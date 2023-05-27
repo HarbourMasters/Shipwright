@@ -16,9 +16,8 @@ void accessible_en_NPC_Gen(AccessibleActor* actor) {
     ActorAccessibility_PlaySpecialSound(actor, NA_SE_VO_NB_LAUGH);
 
 }
-
 void accessible_en_chest(AccessibleActor* actor) {
-    s32 treasureFlag = actor->params & 0x1F;
+    s32 treasureFlag = actor->actor->params & 0x1F;
 
     if (!(treasureFlag >= 20 && treasureFlag < 32)) {
         ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_TBOX_UNLOCK);
@@ -42,31 +41,31 @@ void accessible_test(AccessibleActor* actor) {
 }
 
 void accessible_grotto(AccessibleActor* actor) {
-    if ((actor->params & 0x300) == 0) {
+    if ((actor->actor->params & 0x300) == 0) {
         ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_DROP_FALL);
     }
 }
 
 void accessible_torches(AccessibleActor* actor) {
-    if ((actor->params) == 4230) {
+    if ((actor->actor->params) == 4230) {
         ActorAccessibility_PlaySpecialSound(actor, NA_SE_EN_ANUBIS_FIRE);
     }
 }
-
 void accessible_switch(AccessibleActor* actor) {
-
-    if ((actor->params & 7) == 0) {
-        if (actor->scaley >= 33.0f / 200.0f) { //(!(Flags_GetSwitch(actor->play, (actor->params >> 8 & 0x3F)))) {
+    ObjSwitch* sw = (ObjSwitch*)actor->actor;
+    Vec3f& scale = actor->actor->scale;
+    if ((actor->actor->params & 7) == 0) {
+        if (scale.y >= 33.0f / 200.0f) { //(!(Flags_GetSwitch(actor->play, (actor->params >> 8 & 0x3F)))) {
             ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_FOOT_SWITCH);
-        }
+}
     }
-    else if ((actor->params & 7) == 1) {
-        if (actor->scaley >= 33.0f / 200.0f) { //(!(Flags_GetSwitch(actor->play, (actor->params >> 8 & 0x3F)))) {
+    else if ((actor->actor->params & 7) == 1) {
+        if (scale.y >= 33.0f / 200.0f) { //(!(Flags_GetSwitch(actor->play, (actor->params >> 8 & 0x3F)))) {
             ActorAccessibility_PlaySpecialSound(actor, NA_SE_IT_HAMMER_HIT);
         }
     } 
-    else if ((actor->params & 7) == 2) {
-        if (actor->eyeTex == 0) { //(!(Flags_GetSwitch(actor->play, (actor->params >> 8 & 0x3F))))
+    else if ((actor->actor->params & 7) == 2) {
+        if (sw->eyeTexIndex == 0) { //(!(Flags_GetSwitch(actor->play, (actor->params >> 8 & 0x3F))))
                                     // make it only play for open eye
 
             ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_FOOT_SWITCH);
@@ -114,5 +113,4 @@ void ActorAccessibility_Init() {
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SWITCH, "Switch", accessible_switch, 30, 1000, 1.1);
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_OSHIHIKI, "Pushable Block", accessible_test, 30, 1000, 1.1);
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SYOKUDAI, "Torches", accessible_torches, 30, 1000, 1.1);
-    ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SWITCH, "Switch", accessible_switch, 30, 1000, 1.1);
 }

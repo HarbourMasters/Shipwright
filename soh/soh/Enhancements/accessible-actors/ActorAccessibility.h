@@ -1,6 +1,5 @@
 #pragma once
 #include <z64.h>
-#include <overlays/actors/ovl_Obj_Switch/z_obj_switch.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -32,14 +31,9 @@ struct AccessibleActor
 
     Actor* actor; // This can be null for a fake actor.
     s16 id;       // For real actors, we copy the ID of the actor. For fake actors we have our own table of values.
-    s16 params;
-    u32 flags;
-    f32 scaley;
-    s16 eyeTex;
     f32 xzDistToPlayer;
     Vec3f projectedPos;
     PlayState* play;
-    ObjSwitch* sw;
     u8 isDrawn;//Do we just never play accessibility sounds for actors that aren't drawn?
 
     int frameCount; // Incremented every time the callback is called. The callback is free to modify this. Can be used
@@ -54,9 +48,8 @@ struct AccessibleActor
     ActorAccessibilityPolicy policy;//A copy, so it can be customized on a per-actor basis if needed.
 };
 
-
 void ActorAccessibility_Init();
-void ActorAccessibility_TrackNewActor(Actor* actor, ObjSwitch* sw);
+void ActorAccessibility_TrackNewActor(Actor* actor);
         void ActorAccessibility_RemoveTrackedActor(Actor* actor);
 void ActorAccessibility_AddSupportedActor(s16 type, const char* englishName, ActorAccessibilityCallback callback, int frames = 20,
                                           float distance = 1000, f32 pitch = 1.0, f32 volume = 1.0, s16 sfx = 0);
