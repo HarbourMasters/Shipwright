@@ -2,8 +2,6 @@
 #include "soh/resource/type/AudioSample.h"
 #include "spdlog/spdlog.h"
 
-#define DRMP3_IMPLEMENTATION
-#include <dr_libs/mp3.h>
 #define DRWAV_IMPLEMENTATION
 #include <dr_libs/wav.h>
 
