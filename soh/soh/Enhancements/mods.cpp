@@ -336,6 +336,31 @@ void RegisterRupeeDash() {
     });
 }
 
+void RegisterShadowTag() {
+    static bool shouldSpawn = false;
+    static uint16_t delayTimer = 60;
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        if (!CVarGetInteger("gShadowTag", 0)) {
+            return;
+        }
+        if (shouldSpawn && (delayTimer <= 0)) {
+            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WALLMAS, 0, 0, 0, 0, 0, 0, 3, false);
+            shouldSpawn = false;
+        } else {
+            delayTimer--;
+        }
+    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
+        shouldSpawn = true;
+        delayTimer = 60;
+    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
+        shouldSpawn = true;
+        delayTimer = 60;
+    });
+}
+
 struct DayTimeGoldSkulltulas {
     uint16_t scene;
     uint16_t room;
@@ -533,6 +558,7 @@ void InitMods() {
     RegisterAutoSave();
     RegisterDaytimeGoldSkultullas();
     RegisterRupeeDash();
+    RegisterShadowTag();
     RegisterHyperBosses();
     RegisterHyperEnemies();
     RegisterBonkDamage();

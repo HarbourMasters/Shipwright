@@ -981,6 +981,14 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Interval between Rupee reduction in Rupee Dash Mode");
                 }
 
+                UIWidgets::Spacer(0);
+
+                UIWidgets::PaddedEnhancementCheckbox("Shadow Tag Mode", "gShadowTag", true, false);
+
+                if (CVarGetInteger("gShadowTag", 0)) {
+                    UIWidgets::Tooltip("A wallmaster follows Link everywhere, don't get caught!");
+                }
+
                 ImGui::EndMenu();
             }
 
