@@ -7,6 +7,8 @@
 #include <macros.h>
 #include <stdio.h>
 #include <string>
+void accessible_va_ledge_cue(AccessibleActor* actor);
+void accessible_va_wall_cue(AccessibleActor* actor);
 
     // Begin actor-specific policy callbacks.
 
@@ -126,5 +128,10 @@ void ActorAccessibility_Init() {
     VirtualActorList* list = ActorAccessibility_GetVirtualActorList(3, 17);//Forest temple basement.
 //Now place the actor.
     ActorAccessibility_AddVirtualActor(list, VA_PROTOTYPE, { { 299.16, -779, -1807.22 }, { 0, 14702, 0 } });
-
+//Install dcvz's ledge and wall cues.
+    ActorAccessibility_AddSupportedActor(VA_LEDGE_CUE, "Ledge cue helper", accessible_va_ledge_cue, 1);
+    ActorAccessibility_AddSupportedActor(VA_WALL_CUE, "Wall cue helper", accessible_va_wall_cue, 1);
+    list = ActorAccessibility_GetVirtualActorList(EVERYWHERE, 0);
+    ActorAccessibility_AddVirtualActor(list, VA_WALL_CUE, { { 0, 0, 0 }, { 0, 0, 0 } });
+    ActorAccessibility_AddVirtualActor(list, VA_LEDGE_CUE, { { 0, 0, 0 }, { 0, 0, 0 } });
 }
