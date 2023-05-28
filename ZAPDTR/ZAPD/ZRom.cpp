@@ -1,6 +1,6 @@
 #include "ZRom.h"
 #include "Utils/BitConverter.h"
-#include "Utils/File.h"
+#include <Utils/DiskFile.h>
 #include "Utils/Directory.h"
 #include "yaz0/yaz0.h"
 
@@ -95,7 +95,7 @@ bool ZRom::IsMQ() {
 ZRom::ZRom(std::string romPath)
 {
 	RomVersion version;
-	romData = File::ReadAllBytes(romPath);
+	romData = DiskFile::ReadAllBytes(romPath);
 
 	version.crc = BitConverter::ToInt32BE(romData, 0x10);
 
@@ -189,7 +189,7 @@ ZRom::ZRom(std::string romPath)
 	}
 
 	auto path = StringHelper::Sprintf("%s/%s", Globals::Instance->fileListPath.string().c_str(), version.listPath.c_str());
-	auto txt = File::ReadAllText(path);
+	auto txt = DiskFile::ReadAllText(path);
 	std::vector<std::string> lines = StringHelper::Split(txt, "\n");
 
     std::vector<uint8_t> decompressedData(1);
@@ -222,7 +222,7 @@ ZRom::ZRom(std::string romPath)
 		else
 			files[lines[i]] = outData;
 
-		//File::WriteAllBytes(StringHelper::Sprintf("baserom/%s", lines[i].c_str()), files[lines[i]]);
+		//DiskFile::WriteAllBytes(StringHelper::Sprintf("baserom/%s", lines[i].c_str()), files[lines[i]]);
 	}
 }
 

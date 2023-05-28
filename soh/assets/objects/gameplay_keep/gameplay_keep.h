@@ -20,6 +20,9 @@ static const ALIGN_ASSET(2) char gBottleGlassTex[] = dgBottleGlassTex;
 #define dgDekuStickTex "__OTR__objects/gameplay_keep/gDekuStickTex"
 static const ALIGN_ASSET(2) char gDekuStickTex[] = dgDekuStickTex;
 
+#define dgDekuStickOverflowTex "__OTR__objects/gameplay_keep/gDekuStickOverflowTex"
+static const ALIGN_ASSET(2) char gDekuStickOverflowTex[] = dgDekuStickOverflowTex;
+
 #define dgLinkHairTex "__OTR__objects/gameplay_keep/gLinkHairTex"
 static const ALIGN_ASSET(2) char gLinkHairTex[] = dgLinkHairTex;
 
@@ -2374,6 +2377,9 @@ static const ALIGN_ASSET(2) char gEffUnknown11Tex[] = dgEffUnknown11Tex;
 
 #define dgEffUnknown12Tex "__OTR__objects/gameplay_keep/gEffUnknown12Tex"
 static const ALIGN_ASSET(2) char gEffUnknown12Tex[] = dgEffUnknown12Tex;
+
+#define dgEffUnknown12OverflowTex "__OTR__objects/gameplay_keep/gEffUnknown12OverflowTex"
+static const ALIGN_ASSET(2) char gEffUnknown12OverflowTex[] = dgEffUnknown12OverflowTex;
 
 #define dgUnknownWoodBoardTex "__OTR__objects/gameplay_keep/gUnknownWoodBoardTex"
 static const ALIGN_ASSET(2) char gUnknownWoodBoardTex[] = dgUnknownWoodBoardTex;

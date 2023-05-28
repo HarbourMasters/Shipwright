@@ -96,12 +96,17 @@ if (NOT TARGET ZAPDUtils)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils ${CMAKE_BINARY_DIR}/ZAPDUtils)
 endif()
 
+if (NOT TARGET ZAPDLib)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
+endif()
+
 set(PROJECT_NAME soh)
 
 ################################################################################
 # Sources
 ################################################################################
 configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/src/boot/build.c.in ${CMAKE_BINARY_DIR}/build.c @ONLY)
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/src/boot/properties.h.in ${CMAKE_CURRENT_SOURCE_DIR}/properties.h @ONLY)
 
 set(Header_Files "resource.h")
 source_group("headers" FILES ${Header_Files})
@@ -176,6 +181,23 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 # }}}
 
+if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
+    # soh/Extractor {{{
+    file(GLOB_RECURSE soh__Extractor RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+        "soh/Extractor/*.c"
+        "soh/Extractor/*.cpp"
+        "soh/Extractor/*.h"
+        "soh/Extractor/*.hpp"
+    )
+    # }}}
+else()
+    file(GLOB_RECURSE soh__Extractor RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+        "soh/Extractor/*.h"
+        "soh/Extractor/*.hpp"
+    )
+# }}}
+endif()
+
 # soh/resource {{{
 file(GLOB_RECURSE soh__Resource RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "soh/resource/*.cpp" "soh/resource/*.h")
 
@@ -189,6 +211,7 @@ source_group("soh\\resource\\importer\\scenecommand" REGULAR_EXPRESSION "soh/res
 file(GLOB_RECURSE src__ RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "src/*.c" "src/*.h")
 
 list(APPEND src__ ${CMAKE_BINARY_DIR}/build.c)
+list(APPEND src__ ${CMAKE_CURRENT_SOURCE_DIR}/properties.h)
 list(APPEND src__ ${CMAKE_CURRENT_SOURCE_DIR}/Resource.rc)
 list(FILTER src__ EXCLUDE REGEX "src/dmadata/*")
 list(FILTER src__ EXCLUDE REGEX "src/elf_message/*")
@@ -208,7 +231,7 @@ list(REMOVE_ITEM src__ "src/libultra/gu/sqrtf.c")
 list(REMOVE_ITEM src__ "src/libultra/gu/us2dex.c")
 
 source_group("src" REGULAR_EXPRESSION "src/*")
-source_group("src\\build" FILES ${CMAKE_BINARY_DIR}/build.c ${CMAKE_CURRENT_SOURCE_DIR}/Resource.rc)
+source_group("src\\build" FILES ${CMAKE_BINARY_DIR}/build.c ${CMAKE_CURRENT_SOURCE_DIR}/properties.h ${CMAKE_CURRENT_SOURCE_DIR}/Resource.rc)
 source_group("src\\boot" REGULAR_EXPRESSION "src/boot/*")
 source_group("src\\buffers" REGULAR_EXPRESSION "src/buffers/*")
 source_group("src\\code" REGULAR_EXPRESSION "src/code/*")
@@ -224,6 +247,7 @@ set(ALL_FILES
     ${Header_Files__include}
     ${soh__}
     ${soh__Enhancements}
+    ${soh__Extractor}
     ${soh__Resource}
     ${src__}
 )
@@ -476,8 +500,9 @@ if(MSVC)
                 /INCREMENTAL:NO;
                 /FORCE:MULTIPLE
             >
+            /MANIFEST:NO;
             /DEBUG;
-            /SUBSYSTEM:WINDOWS           
+            /SUBSYSTEM:WINDOWS
         )
     elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
         target_link_options(${PROJECT_NAME} PRIVATE
@@ -490,6 +515,7 @@ if(MSVC)
                 /INCREMENTAL:NO;
                 /FORCE:MULTIPLE
             >
+            /MANIFEST:NO;
             /DEBUG;
             /SUBSYSTEM:WINDOWS
         )
@@ -599,6 +625,17 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		COMMAND   $<CONFIG:Debug> copy /b $<SHELL_PATH:${CMAKE_BINARY_DIR}/>build.c +,,
 	)
 endif()
+
+if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
+    add_custom_command(
+		TARGET ${PROJECT_NAME}
+		POST_BUILD
+		COMMENT "Copying asset xmls..."
+		COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/OTRGui/assets $<TARGET_FILE_DIR:soh>/assets
+		COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/soh/assets/xml $<TARGET_FILE_DIR:soh>/assets/extractor/xmls
+		COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/OTRExporter/assets $<TARGET_FILE_DIR:soh>/Extract/assets
+	)
+endif()
 ################################################################################
 # Dependencies
 ################################################################################
@@ -606,12 +643,18 @@ add_dependencies(${PROJECT_NAME}
     ZAPDUtils
     libultraship
 )
+if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
+add_dependencies(${PROJECT_NAME}
+    ZAPDLib
+)
+endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
 			"libultraship;"
 			"ZAPDUtils;"
+			"ZAPDLib;"
 			"glu32;"
 			"SDL2::SDL2;"
 			"SDL2::SDL2main;"
@@ -626,6 +669,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
 			"libultraship;"
 			"ZAPDUtils;"
+			"ZAPDLib;"
 			"glu32;"
 			"SDL2::SDL2;"
 			"SDL2::SDL2main;"
@@ -651,7 +695,6 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "CafeOS")
     find_package(SDL2 REQUIRED)
     set(ADDITIONAL_LIBRARY_DEPENDENCIES
         "libultraship;"
-        "ZAPDUtils;"
         SDL2::SDL2-static
 
         "$<$<CONFIG:Debug>:-Wl,--wrap=abort>"
@@ -666,6 +709,7 @@ else()
  	set(ADDITIONAL_LIBRARY_DEPENDENCIES
         "libultraship;"
         "ZAPDUtils;"
+		"ZAPDLib;"
 		SDL2::SDL2
         "$<$<BOOL:${BUILD_CROWD_CONTROL}>:SDL2_net::SDL2_net>"
 		${CMAKE_DL_LIBS}

@@ -96,6 +96,8 @@ void EnDntJiji_Destroy(Actor* thisx, PlayState* play) {
     EnDntJiji* this = (EnDntJiji*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDntJiji_SetFlower(EnDntJiji* this, PlayState* play) {

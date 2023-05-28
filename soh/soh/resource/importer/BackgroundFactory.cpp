@@ -2,8 +2,8 @@
 #include "soh/resource/type/Background.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> BackgroundFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+namespace LUS {
+std::shared_ptr<Resource> BackgroundFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                           std::shared_ptr<ResourceInitData> initData,
                                                           std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<Background>(resourceMgr, initData);
@@ -37,4 +37,4 @@ void BackgroundFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader, 
         background->Data.push_back(reader->ReadUByte());
     }
 }
-} // namespace Ship
+} // namespace LUS

@@ -1,6 +1,6 @@
 #include "SetTimeSettings.h"
 
-namespace Ship {
+namespace LUS {
 void* SetTimeSettings::GetPointer() {
     return &settings;
 }
@@ -8,4 +8,4 @@ void* SetTimeSettings::GetPointer() {
 size_t SetTimeSettings::GetPointerSize() {
 	return sizeof(TimeSettings);
 }
-} // namespace Ship
+} // namespace LUS

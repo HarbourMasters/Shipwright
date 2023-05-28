@@ -11,7 +11,7 @@
 #include <libultraship/libultra/types.h>
 
 
-namespace Ship {
+namespace LUS {
 
 class SetAlternateHeaders : public SceneCommand {
   public:
@@ -23,4 +23,4 @@ class SetAlternateHeaders : public SceneCommand {
     uint32_t numHeaders;
     std::vector<std::shared_ptr<Scene>> headers;
 };
-}; // namespace Ship
+}; // namespace LUS

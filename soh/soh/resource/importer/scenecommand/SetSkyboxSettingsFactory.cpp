@@ -2,8 +2,8 @@
 #include "soh/resource/type/scenecommand/SetSkyboxSettings.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> SetSkyboxSettingsFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+namespace LUS {
+std::shared_ptr<Resource> SetSkyboxSettingsFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                                  std::shared_ptr<ResourceInitData> initData,
                                                                  std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetSkyboxSettings>(resourceMgr, initData);
@@ -38,4 +38,4 @@ void SetSkyboxSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
     setSkyboxSettings->settings.indoors = reader->ReadInt8();
 }
 
-} // namespace Ship
+} // namespace LUS

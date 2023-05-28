@@ -3,6 +3,7 @@
 #include <array>
 #include <string>
 #include <string_view>
+#include <cstdint>
 
 using RandomizerHash = std::array<std::string, 5>;
 

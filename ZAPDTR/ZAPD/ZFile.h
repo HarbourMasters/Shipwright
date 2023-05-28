@@ -32,10 +32,11 @@ class ZFile
 {
 public:
 	std::map<offset_t, Declaration*> declarations;
-	std::string defines;
 	std::vector<ZResource*> resources;
+	std::string defines;
 
 	int workerID;
+	bool isCompilable = false;
 
 	// Default to using virtual addresses
 	uint32_t segment = 0x80;
@@ -55,7 +56,7 @@ public:
 	void ExtractResources();
 	void BuildSourceFile();
 	void AddResource(ZResource* res);
-	ZResource* FindResource(uint32_t rawDataIndex);
+	ZResource* FindResource(offset_t rawDataIndex);
 	std::vector<ZResource*> GetResourcesOfType(ZResourceType resType);
 
 	Declaration* AddDeclaration(offset_t address, DeclarationAlignment alignment, size_t size,
@@ -84,9 +85,9 @@ public:
 	                                    const std::string& expectedType,
 	                                    std::string& declName) const;
 
-	Declaration* GetDeclaration(uint32_t address) const;
-	Declaration* GetDeclarationRanged(uint32_t address) const;
-	bool HasDeclaration(uint32_t address);
+	Declaration* GetDeclaration(offset_t address) const;
+	Declaration* GetDeclarationRanged(offset_t address) const;
+	bool HasDeclaration(offset_t address);
 
 	std::string GetHeaderInclude() const;
 	std::string GetZRoomHeaderInclude() const;

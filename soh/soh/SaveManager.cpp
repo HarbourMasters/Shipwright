@@ -7,7 +7,7 @@
 #include "macros.h"
 #include <variables.h>
 #include <Hooks.h>
-#include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
 
 #define NOGDI // avoid various windows defines that conflict with things in z64.h
 #include <spdlog/spdlog.h>
@@ -17,21 +17,50 @@
 #include <array>
 
 extern "C" SaveContext gSaveContext;
+using namespace std::string_literals;
+
+void SaveManager::WriteSaveFile(const std::filesystem::path& savePath, const uintptr_t addr, void* dramAddr,
+                           const size_t size) {
+    std::ofstream saveFile = std::ofstream(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
+    saveFile.seekp(addr);
+    saveFile.write((char*)dramAddr, size);
+    saveFile.close();
+}
+
+void SaveManager::ReadSaveFile(std::filesystem::path savePath, uintptr_t addr, void* dramAddr, size_t size) {
+    std::ifstream saveFile = std::ifstream(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
+
+    // If the file doesn't exist, initialize DRAM
+    if (saveFile.good()) {
+        saveFile.seekg(addr);
+        saveFile.read((char*)dramAddr, size);
+    } else {
+        memset(dramAddr, 0, size);
+    }
+
+    saveFile.close();
+}
 
 std::filesystem::path SaveManager::GetFileName(int fileNum) {
-    const std::filesystem::path sSavePath(Ship::Window::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
     return sSavePath / ("file" + std::to_string(fileNum + 1) + ".sav");
 }
 
 SaveManager::SaveManager() {
+    coreSectionIDsByName["base"] = SECTION_ID_BASE;
+    coreSectionIDsByName["randomizer"] = SECTION_ID_RANDOMIZER;
+    coreSectionIDsByName["sohStats"] = SECTION_ID_STATS;
+    coreSectionIDsByName["entrances"] = SECTION_ID_ENTRANCES;
+    coreSectionIDsByName["scenes"] = SECTION_ID_SCENES;
     AddLoadFunction("base", 1, LoadBaseVersion1);
     AddLoadFunction("base", 2, LoadBaseVersion2);
     AddLoadFunction("base", 3, LoadBaseVersion3);
-    AddSaveFunction("base", 3, SaveBase);
+    AddLoadFunction("base", 4, LoadBaseVersion4);
+    AddSaveFunction("base", 4, SaveBase, true, SECTION_PARENT_NONE);
 
     AddLoadFunction("randomizer", 1, LoadRandomizerVersion1);
     AddLoadFunction("randomizer", 2, LoadRandomizerVersion2);
-    AddSaveFunction("randomizer", 2, SaveRandomizer);
+    AddSaveFunction("randomizer", 2, SaveRandomizer, true, SECTION_PARENT_NONE);
 
     AddInitFunction(InitFileImpl);
 
@@ -241,59 +270,59 @@ void SaveManager::LoadRandomizerVersion2() {
     SaveManager::Instance->LoadData("lastScene", gSaveContext.lastScene, (uint32_t)0);
 }
 
-void SaveManager::SaveRandomizer() {
+void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID) {
 
-    if(!gSaveContext.n64ddFlag) return;
+    if(!saveContext->n64ddFlag) return;
 
     SaveManager::Instance->SaveArray("itemLocations", RC_MAX, [&](size_t i) {
         SaveManager::Instance->SaveStruct("", [&]() {
-            SaveManager::Instance->SaveData("rgID", gSaveContext.itemLocations[i].get.rgID);
-            SaveManager::Instance->SaveData("fakeRgID", gSaveContext.itemLocations[i].get.fakeRgID);
-            SaveManager::Instance->SaveData("trickName", gSaveContext.itemLocations[i].get.trickName);
+            SaveManager::Instance->SaveData("rgID", saveContext->itemLocations[i].get.rgID);
+            SaveManager::Instance->SaveData("fakeRgID", saveContext->itemLocations[i].get.fakeRgID);
+            SaveManager::Instance->SaveData("trickName", saveContext->itemLocations[i].get.trickName);
         });
     });
 
-    SaveManager::Instance->SaveArray("entrances", ARRAY_COUNT(gSaveContext.entranceOverrides), [&](size_t i) {
+    SaveManager::Instance->SaveArray("entrances", ARRAY_COUNT(saveContext->entranceOverrides), [&](size_t i) {
         SaveManager::Instance->SaveStruct("", [&]() {
-            SaveManager::Instance->SaveData("index", gSaveContext.entranceOverrides[i].index);
-            SaveManager::Instance->SaveData("destination", gSaveContext.entranceOverrides[i].destination);
-            SaveManager::Instance->SaveData("blueWarp", gSaveContext.entranceOverrides[i].blueWarp);
-            SaveManager::Instance->SaveData("override", gSaveContext.entranceOverrides[i].override);
-            SaveManager::Instance->SaveData("overrideDestination", gSaveContext.entranceOverrides[i].overrideDestination);
+            SaveManager::Instance->SaveData("index", saveContext->entranceOverrides[i].index);
+            SaveManager::Instance->SaveData("destination", saveContext->entranceOverrides[i].destination);
+            SaveManager::Instance->SaveData("blueWarp", saveContext->entranceOverrides[i].blueWarp);
+            SaveManager::Instance->SaveData("override", saveContext->entranceOverrides[i].override);
+            SaveManager::Instance->SaveData("overrideDestination", saveContext->entranceOverrides[i].overrideDestination);
         });
     });
 
-    SaveManager::Instance->SaveArray("seed", ARRAY_COUNT(gSaveContext.seedIcons), [&](size_t i) {
-        SaveManager::Instance->SaveData("", gSaveContext.seedIcons[i]);
+    SaveManager::Instance->SaveArray("seed", ARRAY_COUNT(saveContext->seedIcons), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->seedIcons[i]);
     });
 
     SaveManager::Instance->SaveArray("randoSettings", RSK_MAX, [&](size_t i) {
-        SaveManager::Instance->SaveData("", gSaveContext.randoSettings[i].value);
+        SaveManager::Instance->SaveData("", saveContext->randoSettings[i].value);
     });
 
-    SaveManager::Instance->SaveArray("hintLocations", ARRAY_COUNT(gSaveContext.hintLocations), [&](size_t i) {
+    SaveManager::Instance->SaveArray("hintLocations", ARRAY_COUNT(saveContext->hintLocations), [&](size_t i) {
         SaveManager::Instance->SaveStruct("", [&]() {
-            SaveManager::Instance->SaveData("check", gSaveContext.hintLocations[i].check);
-            SaveManager::Instance->SaveData("hintText", gSaveContext.hintLocations[i].hintText);
+            SaveManager::Instance->SaveData("check", saveContext->hintLocations[i].check);
+            SaveManager::Instance->SaveData("hintText", saveContext->hintLocations[i].hintText);
         });
     });
 
-    SaveManager::Instance->SaveData("childAltarText", gSaveContext.childAltarText);
-    SaveManager::Instance->SaveData("adultAltarText", gSaveContext.adultAltarText);
-    SaveManager::Instance->SaveData("ganonHintText", gSaveContext.ganonHintText);
-    SaveManager::Instance->SaveData("ganonText", gSaveContext.ganonText);
-    SaveManager::Instance->SaveData("dampeText", gSaveContext.dampeText);
-    SaveManager::Instance->SaveData("gregHintText", gSaveContext.gregHintText);
-    SaveManager::Instance->SaveData("warpMinuetText", gSaveContext.warpMinuetText);
-    SaveManager::Instance->SaveData("warpBoleroText", gSaveContext.warpBoleroText);
-    SaveManager::Instance->SaveData("warpSerenadeText", gSaveContext.warpSerenadeText);
-    SaveManager::Instance->SaveData("warpRequiemText", gSaveContext.warpRequiemText);
-    SaveManager::Instance->SaveData("warpNocturneText", gSaveContext.warpNocturneText);
-    SaveManager::Instance->SaveData("warpPreludeText", gSaveContext.warpPreludeText);
+    SaveManager::Instance->SaveData("childAltarText", saveContext->childAltarText);
+    SaveManager::Instance->SaveData("adultAltarText", saveContext->adultAltarText);
+    SaveManager::Instance->SaveData("ganonHintText", saveContext->ganonHintText);
+    SaveManager::Instance->SaveData("ganonText", saveContext->ganonText);
+    SaveManager::Instance->SaveData("dampeText", saveContext->dampeText);
+    SaveManager::Instance->SaveData("gregHintText", saveContext->gregHintText);
+    SaveManager::Instance->SaveData("warpMinuetText", saveContext->warpMinuetText);
+    SaveManager::Instance->SaveData("warpBoleroText", saveContext->warpBoleroText);
+    SaveManager::Instance->SaveData("warpSerenadeText", saveContext->warpSerenadeText);
+    SaveManager::Instance->SaveData("warpRequiemText", saveContext->warpRequiemText);
+    SaveManager::Instance->SaveData("warpNocturneText", saveContext->warpNocturneText);
+    SaveManager::Instance->SaveData("warpPreludeText", saveContext->warpPreludeText);
 
-    SaveManager::Instance->SaveData("adultTradeItems", gSaveContext.adultTradeItems);
+    SaveManager::Instance->SaveData("adultTradeItems", saveContext->adultTradeItems);
 
-    SaveManager::Instance->SaveData("pendingIceTrapCount", gSaveContext.pendingIceTrapCount);
+    SaveManager::Instance->SaveData("pendingIceTrapCount", saveContext->pendingIceTrapCount);
 
     std::shared_ptr<Randomizer> randomizer = OTRGlobals::Instance->gRandomizer;
 
@@ -310,7 +339,7 @@ void SaveManager::SaveRandomizer() {
         });
     });
 
-    SaveManager::Instance->SaveData("masterQuestDungeonCount", gSaveContext.mqDungeonCount);
+    SaveManager::Instance->SaveData("masterQuestDungeonCount", saveContext->mqDungeonCount);
 
     std::vector<uint16_t> masterQuestDungeons;
     for (const auto scene : randomizer->masterQuestDungeons) {
@@ -324,10 +353,12 @@ void SaveManager::SaveRandomizer() {
 }
 
 void SaveManager::Init() {
-    const std::filesystem::path sSavePath(Ship::Window::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
-    auto sOldSavePath = Ship::Window::GetPathRelativeToAppDirectory("oot_save.sav");
-    auto sOldBackupSavePath = Ship::Window::GetPathRelativeToAppDirectory("oot_save.bak");
+    auto sOldSavePath = LUS::Context::GetPathRelativeToAppDirectory("oot_save.sav");
+    auto sOldBackupSavePath = LUS::Context::GetPathRelativeToAppDirectory("oot_save.bak");
+    LUS::RegisterHook<LUS::ExitGame>([this]() { ThreadPoolWait(); });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>([this](uint32_t fileNum) { ThreadPoolWait(); });
 
     // If the save directory does not exist, create it
     if (!std::filesystem::exists(sSavePath)) {
@@ -368,11 +399,13 @@ void SaveManager::Init() {
     } else {
         CreateDefaultGlobal();
     }
+    smThreadPool = std::make_shared<BS::thread_pool>(1);
 
     // Load files to initialize metadata
     for (int fileNum = 0; fileNum < MaxFiles; fileNum++) {
         if (std::filesystem::exists(GetFileName(fileNum))) {
             LoadFile(fileNum);
+            saveBlock = nlohmann::json::object();
         }
 
     }
@@ -486,37 +519,6 @@ void SaveManager::InitFileNormal() {
     }
     gSaveContext.inventory.defenseHearts = 0;
     gSaveContext.inventory.gsTokens = 0;
-    gSaveContext.sohStats.heartPieces = 0;
-    gSaveContext.sohStats.heartContainers = 0;
-    for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys); dungeon++) {
-        gSaveContext.sohStats.dungeonKeys[dungeon] = 0;
-    }
-    gSaveContext.sohStats.playTimer = 0;
-    gSaveContext.sohStats.pauseTimer = 0;
-    for (int timestamp = 0; timestamp < ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp); timestamp++) {
-        gSaveContext.sohStats.itemTimestamp[timestamp] = 0;
-    }
-    for (int timestamp = 0; timestamp < ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps); timestamp++) {
-        gSaveContext.sohStats.sceneTimestamps[timestamp].sceneTime = 0;
-        gSaveContext.sohStats.sceneTimestamps[timestamp].roomTime = 0;
-        gSaveContext.sohStats.sceneTimestamps[timestamp].scene = 254;
-        gSaveContext.sohStats.sceneTimestamps[timestamp].room = 254;
-        gSaveContext.sohStats.sceneTimestamps[timestamp].isRoom = 0;
-    }
-    gSaveContext.sohStats.tsIdx = 0;
-    for (int count = 0; count < ARRAY_COUNT(gSaveContext.sohStats.count); count++) {
-        gSaveContext.sohStats.count[count] = 0;
-    }
-    gSaveContext.sohStats.gameComplete = false;
-    for (int scenesIdx = 0; scenesIdx < ARRAY_COUNT(gSaveContext.sohStats.scenesDiscovered); scenesIdx++) {
-        gSaveContext.sohStats.scenesDiscovered[scenesIdx] = 0;
-    }
-    for (int entrancesIdx = 0; entrancesIdx < ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered); entrancesIdx++) {
-        gSaveContext.sohStats.entrancesDiscovered[entrancesIdx] = 0;
-    }
-    for (int rc = 0; rc < ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped); rc++) {
-        gSaveContext.sohStats.locationsSkipped[rc] = 0;
-    }
     for (int scene = 0; scene < ARRAY_COUNT(gSaveContext.sceneFlags); scene++) {
         gSaveContext.sceneFlags[scene].chest = 0;
         gSaveContext.sceneFlags[scene].swch = 0;
@@ -584,12 +586,6 @@ void SaveManager::InitFileNormal() {
     gSaveContext.sceneFlags[5].swch = 0x40000000;
     gSaveContext.pendingSale = ITEM_NONE;
     gSaveContext.pendingSaleMod = MOD_NONE;
-
-    strncpy(gSaveContext.sohStats.buildVersion, (const char*) gBuildVersion, sizeof(gSaveContext.sohStats.buildVersion) - 1);
-    gSaveContext.sohStats.buildVersion[sizeof(gSaveContext.sohStats.buildVersion) - 1] = 0;
-    gSaveContext.sohStats.buildVersionMajor = gBuildVersionMajor;
-    gSaveContext.sohStats.buildVersionMinor = gBuildVersionMinor;
-    gSaveContext.sohStats.buildVersionPatch = gBuildVersionPatch;
 
     //RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
 }
@@ -672,11 +668,6 @@ void SaveManager::InitFileDebug() {
     }
     gSaveContext.inventory.defenseHearts = 0;
     gSaveContext.inventory.gsTokens = 0;
-    gSaveContext.sohStats.heartPieces = 8;
-    gSaveContext.sohStats.heartContainers = 8;
-    for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys); dungeon++) {
-        gSaveContext.sohStats.dungeonKeys[dungeon] = 8;
-    }
 
     gSaveContext.horseData.scene = SCENE_SPOT00;
     gSaveContext.horseData.pos.x = -1840;
@@ -704,35 +695,82 @@ void SaveManager::InitFileDebug() {
     gSaveContext.sceneFlags[5].swch = 0x40000000;
 }
 
-void SaveManager::SaveFile(int fileNum) {
-    if (fileNum == 0xFF) {
-        return;
-    }
+// Threaded SaveFile takes copy of gSaveContext for local unmodified storage
 
-    nlohmann::json baseBlock;
+void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int sectionID) {
+    // Needed for first time save, hasn't changed in forever anyway
+    saveBlock["version"] = 1;
+    if (sectionID == SECTION_ID_BASE) {
+        for (auto& sectionHandlerPair : sectionSaveHandlers) {
+            auto& saveFuncInfo = sectionHandlerPair.second;
+            // Don't call SaveFuncs for sections that aren't tied to game save
+            if (!saveFuncInfo.saveWithBase) {
+                continue;
+            }
+            nlohmann::json& sectionBlock = saveBlock["sections"][saveFuncInfo.name];
+            sectionBlock["version"] = sectionHandlerPair.second.version;
+            // If any save file is loaded for medatata, or a spoiler log is loaded (not sure which at this point), there is still data in the "randomizer" section
+            // This clears the randomizer data block if and only if the section being called is "randomizer" and n64ddFlag is false.
+            if (sectionHandlerPair.second.name == "randomizer" && !gSaveContext.n64ddFlag) {
+                sectionBlock["data"] = nlohmann::json::object();
+                continue;
+            }
 
-    baseBlock["version"] = 1;
-    baseBlock["sections"] = nlohmann::json::object();
-    for (auto& section : sectionSaveHandlers) {
-        nlohmann::json& sectionBlock = baseBlock["sections"][section.first];
-        sectionBlock["version"] = section.second.first;
-
+            currentJsonContext = &sectionBlock["data"];
+            sectionHandlerPair.second.func(saveContext, sectionID);
+        }
+    } else {
+        SaveFuncInfo svi = sectionSaveHandlers.find(sectionID)->second;
+        auto& sectionName = svi.name;
+        auto sectionVersion = svi.version;
+        // If section has a parentSection, it is a subsection. Load parentSection version and set sectionBlock to parent string
+        if (svi.parentSection != -1 && svi.parentSection < sectionIndex) {
+            auto parentSvi = sectionSaveHandlers.find(svi.parentSection)->second;
+            sectionName = parentSvi.name;
+            sectionVersion = parentSvi.version;
+        }
+        nlohmann::json& sectionBlock = saveBlock["sections"][sectionName];
+        sectionBlock["version"] = sectionVersion;
         currentJsonContext = &sectionBlock["data"];
-        section.second.second();
+        svi.func(saveContext, sectionID);
     }
 
 #if defined(__SWITCH__) || defined(__WIIU__)
     FILE* w = fopen(GetFileName(fileNum).c_str(), "w");
-    std::string json_string = baseBlock.dump(4);
+    std::string json_string = saveBlock.dump(4);
     fwrite(json_string.c_str(), sizeof(char), json_string.length(), w);
     fclose(w);
 #else
     std::ofstream output(GetFileName(fileNum));
-    output << std::setw(4) << baseBlock << std::endl;
+    output << std::setw(4) << saveBlock << std::endl;
 #endif
 
+    delete saveContext;
     InitMeta(fileNum);
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaveFile>(fileNum);
+}
+
+// SaveSection creates a copy of gSaveContext to prevent mid-save data modification, and passes its reference to SaveFileThreaded
+void SaveManager::SaveSection(int fileNum, int sectionID, bool threaded) {
+    if (fileNum == 0xFF) {
+        return;
+    }
+    // Don't save a nonexistent section
+    if (sectionID >= sectionIndex) {
+        SPDLOG_ERROR("SaveSection: Section ID not registered.");
+        return;
+    }
+    auto saveContext = new SaveContext;
+    memcpy(saveContext, &gSaveContext, sizeof(gSaveContext));
+    if (threaded) {
+        smThreadPool->push_task_back(&SaveManager::SaveFileThreaded, this, fileNum, saveContext, sectionID);
+    } else {
+        SaveFileThreaded(fileNum, saveContext, sectionID);
+    }
+}
+
+void SaveManager::SaveFile(int fileNum) {
+    SaveSection(fileNum, SECTION_ID_BASE, true);
 }
 
 void SaveManager::SaveGlobal() {
@@ -742,7 +780,7 @@ void SaveManager::SaveGlobal() {
     globalBlock["zTargetSetting"] = gSaveContext.zTargetSetting;
     globalBlock["language"] = gSaveContext.language;
 
-    const std::filesystem::path sSavePath(Ship::Window::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
 
     std::ofstream output(sGlobalPath);
@@ -755,7 +793,7 @@ void SaveManager::LoadFile(int fileNum) {
 
     std::ifstream input(GetFileName(fileNum));
 
-    nlohmann::json saveBlock;
+    saveBlock = nlohmann::json::object();
     input >> saveBlock;
     if (!saveBlock.contains("version")) {
         SPDLOG_ERROR("Save at " + GetFileName(fileNum).string() + " contains no version");
@@ -797,6 +835,10 @@ void SaveManager::LoadFile(int fileNum) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLoadFile>(fileNum);
 }
 
+void SaveManager::ThreadPoolWait() {
+    smThreadPool->wait_for_tasks();
+}
+
 bool SaveManager::SaveFile_Exist(int fileNum) {
     try {
         bool exists = std::filesystem::exists(GetFileName(fileNum));
@@ -827,14 +869,22 @@ void SaveManager::AddLoadFunction(const std::string& name, int version, LoadFunc
     sectionLoadHandlers[name][version] = func;
 }
 
-void SaveManager::AddSaveFunction(const std::string& name, int version, SaveFunc func) {
-    if (sectionSaveHandlers.contains(name)) {
+void SaveManager::AddSaveFunction(const std::string& name, int version, SaveFunc func, bool saveWithBase, int parentSection = -1) {
+    if (sectionRegistry.contains(name)) {
         SPDLOG_ERROR("Adding save function for section that already has one: " + name);
         assert(false);
         return;
     }
 
-    sectionSaveHandlers[name] = std::make_pair(version, func);
+    int index = sectionIndex;
+    if (coreSectionIDsByName.contains(name)) {
+        index = coreSectionIDsByName.find(name)->second;
+    } else {
+        sectionIndex++;
+    }
+    SaveFuncInfo sfi = { name, version, func, saveWithBase, parentSection };
+    sectionSaveHandlers.emplace(index, sfi);
+    sectionRegistry.emplace(name, index);
 }
 
 void SaveManager::AddPostFunction(const std::string& name, PostFunc func) {
@@ -845,6 +895,15 @@ void SaveManager::AddPostFunction(const std::string& name, PostFunc func) {
     }
 
     postHandlers[name] = func;
+}
+
+// Returns -1 if section name not found
+int SaveManager::GetSaveSectionID(std::string& sectionName) {
+    if (sectionRegistry.contains(sectionName)) {
+        return sectionRegistry.find(sectionName)->second;
+    } else {
+        return -1;
+    }
 }
 
 void SaveManager::CreateDefaultGlobal() {
@@ -1079,6 +1138,8 @@ void SaveManager::LoadBaseVersion2() {
         SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.dungeonKeys[i]);
         });
+        SaveManager::Instance->LoadData("rtaTiming", gSaveContext.sohStats.rtaTiming);
+        SaveManager::Instance->LoadData("fileCreatedAt", gSaveContext.sohStats.fileCreatedAt);
         SaveManager::Instance->LoadData("playTimer", gSaveContext.sohStats.playTimer);
         SaveManager::Instance->LoadData("pauseTimer", gSaveContext.sohStats.pauseTimer);
         SaveManager::Instance->LoadArray("timestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
@@ -1293,6 +1354,8 @@ void SaveManager::LoadBaseVersion3() {
         SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.dungeonKeys[i]);
         });
+        SaveManager::Instance->LoadData("rtaTiming", gSaveContext.sohStats.rtaTiming);
+        SaveManager::Instance->LoadData("fileCreatedAt", gSaveContext.sohStats.fileCreatedAt);
         SaveManager::Instance->LoadData("playTimer", gSaveContext.sohStats.playTimer);
         SaveManager::Instance->LoadData("pauseTimer", gSaveContext.sohStats.pauseTimer);
         SaveManager::Instance->LoadArray("itemTimestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
@@ -1418,212 +1481,346 @@ void SaveManager::LoadBaseVersion3() {
     SaveManager::Instance->LoadData("dogParams", gSaveContext.dogParams);
 }
 
-void SaveManager::SaveBase() {
-    SaveManager::Instance->SaveData("entranceIndex", gSaveContext.entranceIndex);
-    SaveManager::Instance->SaveData("linkAge", gSaveContext.linkAge);
-    SaveManager::Instance->SaveData("cutsceneIndex", gSaveContext.cutsceneIndex);
-    SaveManager::Instance->SaveData("dayTime", gSaveContext.dayTime);
-    SaveManager::Instance->SaveData("nightFlag", gSaveContext.nightFlag);
-    SaveManager::Instance->SaveData("totalDays", gSaveContext.totalDays);
-    SaveManager::Instance->SaveData("bgsDayCount", gSaveContext.bgsDayCount);
-    SaveManager::Instance->SaveData("deaths", gSaveContext.deaths);
-    SaveManager::Instance->SaveArray("playerName", ARRAY_COUNT(gSaveContext.playerName), [](size_t i) {
-        SaveManager::Instance->SaveData("", gSaveContext.playerName[i]);
+void SaveManager::LoadBaseVersion4() {
+    SaveManager::Instance->LoadData("entranceIndex", gSaveContext.entranceIndex);
+    SaveManager::Instance->LoadData("linkAge", gSaveContext.linkAge);
+    SaveManager::Instance->LoadData("cutsceneIndex", gSaveContext.cutsceneIndex);
+    SaveManager::Instance->LoadData("dayTime", gSaveContext.dayTime);
+    SaveManager::Instance->LoadData("nightFlag", gSaveContext.nightFlag);
+    SaveManager::Instance->LoadData("totalDays", gSaveContext.totalDays);
+    SaveManager::Instance->LoadData("bgsDayCount", gSaveContext.bgsDayCount);
+    SaveManager::Instance->LoadData("deaths", gSaveContext.deaths);
+    SaveManager::Instance->LoadArray("playerName", ARRAY_COUNT(gSaveContext.playerName), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.playerName[i]);
     });
-    SaveManager::Instance->SaveData("n64ddFlag", gSaveContext.n64ddFlag);
-    SaveManager::Instance->SaveData("healthCapacity", gSaveContext.healthCapacity);
-    SaveManager::Instance->SaveData("health", gSaveContext.health);
-    SaveManager::Instance->SaveData("magicLevel", gSaveContext.magicLevel);
-    SaveManager::Instance->SaveData("magic", gSaveContext.magic);
-    SaveManager::Instance->SaveData("rupees", gSaveContext.rupees);
-    SaveManager::Instance->SaveData("swordHealth", gSaveContext.swordHealth);
-    SaveManager::Instance->SaveData("naviTimer", gSaveContext.naviTimer);
-    SaveManager::Instance->SaveData("isMagicAcquired", gSaveContext.isMagicAcquired);
-    SaveManager::Instance->SaveData("isDoubleMagicAcquired", gSaveContext.isDoubleMagicAcquired);
-    SaveManager::Instance->SaveData("isDoubleDefenseAcquired", gSaveContext.isDoubleDefenseAcquired);
-    SaveManager::Instance->SaveData("bgsFlag", gSaveContext.bgsFlag);
-    SaveManager::Instance->SaveData("ocarinaGameRoundNum", gSaveContext.ocarinaGameRoundNum);
-    SaveManager::Instance->SaveStruct("childEquips", []() {
-        SaveManager::Instance->SaveArray("buttonItems", ARRAY_COUNT(gSaveContext.childEquips.buttonItems), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.childEquips.buttonItems[i]);
+    SaveManager::Instance->LoadData("n64ddFlag", gSaveContext.n64ddFlag);
+    SaveManager::Instance->LoadData("healthCapacity", gSaveContext.healthCapacity);
+    SaveManager::Instance->LoadData("health", gSaveContext.health);
+    SaveManager::Instance->LoadData("magicLevel", gSaveContext.magicLevel);
+    SaveManager::Instance->LoadData("magic", gSaveContext.magic);
+    SaveManager::Instance->LoadData("rupees", gSaveContext.rupees);
+    SaveManager::Instance->LoadData("swordHealth", gSaveContext.swordHealth);
+    SaveManager::Instance->LoadData("naviTimer", gSaveContext.naviTimer);
+    SaveManager::Instance->LoadData("isMagicAcquired", gSaveContext.isMagicAcquired);
+    SaveManager::Instance->LoadData("isDoubleMagicAcquired", gSaveContext.isDoubleMagicAcquired);
+    SaveManager::Instance->LoadData("isDoubleDefenseAcquired", gSaveContext.isDoubleDefenseAcquired);
+    SaveManager::Instance->LoadData("bgsFlag", gSaveContext.bgsFlag);
+    SaveManager::Instance->LoadData("ocarinaGameRoundNum", gSaveContext.ocarinaGameRoundNum);
+    SaveManager::Instance->LoadStruct("childEquips", []() {
+        SaveManager::Instance->LoadArray("buttonItems", ARRAY_COUNT(gSaveContext.childEquips.buttonItems), [](size_t i) {
+                SaveManager::Instance->LoadData("", gSaveContext.childEquips.buttonItems[i],
+                                                static_cast<uint8_t>(ITEM_NONE));
         });
-        SaveManager::Instance->SaveArray("cButtonSlots", ARRAY_COUNT(gSaveContext.childEquips.cButtonSlots), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.childEquips.cButtonSlots[i]);
+        SaveManager::Instance->LoadArray("cButtonSlots", ARRAY_COUNT(gSaveContext.childEquips.cButtonSlots), [](size_t i) {
+                SaveManager::Instance->LoadData("", gSaveContext.childEquips.cButtonSlots[i],
+                                                static_cast<uint8_t>(SLOT_NONE));
         });
-        SaveManager::Instance->SaveData("equipment", gSaveContext.childEquips.equipment);
+        SaveManager::Instance->LoadData("equipment", gSaveContext.childEquips.equipment);
     });
-    SaveManager::Instance->SaveStruct("adultEquips", []() {
-        SaveManager::Instance->SaveArray("buttonItems", ARRAY_COUNT(gSaveContext.adultEquips.buttonItems), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.adultEquips.buttonItems[i]);
+    SaveManager::Instance->LoadStruct("adultEquips", []() {
+        SaveManager::Instance->LoadArray("buttonItems", ARRAY_COUNT(gSaveContext.adultEquips.buttonItems), [](size_t i) {
+                SaveManager::Instance->LoadData("", gSaveContext.adultEquips.buttonItems[i],
+                                                static_cast<uint8_t>(ITEM_NONE));
         });
-        SaveManager::Instance->SaveArray("cButtonSlots", ARRAY_COUNT(gSaveContext.adultEquips.cButtonSlots), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.adultEquips.cButtonSlots[i]);
+        SaveManager::Instance->LoadArray("cButtonSlots", ARRAY_COUNT(gSaveContext.adultEquips.cButtonSlots), [](size_t i) {
+                SaveManager::Instance->LoadData("", gSaveContext.adultEquips.cButtonSlots[i],
+                                                static_cast<uint8_t>(SLOT_NONE));
         });
-        SaveManager::Instance->SaveData("equipment", gSaveContext.adultEquips.equipment);
+        SaveManager::Instance->LoadData("equipment", gSaveContext.adultEquips.equipment);
     });
-    SaveManager::Instance->SaveData("unk_54", gSaveContext.unk_54);
-    SaveManager::Instance->SaveData("savedSceneNum", gSaveContext.savedSceneNum);
-    SaveManager::Instance->SaveStruct("equips", []() {
-        SaveManager::Instance->SaveArray("buttonItems", ARRAY_COUNT(gSaveContext.equips.buttonItems), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.equips.buttonItems[i]);
+    SaveManager::Instance->LoadData("unk_54", gSaveContext.unk_54);
+    SaveManager::Instance->LoadData("savedSceneNum", gSaveContext.savedSceneNum);
+    SaveManager::Instance->LoadStruct("equips", []() {
+        SaveManager::Instance->LoadArray("buttonItems", ARRAY_COUNT(gSaveContext.equips.buttonItems), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.equips.buttonItems[i], static_cast<uint8_t>(ITEM_NONE));
         });
-        SaveManager::Instance->SaveArray("cButtonSlots", ARRAY_COUNT(gSaveContext.equips.cButtonSlots), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.equips.cButtonSlots[i]);
+        SaveManager::Instance->LoadArray("cButtonSlots", ARRAY_COUNT(gSaveContext.equips.cButtonSlots), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.equips.cButtonSlots[i], static_cast<uint8_t>(SLOT_NONE));
         });
-        SaveManager::Instance->SaveData("equipment", gSaveContext.equips.equipment);
+        SaveManager::Instance->LoadData("equipment", gSaveContext.equips.equipment);
     });
-    SaveManager::Instance->SaveStruct("inventory", []() {
-        SaveManager::Instance->SaveArray("items", ARRAY_COUNT(gSaveContext.inventory.items), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.inventory.items[i]);
+    SaveManager::Instance->LoadStruct("inventory", []() {
+        SaveManager::Instance->LoadArray("items", ARRAY_COUNT(gSaveContext.inventory.items), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.inventory.items[i]);
         });
-        SaveManager::Instance->SaveArray("ammo", ARRAY_COUNT(gSaveContext.inventory.ammo), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.inventory.ammo[i]);
+        SaveManager::Instance->LoadArray("ammo", ARRAY_COUNT(gSaveContext.inventory.ammo), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.inventory.ammo[i]);
         });
-        SaveManager::Instance->SaveData("equipment", gSaveContext.inventory.equipment);
-        SaveManager::Instance->SaveData("upgrades", gSaveContext.inventory.upgrades);
-        SaveManager::Instance->SaveData("questItems", gSaveContext.inventory.questItems);
-        SaveManager::Instance->SaveArray("dungeonItems", ARRAY_COUNT(gSaveContext.inventory.dungeonItems), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.inventory.dungeonItems[i]);
+        SaveManager::Instance->LoadData("equipment", gSaveContext.inventory.equipment);
+        SaveManager::Instance->LoadData("upgrades", gSaveContext.inventory.upgrades);
+        SaveManager::Instance->LoadData("questItems", gSaveContext.inventory.questItems);
+        SaveManager::Instance->LoadArray("dungeonItems", ARRAY_COUNT(gSaveContext.inventory.dungeonItems), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.inventory.dungeonItems[i]);
         });
-        SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(gSaveContext.inventory.dungeonKeys), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.inventory.dungeonKeys[i]);
+        SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(gSaveContext.inventory.dungeonKeys), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.inventory.dungeonKeys[i]);
         });
-        SaveManager::Instance->SaveData("defenseHearts", gSaveContext.inventory.defenseHearts);
-        SaveManager::Instance->SaveData("gsTokens", gSaveContext.inventory.gsTokens);
+        SaveManager::Instance->LoadData("defenseHearts", gSaveContext.inventory.defenseHearts);
+        SaveManager::Instance->LoadData("gsTokens", gSaveContext.inventory.gsTokens);
     });
-    SaveManager::Instance->SaveStruct("sohStats", []() {
-        SaveManager::Instance->SaveData("buildVersion", gSaveContext.sohStats.buildVersion);
-        SaveManager::Instance->SaveData("buildVersionMajor", gSaveContext.sohStats.buildVersionMajor);
-        SaveManager::Instance->SaveData("buildVersionMinor", gSaveContext.sohStats.buildVersionMinor);
-        SaveManager::Instance->SaveData("buildVersionPatch", gSaveContext.sohStats.buildVersionPatch);
-
-        SaveManager::Instance->SaveData("heartPieces", gSaveContext.sohStats.heartPieces);
-        SaveManager::Instance->SaveData("heartContainers", gSaveContext.sohStats.heartContainers);
-        SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.sohStats.dungeonKeys[i]);
-        });
-        SaveManager::Instance->SaveData("playTimer", gSaveContext.sohStats.playTimer);
-        SaveManager::Instance->SaveData("pauseTimer", gSaveContext.sohStats.pauseTimer);
-        SaveManager::Instance->SaveArray("itemTimestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.sohStats.itemTimestamp[i]);
-        });
-        SaveManager::Instance->SaveArray("sceneTimestamps", ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps), [](size_t i) {
-            SaveManager::Instance->SaveStruct("", [&i]() {
-                SaveManager::Instance->SaveData("scene", gSaveContext.sohStats.sceneTimestamps[i].scene);
-                SaveManager::Instance->SaveData("room", gSaveContext.sohStats.sceneTimestamps[i].room);
-                SaveManager::Instance->SaveData("sceneTime", gSaveContext.sohStats.sceneTimestamps[i].sceneTime);
-                SaveManager::Instance->SaveData("roomTime", gSaveContext.sohStats.sceneTimestamps[i].roomTime);
-                SaveManager::Instance->SaveData("isRoom", gSaveContext.sohStats.sceneTimestamps[i].isRoom);
-            });
-        });
-        SaveManager::Instance->SaveData("tsIdx", gSaveContext.sohStats.tsIdx);
-        SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.sohStats.count[i]);
-        });
-        SaveManager::Instance->SaveArray("scenesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.scenesDiscovered), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.sohStats.scenesDiscovered[i]);
-        });
-        SaveManager::Instance->SaveArray("entrancesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.sohStats.entrancesDiscovered[i]);
-        });
-        SaveManager::Instance->SaveArray("locationsSkipped", ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped), [](size_t i) {
-            SaveManager::Instance->SaveData("", gSaveContext.sohStats.locationsSkipped[i]);
+    SaveManager::Instance->LoadArray("sceneFlags", ARRAY_COUNT(gSaveContext.sceneFlags), [](size_t i) {
+        SaveManager::Instance->LoadStruct("", [&i]() {
+            SaveManager::Instance->LoadData("chest", gSaveContext.sceneFlags[i].chest);
+            SaveManager::Instance->LoadData("swch", gSaveContext.sceneFlags[i].swch);
+            SaveManager::Instance->LoadData("clear", gSaveContext.sceneFlags[i].clear);
+            SaveManager::Instance->LoadData("collect", gSaveContext.sceneFlags[i].collect);
+            SaveManager::Instance->LoadData("unk", gSaveContext.sceneFlags[i].unk);
+            SaveManager::Instance->LoadData("rooms", gSaveContext.sceneFlags[i].rooms);
+            SaveManager::Instance->LoadData("floors", gSaveContext.sceneFlags[i].floors);
         });
     });
-    SaveManager::Instance->SaveArray("sceneFlags", ARRAY_COUNT(gSaveContext.sceneFlags), [](size_t i) {
-        SaveManager::Instance->SaveStruct("", [&i]() {
-            SaveManager::Instance->SaveData("chest", gSaveContext.sceneFlags[i].chest);
-            SaveManager::Instance->SaveData("swch", gSaveContext.sceneFlags[i].swch);
-            SaveManager::Instance->SaveData("clear", gSaveContext.sceneFlags[i].clear);
-            SaveManager::Instance->SaveData("collect", gSaveContext.sceneFlags[i].collect);
-            SaveManager::Instance->SaveData("unk", gSaveContext.sceneFlags[i].unk);
-            SaveManager::Instance->SaveData("rooms", gSaveContext.sceneFlags[i].rooms);
-            SaveManager::Instance->SaveData("floors", gSaveContext.sceneFlags[i].floors);
+    SaveManager::Instance->LoadStruct("fw", []() {
+        SaveManager::Instance->LoadStruct("pos", []() {
+            SaveManager::Instance->LoadData("x", gSaveContext.fw.pos.x);
+            SaveManager::Instance->LoadData("y", gSaveContext.fw.pos.y);
+            SaveManager::Instance->LoadData("z", gSaveContext.fw.pos.z);
+        });
+        SaveManager::Instance->LoadData("yaw", gSaveContext.fw.yaw);
+        SaveManager::Instance->LoadData("playerParams", gSaveContext.fw.playerParams);
+        SaveManager::Instance->LoadData("entranceIndex", gSaveContext.fw.entranceIndex);
+        SaveManager::Instance->LoadData("roomIndex", gSaveContext.fw.roomIndex);
+        SaveManager::Instance->LoadData("set", gSaveContext.fw.set);
+        SaveManager::Instance->LoadData("tempSwchFlags", gSaveContext.fw.tempSwchFlags);
+        SaveManager::Instance->LoadData("tempCollectFlags", gSaveContext.fw.tempCollectFlags);
+    });
+    SaveManager::Instance->LoadArray("gsFlags", ARRAY_COUNT(gSaveContext.gsFlags), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.gsFlags[i]);
+    });
+    SaveManager::Instance->LoadArray("highScores", ARRAY_COUNT(gSaveContext.highScores), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.highScores[i]);
+    });
+    SaveManager::Instance->LoadArray("eventChkInf", ARRAY_COUNT(gSaveContext.eventChkInf), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.eventChkInf[i]);
+    });
+    SaveManager::Instance->LoadArray("itemGetInf", ARRAY_COUNT(gSaveContext.itemGetInf), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.itemGetInf[i]);
+    });
+    SaveManager::Instance->LoadArray("infTable", ARRAY_COUNT(gSaveContext.infTable), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.infTable[i]);
+    });
+    SaveManager::Instance->LoadData("worldMapAreaData", gSaveContext.worldMapAreaData);
+    SaveManager::Instance->LoadData("scarecrowLongSongSet", gSaveContext.scarecrowLongSongSet);
+    SaveManager::Instance->LoadArray("scarecrowLongSong", ARRAY_COUNT(gSaveContext.scarecrowLongSong), [](size_t i) {
+        SaveManager::Instance->LoadStruct("", [&i]() {
+            SaveManager::Instance->LoadData("noteIdx", gSaveContext.scarecrowLongSong[i].noteIdx);
+            SaveManager::Instance->LoadData("unk_01", gSaveContext.scarecrowLongSong[i].unk_01);
+            SaveManager::Instance->LoadData("unk_02", gSaveContext.scarecrowLongSong[i].unk_02);
+            SaveManager::Instance->LoadData("volume", gSaveContext.scarecrowLongSong[i].volume);
+            SaveManager::Instance->LoadData("vibrato", gSaveContext.scarecrowLongSong[i].vibrato);
+            SaveManager::Instance->LoadData("tone", gSaveContext.scarecrowLongSong[i].tone);
+            SaveManager::Instance->LoadData("semitone", gSaveContext.scarecrowLongSong[i].semitone);
         });
     });
-    SaveManager::Instance->SaveStruct("fw", []() {
-        SaveManager::Instance->SaveStruct("pos", []() {
-            SaveManager::Instance->SaveData("x", gSaveContext.fw.pos.x);
-            SaveManager::Instance->SaveData("y", gSaveContext.fw.pos.y);
-            SaveManager::Instance->SaveData("z", gSaveContext.fw.pos.z);
-        });
-        SaveManager::Instance->SaveData("yaw", gSaveContext.fw.yaw);
-        SaveManager::Instance->SaveData("playerParams", gSaveContext.fw.playerParams);
-        SaveManager::Instance->SaveData("entranceIndex", gSaveContext.fw.entranceIndex);
-        SaveManager::Instance->SaveData("roomIndex", gSaveContext.fw.roomIndex);
-        SaveManager::Instance->SaveData("set", gSaveContext.fw.set);
-        SaveManager::Instance->SaveData("tempSwchFlags", gSaveContext.fw.tempSwchFlags);
-        SaveManager::Instance->SaveData("tempCollectFlags", gSaveContext.fw.tempCollectFlags);
-    });
-    SaveManager::Instance->SaveArray("gsFlags", ARRAY_COUNT(gSaveContext.gsFlags), [](size_t i) {
-        SaveManager::Instance->SaveData("", gSaveContext.gsFlags[i]);
-    });
-    SaveManager::Instance->SaveArray("highScores", ARRAY_COUNT(gSaveContext.highScores), [](size_t i) {
-        SaveManager::Instance->SaveData("", gSaveContext.highScores[i]);
-    });
-    SaveManager::Instance->SaveArray("eventChkInf", ARRAY_COUNT(gSaveContext.eventChkInf), [](size_t i) {
-        SaveManager::Instance->SaveData("", gSaveContext.eventChkInf[i]);
-    });
-    SaveManager::Instance->SaveArray("itemGetInf", ARRAY_COUNT(gSaveContext.itemGetInf), [](size_t i) {
-        SaveManager::Instance->SaveData("", gSaveContext.itemGetInf[i]);
-    });
-    SaveManager::Instance->SaveArray("infTable", ARRAY_COUNT(gSaveContext.infTable), [](size_t i) {
-        SaveManager::Instance->SaveData("", gSaveContext.infTable[i]);
-    });
-    SaveManager::Instance->SaveData("worldMapAreaData", gSaveContext.worldMapAreaData);
-    SaveManager::Instance->SaveData("scarecrowLongSongSet", gSaveContext.scarecrowLongSongSet);
-    SaveManager::Instance->SaveArray("scarecrowLongSong", ARRAY_COUNT(gSaveContext.scarecrowLongSong), [](size_t i) {
-        SaveManager::Instance->SaveStruct("", [&i]() {
-            SaveManager::Instance->SaveData("noteIdx", gSaveContext.scarecrowLongSong[i].noteIdx);
-            SaveManager::Instance->SaveData("unk_01", gSaveContext.scarecrowLongSong[i].unk_01);
-            SaveManager::Instance->SaveData("unk_02", gSaveContext.scarecrowLongSong[i].unk_02);
-            SaveManager::Instance->SaveData("volume", gSaveContext.scarecrowLongSong[i].volume);
-            SaveManager::Instance->SaveData("vibrato", gSaveContext.scarecrowLongSong[i].vibrato);
-            SaveManager::Instance->SaveData("tone", gSaveContext.scarecrowLongSong[i].tone);
-            SaveManager::Instance->SaveData("semitone", gSaveContext.scarecrowLongSong[i].semitone);
+    SaveManager::Instance->LoadData("scarecrowSpawnSongSet", gSaveContext.scarecrowSpawnSongSet);
+    SaveManager::Instance->LoadArray("scarecrowSpawnSong", ARRAY_COUNT(gSaveContext.scarecrowSpawnSong), [](size_t i) {
+        SaveManager::Instance->LoadStruct("", [&i]() {
+            SaveManager::Instance->LoadData("noteIdx", gSaveContext.scarecrowSpawnSong[i].noteIdx);
+            SaveManager::Instance->LoadData("unk_01", gSaveContext.scarecrowSpawnSong[i].unk_01);
+            SaveManager::Instance->LoadData("unk_02", gSaveContext.scarecrowSpawnSong[i].unk_02);
+            SaveManager::Instance->LoadData("volume", gSaveContext.scarecrowSpawnSong[i].volume);
+            SaveManager::Instance->LoadData("vibrato", gSaveContext.scarecrowSpawnSong[i].vibrato);
+            SaveManager::Instance->LoadData("tone", gSaveContext.scarecrowSpawnSong[i].tone);
+            SaveManager::Instance->LoadData("semitone", gSaveContext.scarecrowSpawnSong[i].semitone);
         });
     });
-    SaveManager::Instance->SaveData("scarecrowSpawnSongSet", gSaveContext.scarecrowSpawnSongSet);
-    SaveManager::Instance->SaveArray("scarecrowSpawnSong", ARRAY_COUNT(gSaveContext.scarecrowSpawnSong), [](size_t i) {
-        SaveManager::Instance->SaveStruct("", [&i]() {
-            SaveManager::Instance->SaveData("noteIdx", gSaveContext.scarecrowSpawnSong[i].noteIdx);
-            SaveManager::Instance->SaveData("unk_01", gSaveContext.scarecrowSpawnSong[i].unk_01);
-            SaveManager::Instance->SaveData("unk_02", gSaveContext.scarecrowSpawnSong[i].unk_02);
-            SaveManager::Instance->SaveData("volume", gSaveContext.scarecrowSpawnSong[i].volume);
-            SaveManager::Instance->SaveData("vibrato", gSaveContext.scarecrowSpawnSong[i].vibrato);
-            SaveManager::Instance->SaveData("tone", gSaveContext.scarecrowSpawnSong[i].tone);
-            SaveManager::Instance->SaveData("semitone", gSaveContext.scarecrowSpawnSong[i].semitone);
+    SaveManager::Instance->LoadStruct("horseData", []() {
+        SaveManager::Instance->LoadData("scene", gSaveContext.horseData.scene);
+        SaveManager::Instance->LoadStruct("pos", []() {
+            SaveManager::Instance->LoadData("x", gSaveContext.horseData.pos.x);
+            SaveManager::Instance->LoadData("y", gSaveContext.horseData.pos.y);
+            SaveManager::Instance->LoadData("z", gSaveContext.horseData.pos.z);
         });
-    });
-    SaveManager::Instance->SaveStruct("horseData", []() {
-        SaveManager::Instance->SaveData("scene", gSaveContext.horseData.scene);
-        SaveManager::Instance->SaveStruct("pos", []() {
-            SaveManager::Instance->SaveData("x", gSaveContext.horseData.pos.x);
-            SaveManager::Instance->SaveData("y", gSaveContext.horseData.pos.y);
-            SaveManager::Instance->SaveData("z", gSaveContext.horseData.pos.z);
-        });
-        SaveManager::Instance->SaveData("angle", gSaveContext.horseData.angle);
+        SaveManager::Instance->LoadData("angle", gSaveContext.horseData.angle);
     });
 
-    SaveManager::Instance->SaveArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
-        SaveManager::Instance->SaveData("", gSaveContext.randomizerInf[i]);
+    SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
-    SaveManager::Instance->SaveData("isMasterQuest", gSaveContext.isMasterQuest);
-    SaveManager::Instance->SaveStruct("backupFW", []() {
-        SaveManager::Instance->SaveStruct("pos", []() {
-            SaveManager::Instance->SaveData("x", gSaveContext.backupFW.pos.x);
-            SaveManager::Instance->SaveData("y", gSaveContext.backupFW.pos.y);
-            SaveManager::Instance->SaveData("z", gSaveContext.backupFW.pos.z);
+    SaveManager::Instance->LoadData("isMasterQuest", gSaveContext.isMasterQuest);
+    SaveManager::Instance->LoadStruct("backupFW", []() {
+        SaveManager::Instance->LoadStruct("pos", []() {
+            SaveManager::Instance->LoadData("x", gSaveContext.backupFW.pos.x);
+            SaveManager::Instance->LoadData("y", gSaveContext.backupFW.pos.y);
+            SaveManager::Instance->LoadData("z", gSaveContext.backupFW.pos.z);
         });
-        SaveManager::Instance->SaveData("yaw", gSaveContext.backupFW.yaw);
-        SaveManager::Instance->SaveData("playerParams", gSaveContext.backupFW.playerParams);
-        SaveManager::Instance->SaveData("entranceIndex", gSaveContext.backupFW.entranceIndex);
-        SaveManager::Instance->SaveData("roomIndex", gSaveContext.backupFW.roomIndex);
-        SaveManager::Instance->SaveData("set", gSaveContext.backupFW.set);
-        SaveManager::Instance->SaveData("tempSwchFlags", gSaveContext.backupFW.tempSwchFlags);
-        SaveManager::Instance->SaveData("tempCollectFlags", gSaveContext.backupFW.tempCollectFlags);
+        SaveManager::Instance->LoadData("yaw", gSaveContext.backupFW.yaw);
+        SaveManager::Instance->LoadData("playerParams", gSaveContext.backupFW.playerParams);
+        SaveManager::Instance->LoadData("entranceIndex", gSaveContext.backupFW.entranceIndex);
+        SaveManager::Instance->LoadData("roomIndex", gSaveContext.backupFW.roomIndex);
+        SaveManager::Instance->LoadData("set", gSaveContext.backupFW.set);
+        SaveManager::Instance->LoadData("tempSwchFlags", gSaveContext.backupFW.tempSwchFlags);
+        SaveManager::Instance->LoadData("tempCollectFlags", gSaveContext.backupFW.tempCollectFlags);
     });
-    SaveManager::Instance->SaveData("dogParams", gSaveContext.dogParams);
+    SaveManager::Instance->LoadData("dogParams", gSaveContext.dogParams);
+}
+
+void SaveManager::SaveBase(SaveContext* saveContext, int sectionID) {
+    SaveManager::Instance->SaveData("entranceIndex", saveContext->entranceIndex);
+    SaveManager::Instance->SaveData("linkAge", saveContext->linkAge);
+    SaveManager::Instance->SaveData("cutsceneIndex", saveContext->cutsceneIndex);
+    SaveManager::Instance->SaveData("dayTime", saveContext->dayTime);
+    SaveManager::Instance->SaveData("nightFlag", saveContext->nightFlag);
+    SaveManager::Instance->SaveData("totalDays", saveContext->totalDays);
+    SaveManager::Instance->SaveData("bgsDayCount", saveContext->bgsDayCount);
+    SaveManager::Instance->SaveData("deaths", saveContext->deaths);
+    SaveManager::Instance->SaveArray("playerName", ARRAY_COUNT(saveContext->playerName), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->playerName[i]);
+    });
+    SaveManager::Instance->SaveData("n64ddFlag", saveContext->n64ddFlag);
+    SaveManager::Instance->SaveData("healthCapacity", saveContext->healthCapacity);
+    SaveManager::Instance->SaveData("health", saveContext->health);
+    SaveManager::Instance->SaveData("magicLevel", saveContext->magicLevel);
+    SaveManager::Instance->SaveData("magic", saveContext->magic);
+    SaveManager::Instance->SaveData("rupees", saveContext->rupees);
+    SaveManager::Instance->SaveData("swordHealth", saveContext->swordHealth);
+    SaveManager::Instance->SaveData("naviTimer", saveContext->naviTimer);
+    SaveManager::Instance->SaveData("isMagicAcquired", saveContext->isMagicAcquired);
+    SaveManager::Instance->SaveData("isDoubleMagicAcquired", saveContext->isDoubleMagicAcquired);
+    SaveManager::Instance->SaveData("isDoubleDefenseAcquired", saveContext->isDoubleDefenseAcquired);
+    SaveManager::Instance->SaveData("bgsFlag", saveContext->bgsFlag);
+    SaveManager::Instance->SaveData("ocarinaGameRoundNum", saveContext->ocarinaGameRoundNum);
+    SaveManager::Instance->SaveStruct("childEquips", [&]() {
+        SaveManager::Instance->SaveArray("buttonItems", ARRAY_COUNT(saveContext->childEquips.buttonItems), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->childEquips.buttonItems[i]);
+        });
+        SaveManager::Instance->SaveArray("cButtonSlots", ARRAY_COUNT(saveContext->childEquips.cButtonSlots), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->childEquips.cButtonSlots[i]);
+        });
+        SaveManager::Instance->SaveData("equipment", saveContext->childEquips.equipment);
+    });
+    SaveManager::Instance->SaveStruct("adultEquips", [&]() {
+        SaveManager::Instance->SaveArray("buttonItems", ARRAY_COUNT(saveContext->adultEquips.buttonItems), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->adultEquips.buttonItems[i]);
+        });
+        SaveManager::Instance->SaveArray("cButtonSlots", ARRAY_COUNT(saveContext->adultEquips.cButtonSlots), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->adultEquips.cButtonSlots[i]);
+        });
+        SaveManager::Instance->SaveData("equipment", saveContext->adultEquips.equipment);
+    });
+    SaveManager::Instance->SaveData("unk_54", saveContext->unk_54);
+    SaveManager::Instance->SaveData("savedSceneNum", saveContext->savedSceneNum);
+    SaveManager::Instance->SaveStruct("equips", [&]() {
+        SaveManager::Instance->SaveArray("buttonItems", ARRAY_COUNT(saveContext->equips.buttonItems), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->equips.buttonItems[i]);
+        });
+        SaveManager::Instance->SaveArray("cButtonSlots", ARRAY_COUNT(saveContext->equips.cButtonSlots), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->equips.cButtonSlots[i]);
+        });
+        SaveManager::Instance->SaveData("equipment", saveContext->equips.equipment);
+    });
+    SaveManager::Instance->SaveStruct("inventory", [&]() {
+        SaveManager::Instance->SaveArray("items", ARRAY_COUNT(saveContext->inventory.items), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->inventory.items[i]);
+        });
+        SaveManager::Instance->SaveArray("ammo", ARRAY_COUNT(saveContext->inventory.ammo), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->inventory.ammo[i]);
+        });
+        SaveManager::Instance->SaveData("equipment", saveContext->inventory.equipment);
+        SaveManager::Instance->SaveData("upgrades", saveContext->inventory.upgrades);
+        SaveManager::Instance->SaveData("questItems", saveContext->inventory.questItems);
+        SaveManager::Instance->SaveArray("dungeonItems", ARRAY_COUNT(saveContext->inventory.dungeonItems), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->inventory.dungeonItems[i]);
+        });
+        SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(saveContext->inventory.dungeonKeys), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->inventory.dungeonKeys[i]);
+        });
+        SaveManager::Instance->SaveData("defenseHearts", saveContext->inventory.defenseHearts);
+        SaveManager::Instance->SaveData("gsTokens", saveContext->inventory.gsTokens);
+    });
+    SaveManager::Instance->SaveArray("sceneFlags", ARRAY_COUNT(saveContext->sceneFlags), [&](size_t i) {
+        SaveManager::Instance->SaveStruct("", [&]() {
+            SaveManager::Instance->SaveData("chest", saveContext->sceneFlags[i].chest);
+            SaveManager::Instance->SaveData("swch", saveContext->sceneFlags[i].swch);
+            SaveManager::Instance->SaveData("clear", saveContext->sceneFlags[i].clear);
+            SaveManager::Instance->SaveData("collect", saveContext->sceneFlags[i].collect);
+            SaveManager::Instance->SaveData("unk", saveContext->sceneFlags[i].unk);
+            SaveManager::Instance->SaveData("rooms", saveContext->sceneFlags[i].rooms);
+            SaveManager::Instance->SaveData("floors", saveContext->sceneFlags[i].floors);
+        });
+    });
+    SaveManager::Instance->SaveStruct("fw", [&]() {
+        SaveManager::Instance->SaveStruct("pos", [&]() {
+            SaveManager::Instance->SaveData("x", saveContext->fw.pos.x);
+            SaveManager::Instance->SaveData("y", saveContext->fw.pos.y);
+            SaveManager::Instance->SaveData("z", saveContext->fw.pos.z);
+        });
+        SaveManager::Instance->SaveData("yaw", saveContext->fw.yaw);
+        SaveManager::Instance->SaveData("playerParams", saveContext->fw.playerParams);
+        SaveManager::Instance->SaveData("entranceIndex", saveContext->fw.entranceIndex);
+        SaveManager::Instance->SaveData("roomIndex", saveContext->fw.roomIndex);
+        SaveManager::Instance->SaveData("set", saveContext->fw.set);
+        SaveManager::Instance->SaveData("tempSwchFlags", saveContext->fw.tempSwchFlags);
+        SaveManager::Instance->SaveData("tempCollectFlags", saveContext->fw.tempCollectFlags);
+    });
+    SaveManager::Instance->SaveArray("gsFlags", ARRAY_COUNT(saveContext->gsFlags), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->gsFlags[i]);
+    });
+    SaveManager::Instance->SaveArray("highScores", ARRAY_COUNT(saveContext->highScores), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->highScores[i]);
+    });
+    SaveManager::Instance->SaveArray("eventChkInf", ARRAY_COUNT(saveContext->eventChkInf), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->eventChkInf[i]);
+    });
+    SaveManager::Instance->SaveArray("itemGetInf", ARRAY_COUNT(saveContext->itemGetInf), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->itemGetInf[i]);
+    });
+    SaveManager::Instance->SaveArray("infTable", ARRAY_COUNT(saveContext->infTable), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->infTable[i]);
+    });
+    SaveManager::Instance->SaveData("worldMapAreaData", saveContext->worldMapAreaData);
+    SaveManager::Instance->SaveData("scarecrowLongSongSet", saveContext->scarecrowLongSongSet);
+    SaveManager::Instance->SaveArray("scarecrowLongSong", ARRAY_COUNT(saveContext->scarecrowLongSong), [&](size_t i) {
+        SaveManager::Instance->SaveStruct("", [&]() {
+            SaveManager::Instance->SaveData("noteIdx", saveContext->scarecrowLongSong[i].noteIdx);
+            SaveManager::Instance->SaveData("unk_01", saveContext->scarecrowLongSong[i].unk_01);
+            SaveManager::Instance->SaveData("unk_02", saveContext->scarecrowLongSong[i].unk_02);
+            SaveManager::Instance->SaveData("volume", saveContext->scarecrowLongSong[i].volume);
+            SaveManager::Instance->SaveData("vibrato", saveContext->scarecrowLongSong[i].vibrato);
+            SaveManager::Instance->SaveData("tone", saveContext->scarecrowLongSong[i].tone);
+            SaveManager::Instance->SaveData("semitone", saveContext->scarecrowLongSong[i].semitone);
+        });
+    });
+    SaveManager::Instance->SaveData("scarecrowSpawnSongSet", saveContext->scarecrowSpawnSongSet);
+    SaveManager::Instance->SaveArray("scarecrowSpawnSong", ARRAY_COUNT(saveContext->scarecrowSpawnSong), [&](size_t i) {
+        SaveManager::Instance->SaveStruct("", [&]() {
+            SaveManager::Instance->SaveData("noteIdx", saveContext->scarecrowSpawnSong[i].noteIdx);
+            SaveManager::Instance->SaveData("unk_01", saveContext->scarecrowSpawnSong[i].unk_01);
+            SaveManager::Instance->SaveData("unk_02", saveContext->scarecrowSpawnSong[i].unk_02);
+            SaveManager::Instance->SaveData("volume", saveContext->scarecrowSpawnSong[i].volume);
+            SaveManager::Instance->SaveData("vibrato", saveContext->scarecrowSpawnSong[i].vibrato);
+            SaveManager::Instance->SaveData("tone", saveContext->scarecrowSpawnSong[i].tone);
+            SaveManager::Instance->SaveData("semitone", saveContext->scarecrowSpawnSong[i].semitone);
+        });
+    });
+    SaveManager::Instance->SaveStruct("horseData", [&]() {
+        SaveManager::Instance->SaveData("scene", saveContext->horseData.scene);
+        SaveManager::Instance->SaveStruct("pos", [&]() {
+            SaveManager::Instance->SaveData("x", saveContext->horseData.pos.x);
+            SaveManager::Instance->SaveData("y", saveContext->horseData.pos.y);
+            SaveManager::Instance->SaveData("z", saveContext->horseData.pos.z);
+        });
+        SaveManager::Instance->SaveData("angle", saveContext->horseData.angle);
+    });
+
+    SaveManager::Instance->SaveArray("randomizerInf", ARRAY_COUNT(saveContext->randomizerInf), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->randomizerInf[i]);
+    });
+    SaveManager::Instance->SaveData("isMasterQuest", saveContext->isMasterQuest);
+    SaveManager::Instance->SaveStruct("backupFW", [&]() {
+        SaveManager::Instance->SaveStruct("pos", [&]() {
+            SaveManager::Instance->SaveData("x", saveContext->backupFW.pos.x);
+            SaveManager::Instance->SaveData("y", saveContext->backupFW.pos.y);
+            SaveManager::Instance->SaveData("z", saveContext->backupFW.pos.z);
+        });
+        SaveManager::Instance->SaveData("yaw", saveContext->backupFW.yaw);
+        SaveManager::Instance->SaveData("playerParams", saveContext->backupFW.playerParams);
+        SaveManager::Instance->SaveData("entranceIndex", saveContext->backupFW.entranceIndex);
+        SaveManager::Instance->SaveData("roomIndex", saveContext->backupFW.roomIndex);
+        SaveManager::Instance->SaveData("set", saveContext->backupFW.set);
+        SaveManager::Instance->SaveData("tempSwchFlags", saveContext->backupFW.tempSwchFlags);
+        SaveManager::Instance->SaveData("tempCollectFlags", saveContext->backupFW.tempCollectFlags);
+    });
+    SaveManager::Instance->SaveData("dogParams", saveContext->dogParams);
 }
 
 void SaveManager::SaveArray(const std::string& name, const size_t size, SaveArrayFunc func) {
@@ -1699,8 +1896,7 @@ void SaveManager::LoadStruct(const std::string& name, LoadStructFunc func) {
 
 #if defined(__WIIU__) || defined(__SWITCH__)
 // std::filesystem::copy_file doesn't work properly with the Wii U's toolchain atm
-int copy_file(const char* src, const char* dst)
-{
+int copy_file(const char* src, const char* dst) {
     alignas(0x40) uint8_t buf[4096];
     FILE* r = fopen(src, "r");
     if (!r) {
@@ -2102,7 +2298,7 @@ void SaveManager::ConvertFromUnversioned() {
             static SaveContext saveContextSave = gSaveContext;
             InitFile(false);
             CopyV0Save(*file, gSaveContext);
-            SaveFile(fileNum);
+            SaveSection(fileNum, SECTION_ID_BASE, false);
             InitMeta(fileNum);
             gSaveContext = saveContextSave;
         }
@@ -2126,21 +2322,25 @@ extern "C" void Save_SaveFile(void) {
     SaveManager::Instance->SaveFile(gSaveContext.fileNum);
 }
 
+extern "C" void Save_SaveSection(int sectionID) {
+    SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionID, true);
+}
+
 extern "C" void Save_SaveGlobal(void) {
     SaveManager::Instance->SaveGlobal();
 }
 
 extern "C" void Save_LoadFile(void) {
     SaveManager::Instance->LoadFile(gSaveContext.fileNum);
-    Ship::ExecuteHooks<Ship::LoadFile>(gSaveContext.fileNum);
+    LUS::ExecuteHooks<LUS::LoadFile>(gSaveContext.fileNum);
 }
 
 extern "C" void Save_AddLoadFunction(char* name, int version, SaveManager::LoadFunc func) {
     SaveManager::Instance->AddLoadFunction(name, version, func);
 }
 
-extern "C" void Save_AddSaveFunction(char* name, int version, SaveManager::SaveFunc func) {
-    SaveManager::Instance->AddSaveFunction(name, version, func);
+extern "C" void Save_AddSaveFunction(char* name, int version, SaveManager::SaveFunc func, bool saveWithBase) {
+    SaveManager::Instance->AddSaveFunction(name, version, func, saveWithBase);
 }
 
 extern "C" SaveFileMetaInfo* Save_GetSaveMetaInfo(int fileNum) {
@@ -2153,7 +2353,7 @@ extern "C" void Save_CopyFile(int from, int to) {
 
 extern "C" void Save_DeleteFile(int fileNum) {
     SaveManager::Instance->DeleteZeldaFile(fileNum);
-    Ship::ExecuteHooks<Ship::DeleteFile>(fileNum);
+    LUS::ExecuteHooks<LUS::DeleteFile>(fileNum);
 }
 
 extern "C" u32 Save_Exist(int fileNum) {

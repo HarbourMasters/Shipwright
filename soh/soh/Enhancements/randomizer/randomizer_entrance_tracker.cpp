@@ -630,7 +630,10 @@ void InitEntranceTrackingData() {
 
 void DrawEntranceTracker(bool& open) {
     if (!open) {
-        CVarSetInteger("gEntranceTrackerEnabled", 0);
+        if (CVarGetInteger("gEntranceTrackerEnabled", 0)) {
+            CVarClear("gEntranceTrackerEnabled");
+            LUS::RequestCvarSaveOnNextTick();
+        }
         return;
     }
 
@@ -926,7 +929,7 @@ void DrawEntranceTracker(bool& open) {
 }
 
 void InitEntranceTracker() {
-    SohImGui::AddWindow("Randomizer", "Entrance Tracker", DrawEntranceTracker, CVarGetInteger("gEntranceTrackerEnabled", 0) == 1);
+    LUS::AddWindow("Randomizer", "Entrance Tracker", DrawEntranceTracker, CVarGetInteger("gEntranceTrackerEnabled", 0));
 
     // Setup hooks for loading and clearing the entrance tracker data
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {

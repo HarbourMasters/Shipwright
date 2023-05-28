@@ -1,6 +1,6 @@
 #include "AudioSoundFont.h"
 
-namespace Ship {
+namespace LUS {
 void* AudioSoundFont::GetPointer() {
     return &soundFont;
 }
@@ -8,4 +8,4 @@ void* AudioSoundFont::GetPointer() {
 size_t AudioSoundFont::GetPointerSize() {
     return sizeof(SoundFont);
 }
-} // namespace Ship
+} // namespace LUS

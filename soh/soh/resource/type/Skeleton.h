@@ -3,8 +3,9 @@
 #include <cstdint>
 #include "Resource.h"
 #include "SkeletonLimb.h"
+#include <z64animation.h>
 
-namespace Ship {
+namespace LUS {
 
 enum class SkeletonType {
     Normal,
@@ -68,4 +69,23 @@ class Skeleton : public Resource {
     std::vector<std::string> limbTable;
     std::vector<void*> skeletonHeaderSegments;
 };
-} // namespace Ship
+
+// TODO: CLEAN THIS UP LATER
+struct SkeletonPatchInfo 
+{
+    SkelAnime* skelAnime;
+    std::string vanillaSkeletonPath;
+};
+
+class SkeletonPatcher {
+  public:
+    static void RegisterSkeleton(std::string& path, SkelAnime* skelAnime);
+    static void UnregisterSkeleton(SkelAnime* skelAnime);
+    static void ClearSkeletons();
+    static void UpdateSkeletons();
+
+    static std::vector<SkeletonPatchInfo> skeletons;
+};
+
+
+} // namespace LUS

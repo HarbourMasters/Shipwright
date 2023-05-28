@@ -1,7 +1,7 @@
 #include "Cutscene.h"
 #include <libultraship/libultra/gbi.h>
 
-namespace Ship {
+namespace LUS {
 void* Cutscene::GetPointer() {
     return commands.data();
 }
@@ -9,4 +9,4 @@ void* Cutscene::GetPointer() {
 size_t Cutscene::GetPointerSize() {
 	return commands.size() * sizeof(uint32_t);
 }
-} // namespace Ship
+} // namespace LUS

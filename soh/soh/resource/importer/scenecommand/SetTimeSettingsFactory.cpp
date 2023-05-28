@@ -2,8 +2,8 @@
 #include "soh/resource/type/scenecommand/SetTimeSettings.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> SetTimeSettingsFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+namespace LUS {
+std::shared_ptr<Resource> SetTimeSettingsFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                                std::shared_ptr<ResourceInitData> initData,
                                                                std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetTimeSettings>(resourceMgr, initData);
@@ -25,7 +25,7 @@ std::shared_ptr<Resource> SetTimeSettingsFactory::ReadResource(std::shared_ptr<R
     return resource;
 }
 
-void Ship::SetTimeSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetTimeSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource) {
     std::shared_ptr<SetTimeSettings> setTimeSettings = std::static_pointer_cast<SetTimeSettings>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setTimeSettings);
@@ -37,4 +37,4 @@ void Ship::SetTimeSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
     setTimeSettings->settings.timeIncrement = reader->ReadInt8();
 }
 
-} // namespace Ship
+} // namespace LUS
