@@ -295,25 +295,7 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
     }
 
     uint8_t rumble = (padMgr->rumbleEnable[0] > 0);
-    uint8_t ledColor = 1;
-
-    if (HealthMeter_IsCritical()) {
-        ledColor = 0;
-    } else if (gPlayState) {
-        switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
-            case PLAYER_TUNIC_KOKIRI:
-                ledColor = 1;
-                break;
-            case PLAYER_TUNIC_GORON:
-                ledColor = 2;
-                break;
-            case PLAYER_TUNIC_ZORA:
-                ledColor = 3;
-                break;
-        }
-    }
-
-    OTRControllerCallback(rumble, ledColor);
+    OTRControllerCallback(rumble);
 
     if (CVarGetInteger("gPauseBufferBlockInputFrame", 0)) {
         Controller_BlockGameInput();

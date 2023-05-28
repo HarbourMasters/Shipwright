@@ -163,7 +163,7 @@ namespace GameMenuBar {
                 ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.0f));
                 ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
                 ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-                if (ImGui::Button(GetWindowButtonText("Controller Configuration", CVarGetInteger("gControllerConfigurationEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f)))
+                if (ImGui::Button(GetWindowButtonText("Controller Mapping", CVarGetInteger("gControllerConfigurationEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f)))
                 {
                     if (CVarGetInteger("gControllerConfigurationEnabled", 0)) {
                         CVarClear("gControllerConfigurationEnabled");
@@ -172,6 +172,16 @@ namespace GameMenuBar {
                     }
                     LUS::RequestCvarSaveOnNextTick();
                     LUS::ToggleInputEditorWindow(CVarGetInteger("gControllerConfigurationEnabled", 0));
+                }
+                if (ImGui::Button(GetWindowButtonText("Additional Controller Options", CVarGetInteger("gControllerOptionsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
+                {
+                    if (CVarGetInteger("gControllerOptionsEnabled", 0)) {
+                        CVarClear("gControllerOptionsEnabled");
+                    } else {
+                        CVarSetInteger("gControllerOptionsEnabled", 1);
+                    }
+                    LUS::RequestCvarSaveOnNextTick();
+                    LUS::EnableWindow("Additional Controller Options", CVarGetInteger("gControllerOptionsEnabled", 0));
                 }
                 UIWidgets::PaddedSeparator();
                 ImGui::PopStyleColor(1);
@@ -186,7 +196,6 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
                 UIWidgets::PaddedEnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", "gSimulatedInputLag", 0, 6, "", 0, true, true, false);
                 UIWidgets::Tooltip("Buffers your inputs to be executed a specified amount of frames later");
-
                 ImGui::EndMenu();
             }
 
@@ -990,16 +999,6 @@ namespace GameMenuBar {
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
 
-            if (ImGui::Button(GetWindowButtonText("Customize Game Controls", CVarGetInteger("gGameControlEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
-            {
-                if (CVarGetInteger("gGameControlEditorEnabled", 0)) {
-                    CVarClear("gGameControlEditorEnabled");
-                } else {
-                    CVarSetInteger("gGameControlEditorEnabled", 1);
-                }
-                LUS::RequestCvarSaveOnNextTick();
-                LUS::EnableWindow("Game Control Editor", CVarGetInteger("gGameControlEditorEnabled", 0));
-            }
             if (ImGui::Button(GetWindowButtonText("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
                 if (CVarGetInteger("gCosmeticsEditorEnabled", 0)) {

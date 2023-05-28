@@ -10,10 +10,11 @@
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
 #include <libultraship/bridge.h>
-#include <libultraship/libultra/controller.h>
+#include <libultraship/libultraship.h>
 #include <Utils/StringHelper.h>
 #include <ImGuiImpl.h>
 
+#include "Window.h"
 #include "../../UIWidgets.hpp"
 
 namespace GameControlEditor {
@@ -88,7 +89,7 @@ namespace GameControlEditor {
     void DrawUI(bool&);
 
     void Init() {
-        LUS::AddWindow("Enhancements", "Game Control Editor", DrawUI, CVarGetInteger("gGameControlEditorEnabled", 0));
+        LUS::AddWindow("Enhancements", "Additional Controller Options", DrawUI, CVarGetInteger("gControllerOptionsEnabled", 0));
 
         addButtonName(BTN_A,		"A");
         addButtonName(BTN_B,		"B");
@@ -325,13 +326,46 @@ namespace GameControlEditor {
         UIWidgets::PaddedEnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL");
         DrawHelpIcon("Speak to Navi with L but enter first-person camera with C-Up");
         LUS::EndGroupPanel();
+    }
 
+    void DrawLEDControlPanel() {
+        LUS::BeginGroupPanel("LED Colors", ImGui::GetContentRegionAvail());
+        static const char* ledSources[4] = { "Original Tunic Colors", "Cosmetics Tunic Colors", "Health Colors", "Custom" };
+        UIWidgets::PaddedText("Source");
+        UIWidgets::EnhancementCombobox("gLedColorSource", ledSources, LED_SOURCE_TUNIC_ORIGINAL);
+        DrawHelpIcon("Health\n- Red when health critical (13-20% depending on max health)\n- Yellow when health < 40%. Green otherwise.\n\n" \
+                     "Tunics: colors will mirror currently equipped tunic, whether original or the current values in Cosmetics Editor.\n\n" \
+                     "Custom: single, solid color");
+        if (CVarGetInteger("gLedColorSource", 1) == 3) {
+            UIWidgets::Spacer(3);
+            auto port1Color = CVarGetColor24("gLedPort1Color", { 255, 255, 255 });
+            ImVec4 colorVec = { port1Color.r / 255.0f, port1Color.g / 255.0f, port1Color.b / 255.0f, 1.0f };
+            if (ImGui::ColorEdit3("", (float*)&colorVec, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel)) {
+                Color_RGB8 color;
+                color.r = colorVec.x * 255.0;
+                color.g = colorVec.y * 255.0;
+                color.b = colorVec.z * 255.0;
+
+                CVarSetColor24("gLedPort1Color", color);
+                LUS::RequestCvarSaveOnNextTick();
+            }
+            ImGui::SameLine();
+            ImGui::Text("Custom Color");
+        }
+        UIWidgets::PaddedEnhancementSliderFloat("Brightness: %d%%", "##LED_Brightness", "gLedBrightness",
+                                                0.0f, 1.0f, "", 1.0f, true, true);
+        DrawHelpIcon("Sets the brightness of controller LEDs. 0% brightness = LEDs off.");
+        UIWidgets::PaddedEnhancementCheckbox("Critical Health Override", "gLedCriticalOverride", true, true, 
+            CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL) == LED_SOURCE_HEALTH, "Override redundant for health source.",
+            UIWidgets::CheckboxGraphics::Cross, true);
+        DrawHelpIcon("Shows red color when health is critical, otherwise displays according to color source.");
+        LUS::EndGroupPanel();
     }
 
     void DrawUI(bool& open) {
         if (!open) {
-            if (CVarGetInteger("gGameControlEditorEnabled", 0)) {
-                CVarClear("gGameControlEditorEnabled");
+            if (CVarGetInteger("gControllerOptionsEnabled", 0)) {
+                CVarClear("gControllerOptionsEnabled");
                 LUS::RequestCvarSaveOnNextTick();
             }
             return;
@@ -361,6 +395,9 @@ namespace GameControlEditor {
                 DrawMiscControlPanel();
             } else {
                 DrawCustomButtons();
+                if (CurrentPort == 1 && LUS::Context::GetInstance()->GetControlDeck()->GetDeviceFromPortIndex(0)->CanSetLed()) {
+                    DrawLEDControlPanel();
+                }
             }
         }
         ImGui::End();
