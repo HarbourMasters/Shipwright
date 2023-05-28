@@ -6,7 +6,7 @@
 #include <macros.h>
 #include <objects/gameplay_keep/gameplay_keep.h>
 #include <functions.h>
-#include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
 #include <textures/icon_item_static/icon_item_static.h>
 #include <textures/icon_item_24_static/icon_item_24_static.h>
 #include <ImGuiImpl.h>
@@ -3068,7 +3068,7 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
 }
 
 std::filesystem::path GetTrackerDataFileName(int fileNum) {
-    const std::filesystem::path sSavePath(Ship::Window::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sSavePath(LUS::Context::GetPathRelativeToAppDirectory("Save"));
     return sSavePath / ("file" + std::to_string(fileNum + 1) + "-trackers.json");
 }
 

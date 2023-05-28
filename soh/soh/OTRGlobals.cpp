@@ -2049,6 +2049,7 @@ extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* repla
 
 extern "C" void SaveManager_ThreadPoolWait() {
     SaveManager::Instance->ThreadPoolWait();
+}
 
 extern "C" void CheckTracker_OnMessageClose() {
     CheckTracker::CheckTrackerDialogClosed();

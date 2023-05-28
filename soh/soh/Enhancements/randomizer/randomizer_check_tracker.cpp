@@ -1613,7 +1613,7 @@ void InitCheckTracker() {
     LUS::RegisterHook<LUS::ControllerRead>([](OSContPad* cont_pad) {
         trackerButtonsPressed = cont_pad;
     });
-    Ship::RegisterHook<Ship::DeleteFile>([](uint32_t fileNum) {
+    LUS::RegisterHook<LUS::DeleteFile>([](uint32_t fileNum) {
         Teardown();
     });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(CheckTrackerItemReceive);
