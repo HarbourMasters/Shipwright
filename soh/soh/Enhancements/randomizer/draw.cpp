@@ -22,7 +22,7 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
         { 126, 16, 177 },  // Shadow Temple
         { 227, 110, 255 }, // Bottom of the Well
         { 221, 212, 60 },  // Gerudo Training Grounds
-        { 255, 255, 255 }, // Theive's Hideout (unused)
+        { 255, 255, 255 }, // Thieves' Hideout
         { 80, 80, 80 }     // Ganon's Castle
     };
 
@@ -110,7 +110,7 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
         { 126, 16, 177 },  // Shadow Temple
         { 227, 110, 255 }, // Bottom of the Well
         { 221, 212, 60 },  // Gerudo Training Grounds
-        { 255, 255, 255 }, // Theive's Hideout (unused)
+        { 255, 255, 255 }, // Thieves' Hideout
         { 80, 80, 80 }     // Ganon's Castle
     };
 
