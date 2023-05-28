@@ -86,7 +86,9 @@ Currently, there are three rendering APIs supported: DirectX11 (Windows), OpenGL
 
 Custom assets are packed in `.otr` files. To use custom assets, place them in the `mods` folder.
 
-If you're interested in creating and/or packing your own custom asset `.otr` files, check out [**retro**](https://github.com/HarbourMasters64/retro)!
+If you're interested in creating and/or packing your own custom asset `.otr` files, check out the following tools:
+* [**retro - OTR generator**](https://github.com/HarbourMasters64/retro)
+* [**fast64 - Blender plugin**](https://github.com/HarbourMasters/fast64)
 
 # Development
 ### Building
