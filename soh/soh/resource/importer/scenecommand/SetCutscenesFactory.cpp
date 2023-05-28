@@ -4,12 +4,12 @@
 #include "spdlog/spdlog.h"
 
 namespace LUS {
-std::shared_ptr<Resource>
+std::shared_ptr<IResource>
 SetCutscenesFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetCutscenes>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-    switch (resource->InitData->ResourceVersion) {
+    switch (resource->GetInitData()->ResourceVersion) {
     case 0:
 	    factory = std::make_shared<SetCutscenesFactoryV0>();
 	    break;
@@ -17,7 +17,7 @@ SetCutscenesFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, st
 
     if (factory == nullptr)
     {
-        SPDLOG_ERROR("Failed to load SetCutscenes with version {}", resource->InitData->ResourceVersion);
+        SPDLOG_ERROR("Failed to load SetCutscenes with version {}", resource->GetInitData()->ResourceVersion);
         return nullptr;
     }
 
@@ -27,7 +27,7 @@ SetCutscenesFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, st
 }
 
 void LUS::SetCutscenesFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        		  std::shared_ptr<Resource> resource) {
+                                        		  std::shared_ptr<IResource> resource) {
     std::shared_ptr<SetCutscenes> setCutscenes = std::static_pointer_cast<SetCutscenes>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setCutscenes);
 

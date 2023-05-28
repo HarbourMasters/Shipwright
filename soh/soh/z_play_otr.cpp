@@ -13,7 +13,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn);
 s32 OTRScene_ExecuteCommands(PlayState* play, LUS::Scene* scene);
 
 //LUS::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
-LUS::Resource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
+LUS::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
 {
     auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResource(fileName);
     return res.get();

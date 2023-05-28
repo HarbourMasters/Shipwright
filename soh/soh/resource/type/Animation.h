@@ -63,13 +63,13 @@ namespace LUS {
     TransformUpdateIndex transformUpdateIndex;
   };
 
-  class Animation : public Resource {
+  class Animation : public Resource<AnimationData> {
     public:
       using Resource::Resource;
 
       Animation() : Resource(std::shared_ptr<ResourceInitData>()) {}
 
-      void* GetPointer();
+      AnimationData* GetPointer();
       size_t GetPointerSize();
 
       AnimationType type;

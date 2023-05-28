@@ -9,7 +9,7 @@
 
 namespace LUS {
 
-class Scene : public Resource {
+class Scene : public Resource<void> {
 public:
   using Resource::Resource;
 
@@ -18,6 +18,6 @@ public:
     void* GetPointer();
   size_t GetPointerSize();
 
-  std::vector<std::shared_ptr<SceneCommand>> commands;
+  std::vector<std::shared_ptr<ISceneCommand>> commands;
 };
 }; // namespace LUS

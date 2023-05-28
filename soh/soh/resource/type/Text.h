@@ -16,15 +16,15 @@ public:
 	std::string msg;
 };
 
-class Text : public Resource {
+class Text : public Resource<MessageEntry> {
 public:
   using Resource::Resource;
 
     Text() : Resource(std::shared_ptr<ResourceInitData>()) {}
 
-    void* GetPointer();
-  size_t GetPointerSize();
+    MessageEntry* GetPointer();
+    size_t GetPointerSize();
 
-  std::vector<MessageEntry> messages;
+    std::vector<MessageEntry> messages;
 };
 }; // namespace LUS

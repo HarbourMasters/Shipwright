@@ -67,13 +67,13 @@ typedef struct {
     size_t cameraDataListLen; // OTRTODO: Added to allow for bounds checking the cameraDataList.
 } CollisionHeaderData; // original name: BGDataInfo
 
-class CollisionHeader : public Resource {
+class CollisionHeader : public Resource<CollisionHeaderData> {
 public:
     using Resource::Resource;
 
     CollisionHeader() : Resource(std::shared_ptr<ResourceInitData>()) {}
 
-    void* GetPointer();
+    CollisionHeaderData* GetPointer();
     size_t GetPointerSize();
 
     CollisionHeaderData collisionHeaderData;

@@ -83,11 +83,11 @@ typedef struct {
     /* 0x04 */ Gfx* xlu;
 } PolygonDlist; // size = 0x8
 
-class SetMesh : public SceneCommand {
+class SetMesh : public SceneCommand<MeshHeader> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    MeshHeader* GetPointer();
     size_t GetPointerSize();
 
     uint32_t numPoly;

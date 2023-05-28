@@ -97,38 +97,38 @@ union SkeletonLimbData {
   SkinLimb skinLimb;
 };
 
-class SkeletonLimb : public Resource {
+class SkeletonLimb : public Resource<SkeletonLimbData> {
 public:
   using Resource::Resource;
 
     SkeletonLimb() : Resource(std::shared_ptr<ResourceInitData>()) {}
 
-    void* GetPointer();
-  size_t GetPointerSize();
+    SkeletonLimbData* GetPointer();
+    size_t GetPointerSize();
 
-  LimbType limbType;
-  SkeletonLimbData limbData;
+    LimbType limbType;
+    SkeletonLimbData limbData;
 
-  ZLimbSkinType skinSegmentType;
-  uint16_t skinVtxCnt;
-  SkinAnimatedLimbData skinAnimLimbData;
+    ZLimbSkinType skinSegmentType;
+    uint16_t skinVtxCnt;
+    SkinAnimatedLimbData skinAnimLimbData;
 
-  std::string skinDataDList;
-  std::string skinDList;
-  std::string skinDList2;
+    std::string skinDataDList;
+    std::string skinDList;
+    std::string skinDList2;
 
-  float legTransX, legTransY, legTransZ; // Vec3f
-  uint16_t rotX, rotY, rotZ;             // Vec3s
+    float legTransX, legTransY, legTransZ; // Vec3f
+    uint16_t rotX, rotY, rotZ;             // Vec3s
 
-  std::string childPtr, siblingPtr, dListPtr, dList2Ptr;
+    std::string childPtr, siblingPtr, dListPtr, dList2Ptr;
 
-  int16_t transX, transY, transZ;
-  uint8_t childIndex, siblingIndex;
+    int16_t transX, transY, transZ;
+    uint8_t childIndex, siblingIndex;
 
-  uint32_t skinLimbModifCount;
-  std::vector<SkinLimbModif> skinLimbModifArray;
+    uint32_t skinLimbModifCount;
+    std::vector<SkinLimbModif> skinLimbModifArray;
 
-  std::vector<std::vector<SkinVertex>> skinLimbModifVertexArrays;
-  std::vector<std::vector<SkinTransformation>> skinLimbModifTransformationArrays;
+    std::vector<std::vector<SkinVertex>> skinLimbModifVertexArrays;
+    std::vector<std::vector<SkinTransformation>> skinLimbModifTransformationArrays;
 };
 } // namespace LUS

@@ -1,7 +1,7 @@
 #include "SetPathways.h"
 
 namespace LUS {
-void* SetPathways::GetPointer() {
+PathData** SetPathways::GetPointer() {
     return paths.data();
 }
 

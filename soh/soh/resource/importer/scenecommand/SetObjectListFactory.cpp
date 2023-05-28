@@ -3,19 +3,19 @@
 #include "spdlog/spdlog.h"
 
 namespace LUS {
-std::shared_ptr<Resource>
+std::shared_ptr<IResource>
 SetObjectListFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetObjectList>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-    switch (resource->InitData->ResourceVersion) {
+    switch (resource->GetInitData()->ResourceVersion) {
     case 0:
 	    factory = std::make_shared<SetObjectListFactoryV0>();
 	    break;
     }
 
     if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load SetObjectList with version {}", resource->InitData->ResourceVersion);
+        SPDLOG_ERROR("Failed to load SetObjectList with version {}", resource->GetInitData()->ResourceVersion);
 	return nullptr;
     }
 
@@ -25,7 +25,7 @@ SetObjectListFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, s
 }
 
 void LUS::SetObjectListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<Resource> resource)
+                                        std::shared_ptr<IResource> resource)
 {
     std::shared_ptr<SetObjectList> setObjectList = std::static_pointer_cast<SetObjectList>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setObjectList);

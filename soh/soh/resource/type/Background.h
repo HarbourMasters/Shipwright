@@ -3,13 +3,13 @@
 #include "resource/Resource.h"
 
 namespace LUS {
-class Background : public Resource {
+class Background : public Resource<uint8_t> {
   public:
     using Resource::Resource;
 
     Background() : Resource(std::shared_ptr<ResourceInitData>()) {}
 
-    void* GetPointer();
+    uint8_t* GetPointer();
     size_t GetPointerSize();
 
     std::vector<uint8_t> Data;

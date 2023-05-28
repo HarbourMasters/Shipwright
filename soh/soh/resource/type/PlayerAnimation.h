@@ -9,13 +9,13 @@
 
 namespace LUS {
 
-class PlayerAnimation : public Resource {
+class PlayerAnimation : public Resource<int16_t> {
   public:
     using Resource::Resource;
 
     PlayerAnimation() : Resource(std::shared_ptr<ResourceInitData>()) {}
 
-    void* GetPointer();
+    int16_t* GetPointer();
     size_t GetPointerSize();
 
     std::vector<int16_t> limbRotData;

@@ -4,7 +4,7 @@
 #include "libultraship/libultraship.h"
 
 namespace LUS {
-void* Skeleton::GetPointer() {
+SkeletonData* Skeleton::GetPointer() {
     return &skeletonData;
 }
 
@@ -36,9 +36,9 @@ void SkeletonPatcher::RegisterSkeleton(std::string& path, SkelAnime* skelAnime) 
     }
 
     // Determine if we're using an alternate skeleton
-    if (path.starts_with(LUS::Resource::gAltAssetPrefix)) {
-        info.vanillaSkeletonPath = path.substr(LUS::Resource::gAltAssetPrefix.length(),
-                                               path.size() - LUS::Resource::gAltAssetPrefix.length());
+    if (path.starts_with(LUS::IResource::gAltAssetPrefix)) {
+        info.vanillaSkeletonPath = path.substr(LUS::IResource::gAltAssetPrefix.length(),
+                                               path.size() - LUS::IResource::gAltAssetPrefix.length());
     } else {
         info.vanillaSkeletonPath = path;
     }
@@ -70,7 +70,7 @@ void SkeletonPatcher::UpdateSkeletons() {
     {
         Skeleton* newSkel =
             (Skeleton*)LUS::Context::GetInstance()->GetResourceManager()
-                ->LoadResource((isHD ? LUS::Resource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true)
+                ->LoadResource((isHD ? LUS::IResource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true)
                 .get();
 
         if (newSkel != nullptr)

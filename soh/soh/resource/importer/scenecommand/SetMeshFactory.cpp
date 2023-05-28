@@ -4,12 +4,12 @@
 #include "libultraship/libultraship.h"
 
 namespace LUS {
-std::shared_ptr<Resource>
+std::shared_ptr<IResource>
 SetMeshFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetMesh>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-    switch (resource->InitData->ResourceVersion) {
+    switch (resource->GetInitData()->ResourceVersion) {
     case 0:
         factory = std::make_shared<SetMeshFactoryV0>();
         break;
@@ -17,7 +17,7 @@ SetMeshFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::sh
 
     if (factory == nullptr)
     {
-        SPDLOG_ERROR("Failed to load SetMesh with version {}", resource->InitData->ResourceVersion);
+        SPDLOG_ERROR("Failed to load SetMesh with version {}", resource->GetInitData()->ResourceVersion);
         return nullptr;
     }
 
@@ -27,7 +27,7 @@ SetMeshFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::sh
 }
 
 void LUS::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<Resource> resource)
+                                        std::shared_ptr<IResource> resource)
 {
     std::shared_ptr<SetMesh> setMesh = std::static_pointer_cast<SetMesh>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setMesh);
@@ -66,8 +66,8 @@ void LUS::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader
 
             auto opaRes = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
             auto xluRes = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
-            dlist.opa = meshOpa != "" ? (Gfx*)(opaRes ? opaRes->GetPointer() : nullptr) : 0;
-            dlist.xlu = meshXlu != "" ? (Gfx*)(xluRes ? xluRes->GetPointer() : nullptr) : 0;
+            dlist.opa = meshOpa != "" ? (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr) : 0;
+            dlist.xlu = meshXlu != "" ? (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr) : 0;
 
             setMesh->dlists.push_back(dlist);
         } else if (setMesh->meshHeader.base.type == 1) {
@@ -79,8 +79,8 @@ void LUS::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader
 
             auto opaRes = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(imgOpa.c_str());
             auto xluRes = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(imgXlu.c_str());
-            pType.opa = imgOpa != "" ? (Gfx*)(opaRes ? opaRes->GetPointer() : nullptr) : 0;
-            pType.xlu = imgXlu != "" ? (Gfx*)(xluRes ? xluRes->GetPointer() : nullptr) : 0;
+            pType.opa = imgOpa != "" ? (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr) : 0;
+            pType.xlu = imgXlu != "" ? (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr) : 0;
 
             int32_t bgImageCount = reader->ReadUInt32();
             setMesh->images.reserve(bgImageCount);
@@ -127,8 +127,8 @@ void LUS::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader
 
             opaRes = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
             xluRes = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
-            pType.opa = meshOpa != "" ? (Gfx*)(opaRes ? opaRes->GetPointer() : nullptr) : 0;
-            pType.xlu = meshXlu != "" ? (Gfx*)(xluRes ? xluRes->GetPointer() : nullptr) : 0;
+            pType.opa = meshOpa != "" ? (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr) : 0;
+            pType.xlu = meshXlu != "" ? (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr) : 0;
 
             setMesh->dlists.push_back(pType);
         } else if (setMesh->meshHeader.base.type == 2) {
@@ -145,8 +145,8 @@ void LUS::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader
 
             auto opaRes = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshOpa.c_str());
             auto xluRes = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(meshXlu.c_str());
-            dlist.opa = meshOpa != "" ? (Gfx*)(opaRes ? opaRes->GetPointer() : nullptr) : 0;
-            dlist.xlu = meshXlu != "" ? (Gfx*)(xluRes ? xluRes->GetPointer() : nullptr) : 0;
+            dlist.opa = meshOpa != "" ? (Gfx*)(opaRes ? opaRes->GetRawPointer() : nullptr) : 0;
+            dlist.xlu = meshXlu != "" ? (Gfx*)(xluRes ? xluRes->GetRawPointer() : nullptr) : 0;
 
             setMesh->dlists2.push_back(dlist);
         } else {

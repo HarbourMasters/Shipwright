@@ -4,19 +4,19 @@
 #include <libultraship/libultraship.h>
 
 namespace LUS {
-std::shared_ptr<Resource>
+std::shared_ptr<IResource>
 SkeletonFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<Skeleton>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-    switch (resource->InitData->ResourceVersion) {
+    switch (resource->GetInitData()->ResourceVersion) {
     case 0:
 	factory = std::make_shared<SkeletonFactoryV0>();
 	break;
     }
 
     if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load Skeleton with version {}", resource->InitData->ResourceVersion);
+        SPDLOG_ERROR("Failed to load Skeleton with version {}", resource->GetInitData()->ResourceVersion);
 	return nullptr;
     }
 
@@ -25,19 +25,19 @@ SkeletonFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::s
     return resource;
 }
 
-std::shared_ptr<Resource>
+std::shared_ptr<IResource>
 SkeletonFactory::ReadResourceXML(std::shared_ptr<ResourceInitData> initData, tinyxml2::XMLElement *reader) {
     auto resource = std::make_shared<Skeleton>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-    switch (resource->InitData->ResourceVersion) {
+    switch (resource->GetInitData()->ResourceVersion) {
         case 0:
             factory = std::make_shared<SkeletonFactoryV0>();
             break;
     }
 
     if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load Skeleton with version {}", resource->InitData->ResourceVersion);
+        SPDLOG_ERROR("Failed to load Skeleton with version {}", resource->GetInitData()->ResourceVersion);
         return nullptr;
     }
 
@@ -47,7 +47,7 @@ SkeletonFactory::ReadResourceXML(std::shared_ptr<ResourceInitData> initData, tin
 }
 
 void SkeletonFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<Resource> resource)
+                                        std::shared_ptr<IResource> resource)
 {
     std::shared_ptr<Skeleton> skeleton = std::static_pointer_cast<Skeleton>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, skeleton);
@@ -84,7 +84,7 @@ void SkeletonFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
     for (size_t i = 0; i < skeleton->limbTable.size(); i++) {
         std::string limbStr = skeleton->limbTable[i];
         auto limb = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(limbStr.c_str());
-        skeleton->skeletonHeaderSegments.push_back(limb ? limb->GetPointer() : nullptr);
+        skeleton->skeletonHeaderSegments.push_back(limb ? limb->GetRawPointer() : nullptr);
     }
 
     if (skeleton->type == LUS::SkeletonType::Normal) {
@@ -97,7 +97,7 @@ void SkeletonFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
         SPDLOG_ERROR("unknown skeleton type {}", (uint32_t)skeleton->type);
     }
 }
-void SkeletonFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<Resource> resource) 
+void SkeletonFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<IResource> resource)
 {
     std::shared_ptr<Skeleton> skel = std::static_pointer_cast<Skeleton>(resource);
 
@@ -141,7 +141,7 @@ void SkeletonFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_p
             skel->limbTable.push_back(limbName);
 
             auto limb = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(limbName.c_str());
-            skel->skeletonHeaderSegments.push_back(limb ? limb->GetPointer() : nullptr);
+            skel->skeletonHeaderSegments.push_back(limb ? limb->GetRawPointer() : nullptr);
         }
 
         child = child->NextSiblingElement();

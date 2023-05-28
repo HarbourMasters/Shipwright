@@ -1,7 +1,7 @@
 #include "SetRoomList.h"
 
 namespace LUS {
-void* SetRoomList::GetPointer() {
+RomFile* SetRoomList::GetPointer() {
     return rooms.data();
 }
 

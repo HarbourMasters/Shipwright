@@ -49,13 +49,13 @@ union SkeletonData {
     SkelCurveLimbList skelCurveLimbList;
 };
 
-class Skeleton : public Resource {
+class Skeleton : public Resource<SkeletonData> {
   public:
     using Resource::Resource;
 
     Skeleton() : Resource(std::shared_ptr<ResourceInitData>()) {}
 
-    void* GetPointer();
+    SkeletonData* GetPointer();
     size_t GetPointerSize();
 
     SkeletonType type;
