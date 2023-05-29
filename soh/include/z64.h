@@ -2236,6 +2236,13 @@ typedef enum {
     /* 0x02 */ PAUSE_ANY_CURSOR_ALWAYS_OFF,
 } PauseCursorAnySlotOptions;
 
+typedef enum {
+    LED_SOURCE_TUNIC_ORIGINAL,
+    LED_SOURCE_TUNIC_COSMETICS,
+    LED_SOURCE_HEALTH,
+    LED_SOURCE_CUSTOM
+} LEDColorSource;
+
 #define ROM_FILE(name) \
     { 0, 0, #name }
 

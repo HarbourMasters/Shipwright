@@ -61,6 +61,15 @@ typedef struct {
     u8 isRoom;
 } SceneTimestamp;
 
+typedef enum { // Pre-existing IDs for save sections in base code
+    SECTION_ID_BASE,
+    SECTION_ID_RANDOMIZER,
+    SECTION_ID_STATS,
+    SECTION_ID_ENTRANCES,
+    SECTION_ID_SCENES,
+    SECTION_ID_MAX
+} SaveFuncIDs;
+
 typedef struct {
     /*      */ char buildVersion[50];
     /*      */ s16 buildVersionMajor;
