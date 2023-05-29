@@ -584,12 +584,6 @@ void SaveManager::InitFileNormal() {
     gSaveContext.pendingSale = ITEM_NONE;
     gSaveContext.pendingSaleMod = MOD_NONE;
 
-    strncpy(gSaveContext.sohStats.buildVersion, (const char*) gBuildVersion, sizeof(gSaveContext.sohStats.buildVersion) - 1);
-    gSaveContext.sohStats.buildVersion[sizeof(gSaveContext.sohStats.buildVersion) - 1] = 0;
-    gSaveContext.sohStats.buildVersionMajor = gBuildVersionMajor;
-    gSaveContext.sohStats.buildVersionMinor = gBuildVersionMinor;
-    gSaveContext.sohStats.buildVersionPatch = gBuildVersionPatch;
-
     if (gSaveContext.isBossRush) {
         BossRush_InitSave();
     }
