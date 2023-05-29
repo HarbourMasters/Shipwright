@@ -143,6 +143,8 @@ void EnDoor_Destroy(Actor* thisx, PlayState* play) {
     if (transitionEntry->id < 0) {
         transitionEntry->id = -transitionEntry->id;
     }
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDoor_SetupType(EnDoor* this, PlayState* play) {

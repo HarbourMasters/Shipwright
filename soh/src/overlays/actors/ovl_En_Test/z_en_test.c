@@ -321,6 +321,9 @@ void EnTest_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyCylinder(play, &this->shieldCollider);
     Collider_DestroyCylinder(play, &this->bodyCollider);
     Collider_DestroyQuad(play, &this->swordCollider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
+    ResourceMgr_UnregisterSkeleton(&this->upperSkelanime);
 }
 
 /**

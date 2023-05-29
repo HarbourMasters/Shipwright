@@ -107,6 +107,8 @@ void EnHeishi4_Destroy(Actor* thisx, PlayState* play) {
     EnHeishi4* this = (EnHeishi4*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80A56328(EnHeishi4* this, PlayState* play) {

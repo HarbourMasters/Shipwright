@@ -205,6 +205,8 @@ void EnRu1_Destroy(Actor* thisx, PlayState* play) {
 
     D_80AF1938 = 0;
     EnRu1_DestroyColliders(this, play);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnRu1_UpdateEyes(EnRu1* this) {

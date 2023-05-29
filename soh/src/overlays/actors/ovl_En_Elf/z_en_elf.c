@@ -437,6 +437,8 @@ void EnElf_Destroy(Actor* thisx, PlayState* play) {
 
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNodeGlow);
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNodeNoGlow);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80A02A20(EnElf* this, PlayState* play) {

@@ -815,6 +815,8 @@ void EnSt_Destroy(Actor* thisx, PlayState* play) {
         Collider_DestroyCylinder(play, &this->colCylinder[i]);
     }
     Collider_DestroyJntSph(play, &this->colSph);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnSt_WaitOnCeiling(EnSt* this, PlayState* play) {

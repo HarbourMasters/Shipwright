@@ -138,6 +138,8 @@ void EnToryo_Destroy(Actor* thisx, PlayState* play) {
     EnToryo* this = (EnToryo*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 func_80B203D8(EnToryo* this, PlayState* play) {

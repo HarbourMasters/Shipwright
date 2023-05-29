@@ -171,6 +171,8 @@ void EnEiyer_Init(Actor* thisx, PlayState* play) {
 void EnEiyer_Destroy(Actor* thisx, PlayState* play) {
     EnEiyer* this = (EnEiyer*)thisx;
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelanime);
 }
 
 void EnEiyer_RotateAroundHome(EnEiyer* this) {

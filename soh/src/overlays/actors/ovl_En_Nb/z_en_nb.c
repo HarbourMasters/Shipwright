@@ -147,6 +147,8 @@ void EnNb_Destroy(Actor* thisx, PlayState* play) {
     
     D_80AB4318 = 0;
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80AB0FBC(EnNb* this, PlayState* play) {

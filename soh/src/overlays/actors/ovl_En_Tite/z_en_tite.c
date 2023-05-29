@@ -217,6 +217,8 @@ void EnTite_Destroy(Actor* thisx, PlayState* play) {
         osSyncPrintf("\n\n");
     }
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnTite_SetupIdle(EnTite* this) {

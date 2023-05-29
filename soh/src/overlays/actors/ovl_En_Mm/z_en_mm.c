@@ -198,6 +198,8 @@ void EnMm_Destroy(Actor* thisx, PlayState* play) {
     EnMm* this = (EnMm*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 func_80AADA70(void) {

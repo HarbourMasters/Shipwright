@@ -12,7 +12,7 @@
 
 extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEntry) {
     s32 pad;
-    s8 isColoredKeysEnabled = CVarGetInteger("gRandoMatchKeyColors", 0);
+    s8 isColoredKeysEnabled = CVarGetInteger("gRandoMatchKeyColors", 1);
     s16 color_slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_SMALL_KEY;
     s16 colors[9][3] = {
         { 4, 195, 46 },    // Forest Temple
@@ -22,7 +22,7 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
         { 126, 16, 177 },  // Shadow Temple
         { 227, 110, 255 }, // Bottom of the Well
         { 221, 212, 60 },  // Gerudo Training Grounds
-        { 255, 255, 255 }, // Theive's Hideout (unused)
+        { 255, 255, 255 }, // Thieves' Hideout
         { 80, 80, 80 }     // Ganon's Castle
     };
 
@@ -49,7 +49,7 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
 
 extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEntry) {
     s32 pad;
-    s8 isColoredKeysEnabled = CVarGetInteger("gRandoMatchKeyColors", 0);
+    s8 isColoredKeysEnabled = CVarGetInteger("gRandoMatchKeyColors", 1);
     s16 color_slot;
     color_slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_BOSS_KEY;
     s16 colors[6][3] = {
@@ -110,7 +110,7 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
         { 126, 16, 177 },  // Shadow Temple
         { 227, 110, 255 }, // Bottom of the Well
         { 221, 212, 60 },  // Gerudo Training Grounds
-        { 255, 255, 255 }, // Theive's Hideout (unused)
+        { 255, 255, 255 }, // Thieves' Hideout
         { 80, 80, 80 }     // Ganon's Castle
     };
 

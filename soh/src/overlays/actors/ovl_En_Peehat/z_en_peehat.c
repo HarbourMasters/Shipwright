@@ -256,6 +256,8 @@ void EnPeehat_Destroy(Actor* thisx, PlayState* play) {
             parent->unk_2FA--;
         }
     }
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnPeehat_SpawnDust(PlayState* play, EnPeehat* this, Vec3f* pos, f32 arg3, s32 arg4, f32 arg5, f32 arg6) {

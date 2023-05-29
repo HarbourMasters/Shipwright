@@ -124,6 +124,8 @@ void EnCrow_Destroy(Actor* thisx, PlayState* play) {
     EnCrow* this = (EnCrow*)thisx;
 
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 // Setup Action functions

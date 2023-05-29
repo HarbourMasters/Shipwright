@@ -17,6 +17,7 @@ void SetTransitionActorList::ParseRawData()
 	int numActors = cmdArg1;
 	uint32_t currentPtr = segmentOffset;
 
+	transitionActors.reserve(numActors);
 	for (int32_t i = 0; i < numActors; i++)
 	{
 		TransitionActorEntry entry(parent->GetRawData(), currentPtr);

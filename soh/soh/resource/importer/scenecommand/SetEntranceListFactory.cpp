@@ -2,8 +2,8 @@
 #include "soh/resource/type/scenecommand/SetEntranceList.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> SetEntranceListFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+namespace LUS {
+std::shared_ptr<Resource> SetEntranceListFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                                std::shared_ptr<ResourceInitData> initData,
                                                                std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetEntranceList>(resourceMgr, initData);
@@ -25,7 +25,7 @@ std::shared_ptr<Resource> SetEntranceListFactory::ReadResource(std::shared_ptr<R
     return resource;
 }
 
-void Ship::SetEntranceListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetEntranceListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource) {
     std::shared_ptr<SetEntranceList> setEntranceList = std::static_pointer_cast<SetEntranceList>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setEntranceList);
@@ -44,4 +44,4 @@ void Ship::SetEntranceListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
     }
 }
 
-} // namespace Ship
+} // namespace LUS

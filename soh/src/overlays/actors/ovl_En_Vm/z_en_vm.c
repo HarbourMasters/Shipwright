@@ -162,6 +162,8 @@ void EnVm_Destroy(Actor* thisx, PlayState* play) {
     EnVm* this = (EnVm*)thisx;
 
     Collider_DestroyCylinder(play, &this->colliderCylinder);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnVm_SetupWait(EnVm* this) {

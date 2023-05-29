@@ -24,6 +24,9 @@ void DemoIk_Type1Draw(DemoIk* this, PlayState* play);
 void DemoIk_Type2Draw(DemoIk* this, PlayState* play);
 
 void DemoIk_Destroy(Actor* thisx, PlayState* play) {
+    DemoIk* this = (DemoIk*)thisx;
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void DemoIk_BgCheck(DemoIk* this, PlayState* play) {

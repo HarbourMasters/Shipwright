@@ -86,6 +86,8 @@ void EnPoDesert_Destroy(Actor* thisx, PlayState* play) {
 
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNode);
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnPoDesert_SetNextPathPoint(EnPoDesert* this, PlayState* play) {

@@ -769,6 +769,8 @@ void Entrance_SetSceneDiscovered(u8 sceneNum) {
         u32 sceneBit = 1 << (sceneNum - (idx * bitsPerIndex));
         gSaveContext.sohStats.scenesDiscovered[idx] |= sceneBit;
     }
+    // Save scenesDiscovered
+    Save_SaveSection(SECTION_ID_SCENES);
 }
 
 u8 Entrance_GetIsEntranceDiscovered(u16 entranceIndex) {
@@ -801,4 +803,6 @@ void Entrance_SetEntranceDiscovered(u16 entranceIndex) {
             }
         }
     }
+    // Save entrancesDiscovered
+    Save_SaveSection(SECTION_ID_ENTRANCES);
 }

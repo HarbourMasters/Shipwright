@@ -185,6 +185,8 @@ void EnSkb_Destroy(Actor* thisx, PlayState* play) {
         }
     }
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80AFCD60(EnSkb* this) {

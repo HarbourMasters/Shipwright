@@ -2,9 +2,10 @@
 
 #include <functional>
 #include <string_view>
+#include <unordered_map>
 
 #include "Utils/Directory.h"
-#include "Utils/File.h"
+#include <Utils/DiskFile.h>
 #include "Utils/Path.h"
 #include "ZFile.h"
 #include "tinyxml2.h"
@@ -56,7 +57,7 @@ void GameConfig::ReadTexturePool(const fs::path& texturePoolXmlPath)
 
 void GameConfig::GenSymbolMap(const fs::path& symbolMapPath)
 {
-	auto symbolLines = File::ReadAllLines(symbolMapPath);
+	auto symbolLines = DiskFile::ReadAllLines(symbolMapPath);
 
 	for (std::string& symbolLine : symbolLines)
 	{
@@ -78,7 +79,7 @@ void GameConfig::ConfigFunc_ActorList(const tinyxml2::XMLElement& element)
 {
 	std::string fileName = element.Attribute("File");
 	std::vector<std::string> lines =
-		File::ReadAllLines(Path::GetDirectoryName(configFilePath) / fileName);
+		DiskFile::ReadAllLines(Path::GetDirectoryName(configFilePath) / fileName);
 
 	for (auto& line : lines)
 		actorList.emplace_back(std::move(line));
@@ -88,10 +89,30 @@ void GameConfig::ConfigFunc_ObjectList(const tinyxml2::XMLElement& element)
 {
 	std::string fileName = element.Attribute("File");
 	std::vector<std::string> lines =
-		File::ReadAllLines(Path::GetDirectoryName(configFilePath) / fileName);
+		DiskFile::ReadAllLines(Path::GetDirectoryName(configFilePath) / fileName);
 
 	for (auto& line : lines)
 		objectList.emplace_back(std::move(line));
+}
+
+void GameConfig::ConfigFunc_EntranceList(const tinyxml2::XMLElement& element)
+{
+	std::string fileName = element.Attribute("File");
+	std::vector<std::string> lines =
+		DiskFile::ReadAllLines(Path::GetDirectoryName(configFilePath) / fileName);
+
+	for (auto& line : lines)
+		entranceList.emplace_back(std::move(line));
+}
+
+void GameConfig::ConfigFunc_specialEntranceList(const tinyxml2::XMLElement& element)
+{
+	std::string fileName = element.Attribute("File");
+	std::vector<std::string> lines =
+		DiskFile::ReadAllLines(Path::GetDirectoryName(configFilePath) / fileName);
+
+	for (auto& line : lines)
+		specialEntranceList.emplace_back(std::move(line));
 }
 
 void GameConfig::ConfigFunc_TexturePool(const tinyxml2::XMLElement& element)
@@ -145,10 +166,12 @@ void GameConfig::ConfigFunc_ExternalFile(const tinyxml2::XMLElement& element)
 
 void GameConfig::ReadConfigFile(const fs::path& argConfigFilePath)
 {
-	static const std::map<std::string, ConfigFunc> ConfigFuncDictionary = {
+	static const std::unordered_map<std::string, ConfigFunc> ConfigFuncDictionary = {
 		{"SymbolMap", &GameConfig::ConfigFunc_SymbolMap},
 		{"ActorList", &GameConfig::ConfigFunc_ActorList},
 		{"ObjectList", &GameConfig::ConfigFunc_ObjectList},
+		{"EntranceList", &GameConfig::ConfigFunc_EntranceList},
+		{"SpecialEntranceList", &GameConfig::ConfigFunc_specialEntranceList},
 		{"TexturePool", &GameConfig::ConfigFunc_TexturePool},
 		{"BGConfig", &GameConfig::ConfigFunc_BGConfig},
 		{"ExternalXMLFolder", &GameConfig::ConfigFunc_ExternalXMLFolder},

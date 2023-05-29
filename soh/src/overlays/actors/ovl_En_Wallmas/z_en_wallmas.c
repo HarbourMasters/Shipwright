@@ -130,12 +130,16 @@ void EnWallmas_Init(Actor* thisx, PlayState* play) {
     this->switchFlag = (u8)(thisx->params >> 0x8);
     thisx->params = thisx->params & 0xFF;
 
+    if (this->actor.params == WMT_SHADOWTAG) {
+        Actor_ChangeCategory(play, &play->actorCtx, this, ACTORCAT_NPC);
+    }
+
     if (thisx->params == WMT_FLAG) {
         if (Flags_GetSwitch(play, this->switchFlag) != 0) {
             Actor_Kill(thisx);
             return;
         }
-
+        
         EnWallmas_ProximityOrSwitchInit(this);
     } else if (thisx->params == WMT_PROXIMITY) {
         EnWallmas_ProximityOrSwitchInit(this);
@@ -148,6 +152,8 @@ void EnWallmas_Destroy(Actor* thisx, PlayState* play) {
     EnWallmas* this = (EnWallmas*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnWallmas_TimerInit(EnWallmas* this, PlayState* play) {
@@ -271,7 +277,7 @@ void EnWallmas_ProximityOrSwitchInit(EnWallmas* this) {
     this->timer = 0;
     this->actor.draw = NULL;
     this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
-    if (this->actor.params == WMT_PROXIMITY) {
+    if (this->actor.params == WMT_PROXIMITY || this->actor.params == WMT_SHADOWTAG) {
         this->actionFunc = EnWallmas_WaitForProximity;
     } else {
         this->actionFunc = EnWallmas_WaitForSwitchFlag;
@@ -305,11 +311,16 @@ void EnWallmas_WaitToDrop(EnWallmas* this, PlayState* play) {
         this->timer--;
     }
 
-    if ((player->stateFlags1 & 0x100000) || (player->stateFlags1 & 0x8000000) || !(player->actor.bgCheckFlags & 1) ||
+    if (this->actor.params == WMT_SHADOWTAG) {
+        if ((player->stateFlags1 & 0x100000) || (player->stateFlags1 & 0x8000000) || !(player->actor.bgCheckFlags & 1)) {
+            Audio_StopSfxById(NA_SE_EN_FALL_AIM);
+            this->timer = 0x82;
+        }
+    } else if ((player->stateFlags1 & 0x100000) || (player->stateFlags1 & 0x8000000) || !(player->actor.bgCheckFlags & 1) ||
         ((this->actor.params == 1) && (320.0f < Math_Vec3f_DistXZ(&this->actor.home.pos, playerPos)))) {
         Audio_StopSfxById(NA_SE_EN_FALL_AIM);
         this->timer = 0x82;
-    }
+        }
 
     if (this->timer == 0x50) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_FALL_AIM);
@@ -388,6 +399,11 @@ void EnWallmas_ReturnToCeiling(EnWallmas* this, PlayState* play) {
             EnWallmas_ProximityOrSwitchInit(this);
         }
     }
+    if (this->actor.params == WMT_SHADOWTAG) {
+        if (!CVarGetInteger("gShadowTag", 0)) {
+            Actor_Kill(&this->actor);
+        } 
+    }
 }
 
 void EnWallmas_TakeDamage(EnWallmas* this, PlayState* play) {
@@ -416,6 +432,13 @@ void EnWallmas_Die(EnWallmas* this, PlayState* play) {
         Actor_SetScale(&this->actor, 0.01f);
         Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xC0);
         Actor_Kill(&this->actor);
+    }
+    if (this->actor.params == WMT_SHADOWTAG) {
+        if (!CVarGetInteger("gShadowTag", 0)) {
+            Actor_Kill(&this->actor);
+        } else {
+            EnWallmas_Init(this, play);
+        }
     }
     this->actor.scale.z = this->actor.scale.x;
     this->actor.scale.y = this->actor.scale.x;
@@ -476,7 +499,8 @@ void EnWallmas_TakePlayer(EnWallmas* this, PlayState* play) {
 
 void EnWallmas_WaitForProximity(EnWallmas* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    if (Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) < 200.0f) {
+    if (this->actor.params == WMT_SHADOWTAG ||
+        Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) < 200.0f) {
         EnWallmas_TimerInit(this, play);
     }
 }

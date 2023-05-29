@@ -224,6 +224,8 @@ void EnGb_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyCylinder(play, &this->collider);
     LightContext_RemoveLight(play, &play->lightCtx, this->light);
     DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80A2F608(EnGb* this) {

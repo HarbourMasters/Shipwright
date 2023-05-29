@@ -279,6 +279,8 @@ void EnWf_Destroy(Actor* thisx, PlayState* play) {
             osSyncPrintf("\n\n");
         }
     }
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnWf_ChangeAction(PlayState* play, EnWf* this, s16 mustChoose) {

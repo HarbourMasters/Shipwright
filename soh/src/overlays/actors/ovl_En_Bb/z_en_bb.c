@@ -403,6 +403,8 @@ void EnBb_Destroy(Actor* thisx, PlayState* play) {
     EnBb* this = (EnBb*)thisx;
 
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnBb_SetupFlameTrail(EnBb* this) {

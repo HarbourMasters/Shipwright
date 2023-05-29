@@ -4,7 +4,7 @@
 
 #include "Globals.h"
 #include "Utils/BitConverter.h"
-#include "Utils/File.h"
+#include <Utils/DiskFile.h>
 #include "Utils/StringHelper.h"
 #include "WarningHandler.h"
 #include "ZFile.h"
@@ -67,7 +67,7 @@ void ZNormalAnimation::ParseRawData()
 {
 	ZAnimation::ParseRawData();
 
-	const uint8_t* data = parent->GetRawData().data();
+	auto& data = parent->GetRawData();
 
 	rotationValuesSeg = BitConverter::ToInt32BE(data, rawDataIndex + 4);
 	rotationIndicesSeg = BitConverter::ToInt32BE(data, rawDataIndex + 8);

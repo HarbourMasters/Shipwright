@@ -50,6 +50,9 @@ void EnDs_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnDs_Destroy(Actor* thisx, PlayState* play) {
+    EnDs* this = (EnDs*)thisx;
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDs_Talk(EnDs* this, PlayState* play) {

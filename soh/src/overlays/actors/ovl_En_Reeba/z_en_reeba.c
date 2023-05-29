@@ -161,6 +161,8 @@ void EnReeba_Destroy(Actor* thisx, PlayState* play) {
             }
         }
     }
+
+    ResourceMgr_UnregisterSkeleton(&this->skelanime);
 }
 
 void func_80AE4F40(EnReeba* this, PlayState* play) {

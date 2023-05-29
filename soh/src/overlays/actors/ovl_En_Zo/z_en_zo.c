@@ -615,6 +615,9 @@ void EnZo_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnZo_Destroy(Actor* thisx, PlayState* play) {
+    EnZo* this = (EnZo*)thisx;
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnZo_Standing(EnZo* this, PlayState* play) {

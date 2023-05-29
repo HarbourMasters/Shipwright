@@ -76,6 +76,8 @@ void EnJs_Destroy(Actor* thisx, PlayState* play) {
     EnJs* this = (EnJs*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 u8 func_80A88F64(EnJs* this, PlayState* play, u16 textId) {

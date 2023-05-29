@@ -254,6 +254,8 @@ void EnPoh_Destroy(Actor* thisx, PlayState* play) {
     if (this->actor.params == EN_POH_RUPEE) {
         D_80AE1A50--;
     }
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80ADE114(EnPoh* this) {

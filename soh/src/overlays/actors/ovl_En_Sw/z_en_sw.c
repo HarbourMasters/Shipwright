@@ -328,6 +328,8 @@ void EnSw_Destroy(Actor* thisx, PlayState* play) {
     EnSw* this = (EnSw*)thisx;
 
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 func_80B0C9F0(EnSw* this, PlayState* play) {

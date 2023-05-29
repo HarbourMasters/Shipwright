@@ -699,6 +699,8 @@ void EnMd_Init(Actor* thisx, PlayState* play) {
 void EnMd_Destroy(Actor* thisx, PlayState* play) {
     EnMd* this = (EnMd*)thisx;
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80AAB874(EnMd* this, PlayState* play) {

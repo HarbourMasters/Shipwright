@@ -278,6 +278,8 @@ void EnDekubaba_Destroy(Actor* thisx, PlayState* play) {
     EnDekubaba* this = (EnDekubaba*)thisx;
 
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDekubaba_DisableHitboxes(EnDekubaba* this) {

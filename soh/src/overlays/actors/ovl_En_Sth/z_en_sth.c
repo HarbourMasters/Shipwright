@@ -173,6 +173,8 @@ void EnSth_Destroy(Actor* thisx, PlayState* play) {
     EnSth* this = (EnSth*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnSth_WaitForObjectLoaded(EnSth* this, PlayState* play) {

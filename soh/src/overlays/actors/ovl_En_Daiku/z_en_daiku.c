@@ -219,6 +219,8 @@ void EnDaiku_Destroy(Actor* thisx, PlayState* play) {
     EnDaiku* this = (EnDaiku*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnDaiku_UpdateTalking(EnDaiku* this, PlayState* play) {

@@ -96,6 +96,8 @@ void EnNiwLady_Destroy(Actor* thisx, PlayState* play) {
     EnNiwLady* this = (EnNiwLady*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnNiwLady_ChoseAnimation(EnNiwLady* this, PlayState* play, s32 arg2) {

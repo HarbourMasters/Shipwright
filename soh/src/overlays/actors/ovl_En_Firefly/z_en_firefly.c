@@ -198,6 +198,8 @@ void EnFirefly_Destroy(Actor* thisx, PlayState* play) {
     EnFirefly* this = (EnFirefly*)thisx;
 
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnFirefly_SetupFlyIdle(EnFirefly* this) {

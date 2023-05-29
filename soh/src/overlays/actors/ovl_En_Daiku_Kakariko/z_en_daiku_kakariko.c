@@ -208,6 +208,8 @@ void EnDaikuKakariko_Destroy(Actor* thisx, PlayState* play) {
     EnDaikuKakariko* this = (EnDaikuKakariko*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnDaikuKakariko_GetTalkState(EnDaikuKakariko* this, PlayState* play) {

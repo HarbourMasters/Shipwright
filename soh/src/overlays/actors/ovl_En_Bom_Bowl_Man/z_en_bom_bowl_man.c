@@ -89,6 +89,9 @@ void EnBomBowlMan_Init(Actor* thisx, PlayState* play2) {
 }
 
 void EnBomBowlMan_Destroy(Actor* thisx, PlayState* play) {
+    EnBomBowlMan* this = (EnBomBowlMan*)thisx;
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnBomBowMan_SetupWaitAsleep(EnBomBowlMan* this, PlayState* play) {

@@ -1,6 +1,6 @@
 #include "Background.h"
 
-namespace Ship {
+namespace LUS {
 void* Background::GetPointer() {
     return Data.data();
 }
@@ -8,4 +8,4 @@ void* Background::GetPointer() {
 size_t Background::GetPointerSize() {
     return Data.size() * sizeof(uint8_t);
 }
-} // namespace Ship
+} // namespace LUS

@@ -157,6 +157,8 @@ void EnFish_Destroy(Actor* thisx, PlayState* play2) {
     EnFish* this = (EnFish*)thisx;
 
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnFish_SetYOffset(EnFish* this) {

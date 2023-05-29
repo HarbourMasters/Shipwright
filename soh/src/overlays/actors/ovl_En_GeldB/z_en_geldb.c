@@ -269,6 +269,8 @@ void EnGeldB_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyTris(play, &this->blockCollider);
     Collider_DestroyCylinder(play, &this->bodyCollider);
     Collider_DestroyQuad(play, &this->swordCollider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnGeldB_ReactToPlayer(PlayState* play, EnGeldB* this, s16 arg2) {

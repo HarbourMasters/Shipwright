@@ -167,6 +167,8 @@ void EnDntNomal_Destroy(Actor* thisx, PlayState* play) {
     } else {
         Collider_DestroyCylinder(play, &this->bodyCyl);
     }
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDntNomal_WaitForObject(EnDntNomal* this, PlayState* play) {

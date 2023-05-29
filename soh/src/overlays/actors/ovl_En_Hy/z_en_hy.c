@@ -906,6 +906,8 @@ void EnHy_Destroy(Actor* thisx, PlayState* play) {
     EnHy* this = (EnHy*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnHy_InitImpl(EnHy* this, PlayState* play) {

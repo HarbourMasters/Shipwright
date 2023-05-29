@@ -117,6 +117,8 @@ void EnPoRelay_Destroy(Actor* thisx, PlayState* play) {
     D_80AD8D24 = 0;
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNode);
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnPoRelay_SetupIdle(EnPoRelay* this) {

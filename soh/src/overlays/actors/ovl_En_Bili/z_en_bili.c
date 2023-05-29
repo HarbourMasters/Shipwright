@@ -136,6 +136,8 @@ void EnBili_Destroy(Actor* thisx, PlayState* play) {
     EnBili* this = (EnBili*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 // Setup Action Functions

@@ -503,6 +503,8 @@ void EnIn_Destroy(Actor* thisx, PlayState* play) {
 
     if (this->actionFunc != NULL && this->actionFunc != func_80A79FB0) {
         Collider_DestroyCylinder(play, &this->collider);
+
+        ResourceMgr_UnregisterSkeleton(&this->skelAnime);
     }
 }
 

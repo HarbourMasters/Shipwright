@@ -2,8 +2,8 @@
 #include "soh/resource/type/scenecommand/SetEchoSettings.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> SetEchoSettingsFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+namespace LUS {
+std::shared_ptr<Resource> SetEchoSettingsFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                                std::shared_ptr<ResourceInitData> initData,
                                                                std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetEchoSettings>(resourceMgr, initData);
@@ -25,7 +25,7 @@ std::shared_ptr<Resource> SetEchoSettingsFactory::ReadResource(std::shared_ptr<R
     return resource;
 }
 
-void Ship::SetEchoSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetEchoSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource)
 {
     std::shared_ptr<SetEchoSettings> setEchoSettings = std::static_pointer_cast<SetEchoSettings>(resource);
@@ -36,4 +36,4 @@ void Ship::SetEchoSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReade
     setEchoSettings->settings.echo = reader->ReadInt8();
 }
 
-} // namespace Ship
+} // namespace LUS

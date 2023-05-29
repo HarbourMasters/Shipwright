@@ -3,6 +3,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "textures/do_action_static/do_action_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
+#include "soh_assets.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "libultraship/bridge.h"
@@ -14,6 +15,7 @@
 #endif
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 
 #define DO_ACTION_TEX_WIDTH() 48
@@ -1705,7 +1707,12 @@ u8 Return_Item_Entry(GetItemEntry itemEntry, ItemID returnItem ) {
 
 // Processes Item_Give returns
 u8 Return_Item(u8 itemID, ModIndex modId, ItemID returnItem) {
-    uint32_t get = GetGIID(itemID);
+    // ITEM_SOLD_OUT doesn't have an ItemTable entry, so pass custom entry instead
+    if (itemID == ITEM_SOLD_OUT) {
+        GetItemEntry gie = { ITEM_SOLD_OUT, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_LESSER, NULL };
+        return Return_Item_Entry(gie, returnItem);
+    }
+    int32_t get = GetGIID(itemID);
     if (get == -1) {
         modId = MOD_RANDOMIZER;
         get = itemID;
@@ -2270,6 +2277,7 @@ u8 Item_Give(PlayState* play, u8 item) {
                     }
 
                     gSaveContext.inventory.items[temp + i] = item;
+                    break;
                 }
             }
         } else {
@@ -5219,7 +5227,7 @@ void Interface_Draw(PlayState* play) {
 
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, dPadColor.r, dPadColor.g, dPadColor.b, dpadAlpha);
             if (fullUi) {
-                gDPLoadTextureBlock(OVERLAY_DISP++, "__OTR__textures/parameter_static/gDPad",
+                gDPLoadTextureBlock(OVERLAY_DISP++, gDPadTex,
                                     G_IM_FMT_IA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                 gSPWideTextureRectangle(OVERLAY_DISP++, DpadPosX << 2, DpadPosY << 2,
@@ -6156,8 +6164,13 @@ void Interface_Update(PlayState* play) {
                     u16 tempSaleMod = gSaveContext.pendingSaleMod;
                     gSaveContext.pendingSale = ITEM_NONE;
                     gSaveContext.pendingSaleMod = MOD_NONE;
-                    if (tempSaleMod == 0) {
-                        tempSaleItem = GetGIID(tempSaleItem);
+                    if (tempSaleMod == MOD_NONE) {
+                        s16 giid = GetGIID(tempSaleItem);
+                        if (giid == -1) {
+                            tempSaleMod = MOD_RANDOMIZER;
+                        } else {
+                            tempSaleItem = giid;
+                        }
                     }
                     GameInteractor_ExecuteOnSaleEndHooks(ItemTable_RetrieveEntry(tempSaleMod, tempSaleItem));
                 }

@@ -109,8 +109,7 @@ void EnKakasi2_Destroy(Actor* thisx, PlayState* play) {
     EnKakasi2* this = (EnKakasi2*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-    SkelAnime_Free(&this->skelAnime, play); // OTR - Fixed this memory leak
-    //! @bug SkelAnime_Free is not called
+    SkelAnime_Free(&this->skelAnime, play);
 }
 
 void func_80A90264(EnKakasi2* this, PlayState* play) {

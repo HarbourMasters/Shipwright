@@ -14,6 +14,7 @@ void EnTakaraMan_Init(Actor* thisx, PlayState* play);
 void EnTakaraMan_Reset(Actor* thisx, PlayState* play);
 void EnTakaraMan_Update(Actor* thisx, PlayState* play);
 void EnTakaraMan_Draw(Actor* thisx, PlayState* play);
+void EnTakaraMan_Destroy(Actor* thisx, PlayState* play);
 
 void func_80B176E0(EnTakaraMan* this, PlayState* play);
 void func_80B1778C(EnTakaraMan* this, PlayState* play);
@@ -29,7 +30,7 @@ const ActorInit En_Takara_Man_InitVars = {
     OBJECT_TS,
     sizeof(EnTakaraMan),
     (ActorFunc)EnTakaraMan_Init,
-    NULL,
+    (ActorFunc)EnTakaraMan_Destroy,
     (ActorFunc)EnTakaraMan_Update,
     (ActorFunc)EnTakaraMan_Draw,
     (ActorResetFunc)EnTakaraMan_Reset,
@@ -70,6 +71,12 @@ void EnTakaraMan_Init(Actor* thisx, PlayState* play) {
     thisx->world.rot.y = thisx->shape.rot.y = -0x4E20;
     thisx->targetMode = 1;
     this->actionFunc = func_80B176E0;
+}
+
+void EnTakaraMan_Destroy(Actor* thisx, PlayState* play) {
+    EnTakaraMan* this = (EnTakaraMan*)thisx;
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80B176E0(EnTakaraMan* this, PlayState* play) {

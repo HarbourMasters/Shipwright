@@ -203,6 +203,8 @@ void DoorKiller_Destroy(Actor* thisx, PlayState* play) {
     if ((thisx->params & 0xFF) == DOOR_KILLER_DOOR) {
         Collider_DestroyCylinder(play, &this->colliderCylinder);
         Collider_DestroyJntSph(play, &this->colliderJntSph);
+
+        ResourceMgr_UnregisterSkeleton(&this->skelAnime);
     }
 }
 

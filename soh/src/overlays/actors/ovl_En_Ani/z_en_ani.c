@@ -95,6 +95,8 @@ void EnAni_Destroy(Actor* thisx, PlayState* play) {
     EnAni* this = (EnAni*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnAni_SetText(EnAni* this, PlayState* play, u16 textId) {

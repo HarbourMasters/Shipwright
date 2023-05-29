@@ -120,6 +120,9 @@ void EnTr_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnTr_Destroy(Actor* thisx, PlayState* play) {
+    EnTr* this = (EnTr*)thisx;
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnTr_CrySpellcast(EnTr* this, PlayState* play) {

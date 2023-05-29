@@ -161,6 +161,8 @@ void EnMm2_Destroy(Actor* thisx, PlayState* play) {
     EnMm2* this = (EnMm2*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 func_80AAF224(EnMm2* this, PlayState* play, EnMm2ActionFunc actionFunc) {

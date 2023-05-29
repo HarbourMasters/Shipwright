@@ -136,6 +136,8 @@ void EnDekunuts_Destroy(Actor* thisx, PlayState* play) {
 
     if (this->actor.params != DEKUNUTS_FLOWER) {
         Collider_DestroyCylinder(play, &this->collider);
+
+        ResourceMgr_UnregisterSkeleton(&this->skelAnime);
     }
 }
 

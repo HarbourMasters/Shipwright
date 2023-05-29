@@ -161,6 +161,8 @@ void EnBw_Destroy(Actor* thisx, PlayState* play) {
 
     Collider_DestroyCylinder(play, &this->collider1);
     Collider_DestroyCylinder(play, &this->collider2);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_809CE884(EnBw* this, PlayState* play) {

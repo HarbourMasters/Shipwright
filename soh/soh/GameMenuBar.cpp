@@ -12,7 +12,7 @@
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include <ImGui/imgui_internal.h>
 #include <ImGuiImpl.h>
-#include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
 #include <Hooks.h>
 #include <libultraship/libultra/types.h>
 #include <libultraship/libultra/pi.h>
@@ -29,6 +29,7 @@
 #include "soh/SaveManager.h"
 #include "OTRGlobals.h"
 #include "soh/Enhancements/presets.h"
+#include "soh/Enhancements/mods.h"
 #include "soh/resource/type/Skeleton.h"
 
 #ifdef ENABLE_CROWD_CONTROL
@@ -45,6 +46,8 @@ extern "C" {
     void enableBetaQuest() { isBetaQuestEnabled = true; }
     void disableBetaQuest() { isBetaQuestEnabled = false; }
 }
+
+extern "C" PlayState* gPlayState;
 
 enum SeqPlayers {
     /* 0 */ SEQ_BGM_MAIN,
@@ -108,8 +111,8 @@ namespace GameMenuBar {
     // MARK: - Delegates
 
     void SetupHooks() {
-        Ship::RegisterHook<Ship::AudioInit>(UpdateAudio);
-        Ship::RegisterHook<Ship::GfxInit>(UpdateAudio);
+        LUS::RegisterHook<LUS::AudioInit>(UpdateAudio);
+        LUS::RegisterHook<LUS::GfxInit>(UpdateAudio);
     }
 
     void Draw() {
@@ -131,8 +134,8 @@ namespace GameMenuBar {
                 }
 
                 ImGui::Text("Audio API (Needs reload)");
-                auto audioBackends = SohImGui::GetAvailableAudioBackends();
-                auto currentAudioBackend = SohImGui::GetCurrentAudioBackend();
+                auto audioBackends = LUS::GetAvailableAudioBackends();
+                auto currentAudioBackend = LUS::GetCurrentAudioBackend();
 
                 if (audioBackends.size() <= 1) {
                     UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
@@ -140,7 +143,7 @@ namespace GameMenuBar {
                 if (ImGui::BeginCombo("##AApi", currentAudioBackend.second)) {
                     for (uint8_t i = 0; i < audioBackends.size(); i++) {
                         if (ImGui::Selectable(audioBackends[i].second, audioBackends[i] == currentAudioBackend)) {
-                            SohImGui::SetCurrentAudioBackend(i, audioBackends[i]);
+                            LUS::SetCurrentAudioBackend(i, audioBackends[i]);
                         }
                     }
 
@@ -160,12 +163,25 @@ namespace GameMenuBar {
                 ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.0f));
                 ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
                 ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-                if (ImGui::Button(GetWindowButtonText("Controller Configuration", CVarGetInteger("gControllerConfigurationEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f)))
+                if (ImGui::Button(GetWindowButtonText("Controller Mapping", CVarGetInteger("gControllerConfigurationEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f)))
                 {
-                    bool currentValue = CVarGetInteger("gControllerConfigurationEnabled", 0);
-                    CVarSetInteger("gControllerConfigurationEnabled", !currentValue);
-                    SohImGui::RequestCvarSaveOnNextTick();
-                    SohImGui::ToggleInputEditorWindow(CVarGetInteger("gControllerConfigurationEnabled", 0));
+                    if (CVarGetInteger("gControllerConfigurationEnabled", 0)) {
+                        CVarClear("gControllerConfigurationEnabled");
+                    } else {
+                        CVarSetInteger("gControllerConfigurationEnabled", 1);
+                    }
+                    LUS::RequestCvarSaveOnNextTick();
+                    LUS::ToggleInputEditorWindow(CVarGetInteger("gControllerConfigurationEnabled", 0));
+                }
+                if (ImGui::Button(GetWindowButtonText("Additional Controller Options", CVarGetInteger("gControllerOptionsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
+                {
+                    if (CVarGetInteger("gControllerOptionsEnabled", 0)) {
+                        CVarClear("gControllerOptionsEnabled");
+                    } else {
+                        CVarSetInteger("gControllerOptionsEnabled", 1);
+                    }
+                    LUS::RequestCvarSaveOnNextTick();
+                    LUS::EnableWindow("Additional Controller Options", CVarGetInteger("gControllerOptionsEnabled", 0));
                 }
                 UIWidgets::PaddedSeparator();
                 ImGui::PopStyleColor(1);
@@ -180,7 +196,6 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
                 UIWidgets::PaddedEnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", "gSimulatedInputLag", 0, 6, "", 0, true, true, false);
                 UIWidgets::Tooltip("Buffers your inputs to be executed a specified amount of frames later");
-
                 ImGui::EndMenu();
             }
 
@@ -190,21 +205,21 @@ namespace GameMenuBar {
             #ifndef __APPLE__
                 UIWidgets::EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f, 2.0f, "", 1.0f, true);
                 UIWidgets::Tooltip("Multiplies your output resolution by the value inputted, as a more intensive but effective form of anti-aliasing");
-                SohImGui::SetResolutionMultiplier(CVarGetFloat("gInternalResolution", 1));
+                LUS::SetResolutionMultiplier(CVarGetFloat("gInternalResolution", 1));
             #endif
             #ifndef __WIIU__
                 UIWidgets::PaddedEnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "", 1, true, true, false);
                 UIWidgets::Tooltip("Activates multi-sample anti-aliasing when above 1x up to 8x for 8 samples for every pixel");
-                SohImGui::SetMSAALevel(CVarGetInteger("gMSAAValue", 1));
+                LUS::SetMSAALevel(CVarGetInteger("gMSAAValue", 1));
             #endif
 
                 { // FPS Slider
                     const int minFps = 20;
                     static int maxFps;
-                    if (SohImGui::WindowBackend() == SohImGui::Backend::DX11) {
+                    if (LUS::WindowBackend() == LUS::Backend::DX11) {
                         maxFps = 360;
                     } else {
-                        maxFps = Ship::Window::GetInstance()->GetCurrentRefreshRate();
+                        maxFps = LUS::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
                     }
                     int currentFps = fmax(fmin(OTRGlobals::Instance->GetInterpolationFPS(), maxFps), minFps);
                 #ifdef __WIIU__
@@ -264,15 +279,15 @@ namespace GameMenuBar {
                         currentFps = 60;
                     }
                     CVarSetInteger("gInterpolationFPS", currentFps);
-                    SohImGui::RequestCvarSaveOnNextTick();
+                    LUS::RequestCvarSaveOnNextTick();
                 #else
                     bool matchingRefreshRate =
-                        CVarGetInteger("gMatchRefreshRate", 0) && SohImGui::WindowBackend() != SohImGui::Backend::DX11;
+                        CVarGetInteger("gMatchRefreshRate", 0) && LUS::WindowBackend() != LUS::Backend::DX11;
                     UIWidgets::PaddedEnhancementSliderInt(
                         (currentFps == 20) ? "FPS: Original (20)" : "FPS: %d",
                         "##FPSInterpolation", "gInterpolationFPS", minFps, maxFps, "", 20, true, true, false, matchingRefreshRate);
                 #endif
-                    if (SohImGui::WindowBackend() == SohImGui::Backend::DX11) {
+                    if (LUS::WindowBackend() == LUS::Backend::DX11) {
                         UIWidgets::Tooltip(
                             "Uses Matrix Interpolation to create extra frames, resulting in smoother graphics. This is purely "
                             "visual and does not impact game logic, execution of glitches etc.\n\n"
@@ -286,13 +301,13 @@ namespace GameMenuBar {
                     }
                 } // END FPS Slider
 
-                if (SohImGui::WindowBackend() == SohImGui::Backend::DX11) {
+                if (LUS::WindowBackend() == LUS::Backend::DX11) {
                     UIWidgets::Spacer(0);
                     if (ImGui::Button("Match Refresh Rate")) {
-                        int hz = Ship::Window::GetInstance()->GetCurrentRefreshRate();
+                        int hz = LUS::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
                         if (hz >= 20 && hz <= 360) {
                             CVarSetInteger("gInterpolationFPS", hz);
-                            SohImGui::RequestCvarSaveOnNextTick();
+                            LUS::RequestCvarSaveOnNextTick();
                         }
                     }
                 } else {
@@ -300,7 +315,7 @@ namespace GameMenuBar {
                 }
                 UIWidgets::Tooltip("Matches interpolation value to the current game's window refresh rate");
 
-                if (SohImGui::WindowBackend() == SohImGui::Backend::DX11) {
+                if (LUS::WindowBackend() == LUS::Backend::DX11) {
                     UIWidgets::PaddedEnhancementSliderInt(CVarGetInteger("gExtraLatencyThreshold", 80) == 0 ? "Jitter fix: Off" : "Jitter fix: >= %d FPS",
                         "##ExtraLatencyThreshold", "gExtraLatencyThreshold", 0, 360, "", 80, true, true, false);
                     UIWidgets::Tooltip("When Interpolation FPS setting is at least this threshold, add one frame of input lag (e.g. 16.6 ms for 60 FPS) in order to avoid jitter. This setting allows the CPU to work on one frame while GPU works on the previous frame.\nThis setting should be used when your computer is too slow to do CPU + GPU work in time.");
@@ -309,8 +324,8 @@ namespace GameMenuBar {
                 UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
 
                 ImGui::Text("Renderer API (Needs reload)");
-                auto renderingBackends = SohImGui::GetAvailableRenderingBackends();
-                auto currentRenderingBackend = SohImGui::GetCurrentRenderingBackend();
+                auto renderingBackends = LUS::GetAvailableRenderingBackends();
+                auto currentRenderingBackend = LUS::GetCurrentRenderingBackend();
 
                 if (renderingBackends.size() <= 1) {
                     UIWidgets::DisableComponent(ImGui::GetStyle().Alpha * 0.5f);
@@ -318,7 +333,7 @@ namespace GameMenuBar {
                 if (ImGui::BeginCombo("##RApi", currentRenderingBackend.second)) {
                     for (uint8_t i = 0; i < renderingBackends.size(); i++) {
                         if (ImGui::Selectable(renderingBackends[i].second, renderingBackends[i] == currentRenderingBackend)) {
-                            SohImGui::SetCurrentRenderingBackend(i, renderingBackends[i]);
+                            LUS::SetCurrentRenderingBackend(i, renderingBackends[i]);
                         }
                     }
 
@@ -328,29 +343,28 @@ namespace GameMenuBar {
                     UIWidgets::ReEnableComponent("");
                 }
 
-                if (Ship::Window::GetInstance()->CanDisableVerticalSync()) {
+                if (LUS::Context::GetInstance()->GetWindow()->CanDisableVerticalSync()) {
                     UIWidgets::PaddedEnhancementCheckbox("Enable Vsync", "gVsyncEnabled", true, false);
                 }
 
-                if (SohImGui::SupportsWindowedFullscreen()) {
+                if (LUS::SupportsWindowedFullscreen()) {
                     UIWidgets::PaddedEnhancementCheckbox("Windowed fullscreen", "gSdlWindowedFullscreen", true, false);
                 }
 
-                if (SohImGui::SupportsViewports()) {
-                    UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows", "gEnableMultiViewports", true, false);
+                if (LUS::SupportsViewports()) {
+                    UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows", "gEnableMultiViewports", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
                     UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
                 }
 
                 // If more filters are added to LUS, make sure to add them to the filters list here
                 ImGui::Text("Texture Filter (Needs reload)");
-                const char* filters[] = { SohImGui::GetSupportedTextureFilters()[0],
-                                          SohImGui::GetSupportedTextureFilters()[1],
-                                          SohImGui::GetSupportedTextureFilters()[2] };
+                const char* filters[] = { LUS::GetSupportedTextureFilters()[0], LUS::GetSupportedTextureFilters()[1],
+                                          LUS::GetSupportedTextureFilters()[2] };
                 UIWidgets::EnhancementCombobox("gTextureFilter", filters, 0);
 
                 UIWidgets::Spacer(0);
 
-                SohImGui::DrawSettings();
+                LUS::DrawSettings();
 
                 ImGui::EndMenu();
             }
@@ -570,6 +584,8 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
                     UIWidgets::PaddedEnhancementCheckbox("Hyper Bosses", "gHyperBosses", true, false);
                     UIWidgets::Tooltip("All major bosses move and act twice as fast.");
+                    UIWidgets::PaddedEnhancementCheckbox("Hyper Enemies", "gHyperEnemies", true, false);
+                    UIWidgets::Tooltip("All regular enemies and mini-bosses move and act twice as fast.");
                     UIWidgets::PaddedEnhancementCheckbox("Always Win Goron Pot", "gGoronPot", true, false);
                     UIWidgets::Tooltip("Always get the heart piece/purple rupee from the spinning Goron pot");
                     UIWidgets::PaddedEnhancementCheckbox("Always Win Dampe Digging Game", "gDampeWin", true, false, SaveManager::Instance->IsRandoFile(),
@@ -718,14 +734,6 @@ namespace GameMenuBar {
                         ImGui::EndMenu();
                     }
 
-                    UIWidgets::Spacer(0);
-
-                    UIWidgets::PaddedEnhancementCheckbox("Rupee Dash Mode", "gRupeeDash", true, false);
-                    UIWidgets::Tooltip("Rupees reduced over time, Link suffers damage when the count hits 0.");
-                    UIWidgets::PaddedEnhancementSliderInt("Rupee Dash Interval: %d", "##DashInterval", "gDashInterval", 3, 5, "", 5, true, true, false,
-                        !CVarGetInteger("gRupeeDash", 0), "This option is disabled because \"Rupee Dash Mode\" is turned off");
-                    UIWidgets::Tooltip("Interval between Rupee reduction in Rupee Dash Mode");
-
                     ImGui::EndMenu();
                 }
 
@@ -866,7 +874,9 @@ namespace GameMenuBar {
                     ImGui::EndMenu();
                 }
                 UIWidgets::PaddedText("Fix Vanishing Paths", true, false);
-                UIWidgets::EnhancementCombobox("gDirtPathFix", zFightingOptions, 0);
+                if (UIWidgets::EnhancementCombobox("gSceneSpecificDirtPathFix", zFightingOptions, 0) && gPlayState != NULL) {
+                    UpdateDirtPathFixState(gPlayState->sceneNum);
+                }
                 UIWidgets::Tooltip("Disabled: Paths vanish more the higher the resolution (Z-fighting is based on resolution)\n"
                                    "Consistent: Certain paths vanish the same way in all resolutions\n"
                                    "No Vanish: Paths do not vanish, Link seems to sink in to some paths\n"
@@ -896,11 +906,13 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Correctly centers the Navi text prompt on the HUD's C-Up button");
                 UIWidgets::PaddedEnhancementCheckbox("Fix Anubis fireballs", "gAnubisFix", true, false);
                 UIWidgets::Tooltip("Make Anubis fireballs do fire damage when reflected back at them with the Mirror Shield");
-                UIWidgets::PaddedEnhancementCheckbox("Fix Megaton Hammer crouch stab", "gCrouchStabHammerFix", true, false);
+                if (UIWidgets::PaddedEnhancementCheckbox("Fix Megaton Hammer crouch stab", "gCrouchStabHammerFix", true, false)) {
+                    if (!CVarGetInteger("gCrouchStabHammerFix", 0)) {
+                        CVarClear("gCrouchStabFix");
+                    }
+                }
                 UIWidgets::Tooltip("Make the Megaton Hammer's crouch stab able to destroy rocks without first swinging it normally");
-                if (CVarGetInteger("gCrouchStabHammerFix", 0) == 0) {
-                    CVarSetInteger("gCrouchStabFix", 0);
-                } else {
+                if (CVarGetInteger("gCrouchStabHammerFix", 0)) {
                     UIWidgets::PaddedEnhancementCheckbox("Remove power crouch stab", "gCrouchStabFix", true, false);
                     UIWidgets::Tooltip("Make crouch stabbing always do the same damage as a regular slash");
                 }
@@ -969,6 +981,14 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Interval between Rupee reduction in Rupee Dash Mode");
                 }
 
+                UIWidgets::Spacer(0);
+
+                UIWidgets::PaddedEnhancementCheckbox("Shadow Tag Mode", "gShadowTag", true, false);
+
+                if (CVarGetInteger("gShadowTag", 0)) {
+                    UIWidgets::Tooltip("A wallmaster follows Link everywhere, don't get caught!");
+                }
+
                 ImGui::EndMenu();
             }
 
@@ -987,32 +1007,34 @@ namespace GameMenuBar {
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
 
-            if (ImGui::Button(GetWindowButtonText("Customize Game Controls", CVarGetInteger("gGameControlEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
-            {
-                bool currentValue = CVarGetInteger("gGameControlEditorEnabled", 0);
-                CVarSetInteger("gGameControlEditorEnabled", !currentValue);
-                SohImGui::RequestCvarSaveOnNextTick();
-                SohImGui::EnableWindow("Game Control Editor", CVarGetInteger("gGameControlEditorEnabled", 0));
-            }
             if (ImGui::Button(GetWindowButtonText("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
-                bool currentValue = CVarGetInteger("gCosmeticsEditorEnabled", 0);
-                CVarSetInteger("gCosmeticsEditorEnabled", !currentValue);
-                SohImGui::RequestCvarSaveOnNextTick();
-                SohImGui::EnableWindow("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0));
+                if (CVarGetInteger("gCosmeticsEditorEnabled", 0)) {
+                    CVarClear("gCosmeticsEditorEnabled");
+                } else {
+                    CVarSetInteger("gCosmeticsEditorEnabled", 1);
+                }
+                LUS::RequestCvarSaveOnNextTick();
+                LUS::EnableWindow("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0));
             }
             if (ImGui::Button(GetWindowButtonText("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
-                bool currentValue = CVarGetInteger("gAudioEditor.WindowOpen", 0);
-                CVarSetInteger("gAudioEditor.WindowOpen", !currentValue);
-                SohImGui::RequestCvarSaveOnNextTick();
-                SohImGui::EnableWindow("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0));
+                if (CVarGetInteger("gAudioEditor.WindowOpen", 0)) {
+                    CVarClear("gAudioEditor.WindowOpen");
+                } else {
+                    CVarSetInteger("gAudioEditor.WindowOpen", 1);
+                }
+                LUS::RequestCvarSaveOnNextTick();
+                LUS::EnableWindow("Audio Editor", CVarGetInteger("gAudioEditor.WindowOpen", 0));
             }
-            if (ImGui::Button(GetWindowButtonText("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-                bool currentValue = CVarGetInteger("gGameplayStatsEnabled", 0);
-                CVarSetInteger("gGameplayStatsEnabled", !currentValue);
-                SohImGui::RequestCvarSaveOnNextTick();
-                SohImGui::EnableWindow("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0));
+            if (ImGui::Button(GetWindowButtonText("Gameplay Stats", CVarGetInteger("gGameplayStats.Enabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                if (CVarGetInteger("gGameplayStats.Enabled", 0)) {
+                    CVarClear("gGameplayStats.Enabled");
+                } else {
+                    CVarSetInteger("gGameplayStats.Enabled", 1);
+                }
+                LUS::RequestCvarSaveOnNextTick();
+                LUS::EnableWindow("Gameplay Stats", CVarGetInteger("gGameplayStats.Enabled", 0));
             }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
@@ -1020,9 +1042,9 @@ namespace GameMenuBar {
          #ifdef __SWITCH__
             UIWidgets::Spacer(0);
             ImGui::Text("Switch performance mode");
-            if (UIWidgets::EnhancementCombobox("gSwitchPerfMode", SWITCH_CPU_PROFILES, (int)Ship::SwitchProfiles::STOCK)) {
-                SPDLOG_INFO("Profile:: %s", SWITCH_CPU_PROFILES[CVarGetInteger("gSwitchPerfMode", (int)Ship::SwitchProfiles::STOCK)]);
-                Ship::Switch::ApplyOverclock();
+            if (UIWidgets::EnhancementCombobox("gSwitchPerfMode", SWITCH_CPU_PROFILES, (int)LUS::SwitchProfiles::STOCK)) {
+                SPDLOG_INFO("Profile:: %s", SWITCH_CPU_PROFILES[CVarGetInteger("gSwitchPerfMode", (int)LUS::SwitchProfiles::STOCK)]);
+                LUS::Switch::ApplyOverclock();
             }
          #endif
 
@@ -1123,7 +1145,7 @@ namespace GameMenuBar {
                 }
                 else {
                     lastBetaQuestWorld = betaQuestWorld = 0xFFEF;
-                    CVarSetInteger("gBetaQuestWorld", betaQuestWorld);
+                    CVarClear("gBetaQuestWorld");
                 }
                 if (betaQuestEnabled != lastBetaQuestEnabled || betaQuestWorld != lastBetaQuestWorld)
                 {
@@ -1133,9 +1155,9 @@ namespace GameMenuBar {
                     CVarSetInteger("gEnableBetaQuest", betaQuestEnabled);
                     CVarSetInteger("gBetaQuestWorld", betaQuestWorld);
 
-                    SohImGui::DispatchConsoleCommand("reset");
+                    LUS::DispatchConsoleCommand("reset");
 
-                    SohImGui::RequestCvarSaveOnNextTick();
+                    LUS::RequestCvarSaveOnNextTick();
                 }
 
                 if (!isBetaQuestEnabled) {
@@ -1167,7 +1189,7 @@ namespace GameMenuBar {
             };
             UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", "gBetterDebugWarpScreen", true, false);
             UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
-            UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", "gDebugWarpScreenTranslation", true, false);
+            UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", "gDebugWarpScreenTranslation", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
             UIWidgets::Tooltip("Translate the Debug Warp Screen based on the game language");
             UIWidgets::PaddedSeparator();
             ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
@@ -1176,52 +1198,70 @@ namespace GameMenuBar {
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
             if (ImGui::Button(GetWindowButtonText("Stats", CVarGetInteger("gStatsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
-                bool currentValue = CVarGetInteger("gStatsEnabled", 0);
-                CVarSetInteger("gStatsEnabled", !currentValue);
-                SohImGui::ToggleStatisticsWindow(true);
-                SohImGui::RequestCvarSaveOnNextTick();
+                if (CVarGetInteger("gStatsEnabled", 0)) {
+                    CVarClear("gStatsEnabled");
+                } else {
+                    CVarSetInteger("gStatsEnabled", 1);
+                }
+                LUS::ToggleStatisticsWindow(CVarGetInteger("gStatsEnabled", 0));
+                LUS::RequestCvarSaveOnNextTick();
             }
             UIWidgets::Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Console", CVarGetInteger("gConsoleEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
-                bool currentValue = CVarGetInteger("gConsoleEnabled", 0);
-                CVarSetInteger("gConsoleEnabled", !currentValue);
-                SohImGui::RequestCvarSaveOnNextTick();
-                SohImGui::ToggleConsoleWindow(!currentValue);
+                if (CVarGetInteger("gConsoleEnabled", 0)) {
+                    CVarClear("gConsoleEnabled");
+                } else {
+                    CVarSetInteger("gConsoleEnabled", 1);
+                }
+                LUS::RequestCvarSaveOnNextTick();
+                LUS::ToggleConsoleWindow(CVarGetInteger("gConsoleEnabled", 0));
             }
             UIWidgets::Tooltip("Enables the console window, allowing you to input commands, type help for some examples");
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Save Editor", CVarGetInteger("gSaveEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
-                bool currentValue = CVarGetInteger("gSaveEditorEnabled", 0);
-                CVarSetInteger("gSaveEditorEnabled", !currentValue);
-                SohImGui::RequestCvarSaveOnNextTick();
-                SohImGui::EnableWindow("Save Editor", CVarGetInteger("gSaveEditorEnabled", 0));
+                if (CVarGetInteger("gSaveEditorEnabled", 0)) {
+                    CVarClear("gSaveEditorEnabled");
+                } else {
+                    CVarSetInteger("gSaveEditorEnabled", 1);
+                }
+                LUS::RequestCvarSaveOnNextTick();
+                LUS::EnableWindow("Save Editor", CVarGetInteger("gSaveEditorEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Collision Viewer", CVarGetInteger("gCollisionViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
-                bool currentValue = CVarGetInteger("gCollisionViewerEnabled", 0);
-                CVarSetInteger("gCollisionViewerEnabled", !currentValue);
-                SohImGui::RequestCvarSaveOnNextTick();
-                SohImGui::EnableWindow("Collision Viewer", CVarGetInteger("gCollisionViewerEnabled", 0));
+                if (CVarGetInteger("gCollisionViewerEnabled", 0)) {
+                    CVarClear("gCollisionViewerEnabled");
+                } else {
+                    CVarSetInteger("gCollisionViewerEnabled", 1);
+                }
+                LUS::RequestCvarSaveOnNextTick();
+                LUS::EnableWindow("Collision Viewer", CVarGetInteger("gCollisionViewerEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Actor Viewer", CVarGetInteger("gActorViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
-                bool currentValue = CVarGetInteger("gActorViewerEnabled", 0);
-                CVarSetInteger("gActorViewerEnabled", !currentValue);
-                SohImGui::RequestCvarSaveOnNextTick();
-                SohImGui::EnableWindow("Actor Viewer", CVarGetInteger("gActorViewerEnabled", 0));
+                if (CVarGetInteger("gActorViewerEnabled", 0)) {
+                    CVarClear("gActorViewerEnabled");
+                } else {
+                    CVarSetInteger("gActorViewerEnabled", 1);
+                }
+                LUS::RequestCvarSaveOnNextTick();
+                LUS::EnableWindow("Actor Viewer", CVarGetInteger("gActorViewerEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Display List Viewer", CVarGetInteger("gDLViewerEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
-                bool currentValue = CVarGetInteger("gDLViewerEnabled", 0);
-                CVarSetInteger("gDLViewerEnabled", !currentValue);
-                SohImGui::RequestCvarSaveOnNextTick();
-                SohImGui::EnableWindow("Display List Viewer", CVarGetInteger("gDLViewerEnabled", 0));
+                if (CVarGetInteger("gDLViewerEnabled", 0)) {
+                    CVarClear("gDLViewerEnabled");
+                } else {
+                    CVarSetInteger("gDLViewerEnabled", 1);
+                }
+                LUS::RequestCvarSaveOnNextTick();
+                LUS::EnableWindow("Display List Viewer", CVarGetInteger("gDLViewerEnabled", 0));
             }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
@@ -1244,50 +1284,68 @@ namespace GameMenuBar {
         #endif
             if (ImGui::Button(GetWindowButtonText("Randomizer Settings", CVarGetInteger("gRandomizerSettingsEnabled", 0)).c_str(), buttonSize))
             {
-                bool currentValue = CVarGetInteger("gRandomizerSettingsEnabled", 0);
-                CVarSetInteger("gRandomizerSettingsEnabled", !currentValue);
-                SohImGui::RequestCvarSaveOnNextTick();
-                SohImGui::EnableWindow("Randomizer Settings", CVarGetInteger("gRandomizerSettingsEnabled", 0));
+                if (CVarGetInteger("gRandomizerSettingsEnabled", 0)) {
+                    CVarClear("gRandomizerSettingsEnabled");
+                } else {
+                    CVarSetInteger("gRandomizerSettingsEnabled", 1);
+                }
+                LUS::RequestCvarSaveOnNextTick();
+                LUS::EnableWindow("Randomizer Settings", CVarGetInteger("gRandomizerSettingsEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Item Tracker", CVarGetInteger("gItemTrackerEnabled", 0)).c_str(), buttonSize))
             {
-                bool currentValue = CVarGetInteger("gItemTrackerEnabled", 0);
-                CVarSetInteger("gItemTrackerEnabled", !currentValue);
-                SohImGui::RequestCvarSaveOnNextTick();
-                SohImGui::EnableWindow("Item Tracker", CVarGetInteger("gItemTrackerEnabled", 0));
+                if (CVarGetInteger("gItemTrackerEnabled", 0)) {
+                    CVarClear("gItemTrackerEnabled");
+                } else {
+                    CVarSetInteger("gItemTrackerEnabled", 1);
+                }
+                LUS::RequestCvarSaveOnNextTick();
+                LUS::EnableWindow("Item Tracker", CVarGetInteger("gItemTrackerEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Item Tracker Settings", CVarGetInteger("gItemTrackerSettingsEnabled", 0)).c_str(), buttonSize))
             {
-                bool currentValue = CVarGetInteger("gItemTrackerSettingsEnabled", 0);
-                CVarSetInteger("gItemTrackerSettingsEnabled", !currentValue);
-                SohImGui::RequestCvarSaveOnNextTick();
-                SohImGui::EnableWindow("Item Tracker Settings", CVarGetInteger("gItemTrackerSettingsEnabled", 0));
+                if (CVarGetInteger("gItemTrackerSettingsEnabled", 0)) {
+                    CVarClear("gItemTrackerSettingsEnabled");
+                } else {
+                    CVarSetInteger("gItemTrackerSettingsEnabled", 1);
+                }
+                LUS::RequestCvarSaveOnNextTick();
+                LUS::EnableWindow("Item Tracker Settings", CVarGetInteger("gItemTrackerSettingsEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0)).c_str(), buttonSize))
             {
-                bool currentValue = CVarGetInteger("gEntranceTrackerEnabled", 0);
-                CVarSetInteger("gEntranceTrackerEnabled", !currentValue);
-                SohImGui::RequestCvarSaveOnNextTick();
-                SohImGui::EnableWindow("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0));
+                if (CVarGetInteger("gEntranceTrackerEnabled", 0)) {
+                    CVarClear("gEntranceTrackerEnabled");
+                } else {
+                    CVarSetInteger("gEntranceTrackerEnabled", 1);
+                }
+                LUS::RequestCvarSaveOnNextTick();
+                LUS::EnableWindow("Entrance Tracker", CVarGetInteger("gEntranceTrackerEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0)).c_str(), buttonSize))
             {
-                bool currentValue = CVarGetInteger("gCheckTrackerEnabled", 0);
-                CVarSetInteger("gCheckTrackerEnabled", !currentValue);
-                SohImGui::RequestCvarSaveOnNextTick();
-                SohImGui::EnableWindow("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0));
+                if (CVarGetInteger("gCheckTrackerEnabled", 0)) {
+                    CVarClear("gCheckTrackerEnabled");
+                } else {
+                    CVarSetInteger("gCheckTrackerEnabled", 1);
+                }
+                LUS::RequestCvarSaveOnNextTick();
+                LUS::EnableWindow("Check Tracker", CVarGetInteger("gCheckTrackerEnabled", 0));
             }
             UIWidgets::Spacer(0);
             if (ImGui::Button(GetWindowButtonText("Check Tracker Settings", CVarGetInteger("gCheckTrackerSettingsEnabled", 0)).c_str(), buttonSize))
             {
-                bool currentValue = CVarGetInteger("gCheckTrackerSettingsEnabled", 0);
-                CVarSetInteger("gCheckTrackerSettingsEnabled", !currentValue);
-                SohImGui::RequestCvarSaveOnNextTick();
-                SohImGui::EnableWindow("Check Tracker Settings", CVarGetInteger("gCheckTrackerSettingsEnabled", 0));
+                if (CVarGetInteger("gCheckTrackerSettingsEnabled", 0)) {
+                    CVarClear("gCheckTrackerSettingsEnabled");
+                } else {
+                    CVarSetInteger("gCheckTrackerSettingsEnabled", 1);
+                }
+                LUS::RequestCvarSaveOnNextTick();
+                LUS::EnableWindow("Check Tracker Settings", CVarGetInteger("gCheckTrackerSettingsEnabled", 0));
             }
             ImGui::PopStyleVar(3);
             ImGui::PopStyleColor(1);
@@ -1296,11 +1354,11 @@ namespace GameMenuBar {
 
             if (ImGui::BeginMenu("Rando Enhancements"))
             {
-                UIWidgets::EnhancementCheckbox("Rando-Relevant Navi Hints", "gRandoRelevantNavi");
+                UIWidgets::EnhancementCheckbox("Rando-Relevant Navi Hints", "gRandoRelevantNavi", false, "", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::Tooltip(
                     "Replace Navi's overworld quest hints with rando-related gameplay hints."
                 );
-                UIWidgets::PaddedEnhancementCheckbox("Random Rupee Names", "gRandomizeRupeeNames", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Random Rupee Names", "gRandomizeRupeeNames", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::Tooltip(
                     "When obtaining rupees, randomize what the rupee is called in the textbox."
                 );
@@ -1327,7 +1385,7 @@ namespace GameMenuBar {
                     "shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
 
                 UIWidgets::PaddedEnhancementCheckbox("Key Colors Match Dungeon", "gRandoMatchKeyColors", true, false,
-                                                     disableKeyColors, disableKeyColorsText);
+                                                     disableKeyColors, disableKeyColorsText, UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::Tooltip(
                     "Matches the color of small keys and boss keys to the dungeon they belong to. "
                     "This helps identify keys from afar and adds a little bit of flair.\n\nThis only "

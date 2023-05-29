@@ -2,8 +2,8 @@
 #include "soh/resource/type/scenecommand/SetSoundSettings.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> SetSoundSettingsFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
+namespace LUS {
+std::shared_ptr<Resource> SetSoundSettingsFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
                                                                 std::shared_ptr<ResourceInitData> initData,
                                                                 std::shared_ptr<BinaryReader> reader) {
     auto resource = std::make_shared<SetSoundSettings>(resourceMgr, initData);
@@ -25,7 +25,7 @@ std::shared_ptr<Resource> SetSoundSettingsFactory::ReadResource(std::shared_ptr<
     return resource;
 }
 
-void Ship::SetSoundSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+void LUS::SetSoundSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
                                         std::shared_ptr<Resource> resource) {
     std::shared_ptr<SetSoundSettings> setSoundSettings = std::static_pointer_cast<SetSoundSettings>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setSoundSettings);
@@ -37,4 +37,4 @@ void Ship::SetSoundSettingsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRead
     setSoundSettings->settings.seqId = reader->ReadInt8();
 }
 
-} // namespace Ship
+} // namespace LUS

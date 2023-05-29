@@ -183,6 +183,9 @@ void EnSyatekiMan_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnSyatekiMan_Destroy(Actor* thisx, PlayState* play) {
+    EnSyatekiMan* this = (EnSyatekiMan*)thisx;
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnSyatekiMan_Start(EnSyatekiMan* this, PlayState* play) {

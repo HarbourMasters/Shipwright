@@ -364,6 +364,8 @@ void EnZf_Destroy(Actor* thisx, PlayState* play) {
     Effect_Delete(play, this->blureIndex);
     Collider_DestroyCylinder(play, &this->bodyCollider);
     Collider_DestroyQuad(play, &this->swordCollider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 /**

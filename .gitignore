@@ -7,7 +7,7 @@ __pycache__/
 .vscode/
 .vs/
 .idea/
-cmake-build-debug
+cmake-build-**
 venv/
 .cache/
 
@@ -444,6 +444,7 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
+_packages
 */extract_assets_cmake*
 /build*
 

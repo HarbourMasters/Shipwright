@@ -119,6 +119,8 @@ void EnKarebaba_Destroy(Actor* thisx, PlayState* play) {
 
     Collider_DestroyCylinder(play, &this->bodyCollider);
     Collider_DestroyCylinder(play, &this->headCollider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnKarebaba_ResetCollider(EnKarebaba* this) {

@@ -11,12 +11,6 @@ extern "C" {
 #include "functions.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
-extern void Play_PerformSave(PlayState* play);
-extern s32 Health_ChangeBy(PlayState* play, s16 healthChange);
-extern void Rupees_ChangeBy(s16 rupeeChange);
-extern Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 posX, f32 posY, f32 posZ,
-                            s16 rotX, s16 rotY, s16 rotZ, s16 params, s16 canRandomize);
-extern void Inventory_ChangeEquipment(s16 equipment, u16 value);
 }
 bool performDelayedSave = false;
 bool performSave = false;
@@ -152,7 +146,7 @@ void RegisterFreezeTime() {
             int32_t prevTime = CVarGetInteger("gPrevTime", gSaveContext.dayTime);
             gSaveContext.dayTime = prevTime;
         } else {
-            CVarSetInteger("gPrevTime", -1);
+            CVarClear("gPrevTime");
         }
     });
 }
@@ -342,6 +336,31 @@ void RegisterRupeeDash() {
     });
 }
 
+void RegisterShadowTag() {
+    static bool shouldSpawn = false;
+    static uint16_t delayTimer = 60;
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        if (!CVarGetInteger("gShadowTag", 0)) {
+            return;
+        }
+        if (shouldSpawn && (delayTimer <= 0)) {
+            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WALLMAS, 0, 0, 0, 0, 0, 0, 3, false);
+            shouldSpawn = false;
+        } else {
+            delayTimer--;
+        }
+    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
+        shouldSpawn = true;
+        delayTimer = 60;
+    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
+        shouldSpawn = true;
+        delayTimer = 60;
+    });
+}
+
 struct DayTimeGoldSkulltulas {
     uint16_t scene;
     uint16_t room;
@@ -408,11 +427,13 @@ void RegisterHyperBosses() {
         uint8_t isBossActor =
             actor->id == ACTOR_BOSS_GOMA ||                              // Gohma
             actor->id == ACTOR_BOSS_DODONGO ||                           // King Dodongo
+            actor->id == ACTOR_EN_BDFIRE ||                              // King Dodongo Fire Breath
             actor->id == ACTOR_BOSS_VA ||                                // Barinade
             actor->id == ACTOR_BOSS_GANONDROF ||                         // Phantom Ganon
-            (actor->id == 0 && actor->category == ACTORCAT_BOSS) ||      // Phantom Ganon/Ganondorf Energy Ball/Thunder
+            actor->id == ACTOR_EN_FHG_FIRE ||                            // Phantom Ganon/Ganondorf Energy Ball/Thunder
             actor->id == ACTOR_EN_FHG ||                                 // Phantom Ganon's Horse
             actor->id == ACTOR_BOSS_FD || actor->id == ACTOR_BOSS_FD2 || // Volvagia (grounded/flying)
+            actor->id == ACTOR_EN_VB_BALL ||                             // Volvagia Rocks
             actor->id == ACTOR_BOSS_MO ||                                // Morpha
             actor->id == ACTOR_BOSS_SST ||                               // Bongo Bongo
             actor->id == ACTOR_BOSS_TW ||                                // Twinrova
@@ -434,6 +455,25 @@ void RegisterHyperBosses() {
             } else {
                 GameInteractor::RawAction::UpdateActor(actor);
             }
+        }
+    });
+}
+
+void RegisterHyperEnemies() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+        // Run the update function a second time to make enemies and minibosses move and act twice as fast.
+
+        Player* player = GET_PLAYER(gPlayState);
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        // Some enemies are not in the ACTORCAT_ENEMY category, and some are that aren't really enemies.
+        bool isEnemy = actor->category == ACTORCAT_ENEMY || actor->id == ACTOR_EN_TORCH2;
+        bool isExcludedEnemy = actor->id == ACTOR_EN_FIRE_ROCK || actor->id == ACTOR_EN_ENCOUNT2;
+
+        // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some cutscenes.
+        if (CVarGetInteger("gHyperEnemies", 0) && isEnemy && !isExcludedEnemy &&
+            !Player_InBlockingCsMode(gPlayState, player)) {
+            GameInteractor::RawAction::UpdateActor(actor);
         }
     });
 }
@@ -484,6 +524,24 @@ void RegisterBonkDamage() {
     });
 }
 
+void UpdateDirtPathFixState(int32_t sceneNum) {
+    switch (sceneNum) {
+        case SCENE_SPOT00:
+        case SCENE_SPOT04:
+        case SCENE_SPOT15:
+            CVarSetInteger("gDirtPathFix", CVarGetInteger("gSceneSpecificDirtPathFix", 0));
+            return;
+        default:
+            CVarClear("gDirtPathFix");
+    }
+}
+
+void RegisterMenuPathFix() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>([](int32_t sceneNum) {
+        UpdateDirtPathFixState(sceneNum);
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -500,6 +558,9 @@ void InitMods() {
     RegisterAutoSave();
     RegisterDaytimeGoldSkultullas();
     RegisterRupeeDash();
+    RegisterShadowTag();
     RegisterHyperBosses();
+    RegisterHyperEnemies();
     RegisterBonkDamage();
+    RegisterMenuPathFix();
 }

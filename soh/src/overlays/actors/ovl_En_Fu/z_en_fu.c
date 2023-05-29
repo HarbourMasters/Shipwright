@@ -99,6 +99,8 @@ void EnFu_Init(Actor* thisx, PlayState* play) {
 void EnFu_Destroy(Actor* thisx, PlayState* play) {
     EnFu* this = (EnFu*)thisx;
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelanime);
 }
 
 s32 func_80A1D94C(EnFu* this, PlayState* play, u16 textID, EnFuActionFunc actionFunc) {

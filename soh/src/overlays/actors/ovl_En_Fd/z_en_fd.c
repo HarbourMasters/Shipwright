@@ -472,6 +472,8 @@ void EnFd_Destroy(Actor* thisx, PlayState* play) {
     EnFd* this = (EnFd*)thisx;
 
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnFd_Reappear(EnFd* this, PlayState* play) {

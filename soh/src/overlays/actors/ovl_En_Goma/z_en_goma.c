@@ -44,7 +44,7 @@ void EnGoma_SetupJump(EnGoma* this);
 void EnGoma_SetupStunned(EnGoma* this, PlayState* play);
 
 const ActorInit En_Goma_InitVars = {
-    ACTOR_BOSS_GOMA,
+    ACTOR_EN_GOMA,
     ACTORCAT_ENEMY,
     FLAGS,
     OBJECT_GOL,
@@ -177,6 +177,8 @@ void EnGoma_Destroy(Actor* thisx, PlayState* play) {
     if (this->actor.params < 10) {
         Collider_DestroyCylinder(play, &this->colCyl1);
         Collider_DestroyCylinder(play, &this->colCyl2);
+
+        ResourceMgr_UnregisterSkeleton(&this->skelanime);
     }
 }
 
