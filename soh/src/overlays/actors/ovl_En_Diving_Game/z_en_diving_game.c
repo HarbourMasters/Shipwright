@@ -108,6 +108,8 @@ void EnDivingGame_Destroy(Actor* thisx, PlayState* play) {
         gSaveContext.timer1State = 0;
     }
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDivingGame_SpawnRuppy(EnDivingGame* this, PlayState* play) {

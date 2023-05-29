@@ -222,9 +222,9 @@ void Extractor::GetRoms(std::vector<std::string>& roms) {
             if (S_ISREG(path.st_mode)) {
 
                 // Get the position of the extension character.
-                char* ext = strchr(dir->d_name, '.');
-                if (ext != NULL && (strcmp(ext, ".z64") == 0) && (strcmp(ext, ".n64") == 0) &&
-                    (strcmp(ext, ".v64") == 0)) {
+                char* ext = strrchr(dir->d_name, '.');
+                if (ext != NULL && (strcmp(ext, ".z64") == 0 || strcmp(ext, ".n64") == 0 ||
+                    strcmp(ext, ".v64") == 0)) {
                     roms.push_back(dir->d_name);
                 }
             }

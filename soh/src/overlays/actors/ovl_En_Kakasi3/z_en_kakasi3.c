@@ -63,8 +63,7 @@ void EnKakasi3_Destroy(Actor* thisx, PlayState* play) {
     EnKakasi3* this = (EnKakasi3*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-    SkelAnime_Free(&this->skelAnime, play); //OTR - Fixed this memory leak
-    //! @bug SkelAnime_Free is not called
+    SkelAnime_Free(&this->skelAnime, play);
 }
 
 void EnKakasi3_Init(Actor* thisx, PlayState* play) {

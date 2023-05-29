@@ -164,6 +164,8 @@ void EnDh_Destroy(Actor* thisx, PlayState* play) {
     func_800F5B58();
     Collider_DestroyCylinder(play, &this->collider1);
     Collider_DestroyJntSph(play, &this->collider2);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDh_SpawnDebris(PlayState* play, EnDh* this, Vec3f* spawnPos, f32 spread, s32 arg4, f32 accelXZ,

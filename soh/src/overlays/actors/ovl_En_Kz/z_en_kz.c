@@ -385,6 +385,8 @@ void EnKz_Destroy(Actor* thisx, PlayState* play) {
     EnKz* this = (EnKz*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelanime);
 }
 
 void EnKz_PreMweepWait(EnKz* this, PlayState* play) {

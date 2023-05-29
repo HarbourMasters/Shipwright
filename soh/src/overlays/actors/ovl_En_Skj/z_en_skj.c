@@ -464,6 +464,8 @@ void EnSkj_Destroy(Actor* thisx, PlayState* play) {
     EnSkj* this = (EnSkj*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnSkj_RangeCheck(Player* player, EnSkj* this) {

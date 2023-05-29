@@ -29,6 +29,7 @@
 #include "soh/SaveManager.h"
 #include "OTRGlobals.h"
 #include "soh/Enhancements/presets.h"
+#include "soh/Enhancements/mods.h"
 #include "soh/resource/type/Skeleton.h"
 
 #ifdef ENABLE_CROWD_CONTROL
@@ -45,6 +46,8 @@ extern "C" {
     void enableBetaQuest() { isBetaQuestEnabled = true; }
     void disableBetaQuest() { isBetaQuestEnabled = false; }
 }
+
+extern "C" PlayState* gPlayState;
 
 enum SeqPlayers {
     /* 0 */ SEQ_BGM_MAIN,
@@ -160,7 +163,7 @@ namespace GameMenuBar {
                 ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.0f));
                 ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
                 ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-                if (ImGui::Button(GetWindowButtonText("Controller Configuration", CVarGetInteger("gControllerConfigurationEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f)))
+                if (ImGui::Button(GetWindowButtonText("Controller Mapping", CVarGetInteger("gControllerConfigurationEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f)))
                 {
                     if (CVarGetInteger("gControllerConfigurationEnabled", 0)) {
                         CVarClear("gControllerConfigurationEnabled");
@@ -169,6 +172,16 @@ namespace GameMenuBar {
                     }
                     LUS::RequestCvarSaveOnNextTick();
                     LUS::ToggleInputEditorWindow(CVarGetInteger("gControllerConfigurationEnabled", 0));
+                }
+                if (ImGui::Button(GetWindowButtonText("Additional Controller Options", CVarGetInteger("gControllerOptionsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
+                {
+                    if (CVarGetInteger("gControllerOptionsEnabled", 0)) {
+                        CVarClear("gControllerOptionsEnabled");
+                    } else {
+                        CVarSetInteger("gControllerOptionsEnabled", 1);
+                    }
+                    LUS::RequestCvarSaveOnNextTick();
+                    LUS::EnableWindow("Additional Controller Options", CVarGetInteger("gControllerOptionsEnabled", 0));
                 }
                 UIWidgets::PaddedSeparator();
                 ImGui::PopStyleColor(1);
@@ -183,7 +196,6 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
                 UIWidgets::PaddedEnhancementSliderInt("Simulated Input Lag: %d frames", "##SimulatedInputLag", "gSimulatedInputLag", 0, 6, "", 0, true, true, false);
                 UIWidgets::Tooltip("Buffers your inputs to be executed a specified amount of frames later");
-
                 ImGui::EndMenu();
             }
 
@@ -572,6 +584,8 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
                     UIWidgets::PaddedEnhancementCheckbox("Hyper Bosses", "gHyperBosses", true, false);
                     UIWidgets::Tooltip("All major bosses move and act twice as fast.");
+                    UIWidgets::PaddedEnhancementCheckbox("Hyper Enemies", "gHyperEnemies", true, false);
+                    UIWidgets::Tooltip("All regular enemies and mini-bosses move and act twice as fast.");
                     UIWidgets::PaddedEnhancementCheckbox("Always Win Goron Pot", "gGoronPot", true, false);
                     UIWidgets::Tooltip("Always get the heart piece/purple rupee from the spinning Goron pot");
                     UIWidgets::PaddedEnhancementCheckbox("Always Win Dampe Digging Game", "gDampeWin", true, false, SaveManager::Instance->IsRandoFile(),
@@ -860,7 +874,9 @@ namespace GameMenuBar {
                     ImGui::EndMenu();
                 }
                 UIWidgets::PaddedText("Fix Vanishing Paths", true, false);
-                UIWidgets::EnhancementCombobox("gDirtPathFix", zFightingOptions, 0);
+                if (UIWidgets::EnhancementCombobox("gSceneSpecificDirtPathFix", zFightingOptions, 0) && gPlayState != NULL) {
+                    UpdateDirtPathFixState(gPlayState->sceneNum);
+                }
                 UIWidgets::Tooltip("Disabled: Paths vanish more the higher the resolution (Z-fighting is based on resolution)\n"
                                    "Consistent: Certain paths vanish the same way in all resolutions\n"
                                    "No Vanish: Paths do not vanish, Link seems to sink in to some paths\n"
@@ -965,6 +981,14 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("Interval between Rupee reduction in Rupee Dash Mode");
                 }
 
+                UIWidgets::Spacer(0);
+
+                UIWidgets::PaddedEnhancementCheckbox("Shadow Tag Mode", "gShadowTag", true, false);
+
+                if (CVarGetInteger("gShadowTag", 0)) {
+                    UIWidgets::Tooltip("A wallmaster follows Link everywhere, don't get caught!");
+                }
+
                 ImGui::EndMenu();
             }
 
@@ -983,16 +1007,6 @@ namespace GameMenuBar {
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
 
-            if (ImGui::Button(GetWindowButtonText("Customize Game Controls", CVarGetInteger("gGameControlEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
-            {
-                if (CVarGetInteger("gGameControlEditorEnabled", 0)) {
-                    CVarClear("gGameControlEditorEnabled");
-                } else {
-                    CVarSetInteger("gGameControlEditorEnabled", 1);
-                }
-                LUS::RequestCvarSaveOnNextTick();
-                LUS::EnableWindow("Game Control Editor", CVarGetInteger("gGameControlEditorEnabled", 0));
-            }
             if (ImGui::Button(GetWindowButtonText("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f)))
             {
                 if (CVarGetInteger("gCosmeticsEditorEnabled", 0)) {
