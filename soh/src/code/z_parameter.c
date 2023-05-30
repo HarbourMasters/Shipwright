@@ -1467,6 +1467,8 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.infTable[29] |= 1;
         }
 
+        // When using enhancements, set swordless flag if player doesn't have kokiri sword or hasn't equipped a sword yet.
+        // Then set the child equips button items to item none to ensure kokiri sword is not equipped
         if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && ((1 << 0 & gSaveContext.inventory.equipment) == 0 || gSaveContext.infTable[29] & 1)) {
             gSaveContext.infTable[29] |= 1;
             gSaveContext.childEquips.buttonItems[0] = ITEM_NONE;
@@ -1481,6 +1483,7 @@ void Inventory_SwapAgeEquipment(void) {
         }
 
         gSaveContext.adultEquips.equipment = gSaveContext.equips.equipment;
+        // Switching age using enhancements separated out to make vanilla flow clear
         if (CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) {
             for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                 gSaveContext.equips.buttonItems[i] = gSaveContext.childEquips.buttonItems[i];
@@ -1501,7 +1504,8 @@ void Inventory_SwapAgeEquipment(void) {
 
             gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
             gSaveContext.equips.equipment &= 0xFFF0;
-            if (!((1 << 0 & gSaveContext.inventory.equipment) == 0 || gSaveContext.infTable[29] & 1)) {
+            // Equips kokiri sword in the inventory screen only if kokiri sword exists in inventory and a sword has been equipped already
+            if (!((1 << 0 & gSaveContext.inventory.equipment) == 0) && !(gSaveContext.infTable[29] & 1)) {
                 gSaveContext.equips.equipment |= 0x0001;
             }
         } else if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE) {
