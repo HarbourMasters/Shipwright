@@ -7,7 +7,7 @@
 #include "z_en_tr.h"
 #include "objects/object_tr/object_tr.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void EnTr_Init(Actor* thisx, PlayState* play);
 void EnTr_Destroy(Actor* thisx, PlayState* play);

@@ -9,7 +9,7 @@
 #include "objects/object_bowl/object_bowl.h"
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void BgBomGuard_Init(Actor* thisx, PlayState* play);
 void BgBomGuard_Destroy(Actor* thisx, PlayState* play);
