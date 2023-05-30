@@ -338,29 +338,65 @@ u8 CheckDungeonCount() {
     return dungeonCount;
 }
 
+u8 CheckBridgeRewardCount() {
+    u8 bridgeRewardCount = 0;
+
+    switch (Randomizer_GetSettingValue(RSK_BRIDGE_OPTIONS)) {
+        case RO_BRIDGE_WILDCARD_REWARD:
+            if (Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
+                bridgeRewardCount += 1;
+            }
+            break;
+        case RO_BRIDGE_GREG_REWARD:
+            if (Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
+                bridgeRewardCount += 1;
+            }
+            break;
+    }
+    return bridgeRewardCount;
+}
+
+u8 CheckLACSRewardCount() {
+    u8 lacsRewardCount = 0;
+
+    switch (Randomizer_GetSettingValue(RSK_LACS_OPTIONS)) {
+        case RO_LACS_WILDCARD_REWARD:
+            if (Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
+                lacsRewardCount += 1;
+            }
+            break;
+        case RO_LACS_GREG_REWARD:
+            if (Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
+                lacsRewardCount += 1;
+            }
+            break;
+    }
+    return lacsRewardCount;
+}
+
 void GivePlayerRandoRewardZeldaLightArrowsGift(PlayState* play, RandomizerCheck check) {
     Player* player = GET_PLAYER(play);
 
     u8 meetsRequirements = 0;
 
     switch (Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY)) {
-        case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
-            if (CheckMedallionCount() >= Randomizer_GetSettingValue(RSK_LACS_MEDALLION_COUNT)) {
+        case RO_GANON_BOSS_KEY_LACS_STONES:
+            if ((CheckStoneCount() + CheckLACSRewardCount()) >= Randomizer_GetSettingValue(RSK_LACS_STONE_COUNT)) {
                 meetsRequirements = true;
             }
             break;
-        case RO_GANON_BOSS_KEY_LACS_STONES:
-            if (CheckStoneCount() >= Randomizer_GetSettingValue(RSK_LACS_STONE_COUNT)) {
+        case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
+            if ((CheckMedallionCount() + CheckLACSRewardCount()) >= Randomizer_GetSettingValue(RSK_LACS_MEDALLION_COUNT)) {
                 meetsRequirements = true;
             }
             break;
         case RO_GANON_BOSS_KEY_LACS_REWARDS:
-            if ((CheckMedallionCount() + CheckStoneCount()) >= Randomizer_GetSettingValue(RSK_LACS_REWARD_COUNT)) {
+            if ((CheckMedallionCount() + CheckStoneCount() + CheckLACSRewardCount()) >= Randomizer_GetSettingValue(RSK_LACS_REWARD_COUNT)) {
                 meetsRequirements = true;
             }
             break;
         case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
-            if (CheckDungeonCount() >= Randomizer_GetSettingValue(RSK_LACS_DUNGEON_COUNT)) {
+            if ((CheckDungeonCount() + CheckLACSRewardCount()) >= Randomizer_GetSettingValue(RSK_LACS_DUNGEON_COUNT)) {
                 meetsRequirements = true;
             }
             break;

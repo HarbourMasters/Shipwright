@@ -106,25 +106,25 @@ void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, PlayState* play) {
                 }
                 break;
             case RO_BRIDGE_STONES:
-                if (CheckStoneCount() >= bridgeStoneCount) {
+                if ((CheckStoneCount() + CheckBridgeRewardCount()) >= bridgeStoneCount) {
                     this->actionFunc = BgGjyoBridge_SpawnBridge;
                     func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
                 }
                 break;
             case RO_BRIDGE_MEDALLIONS:
-                if (CheckMedallionCount() >= bridgeMedallionCount) {
+                if ((CheckMedallionCount() + CheckBridgeRewardCount()) >= bridgeMedallionCount) {
                     this->actionFunc = BgGjyoBridge_SpawnBridge;
                     func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
                 }
                 break;
             case RO_BRIDGE_DUNGEON_REWARDS:
-                if ((CheckMedallionCount() + CheckStoneCount()) >= bridgeRewardCount) {
+                if ((CheckMedallionCount() + CheckStoneCount() + CheckBridgeRewardCount()) >= bridgeRewardCount) {
                     this->actionFunc = BgGjyoBridge_SpawnBridge;
                     func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
                 }
                 break;
             case RO_BRIDGE_DUNGEONS:
-                if (CheckDungeonCount() >= bridgeDungeonCount) {
+                if ((CheckDungeonCount() + CheckBridgeRewardCount()) >= bridgeDungeonCount) {
                     this->actionFunc = BgGjyoBridge_SpawnBridge;
                     func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
                 }
