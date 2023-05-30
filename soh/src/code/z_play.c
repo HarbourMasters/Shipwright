@@ -1884,6 +1884,8 @@ void Play_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         Entrance_OverrideSpawnScene(sceneNum, spawn);
     }
+
+    CVarSetInteger("gBetterDebugWarpScreenMQMode", 0);
 }
 
 void func_800C016C(PlayState* play, Vec3f* src, Vec3f* dest) {
