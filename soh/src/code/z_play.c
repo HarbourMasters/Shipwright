@@ -1714,6 +1714,8 @@ void Play_Draw(PlayState* play) {
     }
 
     CLOSE_DISPS(gfxCtx);
+
+    Interface_DrawTotalGameplayTimer(play);
 }
 
 time_t Play_GetRealTime() {
