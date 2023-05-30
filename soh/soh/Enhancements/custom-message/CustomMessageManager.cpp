@@ -2,6 +2,7 @@
 #include "CustomMessageInterfaceAddon.h"
 #include <algorithm>
 #include <stdint.h>
+#include <string>
 
 using namespace std::literals::string_literals;
 
