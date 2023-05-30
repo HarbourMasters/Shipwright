@@ -9,6 +9,7 @@
 #include "libultraship/bridge.h"
 #include "soh/Enhancements/gameplaystats.h"
 #include "soh/Enhancements/bossrush.h"
+#include <soh/Enhancements/custom-message/CustomMessageInterfaceAddon.h>
 
 #ifdef _MSC_VER
 #include <stdlib.h>
@@ -6504,123 +6505,15 @@ void Interface_DrawTextCharacter(GraphicsContext* gfx, int16_t x, int16_t y, voi
     CLOSE_DISPS(gfx);
 }
 
-uint16_t Interface_ConvertCharToTextureIndex(int16_t character) {
-
-    switch (character) {
-        case -64: // À
-            character = 96;
-            break;
-        case -18: // î
-            character = 97;
-            break;
-        case -62: // Â
-            character = 98;
-            break;
-        case -60: // Ä
-            character = 99;
-            break;
-        case -57: // Ç
-            character = 100;
-            break;
-        case -56: // È
-            character = 101;
-            break;
-        case -55: // É
-            character = 102;
-            break;
-        case -54: // Ê
-            character = 103;
-            break;
-        case -53: // Ë
-            character = 104;
-            break;
-        case -49: // Ï
-            character = 105;
-            break;
-        case -44: // Ô
-            character = 106;
-            break;
-        case -42: // Ö
-            character = 107;
-            break;
-        case -39: // Ù
-            character = 108;
-            break;
-        case -37: // Û
-            character = 109;
-            break;
-        case -36: // Ü
-            character = 110;
-            break;
-        case -33: // ß
-            character = 111;
-            break;
-        case -32: // à
-            character = 112;
-            break;
-        case -31: // á
-            character = 113;
-            break;
-        case -30: // â
-            character = 114;
-            break;
-        case -28: // ä
-            character = 115;
-            break;
-        case -25: // ç
-            character = 116;
-            break;
-        case -24: // è
-            character = 117;
-            break;
-        case -23: // é
-            character = 118;
-            break;
-        case -22: // ê
-            character = 119;
-            break;
-        case -21: // ë
-            character = 120;
-            break;
-        case -17: // ï
-            character = 121;
-            break;
-        case -12: // ô
-            character = 122;
-            break;
-        case -10: // ö
-            character = 123;
-            break;
-        case -7: // ù
-            character = 124;
-            break;
-        case -5: // û
-            character = 125;
-            break;
-        case -4: // ü
-            character = 126;
-            break;
-        default:
-            if (character > 32) {
-                character -= 32;
-            } else {
-                character = 0;
-            }
-            break;
-    }
-
-    return character;
-}
-
-uint16_t Interface_GetTextKerningOffset(int16_t character) {
+uint16_t Interface_GetTextKerningOffset(unsigned char character) {
 
     switch (character) {
         case 'i':
         case '|':
         case '\'':
-        case -18: // î
-        case -49: // Ï
-        case -17: // ï
+        case 0x81: // î
+        case 0x89: // Ï
+        case 0x99: // ï
             return 3;
         case 'l':
         case 'I':
@@ -6654,25 +6547,25 @@ uint16_t Interface_GetTextKerningOffset(int16_t character) {
         case '!':
         case '(':
         case ')':
-        case -56: // È
-        case -55: // É
-        case -54: // Ê
-        case -53: // Ë
-        case -33: // ß
-        case -32: // à
-        case -31: // á
-        case -30: // â
-        case -28: // ä
-        case -25: // ç
-        case -24: // è
-        case -23: // é
-        case -22: // ê
-        case -21: // ë
-        case -12: // ô
-        case -10: // ö
-        case -7:  // ù
-        case -5:  // û
-        case -4:  // ü
+        case 0x85: // È
+        case 0x86: // É
+        case 0x87: // Ê
+        case 0x88: // Ë
+        case 0x8F: // ß
+        case 0x90: // à
+        case 0x91: // á
+        case 0x92: // â
+        case 0x93: // ä
+        case 0x94: // ç
+        case 0x95: // è
+        case 0x96: // é
+        case 0x97: // ê
+        case 0x98: // ë
+        case 0x9A: // ô
+        case 0x9B: // ö
+        case 0x9C: // ù
+        case 0x9D: // û
+        case 0x9E: // ü
             return 6;
         case 'a':
         case 'b':
@@ -6718,11 +6611,11 @@ uint16_t Interface_GetTextKerningOffset(int16_t character) {
         case '5':
         case '8':
         case '9':
-        case -64: // À
-        case -62: // Â
-        case -39: // Ù
-        case -37: // Û
-        case -36: // Ü
+        case 0x80: // À
+        case 0x82: // Â
+        case 0x8C: // Ù
+        case 0x8D: // Û
+        case 0x8E: // Ü
             return 8;
         case 'w':
         case 'N':
@@ -6730,8 +6623,8 @@ uint16_t Interface_GetTextKerningOffset(int16_t character) {
         case 'U':
         case 'V':
         case 'H':
-        case -60: // Ä
-        case -57: // Ç
+        case 0x83: // Ä
+        case 0x84: // Ç
             return 9;
         case 'Q':
         case 'W':
@@ -6748,23 +6641,23 @@ uint16_t Interface_DrawTextLine(GraphicsContext* gfx, char text[], int16_t x, in
     uint16_t textureIndex;
     uint16_t kerningOffset = 0;
     uint16_t lineOffset = 0;
-    char* textPointer = &text[0];
-    uint8_t textLength = strlen(textPointer);
     void* texture;
+    const char* processedText = Interface_ReplaceSpecialCharacters(text);
+    uint8_t textLength = strlen(processedText);
 
     for (uint16_t i = 0; i < textLength; i++) {
-        if (text[i] == '\n') {
+        if (processedText[i] == '\n') {
             lineOffset += 15 * textScale;
             kerningOffset = 0;
         } else {
-            textureIndex = Interface_ConvertCharToTextureIndex(text[i]);
+            textureIndex = processedText[i] - 32;
 
             if (textureIndex != 0) {
                 texture = Font_FetchCharTexture(textureIndex);
                 Interface_DrawTextCharacter(gfx, x + kerningOffset, y + lineOffset, texture, colorR, colorG, colorB,
                                             colorA, textScale, textShadow);
             }
-            kerningOffset += Interface_GetTextKerningOffset(text[i]) * textScale;
+            kerningOffset += Interface_GetTextKerningOffset(processedText[i]) * textScale;
         }
     }
 
