@@ -1252,6 +1252,7 @@ typedef struct {
   /*      */ char* germanName;
   /*      */ char* frenchName;
   /*      */ s32 entranceIndex;
+  /*      */ u8 canBeMQ;
 } BetterSceneSelectEntrancePair;
 
 typedef struct {
@@ -1259,7 +1260,7 @@ typedef struct {
     /*      */ char* germanName;
     /*      */ char* frenchName;
     /*      */ void (*loadFunc)(struct SelectContext*, s32);
-    /*      */ s32 count;
+    /*      */ u8 entranceCount;
     /*      */ BetterSceneSelectEntrancePair entrancePairs[18];
 } BetterSceneSelectEntry;
 
@@ -2231,6 +2232,13 @@ typedef enum {
     /* 0x01 */ PAUSE_ANY_CURSOR_ALWAYS_ON,
     /* 0x02 */ PAUSE_ANY_CURSOR_ALWAYS_OFF,
 } PauseCursorAnySlotOptions;
+
+typedef enum {
+    LED_SOURCE_TUNIC_ORIGINAL,
+    LED_SOURCE_TUNIC_COSMETICS,
+    LED_SOURCE_HEALTH,
+    LED_SOURCE_CUSTOM
+} LEDColorSource;
 
 #define ROM_FILE(name) \
     { 0, 0, #name }

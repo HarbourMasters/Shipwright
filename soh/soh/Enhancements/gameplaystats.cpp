@@ -2,6 +2,9 @@ extern "C" {
 #include "gameplaystats.h"
 }
 
+#include "soh/SaveManager.h"
+#include "functions.h"
+#include "macros.h"
 #include "ImGuiImpl.h"
 #include "../UIWidgets.hpp"
 
@@ -273,6 +276,112 @@ std::string formatHexOnlyGameplayStat(uint32_t value) {
     return fmt::format("{:#x}", value, value);
 }
 
+extern "C" char* GameplayStats_GetCurrentTime() {
+    std::string timeString = formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME).c_str();
+    const int stringLength = timeString.length();
+    char* timeChar = new char[stringLength + 1];
+    strcpy(timeChar, timeString.c_str());
+    return timeChar;
+}
+
+void LoadStatsVersion1() {
+    std::string buildVersion;
+    SaveManager::Instance->LoadData("buildVersion", buildVersion);
+    strncpy(gSaveContext.sohStats.buildVersion, buildVersion.c_str(), ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1);
+    gSaveContext.sohStats.buildVersion[ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1] = 0;
+    SaveManager::Instance->LoadData("buildVersionMajor", gSaveContext.sohStats.buildVersionMajor);
+    SaveManager::Instance->LoadData("buildVersionMinor", gSaveContext.sohStats.buildVersionMinor);
+    SaveManager::Instance->LoadData("buildVersionPatch", gSaveContext.sohStats.buildVersionPatch);
+
+    SaveManager::Instance->LoadData("heartPieces", gSaveContext.sohStats.heartPieces);
+    SaveManager::Instance->LoadData("heartContainers", gSaveContext.sohStats.heartContainers);
+    SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.sohStats.dungeonKeys[i]);
+    });
+    SaveManager::Instance->LoadData("rtaTiming", gSaveContext.sohStats.rtaTiming);
+    SaveManager::Instance->LoadData("fileCreatedAt", gSaveContext.sohStats.fileCreatedAt);
+    SaveManager::Instance->LoadData("playTimer", gSaveContext.sohStats.playTimer);
+    SaveManager::Instance->LoadData("pauseTimer", gSaveContext.sohStats.pauseTimer);
+    SaveManager::Instance->LoadArray("itemTimestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.sohStats.itemTimestamp[i]);
+    });
+    SaveManager::Instance->LoadArray("sceneTimestamps", ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps), [&](size_t i) {
+        SaveManager::Instance->LoadStruct("", [&]() {
+            int scene, room, sceneTime, roomTime, isRoom;
+            SaveManager::Instance->LoadData("scene", scene);
+            SaveManager::Instance->LoadData("room", room);
+            SaveManager::Instance->LoadData("sceneTime", sceneTime);
+            SaveManager::Instance->LoadData("roomTime", roomTime);
+            SaveManager::Instance->LoadData("isRoom", isRoom);
+            if (scene == 0 && room == 0 && sceneTime == 0 && roomTime == 0 && isRoom == 0) {
+                return;
+            }
+            gSaveContext.sohStats.sceneTimestamps[i].scene = scene;
+            gSaveContext.sohStats.sceneTimestamps[i].room = room;
+            gSaveContext.sohStats.sceneTimestamps[i].sceneTime = sceneTime;
+            gSaveContext.sohStats.sceneTimestamps[i].roomTime = roomTime;
+            gSaveContext.sohStats.sceneTimestamps[i].isRoom = isRoom;
+        });
+    });
+    SaveManager::Instance->LoadData("tsIdx", gSaveContext.sohStats.tsIdx);
+    SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.sohStats.count[i]);
+    });
+    SaveManager::Instance->LoadArray("scenesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.scenesDiscovered), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.sohStats.scenesDiscovered[i]);
+    });
+    SaveManager::Instance->LoadArray("entrancesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.sohStats.entrancesDiscovered[i]);
+    });
+    SaveManager::Instance->LoadArray("locationsSkipped", ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.sohStats.locationsSkipped[i]);
+    });
+}
+
+void SaveStats(SaveContext* saveContext, int sectionID) {
+    SaveManager::Instance->SaveData("buildVersion", saveContext->sohStats.buildVersion);
+    SaveManager::Instance->SaveData("buildVersionMajor", saveContext->sohStats.buildVersionMajor);
+    SaveManager::Instance->SaveData("buildVersionMinor", saveContext->sohStats.buildVersionMinor);
+    SaveManager::Instance->SaveData("buildVersionPatch", saveContext->sohStats.buildVersionPatch);
+
+    SaveManager::Instance->SaveData("heartPieces", saveContext->sohStats.heartPieces);
+    SaveManager::Instance->SaveData("heartContainers", saveContext->sohStats.heartContainers);
+    SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(saveContext->sohStats.dungeonKeys), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->sohStats.dungeonKeys[i]);
+    });
+    SaveManager::Instance->SaveData("rtaTiming", saveContext->sohStats.rtaTiming);
+    SaveManager::Instance->SaveData("fileCreatedAt", saveContext->sohStats.fileCreatedAt);
+    SaveManager::Instance->SaveData("playTimer", saveContext->sohStats.playTimer);
+    SaveManager::Instance->SaveData("pauseTimer", saveContext->sohStats.pauseTimer);
+    SaveManager::Instance->SaveArray("itemTimestamps", ARRAY_COUNT(saveContext->sohStats.itemTimestamp), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->sohStats.itemTimestamp[i]);
+    });
+    SaveManager::Instance->SaveArray("sceneTimestamps", ARRAY_COUNT(saveContext->sohStats.sceneTimestamps), [&](size_t i) {
+        if (saveContext->sohStats.sceneTimestamps[i].scene != 254 && saveContext->sohStats.sceneTimestamps[i].room != 254) {
+            SaveManager::Instance->SaveStruct("", [&]() {
+                SaveManager::Instance->SaveData("scene", saveContext->sohStats.sceneTimestamps[i].scene);
+                SaveManager::Instance->SaveData("room", saveContext->sohStats.sceneTimestamps[i].room);
+                SaveManager::Instance->SaveData("sceneTime", saveContext->sohStats.sceneTimestamps[i].sceneTime);
+                SaveManager::Instance->SaveData("roomTime", saveContext->sohStats.sceneTimestamps[i].roomTime);
+                SaveManager::Instance->SaveData("isRoom", saveContext->sohStats.sceneTimestamps[i].isRoom);
+            });
+        }
+    });
+    SaveManager::Instance->SaveData("tsIdx", saveContext->sohStats.tsIdx);
+    SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(saveContext->sohStats.count), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->sohStats.count[i]);
+    });
+    SaveManager::Instance->SaveArray("scenesDiscovered", ARRAY_COUNT(saveContext->sohStats.scenesDiscovered), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->sohStats.scenesDiscovered[i]);
+    });
+    SaveManager::Instance->SaveArray("entrancesDiscovered", ARRAY_COUNT(saveContext->sohStats.entrancesDiscovered), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->sohStats.entrancesDiscovered[i]);
+    });
+    SaveManager::Instance->SaveArray("locationsSkipped", ARRAY_COUNT(saveContext->sohStats.locationsSkipped), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->sohStats.locationsSkipped[i]);
+    });
+}
+
 void GameplayStatsRow(const char* label, std::string value, ImVec4 color = COLOR_WHITE) {
     ImGui::PushStyleColor(ImGuiCol_Text, color);
     ImGui::TableNextRow();
@@ -333,7 +442,7 @@ void DrawGameplayStatsHeader() {
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
     ImGui::BeginTable("gameplayStatsHeader", 1, ImGuiTableFlags_BordersOuter);
     ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
-    GameplayStatsRow("Build Version:", gSaveContext.sohStats.buildVersion);
+    GameplayStatsRow("Build Version:", (char*) gBuildVersion);
     if (gSaveContext.sohStats.rtaTiming) {
         GameplayStatsRow("Total Time (RTA):", formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME), gSaveContext.sohStats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
     } else {
@@ -497,25 +606,27 @@ void DrawGameplayStatsBreakdownTab() {
 }
 
 void DrawGameplayStatsOptionsTab() {
-    UIWidgets::PaddedEnhancementCheckbox("Show latest timestamps on top", "gGameplayStats.TimestampsReverse");
-    UIWidgets::PaddedEnhancementCheckbox("Room Breakdown", "gGameplayStats.RoomBreakdown");
+    UIWidgets::PaddedEnhancementCheckbox("Show in-game total timer", "gGameplayStats.ShowIngameTimer", true, false);
+    UIWidgets::InsertHelpHoverText("Keep track of the timer as an in-game HUD element. The position of the timer can be changed in the Cosmetics Editor.");
+    UIWidgets::PaddedEnhancementCheckbox("Show latest timestamps on top", "gGameplayStats.TimestampsReverse", true, false);
+    UIWidgets::PaddedEnhancementCheckbox("Room Breakdown", "gGameplayStats.RoomBreakdown", true, false);
     ImGui::SameLine();
     UIWidgets::InsertHelpHoverText("Allows a more in-depth perspective of time spent in a certain map.");   
-    UIWidgets::PaddedEnhancementCheckbox("RTA Timing on new files", "gGameplayStats.RTATiming");
+    UIWidgets::PaddedEnhancementCheckbox("RTA Timing on new files", "gGameplayStats.RTATiming", true, false);
     ImGui::SameLine();
     UIWidgets::InsertHelpHoverText(
         "Timestamps are relative to starting timestamp rather than in game time, usually necessary for races/speedruns.\n\n"
         "Starting timestamp is on first non-c-up input after intro cutscene.\n\n"
         "NOTE: THIS NEEDS TO BE SET BEFORE CREATING A FILE TO TAKE EFFECT"
     );   
-    UIWidgets::PaddedEnhancementCheckbox("Show additional detail timers", "gGameplayStats.ShowAdditionalTimers");
+    UIWidgets::PaddedEnhancementCheckbox("Show additional detail timers", "gGameplayStats.ShowAdditionalTimers", true, false);
     UIWidgets::PaddedEnhancementCheckbox("Show Debug Info", "gGameplayStats.ShowDebugInfo");
 }
 
 void DrawStatsTracker(bool& open) {
     if (!open) {
-        if (CVarGetInteger("gGameplayStatsEnabled", 0)) {
-            CVarClear("gGameplayStatsEnabled");
+        if (CVarGetInteger("gGameplayStats.Enabled", 0)) {
+            CVarClear("gGameplayStats.Enabled");
             LUS::RequestCvarSaveOnNextTick();
         }
         return;
@@ -552,6 +663,47 @@ void DrawStatsTracker(bool& open) {
     ImGui::Text("Note: Gameplay stats are saved to the current file and will be\nlost if you quit without saving.");
 
     ImGui::End();
+}
+void InitStats(bool isDebug) {
+    gSaveContext.sohStats.heartPieces = isDebug ? 8 : 0;
+    gSaveContext.sohStats.heartContainers = isDebug ? 8 : 0;
+    for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys); dungeon++) {
+        gSaveContext.sohStats.dungeonKeys[dungeon] = isDebug ? 8 : 0;
+    }
+    gSaveContext.sohStats.rtaTiming = CVarGetInteger("gGameplayStats.RTATiming", 0);
+    gSaveContext.sohStats.fileCreatedAt = 0;
+    gSaveContext.sohStats.playTimer = 0;
+    gSaveContext.sohStats.pauseTimer = 0;
+    for (int timestamp = 0; timestamp < ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp); timestamp++) {
+        gSaveContext.sohStats.itemTimestamp[timestamp] = 0;
+    }
+    for (int timestamp = 0; timestamp < ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps); timestamp++) {
+        gSaveContext.sohStats.sceneTimestamps[timestamp].sceneTime = 0;
+        gSaveContext.sohStats.sceneTimestamps[timestamp].roomTime = 0;
+        gSaveContext.sohStats.sceneTimestamps[timestamp].scene = 254;
+        gSaveContext.sohStats.sceneTimestamps[timestamp].room = 254;
+        gSaveContext.sohStats.sceneTimestamps[timestamp].isRoom = 0;
+    }
+    gSaveContext.sohStats.tsIdx = 0;
+    for (int count = 0; count < ARRAY_COUNT(gSaveContext.sohStats.count); count++) {
+        gSaveContext.sohStats.count[count] = 0;
+    }
+    gSaveContext.sohStats.gameComplete = false;
+    for (int scenesIdx = 0; scenesIdx < ARRAY_COUNT(gSaveContext.sohStats.scenesDiscovered); scenesIdx++) {
+        gSaveContext.sohStats.scenesDiscovered[scenesIdx] = 0;
+    }
+    for (int entrancesIdx = 0; entrancesIdx < ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered); entrancesIdx++) {
+        gSaveContext.sohStats.entrancesDiscovered[entrancesIdx] = 0;
+    }
+    for (int rc = 0; rc < ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped); rc++) {
+        gSaveContext.sohStats.locationsSkipped[rc] = 0;
+    }
+
+    strncpy(gSaveContext.sohStats.buildVersion, (const char*) gBuildVersion, sizeof(gSaveContext.sohStats.buildVersion) - 1);
+    gSaveContext.sohStats.buildVersion[sizeof(gSaveContext.sohStats.buildVersion) - 1] = 0;
+    gSaveContext.sohStats.buildVersionMajor = gBuildVersionMajor;
+    gSaveContext.sohStats.buildVersionMinor = gBuildVersionMinor;
+    gSaveContext.sohStats.buildVersionPatch = gBuildVersionPatch;
 }
 
 // Entries listed here will have a timestamp shown in the stat window
@@ -702,4 +854,12 @@ extern "C" void InitStatTracker() {
     LUS::AddWindow("Enhancements", "Gameplay Stats", DrawStatsTracker, CVarGetInteger("gGameplayStats.Enabled", 0));
     SetupDisplayNames();
     SetupDisplayColors();
+
+    SaveManager::Instance->AddLoadFunction("sohStats", 1, LoadStatsVersion1);
+    // Add main section save, no parent
+    SaveManager::Instance->AddSaveFunction("sohStats", 1, SaveStats, true, SECTION_PARENT_NONE);
+    // Add subsections, parent of "sohStats". Not sure how to do this without the redundant references to "SaveStats"
+    SaveManager::Instance->AddSaveFunction("entrances", 1, SaveStats, false, SECTION_ID_STATS);
+    SaveManager::Instance->AddSaveFunction("scenes", 1, SaveStats, false, SECTION_ID_STATS);
+    SaveManager::Instance->AddInitFunction(InitStats);
 }

@@ -6,7 +6,7 @@
 
 #include "z_en_si.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_9)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOOKSHOT_DRAGS)
 
 void EnSi_Init(Actor* thisx, PlayState* play);
 void EnSi_Destroy(Actor* thisx, PlayState* play);
@@ -88,7 +88,7 @@ s32 func_80AFB748(EnSi* this, PlayState* play) {
 void func_80AFB768(EnSi* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_13)) {
+    if (CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_HOOKSHOT_ATTACHED)) {
         this->actionFunc = func_80AFB89C;
     } else {
         Math_SmoothStepToF(&this->actor.scale.x, 0.25f, 0.4f, 1.0f, 0.0f);
@@ -146,7 +146,7 @@ void func_80AFB89C(EnSi* this, PlayState* play) {
     Actor_SetScale(&this->actor, this->actor.scale.x);
     this->actor.shape.rot.y += 0x400;
 
-    if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_13)) {
+    if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_HOOKSHOT_ATTACHED)) {
         if (gSaveContext.n64ddFlag) {
             Randomizer_UpdateSkullReward(this, play);
         } else {

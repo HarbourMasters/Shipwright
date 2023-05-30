@@ -7,7 +7,7 @@
 #include "z_oceff_wipe2.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_25)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void OceffWipe2_Init(Actor* thisx, PlayState* play);
 void OceffWipe2_Destroy(Actor* thisx, PlayState* play);

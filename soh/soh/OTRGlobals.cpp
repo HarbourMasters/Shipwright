@@ -122,6 +122,10 @@ SpeechSynthesizer* SpeechSynthesizer::Instance;
 extern "C" char** cameraStrings;
 std::vector<std::shared_ptr<std::string>> cameraStdStrings;
 
+Color_RGB8 kokiriColor = { 0x1E, 0x69, 0x1B };
+Color_RGB8 goronColor = { 0x64, 0x14, 0x00 };
+Color_RGB8 zoraColor = { 0x00, 0xEC, 0x64 };
+
 // OTRTODO: A lot of these left in Japanese are used by the mempak manager. LUS does not currently support mempaks. Ignore unused ones.
 const char* constCameraStrings[] = {
     "INSUFFICIENT",
@@ -1020,22 +1024,29 @@ extern "C" uint32_t ResourceMgr_GetGameVersion(int index) {
 
 uint32_t IsSceneMasterQuest(s16 sceneNum) {
     uint32_t value = 0;
-    if (OTRGlobals::Instance->HasMasterQuest()) {
-        if (!OTRGlobals::Instance->HasOriginal()) {
-            value = 1;
-        } else if (gSaveContext.isMasterQuest) {
-            value = 1;
-        } else {
-            value = 0;
-            if (gSaveContext.n64ddFlag) {
-                if (!OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty()) {
-                    if (gPlayState != NULL && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(sceneNum)) {
-                        value = 1;
+    uint8_t mqMode = CVarGetInteger("gBetterDebugWarpScreenMQMode", 0);
+    if (mqMode == 1) { //non-mq wants to be mq
+        return 1;
+    } else if (mqMode == 2) {//mq wants to be non-mq
+        return 0;
+    } else {
+        if (OTRGlobals::Instance->HasMasterQuest()) {
+            if (!OTRGlobals::Instance->HasOriginal()) {
+                value = 1;
+            } else if (gSaveContext.isMasterQuest) {
+                value = 1;
+            }
+            } else {
+                value = 0;
+                if (gSaveContext.n64ddFlag) {
+                    if (!OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty()) {
+                        if (gPlayState != NULL && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(sceneNum)) {
+                            value = 1;
+                        }
                     }
                 }
             }
         }
-    }
     return value;
 }
 
@@ -1590,28 +1601,63 @@ extern "C" uint32_t OTRGetCurrentHeight() {
     return OTRGlobals::Instance->context->GetWindow()->GetCurrentHeight();
 }
 
-extern "C" void OTRControllerCallback(uint8_t rumble, uint8_t ledColor) {
-    auto controlDeck = LUS::Context::GetInstance()->GetControlDeck();
-
-    for (int i = 0; i < controlDeck->GetNumConnectedPorts(); ++i) {
-        auto physicalDevice = controlDeck->GetDeviceFromPortIndex(i);
-        switch (ledColor) {
-            case 0:
-                physicalDevice->SetLedColor(i, {255, 0, 0});
-                break;
-            case 1:
-                physicalDevice->SetLedColor(i, {0x1E, 0x69, 0x1B});
-                break;
-            case 2:
-                physicalDevice->SetLedColor(i, {0x64, 0x14, 0x00});
-                break;
-            case 3:
-                physicalDevice->SetLedColor(i, {0x00, 0x3C, 0x64});
-                break;
+Color_RGB8 GetColorForControllerLED() {
+    auto brightness = CVarGetFloat("gLedBrightness", 1.0f) / 1.0f;
+    Color_RGB8 color = { 0, 0, 0 };
+    if (brightness > 0.0f) {
+        LEDColorSource source = static_cast<LEDColorSource>(CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL));
+        bool criticalOverride = CVarGetInteger("gLedCriticalOverride", 1);
+        if (gPlayState && (source == LED_SOURCE_TUNIC_ORIGINAL || source == LED_SOURCE_TUNIC_COSMETICS)) {
+            switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
+                case PLAYER_TUNIC_KOKIRI:
+                    color = source == LED_SOURCE_TUNIC_COSMETICS
+                                ? CVarGetColor24("gCosmetics.Link_KokiriTunic.Value", kokiriColor)
+                                : kokiriColor;
+                    break;
+                case PLAYER_TUNIC_GORON:
+                    color = source == LED_SOURCE_TUNIC_COSMETICS
+                                ? CVarGetColor24("gCosmetics.Link_GoronTunic.Value", goronColor)
+                                : goronColor;
+                    break;
+                case PLAYER_TUNIC_ZORA:
+                    color = source == LED_SOURCE_TUNIC_COSMETICS
+                                ? CVarGetColor24("gCosmetics.Link_ZoraTunic.Value", zoraColor)
+                                : zoraColor;
+                    break;
+            }
         }
-
-        physicalDevice->SetRumble(i, rumble);
+        if (source == LED_SOURCE_CUSTOM) {
+            color = CVarGetColor24("gLedPort1Color", { 255, 255, 255 });
+        }
+        if (criticalOverride || source == LED_SOURCE_HEALTH) {
+            if (HealthMeter_IsCritical()) {
+                color = { 0xFF, 0, 0 };
+            } else if (source == LED_SOURCE_HEALTH) {
+                if (gSaveContext.health / gSaveContext.healthCapacity <= 0.4f) {
+                    color = { 0xFF, 0xFF, 0 };
+                } else {
+                    color = { 0, 0xFF, 0 };
+                }
+            }
+        }
+        color.r = color.r * brightness;
+        color.g = color.g * brightness;
+        color.b = color.b * brightness;
     }
+
+    return color;
+}
+
+extern "C" void OTRControllerCallback(uint8_t rumble) {
+    auto physicalDevice = LUS::Context::GetInstance()->GetControlDeck()->GetDeviceFromPortIndex(0);
+
+    if (physicalDevice->CanSetLed()) {
+        // We call this every tick, SDL accounts for this use and prevents driver spam
+        // https://github.com/libsdl-org/SDL/blob/f17058b562c8a1090c0c996b42982721ace90903/src/joystick/SDL_joystick.c#L1114-L1144
+        physicalDevice->SetLedColor(0, GetColorForControllerLED());
+    }
+
+    physicalDevice->SetRumble(0, rumble);
 }
 
 extern "C" float OTRGetAspectRatio() {

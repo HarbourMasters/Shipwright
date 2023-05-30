@@ -2,7 +2,7 @@
 #include "vt.h"
 #include "objects/object_ik/object_ik.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void DemoIk_Init(Actor* thisx, PlayState* play);
 void DemoIk_Destroy(Actor* thisx, PlayState* play);
