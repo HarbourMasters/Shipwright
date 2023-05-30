@@ -1399,12 +1399,7 @@ void Inventory_SwapAgeEquipment(void) {
             if (i != 0) {
                 gSaveContext.childEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
             } else {
-                if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && 
-                    (gSaveContext.infTable[29] & 1)) {
-                    gSaveContext.childEquips.buttonItems[i] = ITEM_NONE;
-                } else {
-                    gSaveContext.childEquips.buttonItems[i] = ITEM_SWORD_KOKIRI;
-                }
+                gSaveContext.childEquips.buttonItems[i] = ITEM_SWORD_KOKIRI;
             }
 
             if (i != 0) {
@@ -1472,7 +1467,7 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.infTable[29] |= 1;
         }
 
-        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && (1 << 0 & gSaveContext.inventory.equipment) == 0) {
+        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && ((1 << 0 & gSaveContext.inventory.equipment) == 0 || gSaveContext.infTable[29] & 1)) {
             gSaveContext.infTable[29] |= 1;
             gSaveContext.childEquips.buttonItems[0] = ITEM_NONE;
         }
@@ -1486,10 +1481,30 @@ void Inventory_SwapAgeEquipment(void) {
         }
 
         gSaveContext.adultEquips.equipment = gSaveContext.equips.equipment;
+        if (CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) {
+            for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+                gSaveContext.equips.buttonItems[i] = gSaveContext.childEquips.buttonItems[i];
 
-        if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE ||
-            CVarGetInteger("gSwitchAge", 0) ||
-            CVarGetInteger("gSwitchTimeline", 0)) {
+                if (i != 0) {
+                    gSaveContext.equips.cButtonSlots[i - 1] = gSaveContext.childEquips.cButtonSlots[i - 1];
+                }
+
+                if (((gSaveContext.equips.buttonItems[i] >= ITEM_BOTTLE) &&
+                     (gSaveContext.equips.buttonItems[i] <= ITEM_POE)) ||
+                    ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
+                     (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK))) {
+                    osSyncPrintf("Register_Item_Pt(%d)=%d\n", i, gSaveContext.equips.cButtonSlots[i - 1]);
+                    gSaveContext.equips.buttonItems[i] =
+                        gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[i - 1]];
+                }
+            }
+
+            gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
+            gSaveContext.equips.equipment &= 0xFFF0;
+            if (!((1 << 0 & gSaveContext.inventory.equipment) == 0 || gSaveContext.infTable[29] & 1)) {
+                gSaveContext.equips.equipment |= 0x0001;
+            }
+        } else if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE) {
             for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                 gSaveContext.equips.buttonItems[i] = gSaveContext.childEquips.buttonItems[i];
 
