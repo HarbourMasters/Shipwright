@@ -11,7 +11,7 @@
 #include "objects/object_kusa/object_kusa.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_23)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_ALWAYS_THROWN)
 
 void EnKusa_Init(Actor* thisx, PlayState* play);
 void EnKusa_Destroy(Actor* thisx, PlayState* play);
@@ -294,13 +294,13 @@ void EnKusa_WaitObject(EnKusa* this, PlayState* play) {
 
         this->actor.draw = EnKusa_Draw;
         this->actor.objBankIndex = this->objBankIndex;
-        this->actor.flags &= ~ACTOR_FLAG_4;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
     }
 }
 
 void EnKusa_SetupMain(EnKusa* this) {
     EnKusa_SetupAction(this, EnKusa_Main);
-    this->actor.flags &= ~ACTOR_FLAG_4;
+    this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
 }
 
 void EnKusa_Main(EnKusa* this, PlayState* play) {
@@ -349,7 +349,7 @@ void EnKusa_Main(EnKusa* this, PlayState* play) {
 void EnKusa_SetupLiftedUp(EnKusa* this) {
     EnKusa_SetupAction(this, EnKusa_LiftedUp);
     this->actor.room = -1;
-    this->actor.flags |= ACTOR_FLAG_4;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
 }
 
 void EnKusa_LiftedUp(EnKusa* this, PlayState* play) {

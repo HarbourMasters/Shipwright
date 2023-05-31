@@ -7,7 +7,7 @@
 #include "z_en_ganon_mant.h"
 #include "overlays/actors/ovl_Boss_Ganon/z_boss_ganon.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnGanonMant_Init(Actor* thisx, PlayState* play);
 void EnGanonMant_Destroy(Actor* thisx, PlayState* play);
@@ -103,7 +103,7 @@ static u8 sMaskTex[MANT_TEX_WIDTH * MANT_TEX_HEIGHT] = { {0} };
 void EnGanonMant_Init(Actor* thisx, PlayState* play) {
     EnGanonMant* this = (EnGanonMant*)thisx;
 
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
 
     for (int i = 0; i < ARRAY_COUNT(sMaskTex); i++) {
         sMaskTex[i] = 0;

@@ -12,7 +12,7 @@
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 typedef enum {
     /* 0 */ NOT_DEAD,
@@ -245,7 +245,7 @@ void BossGanondrof_Init(Actor* thisx, PlayState* play) {
     Collider_InitCylinder(play, &this->colliderSpear);
     Collider_SetCylinder(play, &this->colliderBody, &this->actor, &sCylinderInitBody);
     Collider_SetCylinder(play, &this->colliderSpear, &this->actor, &sCylinderInitSpear);
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     if (Flags_GetClear(play, play->roomCtx.curRoom.num)) {
         Actor_Kill(&this->actor);
         Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, GND_BOSSROOM_CENTER_X, GND_BOSSROOM_CENTER_Y,
@@ -407,7 +407,7 @@ void BossGanondrof_Paintings(BossGanondrof* this, PlayState* play) {
         EnfHG* horseTemp;
 
         Animation_MorphToPlayOnce(&this->skelAnime, &gPhantomGanonRideSpearRaiseAnim, -2.0f);
-        this->actor.flags |= ACTOR_FLAG_0;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
         horseTemp = (EnfHG*)this->actor.child;
         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE, this->spearTip.x,
                            this->spearTip.y, this->spearTip.z, 30, FHGFIRE_LIGHT_GREEN, 0, FHGFIRE_SPEAR_LIGHT);
@@ -418,7 +418,7 @@ void BossGanondrof_Paintings(BossGanondrof* this, PlayState* play) {
         Animation_MorphToPlayOnce(&this->skelAnime, &gPhantomGanonRideSpearResetAnim, -2.0f);
     } else if (horse->bossGndSignal == FHG_RIDE) {
         Animation_MorphToLoop(&this->skelAnime, &gPhantomGanonRideAnim, -2.0f);
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     }
 
     osSyncPrintf("RUN 3\n");
@@ -445,7 +445,7 @@ void BossGanondrof_Paintings(BossGanondrof* this, PlayState* play) {
 void BossGanondrof_SetupNeutral(BossGanondrof* this, f32 arg1) {
     Animation_MorphToLoop(&this->skelAnime, &gPhantomGanonNeutralAnim, arg1);
     this->actionFunc = BossGanondrof_Neutral;
-    this->actor.flags |= ACTOR_FLAG_0;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     this->fwork[GND_FLOAT_SPEED] = 0.0f;
     this->timers[0] = (s16)(Rand_ZeroOne() * 64.0f) + 30;
 }
@@ -717,7 +717,7 @@ void BossGanondrof_Stunned(BossGanondrof* this, PlayState* play) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_FANTOM_DAMAGE2);
         }
 
-        this->actor.flags |= ACTOR_FLAG_10;
+        this->actor.flags |= ACTOR_FLAG_DRAGGED_BY_HOOKSHOT;
     }
 
     osSyncPrintf("TIME0 %d ********************************************\n", this->timers[0]);
@@ -900,7 +900,7 @@ void BossGanondrof_SetupDeath(BossGanondrof* this, PlayState* play) {
     Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x100FF);
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_FANTOM_DEAD);
     this->deathState = DEATH_START;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->work[GND_VARIANCE_TIMER] = 0;
     this->shockTimer = 50;
 }
@@ -1286,7 +1286,7 @@ void BossGanondrof_Update(Actor* thisx, PlayState* play) {
     EnfHG* horse;
 
     osSyncPrintf("MOVE START %d\n", this->actor.params);
-    this->actor.flags &= ~ACTOR_FLAG_10;
+    this->actor.flags &= ~ACTOR_FLAG_DRAGGED_BY_HOOKSHOT;
     this->colliderBody.base.colType = COLTYPE_HIT3;
     if (this->killActor) {
         Actor_Kill(&this->actor);

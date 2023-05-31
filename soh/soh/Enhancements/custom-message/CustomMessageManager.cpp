@@ -92,12 +92,12 @@ void CustomMessage::Replace(std::string&& oldStr, std::string&& newEnglish, std:
     }
     position = french.find(oldStr);
     while (position != std::string::npos) {
-        french.replace(position, oldStr.length(), newEnglish);
+        french.replace(position, oldStr.length(), newFrench);
         position = french.find(oldStr);
     }
     position = german.find(oldStr);
     while (position != std::string::npos) {
-        german.replace(position, oldStr.length(), newEnglish);
+        german.replace(position, oldStr.length(), newGerman);
         position = german.find(oldStr);
     }
     Format();

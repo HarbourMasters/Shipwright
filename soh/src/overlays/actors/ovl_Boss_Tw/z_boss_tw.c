@@ -7,7 +7,7 @@
 
 #include <string.h>
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 typedef enum {
     /* 0x00 */ TW_KOTAKE,
@@ -421,7 +421,7 @@ void BossTw_Init(Actor* thisx, PlayState* play2) {
         Actor_SetScale(&this->actor, 0.01f);
         this->actor.update = BossTw_BlastUpdate;
         this->actor.draw = BossTw_BlastDraw;
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
 
         Collider_InitCylinder(play, &this->collider);
         Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInitBlasts);
@@ -611,7 +611,7 @@ void BossTw_SetupFlyTo(BossTw* this, PlayState* play) {
     BossTw* otherTw = (BossTw*)this->actor.parent;
 
     this->unk_5F8 = 1;
-    this->actor.flags |= ACTOR_FLAG_0;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     this->actionFunc = BossTw_FlyTo;
     this->rotateSpeed = 0.0f;
     Animation_MorphToLoop(&this->skelAnime, &object_tw_Anim_006F28, -10.0f);
@@ -1435,7 +1435,7 @@ void BossTw_SetupWait(BossTw* this, PlayState* play) {
     this->actionFunc = BossTw_Wait;
     this->visible = false;
     this->actor.world.pos.y = -2000.0f;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
 }
 
 void BossTw_Wait(BossTw* this, PlayState* play) {
@@ -1597,7 +1597,7 @@ void BossTw_TwinrovaMergeCS(BossTw* this, PlayState* play) {
 
                     this->csState1 = 1;
                     this->visible = true;
-                    this->actor.flags |= ACTOR_FLAG_0;
+                    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
                     this->actor.shape.rot.y = 0;
                     BossTw_SetupWait(sKotakePtr, play);
                     BossTw_SetupWait(sKoumePtr, play);
@@ -1718,7 +1718,7 @@ void BossTw_SetupCSWait(BossTw* this, PlayState* play) {
     this->actionFunc = BossTw_CSWait;
     this->visible = false;
     this->actor.world.pos.y = -2000.0f;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
 }
 
 /**
@@ -1731,7 +1731,7 @@ void BossTw_TwinrovaSetupIntroCS(BossTw* this, PlayState* play) {
     this->actionFunc = BossTw_TwinrovaIntroCS;
     this->visible = false;
     this->actor.world.pos.y = -2000.0f;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
 }
 
 void BossTw_TwinrovaIntroCS(BossTw* this, PlayState* play) {
@@ -2337,7 +2337,7 @@ void BossTw_TwinrovaSetupDeathCS(BossTw* this, PlayState* play) {
     this->actionFunc = BossTw_TwinrovaDeathCS;
     Animation_MorphToLoop(&this->skelAnime, &object_tw_Anim_024374, -3.0f);
     this->actor.world.rot.y = this->actor.shape.rot.y;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->csState2 = this->csState1 = 0;
     this->work[CS_TIMER_1] = this->work[CS_TIMER_2] = 0;
     this->work[INVINC_TIMER] = 10000;
@@ -2652,7 +2652,7 @@ void BossTw_TwinrovaDeathCS(BossTw* this, PlayState* play) {
                     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_BOSS_TW,
                                        this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, 0, 0,
                                        0, TW_DEATHBALL_KOTAKE);
-                    this->actor.flags &= ~ACTOR_FLAG_0;
+                    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                 }
             }
             Actor_SetScale(&this->actor, this->actor.scale.x);
@@ -2705,7 +2705,7 @@ void BossTw_TwinrovaDeathCS(BossTw* this, PlayState* play) {
                 sKoumePtr->work[YAW_TGT] = sKotakePtr->work[YAW_TGT] = sKoumePtr->actor.shape.rot.x =
                     sKotakePtr->actor.shape.rot.x = sKoumePtr->actor.shape.rot.y = sKotakePtr->actor.shape.rot.y = 0;
                 func_8002DF54(play, &sKoumePtr->actor, 1);
-                sKoumePtr->actor.flags |= ACTOR_FLAG_0;
+                sKoumePtr->actor.flags |= ACTOR_FLAG_TARGETABLE;
             }
             break;
         case 2:
@@ -2954,7 +2954,7 @@ void BossTw_TwinrovaUpdate(Actor* thisx, PlayState* play2) {
     BossTw* this = (BossTw*)thisx;
     Player* player = GET_PLAYER(play);
 
-    this->actor.flags &= ~ACTOR_FLAG_10;
+    this->actor.flags &= ~ACTOR_FLAG_DRAGGED_BY_HOOKSHOT;
     this->unk_5F8 = 0;
     this->collider.base.colType = COLTYPE_HIT3;
 
@@ -5307,7 +5307,7 @@ void BossTw_TwinrovaStun(BossTw* this, PlayState* play) {
     s16 cloudType;
 
     this->unk_5F8 = 1;
-    this->actor.flags |= ACTOR_FLAG_10;
+    this->actor.flags |= ACTOR_FLAG_DRAGGED_BY_HOOKSHOT;
 
     cloudType = sTwinrovaBlastType == 0 ? 3 : 2;
 
