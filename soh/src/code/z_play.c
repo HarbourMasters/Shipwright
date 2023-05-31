@@ -1473,6 +1473,15 @@ void Play_Draw(PlayState* play) {
         func_800AA460(&play->view, play->view.fovy, play->view.zNear, play->lightCtx.fogFar);
         func_800AAA50(&play->view, 15);
 
+        if (CVarGetInteger("gMirroredWorld", 0)) {
+            gSPMatrix(POLY_OPA_DISP++, play->view.projectionFlippedPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+            gSPMatrix(POLY_XLU_DISP++, play->view.projectionFlippedPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+            gSPMatrix(POLY_KAL_DISP++, play->view.projectionFlippedPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+            gSPMatrix(POLY_OPA_DISP++, play->view.viewingPtr, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+            gSPMatrix(POLY_XLU_DISP++, play->view.viewingPtr, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+            gSPMatrix(POLY_KAL_DISP++, play->view.viewingPtr, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+        }
+
         // The billboard matrix temporarily stores the viewing matrix
         Matrix_MtxToMtxF(&play->view.viewing, &play->billboardMtxF);
         Matrix_MtxToMtxF(&play->view.projection, &play->viewProjectionMtxF);
@@ -1746,6 +1755,23 @@ void Play_Main(GameState* thisx) {
     if (play->envCtx.unk_EE[2] == 0 && CVarGetInteger("gLetItSnow", 0)) {
         play->envCtx.unk_EE[3] = 64;
         Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_OBJECT_KANKYO, 0, 0, 0, 0, 0, 0, 3, 0);
+    }
+
+    if (
+        CVarGetInteger("gMirroredWorldToggle", 1) && 
+        play->pauseCtx.state == 0 && !(
+        (play->sceneNum >= SCENE_SHOP1 && play->sceneNum <= SCENE_FACE_SHOP) || 
+        play->sceneNum == SCENE_ENTRA ||
+        play->sceneNum == SCENE_ENTRA_N ||
+        play->sceneNum == SCENE_MARKET_ALLEY ||
+        play->sceneNum == SCENE_MARKET_ALLEY_N ||
+        play->sceneNum == SCENE_SHRINE ||
+        play->sceneNum == SCENE_SHRINE_N ||
+        play->sceneNum == SCENE_SHRINE_R)
+    ) {
+        CVarSetInteger("gMirroredWorld", 1);
+    } else {
+        CVarSetInteger("gMirroredWorld", 0);
     }
 
     D_8012D1F8 = &play->state.input[0];

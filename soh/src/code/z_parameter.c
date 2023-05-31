@@ -5090,7 +5090,13 @@ void Interface_Draw(PlayState* play) {
         Minimap_Draw(play);
 
         if ((R_PAUSE_MENU_MODE != 2) && (R_PAUSE_MENU_MODE != 3)) {
+            if (CVarGetInteger("gMirroredWorld", 0)) {
+                gSPMatrix(OVERLAY_DISP++, interfaceCtx->view.projectionFlippedPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+            }
             func_8002C124(&play->actorCtx.targetCtx, play); // Draw Z-Target
+            if (CVarGetInteger("gMirroredWorld", 0)) {
+                gSPMatrix(OVERLAY_DISP++, interfaceCtx->view.projectionPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+            }
         }
 
         Gfx_SetupDL_39Overlay(play->state.gfxCtx);

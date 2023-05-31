@@ -1015,6 +1015,10 @@ void DrawEnhancementsMenu() {
         UIWidgets::Spacer(0);
 
         if (ImGui::BeginMenu("Extra Modes")) {
+            UIWidgets::PaddedEnhancementCheckbox("Mirrored World", "gMirroredWorldToggle", true, false);
+
+            UIWidgets::Spacer(0);
+
             UIWidgets::PaddedEnhancementCheckbox("Ivan the Fairy (Coop Mode)", "gIvanCoopModeEnabled", true, false);
             UIWidgets::Tooltip("Enables Ivan the Fairy upon the next map change. Player 2 can control Ivan and "
                                 "press the C-Buttons to use items and mess with Player 1!");
