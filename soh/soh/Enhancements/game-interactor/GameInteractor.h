@@ -6,6 +6,9 @@
 #include "GameInteractionEffect.h"
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
+#define MAX_IP_BUFFER_SIZE 256
+#define MAX_PORT_BUFFER_SIZE 6
+
 typedef enum {
     /* 0x00 */ GI_LINK_SIZE_NORMAL,
     /* 0x01 */ GI_LINK_SIZE_GIANT,
@@ -89,9 +92,14 @@ uint8_t GameInteractor_SecondCollisionUpdate();
 
 
 #ifdef __cplusplus
-
+#include <thread>
 #include <vector>
 #include <functional>
+
+#ifdef ENABLE_REMOTE_CONTROL
+#include <SDL2/SDL_net.h>
+#include <nlohmann/json.hpp>
+#endif
 
 #define DEFINE_HOOK(name, type)         \
     struct name {                       \
@@ -127,10 +135,21 @@ public:
         static void SetPacifistMode(bool active);
     };
 
+    #ifdef ENABLE_REMOTE_CONTROL
+    char remoteIPStr[MAX_IP_BUFFER_SIZE];
+    char remotePortStr[MAX_PORT_BUFFER_SIZE];
+    bool isRemoteInteractorEnabled;
+
+    void EnableRemoteInteractor();
+    void DisableRemoteInteractor();
+    void RegisterRemoteForwarder(std::function<void(nlohmann::json)> method);
+    void TransmitMessageToRemote(nlohmann::json payload);
+    #endif
+
     // Effects
     static GameInteractionEffectQueryResult CanApplyEffect(GameInteractionEffectBase* effect);
     static GameInteractionEffectQueryResult ApplyEffect(GameInteractionEffectBase* effect);
-    static GameInteractionEffectQueryResult RemoveEffect(GameInteractionEffectBase* effect);
+    static GameInteractionEffectQueryResult RemoveEffect(RemovableGameInteractionEffect* effect);
 
     // Game Hooks
     template <typename H> struct RegisteredGameHooks { inline static std::vector<typename H::fn> functions; };
@@ -216,6 +235,18 @@ public:
         static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
         static GameInteractionEffectQueryResult SpawnActor(uint32_t actorId, int32_t actorParams);
     };
+
+    private:
+    #ifdef ENABLE_REMOTE_CONTROL
+        IPaddress remoteIP;
+        TCPsocket remoteSocket;
+        std::thread remoteThreadReceive;
+        bool isRemoteInteractorConnected;
+        std::function<void(nlohmann::json)> remoteForwarder;
+
+        void ReceiveFromServer();
+        void HandleRemoteMessage(char message[512]);
+    #endif
 };
 
 #endif /* __cplusplus */

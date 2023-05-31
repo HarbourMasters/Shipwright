@@ -31,11 +31,11 @@ GameInteractionEffectQueryResult GameInteractionEffectBase::Apply() {
 }
 
 /// For most effects, CanBeRemoved is the same as CanBeApplied. When its not: please override `CanBeRemoved`.
-GameInteractionEffectQueryResult GameInteractionEffectBase::CanBeRemoved() {
+GameInteractionEffectQueryResult RemovableGameInteractionEffect::CanBeRemoved() {
     return CanBeApplied();
 }
 
-GameInteractionEffectQueryResult GameInteractionEffectBase::Remove() {
+GameInteractionEffectQueryResult RemovableGameInteractionEffect::Remove() {
     GameInteractionEffectQueryResult result = CanBeRemoved();
     if (result != GameInteractionEffectQueryResult::Possible) {
         return result;
@@ -119,10 +119,10 @@ namespace GameInteractionEffect {
         }
     }
     void NoUI::_Apply() {
-        GameInteractor::State::NoUIActive = 1;
+        GameInteractor::State::NoUIActive = true;
     }
     void NoUI::_Remove() {
-        GameInteractor::State::NoUIActive = 0;
+        GameInteractor::State::NoUIActive = false;
     }
 
     // MARK: - ModifyGravity

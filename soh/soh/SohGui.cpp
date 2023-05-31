@@ -31,7 +31,7 @@
 #include "soh/resource/type/Skeleton.h"
 #include "libultraship/libultraship.h"
 
-#ifdef ENABLE_CROWD_CONTROL
+#ifdef ENABLE_REMOTE_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
 #endif
 

@@ -75,7 +75,7 @@
 #include "SohGui.hpp"
 #include "ActorDB.h"
 
-#ifdef ENABLE_CROWD_CONTROL
+#ifdef ENABLE_REMOTE_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
 CrowdControl* CrowdControl::Instance;
 #endif
@@ -763,7 +763,24 @@ extern "C" void InitOTR() {
     SpeechSynthesizer::Instance = new SAPISpeechSynthesizer();
     SpeechSynthesizer::Instance->Init();
 #endif
-    
+
+#ifdef ENABLE_REMOTE_CONTROL
+    CrowdControl::Instance = new CrowdControl();
+
+    auto remoteIP = CVarGetString("gRemoteGIIP", "");
+    auto remoteIPSize = strlen(remoteIP);
+    auto remotePort = CVarGetString("gRemoteGIPort", "");
+    auto remotePortSize = strlen(remotePort);
+
+    if (remoteIPSize > 0) {
+        strncpy(GameInteractor::Instance->remoteIPStr, remoteIP, remoteIPSize);
+    }
+
+    if (remotePortSize > 0) {
+        strncpy(GameInteractor::Instance->remotePortStr, remotePort, remotePortSize);
+    }
+#endif
+
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     OTRAudio_Init();
@@ -783,13 +800,14 @@ extern "C" void InitOTR() {
     }
 
     srand(now);
-#ifdef ENABLE_CROWD_CONTROL
-    CrowdControl::Instance = new CrowdControl();
-    CrowdControl::Instance->Init();
-    if (CVarGetInteger("gCrowdControl", 0)) {
-        CrowdControl::Instance->Enable();
-    } else {
-        CrowdControl::Instance->Disable();
+#ifdef ENABLE_REMOTE_CONTROL
+    SDLNet_Init();
+    if (CVarGetInteger("gRemoteGIEnabled", 0)) {
+        if (CVarGetInteger("gRemoteGIScheme", 0) == 1) {
+            CrowdControl::Instance->Enable();
+        } else {
+            GameInteractor::Instance->EnableRemoteInteractor();
+        }
     }
 #endif
 
@@ -805,9 +823,15 @@ extern "C" void SaveManager_ThreadPoolWait() {
 extern "C" void DeinitOTR() {
     SaveManager_ThreadPoolWait();
     OTRAudio_Exit();
-#ifdef ENABLE_CROWD_CONTROL
-    CrowdControl::Instance->Disable();
-    CrowdControl::Instance->Shutdown();
+#ifdef ENABLE_REMOTE_CONTROL
+    if (CVarGetInteger("gRemoteGIEnabled", 0)) {
+        if (CVarGetInteger("gRemoteGIScheme", 0) == 1) {
+            CrowdControl::Instance->Disable();
+        } else {
+            GameInteractor::Instance->DisableRemoteInteractor();
+        }
+    }
+    SDLNet_Quit();
 #endif
 
     // Destroying gui here because we have shared ptrs to LUS objects which output to SPDLOG which is destroyed before these shared ptrs.
