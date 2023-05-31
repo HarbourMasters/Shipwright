@@ -302,7 +302,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY },
     { "Misc Settings:ToT Altar Hint", RSK_TOT_ALTAR_HINT },
-    { "Misc Settings:Light Arrows Hint", RSK_LIGHT_ARROWS_HINT },
+    { "Misc Settings:Light Arrow Hint", RSK_LIGHT_ARROWS_HINT },
     { "Misc Settings:Dampe's Diary Hint", RSK_DAMPES_DIARY_HINT },
     { "Misc Settings:Greg the Rupee Hint", RSK_GREG_HINT },
     { "Misc Settings:Saria's Hint", RSK_SARIA_HINT },
