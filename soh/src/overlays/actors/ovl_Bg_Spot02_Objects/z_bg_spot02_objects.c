@@ -7,7 +7,7 @@
 #include "z_bg_spot02_objects.h"
 #include "objects/object_spot02_objects/object_spot02_objects.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void BgSpot02Objects_Init(Actor* thisx, PlayState* play);
 void BgSpot02Objects_Destroy(Actor* thisx, PlayState* play);
@@ -75,7 +75,7 @@ void BgSpot02Objects_Init(Actor* thisx, PlayState* play) {
             } else if (thisx->params == 1) {
                 this->actionFunc = func_808AC8FC;
                 CollisionHeader_GetVirtual(&object_spot02_objects_Col_0128D8, &colHeader);
-                thisx->flags |= ACTOR_FLAG_22;
+                thisx->flags |= ACTOR_FLAG_IGNORE_POINTLIGHTS;
             } else {
                 if (play->sceneNum == SCENE_SPOT02) {
                     this->actionFunc = func_808AC908;

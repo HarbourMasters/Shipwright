@@ -14,7 +14,7 @@
 #include "scenes/dungeons/ice_doukutu/ice_doukutu_scene.h"
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void EnXc_Init(Actor* thisx, PlayState* play);
 void EnXc_Destroy(Actor* thisx, PlayState* play);
@@ -2239,7 +2239,7 @@ void EnXc_SetupDialogueAction(EnXc* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->action = SHEIK_ACTION_IN_DIALOGUE;
     } else {
-        this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
+         this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
         if (gSaveContext.n64ddFlag && gPlayState->sceneNum == SCENE_TOKINOMA) {
             if (!CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANON)) {
                 this->actor.textId = 0x7010;    
@@ -2267,7 +2267,7 @@ void EnXc_SetupDialogueAction(EnXc* this, PlayState* play) {
 void func_80B41798(EnXc* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
         this->action = SHEIK_ACTION_BLOCK_PEDESTAL;
-        this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
+        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
     }
 }
 

@@ -17,6 +17,7 @@
     gSaveContext.sohStats.sceneTimer)
 
 void InitStatTracker();
+char* GameplayStats_GetCurrentTime();
 
 typedef enum {
     // 0x00 to 0x9B (0 to 155) used for getting items,

@@ -9,7 +9,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnBom_Init(Actor* thisx, PlayState* play);
 void EnBom_Destroy(Actor* thisx, PlayState* play);
@@ -183,7 +183,7 @@ void EnBom_Explode(EnBom* this, PlayState* play) {
     Player* player;
 
     if (this->explosionCollider.elements[0].dim.modelSphere.radius == 0) {
-        this->actor.flags |= ACTOR_FLAG_5;
+        this->actor.flags |= ACTOR_FLAG_DRAW_WHILE_CULLED;
         func_800AA000(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
     }
 
@@ -344,7 +344,7 @@ void EnBom_Update(Actor* thisx, PlayState* play2) {
             Camera_AddQuake(&play->mainCamera, 2, 0xB, 8);
             thisx->params = BOMB_EXPLOSION;
             this->timer = 10;
-            thisx->flags |= ACTOR_FLAG_5;
+            thisx->flags |= ACTOR_FLAG_DRAW_WHILE_CULLED;
             EnBom_SetupAction(this, EnBom_Explode);
         }
     }
