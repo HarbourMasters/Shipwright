@@ -697,6 +697,14 @@ void Play_Init(GameState* thisx) {
                     GET_PLAYER(play)->actor.world.pos.y + Player_GetHeight(GET_PLAYER(play)) + 5.0f,
                     GET_PLAYER(play)->actor.world.pos.z, 0, 0, 0, 1, true);
     }
+    if (gSaveContext.n64ddFlag && LINK_IS_ADULT &&
+        Randomizer_GetSettingValue(RSK_TRIAL_COUNT) != RO_GANONS_TRIALS_SKIP) {
+        if (play->sceneNum == SCENE_TOKINOMA) {
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_XC, -104, -40, 2382, 0, 0x8000, 0, -1, false);
+        } else if (play->sceneNum == SCENE_GANONTIKA) { 
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_XC, 101, 150, 137, 0, 0, 0, -1, false);
+        }
+    }
 }
 
 void Play_Update(PlayState* play) {

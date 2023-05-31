@@ -223,6 +223,8 @@ extern void CreateMerchantsHints();
 extern void CreateWarpSongTexts();
 extern void CreateDampesDiaryText();
 extern void CreateGregRupeeHint();
+extern void CreateSheikText();
+extern void CreateSariaText();
 extern void CreateGanonText();
 extern void CreateAltarText();
 
@@ -232,6 +234,8 @@ Text& GetGanonText();
 Text& GetGanonHintText();
 Text& GetDampeHintText();
 Text& GetGregHintText();
+Text& GetSheikHintText();
+Text& GetSariaHintText();
 
 Text& GetWarpMinuetText();
 Text& GetWarpBoleroText();

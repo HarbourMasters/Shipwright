@@ -116,6 +116,8 @@ Text childAltarText;
 Text adultAltarText;
 Text ganonText;
 Text ganonHintText;
+Text sheikText;
+Text sariaText;
 Text dampesText;
 Text gregText;
 Text warpMinuetText;
@@ -147,6 +149,14 @@ Text& GetDampeHintText() {
 
 Text& GetGregHintText() {
   return gregText;
+}
+
+Text& GetSheikHintText() {
+  return sheikText;
+}
+
+Text& GetSariaHintText() {
+  return sariaText;
 }
 
 Text& GetWarpMinuetText() {
@@ -803,6 +813,33 @@ void CreateGregRupeeHint() {
 
     gregText = temp1 + area + temp2;
 }
+
+void CreateSheikText() {
+  //Get the location of the light arrows
+  auto lightArrowLocation = FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == LIGHT_ARROWS;})[0];
+  Text area = GetHintRegion(Location(lightArrowLocation)->GetParentRegionKey())->GetHint().GetText();
+  Text temp1 = Text{
+    "I overheard Ganondorf say that he misplaced the %rLight Arrows%w in&%g",
+    "",
+    ""
+  };
+  Text temp2 = Text{"%w.", "%w.", "%w."};
+  sheikText = temp1 + area + temp2;
+}
+
+void CreateSariaText() {
+  //Get the location of the light arrows
+  auto magicLocation = FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == PROGRESSIVE_MAGIC_METER;})[0];
+  Text area = GetHintRegion(Location(magicLocation)->GetParentRegionKey())->GetHint().GetText();
+  Text temp1 = Text{
+    "Did you feel the %gsurge of magic%w recently? A mysterious bird told me it came from %g",
+    "",
+    ""
+  };
+  Text temp2 = Text{"%w.^You should check that place out, @!$C", "%w.", "%w."};
+  sariaText = temp1 + area + temp2;
+}
+
 
 void CreateWarpSongTexts() {
   if (!ShuffleWarpSongs) {

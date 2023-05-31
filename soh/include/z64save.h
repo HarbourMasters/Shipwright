@@ -298,6 +298,8 @@ typedef struct {
     /*        */ char gregHintText[250];
     /*        */ char ganonText[250];
     /*        */ char dampeText[150];
+    /*        */ char sheikText[150];
+    /*        */ char sariaText[150];
     /*        */ char warpMinuetText[100];
     /*        */ char warpBoleroText[100];
     /*        */ char warpSerenadeText[100];

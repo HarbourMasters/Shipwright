@@ -412,6 +412,21 @@ s32 EnXc_SerenadeCS(EnXc* this, PlayState* play) {
 void EnXc_DoNothing(EnXc* this, PlayState* play) {
 }
 
+void EnXc_RandoStand(EnXc* this, PlayState* play) {
+    //Replaces Ganondorf Light Arrow hint. also stands in ToT
+    if (play->sceneNum == SCENE_TOKINOMA) {
+        EnXc_ChangeAnimation(this, &gSheikArmsCrossedIdleAnim, ANIMMODE_LOOP, 0.0f, false);
+    } else {
+        EnXc_ChangeAnimation(this, &gSheikIdleAnim, ANIMMODE_LOOP, 0.0f, false);
+    }
+    this->action = SHEIK_ACTION_BLOCK_PEDESTAL;
+    this->drawMode = SHEIK_DRAW_DEFAULT;
+    this->unk_30C = 1;
+    if (!gSaveContext.n64ddFlag) {
+        Actor_Kill(&this->actor);
+    }
+}
+
 void EnXc_SetWalkingSFX(EnXc* this, PlayState* play) {
     s32 pad[2];
     u32 sfxId;
@@ -2225,10 +2240,25 @@ void EnXc_SetupDialogueAction(EnXc* this, PlayState* play) {
         this->action = SHEIK_ACTION_IN_DIALOGUE;
     } else {
         this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
-        if (INV_CONTENT(ITEM_HOOKSHOT) != ITEM_NONE) {
-            this->actor.textId = 0x7010;
-        } else {
-            this->actor.textId = 0x700F;
+        if (gSaveContext.n64ddFlag && gPlayState->sceneNum == SCENE_TOKINOMA) {
+            if (!CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANON)) {
+                this->actor.textId = 0x7010;    
+            } else {
+                this->actor.textId = 0x700F;    
+            }
+        } else if (gSaveContext.n64ddFlag && gPlayState->sceneNum == SCENE_GANONTIKA) {
+            if (CHECK_OWNED_EQUIP(EQUIP_SWORD, 1) && INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) {
+                this->actor.textId = 0x700F;
+            } else {
+                this->actor.textId = 0x7010;
+            }
+        }
+        else {
+            if (INV_CONTENT(ITEM_HOOKSHOT) != ITEM_NONE) {
+                this->actor.textId = 0x7010; //"You need another skill"
+            } else {
+                this->actor.textId = 0x700F; //"You have what you need"
+            }
         }
         func_8002F2F4(&this->actor, play);
     }
@@ -2400,6 +2430,10 @@ void EnXc_Init(Actor* thisx, PlayState* play) {
             break;
         case SHEIK_TYPE_0:
             EnXc_DoNothing(this, play);
+            break;
+        case -1: //Special rando case
+            EnXc_RandoStand(this, play);
+            thisx->room = -1;
             break;
         default:
             osSyncPrintf(VT_FGCOL(RED) " En_Oa2 の arg_data がおかしい!!!!!!!!!!!!!!!!!!!!!!!!!\n" VT_RST);
