@@ -709,7 +709,7 @@ f32 sFontWidths[144] = {
     14.0f, // ?
 };
 
-f32 Message_GetCharacterWidth(uint16_t characterIndex) {
+f32 Message_GetCharacterWidth(unsigned char characterIndex) {
     return sFontWidths[characterIndex] * (R_TEXT_CHAR_SCALE / 100.0f);
 }
 
