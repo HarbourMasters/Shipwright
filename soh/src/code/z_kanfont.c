@@ -178,7 +178,7 @@ void Font_LoadChar(Font* font, u8 character, u16 codePointIndex) {
 }
 
 void* Font_FetchCharTexture(u8 character) {
-    return GetResourceDataByName(fntTbl[character]);
+    return fntTbl[character];
 }
 
 /**
