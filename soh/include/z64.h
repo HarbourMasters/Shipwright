@@ -1293,9 +1293,12 @@ typedef struct SelectContext {
     /* 0x0230 */ s32 lockDown;
     /* 0x0234 */ s32 unk_234; // unused
     /* 0x0238 */ u8* staticSegment;
+    // #region SOH [General]
     /*        */ s32 currentEntrance;
+    /*        */ u8 isBetterWarp;
     /*        */ BetterSceneSelectEntry* betterScenes;
     /*        */ BetterSceneSelectGrottoData* betterGrottos;
+    // #endregion
 } SelectContext; // size = 0x240
 
 typedef struct {

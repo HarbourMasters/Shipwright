@@ -54,6 +54,7 @@ void OTRGetPixelDepthPrepare(float x, float y);
 uint16_t OTRGetPixelDepth(float x, float y);
 int32_t OTRGetLastScancode();
 uint32_t ResourceMgr_IsGameMasterQuest();
+uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 uint32_t ResourceMgr_GameHasMasterQuest();
 uint32_t ResourceMgr_GameHasOriginal();
 uint32_t ResourceMgr_GetNumGameVersions();
