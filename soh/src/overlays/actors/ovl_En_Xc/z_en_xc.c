@@ -2247,7 +2247,8 @@ void EnXc_SetupDialogueAction(EnXc* this, PlayState* play) {
                 this->actor.textId = 0x700F;    
             }
         } else if (gSaveContext.n64ddFlag && gPlayState->sceneNum == SCENE_GANONTIKA) {
-            if (CHECK_OWNED_EQUIP(EQUIP_SWORD, 1) && INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) {
+            if (CHECK_OWNED_EQUIP(EQUIP_SWORD, 1) && INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT &&
+            CUR_CAPACITY(UPG_QUIVER) >= 30 && gSaveContext.isMagicAcquired) {
                 this->actor.textId = 0x700F;
             } else {
                 this->actor.textId = 0x7010;

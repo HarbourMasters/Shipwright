@@ -4946,10 +4946,14 @@ CustomMessage Randomizer::GetMiscMessage(s16 scene, u16 originalTextId) {
                 break;
             case SCENE_GANONTIKA:
                 if (originalTextId == TEXT_SHEIK_1) {
-                    messageEntry.Replace("{{message}}",
-                    gSaveContext.sheikText,
-                    gSaveContext.sheikText,
-                    gSaveContext.sheikText);
+                    if (INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) {
+                        messageEntry.Replace("{{message}}", gSaveContext.sheikText, gSaveContext.sheikText, gSaveContext.sheikText);
+                    } else {
+                        messageEntry.Replace("{{message}}", "You are still ill-equipped to&face %rGanondorf%w."
+                        "^Seek out the %cMaster Sword%w,&%rsomething to hold your arrows%w,&and %gmagic to summon the light%w.",
+                        "Test1^Test2",
+                        "Test1^Test2");
+                    }                   
                 } else {
                     messageEntry.Replace("{{message}}",
                     "If you're ready, then proceed.^Good luck.",
