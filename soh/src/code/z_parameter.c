@@ -6529,136 +6529,6 @@ void Interface_DrawTextCharacter(GraphicsContext* gfx, int16_t x, int16_t y, voi
     CLOSE_DISPS(gfx);
 }
 
-uint16_t Interface_GetTextKerningOffset(unsigned char character) {
-
-    switch (character) {
-        case 'i':
-        case '|':
-        case '\'':
-        case 0x81: // î
-        case 0x89: // Ï
-        case 0x99: // ï
-            return 3;
-        case 'l':
-        case 'I':
-        case ',':
-        case '.':
-        case '[':
-        case ']':
-        case ':':
-        case ';':
-        case '`':
-            return 4;
-        case 'j':
-        case 't':
-        case ' ':
-        case '{':
-        case '}':
-        case '"':
-        case '1':
-            return 5;
-        case 'f':
-        case 'r':
-        case 's':
-        case 'x':
-        case 'z':
-        case '*':
-        case '-':
-        case '<':
-        case '>':
-        case '/':
-        case '_':
-        case '!':
-        case '(':
-        case ')':
-        case 0x85: // È
-        case 0x86: // É
-        case 0x87: // Ê
-        case 0x88: // Ë
-        case 0x8F: // ß
-        case 0x90: // à
-        case 0x91: // á
-        case 0x92: // â
-        case 0x93: // ä
-        case 0x94: // ç
-        case 0x95: // è
-        case 0x96: // é
-        case 0x97: // ê
-        case 0x98: // ë
-        case 0x9A: // ô
-        case 0x9B: // ö
-        case 0x9C: // ù
-        case 0x9D: // û
-        case 0x9E: // ü
-            return 6;
-        case 'a':
-        case 'b':
-        case 'c':
-        case 'd':
-        case 'e':
-        case 'h':
-        case 'k':
-        case 'n':
-        case 'p':
-        case 'u':
-        case 'v':
-        case 'y':
-        case 'E':
-        case 'F':
-        case 'J':
-        case 'L':
-        case 'B':
-        case '^':
-        case '~':
-        case '#':
-        case '$':
-        case '2':
-        case '4':
-        case '6':
-        case '7':
-            return 7;
-        case 'g':
-        case 'o':
-        case 'q':
-        case 'K':
-        case 'P':
-        case 'R':
-        case 'S':
-        case 'X':
-        case 'Y':
-        case 'Z':
-        case '+':
-        case '=':
-        case '?':
-        case '0':
-        case '3':
-        case '5':
-        case '8':
-        case '9':
-        case 0x80: // À
-        case 0x82: // Â
-        case 0x8C: // Ù
-        case 0x8D: // Û
-        case 0x8E: // Ü
-            return 8;
-        case 'w':
-        case 'N':
-        case 'T':
-        case 'U':
-        case 'V':
-        case 'H':
-        case 0x83: // Ä
-        case 0x84: // Ç
-            return 9;
-        case 'Q':
-        case 'W':
-        case '%':
-            return 11;
-        default:
-            return 10;
-    }
-}
-
 uint16_t Interface_DrawTextLine(GraphicsContext* gfx, char text[], int16_t x, int16_t y, uint16_t colorR,
                          uint16_t colorG, uint16_t colorB, uint16_t colorA, float textScale, uint8_t textShadow) {
 
@@ -6681,7 +6551,7 @@ uint16_t Interface_DrawTextLine(GraphicsContext* gfx, char text[], int16_t x, in
                 Interface_DrawTextCharacter(gfx, x + kerningOffset, y + lineOffset, texture, colorR, colorG, colorB,
                                             colorA, textScale, textShadow);
             }
-            kerningOffset += Interface_GetTextKerningOffset(processedText[i]) * textScale;
+            kerningOffset += (uint16_t)(Message_GetCharacterWidth(textureIndex) * textScale);
         }
     }
 
