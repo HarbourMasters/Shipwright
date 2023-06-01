@@ -411,6 +411,7 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         Randomizer::hintMessageTableID, TEXT_SARIAS_SONG_FACE_TO_FACE,
         CustomMessage(gSaveContext.sariaText, gSaveContext.sariaText, gSaveContext.sariaText, TEXTBOX_TYPE_BLUE));
 
+
     this->childAltarText = gSaveContext.childAltarText;
     this->adultAltarText = gSaveContext.adultAltarText;
     this->ganonHintText = gSaveContext.ganonHintText;
@@ -450,8 +451,12 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_FROGS_UNDERWATER,
             CustomMessage("Some frogs holding&%g{{item}}%w&are looking at you from underwater...",
-            "",
-            "", TEXTBOX_TYPE_BLUE)
+            "Unter Wasser gibt es Frösche,&die %g{{item}}%w&bei sich haben und Dich neugierig&beobachten...",
+            "Des grenouilles se trouvant&sous l'eau vous fixent attentivement,&tenant fermement&%r{{item}}%w.", TEXTBOX_TYPE_BLUE)
+        );
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_SARIAS_SONG_FOREST_SOUNDS,
+            CustomMessage("{{message}}", "{{message}}", "{{message}}", TEXTBOX_TYPE_BLUE)
         );
 
 
@@ -4494,7 +4499,7 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedEnhancementCheckbox("Saria (Magic)", "gRandomizeSariaHint", true, false);
                 UIWidgets::InsertHelpHoverText("Talking to Saria either in person or through Saria's Song will tell you the location of a progressive magic meter.");
                 UIWidgets::PaddedEnhancementCheckbox("Frog Ocarina Game", "gRandomizeFrogsHint", true, false);
-                UIWidgets::InsertHelpHoverText("Standing near the frogs in Zora's River will tell you the reward for playing all non-warp songs to them.");
+                UIWidgets::InsertHelpHoverText("Standing near the frogs in Zora's River will tell you the reward for the frogs' ocarina game.");
                 UIWidgets::PaddedEnhancementCheckbox("Warp Song text", "gRandomizeWarpSongText", true, false, !CVarGetInteger("gRandomizeShuffleWarpSongs", RO_GENERIC_OFF),
                  "This option is disabled since warp songs are not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::InsertHelpHoverText("Playing a warp song will tell you where it leads. (If warp song destinations are vanilla, this is always enabled.)");
@@ -4935,13 +4940,13 @@ CustomMessage Randomizer::GetMiscMessage(s16 scene, u16 originalTextId) {
                 if (originalTextId == TEXT_SHEIK_1) {
                     messageEntry.Replace("{{message}}", 
                     "@,&meet me at %gGanon's Castle%w&once you obtain the %rkey to his lair%w.",
-                    "Test",
-                    "Test");
+                    "@, wir treffen uns bei %gGanons Schloß%w,&sobald Du den %rSchlüssel zu&seinem Verließ%w hast.",
+                    "Retrouve-moi au %gChâteau de Ganon%w une&fois que tu auras obtenu la&Mrclé de son repaire%w.");
                 } else {
                     messageEntry.Replace("{{message}}",
                     "The time has come. Prepare yourself.",
-                    "Test",
-                    "Test");
+                    "Die Zeit ist gekommen.&Mach Dich bereit.",
+                    "Le moment est venu @.&Tu ferais bien de te préparer.");
                 }
                 break;
             case SCENE_GANONTIKA:
@@ -4950,15 +4955,17 @@ CustomMessage Randomizer::GetMiscMessage(s16 scene, u16 originalTextId) {
                         messageEntry.Replace("{{message}}", gSaveContext.sheikText, gSaveContext.sheikText, gSaveContext.sheikText);
                     } else {
                         messageEntry.Replace("{{message}}", "You are still ill-equipped to&face %rGanondorf%w."
-                        "^Seek out the %cMaster Sword%w,&%rsomething to hold your arrows%w,&and %gmagic to summon the light%w.",
-                        "Test1^Test2",
-                        "Test1^Test2");
+                        "^Seek out the %cMaster Sword%w,&%rsomething to hold your arrows%w,&and %gmagic%w to summon the %ylight%w.",
+                        "Du bist noch nicht gewappnet um Dich&%rGanondorf%w stellen zu können.^"
+                        "Begib Dich auf die Suche nach dem&%cMaster-Schwert%w, %retwas um deine Pfeilen&einen Sinn zu geben%w,^sowie %gdie Magie%w, um das %yLicht%w&herauf beschwören zu können.",
+                        "@, tu n'es toujours pas prêt à affronter&%rGanondorf%w.^"
+                        "Cherche l'%cÉpée de Légende%w,&%rquelque chose pour ranger tes flèches%w&et de la %gmagie%w pour invoquer la&%ylumière%w.");
                     }                   
                 } else {
                     messageEntry.Replace("{{message}}",
                     "If you're ready, then proceed.^Good luck.",
-                    "Test",
-                    "Test");
+                    "Wenn Du bereit bist, so schreite&voran.^Viel Glück.",
+                    "Si tu es prêt, tu peux y aller.^Bonne chance.");
                 }
                 break;
         }

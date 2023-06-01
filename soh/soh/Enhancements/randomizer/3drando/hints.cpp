@@ -801,13 +801,13 @@ void CreateGregRupeeHint() {
 
   Text temp1 = Text{
     "By the way, if you're interested, I saw the shiniest %gGreen Rupee%w somewhere in%g ",
-    "",
+    "Au fait, si ça t'intéresse, j'ai aperçu le plus éclatant des %gRubis Verts%w quelque part à %g",
     ""
   };
 
   Text temp2 = {
     "%w.^It's said to have %rmysterious powers%w...^But then, it could just be another regular rupee.&Oh well.",
-    "",
+    "%w. On dit qu'il possède des pouvoirs mystérieux... Mais bon, ça pourrait juste être un autre rubis ordinaire.",
     ""
   };
 
@@ -820,7 +820,7 @@ void CreateSheikText() {
   Text area = GetHintRegion(Location(lightArrowLocation)->GetParentRegionKey())->GetHint().GetText();
   Text temp1 = Text{
     "I overheard Ganondorf say that he misplaced the %rLight Arrows%w in&%g",
-    "",
+    "J'ai entendu dire que Ganondorf aurait caché les %rFlèches de Lumière%w dans %g",
     ""
   };
   Text temp2 = Text{"%w.", "%w.", "%w."};
@@ -833,10 +833,14 @@ void CreateSariaText() {
   Text area = GetHintRegion(Location(magicLocation)->GetParentRegionKey())->GetHint().GetText();
   Text temp1 = Text{
     "Did you feel the %gsurge of magic%w recently? A mysterious bird told me it came from %g",
-    "",
+    "As-tu récemment ressenti une vague de %gpuissance magique%w? Un mystérieux hibou m'a dit  qu'elle provenait du %g",
     ""
   };
-  Text temp2 = Text{"%w.^You should check that place out, @!$C", "%w.", "%w."};
+  Text temp2 = Text{
+    "%w.^You should check that place out, @!$C", 
+    "%w. Tu devrais aller y jeter un coup d'oeil, @!", 
+    "%w."
+  };
   sariaText = temp1 + area + temp2;
 }
 

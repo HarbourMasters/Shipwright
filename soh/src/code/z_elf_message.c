@@ -154,6 +154,9 @@ u16 ElfMessage_GetSariaText(PlayState* play) {
 
     if (!LINK_IS_ADULT) {
         if (Actor_FindNearby(play, &player->actor, ACTOR_EN_SA, 4, 800.0f) == NULL) {
+             if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SARIA_HINT)) {
+                return 0x161;
+            }
             msgs = sChildSariaMsgs;
         } else {
             return 0x0160; // Special text about Saria preferring to talk to you face-to-face
