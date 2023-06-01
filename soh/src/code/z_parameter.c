@@ -5007,8 +5007,8 @@ void Interface_Draw(PlayState* play) {
                         // Small Key Counter
                         gDPPipeSync(OVERLAY_DISP++);
                         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->magicAlpha);
-                        gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0,
-                              PRIMITIVE, 0);
+                        gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE,
+                                          TEXEL0, 0, PRIMITIVE, 0);
 
                         interfaceCtx->counterDigits[2] = 0;
                         interfaceCtx->counterDigits[3] = gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex];

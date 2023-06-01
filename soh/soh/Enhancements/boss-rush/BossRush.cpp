@@ -6,8 +6,8 @@
 #include <vector>
 
 typedef struct BossRushSetting {
-    std::vector<std::string> name;
-    std::vector<std::vector<std::string>> choices;
+    std::array<std::string, LANGUAGE_MAX> name;
+    std::vector<std::array<std::string, LANGUAGE_MAX>> choices;
 } BossRushSetting;
 
 BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = { 
