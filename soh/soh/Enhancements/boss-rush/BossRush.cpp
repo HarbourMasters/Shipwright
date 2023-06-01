@@ -109,19 +109,19 @@ BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = {
     }
 };
 
-extern "C" const char* BossRush_GetSettingName(uint8_t optionIndex, uint8_t language) {
+const char* BossRush_GetSettingName(uint8_t optionIndex, uint8_t language) {
     return BossRushOptions[optionIndex].name[language].c_str();
 }
 
-extern "C" const char* BossRush_GetSettingChoiceName(uint8_t optionIndex, uint8_t choiceIndex, uint8_t language) {
+const char* BossRush_GetSettingChoiceName(uint8_t optionIndex, uint8_t choiceIndex, uint8_t language) {
     return BossRushOptions[optionIndex].choices[choiceIndex][language].c_str();
 }
 
-extern "C" uint8_t BossRush_GetSettingOptionsAmount(uint8_t optionIndex) {
+uint8_t BossRush_GetSettingOptionsAmount(uint8_t optionIndex) {
     return BossRushOptions[optionIndex].choices.size();
 }
 
-extern "C" void BossRush_SpawnBlueWarps(PlayState* play) {
+void BossRush_SpawnBlueWarps(PlayState* play) {
 
     // Spawn blue warps in Chamber of Sages based on what bosses have been defeated.
     if (gSaveContext.linkAge == LINK_AGE_CHILD) {
@@ -165,7 +165,7 @@ extern "C" void BossRush_SpawnBlueWarps(PlayState* play) {
     }
 }
 
-extern "C" void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
+void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
 
     // If warping from Chamber of Sages, choose the correct boss room to teleport to.
     if (play->sceneNum == SCENE_KENJYANOMA) {
@@ -222,7 +222,7 @@ extern "C" void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpP
     }
 }
 
-extern "C" void BossRush_HandleBlueWarpHeal(PlayState* play) {
+void BossRush_HandleBlueWarpHeal(PlayState* play) {
 
     // This function gets called multiple times per blue warp, so only heal when player isn't at max HP.
     if (gSaveContext.bossRushOptions[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_EVERYBOSS &&
@@ -231,7 +231,7 @@ extern "C" void BossRush_HandleBlueWarpHeal(PlayState* play) {
     }
 }
 
-extern "C" void BossRush_HandleCompleteBoss(PlayState* play) {
+void BossRush_HandleCompleteBoss(PlayState* play) {
     if (!gSaveContext.isBossRush) {
         return;
     }
@@ -280,7 +280,7 @@ extern "C" void BossRush_HandleCompleteBoss(PlayState* play) {
     }
 }
 
-extern "C" void BossRush_InitSave() {
+void BossRush_InitSave() {
 
     // Set player name to Lonk for the few textboxes that show up during Boss Rush. Player can't input their own name.
     std::array<char, 8> brPlayerName = { 21, 50, 49, 46, 62, 62, 62, 62 };

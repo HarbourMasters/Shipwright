@@ -151,7 +151,7 @@ void CustomMessage::ReplaceSpecialCharacters() {
     }
 }
 
-extern "C" const char* Interface_ReplaceSpecialCharacters(char text[]) {
+const char* Interface_ReplaceSpecialCharacters(char text[]) {
     std::string textString(text);
 
     for (auto specialCharacterPair : textBoxSpecialCharacters) {
