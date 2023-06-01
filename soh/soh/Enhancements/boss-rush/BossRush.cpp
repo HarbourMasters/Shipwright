@@ -1,15 +1,9 @@
 ﻿#include "BossRush.h"
-#include "functions.h"
-#include "macros.h"
-#include "variables.h"
+#include "global.h"
 
 #include <array>
 #include <string>
 #include <vector>
-
-extern "C" {
-uint64_t GetUnixTimestamp();
-}
 
 typedef struct BossRushSetting {
     std::vector<std::string> name;
