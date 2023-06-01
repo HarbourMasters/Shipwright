@@ -1758,17 +1758,7 @@ void Play_Main(GameState* thisx) {
     }
 
     if (
-        CVarGetInteger("gMirroredWorldToggle", 1) && !(
-        (play->sceneNum >= SCENE_SHOP1 && play->sceneNum <= SCENE_FACE_SHOP) || 
-        play->sceneNum == SCENE_ENTRA ||
-        play->sceneNum == SCENE_ENTRA_N ||
-        play->sceneNum == SCENE_ENRUI ||
-        play->sceneNum == SCENE_HUT ||
-        play->sceneNum == SCENE_MARKET_ALLEY ||
-        play->sceneNum == SCENE_MARKET_ALLEY_N ||
-        play->sceneNum == SCENE_SHRINE ||
-        play->sceneNum == SCENE_SHRINE_N ||
-        play->sceneNum == SCENE_SHRINE_R)
+        CVarGetInteger("gMirroredWorldToggle", 1)
     ) {
         CVarSetInteger("gMirroredWorld", 1);
     } else {
