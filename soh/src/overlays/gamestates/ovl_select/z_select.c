@@ -1440,7 +1440,7 @@ void Better_Select_PrintMQSetting(SelectContext* this, GfxPrint* printer) {
                     label = this->opt ? "AN" : "AUS";
                     break;
                 case LANGUAGE_FRA:
-                    label = this->opt ? "ALLUME" : "ETEINT";
+                    label = this->opt ? "ACTIVE" : "DESACTIVE";
                     break;
             }
         } else {
