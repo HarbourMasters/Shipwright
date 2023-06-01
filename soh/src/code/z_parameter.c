@@ -5371,7 +5371,8 @@ void Interface_Draw(PlayState* play) {
             Interface_DrawActionButton(play, PosX_BtnA, PosY_BtnA);
         }
         gDPPipeSync(OVERLAY_DISP++);
-        gSPSetGeometryMode(OVERLAY_DISP++, G_CULL_BACK);
+        // Invert culling since we are not flipping z_parameter for mirror world
+        gSPSetGeometryMode(OVERLAY_DISP++, CVarGetInteger("gMirroredWorld", 0) ? G_CULL_FRONT : G_CULL_BACK);
         gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                           PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->aAlpha);
