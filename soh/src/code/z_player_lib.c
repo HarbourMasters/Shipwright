@@ -1776,7 +1776,7 @@ void func_80091A24(PlayState* play, void* seg04, void* seg06, SkelAnime* skelAni
 
     Matrix_SetTranslateRotateYXZ(pos->x - ((CVarGetInteger("gPauseLiveLink", 0) && LINK_AGE_IN_YEARS == YEARS_ADULT) ? 25 : 0),
                                  pos->y - (CVarGetInteger("gPauseTriforce", 0) ? 16 : 0), pos->z, rot);
-    Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
+    Matrix_Scale(scale * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1), scale, scale, MTXMODE_APPLY);
 
     gSPSegment(POLY_OPA_DISP++, 0x04, seg04);
     gSPSegment(POLY_OPA_DISP++, 0x06, seg06);
