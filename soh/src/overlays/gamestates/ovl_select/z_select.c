@@ -43,6 +43,11 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
     }
 
     if (this->isBetterWarp) {
+        CVarSetInteger("gBetterDebugWarpScreenCurrentScene", this->currentScene);
+        CVarSetInteger("gBetterDebugWarpScreenTopDisplayedScene", this->topDisplayedScene);
+        CVarSetInteger("gBetterDebugWarpScreenPageDownIndex", this->pageDownIndex);
+        CVarSave();
+
         if (ResourceMgr_GameHasMasterQuest() && ResourceMgr_GameHasOriginal()) {
             BetterSceneSelectEntrancePair entrancePair = this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex];
             // Check to see if the scene/entrance we just picked can be MQ'd
@@ -54,12 +59,7 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
                     CVarSetInteger("gBetterDebugWarpScreenMQMode", 2); // Force MQ for default vanilla scene
                 }
             }
-        };
-
-        CVarSetInteger("gBetterDebugWarpScreenCurrentScene", this->currentScene);
-        CVarSetInteger("gBetterDebugWarpScreenTopDisplayedScene", this->topDisplayedScene);
-        CVarSetInteger("gBetterDebugWarpScreenPageDownIndex", this->pageDownIndex);
-        CVarSave();
+        }
     }
 
     gSaveContext.respawnFlag = 0;
@@ -1468,10 +1468,10 @@ void Select_DrawMenu(SelectContext* this) {
     GfxPrint_Init(printer);
     GfxPrint_Open(printer, POLY_OPA_DISP);
     if (this->isBetterWarp) {
-        Better_Select_PrintMenu(this, printer);
-        Better_Select_PrintAgeSetting(this, printer, ((void)0, gSaveContext.linkAge));
         Better_Select_PrintTimeSetting(this, printer);
+        Better_Select_PrintAgeSetting(this, printer, ((void)0, gSaveContext.linkAge));
         Better_Select_PrintMQSetting(this, printer);
+        Better_Select_PrintMenu(this, printer);
     } else {
         Select_PrintMenu(this, printer);
         Select_PrintAgeSetting(this, printer, ((void)0, gSaveContext.linkAge));
