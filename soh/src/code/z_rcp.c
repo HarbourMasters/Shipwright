@@ -1312,6 +1312,10 @@ void Gfx_SetupDL_42Overlay(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
     gSPDisplayList(OVERLAY_DISP++, sSetupDL[SETUPDL_42]);
+    if (CVarGetInteger("gMirroredWorld", 0)) {
+        gSPClearGeometryMode(OVERLAY_DISP++, G_CULL_BACK);
+        gSPSetGeometryMode(OVERLAY_DISP++, G_CULL_FRONT);
+    }
 
     CLOSE_DISPS(gfxCtx);
 }

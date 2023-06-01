@@ -599,12 +599,6 @@ void HealthMeter_Draw(PlayState* play) {
                 }
             }
 
-            // Invert culling since we are not flipping z_parameter for mirror world
-            if (CVarGetInteger("gMirroredWorld", 0)) {
-                gSPClearGeometryMode(OVERLAY_DISP++, G_CULL_BACK);
-                gSPSetGeometryMode(OVERLAY_DISP++, G_CULL_FRONT);
-            }
-
             {
                 Mtx* matrix = Graph_Alloc(gfxCtx, sizeof(Mtx));
                 Matrix_SetTranslateScaleMtx2(matrix, 
