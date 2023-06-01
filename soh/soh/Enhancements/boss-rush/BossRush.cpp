@@ -1,5 +1,8 @@
 ﻿#include "BossRush.h"
-#include "global.h"
+#include "soh/OTRGlobals.h"
+#include "functions.h"
+#include "macros.h"
+#include "variables.h"
 
 #include <array>
 #include <string>
