@@ -220,6 +220,15 @@ extern "C" void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpP
     }
 }
 
+extern "C" void BossRush_HandleBlueWarpHeal(PlayState* play) {
+
+    // This function gets called multiple times per blue warp, so only heal when player isn't at max HP.
+    if (gSaveContext.bossRushOptions[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_EVERYBOSS &&
+        gSaveContext.health != gSaveContext.healthCapacity) {
+        Health_ChangeBy(play, 320);
+    }
+}
+
 extern "C" void BossRush_HandleCompleteBoss(PlayState* play) {
     if (!gSaveContext.isBossRush) {
         return;
@@ -255,8 +264,9 @@ extern "C" void BossRush_HandleCompleteBoss(PlayState* play) {
             break;
     }
 
-    // Fully heal the player
-    if (gSaveContext.bossRushOptions[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_EVERYBOSS) {
+    // Fully heal the player after Ganondorf
+    if (gSaveContext.bossRushOptions[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_EVERYBOSS &&
+        play->sceneNum == SCENE_GANON_BOSS) {
         Health_ChangeBy(play, 320);
     }
 

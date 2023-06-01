@@ -760,9 +760,9 @@ void DoorWarp1_AdultWarpIdle(DoorWarp1* this, PlayState* play) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EV_WARP_HOLE - SFX_FLAG);
 
     if (DoorWarp1_PlayerInRange(this, play)) {
-        // Pause timer and set boss timestamp as soon as player steps into the blue warp.
-        if (gSaveContext.isBossRush && play->sceneNum != SCENE_KENJYANOMA) {
-            BossRush_HandleCompleteBoss(play);
+        // Heal player in Boss Rush
+        if (gSaveContext.isBossRush) {
+            BossRush_HandleBlueWarpHeal(play);
         }
 
         player = GET_PLAYER(play);
