@@ -1,6 +1,7 @@
-﻿#include "bossrush.h"
+﻿#include "BossRush.h"
 #include "functions.h"
 #include "macros.h"
+#include "variables.h"
 
 #include <array>
 #include <string>
@@ -93,6 +94,13 @@ BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = {
     },
     {
         { "HOVER BOOTS:", "GLEITSTIEFEL:", "BOTTES DES AIRS:" },
+        {
+            { "No", "Nein", "Non" },
+            { "Yes", "Ja", "Oui" }
+        }
+    },
+    {
+        { "BUNNY HOOD:", "HASENOHREN:", "MASQUE DU LAPIN:" },
         {
             { "No", "Nein", "Non" },
             { "Yes", "Ja", "Oui" }
@@ -374,6 +382,10 @@ extern "C" void BossRush_InitSave() {
             break;
         default:
             break;
+    }
+
+    if (gSaveContext.bossRushOptions[BR_OPTIONS_BUNNYHOOD] == BR_CHOICE_BUNNYHOOD_YES) {
+        brItems[23] = ITEM_MASK_BUNNY;
     }
 
     for (int item = 0; item < ARRAY_COUNT(gSaveContext.inventory.items); item++) {

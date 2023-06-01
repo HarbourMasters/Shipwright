@@ -2,7 +2,7 @@
 #include <libultraship/bridge.h>
 #include "game-interactor/GameInteractor.h"
 #include "tts/tts.h"
-#include "soh/Enhancements/bossrush.h"
+#include "soh/Enhancements/boss-rush/BossRushTypes.h"
 
 extern "C" {
 #include <z64.h>

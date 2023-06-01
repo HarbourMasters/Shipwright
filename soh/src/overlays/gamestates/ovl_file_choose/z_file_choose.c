@@ -11,8 +11,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "soh_assets.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/bossrush.h"
-
+#include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 
 #define MIN_QUEST (ResourceMgr_GameHasOriginal() ? FS_QUEST_NORMAL : FS_QUEST_MASTER)

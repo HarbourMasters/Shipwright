@@ -8,7 +8,7 @@
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "libultraship/bridge.h"
 #include "soh/Enhancements/gameplaystats.h"
-#include "soh/Enhancements/bossrush.h"
+#include "soh/Enhancements/boss-rush/BossRushTypes.h"
 #include "soh/Enhancements/custom-message/CustomMessageInterfaceAddon.h"
 
 #ifdef _MSC_VER

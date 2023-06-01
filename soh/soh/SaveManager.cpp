@@ -7,7 +7,7 @@
 #include "macros.h"
 #include <variables.h>
 #include <Hooks.h>
-#include "soh/Enhancements/bossrush.h"
+#include "soh/Enhancements/boss-rush/BossRush.h"
 #include <libultraship/libultraship.h>
 
 #define NOGDI // avoid various windows defines that conflict with things in z64.h
