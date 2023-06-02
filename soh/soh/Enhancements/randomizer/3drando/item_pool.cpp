@@ -725,7 +725,7 @@ void GenerateItemPool() {
       AddItemToMainPool(BOMBCHU_10);
     }
   } else {
-    PlaceItemInLocation(KAK_GRANNYS_SHOP, BOTTLE_WITH_BLUE_POTION, false, true);
+    PlaceItemInLocation(KAK_GRANNYS_SHOP, BLUE_POTION_REFILL, false, true);
     PlaceItemInLocation(GC_MEDIGORON, GIANTS_KNIFE, false, true);
     PlaceItemInLocation(WASTELAND_BOMBCHU_SALESMAN, BOMBCHU_10, false, true);
   }

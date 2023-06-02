@@ -21,6 +21,86 @@ typedef struct {
 } Sprite;
 
 typedef enum {
+    HINT_TYPE_TRIAL,
+    HINT_TYPE_ALWAYS,
+    HINT_TYPE_WOTH, // Way of the Hero
+    HINT_TYPE_BARREN,
+    HINT_TYPE_ENTRANCE,
+    HINT_TYPE_SOMETIMES,
+    HINT_TYPE_RANDOM,
+    HINT_TYPE_ITEM,
+    HINT_TYPE_SONG,
+    HINT_TYPE_OVERWORLD,
+    HINT_TYPE_DUNGEON,
+    HINT_TYPE_JUNK,
+    HINT_TYPE_NAMED_ITEM,
+    HINT_TYPE_MAX
+} HintType;
+
+// Check types based on main settings
+typedef enum {
+    RCTYPE_STANDARD,       // Base set of rando checks
+    RCTYPE_SKULL_TOKEN,    // Gold Skulltulas
+    RCTYPE_COW,            // Cows
+    RCTYPE_ADULT_TRADE,    // Adult trade quest checks
+    RCTYPE_FROG_SONG,      // Frog song purple rupee checks
+    RCTYPE_MAP_COMPASS,    // Maps/Compasses
+    RCTYPE_SMALL_KEY,      // Small Keys
+    RCTYPE_GF_KEY,         // Gerudo Fortress Keys
+    RCTYPE_BOSS_KEY,       // Boss Keys
+    RCTYPE_GANON_BOSS_KEY, // Ganon's boss key
+    RCTYPE_SHOP,           // shops
+    RCTYPE_SCRUB,          // scrubs
+    RCTYPE_MERCHANT,       // merchants
+    RCTYPE_CHEST_GAME,     // todo replace this once we implement it, just using it to exclude for now
+    RCTYPE_LINKS_POCKET,   // todo this feels hacky
+    RCTYPE_GOSSIP_STONE,
+    RCTYPE_SONG_LOCATION,              // Song locations
+    RCTYPE_BOSS_HEART_OR_OTHER_REWARD, // Boss heart container or lesser dungeon rewards (lens, ice arrow)
+    RCTYPE_DUNGEON_REWARD,             // Dungeon rewards (blue warps)
+    RCTYPE_OCARINA,                    // Ocarina locations
+} RandomizerCheckType;
+
+typedef enum { RCVORMQ_VANILLA, RCVORMQ_MQ, RCVORMQ_BOTH } RandomizerCheckVanillaOrMQ;
+
+typedef enum {
+    RCAREA_KOKIRI_FOREST,
+    RCAREA_LOST_WOODS,
+    RCAREA_SACRED_FOREST_MEADOW,
+    RCAREA_HYRULE_FIELD,
+    RCAREA_LAKE_HYLIA,
+    RCAREA_GERUDO_VALLEY,
+    RCAREA_GERUDO_FORTRESS,
+    RCAREA_WASTELAND,
+    RCAREA_DESERT_COLOSSUS,
+    RCAREA_MARKET,
+    RCAREA_HYRULE_CASTLE,
+    RCAREA_KAKARIKO_VILLAGE,
+    RCAREA_GRAVEYARD,
+    RCAREA_DEATH_MOUNTAIN_TRAIL,
+    RCAREA_GORON_CITY,
+    RCAREA_DEATH_MOUNTAIN_CRATER,
+    RCAREA_ZORAS_RIVER,
+    RCAREA_ZORAS_DOMAIN,
+    RCAREA_ZORAS_FOUNTAIN,
+    RCAREA_LON_LON_RANCH,
+    RCAREA_DEKU_TREE,
+    RCAREA_DODONGOS_CAVERN,
+    RCAREA_JABU_JABUS_BELLY,
+    RCAREA_FOREST_TEMPLE,
+    RCAREA_FIRE_TEMPLE,
+    RCAREA_WATER_TEMPLE,
+    RCAREA_SPIRIT_TEMPLE,
+    RCAREA_SHADOW_TEMPLE,
+    RCAREA_BOTTOM_OF_THE_WELL,
+    RCAREA_ICE_CAVERN,
+    RCAREA_GERUDO_TRAINING_GROUND,
+    RCAREA_GANONS_CASTLE,
+    // If adding any more areas, Check Tracker will need a refactor
+    RCAREA_INVALID
+} RandomizerCheckArea;
+
+typedef enum {
     RC_UNKNOWN_CHECK,
     RC_LINKS_POCKET,
     RC_QUEEN_GOHMA,
@@ -1248,6 +1328,7 @@ typedef enum {
     RSK_RAINBOW_BRIDGE_REWARD_COUNT,
     RSK_RAINBOW_BRIDGE_DUNGEON_COUNT,
     RSK_RAINBOW_BRIDGE_TOKEN_COUNT,
+    RSK_BRIDGE_OPTIONS,
     RSK_GANONS_TRIALS,
     RSK_TRIAL_COUNT,
     RSK_STARTING_OCARINA,
@@ -1323,13 +1404,15 @@ typedef enum {
     RSK_LINKS_POCKET,
     RSK_RANDOM_MQ_DUNGEONS,
     RSK_MQ_DUNGEON_COUNT,
-    RSK_LACS_MEDALLION_COUNT,
     RSK_LACS_STONE_COUNT,
+    RSK_LACS_MEDALLION_COUNT,
     RSK_LACS_REWARD_COUNT,
     RSK_LACS_DUNGEON_COUNT,
     RSK_LACS_TOKEN_COUNT,
+    RSK_LACS_OPTIONS,
     RSK_KEYRINGS,
     RSK_KEYRINGS_RANDOM_COUNT,
+    RSK_KEYRINGS_GERUDO_FORTRESS,
     RSK_KEYRINGS_FOREST_TEMPLE,
     RSK_KEYRINGS_FIRE_TEMPLE,
     RSK_KEYRINGS_WATER_TEMPLE,
@@ -1431,6 +1514,13 @@ typedef enum {
     RO_BRIDGE_GREG,
 } RandoOptionRainbowBridge;
 
+// Bridge Reward Options settings (Standard rewards, Greg as reward, Greg as wildcard)
+typedef enum {
+    RO_BRIDGE_STANDARD_REWARD,
+    RO_BRIDGE_GREG_REWARD,
+    RO_BRIDGE_WILDCARD_REWARD,
+} RandoOptionBridgeRewards;
+
 //Shopsanity settings (off, 0-4 items, random)
 typedef enum {
     RO_SHOPSANITY_OFF,
@@ -1503,13 +1593,20 @@ typedef enum {
     RO_GANON_BOSS_KEY_OVERWORLD,
     RO_GANON_BOSS_KEY_ANYWHERE,
     RO_GANON_BOSS_KEY_LACS_VANILLA,
-    RO_GANON_BOSS_KEY_LACS_MEDALLIONS,
     RO_GANON_BOSS_KEY_LACS_STONES,
+    RO_GANON_BOSS_KEY_LACS_MEDALLIONS,
     RO_GANON_BOSS_KEY_LACS_REWARDS,
     RO_GANON_BOSS_KEY_LACS_DUNGEONS,
     RO_GANON_BOSS_KEY_LACS_TOKENS,
     RO_GANON_BOSS_KEY_KAK_TOKENS,
 } RandoOptionGanonsBossKey;
+
+// LACS Reward Options settings (Standard rewards, Greg as reward, Greg as wildcard)
+typedef enum {
+    RO_LACS_STANDARD_REWARD,
+    RO_LACS_GREG_REWARD,
+    RO_LACS_WILDCARD_REWARD,
+} RandoOptionLACSRewards;
 
 //Ganon's Trials
 typedef enum {

@@ -1087,7 +1087,7 @@ void DrawFlagsTab() {
 
     for (int i = 0; i < flagTables.size(); i++) {
         const FlagTable& flagTable = flagTables[i];
-        if (flagTable.flagTableType == RANDOMIZER_INF && !gSaveContext.n64ddFlag) {
+        if (flagTable.flagTableType == RANDOMIZER_INF && !gSaveContext.n64ddFlag && !gSaveContext.isBossRush) {
             continue;
         }
 
@@ -1708,14 +1708,16 @@ void DrawPlayerTab() {
         ImGui::Text("Player State");
         uint8_t bit[32] = {};
         uint32_t flags[3] = { player->stateFlags1, player->stateFlags2, player->stateFlags3 };
+        std::vector<std::vector<std::string>> flag_strs = { state1, state2, state3 };
 
         for (int j = 0; j <= 2; j++) {
             DrawGroupWithBorder([&]() {
                 ImGui::Text("State Flags %d", j + 1);
+                std::vector<std::string> state = flag_strs[j];
                 for (int i = 0; i <= 31; i++) {
                     bit[i] = ((flags[j] >> i) & 1);
                     if (bit[i] != 0) {
-                        ImGui::Text("Flag %d", i);
+                        ImGui::Text("%s", state[i].c_str());
                     }
                 }
             });

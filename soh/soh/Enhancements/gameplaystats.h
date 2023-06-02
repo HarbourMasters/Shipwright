@@ -17,6 +17,7 @@
     gSaveContext.sohStats.sceneTimer)
 
 void InitStatTracker();
+char* GameplayStats_GetCurrentTime();
 
 typedef enum {
     // 0x00 to 0x9B (0 to 155) used for getting items,
@@ -32,6 +33,7 @@ typedef enum {
     /* 0xA7 */ TIMESTAMP_DEFEAT_TWINROVA,       // z_boss_tw.c
     /* 0xA8 */ TIMESTAMP_DEFEAT_GANONDORF,      // z_boss_ganon.c
     /* 0xA9 */ TIMESTAMP_DEFEAT_GANON,          // z_boss_ganon2.c
+    /* 0xA9 */ TIMESTAMP_BOSSRUSH_FINISH,       // z_boss_ganon2.c
     /* 0xAA */ TIMESTAMP_FOUND_GREG,            // z_parameter.c
     /* 0xAB */ TIMESTAMP_MAX
 

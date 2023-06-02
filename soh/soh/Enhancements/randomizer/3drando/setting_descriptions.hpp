@@ -48,6 +48,8 @@ extern string_view bridgeRewardCountDesc;
 extern string_view bridgeDungeonCountDesc;
 extern string_view bridgeTokenCountDesc;
 
+extern string_view bridgeRewardOptionsDesc;
+
 extern string_view randomGanonsTrialsDesc;
 
 extern string_view ganonsTrialCountDesc;
@@ -195,11 +197,13 @@ extern string_view ganonKeyAnywhere;
 extern string_view ganonKeyLACS;
 extern string_view ganonKey100GS;
 
-extern string_view lacsMedallionCountDesc;
 extern string_view lacsStoneCountDesc;
+extern string_view lacsMedallionCountDesc;
 extern string_view lacsRewardCountDesc;
 extern string_view lacsDungeonCountDesc;
 extern string_view lacsTokenCountDesc;
+
+extern string_view lacsRewardOptionsDesc;
 
 extern string_view childStealthDesc;
 

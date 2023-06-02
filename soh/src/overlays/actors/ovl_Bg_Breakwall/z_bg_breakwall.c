@@ -9,7 +9,7 @@
 #include "objects/object_bwall/object_bwall.h"
 #include "objects/object_kingdodongo/object_kingdodongo.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 typedef struct {
     /* 0x00 */ CollisionHeader* colHeader;
@@ -242,7 +242,7 @@ void BgBreakwall_WaitForObject(BgBreakwall* this, PlayState* play) {
 
         this->dyna.actor.objBankIndex = this->bankIndex;
         Actor_SetObjectDependency(play, &this->dyna.actor);
-        this->dyna.actor.flags &= ~ACTOR_FLAG_4;
+        this->dyna.actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
         this->dyna.actor.draw = BgBreakwall_Draw;
         CollisionHeader_GetVirtual(sBombableWallInfo[wallType].colHeader, &colHeader);
         this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
@@ -274,7 +274,8 @@ void BgBreakwall_Wait(BgBreakwall* this, PlayState* play) {
         }
     }
     
-    if (this->collider.base.acFlags & 2 || blueFireArrowHit) {
+    // Break the floor immediately in Boss Rush so the player can jump in the hole immediately.
+    if (this->collider.base.acFlags & 2 || blueFireArrowHit || gSaveContext.isBossRush) {
         Vec3f effectPos;
         s32 wallType = ((this->dyna.actor.params >> 13) & 3) & 0xFF;
 
