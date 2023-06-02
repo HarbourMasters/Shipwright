@@ -289,6 +289,8 @@ jobs:
         key: ${{ runner.os }}-ccache
     - uses: ilammy/msvc-dev-cmd@v1
     - name: Build SoH
+      env: 
+        VCPKG_ROOT: D:/a/vcpkg
       run: |
         set $env:PATH="$env:USERPROFILE/.cargo/bin;$env:PATH"
         cmake -S . -B build-windows -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
