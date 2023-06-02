@@ -155,7 +155,7 @@ void AreaTable_Init_WaterTemple() {
                   EventAccess(&WaterTempleMiddle, {[]{return WaterTempleMiddle || CanPlay(ZeldasLullaby);}}),
                 }, {
                   //Locations
-                  LocationAccess(WATER_TEMPLE_GS_CENTRAL_PILLAR, {[]{return CanUse(LONGSHOT) || (((LogicWaterCentralGSFW && CanUse(FARORES_WIND)) || (LogicWaterCentralGSIrons && CanUse(IRON_BOOTS) && ((CanUse(HOOKSHOT) && CanUse(BOW)) || (CanUse(DINS_FIRE))))) && WaterTempleHigh  && HookshotOrBoomerang);}}),
+                  LocationAccess(WATER_TEMPLE_GS_CENTRAL_PILLAR, {[]{return CanUse(LONGSHOT) || (((LogicWaterCentralGSFW && CanUse(FARORES_WIND) && (CanUse(BOW) || CanUse(DINS_FIRE) || SmallKeys(WATER_TEMPLE, 5))) || (LogicWaterCentralGSIrons && CanUse(IRON_BOOTS) && ((CanUse(HOOKSHOT) && CanUse(BOW)) || (CanUse(DINS_FIRE))))) && WaterTempleHigh && HookshotOrBoomerang);}}),
                 }, {
                   //Exits
                   Entrance(WATER_TEMPLE_LOBBY,                {[]{return true;}}),
