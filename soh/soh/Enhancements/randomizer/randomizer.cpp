@@ -4820,7 +4820,6 @@ void DrawRandoEditor(bool& open) {
                 {RTAREA_ICE_CAVERN, true},
                 {RTAREA_GERUDO_TRAINING_GROUND, true},
                 {RTAREA_GANONS_CASTLE, true}
-                //{RTAREA_BK_SKIPS, true}
             };
             static std::unordered_map<RandomizerTrickArea, bool> areaTreeEnabled {
                 {RTAREA_GENERAL, true},
@@ -4856,7 +4855,6 @@ void DrawRandoEditor(bool& open) {
                 {RTAREA_ICE_CAVERN, true},
                 {RTAREA_GERUDO_TRAINING_GROUND, true},
                 {RTAREA_GANONS_CASTLE, true}
-                //{RTAREA_BK_SKIPS, true}
             };
 
             static std::unordered_map<RandomizerTrickTag, bool> showTag {
@@ -4865,12 +4863,7 @@ void DrawRandoEditor(bool& open) {
                 {RTTAG_ADVANCED,true},
                 {RTTAG_EXPERT,true},
                 {RTTAG_EXTREME,true}
-                /*{RTTAG_LENS,true},
-                {RTTAG_BKSKIP,true}
-                {RTTAG_EXPERIMENTAL,true}*/
             };
-            /*if (ImGui::BeginTabBar("TrickGlitchTabs", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
-                if (ImGui::BeginTabItem("Tricks")) {*/
             static ImGuiTextFilter trickSearch;
             trickSearch.Draw("Filter (inc,-exc)", 490.0f);
             if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
@@ -4910,19 +4903,6 @@ void DrawRandoEditor(bool& open) {
                     LUS::RequestCvarSaveOnNextTick();
                 }
             }
-            /* toggle for tags
-            if (ImGui::Button("Hide All")) {
-                for (auto [rtTag, isShown] : showTag) {
-                    showTag[rtTag] = false;
-                }
-            }
-            ImGui::SameLine();
-            if (ImGui::Button("Show All")) {
-                for (auto [rtTag, isShown] : showTag) {
-                    showTag[rtTag] = true;
-                }
-            }
-            */
             if (ImGui::BeginTable("trickTags", showTag.size(), ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders)) {  
                 for (auto [rtTag, isShown] : showTag) {
                     ImGui::TableNextColumn();
@@ -5177,186 +5157,6 @@ void DrawRandoEditor(bool& open) {
                 }
                 ImGui::EndTable();
             }
-                /*    ImGui::EndTabItem();
-                }
-                if (ImGui::BeginTabItem("Glitches")) {
-
-                    static ImGuiTextFilter glitchSearch;
-                    glitchSearch.Draw("Filter (inc,-exc)", 490.0f);
-                    if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHED) {
-                        ImGui::SameLine();
-                        if (ImGui::Button("Disable all")) {
-                            for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                                for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                    auto etfound = enabledGlitches.find(randomizerTrick);
-                                    if (rtObject.rtGlitch && etfound != enabledGlitches.end() && glitchSearch.PassFilter(rtObject.rtShortName.c_str()) && showType[rtArea]) {
-                                        enabledGlitches.erase(etfound);
-                                    }
-                                }
-                            }
-                        }
-                        ImGui::SameLine();
-                        if (ImGui::Button("Enable all")) {
-                            for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                                for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                    if (rtObject.rtGlitch && !enabledGlitches.count(rtObject.rt) && glitchSearch.PassFilter(rtObject.rtShortName.c_str()) && showType[rtArea]) {
-                                        enabledGlitches.insert(randomizerTrick);
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    if (ImGui::BeginTable("tableRandoGlitches", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                        ImGui::TableSetupColumn("Glitch Areas", ImGuiTableColumnFlags_WidthStretch, 100.0f);
-                        ImGui::TableSetupColumn("Disabled Glitches", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                        ImGui::TableSetupColumn("Enabled Glitches", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-                        ImGui::TableHeadersRow();
-                        ImGui::PopItemFlag();
-                        ImGui::TableNextRow();
-
-                        if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHED) {
-
-                            // COLUMN 1 - TAG FILTERS
-                            ImGui::TableNextColumn();
-                            bool hasGlitch = false;
-                            if (ImGui::Button("Show all")) {
-                                for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                                    showType[rtArea] = true;
-                                }
-                            }
-                            ImGui::SameLine();
-                            if (ImGui::Button("Hide all")) {
-                                for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                                    showType[rtArea] = false;
-                                }
-                            }
-                            ImGui::BeginChild("ChildGlitchAreas", ImVec2(0, -8));
-                            ImGui::BeginTable("GlitchAreas", 1, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders);
-                            for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                                hasGlitch = false;
-                                for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                    if (rtObject.rtGlitch) {
-                                        hasGlitch = true;
-                                        break;
-                                    }
-                                }
-                                if (hasGlitch) {
-                                    ImGui::TableNextRow();
-                                    ImGui::TableNextColumn();
-                                    ImGui::PushStyleColor(ImGuiCol_Header, RandomizerTricks::GetRTAreaColor(rtArea));
-                                    ImGui::Selectable(RandomizerTricks::GetRTAreaName(rtArea).c_str(), &showType[rtArea]);
-                                    ImGui::PopStyleColor(1);
-                                }
-                            }
-                            ImGui::EndTable();
-                            ImGui::EndChild();
-
-                            // COLUMN 2 - DISABLED GLITCHES
-                            ImGui::TableNextColumn();
-                            window->DC.CurrLineTextBaseOffset = 0.0f;
-                            
-                            ImGui::BeginChild("ChildGlitchesDisabled", ImVec2(0, -8));
-
-                            for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                                for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                    if (rtObject.visibleInImgui &&
-                                        glitchSearch.PassFilter(rtObject.rtShortName.c_str()) &&
-                                        showType[rtArea] &&
-                                        !enabledGlitches.count(rtObject.rt) &&
-                                        rtObject.rtGlitch) {
-                                        if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Right)) {
-                                            enabledGlitches.insert(rtObject.rt);
-                                            std::string enabledGlitchString = "";
-                                            for (auto enabledGlitchIt : enabledGlitches) {
-                                                enabledGlitchString += std::to_string(enabledGlitchIt);
-                                                enabledGlitchString += ",";
-                                            }
-                                            CVarSetString("gRandomizeEnabledGlitches", enabledGlitchString.c_str());
-                                            LUS::RequestCvarSaveOnNextTick()
-                                        }
-                                        ImGui::SameLine();
-                                        DrawAreaChip(rtArea);
-                                        DrawTagChips(*rtObject.rtTags);
-                                        ImGui::SameLine();
-                                        ImGui::Text(rtObject.rtShortName.c_str());
-                                        UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
-                                    }
-                                }
-                            }
-                            ImGui::EndChild();
-
-                            
-
-                            // COLUMN 3 - ENABLED GLITCHES
-                            ImGui::TableNextColumn();
-                            window->DC.CurrLineTextBaseOffset = 0.0f;
-                            
-                            ImGui::BeginChild("ChildGlitchesEnabled", ImVec2(0, -8));
-
-                            for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
-                                for (auto [randomizerTrick, rtObject] : rtObjects) {
-                                    auto etfound = enabledGlitches.find(rtObject.rt);
-                                    if (rtObject.visibleInImgui &&
-                                        glitchSearch.PassFilter(rtObject.rtShortName.c_str()) &&
-                                        showType[rtArea] &&
-                                        etfound != enabledGlitches.end() &&
-                                        rtObject.rtGlitch) {
-                                        
-                                        if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Left)) {
-                                            enabledGlitches.erase(etfound);
-                                            std::string enabledGlitchString = "";
-                                            for (auto enabledGlitchIt : enabledGlitches) {
-                                                enabledGlitchString += std::to_string(enabledGlitchIt);
-                                                enabledGlitchString += ",";
-                                            }
-                                            CVarSetString("gRandomizeEnabledGlitches", enabledGlitchString.c_str());
-                                            LUS::RequestCvarSaveOnNextTick()
-                                        }
-                                        ImGui::SameLine();
-                                        DrawAreaChip(rtArea);
-                                        DrawTagChips(*rtObject.rtTags);
-                                        ImGui::SameLine();
-                                        ImGui::Text(rtObject.rtShortName.c_str());
-                                        UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
-                                    }
-                                }
-                            }
-                            ImGui::EndChild();
-                        } else if (true) {
-                            ImGui::TableNextColumn();
-                            ImGui::BeginChild("ChildGlitchAreas", ImVec2(0, -8));
-                            ImGui::Text("Coming Soon.");
-                            ImGui::EndChild();
-                            ImGui::TableNextColumn();
-                            ImGui::BeginChild("ChildGlitchesDisabled", ImVec2(0, -8));
-                            ImGui::Text("Coming Soon.");
-                            ImGui::EndChild();
-                            ImGui::TableNextColumn();
-                            ImGui::BeginChild("ChildGlitchesEnabled", ImVec2(0, -8));
-                            ImGui::Text("Coming Soon.");
-                            ImGui::EndChild();
-                        } else {
-                            ImGui::TableNextColumn();
-                            ImGui::BeginChild("ChildGlitchAreas", ImVec2(0, -8));
-                            ImGui::Text("Requires Glitched Logic.");
-                            ImGui::EndChild();
-                            ImGui::TableNextColumn();
-                            ImGui::BeginChild("ChildGlitchesDisabled", ImVec2(0, -8));
-                            ImGui::Text("Requires Glitched Logic.");
-                            ImGui::EndChild();
-                            ImGui::TableNextColumn();
-                            ImGui::BeginChild("ChildGlitchesEnabled", ImVec2(0, -8));
-                            ImGui::Text("Requires Glitched Logic.");
-                            ImGui::EndChild();
-                        }
-                        ImGui::EndTable();
-                    }
-                    ImGui::EndTabItem();
-                }
-                ImGui::EndTabBar();
-            }*/
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
         } else {
