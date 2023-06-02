@@ -114,7 +114,7 @@ macro(vcpkg_bootstrap)
 endmacro()
 
 macro(_install_or_update_vcpkg)
-    if(NOT EXISTS ${VCPKG_ROOT})
+    if(NOT EXISTS ${VCPKG_ROOT}/.git)
         message(STATUS "Cloning vcpkg in ${VCPKG_ROOT}")
         execute_process(COMMAND git clone https://github.com/Microsoft/vcpkg.git ${VCPKG_ROOT} --depth 1)
 
