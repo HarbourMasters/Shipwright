@@ -155,6 +155,10 @@ typedef struct {
 
 typedef struct {
     RandomizerCheck check;
+    RandomizerCheck hintedCheck;
+    RandomizerGet rGet;
+    RandomizerCheckArea area;
+    HintType type;
     char hintText[200];
 } HintLocationRando;
 
@@ -298,6 +302,7 @@ typedef struct {
     /*        */ EntranceOverride entranceOverrides[ENTRANCE_OVERRIDES_MAX_COUNT];
     /*        */ char childAltarText[250];
     /*        */ char adultAltarText[750];
+    /*        */ RandomizerCheck rewardCheck[9];
     /*        */ char ganonHintText[150];
     /*        */ char gregHintText[250];
     /*        */ char ganonText[250];
@@ -308,6 +313,9 @@ typedef struct {
     /*        */ char warpRequiemText[100];
     /*        */ char warpNocturneText[100];
     /*        */ char warpPreludeText[100];
+    /*        */ RandomizerCheck ganonHintCheck;
+    /*        */ RandomizerCheck gregCheck;
+    /*        */ RandomizerCheck dampeCheck;
     /*        */ u8 seedIcons[5];
     /*        */ u16 randomizerInf[9];
     /*        */ u16 adultTradeItems;

@@ -11,6 +11,8 @@
 #include "utils.hpp"
 #include "shops.hpp"
 #include "hints.hpp"
+#include "pool_functions.hpp"
+#include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include <nlohmann/json.hpp>
 
 #include <cstdio>
@@ -32,6 +34,11 @@
 using json = nlohmann::json;
 
 json jsonData;
+std::map<HintKey, ItemLocation*> hintedLocations;
+
+extern std::unordered_map<HintType, std::string> hintTypeNames;
+extern std::array<std::string, 17> hintCategoryNames;
+extern Area* GetHintRegion(uint32_t);
 
 namespace {
 std::string placementtxt;
@@ -645,6 +652,10 @@ std::string AutoFormatHintTextString(std::string unformattedHintTextString) {
   return textStr;
 }
 
+ItemLocation* GetItemLocation(uint32_t item) {
+    return Location(FilterFromPool(allLocations, [item](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == item;})[0]);
+}
+
 // Writes the hints to the spoiler log, if they are enabled.
 static void WriteHints(int language) {
     std::string unformattedGanonText;
@@ -665,8 +676,8 @@ static void WriteHints(int language) {
             jsonData["warpRequiemText"] = GetWarpRequiemText().GetEnglish();
             jsonData["warpNocturneText"] = GetWarpNocturneText().GetEnglish();
             jsonData["warpPreludeText"] = GetWarpPreludeText().GetEnglish();
-            jsonData["childAltarText"] = GetChildAltarText().GetEnglish();
-            jsonData["adultAltarText"] = GetAdultAltarText().GetEnglish();
+            jsonData["childAltar"]["hintText"] = GetChildAltarText().GetEnglish();
+            jsonData["adultAltar"]["hintText"] = GetAdultAltarText().GetEnglish();
             break;
         case 2:
             unformattedGanonText = GetGanonText().GetFrench();
@@ -679,10 +690,35 @@ static void WriteHints(int language) {
             jsonData["warpRequiemText"] = GetWarpRequiemText().GetFrench();
             jsonData["warpNocturneText"] = GetWarpNocturneText().GetFrench();
             jsonData["warpPreludeText"] = GetWarpPreludeText().GetFrench();
-            jsonData["childAltarText"] = GetChildAltarText().GetFrench();
-            jsonData["adultAltarText"] = GetAdultAltarText().GetFrench();
+            jsonData["childAltar"]["hintText"] = GetChildAltarText().GetFrench();
+            jsonData["adultAltar"]["hintText"] = GetAdultAltarText().GetFrench();
             break;
     }
+
+    ItemLocation* emeraldLoc = GetItemLocation(KOKIRI_EMERALD);
+    ItemLocation* rubyLoc = GetItemLocation(GORON_RUBY);
+    ItemLocation* sapphireLoc = GetItemLocation(ZORA_SAPPHIRE);
+    std::string emeraldArea;
+    std::string erubyArea;
+    std::string sapphireArea;
+
+    jsonData["childAltar"]["rewards"]["emeraldLoc"] = emeraldLoc->GetName();
+    jsonData["childAltar"]["rewards"]["rubyLoc"] = rubyLoc->GetName();
+    jsonData["childAltar"]["rewards"]["sapphireLoc"] = sapphireLoc->GetName();
+
+    ItemLocation* forestMedallionLoc = GetItemLocation(FOREST_MEDALLION);
+    ItemLocation* fireMedallionLoc = GetItemLocation(FIRE_MEDALLION);
+    ItemLocation* waterMedallionLoc = GetItemLocation(WATER_MEDALLION);
+    ItemLocation* shadowMedallionLoc = GetItemLocation(SHADOW_MEDALLION);
+    ItemLocation* spiritMedallionLoc = GetItemLocation(SPIRIT_MEDALLION);
+    ItemLocation* lightMedallionLoc = GetItemLocation(LIGHT_MEDALLION);
+
+    jsonData["adultAltar"]["rewards"]["forestMedallionLoc"] = forestMedallionLoc->GetName();
+    jsonData["adultAltar"]["rewards"]["fireMedallionLoc"] = fireMedallionLoc->GetName();
+    jsonData["adultAltar"]["rewards"]["waterMedallionLoc"] = waterMedallionLoc->GetName();
+    jsonData["adultAltar"]["rewards"]["shadowMedallionLoc"] = shadowMedallionLoc->GetName();
+    jsonData["adultAltar"]["rewards"]["spiritMedallionLoc"] = spiritMedallionLoc->GetName();
+    jsonData["adultAltar"]["rewards"]["lightMedallionLoc"] = lightMedallionLoc->GetName();
 
     std::string ganonText = AutoFormatHintTextString(unformattedGanonText);
     std::string ganonHintText = AutoFormatHintTextString(unformattedGanonHintText);
@@ -691,8 +727,11 @@ static void WriteHints(int language) {
 
     jsonData["ganonText"] = ganonText;
     jsonData["ganonHintText"] = ganonHintText;
+    jsonData["ganonHintLoc"] = GetGanonHintLoc();
     jsonData["dampeText"] = dampesText;
+    jsonData["dampeHintLoc"] = GetDampeHintLoc();
     jsonData["gregText"] = gregText;
+    jsonData["gregLoc"] = GetItemLocation(GREG_RUPEE)->GetName();
 
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;
@@ -700,6 +739,7 @@ static void WriteHints(int language) {
 
     for (const uint32_t key : gossipStoneLocations) {
         ItemLocation* location = Location(key);
+        ItemLocation* hintedLocation = Location(location->GetHintedLocation());
         std::string unformattedHintTextString;
         switch (language) {
             case 0:
@@ -711,8 +751,20 @@ static void WriteHints(int language) {
                 break;
         }
 
+        HintType hintType = location->GetHintType();
+
         std::string textStr = AutoFormatHintTextString(unformattedHintTextString);
-        jsonData["hints"][location->GetName()] = textStr;
+        jsonData["hints"][location->GetName()]["hint"] = textStr;
+        jsonData["hints"][location->GetName()]["type"] = hintTypeNames.find(hintType)->second;
+        if (hintType == HINT_TYPE_ITEM || hintType == HINT_TYPE_NAMED_ITEM) {
+            jsonData["hints"][location->GetName()]["item"] = hintedLocation->GetPlacedItemName().GetEnglish();
+            if (hintType != HINT_TYPE_NAMED_ITEM) {
+                jsonData["hints"][location->GetName()]["location"] = hintedLocation->GetName();
+            }
+        }
+        if (hintType != HINT_TYPE_TRIAL && hintType != HINT_TYPE_JUNK) {
+            jsonData["hints"][location->GetName()]["area"] = location->GetHintedRegion();
+        }
     }
 }
 
@@ -747,6 +799,9 @@ static void WriteAllLocations(int language) {
         if (location->HasScrubsanityPrice() || location->HasShopsanityPrice()) {
           jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
         }
+        if (location->IsHintedAt()) {
+          hintedLocations.emplace(location->GetHintKey(), location);
+        }
 
         if (location->GetPlacedItemKey() == ICE_TRAP) {
           switch (language) {
@@ -767,6 +822,16 @@ static void WriteAllLocations(int language) {
       }
     }
 }
+
+//static void WriteHintData(int language) {
+//    for (auto [hintKey, item_location] : hintedLocations) {
+//        ItemLocation *hint_location = Location(hintKey);
+//        jsonData["hints"][hint_location->GetName()] = { { "text", hint_location->GetPlacedItemName().GetEnglish() },
+//                                                        { "item", item_location->GetPlacedItemName().GetEnglish() },
+//                                                        { "itemLocation", item_location->GetName() },
+//                                                        { "locationArea", item_location->GetParentRegionKey() } };
+//    }
+//}
 
 const char* SpoilerLog_Write(int language) {
     auto spoilerLog = tinyxml2::XMLDocument(false);
@@ -806,6 +871,7 @@ const char* SpoilerLog_Write(int language) {
     WriteHints(language);
     WriteShuffledEntrances();
     WriteAllLocations(language);
+    //WriteHintData(language);
 
     if (!std::filesystem::exists(LUS::Context::GetPathRelativeToAppDirectory("Randomizer"))) {
         std::filesystem::create_directory(LUS::Context::GetPathRelativeToAppDirectory("Randomizer"));
