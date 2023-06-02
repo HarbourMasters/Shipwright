@@ -829,6 +829,8 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
                 UIWidgets::PaddedEnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon", true, false);
                 UIWidgets::Tooltip("Always shows dungeon entrance icons on the minimap");
+                UIWidgets::PaddedEnhancementCheckbox("Show Gauntlets in First Person", "gFPSGauntlets", true, false);
+                UIWidgets::Tooltip("Renders Gauntlets when using the Bow and Hookshot like in OOT3D");
                 UIWidgets::Spacer(0);
                 if (ImGui::BeginMenu("Animated Link in Pause Menu")) {
                     ImGui::Text("Rotation");
@@ -870,7 +872,7 @@ namespace GameMenuBar {
                     if (CVarGetInteger("gPauseLiveLink", 0) >= 16) {
                         UIWidgets::EnhancementSliderInt("Frame to wait: %d", "##MinFrameCount", "gMinFrameCount", 1, 1000, "", 0);
                     }
-
+                    
                     ImGui::EndMenu();
                 }
                 UIWidgets::PaddedText("Fix Vanishing Paths", true, false);

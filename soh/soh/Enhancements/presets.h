@@ -203,6 +203,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gLowResMode",
     "gDrawLineupTick",
     "gQuickBongoKill",
+    "gFPSGauntlets",
     "gDirtPathFix",
     "gAuthenticLogo",
     "gPauseLiveLinkRotationSpeed",
