@@ -1170,7 +1170,8 @@ void Play_Update(PlayState* play) {
 
                 play->gameplayFrames++;
                 // Gameplay stat tracking
-                if (!gSaveContext.sohStats.gameComplete) {
+                if (!gSaveContext.sohStats.gameComplete &&
+                    (!gSaveContext.isBossRush || (gSaveContext.isBossRush && !gSaveContext.isBossRushPaused))) {
                       gSaveContext.sohStats.playTimer++;
                       gSaveContext.sohStats.sceneTimer++;
                       gSaveContext.sohStats.roomTimer++;

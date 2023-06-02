@@ -1,6 +1,9 @@
 #include "CustomMessageManager.h"
+#include "CustomMessageInterfaceAddon.h"
 #include <algorithm>
 #include <stdint.h>
+#include <cstring>
+#include <string>
 
 using namespace std::literals::string_literals;
 
@@ -146,6 +149,24 @@ void CustomMessage::ReplaceSpecialCharacters() {
             }
         }
     }
+}
+
+const char* Interface_ReplaceSpecialCharacters(char text[]) {
+    std::string textString(text);
+
+    for (auto specialCharacterPair : textBoxSpecialCharacters) {
+        size_t start_pos = 0;
+        std::string textBoxSpecialCharacterString = ""s;
+        textBoxSpecialCharacterString += specialCharacterPair.second;
+        while ((start_pos = textString.find(specialCharacterPair.first, start_pos)) != std::string::npos) {
+            textString.replace(start_pos, specialCharacterPair.first.length(), textBoxSpecialCharacterString);
+            start_pos += textBoxSpecialCharacterString.length();
+        }
+    }
+
+    char* textChar = new char[textString.length() + 1];
+    strcpy(textChar, textString.c_str());
+    return textChar;
 }
 
 void CustomMessage::ReplaceColors() {

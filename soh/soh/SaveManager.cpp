@@ -7,6 +7,7 @@
 #include "macros.h"
 #include <variables.h>
 #include <Hooks.h>
+#include "soh/Enhancements/boss-rush/BossRush.h"
 #include <libultraship/libultraship.h>
 
 #define NOGDI // avoid various windows defines that conflict with things in z64.h
@@ -583,6 +584,10 @@ void SaveManager::InitFileNormal() {
     gSaveContext.pendingSale = ITEM_NONE;
     gSaveContext.pendingSaleMod = MOD_NONE;
 
+    if (gSaveContext.isBossRush) {
+        BossRush_InitSave();
+    }
+
     //RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
 }
 
@@ -748,7 +753,8 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
 
 // SaveSection creates a copy of gSaveContext to prevent mid-save data modification, and passes its reference to SaveFileThreaded
 void SaveManager::SaveSection(int fileNum, int sectionID, bool threaded) {
-    if (fileNum == 0xFF) {
+    // Don't save in Boss rush.
+    if (fileNum == 0xFF || fileNum == 0xFE) {
         return;
     }
     // Don't save a nonexistent section

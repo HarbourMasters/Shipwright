@@ -8,6 +8,8 @@
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "libultraship/bridge.h"
 #include "soh/Enhancements/gameplaystats.h"
+#include "soh/Enhancements/boss-rush/BossRushTypes.h"
+#include "soh/Enhancements/custom-message/CustomMessageInterfaceAddon.h"
 
 #ifdef _MSC_VER
 #include <stdlib.h>
@@ -882,7 +884,8 @@ void func_80083108(PlayState* play) {
                     Interface_ChangeAlpha(12);
                 }
             }
-        } else if (play->sceneNum == SCENE_KENJYANOMA) {
+        // Don't hide the HUD in the Chamber of Sages when in Boss Rush.
+        } else if (play->sceneNum == SCENE_KENJYANOMA && !gSaveContext.isBossRush) {
             Interface_ChangeAlpha(1);
         } else if (play->sceneNum == SCENE_TURIBORI) {
             gSaveContext.unk_13E7 = 2;
@@ -4942,7 +4945,10 @@ void Interface_Draw(PlayState* play) {
                 PosX_RC = PosX_RC_ori;
             }
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rColor.r, rColor.g, rColor.b, interfaceCtx->magicAlpha);
-            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, PosX_RC, PosY_RC, 16, 16, 1 << 10, 1 << 10);
+            // Draw Rupee icon. Hide in Boss Rush.
+            if (!gSaveContext.isBossRush) {
+                OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, PosX_RC, PosY_RC, 16, 16, 1 << 10, 1 << 10);
+            }
 
             switch (play->sceneNum) {
                 case SCENE_BMORI1:
@@ -5057,10 +5063,12 @@ void Interface_Draw(PlayState* play) {
             svar2 = rupeeDigitsFirst[CUR_UPG_VALUE(UPG_WALLET)];
             svar5 = rupeeDigitsCount[CUR_UPG_VALUE(UPG_WALLET)];
 
-            for (svar1 = 0, svar3 = 16; svar1 < svar5; svar1++, svar2++, svar3 += 8) {
-                OVERLAY_DISP =
-                    Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[svar2]]), 8, 16,
-                        PosX_RC+svar3, PosY_RC, 8, 16, 1 << 10, 1 << 10);
+            // Draw Rupee Counter. Hide in Boss Rush.
+            if (!gSaveContext.isBossRush) {
+                for (svar1 = 0, svar3 = 16; svar1 < svar5; svar1++, svar2++, svar3 += 8) {
+                    OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[svar2]]),
+                                                 8, 16, PosX_RC + svar3, PosY_RC, 8, 16, 1 << 10, 1 << 10);
+                }
             }
         }
         else {
@@ -5983,7 +5991,8 @@ void Interface_Draw(PlayState* play) {
 void Interface_DrawTotalGameplayTimer(PlayState* play) {
     // Draw timer based on the Gameplay Stats total time.
 
-    if (CVarGetInteger("gGameplayStats.ShowIngameTimer", 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2) {
+    if ((gSaveContext.isBossRush && gSaveContext.bossRushOptions[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES) ||
+        (CVarGetInteger("gGameplayStats.ShowIngameTimer", 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2)) {
 
         s32 X_Margins_Timer = 0;
         if (CVarGetInteger("gIGTUseMargins", 0) != 0) {
@@ -6065,6 +6074,8 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
             // Draw regular text. Change color based on if the timer is paused, running or the game is completed.
             if (gSaveContext.sohStats.gameComplete) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, 255);
+            } else if (gSaveContext.isBossRushPaused) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 150, 150, 150, 255);
             } else {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
             }
@@ -6482,4 +6493,67 @@ void Interface_Update(PlayState* play) {
             gSaveContext.sunsSongState = SUNSSONG_SPECIAL;
         }
     }
+}
+
+void Interface_DrawTextCharacter(GraphicsContext* gfx, int16_t x, int16_t y, void* texture, uint16_t colorR,
+                                    uint16_t colorG, uint16_t colorB, uint16_t colorA, float textScale, uint8_t textShadow) {
+
+    int32_t scale = R_TEXT_CHAR_SCALE * textScale;
+    int32_t sCharTexSize = (scale / 100.0f) * 16.0f;
+    int32_t sCharTexScale = 1024.0f / (scale / 100.0f);
+
+    OPEN_DISPS(gfx);
+
+    gDPPipeSync(POLY_OPA_DISP++);
+
+    gDPLoadTextureBlock_4b(POLY_OPA_DISP++, texture, G_IM_FMT_I, FONT_CHAR_TEX_WIDTH, FONT_CHAR_TEX_HEIGHT, 0,
+                           G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                           G_TX_NOLOD);
+
+    if (textShadow) {
+        // Draw drop shadow
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, colorA);
+        gSPTextureRectangle(POLY_OPA_DISP++, (x + R_TEXT_DROP_SHADOW_OFFSET) << 2, (y + R_TEXT_DROP_SHADOW_OFFSET) << 2,
+                            (x + R_TEXT_DROP_SHADOW_OFFSET + sCharTexSize) << 2,
+                            (y + R_TEXT_DROP_SHADOW_OFFSET + sCharTexSize) << 2, G_TX_RENDERTILE, 0, 0, sCharTexScale,
+                            sCharTexScale);
+    }
+
+    gDPPipeSync(POLY_OPA_DISP++);
+
+    // Draw normal text
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, colorR, colorG, colorB, colorA);
+    gSPTextureRectangle(POLY_OPA_DISP++, x << 2, y << 2, (x + sCharTexSize) << 2, (y + sCharTexSize) << 2,
+                        G_TX_RENDERTILE, 0, 0, sCharTexScale, sCharTexScale);
+
+    CLOSE_DISPS(gfx);
+}
+
+uint16_t Interface_DrawTextLine(GraphicsContext* gfx, char text[], int16_t x, int16_t y, uint16_t colorR,
+                         uint16_t colorG, uint16_t colorB, uint16_t colorA, float textScale, uint8_t textShadow) {
+
+    uint16_t textureIndex;
+    uint16_t kerningOffset = 0;
+    uint16_t lineOffset = 0;
+    void* texture;
+    const char* processedText = Interface_ReplaceSpecialCharacters(text);
+    uint8_t textLength = strlen(processedText);
+
+    for (uint16_t i = 0; i < textLength; i++) {
+        if (processedText[i] == '\n') {
+            lineOffset += 15 * textScale;
+            kerningOffset = 0;
+        } else {
+            textureIndex = processedText[i] - 32;
+
+            if (textureIndex != 0) {
+                texture = Font_FetchCharTexture(textureIndex);
+                Interface_DrawTextCharacter(gfx, x + kerningOffset, y + lineOffset, texture, colorR, colorG, colorB,
+                                            colorA, textScale, textShadow);
+            }
+            kerningOffset += (uint16_t)(Message_GetCharacterWidth(textureIndex) * textScale);
+        }
+    }
+
+    return kerningOffset;
 }

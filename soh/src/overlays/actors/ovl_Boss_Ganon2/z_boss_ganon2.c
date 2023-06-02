@@ -7,6 +7,7 @@
 #include "objects/object_ganon_anime3/object_ganon_anime3.h"
 #include "objects/object_geff/object_geff.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/boss-rush/BossRush.h"
 
 #include <string.h>
 
@@ -233,7 +234,7 @@ void func_808FD5F4(BossGanon2* this, PlayState* play) {
                 sBossGanon2Zelda->actor.shape.rot.y = -0x7000;
 
                 // In rando, skip past the cutscene to the part where the player takes control again.
-                if (!gSaveContext.n64ddFlag) {
+                if (!gSaveContext.n64ddFlag && !gSaveContext.isBossRush) {
                     this->csState = 1;
                     this->csTimer = 0;
                 } else {
@@ -1681,6 +1682,7 @@ void func_8090120C(BossGanon2* this, PlayState* play) {
                 (player->swordState != 0) && (player->heldItemAction == PLAYER_IA_SWORD_MASTER)) {
                 func_80064520(play, &play->csCtx);
                 gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+                BossRush_HandleCompleteBoss(play);
                 gSaveContext.sohStats.gameComplete = true;
                 this->unk_39E = Play_CreateSubCamera(play);
                 Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
