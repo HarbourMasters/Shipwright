@@ -12,7 +12,7 @@
 #include "overlays/actors/ovl_Eff_Dust/z_eff_dust.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void Demo6K_Init(Actor* thisx, PlayState* play);
 void Demo6K_Destroy(Actor* thisx, PlayState* play);
@@ -166,7 +166,7 @@ void Demo6K_Init(Actor* thisx, PlayState* play) {
         case 17:
         case 18:
         case 19:
-            this->actor.flags |= ACTOR_FLAG_5;
+            this->actor.flags |= ACTOR_FLAG_DRAW_WHILE_CULLED;
             this->drawFunc = func_8096865C;
             this->initActionFunc = func_80967410;
             this->flags |= 1;

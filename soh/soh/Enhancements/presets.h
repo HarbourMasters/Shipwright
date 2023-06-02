@@ -44,6 +44,8 @@ typedef struct PresetEntry {
     { cvar, PRESET_ENTRY_TYPE_STRING, value }
 
 void DrawPresetSelector(PresetType presetType);
+void clearCvars(std::vector<const char*> cvarsToClear);
+void applyPreset(std::vector<PresetEntry> entries);
 
 // TODO: Ideally everything below this point will come from one/many JSON files
 
@@ -201,6 +203,62 @@ const std::vector<const char*> enhancementsCvars = {
     "gLowResMode",
     "gDrawLineupTick",
     "gQuickBongoKill",
+    "gFPSGauntlets",
+    "gDirtPathFix",
+    "gAuthenticLogo",
+    "gPauseLiveLinkRotationSpeed",
+    "gBowReticle",
+    "gFixTexturesOOB",
+    "gIvanCoopModeEnabled",
+};
+
+const std::vector<const char*> cheatCvars = {
+    "gConsoleEnabled",
+    "gActorViewerEnabled",
+    "gCollisionViewerEnabled",
+    "gDLViewerEnabled",
+    "gSaveEditorEnabled",
+    "gEnableWalkModify",
+    "gWalkSpeedToggle",
+    "gWalkModifierOne",
+    "gWalkModifierTwo",
+    "gGoronPot",
+    "gDampeWin",
+    "gCustomizeShootingGallery",
+    "gCustomizeBombchuBowling",
+    "gCustomizeFishing",
+    "gInfiniteAmmo",
+    "gInfiniteEpona",
+    "gInfiniteHealth",
+    "gInfiniteMagic",
+    "gInfiniteMoney",
+    "gInfiniteNayru",
+    "gNoClip",
+    "gClimbEverything",
+    "gHookshotEverything",
+    "gCheatHookshotReachMultiplier",
+    "gMoonJumpOnL",
+    "gSuperTunic",
+    "gEzISG",
+    "gTimelessEquipment",
+    "gCheatEasyPauseBufferEnabled",
+    "gCheatEasyInputBufferingEnabled",
+    "gNoRestrictItems",
+    "gFreezeTime",
+    "gPrevTime",
+    "gDropsDontDie",
+    "gFireproofDekuShield",
+    "gShieldTwoHanded",
+    "gTimeSync",
+    "gDebugEnabled",
+    "gSkulltulaDebugEnabled",
+    "gSkipLogoTitle",
+    "gSaveFileID",
+    "gEnableBetaQuest",
+    "gBetterDebugWarpScreen",
+    "gSwitchAge",
+    "gSwitchTimeline",
+    "gNoRedeadFreeze",
 };
 
 const std::vector<const char*> randomizerCvars = {
@@ -215,6 +273,7 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeBlueFireArrows",
     "gRandomizeBombchusInLogic",
     "gRandomizeBossKeysanity",
+    "gRandomizeBridgeRewardOptions",
     "gRandomizeCompleteMaskQuest",
     "gRandomizeCuccosToReturn",
     "gRandomizeDampeHint",
@@ -241,6 +300,7 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeLacsDungeonCount",
     "gRandomizeLacsMedallionCount",
     "gRandomizeLacsRewardCount",
+    "gRandomizeLacsRewardOptions",
     "gRandomizeLacsStoneCount",
     "gRandomizeLacsTokenCount",
     "gRandomizeLAHint",
@@ -322,6 +382,10 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeTokenCount",
     "gRandomizeWarpSongText",
     "gRandomizeZorasFountain",
+    "gRandomizeShuffle100GSReward",
+    "gRandomizeGregHint",
+    "gRandoManualSeedEntry",
+    "gRandomizerSettingsEnabled",
 };
 
 const std::vector<PresetEntry> vanillaPlusPresetEntries = {

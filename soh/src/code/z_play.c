@@ -29,6 +29,8 @@ u64 D_801614D0[0xA00];
 
 PlayState* gPlayState;
 
+s16 gEnPartnerId;
+
 void func_800BC450(PlayState* play) {
     Camera_ChangeDataIdx(GET_ACTIVE_CAM(play), play->unk_1242B - 1);
 }
@@ -338,29 +340,65 @@ u8 CheckDungeonCount() {
     return dungeonCount;
 }
 
+u8 CheckBridgeRewardCount() {
+    u8 bridgeRewardCount = 0;
+
+    switch (Randomizer_GetSettingValue(RSK_BRIDGE_OPTIONS)) {
+        case RO_BRIDGE_WILDCARD_REWARD:
+            if (Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
+                bridgeRewardCount += 1;
+            }
+            break;
+        case RO_BRIDGE_GREG_REWARD:
+            if (Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
+                bridgeRewardCount += 1;
+            }
+            break;
+    }
+    return bridgeRewardCount;
+}
+
+u8 CheckLACSRewardCount() {
+    u8 lacsRewardCount = 0;
+
+    switch (Randomizer_GetSettingValue(RSK_LACS_OPTIONS)) {
+        case RO_LACS_WILDCARD_REWARD:
+            if (Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
+                lacsRewardCount += 1;
+            }
+            break;
+        case RO_LACS_GREG_REWARD:
+            if (Flags_GetRandomizerInf(RAND_INF_GREG_FOUND)) {
+                lacsRewardCount += 1;
+            }
+            break;
+    }
+    return lacsRewardCount;
+}
+
 void GivePlayerRandoRewardZeldaLightArrowsGift(PlayState* play, RandomizerCheck check) {
     Player* player = GET_PLAYER(play);
 
     u8 meetsRequirements = 0;
 
     switch (Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY)) {
-        case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
-            if (CheckMedallionCount() >= Randomizer_GetSettingValue(RSK_LACS_MEDALLION_COUNT)) {
+        case RO_GANON_BOSS_KEY_LACS_STONES:
+            if ((CheckStoneCount() + CheckLACSRewardCount()) >= Randomizer_GetSettingValue(RSK_LACS_STONE_COUNT)) {
                 meetsRequirements = true;
             }
             break;
-        case RO_GANON_BOSS_KEY_LACS_STONES:
-            if (CheckStoneCount() >= Randomizer_GetSettingValue(RSK_LACS_STONE_COUNT)) {
+        case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
+            if ((CheckMedallionCount() + CheckLACSRewardCount()) >= Randomizer_GetSettingValue(RSK_LACS_MEDALLION_COUNT)) {
                 meetsRequirements = true;
             }
             break;
         case RO_GANON_BOSS_KEY_LACS_REWARDS:
-            if ((CheckMedallionCount() + CheckStoneCount()) >= Randomizer_GetSettingValue(RSK_LACS_REWARD_COUNT)) {
+            if ((CheckMedallionCount() + CheckStoneCount() + CheckLACSRewardCount()) >= Randomizer_GetSettingValue(RSK_LACS_REWARD_COUNT)) {
                 meetsRequirements = true;
             }
             break;
         case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
-            if (CheckDungeonCount() >= Randomizer_GetSettingValue(RSK_LACS_DUNGEON_COUNT)) {
+            if ((CheckDungeonCount() + CheckLACSRewardCount()) >= Randomizer_GetSettingValue(RSK_LACS_DUNGEON_COUNT)) {
                 meetsRequirements = true;
             }
             break;
@@ -693,7 +731,7 @@ void Play_Init(GameState* thisx) {
     #endif
 
     if (CVarGetInteger("gIvanCoopModeEnabled", 0)) {
-        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_PARTNER, GET_PLAYER(play)->actor.world.pos.x,
+        Actor_Spawn(&play->actorCtx, play, gEnPartnerId, GET_PLAYER(play)->actor.world.pos.x,
                     GET_PLAYER(play)->actor.world.pos.y + Player_GetHeight(GET_PLAYER(play)) + 5.0f,
                     GET_PLAYER(play)->actor.world.pos.z, 0, 0, 0, 1, true);
     }
@@ -728,7 +766,6 @@ void Play_Update(PlayState* play) {
 
     if ((HREG(81) == 18) && (HREG(82) < 0)) {
         HREG(82) = 0;
-        ActorOverlayTable_LogPrint();
     }
 
     if (CVarGetInteger("gFreeCamera", 0) && Player_InCsMode(play)) {
@@ -1133,7 +1170,8 @@ void Play_Update(PlayState* play) {
 
                 play->gameplayFrames++;
                 // Gameplay stat tracking
-                if (!gSaveContext.sohStats.gameComplete) {
+                if (!gSaveContext.sohStats.gameComplete &&
+                    (!gSaveContext.isBossRush || (gSaveContext.isBossRush && !gSaveContext.isBossRushPaused))) {
                       gSaveContext.sohStats.playTimer++;
                       gSaveContext.sohStats.sceneTimer++;
                       gSaveContext.sohStats.roomTimer++;
@@ -1678,6 +1716,8 @@ void Play_Draw(PlayState* play) {
     }
 
     CLOSE_DISPS(gfxCtx);
+
+    Interface_DrawTotalGameplayTimer(play);
 }
 
 time_t Play_GetRealTime() {
@@ -1884,6 +1924,8 @@ void Play_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         Entrance_OverrideSpawnScene(sceneNum, spawn);
     }
+
+    CVarClear("gBetterDebugWarpScreenMQMode");
 }
 
 void func_800C016C(PlayState* play, Vec3f* src, Vec3f* dest) {

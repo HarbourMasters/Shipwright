@@ -1070,6 +1070,7 @@ typedef enum {
     RSK_RAINBOW_BRIDGE_REWARD_COUNT,
     RSK_RAINBOW_BRIDGE_DUNGEON_COUNT,
     RSK_RAINBOW_BRIDGE_TOKEN_COUNT,
+    RSK_BRIDGE_OPTIONS,
     RSK_GANONS_TRIALS,
     RSK_TRIAL_COUNT,
     RSK_STARTING_OCARINA,
@@ -1145,11 +1146,12 @@ typedef enum {
     RSK_LINKS_POCKET,
     RSK_RANDOM_MQ_DUNGEONS,
     RSK_MQ_DUNGEON_COUNT,
-    RSK_LACS_MEDALLION_COUNT,
     RSK_LACS_STONE_COUNT,
+    RSK_LACS_MEDALLION_COUNT,
     RSK_LACS_REWARD_COUNT,
     RSK_LACS_DUNGEON_COUNT,
     RSK_LACS_TOKEN_COUNT,
+    RSK_LACS_OPTIONS,
     RSK_KEYRINGS,
     RSK_KEYRINGS_RANDOM_COUNT,
     RSK_KEYRINGS_GERUDO_FORTRESS,
@@ -1254,6 +1256,13 @@ typedef enum {
     RO_BRIDGE_GREG,
 } RandoOptionRainbowBridge;
 
+// Bridge Reward Options settings (Standard rewards, Greg as reward, Greg as wildcard)
+typedef enum {
+    RO_BRIDGE_STANDARD_REWARD,
+    RO_BRIDGE_GREG_REWARD,
+    RO_BRIDGE_WILDCARD_REWARD,
+} RandoOptionBridgeRewards;
+
 //Shopsanity settings (off, 0-4 items, random)
 typedef enum {
     RO_SHOPSANITY_OFF,
@@ -1326,13 +1335,20 @@ typedef enum {
     RO_GANON_BOSS_KEY_OVERWORLD,
     RO_GANON_BOSS_KEY_ANYWHERE,
     RO_GANON_BOSS_KEY_LACS_VANILLA,
-    RO_GANON_BOSS_KEY_LACS_MEDALLIONS,
     RO_GANON_BOSS_KEY_LACS_STONES,
+    RO_GANON_BOSS_KEY_LACS_MEDALLIONS,
     RO_GANON_BOSS_KEY_LACS_REWARDS,
     RO_GANON_BOSS_KEY_LACS_DUNGEONS,
     RO_GANON_BOSS_KEY_LACS_TOKENS,
     RO_GANON_BOSS_KEY_KAK_TOKENS,
 } RandoOptionGanonsBossKey;
+
+// LACS Reward Options settings (Standard rewards, Greg as reward, Greg as wildcard)
+typedef enum {
+    RO_LACS_STANDARD_REWARD,
+    RO_LACS_GREG_REWARD,
+    RO_LACS_WILDCARD_REWARD,
+} RandoOptionLACSRewards;
 
 //Ganon's Trials
 typedef enum {

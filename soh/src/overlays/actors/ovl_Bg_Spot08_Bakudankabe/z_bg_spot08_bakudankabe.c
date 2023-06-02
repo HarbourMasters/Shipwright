@@ -9,7 +9,7 @@
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 
-#define FLAGS ACTOR_FLAG_22
+#define FLAGS ACTOR_FLAG_IGNORE_POINTLIGHTS
 
 void BgSpot08Bakudankabe_Init(Actor* thisx, PlayState* play);
 void BgSpot08Bakudankabe_Destroy(Actor* thisx, PlayState* play);

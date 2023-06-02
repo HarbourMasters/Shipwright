@@ -276,6 +276,14 @@ std::string formatHexOnlyGameplayStat(uint32_t value) {
     return fmt::format("{:#x}", value, value);
 }
 
+extern "C" char* GameplayStats_GetCurrentTime() {
+    std::string timeString = formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME).c_str();
+    const int stringLength = timeString.length();
+    char* timeChar = new char[stringLength + 1];
+    strcpy(timeChar, timeString.c_str());
+    return timeChar;
+}
+
 void LoadStatsVersion1() {
     std::string buildVersion;
     SaveManager::Instance->LoadData("buildVersion", buildVersion);
@@ -598,18 +606,20 @@ void DrawGameplayStatsBreakdownTab() {
 }
 
 void DrawGameplayStatsOptionsTab() {
-    UIWidgets::PaddedEnhancementCheckbox("Show latest timestamps on top", "gGameplayStats.TimestampsReverse");
-    UIWidgets::PaddedEnhancementCheckbox("Room Breakdown", "gGameplayStats.RoomBreakdown");
+    UIWidgets::PaddedEnhancementCheckbox("Show in-game total timer", "gGameplayStats.ShowIngameTimer", true, false);
+    UIWidgets::InsertHelpHoverText("Keep track of the timer as an in-game HUD element. The position of the timer can be changed in the Cosmetics Editor.");
+    UIWidgets::PaddedEnhancementCheckbox("Show latest timestamps on top", "gGameplayStats.TimestampsReverse", true, false);
+    UIWidgets::PaddedEnhancementCheckbox("Room Breakdown", "gGameplayStats.RoomBreakdown", true, false);
     ImGui::SameLine();
     UIWidgets::InsertHelpHoverText("Allows a more in-depth perspective of time spent in a certain map.");   
-    UIWidgets::PaddedEnhancementCheckbox("RTA Timing on new files", "gGameplayStats.RTATiming");
+    UIWidgets::PaddedEnhancementCheckbox("RTA Timing on new files", "gGameplayStats.RTATiming", true, false);
     ImGui::SameLine();
     UIWidgets::InsertHelpHoverText(
         "Timestamps are relative to starting timestamp rather than in game time, usually necessary for races/speedruns.\n\n"
         "Starting timestamp is on first non-c-up input after intro cutscene.\n\n"
         "NOTE: THIS NEEDS TO BE SET BEFORE CREATING A FILE TO TAKE EFFECT"
     );   
-    UIWidgets::PaddedEnhancementCheckbox("Show additional detail timers", "gGameplayStats.ShowAdditionalTimers");
+    UIWidgets::PaddedEnhancementCheckbox("Show additional detail timers", "gGameplayStats.ShowAdditionalTimers", true, false);
     UIWidgets::PaddedEnhancementCheckbox("Show Debug Info", "gGameplayStats.ShowDebugInfo");
 }
 
@@ -788,6 +798,7 @@ void SetupDisplayNames() {
     strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_TWINROVA],      "Twinrova Defeated:  ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANONDORF],     "Ganondorf Defeated: ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANON],         "Ganon Defeated:     ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_FINISH],      "Boss Rush Finished: ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GREG],           "Greg Found:         ");
 }
 
@@ -798,39 +809,50 @@ void SetupDisplayColors() {
             case ITEM_KOKIRI_EMERALD:
             case ITEM_SONG_SARIA:
             case ITEM_MEDALLION_FOREST:
+            case TIMESTAMP_DEFEAT_GOHMA:
+            case TIMESTAMP_DEFEAT_PHANTOM_GANON:
             case TIMESTAMP_FOUND_GREG:
                 itemTimestampDisplayColor[i] = COLOR_GREEN;
                 break;
             case ITEM_SONG_BOLERO:
             case ITEM_GORON_RUBY:
             case ITEM_MEDALLION_FIRE:
+            case TIMESTAMP_DEFEAT_KING_DODONGO:
+            case TIMESTAMP_DEFEAT_VOLVAGIA:
                 itemTimestampDisplayColor[i] = COLOR_RED;
                 break;
             case ITEM_SONG_SERENADE:
             case ITEM_ZORA_SAPPHIRE:
             case ITEM_MEDALLION_WATER:
+            case TIMESTAMP_DEFEAT_BARINADE:
+            case TIMESTAMP_DEFEAT_MORPHA:
                 itemTimestampDisplayColor[i] = COLOR_BLUE;
                 break;
             case ITEM_SONG_LULLABY:
             case ITEM_SONG_NOCTURNE:
             case ITEM_MEDALLION_SHADOW:
+            case TIMESTAMP_DEFEAT_BONGO_BONGO:
                 itemTimestampDisplayColor[i] = COLOR_PURPLE;
                 break;
             case ITEM_SONG_EPONA:
             case ITEM_SONG_REQUIEM:
             case ITEM_MEDALLION_SPIRIT:
+            case TIMESTAMP_DEFEAT_TWINROVA:
                 itemTimestampDisplayColor[i] = COLOR_ORANGE;
                 break;
             case ITEM_SONG_SUN:
             case ITEM_SONG_PRELUDE:
             case ITEM_MEDALLION_LIGHT:
             case ITEM_ARROW_LIGHT:
+            case TIMESTAMP_DEFEAT_GANONDORF:
+            case TIMESTAMP_DEFEAT_GANON:
                 itemTimestampDisplayColor[i] = COLOR_YELLOW;
                 break;
             case ITEM_SONG_STORMS:
                 itemTimestampDisplayColor[i] = COLOR_GREY;
                 break;
             case ITEM_SONG_TIME:
+            case TIMESTAMP_BOSSRUSH_FINISH:
                 itemTimestampDisplayColor[i] = COLOR_LIGHT_BLUE;
                 break;
             default:
