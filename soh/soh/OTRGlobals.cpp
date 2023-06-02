@@ -1739,12 +1739,12 @@ extern "C" void* getN64WeirdFrame(s32 i) {
 
 extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSize) {
     CustomMessage customMessage("\x04\x1A\x08"
-                                "D\x96sirez-vous l'\x96quiper maintenant?"
+                                "Would you like to equip it now?"
                                 "\x09&&"
                                 "\x1B%g"
-                                "Oui"
+                                "Yes"
                                 "&"
-                                "Non"
+                                "No"
                                 "%w\x02",
                                 "\x04\x1A\x08"
                                 "M"
@@ -1756,13 +1756,13 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
                                 "&"
                                 "Nein!"
                                 "%w\x02",
-                                "\x04\x1A\x08"
-                                "Would you like to equip it now?"
+				"\x04\x1A\x08"
+                                "D\x96sirez-vous l'\x96quiper maintenant?"
                                 "\x09&&"
                                 "\x1B%g"
-                                "Yes"
+                                "Oui"
                                 "&"
-                                "No"
+                                "Non"
                                 "%w\x02");
     customMessage.Format();
 
