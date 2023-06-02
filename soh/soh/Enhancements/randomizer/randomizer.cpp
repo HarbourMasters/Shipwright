@@ -422,6 +422,7 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
                 "Yeaaarrgh! Ich bin verflucht!^Bitte rette mich, indem du %r{{params}} Skulltulas&%wzerstörst und ich werde dir dafür&%b{{check}} %wgeben!",
                 "Yeaaarrgh! Je suis maudit!^Détruit encore %r{{params}} Araignées de&la Malédiction%w et j'aurai quelque&chose à te donner!&%b({{check}})")
         );
+    CustomMessageManager::Instance->AddVariableReplacer(Randomizer::randoMiscHintsTableID, (CustomMessageVariableReplacer)Randomizer::GetCursedSkullMessage);
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY,
             CustomMessage(gSaveContext.dampeText,
@@ -439,6 +440,7 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         CustomMessage("Warp to&{{location}}?\x1B&%gOK&No%w\x02",
         "Zu {{location}}?\x1B&%gOK&No%w\x02",
         "Se téléporter vers&{{location}}?\x1B&%gOK!&Non%w\x02"));
+    CustomMessageManager::Instance->AddVariableReplacer(Randomizer::hintMessageTableID, (CustomMessageVariableReplacer)Randomizer::GetWarpSongMessage);
 
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN,
         CustomMessage("Water level control system.&Keep away!",
@@ -569,6 +571,8 @@ void Randomizer::LoadMerchantMessages(const char* spoilerFileName) {
             CustomMessage("\x08{{item}}  {{price}} Rupees\x09&&\x1B%gBuy&Don't buy%w\x09\x02",
                 "\x08{{item}}  {{price}} Rubine\x09&&\x1B%gKaufen&Nicht kaufen%w\x09\x02",
                 "\x08{{item}}  {{price}} Rubis\x09&&\x1B%gAcheter&Ne pas acheter%w\x09\x02"));
+        CustomMessageManager::Instance->AddVariableReplacer(Randomizer::merchantMessageTableID,
+                                                            (CustomMessageVariableReplacer)GetMerchantMessage);
 }
 
 void Randomizer::LoadItemLocations(const char* spoilerFileName, bool silent) {
@@ -4832,19 +4836,16 @@ void DrawRandoEditor(bool& open) {
     ImGui::End();
 }
 
-CustomMessage Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
-    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(
-        Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT);
-    if (mysterious) {
+void Randomizer::GetWarpSongMessage(u16 textId, CustomMessage& message) {
+    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_WARP_SONG_HINTS) == RO_GENERIC_ON) {
         std::array<const char*, LANGUAGE_MAX> locationName ={
             "a mysterious place",
             "ein mysteriöser Ort",
             "un endroit mystérieux",
         };
 
-        messageEntry.Replace("{{location}}", locationName[0],
+        message.Replace("{{location}}", locationName[0],
             locationName[1], locationName[2]);
-        return messageEntry;
     }
 
     const char* locationName;
@@ -4869,67 +4870,81 @@ CustomMessage Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
             break;
     }
 
-    messageEntry.Replace("{{location}}", locationName);
-    return messageEntry;
+    message.Replace("{{location}}", locationName);
 }
 
-CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious) {
-    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, textId);
-    RandomizerCheck rc = GetCheckFromRandomizerInf(randomizerInf);
-    RandomizerGet shopItemGet = this->itemLocations[rc].rgID;
-    std::array<std::string, LANGUAGE_MAX> shopItemName;
-    if (mysterious) {
-        shopItemName = {
-            "mysterious item",
-            "mysteriösen Gegenstand",
-            "objet mystérieux"
-        };
-    // TODO: This should eventually be replaced with a full fledged trick model & trick name system
-    } else if (shopItemGet == RG_ICE_TRAP) {
-        shopItemGet = this->itemLocations[rc].fakeRgID;
-        shopItemName = {
-            std::string(this->itemLocations[rc].trickName),
-            std::string(this->itemLocations[rc].trickName),
-            std::string(this->itemLocations[rc].trickName)
-        };
-    } else { 
-        shopItemName = EnumToSpoilerfileGetName[shopItemGet];
-    }
-    u16 shopItemPrice = merchantPrices[rc];
-
-    if (textId == TEXT_SCRUB_RANDOM && shopItemPrice == 0) {
-        messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_SCRUB_RANDOM_FREE);
-    } else if (textId == TEXT_GRANNYS_SHOP) {
-        // Capitalize the first letter for the item in Granny's text as the item is the first word presented
-        for (auto &itemName : shopItemName) {
-            itemName[0] = std::toupper(itemName[0]);
+void Randomizer::GetMerchantMessage(u16 textId, CustomMessage& message) {
+    u16 calledTextId = gPlayState->msgCtx.textId;
+    RandomizerInf randoInf;
+    bool mysterious = false;
+    if (textId >= TEXT_SHOP_ITEM_RANDOM && calledTextId <= TEXT_SHOP_ITEM_RANDOM + (NUM_SHOP_ITEMS * 2)) {
+        if (textId < TEXT_SHOP_ITEM_RANDOM + NUM_SHOP_ITEMS) {
+            randoInf = (RandomizerInf)((calledTextId - TEXT_SHOP_ITEM_RANDOM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
+        } else {
+            randoInf = (RandomizerInf)((calledTextId - (TEXT_SHOP_ITEM_RANDOM + NUM_SHOP_ITEMS)) +
+                                       RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
+        }
+    } else if (textId >= TEXT_SCRUB_RANDOM && textId <= TEXT_SCRUB_RANDOM + NUM_SCRUBS) {
+        mysterious =
+            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SCRUB_TEXT_HINT) == RO_GENERIC_OFF;
+            randoInf = (RandomizerInf)((calledTextId - TEXT_SCRUB_RANDOM) +
+                                RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT);
+    } else {
+        mysterious = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) !=
+                     RO_SHUFFLE_MERCHANTS_ON_HINT;
+        if (textId == TEXT_MEDIGORON) {
+            randoInf = RAND_INF_MERCHANTS_MEDIGORON;
+        } else if (textId == TEXT_GRANNYS_SHOP) {
+            randoInf = RAND_INF_MERCHANTS_GRANNYS_SHOP;
+        } else {
+            randoInf = RAND_INF_MERCHANTS_CARPET_SALESMAN;
         }
     }
+        RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromRandomizerInf(randoInf);
+        RandomizerGet shopItemGet = OTRGlobals::Instance->gRandomizer->itemLocations[rc].rgID;
+        std::array<std::string, LANGUAGE_MAX> shopItemName;
+        if (mysterious) {
+            shopItemName = { "mysterious item", "mysteriösen Gegenstand", "objet mystérieux" };
+            // TODO: This should eventually be replaced with a full fledged trick model & trick name system
+        } else if (shopItemGet == RG_ICE_TRAP) {
+            shopItemGet = OTRGlobals::Instance->gRandomizer->itemLocations[rc].fakeRgID;
+            shopItemName = { std::string(OTRGlobals::Instance->gRandomizer->itemLocations[rc].trickName),
+                             std::string(OTRGlobals::Instance->gRandomizer->itemLocations[rc].trickName),
+                             std::string(OTRGlobals::Instance->gRandomizer->itemLocations[rc].trickName) };
+        } else {
+            shopItemName = OTRGlobals::Instance->gRandomizer->EnumToSpoilerfileGetName[shopItemGet];
+        }
+        u16 shopItemPrice = OTRGlobals::Instance->gRandomizer->merchantPrices[rc];
 
-    messageEntry.Replace("{{item}}", std::move(shopItemName[0]), std::move(shopItemName[1]), std::move(shopItemName[2]));
-    messageEntry.Replace("{{price}}", std::to_string(shopItemPrice));
-    return messageEntry;
-}
+        if (textId == TEXT_GRANNYS_SHOP) {
+            // Capitalize the first letter for the item in Granny's text as the item is the first word presented
+            for (auto& itemName : shopItemName) {
+                itemName[0] = std::toupper(itemName[0]);
+            }
+        }
 
-CustomMessage Randomizer::GetCursedSkullMessage(s16 params) {
-    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_CURSED_SKULLTULA_PEOPLE);
-    RandomizerCheck rc = GetCheckFromActor(ACTOR_EN_SSH, SCENE_KINSUTA, params);
-    RandomizerGet itemGet = this->itemLocations[rc].rgID;
-    std::array<std::string, LANGUAGE_MAX> itemName;
-    if (itemGet == RG_ICE_TRAP) {
-        itemGet = this->itemLocations[rc].fakeRgID;
-        itemName = {
-            std::string(this->itemLocations[rc].trickName),
-            std::string(this->itemLocations[rc].trickName),
-            std::string(this->itemLocations[rc].trickName)
-        };
-    } else {
-        itemName = EnumToSpoilerfileGetName[itemGet];
+        message.Replace("{{item}}", std::move(shopItemName[0]), std::move(shopItemName[1]), std::move(shopItemName[2]));
+        message.Replace("{{price}}", std::to_string(shopItemPrice));
     }
 
-    messageEntry.Replace("{{params}}", std::to_string(params*10));
-    messageEntry.Replace("{{check}}", std::move(itemName[0]), std::move(itemName[1]), std::move(itemName[2]));
-    return messageEntry;
+void Randomizer::GetCursedSkullMessage(u16 textId, CustomMessage& message) {
+    s16 params = GET_PLAYER(gPlayState)->targetActor->params;
+    RandomizerCheck rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(ACTOR_EN_SSH, SCENE_KINSUTA, params);
+    RandomizerGet itemGet = OTRGlobals::Instance->gRandomizer->itemLocations[rc].rgID;
+    std::array<std::string, LANGUAGE_MAX> itemName;
+    if (itemGet == RG_ICE_TRAP) {
+        itemGet = OTRGlobals::Instance->gRandomizer->itemLocations[rc].fakeRgID;
+        itemName = {
+            std::string(OTRGlobals::Instance->gRandomizer->itemLocations[rc].trickName),
+            std::string(OTRGlobals::Instance->gRandomizer->itemLocations[rc].trickName),
+            std::string(OTRGlobals::Instance->gRandomizer->itemLocations[rc].trickName)
+        };
+    } else {
+        itemName = OTRGlobals::Instance->gRandomizer->EnumToSpoilerfileGetName[itemGet];
+    }
+
+    message.Replace("{{params}}", std::to_string(params*10));
+    message.Replace("{{check}}", std::move(itemName[0]), std::move(itemName[1]), std::move(itemName[2]));
 }
 
 static const char* mapGetItemHints[3][2] = {
@@ -4938,8 +4953,8 @@ static const char* mapGetItemHints[3][2] = {
     { "&Elle vous semble %rordinaire%w.", "&Étrange... les mots %r\"Master&Quest\"%w sont gravés dessus." },
 };
 
-CustomMessage Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEntry) {
-    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, itemEntry.getItemId);
+void Randomizer::GetMapGetItemMessageWithHint(u16 textId, CustomMessage& message) {
+    GetItemEntry itemEntry = GET_PLAYER(gPlayState)->getItemEntry;
     int sceneNum;
     switch (itemEntry.getItemId) {
         case RG_DEKU_TREE_MAP:
@@ -4974,15 +4989,17 @@ CustomMessage Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEntry) {
             break;
     }
 
-    if (this->masterQuestDungeons.empty() || this->masterQuestDungeons.size() >= 12) {
-        messageEntry.Replace("{{typeHint}}", "");
-    } else if (ResourceMgr_IsSceneMasterQuest(sceneNum)) {
-        messageEntry.Replace("{{typeHint}}", mapGetItemHints[0][1], mapGetItemHints[1][1], mapGetItemHints[2][1]);
-    } else {
-        messageEntry.Replace("{{typeHint}}", mapGetItemHints[0][0], mapGetItemHints[1][0], mapGetItemHints[2][0]);
-    }
+    std::shared_ptr<Randomizer> rando = OTRGlobals::Instance->gRandomizer;
 
-    return messageEntry;
+    if (rando->masterQuestDungeons.empty() || rando->masterQuestDungeons.size() >= 12) {
+        message.Replace("{{typeHint}}", "");
+    }
+    else if (ResourceMgr_IsSceneMasterQuest(sceneNum)) {
+        message.Replace("{{typeHint}}", mapGetItemHints[0][1], mapGetItemHints[1][1], mapGetItemHints[2][1]);
+    }
+    else {
+        message.Replace("{{typeHint}}", mapGetItemHints[0][0], mapGetItemHints[1][0], mapGetItemHints[2][0]);
+    }
 }
 
 template<size_t N>
@@ -4995,6 +5012,8 @@ void CreateGetItemMessages(const std::array<GetItemMessage, N>* messageEntries) 
             CustomMessage(messageEntry.english, messageEntry.german, messageEntry.french, TEXTBOX_TYPE_BLUE,
                           TEXTBOX_POS_BOTTOM));
     }
+    customMessageManager->AddVariableReplacer(Randomizer::getItemMessageTableID,
+                                              (CustomMessageVariableReplacer)Randomizer::GetMapGetItemMessageWithHint);
 }
 
 void CreateRupeeMessages() {
@@ -5022,13 +5041,13 @@ void CreateRupeeMessages() {
             CustomMessage("You found" + rupeeText + " !", "Du hast" + rupeeText + "  gefunden!",
                           "Vous obtenez" + rupeeText + " !", TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM));
     }
+    customMessageManager->AddVariableReplacer(Randomizer::rupeeMessageTableID,
+                                              (CustomMessageVariableReplacer)Randomizer::GetRupeeMessage);
 }
 
-CustomMessage Randomizer::GetRupeeMessage(u16 rupeeTextId) {
-    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::rupeeMessageTableID, rupeeTextId);
-    messageEntry.Replace("{{rupee}}", RandomElement(englishRupeeNames),
+void Randomizer::GetRupeeMessage(u16 rupeeTextId, CustomMessage& message) {
+    message.Replace("{{rupee}}", RandomElement(englishRupeeNames),
                                                  RandomElement(germanRupeeNames), RandomElement(frenchRupeeNames));
-    return messageEntry;
 }
 
 void CreateNaviRandoMessages() {
@@ -5312,13 +5331,12 @@ void CreateFireTempleGoronMessages() {
     for (u8 i = 0; i <= NUM_GORON_MESSAGES - 1; i++) {
         customMessageManager->CreateMessage(customMessageTableID, goronIDs[i], FireTempleGoronMessages[i]);
     }
+    customMessageManager->AddVariableReplacer(customMessageTableID, (CustomMessageVariableReplacer)Randomizer::GetGoronMessage);
 }
 
-CustomMessage Randomizer::GetGoronMessage(u16 index) {
-    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, goronIDs[index]);
-    messageEntry.Replace("{{days}}", std::to_string(gSaveContext.totalDays));
-    messageEntry.Replace("{{a_btn}}", std::to_string(gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_A]));
-    return messageEntry;
+void Randomizer::GetGoronMessage(u16 textId, CustomMessage& message) {
+    message.Replace("{{days}}", std::to_string(gSaveContext.totalDays));
+    message.Replace("{{a_btn}}", std::to_string(gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_A]));
 }
 
 void Randomizer::CreateCustomMessages() {

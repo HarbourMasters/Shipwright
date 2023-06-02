@@ -1,6 +1,7 @@
 #include "CustomMessageManager.h"
 #include <algorithm>
 #include <stdint.h>
+#include <stdexcept>
 
 using namespace std::literals::string_literals;
 
@@ -186,14 +187,40 @@ const std::string CustomMessage::PLAYER_NAME() const {
     return "\x0F"s;
 }
 
+bool CustomMessageTable::InsertCustomMessage(uint16_t textId, CustomMessage message) {
+    auto insertResultPair = mTable.emplace(textId, message);
+    return insertResultPair.second;
+}
+
+CustomMessage CustomMessageTable::RetrieveMessage(uint16_t textId) {
+    CustomMessage message;
+    try {
+        message = mTable.at(textId);
+    } catch (std::out_of_range e) {
+        throw e;
+    }
+    for( CustomMessageVariableReplacer replacer : mVariableReplacers) {
+        replacer(textId, message);
+    }
+    return message;
+}
+
+void CustomMessageTable::AddVariableReplacer(CustomMessageVariableReplacer variableReplacer) {
+    mVariableReplacers.push_back(variableReplacer);
+}
+
+void CustomMessageTable::Clear() {
+    mTable.clear();
+}
+
 bool CustomMessageManager::InsertCustomMessage(std::string tableID, uint16_t textID, CustomMessage messages) {
     auto foundMessageTable = messageTables.find(tableID);
     if (foundMessageTable == messageTables.end()) {
         return false;
     }
     auto& messageTable = foundMessageTable->second;
-    auto messageInsertResult = messageTable.emplace(textID, messages);
-    return messageInsertResult.second;
+    bool result = messageTable.InsertCustomMessage(textID, messages);
+    return result;
 }
 
 bool CustomMessageManager::CreateGetItemMessage(std::string tableID, uint16_t giid, ItemID iid,
@@ -209,16 +236,17 @@ bool CustomMessageManager::CreateMessage(std::string tableID, uint16_t textID, C
 }
 
 CustomMessage CustomMessageManager::RetrieveMessage(std::string tableID, uint16_t textID) {
-    std::unordered_map<std::string, CustomMessageTable>::const_iterator foundMessageTable = messageTables.find(tableID);
+    auto foundMessageTable = messageTables.find(tableID);
     if (foundMessageTable == messageTables.end()) {
         throw(MessageNotFoundException(tableID, textID));
     }
-    CustomMessageTable messageTable = foundMessageTable->second;
-    std::unordered_map<uint16_t, CustomMessage>::const_iterator foundMessage = messageTable.find(textID);
-    if (foundMessage == messageTable.end()) {
-        throw(MessageNotFoundException(tableID, textID));
+    CustomMessageTable& messageTable = foundMessageTable->second;
+    CustomMessage message;
+    try {
+        message = messageTable.RetrieveMessage(textID);
+    } catch (std::out_of_range e) {
+        throw MessageNotFoundException(tableID, textID);
     }
-    CustomMessage message = foundMessage->second;
     return message;
 }
 
@@ -228,11 +256,21 @@ bool CustomMessageManager::ClearMessageTable(std::string tableID) {
         return false;
     }
     auto& messageTable = foundMessageTable->second;
-    messageTable.clear();
+    messageTable.Clear();
     return true;
 }
 
 bool CustomMessageManager::AddCustomMessageTable(std::string tableID) { 
     CustomMessageTable newMessageTable;
     return messageTables.emplace(tableID, newMessageTable).second;
+}
+
+bool CustomMessageManager::AddVariableReplacer(std::string tableId, CustomMessageVariableReplacer replacer) {
+    auto foundMessageTable = messageTables.find(tableId);
+    if (foundMessageTable == messageTables.end()) {
+        return false;
+    }
+    auto& messageTable = foundMessageTable->second;
+    messageTable.AddVariableReplacer(replacer);
+    return true;
 }

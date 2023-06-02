@@ -87,13 +87,13 @@ class Randomizer {
     GetItemID GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId);
     ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);
-    CustomMessage GetWarpSongMessage(u16 textId, bool mysterious = false);
-    CustomMessage GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious = false);
-    CustomMessage GetCursedSkullMessage(s16 params);
-    CustomMessage GetGoronMessage(u16 index);
-    CustomMessage GetMapGetItemMessageWithHint(GetItemEntry itemEntry);
+    static void GetWarpSongMessage(u16 textId, CustomMessage& message);
+    static void GetMerchantMessage(u16 textId, CustomMessage& message);
+    static void GetCursedSkullMessage(u16 textId, CustomMessage& message);
+    static void GetGoronMessage(u16 textId, CustomMessage& message);
+    static void GetMapGetItemMessageWithHint(u16 textId, CustomMessage& message);
     static void CreateCustomMessages();
-    static CustomMessage GetRupeeMessage(u16 rupeeTextId);
+    static void GetRupeeMessage(u16 rupeeTextId, CustomMessage& message);
     bool CheckContainsVanillaItem(RandomizerCheck randoCheck);
 };
 
