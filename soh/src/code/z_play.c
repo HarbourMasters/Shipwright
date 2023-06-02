@@ -1925,7 +1925,7 @@ void Play_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
         Entrance_OverrideSpawnScene(sceneNum, spawn);
     }
 
-    CVarSetInteger("gBetterDebugWarpScreenMQMode", 0);
+    CVarClear("gBetterDebugWarpScreenMQMode");
 }
 
 void func_800C016C(PlayState* play, Vec3f* src, Vec3f* dest) {
