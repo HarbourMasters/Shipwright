@@ -21,6 +21,7 @@
 #include "../../../src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
 #include <stdexcept>
 #include "randomizer_check_objects.h"
+#include "randomizer_tricks.h"
 #include <sstream>
 #include <tuple>
 #include <functional>
@@ -43,6 +44,8 @@ std::unordered_map<std::string, RandomizerCheckArea> SpoilerfileAreaNameToEnum;
 std::unordered_map<std::string, HintType> SpoilerfileHintTypeNameToEnum;
 std::multimap<std::tuple<s16, s16, s32>, RandomizerCheckObject> checkFromActorMultimap;
 std::set<RandomizerCheck> excludedLocations;
+std::set<RandomizerTrick> enabledTricks;
+std::set<RandomizerTrick> enabledGlitches;
 
 u8 generated;
 char* seedString;
@@ -383,6 +386,17 @@ bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
 }
 #pragma GCC pop_options
 #pragma optimize("", on)
+
+void DrawTagChips(const std::vector<RandomizerTrickTag> &rtTags) {
+    for (auto rtTag : rtTags) {
+        ImGui::SameLine();
+        ImGui::BeginDisabled();
+        ImGui::PushStyleColor(ImGuiCol_Button, RandomizerTricks::GetRTTagColor(rtTag));
+        ImGui::SmallButton(RandomizerTricks::GetRTTagName(rtTag).c_str());
+        ImGui::PopStyleColor();
+        ImGui::EndDisabled();
+    }
+}
 
 void Randomizer::LoadRandomizerSettings(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
@@ -3096,6 +3110,16 @@ void GenerateRandomizerImgui(std::string seed = "") {
         excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
     }
 
+    // todo: better way to sort out linking tricks rather than name
+    
+    std::set<RandomizerTrick> enabledTricks;
+    std::stringstream enabledTrickStringStream(CVarGetString("gRandomizeEnabledTricks", ""));
+    std::string enabledTrickString;
+    while (getline(enabledTrickStringStream, enabledTrickString, ',')) {
+        enabledTricks.insert((RandomizerTrick)std::stoi(enabledTrickString));
+    }
+    
+
     // Update the visibilitiy before removing conflicting excludes (in case the locations tab wasn't viewed)
     RandomizerCheckObjects::UpdateImGuiVisibility();
 
@@ -3107,7 +3131,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
         }
     }
 
-    RandoMain::GenerateRando(cvarSettings, excludedLocations, seed);
+    RandoMain::GenerateRando(cvarSettings, excludedLocations, enabledTricks, seed);
 
     CVarSetInteger("gRandoGenerating", 0);
     CVarSave();
@@ -4701,7 +4725,26 @@ void DrawRandoEditor(bool& open) {
             locationsTabOpen = false;
         }
 
+        static bool tricksTabOpen = false;
         if (ImGui::BeginTabItem("Tricks/Glitches")) {
+            if (!tricksTabOpen) {
+                tricksTabOpen = true;
+                //RandomizerTricks::UpdateImGuiVisibility();
+                // todo: this efficently when we build out cvar array support
+                std::stringstream enabledTrickStringStream(CVarGetString("gRandomizeEnabledTricks", ""));
+                std::string enabledTrickString;
+                enabledTricks.clear();
+                while (getline(enabledTrickStringStream, enabledTrickString, ',')) {
+                    enabledTricks.insert((RandomizerTrick)std::stoi(enabledTrickString));
+                }
+                std::stringstream enabledGlitchStringStream(CVarGetString("gRandomizeEnabledGlitches", ""));
+                std::string enabledGlitchString;
+                enabledGlitches.clear();
+                while (getline(enabledGlitchStringStream, enabledGlitchString, ',')) {
+                    enabledGlitches.insert((RandomizerTrick)std::stoi(enabledGlitchString));
+                }
+            }
+            
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoLogic", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -4710,12 +4753,14 @@ void DrawRandoEditor(bool& open) {
                 ImGui::PushItemWidth(170.0);
                 ImGui::Text("Logic Rules");
                 UIWidgets::InsertHelpHoverText(
-                    "Glitchless - No glitches are required, but may require some minor tricks.\n"
+                    "Glitchless - No glitches are required, but may require some minor tricks. Additional tricks may be enabled and disabled below.\n"
                     "\n"
+                    //"Glitched - Glitches may be required to beat the game. You can disable and enable glitches below.\n"
+                    //"\n"
                     "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, RO_LOGIC_GLITCHLESS);
-                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHLESS) {
+                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
                     ImGui::SameLine();
                     UIWidgets::EnhancementCheckbox(Settings::LocationsReachable.GetName().c_str(), "gRandomizeAllLocationsReachable", false, "", UIWidgets::CheckboxGraphics::Cross, RO_GENERIC_ON);
                     UIWidgets::InsertHelpHoverText(
@@ -4739,35 +4784,383 @@ void DrawRandoEditor(bool& open) {
                 ImGui::PopItemWidth();
                 ImGui::EndTable();
             }
-            if (ImGui::BeginTable("tableRandoTricksGlitches", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                ImGui::TableSetupColumn("Disabled", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Enabled", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+
+            // Tricks
+            static std::unordered_map<RandomizerTrickArea, bool> areaTreeDisabled {
+                {RTAREA_GENERAL, true},
+                {RTAREA_KOKIRI_FOREST, true},
+                {RTAREA_LOST_WOODS, true},
+                {RTAREA_SACRED_FOREST_MEADOW, true},
+                {RTAREA_HYRULE_FIELD, true},
+                {RTAREA_LAKE_HYLIA, true},
+                {RTAREA_GERUDO_VALLEY, true},
+                {RTAREA_GERUDO_FORTRESS, true},
+                {RTAREA_WASTELAND, true},
+                {RTAREA_DESERT_COLOSSUS, true},
+                {RTAREA_MARKET, true},
+                {RTAREA_HYRULE_CASTLE, true},
+                {RTAREA_KAKARIKO_VILLAGE, true},
+                {RTAREA_GRAVEYARD, true},
+                {RTAREA_DEATH_MOUNTAIN_TRAIL, true},
+                {RTAREA_GORON_CITY, true},
+                {RTAREA_DEATH_MOUNTAIN_CRATER, true},
+                {RTAREA_ZORAS_RIVER, true},
+                {RTAREA_ZORAS_DOMAIN, true},
+                {RTAREA_ZORAS_FOUNTAIN, true},
+                {RTAREA_LON_LON_RANCH, true},
+                {RTAREA_DEKU_TREE, true},
+                {RTAREA_DODONGOS_CAVERN, true},
+                {RTAREA_JABU_JABUS_BELLY, true},
+                {RTAREA_FOREST_TEMPLE, true},
+                {RTAREA_FIRE_TEMPLE, true},
+                {RTAREA_WATER_TEMPLE, true},
+                {RTAREA_SPIRIT_TEMPLE, true},
+                {RTAREA_SHADOW_TEMPLE, true},
+                {RTAREA_BOTTOM_OF_THE_WELL, true},
+                {RTAREA_ICE_CAVERN, true},
+                {RTAREA_GERUDO_TRAINING_GROUND, true},
+                {RTAREA_GANONS_CASTLE, true}
+            };
+            static std::unordered_map<RandomizerTrickArea, bool> areaTreeEnabled {
+                {RTAREA_GENERAL, true},
+                {RTAREA_KOKIRI_FOREST, true},
+                {RTAREA_LOST_WOODS, true},
+                {RTAREA_SACRED_FOREST_MEADOW, true},
+                {RTAREA_HYRULE_FIELD, true},
+                {RTAREA_LAKE_HYLIA, true},
+                {RTAREA_GERUDO_VALLEY, true},
+                {RTAREA_GERUDO_FORTRESS, true},
+                {RTAREA_WASTELAND, true},
+                {RTAREA_DESERT_COLOSSUS, true},
+                {RTAREA_MARKET, true},
+                {RTAREA_HYRULE_CASTLE, true},
+                {RTAREA_KAKARIKO_VILLAGE, true},
+                {RTAREA_GRAVEYARD, true},
+                {RTAREA_DEATH_MOUNTAIN_TRAIL, true},
+                {RTAREA_GORON_CITY, true},
+                {RTAREA_DEATH_MOUNTAIN_CRATER, true},
+                {RTAREA_ZORAS_RIVER, true},
+                {RTAREA_ZORAS_DOMAIN, true},
+                {RTAREA_ZORAS_FOUNTAIN, true},
+                {RTAREA_LON_LON_RANCH, true},
+                {RTAREA_DEKU_TREE, true},
+                {RTAREA_DODONGOS_CAVERN, true},
+                {RTAREA_JABU_JABUS_BELLY, true},
+                {RTAREA_FOREST_TEMPLE, true},
+                {RTAREA_FIRE_TEMPLE, true},
+                {RTAREA_WATER_TEMPLE, true},
+                {RTAREA_SPIRIT_TEMPLE, true},
+                {RTAREA_SHADOW_TEMPLE, true},
+                {RTAREA_BOTTOM_OF_THE_WELL, true},
+                {RTAREA_ICE_CAVERN, true},
+                {RTAREA_GERUDO_TRAINING_GROUND, true},
+                {RTAREA_GANONS_CASTLE, true}
+            };
+
+            static std::unordered_map<RandomizerTrickTag, bool> showTag {
+                {RTTAG_NOVICE,true},
+                {RTTAG_INTERMEDIATE,true},
+                {RTTAG_ADVANCED,true},
+                {RTTAG_EXPERT,true},
+                {RTTAG_EXTREME,true}
+            };
+            static ImGuiTextFilter trickSearch;
+            trickSearch.Draw("Filter (inc,-exc)", 490.0f);
+            if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
+                ImGui::SameLine();
+                if (ImGui::Button("Disable All")) {
+                    for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                        for (auto [randomizerTrick, rtObject] : rtObjects) {
+                            auto etfound = enabledTricks.find(randomizerTrick);
+                            if (!rtObject.rtGlitch && etfound != enabledTricks.end()) {
+                                enabledTricks.erase(etfound);
+                            }
+                        }
+                    }
+                    std::string enabledTrickString = "";
+                    for (auto enabledTrickIt : enabledTricks) {
+                        enabledTrickString += std::to_string(enabledTrickIt);
+                        enabledTrickString += ",";
+                    }
+                    CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                    LUS::RequestCvarSaveOnNextTick();
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Enable All")) {
+                    for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                        for (auto [randomizerTrick, rtObject] : rtObjects) {
+                            if (!rtObject.rtGlitch && !enabledTricks.count(rtObject.rt)) {
+                                enabledTricks.insert(randomizerTrick);
+                            }
+                        }
+                    }
+                    std::string enabledTrickString = "";
+                    for (auto enabledTrickIt : enabledTricks) {
+                        enabledTrickString += std::to_string(enabledTrickIt);
+                        enabledTrickString += ",";
+                    }
+                    CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                    LUS::RequestCvarSaveOnNextTick();
+                }
+            }
+            if (ImGui::BeginTable("trickTags", showTag.size(), ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders)) {  
+                for (auto [rtTag, isShown] : showTag) {
+                    ImGui::TableNextColumn();
+                    ImGui::PushStyleColor(ImGuiCol_Header, RandomizerTricks::GetRTTagColor(rtTag));
+                    ImGui::Selectable(RandomizerTricks::GetRTTagName(rtTag).c_str(), &showTag[rtTag]);
+                    ImGui::PopStyleColor(1);
+                }
+                ImGui::EndTable();
+            }
+
+            if (ImGui::BeginTable("tableRandoTricks", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                ImGui::TableSetupColumn("Disabled Tricks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Enabled Tricks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                 ImGui::TableHeadersRow();
                 ImGui::PopItemFlag();
                 ImGui::TableNextRow();
+                
+                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
 
-                // COLUMN 1 - DISABLED TRICKS AND GLITCHES
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildTricksGlitchesDisabled", ImVec2(0, -8));
+                    // COLUMN 1 - DISABLED TRICKS
+                    ImGui::TableNextColumn();
+                    window->DC.CurrLineTextBaseOffset = 0.0f;
+                    
+                    if (ImGui::Button("Collapse All##disabled")) {
+                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                            bool hasTricks = false;
+                            for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                if (rtObject.visibleInImgui &&
+                                    !enabledTricks.count(rtObject.rt) &&
+                                    !rtObject.rtGlitch) {
 
-                ImGui::Text("Coming soon");
+                                    hasTricks = true;
+                                    break;
+                                }
+                            }
+                            if (hasTricks) {
+                                areaTreeDisabled[rtArea] = false;
+                            }
+                        }
+                    }
+                    ImGui::SameLine();
+                    if (ImGui::Button("Open All##disabled")) {
+                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                            bool hasTricks = false;
+                            for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                if (rtObject.visibleInImgui &&
+                                    !enabledTricks.count(rtObject.rt) &&
+                                    !rtObject.rtGlitch) {
 
-                ImGui::EndChild();
+                                    hasTricks = true;
+                                    break;
+                                }
+                            }
+                            if (hasTricks) {
+                                areaTreeDisabled[rtArea] = true;
+                            }
+                        }
+                    }
+                    ImGui::SameLine();
+                    if (ImGui::Button("Enable Visible")) {
+                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                            for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                if (!rtObject.rtGlitch && !enabledTricks.count(rtObject.rt) && trickSearch.PassFilter(rtObject.rtShortName.c_str()) && areaTreeDisabled[rtArea] && RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags)) {
+                                    enabledTricks.insert(randomizerTrick);
+                                }
+                            }
+                        }
+                        std::string enabledTrickString = "";
+                        for (auto enabledTrickIt : enabledTricks) {
+                            enabledTrickString += std::to_string(enabledTrickIt);
+                            enabledTrickString += ",";
+                        }
+                        CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                        LUS::RequestCvarSaveOnNextTick();
+                    }
+                    
+                    ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
 
-                // COLUMN 2 - ENABLED TRICKS AND GLITCHES
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildTricksGlitchesEnabled", ImVec2(0, -8));
+                    for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                        bool hasTricks = false;
+                        for (auto [randomizerTrick, rtObject] : rtObjects) {
+                            if (rtObject.visibleInImgui &&
+                                trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
+                                !enabledTricks.count(rtObject.rt) &&
+                                RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags) &&
+                                !rtObject.rtGlitch) {
 
-                ImGui::Text("Coming soon");
+                                hasTricks = true;
+                                break;
+                            }
+                        }
+                        if (hasTricks) {
+                            ImGui::TreeNodeSetOpen(ImGui::GetID(RandomizerTricks::GetRTAreaName(rtArea).c_str()), areaTreeDisabled[rtArea]);
+                            ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                            if (ImGui::TreeNode(RandomizerTricks::GetRTAreaName(rtArea).c_str())) {
+                                for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                    if (rtObject.visibleInImgui &&
+                                        trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
+                                        !enabledTricks.count(rtObject.rt) &&
+                                        RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags) &&
+                                        !rtObject.rtGlitch) {
+                                        if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Right)) {
+                                            enabledTricks.insert(rtObject.rt);
+                                            std::string enabledTrickString = "";
+                                            for (auto enabledTrickIt : enabledTricks) {
+                                                enabledTrickString += std::to_string(enabledTrickIt);
+                                                enabledTrickString += ",";
+                                            }
+                                            CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                                            LUS::RequestCvarSaveOnNextTick();
+                                        }
+                                        DrawTagChips(*rtObject.rtTags);
+                                        ImGui::SameLine();
+                                        ImGui::Text(rtObject.rtShortName.c_str());
+                                        UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                                    }
+                                }
+                                areaTreeDisabled[rtArea] = true;
+                                ImGui::TreePop();
+                            } else {
+                                areaTreeDisabled[rtArea] = false;
+                            }
+                        }
+                    }
+                    ImGui::EndChild();
 
-                ImGui::EndChild();
+                    
+
+                    // COLUMN 2 - ENABLED TRICKS
+                    ImGui::TableNextColumn();
+                    window->DC.CurrLineTextBaseOffset = 0.0f;
+
+                    if (ImGui::Button("Collapse All##enabled")) {
+                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                            bool hasTricks = false;
+                            for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                if (rtObject.visibleInImgui && 
+                                    enabledTricks.count(rtObject.rt) && 
+                                    !rtObject.rtGlitch) {
+
+                                    hasTricks = true;
+                                    break;
+                                }
+                            }
+                            if (hasTricks) {
+                                areaTreeEnabled[rtArea] = false;
+                            }
+                        }
+                    }
+                    ImGui::SameLine();
+                    if (ImGui::Button("Open All##enabled")) {
+                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                            bool hasTricks = false;
+                            for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                if (rtObject.visibleInImgui && 
+                                    enabledTricks.count(rtObject.rt) && 
+                                    !rtObject.rtGlitch) {
+
+                                    hasTricks = true;
+                                    break;
+                                }
+                            }
+                            if (hasTricks) {
+                                areaTreeEnabled[rtArea] = true;
+                            }
+                        }
+                    }
+                    ImGui::SameLine();
+                    if (ImGui::Button("Disable Visible")) {
+                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                            for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                auto etfound = enabledTricks.find(randomizerTrick);
+                                if (!rtObject.rtGlitch && etfound != enabledTricks.end() && trickSearch.PassFilter(rtObject.rtShortName.c_str()) && areaTreeEnabled[rtArea] && RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags)) {
+                                    enabledTricks.erase(etfound);
+                                }
+                            }
+                        }
+                        std::string enabledTrickString = "";
+                        for (auto enabledTrickIt : enabledTricks) {
+                            enabledTrickString += std::to_string(enabledTrickIt);
+                            enabledTrickString += ",";
+                        }
+                        CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                        LUS::RequestCvarSaveOnNextTick();
+                    }
+                    
+                    ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
+
+                    for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                        bool hasTricks = false;
+                        for (auto [randomizerTrick, rtObject] : rtObjects) {
+                            if (rtObject.visibleInImgui &&
+                                trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
+                                enabledTricks.count(rtObject.rt) &&
+                                RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags) &&
+                                !rtObject.rtGlitch) {
+
+                                hasTricks = true;
+                                break;
+                            }
+                        }
+                        if (hasTricks) {
+                            ImGui::TreeNodeSetOpen(ImGui::GetID(RandomizerTricks::GetRTAreaName(rtArea).c_str()), areaTreeEnabled[rtArea]);
+                            ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                            if (ImGui::TreeNode(RandomizerTricks::GetRTAreaName(rtArea).c_str())) {
+                                for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                    auto etfound = enabledTricks.find(rtObject.rt);
+                                    if (rtObject.visibleInImgui &&
+                                        trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
+                                        etfound != enabledTricks.end() &&
+                                        RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags) &&
+                                        !rtObject.rtGlitch) {
+                                        
+                                        if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Left)) {
+                                            enabledTricks.erase(etfound);
+                                            std::string enabledTrickString = "";
+                                            for (auto enabledTrickIt : enabledTricks) {
+                                                enabledTrickString += std::to_string(enabledTrickIt);
+                                                enabledTrickString += ",";
+                                            }
+                                            CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                                            LUS::RequestCvarSaveOnNextTick();
+                                        }
+                                        DrawTagChips(*rtObject.rtTags);
+                                        ImGui::SameLine();
+                                        ImGui::Text(rtObject.rtShortName.c_str());
+                                        UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                                    }
+                                }
+                                areaTreeEnabled[rtArea] = true;
+                                ImGui::TreePop();
+                            } else {
+                                areaTreeEnabled[rtArea] = false;
+                            }
+                        }
+                    }
+                    ImGui::EndChild();
+                } else {
+                    ImGui::TableNextColumn();
+                    ImGui::BeginChild("ChildTrickAreas", ImVec2(0, -8));
+                    ImGui::Text("Requires Logic Turned On.");
+                    ImGui::EndChild();
+                    ImGui::TableNextColumn();
+                    ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8));
+                    ImGui::Text("Requires Logic Turned On.");
+                    ImGui::EndChild();
+                    ImGui::TableNextColumn();
+                    ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, -8));
+                    ImGui::Text("Requires Logic Turned On.");
+                    ImGui::EndChild();
+                }
                 ImGui::EndTable();
             }
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
+        } else {
+            tricksTabOpen = false;
         }
 
         if (ImGui::BeginTabItem("Starting Inventory")) {

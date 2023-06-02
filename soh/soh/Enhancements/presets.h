@@ -282,6 +282,8 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeDungeonCount",
     "gRandomizeEnableBombchuDrops",
     "gRandomizeEnableGlitchCutscenes",
+    "gRandomizeEnabledGlitches",
+    "gRandomizeEnabledTricks",
     "gRandomizeExcludedLocations",
     "gRandomizeForest",
     "gRandomizeFullWallets",
