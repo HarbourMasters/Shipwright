@@ -46,7 +46,7 @@ extern "C" {
 
 void Entrance_Init(void);
 void Entrance_ResetEntranceTable(void);
-uint8_t Entrance_EntranceIsNull(EntranceOverride *entranceOverride);
+uint8_t Entrance_EntranceIsNull(EntranceOverride* entranceOverride);
 int16_t Entrance_GetOverride(int16_t index);
 int16_t Entrance_OverrideNextIndex(int16_t nextEntranceIndex);
 int16_t Entrance_OverrideDynamicExit(int16_t dynamicExitIndex);
