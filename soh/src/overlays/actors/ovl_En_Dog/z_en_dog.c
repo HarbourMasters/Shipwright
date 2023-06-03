@@ -300,6 +300,8 @@ void EnDog_Init(Actor* thisx, PlayState* play) {
 void EnDog_Destroy(Actor* thisx, PlayState* play) {
     EnDog* this = (EnDog*)thisx;
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDog_FollowPath(EnDog* this, PlayState* play) {

@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <filesystem>
 #include <fstream>
+#include <chrono>
 
 #include <ResourceManager.h>
 #include <File.h>
@@ -71,6 +72,7 @@
 #include <functions.h>
 #include "Enhancements/item-tables/ItemTableManager.h"
 #include "SohGui.hpp"
+#include "ActorDB.h"
 
 #ifdef ENABLE_CROWD_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
@@ -118,6 +120,10 @@ SpeechSynthesizer* SpeechSynthesizer::Instance;
 
 extern "C" char** cameraStrings;
 std::vector<std::shared_ptr<std::string>> cameraStdStrings;
+
+Color_RGB8 kokiriColor = { 0x1E, 0x69, 0x1B };
+Color_RGB8 goronColor = { 0x64, 0x14, 0x00 };
+Color_RGB8 zoraColor = { 0x00, 0xEC, 0x64 };
 
 // OTRTODO: A lot of these left in Japanese are used by the mempak manager. LUS does not currently support mempaks. Ignore unused ones.
 const char* constCameraStrings[] = {
@@ -686,9 +692,10 @@ std::unordered_map<uint32_t, uint32_t> ItemIDtoGetItemID{
     { ITEM_WEIRD_EGG, GI_WEIRD_EGG }
 };
 
-extern "C" uint32_t GetGIID(uint32_t itemID) {
-    if (ItemIDtoGetItemID.contains(itemID))
+extern "C" int32_t GetGIID(uint32_t itemID) {
+    if (ItemIDtoGetItemID.contains(itemID)) {
         return ItemIDtoGetItemID.at(itemID);
+    }
     return -1;
 }
 
@@ -745,6 +752,7 @@ extern "C" void InitOTR() {
     SaveManager::Instance = new SaveManager();
     GameInteractor::Instance = new GameInteractor();
     AudioCollection::Instance = new AudioCollection();
+    ActorDB::Instance = new ActorDB();
 #ifdef __APPLE__
     SpeechSynthesizer::Instance = new DarwinSpeechSynthesizer();
     SpeechSynthesizer::Instance->Init();
@@ -761,6 +769,7 @@ extern "C" void InitOTR() {
     DebugConsole_Init();
 
     InitMods();
+    ActorDB::AddBuiltInCustomActors();
 
     time_t now = time(NULL);
     tm *tm_now = localtime(&now);
@@ -769,6 +778,8 @@ extern "C" void InitOTR() {
     } else {
         CVarClear("gLetItSnow");
     }
+
+    srand(now);
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance = new CrowdControl();
     CrowdControl::Instance->Init();
@@ -828,6 +839,14 @@ extern "C" uint64_t GetPerfCounter() {
     return monotime.tv_sec * 1000 + remainingMs;
 }
 #endif
+
+extern "C" uint64_t GetUnixTimestamp() {
+    auto time = std::chrono::system_clock::now();
+    auto since_epoch = time.time_since_epoch();
+    auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(since_epoch);
+    long now = millis.count();
+    return now;
+}
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
@@ -1006,18 +1025,23 @@ extern "C" uint32_t ResourceMgr_GetGameVersion(int index) {
 
 uint32_t IsSceneMasterQuest(s16 sceneNum) {
     uint32_t value = 0;
-    if (OTRGlobals::Instance->HasMasterQuest()) {
-        if (!OTRGlobals::Instance->HasOriginal()) {
-            value = 1;
-        } else if (gSaveContext.isMasterQuest) {
-            value = 1;
-        } else {
-            value = 0;
-            if (gSaveContext.n64ddFlag) {
-                if (!OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty()) {
-                    if (gPlayState != NULL && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(sceneNum)) {
-                        value = 1;
-                    }
+    uint8_t mqMode = CVarGetInteger("gBetterDebugWarpScreenMQMode", 0);
+    if (mqMode == 1) { // non-mq wants to be mq
+        return 1;
+    } else if (mqMode == 2) { // mq wants to be non-mq
+        return 0;
+    } else {
+        if (OTRGlobals::Instance->HasMasterQuest()) {
+            if (!OTRGlobals::Instance->HasOriginal()) {
+                value = 1;
+            } else if (gSaveContext.isMasterQuest) {
+                value = 1;
+            } else {
+                value = 0;
+                if (gSaveContext.n64ddFlag &&
+                    !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty() &&
+                    OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(sceneNum)) {
+                    value = 1;
                 }
             }
         }
@@ -1576,28 +1600,63 @@ extern "C" uint32_t OTRGetCurrentHeight() {
     return OTRGlobals::Instance->context->GetWindow()->GetHeight();
 }
 
-extern "C" void OTRControllerCallback(uint8_t rumble, uint8_t ledColor) {
-    auto controlDeck = LUS::Context::GetInstance()->GetControlDeck();
-
-    for (int i = 0; i < controlDeck->GetNumConnectedPorts(); ++i) {
-        auto physicalDevice = controlDeck->GetDeviceFromPortIndex(i);
-        switch (ledColor) {
-            case 0:
-                physicalDevice->SetLedColor(i, {255, 0, 0});
-                break;
-            case 1:
-                physicalDevice->SetLedColor(i, {0x1E, 0x69, 0x1B});
-                break;
-            case 2:
-                physicalDevice->SetLedColor(i, {0x64, 0x14, 0x00});
-                break;
-            case 3:
-                physicalDevice->SetLedColor(i, {0x00, 0x3C, 0x64});
-                break;
+Color_RGB8 GetColorForControllerLED() {
+    auto brightness = CVarGetFloat("gLedBrightness", 1.0f) / 1.0f;
+    Color_RGB8 color = { 0, 0, 0 };
+    if (brightness > 0.0f) {
+        LEDColorSource source = static_cast<LEDColorSource>(CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL));
+        bool criticalOverride = CVarGetInteger("gLedCriticalOverride", 1);
+        if (gPlayState && (source == LED_SOURCE_TUNIC_ORIGINAL || source == LED_SOURCE_TUNIC_COSMETICS)) {
+            switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
+                case PLAYER_TUNIC_KOKIRI:
+                    color = source == LED_SOURCE_TUNIC_COSMETICS
+                                ? CVarGetColor24("gCosmetics.Link_KokiriTunic.Value", kokiriColor)
+                                : kokiriColor;
+                    break;
+                case PLAYER_TUNIC_GORON:
+                    color = source == LED_SOURCE_TUNIC_COSMETICS
+                                ? CVarGetColor24("gCosmetics.Link_GoronTunic.Value", goronColor)
+                                : goronColor;
+                    break;
+                case PLAYER_TUNIC_ZORA:
+                    color = source == LED_SOURCE_TUNIC_COSMETICS
+                                ? CVarGetColor24("gCosmetics.Link_ZoraTunic.Value", zoraColor)
+                                : zoraColor;
+                    break;
+            }
         }
-
-        physicalDevice->SetRumble(i, rumble);
+        if (source == LED_SOURCE_CUSTOM) {
+            color = CVarGetColor24("gLedPort1Color", { 255, 255, 255 });
+        }
+        if (criticalOverride || source == LED_SOURCE_HEALTH) {
+            if (HealthMeter_IsCritical()) {
+                color = { 0xFF, 0, 0 };
+            } else if (source == LED_SOURCE_HEALTH) {
+                if (gSaveContext.health / gSaveContext.healthCapacity <= 0.4f) {
+                    color = { 0xFF, 0xFF, 0 };
+                } else {
+                    color = { 0, 0xFF, 0 };
+                }
+            }
+        }
+        color.r = color.r * brightness;
+        color.g = color.g * brightness;
+        color.b = color.b * brightness;
     }
+
+    return color;
+}
+
+extern "C" void OTRControllerCallback(uint8_t rumble) {
+    auto physicalDevice = LUS::Context::GetInstance()->GetControlDeck()->GetDeviceFromPortIndex(0);
+
+    if (physicalDevice->CanSetLed()) {
+        // We call this every tick, SDL accounts for this use and prevents driver spam
+        // https://github.com/libsdl-org/SDL/blob/f17058b562c8a1090c0c996b42982721ace90903/src/joystick/SDL_joystick.c#L1114-L1144
+        physicalDevice->SetLedColor(0, GetColorForControllerLED());
+    }
+
+    physicalDevice->SetRumble(0, rumble);
 }
 
 extern "C" float OTRGetAspectRatio() {
@@ -1622,10 +1681,6 @@ extern "C" int16_t OTRGetRectDimensionFromLeftEdge(float v) {
 extern "C" int16_t OTRGetRectDimensionFromRightEdge(float v) {
     return ((int)ceilf(OTRGetDimensionFromRightEdge(v)));
 }
-
-// extern "C" bool AudioPlayer_Init(void) {
-//     return AudioPlayerInit();
-// }
 
 extern "C" int AudioPlayer_Buffered(void) {
     return AudioPlayerBuffered();
@@ -1659,22 +1714,43 @@ extern "C" void* getN64WeirdFrame(s32 i) {
 }
 
 extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSize) {
+    CustomMessage customMessage("\x04\x1A\x08"
+                                "Would you like to equip it now?"
+                                "\x09&&"
+                                "\x1B%g"
+                                "Yes"
+                                "&"
+                                "No"
+                                "%w\x02",
+                                "\x04\x1A\x08"
+                                "M"
+                                "\x9A"
+                                "chtest Du es jetzt ausr\x9Esten?"
+                                "\x09&&"
+                                "\x1B%g"
+                                "Ja!"
+                                "&"
+                                "Nein!"
+                                "%w\x02",
+				"\x04\x1A\x08"
+                                "D\x96sirez-vous l'\x96quiper maintenant?"
+                                "\x09&&"
+                                "\x1B%g"
+                                "Oui"
+                                "&"
+                                "Non"
+                                "%w\x02");
+    customMessage.Format();
+
     std::string postfix;
 
     if (gSaveContext.language == LANGUAGE_FRA) {
-        postfix = "\x04\x1A\x08" "D\x96sirez-vous l'\x96quiper maintenant?" "\x09&&"
-                  "\x1B%g" "Oui" "&"
-                           "Non" "%w\x02";
+        postfix = customMessage.GetFrench();
     } else if (gSaveContext.language == LANGUAGE_GER) {
-        postfix = "\x04\x1A\x08" "M""\x9A""chtest Du es jetzt ausr\x9Esten?" "\x09&&"
-                  "\x1B%g" "Ja!" "&"
-                           "Nein!" "%w\x02";
+        postfix = customMessage.GetGerman();
     } else {
-        postfix = "\x04\x1A\x08" "Would you like to equip it now?" "\x09&&"
-                  "\x1B%g" "Yes" "&"
-                           "No" "%w\x02";
+        postfix = customMessage.GetEnglish();
     }
-    CustomMessageManager::Instance->FormatCustomMessage(postfix);
     std::string str;
     std::string FixedBaseStr(src);
     int RemoveControlChar = FixedBaseStr.find_first_of("\x02");
@@ -1778,14 +1854,14 @@ extern "C" ItemObtainability Randomizer_GetItemObtainabilityFromRandomizerCheck(
     return OTRGlobals::Instance->gRandomizer->GetItemObtainabilityFromRandomizerCheck(randomizerCheck);
 }
 
-extern "C" CustomMessageEntry Randomizer_GetCustomGetItemMessage(Player* player) {
+CustomMessage Randomizer_GetCustomGetItemMessage(Player* player) {
     s16 giid;
     if (player->getItemEntry.objectId != OBJECT_INVALID) {
         giid = player->getItemEntry.getItemId;
     } else {
         giid = player->getItemId;
     }
-    const CustomMessageEntry getItemText = CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, giid);
+    const CustomMessage getItemText = CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, giid);
     return getItemText;
 }
 
@@ -1795,7 +1871,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     Font* font = &msgCtx->font;
     char* buffer = font->msgBuf;
     const int maxBufferSize = sizeof(font->msgBuf);
-    CustomMessageEntry messageEntry;
+    CustomMessage messageEntry;
     s16 actorParams = 0;
     if (gSaveContext.n64ddFlag) {
         if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
@@ -1934,16 +2010,16 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             // In rando we need to bump the token count by one to show the correct count
             s16 gsCount = gSaveContext.inventory.gsTokens + (gSaveContext.n64ddFlag ? 1 : 0);
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
-            CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{gsCount}}", std::to_string(gsCount));
+            messageEntry.Replace("{{gsCount}}", std::to_string(gsCount));
         }
     }
     if (textId == TEXT_HEART_CONTAINER && CVarGetInteger("gInjectItemCounts", 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_CONTAINER);
-        CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{heartContainerCount}}", std::to_string(gSaveContext.sohStats.heartContainers + 1));
+        messageEntry.Replace("{{heartContainerCount}}", std::to_string(gSaveContext.sohStats.heartContainers + 1));
     }
     if (textId == TEXT_HEART_PIECE && CVarGetInteger("gInjectItemCounts", 0)) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_HEART_PIECE);
-        CustomMessageManager::ReplaceStringInMessage(messageEntry, "{{heartPieceCount}}", std::to_string(gSaveContext.sohStats.heartPieces + 1));
+        messageEntry.Replace("{{heartPieceCount}}", std::to_string(gSaveContext.sohStats.heartPieces + 1));
     }
     if (textId == TEXT_MARKET_GUARD_NIGHT && CVarGetInteger("gMarketSneak", 0) && play->sceneNum == SCENE_ENTRA_N) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_MARKET_GUARD_NIGHT);
@@ -1951,20 +2027,18 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     if (textId == TEXT_RANDO_SAVE_VERSION_WARNING) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_RANDO_SAVE_VERSION_WARNING);
     }
-    if (messageEntry.textBoxType != -1) {
-        font->charTexBuf[0] = (messageEntry.textBoxType << 4) | messageEntry.textBoxPos;
-        switch (gSaveContext.language) {
-            case LANGUAGE_FRA:
-                return msgCtx->msgLength = font->msgLength =
-                           CopyStringToCharBuffer(messageEntry.french, buffer, maxBufferSize);
-            case LANGUAGE_GER:
-                return msgCtx->msgLength = font->msgLength =
-                           CopyStringToCharBuffer(messageEntry.german, buffer, maxBufferSize);
-            case LANGUAGE_ENG:
-            default:
-                return msgCtx->msgLength = font->msgLength =
-                           CopyStringToCharBuffer(messageEntry.english, buffer, maxBufferSize);
-        }
+    font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
+    switch (gSaveContext.language) {
+        case LANGUAGE_FRA:
+            return msgCtx->msgLength = font->msgLength =
+                       CopyStringToCharBuffer(messageEntry.GetFrench(), buffer, maxBufferSize);
+        case LANGUAGE_GER:
+            return msgCtx->msgLength = font->msgLength =
+                       CopyStringToCharBuffer(messageEntry.GetGerman(), buffer, maxBufferSize);
+        case LANGUAGE_ENG:
+        default:
+            return msgCtx->msgLength = font->msgLength =
+                       CopyStringToCharBuffer(messageEntry.GetEnglish(), buffer, maxBufferSize);
     }
     return false;
 }

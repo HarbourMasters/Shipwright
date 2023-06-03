@@ -1,6 +1,7 @@
 #include "z_door_warp1.h"
 #include "objects/object_warp1/object_warp1.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/boss-rush/BossRush.h"
 
 #define FLAGS 0
 
@@ -97,7 +98,16 @@ void DoorWarp1_Destroy(Actor* thisx, PlayState* play) {
         play->envCtx.adjAmbientColor[i] = play->envCtx.adjFogColor[i] = play->envCtx.adjLight1Color[i] =
             0;
     }
-    //! @bug SkelAnime_Free is not called for crystal variants
+
+    switch (this->actor.params) {
+        case WARP_DUNGEON_ADULT:
+        case WARP_BLUE_CRYSTAL:
+        case WARP_PURPLE_CRYSTAL:
+            SkelAnime_Free(&this->skelAnime, play);
+            break;
+        default:
+            break;
+    }
 }
 
 void DoorWarp1_SetupWarp(DoorWarp1* this, PlayState* play) {
@@ -242,8 +252,13 @@ void DoorWarp1_SetupBlueCrystal(DoorWarp1* this, PlayState* play) {
             -255;
     }
 
-    play->envCtx.adjFogNear = -500;
-    this->warpTimer = 30;
+    if (!gSaveContext.isBossRush) {
+        play->envCtx.adjFogNear = -500;
+        this->warpTimer = 30;
+    } else {
+        play->envCtx.adjFogNear = 0;
+        this->warpTimer = 0;
+    }
     this->unk_1B8 = 4000;
     DoorWarp1_SetupAction(this, DoorWarp1_BlueCrystal);
 }
@@ -284,7 +299,11 @@ void DoorWarp1_SetPlayerPos(DoorWarp1* this, PlayState* play) {
 
     player->actor.velocity.y = 0.0f;
     player->actor.world.pos.x = this->actor.world.pos.x;
-    player->actor.world.pos.y = this->actor.world.pos.y + 55.0f;
+    if (!gSaveContext.isBossRush) {
+        player->actor.world.pos.y = this->actor.world.pos.y + 55.0f;
+    } else {
+        player->actor.world.pos.y = this->actor.world.pos.y;
+    }
     player->actor.world.pos.z = this->actor.world.pos.z;
 }
 
@@ -304,9 +323,13 @@ void func_80999214(DoorWarp1* this, PlayState* play) {
 
     Math_SmoothStepToF(&this->crystalAlpha, 255.0f, 0.2f, 5.0f, 0.1f);
 
-    darkness = (f32)(40 - this->warpTimer) / 40.0f;
-    darkness = CLAMP_MIN(darkness, 0);
-
+    if (!gSaveContext.isBossRush) {
+        darkness = (f32)(40 - this->warpTimer) / 40.0f;
+        darkness = CLAMP_MIN(darkness, 0);
+    } else {
+        darkness = 0.0f;
+    }
+    
     for (i = 0; i < 3; i++) {
         play->envCtx.adjAmbientColor[i] = play->envCtx.adjFogColor[i] = play->envCtx.adjLight1Color[i] =
             -255.0f * darkness;
@@ -343,7 +366,9 @@ void func_80999348(DoorWarp1* this, PlayState* play) {
 void DoorWarp1_FloatPlayer(DoorWarp1* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    player->actor.gravity = -0.1f;
+    if (!gSaveContext.isBossRush) {
+        player->actor.gravity = -0.1f;
+    }
 }
 
 void DoorWarp1_PurpleCrystal(DoorWarp1* this, PlayState* play) {
@@ -735,6 +760,11 @@ void DoorWarp1_AdultWarpIdle(DoorWarp1* this, PlayState* play) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EV_WARP_HOLE - SFX_FLAG);
 
     if (DoorWarp1_PlayerInRange(this, play)) {
+        // Heal player in Boss Rush
+        if (gSaveContext.isBossRush) {
+            BossRush_HandleBlueWarpHeal(play);
+        }
+
         player = GET_PLAYER(play);
 
         if (gSaveContext.n64ddFlag) {
@@ -796,7 +826,9 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
     this->warpTimer++;
 
     if (this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF) {
-        if (play->sceneNum == SCENE_MORIBOSSROOM) {
+        if (gSaveContext.isBossRush) {
+            BossRush_HandleBlueWarp(play, this->actor.world.pos.x, this->actor.world.pos.z);
+        } else if (play->sceneNum == SCENE_MORIBOSSROOM) {
             if (!(gSaveContext.eventChkInf[4] & 0x100)) {
                 gSaveContext.eventChkInf[4] |= 0x100;
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE);

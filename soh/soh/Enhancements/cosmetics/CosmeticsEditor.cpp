@@ -321,7 +321,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
 static const char* MarginCvarList[] {
     "gHearts", "gHeartsCount", "gMagicBar", "gVSOA", "gBBtn", "gABtn", "gStartBtn", 
     "gCBtnU", "gCBtnD", "gCBtnL", "gCBtnR", "gDPad", "gMinimap", 
-    "gSKC", "gRC", "gCarrots",  "gTimers", "gAS", "gTCM", "gTCB"
+    "gSKC", "gRC", "gCarrots",  "gTimers", "gAS", "gTCM", "gTCB", "gIGT"
 };
 static const char* MarginCvarNonAnchor[]{ "gCarrots", "gTimers", "gAS", "gTCM","gTCB" };
 
@@ -1402,6 +1402,19 @@ void Draw_Placements(){
             DrawPositionsRadioBoxes("gTCB");
             DrawPositionSlider("gTCB", 0, ImGui::GetWindowViewport()->Size.y/2, -50, ImGui::GetWindowViewport()->Size.x/2+10);
             DrawScaleSlider("gTCB",1.0f);
+            ImGui::NewLine();
+            ImGui::EndTable();
+        }
+    }
+    if (ImGui::CollapsingHeader("In-game Gameplay Timer position")) {
+        if (ImGui::BeginTable("tablegameplaytimer", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("In-game Gameplay Timer settings", FlagsCell, TablesCellsWidth);
+            Table_InitHeader(false);
+            DrawUseMarginsSlider("In-game Gameplay Timer", "gIGT");
+            DrawPositionsRadioBoxes("gIGT");
+            DrawPositionSlider("gIGT", 0, ImGui::GetWindowViewport()->Size.y / 2, -50,
+                               ImGui::GetWindowViewport()->Size.x / 2 + 10);
+            DrawScaleSlider("gIGT", 1.0f);
             ImGui::NewLine();
             ImGui::EndTable();
         }

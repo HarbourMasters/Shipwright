@@ -9,7 +9,7 @@
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "objects/object_tsubo/object_tsubo.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_23)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_ALWAYS_THROWN)
 
 void ObjTsubo_Init(Actor* thisx, PlayState* play);
 void ObjTsubo_Destroy(Actor* thisx, PlayState* play);
@@ -221,6 +221,11 @@ void ObjTsubo_WaterBreak(ObjTsubo* this, PlayState* play) {
 }
 
 void ObjTsubo_SetupWaitForObject(ObjTsubo* this) {
+    // Remove pots in Boss Rush. Present in Barinade's and Ganondorf's arenas.
+    if (gSaveContext.isBossRush) {
+        Actor_Kill(this);
+    }
+
     this->actionFunc = ObjTsubo_WaitForObject;
 }
 
@@ -229,7 +234,7 @@ void ObjTsubo_WaitForObject(ObjTsubo* this, PlayState* play) {
         this->actor.draw = ObjTsubo_Draw;
         this->actor.objBankIndex = this->objTsuboBankIndex;
         ObjTsubo_SetupIdle(this);
-        this->actor.flags &= ~ACTOR_FLAG_4;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
     }
 }
 
@@ -279,7 +284,7 @@ void ObjTsubo_SetupLiftedUp(ObjTsubo* this) {
     this->actionFunc = ObjTsubo_LiftedUp;
     this->actor.room = -1;
     func_8002F7DC(&this->actor, NA_SE_PL_PULL_UP_POT);
-    this->actor.flags |= ACTOR_FLAG_4;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
 }
 
 void ObjTsubo_LiftedUp(ObjTsubo* this, PlayState* play) {

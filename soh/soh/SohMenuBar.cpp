@@ -8,6 +8,7 @@
 #include "z64.h"
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/presets.h"
+#include "soh/Enhancements/mods.h"
 #include "Enhancements/cosmetics/authenticGfxPatches.h"
 #ifdef ENABLE_CROWD_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
@@ -29,6 +30,8 @@
 
 extern bool ShouldClearTextureCacheAtEndOfFrame;
 extern bool isBetaQuestEnabled;
+
+extern "C" PlayState* gPlayState;
 
 enum SeqPlayers {
     /* 0 */ SEQ_BGM_MAIN,
@@ -194,8 +197,13 @@ void DrawSettingsMenu() {
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
             if (mInputEditorWindow) {
-                if (ImGui::Button(GetWindowButtonText("Controller Configuration", CVarGetInteger("gControllerConfigurationEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
+                if (ImGui::Button(GetWindowButtonText("Controller Mapping", CVarGetInteger("gControllerConfigurationEnabled", 0)).c_str(), ImVec2 (-1.0f, 0.0f))) {
                     mInputEditorWindow->ToggleVisibility();
+                }
+            }
+            if (mGameControlEditorWindow) {
+                if (ImGui::Button(GetWindowButtonText("Additional Controller Options", CVarGetInteger("gGameControlEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                    mGameControlEditorWindow->ToggleVisibility();
                 }
             }
             UIWidgets::PaddedSeparator();
@@ -387,7 +395,7 @@ void DrawSettingsMenu() {
             }
 
             if (LUS::Context::GetInstance()->GetWindow()->GetGui()->SupportsViewports()) {
-                UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows", "gEnableMultiViewports", true, false);
+                UIWidgets::PaddedEnhancementCheckbox("Allow multi-windows", "gEnableMultiViewports", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::Tooltip("Allows windows to be able to be dragged off of the main game window. Requires a reload to take effect.");
             }
 
@@ -623,6 +631,8 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
                 UIWidgets::PaddedEnhancementCheckbox("Hyper Bosses", "gHyperBosses", true, false);
                 UIWidgets::Tooltip("All major bosses move and act twice as fast.");
+                UIWidgets::PaddedEnhancementCheckbox("Hyper Enemies", "gHyperEnemies", true, false);
+                UIWidgets::Tooltip("All regular enemies and mini-bosses move and act twice as fast.");
                 UIWidgets::PaddedEnhancementCheckbox("Always Win Goron Pot", "gGoronPot", true, false);
                 UIWidgets::Tooltip("Always get the heart piece/purple rupee from the spinning Goron pot");
                 UIWidgets::PaddedEnhancementCheckbox("Always Win Dampe Digging Game", "gDampeWin", true, false, SaveManager::Instance->IsRandoFile(),
@@ -866,6 +876,8 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
             UIWidgets::PaddedEnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon", true, false);
             UIWidgets::Tooltip("Always shows dungeon entrance icons on the minimap");
+            UIWidgets::PaddedEnhancementCheckbox("Show Gauntlets in First Person", "gFPSGauntlets", true, false);
+            UIWidgets::Tooltip("Renders Gauntlets when using the Bow and Hookshot like in OOT3D");
             UIWidgets::Spacer(0);
             if (ImGui::BeginMenu("Animated Link in Pause Menu")) {
                 ImGui::Text("Rotation");
@@ -911,7 +923,9 @@ void DrawEnhancementsMenu() {
                 ImGui::EndMenu();
             }
             UIWidgets::PaddedText("Fix Vanishing Paths", true, false);
-            UIWidgets::EnhancementCombobox("gDirtPathFix", zFightingOptions, 0);
+            if (UIWidgets::EnhancementCombobox("gSceneSpecificDirtPathFix", zFightingOptions, 0) && gPlayState != NULL) {
+                UpdateDirtPathFixState(gPlayState->sceneNum);
+            }
             UIWidgets::Tooltip("Disabled: Paths vanish more the higher the resolution (Z-fighting is based on resolution)\n"
                                 "Consistent: Certain paths vanish the same way in all resolutions\n"
                                 "No Vanish: Paths do not vanish, Link seems to sink in to some paths\n"
@@ -941,11 +955,13 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Correctly centers the Navi text prompt on the HUD's C-Up button");
             UIWidgets::PaddedEnhancementCheckbox("Fix Anubis fireballs", "gAnubisFix", true, false);
             UIWidgets::Tooltip("Make Anubis fireballs do fire damage when reflected back at them with the Mirror Shield");
-            UIWidgets::PaddedEnhancementCheckbox("Fix Megaton Hammer crouch stab", "gCrouchStabHammerFix", true, false);
+            if (UIWidgets::PaddedEnhancementCheckbox("Fix Megaton Hammer crouch stab", "gCrouchStabHammerFix", true, false)) {
+                if (!CVarGetInteger("gCrouchStabHammerFix", 0)) {
+                    CVarClear("gCrouchStabFix");
+                }
+            }
             UIWidgets::Tooltip("Make the Megaton Hammer's crouch stab able to destroy rocks without first swinging it normally");
-            if (CVarGetInteger("gCrouchStabHammerFix", 0) == 0) {
-                CVarSetInteger("gCrouchStabFix", 0);
-            } else {
+            if (CVarGetInteger("gCrouchStabHammerFix", 0)) {
                 UIWidgets::PaddedEnhancementCheckbox("Remove power crouch stab", "gCrouchStabFix", true, false);
                 UIWidgets::Tooltip("Make crouch stabbing always do the same damage as a regular slash");
             }
@@ -1014,6 +1030,14 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Interval between Rupee reduction in Rupee Dash Mode");
             }
 
+            UIWidgets::Spacer(0);
+
+            UIWidgets::PaddedEnhancementCheckbox("Shadow Tag Mode", "gShadowTag", true, false);
+
+            if (CVarGetInteger("gShadowTag", 0)) {
+                UIWidgets::Tooltip("A wallmaster follows Link everywhere, don't get caught!");
+            }
+
             ImGui::EndMenu();
         }
 
@@ -1031,12 +1055,6 @@ void DrawEnhancementsMenu() {
         ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
         ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
-
-        if (mGameControlEditorWindow) {
-            if (ImGui::Button(GetWindowButtonText("Customize Game Controls", CVarGetInteger("gGameControlEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
-                mGameControlEditorWindow->ToggleVisibility();
-            }
-        }
 
         if (mCosmeticsEditorWindow) {
             if (ImGui::Button(GetWindowButtonText("Cosmetics Editor", CVarGetInteger("gCosmeticsEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
@@ -1164,7 +1182,7 @@ void DrawCheatsMenu() {
             }
             else {
                 lastBetaQuestWorld = betaQuestWorld = 0xFFEF;
-                CVarSetInteger("gBetaQuestWorld", betaQuestWorld);
+                CVarClear("gBetaQuestWorld");
             }
             if (betaQuestEnabled != lastBetaQuestEnabled || betaQuestWorld != lastBetaQuestWorld)
             {
@@ -1214,7 +1232,7 @@ void DrawDeveloperToolsMenu() {
         };
         UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", "gBetterDebugWarpScreen", true, false);
         UIWidgets::Tooltip("Optimized debug warp screen, with the added ability to chose entrances and time of day");
-        UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", "gDebugWarpScreenTranslation", true, false);
+        UIWidgets::PaddedEnhancementCheckbox("Debug Warp Screen Translation", "gDebugWarpScreenTranslation", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
         UIWidgets::Tooltip("Translate the Debug Warp Screen based on the game language");
         UIWidgets::PaddedSeparator();
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
@@ -1328,11 +1346,11 @@ void DrawRandomizerMenu() {
 
         if (ImGui::BeginMenu("Rando Enhancements"))
         {
-            UIWidgets::EnhancementCheckbox("Rando-Relevant Navi Hints", "gRandoRelevantNavi");
+            UIWidgets::EnhancementCheckbox("Rando-Relevant Navi Hints", "gRandoRelevantNavi", false, "", UIWidgets::CheckboxGraphics::Cross, true);
             UIWidgets::Tooltip(
                 "Replace Navi's overworld quest hints with rando-related gameplay hints."
             );
-            UIWidgets::PaddedEnhancementCheckbox("Random Rupee Names", "gRandomizeRupeeNames", true, false);
+            UIWidgets::PaddedEnhancementCheckbox("Random Rupee Names", "gRandomizeRupeeNames", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
             UIWidgets::Tooltip(
                 "When obtaining rupees, randomize what the rupee is called in the textbox."
             );
@@ -1359,7 +1377,7 @@ void DrawRandomizerMenu() {
                 "shuffle settings set to \"Any Dungeon\", \"Overworld\" or \"Anywhere\"";
 
             UIWidgets::PaddedEnhancementCheckbox("Key Colors Match Dungeon", "gRandoMatchKeyColors", true, false,
-                                                    disableKeyColors, disableKeyColorsText);
+                                                  disableKeyColors, disableKeyColorsText, UIWidgets::CheckboxGraphics::Cross, true);
             UIWidgets::Tooltip(
                 "Matches the color of small keys and boss keys to the dungeon they belong to. "
                 "This helps identify keys from afar and adds a little bit of flair.\n\nThis only "

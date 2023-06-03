@@ -3,6 +3,9 @@ extern "C" {
 }
 #include "gameplaystatswindow.h"
 
+#include "soh/SaveManager.h"
+#include "functions.h"
+#include "macros.h"
 #include "../UIWidgets.hpp"
 
 #include <vector>
@@ -10,125 +13,219 @@ extern "C" {
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
 
-
 extern "C" {
 #include <z64.h>
 #include "variables.h"
 extern PlayState* gPlayState;
+uint64_t GetUnixTimestamp();
 }
 
-const std::vector<std::string> sceneMappings = {
-    {"Inside the Deku Tree"},
-    {"Dodongo's Cavern"},
-    {"Inside Jabu-Jabu's Belly"},
-    {"Forest Temple"},
-    {"Fire Temple"},
-    {"Water Temple"},
-    {"Spirit Temple"},
-    {"Shadow Temple"},
-    {"Bottom of the Well"},
-    {"Ice Cavern"},
-    {"Ganon's Tower"},
-    {"Gerudo Training Ground"},
-    {"Theives' Hideout"},
-    {"Inside Ganon's Castle"},
-    {"Tower Collapse"},
-    {"Castle Collapse"},
-    {"Treasure Box Shop"},
-    {"Gohma's Lair"},
-    {"King Dodongo's Lair"},
-    {"Barinade's Lair"},
-    {"Phantom Ganon's Lair"},
-    {"Volvagia's Lair"},
-    {"Morpha's Lair"},
-    {"Twinrova's Lair"},
-    {"Bongo Bongo's Lair"},
-    {"Ganondorf's Lair"},
-    {"Ganon's Lair"},
-    {"Market Entrance (Day)"},
-    {"Market Entrance (Night)"},
-    {"Market Entrance (Adult)"},
-    {"Back Alley (Day)"},
-    {"Back Alley (Night)"},
-    {"Market (Day)"},
-    {"Market (Night)"},
-    {"Market (Adult)"},
-    {"Outside ToT (Day)"},
-    {"Outside ToT (Night)"},
-    {"Outside ToT (Adult)"},
-    {"Know-It-All Bros' House"},
-    {"Twins' House"},
-    {"Mido's House"},
-    {"Saria's House"},
-    {"Carpenter Boss's House"},
-    {"Man in Green's House"},
-    {"Bazaar"},
-    {"Kokiri Shop"},
-    {"Goron Shop"},
-    {"Zora Shop"},
-    {"Kakariko Potion Shop"},
-    {"Market Potion Shop"},
-    {"Bombchu Shop"},
-    {"Happy Mask Shop"},
-    {"Link's House"},
-    {"Richard's House"},
-    {"Stable"},
-    {"Impa's House"},
-    {"Lakeside Lab"},
-    {"Carpenters' Tent"},
-    {"Gravekeeper's Hut"},
-    {"Great Fairy"},
-    {"Fairy Fountain"},
-    {"Great Fairy"},
-    {"Grotto"},
-    {"Redead Grave"},
-    {"Fairy Fountain Grave"},
-    {"Royal Family's Tomb"},
-    {"Shooting Gallery"},
-    {"Temple of Time"},
-    {"Chamber of Sages"},
-    {"Castle Maze (Day)"},
-    {"Castle Maze (Night)"},
-    {"Cutscene Map"},
-    {"Dampe's Grave"},
-    {"Fishing Pond"},
-    {"Castle Courtyard"},
-    {"Bombchu Bowling Alley"},
-    {"Ranch House"},
-    {"Guard House"},
-    {"Granny's Potion Shop"},
-    {"Ganon Fight"},
-    {"House of Skulltula"},
-    {"Hyrule Field"},
-    {"Kakariko Village"},
-    {"Graveyard"},
-    {"Zora's River"},
-    {"Kokiri Forest"},
-    {"Sacred Forest Meadow"},
-    {"Lake Hylia"},
-    {"Zora's Domain"},
-    {"Zora's Fountain"},
-    {"Gerudo Valley"},
-    {"Lost Woods"},
-    {"Desert Colossus"},
-    {"Gerudo's Fortress"},
-    {"Haunted Wasteland"},
-    {"Hyrule Castle"},
-    {"Death Mountain Trail"},
-    {"Death Mountain Crater"},
-    {"Goron City"},
-    {"Lon Lon Ranch"},
-    {"Outside Ganon's Castle"},
+const char* const sceneMappings[] = {
+    "Inside the Deku Tree",
+    "Dodongo's Cavern",
+    "Inside Jabu-Jabu's Belly",
+    "Forest Temple",
+    "Fire Temple",
+    "Water Temple",
+    "Spirit Temple",
+    "Shadow Temple",
+    "Bottom of the Well",
+    "Ice Cavern",
+    "Ganon's Tower",
+    "Gerudo Training Ground",
+    "Theives' Hideout",
+    "Inside Ganon's Castle",
+    "Tower Collapse",
+    "Castle Collapse",
+    "Treasure Box Shop",
+    "Gohma's Lair",
+    "King Dodongo's Lair",
+    "Barinade's Lair",
+    "Phantom Ganon's Lair",
+    "Volvagia's Lair",
+    "Morpha's Lair",
+    "Twinrova's Lair",
+    "Bongo Bongo's Lair",
+    "Ganondorf's Lair",
+    "Ganon's Lair",
+    "Market Entrance (Day)",
+    "Market Entrance (Night)",
+    "Market Entrance (Adult)",
+    "Back Alley (Day)",
+    "Back Alley (Night)",
+    "Market (Day)",
+    "Market (Night)",
+    "Market (Adult)",
+    "Outside ToT (Day)",
+    "Outside ToT (Night)",
+    "Outside ToT (Adult)",
+    "Know-It-All Bros' House",
+    "Twins' House",
+    "Mido's House",
+    "Saria's House",
+    "Carpenter Boss's House",
+    "Man in Green's House",
+    "Bazaar",
+    "Kokiri Shop",
+    "Goron Shop",
+    "Zora Shop",
+    "Kakariko Potion Shop",
+    "Market Potion Shop",
+    "Bombchu Shop",
+    "Happy Mask Shop",
+    "Link's House",
+    "Richard's House",
+    "Stable",
+    "Impa's House",
+    "Lakeside Lab",
+    "Carpenters' Tent",
+    "Gravekeeper's Hut",
+    "Great Fairy",
+    "Fairy Fountain",
+    "Great Fairy",
+    "Grotto",
+    "Redead Grave",
+    "Fairy Fountain Grave",
+    "Royal Family's Tomb",
+    "Shooting Gallery",
+    "Temple of Time",
+    "Chamber of Sages",
+    "Castle Maze (Day)",
+    "Castle Maze (Night)",
+    "Cutscene Map",
+    "Dampe's Grave",
+    "Fishing Pond",
+    "Castle Courtyard",
+    "Bombchu Bowling Alley",
+    "Ranch House",
+    "Guard House",
+    "Granny's Potion Shop",
+    "Ganon Fight",
+    "House of Skulltula",
+    "Hyrule Field",
+    "Kakariko Village",
+    "Graveyard",
+    "Zora's River",
+    "Kokiri Forest",
+    "Sacred Forest Meadow",
+    "Lake Hylia",
+    "Zora's Domain",
+    "Zora's Fountain",
+    "Gerudo Valley",
+    "Lost Woods",
+    "Desert Colossus",
+    "Gerudo's Fortress",
+    "Haunted Wasteland",
+    "Hyrule Castle",
+    "Death Mountain Trail",
+    "Death Mountain Crater",
+    "Goron City",
+    "Lon Lon Ranch",
+    "Outside Ganon's Castle",
     //Debug Rooms
-    {"Test Map"},
-    {"Test Room"},
-    {"Depth Test"},
-    {"Stalfos Mini-Boss"},
-    {"Stalfos Boss"},
-    {"Dark Link"}, 
-    {"Castle Maze (Broken)"},
-    {"SRD Room"}, 
-    {"Chest Room"}
+    "Test Map",
+    "Test Room",
+    "Depth Test",
+    "Stalfos Mini-Boss",
+    "Stalfos Boss",
+    "Dark Link",
+    "Castle Maze (Broken)",
+    "SRD Room",
+    "Chest Room",
+};
+
+const char* const countMappings[] = {
+    "Anubis:",
+    "Armos:",
+    "Arwing:",
+    "Bari:",
+    "Biri:",
+    "Beamos:",
+    "Big Octo:",
+    "Bubble (Blue):",
+    "Bubble (Green):",
+    "Bubble (Red):",
+    "Bubble (White):",
+    "Business Scrub:",
+    "Dark Link:",
+    "Dead Hand:",
+    "Deku Baba:",
+    "Deku Baba (Big):",
+    "Deku Scrub:",
+    "Dinolfos:",
+    "Dodongo:",
+    "Dodongo (Baby):",
+    "Door Mimic:",
+    "Flare Dancer:",
+    "Floormaster:",
+    "Flying Floor Tile:",
+    "Flying Pot:",
+    "Freezard:",
+    "Gerudo Thief:",
+    "Gibdo:",
+    "Gohma Larva:",
+    "Guay:",
+    "Iron Knuckle:",
+    "Iron Knuckle (Nab):",
+    "Keese:",
+    "Keese (Fire):",
+    "Keese (Ice):",
+    "Leever:",
+    "Leever (Big):",
+    "Like-Like:",
+    "Lizalfos:",
+    "Mad Scrub:",
+    "Moblin:",
+    "Moblin (Club):",
+    "Octorok:",
+    "Parasitic Tentacle:",
+    "Peahat:",
+    "Peahat Larva:",
+    "Poe:",
+    "Poe (Big):",
+    "Poe (Composer):",
+    "Poe Sisters:",
+    "Redead:",
+    "Shabom:",
+    "Shellblade:",
+    "Skull Kid:",
+    "Skulltula:",
+    "Skulltula (Big):",
+    "Skulltula (Gold):",
+    "Skullwalltula:",
+    "Spike:",
+    "Stalchild:",
+    "Stalfos:",
+    "Stinger:",
+    "Tailpasaran:",
+    "Tektite (Blue):",
+    "Tektite (Red):",
+    "Torch Slug:",
+    "Wallmaster:",
+    "Withered Deku Baba:",
+    "Wolfos:",
+    "Wolfos (White):",
+    "Deku Sticks:",
+    "Deku Nuts:",
+    "Bombs:",
+    "Arrows:",
+    "Deku Seeds:",
+    "Bombchus:",
+    "Beans:",
+    "A:",
+    "B:",
+    "L:",
+    "R:",
+    "Z:",
+    "C-Up:",
+    "C-Right:",
+    "C-Down:",
+    "C-Left:",
+    "D-Up:",
+    "D-Right:",
+    "D-Down:",
+    "D-Left:",
+    "Start:",
 };
 
 #define COLOR_WHITE      ImVec4(1.00f, 1.00f, 1.00f, 1.00f)
@@ -158,117 +255,240 @@ TimestampInfo itemTimestampDisplay[TIMESTAMP_MAX];
 TimestampInfo sceneTimestampDisplay[8191];
 //std::vector<TimestampInfo> sceneTimestampDisplay;
 
-void DisplayTimeHHMMSS(uint32_t timeInTenthsOfSeconds, std::string text, ImVec4 color) {
-
-    uint32_t sec = timeInTenthsOfSeconds / 10;
+std::string formatTimestampGameplayStat(uint32_t value) {
+    uint32_t sec = value / 10;
     uint32_t hh = sec / 3600;
     uint32_t mm = (sec - hh * 3600) / 60;
     uint32_t ss = sec - hh * 3600 - mm * 60;
-    uint32_t ds = timeInTenthsOfSeconds % 10;
+    uint32_t ds = value % 10;
+    return fmt::format("{}:{:0>2}:{:0>2}.{}", hh, mm, ss, ds);
+}
 
+std::string formatIntGameplayStat(uint32_t value) {
+    return fmt::format("{}", value);
+}
+
+std::string formatHexGameplayStat(uint32_t value) {
+    return fmt::format("{:#x} ({:d})", value, value);
+}
+
+std::string formatHexOnlyGameplayStat(uint32_t value) {
+    return fmt::format("{:#x}", value, value);
+}
+
+extern "C" char* GameplayStats_GetCurrentTime() {
+    std::string timeString = formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME).c_str();
+    const int stringLength = timeString.length();
+    char* timeChar = new char[stringLength + 1];
+    strcpy(timeChar, timeString.c_str());
+    return timeChar;
+}
+
+void LoadStatsVersion1() {
+    std::string buildVersion;
+    SaveManager::Instance->LoadData("buildVersion", buildVersion);
+    strncpy(gSaveContext.sohStats.buildVersion, buildVersion.c_str(), ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1);
+    gSaveContext.sohStats.buildVersion[ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1] = 0;
+    SaveManager::Instance->LoadData("buildVersionMajor", gSaveContext.sohStats.buildVersionMajor);
+    SaveManager::Instance->LoadData("buildVersionMinor", gSaveContext.sohStats.buildVersionMinor);
+    SaveManager::Instance->LoadData("buildVersionPatch", gSaveContext.sohStats.buildVersionPatch);
+
+    SaveManager::Instance->LoadData("heartPieces", gSaveContext.sohStats.heartPieces);
+    SaveManager::Instance->LoadData("heartContainers", gSaveContext.sohStats.heartContainers);
+    SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.sohStats.dungeonKeys[i]);
+    });
+    SaveManager::Instance->LoadData("rtaTiming", gSaveContext.sohStats.rtaTiming);
+    SaveManager::Instance->LoadData("fileCreatedAt", gSaveContext.sohStats.fileCreatedAt);
+    SaveManager::Instance->LoadData("playTimer", gSaveContext.sohStats.playTimer);
+    SaveManager::Instance->LoadData("pauseTimer", gSaveContext.sohStats.pauseTimer);
+    SaveManager::Instance->LoadArray("itemTimestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.sohStats.itemTimestamp[i]);
+    });
+    SaveManager::Instance->LoadArray("sceneTimestamps", ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps), [&](size_t i) {
+        SaveManager::Instance->LoadStruct("", [&]() {
+            int scene, room, sceneTime, roomTime, isRoom;
+            SaveManager::Instance->LoadData("scene", scene);
+            SaveManager::Instance->LoadData("room", room);
+            SaveManager::Instance->LoadData("sceneTime", sceneTime);
+            SaveManager::Instance->LoadData("roomTime", roomTime);
+            SaveManager::Instance->LoadData("isRoom", isRoom);
+            if (scene == 0 && room == 0 && sceneTime == 0 && roomTime == 0 && isRoom == 0) {
+                return;
+            }
+            gSaveContext.sohStats.sceneTimestamps[i].scene = scene;
+            gSaveContext.sohStats.sceneTimestamps[i].room = room;
+            gSaveContext.sohStats.sceneTimestamps[i].sceneTime = sceneTime;
+            gSaveContext.sohStats.sceneTimestamps[i].roomTime = roomTime;
+            gSaveContext.sohStats.sceneTimestamps[i].isRoom = isRoom;
+        });
+    });
+    SaveManager::Instance->LoadData("tsIdx", gSaveContext.sohStats.tsIdx);
+    SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.sohStats.count[i]);
+    });
+    SaveManager::Instance->LoadArray("scenesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.scenesDiscovered), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.sohStats.scenesDiscovered[i]);
+    });
+    SaveManager::Instance->LoadArray("entrancesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.sohStats.entrancesDiscovered[i]);
+    });
+    SaveManager::Instance->LoadArray("locationsSkipped", ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.sohStats.locationsSkipped[i]);
+    });
+}
+
+void SaveStats(SaveContext* saveContext, int sectionID) {
+    SaveManager::Instance->SaveData("buildVersion", saveContext->sohStats.buildVersion);
+    SaveManager::Instance->SaveData("buildVersionMajor", saveContext->sohStats.buildVersionMajor);
+    SaveManager::Instance->SaveData("buildVersionMinor", saveContext->sohStats.buildVersionMinor);
+    SaveManager::Instance->SaveData("buildVersionPatch", saveContext->sohStats.buildVersionPatch);
+
+    SaveManager::Instance->SaveData("heartPieces", saveContext->sohStats.heartPieces);
+    SaveManager::Instance->SaveData("heartContainers", saveContext->sohStats.heartContainers);
+    SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(saveContext->sohStats.dungeonKeys), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->sohStats.dungeonKeys[i]);
+    });
+    SaveManager::Instance->SaveData("rtaTiming", saveContext->sohStats.rtaTiming);
+    SaveManager::Instance->SaveData("fileCreatedAt", saveContext->sohStats.fileCreatedAt);
+    SaveManager::Instance->SaveData("playTimer", saveContext->sohStats.playTimer);
+    SaveManager::Instance->SaveData("pauseTimer", saveContext->sohStats.pauseTimer);
+    SaveManager::Instance->SaveArray("itemTimestamps", ARRAY_COUNT(saveContext->sohStats.itemTimestamp), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->sohStats.itemTimestamp[i]);
+    });
+    SaveManager::Instance->SaveArray("sceneTimestamps", ARRAY_COUNT(saveContext->sohStats.sceneTimestamps), [&](size_t i) {
+        if (saveContext->sohStats.sceneTimestamps[i].scene != 254 && saveContext->sohStats.sceneTimestamps[i].room != 254) {
+            SaveManager::Instance->SaveStruct("", [&]() {
+                SaveManager::Instance->SaveData("scene", saveContext->sohStats.sceneTimestamps[i].scene);
+                SaveManager::Instance->SaveData("room", saveContext->sohStats.sceneTimestamps[i].room);
+                SaveManager::Instance->SaveData("sceneTime", saveContext->sohStats.sceneTimestamps[i].sceneTime);
+                SaveManager::Instance->SaveData("roomTime", saveContext->sohStats.sceneTimestamps[i].roomTime);
+                SaveManager::Instance->SaveData("isRoom", saveContext->sohStats.sceneTimestamps[i].isRoom);
+            });
+        }
+    });
+    SaveManager::Instance->SaveData("tsIdx", saveContext->sohStats.tsIdx);
+    SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(saveContext->sohStats.count), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->sohStats.count[i]);
+    });
+    SaveManager::Instance->SaveArray("scenesDiscovered", ARRAY_COUNT(saveContext->sohStats.scenesDiscovered), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->sohStats.scenesDiscovered[i]);
+    });
+    SaveManager::Instance->SaveArray("entrancesDiscovered", ARRAY_COUNT(saveContext->sohStats.entrancesDiscovered), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->sohStats.entrancesDiscovered[i]);
+    });
+    SaveManager::Instance->SaveArray("locationsSkipped", ARRAY_COUNT(saveContext->sohStats.locationsSkipped), [&](size_t i) {
+        SaveManager::Instance->SaveData("", saveContext->sohStats.locationsSkipped[i]);
+    });
+}
+
+void GameplayStatsRow(const char* label, std::string value, ImVec4 color = COLOR_WHITE) {
     ImGui::PushStyleColor(ImGuiCol_Text, color);
-
-    std::string padded = fmt::format("{:<40}", text);
-    ImGui::Text(padded.c_str());
-    ImGui::SameLine();
-    ImGui::Text("%2u:%02u:%02u.%u", hh, mm, ss, ds);
+    ImGui::TableNextRow();
+    ImGui::TableNextColumn();
+    ImGui::Text(label);
+    ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(value.c_str()).x - 8.0f));
+    ImGui::Text("%s", value.c_str());
     ImGui::PopStyleColor();
 }
 
-void SortChronological(TimestampInfo* arr, size_t len) {
-    TimestampInfo temp;
-    for (int i = 0; i < len; i++) {
-        for (int j = 0; j + 1 < len - i; j++) {
-            if (arr[j].time > arr[j + 1].time) {
-                temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
-            }
-        }
-    }
+bool compareTimestampInfoByTime(const TimestampInfo& a, const TimestampInfo& b) {
+    return CVarGetInteger("gGameplayStats.TimestampsReverse", 0) ? a.time > b.time : a.time < b.time;
 }
 
-void DisplayStat(const char* text, uint32_t value) {
-
-    ImGui::Text(text);
-    ImGui::SameLine();
-    ImGui::Text("%7u", value);
-}
-
-void DisplayStatIfNonZero(const char* text, uint32_t value) {
-    if (value > 0) {
-        DisplayStat(text, value);
-    }
-    return;
-}
-
-std::string ResolveSceneID(int sceneID, int roomID){
-    std::string scene = "";
+const char* ResolveSceneID(int sceneID, int roomID){
     if (sceneID == SCENE_KAKUSIANA) {
         switch (roomID) {
             case 0:
-                scene = "Generic Grotto";
-                break;
+                return "Generic Grotto";
             case 1:
-                scene = "Lake Hylia Scrub Grotto";
-                break;
+                return "Lake Hylia Scrub Grotto";
             case 2:
-                scene = "Redead Grotto";
-                break;
+                return "Redead Grotto";
             case 3:
-                scene = "Cow Grotto";
-                break;
+                return "Cow Grotto";
             case 4:
-                scene = "Scrub Trio";
-                break;
+                return "Scrub Trio";
             case 5:
-                scene = "Flooded Grotto";
-                break;
+                return "Flooded Grotto";
             case 6:
-                scene = "Scrub Duo (Upgrade)";
-                break;
+                return "Scrub Duo (Upgrade)";
             case 7:
-                scene = "Wolfos Grotto";
-                break;
+                return "Wolfos Grotto";
             case 8:
-                scene = "Hyrule Castle Storms Grotto";
-                break;
+                return "Hyrule Castle Storms Grotto";
             case 9:
-                scene = "Scrub Duo";
-                break;
+                return "Scrub Duo";
             case 10:
-                scene = "Tektite Grotto";
-                break;
+                return "Tektite Grotto";
             case 11:
-                scene = "Forest Stage";
-                break;
+                return "Forest Stage";
             case 12:
-                scene = "Webbed Grotto";
-                break;
+                return "Webbed Grotto";
             case 13:
-                scene = "Big Skulltula Grotto";
-                break;
-            default:
-                scene = "???";
+                return "Big Skulltula Grotto";
         };
     } else if (sceneID == SCENE_HAKASITARELAY) {
         //Only the last room of Dampe's Grave (rm 6) is considered the windmill
-        scene = roomID == 6 ? "Windmill" : "Dampe's Grave";
+        return roomID == 6 ? "Windmill" : "Dampe's Grave";
     } else if (sceneID < SCENE_ID_MAX) {
-        scene = sceneMappings[sceneID];
-    } else {
-        scene = "???";
+        return sceneMappings[sceneID];
     }
-    return scene;
+
+    return "???";
 }
 
-void GameplayStatsWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(480, 550), ImGuiCond_Appearing);
-    if (!ImGui::Begin("Gameplay Stats", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
+void DrawGameplayStatsHeader() {
+    ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
+    ImGui::BeginTable("gameplayStatsHeader", 1, ImGuiTableFlags_BordersOuter);
+    ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
+    GameplayStatsRow("Build Version:", (char*) gBuildVersion);
+    if (gSaveContext.sohStats.rtaTiming) {
+        GameplayStatsRow("Total Time (RTA):", formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME), gSaveContext.sohStats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
+    } else {
+        GameplayStatsRow("Total Game Time:", formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME), gSaveContext.sohStats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
     }
-    u32 totalTimer = GAMEPLAYSTAT_TOTAL_TIME;
+    if (CVarGetInteger("gGameplayStats.ShowAdditionalTimers", 0)) { // !Only display total game time
+        GameplayStatsRow("Gameplay Time:", formatTimestampGameplayStat(gSaveContext.sohStats.playTimer / 2), COLOR_GREY);
+        GameplayStatsRow("Pause Menu Time:", formatTimestampGameplayStat(gSaveContext.sohStats.pauseTimer / 3), COLOR_GREY);
+        GameplayStatsRow("Time in scene:", formatTimestampGameplayStat(gSaveContext.sohStats.sceneTimer / 2), COLOR_LIGHT_BLUE);
+        GameplayStatsRow("Time in room:", formatTimestampGameplayStat(gSaveContext.sohStats.roomTimer / 2), COLOR_LIGHT_BLUE);
+    }
+    if (gPlayState != NULL && CVarGetInteger("gGameplayStats.ShowDebugInfo", 0)) { // && display debug info
+        GameplayStatsRow("play->sceneNum:", formatHexGameplayStat(gPlayState->sceneNum), COLOR_YELLOW);
+        GameplayStatsRow("gSaveContext.entranceIndex:", formatHexGameplayStat(gSaveContext.entranceIndex), COLOR_YELLOW);
+        GameplayStatsRow("gSaveContext.cutsceneIndex:", formatHexOnlyGameplayStat(gSaveContext.cutsceneIndex), COLOR_YELLOW);
+        GameplayStatsRow("play->roomCtx.curRoom.num:", formatIntGameplayStat(gPlayState->roomCtx.curRoom.num), COLOR_YELLOW);
+    }
+    ImGui::EndTable();
+    ImGui::PopStyleVar(1);
+}
+
+void DrawGameplayStatsTimestampsTab() {
+    // Set up the array of item timestamps and then sort it chronologically
+    for (int i = 0; i < TIMESTAMP_MAX; i++) {
+        strcpy(itemTimestampDisplay[i].name, itemTimestampDisplayName[i]);
+        itemTimestampDisplay[i].time = gSaveContext.sohStats.itemTimestamp[i];
+        itemTimestampDisplay[i].color = itemTimestampDisplayColor[i];
+    }
+
+    std::sort(itemTimestampDisplay, itemTimestampDisplay + TIMESTAMP_MAX, compareTimestampInfoByTime);
+
+    ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
+    ImGui::BeginTable("gameplayStatsTimestamps", 1, ImGuiTableFlags_BordersOuter);
+    ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
+    for (int i = 0; i < TIMESTAMP_MAX; i++) {
+        // To be shown, the entry must have a non-zero time and a string for its display name
+        if (itemTimestampDisplay[i].time > 0 && strnlen(itemTimestampDisplay[i].name, 21) > 1) {
+            GameplayStatsRow(itemTimestampDisplay[i].name, formatTimestampGameplayStat(itemTimestampDisplay[i].time), itemTimestampDisplay[i].color);
+        }
+    }
+    ImGui::EndTable();
+    ImGui::PopStyleVar(1);
+
+}
+
+void DrawGameplayStatsCountsTab() {
     u32 enemiesDefeated = 0;
     u32 ammoUsed = 0;
     u32 buttonPresses = 0;
@@ -290,233 +510,192 @@ void GameplayStatsWindow::DrawElement() {
     for (int i = COUNT_BUTTON_PRESSES_A; i <= COUNT_BUTTON_PRESSES_START; i++) {
         buttonPresses += gSaveContext.sohStats.count[i];
     }
-    // Set up the array of item timestamps and then sort it chronologically
-    for (int i = 0; i < TIMESTAMP_MAX; i++) {
-        strcpy(itemTimestampDisplay[i].name, itemTimestampDisplayName[i]);
-        itemTimestampDisplay[i].time = gSaveContext.sohStats.itemTimestamp[i];
-        itemTimestampDisplay[i].color = itemTimestampDisplayColor[i];
+
+    ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
+    ImGui::BeginTable("gameplayStatsCounts", 1, ImGuiTableFlags_BordersOuter);
+    ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
+    GameplayStatsRow("Enemies Defeated:", formatIntGameplayStat(enemiesDefeated));
+    if (enemiesDefeated > 0) {
+        ImGui::TableNextRow(); ImGui::TableNextColumn();
+        if (ImGui::TreeNodeEx("Enemy Details...", ImGuiTreeNodeFlags_NoTreePushOnOpen)) {
+            for (int i = COUNT_ENEMIES_DEFEATED_ANUBIS; i <= COUNT_ENEMIES_DEFEATED_WOLFOS; i++) {
+                if (i == COUNT_ENEMIES_DEFEATED_FLOORMASTER) {
+                    GameplayStatsRow(countMappings[i], formatIntGameplayStat(gSaveContext.sohStats.count[i] / 3));
+                } else {
+                    GameplayStatsRow(countMappings[i], formatIntGameplayStat(gSaveContext.sohStats.count[i]));
+                }
+            }
+        }
     }
-   
+    GameplayStatsRow("Rupees Collected:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_RUPEES_COLLECTED]));
+    UIWidgets::Tooltip("Includes rupees collected with a full wallet.");
+    GameplayStatsRow("Rupees Spent:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_RUPEES_SPENT]));
+    GameplayStatsRow("Chests Opened:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_CHESTS_OPENED]));
+    GameplayStatsRow("Ammo Used:", formatIntGameplayStat(ammoUsed));
+    if (ammoUsed > 0) {
+        ImGui::TableNextRow(); ImGui::TableNextColumn();
+        if (ImGui::TreeNodeEx("Ammo Details...", ImGuiTreeNodeFlags_NoTreePushOnOpen)) {
+            for (int i = COUNT_AMMO_USED_STICK; i <= COUNT_AMMO_USED_BEAN; i++) {
+                GameplayStatsRow(countMappings[i], formatIntGameplayStat(gSaveContext.sohStats.count[i]));
+            }
+        }
+    }
+    GameplayStatsRow("Damage Taken:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_DAMAGE_TAKEN]));
+    GameplayStatsRow("Sword Swings:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_SWORD_SWINGS]));
+    GameplayStatsRow("Steps Taken:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_STEPS]));
+    // If using MM Bunny Hood enhancement, show how long it's been equipped (not counting pause time)
+    if (CVarGetInteger("gMMBunnyHood", 0) || gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
+        GameplayStatsRow("Bunny Hood Time:", formatTimestampGameplayStat(gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] / 2));
+    }
+    GameplayStatsRow("Rolls:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_ROLLS]));
+    GameplayStatsRow("Bonks:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_BONKS]));
+    GameplayStatsRow("Sidehops:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_SIDEHOPS]));
+    GameplayStatsRow("Backflips:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_BACKFLIPS]));
+    GameplayStatsRow("Ice Traps:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_ICE_TRAPS]));
+    GameplayStatsRow("Pauses:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_PAUSES]));
+    GameplayStatsRow("Pots Smashed:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_POTS_BROKEN]));
+    GameplayStatsRow("Bushes Cut:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_BUSHES_CUT]));
+    GameplayStatsRow("Buttons Pressed:", formatIntGameplayStat(buttonPresses));
+    if (buttonPresses > 0) {
+        ImGui::TableNextRow(); ImGui::TableNextColumn();
+        if (ImGui::TreeNodeEx("Buttons...", ImGuiTreeNodeFlags_NoTreePushOnOpen)) {
+            for (int i = COUNT_BUTTON_PRESSES_A; i <= COUNT_BUTTON_PRESSES_START; i++) {
+                GameplayStatsRow(countMappings[i], formatIntGameplayStat(gSaveContext.sohStats.count[i]));
+            }
+        }
+    }
+    ImGui::EndTable();
+    ImGui::PopStyleVar(1);
+}
+
+void DrawGameplayStatsBreakdownTab() {
     for (int i = 0; i < gSaveContext.sohStats.tsIdx; i++) {
         std::string sceneName = ResolveSceneID(gSaveContext.sohStats.sceneTimestamps[i].scene, gSaveContext.sohStats.sceneTimestamps[i].room);
         std::string name;
-        if (CVarGetInteger("gGameplayStatRoomBreakdown", 0) && gSaveContext.sohStats.sceneTimestamps[i].scene != SCENE_KAKUSIANA) {
+        if (CVarGetInteger("gGameplayStats.RoomBreakdown", 0) && gSaveContext.sohStats.sceneTimestamps[i].scene != SCENE_KAKUSIANA) {
             name = fmt::format("{:s} Room {:d}", sceneName, gSaveContext.sohStats.sceneTimestamps[i].room);    
         } else {
             name = sceneName;
         }
         strcpy(sceneTimestampDisplay[i].name, name.c_str());
-        sceneTimestampDisplay[i].time = CVarGetInteger("gGameplayStatRoomBreakdown", 0) ? 
+        sceneTimestampDisplay[i].time = CVarGetInteger("gGameplayStats.RoomBreakdown", 0) ? 
             gSaveContext.sohStats.sceneTimestamps[i].roomTime : gSaveContext.sohStats.sceneTimestamps[i].sceneTime;
         sceneTimestampDisplay[i].color = COLOR_GREY;
         sceneTimestampDisplay[i].isRoom = gSaveContext.sohStats.sceneTimestamps[i].isRoom;
     }
 
-    SortChronological(itemTimestampDisplay, sizeof(itemTimestampDisplay) / sizeof(itemTimestampDisplay[0]));
-
-    
-    // Begin drawing the table and showing the stats
-
-    ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
-    ImGui::BeginTable("timers", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV);
-    ImGui::TableSetupColumn("Timers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-    ImGui::TableNextColumn();
-
-    DisplayTimeHHMMSS(totalTimer, "Total Game Time:    ", COLOR_WHITE);
-    UIWidgets::Tooltip("Timer accuracy may be affected by game performance and loading.");
-    DisplayTimeHHMMSS(gSaveContext.sohStats.playTimer / 2, "Gameplay Time:      ", COLOR_WHITE);
-    UIWidgets::Tooltip("Timer accuracy may be affected by game performance and loading.");
-    DisplayTimeHHMMSS(gSaveContext.sohStats.pauseTimer / 3, "Pause Menu Time:    ", COLOR_WHITE);
-    DisplayTimeHHMMSS(gSaveContext.sohStats.sceneTimer / 2, "Time in scene:      ", COLOR_LIGHT_BLUE);
-    UIWidgets::Tooltip("Timer accuracy may be affected by game performance and loading.");
-    DisplayTimeHHMMSS(gSaveContext.sohStats.roomTimer / 2, "Time in room:       ", COLOR_LIGHT_BLUE);
-    UIWidgets::Tooltip("Timer accuracy may be affected by game performance and loading.");
-    ImGui::Text("Current room: %d", gSaveContext.sohStats.roomNum);
-
-    ImGui::PopStyleVar(1);
+    ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
+    ImGui::BeginTable("gameplayStatsCounts", 1, ImGuiTableFlags_BordersOuter);
+    ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
+    for (int i = 0; i < gSaveContext.sohStats.tsIdx; i++) {
+        TimestampInfo tsInfo = sceneTimestampDisplay[i];
+        bool canShow = !tsInfo.isRoom || CVarGetInteger("gGameplayStats.RoomBreakdown", 0);
+        if (tsInfo.time > 0 && strnlen(tsInfo.name, 40) > 1 && canShow) {
+            GameplayStatsRow(tsInfo.name, formatTimestampGameplayStat(tsInfo.time), tsInfo.color);
+        }
+    }
+    std::string toPass;
+    if (CVarGetInteger("gGameplayStats.RoomBreakdown", 0) && gSaveContext.sohStats.sceneNum != SCENE_KAKUSIANA) {
+        toPass = fmt::format("{:s} Room {:d}", ResolveSceneID(gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum), gSaveContext.sohStats.roomNum);
+    } else {
+        toPass = ResolveSceneID(gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum);
+    }
+    GameplayStatsRow(toPass.c_str(), formatTimestampGameplayStat(CURRENT_MODE_TIMER / 2));
     ImGui::EndTable();
+    ImGui::PopStyleVar(1);
+}
 
-    ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 8.0f, 8.0f });
+void DrawGameplayStatsOptionsTab() {
+    UIWidgets::PaddedEnhancementCheckbox("Show in-game total timer", "gGameplayStats.ShowIngameTimer", true, false);
+    UIWidgets::InsertHelpHoverText("Keep track of the timer as an in-game HUD element. The position of the timer can be changed in the Cosmetics Editor.");
+    UIWidgets::PaddedEnhancementCheckbox("Show latest timestamps on top", "gGameplayStats.TimestampsReverse", true, false);
+    UIWidgets::PaddedEnhancementCheckbox("Room Breakdown", "gGameplayStats.RoomBreakdown", true, false);
+    ImGui::SameLine();
+    UIWidgets::InsertHelpHoverText("Allows a more in-depth perspective of time spent in a certain map.");   
+    UIWidgets::PaddedEnhancementCheckbox("RTA Timing on new files", "gGameplayStats.RTATiming", true, false);
+    ImGui::SameLine();
+    UIWidgets::InsertHelpHoverText(
+        "Timestamps are relative to starting timestamp rather than in game time, usually necessary for races/speedruns.\n\n"
+        "Starting timestamp is on first non-c-up input after intro cutscene.\n\n"
+        "NOTE: THIS NEEDS TO BE SET BEFORE CREATING A FILE TO TAKE EFFECT"
+    );   
+    UIWidgets::PaddedEnhancementCheckbox("Show additional detail timers", "gGameplayStats.ShowAdditionalTimers", true, false);
+    UIWidgets::PaddedEnhancementCheckbox("Show Debug Info", "gGameplayStats.ShowDebugInfo");
+}
+
+void GameplayStatsWindow::DrawElement() {
+    ImGui::SetNextWindowSize(ImVec2(480, 550), ImGuiCond_Appearing);
+    if (!ImGui::Begin("Gameplay Stats", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
+        ImGui::End();
+        return;
+    }
+
+    DrawGameplayStatsHeader();
+
     if (ImGui::BeginTabBar("Stats", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("Timestamps")) {
-            // Display chronological timestamps of items obtained and bosses defeated
-            for (int i = 0; i < TIMESTAMP_MAX; i++) {
-                // To be shown, the entry must have a non-zero time and a string for its display name
-                if (itemTimestampDisplay[i].time > 0 && strnlen(itemTimestampDisplay[i].name, 21) > 1) {
-                    DisplayTimeHHMMSS(itemTimestampDisplay[i].time, itemTimestampDisplay[i].name, itemTimestampDisplay[i].color);
-                }
-            }
+            DrawGameplayStatsTimestampsTab();
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Counts")) {
-            DisplayStat("Enemies Defeated:      ", enemiesDefeated);
-            // Show breakdown of enemies defeated in a tree. Only show counts for enemies if they've been defeated at least once.
-            if (enemiesDefeated > 0) {
-                if (ImGui::TreeNode("Enemy Details...")) {
-                    DisplayStatIfNonZero("Anubis:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ANUBIS]);
-                    DisplayStatIfNonZero("Armos:              ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ARMOS]);
-                    DisplayStatIfNonZero("Arwing:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ARWING]);
-                    DisplayStatIfNonZero("Bari:               ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BARI]);
-                    DisplayStatIfNonZero("Biri:               ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BIRI]);
-                    DisplayStatIfNonZero("Beamos:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BEAMOS]);
-                    DisplayStatIfNonZero("Big Octo:           ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BIG_OCTO]);
-                    DisplayStatIfNonZero("Bubble (Blue):      ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_BLUE]);
-                    DisplayStatIfNonZero("Bubble (Green):     ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_GREEN]);
-                    DisplayStatIfNonZero("Bubble (Red):       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_RED]);
-                    DisplayStatIfNonZero("Bubble (White):     ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_WHITE]);
-                    DisplayStatIfNonZero("Business Scrub:     ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUSINESS_SCRUB]);
-                    DisplayStatIfNonZero("Dark Link:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DARK_LINK]);
-                    DisplayStatIfNonZero("Dead Hand:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEAD_HAND]);
-                    DisplayStatIfNonZero("Deku Baba:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA]);
-                    DisplayStatIfNonZero("Deku Baba (Big):    ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG]);
-                    DisplayStatIfNonZero("Deku Scrub:         ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_SCRUB]);
-                    DisplayStatIfNonZero("Dinolfos:           ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DINOLFOS]);
-                    DisplayStatIfNonZero("Dodongo:            ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DODONGO]);
-                    DisplayStatIfNonZero("Dodongo (Baby):     ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DODONGO_BABY]);
-                    DisplayStatIfNonZero("Door Mimic:         ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DOOR_TRAP]);
-                    DisplayStatIfNonZero("Flare Dancer:       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLARE_DANCER]);
-                    DisplayStatIfNonZero("Floormaster:        ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLOORMASTER]/3);
-                    DisplayStatIfNonZero("Flying Floor Tile:  ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLOOR_TILE]);
-                    DisplayStatIfNonZero("Flying Pot:         ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLYING_POT]);
-                    DisplayStatIfNonZero("Freezard:           ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FREEZARD]);
-                    DisplayStatIfNonZero("Gerudo Thief:       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GERUDO_THIEF]);
-                    DisplayStatIfNonZero("Gibdo:              ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GIBDO]);
-                    DisplayStatIfNonZero("Gohma Larva:        ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GOHMA_LARVA]);
-                    DisplayStatIfNonZero("Guay:               ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GUAY]);
-                    DisplayStatIfNonZero("Iron Knuckle:       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE]);
-                    DisplayStatIfNonZero("Iron Knuckle (Nab): ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE_NABOORU]);
-                    DisplayStatIfNonZero("Keese:              ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE]);
-                    DisplayStatIfNonZero("Keese (Fire):       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE_FIRE]);
-                    DisplayStatIfNonZero("Keese (Ice):        ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE_ICE]);
-                    DisplayStatIfNonZero("Leever:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER]);
-                    DisplayStatIfNonZero("Leever (Big):       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER_BIG]);
-                    DisplayStatIfNonZero("Like-Like:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LIKE_LIKE]);
-                    DisplayStatIfNonZero("Lizalfos:           ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LIZALFOS]);
-                    DisplayStatIfNonZero("Mad Scrub:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MAD_SCRUB]);
-                    DisplayStatIfNonZero("Moblin:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MOBLIN]);
-                    DisplayStatIfNonZero("Moblin (Club):      ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MOBLIN_CLUB]);
-                    DisplayStatIfNonZero("Octorok:            ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_OCTOROK]);
-                    DisplayStatIfNonZero("Parasitic Tentacle: ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PARASITIC_TENTACLE]);
-                    DisplayStatIfNonZero("Peahat:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PEAHAT]);
-                    DisplayStatIfNonZero("Peahat Larva:       ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PEAHAT_LARVA]);
-                    DisplayStatIfNonZero("Poe:                ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE]);
-                    DisplayStatIfNonZero("Poe (Big):          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_BIG]);
-                    DisplayStatIfNonZero("Poe (Composer):     ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_COMPOSER]);
-                    DisplayStatIfNonZero("Poe Sisters:        ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_SISTERS]);
-                    DisplayStatIfNonZero("Redead:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_REDEAD]);
-                    DisplayStatIfNonZero("Shabom:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SHABOM]);
-                    DisplayStatIfNonZero("Shellblade:         ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SHELLBLADE]);
-                    DisplayStatIfNonZero("Skull Kid:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULL_KID]);
-                    DisplayStatIfNonZero("Skulltula:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA]);
-                    DisplayStatIfNonZero("Skulltula (Big):    ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_BIG]);
-                    DisplayStatIfNonZero("Skulltula (Gold):   ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_GOLD]);
-                    DisplayStatIfNonZero("Skullwalltula:      ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLWALLTULA]);
-                    DisplayStatIfNonZero("Spike:              ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SPIKE]);
-                    DisplayStatIfNonZero("Stalchild:          ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_STALCHILD]);
-                    DisplayStatIfNonZero("Stalfos:            ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_STALFOS]);
-                    DisplayStatIfNonZero("Stinger:            ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_STINGER]);
-                    DisplayStatIfNonZero("Tailpasaran:        ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TAILPASARAN]);
-                    DisplayStatIfNonZero("Tektite (Blue):     ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_BLUE]);
-                    DisplayStatIfNonZero("Tektite (Red):      ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_RED]);
-                    DisplayStatIfNonZero("Torch Slug:         ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TORCH_SLUG]);
-                    DisplayStatIfNonZero("Wallmaster:         ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WALLMASTER]);
-                    DisplayStatIfNonZero("Withered Deku Baba: ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WITHERED_DEKU_BABA]);
-                    DisplayStatIfNonZero("Wolfos:             ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WOLFOS]);
-                    DisplayStatIfNonZero("Wolfos (White):     ", gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE]);
-                ImGui::NewLine();
-                ImGui::TreePop();
-                }
-            }
-        
-            DisplayStat("Rupees Collected:      ", gSaveContext.sohStats.count[COUNT_RUPEES_COLLECTED]);
-            UIWidgets::Tooltip("Includes rupees collected with a full wallet.");
-            DisplayStat("Rupees Spent:          ", gSaveContext.sohStats.count[COUNT_RUPEES_SPENT]);
-            DisplayStat("Chests Opened:         ", gSaveContext.sohStats.count[COUNT_CHESTS_OPENED]);
-
-            DisplayStat("Ammo Used:             ", ammoUsed);
-            // Show breakdown of ammo used in a collapsible tree. Only show ammo types if they've been used at least once.
-            if (ammoUsed > 0) {
-                if (ImGui::TreeNode("Ammo Details...")) {
-                    DisplayStatIfNonZero("Deku Sticks:        ", gSaveContext.sohStats.count[COUNT_AMMO_USED_STICK]);
-                    DisplayStatIfNonZero("Deku Nuts:          ", gSaveContext.sohStats.count[COUNT_AMMO_USED_NUT]);
-                    DisplayStatIfNonZero("Deku Seeds:         ", gSaveContext.sohStats.count[COUNT_AMMO_USED_SEED]);
-                    DisplayStatIfNonZero("Bombs:              ", gSaveContext.sohStats.count[COUNT_AMMO_USED_BOMB]);
-                    DisplayStatIfNonZero("Bombchus:           ", gSaveContext.sohStats.count[COUNT_AMMO_USED_BOMBCHU]);
-                    DisplayStatIfNonZero("Arrows:             ", gSaveContext.sohStats.count[COUNT_AMMO_USED_ARROW]);
-                    DisplayStatIfNonZero("Beans:              ", gSaveContext.sohStats.count[COUNT_AMMO_USED_BEAN]);
-                    ImGui::NewLine();
-                    ImGui::TreePop();
-                }
-            }
-            DisplayStat("Damage Taken:          ", gSaveContext.sohStats.count[COUNT_DAMAGE_TAKEN]);
-            DisplayStat("Sword Swings:          ", gSaveContext.sohStats.count[COUNT_SWORD_SWINGS]);
-            DisplayStat("Steps Taken:           ", gSaveContext.sohStats.count[COUNT_STEPS]);
-            // If using MM Bunny Hood enhancement, show how long it's been equipped (not counting pause time)
-            if (CVarGetInteger("gMMBunnyHood", 0) || gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
-                DisplayTimeHHMMSS(gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] / 2, "Bunny Hood Time:    ", COLOR_WHITE);
-            }
-            DisplayStat("Rolls:                 ", gSaveContext.sohStats.count[COUNT_ROLLS]);
-            DisplayStat("Bonks:                 ", gSaveContext.sohStats.count[COUNT_BONKS]);
-            DisplayStat("Sidehops:              ", gSaveContext.sohStats.count[COUNT_SIDEHOPS]);
-            DisplayStat("Backflips:             ", gSaveContext.sohStats.count[COUNT_BACKFLIPS]);
-            DisplayStat("Ice Traps:             ", gSaveContext.sohStats.count[COUNT_ICE_TRAPS]);
-            DisplayStat("Pauses:                ", gSaveContext.sohStats.count[COUNT_PAUSES]);
-            DisplayStat("Pots Smashed:          ", gSaveContext.sohStats.count[COUNT_POTS_BROKEN]);
-            DisplayStat("Bushes Cut:            ", gSaveContext.sohStats.count[COUNT_BUSHES_CUT]);
-            DisplayStat("Buttons Pressed:       ", buttonPresses);
-            // Show breakdown of ammo used in a collapsible tree. Only show ammo types if they've been used at least once.
-            if (buttonPresses > 0) {
-                if (ImGui::TreeNode("Buttons...")) {
-                    DisplayStatIfNonZero("A:                  ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_A]);
-                    DisplayStatIfNonZero("B:                  ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_B]);
-                    DisplayStatIfNonZero("L:                  ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_L]);
-                    DisplayStatIfNonZero("R:                  ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_R]);
-                    DisplayStatIfNonZero("Z:                  ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_Z]);
-                    DisplayStatIfNonZero("C-Up:               ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CUP]);
-                    DisplayStatIfNonZero("C-Right:            ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CRIGHT]);
-                    DisplayStatIfNonZero("C-Down:             ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CDOWN]);
-                    DisplayStatIfNonZero("C-Left:             ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_CLEFT]);
-                    DisplayStatIfNonZero("D-Up:               ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DUP]);
-                    DisplayStatIfNonZero("D-Right:            ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DRIGHT]);
-                    DisplayStatIfNonZero("D-Down:             ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DDOWN]);
-                    DisplayStatIfNonZero("D-Left:             ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_DLEFT]);
-                    DisplayStatIfNonZero("Start:              ", gSaveContext.sohStats.count[COUNT_BUTTON_PRESSES_START]);
-                    ImGui::NewLine();
-                    ImGui::TreePop();
-                }
-            }
-        ImGui::EndTabItem();
-        }
-        if (ImGui::BeginTabItem("Breakdown")) {
-            UIWidgets::PaddedEnhancementCheckbox("Room Breakdown", "gGameplayStatRoomBreakdown");
-            ImGui::SameLine();
-            UIWidgets::InsertHelpHoverText("Allows a more in-depth perspective of time spent in a certain map.");
-            if (gPlayState == NULL) {
-                ImGui::Text("Waiting for file load...");
-            } else {
-                for (int i = 0; i < gSaveContext.sohStats.tsIdx; i++) {
-                    TimestampInfo tsInfo = sceneTimestampDisplay[i];
-                    bool canShow = !tsInfo.isRoom || CVarGetInteger("gGameplayStatRoomBreakdown", 0);
-                    if (tsInfo.time > 0 && strnlen(tsInfo.name, 40) > 1 && canShow) {
-                        DisplayTimeHHMMSS(tsInfo.time, tsInfo.name, tsInfo.color);
-                    }
-                }
-                std::string toPass;
-                if (CVarGetInteger("gGameplayStatRoomBreakdown", 0) && gSaveContext.sohStats.sceneNum != SCENE_KAKUSIANA) {
-                    toPass = fmt::format("{:s} Room {:d}", ResolveSceneID(gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum), gSaveContext.sohStats.roomNum);
-                } else {
-                    toPass = ResolveSceneID(gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum);
-                }
-                DisplayTimeHHMMSS(CURRENT_MODE_TIMER / 2, toPass.c_str(), COLOR_WHITE);
-            }
+            DrawGameplayStatsCountsTab();
             ImGui::EndTabItem();
         }
-    ImGui::EndTabBar();
+        if (ImGui::BeginTabItem("Breakdown")) {
+            DrawGameplayStatsBreakdownTab();
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Options")) {
+            DrawGameplayStatsOptionsTab();
+            ImGui::EndTabItem();
+        }
+        ImGui::EndTabBar();
     }
-    ImGui::PopStyleVar(1);
+   
     ImGui::Text("Note: Gameplay stats are saved to the current file and will be\nlost if you quit without saving.");
 
     ImGui::End();
+}
+void InitStats(bool isDebug) {
+    gSaveContext.sohStats.heartPieces = isDebug ? 8 : 0;
+    gSaveContext.sohStats.heartContainers = isDebug ? 8 : 0;
+    for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys); dungeon++) {
+        gSaveContext.sohStats.dungeonKeys[dungeon] = isDebug ? 8 : 0;
+    }
+    gSaveContext.sohStats.rtaTiming = CVarGetInteger("gGameplayStats.RTATiming", 0);
+    gSaveContext.sohStats.fileCreatedAt = 0;
+    gSaveContext.sohStats.playTimer = 0;
+    gSaveContext.sohStats.pauseTimer = 0;
+    for (int timestamp = 0; timestamp < ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp); timestamp++) {
+        gSaveContext.sohStats.itemTimestamp[timestamp] = 0;
+    }
+    for (int timestamp = 0; timestamp < ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps); timestamp++) {
+        gSaveContext.sohStats.sceneTimestamps[timestamp].sceneTime = 0;
+        gSaveContext.sohStats.sceneTimestamps[timestamp].roomTime = 0;
+        gSaveContext.sohStats.sceneTimestamps[timestamp].scene = 254;
+        gSaveContext.sohStats.sceneTimestamps[timestamp].room = 254;
+        gSaveContext.sohStats.sceneTimestamps[timestamp].isRoom = 0;
+    }
+    gSaveContext.sohStats.tsIdx = 0;
+    for (int count = 0; count < ARRAY_COUNT(gSaveContext.sohStats.count); count++) {
+        gSaveContext.sohStats.count[count] = 0;
+    }
+    gSaveContext.sohStats.gameComplete = false;
+    for (int scenesIdx = 0; scenesIdx < ARRAY_COUNT(gSaveContext.sohStats.scenesDiscovered); scenesIdx++) {
+        gSaveContext.sohStats.scenesDiscovered[scenesIdx] = 0;
+    }
+    for (int entrancesIdx = 0; entrancesIdx < ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered); entrancesIdx++) {
+        gSaveContext.sohStats.entrancesDiscovered[entrancesIdx] = 0;
+    }
+    for (int rc = 0; rc < ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped); rc++) {
+        gSaveContext.sohStats.locationsSkipped[rc] = 0;
+    }
+
+    strncpy(gSaveContext.sohStats.buildVersion, (const char*) gBuildVersion, sizeof(gSaveContext.sohStats.buildVersion) - 1);
+    gSaveContext.sohStats.buildVersion[sizeof(gSaveContext.sohStats.buildVersion) - 1] = 0;
+    gSaveContext.sohStats.buildVersionMajor = gBuildVersionMajor;
+    gSaveContext.sohStats.buildVersionMinor = gBuildVersionMinor;
+    gSaveContext.sohStats.buildVersionPatch = gBuildVersionPatch;
 }
 
 // Entries listed here will have a timestamp shown in the stat window
@@ -611,6 +790,8 @@ void SetupDisplayNames() {
     strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_TWINROVA],      "Twinrova Defeated:  ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANONDORF],     "Ganondorf Defeated: ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANON],         "Ganon Defeated:     ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_FINISH],      "Boss Rush Finished: ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GREG],           "Greg Found:         ");
 }
 
 void SetupDisplayColors() {
@@ -620,39 +801,50 @@ void SetupDisplayColors() {
             case ITEM_KOKIRI_EMERALD:
             case ITEM_SONG_SARIA:
             case ITEM_MEDALLION_FOREST:
+            case TIMESTAMP_DEFEAT_GOHMA:
+            case TIMESTAMP_DEFEAT_PHANTOM_GANON:
             case TIMESTAMP_FOUND_GREG:
                 itemTimestampDisplayColor[i] = COLOR_GREEN;
                 break;
             case ITEM_SONG_BOLERO:
             case ITEM_GORON_RUBY:
             case ITEM_MEDALLION_FIRE:
+            case TIMESTAMP_DEFEAT_KING_DODONGO:
+            case TIMESTAMP_DEFEAT_VOLVAGIA:
                 itemTimestampDisplayColor[i] = COLOR_RED;
                 break;
             case ITEM_SONG_SERENADE:
             case ITEM_ZORA_SAPPHIRE:
             case ITEM_MEDALLION_WATER:
+            case TIMESTAMP_DEFEAT_BARINADE:
+            case TIMESTAMP_DEFEAT_MORPHA:
                 itemTimestampDisplayColor[i] = COLOR_BLUE;
                 break;
             case ITEM_SONG_LULLABY:
             case ITEM_SONG_NOCTURNE:
             case ITEM_MEDALLION_SHADOW:
+            case TIMESTAMP_DEFEAT_BONGO_BONGO:
                 itemTimestampDisplayColor[i] = COLOR_PURPLE;
                 break;
             case ITEM_SONG_EPONA:
             case ITEM_SONG_REQUIEM:
             case ITEM_MEDALLION_SPIRIT:
+            case TIMESTAMP_DEFEAT_TWINROVA:
                 itemTimestampDisplayColor[i] = COLOR_ORANGE;
                 break;
             case ITEM_SONG_SUN:
             case ITEM_SONG_PRELUDE:
             case ITEM_MEDALLION_LIGHT:
             case ITEM_ARROW_LIGHT:
+            case TIMESTAMP_DEFEAT_GANONDORF:
+            case TIMESTAMP_DEFEAT_GANON:
                 itemTimestampDisplayColor[i] = COLOR_YELLOW;
                 break;
             case ITEM_SONG_STORMS:
                 itemTimestampDisplayColor[i] = COLOR_GREY;
                 break;
             case ITEM_SONG_TIME:
+            case TIMESTAMP_BOSSRUSH_FINISH:
                 itemTimestampDisplayColor[i] = COLOR_LIGHT_BLUE;
                 break;
             default:
@@ -665,4 +857,12 @@ void SetupDisplayColors() {
 void GameplayStatsWindow::InitElement() {
     SetupDisplayNames();
     SetupDisplayColors();
+
+    SaveManager::Instance->AddLoadFunction("sohStats", 1, LoadStatsVersion1);
+    // Add main section save, no parent
+    SaveManager::Instance->AddSaveFunction("sohStats", 1, SaveStats, true, SECTION_PARENT_NONE);
+    // Add subsections, parent of "sohStats". Not sure how to do this without the redundant references to "SaveStats"
+    SaveManager::Instance->AddSaveFunction("entrances", 1, SaveStats, false, SECTION_ID_STATS);
+    SaveManager::Instance->AddSaveFunction("scenes", 1, SaveStats, false, SECTION_ID_STATS);
+    SaveManager::Instance->AddInitFunction(InitStats);
 }

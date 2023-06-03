@@ -28,7 +28,5 @@ s32 lnearbyint(f64 x);
 
 f32 roundf(f32 x);
 f64 round(f64 x);
-s32 lroundf(f32 x);
-s32 lround(f64 x);
 
 #endif

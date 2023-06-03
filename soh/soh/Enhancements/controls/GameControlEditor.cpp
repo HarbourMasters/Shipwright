@@ -249,8 +249,6 @@ namespace GameControlEditor {
                                                 "gFirstPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true);
             UIWidgets::EnhancementSliderFloat("Aiming/First-Person Vertical Sensitivity: %d %%", "##FirstPersonSensitivity Vertical",
                                               "gFirstPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true);
-        } else {
-            CVarSetFloat("gFirstPersonCameraSensitivity", 1.0f);
         }
         UIWidgets::Spacer(0);
         window->EndGroupPanelPublic(0);
@@ -263,13 +261,13 @@ namespace GameControlEditor {
                             "controller config menu, and map the camera stick to the right stick.");
         UIWidgets::PaddedEnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
         DrawHelpIcon("Inverts the Camera X Axis in:\n-Free camera");
-        UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
+        UIWidgets::PaddedEnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true);
         DrawHelpIcon("Inverts the Camera Y Axis in:\n-Free camera");
         UIWidgets::Spacer(0);
-+       UIWidgets::PaddedEnhancementSliderFloat("Third-Person Horizontal Sensitivity: %d %%", "##ThirdPersonSensitivity Horizontal",
-+                                            "gThirdPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true, true, false, true);
-+       UIWidgets::PaddedEnhancementSliderFloat("Third-Person Vertical Sensitivity: %d %%", "##ThirdPersonSensitivity Vertical",
-+                                          "gThirdPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true, true, false, true);
+        UIWidgets::PaddedEnhancementSliderFloat("Third-Person Horizontal Sensitivity: %d %%", "##ThirdPersonSensitivity Horizontal",
+                                                "gThirdPersonCameraSensitivityX", 0.01f, 5.0f, "", 1.0f, true, true, false, true);
+        UIWidgets::PaddedEnhancementSliderFloat("Third-Person Vertical Sensitivity: %d %%", "##ThirdPersonSensitivity Vertical",
+                                                "gThirdPersonCameraSensitivityY", 0.01f, 5.0f, "", 1.0f, true, true, false, true);
         UIWidgets::PaddedEnhancementSliderInt("Camera Distance: %d", "##CamDist",
                                         "gFreeCameraDistMax", 100, 900, "", 185, true, false, true);
         UIWidgets::PaddedEnhancementSliderInt("Camera Transition Speed: %d", "##CamTranSpeed",
@@ -326,6 +324,40 @@ namespace GameControlEditor {
         window->EndGroupPanelPublic(0);
     }
 
+    void DrawLEDControlPanel(GameControlEditorWindow* window) {
+        LUS::BeginGroupPanel("LED Colors", ImGui::GetContentRegionAvail());
+        static const char* ledSources[4] = { "Original Tunic Colors", "Cosmetics Tunic Colors", "Health Colors", "Custom" };
+        UIWidgets::PaddedText("Source");
+        UIWidgets::EnhancementCombobox("gLedColorSource", ledSources, LED_SOURCE_TUNIC_ORIGINAL);
+        DrawHelpIcon("Health\n- Red when health critical (13-20% depending on max health)\n- Yellow when health < 40%. Green otherwise.\n\n" \
+                     "Tunics: colors will mirror currently equipped tunic, whether original or the current values in Cosmetics Editor.\n\n" \
+                     "Custom: single, solid color");
+        if (CVarGetInteger("gLedColorSource", 1) == 3) {
+            UIWidgets::Spacer(3);
+            auto port1Color = CVarGetColor24("gLedPort1Color", { 255, 255, 255 });
+            ImVec4 colorVec = { port1Color.r / 255.0f, port1Color.g / 255.0f, port1Color.b / 255.0f, 1.0f };
+            if (ImGui::ColorEdit3("", (float*)&colorVec, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel)) {
+                Color_RGB8 color;
+                color.r = colorVec.x * 255.0;
+                color.g = colorVec.y * 255.0;
+                color.b = colorVec.z * 255.0;
+
+                CVarSetColor24("gLedPort1Color", color);
+                LUS::RequestCvarSaveOnNextTick();
+            }
+            ImGui::SameLine();
+            ImGui::Text("Custom Color");
+        }
+        UIWidgets::PaddedEnhancementSliderFloat("Brightness: %d%%", "##LED_Brightness", "gLedBrightness",
+                                                0.0f, 1.0f, "", 1.0f, true, true);
+        DrawHelpIcon("Sets the brightness of controller LEDs. 0% brightness = LEDs off.");
+        UIWidgets::PaddedEnhancementCheckbox("Critical Health Override", "gLedCriticalOverride", true, true, 
+            CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL) == LED_SOURCE_HEALTH, "Override redundant for health source.",
+            UIWidgets::CheckboxGraphics::Cross, true);
+        DrawHelpIcon("Shows red color when health is critical, otherwise displays according to color source.");
+        LUS::EndGroupPanel();
+    }
+
     void GameControlEditorWindow::DrawElement() {
         ImGui::SetNextWindowSize(ImVec2(465, 430), ImGuiCond_FirstUseEver);
         if (ImGui::Begin("Game Controls Configuration", &mIsVisible)) {
@@ -351,6 +383,9 @@ namespace GameControlEditor {
                 DrawMiscControlPanel(this);
             } else {
                 DrawCustomButtons();
+                if (CurrentPort == 1 && LUS::Context::GetInstance()->GetControlDeck()->GetDeviceFromPortIndex(0)->CanSetLed()) {
+                    DrawLEDControlPanel(this);
+                }
             }
         }
         ImGui::End();

@@ -9,7 +9,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnExItem_Init(Actor* thisx, PlayState* play);
 void EnExItem_Destroy(Actor* thisx, PlayState* play);
@@ -52,7 +52,7 @@ void EnExItem_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     EnExItem* this = (EnExItem*)thisx;
 
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->type = this->actor.params & 0xFF;
     this->unusedParam = (this->actor.params >> 8) & 0xFF;
     osSyncPrintf("\n\n");
@@ -403,7 +403,7 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, PlayState* play) {
         func_8002DF54(play, NULL, 7);
         this->actor.parent = NULL;
         if (gSaveContext.n64ddFlag) {
-            GET_PLAYER(play)->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
+            GET_PLAYER(play)->stateFlags1 &= ~(PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_ITEM_OVER_HEAD);
             getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
             getItemId = getItemEntry.getItemId;
         } else {

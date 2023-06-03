@@ -1,14 +1,23 @@
 #pragma once
 
-// Total gameplay time is tracked in tenths of seconds
-// I.E. game time counts frames at 20fps/2, pause time counts frames at 30fps/3
-// Frame counts in z_play.c and z_kaleido_scope_call.c
-#define GAMEPLAYSTAT_TOTAL_TIME (gSaveContext.sohStats.playTimer / 2 + gSaveContext.sohStats.pauseTimer / 3)
-#define CURRENT_MODE_TIMER (CVarGetInteger("gGameplayStatRoomBreakdown", 0) ?\
+// When using RTA timing
+    // get the diff since the save was created,
+    // unless the game is complete in which we use the defeated ganon timestamp
+// When not using RTA timing
+    // Total gameplay time is tracked in tenths of seconds
+    // I.E. game time counts frames at 20fps/2, pause time counts frames at 30fps/3
+    // Frame counts in z_play.c and z_kaleido_scope_call.c
+#define GAMEPLAYSTAT_TOTAL_TIME (gSaveContext.sohStats.rtaTiming ?\
+    (!gSaveContext.sohStats.gameComplete ?\
+        (!gSaveContext.sohStats.fileCreatedAt ? 0 : ((GetUnixTimestamp() - gSaveContext.sohStats.fileCreatedAt) / 100)) :\
+        (gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON])) :\
+    (gSaveContext.sohStats.playTimer / 2 + gSaveContext.sohStats.pauseTimer / 3))
+#define CURRENT_MODE_TIMER (CVarGetInteger("gGameplayStats.RoomBreakdown", 0) ?\
     gSaveContext.sohStats.roomTimer :\
     gSaveContext.sohStats.sceneTimer)
 
 void InitStatTracker();
+char* GameplayStats_GetCurrentTime();
 
 typedef enum {
     // 0x00 to 0x9B (0 to 155) used for getting items,
@@ -24,6 +33,7 @@ typedef enum {
     /* 0xA7 */ TIMESTAMP_DEFEAT_TWINROVA,       // z_boss_tw.c
     /* 0xA8 */ TIMESTAMP_DEFEAT_GANONDORF,      // z_boss_ganon.c
     /* 0xA9 */ TIMESTAMP_DEFEAT_GANON,          // z_boss_ganon2.c
+    /* 0xA9 */ TIMESTAMP_BOSSRUSH_FINISH,       // z_boss_ganon2.c
     /* 0xAA */ TIMESTAMP_FOUND_GREG,            // z_parameter.c
     /* 0xAB */ TIMESTAMP_MAX
 

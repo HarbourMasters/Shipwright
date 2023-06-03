@@ -24,7 +24,7 @@
 #include "objects/object_demo_kekkai/object_demo_kekkai.h"
 #include "objects/object_ouke_haka/object_ouke_haka.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void DoorShutter_Init(Actor* thisx, PlayState* play);
 void DoorShutter_Destroy(Actor* thisx, PlayState* play);

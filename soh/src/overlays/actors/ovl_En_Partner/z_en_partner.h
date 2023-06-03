@@ -45,4 +45,15 @@ typedef struct EnPartner {
     Actor* hookshotTarget;
 } EnPartner;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+void EnPartner_Init(Actor* thisx, PlayState* play);
+void EnPartner_Destroy(Actor* thisx, PlayState* play);
+void EnPartner_Update(Actor* thisx, PlayState* play);
+void EnPartner_Draw(Actor* thisx, PlayState* play);
+#ifdef __cplusplus
+}
+#endif
+
 #endif

@@ -41,9 +41,18 @@ static const ALIGN_ASSET(2) char gSkullTreasureChestSideAndTopTex[] = dgSkullTre
 #define dgTitleRandomizerSubtitleTex "__OTR__objects/object_mag/gTitleRandomizerSubtitleTex"
 static const ALIGN_ASSET(2) char gTitleRandomizerSubtitleTex[] = dgTitleRandomizerSubtitleTex;
 
+#define dgTitleBossRushSubtitleTex "__OTR__objects/object_mag/gTitleBossRushSubtitleTex"
+static const ALIGN_ASSET(2) char gTitleBossRushSubtitleTex[] = dgTitleBossRushSubtitleTex;
+
 // textures
 #define dgDPad "__OTR__textures/parameter_static/gDPad"
 static const ALIGN_ASSET(2) char gDPadTex[] = dgDPad;
+
+#define dgArrowUp "__OTR__textures/parameter_static/gArrowUp"
+static const ALIGN_ASSET(2) char gArrowUpTex[] = dgArrowUp;
+
+#define dgArrowDown "__OTR__textures/parameter_static/gArrowDown"
+static const ALIGN_ASSET(2) char gArrowDownTex[] = dgArrowDown;
 
 #define dgFileSelMQButtonTex "__OTR__textures/title_static/gFileSelMQButtonTex"
 static const ALIGN_ASSET(2) char gFileSelMQButtonTex[] = dgFileSelMQButtonTex;
@@ -56,6 +65,15 @@ static const ALIGN_ASSET(2) char gFileSelPleaseChooseAQuestFRATex[] = dgFileSelP
 
 #define dgFileSelPleaseChooseAQuestGERTex "__OTR__textures/title_static/gFileSelPleaseChooseAQuestGERTex"
 static const ALIGN_ASSET(2) char gFileSelPleaseChooseAQuestGERTex[] = dgFileSelPleaseChooseAQuestGERTex;
+
+#define dgFileSelBossRushSettingsENGTex "__OTR__textures/title_static/gFileSelBossRushSettingsENGTex"
+static const ALIGN_ASSET(2) char gFileSelBossRushSettingsENGText[] = dgFileSelBossRushSettingsENGTex;
+
+#define dgFileSelBossRushSettingsFRATex "__OTR__textures/title_static/gFileSelBossRushSettingsFRATex"
+static const ALIGN_ASSET(2) char gFileSelBossRushSettingsFRAText[] = dgFileSelBossRushSettingsFRATex;
+
+#define dgFileSelBossRushSettingsGERTex "__OTR__textures/title_static/gFileSelBossRushSettingsGERTex"
+static const ALIGN_ASSET(2) char gFileSelBossRushSettingsGERText[] = dgFileSelBossRushSettingsGERTex;
 
 #define dgFileSelRANDButtonTex "__OTR__textures/title_static/gFileSelRANDButtonTex"
 static const ALIGN_ASSET(2) char gFileSelRANDButtonTex[] = dgFileSelRANDButtonTex;

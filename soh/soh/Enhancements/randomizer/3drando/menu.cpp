@@ -512,13 +512,13 @@ void PrintOptionDescription() {
   printf("\x1b[22;0H%s", description.data());
 }
 
-std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations,
+std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
     std::string seedString) {
 
     srand(time(NULL));
     // if a blank seed was entered, make a random one
     if (seedString.empty()) {
-        Settings::seed = rand() & 0xFFFFFFFF;
+        seedString = std::to_string(rand() % 0xFFFFFFFF);
     } else if (seedString.rfind("seed_testing_count", 0) == 0 && seedString.length() > 18) {
         int count;
         try {
@@ -528,20 +528,15 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
         } catch (std::out_of_range &e) {
             count = 1;
         }
-        Playthrough::Playthrough_Repeat(cvarSettings, excludedLocations, count);
+        Playthrough::Playthrough_Repeat(cvarSettings, excludedLocations, enabledTricks, count);
         return "";
-    } else {
-        try {
-            uint32_t seedHash = boost::hash_32<std::string>{}(seedString);
-            int seed = seedHash & 0xFFFFFFFF;
-            Settings::seed = seed;
-            Settings::seedString = seedString;
-        } catch (...) {
-            return "";
-        }
     }
 
-    int ret = Playthrough::Playthrough_Init(Settings::seed, cvarSettings, excludedLocations);
+    Settings::seedString = seedString;
+    uint32_t seedHash = boost::hash_32<std::string>{}(Settings::seedString);
+    Settings::seed = seedHash & 0xFFFFFFFF;
+
+    int ret = Playthrough::Playthrough_Init(Settings::seed, cvarSettings, excludedLocations, enabledTricks);
     if (ret < 0) {
         if (ret == -1) { // Failed to generate after 5 tries
             printf("\n\nFailed to generate after 5 tries.\nPress B to go back to the menu.\nA different seed might be "

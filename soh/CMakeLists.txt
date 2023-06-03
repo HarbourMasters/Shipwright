@@ -278,7 +278,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	endif()
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     set_target_properties(${PROJECT_NAME} PROPERTIES
-        XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC YES 
+        XCODE_ATTRIBUTE_CLANG_ENABLE_OBJC_ARC YES
         OUTPUT_NAME "soh-macos"
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
@@ -507,6 +507,7 @@ if(MSVC)
                 /INCREMENTAL:NO;
                 /FORCE:MULTIPLE
             >
+            /MANIFEST:NO;
             /DEBUG;
             /SUBSYSTEM:WINDOWS
         )
@@ -521,6 +522,7 @@ if(MSVC)
                 /INCREMENTAL:NO;
                 /FORCE:MULTIPLE
             >
+            /MANIFEST:NO;
             /DEBUG;
             /SUBSYSTEM:WINDOWS
         )
@@ -670,7 +672,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"version;"
 			"setupapi"
 		)
-	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32") 
+	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
 			"libultraship;"
 			"ZAPDUtils;"
@@ -757,7 +759,7 @@ nx_generate_nacp(Ship.nacp
    AUTHOR "${PROJECT_TEAM}"
    VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}"
 )
- 
+
 nx_create_nro(soh
     NACP Ship.nacp
     ICON ${CMAKE_CURRENT_SOURCE_DIR}/icon.jpg

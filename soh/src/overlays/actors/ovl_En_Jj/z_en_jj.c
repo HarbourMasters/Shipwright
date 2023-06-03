@@ -8,7 +8,7 @@
 #include "objects/object_jj/object_jj.h"
 #include "overlays/actors/ovl_Eff_Dust/z_eff_dust.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 typedef enum {
     /* 0 */ JABUJABU_EYE_OPEN,
@@ -143,6 +143,8 @@ void EnJj_Destroy(Actor* thisx, PlayState* play) {
         case JABUJABU_MAIN:
             DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
             Collider_DestroyCylinder(play, &this->collider);
+
+            ResourceMgr_UnregisterSkeleton(&this->skelAnime);
             break;
 
         case JABUJABU_COLLISION:

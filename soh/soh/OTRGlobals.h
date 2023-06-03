@@ -54,6 +54,7 @@ void OTRGetPixelDepthPrepare(float x, float y);
 uint16_t OTRGetPixelDepth(float x, float y);
 int32_t OTRGetLastScancode();
 uint32_t ResourceMgr_IsGameMasterQuest();
+uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 uint32_t ResourceMgr_GameHasMasterQuest();
 uint32_t ResourceMgr_GameHasOriginal();
 uint32_t ResourceMgr_GetNumGameVersions();
@@ -144,7 +145,15 @@ void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex);
 void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement);
 void SaveManager_ThreadPoolWait();
 
-uint32_t GetGIID(uint32_t itemID);
+int32_t GetGIID(uint32_t itemID);
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+uint64_t GetUnixTimestamp();
+#ifdef __cplusplus
+};
 #endif
 
 #endif

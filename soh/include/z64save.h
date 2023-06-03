@@ -8,6 +8,7 @@
 #include "soh/Enhancements/randomizer/randomizer_inf.h"
 #include "soh/Enhancements/gameplaystats.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/boss-rush/BossRushTypes.h"
 
 typedef enum {
     /* 0x0 */ MAGIC_STATE_IDLE, // Regular gameplay
@@ -61,6 +62,15 @@ typedef struct {
     u8 isRoom;
 } SceneTimestamp;
 
+typedef enum { // Pre-existing IDs for save sections in base code
+    SECTION_ID_BASE,
+    SECTION_ID_RANDOMIZER,
+    SECTION_ID_STATS,
+    SECTION_ID_ENTRANCES,
+    SECTION_ID_SCENES,
+    SECTION_ID_MAX
+} SaveFuncIDs;
+
 typedef struct {
     /*      */ char buildVersion[50];
     /*      */ s16 buildVersionMajor;
@@ -83,6 +93,8 @@ typedef struct {
     /*      */ u32 entrancesDiscovered[SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT];
     /*      */ u32 scenesDiscovered[SAVEFILE_SCENES_DISCOVERED_IDX_COUNT];
     /*      */ u8 locationsSkipped[RC_MAX];
+    /*      */ bool rtaTiming;
+    /*      */ uint64_t fileCreatedAt;
 } SohStats;
 
 typedef struct {
@@ -143,6 +155,10 @@ typedef struct {
 
 typedef struct {
     RandomizerCheck check;
+    RandomizerCheck hintedCheck;
+    RandomizerGet rGet;
+    RandomizerCheckArea area;
+    HintType type;
     char hintText[200];
 } HintLocationRando;
 
@@ -269,6 +285,9 @@ typedef struct {
     // #region SOH [General]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to SoH
     /*        */ uint32_t isMasterQuest;
+    /*        */ uint32_t isBossRush;
+    /*        */ uint32_t isBossRushPaused;
+    /*        */ uint8_t bossRushOptions[BOSSRUSH_OPTIONS_AMOUNT];
     /*        */ u8 mqDungeonCount;
     /*        */ u8 pendingIceTrapCount;
     /*        */ SohStats sohStats;
@@ -283,6 +302,7 @@ typedef struct {
     /*        */ EntranceOverride entranceOverrides[ENTRANCE_OVERRIDES_MAX_COUNT];
     /*        */ char childAltarText[250];
     /*        */ char adultAltarText[750];
+    /*        */ RandomizerCheck rewardCheck[9];
     /*        */ char ganonHintText[150];
     /*        */ char gregHintText[250];
     /*        */ char ganonText[250];
@@ -293,6 +313,9 @@ typedef struct {
     /*        */ char warpRequiemText[100];
     /*        */ char warpNocturneText[100];
     /*        */ char warpPreludeText[100];
+    /*        */ RandomizerCheck ganonHintCheck;
+    /*        */ RandomizerCheck gregCheck;
+    /*        */ RandomizerCheck dampeCheck;
     /*        */ u8 seedIcons[5];
     /*        */ u16 randomizerInf[9];
     /*        */ u16 adultTradeItems;
