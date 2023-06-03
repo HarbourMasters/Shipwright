@@ -23,7 +23,7 @@
 #include "Enhancements/debugger/debugSaveEditor.h"
 #include "Enhancements/debugger/dlViewer.h"
 #include "Enhancements/gameplaystatswindow.h"
-#include "Enhancements/randomizer/randomizer_check_tracker_window.h"
+#include "Enhancements/randomizer/randomizer_check_tracker.h"
 #include "Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "Enhancements/randomizer/randomizer_item_tracker.h"
 #include "Enhancements/randomizer/randomizer_settings_window.h"
