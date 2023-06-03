@@ -283,6 +283,7 @@ extern bool AdultReflectShield;
 extern bool AdultShield;
 extern bool CanShieldFlick;
 extern bool CanJumpslash;
+extern bool CanUseSword;
 extern bool CanUseProjectile;
 extern bool CanUseMagicArrow;
 

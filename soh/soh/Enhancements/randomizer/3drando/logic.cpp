@@ -293,6 +293,7 @@ namespace Logic {
   bool AdultShield        = false;
   bool CanShieldFlick     = false;
   bool CanJumpslash       = false;
+  bool CanUseSword        = false;
   bool CanUseProjectile   = false;
   bool CanUseMagicArrow   = false;
 
@@ -600,6 +601,7 @@ namespace Logic {
     AdultShield        = IsAdult && (CanUse(HYLIAN_SHIELD) || CanUse(MIRROR_SHIELD));
     CanShieldFlick     = ChildShield || AdultShield;
     CanJumpslash       = IsAdult || Sticks || KokiriSword;
+    CanUseSword        = CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD);
     CanUseProjectile   = HasExplosives || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(SLINGSHOT) || CanUse(BOOMERANG);
     CanUseMagicArrow   = CanUse(FIRE_ARROWS) || CanUse(ICE_ARROWS) || CanUse(LIGHT_ARROWS);
 
@@ -1001,6 +1003,7 @@ namespace Logic {
      AdultShield        = false;
      CanShieldFlick     = false;
      CanJumpslash       = false;
+     CanUseSword        = false;
      CanUseProjectile   = false;
      CanUseMagicArrow   = false;
 
