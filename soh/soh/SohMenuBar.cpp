@@ -87,6 +87,7 @@ std::string GetWindowButtonText(const char* text, bool menuOpen) {
         "8 Hearts",
         "OHKO"
     };
+    static const char* timeTravelOptions[3] = { "Disabled", "Ocarina of Time", "Any Ocarina" };
 
 extern "C" SaveContext gSaveContext;
 
@@ -526,11 +527,12 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Nighttime Skulltulas will spawn during both day and night.");
                 UIWidgets::PaddedEnhancementCheckbox("Dampe Appears All Night", "gDampeAllNight", true, false);
                 UIWidgets::Tooltip("Makes Dampe appear anytime during the night, not just his usual working hours.");
-                UIWidgets::PaddedEnhancementCheckbox("Time Travel with the Song of Time", "gTimeTravel", true, false);
+                UIWidgets::PaddedText("Time Travel with the Song of Time", true, false);
+                UIWidgets::EnhancementCombobox("gTimeTravel", timeTravelOptions, 0);
                 UIWidgets::Tooltip("Allows Link to freely change age by playing the Song of Time.\n"
                     "Time Blocks can still be used properly.\n\n"
                     "Requirements:\n"
-                    "- Obtained the Ocarina of Time\n"
+                    "- Obtained the Ocarina of Time (depends on selection)\n"
                     "- Obtained the Song of Time\n"
                     "- Obtained the Master Sword\n"
                     "- Not within range of Time Block\n"
