@@ -306,7 +306,7 @@ void DrawSettingsMenu() {
                     currentFps = 60;
                 }
                 CVarSetInteger("gInterpolationFPS", currentFps);
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->RequestCvarSaveOnNextTick();
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             #else
                 bool matchingRefreshRate =
                     CVarGetInteger("gMatchRefreshRate", 0) && LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() != LUS::WindowBackend::DX11;
