@@ -4,7 +4,7 @@
 #include "objects/object_efc_star_field/object_efc_star_field.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 typedef enum {
     /* 0x0 */ ENCOUNT2_INACTIVE,

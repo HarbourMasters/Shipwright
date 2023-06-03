@@ -74,6 +74,7 @@
 #include <functions.h>
 #include "Enhancements/item-tables/ItemTableManager.h"
 #include "GameMenuBar.hpp"
+#include "ActorDB.h"
 
 #ifdef ENABLE_CROWD_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
@@ -754,6 +755,7 @@ extern "C" void InitOTR() {
     ItemTableManager::Instance = new ItemTableManager();
     GameInteractor::Instance = new GameInteractor();
     AudioCollection::Instance = new AudioCollection();
+    ActorDB::Instance = new ActorDB();
 #ifdef __APPLE__
     SpeechSynthesizer::Instance = new DarwinSpeechSynthesizer();
     SpeechSynthesizer::Instance->Init();
@@ -761,7 +763,7 @@ extern "C" void InitOTR() {
     SpeechSynthesizer::Instance = new SAPISpeechSynthesizer();
     SpeechSynthesizer::Instance->Init();
 #endif
-    
+
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     OTRAudio_Init();
@@ -779,6 +781,7 @@ extern "C" void InitOTR() {
     VanillaItemTable_Init();
 
     InitMods();
+    ActorDB::AddBuiltInCustomActors();
 
     time_t now = time(NULL);
     tm *tm_now = localtime(&now);
@@ -1024,18 +1027,23 @@ extern "C" uint32_t ResourceMgr_GetGameVersion(int index) {
 
 uint32_t IsSceneMasterQuest(s16 sceneNum) {
     uint32_t value = 0;
-    if (OTRGlobals::Instance->HasMasterQuest()) {
-        if (!OTRGlobals::Instance->HasOriginal()) {
-            value = 1;
-        } else if (gSaveContext.isMasterQuest) {
-            value = 1;
-        } else {
-            value = 0;
-            if (gSaveContext.n64ddFlag) {
-                if (!OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty()) {
-                    if (gPlayState != NULL && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(sceneNum)) {
-                        value = 1;
-                    }
+    uint8_t mqMode = CVarGetInteger("gBetterDebugWarpScreenMQMode", 0);
+    if (mqMode == 1) { // non-mq wants to be mq
+        return 1;
+    } else if (mqMode == 2) { // mq wants to be non-mq
+        return 0;
+    } else {
+        if (OTRGlobals::Instance->HasMasterQuest()) {
+            if (!OTRGlobals::Instance->HasOriginal()) {
+                value = 1;
+            } else if (gSaveContext.isMasterQuest) {
+                value = 1;
+            } else {
+                value = 0;
+                if (gSaveContext.n64ddFlag &&
+                    !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty() &&
+                    OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(sceneNum)) {
+                    value = 1;
                 }
             }
         }
@@ -1729,12 +1737,12 @@ extern "C" void* getN64WeirdFrame(s32 i) {
 
 extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSize) {
     CustomMessage customMessage("\x04\x1A\x08"
-                                "D\x96sirez-vous l'\x96quiper maintenant?"
+                                "Would you like to equip it now?"
                                 "\x09&&"
                                 "\x1B%g"
-                                "Oui"
+                                "Yes"
                                 "&"
-                                "Non"
+                                "No"
                                 "%w\x02",
                                 "\x04\x1A\x08"
                                 "M"
@@ -1746,13 +1754,13 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
                                 "&"
                                 "Nein!"
                                 "%w\x02",
-                                "\x04\x1A\x08"
-                                "Would you like to equip it now?"
+				"\x04\x1A\x08"
+                                "D\x96sirez-vous l'\x96quiper maintenant?"
                                 "\x09&&"
                                 "\x1B%g"
-                                "Yes"
+                                "Oui"
                                 "&"
-                                "No"
+                                "Non"
                                 "%w\x02");
     customMessage.Format();
 

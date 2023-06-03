@@ -99,7 +99,7 @@ void BgHakaGate_Init(Actor* thisx, PlayState* play) {
             this->actionFunc = BgHakaGate_FalseSkull;
         }
         this->vScrollTimer = Rand_ZeroOne() * 20.0f;
-        thisx->flags |= ACTOR_FLAG_4;
+        thisx->flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
         if (Flags_GetSwitch(play, this->switchFlag)) {
             this->vFlameScale = 350;
         }
@@ -126,7 +126,7 @@ void BgHakaGate_Init(Actor* thisx, PlayState* play) {
                 this->actionFunc = BgHakaGate_DoNothing;
                 thisx->world.pos.y += 80.0f;
             } else {
-                thisx->flags |= ACTOR_FLAG_4;
+                thisx->flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
                 Actor_SetFocus(thisx, 30.0f);
                 this->actionFunc = BgHakaGate_GateWait;
             }
@@ -276,7 +276,7 @@ void BgHakaGate_GateWait(BgHakaGate* this, PlayState* play) {
 void BgHakaGate_GateOpen(BgHakaGate* this, PlayState* play) {
     if (Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y + 80.0f, 1.0f)) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_METALDOOR_STOP);
-        this->dyna.actor.flags &= ~ACTOR_FLAG_4;
+        this->dyna.actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
         this->actionFunc = BgHakaGate_DoNothing;
     } else {
         func_8002F974(&this->dyna.actor, NA_SE_EV_METALDOOR_SLIDE - SFX_FLAG);
@@ -294,9 +294,9 @@ void BgHakaGate_FalseSkull(BgHakaGate* this, PlayState* play) {
         Math_StepToS(&this->vFlameScale, 350, 20);
     }
     if (play->actorCtx.lensActive) {
-        this->dyna.actor.flags |= ACTOR_FLAG_7;
+        this->dyna.actor.flags |= ACTOR_FLAG_LENS;
     } else {
-        this->dyna.actor.flags &= ~ACTOR_FLAG_7;
+        this->dyna.actor.flags &= ~ACTOR_FLAG_LENS;
     }
 }
 
@@ -345,7 +345,7 @@ void BgHakaGate_Draw(Actor* thisx, PlayState* play) {
     BgHakaGate* this = (BgHakaGate*)thisx;
     MtxF currentMtxF;
 
-    if (CHECK_FLAG_ALL(thisx->flags, ACTOR_FLAG_7)) {
+    if (CHECK_FLAG_ALL(thisx->flags, ACTOR_FLAG_LENS)) {
         Gfx_DrawDListXlu(play, object_haka_objects_DL_00F1B0);
     } else {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
