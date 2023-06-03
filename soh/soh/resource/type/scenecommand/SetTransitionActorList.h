@@ -21,11 +21,11 @@ typedef struct {
     /* 0x0E */ s16   params;
 } TransitionActorEntry; // size = 0x10
 
-class SetTransitionActorList : public SceneCommand {
+class SetTransitionActorList : public SceneCommand<TransitionActorEntry> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    TransitionActorEntry* GetPointer();
     size_t GetPointerSize();
 
     uint32_t numTransitionActors;

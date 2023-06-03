@@ -11,6 +11,7 @@
 #include "overlays/effects/ovl_Effect_Ss_Fhg_Flash/z_eff_ss_fhg_flash.h"
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
+#include "soh/Enhancements/boss-rush/BossRush.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -958,12 +959,12 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
         case DEATH_THROES:
             switch (this->work[GND_ACTION_STATE]) {
                 case DEATH_SPASM:
-                    if (Animation_OnFrame(&this->skelAnime, this->fwork[GND_END_FRAME]) && !gSaveContext.n64ddFlag) {
+                    if (Animation_OnFrame(&this->skelAnime, this->fwork[GND_END_FRAME]) && !gSaveContext.n64ddFlag && !gSaveContext.isBossRush) {
                         this->fwork[GND_END_FRAME] = Animation_GetLastFrame(&gPhantomGanonAirDamageAnim);
                         Animation_Change(&this->skelAnime, &gPhantomGanonAirDamageAnim, 0.5f, 0.0f,
                                             this->fwork[GND_END_FRAME], ANIMMODE_ONCE_INTERP, 0.0f);
                         this->work[GND_ACTION_STATE] = DEATH_LIMP;
-                    } else if (gSaveContext.n64ddFlag) {
+                    } else if (gSaveContext.n64ddFlag || gSaveContext.isBossRush) {
                         // Skip to death scream animation and move ganondrof to middle
                         this->deathState = DEATH_SCREAM;
                         this->timers[0] = 50;
@@ -990,7 +991,7 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
                     bodyDecayLevel = 1;
                     break;
             }
-            if (gSaveContext.n64ddFlag) {
+            if (gSaveContext.n64ddFlag || gSaveContext.isBossRush) {
                 break;
             }
             Math_ApproachS(&this->actor.shape.rot.y, this->work[GND_VARIANCE_TIMER] * -100, 5, 0xBB8);
@@ -1087,8 +1088,8 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
             bodyDecayLevel = 10;
             if (this->timers[0] == 150) {
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS_CLEAR);
-                Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, GND_BOSSROOM_CENTER_X,
-                            GND_BOSSROOM_CENTER_Y, GND_BOSSROOM_CENTER_Z, 0, 0, 0, WARP_DUNGEON_ADULT, true);
+                Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, GND_BOSSROOM_CENTER_X, GND_BOSSROOM_CENTER_Y,
+                            GND_BOSSROOM_CENTER_Z, 0, 0, 0, WARP_DUNGEON_ADULT, true);
             }
 
             Math_ApproachZeroF(&this->cameraEye.y, 0.05f, 1.0f); // GND_BOSSROOM_CENTER_Y + 33.0f
@@ -1104,8 +1105,10 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
                 this->deathCamera = 0;
                 func_80064534(play, &play->csCtx);
                 func_8002DF54(play, &this->actor, 7);
-                Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, GND_BOSSROOM_CENTER_X,
-                            GND_BOSSROOM_CENTER_Y, GND_BOSSROOM_CENTER_Z + 200.0f, 0, 0, 0, 0, true);
+                if (!gSaveContext.isBossRush) {
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, GND_BOSSROOM_CENTER_X, GND_BOSSROOM_CENTER_Y,
+                                GND_BOSSROOM_CENTER_Z + 200.0f, 0, 0, 0, 0, true);
+                }
                 this->actor.child = &horse->actor;
                 this->killActor = true;
                 horse->killActor = true;
@@ -1246,6 +1249,7 @@ void BossGanondrof_CollisionCheck(BossGanondrof* this, PlayState* play) {
                             BossGanondrof_SetupDeath(this, play);
                             Enemy_StartFinishingBlow(play, &this->actor);
                             gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_PHANTOM_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+                            BossRush_HandleCompleteBoss(play);
                             return;
                         }
                     }

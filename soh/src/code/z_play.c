@@ -4,12 +4,13 @@
 #include <string.h>
 
 #include "soh/Enhancements/gameconsole.h"
-#include <ImGuiImpl.h>
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/debugconsole.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
+
+#include <libultraship/libultraship.h>
 
 #include <time.h>
 
@@ -28,6 +29,8 @@ u64 D_801614D0[0xA00];
 #endif
 
 PlayState* gPlayState;
+
+s16 gEnPartnerId;
 
 void func_800BC450(PlayState* play) {
     Camera_ChangeDataIdx(GET_ACTIVE_CAM(play), play->unk_1242B - 1);
@@ -729,7 +732,7 @@ void Play_Init(GameState* thisx) {
     #endif
 
     if (CVarGetInteger("gIvanCoopModeEnabled", 0)) {
-        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_PARTNER, GET_PLAYER(play)->actor.world.pos.x,
+        Actor_Spawn(&play->actorCtx, play, gEnPartnerId, GET_PLAYER(play)->actor.world.pos.x,
                     GET_PLAYER(play)->actor.world.pos.y + Player_GetHeight(GET_PLAYER(play)) + 5.0f,
                     GET_PLAYER(play)->actor.world.pos.z, 0, 0, 0, 1, true);
     }
@@ -772,7 +775,6 @@ void Play_Update(PlayState* play) {
 
     if ((HREG(81) == 18) && (HREG(82) < 0)) {
         HREG(82) = 0;
-        ActorOverlayTable_LogPrint();
     }
 
     if (CVarGetInteger("gFreeCamera", 0) && Player_InCsMode(play)) {
@@ -1177,7 +1179,8 @@ void Play_Update(PlayState* play) {
 
                 play->gameplayFrames++;
                 // Gameplay stat tracking
-                if (!gSaveContext.sohStats.gameComplete) {
+                if (!gSaveContext.sohStats.gameComplete &&
+                    (!gSaveContext.isBossRush || (gSaveContext.isBossRush && !gSaveContext.isBossRushPaused))) {
                       gSaveContext.sohStats.playTimer++;
                       gSaveContext.sohStats.sceneTimer++;
                       gSaveContext.sohStats.roomTimer++;
@@ -1931,7 +1934,7 @@ void Play_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
         Entrance_OverrideSpawnScene(sceneNum, spawn);
     }
 
-    CVarSetInteger("gBetterDebugWarpScreenMQMode", 0);
+    CVarClear("gBetterDebugWarpScreenMQMode");
 }
 
 void func_800C016C(PlayState* play, Vec3f* src, Vec3f* dest) {

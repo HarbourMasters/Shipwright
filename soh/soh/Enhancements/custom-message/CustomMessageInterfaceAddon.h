@@ -3,10 +3,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-void Debug_Init(void);
-void Debug_Draw(void);
-
+const char* Interface_ReplaceSpecialCharacters(char text[]);
 #ifdef __cplusplus
-}
+};
 #endif

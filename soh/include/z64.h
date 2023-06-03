@@ -41,7 +41,7 @@
 #ifdef __cplusplus
 namespace LUS
 {
-    class Resource;
+    class IResource;
     class Scene;
     class DisplayList;
 };
@@ -1293,9 +1293,12 @@ typedef struct SelectContext {
     /* 0x0230 */ s32 lockDown;
     /* 0x0234 */ s32 unk_234; // unused
     /* 0x0238 */ u8* staticSegment;
+    // #region SOH [General]
     /*        */ s32 currentEntrance;
+    /*        */ u8 isBetterWarp;
     /*        */ BetterSceneSelectEntry* betterScenes;
     /*        */ BetterSceneSelectGrottoData* betterGrottos;
+    // #endregion
 } SelectContext; // size = 0x240
 
 typedef struct {
@@ -1500,6 +1503,10 @@ typedef struct {
     f32 stickAnimTween;
     u8 arrowAnimState;
     u8 stickAnimState;
+    uint8_t bossRushIndex;
+    uint8_t bossRushOffset;
+    int16_t bossRushUIAlpha;
+    uint16_t bossRushArrowOffset;
 } FileChooseContext; // size = 0x1CAE0
 
 typedef enum {

@@ -12,11 +12,11 @@ typedef struct {
   int8_t echo;
 } EchoSettings;
 
-class SetEchoSettings : public SceneCommand {
+class SetEchoSettings : public SceneCommand<EchoSettings> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    EchoSettings* GetPointer();
     size_t GetPointerSize();
 
     EchoSettings settings;

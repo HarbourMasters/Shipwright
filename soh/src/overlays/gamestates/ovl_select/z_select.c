@@ -11,6 +11,8 @@
 
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
+void Select_SwitchBetterWarpMode(SelectContext* this, u8 isBetterWarpMode);
+
 void Select_LoadTitle(SelectContext* this) {
     this->state.running = false;
     SET_NEXT_GAMESTATE(&this->state, Title_Init, TitleContext);
@@ -40,21 +42,24 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
         Grotto_OverrideSpecialEntrance(Entrance_GetOverride(entranceIndex));
     }
 
-    if (ResourceMgr_GameHasMasterQuest() && ResourceMgr_GameHasOriginal()) {
-        //check to see if the scene/entrance we just picked can be MQ'd
-        u8 isMQScene = this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex].canBeMQ;
-        if ((!gSaveContext.isMasterQuest && this->opt) && isMQScene) {
-            CVarSetInteger("gBetterDebugWarpScreenMQMode", 1);
-        } else if ((gSaveContext.isMasterQuest && !this->opt) && isMQScene) {
-            CVarSetInteger("gBetterDebugWarpScreenMQMode", 2);
-        }
-    };
-
-    if (CVarGetInteger("gBetterDebugWarpScreen", 0)) {
+    if (this->isBetterWarp) {
         CVarSetInteger("gBetterDebugWarpScreenCurrentScene", this->currentScene);
         CVarSetInteger("gBetterDebugWarpScreenTopDisplayedScene", this->topDisplayedScene);
         CVarSetInteger("gBetterDebugWarpScreenPageDownIndex", this->pageDownIndex);
         CVarSave();
+
+        if (ResourceMgr_GameHasMasterQuest() && ResourceMgr_GameHasOriginal()) {
+            BetterSceneSelectEntrancePair entrancePair = this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex];
+            // Check to see if the scene/entrance we just picked can be MQ'd
+            if (entrancePair.canBeMQ) {
+                u8 isEntranceDefaultMQ = ResourceMgr_IsSceneMasterQuest(gEntranceTable[entrancePair.entranceIndex].scene);
+                if (!isEntranceDefaultMQ && this->opt) {
+                    CVarSetInteger("gBetterDebugWarpScreenMQMode", 1); // Force vanilla for default MQ scene
+                } else if (isEntranceDefaultMQ && !this->opt) {
+                    CVarSetInteger("gBetterDebugWarpScreenMQMode", 2); // Force MQ for default vanilla scene
+                }
+            }
+        }
     }
 
     gSaveContext.respawnFlag = 0;
@@ -100,7 +105,7 @@ void Select_Grotto_LoadGame(SelectContext* this, s32 grottoIndex) {
         Grotto_OverrideSpecialEntrance(Entrance_GetOverride(grottoEntrance));
     }
 
-    if (CVarGetInteger("gBetterDebugWarpScreen", 0)) {
+    if (this->isBetterWarp) {
         CVarSetInteger("gBetterDebugWarpScreenCurrentScene", this->currentScene);
         CVarSetInteger("gBetterDebugWarpScreenTopDisplayedScene", this->topDisplayedScene);
         CVarSetInteger("gBetterDebugWarpScreenPageDownIndex", this->pageDownIndex);
@@ -462,7 +467,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "From Gerudo Fortress", "Von der Gerudo-Festung", "Depuis la Forteresse Gerudo", 0x022D, 0 },
         { "From Carpenter's Tent", "Vom Zelt der Zimmerleute", "Depuis la Tente du Charpentier", 0x03D0, 0 },
         { "Carpenter's Tent/ Running Man Minigame", "Zelt der Zimmerleute/ Rennlaeufer Minispiel", "Tente du Charpentier/ Marathonien", 0x03A0, 0 },
-        { "Thrown out of Fortress", "Aus der Festung geworfen", "Expulsé de la Forteresse", 0x01A5, 0 },
+        { "Thrown out of Fortress", "Aus der Festung geworfen", "Expulse de la Forteresse", 0x01A5, 0 },
     }},
     { "28:Gerudo Fortress", "28:Gerudo-Festung", "28:Forteresse Gerudo", Select_LoadGame, 18, {
         { "From Gerudo Valley", "Vom Gerudotal", "Depuis la Vallee Gerudo", 0x0129, 0 },
@@ -632,8 +637,8 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Spider Grotto (Hyrule Castle)", "Spinnen-Grotte (Schloss Hyrule)", "Grotte Araignee (Chateau d'Hyrule)", 0x17, 0 },
         { "Cow Grotto (Hyrule Field)", "Kuh-Grotte (Hylianische Steppe)", "Grotte a Vache (Plaine d'Hyrule)", 0x18, 0 },
         { "Cow Grotto (Death Mountain Trail)", "Kuh-Grotte (Gebirgspfad)", "Grotte a Vache (Chemin du Peril)", 0x19, 0 },
-        { "Flooded Grotto (Gerudo Valley)", "Geflutete Grotte (Gerudotal)", "Grotte Inondée (Vallee Gerudo)", 0x1A, 0 },
-        { "Flooded Grotto (Hyrule Field)", "Geflutete Grotte (Hylianische Steppe)", "Grotte Inondée (Plaine d'Hyrule)", 0x1B, 0 },
+        { "Flooded Grotto (Gerudo Valley)", "Geflutete Grotte (Gerudotal)", "Grotte Inondee (Vallee Gerudo)", 0x1A, 0 },
+        { "Flooded Grotto (Hyrule Field)", "Geflutete Grotte (Hylianische Steppe)", "Grotte Inondee (Plaine d'Hyrule)", 0x1B, 0 },
     }},
     { "50:Debug (Use with caution)", "50:Debug (Mit Vorsicht benutzen)", "50:Debug (A utiliser avec prudence)", Select_LoadGame, 10, {
         { "Test Room", "Test Raum", "Salle de Test", 0x0520, 0 },
@@ -885,6 +890,7 @@ void Better_Select_UpdateMenu(SelectContext* this) {
     Input* input = &this->state.input[0];
     s32 pad;
     BetterSceneSelectEntry* selectedScene;
+    uint8_t sceneChanged = 0;
 
     if (this->verticalInputAccumulator == 0) {
         if (CHECK_BTN_ALL(input->press.button, BTN_A) || CHECK_BTN_ALL(input->press.button, BTN_START)) {
@@ -917,8 +923,9 @@ void Better_Select_UpdateMenu(SelectContext* this) {
         }
 
         if (CHECK_BTN_ALL(input->press.button, BTN_L)) {
-            //Hijacking opt as the "MQ" option for better select. Only change opt/play sound if displayed
-            if (this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex].canBeMQ) {
+            // Hijacking opt as the "MQ" option for better select. Only change opt/play sound if displayed
+            if (ResourceMgr_GameHasMasterQuest() && ResourceMgr_GameHasOriginal() &&
+                this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex].canBeMQ) {
                 this->opt = this->opt ? 0 : 1;
                 if (this->opt) {
                     Audio_PlaySoundGeneral(NA_SE_IT_SWORD_PICKOUT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
@@ -981,6 +988,7 @@ void Better_Select_UpdateMenu(SelectContext* this) {
     this->verticalInputAccumulator += this->verticalInput;
 
     if (this->verticalInputAccumulator < -7) {
+        sceneChanged = 1;
         this->verticalInput = 0;
         this->verticalInputAccumulator = 0;
 
@@ -995,6 +1003,7 @@ void Better_Select_UpdateMenu(SelectContext* this) {
     }
 
     if (this->verticalInputAccumulator > 7) {
+        sceneChanged = 1;
         this->verticalInput = 0;
         this->verticalInputAccumulator = 0;
 
@@ -1013,12 +1022,18 @@ void Better_Select_UpdateMenu(SelectContext* this) {
         }
     }
 
+    if (sceneChanged) {
+        BetterSceneSelectEntrancePair entrancePair = this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex];
+        // Update the MQ status to match the new scene
+        if (entrancePair.canBeMQ && ResourceMgr_IsSceneMasterQuest(gEntranceTable[entrancePair.entranceIndex].scene)) {
+            this->opt = 1;
+        } else {
+            this->opt = 0;
+        }
+    }
+
     this->currentScene = (this->currentScene + this->count) % this->count;
     this->topDisplayedScene = (this->topDisplayedScene + this->count) % this->count;
-
-    dREG(80) = this->currentScene;
-    dREG(81) = this->topDisplayedScene;
-    dREG(82) = this->pageDownIndex;
 
     if (this->timerUp != 0) {
         this->timerUp--;
@@ -1159,7 +1174,7 @@ void Better_Select_PrintMenu(SelectContext* this, GfxPrint* printer) {
 
 static SceneSelectLoadingMessages sLoadingMessages[] = {
     { GFXP_HIRAGANA "ｼﾊﾞﾗｸｵﾏﾁｸﾀﾞｻｲ", "Please wait a minute", "Bitte warte eine Minute", "Veuillez patienter une minute" },
-    { GFXP_HIRAGANA "ﾁｮｯﾄ ﾏｯﾃﾈ", "Hold on a sec", "Warte mal 'ne Sekunde" "Une seconde, ça arrive" },
+    { GFXP_HIRAGANA "ﾁｮｯﾄ ﾏｯﾃﾈ", "Hold on a sec", "Warte mal 'ne Sekunde" "Une seconde, ca arrive" },
     { GFXP_KATAKANA "ｳｪｲﾄ ｱ ﾓｰﾒﾝﾄ", "Wait a moment", "Warte einen Moment", "Patientez un instant" },
     { GFXP_KATAKANA "ﾛｰﾄﾞ" GFXP_HIRAGANA "ﾁｭｳ", "Loading", "Ladevorgang", "Chargement" },
     { GFXP_HIRAGANA "ﾅｳ ﾜｰｷﾝｸﾞ", "Now working", "Verarbeite", "Au travail" },
@@ -1167,7 +1182,7 @@ static SceneSelectLoadingMessages sLoadingMessages[] = {
     { GFXP_HIRAGANA "ｺｼｮｳｼﾞｬﾅｲﾖ", "It's not broken", "Es ist nicht kaputt", "C'est pas casse!" },
     { GFXP_KATAKANA "ｺｰﾋｰ ﾌﾞﾚｲｸ", "Coffee Break", "Kaffee-Pause", "Pause Cafe" },
     { GFXP_KATAKANA "Bﾒﾝｦｾｯﾄｼﾃｸﾀﾞｻｲ", "Please set B side", "Please set B side", "Please set B side" },
-    { GFXP_HIRAGANA "ｼﾞｯﾄ" GFXP_KATAKANA "ｶﾞﾏﾝ" GFXP_HIRAGANA "ﾉ" GFXP_KATAKANA "ｺ" GFXP_HIRAGANA "ﾃﾞｱｯﾀ", "Be patient, now", "Übe dich in Geduld", "Veuillez patientez" },
+    { GFXP_HIRAGANA "ｼﾞｯﾄ" GFXP_KATAKANA "ｶﾞﾏﾝ" GFXP_HIRAGANA "ﾉ" GFXP_KATAKANA "ｺ" GFXP_HIRAGANA "ﾃﾞｱｯﾀ", "Be patient, now", "Ube dich in Geduld", "Veuillez patientez" },
     { GFXP_HIRAGANA "ｲﾏｼﾊﾞﾗｸｵﾏﾁｸﾀﾞｻｲ", "Please wait just a minute", "Bitte warte noch eine Minute", "Patientez un peu" },
     { GFXP_HIRAGANA "ｱﾜﾃﾅｲｱﾜﾃﾅｲ｡ﾋﾄﾔｽﾐﾋﾄﾔｽﾐ｡", "Don't panic, don't panic. Take a break, take a break.", "Keine Panik! Nimm dir eine Auszeit", "Pas de panique. Prenez une pause." },
     { "Enough! My ship sails in the morning!", "Enough! My ship sails in the morning!", "Enough! My ship sails in the morning!", "Enough! My ship sails in the morning!" },
@@ -1405,13 +1420,36 @@ void Better_Select_PrintMQSetting(SelectContext* this, GfxPrint* printer) {
     char* label;
 
     if (this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex].canBeMQ) {
-        label = this->opt ? "ON" : "OFF";
-        
+        GfxPrint_SetColor(printer, 100, 100, 100, 255);
         GfxPrint_SetPos(printer, 3, 25);
-        GfxPrint_SetColor(printer, 0, 150, 194, 255);
-        GfxPrint_Printf(printer, "(L)MQ:%s", label);
-    }
 
+        // MQ can be toggled
+        if (ResourceMgr_GameHasMasterQuest() && ResourceMgr_GameHasOriginal()) {
+            GfxPrint_Printf(printer, "(L)MQ:");
+        } else {
+            GfxPrint_Printf(printer, "MQ:");
+        }
+
+        if (CVarGetInteger("gDebugWarpScreenTranslation", 1)) {
+            switch (gSaveContext.language) {
+                case LANGUAGE_ENG:
+                default:
+                    label = this->opt ? "ON" : "OFF";
+                    break;
+                case LANGUAGE_GER:
+                    label = this->opt ? "AN" : "AUS";
+                    break;
+                case LANGUAGE_FRA:
+                    label = this->opt ? "ACTIVE" : "DESACTIVE";
+                    break;
+            }
+        } else {
+            label = this->opt ? "ON" : "OFF";
+        }
+
+        GfxPrint_SetColor(printer, 0, 150, 194, 255);
+        GfxPrint_Printf(printer, "%s", label);
+    }
 }
 
 void Select_DrawMenu(SelectContext* this) {
@@ -1429,11 +1467,11 @@ void Select_DrawMenu(SelectContext* this) {
     printer = alloca(sizeof(GfxPrint));
     GfxPrint_Init(printer);
     GfxPrint_Open(printer, POLY_OPA_DISP);
-    if (CVarGetInteger("gBetterDebugWarpScreen", 0)) {
-        Better_Select_PrintMenu(this, printer);
-        Better_Select_PrintAgeSetting(this, printer, ((void)0, gSaveContext.linkAge));
+    if (this->isBetterWarp) {
         Better_Select_PrintTimeSetting(this, printer);
+        Better_Select_PrintAgeSetting(this, printer, ((void)0, gSaveContext.linkAge));
         Better_Select_PrintMQSetting(this, printer);
+        Better_Select_PrintMenu(this, printer);
     } else {
         Select_PrintMenu(this, printer);
         Select_PrintAgeSetting(this, printer, ((void)0, gSaveContext.linkAge));
@@ -1489,7 +1527,11 @@ void Select_Draw(SelectContext* this) {
 void Select_Main(GameState* thisx) {
     SelectContext* this = (SelectContext*)thisx;
 
-    if (CVarGetInteger("gBetterDebugWarpScreen", 0)) {
+    if (this->isBetterWarp != CVarGetInteger("gBetterDebugWarpScreen", 0)) {
+        Select_SwitchBetterWarpMode(this, !this->isBetterWarp);
+    }
+
+    if (this->isBetterWarp) {
         Better_Select_UpdateMenu(this);
     } else {
         Select_UpdateMenu(this);
@@ -1501,6 +1543,43 @@ void Select_Destroy(GameState* thisx) {
     osSyncPrintf("%c", BEL);
     // "view_cleanup will hang, so it won't be called"
     osSyncPrintf("*** view_cleanupはハングアップするので、呼ばない ***\n");
+}
+
+// Switch better warp mode and re-init the list
+void Select_SwitchBetterWarpMode(SelectContext* this, u8 isBetterWarpMode) {
+    this->isBetterWarp = isBetterWarpMode;
+    this->opt = 0;
+    this->currentScene = 0;
+    this->topDisplayedScene = 0;
+    this->pageDownIndex = 0;
+    gSaveContext.cutsceneIndex = 0x8000;
+    gSaveContext.linkAge = 1;
+    gSaveContext.nightFlag = 0;
+    gSaveContext.dayTime = 0x8000;
+
+    if (isBetterWarpMode) {
+        s32 currScene = CVarGetInteger("gBetterDebugWarpScreenCurrentScene", 0);
+        this->count = ARRAY_COUNT(sBetterScenes);
+
+        if (currScene >= 0 && currScene < this->count) {
+            this->currentScene = currScene;
+            this->topDisplayedScene = CVarGetInteger("gBetterDebugWarpScreenTopDisplayedScene", 0);
+            this->pageDownIndex = CVarGetInteger("gBetterDebugWarpScreenPageDownIndex", 0);
+
+            BetterSceneSelectEntrancePair entrancePair = this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex];
+            if (entrancePair.canBeMQ && ResourceMgr_IsSceneMasterQuest(gEntranceTable[entrancePair.entranceIndex].scene)) {
+                this->opt = 1;
+            }
+        }
+    } else {
+        this->count = ARRAY_COUNT(sScenes);
+
+        if ((dREG(80) >= 0) && (dREG(80) < this->count)) {
+            this->currentScene = dREG(80);
+            this->topDisplayedScene = dREG(81);
+            this->pageDownIndex = dREG(82);
+        }
+    }
 }
 
 void Select_Init(GameState* thisx) {
@@ -1524,7 +1603,7 @@ void Select_Init(GameState* thisx) {
     this->pageDownStops[6] = 91; // Escaping Ganon's Tower 3
     this->pageDownIndex = 0;
     this->opt = 0;
-    this->count = CVarGetInteger("gBetterDebugWarpScreen", 0) ? ARRAY_COUNT(sBetterScenes) : ARRAY_COUNT(sScenes);
+    this->count = ARRAY_COUNT(sScenes);
     View_Init(&this->view, this->state.gfxCtx);
     this->view.flags = (0x08 | 0x02);
     this->verticalInputAccumulator = 0;
@@ -1542,11 +1621,7 @@ void Select_Init(GameState* thisx) {
         this->topDisplayedScene = dREG(81);
         this->pageDownIndex = dREG(82);
     }
-    if (CVarGetInteger("gBetterDebugWarpScreen", 0)) {
-        this->currentScene = CVarGetInteger("gBetterDebugWarpScreenCurrentScene", 0);
-        this->topDisplayedScene = CVarGetInteger("gBetterDebugWarpScreenTopDisplayedScene", 0);
-        this->pageDownIndex = CVarGetInteger("gBetterDebugWarpScreenPageDownIndex", 0);
-    }
+
     R_UPDATE_RATE = 1;
 #if !defined(_MSC_VER) && !defined(__GNUC__)
     this->staticSegment = GAMESTATE_ALLOC_MC(&this->state, size);
@@ -1556,4 +1631,7 @@ void Select_Init(GameState* thisx) {
     gSaveContext.linkAge = 1;
     gSaveContext.nightFlag = 0;
     gSaveContext.dayTime = 0x8000;
+
+    CVarClear("gBetterDebugWarpScreenMQMode");
+    Select_SwitchBetterWarpMode(this, CVarGetInteger("gBetterDebugWarpScreen", 0));
 }

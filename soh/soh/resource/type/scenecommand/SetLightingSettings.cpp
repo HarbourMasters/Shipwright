@@ -1,7 +1,7 @@
 #include "SetLightingSettings.h"
 
 namespace LUS {
-void* SetLightingSettings::GetPointer() {
+EnvLightSettings* SetLightingSettings::GetPointer() {
     return settings.data();
 }
 

@@ -1,7 +1,7 @@
 #include "Text.h"
 
 namespace LUS {
-void* Text::GetPointer() {
+MessageEntry* Text::GetPointer() {
     return messages.data();
 }
 

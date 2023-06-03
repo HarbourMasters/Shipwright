@@ -14,11 +14,11 @@ typedef struct {
   uint8_t reverb;
 } SoundSettings;
 
-class SetSoundSettings : public SceneCommand {
+class SetSoundSettings : public SceneCommand<SoundSettings> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    SoundSettings* GetPointer();
     size_t GetPointerSize();
 
     SoundSettings settings;

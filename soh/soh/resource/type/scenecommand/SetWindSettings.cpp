@@ -1,7 +1,7 @@
 #include "SetWindSettings.h"
 
 namespace LUS {
-void* SetWindSettings::GetPointer() {
+WindSettings* SetWindSettings::GetPointer() {
     return &settings;
 }
 

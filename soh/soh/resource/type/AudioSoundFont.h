@@ -52,11 +52,13 @@ typedef struct {
     s32 fntIndex;
 } SoundFont; // size = 0x14
 
-class AudioSoundFont : public Resource {
+class AudioSoundFont : public Resource<SoundFont> {
 public:
     using Resource::Resource;
 
-    void* GetPointer();
+    AudioSoundFont() : Resource(std::shared_ptr<ResourceInitData>()) {}
+
+    SoundFont* GetPointer();
     size_t GetPointerSize();
 
     int8_t medium;
