@@ -34,17 +34,17 @@ extern PlayState* gPlayState;
 
 #define CMD_REGISTER LUS::Context::GetInstance()->GetConsole()->AddCommand
 // TODO: Commands should be using the output passed in.
-#define ERR_MESSAGE std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->SendErrorMessage
-#define INF_MESSAGE std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->SendInfoMessage
+#define ERROR_MESSAGE std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->SendErrorMessage
+#define INFO_MESSAGE std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->SendInfoMessage
 
 static bool ActorSpawnHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if ((args.size() != 9) && (args.size() != 3) && (args.size() != 6)) {
-        ERR_MESSAGE("Not enough arguments passed to actorspawn");
+        ERROR_MESSAGE("Not enough arguments passed to actorspawn");
         return 1;
     }
 
     if (gPlayState == nullptr) {
-        ERR_MESSAGE("PlayState == nullptr");
+        ERROR_MESSAGE("PlayState == nullptr");
         return 1;
     }
 
@@ -56,7 +56,7 @@ static bool ActorSpawnHandler(std::shared_ptr<LUS::Console> Console, const std::
         try {
             actorId = std::stoi(args[1]);
         } catch (std::invalid_argument const& ex) {
-            ERR_MESSAGE("Invalid actor ID");
+            ERROR_MESSAGE("Invalid actor ID");
             return 1;
         }
     } else {
@@ -91,7 +91,7 @@ static bool ActorSpawnHandler(std::shared_ptr<LUS::Console> Console, const std::
 
     if (Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorId, spawnPoint.pos.x, spawnPoint.pos.y, spawnPoint.pos.z,
                     spawnPoint.rot.x, spawnPoint.rot.y, spawnPoint.rot.z, params, 0) == NULL) {
-        ERR_MESSAGE("Failed to spawn actor. Actor_Spawn returned NULL");
+        ERROR_MESSAGE("Failed to spawn actor. Actor_Spawn returned NULL");
         return 1;
     }
     return 0;
@@ -102,17 +102,17 @@ static bool KillPlayerHandler(std::shared_ptr<LUS::Console> Console, const std::
     effect->parameters[0] = 0;
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] You've met with a terrible fate, haven't you?");
+        INFO_MESSAGE("[SOH] You've met with a terrible fate, haven't you?");
         return 0;
     } else {
-        ERR_MESSAGE("[SOH] Command failed: Could not kill player.");
+        ERROR_MESSAGE("[SOH] Command failed: Could not kill player.");
         return 1;
     }
 }
 
 static bool SetPlayerHealthHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     int health;
@@ -120,12 +120,12 @@ static bool SetPlayerHealthHandler(std::shared_ptr<LUS::Console> Console, const 
     try {
         health = std::stoi(args[1]);
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] Health value must be an integer.");
+        ERROR_MESSAGE("[SOH] Health value must be an integer.");
         return 1;
     }
 
     if (health < 0) {
-        ERR_MESSAGE("[SOH] Health value must be a positive integer");
+        ERROR_MESSAGE("[SOH] Health value must be a positive integer");
         return 1;
     }
 
@@ -133,10 +133,10 @@ static bool SetPlayerHealthHandler(std::shared_ptr<LUS::Console> Console, const 
     effect->parameters[0] = health;
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Player health updated to %d", health);
+        INFO_MESSAGE("[SOH] Player health updated to %d", health);
         return 0;
     } else {
-        ERR_MESSAGE("[SOH] Command failed: Could not set player health.");
+        ERROR_MESSAGE("[SOH] Command failed: Could not set player health.");
         return 1;
     }
 }
@@ -159,31 +159,31 @@ static bool RupeeHandler(std::shared_ptr<LUS::Console> Console, const std::vecto
         rupeeAmount = std::stoi(args[1]);
     }
     catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] Rupee count must be an integer.");
+        ERROR_MESSAGE("[SOH] Rupee count must be an integer.");
         return 1;
     }
 
     if (rupeeAmount < 0) {
-        ERR_MESSAGE("[SOH] Rupee count must be positive");
+        ERROR_MESSAGE("[SOH] Rupee count must be positive");
         return 1;
     }
 
    gSaveContext.rupees = rupeeAmount;
 
-    INF_MESSAGE("Set rupee count to %u", rupeeAmount);
+    INFO_MESSAGE("Set rupee count to %u", rupeeAmount);
     return 0;
 }
 
 static bool SetPosHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string> args, std::string* output) {
     if (gPlayState == nullptr) {
-        ERR_MESSAGE("PlayState == nullptr");
+        ERROR_MESSAGE("PlayState == nullptr");
         return 1;
     }
 
     Player* player = GET_PLAYER(gPlayState);
 
     if (args.size() == 1) {
-        INF_MESSAGE("Player position is [ %.2f, %.2f, %.2f ]", player->actor.world.pos.x,
+        INFO_MESSAGE("Player position is [ %.2f, %.2f, %.2f ]", player->actor.world.pos.x,
                                             player->actor.world.pos.y,
              player->actor.world.pos.z);
         return 0;
@@ -195,7 +195,7 @@ static bool SetPosHandler(std::shared_ptr<LUS::Console> Console, const std::vect
     player->actor.world.pos.y = std::stof(args[2]);
     player->actor.world.pos.z = std::stof(args[3]);
 
-    INF_MESSAGE("Set player position to [ %.2f, %.2f, %.2f ]", player->actor.world.pos.x,
+    INFO_MESSAGE("Set player position to [ %.2f, %.2f, %.2f ]", player->actor.world.pos.x,
                                         player->actor.world.pos.y,
          player->actor.world.pos.z);
     return 0;
@@ -203,7 +203,7 @@ static bool SetPosHandler(std::shared_ptr<LUS::Console> Console, const std::vect
 
 static bool ResetHandler(std::shared_ptr<LUS::Console> Console, std::vector<std::string> args, std::string* output) {
     if (gPlayState == nullptr) {
-        ERR_MESSAGE("PlayState == nullptr");
+        ERROR_MESSAGE("PlayState == nullptr");
         return 1;
     }
 
@@ -222,7 +222,7 @@ const static std::map<std::string, uint16_t> ammoItems{
 
 static bool AddAmmoHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 3) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     int amount;
@@ -230,18 +230,18 @@ static bool AddAmmoHandler(std::shared_ptr<LUS::Console> Console, const std::vec
     try {
         amount = std::stoi(args[2]);
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("Ammo count must be an integer");
+        ERROR_MESSAGE("Ammo count must be an integer");
         return 1;
     }
 
     if (amount < 0) {
-        ERR_MESSAGE("Ammo count must be positive");
+        ERROR_MESSAGE("Ammo count must be positive");
         return 1;
     }
 
     const auto& it = ammoItems.find(args[1]);
     if (it == ammoItems.end()) {
-        ERR_MESSAGE("Invalid ammo type. Options are 'sticks', 'nuts', 'bombs', 'seeds', 'arrows', 'bombchus' and 'beans'");
+        ERROR_MESSAGE("Invalid ammo type. Options are 'sticks', 'nuts', 'bombs', 'seeds', 'arrows', 'bombchus' and 'beans'");
         return 1;
     }
 
@@ -251,17 +251,17 @@ static bool AddAmmoHandler(std::shared_ptr<LUS::Console> Console, const std::vec
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Added ammo.");
+        INFO_MESSAGE("[SOH] Added ammo.");
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not add ammo.");
+        INFO_MESSAGE("[SOH] Command failed: Could not add ammo.");
         return 1;
     }
 }
 
 static bool TakeAmmoHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 3) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     int amount;
@@ -269,18 +269,18 @@ static bool TakeAmmoHandler(std::shared_ptr<LUS::Console> Console, const std::ve
     try {
         amount = std::stoi(args[2]);
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("Ammo count must be an integer");
+        ERROR_MESSAGE("Ammo count must be an integer");
         return 1;
     }
 
     if (amount < 0) {
-        ERR_MESSAGE("Ammo count must be positive");
+        ERROR_MESSAGE("Ammo count must be positive");
         return 1;
     }
 
     const auto& it = ammoItems.find(args[1]);
     if (it == ammoItems.end()) {
-        ERR_MESSAGE(
+        ERROR_MESSAGE(
             "Invalid ammo type. Options are 'sticks', 'nuts', 'bombs', 'seeds', 'arrows', 'bombchus' and 'beans'");
         return 1;
     }
@@ -291,10 +291,10 @@ static bool TakeAmmoHandler(std::shared_ptr<LUS::Console> Console, const std::ve
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Took ammo.");
+        INFO_MESSAGE("[SOH] Took ammo.");
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not take ammo.");
+        INFO_MESSAGE("[SOH] Command failed: Could not take ammo.");
         return 1;
     }
 }
@@ -308,7 +308,7 @@ const static std::map<std::string, uint16_t> bottleItems{
 
 static bool BottleHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 3) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
 
@@ -316,19 +316,19 @@ static bool BottleHandler(std::shared_ptr<LUS::Console> Console, const std::vect
     try {
         slot = std::stoi(args[2]);
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] Bottle slot must be an integer.");
+        ERROR_MESSAGE("[SOH] Bottle slot must be an integer.");
         return 1;
     }
 
     if ((slot < 1) || (slot > 4)) {
-        ERR_MESSAGE("Invalid slot passed");
+        ERROR_MESSAGE("Invalid slot passed");
         return 1;
     }
 
     const auto& it = bottleItems.find(args[1]);
 
     if (it ==  bottleItems.end()) {
-        ERR_MESSAGE("Invalid item passed");
+        ERROR_MESSAGE("Invalid item passed");
         return 1;
     }
 
@@ -340,7 +340,7 @@ static bool BottleHandler(std::shared_ptr<LUS::Console> Console, const std::vect
 
 static bool BHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
 
@@ -350,7 +350,7 @@ static bool BHandler(std::shared_ptr<LUS::Console> Console, const std::vector<st
 
 static bool ItemHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 3) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
 
@@ -361,7 +361,7 @@ static bool ItemHandler(std::shared_ptr<LUS::Console> Console, const std::vector
 
 static bool GiveItemHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string> args, std::string* output) {
     if (args.size() < 3) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     GetItemEntry getItemEntry = GET_ITEM_NONE;
@@ -371,7 +371,7 @@ static bool GiveItemHandler(std::shared_ptr<LUS::Console> Console, const std::ve
     } else if (args[1].compare("randomizer") == 0) {
         getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, std::stoi(args[2]));
     } else {
-        ERR_MESSAGE("[SOH] Invalid argument passed, must be 'vanilla' or 'randomizer'");
+        ERROR_MESSAGE("[SOH] Invalid argument passed, must be 'vanilla' or 'randomizer'");
         return 1;
     }
 
@@ -382,7 +382,7 @@ static bool GiveItemHandler(std::shared_ptr<LUS::Console> Console, const std::ve
 
 static bool EntranceHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
 
@@ -391,7 +391,7 @@ static bool EntranceHandler(std::shared_ptr<LUS::Console> Console, const std::ve
     try {
         entrance = std::stoi(args[1], nullptr, 16);
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] Entrance value must be a Hex number.");
+        ERROR_MESSAGE("[SOH] Entrance value must be a Hex number.");
         return 1;
     }
 
@@ -411,7 +411,7 @@ static bool VoidHandler(std::shared_ptr<LUS::Console> Console, const std::vector
             gPlayState->fadeTransition = 2;
             gSaveContext.nextTransitionType = 2;
     } else {
-        ERR_MESSAGE("gPlayState == nullptr");
+        ERROR_MESSAGE("gPlayState == nullptr");
         return 1;
     }
     return 0;
@@ -424,7 +424,7 @@ static bool ReloadHandler(std::shared_ptr<LUS::Console> Console, const std::vect
         gPlayState->fadeTransition = 11;
         gSaveContext.nextTransitionType = 11;
     } else {
-        ERR_MESSAGE("gPlayState == nullptr");
+        ERROR_MESSAGE("gPlayState == nullptr");
         return 1;
     }
     return 0;
@@ -436,13 +436,13 @@ const static std::map<std::string, uint16_t> fw_options {
 
 static bool FWHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
 
     const auto& it = fw_options.find(args[1]);
     if (it == fw_options.end()) {
-        ERR_MESSAGE("[SOH] Invalid option. Options are 'clear', 'warp', 'backup'");
+        ERROR_MESSAGE("[SOH] Invalid option. Options are 'clear', 'warp', 'backup'");
         return 1;
     }
     
@@ -451,7 +451,7 @@ static bool FWHandler(std::shared_ptr<LUS::Console> Console, const std::vector<s
         switch(it->second) {
             case 0: //clear
                 gSaveContext.fw = clear;
-                INF_MESSAGE("[SOH] Farore's wind point cleared! Reload scene to take effect.");
+                INFO_MESSAGE("[SOH] Farore's wind point cleared! Reload scene to take effect.");
                 return 0;
                 break;
             case 1: //warp
@@ -460,7 +460,7 @@ static bool FWHandler(std::shared_ptr<LUS::Console> Console, const std::vector<s
                     gPlayState->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_TOP].entranceIndex;
                     gPlayState->fadeTransition = 5;
                 } else {
-                    ERR_MESSAGE("Farore's wind not set!");
+                    ERROR_MESSAGE("Farore's wind not set!");
                     return 1;
                 }
                 return 0;
@@ -469,17 +469,17 @@ static bool FWHandler(std::shared_ptr<LUS::Console> Console, const std::vector<s
                 if (CVarGetInteger("gBetterFW", 0)) {
                     gSaveContext.fw = gSaveContext.backupFW;
                     gSaveContext.fw.set = 1;
-                    INF_MESSAGE("[SOH] Backup FW data copied! Reload scene to take effect.");
+                    INFO_MESSAGE("[SOH] Backup FW data copied! Reload scene to take effect.");
                     return 0;
                 } else {
-                    ERR_MESSAGE("Better Farore's Wind isn't turned on!");
+                    ERROR_MESSAGE("Better Farore's Wind isn't turned on!");
                     return 1;
                 }
                 break;
         }
     }
     else {
-        ERR_MESSAGE("gPlayState == nullptr");
+        ERROR_MESSAGE("gPlayState == nullptr");
         return 1;
     }
     
@@ -491,7 +491,7 @@ static bool FileSelectHandler(std::shared_ptr<LUS::Console> Console, const std::
         SET_NEXT_GAMESTATE(&gPlayState->state, FileChoose_Init, FileChooseContext);
         gPlayState->state.running = 0;
     } else {
-        ERR_MESSAGE("gPlayState == nullptr");
+        ERROR_MESSAGE("gPlayState == nullptr");
         return 1;
     }
     return 0;
@@ -508,10 +508,10 @@ static bool SaveStateHandler(std::shared_ptr<LUS::Console> Console, const std::v
 
     switch (rtn) {
         case SaveStateReturn::SUCCESS:
-            INF_MESSAGE("[SOH] Saved state to slot %u", slot);
+            INFO_MESSAGE("[SOH] Saved state to slot %u", slot);
             return 0;
         case SaveStateReturn::FAIL_WRONG_GAMESTATE:
-            ERR_MESSAGE("[SOH] Can not save a state outside of \"GamePlay\"");
+            ERROR_MESSAGE("[SOH] Can not save a state outside of \"GamePlay\"");
             return 1;
     }
 }
@@ -522,16 +522,16 @@ static bool LoadStateHandler(std::shared_ptr<LUS::Console> Console, const std::v
 
     switch (rtn) {
         case SaveStateReturn::SUCCESS:
-            INF_MESSAGE("[SOH] Loaded state from slot (%u)", slot);
+            INFO_MESSAGE("[SOH] Loaded state from slot (%u)", slot);
             return 0;
         case SaveStateReturn::FAIL_INVALID_SLOT:
-            ERR_MESSAGE("[SOH] Invalid State Slot Number (%u)", slot);
+            ERROR_MESSAGE("[SOH] Invalid State Slot Number (%u)", slot);
             return 1;
         case SaveStateReturn::FAIL_STATE_EMPTY:
-            ERR_MESSAGE("[SOH] State Slot (%u) is empty", slot);
+            ERROR_MESSAGE("[SOH] State Slot (%u) is empty", slot);
             return 1;
         case SaveStateReturn::FAIL_WRONG_GAMESTATE:
-            ERR_MESSAGE("[SOH] Can not load a state outside of \"GamePlay\"");
+            ERROR_MESSAGE("[SOH] Can not load a state outside of \"GamePlay\"");
             return 1;
     }
 
@@ -539,7 +539,7 @@ static bool LoadStateHandler(std::shared_ptr<LUS::Console> Console, const std::v
 
 static bool StateSlotSelectHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     uint8_t slot;
@@ -547,24 +547,24 @@ static bool StateSlotSelectHandler(std::shared_ptr<LUS::Console> Console, const 
     try {
         slot = std::stoi(args[1], nullptr, 10);
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] SaveState slot value must be a number.");
+        ERROR_MESSAGE("[SOH] SaveState slot value must be a number.");
         return 1;
     }
 
     if (slot < 0) {
-        ERR_MESSAGE("[SOH] Invalid slot passed. Slot must be between 0 and 2");
+        ERROR_MESSAGE("[SOH] Invalid slot passed. Slot must be between 0 and 2");
         return 1;
     }
 
     OTRGlobals::Instance->gSaveStateMgr->SetCurrentSlot(slot);
-    INF_MESSAGE("[SOH] Slot %u selected",
+    INFO_MESSAGE("[SOH] Slot %u selected",
                                         OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot());
     return 0;
 }
 
 static bool InvisibleHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     uint8_t state;
@@ -572,7 +572,7 @@ static bool InvisibleHandler(std::shared_ptr<LUS::Console> Console, const std::v
     try {
         state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] Invisible value must be a number.");
+        ERROR_MESSAGE("[SOH] Invisible value must be a number.");
         return 1;
     }
 
@@ -580,10 +580,10 @@ static bool InvisibleHandler(std::shared_ptr<LUS::Console> Console, const std::v
     GameInteractionEffectQueryResult result = 
         state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Invisible Link %s", state ? "enabled" : "disabled");
+        INFO_MESSAGE("[SOH] Invisible Link %s", state ? "enabled" : "disabled");
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not %s Invisible Link.",
+        INFO_MESSAGE("[SOH] Command failed: Could not %s Invisible Link.",
                                                 state ? "enable" : "disable");
         return 1;
     }
@@ -591,7 +591,7 @@ static bool InvisibleHandler(std::shared_ptr<LUS::Console> Console, const std::v
 
 static bool GiantLinkHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     uint8_t state;
@@ -599,7 +599,7 @@ static bool GiantLinkHandler(std::shared_ptr<LUS::Console> Console, const std::v
     try {
         state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] Giant value must be a number.");
+        ERROR_MESSAGE("[SOH] Giant value must be a number.");
         return 1;
     }
 
@@ -608,10 +608,10 @@ static bool GiantLinkHandler(std::shared_ptr<LUS::Console> Console, const std::v
     GameInteractionEffectQueryResult result =
         state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Giant Link %s", state ? "enabled" : "disabled");
+        INFO_MESSAGE("[SOH] Giant Link %s", state ? "enabled" : "disabled");
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not %s Giant Link.",
+        INFO_MESSAGE("[SOH] Command failed: Could not %s Giant Link.",
                                                 state ? "enable" : "disable");
         return 1;
     }
@@ -619,7 +619,7 @@ static bool GiantLinkHandler(std::shared_ptr<LUS::Console> Console, const std::v
 
 static bool MinishLinkHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     uint8_t state;
@@ -627,7 +627,7 @@ static bool MinishLinkHandler(std::shared_ptr<LUS::Console> Console, const std::
     try {
         state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] Minish value must be a number.");
+        ERROR_MESSAGE("[SOH] Minish value must be a number.");
         return 1;
     }
 
@@ -636,10 +636,10 @@ static bool MinishLinkHandler(std::shared_ptr<LUS::Console> Console, const std::
     GameInteractionEffectQueryResult result =
         state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Minish Link %s", state ? "enabled" : "disabled");
+        INFO_MESSAGE("[SOH] Minish Link %s", state ? "enabled" : "disabled");
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not %s Minish Link.",
+        INFO_MESSAGE("[SOH] Command failed: Could not %s Minish Link.",
                                                 state ? "enable" : "disable");
         return 1;
     }
@@ -647,7 +647,7 @@ static bool MinishLinkHandler(std::shared_ptr<LUS::Console> Console, const std::
 
 static bool AddHeartContainerHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     int hearts;
@@ -655,12 +655,12 @@ static bool AddHeartContainerHandler(std::shared_ptr<LUS::Console> Console, cons
     try {
         hearts = std::stoi(args[1]);
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] Hearts value must be an integer.");
+        ERROR_MESSAGE("[SOH] Hearts value must be an integer.");
         return 1;
     }
 
     if (hearts < 0) {
-        ERR_MESSAGE("[SOH] Hearts value must be a positive integer");
+        ERROR_MESSAGE("[SOH] Hearts value must be a positive integer");
         return 1;
     }
 
@@ -668,17 +668,17 @@ static bool AddHeartContainerHandler(std::shared_ptr<LUS::Console> Console, cons
     effect->parameters[0] = hearts;
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Added %d heart containers", hearts);
+        INFO_MESSAGE("[SOH] Added %d heart containers", hearts);
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not add heart containers.");
+        INFO_MESSAGE("[SOH] Command failed: Could not add heart containers.");
         return 1;
     }
 }
 
 static bool RemoveHeartContainerHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     int hearts;
@@ -686,12 +686,12 @@ static bool RemoveHeartContainerHandler(std::shared_ptr<LUS::Console> Console, c
     try {
         hearts = std::stoi(args[1]);
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] Hearts value must be an integer.");
+        ERROR_MESSAGE("[SOH] Hearts value must be an integer.");
         return 1;
     }
 
     if (hearts < 0) {
-        ERR_MESSAGE("[SOH] Hearts value must be a positive integer");
+        ERROR_MESSAGE("[SOH] Hearts value must be a positive integer");
         return 1;
     }
 
@@ -699,17 +699,17 @@ static bool RemoveHeartContainerHandler(std::shared_ptr<LUS::Console> Console, c
     effect->parameters[0] = -hearts;
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Removed %d heart containers", hearts);
+        INFO_MESSAGE("[SOH] Removed %d heart containers", hearts);
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not remove heart containers.");
+        INFO_MESSAGE("[SOH] Command failed: Could not remove heart containers.");
         return 1;
     }
 }
 
 static bool GravityHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
 
@@ -718,23 +718,23 @@ static bool GravityHandler(std::shared_ptr<LUS::Console> Console, const std::vec
     try {
         effect->parameters[0] = LUS::Math::clamp(std::stoi(args[1], nullptr, 10), GI_GRAVITY_LEVEL_LIGHT, GI_GRAVITY_LEVEL_HEAVY);
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] Gravity value must be a number.");
+        ERROR_MESSAGE("[SOH] Gravity value must be a number.");
         return 1;
     }
     
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Updated gravity.");
+        INFO_MESSAGE("[SOH] Updated gravity.");
         return 0;
     } else {
-        ERR_MESSAGE("[SOH] Command failed: Could not update gravity.");
+        ERROR_MESSAGE("[SOH] Command failed: Could not update gravity.");
         return 1;
     }
 }
 
 static bool NoUIHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     uint8_t state;
@@ -742,7 +742,7 @@ static bool NoUIHandler(std::shared_ptr<LUS::Console> Console, const std::vector
     try {
         state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] No UI value must be a number.");
+        ERROR_MESSAGE("[SOH] No UI value must be a number.");
         return 1;
     }
     
@@ -751,10 +751,10 @@ static bool NoUIHandler(std::shared_ptr<LUS::Console> Console, const std::vector
         state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] No UI %s", state ? "enabled" : "disabled");
+        INFO_MESSAGE("[SOH] No UI %s", state ? "enabled" : "disabled");
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not %s No UI.",
+        INFO_MESSAGE("[SOH] Command failed: Could not %s No UI.",
                                                 state ? "enable" : "disable");
         return 1;
     }
@@ -765,17 +765,17 @@ static bool FreezeHandler(std::shared_ptr<LUS::Console> Console, const std::vect
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Player frozen");
+        INFO_MESSAGE("[SOH] Player frozen");
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not freeze player.");
+        INFO_MESSAGE("[SOH] Command failed: Could not freeze player.");
         return 1;
     }
 }
 
 static bool DefenseModifierHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     GameInteractionEffectBase* effect = new GameInteractionEffect::ModifyDefenseModifier();
@@ -783,23 +783,23 @@ static bool DefenseModifierHandler(std::shared_ptr<LUS::Console> Console, const 
     try {
         effect->parameters[0] = std::stoi(args[1], nullptr, 10);
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] Defense modifier value must be a number.");
+        ERROR_MESSAGE("[SOH] Defense modifier value must be a number.");
         return 1;
     }
 
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Defense modifier set to %d", effect->parameters[0]);
+        INFO_MESSAGE("[SOH] Defense modifier set to %d", effect->parameters[0]);
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not set defense modifier.");
+        INFO_MESSAGE("[SOH] Command failed: Could not set defense modifier.");
         return 1;
     }
 }
 
 static bool DamageHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     GameInteractionEffectBase* effect = new GameInteractionEffect::ModifyHealth();
@@ -807,29 +807,29 @@ static bool DamageHandler(std::shared_ptr<LUS::Console> Console, const std::vect
     try {
         int value = std::stoi(args[1], nullptr, 10);
         if (value < 0) {
-            ERR_MESSAGE("[SOH] Invalid value passed. Value must be greater than 0");
+            ERROR_MESSAGE("[SOH] Invalid value passed. Value must be greater than 0");
             return 1;
         }
 
         effect->parameters[0] = -value;
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] Damage value must be a number.");
+        ERROR_MESSAGE("[SOH] Damage value must be a number.");
         return 1;
     }
 
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Player damaged");
+        INFO_MESSAGE("[SOH] Player damaged");
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not damage player.");
+        INFO_MESSAGE("[SOH] Command failed: Could not damage player.");
         return 1;
     }
 }
 
 static bool HealHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     GameInteractionEffectBase* effect = new GameInteractionEffect::ModifyHealth();
@@ -837,22 +837,22 @@ static bool HealHandler(std::shared_ptr<LUS::Console> Console, const std::vector
     try {
         int value = std::stoi(args[1], nullptr, 10);
         if (value < 0) {
-            ERR_MESSAGE("[SOH] Invalid value passed. Value must be greater than 0");
+            ERROR_MESSAGE("[SOH] Invalid value passed. Value must be greater than 0");
             return 1;
         }
 
         effect->parameters[0] = value;
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] Damage value must be a number.");
+        ERROR_MESSAGE("[SOH] Damage value must be a number.");
         return 1;
     }
 
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Player healed");
+        INFO_MESSAGE("[SOH] Player healed");
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not heal player.");
+        INFO_MESSAGE("[SOH] Command failed: Could not heal player.");
         return 1;
     }
 }
@@ -862,10 +862,10 @@ static bool FillMagicHandler(std::shared_ptr<LUS::Console> Console, const std::v
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Magic filled");
+        INFO_MESSAGE("[SOH] Magic filled");
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not fill magic.");
+        INFO_MESSAGE("[SOH] Command failed: Could not fill magic.");
         return 1;
     }
 }
@@ -875,17 +875,17 @@ static bool EmptyMagicHandler(std::shared_ptr<LUS::Console> Console, const std::
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Magic emptied");
+        INFO_MESSAGE("[SOH] Magic emptied");
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not empty magic.");
+        INFO_MESSAGE("[SOH] Command failed: Could not empty magic.");
         return 1;
     }
 }
 
 static bool NoZHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
      if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
      uint8_t state;
@@ -893,7 +893,7 @@ static bool NoZHandler(std::shared_ptr<LUS::Console> Console, const std::vector<
     try {
         state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] NoZ value must be a number.");
+        ERROR_MESSAGE("[SOH] NoZ value must be a number.");
         return 1;
     }
 
@@ -902,10 +902,10 @@ static bool NoZHandler(std::shared_ptr<LUS::Console> Console, const std::vector<
         state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] NoZ " + std::string(state ? "enabled" : "disabled"));
+        INFO_MESSAGE("[SOH] NoZ " + std::string(state ? "enabled" : "disabled"));
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not " +
+        INFO_MESSAGE("[SOH] Command failed: Could not " +
                                                 std::string(state ? "enable" : "disable") + " NoZ.");
         return 1;
     }
@@ -913,7 +913,7 @@ static bool NoZHandler(std::shared_ptr<LUS::Console> Console, const std::vector<
 
 static bool OneHitKOHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     uint8_t state;
@@ -921,7 +921,7 @@ static bool OneHitKOHandler(std::shared_ptr<LUS::Console> Console, const std::ve
     try {
         state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] One-hit KO value must be a number.");
+        ERROR_MESSAGE("[SOH] One-hit KO value must be a number.");
         return 1;
     }
 
@@ -930,10 +930,10 @@ static bool OneHitKOHandler(std::shared_ptr<LUS::Console> Console, const std::ve
         state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] One-hit KO " + std::string(state ? "enabled" : "disabled"));
+        INFO_MESSAGE("[SOH] One-hit KO " + std::string(state ? "enabled" : "disabled"));
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not " +
+        INFO_MESSAGE("[SOH] Command failed: Could not " +
                                                 std::string(state ? "enable" : "disable") + " One-hit KO.");
         return 1;
     }
@@ -941,7 +941,7 @@ static bool OneHitKOHandler(std::shared_ptr<LUS::Console> Console, const std::ve
 
 static bool PacifistHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     uint8_t state;
@@ -949,7 +949,7 @@ static bool PacifistHandler(std::shared_ptr<LUS::Console> Console, const std::ve
     try {
         state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] Pacifist value must be a number.");
+        ERROR_MESSAGE("[SOH] Pacifist value must be a number.");
         return 1;
     }
 
@@ -958,10 +958,10 @@ static bool PacifistHandler(std::shared_ptr<LUS::Console> Console, const std::ve
         state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Pacifist " + std::string(state ? "enabled" : "disabled"));
+        INFO_MESSAGE("[SOH] Pacifist " + std::string(state ? "enabled" : "disabled"));
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not " +
+        INFO_MESSAGE("[SOH] Command failed: Could not " +
                                                 std::string(state ? "enable" : "disable") + " Pacifist.");
         return 1;
     }
@@ -969,7 +969,7 @@ static bool PacifistHandler(std::shared_ptr<LUS::Console> Console, const std::ve
 
 static bool PaperLinkHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     uint8_t state;
@@ -977,7 +977,7 @@ static bool PaperLinkHandler(std::shared_ptr<LUS::Console> Console, const std::v
     try {
         state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] Paper Link value must be a number.");
+        ERROR_MESSAGE("[SOH] Paper Link value must be a number.");
         return 1;
     }
 
@@ -987,10 +987,10 @@ static bool PaperLinkHandler(std::shared_ptr<LUS::Console> Console, const std::v
         state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Paper Link " + std::string(state ? "enabled" : "disabled"));
+        INFO_MESSAGE("[SOH] Paper Link " + std::string(state ? "enabled" : "disabled"));
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not " +
+        INFO_MESSAGE("[SOH] Command failed: Could not " +
                                                 std::string(state ? "enable" : "disable") + " Paper Link.");
         return 1;
     }
@@ -998,7 +998,7 @@ static bool PaperLinkHandler(std::shared_ptr<LUS::Console> Console, const std::v
 
 static bool RainstormHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     uint8_t state;
@@ -1006,7 +1006,7 @@ static bool RainstormHandler(std::shared_ptr<LUS::Console> Console, const std::v
     try {
         state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] Rainstorm value must be a number.");
+        ERROR_MESSAGE("[SOH] Rainstorm value must be a number.");
         return 1;
     }
 
@@ -1015,10 +1015,10 @@ static bool RainstormHandler(std::shared_ptr<LUS::Console> Console, const std::v
         state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Rainstorm " + std::string(state ? "enabled" : "disabled"));
+        INFO_MESSAGE("[SOH] Rainstorm " + std::string(state ? "enabled" : "disabled"));
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not " +
+        INFO_MESSAGE("[SOH] Command failed: Could not " +
                                                 std::string(state ? "enable" : "disable") + " Rainstorm.");
         return 1;
     }
@@ -1026,7 +1026,7 @@ static bool RainstormHandler(std::shared_ptr<LUS::Console> Console, const std::v
 
 static bool ReverseControlsHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     uint8_t state;
@@ -1034,7 +1034,7 @@ static bool ReverseControlsHandler(std::shared_ptr<LUS::Console> Console, const 
     try {
         state = std::stoi(args[1], nullptr, 10) == 0 ? 0 : 1;
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] Reverse controls value must be a number.");
+        ERROR_MESSAGE("[SOH] Reverse controls value must be a number.");
         return 1;
     }
 
@@ -1043,11 +1043,11 @@ static bool ReverseControlsHandler(std::shared_ptr<LUS::Console> Console, const 
         state ? GameInteractor::ApplyEffect(effect) : GameInteractor::RemoveEffect(effect);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Reverse controls " +
+        INFO_MESSAGE("[SOH] Reverse controls " +
                                                 std::string(state ? "enabled" : "disabled"));
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not " +
+        INFO_MESSAGE("[SOH] Command failed: Could not " +
                                                 std::string(state ? "enable" : "disable") + " Reverse controls.");
         return 1;
     }
@@ -1055,7 +1055,7 @@ static bool ReverseControlsHandler(std::shared_ptr<LUS::Console> Console, const 
 
 static bool UpdateRupeesHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     GameInteractionEffectBase* effect = new GameInteractionEffect::ModifyRupees();
@@ -1063,23 +1063,23 @@ static bool UpdateRupeesHandler(std::shared_ptr<LUS::Console> Console, const std
     try {
         effect->parameters[0] = std::stoi(args[1], nullptr, 10);
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] Rupee value must be a number.");
+        ERROR_MESSAGE("[SOH] Rupee value must be a number.");
         return 1;
     }
 
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Rupees updated");
+        INFO_MESSAGE("[SOH] Rupees updated");
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not update rupees.");
+        INFO_MESSAGE("[SOH] Command failed: Could not update rupees.");
         return 1;
     }
 }
 
 static bool SpeedModifierHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     GameInteractionEffectBase* effect = new GameInteractionEffect::ModifyRunSpeedModifier();
@@ -1087,16 +1087,16 @@ static bool SpeedModifierHandler(std::shared_ptr<LUS::Console> Console, const st
     try {
         effect->parameters[0] = std::stoi(args[1], nullptr, 10);
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] Speed modifier value must be a number.");
+        ERROR_MESSAGE("[SOH] Speed modifier value must be a number.");
         return 1;
     }
 
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Speed modifier updated");
+        INFO_MESSAGE("[SOH] Speed modifier updated");
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not update speed modifier.");
+        INFO_MESSAGE("[SOH] Command failed: Could not update speed modifier.");
         return 1;
     }
 }
@@ -1109,13 +1109,13 @@ const static std::map<std::string, uint16_t> boots {
 
 static bool BootsHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
 
     const auto& it = boots.find(args[1]);
     if (it == boots.end()) {
-        ERR_MESSAGE("Invalid boot type. Options are 'kokiri', 'iron' and 'hover'");
+        ERROR_MESSAGE("Invalid boot type. Options are 'kokiri', 'iron' and 'hover'");
         return 1;
     }
 
@@ -1124,10 +1124,10 @@ static bool BootsHandler(std::shared_ptr<LUS::Console> Console, const std::vecto
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Boots updated.");
+        INFO_MESSAGE("[SOH] Boots updated.");
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not update boots.");
+        INFO_MESSAGE("[SOH] Command failed: Could not update boots.");
         return 1;
     }
 }
@@ -1140,13 +1140,13 @@ const static std::map<std::string, uint16_t> shields {
 
 static bool GiveShieldHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
 
     const auto& it = shields.find(args[1]);
     if (it == shields.end()) {
-        ERR_MESSAGE("Invalid shield type. Options are 'deku', 'hylian' and 'mirror'");
+        ERROR_MESSAGE("Invalid shield type. Options are 'deku', 'hylian' and 'mirror'");
         return 1;
     }
 
@@ -1155,23 +1155,23 @@ static bool GiveShieldHandler(std::shared_ptr<LUS::Console> Console, const std::
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Gave shield.");
+        INFO_MESSAGE("[SOH] Gave shield.");
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not give shield.");
+        INFO_MESSAGE("[SOH] Command failed: Could not give shield.");
         return 1;
     }
 }
 
 static bool TakeShieldHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
 
     const auto& it = shields.find(args[1]);
     if (it == shields.end()) {
-        ERR_MESSAGE("Invalid shield type. Options are 'deku', 'hylian' and 'mirror'");
+        ERROR_MESSAGE("Invalid shield type. Options are 'deku', 'hylian' and 'mirror'");
         return 1;
     }
 
@@ -1180,17 +1180,17 @@ static bool TakeShieldHandler(std::shared_ptr<LUS::Console> Console, const std::
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Took shield.");
+        INFO_MESSAGE("[SOH] Took shield.");
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not take shield.");
+        INFO_MESSAGE("[SOH] Command failed: Could not take shield.");
         return 1;
     }
 }
 
 static bool KnockbackHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
     GameInteractionEffectBase* effect = new GameInteractionEffect::KnockbackPlayer();
@@ -1198,22 +1198,22 @@ static bool KnockbackHandler(std::shared_ptr<LUS::Console> Console, const std::v
     try {
         int value = std::stoi(args[1], nullptr, 10);
         if (value < 0) {
-            ERR_MESSAGE("[SOH] Invalid value passed. Value must be greater than 0");
+            ERROR_MESSAGE("[SOH] Invalid value passed. Value must be greater than 0");
             return 1;
         }
 
         effect->parameters[0] = value;
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] Knockback value must be a number.");
+        ERROR_MESSAGE("[SOH] Knockback value must be a number.");
         return 1;
     }
 
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Knockback applied");
+        INFO_MESSAGE("[SOH] Knockback applied");
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not apply knockback.");
+        INFO_MESSAGE("[SOH] Command failed: Could not apply knockback.");
         return 1;
     }
 }
@@ -1223,10 +1223,10 @@ static bool ElectrocuteHandler(std::shared_ptr<LUS::Console> Console, const std:
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Electrocuted player");
+        INFO_MESSAGE("[SOH] Electrocuted player");
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not electrocute player.");
+        INFO_MESSAGE("[SOH] Command failed: Could not electrocute player.");
         return 1;
     }
 }
@@ -1236,10 +1236,10 @@ static bool BurnHandler(std::shared_ptr<LUS::Console> Console, const std::vector
     GameInteractionEffectQueryResult result = GameInteractor::ApplyEffect(effect);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Burned player");
+        INFO_MESSAGE("[SOH] Burned player");
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not burn player.");
+        INFO_MESSAGE("[SOH] Command failed: Could not burn player.");
         return 1;
     }
 }
@@ -1248,10 +1248,10 @@ static bool CuccoStormHandler(std::shared_ptr<LUS::Console> Console, const std::
     GameInteractionEffectQueryResult result = GameInteractor::RawAction::SpawnActor(ACTOR_EN_NIW, 0);
 
     if (result == GameInteractionEffectQueryResult::Possible) {
-        INF_MESSAGE("[SOH] Spawned cucco storm");
+        INFO_MESSAGE("[SOH] Spawned cucco storm");
         return 0;
     } else {
-        INF_MESSAGE("[SOH] Command failed: Could not spawn cucco storm.");
+        INFO_MESSAGE("[SOH] Command failed: Could not spawn cucco storm.");
         return 1;
     }
 }
@@ -1275,18 +1275,18 @@ static bool GenerateRandoHandler(std::shared_ptr<LUS::Console> Console, const st
             return 0;
         }
     } catch (std::invalid_argument const& ex) {
-        ERR_MESSAGE("[SOH] seed|count value must be a number.");
+        ERROR_MESSAGE("[SOH] seed|count value must be a number.");
         return 1;
     }
 
 
-    ERR_MESSAGE("[SOH] Rando generation already in progress");
+    ERROR_MESSAGE("[SOH] Rando generation already in progress");
     return 1;
 }
 
 static bool CosmeticsHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
 
@@ -1295,7 +1295,7 @@ static bool CosmeticsHandler(std::shared_ptr<LUS::Console> Console, const std::v
     } else if (args[1].compare("randomize") == 0) {
         CosmeticsEditor_RandomizeAll();
     } else {
-        ERR_MESSAGE("[SOH] Invalid argument passed, must be 'reset' or 'randomize'");
+        ERROR_MESSAGE("[SOH] Invalid argument passed, must be 'reset' or 'randomize'");
         return 1;
     }
 
@@ -1304,7 +1304,7 @@ static bool CosmeticsHandler(std::shared_ptr<LUS::Console> Console, const std::v
 
 static bool SfxHandler(std::shared_ptr<LUS::Console> Console, const std::vector<std::string>& args, std::string* output) {
     if (args.size() < 2) {
-        ERR_MESSAGE("[SOH] Unexpected arguments passed");
+        ERROR_MESSAGE("[SOH] Unexpected arguments passed");
         return 1;
     }
 
@@ -1313,7 +1313,7 @@ static bool SfxHandler(std::shared_ptr<LUS::Console> Console, const std::vector<
     } else if (args[1].compare("randomize") == 0) {
         AudioEditor_RandomizeAll();
     } else {
-        ERR_MESSAGE("[SOH] Invalid argument passed, must be 'reset' or 'randomize'");
+        ERROR_MESSAGE("[SOH] Invalid argument passed, must be 'reset' or 'randomize'");
         return 1;
     }
 
