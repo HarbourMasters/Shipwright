@@ -46,13 +46,6 @@ extern "C" {
     void disableBetaQuest() { isBetaQuestEnabled = false; }
 }
 
-enum SeqPlayers {
-    /* 0 */ SEQ_BGM_MAIN,
-    /* 1 */ SEQ_FANFARE,
-    /* 2 */ SEQ_SFX,
-    /* 3 */ SEQ_BGM_SUB,
-    /* 4 */ SEQ_MAX
-};
 
 namespace SohGui {
 
