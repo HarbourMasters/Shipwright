@@ -957,14 +957,6 @@ static const char* displayType[] = { "Always", "Combo Button Hold" };
 static const char* buttonStrings[] = { "A Button", "B Button", "C-Up",  "C-Down", "C-Left", "C-Right", "L Button",
                                        "Z Button", "R Button", "Start", "D-Up",   "D-Down", "D-Left",  "D-Right" };
 void CheckTrackerSettingsWindow::DrawElement() {
-    if (!mIsVisible) {
-        if (CVarGetInteger("gCheckTrackerSettingsEnabled", 0)) {
-            CVarClear("gCheckTrackerSettingsEnabled");
-            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        }
-        return;
-    }
-
     ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
 
     if (!ImGui::Begin("Check Tracker Settings", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
