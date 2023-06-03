@@ -1,7 +1,7 @@
 #include "SetObjectList.h"
 
 namespace LUS {
-void* SetObjectList::GetPointer() {
+int16_t* SetObjectList::GetPointer() {
     return objects.data();
 }
 

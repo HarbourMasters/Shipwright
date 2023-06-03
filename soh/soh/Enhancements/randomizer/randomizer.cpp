@@ -9,7 +9,6 @@
 #include <libultraship/bridge.h>
 #include <textures/icon_item_static/icon_item_static.h>
 #include <textures/icon_item_24_static/icon_item_24_static.h>
-#include <ImGuiImpl.h>
 #include <thread>
 #include "3drando/rando_main.hpp"
 #include "3drando/random.hpp"
@@ -28,6 +27,8 @@
 #include "draw.h"
 #include "rando_hash.h"
 #include <boost_custom/container_hash/hash_32.hpp>
+#include <libultraship/libultraship.h>
+#include "randomizer_settings_window.h"
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
@@ -3148,18 +3149,10 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
     return false;
 }
 
-void DrawRandoEditor(bool& open) {
+void RandomizerSettingsWindow::DrawElement() {
     if (generated) {
         generated = 0;
         randoThread.join();
-    }
-
-    if (!open) {
-        if (CVarGetInteger("gRandomizerSettingsEnabled", 0)) {
-            CVarClear("gRandomizerSettingsEnabled");
-            LUS::RequestCvarSaveOnNextTick();
-        }
-        return;
     }
 
     // Randomizer settings
@@ -3228,7 +3221,7 @@ void DrawRandoEditor(bool& open) {
     static bool disableGFKeyring = false;
 
     ImGui::SetNextWindowSize(ImVec2(920, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Randomizer Editor", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -4664,7 +4657,7 @@ void DrawRandoEditor(bool& open) {
                                             excludedLocationString += ",";
                                         }
                                         CVarSetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
-                                        LUS::RequestCvarSaveOnNextTick();
+                                        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     ImGui::SameLine();
                                     ImGui::Text(rcObject->rcShortName.c_str());
@@ -4705,7 +4698,7 @@ void DrawRandoEditor(bool& open) {
                                             excludedLocationString += ",";
                                         }
                                         CVarSetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
-                                        LUS::RequestCvarSaveOnNextTick();
+                                        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     ImGui::SameLine();
                                     ImGui::Text(rcObject->rcShortName.c_str());
@@ -4883,7 +4876,7 @@ void DrawRandoEditor(bool& open) {
                         enabledTrickString += ",";
                     }
                     CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
-                    LUS::RequestCvarSaveOnNextTick();
+                    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 }
                 ImGui::SameLine();
                 if (ImGui::Button("Enable All")) {
@@ -4900,7 +4893,7 @@ void DrawRandoEditor(bool& open) {
                         enabledTrickString += ",";
                     }
                     CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
-                    LUS::RequestCvarSaveOnNextTick();
+                    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 }
             }
             if (ImGui::BeginTable("trickTags", showTag.size(), ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders)) {  
@@ -4977,7 +4970,7 @@ void DrawRandoEditor(bool& open) {
                             enabledTrickString += ",";
                         }
                         CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
-                        LUS::RequestCvarSaveOnNextTick();
+                        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                     }
                     
                     ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
@@ -5013,7 +5006,7 @@ void DrawRandoEditor(bool& open) {
                                                 enabledTrickString += ",";
                                             }
                                             CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
-                                            LUS::RequestCvarSaveOnNextTick();
+                                            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                         }
                                         DrawTagChips(*rtObject.rtTags);
                                         ImGui::SameLine();
@@ -5087,7 +5080,7 @@ void DrawRandoEditor(bool& open) {
                             enabledTrickString += ",";
                         }
                         CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
-                        LUS::RequestCvarSaveOnNextTick();
+                        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                     }
                     
                     ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
@@ -5125,7 +5118,7 @@ void DrawRandoEditor(bool& open) {
                                                 enabledTrickString += ",";
                                             }
                                             CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
-                                            LUS::RequestCvarSaveOnNextTick();
+                                            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                         }
                                         DrawTagChips(*rtObject.rtTags);
                                         ImGui::SameLine();
@@ -6131,17 +6124,8 @@ void InitRandoItemTable() {
 }
 
 
-void InitRando() {
-    LUS::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor, CVarGetInteger("gRandomizerSettingsEnabled", 0));
+void RandomizerSettingsWindow::InitElement() {
     Randomizer::CreateCustomMessages();
     seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
     InitRandoItemTable();
-}
-
-extern "C" {
-
-void Rando_Init(void) {
-    InitRando();
-}
-
 }

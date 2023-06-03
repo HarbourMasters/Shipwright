@@ -1,7 +1,7 @@
 #include "SetCutscenes.h"
 
 namespace LUS {
-void* SetCutscenes::GetPointer() {
+uint32_t* SetCutscenes::GetPointer() {
     if (cutscene == nullptr) {
         return nullptr;
     }

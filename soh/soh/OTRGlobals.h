@@ -7,7 +7,7 @@
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
 
 #ifdef __cplusplus
-#include <Window.h>
+#include <Context.h>
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
 #include <vector>
@@ -103,7 +103,6 @@ float OTRGetDimensionFromLeftEdge(float v);
 float OTRGetDimensionFromRightEdge(float v);
 int16_t OTRGetRectDimensionFromLeftEdge(float v);
 int16_t OTRGetRectDimensionFromRightEdge(float v);
-bool AudioPlayer_Init(void);
 int AudioPlayer_Buffered(void);
 int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
@@ -111,7 +110,6 @@ void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t slot);
 void Controller_BlockGameInput();
 void Controller_UnblockGameInput();
-void Hooks_ExecuteAudioInit();
 void* getN64WeirdFrame(s32 i);
 int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSize);
 u32 SpoilerFileExists(const char* spoilerFileName);

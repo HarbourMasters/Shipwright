@@ -1,7 +1,7 @@
 #include "Animation.h"
 
 namespace LUS {
-void* Animation::GetPointer() {
+AnimationData* Animation::GetPointer() {
     return &animationData;
 }
 

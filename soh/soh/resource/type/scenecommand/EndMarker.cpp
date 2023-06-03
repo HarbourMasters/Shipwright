@@ -1,7 +1,7 @@
 #include "EndMarker.h"
 
 namespace LUS {
-void* EndMarker::GetPointer() {
+Marker* EndMarker::GetPointer() {
     return &endMarker;
 }
 

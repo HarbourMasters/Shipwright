@@ -1,14 +1,14 @@
 #include "randomizer_check_tracker.h"
 #include "../../OTRGlobals.h"
-#include <ImGuiImpl.h>
 #include "../../UIWidgets.hpp"
 
 #include <string>
 #include <vector>
 #include <set>
-#include <libultraship/bridge.h>
-#include <Hooks.h>
+#include <libultraship/libultraship.h>
 #include "3drando/item_location.hpp"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+
 
 extern "C" {
 #include "variables.h"
@@ -103,20 +103,11 @@ bool optExpandAll;   // A bool that will expand all checks once
 RandomizerCheck lastLocationChecked = RC_UNKNOWN_CHECK;
 RandomizerCheckArea previousArea = RCAREA_INVALID;
 RandomizerCheckArea currentArea = RCAREA_INVALID;
-OSContPad* trackerButtonsPressed;
 
 std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
 
-void DrawCheckTracker(bool& open) {
-    if (!open) {
-        if (CVarGetInteger("gCheckTrackerEnabled", 0)) {
-            CVarClear("gCheckTrackerEnabled");
-            LUS::RequestCvarSaveOnNextTick();
-        }
-        return;
-    }
-
+void CheckTrackerWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(400, 540), ImGuiCond_FirstUseEver);
 
     if (doInitialize) {
@@ -135,6 +126,7 @@ void DrawCheckTracker(bool& open) {
         if (CVarGetInteger("gCheckTrackerDisplayType", 0) == 1) {
             int comboButton1Mask = buttons[CVarGetInteger("gCheckTrackerComboButton1", 6)];
             int comboButton2Mask = buttons[CVarGetInteger("gCheckTrackerComboButton2", 8)];
+            OSContPad* trackerButtonsPressed = LUS::Context::GetInstance()->GetControlDeck()->GetPads();
             bool comboButtonsHeld = trackerButtonsPressed != nullptr &&
                                     trackerButtonsPressed[0].button & comboButton1Mask &&
                                     trackerButtonsPressed[0].button & comboButton2Mask;
@@ -143,7 +135,7 @@ void DrawCheckTracker(bool& open) {
         }
     }
 
-    BeginFloatWindows("Check Tracker", open, ImGuiWindowFlags_NoScrollbar);
+    BeginFloatWindows("Check Tracker", mIsVisible, ImGuiWindowFlags_NoScrollbar);
 
     if (!initialized) {
         ImGui::Text("Waiting for file load..."); //TODO Language
@@ -963,18 +955,10 @@ static const char* windowType[] = { "Floating", "Window" };
 static const char* displayType[] = { "Always", "Combo Button Hold" };
 static const char* buttonStrings[] = { "A Button", "B Button", "C-Up",  "C-Down", "C-Left", "C-Right", "L Button",
                                        "Z Button", "R Button", "Start", "D-Up",   "D-Down", "D-Left",  "D-Right" };
-void DrawCheckTrackerOptions(bool& open) {
-    if (!open) {
-        if (CVarGetInteger("gCheckTrackerSettingsEnabled", 0)) {
-            CVarClear("gCheckTrackerSettingsEnabled");
-            LUS::RequestCvarSaveOnNextTick();
-        }
-        return;
-    }
-
+void CheckTrackerSettingsWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
 
-    if (!ImGui::Begin("Check Tracker Settings", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Check Tracker Settings", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -1028,9 +1012,7 @@ void DrawCheckTrackerOptions(bool& open) {
     ImGui::End();
 }
 
-void InitCheckTracker() {
-    LUS::AddWindow("Randomizer", "Check Tracker", DrawCheckTracker, CVarGetInteger("gCheckTrackerEnabled", 0));
-    LUS::AddWindow("Randomizer", "Check Tracker Settings", DrawCheckTrackerOptions, CVarGetInteger("gCheckTrackerSettingsEnabled", 0));
+void CheckTrackerWindow::InitElement() {
     Color_Background = CVarGetColor("gCheckTrackerBgColor", Color_Bg_Default);
     Color_Area_Incomplete_Main  = CVarGetColor("gCheckTrackerAreaMainIncompleteColor",    Color_Main_Default);
     Color_Area_Incomplete_Extra = CVarGetColor("gCheckTrackerAreaExtraIncompleteColor",   Color_Area_Incomplete_Extra_Default);
@@ -1051,13 +1033,10 @@ void InitCheckTracker() {
     Color_Saved_Main            = CVarGetColor("gCheckTrackerSavedMainColor",             Color_Main_Default);
     Color_Saved_Extra           = CVarGetColor("gCheckTrackerSavedExtraColor",            Color_Saved_Extra_Default);
 
-    LUS::RegisterHook<LUS::ControllerRead>([](OSContPad* cont_pad) {
-        trackerButtonsPressed = cont_pad;
-    });
-    LUS::RegisterHook<LUS::LoadFile>([](uint32_t fileNum) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadFile>([](uint32_t fileNum) {
         doInitialize = true;
     });
-    LUS::RegisterHook<LUS::DeleteFile>([](uint32_t fileNum) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDeleteFile>([](uint32_t fileNum) {
         Teardown();
     });
     LocationTable_Init();

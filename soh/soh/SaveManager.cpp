@@ -6,7 +6,6 @@
 #include "functions.h"
 #include "macros.h"
 #include <variables.h>
-#include <Hooks.h>
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include <libultraship/libultraship.h>
 
@@ -354,7 +353,6 @@ void SaveManager::Init() {
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
     auto sOldSavePath = LUS::Context::GetPathRelativeToAppDirectory("oot_save.sav");
     auto sOldBackupSavePath = LUS::Context::GetPathRelativeToAppDirectory("oot_save.bak");
-    LUS::RegisterHook<LUS::ExitGame>([this]() { ThreadPoolWait(); });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>([this](uint32_t fileNum) { ThreadPoolWait(); });
 
     // If the save directory does not exist, create it
@@ -838,7 +836,9 @@ void SaveManager::LoadFile(int fileNum) {
 }
 
 void SaveManager::ThreadPoolWait() {
-    smThreadPool->wait_for_tasks();
+    if (smThreadPool) {
+        smThreadPool->wait_for_tasks();
+    }
 }
 
 bool SaveManager::SaveFile_Exist(int fileNum) {
@@ -2334,7 +2334,6 @@ extern "C" void Save_SaveGlobal(void) {
 
 extern "C" void Save_LoadFile(void) {
     SaveManager::Instance->LoadFile(gSaveContext.fileNum);
-    LUS::ExecuteHooks<LUS::LoadFile>(gSaveContext.fileNum);
 }
 
 extern "C" void Save_AddLoadFunction(char* name, int version, SaveManager::LoadFunc func) {
@@ -2355,7 +2354,6 @@ extern "C" void Save_CopyFile(int from, int to) {
 
 extern "C" void Save_DeleteFile(int fileNum) {
     SaveManager::Instance->DeleteZeldaFile(fileNum);
-    LUS::ExecuteHooks<LUS::DeleteFile>(fileNum);
 }
 
 extern "C" u32 Save_Exist(int fileNum) {

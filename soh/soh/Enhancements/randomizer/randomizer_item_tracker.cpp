@@ -1,14 +1,13 @@
 #include "randomizer_item_tracker.h"
 #include "../../util.h"
 #include "../../OTRGlobals.h"
-#include <ImGuiImpl.h>
 #include "../../UIWidgets.hpp"
 
 #include <map>
 #include <string>
 #include <vector>
-#include <libultraship/bridge.h>
-#include <Hooks.h>
+#include <libultraship/libultraship.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include <algorithm>
 
 extern "C" {
@@ -29,8 +28,6 @@ void DrawDungeonItem(ItemTrackerItem item);
 void DrawBottle(ItemTrackerItem item);
 void DrawQuest(ItemTrackerItem item);
 void DrawSong(ItemTrackerItem item);
-
-OSContPad* buttonsPressed;
 
 bool shouldUpdateVectors = true;
 
@@ -452,7 +449,7 @@ void DrawItemCount(ItemTrackerItem item) {
 void DrawEquip(ItemTrackerItem item) {
     bool hasEquip = (item.data & gSaveContext.inventory.equipment) != 0;
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
-    ImGui::Image(LUS::GetTextureByName(hasEquip && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasEquip && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
@@ -462,7 +459,7 @@ void DrawQuest(ItemTrackerItem item) {
     bool hasQuestItem = (item.data & gSaveContext.inventory.questItems) != 0;
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     ImGui::BeginGroup();
-    ImGui::Image(LUS::GetTextureByName(hasQuestItem && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasQuestItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     if (item.id == QUEST_SKULL_TOKEN) {
@@ -524,7 +521,7 @@ void DrawItem(ItemTrackerItem item) {
     }
     
     ImGui::BeginGroup();
-    ImGui::Image(LUS::GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     DrawItemCount(item);
@@ -542,7 +539,7 @@ void DrawBottle(ItemTrackerItem item) {
     }
 
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
-    ImGui::Image(LUS::GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
@@ -557,11 +554,11 @@ void DrawDungeonItem(ItemTrackerItem item) {
     bool hasSmallKey = (gSaveContext.inventory.dungeonKeys[item.data]) >= 0;
     ImGui::BeginGroup();
     if (itemId == ITEM_KEY_SMALL) {
-        ImGui::Image(LUS::GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.name : item.nameFaded),
+        ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.name : item.nameFaded),
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
     else {
-        ImGui::Image(LUS::GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+        ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
 
@@ -601,7 +598,7 @@ void DrawSong(ItemTrackerItem item) {
     bool hasSong = (bitMask & gSaveContext.inventory.questItems) != 0;
     ImVec2 p = ImGui::GetCursorScreenPos();
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
-    ImGui::Image(LUS::GetTextureByName(hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize / 1.5, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     UIWidgets::SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
 }
@@ -637,7 +634,7 @@ void DrawNotes(bool resizeable = false) {
     ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size, ImGuiInputTextFlags_AllowTabInput);
     if (ImGui::IsItemDeactivatedAfterEdit() && IsValidSaveFile()) {
         CVarSetString(("gItemTrackerNotes" + std::to_string(gSaveContext.fileNum)).c_str(), std::string(std::begin(itemTrackerNotes), std::end(itemTrackerNotes)).c_str());
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     ImGui::EndGroup();
 }
@@ -848,19 +845,14 @@ void UpdateVectors() {
     shouldUpdateVectors = false;
 }
 
-void DrawItemTracker(bool& open) {
+void ItemTrackerWindow::DrawElement() {
     UpdateVectors();
-    if (!open) {
-        if (CVarGetInteger("gItemTrackerEnabled", 0)) {
-            CVarClear("gItemTrackerEnabled");
-            LUS::RequestCvarSaveOnNextTick();
-        }
-        return;
-    }
+
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     int iconSpacing = CVarGetInteger("gItemTrackerIconSpacing", 12);
     int comboButton1Mask = buttonMap[CVarGetInteger("gItemTrackerComboButton1", 6)];
     int comboButton2Mask = buttonMap[CVarGetInteger("gItemTrackerComboButton2", 8)];
+    OSContPad* buttonsPressed = LUS::Context::GetInstance()->GetControlDeck()->GetPads();
     bool comboButtonsHeld = buttonsPressed != nullptr && buttonsPressed[0].button & comboButton1Mask && buttonsPressed[0].button & comboButton2Mask;
     bool isPaused = CVarGetInteger("gItemTrackerShowOnlyPaused", 0) == 0 || gPlayState != nullptr && gPlayState->pauseCtx.state > 0;
 
@@ -960,18 +952,10 @@ static const char* buttons[14] = { "A", "B", "C-Up", "C-Down", "C-Left", "C-Righ
 static const char* displayTypes[3] = { "Hidden", "Main Window", "Seperate" };
 static const char* extendedDisplayTypes[4] = { "Hidden", "Main Window", "Misc Window", "Seperate" };
 
-void DrawItemTrackerOptions(bool& open) {
-    if (!open) {
-        if (CVarGetInteger("gItemTrackerSettingsEnabled", 0)) {
-            CVarClear("gItemTrackerSettingsEnabled");
-            LUS::RequestCvarSaveOnNextTick();
-        }
-        return;
-    }
-
+void ItemTrackerSettingsWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(600,375), ImGuiCond_FirstUseEver);
 
-    if (!ImGui::Begin("Item Tracker Settings", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Item Tracker Settings", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -991,7 +975,7 @@ void DrawItemTrackerOptions(bool& open) {
         CVarSetFloat("gItemTrackerBgColorG", ChromaKeyBackground.y);
         CVarSetFloat("gItemTrackerBgColorB", ChromaKeyBackground.z);
         CVarSetFloat("gItemTrackerBgColorA", ChromaKeyBackground.w);
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     ImGui::PopItemWidth();
 
@@ -1086,9 +1070,7 @@ void DrawItemTrackerOptions(bool& open) {
     ImGui::End();
 }
 
-void InitItemTracker() {
-    LUS::AddWindow("Randomizer", "Item Tracker", DrawItemTracker, CVarGetInteger("gItemTrackerEnabled", 0));
-    LUS::AddWindow("Randomizer", "Item Tracker Settings", DrawItemTrackerOptions, CVarGetInteger("gItemTrackerSettingsEnabled", 0));
+void ItemTrackerWindow::InitElement() {
     float trackerBgR = CVarGetFloat("gItemTrackerBgColorR", 0);
     float trackerBgG = CVarGetFloat("gItemTrackerBgColorG", 0);
     float trackerBgB = CVarGetFloat("gItemTrackerBgColorB", 0);
@@ -1103,16 +1085,14 @@ void InitItemTracker() {
     if (itemTrackerNotes.empty()) {
         itemTrackerNotes.push_back(0);
     }
-    LUS::RegisterHook<LUS::ControllerRead>([](OSContPad* cont_pad) {
-        buttonsPressed = cont_pad;
-    });
-    LUS::RegisterHook<LUS::LoadFile>([](uint32_t fileNum) {
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadFile>([](uint32_t fileNum) {
         const char* initialTrackerNotes = CVarGetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
         itemTrackerNotes.resize(strlen(initialTrackerNotes) + 1);
         strcpy(itemTrackerNotes.Data, initialTrackerNotes);
     });
-    LUS::RegisterHook<LUS::DeleteFile>([](uint32_t fileNum) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDeleteFile>([](uint32_t fileNum) {
         CVarSetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     });
 }

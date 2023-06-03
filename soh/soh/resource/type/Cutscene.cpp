@@ -2,7 +2,7 @@
 #include <libultraship/libultra/gbi.h>
 
 namespace LUS {
-void* Cutscene::GetPointer() {
+uint32_t* Cutscene::GetPointer() {
     return commands.data();
 }
 

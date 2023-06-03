@@ -1,6 +1,5 @@
 #include "CosmeticsEditor.h"
 #include "authenticGfxPatches.h"
-#include <ImGuiImpl.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #include <string>
@@ -10,6 +9,7 @@
 #include <algorithm>
 #include <libultraship/libultra/types.h>
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
+#include <libultraship/libultraship.h>
 
 #include "soh/UIWidgets.hpp"
 
@@ -117,7 +117,7 @@ typedef struct {
     # Silly Options
     Lets get this one out of the way, probably the only thing that will be consistent between silly options is how they are rendered
     on the ImGui tab. So when adding one just make sure it follows the same general pattern as the rest. Notably:
-    - Make sure to RequestCvarSaveOnNextTick(), forgetting this will not persist your changes
+    - Make sure to SaveConsoleVariablesOnNextTick(), forgetting this will not persist your changes
     - Make sure reset properly resets the value
     - Depending on your use case you may or may not have to split the cvar into two values (cvar.Changed & cvar.Value)
 
@@ -1424,7 +1424,7 @@ void Draw_Placements(){
 void DrawSillyTab() {
     if (CVarGetInteger("gLetItSnow", 0)) {
         if (UIWidgets::EnhancementCheckbox("Let It Snow", "gLetItSnow")) {
-            LUS::RequestCvarSaveOnNextTick();
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
     }
     if (UIWidgets::EnhancementSliderFloat("Link Body Scale: %f", "##Link_BodyScale", "gCosmetics.Link_BodyScale.Value", 0.001f, 0.025f, "", 0.01f, false)) {
@@ -1434,7 +1434,7 @@ void DrawSillyTab() {
     if (ImGui::Button("Reset##Link_BodyScale")) {
         CVarClear("gCosmetics.Link_BodyScale.Value");
         CVarClear("gCosmetics.Link_BodyScale.Changed");
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         static Player* player = GET_PLAYER(gPlayState);
         player->actor.scale.x = 0.01f;
         player->actor.scale.y = 0.01f;
@@ -1447,7 +1447,7 @@ void DrawSillyTab() {
     if (ImGui::Button("Reset##Link_HeadScale")) {
         CVarClear("gCosmetics.Link_HeadScale.Value");
         CVarClear("gCosmetics.Link_HeadScale.Changed");
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     if (UIWidgets::EnhancementSliderFloat("Link Sword Scale: %f", "##Link_SwordScale", "gCosmetics.Link_SwordScale.Value", 1.0f, 2.5f, "", 1.0f, false)) {
         CVarSetInteger("gCosmetics.Link_SwordScale.Changed", 1);
@@ -1456,44 +1456,44 @@ void DrawSillyTab() {
     if (ImGui::Button("Reset##Link_SwordScale")) {
         CVarClear("gCosmetics.Link_SwordScale.Value");
         CVarClear("gCosmetics.Link_SwordScale.Changed");
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     UIWidgets::EnhancementSliderFloat("Bunny Hood Length: %f", "##BunnyHood_EarLength", "gCosmetics.BunnyHood_EarLength", -300.0f, 1000.0f, "", 0.0f, false);
     ImGui::SameLine();
     if (ImGui::Button("Reset##BunnyHood_EarLength")) {
         CVarClear("gCosmetics.BunnyHood_EarLength");
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     UIWidgets::EnhancementSliderFloat("Bunny Hood Spread: %f", "##BunnyHood_EarSpread", "gCosmetics.BunnyHood_EarSpread", -300.0f, 500.0f, "", 0.0f, false);
     ImGui::SameLine();
     if (ImGui::Button("Reset##BunnyHood_EarSpread")) {
         CVarClear("gCosmetics.BunnyHood_EarSpread");
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     UIWidgets::EnhancementSliderFloat("Goron Neck Length: %f", "##Goron_NeckLength", "gCosmetics.Goron_NeckLength", 0.0f, 1000.0f, "", 0.0f, false);
     ImGui::SameLine();
     if (ImGui::Button("Reset##Goron_NeckLength")) {
         CVarClear("gCosmetics.Goron_NeckLength");
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     UIWidgets::EnhancementCheckbox("Unfix Goron Spin", "gUnfixGoronSpin");
     UIWidgets::EnhancementSliderFloat("Fairies Size: %f", "##Fairies_Size", "gCosmetics.Fairies_Size", 0.25f, 5.0f, "", 1.0f, false);
     ImGui::SameLine();
     if (ImGui::Button("Reset##Fairies_Size")) {
         CVarClear("gCosmetics.Fairies_Size");
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     UIWidgets::EnhancementSliderFloat("N64 Logo Spin Speed: %f", "##N64Logo_SpinSpeed", "gCosmetics.N64Logo_SpinSpeed", 0.25f, 5.0f, "", 1.0f, false);
     ImGui::SameLine();
     if (ImGui::Button("Reset##N64Logo_SpinSpeed")) {
         CVarClear("gCosmetics.N64Logo_SpinSpeed");
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     UIWidgets::EnhancementSliderFloat("Moon Size: %f", "##Moon_Size", "gCosmetics.Moon_Size", 0.5f, 2.0f, "", 1.0f, false);
     ImGui::SameLine();
     if (ImGui::Button("Reset##Moon_Size")) {
         CVarClear("gCosmetics.Moon_Size");
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     if (UIWidgets::EnhancementSliderFloat("Kak Windmill Speed: %f", "##Kak_Windmill_Speed", "gCosmetics.Kak_Windmill_Speed.Value", 100.0f, 6000.0f, "", 100.0f, false)) {
         CVarSetInteger("gCosmetics.Kak_Windmill_Speed.Changed", 1);
@@ -1502,7 +1502,7 @@ void DrawSillyTab() {
     if (ImGui::Button("Reset##Kak_Windmill_Speed")) {
         CVarClear("gCosmetics.Kak_Windmill_Speed.Value");
         CVarClear("gCosmetics.Kak_Windmill_Speed.Changed");
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
 }
 
@@ -1610,7 +1610,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
         CVarSetInteger((cosmeticOption.rainbowCvar), 0);
         CVarSetInteger((cosmeticOption.changedCvar), 1);
         ApplyOrResetCustomGfxPatches();
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     ImGui::SameLine();
     ImGui::Text(cosmeticOption.label.c_str());
@@ -1618,7 +1618,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
     if (ImGui::Button(("Random##" + cosmeticOption.label).c_str())) {
         RandomizeColor(cosmeticOption);
         ApplyOrResetCustomGfxPatches();
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     ImGui::SameLine();
     bool isRainbow = (bool)CVarGetInteger((cosmeticOption.rainbowCvar), 0);
@@ -1626,20 +1626,20 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
         CVarSetInteger((cosmeticOption.rainbowCvar), isRainbow);
         CVarSetInteger((cosmeticOption.changedCvar), 1);
         ApplyOrResetCustomGfxPatches();
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     ImGui::SameLine();
     bool isLocked = (bool)CVarGetInteger((cosmeticOption.lockedCvar), 0);
     if (ImGui::Checkbox(("Locked##" + cosmeticOption.label).c_str(), &isLocked)) {
         CVarSetInteger((cosmeticOption.lockedCvar), isLocked);
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     if (CVarGetInteger((cosmeticOption.changedCvar), 0)) {
         ImGui::SameLine();
         if (ImGui::Button(("Reset##" + cosmeticOption.label).c_str())) {
             ResetColor(cosmeticOption);
             ApplyOrResetCustomGfxPatches();
-            LUS::RequestCvarSaveOnNextTick();
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
     }
 }
@@ -1655,7 +1655,7 @@ void DrawCosmeticGroup(CosmeticGroup cosmeticGroup) {
             }
         }
         ApplyOrResetCustomGfxPatches();
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     ImGui::SameLine();
     if (ImGui::Button(("Reset##" + label).c_str())) {
@@ -1665,7 +1665,7 @@ void DrawCosmeticGroup(CosmeticGroup cosmeticGroup) {
             }
         }
         ApplyOrResetCustomGfxPatches();
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
         if (cosmeticOption.group == cosmeticGroup && (!cosmeticOption.advancedOption || CVarGetInteger("gCosmetics.AdvancedMode", 0))) {
@@ -1679,17 +1679,9 @@ static const char* colorSchemes[2] = {
     "Gamecube",
 };
 
-void DrawCosmeticsEditor(bool& open) {
-    if (!open) {
-        if (CVarGetInteger("gCosmeticsEditorEnabled", 0)) {
-            CVarClear("gCosmeticsEditorEnabled");
-            LUS::RequestCvarSaveOnNextTick();
-        }
-        return;
-    }
-
+void CosmeticsEditorWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(480, 520), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Cosmetics Editor", &open)) {
+    if (!ImGui::Begin("Cosmetics Editor", &mIsVisible)) {
         ImGui::End();
         return;
     }
@@ -1705,7 +1697,7 @@ void DrawCosmeticsEditor(bool& open) {
                     CVarSetInteger(cosmeticOption.lockedCvar, 1);
                 }
             }
-            LUS::RequestCvarSaveOnNextTick();
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
         ImGui::SameLine();
         if (ImGui::Button("Unlock All Advanced", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f))) {
@@ -1714,7 +1706,7 @@ void DrawCosmeticsEditor(bool& open) {
                     CVarSetInteger(cosmeticOption.lockedCvar, 0);
                 }
             }
-            LUS::RequestCvarSaveOnNextTick();
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
     }
     UIWidgets::EnhancementCheckbox("Sync Rainbow colors", "gCosmetics.RainbowSync");
@@ -1726,7 +1718,7 @@ void DrawCosmeticsEditor(bool& open) {
             }
         }
         ApplyOrResetCustomGfxPatches();
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     ImGui::SameLine();
     if (ImGui::Button("Reset All", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f))) {
@@ -1736,7 +1728,7 @@ void DrawCosmeticsEditor(bool& open) {
             }
         }
         ApplyOrResetCustomGfxPatches();
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
 
     if (ImGui::Button("Lock All", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {
@@ -1745,7 +1737,7 @@ void DrawCosmeticsEditor(bool& open) {
                 CVarSetInteger(cosmeticOption.lockedCvar, 1);
             }
         }
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     ImGui::SameLine();
     if (ImGui::Button("Unlock All", ImVec2(ImGui::GetContentRegionAvail().x, 30.0f))) {
@@ -1754,7 +1746,7 @@ void DrawCosmeticsEditor(bool& open) {
                 CVarSetInteger(cosmeticOption.lockedCvar, 0);
             }
         }
-        LUS::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
 
     if (ImGui::BeginTabBar("CosmeticsContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
@@ -1779,7 +1771,7 @@ void DrawCosmeticsEditor(bool& open) {
             if (ImGui::Button("Reset##Trails_Duration")) {
                 CVarClear("gCosmetics.Trails_Duration.Value");
                 CVarClear("gCosmetics.Trails_Duration.Changed");
-                LUS::RequestCvarSaveOnNextTick();
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             }
             ImGui::EndTabItem();
         }
@@ -1819,9 +1811,7 @@ void RegisterOnGameFrameUpdateHook() {
     });
 }
 
-void InitCosmeticsEditor() {
-    // Draw the bar in the menu.
-    LUS::AddWindow("Enhancements", "Cosmetics Editor", DrawCosmeticsEditor, CVarGetInteger("gCosmeticsEditorEnabled", 0));
+void CosmeticsEditorWindow::InitElement() {
     // Convert the `current color` into the format that the ImGui color picker expects
     for (auto& [id, cosmeticOption] : cosmeticOptions) {
         Color_RGBA8 defaultColor = {cosmeticOption.defaultColor.x, cosmeticOption.defaultColor.y, cosmeticOption.defaultColor.z, cosmeticOption.defaultColor.w};
@@ -1832,7 +1822,7 @@ void InitCosmeticsEditor() {
         cosmeticOption.currentColor.z = cvarColor.b / 255.0;
         cosmeticOption.currentColor.w = cvarColor.a / 255.0;
     }
-    LUS::RequestCvarSaveOnNextTick();
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ApplyOrResetCustomGfxPatches();
     ApplyAuthenticGfxPatches();
 
@@ -1848,7 +1838,7 @@ void CosmeticsEditor_RandomizeAll() {
         }
     }
 
-    LUS::RequestCvarSaveOnNextTick();
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ApplyOrResetCustomGfxPatches();
 }
 
@@ -1859,6 +1849,6 @@ void CosmeticsEditor_ResetAll() {
         }
     }
 
-    LUS::RequestCvarSaveOnNextTick();
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ApplyOrResetCustomGfxPatches();
 }

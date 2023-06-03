@@ -1,5 +1,4 @@
 #include "colViewer.h"
-#include <ImGuiImpl.h>
 #include "../../frame_interpolation.h"
 #include "../../UIWidgets.hpp"
 
@@ -7,6 +6,7 @@
 #include <string>
 #include <cmath>
 #include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
 
 extern "C" {
 #include <z64.h>
@@ -51,17 +51,9 @@ static std::vector<Gfx> sphereGfx;
 static std::vector<Vtx> sphereVtx;
 
 // Draws the ImGui window for the collision viewer
-void DrawColViewerWindow(bool& open) {
-    if (!open) {
-        if (CVarGetInteger("gCollisionViewerEnabled", 0)) {
-            CVarClear("gCollisionViewerEnabled");
-            LUS::RequestCvarSaveOnNextTick();
-        }
-        return;
-    }
-
+void ColViewerWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Collision Viewer", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Collision Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -290,9 +282,7 @@ void CreateSphereData() {
     sphereGfx.push_back(gsSPEndDisplayList());
 }
 
-void InitColViewer() {
-    LUS::AddWindow("Developer Tools", "Collision Viewer", DrawColViewerWindow, CVarGetInteger("gCollisionViewerEnabled", 0));
-
+void ColViewerWindow::InitElement() {
     CreateCylinderData();
     CreateSphereData();
 }
