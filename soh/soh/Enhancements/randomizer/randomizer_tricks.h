@@ -1,8 +1,9 @@
 #pragma once
 #include "randomizerTypes.h"
 #include <string>
-#include <map>
-#include <ImGuiImpl.h>
+#include <unordered_map>
+#include <vector>
+#include <libultraship/libultraship.h>
 
 typedef enum {
     RTAREA_GENERAL,

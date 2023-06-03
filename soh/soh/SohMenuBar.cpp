@@ -142,6 +142,7 @@ void DrawShipMenu() {
 }
 
 extern std::shared_ptr<LUS::GuiWindow> mInputEditorWindow;
+extern std::shared_ptr<GameControlEditor::GameControlEditorWindow> mGameControlEditorWindow;
 
 void DrawSettingsMenu() {
     if (ImGui::BeginMenu("Settings"))
@@ -444,7 +445,6 @@ void DrawSettingsMenu() {
 }
 
 extern std::shared_ptr<AudioEditor> mAudioEditorWindow;
-extern std::shared_ptr<GameControlEditor::GameControlEditorWindow> mGameControlEditorWindow;
 extern std::shared_ptr<CosmeticsEditorWindow> mCosmeticsEditorWindow;
 extern std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
 

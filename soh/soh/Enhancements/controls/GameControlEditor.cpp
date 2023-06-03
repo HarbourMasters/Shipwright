@@ -325,7 +325,7 @@ namespace GameControlEditor {
     }
 
     void DrawLEDControlPanel(GameControlEditorWindow* window) {
-        LUS::BeginGroupPanel("LED Colors", ImGui::GetContentRegionAvail());
+        window->BeginGroupPanelPublic("LED Colors", ImGui::GetContentRegionAvail());
         static const char* ledSources[4] = { "Original Tunic Colors", "Cosmetics Tunic Colors", "Health Colors", "Custom" };
         UIWidgets::PaddedText("Source");
         UIWidgets::EnhancementCombobox("gLedColorSource", ledSources, LED_SOURCE_TUNIC_ORIGINAL);
@@ -343,7 +343,7 @@ namespace GameControlEditor {
                 color.b = colorVec.z * 255.0;
 
                 CVarSetColor24("gLedPort1Color", color);
-                LUS::RequestCvarSaveOnNextTick();
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             }
             ImGui::SameLine();
             ImGui::Text("Custom Color");
@@ -355,7 +355,7 @@ namespace GameControlEditor {
             CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL) == LED_SOURCE_HEALTH, "Override redundant for health source.",
             UIWidgets::CheckboxGraphics::Cross, true);
         DrawHelpIcon("Shows red color when health is critical, otherwise displays according to color source.");
-        LUS::EndGroupPanel();
+        window->EndGroupPanelPublic(0);
     }
 
     void GameControlEditorWindow::DrawElement() {
