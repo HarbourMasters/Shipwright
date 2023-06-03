@@ -270,7 +270,7 @@ void func_8009638C(Gfx** displayList, void* source, void* tlut, u16 width, u16 h
     bg->b.imageFmt = fmt;
     bg->b.imageSiz = siz;
     bg->b.imagePal = 0;
-    bg->b.imageFlip = CVarGetInteger("gMirroredWorld", 0);
+    bg->b.imageFlip = CVarGetInteger("gMirroredWorld", 0) ? G_BG_FLAG_FLIPS : 0;
 
     if (ResourceMgr_ResourceIsBackground((char*) source)) {
         char* blob = (char*) ResourceGetDataByName((char *) source);
