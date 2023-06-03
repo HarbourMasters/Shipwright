@@ -748,8 +748,8 @@ extern "C" void InitOTR() {
     OTRGlobals::Instance = new OTRGlobals();
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();
-    SohGui::SetupGuiElements();
     SaveManager::Instance = new SaveManager();
+    SohGui::SetupGuiElements();
     GameInteractor::Instance = new GameInteractor();
     AudioCollection::Instance = new AudioCollection();
     ActorDB::Instance = new ActorDB();
