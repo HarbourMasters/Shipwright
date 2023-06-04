@@ -284,6 +284,7 @@ extern bool AdultShield;
 extern bool CanShieldFlick;
 extern bool CanJumpslash;
 extern bool CanUseSword;
+extern bool CanHurtGoldSkull;
 extern bool CanUseProjectile;
 extern bool CanUseMagicArrow;
 

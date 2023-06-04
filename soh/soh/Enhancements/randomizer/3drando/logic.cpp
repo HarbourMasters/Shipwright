@@ -293,6 +293,7 @@ namespace Logic {
   bool AdultShield        = false;
   bool CanShieldFlick     = false;
   bool CanJumpslash       = false;
+  bool CanHurtGoldSkull   = false;
   bool CanUseSword        = false;
   bool CanUseProjectile   = false;
   bool CanUseMagicArrow   = false;
@@ -600,8 +601,9 @@ namespace Logic {
     AdultReflectShield = IsAdult && CanUse(HYLIAN_SHIELD); //Mirror shield can't reflect attacks
     AdultShield        = IsAdult && (CanUse(HYLIAN_SHIELD) || CanUse(MIRROR_SHIELD));
     CanShieldFlick     = ChildShield || AdultShield;
-    CanJumpslash       = CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD) || CanUse(STICKS); // TODO check this change is safe
-    CanUseSword        = CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD);
+    CanJumpslash       = CanUse(MASTER_SWORD) || CanUse(KOKIRI_SWORD) || CanUse(BIGGORON_SWORD) || CanUse(STICKS); // TODO check this change is safe
+    CanUseSword        = CanUse(MASTER_SWORD) || CanUse(KOKIRI_SWORD) || CanUse(BIGGORON_SWORD);
+    CanHurtGoldSkull   = CanJumpslash || CanUse(SLINGSHOT) || CanUse(BOOMERANG) || HasExplosives || CanUse(MEGATON_HAMMER) || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(DINS_FIRE);
     CanUseProjectile   = HasExplosives || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(SLINGSHOT) || CanUse(BOOMERANG);
     CanUseMagicArrow   = CanUse(FIRE_ARROWS) || CanUse(ICE_ARROWS) || CanUse(LIGHT_ARROWS);
 
@@ -1004,6 +1006,7 @@ namespace Logic {
      CanShieldFlick     = false;
      CanJumpslash       = false;
      CanUseSword        = false;
+     CanHurtGoldSkull   = false;
      CanUseProjectile   = false;
      CanUseMagicArrow   = false;
 
