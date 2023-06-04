@@ -41,9 +41,9 @@ void AreaTable_Init_BottomOfTheWell() {
                   LocationAccess(BOTTOM_OF_THE_WELL_MAP_CHEST,                    {[]{return HasExplosives || (((SmallKeys(BOTTOM_OF_THE_WELL, 3) && (LogicLensBotw || CanUse(LENS_OF_TRUTH))) || CanUse(DINS_FIRE) || (CanUse(STICKS) && LogicBotwBasement)) && GoronBracelet);}}),
                   LocationAccess(BOTTOM_OF_THE_WELL_FIRE_KEESE_CHEST,             {[]{return SmallKeys(BOTTOM_OF_THE_WELL, 3) && (LogicLensBotw || CanUse(LENS_OF_TRUTH));}}),
                   LocationAccess(BOTTOM_OF_THE_WELL_LIKE_LIKE_CHEST,              {[]{return SmallKeys(BOTTOM_OF_THE_WELL, 3) && (LogicLensBotw || CanUse(LENS_OF_TRUTH));}}),
-                  LocationAccess(BOTTOM_OF_THE_WELL_GS_WEST_INNER_ROOM,           {[]{return CanUse(BOOMERANG) && (LogicLensBotw || CanUse(LENS_OF_TRUTH)) && SmallKeys(BOTTOM_OF_THE_WELL, 3);}}),
-                  LocationAccess(BOTTOM_OF_THE_WELL_GS_EAST_INNER_ROOM,           {[]{return CanUse(BOOMERANG) && (LogicLensBotw || CanUse(LENS_OF_TRUTH)) && SmallKeys(BOTTOM_OF_THE_WELL, 3);}}),
-                  LocationAccess(BOTTOM_OF_THE_WELL_GS_LIKE_LIKE_CAGE,            {[]{return SmallKeys(BOTTOM_OF_THE_WELL, 3) && (LogicLensBotw || CanUse(LENS_OF_TRUTH)) && CanUse(BOOMERANG);}}),
+                  LocationAccess(BOTTOM_OF_THE_WELL_GS_WEST_INNER_ROOM,           {[]{return HookshotOrBoomerang && (LogicLensBotw || CanUse(LENS_OF_TRUTH)) && SmallKeys(BOTTOM_OF_THE_WELL, 3);}}),
+                  LocationAccess(BOTTOM_OF_THE_WELL_GS_EAST_INNER_ROOM,           {[]{return HookshotOrBoomerang && (LogicLensBotw || CanUse(LENS_OF_TRUTH)) && SmallKeys(BOTTOM_OF_THE_WELL, 3);}}),
+                  LocationAccess(BOTTOM_OF_THE_WELL_GS_LIKE_LIKE_CAGE,            {[]{return SmallKeys(BOTTOM_OF_THE_WELL, 3) && (LogicLensBotw || CanUse(LENS_OF_TRUTH)) && HookshotOrBoomerang;}}),
                 }, {
                   //Exits
                   Entrance(BOTTOM_OF_THE_WELL_ENTRYWAY, {[]{return true;}}),
