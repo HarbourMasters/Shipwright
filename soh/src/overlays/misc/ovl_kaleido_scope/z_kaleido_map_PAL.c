@@ -438,6 +438,8 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
     s16 stepG;
     s16 stepB;
     bool dpad = CVarGetInteger("gDpadPause", 0);
+    u8 mirroredWorld = CVarGetInteger("gMirroredWorld", 0);
+    u8 mirrorMode = mirroredWorld ? G_TX_MIRROR : G_TX_NOMIRROR;
 
     OPEN_DISPS(gfxCtx);
 
@@ -446,25 +448,27 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
         oldCursorPoint = pauseCtx->cursorPoint[PAUSE_WORLD_MAP];
 
         if (pauseCtx->cursorSpecialPos == 0) {
-            if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
+            if ((!mirroredWorld && ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)))) ||
+                (mirroredWorld && ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))))) {
                 D_8082A6D4 = 0;
 
                 do {
                     pauseCtx->cursorPoint[PAUSE_WORLD_MAP]++;
                     if (pauseCtx->cursorPoint[PAUSE_WORLD_MAP] > 11) {
                         pauseCtx->cursorPoint[PAUSE_WORLD_MAP] = 11;
-                        KaleidoScope_MoveCursorToSpecialPos(play, PAUSE_CURSOR_PAGE_RIGHT);
+                        KaleidoScope_MoveCursorToSpecialPos(play, !mirroredWorld ? PAUSE_CURSOR_PAGE_RIGHT : PAUSE_CURSOR_PAGE_LEFT);
                         break;
                     }
                 } while (pauseCtx->worldMapPoints[pauseCtx->cursorPoint[PAUSE_WORLD_MAP]] == 0);
-            } else if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
+            } else if ((!mirroredWorld && ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT)))) ||
+                       (mirroredWorld && ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))))) {
                 D_8082A6D4 = 0;
 
                 do {
                     pauseCtx->cursorPoint[PAUSE_WORLD_MAP]--;
                     if (pauseCtx->cursorPoint[PAUSE_WORLD_MAP] < 0) {
                         pauseCtx->cursorPoint[PAUSE_WORLD_MAP] = 0;
-                        KaleidoScope_MoveCursorToSpecialPos(play, PAUSE_CURSOR_PAGE_LEFT);
+                        KaleidoScope_MoveCursorToSpecialPos(play, !mirroredWorld ? PAUSE_CURSOR_PAGE_LEFT : PAUSE_CURSOR_PAGE_RIGHT);
                         break;
                     }
                 } while (pauseCtx->worldMapPoints[pauseCtx->cursorPoint[PAUSE_WORLD_MAP]] == 0);
@@ -479,11 +483,18 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
             pauseCtx->cursorItem[PAUSE_MAP] = gSaveContext.worldMapArea + 0x18;
             if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) {
                 if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
-                    pauseCtx->cursorPoint[PAUSE_WORLD_MAP] = 0;
                     pauseCtx->cursorSpecialPos = 0;
 
-                    while (pauseCtx->worldMapPoints[pauseCtx->cursorPoint[PAUSE_WORLD_MAP]] == 0) {
-                        pauseCtx->cursorPoint[PAUSE_WORLD_MAP]++;
+                    if (!mirroredWorld) {
+                        pauseCtx->cursorPoint[PAUSE_WORLD_MAP] = 0;
+                        while (pauseCtx->worldMapPoints[pauseCtx->cursorPoint[PAUSE_WORLD_MAP]] == 0) {
+                            pauseCtx->cursorPoint[PAUSE_WORLD_MAP]++;
+                        }
+                    } else {
+                        pauseCtx->cursorPoint[PAUSE_WORLD_MAP] = 11;
+                        while (pauseCtx->worldMapPoints[pauseCtx->cursorPoint[PAUSE_WORLD_MAP]] == 0) {
+                            pauseCtx->cursorPoint[PAUSE_WORLD_MAP]--;
+                        }
                     }
 
                     pauseCtx->cursorItem[PAUSE_MAP] = pauseCtx->cursorPoint[PAUSE_WORLD_MAP];
@@ -494,11 +505,18 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
                 }
             } else {
                 if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
-                    pauseCtx->cursorPoint[PAUSE_WORLD_MAP] = 11;
                     pauseCtx->cursorSpecialPos = 0;
 
-                    while (pauseCtx->worldMapPoints[pauseCtx->cursorPoint[PAUSE_WORLD_MAP]] == 0) {
-                        pauseCtx->cursorPoint[PAUSE_WORLD_MAP]--;
+                    if (!mirroredWorld) {
+                        pauseCtx->cursorPoint[PAUSE_WORLD_MAP] = 11;
+                        while (pauseCtx->worldMapPoints[pauseCtx->cursorPoint[PAUSE_WORLD_MAP]] == 0) {
+                            pauseCtx->cursorPoint[PAUSE_WORLD_MAP]--;
+                        }
+                    } else {
+                        pauseCtx->cursorPoint[PAUSE_WORLD_MAP] = 0;
+                        while (pauseCtx->worldMapPoints[pauseCtx->cursorPoint[PAUSE_WORLD_MAP]] == 0) {
+                            pauseCtx->cursorPoint[PAUSE_WORLD_MAP]++;
+                        }
                     }
 
                     pauseCtx->cursorItem[PAUSE_MAP] = pauseCtx->cursorPoint[PAUSE_WORLD_MAP];
@@ -517,6 +535,17 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
         if (oldCursorPoint != pauseCtx->cursorPoint[PAUSE_WORLD_MAP]) {
             Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         }
+    }
+
+    // Use matrix scaling to flip the entire map for mirror world
+    if (mirroredWorld) {
+        // Undo the culling change back to "normal" since culling is reversed, but map is vertices are also flipped
+        gSPClearGeometryMode(POLY_KAL_DISP++, G_CULL_FRONT);
+        gSPSetGeometryMode(POLY_KAL_DISP++, G_CULL_BACK);
+        Matrix_Push();
+        Matrix_Scale(-1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
+        gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        Matrix_Pop();
     }
 
     gDPPipeSync(POLY_KAL_DISP++);
@@ -726,6 +755,17 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
         KaleidoScope_DrawCursor(play, PAUSE_MAP);
     }
 
+    if (mirroredWorld) {
+        // Offset U value for current position area name texture into mirror boundary
+        for (i = 0; i < 4; i++) {
+            pauseCtx->mapPageVtx[176 + 4 + i].v.tc[0] += 80 << 5;
+        }
+        // Offset U value for "current position" texture into mirror boundary
+        for (i = 0; i < 4; i++) {
+            pauseCtx->mapPageVtx[176 + 8 + i].v.tc[0] += 64 << 5;
+        }
+    }
+
     gSPVertex(POLY_KAL_DISP++, &pauseCtx->mapPageVtx[176], 16, 0);
 
     if (pauseCtx->tradeQuestLocation != 0xFF) {
@@ -757,12 +797,18 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 0, 0, 0, pauseCtx->alpha);
 
     gDPLoadTextureBlock_4b(POLY_KAL_DISP++, currentPosTitleTexs[gSaveContext.language], G_IM_FMT_I, 64, 8, 0,
-                           G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                           G_TX_WRAP | mirrorMode, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                            G_TX_NOLOD);
 
     gSP1Quadrangle(POLY_KAL_DISP++, 8, 10, 11, 9, 0);
 
     gDPPipeSync(POLY_KAL_DISP++);
+
+    if (mirroredWorld) {
+        // Reset culling to back for mirror mode
+        gSPClearGeometryMode(POLY_KAL_DISP++, G_CULL_BACK);
+        gSPSetGeometryMode(POLY_KAL_DISP++, G_CULL_FRONT);
+    }
 
     CLOSE_DISPS(gfxCtx);
 }
