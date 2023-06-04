@@ -77,7 +77,7 @@ class SaveManager {
 
     // Adds a function that is called when saving. This should only be called once for each function, the version is
     // filled in automatically.
-    void AddSaveFunction(const std::string& name, int version, SaveFunc func, bool saveWithBase, int parentSection);
+    int AddSaveFunction(const std::string& name, int version, SaveFunc func, bool saveWithBase, int parentSection);
 
     // Adds a function to be called after loading is complete. This is to handle any cleanup required from loading old
     // versions.
