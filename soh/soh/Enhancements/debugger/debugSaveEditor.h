@@ -6,8 +6,7 @@
 #include <vector>
 #include <cstdint>
 #include <soh/Enhancements/randomizer/randomizer_inf.h>
-
-void InitSaveEditor();
+#include <libultraship/libultraship.h>
 
 typedef enum {
     EVENT_CHECK_INF,
@@ -583,4 +582,13 @@ const std::vector<std::string> state3 = {
     "Force Pull Ocarina",
     "Restore Nayru's Love",
     "Travelling to Hook Target"
+};
+
+class SaveEditorWindow : public LUS::GuiWindow {
+  public:
+    using GuiWindow::GuiWindow;
+
+    void InitElement() override;
+    void DrawElement() override;
+    void UpdateElement() override {};
 };

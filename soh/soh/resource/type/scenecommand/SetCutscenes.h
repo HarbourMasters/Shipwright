@@ -10,11 +10,11 @@
 // #include <libultraship/libultra.h>
 
 namespace LUS {
-class SetCutscenes : public SceneCommand {
+class SetCutscenes : public SceneCommand<uint32_t> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    uint32_t* GetPointer();
     size_t GetPointerSize();
 
     std::string fileName;

@@ -1,17 +1,17 @@
 extern "C" {
 #include "gameplaystats.h"
 }
+#include "gameplaystatswindow.h"
 
 #include "soh/SaveManager.h"
 #include "functions.h"
 #include "macros.h"
-#include "ImGuiImpl.h"
 #include "../UIWidgets.hpp"
 
 #include <vector>
 #include <string>
 #include <libultraship/bridge.h>
-#include <Hooks.h>
+#include <libultraship/libultraship.h>
 
 extern "C" {
 #include <z64.h>
@@ -623,17 +623,9 @@ void DrawGameplayStatsOptionsTab() {
     UIWidgets::PaddedEnhancementCheckbox("Show Debug Info", "gGameplayStats.ShowDebugInfo");
 }
 
-void DrawStatsTracker(bool& open) {
-    if (!open) {
-        if (CVarGetInteger("gGameplayStats.Enabled", 0)) {
-            CVarClear("gGameplayStats.Enabled");
-            LUS::RequestCvarSaveOnNextTick();
-        }
-        return;
-    }
-
+void GameplayStatsWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(480, 550), ImGuiCond_Appearing);
-    if (!ImGui::Begin("Gameplay Stats", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Gameplay Stats", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -862,8 +854,7 @@ void SetupDisplayColors() {
     }
 }
 
-extern "C" void InitStatTracker() {
-    LUS::AddWindow("Enhancements", "Gameplay Stats", DrawStatsTracker, CVarGetInteger("gGameplayStats.Enabled", 0));
+void GameplayStatsWindow::InitElement() {
     SetupDisplayNames();
     SetupDisplayColors();
 

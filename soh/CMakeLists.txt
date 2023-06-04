@@ -356,17 +356,24 @@ target_include_directories(${PROJECT_NAME} PRIVATE assets
 	${CMAKE_CURRENT_SOURCE_DIR}/src/
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/binarytools
+	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/log
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/debug
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/menu
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/misc
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/core
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/utils
+	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/utils/binarytools
+    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/config
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/resource
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/resource/type
+	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/resource/factory
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/audio
+	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/window
+	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/window/gui
+	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/config
+	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/public
+	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/public/libultra
+	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/src/public/bridge
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/extern
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/extern/Mercury
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/extern/tinyxml2
     ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/
 	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/libjpeg/include/

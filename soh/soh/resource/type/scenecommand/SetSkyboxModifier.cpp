@@ -1,7 +1,7 @@
 #include "SetSkyboxModifier.h"
 
 namespace LUS {
-void* SetSkyboxModifier::GetPointer() {
+SkyboxModifier* SetSkyboxModifier::GetPointer() {
     return &modifier;
 }
 

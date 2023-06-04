@@ -1,7 +1,7 @@
 #include "Background.h"
 
 namespace LUS {
-void* Background::GetPointer() {
+uint8_t* Background::GetPointer() {
     return Data.data();
 }
 
