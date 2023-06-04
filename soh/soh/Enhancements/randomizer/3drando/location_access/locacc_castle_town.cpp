@@ -122,7 +122,7 @@ void AreaTable_Init_CastleTown() {
                   EventAccess(&WanderingBugs,    {[]{return WanderingBugs    || CanBlastOrSmash;}}),
                 }, {
                   //Locations
-                  LocationAccess(HC_GS_STORMS_GROTTO,           {[]{return (CanBlastOrSmash && HookshotOrBoomerang) || (Boomerang && LogicCastleStormsGS);}}),
+                  LocationAccess(HC_GS_STORMS_GROTTO,           {[]{return (CanBlastOrSmash && HookshotOrBoomerang) || (CanUse(BOOMERANG) && LogicCastleStormsGS);}}),
                   LocationAccess(HC_STORMS_GROTTO_GOSSIP_STONE, {[]{return CanBlastOrSmash;}}),
                 }, {
                   //Exits
