@@ -202,7 +202,10 @@ void SetStartingItems() {
     }
 }
 
-extern "C" void Randomizer_InitSaveFile() {
+extern "C" void Randomizer_InitSaveFile(bool isDebug) {
+    if (!gSaveContext.n64ddFlag) {
+        return;
+    }
     // Sets all rando flags to false
     for (s32 i = 0; i < ARRAY_COUNT(gSaveContext.randomizerInf); i++) {
         gSaveContext.randomizerInf[i] = 0;

@@ -81,13 +81,6 @@ typedef enum {
 
 typedef struct {
     RandomizerCheck rc;
-    RandomizerCheckShow status;
-    bool skipped;
-    uint8_t hintItem;
-} RandomizerCheckTrackerData;
-
-typedef struct {
-    RandomizerCheck rc;
     RandomizerCheckVanillaOrMQ vOrMQ;
     RandomizerCheckType rcType;
     RandomizerCheckArea rcArea;

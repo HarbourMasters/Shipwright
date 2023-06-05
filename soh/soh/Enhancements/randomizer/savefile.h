@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-void Randomizer_InitSaveFile();
+void Randomizer_InitSaveFile(bool isDebug);
 
 #ifdef __cplusplus
 }

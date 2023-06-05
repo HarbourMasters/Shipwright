@@ -1111,6 +1111,12 @@ typedef enum {
     RSK_MAX
 } RandomizerSettingKey;
 
+typedef struct {
+    RandomizerCheckShow status;
+    uint16_t skipped;
+    uint16_t hintItem;
+} RandomizerCheckTrackerData;
+
 //Generic Settings (any binary option can use this)
 // off/on
 typedef enum {

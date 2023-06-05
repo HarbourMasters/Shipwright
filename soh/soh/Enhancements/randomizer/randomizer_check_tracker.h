@@ -24,23 +24,16 @@ namespace CheckTracker {
 void InitCheckTracker();
 void Teardown();
 void DrawCheckTracker(bool& open);
-std::map<RandomizerCheck, RandomizerCheckTrackerData> *GetCheckTrackerData();
-void PushDefaultCheckData(RandomizerCheck rc);
+void DefaultCheckData(RandomizerCheck rc);
+void Init();
 void LoadCheckTrackerData(nlohmann::json checks);
 bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj);
-void CreateTrackerData(bool);
+void InitTrackerData(bool isDebug);
 void SetLastItemGetRC(RandomizerCheck rc);
 void CheckTrackerDialogClosed();
 bool IsGameRunning();
-void SetAutoSaved();
 } // namespace CheckTracker
 
-NLOHMANN_JSON_SERIALIZE_ENUM(RandomizerCheckShow, {
-    {RCSHOW_UNCHECKED, "unchecked"},
-    {RCSHOW_SEEN, "seen"},
-    {RCSHOW_SCUMMED, "scummed"},
-    {RCSHOW_SAVED, "saved"}
-})
 
 void to_json(nlohmann::json & j, const RandomizerCheckTrackerData& rctd);
 void from_json(const nlohmann::json& j, RandomizerCheckTrackerData& rctd);

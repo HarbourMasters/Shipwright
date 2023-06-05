@@ -105,9 +105,6 @@ extern "C" {
 
 void Rando_Init(void);
 bool GenerateRandomizer(std::string seed = "");
-//void SaveTrackerData(int fileNum, bool thread, bool convertCollected);
-void SaveTrackerData(bool);
-void EnqueueSave(int, bool);
 
 #ifdef __cplusplus
 }

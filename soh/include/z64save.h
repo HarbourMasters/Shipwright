@@ -285,6 +285,7 @@ typedef struct {
     /*        */ SohStats sohStats;
     /*        */ u8 temporaryWeapon;
     /*        */ FaroresWindData backupFW;
+    /*        */ RandomizerCheckTrackerData checkTrackerData[RC_MAX];
     // #endregion
     // #region SOH [Randomizer]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to Randomizer
