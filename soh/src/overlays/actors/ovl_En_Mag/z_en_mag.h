@@ -47,7 +47,4 @@ static const ALIGN_ASSET(2) char gTitleCopyrightGCTex[] = dgTitleCopyrightGCTex;
 #define dgTitleCopyrightN64Tex "__OTR__objects/object_mag/gTitleCopyright1998Tex"
 static const ALIGN_ASSET(2) char gTitleCopyrightN64Tex[] = dgTitleCopyrightN64Tex;
 
-#define dgTitleMQSubtitleTex "__OTR__objects/object_mag/gTitleMasterQuestSubtitleTex"
-static const ALIGN_ASSET(2) char gTitleMQSubtitleTex[] = dgTitleMQSubtitleTex;
-
 #endif
