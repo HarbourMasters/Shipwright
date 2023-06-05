@@ -427,7 +427,7 @@ void EnButte_Draw(Actor* thisx, PlayState* play) {
 
     if (this->drawSkelAnime) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, NULL, NULL);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, NULL);
         Collider_UpdateSpheres(0, &this->collider);
     }
 

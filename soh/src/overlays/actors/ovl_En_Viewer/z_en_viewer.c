@@ -572,7 +572,8 @@ void EnViewer_DrawGanondorf(EnViewer* this, PlayState* play) {
             EnViewer_UpdateGanondorfCape(play, this);
         }
     } else {
-        SkelAnime_DrawOpa(play, this->skin.skelAnime.skeleton, this->skin.skelAnime.jointTable, NULL, NULL, this);
+        SkelAnime_DrawSkeletonOpa(play, &this->skin.skelAnime, NULL, NULL,
+                                  this);
     }
     CLOSE_DISPS(play->state.gfxCtx);
 }

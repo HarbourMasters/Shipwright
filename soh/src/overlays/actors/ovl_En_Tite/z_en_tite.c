@@ -995,7 +995,7 @@ void EnTite_Draw(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(object_tite_Tex_001F00));
         gSPSegment(POLY_OPA_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(object_tite_Tex_002100));
     }
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, EnTite_PostLimbDraw,
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, EnTite_PostLimbDraw,
                       thisx);
     CLOSE_DISPS(play->state.gfxCtx);
 

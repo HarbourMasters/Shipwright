@@ -66,15 +66,17 @@ void SkeletonPatcher::ClearSkeletons()
 
 void SkeletonPatcher::UpdateSkeletons() {
     bool isHD = CVarGetInteger("gAltAssets", 0);
-    for (auto skel : skeletons) 
-    {
+    for (auto skel : skeletons) {
         Skeleton* newSkel =
             (Skeleton*)LUS::Context::GetInstance()->GetResourceManager()
                 ->LoadResource((isHD ? LUS::IResource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true)
                 .get();
 
-        if (newSkel != nullptr)
+        if (newSkel != nullptr) {
             skel.skelAnime->skeleton = newSkel->skeletonData.skeletonHeader.segment;
+            uintptr_t skelPtr = (uintptr_t)newSkel->GetPointer();
+            memcpy(&skel.skelAnime->skeletonHeader, &skelPtr, sizeof(uintptr_t)); // Dumb thing that needs to be done because cast is not cooperating
+        }
     }
 }
 } // namespace LUS

@@ -1120,7 +1120,8 @@ void EnFr_Draw(Actor* thisx, PlayState* play) {
         Matrix_Translate(this->posButterfly.x, this->posButterfly.y, this->posButterfly.z, MTXMODE_NEW);
         Matrix_Scale(0.015f, 0.015f, 0.015f, MTXMODE_APPLY);
         Matrix_RotateZYX(this->actor.shape.rot.x, this->actor.shape.rot.y, this->actor.shape.rot.z, MTXMODE_APPLY);
-        SkelAnime_DrawOpa(play, this->skelAnimeButterfly.skeleton, this->skelAnimeButterfly.jointTable, NULL, NULL,
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnimeButterfly, NULL,
+                                  NULL,
                           NULL);
     }
     CLOSE_DISPS(play->state.gfxCtx);

@@ -3231,7 +3231,7 @@ void BossVa_Draw(Actor* thisx, PlayState* play) {
                 gSPSegment(POLY_OPA_DISP++, 0x09,
                            Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, (play->gameplayFrames * -10) % 32, 16,
                                             0x20, 1, 0, (play->gameplayFrames * -5) % 32, 16, 32));
-                SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
+                SkelAnime_DrawSkeletonOpa(play, &this->skelAnime,
                                   BossVa_BodyOverrideLimbDraw, BossVa_BodyPostLimbDraw, this);
             }
             break;
@@ -3261,7 +3261,7 @@ void BossVa_Draw(Actor* thisx, PlayState* play) {
             break;
         default:
             if (!this->isDead) {
-                SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
+                SkelAnime_DrawSkeletonOpa(play, &this->skelAnime,
                                   BossVa_BariOverrideLimbDraw, BossVa_BariPostLimbDraw, this);
                 Collider_UpdateSpheres(0, &this->colliderSph);
                 if (sCsState < BOSSVA_BATTLE) {
