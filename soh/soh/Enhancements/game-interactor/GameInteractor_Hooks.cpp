@@ -92,6 +92,10 @@ void GameInteractor_ExecuteOnUpdateFileSelectSelection(uint16_t optionIndex) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileSelectSelection>(optionIndex);
 }
 
+void GameInteractor_ExecuteOnUpdateFileSelectConfirmationSelection(uint16_t optionIndex) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileSelectConfirmationSelection>(optionIndex);
+}
+
 void GameInteractor_ExecuteOnUpdateFileCopySelection(uint16_t optionIndex) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileCopySelection>(optionIndex);
 }
@@ -114,6 +118,18 @@ void GameInteractor_ExecuteOnUpdateFileAudioSelection(uint8_t optionIndex) {
 
 void GameInteractor_ExecuteOnUpdateFileTargetSelection(uint8_t optionIndex) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileTargetSelection>(optionIndex);
+}
+
+void GameInteractor_ExecuteOnUpdateFileQuestSelection(uint8_t questIndex) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileQuestSelection>(questIndex);
+}
+
+void GameInteractor_ExecuteOnUpdateFileBossRushOptionSelection(uint8_t optionIndex, uint8_t optionValue) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileBossRushOptionSelection>(optionIndex, optionValue);
+}
+
+void GameInteractor_ExecuteOnUpdateFileNameSelection(int16_t charCode) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileNameSelection>(charCode);
 }
 
 // MARK: - Game
