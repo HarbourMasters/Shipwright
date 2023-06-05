@@ -6,6 +6,7 @@
 
 #include "z_en_mag.h"
 #include "objects/object_mag/object_mag.h"
+#include <GameVersions.h>
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -618,6 +619,29 @@ s16 GetCharArraySize(const char* str) {
     return length;
 }
 
+static char* EnMag_GetCopyrightTex() 
+{
+    uint32_t gameVersion = ResourceMgr_GetGameVersion(0);
+
+    switch (gameVersion) {
+        case OOT_PAL_11:
+            return gTitleCopyrightN64Tex;
+        default:
+            return gTitleCopyrightGCTex;
+    }
+}
+
+static int EnMag_GetCopyrightTexWidth() {
+    uint32_t gameVersion = ResourceMgr_GetGameVersion(0);
+
+    switch (gameVersion) {
+        case OOT_PAL_11:
+            return 128;
+        default:
+            return 160;
+    }
+}
+
 void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
     static s16 textAlpha = 0;
     static s16 textFadeDirection = 0;
@@ -701,7 +725,8 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
 
         gDPPipeSync(gfx++);
         gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, (s16)this->subAlpha);
-        EnMag_DrawImageRGBA32(&gfx, 174, 145, gTitleMasterQuestSubtitleTex, 128, 32);
+        EnMag_DrawImageRGBA32(&gfx, 174, 145, gTitleMasterQuestSubtitleTex,
+                              EnMag_GetCopyrightTexWidth(), 32);
     }
 
     Gfx_SetupDL_39Ptr(&gfx);
@@ -712,8 +737,9 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
     gDPSetPrimColor(gfx++, 0, 0, (s16)this->copyrightAlpha, (s16)this->copyrightAlpha, (s16)this->copyrightAlpha,
                     (s16)this->copyrightAlpha);
 
-    if ((s16)this->copyrightAlpha != 0) {
-        gDPLoadTextureBlock(gfx++, gTitleCopyright19982003Tex, G_IM_FMT_IA, G_IM_SIZ_8b, 160, 16, 0,
+    if ((s16)this->copyrightAlpha != 0) 
+    {
+        gDPLoadTextureBlock(gfx++, EnMag_GetCopyrightTex(), G_IM_FMT_IA, G_IM_SIZ_8b, 128, 16, 0,
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
 
@@ -905,7 +931,8 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
                     (s16)this->copyrightAlpha);
 
     if ((s16)this->copyrightAlpha != 0) {
-        gDPLoadTextureBlock(gfx++, gTitleCopyright19982003Tex, G_IM_FMT_IA, G_IM_SIZ_8b, 160, 16, 0,
+        gDPLoadTextureBlock(gfx++, EnMag_GetCopyrightTex(), G_IM_FMT_IA, G_IM_SIZ_8b, EnMag_GetCopyrightTexWidth(), 16,
+                            0,
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
 

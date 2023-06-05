@@ -1,0 +1,14 @@
+<Root>
+    <File Name="object_horse_zelda" Segment="6">
+        <Skeleton Name="gHorseZeldaSkel" Type="Normal" LimbType="Skin" Offset="0x6B2C"/>
+
+        <!-- Running. -->
+        <Animation Name="gHorseZeldaGallopingAnim" Offset="0x7148"/>
+
+        <Texture Name="gHorseZeldaEyeTex" OutName="horse_zelda_eye" Format="rgba16" Width="32" Height="16" Offset="0x8"/>
+        <Texture Name="gHorseZeldaHeadHairTex" OutName="horse_zelda_head_hair" Format="rgba16" Width="16" Height="16" Offset="0x688"/>
+        <Texture Name="gHorseZeldaNoseTex" OutName="horse_zelda_nose" Format="rgba16" Width="16" Height="16" Offset="0x488"/>
+
+        <Texture Name="gHorseZeldaLegTex" OutName="horse_zelda_leg" Format="rgba16" Width="16" Height="16" Offset="0x9A8"/>
+    </File>
+</Root>

@@ -20,6 +20,7 @@ You can verify you have a supported copy of the game by checking the `sha1` hash
 
 | Supported Version | `sha1` |
 | - | - |
+| PAL 1.1 | `cfbb98d392e4a9d39da8285d10cbef3974c2f012` |
 | PAL GC | `0227d7c0074f2d0ac935631990da8ec5914597b4` |
 | PAL GC (Debug) | `cee6bc3c2a634b41728f2af8da54d9bf8cc14099` |
 | PAL MQ (Debug) | `079b855b943d6ad8bd1eb026c0ed169ecbdac7da` |
