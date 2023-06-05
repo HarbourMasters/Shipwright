@@ -655,7 +655,7 @@ template <typename T> size_t ResetVector(T& vec) {
     return vec.capacity();
 }
 
-void DrawColViewer() {
+extern "C" void DrawColViewer() {
     if (gPlayState == nullptr) {
         return;
     }
