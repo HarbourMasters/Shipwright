@@ -251,6 +251,8 @@ namespace Logic {
   bool IsAdult          = false;
   bool IsGlitched       = false;
   bool CanBlastOrSmash  = false;
+  bool CanJumpslash     = false;
+  bool CanUseSword      = false;
   bool CanChildAttack   = false;
   bool CanChildDamage   = false;
   bool CanCutShrubs     = false;
@@ -292,9 +294,7 @@ namespace Logic {
   bool AdultReflectShield = false;
   bool AdultShield        = false;
   bool CanShieldFlick     = false;
-  bool CanJumpslash       = false;
   bool CanHurtGoldSkull   = false;
-  bool CanUseSword        = false;
   bool CanUseProjectile   = false;
   bool CanUseMagicArrow   = false;
 
@@ -561,10 +561,12 @@ namespace Logic {
     // IsAdult = Age == AGE_ADULT;
 
     CanBlastOrSmash = HasExplosives || CanUse(MEGATON_HAMMER);
+    CanUseSword     = CanUse(MASTER_SWORD) || CanUse(KOKIRI_SWORD) || CanUse(BIGGORON_SWORD);
+    CanJumpslash    = CanUseSword || CanUse(STICKS); // TODO check this change is safe (i.e. not including hammer)
     CanChildAttack  = IsChild && (Slingshot || Boomerang || Sticks || KokiriSword || HasExplosives || CanUse(DINS_FIRE) || CanUse(MASTER_SWORD) || CanUse(MEGATON_HAMMER) || CanUse(BIGGORON_SWORD));
     CanChildDamage  = IsChild && (Slingshot ||              Sticks || KokiriSword || HasExplosives || CanUse(DINS_FIRE) || CanUse(MASTER_SWORD) || CanUse(MEGATON_HAMMER) || CanUse(BIGGORON_SWORD));
-    CanStunDeku     = IsAdult || CanChildAttack || Nuts || HasShield;
-    CanCutShrubs    = IsAdult /*|| Sticks*/ || KokiriSword || Boomerang || HasExplosives || CanUse(MASTER_SWORD) || CanUse(MEGATON_HAMMER) || CanUse(BIGGORON_SWORD);
+    CanStunDeku     = CanJumpslash || Nuts || HasShield || HasExplosives || CanUse(SLINGSHOT) || CanUse(BOW) || CanUse(MEGATON_HAMMER) || CanUse(HOOKSHOT) || CanUse(BOOMERANG) || CanUse(DINS_FIRE);
+    CanCutShrubs    = CanUseSword /*|| Sticks*/ || Boomerang || HasExplosives || CanUse(MEGATON_HAMMER);
     CanDive         = ProgressiveScale >= 1;
     CanLeaveForest  = OpenForest.IsNot(OPENFOREST_CLOSED) || IsAdult || DekuTreeClear || ShuffleInteriorEntrances || ShuffleOverworldEntrances;
     CanPlantBugs    = IsChild && Bugs;
@@ -591,8 +593,8 @@ namespace Logic {
     HasFireSourceWithTorch = HasFireSource || CanUse(STICKS);
 
     //Gerudo Fortress
-    CanFinishGerudoFortress = (GerudoFortress.Is(GERUDOFORTRESS_NORMAL)    && GerudoFortressKeys >= 4 && (IsAdult || KokiriSword || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)) && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen)) ||
-                              (GerudoFortress.Is(GERUDOFORTRESS_FAST)      && GerudoFortressKeys >= 1 && (IsAdult || KokiriSword || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD))) ||
+    CanFinishGerudoFortress = (GerudoFortress.Is(GERUDOFORTRESS_NORMAL)    && GerudoFortressKeys >= 4 && (CanUseSword/* || CanUse(SLINGSHOT) || CanUse(BOW) || CanUse(MEGATON_HAMMER) || HasExplosives*/) && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen)) ||
+                              (GerudoFortress.Is(GERUDOFORTRESS_FAST)      && GerudoFortressKeys >= 1 && (CanUseSword/* || CanUse(SLINGSHOT) || CanUse(BOW) || CanUse(MEGATON_HAMMER) || HasExplosives*/)) ||
                               (GerudoFortress.IsNot(GERUDOFORTRESS_NORMAL) && GerudoFortress.IsNot(GERUDOFORTRESS_FAST));
 
     HasShield          = CanUse(HYLIAN_SHIELD) || CanUse(DEKU_SHIELD); //Mirror shield can't reflect attacks
@@ -601,9 +603,7 @@ namespace Logic {
     AdultReflectShield = IsAdult && CanUse(HYLIAN_SHIELD); //Mirror shield can't reflect attacks
     AdultShield        = IsAdult && (CanUse(HYLIAN_SHIELD) || CanUse(MIRROR_SHIELD));
     CanShieldFlick     = ChildShield || AdultShield;
-    CanJumpslash       = CanUse(MASTER_SWORD) || CanUse(KOKIRI_SWORD) || CanUse(BIGGORON_SWORD) || CanUse(STICKS); // TODO check this change is safe
-    CanUseSword        = CanUse(MASTER_SWORD) || CanUse(KOKIRI_SWORD) || CanUse(BIGGORON_SWORD);
-    CanHurtGoldSkull   = CanJumpslash || CanUse(SLINGSHOT) || CanUse(BOOMERANG) || HasExplosives || CanUse(MEGATON_HAMMER) || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(DINS_FIRE);
+    CanHurtGoldSkull   = CanJumpslash || CanUse(SLINGSHOT) || CanUse(BOOMERANG) || HasExplosives || CanUse(MEGATON_HAMMER) || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(DINS_FIRE); 
     CanUseProjectile   = HasExplosives || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(SLINGSHOT) || CanUse(BOOMERANG);
     CanUseMagicArrow   = CanUse(FIRE_ARROWS) || CanUse(ICE_ARROWS) || CanUse(LIGHT_ARROWS);
 
@@ -968,6 +968,8 @@ namespace Logic {
      IsAdult          = false;
      IsGlitched       = Settings::Logic.Is(LOGIC_GLITCHED);
      CanBlastOrSmash  = false;
+     CanJumpslash     = false;
+     CanUseSword      = false;
      CanChildAttack   = false;
      CanChildDamage   = false;
      CanCutShrubs     = false;
@@ -1004,8 +1006,6 @@ namespace Logic {
      AdultReflectShield = false;
      AdultShield        = false;
      CanShieldFlick     = false;
-     CanJumpslash       = false;
-     CanUseSword        = false;
      CanHurtGoldSkull   = false;
      CanUseProjectile   = false;
      CanUseMagicArrow   = false;
