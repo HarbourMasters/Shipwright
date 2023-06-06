@@ -131,6 +131,12 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set_source_files_properties(soh/OTRGlobals.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
 endif()
 
+# soh/config {{{
+file(GLOB_RECURSE soh__config RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    "soh/config/*.h"
+)
+# }}}
+
 # soh/enhancements {{{
 file(GLOB_RECURSE soh__Enhancements RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     "soh/Enhancements/*.c"
@@ -246,6 +252,7 @@ set(ALL_FILES
     ${Header_Files}
     ${Header_Files__include}
     ${soh__}
+    ${soh__config}
     ${soh__Enhancements}
     ${soh__Extractor}
     ${soh__Resource}
