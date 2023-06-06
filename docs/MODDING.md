@@ -23,7 +23,7 @@ At this point, I will now direct you to our [BUILDING](building.md) guide, it wi
 
 ## Look at all those branches!
 
-Congrats if you have made it this far! Before we start making changes, you will need to create a new branch. It's recommended that you cut all your branches from the `develop` branch, so before cutting a branch make sure you are on the `develop` branch with the following command:
+Congrats, if you have made it this far! Before we start making changes, you will need to create a new branch. It's recommended that you cut all your branches from the `develop` branch, as that tends to be the most up-to-date. Before cutting a branch make sure you are on the `develop` branch with the following command:
 
 ```bash
 git checkout develop
