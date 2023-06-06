@@ -15,7 +15,7 @@ Your first step is to fork the repository. To do this, you will need a github ac
 On this page you should see a green `Code` button, click this and copy the URL within. (You may use the github desktop app here as well, but I will not provide instructions for it). Then in your terminal/command prompt you will git clone to a local development folder using the copied URL
 
 ```bash
-cd ~/Documents
+cd <path to where you'll clone (eg, ~/Documents)>
 git clone https://github.com/<GITHUB USERNAME>/Shipwright.git
 ```
 
