@@ -1,0 +1,11 @@
+<Root>
+    <File Name="object_gi_dekupouch" Segment="6">
+        <DList Name="gGiBulletBagColorDL" Offset="0x0AF0"/>
+        <DList Name="gGiBulletBag50ColorDL" Offset="0x0B10"/>
+        <DList Name="gGiBulletBagStringColorDL" Offset="0x0B30"/>
+        <DList Name="gGiBulletBag50StringColorDL" Offset="0x0B50"/>
+        <DList Name="gGiBulletBagDL" Offset="0x0B70"/>
+        <DList Name="gGiBulletBagStringDL" Offset="0x0F48"/>
+        <DList Name="gGiBulletBagWritingDL" Offset="0x0FF0"/>
+    </File>
+</Root>

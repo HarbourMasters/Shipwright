@@ -281,7 +281,9 @@ void DrawSettingsMenu() {
 
                 UIWidgets::Spacer(0);
 
+                ImGui::PushItemWidth(std::min((ImGui::GetContentRegionAvail().x - 60.0f), 260.0f));
                 ImGui::SliderInt("##WiiUFPSSlider", &fpsSlider, 1, 3, "", ImGuiSliderFlags_AlwaysClamp);
+                ImGui::PopItemWidth();
 
                 ImGui::SameLine();
                 ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);

@@ -4,6 +4,7 @@
 
 #include <string.h>
 
+#include "soh/Enhancements/debugger/colViewer.h"
 #include "soh/Enhancements/gameconsole.h"
 
 #define GFXPOOL_HEAD_MAGIC 0x1234
@@ -278,6 +279,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
 
     GameState_ReqPadData(gameState);
     GameState_Update(gameState);
+    DrawColViewer();
 
     OPEN_DISPS(gfxCtx);
 
