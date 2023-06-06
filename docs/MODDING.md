@@ -96,7 +96,7 @@ if (IS_DAY || gTimeIncrement >= 0x190) {
 ```
 
 After rebuilding and launching the game, you should now see a new slider in the cheat menu that allows you to change the speed of the day/night cycle. Nice!
-
+If you're ever not sure about how something would be implemented, you can always look at external resources like the [Cloudmodding Wiki](https://wiki.cloudmodding.com/oot/Main_Page) to get a better perspective.
 ## Are you committed?
 
 Now that we have made our changes, we need to commit them. First we need to add the files we changed to the staging area. We can do this with the following command:
