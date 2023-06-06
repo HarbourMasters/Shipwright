@@ -392,7 +392,9 @@ void Map_InitData(PlayState* play, s16 room) {
                     extendedMapIndex = 0x14;
                 }
             } else if (play->sceneNum == SCENE_SPOT06) {
-                if ((LINK_AGE_IN_YEARS == YEARS_ADULT) && !CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) {
+                if ((LINK_AGE_IN_YEARS == YEARS_ADULT) &&
+                    ((!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) ||
+                     (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)))) {
                     extendedMapIndex = 0x15;
                 }
             } else if (play->sceneNum == SCENE_SPOT09) {
@@ -400,7 +402,8 @@ void Map_InitData(PlayState* play, s16 room) {
                     extendedMapIndex = 0x16;
                 }
             } else if (play->sceneNum == SCENE_SPOT12) {
-                if ((gSaveContext.eventChkInf[9] & 0xF) == 0xF) {
+                if ((!gSaveContext.n64ddFlag && ((gSaveContext.eventChkInf[9] & 0xF) == 0xF)) ||
+                    (gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_GERUDO_CARD))) {
                     extendedMapIndex = 0x17;
                 }
             }
