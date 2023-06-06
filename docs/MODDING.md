@@ -6,7 +6,7 @@
 
 Git is required to be installed. Knowing how to use git is going to help, I will list out commands that should set you on the right but without a general understanding you will likely get stuck if you deviate from the happy path.
 
-General coding knowledge is also usually a requirement. You might be able to get by without, but the more knowledge-able the better, as it will allow you to find what you are looking for and troubleshoot much more easily.
+General coding knowledge is also usually a requirement. You might be able to get by without, but the more knowledgeable the better, as it will allow you to find what you are looking for and troubleshoot much more easily.
 
 ## What the fork?
 
