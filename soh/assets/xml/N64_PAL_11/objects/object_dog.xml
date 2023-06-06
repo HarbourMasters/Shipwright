@@ -1,0 +1,41 @@
+﻿<Root>
+    <File Name="object_dog" Segment="6">
+        <Animation Name="gDogBarkAnim" Offset="0x278"/>
+        <Animation Name="gDogBowAnim" Offset="0x928"/>
+        <Animation Name="gDogBow2Anim" Offset="0xC28"/>
+        <Animation Name="gDogRunAnim" Offset="0xD78"/>
+        <Animation Name="gDogSitAnim" Offset="0x1150"/>
+        <Animation Name="gDogWalkAnim" Offset="0x1368"/>
+        <Texture Name="gDogFur1Tex" OutName="fur_1" Format="rgba16" Width="32" Height="32" Offset="0x1380"/> <!-- Lower body-->
+        <Texture Name="gDogFur2Tex" OutName="fur_2" Format="rgba16" Width="32" Height="32" Offset="0x1B80"/> <!-- Front of ears, upper part of the tail, and around the feet-->
+        <Texture Name="gDogFur3Tex" OutName="fur_3" Format="rgba16" Width="32" Height="32" Offset="0x2380"/> <!-- Upper body, top of head-->
+        <Texture Name="gDogFaceEyeTex" OutName="face_and_eye" Format="rgba16" Width="32" Height="32" Offset="0x2B80"/>
+        <Texture Name="gDogFaceNoseTex" OutName="face_and_nose" Format="rgba16" Width="32" Height="32" Offset="0x3380"/>
+        <Texture Name="gDogFur4Tex" OutName="fur_4" Format="rgba16" Width="32" Height="32" Offset="0x3B80"/> <!-- Back of ears, side of head, and part of front body-->
+        <Texture Name="gDogPawTex" OutName="paw" Format="rgba16" Width="16" Height="16" Offset="0x4380"/>
+        <Texture Name="gDogFaceHairTex" OutName="face_hair" Format="rgba16" Width="32" Height="32" Offset="0x4580"/>
+        <DList Name="gDogHeadDL" Offset="0x60E0"/>
+        <DList Name="gDogRightFaceHairDL" Offset="0x6448"/>
+        <DList Name="gDogLeftFaceHairDL" Offset="0x64E8"/>
+        <DList Name="gDogFrontBodyDL" Offset="0x6588"/>
+        <DList Name="gDogFrontRightLegDL" Offset="0x67A0"/>
+        <DList Name="gDogFrontLeftLegDL" Offset="0x6950"/>
+        <DList Name="gDogBackBodyDL" Offset="0x6B00"/>
+        <DList Name="gDogBackRightLegDL" Offset="0x6CA0"/>
+        <DList Name="gDogBackLeftLegDL" Offset="0x6E50"/>
+        <DList Name="gDogTailDL" Offset="0x7000"/>
+        <Limb Name="gDogRootLimb" LimbType="Standard" Offset="0x71D0"/>
+        <Limb Name="gDogBodyBackLimb" LimbType="Standard" Offset="0x71DC"/>
+        <Limb Name="gDogBodyFrontLimb" LimbType="Standard" Offset="0x71E8"/>
+        <Limb Name="gDogHeadControlLimb" LimbType="Standard" Offset="0x71F4"/>
+        <Limb Name="gDogHeadLimb" LimbType="Standard" Offset="0x7200"/>
+        <Limb Name="gDogRightFaceHairLimb" LimbType="Standard" Offset="0x720C"/>
+        <Limb Name="gDogLeftFaceHairLimb" LimbType="Standard" Offset="0x7218"/>
+        <Limb Name="gDogFrontRightLegLimb" LimbType="Standard" Offset="0x7224"/>
+        <Limb Name="gDogFrontLeftLegLimb" LimbType="Standard" Offset="0x7230"/>
+        <Limb Name="gDogBackRightLegLimb" LimbType="Standard" Offset="0x723C"/>
+        <Limb Name="gDogBackLeftLegLimb" LimbType="Standard" Offset="0x7248"/>
+        <Limb Name="gDogTailLimb" LimbType="Standard" Offset="0x7254"/>
+        <Skeleton Name="gDogSkel" Type="Flex" LimbType="Standard" Offset="0x7290"/>
+    </File>
+</Root>

@@ -1,0 +1,11 @@
+<Root>
+    <File Name="daiyousei_izumi_scene" Segment="2">
+        <Cutscene Name="gGreatFairyMagicCs" Offset="0x0130"/>
+        <Cutscene Name="gGreatFairyDoubleMagicCs" Offset="0x13E0"/>
+        <Cutscene Name="gGreatFairyDoubleDefenceCs" Offset="0x25D0"/>
+        <Scene Name="daiyousei_izumi_scene" Offset="0x0"/>
+    </File>
+    <File Name="daiyousei_izumi_room_0" Segment="3">
+        <Room Name="daiyousei_izumi_room_0" Offset="0x0"/>
+    </File>
+</Root>

@@ -1,0 +1,52 @@
+<Root>
+    <File Name="gameplay_dangeon_keep" Segment="5">
+        <DList Name="gUnusedCandleDL" Offset="0x440"/>
+        <DList Name="gBrownFragmentDL" Offset="0x530"/>
+        <Texture Name="gUnusedStoneTex" OutName="unused_stone" Format="rgba16" Width="32" Height="32" Offset="0x7C0"/>
+        <DList Name="gDoorLockDL" Offset="0x1100"/>
+        <DList Name="gDoorChainsDL" Offset="0x11F0"/>
+        <Texture Name="gUnusedGoldLockTex" OutName="unused_gold_lock" Format="rgba16" Width="32" Height="32" Offset="0x1A80"/>
+        <Texture Name="gDoorChainTex" OutName="door_chain" Format="rgba16" Width="16" Height="128" Offset="0x2280"/>
+        <DList Name="gUnusedBombBagDL" Offset="0x32C0"/>
+        <Texture Name="gPushBlockSilverTex" OutName="block_silver" Format="i4" Width="64" Height="64" Offset="0x3350"/>
+        <Texture Name="gPushBlockBaseTex" OutName="block_base" Format="i4" Width="64" Height="64" Offset="0x3B50"/>
+        <Texture Name="gPushBlockGrayTex" OutName="block_gray" Format="i4" Width="64" Height="64" Offset="0x4350"/>
+        <DList Name="gPushBlockDL" Offset="0x4CD0"/>
+        <Collision Name="gPushBlockCol" Offset="0x4E98"/>
+        <DList Name="gWoodenPlatofrmDL" Offset="0x5050"/>
+        <DList Name="gSmallWoodenBoxDL" Offset="0x5290"/>
+        <DList Name="gSmallWoodenBoxFragmentDL" Offset="0x5380"/>
+        <DList Name="gBetaKokiriSwordSpriteDL" Offset="0x5450"/>
+        <DList Name="gMagicJarSpriteDL" Offset="0x5520"/>
+        <DList Name="gBetaSlingshotSpriteDL" Offset="0x55F0"/>
+        <DList Name="gFloorSwitch1DL" Offset="0x5800"/>
+        <DList Name="gRustyFloorSwitchDL" Offset="0x5AD0"/>
+        <DList Name="gFloorSwitch2DL" Offset="0x5D50"/>
+        <Collision Name="gFloorSwitchCol" Offset="0x5FB8"/>
+        <DList Name="gFloorSwitch3DL" Offset="0x6170"/>
+        <DList Name="gBetaFloorSwitchDL" Offset="0x63F0"/>
+        <DList Name="gEyeSwitch1DL" Offset="0x6610"/>
+        <DList Name="gEyeSwitch2DL" Offset="0x6810"/>
+        <DList Name="gCrystalSwitchCoreOpaDL" Offset="0x6D10"/>
+        <DList Name="gCrystalSwitchCoreXluDL" Offset="0x6E60"/>
+        <DList Name="gCrystalSwitchDiamondOpaDL" Offset="0x7340"/>
+        <DList Name="gCrystalSwitchDiamondXluDL" Offset="0x7488"/>
+        <DList Name="gBetaCrystalSwitchDL" Offset="0x77B0"/>
+        <Texture Name="gEyeSwitchGoldClosedTex" OutName="eye_gold_closed" Format="rgba16" Width="32" Height="32" Offset="0x90A0"/>
+        <Texture Name="gEyeSwitchGoldOpeningTex" OutName="eye_gold_opening" Format="rgba16" Width="32" Height="32" Offset="0x98A0"/>
+        <Texture Name="gEyeSwitchGoldClosingTex" OutName="eye_gold_closing" Format="rgba16" Width="32" Height="32" Offset="0xA0A0"/>
+        <Texture Name="gEyeSwitchGoldOpenTex" OutName="eye_gold_open" Format="rgba16" Width="32" Height="32" Offset="0xA8A0"/>
+        <Texture Name="gEyeSwitchSilverOpenTex" OutName="eye_silver_open" Format="rgba16" Width="32" Height="32" Offset="0xB0A0"/>
+        <Texture Name="gEyeSwitchSilverHalfTex" OutName="eye_silver_half" Format="rgba16" Width="32" Height="32" Offset="0xB8A0"/>
+        <Texture Name="gEyeSwitchSilverClosedTex" OutName="eye_silver_closed" Format="rgba16" Width="32" Height="32" Offset="0xC0A0"/>
+        <Texture Name="gDungeonKeepTex_00C8A0" OutName="dungeon_keep_tex_00C8A0" Format="rgba16" Width="32" Height="32" Offset="0xC8A0"/>
+        <Texture Name="gDungeonkeepTex_00D0A0" OutName="dungeon_keep_tex_00D0A0" Format="rgba16" Width="32" Height="32" Offset="0xD0A0"/>
+        <Texture Name="gDungeonKeepTex_00E8A0" OutName="dungeon_keep_tex_00E8A0" Format="i8" Width="32" Height="32" Offset="0xE8A0"/>
+        <Texture Name="gDungeonKeepTex_00ECA0" OutName="dungeon_keep_tex_00ECA0" Format="i8" Width="32" Height="32" Offset="0xECA0"/>
+        <Texture Name="gDungeonKeepTex_00F0A0" OutName="dungeon_keep_tex_00F0A0" Format="rgba16" Width="32" Height="32" Offset="0xF0A0"/>
+        <Texture Name="gCrstalSwitchRedTex" OutName="crystal_red" Format="rgba16" Width="32" Height="32" Offset="0x144B0"/>
+        <Texture Name="gCrstalSwitchBlueTex" OutName="crystal_blue" Format="rgba16" Width="32" Height="32" Offset="0x14CB0"/>
+        <DList Name="gPotDL" Offset="0x17870"/>
+        <DList Name="gPotFragmentDL" Offset="0x17A60"/>
+    </File>
+</Root>

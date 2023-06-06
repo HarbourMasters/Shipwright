@@ -1,0 +1,10 @@
+<Root>
+    <File Name="ganon_tou_scene" Segment="2">
+        <Cutscene Name="gRainbowBridgeCs" Offset="0x2640"/>
+        <Cutscene Name="gGanonsCastleIntroCs" Offset="0x4280"/>
+        <Scene Name="ganon_tou_scene" Offset="0x0"/>
+    </File>
+    <File Name="ganon_tou_room_0" Segment="3">
+        <Room Name="ganon_tou_room_0" Offset="0x0"/>
+    </File>
+</Root>
