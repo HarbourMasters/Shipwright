@@ -41,7 +41,7 @@ You can name your branch whatever you want, but it's recommended to name it some
 
 The limit is your imagination. You can add new features, fix bugs, add new mods, or even change the way the game works. We will demonstrate this by creating a mod that changes the speed of the day/night cycle.
 
-Lets being by finding where the time is updated. Thankfully in the save editor we have a slider already hooked up to the time of day so we can check there for reference. The save editor file is at `soh/soh/Enhancements/debugger/debugSaveEditor.cpp`, if we do a quick search within that file for time we will find the following at line 400:
+Let's being by finding where the time is updated. Thankfully in the save editor we have a slider already hooked up to the time of day so we can check there for reference. The save editor file is at `soh/soh/Enhancements/debugger/debugSaveEditor.cpp`, if we do a quick search within that file for time we will find the following at line 400:
 
 ```cpp
 const uint16_t dayTimeMin = 0;
