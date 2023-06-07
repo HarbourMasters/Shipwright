@@ -662,7 +662,7 @@ void InitStats(bool isDebug) {
     for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys); dungeon++) {
         gSaveContext.sohStats.dungeonKeys[dungeon] = isDebug ? 8 : 0;
     }
-    gSaveContext.sohStats.rtaTiming = CVarGetInteger("gGameplayStats.RTATiming", 0);
+    gSaveContext.sohStats.rtaTiming = CVarGetInteger("gGameplayStats.RTATiming", 0) && !gSaveContext.isBossRush;
     gSaveContext.sohStats.fileCreatedAt = 0;
     gSaveContext.sohStats.playTimer = 0;
     gSaveContext.sohStats.pauseTimer = 0;
