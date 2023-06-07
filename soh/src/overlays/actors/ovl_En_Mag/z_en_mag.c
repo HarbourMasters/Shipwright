@@ -619,26 +619,21 @@ s16 GetCharArraySize(const char* str) {
     return length;
 }
 
-static char* EnMag_GetCopyrightTex() 
-{
-    uint32_t gameVersion = ResourceMgr_GetGameVersion(0);
-
+static void EnMag_SetCopyValues(const char** copy_tex, u16* copy_width, u16* copy_xl, u16* copy_xh) {
+    u32 gameVersion = ResourceMgr_GetGameVersion(0);
     switch (gameVersion) {
         case OOT_PAL_11:
-            return gTitleCopyrightN64Tex;
+            *copy_tex = gTitleCopyright1998Tex;
+            *copy_width = 128;
+            *copy_xl = 376;
+            *copy_xh = 888;
+            break;
         default:
-            return gTitleCopyrightGCTex;
-    }
-}
-
-static int EnMag_GetCopyrightTexWidth() {
-    uint32_t gameVersion = ResourceMgr_GetGameVersion(0);
-
-    switch (gameVersion) {
-        case OOT_PAL_11:
-            return 128;
-        default:
-            return 160;
+            *copy_tex = gTitleCopyright19982003Tex;
+            *copy_width = 160;
+            *copy_xl = 312;
+            *copy_xh = 952;
+            break;
     }
 }
 
@@ -663,6 +658,12 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
     if (CVarGetInteger("gTitleScreenTranslation", 0)) {
         lang = gSaveContext.language;
     }
+
+    const char* copy_tex = NULL;
+    u16 copy_width;
+    u16 copy_xl;
+    u16 copy_xh;
+    EnMag_SetCopyValues(&copy_tex, &copy_width, &copy_xl, &copy_xh);
 
     gSPSegment(gfx++, 0x06, play->objectCtx.status[this->actor.objBankIndex].segment);
 
@@ -725,8 +726,7 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
 
         gDPPipeSync(gfx++);
         gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, (s16)this->subAlpha);
-        EnMag_DrawImageRGBA32(&gfx, 174, 145, gTitleMasterQuestSubtitleTex,
-                              EnMag_GetCopyrightTexWidth(), 32);
+        EnMag_DrawImageRGBA32(&gfx, 174, 145, gTitleMasterQuestSubtitleTex, 128, 32);
     }
 
     Gfx_SetupDL_39Ptr(&gfx);
@@ -737,13 +737,12 @@ void EnMag_DrawInnerMq(Actor* thisx, PlayState* play, Gfx** gfxp) {
     gDPSetPrimColor(gfx++, 0, 0, (s16)this->copyrightAlpha, (s16)this->copyrightAlpha, (s16)this->copyrightAlpha,
                     (s16)this->copyrightAlpha);
 
-    if ((s16)this->copyrightAlpha != 0) 
-    {
-        gDPLoadTextureBlock(gfx++, EnMag_GetCopyrightTex(), G_IM_FMT_IA, G_IM_SIZ_8b, 128, 16, 0,
+    if ((s16)this->copyrightAlpha != 0) {
+        gDPLoadTextureBlock(gfx++, copy_tex, G_IM_FMT_IA, G_IM_SIZ_8b, copy_width, 16, 0,
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
 
-        gSPTextureRectangle(gfx++, 312, 792, 952, 856, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+        gSPTextureRectangle(gfx++, copy_xl, 792, copy_xh, 856, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
     }
 
     if (gSaveContext.fileNum == 0xFEDC) {
@@ -861,6 +860,12 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
         lang = gSaveContext.language;
     }
 
+    const char* copy_tex = NULL;
+    u16 copy_width;
+    u16 copy_xl;
+    u16 copy_xh;
+    EnMag_SetCopyValues(&copy_tex, &copy_width, &copy_xl, &copy_xh);
+
     gSPSegment(gfx++, 0x06, play->objectCtx.status[this->actor.objBankIndex].segment);
 
     Gfx_SetupDL_39Ptr(&gfx);
@@ -931,12 +936,11 @@ void EnMag_DrawInnerVanilla(Actor* thisx, PlayState* play, Gfx** gfxp) {
                     (s16)this->copyrightAlpha);
 
     if ((s16)this->copyrightAlpha != 0) {
-        gDPLoadTextureBlock(gfx++, EnMag_GetCopyrightTex(), G_IM_FMT_IA, G_IM_SIZ_8b, EnMag_GetCopyrightTexWidth(), 16,
-                            0,
+        gDPLoadTextureBlock(gfx++, copy_tex, G_IM_FMT_IA, G_IM_SIZ_8b, copy_width, 16, 0,
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
 
-        gSPTextureRectangle(gfx++, 312, 792, 952, 856, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+        gSPTextureRectangle(gfx++, copy_xl, 792, copy_xh, 856, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
     }
 
     if (gSaveContext.fileNum == 0xFEDC) {
