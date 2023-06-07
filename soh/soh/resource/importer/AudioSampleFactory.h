@@ -19,6 +19,6 @@ class AudioSampleFactoryV0 : public ResourceVersionFactory
 class AudioSampleFactoryV1 : public ResourceVersionFactory
 {
   public:
-    void ParseFileBinary(std::shared_ptr<BinaryReader> reader, std::shared_ptr<Resource> resource) override;
+    void ParseFileBinary(std::shared_ptr<BinaryReader> reader, std::shared_ptr<IResource> resource) override;
 };
 }; // namespace LUS

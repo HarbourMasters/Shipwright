@@ -75,7 +75,7 @@ void LUS::AudioSampleFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> re
 }
 
 void LUS::AudioSampleFactoryV1::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                                 std::shared_ptr<Resource> resource)
+                                                 std::shared_ptr<IResource> resource)
 {
     std::shared_ptr<AudioSample> audioSample = std::static_pointer_cast<AudioSample>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, audioSample);
