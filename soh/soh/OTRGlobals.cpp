@@ -110,6 +110,8 @@ CrowdControl* CrowdControl::Instance;
 #include "soh/resource/importer/TextFactory.h"
 #include "soh/resource/importer/BackgroundFactory.h"
 
+#include "soh/config/ConfigUpdaters.h"
+
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
 CustomMessageManager* CustomMessageManager::Instance;
@@ -789,6 +791,10 @@ extern "C" void InitOTR() {
         CrowdControl::Instance->Disable();
     }
 #endif
+
+    std::shared_ptr<LUS::Config> conf = OTRGlobals::Instance->context->GetConfig(); 
+    conf->RegisterConfigVersion(std::make_shared<LUS::ConfigVersion0Updater>());
+    conf->RunVersionUpdates();
 }
 
 extern "C" void SaveManager_ThreadPoolWait() {

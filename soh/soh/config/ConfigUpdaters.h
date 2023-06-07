@@ -3,7 +3,37 @@
 namespace LUS {
 class ConfigVersion0Updater : public ConfigVersionUpdater {
     public:
-    void Update(std::shared_ptr<Config> conf) {
+    void Update(Config* conf) {
+        if (conf->GetInt("Window.Width", 640) == 640) {
+            conf->Erase("Window.Width");
+        }
+        if (conf->GetInt("Window.Height", 480) == 480) {
+            conf->Erase("Window.Height");
+        }
+        if (conf->GetInt("Window.PositionX", 100) == 100) {
+            conf->Erase("Window.PositionX");
+        }
+        if (conf->GetInt("Window.PositionY", 100) == 100) {
+            conf->Erase("Window.PositionY");
+        }
+        if (conf->GetString("Window.GfxBackend", "") == "") {
+            conf->Erase("Window.GfxBackend");
+        }
+        if (conf->GetString("Window.GfxApi", "") == "") {
+            conf->Erase("Window.GfxApi");
+        }
+        if (conf->GetString("Window.AudioBackend", "") == "") {
+            conf->Erase("Window.AudioBackend");
+        }
+        if (conf->GetBool("Window.Fullscreen.Enabled", false) == false) {
+            conf->Erase("Window.Fullscreen.Enabled");
+        }
+        if (conf->GetInt("Window.Fullscreen.Width", 1920) == 1920) {
+            conf->Erase("Window.Fullscreen.Width");
+        }
+        if (conf->GetInt("Window.Fullscreen.Height", 1080) == 1080) {
+            conf->Erase("Window.Fullscreen.Height");
+        }
         if (conf->GetInt("Shortcuts.Fullscreen", KbScancode::LUS_KB_F11) == KbScancode::LUS_KB_F10) {
             conf->Erase("Shortcuts.Fullscreen");
         }
