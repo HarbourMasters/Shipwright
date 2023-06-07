@@ -914,11 +914,15 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     
         // Greg Bridge
         if (Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE) == RO_BRIDGE_GREG) {
-            ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge1", 2, gsSPGrayscale(true));
-            ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge2", 10, gsDPSetGrayscaleColor(color.r, color.g, color.b, color.a));
+            ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge_StartGrayscale", 2, gsSPGrayscale(true));
+            ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge_MakeGreen", 10, gsDPSetGrayscaleColor(color.r, color.g, color.b, color.a));
+            ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge_EndGrayscale", 79, gsSPGrayscale(false));
+            ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge_EndDList", 80, gsSPEndDisplayList());
         } else {
-            ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge1");
-            ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge2");
+            ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge_StartGrayscale");
+            ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge_MakeGreen");
+            ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge_EndGrayscale");
+            ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge_EndDList");
         }
     }
     static CosmeticOption& consumableBlueRupee = cosmeticOptions.at("Consumable_BlueRupee");
