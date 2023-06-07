@@ -102,7 +102,6 @@ class Randomizer {
 extern "C" {
 #endif
 
-void Rando_Init(void);
 bool GenerateRandomizer(std::string seed = "");
 
 #ifdef __cplusplus

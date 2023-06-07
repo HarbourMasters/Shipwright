@@ -13,11 +13,11 @@ typedef struct {
   int32_t worldMapArea;
 } CameraSettings;
 
-class SetCameraSettings : public SceneCommand {
+class SetCameraSettings : public SceneCommand<CameraSettings> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    CameraSettings* GetPointer();
     size_t GetPointerSize();
 
     CameraSettings settings;

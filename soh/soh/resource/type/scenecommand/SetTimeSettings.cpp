@@ -1,7 +1,7 @@
 #include "SetTimeSettings.h"
 
 namespace LUS {
-void* SetTimeSettings::GetPointer() {
+TimeSettings* SetTimeSettings::GetPointer() {
     return &settings;
 }
 

@@ -2,7 +2,7 @@
 #include <libultraship/libultra/gbi.h>
 
 namespace LUS {
-void* PlayerAnimation::GetPointer() {
+int16_t* PlayerAnimation::GetPointer() {
     return limbRotData.data();
 }
 

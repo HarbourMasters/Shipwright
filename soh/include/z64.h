@@ -41,7 +41,7 @@
 #ifdef __cplusplus
 namespace LUS
 {
-    class Resource;
+    class IResource;
     class Scene;
     class DisplayList;
 };

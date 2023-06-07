@@ -14,11 +14,11 @@ typedef struct {
   uint8_t timeIncrement;
 } TimeSettings;
 
-class SetTimeSettings : public SceneCommand {
+class SetTimeSettings : public SceneCommand<TimeSettings> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    TimeSettings* GetPointer();
     size_t GetPointerSize();
 
     TimeSettings settings;

@@ -40,6 +40,14 @@ while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
                         continue
                     fi
                     ;;
+                cfbb98d392e4a9d39da8285d10cbef3974c2f012)
+                    if [[ ! -e "$SHIP_HOME"/oot.otr ]]; then
+                        ROM=N64_PAL_11
+                        OTRNAME="oot.otr"
+                    else
+                        continue
+                    fi
+                    ;;
                 50bebedad9e0f10746a52b07239e47fa6c284d03)
                     if [[ ! -e "$SHIP_HOME"/oot-mq.otr ]]; then
                         ROM=GC_MQ_D

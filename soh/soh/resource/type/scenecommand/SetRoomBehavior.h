@@ -13,11 +13,11 @@ typedef struct {
   int32_t gameplayFlags2;
 } RoomBehavior;
 
-class SetRoomBehavior : public SceneCommand {
+class SetRoomBehavior : public SceneCommand<RoomBehavior> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    RoomBehavior* GetPointer();
     size_t GetPointerSize();
 
     RoomBehavior roomBehavior;

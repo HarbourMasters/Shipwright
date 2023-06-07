@@ -44,11 +44,13 @@ enum class CutsceneCommands {
     Error = 0xFEAF,
 };
 
-class Cutscene : public Resource {
+class Cutscene : public Resource<uint32_t> {
   public:
     using Resource::Resource;
 
-    void* GetPointer();
+    Cutscene() : Resource(std::shared_ptr<ResourceInitData>()) {}
+
+    uint32_t* GetPointer();
     size_t GetPointerSize();
 
     uint32_t numCommands;

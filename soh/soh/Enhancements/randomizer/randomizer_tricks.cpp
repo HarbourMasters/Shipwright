@@ -2,7 +2,6 @@
 #include <map>
 #include <string>
 #include <libultraship/bridge.h>
-#include <ImGuiImpl.h>
 #include "z64.h"
 
 //Difficulty base tag vectors:

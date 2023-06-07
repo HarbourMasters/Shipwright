@@ -1,7 +1,7 @@
 #include "SetEntranceList.h"
 
 namespace LUS {
-void* SetEntranceList::GetPointer() {
+EntranceEntry* SetEntranceList::GetPointer() {
     return entrances.data();
 }
 

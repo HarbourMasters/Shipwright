@@ -10,11 +10,11 @@
 // #include <libultraship/libultra/types.h>
 
 namespace LUS {
-class SetCollisionHeader : public SceneCommand {
+class SetCollisionHeader : public SceneCommand<CollisionHeaderData> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    CollisionHeaderData* GetPointer();
     size_t GetPointerSize();
 
     std::string fileName;

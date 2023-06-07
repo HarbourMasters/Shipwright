@@ -13,11 +13,11 @@ typedef struct {
   int16_t globalObject;
 } SpecialObjects;
 
-class SetSpecialObjects : public SceneCommand {
+class SetSpecialObjects : public SceneCommand<SpecialObjects> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    SpecialObjects* GetPointer();
     size_t GetPointerSize();
 
     SpecialObjects specialObjects;

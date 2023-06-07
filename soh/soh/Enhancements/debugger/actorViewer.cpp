@@ -1,7 +1,6 @@
 #include "actorViewer.h"
 #include "../../util.h"
 #include "../../UIWidgets.hpp"
-#include <ImGuiImpl.h>
 #include "soh/ActorDB.h"
 
 #include <array>
@@ -9,6 +8,7 @@
 #include <map>
 #include <string>
 #include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
 
 extern "C" {
 #include <z64.h>
@@ -97,17 +97,9 @@ void PopulateActorDropdown(int i, std::vector<Actor*>& data) {
 }
 
 
-void DrawActorViewer(bool& open) {
-    if (!open) {
-        if (CVarGetInteger("gActorViewerEnabled", 0)) {
-            CVarClear("gActorViewerEnabled");
-            LUS::RequestCvarSaveOnNextTick();
-        }
-        return;
-    }
-
+void ActorViewerWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Actor Viewer", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Actor Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -351,8 +343,4 @@ void DrawActorViewer(bool& open) {
     
 
     ImGui::End();
-}
-
-void InitActorViewer() {
-    LUS::AddWindow("Developer Tools", "Actor Viewer", DrawActorViewer, CVarGetInteger("gActorViewerEnabled", 0));
 }

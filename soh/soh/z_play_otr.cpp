@@ -13,7 +13,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn);
 s32 OTRScene_ExecuteCommands(PlayState* play, LUS::Scene* scene);
 
 //LUS::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
-LUS::Resource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
+LUS::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
 {
     auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResource(fileName);
     return res.get();
@@ -82,7 +82,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     }
     /* auto data = static_cast<LUS::Vertex*>(LUS::Context::GetInstance()
                                                ->GetResourceManager()
-                                               ->LoadResource("object_link_child\\object_link_childVtx_01FE08")
+                                               ->ResourceLoad("object_link_child\\object_link_childVtx_01FE08")
                                                .get());
 
     auto data2 = ResourceMgr_LoadVtxByCRC(0x68d4ea06044e228f);*/

@@ -1,7 +1,7 @@
 #include "SetMesh.h"
 
 namespace LUS {
-void* SetMesh::GetPointer() {
+MeshHeader* SetMesh::GetPointer() {
     return &meshHeader;
 }
 

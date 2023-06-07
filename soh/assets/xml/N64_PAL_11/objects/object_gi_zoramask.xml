@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_zoramask" Segment="6">
+        <DList Name="gGiZoraMaskDL" Offset="0x1398"/>
+    </File>
+</Root>

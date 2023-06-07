@@ -1,7 +1,7 @@
 #include "SetSpecialObjects.h"
 
 namespace LUS {
-void* SetSpecialObjects::GetPointer() {
+SpecialObjects* SetSpecialObjects::GetPointer() {
     return &specialObjects;
 }
 

@@ -383,7 +383,7 @@ void FileChoose_UpdateRandomizer() {
     }
 }
 
-uint16_t lastFileChooseButtonIndex;
+static s16 sLastFileChooseButtonIndex;
 
 /**
  * Update the cursor and wait for the player to select a button to change menus accordingly.
@@ -441,6 +441,8 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
                     this->nameEntryBoxPosX = 120;
                 }
 
+                sLastFileChooseButtonIndex = -1;
+
                 this->actionTimer = 8;
             } else {
                 Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
@@ -487,10 +489,10 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         } else {
             this->warningLabel = FS_WARNING_NONE;
         }
-        
-        if (lastFileChooseButtonIndex != this->buttonIndex) {
+
+        if (sLastFileChooseButtonIndex != this->buttonIndex) {
             GameInteractor_ExecuteOnUpdateFileSelectSelection(this->buttonIndex);
-            lastFileChooseButtonIndex = this->buttonIndex;
+            sLastFileChooseButtonIndex = this->buttonIndex;
         }
     }
 }
@@ -560,6 +562,8 @@ void FileChoose_StartQuestMenu(GameState* thisx) {
     if (this->logoAlpha >= 255) {
         this->logoAlpha = 255;
         this->configMode = CM_QUEST_MENU;
+
+        GameInteractor_ExecuteOnUpdateFileQuestSelection(this->questType[this->buttonIndex]);
     }
 }
 
@@ -614,6 +618,8 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
         }
 
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+
+        GameInteractor_ExecuteOnUpdateFileQuestSelection(this->questType[this->buttonIndex]);
     }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
@@ -651,9 +657,13 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
 
     if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
         this->configMode = CM_QUEST_TO_MAIN;
+        sLastFileChooseButtonIndex = -1;
         return;
     }
 }
+
+static s8 sLastBossRushOptionIndex = -1;
+static s8 sLastBossRushOptionValue = -1;
 
 void FileChoose_UpdateBossRushMenu(GameState* thisx) {
     FileChoose_UpdateStickDirectionPromptAnim(thisx);
@@ -724,6 +734,13 @@ void FileChoose_UpdateBossRushMenu(GameState* thisx) {
         }
 
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+    }
+
+    if (sLastBossRushOptionIndex != this->bossRushIndex ||
+        sLastBossRushOptionValue != gSaveContext.bossRushOptions[this->bossRushIndex]) {
+        GameInteractor_ExecuteOnUpdateFileBossRushOptionSelection(this->bossRushIndex, gSaveContext.bossRushOptions[this->bossRushIndex]);
+        sLastBossRushOptionIndex = this->bossRushIndex;
+        sLastBossRushOptionValue = gSaveContext.bossRushOptions[this->bossRushIndex];
     }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
@@ -2072,6 +2089,7 @@ void FileChoose_FadeMainToSelect(GameState* thisx) {
         this->actionTimer = 8;
         this->selectMode++;
         this->confirmButtonIndex = FS_BTN_CONFIRM_YES;
+        sLastFileChooseButtonIndex = -1;
     }
 }
 
@@ -2149,6 +2167,11 @@ void FileChoose_ConfirmFile(GameState* thisx) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         this->confirmButtonIndex ^= 1;
     }
+
+    if (sLastFileChooseButtonIndex != this->confirmButtonIndex) {
+        GameInteractor_ExecuteOnUpdateFileSelectConfirmationSelection(this->confirmButtonIndex);
+        sLastFileChooseButtonIndex = this->confirmButtonIndex;
+    }
 }
 
 /**
@@ -2169,6 +2192,7 @@ void FileChoose_FadeOutFileInfo(GameState* thisx) {
         this->nextTitleLabel = FS_TITLE_SELECT_FILE;
         this->actionTimer = 8;
         this->selectMode++;
+        sLastFileChooseButtonIndex = -1;
     }
 
     this->confirmButtonAlpha[0] = this->confirmButtonAlpha[1] = this->fileInfoAlpha[this->buttonIndex];

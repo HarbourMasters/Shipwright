@@ -34,7 +34,6 @@
 #include "Enhancements/audio/AudioCollection.h"
 #include "Enhancements/audio/AudioEditor.h"
 #include "Enhancements/debugconsole.h"
-#include "Enhancements/debugger/debugger.h"
 #include "Enhancements/randomizer/randomizer.h"
 #include "Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "Enhancements/randomizer/randomizer_item_tracker.h"
@@ -47,7 +46,6 @@
 #include "z64.h"
 #include "macros.h"
 #include <Utils/StringHelper.h>
-#include <Hooks.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
 
 #if not defined (__SWITCH__) && not defined(__WIIU__)
@@ -73,7 +71,7 @@
 #include "Enhancements/custom-message/CustomMessageTypes.h"
 #include <functions.h>
 #include "Enhancements/item-tables/ItemTableManager.h"
-#include "GameMenuBar.hpp"
+#include "SohGui.hpp"
 #include "ActorDB.h"
 
 #ifdef ENABLE_CROWD_CONTROL
@@ -247,7 +245,7 @@ OTRGlobals::OTRGlobals() {
         OOT_PAL_GC_DBG2
     };
     // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
-    context = LUS::Context::CreateInstance("Ship of Harkinian", "soh", OTRFiles, {}, 3);
+    context = LUS::Context::CreateInstance("Ship of Harkinian", "soh", "shipofharkinian.json", OTRFiles, {}, 3);
 
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Animation, "Animation", std::make_shared<LUS::AnimationFactory>());
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_PlayerAnimation, "PlayerAnimation", std::make_shared<LUS::PlayerAnimationFactory>());
@@ -331,7 +329,7 @@ bool OTRGlobals::HasOriginal() {
 }
 
 uint32_t OTRGlobals::GetInterpolationFPS() {
-    if (LUS::WindowBackend() == LUS::Backend::DX11) {
+    if (LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() == LUS::WindowBackend::DX11) {
         return CVarGetInteger("gInterpolationFPS", 20);
     }
 
@@ -744,15 +742,14 @@ extern "C" void InitOTR() {
 #ifdef __SWITCH__
     LUS::Switch::Init(LUS::PreInitPhase);
 #elif defined(__WIIU__)
-    LUS::WiiU::Init();
+    LUS::WiiU::Init("soh");
 #endif
-    LUS::AddSetupHooksDelegate(GameMenuBar::SetupHooks);
-    LUS::RegisterMenuDrawMethod(GameMenuBar::Draw);
 
     OTRGlobals::Instance = new OTRGlobals();
-    SaveManager::Instance = new SaveManager();
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();
+    SaveManager::Instance = new SaveManager();
+    SohGui::SetupGuiElements();
     GameInteractor::Instance = new GameInteractor();
     AudioCollection::Instance = new AudioCollection();
     ActorDB::Instance = new ActorDB();
@@ -763,22 +760,13 @@ extern "C" void InitOTR() {
     SpeechSynthesizer::Instance = new SAPISpeechSynthesizer();
     SpeechSynthesizer::Instance->Init();
 #endif
-
+    
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     OTRAudio_Init();
-    InitCosmeticsEditor();
-    GameControlEditor::Init();
-    InitAudioEditor();
-    DebugConsole_Init();
-    Debug_Init();
-    Rando_Init();
-    InitItemTracker();
-    InitEntranceTracker();
-    InitStatTracker();
-    CheckTracker::InitCheckTracker();
     OTRExtScanner();
     VanillaItemTable_Init();
+    DebugConsole_Init();
 
     InitMods();
     ActorDB::AddBuiltInCustomActors();
@@ -803,12 +791,22 @@ extern "C" void InitOTR() {
 #endif
 }
 
+extern "C" void SaveManager_ThreadPoolWait() {
+    SaveManager::Instance->ThreadPoolWait();
+}
+
 extern "C" void DeinitOTR() {
+    SaveManager_ThreadPoolWait();
     OTRAudio_Exit();
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance->Disable();
     CrowdControl::Instance->Shutdown();
 #endif
+
+    // Destroying gui here because we have shared ptrs to LUS objects which output to SPDLOG which is destroyed before these shared ptrs.
+    SohGui::Destroy();
+
+    OTRGlobals::Instance->context = nullptr;
 }
 
 #ifdef _WIN32
@@ -1108,7 +1106,7 @@ extern "C" void ResourceMgr_LoadFile(const char* resName) {
     LUS::Context::GetInstance()->GetResourceManager()->LoadResource(resName);
 }
 
-std::shared_ptr<LUS::Resource> GetResourceByNameHandlingMQ(const char* path) {
+std::shared_ptr<LUS::IResource> GetResourceByNameHandlingMQ(const char* path) {
     std::string Path = path;
     if (ResourceMgr_IsGameMasterQuest()) {
         size_t pos = 0;
@@ -1126,7 +1124,7 @@ extern "C" char* GetResourceDataByNameHandlingMQ(const char* path) {
         return nullptr;
     }
     
-    return (char*)res->GetPointer();
+    return (char*)res->GetRawPointer();
 }
 
 extern "C" char* ResourceMgr_LoadFileFromDisk(const char* filePath) {
@@ -1145,7 +1143,7 @@ extern "C" char* ResourceMgr_LoadFileFromDisk(const char* filePath) {
 
 extern "C" uint8_t ResourceMgr_ResourceIsBackground(char* texPath) {
     auto res = GetResourceByNameHandlingMQ(texPath);
-    return res->InitData->Type == LUS::ResourceType::SOH_Background;
+    return res->GetInitData()->Type == LUS::ResourceType::SOH_Background;
 }
 
 extern "C" char* ResourceMgr_LoadJPEG(char* data, size_t dataSize)
@@ -1193,9 +1191,9 @@ extern "C" uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     auto res = GetResourceByNameHandlingMQ(filePath);
 
-    if (res->InitData->Type == LUS::ResourceType::DisplayList)
+    if (res->GetInitData()->Type == LUS::ResourceType::DisplayList)
         return (char*)&((std::static_pointer_cast<LUS::DisplayList>(res))->Instructions[0]);
-    else if (res->InitData->Type == LUS::ResourceType::Array)
+    else if (res->GetInitData()->Type == LUS::ResourceType::Array)
         return (char*)(std::static_pointer_cast<LUS::Array>(res))->Vertices.data();
     else {
         return (char*)GetResourceDataByNameHandlingMQ(filePath);
@@ -1205,7 +1203,7 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
 extern "C" char* ResourceMgr_LoadIfDListByName(const char* filePath) {
     auto res = GetResourceByNameHandlingMQ(filePath);
 
-    if (res->InitData->Type == LUS::ResourceType::DisplayList)
+    if (res->GetInitData()->Type == LUS::ResourceType::DisplayList)
         return (char*)&((std::static_pointer_cast<LUS::DisplayList>(res))->Instructions[0]);
     
     return nullptr;
@@ -1316,15 +1314,15 @@ extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
 }
 
 extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path) {
-    return (CollisionHeader*) GetResourceDataByName(path);
+    return (CollisionHeader*) ResourceGetDataByName(path);
 }
 
 extern "C" Vtx* ResourceMgr_LoadVtxByName(char* path) {
-    return (Vtx*) GetResourceDataByName(path);
+    return (Vtx*) ResourceGetDataByName(path);
 }
 
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path) {
-    SequenceData* sequence = (SequenceData*) GetResourceDataByName(path);
+    SequenceData* sequence = (SequenceData*) ResourceGetDataByName(path);
     return *sequence;
 }
 
@@ -1389,11 +1387,11 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
 }
 
 extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path) {
-    return (SoundFontSample*) GetResourceDataByName(path);
+    return (SoundFontSample*) ResourceGetDataByName(path);
 }
 
 extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
-    return (SoundFont*) GetResourceDataByName(path);
+    return (SoundFont*) ResourceGetDataByName(path);
 }
 
 extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
@@ -1415,7 +1413,7 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
 }
 
 extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
-    return (AnimationHeaderCommon*) GetResourceDataByName(path);
+    return (AnimationHeaderCommon*) ResourceGetDataByName(path);
 }
 
 extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime) {
@@ -1429,14 +1427,14 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, Skel
     bool isAlt = CVarGetInteger("gAltAssets", 0);
 
     if (isAlt) {
-        pathStr = LUS::Resource::gAltAssetPrefix + pathStr;
+        pathStr = LUS::IResource::gAltAssetPrefix + pathStr;
     }
 
-    SkeletonHeader* skelHeader = (SkeletonHeader*) GetResourceDataByName(pathStr.c_str());
+    SkeletonHeader* skelHeader = (SkeletonHeader*) ResourceGetDataByName(pathStr.c_str());
 
     // If there isn't an alternate model, load the regular one
     if (isAlt && skelHeader == NULL) {
-        skelHeader = (SkeletonHeader*) GetResourceDataByName(path);
+        skelHeader = (SkeletonHeader*) ResourceGetDataByName(path);
     }
 
     // This function is only called when a skeleton is initialized.
@@ -1463,8 +1461,8 @@ extern "C" s32* ResourceMgr_LoadCSByName(const char* path) {
     return (s32*)GetResourceDataByNameHandlingMQ(path);
 }
 
-std::filesystem::path GetSaveFile(std::shared_ptr<Mercury> Conf) {
-    const std::string fileName = Conf->getString("Game.SaveName", LUS::Context::GetPathRelativeToAppDirectory("oot_save.sav"));
+std::filesystem::path GetSaveFile(std::shared_ptr<LUS::Config> Conf) {
+    const std::string fileName = Conf->GetString("Game.SaveName", LUS::Context::GetPathRelativeToAppDirectory("oot_save.sav"));
     std::filesystem::path saveFile = std::filesystem::absolute(fileName);
 
     if (!exists(saveFile.parent_path())) {
@@ -1475,13 +1473,13 @@ std::filesystem::path GetSaveFile(std::shared_ptr<Mercury> Conf) {
 }
 
 std::filesystem::path GetSaveFile() {
-    const std::shared_ptr<Mercury> pConf = OTRGlobals::Instance->context->GetConfig();
+    const std::shared_ptr<LUS::Config> pConf = OTRGlobals::Instance->context->GetConfig();
 
     return GetSaveFile(pConf);
 }
 
 void OTRGlobals::CheckSaveFile(size_t sramSize) const {
-    const std::shared_ptr<Mercury> pConf = Instance->context->GetConfig();
+    const std::shared_ptr<LUS::Config> pConf = Instance->context->GetConfig();
 
     std::filesystem::path savePath = GetSaveFile(pConf);
     std::fstream saveFile(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
@@ -1595,11 +1593,11 @@ extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(vo
 }
 
 extern "C" uint32_t OTRGetCurrentWidth() {
-    return OTRGlobals::Instance->context->GetWindow()->GetCurrentWidth();
+    return OTRGlobals::Instance->context->GetWindow()->GetWidth();
 }
 
 extern "C" uint32_t OTRGetCurrentHeight() {
-    return OTRGlobals::Instance->context->GetWindow()->GetCurrentHeight();
+    return OTRGlobals::Instance->context->GetWindow()->GetHeight();
 }
 
 Color_RGB8 GetColorForControllerLED() {
@@ -1684,10 +1682,6 @@ extern "C" int16_t OTRGetRectDimensionFromRightEdge(float v) {
     return ((int)ceilf(OTRGetDimensionFromRightEdge(v)));
 }
 
-extern "C" bool AudioPlayer_Init(void) {
-    return AudioPlayerInit();
-}
-
 extern "C" int AudioPlayer_Buffered(void) {
     return AudioPlayerBuffered();
 }
@@ -1712,22 +1706,6 @@ extern "C" int Controller_ShouldRumble(size_t slot) {
     }
 
     return 0;
-}
-
-extern "C" void Controller_BlockGameInput() {
-    auto controlDeck = LUS::Context::GetInstance()->GetControlDeck();
-
-    controlDeck->BlockGameInput();
-}
-
-extern "C" void Controller_UnblockGameInput() {
-    auto controlDeck = LUS::Context::GetInstance()->GetControlDeck();
-
-    controlDeck->UnblockGameInput();
-}
-
-extern "C" void Hooks_ExecuteAudioInit() {
-    LUS::ExecuteHooks<LUS::AudioInit>();
 }
 
 extern "C" void* getN64WeirdFrame(s32 i) {
@@ -2049,29 +2027,29 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     if (textId == TEXT_RANDO_SAVE_VERSION_WARNING) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_RANDO_SAVE_VERSION_WARNING);
     }
-        font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
-        switch (gSaveContext.language) {
-            case LANGUAGE_FRA:
-                return msgCtx->msgLength = font->msgLength =
-                           CopyStringToCharBuffer(messageEntry.GetFrench(), buffer, maxBufferSize);
-            case LANGUAGE_GER:
-                return msgCtx->msgLength = font->msgLength =
-                           CopyStringToCharBuffer(messageEntry.GetGerman(), buffer, maxBufferSize);
-            case LANGUAGE_ENG:
-            default:
-                return msgCtx->msgLength = font->msgLength =
-                           CopyStringToCharBuffer(messageEntry.GetEnglish(), buffer, maxBufferSize);
-        }
+    font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
+    switch (gSaveContext.language) {
+        case LANGUAGE_FRA:
+            return msgCtx->msgLength = font->msgLength =
+                       CopyStringToCharBuffer(messageEntry.GetFrench(), buffer, maxBufferSize);
+        case LANGUAGE_GER:
+            return msgCtx->msgLength = font->msgLength =
+                       CopyStringToCharBuffer(messageEntry.GetGerman(), buffer, maxBufferSize);
+        case LANGUAGE_ENG:
+        default:
+            return msgCtx->msgLength = font->msgLength =
+                       CopyStringToCharBuffer(messageEntry.GetEnglish(), buffer, maxBufferSize);
+    }
     return false;
 }
 
 extern "C" void Overlay_DisplayText(float duration, const char* text) {
-    LUS::GetGameOverlay()->TextDrawNotification(duration, true, text);
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(duration, true, text);
 }
 
 extern "C" void Overlay_DisplayText_Seconds(int seconds, const char* text) {
     float duration = seconds * OTRGlobals::Instance->GetInterpolationFPS() * 0.05;
-    LUS::GetGameOverlay()->TextDrawNotification(duration, true, text);
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(duration, true, text);
 }
 
 extern "C" void Entrance_ClearEntranceTrackingData(void) {
@@ -2092,8 +2070,4 @@ extern "C" void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex) {
 
 extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement) {
     gfx_register_blended_texture(name, mask, replacement);
-}
-
-extern "C" void SaveManager_ThreadPoolWait() {
-    SaveManager::Instance->ThreadPoolWait();
 }

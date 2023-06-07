@@ -10,6 +10,6 @@ class SceneCommandFactory : public ResourceFactory {};
 
 class SceneCommandVersionFactory : public ResourceVersionFactory {
 protected:
-    void ReadCommandId(std::shared_ptr<SceneCommand> command, std::shared_ptr<BinaryReader> reader);
+    void ReadCommandId(std::shared_ptr<ISceneCommand> command, std::shared_ptr<BinaryReader> reader);
 };
 }; // namespace LUS

@@ -332,8 +332,8 @@ void Player_SetBootData(PlayState* play, Player* this) {
 
 // Custom method used to determine if we're using a custom model for link
 uint8_t Player_IsCustomLinkModel() {
-    return (LINK_IS_ADULT && GetResourceIsCustomByName(gLinkAdultSkel)) ||
-           (LINK_IS_CHILD && GetResourceIsCustomByName(gLinkChildSkel));
+    return (LINK_IS_ADULT && ResourceGetIsCustomByName(gLinkAdultSkel)) ||
+           (LINK_IS_CHILD && ResourceGetIsCustomByName(gLinkChildSkel));
 }
 
 s32 Player_InBlockingCsMode(PlayState* play, Player* this) {
