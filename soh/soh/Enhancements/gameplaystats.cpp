@@ -330,7 +330,7 @@ void LoadStatsVersion1() {
     });
 }
 
-void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
+void SaveStats(SaveContext* saveContext, int sectionID) {
     SaveManager::Instance->SaveData("buildVersion", saveContext->sohStats.buildVersion);
     SaveManager::Instance->SaveData("buildVersionMajor", saveContext->sohStats.buildVersionMajor);
     SaveManager::Instance->SaveData("buildVersionMinor", saveContext->sohStats.buildVersionMinor);

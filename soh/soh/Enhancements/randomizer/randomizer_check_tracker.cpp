@@ -838,7 +838,7 @@ void LoadFile() {
 
 void Init() {
     SaveManager::Instance->AddInitFunction(InitTrackerData);
-    sectionId = SaveManager::Instance->AddSaveFunction("checkTracker", 1, SaveFile, true, -1);
+    //sectionId = SaveManager::Instance->AddSaveFunction("checkTracker", 1, SaveFile, true, -1);
     SaveManager::Instance->AddLoadFunction("checkTracker", 1, LoadFile);
 }
 

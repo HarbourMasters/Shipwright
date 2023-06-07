@@ -258,6 +258,9 @@ OTRGlobals::OTRGlobals() {
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_AudioSequence, "AudioSequence", std::make_shared<LUS::AudioSequenceFactory>());
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Background, "Background", std::make_shared<LUS::BackgroundFactory>());
 
+    gSaveStateMgr = std::make_shared<SaveStateMgr>();
+    gRandomizer = std::make_shared<Randomizer>();
+
     hasMasterQuest = hasOriginal = false;
 
     // Move the camera strings from read only memory onto the heap (writable memory)
@@ -743,8 +746,6 @@ extern "C" void InitOTR() {
 
     OTRGlobals::Instance = new OTRGlobals();
     SaveManager::Instance = new SaveManager();
-    OTRGlobals::Instance->gSaveStateMgr = std::make_shared<SaveStateMgr>();
-    OTRGlobals::Instance->gRandomizer = std::make_shared<Randomizer>();
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();
     GameInteractor::Instance = new GameInteractor();

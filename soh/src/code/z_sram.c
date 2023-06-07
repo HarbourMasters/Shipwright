@@ -193,20 +193,16 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
     u16* ptr;
     u16 checksum;
 
-    if (fileChooseCtx->questType[fileChooseCtx->buttonIndex] == 2 && strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0) {
-        // Set N64DD Flags for save file
-        fileChooseCtx->n64ddFlags[fileChooseCtx->buttonIndex] = 1;
-        fileChooseCtx->n64ddFlag = 1;
-        gSaveContext.n64ddFlag = 1;
-    } else {
-        gSaveContext.n64ddFlag = 0;
-    }
-
     if (fileChooseCtx->buttonIndex != 0 || !CVarGetInteger("gDebugEnabled", 0)) {
         Sram_InitNewSave();
     } else {
         Sram_InitDebugSave();
     }
+
+    gSaveContext.entranceIndex = 0xBB;
+    gSaveContext.linkAge = 1;
+    gSaveContext.dayTime = 0x6AAB;
+    gSaveContext.cutsceneIndex = 0xFFF1;
 
     if ((fileChooseCtx->buttonIndex == 0 && CVarGetInteger("gDebugEnabled", 0)) || CVarGetInteger("gNaviSkipCutscene", 0)) {
         gSaveContext.cutsceneIndex = 0;
@@ -214,6 +210,15 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
 
     for (offset = 0; offset < 8; offset++) {
         gSaveContext.playerName[offset] = Save_GetSaveMetaInfo(fileChooseCtx->buttonIndex)->playerName[offset];
+    }
+
+    if (fileChooseCtx->questType[fileChooseCtx->buttonIndex] == 2 && strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0) {
+        // Set N64DD Flags for save file
+        fileChooseCtx->n64ddFlags[fileChooseCtx->buttonIndex] = 1;
+        fileChooseCtx->n64ddFlag = 1;
+        gSaveContext.n64ddFlag = 1;
+
+        Randomizer_InitSaveFile();
     }
 
     Save_SaveFile();

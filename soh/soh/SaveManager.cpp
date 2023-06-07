@@ -270,7 +270,7 @@ void SaveManager::LoadRandomizerVersion2() {
     SaveManager::Instance->LoadData("lastScene", gSaveContext.lastScene, (uint32_t)0);
 }
 
-void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool fullSave) {
+void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID) {
 
     if(!saveContext->n64ddFlag) return;
 
@@ -587,11 +587,6 @@ void SaveManager::InitFileNormal() {
     gSaveContext.pendingSaleMod = MOD_NONE;
 
     //RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
-
-    gSaveContext.entranceIndex = 0xBB;
-    gSaveContext.linkAge = 1;
-    gSaveContext.dayTime = 0x6AAB;
-    gSaveContext.cutsceneIndex = 0xFFF1;
 }
 
 void SaveManager::InitFileDebug() {
@@ -720,7 +715,7 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
             }
 
             currentJsonContext = &sectionBlock["data"];
-            sectionHandlerPair.second.func(saveContext, sectionID, true);
+            sectionHandlerPair.second.func(saveContext, sectionID);
         }
     } else {
         SaveFuncInfo svi = sectionSaveHandlers.find(sectionID)->second;
@@ -735,7 +730,7 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
         nlohmann::json& sectionBlock = saveBlock["sections"][sectionName];
         sectionBlock["version"] = sectionVersion;
         currentJsonContext = &sectionBlock["data"];
-        svi.func(saveContext, sectionID, false);
+        svi.func(saveContext, sectionID);
     }
 
 #if defined(__SWITCH__) || defined(__WIIU__)
@@ -873,11 +868,11 @@ void SaveManager::AddLoadFunction(const std::string& name, int version, LoadFunc
     sectionLoadHandlers[name][version] = func;
 }
 
-int SaveManager::AddSaveFunction(const std::string& name, int version, SaveFunc func, bool saveWithBase, int parentSection = -1) {
+void SaveManager::AddSaveFunction(const std::string& name, int version, SaveFunc func, bool saveWithBase, int parentSection = -1) {
     if (sectionRegistry.contains(name)) {
         SPDLOG_ERROR("Adding save function for section that already has one: " + name);
         assert(false);
-        return -1;
+        return;
     }
 
     int index = sectionIndex;
@@ -889,7 +884,6 @@ int SaveManager::AddSaveFunction(const std::string& name, int version, SaveFunc 
     SaveFuncInfo sfi = { name, version, func, saveWithBase, parentSection };
     sectionSaveHandlers.emplace(index, sfi);
     sectionRegistry.emplace(name, index);
-    return index;
 }
 
 void SaveManager::AddPostFunction(const std::string& name, PostFunc func) {
@@ -1659,7 +1653,7 @@ void SaveManager::LoadBaseVersion4() {
     SaveManager::Instance->LoadData("dogParams", gSaveContext.dogParams);
 }
 
-void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSave) {
+void SaveManager::SaveBase(SaveContext* saveContext, int sectionID) {
     SaveManager::Instance->SaveData("entranceIndex", saveContext->entranceIndex);
     SaveManager::Instance->SaveData("linkAge", saveContext->linkAge);
     SaveManager::Instance->SaveData("cutsceneIndex", saveContext->cutsceneIndex);

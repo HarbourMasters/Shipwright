@@ -137,8 +137,8 @@ Randomizer::Randomizer() {
         };
     }
 
-    SaveManager::Instance->AddInitFunction(Randomizer_InitSaveFile);
-    CheckTracker::Init();
+    //SaveManager::Instance->AddInitFunction(Randomizer_InitSaveFile);
+    //CheckTracker::Init();
 
     RegisterTrackerHooks();
 }
