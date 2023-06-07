@@ -8,7 +8,7 @@
 #include "vt.h"
 #include "objects/object_ta/object_ta.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnTa_Init(Actor* thisx, PlayState* play);
 void EnTa_Destroy(Actor* thisx, PlayState* play);
@@ -181,7 +181,7 @@ void EnTa_Init(Actor* thisx, PlayState* play2) {
                     Actor_Kill(&this->actor);
                 } else {
                     if (IS_DAY) {
-                        this->actor.flags |= ACTOR_FLAG_4;
+                        this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
                         this->unk_2C4[0] = this->unk_2C4[1] = this->unk_2C4[2] = 7;
                         this->superCuccos[0] = (EnNiw*)Actor_Spawn(
                             &play->actorCtx, play, ACTOR_EN_NIW, this->actor.world.pos.x + 5.0f,
@@ -243,6 +243,8 @@ void EnTa_Destroy(Actor* thisx, PlayState* play) {
     if (this->unk_2E0 & 0x200) {
         func_800F5B58();
     }
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 func_80B142F4(EnTa* this, PlayState* play, u16 textId) {
@@ -454,7 +456,7 @@ void func_80B14AF4(EnTa* this, PlayState* play) {
         Audio_PlayActorSound2(&this->actor, NA_SE_VO_TA_CRY_1);
         func_80B13AA0(this, func_80B14A54, func_80B167C0);
         this->unk_2CC = 65;
-        this->actor.flags |= ACTOR_FLAG_4;
+        this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
     }
 }
 
@@ -620,7 +622,7 @@ void func_80B15100(EnTa* this, PlayState* play) {
 void func_80B15260(EnTa* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actionFunc = func_80B15100;
-        this->actor.flags &= ~ACTOR_FLAG_16;
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
     } else {
         func_8002F2CC(&this->actor, play, 1000.0f);
     }
@@ -727,7 +729,7 @@ void func_80B154FC(EnTa* this, PlayState* play) {
                             break;
                     }
                     this->actionFunc = func_80B15260;
-                    this->actor.flags |= ACTOR_FLAG_16;
+                    this->actor.flags |= ACTOR_FLAG_WILL_TALK;
                     func_8002F2CC(&this->actor, play, 1000.0f);
                     return;
                 }
@@ -1062,9 +1064,9 @@ void func_80B16608(EnTa* this, PlayState* play) {
                 this->actionFunc = func_80B1642C;
                 break;
         }
-        this->actor.flags &= ~ACTOR_FLAG_16;
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
     } else {
-        this->actor.flags |= ACTOR_FLAG_16;
+        this->actor.flags |= ACTOR_FLAG_WILL_TALK;
         func_8002F2CC(&this->actor, play, 1000.0f);
     }
     this->unk_2E0 |= 1;

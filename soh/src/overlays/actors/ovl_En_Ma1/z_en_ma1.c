@@ -7,7 +7,7 @@
 #include "z_en_ma1.h"
 #include "objects/object_ma1/object_ma1.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_5 | ACTOR_FLAG_25)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void EnMa1_Init(Actor* thisx, PlayState* play);
 void EnMa1_Destroy(Actor* thisx, PlayState* play);
@@ -426,7 +426,7 @@ void func_80AA0F44(EnMa1* this, PlayState* play) {
             this->actor.textId = 0x2061;
             Message_StartTextbox(play, this->actor.textId, NULL);
             this->interactInfo.talkState = NPC_TALK_STATE_TALKING;
-            this->actor.flags |= ACTOR_FLAG_16;
+            this->actor.flags |= ACTOR_FLAG_WILL_TALK;
             // when rando'ed, skip to the Item Giving. Otherwise go to the song teaching code.
             this->actionFunc = gSaveContext.n64ddFlag ? func_80AA1150 : func_80AA106C;
         } else if (this->actor.xzDistToPlayer < 30.0f + (f32)this->collider.dim.radius) {
@@ -448,7 +448,7 @@ void func_80AA106C(EnMa1* this, PlayState* play) {
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
         Audio_OcaSetInstrument(2);
         func_8010BD58(play, OCARINA_ACTION_TEACH_EPONA);
-        this->actor.flags &= ~ACTOR_FLAG_16;
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
         this->actionFunc = func_80AA10EC;
     }
 }
@@ -500,7 +500,7 @@ void func_80AA1150(EnMa1* this, PlayState* play) {
             // and give the song on next update.
             func_80078884(NA_SE_SY_CORRECT_CHIME);
             this->actionFunc = EnMa1_EndTeachSong;
-            this->actor.flags &= ~ACTOR_FLAG_16;
+            this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
             play->msgCtx.ocarinaMode = OCARINA_MODE_00;
         }
     }

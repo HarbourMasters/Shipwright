@@ -20,6 +20,7 @@ You can verify you have a supported copy of the game by checking the `sha1` hash
 
 | Supported Version | `sha1` |
 | - | - |
+| PAL 1.1 | `cfbb98d392e4a9d39da8285d10cbef3974c2f012` |
 | PAL GC | `0227d7c0074f2d0ac935631990da8ec5914597b4` |
 | PAL GC (Debug) | `cee6bc3c2a634b41728f2af8da54d9bf8cc14099` |
 | PAL MQ (Debug) | `079b855b943d6ad8bd1eb026c0ed169ecbdac7da` |
@@ -86,7 +87,9 @@ Currently, there are three rendering APIs supported: DirectX11 (Windows), OpenGL
 
 Custom assets are packed in `.otr` files. To use custom assets, place them in the `mods` folder.
 
-If you're interested in creating and/or packing your own custom asset `.otr` files, check out [**retro**](https://github.com/HarbourMasters64/retro)!
+If you're interested in creating and/or packing your own custom asset `.otr` files, check out the following tools:
+* [**retro - OTR generator**](https://github.com/HarbourMasters64/retro)
+* [**fast64 - Blender plugin**](https://github.com/HarbourMasters/fast64)
 
 # Development
 ### Building
@@ -101,6 +104,7 @@ If you want to playtest a continuous integration build, you can find them at the
 * [Linux (performance)](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-linux-performance.zip) _(requires `glibc 2.35` or newer, but will be more performant than the compatibility build.)_
 * [Linux (compatibility)](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-linux-compatiblity.zip) _(compatible with most Linux distributions, but may not be as performant as the performance build.)_
 * [Switch](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-switch.zip)
+* [Wii U](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-wiiu.zip)
 
 <a href="https://github.com/Kenix3/libultraship/">
   <picture>

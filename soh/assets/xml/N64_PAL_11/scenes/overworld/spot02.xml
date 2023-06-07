@@ -1,0 +1,17 @@
+<Root>
+    <File Name="spot02_scene" Segment="2">
+        <Scene Name="spot02_scene" Offset="0x0"/>
+
+        <Cutscene Name="spot02_scene_Cs_003C80" Offset="0x3C80"/>
+
+        <Cutscene Name="spot02_scene_Cs_005020" Offset="0x5020"/>
+        <Cutscene Name="gGraveyardIntroCs" Offset="0x70C0"/>
+    </File>
+    <File Name="spot02_room_0" Segment="3">
+        <DList Name="gSpot02DL_0026D0" Offset="0x26D0"/>
+        <Room Name="spot02_room_0" Offset="0x0"/>
+    </File>
+    <File Name="spot02_room_1" Segment="3">
+        <Room Name="spot02_room_1" Offset="0x0"/>
+    </File>
+</Root>

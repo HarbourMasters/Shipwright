@@ -41,7 +41,7 @@
 #ifdef __cplusplus
 namespace LUS
 {
-    class Resource;
+    class IResource;
     class Scene;
     class DisplayList;
 };
@@ -1252,6 +1252,7 @@ typedef struct {
   /*      */ char* germanName;
   /*      */ char* frenchName;
   /*      */ s32 entranceIndex;
+  /*      */ u8 canBeMQ;
 } BetterSceneSelectEntrancePair;
 
 typedef struct {
@@ -1259,7 +1260,7 @@ typedef struct {
     /*      */ char* germanName;
     /*      */ char* frenchName;
     /*      */ void (*loadFunc)(struct SelectContext*, s32);
-    /*      */ s32 count;
+    /*      */ u8 entranceCount;
     /*      */ BetterSceneSelectEntrancePair entrancePairs[18];
 } BetterSceneSelectEntry;
 
@@ -1292,9 +1293,12 @@ typedef struct SelectContext {
     /* 0x0230 */ s32 lockDown;
     /* 0x0234 */ s32 unk_234; // unused
     /* 0x0238 */ u8* staticSegment;
+    // #region SOH [General]
     /*        */ s32 currentEntrance;
+    /*        */ u8 isBetterWarp;
     /*        */ BetterSceneSelectEntry* betterScenes;
     /*        */ BetterSceneSelectGrottoData* betterGrottos;
+    // #endregion
 } SelectContext; // size = 0x240
 
 typedef struct {
@@ -1499,6 +1503,10 @@ typedef struct {
     f32 stickAnimTween;
     u8 arrowAnimState;
     u8 stickAnimState;
+    uint8_t bossRushIndex;
+    uint8_t bossRushOffset;
+    int16_t bossRushUIAlpha;
+    uint16_t bossRushArrowOffset;
 } FileChooseContext; // size = 0x1CAE0
 
 typedef enum {
@@ -2231,6 +2239,13 @@ typedef enum {
     /* 0x01 */ PAUSE_ANY_CURSOR_ALWAYS_ON,
     /* 0x02 */ PAUSE_ANY_CURSOR_ALWAYS_OFF,
 } PauseCursorAnySlotOptions;
+
+typedef enum {
+    LED_SOURCE_TUNIC_ORIGINAL,
+    LED_SOURCE_TUNIC_COSMETICS,
+    LED_SOURCE_HEALTH,
+    LED_SOURCE_CUSTOM
+} LEDColorSource;
 
 #define ROM_FILE(name) \
     { 0, 0, #name }

@@ -1,7 +1,7 @@
 #include "AudioSample.h"
 
 namespace LUS {
-void* AudioSample::GetPointer() {
+Sample* AudioSample::GetPointer() {
     return &sample;
 }
 

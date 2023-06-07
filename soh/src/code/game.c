@@ -466,7 +466,7 @@ void GameState_Destroy(GameState* gameState) {
     ResourceMgr_ClearSkeletons();
 
     if (CVarGetInteger("gAltAssets", 0)) {
-        UnloadResourceDirectory("alt/*");
+        ResourceUnloadDirectory("alt/*");
         gfx_texture_cache_clear();
     }
 }

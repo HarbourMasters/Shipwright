@@ -8,7 +8,7 @@
 #include "vt.h"
 #include "objects/object_rl/object_rl.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void EnRl_Init(Actor* thisx, PlayState* play);
 void EnRl_Destroy(Actor* thisx, PlayState* play);

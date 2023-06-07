@@ -19,11 +19,11 @@ typedef struct {
     /* 0x14 */ s16 fogFar;
 } EnvLightSettings; // size = 0x16
 
-class SetLightingSettings : public SceneCommand {
+class SetLightingSettings : public SceneCommand<EnvLightSettings> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    EnvLightSettings* GetPointer();
     size_t GetPointerSize();
 
     std::vector<EnvLightSettings> settings;

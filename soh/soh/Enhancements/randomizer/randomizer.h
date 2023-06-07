@@ -9,6 +9,7 @@
 #include <memory>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
+#include "soh/Enhancements/randomizer/randomizer_tricks.h"
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
@@ -101,7 +102,6 @@ class Randomizer {
 extern "C" {
 #endif
 
-void Rando_Init(void);
 bool GenerateRandomizer(std::string seed = "");
 
 #ifdef __cplusplus

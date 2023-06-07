@@ -47,10 +47,20 @@ enum class SceneCommandID : uint8_t {
     Error = 0xFF
 };
 
-class SceneCommand : public Resource {
+class ISceneCommand : public IResource {
 public:
-  using Resource::Resource;
-  SceneCommandID cmdId;
+    using IResource::IResource;
+    ISceneCommand() : IResource(std::shared_ptr<ResourceInitData>()) {}
+    SceneCommandID cmdId;
+};
+
+template <class T> class SceneCommand : public ISceneCommand {
+  public:
+    using ISceneCommand::ISceneCommand;
+    virtual T* GetPointer() = 0;
+    void* GetRawPointer() override {
+        return static_cast<void*>(GetPointer());
+    }
 };
 
 }; // namespace LUS

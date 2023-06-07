@@ -8,7 +8,7 @@
 #include "objects/object_sd/object_sd.h"
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void EnHeishi1_Init(Actor* thisx, PlayState* play);
 void EnHeishi1_Destroy(Actor* thisx, PlayState* play);
@@ -33,7 +33,7 @@ void EnHeishi1_WaitNight(EnHeishi1* this, PlayState* play);
 s32 sHeishi1PlayerIsCaught = false;
 
 const ActorInit En_Heishi1_InitVars = {
-    0,
+    ACTOR_EN_HEISHI1,
     ACTORCAT_NPC,
     FLAGS,
     OBJECT_SD,
@@ -142,6 +142,9 @@ void EnHeishi1_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnHeishi1_Destroy(Actor* thisx, PlayState* play) {
+    EnHeishi1* this = (EnHeishi1*)thisx;
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnHeishi1_SetupWalk(EnHeishi1* this, PlayState* play) {

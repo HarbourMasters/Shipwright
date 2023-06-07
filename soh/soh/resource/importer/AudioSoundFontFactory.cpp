@@ -27,13 +27,12 @@ std::string ResourceMgr_BaseName(std::string path) {
 }
 
 namespace LUS {
-std::shared_ptr<Resource> AudioSoundFontFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
-                                                              std::shared_ptr<ResourceInitData> initData,
-                                                              std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<AudioSoundFont>(resourceMgr, initData);
+std::shared_ptr<IResource>
+AudioSoundFontFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+    auto resource = std::make_shared<AudioSoundFont>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-    switch (resource->InitData->ResourceVersion) {
+    switch (resource->GetInitData()->ResourceVersion) {
     case 2:
 	factory = std::make_shared<AudioSoundFontFactoryV0>();
 	break;
@@ -41,7 +40,7 @@ std::shared_ptr<Resource> AudioSoundFontFactory::ReadResource(std::shared_ptr<Re
 
     if (factory == nullptr)
     {
-        SPDLOG_ERROR("Failed to load AudioSoundFont with version {}", resource->InitData->ResourceVersion);
+        SPDLOG_ERROR("Failed to load AudioSoundFont with version {}", resource->GetInitData()->ResourceVersion);
         return nullptr;
     }
 
@@ -51,7 +50,7 @@ std::shared_ptr<Resource> AudioSoundFontFactory::ReadResource(std::shared_ptr<Re
 }
 
 void LUS::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                                    std::shared_ptr<Resource> resource) {
+                                                    std::shared_ptr<IResource> resource) {
     std::shared_ptr<AudioSoundFont> audioSoundFont = std::static_pointer_cast<AudioSoundFont>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, audioSoundFont);
 
@@ -119,7 +118,7 @@ void LUS::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader>
             res = res ? res : LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess("custom/samples/mp3/" + sampleBaseName);
             res = res ? res : LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess("custom/samples/z64/" + sampleBaseName);
             res = res ? res : LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(sampleFileName.c_str());
-            drum.sound.sample = static_cast<Sample*>(res ? res->GetPointer() : nullptr);
+            drum.sound.sample = static_cast<Sample*>(res ? res->GetRawPointer() : nullptr);
         }
 
         audioSoundFont->drums.push_back(drum);
@@ -169,7 +168,7 @@ void LUS::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader>
             res = res ? res : LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess("custom/samples/mp3/" + sampleBaseName);
             res = res ? res : LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess("custom/samples/z64/" + sampleBaseName);
             res = res ? res : LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(sampleFileName.c_str());
-            instrument.lowNotesSound.sample = static_cast<Sample*>(res ? res->GetPointer() : nullptr);
+            instrument.lowNotesSound.sample = static_cast<Sample*>(res ? res->GetRawPointer() : nullptr);
         } else {
             instrument.lowNotesSound.sample = nullptr;
             instrument.lowNotesSound.tuning = 0;
@@ -187,7 +186,7 @@ void LUS::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader>
             res = res ? res : LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess("custom/samples/mp3/" + sampleBaseName);
             res = res ? res : LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess("custom/samples/z64/" + sampleBaseName);
             res = res ? res : LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(sampleFileName.c_str());
-            instrument.normalNotesSound.sample = static_cast<Sample*>(res ? res->GetPointer() : nullptr);
+            instrument.normalNotesSound.sample = static_cast<Sample*>(res ? res->GetRawPointer() : nullptr);
         } else {
             instrument.normalNotesSound.sample = nullptr;
             instrument.normalNotesSound.tuning = 0;
@@ -234,7 +233,7 @@ void LUS::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader>
             res = res ? res : LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess("custom/samples/mp3/" + sampleBaseName);
             res = res ? res : LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess("custom/samples/z64/" + sampleBaseName);
             res = res ? res : LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(sampleFileName.c_str());
-            soundEffect.sample = static_cast<Sample*>(res ? res->GetPointer() : nullptr);
+            soundEffect.sample = static_cast<Sample*>(res ? res->GetRawPointer() : nullptr);
         }
         
         audioSoundFont->soundEffects.push_back(soundEffect);

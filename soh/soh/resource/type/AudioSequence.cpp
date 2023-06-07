@@ -2,7 +2,7 @@
 
 namespace LUS {
 
-void* AudioSequence::GetPointer() {
+Sequence* AudioSequence::GetPointer() {
     return &sequence;
 }
 

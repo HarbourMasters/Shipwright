@@ -1,0 +1,16 @@
+<Root>
+    <File Name="object_gi_liquid" Segment="6">
+        <DList Name="gGiGreenPotColorDL" Offset="0x1270"/>
+        <DList Name="gGiRedPotColorDL" Offset="0x1290"/>
+        <DList Name="gGiBluePotColorDL" Offset="0x12B0"/>
+        <DList Name="gGiGreenLiquidColorDL" Offset="0x12D0"/>
+        <DList Name="gGiRedLiquidColorDL" Offset="0x12F0"/>
+        <DList Name="gGiBlueLiquidColorDL" Offset="0x1310"/>
+        <DList Name="gGiGreenPatternColorDL" Offset="0x1330"/>
+        <DList Name="gGiRedPatternColorDL" Offset="0x1388"/>
+        <DList Name="gGiBluePatternColorDL" Offset="0x13E0"/>
+        <DList Name="gGiPotionPotDL" Offset="0x1438"/>
+        <DList Name="gGiPotionLiquidDL" Offset="0x1790"/>
+        <DList Name="gGiPotionPatternDL" Offset="0x1848"/>
+    </File>
+</Root>
