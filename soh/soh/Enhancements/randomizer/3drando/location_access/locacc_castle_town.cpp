@@ -85,7 +85,7 @@ void AreaTable_Init_CastleTown() {
                 }, {
                   //Locations
                   LocationAccess(HC_MALON_EGG,              {[]{return true;}}),
-                  LocationAccess(HC_GS_TREE,                {[]{return CanChildAttack;}}),
+                  LocationAccess(HC_GS_TREE,                {[]{return CanHurtGoldSkull;}}),
                   LocationAccess(HC_MALON_GOSSIP_STONE,     {[]{return true;}}),
                   LocationAccess(HC_ROCK_WALL_GOSSIP_STONE, {[]{return true;}}),
                 }, {

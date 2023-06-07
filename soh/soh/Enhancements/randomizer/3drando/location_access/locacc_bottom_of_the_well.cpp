@@ -62,8 +62,8 @@ void AreaTable_Init_BottomOfTheWell() {
                   LocationAccess(BOTTOM_OF_THE_WELL_MQ_COMPASS_CHEST,              {[]{return CanUseSword || (CanUse(STICKS) && LogicChildDeadhand);}}),
                   LocationAccess(BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_FREESTANDING_KEY, {[]{return HasExplosives || (LogicBotwMQDeadHandKey && CanUse(BOOMERANG));}}),
                     //Trick: HasExplosives || (LogicBotWMQDeadHandKey && CanUse(BOOMERANG))
-                  LocationAccess(BOTTOM_OF_THE_WELL_MQ_GS_BASEMENT,                {[]{return CanChildAttack || IsAdult;}}),
-                  LocationAccess(BOTTOM_OF_THE_WELL_MQ_GS_COFFIN_ROOM,             {[]{return (CanChildAttack || IsAdult) && SmallKeys(BOTTOM_OF_THE_WELL, 2);}}),
+                  LocationAccess(BOTTOM_OF_THE_WELL_MQ_GS_BASEMENT,                {[]{return CanHurtGoldSkull;}}),
+                  LocationAccess(BOTTOM_OF_THE_WELL_MQ_GS_COFFIN_ROOM,             {[]{return CanHurtGoldSkull && SmallKeys(BOTTOM_OF_THE_WELL, 2);}}),
   }, {
                   //Exits
                   Entrance(BOTTOM_OF_THE_WELL_ENTRYWAY,  {[]{return true;}}),
@@ -76,7 +76,7 @@ void AreaTable_Init_BottomOfTheWell() {
                   LocationAccess(BOTTOM_OF_THE_WELL_MQ_MAP_CHEST,                        {[]{return true;}}),
                   LocationAccess(BOTTOM_OF_THE_WELL_MQ_LENS_OF_TRUTH_CHEST,              {[]{return HasExplosives && SmallKeys(BOTTOM_OF_THE_WELL, 2);}}),
                   LocationAccess(BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_FREESTANDING_KEY, {[]{return true;}}),
-                  LocationAccess(BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM,               {[]{return (CanChildAttack || IsAdult) && (LogicBotwMQPits || HasExplosives);}}),
+                  LocationAccess(BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM,               {[]{return CanHurtGoldSkull && (LogicBotwMQPits || HasExplosives);}}),
                     //Trick: (CanChildAttack || IsAdult) && (LogicBotWMQPits || HasExplosives)
   }, {
                   //Exits
