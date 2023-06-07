@@ -399,40 +399,54 @@ void SaveManager::Init() {
     // Load files to initialize metadata
     for (int fileNum = 0; fileNum < MaxFiles; fileNum++) {
         if (std::filesystem::exists(GetFileName(fileNum))) {
-            LoadFile(fileNum);
-            saveBlock = nlohmann::json::object();
+            LoadFile(fileNum, true);
+            //saveBlock = nlohmann::json::object();
         }
-
     }
 }
 
 void SaveManager::InitMeta(int fileNum) {
     fileMetaInfo[fileNum].valid = true;
-    fileMetaInfo[fileNum].deaths = gSaveContext.deaths;
-    for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].playerName); i++) {
-        fileMetaInfo[fileNum].playerName[i] = gSaveContext.playerName[i];
-    }
-    fileMetaInfo[fileNum].healthCapacity = gSaveContext.healthCapacity;
-    fileMetaInfo[fileNum].questItems = gSaveContext.inventory.questItems;
-    fileMetaInfo[fileNum].defense = gSaveContext.inventory.defenseHearts;
-    fileMetaInfo[fileNum].health = gSaveContext.health;
+    currentJsonContext = &saveBlock["sections"]["base"]["data"];
+    SaveManager::Instance->LoadData("deaths", fileMetaInfo[fileNum].deaths);
+    SaveManager::Instance->LoadArray("playerName", ARRAY_COUNT(fileMetaInfo[fileNum].playerName), [&](size_t i) {
+        SaveManager::Instance->LoadData("", fileMetaInfo[fileNum].playerName[i]);
+    });
+    SaveManager::Instance->LoadData("healthCapacity", fileMetaInfo[fileNum].healthCapacity);
+    SaveManager::Instance->LoadStruct("inventory", [&]() {
+        SaveManager::Instance->LoadData("defenseHearts", fileMetaInfo[fileNum].defense);
+        SaveManager::Instance->LoadData("questItems", fileMetaInfo[fileNum].questItems);
+    });
+    SaveManager::Instance->LoadData("health", fileMetaInfo[fileNum].health);
 
-    for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].seedHash); i++) {
-        fileMetaInfo[fileNum].seedHash[i] = gSaveContext.seedIcons[i];
-    }
+    SaveManager::Instance->LoadData("n64ddFlag", fileMetaInfo[fileNum].randoSave);
 
-    fileMetaInfo[fileNum].randoSave = gSaveContext.n64ddFlag;
+    uint32_t isMasterQuest = 0;
+    SaveManager::Instance->LoadData("isMasterQuest", isMasterQuest);
+    uint8_t mqDungeonCount = 0;
+
+    if (fileMetaInfo[fileNum].randoSave == 1) {
+        currentJsonContext = &saveBlock["sections"]["randomizer"]["data"];
+        SaveManager::Instance->LoadArray("seed", ARRAY_COUNT(fileMetaInfo[fileNum].seedHash), [&](size_t i) {
+            SaveManager::Instance->LoadData("", fileMetaInfo[fileNum].seedHash[i]);
+        });
+        SaveManager::Instance->LoadData("masterQuestDungeonCount", mqDungeonCount, (uint8_t)0);
+    }
     // If the file is marked as a Master Quest file or if we're randomized and have at least one master quest dungeon, we need the mq otr.
-    fileMetaInfo[fileNum].requiresMasterQuest = gSaveContext.isMasterQuest > 0 || (gSaveContext.n64ddFlag && gSaveContext.mqDungeonCount > 0);
+    fileMetaInfo[fileNum].requiresMasterQuest = isMasterQuest > 0 || (fileMetaInfo[fileNum].randoSave && mqDungeonCount > 0);
     // If the file is not marked as Master Quest, it could still theoretically be a rando save with all 12 MQ dungeons, in which case
     // we don't actually require a vanilla OTR.
-    fileMetaInfo[fileNum].requiresOriginal = !gSaveContext.isMasterQuest && (!gSaveContext.n64ddFlag || gSaveContext.mqDungeonCount < 12);
+    fileMetaInfo[fileNum].requiresOriginal =
+        !isMasterQuest && (!fileMetaInfo[fileNum].randoSave || mqDungeonCount < 12);
 
-    fileMetaInfo[fileNum].buildVersionMajor = gSaveContext.sohStats.buildVersionMajor;
-    fileMetaInfo[fileNum].buildVersionMinor = gSaveContext.sohStats.buildVersionMinor;
-    fileMetaInfo[fileNum].buildVersionPatch = gSaveContext.sohStats.buildVersionPatch;
-    strncpy(fileMetaInfo[fileNum].buildVersion, gSaveContext.sohStats.buildVersion, sizeof(fileMetaInfo[fileNum].buildVersion) - 1);
-    fileMetaInfo[fileNum].buildVersion[sizeof(fileMetaInfo[fileNum].buildVersion) - 1] = 0;
+    currentJsonContext = &saveBlock["sections"]["sohStats"]["data"];
+    std::string buildVersion;
+    SaveManager::Instance->LoadData("buildVersion", buildVersion);
+    strncpy(fileMetaInfo[fileNum].buildVersion, buildVersion.c_str(), ARRAY_COUNT(fileMetaInfo[fileNum].buildVersion) - 1);
+    fileMetaInfo[fileNum].buildVersion[ARRAY_COUNT(fileMetaInfo[fileNum].buildVersion) - 1] = 0;
+    SaveManager::Instance->LoadData("buildVersionMajor", fileMetaInfo[fileNum].buildVersionMajor);
+    SaveManager::Instance->LoadData("buildVersionMinor", fileMetaInfo[fileNum].buildVersionMinor);
+    SaveManager::Instance->LoadData("buildVersionPatch", fileMetaInfo[fileNum].buildVersionPatch);
 }
 
 void SaveManager::InitFile(bool isDebug) {
@@ -787,9 +801,8 @@ void SaveManager::SaveGlobal() {
     output << std::setw(4) << globalBlock << std::endl;
 }
 
-void SaveManager::LoadFile(int fileNum) {
+void SaveManager::LoadFile(int fileNum, bool metaLoad) {
     assert(std::filesystem::exists(GetFileName(fileNum)));
-    InitFile(false);
 
     std::ifstream input(GetFileName(fileNum));
 
@@ -799,6 +812,12 @@ void SaveManager::LoadFile(int fileNum) {
         SPDLOG_ERROR("Save at " + GetFileName(fileNum).string() + " contains no version");
         assert(false);
     }
+    InitMeta(fileNum);
+    if (metaLoad) {
+        saveBlock = nlohmann::json::object();
+        return;
+    }
+    InitFile(false);
     switch (saveBlock["version"].get<int>()) {
         case 1:
             for (auto& block : saveBlock["sections"].items()) {
@@ -831,7 +850,6 @@ void SaveManager::LoadFile(int fileNum) {
             assert(false);
             break;
     }
-    InitMeta(fileNum);
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnLoadFile>(fileNum);
 }
 
@@ -2333,7 +2351,7 @@ extern "C" void Save_SaveGlobal(void) {
 }
 
 extern "C" void Save_LoadFile(void) {
-    SaveManager::Instance->LoadFile(gSaveContext.fileNum);
+    SaveManager::Instance->LoadFile(gSaveContext.fileNum, false);
 }
 
 extern "C" void Save_AddLoadFunction(char* name, int version, SaveManager::LoadFunc func) {

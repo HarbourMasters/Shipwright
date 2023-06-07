@@ -63,7 +63,7 @@ class SaveManager {
     void SaveSection(int fileNum, int sectionID, bool threaded);
     int GetSaveSectionID(std::string& name);
     void SaveGlobal();
-    void LoadFile(int fileNum);
+    void LoadFile(int fileNum, bool metaLoad);
     bool SaveFile_Exist(int fileNum);
     void ThreadPoolWait();
 
