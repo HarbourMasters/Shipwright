@@ -46,6 +46,7 @@ extern PlayState* gPlayState;
 #include "objects/object_gjyo_objects/object_gjyo_objects.h"
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
+void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchName, int destinationIndex, int sourceIndex);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 }
@@ -916,13 +917,27 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
         if (Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE) == RO_BRIDGE_GREG) {
             ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge_StartGrayscale", 2, gsSPGrayscale(true));
             ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge_MakeGreen", 10, gsDPSetGrayscaleColor(color.r, color.g, color.b, color.a));
-            ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge_EndGrayscale", 79, gsSPGrayscale(false));
-            ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge_EndDList", 80, gsSPEndDisplayList());
+            // The original rainbow bridge command at index 65 is gsDPSetPrimColor
+            // we don't need this when making the bridge one color, so we shift the
+            // gsDPSetEnvColor and the following commands (which draw the bridge path)
+            // up by one index each, giving us a free index at 78 so we can end the
+            // grayscale before we call gsSPEndDisplayList
+            ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge_MoveEnvColor", 65, gsDPSetEnvColor(0,0,0,128));
+            for (size_t i = 67; i < 79; i++) {
+                std::string commandName = "RainbowBridge_MoveBridgePartDraw" + std::to_string(i);
+                ResourceMgr_PatchGfxCopyCommandByName(gRainbowBridgeDL, commandName.c_str(), i - 1, i);
+            }
+            ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge_EndGrayscale", 78, gsSPGrayscale(false));
         } else {
             ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge_StartGrayscale");
             ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge_MakeGreen");
+            ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge_MoveEnvColor");
+            for (size_t i = 67; i < 79; i++) {
+                std::string commandName = "RainbowBridge_MoveBridgePartDraw" + std::to_string(i);
+                ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, commandName.c_str());
+            }
+            ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge_MoveBridgePartDraw");
             ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge_EndGrayscale");
-            ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge_EndDList");
         }
     }
     static CosmeticOption& consumableBlueRupee = cosmeticOptions.at("Consumable_BlueRupee");
