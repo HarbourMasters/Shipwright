@@ -566,7 +566,7 @@ namespace Logic {
     CanChildAttack  = IsChild && (Slingshot || Boomerang || Sticks || KokiriSword || HasExplosives || CanUse(DINS_FIRE) || CanUse(MASTER_SWORD) || CanUse(MEGATON_HAMMER) || CanUse(BIGGORON_SWORD));
     CanChildDamage  = IsChild && (Slingshot ||              Sticks || KokiriSword || HasExplosives || CanUse(DINS_FIRE) || CanUse(MASTER_SWORD) || CanUse(MEGATON_HAMMER) || CanUse(BIGGORON_SWORD));
     CanStunDeku     = CanJumpslash || Nuts || HasShield || HasExplosives || CanUse(SLINGSHOT) || CanUse(BOW) || CanUse(MEGATON_HAMMER) || CanUse(HOOKSHOT) || CanUse(BOOMERANG) || CanUse(DINS_FIRE);
-    CanCutShrubs    = CanUseSword /*|| Sticks*/ || Boomerang || HasExplosives || CanUse(MEGATON_HAMMER);
+    CanCutShrubs    = CanUseSword /*|| Sticks*/ || CanUse(BOOMERANG) || HasExplosives || CanUse(MEGATON_HAMMER);
     CanDive         = ProgressiveScale >= 1;
     CanLeaveForest  = OpenForest.IsNot(OPENFOREST_CLOSED) || IsAdult || DekuTreeClear || ShuffleInteriorEntrances || ShuffleOverworldEntrances;
     CanPlantBugs    = IsChild && Bugs;

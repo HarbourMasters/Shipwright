@@ -46,12 +46,12 @@ void AreaTable_Init_FireTemple() {
   areaTable[FIRE_TEMPLE_LOOP_ENEMIES] = Area("Fire Temple Loop Enemies", "Fire Temple", FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(FIRE_TEMPLE_FIRST_ROOM, {[]{return SmallKeys(FIRE_TEMPLE, 8) || !IsKeysanity;}}),
-                  Entrance(FIRE_TEMPLE_LOOP_TILES, {[]{return Here(FIRE_TEMPLE_LOOP_ENEMIES, []{return IsAdult || KokiriSword;});}}),
+                  Entrance(FIRE_TEMPLE_LOOP_TILES, {[]{return Here(FIRE_TEMPLE_LOOP_ENEMIES, []{return CanUseSword || CanUse(MEGATON_HAMMER);});}}),
   });
 
   areaTable[FIRE_TEMPLE_LOOP_TILES] = Area("Fire Temple Loop Tiles", "Fire Temple", FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(FIRE_TEMPLE_GS_BOSS_KEY_LOOP, {[]{return IsAdult || CanChildAttack;}}),
+                  LocationAccess(FIRE_TEMPLE_GS_BOSS_KEY_LOOP, {[]{return CanHurtGoldSkull;}}),
                 }, {
                   //Exits
                   Entrance(FIRE_TEMPLE_LOOP_ENEMIES,      {[]{return true;}}),
@@ -60,11 +60,11 @@ void AreaTable_Init_FireTemple() {
 
   areaTable[FIRE_TEMPLE_LOOP_FLARE_DANCER] = Area("Fire Temple Loop Flare Dancer", "Fire Temple", FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(FIRE_TEMPLE_FLARE_DANCER_CHEST, {[]{return (HasExplosives || CanUse(MEGATON_HAMMER)) && IsAdult;}}),
+                  LocationAccess(FIRE_TEMPLE_FLARE_DANCER_CHEST, {[]{return IsAdult && (CanUse(MEGATON_HAMMER) || CanUse(HOOKSHOT) || (HasExplosives && (CanUseSword || CanUse(BOW) || CanUse(SLINGSHOT) || CanUse(BOOMERANG))));}}),
                 }, {
                   //Exits
                   Entrance(FIRE_TEMPLE_LOOP_TILES,         {[]{return true;}}),
-                  Entrance(FIRE_TEMPLE_LOOP_HAMMER_SWITCH, {[]{return Here(FIRE_TEMPLE_LOOP_FLARE_DANCER, []{return (HasExplosives || CanUse(MEGATON_HAMMER) || CanUse(HOOKSHOT)) && (IsAdult || KokiriSword || Slingshot || Boomerang);});}}),
+                  Entrance(FIRE_TEMPLE_LOOP_HAMMER_SWITCH, {[]{return Here(FIRE_TEMPLE_LOOP_FLARE_DANCER, []{return CanUse(MEGATON_HAMMER) || CanUse(HOOKSHOT) || (HasExplosives && (CanUseSword || CanUse(BOW) || CanUse(SLINGSHOT) || CanUse(BOOMERANG)));});}}),
   });
 
   areaTable[FIRE_TEMPLE_LOOP_HAMMER_SWITCH] = Area("Fire Temple Loop Hammer Switch", "Fire Temple", FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {
@@ -110,7 +110,7 @@ void AreaTable_Init_FireTemple() {
 
   areaTable[FIRE_TEMPLE_BIG_LAVA_ROOM_NORTH_TILES] = Area("Fire Temple Big Lava Room North Tiles", "Fire Temple", FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(FIRE_TEMPLE_GS_SONG_OF_TIME_ROOM, {[]{return IsAdult;}}),
+                  LocationAccess(FIRE_TEMPLE_GS_SONG_OF_TIME_ROOM, {[]{return CanHurtGoldSkull;}}),
                 }, {
                   //Exits
                   Entrance(FIRE_TEMPLE_BIG_LAVA_ROOM, {[]{return true;}}),
@@ -137,7 +137,7 @@ void AreaTable_Init_FireTemple() {
                   //Exits
                   Entrance(FIRE_TEMPLE_FIRE_PILLAR_ROOM,   {[]{return SmallKeys(FIRE_TEMPLE, 4);}}),
                   Entrance(FIRE_TEMPLE_SHORTCUT_CLIMB,     {[]{return Here(FIRE_TEMPLE_SHORTCUT_CLIMB, []{return true;});}}),
-                  Entrance(FIRE_TEMPLE_BOULDER_MAZE_LOWER, {[]{return (GoronBracelet || (IsAdult && LogicFireStrength)) && (HasExplosives || (IsAdult && (CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(SLINGSHOT))));}}),
+                  Entrance(FIRE_TEMPLE_BOULDER_MAZE_LOWER, {[]{return (GoronBracelet || (IsAdult && LogicFireStrength)) && (HasExplosives || (CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(SLINGSHOT)));}}),
   });
 
   areaTable[FIRE_TEMPLE_SHORTCUT_CLIMB] = Area("Fire Temple Shortcut Climb", "Fire Temple", FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -149,7 +149,7 @@ void AreaTable_Init_FireTemple() {
   areaTable[FIRE_TEMPLE_BOULDER_MAZE_LOWER] = Area("Fire Temple Boulder Maze Lower", "Fire Temple", FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(FIRE_TEMPLE_BOULDER_MAZE_LOWER_CHEST, {[]{return true;}}),
-                  LocationAccess(FIRE_TEMPLE_GS_BOULDER_MAZE,          {[]{return HasExplosives && (IsAdult || Boomerang || CanUse(HOOKSHOT));}}),
+                  LocationAccess(FIRE_TEMPLE_GS_BOULDER_MAZE,          {[]{return HasExplosives && ((IsAdult && CanHurtGoldSkull) || HookshotOrBoomerang);}}),
                 }, {
                   //Exits
                   Entrance(FIRE_TEMPLE_SHORTCUT_ROOM,                {[]{return true;}}),
@@ -203,7 +203,7 @@ void AreaTable_Init_FireTemple() {
 
   areaTable[FIRE_TEMPLE_SCARECROW_ROOM] = Area("Fire Temple Scarecrow Room", "Fire Temple", FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(FIRE_TEMPLE_GS_SCARECROW_CLIMB, {[]{return IsAdult || CanChildAttack;}}),
+                  LocationAccess(FIRE_TEMPLE_GS_SCARECROW_CLIMB, {[]{return CanJumpslash || CanUse(SLINGSHOT) || CanUse(BOOMERANG) || HasExplosives || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(DINS_FIRE);}}),
                 }, {
                   //Exits
                   Entrance(FIRE_TEMPLE_BOULDER_MAZE_UPPER, {[]{return true;}}),
@@ -276,8 +276,8 @@ void AreaTable_Init_FireTemple() {
 
   areaTable[FIRE_TEMPLE_UPPER_FLARE_DANCER] = Area("Fire Temple Upper Flare Dancer", "Fire Temple", FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(FIRE_TEMPLE_LATE_FIRE_MAZE, {[]{return Here(FIRE_TEMPLE_UPPER_FLARE_DANCER, []{return (HasExplosives || CanUse(MEGATON_HAMMER) || CanUse(HOOKSHOT)) && (IsAdult || KokiriSword || Slingshot || Boomerang);});}}),
-                  Entrance(FIRE_TEMPLE_WEST_CLIMB,     {[]{return Here(FIRE_TEMPLE_UPPER_FLARE_DANCER, []{return (HasExplosives || CanUse(MEGATON_HAMMER) || CanUse(HOOKSHOT)) && (IsAdult || KokiriSword || Slingshot || Boomerang);});}}),
+                  Entrance(FIRE_TEMPLE_LATE_FIRE_MAZE, {[]{return Here(FIRE_TEMPLE_UPPER_FLARE_DANCER, []{return CanUse(MEGATON_HAMMER) || CanUse(HOOKSHOT) || (HasExplosives && (CanUseSword || CanUse(BOW) || CanUse(SLINGSHOT) || CanUse(BOOMERANG)));});}}),
+                  Entrance(FIRE_TEMPLE_WEST_CLIMB,     {[]{return Here(FIRE_TEMPLE_UPPER_FLARE_DANCER, []{return CanUse(MEGATON_HAMMER) || CanUse(HOOKSHOT) || (HasExplosives && (CanUseSword || CanUse(BOW) || CanUse(SLINGSHOT) || CanUse(BOOMERANG)));});}}),
   });
 
   areaTable[FIRE_TEMPLE_WEST_CLIMB] = Area("Fire Temple West Climb", "Fire Temple", FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -314,14 +314,14 @@ void AreaTable_Init_FireTemple() {
   if (Dungeon::FireTemple.IsMQ()) {
   areaTable[FIRE_TEMPLE_MQ_LOWER] = Area("Fire Temple MQ Lower", "Fire Temple", FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST, {[]{return IsAdult || KokiriSword || Sticks || Slingshot || Bombs || CanUse(DINS_FIRE);}}),
-                  LocationAccess(FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST,     {[]{return IsAdult && (LogicFewerTunicRequirements || CanUse(GORON_TUNIC)) && (((CanUse(HOVER_BOOTS) || (LogicFireMQNearBoss && CanUse(BOW))) && HasFireSource) || (CanUse(HOOKSHOT) && CanUse(FIRE_ARROWS) || (CanUse(DINS_FIRE) && ((DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO) && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_QUADRUPLE) && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OCTUPLE) && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_SEXDECUPLE)) || CanUse(GORON_TUNIC) || CanUse(BOW) || CanUse(LONGSHOT)))));}}),
+                  LocationAccess(FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST, {[]{return CanJumpslash || CanUse(SLINGSHOT) || HasExplosives || CanUse(BOW) || CanUse(MEGATON_HAMMER) || CanUse(DINS_FIRE);}}),
+                  LocationAccess(FIRE_TEMPLE_MQ_NEAR_BOSS_CHEST,     {[]{return IsAdult && (FireTimer >= 24) && (((CanUse(HOVER_BOOTS) || (LogicFireMQNearBoss && CanUse(BOW))) && HasFireSource) || (CanUse(HOOKSHOT) && (CanUse(FIRE_ARROWS) || (CanUse(DINS_FIRE) && ((DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO) && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_QUADRUPLE) && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OCTUPLE) && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_SEXDECUPLE)) || CanUse(GORON_TUNIC) || CanUse(BOW) || CanUse(LONGSHOT))))));}}),
                     //Trick: IsAdult && (LogicFewerTunicRequirements || CanUse(GORON_TUNIC)) && (((CanUse(HOVER_BOOTS) || (LogicFireMQNearBoss && CanUse(BOW))) && HasFireSource) || (CanUse(HOOKSHOT) && CanUse(FIRE_ARROWS) || (CanUse(DINS_FIRE) && ((DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO) && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_QUADRUPLE) && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OCTUPLE) && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_SEXDECUPLE)) || CanUse(GORON_TUNIC) || CanUse(BOW) || CanUse(LONGSHOT)))))
   }, {
                   //Exits
                   Entrance(FIRE_TEMPLE_ENTRYWAY,             {[]{return true;}}),
-                  Entrance(FIRE_TEMPLE_BOSS_ENTRYWAY,        {[]{return IsAdult && CanUse(GORON_TUNIC) && CanUse(MEGATON_HAMMER) && BossKeyFireTemple && ((HasFireSource && (LogicFireBossDoorJump || HoverBoots)) || HasAccessTo(FIRE_TEMPLE_MQ_UPPER));}}),
-                  Entrance(FIRE_TEMPLE_MQ_LOWER_LOCKED_DOOR, {[]{return SmallKeys(FIRE_TEMPLE, 5) && (IsAdult || KokiriSword);}}),
+                  Entrance(FIRE_TEMPLE_BOSS_ENTRYWAY,        {[]{return IsAdult && (FireTimer >= 24) && BossKeyFireTemple && ((HasFireSource && (LogicFireBossDoorJump || HoverBoots)) || (HasAccessTo(FIRE_TEMPLE_MQ_UPPER) && CanUse(MEGATON_HAMMER)));}}),
+                  Entrance(FIRE_TEMPLE_MQ_LOWER_LOCKED_DOOR, {[]{return SmallKeys(FIRE_TEMPLE, 5) && (CanUseSword || CanUse(MEGATON_HAMMER));}}),
                   Entrance(FIRE_TEMPLE_MQ_BIG_LAVA_ROOM,     {[]{return IsAdult && FireTimer >= 24 && CanUse(MEGATON_HAMMER);}}),
   });
 
@@ -330,35 +330,35 @@ void AreaTable_Init_FireTemple() {
                   EventAccess(&FairyPot, {[]{return true;}}),
   }, {
                   //Locations
-                  LocationAccess(FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST, {[]{return IsAdult && (HasExplosives || Hammer || Hookshot);}}),
-                  LocationAccess(FIRE_TEMPLE_MQ_MAP_CHEST,            {[]{return IsAdult && CanUse(MEGATON_HAMMER);}}),
+                  LocationAccess(FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST, {[]{return IsAdult && (CanUse(MEGATON_HAMMER) || CanUse(HOOKSHOT) || (HasExplosives && (CanUseSword || CanUse(BOW) || CanUse(SLINGSHOT) || CanUse(BOOMERANG))));}}),
+                  LocationAccess(FIRE_TEMPLE_MQ_MAP_CHEST,            {[]{return CanUse(MEGATON_HAMMER);}}),
   }, {});
 
   areaTable[FIRE_TEMPLE_MQ_BIG_LAVA_ROOM] = Area("Fire Temple MQ Big Lava Room", "Fire Temple", FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&FairyPot, {[]{return FairyPot || (HasFireSource && (Bow || LogicFireMQBKChest) && IsAdult && (CanUse(HOOKSHOT) || LogicFireSongOfTime));}}),
+                  EventAccess(&FairyPot, {[]{return FairyPot || (HasFireSource && (CanUse(BOW) || LogicFireMQBKChest) && ((IsAdult && (CanUse(HOOKSHOT) || LogicFireSongOfTime)) || (CanUse(LONGSHOT))));}}),
                     //Trick: HasFireSource && (Bow || LogicFireMQBKChest) && IsAdult && (CanUse(HOOKSHOT) || LogicFireSongOfTime)
   }, {
                   //Locations
-                  LocationAccess(FIRE_TEMPLE_MQ_BOSS_KEY_CHEST,                   {[]{return HasFireSource && (Bow || LogicFireMQBKChest) && IsAdult && CanUse(HOOKSHOT);}}),
+                  LocationAccess(FIRE_TEMPLE_MQ_BOSS_KEY_CHEST,                   {[]{return HasFireSource && (CanUse(BOW) || LogicFireMQBKChest) && ((IsAdult && CanUse(HOOKSHOT)) || (CanUse(LONGSHOT)));}}),
                     //Trick: HasFireSource && (Bow || LogicFireMQBKChest) && IsAdult && CanUse(HOOKSHOT)
-                  LocationAccess(FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST, {[]{return HasFireSource && HasExplosives && IsAdult && (CanUse(HOOKSHOT) || LogicFireMQBlockedChest);}}),
+                  LocationAccess(FIRE_TEMPLE_MQ_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST, {[]{return HasFireSource && HasExplosives && (CanUse(HOOKSHOT) || LogicFireMQBlockedChest);}}),
                     //Trick: HasFireSource && HasExplosives && IsAdult && (CanUse(HOOKSHOT) || LogicFireMQBlockedChest)
-                  LocationAccess(FIRE_TEMPLE_MQ_GS_BIG_LAVA_ROOM_OPEN_DOOR,       {[]{return true;}}),
+                  LocationAccess(FIRE_TEMPLE_MQ_GS_BIG_LAVA_ROOM_OPEN_DOOR,       {[]{return CanUse(MEGATON_HAMMER);}}),
   }, {
                   //Exits
-                  Entrance(FIRE_TEMPLE_MQ_LOWER_MAZE, {[]{return IsAdult && CanUse(GORON_TUNIC) && SmallKeys(FIRE_TEMPLE, 2) && (HasFireSource || (LogicFireMQClimb && HoverBoots));}}),
+                  Entrance(FIRE_TEMPLE_MQ_LOWER_MAZE, {[]{return (IsAdult || CanUse(HOOKSHOT)) && CanUse(GORON_TUNIC) && SmallKeys(FIRE_TEMPLE, 2) && (HasFireSource || (LogicFireMQClimb && IsAdult && CanUse(HOVER_BOOTS)));}}),
                     //Trick: IsAdult && CanUse(GORON_TUNIC) && SmallKeys(FIRE_TEMPLE, 2) && (HasFireSource || (LogicFireMQClimb && HoverBoots))
   });
 
   areaTable[FIRE_TEMPLE_MQ_LOWER_MAZE] = Area("Fire Temple MQ Lower Maze", "Fire Temple", FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CHEST,     {[]{return true;}}),
+                  LocationAccess(FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CHEST,     {[]{return CanJumpslash || CanUse(MEGATON_HAMMER);}}),
                   LocationAccess(FIRE_TEMPLE_MQ_LIZALFOS_MAZE_SIDE_ROOM_CHEST, {[]{return HasExplosives && (LogicFireMQMazeSideRoom || HasAccessTo(FIRE_TEMPLE_MQ_UPPER_MAZE));}}),
                     //Trick: HasExplosives && (LogicFireMQMazeSideRoom || FIRE_TEMPLE_MQ_UPPER_MAZE.Adult())
    }, {
                   //Exits
-                  Entrance(FIRE_TEMPLE_MQ_UPPER_MAZE, {[]{return (IsAdult && ((HasExplosives && CanUse(HOOKSHOT)) || (LogicFireMQMazeHovers && CanUse(HOVER_BOOTS)))) || LogicFireMQMazeJump;}}),
+                  Entrance(FIRE_TEMPLE_MQ_UPPER_MAZE, {[]{return (CanUse(MEGATON_HAMMER) && HasExplosives && CanUse(HOOKSHOT)) || ((CanJumpslash || CanUse(MEGATON_HAMMER)) && (LogicFireMQMazeJump || (LogicFireMQMazeHovers && IsAdult && CanUse(HOVER_BOOTS))));}}),
                     //Trick: (IsAdult && ((HasExplosives && CanUse(HOOKSHOT)) || (LogicFireMQMazeHovers && CanUse(HOVER_BOOTS)))) || LogicFireMQMazeJump
   });
 
@@ -368,24 +368,24 @@ void AreaTable_Init_FireTemple() {
                   EventAccess(&FairyPot,  {[]{return SmallKeys(FIRE_TEMPLE, 3);}}),
   }, {
                   //Locations
-                  LocationAccess(FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CHEST, {[]{return true;}}),
-                  LocationAccess(FIRE_TEMPLE_MQ_COMPASS_CHEST,             {[]{return HasExplosives;}}),
-                  LocationAccess(FIRE_TEMPLE_MQ_GS_SKULL_ON_FIRE,          {[]{return IsAdult && ((CanPlay(SongOfTime) && CanUse(HOOKSHOT) && HasExplosives) || CanUse(LONGSHOT));}}),
+                  LocationAccess(FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CHEST, {[]{return CanJumpslash || CanUse(MEGATON_HAMMER) || CanUse(BOW) || CanUse(SLINGSHOT) || CanUse(BOOMERANG);}}),
+                  LocationAccess(FIRE_TEMPLE_MQ_COMPASS_CHEST,             {[]{return HasExplosives && CanUse(MEGATON_HAMMER);}}),
+                  LocationAccess(FIRE_TEMPLE_MQ_GS_SKULL_ON_FIRE,          {[]{return HasExplosives && CanUse(MEGATON_HAMMER) && ((CanPlay(SongOfTime) && CanUse(HOOKSHOT)) || CanUse(LONGSHOT));}}),
   }, {
                   //Exits
-                  Entrance(FIRE_TEMPLE_MQ_UPPER, {[]{return SmallKeys(FIRE_TEMPLE, 3) && IsAdult && ((CanUse(BOW) && CanUse(HOOKSHOT)) || CanUse(FIRE_ARROWS));}}),
+                  Entrance(FIRE_TEMPLE_MQ_UPPER, {[]{return SmallKeys(FIRE_TEMPLE, 3) && CanUse(GORON_TUNIC) && ((CanUse(BOW) && CanUse(HOOKSHOT)) || (IsAdult && CanUse(FIRE_ARROWS)));}}),
   });
 
   areaTable[FIRE_TEMPLE_MQ_UPPER] = Area("Fire Temple MQ Upper", "Fire Temple", FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(FIRE_TEMPLE_MQ_FREESTANDING_KEY,            {[]{return (IsAdult && CanUse(HOOKSHOT)) || LogicFireMQFlameMaze;}}),
+                  LocationAccess(FIRE_TEMPLE_MQ_FREESTANDING_KEY,            {[]{return ((IsAdult || (IsChild && (CanPlay(SongOfTime) || CanUse(HOVER_BOOTS)))) && CanUse(HOOKSHOT) && CanUse(MEGATON_HAMMER)) || (LogicFireMQFlameMaze && (CanUse(MEGATON_HAMMER) || CanUse(HOOKSHOT) || (HasExplosives && (CanUseSword || CanUse(BOW) || CanUse(SLINGSHOT) || CanUse(BOOMERANG)))));}}),
                     //Trick: (IsAdult && CanUse(HOOKSHOT)) || LogicFireMQFlameMaze
-                  LocationAccess(FIRE_TEMPLE_MQ_CHEST_ON_FIRE,               {[]{return ((IsAdult && CanUse(HOOKSHOT)) || LogicFireMQFlameMaze) && SmallKeys(FIRE_TEMPLE, 4);}}),
+                  LocationAccess(FIRE_TEMPLE_MQ_CHEST_ON_FIRE,               {[]{return ((IsAdult || (IsChild && (CanPlay(SongOfTime) || CanUse(HOVER_BOOTS)) && CanPlay(ScarecrowSong))) && CanUse(HOOKSHOT) && CanUse(MEGATON_HAMMER)) || ((IsAdult || (IsChild && CanPlay(ScarecrowSong) && CanUse(HOOKSHOT)))) && LogicFireMQFlameMaze && (CanUse(MEGATON_HAMMER) || CanUse(HOOKSHOT) || (HasExplosives && (CanUseSword || CanUse(BOW) || CanUse(SLINGSHOT) || CanUse(BOOMERANG)))) && SmallKeys(FIRE_TEMPLE, 4);}}),
                     //Trick: ((IsAdult && CanUse(HOOKSHOT)) || LogicFireMQFlameMaze) && SmallKeys(FIRE_TEMPLE, 4)
-                  LocationAccess(FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_SIDE_ROOM, {[]{return CanPlay(SongOfTime) || HoverBoots || LogicFireMQFlameMaze;}}),
+                  LocationAccess(FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_SIDE_ROOM, {[]{return CanHurtGoldSkull && (CanPlay(SongOfTime) || CanUse(HOVER_BOOTS) || LogicFireMQFlameMaze);}}),
                     //Trick: CanPlay(SongOfTime) || HoverBoots || LogicFireMQFlameMaze
                   LocationAccess(FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_CENTER,    {[]{return HasExplosives;}}),
-                  LocationAccess(FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_WALL_MAZE,     {[]{return (IsAdult && CanUse(HOOKSHOT) && SmallKeys(FIRE_TEMPLE, 5)) || (LogicFireMQAboveMazeGS && IsAdult && CanUse(LONGSHOT));}}),
+                  LocationAccess(FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_WALL_MAZE,     {[]{return ((IsAdult || (IsChild && (CanPlay(SongOfTime) || CanUse(HOVER_BOOTS))) || LogicFireMQFlameMaze) && CanUse(MEGATON_HAMMER) && CanUse(HOOKSHOT) && SmallKeys(FIRE_TEMPLE, 5)) || (LogicFireMQAboveMazeGS && IsAdult && CanUse(LONGSHOT));}}),
                     //Trick: (IsAdult && CanUse(HOOKSHOT) && SmallKeys(FIRE_TEMPLE, 5)) || (LogicFireMQAboveMazeGS && IsAdult && CanUse(LONGSHOT))
   }, {});
   }
