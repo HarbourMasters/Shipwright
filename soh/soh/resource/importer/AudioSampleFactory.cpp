@@ -96,7 +96,7 @@ void LUS::AudioSampleFactoryV1::ParseFileBinary(std::shared_ptr<BinaryReader> re
         drwav_uint32 channels;
         drwav_uint32 sampleRate;
         drwav_uint64 totalPcm;
-        drmp3_int16* pcmData =
+        drwav_int16* pcmData =
             drwav_open_memory_and_read_pcm_frames_s16(strem2, len, &channels, &sampleRate, &totalPcm, NULL);
         audioSample->sample.size = totalPcm;
         audioSample->sample.sampleAddr = (uint8_t*)pcmData;

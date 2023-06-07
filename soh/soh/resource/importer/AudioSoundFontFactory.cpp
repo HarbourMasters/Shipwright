@@ -196,7 +196,7 @@ void LUS::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader>
 
             auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess("custom/samples/" + sampleBaseName);
             res = res ? res : LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(sampleFileName.c_str());
-            instrument.highNotesSound.sample = static_cast<Sample*>(res ? res->GetPointer() : nullptr);
+            instrument.highNotesSound.sample = static_cast<Sample*>(res ? res->GetRawPointer() : nullptr);
         } else {
             instrument.highNotesSound.sample = nullptr;
             instrument.highNotesSound.tuning = 0;
