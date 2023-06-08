@@ -537,11 +537,10 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
         }
     }
 
-    // Use matrix scaling to flip the entire map for mirror world
+    // Use matrix scaling to flip the entire overworld map for mirror world
     if (mirroredWorld) {
-        // Undo the culling change back to "normal" since culling is reversed, but map is vertices are also flipped
-        gSPClearGeometryMode(POLY_KAL_DISP++, G_CULL_FRONT);
-        gSPSetGeometryMode(POLY_KAL_DISP++, G_CULL_BACK);
+        // Invert culling to counter act the matrix flip
+        gSPSetExtraGeometryMode(POLY_KAL_DISP++, G_EX_INVERT_CULLING);
         Matrix_Push();
         Matrix_Scale(-1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
         gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -805,9 +804,8 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
     gDPPipeSync(POLY_KAL_DISP++);
 
     if (mirroredWorld) {
-        // Reset culling to back for mirror mode
-        gSPClearGeometryMode(POLY_KAL_DISP++, G_CULL_BACK);
-        gSPSetGeometryMode(POLY_KAL_DISP++, G_CULL_FRONT);
+        // Revert the inversion
+        gSPClearExtraGeometryMode(POLY_KAL_DISP++, G_EX_INVERT_CULLING);
     }
 
     CLOSE_DISPS(gfxCtx);

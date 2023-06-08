@@ -1300,10 +1300,6 @@ void Gfx_SetupDL_42Kal(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
     gSPDisplayList(POLY_KAL_DISP++, sSetupDL[SETUPDL_42]);
-    if (CVarGetInteger("gMirroredWorld", 0)) {
-        gSPClearGeometryMode(POLY_KAL_DISP++, G_CULL_BACK);
-        gSPSetGeometryMode(POLY_KAL_DISP++, G_CULL_FRONT);
-    }
 
     CLOSE_DISPS(gfxCtx);
 }
@@ -1312,10 +1308,6 @@ void Gfx_SetupDL_42Overlay(GraphicsContext* gfxCtx) {
     OPEN_DISPS(gfxCtx);
 
     gSPDisplayList(OVERLAY_DISP++, sSetupDL[SETUPDL_42]);
-    if (CVarGetInteger("gMirroredWorld", 0)) {
-        gSPClearGeometryMode(OVERLAY_DISP++, G_CULL_BACK);
-        gSPSetGeometryMode(OVERLAY_DISP++, G_CULL_FRONT);
-    }
 
     CLOSE_DISPS(gfxCtx);
 }
