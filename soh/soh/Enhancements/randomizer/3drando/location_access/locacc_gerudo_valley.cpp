@@ -28,7 +28,7 @@ void AreaTable_Init_GerudoValley() {
                 }, {
                   //Locations
                   LocationAccess(GV_WATERFALL_FREESTANDING_POH, {[]{return true;}}),
-                  LocationAccess(GV_GS_BEAN_PATCH,              {[]{return CanPlantBugs && CanChildAttack;}}),
+                  LocationAccess(GV_GS_BEAN_PATCH,              {[]{return CanPlantBugs && CanHurtGoldSkull;}}),
                   LocationAccess(GV_COW,                        {[]{return IsChild && CanPlay(EponasSong);}}),
                   LocationAccess(GV_GOSSIP_STONE,               {[]{return true;}}),
                 }, {
@@ -102,12 +102,12 @@ void AreaTable_Init_GerudoValley() {
                 }, {
                   //Locations
                   LocationAccess(GF_CHEST,              {[]{return CanUse(HOVER_BOOTS) || (IsAdult && CanUse(SCARECROW)) || CanUse(LONGSHOT);}}),
-                  LocationAccess(GF_HBA_1000_POINTS,    {[]{return GerudoToken && CanRideEpona && Bow && AtDay;}}),
-                  LocationAccess(GF_HBA_1500_POINTS,    {[]{return GerudoToken && CanRideEpona && Bow && AtDay;}}),
-                  LocationAccess(GF_NORTH_F1_CARPENTER, {[]{return  IsAdult || KokiriSword || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD);}}),
-                  LocationAccess(GF_NORTH_F2_CARPENTER, {[]{return (IsAdult || KokiriSword || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)) && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen);}}),
-                  LocationAccess(GF_SOUTH_F1_CARPENTER, {[]{return  IsAdult || KokiriSword || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD);}}),
-                  LocationAccess(GF_SOUTH_F2_CARPENTER, {[]{return  IsAdult || KokiriSword || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD);}}),
+                  LocationAccess(GF_HBA_1000_POINTS,    {[]{return GerudoToken && CanRideEpona && IsAdult && CanUse(BOW) && AtDay;}}),
+                  LocationAccess(GF_HBA_1500_POINTS,    {[]{return GerudoToken && CanRideEpona && IsAdult && CanUse(BOW) && AtDay;}}),
+                  LocationAccess(GF_NORTH_F1_CARPENTER, {[]{return  CanUseSword || CanUse(MEGATON_HAMMER);}}),
+                  LocationAccess(GF_NORTH_F2_CARPENTER, {[]{return (CanUseSword || CanUse(MEGATON_HAMMER)) && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen);}}),
+                  LocationAccess(GF_SOUTH_F1_CARPENTER, {[]{return  CanUseSword || CanUse(MEGATON_HAMMER);}}),
+                  LocationAccess(GF_SOUTH_F2_CARPENTER, {[]{return  CanUseSword || CanUse(MEGATON_HAMMER);}}),
                   LocationAccess(GF_GERUDO_MEMBERSHIP_CARD,       {[]{return CanFinishGerudoFortress;}}),
                   LocationAccess(GF_GS_ARCHERY_RANGE,   {[]{return IsAdult && HookshotOrBoomerang && GerudoToken && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(GF_GS_TOP_FLOOR,       {[]{return IsAdult && AtNight && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen || LogicGFJump) && CanGetNightTimeGS;}}),
@@ -149,7 +149,7 @@ void AreaTable_Init_GerudoValley() {
                 }, {
                   //Locations
                   LocationAccess(WASTELAND_CHEST,            {[]{return HasFireSource;}}),
-                  LocationAccess(WASTELAND_BOMBCHU_SALESMAN, {[]{return AdultsWallet && (IsAdult || Sticks || KokiriSword);}}),
+                  LocationAccess(WASTELAND_BOMBCHU_SALESMAN, {[]{return AdultsWallet && (CanJumpslash || CanUse(MEGATON_HAMMER) || CanUse(HOVER_BOOTS));}}),
                   LocationAccess(WASTELAND_GS,               {[]{return HookshotOrBoomerang;}}),
                 }, {
                   //Exits
@@ -170,7 +170,7 @@ void AreaTable_Init_GerudoValley() {
                 }, {
                   //Locations
                   LocationAccess(COLOSSUS_FREESTANDING_POH, {[]{return IsAdult && CanPlantBean(DESERT_COLOSSUS);}}),
-                  LocationAccess(COLOSSUS_GS_BEAN_PATCH,    {[]{return CanPlantBugs && CanChildAttack;}}),
+                  LocationAccess(COLOSSUS_GS_BEAN_PATCH,    {[]{return CanPlantBugs && CanHurtGoldSkull;}}),
                   LocationAccess(COLOSSUS_GS_TREE,          {[]{return IsAdult && HookshotOrBoomerang && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(COLOSSUS_GS_HILL,          {[]{return IsAdult && AtNight && (CanPlantBean(DESERT_COLOSSUS) || CanUse(LONGSHOT) || (LogicColossusGS && CanUse(HOOKSHOT))) && CanGetNightTimeGS;}}),
                   LocationAccess(COLOSSUS_GOSSIP_STONE,     {[]{return true;}}),
