@@ -25,13 +25,13 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   //Locations
                   LocationAccess(GERUDO_TRAINING_GROUNDS_LOBBY_LEFT_CHEST,  {[]{return CanUse(BOW) || CanUse(SLINGSHOT);}}),
                   LocationAccess(GERUDO_TRAINING_GROUNDS_LOBBY_RIGHT_CHEST, {[]{return CanUse(BOW) || CanUse(SLINGSHOT);}}),
-                  LocationAccess(GERUDO_TRAINING_GROUNDS_STALFOS_CHEST,     {[]{return IsAdult || KokiriSword;}}),
-                  LocationAccess(GERUDO_TRAINING_GROUNDS_BEAMOS_CHEST,      {[]{return HasExplosives && (IsAdult || KokiriSword);}}),
+                  LocationAccess(GERUDO_TRAINING_GROUNDS_STALFOS_CHEST,     {[]{return CanUseSword || CanUse(MEGATON_HAMMER);}}),
+                  LocationAccess(GERUDO_TRAINING_GROUNDS_BEAMOS_CHEST,      {[]{return HasExplosives && (CanUseSword || CanUse(MEGATON_HAMMER));}}),
                 }, {
                   //Exits
                   Entrance(GERUDO_TRAINING_GROUNDS_ENTRYWAY,         {[]{return true;}}),
-                  Entrance(GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_ROOM, {[]{return (IsAdult || KokiriSword) && (CanUse(HOOKSHOT) || LogicGtgWithoutHookshot);}}),
-                  Entrance(GERUDO_TRAINING_GROUNDS_LAVA_ROOM,        {[]{return Here(GERUDO_TRAINING_GROUNDS_LOBBY, []{return (IsAdult || KokiriSword) && HasExplosives;});}}),
+                  Entrance(GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_ROOM, {[]{return (CanUseSword || CanUse(MEGATON_HAMMER)) && (CanUse(HOOKSHOT) || LogicGtgWithoutHookshot);}}),
+                  Entrance(GERUDO_TRAINING_GROUNDS_LAVA_ROOM,        {[]{return Here(GERUDO_TRAINING_GROUNDS_LOBBY, []{return (CanUseSword || CanUse(MEGATON_HAMMER)) && HasExplosives;});}}),
                   Entrance(GERUDO_TRAINING_GROUNDS_CENTRAL_MAZE,     {[]{return true;}}),
   });
 
@@ -73,7 +73,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   LocationAccess(GERUDO_TRAINING_GROUNDS_HAMMER_ROOM_SWITCH_CHEST, {[]{return CanUse(MEGATON_HAMMER) || (CanTakeDamage && LogicFlamingChests);}}),
                 }, {
                   //Exits
-                  Entrance(GERUDO_TRAINING_GROUNDS_EYE_STATUE_LOWER, {[]{return CanUse(MEGATON_HAMMER) && Bow;}}),
+                  Entrance(GERUDO_TRAINING_GROUNDS_EYE_STATUE_LOWER, {[]{return CanUse(MEGATON_HAMMER) && CanUse(BOW);}}),
                   Entrance(GERUDO_TRAINING_GROUNDS_LAVA_ROOM,        {[]{return true;}}),
   });
 
@@ -95,7 +95,7 @@ void AreaTable_Init_GerudoTrainingGrounds() {
 
   areaTable[GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_ROOM] = Area("Gerudo Training Grounds Heavy Block Room", "Gerudo Training Grounds", GERUDO_TRAINING_GROUNDS, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(GERUDO_TRAINING_GROUNDS_BEFORE_HEAVY_BLOCK_CHEST, {[]{return true;}}),
+                  LocationAccess(GERUDO_TRAINING_GROUNDS_BEFORE_HEAVY_BLOCK_CHEST, {[]{return (CanUseSword || CanUse(MEGATON_HAMMER));}}),
                 }, {
                   //Exits
                   Entrance(GERUDO_TRAINING_GROUNDS_EYE_STATUE_UPPER, {[]{return (LogicLensGtg || CanUse(LENS_OF_TRUTH)) && (CanUse(HOOKSHOT) || (LogicGtgFakeWall && CanUse(HOVER_BOOTS)));}}),
@@ -104,10 +104,10 @@ void AreaTable_Init_GerudoTrainingGrounds() {
 
   areaTable[GERUDO_TRAINING_GROUNDS_LIKE_LIKE_ROOM] = Area("Gerudo Training Grounds Like Like Room", "Gerudo Training Grounds", GERUDO_TRAINING_GROUNDS, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_FIRST_CHEST,  {[]{return true;}}),
-                  LocationAccess(GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_SECOND_CHEST, {[]{return true;}}),
-                  LocationAccess(GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_THIRD_CHEST,  {[]{return true;}}),
-                  LocationAccess(GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_FOURTH_CHEST, {[]{return true;}}),
+                  LocationAccess(GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_FIRST_CHEST,  {[]{return (CanUseSword || CanUse(MEGATON_HAMMER));}}),
+                  LocationAccess(GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_SECOND_CHEST, {[]{return (CanUseSword || CanUse(MEGATON_HAMMER));}}),
+                  LocationAccess(GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_THIRD_CHEST,  {[]{return (CanUseSword || CanUse(MEGATON_HAMMER));}}),
+                  LocationAccess(GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_FOURTH_CHEST, {[]{return (CanUseSword || CanUse(MEGATON_HAMMER));}}),
   }, {});
   }
 
