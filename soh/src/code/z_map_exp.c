@@ -870,24 +870,33 @@ void Minimap_Draw(PlayState* play) {
                         // To address this, we take only the first 10 bits (which are later left-shifted by 2 to get our final 12 bits)
                         // to fix the entrance icon position when used with `gSPWideTextureRectangle`
                         s16 newY = gMapData->owEntranceIconPosY[sEntranceIconMapIndex] & 0x3FF;
-                        s16 PosX = gMapData->owEntranceIconPosX[sEntranceIconMapIndex] + (topLeft0 ? 0 : X_Margins_Minimap);
+                        s16 PosX = gMapData->owEntranceIconPosX[sEntranceIconMapIndex] + X_Margins_Minimap;
 
-                        s16 entranceX = topLeft0 ? OTRGetRectDimensionFromLeftEdge(PosX) : OTRGetRectDimensionFromRightEdge(PosX);
-                        s16 entranceY = newY + (topLeft0 ? 0 : Y_Margins_Minimap);
+                        s16 entranceX = OTRGetRectDimensionFromRightEdge(PosX);
+                        s16 entranceY = newY + Y_Margins_Minimap;
                         if (CVarGetInteger("gMinimapPosType", 0) != 0) {
-                            if (!topLeft0) {
-                                entranceY = newY + CVarGetInteger("gMinimapPosY", 0) + Y_Margins_Minimap;
-                                if (CVarGetInteger("gMinimapPosType", 0) == 1) {//Anchor Left
-                                    if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
-                                    entranceX = OTRGetRectDimensionFromLeftEdge(PosX + CVarGetInteger("gMinimapPosX", 0));
-                                } else if (CVarGetInteger("gMinimapPosType", 0) == 2) {//Anchor Right
-                                    if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
-                                    entranceX = OTRGetRectDimensionFromRightEdge(PosX + CVarGetInteger("gMinimapPosX", 0));
-                                } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
-                                    entranceX = PosX + CVarGetInteger("gMinimapPosX", 0);
-                                }
-                            } else if (CVarGetInteger("gMinimapPosType", 0) == 4) {//Hidden
+                            entranceY = newY + CVarGetInteger("gMinimapPosY", 0) + Y_Margins_Minimap;
+                            if (CVarGetInteger("gMinimapPosType", 0) == 1) { // Anchor Left
+                                if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
+                                entranceX = OTRGetRectDimensionFromLeftEdge(PosX + CVarGetInteger("gMinimapPosX", 0));
+                            } else if (CVarGetInteger("gMinimapPosType", 0) == 2) { // Anchor Right
+                                if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
+                                entranceX = OTRGetRectDimensionFromRightEdge(PosX + CVarGetInteger("gMinimapPosX", 0));
+                            } else if (CVarGetInteger("gMinimapPosType", 0) == 3) { // Anchor None
+                                entranceX = PosX + CVarGetInteger("gMinimapPosX", 0);
+                            } else if (CVarGetInteger("gMinimapPosType", 0) == 4) { // Hidden
                                 entranceX = -9999;
+                            }
+                        }
+
+                        // For icons that normally would be placed in 0,0 leave them there based on the left edge dimension
+                        // or hide them entirely based on the settings
+                        if (topLeft0) {
+                            entranceY = 0;
+                            if (CVarGetInteger("gFixDungeonMinimapIcon", 0) || CVarGetInteger("gMinimapPosType", 0) == 4) { // Hidden
+                                entranceX = -9999;
+                            } else {
+                                entranceX = OTRGetRectDimensionFromLeftEdge(0);
                             }
                         }
 
@@ -896,13 +905,11 @@ void Minimap_Draw(PlayState* play) {
                             ((gMapData->owEntranceFlag[sEntranceIconMapIndex] != 0xFFFF) &&
                               ((gSaveContext.infTable[26] & gBitFlags[gMapData->owEntranceFlag[mapIndex]]) ||
                                CVarGetInteger("gAlwaysShowDungeonMinimapIcon", 0)))) {
-                            if (!topLeft0 || !CVarGetInteger("gFixDungeonMinimapIcon", 0)) {
-                                gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                                                    iconSize, iconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
-                                                    G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-                                gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, entranceY << 2, (entranceX + iconSize) << 2,
-                                                       (entranceY + iconSize) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
-                            }
+                            gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b,
+                                                iconSize, iconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                            gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, entranceY << 2, (entranceX + iconSize) << 2,
+                                                    (entranceY + iconSize) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
                         }
                     }
 
