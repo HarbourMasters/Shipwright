@@ -33,7 +33,7 @@ void AreaTable_Init_DekuTree() {
                   Entrance(DEKU_TREE_ENTRYWAY,          {[]{return true;}}),
                   Entrance(DEKU_TREE_2F_MIDDLE_ROOM,    {[]{return true;}}),
                   Entrance(DEKU_TREE_COMPASS_ROOM,      {[]{return true;}}),
-                  Entrance(DEKU_TREE_BASEMENT_LOWER,    {[]{return Here(DEKU_TREE_LOBBY, []{return CanUseSword || CanChildAttack || Nuts;});}}),
+                  Entrance(DEKU_TREE_BASEMENT_LOWER,    {[]{return Here(DEKU_TREE_LOBBY, []{return CanPassSkulltula;});}}),
                   Entrance(DEKU_TREE_OUTSIDE_BOSS_ROOM, {[]{return false;}}),
                   Entrance(DEKU_TREE_BOSS_ENTRYWAY,     {[]{return false;}}),
   });

@@ -251,8 +251,9 @@ namespace Logic {
   bool IsAdult          = false;
   bool IsGlitched       = false;
   bool CanBlastOrSmash  = false;
-  bool CanJumpslash     = false;
   bool CanUseSword      = false;
+  bool CanJumpslash     = false;
+  bool CanPassSkulltula = false;
   bool CanChildAttack   = false;
   bool CanChildDamage   = false;
   bool CanCutShrubs     = false;
@@ -518,8 +519,8 @@ namespace Logic {
     BiggoronSword   = BiggoronSword || ProgressiveGiantKnife >= 2;
 
     ScarecrowSong    = ScarecrowSong || FreeScarecrow || (ChildScarecrow && AdultScarecrow);
-    Scarecrow        = Hookshot && CanPlay(ScarecrowSong);
-    DistantScarecrow = Longshot && CanPlay(ScarecrowSong);
+    Scarecrow        = CanUse(HOOKSHOT) && CanPlay(ScarecrowSong);
+    DistantScarecrow = CanUse(LONGSHOT) && CanPlay(ScarecrowSong);
 
     //Drop Access
     DekuStickDrop = StickPot || DekuBabaSticks;
@@ -560,23 +561,24 @@ namespace Logic {
     // IsChild = Age == AGE_CHILD;
     // IsAdult = Age == AGE_ADULT;
 
-    CanBlastOrSmash = HasExplosives || CanUse(MEGATON_HAMMER);
-    CanUseSword     = CanUse(MASTER_SWORD) || CanUse(KOKIRI_SWORD) || CanUse(BIGGORON_SWORD);
-    CanJumpslash    = CanUseSword || CanUse(STICKS); // TODO check this change is safe (i.e. not including hammer)
-    CanChildAttack  = IsChild && (Slingshot || Boomerang || Sticks || KokiriSword || HasExplosives || CanUse(DINS_FIRE) || CanUse(MASTER_SWORD) || CanUse(MEGATON_HAMMER) || CanUse(BIGGORON_SWORD));
-    CanChildDamage  = IsChild && (Slingshot ||              Sticks || KokiriSword || HasExplosives || CanUse(DINS_FIRE) || CanUse(MASTER_SWORD) || CanUse(MEGATON_HAMMER) || CanUse(BIGGORON_SWORD));
-    CanStunDeku     = CanJumpslash || Nuts || HasShield || HasExplosives || CanUse(SLINGSHOT) || CanUse(BOW) || CanUse(MEGATON_HAMMER) || CanUse(HOOKSHOT) || CanUse(BOOMERANG) || CanUse(DINS_FIRE);
-    CanCutShrubs    = CanUseSword /*|| Sticks*/ || CanUse(BOOMERANG) || HasExplosives || CanUse(MEGATON_HAMMER);
-    CanDive         = ProgressiveScale >= 1;
-    CanLeaveForest  = OpenForest.IsNot(OPENFOREST_CLOSED) || IsAdult || DekuTreeClear || ShuffleInteriorEntrances || ShuffleOverworldEntrances;
-    CanPlantBugs    = IsChild && Bugs;
-    CanRideEpona    = IsAdult && Epona && CanPlay(EponasSong);
+    CanBlastOrSmash  = HasExplosives || CanUse(MEGATON_HAMMER);
+    CanUseSword      = CanUse(MASTER_SWORD) || CanUse(KOKIRI_SWORD) || CanUse(BIGGORON_SWORD);
+    CanJumpslash     = CanUseSword || CanUse(STICKS); // TODO check this change is safe (i.e. not including hammer)
+    CanPassSkulltula = CanJumpslash || Nuts || HasExplosives || CanUse(BOW) || CanUse(SLINGSHOT) || HookshotOrBoomerang || CanUse(MEGATON_HAMMER) || CanUse(DINS_FIRE);
+    CanChildAttack   = IsChild && (Slingshot || Boomerang || Sticks || KokiriSword || HasExplosives || CanUse(DINS_FIRE) || CanUse(MASTER_SWORD) || CanUse(MEGATON_HAMMER) || CanUse(BIGGORON_SWORD));
+    CanChildDamage   = IsChild && (Slingshot ||              Sticks || KokiriSword || HasExplosives || CanUse(DINS_FIRE) || CanUse(MASTER_SWORD) || CanUse(MEGATON_HAMMER) || CanUse(BIGGORON_SWORD));
+    CanStunDeku      = CanJumpslash || Nuts || HasShield || HasExplosives || CanUse(SLINGSHOT) || CanUse(BOW) || CanUse(MEGATON_HAMMER) || CanUse(HOOKSHOT) || CanUse(BOOMERANG) || CanUse(DINS_FIRE);
+    CanCutShrubs     = CanUseSword /*|| Sticks*/ || CanUse(BOOMERANG) || HasExplosives || CanUse(MEGATON_HAMMER);
+    CanDive          = ProgressiveScale >= 1;
+    CanLeaveForest   = OpenForest.IsNot(OPENFOREST_CLOSED) || IsAdult || DekuTreeClear || ShuffleInteriorEntrances || ShuffleOverworldEntrances;
+    CanPlantBugs     = IsChild && Bugs;
+    CanRideEpona     = IsAdult && Epona && CanPlay(EponasSong);
     CanSummonGossipFairy            = Ocarina && (ZeldasLullaby || EponasSong || SongOfTime || SunsSong);
     CanSummonGossipFairyWithoutSuns = Ocarina && (ZeldasLullaby || EponasSong || SongOfTime);
-    Hearts          = BaseHearts + HeartContainer + (PieceOfHeart >> 2);
-    EffectiveHealth = ((Hearts << (2 + DoubleDefense)) >> Multiplier) + ((Hearts << (2 + DoubleDefense)) % (1 << Multiplier) > 0); //Number of half heart hits to die, ranges from 1 to 160
-    FireTimer       = CanUse(GORON_TUNIC) ? 255 : (LogicFewerTunicRequirements) ? (Hearts * 8) : 0;
-    WaterTimer      = CanUse( ZORA_TUNIC) ? 255 : (LogicFewerTunicRequirements) ? (Hearts * 8) : 0;
+    Hearts              = BaseHearts + HeartContainer + (PieceOfHeart >> 2);
+    EffectiveHealth     = ((Hearts << (2 + DoubleDefense)) >> Multiplier) + ((Hearts << (2 + DoubleDefense)) % (1 << Multiplier) > 0); //Number of half heart hits to die, ranges from 1 to 160
+    FireTimer           = CanUse(GORON_TUNIC) ? 255 : (LogicFewerTunicRequirements) ? (Hearts * 8) : 0;
+    WaterTimer          = CanUse( ZORA_TUNIC) ? 255 : (LogicFewerTunicRequirements) ? (Hearts * 8) : 0;
     NeedNayrusLove      = (EffectiveHealth == 1);
     CanSurviveDamage    = !NeedNayrusLove || CanUse(NAYRUS_LOVE);
     CanTakeDamage       = Fairy || CanSurviveDamage;
@@ -968,8 +970,9 @@ namespace Logic {
      IsAdult          = false;
      IsGlitched       = Settings::Logic.Is(LOGIC_GLITCHED);
      CanBlastOrSmash  = false;
-     CanJumpslash     = false;
      CanUseSword      = false;
+     CanJumpslash     = false;
+     CanPassSkulltula = false;
      CanChildAttack   = false;
      CanChildDamage   = false;
      CanCutShrubs     = false;

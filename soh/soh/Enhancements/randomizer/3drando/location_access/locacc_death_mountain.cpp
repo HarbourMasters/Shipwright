@@ -173,7 +173,7 @@ void AreaTable_Init_DeathMountain() {
                 }, {
                   //Locations
                   LocationAccess(DMC_WALL_FREESTANDING_POH, {[]{return FireTimer >= 16 || Hearts >= 3;}}),
-                  LocationAccess(DMC_GS_CRATE,              {[]{return (FireTimer >= 8 || Hearts >= 3) && IsChild && CanChildAttack;}}),
+                  LocationAccess(DMC_GS_CRATE,              {[]{return (FireTimer >= 8 || Hearts >= 3) && IsChild && CanHurtGoldSkull;}}),
                   LocationAccess(DMC_GOSSIP_STONE,          {[]{return HasExplosives && (FireTimer >= 16 || Hearts >= 3);}}),
                 }, {
                   //Exits
@@ -222,7 +222,7 @@ void AreaTable_Init_DeathMountain() {
                   EventAccess(&BeanPlantFairy, {[]{return BeanPlantFairy || (CanPlantBean(DMC_CENTRAL_LOCAL) && CanPlay(SongOfStorms));}}),
                 }, {
                   //Locations
-                  LocationAccess(DMC_GS_BEAN_PATCH, {[]{return (FireTimer >= 8 || Hearts >= 3) && CanPlantBugs && CanChildAttack;}}),
+                  LocationAccess(DMC_GS_BEAN_PATCH, {[]{return (FireTimer >= 8 || Hearts >= 3) && CanPlantBugs && CanHurtGoldSkull;}}),
                 }, {
                   //Exits
                   Entrance(DMC_CENTRAL_NEARBY,   {[]{return true;}}),

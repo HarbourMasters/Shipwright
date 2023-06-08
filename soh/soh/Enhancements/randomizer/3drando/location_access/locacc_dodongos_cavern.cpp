@@ -58,7 +58,7 @@ void AreaTable_Init_DodongosCavern() {
                 }, {
                   //Exits
                   Entrance(DODONGOS_CAVERN_LOBBY,               {[]{return true;}}),
-                  Entrance(DODONGOS_CAVERN_SE_ROOM,             {[]{return Here(DODONGOS_CAVERN_SE_CORRIDOR, []{return CanBlastOrSmash || CanUseSword || CanChildAttack || CanUse(BOW) || CanUse(HOOKSHOT) || (CanTakeDamage && CanShield);});}}),
+                  Entrance(DODONGOS_CAVERN_SE_ROOM,             {[]{return Here(DODONGOS_CAVERN_SE_CORRIDOR, []{return CanBlastOrSmash || CanJumpslash || CanUse(SLINGSHOT) || CanUse(BOW) || HookshotOrBoomerang || (CanTakeDamage && CanShield) || CanUse(DINS_FIRE);});}}),
                   Entrance(DODONGOS_CAVERN_NEAR_LOWER_LIZALFOS, {[]{return true;}}),
   });
 
