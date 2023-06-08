@@ -654,10 +654,6 @@ void Minimap_DrawCompassIcons(PlayState* play) {
                 Matrix_Translate(
                     (R_COMPASS_OFFSET_X + tempX + (CVarGetInteger("gMinimapPosX", 0)*10) / 10.0f),
                     (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
-            } else if (CVarGetInteger("gMinimapPosType", 0) == 4) {//Hidden
-                Matrix_Translate(
-                    (R_COMPASS_OFFSET_X+(9999*10) + tempX / 10.0f),
-                    (R_COMPASS_OFFSET_Y+(9999*10) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
             }
         } else {
             Matrix_Translate(OTRGetDimensionFromRightEdge((R_COMPASS_OFFSET_X+(X_Margins_Minimap*10) + tempX) / 10.0f), (R_COMPASS_OFFSET_Y+((Y_Margins_Minimap*10)*-1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
@@ -692,10 +688,6 @@ void Minimap_DrawCompassIcons(PlayState* play) {
                 Matrix_Translate(
                     (R_COMPASS_OFFSET_X + tempX + (CVarGetInteger("gMinimapPosX", 0)*10) / 10.0f),
                     (R_COMPASS_OFFSET_Y - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
-            } else if (CVarGetInteger("gMinimapPosType", 0) == 4) {//Hidden
-                Matrix_Translate(
-                    (R_COMPASS_OFFSET_X+(9999*10) + tempX / 10.0f),
-                    (R_COMPASS_OFFSET_Y+(9999*10) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
             }
         } else {
             Matrix_Translate(OTRGetDimensionFromRightEdge((R_COMPASS_OFFSET_X+(X_Margins_Minimap*10) + tempX) / 10.0f), (R_COMPASS_OFFSET_Y+((Y_Margins_Minimap*10)*-1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
@@ -752,7 +744,7 @@ void Minimap_Draw(PlayState* play) {
             case SCENE_HAKADAN:
             case SCENE_HAKADANCH:
             case SCENE_ICE_DOUKUTO:
-                if (!R_MINIMAP_DISABLED) {
+                if (!R_MINIMAP_DISABLED && CVarGetInteger("gMinimapPosType", 0) != 4) { // Not Hidden
                     Gfx_SetupDL_39Overlay(play->state.gfxCtx);
                     gDPSetCombineLERP(OVERLAY_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0,
                                       TEXEL0, 0, PRIMITIVE, 0);
@@ -776,8 +768,6 @@ void Minimap_Draw(PlayState* play) {
                                 dgnMiniMapX = OTRGetDimensionFromRightEdge(R_DGN_MINIMAP_X+CVarGetInteger("gMinimapPosX", 0)+X_Margins_Minimap);
                             } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
                                 dgnMiniMapX = CVarGetInteger("gMinimapPosX", 0);
-                            } else if (CVarGetInteger("gMinimapPosType", 0) == 4) {//Hidden
-                                dgnMiniMapX = -9999;
                             }
                         }
                         gSPWideTextureRectangle(OVERLAY_DISP++, dgnMiniMapX << 2, dgnMiniMapY << 2,
@@ -824,7 +814,7 @@ void Minimap_Draw(PlayState* play) {
             case SCENE_SPOT18:
             case SCENE_SPOT20:
             case SCENE_GANON_TOU:
-                if (!R_MINIMAP_DISABLED) {
+                if (!R_MINIMAP_DISABLED && CVarGetInteger("gMinimapPosType", 0) != 4) { // Not Hidden
                     Gfx_SetupDL_39Overlay(play->state.gfxCtx);
 
                     gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
@@ -847,8 +837,6 @@ void Minimap_Draw(PlayState* play) {
                             oWMiniMapX = OTRGetDimensionFromRightEdge(R_OW_MINIMAP_X+CVarGetInteger("gMinimapPosX", 0)+X_Margins_Minimap);
                         } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
                             oWMiniMapX = CVarGetInteger("gMinimapPosX", 0);
-                        } else if (CVarGetInteger("gMinimapPosType", 0) == 4) {//Hidden
-                            oWMiniMapX = -9999;
                         }
                     }
                     gSPWideTextureRectangle(OVERLAY_DISP++, oWMiniMapX << 2, oWMiniMapY << 2,
@@ -883,20 +871,14 @@ void Minimap_Draw(PlayState* play) {
                                 entranceX = OTRGetRectDimensionFromRightEdge(PosX + CVarGetInteger("gMinimapPosX", 0));
                             } else if (CVarGetInteger("gMinimapPosType", 0) == 3) { // Anchor None
                                 entranceX = PosX + CVarGetInteger("gMinimapPosX", 0);
-                            } else if (CVarGetInteger("gMinimapPosType", 0) == 4) { // Hidden
-                                entranceX = -9999;
                             }
                         }
 
                         // For icons that normally would be placed in 0,0 leave them there based on the left edge dimension
-                        // or hide them entirely based on the settings
+                        // or hide them entirely if the fix is applied
                         if (gMapData->owEntranceIconPosY[sEntranceIconMapIndex] == 0) {
                             entranceY = 0;
-                            if (CVarGetInteger("gFixDungeonMinimapIcon", 0) || CVarGetInteger("gMinimapPosType", 0) == 4) { // Hidden
-                                entranceX = -9999;
-                            } else {
-                                entranceX = OTRGetRectDimensionFromLeftEdge(0);
-                            }
+                            entranceX = CVarGetInteger("gFixDungeonMinimapIcon", 0) ? -9999 : OTRGetRectDimensionFromLeftEdge(0);
                         }
 
                         //! @bug UB: sEntranceIconMapIndex can be up to 23 and is accessing owEntranceFlag which is size 20
@@ -924,8 +906,6 @@ void Minimap_Draw(PlayState* play) {
                             entranceX = OTRGetRectDimensionFromRightEdge(270 + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0));
                         } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
                             entranceX = 270 + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0);
-                        } else if (CVarGetInteger("gMinimapPosType", 0) == 4) {//Hidden
-                            entranceX = -9999;
                         }
                     }
 
