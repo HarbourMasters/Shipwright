@@ -863,7 +863,6 @@ void Minimap_Draw(PlayState* play) {
                     if (((play->sceneNum != SCENE_SPOT01) && (play->sceneNum != SCENE_SPOT04) &&
                          (play->sceneNum != SCENE_SPOT08)) ||
                         (LINK_AGE_IN_YEARS != YEARS_ADULT)) {
-                        u8 topLeft0 = gMapData->owEntranceIconPosY[sEntranceIconMapIndex] == 0;
                         // The game authentically uses larger negative values for the entrance icon Y pos value. Normally only the first 12 bits
                         // would be read when the final value is passed into `gSPTextureRectangle`, but our cosmetic hud placements requires using
                         // `gSPWideTextureRectangle` which reads the first 24 bits instead. This caused the icon to be placed off screen.
@@ -891,7 +890,7 @@ void Minimap_Draw(PlayState* play) {
 
                         // For icons that normally would be placed in 0,0 leave them there based on the left edge dimension
                         // or hide them entirely based on the settings
-                        if (topLeft0) {
+                        if (gMapData->owEntranceIconPosY[sEntranceIconMapIndex] == 0) {
                             entranceY = 0;
                             if (CVarGetInteger("gFixDungeonMinimapIcon", 0) || CVarGetInteger("gMinimapPosType", 0) == 4) { // Hidden
                                 entranceX = -9999;
