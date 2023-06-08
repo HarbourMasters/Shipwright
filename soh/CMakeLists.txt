@@ -134,6 +134,7 @@ endif()
 # soh/config {{{
 file(GLOB_RECURSE soh__config RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     "soh/config/*.h"
+    "soh/config/*.cpp"
 )
 # }}}
 
