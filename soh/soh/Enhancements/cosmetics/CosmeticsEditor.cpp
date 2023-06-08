@@ -52,7 +52,7 @@ u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 }
 
 // This is used for the greg bridge
-#define dgEndGrayscaleAndEndDlistDL "__OTR__helpers/gEndGrayscaleAndEndDlistDL"
+#define dgEndGrayscaleAndEndDlistDL "__OTR__helpers/cosmetics/gEndGrayscaleAndEndDlistDL"
 static const ALIGN_ASSET(2) char gEndGrayscaleAndEndDlistDL[] = dgEndGrayscaleAndEndDlistDL;
 
 // Not to be confused with tabs, groups are 1:1 with the boxes shown in the UI, grouping them allows us to reset/randomize
