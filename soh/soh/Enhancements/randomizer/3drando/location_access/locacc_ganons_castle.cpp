@@ -53,10 +53,10 @@ void AreaTable_Init_GanonsCastle() {
 
   areaTable[GANONS_CASTLE_FOREST_TRIAL] = Area("Ganon's Castle Forest Trial", "Ganon's Castle", GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&ForestTrialClear, {[]{return CanUse(LIGHT_ARROWS) && (FireArrows || DinsFire);}}),
+                  EventAccess(&ForestTrialClear, {[]{return CanUse(LIGHT_ARROWS) && HasFireSource;}}),
                 }, {
                   //Locations
-                  LocationAccess(GANONS_CASTLE_FOREST_TRIAL_CHEST, {[]{return IsAdult || CanChildDamage;}}),
+                  LocationAccess(GANONS_CASTLE_FOREST_TRIAL_CHEST, {[]{return CanJumpslash || HasExplosives || CanUse(SLINGSHOT) || CanUse(BOW) || CanUse(MEGATON_HAMMER) || CanUse(DINS_FIRE);}}),
   }, {});
 
   areaTable[GANONS_CASTLE_FIRE_TRIAL] = Area("Ganon's Castle Fire Trial", "Ganon's Castle", GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
@@ -68,7 +68,7 @@ void AreaTable_Init_GanonsCastle() {
                   //Events
                   EventAccess(&BlueFireAccess,  {[]{return BlueFireAccess || HasBottle;}}),
                   EventAccess(&FairyPot,        {[]{return FairyPot || BlueFire;}}),
-                  EventAccess(&WaterTrialClear, {[]{return BlueFire && Hammer && CanUse(LIGHT_ARROWS);}}),
+                  EventAccess(&WaterTrialClear, {[]{return BlueFire && IsAdult && CanUse(MEGATON_HAMMER) && CanUse(LIGHT_ARROWS);}}),
                 }, {
                   //Locations
                   LocationAccess(GANONS_CASTLE_WATER_TRIAL_LEFT_CHEST,  {[]{return true;}}),
@@ -77,7 +77,7 @@ void AreaTable_Init_GanonsCastle() {
 
   areaTable[GANONS_CASTLE_SHADOW_TRIAL] = Area("Ganon's Castle Shadow Trial", "Ganon's Castle", GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&ShadowTrialClear, {[]{return CanUse(LIGHT_ARROWS) && Hammer && ((FireArrows && (LogicLensCastle || CanUse(LENS_OF_TRUTH))) || (CanUse(LONGSHOT) && (CanUse(HOVER_BOOTS) || (DinsFire && (LogicLensCastle || CanUse(LENS_OF_TRUTH))))));}}),
+                  EventAccess(&ShadowTrialClear, {[]{return CanUse(LIGHT_ARROWS) && CanUse(MEGATON_HAMMER) && ((CanUse(FIRE_ARROWS) && (LogicLensCastle || CanUse(LENS_OF_TRUTH))) || (CanUse(LONGSHOT) && (CanUse(HOVER_BOOTS) || (CanUse(DINS_FIRE) && (LogicLensCastle || CanUse(LENS_OF_TRUTH))))));}}),
                 }, {
                   //Locations
                   LocationAccess(GANONS_CASTLE_SHADOW_TRIAL_FRONT_CHEST,            {[]{return CanUse(FIRE_ARROWS) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || CanPlay(SongOfTime) || IsChild;}}),
@@ -86,8 +86,8 @@ void AreaTable_Init_GanonsCastle() {
 
   areaTable[GANONS_CASTLE_SPIRIT_TRIAL] = Area("Ganon's Castle Spirit Trial", "Ganon's Castle", GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&NutPot,           {[]{return NutPot || ((LogicSpiritTrialHookshot || CanUse(HOOKSHOT)) && HasBombchus && Bow && (MirrorShield || (SunlightArrows && CanUse(LIGHT_ARROWS))) && IsAdult);}}),
-                  EventAccess(&SpiritTrialClear, {[]{return CanUse(LIGHT_ARROWS)  && (MirrorShield || SunlightArrows) && HasBombchus && (LogicSpiritTrialHookshot || CanUse(HOOKSHOT));}}),
+                  EventAccess(&NutPot,           {[]{return NutPot || ((LogicSpiritTrialHookshot || CanUse(HOOKSHOT)) && HasBombchus && CanUse(BOW) && (CanUse(MIRROR_SHIELD) || (SunlightArrows && CanUse(LIGHT_ARROWS))));}}),
+                  EventAccess(&SpiritTrialClear, {[]{return CanUse(LIGHT_ARROWS) && (CanUse(MIRROR_SHIELD) || SunlightArrows) && HasBombchus && (LogicSpiritTrialHookshot || CanUse(HOOKSHOT));}}),
                 }, {
                   //Locations
                   LocationAccess(GANONS_CASTLE_SPIRIT_TRIAL_CRYSTAL_SWITCH_CHEST, {[]{return LogicSpiritTrialHookshot || CanUse(HOOKSHOT);}}),
@@ -105,7 +105,7 @@ void AreaTable_Init_GanonsCastle() {
                   LocationAccess(GANONS_CASTLE_LIGHT_TRIAL_FIRST_RIGHT_CHEST,       {[]{return true;}}),
                   LocationAccess(GANONS_CASTLE_LIGHT_TRIAL_SECOND_RIGHT_CHEST,      {[]{return true;}}),
                   LocationAccess(GANONS_CASTLE_LIGHT_TRIAL_THIRD_RIGHT_CHEST,       {[]{return true;}}),
-                  LocationAccess(GANONS_CASTLE_LIGHT_TRIAL_INVISIBLE_ENEMIES_CHEST, {[]{return LogicLensCastle || CanUse(LENS_OF_TRUTH);}}),
+                  LocationAccess(GANONS_CASTLE_LIGHT_TRIAL_INVISIBLE_ENEMIES_CHEST, {[]{return (LogicLensCastle || CanUse(LENS_OF_TRUTH)) && (CanJumpslash || HasExplosives || CanUse(SLINGSHOT) || CanUse(BOW) || CanUse(MEGATON_HAMMER) || CanUse(DINS_FIRE));}}),
                   LocationAccess(GANONS_CASTLE_LIGHT_TRIAL_LULLABY_CHEST,           {[]{return CanPlay(ZeldasLullaby) && SmallKeys(GANONS_CASTLE, 1);}}),
   }, {});
   }
