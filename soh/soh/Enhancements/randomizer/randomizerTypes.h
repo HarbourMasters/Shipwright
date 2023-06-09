@@ -1764,3 +1764,30 @@ typedef struct CowIdentity {
     RandomizerInf randomizerInf;
     RandomizerCheck randomizerCheck;
 } CowIdentity;
+
+typedef enum {
+    WINDOW_FLOATING,
+    WINDOW_WINDOW
+} WindowType;
+
+typedef enum {
+    DISPLAY_ALWAYS,
+    DISPLAY_COMBO_BUTTON
+} DisplayType;
+
+typedef enum {
+    COMBO_BUTTON_A,
+    COMBO_BUTTON_B,
+    COMBO_BUTTON_C_UP,
+    COMBO_BUTTON_C_DOWN,
+    COMBO_BUTTON_C_LEFT,
+    COMBO_BUTTON_C_RIGHT,
+    COMBO_BUTTON_L,
+    COMBO_BUTTON_Z,
+    COMBO_BUTTON_R,
+    COMBO_BUTTON_START,
+    COMBO_BUTTON_D_UP,
+    COMBO_BUTTON_D_DOWN,
+    COMBO_BUTTON_D_LEFT,
+    COMBO_BUTTON_D_RIGHT,
+} ComboButton;
