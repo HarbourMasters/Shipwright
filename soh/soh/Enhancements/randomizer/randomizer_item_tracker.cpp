@@ -668,7 +668,7 @@ void BeginFloatingWindows(std::string UniqueName, ImGuiWindowFlags flags = 0) {
         windowFlags |= ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoResize;
     }
 
-    if (CVarGetInteger("gItemTrackerWindowType", WINDOW_FLOATING) == WINDOW_FLOATING) {
+    if (CVarGetInteger("gItemTrackerWindowType", TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING) {
         ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
         windowFlags |= ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
 
@@ -695,7 +695,7 @@ void EndFloatingWindows() {
 void DrawItemsInRows(std::vector<ItemTrackerItem> items, int columns = 6) {
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     int iconSpacing = CVarGetInteger("gItemTrackerIconSpacing", 12);
-    int topPadding = (CVarGetInteger("gItemTrackerWindowType", WINDOW_FLOATING) == WINDOW_WINDOW) ? 20 : 0;
+    int topPadding = (CVarGetInteger("gItemTrackerWindowType", TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_WINDOW) ? 20 : 0;
 
     for (int i = 0; i < items.size(); i++) {
         int row = i / columns;
@@ -871,13 +871,13 @@ void ItemTrackerWindow::DrawElement() {
 
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     int iconSpacing = CVarGetInteger("gItemTrackerIconSpacing", 12);
-    int comboButton1Mask = buttonMap[CVarGetInteger("gItemTrackerComboButton1", COMBO_BUTTON_L)];
-    int comboButton2Mask = buttonMap[CVarGetInteger("gItemTrackerComboButton2", COMBO_BUTTON_R)];
+    int comboButton1Mask = buttonMap[CVarGetInteger("gItemTrackerComboButton1", TRACKER_COMBO_BUTTON_L)];
+    int comboButton2Mask = buttonMap[CVarGetInteger("gItemTrackerComboButton2", TRACKER_COMBO_BUTTON_R)];
     OSContPad* buttonsPressed = LUS::Context::GetInstance()->GetControlDeck()->GetPads();
     bool comboButtonsHeld = buttonsPressed != nullptr && buttonsPressed[0].button & comboButton1Mask && buttonsPressed[0].button & comboButton2Mask;
     bool isPaused = CVarGetInteger("gItemTrackerShowOnlyPaused", 0) == 0 || gPlayState != nullptr && gPlayState->pauseCtx.state > 0;
 
-    if (CVarGetInteger("gItemTrackerWindowType", WINDOW_FLOATING) == WINDOW_WINDOW || isPaused && (CVarGetInteger("gItemTrackerDisplayType", DISPLAY_ALWAYS) == DISPLAY_ALWAYS ? CVarGetInteger("gItemTrackerEnabled", 0) : comboButtonsHeld)) {
+    if (CVarGetInteger("gItemTrackerWindowType", TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_WINDOW || isPaused && (CVarGetInteger("gItemTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS ? CVarGetInteger("gItemTrackerEnabled", 0) : comboButtonsHeld)) {
         if (
             (CVarGetInteger("gItemTrackerInventoryItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) ||
             (CVarGetInteger("gItemTrackerEquipmentItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) ||
@@ -891,7 +891,7 @@ void ItemTrackerWindow::DrawElement() {
             BeginFloatingWindows("Item Tracker##main window");
             DrawItemsInRows(mainWindowItems, 6);
 
-            if (CVarGetInteger("gItemTrackerNotesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW && CVarGetInteger("gItemTrackerDisplayType", DISPLAY_ALWAYS) == DISPLAY_ALWAYS) {
+            if (CVarGetInteger("gItemTrackerNotesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW && CVarGetInteger("gItemTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS) {
                 DrawNotes();
             }
             EndFloatingWindows();
@@ -956,7 +956,7 @@ void ItemTrackerWindow::DrawElement() {
             EndFloatingWindows();
         }
 
-        if (CVarGetInteger("gItemTrackerNotesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE && CVarGetInteger("gItemTrackerDisplayType", DISPLAY_ALWAYS) == DISPLAY_ALWAYS) {
+        if (CVarGetInteger("gItemTrackerNotesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE && CVarGetInteger("gItemTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS) {
             ImGui::SetNextWindowSize(ImVec2(400,300), ImGuiCond_FirstUseEver);
             BeginFloatingWindows("Personal Notes", ImGuiWindowFlags_NoFocusOnAppearing);
             DrawNotes(true);
@@ -1000,25 +1000,25 @@ void ItemTrackerSettingsWindow::DrawElement() {
     }
     ImGui::PopItemWidth();
 
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Window Type", "gItemTrackerWindowType", windowTypes, WINDOW_FLOATING)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Window Type", "gItemTrackerWindowType", windowTypes, TRACKER_WINDOW_FLOATING)) {
         shouldUpdateVectors = true;
     }
 
-    if (CVarGetInteger("gItemTrackerWindowType", WINDOW_FLOATING) == WINDOW_FLOATING) {
+    if (CVarGetInteger("gItemTrackerWindowType", TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING) {
         if (UIWidgets::PaddedEnhancementCheckbox("Enable Dragging", "gItemTrackerHudEditMode")) {
             shouldUpdateVectors = true;
         }
         if (UIWidgets::PaddedEnhancementCheckbox("Only enable while paused", "gItemTrackerShowOnlyPaused")) {
             shouldUpdateVectors = true;
         }
-        if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Display Mode", "gItemTrackerDisplayType", displayModes, DISPLAY_ALWAYS)) {
+        if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Display Mode", "gItemTrackerDisplayType", displayModes, TRACKER_DISPLAY_ALWAYS)) {
             shouldUpdateVectors = true;
         }
-        if (CVarGetInteger("gItemTrackerDisplayType", DISPLAY_ALWAYS) == DISPLAY_COMBO_BUTTON) {
-            if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 1", "gItemTrackerComboButton1", buttons, COMBO_BUTTON_L)) {
+        if (CVarGetInteger("gItemTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_COMBO_BUTTON) {
+            if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 1", "gItemTrackerComboButton1", buttons, TRACKER_COMBO_BUTTON_L)) {
                 shouldUpdateVectors = true;
             }
-            if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 2", "gItemTrackerComboButton2", buttons, COMBO_BUTTON_R)) {
+            if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 2", "gItemTrackerComboButton2", buttons, TRACKER_COMBO_BUTTON_R)) {
                 shouldUpdateVectors = true;
             }
         }
@@ -1079,7 +1079,7 @@ void ItemTrackerSettingsWindow::DrawElement() {
         shouldUpdateVectors = true;
     }
 
-    if (CVarGetInteger("gItemTrackerDisplayType", DISPLAY_ALWAYS) == DISPLAY_ALWAYS) {
+    if (CVarGetInteger("gItemTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS) {
         if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Personal notes", "gItemTrackerNotesDisplayType", displayTypes, SECTION_DISPLAY_HIDDEN)) {
             shouldUpdateVectors = true;
         }
