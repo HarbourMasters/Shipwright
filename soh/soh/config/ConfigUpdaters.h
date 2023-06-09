@@ -1,9 +1,9 @@
 #include "libultraship/libultraship.h"
 
 namespace LUS {
-class ConfigVersion0Updater : public ConfigVersionUpdater {
+class ConfigVersion1Updater : public ConfigVersionUpdater {
     public:
-    ConfigVersion0Updater();
+    ConfigVersion1Updater();
     void Update(Config* conf);
 };
 }

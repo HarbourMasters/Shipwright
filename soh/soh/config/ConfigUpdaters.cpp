@@ -1,9 +1,9 @@
 #include "ConfigUpdaters.h"
 
 namespace LUS {
-    ConfigVersion0Updater::ConfigVersion0Updater() : ConfigVersionUpdater(0) {}
+    ConfigVersion1Updater::ConfigVersion1Updater() : ConfigVersionUpdater(1) {}
     
-    void ConfigVersion0Updater::Update(Config* conf) {
+    void ConfigVersion1Updater::Update(Config* conf) {
         if (conf->GetInt("Window.Width", 640) == 640) {
             conf->Erase("Window.Width");
         }
