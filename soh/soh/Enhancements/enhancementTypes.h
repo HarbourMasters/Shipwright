@@ -3,7 +3,7 @@ typedef enum {
     CSMC_BOTH,
     CSMC_TEXTURE,
     CSMC_SIZE
-} ChestSizeMatchesContentsType;
+} ChestStyleMatchesContentsType;
 
 typedef enum {
     BUNNY_HOOD_VANILLA,
