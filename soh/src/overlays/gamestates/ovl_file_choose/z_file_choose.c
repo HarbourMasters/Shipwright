@@ -13,6 +13,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
+#include "soh/Enhancements/enhancementTypes.h"
 
 #define MIN_QUEST (ResourceMgr_GameHasOriginal() ? FS_QUEST_NORMAL : FS_QUEST_MASTER)
 #define MAX_QUEST FS_QUEST_BOSSRUSH
@@ -2497,15 +2498,15 @@ void FileChoose_Main(GameState* thisx) {
         gSaveContext.skyboxTime += 0x10;
     }
 
-    if (CVarGetInteger("gSkipLogoTitle", 0) && CVarGetInteger("gSaveFileID", 0) < 3 && !isFastFileIdIncompatible) {
-        if (Save_Exist(CVarGetInteger("gSaveFileID", 0)) && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(CVarGetInteger("gSaveFileID", 0)))) {
-            this->buttonIndex = CVarGetInteger("gSaveFileID", 0);
+    if (CVarGetInteger("gSkipLogoTitle", 0) && CVarGetInteger("gSaveFileID", FASTFILE_1) <= FASTFILE_3 && !isFastFileIdIncompatible) {
+        if (Save_Exist(CVarGetInteger("gSaveFileID", FASTFILE_1)) && FileChoose_IsSaveCompatible(Save_GetSaveMetaInfo(CVarGetInteger("gSaveFileID", FASTFILE_1)))) {
+            this->buttonIndex = CVarGetInteger("gSaveFileID", FASTFILE_1);
             this->menuMode = FS_MENU_MODE_SELECT;
             this->selectMode = SM_LOAD_GAME;
         } else {
             isFastFileIdIncompatible = 1;
         }
-    } else if (CVarGetInteger("gSkipLogoTitle", 0) && CVarGetInteger("gSaveFileID", 0) == 3) {
+    } else if (CVarGetInteger("gSkipLogoTitle", 0) && CVarGetInteger("gSaveFileID", FASTFILE_1) == FASTFILE_MAP_SELECT) {
         this->buttonIndex = 0xFF;
         this->menuMode = FS_MENU_MODE_SELECT;
         this->selectMode = SM_LOAD_GAME;
