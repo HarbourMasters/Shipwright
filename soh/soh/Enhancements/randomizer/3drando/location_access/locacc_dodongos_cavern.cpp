@@ -119,7 +119,7 @@ void AreaTable_Init_DodongosCavern() {
                   LocationAccess(DODONGOS_CAVERN_COMPASS_CHEST, {[]{return true;}}),
                 }, {
                   //Exits
-                  Entrance(DODONGOS_CAVERN_STAIRS_LOWER, {[]{return CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD) || CanUse(BOW) || CanUse(MEGATON_HAMMER) || HasExplosives || GoronBracelet || (Nuts && (CanUse(SLINGSHOT) || CanUse(KOKIRI_SWORD) || CanUse(STICKS)));}}),
+                  Entrance(DODONGOS_CAVERN_STAIRS_LOWER, {[]{return CanUse(MASTER_SWORD) || CanUse(STICKS) || CanUse(BIGGORON_SWORD) || CanUse(BOW) || CanUse(MEGATON_HAMMER) || HasExplosives || GoronBracelet || (Nuts && (CanUse(SLINGSHOT) || CanUse(KOKIRI_SWORD)));}}),
   });
 
   areaTable[DODONGOS_CAVERN_ARMOS_ROOM] = Area("Dodongos Cavern Armos Room", "Dodongos Cavern", DODONGOS_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -221,7 +221,7 @@ void AreaTable_Init_DodongosCavern() {
   }, {
                   //Locations
                   LocationAccess(DODONGOS_CAVERN_MQ_MAP_CHEST,                  {[]{return CanBlastOrSmash || GoronBracelet;}}),
-                  LocationAccess(DODONGOS_CAVERN_MQ_COMPASS_CHEST,              {[]{return CanBlastOrSmash || (GoronBracelet && (CanUseSword || CanUse(STICKS) || Nuts || CanUse(SLINGSHOT) || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(DINS_FIRE) || CanUse(BOOMERANG)));}}),
+                  LocationAccess(DODONGOS_CAVERN_MQ_COMPASS_CHEST,              {[]{return CanBlastOrSmash || (GoronBracelet && CanPassSkulltula);}}),
                   LocationAccess(DODONGOS_CAVERN_MQ_LARVAE_ROOM_CHEST,          {[]{return (CanBlastOrSmash || GoronBracelet) && (CanUse(STICKS) || HasFireSource);}}),
                   LocationAccess(DODONGOS_CAVERN_MQ_TORCH_PUZZLE_ROOM_CHEST,    {[]{return CanBlastOrSmash || (GoronBracelet && (CanUse(STICKS) || CanUse(DINS_FIRE) || (IsAdult && (LogicDCJump || CanUse(HOVER_BOOTS) || CanUse(HOOKSHOT)))));}}),
                   LocationAccess(DODONGOS_CAVERN_MQ_GS_SONG_OF_TIME_BLOCK_ROOM, {[]{return (CanBlastOrSmash || GoronBracelet) && CanPlay(SongOfTime) && CanHurtGoldSkull;}}),
