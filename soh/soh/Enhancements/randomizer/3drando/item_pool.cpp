@@ -47,7 +47,8 @@ const std::array<uint32_t, 16> JunkPoolItems = {
   DEKU_NUTS_10,
   ICE_TRAP,
 };
-const std::array<uint32_t, 59> alwaysItems = {
+const std::array<uint32_t, 60> alwaysItems = {
+  MASTER_SWORD,
   BIGGORON_SWORD,
   BOOMERANG,
   LENS_OF_TRUTH,
@@ -108,7 +109,8 @@ const std::array<uint32_t, 59> alwaysItems = {
   ARROWS_10,
   TREASURE_GAME_HEART,
 };
-const std::array<uint32_t, 43> easyItems = {
+const std::array<uint32_t, 44> easyItems = {
+  MASTER_SWORD,
   BIGGORON_SWORD,
   KOKIRI_SWORD,
   BOOMERANG,
@@ -674,6 +676,13 @@ void GenerateItemPool() {
     PlaceItemInLocation(KF_KOKIRI_SWORD_CHEST, KOKIRI_SWORD, false, true);
   }
 
+  if (ShuffleMasterSword) {
+    AddItemToMainPool(MASTER_SWORD);
+    IceTrapModels.push_back(GI_SWORD_MASTER);
+  } else {
+    PlaceItemInLocation(TOT_MASTER_SWORD, MASTER_SWORD, false, true);
+  }
+
   if (ShuffleWeirdEgg) {
     AddItemToMainPool(WEIRD_EGG);
     IceTrapModels.push_back(GI_WEIRD_EGG);
@@ -1151,6 +1160,10 @@ void GenerateItemPool() {
 
   if (!ShuffleKokiriSword) {
     ReplaceMaxItem(KOKIRI_SWORD, 0);
+  }
+
+  if (!ShuffleMasterSword) {
+    ReplaceMaxItem(MASTER_SWORD, 0);
   }
 
   if (ProgressiveGoronSword) {

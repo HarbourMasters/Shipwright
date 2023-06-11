@@ -6,6 +6,7 @@
 #include "item_pool.hpp"
 #include "logic.hpp"
 #include "random.hpp"
+#include "settings.hpp"
 #include "spoiler_log.hpp"
 #include "fill.hpp"
 #include "hint_list.hpp"
@@ -141,7 +142,8 @@ Text warpRequiemText;
 Text warpNocturneText;
 Text warpPreludeText;
 
-std::string ganonHintLoc;
+std::string LAHintLoc;
+std::string MSHintLoc;
 std::string dampeHintLoc;
 
 Text& GetChildAltarText() {
@@ -192,8 +194,12 @@ Text& GetWarpPreludeText() {
   return warpPreludeText;
 }
 
-std::string GetGanonHintLoc() {
-    return ganonHintLoc;
+std::string GetLAHintLoc() {
+    return LAHintLoc;
+}
+
+std::string GetMSHintLoc() {
+    return MSHintLoc;
 }
 
 std::string GetDampeHintLoc() {
@@ -589,12 +595,28 @@ void CreateGanonText() {
   auto hint = Hint(LIGHT_ARROW_LOCATION_HINT);
   if (lightArrowLocation.empty()) {
     ganonHintText = hint.GetText()+Hint(YOUR_POCKET).GetText();
-    ganonHintLoc = "Link's Pocket";
+    LAHintLoc = "Link's Pocket";
   } else {
     ganonHintText = hint.GetText()+GetHintRegion(Location(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
-    ganonHintLoc = Location(lightArrowLocation[0])->GetName();
+    LAHintLoc = Location(lightArrowLocation[0])->GetName();
   }
   ganonHintText = ganonHintText + "!";
+
+  if (ShuffleMasterSword) {
+    //Get the location of the master sword
+    auto masterSwordLocation = FilterFromPool(allLocations, [](const LocationKey loc){return Location(loc)->GetPlacedItemKey() == MASTER_SWORD;});
+
+    // Add second text box
+    ganonHintText = ganonHintText + "^";
+    if (masterSwordLocation.empty()) {
+      ganonHintText = ganonHintText+Hint(MASTER_SWORD_LOCATION_HINT).GetText()+Hint(YOUR_POCKET).GetText();
+      MSHintLoc = "Link's Pocket";
+    } else {
+      ganonHintText = ganonHintText+Hint(MASTER_SWORD_LOCATION_HINT).GetText()+GetHintRegion(Location(masterSwordLocation[0])->GetParentRegionKey())->GetHint().GetText();
+      MSHintLoc = Location(masterSwordLocation[0])->GetName();
+    }
+    ganonHintText = ganonHintText + "!";
+  }
 
   CreateMessageFromTextObject(0x70CC, 0, 2, 3, AddColorsAndFormat(ganonHintText));
 }

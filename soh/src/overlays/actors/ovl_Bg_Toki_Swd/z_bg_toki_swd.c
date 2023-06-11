@@ -122,7 +122,12 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
     if (!LINK_IS_ADULT || (gSaveContext.eventChkInf[5] & 0x20 && !gSaveContext.n64ddFlag) || gSaveContext.n64ddFlag) {
         if (Actor_HasParent(&this->actor, play)) {
             if (!LINK_IS_ADULT) {
-                Item_Give(play, ITEM_SWORD_MASTER);
+                if (Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
+                    GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_TOT_MASTER_SWORD, GI_SWORD_MASTER);
+                    Randomizer_Item_Give(play, itemEntry);
+                } else {
+                    Item_Give(play, ITEM_SWORD_MASTER);
+                }
                 play->csCtx.segment = D_808BB2F0;
             } else {
                 play->csCtx.segment = D_808BB7A0;

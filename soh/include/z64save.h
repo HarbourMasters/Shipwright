@@ -303,7 +303,7 @@ typedef struct {
     /*        */ char childAltarText[250];
     /*        */ char adultAltarText[750];
     /*        */ RandomizerCheck rewardCheck[9];
-    /*        */ char ganonHintText[150];
+    /*        */ char ganonHintText[300];
     /*        */ char gregHintText[250];
     /*        */ char ganonText[250];
     /*        */ char dampeText[150];
@@ -313,7 +313,8 @@ typedef struct {
     /*        */ char warpRequiemText[100];
     /*        */ char warpNocturneText[100];
     /*        */ char warpPreludeText[100];
-    /*        */ RandomizerCheck ganonHintCheck;
+    /*        */ RandomizerCheck LAHintCheck;
+    /*        */ RandomizerCheck MSHintCheck;
     /*        */ RandomizerCheck gregCheck;
     /*        */ RandomizerCheck dampeCheck;
     /*        */ u8 seedIcons[5];

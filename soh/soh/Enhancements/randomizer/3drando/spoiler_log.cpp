@@ -728,7 +728,8 @@ static void WriteHints(int language) {
 
     jsonData["ganonText"] = ganonText;
     jsonData["ganonHintText"] = ganonHintText;
-    jsonData["ganonHintLoc"] = GetGanonHintLoc();
+    jsonData["LAHintLoc"] = GetLAHintLoc();
+    jsonData["MSHintLoc"] = GetMSHintLoc();
     jsonData["dampeText"] = dampesText;
     jsonData["dampeHintLoc"] = GetDampeHintLoc();
     jsonData["gregText"] = gregText;
