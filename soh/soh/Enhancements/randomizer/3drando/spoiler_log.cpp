@@ -37,10 +37,6 @@ using json = nlohmann::json;
 json jsonData;
 std::map<HintKey, ItemLocation*> hintedLocations;
 
-// json englishJunkHintJson;
-// json frenchJunkHintJson;
-// json germanJunkHintJson;
-
 extern std::unordered_map<HintType, std::string> hintTypeNames;
 extern std::array<std::string, 17> hintCategoryNames;
 extern Area* GetHintRegion(uint32_t);
