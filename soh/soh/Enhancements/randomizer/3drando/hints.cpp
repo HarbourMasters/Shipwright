@@ -14,6 +14,8 @@
 #include "z64item.h"
 #include <spdlog/spdlog.h>
 #include "../randomizerTypes.h"
+#include <nlohmann/json.hpp>
+#include <fstream>
 
 using namespace CustomMessages;
 using namespace Logic;
@@ -466,9 +468,23 @@ static void CreateGoodItemHint() {
   CreateRandomLocationHint(true);
 }
 
+using json = nlohmann::json;
+static Text GetJunkHintTextFromJson() {
+  static bool junkHintsLoaded = false;
+  static std::vector<std::string> englishHints;
+  static std::vector<std::string> frenchHints;
+  if (!junkHintsLoaded) {
+    std::ifstream hintJsonStream("./junkhints.json");
+    json junkHintJson;
+    hintJsonStream >> junkHintJson;
+    englishHints = junkHintJson["english"].get<std::vector<std::string>>();
+    frenchHints = junkHintJson["french"].get<std::vector<std::string>>();
+  }
+
+  return Text{ RandomElement(englishHints), RandomElement(frenchHints), "" };
+}
+
 static void CreateJunkHint() {
-  //duplicate junk hints are possible for now
-  const HintText junkHint = RandomElement(GetHintCategory(HintCategory::Junk));
   LogicReset();
   const std::vector<uint32_t> gossipStones = GetAccessibleLocations(gossipStoneLocations);
   if (gossipStones.empty()) {
@@ -476,7 +492,9 @@ static void CreateJunkHint() {
     return;
   }
   uint32_t gossipStone = RandomElement(gossipStones);
-  Text hint = junkHint.GetText();
+  
+  //duplicate junk hints are possible for now
+  Text hint = GetJunkHintTextFromJson();
 
   SPDLOG_DEBUG("\tMessage: ");
   SPDLOG_DEBUG(hint.english);
