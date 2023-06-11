@@ -2055,25 +2055,25 @@ void HintTable_Init() {
 
     hintTable[GANON_LINE02] = HintText::GanonLine({
         // obscure text
-        Text{ "I knew I shouldn't have put the key on the other side of my door.",
-              /*french*/ "J'aurais dû garder la clé ici. Hélas...",
+        Text{ "I knew I shouldn't have put the&key on the other side of my door.",
+              /*french*/ "J'aurais dû garder la clé ici.&Hélas...",
               /*spanish*/ "Sabía que no tendría que haber dejado la llave al otro lado de la puerta." },
     });
 
     hintTable[GANON_LINE03] = HintText::GanonLine({
         // obscure text
-        Text{ "Looks like it's time for a round of tennis.",
+        Text{ "Looks like it's time for&a round of tennis.",
               /*french*/ "C'est l'heure de jouer au tennis.",
               /*spanish*/ "Parece que es hora de una pachanga de tenis." },
     });
 
     hintTable[GANON_LINE04] = HintText::GanonLine({
         // obscure text
-        Text{ "You'll never deflect my bolts of energy with your sword, then shoot me with those Light Arrows you "
-              "happen to have.",
+        Text{ "You'll never deflect my bolts& of energy with your sword...^"
+              "...then shoot me with those&Light Arrows you happen to have.",
               /*french*/
-              "Ne perds pas ton temps à frapper mes éclairs d'énergie avec ton épée et me tirer avec tes flèches de "
-              "Lumière!",
+              "Ne perds pas ton temps à frapper&mes éclairs d'énergie avec ton&",
+              "épée et me tirer avec tes&flèches de Lumière!"
               /*spanish*/
               "Nunca reflejarás mis esferas de energía con tu espada, para después dispararme con las flechas de luz "
               "que tendrás." },
@@ -2081,18 +2081,18 @@ void HintTable_Init() {
 
     hintTable[GANON_LINE05] = HintText::GanonLine({
         // obscure text
-        Text{ "Why did I leave my trident back in the desert?",
-              /*french*/ "Sale bêtise... Et j'ai oublié mon trident dans le désert!",
+        Text{ "Why did I leave my trident back&in the desert?",
+              /*french*/ "Sale bêtise... Et j'ai oublié&mon trident dans le désert!",
               /*spanish*/ "Santa Hylia... ¿Por qué me habré dejado el tridente en el desierto?" },
     });
 
     hintTable[GANON_LINE06] = HintText::GanonLine({
         // obscure text
-        Text{ "Zelda is probably going to do something stupid, like send you back to your own timeline.^So this is "
-              "quite meaningless. Do you really want to save this moron?",
+        Text{ "Zelda is probably going to do&something stupid, like send you&back to your own timeline."
+              "^So this is quite meaningless.&Do you really want to save&this moron?",
               /*french*/
-              "Même si je suis vaincu... Zelda te renverra dans ton ère, et je reviendrai conquérir!^Telle est la "
-              "prophécie d'Hyrule Historia!",
+              "Même si je suis vaincu...&Zelda te renverra dans ton ère,&et je reviendrai conquérir!"
+              "^Telle est la prophécie&d'Hyrule Historia!",
               /*spanish*/
               "Seguro que Zelda trata de hacer alguna tontería, como enviarte de vuelta a tu línea temporal.^No tiene "
               "ningún sentido alguno. ¿De verdad quieres salvar a esa tonta?" },
@@ -2103,8 +2103,8 @@ void HintTable_Init() {
         Text{ "What about Zelda makes you think&she'd be a better ruler than I?^I saved Lon Lon Ranch,&fed the "
               "hungry,&and my castle floats.",
               /*french*/
-              "Zelda ne sera jamais un meilleur monarque que moi!^J'ai un château volant, mes sujets sont des belles "
-              "amazones... et mes Moblins sont clairement plus puissants que jamais!",
+              "Zelda ne sera jamais un meilleur&monarque que moi!^J'ai un château volant, mes sujets&sont des belles "
+              "amazones...&et mes Moblins sont clairement&plus puissants que jamais!",
               /*spanish*/
               "¿Qué te hace pensar que Zelda gobierna mejor que yo?^Yo he salvado el Rancho Lon Lon,&he alimentado a "
               "los hambrientos&y hasta hago que mi castillo flote." },
@@ -2130,8 +2130,8 @@ void HintTable_Init() {
 
     hintTable[GANON_LINE10] = HintText::GanonLine({
         // obscure text
-        Text{ "After what you did to Koholint Island, how can you call me the bad guy?",
-              /*french*/ "J'admire ce que tu as fait à l'Île Koholint... Toi et moi, nous devrions faire équipe!",
+        Text{ "After what you did to Koholint&Island, how can you call me&the bad guy?",
+              /*french*/ "J'admire ce que tu as fait&à l'Île Koholint... Toi et moi,&nous devrions faire équipe!",
               /*spanish*/ "Después de lo que le hiciste a la Isla Koholint, ¿cómo te atreves a llamarme malvado?" },
     });
 
@@ -2139,7 +2139,7 @@ void HintTable_Init() {
         // obscure text
         Text{ "Today, let's begin down&'The Hero is Defeated' timeline.",
               /*french*/
-              "Si tu me vaincs, Hyrule sera englouti... mais si tu meurs, on aura A Link to the Past, le meilleur opus "
+              "Si tu me vaincs, Hyrule sera&englouti... mais si tu meurs,&on aura A Link to the Past,&le meilleur opus ",
               "de la série!",
               /*spanish*/
               "Hoy daremos lugar a la línea temporal del Héroe Derrotado.&¡Prepárate para el culmen de esta saga!" },

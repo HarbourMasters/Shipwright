@@ -610,44 +610,27 @@ static void WriteWayOfTheHeroLocation(tinyxml2::XMLDocument& spoilerLog) {
 std::string AutoFormatHintTextString(std::string unformattedHintTextString) {
   std::string textStr = unformattedHintTextString;
 
-  // RANDOTODO: don't just make manual exceptions
-  bool needsAutomaicNewlines = true;
-  if (textStr == "Erreur 0x69a504:&Traduction manquante^C'est de la faute à Purple Hato!&J'vous jure!" ||
-      textStr == "Mon très cher @:&Viens vite au château, je t'ai préparé&un délicieux gâteau...^À bientôt, Princesse Zelda" ||
-      textStr == "What about Zelda makes you think&she'd be a better ruler than I?^I saved Lon Lon Ranch,&fed the hungry,&and my castle floats." ||
-      textStr == "Many tricks are up my sleeve,&to save yourself&you'd better leave!" ||
-      textStr == "I've learned this spell,&it's really neat,&I'll keep it later&for your treat!" ||
-      textStr == "Sale petit garnement,&tu fais erreur!&C'est maintenant que marque&ta dernière heure!" ||
-      textStr == "Gamin, ton destin achève,&sous mon sort tu périras!&Cette partie ne fut pas brève,&et cette mort, tu subiras!" ||
-      textStr == "Oh! It's @.&I was expecting someone called Sheik.&Do you know what happened to them?" ||
-      textStr == "Ah, c'est @.&J'attendais un certain Sheik.&Tu sais ce qui lui est arrivé?" ||
-      textStr == "They say \"Forgive me, but-^Your script will not be used.&....After all...^The one writing the rest of the script...&will be me.\"") {
-    needsAutomaicNewlines = false;
-  }
-
-  if (needsAutomaicNewlines) {
-    //insert newlines either manually or when encountering a '&'
-    constexpr size_t lineLength = 34;
-    size_t lastNewline = 0;
-    while (lastNewline + lineLength < textStr.length()) {
-      size_t carrot     = textStr.find('^', lastNewline);
-      size_t ampersand  = textStr.find('&', lastNewline);
-      size_t lastSpace  = textStr.rfind(' ', lastNewline + lineLength);
-      size_t lastPeriod = textStr.rfind('.', lastNewline + lineLength);
-      //replace '&' first if it's within the newline range
-      if (ampersand < lastNewline + lineLength) {
-        lastNewline = ampersand;
-      //or move the lastNewline cursor to the next line if a '^' is encountered
-      } else if (carrot < lastNewline + lineLength) {
-        lastNewline = carrot + 1;
-      //some lines need to be split but don't have spaces, look for periods instead
-      } else if (lastSpace == std::string::npos) {
-        textStr.replace(lastPeriod, 1, ".&");
-        lastNewline = lastPeriod + 2;
-      } else {
-        textStr.replace(lastSpace, 1, "&");
-        lastNewline = lastSpace + 1;
-      }
+  //insert newlines either manually or when encountering a '&'
+  constexpr size_t lineLength = 34;
+  size_t lastNewline = 0;
+  while (lastNewline + lineLength < textStr.length()) {
+    size_t carrot     = textStr.find('^', lastNewline);
+    size_t ampersand  = textStr.find('&', lastNewline);
+    size_t lastSpace  = textStr.rfind(' ', lastNewline + lineLength);
+    size_t lastPeriod = textStr.rfind('.', lastNewline + lineLength);
+    //replace '&' first if it's within the newline range
+    if (ampersand < lastNewline + lineLength) {
+      lastNewline = ampersand;
+    //or move the lastNewline cursor to the next line if a '^' is encountered
+    } else if (carrot < lastNewline + lineLength) {
+      lastNewline = carrot + 1;
+    //some lines need to be split but don't have spaces, look for periods instead
+    } else if (lastSpace == std::string::npos) {
+      textStr.replace(lastPeriod, 1, ".&");
+      lastNewline = lastPeriod + 2;
+    } else {
+      textStr.replace(lastSpace, 1, "&");
+      lastNewline = lastSpace + 1;
     }
   }
 
@@ -663,7 +646,6 @@ ItemLocation* GetItemLocation(uint32_t item) {
 
 // Writes the hints to the spoiler log, if they are enabled.
 static void WriteHints(int language) {
-    std::string unformattedGanonText;
     std::string unformattedGanonHintText;
     std::string unformattedDampesText;
     std::string unformattedGregText;
@@ -671,10 +653,10 @@ static void WriteHints(int language) {
     switch (language) {
         case 0:
         default:
-            unformattedGanonText = GetGanonText().GetEnglish();
             unformattedGanonHintText = GetGanonHintText().GetEnglish();
             unformattedDampesText = GetDampeHintText().GetEnglish();
             unformattedGregText = GetGregHintText().GetEnglish();
+            jsonData["ganonText"] = GetGanonText().GetEnglish();
             jsonData["warpMinuetText"] = GetWarpMinuetText().GetEnglish();
             jsonData["warpBoleroText"] = GetWarpBoleroText().GetEnglish();
             jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetEnglish();
@@ -685,10 +667,10 @@ static void WriteHints(int language) {
             jsonData["adultAltar"]["hintText"] = GetAdultAltarText().GetEnglish();
             break;
         case 2:
-            unformattedGanonText = GetGanonText().GetFrench();
             unformattedGanonHintText = GetGanonHintText().GetFrench();
             unformattedDampesText = GetDampeHintText().GetFrench();
             unformattedGregText = GetGregHintText().GetFrench();
+            jsonData["ganonText"] = GetGanonText().GetFrench();
             jsonData["warpMinuetText"] = GetWarpMinuetText().GetFrench();
             jsonData["warpBoleroText"] = GetWarpBoleroText().GetFrench();
             jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetFrench();
@@ -725,12 +707,10 @@ static void WriteHints(int language) {
     jsonData["adultAltar"]["rewards"]["spiritMedallionLoc"] = spiritMedallionLoc->GetName();
     jsonData["adultAltar"]["rewards"]["lightMedallionLoc"] = lightMedallionLoc->GetName();
 
-    std::string ganonText = AutoFormatHintTextString(unformattedGanonText);
     std::string ganonHintText = AutoFormatHintTextString(unformattedGanonHintText);
     std::string dampesText = AutoFormatHintTextString(unformattedDampesText);
     std::string gregText = AutoFormatHintTextString(unformattedGregText);
 
-    jsonData["ganonText"] = ganonText;
     jsonData["ganonHintText"] = ganonHintText;
     jsonData["ganonHintLoc"] = GetGanonHintLoc();
     jsonData["dampeText"] = dampesText;
@@ -756,26 +736,15 @@ static void WriteHints(int language) {
                 break;
         }
 
+        // Don't autoformat junk hints
+        // some combos of line and box breaks can lead to the autoformatter getting
+        // stuck in an infinite loop. this was handled in the past by manual checks
+        // but that isn't a viable option when people can edit their junk hint json files
         HintType hintType = location->GetHintType();
+        std::string textStr = hintType != HINT_TYPE_JUNK ?
+          AutoFormatHintTextString(unformattedHintTextString) :
+          unformattedHintTextString;
 
-        // auto allJunkHints = GetHintCategory(HintCategory::Junk);
-        // for (HintText hint : allJunkHints) {
-        //   englishJunkHintJson["junkhints"].push_back(hint.GetText().GetEnglish());
-        //   frenchJunkHintJson["junkhints"].push_back(hint.GetText().GetFrench());
-        // }
-        // std::string jsonEnglishHintString = englishJunkHintJson.dump(4);
-        // std::ofstream jsonEnglishHintfile("blarge.json");
-        // jsonEnglishHintfile << std::setw(4) << jsonEnglishHintString << std::endl;
-        // jsonEnglishHintfile.close();
-
-        // std::string jsonFrenchHintString = frenchJunkHintJson.dump(4);
-        // std::ofstream jsonFrenchHintfile("blargf.json");
-        // jsonFrenchHintfile << std::setw(4) << jsonFrenchHintString << std::endl;
-        // jsonFrenchHintfile.close();
-
-        // int blarg = 3;
-
-        std::string textStr = AutoFormatHintTextString(unformattedHintTextString);
         jsonData["hints"][location->GetName()]["hint"] = textStr;
         jsonData["hints"][location->GetName()]["type"] = hintTypeNames.find(hintType)->second;
         if (hintType == HINT_TYPE_ITEM || hintType == HINT_TYPE_NAMED_ITEM) {
