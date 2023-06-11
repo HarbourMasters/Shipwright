@@ -1106,6 +1106,23 @@ extern "C" void ResourceMgr_LoadFile(const char* resName) {
     LUS::Context::GetInstance()->GetResourceManager()->LoadResource(resName);
 }
 
+extern "C" void ResourceMgr_LoadAllSceneResources(int16_t sceneNum, bool now) {
+    std::string sceneName = gSceneTable[sceneNum].sceneFile.fileName;
+    std::string Path = "alt/scenes/nonmq/" + sceneName + "/*";
+    if (ResourceMgr_IsGameMasterQuest()) {
+        size_t pos = 0;
+        if ((pos = Path.find("/nonmq/", 0)) != std::string::npos) {
+            Path.replace(pos, 7, "/mq/");
+        }
+    }
+
+    if (now) {
+        OTRGlobals::Instance->context->GetResourceManager()->LoadDirectory(Path);
+    } else {
+        OTRGlobals::Instance->context->GetResourceManager()->LoadDirectoryAsync(Path);
+    }
+}
+
 std::shared_ptr<LUS::IResource> GetResourceByNameHandlingMQ(const char* path) {
     std::string Path = path;
     if (ResourceMgr_IsGameMasterQuest()) {

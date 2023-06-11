@@ -1,6 +1,10 @@
 #include "OTRGlobals.h"
 #include <libultraship/libultraship.h>
+#include "soh/ActorDB.h"
 #include "soh/resource/type/Scene.h"
+#include "soh/resource/type/scenecommand/SetRoomList.h"
+#include "soh/resource/type/scenecommand/SetActorList.h"
+#include "soh/resource/type/scenecommand/SetObjectList.h"
 #include <Utils/StringHelper.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "global.h"
@@ -13,7 +17,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn);
 s32 OTRScene_ExecuteCommands(PlayState* play, LUS::Scene* scene);
 
 //LUS::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
-LUS::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
+LUS::IResource* OTRPlay_LoadFile(const char* fileName)
 {
     auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResource(fileName);
     return res.get();
@@ -37,7 +41,7 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
     }
     std::string scenePath = StringHelper::Sprintf("scenes/%s/%s/%s", sceneVersion.c_str(), scene->sceneFile.fileName, scene->sceneFile.fileName);
 
-    play->sceneSegment = OTRPlay_LoadFile(play, scenePath.c_str());
+    play->sceneSegment = OTRPlay_LoadFile(scenePath.c_str());
 
     // Failed to load scene... default to doodongs cavern
     if (play->sceneSegment == nullptr) 
@@ -71,6 +75,50 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     Object_InitBank(play, &play->objectCtx);
     LightContext_Init(play, &play->lightCtx);
     TransitionActor_InitContext(&play->state, &play->transiActorCtx);
+
+    if (CVarGetInteger("gAltAssets", 0)) {
+        std::unordered_set<std::string> objects;
+
+        LUS::SceneCommandID cmdCode;
+        auto scene = (LUS::Scene*)play->sceneSegment;
+        for (auto sceneCmd : scene->commands) {
+            if (sceneCmd->cmdId == LUS::SceneCommandID::SetRoomList) {
+                auto setRoomListCmd = std::dynamic_pointer_cast<LUS::SetRoomList>(sceneCmd);
+                for (auto room : setRoomListCmd->rooms) {
+                    auto roomScene = (LUS::Scene*)OTRPlay_LoadFile(room.fileName);
+                    for (auto roomSceneCmd : roomScene->commands) {
+                        if (roomSceneCmd->cmdId == LUS::SceneCommandID::SetObjectList) {
+                            auto setObjectCmd = std::dynamic_pointer_cast<LUS::SetObjectList>(roomSceneCmd);
+                            for (auto objectId : setObjectCmd->objects) {
+                                std::string objectName = gObjectTable[objectId].fileName;
+                                objects.insert(objectName);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for (auto objectName : objects) {
+            OTRGlobals::Instance->context->GetResourceManager()->LoadDirectoryAsync("alt/objects/" + objectName + "/*");
+        }
+    }
+
+    if (CVarGetInteger("gAltAssets", 0)) {
+        std::unordered_set<std::string> objects;
+        if (play->numSetupActors != 0) {
+            auto actorEntry = &play->setupActorList[0];
+            for (uint16_t i = 0; i < play->numSetupActors; i++) {
+                std::string objectName = gObjectTable[ActorDB_Retrieve(actor->id)->objectId].fileName;
+                objects.insert(objectName);
+
+                actorEntry++;
+            }
+
+
+        }
+    }
+
     func_80096FD4(play, &play->roomCtx.curRoom);
     YREG(15) = 0;
     gSaveContext.worldMapArea = 0;

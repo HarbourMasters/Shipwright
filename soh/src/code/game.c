@@ -462,13 +462,58 @@ void GameState_Destroy(GameState* gameState) {
 
     osSyncPrintf("game デストラクタ終了\n"); // "game destructor end"
 
-    // Performing clear skeletons before unload resources fixes an actor heap corruption crash due to the skeleton patching system.
-    ResourceMgr_ClearSkeletons();
+    PlayState* play = (PlayState*)gameState;
+    static s16 sceneNum = -1;
+    if (play->sceneNum != sceneNum) {
+        sceneNum = play->sceneNum;
 
-    if (CVarGetInteger("gAltAssets", 0)) {
-        ResourceUnloadDirectory("alt/*");
-        gfx_texture_cache_clear();
+        // Performing clear skeletons before unload resources fixes an actor heap corruption crash due to the skeleton patching system.
+        ResourceMgr_ClearSkeletons();
+
+        if (CVarGetInteger("gAltAssets", 0)) {
+            UnloadResourceDirectory("alt/objects/object_a*");
+            UnloadResourceDirectory("alt/objects/object_B*");
+            UnloadResourceDirectory("alt/objects/object_b*");
+            UnloadResourceDirectory("alt/objects/object_c*");
+            UnloadResourceDirectory("alt/objects/object_d*");
+            UnloadResourceDirectory("alt/objects/object_e*");
+            UnloadResourceDirectory("alt/objects/object_f*");
+            UnloadResourceDirectory("alt/objects/object_g*");
+            UnloadResourceDirectory("alt/objects/object_h*");
+            UnloadResourceDirectory("alt/objects/object_i*");
+            UnloadResourceDirectory("alt/objects/object_j*");
+            UnloadResourceDirectory("alt/objects/object_k*");
+            UnloadResourceDirectory("alt/objects/object_l*");
+            UnloadResourceDirectory("alt/objects/object_ma1/*");
+            UnloadResourceDirectory("alt/objects/object_ma2/*");
+            UnloadResourceDirectory("alt/objects/object_mam*");
+            UnloadResourceDirectory("alt/objects/object_mas*");
+            UnloadResourceDirectory("alt/objects/object_mb*");
+            UnloadResourceDirectory("alt/objects/object_md*");
+            UnloadResourceDirectory("alt/objects/object_me*");
+            UnloadResourceDirectory("alt/objects/object_mi*");
+            UnloadResourceDirectory("alt/objects/object_mj*");
+            UnloadResourceDirectory("alt/objects/object_mk*");
+            UnloadResourceDirectory("alt/objects/object_mm*");
+            UnloadResourceDirectory("alt/objects/object_mo*");
+            UnloadResourceDirectory("alt/objects/object_n*");
+            UnloadResourceDirectory("alt/objects/object_o*");
+            UnloadResourceDirectory("alt/objects/object_p*");
+            UnloadResourceDirectory("alt/objects/object_q*");
+            UnloadResourceDirectory("alt/objects/object_r*");
+            UnloadResourceDirectory("alt/objects/object_s*");
+            UnloadResourceDirectory("alt/objects/object_t*");
+            UnloadResourceDirectory("alt/objects/object_u*");
+            UnloadResourceDirectory("alt/objects/object_v*");
+            UnloadResourceDirectory("alt/objects/object_w*");
+            UnloadResourceDirectory("alt/objects/object_x*");
+            UnloadResourceDirectory("alt/objects/object_y*");
+            UnloadResourceDirectory("alt/objects/object_z*");
+            UnloadResourceDirectory("alt/scenes/*");
+            gfx_texture_cache_clear();
+        }
     }
+
 }
 
 GameStateFunc GameState_GetInit(GameState* gameState) {

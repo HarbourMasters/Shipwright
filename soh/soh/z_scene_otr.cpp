@@ -33,7 +33,7 @@
 #include "soh/resource/type/scenecommand/SetEchoSettings.h"
 #include "soh/resource/type/scenecommand/SetAlternateHeaders.h"
 
-extern LUS::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName);
+extern LUS::IResource* OTRPlay_LoadFile(const char* fileName);
 extern "C" s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
 extern "C" RomFile sNaviMsgFiles[];
 s32 OTRScene_ExecuteCommands(PlayState* play, LUS::Scene* scene);
@@ -119,7 +119,7 @@ bool Scene_CommandSpecialFiles(PlayState* play, LUS::ISceneCommand* cmd) {
 
     if (specialCmd->specialObjects.elfMessage != 0) {
         auto res = 
-            (LUS::Blob*)OTRPlay_LoadFile(play, sNaviMsgFiles[specialCmd->specialObjects.elfMessage - 1].fileName);
+            (LUS::Blob*)OTRPlay_LoadFile(sNaviMsgFiles[specialCmd->specialObjects.elfMessage - 1].fileName);
         play->cUpElfMsgs = (ElfMessage*)res->Data.data();
     }
 

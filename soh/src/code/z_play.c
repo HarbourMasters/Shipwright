@@ -1920,6 +1920,9 @@ void Play_InitScene(PlayState* play, s32 spawn)
 }
 
 void Play_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
+    if (CVarGetInteger("gAltAssets", 0)) {
+        ResourceMgr_LoadAllSceneResources(sceneNum, false);
+    }
 
     OTRPlay_SpawnScene(play, sceneNum, spawn);
 
