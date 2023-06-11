@@ -37,6 +37,10 @@ using json = nlohmann::json;
 json jsonData;
 std::map<HintKey, ItemLocation*> hintedLocations;
 
+// json englishJunkHintJson;
+// json frenchJunkHintJson;
+// json germanJunkHintJson;
+
 extern std::unordered_map<HintType, std::string> hintTypeNames;
 extern std::array<std::string, 17> hintCategoryNames;
 extern Area* GetHintRegion(uint32_t);
@@ -753,6 +757,23 @@ static void WriteHints(int language) {
         }
 
         HintType hintType = location->GetHintType();
+
+        // auto allJunkHints = GetHintCategory(HintCategory::Junk);
+        // for (HintText hint : allJunkHints) {
+        //   englishJunkHintJson["junkhints"].push_back(hint.GetText().GetEnglish());
+        //   frenchJunkHintJson["junkhints"].push_back(hint.GetText().GetFrench());
+        // }
+        // std::string jsonEnglishHintString = englishJunkHintJson.dump(4);
+        // std::ofstream jsonEnglishHintfile("blarge.json");
+        // jsonEnglishHintfile << std::setw(4) << jsonEnglishHintString << std::endl;
+        // jsonEnglishHintfile.close();
+
+        // std::string jsonFrenchHintString = frenchJunkHintJson.dump(4);
+        // std::ofstream jsonFrenchHintfile("blargf.json");
+        // jsonFrenchHintfile << std::setw(4) << jsonFrenchHintString << std::endl;
+        // jsonFrenchHintfile.close();
+
+        // int blarg = 3;
 
         std::string textStr = AutoFormatHintTextString(unformattedHintTextString);
         jsonData["hints"][location->GetName()]["hint"] = textStr;
