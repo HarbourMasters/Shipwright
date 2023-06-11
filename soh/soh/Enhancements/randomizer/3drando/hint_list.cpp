@@ -2139,7 +2139,7 @@ void HintTable_Init() {
         // obscure text
         Text{ "Today, let's begin down&'The Hero is Defeated' timeline.",
               /*french*/
-              "Si tu me vaincs, Hyrule sera&englouti... mais si tu meurs,&on aura A Link to the Past,&le meilleur opus ",
+              "Si tu me vaincs, Hyrule sera&englouti... mais si tu meurs,&on aura A Link to the Past,&le meilleur opus "
               "de la série!",
               /*spanish*/
               "Hoy daremos lugar a la línea temporal del Héroe Derrotado.&¡Prepárate para el culmen de esta saga!" },
