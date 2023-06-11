@@ -62,6 +62,7 @@ std::string GetWindowButtonText(const char* text, bool menuOpen) {
 
     static const char* chestStyleMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only" };
     static const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run" };
+    static const char* mirroredWorldModes[4] = { "Disabled", "Always", "Random", "Random (Seeded)" };
     static const char* allPowers[9] = {
                         "Vanilla (1x)",
                         "Double (2x)",
@@ -1015,7 +1016,16 @@ void DrawEnhancementsMenu() {
         UIWidgets::Spacer(0);
 
         if (ImGui::BeginMenu("Extra Modes")) {
-            UIWidgets::PaddedEnhancementCheckbox("Mirrored World", "gMirroredWorldToggle", true, false);
+            UIWidgets::PaddedText("Mirrored World Mode", true, false);
+            if (UIWidgets::EnhancementCombobox("gMirroredWorldMode", mirroredWorldModes, MIRRORED_WORLD_OFF) && gPlayState != NULL) {
+                UpdateMirrorModeState(gPlayState->sceneNum);
+            }
+            UIWidgets::Tooltip(
+                "Mirrors the world horizontally\n\n"
+                "- Always: Always mirror the world\n"
+                "- Random: Randomly decide to mirror the world on each scene change\n"
+                "- Random (Seeded): Scenes are mirrored based on the current randomizer seed/file\n"
+            );
 
             UIWidgets::Spacer(0);
 

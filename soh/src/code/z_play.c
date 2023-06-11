@@ -1765,14 +1765,6 @@ void Play_Main(GameState* thisx) {
         Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_OBJECT_KANKYO, 0, 0, 0, 0, 0, 0, 3, 0);
     }
 
-    if (
-        CVarGetInteger("gMirroredWorldToggle", 1)
-    ) {
-        CVarSetInteger("gMirroredWorld", 1);
-    } else {
-        CVarSetInteger("gMirroredWorld", 0);
-    }
-
     D_8012D1F8 = &play->state.input[0];
 
     DebugDisplay_Init();
