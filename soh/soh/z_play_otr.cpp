@@ -109,7 +109,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
         if (play->numSetupActors != 0) {
             auto actorEntry = &play->setupActorList[0];
             for (uint16_t i = 0; i < play->numSetupActors; i++) {
-                std::string objectName = gObjectTable[ActorDB_Retrieve(actor->id)->objectId].fileName;
+                std::string objectName = gObjectTable[ActorDB::Instance->RetrieveEntry(actorEntry->id).entry.objectId].fileName;
                 objects.insert(objectName);
 
                 actorEntry++;
