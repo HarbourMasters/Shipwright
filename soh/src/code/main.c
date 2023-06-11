@@ -65,15 +65,15 @@ int main(int argc, char** argv)
     if (CVarGetInteger("gAltAssets", 0)) {
         // LoadResourceDirectory("textures/nintendo_rogo_static/*");
         // LoadResourceDirectory("textures/font/*");
-        LoadResourceDirectory("audio/*");
+        ResourceLoadDirectory("audio/*");
         // LoadResourceDirectory("text/*");
         // LoadResourceDirectory("scenes/*/spot00*");
 
-        LoadResourceDirectoryAsync("alt/code/*");
-        LoadResourceDirectoryAsync("alt/objects/gameplay_*");
-        LoadResourceDirectoryAsync("alt/objects/object_mag/*");
-        LoadResourceDirectoryAsync("alt/overlays/*");
-        LoadResourceDirectoryAsync("alt/textures/*");
+        ResourceLoadDirectoryAsync("alt/code/*");
+        ResourceLoadDirectoryAsync("alt/objects/gameplay_*");
+        ResourceLoadDirectoryAsync("alt/objects/object_mag/*");
+        ResourceLoadDirectoryAsync("alt/overlays/*");
+        ResourceLoadDirectoryAsync("alt/textures/*");
     }
 
     // TODO: Was moved to below InitOTR because it requires window to be setup. But will be late to catch crashes.
