@@ -102,7 +102,9 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
         for (auto objectName : objects) {
             OTRGlobals::Instance->context->GetResourceManager()->LoadDirectoryAsync("alt/objects/" + objectName + "/*");
         }
+    }
 
+    if (CVarGetInteger("gAltAssets", 0)) {
         std::unordered_set<std::string> objects;
         if (play->numSetupActors != 0) {
             auto actorEntry = &play->setupActorList[0];
@@ -112,8 +114,6 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
 
                 actorEntry++;
             }
-
-
         }
     }
 
