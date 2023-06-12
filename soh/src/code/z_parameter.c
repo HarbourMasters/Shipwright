@@ -1415,13 +1415,18 @@ void Inventory_SwapAgeEquipment(void) {
         // When becoming adult, remove swordless flag since we'll get master sword
         // Only in rando to keep swordless link bugs in vanilla
         if (gSaveContext.n64ddFlag) {
+            if (!Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
             gSaveContext.infTable[29] &= ~1;
+            }
         }
 
         gSaveContext.childEquips.equipment = gSaveContext.equips.equipment;
 
         if (gSaveContext.adultEquips.buttonItems[0] == ITEM_NONE) {
-            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {;}
+            else {
+                gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+            }
 
             if (gSaveContext.inventory.items[SLOT_NUT] != ITEM_NONE) {
                 gSaveContext.equips.buttonItems[1] = ITEM_NUT;

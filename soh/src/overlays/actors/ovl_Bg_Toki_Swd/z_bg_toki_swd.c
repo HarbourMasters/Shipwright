@@ -123,8 +123,16 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
         if (Actor_HasParent(&this->actor, play)) {
             if (!LINK_IS_ADULT) {
                 if (Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
-                    GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_TOT_MASTER_SWORD, GI_NONE);
-                    Randomizer_Item_Give(play, itemEntry);
+                    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_TOT_MASTER_SWORD, GI_NONE);
+                    if (getItemEntry.modIndex == MOD_NONE) {
+                        //RANDOTODO: Move this into Item_Give() or some other central location
+                        if (getItemEntry.getItemId == GI_SWORD_BGS) {
+                            gSaveContext.bgsFlag = true;
+                        }
+                        Item_Give(play, getItemEntry.itemId);
+                    } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
+                        Randomizer_Item_Give(play, getItemEntry);
+                    }
                 } else {
                     Item_Give(play, ITEM_SWORD_MASTER);
                 }
