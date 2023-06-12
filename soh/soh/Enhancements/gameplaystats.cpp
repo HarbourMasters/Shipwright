@@ -12,6 +12,7 @@ extern "C" {
 #include <string>
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
+#include "soh/Enhancements/enhancementTypes.h"
 
 extern "C" {
 #include <z64.h>
@@ -544,7 +545,7 @@ void DrawGameplayStatsCountsTab() {
     GameplayStatsRow("Sword Swings:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_SWORD_SWINGS]));
     GameplayStatsRow("Steps Taken:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_STEPS]));
     // If using MM Bunny Hood enhancement, show how long it's been equipped (not counting pause time)
-    if (CVarGetInteger("gMMBunnyHood", 0) || gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
+    if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA || gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
         GameplayStatsRow("Bunny Hood Time:", formatTimestampGameplayStat(gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] / 2));
     }
     GameplayStatsRow("Rolls:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_ROLLS]));

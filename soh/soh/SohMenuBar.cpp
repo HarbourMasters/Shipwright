@@ -60,7 +60,7 @@ std::string GetWindowButtonText(const char* text, bool menuOpen) {
             "Linear", "None"
     };
 
-    static const char* chestSizeAndTextureMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only" };
+    static const char* chestStyleMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only" };
     static const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run" };
     static const char* allPowers[9] = {
                         "Vanilla (1x)",
@@ -130,7 +130,7 @@ void DrawShipMenu() {
         }
 #if !defined(__SWITCH__) && !defined(__WIIU__)
         auto backend = LUS::Context::GetInstance()->GetWindow()->GetWindowBackend();
-        if (ImGui::MenuItem("Toggle Fullscreen", "F9")) {
+        if (ImGui::MenuItem("Toggle Fullscreen", "F11")) {
             LUS::Context::GetInstance()->GetWindow()->ToggleFullscreen();
         }
         if (ImGui::MenuItem("Quit")) {
@@ -405,7 +405,7 @@ void DrawSettingsMenu() {
             // If more filters are added to LUS, make sure to add them to the filters list here
             ImGui::Text("Texture Filter (Needs reload)");
 
-            UIWidgets::EnhancementCombobox("gTextureFilter", filters, 0);
+            UIWidgets::EnhancementCombobox("gTextureFilter", filters, FILTER_THREE_POINT);
 
             UIWidgets::Spacer(0);
 
@@ -480,8 +480,8 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Fast Chests", "gFastChests", true, false);
                 UIWidgets::Tooltip("Kick open every chest");
                 UIWidgets::PaddedText("Chest size & texture matches contents", true, false);
-                if (UIWidgets::EnhancementCombobox("gChestSizeAndTextureMatchesContents", chestSizeAndTextureMatchesContentsOptions, 0)) {
-                    if (CVarGetInteger("gChestSizeAndTextureMatchesContents", 0) == 0) {
+                if (UIWidgets::EnhancementCombobox("gChestSizeAndTextureMatchesContents", chestStyleMatchesContentsOptions, CSMC_DISABLED)) {
+                    if (CVarGetInteger("gChestSizeAndTextureMatchesContents", CSMC_DISABLED) == CSMC_DISABLED) {
                         CVarSetInteger("gChestSizeDependsStoneOfAgony", 0);
                     }
                 }
@@ -494,7 +494,7 @@ void DrawEnhancementsMenu() {
                     " - Boss keys: Vanilla size and texture\n"
                     " - Skulltula Tokens: Small skulltula chest\n"
                 );
-                if (CVarGetInteger("gChestSizeAndTextureMatchesContents", 0) > 0) {
+                if (CVarGetInteger("gChestSizeAndTextureMatchesContents", CSMC_DISABLED) != CSMC_DISABLED) {
                     UIWidgets::PaddedEnhancementCheckbox("Chests of Agony", "gChestSizeDependsStoneOfAgony", true, false);
                     UIWidgets::Tooltip("Only change the size/texture of chests if you have the Stone of Agony.");
                 }
@@ -551,7 +551,7 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Prevent Dropped Ocarina Inputs", "gDpadNoDropOcarinaInput", true, false);
                 UIWidgets::Tooltip("Prevent dropping inputs when playing the ocarina quickly");
                 UIWidgets::PaddedText("Bunny Hood Effect", true, false);
-                UIWidgets::EnhancementCombobox("gMMBunnyHood", bunnyHoodOptions, 0);
+                UIWidgets::EnhancementCombobox("gMMBunnyHood", bunnyHoodOptions, BUNNY_HOOD_VANILLA);
                 UIWidgets::Tooltip(
                     "Wearing the Bunny Hood grants a speed increase like in Majora's Mask. The longer jump option is not accounted for in randomizer logic.\n\n"
                     "Also disables NPC's reactions to wearing the Bunny Hood."
@@ -616,7 +616,7 @@ void DrawEnhancementsMenu() {
                     "64x: Cannot survive void damage"
                 );
                 UIWidgets::PaddedText("Bonk Damage Multiplier", true, false);
-                UIWidgets::EnhancementCombobox("gBonkDamageMul", bonkDamageValues, 0);
+                UIWidgets::EnhancementCombobox("gBonkDamageMul", bonkDamageValues, BONK_DAMAGE_NONE);
                 UIWidgets::Tooltip("Modifies damage taken after bonking.");
                 UIWidgets::PaddedEnhancementCheckbox("Spawn with full health", "gFullHealthSpawn", true, false);
                 UIWidgets::Tooltip("Respawn with full health instead of 3 Hearts");
@@ -925,7 +925,7 @@ void DrawEnhancementsMenu() {
                 ImGui::EndMenu();
             }
             UIWidgets::PaddedText("Fix Vanishing Paths", true, false);
-            if (UIWidgets::EnhancementCombobox("gSceneSpecificDirtPathFix", zFightingOptions, 0) && gPlayState != NULL) {
+            if (UIWidgets::EnhancementCombobox("gSceneSpecificDirtPathFix", zFightingOptions, ZFIGHT_FIX_DISABLED) && gPlayState != NULL) {
                 UpdateDirtPathFixState(gPlayState->sceneNum);
             }
             UIWidgets::Tooltip("Disabled: Paths vanish more the higher the resolution (Z-fighting is based on resolution)\n"
@@ -1047,7 +1047,7 @@ void DrawEnhancementsMenu() {
 
         // Autosave enum value of 1 is the default in presets and the old checkbox "on" state for backwards compatibility
         UIWidgets::PaddedText("Autosave", false, true);
-        UIWidgets::EnhancementCombobox("gAutosave", autosaveLabels, 0);
+        UIWidgets::EnhancementCombobox("gAutosave", autosaveLabels, AUTOSAVE_OFF);
         UIWidgets::Tooltip("Automatically save the game when changing locations and/or obtaining items\n"
             "Major items exclude rupees and health/magic/ammo refills (but include bombchus unless bombchu drops are enabled)");
 
