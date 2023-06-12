@@ -18,7 +18,7 @@ while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
         do
             if [[ -e $romfile ]]; then
                 export ASSETDIR="$(mktemp -d /tmp/assets-XXXXX)"
-                ln -s "$HERE"/usr/bin/{assets,soh.elf} "$ASSETDIR"
+                ln -s "$HERE"/usr/bin/{assets,soh.elf,ZAPD} "$ASSETDIR"
                 export OLDPWD="$PWD"
                 mkdir -p "$ASSETDIR"/tmp
 	            mkdir -p "$ASSETDIR"/Extract
