@@ -8,6 +8,7 @@
 #include "objects/object_gi_key/object_gi_key.h"
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
+#include "objects/object_toki_objects/object_toki_objects.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 
 extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEntry) {
@@ -162,6 +163,27 @@ extern "C" void Randomizer_DrawDoubleDefense(PlayState* play, GetItemEntry getIt
     gSPGrayscale(POLY_XLU_DISP++, false);
 
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiHeartContainerDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawMasterSword(PlayState* play, GetItemEntry getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+
+    gSPSegment(POLY_OPA_DISP++, 0x08,
+               (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 1),
+                                0 * (play->state.frames * 1), 32, 32, 1, 0 * (play->state.frames * 1),
+                                0 * (play->state.frames * 1), 32, 32));
+
+    Matrix_Scale(0.05f, 0.05f, 0.05f, MTXMODE_APPLY);
+    Matrix_RotateZ(2.1f, MTXMODE_APPLY);
+
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)object_toki_objects_DL_001BD0);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
