@@ -392,7 +392,9 @@ void Map_InitData(PlayState* play, s16 room) {
                     extendedMapIndex = 0x14;
                 }
             } else if (play->sceneNum == SCENE_SPOT06) {
-                if ((LINK_AGE_IN_YEARS == YEARS_ADULT) && !CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) {
+                if ((LINK_AGE_IN_YEARS == YEARS_ADULT) &&
+                    ((!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) ||
+                     (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)))) {
                     extendedMapIndex = 0x15;
                 }
             } else if (play->sceneNum == SCENE_SPOT09) {
@@ -400,7 +402,8 @@ void Map_InitData(PlayState* play, s16 room) {
                     extendedMapIndex = 0x16;
                 }
             } else if (play->sceneNum == SCENE_SPOT12) {
-                if ((gSaveContext.eventChkInf[9] & 0xF) == 0xF) {
+                if ((!gSaveContext.n64ddFlag && ((gSaveContext.eventChkInf[9] & 0xF) == 0xF)) ||
+                    (gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_GERUDO_CARD))) {
                     extendedMapIndex = 0x17;
                 }
             }
@@ -668,10 +671,6 @@ void Minimap_DrawCompassIcons(PlayState* play) {
                 Matrix_Translate(
                     (tempXOffset + tempX + (CVarGetInteger("gMinimapPosX", 0)*10) / 10.0f),
                     (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
-            } else if (CVarGetInteger("gMinimapPosType", 0) == 4) {//Hidden
-                Matrix_Translate(
-                    (tempXOffset+(9999*10) + tempX / 10.0f),
-                    (R_COMPASS_OFFSET_Y+(9999*10) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
             }
         } else {
             Matrix_Translate(OTRGetDimensionFromRightEdge((tempXOffset+(X_Margins_Minimap*10) + tempX) / 10.0f), (R_COMPASS_OFFSET_Y+((Y_Margins_Minimap*10)*-1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
@@ -706,10 +705,6 @@ void Minimap_DrawCompassIcons(PlayState* play) {
                 Matrix_Translate(
                     (tempXOffset + tempX + (CVarGetInteger("gMinimapPosX", 0)*10) / 10.0f),
                     (R_COMPASS_OFFSET_Y - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
-            } else if (CVarGetInteger("gMinimapPosType", 0) == 4) {//Hidden
-                Matrix_Translate(
-                    (tempXOffset+(9999*10) + tempX / 10.0f),
-                    (R_COMPASS_OFFSET_Y+(9999*10) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
             }
         } else {
             Matrix_Translate(OTRGetDimensionFromRightEdge((tempXOffset+(X_Margins_Minimap*10) + tempX) / 10.0f), (R_COMPASS_OFFSET_Y+((Y_Margins_Minimap*10)*-1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
@@ -766,7 +761,7 @@ void Minimap_Draw(PlayState* play) {
             case SCENE_HAKADAN:
             case SCENE_HAKADANCH:
             case SCENE_ICE_DOUKUTO:
-                if (!R_MINIMAP_DISABLED) {
+                if (!R_MINIMAP_DISABLED && CVarGetInteger("gMinimapPosType", 0) != 4) { // Not Hidden
                     Gfx_SetupDL_39Overlay(play->state.gfxCtx);
                     gDPSetCombineLERP(OVERLAY_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0,
                                       TEXEL0, 0, PRIMITIVE, 0);
@@ -791,8 +786,6 @@ void Minimap_Draw(PlayState* play) {
                                 dgnMiniMapX = OTRGetDimensionFromRightEdge(R_DGN_MINIMAP_X+CVarGetInteger("gMinimapPosX", 0)+X_Margins_Minimap);
                             } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
                                 dgnMiniMapX = CVarGetInteger("gMinimapPosX", 0);
-                            } else if (CVarGetInteger("gMinimapPosType", 0) == 4) {//Hidden
-                                dgnMiniMapX = -9999;
                             }
                         }
 
@@ -846,7 +839,7 @@ void Minimap_Draw(PlayState* play) {
             case SCENE_SPOT18:
             case SCENE_SPOT20:
             case SCENE_GANON_TOU:
-                if (!R_MINIMAP_DISABLED) {
+                if (!R_MINIMAP_DISABLED && CVarGetInteger("gMinimapPosType", 0) != 4) { // Not Hidden
                     Gfx_SetupDL_39Overlay(play->state.gfxCtx);
 
                     gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
@@ -870,8 +863,6 @@ void Minimap_Draw(PlayState* play) {
                             oWMiniMapX = OTRGetDimensionFromRightEdge(R_OW_MINIMAP_X+CVarGetInteger("gMinimapPosX", 0)+X_Margins_Minimap);
                         } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
                             oWMiniMapX = CVarGetInteger("gMinimapPosX", 0);
-                        } else if (CVarGetInteger("gMinimapPosType", 0) == 4) {//Hidden
-                            oWMiniMapX = -9999;
                         }
                     }
 
@@ -888,73 +879,58 @@ void Minimap_Draw(PlayState* play) {
 
                     gDPSetPrimColor(OVERLAY_DISP++, 0, 0, minimapColor.r, minimapColor.g, minimapColor.b, interfaceCtx->minimapAlpha);
 
+                    s16 iconSize = 8;
+
                     if (((play->sceneNum != SCENE_SPOT01) && (play->sceneNum != SCENE_SPOT04) &&
                          (play->sceneNum != SCENE_SPOT08)) ||
                         (LINK_AGE_IN_YEARS != YEARS_ADULT)) {
-                        bool Map0 = gMapData->owEntranceIconPosY[sEntranceIconMapIndex] << 2 == 0;
-                        s16 IconSize = 8;
-
                         s16 origX = gMapData->owEntranceIconPosX[sEntranceIconMapIndex];
 
                         // Compute the distance of the center of the original texture location to the center of the map
                         // Then duplicate that and right-align the texture (extra 2 pixels are due to the texture being a 6px left-aligned in a 8px tex)
-                        s16 distFromCenter = (R_OW_MINIMAP_X + (gMapData->owMinimapWidth[mapIndex] / 2)) - (origX + (IconSize / 2));
-                        s16 mirrorOffset = distFromCenter * 2 + (IconSize / 2) - 2;
+                        s16 distFromCenter = (R_OW_MINIMAP_X + (gMapData->owMinimapWidth[mapIndex] / 2)) - (origX + (iconSize / 2));
+                        s16 mirrorOffset = distFromCenter * 2 + (iconSize / 2) - 2;
                         s16 newX = origX + (CVarGetInteger("gMirroredWorld", 0) ? mirrorOffset : 0);
+
                         // The game authentically uses larger negative values for the entrance icon Y pos value. Normally only the first 12 bits
                         // would be read when the final value is passed into `gSPTextureRectangle`, but our cosmetic hud placements requires using
                         // `gSPWideTextureRectangle` which reads the first 24 bits instead. This caused the icon to be placed off screen.
-                        // To address this, we take the only the first 8 bits (which are later left-shifted by 2 to get our final 12 bits)
+                        // To address this, we take only the first 10 bits (which are later left-shifted by 2 to get our final 12 bits)
                         // to fix the entrance icon position when used with `gSPWideTextureRectangle`
-                        s16 newY = gMapData->owEntranceIconPosY[sEntranceIconMapIndex] & 0xFF;
-                        s16 PosX = newX + (Map0 ? 0 : X_Margins_Minimap);
-                        s16 PosY = newY + (Map0 ? 0 : Y_Margins_Minimap);
-                        //gFixDungeonMinimapIcon fix both Y position of visible icon and hide these non needed.
+                        s16 newY = gMapData->owEntranceIconPosY[sEntranceIconMapIndex] & 0x3FF;
 
-                        s16 TopLeftX = (Map0 ? OTRGetRectDimensionFromLeftEdge(PosX) : OTRGetRectDimensionFromRightEdge(PosX)) << 2;
-                        s16 TopLeftY = PosY << 2;
-                        s16 TopLeftW = (Map0 ? OTRGetRectDimensionFromLeftEdge(PosX + IconSize) : OTRGetRectDimensionFromRightEdge(PosX + IconSize)) << 2;
-                        s16 TopLeftH = (PosY + IconSize) << 2;
+                        s16 entranceX = OTRGetRectDimensionFromRightEdge(newX + X_Margins_Minimap);
+                        s16 entranceY = newY + Y_Margins_Minimap;
                         if (CVarGetInteger("gMinimapPosType", 0) != 0) {
-                            PosX = newX + CVarGetInteger("gMinimapPosX", 0) + X_Margins_Minimap;
-                            PosY = newY + CVarGetInteger("gMinimapPosY", 0) + Y_Margins_Minimap;
-                            if (CVarGetInteger("gMinimapPosType", 0) == 1) {//Anchor Left
+                            entranceY = newY + CVarGetInteger("gMinimapPosY", 0) + Y_Margins_Minimap;
+                            if (CVarGetInteger("gMinimapPosType", 0) == 1) { // Anchor Left
                                 if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
-                                TopLeftX = OTRGetRectDimensionFromLeftEdge(PosX) << 2;
-                                TopLeftW = OTRGetRectDimensionFromLeftEdge(PosX + IconSize) << 2;
-                            } else if (CVarGetInteger("gMinimapPosType", 0) == 2) {//Anchor Right
+                                entranceX = OTRGetRectDimensionFromLeftEdge(newX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0));
+                            } else if (CVarGetInteger("gMinimapPosType", 0) == 2) { // Anchor Right
                                 if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
-                                TopLeftX = OTRGetRectDimensionFromRightEdge(PosX) << 2;
-                                TopLeftW = OTRGetRectDimensionFromRightEdge(PosX + IconSize) << 2;
-                            } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
-                                TopLeftX = PosX << 2;
-                                TopLeftW = PosX + IconSize << 2;
-                            } else if (CVarGetInteger("gMinimapPosType", 0) == 4) {//Hidden
-                                TopLeftX = -9999 << 2;
-                                TopLeftW = -9999 + IconSize << 2;
+                                entranceX = OTRGetRectDimensionFromRightEdge(newX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0));
+                            } else if (CVarGetInteger("gMinimapPosType", 0) == 3) { // Anchor None
+                                entranceX = newX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0);
                             }
-                            if (!CVarGetInteger("gMinimapPosType", 0) != 4 && Map0 && !CVarGetInteger("gFixDungeonMinimapIcon", 0)) { //Force top left icon if fix not applied.
-                                TopLeftX = OTRGetRectDimensionFromLeftEdge(newX) << 2;
-                                TopLeftY = newY << 2;
-                                TopLeftW = OTRGetRectDimensionFromLeftEdge(newX + IconSize) << 2;
-                                TopLeftH = (newY + IconSize) << 2;
-                            }
-                        }
-                        if (CVarGetInteger("gFixDungeonMinimapIcon", 0) != 0){
-                            //No idea why and how Original value work but this does actually fix them all.
-                            PosY = PosY+1024;
                         }
 
-                        if (((gMapData->owEntranceFlag[sEntranceIconMapIndex] == 0xFFFF) ||
-                             ((gMapData->owEntranceFlag[sEntranceIconMapIndex] != 0xFFFF) &&
-                              (gSaveContext.infTable[26] & gBitFlags[gMapData->owEntranceFlag[mapIndex]])
-                             )) || CVarGetInteger("gAlwaysShowDungeonMinimapIcon", 0)) {
-                            if (!Map0 || !CVarGetInteger("gFixDungeonMinimapIcon", 0)) {
-                                gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                                                    IconSize, IconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
-                                                    G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-                                gSPWideTextureRectangle(OVERLAY_DISP++, TopLeftX, TopLeftY, TopLeftW, TopLeftH, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
-                            }
+                        // For icons that normally would be placed in 0,0 leave them there based on the left edge dimension
+                        // or hide them entirely if the fix is applied
+                        if (gMapData->owEntranceIconPosY[sEntranceIconMapIndex] == 0) {
+                            entranceY = 0;
+                            entranceX = CVarGetInteger("gFixDungeonMinimapIcon", 0) ? -9999 : OTRGetRectDimensionFromLeftEdge(0);
+                        }
+
+                        //! @bug UB: sEntranceIconMapIndex can be up to 23 and is accessing owEntranceFlag which is size 20
+                        if ((gMapData->owEntranceFlag[sEntranceIconMapIndex] == 0xFFFF) ||
+                            ((gMapData->owEntranceFlag[sEntranceIconMapIndex] != 0xFFFF) &&
+                              ((gSaveContext.infTable[26] & gBitFlags[gMapData->owEntranceFlag[mapIndex]]) ||
+                               CVarGetInteger("gAlwaysShowDungeonMinimapIcon", 0)))) {
+                            gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b,
+                                                iconSize, iconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                            gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, entranceY << 2, (entranceX + iconSize) << 2,
+                                                    (entranceY + iconSize) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
                         }
                     }
 
@@ -971,25 +947,17 @@ void Minimap_Draw(PlayState* play) {
                             entranceX = OTRGetRectDimensionFromRightEdge(origX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0));
                         } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
                             entranceX = origX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0);
-                        } else if (CVarGetInteger("gMinimapPosType", 0) == 4) {//Hidden
-                            entranceX = -9999;
                         }
                     }
 
-                    if ((play->sceneNum == SCENE_SPOT08) && (gSaveContext.infTable[26] & gBitFlags[9])) {
-                        gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8,
-                                            8, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                    // Ice Cavern entrance icon
+                    if ((play->sceneNum == SCENE_SPOT08) && ((gSaveContext.infTable[26] & gBitFlags[9]) ||
+                        CVarGetInteger("gAlwaysShowDungeonMinimapIcon", 0))) {
+                        gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, iconSize,
+                                            iconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-                        gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, entranceY << 2, (entranceX + 8) << 2, (entranceY + 8) << 2,
-                                                G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
-                    } else if ((play->sceneNum == SCENE_SPOT08) && CVarGetInteger("gAlwaysShowDungeonMinimapIcon", 0) != 0){
-
-                        gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8,
-                                            8, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-                                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-
-                        gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, entranceY << 2, (entranceX + 8) << 2, (entranceY + 8) << 2,
-                                                G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                        gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, entranceY << 2, (entranceX + iconSize) << 2,
+                                               (entranceY + iconSize) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
                     }
 
                     Minimap_DrawCompassIcons(play); // Draw icons for the player spawn and current position
