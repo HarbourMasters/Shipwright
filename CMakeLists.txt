@@ -99,7 +99,17 @@ set_property(TARGET soh PROPERTY APPIMAGE_ICON_FILE "${CMAKE_BINARY_DIR}/sohIcon
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 install(PROGRAMS "${CMAKE_SOURCE_DIR}/scripts/linux/appimage/soh.sh" DESTINATION . COMPONENT appimage)
 install(FILES "${CMAKE_SOURCE_DIR}/soh.otr" DESTINATION . COMPONENT appimage)
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/extractor/" DESTINATION ./assets/extractor COMPONENT appimage FILES_MATCHING PATTERN "*")
+
+# couldn't find a clean way to get everything including subdirectories without doing this
+file(GLOB subdirectories RELATIVE ${CMAKE_SOURCE_DIR}/soh/assets/extractor/ ${CMAKE_SOURCE_DIR}/soh/assets/extractor/*)
+foreach(subdirectory ${subdirectories})
+    if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/soh/assets/extractor/${subdirectory})
+        install(DIRECTORY ${CMAKE_SOURCE_DIR}/soh/assets/extractor/${subdirectory}
+                DESTINATION ./assets/extractor/${subdirectory})
+    endif()
+endforeach()
+
+# install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/extractor/" DESTINATION ./assets/extractor COMPONENT appimage FILES_MATCHING PATTERN "*")
 endif()
 
 find_package(Python3 COMPONENTS Interpreter)
