@@ -452,7 +452,7 @@ void InitAudioDevice(void)
         return;
     }
 
-    // Mixing happens on a seperate thread which means we need to synchronize. I'm using a mutex here to make things simple, but may
+    // Mixing happens on a separate thread which means we need to synchronize. I'm using a mutex here to make things simple, but may
     // want to look at something a bit smarter later on to keep everything real-time, if that's necessary.
     if (ma_mutex_init(&AUDIO.System.lock) != MA_SUCCESS)
     {

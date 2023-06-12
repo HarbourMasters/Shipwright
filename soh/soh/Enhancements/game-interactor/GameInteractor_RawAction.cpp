@@ -3,6 +3,7 @@
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include <math.h>
+#include "soh/Enhancements/debugger/colViewer.h"
 
 extern "C" {
 #include "variables.h"
@@ -233,15 +234,15 @@ void GameInteractor::RawAction::SetCollisionViewer(bool active) {
     CVarSetInteger("gColViewerDecal", active);
     
     if (active) {
-        CVarSetInteger("gColViewerScene", 2);
-        CVarSetInteger("gColViewerBgActors", 2);
-        CVarSetInteger("gColViewerColCheck", 2);
-        CVarSetInteger("gColViewerWaterbox", 2);
+        CVarSetInteger("gColViewerScene", COLVIEW_TRANSPARENT);
+        CVarSetInteger("gColViewerBgActors", COLVIEW_TRANSPARENT);
+        CVarSetInteger("gColViewerColCheck", COLVIEW_TRANSPARENT);
+        CVarSetInteger("gColViewerWaterbox", COLVIEW_TRANSPARENT);
     } else {
-        CVarSetInteger("gColViewerScene", 0);
-        CVarSetInteger("gColViewerBgActors", 0);
-        CVarSetInteger("gColViewerColCheck", 0);
-        CVarSetInteger("gColViewerWaterbox", 0);
+        CVarSetInteger("gColViewerScene", COLVIEW_DISABLED);
+        CVarSetInteger("gColViewerBgActors", COLVIEW_DISABLED);
+        CVarSetInteger("gColViewerColCheck", COLVIEW_DISABLED);
+        CVarSetInteger("gColViewerWaterbox", COLVIEW_DISABLED);
     }
 }
 

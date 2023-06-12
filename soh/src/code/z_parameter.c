@@ -10,6 +10,8 @@
 #include "soh/Enhancements/gameplaystats.h"
 #include "soh/Enhancements/boss-rush/BossRushTypes.h"
 #include "soh/Enhancements/custom-message/CustomMessageInterfaceAddon.h"
+#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include "soh/Enhancements/enhancementTypes.h"
 
 #ifdef _MSC_VER
 #include <stdlib.h>
@@ -1127,7 +1129,7 @@ void func_80083108(PlayState* play) {
 
                 if (interfaceCtx->restrictions.tradeItems != 0) {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
-                        if ((CVarGetInteger("gMMBunnyHood", 0) != 0)
+                        if ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA)
                             && (gSaveContext.equips.buttonItems[i] >= ITEM_MASK_KEATON)
                             && (gSaveContext.equips.buttonItems[i] <= ITEM_MASK_TRUTH)) {
                             gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_ENABLED;
@@ -3704,7 +3706,7 @@ void Interface_DrawItemButtons(PlayState* play) {
     Color_RGB8 bButtonColor = { 0, 150, 0 };
     if (CVarGetInteger("gCosmetics.Hud_BButton.Changed", 0)) {
         bButtonColor = CVarGetColor24("gCosmetics.Hud_BButton.Value", bButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         bButtonColor = (Color_RGB8){ 255, 30, 30 };
     }
 
@@ -3732,7 +3734,7 @@ void Interface_DrawItemButtons(PlayState* play) {
     Color_RGB8 startButtonColor = { 200, 0, 0 };
     if (CVarGetInteger("gCosmetics.Hud_StartButton.Changed", 0)) {
         startButtonColor = CVarGetColor24("gCosmetics.Hud_StartButton.Value", startButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         startButtonColor = (Color_RGB8){ 120, 120, 120 };
     }
 
@@ -4828,7 +4830,7 @@ void Interface_Draw(PlayState* play) {
     Color_RGB8 aButtonColor = { 90, 90, 255 };
     if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
         aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         aButtonColor = (Color_RGB8){ 0, 200, 50 };
     }
 
