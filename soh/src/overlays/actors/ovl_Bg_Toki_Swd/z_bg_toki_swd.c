@@ -123,7 +123,7 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
         if (Actor_HasParent(&this->actor, play)) {
             if (!LINK_IS_ADULT) {
                 if (Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
-                    GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_TOT_MASTER_SWORD, GI_SWORD_MASTER);
+                    GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_TOT_MASTER_SWORD, GI_NONE);
                     Randomizer_Item_Give(play, itemEntry);
                 } else {
                     Item_Give(play, ITEM_SWORD_MASTER);

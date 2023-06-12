@@ -226,7 +226,7 @@ void InitTrickNames() {
      Text{"Korok Sword", "Épée Korok", "Espada Korok"},
      Text{"Hero's Sword", "Épée du Héros", "Espada del héroe"},
      Text{"Razor Sword", "Lame Rasoir", "Espada de esmeril"}};
-  trickNameTable[GI_SWORD_MASTER] = {
+  trickNameTable[0x73] = { //Master Sword without the GI enum
      Text{"Goddess Sword", "Épée de la déesse", "Espada Divina"},
      Text{"Gilded Sword", "Excalibur", "Espada de los Sabios"},
      Text{"Magical Sword", "Lame dorée", "Fay"}};

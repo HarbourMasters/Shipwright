@@ -1945,8 +1945,6 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
         // Equipment
         case RG_KOKIRI_SWORD:
             return GI_SWORD_KOKIRI;
-        case RG_MASTER_SWORD:
-            return GI_SWORD_MASTER;
         case RG_PROGRESSIVE_GORONSWORD: //todo progressive?
             return GI_SWORD_BGS;
         case RG_GIANTS_KNIFE:

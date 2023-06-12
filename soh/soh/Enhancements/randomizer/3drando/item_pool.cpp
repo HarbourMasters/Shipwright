@@ -678,7 +678,7 @@ void GenerateItemPool() {
 
   if (ShuffleMasterSword) {
     AddItemToMainPool(MASTER_SWORD);
-    IceTrapModels.push_back(GI_SWORD_MASTER);
+    IceTrapModels.push_back(0x73); //Master Sword without the GI enum
   } else {
     PlaceItemInLocation(TOT_MASTER_SWORD, MASTER_SWORD, false, true);
   }
