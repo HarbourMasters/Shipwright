@@ -77,7 +77,7 @@ Rebuild the game and launch it, then load a save file. You should see that the t
 UIWidgets::EnhancementSliderFloat("Hookshot Reach Multiplier: %.1fx", "##gCheatHookshotReachMultiplier", "gCheatHookshotReachMultiplier", 1.0f, 5.0f, "", 1.0f, false);
 ```
 
-The float values being passed in here are `minumum`, `maximum`, and `default` respectively. We'll make our minimum 0.2 to allow it to move slower, and our maximum 5.0 to allow it to move up to 5x faster. We'll also set the default to 1.0 so that it doesn't change the behavior by default. Copy this line and paste it below, then make the relevant changes:
+The float values being passed in here are `minimum`, `maximum`, and `default` respectively. We'll make our minimum 0.2 to allow it to move slower, and our maximum 5.0 to allow it to move up to 5x faster. We'll also set the default to 1.0 so that it doesn't change the behavior by default. Copy this line and paste it below, then make the relevant changes:
 
 ```cpp
 UIWidgets::EnhancementSliderFloat("Time Multiplier: %.1fx", "##gCheatTimeMultiplier", "gCheatTimeMultiplier", 0.2f, 5.0f, "", 1.0f, false);
