@@ -657,6 +657,7 @@ add_dependencies(${PROJECT_NAME}
 endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    find_package(glfw3 REQUIRED)
 	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
 			"libultraship;"
