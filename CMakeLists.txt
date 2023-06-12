@@ -108,8 +108,8 @@ install(FILES "${CMAKE_SOURCE_DIR}/soh.otr" DESTINATION . COMPONENT appimage)
 #                 DESTINATION ./assets/extractor/${subdirectory})
 #     endif()
 # endforeach()
-
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/extractor/" DESTINATION ./assets/extractor)
+install(TARGETS ZAPD DESTINATION ${CMAKE_BINARY_DIR}/assets/extractor)
+# install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/extractor/" DESTINATION ./assets/extractor)
 endif()
 
 find_package(Python3 COMPONENTS Interpreter)
