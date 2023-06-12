@@ -1435,7 +1435,7 @@ void DrawSillyTab() {
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
     }
-    if (UIWidgets::EnhancementSliderFloat("Link Body Scale: %f", "##Link_BodyScale", "gCosmetics.Link_BodyScale.Value", 0.001f, 0.025f, "", 0.01f, false)) {
+    if (UIWidgets::EnhancementSliderFloat("Link Body Scale: %f", "##Link_BodyScale", "gCosmetics.Link_BodyScale.Value", 0.001f, 0.025f, "", 0.01f, true)) {
         CVarSetInteger("gCosmetics.Link_BodyScale.Changed", 1);
     }
     ImGui::SameLine();
@@ -1443,10 +1443,12 @@ void DrawSillyTab() {
         CVarClear("gCosmetics.Link_BodyScale.Value");
         CVarClear("gCosmetics.Link_BodyScale.Changed");
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        static Player* player = GET_PLAYER(gPlayState);
-        player->actor.scale.x = 0.01f;
-        player->actor.scale.y = 0.01f;
-        player->actor.scale.z = 0.01f;
+        if (gPlayState != nullptr) {
+            static Player* player = GET_PLAYER(gPlayState);
+            player->actor.scale.x = 0.01f;
+            player->actor.scale.y = 0.01f;
+            player->actor.scale.z = 0.01f;
+        }
     }
     if (UIWidgets::EnhancementSliderFloat("Link Head Scale: %f", "##Link_HeadScale", "gCosmetics.Link_HeadScale.Value", 0.4f, 4.0f, "", 1.0f, false)) {
         CVarSetInteger("gCosmetics.Link_HeadScale.Changed", 1);
