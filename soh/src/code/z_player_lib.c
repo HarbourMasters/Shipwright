@@ -112,21 +112,21 @@ Gfx* sSheathWithoutSwordDLs[] = {
     gLinkChildDekuShieldWithMatrixDL,
 };
 
-Gfx* sLeftHandWithTwoHandedSwordDLs[] = {
+Gfx* gLeftHandWithTwoHandedSwordDLs[] = {
     gLinkAdultLeftHandHoldingBgsNearDL,          gLinkChildLeftHandHoldingMasterSwordDL,
     gLinkAdultLeftHandHoldingBgsFarDL,           gLinkChildLeftHandHoldingMasterSwordDL,
     gLinkAdultHandHoldingBrokenGiantsKnifeDL,    gLinkChildLeftHandHoldingMasterSwordDL,
     gLinkAdultHandHoldingBrokenGiantsKnifeFarDL, gLinkChildLeftHandHoldingMasterSwordDL,
 };
 
-Gfx* sLeftHandDLs[] = {
+Gfx* gLeftHandDLs[] = {
     gLinkAdultLeftHandNearDL,
     gLinkChildLeftHandNearDL,
     gLinkAdultLeftHandFarDL,
     gLinkChildLeftHandFarDL,
 };
 
-Gfx* sLeftFistDLs[] = {
+Gfx* gLeftFistDLs[] = {
     gLinkAdultLeftHandClosedNearDL,
     gLinkChildLeftFistNearDL,
     gLinkAdultLeftHandClosedFarDL,
@@ -224,7 +224,7 @@ Gfx* sLeftHandWithHammerDLs[] = {
     gLinkChildLeftHandFarDL,
 };
 
-Gfx* sLeftHandWithBoomerangDLs[] = {
+Gfx* gLeftHandWithBoomerangDLs[] = {
     gLinkAdultLeftHandNearDL,
     gLinkChildLeftFistAndBoomerangNearDL,
     gLinkAdultLeftHandFarDL,
@@ -265,7 +265,7 @@ Gfx* sHoldingFirstPersonWeaponDLs[] = {
 
 // Indexed by model types (left hand, right hand, sheath or waist)
 Gfx** sPlayerDListGroups[] = {
-    sLeftHandDLs, sLeftFistDLs, sLeftHandWithSwordDuplicateDLs, sLeftHandWithSwordDLs, sLeftHandWithTwoHandedSwordDLs, sLeftHandWithHammerDLs, sLeftHandWithBoomerangDLs,
+    gLeftHandDLs, gLeftFistDLs, sLeftHandWithSwordDuplicateDLs, sLeftHandWithSwordDLs, sLeftHandWithTwoHandedSwordDLs, sLeftHandWithHammerDLs, sLeftHandWithBoomerangDLs,
     sBottleHandDLs, sRightHandDLs, sRightFistDLs, sRightFistWithShieldDLs, sRightHandHoldingBowSlingshotDLs, sRightHandHoldingBowSlingshotDuplicateDLs, sFairyOcarinaDLs,
     sOcarinaOfTimeDLs, sRightHandWithHookshotDLs, sSwordAndSheathDLs, sSheathDLs, sSheathWithSwordDLs, sSheathWithoutSwordDLs, sWaistDLs,
 };
@@ -1043,10 +1043,10 @@ s32 func_80090014(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
             if ((D_80160014 == 4) && (gSaveContext.swordHealth <= 0.0f)) {
                 dLists += 4;
             } else if ((D_80160014 == 6) && (this->stateFlags1 & 0x2000000)) {
-                dLists = &sLeftHandDLs[gSaveContext.linkAge];
+                dLists = &gLeftHandDLs[gSaveContext.linkAge];
                 D_80160014 = 0;
             } else if ((this->leftHandType == 0) && (this->actor.speedXZ > 2.0f) && !(this->stateFlags1 & 0x8000000)) {
-                dLists = &sLeftFistDLs[gSaveContext.linkAge];
+                dLists = &gLeftFistDLs[gSaveContext.linkAge];
                 D_80160014 = 1;
             }
 
