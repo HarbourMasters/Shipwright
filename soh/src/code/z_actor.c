@@ -2603,7 +2603,7 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
     func_8002C7BC(&actorCtx->targetCtx, player, actor, play);
     TitleCard_Update(play, &actorCtx->titleCtx);
     DynaPoly_UpdateBgActorTransforms(play, &play->colCtx.dyna);
-    ActorAccessibility_RunAccessibilityForAllActors();
+    ActorAccessibility_RunAccessibilityForAllActors(play);
 
 }
 

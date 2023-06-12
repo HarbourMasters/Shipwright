@@ -22,7 +22,7 @@ const char* englishName;
     f32 distance; // Maximum distance from player before the actor should be considered out of range.
     f32 pitch;
     f32 volume;
-
+    bool runsAlways;//If set, then the distance policy is ignored.
 } ActorAccessibilityPolicy;
 
 // Accessible actor object. This can be a "real" actor (one that corresponds to an actual actor in the game) or a
@@ -35,7 +35,7 @@ struct AccessibleActor
     uint64_t instanceID;
 
     Actor* actor; // This can be null for a virtual actor.
-    s16 id;       // For real actors, we copy the ID of the actor. For virtual actors we have our own table of values.
+    s16 id;       // For real actors, we copy the ID of the actor. For virtual actors we have our own table of values which are out of range for real actors.
     f32 xzDistToPlayer;
     PosRot world;
     Vec3f projectedPos;
@@ -55,10 +55,11 @@ struct AccessibleActor
 };
 
 void ActorAccessibility_Init();
+void ActorAccessibility_InitPolicy(ActorAccessibilityPolicy& policy, const char* englishName, ActorAccessibilityCallback callback, s16 sfx = NULL);
+
 void ActorAccessibility_TrackNewActor(Actor* actor);
         void ActorAccessibility_RemoveTrackedActor(Actor* actor);
-void ActorAccessibility_AddSupportedActor(s16 type, const char* englishName, ActorAccessibilityCallback callback, int frames = 20,
-                                          float distance = 500, f32 pitch = 1.0, f32 volume = 1.0, s16 sfx = 0);
+void ActorAccessibility_AddSupportedActor(s16 type, ActorAccessibilityPolicy policy);
 
             void ActorAccessibility_RunAccessibilityForActor(PlayState* play, AccessibleActor* actor);
         void ActorAccessibility_RunAccessibilityForAllActors(PlayState* play);

@@ -33,18 +33,19 @@ uint64_t ActorAccessibility_GetNextID() {
     NextActorID++;
     return result;
 }
-
-void ActorAccessibility_AddSupportedActor(s16 type, const char* englishName, ActorAccessibilityCallback callback, int frames, float distance, f32 pitch, f32 volume, s16 sfx) {
-    ActorAccessibilityPolicy policy;
+void ActorAccessibility_InitPolicy(ActorAccessibilityPolicy& policy, const char* englishName, ActorAccessibilityCallback callback, s16 sfx) {
     policy.callback = callback;
-
-policy.englishName = englishName;
-    policy.n = frames;
-    policy.distance = distance;
-    policy.pitch = pitch;
-    policy.volume = volume;
+    policy.distance = 500;
+    policy.englishName = englishName;
+    policy.n = 20;
+    policy.pitch = 1.5;
+    policy.runsAlways = false;
     policy.sound = sfx;
+    policy.volume = 1.0;
 
+}
+
+    void ActorAccessibility_AddSupportedActor(s16 type, ActorAccessibilityPolicy policy) {
     supportedActors[type] = policy;
 
 }
@@ -151,7 +152,7 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         if (actor->frameCount > 0)
             return;
         actor->frameCount = actor->policy.n;
-        if (actor->xzDistToPlayer > actor->policy.distance) {
+        if (!actor->policy.runsAlways && actor->xzDistToPlayer > actor->policy.distance) {
             return;
         }
         if (actor->isDrawn == 0)
