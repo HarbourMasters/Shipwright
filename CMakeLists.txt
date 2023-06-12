@@ -108,15 +108,6 @@ install(FILES "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ObjectList_OoTMqDbg.txt" DEST
 install(FILES "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/SymbolMap_OoTMqDbg.txt" DESTINATION ./assets/extractor/symbols COMPONENT appimage)
 endif()
 
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/extractor/" DESTINATION ${CMAKE_BINARY_DIR}/assets/extractor)
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/xml/" DESTINATION ${CMAKE_BINARY_DIR}/assets/extractor/xmls)
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/filelists/" DESTINATION ${CMAKE_BINARY_DIR}/assets/extractor/filelists)
-install(FILES "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ActorList_OoTMqDbg.txt" DESTINATION ${CMAKE_BINARY_DIR}/assets/extractor/symbols)
-install(FILES "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ObjectList_OoTMqDbg.txt" DESTINATION ${CMAKE_BINARY_DIR}/assets/extractor/symbols)
-install(FILES "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/SymbolMap_OoTMqDbg.txt" DESTINATION ${CMAKE_BINARY_DIR}/assets/extractor/symbols)
-endif()
-
 find_package(Python3 COMPONENTS Interpreter)
 
 # Target to generate OTRs
