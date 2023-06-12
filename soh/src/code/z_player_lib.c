@@ -265,7 +265,7 @@ Gfx* sHoldingFirstPersonWeaponDLs[] = {
 
 // Indexed by model types (left hand, right hand, sheath or waist)
 Gfx** sPlayerDListGroups[] = {
-    gLeftHandDLs, gLeftFistDLs, sLeftHandWithSwordDuplicateDLs, sLeftHandWithSwordDLs, sLeftHandWithTwoHandedSwordDLs, sLeftHandWithHammerDLs, sLeftHandWithBoomerangDLs,
+    gLeftHandDLs, gLeftFistDLs, sLeftHandWithSwordDuplicateDLs, sLeftHandWithSwordDLs, gLeftHandWithTwoHandedSwordDLs, sLeftHandWithHammerDLs, gLeftHandWithBoomerangDLs,
     sBottleHandDLs, sRightHandDLs, sRightFistDLs, sRightFistWithShieldDLs, sRightHandHoldingBowSlingshotDLs, sRightHandHoldingBowSlingshotDuplicateDLs, sFairyOcarinaDLs,
     sOcarinaOfTimeDLs, sRightHandWithHookshotDLs, sSwordAndSheathDLs, sSheathDLs, sSheathWithSwordDLs, sSheathWithoutSwordDLs, sWaistDLs,
 };
