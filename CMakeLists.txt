@@ -108,7 +108,7 @@ install(FILES "${CMAKE_SOURCE_DIR}/soh.otr" DESTINATION . COMPONENT appimage)
 #                 DESTINATION ./assets/extractor/${subdirectory})
 #     endif()
 # endforeach()
-install(TARGETS ZAPD DESTINATION ${CMAKE_BINARY_DIR}/assets/extractor)
+install(TARGETS ZAPD DESTINATION ./assets/extractor COMPONENT appimage)
 # install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/extractor/" DESTINATION ./assets/extractor)
 endif()
 
