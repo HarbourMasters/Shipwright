@@ -1,7 +1,7 @@
 #include "SetRoomBehavior.h"
 
 namespace LUS {
-void* SetRoomBehavior::GetPointer() {
+RoomBehavior* SetRoomBehavior::GetPointer() {
     return &roomBehavior;
 }
 

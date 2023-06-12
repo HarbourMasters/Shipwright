@@ -1,0 +1,14 @@
+<Root>
+    <File Name="ovl_En_Clear_Tag" BaseAddress="0x80A939A0" RangeStart="0x2600" RangeEnd="0x89F0">
+        <DList Name="gArwingDL" Offset="0x2600"/>
+        <DList Name="gArwingLaserDL" Offset="0x6298"/>
+        <DList Name="gArwingBackfireDL" Offset="0x6598"/>
+        <DList Name="gArwingDebrisEffectMaterialDL" Offset="0x6948"/>
+        <DList Name="gArwingDebrisEffectDL" Offset="0x69C8"/>
+        <DList Name="gArwingFireEffectMaterialDL" Offset="0x7010"/>
+        <DList Name="gArwingFireEffectDL" Offset="0x70B8"/>
+        <DList Name="gArwingFlashEffectDL" Offset="0x8118"/>
+        <DList Name="gArwingFlashEffectGroundDL" Offset="0x83C8"/>
+        <DList Name="gArwingShadowDL" Offset="0x8880"/>
+    </File>
+</Root>

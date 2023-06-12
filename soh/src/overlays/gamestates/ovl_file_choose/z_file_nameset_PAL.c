@@ -102,6 +102,9 @@ static s16 D_80812604[] = {
     0x0048, 0x0045, 0x0045, 0x0045, 0x0045, 0x0045, 0x0045, 0x0045, 0x0045, 0x0045, 0x0045,
 };
 
+static s16 sLastCharIndex = -1;
+static s16 sLastKbdX = -1;
+
 /**
  * Set vertices used by all elements of the name entry screen that are NOT the keyboard.
  * This includes the cursor highlight, the name entry plate and characters, and the buttons.
@@ -373,6 +376,7 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
                         this->configMode = CM_NAME_ENTRY_TO_MAIN;
                     }
                     this->prevConfigMode = CM_NAME_ENTRY;
+                    sLastCharIndex = -1;
                     CVarSetInteger("gOnFileSelectNameEntry", 0);
                 } else {
                     for (i = this->newFileNameCharCount; i < 7; i++) {
@@ -628,6 +632,16 @@ void FileChoose_UpdateKeyboardCursor(GameState* thisx) {
 
     if (this->kbdY == 5) {
         this->kbdButton = this->kbdX;
+
+        if (sLastKbdX != this->kbdX) {
+            GameInteractor_ExecuteOnUpdateFileNameSelection(0xF0 + this->kbdX);
+            sLastKbdX = this->kbdX;
+            sLastCharIndex = -1;
+        }
+    } else if (sLastCharIndex != this->charIndex && this->charIndex < 65) {
+        GameInteractor_ExecuteOnUpdateFileNameSelection(D_808123F0[this->charIndex]);
+        sLastCharIndex = this->charIndex;
+        sLastKbdX = -1;
     }
 }
 
@@ -656,7 +670,7 @@ void FileChoose_StartOptions(GameState* thisx) {
 }
 
 static u8 sSelectedSetting;
-int8_t lastOptionButtonIndex = -1;
+static s8 sLastOptionButtonIndex = -1;
 
 /**
  * Update the cursor and appropriate settings for the options menu.
@@ -673,6 +687,7 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         this->prevConfigMode = this->configMode;
         this->configMode = CM_OPTIONS_TO_MAIN;
+        sLastOptionButtonIndex = -1;
         osSyncPrintf("ＳＡＶＥ");
         Save_SaveGlobal();
         osSyncPrintf(VT_FGCOL(YELLOW));
@@ -721,15 +736,15 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
     }
     
     if (sSelectedSetting == FS_SETTING_AUDIO) {
-        if (lastOptionButtonIndex != gSaveContext.audioSetting) {
+        if (sLastOptionButtonIndex != gSaveContext.audioSetting) {
             GameInteractor_ExecuteOnUpdateFileAudioSelection(gSaveContext.audioSetting);
-            lastOptionButtonIndex = gSaveContext.audioSetting;
+            sLastOptionButtonIndex = gSaveContext.audioSetting;
         }
     } else {
         // offset to detect switching between modes
-        if (lastOptionButtonIndex != FS_BTN_SELECT_QUIT + gSaveContext.zTargetSetting + 1) {
+        if (sLastOptionButtonIndex != FS_BTN_SELECT_QUIT + gSaveContext.zTargetSetting + 1) {
             GameInteractor_ExecuteOnUpdateFileTargetSelection(gSaveContext.zTargetSetting);
-            lastOptionButtonIndex = FS_BTN_SELECT_QUIT + gSaveContext.zTargetSetting + 1;
+            sLastOptionButtonIndex = FS_BTN_SELECT_QUIT + gSaveContext.zTargetSetting + 1;
         }
     }
 }

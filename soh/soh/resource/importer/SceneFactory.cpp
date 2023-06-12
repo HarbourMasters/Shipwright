@@ -30,9 +30,8 @@
 
 namespace LUS {
 
-std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
-                                                     std::shared_ptr<ResourceInitData> initData,
-                                                     std::shared_ptr<BinaryReader> reader) {
+std::shared_ptr<IResource>
+SceneFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
     if (SceneFactory::sceneCommandFactories.empty()) {
         SceneFactory::sceneCommandFactories[LUS::SceneCommandID::SetLightingSettings] = std::make_shared<SetLightingSettingsFactory>();
         SceneFactory::sceneCommandFactories[LUS::SceneCommandID::SetWind] = std::make_shared<SetWindSettingsFactory>();
@@ -61,17 +60,17 @@ std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<ResourceMan
         SceneFactory::sceneCommandFactories[LUS::SceneCommandID::SetMesh] = std::make_shared<SetMeshFactory>();
     }
 
-    auto resource = std::make_shared<Scene>(resourceMgr, initData);
+    auto resource = std::make_shared<Scene>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-    switch (resource->InitData->ResourceVersion) {
+    switch (resource->GetInitData()->ResourceVersion) {
     case 0:
 	    factory = std::make_shared<SceneFactoryV0>();
 	    break;
     }
 
     if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load Scene with version {}", resource->InitData->ResourceVersion);
+        SPDLOG_ERROR("Failed to load Scene with version {}", resource->GetInitData()->ResourceVersion);
         return nullptr;
     }
 
@@ -81,7 +80,7 @@ std::shared_ptr<Resource> SceneFactory::ReadResource(std::shared_ptr<ResourceMan
 }
 
 void SceneFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<Resource> resource)
+                                        std::shared_ptr<IResource> resource)
 {
     std::shared_ptr<Scene> scene = std::static_pointer_cast<Scene>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, scene);
@@ -98,27 +97,27 @@ void SceneFactoryV0::ParseSceneCommands(std::shared_ptr<Scene> scene, std::share
     }
 }
 
-std::shared_ptr<SceneCommand> SceneFactoryV0::ParseSceneCommand(std::shared_ptr<Scene> scene,
+std::shared_ptr<ISceneCommand> SceneFactoryV0::ParseSceneCommand(std::shared_ptr<Scene> scene,
                                                                 std::shared_ptr<BinaryReader> reader, uint32_t index) {
     SceneCommandID cmdID = (SceneCommandID)reader->ReadInt32();
 
     reader->Seek(-sizeof(int32_t), SeekOffsetType::Current);
 
-    std::shared_ptr<SceneCommand> result = nullptr;
+    std::shared_ptr<ISceneCommand> result = nullptr;
     std::shared_ptr<SceneCommandFactory> commandFactory = SceneFactory::sceneCommandFactories[cmdID];
 
     if (commandFactory != nullptr) {
         auto initData = std::make_shared<ResourceInitData>();
-        initData->Id = scene->InitData->Id;
+        initData->Id = scene->GetInitData()->Id;
         initData->Type = ResourceType::SOH_SceneCommand;
-        initData->Path = scene->InitData->Path + "/SceneCommand" + std::to_string(index);
-        initData->ResourceVersion = scene->InitData->ResourceVersion;
-        result = std::static_pointer_cast<SceneCommand>(commandFactory->ReadResource(scene->ResourceManager, initData, reader));
+        initData->Path = scene->GetInitData()->Path + "/SceneCommand" + std::to_string(index);
+        initData->ResourceVersion = scene->GetInitData()->ResourceVersion;
+        result = std::static_pointer_cast<ISceneCommand>(commandFactory->ReadResource(initData, reader));
         // Cache the resource?
     }
 
     if (result == nullptr) {
-        SPDLOG_ERROR("Failed to load scene command of type {} in scene {}", (uint32_t)cmdID, scene->InitData->Path);
+        SPDLOG_ERROR("Failed to load scene command of type {} in scene {}", (uint32_t)cmdID, scene->GetInitData()->Path);
     }
 
     return result;

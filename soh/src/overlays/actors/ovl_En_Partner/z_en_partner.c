@@ -20,19 +20,6 @@ void EnPartner_Update(Actor* thisx, PlayState* play);
 void EnPartner_Draw(Actor* thisx, PlayState* play);
 void EnPartner_SpawnSparkles(EnPartner* this, PlayState* play, s32 sparkleLife);
 
-const ActorInit En_Partner_InitVars = {
-    ACTOR_EN_PARTNER,
-    ACTORCAT_ITEMACTION,
-    FLAGS,
-    OBJECT_GAMEPLAY_KEEP,
-    sizeof(EnPartner),
-    (ActorFunc)EnPartner_Init,
-    (ActorFunc)EnPartner_Destroy,
-    (ActorFunc)EnPartner_Update,
-    (ActorFunc)EnPartner_Draw,
-    NULL,
-};
-
 static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 8, ICHAIN_STOP),
 };

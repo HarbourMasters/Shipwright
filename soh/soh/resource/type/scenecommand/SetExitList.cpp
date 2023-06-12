@@ -1,7 +1,7 @@
 #include "SetExitList.h"
 
 namespace LUS {
-void* SetExitList::GetPointer() {
+uint16_t* SetExitList::GetPointer() {
     return exits.data();
 }
 

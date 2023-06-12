@@ -12,8 +12,10 @@
 #include "objects/object_bv/object_bv.h"
 #include "overlays/actors/ovl_En_Boom/z_en_boom.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/boss-rush/BossRush.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -1396,6 +1398,7 @@ void BossVa_BodyPhase4(BossVa* this, PlayState* play) {
                             BossVa_SetupBodyDeath(this, play);
                             Enemy_StartFinishingBlow(play, &this->actor);
                             gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_BARINADE] = GAMEPLAYSTAT_TOTAL_TIME;
+                            BossRush_HandleCompleteBoss(play);
                             return;
                         }
                         this->actor.speedXZ = -10.0f;
@@ -1650,8 +1653,10 @@ void BossVa_BodyDeath(BossVa* this, PlayState* play) {
                 func_8002DF54(play, &this->actor, 7);
                 sCsState++;
 
-                Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x,
-                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                if (!gSaveContext.isBossRush) {
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x,
+                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                }
 
                 for (i = 2, sp7C = 2; i > 0; i--) {
                     if (Math_Vec3f_DistXYZ(&sWarpPos[i], &player->actor.world.pos) <
@@ -1660,8 +1665,13 @@ void BossVa_BodyDeath(BossVa* this, PlayState* play) {
                     }
                 }
 
-                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_RU1, sWarpPos[sp7C].x, sWarpPos[sp7C].y,
-                            sWarpPos[sp7C].z, 0, 0, 0, 0, true);
+                if (!gSaveContext.isBossRush) {
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_RU1, sWarpPos[sp7C].x, sWarpPos[sp7C].y,
+                                sWarpPos[sp7C].z, 0, 0, 0, 0, true);
+                } else {
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, sWarpPos[sp7C].x, sWarpPos[sp7C].y,
+                                sWarpPos[sp7C].z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                }
             }
         case DEATH_FINISH:
             Rand_CenteredFloat(0.5f);

@@ -1,7 +1,7 @@
 #include "SetSkyboxSettings.h"
 
 namespace LUS {
-void* SetSkyboxSettings::GetPointer() {
+SkyboxSettings* SetSkyboxSettings::GetPointer() {
     return &settings;
 }
 

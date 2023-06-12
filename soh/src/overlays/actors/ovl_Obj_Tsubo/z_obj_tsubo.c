@@ -221,6 +221,11 @@ void ObjTsubo_WaterBreak(ObjTsubo* this, PlayState* play) {
 }
 
 void ObjTsubo_SetupWaitForObject(ObjTsubo* this) {
+    // Remove pots in Boss Rush. Present in Barinade's and Ganondorf's arenas.
+    if (gSaveContext.isBossRush) {
+        Actor_Kill(this);
+    }
+
     this->actionFunc = ObjTsubo_WaitForObject;
 }
 

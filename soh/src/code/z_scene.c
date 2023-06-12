@@ -1,5 +1,6 @@
 #include "global.h"
 #include "vt.h"
+#include "soh/ActorDB.h"
 
 RomFile sNaviMsgFiles[];
 
@@ -193,7 +194,7 @@ void Scene_CommandSpawnList(PlayState* play, SceneCmd* cmd) {
 
     linkObjectId = gLinkObjectIds[((void)0, gSaveContext.linkAge)];
 
-    gActorOverlayTable[linkEntry->id].initInfo->objectId = linkObjectId;
+    ActorDB_Retrieve(linkEntry->id)->objectId = linkObjectId;
     Object_Spawn(&play->objectCtx, linkObjectId);
 }
 

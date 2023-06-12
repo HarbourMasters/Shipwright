@@ -3,13 +3,12 @@
 #include "spdlog/spdlog.h"
 
 namespace LUS {
-std::shared_ptr<Resource> SetLightListFactory::ReadResource(std::shared_ptr<ResourceManager> resourceMgr,
-                                                            std::shared_ptr<ResourceInitData> initData,
-                                                            std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<SetLightList>(resourceMgr, initData);
+std::shared_ptr<IResource>
+SetLightListFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+    auto resource = std::make_shared<SetLightList>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-    switch (resource->InitData->ResourceVersion) {
+    switch (resource->GetInitData()->ResourceVersion) {
     case 0:
 	factory = std::make_shared<SetLightListFactoryV0>();
 	break;
@@ -17,7 +16,7 @@ std::shared_ptr<Resource> SetLightListFactory::ReadResource(std::shared_ptr<Reso
 
     if (factory == nullptr)
     {
-        SPDLOG_ERROR("Failed to load SetLightList with version {}", resource->InitData->ResourceVersion);
+        SPDLOG_ERROR("Failed to load SetLightList with version {}", resource->GetInitData()->ResourceVersion);
 	return nullptr;
     }
 
@@ -27,7 +26,7 @@ std::shared_ptr<Resource> SetLightListFactory::ReadResource(std::shared_ptr<Reso
 }
 
 void LUS::SetLightListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        		  std::shared_ptr<Resource> resource)
+                                        		  std::shared_ptr<IResource> resource)
 {
     std::shared_ptr<SetLightList> setLightList = std::static_pointer_cast<SetLightList>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setLightList);

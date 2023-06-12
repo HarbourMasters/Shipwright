@@ -277,6 +277,11 @@ void EnKusa_Destroy(Actor* thisx, PlayState* play2) {
 }
 
 void EnKusa_SetupWaitObject(EnKusa* this) {
+    // Kill bushes in Boss Rush. Used in Gohma's arena.
+    if (gSaveContext.isBossRush) {
+        Actor_Kill(this);
+    }
+
     EnKusa_SetupAction(this, EnKusa_WaitObject);
 }
 

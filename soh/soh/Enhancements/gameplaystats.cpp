@@ -1,17 +1,18 @@
 extern "C" {
 #include "gameplaystats.h"
 }
+#include "gameplaystatswindow.h"
 
 #include "soh/SaveManager.h"
 #include "functions.h"
 #include "macros.h"
-#include "ImGuiImpl.h"
 #include "../UIWidgets.hpp"
 
 #include <vector>
 #include <string>
 #include <libultraship/bridge.h>
-#include <Hooks.h>
+#include <libultraship/libultraship.h>
+#include "soh/Enhancements/enhancementTypes.h"
 
 extern "C" {
 #include <z64.h>
@@ -544,7 +545,7 @@ void DrawGameplayStatsCountsTab() {
     GameplayStatsRow("Sword Swings:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_SWORD_SWINGS]));
     GameplayStatsRow("Steps Taken:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_STEPS]));
     // If using MM Bunny Hood enhancement, show how long it's been equipped (not counting pause time)
-    if (CVarGetInteger("gMMBunnyHood", 0) || gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
+    if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA || gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
         GameplayStatsRow("Bunny Hood Time:", formatTimestampGameplayStat(gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] / 2));
     }
     GameplayStatsRow("Rolls:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_ROLLS]));
@@ -623,17 +624,9 @@ void DrawGameplayStatsOptionsTab() {
     UIWidgets::PaddedEnhancementCheckbox("Show Debug Info", "gGameplayStats.ShowDebugInfo");
 }
 
-void DrawStatsTracker(bool& open) {
-    if (!open) {
-        if (CVarGetInteger("gGameplayStats.Enabled", 0)) {
-            CVarClear("gGameplayStats.Enabled");
-            LUS::RequestCvarSaveOnNextTick();
-        }
-        return;
-    }
-
+void GameplayStatsWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(480, 550), ImGuiCond_Appearing);
-    if (!ImGui::Begin("Gameplay Stats", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Gameplay Stats", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -798,6 +791,7 @@ void SetupDisplayNames() {
     strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_TWINROVA],      "Twinrova Defeated:  ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANONDORF],     "Ganondorf Defeated: ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANON],         "Ganon Defeated:     ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_FINISH],      "Boss Rush Finished: ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GREG],           "Greg Found:         ");
 }
 
@@ -808,39 +802,50 @@ void SetupDisplayColors() {
             case ITEM_KOKIRI_EMERALD:
             case ITEM_SONG_SARIA:
             case ITEM_MEDALLION_FOREST:
+            case TIMESTAMP_DEFEAT_GOHMA:
+            case TIMESTAMP_DEFEAT_PHANTOM_GANON:
             case TIMESTAMP_FOUND_GREG:
                 itemTimestampDisplayColor[i] = COLOR_GREEN;
                 break;
             case ITEM_SONG_BOLERO:
             case ITEM_GORON_RUBY:
             case ITEM_MEDALLION_FIRE:
+            case TIMESTAMP_DEFEAT_KING_DODONGO:
+            case TIMESTAMP_DEFEAT_VOLVAGIA:
                 itemTimestampDisplayColor[i] = COLOR_RED;
                 break;
             case ITEM_SONG_SERENADE:
             case ITEM_ZORA_SAPPHIRE:
             case ITEM_MEDALLION_WATER:
+            case TIMESTAMP_DEFEAT_BARINADE:
+            case TIMESTAMP_DEFEAT_MORPHA:
                 itemTimestampDisplayColor[i] = COLOR_BLUE;
                 break;
             case ITEM_SONG_LULLABY:
             case ITEM_SONG_NOCTURNE:
             case ITEM_MEDALLION_SHADOW:
+            case TIMESTAMP_DEFEAT_BONGO_BONGO:
                 itemTimestampDisplayColor[i] = COLOR_PURPLE;
                 break;
             case ITEM_SONG_EPONA:
             case ITEM_SONG_REQUIEM:
             case ITEM_MEDALLION_SPIRIT:
+            case TIMESTAMP_DEFEAT_TWINROVA:
                 itemTimestampDisplayColor[i] = COLOR_ORANGE;
                 break;
             case ITEM_SONG_SUN:
             case ITEM_SONG_PRELUDE:
             case ITEM_MEDALLION_LIGHT:
             case ITEM_ARROW_LIGHT:
+            case TIMESTAMP_DEFEAT_GANONDORF:
+            case TIMESTAMP_DEFEAT_GANON:
                 itemTimestampDisplayColor[i] = COLOR_YELLOW;
                 break;
             case ITEM_SONG_STORMS:
                 itemTimestampDisplayColor[i] = COLOR_GREY;
                 break;
             case ITEM_SONG_TIME:
+            case TIMESTAMP_BOSSRUSH_FINISH:
                 itemTimestampDisplayColor[i] = COLOR_LIGHT_BLUE;
                 break;
             default:
@@ -850,8 +855,7 @@ void SetupDisplayColors() {
     }
 }
 
-extern "C" void InitStatTracker() {
-    LUS::AddWindow("Enhancements", "Gameplay Stats", DrawStatsTracker, CVarGetInteger("gGameplayStats.Enabled", 0));
+void GameplayStatsWindow::InitElement() {
     SetupDisplayNames();
     SetupDisplayColors();
 

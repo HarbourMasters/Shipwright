@@ -15,11 +15,11 @@ typedef struct {
   uint8_t indoors;
 } SkyboxSettings;
 
-class SetSkyboxSettings : public SceneCommand {
+class SetSkyboxSettings : public SceneCommand<SkyboxSettings> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    SkyboxSettings* GetPointer();
     size_t GetPointerSize();
 
     SkyboxSettings settings;

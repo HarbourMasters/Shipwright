@@ -347,8 +347,8 @@ void Player_SetBootData(PlayState* play, Player* this) {
 
 // Custom method used to determine if we're using a custom model for link
 uint8_t Player_IsCustomLinkModel() {
-    return (LINK_IS_ADULT && GetResourceIsCustomByName(gLinkAdultSkel)) ||
-           (LINK_IS_CHILD && GetResourceIsCustomByName(gLinkChildSkel));
+    return (LINK_IS_ADULT && ResourceGetIsCustomByName(gLinkAdultSkel)) ||
+           (LINK_IS_CHILD && ResourceGetIsCustomByName(gLinkChildSkel));
 }
 
 s32 Player_InBlockingCsMode(PlayState* play, Player* this) {
@@ -844,7 +844,9 @@ void func_8008F470(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dLis
 
     SkelAnime_DrawFlexLod(play, skeleton, jointTable, dListCount, overrideLimbDraw, postLimbDraw, data, lod);
 
-    if ((overrideLimbDraw != func_800902F0) && (overrideLimbDraw != func_80090440) && (gSaveContext.gameMode != 3)) {
+    if (((CVarGetInteger("gFPSGauntlets", 0) && LINK_IS_ADULT) || (overrideLimbDraw != func_800902F0)) &&
+        (overrideLimbDraw != func_80090440) &&
+        (gSaveContext.gameMode != 3)) {
         if (LINK_IS_ADULT) {
             s32 strengthUpgrade = CUR_UPG_VALUE(UPG_STRENGTH);
 

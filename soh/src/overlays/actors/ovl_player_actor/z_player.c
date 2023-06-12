@@ -25,6 +25,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include <overlays/actors/ovl_En_Partner/z_en_partner.h>
+#include "soh/Enhancements/enhancementTypes.h"
 
 typedef enum {
     /* 0x00 */ KNOB_ANIM_ADULT_L,
@@ -2049,7 +2050,7 @@ void func_80833DF8(Player* this, PlayState* play) {
     s32 i;
 
     if (this->currentMask != PLAYER_MASK_NONE) {
-        if (CVarGetInteger("gMMBunnyHood", 0) != 0) {
+        if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) {
             s32 maskItem = this->currentMask - PLAYER_MASK_KEATON + ITEM_MASK_KEATON;
             bool hasOnDpad = false;
             if (CVarGetInteger("gDpadEquips", 0) != 0) {
@@ -4437,7 +4438,8 @@ s32 func_80839800(Player* this, PlayState* play) {
     if ((this->doorType != PLAYER_DOORTYPE_NONE) &&
         (!(this->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) ||
          ((this->heldActor != NULL) && (this->heldActor->id == ACTOR_EN_RU1)))) {
-        if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) || (func_8084F9A0 == this->func_674)) {
+        // Disable doors in Boss Rush so the player can't leave the boss rooms backwards.
+        if ((CHECK_BTN_ALL(sControlInput->press.button, BTN_A) || (func_8084F9A0 == this->func_674)) && !gSaveContext.isBossRush) {
             doorActor = this->doorActor;
 
             if (this->doorType <= PLAYER_DOORTYPE_AJAR) {
@@ -6118,7 +6120,7 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
             }
         }
 
-        if (CVarGetInteger("gMMBunnyHood", 0) == 1 && this->currentMask == PLAYER_MASK_BUNNY) {
+        if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) == BUNNY_HOOD_FAST_AND_JUMP && this->currentMask == PLAYER_MASK_BUNNY) {
             maxSpeed *= 1.5f;
         } 
         
@@ -7760,9 +7762,9 @@ void func_80842180(Player* this, PlayState* play) {
                 }
             }
 
-            if (CVarGetInteger("gMMBunnyHood", 0) && this->currentMask == PLAYER_MASK_BUNNY) {
+            if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && this->currentMask == PLAYER_MASK_BUNNY) {
                 sp2C *= 1.5f;
-            } 
+            }
             
             if (CVarGetInteger("gEnableWalkModify", 0)) {
                 if (CVarGetInteger("gWalkSpeedToggle", 0)) {
@@ -9663,7 +9665,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     func_80835F44(play, this, ITEM_NONE);
     Player_SetEquipmentData(play, this);
     this->prevBoots = this->currentBoots;
-    if (CVarGetInteger("gMMBunnyHood", 0)) {
+    if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) {
         if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_SOLD_OUT) {
             sMaskMemory = PLAYER_MASK_NONE;
         }

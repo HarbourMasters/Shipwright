@@ -1,7 +1,7 @@
 #include "SetLightList.h"
 
 namespace LUS {
-void* SetLightList::GetPointer() {
+LightInfo* SetLightList::GetPointer() {
     return lightList.data();
 }
 

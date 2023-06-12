@@ -5,6 +5,7 @@
 #include <variant>
 #include <cstdint>
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/enhancementTypes.h"
 
 enum PresetEntryType {
     PRESET_ENTRY_TYPE_S32,
@@ -203,6 +204,7 @@ const std::vector<const char*> enhancementsCvars = {
     "gLowResMode",
     "gDrawLineupTick",
     "gQuickBongoKill",
+    "gFPSGauntlets",
     "gDirtPathFix",
     "gAuthenticLogo",
     "gPauseLiveLinkRotationSpeed",
@@ -281,6 +283,8 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeDungeonCount",
     "gRandomizeEnableBombchuDrops",
     "gRandomizeEnableGlitchCutscenes",
+    "gRandomizeEnabledGlitches",
+    "gRandomizeEnabledTricks",
     "gRandomizeExcludedLocations",
     "gRandomizeForest",
     "gRandomizeFullWallets",
@@ -534,7 +538,7 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     // No Skulltula Freeze
     PRESET_ENTRY_S32("gSkulltulaFreeze", 1),
     // MM Bunny Hood
-    PRESET_ENTRY_S32("gMMBunnyHood", 1),
+    PRESET_ENTRY_S32("gMMBunnyHood", BUNNY_HOOD_FAST_AND_JUMP),
     // Fast Chests
     PRESET_ENTRY_S32("gFastChests", 1),
     // Fast Drops
@@ -576,7 +580,7 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32("gAnubisFix", 1),
 
     // Autosave
-    PRESET_ENTRY_S32("gAutosave", 1),
+    PRESET_ENTRY_S32("gAutosave", AUTOSAVE_LOCATION_AND_MAJOR_ITEMS),
 };
 
 const std::vector<PresetEntry> randomizerPresetEntries = {
@@ -654,7 +658,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // No Skulltula Freeze
     PRESET_ENTRY_S32("gSkulltulaFreeze", 1),
     // MM Bunny Hood
-    PRESET_ENTRY_S32("gMMBunnyHood", 1),
+    PRESET_ENTRY_S32("gMMBunnyHood", BUNNY_HOOD_FAST_AND_JUMP),
     // Fast Chests
     PRESET_ENTRY_S32("gFastChests", 1),
     // Fast Drops
@@ -698,7 +702,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gAnubisFix", 1),
 
     // Autosave
-    PRESET_ENTRY_S32("gAutosave", 1),
+    PRESET_ENTRY_S32("gAutosave", AUTOSAVE_LOCATION_AND_MAJOR_ITEMS),
 
     // Customize Fishing Behaviour
     PRESET_ENTRY_S32("gCustomizeFishing", 1),
@@ -718,7 +722,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Pull out Ocarina to Summon Scarecrow
     PRESET_ENTRY_S32("gSkipScarecrow", 1),
     // Chest size & texture matches contents
-    PRESET_ENTRY_S32("gChestSizeAndTextureMatchesContents", 1),
+    PRESET_ENTRY_S32("gChestSizeAndTextureMatchesContents", CSMC_BOTH),
 
     // Pause link animation (0 to 16)
     PRESET_ENTRY_S32("gPauseLiveLink", 16),
@@ -731,9 +735,9 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
 };
 
 const std::vector<PresetEntry> s6PresetEntries = {
-    PRESET_ENTRY_S32("gChestSizeAndTextureMatchesContents", 1),
+    PRESET_ENTRY_S32("gChestSizeAndTextureMatchesContents", CSMC_BOTH),
     PRESET_ENTRY_S32("gFastChests", 1),
-    PRESET_ENTRY_S32("gMMBunnyHood", 2),
+    PRESET_ENTRY_S32("gMMBunnyHood", BUNNY_HOOD_FAST),
     PRESET_ENTRY_S32("gRandomizeBigPoeTargetCount", 1),
     PRESET_ENTRY_S32("gRandomizeCuccosToReturn", 4),
     PRESET_ENTRY_S32("gRandomizeDoorOfTime", RO_DOOROFTIME_OPEN),
@@ -764,9 +768,9 @@ const std::vector<PresetEntry> s6PresetEntries = {
 };
 
 const std::vector<PresetEntry> hellModePresetEntries = {
-    PRESET_ENTRY_S32("gChestSizeAndTextureMatchesContents", 1),
+    PRESET_ENTRY_S32("gChestSizeAndTextureMatchesContents", CSMC_BOTH),
     PRESET_ENTRY_S32("gFastChests", 1),
-    PRESET_ENTRY_S32("gMMBunnyHood", 2),
+    PRESET_ENTRY_S32("gMMBunnyHood", BUNNY_HOOD_FAST),
     PRESET_ENTRY_S32("gRandomizeBigPoeTargetCount", 1),
     PRESET_ENTRY_S32("gRandomizeBlueFireArrows", 1),
     PRESET_ENTRY_S32("gRandomizeBossKeysanity", RO_DUNGEON_ITEM_LOC_ANYWHERE),

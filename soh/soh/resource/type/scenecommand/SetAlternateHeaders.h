@@ -13,7 +13,7 @@
 
 namespace LUS {
 
-class SetAlternateHeaders : public SceneCommand {
+class SetAlternateHeaders : public SceneCommand<void> {
   public:
     using SceneCommand::SceneCommand;
 

@@ -365,6 +365,7 @@ extern string_view ToggleLogicNoneDesc;
 extern string_view ToggleLogicNoviceDesc;
 extern string_view ToggleLogicIntermediateDesc;
 extern string_view ToggleLogicExpertDesc;
+extern string_view LogicTempDesc;
 extern string_view LogicGrottosWithoutAgonyDesc;
 extern string_view LogicVisibleCollisionDesc;
 extern string_view LogicFewerTunicRequirementsDesc;

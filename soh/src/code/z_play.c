@@ -4,12 +4,14 @@
 #include <string.h>
 
 #include "soh/Enhancements/gameconsole.h"
-#include <ImGuiImpl.h>
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/debugconsole.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
+#include "soh/Enhancements/enhancementTypes.h"
+
+#include <libultraship/libultraship.h>
 
 #include <time.h>
 
@@ -28,6 +30,8 @@ u64 D_801614D0[0xA00];
 #endif
 
 PlayState* gPlayState;
+
+s16 gEnPartnerId;
 
 void func_800BC450(PlayState* play) {
     Camera_ChangeDataIdx(GET_ACTIVE_CAM(play), play->unk_1242B - 1);
@@ -641,7 +645,7 @@ void Play_Init(GameState* thisx) {
 
     Fault_AddClient(&D_801614B8, ZeldaArena_Display, NULL, NULL);
     // In order to keep bunny hood equipped on first load, we need to pre-set the age reqs for the item and slot
-    if (CVarGetInteger("gMMBunnyHood", 0) || CVarGetInteger("gTimelessEquipment", 0)) {
+    if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA || CVarGetInteger("gTimelessEquipment", 0)) {
         gItemAgeReqs[ITEM_MASK_BUNNY] = 9;
         if(INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY)
             gSlotAgeReqs[SLOT_TRADE_CHILD] = 9;
@@ -729,7 +733,7 @@ void Play_Init(GameState* thisx) {
     #endif
 
     if (CVarGetInteger("gIvanCoopModeEnabled", 0)) {
-        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_PARTNER, GET_PLAYER(play)->actor.world.pos.x,
+        Actor_Spawn(&play->actorCtx, play, gEnPartnerId, GET_PLAYER(play)->actor.world.pos.x,
                     GET_PLAYER(play)->actor.world.pos.y + Player_GetHeight(GET_PLAYER(play)) + 5.0f,
                     GET_PLAYER(play)->actor.world.pos.z, 0, 0, 0, 1, true);
     }
@@ -764,7 +768,6 @@ void Play_Update(PlayState* play) {
 
     if ((HREG(81) == 18) && (HREG(82) < 0)) {
         HREG(82) = 0;
-        ActorOverlayTable_LogPrint();
     }
 
     if (CVarGetInteger("gFreeCamera", 0) && Player_InCsMode(play)) {
@@ -1169,12 +1172,13 @@ void Play_Update(PlayState* play) {
 
                 play->gameplayFrames++;
                 // Gameplay stat tracking
-                if (!gSaveContext.sohStats.gameComplete) {
+                if (!gSaveContext.sohStats.gameComplete &&
+                    (!gSaveContext.isBossRush || (gSaveContext.isBossRush && !gSaveContext.isBossRushPaused))) {
                       gSaveContext.sohStats.playTimer++;
                       gSaveContext.sohStats.sceneTimer++;
                       gSaveContext.sohStats.roomTimer++;
 
-                      if (CVarGetInteger("gMMBunnyHood", 0) && Player_GetMask(play) == PLAYER_MASK_BUNNY) {
+                      if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && Player_GetMask(play) == PLAYER_MASK_BUNNY) {
                           gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD]++;
                       }
                 }
@@ -1923,7 +1927,7 @@ void Play_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
         Entrance_OverrideSpawnScene(sceneNum, spawn);
     }
 
-    CVarSetInteger("gBetterDebugWarpScreenMQMode", 0);
+    CVarClear("gBetterDebugWarpScreenMQMode");
 }
 
 void func_800C016C(PlayState* play, Vec3f* src, Vec3f* dest) {
@@ -2284,7 +2288,7 @@ void Play_PerformSave(PlayState* play) {
         } else {
             Save_SaveFile();
         }
-        if (CVarGetInteger("gAutosave", 0)) {
+        if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) != AUTOSAVE_OFF) {
             Overlay_DisplayText(3.0f, "Game Saved");
         }
     }

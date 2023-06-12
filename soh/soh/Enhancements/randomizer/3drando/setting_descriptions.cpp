@@ -1112,6 +1112,7 @@ string_view ToggleLogicNoneDesc                       = "Disables all the Detail
 string_view ToggleLogicNoviceDesc                     = "Enables only the easier Detailed Logic tricks";   //
 string_view ToggleLogicIntermediateDesc               = "Enables all but the harder Detailed Logic tricks.";
 string_view ToggleLogicExpertDesc                     = "Enables all the Detailed Logic tricks.";          //
+string_view LogicTempDesc                             = "";                                                //
                                                                                                            //
 string_view LogicGrottosWithoutAgonyDesc              = "Difficulty: Novice\n"                             //
                                                         "Grottos can be accessed without Stone of Agony,\n"//

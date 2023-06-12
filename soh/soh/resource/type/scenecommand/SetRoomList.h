@@ -17,11 +17,11 @@ namespace LUS {
 //     char* fileName;
 // } RomFile; // size = 0x8
 
-class SetRoomList : public SceneCommand {
+class SetRoomList : public SceneCommand<RomFile> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    RomFile* GetPointer();
     size_t GetPointerSize();
 
     uint32_t numRooms;
