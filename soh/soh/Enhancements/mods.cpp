@@ -3,6 +3,7 @@
 #include "game-interactor/GameInteractor.h"
 #include "tts/tts.h"
 #include "soh/Enhancements/boss-rush/BossRushTypes.h"
+#include "soh/Enhancements/enhancementTypes.h"
 
 extern "C" {
 #include <z64.h>
@@ -227,13 +228,13 @@ void AutoSave(GetItemEntry itemEntry) {
     // Don't autosave in the Chamber of Sages since resuming from that map breaks the game
     // Don't autosave during the Ganon fight when picking up the Master Sword
     // Don't autosave in grottos since resuming from grottos breaks the game.
-    if ((CVarGetInteger("gAutosave", 0) > 0) && (gPlayState != NULL) && (gSaveContext.pendingSale == ITEM_NONE) &&
+    if ((CVarGetInteger("gAutosave", AUTOSAVE_OFF) != AUTOSAVE_OFF) && (gPlayState != NULL) && (gSaveContext.pendingSale == ITEM_NONE) &&
         (gPlayState->gameplayFrames > 60 && gSaveContext.cutsceneIndex < 0xFFF0) && (gPlayState->sceneNum != SCENE_GANON_DEMO)) {
-        if (((CVarGetInteger("gAutosave", 0) == 2) || (CVarGetInteger("gAutosave", 0) == 5)) && (item != ITEM_NONE)) {
+        if (((CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS) || (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_ALL_ITEMS)) && (item != ITEM_NONE)) {
             // Autosave for all items
             performSave = true;
 
-        } else if (((CVarGetInteger("gAutosave", 0) == 1) || (CVarGetInteger("gAutosave", 0) == 4)) && (item != ITEM_NONE)) {
+        } else if (((CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS) || (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_MAJOR_ITEMS)) && (item != ITEM_NONE)) {
             // Autosave for major items
             if (itemEntry.modIndex == 0) {
                 switch (item) {
@@ -284,12 +285,16 @@ void AutoSave(GetItemEntry itemEntry) {
             } else if (itemEntry.modIndex == 1 && item != RG_ICE_TRAP) {
                 performSave = true;
             }
-        } else if ((CVarGetInteger("gAutosave", 0) > 0 && (CVarGetInteger("gAutosave", 0) < 4))) {
+        } else if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS ||
+                   CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS ||
+                   CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION) {
             performSave = true;
         }
         if ((gPlayState->sceneNum == SCENE_YOUSEI_IZUMI_TATE) || (gPlayState->sceneNum == SCENE_KAKUSIANA) ||
                 (gPlayState->sceneNum == SCENE_KENJYANOMA)) {
-            if ((CVarGetInteger("gAutosave", 0) > 0 && (CVarGetInteger("gAutosave", 0) < 4))) {
+            if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS ||
+                CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS ||
+                CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION) {
                 performSave = false;
                 return;
             }
@@ -486,47 +491,44 @@ void RegisterHyperEnemies() {
 
 void RegisterBonkDamage() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerBonk>([]() {
-        uint8_t bonkOption = CVarGetInteger("gBonkDamageMul", 0);
+        uint8_t bonkOption = CVarGetInteger("gBonkDamageMul", BONK_DAMAGE_NONE);
+        if (bonkOption == BONK_DAMAGE_NONE) {
+            return;
+        }
+
+        if (bonkOption == BONK_DAMAGE_OHKO) {
+            gSaveContext.health = 0;
+            return;
+        }
+
         uint16_t bonkDamage = 0;
         switch (bonkOption) {
-            // Quarter heart
-            case 1:
+            case BONK_DAMAGE_QUARTER_HEART:
                 bonkDamage = 4;
                 break;
-            // Half a heart
-            case 2:
+            case BONK_DAMAGE_HALF_HEART:
                 bonkDamage = 8;
                 break;
-            // Full heart
-            case 3:
+            case BONK_DAMAGE_1_HEART:
                 bonkDamage = 16;
                 break;
-            // 2 hearts
-            case 4:
+            case BONK_DAMAGE_2_HEARTS:
                 bonkDamage = 32;
                 break;
-            // 4 hearts
-            case 5:
+            case BONK_DAMAGE_4_HEARTS:
                 bonkDamage = 64;
                 break;
-            // 8 hearts
-            case 6:
+            case BONK_DAMAGE_8_HEARTS:
                 bonkDamage = 128;
                 break;
-            case 0:
-            case 7:
             default:
                 break;
         }
-        // OHKO
-        if (bonkOption == 7) {
-            gSaveContext.health = 0;
-        } else if (bonkDamage) {
-            Health_ChangeBy(gPlayState, -bonkDamage);
-            // Set invincibility to make Link flash red as a visual damage indicator.
-            Player* player = GET_PLAYER(gPlayState);
-            player->invincibilityTimer = 28;
-        }
+        
+        Health_ChangeBy(gPlayState, -bonkDamage);
+        // Set invincibility to make Link flash red as a visual damage indicator.
+        Player* player = GET_PLAYER(gPlayState);
+        player->invincibilityTimer = 28;
     });
 }
 
@@ -535,7 +537,7 @@ void UpdateDirtPathFixState(int32_t sceneNum) {
         case SCENE_SPOT00:
         case SCENE_SPOT04:
         case SCENE_SPOT15:
-            CVarSetInteger("gDirtPathFix", CVarGetInteger("gSceneSpecificDirtPathFix", 0));
+            CVarSetInteger("gDirtPathFix", CVarGetInteger("gSceneSpecificDirtPathFix", ZFIGHT_FIX_DISABLED));
             return;
         default:
             CVarClear("gDirtPathFix");
