@@ -805,6 +805,8 @@ namespace GameMenuBar {
                 if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", "gAltAssets", true, false)) {
                     ShouldClearTextureCacheAtEndOfFrame = true;
                 }
+                UIWidgets::PaddedEnhancementCheckbox("Alternate Asset Loading Method", "gAltAssetLoading", true, false);
+                UIWidgets::Tooltip("Optimizes Loading Link's Display Lists. For Alternate Assets Only.");
                 UIWidgets::PaddedEnhancementCheckbox("Disable LOD", "gDisableLOD", true, false);
                 UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
                 if (UIWidgets::PaddedEnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance", true, false)) {

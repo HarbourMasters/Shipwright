@@ -70,6 +70,15 @@ Gfx* D_80125CE8[] = {
     gLinkChildRightHandClosedFarDL,
 };
 
+Gfx* D_80125CE8Alt[] = {
+    gLinkAdultRightHandClosedNearDL, gLinkChildRightHandClosedNearDL, gLinkAdultRightHandClosedFarDL,
+    gLinkChildRightHandClosedFarDL,  gLinkAdultRightHandClosedNearDL, gLinkChildRightHandClosedNearDL,
+    gLinkAdultRightHandClosedFarDL,  gLinkChildRightHandClosedFarDL,  gLinkAdultRightHandClosedNearDL,
+    gLinkChildRightHandClosedNearDL, gLinkAdultRightHandClosedFarDL,  gLinkChildRightHandClosedFarDL,
+    gLinkAdultRightHandClosedNearDL, gLinkChildRightHandClosedNearDL, gLinkAdultRightHandClosedFarDL,
+    gLinkChildRightHandClosedFarDL,
+};
+
 Gfx* D_80125D28[] = {
     gLinkAdultMasterSwordAndSheathNearDL,       gLinkChildSwordAndSheathNearDL,
     gLinkAdultMasterSwordAndSheathFarDL,        gLinkChildSwordAndSheathFarDL,
@@ -225,10 +234,10 @@ Gfx* D_80125EE8[] = {
 };
 
 Gfx* D_80125EF8[] = {
-    gLinkAdultLeftHandNearDL,
-    gLinkChildLeftFistAndBoomerangNearDL,
-    gLinkAdultLeftHandFarDL,
-    gLinkChildLeftFistAndBoomerangFarDL,
+    gLinkAdultLeftHandClosedNearDL,
+    gLinkChildLeftFistNearDL,
+    gLinkAdultLeftHandClosedFarDL,
+    gLinkChildLeftFistFarDL,
 };
 
 Gfx* D_80125F08[] = {
@@ -267,6 +276,12 @@ Gfx* sHoldingFirstPersonWeaponDLs[] = {
 Gfx** sPlayerDListGroups[] = {
     D_80125E08, D_80125E18, D_80125E38, D_80125E28, D_80125DE8, D_80125EE8, D_80125EF8,
     D_80125F08, D_80125E48, D_80125E58, D_80125CE8, D_80125E68, D_80125EA8, D_80125EB8,
+    D_80125EC8, D_80125ED8, D_80125E78, D_80125E88, D_80125D28, D_80125D88, D_80125E98,
+};
+
+Gfx** sPlayerDListGroupsAlt[] = {
+    D_80125E08, D_80125E18, D_80125E38, D_80125E28, D_80125DE8, D_80125EE8, D_80125EF8,
+    D_80125F08, D_80125E48, D_80125E58, D_80125CE8Alt, D_80125E68, D_80125EA8, D_80125EB8,
     D_80125EC8, D_80125ED8, D_80125E78, D_80125E88, D_80125D28, D_80125D88, D_80125E98,
 };
 
@@ -389,7 +404,30 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     // Left hand
     this->leftHandType = gPlayerModelTypes[modelGroup][1];
     this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][gSaveContext.linkAge];
-    
+
+    // Right hand
+    this->rightHandType = gPlayerModelTypes[modelGroup][2];
+    this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
+
+    if (CVarGetInteger("gBowSlingShotAmmoFix", 0) && this->rightHandType == 11) { // If holding Bow/Slingshot
+        this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
+    }
+
+    // Sheath
+    this->sheathType = gPlayerModelTypes[modelGroup][3];
+    this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
+
+    // Waist
+    this->waistDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][4]][gSaveContext.linkAge];
+
+    Player_SetModelsForHoldingShield(this);
+}
+
+void Player_SetModelsAlt(Player* this, s32 modelGroup) {
+    // Left hand
+    this->leftHandType = gPlayerModelTypes[modelGroup][1];
+    this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][gSaveContext.linkAge];
+
     // Right hand
     this->rightHandType = gPlayerModelTypes[modelGroup][2];
     this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
@@ -421,7 +459,10 @@ void Player_SetModelGroup(Player* this, s32 modelGroup) {
         this->modelAnimType = 0;
     }
 
-    Player_SetModels(this, modelGroup);
+    if (CVarGetInteger("gBowSlingShotAmmoFix", 0))
+        Player_SetModelsAlt(this, modelGroup);
+    else
+        Player_SetModels(this, modelGroup);
 }
 
 void func_8008EC70(Player* this) {
@@ -1451,19 +1492,130 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
             gSPDisplayList(POLY_OPA_DISP++, gLinkChildLinkDekuStickDL);
 
             CLOSE_DISPS(play->state.gfxCtx);
-        } else if ((this->actor.scale.y >= 0.0f) && (this->swordState != 0)) {
+        }
+        
+        //kokiri sword
+        else if ((this->leftHandType == 2 || this->leftHandType == 3) && 
+                (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_KOKIRI)) {
+            Vec3f sp124[3];
+
+            OPEN_DISPS(play->state.gfxCtx);
+
+            if (this->actor.scale.y >= 0.0f) {
+                D_80126080.x = sSwordLengths[Player_GetSwordHeld(this)];
+                func_80090A28(this, sp124);
+                if (this->swordState != 0) {
+                    EffectBlure_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex),
+                                           sSwordTypes[Player_GetSwordHeld(this)]);
+                    func_800906D4(play, this, sp124);
+                }
+            }
+
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gLinkChildLeftFistAndKokiriSwordNearDL); //
+
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
+        // master sword
+        else if ((this->leftHandType == 2 || this->leftHandType == 3) &&
+                 (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_MASTER)) {
+            Vec3f sp124[3];
+
+            OPEN_DISPS(play->state.gfxCtx);
+
+            if (this->actor.scale.y >= 0.0f) {
+                D_80126080.x = sSwordLengths[Player_GetSwordHeld(this)];
+                func_80090A28(this, sp124);
+                if (this->swordState != 0) {
+                    EffectBlure_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex),
+                                           sSwordTypes[Player_GetSwordHeld(this)]);
+                    func_800906D4(play, this, sp124);
+                }
+            }
+
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftHandHoldingMasterSwordNearDL); //
+
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
+        // biggoron sword
+        else if (this->leftHandType == 4 && (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS)) {
+            Vec3f sp124[3];
+
+            OPEN_DISPS(play->state.gfxCtx);
+
+            if (this->actor.scale.y >= 0.0f) {
+                if (Player_HoldsBrokenKnife(this)) {
+                    D_80126080.x = 1500.0f;
+                } else {
+                    D_80126080.x = sSwordLengths[Player_GetSwordHeld(this)];
+                }
+                func_80090A28(this, sp124);
+                if (this->swordState != 0) {
+                    EffectBlure_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex),
+                                           sSwordTypes[Player_GetSwordHeld(this)]);
+                    func_800906D4(play, this, sp124);
+                }
+            }
+
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            if (Player_HoldsBrokenKnife(this)) {
+                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHandHoldingBrokenGiantsKnifeDL);
+            }
+            else {
+                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftHandHoldingBgsNearDL); //
+            }
+
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
+        // metagon hammer
+        else if (this->leftHandType == 5) {
+            Vec3f sp124[3];
+
+            OPEN_DISPS(play->state.gfxCtx);
+
+            if (this->actor.scale.y >= 0.0f) {
+                D_80126080.x = sSwordLengths[Player_GetSwordHeld(this)];
+                func_80090A28(this, sp124);
+                if (this->swordState != 0) {
+                    EffectBlure_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex),
+                                           sSwordTypes[Player_GetSwordHeld(this)]);
+                    func_800906D4(play, this, sp124);
+                }
+            }
+
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftHandHoldingHammerNearDL); //
+
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
+        //boomerang
+        else if (this->leftHandType == 6 && !(this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG)) {
+            Vec3f sp124[3];
+
+            OPEN_DISPS(play->state.gfxCtx);
+
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gLinkChildLeftFistAndBoomerangNearDL); //
+
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
+        
+        
+        /* if ((this->actor.scale.y >= 0.0f) && (this->swordState != 0)) {
             Vec3f spE4[3];
 
             if (Player_HoldsBrokenKnife(this)) {
                 D_80126080.x = 1500.0f;
             } else {
                 D_80126080.x = sSwordLengths[Player_GetSwordHeld(this)];
-                EffectBlure_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex), sSwordTypes[Player_GetSwordHeld(this)]);
+                EffectBlure_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex),
+                                       sSwordTypes[Player_GetSwordHeld(this)]);
             }
 
             func_80090A28(this, spE4);
             func_800906D4(play, this, spE4);
-        } else if ((*dList != NULL) && (this->leftHandType == 7)) {
+        }*/ else if ((*dList != NULL) && (this->leftHandType == 7)) {
             Color_RGB8* bottleColor = &sBottleColors[Player_ActionToBottle(this, this->itemAction)];
 
             OPEN_DISPS(play->state.gfxCtx);
@@ -1506,7 +1658,44 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
 
         if (this->rightHandType == 0xFF) {
             Matrix_Get(&this->shieldMf);
-        } else if ((this->rightHandType == 11) || (this->rightHandType == 12)) {
+        }
+
+        // deku shield
+        else if (this->rightHandType == 10 && (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU)) {
+            Vec3f sp124[3];
+
+            OPEN_DISPS(play->state.gfxCtx);
+
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gLinkChildRightFistAndDekuShieldNearDL); //
+
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
+        // hylian shield
+        else if (this->rightHandType == 10 && (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
+                 Player_IsChildWithHylianShield(this)) {
+            Vec3f sp124[3];
+
+            OPEN_DISPS(play->state.gfxCtx);
+
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightHandHoldingHylianShieldNearDL); //
+
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
+        // mirror shield
+        else if (this->rightHandType == 10 && (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR)) {
+            Vec3f sp124[3];
+
+            OPEN_DISPS(play->state.gfxCtx);
+
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightHandHoldingMirrorShieldNearDL); //
+
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
+
+        else if ((this->rightHandType == 11) || (this->rightHandType == 12)) {
             s32 stringModelToUse = gSaveContext.linkAge;
             if(CVarGetInteger("gBowSlingShotAmmoFix", 0)){
                 stringModelToUse = Player_HoldsSlingshot(this);
