@@ -49,5 +49,9 @@ namespace LUS {
         if (conf->GetString("Game.Patches Archive", "") == "") {
             conf->Erase("Game.Patches Archive");
         }
+        if (CVarGetInteger("gDirtPathFix", 0) != 0) {
+            CVarSetInteger("gZFightingMode", CVarGetInteger("gDirtPathFix", 0));
+            CVarClear("gDirtPathFix");
+        }
     }
 }
