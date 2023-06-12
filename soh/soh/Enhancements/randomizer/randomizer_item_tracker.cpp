@@ -2,6 +2,7 @@
 #include "../../util.h"
 #include "../../OTRGlobals.h"
 #include "../../UIWidgets.hpp"
+#include "randomizerTypes.h"
 
 #include <map>
 #include <string>
@@ -236,6 +237,25 @@ typedef enum {
   ITEM_TRACKER_NUMBER_AMMO,
 } ItemTrackerNumberOption;
 
+typedef enum {
+    KEYS_COLLECTED_MAX,
+    KEYS_CURRENT_COLLECTED_MAX,
+    KEYS_CURRENT_MAX
+} ItemTrackerKeysNumberOption;
+
+typedef enum {
+    SECTION_DISPLAY_HIDDEN,
+    SECTION_DISPLAY_MAIN_WINDOW,
+    SECTION_DISPLAY_SEPARATE
+} ItemTrackerDisplayType;
+
+typedef enum {
+    SECTION_DISPLAY_EXTENDED_HIDDEN,
+    SECTION_DISPLAY_EXTENDED_MAIN_WINDOW,
+    SECTION_DISPLAY_EXTENDED_MISC_WINDOW,
+    SECTION_DISPLAY_EXTENDED_SEPARATE
+} ItemTrackerExtendedDisplayType;
+
 struct ItemTrackerNumbers {
   int currentCapacity;
   int maxCapacity;
@@ -357,8 +377,8 @@ void DrawItemCount(ItemTrackerItem item) {
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     ItemTrackerNumbers currentAndMax = GetItemCurrentAndMax(item);
     ImVec2 p = ImGui::GetCursorScreenPos();
-    int32_t trackerNumberDisplayMode = CVarGetInteger("gItemTrackerCapacityTrack", 1);
-    int32_t trackerKeyNumberDisplayMode = CVarGetInteger("gItemTrackerKeyTrack", 0);
+    int32_t trackerNumberDisplayMode = CVarGetInteger("gItemTrackerCapacityTrack", ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY);
+    int32_t trackerKeyNumberDisplayMode = CVarGetInteger("gItemTrackerKeyTrack", KEYS_COLLECTED_MAX);
 
     if (item.id == ITEM_KEY_SMALL && IsValidSaveFile()) {
         std::string currentString = "";
@@ -366,11 +386,11 @@ void DrawItemCount(ItemTrackerItem item) {
         ImU32 currentColor = IM_COL_WHITE;
         ImU32 maxColor = IM_COL_GREEN;
         // "Collected / Max", "Current / Collected / Max", "Current / Max"
-        if (trackerKeyNumberDisplayMode == 1 || trackerKeyNumberDisplayMode == 2) {
+        if (trackerKeyNumberDisplayMode == KEYS_CURRENT_COLLECTED_MAX || trackerKeyNumberDisplayMode == KEYS_CURRENT_MAX) {
             currentString+= std::to_string(currentAndMax.currentAmmo);
             currentString+= "/";
         }
-        if (trackerKeyNumberDisplayMode == 0 || trackerKeyNumberDisplayMode == 1) {
+        if (trackerKeyNumberDisplayMode == KEYS_COLLECTED_MAX || trackerKeyNumberDisplayMode == KEYS_CURRENT_COLLECTED_MAX) {
             currentString+= std::to_string(currentAndMax.currentCapacity);
             currentString+= "/";
         }
@@ -648,7 +668,7 @@ void BeginFloatingWindows(std::string UniqueName, ImGuiWindowFlags flags = 0) {
         windowFlags |= ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoResize;
     }
 
-    if (!CVarGetInteger("gItemTrackerWindowType", 0)) {
+    if (CVarGetInteger("gItemTrackerWindowType", TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING) {
         ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
         windowFlags |= ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
 
@@ -675,7 +695,7 @@ void EndFloatingWindows() {
 void DrawItemsInRows(std::vector<ItemTrackerItem> items, int columns = 6) {
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     int iconSpacing = CVarGetInteger("gItemTrackerIconSpacing", 12);
-    int topPadding = CVarGetInteger("gItemTrackerWindowType", 0) ? 20 : 0;
+    int topPadding = (CVarGetInteger("gItemTrackerWindowType", TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_WINDOW) ? 20 : 0;
 
     for (int i = 0; i < items.size(); i++) {
         int row = i / columns;
@@ -767,7 +787,7 @@ void UpdateVectors() {
     dungeonRewards.insert(dungeonRewards.end(), dungeonRewardMedallions.begin(), dungeonRewardMedallions.end());
 
     dungeonItems.clear();
-    if (CVarGetInteger("gItemTrackerDisplayDungeonItemsHorizontal", 1) && CVarGetInteger("gItemTrackerDungeonItemsDisplayType", 0) == 2) {
+    if (CVarGetInteger("gItemTrackerDisplayDungeonItemsHorizontal", 1) && CVarGetInteger("gItemTrackerDungeonItemsDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE) {
         if (CVarGetInteger("gItemTrackerDisplayDungeonItemsMaps", 1)) {
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsWithMapsHorizontal, 12);
             // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
@@ -788,38 +808,39 @@ void UpdateVectors() {
     }
 
     mainWindowItems.clear();
-    if (CVarGetInteger("gItemTrackerInventoryItemsDisplayType", 1) == 1) {
+    if (CVarGetInteger("gItemTrackerInventoryItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) {
         mainWindowItems.insert(mainWindowItems.end(), inventoryItems.begin(), inventoryItems.end());
     }
-    if (CVarGetInteger("gItemTrackerEquipmentItemsDisplayType", 1) == 1) {
+    if (CVarGetInteger("gItemTrackerEquipmentItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) {
         mainWindowItems.insert(mainWindowItems.end(), equipmentItems.begin(), equipmentItems.end());
     }
-    if (CVarGetInteger("gItemTrackerMiscItemsDisplayType", 1) == 1) {
+    if (CVarGetInteger("gItemTrackerMiscItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) {
         mainWindowItems.insert(mainWindowItems.end(), miscItems.begin(), miscItems.end());
     }
-    if (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", 1) == 1) {
+    if (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) {
         mainWindowItems.insert(mainWindowItems.end(), dungeonRewardStones.begin(), dungeonRewardStones.end());
         mainWindowItems.insert(mainWindowItems.end(), dungeonRewardMedallions.begin(), dungeonRewardMedallions.end());
     }
-    if (CVarGetInteger("gItemTrackerSongsDisplayType", 1) == 1) {
-        if (CVarGetInteger("gItemTrackerMiscItemsDisplayType", 1) == 1 && CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", 1) != 1) {
+    if (CVarGetInteger("gItemTrackerSongsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) {
+        if (CVarGetInteger("gItemTrackerMiscItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW &&
+            CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) != SECTION_DISPLAY_MAIN_WINDOW) {
             mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
             mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
             mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
         }
         mainWindowItems.insert(mainWindowItems.end(), songItems.begin(), songItems.end());
     }
-    if (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", 0) == 1) {
+    if (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW) {
         mainWindowItems.insert(mainWindowItems.end(), dungeonItems.begin(), dungeonItems.end());
     }
 
     // if we're adding greg to the misc window,
     // and misc isn't on the main window,
     // and it doesn't already have greg, add him
-    if (CVarGetInteger("gItemTrackerGregDisplayType", 0) == 2 &&
-        CVarGetInteger("gItemTrackerMiscItemsDisplayType", 1) != 1 &&
+    if (CVarGetInteger("gItemTrackerGregDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MISC_WINDOW &&
+        CVarGetInteger("gItemTrackerMiscItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) != SECTION_DISPLAY_MAIN_WINDOW &&
         std::none_of(miscItems.begin(), miscItems.end(), [](ItemTrackerItem item){return item.id == ITEM_RUPEE_GREEN;})) {
-            
+
         miscItems.insert(miscItems.end(), gregItems.begin(), gregItems.end());
     } else {
         for (auto it = miscItems.begin(); it != miscItems.end();) {
@@ -832,7 +853,7 @@ void UpdateVectors() {
     }
 
     // if we're adding greg to the main window
-    if (CVarGetInteger("gItemTrackerGregDisplayType", 0) == 1) {
+    if (CVarGetInteger("gItemTrackerGregDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) {
         // insert empty items until we're on a new row for greg
         while (mainWindowItems.size() % 6) {
             mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
@@ -850,53 +871,53 @@ void ItemTrackerWindow::DrawElement() {
 
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     int iconSpacing = CVarGetInteger("gItemTrackerIconSpacing", 12);
-    int comboButton1Mask = buttonMap[CVarGetInteger("gItemTrackerComboButton1", 6)];
-    int comboButton2Mask = buttonMap[CVarGetInteger("gItemTrackerComboButton2", 8)];
+    int comboButton1Mask = buttonMap[CVarGetInteger("gItemTrackerComboButton1", TRACKER_COMBO_BUTTON_L)];
+    int comboButton2Mask = buttonMap[CVarGetInteger("gItemTrackerComboButton2", TRACKER_COMBO_BUTTON_R)];
     OSContPad* buttonsPressed = LUS::Context::GetInstance()->GetControlDeck()->GetPads();
     bool comboButtonsHeld = buttonsPressed != nullptr && buttonsPressed[0].button & comboButton1Mask && buttonsPressed[0].button & comboButton2Mask;
     bool isPaused = CVarGetInteger("gItemTrackerShowOnlyPaused", 0) == 0 || gPlayState != nullptr && gPlayState->pauseCtx.state > 0;
 
-    if (CVarGetInteger("gItemTrackerWindowType", 0) == 1 || isPaused && (CVarGetInteger("gItemTrackerDisplayType", 0) == 0 ? CVarGetInteger("gItemTrackerEnabled", 0) : comboButtonsHeld)) {
+    if (CVarGetInteger("gItemTrackerWindowType", TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_WINDOW || isPaused && (CVarGetInteger("gItemTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS ? CVarGetInteger("gItemTrackerEnabled", 0) : comboButtonsHeld)) {
         if (
-            (CVarGetInteger("gItemTrackerInventoryItemsDisplayType", 1) == 1) ||
-            (CVarGetInteger("gItemTrackerEquipmentItemsDisplayType", 1) == 1) ||
-            (CVarGetInteger("gItemTrackerMiscItemsDisplayType", 1) == 1) ||
-            (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", 1) == 1) ||
-            (CVarGetInteger("gItemTrackerSongsDisplayType", 1) == 1) ||
-            (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", 0) == 1) ||
-            (CVarGetInteger("gItemTrackerGregDisplayType", 0) == 1) ||
-            (CVarGetInteger("gItemTrackerNotesDisplayType", 0) == 1)
+            (CVarGetInteger("gItemTrackerInventoryItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) ||
+            (CVarGetInteger("gItemTrackerEquipmentItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) ||
+            (CVarGetInteger("gItemTrackerMiscItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) ||
+            (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) ||
+            (CVarGetInteger("gItemTrackerSongsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) ||
+            (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW) ||
+            (CVarGetInteger("gItemTrackerGregDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) ||
+            (CVarGetInteger("gItemTrackerNotesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW)
         ) {
             BeginFloatingWindows("Item Tracker##main window");
             DrawItemsInRows(mainWindowItems, 6);
 
-            if (CVarGetInteger("gItemTrackerNotesDisplayType", 0) == 1 && CVarGetInteger("gItemTrackerDisplayType", 0) == 0) {
+            if (CVarGetInteger("gItemTrackerNotesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW && CVarGetInteger("gItemTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS) {
                 DrawNotes();
             }
             EndFloatingWindows();
         }
 
-        if (CVarGetInteger("gItemTrackerInventoryItemsDisplayType", 1) == 2) {
+        if (CVarGetInteger("gItemTrackerInventoryItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Inventory Items Tracker");
             DrawItemsInRows(inventoryItems);
             EndFloatingWindows();
         }
 
-        if (CVarGetInteger("gItemTrackerEquipmentItemsDisplayType", 1) == 2) {
+        if (CVarGetInteger("gItemTrackerEquipmentItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Equipment Items Tracker");
             DrawItemsInRows(equipmentItems, 3);
             EndFloatingWindows();
         }
 
-        if (CVarGetInteger("gItemTrackerMiscItemsDisplayType", 1) == 2) {
+        if (CVarGetInteger("gItemTrackerMiscItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Misc Items Tracker");
             DrawItemsInRows(miscItems, 4);
             EndFloatingWindows();
         }
 
-        if (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", 1) == 2) {
+        if (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Dungeon Rewards Tracker");
-            if (CVarGetInteger("gItemTrackerDungeonRewardsCircle", 0) == 1) {
+            if (CVarGetInteger("gItemTrackerDungeonRewardsCircle", 0)) {
                 ImGui::BeginGroup();
                 DrawItemsInACircle(dungeonRewardMedallions);
                 ImGui::EndGroup();
@@ -909,13 +930,13 @@ void ItemTrackerWindow::DrawElement() {
             EndFloatingWindows();
         }
 
-        if (CVarGetInteger("gItemTrackerSongsDisplayType", 1) == 2) {
+        if (CVarGetInteger("gItemTrackerSongsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Songs Tracker");
             DrawItemsInRows(songItems);
             EndFloatingWindows();
         }
 
-        if (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", 0) == 2) {
+        if (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Dungeon Items Tracker");
             if (CVarGetInteger("gItemTrackerDisplayDungeonItemsHorizontal", 1)) {
                 if (CVarGetInteger("gItemTrackerDisplayDungeonItemsMaps", 1)) {
@@ -929,13 +950,13 @@ void ItemTrackerWindow::DrawElement() {
             EndFloatingWindows();
         }
 
-        if (CVarGetInteger("gItemTrackerGregDisplayType", 0) == 3) {
+        if (CVarGetInteger("gItemTrackerGregDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_SEPARATE) {
             BeginFloatingWindows("Greg Tracker");
             DrawItemsInRows(gregItems);
             EndFloatingWindows();
         }
 
-        if (CVarGetInteger("gItemTrackerNotesDisplayType", 0) == 2 && CVarGetInteger("gItemTrackerDisplayType", 0) == 0) {
+        if (CVarGetInteger("gItemTrackerNotesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE && CVarGetInteger("gItemTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS) {
             ImGui::SetNextWindowSize(ImVec2(400,300), ImGuiCond_FirstUseEver);
             BeginFloatingWindows("Personal Notes", ImGuiWindowFlags_NoFocusOnAppearing);
             DrawNotes(true);
@@ -949,8 +970,8 @@ static const char* itemTrackerKeyTrackOptions[3] = { "Collected / Max", "Current
 static const char* windowTypes[2] = { "Floating", "Window" };
 static const char* displayModes[2] = { "Always", "Combo Button Hold" };
 static const char* buttons[14] = { "A", "B", "C-Up", "C-Down", "C-Left", "C-Right", "L", "Z", "R", "Start", "D-Up", "D-Down", "D-Left", "D-Right" };
-static const char* displayTypes[3] = { "Hidden", "Main Window", "Seperate" };
-static const char* extendedDisplayTypes[4] = { "Hidden", "Main Window", "Misc Window", "Seperate" };
+static const char* displayTypes[3] = { "Hidden", "Main Window", "Separate" };
+static const char* extendedDisplayTypes[4] = { "Hidden", "Main Window", "Misc Window", "Separate" };
 
 void ItemTrackerSettingsWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(600,375), ImGuiCond_FirstUseEver);
@@ -979,25 +1000,25 @@ void ItemTrackerSettingsWindow::DrawElement() {
     }
     ImGui::PopItemWidth();
 
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Window Type", "gItemTrackerWindowType", windowTypes, 0)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Window Type", "gItemTrackerWindowType", windowTypes, TRACKER_WINDOW_FLOATING)) {
         shouldUpdateVectors = true;
     }
 
-    if (CVarGetInteger("gItemTrackerWindowType", 0) == 0) {
+    if (CVarGetInteger("gItemTrackerWindowType", TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING) {
         if (UIWidgets::PaddedEnhancementCheckbox("Enable Dragging", "gItemTrackerHudEditMode")) {
             shouldUpdateVectors = true;
         }
         if (UIWidgets::PaddedEnhancementCheckbox("Only enable while paused", "gItemTrackerShowOnlyPaused")) {
             shouldUpdateVectors = true;
         }
-        if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Display Mode", "gItemTrackerDisplayType", displayModes, 0)) {
+        if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Display Mode", "gItemTrackerDisplayType", displayModes, TRACKER_DISPLAY_ALWAYS)) {
             shouldUpdateVectors = true;
         }
-        if (CVarGetInteger("gItemTrackerDisplayType", 0) > 0) {
-            if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 1", "gItemTrackerComboButton1", buttons, 6)) {
+        if (CVarGetInteger("gItemTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_COMBO_BUTTON) {
+            if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 1", "gItemTrackerComboButton1", buttons, TRACKER_COMBO_BUTTON_L)) {
                 shouldUpdateVectors = true;
             }
-            if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 2", "gItemTrackerComboButton2", buttons, 8)) {
+            if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 2", "gItemTrackerComboButton2", buttons, TRACKER_COMBO_BUTTON_R)) {
                 shouldUpdateVectors = true;
             }
         }
@@ -1007,45 +1028,45 @@ void ItemTrackerSettingsWindow::DrawElement() {
     UIWidgets::EnhancementSliderInt("Icon margins : %dpx", "##ITEMTRACKERSPACING", "gItemTrackerIconSpacing", -5, 50, "", 12);
     
     ImGui::Text("Ammo/Capacity Tracking");
-    UIWidgets::EnhancementCombobox("gItemTrackerCapacityTrack", itemTrackerCapacityTrackOptions, 1);
+    UIWidgets::EnhancementCombobox("gItemTrackerCapacityTrack", itemTrackerCapacityTrackOptions, ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY);
     UIWidgets::InsertHelpHoverText("Customize what the numbers under each item are tracking."
                                     "\n\nNote: items without capacity upgrades will track ammo even in capacity mode");
-    if (CVarGetInteger("gItemTrackerCapacityTrack", 1) == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY || CVarGetInteger("gItemTrackerCapacityTrack", 1) == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY) {
+    if (CVarGetInteger("gItemTrackerCapacityTrack", ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY) == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY || CVarGetInteger("gItemTrackerCapacityTrack", ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY) == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY) {
         if (UIWidgets::PaddedEnhancementCheckbox("Align count to left side", "gItemTrackerCurrentOnLeft")) {
             shouldUpdateVectors = true;
         }
     }
     ImGui::Text("Key Count Tracking");
-    UIWidgets::EnhancementCombobox("gItemTrackerKeyTrack", itemTrackerKeyTrackOptions, 0);
+    UIWidgets::EnhancementCombobox("gItemTrackerKeyTrack", itemTrackerKeyTrackOptions, KEYS_COLLECTED_MAX);
     UIWidgets::InsertHelpHoverText("Customize what numbers are shown for key tracking.");
 
     ImGui::TableNextColumn();
 
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Inventory", "gItemTrackerInventoryItemsDisplayType", displayTypes, 1)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Inventory", "gItemTrackerInventoryItemsDisplayType", displayTypes, SECTION_DISPLAY_MAIN_WINDOW)) {
         shouldUpdateVectors = true;
     }
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Equipment", "gItemTrackerEquipmentItemsDisplayType", displayTypes, 1)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Equipment", "gItemTrackerEquipmentItemsDisplayType", displayTypes, SECTION_DISPLAY_MAIN_WINDOW)) {
         shouldUpdateVectors = true;
     }
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Misc", "gItemTrackerMiscItemsDisplayType", displayTypes, 1)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Misc", "gItemTrackerMiscItemsDisplayType", displayTypes, SECTION_DISPLAY_MAIN_WINDOW)) {
         shouldUpdateVectors = true;
     }
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Dungeon Rewards", "gItemTrackerDungeonRewardsDisplayType", displayTypes, 1)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Dungeon Rewards", "gItemTrackerDungeonRewardsDisplayType", displayTypes, SECTION_DISPLAY_MAIN_WINDOW)) {
         shouldUpdateVectors = true;
     }
-    if (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", 1) == 2) {
+    if (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_SEPARATE) {
         if (UIWidgets::PaddedEnhancementCheckbox("Circle display", "gItemTrackerDungeonRewardsCircle", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
             shouldUpdateVectors = true;
         }
     }
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Songs", "gItemTrackerSongsDisplayType", displayTypes, 1)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Songs", "gItemTrackerSongsDisplayType", displayTypes, SECTION_DISPLAY_MAIN_WINDOW)) {
         shouldUpdateVectors = true;
     }
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Dungeon Items", "gItemTrackerDungeonItemsDisplayType", displayTypes, 0)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Dungeon Items", "gItemTrackerDungeonItemsDisplayType", displayTypes, SECTION_DISPLAY_HIDDEN)) {
         shouldUpdateVectors = true;
     }
-    if (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", 0) != 0) {
-        if (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", 0) == 2) {
+    if (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", SECTION_DISPLAY_HIDDEN) != SECTION_DISPLAY_HIDDEN) {
+        if (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE) {
             if (UIWidgets::PaddedEnhancementCheckbox("Horizontal display", "gItemTrackerDisplayDungeonItemsHorizontal", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
                 shouldUpdateVectors = true;
             }
@@ -1054,12 +1075,12 @@ void ItemTrackerSettingsWindow::DrawElement() {
             shouldUpdateVectors = true;
         }
     }
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Greg", "gItemTrackerGregDisplayType", extendedDisplayTypes, 0)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Greg", "gItemTrackerGregDisplayType", extendedDisplayTypes, SECTION_DISPLAY_EXTENDED_HIDDEN)) {
         shouldUpdateVectors = true;
     }
 
-    if (CVarGetInteger("gItemTrackerDisplayType", 0) != 1) {
-        if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Personal notes", "gItemTrackerNotesDisplayType", displayTypes, 0)) {
+    if (CVarGetInteger("gItemTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS) {
+        if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Personal notes", "gItemTrackerNotesDisplayType", displayTypes, SECTION_DISPLAY_HIDDEN)) {
             shouldUpdateVectors = true;
         }
     }
