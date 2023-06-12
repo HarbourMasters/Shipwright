@@ -377,13 +377,11 @@ void SetMarginAll(const char* ButtonName, bool SetActivated) {
 }
 void ResetPositionAll() {
     if (ImGui::Button("Reset all positions")) {
-        u8 arrayLength = sizeof(MarginCvarList) / sizeof(*MarginCvarList);
-        for (u8 s = 0; s < arrayLength; s++) {
-            const char* cvarName = MarginCvarList[s];
-            const char* cvarPosType = std::string(cvarName).append("PosType").c_str();
-            const char* cvarNameMargins = std::string(cvarName).append("UseMargins").c_str();
-            CVarSetInteger(cvarPosType, 0);
-            CVarSetInteger(cvarNameMargins, false); //Turn margin off to everythings as that original position.
+        for (auto cvarName : MarginCvarList) {
+            std::string cvarPosType = std::string(cvarName).append("PosType");
+            std::string cvarNameMargins = std::string(cvarName).append("UseMargins");
+            CVarSetInteger(cvarPosType.c_str(), 0);
+            CVarSetInteger(cvarNameMargins.c_str(), false); //Turn margin off to everythings as that original position.
         }
     }
 }
