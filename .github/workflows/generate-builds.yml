@@ -304,12 +304,7 @@ jobs:
         mv ./x64/Release/soh.pdb ./soh-windows/debug/soh.pdb
         mv ./README.md ./soh-windows/readme.txt
         mv ./build-windows/gamecontrollerdb.txt ./soh-windows/gamecontrollerdb.txt
-        mv ./soh/assets/extractor/ ./soh-windows/assets/extractor
-        mv ./soh/assets/xml/ ./soh-windows/assets/extractor/xmls
-        mv ./OTRExporter/CFG/filelists/ ./soh-windows/assets/extractor/filelists
-        mv ./OTRExporter/CFG/ActorList_OoTMqDbg.txt ./soh-windows/assets/extractor/symbols
-        mv ./OTRExporter/CFG/ObjectList_OoTMqDbg.txt ./soh-windows/assets/extractor/symbols
-        mv ./OTRExporter/CFG/SymbolMap_OoTMqDbg.txt ./soh-windows/assets/extractor/symbols
+        mv ./x64/Release/assets ./soh-windows
     - name: Download soh.otr
       uses: actions/download-artifact@v3
       with:
