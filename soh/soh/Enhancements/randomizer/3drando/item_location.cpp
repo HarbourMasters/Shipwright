@@ -1267,6 +1267,7 @@ std::vector<uint32_t> overworldLocations = {
   OGC_GREAT_FAIRY_REWARD,
 
   //Temple of Time
+  TOT_MASTER_SWORD,
   SHEIK_AT_TEMPLE,
   TOT_LIGHT_ARROWS_CUTSCENE,
 

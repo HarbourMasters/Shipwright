@@ -48,7 +48,6 @@ const std::array<uint32_t, 16> JunkPoolItems = {
   ICE_TRAP,
 };
 const std::array<uint32_t, 60> alwaysItems = {
-  MASTER_SWORD,
   BIGGORON_SWORD,
   BOOMERANG,
   LENS_OF_TRUTH,
@@ -110,7 +109,6 @@ const std::array<uint32_t, 60> alwaysItems = {
   TREASURE_GAME_HEART,
 };
 const std::array<uint32_t, 44> easyItems = {
-  MASTER_SWORD,
   BIGGORON_SWORD,
   KOKIRI_SWORD,
   BOOMERANG,
