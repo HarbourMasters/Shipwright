@@ -2548,7 +2548,7 @@ void BossTw_DeathCSMsgSfx(BossTw* this, PlayState* play) {
         Math_ApproachF(&this->workf[UNK_F18], 255.0f, 0.1f, 5.0f);
     }
 
-    // Add seperate timings for the "beam" that opens and closes around the sisters
+    // Add separate timings for the "beam" that opens and closes around the sisters
     // Needed because we skip ahead in cutscene timer value so it never gets called otherwise
     if (gSaveContext.n64ddFlag || gSaveContext.isBossRush) {
         if (this->work[CS_TIMER_2] < 900) {

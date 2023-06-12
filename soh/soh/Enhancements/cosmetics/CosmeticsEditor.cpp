@@ -1,4 +1,5 @@
 #include "CosmeticsEditor.h"
+#include "cosmeticsTypes.h"
 #include "authenticGfxPatches.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
@@ -1695,7 +1696,7 @@ void CosmeticsEditorWindow::DrawElement() {
 
     ImGui::Text("Color Scheme");
     ImGui::SameLine();
-    UIWidgets::EnhancementCombobox("gCosmetics.DefaultColorScheme", colorSchemes, 0);
+    UIWidgets::EnhancementCombobox("gCosmetics.DefaultColorScheme", colorSchemes, COLORSCHEME_N64);
     UIWidgets::EnhancementCheckbox("Advanced Mode", "gCosmetics.AdvancedMode");
     if (CVarGetInteger("gCosmetics.AdvancedMode", 0)) {
         if (ImGui::Button("Lock All Advanced", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {

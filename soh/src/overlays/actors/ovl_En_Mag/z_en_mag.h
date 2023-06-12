@@ -41,10 +41,7 @@ typedef enum {
     /* 0x04 */ MAG_STATE_POST_DISPLAY
 } EnMagGlobalState;
 
-#define dgTitleCopyrightGCTex "__OTR__objects/object_mag/gTitleCopyright19982003Tex"
-static const ALIGN_ASSET(2) char gTitleCopyrightGCTex[] = dgTitleCopyrightGCTex;
-
-#define dgTitleCopyrightN64Tex "__OTR__objects/object_mag/gTitleCopyright1998Tex"
-static const ALIGN_ASSET(2) char gTitleCopyrightN64Tex[] = dgTitleCopyrightN64Tex;
+#define dgTitleCopyright1998Tex "__OTR__objects/object_mag/gTitleCopyright1998Tex"
+static const ALIGN_ASSET(2) char gTitleCopyright1998Tex[] = dgTitleCopyright1998Tex;
 
 #endif
