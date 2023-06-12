@@ -1,7 +1,7 @@
 #include "SetTransitionActorList.h"
 
 namespace LUS {
-void* SetTransitionActorList::GetPointer() {
+TransitionActorEntry* SetTransitionActorList::GetPointer() {
     return transitionActorList.data();
 }
 

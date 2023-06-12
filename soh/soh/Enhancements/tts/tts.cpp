@@ -9,8 +9,10 @@
 #include "soh/OTRGlobals.h"
 #include "message_data_static.h"
 #include "overlays/gamestates/ovl_file_choose/file_choose.h"
+#include "soh/Enhancements/boss-rush/BossRush.h"
 
 extern "C" {
+extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
 
@@ -67,7 +69,19 @@ std::string GetParameritizedText(std::string key, TextBank bank, const char* arg
             break;
         }
         case TEXT_BANK_FILECHOOSE: {
-            return fileChooseMap[key].get<std::string>();
+            auto value = fileChooseMap[key].get<std::string>();
+
+            std::string searchString = "$0";
+            size_t index = value.find(searchString);
+
+            if (index != std::string::npos) {
+                ASSERT(arg != nullptr);
+                value.replace(index, searchString.size(), std::string(arg));
+                return value;
+            } else {
+                return value;
+            }
+
             break;
         }
     }
@@ -350,7 +364,26 @@ void RegisterOnUpdateMainMenuSelection() {
                 break;
         }
     });
-    
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileSelectConfirmationSelection>([](uint16_t optionIndex) {
+        if (!CVarGetInteger("gA11yTTS", 0)) return;
+
+        switch (optionIndex) {
+            case FS_BTN_CONFIRM_YES: {
+                auto translation = GetParameritizedText("confirm", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                break;
+            }
+            case FS_BTN_CONFIRM_QUIT: {
+                auto translation = GetParameritizedText("quit", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                break;
+            }
+            default:
+                break;
+        }
+    });
+
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileCopySelection>([](uint16_t optionIndex) {
         if (!CVarGetInteger("gA11yTTS", 0)) return;
         
@@ -493,7 +526,78 @@ void RegisterOnUpdateMainMenuSelection() {
             default:
                 break;
         }
+    });
 
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileQuestSelection>([](uint8_t questIndex) {
+        if (!CVarGetInteger("gA11yTTS", 0)) return;
+
+        switch (questIndex) {
+            case FS_QUEST_NORMAL: {
+                auto translation = GetParameritizedText("quest_sel_vanilla", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                break;
+            }
+            case FS_QUEST_MASTER: {
+                auto translation = GetParameritizedText("quest_sel_mq", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                break;
+            }
+            case FS_QUEST_RANDOMIZER: {
+                auto translation = GetParameritizedText("quest_sel_randomizer", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                break;
+            }
+            case FS_QUEST_BOSSRUSH: {
+                auto translation = GetParameritizedText("quest_sel_boss_rush", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                break;
+            }
+            default:
+                break;
+        }
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileBossRushOptionSelection>([](uint8_t optionIndex, uint8_t optionValue) {
+        if (!CVarGetInteger("gA11yTTS", 0)) return;
+
+        auto optionName = BossRush_GetSettingName(optionIndex, gSaveContext.language);
+        auto optionValueName = BossRush_GetSettingChoiceName(optionIndex, optionValue, gSaveContext.language);
+        auto translation = optionName + std::string(" - ") + optionValueName;
+        SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileNameSelection>([](int16_t charCode) {
+        if (!CVarGetInteger("gA11yTTS", 0)) return;
+
+        char charVal[2];
+        std::string translation;
+
+        if (charCode < 10) { // Digits
+            sprintf(charVal, "%c", charCode + 0x30);
+        } else if (charCode >= 10 && charCode < 36) { // Uppercase letters
+            sprintf(charVal, "%c", charCode + 0x37);
+            translation = GetParameritizedText("capital_letter", TEXT_BANK_FILECHOOSE, charVal);
+        } else if (charCode >= 36 && charCode < 62) { // Lowercase letters
+            sprintf(charVal, "%c", charCode + 0x3D);
+        } else if (charCode == 62) { // Space
+            translation = GetParameritizedText("space", TEXT_BANK_FILECHOOSE, nullptr);
+        } else if (charCode == 63) { // -
+            translation = GetParameritizedText("hyphen", TEXT_BANK_FILECHOOSE, nullptr);
+        } else if (charCode == 64) { // .
+            translation = GetParameritizedText("period", TEXT_BANK_FILECHOOSE, nullptr);
+        } else if (charCode == 0xF0 + FS_KBD_BTN_BACKSPACE) {
+            translation = GetParameritizedText("backspace", TEXT_BANK_FILECHOOSE, nullptr);
+        } else if (charCode == 0xF0 + FS_KBD_BTN_END) {
+            translation = GetParameritizedText("end", TEXT_BANK_FILECHOOSE, nullptr);
+        } else {
+            sprintf(charVal, "%c", charCode);
+        }
+
+        if (translation.empty()) {
+            SpeechSynthesizer::Instance->Speak(charVal, GetLanguageCode());
+        } else {
+            SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+        }
     });
 }
 

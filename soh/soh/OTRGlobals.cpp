@@ -34,7 +34,6 @@
 #include "Enhancements/audio/AudioCollection.h"
 #include "Enhancements/audio/AudioEditor.h"
 #include "Enhancements/debugconsole.h"
-#include "Enhancements/debugger/debugger.h"
 #include "Enhancements/randomizer/randomizer.h"
 #include "Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "Enhancements/randomizer/randomizer_item_tracker.h"
@@ -47,7 +46,6 @@
 #include "z64.h"
 #include "macros.h"
 #include <Utils/StringHelper.h>
-#include <Hooks.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
 
 #if not defined (__SWITCH__) && not defined(__WIIU__)
@@ -73,7 +71,8 @@
 #include "Enhancements/custom-message/CustomMessageTypes.h"
 #include <functions.h>
 #include "Enhancements/item-tables/ItemTableManager.h"
-#include "GameMenuBar.hpp"
+#include "SohGui.hpp"
+#include "ActorDB.h"
 
 #ifdef ENABLE_CROWD_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
@@ -121,6 +120,10 @@ SpeechSynthesizer* SpeechSynthesizer::Instance;
 
 extern "C" char** cameraStrings;
 std::vector<std::shared_ptr<std::string>> cameraStdStrings;
+
+Color_RGB8 kokiriColor = { 0x1E, 0x69, 0x1B };
+Color_RGB8 goronColor = { 0x64, 0x14, 0x00 };
+Color_RGB8 zoraColor = { 0x00, 0xEC, 0x64 };
 
 // OTRTODO: A lot of these left in Japanese are used by the mempak manager. LUS does not currently support mempaks. Ignore unused ones.
 const char* constCameraStrings[] = {
@@ -242,7 +245,7 @@ OTRGlobals::OTRGlobals() {
         OOT_PAL_GC_DBG2
     };
     // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
-    context = LUS::Context::CreateInstance("Ship of Harkinian", "soh", OTRFiles, {}, 3);
+    context = LUS::Context::CreateInstance("Ship of Harkinian", "soh", "shipofharkinian.json", OTRFiles, {}, 3);
 
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Animation, "Animation", std::make_shared<LUS::AnimationFactory>());
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_PlayerAnimation, "PlayerAnimation", std::make_shared<LUS::PlayerAnimationFactory>());
@@ -326,7 +329,7 @@ bool OTRGlobals::HasOriginal() {
 }
 
 uint32_t OTRGlobals::GetInterpolationFPS() {
-    if (LUS::WindowBackend() == LUS::Backend::DX11) {
+    if (LUS::Context::GetInstance()->GetWindow()->GetWindowBackend() == LUS::WindowBackend::DX11) {
         return CVarGetInteger("gInterpolationFPS", 20);
     }
 
@@ -689,9 +692,10 @@ std::unordered_map<uint32_t, uint32_t> ItemIDtoGetItemID{
     { ITEM_WEIRD_EGG, GI_WEIRD_EGG }
 };
 
-extern "C" uint32_t GetGIID(uint32_t itemID) {
-    if (ItemIDtoGetItemID.contains(itemID))
+extern "C" int32_t GetGIID(uint32_t itemID) {
+    if (ItemIDtoGetItemID.contains(itemID)) {
         return ItemIDtoGetItemID.at(itemID);
+    }
     return -1;
 }
 
@@ -738,17 +742,17 @@ extern "C" void InitOTR() {
 #ifdef __SWITCH__
     LUS::Switch::Init(LUS::PreInitPhase);
 #elif defined(__WIIU__)
-    LUS::WiiU::Init();
+    LUS::WiiU::Init("soh");
 #endif
-    LUS::AddSetupHooksDelegate(GameMenuBar::SetupHooks);
-    LUS::RegisterMenuDrawMethod(GameMenuBar::Draw);
 
     OTRGlobals::Instance = new OTRGlobals();
-    SaveManager::Instance = new SaveManager();
     CustomMessageManager::Instance = new CustomMessageManager();
     ItemTableManager::Instance = new ItemTableManager();
+    SaveManager::Instance = new SaveManager();
+    SohGui::SetupGuiElements();
     GameInteractor::Instance = new GameInteractor();
     AudioCollection::Instance = new AudioCollection();
+    ActorDB::Instance = new ActorDB();
 #ifdef __APPLE__
     SpeechSynthesizer::Instance = new DarwinSpeechSynthesizer();
     SpeechSynthesizer::Instance->Init();
@@ -760,20 +764,12 @@ extern "C" void InitOTR() {
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     OTRAudio_Init();
-    InitCosmeticsEditor();
-    GameControlEditor::Init();
-    InitAudioEditor();
-    DebugConsole_Init();
-    Debug_Init();
-    Rando_Init();
-    InitItemTracker();
-    InitEntranceTracker();
-    InitStatTracker();
-    CheckTracker::InitCheckTracker();
     OTRExtScanner();
     VanillaItemTable_Init();
+    DebugConsole_Init();
 
     InitMods();
+    ActorDB::AddBuiltInCustomActors();
 
     time_t now = time(NULL);
     tm *tm_now = localtime(&now);
@@ -782,6 +778,8 @@ extern "C" void InitOTR() {
     } else {
         CVarClear("gLetItSnow");
     }
+
+    srand(now);
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance = new CrowdControl();
     CrowdControl::Instance->Init();
@@ -793,12 +791,22 @@ extern "C" void InitOTR() {
 #endif
 }
 
+extern "C" void SaveManager_ThreadPoolWait() {
+    SaveManager::Instance->ThreadPoolWait();
+}
+
 extern "C" void DeinitOTR() {
+    SaveManager_ThreadPoolWait();
     OTRAudio_Exit();
 #ifdef ENABLE_CROWD_CONTROL
     CrowdControl::Instance->Disable();
     CrowdControl::Instance->Shutdown();
 #endif
+
+    // Destroying gui here because we have shared ptrs to LUS objects which output to SPDLOG which is destroyed before these shared ptrs.
+    SohGui::Destroy();
+
+    OTRGlobals::Instance->context = nullptr;
 }
 
 #ifdef _WIN32
@@ -1017,18 +1025,23 @@ extern "C" uint32_t ResourceMgr_GetGameVersion(int index) {
 
 uint32_t IsSceneMasterQuest(s16 sceneNum) {
     uint32_t value = 0;
-    if (OTRGlobals::Instance->HasMasterQuest()) {
-        if (!OTRGlobals::Instance->HasOriginal()) {
-            value = 1;
-        } else if (gSaveContext.isMasterQuest) {
-            value = 1;
-        } else {
-            value = 0;
-            if (gSaveContext.n64ddFlag) {
-                if (!OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty()) {
-                    if (gPlayState != NULL && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(sceneNum)) {
-                        value = 1;
-                    }
+    uint8_t mqMode = CVarGetInteger("gBetterDebugWarpScreenMQMode", 0);
+    if (mqMode == 1) { // non-mq wants to be mq
+        return 1;
+    } else if (mqMode == 2) { // mq wants to be non-mq
+        return 0;
+    } else {
+        if (OTRGlobals::Instance->HasMasterQuest()) {
+            if (!OTRGlobals::Instance->HasOriginal()) {
+                value = 1;
+            } else if (gSaveContext.isMasterQuest) {
+                value = 1;
+            } else {
+                value = 0;
+                if (gSaveContext.n64ddFlag &&
+                    !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty() &&
+                    OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(sceneNum)) {
+                    value = 1;
                 }
             }
         }
@@ -1093,7 +1106,7 @@ extern "C" void ResourceMgr_LoadFile(const char* resName) {
     LUS::Context::GetInstance()->GetResourceManager()->LoadResource(resName);
 }
 
-std::shared_ptr<LUS::Resource> GetResourceByNameHandlingMQ(const char* path) {
+std::shared_ptr<LUS::IResource> GetResourceByNameHandlingMQ(const char* path) {
     std::string Path = path;
     if (ResourceMgr_IsGameMasterQuest()) {
         size_t pos = 0;
@@ -1111,7 +1124,7 @@ extern "C" char* GetResourceDataByNameHandlingMQ(const char* path) {
         return nullptr;
     }
     
-    return (char*)res->GetPointer();
+    return (char*)res->GetRawPointer();
 }
 
 extern "C" char* ResourceMgr_LoadFileFromDisk(const char* filePath) {
@@ -1130,7 +1143,7 @@ extern "C" char* ResourceMgr_LoadFileFromDisk(const char* filePath) {
 
 extern "C" uint8_t ResourceMgr_ResourceIsBackground(char* texPath) {
     auto res = GetResourceByNameHandlingMQ(texPath);
-    return res->InitData->Type == LUS::ResourceType::SOH_Background;
+    return res->GetInitData()->Type == LUS::ResourceType::SOH_Background;
 }
 
 extern "C" char* ResourceMgr_LoadJPEG(char* data, size_t dataSize)
@@ -1178,9 +1191,9 @@ extern "C" uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     auto res = GetResourceByNameHandlingMQ(filePath);
 
-    if (res->InitData->Type == LUS::ResourceType::DisplayList)
+    if (res->GetInitData()->Type == LUS::ResourceType::DisplayList)
         return (char*)&((std::static_pointer_cast<LUS::DisplayList>(res))->Instructions[0]);
-    else if (res->InitData->Type == LUS::ResourceType::Array)
+    else if (res->GetInitData()->Type == LUS::ResourceType::Array)
         return (char*)(std::static_pointer_cast<LUS::Array>(res))->Vertices.data();
     else {
         return (char*)GetResourceDataByNameHandlingMQ(filePath);
@@ -1190,7 +1203,7 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
 extern "C" char* ResourceMgr_LoadIfDListByName(const char* filePath) {
     auto res = GetResourceByNameHandlingMQ(filePath);
 
-    if (res->InitData->Type == LUS::ResourceType::DisplayList)
+    if (res->GetInitData()->Type == LUS::ResourceType::DisplayList)
         return (char*)&((std::static_pointer_cast<LUS::DisplayList>(res))->Instructions[0]);
     
     return nullptr;
@@ -1301,15 +1314,15 @@ extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
 }
 
 extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path) {
-    return (CollisionHeader*) GetResourceDataByName(path);
+    return (CollisionHeader*) ResourceGetDataByName(path);
 }
 
 extern "C" Vtx* ResourceMgr_LoadVtxByName(char* path) {
-    return (Vtx*) GetResourceDataByName(path);
+    return (Vtx*) ResourceGetDataByName(path);
 }
 
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path) {
-    SequenceData* sequence = (SequenceData*) GetResourceDataByName(path);
+    SequenceData* sequence = (SequenceData*) ResourceGetDataByName(path);
     return *sequence;
 }
 
@@ -1374,11 +1387,11 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
 }
 
 extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path) {
-    return (SoundFontSample*) GetResourceDataByName(path);
+    return (SoundFontSample*) ResourceGetDataByName(path);
 }
 
 extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
-    return (SoundFont*) GetResourceDataByName(path);
+    return (SoundFont*) ResourceGetDataByName(path);
 }
 
 extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
@@ -1400,7 +1413,7 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
 }
 
 extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
-    return (AnimationHeaderCommon*) GetResourceDataByName(path);
+    return (AnimationHeaderCommon*) ResourceGetDataByName(path);
 }
 
 extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime) {
@@ -1414,14 +1427,14 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, Skel
     bool isAlt = CVarGetInteger("gAltAssets", 0);
 
     if (isAlt) {
-        pathStr = LUS::Resource::gAltAssetPrefix + pathStr;
+        pathStr = LUS::IResource::gAltAssetPrefix + pathStr;
     }
 
-    SkeletonHeader* skelHeader = (SkeletonHeader*) GetResourceDataByName(pathStr.c_str());
+    SkeletonHeader* skelHeader = (SkeletonHeader*) ResourceGetDataByName(pathStr.c_str());
 
     // If there isn't an alternate model, load the regular one
     if (isAlt && skelHeader == NULL) {
-        skelHeader = (SkeletonHeader*) GetResourceDataByName(path);
+        skelHeader = (SkeletonHeader*) ResourceGetDataByName(path);
     }
 
     // This function is only called when a skeleton is initialized.
@@ -1448,8 +1461,8 @@ extern "C" s32* ResourceMgr_LoadCSByName(const char* path) {
     return (s32*)GetResourceDataByNameHandlingMQ(path);
 }
 
-std::filesystem::path GetSaveFile(std::shared_ptr<Mercury> Conf) {
-    const std::string fileName = Conf->getString("Game.SaveName", LUS::Context::GetPathRelativeToAppDirectory("oot_save.sav"));
+std::filesystem::path GetSaveFile(std::shared_ptr<LUS::Config> Conf) {
+    const std::string fileName = Conf->GetString("Game.SaveName", LUS::Context::GetPathRelativeToAppDirectory("oot_save.sav"));
     std::filesystem::path saveFile = std::filesystem::absolute(fileName);
 
     if (!exists(saveFile.parent_path())) {
@@ -1460,13 +1473,13 @@ std::filesystem::path GetSaveFile(std::shared_ptr<Mercury> Conf) {
 }
 
 std::filesystem::path GetSaveFile() {
-    const std::shared_ptr<Mercury> pConf = OTRGlobals::Instance->context->GetConfig();
+    const std::shared_ptr<LUS::Config> pConf = OTRGlobals::Instance->context->GetConfig();
 
     return GetSaveFile(pConf);
 }
 
 void OTRGlobals::CheckSaveFile(size_t sramSize) const {
-    const std::shared_ptr<Mercury> pConf = Instance->context->GetConfig();
+    const std::shared_ptr<LUS::Config> pConf = Instance->context->GetConfig();
 
     std::filesystem::path savePath = GetSaveFile(pConf);
     std::fstream saveFile(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
@@ -1580,35 +1593,70 @@ extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(vo
 }
 
 extern "C" uint32_t OTRGetCurrentWidth() {
-    return OTRGlobals::Instance->context->GetWindow()->GetCurrentWidth();
+    return OTRGlobals::Instance->context->GetWindow()->GetWidth();
 }
 
 extern "C" uint32_t OTRGetCurrentHeight() {
-    return OTRGlobals::Instance->context->GetWindow()->GetCurrentHeight();
+    return OTRGlobals::Instance->context->GetWindow()->GetHeight();
 }
 
-extern "C" void OTRControllerCallback(uint8_t rumble, uint8_t ledColor) {
-    auto controlDeck = LUS::Context::GetInstance()->GetControlDeck();
-
-    for (int i = 0; i < controlDeck->GetNumConnectedPorts(); ++i) {
-        auto physicalDevice = controlDeck->GetDeviceFromPortIndex(i);
-        switch (ledColor) {
-            case 0:
-                physicalDevice->SetLedColor(i, {255, 0, 0});
-                break;
-            case 1:
-                physicalDevice->SetLedColor(i, {0x1E, 0x69, 0x1B});
-                break;
-            case 2:
-                physicalDevice->SetLedColor(i, {0x64, 0x14, 0x00});
-                break;
-            case 3:
-                physicalDevice->SetLedColor(i, {0x00, 0x3C, 0x64});
-                break;
+Color_RGB8 GetColorForControllerLED() {
+    auto brightness = CVarGetFloat("gLedBrightness", 1.0f) / 1.0f;
+    Color_RGB8 color = { 0, 0, 0 };
+    if (brightness > 0.0f) {
+        LEDColorSource source = static_cast<LEDColorSource>(CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL));
+        bool criticalOverride = CVarGetInteger("gLedCriticalOverride", 1);
+        if (gPlayState && (source == LED_SOURCE_TUNIC_ORIGINAL || source == LED_SOURCE_TUNIC_COSMETICS)) {
+            switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
+                case PLAYER_TUNIC_KOKIRI:
+                    color = source == LED_SOURCE_TUNIC_COSMETICS
+                                ? CVarGetColor24("gCosmetics.Link_KokiriTunic.Value", kokiriColor)
+                                : kokiriColor;
+                    break;
+                case PLAYER_TUNIC_GORON:
+                    color = source == LED_SOURCE_TUNIC_COSMETICS
+                                ? CVarGetColor24("gCosmetics.Link_GoronTunic.Value", goronColor)
+                                : goronColor;
+                    break;
+                case PLAYER_TUNIC_ZORA:
+                    color = source == LED_SOURCE_TUNIC_COSMETICS
+                                ? CVarGetColor24("gCosmetics.Link_ZoraTunic.Value", zoraColor)
+                                : zoraColor;
+                    break;
+            }
         }
-
-        physicalDevice->SetRumble(i, rumble);
+        if (source == LED_SOURCE_CUSTOM) {
+            color = CVarGetColor24("gLedPort1Color", { 255, 255, 255 });
+        }
+        if (criticalOverride || source == LED_SOURCE_HEALTH) {
+            if (HealthMeter_IsCritical()) {
+                color = { 0xFF, 0, 0 };
+            } else if (source == LED_SOURCE_HEALTH) {
+                if (gSaveContext.health / gSaveContext.healthCapacity <= 0.4f) {
+                    color = { 0xFF, 0xFF, 0 };
+                } else {
+                    color = { 0, 0xFF, 0 };
+                }
+            }
+        }
+        color.r = color.r * brightness;
+        color.g = color.g * brightness;
+        color.b = color.b * brightness;
     }
+
+    return color;
+}
+
+extern "C" void OTRControllerCallback(uint8_t rumble) {
+    auto physicalDevice = LUS::Context::GetInstance()->GetControlDeck()->GetDeviceFromPortIndex(0);
+
+    if (physicalDevice->CanSetLed()) {
+        // We call this every tick, SDL accounts for this use and prevents driver spam
+        // https://github.com/libsdl-org/SDL/blob/f17058b562c8a1090c0c996b42982721ace90903/src/joystick/SDL_joystick.c#L1114-L1144
+        physicalDevice->SetLedColor(0, GetColorForControllerLED());
+    }
+
+    physicalDevice->SetRumble(0, rumble);
 }
 
 extern "C" float OTRGetAspectRatio() {
@@ -1632,10 +1680,6 @@ extern "C" int16_t OTRGetRectDimensionFromLeftEdge(float v) {
 
 extern "C" int16_t OTRGetRectDimensionFromRightEdge(float v) {
     return ((int)ceilf(OTRGetDimensionFromRightEdge(v)));
-}
-
-extern "C" bool AudioPlayer_Init(void) {
-    return AudioPlayerInit();
 }
 
 extern "C" int AudioPlayer_Buffered(void) {
@@ -1664,22 +1708,6 @@ extern "C" int Controller_ShouldRumble(size_t slot) {
     return 0;
 }
 
-extern "C" void Controller_BlockGameInput() {
-    auto controlDeck = LUS::Context::GetInstance()->GetControlDeck();
-
-    controlDeck->BlockGameInput();
-}
-
-extern "C" void Controller_UnblockGameInput() {
-    auto controlDeck = LUS::Context::GetInstance()->GetControlDeck();
-
-    controlDeck->UnblockGameInput();
-}
-
-extern "C" void Hooks_ExecuteAudioInit() {
-    LUS::ExecuteHooks<LUS::AudioInit>();
-}
-
 extern "C" void* getN64WeirdFrame(s32 i) {
     char* weirdFrameBytes = reinterpret_cast<char*>(n64WeirdFrames);
     return &weirdFrameBytes[i + sizeof(n64WeirdFrames)];
@@ -1687,12 +1715,12 @@ extern "C" void* getN64WeirdFrame(s32 i) {
 
 extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSize) {
     CustomMessage customMessage("\x04\x1A\x08"
-                                "D\x96sirez-vous l'\x96quiper maintenant?"
+                                "Would you like to equip it now?"
                                 "\x09&&"
                                 "\x1B%g"
-                                "Oui"
+                                "Yes"
                                 "&"
-                                "Non"
+                                "No"
                                 "%w\x02",
                                 "\x04\x1A\x08"
                                 "M"
@@ -1704,13 +1732,13 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
                                 "&"
                                 "Nein!"
                                 "%w\x02",
-                                "\x04\x1A\x08"
-                                "Would you like to equip it now?"
+				"\x04\x1A\x08"
+                                "D\x96sirez-vous l'\x96quiper maintenant?"
                                 "\x09&&"
                                 "\x1B%g"
-                                "Yes"
+                                "Oui"
                                 "&"
-                                "No"
+                                "Non"
                                 "%w\x02");
     customMessage.Format();
 
@@ -1999,29 +2027,29 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     if (textId == TEXT_RANDO_SAVE_VERSION_WARNING) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_RANDO_SAVE_VERSION_WARNING);
     }
-        font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
-        switch (gSaveContext.language) {
-            case LANGUAGE_FRA:
-                return msgCtx->msgLength = font->msgLength =
-                           CopyStringToCharBuffer(messageEntry.GetFrench(), buffer, maxBufferSize);
-            case LANGUAGE_GER:
-                return msgCtx->msgLength = font->msgLength =
-                           CopyStringToCharBuffer(messageEntry.GetGerman(), buffer, maxBufferSize);
-            case LANGUAGE_ENG:
-            default:
-                return msgCtx->msgLength = font->msgLength =
-                           CopyStringToCharBuffer(messageEntry.GetEnglish(), buffer, maxBufferSize);
-        }
+    font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
+    switch (gSaveContext.language) {
+        case LANGUAGE_FRA:
+            return msgCtx->msgLength = font->msgLength =
+                       CopyStringToCharBuffer(messageEntry.GetFrench(), buffer, maxBufferSize);
+        case LANGUAGE_GER:
+            return msgCtx->msgLength = font->msgLength =
+                       CopyStringToCharBuffer(messageEntry.GetGerman(), buffer, maxBufferSize);
+        case LANGUAGE_ENG:
+        default:
+            return msgCtx->msgLength = font->msgLength =
+                       CopyStringToCharBuffer(messageEntry.GetEnglish(), buffer, maxBufferSize);
+    }
     return false;
 }
 
 extern "C" void Overlay_DisplayText(float duration, const char* text) {
-    LUS::GetGameOverlay()->TextDrawNotification(duration, true, text);
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(duration, true, text);
 }
 
 extern "C" void Overlay_DisplayText_Seconds(int seconds, const char* text) {
     float duration = seconds * OTRGlobals::Instance->GetInterpolationFPS() * 0.05;
-    LUS::GetGameOverlay()->TextDrawNotification(duration, true, text);
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(duration, true, text);
 }
 
 extern "C" void Entrance_ClearEntranceTrackingData(void) {
@@ -2042,8 +2070,4 @@ extern "C" void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex) {
 
 extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement) {
     gfx_register_blended_texture(name, mask, replacement);
-}
-
-extern "C" void SaveManager_ThreadPoolWait() {
-    SaveManager::Instance->ThreadPoolWait();
 }

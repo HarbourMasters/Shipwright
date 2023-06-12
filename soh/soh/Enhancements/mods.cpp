@@ -2,6 +2,8 @@
 #include <libultraship/bridge.h>
 #include "game-interactor/GameInteractor.h"
 #include "tts/tts.h"
+#include "soh/Enhancements/boss-rush/BossRushTypes.h"
+#include "soh/Enhancements/enhancementTypes.h"
 
 extern "C" {
 #include <z64.h>
@@ -11,12 +13,6 @@ extern "C" {
 #include "functions.h"
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
-extern void Play_PerformSave(PlayState* play);
-extern s32 Health_ChangeBy(PlayState* play, s16 healthChange);
-extern void Rupees_ChangeBy(s16 rupeeChange);
-extern Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 posX, f32 posY, f32 posZ,
-                            s16 rotX, s16 rotY, s16 rotZ, s16 params, s16 canRandomize);
-extern void Inventory_ChangeEquipment(s16 equipment, u16 value);
 }
 bool performDelayedSave = false;
 bool performSave = false;
@@ -232,13 +228,13 @@ void AutoSave(GetItemEntry itemEntry) {
     // Don't autosave in the Chamber of Sages since resuming from that map breaks the game
     // Don't autosave during the Ganon fight when picking up the Master Sword
     // Don't autosave in grottos since resuming from grottos breaks the game.
-    if ((CVarGetInteger("gAutosave", 0) > 0) && (gPlayState != NULL) && (gSaveContext.pendingSale == ITEM_NONE) &&
+    if ((CVarGetInteger("gAutosave", AUTOSAVE_OFF) != AUTOSAVE_OFF) && (gPlayState != NULL) && (gSaveContext.pendingSale == ITEM_NONE) &&
         (gPlayState->gameplayFrames > 60 && gSaveContext.cutsceneIndex < 0xFFF0) && (gPlayState->sceneNum != SCENE_GANON_DEMO)) {
-        if (((CVarGetInteger("gAutosave", 0) == 2) || (CVarGetInteger("gAutosave", 0) == 5)) && (item != ITEM_NONE)) {
+        if (((CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS) || (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_ALL_ITEMS)) && (item != ITEM_NONE)) {
             // Autosave for all items
             performSave = true;
 
-        } else if (((CVarGetInteger("gAutosave", 0) == 1) || (CVarGetInteger("gAutosave", 0) == 4)) && (item != ITEM_NONE)) {
+        } else if (((CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS) || (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_MAJOR_ITEMS)) && (item != ITEM_NONE)) {
             // Autosave for major items
             if (itemEntry.modIndex == 0) {
                 switch (item) {
@@ -289,12 +285,16 @@ void AutoSave(GetItemEntry itemEntry) {
             } else if (itemEntry.modIndex == 1 && item != RG_ICE_TRAP) {
                 performSave = true;
             }
-        } else if ((CVarGetInteger("gAutosave", 0) > 0 && (CVarGetInteger("gAutosave", 0) < 4))) {
+        } else if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS ||
+                   CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS ||
+                   CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION) {
             performSave = true;
         }
         if ((gPlayState->sceneNum == SCENE_YOUSEI_IZUMI_TATE) || (gPlayState->sceneNum == SCENE_KAKUSIANA) ||
                 (gPlayState->sceneNum == SCENE_KENJYANOMA)) {
-            if ((CVarGetInteger("gAutosave", 0) > 0 && (CVarGetInteger("gAutosave", 0) < 4))) {
+            if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS ||
+                CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS ||
+                CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION) {
                 performSave = false;
                 return;
             }
@@ -339,6 +339,31 @@ void RegisterRupeeDash() {
         } else {
             rupeeDashTimer++;
         }
+    });
+}
+
+void RegisterShadowTag() {
+    static bool shouldSpawn = false;
+    static uint16_t delayTimer = 60;
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        if (!CVarGetInteger("gShadowTag", 0)) {
+            return;
+        }
+        if (shouldSpawn && (delayTimer <= 0)) {
+            Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_WALLMAS, 0, 0, 0, 0, 0, 0, 3, false);
+            shouldSpawn = false;
+        } else {
+            delayTimer--;
+        }
+    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
+        shouldSpawn = true;
+        delayTimer = 60;
+    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int16_t sceneNum) {
+        shouldSpawn = true;
+        delayTimer = 60;
     });
 }
 
@@ -421,8 +446,13 @@ void RegisterHyperBosses() {
             actor->id == ACTOR_BOSS_GANON ||                             // Ganondorf
             actor->id == ACTOR_BOSS_GANON2;                              // Ganon
 
+        uint8_t hyperBossesActive =
+            CVarGetInteger("gHyperBosses", 0) ||
+            (gSaveContext.isBossRush &&
+             gSaveContext.bossRushOptions[BR_OPTIONS_HYPERBOSSES] == BR_CHOICE_HYPERBOSSES_YES);
+
         // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
-        if (CVarGetInteger("gHyperBosses", 0) && isBossActor && !Player_InBlockingCsMode(gPlayState, player)) {
+        if (hyperBossesActive && isBossActor && !Player_InBlockingCsMode(gPlayState, player)) {
             // Barinade needs to be updated in sequence to avoid unintended behaviour.
             if (actor->id == ACTOR_BOSS_VA) {
                 // params -1 is BOSSVA_BODY
@@ -440,49 +470,83 @@ void RegisterHyperBosses() {
     });
 }
 
+void RegisterHyperEnemies() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorUpdate>([](void* refActor) {
+        // Run the update function a second time to make enemies and minibosses move and act twice as fast.
+
+        Player* player = GET_PLAYER(gPlayState);
+        Actor* actor = static_cast<Actor*>(refActor);
+
+        // Some enemies are not in the ACTORCAT_ENEMY category, and some are that aren't really enemies.
+        bool isEnemy = actor->category == ACTORCAT_ENEMY || actor->id == ACTOR_EN_TORCH2;
+        bool isExcludedEnemy = actor->id == ACTOR_EN_FIRE_ROCK || actor->id == ACTOR_EN_ENCOUNT2;
+
+        // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some cutscenes.
+        if (CVarGetInteger("gHyperEnemies", 0) && isEnemy && !isExcludedEnemy &&
+            !Player_InBlockingCsMode(gPlayState, player)) {
+            GameInteractor::RawAction::UpdateActor(actor);
+        }
+    });
+}
+
 void RegisterBonkDamage() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerBonk>([]() {
-        uint8_t bonkOption = CVarGetInteger("gBonkDamageMul", 0);
+        uint8_t bonkOption = CVarGetInteger("gBonkDamageMul", BONK_DAMAGE_NONE);
+        if (bonkOption == BONK_DAMAGE_NONE) {
+            return;
+        }
+
+        if (bonkOption == BONK_DAMAGE_OHKO) {
+            gSaveContext.health = 0;
+            return;
+        }
+
         uint16_t bonkDamage = 0;
         switch (bonkOption) {
-            // Quarter heart
-            case 1:
+            case BONK_DAMAGE_QUARTER_HEART:
                 bonkDamage = 4;
                 break;
-            // Half a heart
-            case 2:
+            case BONK_DAMAGE_HALF_HEART:
                 bonkDamage = 8;
                 break;
-            // Full heart
-            case 3:
+            case BONK_DAMAGE_1_HEART:
                 bonkDamage = 16;
                 break;
-            // 2 hearts
-            case 4:
+            case BONK_DAMAGE_2_HEARTS:
                 bonkDamage = 32;
                 break;
-            // 4 hearts
-            case 5:
+            case BONK_DAMAGE_4_HEARTS:
                 bonkDamage = 64;
                 break;
-            // 8 hearts
-            case 6:
+            case BONK_DAMAGE_8_HEARTS:
                 bonkDamage = 128;
                 break;
-            case 0:
-            case 7:
             default:
                 break;
         }
-        // OHKO
-        if (bonkOption == 7) {
-            gSaveContext.health = 0;
-        } else if (bonkDamage) {
-            Health_ChangeBy(gPlayState, -bonkDamage);
-            // Set invincibility to make Link flash red as a visual damage indicator.
-            Player* player = GET_PLAYER(gPlayState);
-            player->invincibilityTimer = 28;
-        }
+        
+        Health_ChangeBy(gPlayState, -bonkDamage);
+        // Set invincibility to make Link flash red as a visual damage indicator.
+        Player* player = GET_PLAYER(gPlayState);
+        player->invincibilityTimer = 28;
+    });
+}
+
+void UpdateDirtPathFixState(int32_t sceneNum) {
+    switch (sceneNum) {
+        case SCENE_SPOT00:
+        case SCENE_SPOT04:
+        case SCENE_SPOT15:
+            CVarSetInteger("gDirtPathFix", CVarGetInteger("gSceneSpecificDirtPathFix", ZFIGHT_FIX_DISABLED));
+            return;
+        default:
+            CVarClear("gDirtPathFix");
+    }
+}
+
+void RegisterMenuPathFix() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>([](int32_t sceneNum) {
+        UpdateDirtPathFixState(sceneNum);
     });
 }
 
@@ -502,6 +566,9 @@ void InitMods() {
     RegisterAutoSave();
     RegisterDaytimeGoldSkultullas();
     RegisterRupeeDash();
+    RegisterShadowTag();
     RegisterHyperBosses();
+    RegisterHyperEnemies();
     RegisterBonkDamage();
+    RegisterMenuPathFix();
 }

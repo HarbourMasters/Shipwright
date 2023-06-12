@@ -17,11 +17,11 @@ namespace LUS {
 //     /* 0x0E */ s16   params;
 // } ActorEntry; // size = 0x10
 
-class SetStartPositionList : public SceneCommand {
+class SetStartPositionList : public SceneCommand<ActorEntry> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    ActorEntry* GetPointer();
     size_t GetPointerSize();
 
     uint32_t numStartPositions;

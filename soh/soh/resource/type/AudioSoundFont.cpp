@@ -1,7 +1,7 @@
 #include "AudioSoundFont.h"
 
 namespace LUS {
-void* AudioSoundFont::GetPointer() {
+SoundFont* AudioSoundFont::GetPointer() {
     return &soundFont;
 }
 

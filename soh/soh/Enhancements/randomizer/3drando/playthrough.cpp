@@ -11,7 +11,7 @@
 
 namespace Playthrough {
 
-int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations) {
+int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks) {
     // initialize the RNG with just the seed incase any settings need to be
     // resolved to something random
     Random_Init(seed);
@@ -22,7 +22,7 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
     HintReset();
     Areas::AccessReset();
 
-    Settings::UpdateSettings(cvarSettings, excludedLocations);
+    Settings::UpdateSettings(cvarSettings, excludedLocations, enabledTricks);
     // once the settings have been finalized turn them into a string for hashing
     std::string settingsStr;
     for (Menu* menu : Settings::GetAllOptionMenus()) {
@@ -83,15 +83,16 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
 }
 
 // used for generating a lot of seeds at once
-int Playthrough_Repeat(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, int count /*= 1*/) {
+int Playthrough_Repeat(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks, int count /*= 1*/) {
     printf("\x1b[0;0HGENERATING %d SEEDS", count);
     uint32_t repeatedSeed = 0;
     for (int i = 0; i < count; i++) {
-        repeatedSeed = rand() % 0xFFFFFFFF;
-        Settings::seed = repeatedSeed;
+        Settings::seedString = std::to_string(rand() % 0xFFFFFFFF);
+        repeatedSeed = boost::hash_32<std::string>{}(Settings::seedString);
+        Settings::seed = repeatedSeed % 0xFFFFFFFF;
         CitraPrint("testing seed: " + std::to_string(Settings::seed));
         ClearProgress();
-        Playthrough_Init(Settings::seed, cvarSettings, excludedLocations);
+        Playthrough_Init(Settings::seed, cvarSettings, excludedLocations, enabledTricks);
         printf("\x1b[15;15HSeeds Generated: %d\n", i + 1);
     }
 

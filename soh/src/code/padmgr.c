@@ -209,6 +209,7 @@ void PadMgr_RumbleSet(PadMgr* padMgr, u8* ctrlrRumbles) {
     padMgr->rumbleOnFrames = 240;
 }
 
+#define PAUSE_BUFFER_INPUT_BLOCK_ID 0
 void PadMgr_ProcessInputs(PadMgr* padMgr) {
     s32 i;
     Input* input;
@@ -295,30 +296,12 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
     }
 
     uint8_t rumble = (padMgr->rumbleEnable[0] > 0);
-    uint8_t ledColor = 1;
-
-    if (HealthMeter_IsCritical()) {
-        ledColor = 0;
-    } else if (gPlayState) {
-        switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
-            case PLAYER_TUNIC_KOKIRI:
-                ledColor = 1;
-                break;
-            case PLAYER_TUNIC_GORON:
-                ledColor = 2;
-                break;
-            case PLAYER_TUNIC_ZORA:
-                ledColor = 3;
-                break;
-        }
-    }
-
-    OTRControllerCallback(rumble, ledColor);
+    OTRControllerCallback(rumble);
 
     if (CVarGetInteger("gPauseBufferBlockInputFrame", 0)) {
-        Controller_BlockGameInput();
+        ControllerBlockGameInput(PAUSE_BUFFER_INPUT_BLOCK_ID);
     } else {
-        Controller_UnblockGameInput();
+        ControllerUnblockGameInput(PAUSE_BUFFER_INPUT_BLOCK_ID);
     }
 
     PadMgr_UnlockPadData(padMgr);

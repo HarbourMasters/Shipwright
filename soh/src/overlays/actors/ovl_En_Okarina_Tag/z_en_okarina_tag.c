@@ -9,7 +9,7 @@
 #include "scenes/overworld/spot02/spot02_scene.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_25)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void EnOkarinaTag_Init(Actor* thisx, PlayState* play);
 void EnOkarinaTag_Destroy(Actor* thisx, PlayState* play);
@@ -47,7 +47,7 @@ void EnOkarinaTag_Init(Actor* thisx, PlayState* play) {
     osSyncPrintf("\n\n");
     // "Ocarina tag outbreak"
     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ オカリナタグ発生 ☆☆☆☆☆ %x\n" VT_RST, this->actor.params);
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->type = (this->actor.params >> 0xA) & 0x3F;
     this->ocarinaSong = (this->actor.params >> 6) & 0xF;
     this->switchFlag = this->actor.params & 0x3F;
@@ -112,7 +112,7 @@ void func_80ABEF2C(EnOkarinaTag* this, PlayState* play) {
     player = GET_PLAYER(play);
     this->unk_15A++;
     if ((this->switchFlag >= 0) && (Flags_GetSwitch(play, this->switchFlag))) {
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     } else {
         if ((this->ocarinaSong != 6) || (gSaveContext.scarecrowSpawnSongSet)) {
             if (player->stateFlags2 & 0x1000000) {
@@ -191,7 +191,7 @@ void func_80ABF28C(EnOkarinaTag* this, PlayState* play) {
     this->unk_15A++;
     if ((this->ocarinaSong != 6) || (gSaveContext.scarecrowSpawnSongSet)) {
         if ((this->switchFlag >= 0) && Flags_GetSwitch(play, this->switchFlag)) {
-            this->actor.flags &= ~ACTOR_FLAG_0;
+            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
         } else if (((this->type != 4) || !(gSaveContext.eventChkInf[4] & 0x800)) &&
                    ((this->type != 6) || !(gSaveContext.eventChkInf[1] & 0x2000)) &&
                    (this->actor.xzDistToPlayer < (90.0f + this->interactRange)) &&

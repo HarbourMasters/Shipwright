@@ -3,7 +3,7 @@
 #include "overlays/actors/ovl_En_Bom_Chu/z_en_bom_chu.h"
 #include "overlays/actors/ovl_En_Ex_Item/z_en_ex_item.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void EnBomBowlPit_Init(Actor* thisx, PlayState* play);
 void EnBomBowlPit_Destroy(Actor* thisx, PlayState* play);

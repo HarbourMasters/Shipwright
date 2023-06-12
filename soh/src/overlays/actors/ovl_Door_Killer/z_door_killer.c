@@ -11,7 +11,7 @@
 #include "objects/object_haka_door/object_haka_door.h"
 #include "objects/object_door_killer/object_door_killer.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 typedef enum {
     /* 0 */ DOOR_KILLER_DOOR,
@@ -203,6 +203,8 @@ void DoorKiller_Destroy(Actor* thisx, PlayState* play) {
     if ((thisx->params & 0xFF) == DOOR_KILLER_DOOR) {
         Collider_DestroyCylinder(play, &this->colliderCylinder);
         Collider_DestroyJntSph(play, &this->colliderJntSph);
+
+        ResourceMgr_UnregisterSkeleton(&this->skelAnime);
     }
 }
 

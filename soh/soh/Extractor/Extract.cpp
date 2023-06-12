@@ -52,16 +52,19 @@ static constexpr uint32_t OOT_PAL_GC = 0x09465AC3;
 static constexpr uint32_t OOT_PAL_GC_DBG1 = 0x871E1C92; // 03-21-2002 build
 static constexpr uint32_t OOT_PAL_GC_DBG2 = 0x87121EFE; // 03-13-2002 build
 static constexpr uint32_t OOT_PAL_GC_MQ_DBG = 0x917D18F6;
+static constexpr uint32_t OOT_PAL_10 = 0xB044B569;
+static constexpr uint32_t OOT_PAL_11 = 0xB2055FBD;
 
 static const std::unordered_map<uint32_t, const char*> verMap = {
-    { OOT_PAL_GC, "PAL GameCube" },
-    { OOT_PAL_GC_DBG1, "PAL GameCube Debug 1" },
-    { OOT_PAL_GC_DBG2, "PAL GameCube Debug 2" },
-    { OOT_PAL_GC_MQ_DBG, "PAL GameCube MQ Debug" },
+    { OOT_PAL_GC, "PAL Gamecube" },
+    { OOT_PAL_GC_DBG1, "PAL Debug 1" },
+    { OOT_PAL_GC_DBG2, "PAL Debug 2" },
+    { OOT_PAL_GC_MQ_DBG, "PAL MQ Debug" },
+    { OOT_PAL_11, "PAL N64 1.1" },
 };
 
 // TODO only check the first 54MB of the rom.
-static constexpr std::array<const uint32_t, 7> goodCrcs = {
+static constexpr std::array<const uint32_t, 8> goodCrcs = {
     0xfa8c0555, // MQ DBG 64MB (Original overdump)
     0x8652ac4c, // MQ DBG 64MB
     0x5B8A1EB7, // MQ DBG 64MB (Empty overdump)
@@ -69,6 +72,7 @@ static constexpr std::array<const uint32_t, 7> goodCrcs = {
     0x044b3982, // NMQ DBG 54MB
     0xEB15D7B9, // NMQ DBG 64MB
     0xDA8E61BF, // GC PAL
+    0xE033FBBA, // N64 PAL 1.1
 };
 
 enum class ButtonId : int {
@@ -222,9 +226,9 @@ void Extractor::GetRoms(std::vector<std::string>& roms) {
             if (S_ISREG(path.st_mode)) {
 
                 // Get the position of the extension character.
-                char* ext = strchr(dir->d_name, '.');
-                if (ext != NULL && (strcmp(ext, ".z64") == 0) && (strcmp(ext, ".n64") == 0) &&
-                    (strcmp(ext, ".v64") == 0)) {
+                char* ext = strrchr(dir->d_name, '.');
+                if (ext != NULL && (strcmp(ext, ".z64") == 0 || strcmp(ext, ".n64") == 0 ||
+                    strcmp(ext, ".v64") == 0)) {
                     roms.push_back(dir->d_name);
                 }
             }
@@ -465,6 +469,8 @@ bool Extractor::IsMasterQuest() const {
     switch (GetRomVerCrc()) {
         case OOT_PAL_GC_MQ_DBG:
             return true;
+        case OOT_PAL_10:
+        case OOT_PAL_11:
         case OOT_PAL_GC:
         case OOT_PAL_GC_DBG1:
             return false;
@@ -481,6 +487,8 @@ const char* Extractor::GetZapdVerStr() const {
             return "GC_NMQ_D";
         case OOT_PAL_GC_MQ_DBG:
             return "GC_MQ_D";
+        case OOT_PAL_11:
+            return "N64_PAL_11";
         default:
             // We should never be in a state where this path happens.
             UNREACHABLE;
@@ -492,13 +500,13 @@ extern "C" int zapd_main(int argc, char** argv);
 
 bool Extractor::CallZapd() {
     constexpr int argc = 16;
-    char xmlPath[100];
-    char confPath[100];
+    char xmlPath[1024];
+    char confPath[1024];
     std::array<const char*, argc> argv;
     const char* version = GetZapdVerStr();
 
-    snprintf(xmlPath, 100, "assets/extractor/xmls/%s", version);
-    snprintf(confPath, 100, "assets/extractor/Config_%s.xml", version);
+    snprintf(xmlPath, 1024, "assets/extractor/xmls/%s", version);
+    snprintf(confPath, 1024, "assets/extractor/Config_%s.xml", version);
 
     argv[0] = "ZAPD";
     argv[1] = "ed";

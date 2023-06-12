@@ -1,7 +1,7 @@
 #include "SetStartPositionList.h"
 
 namespace LUS {
-void* SetStartPositionList::GetPointer() {
+ActorEntry* SetStartPositionList::GetPointer() {
     return startPositions.data();
 }
 

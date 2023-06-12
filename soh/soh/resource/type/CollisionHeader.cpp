@@ -1,7 +1,7 @@
 #include "CollisionHeader.h"
 
 namespace LUS {
-void* CollisionHeader::GetPointer() {
+CollisionHeaderData* CollisionHeader::GetPointer() {
     return &collisionHeaderData;
 }
 

@@ -60,11 +60,12 @@ namespace Settings {
   Option ZorasFountain       = Option::U8  ("Zora's Fountain",        {"Closed", "Closed as child", "Open"},                                        {fountainNormal, fountainAdult, fountainOpen});
   Option GerudoFortress      = Option::U8  ("Gerudo Fortress",        {"Normal", "Fast", "Open"},                                                   {gerudoNormal, gerudoFast, gerudoOpen});
   Option Bridge              = Option::U8  ("Rainbow Bridge",         {"Vanilla", "Always open", "Stones", "Medallions", "Dungeon rewards", "Dungeons", "Tokens", "Greg"}, {bridgeVanilla, bridgeOpen, bridgeStones, bridgeMedallions, bridgeRewards, bridgeDungeons, bridgeTokens, bridgeGreg},   OptionCategory::Setting,    RAINBOWBRIDGE_VANILLA);
-  Option BridgeStoneCount    = Option::U8  ("Stone Count",          {NumOpts(0, 3)},                                                              {bridgeStoneCountDesc},                                                                                     OptionCategory::Setting,    1,                          true);
-  Option BridgeMedallionCount= Option::U8  ("Medallion Count",      {NumOpts(0, 6)},                                                              {bridgeMedallionCountDesc},                                                                                 OptionCategory::Setting,    1,                          true);
-  Option BridgeRewardCount   = Option::U8  ("Reward Count",         {NumOpts(0, 9)},                                                              {bridgeRewardCountDesc},                                                                                    OptionCategory::Setting,    1,                          true);
-  Option BridgeDungeonCount  = Option::U8  ("Dungeon Count",        {NumOpts(0, 8)},                                                              {bridgeDungeonCountDesc},                                                                                   OptionCategory::Setting,    1,                          true);
+  Option BridgeStoneCount    = Option::U8  ("Stone Count",          {NumOpts(0, 4)},                                                              {bridgeStoneCountDesc},                                                                                     OptionCategory::Setting,    1,                          true);
+  Option BridgeMedallionCount= Option::U8  ("Medallion Count",      {NumOpts(0, 7)},                                                              {bridgeMedallionCountDesc},                                                                                 OptionCategory::Setting,    1,                          true);
+  Option BridgeRewardCount   = Option::U8  ("Reward Count",         {NumOpts(0, 10)},                                                              {bridgeRewardCountDesc},                                                                                    OptionCategory::Setting,    1,                          true);
+  Option BridgeDungeonCount  = Option::U8  ("Dungeon Count",        {NumOpts(0, 9)},                                                              {bridgeDungeonCountDesc},                                                                                   OptionCategory::Setting,    1,                          true);
   Option BridgeTokenCount    = Option::U8  ("Token Count",          {NumOpts(0, 100)},                                                            {bridgeTokenCountDesc},                                                                                     OptionCategory::Setting,    1,                          true);
+  Option BridgeRewardOptions = Option::U8  ("Bridge Reward Options",  {"Standard Rewards", "Greg as Reward", "Greg as Wildcard"},                 {bridgeRewardOptionsDesc});
   Option RandomGanonsTrials  = Option::Bool("Random Ganon's Trials",  {"Off", "On"},                                                                {randomGanonsTrialsDesc},                                                                                   OptionCategory::Setting,    ON);
   Option GanonsTrialsCount   = Option::U8  ("Trial Count",          {NumOpts(0, 6)},                                                              {ganonsTrialCountDesc},                                                                                     OptionCategory::Setting,    1,                          true);
   std::vector<Option *> openOptions = {
@@ -80,6 +81,7 @@ namespace Settings {
     &BridgeRewardCount,
     &BridgeDungeonCount,
     &BridgeTokenCount,
+    &BridgeRewardOptions,
     &RandomGanonsTrials,
     &GanonsTrialsCount,
   };
@@ -227,16 +229,17 @@ namespace Settings {
                                                                          {gerudoKeysVanilla, gerudoKeysAnyDungeon, gerudoKeysOverworld, gerudoKeysAnywhere});
   Option BossKeysanity       = Option::U8  ("Boss Keys",                 {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"},
                                                                          {bossKeyStartWith, bossKeyVanilla, bossKeyOwnDungeon, bossKeyAnyDungeon, bossKeyOverworld, bossKeyAnywhere},                                                                              OptionCategory::Setting,    BOSSKEYSANITY_OWN_DUNGEON);
-  Option GanonsBossKey       = Option::U8  ("Ganon's Boss Key",          {"Vanilla", "Own dungeon", "Start with", "Any Dungeon", "Overworld", "Anywhere", "LACS-Vanilla", "LACS-Medallions", "LACS-Stones", "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens", "100 GS Reward"},
+  Option GanonsBossKey       = Option::U8  ("Ganon's Boss Key",          {"Vanilla", "Own dungeon", "Start with", "Any Dungeon", "Overworld", "Anywhere", "LACS-Vanilla", "LACS-Stones", "LACS-Medallions", "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens", "100 GS Reward"},
                                                                          {ganonKeyVanilla, ganonKeyOwnDungeon, ganonKeyStartWith, ganonKeyAnyDungeon, ganonKeyOverworld, ganonKeyAnywhere, ganonKeyLACS, ganonKey100GS},                                           OptionCategory::Setting,    GANONSBOSSKEY_VANILLA);
   uint8_t LACSCondition           = 0;
-  Option LACSMedallionCount  = Option::U8  ("Medallion Count",         {NumOpts(0, 6)},                                                        {lacsMedallionCountDesc},                                                                                         OptionCategory::Setting,    1,                          true);
-  Option LACSStoneCount      = Option::U8  ("Stone Count",             {NumOpts(0, 3)},                                                        {lacsStoneCountDesc},                                                                                             OptionCategory::Setting,    1,                          true);
-  Option LACSRewardCount     = Option::U8  ("Reward Count",            {NumOpts(0, 9)},                                                        {lacsRewardCountDesc},                                                                                            OptionCategory::Setting,    1,                          true);
-  Option LACSDungeonCount    = Option::U8  ("Dungeon Count",           {NumOpts(0, 8)},                                                        {lacsDungeonCountDesc},                                                                                           OptionCategory::Setting,    1,                          true);
+  Option LACSStoneCount      = Option::U8  ("Stone Count",             {NumOpts(0, 4)},                                                        {lacsStoneCountDesc},                                                                                             OptionCategory::Setting,    1,                          true);
+  Option LACSMedallionCount  = Option::U8  ("Medallion Count",         {NumOpts(0, 7)},                                                        {lacsMedallionCountDesc},                                                                                         OptionCategory::Setting,    1,                          true);
+  Option LACSRewardCount     = Option::U8  ("Reward Count",            {NumOpts(0, 10)},                                                       {lacsRewardCountDesc},                                                                                            OptionCategory::Setting,    1,                          true);
+  Option LACSDungeonCount    = Option::U8  ("Dungeon Count",           {NumOpts(0, 9)},                                                        {lacsDungeonCountDesc},                                                                                           OptionCategory::Setting,    1,                          true);
   Option LACSTokenCount      = Option::U8  ("Token Count",             {NumOpts(0, 100)},                                                      {lacsTokenCountDesc},                                                                                             OptionCategory::Setting,    1,                          true);
+  Option LACSRewardOptions   = Option::U8  ("LACS Reward Options",     {"Standard Reward", "Greg as Reward", "Greg as Wildcard"},              {lacsRewardOptionsDesc});
   Option KeyRings            = Option::U8  ("Key Rings",               {"Off", "Random", "Count", "Selection"},                                {keyRingDesc});
-  Option KeyRingsRandomCount = Option::U8  ("Keyring Dungeon Count",   {NumOpts(0, 8)},                                                        {keyRingDesc},                                                                                                    OptionCategory::Setting,    1);
+  Option KeyRingsRandomCount = Option::U8  ("Keyring Dungeon Count",   {NumOpts(0, 9)},                                                        {keyRingDesc},                                                                                                    OptionCategory::Setting,    1);
   Option RingFortress        = Option::Bool("Gerudo Fortress",         {"Off", "On"},                                                          {keyRingDesc},                                                                                                    OptionCategory::Setting);
   Option RingForest          = Option::Bool("Forest Temple",           {"Off", "On"},                                                          {keyRingDesc},                                                                                                    OptionCategory::Setting);
   Option RingFire            = Option::Bool("Fire Temple",             {"Off", "On"},                                                          {keyRingDesc},                                                                                                    OptionCategory::Setting);
@@ -254,11 +257,12 @@ namespace Settings {
     &GerudoKeys,
     &BossKeysanity,
     &GanonsBossKey,
-    &LACSMedallionCount,
     &LACSStoneCount,
+    &LACSMedallionCount,
     &LACSRewardCount,
     &LACSDungeonCount,
     &LACSTokenCount,
+    &LACSRewardOptions,
     &KeyRings,
     &KeyRingsRandomCount,
     &RingFortress,
@@ -272,7 +276,6 @@ namespace Settings {
     &RingCastle,
   };
   std::vector<Option *> keyRingOptions = {
-    &RingFortress,
     &RingForest,
     &RingFire,
     &RingWater,
@@ -655,279 +658,539 @@ namespace Settings {
   }
 
   //Detailed Logic Tricks                               ---------------------
-  Option ToggleAllTricks                  = Option::U8("All Tricks", {"None", "Novice", "Intermediate", "Expert"},  {ToggleLogicNoneDesc, ToggleLogicNoviceDesc, ToggleLogicIntermediateDesc, ToggleLogicExpertDesc},                                           OptionCategory::Toggle);
-  Option LogicGrottosWithoutAgony         = LogicTrick(" Grotto Access\n   w/o Stone of Agony",       LogicGrottosWithoutAgonyDesc);
-  Option LogicVisibleCollision            = LogicTrick(" Go Through Visible\n   One-Way Collisions",  LogicVisibleCollisionDesc);
-  Option LogicFewerTunicRequirements      = LogicTrick(" Fewer Tunic\n   Requirements",               LogicFewerTunicRequirementsDesc);
-  Option LogicLostWoodsGSBean             = LogicTrick(" LW Adult Tree GS\n   w/o Magic Beans",       LogicLostWoodsGSBeanDesc);
-  Option LogicLabDiving                   = LogicTrick(" LH Lab Dive\n   w/o Gold Scale",             LogicLabDivingDesc);
-  Option LogicLabWallGS                   = LogicTrick(" LH Lab Wall GS\n   w/ Jump Slash",           LogicLabWallGSDesc);
-  Option LogicGraveyardPoH                = LogicTrick(" GY Crate PoH\n   w/ Boomerang",              LogicGraveyardPoHDesc);
-  Option LogicChildDampeRacePoH           = LogicTrick(" GY Second Dampe\n   Race as Child",          LogicChildDampeRacePoHDesc);
-  Option LogicGVHammerChest               = LogicTrick(" GV Hammer Chest\n   w/o Hammer",             LogicGVHammerChestDesc);
-  Option LogicGerudoKitchen               = LogicTrick(" GF Through Kitchen\n   w/ Nothing",          LogicGerudoKitchenDesc);
-  Option LogicLensWasteland               = LogicTrick(" Haunted Wasteland\n   w/o Lens of Truth",    LogicLensWastelandDesc);
-  Option LogicReverseWasteland            = LogicTrick(" Haunted Wasteland\n   in Reverse",           LogicReverseWastelandDesc);
-  Option LogicColossusGS                  = LogicTrick(" Colossus Hill GS\n   w/ Hookshot",           LogicColossusGSDesc);
-  Option LogicOutsideGanonsGS             = LogicTrick(" Outside GaC GS\n   w/ Jump Slash",           LogicOutsideGanonsGSDesc);
-  Option LogicManOnRoof                   = LogicTrick(" Kak Roof Guy\n   w/o Hookshot",              LogicManOnRoofDesc);
-  Option LogicWindmillPoHHookshot         = LogicTrick(" Windmill PoH\n   w/ Hookshot",               LogicWindmillPoHHookshotDesc);
-  Option LogicDMTBombable                 = LogicTrick(" DMT Wall Chest\n   w/ Strength",             LogicDMTBombableDesc);
-  Option LogicDMTSoilGS                   = LogicTrick(" DMT Soil GS\n   w/o Opening DC",             LogicDMTSoilGSDesc);
-  Option LogicDMTSummitHover              = LogicTrick(" DMT Summit\n   w/ Hover Boots",              LogicDMTSummitHoverDesc);
-  Option LogicLinkGoronDins               = LogicTrick(" GoC Adult Goron\n   w/ Din's Fire",          LogicLinkGoronDinsDesc);
-  Option LogicGoronCityLeftMost           = LogicTrick(" GoC Maze Left Chest\n   w/ Hover Boots",     LogicGoronCityLeftMostDesc);
-  Option LogicGoronCityPot                = LogicTrick(" GoC Goron Vase PoH\n   w/ Bombchu",          LogicGoronCityPotDesc); //Needs Testing
-  Option LogicGoronCityPotWithStrength    = LogicTrick(" GoC Goron Vase PoH\n   w/ Strength",         LogicGoronCityPotWithStrengthDesc);
-  Option LogicChildRollingWithStrength    = LogicTrick(" GoC Child Goron\n   w/ Strength",            LogicChildRollingWithStrengthDesc);
-  Option LogicCraterUpperToLower          = LogicTrick(" DMC Upper to Lower\n   w/ Hammer",           LogicCraterUpperToLowerDesc); //Needs Testing
-  Option LogicCraterBeanPoHWithHovers     = LogicTrick(" DMC Bean PoH\n   w/ Hover Boots",            LogicCraterBeanPoHWithHoversDesc);
-  Option LogicBiggoronBolero              = LogicTrick(" DMC Deliver Eyedrops\n   w/ Bolero of Fire", LogicBiggoronBoleroDesc);
-  Option LogicZoraRiverLower              = LogicTrick(" ZR Lower PoH\n   w/ Nothing",                LogicZoraRiverLowerDesc);
-  Option LogicZoraRiverUpper              = LogicTrick(" ZR Upper PoH\n   w/ Nothing",                LogicZoraRiverUpperDesc);
-  Option LogicZFGreatFairy                = LogicTrick(" ZF Great Fairy\n   w/o Explosives",          LogicZFGreatFairyDesc);
-  Option LogicDekuB1WebsWithBow           = LogicTrick(" DT B1 Web\n   w/ Bow",                       LogicDekuB1WebsWithBowDesc);
-  Option LogicDekuB1Skip                  = LogicTrick(" DT B1 Navigation\n   w/o Slingshot",         LogicDekuB1SkipDesc);
-  Option LogicDekuBasementGS              = LogicTrick(" DT B1 Vines GS\n   w/ Jump Slash",           LogicDekuBasementGSDesc);
-  Option LogicDCStaircase                 = LogicTrick(" DC Staircase\n   w/ Bow",                    LogicDCStaircaseDesc);
-  Option LogicDCJump                      = LogicTrick(" DC Spike Trap Room\n   w/o Hover Boots",     LogicDCJumpDesc);
-  Option LogicDCSlingshotSkip             = LogicTrick(" DC Eye Switches\n   w/o Slingshot",          LogicDCSlingshotSkipDesc);
-  Option LogicDCScarecrowGS               = LogicTrick(" DC Scarecrow GS\n   w/ Armos Statue",        LogicDCScarecrowGSDesc);
-  Option LogicJabuBossGSAdult             = LogicTrick(" JJB Near Boss GS\n   as Adult",              LogicJabuBossGSAdultDesc); //Needs Testing
-  Option LogicJabuScrubJumpDive           = LogicTrick(" JJB Deku Scrub\n   as Adult",                LogicJabuScrubJumpDiveDesc); //Needs Testing
-  Option LogicForestOutsideBackdoor       = LogicTrick(" FoT West Backdoor\n   w/ Jump Slash",        LogicForestOutsideBackdoorDesc); //Needs Testing
-  Option LogicForestDoorFrame             = LogicTrick(" FoT East Scarecrow\n   w/ Hover Boots",      LogicForestDoorFrameDesc); //Needs Testing
-  Option LogicForestOutdoorEastGS         = LogicTrick(" FoT East Yard GS\n   w/ Boomerang",          LogicForestOutdoorEastGSDesc);
-  Option LogicFireBossDoorJump            = LogicTrick(" FiT Boss Door\n   w/o Hover Boots",          LogicFireBossDoorJumpDesc);
-  Option LogicFireStrength                = LogicTrick(" FiT Climb Block\n   w/o Strength",           LogicFireStrengthDesc);
-  Option LogicFireScarecrow               = LogicTrick(" FiT East Tower\n   w/o Scarecrow",           LogicFireScarecrowDesc);
-  Option LogicFireFlameMaze               = LogicTrick(" FiT Firewall Maze\n   w/ Nothing",           LogicFireFlameMazeDesc);
-  Option LogicFireSongOfTime              = LogicTrick(" FiT SoT Room GS\n   w/o SoT",                LogicFireSongOfTimeDesc);
-  Option LogicWaterTempleTorchLongshot    = LogicTrick(" WaT Torch Longshot\n   Shortcut",            LogicWaterTempleTorchLongshotDesc);
-  Option LogicWaterTempleUpperBoost       = LogicTrick(" WaT Boss Ledge\n   w/ Bombs",                LogicWaterTempleUpperBoostDesc);
-  Option LogicWaterCentralBow             = LogicTrick(" WaT Bow Target\n   w/o Longshot/Hover",      LogicWaterCentralBowDesc);
-  Option LogicWaterCentralGSFW            = LogicTrick(" WaT Center Room GS\n   w/ Farore's Wind",    LogicWaterCentralGSFWDesc);
-  Option LogicWaterCrackedWallNothing     = LogicTrick(" WaT Cracked Wall\n   w/ Nothing",            LogicWaterCrackedWallNothingDesc);
-  Option LogicWaterCrackedWallHovers      = LogicTrick(" WaT Cracked Wall\n   w/ Hover Boots",        LogicWaterCrackedWallHoversDesc);
-  Option LogicWaterBossKeyRegion          = LogicTrick(" WaT B1 North Area\n   w/ Hover Boots",       LogicWaterBossKeyRegionDesc);
-  Option LogicWaterBKJumpDive             = LogicTrick(" WaT Boss Key Room\n   w/o Iron Boots",       LogicWaterBKJumpDiveDesc);
-  Option LogicWaterNorthBasementLedgeJump = LogicTrick(" WaT Boss Key Rooms\n   w/ Precise Jump",     LogicWaterNorthBasementLedgeJumpDesc);
-  Option LogicWaterDragonAdult            = LogicTrick(" WaT Whirlpool\n   w/o Iron Boots",           LogicWaterDragonAdultDesc);
-  Option LogicWaterDragonJumpDive         = LogicTrick(" WaT Whirlpool Up\n   w/o Iron Boots",        LogicWaterDragonJumpDiveDesc);
-  Option LogicWaterRiverGS                = LogicTrick(" WaT River GS\n   w/o Iron Boots",            LogicWaterRiverGSDesc);
-  Option LogicWaterFallingPlatformGS      = LogicTrick(" WaT Waterfall GS\n   w/ Hookshot",           LogicWaterFallingPlatformGSDesc);
-  Option LogicSpiritLowerAdultSwitch      = LogicTrick(" SpT Ceiling Switch\n   w/ Bombs",            LogicSpiritLowerAdultSwitchDesc);
-  Option LogicSpiritChildBombchu          = LogicTrick(" SpT Child Bridge\n   w/ Bombchu",            LogicSpiritChildBombchuDesc);
-  Option LogicSpiritWall                  = LogicTrick(" SpT Shifting Wall\n   w/ Nothing",           LogicSpiritWallDesc);
-  Option LogicSpiritLobbyGS               = LogicTrick(" SpT Main Room GS\n   w/ Boomerang",          LogicSpiritLobbyGSDesc);
-  Option LogicSpiritMapChest              = LogicTrick(" SpT Map Chest\n   w/ Bow",                   LogicSpiritMapChestDesc);
-  Option LogicSpiritSunChest              = LogicTrick(" SpT Sun Block Room\n   w/ Bow",              LogicSpiritSunChestDesc);
-  Option LogicShadowFireArrowEntry        = LogicTrick(" ShT Entry\n   w/ Fire Arrows",               LogicShadowFireArrowEntryDesc); //Needs Testing
-  Option LogicShadowUmbrella              = LogicTrick(" ShT Stone Umbrella\n   w/ Hover Boots",      LogicShadowUmbrellaDesc);
-  Option LogicShadowFreestandingKey       = LogicTrick(" ShT Skull Vase Key\n   w/ Bombchu",          LogicShadowFreestandingKeyDesc);
-  Option LogicShadowStatue                = LogicTrick(" ShT River Statue\n   w/ Bombchu",            LogicShadowStatueDesc);
-  Option LogicShadowBongo                 = LogicTrick("ShT Bongo\n w/o Projectiles",                 LogicShadowBongoDesc);
-  Option LogicChildDeadhand               = LogicTrick(" BotW Deadhand\n   w/o Sword",                LogicChildDeadhandDesc);
-  Option LogicGtgWithoutHookshot          = LogicTrick(" GTG West Silver Rupee\n   w/o Hookshot",     LogicGtgWithoutHookshotDesc);
-  Option LogicGtgFakeWall                 = LogicTrick(" GTG Invisible Wall\n   w/ Hover Boots",      LogicGtgFakeWallDesc);
-  Option LogicLensSpirit                  = LogicTrick(" SpT Navigate\n   w/o Lens of Truth",         LogicLensSpiritDesc);
-  Option LogicLensShadow                  = LogicTrick(" ShT Early Rooms\n   w/o Lens of Truth",      LogicLensShadowDesc);
-  Option LogicLensShadowBack              = LogicTrick(" ShT Later Rooms\n   w/o Lens of Truth",      LogicLensShadowBackDesc);
-  Option LogicLensBotw                    = LogicTrick(" BotW Navigate\n   w/o Lens of Truth",        LogicLensBotwDesc);
-  Option LogicLensGtg                     = LogicTrick(" GTG Navigate\n   w/o Lens of Truth",         LogicLensGtgDesc);
-  Option LogicLensCastle                  = LogicTrick(" GaC Navigate\n   w/o Lens of Truth",         LogicLensCastleDesc);
-  Option LogicLensJabuMQ                  = LogicTrick(" JJB MQ Navigate\n   w/o Lens of Truth",      LogicLensJabuMQDesc);
-  Option LogicLensSpiritMQ                = LogicTrick(" SpT MQ Navigate\n   w/o Lens of Truth",      LogicLensSpiritMQDesc);
-  Option LogicLensShadowMQ                = LogicTrick(" ShT MQ Early Rooms\n   w/o Lens of Truth",   LogicLensShadowMQDesc);
-  Option LogicLensShadowMQBack            = LogicTrick(" ShT MQ Later Rooms\n   w/o Lens of Truth",   LogicLensShadowMQBackDesc);
-  Option LogicLensBotwMQ                  = LogicTrick(" BotW MQ Nagivate\n   w/o Lens of Truth",     LogicLensBotwMQDesc);
-  Option LogicLensGtgMQ                   = LogicTrick(" GTG MQ Navigate\n   w/o Lens of Truth",      LogicLensGtgMQDesc);
-  Option LogicLensCastleMQ                = LogicTrick(" GaC MQ Navigate\n   w/o Lens of Truth",      LogicLensCastleMQDesc);
-  Option LogicSpiritTrialHookshot         = LogicTrick(" Spirit Trial\n   w/o Hookshot",              LogicSpiritTrialHookshotDesc);
-  Option LogicFlamingChests               = LogicTrick(" Open chests through\n   flame circles",      LogicFlamingChestsDesc);
+  Option LogicVisibleCollision                    = LogicTrick(std::to_string(RT_VISIBLE_COLLISION), LogicTempDesc);
+  Option LogicGrottosWithoutAgony                 = LogicTrick(std::to_string(RT_GROTTOS_WITHOUT_AGONY), LogicTempDesc);
+  Option LogicFewerTunicRequirements              = LogicTrick(std::to_string(RT_FEWER_TUNIC_REQUIREMENTS), LogicTempDesc);
+  Option LogicRustedSwitches                      = LogicTrick(std::to_string(RT_RUSTED_SWITCHES), LogicTempDesc);
+  Option LogicFlamingChests                       = LogicTrick(std::to_string(RT_FLAMING_CHESTS), LogicTempDesc);
+  Option LogicBunnyHoodJump                       = LogicTrick(std::to_string(RT_BUNNY_HOOD_JUMPS), LogicTempDesc);
+  Option LogicDamageBoost                         = LogicTrick(std::to_string(RT_DAMAGE_BOOST_SIMPLE), LogicTempDesc);
+  Option LogicHoverBoost                          = LogicTrick(std::to_string(RT_HOVER_BOOST_SIMPLE), LogicTempDesc);
+  Option LogicAdultKokiriGS                       = LogicTrick(std::to_string(RT_KF_ADULT_GS), LogicTempDesc);
+  Option LogicLostWoodsBridge                     = LogicTrick(std::to_string(RT_LW_BRIDGE), LogicTempDesc);
+  Option LogicMidoBackflip                        = LogicTrick(std::to_string(RT_LW_MIDO_BACKFLIP), LogicTempDesc);
+  Option LogicLostWoodsGSBean                     = LogicTrick(std::to_string(RT_LW_GS_BEAN), LogicTempDesc);
+  Option LogicCastleStormsGS                      = LogicTrick(std::to_string(RT_HC_STORMS_GS), LogicTempDesc);
+  Option LogicManOnRoof                           = LogicTrick(std::to_string(RT_KAK_MAN_ON_ROOF), LogicTempDesc);
+  Option LogicKakarikoTowerGS                     = LogicTrick(std::to_string(RT_KAK_TOWER_GS), LogicTempDesc);
+  Option LogicAdultWindmillPoH                    = LogicTrick(std::to_string(RT_KAK_ADULT_WINDMILL_POH), LogicTempDesc);
+  Option LogicChildWindmillPoH                    = LogicTrick(std::to_string(RT_KAK_CHILD_WINDMILL_POH), LogicTempDesc);
+  Option LogicKakarikoRooftopGS                   = LogicTrick(std::to_string(RT_KAK_ROOFTOP_GS), LogicTempDesc);
+  Option LogicGraveyardPoH                        = LogicTrick(std::to_string(RT_GY_POH), LogicTempDesc);
+  Option LogicChildDampeRacePoH                   = LogicTrick(std::to_string(RT_GY_CHILD_DAMPE_RACE_POH), LogicTempDesc);
+  Option LogicShadowFireArrowEntry                = LogicTrick(std::to_string(RT_GY_SHADOW_FIRE_ARROWS), LogicTempDesc);
+  Option LogicDMTSoilGS                           = LogicTrick(std::to_string(RT_DMT_SOIL_GS), LogicTempDesc);
+  Option LogicDMTBombable                         = LogicTrick(std::to_string(RT_DMT_BOMBABLE), LogicTempDesc);
+  Option LogicDMTGSLowerHookshot                  = LogicTrick(std::to_string(RT_DMT_HOOKSHOT_LOWER_GS), LogicTempDesc);
+  Option LogicDMTGSLowerHovers                    = LogicTrick(std::to_string(RT_DMT_HOVERS_LOWER_GS), LogicTempDesc);
+  Option LogicDMTGSLowerBean                      = LogicTrick(std::to_string(RT_DMT_BEAN_LOWER_GS), LogicTempDesc);
+  Option LogicDMTGSLowerJS                        = LogicTrick(std::to_string(RT_DMT_JS_LOWER_GS), LogicTempDesc);
+  Option LogicDMTClimbHovers                      = LogicTrick(std::to_string(RT_DMT_CLIMB_HOVERS), LogicTempDesc);
+  Option LogicDMTGSUpper                          = LogicTrick(std::to_string(RT_DMT_UPPER_GS), LogicTempDesc);
+  Option LogicBiggoronBolero                      = LogicTrick(std::to_string(RT_DMT_BOLERO_BIGGORON), LogicTempDesc);
+  Option LogicGoronCityPot                        = LogicTrick(std::to_string(RT_GC_POT), LogicTempDesc);
+  Option LogicGoronCityPotWithStrength            = LogicTrick(std::to_string(RT_GC_POT_STRENGTH), LogicTempDesc);
+  Option LogicChildRollingWithStrength            = LogicTrick(std::to_string(RT_GC_ROLLING_STRENGTH), LogicTempDesc);
+  Option LogicGoronCityLeftMost                   = LogicTrick(std::to_string(RT_GC_LEFTMOST), LogicTempDesc);
+  Option LogicGoronCityGrotto                     = LogicTrick(std::to_string(RT_GC_GROTTO), LogicTempDesc);
+  Option LogicGoronCityLinkGoronDins              = LogicTrick(std::to_string(RT_GC_LINK_GORON_DINS), LogicTempDesc);
+  Option LogicCraterBeanPoHWithHovers             = LogicTrick(std::to_string(RT_DMC_HOVER_BEAN_POH), LogicTempDesc);
+  Option LogicCraterBoleroJump                    = LogicTrick(std::to_string(RT_DMC_BOLERO_JUMP), LogicTempDesc);
+  Option LogicCraterBoulderJS                     = LogicTrick(std::to_string(RT_DMC_BOULDER_JS), LogicTempDesc);
+  Option LogicCraterBoulderSkip                   = LogicTrick(std::to_string(RT_DMC_BOULDER_SKIP), LogicTempDesc);
+  Option LogicZoraRiverLower                      = LogicTrick(std::to_string(RT_ZR_LOWER), LogicTempDesc);
+  Option LogicZoraRiverUpper                      = LogicTrick(std::to_string(RT_ZR_UPPER), LogicTempDesc);
+  Option LogicZoraWithHovers                      = LogicTrick(std::to_string(RT_ZR_HOVERS), LogicTempDesc);
+  Option LogicZoraWithCucco                       = LogicTrick(std::to_string(RT_ZR_CUCCO), LogicTempDesc);
+  Option LogicKingZoraSkip                        = LogicTrick(std::to_string(RT_ZD_KING_ZORA_SKIP), LogicTempDesc);
+  Option LogicDomainGS                            = LogicTrick(std::to_string(RT_ZD_GS), LogicTempDesc);
+  Option LogicLabWallGS                           = LogicTrick(std::to_string(RT_LH_LAB_WALL_GS), LogicTempDesc);
+  Option LogicLabDiving                           = LogicTrick(std::to_string(RT_LH_LAB_DIVING), LogicTempDesc);
+  Option LogicWaterHookshotEntry                  = LogicTrick(std::to_string(RT_LH_WATER_HOOKSHOT), LogicTempDesc);
+  Option LogicValleyCrateHovers                   = LogicTrick(std::to_string(RT_GV_CRATE_HOVERS), LogicTempDesc);
+  Option LogicGerudoKitchen                       = LogicTrick(std::to_string(RT_GF_KITCHEN), LogicTempDesc);
+  Option LogicGFJump                              = LogicTrick(std::to_string(RT_GF_JUMP), LogicTempDesc);
+  Option LogicWastelandBunnyCrossing              = LogicTrick(std::to_string(RT_HW_BUNNY_CROSSING), LogicTempDesc);
+  Option LogicWastelandCrossing                   = LogicTrick(std::to_string(RT_HW_CROSSING), LogicTempDesc);
+  Option LogicLensWasteland                       = LogicTrick(std::to_string(RT_LENS_HW), LogicTempDesc);
+  Option LogicReverseWasteland                    = LogicTrick(std::to_string(RT_HW_REVERSE), LogicTempDesc);
+  Option LogicColossusGS                          = LogicTrick(std::to_string(RT_COLOSSUS_GS), LogicTempDesc);
+  Option LogicDekuBasementGS                      = LogicTrick(std::to_string(RT_DEKU_BASEMENT_GS), LogicTempDesc);
+  Option LogicDekuB1Skip                          = LogicTrick(std::to_string(RT_DEKU_B1_SKIP), LogicTempDesc);
+  Option LogicDekuB1WebsWithBow                   = LogicTrick(std::to_string(RT_DEKU_B1_BOW_WEBS), LogicTempDesc);
+  Option LogicDekuMQCompassGS                     = LogicTrick(std::to_string(RT_DEKU_MQ_COMPASS_GS), LogicTempDesc);
+  Option LogicDekuMQLog                           = LogicTrick(std::to_string(RT_DEKU_MQ_LOG), LogicTempDesc);
+  Option LogicDCScarecrowGS                       = LogicTrick(std::to_string(RT_DC_SCARECROW_GS), LogicTempDesc);
+  Option LogicDCVinesGS                           = LogicTrick(std::to_string(RT_DC_VINES_GS), LogicTempDesc);
+  Option LogicDCStaircase                         = LogicTrick(std::to_string(RT_DC_STAIRCASE), LogicTempDesc);
+  Option LogicDCSlingshotSkip                     = LogicTrick(std::to_string(RT_DC_SLINGSHOT_SKIP), LogicTempDesc);
+  Option LogicDCScrubRoom                         = LogicTrick(std::to_string(RT_DC_SCRUB_ROOM), LogicTempDesc);
+  Option LogicDCJump                              = LogicTrick(std::to_string(RT_DC_JUMP), LogicTempDesc);
+  Option LogicDCHammerFloor                       = LogicTrick(std::to_string(RT_DC_HAMMER_FLOOR), LogicTempDesc);
+  Option LogicDCMQChildBombs                      = LogicTrick(std::to_string(RT_DC_MQ_CHILD_BOMBS), LogicTempDesc);
+  Option LogicDCMQEyesChild                       = LogicTrick(std::to_string(RT_DC_MQ_CHILD_EYES), LogicTempDesc);
+  Option LogicDCMQEyesAdult                       = LogicTrick(std::to_string(RT_DC_MQ_ADULT_EYES), LogicTempDesc);
+  Option LogicJabuAlcoveJumpDive                  = LogicTrick(std::to_string(RT_JABU_ALCOVE_JUMP_DIVE), LogicTempDesc);
+  Option LogicJabuBossHover                       = LogicTrick(std::to_string(RT_JABU_BOSS_HOVER), LogicTempDesc);
+  Option LogicJabuNearBossRanged                  = LogicTrick(std::to_string(RT_JABU_NEAR_BOSS_RANGED), LogicTempDesc);
+  Option LogicJabuNearBossExplosives              = LogicTrick(std::to_string(RT_JABU_NEAR_BOSS_EXPLOSIVES), LogicTempDesc);
+  Option LogicLensJabuMQ                          = LogicTrick(std::to_string(RT_LENS_JABU_MQ), LogicTempDesc);
+  Option LogicJabuMQRangJump                      = LogicTrick(std::to_string(RT_JABU_MQ_RANG_JUMP), LogicTempDesc);
+  Option LogicJabuMQSoTGS                         = LogicTrick(std::to_string(RT_JABU_MQ_SOT_GS), LogicTempDesc);
+  Option LogicLensBotw                            = LogicTrick(std::to_string(RT_LENS_BOTW), LogicTempDesc);
+  Option LogicChildDeadhand                       = LogicTrick(std::to_string(RT_BOTW_CHILD_DEADHAND), LogicTempDesc);
+  Option LogicBotwBasement                        = LogicTrick(std::to_string(RT_BOTW_BASEMENT), LogicTempDesc);
+  Option LogicBotwMQPits                          = LogicTrick(std::to_string(RT_BOTW_MQ_PITS), LogicTempDesc);
+  Option LogicBotwMQDeadHandKey                   = LogicTrick(std::to_string(RT_BOTW_MQ_DEADHAND_KEY), LogicTempDesc);
+  Option LogicForestFirstGS                       = LogicTrick(std::to_string(RT_FOREST_FIRST_GS), LogicTempDesc);
+  Option LogicForestOutdoorEastGS                 = LogicTrick(std::to_string(RT_FOREST_OUTDOORS_EAST_GS), LogicTempDesc);
+  Option LogicForestVines                         = LogicTrick(std::to_string(RT_FOREST_VINES), LogicTempDesc);
+  Option LogicForestOutdoorsLedge                 = LogicTrick(std::to_string(RT_FOREST_OUTDOORS_LEDGE), LogicTempDesc);
+  Option LogicForestDoorFrame                     = LogicTrick(std::to_string(RT_FOREST_DOORFRAME), LogicTempDesc);
+  Option LogicForestOutsideBackdoor               = LogicTrick(std::to_string(RT_FOREST_OUTSIDE_BACKDOOR), LogicTempDesc);
+  Option LogicForestMQWellSwim                    = LogicTrick(std::to_string(RT_FOREST_MQ_WELL_SWIM), LogicTempDesc);
+  Option LogicForestMQBlockPuzzle                 = LogicTrick(std::to_string(RT_FOREST_MQ_BLOCK_PUZZLE), LogicTempDesc);
+  Option LogicForestMQHallwaySwitchJS             = LogicTrick(std::to_string(RT_FOREST_MQ_JS_HALLWAY_SWITCH), LogicTempDesc);
+  Option LogicForestMQHallwaySwitchHookshot       = LogicTrick(std::to_string(RT_FOREST_MQ_HOOKSHOT_HALLWAY_SWITCH), LogicTempDesc);
+  Option LogicForestMQHallwaySwitchBoomerang      = LogicTrick(std::to_string(RT_FOREST_MQ_RANG_HALLWAY_SWITCH), LogicTempDesc);
+  Option LogicFireBossDoorJump                    = LogicTrick(std::to_string(RT_FIRE_BOSS_DOOR_JUMP), LogicTempDesc);
+  Option LogicFireSongOfTime                      = LogicTrick(std::to_string(RT_FIRE_SOT), LogicTempDesc);
+  Option LogicFireStrength                        = LogicTrick(std::to_string(RT_FIRE_STRENGTH), LogicTempDesc);
+  Option LogicFireScarecrow                       = LogicTrick(std::to_string(RT_FIRE_SCARECROW), LogicTempDesc);
+  Option LogicFireFlameMaze                       = LogicTrick(std::to_string(RT_FIRE_FLAME_MAZE), LogicTempDesc);
+  Option LogicFireMQNearBoss                      = LogicTrick(std::to_string(RT_FIRE_MQ_NEAR_BOSS), LogicTempDesc);
+  Option LogicFireMQBlockedChest                  = LogicTrick(std::to_string(RT_FIRE_MQ_BLOCKED_CHEST), LogicTempDesc);
+  Option LogicFireMQBKChest                       = LogicTrick(std::to_string(RT_FIRE_MQ_BK_CHEST), LogicTempDesc);
+  Option LogicFireMQClimb                         = LogicTrick(std::to_string(RT_FIRE_MQ_CLIMB), LogicTempDesc);
+  Option LogicFireMQMazeSideRoom                  = LogicTrick(std::to_string(RT_FIRE_MQ_MAZE_SIDE_ROOM), LogicTempDesc);
+  Option LogicFireMQMazeHovers                    = LogicTrick(std::to_string(RT_FIRE_MQ_MAZE_HOVERS), LogicTempDesc);
+  Option LogicFireMQMazeJump                      = LogicTrick(std::to_string(RT_FIRE_MQ_MAZE_JUMP), LogicTempDesc);
+  Option LogicFireMQAboveMazeGS                   = LogicTrick(std::to_string(RT_FIRE_MQ_ABOVE_MAZE_GS), LogicTempDesc);
+  Option LogicFireMQFlameMaze                     = LogicTrick(std::to_string(RT_FIRE_MQ_FLAME_MAZE), LogicTempDesc);
+  Option LogicWaterTempleTorchLongshot            = LogicTrick(std::to_string(RT_WATER_LONGSHOT_TORCH), LogicTempDesc);
+  Option LogicWaterCrackedWallHovers              = LogicTrick(std::to_string(RT_WATER_CRACKED_WALL_HOVERS), LogicTempDesc);
+  Option LogicWaterCrackedWallNothing             = LogicTrick(std::to_string(RT_WATER_CRACKED_WALL), LogicTempDesc);
+  Option LogicWaterBossKeyRegion                  = LogicTrick(std::to_string(RT_WATER_BK_REGION), LogicTempDesc);
+  Option LogicWaterNorthBasementLedgeJump         = LogicTrick(std::to_string(RT_WATER_NORTH_BASEMENT_LEDGE_JUMP), LogicTempDesc);
+  Option LogicWaterBKJumpDive                     = LogicTrick(std::to_string(RT_WATER_BK_JUMP_DIVE), LogicTempDesc);
+  Option LogicWaterCentralGSFW                    = LogicTrick(std::to_string(RT_WATER_FW_CENTRAL_GS), LogicTempDesc);
+  Option LogicWaterCentralGSIrons                 = LogicTrick(std::to_string(RT_WATER_IRONS_CENTRAL_GS), LogicTempDesc);
+  Option LogicWaterCentralBow                     = LogicTrick(std::to_string(RT_WATER_CENTRAL_BOW), LogicTempDesc);
+  Option LogicWaterFallingPlatformGSHookshot      = LogicTrick(std::to_string(RT_WATER_HOOKSHOT_FALLING_PLATFORM_GS), LogicTempDesc);
+  Option LogicWaterFallingPlatformGSBoomerang     = LogicTrick(std::to_string(RT_WATER_RANG_FALLING_PLATFORM_GS), LogicTempDesc);
+  Option LogicWaterRiverGS                        = LogicTrick(std::to_string(RT_WATER_RIVER_GS), LogicTempDesc);
+  Option LogicWaterDragonJumpDive                 = LogicTrick(std::to_string(RT_WATER_DRAGON_JUMP_DIVE), LogicTempDesc);
+  Option LogicWaterDragonAdult                    = LogicTrick(std::to_string(RT_WATER_ADULT_DRAGON), LogicTempDesc);
+  Option LogicWaterDragonChild                    = LogicTrick(std::to_string(RT_WATER_CHILD_DRAGON), LogicTempDesc);
+  Option LogicWaterMQCentralPillar                = LogicTrick(std::to_string(RT_WATER_MQ_CENTRAL_PILLAR), LogicTempDesc);
+  Option LogicWaterMQLockedGS                     = LogicTrick(std::to_string(RT_WATER_MQ_LOCKED_GS), LogicTempDesc);
+  Option LogicLensShadow                          = LogicTrick(std::to_string(RT_LENS_SHADOW), LogicTempDesc);
+  Option LogicLensShadowPlatform                  = LogicTrick(std::to_string(RT_LENS_SHADOW_PLATFORM), LogicTempDesc);
+  Option LogicLensBongo                           = LogicTrick(std::to_string(RT_LENS_BONGO), LogicTempDesc);
+  Option LogicShadowUmbrella                      = LogicTrick(std::to_string(RT_SHADOW_UMBRELLA), LogicTempDesc);
+  Option LogicShadowUmbrellaGS                    = LogicTrick(std::to_string(RT_SHADOW_UMBRELLA_GS), LogicTempDesc);
+  Option LogicShadowFreestandingKey               = LogicTrick(std::to_string(RT_SHADOW_FREESTANDING_KEY), LogicTempDesc);
+  Option LogicShadowStatue                        = LogicTrick(std::to_string(RT_SHADOW_STATUE), LogicTempDesc);
+  Option LogicShadowBongo                         = LogicTrick(std::to_string(RT_SHADOW_BONGO), LogicTempDesc);
+  Option LogicLensShadowMQ                        = LogicTrick(std::to_string(RT_LENS_SHADOW_MQ), LogicTempDesc);
+  Option LogicLensShadowMQInvisibleBlades         = LogicTrick(std::to_string(RT_LENS_SHADOW_MQ_INVISIBLE_BLADES), LogicTempDesc);
+  Option LogicLensShadowMQPlatform                = LogicTrick(std::to_string(RT_LENS_SHADOW_MQ_PLATFORM), LogicTempDesc);
+  Option LogicLensShadowMQDeadHand                = LogicTrick(std::to_string(RT_LENS_SHADOW_MQ_DEADHAND), LogicTempDesc);
+  Option LogicShadowMQGap                         = LogicTrick(std::to_string(RT_SHADOW_MQ_GAP), LogicTempDesc);
+  Option LogicShadowMQInvisibleBlades             = LogicTrick(std::to_string(RT_SHADOW_MQ_INVISIBLE_BLADES), LogicTempDesc);
+  Option LogicShadowMQHugePit                     = LogicTrick(std::to_string(RT_SHADOW_MQ_HUGE_PIT), LogicTempDesc);
+  Option LogicShadowMQWindyWalkway                = LogicTrick(std::to_string(RT_SHADOW_MQ_WINDY_WALKWAY), LogicTempDesc);
+  Option LogicLensSpirit                          = LogicTrick(std::to_string(RT_LENS_SPIRIT), LogicTempDesc);
+  Option LogicSpiritChildBombchu                  = LogicTrick(std::to_string(RT_SPIRIT_CHILD_CHU), LogicTempDesc);
+  Option LogicSpiritLobbyGS                       = LogicTrick(std::to_string(RT_SPIRIT_LOBBY_GS), LogicTempDesc);
+  Option LogicSpiritLowerAdultSwitch              = LogicTrick(std::to_string(RT_SPIRIT_LOWER_ADULT_SWITCH), LogicTempDesc);
+  Option LogicSpiritLobbyJump                     = LogicTrick(std::to_string(RT_SPIRIT_LOBBY_JUMP), LogicTempDesc);
+  Option LogicSpiritPlatformHookshot              = LogicTrick(std::to_string(RT_SPIRIT_PLATFORM_HOOKSHOT), LogicTempDesc);
+  Option LogicSpiritMapChest                      = LogicTrick(std::to_string(RT_SPIRIT_MAP_CHEST), LogicTempDesc);
+  Option LogicSpiritSunChest                      = LogicTrick(std::to_string(RT_SPIRIT_SUN_CHEST), LogicTempDesc);
+  Option LogicSpiritWall                          = LogicTrick(std::to_string(RT_SPIRIT_WALL), LogicTempDesc);
+  Option LogicLensSpiritMQ                        = LogicTrick(std::to_string(RT_LENS_SPIRIT_MQ), LogicTempDesc);
+  Option LogicSpiritMQSunBlockSoT                 = LogicTrick(std::to_string(RT_SPIRIT_MQ_SUN_BLOCK_SOT), LogicTempDesc);
+  Option LogicSpiritMQSunBlockGS                  = LogicTrick(std::to_string(RT_SPIRIT_MQ_SUN_BLOCK_GS), LogicTempDesc);
+  Option LogicSpiritMQLowerAdult                  = LogicTrick(std::to_string(RT_SPIRIT_MQ_LOWER_ADULT), LogicTempDesc);
+  Option LogicSpiritMQFrozenEye                   = LogicTrick(std::to_string(RT_SPIRIT_MQ_FROZEN_EYE), LogicTempDesc);
+  Option LogicIceBlockGS                          = LogicTrick(std::to_string(RT_ICE_BLOCK_GS), LogicTempDesc);
+  Option LogicIceMQRedIceGS                       = LogicTrick(std::to_string(RT_ICE_MQ_RED_ICE_GS), LogicTempDesc);
+  Option LogicIceMQScarecrow                      = LogicTrick(std::to_string(RT_ICE_MQ_SCARECROW), LogicTempDesc);
+  Option LogicLensGtg                             = LogicTrick(std::to_string(RT_LENS_GTG), LogicTempDesc);
+  Option LogicGtgWithoutHookshot                  = LogicTrick(std::to_string(RT_GTG_WITHOUT_HOOKSHOT), LogicTempDesc);
+  Option LogicGtgFakeWall                         = LogicTrick(std::to_string(RT_GTG_FAKE_WALL), LogicTempDesc);
+  Option LogicLensGtgMQ                           = LogicTrick(std::to_string(RT_LENS_GTG_MQ), LogicTempDesc);
+  Option LogicGtgMQWithHookshot                   = LogicTrick(std::to_string(RT_GTG_MQ_WITH_HOOKSHOT), LogicTempDesc);
+  Option LogicGtgMQWithoutHookshot                = LogicTrick(std::to_string(RT_GTG_MQ_WIHTOUT_HOOKSHOT), LogicTempDesc);
+  Option LogicLensCastle                          = LogicTrick(std::to_string(RT_LENS_GANON), LogicTempDesc);
+  Option LogicSpiritTrialHookshot                 = LogicTrick(std::to_string(RT_GANON_SPIRIT_TRIAL_HOOKSHOT), LogicTempDesc);
+  Option LogicLensCastleMQ                        = LogicTrick(std::to_string(RT_LENS_GANON_MQ), LogicTempDesc);
+  Option LogicFireTrialMQ                         = LogicTrick(std::to_string(RT_GANON_MQ_FIRE_TRIAL), LogicTempDesc);
+  Option LogicShadowTrialMQ                       = LogicTrick(std::to_string(RT_GANON_MQ_SHADOW_TRIAL), LogicTempDesc);
+  Option LogicLightTrialMQ                        = LogicTrick(std::to_string(RT_GANON_MQ_LIGHT_TRIAL), LogicTempDesc);
+
   std::vector<Option *> trickOptions = {
-    &ToggleAllTricks,
-    &LogicGrottosWithoutAgony,
     &LogicVisibleCollision,
+    &LogicGrottosWithoutAgony,
     &LogicFewerTunicRequirements,
+    &LogicRustedSwitches,
+    &LogicFlamingChests,
+    &LogicBunnyHoodJump,
+    &LogicDamageBoost,
+    &LogicHoverBoost,
+    &LogicAdultKokiriGS,
+    &LogicLostWoodsBridge,
+    &LogicMidoBackflip,
     &LogicLostWoodsGSBean,
-    &LogicLabDiving,
-    &LogicLabWallGS,
+    &LogicCastleStormsGS,
+    &LogicManOnRoof,
+    &LogicKakarikoTowerGS,
+    &LogicAdultWindmillPoH,
+    &LogicChildWindmillPoH,
+    &LogicKakarikoRooftopGS,
     &LogicGraveyardPoH,
     &LogicChildDampeRacePoH,
-    &LogicGVHammerChest,
-    &LogicGerudoKitchen,
-    &LogicLensWasteland,
-    &LogicReverseWasteland,
-    &LogicColossusGS,
-    &LogicOutsideGanonsGS,
-    &LogicManOnRoof,
-    &LogicWindmillPoHHookshot,
-    &LogicDMTBombable,
+    &LogicShadowFireArrowEntry,
     &LogicDMTSoilGS,
-    &LogicDMTSummitHover,
-    &LogicLinkGoronDins,
-    &LogicGoronCityLeftMost,
+    &LogicDMTBombable,
+    &LogicDMTGSLowerHookshot,
+    &LogicDMTGSLowerHovers,
+    &LogicDMTGSLowerBean,
+    &LogicDMTGSLowerJS,
+    &LogicDMTClimbHovers,
+    &LogicDMTGSUpper,
+    &LogicBiggoronBolero,
     &LogicGoronCityPot,
     &LogicGoronCityPotWithStrength,
     &LogicChildRollingWithStrength,
-    //&LogicCraterUpperToLower, Needs Testing           Possible to break in 1 swing if you hit the right place? Right angle? Seems very inconsistent.
+    &LogicGoronCityLeftMost,
+    &LogicGoronCityGrotto,
+    &LogicGoronCityLinkGoronDins,
     &LogicCraterBeanPoHWithHovers,
-    &LogicBiggoronBolero,
+    &LogicCraterBoleroJump,
+    &LogicCraterBoulderJS,
+    &LogicCraterBoulderSkip,
     &LogicZoraRiverLower,
     &LogicZoraRiverUpper,
-    &LogicZFGreatFairy,
-    &LogicDekuB1WebsWithBow,
-    &LogicDekuB1Skip,
+    &LogicZoraWithHovers,
+    &LogicZoraWithCucco,
+    &LogicKingZoraSkip,
+    &LogicDomainGS,
+    &LogicLabWallGS,
+    &LogicLabDiving,
+    &LogicWaterHookshotEntry,
+    &LogicValleyCrateHovers,
+    &LogicGerudoKitchen,
+    &LogicGFJump,
+    &LogicWastelandBunnyCrossing,
+    &LogicWastelandCrossing,
+    &LogicLensWasteland,
+    &LogicReverseWasteland,
+    &LogicColossusGS,
     &LogicDekuBasementGS,
-    &LogicDCStaircase,
-    &LogicDCJump,
-    &LogicDCSlingshotSkip,
+    &LogicDekuB1Skip,
+    &LogicDekuB1WebsWithBow,
+    &LogicDekuMQCompassGS,
+    &LogicDekuMQLog,
     &LogicDCScarecrowGS,
-    //&LogicJabuBossGSAdult, Needs Testing              Don't know if possible as described, easier method exists as you can just backwalk with the box
-    &LogicJabuScrubJumpDive,
-    //&LogicForestOutsideBackdoor, Needs Testing        Possible with bombchu damage boost, jumpslash is definitely harder than "intermediate" if at all possible
-    &LogicForestDoorFrame,
+    &LogicDCVinesGS,
+    &LogicDCStaircase,
+    &LogicDCSlingshotSkip,
+    &LogicDCScrubRoom,
+    &LogicDCJump,
+    &LogicDCHammerFloor,
+    &LogicDCMQChildBombs,
+    &LogicDCMQEyesChild,
+    &LogicDCMQEyesAdult,
+    &LogicJabuAlcoveJumpDive,
+    &LogicJabuBossHover,
+    &LogicJabuNearBossRanged,
+    &LogicJabuNearBossExplosives,
+    &LogicLensJabuMQ,
+    &LogicJabuMQRangJump,
+    &LogicJabuMQSoTGS,
+    &LogicLensBotw,
+    &LogicChildDeadhand,
+    &LogicBotwBasement,
+    &LogicBotwMQPits,
+    &LogicBotwMQDeadHandKey,
+    &LogicForestFirstGS,
     &LogicForestOutdoorEastGS,
+    &LogicForestVines,
+    &LogicForestOutdoorsLedge,
+    &LogicForestDoorFrame,
+    &LogicForestOutsideBackdoor,
+    &LogicForestMQWellSwim,
+    &LogicForestMQBlockPuzzle,
+    &LogicForestMQHallwaySwitchJS,
+    //&LogicForestMQHallwaySwitchHookshot,
+    &LogicForestMQHallwaySwitchBoomerang,
     &LogicFireBossDoorJump,
+    &LogicFireSongOfTime,
     &LogicFireStrength,
     &LogicFireScarecrow,
     &LogicFireFlameMaze,
-    &LogicFireSongOfTime,
+    &LogicFireMQNearBoss,
+    &LogicFireMQBlockedChest,
+    &LogicFireMQBKChest,
+    &LogicFireMQClimb,
+    &LogicFireMQMazeSideRoom,
+    &LogicFireMQMazeHovers,
+    &LogicFireMQMazeJump,
+    &LogicFireMQAboveMazeGS,
+    &LogicFireMQFlameMaze,
     &LogicWaterTempleTorchLongshot,
-    &LogicWaterTempleUpperBoost,
-    &LogicWaterCentralBow,
-    &LogicWaterCentralGSFW,
-    &LogicWaterCrackedWallNothing,
     &LogicWaterCrackedWallHovers,
+    &LogicWaterCrackedWallNothing,
     &LogicWaterBossKeyRegion,
-    &LogicWaterBKJumpDive,
     &LogicWaterNorthBasementLedgeJump,
+    &LogicWaterBKJumpDive,
+    &LogicWaterCentralGSFW,
+    &LogicWaterCentralGSIrons,
+    &LogicWaterCentralBow,
+    &LogicWaterFallingPlatformGSHookshot,
+    &LogicWaterFallingPlatformGSBoomerang,
+    &LogicWaterRiverGS,
     &LogicWaterDragonJumpDive,
     &LogicWaterDragonAdult,
-    &LogicWaterRiverGS,
-    &LogicWaterFallingPlatformGS,
-    &LogicSpiritLowerAdultSwitch,
-    &LogicSpiritChildBombchu,
-    &LogicSpiritWall,
-    &LogicSpiritLobbyGS,
-    &LogicSpiritMapChest,
-    &LogicSpiritSunChest,
-    //&LogicShadowFireArrowEntry, Needs Testing
+    &LogicWaterDragonChild,
+    &LogicWaterMQCentralPillar,
+    &LogicWaterMQLockedGS,
+    &LogicLensShadow,
+    &LogicLensShadowPlatform,
+    &LogicLensBongo,
     &LogicShadowUmbrella,
+    &LogicShadowUmbrellaGS,
     &LogicShadowFreestandingKey,
     &LogicShadowStatue,
     &LogicShadowBongo,
-    &LogicChildDeadhand,
+    &LogicLensShadowMQ,
+    &LogicLensShadowMQInvisibleBlades,
+    &LogicLensShadowMQPlatform,
+    &LogicLensShadowMQDeadHand,
+    &LogicShadowMQGap,
+    &LogicShadowMQInvisibleBlades,
+    &LogicShadowMQHugePit,
+    &LogicShadowMQWindyWalkway,
+    &LogicLensSpirit,
+    &LogicSpiritChildBombchu,
+    &LogicSpiritLobbyGS,
+    &LogicSpiritLowerAdultSwitch,
+    &LogicSpiritLobbyJump,
+    &LogicSpiritPlatformHookshot,
+    &LogicSpiritMapChest,
+    &LogicSpiritSunChest,
+    &LogicSpiritWall,
+    &LogicLensSpiritMQ,
+    &LogicSpiritMQSunBlockSoT,
+    &LogicSpiritMQSunBlockGS,
+    &LogicSpiritMQLowerAdult,
+    &LogicSpiritMQFrozenEye,
+    &LogicIceBlockGS,
+    &LogicIceMQRedIceGS,
+    &LogicIceMQScarecrow,
+    &LogicLensGtg,
     &LogicGtgWithoutHookshot,
     &LogicGtgFakeWall,
-    &LogicLensSpirit,
-    &LogicLensShadow,
-    &LogicLensShadowBack,
-    &LogicLensBotw,
-    &LogicLensGtg,
-    &LogicLensCastle,
-    &LogicLensJabuMQ,
-    &LogicLensSpiritMQ,
-    &LogicLensShadowMQ,
-    &LogicLensShadowMQBack,
-    &LogicLensBotwMQ,
     &LogicLensGtgMQ,
-    &LogicLensCastleMQ,
+    &LogicGtgMQWithHookshot,
+    &LogicGtgMQWithoutHookshot,
+    &LogicLensCastle,
     &LogicSpiritTrialHookshot,
-    &LogicFlamingChests,
+    &LogicLensCastleMQ,
+    &LogicFireTrialMQ,
+    &LogicShadowTrialMQ,
+    &LogicLightTrialMQ,
+  };
+  std::unordered_map<RandomizerTrick,Option *> trickOptionMap = {
+    {RT_VISIBLE_COLLISION,&LogicVisibleCollision},
+    {RT_GROTTOS_WITHOUT_AGONY,&LogicGrottosWithoutAgony},
+    {RT_FEWER_TUNIC_REQUIREMENTS,&LogicFewerTunicRequirements},
+    {RT_RUSTED_SWITCHES,&LogicRustedSwitches},
+    {RT_FLAMING_CHESTS,&LogicFlamingChests},
+    {RT_BUNNY_HOOD_JUMPS,&LogicBunnyHoodJump},
+    {RT_DAMAGE_BOOST_SIMPLE,&LogicDamageBoost},
+    {RT_HOVER_BOOST_SIMPLE,&LogicHoverBoost},
+    {RT_KF_ADULT_GS,&LogicAdultKokiriGS},
+    {RT_LW_BRIDGE,&LogicLostWoodsBridge},
+    {RT_LW_MIDO_BACKFLIP,&LogicMidoBackflip},
+    {RT_LW_GS_BEAN,&LogicLostWoodsGSBean},
+    {RT_HC_STORMS_GS,&LogicCastleStormsGS},
+    {RT_KAK_MAN_ON_ROOF,&LogicManOnRoof},
+    {RT_KAK_TOWER_GS,&LogicKakarikoTowerGS},
+    {RT_KAK_ADULT_WINDMILL_POH,&LogicAdultWindmillPoH},
+    {RT_KAK_CHILD_WINDMILL_POH,&LogicChildWindmillPoH},
+    {RT_KAK_ROOFTOP_GS,&LogicKakarikoRooftopGS},
+    {RT_GY_POH,&LogicGraveyardPoH},
+    {RT_GY_CHILD_DAMPE_RACE_POH,&LogicChildDampeRacePoH},
+    {RT_GY_SHADOW_FIRE_ARROWS,&LogicShadowFireArrowEntry},
+    {RT_DMT_SOIL_GS,&LogicDMTSoilGS},
+    {RT_DMT_BOMBABLE,&LogicDMTBombable},
+    {RT_DMT_HOOKSHOT_LOWER_GS,&LogicDMTGSLowerHookshot},
+    {RT_DMT_HOVERS_LOWER_GS,&LogicDMTGSLowerHovers},
+    {RT_DMT_BEAN_LOWER_GS,&LogicDMTGSLowerBean},
+    {RT_DMT_JS_LOWER_GS,&LogicDMTGSLowerJS},
+    {RT_DMT_CLIMB_HOVERS,&LogicDMTClimbHovers},
+    {RT_DMT_UPPER_GS,&LogicDMTGSUpper},
+    {RT_DMT_BOLERO_BIGGORON,&LogicBiggoronBolero},
+    {RT_GC_POT,&LogicGoronCityPot},
+    {RT_GC_POT_STRENGTH,&LogicGoronCityPotWithStrength},
+    {RT_GC_ROLLING_STRENGTH,&LogicChildRollingWithStrength},
+    {RT_GC_LEFTMOST,&LogicGoronCityLeftMost},
+    {RT_GC_GROTTO,&LogicGoronCityGrotto},
+    {RT_GC_LINK_GORON_DINS,&LogicGoronCityLinkGoronDins},
+    {RT_DMC_HOVER_BEAN_POH,&LogicCraterBeanPoHWithHovers},
+    {RT_DMC_BOLERO_JUMP,&LogicCraterBoleroJump},
+    {RT_DMC_BOULDER_JS,&LogicCraterBoulderJS},
+    {RT_DMC_BOULDER_SKIP,&LogicCraterBoulderSkip},
+    {RT_ZR_LOWER,&LogicZoraRiverLower},
+    {RT_ZR_UPPER,&LogicZoraRiverUpper},
+    {RT_ZR_HOVERS,&LogicZoraWithHovers},
+    {RT_ZR_CUCCO,&LogicZoraWithCucco},
+    {RT_ZD_KING_ZORA_SKIP,&LogicKingZoraSkip},
+    {RT_ZD_GS,&LogicDomainGS},
+    {RT_LH_LAB_WALL_GS,&LogicLabWallGS},
+    {RT_LH_LAB_DIVING,&LogicLabDiving},
+    {RT_LH_WATER_HOOKSHOT,&LogicWaterHookshotEntry},
+    {RT_GV_CRATE_HOVERS,&LogicValleyCrateHovers},
+    {RT_GF_KITCHEN,&LogicGerudoKitchen},
+    {RT_GF_JUMP,&LogicGFJump},
+    {RT_HW_BUNNY_CROSSING,&LogicWastelandBunnyCrossing},
+    {RT_HW_CROSSING,&LogicWastelandCrossing},
+    {RT_LENS_HW,&LogicLensWasteland},
+    {RT_HW_REVERSE,&LogicReverseWasteland},
+    {RT_COLOSSUS_GS,&LogicColossusGS},
+    {RT_DEKU_BASEMENT_GS,&LogicDekuBasementGS},
+    {RT_DEKU_B1_SKIP,&LogicDekuB1Skip},
+    {RT_DEKU_B1_BOW_WEBS,&LogicDekuB1WebsWithBow},
+    {RT_DEKU_MQ_COMPASS_GS,&LogicDekuMQCompassGS},
+    {RT_DEKU_MQ_LOG,&LogicDekuMQLog},
+    {RT_DC_SCARECROW_GS,&LogicDCScarecrowGS},
+    {RT_DC_VINES_GS,&LogicDCVinesGS},
+    {RT_DC_STAIRCASE,&LogicDCStaircase},
+    {RT_DC_SLINGSHOT_SKIP,&LogicDCSlingshotSkip},
+    {RT_DC_SCRUB_ROOM,&LogicDCScrubRoom},
+    {RT_DC_JUMP,&LogicDCJump},
+    {RT_DC_HAMMER_FLOOR,&LogicDCHammerFloor},
+    {RT_DC_MQ_CHILD_BOMBS,&LogicDCMQChildBombs},
+    {RT_DC_MQ_CHILD_EYES,&LogicDCMQEyesChild},
+    {RT_DC_MQ_ADULT_EYES,&LogicDCMQEyesAdult},
+    {RT_JABU_ALCOVE_JUMP_DIVE,&LogicJabuAlcoveJumpDive},
+    {RT_JABU_BOSS_HOVER,&LogicJabuBossHover},
+    {RT_JABU_NEAR_BOSS_RANGED,&LogicJabuNearBossRanged},
+    {RT_JABU_NEAR_BOSS_EXPLOSIVES,&LogicJabuNearBossExplosives},
+    {RT_LENS_JABU_MQ,&LogicLensJabuMQ},
+    {RT_JABU_MQ_RANG_JUMP,&LogicJabuMQRangJump},
+    {RT_JABU_MQ_SOT_GS,&LogicJabuMQSoTGS},
+    {RT_LENS_BOTW,&LogicLensBotw},
+    {RT_BOTW_CHILD_DEADHAND,&LogicChildDeadhand},
+    {RT_BOTW_BASEMENT,&LogicBotwBasement},
+    {RT_BOTW_MQ_PITS,&LogicBotwMQPits},
+    {RT_BOTW_MQ_DEADHAND_KEY,&LogicBotwMQDeadHandKey},
+    {RT_FOREST_FIRST_GS,&LogicForestFirstGS},
+    {RT_FOREST_OUTDOORS_EAST_GS,&LogicForestOutdoorEastGS},
+    {RT_FOREST_VINES,&LogicForestVines},
+    {RT_FOREST_OUTDOORS_LEDGE,&LogicForestOutdoorsLedge},
+    {RT_FOREST_DOORFRAME,&LogicForestDoorFrame},
+    {RT_FOREST_OUTSIDE_BACKDOOR,&LogicForestOutsideBackdoor},
+    {RT_FOREST_MQ_WELL_SWIM,&LogicForestMQWellSwim},
+    {RT_FOREST_MQ_BLOCK_PUZZLE,&LogicForestMQBlockPuzzle},
+    {RT_FOREST_MQ_JS_HALLWAY_SWITCH,&LogicForestMQHallwaySwitchJS},
+    {RT_FOREST_MQ_HOOKSHOT_HALLWAY_SWITCH,&LogicForestMQHallwaySwitchHookshot},
+    {RT_FOREST_MQ_RANG_HALLWAY_SWITCH,&LogicForestMQHallwaySwitchBoomerang},
+    {RT_FIRE_BOSS_DOOR_JUMP,&LogicFireBossDoorJump},
+    {RT_FIRE_SOT,&LogicFireSongOfTime},
+    {RT_FIRE_STRENGTH,&LogicFireStrength},
+    {RT_FIRE_SCARECROW,&LogicFireScarecrow},
+    {RT_FIRE_FLAME_MAZE,&LogicFireFlameMaze},
+    {RT_FIRE_MQ_NEAR_BOSS,&LogicFireMQNearBoss},
+    {RT_FIRE_MQ_BLOCKED_CHEST,&LogicFireMQBlockedChest},
+    {RT_FIRE_MQ_BK_CHEST,&LogicFireMQBKChest},
+    {RT_FIRE_MQ_CLIMB,&LogicFireMQClimb},
+    {RT_FIRE_MQ_MAZE_SIDE_ROOM,&LogicFireMQMazeSideRoom},
+    {RT_FIRE_MQ_MAZE_HOVERS,&LogicFireMQMazeHovers},
+    {RT_FIRE_MQ_MAZE_JUMP,&LogicFireMQMazeJump},
+    {RT_FIRE_MQ_ABOVE_MAZE_GS,&LogicFireMQAboveMazeGS},
+    {RT_FIRE_MQ_FLAME_MAZE,&LogicFireMQFlameMaze},
+    {RT_WATER_LONGSHOT_TORCH,&LogicWaterTempleTorchLongshot},
+    {RT_WATER_CRACKED_WALL_HOVERS,&LogicWaterCrackedWallHovers},
+    {RT_WATER_CRACKED_WALL,&LogicWaterCrackedWallNothing},
+    {RT_WATER_BK_REGION,&LogicWaterBossKeyRegion},
+    {RT_WATER_NORTH_BASEMENT_LEDGE_JUMP,&LogicWaterNorthBasementLedgeJump},
+    {RT_WATER_BK_JUMP_DIVE,&LogicWaterBKJumpDive},
+    {RT_WATER_FW_CENTRAL_GS,&LogicWaterCentralGSFW},
+    {RT_WATER_IRONS_CENTRAL_GS,&LogicWaterCentralGSIrons},
+    {RT_WATER_CENTRAL_BOW,&LogicWaterCentralBow},
+    {RT_WATER_HOOKSHOT_FALLING_PLATFORM_GS,&LogicWaterFallingPlatformGSHookshot},
+    {RT_WATER_RANG_FALLING_PLATFORM_GS,&LogicWaterFallingPlatformGSBoomerang},
+    {RT_WATER_RIVER_GS,&LogicWaterRiverGS},
+    {RT_WATER_DRAGON_JUMP_DIVE,&LogicWaterDragonJumpDive},
+    {RT_WATER_ADULT_DRAGON,&LogicWaterDragonAdult},
+    {RT_WATER_CHILD_DRAGON,&LogicWaterDragonChild},
+    {RT_WATER_MQ_CENTRAL_PILLAR,&LogicWaterMQCentralPillar},
+    {RT_WATER_MQ_LOCKED_GS,&LogicWaterMQLockedGS},
+    {RT_LENS_SHADOW,&LogicLensShadow},
+    {RT_LENS_SHADOW_PLATFORM,&LogicLensShadowPlatform},
+    {RT_LENS_BONGO,&LogicLensBongo},
+    {RT_SHADOW_UMBRELLA,&LogicShadowUmbrella},
+    {RT_SHADOW_UMBRELLA_GS,&LogicShadowUmbrellaGS},
+    {RT_SHADOW_FREESTANDING_KEY,&LogicShadowFreestandingKey},
+    {RT_SHADOW_STATUE,&LogicShadowStatue},
+    {RT_SHADOW_BONGO,&LogicShadowBongo},
+    {RT_LENS_SHADOW_MQ,&LogicLensShadowMQ},
+    {RT_LENS_SHADOW_MQ_INVISIBLE_BLADES,&LogicLensShadowMQInvisibleBlades},
+    {RT_LENS_SHADOW_MQ_PLATFORM,&LogicLensShadowMQPlatform},
+    {RT_LENS_SHADOW_MQ_DEADHAND,&LogicLensShadowMQDeadHand},
+    {RT_SHADOW_MQ_GAP,&LogicShadowMQGap},
+    {RT_SHADOW_MQ_INVISIBLE_BLADES,&LogicShadowMQInvisibleBlades},
+    {RT_SHADOW_MQ_HUGE_PIT,&LogicShadowMQHugePit},
+    {RT_SHADOW_MQ_WINDY_WALKWAY,&LogicShadowMQWindyWalkway},
+    {RT_LENS_SPIRIT,&LogicLensSpirit},
+    {RT_SPIRIT_CHILD_CHU,&LogicSpiritChildBombchu},
+    {RT_SPIRIT_LOBBY_GS,&LogicSpiritLobbyGS},
+    {RT_SPIRIT_LOWER_ADULT_SWITCH,&LogicSpiritLowerAdultSwitch},
+    {RT_SPIRIT_LOBBY_JUMP,&LogicSpiritLobbyJump},
+    {RT_SPIRIT_PLATFORM_HOOKSHOT,&LogicSpiritPlatformHookshot},
+    {RT_SPIRIT_MAP_CHEST,&LogicSpiritMapChest},
+    {RT_SPIRIT_SUN_CHEST,&LogicSpiritSunChest},
+    {RT_SPIRIT_WALL,&LogicSpiritWall},
+    {RT_LENS_SPIRIT_MQ,&LogicLensSpiritMQ},
+    {RT_SPIRIT_MQ_SUN_BLOCK_SOT,&LogicSpiritMQSunBlockSoT},
+    {RT_SPIRIT_MQ_SUN_BLOCK_GS,&LogicSpiritMQSunBlockGS},
+    {RT_SPIRIT_MQ_LOWER_ADULT,&LogicSpiritMQLowerAdult},
+    {RT_SPIRIT_MQ_FROZEN_EYE,&LogicSpiritMQFrozenEye},
+    {RT_ICE_BLOCK_GS,&LogicIceBlockGS},
+    {RT_ICE_MQ_RED_ICE_GS,&LogicIceMQRedIceGS},
+    {RT_ICE_MQ_SCARECROW,&LogicIceMQScarecrow},
+    {RT_LENS_GTG,&LogicLensGtg},
+    {RT_GTG_WITHOUT_HOOKSHOT,&LogicGtgWithoutHookshot},
+    {RT_GTG_FAKE_WALL,&LogicGtgFakeWall},
+    {RT_LENS_GTG_MQ,&LogicLensGtgMQ},
+    {RT_GTG_MQ_WITH_HOOKSHOT,&LogicGtgMQWithHookshot},
+    {RT_GTG_MQ_WIHTOUT_HOOKSHOT,&LogicGtgMQWithoutHookshot},
+    {RT_LENS_GANON,&LogicLensCastle},
+    {RT_GANON_SPIRIT_TRIAL_HOOKSHOT,&LogicSpiritTrialHookshot},
+    {RT_LENS_GANON_MQ,&LogicLensCastleMQ},
+    {RT_GANON_MQ_FIRE_TRIAL,&LogicFireTrialMQ},
+    {RT_GANON_MQ_SHADOW_TRIAL,&LogicShadowTrialMQ},
+    {RT_GANON_MQ_LIGHT_TRIAL,&LogicLightTrialMQ},
   };
 
-  //Function to avoid accidentally naming the options wrong, as logic.cpp requires these exact names
-  std::vector<std::string> GlitchDifficultyOptions(uint8_t enabledDifficulties) {
-    static constexpr std::array glitchDifficulties{"Novice", "Intermediate", "Advanced", "Expert", "Hero"};
+  //TODO completely rewrite glitch section since oot3d glitches differ from oot
+  
+  Option GlitchEquipSwapDins = LogicTrick("", LogicTempDesc);
+  Option GlitchEquipSwap     = LogicTrick("", LogicTempDesc);
 
-    std::vector<std::string> selectableDifficulties;
-    selectableDifficulties.push_back("Disabled");
-    for (size_t i = 0; i < glitchDifficulties.size(); i++) {
-      if ((enabledDifficulties >> i) & 1) {
-        selectableDifficulties.push_back(glitchDifficulties[i]);
-      }
-    }
-
-    return selectableDifficulties;
-  }
-
-  Option GlitchRestrictedItems    = Option::U8("Restricted Items",      GlitchDifficultyOptions(0b00001), { GlitchRestrictedItemsDescDisabled    , GlitchRestrictedItemsDescNovice                                                                                                                                                              });
-  Option GlitchSuperStab          = Option::U8("Super Stab",            GlitchDifficultyOptions(0b00001), { GlitchSuperStabDescDisabled          , GlitchSuperStabDescNovice                                                                                                                                                                    });
-  Option GlitchISG                = Option::U8("Infinite Sword Glitch", GlitchDifficultyOptions(0b00111), { GlitchISGDescDisabled                , GlitchISGDescNovice                , GlitchISGDescIntermediate                , GlitchISGDescAdvanced                                                                                        });
-  Option GlitchHover              = Option::U8("Bomb Hover",            GlitchDifficultyOptions(0b00111), { GlitchHoverDescDisabled              , GlitchHoverDescNovice              , GlitchHoverDescIntermediate              , GlitchHoverDescAdvanced                                                                                      });
-  Option GlitchBombOI             = Option::U8("Ocarina Items (Bomb)",  GlitchDifficultyOptions(0b01111), { GlitchBombOIDescDisabled             , GlitchBombOIDescNovice             , GlitchBombOIDescIntermediate             , GlitchBombOIDescAdvanced             , GlitchBombOIDescExpert                                                });
-  Option GlitchHoverBoost         = Option::U8("HoverBoost",            GlitchDifficultyOptions(0b00111), { GlitchHoverBoostDescDisabled         , GlitchHoverBoostDescNovice         , GlitchHoverBoostDescIntermediate         , GlitchHoverBoostDescAdvanced                                                                                 });
-  Option GlitchSuperSlide         = Option::U8("Extended Super Slide",  GlitchDifficultyOptions(0b01111), { GlitchSuperSlideDescDisabled         , GlitchSuperSlideDescNovice         , GlitchSuperSlideDescIntermediate         , GlitchSuperSlideDescAdvanced         , GlitchSuperSlideDescExpert                                            });
-  Option GlitchMegaflip           = Option::U8("Megaflip",              GlitchDifficultyOptions(0b11111), { GlitchMegaflipDescDisabled           , GlitchMegaflipDescNovice           , GlitchMegaflipDescIntermediate           , GlitchMegaflipDescAdvanced           , GlitchMegaflipDescExpert           , GlitchMegaflipDescHero           });
-  Option GlitchASlide             = Option::U8("A-Slide",               GlitchDifficultyOptions(0b01111), { GlitchASlideDescDisabled             , GlitchASlideDescNovice             , GlitchASlideDescIntermediate             , GlitchASlideDescAdvanced             , GlitchASlideDescExpert                                                });
-  Option GlitchHammerSlide        = Option::U8("Hammer Slide",          GlitchDifficultyOptions(0b00011), { GlitchHammerSlideDescDisabled        , GlitchHammerSlideDescNovice        , GlitchHammerSlideDescIntermediate                                                                                                                       });
-  Option GlitchLedgeCancel        = Option::U8("Ledge Cancel",          GlitchDifficultyOptions(0b00111), { GlitchLedgeCancelDescDisabled        , GlitchLedgeCancelDescNovice        , GlitchLedgeCancelDescIntermediate        , GlitchLedgeCancelDescAdvanced                                                                                });
-  Option GlitchActionSwap         = Option::U8("Action Swap",           GlitchDifficultyOptions(0b00101), { GlitchActionSwapDescDisabled         , GlitchActionSwapDescNovice                                                    , GlitchActionSwapDescAdvanced                                                                                 });
-  Option GlitchQPA                = Option::U8("Quick Put Away",        GlitchDifficultyOptions(0b01111), { GlitchQPADescDisabled                , GlitchQPADescNovice                , GlitchQPADescIntermediate                , GlitchQPADescAdvanced                , GlitchQPADescExpert                                                   });
-  Option GlitchHookshotClip       = Option::U8("Hookshot Clip",         GlitchDifficultyOptions(0b00011), { GlitchHookshotClipDescDisabled       , GlitchHookshotClipDescNovice       , GlitchHookshotClipDescIntermediate                                                                                                                      });
-  Option GlitchHookshotJump_Bonk  = Option::U8("Hookshot Jump (Bonk)",  GlitchDifficultyOptions(0b00111), { GlitchHookshotJump_BonkDescDisabled  , GlitchHookshotJump_BonkDescNovice  , GlitchHookshotJump_BonkDescIntermediate  , GlitchHookshotJump_BonkDescAdvanced                                                                          });
-  Option GlitchHookshotJump_Boots = Option::U8("Hookshot Jump (Boots)", GlitchDifficultyOptions(0b00111), { GlitchHookshotJump_BootsDescDisabled , GlitchHookshotJump_BootsDescNovice , GlitchHookshotJump_BootsDescIntermediate , GlitchHookshotJump_BootsDescAdvanced                                                                         });
-  Option GlitchCutsceneDive       = Option::U8("Cutscene Dives",        GlitchDifficultyOptions(0b00111), { GlitchCutsceneDiveDescDisabled       , GlitchCutsceneDiveDescNovice       , GlitchCutsceneDiveDescIntermediate       , GlitchCutsceneDiveDescAdvanced                                                                               });
-  Option GlitchNaviDive_Stick     = Option::U8("Navi Dive (Stick)",     GlitchDifficultyOptions(0b00111), { GlitchNaviDive_StickDescDisabled     , GlitchNaviDive_StickDescNovice     , GlitchNaviDive_StickDescIntermediate     , GlitchNaviDive_StickDescAdvanced                                                                             });
-  Option GlitchTripleSlashClip    = Option::U8("Triple Slash Clip",     GlitchDifficultyOptions(0b01111), { GlitchTripleSlashClipDescDisabled    , GlitchTripleSlashClipDescNovice    , GlitchTripleSlashClipDescIntermediate    , GlitchTripleSlashClipDescAdvanced    , GlitchTripleSlashClipDescExpert                                       });
-  Option GlitchLedgeClip          = Option::U8("Ledge Clip",            GlitchDifficultyOptions(0b00111), { GlitchLedgeClipDescDisabled          , GlitchLedgeClipDescNovice          , GlitchLedgeClipDescIntermediate          , GlitchLedgeClipDescAdvanced                                                                                  });
-  Option GlitchSeamWalk           = Option::U8("Seam Walk",             GlitchDifficultyOptions(0b11111), { GlitchSeamWalkDescDisabled           , GlitchSeamWalkDescNovice           , GlitchSeamWalkDescIntermediate           , GlitchSeamWalkDescAdvanced           , GlitchSeamWalkDescExpert           , GlitchSeamWalkDescHero           });
   std::vector<Option*> glitchCategories = {
-    &GlitchRestrictedItems,
-    &GlitchSuperStab,
-    &GlitchISG,
-    &GlitchHover,
-    &GlitchBombOI,
-    &GlitchHoverBoost,
-    &GlitchSuperSlide,
-    &GlitchMegaflip,
-    &GlitchASlide,
-    &GlitchHammerSlide,
-    &GlitchLedgeCancel,
-    &GlitchActionSwap,
-    &GlitchQPA,
-    &GlitchHookshotClip,
-    &GlitchHookshotJump_Bonk,
-    &GlitchHookshotJump_Boots,
-    &GlitchCutsceneDive,
-    &GlitchNaviDive_Stick,
-    &GlitchTripleSlashClip,
-    &GlitchLedgeClip,
-    &GlitchSeamWalk,
+    &GlitchEquipSwapDins,
+    &GlitchEquipSwap,
   };
-
-  Option GlitchWWTEscape         = Option::Bool("WWT Kokiri\n  Forest Escape", {"Off", "On"}, {GlitchWWTEscapeDesc});
-  Option GlitchGVTentAsChild     = Option::Bool("Enter GV Tent\n  as Child",   {"Off", "On"}, {GlitchGVTentAsChildDesc});
-  Option GlitchGFGuardSneak      = Option::Bool("Sneak Past\n  the GF Guard",  {"Off", "On"}, {GlitchGFGuardSneakDesc});
-  Option GlitchItemlessWasteland = Option::Bool("Cross the HW\n  w/o Items",   {"Off", "On"}, {GlitchItemlessWastelandDesc});
-  Option GlitchOccamsStatue      = Option::Bool("Occam's Statue",              {"Off", "On"}, {GlitchOccamsStatueDesc});
-  Option GlitchZDOoBJumpSlash    = Option::Bool("ZD OoB w/\n  Jump Slash",     {"Off", "On"}, {GlitchZDOoBJumpSlashDesc});
-  Option GlitchJabuStickRecoil   = Option::Bool("Enter Jabu\n  w/o Bottle",    {"Off", "On"}, {GlitchJabuStickRecoilDesc});
-  Option GlitchJabuAdult         = Option::Bool("Enter Jabu\n  as Adult",      {"Off", "On"}, {GlitchJabuAdultDesc});
-  Option GlitchBlueFireWall      = Option::Bool("Break Walls\n  w/ Blue Fire", {"Off", "On"}, {GlitchBlueFireWallDesc});
-  Option GlitchClassicHalfie     = Option::Bool("Classic Halfie",              {"Off", "On"}, {GlitchClassicHalfieDesc});
-  Option GlitchModernHalfie      = Option::Bool("Modern Halfie",               {"Off", "On"}, {GlitchModernHalfieDesc});
-  Option GlitchJabuSwitch        = Option::Bool("Jabu Switch\n  w/ CS item",   {"Off", "On"}, {GlitchJabuSwitchDesc});
-  Option GlitchForestBKSkip      = Option::Bool("Forest Temple\n  BK Skip",    {"Off", "On"}, {GlitchForestBKSkipDesc});
-  Option GlitchFireGrunzClip     = Option::Bool("Fire Temple\n  Grunz Clip",   {"Off", "On"}, {GlitchFireGrunzClipDesc});
+  
   std::vector<Option*> miscGlitches = {
-    &GlitchWWTEscape,
-    &GlitchGVTentAsChild,
-    &GlitchGFGuardSneak,
-    &GlitchItemlessWasteland,
-    &GlitchOccamsStatue,
-    &GlitchZDOoBJumpSlash,
-    &GlitchJabuStickRecoil,
-    &GlitchJabuAdult,
-    &GlitchBlueFireWall,
-    &GlitchClassicHalfie,
-    &GlitchModernHalfie,
-    &GlitchJabuSwitch,
-    &GlitchForestBKSkip,
-    &GlitchFireGrunzClip,
+    
   };
+  
 
   Menu glitchCategorySettings = Menu::SubMenu("General Categories",     &glitchCategories, false);
   Menu miscGlitchSettings     = Menu::SubMenu("Miscellaneous Glitches", &miscGlitches,     false);
@@ -1298,6 +1561,7 @@ namespace Settings {
     ctx.bridgeRewardCount    = BridgeRewardCount.Value<uint8_t>();
     ctx.bridgeDungeonCount   = BridgeDungeonCount.Value<uint8_t>();
     ctx.bridgeTokenCount     = BridgeTokenCount.Value<uint8_t>();
+    ctx.bridgeRewardOptions  = BridgeRewardOptions.Value<uint8_t>();
     ctx.randomGanonsTrials   = (RandomGanonsTrials) ? 1 : 0;
     ctx.ganonsTrialsCount    = GanonsTrialsCount.Value<uint8_t>();
 
@@ -1346,11 +1610,12 @@ namespace Settings {
     ctx.bossKeysanity        = BossKeysanity.Value<uint8_t>();
     ctx.ganonsBossKey        = GanonsBossKey.Value<uint8_t>();
     ctx.lacsCondition        = LACSCondition;
-    ctx.lacsMedallionCount   = LACSMedallionCount.Value<uint8_t>();
     ctx.lacsStoneCount       = LACSStoneCount.Value<uint8_t>();
+    ctx.lacsMedallionCount   = LACSMedallionCount.Value<uint8_t>();
     ctx.lacsRewardCount      = LACSRewardCount.Value<uint8_t>();
     ctx.lacsDungeonCount     = LACSDungeonCount.Value<uint8_t>();
     ctx.lacsTokenCount       = LACSTokenCount.Value<uint8_t>();
+    ctx.lacsRewardOptions    = LACSRewardOptions.Value<uint8_t>();
 
     ctx.ringFortress         = (RingFortress) ? 1 : 0;
     ctx.ringForest           = (RingForest) ? 1 : 0;
@@ -2115,20 +2380,20 @@ namespace Settings {
     }
 
     if (!RandomizeDungeon) {
-      //Only show Medallion Count if setting Ganons Boss Key to LACS Medallions
-      if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_MEDALLIONS)) {
-        LACSMedallionCount.Unhide();
-      } else {
-        LACSMedallionCount.SetSelectedIndex(6);
-        LACSMedallionCount.Hide();
-      }
-
       //Only show Stone Count if setting Ganons Boss Key to LACS Stones
       if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_STONES)) {
         LACSStoneCount.Unhide();
       } else {
         LACSStoneCount.SetSelectedIndex(3);
         LACSStoneCount.Hide();
+      }
+      
+      //Only show Medallion Count if setting Ganons Boss Key to LACS Medallions
+      if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_MEDALLIONS)) {
+        LACSMedallionCount.Unhide();
+      } else {
+        LACSMedallionCount.SetSelectedIndex(6);
+        LACSMedallionCount.Hide();
       }
 
       //Only show Reward Count if setting Ganons Boss Key to LACS Rewards
@@ -2155,7 +2420,8 @@ namespace Settings {
         LACSTokenCount.Hide();
       }
 
-      if (KeyRings.IsNot(KEYRINGS_OFF)) {
+      // Only show dungeons when keyring selection is enabled
+      if (KeyRings.Is(KEYRINGS_SELECTION)) {
         for (Option *option : keyRingOptions) {
           option->Unhide();
         }
@@ -2192,109 +2458,6 @@ namespace Settings {
       StartingDoubleDefense.Lock();
     } else {
       StartingDoubleDefense.Unlock();
-    }
-
-    if (currentSetting != nullptr) {
-      if (currentSetting->GetName() == "All Tricks")  {
-        for (uint16_t i = 1; i < Settings::trickOptions.size(); i++) {
-          trickOptions[i]->SetSelectedIndex(0);
-        }
-        if(currentSetting->GetSelectedOptionIndex() >= 1){ //novice options
-          LogicGrottosWithoutAgony.SetSelectedIndex(1);
-          LogicVisibleCollision.SetSelectedIndex(1);
-          LogicFewerTunicRequirements.SetSelectedIndex(1);
-          LogicLostWoodsGSBean.SetSelectedIndex(1);
-          LogicLabDiving.SetSelectedIndex(1);
-          LogicGraveyardPoH.SetSelectedIndex(1);
-          LogicGVHammerChest.SetSelectedIndex(1);
-          LogicManOnRoof.SetSelectedIndex(1);
-          LogicWindmillPoHHookshot.SetSelectedIndex(1);
-          LogicGoronCityLeftMost.SetSelectedIndex(1);
-          LogicZoraRiverLower.SetSelectedIndex(1);
-          LogicZoraRiverUpper.SetSelectedIndex(1);
-          LogicZFGreatFairy.SetSelectedIndex(1);
-          LogicDekuB1WebsWithBow.SetSelectedIndex(1);
-          LogicDCJump.SetSelectedIndex(1);
-          LogicJabuScrubJumpDive.SetSelectedIndex(1);
-          LogicForestOutdoorEastGS.SetSelectedIndex(1);
-          LogicFireScarecrow.SetSelectedIndex(1);
-          LogicWaterTempleTorchLongshot.SetSelectedIndex(1);
-          LogicWaterCentralGSFW.SetSelectedIndex(1);
-          LogicWaterNorthBasementLedgeJump.SetSelectedIndex(1);
-          LogicWaterRiverGS.SetSelectedIndex(1);
-          LogicSpiritLowerAdultSwitch.SetSelectedIndex(1);
-          LogicShadowStatue.SetSelectedIndex(1);
-          LogicChildDeadhand.SetSelectedIndex(1);
-          LogicGtgFakeWall.SetSelectedIndex(1);
-          LogicLensSpirit.SetSelectedIndex(1);
-          LogicLensShadow.SetSelectedIndex(1);
-          LogicLensGtg.SetSelectedIndex(1);
-          LogicLensJabuMQ.SetSelectedIndex(1);
-          LogicLensSpiritMQ.SetSelectedIndex(1);
-          LogicLensShadowMQ.SetSelectedIndex(1);
-          LogicLensBotwMQ.SetSelectedIndex(1);
-          LogicLensGtgMQ.SetSelectedIndex(1);
-          LogicFlamingChests.SetSelectedIndex(1);
-        }
-        if(currentSetting->GetSelectedOptionIndex() >= 2){ //intermediate options
-          LogicLabWallGS.SetSelectedIndex(1);
-          LogicChildDampeRacePoH.SetSelectedIndex(1);
-          LogicGerudoKitchen.SetSelectedIndex(1);
-          LogicOutsideGanonsGS.SetSelectedIndex(1);
-          LogicDMTSoilGS.SetSelectedIndex(1);
-          LogicDMTSummitHover.SetSelectedIndex(1);
-          LogicLinkGoronDins.SetSelectedIndex(1);
-          LogicGoronCityPotWithStrength.SetSelectedIndex(1);
-          //LogicCraterUpperToLower.SetSelectedIndex(1);
-          LogicBiggoronBolero.SetSelectedIndex(1);
-          LogicDekuB1Skip.SetSelectedIndex(1);
-          LogicDekuBasementGS.SetSelectedIndex(1);
-          LogicDCStaircase.SetSelectedIndex(1);
-          LogicDCScarecrowGS.SetSelectedIndex(1);
-          //LogicJabuBossGSAdult.SetSelectedIndex(1);
-          //LogicForestOutsideBackdoor.SetSelectedIndex(1);
-          LogicForestDoorFrame.SetSelectedIndex(1);
-          LogicFireBossDoorJump.SetSelectedIndex(1);
-          LogicFireSongOfTime.SetSelectedIndex(1);
-          LogicWaterCentralBow.SetSelectedIndex(1);
-          LogicWaterBossKeyRegion.SetSelectedIndex(1);
-          LogicWaterBKJumpDive.SetSelectedIndex(1);
-          LogicWaterFallingPlatformGS.SetSelectedIndex(1);
-          LogicSpiritChildBombchu.SetSelectedIndex(1);
-          LogicSpiritLobbyGS.SetSelectedIndex(1);
-          LogicSpiritMapChest.SetSelectedIndex(1);
-          LogicShadowFreestandingKey.SetSelectedIndex(1);
-          LogicLensShadowBack.SetSelectedIndex(1);
-          LogicLensBotw.SetSelectedIndex(1);
-          LogicLensCastle.SetSelectedIndex(1);
-          LogicLensShadowMQBack.SetSelectedIndex(1);
-          LogicLensCastleMQ.SetSelectedIndex(1);
-          LogicSpiritTrialHookshot.SetSelectedIndex(1);
-        }
-        if(currentSetting->GetSelectedOptionIndex() == 3){ //expert options
-          LogicLensWasteland.SetSelectedIndex(1);
-          LogicReverseWasteland.SetSelectedIndex(1);
-          LogicColossusGS.SetSelectedIndex(1);
-          LogicDMTBombable.SetSelectedIndex(1);
-          LogicGoronCityPot.SetSelectedIndex(1);
-          LogicChildRollingWithStrength.SetSelectedIndex(1);
-          LogicCraterBeanPoHWithHovers.SetSelectedIndex(1);
-          LogicDCSlingshotSkip.SetSelectedIndex(1);
-          LogicFireStrength.SetSelectedIndex(1);
-          LogicFireFlameMaze.SetSelectedIndex(1);
-          LogicWaterTempleUpperBoost.SetSelectedIndex(1);
-          LogicWaterCrackedWallNothing.SetSelectedIndex(1);
-          LogicWaterCrackedWallHovers.SetSelectedIndex(1);
-          LogicWaterDragonAdult.SetSelectedIndex(1);
-          LogicWaterDragonJumpDive.SetSelectedIndex(1);
-          LogicSpiritWall.SetSelectedIndex(1);
-          LogicSpiritSunChest.SetSelectedIndex(1);
-          //LogicShadowFireArrowEntry.SetSelectedIndex(1);
-          LogicShadowUmbrella.SetSelectedIndex(1);
-          LogicShadowBongo.SetSelectedIndex(1);
-          LogicGtgWithoutHookshot.SetSelectedIndex(1);
-        }
-      }
     }
 
     // Multiplayer
@@ -2659,18 +2822,19 @@ namespace Settings {
   }
 
   //Function to set flags depending on settings
-  void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations) {
+  void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks) {
 
-    // RANDTODO: Switch this back once all logic options are implemented
-    // Logic.SetSelectedIndex(cvarSettings[RSK_LOGIC_RULES]);
+    //Logic.SetSelectedIndex(cvarSettings[RSK_LOGIC_RULES]);
+    //TODO switch back for glitch logic
     switch (cvarSettings[RSK_LOGIC_RULES]) {
-        case RO_LOGIC_GLITCHLESS:
-            Logic.SetSelectedIndex(0);
-            break;
-        case RO_LOGIC_NO_LOGIC:
-            Logic.SetSelectedIndex(2);
-            break;
+      case RO_LOGIC_GLITCHLESS:
+        Logic.SetSelectedIndex(0);
+        break;
+      case RO_LOGIC_NO_LOGIC:
+        Logic.SetSelectedIndex(2);
+        break;
     }
+
     LocationsReachable.SetSelectedIndex(cvarSettings[RSK_ALL_LOCATIONS_REACHABLE]);
 
     AddExcludedOptions();
@@ -2682,6 +2846,13 @@ namespace Settings {
         location->GetExcludedOption()->SetSelectedIndex(0);
       }
     }
+
+    //tricks
+    
+    for (auto randomizerTrick : enabledTricks) {
+      trickOptionMap[randomizerTrick]->SetSelectedIndex(1);
+    }
+    
 
     OpenForest.SetSelectedIndex(cvarSettings[RSK_FOREST]);
     OpenKakariko.SetSelectedIndex(cvarSettings[RSK_KAK_GATE]);
@@ -2695,6 +2866,7 @@ namespace Settings {
     BridgeRewardCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT]);
     BridgeDungeonCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT]);
     BridgeTokenCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT]);
+    BridgeRewardOptions.SetSelectedIndex(cvarSettings[RSK_BRIDGE_OPTIONS]);
     if (cvarSettings[RSK_GANONS_TRIALS] == RO_GANONS_TRIALS_RANDOM_NUMBER) {
         RandomGanonsTrials.SetSelectedIndex(1);
     } else {
@@ -2826,9 +2998,11 @@ namespace Settings {
     LACSRewardCount.SetSelectedIndex(cvarSettings[RSK_LACS_REWARD_COUNT]);
     LACSDungeonCount.SetSelectedIndex(cvarSettings[RSK_LACS_DUNGEON_COUNT]);
     LACSTokenCount.SetSelectedIndex(cvarSettings[RSK_LACS_TOKEN_COUNT]);
+    LACSRewardOptions.SetSelectedIndex(cvarSettings[RSK_LACS_OPTIONS]);
 
     KeyRings.SetSelectedIndex(cvarSettings[RSK_KEYRINGS]);
     KeyRingsRandomCount.SetSelectedIndex(cvarSettings[RSK_KEYRINGS_RANDOM_COUNT]);
+    RingFortress.SetSelectedIndex(cvarSettings[RSK_KEYRINGS_GERUDO_FORTRESS]);
     RingForest.SetSelectedIndex(cvarSettings[RSK_KEYRINGS_FOREST_TEMPLE]);
     RingFire.SetSelectedIndex(cvarSettings[RSK_KEYRINGS_FIRE_TEMPLE]);
     RingWater.SetSelectedIndex(cvarSettings[RSK_KEYRINGS_WATER_TEMPLE]);
@@ -2923,22 +3097,23 @@ namespace Settings {
       }
     }
 
-    std::vector<uint8_t> randKeyRingDungeons = {};
     //Set key ring for each dungeon
     for (size_t i = 0; i < dungeons.size(); i++) {
       dungeons[i]->ClearKeyRing();
-      if (dungeons[i]->GetSmallKeyCount() > 0) {
-        randKeyRingDungeons.push_back(i);
-      }
     }
-    if (KeyRings.Is(KEYRINGS_RANDOM) || KeyRings.Is(KEYRINGS_RANDOM_COUNT)) {
-      int keyRingCount = KeyRings.Is(KEYRINGS_RANDOM_COUNT) ? KeyRingsRandomCount.Value<uint8_t>() : Random(0, randKeyRingDungeons.size());
-      Shuffle(randKeyRingDungeons);
-
-      for (uint8_t i = 0; i < keyRingCount; i++) {
-        dungeons[randKeyRingDungeons[i]]->SetKeyRing();
+    if (KeyRings) {
+      // Random Key Rings
+      if (KeyRings.Is(KEYRINGS_RANDOM) || KeyRings.Is(KEYRINGS_RANDOM_COUNT)) {
+        auto keyRings = keyRingOptions;
+        if (GerudoFortress.Is(GERUDOFORTRESS_NORMAL) && GerudoKeys.IsNot(GERUDOKEYS_VANILLA)) {
+          keyRings.push_back(&RingFortress);
+        }
+        int keyRingCount = KeyRings.Is(KEYRINGS_RANDOM_COUNT) ? KeyRingsRandomCount.Value<uint8_t>() : Random(0, keyRings.size());
+        Shuffle(keyRings);
+        for (size_t i = 0; i < keyRingCount; i++) {
+          keyRings[i]->SetSelectedIndex(ON);
+        }
       }
-    } else if (KeyRings.Is(KEYRINGS_SELECTION)) {
       if (RingWell) {
         BottomOfTheWell.SetKeyRing();
       }
@@ -3006,10 +3181,10 @@ namespace Settings {
 
     HasNightStart = StartingTime.Is(STARTINGTIME_NIGHT);
 
-    if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_MEDALLIONS)) {
-      LACSCondition = LACSCONDITION_MEDALLIONS;
-    } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_STONES)) {
+    if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_STONES)) {
       LACSCondition = LACSCONDITION_STONES;
+    } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_MEDALLIONS)) {
+      LACSCondition = LACSCONDITION_MEDALLIONS;
     } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_REWARDS)) {
       LACSCondition = LACSCONDITION_REWARDS;
     } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_DUNGEONS)) {

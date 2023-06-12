@@ -39,7 +39,7 @@ void AreaTable_Init_IceCavern() {
                   LocationAccess(ICE_CAVERN_FREESTANDING_POH,        {[]{return BlueFire;}}),
                   LocationAccess(ICE_CAVERN_GS_SPINNING_SCYTHE_ROOM, {[]{return HookshotOrBoomerang;}}),
                   LocationAccess(ICE_CAVERN_GS_HEART_PIECE_ROOM,     {[]{return BlueFire && HookshotOrBoomerang;}}),
-                  LocationAccess(ICE_CAVERN_GS_PUSH_BLOCK_ROOM,      {[]{return BlueFire && HookshotOrBoomerang;}}),
+                  LocationAccess(ICE_CAVERN_GS_PUSH_BLOCK_ROOM,      {[]{return BlueFire && (HookshotOrBoomerang || (LogicIceBlockGS && IsAdult && CanUse(HOVER_BOOTS)));}}),
   }, {});
   }
 
@@ -71,7 +71,7 @@ void AreaTable_Init_IceCavern() {
                   LocationAccess(ICE_CAVERN_MQ_IRON_BOOTS_CHEST, {[]{return IsAdult;}}),
                   LocationAccess(SHEIK_IN_ICE_CAVERN,            {[]{return IsAdult;}}),
                   LocationAccess(ICE_CAVERN_MQ_GS_ICE_BLOCK,     {[]{return IsAdult || CanUseProjectile;}}),
-                  LocationAccess(ICE_CAVERN_MQ_GS_SCARECROW,     {[]{return IsAdult && (CanUse(SCARECROW) || (CanUse(HOVER_BOOTS) && CanUse(LONGSHOT)));}}),
+                  LocationAccess(ICE_CAVERN_MQ_GS_SCARECROW,     {[]{return (CanUse(SCARECROW) || (HoverBoots && CanUse(LONGSHOT)) || LogicIceMQScarecrow) && IsAdult;}}),
                     //Tricks: (CanUse(SCARECROW) || (HoverBoots && CanUse(LONGSHOT)) || LogicIceMQScarecrow) && IsAdult
   }, {});
 
@@ -79,7 +79,7 @@ void AreaTable_Init_IceCavern() {
                   //Locations
                   LocationAccess(ICE_CAVERN_MQ_COMPASS_CHEST,    {[]{return true;}}),
                   LocationAccess(ICE_CAVERN_MQ_FREESTANDING_POH, {[]{return HasExplosives;}}),
-                  LocationAccess(ICE_CAVERN_MQ_GS_RED_ICE,       {[]{return CanPlay(SongOfTime);}}),
+                  LocationAccess(ICE_CAVERN_MQ_GS_RED_ICE,       {[]{return CanPlay(SongOfTime) || LogicIceMQRedIceGS;}}),
                     //Trick: CanPlay(SongOfTime) || LogicIceMQRedIceGS
   }, {});
   }

@@ -9,7 +9,7 @@
 #include "objects/object_tk/object_tk.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 #define COLLECTFLAG_GRAVEDIGGING_HEART_PIECE 0x19
 #define ITEMGETINFFLAG_GRAVEDIGGING_HEART_PIECE 0x1000
 
@@ -526,6 +526,8 @@ void EnTk_Destroy(Actor* thisx, PlayState* play) {
     EnTk* this = (EnTk*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnTk_Rest(EnTk* this, PlayState* play) {
