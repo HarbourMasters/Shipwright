@@ -8170,7 +8170,7 @@ void func_80843188(Player* this, PlayState* play) {
 
     if (this->unk_850 != 0) {
         sp54 = sControlInput->rel.stick_y * 100;
-        sp50 = sControlInput->rel.stick_x * -120;
+        sp50 = sControlInput->rel.stick_x * (CVarGetInteger("gMirroredWorld", 0) ? 120 : -120);
         sp4E = this->actor.shape.rot.y - Camera_GetInputDirYaw(GET_ACTIVE_CAM(play));
 
         sp40 = Math_CosS(sp4E);
@@ -11347,12 +11347,13 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
     s32 temp1;
     s16 temp2;
     s16 temp3;
+    bool gInvertAimingXAxis = (CVarGetInteger("gInvertAimingXAxis", 0) && !CVarGetInteger("gMirroredWorld", 0)) || (!CVarGetInteger("gInvertAimingXAxis", 0) && CVarGetInteger("gMirroredWorld", 0));
 
     if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0) && !CVarGetInteger("gDisableAutoCenterViewFirstPerson", 0)) {
         temp2 = sControlInput->rel.stick_y * 240.0f * (CVarGetInteger("gInvertAimingYAxis", 1) ? 1 : -1); // Sensitivity not applied here because higher than default sensitivies will allow the camera to escape the autocentering, and glitch out massively
         Math_SmoothStepToS(&this->actor.focus.rot.x, temp2, 14, 4000, 30);
 
-        temp2 = sControlInput->rel.stick_x * -16.0f * (CVarGetInteger("gInvertAimingXAxis", 0) ? -1 : 1) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
+        temp2 = sControlInput->rel.stick_x * -16.0f * (gInvertAimingXAxis ? -1 : 1) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
         temp2 = CLAMP(temp2, -3000, 3000);
         this->actor.focus.rot.y += temp2;
     } else {
@@ -11377,18 +11378,18 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         temp2 = this->actor.focus.rot.y - this->actor.shape.rot.y;
         temp3 = ((sControlInput->rel.stick_x >= 0) ? 1 : -1) *
                 (s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f *
-                        (CVarGetInteger("gInvertAimingXAxis", 0) ? -1 : 1)) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
+                        (gInvertAimingXAxis ? -1 : 1)) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
         temp2 += temp3;
 
         this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
 
         if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
-            this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f;
+            this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
         }
 
         if (fabsf(sControlInput->cur.right_stick_x) > 15.0f && CVarGetInteger("gRightStickAiming", 0) != 0) {
             this->actor.focus.rot.y +=
-                (sControlInput->cur.right_stick_x) * 10.0f * (CVarGetInteger("gInvertAimingXAxis", 0) ? 1 : -1) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
+                (sControlInput->cur.right_stick_x) * 10.0f * (gInvertAimingXAxis ? 1 : -1) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
         }
     }
 
@@ -11939,7 +11940,7 @@ void func_8084BF1C(Player* this, PlayState* play) {
                 if ((this->unk_84F != 0) && (sp80 != 0)) {
                     anim2 = this->ageProperties->unk_BC[this->unk_850];
 
-                    if (sp80 > 0) {
+                    if (CVarGetInteger("gMirroredWorld", 0) ? (sp80 < 0) : (sp80 > 0)) {
                         this->skelAnime.prevTransl = this->ageProperties->unk_7A[this->unk_850];
                         func_80832264(play, this, anim2);
                     } else {
@@ -13619,9 +13620,9 @@ s32 func_8084FCAC(Player* this, PlayState* play) {
                 if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_DDOWN)) {
                     angle = temp + 0x8000;
                 } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_DLEFT)) {
-                    angle = temp + 0x4000;
+                    angle = temp + (0x4000 * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1));
                 } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_DRIGHT)) {
-                    angle = temp - 0x4000;
+                    angle = temp - (0x4000 * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1));
                 }
 
                 this->actor.world.pos.x += speed * Math_SinS(angle);
