@@ -131,8 +131,11 @@ void PauseMapMark_DrawForDungeon(PlayState* play) {
                                     markInfo->textureWidth, markInfo->textureHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
+                // Compute the offset to mirror icons over the map center (48) as an axis line
+                s16 mirrorOffset = CVarGetInteger("gMirroredWorld", 0) ? mirrorOffset = (48 - markPoint->x) * 2 + 1 : 0;
+
                 Matrix_Push();
-                Matrix_Translate(GREG(92) + markPoint->x, GREG(93) + markPoint->y, 0.0f, MTXMODE_APPLY);
+                Matrix_Translate(GREG(92) + markPoint->x + mirrorOffset, GREG(93) + markPoint->y, 0.0f, MTXMODE_APPLY);
                 Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
                 gSPMatrix(POLY_KAL_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

@@ -635,32 +635,49 @@ void Minimap_DrawCompassIcons(PlayState* play) {
         gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
         gDPSetCombineMode(OVERLAY_DISP++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
 
+        s16 mapWidth = 0;
+        s16 mapStartPosX = 0;
+        if (play->sceneNum >= SCENE_SPOT00 && play->sceneNum <= SCENE_GANON_TOU) { // Overworld
+            mapStartPosX = R_OW_MINIMAP_X;
+            mapWidth = gMapData->owMinimapWidth[R_MAP_INDEX];
+        } else if (play->sceneNum >= SCENE_YDAN && play->sceneNum <= SCENE_ICE_DOUKUTO) { // Dungeons
+            mapStartPosX = R_DGN_MINIMAP_X;
+            mapWidth = 96;
+        }
+
+        // The compass offset value is a factor of 10 compared to N64 screen pixels and originates in the center of the screen
+        // Compute the additional mirror offset value by normalizing the original offset position
+        // and taking it's distance to the center of the map, duplicating that result and casting back to a factor of 10
+        s16 mirrorOffset = ((mapWidth / 2) - ((R_COMPASS_OFFSET_X / 10) - (mapStartPosX - SCREEN_WIDTH / 2))) * 2 * 10;
+
         tempX = player->actor.world.pos.x;
         tempZ = player->actor.world.pos.z;
-        tempX /= R_COMPASS_SCALE_X;
+        tempX /= R_COMPASS_SCALE_X * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
         tempZ /= R_COMPASS_SCALE_Y;
+
+        s16 tempXOffset = R_COMPASS_OFFSET_X + (CVarGetInteger("gMirroredWorld", 0) ? mirrorOffset : 0);
         if (CVarGetInteger("gMinimapPosType", 0) != 0) {
             if (CVarGetInteger("gMinimapPosType", 0) == 1) {//Anchor Left
                 if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
-                    Matrix_Translate(
-                        OTRGetDimensionFromLeftEdge((R_COMPASS_OFFSET_X + (X_Margins_Minimap*10) + tempX + (CVarGetInteger("gMinimapPosX", 0)*10)) / 10.0f),
-                        (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
+                Matrix_Translate(
+                    OTRGetDimensionFromLeftEdge((tempXOffset + (X_Margins_Minimap*10) + tempX + (CVarGetInteger("gMinimapPosX", 0)*10)) / 10.0f),
+                    (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
             } else if (CVarGetInteger("gMinimapPosType", 0) == 2) {//Anchor Right
                 if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
                 Matrix_Translate(
-                    OTRGetDimensionFromRightEdge((R_COMPASS_OFFSET_X + (X_Margins_Minimap*10) + tempX + (CVarGetInteger("gMinimapPosX", 0)*10)) / 10.0f),
+                    OTRGetDimensionFromRightEdge((tempXOffset + (X_Margins_Minimap*10) + tempX + (CVarGetInteger("gMinimapPosX", 0)*10)) / 10.0f),
                     (R_COMPASS_OFFSET_Y +((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
             } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
                 Matrix_Translate(
-                    (R_COMPASS_OFFSET_X + tempX + (CVarGetInteger("gMinimapPosX", 0)*10) / 10.0f),
+                    (tempXOffset + tempX + (CVarGetInteger("gMinimapPosX", 0)*10) / 10.0f),
                     (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
             }
         } else {
-            Matrix_Translate(OTRGetDimensionFromRightEdge((R_COMPASS_OFFSET_X+(X_Margins_Minimap*10) + tempX) / 10.0f), (R_COMPASS_OFFSET_Y+((Y_Margins_Minimap*10)*-1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
+            Matrix_Translate(OTRGetDimensionFromRightEdge((tempXOffset+(X_Margins_Minimap*10) + tempX) / 10.0f), (R_COMPASS_OFFSET_Y+((Y_Margins_Minimap*10)*-1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
         }
         Matrix_Scale(0.4f, 0.4f, 0.4f, MTXMODE_APPLY);
         Matrix_RotateX(-1.6f, MTXMODE_APPLY);
-        tempX = (0x7FFF - player->actor.shape.rot.y) / 0x400;
+        tempX = ((0x7FFF - player->actor.shape.rot.y) / 0x400) * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
         Matrix_RotateY(tempX / 10.0f, MTXMODE_APPLY);
         gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -669,32 +686,32 @@ void Minimap_DrawCompassIcons(PlayState* play) {
         gSPDisplayList(OVERLAY_DISP++, gCompassArrowDL);
 
         //Player map entry (red arrow)
-        tempX = sPlayerInitialPosX+X_Margins_Minimap;
-        tempZ = sPlayerInitialPosZ+Y_Margins_Minimap;
-        tempX /= R_COMPASS_SCALE_X;
+        tempX = sPlayerInitialPosX;
+        tempZ = sPlayerInitialPosZ;
+        tempX /= R_COMPASS_SCALE_X * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
         tempZ /= R_COMPASS_SCALE_Y;
         if (CVarGetInteger("gMinimapPosType", 0) != 0) {
             if (CVarGetInteger("gMinimapPosType", 0) == 1) {//Anchor Left
                 if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
-                    Matrix_Translate(
-                        OTRGetDimensionFromLeftEdge((R_COMPASS_OFFSET_X + (X_Margins_Minimap*10) + tempX + (CVarGetInteger("gMinimapPosX", 0)*10)) / 10.0f),
-                        (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
+                Matrix_Translate(
+                    OTRGetDimensionFromLeftEdge((tempXOffset + (X_Margins_Minimap*10) + tempX + (CVarGetInteger("gMinimapPosX", 0)*10)) / 10.0f),
+                    (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
             } else if (CVarGetInteger("gMinimapPosType", 0) == 2) {//Anchor Right
                 if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
                 Matrix_Translate(
-                    OTRGetDimensionFromRightEdge((R_COMPASS_OFFSET_X + (X_Margins_Minimap*10) + tempX + (CVarGetInteger("gMinimapPosX", 0)*10)) / 10.0f),
+                    OTRGetDimensionFromRightEdge((tempXOffset + (X_Margins_Minimap*10) + tempX + (CVarGetInteger("gMinimapPosX", 0)*10)) / 10.0f),
                     (R_COMPASS_OFFSET_Y +((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
             } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
                 Matrix_Translate(
-                    (R_COMPASS_OFFSET_X + tempX + (CVarGetInteger("gMinimapPosX", 0)*10) / 10.0f),
+                    (tempXOffset + tempX + (CVarGetInteger("gMinimapPosX", 0)*10) / 10.0f),
                     (R_COMPASS_OFFSET_Y - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
             }
         } else {
-            Matrix_Translate(OTRGetDimensionFromRightEdge((R_COMPASS_OFFSET_X+(X_Margins_Minimap*10) + tempX) / 10.0f), (R_COMPASS_OFFSET_Y+((Y_Margins_Minimap*10)*-1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
+            Matrix_Translate(OTRGetDimensionFromRightEdge((tempXOffset+(X_Margins_Minimap*10) + tempX) / 10.0f), (R_COMPASS_OFFSET_Y+((Y_Margins_Minimap*10)*-1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
         }
         Matrix_Scale(VREG(9) / 100.0f, VREG(9) / 100.0f, VREG(9) / 100.0f, MTXMODE_APPLY);
         Matrix_RotateX(VREG(52) / 10.0f, MTXMODE_APPLY);
-        Matrix_RotateY(sPlayerInitialDirection / 10.0f, MTXMODE_APPLY);
+        Matrix_RotateY((sPlayerInitialDirection * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1)) / 10.0f, MTXMODE_APPLY);
         gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
@@ -752,8 +769,9 @@ void Minimap_Draw(PlayState* play) {
                     if (CHECK_DUNGEON_ITEM(DUNGEON_MAP, mapIndex)) {
                         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, minimapColor.r, minimapColor.g, minimapColor.b, interfaceCtx->minimapAlpha);
 
+                        u8 mirrorMode = CVarGetInteger("gMirroredWorld", 0) ? G_TX_MIRROR : G_TX_NOMIRROR;
                         gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->mapSegmentName[0], G_IM_FMT_I, 96, 85, 0,
-                                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                                               mirrorMode | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                                G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
                         s16 dgnMiniMapX = OTRGetRectDimensionFromRightEdge(R_DGN_MINIMAP_X + X_Margins_Minimap);
@@ -770,9 +788,16 @@ void Minimap_Draw(PlayState* play) {
                                 dgnMiniMapX = CVarGetInteger("gMinimapPosX", 0);
                             }
                         }
+
+                        s32 sValue = 0;
+                        if (CVarGetInteger("gMirroredWorld", 0)) {
+                            // Flip the minimap on the x-axis (s-axis) by setting s to the textures mirror boundary
+                            sValue = 96 << 5;
+                        }
+
                         gSPWideTextureRectangle(OVERLAY_DISP++, dgnMiniMapX << 2, dgnMiniMapY << 2,
                                             (dgnMiniMapX + 96) << 2, (dgnMiniMapY + 85) << 2, G_TX_RENDERTILE,
-                                            0, 0, 1 << 10, 1 << 10);
+                                            sValue, 0, 1 << 10, 1 << 10);
                     }
 
                     if (CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, mapIndex)) {
@@ -820,9 +845,10 @@ void Minimap_Draw(PlayState* play) {
                     gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
                     gDPSetPrimColor(OVERLAY_DISP++, 0, 0, minimapColor.r, minimapColor.g, minimapColor.b, interfaceCtx->minimapAlpha);
 
+                    u8 mirrorMode = CVarGetInteger("gMirroredWorld", 0) ? G_TX_MIRROR : G_TX_NOMIRROR;
                     gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->mapSegmentName[0], G_IM_FMT_IA,
                                            gMapData->owMinimapWidth[mapIndex], gMapData->owMinimapHeight[mapIndex], 0,
-                                           G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                                           mirrorMode | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
                     s16 oWMiniMapX = OTRGetRectDimensionFromRightEdge(R_OW_MINIMAP_X + X_Margins_Minimap);
@@ -839,9 +865,16 @@ void Minimap_Draw(PlayState* play) {
                             oWMiniMapX = CVarGetInteger("gMinimapPosX", 0);
                         }
                     }
+
+                    s32 sValue = 0;
+                    if (CVarGetInteger("gMirroredWorld", 0)) {
+                        // Flip the minimap on the x-axis (s-axis) by setting s to the textures mirror boundary
+                        sValue = gMapData->owMinimapWidth[mapIndex] << 5;
+                    }
+
                     gSPWideTextureRectangle(OVERLAY_DISP++, oWMiniMapX << 2, oWMiniMapY << 2,
                                            (oWMiniMapX + gMapData->owMinimapWidth[mapIndex]) << 2,
-                                           (oWMiniMapY + gMapData->owMinimapHeight[mapIndex]) << 2, G_TX_RENDERTILE, 0,
+                                           (oWMiniMapY + gMapData->owMinimapHeight[mapIndex]) << 2, G_TX_RENDERTILE, sValue,
                                             0, 1 << 10, 1 << 10);
 
                     gDPSetPrimColor(OVERLAY_DISP++, 0, 0, minimapColor.r, minimapColor.g, minimapColor.b, interfaceCtx->minimapAlpha);
@@ -851,26 +884,33 @@ void Minimap_Draw(PlayState* play) {
                     if (((play->sceneNum != SCENE_SPOT01) && (play->sceneNum != SCENE_SPOT04) &&
                          (play->sceneNum != SCENE_SPOT08)) ||
                         (LINK_AGE_IN_YEARS != YEARS_ADULT)) {
+                        s16 origX = gMapData->owEntranceIconPosX[sEntranceIconMapIndex];
+
+                        // Compute the distance of the center of the original texture location to the center of the map
+                        // Then duplicate that and right-align the texture (extra 2 pixels are due to the texture being a 6px left-aligned in a 8px tex)
+                        s16 distFromCenter = (R_OW_MINIMAP_X + (gMapData->owMinimapWidth[mapIndex] / 2)) - (origX + (iconSize / 2));
+                        s16 mirrorOffset = distFromCenter * 2 + (iconSize / 2) - 2;
+                        s16 newX = origX + (CVarGetInteger("gMirroredWorld", 0) ? mirrorOffset : 0);
+
                         // The game authentically uses larger negative values for the entrance icon Y pos value. Normally only the first 12 bits
                         // would be read when the final value is passed into `gSPTextureRectangle`, but our cosmetic hud placements requires using
                         // `gSPWideTextureRectangle` which reads the first 24 bits instead. This caused the icon to be placed off screen.
                         // To address this, we take only the first 10 bits (which are later left-shifted by 2 to get our final 12 bits)
                         // to fix the entrance icon position when used with `gSPWideTextureRectangle`
                         s16 newY = gMapData->owEntranceIconPosY[sEntranceIconMapIndex] & 0x3FF;
-                        s16 PosX = gMapData->owEntranceIconPosX[sEntranceIconMapIndex] + X_Margins_Minimap;
 
-                        s16 entranceX = OTRGetRectDimensionFromRightEdge(PosX);
+                        s16 entranceX = OTRGetRectDimensionFromRightEdge(newX + X_Margins_Minimap);
                         s16 entranceY = newY + Y_Margins_Minimap;
                         if (CVarGetInteger("gMinimapPosType", 0) != 0) {
                             entranceY = newY + CVarGetInteger("gMinimapPosY", 0) + Y_Margins_Minimap;
                             if (CVarGetInteger("gMinimapPosType", 0) == 1) { // Anchor Left
                                 if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
-                                entranceX = OTRGetRectDimensionFromLeftEdge(PosX + CVarGetInteger("gMinimapPosX", 0));
+                                entranceX = OTRGetRectDimensionFromLeftEdge(newX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0));
                             } else if (CVarGetInteger("gMinimapPosType", 0) == 2) { // Anchor Right
                                 if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
-                                entranceX = OTRGetRectDimensionFromRightEdge(PosX + CVarGetInteger("gMinimapPosX", 0));
+                                entranceX = OTRGetRectDimensionFromRightEdge(newX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0));
                             } else if (CVarGetInteger("gMinimapPosType", 0) == 3) { // Anchor None
-                                entranceX = PosX + CVarGetInteger("gMinimapPosX", 0);
+                                entranceX = newX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0);
                             }
                         }
 
@@ -894,18 +934,19 @@ void Minimap_Draw(PlayState* play) {
                         }
                     }
 
-                    s16 entranceX = OTRGetRectDimensionFromRightEdge(270 + X_Margins_Minimap);
+                    s16 origX = CVarGetInteger("gMirroredWorld", 0) ? 256 : 270;
+                    s16 entranceX = OTRGetRectDimensionFromRightEdge(origX + X_Margins_Minimap);
                     s16 entranceY = 154 + Y_Margins_Minimap;
                     if (CVarGetInteger("gMinimapPosType", 0) != 0) {
                         entranceY = 154 + Y_Margins_Minimap + CVarGetInteger("gMinimapPosY", 0);
                         if (CVarGetInteger("gMinimapPosType", 0) == 1) {//Anchor Left
                             if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
-                            entranceX = OTRGetRectDimensionFromLeftEdge(270 + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0));
+                            entranceX = OTRGetRectDimensionFromLeftEdge(origX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0));
                         } else if (CVarGetInteger("gMinimapPosType", 0) == 2) {//Anchor Right
                             if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
-                            entranceX = OTRGetRectDimensionFromRightEdge(270 + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0));
+                            entranceX = OTRGetRectDimensionFromRightEdge(origX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0));
                         } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
-                            entranceX = 270 + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0);
+                            entranceX = origX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0);
                         }
                     }
 

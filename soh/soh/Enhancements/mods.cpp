@@ -4,6 +4,7 @@
 #include "tts/tts.h"
 #include "soh/Enhancements/boss-rush/BossRushTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/randomizer/3drando/random.hpp"
 
 extern "C" {
 #include <z64.h>
@@ -550,6 +551,29 @@ void RegisterMenuPathFix() {
     });
 }
 
+void UpdateMirrorModeState(int32_t sceneNum) {
+    if (CVarGetInteger("gMirroredWorldMode", MIRRORED_WORLD_OFF) == MIRRORED_WORLD_RANDOM_SEEDED) {
+        uint32_t seed = sceneNum + (gSaveContext.n64ddFlag ? (gSaveContext.seedIcons[0] + gSaveContext.seedIcons[1] + gSaveContext.seedIcons[2] + gSaveContext.seedIcons[3] + gSaveContext.seedIcons[4]) : gSaveContext.sohStats.fileCreatedAt);
+        Random_Init(seed);
+    }
+
+    uint8_t randomNumber = Random(0, 2);
+    if (
+        CVarGetInteger("gMirroredWorldMode", MIRRORED_WORLD_OFF) == MIRRORED_WORLD_ALWAYS ||
+        CVarGetInteger("gMirroredWorldMode", MIRRORED_WORLD_OFF) > MIRRORED_WORLD_ALWAYS && randomNumber == 1
+    ) {
+        CVarSetInteger("gMirroredWorld", 1);
+    } else {
+        CVarClear("gMirroredWorld");
+    }
+}
+
+void RegisterMirrorModeHandler() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
+        UpdateMirrorModeState(sceneNum);
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -571,4 +595,5 @@ void InitMods() {
     RegisterHyperEnemies();
     RegisterBonkDamage();
     RegisterMenuPathFix();
+    RegisterMirrorModeHandler();
 }
