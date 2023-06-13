@@ -305,6 +305,7 @@ jobs:
         mv ./README.md ./soh-windows/readme.txt
         mv ./build-windows/gamecontrollerdb.txt ./soh-windows/gamecontrollerdb.txt
         mv ./x64/Release/assets ./soh-windows
+        ls
     - name: Download soh.otr
       uses: actions/download-artifact@v3
       with:
