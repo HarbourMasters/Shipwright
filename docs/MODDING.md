@@ -8,7 +8,7 @@ Git is required to be installed. Knowing how to use git is going to help, I will
 
 General coding knowledge is also usually a requirement. You might be able to get by without, but the more knowledgeable the better, as it will allow you to find what you are looking for and troubleshoot much more easily.
 
-## What the fork?
+## Making a fork in the road
 
 Your first step is to fork the repository. To do this, you will need a github account. Assuming you have a github account you can navigate to the Shipwright repo [here](https://github.com/HarbourMasters/Shipwright) and press the `Fork` button in the top right of the screen. When that process is complete you should land on a page that looks similar to the original repo, but under your username (eg: `https://github.com/<GITHUB USERNAME>/Shipwright`).
 
