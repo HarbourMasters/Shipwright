@@ -2831,7 +2831,10 @@ s32 func_80835B60(Player* this, PlayState* play) {
     if (!(this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG)) {
         func_80833638(this, func_80835C08);
         LinkAnimation_PlayOnce(play, &this->skelAnime2, &gPlayerAnim_link_boom_catch);
-        func_808357E8(this, gLeftHandWithBoomerangDLs);
+        if (CVarGetInteger("gAltLinkEquip", 0))
+            func_808357E8(this, gLeftHandWithBoomerangDLs);
+        else
+            func_808357E8(this, gLeftHandWithBoomerangDLs);
         func_8002F7DC(&this->actor, NA_SE_PL_CATCH_BOOMERANG);
         func_80832698(this, NA_SE_VO_LI_SWORD_N);
         return 1;
@@ -14596,7 +14599,7 @@ void func_80851A50(PlayState* play, Player* this, CsCmdActorAction* arg2) {
         this->interactRangeActor->parent = &this->actor;
 
         if (!LINK_IS_ADULT) {
-            dLists = sLeftHandWithTwoHandedSwordDLs;
+            dLists = gLeftHandWithTwoHandedSwordDLs;
         } else {
             dLists = gLeftFistDLs;
         }
