@@ -537,10 +537,10 @@ void UpdateDirtPathFixState(int32_t sceneNum) {
         case SCENE_SPOT00:
         case SCENE_SPOT04:
         case SCENE_SPOT15:
-            CVarSetInteger("gDirtPathFix", CVarGetInteger("gSceneSpecificDirtPathFix", ZFIGHT_FIX_DISABLED));
+            CVarSetInteger("gZFightingMode", CVarGetInteger("gSceneSpecificDirtPathFix", ZFIGHT_FIX_DISABLED));
             return;
         default:
-            CVarClear("gDirtPathFix");
+            CVarClear("gZFightingMode");
     }
 }
 
