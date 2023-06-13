@@ -564,7 +564,7 @@ void UpdateMirrorModeState(int32_t sceneNum) {
     ) {
         CVarSetInteger("gMirroredWorld", 1);
     } else {
-        CVarSetInteger("gMirroredWorld", 0);
+        CVarClear("gMirroredWorld");
     }
 }
 

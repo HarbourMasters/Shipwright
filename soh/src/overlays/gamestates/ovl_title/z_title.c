@@ -269,7 +269,6 @@ void Title_Destroy(GameState* thisx) {
 void Title_Init(GameState* thisx) {
     //u32 size = 0;
     TitleContext* this = (TitleContext*)thisx;
-    CVarClear("gMirroredWorld");
 
     this->staticSegment = NULL;
     //this->staticSegment = GAMESTATE_ALLOC_MC(&this->state, size);
