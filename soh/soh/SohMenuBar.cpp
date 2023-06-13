@@ -140,7 +140,7 @@ void DrawShipMenu() {
 #if !defined(__SWITCH__) && !defined(__WIIU__)
          "F1"
 #else
-         ""
+         "-"
 #endif
         )) {
             LUS::Context::GetInstance()->GetWindow()->GetGui()->GetMenuBar()->ToggleVisibility();
