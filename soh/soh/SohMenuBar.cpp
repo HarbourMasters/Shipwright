@@ -123,8 +123,10 @@ void DrawShipMenu() {
         if (ImGui::MenuItem("Reset",
 #ifdef __APPLE__
                             "Command-R"
-#else
+#elif !defined(__SWITCH__) && !defined(__WIIU__)
                             "Ctrl+R"
+#else
+                            ""
 #endif
                             )) {
             std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
@@ -134,7 +136,13 @@ void DrawShipMenu() {
         if (ImGui::MenuItem("Toggle Fullscreen", "F11")) {
             LUS::Context::GetInstance()->GetWindow()->ToggleFullscreen();
         }
-        if (ImGui::MenuItem("Hide Menu Bar", "F1")) {
+        if (ImGui::MenuItem("Hide Menu Bar",
+#if !defined(__SWITCH__) && !defined(__WIIU__)
+         "F1"
+#else
+         ""
+#endif
+        )) {
             LUS::Context::GetInstance()->GetWindow()->GetGui()->GetMenuBar()->ToggleVisibility();
         }
         if (ImGui::MenuItem("Quit")) {
