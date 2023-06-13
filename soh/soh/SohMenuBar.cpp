@@ -131,7 +131,7 @@ void DrawShipMenu() {
         }
 #if !defined(__SWITCH__) && !defined(__WIIU__)
         auto backend = LUS::Context::GetInstance()->GetWindow()->GetWindowBackend();
-        if (ImGui::MenuItem("Toggle Fullscreen", "F9")) {
+        if (ImGui::MenuItem("Toggle Fullscreen", "F11")) {
             LUS::Context::GetInstance()->GetWindow()->ToggleFullscreen();
         }
         if (ImGui::MenuItem("Quit")) {
