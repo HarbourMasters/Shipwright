@@ -165,6 +165,13 @@ install(TARGETS ZAPD DESTINATION ${CMAKE_BINARY_DIR}/assets/extractor)
 
 set(PROGRAM_PERMISSIONS_EXECUTE OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ WORLD_EXECUTE WORLD_READ)
 
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/extractor/" DESTINATION ./assets/extractor)
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/xml/" DESTINATION ./assets/extractor/xmls)
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/filelists/" DESTINATION ./assets/extractor/filelists)
+install(FILES "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ActorList_OoTMqDbg.txt" DESTINATION ./assets/extractor/symbols)
+install(FILES "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ObjectList_OoTMqDbg.txt" DESTINATION ./assets/extractor/symbols)
+install(FILES "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/SymbolMap_OoTMqDbg.txt" DESTINATION ./assets/extractor/symbols)
+
 install(DIRECTORY ${CMAKE_BINARY_DIR}/assets
         DESTINATION .
         PATTERN ZAPD.out
