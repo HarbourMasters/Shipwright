@@ -1097,6 +1097,8 @@ s32 Player_IsChildWithHylianShield(Player* player);
 s32 Player_ActionToModelGroup(Player* player, s32 actionParam);
 void Player_SetModelsForHoldingShield(Player* player);
 void Player_SetModels(Player* player, s32 modelGroup);
+void Player_SetModelsForHoldingShieldAlt(Player* player);
+void Player_SetModelsAlt(Player* player, s32 modelGroup);
 void Player_SetModelGroup(Player* player, s32 modelGroup);
 void func_8008EC70(Player* player);
 void Player_SetEquipmentData(PlayState* play, Player* player);

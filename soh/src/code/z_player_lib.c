@@ -312,8 +312,8 @@ Gfx** sPlayerDListGroupsAlt[] = {
     sRightFistAltDLs,
     sRightFistDLs,
     sRightFistDLs,
-    sFairyOcarinaDLs,
-    sOcarinaOfTimeDLs,
+    sRightHandDLs,
+    sRightHandDLs,
     sRightFistDLs,
     sFourNullDLs,
     sFourNullDLs,
@@ -1748,6 +1748,7 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
                 gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightHandHoldingMirrorShieldNearDL); //
 
                 CLOSE_DISPS(play->state.gfxCtx);
+                // slingshot
             } else if (this->rightHandType == 11 && this->itemAction == PLAYER_IA_SLINGSHOT) {
                 Vec3f sp124[3];
 
@@ -1763,6 +1764,7 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
                                gLinkChildRightHandHoldingSlingshotNearDL); //
 
                 CLOSE_DISPS(play->state.gfxCtx);
+                // bow
             } else if (this->rightHandType == 11 && this->itemAction != PLAYER_IA_SLINGSHOT) {
                 Vec3f sp124[3];
 
@@ -1778,9 +1780,42 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
                 gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightHandHoldingBowNearDL); //
 
                 CLOSE_DISPS(play->state.gfxCtx);
+                // fairy ocarina
+            } else if (this->rightHandType == 13) {
+                Vec3f sp124[3];
+
+                OPEN_DISPS(play->state.gfxCtx);
+
+                if (LINK_IS_ADULT) {
+                    Matrix_Translate(115.0f, 200.0f, 115.0f, MTXMODE_APPLY);
+                    Matrix_RotateZYX(7.57f, 3.72f, 0.0f, MTXMODE_APPLY);
+                }
+
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+
+                gSPDisplayList(POLY_OPA_DISP++, gLinkChildRightHandHoldingFairyOcarinaNearDL); //
+
+                CLOSE_DISPS(play->state.gfxCtx);
+                // ocarina of time
+            } else if (this->rightHandType == 14) {
+                Vec3f sp124[3];
+
+                OPEN_DISPS(play->state.gfxCtx);
+
+                if (LINK_IS_ADULT) {
+                    Matrix_Translate(115.0f, 200.0f, 115.0f, MTXMODE_APPLY);
+                    Matrix_RotateZYX(7.57f, 3.72f, 0.0f, MTXMODE_APPLY);
+                }
+
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+
+                gSPDisplayList(POLY_OPA_DISP++, gLinkChildRightHandAndOotNearDL); //
+
+                CLOSE_DISPS(play->state.gfxCtx);
             }
         }
-
         if (this->rightHandType == 0xFF) {
             Matrix_Get(&this->shieldMf);
         }
@@ -2006,8 +2041,20 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
 
                     CLOSE_DISPS(play->state.gfxCtx);
                 }
+                // Child Hylian Shield
+                if (this->rightHandType != 10 && (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
+                    Player_IsChildWithHylianShield(this)) {
+                    OPEN_DISPS(play->state.gfxCtx);
+
+                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                    gSPDisplayList(POLY_OPA_DISP++, gLinkChildHylianShieldAndSheathNearDL);
+
+                    CLOSE_DISPS(play->state.gfxCtx);
+                }
                 //Adult Hylian Shield
-                if (this->rightHandType != 10 && (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) && LINK_IS_ADULT) {
+                if (this->rightHandType != 10 && (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
+                    !Player_IsChildWithHylianShield(this)) {
                     OPEN_DISPS(play->state.gfxCtx);
 
                     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
@@ -2124,8 +2171,9 @@ s32 func_80091880(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
 
     if (!CVarGetInteger("gAltLinkEquip", 0))
         dLists = &sPlayerDListGroups[type][gSaveContext.linkAge];
-    else 
+    else
         dLists = &sPlayerDListGroupsAlt[type][gSaveContext.linkAge];
+
     *dList = dLists[dListOffset];
 
     return 0;
