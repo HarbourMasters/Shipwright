@@ -63,6 +63,7 @@ std::string GetWindowButtonText(const char* text, bool menuOpen) {
     static const char* chestStyleMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only" };
     static const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run" };
     static const char* mirroredWorldModes[4] = { "Disabled", "Always", "Random", "Random (Seeded)" };
+    static const char* enemyRandomizerModes[3] = { "Disabled", "Random", "Random (Seeded)" };
     static const char* allPowers[9] = {
                         "Vanilla (1x)",
                         "Double (2x)",
@@ -1016,7 +1017,18 @@ void DrawEnhancementsMenu() {
         UIWidgets::Spacer(0);
 
         if (ImGui::BeginMenu("Extra Modes")) {
-            UIWidgets::PaddedText("Mirrored World Mode", true, false);
+        #ifdef ENABLE_CROWD_CONTROL
+            if (UIWidgets::PaddedEnhancementCheckbox("Crowd Control", "gCrowdControl", false, false)) {
+                if (CVarGetInteger("gCrowdControl", 0)) {
+                    CrowdControl::Instance->Enable();
+                } else {
+                    CrowdControl::Instance->Disable();
+                }
+            }
+            UIWidgets::Tooltip("Will attempt to connect to the Crowd Control server. Check out crowdcontrol.live for more information.");
+        #endif
+
+            UIWidgets::PaddedText("Mirrored World", true, false);
             if (UIWidgets::EnhancementCombobox("gMirroredWorldMode", mirroredWorldModes, MIRRORED_WORLD_OFF) && gPlayState != NULL) {
                 UpdateMirrorModeState(gPlayState->sceneNum);
             }
@@ -1027,18 +1039,23 @@ void DrawEnhancementsMenu() {
                 "- Random (Seeded): Scenes are mirrored based on the current randomizer seed/file\n"
             );
 
-            UIWidgets::Spacer(0);
+            UIWidgets::PaddedText("Enemy Randomizer", true, false);
+            UIWidgets::EnhancementCombobox("gRandomizedEnemies", enemyRandomizerModes, ENEMY_RANDOMIZER_OFF);
+            UIWidgets::Tooltip(
+                "Replaces fixed enemies throughout the game with a random enemy. Bosses, mini-bosses and a few specific regular enemies are excluded.\n"
+                "Enemies that need more than Deku Nuts + either Deku Sticks or a sword to kill are excluded from spawning in \"clear enemy\" rooms.\n\n"
+                "- Random: Enemies are randomized every time you load a room\n"
+                "- Random (Seeded): Enemies are randomized based on the current randomizer seed/file\n"
+            );
 
             UIWidgets::PaddedEnhancementCheckbox("Ivan the Fairy (Coop Mode)", "gIvanCoopModeEnabled", true, false);
             UIWidgets::Tooltip("Enables Ivan the Fairy upon the next map change. Player 2 can control Ivan and "
                                 "press the C-Buttons to use items and mess with Player 1!");
 
-            UIWidgets::Spacer(0);
-
             UIWidgets::PaddedEnhancementCheckbox("Rupee Dash Mode", "gRupeeDash", true, false);
+            UIWidgets::Tooltip("Rupees reduced over time, Link suffers damage when the count hits 0.");
 
             if (CVarGetInteger("gRupeeDash", 0)) {
-                UIWidgets::Tooltip("Rupees reduced over time, Link suffers damage when the count hits 0.");
                 UIWidgets::PaddedEnhancementSliderInt(
                     "Rupee Dash Interval: %d", "##DashInterval", "gDashInterval", 3, 5, "", 5, true, true, false,
                     !CVarGetInteger("gRupeeDash", 0),
@@ -1046,13 +1063,8 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Interval between Rupee reduction in Rupee Dash Mode");
             }
 
-            UIWidgets::Spacer(0);
-
             UIWidgets::PaddedEnhancementCheckbox("Shadow Tag Mode", "gShadowTag", true, false);
-
-            if (CVarGetInteger("gShadowTag", 0)) {
-                UIWidgets::Tooltip("A wallmaster follows Link everywhere, don't get caught!");
-            }
+            UIWidgets::Tooltip("A wallmaster follows Link everywhere, don't get caught!");
 
             ImGui::EndMenu();
         }
@@ -1404,38 +1416,6 @@ void DrawRandomizerMenu() {
                 "(medallions/stones/songs). Note that these fanfares are longer than usual."
             );
             ImGui::EndMenu();
-        }
-
-        UIWidgets::PaddedSeparator();
-
-    #ifdef ENABLE_CROWD_CONTROL
-        UIWidgets::EnhancementCheckbox("Crowd Control", "gCrowdControl");
-        UIWidgets::Tooltip("Will attempt to connect to the Crowd Control server. Check out crowdcontrol.live for more information.");
-
-        if (CVarGetInteger("gCrowdControl", 0)) {
-            CrowdControl::Instance->Enable();
-        } else {
-            CrowdControl::Instance->Disable();
-        }
-
-        UIWidgets::Spacer(0);
-    #endif
-
-        UIWidgets::EnhancementCheckbox("Enemy Randomizer", "gRandomizedEnemies");
-        UIWidgets::Tooltip(
-            "Randomizes regular enemies every time you load a room. Bosses, mini-bosses and a few specific regular enemies are excluded.\n\n"
-            "Enemies that need more than Deku Nuts + either Deku Sticks or a sword to kill are excluded from spawning in \"clear enemy\" rooms."
-        );
-
-        if (CVarGetInteger("gRandomizedEnemies", 0)) {
-
-            bool disableSeededEnemies = !gSaveContext.n64ddFlag && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
-            static const char* disableSeededEnemiesText = "This setting is disabled because it relies on a randomizer savefile.";
-
-            UIWidgets::PaddedEnhancementCheckbox("Seeded Enemy Spawns", "gSeededRandomizedEnemies", true, false, disableSeededEnemies, disableSeededEnemiesText);
-            UIWidgets::Tooltip(
-                "Enemy spawns will stay consistent throughout room reloads. Enemy spawns are based on randomizer seeds, so this only works with randomizer savefiles."
-            );
         }
 
         ImGui::EndMenu();
