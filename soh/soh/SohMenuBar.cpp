@@ -131,11 +131,6 @@ void DrawShipMenu() {
                             )) {
             std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
         }
-#if !defined(__SWITCH__) && !defined(__WIIU__)
-        auto backend = LUS::Context::GetInstance()->GetWindow()->GetWindowBackend();
-        if (ImGui::MenuItem("Toggle Fullscreen", "F11")) {
-            LUS::Context::GetInstance()->GetWindow()->ToggleFullscreen();
-        }
         if (ImGui::MenuItem("Hide Menu Bar",
 #if !defined(__SWITCH__) && !defined(__WIIU__)
          "F1"
@@ -144,6 +139,11 @@ void DrawShipMenu() {
 #endif
         )) {
             LUS::Context::GetInstance()->GetWindow()->GetGui()->GetMenuBar()->ToggleVisibility();
+        }
+#if !defined(__SWITCH__) && !defined(__WIIU__)
+        auto backend = LUS::Context::GetInstance()->GetWindow()->GetWindowBackend();
+        if (ImGui::MenuItem("Toggle Fullscreen", "F11")) {
+            LUS::Context::GetInstance()->GetWindow()->ToggleFullscreen();
         }
         if (ImGui::MenuItem("Quit")) {
             LUS::Context::GetInstance()->GetWindow()->Close();
