@@ -168,8 +168,7 @@ void Sram_OpenSave() {
 
     // check for owning kokiri sword.. to restore master sword? bug or debug feature?
     if (LINK_AGE_IN_YEARS == YEARS_ADULT && !CHECK_OWNED_EQUIP(EQUIP_SWORD, 1)) {
-        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {;}
-        else {
+        if (!gSaveContext.n64ddFlag || !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
             gSaveContext.inventory.equipment |= gBitFlags[1] << gEquipShifts[EQUIP_SWORD];
             gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
             gSaveContext.equips.equipment &= ~0xF;

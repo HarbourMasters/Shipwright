@@ -47,7 +47,7 @@ const std::array<uint32_t, 16> JunkPoolItems = {
   DEKU_NUTS_10,
   ICE_TRAP,
 };
-const std::array<uint32_t, 60> alwaysItems = {
+const std::array<uint32_t, 59> alwaysItems = {
   BIGGORON_SWORD,
   BOOMERANG,
   LENS_OF_TRUTH,
@@ -111,6 +111,7 @@ const std::array<uint32_t, 60> alwaysItems = {
 const std::array<uint32_t, 44> easyItems = {
   BIGGORON_SWORD,
   KOKIRI_SWORD,
+  MASTER_SWORD,
   BOOMERANG,
   LENS_OF_TRUTH,
   MEGATON_HAMMER,
