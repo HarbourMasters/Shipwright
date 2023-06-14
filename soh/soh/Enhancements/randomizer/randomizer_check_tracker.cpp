@@ -364,6 +364,7 @@ bool showMerchants;
 bool showCows;
 bool showAdultTrade;
 bool showKokiriSword;
+bool showMasterSword;
 bool showWeirdEgg;
 bool showGerudoCard;
 bool showFrogSongRupees;
@@ -402,6 +403,9 @@ void LoadSettings() {
         : true;
     showKokiriSword = gSaveContext.n64ddFlag ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_KOKIRI_SWORD) == RO_GENERIC_YES
+        : true;
+    showMasterSword = gSaveContext.n64ddFlag ?
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MASTER_SWORD) == RO_GENERIC_YES
         : true;
     showWeirdEgg = gSaveContext.n64ddFlag ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_WEIRD_EGG) == RO_GENERIC_YES
@@ -505,6 +509,7 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
             rcObj.rc == RC_DMT_TRADE_CLAIM_CHECK // even when shuffle adult trade is off
         ) &&
         (rcObj.rc != RC_KF_KOKIRI_SWORD_CHEST         || showKokiriSword) &&
+        (rcObj.rc != RC_TOT_MASTER_SWORD              || showMasterSword) &&
         (rcObj.rc != RC_ZR_MAGIC_BEAN_SALESMAN        || showBeans) &&
         (rcObj.rc != RC_HC_MALON_EGG                  || showWeirdEgg) &&
         (rcObj.rcType != RCTYPE_FROG_SONG             || showFrogSongRupees) &&

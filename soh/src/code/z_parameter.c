@@ -818,6 +818,8 @@ void func_80083108(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
     s16 i;
     s16 sp28 = 0;
+    u8 swordlessShuffleFlag = (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && 
+      !(CHECK_OWNED_EQUIP(EQUIP_SWORD, 1)) && LINK_IS_ADULT);
 
     if ((gSaveContext.cutsceneIndex < 0xFFF0) ||
         ((play->sceneNum == SCENE_SPOT20) && (gSaveContext.cutsceneIndex == 0xFFF0))) {
@@ -825,7 +827,7 @@ void func_80083108(PlayState* play) {
 
         if ((player->stateFlags1 & 0x00800000) || (play->shootingGalleryStatus > 1) ||
             ((play->sceneNum == SCENE_BOWLING) && Flags_GetSwitch(play, 0x38))) {
-            if (gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
+            if (gSaveContext.equips.buttonItems[0] != ITEM_NONE || swordlessShuffleFlag) {
                 gSaveContext.unk_13E7 = 1;
 
                 if (gSaveContext.buttonStatus[0] == BTN_DISABLED) {
@@ -877,6 +879,17 @@ void func_80083108(PlayState* play) {
                 } else if ((play->sceneNum == SCENE_BOWLING) && Flags_GetSwitch(play, 0x38)) {
                     Interface_ChangeAlpha(8);
                 } else if (player->stateFlags1 & 0x00800000) {
+                    if (swordlessShuffleFlag) {
+                        if (INV_CONTENT(SLOT_BOW) == ITEM_BOW) {
+                            gSaveContext.equips.buttonItems[0] = ITEM_BOW;
+                            Interface_LoadItemIcon1(play, 0);
+                        } else {
+                            gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+                        }
+                        gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] = gSaveContext.buttonStatus[3] = BTN_DISABLED;
+                        gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] = 
+                          gSaveContext.buttonStatus[8] = BTN_DISABLED;
+                    }
                     Interface_ChangeAlpha(12);
                 }
             } else {
@@ -892,6 +905,9 @@ void func_80083108(PlayState* play) {
             if (play->interfaceCtx.unk_260 != 0) {
                 if (gSaveContext.equips.buttonItems[0] != ITEM_FISHING_POLE) {
                     gSaveContext.buttonStatus[0] = gSaveContext.equips.buttonItems[0];
+                    if (swordlessShuffleFlag) {
+                        gSaveContext.buttonStatus[0] = BTN_ENABLED;
+                    }
                     gSaveContext.equips.buttonItems[0] = ITEM_FISHING_POLE;
                     gSaveContext.unk_13EA = 0;
                     Interface_LoadItemIcon1(play, 0);
@@ -902,6 +918,9 @@ void func_80083108(PlayState* play) {
                     Interface_ChangeAlpha(12);
                 }
             } else if (gSaveContext.equips.buttonItems[0] == ITEM_FISHING_POLE) {
+                if (swordlessShuffleFlag) {
+                    gSaveContext.buttonStatus[0] = BTN_DISABLED;
+                }
                 gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
                 gSaveContext.unk_13EA = 0;
 
@@ -1050,6 +1069,9 @@ void func_80083108(PlayState* play) {
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOMBCHU) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
                         if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0)) {
+                            if (swordlessShuffleFlag) {
+                                gSaveContext.buttonStatus[0] = 255;
+                            }
                             gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
                             sp28 = 1;
 
@@ -1415,7 +1437,7 @@ void Inventory_SwapAgeEquipment(void) {
         // When becoming adult, remove swordless flag since we'll get master sword
         // (Unless Master Sword is shuffled)
         // Only in rando to keep swordless link bugs in vanilla
-        if (!gSaveContext.n64ddFlag || !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
+        if (gSaveContext.n64ddFlag && !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
             gSaveContext.infTable[29] &= ~1;
         }
 
