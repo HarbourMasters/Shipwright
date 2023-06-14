@@ -7,6 +7,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "textures/message_static/message_static.h"
 #include "textures/message_texture_static/message_texture_static.h"
+#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 
 s16 sTextFade = false; // original name: key_off_flag ?
 
@@ -97,7 +98,7 @@ void Message_ResetOcarinaNoteState(void) {
     sOcarinaNoteCBtnEnv = (Color_RGB8){ 10, 10, 10 };
     if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
         sOcarinaNoteABtnPrim = CVarGetColor24("gCosmetics.Hud_AButton.Value", sOcarinaNoteABtnPrim);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         sOcarinaNoteABtnPrim = (Color_RGB8){ 80, 255, 150 };
     }
     if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
@@ -465,7 +466,7 @@ void Message_DrawTextboxIcon(PlayState* play, Gfx** p, s16 x, s16 y) {
         sIconPrimColors[0].b = (color.b / 255) * 95;
         sIconPrimColors[1] = color;
         sIconEnvColors[1] = color;
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         sIconPrimColors[0] = (Color_RGB8){ 0, 200, 80 };
         sIconPrimColors[1] = (Color_RGB8){ 50, 255, 130 }; 
         sIconEnvColors[1] = (Color_RGB8){ 50, 255, 130 }; 
@@ -2017,7 +2018,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         sOcarinaNoteAPrimColors[0].b = (color.b / 255) * 95;
         sOcarinaNoteAPrimColors[1] = color;
         sOcarinaNoteAEnvColors[1] = color;
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         sOcarinaNoteAPrimColors[0] = (Color_RGB8){ 80, 255, 150 };
         sOcarinaNoteAPrimColors[1] = (Color_RGB8){ 100, 255, 200 };
         sOcarinaNoteAEnvColors[1] = (Color_RGB8){ 50, 255, 50 };

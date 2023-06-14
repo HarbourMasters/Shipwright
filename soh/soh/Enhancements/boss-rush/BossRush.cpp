@@ -426,6 +426,7 @@ void BossRush_InitSave() {
     Inventory_ChangeUpgrade(UPG_BULLET_BAG, upgradeLevel);
     Inventory_ChangeUpgrade(UPG_STICKS, upgradeLevel);
     Inventory_ChangeUpgrade(UPG_NUTS, upgradeLevel);
+    Inventory_ChangeUpgrade(UPG_STRENGTH, 1);
 
     // Set flags and Link's age based on chosen settings.
     if (gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ADULT ||

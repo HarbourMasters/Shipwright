@@ -1,6 +1,7 @@
 #include "z_en_box.h"
 #include "objects/object_box/object_box.h"
 #include "soh_assets.h"
+#include "soh/Enhancements/enhancementTypes.h"
 
 #define FLAGS 0
 
@@ -632,11 +633,11 @@ void EnBox_Update(Actor* thisx, PlayState* play) {
 
 void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     EnBox_CreateExtraChestTextures();
-    int cstmc = CVarGetInteger("gChestSizeAndTextureMatchesContents", 0);
+    int csmc = CVarGetInteger("gChestSizeAndTextureMatchesContents", CSMC_DISABLED);
     int requiresStoneAgony = CVarGetInteger("gChestSizeDependsStoneOfAgony", 0);
     GetItemCategory getItemCategory;
 
-    int isVanilla = cstmc == 0 || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)) ||
+    int isVanilla = csmc == CSMC_DISABLED || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)) ||
         (play->sceneNum == SCENE_TAKARAYA && this->dyna.actor.room != 6); // Exclude treasure game chests except for the final room
 
     if (!isVanilla) {
@@ -656,7 +657,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     }
 
     // Change size
-    if (!isVanilla && (cstmc == 1 || cstmc == 3)) {
+    if (!isVanilla && (csmc == CSMC_BOTH || csmc == CSMC_SIZE)) {
         switch (getItemCategory) {
             case ITEM_CATEGORY_JUNK:
             case ITEM_CATEGORY_SMALL_KEY:
@@ -685,7 +686,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     }
 
     // Change texture
-    if (!isVanilla && (cstmc == 1 || cstmc == 2)) {
+    if (!isVanilla && (csmc == CSMC_BOTH || csmc == CSMC_TEXTURE)) {
         switch (getItemCategory) {
             case ITEM_CATEGORY_MAJOR:
                 this->boxBodyDL = gGoldTreasureChestChestFrontDL;
