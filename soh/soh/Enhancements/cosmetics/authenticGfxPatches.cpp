@@ -200,6 +200,8 @@ void PatchMirroredSunSongEtching() {
     static const char gMqRoyalGraveBackRoomSongVtx[] = "__OTR__scenes/mq/hakaana_ouke_scene/hakaana_ouke_room_2Vtx_004F80";
     static const char gNonMqRoyalGraveBackRoomSongVtx[] = "__OTR__scenes/nonmq/hakaana_ouke_scene/hakaana_ouke_room_2Vtx_004F80";
 
+    static Vtx* mirroredVtx;
+
     // Using a dummy texture here, but will be ignoring the texture command itself
     // Only need to patch over the two SetTile commands to get the MIRROR effect
     Gfx mirroredSunSongTex[] = {
@@ -207,13 +209,23 @@ void PatchMirroredSunSongEtching() {
                              G_TX_NOMIRROR | G_TX_CLAMP, 7, 5, G_TX_NOLOD, G_TX_NOLOD)
     };
 
-    static Vtx* mirroredVtx;
+    const char* royalGraveBackRoomDL;
+    const char* royalGraveBackRoomSongVtx;
+
+    // If we have the original game, then always prefer the nonmq paths as that is what will be used in game
+    if (ResourceMgr_GameHasOriginal()) {
+        royalGraveBackRoomDL = gNonMqRoyalGraveBackRoomDL;
+        royalGraveBackRoomSongVtx = gNonMqRoyalGraveBackRoomSongVtx;
+    } else {
+        royalGraveBackRoomDL = gMqRoyalGraveBackRoomDL;
+        royalGraveBackRoomSongVtx = gMqRoyalGraveBackRoomSongVtx;
+    }
 
     if (CVarGetInteger("gMirroredWorld", 0)) {
         if (mirroredVtx == nullptr) {
-            // Copy the original vertices that we want to modify
+            // Copy the original vertices that we want to modify (4 at the beginning of the resource)
             mirroredVtx = (Vtx*)malloc(sizeof(Vtx) * 4);
-            Vtx* origVtx = (Vtx*)ResourceGetDataByName(ResourceMgr_GameHasOriginal() ? gNonMqRoyalGraveBackRoomSongVtx : gMqRoyalGraveBackRoomSongVtx);
+            Vtx* origVtx = (Vtx*)ResourceGetDataByName(royalGraveBackRoomSongVtx);
             memcpy(mirroredVtx, origVtx, sizeof(Vtx) * 4);
 
             // Offset the vertex U coordinate values by the width of the texture
@@ -222,38 +234,21 @@ void PatchMirroredSunSongEtching() {
             }
         }
 
-        if (ResourceMgr_GameHasMasterQuest()) {
-            ResourceMgr_PatchGfxByName(gMqRoyalGraveBackRoomDL, "MQRoyalGraveSunSongTexture_1", 13, mirroredSunSongTex[1]);
-            ResourceMgr_PatchGfxByName(gMqRoyalGraveBackRoomDL, "MQRoyalGraveSunSongTexture_2", 17, mirroredSunSongTex[5]);
-            ResourceMgr_PatchGfxByName(gMqRoyalGraveBackRoomDL, "MQRoyalGraveSunSongTextureCords_1", 24, gsSPVertex(mirroredVtx, 4, 0));
-            // noop as the original vertex command is 128 bit wide
-            ResourceMgr_PatchGfxByName(gMqRoyalGraveBackRoomDL, "MQRoyalGraveSunSongTextureCords_2", 25, gsSPNoOp());
-        }
-        if (ResourceMgr_GameHasOriginal()) {
-            ResourceMgr_PatchGfxByName(gNonMqRoyalGraveBackRoomDL, "NonMQRoyalGraveSunSongTexture_1", 13, mirroredSunSongTex[1]);
-            ResourceMgr_PatchGfxByName(gNonMqRoyalGraveBackRoomDL, "NonMQRoyalGraveSunSongTexture_2", 17, mirroredSunSongTex[5]);
-            ResourceMgr_PatchGfxByName(gNonMqRoyalGraveBackRoomDL, "NonMQRoyalGraveSunSongTextureCords_1", 24, gsSPVertex(mirroredVtx, 4, 0));
-            // noop as the original vertex command is 128 bit wide
-            ResourceMgr_PatchGfxByName(gNonMqRoyalGraveBackRoomDL, "NonMQRoyalGraveSunSongTextureCords_2", 25, gsSPNoOp());
-        }
+        ResourceMgr_PatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTexture_1", 13, mirroredSunSongTex[1]);
+        ResourceMgr_PatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTexture_2", 17, mirroredSunSongTex[5]);
+        ResourceMgr_PatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTextureCords_1", 24, gsSPVertex(mirroredVtx, 4, 0));
+        // noop as the original vertex command is 128 bit wide
+        ResourceMgr_PatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTextureCords_2", 25, gsSPNoOp());
     } else {
         if (mirroredVtx != nullptr) {
             free(mirroredVtx);
             mirroredVtx = nullptr;
         }
 
-        if (ResourceMgr_GameHasMasterQuest()) {
-            ResourceMgr_UnpatchGfxByName(gMqRoyalGraveBackRoomDL, "MQRoyalGraveSunSongTexture_1");
-            ResourceMgr_UnpatchGfxByName(gMqRoyalGraveBackRoomDL, "MQRoyalGraveSunSongTexture_2");
-            ResourceMgr_UnpatchGfxByName(gMqRoyalGraveBackRoomDL, "MQRoyalGraveSunSongTextureCords_1");
-            ResourceMgr_UnpatchGfxByName(gMqRoyalGraveBackRoomDL, "MQRoyalGraveSunSongTextureCords_2");
-        }
-        if (ResourceMgr_GameHasOriginal()) {
-            ResourceMgr_UnpatchGfxByName(gNonMqRoyalGraveBackRoomDL, "NonMQRoyalGraveSunSongTexture_1");
-            ResourceMgr_UnpatchGfxByName(gNonMqRoyalGraveBackRoomDL, "NonMQRoyalGraveSunSongTexture_2");
-            ResourceMgr_UnpatchGfxByName(gNonMqRoyalGraveBackRoomDL, "NonMQRoyalGraveSunSongTextureCords_1");
-            ResourceMgr_UnpatchGfxByName(gNonMqRoyalGraveBackRoomDL, "NonMQRoyalGraveSunSongTextureCords_2");
-        }
+        ResourceMgr_UnpatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTexture_1");
+        ResourceMgr_UnpatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTexture_2");
+        ResourceMgr_UnpatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTextureCords_1");
+        ResourceMgr_UnpatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTextureCords_2");
     }
 }
 
