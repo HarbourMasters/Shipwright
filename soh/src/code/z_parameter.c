@@ -10,6 +10,8 @@
 #include "soh/Enhancements/gameplaystats.h"
 #include "soh/Enhancements/boss-rush/BossRushTypes.h"
 #include "soh/Enhancements/custom-message/CustomMessageInterfaceAddon.h"
+#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include "soh/Enhancements/enhancementTypes.h"
 
 #ifdef _MSC_VER
 #include <stdlib.h>
@@ -1149,7 +1151,7 @@ void func_80083108(PlayState* play) {
 
                 if (interfaceCtx->restrictions.tradeItems != 0) {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
-                        if ((CVarGetInteger("gMMBunnyHood", 0) != 0)
+                        if ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA)
                             && (gSaveContext.equips.buttonItems[i] >= ITEM_MASK_KEATON)
                             && (gSaveContext.equips.buttonItems[i] <= ITEM_MASK_TRUTH)) {
                             gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_ENABLED;
@@ -3738,7 +3740,7 @@ void Interface_DrawItemButtons(PlayState* play) {
     Color_RGB8 bButtonColor = { 0, 150, 0 };
     if (CVarGetInteger("gCosmetics.Hud_BButton.Changed", 0)) {
         bButtonColor = CVarGetColor24("gCosmetics.Hud_BButton.Value", bButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         bButtonColor = (Color_RGB8){ 255, 30, 30 };
     }
 
@@ -3766,7 +3768,7 @@ void Interface_DrawItemButtons(PlayState* play) {
     Color_RGB8 startButtonColor = { 200, 0, 0 };
     if (CVarGetInteger("gCosmetics.Hud_StartButton.Changed", 0)) {
         startButtonColor = CVarGetColor24("gCosmetics.Hud_StartButton.Value", startButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         startButtonColor = (Color_RGB8){ 120, 120, 120 };
     }
 
@@ -4862,7 +4864,7 @@ void Interface_Draw(PlayState* play) {
     Color_RGB8 aButtonColor = { 90, 90, 255 };
     if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
         aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         aButtonColor = (Color_RGB8){ 0, 200, 50 };
     }
 
@@ -5122,7 +5124,13 @@ void Interface_Draw(PlayState* play) {
         Minimap_Draw(play);
 
         if ((R_PAUSE_MENU_MODE != 2) && (R_PAUSE_MENU_MODE != 3)) {
+            if (CVarGetInteger("gMirroredWorld", 0)) {
+                gSPMatrix(OVERLAY_DISP++, interfaceCtx->view.projectionFlippedPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+            }
             func_8002C124(&play->actorCtx.targetCtx, play); // Draw Z-Target
+            if (CVarGetInteger("gMirroredWorld", 0)) {
+                gSPMatrix(OVERLAY_DISP++, interfaceCtx->view.projectionPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+            }
         }
 
         Gfx_SetupDL_39Overlay(play->state.gfxCtx);
@@ -6108,7 +6116,7 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
             // Draw regular text. Change color based on if the timer is paused, running or the game is completed.
             if (gSaveContext.sohStats.gameComplete) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, 255);
-            } else if (gSaveContext.isBossRushPaused) {
+            } else if (gSaveContext.isBossRushPaused && !gSaveContext.sohStats.rtaTiming) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 150, 150, 150, 255);
             } else {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);

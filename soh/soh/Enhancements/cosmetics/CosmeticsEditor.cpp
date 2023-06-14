@@ -1,4 +1,5 @@
 #include "CosmeticsEditor.h"
+#include "cosmeticsTypes.h"
 #include "authenticGfxPatches.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
@@ -46,9 +47,14 @@ extern PlayState* gPlayState;
 #include "objects/object_gjyo_objects/object_gjyo_objects.h"
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
 void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction);
+void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchName, int destinationIndex, int sourceIndex);
 void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 }
+
+// This is used for the greg bridge
+#define dgEndGrayscaleAndEndDlistDL "__OTR__helpers/cosmetics/gEndGrayscaleAndEndDlistDL"
+static const ALIGN_ASSET(2) char gEndGrayscaleAndEndDlistDL[] = dgEndGrayscaleAndEndDlistDL;
 
 // Not to be confused with tabs, groups are 1:1 with the boxes shown in the UI, grouping them allows us to reset/randomize
 // every item in a group at once. If you are looking for tabs they are rendered manually in ImGui in `DrawCosmeticsEditor`
@@ -371,13 +377,11 @@ void SetMarginAll(const char* ButtonName, bool SetActivated) {
 }
 void ResetPositionAll() {
     if (ImGui::Button("Reset all positions")) {
-        u8 arrayLength = sizeof(MarginCvarList) / sizeof(*MarginCvarList);
-        for (u8 s = 0; s < arrayLength; s++) {
-            const char* cvarName = MarginCvarList[s];
-            const char* cvarPosType = std::string(cvarName).append("PosType").c_str();
-            const char* cvarNameMargins = std::string(cvarName).append("UseMargins").c_str();
-            CVarSetInteger(cvarPosType, 0);
-            CVarSetInteger(cvarNameMargins, false); //Turn margin off to everythings as that original position.
+        for (auto cvarName : MarginCvarList) {
+            std::string cvarPosType = std::string(cvarName).append("PosType");
+            std::string cvarNameMargins = std::string(cvarName).append("UseMargins");
+            CVarSetInteger(cvarPosType.c_str(), 0);
+            CVarSetInteger(cvarNameMargins.c_str(), false); //Turn margin off to everythings as that original position.
         }
     }
 }
@@ -914,11 +918,13 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
     
         // Greg Bridge
         if (Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE) == RO_BRIDGE_GREG) {
-            ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge1", 2, gsSPGrayscale(true));
-            ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge2", 10, gsDPSetGrayscaleColor(color.r, color.g, color.b, color.a));
+            ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge_StartGrayscale", 2, gsSPGrayscale(true));
+            ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge_MakeGreen", 10, gsDPSetGrayscaleColor(color.r, color.g, color.b, color.a));
+            ResourceMgr_PatchGfxByName(gRainbowBridgeDL, "RainbowBridge_EndGrayscaleAndEndDlist", 79, gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL));
         } else {
-            ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge1");
-            ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge2");
+            ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge_StartGrayscale");
+            ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge_MakeGreen");
+            ResourceMgr_UnpatchGfxByName(gRainbowBridgeDL, "RainbowBridge_EndGrayscaleAndEndDlist");
         }
     }
     static CosmeticOption& consumableBlueRupee = cosmeticOptions.at("Consumable_BlueRupee");
@@ -1427,7 +1433,7 @@ void DrawSillyTab() {
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
     }
-    if (UIWidgets::EnhancementSliderFloat("Link Body Scale: %f", "##Link_BodyScale", "gCosmetics.Link_BodyScale.Value", 0.001f, 0.025f, "", 0.01f, false)) {
+    if (UIWidgets::EnhancementSliderFloat("Link Body Scale: %f", "##Link_BodyScale", "gCosmetics.Link_BodyScale.Value", 0.001f, 0.025f, "", 0.01f, true)) {
         CVarSetInteger("gCosmetics.Link_BodyScale.Changed", 1);
     }
     ImGui::SameLine();
@@ -1435,10 +1441,12 @@ void DrawSillyTab() {
         CVarClear("gCosmetics.Link_BodyScale.Value");
         CVarClear("gCosmetics.Link_BodyScale.Changed");
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        static Player* player = GET_PLAYER(gPlayState);
-        player->actor.scale.x = 0.01f;
-        player->actor.scale.y = 0.01f;
-        player->actor.scale.z = 0.01f;
+        if (gPlayState != nullptr) {
+            static Player* player = GET_PLAYER(gPlayState);
+            player->actor.scale.x = 0.01f;
+            player->actor.scale.y = 0.01f;
+            player->actor.scale.z = 0.01f;
+        }
     }
     if (UIWidgets::EnhancementSliderFloat("Link Head Scale: %f", "##Link_HeadScale", "gCosmetics.Link_HeadScale.Value", 0.4f, 4.0f, "", 1.0f, false)) {
         CVarSetInteger("gCosmetics.Link_HeadScale.Changed", 1);
@@ -1688,7 +1696,7 @@ void CosmeticsEditorWindow::DrawElement() {
 
     ImGui::Text("Color Scheme");
     ImGui::SameLine();
-    UIWidgets::EnhancementCombobox("gCosmetics.DefaultColorScheme", colorSchemes, 0);
+    UIWidgets::EnhancementCombobox("gCosmetics.DefaultColorScheme", colorSchemes, COLORSCHEME_N64);
     UIWidgets::EnhancementCheckbox("Advanced Mode", "gCosmetics.AdvancedMode");
     if (CVarGetInteger("gCosmetics.AdvancedMode", 0)) {
         if (ImGui::Button("Lock All Advanced", ImVec2(ImGui::GetContentRegionAvail().x / 2, 30.0f))) {

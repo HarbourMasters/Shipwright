@@ -59,10 +59,10 @@ void ColViewerWindow::DrawElement() {
     }
     UIWidgets::EnhancementCheckbox("Enabled", "gColViewerEnabled");
 
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Scene", "gColViewerScene", ColRenderSettingNames, 0);
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Bg Actors", "gColViewerBgActors", ColRenderSettingNames, 0);
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Col Check", "gColViewerColCheck", ColRenderSettingNames, 0);
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Waterbox", "gColViewerWaterbox", ColRenderSettingNames, 0);
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Scene", "gColViewerScene", ColRenderSettingNames, COLVIEW_DISABLED);
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Bg Actors", "gColViewerBgActors", ColRenderSettingNames, COLVIEW_DISABLED);
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Col Check", "gColViewerColCheck", ColRenderSettingNames, COLVIEW_DISABLED);
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Waterbox", "gColViewerWaterbox", ColRenderSettingNames, COLVIEW_DISABLED);
 
     UIWidgets::EnhancementCheckbox("Apply as decal", "gColViewerDecal");
     UIWidgets::InsertHelpHoverText("Applies the collision as a decal display. This can be useful if there is z-fighting occuring "
@@ -428,9 +428,9 @@ void DrawDynapoly(std::vector<Gfx>& dl, CollisionHeader* col, int32_t bgId) {
 
 // Draws the scene
 void DrawSceneCollision() {
-    ColRenderSetting showSceneColSetting = (ColRenderSetting)CVarGetInteger("gColViewerScene", 0);
+    ColRenderSetting showSceneColSetting = (ColRenderSetting)CVarGetInteger("gColViewerScene", COLVIEW_DISABLED);
 
-    if (showSceneColSetting == ColRenderSetting::Disabled || CVarGetInteger("gColViewerEnabled", 0) == 0) {
+    if (showSceneColSetting == ColRenderSetting::Disabled || !CVarGetInteger("gColViewerEnabled", 0)) {
         return;
     }
 
@@ -443,8 +443,8 @@ void DrawSceneCollision() {
 
 // Draws all Bg Actors
 void DrawBgActorCollision() {
-    ColRenderSetting showBgActorSetting = (ColRenderSetting)CVarGetInteger("gColViewerBgActors", 0);
-    if (showBgActorSetting == ColRenderSetting::Disabled || CVarGetInteger("gColViewerEnabled", 0) == 0) {
+    ColRenderSetting showBgActorSetting = (ColRenderSetting)CVarGetInteger("gColViewerBgActors", COLVIEW_DISABLED);
+    if (showBgActorSetting == ColRenderSetting::Disabled || !CVarGetInteger("gColViewerEnabled", 0)) {
         return;
     }
 
@@ -568,8 +568,8 @@ void DrawColCheckList(std::vector<Gfx>& dl, Collider** objects, int32_t count) {
 
 // Draws all Col Check objects
 void DrawColCheckCollision() {
-    ColRenderSetting showColCheckSetting = (ColRenderSetting)CVarGetInteger("gColViewerColCheck", 0);
-    if (showColCheckSetting == ColRenderSetting::Disabled || CVarGetInteger("gColViewerEnabled", 0) == 0) {
+    ColRenderSetting showColCheckSetting = (ColRenderSetting)CVarGetInteger("gColViewerColCheck", COLVIEW_DISABLED);
+    if (showColCheckSetting == ColRenderSetting::Disabled || !CVarGetInteger("gColViewerEnabled", 0)) {
         return;
     }
 
@@ -621,8 +621,8 @@ extern "C" f32 zdWaterBoxMinY;
 
 // Draws all waterboxes
 void DrawWaterboxList() {
-    ColRenderSetting showWaterboxSetting = (ColRenderSetting)CVarGetInteger("gColViewerWaterbox", 0);
-    if (showWaterboxSetting == ColRenderSetting::Disabled || CVarGetInteger("gColViewerEnabled", 0) == 0) {
+    ColRenderSetting showWaterboxSetting = (ColRenderSetting)CVarGetInteger("gColViewerWaterbox", COLVIEW_DISABLED);
+    if (showWaterboxSetting == ColRenderSetting::Disabled || !CVarGetInteger("gColViewerEnabled", 0)) {
         return;
     }
 

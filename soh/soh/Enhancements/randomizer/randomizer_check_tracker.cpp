@@ -8,6 +8,7 @@
 #include <libultraship/libultraship.h>
 #include "3drando/item_location.hpp"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "randomizerTypes.h"
 
 
 extern "C" {
@@ -118,20 +119,21 @@ void CheckTrackerWindow::DrawElement() {
         return;
     }
 
-    if (CVarGetInteger("gCheckTrackerWindowType", 1) == 0) {
-        if (CVarGetInteger("gCheckTrackerShowOnlyPaused", 0) == 1)
-            if (gPlayState == nullptr || gPlayState->pauseCtx.state == 0)
-                return;
+    if (CVarGetInteger("gCheckTrackerWindowType", TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
+        if (CVarGetInteger("gCheckTrackerShowOnlyPaused", 0) && (gPlayState == nullptr || gPlayState->pauseCtx.state == 0)) {
+            return;
+        }
 
-        if (CVarGetInteger("gCheckTrackerDisplayType", 0) == 1) {
-            int comboButton1Mask = buttons[CVarGetInteger("gCheckTrackerComboButton1", 6)];
-            int comboButton2Mask = buttons[CVarGetInteger("gCheckTrackerComboButton2", 8)];
+        if (CVarGetInteger("gCheckTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_COMBO_BUTTON) {
+            int comboButton1Mask = buttons[CVarGetInteger("gCheckTrackerComboButton1", TRACKER_COMBO_BUTTON_L)];
+            int comboButton2Mask = buttons[CVarGetInteger("gCheckTrackerComboButton2", TRACKER_COMBO_BUTTON_R)];
             OSContPad* trackerButtonsPressed = LUS::Context::GetInstance()->GetControlDeck()->GetPads();
             bool comboButtonsHeld = trackerButtonsPressed != nullptr &&
                                     trackerButtonsPressed[0].button & comboButton1Mask &&
                                     trackerButtonsPressed[0].button & comboButton2Mask;
-            if (!comboButtonsHeld)
+            if (!comboButtonsHeld) {
                 return;
+            }
         }
     }
 
@@ -333,7 +335,7 @@ void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flag
             ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoFocusOnAppearing;
     }
 
-    if (!CVarGetInteger("gCheckTrackerWindowType", 1)) {
+    if (CVarGetInteger("gCheckTrackerWindowType", TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
         ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
         windowFlags |= ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoTitleBar |
                        ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
@@ -985,14 +987,14 @@ void CheckTrackerSettingsWindow::DrawElement() {
     }
     ImGui::PopItemWidth();
 
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Window Type", "gCheckTrackerWindowType", windowType, 1);
-    if (CVarGetInteger("gCheckTrackerWindowType", 1) == 0) {
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Window Type", "gCheckTrackerWindowType", windowType, TRACKER_WINDOW_WINDOW);
+    if (CVarGetInteger("gCheckTrackerWindowType", TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
         UIWidgets::EnhancementCheckbox("Enable Dragging", "gCheckTrackerHudEditMode");
         UIWidgets::EnhancementCheckbox("Only enable while paused", "gCheckTrackerShowOnlyPaused");
         UIWidgets::LabeledRightAlignedEnhancementCombobox("Display Mode", "gCheckTrackerDisplayType", displayType, 0);
-        if (CVarGetInteger("gCheckTrackerDisplayType", 0) > 0) {
-            UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 1", "gCheckTrackerComboButton1", buttonStrings, 6);
-            UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 2", "gCheckTrackerComboButton2", buttonStrings, 8);
+        if (CVarGetInteger("gCheckTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_COMBO_BUTTON) {
+            UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 1", "gCheckTrackerComboButton1", buttonStrings, TRACKER_COMBO_BUTTON_L);
+            UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 2", "gCheckTrackerComboButton2", buttonStrings, TRACKER_COMBO_BUTTON_R);
         }
     }
     UIWidgets::EnhancementCheckbox("Performance mode", "gCheckTrackerOptionPerformanceMode");

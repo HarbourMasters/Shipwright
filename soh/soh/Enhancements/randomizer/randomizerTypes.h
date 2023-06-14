@@ -1767,3 +1767,30 @@ typedef struct CowIdentity {
     RandomizerInf randomizerInf;
     RandomizerCheck randomizerCheck;
 } CowIdentity;
+
+typedef enum {
+    TRACKER_WINDOW_FLOATING,
+    TRACKER_WINDOW_WINDOW
+} TrackerWindowType;
+
+typedef enum {
+    TRACKER_DISPLAY_ALWAYS,
+    TRACKER_DISPLAY_COMBO_BUTTON
+} TrackerDisplayType;
+
+typedef enum {
+    TRACKER_COMBO_BUTTON_A,
+    TRACKER_COMBO_BUTTON_B,
+    TRACKER_COMBO_BUTTON_C_UP,
+    TRACKER_COMBO_BUTTON_C_DOWN,
+    TRACKER_COMBO_BUTTON_C_LEFT,
+    TRACKER_COMBO_BUTTON_C_RIGHT,
+    TRACKER_COMBO_BUTTON_L,
+    TRACKER_COMBO_BUTTON_Z,
+    TRACKER_COMBO_BUTTON_R,
+    TRACKER_COMBO_BUTTON_START,
+    TRACKER_COMBO_BUTTON_D_UP,
+    TRACKER_COMBO_BUTTON_D_DOWN,
+    TRACKER_COMBO_BUTTON_D_LEFT,
+    TRACKER_COMBO_BUTTON_D_RIGHT,
+} TrackerComboButton;

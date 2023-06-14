@@ -110,6 +110,8 @@ CrowdControl* CrowdControl::Instance;
 #include "soh/resource/importer/TextFactory.h"
 #include "soh/resource/importer/BackgroundFactory.h"
 
+#include "soh/config/ConfigUpdaters.h"
+
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
 CustomMessageManager* CustomMessageManager::Instance;
@@ -789,6 +791,10 @@ extern "C" void InitOTR() {
         CrowdControl::Instance->Disable();
     }
 #endif
+
+    std::shared_ptr<LUS::Config> conf = OTRGlobals::Instance->context->GetConfig(); 
+    conf->RegisterConfigVersionUpdater(std::make_shared<LUS::ConfigVersion1Updater>());
+    conf->RunVersionUpdates();
 }
 
 extern "C" void SaveManager_ThreadPoolWait() {
@@ -1271,6 +1277,23 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
     }
 
     *gfx = instruction;
+}
+
+extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchName, int destinationIndex, int sourceIndex) {
+    auto res = std::static_pointer_cast<LUS::DisplayList>(
+        LUS::Context::GetInstance()->GetResourceManager()->LoadResource(path));
+
+    Gfx* destinationGfx = (Gfx*)&res->Instructions[destinationIndex];
+    Gfx sourceGfx = res->Instructions[sourceIndex];
+
+    if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
+        originalGfx[path][patchName] = {
+            destinationIndex,
+            *destinationGfx
+        };
+    }
+
+    *destinationGfx = sourceGfx;
 }
 
 extern "C" void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName) {
