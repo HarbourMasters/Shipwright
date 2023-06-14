@@ -2838,7 +2838,7 @@ s32 func_80835B60(Player* this, PlayState* play) {
         func_80833638(this, func_80835C08);
         LinkAnimation_PlayOnce(play, &this->skelAnime2, &gPlayerAnim_link_boom_catch);
         if (CVarGetInteger("gAltLinkEquip", 0))
-            func_808357E8(this, gLeftHandWithBoomerangDLs);
+            func_808357E8(this, gLeftFistDLs);
         else
             func_808357E8(this, gLeftHandWithBoomerangDLs);
         func_8002F7DC(&this->actor, NA_SE_PL_CATCH_BOOMERANG);
