@@ -2125,6 +2125,15 @@ void Cutscene_HandleEntranceTriggers(PlayState* play) {
         return;
     }
 
+    // epona steal fix
+    if (gSaveContext.n64ddFlag &&
+        gSaveContext.entranceIndex == 650 ||
+        gSaveContext.entranceIndex == 654 ||
+        gSaveContext.entranceIndex == 658 ||
+        gSaveContext.entranceIndex == 1142) {
+        Flags_UnsetEventChkInf(EVENTCHKINF_EPONA_OBTAINED);
+    }
+
     for (i = 0; i < ARRAY_COUNT(sEntranceCutsceneTable); i++) {
         entranceCutscene = &sEntranceCutsceneTable[i];
 

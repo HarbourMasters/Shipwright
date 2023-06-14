@@ -4706,6 +4706,13 @@ void Flags_SetEventChkInf(s32 flag) {
 }
 
 /**
+ * Unsets event_chk_inf flag.
+ */
+void Flags_UnsetEventChkInf(s32 flag) {
+    gSaveContext.eventChkInf[flag >> 4] &= ~(1 << (flag & 0xF));
+}
+
+/**
  * Tests if "inf_table flag is set.
  */
 s32 Flags_GetInfTable(s32 flag) {
