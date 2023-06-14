@@ -1461,7 +1461,9 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.buttonItems[3] = gSaveContext.inventory.items[SLOT_OCARINA];
             gSaveContext.equips.cButtonSlots[1] = SLOT_BOMB;
             gSaveContext.equips.cButtonSlots[2] = SLOT_OCARINA;
-            gSaveContext.equips.equipment = 0x1122;
+            
+            gSaveContext.equips.equipment = (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && 
+             gSaveContext.equips.buttonItems[0] == ITEM_NONE) ? 0x1120 :0x1122;
 
             // Set the dpad to nothing
             gSaveContext.equips.buttonItems[4] = ITEM_NONE;

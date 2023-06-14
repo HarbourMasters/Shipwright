@@ -736,6 +736,7 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
         case SpoilerCollectionCheckType::SPOILER_CHK_COW:
         case SpoilerCollectionCheckType::SPOILER_CHK_SCRUB:
         case SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF:
+        case SpoilerCollectionCheckType::SPOILER_CHK_MASTER_SWORD:
             return Flags_GetRandomizerInf(OTRGlobals::Instance->gRandomizer->GetRandomizerInfFromCheck(obj.rc));
         case SpoilerCollectionCheckType::SPOILER_CHK_EVENT_CHK_INF:
             return gSaveContext.eventChkInf[flag / 16] & (0x01 << flag % 16);
