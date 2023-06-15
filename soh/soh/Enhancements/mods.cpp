@@ -566,6 +566,7 @@ void UpdateMirrorModeState(int32_t sceneNum) {
     uint8_t randomNumber = Random(0, 2);
     if (
         mirroredMode == MIRRORED_WORLD_ALWAYS ||
+        (mirroredMode == MIRRORED_WORLD_DUNGEONS_ONLY && (sceneNum >= SCENE_YDAN && sceneNum <= SCENE_GANONTIKA_SONOGO)) ||
         (mirroredMode > MIRRORED_WORLD_ALWAYS && randomNumber == 1)
     ) {
         nextMirroredWorld = true;

@@ -62,7 +62,7 @@ std::string GetWindowButtonText(const char* text, bool menuOpen) {
 
     static const char* chestStyleMatchesContentsOptions[4] = { "Disabled", "Both", "Texture Only", "Size Only" };
     static const char* bunnyHoodOptions[3] = { "Disabled", "Faster Run & Longer Jump", "Faster Run" };
-    static const char* mirroredWorldModes[4] = { "Disabled", "Always", "Random", "Random (Seeded)" };
+    static const char* mirroredWorldModes[5] = { "Disabled", "Always", "Dungeons", "Random", "Random (Seeded)" };
     static const char* enemyRandomizerModes[3] = { "Disabled", "Random", "Random (Seeded)" };
     static const char* allPowers[9] = {
                         "Vanilla (1x)",
@@ -1052,6 +1052,7 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip(
                 "Mirrors the world horizontally\n\n"
                 "- Always: Always mirror the world\n"
+                "- Dungeon: Mirror the world in Dungeons\n"
                 "- Random: Randomly decide to mirror the world on each scene change\n"
                 "- Random (Seeded): Scenes are mirrored based on the current randomizer seed/file\n"
             );
