@@ -24,7 +24,7 @@ void AreaTable_Init_IceCavern() {
   areaTable[ICE_CAVERN_BEGINNING] = Area("Ice Cavern Beginning", "Ice Cavern", ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(ICE_CAVERN_ENTRYWAY, {[]{return true;}}),
-                  Entrance(ICE_CAVERN_MAIN,     {[]{return Here(ICE_CAVERN_BEGINNING, []{return (CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)) || HasExplosives || CanUse(DINS_FIRE);});}}),
+                  Entrance(ICE_CAVERN_MAIN,     {[]{return Here(ICE_CAVERN_BEGINNING, []{return (CanUse(MASTER_SWORD) || CanUse(KOKIRI_SWORD) || CanUse(BIGGORON_SWORD)) || HasExplosives || CanUse(DINS_FIRE);});}}),
   });
 
   areaTable[ICE_CAVERN_MAIN] = Area("Ice Cavern", "Ice Cavern", ICE_CAVERN, NO_DAY_NIGHT_CYCLE, {
@@ -53,7 +53,7 @@ void AreaTable_Init_IceCavern() {
   }, {}, {
                   //Exits
                   Entrance(ICE_CAVERN_ENTRYWAY,             {[]{return true;}}),
-                  Entrance(ICE_CAVERN_MQ_MAP_ROOM,          {[]{return CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD) || CanUse(DINS_FIRE) || (HasExplosives && (CanUse(STICKS) || CanUse(SLINGSHOT) || CanJumpslash));}}),
+                  Entrance(ICE_CAVERN_MQ_MAP_ROOM,          {[]{return CanUse(MASTER_SWORD) || CanUse(KOKIRI_SWORD) || CanUse(BIGGORON_SWORD) || CanUse(DINS_FIRE) || (HasExplosives && (CanUse(STICKS) || CanUse(SLINGSHOT) || CanUse(BOW)));}}),
                   Entrance(ICE_CAVERN_MQ_COMPASS_ROOM,      {[]{return IsAdult && BlueFire;}}),
                   Entrance(ICE_CAVERN_MQ_IRON_BOOTS_REGION, {[]{return BlueFire;}}),
   });

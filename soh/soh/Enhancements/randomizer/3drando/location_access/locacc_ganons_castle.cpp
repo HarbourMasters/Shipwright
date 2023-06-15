@@ -86,8 +86,8 @@ void AreaTable_Init_GanonsCastle() {
 
   areaTable[GANONS_CASTLE_SPIRIT_TRIAL] = Area("Ganon's Castle Spirit Trial", "Ganon's Castle", GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&NutPot,           {[]{return NutPot || ((LogicSpiritTrialHookshot || CanUse(HOOKSHOT)) && HasBombchus && Bow && (MirrorShield || (SunlightArrows && CanUse(LIGHT_ARROWS))) && IsAdult);}}),
-                  EventAccess(&SpiritTrialClear, {[]{return CanUse(LIGHT_ARROWS)  && (IsAdult && CanUse(MIRROR_SHIELD) || SunlightArrows) && HasBombchus && (LogicSpiritTrialHookshot || CanUse(HOOKSHOT));}}),
+                  EventAccess(&NutPot,           {[]{return NutPot || (((LogicSpiritTrialHookshot && CanJumpslash) || CanUse(HOOKSHOT)) && HasBombchus && CanUse(BOW) && (CanUse(MIRROR_SHIELD) || (SunlightArrows && CanUse(LIGHT_ARROWS))));}}),
+                  EventAccess(&SpiritTrialClear, {[]{return CanUse(LIGHT_ARROWS) && (CanUse(MIRROR_SHIELD) || SunlightArrows) && HasBombchus && ((LogicSpiritTrialHookshot && CanJumpslash) || CanUse(HOOKSHOT));}}),
                 }, {
                   //Locations
                   LocationAccess(GANONS_CASTLE_SPIRIT_TRIAL_CRYSTAL_SWITCH_CHEST, {[]{return LogicSpiritTrialHookshot || CanUse(HOOKSHOT);}}),
@@ -153,7 +153,7 @@ void AreaTable_Init_GanonsCastle() {
 
   areaTable[GANONS_CASTLE_MQ_FOREST_TRIAL] = Area("Ganon's Castle MQ Forest Trial", "Ganons Castle", GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&ForestTrialClear, {[]{return IsAdult && CanUse(LIGHT_ARROWS) && (CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)) &&CanPlay(SongOfTime);}}),
+                  EventAccess(&ForestTrialClear, {[]{return IsAdult && CanUse(LIGHT_ARROWS) && (CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)) && CanPlay(SongOfTime);}}),
   }, {
                   //Locations
                   LocationAccess(GANONS_CASTLE_MQ_FOREST_TRIAL_EYE_SWITCH_CHEST,        {[]{return (CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)) && (CanUse(BOW) || CanUse(SLINGSHOT));}}),
@@ -203,11 +203,11 @@ void AreaTable_Init_GanonsCastle() {
 
   areaTable[GANONS_CASTLE_MQ_LIGHT_TRIAL] = Area("Ganon's Castle MQ Light Trial", "Ganons Castle", GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&LightTrialClear, {[]{return IsAdult && (CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)) && CanUse(LIGHT_ARROWS) && SmallKeys(GANONS_CASTLE, 3) && (LogicLensCastleMQ || CanUse(LENS_OF_TRUTH)) && (Hookshot || LogicLightTrialMQ);}}),
+                  EventAccess(&LightTrialClear, {[]{return IsAdult && (CanUse(MASTER_SWORD) || CanUse(KOKIRI_SWORD) || CanUse(BIGGORON_SWORD)) && CanUse(LIGHT_ARROWS) && SmallKeys(GANONS_CASTLE, 3) && (LogicLensCastleMQ || CanUse(LENS_OF_TRUTH)) && (Hookshot || LogicLightTrialMQ);}}),
                     //Trick: IsAdult && CanUse(LIGHT_ARROWS) && SmallKeys(GANONS_CASTLE, 3) && (LogicLensCastleMQ || CanUse(LENS_OF_TRUTH)) && (Hookshot || LogicLightTrialMQ)
   }, {
                   //Locations
-                  LocationAccess(GANONS_CASTLE_MQ_LIGHT_TRIAL_LULLABY_CHEST, {[]{return (CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)) && CanPlay(ZeldasLullaby);}}),
+                  LocationAccess(GANONS_CASTLE_MQ_LIGHT_TRIAL_LULLABY_CHEST, {[]{return (CanUse(MASTER_SWORD) || CanUse(KOKIRI_SWORD) || CanUse(BIGGORON_SWORD)) && CanPlay(ZeldasLullaby);}}),
   }, {});
   }
 }
