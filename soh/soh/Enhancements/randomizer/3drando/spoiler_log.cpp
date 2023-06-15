@@ -32,7 +32,7 @@
 
 #include <libultraship/libultraship.h>
 
-using json = nlohmann::json;
+using json = nlohmann::ordered_json;
 
 json jsonData;
 std::map<HintKey, ItemLocation*> hintedLocations;
@@ -843,8 +843,8 @@ const char* SpoilerLog_Write(int language) {
 
     jsonData.clear();
 
-    jsonData["_version"] = (char*) gBuildVersion;
-    jsonData["_seed"] = Settings::seedString;
+    jsonData["version"] = (char*) gBuildVersion;
+    jsonData["seed"] = Settings::seedString;
 
     // Write Hash
     int index = 0;
