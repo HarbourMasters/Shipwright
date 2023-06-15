@@ -1537,7 +1537,7 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
                 OPEN_DISPS(play->state.gfxCtx);
 
                 if (LINK_IS_ADULT) {
-                    Matrix_Scale(1.2f, 1.2f, 1.2f, MTXMODE_APPLY);
+                    Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
                 }
 
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
@@ -1545,6 +1545,10 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
                 gSPDisplayList(POLY_OPA_DISP++, gLinkChildLeftFistAndKokiriSwordNearDL); //
 
                 CLOSE_DISPS(play->state.gfxCtx);
+
+                if (LINK_IS_ADULT) {
+                    Matrix_Scale(.8f, .8f, .8f, MTXMODE_APPLY);
+                }
             }
             // master sword
             else if ((this->leftHandType == 2 || this->leftHandType == 3)) {
@@ -1561,6 +1565,10 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
                 gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftHandHoldingMasterSwordNearDL); //
 
                 CLOSE_DISPS(play->state.gfxCtx);
+
+                if (LINK_IS_CHILD) {
+                    Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
+                }
             }
             // biggoron sword
             else if (this->leftHandType == 4 && (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS) &&
@@ -1574,6 +1582,10 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHandHoldingBrokenGiantsKnifeDL);
                 CLOSE_DISPS(play->state.gfxCtx);
+
+                if (LINK_IS_CHILD) {
+                    Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
+                }
             } else if (this->leftHandType == 4 && (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS) &&
                        !(gSaveContext.swordHealth <= 0.0f)) {
                 OPEN_DISPS(play->state.gfxCtx);
@@ -1600,6 +1612,10 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
                 gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftHandHoldingHammerNearDL); //
 
                 CLOSE_DISPS(play->state.gfxCtx);
+
+                if (LINK_IS_CHILD) {
+                    Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
+                }
             }
             // boomerang
             else if (this->leftHandType == 6 && !(this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG)) {
@@ -1608,7 +1624,7 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
                 OPEN_DISPS(play->state.gfxCtx);
 
                 if (LINK_IS_ADULT) {
-                    Matrix_Scale(1.2f, 1.2f, 1.2f, MTXMODE_APPLY);
+                    Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
                 }
 
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
@@ -1616,6 +1632,10 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
                 gSPDisplayList(POLY_OPA_DISP++, gLinkChildLeftFistAndBoomerangNearDL); //
 
                 CLOSE_DISPS(play->state.gfxCtx);
+
+                if (LINK_IS_CHILD) {
+                    Matrix_Scale(.8f, .8f, .8f, MTXMODE_APPLY);
+                }
             }
         }
 
@@ -1724,7 +1744,7 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
                 OPEN_DISPS(play->state.gfxCtx);
 
                 if (LINK_IS_CHILD) {
-                    Matrix_Scale(.75f, .75f, .75f, MTXMODE_APPLY);
+                    Matrix_Scale(.8f, .8f, .8f, MTXMODE_APPLY);
                 }
 
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
@@ -1740,7 +1760,7 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
                 OPEN_DISPS(play->state.gfxCtx);
 
                 if (LINK_IS_CHILD) {
-                    Matrix_Scale(.75f, .75f, .75f, MTXMODE_APPLY);
+                    Matrix_Scale(.8f, .8f, .8f, MTXMODE_APPLY);
                 }
 
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
