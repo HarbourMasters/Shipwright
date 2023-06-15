@@ -81,7 +81,7 @@ cd "build/x64"
 ```
 
 ## Linux
-Requires `gcc >= 10, x11, curl, python3, sdl2 >= 2.0.22, libpng, glew >= 2.2, ninja, cmake, lld`
+Requires `gcc >= 10, x11, curl, python3, sdl2 >= 2.0.22, libpng, ninja, cmake, lld`
 
 **Important: For maximum performance make sure you have ninja build tools installed!**
 
@@ -124,7 +124,7 @@ cpack -G External (creates appimage)
 ```
 
 ## macOS
-Requires Xcode (or xcode-tools) && `sdl2, libpng, glew, ninja, cmake` (can be installed via homebrew, macports, etc)
+Requires Xcode (or xcode-tools) && `sdl2, libpng, ninja, cmake` (can be installed via homebrew, macports, etc)
 
 **Important: For maximum performance make sure you have ninja build tools installed!**
 

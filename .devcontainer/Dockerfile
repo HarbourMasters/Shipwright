@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/devcontainers/cpp:ubuntu-22.04
 
-RUN apt-get update && apt-get install -y libsdl2-dev libsdl2-net-dev libpng-dev libglew-dev ninja-build
+RUN apt-get update && apt-get install -y libsdl2-dev libsdl2-net-dev libpng-dev ninja-build
 
 # Install latest SDL2
 RUN wget https://www.libsdl.org/release/SDL2-2.26.1.tar.gz && \

@@ -1,1 +1,1 @@
-libsdl2-dev libsdl2-net-dev libpng-dev libglew-dev ninja-build 
+libsdl2-dev libsdl2-net-dev libpng-dev ninja-build 
