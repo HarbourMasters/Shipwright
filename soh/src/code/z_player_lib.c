@@ -405,7 +405,11 @@ s32 func_8008E9C4(Player* this) {
 }
 
 s32 Player_IsChildWithHylianShield(Player* this) {
-    return gSaveContext.linkAge != 0 && (this->currentShield == PLAYER_SHIELD_HYLIAN);
+    if (CVarGetInteger("gNormalHylianShield", 0)) {
+        return false;
+    }
+    else
+        return gSaveContext.linkAge != 0 && (this->currentShield == PLAYER_SHIELD_HYLIAN);
 }
 
 s32 Player_ActionToModelGroup(Player* this, s32 actionParam) {
@@ -838,7 +842,7 @@ Gfx* sBootDListGroups[][2] = {
     { gLinkAdultLeftHoverBootDL, gLinkAdultRightHoverBootDL },
 };
 
-void func_8008F470(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dListCount, s32 lod, s32 tunic,
+void Player_DrawLink(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dListCount, s32 lod, s32 tunic,
                    s32 boots, s32 face, OverrideLimbDrawOpa overrideLimbDraw, PostLimbDrawOpa postLimbDraw,
                    void* data) {
     Color_RGB8* color;
@@ -1515,7 +1519,7 @@ Vec3f D_801261E0[] = {
 // started working out properly
 #define RETICLE_MAX 3.402823466e+12f
 
-void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+void Player_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
 
     if (*dList != NULL) {
@@ -1966,7 +1970,8 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
         }
     } else if (this->actor.scale.y >= 0.0f) {
         if (limbIndex == PLAYER_LIMB_SHEATH) {
-            if (CVarGetInteger("gAltLinkEquip", 0))
+            if (CVarGetInteger("gAltLinkEquip", 0) && !(this->stateFlags2 & PLAYER_STATE2_CRAWLING)) 
+                //don't render these if the player's crawling. doesn't render when entering/exiting tunnels until I can find a better way to do this - S
             {
                 //Kokiri Sword Sheath
                 if (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_KOKIRI){
@@ -2061,7 +2066,7 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
 
                     CLOSE_DISPS(play->state.gfxCtx);
                 }
-                // Child Hylian Shield
+                // Child Hylian Shield on Back
                 if (this->rightHandType != 10 && (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
                     Player_IsChildWithHylianShield(this)) {
                     OPEN_DISPS(play->state.gfxCtx);
@@ -2072,10 +2077,14 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
 
                     CLOSE_DISPS(play->state.gfxCtx);
                 }
-                //Adult Hylian Shield
+                //Adult Hylian Shield on Back
                 if (this->rightHandType != 10 && (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
                     !Player_IsChildWithHylianShield(this)) {
                     OPEN_DISPS(play->state.gfxCtx);
+
+                    if (LINK_IS_CHILD) {
+                        Matrix_Scale(.80f, .80f, .80f, MTXMODE_APPLY);
+                    }
 
                     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -2083,7 +2092,7 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
 
                     CLOSE_DISPS(play->state.gfxCtx);
                 }
-                //Mirror Shield
+                //Mirror Shield on Back
                 if (this->rightHandType != 10 && (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR)) {
                     OPEN_DISPS(play->state.gfxCtx);
 
@@ -2279,7 +2288,7 @@ void func_80091A24(PlayState* play, void* seg04, void* seg06, SkelAnime* skelAni
 
     gSPSegment(POLY_OPA_DISP++, 0x0C, gCullBackDList);
 
-    func_8008F470(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, 0, tunic, boots, 0,
+    Player_DrawLink(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, 0, tunic, boots, 0,
                   func_80091880, NULL, &sp12C);
 
      if (CVarGetInteger("gPauseTriforce", 0)) {
@@ -2349,7 +2358,8 @@ void func_8009214C(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f* po
             EquipedStance = 1;
         } else if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == 0) {
             EquipedStance = 2;
-        } else if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == 2 && LINK_AGE_IN_YEARS == YEARS_CHILD) {
+        } else if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == 2 && LINK_AGE_IN_YEARS == YEARS_CHILD &&
+                   !(CVarGetInteger("gNormalHylianShield", 0))) {
             EquipedStance = 3;
         } else {
             // Link is idle so revert to 0
