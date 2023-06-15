@@ -120,20 +120,35 @@ void DrawMenuBarIcon() {
 
 void DrawShipMenu() {
     if (ImGui::BeginMenu("Ship")) {
+        if (ImGui::MenuItem("Hide Menu Bar",
+#if !defined(__SWITCH__) && !defined(__WIIU__)
+         "F1"
+#else
+         "[-]"
+#endif
+        )) {
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->GetMenuBar()->ToggleVisibility();
+        }
+        UIWidgets::Spacer(0);
+#if !defined(__SWITCH__) && !defined(__WIIU__)
+        if (ImGui::MenuItem("Toggle Fullscreen", "F11")) {
+            LUS::Context::GetInstance()->GetWindow()->ToggleFullscreen();
+        }
+        UIWidgets::Spacer(0);
+#endif
         if (ImGui::MenuItem("Reset",
 #ifdef __APPLE__
                             "Command-R"
-#else
+#elif !defined(__SWITCH__) && !defined(__WIIU__)
                             "Ctrl+R"
+#else
+                            ""
 #endif
                             )) {
             std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
         }
 #if !defined(__SWITCH__) && !defined(__WIIU__)
-        auto backend = LUS::Context::GetInstance()->GetWindow()->GetWindowBackend();
-        if (ImGui::MenuItem("Toggle Fullscreen", "F11")) {
-            LUS::Context::GetInstance()->GetWindow()->ToggleFullscreen();
-        }
+        UIWidgets::Spacer(0);
         if (ImGui::MenuItem("Quit")) {
             LUS::Context::GetInstance()->GetWindow()->Close();
         }
