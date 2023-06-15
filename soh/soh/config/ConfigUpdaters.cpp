@@ -57,7 +57,7 @@ namespace LUS {
             if (CVarGetInteger("gSeededRandomizedEnemies", 0)) {
                 CVarSetInteger("gRandomizedEnemies", 2);
             }
-            CVarClear("gSeededRandomizedEnemies");
         }
+        CVarClear("gSeededRandomizedEnemies");
     }
 }
