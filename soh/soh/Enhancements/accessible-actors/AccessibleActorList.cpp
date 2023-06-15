@@ -97,7 +97,6 @@ void ActorAccessibility_Init() {
     const int Npc_Frames = 35;
     ActorAccessibilityPolicy
         policy; 
-    // ActorAccessibility_AddSupportedActor(ACTOR_EN_ISHI, NA_SE_EN_OCTAROCK_ROCK, 20, 500, 1.5);
     ActorAccessibility_InitPolicy(policy, "Rock", accessible_en_ishi);
     ActorAccessibility_AddSupportedActor(ACTOR_EN_ISHI, policy);
 
@@ -182,18 +181,7 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     VirtualActorList* list = ActorAccessibility_GetVirtualActorList(3, 17);//Forest temple basement.
 //Now place the actor.
     ActorAccessibility_AddVirtualActor(list, VA_PROTOTYPE, { { 299.16, -779, -1807.22 }, { 0, 14702, 0 } });
-    ActorAccessibility_InitPolicy(policy, "Ledge cue helper", accessible_va_ledge_cue);
-    policy.n = 1;
-    policy.runsAlways = true;
-    policy.distance = 250;
+//Install cues for walls, ledges etc.
+    ActorAccessibility_InitCues();
 
-    ActorAccessibility_AddSupportedActor(VA_LEDGE_CUE, policy);
-    policy.englishName = "Wall cue helper";
-    policy.callback = accessible_va_wall_cue;
-
-    ActorAccessibility_AddSupportedActor(VA_WALL_CUE, policy);
-
-    list = ActorAccessibility_GetVirtualActorList(EVERYWHERE, 0);
-    ActorAccessibility_AddVirtualActor(list, VA_WALL_CUE, { { 0, 0, 0 }, { 0, 0, 0 } });
-    ActorAccessibility_AddVirtualActor(list, VA_LEDGE_CUE, { { 0, 0, 0 }, { 0, 0, 0 } });
 }

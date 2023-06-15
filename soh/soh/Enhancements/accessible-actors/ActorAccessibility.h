@@ -5,8 +5,14 @@
 extern "C" {
 struct AccessibleActor;
 typedef struct AccessibleActor AccessibleActor;
+//A callback that is run regularely as the game progresses in order to provide accessibility services for an actor.
 
 typedef void (*ActorAccessibilityCallback)(AccessibleActor*);
+//A callback which allows AccessibleActor instances to initialize custom user data (called once per instantiation).
+typedef bool (*ActorAccessibilityUserDataInit)(AccessibleActor*);
+//A callback that can be used to clean up user data when an actor is destroyed.
+typedef void (*ActorAccessibilityUserDataCleanup)(AccessibleActor*);
+
 struct VirtualActorList;
 typedef struct VirtualActorList VirtualActorList;
 
@@ -23,6 +29,9 @@ const char* englishName;
     f32 pitch;
     f32 volume;
     bool runsAlways;//If set, then the distance policy is ignored.
+    ActorAccessibilityUserDataInit initUserData;
+    ActorAccessibilityUserDataCleanup cleanupUserData;
+
 } ActorAccessibilityPolicy;
 
 // Accessible actor object. This can be a "real" actor (one that corresponds to an actual actor in the game) or a
@@ -52,6 +61,7 @@ struct AccessibleActor
     s8 currentReverb;
     // Add more state as needed.
     ActorAccessibilityPolicy policy;//A copy, so it can be customized on a per-actor basis if needed.
+    void* userData;//Set by the policy. Can be anything.
 };
 
 void ActorAccessibility_Init();
@@ -64,14 +74,18 @@ void ActorAccessibility_AddSupportedActor(s16 type, ActorAccessibilityPolicy pol
             void ActorAccessibility_RunAccessibilityForActor(PlayState* play, AccessibleActor* actor);
         void ActorAccessibility_RunAccessibilityForAllActors(PlayState* play);
         void ActorAccessibility_PlaySpecialSound(AccessibleActor* actor, s16 sfxId);
-        
-}
+        f32 ActorAccessibility_ComputeCurrentVolume(f32 maxDistance, f32 xzDistToPlayer);
+        // Computes a relative angle based on Link's (or some other actor's) current angle.
+        Vec3s ActorAccessibility_ComputeRelativeAngle(Vec3s& origin, Vec3s& offset);
+        void ActorAccessibility_InitCues();
+
+        }
 //Stuff related to lists of virtual actors.
 typedef enum {
 //Similar to the game's actual actor table. Values here start at 10000 just to be extra safe.
 VA_INITIAL=1000,
 VA_PROTOTYPE,//Remove this one once this thing is working.
-VA_LEDGE_CUE,
+VA_TERRAIN_CUE,
 VA_WALL_CUE,
 
 } VIRTUAL_ACTOR_TABLE;
@@ -79,6 +93,6 @@ const s16 EVERYWHERE = -32768;//Denotes a virtual actor that is global/ omnipres
 
     //Get the list of virtual actors for a given scene and room index.
 VirtualActorList* ActorAccessibility_GetVirtualActorList(s16 sceneNum, s8 roomNum);
-int ActorAccessibility_AddVirtualActor(VirtualActorList* list, VIRTUAL_ACTOR_TABLE type, PosRot where);
+AccessibleActor* ActorAccessibility_AddVirtualActor(VirtualActorList* list, VIRTUAL_ACTOR_TABLE type, PosRot where);
 
 #endif

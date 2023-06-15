@@ -42,6 +42,8 @@ void ActorAccessibility_InitPolicy(ActorAccessibilityPolicy& policy, const char*
     policy.runsAlways = false;
     policy.sound = sfx;
     policy.volume = 1.0;
+    policy.initUserData = NULL;
+    policy.cleanupUserData = NULL;
 
 }
 
@@ -69,24 +71,29 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         ActorAccessibilityPolicy* policy = ActorAccessibility_GetPolicyForActor(actor->id);
         if (policy == NULL)
             return;
-        AccessibleActor state;
-        state.instanceID = ActorAccessibility_GetNextID();
-        state.actor = actor;
-        state.id = actor->id;
+        AccessibleActor accessibleActor;
+        accessibleActor.instanceID = ActorAccessibility_GetNextID();
+        accessibleActor.actor = actor;
+        accessibleActor.id = actor->id;
         //Stagger the start times so that all of the sounds don't play at exactly the same time.
-        state.frameCount = ActorAccessibility_GetRandomStartingFrameCount(0, policy->n);
-        state.basePitch = policy->pitch;
+        accessibleActor.frameCount = ActorAccessibility_GetRandomStartingFrameCount(0, policy->n);
+        accessibleActor.basePitch = policy->pitch;
 
-        state.currentPitch = policy->pitch;
-        state.baseVolume = policy->volume;
-        state.currentVolume = policy->volume;
+        accessibleActor.currentPitch = policy->pitch;
+        accessibleActor.baseVolume = policy->volume;
+        accessibleActor.currentVolume = policy->volume;
 
-        state.currentVolume = 1.0;
-        state.currentReverb = 0;
-        state.policy = *policy;
+        accessibleActor.currentVolume = 1.0;
+        accessibleActor.currentReverb = 0;
+        accessibleActor.policy = *policy;
+        trackedActors[actor] = accessibleActor.instanceID;
+        accessibleActorList[accessibleActor.instanceID] = accessibleActor;
+        AccessibleActor& savedActor = accessibleActorList[accessibleActor.instanceID];
+        if (policy->initUserData && !policy->initUserData(&savedActor)) {
+            ActorAccessibility_RemoveTrackedActor(actor);
 
-        trackedActors[actor] = state.instanceID;
-        accessibleActorList[state.instanceID] = state;
+            return; // Probably a malloc error preventing user data initialization.
+        }
 
     }
     void ActorAccessibility_RemoveTrackedActor(Actor* actor) {
@@ -98,6 +105,8 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         AccessibleActorList_t::iterator i2 = accessibleActorList.find(id);
         if (i2 == accessibleActorList.end())
             return;
+        if (i2->second.policy.cleanupUserData)
+            i2->second.policy.cleanupUserData(&i2->second);
         accessibleActorList.erase(i2);
 
     }
@@ -105,10 +114,10 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
     f32 ActorAccessibility_DBToLinear(float gain) {
         return (float)pow(10.0, gain / 20.0f);
     }
-    f32 ActorAccessibility_ComputeCurrentVolume(AccessibleActor* actor) {
-        if (actor->policy.distance == 0)
+    f32 ActorAccessibility_ComputeCurrentVolume(f32 maxDistance, f32 xzDistToPlayer) {
+        if (maxDistance == 0)
             return 0.0;
-        f32 db = (abs(actor->xzDistToPlayer) / actor->policy.distance) * MAX_DB_REDUCTION;
+        f32 db = (abs(xzDistToPlayer) / maxDistance) * MAX_DB_REDUCTION;
 
         return ActorAccessibility_DBToLinear(db * -1);
 
@@ -146,7 +155,7 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
             actor->xzDistToPlayer = Math_Vec3f_DistXZ(&actor->world.pos, &player->actor.world.pos);
 
         }
-            actor->currentVolume = ActorAccessibility_ComputeCurrentVolume(actor);
+            actor->currentVolume = ActorAccessibility_ComputeCurrentVolume(actor->policy.distance, actor->xzDistToPlayer);
 
         actor->frameCount--;
         if (actor->frameCount > 0)
@@ -194,11 +203,11 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         return (VirtualActorList*)l;
 
     }
-    int ActorAccessibility_AddVirtualActor(VirtualActorList* list, VIRTUAL_ACTOR_TABLE type, PosRot where)
+    AccessibleActor* ActorAccessibility_AddVirtualActor(VirtualActorList* list, VIRTUAL_ACTOR_TABLE type, PosRot where)
     {
         ActorAccessibilityPolicy* policy = ActorAccessibility_GetPolicyForActor(type);
         if (policy == NULL)
-            return -1;
+            return NULL;
 
         AccessibleActor actor;
         actor.actor = NULL;
@@ -214,9 +223,15 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         actor.play = NULL;
         actor.world = where;
         actor.policy = *policy;
-
         VAList_t* l = (VAList_t*)list;
         l->push_back(actor);
-        return l->size() - 1;
+        size_t index = l->size() - 1;
+        AccessibleActor* savedActor = &(*l)[l->size() - 1];
+        if (policy->initUserData && !policy->initUserData(savedActor)) {
+            l->pop_back();
+
+            return NULL; // Probably a malloc error preventing user data initialization.
+        }
+        return savedActor;
 
     }
