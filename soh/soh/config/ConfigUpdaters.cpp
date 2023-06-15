@@ -53,5 +53,11 @@ namespace LUS {
             CVarSetInteger("gZFightingMode", CVarGetInteger("gDirtPathFix", 0));
             CVarClear("gDirtPathFix");
         }
+        if (CVarGetInteger("gRandomizedEnemies", 0) != 0) {
+            if (CVarGetInteger("gSeededRandomizedEnemies", 0)) {
+                CVarSetInteger("gRandomizedEnemies", 2);
+            }
+        }
+        CVarClear("gSeededRandomizedEnemies");
     }
 }

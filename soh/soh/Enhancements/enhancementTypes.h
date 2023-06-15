@@ -19,6 +19,12 @@ typedef enum {
 } MirroredWorldMode;
 
 typedef enum {
+    ENEMY_RANDOMIZER_OFF,
+    ENEMY_RANDOMIZER_RANDOM,
+    ENEMY_RANDOMIZER_RANDOM_SEEDED,
+} EnemyRandomizerMode;
+
+typedef enum {
     FASTFILE_1,
     FASTFILE_2,
     FASTFILE_3,
