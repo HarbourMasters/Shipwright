@@ -208,7 +208,7 @@ void RegisterOcarinaTimeTravel() {
         uint8_t hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
         // If TimeTravel + Player have the Ocarina of Time + Have Master Sword + is in proper range
         // TODO: Once Swordless Adult is fixed: Remove the Master Sword check
-        if (CVarGetInteger("gTimeTravel", 0) && hasOcarinaOfTime && hasMasterSword &&
+        if (((CVarGetInteger("gTimeTravel", 0) == 1 && hasOcarinaOfTime) || CVarGetInteger("gTimeTravel", 0) == 2) && hasMasterSword &&
             gPlayState->msgCtx.lastPlayedSong == OCARINA_SONG_TIME && !nearbyTimeBlockEmpty && !nearbyTimeBlock &&
             !nearbyOcarinaSpot && !nearbyFrogs) {
 
