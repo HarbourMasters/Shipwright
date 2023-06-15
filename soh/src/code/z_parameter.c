@@ -1445,9 +1445,11 @@ void Inventory_SwapAgeEquipment(void) {
 
         gSaveContext.childEquips.equipment = gSaveContext.equips.equipment;
 
-        if (gSaveContext.adultEquips.buttonItems[0] == ITEM_NONE) {
+        if (gSaveContext.adultEquips.buttonItems[0] == ITEM_NONE && !(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && gSaveContext.adultEquips.equipment)) {
             if (!gSaveContext.n64ddFlag || !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
                 gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+            } else {
+                gSaveContext.equips.buttonItems[0] = ITEM_NONE;
             }
 
             if (gSaveContext.inventory.items[SLOT_NUT] != ITEM_NONE) {
