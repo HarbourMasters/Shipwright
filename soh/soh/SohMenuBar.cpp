@@ -855,12 +855,15 @@ void DrawEnhancementsMenu() {
             if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", "gAltAssets", true, false)) {
                 if (CVarGetInteger("gAltAssets", 0) == 0) {
                     CVarSetInteger("gAltLinkEquip", 0);
+                    CVarSetInteger("gMMBottles", 0);
                 }
                 ShouldClearTextureCacheAtEndOfFrame = true;
             }
             if (CVarGetInteger("gAltAssets", 0) == 1) {
                 UIWidgets::PaddedEnhancementCheckbox("Alternate Equipment Loading", "gAltLinkEquip", true, false);
                 UIWidgets::Tooltip("Use alternate loading method for loading Link's assets");
+                UIWidgets::PaddedEnhancementCheckbox("Majora's Mask Bottles", "gMMBottles", true, false);
+                UIWidgets::Tooltip("Use alternate loading method Bottles, mimicing Majora's Mask");
             }
             UIWidgets::PaddedEnhancementCheckbox("Disable LOD", "gDisableLOD", true, false);
             UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");

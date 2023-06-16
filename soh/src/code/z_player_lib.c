@@ -1471,6 +1471,7 @@ f32 sSwordTypes[] = {
 };
 
 Gfx* sBottleDLists[] = { gLinkAdultBottleDL, gLinkChildBottleDL };
+Gfx* sBottleContentDLists[] = { gLinkAdultHandHoldingBottleDL, gLinkChildBottle2DL };
 
 Color_RGB8 sBottleColors[] = {
     { 255, 255, 255 }, { 80, 80, 255 },   { 255, 100, 255 }, { 0, 0, 255 }, { 255, 0, 255 },
@@ -1687,11 +1688,16 @@ void Player_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot
 
             OPEN_DISPS(play->state.gfxCtx);
 
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gDPSetEnvColor(POLY_XLU_DISP++, bottleColor->r, bottleColor->g, bottleColor->b, 0);
-            gSPDisplayList(POLY_XLU_DISP++, sBottleDLists[(gSaveContext.linkAge)]);
 
+            if (this->itemAction != PLAYER_IA_BOTTLE && CVarGetInteger("gMMBottles", 0)) {
+                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPDisplayList(POLY_XLU_DISP++, sBottleContentDLists[(gSaveContext.linkAge)]);
+            }
+
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_XLU_DISP++, sBottleDLists[(gSaveContext.linkAge)]);
             CLOSE_DISPS(play->state.gfxCtx);
         }
 
@@ -1838,6 +1844,21 @@ void Player_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot
                 gSPDisplayList(POLY_OPA_DISP++, gLinkChildRightHandAndOotNearDL); //
 
                 CLOSE_DISPS(play->state.gfxCtx);
+                //hookshot
+            } else if (this->rightHandType == 15) {
+                Vec3f sp124[3];
+
+                OPEN_DISPS(play->state.gfxCtx);
+
+                if (LINK_IS_CHILD) {
+                    Matrix_Scale(0.7f, 0.7f, 0.7f, MTXMODE_APPLY);
+                }
+
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightHandHoldingHookshotNearDL);
+
+                CLOSE_DISPS(play->state.gfxCtx);
             }
         }
         if (this->rightHandType == 0xFF) {
@@ -1902,21 +1923,6 @@ void Player_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot
             if ((this->heldItemAction == PLAYER_IA_HOOKSHOT) ||
                 (this->heldItemAction == PLAYER_IA_LONGSHOT)) {
                 Matrix_MultVec3f(&D_80126184, &this->unk_3C8);
-
-                if (CVarGetInteger("gAltLinkEquip", 0)) {
-                    Vec3f sp124[3];
-
-                    OPEN_DISPS(play->state.gfxCtx);
-
-                    if (LINK_IS_CHILD) {
-                        Matrix_Scale(0.7f, 0.7f, 0.7f, MTXMODE_APPLY);
-                    }
-
-                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                    gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightHandHoldingHookshotNearDL);
-
-                    CLOSE_DISPS(play->state.gfxCtx);
-                }
 
                 if (heldActor != NULL) {
                     MtxF sp44;
