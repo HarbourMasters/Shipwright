@@ -5,8 +5,8 @@
 
 
 static const f32 detectionDistance = 500.0;
-static const f32 minInclineDistance = 2.0;
-static const f32 minDeclineDistance = 5.0;
+static const f32 minInclineDistance = 1.0;
+static const f32 minDeclineDistance = 1.0;
 
 enum { DISCOVERED_NOTHING = 0,
 DISCOVERED_INCLINE,
@@ -296,11 +296,6 @@ class Wall: protected TerrainCueSound {
             }
 
             pos.y = floorHeight;
-            if (BgCheck_AnyLineTest3(&actor->play->colCtx, &prevPos, &pos, &collisionResult, &wallPoly, 1, 0, 0, 0, &bgId)) {
-                discoverWall(pos);
-                break;
-
-            }
             if (pos.y > prevPos.y && fabs(pos.y - prevPos.y) > minInclineDistance)
                 // Player is on an incline.
             {
@@ -322,6 +317,12 @@ class Wall: protected TerrainCueSound {
 
                 }
             }
+            if (BgCheck_AnyLineTest3(&actor->play->colCtx, &prevPos, &pos, &collisionResult, &wallPoly, 1, 0, 0, 0,
+                                     &bgId)) {
+                discoverWall(pos);
+                break;
+            }
+
         }
 //Emit sound from the discovered position.
 if (currentSound)
