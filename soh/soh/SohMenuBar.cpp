@@ -1144,12 +1144,12 @@ void DrawCheatsMenu() {
         UIWidgets::Tooltip("Passive Infinite Sword Glitch\nIt makes your sword's swing effect and hitbox stay active indefinitely");
         if (UIWidgets::PaddedEnhancementCheckbox("Timeless Equipment", "gTimelessEquipment", true, false)) {
             if (CVarGetInteger("gTimelessEquipment", 0) == 0) {
-                CVarSetInteger("gNormalHylianShield", 0);
+                CVarSetInteger("gNormalChildHylianShield", 0);
             }
         }
         UIWidgets::Tooltip("Allows any item to be equipped, regardless of age\nAlso allows Child to use Adult strength upgrades");
         if (CVarGetInteger("gTimelessEquipment", 0) == 1) {
-            UIWidgets::PaddedEnhancementCheckbox("Normal Hylian Shield", "gNormalHylianShield", true, false);
+            UIWidgets::PaddedEnhancementCheckbox("Normal Child Hylian Shield", "gNormalChildHylianShield", true, false);
             UIWidgets::Tooltip("Allows the Hylian Shield to be used normally as a Child");
         }
         UIWidgets::PaddedEnhancementCheckbox("Easy Frame Advancing", "gCheatEasyPauseBufferEnabled", true, false);

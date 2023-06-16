@@ -405,7 +405,7 @@ s32 func_8008E9C4(Player* this) {
 }
 
 s32 Player_IsChildWithHylianShield(Player* this) {
-    if (CVarGetInteger("gNormalHylianShield", 0)) {
+    if (CVarGetInteger("gNormalChildHylianShield", 0)) {
         return false;
     }
     else
@@ -2364,7 +2364,7 @@ void func_8009214C(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f* po
             EquipedStance = 1;
         } else if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == 0) {
             EquipedStance = 2;
-        } else if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == 2 && LINK_AGE_IN_YEARS == YEARS_CHILD && !(CVarGetInteger("gNormalHylianShield", 0))) {
+        } else if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == 2 && LINK_AGE_IN_YEARS == YEARS_CHILD && !(CVarGetInteger("gNormalChildHylianShield", 0))) {
             EquipedStance = 3;
         } else {
             // Link is idle so revert to 0
