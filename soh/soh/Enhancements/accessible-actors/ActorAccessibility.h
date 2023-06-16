@@ -85,6 +85,7 @@ typedef enum {
 //Similar to the game's actual actor table. Values here start at 10000 just to be extra safe.
 VA_INITIAL=1000,
 VA_PROTOTYPE,//Remove this one once this thing is working.
+VA_CRAWLSPACE,
 VA_TERRAIN_CUE,
 VA_WALL_CUE,
 

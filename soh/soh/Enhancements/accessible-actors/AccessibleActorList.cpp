@@ -174,6 +174,8 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     ActorAccessibility_InitPolicy(policy, "Proof of concept actor", accessible_va_prototype);
     policy.pitch = 0.5;
     ActorAccessibility_AddSupportedActor(VA_PROTOTYPE, policy);
+    ActorAccessibility_InitPolicy(policy, "crawlspace", NULL, NA_SE_EN_MUSI_SINK);
+    ActorAccessibility_AddSupportedActor(VA_CRAWLSPACE, policy);
     // Now query a list of virtual actors for a given
                                                                 // location (scene
                                                        // and room
@@ -181,7 +183,13 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     VirtualActorList* list = ActorAccessibility_GetVirtualActorList(3, 17);//Forest temple basement.
 //Now place the actor.
     ActorAccessibility_AddVirtualActor(list, VA_PROTOTYPE, { { 299.16, -779, -1807.22 }, { 0, 14702, 0 } });
-//Install cues for walls, ledges etc.
+
+    list = ActorAccessibility_GetVirtualActorList(85, 0); // Kokiri Forest
+    ActorAccessibility_AddVirtualActor(list, VA_CRAWLSPACE, { { -784.0, 120.0, 1046.00 }, { 0, 14702, 0 } });
+
+    list = ActorAccessibility_GetVirtualActorList(85, 2); // Kokiri Forest
+    ActorAccessibility_AddVirtualActor(list, VA_CRAWLSPACE, { { -788.0, 120.0, 1392.00 }, { 0, 14702, 0 } });
+        //Install cues for walls, ledges etc.
     ActorAccessibility_InitCues();
 
 }
