@@ -820,8 +820,9 @@ void func_80083108(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
     s16 i;
     s16 sp28 = 0;
-    u8 swordlessShuffleFlag = (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && 
-      !(CHECK_OWNED_EQUIP(EQUIP_SWORD, 1)) && LINK_IS_ADULT);
+    u8 sDoesNotHaveMS = !(CHECK_OWNED_EQUIP(EQUIP_SWORD, 1));
+    u8 sHaveButNotOnB = CHECK_OWNED_EQUIP(EQUIP_SWORD, 1) && (gSaveContext.equips.buttonItems[0] == ITEM_NONE || gSaveContext.buttonStatus[0] < ITEM_SWORD_KOKIRI);
+    u8 swordlessShuffleFlag = (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && (sDoesNotHaveMS || sHaveButNotOnB));
 
     if ((gSaveContext.cutsceneIndex < 0xFFF0) ||
         ((play->sceneNum == SCENE_SPOT20) && (gSaveContext.cutsceneIndex == 0xFFF0))) {
@@ -1030,6 +1031,9 @@ void func_80083108(PlayState* play) {
                             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER) &&
                             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_BGS) &&
                             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KNIFE)) {
+                            if (swordlessShuffleFlag) {
+                                gSaveContext.buttonStatus[0] = 255;
+                            }
                             gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
                         } else {
                             gSaveContext.buttonStatus[0] = gSaveContext.equips.buttonItems[0];
@@ -2612,8 +2616,6 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     if (item == RG_MASTER_SWORD) {
         if (!CHECK_OWNED_EQUIP(EQUIP_SWORD, 1)) {
             gSaveContext.inventory.equipment |= gBitFlags[1] << gEquipShifts[EQUIP_SWORD];
-            gSaveContext.equips.equipment &= 0xFFF0;
-            gSaveContext.equips.equipment |= 0x0002;
         }
         return Return_Item_Entry(giEntry, RG_NONE);
     }
