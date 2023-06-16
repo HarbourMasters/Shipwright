@@ -5,7 +5,7 @@
 
 
 static const f32 detectionDistance = 500.0;
-static const f32 minInclineDistance = 5.0;
+static const f32 minInclineDistance = 2.0;
 static const f32 minDeclineDistance = 5.0;
 
 enum { DISCOVERED_NOTHING = 0,
@@ -27,7 +27,7 @@ class TerrainCueSound {
     s8 currentReverb;
     // Call to start playback.
     void play() {
-        Audio_PlaySoundGeneral(currentSFX, &terrainPos, 255, &currentPitch, &currentVolume, &currentReverb);
+        Audio_PlaySoundGeneral(currentSFX, &terrainProjectedPos, 255, &currentPitch, &currentVolume, &currentReverb);
     }
 
     // Call when terrain is no longer present to stop playback.
@@ -45,6 +45,7 @@ class TerrainCueSound {
         f32 w = 0.0f;
         // Set projectedPos.
         SkinMatrix_Vec3fMtxFMultXYZW(&actor->play->viewProjectionMtxF, &terrainPos, &terrainProjectedPos, &w);
+
         // Set xzDistToPlayer.
         xzDistToPlayer = Math_Vec3f_DistXZ(&terrainPos, &player->actor.world.pos);
         currentVolume = ActorAccessibility_ComputeCurrentVolume(actor->policy.distance, xzDistToPlayer);
