@@ -5,6 +5,7 @@ extern "C" {
 #include <libultraship/libultra.h>
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_fz/object_fz.h"
+#include "objects/object_gi_soldout/object_gi_soldout.h"
 #include "objects/object_ik/object_ik.h"
 #include "objects/object_link_child/object_link_child.h"
 
@@ -192,6 +193,50 @@ void ApplyAuthenticGfxPatches() {
     PatchIronKnuckleTextureOverflow();
 }
 
+// Patches the Sold Out GI DL to render the texture in the mirror boundary
+void PatchMirroredSoldOutGI() {
+    static const char gSoldOutGIVtx[] = "__OTR__objects/object_gi_soldout/object_gi_soldoutVtx_000400";
+
+    static Vtx* mirroredSoldOutVtx;
+
+    // Using a dummy texture here, but will be ignoring the texture command itself
+    // Only need to patch over the two SetTile commands to get the MIRROR effect
+    Gfx mirroredSoldOutTex[] = {
+        gsDPLoadTextureBlock("", G_IM_FMT_IA, G_IM_SIZ_8b, 32, 32, 0, G_TX_MIRROR | G_TX_WRAP,
+                             G_TX_NOMIRROR | G_TX_CLAMP, 5, 5, G_TX_NOLOD, G_TX_NOLOD),
+    };
+
+    if (CVarGetInteger("gMirroredWorld", 0)) {
+        if (mirroredSoldOutVtx == nullptr) {
+            // Copy the original vertices that we want to modify (4 at the beginning of the resource)
+            mirroredSoldOutVtx = (Vtx*)malloc(sizeof(Vtx) * 4);
+            Vtx* origVtx = (Vtx*)ResourceGetDataByName(gSoldOutGIVtx);
+            memcpy(mirroredSoldOutVtx, origVtx, sizeof(Vtx) * 4);
+
+            // Offset the vertex U coordinate values by the width of the texture
+            for (size_t i = 0; i < 4; i++) {
+                mirroredSoldOutVtx[i].v.tc[0] += 32 << 5;
+            }
+        }
+
+        ResourceMgr_PatchGfxByName(gGiSoldOutDL, "SoldOutGITexture_1", 9, mirroredSoldOutTex[1]);
+        ResourceMgr_PatchGfxByName(gGiSoldOutDL, "SoldOutGITexture_2", 13, mirroredSoldOutTex[5]);
+        ResourceMgr_PatchGfxByName(gGiSoldOutDL, "SoldOutGITextureCords_1", 17, gsSPVertex(mirroredSoldOutVtx, 4, 0));
+        // noop as the original vertex command is 128 bit wide
+        ResourceMgr_PatchGfxByName(gGiSoldOutDL, "SoldOutGITextureCords_2", 18, gsSPNoOp());
+    } else {
+        if (mirroredSoldOutVtx != nullptr) {
+            free(mirroredSoldOutVtx);
+            mirroredSoldOutVtx = nullptr;
+        }
+
+        ResourceMgr_UnpatchGfxByName(gGiSoldOutDL, "SoldOutGITexture_1");
+        ResourceMgr_UnpatchGfxByName(gGiSoldOutDL, "SoldOutGITexture_2");
+        ResourceMgr_UnpatchGfxByName(gGiSoldOutDL, "SoldOutGITextureCords_1");
+        ResourceMgr_UnpatchGfxByName(gGiSoldOutDL, "SoldOutGITextureCords_2");
+    }
+}
+
 // Patches the Sun Song Etching in the Royal Grave to be mirrored in mirror mode
 // This is achieved by mirroring the texture at the boundary and overriding the vertex texture coordinates
 void PatchMirroredSunSongEtching() {
@@ -200,7 +245,7 @@ void PatchMirroredSunSongEtching() {
     static const char gMqRoyalGraveBackRoomSongVtx[] = "__OTR__scenes/mq/hakaana_ouke_scene/hakaana_ouke_room_2Vtx_004F80";
     static const char gNonMqRoyalGraveBackRoomSongVtx[] = "__OTR__scenes/nonmq/hakaana_ouke_scene/hakaana_ouke_room_2Vtx_004F80";
 
-    static Vtx* mirroredVtx;
+    static Vtx* mirroredSunSongVtx;
 
     // Using a dummy texture here, but will be ignoring the texture command itself
     // Only need to patch over the two SetTile commands to get the MIRROR effect
@@ -222,27 +267,27 @@ void PatchMirroredSunSongEtching() {
     }
 
     if (CVarGetInteger("gMirroredWorld", 0)) {
-        if (mirroredVtx == nullptr) {
+        if (mirroredSunSongVtx == nullptr) {
             // Copy the original vertices that we want to modify (4 at the beginning of the resource)
-            mirroredVtx = (Vtx*)malloc(sizeof(Vtx) * 4);
+            mirroredSunSongVtx = (Vtx*)malloc(sizeof(Vtx) * 4);
             Vtx* origVtx = (Vtx*)ResourceGetDataByName(royalGraveBackRoomSongVtx);
-            memcpy(mirroredVtx, origVtx, sizeof(Vtx) * 4);
+            memcpy(mirroredSunSongVtx, origVtx, sizeof(Vtx) * 4);
 
             // Offset the vertex U coordinate values by the width of the texture
             for (size_t i = 0; i < 4; i++) {
-                mirroredVtx[i].v.tc[0] += 128 << 5;
+                mirroredSunSongVtx[i].v.tc[0] += 128 << 5;
             }
         }
 
         ResourceMgr_PatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTexture_1", 13, mirroredSunSongTex[1]);
         ResourceMgr_PatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTexture_2", 17, mirroredSunSongTex[5]);
-        ResourceMgr_PatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTextureCords_1", 24, gsSPVertex(mirroredVtx, 4, 0));
+        ResourceMgr_PatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTextureCords_1", 24, gsSPVertex(mirroredSunSongVtx, 4, 0));
         // noop as the original vertex command is 128 bit wide
         ResourceMgr_PatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTextureCords_2", 25, gsSPNoOp());
     } else {
-        if (mirroredVtx != nullptr) {
-            free(mirroredVtx);
-            mirroredVtx = nullptr;
+        if (mirroredSunSongVtx != nullptr) {
+            free(mirroredSunSongVtx);
+            mirroredSunSongVtx = nullptr;
         }
 
         ResourceMgr_UnpatchGfxByName(royalGraveBackRoomDL, "RoyalGraveSunSongTexture_1");
@@ -253,5 +298,6 @@ void PatchMirroredSunSongEtching() {
 }
 
 void ApplyMirrorWorldGfxPatches() {
+    PatchMirroredSoldOutGI();
     PatchMirroredSunSongEtching();
 }
