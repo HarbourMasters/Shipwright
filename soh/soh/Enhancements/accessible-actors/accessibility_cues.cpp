@@ -5,6 +5,9 @@
 
 
 static const f32 detectionDistance = 500.0;
+static const f32 minInclineDistance = 5.0;
+static const f32 minDeclineDistance = 5.0;
+
 enum { DISCOVERED_NOTHING = 0,
 DISCOVERED_INCLINE,
 DISCOVERED_DECLINE,
@@ -144,6 +147,30 @@ class Ledge :protected TerrainCueSound {
 
     }
     };
+class Wall: protected TerrainCueSound {
+        int frames;
+
+  public:
+    Wall(AccessibleActor* actor, Vec3f pos) : TerrainCueSound(actor, pos) {
+        currentPitch = 0.5;
+        currentReverb = 1;
+        currentSFX = NA_SE_IT_SWORD_CHARGE;
+        frames = 0;
+
+        play();
+    }
+    virtual ~Wall() {
+    }
+    void run() {
+        frames++;
+        if (frames == 20) {
+            frames = 0;
+            play();
+
+        }
+    }
+};
+
     class TerrainCueDirection
 {
     AccessibleActor* actor;
@@ -155,6 +182,7 @@ class Ledge :protected TerrainCueSound {
         Incline incline;
         Decline decline;
         Ledge ledge;
+        Wall wall;
 
     };
     TerrainCueSound* currentSound;
@@ -208,7 +236,18 @@ class Ledge :protected TerrainCueSound {
         terrainDiscovered = DISCOVERED_LEDGE;
 
     }
+    void discoverWall(Vec3f pos) {
+        if (terrainDiscovered == DISCOVERED_WALL)
+            return;
 
+        destroyCurrentSound();
+
+        new (&wall) Wall(actor, pos);
+        currentSound = (TerrainCueSound*)&wall;
+        terrainDiscovered = DISCOVERED_WALL;
+
+
+    }
     void scan() {
         Player* player = GET_PLAYER(actor->play);
         if (player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE) {
@@ -223,7 +262,9 @@ class Ledge :protected TerrainCueSound {
         velocity.z = Math_CosS(rot.y);
         // Draw a line from Link's position to the max detection distance based on the configured relative angle.
         Vec3f pos = player->actor.world.pos;
+
         CollisionPoly poly;
+        CollisionPoly* wallPoly;
         f32 step = fabs(velocity.x + velocity.z);
         f32 distToTravel = detectionDistance;
         Vec3f collisionResult;
@@ -238,6 +279,8 @@ class Ledge :protected TerrainCueSound {
             pos.y = floorHeight;
 
         }
+        Vec3f startingPos = pos;
+
         while (distToTravel >= 0) {
             Vec3f prevPos = pos;
             pos.x += velocity.x;
@@ -252,13 +295,20 @@ class Ledge :protected TerrainCueSound {
             }
 
             pos.y = floorHeight;
-            if (pos.y > prevPos.y)// Player is on an incline.
+            if (BgCheck_AnyLineTest3(&actor->play->colCtx, &prevPos, &pos, &collisionResult, &wallPoly, 1, 0, 0, 0, &bgId)) {
+                discoverWall(pos);
+                break;
+
+            }
+            if (pos.y > prevPos.y && fabs(pos.y - prevPos.y) > minInclineDistance)
+                // Player is on an incline.
             {
 
                 discoverIncline(pos);
                 break;
 
-            } else if (pos.y < prevPos.y) {
+            } else if (pos.y < prevPos.y && fabs(pos.y - prevPos.y) > minDeclineDistance)
+            {
                 // Is this a big drop or just a slope?
                 if (fabs(pos.y - prevPos.y) < 10) {
                     discoverDecline(pos);
@@ -267,6 +317,8 @@ class Ledge :protected TerrainCueSound {
                 } else // It's a bigger drop, possibly the edge of a platform.
                 {
                     discoverLedge(pos);
+                    break;
+
                 }
             }
         }
@@ -393,7 +445,7 @@ ActorAccessibilityPolicy policy;
     ActorAccessibility_InitPolicy(policy, "Terrain cue helper", accessible_va_terrain_cue);
         policy.n = 1;
         policy.runsAlways = true;
-        policy.distance = 250;
+        policy.distance = 500;
         policy.initUserData = ActorAccessibility_InitTerrainCueState;
         policy.cleanupUserData = ActorAccessibility_CleanupTerrainCueState;
 
