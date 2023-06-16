@@ -9,7 +9,6 @@
 
 extern "C" {
 #include <z64.h>
-#include "soh/OTRGlobals.h"
 #include "macros.h"
 #include "functions.h"
 #include "variables.h"
