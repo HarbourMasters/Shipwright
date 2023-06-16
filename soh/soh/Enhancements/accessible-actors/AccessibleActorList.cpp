@@ -176,6 +176,15 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     ActorAccessibility_AddSupportedActor(VA_PROTOTYPE, policy);
     ActorAccessibility_InitPolicy(policy, "crawlspace", NULL, NA_SE_EN_MUSI_SINK);
     ActorAccessibility_AddSupportedActor(VA_CRAWLSPACE, policy);
+    ActorAccessibility_InitPolicy(policy, "Ladder/climable", NULL, NA_SE_PL_CLIMB_CLIFF);
+    policy.volume = 1.5;
+    policy.pitch = 1.3;
+    policy.distance = 5000;
+    ActorAccessibility_AddSupportedActor(VA_CLIMB, policy);
+    ActorAccessibility_InitPolicy(policy, "Door", NULL, NA_SE_OC_DOOR_OPEN);
+    policy.n = 30;
+    policy.pitch = 1.1;
+    ActorAccessibility_AddSupportedActor(VA_DOOR, policy);
     // Now query a list of virtual actors for a given
                                                                 // location (scene
                                                        // and room
@@ -186,8 +195,16 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
 
     list = ActorAccessibility_GetVirtualActorList(85, 0); // Kokiri Forest
     ActorAccessibility_AddVirtualActor(list, VA_CRAWLSPACE, { { -784.0, 120.0, 1046.00 }, { 0, 14702, 0 } });
+    ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -547.0, 60.0, -1036.00 }, { 0, 14702, 0 } });
+    ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -29.0, -80.0, 983.00 }, { 0, 14702, 0 } });
+    ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { -448.0, 0.0, -528.00 }, { 0, 14702, 0 } });
+    ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { -1082.0, 120.0, 383.00 }, { 0, 14702, 0 } });
+    ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { -27.0, 100.0, 1117.00 }, { 0, 14702, 0 } });
+    ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 515.0, 0.0, 647.00 }, { 0, 14702, 0 } });
+    ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 1046.0, 0.0, 549.00 }, { 0, 14702, 0 } });
+    ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 848.0, 0.0, -323.00 }, { 0, 14702, 0 } });
 
-    list = ActorAccessibility_GetVirtualActorList(85, 2); // Kokiri Forest
+    list = ActorAccessibility_GetVirtualActorList(85, 2); // Kokiri Forest Room with boulder and korkiri sword
     ActorAccessibility_AddVirtualActor(list, VA_CRAWLSPACE, { { -788.0, 120.0, 1392.00 }, { 0, 14702, 0 } });
         //Install cues for walls, ledges etc.
     ActorAccessibility_InitCues();

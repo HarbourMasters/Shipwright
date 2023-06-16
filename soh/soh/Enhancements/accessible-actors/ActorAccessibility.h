@@ -88,6 +88,8 @@ VA_PROTOTYPE,//Remove this one once this thing is working.
 VA_CRAWLSPACE,
 VA_TERRAIN_CUE,
 VA_WALL_CUE,
+VA_CLIMB,
+VA_DOOR,
 
 } VIRTUAL_ACTOR_TABLE;
 const s16 EVERYWHERE = -32768;//Denotes a virtual actor that is global/ omnipresent.
