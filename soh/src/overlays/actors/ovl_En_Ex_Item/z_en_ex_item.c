@@ -442,7 +442,7 @@ void EnExItem_TargetPrizeFinish(EnExItem* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         // "Successful completion"
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
-        gSaveContext.itemGetInf[1] |= 0x2000;
+        Flags_SetItemGetInf(ITEMGETINF_1D);
         Actor_Kill(&this->actor);
     }
 }

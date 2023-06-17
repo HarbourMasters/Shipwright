@@ -252,7 +252,7 @@ void EnGe2_CaptureClose(EnGe2* this, PlayState* play) {
 
         if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
             play->nextEntranceIndex = 0x1A5;
-        } else if (gSaveContext.eventChkInf[12] & 0x80) {
+        } else if (Flags_GetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO)) {
             play->nextEntranceIndex = 0x5F8;
         } else {
             play->nextEntranceIndex = 0x3B4;
@@ -282,7 +282,7 @@ void EnGe2_CaptureCharge(EnGe2* this, PlayState* play) {
 
         if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
             play->nextEntranceIndex = 0x1A5;
-        } else if (gSaveContext.eventChkInf[12] & 0x80) {
+        } else if (Flags_GetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO)) {
             play->nextEntranceIndex = 0x5F8;
         } else {
             play->nextEntranceIndex = 0x3B4;

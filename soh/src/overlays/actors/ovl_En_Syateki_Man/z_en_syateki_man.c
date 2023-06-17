@@ -358,7 +358,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                             this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_SHOOTING_GALLERY_REWARD, GI_BULLET_BAG_50);
                             this->getItemId = this->getItemEntry.getItemId;
                             Flags_SetTreasure(play, 0x1E);
-                        } else if (!gSaveContext.n64ddFlag && !(gSaveContext.itemGetInf[0] & 0x2000)) {
+                        } else if (!gSaveContext.n64ddFlag && !Flags_GetItemGetInf(ITEMGETINF_0D)) {
                             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Equip_Pachinko ☆☆☆☆☆ %d\n" VT_RST,
                                          CUR_UPG_VALUE(UPG_BULLET_BAG));
                             if (CUR_UPG_VALUE(UPG_BULLET_BAG) == 1) {
@@ -375,7 +375,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                             this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_SHOOTING_GALLERY_REWARD, GI_QUIVER_50);
                             this->getItemId = this->getItemEntry.getItemId;
                             Flags_SetTreasure(play, 0x1F);
-                        } else if (!gSaveContext.n64ddFlag && !(gSaveContext.itemGetInf[0] & 0x4000)) {
+                        } else if (!gSaveContext.n64ddFlag && !Flags_GetItemGetInf(ITEMGETINF_0E)) {
                             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Equip_Bow ☆☆☆☆☆ %d\n" VT_RST,
                                          CUR_UPG_VALUE(UPG_QUIVER));
                             switch (CUR_UPG_VALUE(UPG_QUIVER)) {
@@ -445,9 +445,9 @@ void EnSyatekiMan_FinishPrize(EnSyatekiMan* this, PlayState* play) {
         // "Successful completion"
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
         if (!LINK_IS_ADULT) {
-            gSaveContext.itemGetInf[0] |= 0x2000;
+            Flags_SetItemGetInf(ITEMGETINF_0D);
         } else if ((this->getItemId == GI_QUIVER_40) || (this->getItemId == GI_QUIVER_50)) {
-            gSaveContext.itemGetInf[0] |= 0x4000;
+            Flags_SetItemGetInf(ITEMGETINF_0E);
         }
         this->gameResult = SYATEKI_RESULT_NONE;
         this->actor.parent = this->tempGallery;

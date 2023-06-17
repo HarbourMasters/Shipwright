@@ -241,10 +241,10 @@ s32 EnDaiku_UpdateTalking(EnDaiku* this, PlayState* play) {
             if (Message_ShouldAdvance(play)) {
                 switch (this->actor.textId) {
                     case 0x6061:
-                        gSaveContext.infTable[23] |= 0x40;
+                        Flags_SetInfTable(INFTABLE_176);
                         break;
                     case 0x6064:
-                        gSaveContext.infTable[23] |= 0x100;
+                        Flags_SetInfTable(INFTABLE_178);
                         break;
                 }
 
@@ -310,7 +310,7 @@ void EnDaiku_UpdateText(EnDaiku* this, PlayState* play) {
                         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT)) {
                             this->actor.textId = 0x6063;
                         } else {
-                            if (!(gSaveContext.infTable[23] & 0x40)) {
+                            if (!Flags_GetInfTable(INFTABLE_176)) {
                                 this->actor.textId = 0x6061;
                             } else {
                                 this->actor.textId = 0x6062;
@@ -321,7 +321,7 @@ void EnDaiku_UpdateText(EnDaiku* this, PlayState* play) {
                         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT)) {
                             this->actor.textId = 0x6066;
                         } else {
-                            if (!(gSaveContext.infTable[23] & 0x100)) {
+                            if (!Flags_GetInfTable(INFTABLE_178)) {
                                 this->actor.textId = 0x6064;
                             } else {
                                 this->actor.textId = 0x6065;

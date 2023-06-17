@@ -47,7 +47,7 @@ void BgTokiHikari_Init(Actor* thisx, PlayState* play) {
             this->actionFunc = BgTokiHikari_DoNothing;
             break;
         case 1:
-            if (!(gSaveContext.eventChkInf[4] & 0x800)) {
+            if (!Flags_GetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME)) {
                 this->actionFunc = func_808BA204;
                 this->unk_14C = 0.0f;
             } else {
