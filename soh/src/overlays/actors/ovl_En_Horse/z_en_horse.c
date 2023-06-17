@@ -462,7 +462,7 @@ s32 EnHorse_BgCheckBridgeJumpPoint(EnHorse* this, PlayState* play) {
     if (this->actor.speedXZ < 12.8f) {
         return false;
     }
-    if ((gSaveContext.eventChkInf[9] & 0xF) == 0xF) {
+    if (GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {
         return false;
     }
 
@@ -3554,7 +3554,7 @@ void EnHorse_Update(Actor* thisx, PlayState* play2) {
             this->stateFlags &= ~ENHORSE_FLAG_24;
         }
 
-        if (play->sceneNum == SCENE_SPOT09 && (gSaveContext.eventChkInf[9] & 0xF) != 0xF) {
+        if (play->sceneNum == SCENE_SPOT09 && !GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {
             EnHorse_CheckBridgeJumps(this, play);
         }
 

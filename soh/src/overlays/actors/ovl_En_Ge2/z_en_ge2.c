@@ -234,7 +234,9 @@ s32 EnGe2_CheckCarpentersFreed(void) {
         }
     } 
 
-    if ((u8)(gSaveContext.eventChkInf[9] & 0xF) == 0xF) {
+    if (CHECK_FLAG_ALL(gSaveContext.eventChkInf[EVENTCHKINF_CARPENTERS_FREE_INDEX] &
+                           (EVENTCHKINF_CARPENTERS_FREE_MASK_ALL | 0xF0),
+                       EVENTCHKINF_CARPENTERS_FREE_MASK_ALL)) {
         return 1;
     }
     return 0;

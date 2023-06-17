@@ -263,7 +263,7 @@ s32 func_80B206A0(EnToryo* this, PlayState* play) {
 
     if (textId == 0) {
         if ((this->stateFlags & 1)) {
-            if ((gSaveContext.eventChkInf[9] & 0xF) == 0xF) {
+            if (GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {
                 ret = 0x606C;
             } else if ((gSaveContext.infTable[23] & 1)) {
                 ret = 0x606B;

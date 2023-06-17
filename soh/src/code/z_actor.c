@@ -4692,31 +4692,87 @@ void func_80035B18(PlayState* play, Actor* actor, u16 textId) {
 }
 
 /**
- * Tests if event_chk_inf flag is set.
+ * Tests if "eventChkInf" flag is set.
  */
 s32 Flags_GetEventChkInf(s32 flag) {
     return gSaveContext.eventChkInf[flag >> 4] & (1 << (flag & 0xF));
 }
 
 /**
- * Sets event_chk_inf flag.
+ * Sets "eventChkInf" flag.
  */
 void Flags_SetEventChkInf(s32 flag) {
     gSaveContext.eventChkInf[flag >> 4] |= (1 << (flag & 0xF));
 }
 
 /**
- * Tests if "inf_table flag is set.
+ * Unsets "eventChkInf" flag.
+ */
+void Flags_UnsetEventChkInf(s32 flag) {
+    gSaveContext.eventChkInf[flag >> 4] &= ~(1 << (flag & 0xF));
+}
+
+/**
+ * Tests if "itemGetInf" flag is set.
+ */
+s32 Flags_GetItemGetInf(s32 flag) {
+    return gSaveContext.itemGetInf[flag >> 4] & (1 << (flag & 0xF));
+}
+
+/**
+ * Sets "itemGetInf" flag.
+ */
+void Flags_SetItemGetInf(s32 flag) {
+    gSaveContext.itemGetInf[flag >> 4] |= (1 << (flag & 0xF));
+}
+
+/**
+ * Unsets "itemGetInf" flag.
+ */
+void Flags_UnsetItemGetInf(s32 flag) {
+    gSaveContext.itemGetInf[flag >> 4] &= ~(1 << (flag & 0xF));
+}
+
+/**
+ * Tests if "infTable" flag is set.
  */
 s32 Flags_GetInfTable(s32 flag) {
     return gSaveContext.infTable[flag >> 4] & (1 << (flag & 0xF));
 }
 
 /**
- * Sets "inf_table" flag.
+ * Sets "infTable" flag.
  */
 void Flags_SetInfTable(s32 flag) {
     gSaveContext.infTable[flag >> 4] |= (1 << (flag & 0xF));
+}
+
+/**
+ * Unsets "infTable" flag.
+ */
+void Flags_UnsetInfTable(s32 flag) {
+    gSaveContext.infTable[flag >> 4] &= ~(1 << (flag & 0xF));
+}
+
+/**
+ * Tests if "eventInf" flag is set.
+ */
+s32 Flags_GetEventInf(s32 flag) {
+    return gSaveContext.eventInf[flag >> 4] & (1 << (flag & 0xF));
+}
+
+/**
+ * Sets "eventInf" flag.
+ */
+void Flags_SetEventInf(s32 flag) {
+    gSaveContext.eventInf[flag >> 4] |= (1 << (flag & 0xF));
+}
+
+/**
+ * Unsets "eventInf" flag.
+ */
+void Flags_UnsetEventInf(s32 flag) {
+    gSaveContext.eventInf[flag >> 4] &= ~(1 << (flag & 0xF));
 }
 
 /**
@@ -4731,6 +4787,13 @@ s32 Flags_GetRandomizerInf(RandomizerInf flag) {
  */
 void Flags_SetRandomizerInf(RandomizerInf flag) {
     gSaveContext.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
+}
+
+/**
+ * Unsets "randomizerInf" flag.
+ */
+void Flags_UnsetRandomizerInf(RandomizerInf flag) {
+    gSaveContext.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
 }
 
 u32 func_80035BFC(PlayState* play, s16 arg1) {

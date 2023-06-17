@@ -6279,23 +6279,32 @@ void func_8083E4C4(PlayState* play, Player* this, GetItemEntry* giEntry) {
 // and which flag is specified in player->pendingFlag.flagID.
 void Player_SetPendingFlag(Player* this, PlayState* play) {
     switch (this->pendingFlag.flagType) {
-        case FLAG_SCENE_CLEAR:
-            Flags_SetClear(play, this->pendingFlag.flagID);
-            break;
-        case FLAG_SCENE_COLLECTIBLE:
-            Flags_SetCollectible(play, this->pendingFlag.flagID);
-            break;
         case FLAG_SCENE_SWITCH:
             Flags_SetSwitch(play, this->pendingFlag.flagID);
             break;
         case FLAG_SCENE_TREASURE:
             Flags_SetTreasure(play, this->pendingFlag.flagID);
             break;
-        case FLAG_RANDOMIZER_INF:
-            Flags_SetRandomizerInf(this->pendingFlag.flagID);
+        case FLAG_SCENE_CLEAR:
+            Flags_SetClear(play, this->pendingFlag.flagID);
+            break;
+        case FLAG_SCENE_COLLECTIBLE:
+            Flags_SetCollectible(play, this->pendingFlag.flagID);
             break;
         case FLAG_EVENT_CHECK_INF:
             Flags_SetEventChkInf(this->pendingFlag.flagID);
+            break;
+        case FLAG_ITEM_GET_INF:
+            Flags_SetItemGetInf(this->pendingFlag.flagID);
+            break;
+        case FLAG_INF_TABLE:
+            Flags_SetInfTable(this->pendingFlag.flagID);
+            break;
+        case FLAG_EVENT_INF:
+            Flags_SetEventInf(this->pendingFlag.flagID);
+            break;
+        case FLAG_RANDOMIZER_INF:
+            Flags_SetRandomizerInf(this->pendingFlag.flagID);
             break;
         case FLAG_NONE:
         default:
