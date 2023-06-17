@@ -9,6 +9,11 @@ export DYLD_FALLBACK_LIBRARY_PATH="$LIBPATH"
 
 if [ ! -e "$SHIP_HOME" ]; then	mkdir "$SHIP_HOME"; fi
 
+if [ ! -e "$SHIP_HOME"/mods ]; then
+	mkdir -p "$SHIP_HOME"/mods
+	touch "$SHIP_HOME"/mods/custom_otr_files_go_here.txt
+fi
+
 # If either OTR doesn't exist kick off the OTR gen process
 if [ ! -e "$SHIP_HOME"/oot.otr ] || [ ! -e "$SHIP_HOME"/oot-mq.otr ]; then
 
