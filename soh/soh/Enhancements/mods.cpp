@@ -4,6 +4,8 @@
 #include "tts/tts.h"
 #include "soh/Enhancements/boss-rush/BossRushTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/randomizer/3drando/random.hpp"
+#include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 
 extern "C" {
 #include <z64.h>
@@ -206,7 +208,7 @@ void RegisterOcarinaTimeTravel() {
         uint8_t hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
         // If TimeTravel + Player have the Ocarina of Time + Have Master Sword + is in proper range
         // TODO: Once Swordless Adult is fixed: Remove the Master Sword check
-        if (CVarGetInteger("gTimeTravel", 0) && hasOcarinaOfTime && hasMasterSword &&
+        if (((CVarGetInteger("gTimeTravel", 0) == 1 && hasOcarinaOfTime) || CVarGetInteger("gTimeTravel", 0) == 2) && hasMasterSword &&
             gPlayState->msgCtx.lastPlayedSong == OCARINA_SONG_TIME && !nearbyTimeBlockEmpty && !nearbyTimeBlock &&
             !nearbyOcarinaSpot && !nearbyFrogs) {
 
@@ -537,16 +539,51 @@ void UpdateDirtPathFixState(int32_t sceneNum) {
         case SCENE_SPOT00:
         case SCENE_SPOT04:
         case SCENE_SPOT15:
-            CVarSetInteger("gDirtPathFix", CVarGetInteger("gSceneSpecificDirtPathFix", ZFIGHT_FIX_DISABLED));
+            CVarSetInteger("gZFightingMode", CVarGetInteger("gSceneSpecificDirtPathFix", ZFIGHT_FIX_DISABLED));
             return;
         default:
-            CVarClear("gDirtPathFix");
+            CVarClear("gZFightingMode");
     }
 }
 
 void RegisterMenuPathFix() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>([](int32_t sceneNum) {
         UpdateDirtPathFixState(sceneNum);
+    });
+}
+
+void UpdateMirrorModeState(int32_t sceneNum) {
+    static bool prevMirroredWorld = false;
+    bool nextMirroredWorld = false;
+
+    int16_t mirroredMode = CVarGetInteger("gMirroredWorldMode", MIRRORED_WORLD_OFF);
+
+    if (mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED) {
+        uint32_t seed = sceneNum + (gSaveContext.n64ddFlag ? (gSaveContext.seedIcons[0] + gSaveContext.seedIcons[1] + gSaveContext.seedIcons[2] + gSaveContext.seedIcons[3] + gSaveContext.seedIcons[4]) : gSaveContext.sohStats.fileCreatedAt);
+        Random_Init(seed);
+    }
+
+    uint8_t randomNumber = Random(0, 2);
+    if (
+        mirroredMode == MIRRORED_WORLD_ALWAYS ||
+        (mirroredMode > MIRRORED_WORLD_ALWAYS && randomNumber == 1)
+    ) {
+        nextMirroredWorld = true;
+        CVarSetInteger("gMirroredWorld", 1);
+    } else {
+        nextMirroredWorld = false;
+        CVarClear("gMirroredWorld");
+    }
+
+    if (prevMirroredWorld != nextMirroredWorld) {
+        prevMirroredWorld = nextMirroredWorld;
+        ApplyMirrorWorldGfxPatches();
+    }
+}
+
+void RegisterMirrorModeHandler() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
+        UpdateMirrorModeState(sceneNum);
     });
 }
 
@@ -571,4 +608,5 @@ void InitMods() {
     RegisterHyperEnemies();
     RegisterBonkDamage();
     RegisterMenuPathFix();
+    RegisterMirrorModeHandler();
 }

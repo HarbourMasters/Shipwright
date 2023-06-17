@@ -49,5 +49,15 @@ namespace LUS {
         if (conf->GetString("Game.Patches Archive", "") == "") {
             conf->Erase("Game.Patches Archive");
         }
+        if (CVarGetInteger("gDirtPathFix", 0) != 0) {
+            CVarSetInteger("gZFightingMode", CVarGetInteger("gDirtPathFix", 0));
+            CVarClear("gDirtPathFix");
+        }
+        if (CVarGetInteger("gRandomizedEnemies", 0) != 0) {
+            if (CVarGetInteger("gSeededRandomizedEnemies", 0)) {
+                CVarSetInteger("gRandomizedEnemies", 2);
+            }
+        }
+        CVarClear("gSeededRandomizedEnemies");
     }
 }

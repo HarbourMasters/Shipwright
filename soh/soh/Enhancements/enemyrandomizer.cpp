@@ -2,6 +2,7 @@
 #include "functions.h"
 #include "macros.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
+#include "soh/Enhancements/enhancementTypes.h"
 #include "variables.h"
 
 extern "C" {
@@ -232,16 +233,13 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
 }
 
 EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
-    if (CVarGetInteger("gSeededRandomizedEnemies", 0) && gSaveContext.n64ddFlag) {
-        uint32_t finalSeed = seed + gSaveContext.seedIcons[0] + gSaveContext.seedIcons[1] + gSaveContext.seedIcons[2] +
-                        gSaveContext.seedIcons[3] + gSaveContext.seedIcons[4];
+    if (CVarGetInteger("gRandomizedEnemies", ENEMY_RANDOMIZER_OFF) == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
+        uint32_t finalSeed = seed + (gSaveContext.n64ddFlag ? (gSaveContext.seedIcons[0] + gSaveContext.seedIcons[1] + gSaveContext.seedIcons[2] + gSaveContext.seedIcons[3] + gSaveContext.seedIcons[4]) : gSaveContext.sohStats.fileCreatedAt);
         Random_Init(finalSeed);
-        uint32_t randomNumber = Random(0, RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE);
-        return randomizedEnemySpawnTable[randomNumber];
-    } else {
-        uint32_t randomNumber = rand() + seed;
-        return randomizedEnemySpawnTable[randomNumber % RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE];
     }
+
+    uint32_t randomNumber = Random(0, RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE);
+    return randomizedEnemySpawnTable[randomNumber];
 }
 
 bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, int16_t params, float posX) {
