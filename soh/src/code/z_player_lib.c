@@ -1479,7 +1479,8 @@ Color_RGB8 sBottleColors[] = {
     { 255, 255, 255 }, { 255, 255, 255 }, { 80, 80, 255 },
 };
 
-Vec3f D_80126128 = { 398.0f, 1419.0f, 244.0f };
+Vec3f sLeftHandArrowVec3 = { 398.0f, 1419.0f, 244.0f };
+Vec3f sChildLeftHandArrowVec3 = { 420.0f, 1210.0f, 380.0f }; //ripped from MM
 
 BowStringData sBowStringData[] = {
     { gLinkAdultBowStringDL, { 0.0f, -360.4f, 0.0f } },       // bow
@@ -1705,7 +1706,11 @@ void Player_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot
         if (this->actor.scale.y >= 0.0f) {
             if (!Player_HoldsHookshot(this) && ((hookedActor = this->heldActor) != NULL)) {
                 if (this->stateFlags1 & 0x200) {
-                    Matrix_MultVec3f(&D_80126128, &hookedActor->world.pos);
+                    if (LINK_IS_CHILD && CVarGetInteger("gBowSlingShotAmmoFix", 0) &&
+                        this->itemAction != PLAYER_IA_SLINGSHOT)
+                        Matrix_MultVec3f(&sChildLeftHandArrowVec3, &hookedActor->world.pos);
+                    else
+                        Matrix_MultVec3f(&sLeftHandArrowVec3, &hookedActor->world.pos);
                     Matrix_RotateZYX(0x69E8, -0x5708, 0x458E, MTXMODE_APPLY);
                     Matrix_Get(&sp14C);
                     Matrix_MtxFToYXZRotS(&sp14C, &hookedActor->world.rot, 0);
