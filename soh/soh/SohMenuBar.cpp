@@ -861,9 +861,9 @@ void DrawEnhancementsMenu() {
             }
             if (CVarGetInteger("gAltAssets", 0) == 1) {
                 UIWidgets::PaddedEnhancementCheckbox("Alternate Equipment Loading", "gAltLinkEquip", true, false);
-                UIWidgets::Tooltip("Use alternate loading method for loading Link's assets");
+                UIWidgets::Tooltip("Display Link's equipment separately from his body, allowing Timeless equipment to display properly on child Link and equipment to display properly on custom Link models.");
                 UIWidgets::PaddedEnhancementCheckbox("Majora's Mask Bottles", "gMMBottles", true, false);
-                UIWidgets::Tooltip("Use alternate loading method Bottles, mimicing Majora's Mask");
+                UIWidgets::Tooltip("Display bottle contents separately from the bottle itself, similar to Majora's Mask.");
             }
             UIWidgets::PaddedEnhancementCheckbox("Disable LOD", "gDisableLOD", true, false);
             UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
