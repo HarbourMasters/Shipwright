@@ -8,6 +8,8 @@
 #include "textures/message_static/message_static.h"
 #include "textures/message_texture_static/message_texture_static.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/OTRGlobals.h"
 
 s16 sTextFade = false; // original name: key_off_flag ?
 

@@ -20,6 +20,10 @@ void EnPartner_Update(Actor* thisx, PlayState* play);
 void EnPartner_Draw(Actor* thisx, PlayState* play);
 void EnPartner_SpawnSparkles(EnPartner* this, PlayState* play, s32 sparkleLife);
 
+void func_808328EC(Player* this, u16 sfxId);
+void func_808429B4(PlayState* play, s32 speed, s32 y, s32 countdown);
+s32 spawn_boomerang_ivan(EnPartner* this, PlayState* play);
+
 static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 8, ICHAIN_STOP),
 };

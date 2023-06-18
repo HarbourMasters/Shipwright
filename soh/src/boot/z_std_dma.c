@@ -1,5 +1,6 @@
 #include "global.h"
 #include "vt.h"
+#include <stdio.h>
 
 StackEntry sDmaMgrStackInfo;
 OSMesgQueue sDmaMgrMsgQueue;
@@ -183,14 +184,14 @@ void DmaMgr_Error(DmaRequest* req, const char* file, const char* errorName, cons
     osSyncPrintf(VT_RST);
 
     if (req->filename) {
-        sprintf(buff1, "DMA ERROR: %s %d", req->filename, req->line);
+        snprintf(buff1, sizeof(buff1), "DMA ERROR: %s %d", req->filename, req->line);
     } else if (sDmaMgrCurFileName) {
-        sprintf(buff1, "DMA ERROR: %s %d", sDmaMgrCurFileName, sDmaMgrCurFileLine);
+        snprintf(buff1, sizeof(buff1), "DMA ERROR: %s %d", sDmaMgrCurFileName, sDmaMgrCurFileLine);
     } else {
-        sprintf(buff1, "DMA ERROR: %s", errorName != NULL ? errorName : "???");
+        snprintf(buff1, sizeof(buff1), "DMA ERROR: %s", errorName != NULL ? errorName : "???");
     }
 
-    sprintf(buff2, "%07X %08X %X %s", vrom, ram, size, file != NULL ? file : "???");
+    snprintf(buff2, sizeof(buff1), "%07X %08X %X %s", vrom, ram, size, file != NULL ? file : "???");
     Fault_AddHungupAndCrashImpl(buff1, buff2);
 }
 

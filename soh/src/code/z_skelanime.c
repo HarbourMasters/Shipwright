@@ -1,5 +1,7 @@
 #include "global.h"
 #include "vt.h"
+#include <string.h>
+#include <stdio.h>
 
 #define ANIM_INTERP 1
 
@@ -865,7 +867,7 @@ void AnimationContext_SetLoadFrame(PlayState* play, LinkAnimationHeader* animati
 
         char animPath[2048];
 
-        sprintf(animPath, "misc/link_animetion/gPlayerAnimData_%06X", (((uintptr_t)linkAnimHeader->segment - 0x07000000)));
+        snprintf(animPath, sizeof(animPath), "misc/link_animetion/gPlayerAnimData_%06X", (((uintptr_t)linkAnimHeader->segment - 0x07000000)));
 
         //printf("Streaming %s, seg = %08X\n", animPath, linkAnimHeader->segment);
 

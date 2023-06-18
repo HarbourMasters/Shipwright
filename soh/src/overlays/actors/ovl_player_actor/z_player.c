@@ -26,6 +26,12 @@
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include <overlays/actors/ovl_En_Partner/z_en_partner.h>
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/randomizer/randomizer_grotto.h"
+#include "soh/frame_interpolation.h"
+
+#include <string.h>
+#include <stdlib.h>
 
 typedef enum {
     /* 0x00 */ KNOB_ANIM_ADULT_L,
@@ -1279,13 +1285,13 @@ static LinkAnimationHeader* D_808543D4[] = {
 };
 
 // return type can't be void due to regalloc in func_8084FCAC
-s32 func_80832210(Player* this) {
+void func_80832210(Player* this) {
     this->actor.speedXZ = 0.0f;
     this->linearVelocity = 0.0f;
 }
 
 // return type can't be void due to regalloc in func_8083F72C
-s32 func_80832224(Player* this) {
+void func_80832224(Player* this) {
     func_80832210(this);
     this->unk_6AD = 0;
 }

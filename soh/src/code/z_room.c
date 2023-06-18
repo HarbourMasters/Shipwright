@@ -5,6 +5,7 @@
 #include "global.h"
 #include "vt.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include <string.h>
 
 void func_80095AB4(PlayState* play, Room* room, u32 flags);
 void func_80095D04(PlayState* play, Room* room, u32 flags);
@@ -26,6 +27,9 @@ Gfx D_801270B0[] = {
     gsSPClipRatio(FRUSTRATIO_1),
     gsSPEndDisplayList(),
 };
+
+s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomNum);
+s32 OTRfunc_800973FC(PlayState* play, RoomContext* roomCtx);
 
 void (*sRoomDrawHandlers[])(PlayState* play, Room* room, u32 flags) = {
     func_80095AB4,

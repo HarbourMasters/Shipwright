@@ -14,9 +14,15 @@
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+
 
 #define MIN_QUEST (ResourceMgr_GameHasOriginal() ? FS_QUEST_NORMAL : FS_QUEST_MASTER)
 #define MAX_QUEST FS_QUEST_BOSSRUSH
+
+void Sram_InitDebugSave(void);
+void Sram_InitBossRushSave();
+
 u8 hasRandomizerQuest() {
     if (strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0) {
         return 1;

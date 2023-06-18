@@ -10,6 +10,7 @@
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #include <libultraship/libultraship.h>
 
@@ -32,6 +33,11 @@ u64 D_801614D0[0xA00];
 PlayState* gPlayState;
 
 s16 gEnPartnerId;
+
+void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn);
+
+void enableBetaQuest();
+void disableBetaQuest();
 
 void func_800BC450(PlayState* play) {
     Camera_ChangeDataIdx(GET_ACTIVE_CAM(play), play->unk_1242B - 1);

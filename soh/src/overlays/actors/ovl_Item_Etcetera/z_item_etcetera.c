@@ -21,7 +21,6 @@ void ItemEtcetera_SpawnSparkles(ItemEtcetera* this, PlayState* play);
 void ItemEtcetera_MoveFireArrowDown(ItemEtcetera* this, PlayState* play);
 void func_80B85B28(ItemEtcetera* this, PlayState* play);
 void ItemEtcetera_UpdateFireArrow(ItemEtcetera* this, PlayState* play);
-GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, PlayState* play);
 
 const ActorInit Item_Etcetera_InitVars = {
     ACTOR_ITEM_ETCETERA,

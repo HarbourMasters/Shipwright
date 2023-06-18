@@ -9,6 +9,8 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/enemyrandomizer.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+
 #include "soh/ActorDB.h"
 
 #if defined(_MSC_VER) || defined(__GNUC__)
@@ -2570,7 +2572,7 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
                         actor->colorFilterTimer--;
                     }
                     actor->update(actor, play);
-                    GameInteractor_ExecuteOnActorUpdate(actor, play);
+                    GameInteractor_ExecuteOnActorUpdate(actor);
                     func_8003F8EC(play, &play->colCtx.dyna, actor);
                 }
 

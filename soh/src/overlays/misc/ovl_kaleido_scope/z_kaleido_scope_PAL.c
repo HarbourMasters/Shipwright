@@ -1,5 +1,6 @@
 #include "z_kaleido_scope.h"
 #include <stdlib.h>
+#include <string.h>
 
 #include "textures/item_name_static/item_name_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
@@ -16,7 +17,10 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+
 
 static void* sEquipmentFRATexs[] = {
     gPauseEquipment00FRATex, gPauseEquipment01Tex, gPauseEquipment02Tex, gPauseEquipment03Tex, gPauseEquipment04Tex,
