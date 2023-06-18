@@ -1344,6 +1344,7 @@ void SkinMatrix_Vec3fMtxFMultXYZW(MtxF* mf, Vec3f* src, Vec3f* xyzDest, f32* wDe
 void SkinMatrix_Vec3fMtxFMultXYZ(MtxF* mf, Vec3f* src, Vec3f* dest);
 void SkinMatrix_MtxFMtxFMult(MtxF* mfA, MtxF* mfB, MtxF* dest);
 void SkinMatrix_GetClear(MtxF** mf);
+void SkinMatrix_Clear(MtxF* mf);
 void SkinMatrix_MtxFCopy(MtxF* src, MtxF* dest);
 s32 SkinMatrix_Invert(MtxF* src, MtxF* dest);
 void SkinMatrix_SetScale(MtxF* mf, f32 x, f32 y, f32 z);
