@@ -10,6 +10,7 @@
 #include "objects/object_spot02_objects/object_spot02_objects.h"
 
 #include "soh/frame_interpolation.h"
+#include <assert.h>
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
@@ -792,7 +793,7 @@ void ObjectKankyo_SunGraveSparkInit(ObjectKankyo* this, PlayState* play) {
     s32 objBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_SPOT02_OBJECTS);
 
     if (objBankIndex < 0) {
-        ASSERT(objBankIndex < 0);
+        assert(objBankIndex < 0);
     } else {
         this->requiredObjBankIndex = objBankIndex;
     }
@@ -893,7 +894,7 @@ void ObjectKankyo_InitBeams(ObjectKankyo* this, PlayState* play) {
     s32 objectIndex = Object_GetIndex(&play->objectCtx, OBJECT_DEMO_KEKKAI);
 
     if (objectIndex < 0) {
-        ASSERT(objectIndex < 0);
+        assert(objectIndex < 0);
     } else {
         this->requiredObjBankIndex = objectIndex;
     }

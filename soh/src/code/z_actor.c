@@ -13,11 +13,9 @@
 
 #include "soh/ActorDB.h"
 
-#if defined(_MSC_VER) || defined(__GNUC__)
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
-#endif
 
 #if defined(_MSC_VER) || defined(__GNUC__)
 #include "textures/place_title_cards/g_pn_49.h"
@@ -2902,7 +2900,7 @@ void func_800315AC(PlayState* play, ActorContext* actorCtx) {
                     if ((actor->flags & ACTOR_FLAG_LENS) &&
                         ((play->roomCtx.curRoom.lensMode == LENS_MODE_HIDE_ACTORS) ||
                          play->actorCtx.lensActive || (actor->room != play->roomCtx.curRoom.num))) {
-                        ASSERT(invisibleActorCounter < INVISIBLE_ACTOR_MAX);
+                        assert(invisibleActorCounter < INVISIBLE_ACTOR_MAX);
                         invisibleActors[invisibleActorCounter] = actor;
                         invisibleActorCounter++;
                     } else {
@@ -3129,7 +3127,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
 
     ActorDBEntry* dbEntry = ActorDB_Retrieve(actorId);
 
-    ASSERT(dbEntry->valid);
+    assert(dbEntry->valid);
 
     if (HREG(20) != 0) {
         // "Actor class addition [%d:%s]"
@@ -3167,7 +3165,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
         return NULL;
     }
 
-    ASSERT(dbEntry->numLoaded < 255);
+    assert(dbEntry->numLoaded < 255);
 
     dbEntry->numLoaded++;
 

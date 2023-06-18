@@ -8,6 +8,7 @@
 #include "vt.h"
 #include "objects/object_gla/object_gla.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include <assert.h>
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -157,7 +158,7 @@ void EnGe2_Init(Actor* thisx, PlayState* play) {
             this->actor.targetMode = 6;
             break;
         default:
-            ASSERT(0);
+            assert(0);
     }
 
     this->stateFlags = 0;

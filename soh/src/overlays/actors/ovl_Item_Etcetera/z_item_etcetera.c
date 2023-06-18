@@ -5,6 +5,7 @@
  */
 
 #include "z_item_etcetera.h"
+#include <assert.h>
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -68,7 +69,7 @@ void ItemEtcetera_Init(Actor* thisx, PlayState* play) {
     objBankIndex = Object_GetIndex(&play->objectCtx, sObjectIds[type]);
     osSyncPrintf("bank_ID = %d\n", objBankIndex);
     if (objBankIndex < 0) {
-        ASSERT(objBankIndex < 0);
+        assert(objBankIndex < 0);
     } else {
         this->objBankIndex = objBankIndex;
     }

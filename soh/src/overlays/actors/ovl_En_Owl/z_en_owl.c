@@ -9,6 +9,7 @@
 #include "scenes/overworld/spot06/spot06_scene.h"
 #include "scenes/overworld/spot16/spot16_scene.h"
 #include "vt.h"
+#include <assert.h>
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -989,7 +990,7 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                     this->actor.draw = NULL;
                     break;
                 default:
-                    ASSERT(0);
+                    assert(0);
                     break;
             }
 

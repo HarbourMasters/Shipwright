@@ -6,6 +6,7 @@
 #include "vt.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include <string.h>
+#include <assert.h>
 
 void func_80095AB4(PlayState* play, Room* room, u32 flags);
 void func_80095D04(PlayState* play, Room* room, u32 flags);
@@ -126,7 +127,7 @@ void func_80095D04(PlayState* play, Room* room, u32 flags) {
     polygonDlist = SEGMENTED_TO_VIRTUAL(polygon2->start);
     spA4 = spB8;
 
-    ASSERT(polygon2->num <= SHAPE_SORT_MAX);
+    assert(polygon2->num <= SHAPE_SORT_MAX);
     sp78 = polygonDlist;
 
     for (sp9C = 0; sp9C < polygon2->num; sp9C++, polygonDlist++) {
@@ -590,7 +591,7 @@ s32 func_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomNum) {
         roomCtx->curRoom.segment = NULL;
         roomCtx->status = 1;
 
-        ASSERT(roomNum < play->numRooms);
+        assert(roomNum < play->numRooms);
 
         size = play->roomList[roomNum].vromEnd - play->roomList[roomNum].vromStart;
         roomCtx->unk_34 = (void*)ALIGN16((intptr_t)roomCtx->bufPtrs[roomCtx->unk_30] - ((size + 8) * roomCtx->unk_30 + 7));
@@ -633,7 +634,7 @@ void Room_Draw(PlayState* play, Room* room, u32 flags) {
     if (room->segment != NULL)
     {
         gSegments[3] = VIRTUAL_TO_PHYSICAL(room->segment);
-        ASSERT(room->meshHeader->base.type < ARRAY_COUNTU(sRoomDrawHandlers));
+        assert(room->meshHeader->base.type < ARRAY_COUNTU(sRoomDrawHandlers));
         sRoomDrawHandlers[room->meshHeader->base.type](play, room, flags);
     }
 }

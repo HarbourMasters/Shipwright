@@ -15,6 +15,7 @@
 #include <libultraship/libultraship.h>
 
 #include <time.h>
+#include <assert.h>
 
 void* D_8012D1F0 = NULL;
 //UNK_TYPE D_8012D1F4 = 0; // unused
@@ -44,7 +45,7 @@ void func_800BC450(PlayState* play) {
 }
 
 void func_800BC490(PlayState* play, s16 point) {
-    ASSERT(point == 1 || point == 2);
+    assert(point == 1 || point == 2);
 
     play->unk_1242B = point;
 

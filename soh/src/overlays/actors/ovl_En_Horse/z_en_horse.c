@@ -9,6 +9,7 @@
 #include "objects/object_horse/object_horse.h"
 #include "objects/object_hni/object_hni.h"
 #include "scenes/overworld/spot09/spot09_scene.h"
+#include <assert.h>
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -869,8 +870,7 @@ void EnHorse_Init(Actor* thisx, PlayState* play2) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_IN, this->actor.world.pos.x, this->actor.world.pos.y,
                         this->actor.world.pos.z, this->actor.shape.rot.x, this->actor.shape.rot.y, 1, 1, true);
         if (this->rider == NULL) {
-            //__assert("this->race.rider != NULL");
-            ASSERT(this->rider == NULL);
+            assert(this->rider == NULL);
         }
         if (!(gSaveContext.eventInf[0] & 0x40)) {
             this->ingoHorseMaxSpeed = 12.07f;

@@ -8,6 +8,7 @@
 #include "objects/object_oF1d_map/object_oF1d_map.h"
 #include "objects/object_gm/object_gm.h"
 #include "vt.h"
+#include <assert.h>
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -78,7 +79,7 @@ void EnGm_Init(Actor* thisx, PlayState* play) {
         // "There is no model bank! !! (Medi Goron)"
         osSyncPrintf("モデル バンクが無いよ！！（中ゴロン）\n");
         osSyncPrintf(VT_RST);
-        ASSERT(this->objGmBankIndex < 0);
+        assert(this->objGmBankIndex < 0);
     }
 
     this->updateFunc = func_80A3D838;

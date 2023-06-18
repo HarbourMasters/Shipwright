@@ -32,6 +32,7 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <assert.h>
 
 typedef enum {
     /* 0x00 */ KNOB_ANIM_ADULT_L,
@@ -4992,7 +4993,7 @@ void func_8083AE40(Player* this, s16 objectId) {
         size = gObjectTable[objectId].vromEnd - gObjectTable[objectId].vromStart;
 
         LOG_HEX("size", size);
-        ASSERT(size <= 1024 * 8);
+        assert(size <= 1024 * 8);
 
         DmaMgr_SendRequest2(&this->giObjectDmaRequest, (uintptr_t)this->giObjectSegment,
                             gObjectTable[objectId].vromStart, size, 0, &this->giObjectLoadQueue, OS_MESG_PTR(NULL),

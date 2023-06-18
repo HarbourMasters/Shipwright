@@ -9,6 +9,7 @@
 #include "objects/object_triforce_spot/object_triforce_spot.h"
 #include "objects/object_efc_tw/object_efc_tw.h"
 #include "objects/object_gi_jewel/object_gi_jewel.h"
+#include <assert.h>
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -199,7 +200,7 @@ void DemoEffect_Init(Actor* thisx, PlayState* play2) {
     osSyncPrintf(VT_FGCOL(CYAN) " bank_ID = %d\n" VT_RST, objectIndex);
 
     if (objectIndex < 0) {
-        ASSERT(objectIndex < 0);
+        assert(objectIndex < 0);
     } else {
         this->initObjectBankIndex = objectIndex;
     }
@@ -509,7 +510,7 @@ void DemoEffect_Init(Actor* thisx, PlayState* play2) {
             break;
 
         default:
-            ASSERT(0);
+            assert(0);
             break;
     }
 
@@ -688,7 +689,7 @@ void DemoEffect_InitTimeWarp(DemoEffect* this, PlayState* play) {
     s32 effectType = (this->actor.params & 0x00FF);
 
     if (!SkelCurve_Init(play, &this->skelCurve, &gTimeWarpSkel, &gTimeWarpAnim)) {
-        ASSERT(!SkelCurve_Init(play, &this->skelCurve, &gTimeWarpSkel, &gTimeWarpAnim));
+        assert(!SkelCurve_Init(play, &this->skelCurve, &gTimeWarpSkel, &gTimeWarpAnim));
     }
 
     if (effectType == DEMO_EFFECT_TIMEWARP_TIMEBLOCK_LARGE || effectType == DEMO_EFFECT_TIMEWARP_TIMEBLOCK_SMALL) {

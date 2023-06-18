@@ -50,7 +50,6 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
 
     scene->unk_13 = 0;
 
-    //ASSERT(play->sceneSegment != NULL);
     //gSegments[2] = VIRTUAL_TO_PHYSICAL(play->sceneSegment);
 
     OTRPlay_InitScene(play, spawn);

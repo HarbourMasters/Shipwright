@@ -15,6 +15,7 @@
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include <assert.h>
 
 
 #define MIN_QUEST (ResourceMgr_GameHasOriginal() ? FS_QUEST_NORMAL : FS_QUEST_MASTER)
@@ -2876,12 +2877,12 @@ void FileChoose_Init(GameState* thisx) {
     osSyncPrintf("SIZE=%x\n", size);
 
     this->staticSegment = GAMESTATE_ALLOC_MC(&this->state, size);
-    ASSERT(this->staticSegment != NULL);
+    assert(this->staticSegment != NULL);
     DmaMgr_SendRequest1(this->staticSegment, (u32)_title_staticSegmentRomStart, size, __FILE__, __LINE__);
 
     size = (u32)_parameter_staticSegmentRomEnd - (u32)_parameter_staticSegmentRomStart;
     this->parameterSegment = GAMESTATE_ALLOC_MC(&this->state, size);
-    ASSERT(this->parameterSegment != NULL);
+    assert(this->parameterSegment != NULL);
     DmaMgr_SendRequest1(this->parameterSegment, (u32)_parameter_staticSegmentRomStart, size, __FILE__,
                         __LINE__);
 

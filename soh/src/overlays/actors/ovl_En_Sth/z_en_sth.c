@@ -8,6 +8,7 @@
 #include "z_en_sth.h"
 #include "objects/object_ahg/object_ahg.h"
 #include "objects/object_boj/object_boj.h"
+#include <assert.h>
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -128,7 +129,7 @@ void EnSth_Init(Actor* thisx, PlayState* play) {
 
     osSyncPrintf("bank_ID = %d\n", objectBankIdx);
     if (objectBankIdx < 0) {
-        ASSERT(objectBankIdx < 0);
+        assert(objectBankIdx < 0);
     }
     this->objectBankIdx = objectBankIdx;
     this->drawFunc = EnSth_Draw;

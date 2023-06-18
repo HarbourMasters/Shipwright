@@ -1,6 +1,7 @@
 #include "global.h"
 #include "vt.h"
 #include <stdio.h>
+#include <assert.h>
 
 StackEntry sDmaMgrStackInfo;
 OSMesgQueue sDmaMgrMsgQueue;
@@ -124,9 +125,9 @@ end:
 s32 DmaMgr_DmaHandler(OSPiHandle* pihandle, OSIoMesg* mb, s32 direction) {
     s32 ret;
 
-    ASSERT(pihandle == gCartHandle);
-    ASSERT(direction == OS_READ);
-    ASSERT(mb != NULL);
+    assert(pihandle == gCartHandle);
+    assert(direction == OS_READ);
+    assert(mb != NULL);
 
     if (D_80009460 == 10) {
         osSyncPrintf("%10lld サウンドＤＭＡ %08x %08x %08x (%d)\n", OS_CYCLES_TO_USEC(osGetTime()), mb->dramAddr,

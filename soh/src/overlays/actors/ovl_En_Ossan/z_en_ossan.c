@@ -15,6 +15,7 @@
 #include "objects/object_masterkokirihead/object_masterkokirihead.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include <assert.h>
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -599,7 +600,7 @@ void EnOssan_Init(Actor* thisx, PlayState* play) {
         osSyncPrintf(VT_COL(RED, WHITE));
         osSyncPrintf("引数がおかしいよ(arg_data=%d)！！\n", this->actor.params);
         osSyncPrintf(VT_RST);
-        ASSERT(this->actor.params > OSSAN_TYPE_MASK && this->actor.params < OSSAN_TYPE_KOKIRI);
+        assert(this->actor.params > OSSAN_TYPE_MASK && this->actor.params < OSSAN_TYPE_KOKIRI);
         return;
     }
 
@@ -631,7 +632,7 @@ void EnOssan_Init(Actor* thisx, PlayState* play) {
         osSyncPrintf(VT_COL(RED, WHITE));
         osSyncPrintf("バンクが無いよ！！(%s)\n", sShopkeeperPrintName[this->actor.params]);
         osSyncPrintf(VT_RST);
-        ASSERT(this->objBankIndex1 < 0);
+        assert(this->objBankIndex1 < 0);
         return;
     }
 
@@ -640,7 +641,7 @@ void EnOssan_Init(Actor* thisx, PlayState* play) {
         osSyncPrintf(VT_COL(RED, WHITE));
         osSyncPrintf("予備バンクが無いよ！！(%s)\n", sShopkeeperPrintName[this->actor.params]);
         osSyncPrintf(VT_RST);
-        ASSERT(EnOssan_TryGetObjBankIndexes(this, play, objectIds) == 0);
+        assert(EnOssan_TryGetObjBankIndexes(this, play, objectIds) == 0);
         return;
     }
 
