@@ -548,14 +548,16 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             -Wno-missing-field-initializers
             -Wno-parentheses
             -Wno-narrowing
-            -Wno-c++11-narrowing
             -Wno-missing-braces
             $<$<COMPILE_LANGUAGE:C>:
                 -Werror-implicit-function-declaration
                 -Wno-incompatible-pointer-types
             >
             $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
-            $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
+            $<$<COMPILE_LANGUAGE:CXX>:
+                -Wno-c++11-narrowing
+                -Wno-deprecated-enum-enum-conversion
+            >
             -pthread
         )
 
@@ -572,15 +574,16 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             -Wno-missing-field-initializers
             -Wno-parentheses
             -Wno-narrowing
-            -Wno-c++11-narrowing
             -Wno-missing-braces
-            
             $<$<COMPILE_LANGUAGE:C>:
                 -Werror-implicit-function-declaration
                 -Wno-incompatible-pointer-types
             >
             $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
-            $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
+            $<$<COMPILE_LANGUAGE:CXX>:
+                -Wno-c++11-narrowing
+                -Wno-deprecated-enum-enum-conversion
+            >
             -pthread
         )
 
@@ -597,7 +600,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             -Wno-narrowing
             -Wno-switch-outside-range
             $<$<COMPILE_LANGUAGE:C>:
-                -Werror-implicit-function-declaration>
+                -Werror-implicit-function-declaration
                 -Wno-incompatible-pointer-types
                 -Wno-discarded-array-qualifiers
                 -Wno-discarded-qualifiers
