@@ -1807,7 +1807,7 @@ void Player_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot
                 OPEN_DISPS(play->state.gfxCtx);
 
                 if (LINK_IS_CHILD) {
-                    Matrix_Scale(0.75f, 0.75f, 0.75f, MTXMODE_APPLY);
+                    Matrix_Scale(0.8f, 0.8f, 0.8f, MTXMODE_APPLY);
                 }
 
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
@@ -1857,7 +1857,7 @@ void Player_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot
                 OPEN_DISPS(play->state.gfxCtx);
 
                 if (LINK_IS_CHILD) {
-                    Matrix_Scale(0.7f, 0.7f, 0.7f, MTXMODE_APPLY);
+                    Matrix_Scale(0.8f, 0.8f, 0.8f, MTXMODE_APPLY);
                 }
 
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
@@ -2210,7 +2210,8 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
     } else if (limbIndex == PLAYER_LIMB_R_HAND) {
         if (CVarGetInteger("gAltLinkEquip", 0)) {
             // deku shield
-            if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU)) {
+            if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU) &&
+                !(CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS)) {
                 Vec3f sp124[3];
 
                 OPEN_DISPS(play->state.gfxCtx);
@@ -2227,7 +2228,8 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
             }
             // hylian shield
             else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
-                     (CVarGetInteger("gNormalChildHylianShield", 0) || LINK_IS_ADULT)) {
+                     (CVarGetInteger("gNormalChildHylianShield", 0) || LINK_IS_ADULT) &&
+                     !(CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS)) {
                 Vec3f sp124[3];
 
                 OPEN_DISPS(play->state.gfxCtx);
@@ -2243,7 +2245,8 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
                 CLOSE_DISPS(play->state.gfxCtx);
             }
             // mirror shield
-            else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR)) {
+            else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR) &&
+                     !(CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS)) {
                 Vec3f sp124[3];
 
                 OPEN_DISPS(play->state.gfxCtx);
@@ -2323,6 +2326,52 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, gLinkChildHylianShieldAndSheathNearDL);
+
+                CLOSE_DISPS(play->state.gfxCtx);
+            }
+            // Deku Shield on Back
+            if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS) &&
+                (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU)) {
+                OPEN_DISPS(play->state.gfxCtx);
+
+                if (LINK_IS_ADULT) {
+                    Matrix_Scale(1.2f, 1.2f, 1.2f, MTXMODE_APPLY);
+                }
+
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPDisplayList(POLY_OPA_DISP++, gLinkChildDekuShieldAndSheathNearDL);
+
+                CLOSE_DISPS(play->state.gfxCtx);
+            }
+            // Adult Hylian Shield on Back
+            if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS) &&
+                (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
+                (CVarGetInteger("gNormalChildHylianShield", 0) || LINK_IS_ADULT)) {
+                OPEN_DISPS(play->state.gfxCtx);
+
+                if (LINK_IS_CHILD) {
+                    Matrix_Scale(.80f, .80f, .80f, MTXMODE_APPLY);
+                }
+
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHylianShieldAndSheathNearDL);
+
+                CLOSE_DISPS(play->state.gfxCtx);
+            }
+            // Mirror Shield on Back
+            if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS) &&
+                (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR)) {
+                OPEN_DISPS(play->state.gfxCtx);
+
+                if (LINK_IS_CHILD) {
+                    Matrix_Scale(.80f, .80f, .80f, MTXMODE_APPLY);
+                }
+
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultMirrorShieldAndSheathNearDL);
 
                 CLOSE_DISPS(play->state.gfxCtx);
             }
