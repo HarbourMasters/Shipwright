@@ -296,6 +296,7 @@ s32 func_800AAA9C(View* view) {
     s32 height;
     Vp* vp;
     Mtx* projection;
+    Mtx* projectionFlipped;
     Mtx* viewing;
     GraphicsContext* gfxCtx = view->gfxCtx;
 
@@ -313,8 +314,11 @@ s32 func_800AAA9C(View* view) {
     gSPViewport(POLY_KAL_DISP++, vp);
 
     projection = Graph_Alloc(gfxCtx, sizeof(Mtx));
+    projectionFlipped = Graph_Alloc(gfxCtx, sizeof(Mtx));
     LOG_CHECK_NULL_POINTER("projection", projection);
+    LOG_CHECK_NULL_POINTER("projectionFlipped", projectionFlipped);
     view->projectionPtr = projection;
+    view->projectionFlippedPtr = projectionFlipped;
 
     width = view->viewport.rightX - view->viewport.leftX;
     height = view->viewport.bottomY - view->viewport.topY;
@@ -427,6 +431,15 @@ s32 func_800AAA9C(View* view) {
         }
         osSyncPrintf("\n");
     }
+    if (CVarGetInteger("gMirroredWorld", 0)) {
+        MtxF flipF;
+        SkinMatrix_Clear(&flipF);
+        flipF.xx = -1.0;
+        MtxF projectionF;
+        Matrix_MtxToMtxF(projection, &projectionF);
+        SkinMatrix_MtxFMtxFMult(&projectionF, &flipF, &projectionF);
+        Matrix_MtxFToMtx(&projectionF, projectionFlipped);
+    }
 
     view->projection = *projection;
 
@@ -511,6 +524,7 @@ s32 func_800AB0A8(View* view) {
 s32 func_800AB2C4(View* view) {
     Vp* vp;
     Mtx* projection;
+    Mtx* projectionFlipped;
     GraphicsContext* gfxCtx;
 
     gfxCtx = view->gfxCtx;
@@ -528,11 +542,25 @@ s32 func_800AB2C4(View* view) {
     gSPViewport(OVERLAY_DISP++, vp);
 
     projection = Graph_Alloc(gfxCtx, sizeof(Mtx));
+    projectionFlipped = Graph_Alloc(gfxCtx, sizeof(Mtx));
     LOG_CHECK_NULL_POINTER("projection", projection);
+    LOG_CHECK_NULL_POINTER("projectionFlipped", projectionFlipped);
     view->projectionPtr = projection;
+    view->projectionFlippedPtr = projectionFlipped;
 
     guOrtho(projection, -(f32)gScreenWidth * 0.5f, (f32)gScreenWidth * 0.5f, -(f32)gScreenHeight * 0.5f,
             (f32)gScreenHeight * 0.5f, -30, view->zFar, view->scale);
+
+    // This is for z-targeting
+    if (CVarGetInteger("gMirroredWorld", 0)) {
+        MtxF flipF;
+        SkinMatrix_Clear(&flipF);
+        flipF.xx = -1.0;
+        MtxF projectionF;
+        Matrix_MtxToMtxF(projection, &projectionF);
+        SkinMatrix_MtxFMtxFMult(&projectionF, &flipF, &projectionF);
+        Matrix_MtxFToMtx(&projectionF, projectionFlipped);
+    }
 
     view->projection = *projection;
 

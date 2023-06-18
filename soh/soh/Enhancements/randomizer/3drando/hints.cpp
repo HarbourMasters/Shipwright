@@ -607,7 +607,7 @@ static Text BuildDungeonRewardText(const uint32_t itemKey) {
   std::string rewardString = "$" + std::to_string(itemKey - KOKIRI_EMERALD);
 
   // RANDOTODO implement colors for locations
-  return Text()+rewardString+GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText()+"...^";
+  return Text()+rewardString+GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText().Capitalize()+"...^";
 }
 
 static Text BuildDoorOfTimeText() {

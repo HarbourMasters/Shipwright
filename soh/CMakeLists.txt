@@ -131,6 +131,13 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set_source_files_properties(soh/OTRGlobals.cpp PROPERTIES COMPILE_FLAGS "/utf-8")
 endif()
 
+# soh/config {{{
+file(GLOB_RECURSE soh__config RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    "soh/config/*.h"
+    "soh/config/*.cpp"
+)
+# }}}
+
 # soh/enhancements {{{
 file(GLOB_RECURSE soh__Enhancements RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     "soh/Enhancements/*.c"
@@ -246,6 +253,7 @@ set(ALL_FILES
     ${Header_Files}
     ${Header_Files__include}
     ${soh__}
+    ${soh__config}
     ${soh__Enhancements}
     ${soh__Extractor}
     ${soh__Resource}
@@ -646,10 +654,14 @@ if(NOT CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
 		TARGET ${PROJECT_NAME}
 		POST_BUILD
 		COMMENT "Copying asset xmls..."
-		COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/OTRGui/assets $<TARGET_FILE_DIR:soh>/assets
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/soh/assets/extractor $<TARGET_FILE_DIR:soh>/assets/extractor
 		COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/soh/assets/xml $<TARGET_FILE_DIR:soh>/assets/extractor/xmls
-		COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/OTRExporter/assets $<TARGET_FILE_DIR:soh>/Extract/assets
-	)
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/OTRExporter/CFG/filelists $<TARGET_FILE_DIR:soh>/assets/extractor/filelists
+        COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:soh>/assets/extractor/symbols
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ActorList_OoTMqDbg.txt $<TARGET_FILE_DIR:soh>/assets/extractor/symbols
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ObjectList_OoTMqDbg.txt $<TARGET_FILE_DIR:soh>/assets/extractor/symbols
+	    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/OTRExporter/CFG/SymbolMap_OoTMqDbg.txt $<TARGET_FILE_DIR:soh>/assets/extractor/symbols
+    )
 endif()
 ################################################################################
 # Dependencies
@@ -665,6 +677,7 @@ add_dependencies(${PROJECT_NAME}
 endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    find_package(glfw3 REQUIRED)
 	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
 			"libultraship;"

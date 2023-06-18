@@ -818,7 +818,8 @@ Gfx* KaleidoScope_QuadTextureIA4(Gfx* gfx, void* texture, s16 width, s16 height,
 }
 
 Gfx* KaleidoScope_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height, u16 point) {
-    gDPLoadTextureBlock(gfx++, texture, G_IM_FMT_IA, G_IM_SIZ_8b, width, height, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    u8 mirrorMode = CVarGetInteger("gMirroredWorld", 0) ? G_TX_MIRROR : G_TX_NOMIRROR;
+    gDPLoadTextureBlock(gfx++, texture, G_IM_FMT_IA, G_IM_SIZ_8b, width, height, 0, mirrorMode | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     gSP1Quadrangle(gfx++, point, point + 2, point + 3, point + 1, 0);
 
@@ -3045,6 +3046,14 @@ void KaleidoScope_Draw(PlayState* play) {
     }
 
     func_800AAA50(&play->view, 15);
+
+    // Flip the OPA and XLU projections again as the set view call above reset the original flips from z_play
+    if (CVarGetInteger("gMirroredWorld", 0)) {
+        gSPMatrix(POLY_OPA_DISP++, play->view.projectionFlippedPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+        gSPMatrix(POLY_XLU_DISP++, play->view.projectionFlippedPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+        gSPMatrix(POLY_OPA_DISP++, play->view.viewingPtr, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+        gSPMatrix(POLY_XLU_DISP++, play->view.viewingPtr, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+    }
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

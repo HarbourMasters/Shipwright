@@ -5089,7 +5089,13 @@ void Interface_Draw(PlayState* play) {
         Minimap_Draw(play);
 
         if ((R_PAUSE_MENU_MODE != 2) && (R_PAUSE_MENU_MODE != 3)) {
+            if (CVarGetInteger("gMirroredWorld", 0)) {
+                gSPMatrix(OVERLAY_DISP++, interfaceCtx->view.projectionFlippedPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+            }
             func_8002C124(&play->actorCtx.targetCtx, play); // Draw Z-Target
+            if (CVarGetInteger("gMirroredWorld", 0)) {
+                gSPMatrix(OVERLAY_DISP++, interfaceCtx->view.projectionPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+            }
         }
 
         Gfx_SetupDL_39Overlay(play->state.gfxCtx);
@@ -6075,7 +6081,7 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
             // Draw regular text. Change color based on if the timer is paused, running or the game is completed.
             if (gSaveContext.sohStats.gameComplete) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, 255);
-            } else if (gSaveContext.isBossRushPaused) {
+            } else if (gSaveContext.isBossRushPaused && !gSaveContext.sohStats.rtaTiming) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 150, 150, 150, 255);
             } else {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
