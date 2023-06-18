@@ -1937,14 +1937,18 @@ void Play_InitScene(PlayState* play, s32 spawn)
 }
 
 void Play_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
+    uint8_t mqMode = CVarGetInteger("gBetterDebugWarpScreenMQMode", WARP_MODE_OVERRIDE_OFF);
+    int16_t mqModeScene = CVarGetInteger("gBetterDebugWarpScreenMQModeScene", -1);
+    if (mqMode != WARP_MODE_OVERRIDE_OFF && sceneNum != mqModeScene) {
+        CVarClear("gBetterDebugWarpScreenMQMode");
+        CVarClear("gBetterDebugWarpScreenMQModeScene");
+    }
 
     OTRPlay_SpawnScene(play, sceneNum, spawn);
 
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         Entrance_OverrideSpawnScene(sceneNum, spawn);
     }
-
-    CVarClear("gBetterDebugWarpScreenMQMode");
 }
 
 void func_800C016C(PlayState* play, Vec3f* src, Vec3f* dest) {
