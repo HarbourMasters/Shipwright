@@ -1839,7 +1839,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                 CLOSE_DISPS(play->state.gfxCtx);
                 // fairy ocarina
-            } else if (this->rightHandType == 13) {
+            } else if (this->rightHandType == 13 || this->itemAction == PLAYER_IA_OCARINA_FAIRY) {
                 Vec3f sp124[3];
 
                 OPEN_DISPS(play->state.gfxCtx);
@@ -1856,7 +1856,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                 CLOSE_DISPS(play->state.gfxCtx);
                 // ocarina of time
-            } else if (this->rightHandType == 14) {
+            } else if (this->rightHandType == 14 || this->itemAction == PLAYER_IA_OCARINA_TIME) {
                 Vec3f sp124[3];
 
                 OPEN_DISPS(play->state.gfxCtx);

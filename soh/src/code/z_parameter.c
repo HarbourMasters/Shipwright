@@ -1852,9 +1852,12 @@ u8 Item_Give(PlayState* play, u8 item) {
             }
             
         } else if (item == ITEM_SWORD_MASTER) {
-            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
-            gSaveContext.equips.equipment &= 0xFFF0;
-            gSaveContext.equips.equipment |= 0x0002;
+            //this forces the sword to the Master Sword, despite the fact I don't think this is needed. Breaks DList Rework, but messes with rando / timeless equipment?
+            if (!CVarGetInteger("gAltLinkEquip", 0)) {
+                gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+                gSaveContext.equips.equipment &= 0xFFF0;
+                gSaveContext.equips.equipment |= 0x0002;
+            }
             if (play != NULL) {
                 Interface_LoadItemIcon1(play, 0);
             }
