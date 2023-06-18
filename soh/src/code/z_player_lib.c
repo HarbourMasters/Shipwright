@@ -51,19 +51,23 @@ u8 gPlayerModelTypes[][5] = {
     { 0, 0, 13, 18, 20 }, { 0, 0, 14, 18, 20 }, { 0, 7, 8, 18, 20 },  { 0, 2, 8, 19, 20 },
 };
 
-Gfx* sRightFistWithShieldDLs[] = {
+Gfx* sPlayerRightHandShieldDLs[] = {
+    // PLAYER_SHIELD_NONE
     gLinkAdultRightHandClosedNearDL,
     gLinkChildRightHandClosedNearDL,
     gLinkAdultRightHandClosedFarDL,
     gLinkChildRightHandClosedFarDL,
+    // PLAYER_SHIELD_DEKU
     gLinkAdultRightHandClosedNearDL,
     gLinkChildRightFistAndDekuShieldNearDL,
     gLinkAdultRightHandClosedFarDL,
     gLinkChildRightFistAndDekuShieldFarDL,
+    // PLAYER_SHIELD_HYLIAN
     gLinkAdultRightHandHoldingHylianShieldNearDL,
     gLinkChildRightHandClosedNearDL,
     gLinkAdultRightHandHoldingHylianShieldFarDL,
     gLinkChildRightHandClosedFarDL,
+    // PLAYER_SHIELD_MIRROR
     gLinkAdultRightHandHoldingMirrorShieldNearDL,
     gLinkChildRightHandClosedNearDL,
     gLinkAdultRightHandHoldingMirrorShieldFarDL,
@@ -128,61 +132,62 @@ Gfx* sLongNullDLs[] = {
     NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
 };
 
-Gfx* gLeftHandWithTwoHandedSwordDLs[] = {
+Gfx* gPlayerLeftHandBgsDLs[] = {
     gLinkAdultLeftHandHoldingBgsNearDL,          gLinkChildLeftHandHoldingMasterSwordDL,
     gLinkAdultLeftHandHoldingBgsFarDL,           gLinkChildLeftHandHoldingMasterSwordDL,
     gLinkAdultHandHoldingBrokenGiantsKnifeDL,    gLinkChildLeftHandHoldingMasterSwordDL,
     gLinkAdultHandHoldingBrokenGiantsKnifeFarDL, gLinkChildLeftHandHoldingMasterSwordDL,
 };
 
-Gfx* sLeftHandWithTwoHandedSwordAltDLs[] = {
+Gfx* sPlayerLeftHandNoBgsDLs[] = {
     gLinkAdultLeftHandClosedNearDL,     gLinkChildLeftFistNearDL, 
     gLinkAdultLeftHandClosedFarDL,      gLinkChildLeftFistFarDL,
     gLinkAdultLeftHandClosedNearDL,     gLinkChildLeftFistNearDL, 
     gLinkAdultLeftHandClosedFarDL,      gLinkChildLeftFistFarDL,
 };
 
-Gfx* gLeftHandDLs[] = {
+Gfx* gPlayerLeftHandOpenDLs[] = {
     gLinkAdultLeftHandNearDL,       gLinkChildLeftHandNearDL,
     gLinkAdultLeftHandFarDL,        gLinkChildLeftHandFarDL,
 };
 
-Gfx* gLeftFistDLs[] = {
+Gfx* gPlayerLeftHandClosedDLs[] = {
     gLinkAdultLeftHandClosedNearDL,
     gLinkChildLeftFistNearDL,
     gLinkAdultLeftHandClosedFarDL,
     gLinkChildLeftFistFarDL,
 };
 
-Gfx* sLeftHandWithSwordDLs[] = {
+// Identical to `sPlayerLeftHandSwordDLs` and unused
+Gfx* sPlayerLeftHandSwordDLs2[] = {
     gLinkAdultLeftHandHoldingMasterSwordNearDL,
     gLinkChildLeftFistAndKokiriSwordNearDL,
     gLinkAdultLeftHandHoldingMasterSwordFarDL,
     gLinkChildLeftFistAndKokiriSwordFarDL,
 };
 
-Gfx* sLeftHandWithSwordDuplicateDLs[] = {
+Gfx* sPlayerLeftHandSwordDLs[] = {
     gLinkAdultLeftHandHoldingMasterSwordNearDL,
     gLinkChildLeftFistAndKokiriSwordNearDL,
     gLinkAdultLeftHandHoldingMasterSwordFarDL,
     gLinkChildLeftFistAndKokiriSwordFarDL,
 };
 
-Gfx* sRightHandDLs[] = {
+Gfx* sPlayerRightHandOpenDLs[] = {
     gLinkAdultRightHandNearDL,
     gLinkChildRightHandNearDL,
     gLinkAdultRightHandFarDL,
     gLinkChildRightHandFarDL,
 };
 
-Gfx* sRightFistDLs[] = {
+Gfx* sPlayerRightHandClosedDLs[] = {
     gLinkAdultRightHandClosedNearDL,
     gLinkChildRightHandClosedNearDL,
     gLinkAdultRightHandClosedFarDL,
     gLinkChildRightHandClosedFarDL,
 };
 
-Gfx* sRightHandHoldingBowSlingshotDLs[] = {
+Gfx* sPlayerRightHandBowSlingshotDLs[] = {
     gLinkAdultRightHandHoldingBowNearDL,
     gLinkChildRightHandHoldingSlingshotNearDL,
     gLinkAdultRightHandHoldingBowFarDL,
@@ -210,116 +215,116 @@ Gfx* sFourNullDLs[] = {
     NULL,
 };
 
-Gfx* sWaistDLs[] = {
+Gfx* sPlayerWaistDLs[] = {
     gLinkAdultWaistNearDL,
     gLinkChildWaistNearDL,
     gLinkAdultWaistFarDL,
     gLinkChildWaistFarDL,
 };
 
-Gfx* sRightHandHoldingBowSlingshotDuplicateDLs[] = {
+Gfx* sPlayerRightHandBowSlingshotDLs2[] = {
     gLinkAdultRightHandHoldingBowNearDL,
     gLinkChildRightHandHoldingSlingshotNearDL,
     gLinkAdultRightHandHoldingBowFarDL,
     gLinkChildRightHandHoldingSlingshotFarDL,
 };
 
-Gfx* sFairyOcarinaDLs[] = {
+Gfx* sPlayerRightHandOcarinaDLs[] = {
     gLinkAdultRightHandHoldingOotNearDL,
     gLinkChildRightHandHoldingFairyOcarinaNearDL,
     gLinkAdultRightHandHoldingOotFarDL,
     gLinkChildRightHandHoldingFairyOcarinaFarDL,
 };
 
-Gfx* sOcarinaOfTimeDLs[] = {
+Gfx* sPlayerRightHandOotDLs[] = {
     gLinkAdultRightHandHoldingOotNearDL,
     gLinkChildRightHandAndOotNearDL,
     gLinkAdultRightHandHoldingOotFarDL,
     gLinkChildRightHandHoldingOOTFarDL,
 };
 
-Gfx* sRightHandWithHookshotDLs[] = {
+Gfx* sPlayerRightHandHookshotDLs[] = {
     gLinkAdultRightHandHoldingHookshotNearDL,
     gLinkChildRightHandNearDL,
     gLinkAdultRightHandHoldingHookshotNearDL, // Despite there being a 'far' displayList named, it's actually the FPS model. Why? No clue. -Moriya
     gLinkChildRightHandFarDL,
 };
 
-Gfx* sLeftHandWithHammerDLs[] = {
+Gfx* sPlayerLeftHandHammerDLs[] = {
     gLinkAdultLeftHandHoldingHammerNearDL,
     gLinkChildLeftHandNearDL,
     gLinkAdultLeftHandHoldingHammerFarDL,
     gLinkChildLeftHandFarDL,
 };
 
-Gfx* gLeftHandWithBoomerangDLs[] = {
+Gfx* gPlayerLeftHandBoomerangDLs[] = {
     gLinkAdultLeftHandNearDL,
     gLinkChildLeftFistAndBoomerangNearDL,
     gLinkAdultLeftHandFarDL,
     gLinkChildLeftFistAndBoomerangFarDL,
 };
 
-Gfx* sBottleHandDLs[] = {
+Gfx* sPlayerLeftHandBottleDLs[] = {
     gLinkAdultLeftHandOutNearDL,
     gLinkChildLeftHandUpNearDL,
     gLinkAdultLeftHandOutNearDL,
     gLinkChildLeftHandUpNearDL,
 };
 
-Gfx* sArmOutDLs[] = {
+Gfx* sFirstPersonLeftForearmDLs[] = {
     gLinkAdultRightArmOutNearDL,
     NULL,
 };
 
-Gfx* sHandOutDLs[] = {
+Gfx* sFirstPersonLeftHandDLs[] = {
     gLinkAdultRightHandOutNearDL,
     NULL,
 };
 
-Gfx* sRightShoulderNearDLs[] = {
+Gfx* sFirstPersonRightShoulderDLs[] = {
     gLinkAdultRightShoulderNearDL,
     gLinkChildRightShoulderNearDL,
 };
 
-Gfx* sLeftArmOutDLs[] = {
+Gfx* sFirstPersonForearmDLs[] = {
     gLinkAdultLeftArmOutNearDL,
     NULL,
 };
 
-Gfx* sHoldingFirstPersonWeaponDLs[] = {
+Gfx* sFirstPersonRightHandHoldingWeaponDLs[] = {
     gLinkAdultRightHandHoldingBowFirstPersonDL,
     gLinkChildRightArmStretchedSlingshotDL,
 };
 
 // Indexed by model types (left hand, right hand, sheath or waist)
 Gfx** sPlayerDListGroups[] = {
-    gLeftHandDLs, gLeftFistDLs, sLeftHandWithSwordDuplicateDLs, sLeftHandWithSwordDLs, gLeftHandWithTwoHandedSwordDLs, sLeftHandWithHammerDLs, gLeftHandWithBoomerangDLs,
-    sBottleHandDLs, sRightHandDLs, sRightFistDLs, sRightFistWithShieldDLs, sRightHandHoldingBowSlingshotDLs, sRightHandHoldingBowSlingshotDuplicateDLs, sFairyOcarinaDLs,
-    sOcarinaOfTimeDLs, sRightHandWithHookshotDLs, sSwordAndSheathDLs, sSheathDLs, sSheathWithSwordDLs, sSheathWithoutSwordDLs, sWaistDLs,
+    gPlayerLeftHandOpenDLs, gPlayerLeftHandClosedDLs, sPlayerLeftHandSwordDLs, sPlayerLeftHandSwordDLs2, gPlayerLeftHandBgsDLs, sPlayerLeftHandHammerDLs, gPlayerLeftHandBoomerangDLs,
+    sPlayerLeftHandBottleDLs, sPlayerRightHandOpenDLs, sPlayerRightHandClosedDLs, sPlayerRightHandShieldDLs, sPlayerRightHandBowSlingshotDLs, sPlayerRightHandBowSlingshotDLs2, sPlayerRightHandOcarinaDLs,
+    sPlayerRightHandOotDLs, sPlayerRightHandHookshotDLs, sSwordAndSheathDLs, sSheathDLs, sSheathWithSwordDLs, sSheathWithoutSwordDLs, sPlayerWaistDLs,
 };
 
 Gfx** sPlayerDListGroupsAlt[] = {
-    gLeftHandDLs,
-    gLeftFistDLs,
-    gLeftFistDLs,
-    gLeftFistDLs,
-    sLeftHandWithTwoHandedSwordAltDLs,
-    gLeftFistDLs,
-    gLeftFistDLs,
-    sBottleHandDLs,
-    sRightHandDLs,
-    sRightFistDLs,
+    gPlayerLeftHandOpenDLs,
+    gPlayerLeftHandClosedDLs,
+    gPlayerLeftHandClosedDLs,
+    gPlayerLeftHandClosedDLs,
+    sPlayerLeftHandNoBgsDLs,
+    gPlayerLeftHandClosedDLs,
+    gPlayerLeftHandClosedDLs,
+    sPlayerLeftHandBottleDLs,
+    sPlayerRightHandOpenDLs,
+    sPlayerRightHandClosedDLs,
     sRightFistAltDLs,
-    sRightFistDLs,
-    sRightFistDLs,
-    sRightHandDLs,
-    sRightHandDLs,
-    sRightFistDLs,
+    sPlayerRightHandClosedDLs,
+    sPlayerRightHandClosedDLs,
+    sPlayerRightHandOpenDLs,
+    sPlayerRightHandOpenDLs,
+    sPlayerRightHandClosedDLs,
     sFourNullDLs,
     sFourNullDLs,
     sLongNullDLs,
     sLongNullDLs,
-    sWaistDLs,
+    sPlayerWaistDLs,
 };
 
 Gfx gCullBackDList[] = {
@@ -335,8 +340,8 @@ Gfx gCullFrontDList[] = {
 Vec3f* D_80160000;
 s32 sDListsLodOffset;
 Vec3f sGetItemRefPos;
-s32 D_80160014;
-s32 D_80160018;
+s32 sLeftHandType;
+s32 sRightHandType;
 
 void Player_SetBootData(PlayState* play, Player* this) {
     s32 currentBoots;
@@ -842,7 +847,7 @@ Gfx* sBootDListGroups[][2] = {
     { gLinkAdultLeftHoverBootDL, gLinkAdultRightHoverBootDL },
 };
 
-void Player_DrawLink(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dListCount, s32 lod, s32 tunic,
+void Player_DrawImpl(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dListCount, s32 lod, s32 tunic,
                    s32 boots, s32 face, OverrideLimbDrawOpa overrideLimbDraw, PostLimbDrawOpa postLimbDraw,
                    void* data) {
     Color_RGB8* color;
@@ -900,8 +905,8 @@ void Player_DrawLink(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dL
 
     SkelAnime_DrawFlexLod(play, skeleton, jointTable, dListCount, overrideLimbDraw, postLimbDraw, data, lod);
 
-    if (((CVarGetInteger("gFPSGauntlets", 0) && LINK_IS_ADULT) || (overrideLimbDraw != Player_OverrideLimbDrawFPS)) &&
-        (overrideLimbDraw != Player_OverrideLimbDrawNull) &&
+    if (((CVarGetInteger("gFPSGauntlets", 0) && LINK_IS_ADULT) || (overrideLimbDraw != Player_OverrideLimbDrawGameplayFirstPerson)) &&
+        (overrideLimbDraw != Player_OverrideLimbDrawGameplayCrawling) &&
         (gSaveContext.gameMode != 3)) {
         if (LINK_IS_ADULT) {
             s32 strengthUpgrade = CUR_UPG_VALUE(UPG_STRENGTH);
@@ -922,9 +927,9 @@ void Player_DrawLink(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dL
                 gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftGauntletPlate1DL);
                 gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightGauntletPlate1DL);
                 gSPDisplayList(POLY_OPA_DISP++,
-                               (D_80160014 == 0) ? gLinkAdultLeftGauntletPlate2DL : gLinkAdultLeftGauntletPlate3DL);
+                               (sLeftHandType == 0) ? gLinkAdultLeftGauntletPlate2DL : gLinkAdultLeftGauntletPlate3DL);
                 gSPDisplayList(POLY_OPA_DISP++,
-                               (D_80160018 == 8) ? gLinkAdultRightGauntletPlate2DL : gLinkAdultRightGauntletPlate3DL);
+                               (sRightHandType == 8) ? gLinkAdultRightGauntletPlate2DL : gLinkAdultRightGauntletPlate3DL);
             }
 
             if (boots != 0) {
@@ -943,7 +948,7 @@ void Player_DrawLink(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dL
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-Vec3f D_8012602C = { 0.0f, 0.0f, 0.0f };
+Vec3f sZeroVec = { 0.0f, 0.0f, 0.0f };
 
 Vec3f D_80126038[] = {
     { 1304.0f, 0.0f, 0.0f },
@@ -991,10 +996,10 @@ void func_8008F87C(PlayState* play, Player* this, SkelAnime* skelAnime, Vec3f* p
 
         Matrix_Push();
         Matrix_TranslateRotateZYX(pos, rot);
-        Matrix_MultVec3f(&D_8012602C, &spA4);
+        Matrix_MultVec3f(&sZeroVec, &spA4);
         Matrix_TranslateRotateZYX(&D_80126038[gSaveContext.linkAge], &skelAnime->jointTable[shinLimbIndex]);
         Matrix_Translate(D_80126050[gSaveContext.linkAge], 0.0f, 0.0f, MTXMODE_APPLY);
-        Matrix_MultVec3f(&D_8012602C, &sp98);
+        Matrix_MultVec3f(&sZeroVec, &sp98);
         Matrix_MultVec3f(&D_80126070, &footprintPos);
         Matrix_Pop();
 
@@ -1050,12 +1055,12 @@ void func_8008F87C(PlayState* play, Player* this, SkelAnime* skelAnime, Vec3f* p
     }
 }
 
-s32 Player_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
 
     if (limbIndex == PLAYER_LIMB_ROOT) {
-        D_80160014 = this->leftHandType;
-        D_80160018 = this->rightHandType;
+        sLeftHandType = this->leftHandType;
+        sRightHandType = this->rightHandType;
         D_80160000 = &this->meleeWeaponInfo[2].base;
 
         if (!LINK_IS_ADULT) {
@@ -1131,33 +1136,33 @@ s32 Player_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* 
     return false;
 }
 
-s32 Player_OverrideLimbDrawStandard(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
 
-    if (!Player_OverrideLimbDraw(play, limbIndex, dList, pos, rot, thisx)) 
+    if (!Player_OverrideLimbDrawGameplayCommon(play, limbIndex, dList, pos, rot, thisx)) 
     {
         if (limbIndex == PLAYER_LIMB_L_HAND) {
             Gfx** dLists = this->leftHandDLists;
 
-            if ((D_80160014 == 4) && (gSaveContext.swordHealth <= 0.0f)) {
+            if ((sLeftHandType == 4) && (gSaveContext.swordHealth <= 0.0f)) {
                 dLists += 4;
-            } else if ((D_80160014 == 6) && (this->stateFlags1 & 0x2000000)) {
-                dLists = &gLeftHandDLs[gSaveContext.linkAge];
-                D_80160014 = 0;
+            } else if ((sLeftHandType == 6) && (this->stateFlags1 & 0x2000000)) {
+                dLists = &gPlayerLeftHandOpenDLs[gSaveContext.linkAge];
+                sLeftHandType = 0;
             } else if ((this->leftHandType == 0) && (this->actor.speedXZ > 2.0f) && !(this->stateFlags1 & 0x8000000)) {
-                dLists = &gLeftFistDLs[gSaveContext.linkAge];
-                D_80160014 = 1;
+                dLists = &gPlayerLeftHandClosedDLs[gSaveContext.linkAge];
+                sLeftHandType = 1;
             }
 
             *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
         } else if (limbIndex == PLAYER_LIMB_R_HAND) {
             Gfx** dLists = this->rightHandDLists;
 
-            if (D_80160018 == 10) {
+            if (sRightHandType == 10) {
                 dLists += this->currentShield * 4;
             } else if ((this->rightHandType == 8) && (this->actor.speedXZ > 2.0f) && !(this->stateFlags1 & 0x8000000)) {
-                dLists = &sRightFistDLs[gSaveContext.linkAge];
-                D_80160018 = 9;
+                dLists = &sPlayerRightHandClosedDLs[gSaveContext.linkAge];
+                sRightHandType = 9;
             }
 
             *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
@@ -1200,24 +1205,24 @@ s32 Player_OverrideLimbDrawStandard(PlayState* play, s32 limbIndex, Gfx** dList,
     return false;
 }
 
-s32 Player_OverrideLimbDrawFPS(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+s32 Player_OverrideLimbDrawGameplayFirstPerson(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
 
-    if (!Player_OverrideLimbDraw(play, limbIndex, dList, pos, rot, thisx)) {
+    if (!Player_OverrideLimbDrawGameplayCommon(play, limbIndex, dList, pos, rot, thisx)) {
         if (this->unk_6AD != 2) {
             *dList = NULL;
         } else if (limbIndex == PLAYER_LIMB_L_FOREARM) {
-            *dList = sArmOutDLs[gSaveContext.linkAge];
+            *dList = sFirstPersonLeftForearmDLs[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_L_HAND) {
             s32 handOutDlIndex = gSaveContext.linkAge;
             if (CVarGetInteger("gBowSlingShotAmmoFix", 0) && LINK_IS_ADULT && Player_HoldsSlingshot(this)) {
                 handOutDlIndex = 1;
             }
-            *dList = sHandOutDLs[handOutDlIndex];
+            *dList = sFirstPersonLeftHandDLs[handOutDlIndex];
         } else if (limbIndex == PLAYER_LIMB_R_SHOULDER) {
-            *dList = sRightShoulderNearDLs[gSaveContext.linkAge];
+            *dList = sFirstPersonRightShoulderDLs[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_R_FOREARM) {
-            *dList = sLeftArmOutDLs[gSaveContext.linkAge];
+            *dList = sFirstPersonForearmDLs[gSaveContext.linkAge];
         } else if (limbIndex == PLAYER_LIMB_R_HAND) {
             s32 firstPersonWeaponIndex = gSaveContext.linkAge;
             if (CVarGetInteger("gBowSlingShotAmmoFix", 0)) {
@@ -1228,10 +1233,10 @@ s32 Player_OverrideLimbDrawFPS(PlayState* play, s32 limbIndex, Gfx** dList, Vec3
                 }
             }
             if (CVarGetInteger("gAltLinkEquip", 0))
-                *dList = sHoldingFirstPersonWeaponDLs[gSaveContext.linkAge];
+                *dList = sFirstPersonRightHandHoldingWeaponDLs[gSaveContext.linkAge];
             else
                 *dList = Player_HoldsHookshot(this) ? gLinkAdultRightHandHoldingHookshotFarDL //despite the name, this is the FPS hookshot
-                                                : sHoldingFirstPersonWeaponDLs[firstPersonWeaponIndex];
+                                                : sFirstPersonRightHandHoldingWeaponDLs[firstPersonWeaponIndex];
         } else {
             *dList = NULL;
         }
@@ -1240,8 +1245,8 @@ s32 Player_OverrideLimbDrawFPS(PlayState* play, s32 limbIndex, Gfx** dList, Vec3
     return false;
 }
 
-s32 Player_OverrideLimbDrawNull(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
-    if (!Player_OverrideLimbDraw(play, limbIndex, dList, pos, rot, thisx)) {
+s32 Player_OverrideLimbDrawGameplayCrawling(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+    if (!Player_OverrideLimbDrawGameplayCommon(play, limbIndex, dList, pos, rot, thisx)) {
         *dList = NULL;
     }
 
@@ -1277,7 +1282,7 @@ u8 func_80090480(PlayState* play, ColliderQuad* collider, WeaponInfo* weaponInfo
     }
 }
 
-void func_80090604(PlayState* play, Player* this, ColliderQuad* collider, Vec3f* quadSrc) {
+void Player_UpdateShieldCollider(PlayState* play, Player* this, ColliderQuad* collider, Vec3f* quadSrc) {
     static u8 shieldColTypes[PLAYER_SHIELD_MAX] = {
         COLTYPE_METAL,
         COLTYPE_WOOD,
@@ -1462,8 +1467,13 @@ void Player_DrawHookshotReticle(PlayState* play, Player* this, f32 arg2) {
 
 Vec3f D_801260D4 = { 1100.0f, -700.0f, 0.0f };
 
-f32 sSwordLengths[] = {
-    0.0f, 4000.0f, 3000.0f, 5500.0f, 0.0f, 2500.0f,
+f32 sMeleeWeaponLengths[] = {
+    0.0f,    // not a melee weapon
+    4000.0f, // Master Sword
+    3000.0f, // Kokiri Sword
+    5500.0f, // Biggoron's Sword
+    0.0f,    // Deku Stick
+    2500.0f, // Hammer
 };
 
 f32 sSwordTypes[] = {
@@ -1474,9 +1484,19 @@ Gfx* sBottleDLists[] = { gLinkAdultBottleDL, gLinkChildBottleDL };
 Gfx* sBottleContentDLists[] = { gLinkAdultHandHoldingBottleDL, gLinkChildBottle2DL };
 
 Color_RGB8 sBottleColors[] = {
-    { 255, 255, 255 }, { 80, 80, 255 },   { 255, 100, 255 }, { 0, 0, 255 }, { 255, 0, 255 },
-    { 255, 0, 255 },   { 200, 200, 100 }, { 255, 0, 0 },     { 0, 0, 255 }, { 0, 255, 0 },
-    { 255, 255, 255 }, { 255, 255, 255 }, { 80, 80, 255 },
+    { 255, 255, 255 }, // Empty
+    { 80, 80, 255 },   // Fish
+    { 255, 100, 255 }, // Fire
+    { 0, 0, 255 },     // Bug
+    { 255, 0, 255 },   // Poe
+    { 255, 0, 255 },   // Big Poe
+    { 200, 200, 100 }, // Letter
+    { 255, 0, 0 },     // Red Potion
+    { 0, 0, 255 },     // Blue Potion
+    { 0, 255, 0 },     // Green Potion
+    { 255, 255, 255 }, // Milk
+    { 255, 255, 255 }, // Half Milk
+    { 80, 80, 255 },   // Fairy
 };
 
 Vec3f sLeftHandArrowVec3 = { 398.0f, 1419.0f, 244.0f };
@@ -1491,7 +1511,8 @@ f32 sBowScaleByAge[] = {
     1.2, 0.75,
 };
 
-Vec3f D_80126154[] = {
+// Coordinates of the shield quad collider vertices, in the right hand limb's own model space.
+Vec3f sRightHandLimbModelShieldQuadVertices[] = {
     { -4500.0f, -3000.0f, -600.0f },
     { 1500.0f, -3000.0f, -600.0f },
     { -4500.0f, 3000.0f, -600.0f },
@@ -1501,17 +1522,18 @@ Vec3f D_80126154[] = {
 Vec3f D_80126184 = { 100.0f, 1500.0f, 0.0f };
 Vec3f D_80126190 = { 100.0f, 1640.0f, 0.0f };
 
-Vec3f D_8012619C[] = {
+// Coordinates of the shield quad collider vertices, in the sheath limb's own model space.
+Vec3f sSheathLimbModelShieldQuadVertices[] = {
     { -3000.0f, -3000.0f, -900.0f },
     { 3000.0f, -3000.0f, -900.0f },
     { -3000.0f, 3000.0f, -900.0f },
     { 3000.0f, 3000.0f, -900.0f },
 };
 
-Vec3f D_801261CC = { 630.0f, 100.0f, -30.0f };
-Vec3s D_801261D8 = { 0, 0, 0x7FFF };
+Vec3f sSheathLimbModelShieldOnBackPos = { 630.0f, 100.0f, -30.0f };
+Vec3s sSheathLimbModelShieldOnBackZyxRot = { 0, 0, 0x7FFF };
 
-Vec3f D_801261E0[] = {
+Vec3f sLeftRightFootLimbModelFootPos[] = {
     { 200.0f, 300.0f, 0.0f },
     { 200.0f, 200.0f, 0.0f },
 };
@@ -1521,11 +1543,11 @@ Vec3f D_801261E0[] = {
 // started working out properly
 #define RETICLE_MAX 3.402823466e+12f
 
-void Player_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
+void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
 
     if (*dList != NULL) {
-        Matrix_MultVec3f(&D_8012602C, D_80160000);
+        Matrix_MultVec3f(&sZeroVec, D_80160000);
     }
 
     if (limbIndex == PLAYER_LIMB_L_HAND) {
@@ -1676,7 +1698,7 @@ void Player_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot
             if (Player_HoldsBrokenKnife(this)) {
                 D_80126080.x = 1500.0f;
             } else {
-                D_80126080.x = sSwordLengths[Player_GetSwordHeld(this)];
+                D_80126080.x = sMeleeWeaponLengths[Player_GetSwordHeld(this)];
                 EffectBlure_ChangeType(Effect_GetByIndex(this->meleeWeaponEffectIndex),
                                        sSwordTypes[Player_GetSwordHeld(this)]);
             }
@@ -1885,7 +1907,7 @@ void Player_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot
                 Vec3f sp90;
                 f32 distXYZ;
 
-                Matrix_MultVec3f(&D_8012602C, &sp90);
+                Matrix_MultVec3f(&sZeroVec, &sp90);
                 distXYZ = Math_Vec3f_DistXYZ(D_80160000, &sp90);
 
                 this->unk_858 = distXYZ - 3.0f;
@@ -1916,7 +1938,7 @@ void Player_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot
 
         } else if ((this->actor.scale.y >= 0.0f) && (this->rightHandType == 10)) {
             Matrix_Get(&this->shieldMf);
-            func_80090604(play, this, &this->shieldQuad, D_80126154);
+            Player_UpdateShieldCollider(play, this, &this->shieldQuad, sRightHandLimbModelShieldQuadVertices);
         }
 
         if (this->actor.scale.y >= 0.0f) {
@@ -2117,16 +2139,16 @@ void Player_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot
             }
             if ((this->rightHandType != 10) && (this->rightHandType != 0xFF)) {
                 if (Player_IsChildWithHylianShield(this)) {
-                    func_80090604(play, this, &this->shieldQuad, D_8012619C);
+                    Player_UpdateShieldCollider(play, this, &this->shieldQuad, sSheathLimbModelShieldQuadVertices);
                 }
 
-                Matrix_TranslateRotateZYX(&D_801261CC, &D_801261D8);
+                Matrix_TranslateRotateZYX(&sSheathLimbModelShieldOnBackPos, &sSheathLimbModelShieldOnBackZyxRot);
                 Matrix_Get(&this->shieldMf);
             }
         } else if (limbIndex == PLAYER_LIMB_HEAD) {
             Matrix_MultVec3f(&D_801260D4, &this->actor.focus.pos);
         } else {
-            Vec3f* vec = &D_801261E0[(gSaveContext.linkAge)];
+            Vec3f* vec = &sLeftRightFootLimbModelFootPos[(gSaveContext.linkAge)];
 
             Actor_SetFeetPos(&this->actor, limbIndex, PLAYER_LIMB_L_FOOT, vec, PLAYER_LIMB_R_FOOT, vec);
         }
@@ -2404,11 +2426,11 @@ u32 func_80091738(PlayState* play, u8* segment, SkelAnime* skelAnime) {
     return size + 0x8800 + 0x90;
 }
 
-u8 D_801261F8[] = { 2, 2, 5 };
+u8 sPauseModelGroupBySword[] = { 2, 2, 5 };
 
-s32 Player_RenderPauseScreenLink(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* arg) {
+s32 Player_OverrideLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* arg) {
     u8* ptr = arg;
-    u8 modelGroup = D_801261F8[ptr[0] > 0 ? ptr[0] - 1 : 0];
+    u8 modelGroup = sPauseModelGroupBySword[ptr[0] > 0 ? ptr[0] - 1 : 0];
     s32 type;
     s32 dListOffset = 0;
     Gfx** dLists;
@@ -2420,7 +2442,7 @@ s32 Player_RenderPauseScreenLink(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
     if (limbIndex == PLAYER_LIMB_L_HAND) {
         type = gPlayerModelTypes[modelGroup][1];
-        D_80160014 = type;
+        sLeftHandType = type;
 
         if (ptr[0] == 0)
             type = 0;
@@ -2430,7 +2452,7 @@ s32 Player_RenderPauseScreenLink(PlayState* play, s32 limbIndex, Gfx** dList, Ve
         }
     } else if (limbIndex == PLAYER_LIMB_R_HAND) {
         type = gPlayerModelTypes[modelGroup][2];
-        D_80160018 = type;
+        sRightHandType = type;
         if (type == 10) {
             dListOffset = ptr[1] * ptrSize;
         }
@@ -2478,7 +2500,7 @@ void Pause_DrawTriforceSpot(PlayState* play, s32 showLightColumn) {
     rotation += 0x03E8;
 }
 
-void func_80091A24(PlayState* play, void* seg04, void* seg06, SkelAnime* skelAnime, Vec3f* pos, Vec3s* rot,
+void Player_DrawPauseImpl(PlayState* play, void* seg04, void* seg06, SkelAnime* skelAnime, Vec3f* pos, Vec3s* rot,
                    f32 scale, s32 sword, s32 tunic, s32 shield, s32 boots, s32 width, s32 height, Vec3f* eye, Vec3f* at,
                    f32 fovy, void* img1, void* img2) {
     static Vp viewport = { 128, 224, 511, 0, 128, 224, 511, 0 };
@@ -2542,8 +2564,8 @@ void func_80091A24(PlayState* play, void* seg04, void* seg06, SkelAnime* skelAni
 
     gSPSegment(POLY_OPA_DISP++, 0x0C, gCullBackDList);
 
-    Player_DrawLink(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, 0, tunic, boots, 0,
-                    Player_RenderPauseScreenLink, Player_PostLimbDrawPause, &sp12C);
+    Player_DrawImpl(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, 0, tunic, boots, 0,
+                    Player_OverrideLimbDrawPause, Player_PostLimbDrawPause, &sp12C);
 
      if (CVarGetInteger("gPauseTriforce", 0)) {
 
@@ -2570,7 +2592,7 @@ s16 EquipedStance; // Link's current mode (Two handed, One handed...)
 s16 FrameCountSinceLastAnim = 0; // Time since last animation
 s16 MinFrameCount; // Frame to wait before checking if we need to change the animation
 
-void func_8009214C(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f* pos, Vec3s* rot, f32 scale,
+void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f* pos, Vec3s* rot, f32 scale,
                    s32 sword, s32 tunic, s32 shield, s32 boots) {
     Input* p1Input = &play->state.input[0];
     Vec3f eye = { 0.0f, 0.0f, -400.0f };
@@ -2805,7 +2827,7 @@ void func_8009214C(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f* po
     }
 
 
-    func_80091A24(play, segment + 0x3800, segment + 0x8800, skelAnime, pos, rot, scale, sword, tunic, shield,
+    Player_DrawPauseImpl(play, segment + 0x3800, segment + 0x8800, skelAnime, pos, rot, scale, sword, tunic, shield,
                   boots, 64, 112, &eye, &at, 60.0f, play->state.gfxCtx->curFrameBuffer,
                   play->state.gfxCtx->curFrameBuffer + 0x1C00);
 }

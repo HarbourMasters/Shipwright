@@ -152,7 +152,7 @@ void KaleidoScope_DrawPlayerWork(PlayState* play) {
 
     extern int fbTest;
     gsSPSetFB(play->state.gfxCtx->polyOpa.p++, fbTest);
-    func_8009214C(play, pauseCtx->playerSegment, &pauseCtx->playerSkelAnime, &pos, &link_kaleido_rot, scale,
+    Player_DrawPause(play, pauseCtx->playerSegment, &pauseCtx->playerSkelAnime, &pos, &link_kaleido_rot, scale,
                   CUR_EQUIP_VALUE(EQUIP_SWORD), CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1, CUR_EQUIP_VALUE(EQUIP_SHIELD),
                   CUR_EQUIP_VALUE(EQUIP_BOOTS) - 1);
     gsSPResetFB(play->state.gfxCtx->polyOpa.p++);
