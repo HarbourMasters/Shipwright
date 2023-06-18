@@ -1,4 +1,10 @@
 typedef enum {
+    WARP_MODE_OVERRIDE_OFF,
+    WARP_MODE_OVERRIDE_MQ_AS_VANILLA,
+    WARP_MODE_OVERRIDE_VANILLA_AS_MQ,
+} BetterDebugWarpOverrideMQMode;
+
+typedef enum {
     CSMC_DISABLED,
     CSMC_BOTH,
     CSMC_TEXTURE,
