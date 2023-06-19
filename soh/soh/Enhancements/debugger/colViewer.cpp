@@ -693,11 +693,23 @@ extern "C" void DrawColViewer() {
 
     OPEN_DISPS(gPlayState->state.gfxCtx);
 
+    uint8_t mirroredWorld = CVarGetInteger("gMirroredWorld", 0);
+    // Col viewer needs inverted culling in mirror mode for both OPA and XLU buffers
+    if (mirroredWorld) {
+        gSPSetExtraGeometryMode(POLY_OPA_DISP++, G_EX_INVERT_CULLING);
+        gSPSetExtraGeometryMode(POLY_XLU_DISP++, G_EX_INVERT_CULLING);
+    }
+
     opaDl.push_back(gsSPEndDisplayList());
     gSPDisplayList(POLY_OPA_DISP++, opaDl.data());
 
     xluDl.push_back(gsSPEndDisplayList());
     gSPDisplayList(POLY_XLU_DISP++, xluDl.data());
+
+    if (mirroredWorld) {
+        gSPClearExtraGeometryMode(POLY_OPA_DISP++, G_EX_INVERT_CULLING);
+        gSPClearExtraGeometryMode(POLY_XLU_DISP++, G_EX_INVERT_CULLING);
+    }
 
     CLOSE_DISPS(gPlayState->state.gfxCtx);
 }
