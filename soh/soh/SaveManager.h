@@ -44,7 +44,7 @@ class SaveManager {
 
     using InitFunc = void (*)(bool isDebug);
     using LoadFunc = void (*)();
-    using SaveFunc = void (*)(SaveContext* saveContext, int sectionID);
+    using SaveFunc = void (*)(SaveContext* saveContext, int sectionID, bool fullSave);
     using PostFunc = void (*)(int version);
 
     typedef struct {
@@ -75,7 +75,7 @@ class SaveManager {
 
     // Adds a function that is called when saving. This should only be called once for each function, the version is
     // filled in automatically.
-    void AddSaveFunction(const std::string& name, int version, SaveFunc func, bool saveWithBase, int parentSection);
+    int AddSaveFunction(const std::string& name, int version, SaveFunc func, bool saveWithBase, int parentSection);
 
     // Adds a function to be called after loading is complete. This is to handle any cleanup required from loading old
     // versions.
@@ -144,13 +144,13 @@ class SaveManager {
 
     static void LoadRandomizerVersion1();
     static void LoadRandomizerVersion2();
-    static void SaveRandomizer(SaveContext* saveContext, int sectionID);
+    static void SaveRandomizer(SaveContext* saveContext, int sectionID, bool fullSave);
 
     static void LoadBaseVersion1();
     static void LoadBaseVersion2();
     static void LoadBaseVersion3();
     static void LoadBaseVersion4();
-    static void SaveBase(SaveContext* saveContext, int sectionID);
+    static void SaveBase(SaveContext* saveContext, int sectionID, bool fullSave);
 
     std::vector<InitFunc> initFuncs;
 

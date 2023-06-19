@@ -9,6 +9,7 @@
 #include "vt.h"
 #include "alloca.h"
 
+#include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
 void Select_SwitchBetterWarpMode(SelectContext* this, u8 isBetterWarpMode);
@@ -52,11 +53,14 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
             BetterSceneSelectEntrancePair entrancePair = this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex];
             // Check to see if the scene/entrance we just picked can be MQ'd
             if (entrancePair.canBeMQ) {
-                u8 isEntranceDefaultMQ = ResourceMgr_IsSceneMasterQuest(gEntranceTable[entrancePair.entranceIndex].scene);
-                if (!isEntranceDefaultMQ && this->opt) {
-                    CVarSetInteger("gBetterDebugWarpScreenMQMode", 1); // Force vanilla for default MQ scene
-                } else if (isEntranceDefaultMQ && !this->opt) {
-                    CVarSetInteger("gBetterDebugWarpScreenMQMode", 2); // Force MQ for default vanilla scene
+                s16 scene = gEntranceTable[entrancePair.entranceIndex].scene;
+                u8 isEntranceDefaultMQ = ResourceMgr_IsSceneMasterQuest(scene);
+                if (!isEntranceDefaultMQ && this->opt) { // Force vanilla for default MQ scene
+                    CVarSetInteger("gBetterDebugWarpScreenMQMode", WARP_MODE_OVERRIDE_MQ_AS_VANILLA);
+                    CVarSetInteger("gBetterDebugWarpScreenMQModeScene", scene);
+                } else if (isEntranceDefaultMQ && !this->opt) { // Force MQ for default vanilla scene
+                    CVarSetInteger("gBetterDebugWarpScreenMQMode", WARP_MODE_OVERRIDE_VANILLA_AS_MQ);
+                    CVarSetInteger("gBetterDebugWarpScreenMQModeScene", scene);
                 }
             }
         }
@@ -1633,5 +1637,6 @@ void Select_Init(GameState* thisx) {
     gSaveContext.dayTime = 0x8000;
 
     CVarClear("gBetterDebugWarpScreenMQMode");
+    CVarClear("gBetterDebugWarpScreenMQModeScene");
     Select_SwitchBetterWarpMode(this, CVarGetInteger("gBetterDebugWarpScreen", 0));
 }
