@@ -836,12 +836,6 @@ void LoadFile() {
     UpdateInventoryChecks();
 }
 
-void Init() {
-    SaveManager::Instance->AddInitFunction(InitTrackerData);
-    //sectionId = SaveManager::Instance->AddSaveFunction("checkTracker", 1, SaveFile, true, -1);
-    SaveManager::Instance->AddLoadFunction("checkTracker", 1, LoadFile);
-}
-
 void Teardown() {
     initialized = false;
     for (auto& [rcArea, vec] : checksByArea) {
@@ -1347,6 +1341,21 @@ bool IsHeartPiece(GetItemID giid) {
     return giid == GI_HEART_PIECE || giid == GI_HEART_PIECE_WIN;
 }
 
+void Init() {
+    SaveManager::Instance->AddInitFunction(InitTrackerData);
+    sectionId = SaveManager::Instance->AddSaveFunction("checkTracker", 1, SaveFile, true, -1);
+    SaveManager::Instance->AddLoadFunction("checkTracker", 1, LoadFile);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadFile>(
+        [](uint32_t fileNum) { doInitialize = true; });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDeleteFile>([](uint32_t fileNum) { Teardown(); });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(CheckTrackerItemReceive);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSaleEnd>(CheckTrackerSaleEnd);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(CheckTrackerFrame);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>(CheckTrackerTransition);
+
+    LocationTable_Init();
+}
+
 void DrawLocation(RandomizerCheckObject rcObj) {
     Color_RGBA8 mainColor; 
     Color_RGBA8 extraColor;
@@ -1610,7 +1619,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
 }
 
 void CheckTrackerWindow::InitElement() {
-    Color_Background = CVarGetColor("gCheckTrackerBgColor", Color_Bg_Default);
+    Color_Background            = CVarGetColor("gCheckTrackerBgColor",                    Color_Bg_Default);
     Color_Area_Incomplete_Main  = CVarGetColor("gCheckTrackerAreaMainIncompleteColor",    Color_Main_Default);
     Color_Area_Incomplete_Extra = CVarGetColor("gCheckTrackerAreaExtraIncompleteColor",   Color_Area_Incomplete_Extra_Default);
     Color_Area_Complete_Main    = CVarGetColor("gCheckTrackerAreaMainCompleteColor",      Color_Main_Default);
@@ -1636,15 +1645,6 @@ void CheckTrackerWindow::InitElement() {
     /*LUS::RegisterHook<LUS::LoadFile>([](uint32_t fileNum) {
         doInitialize = true;
     });*/
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDeleteFile>([](uint32_t fileNum) {
-        Teardown();
-    });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(CheckTrackerItemReceive);
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSaleEnd>(CheckTrackerSaleEnd);
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(CheckTrackerFrame);
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>(CheckTrackerTransition);
-
-    LocationTable_Init();
 }
 
 } // namespace CheckTracker
