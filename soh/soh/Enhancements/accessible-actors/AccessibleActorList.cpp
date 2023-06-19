@@ -8,6 +8,13 @@
 #include <stdio.h>
 #include <string>
 #include <float.h>
+//Declarations specific to chests.
+#include "overlays/actors/ovl_En_Box/z_en_box.h"
+extern "C" {
+
+void EnBox_WaitOpen(EnBox*, PlayState*);
+}
+
 void accessible_va_ledge_cue(AccessibleActor* actor);
 void accessible_va_wall_cue(AccessibleActor* actor);
 
@@ -22,6 +29,11 @@ void accessible_en_NPC_Gen(AccessibleActor* actor) {
 
 }
 void accessible_en_chest(AccessibleActor* actor) {
+    EnBox* chest = (EnBox*)actor->actor;
+    //Only chests that are "waiting to be opened" should play a sound. Chests which have not yet appeared (because some enemy has not been killed, switch has not been hit, etc) will not be in this action mode.
+    if (chest->actionFunc != EnBox_WaitOpen)
+        return;
+
     s32 treasureFlag = actor->actor->params & 0x1F;
 
     if (!(treasureFlag >= 20 && treasureFlag < 32)) {
