@@ -434,31 +434,16 @@ void Player_SetModelsForHoldingShield(Player* this) {
             !Player_IsChildWithHylianShield(this)) {
             this->rightHandType = 10;
             this->rightHandDLists = &sPlayerDListGroups[10][gSaveContext.linkAge];
+            if (CVarGetInteger("gAltLinkEquip", 0))
+                this->rightHandDLists = &sPlayerDListGroupsAlt[10][gSaveContext.linkAge];
             if (this->sheathType == 18) {
                 this->sheathType = 16;
             } else if (this->sheathType == 19) {
                 this->sheathType = 17;
             }
             this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
-            this->modelAnimType = 2;
-            this->itemAction = -1;
-        }
-    }
-}
-
-void Player_SetModelsForHoldingShieldAlt(Player* this) {
-    if ((this->stateFlags1 & 0x400000) && ((this->itemAction < 0) || (this->itemAction == this->heldItemAction))) {
-        if ((CVarGetInteger("gShieldTwoHanded", 0) && (this->heldItemAction != PLAYER_IA_STICK) ||
-             !Player_HoldsTwoHandedWeapon(this)) &&
-            !Player_IsChildWithHylianShield(this)) {
-            this->rightHandType = 10;
-            this->rightHandDLists = &sPlayerDListGroupsAlt[10][gSaveContext.linkAge];
-            if (this->sheathType == 18) {
-                this->sheathType = 16;
-            } else if (this->sheathType == 19) {
-                this->sheathType = 17;
-            }
-            this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
+            if (CVarGetInteger("gAltLinkEquip", 0))
+                this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
             this->modelAnimType = 2;
             this->itemAction = -1;
         }
@@ -469,43 +454,30 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     // Left hand
     this->leftHandType = gPlayerModelTypes[modelGroup][1];
     this->leftHandDLists = &sPlayerDListGroups[this->leftHandType][gSaveContext.linkAge];
+    if (CVarGetInteger("gAltLinkEquip", 0))
+        this->leftHandDLists = &sPlayerDListGroupsAlt[this->leftHandType][gSaveContext.linkAge];
 
     // Right hand
     this->rightHandType = gPlayerModelTypes[modelGroup][2];
     this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][gSaveContext.linkAge];
+    if (CVarGetInteger("gAltLinkEquip", 0))
+        this->rightHandDLists = &sPlayerDListGroupsAlt[this->rightHandType][gSaveContext.linkAge];
 
     if (CVarGetInteger("gBowSlingShotAmmoFix", 0) && this->rightHandType == 11) { // If holding Bow/Slingshot
-        this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
+        this->rightHandDLists = &sPlayerDListGroupsAlt[this->rightHandType][Player_HoldsSlingshot(this)];
     }
 
     // Sheath
     this->sheathType = gPlayerModelTypes[modelGroup][3];
     this->sheathDLists = &sPlayerDListGroups[this->sheathType][gSaveContext.linkAge];
+    if (CVarGetInteger("gAltLinkEquip", 0))
+        this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
 
     // Waist
     this->waistDLists = &sPlayerDListGroups[gPlayerModelTypes[modelGroup][4]][gSaveContext.linkAge];
+    // leftover from waist bomb bag, no alt DList needed here.
 
     Player_SetModelsForHoldingShield(this);
-}
-
-//Having this as an entirely seperate routine is annoying. Need to fix this.
-void Player_SetModelsAlt(Player* this, s32 modelGroup) {
-    // Left hand
-    this->leftHandType = gPlayerModelTypes[modelGroup][1];
-    this->leftHandDLists = &sPlayerDListGroupsAlt[this->leftHandType][gSaveContext.linkAge];
-
-    // Right hand
-    this->rightHandType = gPlayerModelTypes[modelGroup][2];
-    this->rightHandDLists = &sPlayerDListGroupsAlt[this->rightHandType][gSaveContext.linkAge];
-
-    // Sheath
-    this->sheathType = gPlayerModelTypes[modelGroup][3];
-    this->sheathDLists = &sPlayerDListGroupsAlt[this->sheathType][gSaveContext.linkAge];
-
-    // Waist
-    this->waistDLists = &sPlayerDListGroupsAlt[gPlayerModelTypes[modelGroup][4]][gSaveContext.linkAge];
-
-    Player_SetModelsForHoldingShieldAlt(this);
 }
 
 void Player_SetModelGroup(Player* this, s32 modelGroup) {

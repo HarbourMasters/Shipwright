@@ -2395,10 +2395,7 @@ s32 func_80834B5C(Player* this, PlayState* play) {
         return 1;
     } else {
         this->stateFlags1 |= PLAYER_STATE1_SHIELDING;
-        if (CVarGetInteger("gAltLinkEquip", 0))
-            Player_SetModelsForHoldingShieldAlt(this);
-        else
-            Player_SetModelsForHoldingShield(this);
+        Player_SetModelsForHoldingShield(this);
         return 1;
     }
 }
@@ -2414,10 +2411,7 @@ s32 func_80834BD4(Player* this, PlayState* play) {
     }
 
     this->stateFlags1 |= PLAYER_STATE1_SHIELDING;
-    if (CVarGetInteger("gAltLinkEquip", 0))
-        Player_SetModelsForHoldingShieldAlt(this);
-    else
-        Player_SetModelsForHoldingShield(this);
+    Player_SetModelsForHoldingShield(this);
 
     return 1;
 }
@@ -2915,10 +2909,7 @@ void func_80835DE4(PlayState* play, Player* this, PlayerFunc674 func, s32 flags)
         this->itemAction = this->heldItemAction;
         func_80835C58(play, this, func, flags);
         this->itemAction = temp;
-        if (CVarGetInteger("gAltLinkEquip", 0))
-            Player_SetModelsAlt(this, Player_ActionToModelGroup(this, this->itemAction));
-        else
-            Player_SetModels(this, Player_ActionToModelGroup(this, this->itemAction));
+        Player_SetModels(this, Player_ActionToModelGroup(this, this->itemAction));
     }
 }
 
@@ -5502,10 +5493,7 @@ s32 func_8083C2B0(Player* this, PlayState* play) {
             this->stateFlags1 |= PLAYER_STATE1_SHIELDING;
 
             if (!Player_IsChildWithHylianShield(this)) {
-                if (CVarGetInteger("gAltLinkEquip", 0))
-                    Player_SetModelsForHoldingShieldAlt(this);
-                else
-                    Player_SetModelsForHoldingShield(this);
+                Player_SetModelsForHoldingShield(this);
                 anim = D_80853914[PLAYER_ANIMGROUP_20][this->modelAnimType];
             } else {
                 anim = &gPlayerAnim_clink_normal_defense_ALL;
@@ -8250,10 +8238,7 @@ void func_80843188(Player* this, PlayState* play) {
 
     this->stateFlags1 |= PLAYER_STATE1_SHIELDING;
 
-    if (CVarGetInteger("gAltLinkEquip", 0))
-        Player_SetModelsForHoldingShieldAlt(this);
-    else
-        Player_SetModelsForHoldingShield(this);
+    Player_SetModelsForHoldingShield(this);
 
     this->unk_6AE |= 0xC1;
 }
@@ -8275,10 +8260,7 @@ void func_808435C4(Player* this, PlayState* play) {
         if ((temp != 0) && ((temp > 0) || LinkAnimation_Update(play, &this->skelAnime))) {
             func_80835C58(play, this, func_80843188, 1);
             this->stateFlags1 |= PLAYER_STATE1_SHIELDING;
-            if (CVarGetInteger("gAltLinkEquip", 0))
-                Player_SetModelsForHoldingShieldAlt(this);
-            else
-                Player_SetModelsForHoldingShield(this);
+            Player_SetModelsForHoldingShield(this);
             anim = D_80853914[PLAYER_ANIMGROUP_20][this->modelAnimType];
             frames = Animation_GetLastFrame(anim);
             LinkAnimation_Change(play, &this->skelAnime, anim, 1.0f, frames, frames, ANIMMODE_ONCE, 0.0f);
@@ -14675,10 +14657,7 @@ void func_80851CA4(PlayState* play, Player* this, CsCmdActorAction* arg2) {
 void func_80851D2C(PlayState* play, Player* this, CsCmdActorAction* arg2) {
     func_80850F1C(play, this, &gPlayerAnim_link_normal_okarina_start);
     func_8084B498(this);
-    if (CVarGetInteger("gAltLinkEquip", 0))
-        Player_SetModelsAlt(this, Player_ActionToModelGroup(this, this->itemAction));
-    else
-        Player_SetModels(this, Player_ActionToModelGroup(this, this->itemAction));
+    Player_SetModels(this, Player_ActionToModelGroup(this, this->itemAction));
 }
 
 static struct_80832924 D_808551B8[] = {
