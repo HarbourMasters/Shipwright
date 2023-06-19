@@ -488,6 +488,7 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     Player_SetModelsForHoldingShield(this);
 }
 
+//Having this as an entirely seperate routine is annoying. Need to fix this.
 void Player_SetModelsAlt(Player* this, s32 modelGroup) {
     // Left hand
     this->leftHandType = gPlayerModelTypes[modelGroup][1];
@@ -520,10 +521,7 @@ void Player_SetModelGroup(Player* this, s32 modelGroup) {
         this->modelAnimType = 0;
     }
 
-    if (CVarGetInteger("gAltLinkEquip", 0))
-        Player_SetModelsAlt(this, modelGroup);
-    else
-        Player_SetModels(this, modelGroup);
+    Player_SetModels(this, modelGroup);
 }
 
 void func_8008EC70(Player* this) {
@@ -1485,6 +1483,9 @@ f32 sSwordTypes[] = {
 };
 
 Gfx* sBottleDLists[] = { gLinkAdultBottleDL, gLinkChildBottleDL };
+// The below uses 2 unused bottle Display lists for MM bottle contents.
+// Adult is, I'm guessing, an older DList before Environment colors complicated things.
+// Child's is just a duplicate of default bottle for some reason
 Gfx* sBottleContentDLists[] = { gLinkAdultHandHoldingBottleDL, gLinkChildBottle2DL };
 
 Color_RGB8 sBottleColors[] = {
@@ -1561,114 +1562,117 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
         Math_Vec3f_Copy(&this->leftHandPos, D_80160000);
 
         if (CVarGetInteger("gAltLinkEquip", 0)) {
-            // kokiri sword
-            if ((this->leftHandType == 2 || this->leftHandType == 3) &&
-                (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_KOKIRI)) {
-                Vec3f sp124[3];
+            // todo: find a way to put the Master Sword being drawn in the MS cutscene here.
+            // Get rotations in blender for Matrix_Rotate to make sure it's rotated right.
+            // Or just use a seperate sword and leave the rotations somewhere to help with modders.
+            // I just can't find the best way to know the player's in that cutscene.
+            switch (this->leftHandType) {
+                case 2: // Unused, but a safe measure
+                case 3: 
+                    switch (CUR_EQUIP_VALUE(EQUIP_SWORD)) {
+                        case PLAYER_SWORD_KOKIRI:
+                            OPEN_DISPS(play->state.gfxCtx);
 
-                OPEN_DISPS(play->state.gfxCtx);
+                            if (LINK_IS_ADULT) {
+                                Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
+                            }
 
-                if (LINK_IS_ADULT) {
-                    Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
-                }
+                            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                            gSPDisplayList(POLY_OPA_DISP++, gLinkChildLeftFistAndKokiriSwordNearDL);
 
-                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkChildLeftFistAndKokiriSwordNearDL); //
+                            CLOSE_DISPS(play->state.gfxCtx);
 
-                CLOSE_DISPS(play->state.gfxCtx);
+                            if (LINK_IS_ADULT) {
+                                // Scale the Matrix back to default, otherwise sword trail lengths get ruined
+                                Matrix_Scale(.8f, .8f, .8f, MTXMODE_APPLY); 
+                            }
+                            break;
+                        default:
+                            OPEN_DISPS(play->state.gfxCtx);
 
-                if (LINK_IS_ADULT) {
-                    Matrix_Scale(.8f, .8f, .8f, MTXMODE_APPLY);
-                }
-            }
-            // master sword
-            else if ((this->leftHandType == 2 || this->leftHandType == 3)) {
-                Vec3f sp124[3];
+                            if (LINK_IS_CHILD) {
+                                Matrix_Scale(.8f, .8f, .8f, MTXMODE_APPLY);
+                            }
 
-                OPEN_DISPS(play->state.gfxCtx);
+                            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftHandHoldingMasterSwordNearDL);
 
-                if (LINK_IS_CHILD) {
-                    Matrix_Scale(.8f, .8f, .8f, MTXMODE_APPLY);
-                }
+                            CLOSE_DISPS(play->state.gfxCtx);
 
-                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftHandHoldingMasterSwordNearDL); //
+                            if (LINK_IS_CHILD) {
+                                Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
+                            }
+                            break;
+                    }
+                    break;
+                case 4:
+                    if (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS) {
+                        if (gSaveContext.swordHealth <= 0.0f) {
+                            OPEN_DISPS(play->state.gfxCtx);
 
-                CLOSE_DISPS(play->state.gfxCtx);
+                            if (LINK_IS_CHILD) {
+                                Matrix_Scale(.8f, .8f, .8f, MTXMODE_APPLY);
+                            }
+                            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                        G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHandHoldingBrokenGiantsKnifeDL);
+                            CLOSE_DISPS(play->state.gfxCtx);
 
-                if (LINK_IS_CHILD) {
-                    Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
-                }
-            }
-            // biggoron sword
-            else if (this->leftHandType == 4 && (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS) &&
-                     (gSaveContext.swordHealth <= 0.0f)) {
-                OPEN_DISPS(play->state.gfxCtx);
+                            if (LINK_IS_CHILD) {
+                                Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
+                            }
+                        }
+                        else {
+                            OPEN_DISPS(play->state.gfxCtx);
 
-                if (LINK_IS_CHILD) {
-                    Matrix_Scale(.8f, .8f, .8f, MTXMODE_APPLY);
-                }
-                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHandHoldingBrokenGiantsKnifeDL);
-                CLOSE_DISPS(play->state.gfxCtx);
+                            if (LINK_IS_CHILD) {
+                                Matrix_Scale(.8f, .8f, .8f, MTXMODE_APPLY);
+                            }
+                            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftHandHoldingBgsNearDL);
+                            CLOSE_DISPS(play->state.gfxCtx);
+                        }
+                    }
+                    break;
+                case 5:
+                    OPEN_DISPS(play->state.gfxCtx);
 
-                if (LINK_IS_CHILD) {
-                    Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
-                }
-            } else if (this->leftHandType == 4 && (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS) &&
-                       !(gSaveContext.swordHealth <= 0.0f)) {
-                OPEN_DISPS(play->state.gfxCtx);
+                    if (LINK_IS_CHILD) {
+                        Matrix_Scale(.8f, .8f, .8f, MTXMODE_APPLY);
+                    }
 
-                if (LINK_IS_CHILD) {
-                    Matrix_Scale(.8f, .8f, .8f, MTXMODE_APPLY);
-                }
-                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftHandHoldingBgsNearDL); //
-                CLOSE_DISPS(play->state.gfxCtx);
-            }
-            // metagon hammer
-            else if (this->leftHandType == 5) {
-                Vec3f sp124[3];
+                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                    gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftHandHoldingHammerNearDL);
 
-                OPEN_DISPS(play->state.gfxCtx);
+                    CLOSE_DISPS(play->state.gfxCtx);
 
-                if (LINK_IS_CHILD) {
-                    Matrix_Scale(.8f, .8f, .8f, MTXMODE_APPLY);
-                }
+                    if (LINK_IS_CHILD) {
+                        Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
+                    }
+                    break;
+                case 6:
+                    if (!(this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG)) {
+                        OPEN_DISPS(play->state.gfxCtx);
 
-                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftHandHoldingHammerNearDL); //
+                        if (LINK_IS_ADULT) {
+                            Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
+                        }
 
-                CLOSE_DISPS(play->state.gfxCtx);
+                        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                        gSPDisplayList(POLY_OPA_DISP++, gLinkChildLeftFistAndBoomerangNearDL);
 
-                if (LINK_IS_CHILD) {
-                    Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
-                }
-            }
-            // boomerang
-            else if (this->leftHandType == 6 && !(this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG)) {
-                Vec3f sp124[3];
+                        CLOSE_DISPS(play->state.gfxCtx);
 
-                OPEN_DISPS(play->state.gfxCtx);
-
-                if (LINK_IS_ADULT) {
-                    Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
-                }
-
-                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkChildLeftFistAndBoomerangNearDL); //
-
-                CLOSE_DISPS(play->state.gfxCtx);
-
-                if (LINK_IS_CHILD) {
-                    Matrix_Scale(.8f, .8f, .8f, MTXMODE_APPLY);
-                }
+                        if (LINK_IS_CHILD) {
+                            Matrix_Scale(.8f, .8f, .8f, MTXMODE_APPLY);
+                        }
+                    }
+                    break;
             }
         }
 
@@ -1762,90 +1766,126 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
         Actor* heldActor = this->heldActor;
 
         if (CVarGetInteger("gAltLinkEquip", 0)) {
-            // deku shield
-            if (this->rightHandType == 10 && (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU)) {
-                Vec3f sp124[3];
+            switch (this->rightHandType) {
+                case 10:
+                    if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU) {
+                        OPEN_DISPS(play->state.gfxCtx);
 
-                OPEN_DISPS(play->state.gfxCtx);
+                        if (LINK_IS_ADULT) {
+                            Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
+                        }
 
-                if (LINK_IS_ADULT) {
-                    Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
-                }
+                        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                        gSPDisplayList(POLY_OPA_DISP++, gLinkChildRightFistAndDekuShieldNearDL);
 
-                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkChildRightFistAndDekuShieldNearDL); //
+                        CLOSE_DISPS(play->state.gfxCtx);
+                    } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
+                               !Player_IsChildWithHylianShield(this)) { //I don't think this check is needed, but I'm playing it safe
+                        OPEN_DISPS(play->state.gfxCtx);
 
-                CLOSE_DISPS(play->state.gfxCtx);
+                        if (LINK_IS_CHILD) {
+                            Matrix_Scale(.8f, .8f, .8f, MTXMODE_APPLY);
+                        }
+
+                        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                        gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightHandHoldingHylianShieldNearDL);
+
+                        CLOSE_DISPS(play->state.gfxCtx);
+                    } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR)) {
+                        OPEN_DISPS(play->state.gfxCtx);
+
+                        if (LINK_IS_CHILD) {
+                            Matrix_Scale(.8f, .8f, .8f, MTXMODE_APPLY);
+                        }
+
+                        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                        gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightHandHoldingMirrorShieldNearDL);
+
+                        CLOSE_DISPS(play->state.gfxCtx);
+                        // slingshot
+                    }
+                    break;
+                case 11:
+                    if (this->itemAction == PLAYER_IA_SLINGSHOT) {
+                        OPEN_DISPS(play->state.gfxCtx);
+
+                        if (LINK_IS_ADULT) {
+                            Matrix_Scale(1.2f, 1.2f, 1.2f, MTXMODE_APPLY);
+                        }
+
+                        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                        gSPDisplayList(POLY_OPA_DISP++,
+                                       gLinkChildRightHandHoldingSlingshotNearDL);
+
+                        CLOSE_DISPS(play->state.gfxCtx);
+                    } else {
+                        // todo: For some reason, this isn't at the right angle for
+                        // child link compared to MM Bow. Probably needs animation edits
+                        OPEN_DISPS(play->state.gfxCtx);
+
+                        if (LINK_IS_CHILD) {
+                            Matrix_Scale(0.8f, 0.8f, 0.8f, MTXMODE_APPLY);
+                        }
+
+                        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+
+                        gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightHandHoldingBowNearDL);
+
+                        CLOSE_DISPS(play->state.gfxCtx);
+                    }
+                    break;
+                case 13:
+                    OPEN_DISPS(play->state.gfxCtx);
+
+                    if (LINK_IS_ADULT) { //Repositions the Ocarina for Adult
+                        Matrix_Translate(115.0f, 200.0f, 115.0f, MTXMODE_APPLY);
+                        Matrix_RotateZYX(7.57f, 3.72f, 0.0f, MTXMODE_APPLY);
+                    }
+
+                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+
+                    gSPDisplayList(POLY_OPA_DISP++, gLinkChildRightHandHoldingFairyOcarinaNearDL);
+
+                    CLOSE_DISPS(play->state.gfxCtx);
+                    break;
+                case 14:
+                    OPEN_DISPS(play->state.gfxCtx);
+
+                    if (LINK_IS_ADULT) { //Repositions the Ocarina for Adult
+                        Matrix_Translate(115.0f, 200.0f, 115.0f, MTXMODE_APPLY);
+                        Matrix_RotateZYX(7.57f, 3.72f, 0.0f, MTXMODE_APPLY);
+                    }
+
+                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+
+                    gSPDisplayList(POLY_OPA_DISP++, gLinkChildRightHandAndOotNearDL); //Yes, Both ages use the Child OoT
+
+                    CLOSE_DISPS(play->state.gfxCtx);
+                    break;
+                case 15:
+                    OPEN_DISPS(play->state.gfxCtx);
+
+                    if (LINK_IS_CHILD) {
+                        Matrix_Scale(0.8f, 0.8f, 0.8f, MTXMODE_APPLY);
+                    }
+
+                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                    gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightHandHoldingHookshotNearDL);
+
+                    CLOSE_DISPS(play->state.gfxCtx);
+                    break;
             }
-            // hylian shield
-            else if (this->rightHandType == 10 && (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
-                     !Player_IsChildWithHylianShield(this)) {
-                Vec3f sp124[3];
-
-                OPEN_DISPS(play->state.gfxCtx);
-
-                if (LINK_IS_CHILD) {
-                    Matrix_Scale(.8f, .8f, .8f, MTXMODE_APPLY);
-                }
-
-                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightHandHoldingHylianShieldNearDL); //
-
-                CLOSE_DISPS(play->state.gfxCtx);
-            }
-            // mirror shield
-            else if (this->rightHandType == 10 && (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR)) {
-                Vec3f sp124[3];
-
-                OPEN_DISPS(play->state.gfxCtx);
-
-                if (LINK_IS_CHILD) {
-                    Matrix_Scale(.8f, .8f, .8f, MTXMODE_APPLY);
-                }
-
-                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightHandHoldingMirrorShieldNearDL); //
-
-                CLOSE_DISPS(play->state.gfxCtx);
-                // slingshot
-            } else if (this->rightHandType == 11 && this->itemAction == PLAYER_IA_SLINGSHOT) {
-                Vec3f sp124[3];
-
-                OPEN_DISPS(play->state.gfxCtx);
-
-                if (LINK_IS_ADULT) {
-                    Matrix_Scale(1.2f, 1.2f, 1.2f, MTXMODE_APPLY);
-                }
-
-                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++,
-                               gLinkChildRightHandHoldingSlingshotNearDL); //
-
-                CLOSE_DISPS(play->state.gfxCtx);
-                // bow
-            } else if (this->rightHandType == 11 && this->itemAction != PLAYER_IA_SLINGSHOT) {
-                Vec3f sp124[3];
-
-                OPEN_DISPS(play->state.gfxCtx);
-
-                if (LINK_IS_CHILD) {
-                    Matrix_Scale(0.8f, 0.8f, 0.8f, MTXMODE_APPLY);
-                }
-
-                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-
-                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightHandHoldingBowNearDL); //
-
-                CLOSE_DISPS(play->state.gfxCtx);
-                // fairy ocarina
-            } else if (this->rightHandType == 13 || this->itemAction == PLAYER_IA_OCARINA_FAIRY) {
-                Vec3f sp124[3];
-
+            //I don't know why these need to be here, they shouldn't, but if they aren't,
+            //Song cutscenes make the ocarinas dissapear.
+            if (this->itemAction == PLAYER_IA_OCARINA_FAIRY) {
                 OPEN_DISPS(play->state.gfxCtx);
 
                 if (LINK_IS_ADULT) {
@@ -1856,13 +1896,11 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-                gSPDisplayList(POLY_OPA_DISP++, gLinkChildRightHandHoldingFairyOcarinaNearDL); //
+                gSPDisplayList(POLY_OPA_DISP++, gLinkChildRightHandHoldingFairyOcarinaNearDL);
 
                 CLOSE_DISPS(play->state.gfxCtx);
-                // ocarina of time
-            } else if (this->rightHandType == 14 || this->itemAction == PLAYER_IA_OCARINA_TIME) {
-                Vec3f sp124[3];
-
+            }
+            if (this->itemAction == PLAYER_IA_OCARINA_TIME) {
                 OPEN_DISPS(play->state.gfxCtx);
 
                 if (LINK_IS_ADULT) {
@@ -1873,22 +1911,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-                gSPDisplayList(POLY_OPA_DISP++, gLinkChildRightHandAndOotNearDL); //
-
-                CLOSE_DISPS(play->state.gfxCtx);
-                // hookshot
-            } else if (this->rightHandType == 15) {
-                Vec3f sp124[3];
-
-                OPEN_DISPS(play->state.gfxCtx);
-
-                if (LINK_IS_CHILD) {
-                    Matrix_Scale(0.8f, 0.8f, 0.8f, MTXMODE_APPLY);
-                }
-
-                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightHandHoldingHookshotNearDL);
+                gSPDisplayList(POLY_OPA_DISP++, gLinkChildRightHandAndOotNearDL);
 
                 CLOSE_DISPS(play->state.gfxCtx);
             }
@@ -2003,140 +2026,136 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
         if (limbIndex == PLAYER_LIMB_SHEATH) {
             if (CVarGetInteger("gAltLinkEquip", 0) &&
                 !(this->stateFlags2 & PLAYER_STATE2_CRAWLING && this->actor.projectedPos.z < 0.0f))
-            // don't render these if the player's crawling. doesn't render when entering/exiting tunnels until I can
-            // find a better way to do this - S
+            // don't render these if the player's crawling.
             {
-                // Kokiri Sword Sheath
-                if (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_KOKIRI) {
-                    OPEN_DISPS(play->state.gfxCtx);
-
-                    if (LINK_IS_ADULT) {
-                        Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
-                    }
-
-                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                    gSPDisplayList(POLY_OPA_DISP++, gLinkChildSheathNearDL);
-
-                    CLOSE_DISPS(play->state.gfxCtx);
-                    if (this->leftHandType != 2 && this->leftHandType != 3) {
+                switch (CUR_EQUIP_VALUE(EQUIP_SWORD)){
+                    case PLAYER_SWORD_KOKIRI:
                         OPEN_DISPS(play->state.gfxCtx);
+
+                        if (LINK_IS_ADULT) {
+                            Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
+                        }
 
                         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                        gSPDisplayList(POLY_OPA_DISP++, gLinkChildSwordAndSheathNearDL);
+                        gSPDisplayList(POLY_OPA_DISP++, gLinkChildSheathNearDL);
 
                         CLOSE_DISPS(play->state.gfxCtx);
-                    }
-                    if (LINK_IS_ADULT) {
-                        Matrix_Scale(0.8f, 0.8f, 0.8f, MTXMODE_APPLY);
-                    }
-                }
-                // master Sword Sheath
-                else if (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_MASTER) {
-                    OPEN_DISPS(play->state.gfxCtx);
+                        if (this->leftHandType != 2 && this->leftHandType != 3) {
+                            OPEN_DISPS(play->state.gfxCtx);
 
-                    if (LINK_IS_CHILD) {
-                        Matrix_Scale(0.8f, 0.8f, 0.8f, MTXMODE_APPLY);
-                    }
+                            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                            gSPDisplayList(POLY_OPA_DISP++, gLinkChildSwordAndSheathNearDL);
 
-                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                    gSPDisplayList(POLY_OPA_DISP++, gLinkAdultSheathNearDL);
-
-                    CLOSE_DISPS(play->state.gfxCtx);
-                    if (this->leftHandType != 2 && this->leftHandType != 3) {
+                            CLOSE_DISPS(play->state.gfxCtx);
+                        }
+                        if (LINK_IS_ADULT) {
+                            Matrix_Scale(0.8f, 0.8f, 0.8f, MTXMODE_APPLY);
+                        }
+                        break;
+                    case PLAYER_SWORD_MASTER:
                         OPEN_DISPS(play->state.gfxCtx);
+
+                        if (LINK_IS_CHILD) {
+                            Matrix_Scale(0.8f, 0.8f, 0.8f, MTXMODE_APPLY);
+                        }
 
                         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                        gSPDisplayList(POLY_OPA_DISP++, gLinkAdultMasterSwordAndSheathNearDL);
+                        gSPDisplayList(POLY_OPA_DISP++, gLinkAdultSheathNearDL);
 
                         CLOSE_DISPS(play->state.gfxCtx);
-                    }
-                    if (LINK_IS_CHILD) {
-                        Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
-                    }
-                }
-                // BG Sword Sheath
-                else if (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS) {
-                    OPEN_DISPS(play->state.gfxCtx);
+                        if (this->leftHandType != 2 && this->leftHandType != 3) {
+                            OPEN_DISPS(play->state.gfxCtx);
 
-                    if (LINK_IS_CHILD) {
-                        Matrix_Scale(0.8f, 0.8f, 0.8f, MTXMODE_APPLY);
-                    }
+                            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultMasterSwordAndSheathNearDL);
 
-                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                    gSPDisplayList(POLY_OPA_DISP++,
-                                   gLinkAdultHylianShieldSwordAndSheathNearDL); // repurposes otherwise unused DLS
-
-                    CLOSE_DISPS(play->state.gfxCtx);
-                    if (this->leftHandType != 4) {
+                            CLOSE_DISPS(play->state.gfxCtx);
+                        }
+                        if (LINK_IS_CHILD) {
+                            Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
+                        }
+                        break;
+                    case PLAYER_SWORD_BGS:
                         OPEN_DISPS(play->state.gfxCtx);
+
+                        if (LINK_IS_CHILD) {
+                            Matrix_Scale(0.8f, 0.8f, 0.8f, MTXMODE_APPLY);
+                        }
 
                         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                         gSPDisplayList(POLY_OPA_DISP++,
-                                       gLinkAdultMirrorShieldSwordAndSheathNearDL); // repurposes otherwise unused DLS
+                                       gLinkAdultHylianShieldSwordAndSheathNearDL); // repurposes otherwise unused DLS
 
                         CLOSE_DISPS(play->state.gfxCtx);
+                        if (this->leftHandType != 4) {
+                            OPEN_DISPS(play->state.gfxCtx);
+
+                            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                            gSPDisplayList(
+                                POLY_OPA_DISP++,
+                                gLinkAdultMirrorShieldSwordAndSheathNearDL); // repurposes otherwise unused DLS
+
+                            CLOSE_DISPS(play->state.gfxCtx);
+                        }
+                        if (LINK_IS_CHILD) {
+                            Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
+                        }
                     }
-                    if (LINK_IS_CHILD) {
-                        Matrix_Scale(1.25f, 1.25f, 1.25f, MTXMODE_APPLY);
+                if (this->rightHandType != 10) {
+                    switch (CUR_EQUIP_VALUE(EQUIP_SHIELD)) {
+                        case PLAYER_SHIELD_DEKU:
+                            OPEN_DISPS(play->state.gfxCtx);
+
+                            if (LINK_IS_ADULT) {
+                                Matrix_Scale(1.2f, 1.2f, 1.2f, MTXMODE_APPLY);
+                            }
+
+                            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                            gSPDisplayList(POLY_OPA_DISP++, gLinkChildDekuShieldAndSheathNearDL);
+
+                            CLOSE_DISPS(play->state.gfxCtx);
+                            break;
+                        case PLAYER_SHIELD_HYLIAN:
+                            OPEN_DISPS(play->state.gfxCtx);
+
+                            if (LINK_IS_CHILD) {
+                                Matrix_Scale(.80f, .80f, .80f, MTXMODE_APPLY);
+                            }
+
+                            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHylianShieldAndSheathNearDL);
+
+                            CLOSE_DISPS(play->state.gfxCtx);
+                            break;
+                        case PLAYER_SHIELD_MIRROR:
+                            OPEN_DISPS(play->state.gfxCtx);
+
+                            if (LINK_IS_CHILD) {
+                                Matrix_Scale(.80f, .80f, .80f, MTXMODE_APPLY);
+                            }
+
+                            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultMirrorShieldAndSheathNearDL);
+
+                            CLOSE_DISPS(play->state.gfxCtx);
                     }
                 }
-                // Deku Shield on Back
-                if (this->rightHandType != 10 && (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU)) {
-                    OPEN_DISPS(play->state.gfxCtx);
-
-                    if (LINK_IS_ADULT) {
-                        Matrix_Scale(1.2f, 1.2f, 1.2f, MTXMODE_APPLY);
-                    }
-
-                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                    gSPDisplayList(POLY_OPA_DISP++, gLinkChildDekuShieldAndSheathNearDL);
-
-                    CLOSE_DISPS(play->state.gfxCtx);
-                }
-                // Child Hylian Shield on Back
-                if (this->rightHandType != 10 && (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
+                if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN &&
                     Player_IsChildWithHylianShield(this)) {
                     OPEN_DISPS(play->state.gfxCtx);
 
                     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                     gSPDisplayList(POLY_OPA_DISP++, gLinkChildHylianShieldAndSheathNearDL);
-
-                    CLOSE_DISPS(play->state.gfxCtx);
-                }
-                // Adult Hylian Shield on Back
-                if (this->rightHandType != 10 && (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
-                    !Player_IsChildWithHylianShield(this)) {
-                    OPEN_DISPS(play->state.gfxCtx);
-
-                    if (LINK_IS_CHILD) {
-                        Matrix_Scale(.80f, .80f, .80f, MTXMODE_APPLY);
-                    }
-
-                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                    gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHylianShieldAndSheathNearDL);
-
-                    CLOSE_DISPS(play->state.gfxCtx);
-                }
-                // Mirror Shield on Back
-                if (this->rightHandType != 10 && (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR)) {
-                    OPEN_DISPS(play->state.gfxCtx);
-
-                    if (LINK_IS_CHILD) {
-                        Matrix_Scale(.80f, .80f, .80f, MTXMODE_APPLY);
-                    }
-
-                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                    gSPDisplayList(POLY_OPA_DISP++, gLinkAdultMirrorShieldAndSheathNearDL);
 
                     CLOSE_DISPS(play->state.gfxCtx);
                 }
@@ -2167,8 +2186,6 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
         if (CVarGetInteger("gAltLinkEquip", 0)) {
             // kokiri sword
             if (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_KOKIRI) {
-                Vec3f sp124[3];
-
                 OPEN_DISPS(play->state.gfxCtx);
 
                 if (LINK_IS_ADULT) {
@@ -2187,8 +2204,6 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
             }
             // master sword
             else if (CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_MASTER) {
-                Vec3f sp124[3];
-
                 OPEN_DISPS(play->state.gfxCtx);
 
                 if (LINK_IS_CHILD) {
@@ -2239,8 +2254,6 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
             // deku shield
             if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU) &&
                 !(CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS)) {
-                Vec3f sp124[3];
-
                 OPEN_DISPS(play->state.gfxCtx);
 
                 if (LINK_IS_ADULT) {
@@ -2257,8 +2270,6 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
             else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
                      (CVarGetInteger("gNormalChildHylianShield", 0) || LINK_IS_ADULT) &&
                      !(CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS)) {
-                Vec3f sp124[3];
-
                 OPEN_DISPS(play->state.gfxCtx);
 
                 if (LINK_IS_CHILD) {
@@ -2274,8 +2285,6 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
             // mirror shield
             else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR) &&
                      !(CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_BGS)) {
-                Vec3f sp124[3];
-
                 OPEN_DISPS(play->state.gfxCtx);
 
                 if (LINK_IS_CHILD) {
