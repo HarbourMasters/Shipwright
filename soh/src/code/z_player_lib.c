@@ -673,6 +673,10 @@ s32 Player_HoldsSlingshot(Player* this) {
     return this->heldItemAction == PLAYER_IA_SLINGSHOT;
 }
 
+s32 Player_HoldsStick(Player* this) {
+    return this->heldItemAction == PLAYER_IA_STICK;
+}
+
 s32 func_8008F128(Player* this) {
     return Player_HoldsHookshot(this) && (this->heldActor == NULL);
 }
