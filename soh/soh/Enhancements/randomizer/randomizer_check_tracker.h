@@ -4,8 +4,31 @@
 #include "randomizer_check_objects.h"
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
+#include <libultraship/libultraship.h>
+
 namespace CheckTracker {
 
+class CheckTrackerSettingsWindow : public LUS::GuiWindow {
+  public:
+    using LUS::GuiWindow::GuiWindow;
+    ~CheckTrackerSettingsWindow() {};
+
+  protected:
+    void InitElement() override {};
+    void DrawElement() override;
+    void UpdateElement() override {};
+};
+
+class CheckTrackerWindow : public LUS::GuiWindow {
+  public:
+    using LUS::GuiWindow::GuiWindow;
+    ~CheckTrackerWindow() {};
+
+  protected:
+    void InitElement() override;
+    void DrawElement() override;
+    void UpdateElement() override {};
+};
 
 //Converts an index into a Little Endian bitmask, as follows:
 //00: 0000000100000000
@@ -22,10 +45,10 @@ namespace CheckTracker {
 #define INDEX_TO_16BIT_LITTLE_ENDIAN_BITMASK(idx) (0x8000 >> (7 - (idx % 8) + ((idx % 16) / 8) * 8))
 
 void InitCheckTracker();
-void Teardown();
 void DrawCheckTracker(bool& open);
 void DefaultCheckData(RandomizerCheck rc);
 void Init();
+void Teardown();
 void LoadCheckTrackerData(nlohmann::json checks);
 bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj);
 void InitTrackerData(bool isDebug);

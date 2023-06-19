@@ -4,10 +4,11 @@
 #include "objects/object_tw/object_tw.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/boss-rush/BossRush.h"
 
 #include <string.h>
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 typedef enum {
     /* 0x00 */ TW_KOTAKE,
@@ -421,7 +422,7 @@ void BossTw_Init(Actor* thisx, PlayState* play2) {
         Actor_SetScale(&this->actor, 0.01f);
         this->actor.update = BossTw_BlastUpdate;
         this->actor.draw = BossTw_BlastDraw;
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
 
         Collider_InitCylinder(play, &this->collider);
         Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInitBlasts);
@@ -611,7 +612,7 @@ void BossTw_SetupFlyTo(BossTw* this, PlayState* play) {
     BossTw* otherTw = (BossTw*)this->actor.parent;
 
     this->unk_5F8 = 1;
-    this->actor.flags |= ACTOR_FLAG_0;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     this->actionFunc = BossTw_FlyTo;
     this->rotateSpeed = 0.0f;
     Animation_MorphToLoop(&this->skelAnime, &object_tw_Anim_006F28, -10.0f);
@@ -1435,7 +1436,7 @@ void BossTw_SetupWait(BossTw* this, PlayState* play) {
     this->actionFunc = BossTw_Wait;
     this->visible = false;
     this->actor.world.pos.y = -2000.0f;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
 }
 
 void BossTw_Wait(BossTw* this, PlayState* play) {
@@ -1597,7 +1598,7 @@ void BossTw_TwinrovaMergeCS(BossTw* this, PlayState* play) {
 
                     this->csState1 = 1;
                     this->visible = true;
-                    this->actor.flags |= ACTOR_FLAG_0;
+                    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
                     this->actor.shape.rot.y = 0;
                     BossTw_SetupWait(sKotakePtr, play);
                     BossTw_SetupWait(sKoumePtr, play);
@@ -1718,7 +1719,7 @@ void BossTw_SetupCSWait(BossTw* this, PlayState* play) {
     this->actionFunc = BossTw_CSWait;
     this->visible = false;
     this->actor.world.pos.y = -2000.0f;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
 }
 
 /**
@@ -1731,7 +1732,7 @@ void BossTw_TwinrovaSetupIntroCS(BossTw* this, PlayState* play) {
     this->actionFunc = BossTw_TwinrovaIntroCS;
     this->visible = false;
     this->actor.world.pos.y = -2000.0f;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
 }
 
 void BossTw_TwinrovaIntroCS(BossTw* this, PlayState* play) {
@@ -2337,7 +2338,7 @@ void BossTw_TwinrovaSetupDeathCS(BossTw* this, PlayState* play) {
     this->actionFunc = BossTw_TwinrovaDeathCS;
     Animation_MorphToLoop(&this->skelAnime, &object_tw_Anim_024374, -3.0f);
     this->actor.world.rot.y = this->actor.shape.rot.y;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->csState2 = this->csState1 = 0;
     this->work[CS_TIMER_1] = this->work[CS_TIMER_2] = 0;
     this->work[INVINC_TIMER] = 10000;
@@ -2364,7 +2365,7 @@ void BossTw_DeathCSMsgSfx(BossTw* this, PlayState* play) {
     sp35 = 0;
 
     // Skip ahead to last part of the cutscene in rando
-    if (this->work[CS_TIMER_2] == 10 && gSaveContext.n64ddFlag) {
+    if (this->work[CS_TIMER_2] == 10 && (gSaveContext.n64ddFlag || gSaveContext.isBossRush)) {
         this->work[CS_TIMER_2] = 860;
     }
 
@@ -2547,9 +2548,9 @@ void BossTw_DeathCSMsgSfx(BossTw* this, PlayState* play) {
         Math_ApproachF(&this->workf[UNK_F18], 255.0f, 0.1f, 5.0f);
     }
 
-    // Add seperate timings for the "beam" that opens and closes around the sisters
+    // Add separate timings for the "beam" that opens and closes around the sisters
     // Needed because we skip ahead in cutscene timer value so it never gets called otherwise
-    if (gSaveContext.n64ddFlag) {
+    if (gSaveContext.n64ddFlag || gSaveContext.isBossRush) {
         if (this->work[CS_TIMER_2] < 900) {
             Math_ApproachF(&this->workf[UNK_F18], 255.0f, 0.1f, 5.0f);
         } else if (this->work[CS_TIMER_2] > 910) {
@@ -2652,7 +2653,7 @@ void BossTw_TwinrovaDeathCS(BossTw* this, PlayState* play) {
                     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_BOSS_TW,
                                        this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, 0, 0,
                                        0, TW_DEATHBALL_KOTAKE);
-                    this->actor.flags &= ~ACTOR_FLAG_0;
+                    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                 }
             }
             Actor_SetScale(&this->actor, this->actor.scale.x);
@@ -2705,7 +2706,7 @@ void BossTw_TwinrovaDeathCS(BossTw* this, PlayState* play) {
                 sKoumePtr->work[YAW_TGT] = sKotakePtr->work[YAW_TGT] = sKoumePtr->actor.shape.rot.x =
                     sKotakePtr->actor.shape.rot.x = sKoumePtr->actor.shape.rot.y = sKotakePtr->actor.shape.rot.y = 0;
                 func_8002DF54(play, &sKoumePtr->actor, 1);
-                sKoumePtr->actor.flags |= ACTOR_FLAG_0;
+                sKoumePtr->actor.flags |= ACTOR_FLAG_TARGETABLE;
             }
             break;
         case 2:
@@ -2794,9 +2795,14 @@ void BossTw_TwinrovaDeathCS(BossTw* this, PlayState* play) {
                 func_80064534(play, &play->csCtx);
                 func_8002DF54(play, &this->actor, 7);
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS_CLEAR);
-                Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 600.0f, 230.0f,
-                                   0.0f, 0, 0, 0, WARP_DUNGEON_ADULT);
-                Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -600.0f, 230.f, 0.0f, 0, 0, 0, 0, true);
+                if (!gSaveContext.isBossRush) {
+                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 600.0f, 230.0f, 0.0f, 0,
+                                       0, 0, WARP_DUNGEON_ADULT);
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -600.0f, 230.f, 0.0f, 0, 0, 0, 0, true);
+                } else {
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 600.0f, 230.0f, 0.0f, 0, 0, 0,
+                                WARP_DUNGEON_ADULT, true);
+                }
                 this->actor.world.pos.y = -2000.0f;
                 this->workf[UNK_F18] = 0.0f;
                 sKoumePtr->visible = sKotakePtr->visible = false;
@@ -2949,7 +2955,7 @@ void BossTw_TwinrovaUpdate(Actor* thisx, PlayState* play2) {
     BossTw* this = (BossTw*)thisx;
     Player* player = GET_PLAYER(play);
 
-    this->actor.flags &= ~ACTOR_FLAG_10;
+    this->actor.flags &= ~ACTOR_FLAG_DRAGGED_BY_HOOKSHOT;
     this->unk_5F8 = 0;
     this->collider.base.colType = COLTYPE_HIT3;
 
@@ -5287,6 +5293,7 @@ void BossTw_TwinrovaDamage(BossTw* this, PlayState* play, u8 damage) {
             Enemy_StartFinishingBlow(play, &this->actor);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_TWINROBA_YOUNG_DEAD);
             gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_TWINROVA] = GAMEPLAYSTAT_TOTAL_TIME;
+            BossRush_HandleCompleteBoss(play);
             return;
         }
 
@@ -5301,7 +5308,7 @@ void BossTw_TwinrovaStun(BossTw* this, PlayState* play) {
     s16 cloudType;
 
     this->unk_5F8 = 1;
-    this->actor.flags |= ACTOR_FLAG_10;
+    this->actor.flags |= ACTOR_FLAG_DRAGGED_BY_HOOKSHOT;
 
     cloudType = sTwinrovaBlastType == 0 ? 3 : 2;
 

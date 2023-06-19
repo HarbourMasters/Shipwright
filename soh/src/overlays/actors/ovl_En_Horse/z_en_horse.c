@@ -10,7 +10,7 @@
 #include "objects/object_hni/object_hni.h"
 #include "scenes/overworld/spot09/spot09_scene.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 typedef void (*EnHorseCsFunc)(EnHorse*, PlayState*, CsCmdActorAction*);
 typedef void (*EnHorseActionFunc)(EnHorse*, PlayState*);
@@ -725,7 +725,7 @@ s32 EnHorse_PlayerCanMove(EnHorse* this, PlayState* play) {
 
     if ((player->stateFlags1 & 1) || func_8002DD78(GET_PLAYER(play)) == 1 || (player->stateFlags1 & 0x100000) ||
         ((this->stateFlags & ENHORSE_FLAG_19) && !this->inRace) || this->action == ENHORSE_ACT_HBA ||
-        player->actor.flags & ACTOR_FLAG_8 || play->csCtx.state != 0) {
+        player->actor.flags & ACTOR_FLAG_PLAYER_TALKED_TO || play->csCtx.state != 0) {
         return false;
     }
     return true;
@@ -1539,7 +1539,7 @@ void EnHorse_Reverse(EnHorse* this, PlayState* play) {
         } else if (stickMag < 10.0f) {
             stickAngle = -0x7FFF;
         }
-    } else if (player->actor.flags & ACTOR_FLAG_8) {
+    } else if (player->actor.flags & ACTOR_FLAG_PLAYER_TALKED_TO) {
         EnHorse_StartMountedIdleResetAnim(this);
         this->actor.speedXZ = 0.0f;
         return;
@@ -3042,7 +3042,7 @@ void EnHorse_StickDirection(Vec2f* curStick, f32* stickMag, s16* angle) {
 
 void EnHorse_UpdateStick(EnHorse* this, PlayState* play) {
     this->lastStick = this->curStick;
-    this->curStick.x = play->state.input[0].rel.stick_x;
+    this->curStick.x = play->state.input[0].rel.stick_x * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
     this->curStick.y = play->state.input[0].rel.stick_y;
 }
 

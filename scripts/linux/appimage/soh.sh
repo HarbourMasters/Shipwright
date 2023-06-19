@@ -13,12 +13,17 @@ if [ -z ${SHIP_BIN_DIR+x} ]; then
 export SHIP_BIN_DIR="$HERE/usr/bin"
 fi
 
+if [[ ! -e "$SHIP_HOME"/mods ]]; then
+    mkdir -p "$SHIP_HOME"/mods
+    touch "$SHIP_HOME"/mods/custom_otr_files_go_here.txt
+fi
+
 while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
         for romfile in "$SHIP_HOME"/*.*64
         do
             if [[ -e $romfile ]]; then
                 export ASSETDIR="$(mktemp -d /tmp/assets-XXXXX)"
-                ln -s "$HERE"/usr/bin/{assets,soh.elf,OTRGui} "$ASSETDIR"
+                ln -s "$HERE"/usr/bin/{assets,soh.elf,ZAPD} "$ASSETDIR"
                 export OLDPWD="$PWD"
                 mkdir -p "$ASSETDIR"/tmp
 	            mkdir -p "$ASSETDIR"/Extract
@@ -35,6 +40,14 @@ while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
                 0227d7c0074f2d0ac935631990da8ec5914597b4)
                     if [[ ! -e "$SHIP_HOME"/oot.otr ]]; then
                         ROM=GC_NMQ_PAL_F
+                        OTRNAME="oot.otr"
+                    else
+                        continue
+                    fi
+                    ;;
+                cfbb98d392e4a9d39da8285d10cbef3974c2f012)
+                    if [[ ! -e "$SHIP_HOME"/oot.otr ]]; then
+                        ROM=N64_PAL_11
                         OTRNAME="oot.otr"
                     else
                         continue

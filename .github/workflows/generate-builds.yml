@@ -229,48 +229,48 @@ jobs:
           soh.nro
           soh.otr
           readme.txt
-  # build-wiiu:
-  #   needs: generate-soh-otr
-  #   runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
-  #   container:
-  #     image: devkitpro/devkitppc:latest
-  #   steps:
-  #   - name: Install dependencies
-  #     if: ${{ !vars.LINUX_RUNNER }}
-  #     run: |
-  #       sudo apt-get update
-  #       sudo apt-get install -y ninja-build
-  #   - uses: actions/checkout@v3
-  #     with:
-  #       submodules: true
-  #   - name: ccache
-  #     uses: hendrikmuhs/ccache-action@v1.2
-  #     with:
-  #       key: ${{ runner.os }}-wiiu-ccache
-  #   - name: Build SoH
-  #     run: |
-  #       cmake -H. -Bbuild-wiiu -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_C_COMPILER_LAUNCHER=ccache
-  #       cmake --build build-wiiu --target soh_wuhb --config Release -j3
+  build-wiiu:
+    needs: generate-soh-otr
+    runs-on: ${{ (vars.LINUX_RUNNER && fromJSON(vars.LINUX_RUNNER)) || 'ubuntu-latest' }}
+    container:
+      image: devkitpro/devkitppc:20230110
+    steps:
+    - name: Install dependencies
+      if: ${{ !vars.LINUX_RUNNER }}
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ninja-build
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ runner.os }}-wiiu-ccache
+    - name: Build SoH
+      run: |
+        cmake -H. -Bbuild-wiiu -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/WiiU.cmake -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_C_COMPILER_LAUNCHER=ccache
+        cmake --build build-wiiu --target soh_wuhb --config Release -j3
 
-  #       mv build-wiiu/soh/*.rpx soh.rpx
-  #       mv build-wiiu/soh/*.wuhb soh.wuhb
-  #       mv README.md readme.txt
-  #     env:
-  #       DEVKITPRO: /opt/devkitpro
-  #       DEVKITPPC: /opt/devkitpro/devkitPPC
-  #   - name: Download soh.otr
-  #     uses: actions/download-artifact@v3
-  #     with:
-  #       name: soh.otr
-  #   - name: Upload build
-  #     uses: actions/upload-artifact@v3
-  #     with:
-  #       name: soh-wiiu
-  #       path: |
-  #         soh.rpx
-  #         soh.wuhb
-  #         soh.otr
-  #         readme.txt
+        mv build-wiiu/soh/*.rpx soh.rpx
+        mv build-wiiu/soh/*.wuhb soh.wuhb
+        mv README.md readme.txt
+      env:
+        DEVKITPRO: /opt/devkitpro
+        DEVKITPPC: /opt/devkitpro/devkitPPC
+    - name: Download soh.otr
+      uses: actions/download-artifact@v3
+      with:
+        name: soh.otr
+    - name: Upload build
+      uses: actions/upload-artifact@v3
+      with:
+        name: soh-wiiu
+        path: |
+          soh.rpx
+          soh.wuhb
+          soh.otr
+          readme.txt
   build-windows:
     needs: generate-soh-otr
     runs-on: ${{ (vars.WINDOWS_RUNNER && fromJSON(vars.WINDOWS_RUNNER)) || 'windows-latest' }}
@@ -289,6 +289,8 @@ jobs:
         key: ${{ runner.os }}-ccache
     - uses: ilammy/msvc-dev-cmd@v1
     - name: Build SoH
+      env: 
+        VCPKG_ROOT: D:/a/vcpkg
       run: |
         set $env:PATH="$env:USERPROFILE/.cargo/bin;$env:PATH"
         cmake -S . -B build-windows -G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
@@ -302,8 +304,7 @@ jobs:
         mv ./x64/Release/soh.pdb ./soh-windows/debug/soh.pdb
         mv ./README.md ./soh-windows/readme.txt
         mv ./build-windows/gamecontrollerdb.txt ./soh-windows/gamecontrollerdb.txt
-        mv ./build-windows/OTRGui/assets ./soh-windows
-        mv ./build-windows/ZAPD/ZAPD.exe ./soh-windows/assets/extractor/ZAPD.exe
+        mv ./x64/Release/assets ./soh-windows
     - name: Download soh.otr
       uses: actions/download-artifact@v3
       with:

@@ -3,9 +3,8 @@
 #include <string>
 #include <vector>
 #include <cstdint>
+#include <libultraship/libultraship.h>
 
-void InitItemTracker();
-void DrawItemTracker(bool& open);
 void DrawItemAmmo(int itemId);
 
 typedef struct ItemTrackerItem {
@@ -29,3 +28,23 @@ typedef struct ItemTrackerDungeon {
     uint32_t id;
     std::vector<uint32_t> items;
 } ItemTrackerDungeon;
+
+class ItemTrackerSettingsWindow : public LUS::GuiWindow {
+  public:
+    using GuiWindow::GuiWindow;
+
+  protected:
+    void InitElement() override {};
+    void DrawElement() override;
+    void UpdateElement() override {};
+};
+
+class ItemTrackerWindow : public LUS::GuiWindow {
+  public:
+    using GuiWindow::GuiWindow;
+
+protected:
+    void InitElement() override;
+    void DrawElement() override;
+    void UpdateElement() override {};
+};

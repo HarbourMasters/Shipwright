@@ -11,17 +11,14 @@ void AreaTable_Init_GerudoValley() {
                   EventAccess(&BugRock, {[]{return BugRock || IsChild;}}),
                 }, {
                   //Locations
-                  LocationAccess(GV_GS_SMALL_BRIDGE, {[]{return IsChild && HookshotOrBoomerang && AtNight && CanGetNightTimeGS;},
-                                          /*Glitched*/[]{return IsChild && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE) && AtNight && CanGetNightTimeGS;}}),
+                  LocationAccess(GV_GS_SMALL_BRIDGE, {[]{return IsChild && HookshotOrBoomerang && AtNight && CanGetNightTimeGS;}}),
                 }, {
                   //Exits
                   Entrance(HYRULE_FIELD,      {[]{return true;}}),
                   Entrance(GV_UPPER_STREAM,   {[]{return true;}}),
                   Entrance(GV_CRATE_LEDGE,    {[]{return IsChild || CanUse(LONGSHOT);}}),
                   Entrance(GV_GROTTO_LEDGE,   {[]{return true;}}),
-                  Entrance(GV_FORTRESS_SIDE,  {[]{return (IsAdult && (CanRideEpona || CanUse(LONGSHOT) || GerudoFortress.Is(GERUDOFORTRESS_OPEN) || CarpenterRescue)) || (IsChild && CanUse(HOOKSHOT));},
-                                   /*Glitched*/[]{return (HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE)) || (IsChild && CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::HERO)) || (IsAdult && (CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::HammerSlide, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::ADVANCED) ||
-                                                         (CanUse(HOVER_BOOTS) && (CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE) || (CanSurviveDamage && (Bombs || HasBombchus) && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::NOVICE)) || (Bombs && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::ADVANCED))))));}}),
+                  Entrance(GV_FORTRESS_SIDE,  {[]{return (IsAdult && (CanRideEpona || CanUse(LONGSHOT) || GerudoFortress.Is(GERUDOFORTRESS_OPEN) || CarpenterRescue)) || (IsChild && CanUse(HOOKSHOT));}}),
   });
 
   areaTable[GV_UPPER_STREAM] = Area("GV Upper Stream", "Gerudo Valley", GERUDO_VALLEY, DAY_NIGHT_CYCLE, {
@@ -32,8 +29,7 @@ void AreaTable_Init_GerudoValley() {
                   //Locations
                   LocationAccess(GV_WATERFALL_FREESTANDING_POH, {[]{return true;}}),
                   LocationAccess(GV_GS_BEAN_PATCH,              {[]{return CanPlantBugs && CanChildAttack;}}),
-                  LocationAccess(GV_COW,                        {[]{return IsChild && CanPlay(EponasSong);},
-                                                     /*Glitched*/[]{return IsChild && EponasSong && (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)));}}),
+                  LocationAccess(GV_COW,                        {[]{return IsChild && CanPlay(EponasSong);}}),
                   LocationAccess(GV_GOSSIP_STONE,               {[]{return true;}}),
                 }, {
                   //Exits
@@ -64,24 +60,19 @@ void AreaTable_Init_GerudoValley() {
                   //Events
                   EventAccess(&BrokenSwordAccess, {[]{return IsAdult && (PoachersSawAccess || PoachersSaw);}}),
                 }, {
-                  //Locations
-                  LocationAccess(GV_CHEST,          {[]{return IsAdult && (CanUse(MEGATON_HAMMER) || LogicGVHammerChest);},
-                                         /*Glitched*/[]{return IsAdult && (CanDoGlitch(GlitchType::LedgeCancel, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) || (CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::NOVICE) && (CanTakeDamageTwice || CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED))));}}),
+                  //Locations                                       
+                  LocationAccess(GV_CHEST,          {[]{return IsAdult && CanUse(MEGATON_HAMMER);}}),
                   LocationAccess(GV_TRADE_SAW,      {[]{return IsAdult && PoachersSaw;}}),
-                  LocationAccess(GV_GS_BEHIND_TENT, {[]{return IsAdult && HookshotOrBoomerang && AtNight && CanGetNightTimeGS;},
-                                         /*Glitched*/[]{return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && IsAdult && AtNight && CanGetNightTimeGS;}}),
+                  LocationAccess(GV_GS_BEHIND_TENT, {[]{return IsAdult && HookshotOrBoomerang && AtNight && CanGetNightTimeGS;}}),
                   LocationAccess(GV_GS_PILLAR,      {[]{return IsAdult && HookshotOrBoomerang && AtNight && CanGetNightTimeGS;}}),
                 }, {
                   //Exits
                   Entrance(GERUDO_FORTRESS,   {[]{return true;}}),
                   Entrance(GV_UPPER_STREAM,   {[]{return true;}}),
-                  Entrance(GERUDO_VALLEY,     {[]{return IsChild || CanRideEpona || CanUse(LONGSHOT) || GerudoFortress.Is(GERUDOFORTRESS_OPEN) || CarpenterRescue;},
-                                   /*Glitched*/[]{return (HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::HammerSlide, GlitchDifficulty::NOVICE) || CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::ADVANCED) ||
-                                                         (CanUse(HOVER_BOOTS) && (CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE) || (CanSurviveDamage && (Bombs || HasBombchus) && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::NOVICE)) || (Bombs && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::ADVANCED))));}}),
-                  Entrance(GV_CARPENTER_TENT, {[]{return IsAdult;},
-                                   /*Glitched*/[]{return GlitchGVTentAsChild.Value<bool>();}}),
-                  Entrance(GV_STORMS_GROTTO,  {[]{return IsAdult && CanOpenStormGrotto;},
-                                   /*Glitched*/[]{return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsAdult && SongOfStorms && (ShardOfAgony || LogicGrottosWithoutAgony);}}),
+                  Entrance(GERUDO_VALLEY,     {[]{return IsChild || CanRideEpona || CanUse(LONGSHOT) || GerudoFortress.Is(GERUDOFORTRESS_OPEN) || CarpenterRescue;}}),
+                  Entrance(GV_CARPENTER_TENT, {[]{return IsAdult;}}),
+                  Entrance(GV_STORMS_GROTTO,  {[]{return IsAdult && CanOpenStormGrotto;}}),
+                  Entrance(GV_CRATE_LEDGE, {[]{return false;}}),
   });
 
   areaTable[GV_CARPENTER_TENT] = Area("GV Carpenter Tent", "GV Carpenter Tent", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -110,33 +101,22 @@ void AreaTable_Init_GerudoValley() {
                   EventAccess(&GtG_GateOpen,    {[]{return GtG_GateOpen || (IsAdult && GerudoToken);}}),
                 }, {
                   //Locations
-                  LocationAccess(GF_CHEST,              {[]{return CanUse(HOVER_BOOTS) || (IsAdult && CanUse(SCARECROW)) || CanUse(LONGSHOT);},
-                                             /*Glitched*/[]{return (CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::NOVICE))) && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen);}}),
+                  LocationAccess(GF_CHEST,              {[]{return CanUse(HOVER_BOOTS) || (IsAdult && CanUse(SCARECROW)) || CanUse(LONGSHOT);}}),
                   LocationAccess(GF_HBA_1000_POINTS,    {[]{return GerudoToken && CanRideEpona && Bow && AtDay;}}),
                   LocationAccess(GF_HBA_1500_POINTS,    {[]{return GerudoToken && CanRideEpona && Bow && AtDay;}}),
-                  LocationAccess(GF_NORTH_F1_CARPENTER, {[]{return  IsAdult || KokiriSword || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD);},
-                                             /*Glitched*/[]{return CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE);}}),
-                  LocationAccess(GF_NORTH_F2_CARPENTER, {[]{return (IsAdult || KokiriSword || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)) && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen);},
-                                             /*Glitched*/[]{return CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE) && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen);}}),
-                  LocationAccess(GF_SOUTH_F1_CARPENTER, {[]{return  IsAdult || KokiriSword || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD);},
-                                             /*Glitched*/[]{return CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE);}}),
-                  LocationAccess(GF_SOUTH_F2_CARPENTER, {[]{return  IsAdult || KokiriSword || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD);},
-                                             /*Glitched*/[]{return CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE);}}),
+                  LocationAccess(GF_NORTH_F1_CARPENTER, {[]{return  IsAdult || KokiriSword || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD);}}),
+                  LocationAccess(GF_NORTH_F2_CARPENTER, {[]{return (IsAdult || KokiriSword || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)) && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen);}}),
+                  LocationAccess(GF_SOUTH_F1_CARPENTER, {[]{return  IsAdult || KokiriSword || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD);}}),
+                  LocationAccess(GF_SOUTH_F2_CARPENTER, {[]{return  IsAdult || KokiriSword || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD);}}),
                   LocationAccess(GF_GERUDO_MEMBERSHIP_CARD,       {[]{return CanFinishGerudoFortress;}}),
-                  LocationAccess(GF_GS_ARCHERY_RANGE,   {[]{return IsAdult && HookshotOrBoomerang && GerudoToken && AtNight && CanGetNightTimeGS;},
-                                             /*Glitched*/[]{return IsAdult && HookshotOrBoomerang && GlitchGFGuardSneak && AtNight && CanGetNightTimeGS;}}),
-                  LocationAccess(GF_GS_TOP_FLOOR,       {[]{return IsAdult && AtNight && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen) && CanGetNightTimeGS;}}),
+                  LocationAccess(GF_GS_ARCHERY_RANGE,   {[]{return IsAdult && HookshotOrBoomerang && GerudoToken && AtNight && CanGetNightTimeGS;}}),
+                  LocationAccess(GF_GS_TOP_FLOOR,       {[]{return IsAdult && AtNight && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen || LogicGFJump) && CanGetNightTimeGS;}}),
                 }, {
                   //Exits
                   Entrance(GV_FORTRESS_SIDE,                 {[]{return true;}}),
-                  Entrance(GF_OUTSIDE_GATE,                  {[]{return GF_GateOpen;},
-                                                  /*Glitched*/[]{return (IsChild && CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::ADVANCED)) || ((IsChild || ((CanUse(HOOKSHOT) || CanUse(BOW) || CanUse(BOOMERANG)) && GlitchGFGuardSneak)) && ((CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE) && CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::NOVICE)) ||
-                                                                        CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::INTERMEDIATE)) && (CanUse(STICKS) || (BiggoronSword && IsAdult) || CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE)));}}),
-                  Entrance(GERUDO_TRAINING_GROUNDS_ENTRYWAY, {[]{return GtG_GateOpen && (IsAdult || ShuffleDungeonEntrances);},
-                                                  /*Glitched*/[]{return (CanDoGlitch(GlitchType::LedgeClip, GlitchDifficulty::INTERMEDIATE) && (HoverBoots || CanDoGlitch(GlitchType::LedgeClip, GlitchDifficulty::ADVANCED))) || ((IsChild || ((CanUse(HOOKSHOT) || CanUse(BOW) || CanUse(BOOMERANG)) && GlitchGFGuardSneak)) && ((CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE) &&
-                                                                        CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::NOVICE)) || CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::INTERMEDIATE)) && (CanUse(STICKS) || (BiggoronSword && IsAdult) || CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::INTERMEDIATE)));}}),
-                  Entrance(GF_STORMS_GROTTO,                 {[]{return IsAdult && CanOpenStormGrotto;},
-                                                  /*Glitched*/[]{return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && IsAdult && SongOfStorms && (ShardOfAgony || LogicGrottosWithoutAgony);}}),
+                  Entrance(GF_OUTSIDE_GATE,                  {[]{return GF_GateOpen;}}),
+                  Entrance(GERUDO_TRAINING_GROUNDS_ENTRYWAY, {[]{return GtG_GateOpen && (IsAdult || ShuffleDungeonEntrances);}}),
+                  Entrance(GF_STORMS_GROTTO,                 {[]{return IsAdult && CanOpenStormGrotto;}}),
   });
 
   areaTable[GF_OUTSIDE_GATE] = Area("GF Outside Gate", "Gerudo Fortress", NONE, NO_DAY_NIGHT_CYCLE, {
@@ -159,9 +139,7 @@ void AreaTable_Init_GerudoValley() {
   areaTable[WASTELAND_NEAR_FORTRESS] = Area("Wasteland Near Fortress", "Haunted Wasteland", HAUNTED_WASTELAND, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
                   Entrance(GF_OUTSIDE_GATE,   {[]{return true;}}),
-                  Entrance(HAUNTED_WASTELAND, {[]{return CanUse(HOVER_BOOTS) || CanUse(LONGSHOT);},
-                                   /*Glitched*/[]{return ((Bombs || HasBombchus) && CanSurviveDamage && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::NOVICE)) || (CanUse(MEGATON_HAMMER) && CanShield && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::INTERMEDIATE)) ||
-                                                         (Bombs && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::ADVANCED)) || (Bombs && HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE) && CanDoGlitch(GlitchType::ISG, GlitchDifficulty::INTERMEDIATE)) || GlitchItemlessWasteland;}}),
+                  Entrance(HAUNTED_WASTELAND, {[]{return CanUse(HOVER_BOOTS) || CanUse(LONGSHOT) || LogicWastelandCrossing;}}),
   });
 
   areaTable[HAUNTED_WASTELAND] = Area("Haunted Wasteland", "Haunted Wasteland", HAUNTED_WASTELAND, NO_DAY_NIGHT_CYCLE, {
@@ -170,18 +148,13 @@ void AreaTable_Init_GerudoValley() {
                   EventAccess(&NutPot,   {[]{return true;}}),
                 }, {
                   //Locations
-                  LocationAccess(WASTELAND_CHEST,            {[]{return HasFireSource;},
-                                                  /*Glitched*/[]{return CanUse(STICKS) && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::INTERMEDIATE);}}),
-                  LocationAccess(WASTELAND_BOMBCHU_SALESMAN, {[]{return AdultsWallet && (IsAdult || Sticks || KokiriSword);},
-                                                  /*Glitched*/[]{return AdultsWallet && CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::NOVICE);}}),
-                  LocationAccess(WASTELAND_GS,               {[]{return HookshotOrBoomerang;},
-                                                  /*Glitched*/[]{return CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE);}}),
+                  LocationAccess(WASTELAND_CHEST,            {[]{return HasFireSource;}}),
+                  LocationAccess(WASTELAND_BOMBCHU_SALESMAN, {[]{return AdultsWallet && (IsAdult || Sticks || KokiriSword);}}),
+                  LocationAccess(WASTELAND_GS,               {[]{return HookshotOrBoomerang;}}),
                 }, {
                   //Exits
                   Entrance(WASTELAND_NEAR_COLOSSUS, {[]{return LogicLensWasteland || CanUse(LENS_OF_TRUTH);}}),
-                  Entrance(WASTELAND_NEAR_FORTRESS, {[]{return CanUse(HOVER_BOOTS) || CanUse(LONGSHOT);},
-                                         /*Glitched*/[]{return ((Bombs || HasBombchus) && CanSurviveDamage && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::NOVICE)) || (CanUse(MEGATON_HAMMER) && CanShield && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::INTERMEDIATE)) ||
-                                                               (Bombs && CanDoGlitch(GlitchType::SuperSlide, GlitchDifficulty::ADVANCED)) || (HasBombchus && CanDoGlitch(GlitchType::BombHover, GlitchDifficulty::INTERMEDIATE)) || GlitchItemlessWasteland;}}),
+                  Entrance(WASTELAND_NEAR_FORTRESS, {[]{return CanUse(HOVER_BOOTS) || CanUse(LONGSHOT) || LogicWastelandCrossing;}}),
   });
 
   areaTable[WASTELAND_NEAR_COLOSSUS] = Area("Wasteland Near Colossus", "Haunted Wasteland", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
@@ -192,18 +165,14 @@ void AreaTable_Init_GerudoValley() {
 
   areaTable[DESERT_COLOSSUS] = Area("Desert Colossus", "Desert Colossus", DESERT_COLOSSUS, DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&FairyPond, {[]{return FairyPond || CanPlay(SongOfStorms);},
-                               /*Glitched*/[]{return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && Bombs && CanTakeDamage && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && CanShield && HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && SongOfStorms;}}),
+                  EventAccess(&FairyPond, {[]{return FairyPond || CanPlay(SongOfStorms);}}),
                   EventAccess(&BugRock,   {[]{return true;}}),
                 }, {
                   //Locations
-                  LocationAccess(COLOSSUS_FREESTANDING_POH, {[]{return IsAdult && CanPlantBean(DESERT_COLOSSUS);},
-                                                 /*Glitched*/[]{return (HoverBoots && CanDoGlitch(GlitchType::HookshotJump_Boots, GlitchDifficulty::ADVANCED)) || (((IsChild && (ChildCanAccess(SPIRIT_TEMPLE_OUTDOOR_HANDS) || ChildCanAccess(SPIRIT_TEMPLE_MQ_SILVER_GAUNTLETS_HAND) || ChildCanAccess(SPIRIT_TEMPLE_MQ_MIRROR_SHIELD_HAND))) ||
-                                                                       (IsAdult && (AdultCanAccess(SPIRIT_TEMPLE_OUTDOOR_HANDS) || AdultCanAccess(SPIRIT_TEMPLE_MQ_SILVER_GAUNTLETS_HAND) || AdultCanAccess(SPIRIT_TEMPLE_MQ_MIRROR_SHIELD_HAND)))) && (CanDoGlitch(GlitchType::Megaflip, GlitchDifficulty::ADVANCED) || CanDoGlitch(GlitchType::HoverBoost, GlitchDifficulty::INTERMEDIATE)));}}),
+                  LocationAccess(COLOSSUS_FREESTANDING_POH, {[]{return IsAdult && CanPlantBean(DESERT_COLOSSUS);}}),
                   LocationAccess(COLOSSUS_GS_BEAN_PATCH,    {[]{return CanPlantBugs && CanChildAttack;}}),
                   LocationAccess(COLOSSUS_GS_TREE,          {[]{return IsAdult && HookshotOrBoomerang && AtNight && CanGetNightTimeGS;}}),
-                  LocationAccess(COLOSSUS_GS_HILL,          {[]{return IsAdult && AtNight && (CanPlantBean(DESERT_COLOSSUS) || CanUse(LONGSHOT) || (LogicColossusGS && CanUse(HOOKSHOT))) && CanGetNightTimeGS;},
-                                                 /*Glitched*/[]{return CanDoGlitch(GlitchType::SeamWalk, GlitchDifficulty::EXPERT) && CanShield && IsAdult && AtNight && CanGetNightTimeGS;}}),
+                  LocationAccess(COLOSSUS_GS_HILL,          {[]{return IsAdult && AtNight && (CanPlantBean(DESERT_COLOSSUS) || CanUse(LONGSHOT) || (LogicColossusGS && CanUse(HOOKSHOT))) && CanGetNightTimeGS;}}),
                   LocationAccess(COLOSSUS_GOSSIP_STONE,     {[]{return true;}}),
                 }, {
                   //Exits
@@ -223,8 +192,7 @@ void AreaTable_Init_GerudoValley() {
 
   areaTable[COLOSSUS_GREAT_FAIRY_FOUNTAIN] = Area("Colossus Great Fairy Fountain", "Colossus Great Fairy Fountain", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(COLOSSUS_GREAT_FAIRY_REWARD, {[]{return CanPlay(ZeldasLullaby);},
-                                                   /*Glitched*/[]{return (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Bugs || Fish) && CanShield && Bombs && CanTakeDamage && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED))) && ZeldasLullaby;}}),
+                  LocationAccess(COLOSSUS_GREAT_FAIRY_REWARD, {[]{return CanPlay(ZeldasLullaby);}}),
                 }, {
                   //Exits
                   Entrance(DESERT_COLOSSUS, {[]{return true;}}),

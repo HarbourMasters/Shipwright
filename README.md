@@ -20,6 +20,7 @@ You can verify you have a supported copy of the game by checking the `sha1` hash
 
 | Supported Version | `sha1` |
 | - | - |
+| PAL 1.1 | `cfbb98d392e4a9d39da8285d10cbef3974c2f012` |
 | PAL GC | `0227d7c0074f2d0ac935631990da8ec5914597b4` |
 | PAL GC (Debug) | `cee6bc3c2a634b41728f2af8da54d9bf8cc14099` |
 | PAL MQ (Debug) | `079b855b943d6ad8bd1eb026c0ed169ecbdac7da` |
@@ -74,9 +75,8 @@ Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 | F6 | Change state |
 | F7 | Load state |
 | F9 | Toggle Text-to-Speech (Windows and Mac only) |
-| F10 | Fullscreen (OpenGL) |
+| F11 | Fullscreen |
 | Tab | Toggle Alternate assets |
-| Alt+Enter | Fullscreen (DirectX) |
 | Ctrl+R | Reset |
 
 ### Graphics Backends
@@ -103,6 +103,7 @@ If you want to playtest a continuous integration build, you can find them at the
 * [Linux (performance)](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-linux-performance.zip) _(requires `glibc 2.35` or newer, but will be more performant than the compatibility build.)_
 * [Linux (compatibility)](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-linux-compatiblity.zip) _(compatible with most Linux distributions, but may not be as performant as the performance build.)_
 * [Switch](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-switch.zip)
+* [Wii U](https://nightly.link/HarbourMasters/Shipwright/workflows/generate-builds/develop/soh-wiiu.zip)
 
 <a href="https://github.com/Kenix3/libultraship/">
   <picture>

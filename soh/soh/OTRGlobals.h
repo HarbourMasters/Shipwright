@@ -7,7 +7,7 @@
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
 
 #ifdef __cplusplus
-#include <Window.h>
+#include <Context.h>
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
 #include <vector>
@@ -54,6 +54,7 @@ void OTRGetPixelDepthPrepare(float x, float y);
 uint16_t OTRGetPixelDepth(float x, float y);
 int32_t OTRGetLastScancode();
 uint32_t ResourceMgr_IsGameMasterQuest();
+uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 uint32_t ResourceMgr_GameHasMasterQuest();
 uint32_t ResourceMgr_GameHasOriginal();
 uint32_t ResourceMgr_GetNumGameVersions();
@@ -88,7 +89,6 @@ void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size);
 void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size);
 
 uint64_t GetPerfCounter();
-uint64_t GetUnixTimestamp();
 struct SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime);
 void ResourceMgr_UnregisterSkeleton(SkelAnime* skelAnime);
 void ResourceMgr_ClearSkeletons();
@@ -103,7 +103,6 @@ float OTRGetDimensionFromLeftEdge(float v);
 float OTRGetDimensionFromRightEdge(float v);
 int16_t OTRGetRectDimensionFromLeftEdge(float v);
 int16_t OTRGetRectDimensionFromRightEdge(float v);
-bool AudioPlayer_Init(void);
 int AudioPlayer_Buffered(void);
 int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
@@ -111,7 +110,6 @@ void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t slot);
 void Controller_BlockGameInput();
 void Controller_UnblockGameInput();
-void Hooks_ExecuteAudioInit();
 void* getN64WeirdFrame(s32 i);
 int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSize);
 u32 SpoilerFileExists(const char* spoilerFileName);
@@ -148,6 +146,14 @@ void SaveManager_ThreadPoolWait();
 void CheckTracker_OnMessageClose();
 
 int32_t GetGIID(uint32_t itemID);
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+uint64_t GetUnixTimestamp();
+#ifdef __cplusplus
+};
 #endif
 
 #endif

@@ -73,6 +73,12 @@ typedef enum {
 } RainbowBridgeSetting;
 
 typedef enum {
+    BRIDGE_OPTION_STANDARD,
+    BRIDGE_OPTION_GREG,
+    BRIDGE_OPTION_WILDCARD,
+} BridgeRewardOptionsSetting;
+
+typedef enum {
     LACSCONDITION_VANILLA,
     LACSCONDITION_STONES,
     LACSCONDITION_MEDALLIONS,
@@ -80,6 +86,12 @@ typedef enum {
     LACSCONDITION_DUNGEONS,
     LACSCONDITION_TOKENS,
 } LACSConditionSetting;
+
+typedef enum {
+    LACS_OPTION_STANDARD,
+    LACS_OPTION_GREG,
+    LACS_OPTION_WILDCARD,
+} LACSRewardOptionsSetting;
 
 typedef enum {
     AGE_CHILD,
@@ -233,8 +245,8 @@ typedef enum {
     GANONSBOSSKEY_OVERWORLD,
     GANONSBOSSKEY_ANYWHERE,
     GANONSBOSSKEY_LACS_VANILLA,
-    GANONSBOSSKEY_LACS_MEDALLIONS,
     GANONSBOSSKEY_LACS_STONES,
+    GANONSBOSSKEY_LACS_MEDALLIONS,
     GANONSBOSSKEY_LACS_REWARDS,
     GANONSBOSSKEY_LACS_DUNGEONS,
     GANONSBOSSKEY_LACS_TOKENS,
@@ -389,6 +401,7 @@ typedef struct {
     uint8_t bridgeRewardCount;
     uint8_t bridgeDungeonCount;
     uint8_t bridgeTokenCount;
+    uint8_t bridgeRewardOptions;
     uint8_t randomGanonsTrials;
     uint8_t ganonsTrialsCount;
 
@@ -440,11 +453,12 @@ typedef struct {
     uint8_t bossKeysanity;
     uint8_t ganonsBossKey;
     uint8_t lacsCondition;
-    uint8_t lacsMedallionCount;
     uint8_t lacsStoneCount;
+    uint8_t lacsMedallionCount;
     uint8_t lacsRewardCount;
     uint8_t lacsDungeonCount;
     uint8_t lacsTokenCount;
+    uint8_t lacsRewardOptions;
 
     uint8_t ringFortress;
     uint8_t ringForest;
@@ -879,7 +893,7 @@ class Menu {
 };
 
 namespace Settings {
-void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations);
+void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks);
   SettingsContext FillContext();
   void InitSettings();
   void SetDefaultSettings();
@@ -908,6 +922,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option BridgeRewardCount;
   extern Option BridgeDungeonCount;
   extern Option BridgeTokenCount;
+  extern Option BridgeRewardOptions;
   extern Option RandomGanonsTrials;
   extern Option GanonsTrialsCount;
 
@@ -960,11 +975,12 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option BossKeysanity;
   extern Option GanonsBossKey;
   extern uint8_t LACSCondition;
-  extern Option LACSMedallionCount;
   extern Option LACSStoneCount;
+  extern Option LACSMedallionCount;
   extern Option LACSRewardCount;
   extern Option LACSDungeonCount;
   extern Option LACSTokenCount;
+  extern Option LACSRewardOptions;
   extern Option KeyRings;
   extern Option KeyRingsRandomCount;
   extern Option RingFortress;
@@ -1115,134 +1131,186 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option NightGSExpectSuns;
 
   //Trick Settings
+  //New Trick Settings (from ootr https://github.com/ootrandomizer/OoT-Randomizer/blob/Dev/SettingsList.py, additions to this list marked)
   extern Option ToggleAllTricks;
-  extern Option LogicGrottosWithoutAgony;
   extern Option LogicVisibleCollision;
+  extern Option LogicGrottosWithoutAgony;
   extern Option LogicFewerTunicRequirements;
+  extern Option LogicRustedSwitches;
+  extern Option LogicFlamingChests;
+  extern Option LogicBunnyHoodJump; //NEW not implemented
+  extern Option LogicDamageBoost; //NEW not implemented
+  extern Option LogicHoverBoost; //NEW not implemented
+  extern Option LogicAdultKokiriGS;
+  extern Option LogicLostWoodsBridge;
+  extern Option LogicMidoBackflip;
   extern Option LogicLostWoodsGSBean;
-  extern Option LogicLabDiving;
-  extern Option LogicLabWallGS;
+  extern Option LogicCastleStormsGS;
+  extern Option LogicManOnRoof;
+  extern Option LogicKakarikoTowerGS;
+  extern Option LogicAdultWindmillPoH;
+  extern Option LogicChildWindmillPoH; //NEW not implemented
+  extern Option LogicKakarikoRooftopGS;
   extern Option LogicGraveyardPoH;
   extern Option LogicChildDampeRacePoH;
-  extern Option LogicGVHammerChest;
-  extern Option LogicGerudoKitchen;
-  extern Option LogicLensWasteland;
-  extern Option LogicReverseWasteland;
-  extern Option LogicColossusGS;
-  extern Option LogicOutsideGanonsGS;
-  extern Option LogicManOnRoof;
-  extern Option LogicWindmillPoHHookshot;
-  extern Option LogicDMTBombable;
+  extern Option LogicShadowFireArrowEntry;
   extern Option LogicDMTSoilGS;
-  extern Option LogicDMTSummitHover;
-  extern Option LogicLinkGoronDins;
-  extern Option LogicGoronCityLeftMost;
+  extern Option LogicDMTBombable;
+  extern Option LogicDMTGSLowerHookshot;
+  extern Option LogicDMTGSLowerHovers;
+  extern Option LogicDMTGSLowerBean;
+  extern Option LogicDMTGSLowerJS; //NEW
+  extern Option LogicDMTClimbHovers;
+  extern Option LogicDMTGSUpper;
+  extern Option LogicBiggoronBolero; //not implemented - unnecessary with SoH rando
   extern Option LogicGoronCityPot;
   extern Option LogicGoronCityPotWithStrength;
   extern Option LogicChildRollingWithStrength;
-  extern Option LogicCraterUpperToLower;
+  extern Option LogicGoronCityLeftMost;
+  extern Option LogicGoronCityGrotto;
+  extern Option LogicGoronCityLinkGoronDins;
   extern Option LogicCraterBeanPoHWithHovers;
-  extern Option LogicBiggoronBolero;
+  extern Option LogicCraterBoleroJump;
+  extern Option LogicCraterBoulderJS;
+  extern Option LogicCraterBoulderSkip;
   extern Option LogicZoraRiverLower;
   extern Option LogicZoraRiverUpper;
-  extern Option LogicZFGreatFairy;
-  extern Option LogicDekuB1WebsWithBow;
-  extern Option LogicDekuB1Skip;
+  extern Option LogicZoraWithHovers;
+  extern Option LogicZoraWithCucco;
+  extern Option LogicKingZoraSkip;
+  extern Option LogicDomainGS;
+  extern Option LogicLabWallGS;
+  extern Option LogicLabDiving;
+  extern Option LogicWaterHookshotEntry;
+  extern Option LogicValleyCrateHovers;
+  extern Option LogicGerudoKitchen;
+  extern Option LogicGFJump;
+  extern Option LogicWastelandBunnyCrossing; //NEW not implemented
+  extern Option LogicWastelandCrossing;
+  extern Option LogicLensWasteland;
+  extern Option LogicReverseWasteland;
+  extern Option LogicColossusGS;
   extern Option LogicDekuBasementGS;
-  extern Option LogicDCStaircase;
-  extern Option LogicDCJump;
-  extern Option LogicDCSlingshotSkip;
+  extern Option LogicDekuB1Skip;
+  extern Option LogicDekuB1WebsWithBow;
+  extern Option LogicDekuMQCompassGS;
+  extern Option LogicDekuMQLog;
   extern Option LogicDCScarecrowGS;
-  extern Option LogicJabuBossGSAdult;
-  extern Option LogicJabuScrubJumpDive;
-  extern Option LogicForestOutsideBackdoor;
-  extern Option LogicForestDoorFrame;
+  extern Option LogicDCVinesGS;
+  extern Option LogicDCStaircase;
+  extern Option LogicDCSlingshotSkip;
+  extern Option LogicDCScrubRoom;
+  extern Option LogicDCJump;
+  extern Option LogicDCHammerFloor;
+  extern Option LogicDCMQChildBombs;
+  extern Option LogicDCMQEyesChild;
+  extern Option LogicDCMQEyesAdult;
+  extern Option LogicJabuAlcoveJumpDive;
+  extern Option LogicJabuBossHover;
+  extern Option LogicJabuNearBossRanged;
+  extern Option LogicJabuNearBossExplosives;
+  extern Option LogicLensJabuMQ;
+  extern Option LogicJabuMQRangJump; //not implemented - requires dungeon shortcuts which is not built into rando yet
+  extern Option LogicJabuMQSoTGS;
+  extern Option LogicLensBotw;
+  extern Option LogicChildDeadhand;
+  extern Option LogicBotwBasement;
+  extern Option LogicBotwMQPits;
+  extern Option LogicBotwMQDeadHandKey;
+  extern Option LogicForestFirstGS;
   extern Option LogicForestOutdoorEastGS;
+  extern Option LogicForestVines;
+  extern Option LogicForestOutdoorsLedge;
+  extern Option LogicForestDoorFrame;
+  extern Option LogicForestOutsideBackdoor;
+  extern Option LogicForestMQWellSwim;
+  extern Option LogicForestMQBlockPuzzle;
+  extern Option LogicForestMQHallwaySwitchJS;
+  extern Option LogicForestMQHallwaySwitchHookshot; //not implemented yet
+  extern Option LogicForestMQHallwaySwitchBoomerang;
   extern Option LogicFireBossDoorJump;
+  extern Option LogicFireSongOfTime;
   extern Option LogicFireStrength;
   extern Option LogicFireScarecrow;
   extern Option LogicFireFlameMaze;
-  extern Option LogicFireSongOfTime;
+  extern Option LogicFireMQNearBoss;
+  extern Option LogicFireMQBlockedChest;
+  extern Option LogicFireMQBKChest;
+  extern Option LogicFireMQClimb;
+  extern Option LogicFireMQMazeSideRoom;
+  extern Option LogicFireMQMazeHovers;
+  extern Option LogicFireMQMazeJump;
+  extern Option LogicFireMQAboveMazeGS;
+  extern Option LogicFireMQFlameMaze;
   extern Option LogicWaterTempleTorchLongshot;
-  extern Option LogicWaterTempleUpperBoost;
-  extern Option LogicWaterCentralBow;
-  extern Option LogicWaterCentralGSFW;
-  extern Option LogicWaterCrackedWallNothing;
   extern Option LogicWaterCrackedWallHovers;
+  extern Option LogicWaterCrackedWallNothing;
   extern Option LogicWaterBossKeyRegion;
-  extern Option LogicWaterBKJumpDive;
   extern Option LogicWaterNorthBasementLedgeJump;
+  extern Option LogicWaterBKJumpDive;
+  extern Option LogicWaterCentralGSFW;
+  extern Option LogicWaterCentralGSIrons;
+  extern Option LogicWaterCentralBow;
+  extern Option LogicWaterFallingPlatformGSHookshot;
+  extern Option LogicWaterFallingPlatformGSBoomerang;
+  extern Option LogicWaterRiverGS;
   extern Option LogicWaterDragonJumpDive;
   extern Option LogicWaterDragonAdult;
-  extern Option LogicWaterRiverGS;
-  extern Option LogicWaterFallingPlatformGS;
-  extern Option LogicSpiritLowerAdultSwitch;
-  extern Option LogicSpiritChildBombchu;
-  extern Option LogicSpiritWall;
-  extern Option LogicSpiritLobbyGS;
-  extern Option LogicSpiritMapChest;
-  extern Option LogicSpiritSunChest;
-  extern Option LogicShadowFireArrowEntry;
+  extern Option LogicWaterDragonChild;
+  extern Option LogicWaterMQCentralPillar;
+  extern Option LogicWaterMQLockedGS;
+  extern Option LogicLensShadow;
+  extern Option LogicLensShadowPlatform;
+  extern Option LogicLensBongo;
   extern Option LogicShadowUmbrella;
+  extern Option LogicShadowUmbrellaGS;
   extern Option LogicShadowFreestandingKey;
   extern Option LogicShadowStatue;
-  extern Option LogicShadowBongo;
-  extern Option LogicChildDeadhand;
+  extern Option LogicShadowBongo; //not implemented - projectiles are not expected for bongo anyways
+  extern Option LogicLensShadowMQ;
+  extern Option LogicLensShadowMQInvisibleBlades;
+  extern Option LogicLensShadowMQPlatform;
+  extern Option LogicLensShadowMQDeadHand;
+  extern Option LogicShadowMQGap;
+  extern Option LogicShadowMQInvisibleBlades;
+  extern Option LogicShadowMQHugePit;
+  extern Option LogicShadowMQWindyWalkway; //not implemented - requires dungeon shortcuts which is not built into rando yet
+  extern Option LogicLensSpirit;
+  extern Option LogicSpiritChildBombchu;
+  extern Option LogicSpiritLobbyGS;
+  extern Option LogicSpiritLowerAdultSwitch;
+  extern Option LogicSpiritLobbyJump;
+  extern Option LogicSpiritPlatformHookshot; //not implemented - requires boss shortcuts which is not built into rando yet
+  extern Option LogicSpiritMapChest;
+  extern Option LogicSpiritSunChest;
+  extern Option LogicSpiritWall;
+  extern Option LogicLensSpiritMQ;
+  extern Option LogicSpiritMQSunBlockSoT;
+  extern Option LogicSpiritMQSunBlockGS;
+  extern Option LogicSpiritMQLowerAdult;
+  extern Option LogicSpiritMQFrozenEye;
+  extern Option LogicIceBlockGS;
+  extern Option LogicIceMQRedIceGS;
+  extern Option LogicIceMQScarecrow;
+  extern Option LogicLensGtg;
   extern Option LogicGtgWithoutHookshot;
   extern Option LogicGtgFakeWall;
-  extern Option LogicLensSpirit;
-  extern Option LogicLensShadow;
-  extern Option LogicLensShadowBack;
-  extern Option LogicLensBotw;
-  extern Option LogicLensGtg;
-  extern Option LogicLensCastle;
-  extern Option LogicLensJabuMQ;
-  extern Option LogicLensSpiritMQ;
-  extern Option LogicLensShadowMQ;
-  extern Option LogicLensShadowMQBack;
-  extern Option LogicLensBotwMQ;
   extern Option LogicLensGtgMQ;
-  extern Option LogicLensCastleMQ;
+  extern Option LogicGtgMQWithHookshot;
+  extern Option LogicGtgMQWithoutHookshot;
+  extern Option LogicLensCastle;
   extern Option LogicSpiritTrialHookshot;
-  extern Option LogicFlamingChests;
+  extern Option LogicLensCastleMQ;
+  extern Option LogicFireTrialMQ;
+  extern Option LogicShadowTrialMQ;
+  extern Option LogicLightTrialMQ;
+
+  
 
   //Glitch Settings
-  extern Option GlitchRestrictedItems;
-  extern Option GlitchSuperStab;
-  extern Option GlitchISG;
-  extern Option GlitchHover;
-  extern Option GlitchBombOI;
-  extern Option GlitchHoverBoost;
-  extern Option GlitchSuperSlide;
-  extern Option GlitchMegaflip;
-  extern Option GlitchASlide;
-  extern Option GlitchHammerSlide;
-  extern Option GlitchLedgeCancel;
-  extern Option GlitchActionSwap;
-  extern Option GlitchQPA;
-  extern Option GlitchHookshotClip;
-  extern Option GlitchHookshotJump_Bonk;
-  extern Option GlitchHookshotJump_Boots;
-  extern Option GlitchCutsceneDive;
-  extern Option GlitchNaviDive_Stick;
-  extern Option GlitchTripleSlashClip;
-  extern Option GlitchLedgeClip;
-  extern Option GlitchSeamWalk;
-  //Misc Glitch Settings
-  extern Option GlitchWWTEscape;
-  extern Option GlitchGVTentAsChild;
-  extern Option GlitchGFGuardSneak;
-  extern Option GlitchItemlessWasteland;
-  extern Option GlitchOccamsStatue;
-  extern Option GlitchZDOoBJumpSlash;
-  extern Option GlitchJabuStickRecoil;
-  extern Option GlitchJabuAdult;
-  extern Option GlitchBlueFireWall;
-  extern Option GlitchClassicHalfie;
-  extern Option GlitchModernHalfie;
-  extern Option GlitchJabuSwitch;
-  extern Option GlitchForestBKSkip;
-  extern Option GlitchFireGrunzClip;
+  extern Option GlitchEquipSwapDins;
+  extern Option GlitchEquipSwap;
+  
 
   //Multiplayer Settings
   extern Option MP_Enabled;

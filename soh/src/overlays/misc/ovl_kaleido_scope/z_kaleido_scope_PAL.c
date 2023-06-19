@@ -16,6 +16,7 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 
 static void* sEquipmentFRATexs[] = {
     gPauseEquipment00FRATex, gPauseEquipment01Tex, gPauseEquipment02Tex, gPauseEquipment03Tex, gPauseEquipment04Tex,
@@ -813,7 +814,8 @@ Gfx* KaleidoScope_QuadTextureIA4(Gfx* gfx, void* texture, s16 width, s16 height,
 }
 
 Gfx* KaleidoScope_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height, u16 point) {
-    gDPLoadTextureBlock(gfx++, texture, G_IM_FMT_IA, G_IM_SIZ_8b, width, height, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    u8 mirrorMode = CVarGetInteger("gMirroredWorld", 0) ? G_TX_MIRROR : G_TX_NOMIRROR;
+    gDPLoadTextureBlock(gfx++, texture, G_IM_FMT_IA, G_IM_SIZ_8b, width, height, 0, mirrorMode | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     gSP1Quadrangle(gfx++, point, point + 2, point + 3, point + 1, 0);
 
@@ -999,7 +1001,7 @@ void KaleidoScope_DrawCursor(PlayState* play, u16 pageIndex) {
 
     if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
         sCursorColors[2] = CVarGetColor24("gCosmetics.Hud_AButton.Value", sCursorColors[2]);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         sCursorColors[2] = (Color_RGB8){ 0, 255, 50 };
     }
 
@@ -1082,7 +1084,7 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
         aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
         D_8082ACF4[8] = CVarGetColor24("gCosmetics.Hud_AButton.Value", D_8082ACF4[8]);
         D_8082ACF4[11] = CVarGetColor24("gCosmetics.Hud_AButton.Value", D_8082ACF4[11]);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         aButtonColor = (Color_RGB8){ 100, 255, 100 };
         D_8082ACF4[8] = (Color_RGB8){ 0, 255, 50 };
         D_8082ACF4[11] = (Color_RGB8){ 0, 255, 50 };
@@ -1508,8 +1510,14 @@ void KaleidoScope_DrawPages(PlayState* play, GraphicsContext* gfxCtx) {
                 gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
                 gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
 
-                POLY_KAL_DISP =
-                    KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][0], 48, 16, 12);
+                if (!gSaveContext.isBossRush) {
+                    POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(
+                        POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][0], 48, 16, 12);
+                } else {
+                    // Show "No" twice in Boss Rush because the player can't save within it.
+                    POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(
+                        POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][1], 48, 16, 12);
+                }
 
                 POLY_KAL_DISP =
                     KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sPromptChoiceTexs[gSaveContext.language][1], 48, 16, 16);
@@ -1534,7 +1542,7 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
     Color_RGB8 aButtonColor = { 0, 100, 255 };
     if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
         aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         aButtonColor = (Color_RGB8){ 0, 255, 100 };
     }
 
@@ -3035,6 +3043,14 @@ void KaleidoScope_Draw(PlayState* play) {
 
     func_800AAA50(&play->view, 15);
 
+    // Flip the OPA and XLU projections again as the set view call above reset the original flips from z_play
+    if (CVarGetInteger("gMirroredWorld", 0)) {
+        gSPMatrix(POLY_OPA_DISP++, play->view.projectionFlippedPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+        gSPMatrix(POLY_XLU_DISP++, play->view.projectionFlippedPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+        gSPMatrix(POLY_OPA_DISP++, play->view.viewingPtr, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+        gSPMatrix(POLY_XLU_DISP++, play->view.viewingPtr, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+    }
+
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
@@ -3173,8 +3189,8 @@ void KaleidoScope_LoadDungeonMap(PlayState* play) {
 
     interfaceCtx->mapSegmentName[0] = sDungeonMapTexs[R_MAP_TEX_INDEX];
     interfaceCtx->mapSegmentName[1] = sDungeonMapTexs[R_MAP_TEX_INDEX + 1];
-    interfaceCtx->mapSegment[0] = GetResourceDataByName(sDungeonMapTexs[R_MAP_TEX_INDEX]);
-    interfaceCtx->mapSegment[1] = GetResourceDataByName(sDungeonMapTexs[R_MAP_TEX_INDEX + 1]);
+    interfaceCtx->mapSegment[0] = ResourceGetDataByName(sDungeonMapTexs[R_MAP_TEX_INDEX]);
+    interfaceCtx->mapSegment[1] = ResourceGetDataByName(sDungeonMapTexs[R_MAP_TEX_INDEX + 1]);
 }
 
 void KaleidoScope_UpdateDungeonMap(PlayState* play) {
@@ -3629,7 +3645,9 @@ void KaleidoScope_Update(PlayState* play)
         case 6:
             switch (pauseCtx->unk_1E4) {
                 case 0:
-                    if (CHECK_BTN_ALL(input->press.button, BTN_START)) {
+                    // Boss Rush skips past the "Save?" window when pressing B while paused.
+                    if (CHECK_BTN_ALL(input->press.button, BTN_START) ||
+                        (CHECK_BTN_ALL(input->press.button, BTN_B) && gSaveContext.isBossRush)) {
                         if (CVarGetInteger("gCheatEasyPauseBufferEnabled", 0) || CVarGetInteger("gCheatEasyInputBufferingEnabled", 0)) {
                             CVarSetInteger("gPauseBufferBlockInputFrame", 9);
                         }
@@ -4015,7 +4033,11 @@ void KaleidoScope_Update(PlayState* play)
                 VREG(88) = 66;
                 WREG(2) = 0;
                 pauseCtx->alpha = 255;
-                pauseCtx->state = 0xE;
+                if (!gSaveContext.isBossRush) {
+                    pauseCtx->state = 0xE;
+                } else {
+                    pauseCtx->state = 0xF;
+                }
                 gSaveContext.deaths++;
                 if (gSaveContext.deaths > 999) {
                     gSaveContext.deaths = 999;
@@ -4059,7 +4081,7 @@ void KaleidoScope_Update(PlayState* play)
 
         case 0x10:
             if (CHECK_BTN_ALL(input->press.button, BTN_A) || CHECK_BTN_ALL(input->press.button, BTN_START)) {
-                if (pauseCtx->promptChoice == 0) {
+                if (pauseCtx->promptChoice == 0 && !gSaveContext.isBossRush) {
                     Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                            &D_801333E8);
                     Play_SaveSceneFlags(play);
@@ -4132,7 +4154,7 @@ void KaleidoScope_Update(PlayState* play)
                     R_PAUSE_MENU_MODE = 0;
                     func_800981B8(&play->objectCtx);
                     func_800418D0(&play->colCtx, play);
-                    if (pauseCtx->promptChoice == 0) {
+                    if (pauseCtx->promptChoice == 0 && !gSaveContext.isBossRush) {
                         Play_TriggerRespawn(play);
                         gSaveContext.respawnFlag = -2;
                         // In ER, handle death warp to last entrance from grottos
@@ -4156,6 +4178,7 @@ void KaleidoScope_Update(PlayState* play)
                         osSyncPrintf(VT_RST);
                     } else {
                         play->state.running = 0;
+                        gSaveContext.isBossRush = false;
                         SET_NEXT_GAMESTATE(&play->state, Opening_Init, OpeningContext);
                         GameInteractor_ExecuteOnExitGame(gSaveContext.fileNum);
                     }

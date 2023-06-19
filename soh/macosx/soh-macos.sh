@@ -9,6 +9,11 @@ export DYLD_FALLBACK_LIBRARY_PATH="$LIBPATH"
 
 if [ ! -e "$SHIP_HOME" ]; then	mkdir "$SHIP_HOME"; fi
 
+if [ ! -e "$SHIP_HOME"/mods ]; then
+	mkdir -p "$SHIP_HOME"/mods
+	touch "$SHIP_HOME"/mods/custom_otr_files_go_here.txt
+fi
+
 # If either OTR doesn't exist kick off the OTR gen process
 if [ ! -e "$SHIP_HOME"/oot.otr ] || [ ! -e "$SHIP_HOME"/oot-mq.otr ]; then
 
@@ -115,6 +120,9 @@ if [ ! -e "$SHIP_HOME"/oot.otr ] || [ ! -e "$SHIP_HOME"/oot-mq.otr ]; then
 				OTRNAME="oot.otr";;
 			0227d7c0074f2d0ac935631990da8ec5914597b4)
 				ROM=GC_NMQ_PAL_F
+				OTRNAME="oot.otr";;
+			cfbb98d392e4a9d39da8285d10cbef3974c2f012)
+				ROM=N64_PAL_11
 				OTRNAME="oot.otr";;
 			50bebedad9e0f10746a52b07239e47fa6c284d03)
 				ROM=GC_MQ_D

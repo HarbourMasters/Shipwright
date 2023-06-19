@@ -14,8 +14,9 @@
 #include "objects/object_masterzoora/object_masterzoora.h"
 #include "objects/object_masterkokirihead/object_masterkokirihead.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnOssan_Init(Actor* thisx, PlayState* play);
 void EnOssan_Destroy(Actor* thisx, PlayState* play);
@@ -660,6 +661,10 @@ void EnOssan_UpdateCursorPos(PlayState* play, EnOssan* this) {
     Actor_GetScreenPos(play, &this->shelfSlots[this->cursorIndex]->actor, &x, &y);
     this->cursorX = x;
     this->cursorY = y;
+
+    if (CVarGetInteger("gMirroredWorld", 0)) {
+        this->cursorX = SCREEN_WIDTH - x;
+    }
 }
 
 void EnOssan_EndInteraction(PlayState* play, EnOssan* this) {
@@ -767,6 +772,10 @@ void EnOssan_UpdateJoystickInputState(PlayState* play, EnOssan* this) {
     Input* input = &play->state.input[0];
     s8 stickX = input->rel.stick_x;
     s8 stickY = input->rel.stick_y;
+
+    if (CVarGetInteger("gMirroredWorld", 0)) {
+        stickX = -input->rel.stick_x;
+    }
 
     this->moveHorizontal = this->moveVertical = false;
 
@@ -978,8 +987,16 @@ void EnOssan_State_FacingShopkeeper(EnOssan* this, PlayState* play, Player* play
             func_80078884(NA_SE_SY_DECIDE);
             return;
         }
+
+        u16 dLeft = BTN_DLEFT;
+        u16 dRight = BTN_DRIGHT;
+        if (CVarGetInteger("gMirroredWorld", 0)) {
+            dLeft = BTN_DRIGHT;
+            dRight = BTN_DLEFT;
+        }
+
         // Stick Left
-        if ((this->stickAccumX < 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
+        if ((this->stickAccumX < 0) || (dpad && CHECK_BTN_ALL(input->press.button, dLeft))) {
             nextIndex = EnOssan_SetCursorIndexFromNeutral(this, 4);
             if (nextIndex != CURSOR_INVALID) {
                 this->cursorIndex = nextIndex;
@@ -988,7 +1005,7 @@ void EnOssan_State_FacingShopkeeper(EnOssan* this, PlayState* play, Player* play
                 this->stickLeftPrompt.isEnabled = false;
                 func_80078884(NA_SE_SY_CURSOR);
             }
-        } else if ((this->stickAccumX > 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
+        } else if ((this->stickAccumX > 0) || (dpad && CHECK_BTN_ALL(input->press.button, dRight))) {
             nextIndex = EnOssan_SetCursorIndexFromNeutral(this, 0);
             if (nextIndex != CURSOR_INVALID) {
                 this->cursorIndex = nextIndex;
@@ -1218,8 +1235,16 @@ void EnOssan_State_BrowseLeftShelf(EnOssan* this, PlayState* play, Player* playe
     EnOssan_UpdateCursorPos(play, this);
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) &&
         !EnOssan_HasPlayerSelectedItem(play, this, &play->state.input[0])) {
+
+        u16 dLeft = BTN_DLEFT;
+        u16 dRight = BTN_DRIGHT;
+        if (CVarGetInteger("gMirroredWorld", 0)) {
+            dLeft = BTN_DRIGHT;
+            dRight = BTN_DLEFT;
+        }
+
         if (this->moveHorizontal) {
-            if ((this->stickAccumX > 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
+            if ((this->stickAccumX > 0) || (dpad && CHECK_BTN_ALL(input->press.button, dRight))) {
                 a = EnOssan_CursorRight(this, this->cursorIndex, 4);
                 if (a != CURSOR_INVALID) {
                     this->cursorIndex = a;
@@ -1227,14 +1252,14 @@ void EnOssan_State_BrowseLeftShelf(EnOssan* this, PlayState* play, Player* playe
                     EnOssan_SetLookToShopkeeperFromShelf(play, this);
                     return;
                 }
-            } else if ((this->stickAccumX < 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
+            } else if ((this->stickAccumX < 0) || (dpad && CHECK_BTN_ALL(input->press.button, dLeft))) {
                 b = EnOssan_CursorLeft(this, this->cursorIndex, 8);
                 if (b != CURSOR_INVALID) {
                     this->cursorIndex = b;
                 }
             }
         } else {
-            if ((this->stickAccumX > 0 && this->stickAccumX > 500) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
+            if ((this->stickAccumX > 0 && this->stickAccumX > 500) || (dpad && CHECK_BTN_ALL(input->press.button, dRight))) {
                 c = EnOssan_CursorRight(this, this->cursorIndex, 4);
                 if (c != CURSOR_INVALID) {
                     this->cursorIndex = c;
@@ -1242,7 +1267,7 @@ void EnOssan_State_BrowseLeftShelf(EnOssan* this, PlayState* play, Player* playe
                     EnOssan_SetLookToShopkeeperFromShelf(play, this);
                     return;
                 }
-            } else if ((this->stickAccumX < 0 && this->stickAccumX < -500) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
+            } else if ((this->stickAccumX < 0 && this->stickAccumX < -500) || (dpad && CHECK_BTN_ALL(input->press.button, dLeft))) {
                 d = EnOssan_CursorLeft(this, this->cursorIndex, 8);
                 if (d != CURSOR_INVALID) {
                     this->cursorIndex = d;
@@ -1279,8 +1304,16 @@ void EnOssan_State_BrowseRightShelf(EnOssan* this, PlayState* play, Player* play
     EnOssan_UpdateCursorPos(play, this);
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) &&
         !EnOssan_HasPlayerSelectedItem(play, this, &play->state.input[0])) {
+
+        u16 dLeft = BTN_DLEFT;
+        u16 dRight = BTN_DRIGHT;
+        if (CVarGetInteger("gMirroredWorld", 0)) {
+            dLeft = BTN_DRIGHT;
+            dRight = BTN_DLEFT;
+        }
+
         if (this->moveHorizontal) {
-            if ((this->stickAccumX < 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
+            if ((this->stickAccumX < 0) || (dpad && CHECK_BTN_ALL(input->press.button, dLeft))) {
                 nextIndex = EnOssan_CursorRight(this, this->cursorIndex, 0);
                 if (nextIndex != CURSOR_INVALID) {
                     this->cursorIndex = nextIndex;
@@ -1288,14 +1321,14 @@ void EnOssan_State_BrowseRightShelf(EnOssan* this, PlayState* play, Player* play
                     EnOssan_SetLookToShopkeeperFromShelf(play, this);
                     return;
                 }
-            } else if ((this->stickAccumX > 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
+            } else if ((this->stickAccumX > 0) || (dpad && CHECK_BTN_ALL(input->press.button, dRight))) {
                 nextIndex = EnOssan_CursorLeft(this, this->cursorIndex, 4);
                 if (nextIndex != CURSOR_INVALID) {
                     this->cursorIndex = nextIndex;
                 }
             }
         } else {
-            if ((this->stickAccumX < 0 && this->stickAccumX < -500) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
+            if ((this->stickAccumX < 0 && this->stickAccumX < -500) || (dpad && CHECK_BTN_ALL(input->press.button, dLeft))) {
                 nextIndex = EnOssan_CursorRight(this, this->cursorIndex, 0);
                 if (nextIndex != CURSOR_INVALID) {
                     this->cursorIndex = nextIndex;
@@ -1303,7 +1336,7 @@ void EnOssan_State_BrowseRightShelf(EnOssan* this, PlayState* play, Player* play
                     EnOssan_SetLookToShopkeeperFromShelf(play, this);
                     return;
                 }
-            } else if ((this->stickAccumX > 0 && this->stickAccumX > 500) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
+            } else if ((this->stickAccumX > 0 && this->stickAccumX > 500) || (dpad && CHECK_BTN_ALL(input->press.button, dRight))) {
                 nextIndex = EnOssan_CursorLeft(this, this->cursorIndex, 4);
                 if (nextIndex != CURSOR_INVALID) {
                     this->cursorIndex = nextIndex;
@@ -1939,7 +1972,7 @@ void EnOssan_UpdateCursorAnim(EnOssan* this) {
     Color_RGB8 aButtonColor = { 0, 80, 255 };
     if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
         aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         aButtonColor = (Color_RGB8){ 0, 255, 80 };
     }
     f32 t;
@@ -2184,7 +2217,7 @@ void EnOssan_InitActionFunc(EnOssan* this, PlayState* play) {
     ShopItem* items;
 
     if (EnOssan_AreShopkeeperObjectsLoaded(this, play)) {
-        this->actor.flags &= ~ACTOR_FLAG_4;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
         this->actor.objBankIndex = this->objBankIndex1;
         Actor_SetObjectDependency(play, &this->actor);
 
@@ -2269,7 +2302,7 @@ void EnOssan_InitActionFunc(EnOssan* this, PlayState* play) {
         this->blinkTimer = 20;
         this->eyeTextureIdx = 0;
         this->blinkFunc = EnOssan_WaitForBlink;
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
         EnOssan_SetupAction(this, EnOssan_MainActionFunc);
     }
 }
@@ -2373,6 +2406,12 @@ void EnOssan_DrawTextRec(PlayState* play, s32 r, s32 g, s32 b, s32 a, f32 x, f32
 void EnOssan_DrawStickDirectionPrompts(PlayState* play, EnOssan* this) {
     s32 drawStickLeftPrompt = this->stickLeftPrompt.isEnabled;
     s32 drawStickRightPrompt = this->stickRightPrompt.isEnabled;
+
+    // Invert which stick prompt is active when only one is active
+    if (CVarGetInteger("gMirroredWorld", 0) && (drawStickLeftPrompt != drawStickRightPrompt)) {
+        drawStickLeftPrompt = !drawStickLeftPrompt;
+        drawStickRightPrompt = !drawStickRightPrompt;
+    }
 
     OPEN_DISPS(play->state.gfxCtx);
     if (drawStickLeftPrompt || drawStickRightPrompt) {

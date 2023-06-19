@@ -1,7 +1,7 @@
 #include "SkeletonLimb.h"
 
 namespace LUS {
-void* SkeletonLimb::GetPointer() {
+SkeletonLimbData* SkeletonLimb::GetPointer() {
     return &limbData;
 }
 

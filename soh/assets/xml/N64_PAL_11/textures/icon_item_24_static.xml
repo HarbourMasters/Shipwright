@@ -1,0 +1,24 @@
+<Root>
+    <File Name="icon_item_24_static" Segment="9">
+        <Texture Name="gForestMedallionIconTex" OutName="forest_medallion_icon" Format="rgba32" Width="24" Height="24" Offset="0x0"/>
+        <Texture Name="gFireMedallionIconTex" OutName="fire_medallion_icon" Format="rgba32" Width="24" Height="24" Offset="0x900"/>
+        <Texture Name="gWaterMedallionIconTex" OutName="water_medallion_icon" Format="rgba32" Width="24" Height="24" Offset="0x1200"/>
+        <Texture Name="gSpiritMedallionIconTex" OutName="spirit_medallion_icon" Format="rgba32" Width="24" Height="24" Offset="0x1B00"/>
+        <Texture Name="gShadowMedallionIconTex" OutName="shadow_medallion_icon" Format="rgba32" Width="24" Height="24" Offset="0x2400"/>
+        <Texture Name="gLightMedallionIconTex" OutName="light_medallion_icon" Format="rgba32" Width="24" Height="24" Offset="0x2D00"/>
+        <Texture Name="gKokiriEmeraldIconTex" OutName="kokiri_emerald_icon" Format="rgba32" Width="24" Height="24" Offset="0x3600"/>
+        <Texture Name="gGoronRubyIconTex" OutName="goron_ruby_icon" Format="rgba32" Width="24" Height="24" Offset="0x3F00"/>
+        <Texture Name="gZoraSapphireIconTex" OutName="zora_sapphire_icon" Format="rgba32" Width="24" Height="24" Offset="0x4800"/>
+        <Texture Name="gStoneOfAgonyIconTex" OutName="stone_of_agony_icon" Format="rgba32" Width="24" Height="24" Offset="0x5100"/>
+        <Texture Name="gGerudosCardIconTex" OutName="gerudos_card_icon" Format="rgba32" Width="24" Height="24" Offset="0x5A00"/>
+        <Texture Name="gGoldSkulltulaIconTex" OutName="gold_skulltula_icon" Format="rgba32" Width="24" Height="24" Offset="0x6300"/>
+        <Texture Name="gHeartContainerIconTex" OutName="heart_container_icon" Format="rgba32" Width="24" Height="24" Offset="0x6C00"/>
+        <Texture Name="gUnusedPieceOfHeartIconTex" OutName="unsed_piece_of_heart_icon" Format="rgba32" Width="24" Height="24" Offset="0x7500"/>
+        <Texture Name="gBossKeyIconTex" OutName="boss_key_icon" Format="rgba32" Width="24" Height="24" Offset="0x7E00"/>
+        <Texture Name="gCompassIconTex" OutName="compass_icon" Format="rgba32" Width="24" Height="24" Offset="0x8700"/>
+        <Texture Name="gDungeonMapIconTex" OutName="dungeon_map_icon" Format="rgba32" Width="24" Height="24" Offset="0x9000"/>
+        <Texture Name="gSmallKeyIconTex" OutName="small_key_icon" Format="rgba32" Width="24" Height="24" Offset="0x9900"/>
+        <Texture Name="gSmallMagicJarIconTex" OutName="small_magic_jar_icon" Format="rgba32" Width="24" Height="24" Offset="0xA200"/>
+        <Texture Name="gBigMagicJarIconTex" OutName="big_magic_jar_icon" Format="rgba32" Width="24" Height="24" Offset="0xAB00"/>
+    </File>
+</Root>

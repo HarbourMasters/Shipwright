@@ -6,7 +6,7 @@
 
 #include "z_demo_shd.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void DemoShd_Init(Actor* thisx, PlayState* play);
 void DemoShd_Destroy(Actor* thisx, PlayState* play);

@@ -15,11 +15,11 @@ typedef struct {
   uint8_t windSpeed;
 } WindSettings;
 
-class SetWindSettings : public SceneCommand {
+class SetWindSettings : public SceneCommand<WindSettings> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    WindSettings* GetPointer();
     size_t GetPointerSize();
 
     WindSettings settings;
