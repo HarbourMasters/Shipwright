@@ -169,6 +169,9 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     policy.n = 30;
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SYOKUDAI, policy);
+    
+    ActorAccessibility_InitPolicy(policy, "Pot", NULL, NA_SE_EV_POT_BROKEN);
+    ActorAccessibility_AddSupportedActor(ACTOR_OBJ_TSUBO, policy);
     //Virtual actor demo.
 //First add support for an actor as you normally would.
     ActorAccessibility_InitPolicy(policy, "Proof of concept actor", accessible_va_prototype);
@@ -185,6 +188,9 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     policy.n = 30;
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(VA_DOOR, policy);
+    ActorAccessibility_InitPolicy(policy, "Area Change", NULL,
+                                  NA_SE_EV_HORSE_RUN_LEVEL); // make callback&find better sound
+    ActorAccessibility_AddSupportedActor(VA_AREA_CHANGE, policy);
     // Now query a list of virtual actors for a given
                                                                 // location (scene
                                                        // and room
@@ -203,9 +209,29 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 515.0, 0.0, 647.00 }, { 0, 14702, 0 } });
     ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 1046.0, 0.0, 549.00 }, { 0, 14702, 0 } });
     ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 848.0, 0.0, -323.00 }, { 0, 14702, 0 } });
+    ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE,{ { -317.0, 373.2, -1542.00 }, {0, 14702, 0 }});
+    ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE, { { -1380.0, -67.0, -288.00 }, { 0, 14702, 0 } });
 
     list = ActorAccessibility_GetVirtualActorList(85, 2); // Kokiri Forest Room with boulder and korkiri sword
     ActorAccessibility_AddVirtualActor(list, VA_CRAWLSPACE, { { -788.0, 120.0, 1392.00 }, { 0, 14702, 0 } });
+
+    list = ActorAccessibility_GetVirtualActorList(38, 0); //know-it-all house
+    ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 12.0, 0.0, -131.00 }, { 0, 14702, 0 } });
+
+    list = ActorAccessibility_GetVirtualActorList(40, 0); // mido house
+    ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { -6.6, 0.0, -179.00 }, { 0, 14702, 0 } });
+
+    list = ActorAccessibility_GetVirtualActorList(52, 0); // link's house
+    ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 2.3, 0.0, -134.00 }, { 0, 14702, 0 } });
+
+    list = ActorAccessibility_GetVirtualActorList(41, 0); // saria's house
+    ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 1.7, 0.0, -188.00 }, { 0, 14702, 0 } });
+
+    list = ActorAccessibility_GetVirtualActorList(39, 0); // twins house
+    ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 3.0, 0.0, -179.00 }, { 0, 14702, 0 } });
+
+    list = ActorAccessibility_GetVirtualActorList(45, 0); // Kokiri Shop
+    ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 0.0, 0.0, 150.00 }, { 0, 14702, 0 } });
         //Install cues for walls, ledges etc.
     ActorAccessibility_InitCues();
 
