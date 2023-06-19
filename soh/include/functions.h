@@ -1145,6 +1145,7 @@ s32 func_80090440(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
 u8 func_80090480(PlayState* play, ColliderQuad* collider, WeaponInfo* weaponDim, Vec3f* newTip,
                  Vec3f* newBase);
 void Player_DrawGetItem(PlayState* play, Player* player);
+s32 func_8083E5A8(Player* this, PlayState* play);
 void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* data);
 u32 func_80091738(PlayState* play, u8* segment, SkelAnime* skelAnime);
 void func_8009214C(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f* pos, Vec3s* rot, f32 scale,
@@ -1536,6 +1537,7 @@ u8 CheckMedallionCount();
 u8 CheckDungeonCount();
 u8 CheckBridgeRewardCount();
 u8 CheckLACSRewardCount();
+u8 MeetsLACSRequirements();
 s32 Play_InCsMode(PlayState* play);
 f32 func_800BFCB8(PlayState* play, MtxF* mf, Vec3f* vec);
 void* Play_LoadFile(PlayState* play, RomFile* file);

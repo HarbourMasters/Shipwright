@@ -289,19 +289,17 @@ void func_80B3CA38(EnXc* this, PlayState* play) {
     }
 }
 
-void GivePlayerRandoRewardSheikSong(EnXc* sheik, PlayState* play, RandomizerCheck check, int sheikType, GetItemID ogSongId) {
+void GivePlayerRandoRewardSheikSong(EnXc* sheik, PlayState* play, RandomizerCheck check, int eventChkInfFlag, GetItemID ogSongId) {
     Player* player = GET_PLAYER(play);
-    if (!(gSaveContext.eventChkInf[5] & sheikType)) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, ogSongId);
-        if (check == RC_SHEIK_AT_TEMPLE && !Flags_GetTreasure(play, 0x1F)) {
-            if (GiveItemEntryFromActor(&sheik->actor, play, getItemEntry, 10000.0f, 100.0f)) {
-                player->pendingFlag.flagID = 0x1F;
-                player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
-            }
-        } else if (check != RC_SHEIK_AT_TEMPLE) {
-            if (GiveItemEntryFromActor(&sheik->actor, play, getItemEntry, 10000.0f, 100.0f)) {
-                player->pendingFlag.flagID = (0x5 << 4) | (sheikType & 0xF) >> 1;
+    if (!Flags_GetEventChkInf(eventChkInfFlag)) {
+        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ?
+            Randomizer_GetItemFromKnownCheck(check, ogSongId) :
+            ItemTable_RetrieveEntry(MOD_RANDOMIZER, ogSongId);
+
+        if (player != NULL && !Player_InBlockingCsMode(play, player)) {
+            if (GiveItemEntryWithoutActor(play, getItemEntry)) {
                 player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+                player->pendingFlag.flagID = eventChkInfFlag;
             }
         }
     }
@@ -320,7 +318,7 @@ s32 EnXc_MinuetCS(EnXc* this, PlayState* play) {
                     Flags_SetEventChkInf(EVENTCHKINF_LEARNED_MINUET_OF_FOREST);
                     Item_Give(play, ITEM_SONG_MINUET);
                 } else {
-                    GivePlayerRandoRewardSheikSong(this, play, RC_SHEIK_IN_FOREST, 1, RG_MINUET_OF_FOREST);
+                    GivePlayerRandoRewardSheikSong(this, play, RC_SHEIK_IN_FOREST, EVENTCHKINF_LEARNED_MINUET_OF_FOREST, RG_MINUET_OF_FOREST);
                     return false;
                 }
                 return true;
@@ -356,7 +354,7 @@ s32 EnXc_BoleroCS(EnXc* this, PlayState* play) {
                 Flags_SetEventChkInf(EVENTCHKINF_LEARNED_BOLERO_OF_FIRE);
                 Item_Give(play, ITEM_SONG_BOLERO);
             } else {
-                GivePlayerRandoRewardSheikSong(this, play, RC_SHEIK_IN_CRATER, 2, RG_BOLERO_OF_FIRE);
+                GivePlayerRandoRewardSheikSong(this, play, RC_SHEIK_IN_CRATER, EVENTCHKINF_LEARNED_BOLERO_OF_FIRE, RG_BOLERO_OF_FIRE);
                 return false;
             }
             return true;
@@ -397,7 +395,7 @@ s32 EnXc_SerenadeCS(EnXc* this, PlayState* play) {
                 Flags_SetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER); // Learned Serenade of Water Flag
                 Item_Give(play, ITEM_SONG_SERENADE);
             } else {
-                GivePlayerRandoRewardSheikSong(this, play, RC_SHEIK_IN_ICE_CAVERN, 4, RG_SERENADE_OF_WATER);
+                GivePlayerRandoRewardSheikSong(this, play, RC_SHEIK_IN_ICE_CAVERN, EVENTCHKINF_LEARNED_SERENADE_OF_WATER, RG_SERENADE_OF_WATER);
                 return false;
             }
             osSyncPrintf("ブーツを取った!!!!!!!!!!!!!!!!!!\n");
@@ -2208,7 +2206,7 @@ void EnXc_InitTempleOfTime(EnXc* this, PlayState* play) {
                 gSaveContext.cutsceneTrigger = 1;
                 this->action = SHEIK_ACTION_30;
             } else {
-                GivePlayerRandoRewardSheikSong(this, play, RC_SHEIK_AT_TEMPLE, 0x20, RG_PRELUDE_OF_LIGHT);
+                GivePlayerRandoRewardSheikSong(this, play, RC_SHEIK_AT_TEMPLE, EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT, RG_PRELUDE_OF_LIGHT);
             }
         } else if (!Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT)) {
             func_80B3C9EC(this);
@@ -2350,7 +2348,7 @@ void EnXc_Update(Actor* thisx, PlayState* play) {
     if (this->actor.params == SHEIK_TYPE_9) {
         if (gSaveContext.n64ddFlag && LINK_IS_ADULT) {
             if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT)) {
-                GivePlayerRandoRewardSheikSong(this, play, RC_SHEIK_AT_TEMPLE, 0x20, RG_PRELUDE_OF_LIGHT);
+                GivePlayerRandoRewardSheikSong(this, play, RC_SHEIK_AT_TEMPLE, EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT, RG_PRELUDE_OF_LIGHT);
             }
         }
     }

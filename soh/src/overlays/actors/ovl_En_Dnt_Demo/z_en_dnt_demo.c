@@ -139,19 +139,27 @@ void EnDntDemo_Judge(EnDntDemo* this, PlayState* play) {
             Player* player = GET_PLAYER(play);
             switch (Player_GetMask(play)) {
                 case PLAYER_MASK_SKULL:
-                    if (!Flags_GetTreasure(play, 0x1F) && !Player_InBlockingCsMode(play, player)) {
-                        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_SKULL_MASK, GI_STICK_UPGRADE_30);
-                        GiveItemEntryWithoutActor(play, getItemEntry);
-                        player->pendingFlag.flagID = 0x1F;
-                        player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
+                    if (!Flags_GetItemGetInf(ITEMGETINF_OBTAINED_STICK_UPGRADE_FROM_STAGE) && !Player_InBlockingCsMode(play, player)) {
+                        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ?
+                            Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_SKULL_MASK, GI_STICK_UPGRADE_30) :
+                            ItemTable_RetrieveEntry(MOD_NONE, GI_STICK_UPGRADE_30);
+
+                        if (GiveItemEntryWithoutActor(play, getItemEntry)) {
+                            player->pendingFlag.flagID = ITEMGETINF_OBTAINED_STICK_UPGRADE_FROM_STAGE;
+                            player->pendingFlag.flagType = FLAG_ITEM_GET_INF;
+                        }
                     }
                     break;
                 case PLAYER_MASK_TRUTH:
-                    if (!Flags_GetTreasure(play, 0x1E) && !Player_InBlockingCsMode(play, player)) {
-                        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_MASK_OF_TRUTH, GI_NUT_UPGRADE_40);
-                        GiveItemEntryWithoutActor(play, getItemEntry);
-                        player->pendingFlag.flagID = 0x1E;
-                        player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
+                    if (!Flags_GetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE) && !Player_InBlockingCsMode(play, player)) {
+                        GetItemEntry getItemEntry = gSaveContext.n64ddFlag ?
+                            Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_MASK_OF_TRUTH, GI_NUT_UPGRADE_40) :
+                            ItemTable_RetrieveEntry(MOD_NONE, GI_NUT_UPGRADE_40);
+
+                        if (GiveItemEntryWithoutActor(play, getItemEntry)) {
+                            player->pendingFlag.flagID = ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE;
+                            player->pendingFlag.flagType = FLAG_ITEM_GET_INF;
+                        }
                     }
                     break;
             }

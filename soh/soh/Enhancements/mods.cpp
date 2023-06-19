@@ -17,6 +17,8 @@ extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 
 uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
+GetItemEntry ItemTable_RetrieveEntry(s16 modIndex, s16 getItemID);
+GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 }
 bool performDelayedSave = false;
 bool performSave = false;
@@ -599,6 +601,171 @@ void RegisterMirrorModeHandler() {
     });
 }
 
+typedef struct {
+    int32_t shouldRecieveFlag;
+    FlagType shouldRecieveFlagType;
+    int32_t hasRecievedFlag;
+    FlagType hasRecievedFlagType;
+    RandomizerCheck randomizerCheck;
+    ModIndex modIndex;
+    uint32_t vanillaItemID;
+} ItemGiverEntry;
+
+std::vector<ItemGiverEntry> itemGiverEntries = {
+    {
+        EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL, FLAG_EVENT_CHECK_INF,
+        RAND_INF_RECEIVED_LIGHT_MEDALLION, FLAG_RANDOMIZER_INF,
+        RC_LINKS_POCKET,
+        MOD_RANDOMIZER,
+        RG_LIGHT_MEDALLION,
+    },
+    {
+        EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP, FLAG_EVENT_CHECK_INF,
+        RAND_INF_DUNGEONS_DONE_DEKU_TREE, FLAG_RANDOMIZER_INF,
+        RC_QUEEN_GOHMA,
+        MOD_RANDOMIZER,
+        RG_KOKIRI_EMERALD,
+    },
+    {
+        EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP, FLAG_EVENT_CHECK_INF,
+        RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN, FLAG_RANDOMIZER_INF,
+        RC_KING_DODONGO,
+        MOD_RANDOMIZER,
+        RG_GORON_RUBY,
+    },
+    {
+        EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP, FLAG_EVENT_CHECK_INF,
+        RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY, FLAG_RANDOMIZER_INF,
+        RC_BARINADE,
+        MOD_RANDOMIZER,
+        RG_ZORA_SAPPHIRE,
+    },
+    {
+        EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP, FLAG_EVENT_CHECK_INF,
+        RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE, FLAG_RANDOMIZER_INF,
+        RC_PHANTOM_GANON,
+        MOD_RANDOMIZER,
+        RG_FOREST_MEDALLION,
+    },
+    {
+        EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP, FLAG_EVENT_CHECK_INF,
+        RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE, FLAG_RANDOMIZER_INF,
+        RC_VOLVAGIA,
+        MOD_RANDOMIZER,
+        RG_FIRE_MEDALLION,
+    },
+    {
+        EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP, FLAG_EVENT_CHECK_INF,
+        RAND_INF_DUNGEONS_DONE_WATER_TEMPLE, FLAG_RANDOMIZER_INF,
+        RC_MORPHA,
+        MOD_RANDOMIZER,
+        RG_WATER_MEDALLION,
+    },
+    {
+        RAND_INF_USED_SPIRIT_TEMPLE_BLUE_WARP, FLAG_RANDOMIZER_INF,
+        RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE, FLAG_RANDOMIZER_INF,
+        RC_TWINROVA,
+        MOD_RANDOMIZER,
+        RG_SPIRIT_MEDALLION,
+    },
+    {
+        RAND_INF_USED_SHADOW_TEMPLE_BLUE_WARP, FLAG_RANDOMIZER_INF,
+        RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE, FLAG_RANDOMIZER_INF,
+        RC_BONGO_BONGO,
+        MOD_RANDOMIZER,
+        RG_SHADOW_MEDALLION,
+    },
+    {
+        EVENTCHKINF_LEARNED_ZELDAS_LULLABY, FLAG_EVENT_CHECK_INF,
+        RAND_INF_RECEIVED_ZELDAS_LULLABY, FLAG_RANDOMIZER_INF,
+        RC_SONG_FROM_IMPA,
+        MOD_RANDOMIZER,
+        RG_ZELDAS_LULLABY,
+    },
+    {
+        EVENTCHKINF_OBTAINED_OCARINA_OF_TIME, FLAG_EVENT_CHECK_INF,
+        EVENTCHKINF_LEARNED_SONG_OF_TIME, FLAG_EVENT_CHECK_INF,
+        RC_SONG_FROM_OCARINA_OF_TIME,
+        MOD_RANDOMIZER,
+        RG_SONG_OF_TIME,
+    },
+    {
+        EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT, FLAG_EVENT_CHECK_INF,
+        RAND_INF_RECEIVED_REQUIEM_OF_SPIRIT, FLAG_RANDOMIZER_INF,
+        RC_SHEIK_AT_COLOSSUS,
+        MOD_RANDOMIZER,
+        RG_REQUIEM_OF_SPIRIT,
+    },
+    {
+        EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL, FLAG_EVENT_CHECK_INF,
+        EVENTCHKINF_LEARNED_NOCTURNE_OF_SHADOW, FLAG_EVENT_CHECK_INF,
+        RC_SHEIK_IN_KAKARIKO,
+        MOD_RANDOMIZER,
+        RG_NOCTURNE_OF_SHADOW,
+    },
+    {
+        EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE, FLAG_EVENT_CHECK_INF,
+        RAND_INF_RECEIVED_FAIRY_OCARINA, FLAG_RANDOMIZER_INF,
+        RC_LW_GIFT_FROM_SARIA,
+        MOD_NONE,
+        GI_OCARINA_FAIRY,
+    },
+    {
+        EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS, FLAG_EVENT_CHECK_INF,
+        RAND_INF_RECEIVED_LIGHT_ARROWS, FLAG_RANDOMIZER_INF,
+        RC_TOT_LIGHT_ARROWS_CUTSCENE,
+        MOD_NONE,
+        GI_ARROW_LIGHT,
+    },
+};
+
+s32 Flags_Get(FlagType flagType, s32 flag) {
+    switch (flagType) {
+        case FLAG_EVENT_CHECK_INF:
+            return Flags_GetEventChkInf(flag);
+        case FLAG_ITEM_GET_INF:
+            return Flags_GetItemGetInf(flag);
+        case FLAG_INF_TABLE:
+            return Flags_GetInfTable(flag);
+        case FLAG_EVENT_INF:
+            return Flags_GetEventInf(flag);
+        case FLAG_RANDOMIZER_INF:
+            return Flags_GetRandomizerInf(static_cast<RandomizerInf>(flag));
+        default:
+            return 0;
+    }
+}
+
+void RegisterItemGiver() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        Player* player = GET_PLAYER(gPlayState);
+        if (player == NULL || Player_InBlockingCsMode(gPlayState, player)) {
+            return;
+        }
+
+        for (auto& itemGiverEntry : itemGiverEntries) {
+            if (
+                Flags_Get(itemGiverEntry.shouldRecieveFlagType, itemGiverEntry.shouldRecieveFlag) &&
+                !Flags_Get(itemGiverEntry.hasRecievedFlagType, itemGiverEntry.hasRecievedFlag)
+            ) {
+                GetItemEntry getItemEntry = gSaveContext.n64ddFlag ? 
+                    Randomizer_GetItemFromKnownCheck(itemGiverEntry.randomizerCheck, static_cast<GetItemID>(itemGiverEntry.vanillaItemID)) : 
+                    ItemTable_RetrieveEntry(itemGiverEntry.modIndex, itemGiverEntry.vanillaItemID);
+
+                if (GiveItemEntryWithoutActor(gPlayState, getItemEntry)) {
+                    player->pendingFlag.flagType = itemGiverEntry.hasRecievedFlagType;
+                    player->pendingFlag.flagID = itemGiverEntry.hasRecievedFlag;
+                }
+                if (player->stateFlags1 & PLAYER_STATE1_IN_WATER) {
+                    // Allow the player to receive the item while swimming
+                    player->stateFlags2 |= PLAYER_STATE2_UNDERWATER;
+                    func_8083E5A8(player, gPlayState);
+                }
+            }
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -621,4 +788,5 @@ void InitMods() {
     RegisterBonkDamage();
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
+    RegisterItemGiver();
 }

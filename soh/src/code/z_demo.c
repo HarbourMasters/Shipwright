@@ -2149,34 +2149,80 @@ void Cutscene_HandleEntranceTriggers(PlayState* play) {
 void Cutscene_HandleConditionalTriggers(PlayState* play) {
     osSyncPrintf("\ngame_info.mode=[%d] restart_flag", ((void)0, gSaveContext.respawnFlag));
 
+    if (gSaveContext.n64ddFlag) {
+        // Deku Tree Blue warp
+        if (gSaveContext.entranceIndex == 0xEE && gSaveContext.cutsceneIndex == 0xFFF1) {
+            gSaveContext.entranceIndex = 0x457;
+            gSaveContext.cutsceneIndex = 0;
+        // Dodongo's Cavern Blue warp
+        } else if (gSaveContext.entranceIndex == 0x13D && gSaveContext.cutsceneIndex == 0xFFF1) {
+            gSaveContext.entranceIndex = 0x47A;
+            gSaveContext.cutsceneIndex = 0;
+        // Jabu Jabu's Blue warp
+        } else if (gSaveContext.entranceIndex == 0x10E && gSaveContext.cutsceneIndex == 0xFFF0) {
+            gSaveContext.entranceIndex = 0x10E;
+            gSaveContext.cutsceneIndex = 0;
+        // Forest Temple Blue warp
+        } else if (gSaveContext.entranceIndex == 0x6B && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_FOREST) {
+            gSaveContext.entranceIndex = 0x608;
+            gSaveContext.cutsceneIndex = 0;
+        // Fire Temple Blue warp
+        } else if (gSaveContext.entranceIndex == 0xDB && gSaveContext.cutsceneIndex == 0xFFF3) {
+            gSaveContext.entranceIndex = 0x564;
+            gSaveContext.cutsceneIndex = 0;
+        // Water Temple Blue warp
+        } else if (gSaveContext.entranceIndex == 0x6B && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_WATER) {
+            gSaveContext.entranceIndex = 0x60C;
+            gSaveContext.cutsceneIndex = 0;
+        // Spirit Temple Blue warp
+        } else if (gSaveContext.entranceIndex == 0x6B && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_SPIRIT) {
+            gSaveContext.entranceIndex = 0x610;
+            gSaveContext.cutsceneIndex = 0;
+        // Shadow Temple Blue warp
+        } else if (gSaveContext.entranceIndex == 0x6B && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_SHADOW) {
+            gSaveContext.entranceIndex = 0x580;
+            gSaveContext.cutsceneIndex = 0;
+        // Zelda escaping with impa cutscene
+        } else if (gSaveContext.entranceIndex == 0xCD && gSaveContext.cutsceneIndex == 0xFFF1) {
+            gSaveContext.cutsceneIndex = 0;
+        }
+    }
+
+    // Vanilla requirements are if the player has used the blue warp, whereas randomizer requirements are if the player has collected the medallions.
+    u8 meetsBurningKakRequirements = gSaveContext.n64ddFlag ?
+        CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) :
+        Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP);
+    // Vanilla requirements are if the player entered from hyrule field, for randomizer we just care they are entering the scene
+    u8 isEnteringKak = gSaveContext.n64ddFlag ?
+        gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_SPOT01 :
+        gSaveContext.entranceIndex == 0x00DB;
+
     if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
         const bool bShouldTowerRandoSkip =
             (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_TOWER_ESCAPE));
         if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT)) {
+            Flags_SetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT);
             if (!gSaveContext.n64ddFlag) {
-                Flags_SetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT);
                 gSaveContext.entranceIndex = 0x0123;
                 gSaveContext.cutsceneIndex = 0xFFF0;
             }
-        } else if ((gSaveContext.entranceIndex == 0x00DB) && LINK_IS_ADULT && (Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) &&
-                   (Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) && (Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) &&
-                   !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL)) {
+        } else if (isEnteringKak && LINK_IS_ADULT && !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL) && meetsBurningKakRequirements) {
+            Flags_SetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL);
             if (!gSaveContext.n64ddFlag) {
-                Flags_SetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL);
                 gSaveContext.cutsceneIndex = 0xFFF0;
             }
         } else if ((gSaveContext.entranceIndex == 0x05E0) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE)) {
+            Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE);
             if (!gSaveContext.n64ddFlag) {
-                Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE);
                 Item_Give(play, ITEM_OCARINA_FAIRY);
                 gSaveContext.entranceIndex = 0x011E;
                 gSaveContext.cutsceneIndex = 0xFFF0;
             }
-        } else if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
-                   LINK_IS_ADULT && !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) &&
-                   (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA)) {
+        } else if ((gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA) && LINK_IS_ADULT &&
+            !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) && MeetsLACSRequirements()
+        ) {
+            Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
             if (!gSaveContext.n64ddFlag) {
-                Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
                 gSaveContext.entranceIndex = 0x0053;
                 gSaveContext.cutsceneIndex = 0xFFF8;
             }

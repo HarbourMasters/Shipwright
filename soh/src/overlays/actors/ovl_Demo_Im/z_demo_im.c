@@ -903,33 +903,22 @@ void func_80986BF8(DemoIm* this, PlayState* play) {
     }
 }
 
-void GivePlayerRandoRewardImpa(Actor* impa, PlayState* play, RandomizerCheck check) {
-    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_ZELDAS_LULLABY);
-
-    if (impa->parent != NULL && impa->parent->id == GET_PLAYER(play)->actor.id &&
-        !Flags_GetTreasure(play, 0x1F)) {
-        Flags_SetTreasure(play, 0x1F);
-    } else if (!Flags_GetTreasure(play, 0x1F) && !Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA)) {
-        GiveItemEntryFromActor(impa, play, getItemEntry, 75.0f, 50.0f);
-    } else if (!Player_InBlockingCsMode(play, GET_PLAYER(play))) {
-        Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
-        play->sceneLoadFlag = 0x14;
-        play->fadeTransition = 3;
-        gSaveContext.nextTransitionType = 3;
-        // In entrance rando have impa bring link back to the front of castle grounds
-        if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
-            play->nextEntranceIndex = 0x0138;
-        } else {
-            play->nextEntranceIndex = 0x0594;
-        }
-        gSaveContext.nextCutsceneIndex = 0;
-    }
-}
-
 void func_80986C30(DemoIm* this, PlayState* play) {
     if (func_80986A5C(this, play)) {
         if (gSaveContext.n64ddFlag) {
-            GivePlayerRandoRewardImpa(this, play, RC_SONG_FROM_IMPA);
+            Player* player = GET_PLAYER(play);
+
+            // In entrance rando have impa bring link back to the front of castle grounds
+            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
+                play->nextEntranceIndex = 0x0138;
+            } else {
+                play->nextEntranceIndex = 0x0594;
+            }
+            play->fadeTransition = 38;
+            play->sceneLoadFlag = 0x14;
+            gSaveContext.nextTransitionType = 2;
+            func_8002DF54(play, &player->actor, 8);
+            Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
         } else {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gZeldasCourtyardLullabyCs);
             gSaveContext.cutsceneTrigger = 1;

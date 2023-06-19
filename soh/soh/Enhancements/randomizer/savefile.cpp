@@ -96,8 +96,11 @@ void GiveLinkDekuNuts(int howManyNuts) {
 
 void GiveLinksPocketItem() {
     if (Randomizer_GetSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, (GetItemID)RG_NONE);
-        StartingItemGive(getItemEntry);
+        // GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, (GetItemID)RG_NONE);
+        // StartingItemGive(getItemEntry);
+        // Flags_SetRandomizerInf(RAND_INF_RECEIVED_LIGHT_MEDALLION);
+        // If we re-add the above, we'll get the item on save creation, now it's given on first load
+        Flags_SetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL);
     }
 }
 
@@ -219,9 +222,11 @@ extern "C" void Randomizer_InitSaveFile() {
     Flags_SetEventChkInf(EVENTCHKINF_DEKU_TREE_OPENED_MOUTH);
     Flags_SetInfTable(INFTABLE_SPOKE_TO_KAEPORA_IN_LAKE_HYLIA);
     Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
-    Flags_SetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL);
+    // Moved to links pocket condition (awards light medallion)
+    // Flags_SetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL);
     Flags_SetEventChkInf(EVENTCHKINF_SHEIK_SPAWNED_AT_MASTER_SWORD_PEDESTAL);
-    Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
+    // Now used to give player LACS rewards
+    // Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
     Flags_SetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO);
     Flags_SetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET);
     Flags_SetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
@@ -331,8 +336,10 @@ extern "C" void Randomizer_InitSaveFile() {
     }
 
     if (Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA)) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_SONG_FROM_IMPA, (GetItemID)RG_ZELDAS_LULLABY);
-        StartingItemGive(getItemEntry);
+        // GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_SONG_FROM_IMPA, (GetItemID)RG_ZELDAS_LULLABY);
+        // StartingItemGive(getItemEntry);
+        // Flags_SetRandomizerInf(RAND_INF_RECEIVED_ZELDAS_LULLABY);
+        // If we re-add the above, we'll get the item on save creation, now it's given on first load
 
         // malon/talon back at ranch
         Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG);
@@ -374,14 +381,8 @@ extern "C" void Randomizer_InitSaveFile() {
         gSaveContext.sceneFlags[SCENE_MIZUSIN].swch |= (1 << 0x15);
     }
 
-    int openForest = Randomizer_GetSettingValue(RSK_FOREST);
-    switch (openForest) {
-        case RO_FOREST_OPEN:
-            Flags_SetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD);
-            // Fallthrough
-        case RO_FOREST_CLOSED_DEKU:
-            Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
-            break;
+    if (Randomizer_GetSettingValue(RSK_FOREST) == RO_FOREST_OPEN) {
+        Flags_SetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD);
     }
 
     int doorOfTime = Randomizer_GetSettingValue(RSK_DOOR_OF_TIME);

@@ -1192,7 +1192,7 @@ void func_80A99048(EnKo* this, PlayState* play) {
                     this->actionFunc = func_80A995CC;
                     return;
                 }
-            } else {
+            } else if ((gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_FOREST) == RO_FOREST_CLOSED)) {
                 if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD)) {
                     this->collider.dim.height += 200;
                     this->actionFunc = func_80A995CC;

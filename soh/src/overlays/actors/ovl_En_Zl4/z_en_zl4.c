@@ -227,17 +227,18 @@ u16 EnZl4_GetText(PlayState* play, Actor* thisx) {
     return ret;
 }
 
-void GivePlayerRandoRewardZeldaChild(EnZl4* zelda, PlayState* play, RandomizerCheck check) {
-    if (zelda->actor.parent != NULL && zelda->actor.parent->id == GET_PLAYER(play)->actor.id &&
-        !Flags_GetTreasure(play, 0x1E)) {
-        Flags_SetTreasure(play, 0x1E);
-    } else if (!Flags_GetTreasure(play, 0x1E) && !Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA) && Actor_TextboxIsClosing(&zelda->actor, play) &&
-               (play->msgCtx.textId == 0x703C || play->msgCtx.textId == 0x703D)) {
-        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, GI_LETTER_ZELDA);
-        GiveItemEntryFromActor(&zelda->actor, play, getItemEntry, 10000.0f, 100.0f);
-    } else if (Flags_GetTreasure(play, 0x1E) && !Player_InBlockingCsMode(play, GET_PLAYER(play))) {
-        gSaveContext.unk_13EE = 0x32;
-        Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER);
+void GivePlayerRandoRewardZeldaChild(EnZl4* zelda, PlayState* play) {
+    Player* player = GET_PLAYER(play);
+    GetItemEntry getItemEntry = gSaveContext.n64ddFlag ? 
+        Randomizer_GetItemFromKnownCheck(RC_HC_ZELDAS_LETTER, GI_LETTER_ZELDA) : 
+        ItemTable_RetrieveEntry(MOD_NONE, GI_LETTER_ZELDA);
+
+    if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER) && player != NULL && Actor_TextboxIsClosing(&zelda->actor, play) && (play->msgCtx.textId == 0x703C || play->msgCtx.textId == 0x703D)) {
+        if (GiveItemEntryWithoutActor(play, getItemEntry)) {
+            player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+            player->pendingFlag.flagID = EVENTCHKINF_OBTAINED_ZELDAS_LETTER;
+            gSaveContext.unk_13EE = 0x32;
+        }
     }
 }
 
@@ -1227,7 +1228,7 @@ void EnZl4_Idle(EnZl4* this, PlayState* play) {
     func_80B5BB78(this, play);
     
     if (gSaveContext.n64ddFlag) {
-        GivePlayerRandoRewardZeldaChild(this, play, RC_HC_ZELDAS_LETTER);
+        GivePlayerRandoRewardZeldaChild(this, play);
         return;
     }
 }

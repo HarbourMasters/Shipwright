@@ -323,10 +323,16 @@ void func_80ABF708(EnOkarinaTag* this, PlayState* play) {
     }
 }
 
-void GivePlayerRandoRewardSunSong(EnOkarinaTag* song, PlayState* play, RandomizerCheck check) {
-    Flags_SetTreasure(play, 0x1F);
-    GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, GI_LETTER_ZELDA);
-    GiveItemEntryFromActor(&song->actor, play, getItemEntry, 10000.0f, 100.0f);
+void GivePlayerRandoRewardSunSong(EnOkarinaTag* song, PlayState* play) {
+    Player* player = GET_PLAYER(play);
+    GetItemEntry getItemEntry = gSaveContext.n64ddFlag ?
+        Randomizer_GetItemFromKnownCheck(RC_SONG_FROM_ROYAL_FAMILYS_TOMB, RG_SUNS_SONG) :
+        ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_SUNS_SONG);
+
+    if (GiveItemEntryFromActor(&song->actor, play, getItemEntry, 10000.0f, 100.0f)) {
+        player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
+        player->pendingFlag.flagID = EVENTCHKINF_LEARNED_SUNS_SONG;
+    }
 }
 
 void func_80ABF7CC(EnOkarinaTag* this, PlayState* play) {
@@ -338,8 +344,8 @@ void func_80ABF7CC(EnOkarinaTag* this, PlayState* play) {
         if (!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_SONG_SUN)) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gSunSongGraveSunSongTeachCs);
             gSaveContext.cutsceneTrigger = 1;
-        } else if (gSaveContext.n64ddFlag && !Flags_GetTreasure(play, 0x1F)) {
-            GivePlayerRandoRewardSunSong(this, play, RC_SONG_FROM_ROYAL_FAMILYS_TOMB);
+        } else if (gSaveContext.n64ddFlag && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SUNS_SONG)) {
+            GivePlayerRandoRewardSunSong(this, play);
         }
         this->actionFunc = func_80ABF708;
     }
