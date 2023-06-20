@@ -97,7 +97,7 @@ void EnJj_Init(Actor* thisx, PlayState* play2) {
             this->extraBlinkCounter = 0;
             this->extraBlinkTotal = 0;
 
-            if (gSaveContext.eventChkInf[3] & 0x400) { // Fish given
+            if (Flags_GetEventChkInf(EVENTCHKINF_OFFERED_FISH_TO_JABU_JABU)) { // Fish given
                 EnJj_SetupAction(this, EnJj_WaitToOpenMouth);
             } else {
                 EnJj_SetupAction(this, EnJj_WaitForFish);
@@ -222,7 +222,7 @@ void EnJj_BeginCutscene(EnJj* this, PlayState* play) {
         gSaveContext.cutsceneTrigger = 1;
         func_8003EBF8(play, &play->colCtx.dyna, bodyCollisionActor->bgId);
         func_8005B1A4(GET_ACTIVE_CAM(play));
-        gSaveContext.eventChkInf[3] |= 0x400;
+        Flags_SetEventChkInf(EVENTCHKINF_OFFERED_FISH_TO_JABU_JABU);
         func_80078884(NA_SE_SY_CORRECT_CHIME);
     }
 }

@@ -2542,19 +2542,19 @@ void Environment_WarpSongLeave(PlayState* play) {
 
     switch (play->nextEntranceIndex) {
         case 0x147:
-            Flags_SetEventChkInf(0xB9);
+            Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DEATH_MOUNTAIN_CRATER);
             break;
         case 0x0102:
-            Flags_SetEventChkInf(0xB1);
+            Flags_SetEventChkInf(EVENTCHKINF_ENTERED_LAKE_HYLIA);
             break;
         case 0x0123:
-            Flags_SetEventChkInf(0xB8);
+            Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DESERT_COLOSSUS);
             break;
         case 0x00E4:
-            Flags_SetEventChkInf(0xB6);
+            Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GRAVEYARD);
             break;
         case 0x0053:
-            Flags_SetEventChkInf(0xA7);
+            Flags_SetEventChkInf(EVENTCHKINF_ENTERED_TEMPLE_OF_TIME);
             break;
         case 0x00FC:
             break;

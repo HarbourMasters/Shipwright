@@ -93,15 +93,15 @@ void EnZl1_Init(Actor* thisx, PlayState* play) {
         Animation_Change(&this->skelAnime, &gChildZelda1Anim_00438, 1.0f, 0.0f, frameCount, ANIMMODE_LOOP, 0.0f);
         this->unk_1E6 = 0;
         this->actionFunc = func_80B4BC78;
-    } else if (Flags_GetEventChkInf(9) && Flags_GetEventChkInf(0x25) && Flags_GetEventChkInf(0x37)) {
+    } else if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
         Actor_Kill(&this->actor);
-    } else if ((Flags_GetEventChkInf(9) && Flags_GetEventChkInf(0x25)) ||
-               (Flags_GetEventChkInf(9) && Flags_GetEventChkInf(0x37))) {
+    } else if ((Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) ||
+               (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP))) {
         frameCount = Animation_GetLastFrame(&gChildZelda1Anim_00438);
         Animation_Change(&this->skelAnime, &gChildZelda1Anim_00438, 1.0f, 0.0f, frameCount, ANIMMODE_LOOP, 0.0f);
         this->actor.textId = 0x703D;
         this->actionFunc = func_80B4AF18;
-    } else if (Flags_GetEventChkInf(0x40)) {
+    } else if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
         frameCount = Animation_GetLastFrame(&gChildZelda1Anim_00438);
         Animation_Change(&this->skelAnime, &gChildZelda1Anim_00438, 1.0f, 0.0f, frameCount, ANIMMODE_LOOP, 0.0f);
         this->actor.textId = 0x703C;
@@ -532,7 +532,7 @@ void func_80B4BF2C(EnZl1* this, PlayState* play) {
             if ((Message_GetState(msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
                 this->actor.textId = 0x703C;
                 Message_ContinueTextbox(play, this->actor.textId);
-                Flags_SetEventChkInf(0x40);
+                Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER);
                 this->unk_1E2 = 6;
             }
             break;

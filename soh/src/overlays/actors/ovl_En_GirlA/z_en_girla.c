@@ -324,55 +324,55 @@ void EnGirlA_SetupAction(EnGirlA* this, EnGirlAActionFunc func) {
 s32 EnGirlA_TryChangeShopItem(EnGirlA* this, PlayState* play) {
     switch (this->actor.params) {
         case SI_MILK_BOTTLE:
-            if (gSaveContext.itemGetInf[0] & 0x4) {
+            if (Flags_GetItemGetInf(ITEMGETINF_TALON_BOTTLE)) {
                 this->actor.params = SI_HEART;
                 return true;
             }
             break;
         case SI_BOMBCHU_10_2:
-            if (gSaveContext.itemGetInf[0] & 0x40) {
+            if (Flags_GetItemGetInf(ITEMGETINF_06)) {
                 this->actor.params = SI_SOLD_OUT;
                 return true;
             }
             break;
         case SI_BOMBCHU_10_3:
-            if (gSaveContext.itemGetInf[0] & 0x80) {
+            if (Flags_GetItemGetInf(ITEMGETINF_07)) {
                 this->actor.params = SI_SOLD_OUT;
                 return true;
             }
             break;
         case SI_BOMBCHU_20_3:
-            if (gSaveContext.itemGetInf[0] & 0x100) {
+            if (Flags_GetItemGetInf(ITEMGETINF_08)) {
                 this->actor.params = SI_SOLD_OUT;
                 return true;
             }
             break;
         case SI_BOMBCHU_20_4:
-            if (gSaveContext.itemGetInf[0] & 0x200) {
+            if (Flags_GetItemGetInf(ITEMGETINF_09)) {
                 this->actor.params = SI_SOLD_OUT;
                 return true;
             }
             break;
         case SI_BOMBCHU_10_4:
-            if (gSaveContext.itemGetInf[0] & 0x400) {
+            if (Flags_GetItemGetInf(ITEMGETINF_0A)) {
                 this->actor.params = SI_SOLD_OUT;
                 return true;
             }
             break;
         case SI_BOMBCHU_10_1:
-            if (gSaveContext.itemGetInf[0] & 0x8) {
+            if (Flags_GetItemGetInf(ITEMGETINF_03)) {
                 this->actor.params = SI_SOLD_OUT;
                 return true;
             }
             break;
         case SI_BOMBCHU_20_1:
-            if (gSaveContext.itemGetInf[0] & 0x10) {
+            if (Flags_GetItemGetInf(ITEMGETINF_04)) {
                 this->actor.params = SI_SOLD_OUT;
                 return true;
             }
             break;
         case SI_BOMBCHU_20_2:
-            if (gSaveContext.itemGetInf[0] & 0x20) {
+            if (Flags_GetItemGetInf(ITEMGETINF_05)) {
                 this->actor.params = SI_SOLD_OUT;
                 return true;
             }
@@ -995,7 +995,7 @@ void EnGirlA_BuyEvent_ShieldDiscount(PlayState* play, EnGirlA* this) {
     gSaveContext.pendingSale = entry.itemId;
     gSaveContext.pendingSaleMod = entry.modIndex;
     if (this->actor.params == SI_HYLIAN_SHIELD) {
-        if (gSaveContext.infTable[7] & 0x40) {
+        if (Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)) {
             Rupees_ChangeBy(-(this->basePrice - sShieldDiscounts[(s32)Rand_ZeroFloat(7.9f)]));
             return;
         }
@@ -1031,28 +1031,28 @@ void EnGirlA_BuyEvent_ObtainBombchuPack(PlayState* play, EnGirlA* this) {
 
     switch (this->actor.params) {
         case SI_BOMBCHU_10_2:
-            gSaveContext.itemGetInf[0] |= 0x40;
+            Flags_SetItemGetInf(ITEMGETINF_06);
             break;
         case SI_BOMBCHU_10_3:
-            gSaveContext.itemGetInf[0] |= 0x80;
+            Flags_SetItemGetInf(ITEMGETINF_07);
             break;
         case SI_BOMBCHU_20_3:
-            gSaveContext.itemGetInf[0] |= 0x100;
+            Flags_SetItemGetInf(ITEMGETINF_08);
             break;
         case SI_BOMBCHU_20_4:
-            gSaveContext.itemGetInf[0] |= 0x200;
+            Flags_SetItemGetInf(ITEMGETINF_09);
             break;
         case SI_BOMBCHU_10_4:
-            gSaveContext.itemGetInf[0] |= 0x400;
+            Flags_SetItemGetInf(ITEMGETINF_0A);
             break;
         case SI_BOMBCHU_10_1:
-            gSaveContext.itemGetInf[0] |= 0x8;
+            Flags_SetItemGetInf(ITEMGETINF_03);
             break;
         case SI_BOMBCHU_20_1:
-            gSaveContext.itemGetInf[0] |= 0x10;
+            Flags_SetItemGetInf(ITEMGETINF_04);
             break;
         case SI_BOMBCHU_20_2:
-            gSaveContext.itemGetInf[0] |= 0x20;
+            Flags_SetItemGetInf(ITEMGETINF_05);
             break;
     }
 }
@@ -1090,27 +1090,27 @@ void EnGirlA_SetItemDescription(PlayState* play, EnGirlA* this) {
         isMaskFreeToBorrow = false;
         switch (this->actor.params) {
             case SI_KEATON_MASK:
-                if (gSaveContext.itemGetInf[3] & 0x100) {
+                if (Flags_GetItemGetInf(ITEMGETINF_38)) {
                     isMaskFreeToBorrow = true;
                 }
                 break;
             case SI_SPOOKY_MASK:
-                if (gSaveContext.itemGetInf[3] & 0x400) {
+                if (Flags_GetItemGetInf(ITEMGETINF_3A)) {
                     isMaskFreeToBorrow = true;
                 }
                 break;
             case SI_SKULL_MASK:
-                if (gSaveContext.itemGetInf[3] & 0x200) {
+                if (Flags_GetItemGetInf(ITEMGETINF_39)) {
                     isMaskFreeToBorrow = true;
                 }
                 break;
             case SI_BUNNY_HOOD:
-                if (gSaveContext.itemGetInf[3] & 0x800) {
+                if (Flags_GetItemGetInf(ITEMGETINF_3B)) {
                     isMaskFreeToBorrow = true;
                 }
                 break;
             case SI_MASK_OF_TRUTH:
-                if (gSaveContext.itemGetInf[3] & 0x800) {
+                if (Flags_GetItemGetInf(ITEMGETINF_3B)) {
                     isMaskFreeToBorrow = true;
                 }
                 break;
@@ -1184,7 +1184,7 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, PlayState* play) {
         this->actor.objBankIndex = this->objBankIndex;
         switch (this->actor.params) {
             case SI_KEATON_MASK:
-                if (gSaveContext.itemGetInf[3] & 0x100) {
+                if (Flags_GetItemGetInf(ITEMGETINF_38)) {
                     this->actor.textId = 0x70B6;
                 } else {
                     this->actor.textId = itemEntry->itemDescTextId;
@@ -1192,7 +1192,7 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, PlayState* play) {
                 this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
                 break;
             case SI_SPOOKY_MASK:
-                if (gSaveContext.itemGetInf[3] & 0x400) {
+                if (Flags_GetItemGetInf(ITEMGETINF_3A)) {
                     this->actor.textId = 0x70B5;
                 } else {
                     this->actor.textId = itemEntry->itemDescTextId;
@@ -1200,7 +1200,7 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, PlayState* play) {
                 this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
                 break;
             case SI_SKULL_MASK:
-                if (gSaveContext.itemGetInf[3] & 0x200) {
+                if (Flags_GetItemGetInf(ITEMGETINF_39)) {
                     this->actor.textId = 0x70B4;
                 } else {
                     this->actor.textId = itemEntry->itemDescTextId;
@@ -1208,7 +1208,7 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, PlayState* play) {
                 this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
                 break;
             case SI_BUNNY_HOOD:
-                if (gSaveContext.itemGetInf[3] & 0x800) {
+                if (Flags_GetItemGetInf(ITEMGETINF_3B)) {
                     this->actor.textId = 0x70B7;
                 } else {
                     this->actor.textId = itemEntry->itemDescTextId;
@@ -1216,7 +1216,7 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, PlayState* play) {
                 this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
                 break;
             case SI_MASK_OF_TRUTH:
-                if (gSaveContext.itemGetInf[3] & 0x800) {
+                if (Flags_GetItemGetInf(ITEMGETINF_3B)) {
                     this->actor.textId = 0x70BB;
                     this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
                 } else {

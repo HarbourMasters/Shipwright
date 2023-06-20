@@ -81,7 +81,7 @@ void EfcErupc_UpdateAction(EfcErupc* this, PlayState* play) {
                 case 2:
                     if (this->unk_14E == 0) {
                         func_800F3F3C(6);
-                        gSaveContext.eventChkInf[2] |= 0x8000;
+                        Flags_SetEventChkInf(EVENTCHKINF_DEATH_MOUNTAIN_ERUPTED);
                     }
                     this->unk_14E++;
                     break;

@@ -137,7 +137,7 @@ void EnFu_WaitChild(EnFu* this, PlayState* play) {
     u16 textID = Text_GetFaceReaction(play, 0xB);
 
     if (textID == 0) {
-        textID = (gSaveContext.eventChkInf[6] & 0x80) ? 0x5033 : 0x5032;
+        textID = (Flags_GetEventChkInf(EVENTCHKINF_DRAINED_WELL_IN_KAKARIKO)) ? 0x5033 : 0x5032;
     }
 
     // if ACTOR_FLAG_PLAYER_TALKED_TO is set and textID is 0x5033, change animation
@@ -168,7 +168,7 @@ void func_WaitForSongGive(EnFu* this, PlayState* play) {
 void func_80A1DB60(EnFu* this, PlayState* play) {
     if (play->csCtx.state == CS_STATE_IDLE) {
         this->actionFunc = EnFu_WaitAdult;
-        gSaveContext.eventChkInf[5] |= 0x800;
+        Flags_SetEventChkInf(EVENTCHKINF_LEARNED_SONG_OF_STORMS);
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     }
 
@@ -206,7 +206,7 @@ void func_80A1DBD4(EnFu* this, PlayState* play) {
         }
 
         play->msgCtx.ocarinaMode = OCARINA_MODE_00;
-        gSaveContext.eventChkInf[6] |= 0x20;
+        Flags_SetEventChkInf(EVENTCHKINF_PLAYED_SONG_OF_STORMS_IN_WINDMILL);
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_02) {
         player->stateFlags2 &= ~0x1000000;
         this->actionFunc = EnFu_WaitAdult;
@@ -244,7 +244,7 @@ void EnFu_WaitAdult(EnFu* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
-    if ((gSaveContext.eventChkInf[5] & 0x800)) {
+    if ((Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SONG_OF_STORMS))) {
         func_80A1D94C(this, play, 0x508E, func_80A1DBA0);
     } else if (player->stateFlags2 & 0x1000000) {
         this->actor.textId = 0x5035;

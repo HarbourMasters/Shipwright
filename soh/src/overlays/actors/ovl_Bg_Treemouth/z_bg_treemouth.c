@@ -143,9 +143,9 @@ void func_808BC864(BgTreemouth* this, PlayState* play) {
 }
 
 void func_808BC8B8(BgTreemouth* this, PlayState* play) {
-    if ((!(Flags_GetEventChkInf(5))) || LINK_IS_ADULT) {
+    if ((!Flags_GetEventChkInf(EVENTCHKINF_DEKU_TREE_OPENED_MOUTH)) || LINK_IS_ADULT) {
         if (!LINK_IS_ADULT) {
-            if (Flags_GetEventChkInf(0xC)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_MET_DEKU_TREE)) {
                 if (Actor_IsFacingAndNearPlayer(&this->dyna.actor, 1658.0f, 0x7530)) {
                     this->dyna.actor.flags |= ACTOR_FLAG_TARGETABLE;
                     if (this->dyna.actor.isTargeted) {
@@ -156,7 +156,7 @@ void func_808BC8B8(BgTreemouth* this, PlayState* play) {
                     }
                 }
             } else if (Actor_IsFacingAndNearPlayer(&this->dyna.actor, 1658.0f, 0x4E20)) {
-                Flags_SetEventChkInf(0xC);
+                Flags_SetEventChkInf(EVENTCHKINF_MET_DEKU_TREE);
                 play->csCtx.segment = D_808BCE20;
                 gSaveContext.cutsceneTrigger = 1;
                 BgTreemouth_SetupAction(this, func_808BC9EC);
@@ -188,7 +188,7 @@ void func_808BC9EC(BgTreemouth* this, PlayState* play) {
 
         if (play->msgCtx.choiceIndex == 0) {
             play->csCtx.segment = D_808BD520;
-            Flags_SetEventChkInf(5);
+            Flags_SetEventChkInf(EVENTCHKINF_DEKU_TREE_OPENED_MOUTH);
             BgTreemouth_SetupAction(this, func_808BCAF0);
         } else {
             play->csCtx.segment = D_808BD790;
@@ -237,7 +237,7 @@ void BgTreemouth_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if ((gSaveContext.sceneSetupIndex < 4) || LINK_IS_ADULT) {
-        if (gSaveContext.eventChkInf[0] & 0x80) {
+        if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD)) {
             alpha = 2150;
         }
     } else { // neeeded to match

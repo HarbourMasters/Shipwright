@@ -53,7 +53,7 @@ static InitChainEntry sInitChain[] = {
 void EnGuest_Init(Actor* thisx, PlayState* play) {
     EnGuest* this = (EnGuest*)thisx;
 
-    if (gSaveContext.infTable[7] & 0x40) {
+    if (Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)) {
         Actor_Kill(&this->actor);
     } else {
         this->osAnimeBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_OS_ANIME);
