@@ -771,7 +771,6 @@ extern "C" void InitOTR() {
     VanillaItemTable_Init();
     DebugConsole_Init();
 
-    CheckTracker::Init();
     InitMods();
     ActorDB::AddBuiltInCustomActors();
 

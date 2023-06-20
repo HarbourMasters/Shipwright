@@ -1341,21 +1341,6 @@ bool IsHeartPiece(GetItemID giid) {
     return giid == GI_HEART_PIECE || giid == GI_HEART_PIECE_WIN;
 }
 
-void Init() {
-    SaveManager::Instance->AddInitFunction(InitTrackerData);
-    sectionId = SaveManager::Instance->AddSaveFunction("checkTracker", 1, SaveFile, true, -1);
-    SaveManager::Instance->AddLoadFunction("checkTracker", 1, LoadFile);
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadFile>(
-        [](uint32_t fileNum) { doInitialize = true; });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDeleteFile>([](uint32_t fileNum) { Teardown(); });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(CheckTrackerItemReceive);
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSaleEnd>(CheckTrackerSaleEnd);
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(CheckTrackerFrame);
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>(CheckTrackerTransition);
-
-    LocationTable_Init();
-}
-
 void DrawLocation(RandomizerCheckObject rcObj) {
     Color_RGBA8 mainColor; 
     Color_RGBA8 extraColor;
@@ -1645,6 +1630,19 @@ void CheckTrackerWindow::InitElement() {
     /*LUS::RegisterHook<LUS::LoadFile>([](uint32_t fileNum) {
         doInitialize = true;
     });*/
+    SaveManager::Instance->AddInitFunction(InitTrackerData);
+    sectionId = SaveManager::Instance->AddSaveFunction("checkTracker", 1, SaveFile, true, -1);
+    SaveManager::Instance->AddLoadFunction("checkTracker", 1, LoadFile);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadFile>([](uint32_t fileNum) {
+        doInitialize = true;
+    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDeleteFile>([](uint32_t fileNum) { Teardown(); });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(CheckTrackerItemReceive);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSaleEnd>(CheckTrackerSaleEnd);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(CheckTrackerFrame);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>(CheckTrackerTransition);
+
+    LocationTable_Init();
 }
 
 } // namespace CheckTracker

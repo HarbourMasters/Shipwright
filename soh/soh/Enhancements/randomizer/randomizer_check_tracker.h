@@ -44,12 +44,8 @@ class CheckTrackerWindow : public LUS::GuiWindow {
 //repeat...
 #define INDEX_TO_16BIT_LITTLE_ENDIAN_BITMASK(idx) (0x8000 >> (7 - (idx % 8) + ((idx % 16) / 8) * 8))
 
-void InitCheckTracker();
-void DrawCheckTracker(bool& open);
 void DefaultCheckData(RandomizerCheck rc);
-void Init();
 void Teardown();
-void LoadCheckTrackerData(nlohmann::json checks);
 bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj);
 void InitTrackerData(bool isDebug);
 void SetLastItemGetRC(RandomizerCheck rc);
