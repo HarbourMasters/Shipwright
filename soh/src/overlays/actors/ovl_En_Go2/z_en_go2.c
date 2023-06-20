@@ -513,7 +513,7 @@ s16 EnGo2_UpdateTalkStateGoronCityLowestFloor(PlayState* play, EnGo2* this) {
 u16 EnGo2_GetTextIdGoronCityLink(PlayState* play, EnGo2* this) {
     // For rando, prioritize opening the doors in GC when Link the goron has been stopped when
     // the doors are not opened, otherwise let him talk about the DMC exit or that gorons are saved
-    if (gSaveContext.n64ddFlag) {
+    if (gSaveContext.n64ddFlag || CVarGetInteger("gSkipCutscenes", 0)) {
         if (!Flags_GetInfTable(INFTABLE_STOPPED_GORON_LINKS_ROLLING)) {
             return 0x3030;
         } else if (!Flags_GetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED)) {

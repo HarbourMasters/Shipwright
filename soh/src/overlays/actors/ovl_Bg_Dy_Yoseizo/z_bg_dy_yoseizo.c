@@ -265,6 +265,14 @@ void BgDyYoseizo_CheckMagicAcquired(BgDyYoseizo* this, PlayState* play) {
                 return;
             }
         }
+
+        if(CVarGetInteger("gSkipCutscenes", 0)) {
+            gSaveContext.healthAccumulator = 0x140;
+            Magic_Fill(play);
+            GivePlayerRandoRewardGreatFairy(this, play);
+            return;
+        }
+
         func_8002DF54(play, &this->actor, 1);
         this->actionFunc = BgDyYoseizo_ChooseType;
     }

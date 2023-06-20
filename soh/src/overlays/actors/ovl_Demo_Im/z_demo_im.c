@@ -905,7 +905,7 @@ void func_80986BF8(DemoIm* this, PlayState* play) {
 
 void func_80986C30(DemoIm* this, PlayState* play) {
     if (func_80986A5C(this, play)) {
-        if (gSaveContext.n64ddFlag) {
+        if (gSaveContext.n64ddFlag || CVarGetInteger("gSkipCutscenes", 0)) {
             Player* player = GET_PLAYER(play);
 
             // In entrance rando have impa bring link back to the front of castle grounds

@@ -150,6 +150,13 @@ void BgBdanObjects_Init(Actor* thisx, PlayState* play) {
             this->timer = 512;
             this->switchFlag = 0;
             this->actionFunc = func_8086C874;
+            // When player is entering from bottom of room, adjust platform position so we don't have to wait for it
+            if (CVarGetInteger("gSkipCutscenes", 0)) {
+                Player* player = GET_PLAYER(play);
+                if (player->actor.world.pos.y < -500.0f) {
+                    this->timer = 220;
+                }
+            }
         } else {
             CollisionHeader_GetVirtual(&gJabuLoweringPlatformCol, &colHeader);
             if (Flags_GetSwitch(play, this->switchFlag)) {

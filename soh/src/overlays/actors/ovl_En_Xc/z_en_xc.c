@@ -312,7 +312,7 @@ s32 EnXc_MinuetCS(EnXc* this, PlayState* play) {
 
         if (z < -2225.0f) {
             if (!Play_InCsMode(play)) {
-                if (!gSaveContext.n64ddFlag) {
+                if (!gSaveContext.n64ddFlag && !CVarGetInteger("gSkipCutscenes", 0)) {
                     play->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gMinuetCs);
                     gSaveContext.cutsceneTrigger = 1;
                     Flags_SetEventChkInf(EVENTCHKINF_LEARNED_MINUET_OF_FOREST);
@@ -348,7 +348,7 @@ s32 EnXc_BoleroCS(EnXc* this, PlayState* play) {
         if ((posRot->pos.x > -784.0f) && (posRot->pos.x < -584.0f) && (posRot->pos.y > 447.0f) &&
             (posRot->pos.y < 647.0f) && (posRot->pos.z > -446.0f) && (posRot->pos.z < -246.0f) &&
             !Play_InCsMode(play)) {
-            if (!gSaveContext.n64ddFlag) {
+            if (!gSaveContext.n64ddFlag && !CVarGetInteger("gSkipCutscenes", 0)) {
                 play->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gDeathMountainCraterBoleroCs);
                 gSaveContext.cutsceneTrigger = 1;
                 Flags_SetEventChkInf(EVENTCHKINF_LEARNED_BOLERO_OF_FIRE);
@@ -389,7 +389,7 @@ s32 EnXc_SerenadeCS(EnXc* this, PlayState* play) {
              (Flags_GetTreasure(play, 2) && gSaveContext.n64ddFlag)) &&
             !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER) && !(stateFlags & 0x20000000) &&
             !Play_InCsMode(play)) {
-            if (!gSaveContext.n64ddFlag) {
+            if (!gSaveContext.n64ddFlag && !CVarGetInteger("gSkipCutscenes", 0)) {
                 Cutscene_SetSegment(play, &gIceCavernSerenadeCs);
                 gSaveContext.cutsceneTrigger = 1;
                 Flags_SetEventChkInf(EVENTCHKINF_LEARNED_SERENADE_OF_WATER); // Learned Serenade of Water Flag
@@ -2199,7 +2199,7 @@ void EnXc_InitTempleOfTime(EnXc* this, PlayState* play) {
                     !gSaveContext.n64ddFlag) ||
                    (!Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
                     gSaveContext.n64ddFlag)) {
-            if (!gSaveContext.n64ddFlag) {
+            if (!gSaveContext.n64ddFlag && !CVarGetInteger("gSkipCutscenes", 0)) {
                 Flags_SetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT);
                 Item_Give(play, ITEM_SONG_PRELUDE);
                 play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gTempleOfTimePreludeCs);

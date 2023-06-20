@@ -390,7 +390,7 @@ void EnZl4_Init(Actor* thisx, PlayState* play) {
     this->actor.textId = -1;
     this->eyeExpression = this->mouthExpression = ZL4_MOUTH_NEUTRAL;
 
-    if (gSaveContext.n64ddFlag) {
+    if (gSaveContext.n64ddFlag || CVarGetInteger("gSkipCutscenes", 0)) {
         Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_0);
         this->actionFunc = EnZl4_Idle;
         return;
@@ -1227,7 +1227,7 @@ void EnZl4_Idle(EnZl4* this, PlayState* play) {
                       EnZl4_GetText, func_80B5B9B0);
     func_80B5BB78(this, play);
     
-    if (gSaveContext.n64ddFlag) {
+    if (gSaveContext.n64ddFlag || CVarGetInteger("gSkipCutscenes", 0)) {
         GivePlayerRandoRewardZeldaChild(this, play);
         return;
     }

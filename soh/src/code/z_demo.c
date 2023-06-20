@@ -496,8 +496,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
     // Automatically skip certain cutscenes when in rando
     // cmd->base == 8: Traveling back/forward in time cutscene
     // cmd->base == 24: Dropping a fish for Jabu Jabu
-    // cmd->base == 33: Zelda escaping with impa cutscene
-    bool randoCsSkip = (gSaveContext.n64ddFlag && (cmd->base == 8 || cmd->base == 24 || cmd->base == 33));
+    bool randoCsSkip = ((gSaveContext.n64ddFlag || CVarGetInteger("gSkipCutscenes", 0)) && (cmd->base == 8 || cmd->base == 24));
     bool debugCsSkip = (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_START) &&
                         (gSaveContext.fileNum != 0xFEDC) && CVarGetInteger("gDebugEnabled", 0));
 
@@ -559,6 +558,8 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
     }
 
     if (playCutscene || (temp != 0) || ((csCtx->frames > 20) && (randoCsSkip || debugCsSkip))) {
+
+        lusprintf(__FILE__, __LINE__, 2, "C: entranceIndex:%#x, cutsceneIndex:%#x, cmdbase:%d", gSaveContext.entranceIndex, gSaveContext.cutsceneIndex, cmd->base);
 
         csCtx->state = CS_STATE_UNSKIPPABLE_EXEC;
         Audio_SetCutsceneFlag(0);
@@ -624,13 +625,16 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                     gSaveContext.fw.set = 0;
                     gSaveContext.respawn[RESPAWN_MODE_TOP].data = 0;
                 }
-                if (!Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL) && !CVarGetInteger("gSkipCutscenes", 0)) {
                     Flags_SetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL);
                     play->nextEntranceIndex = 0x00A0;
                     play->sceneLoadFlag = 0x14;
                     gSaveContext.cutsceneIndex = 0xFFF3;
                     play->fadeTransition = 11;
                 } else {
+                    if (!Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL) && CVarGetInteger("gSkipCutscenes", 0)) {
+                        Flags_SetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL);
+                    }
                     if (gSaveContext.sceneSetupIndex < 4) {
                         if (!LINK_IS_ADULT) {
                             play->linkAgeOnLoad = 0;
@@ -1292,7 +1296,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 break;
         }
 
-        if (randoCsSkip) {
+        if (gSaveContext.n64ddFlag) {
             Entrance_OverrideCutsceneEntrance(cmd->base);
         }
     }
@@ -2137,6 +2141,8 @@ void Cutscene_HandleEntranceTriggers(PlayState* play) {
             (!Flags_GetEventChkInf(entranceCutscene->flag) || (entranceCutscene->flag == 0x18)) &&
             (gSaveContext.cutsceneIndex < 0xFFF0) && ((u8)gSaveContext.linkAge == requiredAge) &&
             (gSaveContext.respawnFlag <= 0)) {
+                
+            lusprintf(__FILE__, __LINE__, 2, "A: entranceIndex:%#x, entranceCutscene->flag:%#x", gSaveContext.entranceIndex, entranceCutscene->flag);
             Flags_SetEventChkInf(entranceCutscene->flag);
             Cutscene_SetSegment(play, entranceCutscene->segAddr);
             gSaveContext.cutsceneTrigger = 2;
@@ -2149,7 +2155,9 @@ void Cutscene_HandleEntranceTriggers(PlayState* play) {
 void Cutscene_HandleConditionalTriggers(PlayState* play) {
     osSyncPrintf("\ngame_info.mode=[%d] restart_flag", ((void)0, gSaveContext.respawnFlag));
 
-    if (gSaveContext.n64ddFlag) {
+    lusprintf(__FILE__, __LINE__, 2, "B: entranceIndex:%#x, cutsceneIndex:%#x", gSaveContext.entranceIndex, gSaveContext.cutsceneIndex);
+
+    if (CVarGetInteger("gSkipCutscenes", 0) || gSaveContext.n64ddFlag) {
         // Deku Tree Blue warp
         if (gSaveContext.entranceIndex == 0xEE && gSaveContext.cutsceneIndex == 0xFFF1) {
             gSaveContext.entranceIndex = 0x457;
@@ -2202,18 +2210,18 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
             (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_TOWER_ESCAPE));
         if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT)) {
             Flags_SetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT);
-            if (!gSaveContext.n64ddFlag) {
+            if (!gSaveContext.n64ddFlag && !CVarGetInteger("gSkipCutscenes", 0)) {
                 gSaveContext.entranceIndex = 0x0123;
                 gSaveContext.cutsceneIndex = 0xFFF0;
             }
         } else if (isEnteringKak && LINK_IS_ADULT && !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL) && meetsBurningKakRequirements) {
             Flags_SetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL);
-            if (!gSaveContext.n64ddFlag) {
+            if (!gSaveContext.n64ddFlag && !CVarGetInteger("gSkipCutscenes", 0)) {
                 gSaveContext.cutsceneIndex = 0xFFF0;
             }
         } else if ((gSaveContext.entranceIndex == 0x05E0) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE)) {
             Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE);
-            if (!gSaveContext.n64ddFlag) {
+            if (!gSaveContext.n64ddFlag && !CVarGetInteger("gSkipCutscenes", 0)) {
                 Item_Give(play, ITEM_OCARINA_FAIRY);
                 gSaveContext.entranceIndex = 0x011E;
                 gSaveContext.cutsceneIndex = 0xFFF0;
@@ -2222,7 +2230,7 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
             !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) && MeetsLACSRequirements()
         ) {
             Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
-            if (!gSaveContext.n64ddFlag) {
+            if (!gSaveContext.n64ddFlag && !CVarGetInteger("gSkipCutscenes", 0)) {
                 gSaveContext.entranceIndex = 0x0053;
                 gSaveContext.cutsceneIndex = 0xFFF8;
             }
@@ -2233,7 +2241,7 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
             Flags_SetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
             gSaveContext.entranceIndex = 0x0517;
             // In rando, skip the cutscene for the tower falling down after the escape.
-            if (gSaveContext.n64ddFlag) {
+            if (gSaveContext.n64ddFlag || CVarGetInteger("gSkipCutscenes", 0)) {
                 return;
             }
             gSaveContext.cutsceneIndex = 0xFFF0;

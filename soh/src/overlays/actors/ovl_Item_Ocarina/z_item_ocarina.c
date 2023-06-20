@@ -169,7 +169,7 @@ void ItemOcarina_DoNothing(ItemOcarina* this, PlayState* play) {
 
 void ItemOcarina_StartSoTCutscene(ItemOcarina* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
-        if (!gSaveContext.n64ddFlag) {
+        if (!gSaveContext.n64ddFlag && !CVarGetInteger("gSkipCutscenes", 0)) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gHyruleFieldZeldaSongOfTimeCs);
             gSaveContext.cutsceneTrigger = 1;
         } else {
@@ -189,10 +189,12 @@ void ItemOcarina_WaitInWater(ItemOcarina* this, PlayState* play) {
         this->actionFunc = ItemOcarina_StartSoTCutscene;
         this->actor.draw = NULL;
     } else {
-        if (!gSaveContext.n64ddFlag) {
+        if (!gSaveContext.n64ddFlag && !CVarGetInteger("gSkipCutscenes", 0)) {
             func_8002F434(&this->actor, play, GI_OCARINA_OOT, 30.0f, 50.0f);
         } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
+            GetItemEntry getItemEntry = gSaveContext.n64ddFlag ? 
+                Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT) : 
+                ItemTable_RetrieveEntry(MOD_NONE, GI_OCARINA_OOT);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 30.0f, 50.0f);
         }
 

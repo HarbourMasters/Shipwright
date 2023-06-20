@@ -387,7 +387,7 @@ s32 func_80AF5DFC(EnSa* this, PlayState* play) {
         return 1;
     }
     if (play->sceneNum == SCENE_SPOT05 && (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER))) {
-        if (gSaveContext.n64ddFlag) {
+        if (gSaveContext.n64ddFlag || CVarGetInteger("gSkipCutscenes", 0)) {
             return 5;
         }
         return CHECK_QUEST_ITEM(QUEST_SONG_SARIA) ? 2 : 5;
@@ -636,7 +636,7 @@ void func_80AF683C(EnSa* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (!(player->actor.world.pos.z >= -2220.0f) && !Play_InCsMode(play)) {
-        if (gSaveContext.n64ddFlag) {
+        if (gSaveContext.n64ddFlag || CVarGetInteger("gSkipCutscenes", 0)) {
             GivePlayerRandoRewardSaria(this, play);
             return;
         }

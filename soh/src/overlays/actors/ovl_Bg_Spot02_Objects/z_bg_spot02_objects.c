@@ -131,7 +131,7 @@ void func_808AC908(BgSpot02Objects* this, PlayState* play) {
 
     // We want to do most of the same things in rando, but we're not in a cutscene and the flag for
     // destroying the royal tombstone is already set.
-    if (gSaveContext.n64ddFlag && Flags_GetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB)) {
+    if ((gSaveContext.n64ddFlag || CVarGetInteger("gSkipCutscenes", 0)) && Flags_GetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB)) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_GRAVE_EXPLOSION);
         this->timer = 25;
         pos.x = (Math_SinS(this->dyna.actor.shape.rot.y) * 50.0f) + this->dyna.actor.world.pos.x;

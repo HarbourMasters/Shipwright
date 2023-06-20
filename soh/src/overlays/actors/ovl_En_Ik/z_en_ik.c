@@ -1442,7 +1442,7 @@ void func_80A781CC(Actor* thisx, PlayState* play) {
         this->actor.update = EnIk_Update;
         this->actor.draw = EnIk_Draw;
         // Don't initiate nabooru defeat CS in rando
-        if (!(gSaveContext.n64ddFlag)) {
+        if (!gSaveContext.n64ddFlag && !CVarGetInteger("gSkipCutscenes", 0)) {
             Cutscene_SetSegment(play, gSpiritBossNabooruKnuckleDefeatCs);
             gSaveContext.cutsceneTrigger = 1;
             Actor_SetScale(&this->actor, 0.01f);

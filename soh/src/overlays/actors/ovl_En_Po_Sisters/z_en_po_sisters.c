@@ -863,7 +863,7 @@ void func_80ADB338(EnPoSisters* this, PlayState* play) {
                 this->unk_19C--;
 
                 // Force Meg to respawn instantly after getting hit
-                if (gSaveContext.n64ddFlag) {
+                if (gSaveContext.n64ddFlag || CVarGetInteger("gSkipCutscenes", 0)) {
                     this->unk_19C = 0;
                 }
             }
