@@ -1646,6 +1646,20 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                         }
                     }
                     break;
+                case 20:
+                    // This is for the child pulling the master sword from the pedestal
+                    // The rotation isn't 100% vanilla but it's good enough :tm:
+                    OPEN_DISPS(play->state.gfxCtx);
+
+                    Matrix_RotateZYX(-0x4400, -0x800, 0x8000, MTXMODE_APPLY);
+                    Matrix_Translate(280, -280, -160, MTXMODE_APPLY);
+
+                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                    gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftHandHoldingMasterSwordNearDL);
+
+                    CLOSE_DISPS(play->state.gfxCtx);
+                    break;
             }
         }
 

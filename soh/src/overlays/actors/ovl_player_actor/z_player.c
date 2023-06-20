@@ -14600,12 +14600,15 @@ void func_80851A50(PlayState* play, Player* this, CsCmdActorAction* arg2) {
         sp2C = &D_808551A4[gSaveContext.linkAge];
         this->interactRangeActor->parent = &this->actor;
 
-        if (!LINK_IS_ADULT) {
+        if (!LINK_IS_ADULT && !CVarGetInteger("gAltLinkEquip", 0)) {
             dLists = gPlayerLeftHandBgsDLs;
         } else {
             dLists = gPlayerLeftHandClosedDLs;
         }
         this->leftHandDLists = &dLists[gSaveContext.linkAge];
+
+        if (!LINK_IS_ADULT && CVarGetInteger("gAltLinkEquip", 0))
+            this->leftHandType = 20; //I'll be amazed if this actually works
 
         func_8002F7DC(&this->actor, sp2C->unk_00);
         if (!LINK_IS_ADULT) {
