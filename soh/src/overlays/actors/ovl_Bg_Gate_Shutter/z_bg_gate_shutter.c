@@ -44,8 +44,8 @@ void BgGateShutter_Init(Actor* thisx, PlayState* play) {
     this->somePos.x = thisx->world.pos.x;
     this->somePos.y = thisx->world.pos.y;
     this->somePos.z = thisx->world.pos.z;
-    if (((gSaveContext.infTable[7] & 0x40) ||
-         (!gSaveContext.n64ddFlag && (gSaveContext.eventChkInf[4] & 0x20)) ||
+    if (((Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)) ||
+         (!gSaveContext.n64ddFlag && (Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL))) ||
          (gSaveContext.n64ddFlag && (Randomizer_GetSettingValue(RSK_KAK_GATE) == RO_KAK_GATE_OPEN))) &&
         (play->sceneNum == SCENE_SPOT01)) {
         thisx->world.pos.x = -89.0f;
@@ -66,7 +66,7 @@ void BgGateShutter_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_8087828C(BgGateShutter* this, PlayState* play) {
-    if (this->openingState == 1 && !(gSaveContext.infTable[7] & 0x40)) {
+    if (this->openingState == 1 && !Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)) {
         this->unk_178 = 2;
         this->actionFunc = func_80878300;
     } else if (this->openingState == 2) {

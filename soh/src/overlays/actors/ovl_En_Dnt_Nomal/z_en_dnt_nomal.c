@@ -249,7 +249,7 @@ void EnDntNomal_TargetWait(EnDntNomal* this, PlayState* play) {
             func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
             // "Big hit"
             osSyncPrintf(VT_FGCOL(CYAN) "☆☆☆☆☆ 大当り ☆☆☆☆☆ %d\n" VT_RST, this->hitCounter);
-            if (!LINK_IS_ADULT && !(gSaveContext.itemGetInf[1] & 0x2000)) {
+            if (!LINK_IS_ADULT && !Flags_GetItemGetInf(ITEMGETINF_1D)) {
                 this->hitCounter++;
                 if (this->hitCounter >= 3) {
                     if(gSaveContext.n64ddFlag) {

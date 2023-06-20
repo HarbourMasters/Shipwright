@@ -356,14 +356,14 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                 if ((pauseCtx->debugState == 0) && (pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0)) {
                     // only allow mask select when:
                     // the shop is open:
-                    // * zelda's letter check: gSaveContext.eventChkInf[4] & 1
-                    // * kak gate check: gSaveContext.infTable[7] & 0x40
-                    // and the mask quest is complete: gSaveContext.eventChkInf[8] & 0x8000
+                    // * zelda's letter check: Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)
+                    // * kak gate check: Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)
+                    // and the mask quest is complete: Flags_GetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE)
                     if (CVarGetInteger("gMaskSelect", 0) &&
-                        (gSaveContext.eventChkInf[8] & 0x8000) &&
+                        (Flags_GetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE)) &&
                         cursorSlot == SLOT_TRADE_CHILD && CHECK_BTN_ALL(input->press.button, BTN_A) &&
-                        (gSaveContext.eventChkInf[4] & 1) &&
-                        (gSaveContext.infTable[7] & 0x40)) {
+                        (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) &&
+                        (Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD))) {
                         Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                         gSelectingMask = !gSelectingMask;
                     }

@@ -638,7 +638,7 @@ void BossVa_Init(Actor* thisx, PlayState* play2) {
                                0, BOSSVA_DOOR);
             if (Flags_GetClear(play, play->roomCtx.curRoom.num)) {
                 warpId = ACTOR_EN_RU1;
-                if (gSaveContext.eventChkInf[3] & 0x80) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                     warpId = ACTOR_DOOR_WARP1;
                 }
                 Actor_Spawn(&play->actorCtx, play, warpId, this->actor.world.pos.x, this->actor.world.pos.y,
@@ -651,7 +651,7 @@ void BossVa_Init(Actor* thisx, PlayState* play2) {
             } else {
                 this->actor.colChkInfo.damageTable = sDamageTable;
                 sPhase2Timer = 0xFFFF;
-                if (gSaveContext.eventChkInf[7] & 0x40) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_BARINA_BATTLE)) {
                     sCsState = INTRO_CALL_BARI;
                     sDoorState = 100;
                     func_8002DF54(play, &this->actor, 1);
@@ -986,7 +986,7 @@ void BossVa_BodyIntro(BossVa* this, PlayState* play) {
                 sCameraNextAt.y = 140.0f;
                 sCameraNextAt.z = -200.0f;
 
-                if (!(gSaveContext.eventChkInf[7] & 0x40)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_BEGAN_BARINA_BATTLE)) {
                     TitleCard_InitBossName(play, &play->actorCtx.titleCtx,
                                            SEGMENTED_TO_VIRTUAL(gBarinadeTitleCardENGTex), 160, 180, 128, 40, true);
                 }
@@ -1028,7 +1028,7 @@ void BossVa_BodyIntro(BossVa* this, PlayState* play) {
                 Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
                 func_8002DF54(play, &this->actor, 7);
                 sCsState++;
-                gSaveContext.eventChkInf[7] |= 0x40;
+                Flags_SetEventChkInf(EVENTCHKINF_BEGAN_BARINA_BATTLE);
                 player->actor.shape.rot.y = player->actor.world.rot.y = this->actor.yawTowardsPlayer + 0x8000;
             }
             break;

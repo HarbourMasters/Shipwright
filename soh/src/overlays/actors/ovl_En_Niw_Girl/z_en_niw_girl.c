@@ -144,7 +144,7 @@ void EnNiwGirl_Talk(EnNiwGirl* this, PlayState* play) {
                      -10.0f);
     this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     this->actor.textId = 0x7000;
-    if ((gSaveContext.eventChkInf[8] & 1) && (this->unk_27A == 0)) {
+    if ((Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) && (this->unk_27A == 0)) {
         this->actor.textId = 0x70EA;
     }
     switch (Player_GetMask(play)) {

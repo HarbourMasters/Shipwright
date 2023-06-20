@@ -570,7 +570,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
             Play_ChangeCameraStatus(play, this->csCamIndex, CAM_STAT_ACTIVE);
             this->csCamFov = 60.0f;
 
-            if (gSaveContext.eventChkInf[7] & 0x100 || gSaveContext.n64ddFlag || gSaveContext.isBossRush) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_GANONDORF_BATTLE) || gSaveContext.n64ddFlag || gSaveContext.isBossRush) {
                 // watched cutscene already, skip most of it
                 this->csState = 17;
                 this->csTimer = 0;
@@ -1108,12 +1108,12 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
                 gSegments[6] = VIRTUAL_TO_PHYSICAL(
                     play->objectCtx.status[Object_GetIndex(&play->objectCtx, OBJECT_GANON)].segment);
 
-                if (!(gSaveContext.eventChkInf[7] & 0x100)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_BEGAN_GANONDORF_BATTLE)) {
                     TitleCard_InitBossName(play, &play->actorCtx.titleCtx,
                                            SEGMENTED_TO_VIRTUAL(gGanondorfTitleCardENGTex), 160, 180, 128, 40, true);
                 }
 
-                gSaveContext.eventChkInf[7] |= 0x100;
+                Flags_SetEventChkInf(EVENTCHKINF_BEGAN_GANONDORF_BATTLE);
             }
 
             if (this->csTimer >= 20) {
@@ -1540,7 +1540,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
             if (this->csTimer == 180) {
                 play->sceneLoadFlag = 0x14;
                 if ((gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_TOWER_ESCAPE) || gSaveContext.isBossRush)) {
-                    Flags_SetEventChkInf(0xC7);
+                    Flags_SetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
                     play->nextEntranceIndex = 0x517;
                 }
                 else {
