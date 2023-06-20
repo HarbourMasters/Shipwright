@@ -879,7 +879,7 @@ void CheckTrackerWindow::DrawElement() {
 
     BeginFloatWindows("Check Tracker", mIsVisible, ImGuiWindowFlags_NoScrollbar);
 
-    if (!IsGameRunning) {
+    if (!IsGameRunning()) {
         ImGui::Text("Waiting for file load..."); //TODO Language
         EndFloatWindows();
         return;
