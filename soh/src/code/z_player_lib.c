@@ -463,7 +463,8 @@ void Player_SetModels(Player* this, s32 modelGroup) {
     if (CVarGetInteger("gAltLinkEquip", 0))
         this->rightHandDLists = &sPlayerDListGroupsAlt[this->rightHandType][gSaveContext.linkAge];
 
-    if (CVarGetInteger("gBowSlingShotAmmoFix", 0) && this->rightHandType == 11) { // If holding Bow/Slingshot
+    if ((CVarGetInteger("gBowSlingShotAmmoFix", 0) && !CVarGetInteger("gAltLinkEquip", 0)) &&
+        this->rightHandType == 11) { // If holding Bow/Slingshot without new DList system
         this->rightHandDLists = &sPlayerDListGroupsAlt[this->rightHandType][Player_HoldsSlingshot(this)];
     }
 
