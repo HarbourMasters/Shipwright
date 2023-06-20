@@ -445,34 +445,31 @@ void Entrance_SetWarpSongEntrance(void) {
 }
 
 void Entrance_OverrideBlueWarp(void) {
-    // Set nextEntranceIndex as a flag so that Grotto_CheckSpecialEntrance
-    // won't return index 0x7FFF, which can't work to override blue warps.
-    gPlayState->nextEntranceIndex = 0;
+    // Handles first time entering bluewarp (with item give)
+    switch (gSaveContext.entranceIndex) {
+        case 0x0457: // Gohma blue warp
+        case 0x047A: // KD blue warp
+        case 0x010E: // Barinade blue warp
+        case 0x0608: // Phantom Ganon blue warp
+        case 0x0564: // Volvagia blue warp
+        case 0x060C: // Morpha blue warp
+        case 0x0610: // Bongo-Bongo blue warp
+        case 0x0580: // Twinrova blue warp
+            gSaveContext.entranceIndex = Entrance_OverrideNextIndex(gSaveContext.entranceIndex);
+            return;
+    }
 
-    switch (gPlayState->sceneNum) {
-        case SCENE_YDAN_BOSS: // Ghoma boss room
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0457);
-            return;
-        case SCENE_DDAN_BOSS: // King Dodongo boss room
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x047A);
-            return;
-        case SCENE_BDAN_BOSS: // Barinade boss room
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x010E);
-            return;
-        case SCENE_MORIBOSSROOM: // Phantom Ganon boss room
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0608);
-            return;
-        case SCENE_FIRE_BS: // Volvagia boss room
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0564);
-            return;
-        case SCENE_MIZUSIN_BS: // Morpha boss room
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x060C);
-            return;
-        case SCENE_JYASINBOSS: // Bongo-Bongo boss room
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0610);
-            return;
-        case SCENE_HAKADAN_BS: // Twinrova boss room
-            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(0x0580);
+    // Handles second+ times entering bluewarp
+    switch (gPlayState->nextEntranceIndex) {
+        case 0x0457: // Gohma blue warp
+        case 0x047A: // KD blue warp
+        case 0x010E: // Barinade blue warp
+        case 0x0608: // Phantom Ganon blue warp
+        case 0x0564: // Volvagia blue warp
+        case 0x060C: // Morpha blue warp
+        case 0x0610: // Bongo-Bongo blue warp
+        case 0x0580: // Twinrova blue warp
+            gPlayState->nextEntranceIndex = Entrance_OverrideNextIndex(gPlayState->nextEntranceIndex);
             return;
     }
 }
