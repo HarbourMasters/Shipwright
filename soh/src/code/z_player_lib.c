@@ -1826,36 +1826,6 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                         CLOSE_DISPS(play->state.gfxCtx);
                     }
                     break;
-                case 13:
-                    OPEN_DISPS(play->state.gfxCtx);
-
-                    if (LINK_IS_ADULT) { //Repositions the Ocarina for Adult
-                        Matrix_Translate(115.0f, 200.0f, 115.0f, MTXMODE_APPLY);
-                        Matrix_RotateZYX(7.57f, 3.72f, 0.0f, MTXMODE_APPLY);
-                    }
-
-                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                                G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-
-                    gSPDisplayList(POLY_OPA_DISP++, gLinkChildRightHandHoldingFairyOcarinaNearDL);
-
-                    CLOSE_DISPS(play->state.gfxCtx);
-                    break;
-                case 14:
-                    OPEN_DISPS(play->state.gfxCtx);
-
-                    if (LINK_IS_ADULT) { //Repositions the Ocarina for Adult
-                        Matrix_Translate(115.0f, 200.0f, 115.0f, MTXMODE_APPLY);
-                        Matrix_RotateZYX(7.57f, 3.72f, 0.0f, MTXMODE_APPLY);
-                    }
-
-                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                                G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-
-                    gSPDisplayList(POLY_OPA_DISP++, gLinkChildRightHandAndOotNearDL); //Yes, Both ages use the Child OoT
-
-                    CLOSE_DISPS(play->state.gfxCtx);
-                    break;
                 case 15:
                     OPEN_DISPS(play->state.gfxCtx);
 
@@ -1872,7 +1842,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
             }
             //I don't know why these need to be here, they shouldn't, but if they aren't,
             //Song cutscenes make the ocarinas dissapear.
-            if (this->itemAction == PLAYER_IA_OCARINA_FAIRY) {
+            if (this->itemAction == PLAYER_IA_OCARINA_FAIRY || this->rightHandType == 13) {
                 OPEN_DISPS(play->state.gfxCtx);
 
                 if (LINK_IS_ADULT) {
@@ -1887,7 +1857,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                 CLOSE_DISPS(play->state.gfxCtx);
             }
-            if (this->itemAction == PLAYER_IA_OCARINA_TIME) {
+            if (this->itemAction == PLAYER_IA_OCARINA_TIME || this->rightHandType == 14) {
                 OPEN_DISPS(play->state.gfxCtx);
 
                 if (LINK_IS_ADULT) {
