@@ -6310,6 +6310,8 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
 
     if(gSaveContext.pendingIceTrapCount) {
         gSaveContext.pendingIceTrapCount--;
+        GameInteractor_ExecuteOnTrapProcessedHooks();
+        if (CVarGetInteger("gChestTraps.enabled", 0)) return;
         this->stateFlags1 &= ~(PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_ITEM_OVER_HEAD);
         this->actor.colChkInfo.damage = 0;
         func_80837C0C(play, this, 3, 0.0f, 0.0f, 0, 20);
@@ -12944,15 +12946,10 @@ void func_8084E6D4(Player* this, PlayState* play) {
                     func_8083C0E8(this, play);
                     GameInteractor_ExecuteOnItemReceiveHooks(this->getItemEntry);
                 } else {
-                        this->actor.colChkInfo.damage = 0;
-                    if (!CVarGetInteger("gChestTraps.enabled", 0)) {
-                        func_80837C0C(play, this, 3, 0.0f, 0.0f, 0, 20);
-                    }
-                        GameInteractor_ExecuteOnItemReceiveHooks(this->getItemEntry);
-                        this->getItemId = GI_NONE;
-                        this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
-                        // Gameplay stats: Increment Ice Trap count
-                        gSaveContext.sohStats.count[COUNT_ICE_TRAPS]++;
+                    gSaveContext.pendingIceTrapCount++;
+                    Player_SetPendingFlag(this, play);
+                    func_8083C0E8(this, play);
+                    GameInteractor_ExecuteOnItemReceiveHooks(this->getItemEntry);
                 }
                 return;
             }

@@ -8,6 +8,7 @@ void GameInteractor_ExecuteOnLoadGame(int32_t fileNum);
 void GameInteractor_ExecuteOnExitGame(int32_t fileNum);
 void GameInteractor_ExecuteOnGameFrameUpdate();
 void GameInteractor_ExecuteOnItemReceiveHooks(GetItemEntry itemEntry);
+void GameInteractor_ExecuteOnTrapProcessedHooks();
 void GameInteractor_ExecuteOnSaleEndHooks(GetItemEntry itemEntry);
 void GameInteractor_ExecuteOnTransitionEndHooks(int16_t sceneNum);
 void GameInteractor_ExecuteOnSceneInit(int16_t sceneNum);

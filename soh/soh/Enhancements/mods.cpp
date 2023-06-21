@@ -618,8 +618,8 @@ void RegisterAltChestTypes() {
     static int statusTimer = -1;
     static int eventTimer = -1;
 
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) {
-        if (!CVarGetInteger("gChestTraps.enabled", 0) || itemEntry.itemId != RG_ICE_TRAP) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTrapProcessed>([]() {
+        if (!CVarGetInteger("gChestTraps.enabled", 0)) {
             return;
         }
         roll = RandomElement(getEnabledChestTraps());
