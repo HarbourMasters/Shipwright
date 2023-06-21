@@ -537,42 +537,10 @@ void CheckTrackerDialogClosed() {
     }
 }
 
-//json SerializeTrackerData(int fileNum, bool gameSave) {
-//    json block;
-//    block["checks"] = json::array();
-//    //std::map<RandomizerCheck, RandomizerCheckTrackerData> trackerData(*CheckTracker::GetCheckTrackerData());
-//    for (int i = 1; i < RC_MAX; i++) {
-//        /*if (i == RC_LINKS_POCKET)
-//            continue;*/
-//        json innerBlock = gSaveContext.checkTrackerData[i];
-//        if (gSaveContext.checkTrackerData[i].status == RCSHOW_COLLECTED) {
-//            if (gameSave) {
-//                innerBlock["status"] = RCSHOW_SAVED;
-//                //CheckTracker::GetCheckTrackerData()->find(rc)->second.status = RCSHOW_SAVED;
-//            } else {
-//                innerBlock["status"] = RCSHOW_SCUMMED;
-//            }
-//        }
-//
-//        block["checks"].push_back(innerBlock);
-//    }
-//    return block;
-//}
-
 void CheckTrackerTransition(uint32_t sceneNum) {
     if (!IsGameRunning()) {
         return;
     }
-    //if (newFileCheck) {
-    //    newFileCheck = false;
-    //    for (auto [area, check] : checksByArea) {
-    //        CheckByArea(area, GET_ITEM_NONE, true);
-    //    }
-    //    //EnqueueSave(gSaveContext.fileNum, true);
-    //    //SaveTrackerData(gSaveContext.fileNum, true, true);
-    //    UpdateAllOrdering();
-    //    UpdateInventoryChecks();
-    //}
     if (transitionCheck) {
         transitionCheck = false;
         checkCollected = true;
@@ -853,8 +821,6 @@ void Teardown() {
         vec.clear();
         areaChecksGotten[rcArea] = 0;
     }
-    //checkStatusMap.clear();
-    //checkTrackerData.clear();
     checksByArea.clear();
     areasSpoiled = 0;
     checkCollected = false;
@@ -1413,8 +1379,6 @@ void DrawLocation(RandomizerCheckObject rcObj) {
                 gSaveContext.checkTrackerData[rcObj.rc].skipped = true;
                 areaChecksGotten[rcObj.rcArea]++;
             }
-            //EnqueueSave(gSaveContext.fileNum, false);
-            //SaveTrackerData(gSaveContext.fileNum, true, false);
             UpdateOrdering(rcObj.rcArea);
             UpdateInventoryChecks();
         }
@@ -1635,12 +1599,6 @@ void CheckTrackerWindow::InitElement() {
     Color_Saved_Main            = CVarGetColor("gCheckTrackerSavedMainColor",             Color_Main_Default);
     Color_Saved_Extra           = CVarGetColor("gCheckTrackerSavedExtraColor",            Color_Saved_Extra_Default);
 
-    /*LUS::RegisterHook<LUS::ControllerRead>([](OSContPad* cont_pad) {
-        trackerButtonsPressed = cont_pad;
-    });*/
-    /*LUS::RegisterHook<LUS::LoadFile>([](uint32_t fileNum) {
-        doInitialize = true;
-    });*/
     SaveManager::Instance->AddInitFunction(InitTrackerData);
     sectionId = SaveManager::Instance->AddSaveFunction("checkTracker", 1, SaveFile, true, -1);
     SaveManager::Instance->AddLoadFunction("checkTracker", 1, LoadFile);
