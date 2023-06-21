@@ -56,6 +56,7 @@ bool previousShowHidden = false;
 bool checkCollected = false;
 int checkLoops = 0;
 int checkCounter = 0;
+u16 savedFrames = 0;
 bool messageCloseCheck = false;
 bool pendingSaleCheck = false;
 bool transitionCheck = false;
@@ -600,6 +601,9 @@ void CheckTrackerFrame() {
             checkLoops = 0;
         }
     }
+    if (savedFrames > 0) {
+        savedFrames--;
+    }
 }
 
 void CheckTrackerSaleEnd(GetItemEntry giEntry) {
@@ -769,7 +773,7 @@ void InitTrackerData(bool isDebug) {
 void SaveTrackerData(SaveContext* saveContext, int sectionID, bool gameSave) {
     SaveManager::Instance->SaveArray("checkTrackerData", ARRAY_COUNT(saveContext->checkTrackerData), [&](size_t i) {
         if (saveContext->checkTrackerData[i].status == RCSHOW_COLLECTED) {
-            if (gameSave) {
+            if (gameSave || savedFrames > 0) {
                 gSaveContext.checkTrackerData[i].status = saveContext->checkTrackerData[i].status = RCSHOW_SAVED;
             } else {
                 saveContext->checkTrackerData[i].status = RCSHOW_SCUMMED;
@@ -781,6 +785,9 @@ void SaveTrackerData(SaveContext* saveContext, int sectionID, bool gameSave) {
 
 void SaveFile(SaveContext* saveContext, int sectionID, bool fullSave) {
     SaveTrackerData(saveContext, sectionID, fullSave);
+    if (fullSave) {
+        savedFrames = 20;
+    }
 }
 
 void LoadFile() {
