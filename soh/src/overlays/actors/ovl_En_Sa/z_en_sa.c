@@ -152,25 +152,25 @@ u16 func_80AF55E0(PlayState* play, Actor* thisx) {
     if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
         this->unk_208 = 0;
         this->unk_209 = TEXT_STATE_NONE;
-        if (gSaveContext.infTable[0] & 0x20) {
+        if (Flags_GetInfTable(INFTABLE_05)) {
             return 0x1048;
         } else {
             return 0x1047;
         }
     }
-    if (gSaveContext.eventChkInf[0] & 4) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_FIRST_SPOKE_TO_MIDO)) {
         this->unk_208 = 0;
         this->unk_209 = TEXT_STATE_NONE;
-        if (gSaveContext.infTable[0] & 8) {
+        if (Flags_GetInfTable(INFTABLE_03)) {
             return 0x1032;
         } else {
             return 0x1031;
         }
     }
-    if (gSaveContext.infTable[0] & 1) {
+    if (Flags_GetInfTable(INFTABLE_GREETED_BY_SARIA)) {
         this->unk_208 = 0;
         this->unk_209 = TEXT_STATE_NONE;
-        if (gSaveContext.infTable[0] & 2) {
+        if (Flags_GetInfTable(INFTABLE_01)) {
             return 0x1003;
         } else {
             return 0x1002;
@@ -187,16 +187,16 @@ s16 func_80AF56F4(PlayState* play, Actor* thisx) {
         case TEXT_STATE_CLOSING:
             switch (this->actor.textId) {
                 case 0x1002:
-                    gSaveContext.infTable[0] |= 2;
+                    Flags_SetInfTable(INFTABLE_01);
                     ret = NPC_TALK_STATE_IDLE;
                     break;
                 case 0x1031:
-                    gSaveContext.eventChkInf[0] |= 8;
-                    gSaveContext.infTable[0] |= 8;
+                    Flags_SetEventChkInf(EVENTCHKINF_COMPLAINED_ABOUT_MIDO);
+                    Flags_SetInfTable(INFTABLE_03);
                     ret = NPC_TALK_STATE_IDLE;
                     break;
                 case 0x1047:
-                    gSaveContext.infTable[0] |= 0x20;
+                    Flags_SetInfTable(INFTABLE_05);
                     ret = NPC_TALK_STATE_IDLE;
                     break;
                 default:
@@ -383,17 +383,17 @@ s32 func_80AF5DFC(EnSa* this, PlayState* play) {
         }
     }
     if (play->sceneNum == SCENE_KOKIRI_HOME5 && !LINK_IS_ADULT &&
-        INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY && !(gSaveContext.eventChkInf[4] & 1)) {
+        INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY && !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
         return 1;
     }
-    if (play->sceneNum == SCENE_SPOT05 && (gSaveContext.eventChkInf[4] & 1)) {
+    if (play->sceneNum == SCENE_SPOT05 && (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER))) {
         if (gSaveContext.n64ddFlag) {
             return 5;
         }
         return CHECK_QUEST_ITEM(QUEST_SONG_SARIA) ? 2 : 5;
     }
     if (play->sceneNum == SCENE_SPOT04 && !CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
-        if (gSaveContext.infTable[0] & 1) {
+        if (Flags_GetInfTable(INFTABLE_GREETED_BY_SARIA)) {
             return 1;
         }
         return 4;
@@ -591,7 +591,7 @@ void func_80AF6448(EnSa* this, PlayState* play) {
                     break;
             }
         } else if (!CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) &&
-                   ((gSaveContext.infTable[0] & 2) || (gSaveContext.infTable[0] & 8))) {
+                   ((Flags_GetInfTable(INFTABLE_01)) || (Flags_GetInfTable(INFTABLE_03)))) {
             if (this->unk_20B != 3) {
                 func_80AF5CD4(this, 3);
             }
@@ -727,7 +727,7 @@ void func_80AF6B20(EnSa* this, PlayState* play) {
         this->actor.world.pos = this->actor.home.pos;
         this->actor.world.rot = this->unk_21A;
         this->mouthIndex = 0;
-        gSaveContext.infTable[0] |= 1;
+        Flags_SetInfTable(INFTABLE_GREETED_BY_SARIA);
     }
 
     this->actionFunc = func_80AF6448;
