@@ -124,8 +124,8 @@ Color_RGBA8 Color_Skipped_Main_Default              = { 160, 160, 160, 255 };   
 Color_RGBA8 Color_Skipped_Extra_Default             = { 160, 160, 160, 255 };   // Grey
 Color_RGBA8 Color_Seen_Extra_Default                = { 255, 255, 255, 255 };   // TODO
 Color_RGBA8 Color_Hinted_Extra_Default              = { 255, 255, 255, 255 };   // TODO
-Color_RGBA8 Color_Collected_Extra_Default           = { 255, 255, 255, 255 };   // TODO
-Color_RGBA8 Color_Scummed_Extra_Default             = { 255, 255, 255, 255 };   // TODO
+Color_RGBA8 Color_Collected_Extra_Default           = { 242, 101,  34, 255 };   // Orange
+Color_RGBA8 Color_Scummed_Extra_Default             = {   0, 174, 239, 255 };   // Blue
 Color_RGBA8 Color_Saved_Extra_Default               = {   0, 185,   0, 255 };   // Green
 
 Color_RGBA8 Color_Background = { 0, 0, 0, 255 };
