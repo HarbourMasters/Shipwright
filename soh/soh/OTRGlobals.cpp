@@ -33,6 +33,7 @@
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/audio/AudioCollection.h"
 #include "Enhancements/audio/AudioEditor.h"
+#include "Enhancements/enhancementTypes.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/randomizer/randomizer.h"
 #include "Enhancements/randomizer/randomizer_entrance_tracker.h"
@@ -1031,10 +1032,10 @@ extern "C" uint32_t ResourceMgr_GetGameVersion(int index) {
 
 uint32_t IsSceneMasterQuest(s16 sceneNum) {
     uint32_t value = 0;
-    uint8_t mqMode = CVarGetInteger("gBetterDebugWarpScreenMQMode", 0);
-    if (mqMode == 1) { // non-mq wants to be mq
+    uint8_t mqMode = CVarGetInteger("gBetterDebugWarpScreenMQMode", WARP_MODE_OVERRIDE_OFF);
+    if (mqMode == WARP_MODE_OVERRIDE_MQ_AS_VANILLA) {
         return 1;
-    } else if (mqMode == 2) { // mq wants to be non-mq
+    } else if (mqMode == WARP_MODE_OVERRIDE_VANILLA_AS_MQ) {
         return 0;
     } else {
         if (OTRGlobals::Instance->HasMasterQuest()) {

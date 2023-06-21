@@ -377,7 +377,7 @@ void BossMo_Init(Actor* thisx, PlayState* play2) {
             MO_WATER_LEVEL(play) = -500;
             return;
         }
-        if (gSaveContext.eventChkInf[7] & 0x10) {
+        if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_MORPHA_BATTLE)) {
             Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS);
             this->tentMaxAngle = 5.0f;
             this->timers[0] = 50;
@@ -1445,7 +1445,7 @@ void BossMo_IntroCs(BossMo* this, PlayState* play) {
             if (this->timers[2] == 130) {
                 TitleCard_InitBossName(play, &play->actorCtx.titleCtx,
                                        SEGMENTED_TO_VIRTUAL(gMorphaTitleCardENGTex), 160, 180, 128, 40, true);
-                gSaveContext.eventChkInf[7] |= 0x10;
+                Flags_SetEventChkInf(EVENTCHKINF_BEGAN_MORPHA_BATTLE);
             }
             break;
         case MO_INTRO_FINISH:

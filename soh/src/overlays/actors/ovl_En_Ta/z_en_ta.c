@@ -74,7 +74,7 @@ void func_80B13AAC(EnTa* this, PlayState* play) {
 
     if (gSaveContext.eventInf[0] & 0x400) {
         if (gSaveContext.eventInf[0] & 0x100) {
-            if (gSaveContext.itemGetInf[0] & 4) {
+            if (Flags_GetItemGetInf(ITEMGETINF_TALON_BOTTLE)) {
                 this->actor.textId = 0x2088;
             } else {
                 this->actor.textId = 0x2086;
@@ -84,8 +84,8 @@ void func_80B13AAC(EnTa* this, PlayState* play) {
         }
         gSaveContext.eventInf[0] &= ~0x100;
     } else if (faceReaction == 0) {
-        if (gSaveContext.infTable[7] & 0x4000) {
-            if (gSaveContext.itemGetInf[0] & 4) {
+        if (Flags_GetInfTable(INFTABLE_TALKED_TO_TALON_IN_RANCH_HOUSE)) {
+            if (Flags_GetItemGetInf(ITEMGETINF_TALON_BOTTLE)) {
                 this->actor.textId = 0x208B;
             } else {
                 this->actor.textId = 0x207F;
@@ -123,11 +123,11 @@ void EnTa_Init(Actor* thisx, PlayState* play2) {
     switch (this->actor.params) {
         case 1:
             osSyncPrintf(VT_FGCOL(CYAN) " 追放タロン \n" VT_RST);
-            if (gSaveContext.eventChkInf[6] & 0x800) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO)) {
                 Actor_Kill(&this->actor);
             } else if (!LINK_IS_ADULT) {
                 Actor_Kill(&this->actor);
-            } else if (gSaveContext.eventChkInf[6] & 0x400) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_KAKARIKO)) {
                 func_80B13AA0(this, func_80B14CAC, func_80B167C0);
                 this->eyeIndex = 0;
                 Animation_PlayOnce(&this->skelAnime, &gTalonStandAnim);
@@ -142,7 +142,7 @@ void EnTa_Init(Actor* thisx, PlayState* play2) {
             break;
         case 2:
             osSyncPrintf(VT_FGCOL(CYAN) " 出戻りタロン \n" VT_RST);
-            if (!(gSaveContext.eventChkInf[6] & 0x800)) {
+            if (!Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO)) {
                 Actor_Kill(&this->actor);
             } else if (!LINK_IS_ADULT) {
                 Actor_Kill(&this->actor);
@@ -159,9 +159,9 @@ void EnTa_Init(Actor* thisx, PlayState* play2) {
         default:
             osSyncPrintf(VT_FGCOL(CYAN) " その他のタロン \n" VT_RST);
             if (play->sceneNum == SCENE_SPOT15) {
-                if (gSaveContext.eventChkInf[1] & 0x10) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
                     Actor_Kill(&this->actor);
-                } else if (gSaveContext.eventChkInf[1] & 0x8) {
+                } else if (Flags_GetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_CASTLE)) {
                     func_80B13AA0(this, func_80B14C18, func_80B167C0);
                     this->eyeIndex = 0;
                     Animation_PlayOnce(&this->skelAnime, &gTalonStandAnim);
@@ -175,7 +175,7 @@ void EnTa_Init(Actor* thisx, PlayState* play2) {
                 }
             } else if (play->sceneNum == SCENE_SOUKO) {
                 osSyncPrintf(VT_FGCOL(CYAN) " ロンロン牧場の倉庫 の タロン\n" VT_RST);
-                if (!(gSaveContext.eventChkInf[1] & 0x10)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
                     Actor_Kill(&this->actor);
                 } else if (LINK_IS_ADULT) {
                     Actor_Kill(&this->actor);
@@ -277,10 +277,10 @@ void func_80B143D4(EnTa* this, PlayState* play) {
 void func_80B14410(EnTa* this) {
     if (!LINK_IS_ADULT) {
         func_80B13AA0(this, func_80B14C18, func_80B167C0);
-        gSaveContext.eventChkInf[1] |= 0x8;
+        Flags_SetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_CASTLE);
     } else {
         func_80B13AA0(this, func_80B14CAC, func_80B167C0);
-        gSaveContext.eventChkInf[6] |= 0x400;
+        Flags_SetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_KAKARIKO);
     }
 }
 
@@ -465,7 +465,7 @@ void func_80B14B6C(EnTa* this, PlayState* play) {
         s16 csCamIdx = OnePointCutscene_Init(play, 4175, -99, &this->actor, MAIN_CAM);
         func_80B13AA0(this, func_80B14AF4, func_80B167C0);
         this->unk_2CC = 5;
-        gSaveContext.eventChkInf[1] |= 0x10;
+        Flags_SetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE);
         if (gSaveContext.n64ddFlag) {
             OnePointCutscene_EndCutscene(play, csCamIdx);
         }
@@ -490,10 +490,10 @@ void func_80B14C60(EnTa* this, PlayState* play) {
 }
 
 void func_80B14CAC(EnTa* this, PlayState* play) {
-    if (gSaveContext.eventChkInf[1] & 0x100) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED)) {
         if (func_80B142F4(this, play, 0x5017)) {
             func_80B13AA0(this, func_80B14C60, func_80B167C0);
-            gSaveContext.eventChkInf[6] |= 0x800;
+            Flags_SetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO);
         }
     } else if (func_80B142F4(this, play, 0x5016)) {
         func_80B13AA0(this, func_80B14C60, func_80B167C0);
@@ -872,7 +872,7 @@ void func_80B15E80(EnTa* this, PlayState* play) {
         this->actor.parent = NULL;
         this->actionFunc = func_80B15E28;
         if (!(this->unk_2E0 & 0x2)) {
-            gSaveContext.itemGetInf[0] |= 4;
+            Flags_SetItemGetInf(ITEMGETINF_TALON_BOTTLE);
         }
         this->unk_2E0 &= ~0x2;
     } else if (this->unk_2E0 & 2) {
@@ -992,8 +992,8 @@ void func_80B162E8(EnTa* this, PlayState* play) {
 
 void func_80B16364(EnTa* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
-        gSaveContext.infTable[7] |= 0x4000;
-        if (gSaveContext.itemGetInf[0] & 4) {
+        Flags_SetInfTable(INFTABLE_TALKED_TO_TALON_IN_RANCH_HOUSE);
+        if (Flags_GetItemGetInf(ITEMGETINF_TALON_BOTTLE)) {
             Message_ContinueTextbox(play, 0x208B);
             func_80B13AA0(this, func_80B15FE8, func_80B16938);
         } else {
@@ -1032,7 +1032,7 @@ void func_80B16504(EnTa* this, PlayState* play) {
         if (faceReaction != 0) {
             func_80B14FAC(this, func_80B15E28);
         } else {
-            gSaveContext.infTable[7] |= 0x4000;
+            Flags_SetInfTable(INFTABLE_TALKED_TO_TALON_IN_RANCH_HOUSE);
 
             switch (this->actor.textId) {
                 case 0x207E:

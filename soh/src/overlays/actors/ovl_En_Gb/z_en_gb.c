@@ -143,7 +143,7 @@ static Vec3f sBottlesPositions[] = {
 };
 
 void func_80A2F180(EnGb* this) {
-    if (gSaveContext.infTable[0xB] & 0x40) {
+    if (Flags_GetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET)) {
         this->textId = 0x70F5;
     } else {
         this->textId = 0x70F4;
@@ -308,8 +308,8 @@ void func_80A2F83C(EnGb* this, PlayState* play) {
 
 void func_80A2F94C(EnGb* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
-        if (!(gSaveContext.infTable[0xB] & 0x40)) {
-            gSaveContext.infTable[0xB] |= 0x40;
+        if (!Flags_GetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET)) {
+            Flags_SetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET);
         }
         func_80A2F180(this);
         this->actionFunc = func_80A2F83C;
@@ -318,8 +318,8 @@ void func_80A2F94C(EnGb* this, PlayState* play) {
 
 void func_80A2F9C0(EnGb* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
-        if (!(gSaveContext.infTable[0xB] & 0x40)) {
-            gSaveContext.infTable[0xB] |= 0x40;
+        if (!Flags_GetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET)) {
+            Flags_SetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET);
         }
         func_80A2F180(this);
         Player_UpdateBottleHeld(play, GET_PLAYER(play), ITEM_BOTTLE, PLAYER_IA_BOTTLE);
@@ -330,8 +330,8 @@ void func_80A2F9C0(EnGb* this, PlayState* play) {
 
 void func_80A2FA50(EnGb* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
-        if (!(gSaveContext.infTable[0xB] & 0x40)) {
-            gSaveContext.infTable[0xB] |= 0x40;
+        if (!Flags_GetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET)) {
+            Flags_SetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET);
         }
         func_80A2F180(this);
         Player_UpdateBottleHeld(play, GET_PLAYER(play), ITEM_BOTTLE, PLAYER_IA_BOTTLE);
