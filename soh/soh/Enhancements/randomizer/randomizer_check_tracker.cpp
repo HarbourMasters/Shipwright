@@ -442,6 +442,10 @@ bool CheckByArea(RandomizerCheckArea area = RCAREA_INVALID, GetItemEntry giEntry
                             if (HasSong(titem)) {
                                 collected = true;
                             }
+                        } else if (rco.rc == RC_GC_DARUNIAS_JOY) {
+                            if (CUR_UPG_VALUE(UPG_STRENGTH) == 1) {
+                                collected = true;
+                            }
                         }
                     }
                 }
@@ -679,10 +683,10 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
         } else if (giEntry.itemId == ITEM_SONG_PRELUDE) {
             SetCheckCollected(RC_SHEIK_AT_TEMPLE);
             return;
-        } /*else if (giEntry.itemId == ITEM_BRACELET) {
+        } else if (giEntry.itemId == ITEM_BRACELET) {
             SetCheckCollected(RC_GC_DARUNIAS_JOY);
             return;
-        }*/
+        }
     }
     checkScene = scene;
     checkArea = GetCheckArea();
