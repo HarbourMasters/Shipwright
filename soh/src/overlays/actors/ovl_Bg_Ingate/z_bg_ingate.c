@@ -46,7 +46,7 @@ void BgInGate_Init(Actor* thisx, PlayState* play) {
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
 
     if ((play->sceneNum != SCENE_SPOT20 || !LINK_IS_ADULT) ||
-        (((gSaveContext.eventChkInf[1] & 0x100)) && (gSaveContext.cutsceneIndex != 0xFFF0))) {
+        (((Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED))) && (gSaveContext.cutsceneIndex != 0xFFF0))) {
         Actor_Kill(&this->dyna.actor);
         return;
     }

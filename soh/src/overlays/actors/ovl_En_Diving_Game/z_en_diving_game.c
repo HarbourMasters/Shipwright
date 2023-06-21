@@ -144,14 +144,14 @@ s32 EnDivingGame_HasMinigameFinished(EnDivingGame* this, PlayState* play) {
     } else {
         s32 rupeesNeeded = 5;
 
-        if (gSaveContext.eventChkInf[3] & 0x100) {
+        if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
             rupeesNeeded = 10;
         }
         if (this->grabbedRupeesCounter >= rupeesNeeded) {
             // Won.
             gSaveContext.timer1State = 0;
             this->allRupeesThrown = this->state = this->phase = this->unk_2A2 = this->grabbedRupeesCounter = 0;
-            if (!(gSaveContext.eventChkInf[3] & 0x100)) {
+            if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
                 this->actor.textId = 0x4055;
             } else {
                 this->actor.textId = 0x405D;
@@ -164,7 +164,7 @@ s32 EnDivingGame_HasMinigameFinished(EnDivingGame* this, PlayState* play) {
             func_800F5B58();
             Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
             func_8002DF54(play, NULL, 8);
-            if (!(gSaveContext.eventChkInf[3] & 0x100)) {
+            if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
                 this->actionFunc = func_809EE96C;
             } else {
                 this->actionFunc = func_809EE048;
@@ -210,7 +210,7 @@ void EnDivingGame_Talk(EnDivingGame* this, PlayState* play) {
                 switch (this->state) {
                     case ENDIVINGGAME_STATE_NOTPLAYING:
                         this->unk_292 = TEXT_STATE_CHOICE;
-                        if (!(gSaveContext.eventChkInf[3] & 0x100)) {
+                        if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
                             this->actor.textId = 0x4053;
                             this->phase = ENDIVINGGAME_PHASE_1;
                         } else {
@@ -252,7 +252,7 @@ void EnDivingGame_HandlePlayChoice(EnDivingGame* this, PlayState* play) {
                 this->allRupeesThrown = this->state = this->phase = this->unk_2A2 = this->grabbedRupeesCounter = 0;
                 break;
         }
-        if (!(gSaveContext.eventChkInf[3] & 0x100) || this->actor.textId == 0x85 || this->actor.textId == 0x2D) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_SILVER_SCALE) || this->actor.textId == 0x85 || this->actor.textId == 0x2D) {
             Message_ContinueTextbox(play, this->actor.textId);
             this->unk_292 = TEXT_STATE_EVENT;
             this->actionFunc = func_809EE048;
@@ -311,7 +311,7 @@ void EnDivingGame_SetupRupeeThrow(EnDivingGame* this, PlayState* play) {
     this->unk_2D0.x = -280.0f;
     this->unk_2D0.y = -20.0f;
     this->unk_2D0.z = -240.0f;
-    if (!(gSaveContext.eventChkInf[3] & 0x100)) {
+    if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
         this->rupeesLeftToThrow = 5;
     } else {
         this->rupeesLeftToThrow = 10;
@@ -355,7 +355,7 @@ void EnDivingGame_RupeeThrow(EnDivingGame* this, PlayState* play) {
         this->spawnRuppyTimer = 5;
         EnDivingGame_SpawnRuppy(this, play);
         this->rupeesLeftToThrow--;
-        if (!(gSaveContext.eventChkInf[3] & 0x100)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
             this->unk_296 = 30;
         } else {
             this->unk_296 = 5;
@@ -413,7 +413,7 @@ void func_809EE800(EnDivingGame* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     if (this->unk_292 == Message_GetState(&play->msgCtx) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
-        if (!(gSaveContext.eventChkInf[3] & 0x100)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_SILVER_SCALE)) {
             func_80088B34(BREG(2) + 50);
         } else {
             func_80088B34(BREG(2) + 50);
@@ -486,7 +486,7 @@ void func_809EEAF8(EnDivingGame* this, PlayState* play) {
         // "Successful completion"
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
         this->allRupeesThrown = this->state = this->phase = this->unk_2A2 = this->grabbedRupeesCounter = 0;
-        gSaveContext.eventChkInf[3] |= 0x100;
+        Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_SILVER_SCALE);
         this->actionFunc = func_809EDCB0;
     }
 }

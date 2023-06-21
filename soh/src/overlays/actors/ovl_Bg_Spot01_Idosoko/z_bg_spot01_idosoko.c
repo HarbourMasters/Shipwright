@@ -51,7 +51,7 @@ void BgSpot01Idosoko_Init(Actor* thisx, PlayState* play) {
     // child Link has drained the water to the well
     if (!LINK_IS_ADULT || (gSaveContext.n64ddFlag &&
         Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF &&
-        Flags_GetEventChkInf(0x67))) {
+        Flags_GetEventChkInf(EVENTCHKINF_DRAINED_WELL_IN_KAKARIKO))) {
         Actor_Kill(&this->dyna.actor);
     } else {
         BgSpot01Idosoko_SetupAction(this, func_808ABF54);

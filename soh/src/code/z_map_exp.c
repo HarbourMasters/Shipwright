@@ -398,11 +398,11 @@ void Map_InitData(PlayState* play, s16 room) {
                     extendedMapIndex = 0x15;
                 }
             } else if (play->sceneNum == SCENE_SPOT09) {
-                if ((LINK_AGE_IN_YEARS == YEARS_ADULT) && !((gSaveContext.eventChkInf[9] & 0xF) == 0xF)) {
+                if ((LINK_AGE_IN_YEARS == YEARS_ADULT) && !GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {
                     extendedMapIndex = 0x16;
                 }
             } else if (play->sceneNum == SCENE_SPOT12) {
-                if ((!gSaveContext.n64ddFlag && ((gSaveContext.eventChkInf[9] & 0xF) == 0xF)) ||
+                if ((!gSaveContext.n64ddFlag && GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) ||
                     (gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_GERUDO_CARD))) {
                     extendedMapIndex = 0x17;
                 }
