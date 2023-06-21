@@ -2150,41 +2150,55 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
     osSyncPrintf("\ngame_info.mode=[%d] restart_flag", ((void)0, gSaveContext.respawnFlag));
 
     if (gSaveContext.n64ddFlag) {
+        uint8_t isBlueWarp = 0;
         // Deku Tree Blue warp
         if (gSaveContext.entranceIndex == 0xEE && gSaveContext.cutsceneIndex == 0xFFF1) {
             gSaveContext.entranceIndex = 0x457;
             gSaveContext.cutsceneIndex = 0;
+            isBlueWarp = 1;
         // Dodongo's Cavern Blue warp
         } else if (gSaveContext.entranceIndex == 0x13D && gSaveContext.cutsceneIndex == 0xFFF1) {
             gSaveContext.entranceIndex = 0x47A;
             gSaveContext.cutsceneIndex = 0;
+            isBlueWarp = 1;
         // Jabu Jabu's Blue warp
         } else if (gSaveContext.entranceIndex == 0x10E && gSaveContext.cutsceneIndex == 0xFFF0) {
             gSaveContext.entranceIndex = 0x10E;
             gSaveContext.cutsceneIndex = 0;
+            isBlueWarp = 1;
         // Forest Temple Blue warp
         } else if (gSaveContext.entranceIndex == 0x6B && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_FOREST) {
             gSaveContext.entranceIndex = 0x608;
             gSaveContext.cutsceneIndex = 0;
+            isBlueWarp = 1;
         // Fire Temple Blue warp
         } else if (gSaveContext.entranceIndex == 0xDB && gSaveContext.cutsceneIndex == 0xFFF3) {
             gSaveContext.entranceIndex = 0x564;
             gSaveContext.cutsceneIndex = 0;
+            isBlueWarp = 1;
         // Water Temple Blue warp
         } else if (gSaveContext.entranceIndex == 0x6B && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_WATER) {
             gSaveContext.entranceIndex = 0x60C;
             gSaveContext.cutsceneIndex = 0;
+            isBlueWarp = 1;
         // Spirit Temple Blue warp
         } else if (gSaveContext.entranceIndex == 0x6B && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_SPIRIT) {
             gSaveContext.entranceIndex = 0x610;
             gSaveContext.cutsceneIndex = 0;
+            isBlueWarp = 1;
         // Shadow Temple Blue warp
         } else if (gSaveContext.entranceIndex == 0x6B && gSaveContext.cutsceneIndex == 0x0 && gSaveContext.chamberCutsceneNum == CHAMBER_CS_SHADOW) {
             gSaveContext.entranceIndex = 0x580;
             gSaveContext.cutsceneIndex = 0;
+            isBlueWarp = 1;
         // Zelda escaping with impa cutscene
         } else if (gSaveContext.entranceIndex == 0xCD && gSaveContext.cutsceneIndex == 0xFFF1) {
             gSaveContext.cutsceneIndex = 0;
+        }
+
+        if (isBlueWarp && (Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF ||
+            Randomizer_GetSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) != RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
+            Entrance_OverrideBlueWarp();
         }
     }
 
