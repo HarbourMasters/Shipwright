@@ -322,6 +322,8 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("NPC_Gerudo",                    "Gerudo",               GROUP_NPC,          ImVec4( 90,   0, 140, 255), false, true, false),
     COSMETIC_OPTION("NPC_MetalTrap",                 "Metal Trap",           GROUP_NPC,          ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("NPC_IronKnuckles",              "Iron Knuckles",        GROUP_NPC,          ImVec4(245, 255, 205, 255), false, true, false),
+    COSMETIC_OPTION("NPC_EnemyHealthBar",            "Enemy Health Bar",     GROUP_NPC,          ImVec4(255,   0,   0, 255), true, true, false),
+    COSMETIC_OPTION("NPC_EnemyHealthBorder",         "Enemy Health Border",  GROUP_NPC,          ImVec4(255, 255, 255, 255), true, false, true),
 };
 
 static const char* MarginCvarList[] {
