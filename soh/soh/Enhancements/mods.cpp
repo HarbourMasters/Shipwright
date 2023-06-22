@@ -577,86 +577,86 @@ void RegisterMirrorModeHandler() {
 }
 
 typedef enum {
-    CHEST_ICE_TRAP,
-    CHEST_BURN_TRAP,
-    CHEST_SHOCK_TRAP,
-    CHEST_KNOCK_TRAP,
-    CHEST_SPEED_TRAP,
-    CHEST_BOMB_TRAP,
-    CHEST_VOID_TRAP,
-    CHEST_AMMO_TRAP,
-    CHEST_KILL_TRAP,
-    CHEST_TELEPORT_TRAP,
-    CHEST_TRAP_MAX
+    ADD_ICE_TRAP,
+    ADD_BURN_TRAP,
+    ADD_SHOCK_TRAP,
+    ADD_KNOCK_TRAP,
+    ADD_SPEED_TRAP,
+    ADD_BOMB_TRAP,
+    ADD_VOID_TRAP,
+    ADD_AMMO_TRAP,
+    ADD_KILL_TRAP,
+    ADD_TELEPORT_TRAP,
+    ADD_TRAP_MAX
 } AltTrapType;
 
 const char* altTrapTypeCvars[] = {
-    "gChestTraps.Ice",
-    "gChestTraps.Burn",
-    "gChestTraps.Shock",
-    "gChestTraps.Knock",
-    "gChestTraps.Speed",
-    "gChestTraps.Bomb",
-    "gChestTraps.Void",
-    "gChestTraps.Ammo",
-    "gChestTraps.Kill",
-    "gChestTraps.Tele"
+    "gAddTraps.Ice",
+    "gAddTraps.Burn",
+    "gAddTraps.Shock",
+    "gAddTraps.Knock",
+    "gAddTraps.Speed",
+    "gAddTraps.Bomb",
+    "gAddTraps.Void",
+    "gAddTraps.Ammo",
+    "gAddTraps.Kill",
+    "gAddTraps.Tele"
 };
 
-std::vector<AltTrapType> getEnabledChestTraps () {
-    std::vector<AltTrapType> enabledChestTraps;
-    for (int i = 0; i < CHEST_TRAP_MAX; i++) {
+std::vector<AltTrapType> getEnabledAddTraps () {
+    std::vector<AltTrapType> enabledAddTraps;
+    for (int i = 0; i < ADD_TRAP_MAX; i++) {
         if (CVarGetInteger(altTrapTypeCvars[i], 0)) {
-            enabledChestTraps.push_back(static_cast<AltTrapType>(i));
+            enabledAddTraps.push_back(static_cast<AltTrapType>(i));
         }
     }
-    return enabledChestTraps;
+    return enabledAddTraps;
 };
 
-void RegisterAltChestTypes() {
-    static AltTrapType roll = CHEST_TRAP_MAX;
+void RegisterAltTrapTypes() {
+    static AltTrapType roll = ADD_TRAP_MAX;
     static int statusTimer = -1;
     static int eventTimer = -1;
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTrapProcessed>([]() {
-        if (!CVarGetInteger("gChestTraps.enabled", 0)) {
+        if (!CVarGetInteger("gAddTraps.enabled", 0)) {
             return;
         }
-        roll = RandomElement(getEnabledChestTraps());
+        roll = RandomElement(getEnabledAddTraps());
         switch (roll) {
-            case CHEST_ICE_TRAP:
+            case ADD_ICE_TRAP:
                 GameInteractor::RawAction::FreezePlayer();
                 break;
-            case CHEST_BURN_TRAP:
+            case ADD_BURN_TRAP:
                 GameInteractor::RawAction::BurnPlayer();
                 break;
-            case CHEST_SHOCK_TRAP:
+            case ADD_SHOCK_TRAP:
                 GameInteractor::RawAction::ElectrocutePlayer();
                 break;
-            case CHEST_KNOCK_TRAP:
+            case ADD_KNOCK_TRAP:
                 eventTimer = 3;
                 break;
-            case CHEST_SPEED_TRAP:
+            case ADD_SPEED_TRAP:
                 Audio_PlaySoundGeneral(NA_SE_VO_KZ_MOVE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                 GameInteractor::State::RunSpeedModifier = -2;
                 statusTimer = 200;
                 Overlay_DisplayText(10, "Speed Decreased!");
                 break;
-            case CHEST_BOMB_TRAP:
+            case ADD_BOMB_TRAP:
                 eventTimer = 3;
                 break;
-            case CHEST_VOID_TRAP:
+            case ADD_VOID_TRAP:
                 Audio_PlaySoundGeneral(NA_SE_EN_GANON_LAUGH, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                 eventTimer = 3;                    
                 break;
-            case CHEST_AMMO_TRAP:
+            case ADD_AMMO_TRAP:
                 eventTimer = 3;
                 Overlay_DisplayText(5, "Ammo Halved!");
                 break;
-            case CHEST_KILL_TRAP:
+            case ADD_KILL_TRAP:
                 GameInteractor::RawAction::SetPlayerHealth(0);
                 break;
-            case CHEST_TELEPORT_TRAP:
+            case ADD_TELEPORT_TRAP:
                 eventTimer = 3;
                 break;
         }
@@ -668,16 +668,16 @@ void RegisterAltChestTypes() {
         }
         if (eventTimer == 0) {
             switch (roll) {
-                case CHEST_KNOCK_TRAP:
+                case ADD_KNOCK_TRAP:
                     GameInteractor::RawAction::KnockbackPlayer(1);
                     break;
-                case CHEST_BOMB_TRAP:
+                case ADD_BOMB_TRAP:
                     GameInteractor::RawAction::SpawnActor(ACTOR_EN_BOM, 1);
                     break;
-                case CHEST_VOID_TRAP:
+                case ADD_VOID_TRAP:
                     Play_TriggerRespawn(gPlayState);
                     break;
-                case CHEST_AMMO_TRAP:
+                case ADD_AMMO_TRAP:
                     AMMO(ITEM_STICK) = AMMO(ITEM_STICK) * 0.5;
                     AMMO(ITEM_NUT) = AMMO(ITEM_NUT) * 0.5;
                     AMMO(ITEM_SLINGSHOT) = AMMO(ITEM_SLINGSHOT) * 0.5;
@@ -686,7 +686,7 @@ void RegisterAltChestTypes() {
                     AMMO(ITEM_BOMBCHU) = AMMO(ITEM_BOMBCHU) * 0.5;
                     Audio_PlaySoundGeneral(NA_SE_VO_FR_SMILE_0, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                     break;
-                case CHEST_TELEPORT_TRAP:
+                case ADD_TELEPORT_TRAP:
                     int entrance;
                     int index = 1 + rand() % 10;
                     switch (index) {
@@ -743,5 +743,5 @@ void InitMods() {
     RegisterBonkDamage();
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
-    RegisterAltChestTypes();
+    RegisterAltTrapTypes();
 }

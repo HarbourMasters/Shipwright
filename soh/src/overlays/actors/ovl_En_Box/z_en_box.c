@@ -628,7 +628,7 @@ void EnBox_Update(Actor* thisx, PlayState* play) {
     if (((!gSaveContext.n64ddFlag && ((this->dyna.actor.params >> 5 & 0x7F) == 0x7C)) ||
         (gSaveContext.n64ddFlag && ABS(sItem.getItemId) == RG_ICE_TRAP)) &&
         this->actionFunc == EnBox_Open && this->skelanime.curFrame > 45 && this->iceSmokeTimer < 100) {
-        if (!CVarGetInteger("gChestTraps.enabled", 0)) {
+        if (!CVarGetInteger("gAddTraps.enabled", 0)) {
             EnBox_SpawnIceSmoke(this, play);
         }
     }

@@ -12945,21 +12945,22 @@ void func_8084E6D4(Player* this, PlayState* play) {
                                 this->actor.world.pos.y + 100.0f, this->actor.world.pos.z, 0, 0, 0, 0, true);
                     func_8083C0E8(this, play);
                     GameInteractor_ExecuteOnItemReceiveHooks(this->getItemEntry);
-                } else {
+                } else if (gSaveContext.n64ddFlag) {
                     gSaveContext.pendingIceTrapCount++;
                     Player_SetPendingFlag(this, play);
                     func_8083C0E8(this, play);
                     GameInteractor_ExecuteOnItemReceiveHooks(this->getItemEntry);
+                } else {
+                    this->actor.colChkInfo.damage = 0;
+                    func_80837C0C(play, this, 3, 0.0f, 0.0f, 0, 20);
                 }
                 return;
             }
 
-            if (!CVarGetInteger("gChestTraps.enabled", 0)) {
-                if (this->skelAnime.animation == &gPlayerAnim_link_normal_box_kick) {
-                        func_808322D0(play, this, &gPlayerAnim_link_demo_get_itemB);
-                } else {
-                        func_808322D0(play, this, &gPlayerAnim_link_demo_get_itemA);
-                }
+            if (this->skelAnime.animation == &gPlayerAnim_link_normal_box_kick) {
+                    func_808322D0(play, this, &gPlayerAnim_link_demo_get_itemB);
+            } else {
+                    func_808322D0(play, this, &gPlayerAnim_link_demo_get_itemA);
             }
 
             this->unk_850 = 2;

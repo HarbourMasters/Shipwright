@@ -1056,32 +1056,32 @@ void DrawEnhancementsMenu() {
 
             UIWidgets::Spacer(0);
 
-            UIWidgets::PaddedEnhancementCheckbox("Additional Chest Traps", "gChestTraps.enabled", true, false);
-            UIWidgets::Tooltip("Enables additional Chest Trap variants.");
+            UIWidgets::PaddedEnhancementCheckbox("Additional Traps", "gAddTraps.enabled", true, false);
+            UIWidgets::Tooltip("Enables additional Trap variants.");
 
-            if (CVarGetInteger("gChestTraps.enabled", 0)) {
+            if (CVarGetInteger("gAddTraps.enabled", 0)) {
                 UIWidgets::PaddedSeparator();
-                if (ImGui::BeginMenu("Chest Options")) {
+                if (ImGui::BeginMenu("Trap Options")) {
                     ImGui::Text("Tier 1 Traps:");
                     UIWidgets::Spacer(0);
-                    UIWidgets::PaddedEnhancementCheckbox("Freeze Traps", "gChestTraps.Ice", true, false);
-                    UIWidgets::PaddedEnhancementCheckbox("Burn Traps", "gChestTraps.Burn", true, false);
-                    UIWidgets::PaddedEnhancementCheckbox("Shock Traps", "gChestTraps.Shock", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Freeze Traps", "gAddTraps.Ice", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Burn Traps", "gAddTraps.Burn", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Shock Traps", "gAddTraps.Shock", true, false);
 
                     UIWidgets::PaddedSeparator();
                     ImGui::Text("Tier 2 Traps:");
                     UIWidgets::Spacer(0);
-                    UIWidgets::PaddedEnhancementCheckbox("Knockback Traps", "gChestTraps.Knock", true, false);
-                    UIWidgets::PaddedEnhancementCheckbox("Speed Traps", "gChestTraps.Speed", true, false);
-                    UIWidgets::PaddedEnhancementCheckbox("Bomb Traps", "gChestTraps.Bomb", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Knockback Traps", "gAddTraps.Knock", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Speed Traps", "gAddTraps.Speed", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Bomb Traps", "gAddTraps.Bomb", true, false);
 
                     UIWidgets::PaddedSeparator();
                     ImGui::Text("Tier 3 Traps:");
                     UIWidgets::Spacer(0);
-                    UIWidgets::PaddedEnhancementCheckbox("Void Traps", "gChestTraps.Void", true, false);
-                    UIWidgets::PaddedEnhancementCheckbox("Ammo Traps", "gChestTraps.Ammo", true, false);
-                    UIWidgets::PaddedEnhancementCheckbox("Death Traps", "gChestTraps.Kill", true, false);
-                    UIWidgets::PaddedEnhancementCheckbox("Teleport Traps", "gChestTraps.Tele", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Void Traps", "gAddTraps.Void", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Ammo Traps", "gAddTraps.Ammo", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Death Traps", "gAddTraps.Kill", true, false);
+                    UIWidgets::PaddedEnhancementCheckbox("Teleport Traps", "gAddTraps.Tele", true, false);
 
                     ImGui::EndMenu();
                 }
