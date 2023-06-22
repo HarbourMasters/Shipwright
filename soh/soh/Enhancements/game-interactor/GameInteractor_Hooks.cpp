@@ -18,6 +18,10 @@ void GameInteractor_ExecuteOnItemReceiveHooks(GetItemEntry itemEntry) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnItemReceive>(itemEntry);
 }
 
+void GameInteractor_ExecuteOnTrapProcessedHooks() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnTrapProcessed>();
+}
+
 void GameInteractor_ExecuteOnSaleEndHooks(GetItemEntry itemEntry) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSaleEnd>(itemEntry);
 }

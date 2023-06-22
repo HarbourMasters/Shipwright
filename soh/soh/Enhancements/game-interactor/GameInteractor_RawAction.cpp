@@ -103,7 +103,9 @@ void GameInteractor::RawAction::ForceEquipBoots(int8_t boots) {
 }
 
 void GameInteractor::RawAction::FreezePlayer() {
-    gSaveContext.pendingIceTrapCount++;
+    Player* player = GET_PLAYER(gPlayState);
+    player->actor.colChkInfo.damage = 0;
+    func_80837C0C(gPlayState, player, 3, 0, 0, 0, 0);
 }
 
 void GameInteractor::RawAction::BurnPlayer() {
