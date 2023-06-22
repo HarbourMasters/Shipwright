@@ -3239,8 +3239,7 @@ void BossVa_Draw(Actor* thisx, PlayState* play) {
         case BOSSVA_SUPPORT_2:
         case BOSSVA_SUPPORT_3:
             if (!this->isDead) {
-                SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                                      this->skelAnime.dListCount, BossVa_SupportOverrideLimbDraw,
+                SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, BossVa_SupportOverrideLimbDraw,
                                       BossVa_SupportPostLimbDraw, this);
             }
             break;
@@ -3248,16 +3247,14 @@ void BossVa_Draw(Actor* thisx, PlayState* play) {
         case BOSSVA_ZAPPER_2:
         case BOSSVA_ZAPPER_3:
             if (!this->isDead) {
-                SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                                      this->skelAnime.dListCount, BossVa_ZapperOverrideLimbDraw,
+                SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, BossVa_ZapperOverrideLimbDraw,
                                       BossVa_ZapperPostLimbDraw, this);
             }
             break;
         case BOSSVA_STUMP_1:
         case BOSSVA_STUMP_2:
         case BOSSVA_STUMP_3:
-            SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                                  this->skelAnime.dListCount, NULL, NULL, NULL);
+            SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, NULL);
             break;
         default:
             if (!this->isDead) {

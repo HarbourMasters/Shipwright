@@ -764,7 +764,6 @@ void EnFish_Draw(Actor* thisx, PlayState* play) {
     EnFish* this = (EnFish*)thisx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, NULL, NULL);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, NULL);
     Collider_UpdateSpheres(0, &this->collider);
 }

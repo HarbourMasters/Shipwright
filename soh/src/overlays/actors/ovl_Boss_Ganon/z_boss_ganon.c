@@ -3891,8 +3891,7 @@ void BossGanon_Draw(Actor* thisx, PlayState* play) {
 
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gGanondorfNormalEyeTex));
 
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          BossGanon_OverrideLimbDraw, BossGanon_PostLimbDraw, &this->actor);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, BossGanon_OverrideLimbDraw, BossGanon_PostLimbDraw, &this->actor);
 
     this->unk_2EC[0].x = this->unk_2EC[1].x;
     this->unk_2EC[0].y = this->unk_2EC[1].y + 30.0f;

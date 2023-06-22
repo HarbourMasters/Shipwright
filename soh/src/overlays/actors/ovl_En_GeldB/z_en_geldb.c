@@ -1587,8 +1587,7 @@ void EnGeldB_Draw(Actor* thisx, PlayState* play) {
     if ((this->action != GELDB_WAIT) || !this->invisible) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->blinkState]));
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnGeldB_OverrideLimbDraw, EnGeldB_PostLimbDraw, this);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnGeldB_OverrideLimbDraw, EnGeldB_PostLimbDraw, this);
         if (this->action == GELDB_BLOCK) {
             s32 i;
             Vec3f blockTrisVtx0[3];

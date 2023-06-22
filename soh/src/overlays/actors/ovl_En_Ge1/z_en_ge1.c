@@ -880,8 +880,7 @@ void EnGe1_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->eyeIndex]));
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnGe1_OverrideLimbDraw, EnGe1_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnGe1_OverrideLimbDraw, EnGe1_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

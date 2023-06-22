@@ -1000,8 +1000,7 @@ void EnIn_Draw(Actor* thisx, PlayState* play) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
         gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gIngoHeadGradient2Tex));
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnIn_OverrideLimbDraw, EnIn_PostLimbDraw, &this->actor);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnIn_OverrideLimbDraw, EnIn_PostLimbDraw, &this->actor);
     }
     CLOSE_DISPS(play->state.gfxCtx);
 }

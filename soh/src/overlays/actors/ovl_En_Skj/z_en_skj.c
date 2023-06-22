@@ -1682,8 +1682,7 @@ void EnSkj_Draw(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_OPA_DISP++, 0x0C, EnSkj_OpaqueDL(play->state.gfxCtx, this->alpha));
     }
 
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnSkj_OverrideLimbDraw, EnSkj_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnSkj_OverrideLimbDraw, EnSkj_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

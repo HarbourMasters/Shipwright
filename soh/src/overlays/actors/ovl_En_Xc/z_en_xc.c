@@ -1132,8 +1132,7 @@ void EnXc_DrawPullingOutHarp(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(gfxCtx);
     func_8002EBCC(&this->actor, play, 0);
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                          EnXc_PullingOutHarpOverrideLimbDraw, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, EnXc_PullingOutHarpOverrideLimbDraw, NULL, this);
     CLOSE_DISPS(gfxCtx);
 }
 
@@ -1155,8 +1154,7 @@ void EnXc_DrawHarp(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(gfxCtx);
     func_8002EBCC(&this->actor, play, 0);
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                          EnXc_HarpOverrideLimbDraw, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, EnXc_HarpOverrideLimbDraw, NULL, this);
     CLOSE_DISPS(gfxCtx);
 }
 
@@ -1783,8 +1781,7 @@ void EnXc_DrawTriforce(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTexture));
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                          EnXc_TriforceOverrideLimbDraw, EnXc_TriforcePostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, EnXc_TriforceOverrideLimbDraw, EnXc_TriforcePostLimbDraw, this);
     CLOSE_DISPS(gfxCtx);
 }
 
@@ -2185,7 +2182,7 @@ void EnXc_DrawSquintingEyes(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gSheikEyeSquintingTex));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gSheikEyeSquintingTex));
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL, NULL,
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, NULL, NULL,
                           NULL);
     CLOSE_DISPS(gfxCtx);
 }
@@ -2455,8 +2452,7 @@ void EnXc_DrawDefault(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeSegment));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeSegment));
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                          EnXc_OverrideLimbDraw, EnXc_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, EnXc_OverrideLimbDraw, EnXc_PostLimbDraw, this);
     CLOSE_DISPS(gfxCtx);
 }
 

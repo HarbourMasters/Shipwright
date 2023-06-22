@@ -2737,8 +2737,7 @@ void BossSst_DrawHand(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_OPA_DISP++, 0x08, sBodyStaticDList);
     }
 
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          BossSst_OverrideHandDraw, BossSst_PostHandDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, BossSst_OverrideHandDraw, BossSst_PostHandDraw, this);
     if (this->trailCount >= 2) {
         BossSstHandTrail* trail;
         BossSstHandTrail* trail2;

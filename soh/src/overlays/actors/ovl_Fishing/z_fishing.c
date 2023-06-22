@@ -4329,16 +4329,14 @@ void Fishing_DrawFish(Actor* thisx, PlayState* play) {
         Matrix_RotateY((this->unk_16C * (M_PI / 32768)) - (M_PI / 2), MTXMODE_APPLY);
         Matrix_Translate(0.0f, 0.0f, this->unk_16C * 10.0f * 0.01f, MTXMODE_APPLY);
 
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, Fishing_FishOverrideLimbDraw, Fishing_FishPostLimbDraw, this);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, Fishing_FishOverrideLimbDraw, Fishing_FishPostLimbDraw, this);
     } else {
         Matrix_Translate(0.0f, 0.0f, 3000.0f, MTXMODE_APPLY);
         Matrix_RotateY(this->unk_16C * (M_PI / 32768), MTXMODE_APPLY);
         Matrix_Translate(0.0f, 0.0f, -3000.0f, MTXMODE_APPLY);
         Matrix_RotateY(-(M_PI / 2), MTXMODE_APPLY);
 
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, Fishing_LoachOverrideLimbDraw, Fishing_LoachPostLimbDraw,
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, Fishing_LoachOverrideLimbDraw, Fishing_LoachPostLimbDraw,
                               this);
     }
 }
@@ -5832,8 +5830,7 @@ void Fishing_DrawOwner(Actor* thisx, PlayState* play) {
         (fabsf(this->actor.projectedPos.x) < (100.0f + this->actor.projectedPos.z))) {
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sFishingOwnerEyeTexs[this->unk_160]));
 
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, Fishing_OwnerOverrideLimbDraw, Fishing_OwnerPostLimbDraw,
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, Fishing_OwnerOverrideLimbDraw, Fishing_OwnerPostLimbDraw,
                               this);
     }
 

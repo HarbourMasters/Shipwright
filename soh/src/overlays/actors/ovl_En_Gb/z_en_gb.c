@@ -447,8 +447,7 @@ void EnGb_Draw(Actor* thisx, PlayState* play) {
     Lights_PointNoGlowSetInfo(&this->lightInfo, this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y,
                               this->dyna.actor.world.pos.z, this->lightColor.r, this->lightColor.g, this->lightColor.b,
                               this->lightColor.a);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, NULL, &this->dyna.actor);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, &this->dyna.actor);
     EnGb_DrawCagedSouls(this, play);
     CLOSE_DISPS(play->state.gfxCtx);
 }

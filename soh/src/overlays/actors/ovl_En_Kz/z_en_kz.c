@@ -554,8 +554,7 @@ void EnKz_Draw(Actor* thisx, PlayState* play) {
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeSegments[this->eyeIdx]));
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelanime.skeleton, this->skelanime.jointTable, this->skelanime.dListCount,
-                          EnKz_OverrideLimbDraw, EnKz_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelanime, EnKz_OverrideLimbDraw, EnKz_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

@@ -2819,8 +2819,7 @@ void BossGanon2_Draw(Actor* thisx, PlayState* play) {
             BossGanon2_SetObjectSegment(this, play, OBJECT_GANON, true);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gGanondorfEmptyEyeTex));
             gSPSegment(POLY_XLU_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gGanondorfEmptyEyeTex));
-            SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                                  this->skelAnime.dListCount, NULL, BossGanon2_PostLimbDraw2, this);
+            SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, BossGanon2_PostLimbDraw2, this);
             break;
         case 1:
         case 2:
@@ -2837,9 +2836,7 @@ void BossGanon2_Draw(Actor* thisx, PlayState* play) {
             Matrix_Translate(0.0f, 4000.0f, -4000.0f, MTXMODE_APPLY);
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                                  this->skelAnime.dListCount, BossGanon2_OverrideLimbDraw, BossGanon2_PostLimbDraw,
-                                  this);
+            SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, BossGanon2_OverrideLimbDraw, BossGanon2_PostLimbDraw, this);
             POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
             BossGanon2_GenShadowTexture(shadowTexture, this, play);
             BossGanon2_DrawShadowTexture(shadowTexture, this, play);

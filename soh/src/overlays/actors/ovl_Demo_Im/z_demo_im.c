@@ -1231,8 +1231,7 @@ void DemoIm_DrawSolid(DemoIm* this, PlayState* play) {
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     gSPSegment(POLY_OPA_DISP++, 0x0C, &D_80116280[2]);
 
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                          DemoIm_OverrideLimbDraw, DemoIm_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, DemoIm_OverrideLimbDraw, DemoIm_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
