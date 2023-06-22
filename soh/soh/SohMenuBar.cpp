@@ -954,6 +954,11 @@ void DrawEnhancementsMenu() {
                                 "Consistent: Certain paths vanish the same way in all resolutions\n"
                                 "No Vanish: Paths do not vanish, Link seems to sink in to some paths\n"
                                 "This might affect other decal effects\n");
+            UIWidgets::PaddedEnhancementCheckbox("Visual Small Key display", "gVisualKeys", true, false);
+            UIWidgets::Tooltip("Displays Small Key count using multiple icons rather than a numeric counter");
+            const bool disableKeySpacing = !CVarGetInteger("gVisualKeys", 0);
+            static const char* disableKeySpacingTooltip = "This option is disabled because \"Visual Small Key display\" is turned off";
+            UIWidgets::EnhancementSliderInt("Small Key icon spacing: %d", "##SmallKeySpacing", "gSmallKeySpacing", 1, 16, "", 8, true, disableKeySpacing, disableKeySpacingTooltip);
             UIWidgets::PaddedEnhancementSliderInt("Text Spacing: %d", "##TEXTSPACING", "gTextSpacing", 4, 6, "", 6, true, true, true);
             UIWidgets::Tooltip("Space between text characters (useful for HD font textures)");
             ImGui::EndMenu();
