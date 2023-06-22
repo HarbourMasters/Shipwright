@@ -599,7 +599,7 @@ void func_809975C0(DoorShutter* this, PlayState* play) {
     Actor_UpdateBgCheckInfo(play, &this->dyna.actor, 0.0f, 0.0f, 0.0f, 4);
     if (this->dyna.actor.bgCheckFlags & 1) {
         DoorShutter_SetupAction(this, func_809976B8);
-        if (!(gSaveContext.eventChkInf[7] & 1)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_BEGAN_GOHMA_BATTLE)) {
             BossGoma* parent = (BossGoma*)this->dyna.actor.parent;
 
             this->unk_164 = 10;

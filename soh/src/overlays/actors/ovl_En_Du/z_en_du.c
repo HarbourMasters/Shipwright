@@ -112,7 +112,7 @@ u16 func_809FDC38(PlayState* play, Actor* actor) {
             return 0x301D;
         }
     }
-    if (gSaveContext.infTable[0x11] & 8) {
+    if (Flags_GetInfTable(INFTABLE_113)) {
         return 0x301B;
     } else {
         return 0x301A;
@@ -127,13 +127,13 @@ s16 func_809FDCDC(PlayState* play, Actor* actor) {
         case TEXT_STATE_CLOSING:
             switch (actor->textId) {
                 case 0x301A:
-                    gSaveContext.infTable[0x11] |= 8;
+                    Flags_SetInfTable(INFTABLE_113);
                     break;
                 case 0x301C:
                 case 0x301F:
                     return NPC_TALK_STATE_ACTION;
                 case 0x3020:
-                    gSaveContext.eventChkInf[0x2] |= 4;
+                    Flags_SetEventChkInf(EVENTCHKINF_22);
                     break;
             }
             return 0;
@@ -157,7 +157,7 @@ s16 func_809FDCDC(PlayState* play, Actor* actor) {
 s32 func_809FDDB4(EnDu* this, PlayState* play) {
     if (play->sceneNum == SCENE_SPOT18 && LINK_IS_CHILD) {
         return 1;
-    } else if (play->sceneNum == SCENE_HIDAN && !(gSaveContext.infTable[0x11] & 0x400) && LINK_IS_ADULT) {
+    } else if (play->sceneNum == SCENE_HIDAN && !Flags_GetInfTable(INFTABLE_SPOKE_TO_DARUNIA_IN_FIRE_TEMPLE) && LINK_IS_ADULT) {
         return 1;
     }
     return 0;
@@ -431,7 +431,7 @@ void func_809FE798(EnDu* this, PlayState* play) {
         }
     } else {
         Actor_Kill(&this->actor);
-        gSaveContext.infTable[0x11] |= 0x400;
+        Flags_SetInfTable(INFTABLE_SPOKE_TO_DARUNIA_IN_FIRE_TEMPLE);
     }
 }
 
