@@ -5,7 +5,6 @@
 #include <functions.h>
 #include <macros.h>
 const int MAX_DB_REDUCTION = 20; // This is the amount in DB that a sound will be reduced by when it is at the maximum distance from the player.
-        // A reduction of -35 DB pretty much makes a sound inaudible.
 typedef struct {
     union {
         struct {
@@ -117,9 +116,11 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
     f32 ActorAccessibility_ComputeCurrentVolume(f32 maxDistance, f32 xzDistToPlayer) {
         if (maxDistance == 0)
             return 0.0;
-        f32 db = (abs(xzDistToPlayer) / maxDistance) * MAX_DB_REDUCTION;
+        f32 absDistance = fabs(xzDistToPlayer);
 
-        return ActorAccessibility_DBToLinear(db * -1);
+        f32 db = LERP(0.0 - MAX_DB_REDUCTION, 0.0, (maxDistance - absDistance) / maxDistance);
+
+        return ActorAccessibility_DBToLinear(db);
 
     }
 
@@ -174,6 +175,9 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
 
     }
     void ActorAccessibility_RunAccessibilityForAllActors(PlayState* play) {
+//Entirely exclude the title screen.
+        if (play->sceneNum == 81)
+            return;
 
         //Real actors.
         for (AccessibleActorList_t::iterator i = accessibleActorList.begin(); i != accessibleActorList.end(); i++)

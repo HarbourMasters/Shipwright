@@ -2,11 +2,16 @@
 #include "z64.h"
 #include "macros.h"
 #include "functions.h"
+extern "C" {
+s32 func_80839768(PlayState* play, Player* p, Vec3f* arg2, CollisionPoly** arg3, s32* arg4, Vec3f* arg5);
 
+}
 
 static const f32 detectionDistance = 500.0;
-static const f32 minInclineDistance = 1.0;
-static const f32 minDeclineDistance = 1.0;
+static const f32 minInclineDistance = 5.0;
+static const f32 minDeclineDistance = 5.0;
+static Player fakePlayer;//Used for wall height detection.
+static Vec3f D_80854798 = { 0.0f, 18.0f, 0.0f }; // From z_player.c.
 
 enum { DISCOVERED_NOTHING = 0,
 DISCOVERED_INCLINE,
@@ -132,9 +137,11 @@ class Decline : protected TerrainCueSound {
         }
     };
 class Ledge :protected TerrainCueSound {
+        bool climbable;//Distinguishes between a ledge link can fall from and one he can climb up.
       public:
-    Ledge(AccessibleActor* actor, Vec3f pos) : TerrainCueSound(actor, pos) {
-            currentPitch = 0.4;
+    Ledge(AccessibleActor* actor, Vec3f pos, bool above = false) : TerrainCueSound(actor, pos) {
+            currentPitch = above? 2.0 : 0.4;
+            climbable = above;
         currentReverb = 1;
             currentSFX = NA_SE_EV_WIND_TRAP;
             play();
@@ -142,6 +149,10 @@ class Ledge :protected TerrainCueSound {
     }
     virtual ~Ledge() {
     
+    }
+    bool isClimbable() {
+        return climbable;
+
     }
     void run() {
     //No implementation.
@@ -156,6 +167,7 @@ class Wall: protected TerrainCueSound {
         currentPitch = 0.5;
         currentReverb = 1;
         currentSFX = NA_SE_IT_SWORD_CHARGE;
+
         frames = 0;
 
         play();
@@ -163,6 +175,7 @@ class Wall: protected TerrainCueSound {
     virtual ~Wall() {
     }
     void run() {
+
         frames++;
         if (frames == 20) {
             frames = 0;
@@ -177,6 +190,9 @@ class Wall: protected TerrainCueSound {
     AccessibleActor* actor;
     Vec3s relRot;//Relative angle.
     Vec3s rot;//Actual angle.
+    f32 wallCheckHeight;
+    f32 wallCheckRadius;
+    f32 ceilingCheckHeight;
     int terrainDiscovered;
 
     union {
@@ -187,6 +203,139 @@ class Wall: protected TerrainCueSound {
 
     };
     TerrainCueSound* currentSound;
+//Apply an offset b to a Vec3f a.
+    Vec3f applyVec3fOffset(Vec3f& a, Vec3f& b) {
+        Vec3f c;
+        c.x = a.x + b.x;
+        c.y = a.y + b.y;
+        c.z = a.z + b.z;
+        return c;
+
+    }
+    //If a sound is currently playing, disable it.
+    void destroyCurrentSound() {
+        if (currentSound == NULL)
+            return;
+        currentSound->~TerrainCueSound();
+        currentSound = NULL;
+        terrainDiscovered = DISCOVERED_NOTHING;
+    }
+//Play a sound from the position of a previously discovered incline.
+
+    void discoverIncline(Vec3f pos) {
+        if (terrainDiscovered == DISCOVERED_INCLINE)
+            return;
+
+        destroyCurrentSound();
+
+        new (&incline) Incline(actor, pos);
+        currentSound = (TerrainCueSound*)&incline;
+        terrainDiscovered = DISCOVERED_INCLINE;
+    }
+    //Play a sound from the position of a previously discovered decline.
+
+    void discoverDecline(Vec3f pos) {
+        if (terrainDiscovered == DISCOVERED_DECLINE)
+            return;
+
+        destroyCurrentSound();
+
+        new (&decline) Decline(actor, pos);
+        currentSound = (TerrainCueSound*)&decline;
+        terrainDiscovered = DISCOVERED_DECLINE;
+    }
+    //Play a sound from the position of a previously discovered ledge.
+
+    void discoverLedge(Vec3f pos, bool upper = false) {
+        if (terrainDiscovered == DISCOVERED_LEDGE && ledge.isClimbable() == upper)
+            return;
+
+        destroyCurrentSound();
+
+        new (&ledge) Ledge(actor, pos, upper);
+        currentSound = (TerrainCueSound*)&ledge;
+        terrainDiscovered = DISCOVERED_LEDGE;
+    }
+    //Play a sound from the position of a previously discovered wall.
+
+    void discoverWall(Vec3f pos) {
+        if (terrainDiscovered == DISCOVERED_WALL)
+            return;
+
+        destroyCurrentSound();
+
+        new (&wall) Wall(actor, pos);
+        currentSound = (TerrainCueSound*)&wall;
+        terrainDiscovered = DISCOVERED_WALL;
+    }
+        //Find out how high a wall goes.
+    f32 findWallHeight(Vec3f& pos, CollisionPoly* poly) {
+        Player* player = GET_PLAYER(actor->play);
+        f32 wallHeight;
+        D_80854798.y = 18.0f;
+        D_80854798.z = player->ageProperties->unk_38 + 10.0f;
+        f32 wallYaw = Math_Atan2S(poly->normal.z, poly->normal.x);
+        f32 nx = COLPOLY_GET_NORMAL(poly->normal.x);
+        f32 ny = COLPOLY_GET_NORMAL(poly->normal.y);
+
+        f32 nz = COLPOLY_GET_NORMAL(poly->normal.z);
+
+        // Logic adapted from contents of z_player.c (beginning around line 10148).
+        f32 wallDistance = Math3D_UDistPlaneToPos(nx, ny, nz, poly->dist, &pos);
+        f32 wd10 = wallDistance + 10.0f;
+
+        Vec3f raycast;
+        raycast.x = pos.x - (wd10 * nx);
+        raycast.z = pos.z - (wd10 * nz);
+        raycast.y = pos.y + player->ageProperties->unk_0C;
+        CollisionPoly* testPoly;
+        wallHeight = BgCheck_EntityRaycastFloor1(&actor->play->colCtx, &testPoly, &raycast) - pos.y;
+        f32 outY;
+        s32 bgId;
+        if ((wallHeight < 18.0f) ||
+            BgCheck_EntityCheckCeiling(&actor->play->colCtx, &outY, &pos,
+                                       wallHeight + 20.0f, &testPoly, &bgId, NULL)) {
+            wallHeight = 399.96002f;
+        } 
+else {
+            D_80854798.y = (wallHeight + 5.0f);
+            fakePlayer.actor.shape.rot = player->actor.shape.rot;
+            fakePlayer.actor.world.pos = pos;
+            Vec3f collisionResult;
+
+            //The following replicates some pretty confusing logic in z_player.c (another series of conditions which determines whether wallHeight should be set to the magic number 399.96002f).
+            //Rather than copying the relevant functions to eliminate dependency on the player object, or risking weird side effects from passing in the real player with a temporarily modified pos vector, I'm using this fake player instance instead. These functions only need the player's position and shape rotation vectors set.
+            if (func_80839768(actor->play, &fakePlayer, &D_80854798, &testPoly, &bgId, &collisionResult) &&
+                abs(wallYaw - Math_Atan2S(testPoly->normal.z, testPoly->normal.x)) < 0x4000 &&
+                !func_80041E18(&actor->play->colCtx, testPoly, bgId)) {
+                wallHeight = 399.96002f;
+            }
+
+        }
+        return wallHeight;
+
+    }
+
+    // choose to discover either a wall or a climbable ledge depending on wall height.
+    void discoverWallOrLedge(Vec3f pos, CollisionPoly* poly) {
+        Player* player = GET_PLAYER(actor->play);
+        if (findWallHeight(pos, poly) <= player->ageProperties->unk_0C) // Ledge at top of wall can be reached.
+            discoverLedge(pos, true);
+        else
+            discoverWall(pos);
+    }
+
+     //Check if traveling from point A to point B is obstructed by a wall.
+    CollisionPoly* checkWall(Vec3f& pos, Vec3f& prevPos, Vec3f& collisionPos) {
+        Player* player = GET_PLAYER(actor->play);
+        CollisionPoly* poly;
+        s32 bgId;
+        BgCheck_EntitySphVsWall3(&actor->play->colCtx, &collisionPos, &pos, &prevPos, wallCheckRadius, &poly, &bgId,
+                                 NULL, wallCheckHeight);
+        return poly;
+
+    }
+
   public:
     // Initialize a TerrainCueDirection based on a relative angle.
     void init(AccessibleActor* actor, Vec3s rot) {
@@ -197,74 +346,58 @@ class Wall: protected TerrainCueSound {
         currentSound = NULL;
 
     }
-    void destroyCurrentSound() {
-        if (currentSound == NULL)
-            return;
-            currentSound->~TerrainCueSound();
-            currentSound = NULL;
-            terrainDiscovered = DISCOVERED_NOTHING;
-
-        }
-    void discoverIncline(Vec3f pos) {
-            if (terrainDiscovered == DISCOVERED_INCLINE)
-                return;
-
-        destroyCurrentSound();
-
-        new (&incline) Incline(actor, pos);
-        currentSound = (TerrainCueSound*) & incline;
-        terrainDiscovered = DISCOVERED_INCLINE;
+//Move a probe to its next point along a line, ensuring that it remains on the floor. Returns false if the move would put the probe out of bounds. Does not take walls into account.
+    bool move(Vec3f& pos, Vec3f& velocity) {
+        CollisionPoly poly;
+        pos.x += velocity.x;
+        pos.y += velocity.y;
+        pos.z += velocity.z;
+        f32 floorHeight = 0;
+        floorHeight = BgCheck_AnyRaycastFloor1(&actor->play->colCtx, &poly, &pos);
+        if (floorHeight == BGCHECK_Y_MIN)
+            return false;// I'm guessing this means out of bounds?
+        pos.y = floorHeight;
+        if (!BgCheck_PosInStaticBoundingBox(&actor->play->colCtx, &pos))
+            return false;//Out of bounds.
+        return true;
     }
-    void discoverDecline(Vec3f pos) {
-        if (terrainDiscovered == DISCOVERED_DECLINE)
-            return;
-
-        destroyCurrentSound();
-
-        new (&decline) Decline(actor, pos);
-        currentSound = (TerrainCueSound*)&decline;
-        terrainDiscovered = DISCOVERED_DECLINE;
-
+    bool isHeadOnCollision(Vec3f& wallPos, Vec3f& velocity) {
+        Vec3f pos = wallPos;
+        if (!move(pos, velocity))
+            return true;//Arbitrary, but hopefully this can't happen under normal gameplay circumstances.
+        Vec3f newWallPos;
+        if (!checkWall(pos, wallPos, newWallPos))
+            return false;
+        f32 dist = Math_Vec3f_DistXYZ(&wallPos, &newWallPos);
+        return fabs(dist) < 0.25;
     }
-    void discoverLedge(Vec3f pos) {
-        if (terrainDiscovered == DISCOVERED_LEDGE)
-            return;
-
-        destroyCurrentSound();
-
-        new (&ledge) Ledge(actor, pos);
-        currentSound = (TerrainCueSound*)&ledge;
-        terrainDiscovered = DISCOVERED_LEDGE;
-
-    }
-    void discoverWall(Vec3f pos) {
-        if (terrainDiscovered == DISCOVERED_WALL)
-            return;
-
-        destroyCurrentSound();
-
-        new (&wall) Wall(actor, pos);
-        currentSound = (TerrainCueSound*)&wall;
-        terrainDiscovered = DISCOVERED_WALL;
-
-
-    }
+        //Perform all terrain detection and sound book keeping. Call once per frame.
     void scan() {
         Player* player = GET_PLAYER(actor->play);
         if (player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE) {
             destroyCurrentSound();
             return;
-
         }
+        // Adapted from code in z_player.c, lines 10000 - 10008.
+        if (player->stateFlags2 & PLAYER_STATE2_CRAWLING) {
+            wallCheckRadius = 10.0f;
+            wallCheckHeight = 15.0f;
+            ceilingCheckHeight = 30.0f;
+        } else {
+            wallCheckRadius = player->ageProperties->unk_38;
+            wallCheckHeight = 26.0f;
+            ceilingCheckHeight = player->ageProperties->unk_00;
+        }
+
         // The virtual cue actors travel in lines relative to Link's angle.
         rot = ActorAccessibility_ComputeRelativeAngle(player->actor.world.rot, relRot);
         Vec3f velocity;
+
         velocity.x = Math_SinS(rot.y);
+        velocity.y = 10.0;
         velocity.z = Math_CosS(rot.y);
         // Draw a line from Link's position to the max detection distance based on the configured relative angle.
         Vec3f pos = player->actor.world.pos;
-
-        CollisionPoly poly;
         CollisionPoly* wallPoly;
         f32 step = fabs(velocity.x + velocity.z);
         f32 distToTravel = detectionDistance;
@@ -274,57 +407,44 @@ class Wall: protected TerrainCueSound {
 
         if (player->stateFlags3 & PLAYER_STATE3_MIDAIR || player->stateFlags2&PLAYER_STATE2_HOPPING) {
             f32 floorHeight = 0;
+            CollisionPoly poly;
             floorHeight = BgCheck_AnyRaycastFloor1(&actor->play->colCtx, &poly, &pos);
             if (floorHeight == BGCHECK_Y_MIN)
                 return;//Link is about to void out of bounds or something.
             pos.y = floorHeight;
 
         }
-        Vec3f startingPos = pos;
 
         while (distToTravel >= 0) {
             Vec3f prevPos = pos;
-            pos.x += velocity.x;
-            pos.y += 10;
-            pos.z += velocity.z;
-            distToTravel -= step;
-            f32 floorHeight = 0;
-            floorHeight = BgCheck_AnyRaycastFloor1(&actor->play->colCtx, &poly, &pos);
-            if (floorHeight == BGCHECK_Y_MIN) {
+            if (!move(pos, velocity)) {
                 destroyCurrentSound();
-                break; // I'm guessing this means out of bounds?
+                break;//Probe is out of bounds.
             }
-
-            pos.y = floorHeight;
-            if (pos.y > prevPos.y && fabs(pos.y - prevPos.y) > minInclineDistance)
-                // Player is on an incline.
+            distToTravel -= (step + fabs(pos.y - pos.y));
+            if (pos.y < prevPos.y && fabs(pos.y - prevPos.y) >= 10)
             {
-
-                discoverIncline(pos);
-                break;
-
-            } else if (pos.y < prevPos.y && fabs(pos.y - prevPos.y) > minDeclineDistance)
-            {
-                // Is this a big drop or just a slope?
-                if (fabs(pos.y - prevPos.y) < 10) {
-                    discoverDecline(pos);
-                    break;
-
-                } else // It's a bigger drop, possibly the edge of a platform.
-                {
+                    //This is a fall.
                     discoverLedge(pos);
                     break;
 
                 }
-            }
-            if (BgCheck_AnyLineTest3(&actor->play->colCtx, &prevPos, &pos, &collisionResult, &wallPoly, 1, 0, 0, 0,
-                                     &bgId)) {
-                discoverWall(pos);
-                break;
+            Vec3f wallPos;
+                CollisionPoly* wallPoly = checkWall(pos, prevPos, wallPos);
+            if (wallPoly) {
+
+//Ignore wall collisions that aren't *almost* head-on.
+                if (isHeadOnCollision (wallPos, velocity))
+                {
+                        discoverWallOrLedge(wallPos, wallPoly);
+
+                        break;
+                    }
+
             }
 
         }
-//Emit sound from the discovered position.
+            //Emit sound from the discovered position.
 if (currentSound)
             currentSound->update(pos);
     }
@@ -367,7 +487,8 @@ Vec3s ActorAccessibility_ComputeRelativeAngle(Vec3s& origin, Vec3s& offset) {
         void accessible_va_terrain_cue(AccessibleActor * actor) {
 
     TerrainCueState* state = (TerrainCueState*)actor->userData;
-            state->directions[0].scan();
+            for (int i = 0; i < 3; i++)
+            state->directions[i].scan();
 
     }
         /*
