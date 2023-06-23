@@ -64,11 +64,24 @@ void accessible_grotto(AccessibleActor* actor) {
 }
 
 void accessible_torches(AccessibleActor* actor) {
-    if ((actor->actor->params) == 4230) {
+    if ((actor->actor->params) == 4230 || (actor->actor->params) == 4220 || (actor->actor->params) == 4227) {
+        ActorAccessibility_PlaySpecialSound(actor, NA_SE_IT_BOMB_IGNIT);
+    }
+    if ((actor->actor->params) == 9216 || (actor->actor->params) == 962) {
         ActorAccessibility_PlaySpecialSound(actor, NA_SE_EN_ANUBIS_FIRE);
     }
 }
-void accessible_switch(AccessibleActor* actor) {
+
+void accessible_hasi(AccessibleActor* actor) {
+    if ((actor->actor->params) == 0) {
+        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_BLOCK_SHAKE);
+    }
+
+    else if ((actor->actor->params) == 1) {
+        ActorAccessibility_PlaySpecialSound(actor, NA_SE_PL_DAMAGE);
+    }
+}
+    void accessible_switch(AccessibleActor* actor) {
     ObjSwitch* sw = (ObjSwitch*)actor->actor;
     Vec3f& scale = actor->actor->scale;
     if ((actor->actor->params & 7) == 0) {
@@ -105,6 +118,13 @@ void accessible_va_prototype(AccessibleActor* actor) {
     ActorAccessibility_PlaySpecialSound(actor, NA_SE_IT_BOMB_EXPLOSION);
 
 }
+
+void accessible_maruta(AccessibleActor* actor) {
+    if (actor->actor->params == 1) {
+        ActorAccessibility_PlaySpecialSound(actor, NA_SE_PL_LAND_LADDER);
+    }
+}
+
 void ActorAccessibility_Init() {
     const int Npc_Frames = 35;
     ActorAccessibilityPolicy
@@ -161,6 +181,7 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     policy.pitch = 1.0;
     ActorAccessibility_AddSupportedActor(ACTOR_DOOR_ANA, policy);
     ActorAccessibility_InitPolicy(policy, "Web", NULL, NA_SE_EV_WEB_BROKEN);
+    policy.n = 40;
     policy.distance = 5000;
     policy.pitch = 1.2;
     ActorAccessibility_AddSupportedActor(ACTOR_BG_YDAN_SP, policy);
@@ -178,12 +199,23 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_OSHIHIKI, policy);
     ActorAccessibility_InitPolicy(policy, "Torch", accessible_torches);
-    policy.n = 30;
+    policy.n = 50;
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SYOKUDAI, policy);
-    
+    ActorAccessibility_InitPolicy(policy, "Deku Tree Moving Platform", accessible_hasi);
+    policy.distance = 1000;
+    ActorAccessibility_AddSupportedActor(ACTOR_BG_YDAN_HASI, policy);
     ActorAccessibility_InitPolicy(policy, "Pot", NULL, NA_SE_EV_POT_BROKEN);
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_TSUBO, policy);
+    ActorAccessibility_InitPolicy(policy, "Deku Tree Entrance", NULL, NA_SE_EV_FANTOM_WARP_L);
+    policy.distance = 5000;
+    ActorAccessibility_AddSupportedActor(ACTOR_BG_TREEMOUTH, policy);
+    ActorAccessibility_InitPolicy(policy, "Platform collapsable", NULL, NA_SE_EV_BLOCK_SHAKE);
+    ActorAccessibility_AddSupportedActor(ACTOR_OBJ_LIFT, policy);
+    ActorAccessibility_InitPolicy(policy, "Ladder in Slingshot Room", accessible_maruta);
+    ActorAccessibility_AddSupportedActor(ACTOR_BG_YDAN_MARUTA, policy);
+    ActorAccessibility_InitPolicy(policy, "bombable wall", NULL, NA_SE_EN_OCTAROCK_ROCK);
+    ActorAccessibility_AddSupportedActor(ACTOR_BG_BREAKWALL, policy);
     //Virtual actor demo.
 //First add support for an actor as you normally would.
     ActorAccessibility_InitPolicy(policy, "Proof of concept actor", accessible_va_prototype);
@@ -191,7 +223,7 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     ActorAccessibility_AddSupportedActor(VA_PROTOTYPE, policy);
     ActorAccessibility_InitPolicy(policy, "crawlspace", NULL, NA_SE_EN_MUSI_SINK);
     ActorAccessibility_AddSupportedActor(VA_CRAWLSPACE, policy);
-    ActorAccessibility_InitPolicy(policy, "Ladder/climable", NULL, NA_SE_PL_CLIMB_CLIFF);
+    ActorAccessibility_InitPolicy(policy, "Ladder/climable", NULL, NA_SE_PL_LAND_LADDER);
     policy.volume = 1.5;
     policy.pitch = 1.3;
     policy.distance = 5000;
@@ -203,6 +235,10 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     ActorAccessibility_InitPolicy(policy, "Area Change", NULL,
                                   NA_SE_EV_HORSE_RUN_LEVEL); // make callback&find better sound
     ActorAccessibility_AddSupportedActor(VA_AREA_CHANGE, policy);
+    ActorAccessibility_InitPolicy(policy, "marker", NULL,
+                                  NA_SE_EV_DIAMOND_SWITCH); 
+    policy.pitch = 1.7;
+    ActorAccessibility_AddSupportedActor(VA_MARKER, policy);
     // Now query a list of virtual actors for a given
                                                                 // location (scene
                                                        // and room
@@ -244,7 +280,38 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
 
     list = ActorAccessibility_GetVirtualActorList(45, 0); // Kokiri Shop
     ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 0.0, 0.0, 150.00 }, { 0, 14702, 0 } });
+
+    list = ActorAccessibility_GetVirtualActorList(0, 0);//deku tree main room
+    ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -226.7, 0, 197.0 } });
+    ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { 118.6, 0, -286.6 } });
+    ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE, { {0, 0, 640} });
+    ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { 287.4, 368.0, 347.0 } });
+    ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { 419.4, 368.0, 173.6 } });
+    ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { 323, 567.0, 314.6 } });
+    ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { 127.5, 897.0, 433.6 } });
+    ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { 440.9, 897.0, 101.6 } });
+
+    list = ActorAccessibility_GetVirtualActorList(0, 2); // deku tree slingshot room
+    ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -1159, 288.0, 1403.0 } });
+    ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -1179.6, 480.0, 1463.6 } });
+    ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -1398.9, 288.0, 1161.6 } });
+
+    list = ActorAccessibility_GetVirtualActorList(0, 10); // deku tree map room
+    ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -762, 733.0, 151.0 } });
+    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { -935, 780.0, -113 } });
+    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { -1031.0, 800.0, 109.7 } });
+    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { -1184, 820.0, -103.4 } });
+
+    list = ActorAccessibility_GetVirtualActorList(0, 7); // deku tree bombable wall room
+    ActorAccessibility_AddVirtualActor(list, VA_CRAWLSPACE, { { -1209, -820.0, 3.5 } });
+
+    list = ActorAccessibility_GetVirtualActorList(0, 3); // deku tree basement 1 lobby
+    ActorAccessibility_AddVirtualActor(list, VA_CRAWLSPACE, { { -901, -820.0, 0.5 } });
+    ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { 108, -919.5, 5.0 } });
+
+    list = ActorAccessibility_GetVirtualActorList(0, 9); // deku tree b2 lobby
+    ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -639, -1912.5, 188.0 } });
         //Install cues for walls, ledges etc.
-    ActorAccessibility_InitCues();
+    //ActorAccessibility_InitCues();
 
 }
