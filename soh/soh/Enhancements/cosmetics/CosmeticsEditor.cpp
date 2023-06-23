@@ -257,6 +257,8 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Hud_Minimap",                   "Minimap",              GROUP_HUD,          ImVec4(  0, 255, 255, 255), false, true, false),
     COSMETIC_OPTION("Hud_MinimapPosition",           "Minimap Position",     GROUP_HUD,          ImVec4(200, 255,   0, 255), false, true, true),
     COSMETIC_OPTION("Hud_MinimapEntrance",           "Minimap Entrance",     GROUP_HUD,          ImVec4(200,   0,   0, 255), false, true, true),
+    COSMETIC_OPTION("Hud_EnemyHealthBar",            "Enemy Health Bar",     GROUP_HUD,          ImVec4(255,   0,   0, 255), true, true, false),
+    COSMETIC_OPTION("Hud_EnemyHealthBorder",         "Enemy Health Border",  GROUP_HUD,          ImVec4(255, 255, 255, 255), true, false, true),
 
     COSMETIC_OPTION("Title_FileChoose",              "File Choose",          GROUP_TITLE,        ImVec4(100, 150, 255, 255), false, true, false),
     COSMETIC_OPTION("Title_NintendoLogo",            "Nintendo Logo",        GROUP_TITLE,        ImVec4(  0,   0, 255, 255), false, true, true),
@@ -322,8 +324,6 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("NPC_Gerudo",                    "Gerudo",               GROUP_NPC,          ImVec4( 90,   0, 140, 255), false, true, false),
     COSMETIC_OPTION("NPC_MetalTrap",                 "Metal Trap",           GROUP_NPC,          ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("NPC_IronKnuckles",              "Iron Knuckles",        GROUP_NPC,          ImVec4(245, 255, 205, 255), false, true, false),
-    COSMETIC_OPTION("NPC_EnemyHealthBar",            "Enemy Health Bar",     GROUP_NPC,          ImVec4(255,   0,   0, 255), true, true, false),
-    COSMETIC_OPTION("NPC_EnemyHealthBorder",         "Enemy Health Border",  GROUP_NPC,          ImVec4(255, 255, 255, 255), true, false, true),
 };
 
 static const char* MarginCvarList[] {
@@ -402,6 +402,10 @@ void CosmeticsUpdateTick() {
             newColor.g = sin(frequency * (hue + index) + (2 * M_PI / 3)) * 127 + 128;
             newColor.b = sin(frequency * (hue + index) + (4 * M_PI / 3)) * 127 + 128;
             newColor.a = 255;
+            // For alpha supported options, retain the last set alpha instead of overwriting
+            if (cosmeticOption.supportsAlpha) {
+                newColor.a = cosmeticOption.currentColor.w * 255;
+            }
 
             cosmeticOption.currentColor.x = newColor.r / 255.0;
             cosmeticOption.currentColor.y = newColor.g / 255.0;
@@ -1427,6 +1431,31 @@ void Draw_Placements(){
             ImGui::EndTable();
         }
     }
+    if (ImGui::CollapsingHeader("Enemy Health Bar position")) {
+        if (ImGui::BeginTable("enemyhealthbar", 1, FlagsTable)) {
+            ImGui::TableSetupColumn("Enemy Health Bar settings", FlagsCell, TablesCellsWidth);
+            Table_InitHeader(false);
+            std::string posTypeCVar = "gCosmetics.Hud_EnemyHealthBarPosType";
+            UIWidgets::EnhancementRadioButton("Anchor to Enemy", posTypeCVar.c_str(), ENEMYHEALTH_ANCHOR_ACTOR);
+            UIWidgets::Tooltip("This will use enemy on screen position");
+            UIWidgets::EnhancementRadioButton("Anchor to the top", posTypeCVar.c_str(), ENEMYHEALTH_ANCHOR_TOP);
+            UIWidgets::Tooltip("This will make your elements follow the top edge of your game window");
+            UIWidgets::EnhancementRadioButton("Anchor to the bottom", posTypeCVar.c_str(), ENEMYHEALTH_ANCHOR_BOTTOM);
+            UIWidgets::Tooltip("This will make your elements follow the bottom edge of your game window");
+            DrawPositionSlider("gCosmetics.Hud_EnemyHealthBar", -SCREEN_HEIGHT, SCREEN_HEIGHT, -ImGui::GetWindowViewport()->Size.x / 2, ImGui::GetWindowViewport()->Size.x / 2);
+            if (UIWidgets::EnhancementSliderInt("Health Bar Width: %d", "##EnemyHealthBarWidth", "gCosmetics.Hud_EnemyHealthBarWidth.Value", 32, 128, "", 64)) {
+                CVarSetInteger("gCosmetics.Hud_EnemyHealthBarWidth.Changed", 1);
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Reset##EnemyHealthBarWidth")) {
+                CVarClear("gCosmetics.Hud_EnemyHealthBarWidth.Value");
+                CVarClear("gCosmetics.Hud_EnemyHealthBarWidth.Changed");
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            }
+            ImGui::NewLine();
+            ImGui::EndTable();
+        }
+    }
 }
 
 void DrawSillyTab() {
@@ -1541,6 +1570,10 @@ void RandomizeColor(CosmeticOption& cosmeticOption) {
     newColor.g = Random(0, 255);
     newColor.b = Random(0, 255);
     newColor.a = 255;
+    // For alpha support options, retain the last set alpha instead of overwriting
+    if (cosmeticOption.supportsAlpha) {
+        newColor.a = cosmeticOption.currentColor.w * 255;
+    }
 
     cosmeticOption.currentColor.x = newColor.r / 255.0;
     cosmeticOption.currentColor.y = newColor.g / 255.0;
@@ -1609,7 +1642,13 @@ void ResetColor(CosmeticOption& cosmeticOption) {
 }
 
 void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
-    if (ImGui::ColorEdit3(cosmeticOption.label.c_str(), (float*)&cosmeticOption.currentColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel)) {
+    bool colorChanged;
+    if (cosmeticOption.supportsAlpha) {
+        colorChanged = ImGui::ColorEdit4(cosmeticOption.label.c_str(), (float*)&cosmeticOption.currentColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel);
+    } else {
+        colorChanged = ImGui::ColorEdit3(cosmeticOption.label.c_str(), (float*)&cosmeticOption.currentColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel);
+    }
+    if (colorChanged) {
         Color_RGBA8 color;
         color.r = cosmeticOption.currentColor.x * 255.0;
         color.g = cosmeticOption.currentColor.y * 255.0;
@@ -1630,13 +1669,15 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
         ApplyOrResetCustomGfxPatches();
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
-    ImGui::SameLine();
-    bool isRainbow = (bool)CVarGetInteger((cosmeticOption.rainbowCvar), 0);
-    if (ImGui::Checkbox(("Rainbow##" + cosmeticOption.label).c_str(), &isRainbow)) {
-        CVarSetInteger((cosmeticOption.rainbowCvar), isRainbow);
-        CVarSetInteger((cosmeticOption.changedCvar), 1);
-        ApplyOrResetCustomGfxPatches();
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    if (cosmeticOption.supportsRainbow) {
+        ImGui::SameLine();
+        bool isRainbow = (bool)CVarGetInteger((cosmeticOption.rainbowCvar), 0);
+        if (ImGui::Checkbox(("Rainbow##" + cosmeticOption.label).c_str(), &isRainbow)) {
+            CVarSetInteger((cosmeticOption.rainbowCvar), isRainbow);
+            CVarSetInteger((cosmeticOption.changedCvar), 1);
+            ApplyOrResetCustomGfxPatches();
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        }
     }
     ImGui::SameLine();
     bool isLocked = (bool)CVarGetInteger((cosmeticOption.lockedCvar), 0);

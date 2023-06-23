@@ -1213,9 +1213,9 @@ void Actor_Init(Actor* actor, PlayState* play) {
         actor->init(actor, play);
         actor->init = NULL;
 
-        // For enenmy health bar we need to know the max health after init
+        // For enemy health bar we need to know the max health during init
         if (actor->category == ACTORCAT_ENEMY) {
-            actor->maxHealth = actor->colChkInfo.health;
+            actor->maximumHealth = actor->colChkInfo.health;
         }
     }
 }
