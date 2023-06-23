@@ -116,22 +116,22 @@ void ObjectKankyo_Init(Actor* thisx, PlayState* play) {
             }
 
             // Check which beams are disabled
-            if (Flags_GetEventChkInf(0xBB)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_FOREST_TRIAL)) {
                 this->effects[0].size = 0.0f;
             }
-            if (Flags_GetEventChkInf(0xBC)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_WATER_TRIAL)) {
                 this->effects[1].size = 0.0f;
             }
-            if (Flags_GetEventChkInf(0xBD)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_SHADOW_TRIAL)) {
                 this->effects[2].size = 0.0f;
             }
-            if (Flags_GetEventChkInf(0xBE)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_FIRE_TRIAL)) {
                 this->effects[3].size = 0.0f;
             }
-            if (Flags_GetEventChkInf(0xBF)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_LIGHT_TRIAL)) {
                 this->effects[4].size = 0.0f;
             }
-            if (Flags_GetEventChkInf(0xAD)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_SPIRIT_TRIAL)) {
                 this->effects[5].size = 0.0f;
             }
 

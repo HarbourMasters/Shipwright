@@ -128,7 +128,7 @@ void BgSpot06Objects_Init(Actor* thisx, PlayState* play) {
             Collider_SetJntSph(play, &this->collider, thisx, &sJntSphInit, this->colliderItem);
 
             if (LINK_IS_ADULT && Flags_GetSwitch(play, this->switchFlag)) {
-                if (!(gSaveContext.eventChkInf[6] & 0x200)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER)) {
                     thisx->home.pos.y = thisx->world.pos.y = WATER_LEVEL_LOWERED;
                 } else {
                     thisx->home.pos.y = thisx->world.pos.y = WATER_LEVEL_RAISED;
@@ -154,7 +154,7 @@ void BgSpot06Objects_Init(Actor* thisx, PlayState* play) {
             Actor_ProcessInitChain(thisx, sInitChainWaterPlane);
             thisx->flags = ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED;
 
-            if (LINK_IS_ADULT && !(Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER))) {
+            if (LINK_IS_ADULT && !Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER)) {
                 if (gSaveContext.sceneSetupIndex < 4) {
                     this->lakeHyliaWaterLevel = -681.0f;
                     play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].ySurface =
@@ -623,7 +623,7 @@ void BgSpot06Objects_WaterPlaneCutsceneLower(BgSpot06Objects* this, PlayState* p
         this->dyna.actor.world.pos.y = (this->lakeHyliaWaterLevel + 680.0f) + WATER_LEVEL_RAISED;
     }
 
-    gSaveContext.eventChkInf[6] &= ~0x200; // Unset the "raised lake hylia water" flag
+    Flags_UnsetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER); // Unset the "raised lake hylia water" flag
     play->roomCtx.unk_74[0] = 87; // Remove the moving under water texture from lake hylia ground
 
     if (this->lakeHyliaWaterLevel <= -681.0f) {

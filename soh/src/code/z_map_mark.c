@@ -132,8 +132,19 @@ void MapMark_DrawForDungeon(PlayState* play) {
         //Place each chest / boss room icon
         for (i = 0; i < mapMarkIconData->count; i++) {
             if ((mapMarkIconData->markType != MAP_MARK_CHEST) || !Flags_GetTreasure(play, markPoint->chestFlag)) {
+                markInfo = &sMapMarkInfoTable[mapMarkIconData->markType];
+                int height = markInfo->textureHeight * 1.0f; //Adjust Height with scale
+                int width = markInfo->textureWidth * 1.0f; //Adjust Width with scale
+                int height_factor = (1 << 10) * markInfo->textureHeight / height;
+                int width_factor = (1 << 10) * markInfo->textureWidth / width;
+
+                // The original mark point X originates from the left edge of the map
+                // For mirror mode, we compute the new mark point X by subtracting it from the right side of the
+                // dungeon map and the textures width
+                s16 markPointX = CVarGetInteger("gMirroredWorld", 0) ? 96 - markPoint->x - width : markPoint->x;
+
                 //Minimap chest / boss icon 
-                const s32 PosX_Minimap_ori = GREG(94) + OTRGetRectDimensionFromRightEdge(markPoint->x+X_Margins_Minimap_ic) + 204;
+                const s32 PosX_Minimap_ori = GREG(94) + OTRGetRectDimensionFromRightEdge(markPointX+X_Margins_Minimap_ic) + 204;
                 const s32 PosY_Minimap_ori = GREG(95) + markPoint->y + Y_Margins_Minimap_ic + 140;
                 if (CVarGetInteger("gMinimapPosType", 0) != 0) {
                     rectTop = (markPoint->y + Y_Margins_Minimap_ic + 140 + CVarGetInteger("gMinimapPosY", 0));
@@ -143,15 +154,15 @@ void MapMark_DrawForDungeon(PlayState* play) {
                             play->sceneNum == SCENE_BMORI1 || play->sceneNum == SCENE_HIDAN || play->sceneNum == SCENE_MIZUSIN || 
                             play->sceneNum == SCENE_JYASINZOU || play->sceneNum == SCENE_HAKADAN || play->sceneNum == SCENE_HAKADANCH || 
                             play->sceneNum == SCENE_ICE_DOUKUTO) {
-                            rectLeft = OTRGetRectDimensionFromLeftEdge(markPoint->x+CVarGetInteger("gMinimapPosX", 0)+204+X_Margins_Minimap_ic);
+                            rectLeft = OTRGetRectDimensionFromLeftEdge(markPointX+CVarGetInteger("gMinimapPosX", 0)+204+X_Margins_Minimap_ic);
                         } else {
-                            rectLeft = OTRGetRectDimensionFromLeftEdge(markPoint->x+CVarGetInteger("gMinimapPosX", 0)+204+X_Margins_Minimap_ic);
+                            rectLeft = OTRGetRectDimensionFromLeftEdge(markPointX+CVarGetInteger("gMinimapPosX", 0)+204+X_Margins_Minimap_ic);
                         }
                     } else if (CVarGetInteger("gMinimapPosType", 0) == 2) {//Anchor Right
                         if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap_ic = Right_MC_Margin;};
-                        rectLeft = OTRGetRectDimensionFromRightEdge(markPoint->x+CVarGetInteger("gMinimapPosX", 0)+204+X_Margins_Minimap_ic);
+                        rectLeft = OTRGetRectDimensionFromRightEdge(markPointX+CVarGetInteger("gMinimapPosX", 0)+204+X_Margins_Minimap_ic);
                     } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
-                        rectLeft = markPoint->x+CVarGetInteger("gMinimapPosX", 0)+204+X_Margins_Minimap_ic;
+                        rectLeft = markPointX+CVarGetInteger("gMinimapPosX", 0)+204+X_Margins_Minimap_ic;
                     } else if (CVarGetInteger("gMinimapPosType", 0) == 4) {//Hidden
                         rectLeft = -9999;
                     }
@@ -159,13 +170,6 @@ void MapMark_DrawForDungeon(PlayState* play) {
                     rectLeft = PosX_Minimap_ori;
                     rectTop = PosY_Minimap_ori;
                 }
-
-                int height = 8 * 1.0f; //Adjust Height with scale
-                int width = 8 * 1.0f; //Adjust Width with scale
-                int height_factor = (1 << 10) * 8 / height;
-                int width_factor = (1 << 10) * 8 / width;
-
-                markInfo = &sMapMarkInfoTable[mapMarkIconData->markType];
 
                 gDPPipeSync(OVERLAY_DISP++);
 

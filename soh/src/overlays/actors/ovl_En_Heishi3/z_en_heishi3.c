@@ -205,7 +205,7 @@ void func_80A55D00(EnHeishi3* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play) &&
         (this->respawnFlag == 0)) {
-        gSaveContext.eventChkInf[4] |= 0x4000;
+        Flags_SetEventChkInf(EVENTCHKINF_CAUGHT_BY_CASTLE_GUARDS);
         play->nextEntranceIndex = 0x47E; // Hyrule Castle from Guard Capture (outside)
         play->sceneLoadFlag = 0x14;
         this->respawnFlag = 1;

@@ -64,7 +64,7 @@ s32 func_808B1AE0(BgSpot09Obj* this, PlayState* play) {
         return this->dyna.actor.params == 0;
     }
 
-    carpentersRescued = (gSaveContext.eventChkInf[9] & 0xF) == 0xF;
+    carpentersRescued = GET_EVENTCHKINF_CARPENTERS_FREE_ALL();
 
     if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
         switch (this->dyna.actor.params) {
@@ -139,7 +139,7 @@ void BgSpot09Obj_Init(Actor* thisx, PlayState* play) {
     BgSpot09Obj* this = (BgSpot09Obj*)thisx;
 
     osSyncPrintf("Spot09 Object [arg_data : 0x%04x](大工救出フラグ 0x%x)\n", this->dyna.actor.params,
-                 gSaveContext.eventChkInf[9] & 0xF);
+                 GET_EVENTCHKINF_CARPENTERS_FREE_ALL());
     this->dyna.actor.params &= 0xFF;
     if ((this->dyna.actor.params < 0) || (this->dyna.actor.params >= 5)) {
         osSyncPrintf("Error : Spot 09 object の arg_data が判別出来ない(%s %d)(arg_data 0x%04x)\n",

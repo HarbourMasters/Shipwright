@@ -192,8 +192,8 @@ void func_80ABF28C(EnOkarinaTag* this, PlayState* play) {
     if ((this->ocarinaSong != 6) || (gSaveContext.scarecrowSpawnSongSet)) {
         if ((this->switchFlag >= 0) && Flags_GetSwitch(play, this->switchFlag)) {
             this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
-        } else if (((this->type != 4) || !(gSaveContext.eventChkInf[4] & 0x800)) &&
-                   ((this->type != 6) || !(gSaveContext.eventChkInf[1] & 0x2000)) &&
+        } else if (((this->type != 4) || !Flags_GetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME)) &&
+                   ((this->type != 6) || !Flags_GetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB)) &&
                    (this->actor.xzDistToPlayer < (90.0f + this->interactRange)) &&
                    (fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < 80.0f)) {
             if (player->stateFlags2 & 0x1000000) {
@@ -243,15 +243,15 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
         switch (this->type) {
             case 1:
                 Flags_SetSwitch(play, this->switchFlag);
-                gSaveContext.eventChkInf[3] |= 0x200;
+                Flags_SetEventChkInf(EVENTCHKINF_OPENED_ZORAS_DOMAIN);
                 break;
             case 2:
                 if (!gSaveContext.n64ddFlag) {
                     play->csCtx.segment = D_80ABF9D0;
                     gSaveContext.cutsceneTrigger = 1;
                 } else {
-                    gSaveContext.eventChkInf[6] |= 0x80;
-                    gSaveContext.eventChkInf[6] |= 0x20;
+                    Flags_SetEventChkInf(EVENTCHKINF_DRAINED_WELL_IN_KAKARIKO);
+                    Flags_SetEventChkInf(EVENTCHKINF_PLAYED_SONG_OF_STORMS_IN_WINDMILL);
                 }
                 func_800F574C(1.18921f, 0x5A);
                 break;
@@ -279,7 +279,7 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
                                                              : SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_005020);
                     gSaveContext.cutsceneTrigger = 1;
                 }
-                gSaveContext.eventChkInf[1] |= 0x2000;
+                Flags_SetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB);
                 func_80078884(NA_SE_SY_CORRECT_CHIME);
                 break;
             default:

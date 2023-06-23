@@ -430,7 +430,7 @@ u16 func_80A6F810(PlayState* play, Actor* thisx) {
     switch (this->actor.params & 0x7F) {
         case ENHY_TYPE_AOB:
             if (play->sceneNum == SCENE_KAKARIKO) {
-                return (this->unk_330 & 0x800) ? 0x508D : ((gSaveContext.infTable[12] & 0x800) ? 0x508C : 0x508B);
+                return (this->unk_330 & 0x800) ? 0x508D : ((Flags_GetInfTable(INFTABLE_CB)) ? 0x508C : 0x508B);
             } else if (play->sceneNum == SCENE_MARKET_DAY) {
                 return (gSaveContext.eventInf[3] & 1) ? 0x709B : 0x709C;
             } else if (gSaveContext.dogIsLost) {
@@ -446,77 +446,77 @@ u16 func_80A6F810(PlayState* play, Actor* thisx) {
                 return 0x70A0;
             }
         case ENHY_TYPE_COB:
-            if (gSaveContext.eventChkInf[8] & 1) {
-                return (gSaveContext.infTable[12] & 2) ? 0x7017 : 0x7045;
+            if (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) {
+                return (Flags_GetInfTable(INFTABLE_C1)) ? 0x7017 : 0x7045;
             } else {
-                return (gSaveContext.infTable[12] & 1) ? 0x7017 : 0x7016;
+                return (Flags_GetInfTable(INFTABLE_C0)) ? 0x7017 : 0x7016;
             }
         case ENHY_TYPE_AHG_2:
             if (play->sceneNum == SCENE_KAKARIKO) {
                 return 0x5086;
             } else if (play->sceneNum == SCENE_SPOT01) {
                 return 0x5085;
-            } else if (gSaveContext.eventChkInf[8] & 1) {
-                return (gSaveContext.infTable[12] & 8) ? 0x701A : 0x7047;
-            } else if (gSaveContext.eventChkInf[1] & 0x10) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) {
+                return (Flags_GetInfTable(INFTABLE_C3)) ? 0x701A : 0x7047;
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
                 return 0x701A;
-            } else if (gSaveContext.eventChkInf[1] & 1) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_CHILD_MALON_AT_CASTLE_OR_MARKET)) {
                 return 0x701B;
-            } else if (gSaveContext.infTable[12] & 4) {
+            } else if (Flags_GetInfTable(INFTABLE_C2)) {
                 return 0x701C;
             } else {
                 return 0x701A;
             }
         case ENHY_TYPE_BOJ_3:
-            return (gSaveContext.eventChkInf[8] & 1) ? ((gSaveContext.infTable[12] & 0x10) ? 0x7001 : 0x70EB) : 0x7001;
+            return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? ((Flags_GetInfTable(INFTABLE_C4)) ? 0x7001 : 0x70EB) : 0x7001;
         case ENHY_TYPE_AHG_4:
-            return (gSaveContext.eventChkInf[8] & 1) ? 0x704B : ((gSaveContext.infTable[12] & 0x20) ? 0x7024 : 0x7023);
+            return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? 0x704B : ((Flags_GetInfTable(INFTABLE_C5)) ? 0x7024 : 0x7023);
         case ENHY_TYPE_BOJ_5:
             player->exchangeItemId = EXCH_ITEM_BLUE_FIRE;
             return 0x700C;
         case ENHY_TYPE_BBA:
-            return (gSaveContext.eventChkInf[8] & 1) ? 0x704A : ((gSaveContext.infTable[12] & 0x40) ? 0x7022 : 0x7021);
+            return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? 0x704A : ((Flags_GetInfTable(INFTABLE_C6)) ? 0x7022 : 0x7021);
         case ENHY_TYPE_BJI_7:
             if (play->sceneNum == SCENE_KAKARIKO) {
                 return 0x5088;
             } else if (play->sceneNum == SCENE_SPOT01) {
                 return 0x5087;
             } else {
-                return (gSaveContext.eventChkInf[8] & 1) ? 0x704D
-                                                         : ((gSaveContext.infTable[12] & 0x80) ? 0x7028 : 0x7027);
+                return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? 0x704D
+                                                         : ((Flags_GetInfTable(INFTABLE_C7)) ? 0x7028 : 0x7027);
             }
         case ENHY_TYPE_CNE_8:
-            if (gSaveContext.eventChkInf[8] & 1) {
-                return (gSaveContext.infTable[12] & 0x200) ? 0x701E : 0x7048;
+            if (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) {
+                return (Flags_GetInfTable(INFTABLE_C9)) ? 0x701E : 0x7048;
             } else {
-                return (gSaveContext.infTable[12] & 0x100) ? 0x701E : 0x701D;
+                return (Flags_GetInfTable(INFTABLE_C8)) ? 0x701E : 0x701D;
             }
         case ENHY_TYPE_BOJ_9:
             if (play->sceneNum == SCENE_KAKARIKO) {
-                return (gSaveContext.eventChkInf[10] & 0x400) ? 0x5082 : 0x5081;
+                return (Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL)) ? 0x5082 : 0x5081;
             } else if (play->sceneNum == SCENE_SPOT01) {
                 return CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) ? 0x5080 : 0x507F;
             } else {
-                return (gSaveContext.eventChkInf[8] & 1) ? 0x7049
-                                                         : ((gSaveContext.infTable[12] & 0x400) ? 0x7020 : 0x701F);
+                return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? 0x7049
+                                                         : ((Flags_GetInfTable(INFTABLE_CA)) ? 0x7020 : 0x701F);
             }
         case ENHY_TYPE_BOJ_10:
             if (play->sceneNum == SCENE_LABO) {
-                return (gSaveContext.eventChkInf[10] & 0x400) ? 0x507E : 0x507D;
+                return (Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL)) ? 0x507E : 0x507D;
             } else if (play->sceneNum == SCENE_SPOT01) {
                 return CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) ? 0x507C : 0x507B;
             } else {
-                return (gSaveContext.eventChkInf[8] & 1) ? 0x7046
-                                                         : ((gSaveContext.infTable[12] & 0x2000) ? 0x7019 : 0x7018);
+                return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? 0x7046
+                                                         : ((Flags_GetInfTable(INFTABLE_CD)) ? 0x7019 : 0x7018);
             }
         case ENHY_TYPE_CNE_11:
-            return (gSaveContext.infTable[8] & 0x800) ? ((gSaveContext.infTable[12] & 0x1000) ? 0x7014 : 0x70A4)
+            return (Flags_GetInfTable(INFTABLE_ENTERED_HYRULE_CASTLE)) ? ((Flags_GetInfTable(INFTABLE_CC)) ? 0x7014 : 0x70A4)
                                                       : 0x7014;
         case ENHY_TYPE_BOJ_12:
             if (play->sceneNum == SCENE_SPOT01) {
                 return !IS_DAY ? 0x5084 : 0x5083;
             } else {
-                return (gSaveContext.eventChkInf[8] & 1) ? 0x7044 : 0x7015;
+                return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? 0x7044 : 0x7015;
             }
         case ENHY_TYPE_AHG_13:
             return 0x7055;
@@ -529,20 +529,20 @@ u16 func_80A6F810(PlayState* play, Actor* thisx) {
         case ENHY_TYPE_AHG_17:
             if (!LINK_IS_ADULT) {
                 if (IS_DAY) {
-                    return (gSaveContext.infTable[22] & 1) ? 0x5058 : 0x5057;
+                    return (Flags_GetInfTable(INFTABLE_160)) ? 0x5058 : 0x5057;
                 } else {
-                    return (gSaveContext.infTable[22] & 2) ? 0x505A : 0x5059;
+                    return (Flags_GetInfTable(INFTABLE_161)) ? 0x505A : 0x5059;
                 }
             } else if (IS_DAY) {
-                return (gSaveContext.infTable[22] & 4) ? 0x505C : 0x505B;
+                return (Flags_GetInfTable(INFTABLE_162)) ? 0x505C : 0x505B;
             } else {
                 return 0x5058;
             }
         case ENHY_TYPE_BOB_18:
             if (!LINK_IS_ADULT) {
-                return (gSaveContext.eventChkInf[8] & 1) ? 0x505F : ((gSaveContext.infTable[22] & 8) ? 0x505E : 0x505D);
+                return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? 0x505F : ((Flags_GetInfTable(INFTABLE_163)) ? 0x505E : 0x505D);
             } else {
-                return (this->unk_330 & 0x800) ? 0x5062 : ((gSaveContext.infTable[22] & 0x10) ? 0x5061 : 0x5060);
+                return (this->unk_330 & 0x800) ? 0x5062 : ((Flags_GetInfTable(INFTABLE_164)) ? 0x5061 : 0x5060);
             }
         case ENHY_TYPE_BJI_19:
             return 0x7120;
@@ -599,67 +599,67 @@ s16 func_80A70058(PlayState* play, Actor* thisx) {
                     Player_UpdateBottleHeld(play, GET_PLAYER(play), ITEM_BOTTLE, PLAYER_IA_BOTTLE);
                     break;
                 case 0x7016:
-                    gSaveContext.infTable[12] |= 1;
+                    Flags_SetInfTable(INFTABLE_C0);
                     break;
                 case 0x7045:
-                    gSaveContext.infTable[12] |= 2;
+                    Flags_SetInfTable(INFTABLE_C1);
                     break;
                 case 0x701B:
-                    gSaveContext.infTable[12] |= 4;
+                    Flags_SetInfTable(INFTABLE_C2);
                     break;
                 case 0x7047:
-                    gSaveContext.infTable[12] |= 8;
+                    Flags_SetInfTable(INFTABLE_C3);
                     break;
                 case 0x70EB:
-                    gSaveContext.infTable[12] |= 0x10;
+                    Flags_SetInfTable(INFTABLE_C4);
                     break;
                 case 0x7023:
-                    gSaveContext.infTable[12] |= 0x20;
+                    Flags_SetInfTable(INFTABLE_C5);
                     break;
                 case 0x7021:
-                    gSaveContext.infTable[12] |= 0x40;
+                    Flags_SetInfTable(INFTABLE_C6);
                     break;
                 case 0x7027:
-                    gSaveContext.infTable[12] |= 0x80;
+                    Flags_SetInfTable(INFTABLE_C7);
                     break;
                 case 0x701D:
-                    gSaveContext.infTable[12] |= 0x100;
+                    Flags_SetInfTable(INFTABLE_C8);
                     break;
                 case 0x7048:
-                    gSaveContext.infTable[12] |= 0x200;
+                    Flags_SetInfTable(INFTABLE_C9);
                     break;
                 case 0x701F:
-                    gSaveContext.infTable[12] |= 0x400;
+                    Flags_SetInfTable(INFTABLE_CA);
                     break;
                 case 0x7018:
-                    gSaveContext.infTable[12] |= 0x2000;
+                    Flags_SetInfTable(INFTABLE_CD);
                     break;
                 case 0x70A4:
-                    gSaveContext.infTable[12] |= 0x1000;
+                    Flags_SetInfTable(INFTABLE_CC);
                     break;
                 case 0x5057:
-                    gSaveContext.infTable[22] |= 1;
+                    Flags_SetInfTable(INFTABLE_160);
                     break;
                 case 0x5059:
-                    gSaveContext.infTable[22] |= 2;
+                    Flags_SetInfTable(INFTABLE_161);
                     break;
                 case 0x505B:
-                    gSaveContext.infTable[22] |= 4;
+                    Flags_SetInfTable(INFTABLE_162);
                     break;
                 case 0x505D:
-                    gSaveContext.infTable[22] |= 8;
+                    Flags_SetInfTable(INFTABLE_163);
                     break;
                 case 0x5060:
-                    gSaveContext.infTable[22] |= 0x10;
+                    Flags_SetInfTable(INFTABLE_164);
                     break;
                 case 0x508B:
-                    gSaveContext.infTable[12] |= 0x800;
+                    Flags_SetInfTable(INFTABLE_CB);
                     break;
                 case 0x709E:
                     gSaveContext.dogParams = 0;
                     break;
                 case 0x709F:
-                    if (gSaveContext.infTable[25] & 2) { // Already brought the lost dog back
+                    if (Flags_GetInfTable(INFTABLE_191)) { // Already brought the lost dog back
                         func_80A6F7CC(this, play, GI_RUPEE_BLUE);
                     } else {
                         if (!gSaveContext.n64ddFlag) {
@@ -869,7 +869,7 @@ s32 EnHy_ShouldSpawn(EnHy* this, PlayState* play) {
                 return true;
             } else if (IS_NIGHT) {
                 return false;
-            } else if ((gSaveContext.eventChkInf[8] & 1) && !(gSaveContext.eventChkInf[4] & 0x20)) {
+            } else if ((Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) && !Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL)) {
                 return false;
             } else {
                 return true;
@@ -1079,8 +1079,8 @@ void func_80A714C4(EnHy* this, PlayState* play) {
 void func_80A71530(EnHy* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         if (gSaveContext.n64ddFlag) {
-            if (!(gSaveContext.infTable[25] & 2)) {
-                gSaveContext.infTable[25] |= 2;
+            if (!Flags_GetInfTable(INFTABLE_191)) {
+                Flags_SetInfTable(INFTABLE_191);
             }
             gSaveContext.dogParams = 0;
             gSaveContext.dogIsLost = false;
@@ -1089,7 +1089,7 @@ void func_80A71530(EnHy* this, PlayState* play) {
                 case GI_HEART_PIECE:
                     gSaveContext.dogParams = 0;
                     gSaveContext.dogIsLost = false;
-                    gSaveContext.infTable[25] |= 2;
+                    Flags_SetInfTable(INFTABLE_191);
                     break;
                 case GI_RUPEE_BLUE:
                     Rupees_ChangeBy(5);

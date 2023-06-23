@@ -2580,7 +2580,7 @@ void func_80B59AD0(EnZl3* this, PlayState* play) {
     func_80088AA0(180);
     func_80B54EA4(this, play);
     func_80B53614(this, play);
-    gSaveContext.eventChkInf[12] &= ~0x80;
+    Flags_UnsetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
     func_80B56F10(this, play);
     gSaveContext.healthAccumulator = 320;
     Magic_Fill(play);
