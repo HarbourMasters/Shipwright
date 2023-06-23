@@ -296,7 +296,7 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -1179.6, 480.0, 1463.6 } });
     ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -1398.9, 288.0, 1161.6 } });
 
-    list = ActorAccessibility_GetVirtualActorList(0, 10); // deku tree map room
+    list = ActorAccessibility_GetVirtualActorList(0, 10); // deku tree compass room
     ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -762, 733.0, 151.0 } });
     ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { -935, 780.0, -113 } });
     ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { -1031.0, 800.0, 109.7 } });
@@ -312,6 +312,6 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     list = ActorAccessibility_GetVirtualActorList(0, 9); // deku tree b2 lobby
     ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -639, -1912.5, 188.0 } });
         //Install cues for walls, ledges etc.
-    //ActorAccessibility_InitCues();
+    ActorAccessibility_InitCues();
 
 }
