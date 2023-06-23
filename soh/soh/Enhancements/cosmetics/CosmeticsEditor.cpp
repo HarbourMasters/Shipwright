@@ -1446,6 +1446,7 @@ void Draw_Placements(){
             if (UIWidgets::EnhancementSliderInt("Health Bar Width: %d", "##EnemyHealthBarWidth", "gCosmetics.Hud_EnemyHealthBarWidth.Value", 32, 128, "", 64)) {
                 CVarSetInteger("gCosmetics.Hud_EnemyHealthBarWidth.Changed", 1);
             }
+            UIWidgets::Tooltip("This will change the width of the health bar");
             ImGui::SameLine();
             if (ImGui::Button("Reset##EnemyHealthBarWidth")) {
                 CVarClear("gCosmetics.Hud_EnemyHealthBarWidth.Value");
@@ -1570,7 +1571,7 @@ void RandomizeColor(CosmeticOption& cosmeticOption) {
     newColor.g = Random(0, 255);
     newColor.b = Random(0, 255);
     newColor.a = 255;
-    // For alpha support options, retain the last set alpha instead of overwriting
+    // For alpha supported options, retain the last set alpha instead of overwriting
     if (cosmeticOption.supportsAlpha) {
         newColor.a = cosmeticOption.currentColor.w * 255;
     }
