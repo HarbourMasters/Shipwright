@@ -6124,7 +6124,7 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
             maxSpeed *= 1.5f;
         } 
         
-        if (CVarGetInteger("gEnableWalkModify", 0)) {
+        if (CVarGetInteger("gEnableWalkModify", 0) && !CVarGetInteger("gWalkModifierDoesntChangeJump", 0)) {
             if (CVarGetInteger("gWalkSpeedToggle", 0)) {
                 if (gWalkSpeedToggle1) {
                     maxSpeed *= CVarGetFloat("gWalkModifierOne", 1.0f);
@@ -6279,23 +6279,32 @@ void func_8083E4C4(PlayState* play, Player* this, GetItemEntry* giEntry) {
 // and which flag is specified in player->pendingFlag.flagID.
 void Player_SetPendingFlag(Player* this, PlayState* play) {
     switch (this->pendingFlag.flagType) {
-        case FLAG_SCENE_CLEAR:
-            Flags_SetClear(play, this->pendingFlag.flagID);
-            break;
-        case FLAG_SCENE_COLLECTIBLE:
-            Flags_SetCollectible(play, this->pendingFlag.flagID);
-            break;
         case FLAG_SCENE_SWITCH:
             Flags_SetSwitch(play, this->pendingFlag.flagID);
             break;
         case FLAG_SCENE_TREASURE:
             Flags_SetTreasure(play, this->pendingFlag.flagID);
             break;
-        case FLAG_RANDOMIZER_INF:
-            Flags_SetRandomizerInf(this->pendingFlag.flagID);
+        case FLAG_SCENE_CLEAR:
+            Flags_SetClear(play, this->pendingFlag.flagID);
+            break;
+        case FLAG_SCENE_COLLECTIBLE:
+            Flags_SetCollectible(play, this->pendingFlag.flagID);
             break;
         case FLAG_EVENT_CHECK_INF:
             Flags_SetEventChkInf(this->pendingFlag.flagID);
+            break;
+        case FLAG_ITEM_GET_INF:
+            Flags_SetItemGetInf(this->pendingFlag.flagID);
+            break;
+        case FLAG_INF_TABLE:
+            Flags_SetInfTable(this->pendingFlag.flagID);
+            break;
+        case FLAG_EVENT_INF:
+            Flags_SetEventInf(this->pendingFlag.flagID);
+            break;
+        case FLAG_RANDOMIZER_INF:
+            Flags_SetRandomizerInf(this->pendingFlag.flagID);
             break;
         case FLAG_NONE:
         default:
@@ -8170,7 +8179,7 @@ void func_80843188(Player* this, PlayState* play) {
 
     if (this->unk_850 != 0) {
         sp54 = sControlInput->rel.stick_y * 100;
-        sp50 = sControlInput->rel.stick_x * -120;
+        sp50 = sControlInput->rel.stick_x * (CVarGetInteger("gMirroredWorld", 0) ? 120 : -120);
         sp4E = this->actor.shape.rot.y - Camera_GetInputDirYaw(GET_ACTIVE_CAM(play));
 
         sp40 = Math_CosS(sp4E);
@@ -9715,8 +9724,8 @@ void Player_Init(Actor* thisx, PlayState* play2) {
             if ((gSaveContext.sceneSetupIndex < 4) &&
                 (gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].field &
                  0x4000) &&
-                ((play->sceneNum != SCENE_DDAN) || (gSaveContext.eventChkInf[11] & 1)) &&
-                ((play->sceneNum != SCENE_NIGHT_SHOP) || (gSaveContext.eventChkInf[2] & 0x20))) {
+                ((play->sceneNum != SCENE_DDAN) || (Flags_GetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN))) &&
+                ((play->sceneNum != SCENE_NIGHT_SHOP) || (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)))) {
                 TitleCard_InitPlaceName(play, &play->actorCtx.titleCtx, this->giObjectSegment, 160, 120, 144,
                                         24, 20);
             }
@@ -11347,12 +11356,13 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
     s32 temp1;
     s16 temp2;
     s16 temp3;
+    bool gInvertAimingXAxis = (CVarGetInteger("gInvertAimingXAxis", 0) && !CVarGetInteger("gMirroredWorld", 0)) || (!CVarGetInteger("gInvertAimingXAxis", 0) && CVarGetInteger("gMirroredWorld", 0));
 
     if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0) && !CVarGetInteger("gDisableAutoCenterViewFirstPerson", 0)) {
         temp2 = sControlInput->rel.stick_y * 240.0f * (CVarGetInteger("gInvertAimingYAxis", 1) ? 1 : -1); // Sensitivity not applied here because higher than default sensitivies will allow the camera to escape the autocentering, and glitch out massively
         Math_SmoothStepToS(&this->actor.focus.rot.x, temp2, 14, 4000, 30);
 
-        temp2 = sControlInput->rel.stick_x * -16.0f * (CVarGetInteger("gInvertAimingXAxis", 0) ? -1 : 1) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
+        temp2 = sControlInput->rel.stick_x * -16.0f * (gInvertAimingXAxis ? -1 : 1) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
         temp2 = CLAMP(temp2, -3000, 3000);
         this->actor.focus.rot.y += temp2;
     } else {
@@ -11377,18 +11387,18 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         temp2 = this->actor.focus.rot.y - this->actor.shape.rot.y;
         temp3 = ((sControlInput->rel.stick_x >= 0) ? 1 : -1) *
                 (s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f *
-                        (CVarGetInteger("gInvertAimingXAxis", 0) ? -1 : 1)) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
+                        (gInvertAimingXAxis ? -1 : 1)) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
         temp2 += temp3;
 
         this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
 
         if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
-            this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f;
+            this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
         }
 
         if (fabsf(sControlInput->cur.right_stick_x) > 15.0f && CVarGetInteger("gRightStickAiming", 0) != 0) {
             this->actor.focus.rot.y +=
-                (sControlInput->cur.right_stick_x) * 10.0f * (CVarGetInteger("gInvertAimingXAxis", 0) ? 1 : -1) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
+                (sControlInput->cur.right_stick_x) * 10.0f * (gInvertAimingXAxis ? 1 : -1) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
         }
     }
 
@@ -11939,7 +11949,7 @@ void func_8084BF1C(Player* this, PlayState* play) {
                 if ((this->unk_84F != 0) && (sp80 != 0)) {
                     anim2 = this->ageProperties->unk_BC[this->unk_850];
 
-                    if (sp80 > 0) {
+                    if (CVarGetInteger("gMirroredWorld", 0) ? (sp80 < 0) : (sp80 > 0)) {
                         this->skelAnime.prevTransl = this->ageProperties->unk_7A[this->unk_850];
                         func_80832264(play, this, anim2);
                     } else {
@@ -12388,7 +12398,7 @@ void func_8084D3E4(Player* this, PlayState* play) {
         this->actor.parent = NULL;
         AREG(6) = 0;
 
-        if (Flags_GetEventChkInf(0x18) || (DREG(1) != 0)) {
+        if (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) || (DREG(1) != 0)) {
             gSaveContext.horseData.pos.x = rideActor->actor.world.pos.x;
             gSaveContext.horseData.pos.y = rideActor->actor.world.pos.y;
             gSaveContext.horseData.pos.z = rideActor->actor.world.pos.z;
@@ -13619,9 +13629,9 @@ s32 func_8084FCAC(Player* this, PlayState* play) {
                 if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_DDOWN)) {
                     angle = temp + 0x8000;
                 } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_DLEFT)) {
-                    angle = temp + 0x4000;
+                    angle = temp + (0x4000 * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1));
                 } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_DRIGHT)) {
-                    angle = temp - 0x4000;
+                    angle = temp - (0x4000 * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1));
                 }
 
                 this->actor.world.pos.x += speed * Math_SinS(angle);

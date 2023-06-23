@@ -4697,31 +4697,87 @@ void func_80035B18(PlayState* play, Actor* actor, u16 textId) {
 }
 
 /**
- * Tests if event_chk_inf flag is set.
+ * Tests if "eventChkInf" flag is set.
  */
 s32 Flags_GetEventChkInf(s32 flag) {
     return gSaveContext.eventChkInf[flag >> 4] & (1 << (flag & 0xF));
 }
 
 /**
- * Sets event_chk_inf flag.
+ * Sets "eventChkInf" flag.
  */
 void Flags_SetEventChkInf(s32 flag) {
     gSaveContext.eventChkInf[flag >> 4] |= (1 << (flag & 0xF));
 }
 
 /**
- * Tests if "inf_table flag is set.
+ * Unsets "eventChkInf" flag.
+ */
+void Flags_UnsetEventChkInf(s32 flag) {
+    gSaveContext.eventChkInf[flag >> 4] &= ~(1 << (flag & 0xF));
+}
+
+/**
+ * Tests if "itemGetInf" flag is set.
+ */
+s32 Flags_GetItemGetInf(s32 flag) {
+    return gSaveContext.itemGetInf[flag >> 4] & (1 << (flag & 0xF));
+}
+
+/**
+ * Sets "itemGetInf" flag.
+ */
+void Flags_SetItemGetInf(s32 flag) {
+    gSaveContext.itemGetInf[flag >> 4] |= (1 << (flag & 0xF));
+}
+
+/**
+ * Unsets "itemGetInf" flag.
+ */
+void Flags_UnsetItemGetInf(s32 flag) {
+    gSaveContext.itemGetInf[flag >> 4] &= ~(1 << (flag & 0xF));
+}
+
+/**
+ * Tests if "infTable" flag is set.
  */
 s32 Flags_GetInfTable(s32 flag) {
     return gSaveContext.infTable[flag >> 4] & (1 << (flag & 0xF));
 }
 
 /**
- * Sets "inf_table" flag.
+ * Sets "infTable" flag.
  */
 void Flags_SetInfTable(s32 flag) {
     gSaveContext.infTable[flag >> 4] |= (1 << (flag & 0xF));
+}
+
+/**
+ * Unsets "infTable" flag.
+ */
+void Flags_UnsetInfTable(s32 flag) {
+    gSaveContext.infTable[flag >> 4] &= ~(1 << (flag & 0xF));
+}
+
+/**
+ * Tests if "eventInf" flag is set.
+ */
+s32 Flags_GetEventInf(s32 flag) {
+    return gSaveContext.eventInf[flag >> 4] & (1 << (flag & 0xF));
+}
+
+/**
+ * Sets "eventInf" flag.
+ */
+void Flags_SetEventInf(s32 flag) {
+    gSaveContext.eventInf[flag >> 4] |= (1 << (flag & 0xF));
+}
+
+/**
+ * Unsets "eventInf" flag.
+ */
+void Flags_UnsetEventInf(s32 flag) {
+    gSaveContext.eventInf[flag >> 4] &= ~(1 << (flag & 0xF));
 }
 
 /**
@@ -4738,27 +4794,34 @@ void Flags_SetRandomizerInf(RandomizerInf flag) {
     gSaveContext.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
 }
 
+/**
+ * Unsets "randomizerInf" flag.
+ */
+void Flags_UnsetRandomizerInf(RandomizerInf flag) {
+    gSaveContext.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
+}
+
 u32 func_80035BFC(PlayState* play, s16 arg1) {
     u16 retTextId = 0;
 
     switch (arg1) {
         case 0:
-            if (Flags_GetEventChkInf(0x9)) {
-                if (Flags_GetInfTable(0x5)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
+                if (Flags_GetInfTable(INFTABLE_05)) {
                     retTextId = 0x1048;
                 } else {
                     retTextId = 0x1047;
                 }
             } else {
-                if (Flags_GetEventChkInf(0x2)) {
-                    if (Flags_GetInfTable(0x3)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_FIRST_SPOKE_TO_MIDO)) {
+                    if (Flags_GetInfTable(INFTABLE_03)) {
                         retTextId = 0x1032;
                     } else {
                         retTextId = 0x1031;
                     }
                 } else {
-                    if (Flags_GetInfTable(0x0)) {
-                        if (Flags_GetInfTable(0x1)) {
+                    if (Flags_GetInfTable(INFTABLE_GREETED_BY_SARIA)) {
+                        if (Flags_GetInfTable(INFTABLE_01)) {
                             retTextId = 0x1003;
                         } else {
                             retTextId = 0x1002;
@@ -4771,21 +4834,21 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 1:
             if (!LINK_IS_ADULT) {
-                if (Flags_GetEventChkInf(0x9)) {
-                    if (Flags_GetInfTable(0x10)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
+                    if (Flags_GetInfTable(INFTABLE_10)) {
                         retTextId = 0x1046;
                     } else {
                         retTextId = 0x1045;
                     }
                 } else {
-                    if (Flags_GetEventChkInf(0x3)) {
-                        if (Flags_GetInfTable(0xE)) {
+                    if (Flags_GetEventChkInf(EVENTCHKINF_COMPLAINED_ABOUT_MIDO)) {
+                        if (Flags_GetInfTable(INFTABLE_0E)) {
                             retTextId = 0x1034;
                         } else {
                             retTextId = 0x1033;
                         }
                     } else {
-                        if (Flags_GetInfTable(0xC)) {
+                        if (Flags_GetInfTable(INFTABLE_0C)) {
                             retTextId = 0x1030;
                         } else {
                             retTextId = 0x102F;
@@ -4793,21 +4856,21 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
                     }
                 }
             } else {
-                if (Flags_GetEventChkInf(0x5C)) {
-                    if (Flags_GetInfTable(0x19)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_5C)) {
+                    if (Flags_GetInfTable(INFTABLE_19)) {
                         retTextId = 0x1071;
                     } else {
                         retTextId = 0x1070;
                     }
                 } else {
-                    if (Flags_GetEventChkInf(0xB)) {
-                        if (Flags_GetInfTable(0x17)) {
+                    if (Flags_GetEventChkInf(EVENTCHKINF_0B)) {
+                        if (Flags_GetInfTable(INFTABLE_17)) {
                             retTextId = 0x1068;
                         } else {
                             retTextId = 0x1067;
                         }
                     } else {
-                        if (Flags_GetInfTable(0x15)) {
+                        if (Flags_GetInfTable(INFTABLE_15)) {
                             retTextId = 0x1061;
                         } else {
                             retTextId = 0x1060;
@@ -4818,15 +4881,15 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 2:
             if (!LINK_IS_ADULT) {
-                if (Flags_GetEventChkInf(0x9)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
                     retTextId = 0x1042;
                 } else {
                     retTextId = 0x1004;
                 }
             } else {
-                if (Flags_GetEventChkInf(0x5C)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_5C)) {
                     retTextId = 0x1072;
-                } else if (Flags_GetInfTable(0x41)) {
+                } else if (Flags_GetInfTable(INFTABLE_41)) {
                     retTextId = 0x1055;
                 } else {
                     retTextId = 0x1056;
@@ -4835,17 +4898,17 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 3:
             if (!LINK_IS_ADULT) {
-                if (Flags_GetEventChkInf(0x9)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
                     retTextId = 0x1043;
                 } else {
-                    if (Flags_GetInfTable(0x1E)) {
+                    if (Flags_GetInfTable(INFTABLE_1E)) {
                         retTextId = 0x1006;
                     } else {
                         retTextId = 0x1005;
                     }
                 }
             } else {
-                if (Flags_GetEventChkInf(0x5C)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_5C)) {
                     retTextId = 0x1073;
                 } else {
                     retTextId = 0x105A;
@@ -4854,15 +4917,15 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 4:
             if (!LINK_IS_ADULT) {
-                if (Flags_GetEventChkInf(0x9)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
                     retTextId = 0x1042;
                 } else {
                     retTextId = 0x1007;
                 }
             } else {
-                if (Flags_GetEventChkInf(0x5C)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_5C)) {
                     retTextId = 0x1072;
-                } else if (Flags_GetInfTable(0x47)) {
+                } else if (Flags_GetInfTable(INFTABLE_47)) {
                     retTextId = 0x105E;
                 } else {
                     retTextId = 0x105D;
@@ -4871,15 +4934,15 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 5:
             if (!LINK_IS_ADULT) {
-                if (Flags_GetEventChkInf(0x9)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
                     retTextId = 0x1044;
-                } else if (Flags_GetInfTable(0x22)) {
+                } else if (Flags_GetInfTable(INFTABLE_22)) {
                     retTextId = 0x1009;
                 } else {
                     retTextId = 0x1008;
                 }
             } else {
-                if (Flags_GetEventChkInf(0x5C)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_5C)) {
                     retTextId = 0x1075;
                 } else {
                     retTextId = 0x105B;
@@ -4888,15 +4951,15 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 6:
             if (!LINK_IS_ADULT) {
-                if (Flags_GetEventChkInf(0x9)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
                     retTextId = 0x1042;
-                } else if (Flags_GetInfTable(0x24)) {
+                } else if (Flags_GetInfTable(INFTABLE_24)) {
                     retTextId = 0x100B;
                 } else {
                     retTextId = 0x100A;
                 }
             } else {
-                if (Flags_GetEventChkInf(0x5C)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_5C)) {
                     retTextId = 0x1056;
                 } else {
                     retTextId = 0x105F;
@@ -4905,15 +4968,15 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 7:
             if (!LINK_IS_ADULT) {
-                if (Flags_GetEventChkInf(0x9)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
                     retTextId = 0x1043;
-                } else if (Flags_GetInfTable(0x26)) {
+                } else if (Flags_GetInfTable(INFTABLE_26)) {
                     retTextId = 0x100D;
                 } else {
                     retTextId = 0x100C;
                 }
             } else {
-                if (Flags_GetEventChkInf(0x5C)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_5C)) {
                     retTextId = 0x1057;
                 } else {
                     retTextId = 0x1057;
@@ -4922,17 +4985,17 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 8:
             if (!LINK_IS_ADULT) {
-                if (Flags_GetEventChkInf(0x9)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
                     retTextId = 0x1043;
-                } else if (Flags_GetInfTable(0x28)) {
+                } else if (Flags_GetInfTable(INFTABLE_28)) {
                     retTextId = 0x1019;
                 } else {
                     retTextId = 0x100E;
                 }
             } else {
-                if (Flags_GetEventChkInf(0x5C)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_5C)) {
                     retTextId = 0x1077;
-                } else if (Flags_GetInfTable(0x51)) {
+                } else if (Flags_GetInfTable(INFTABLE_51)) {
                     retTextId = 0x1058;
                 } else {
                     retTextId = 0x1059;
@@ -4941,13 +5004,13 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 9:
             if (!LINK_IS_ADULT) {
-                if (Flags_GetEventChkInf(0x9)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
                     retTextId = 0x1049;
                 } else {
                     retTextId = 0x1035;
                 }
             } else {
-                if (Flags_GetEventChkInf(0x5C)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_5C)) {
                     retTextId = 0x1079;
                 } else {
                     retTextId = 0x104E;
@@ -4956,15 +5019,15 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 10:
             if (!LINK_IS_ADULT) {
-                if (Flags_GetEventChkInf(0x9)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
                     retTextId = 0x104A;
                 } else {
                     retTextId = 0x1038;
                 }
             } else {
-                if (Flags_GetEventChkInf(0x5C)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_5C)) {
                     retTextId = 0x1079;
-                } else if (Flags_GetInfTable(0x59)) {
+                } else if (Flags_GetInfTable(INFTABLE_59)) {
                     retTextId = 0x1050;
                 } else {
                     retTextId = 0x104F;
@@ -4973,13 +5036,13 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 11:
             if (!LINK_IS_ADULT) {
-                if (Flags_GetEventChkInf(0x9)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
                     retTextId = 0x104B;
                 } else {
                     retTextId = 0x103C;
                 }
             } else {
-                if (Flags_GetEventChkInf(0x5C)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_5C)) {
                     retTextId = 0x107B;
                 } else {
                     retTextId = 0x1051;
@@ -4988,13 +5051,13 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 12:
             if (!LINK_IS_ADULT) {
-                if (Flags_GetEventChkInf(0x9)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
                     retTextId = 0x104C;
                 } else {
                     retTextId = 0x103D;
                 }
             } else {
-                if (Flags_GetEventChkInf(0x5C)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_5C)) {
                     retTextId = 0x107C;
                 } else {
                     retTextId = 0x1052;
@@ -5003,15 +5066,15 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 13:
             if (!LINK_IS_ADULT) {
-                if (Flags_GetEventChkInf(0x9)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
                     retTextId = 0x104D;
                 } else {
                     retTextId = 0x103E;
                 }
             } else {
-                if (Flags_GetEventChkInf(0x5C)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_5C)) {
                     retTextId = 0x106E;
-                } else if (Flags_GetInfTable(0x61)) {
+                } else if (Flags_GetInfTable(INFTABLE_61)) {
                     retTextId = 0x1053;
                 } else {
                     retTextId = 0x1054;
@@ -5019,9 +5082,9 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             }
             break;
         case 15:
-            if (Flags_GetEventChkInf(0x5C)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_5C)) {
                 retTextId = 0x1078;
-            } else if (Flags_GetInfTable(0x66)) {
+            } else if (Flags_GetInfTable(INFTABLE_66)) {
                 retTextId = 0x1066;
             } else {
                 retTextId = 0x1062;
@@ -5030,7 +5093,7 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
         case 16:
             if (play->sceneNum == SCENE_SPOT15) {
                 retTextId = 0x7002;
-            } else if (Flags_GetInfTable(0x6A)) {
+            } else if (Flags_GetInfTable(INFTABLE_6A)) {
                 retTextId = 0x7004;
             } else if ((gSaveContext.dayTime >= 0x4000) && (gSaveContext.dayTime < 0xC556)) {
                 retTextId = 0x7002;
@@ -5039,8 +5102,8 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             }
             break;
         case 17:
-            if (Flags_GetEventChkInf(0x9) && Flags_GetEventChkInf(0x25) && Flags_GetEventChkInf(0x37)) {
-                if (Flags_GetInfTable(0x6C)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
+                if (Flags_GetInfTable(INFTABLE_6C)) {
                     retTextId = 0x7008;
                 } else {
                     retTextId = 0x7007;
@@ -5053,11 +5116,11 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             retTextId = 0x702D;
             break;
         case 18:
-            if (Flags_GetEventChkInf(0x9) && Flags_GetEventChkInf(0x25) && Flags_GetEventChkInf(0x37)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x7006;
             } else {
-                if (Flags_GetEventChkInf(0x12)) {
-                    if (Flags_GetInfTable(0x71)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG)) {
+                    if (Flags_GetInfTable(INFTABLE_71)) {
                         retTextId = 0x7072;
                     } else {
                         retTextId = 0x7071;
@@ -5069,50 +5132,50 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 20:
         case 21:
-            if (Flags_GetEventChkInf(0x42)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_42)) {
                 retTextId = 0x2012;
-            } else if (Flags_GetEventChkInf(0x41)) {
-                if (Flags_GetInfTable(0x76)) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_41)) {
+                if (Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)) {
                     retTextId = 0x2011;
                 } else {
                     retTextId = 0x2010;
                 }
-            } else if (Flags_GetEventChkInf(0x40)) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 retTextId = 0x200F;
             } else {
                 retTextId = 0x200E;
             }
             break;
         case 24:
-            if (Flags_GetEventChkInf(0x9) && Flags_GetEventChkInf(0x25) && Flags_GetEventChkInf(0x37)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x7044;
             } else {
                 retTextId = 0x7015;
             }
             break;
         case 25:
-            if (Flags_GetEventChkInf(0x9) && Flags_GetEventChkInf(0x25) && Flags_GetEventChkInf(0x37)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x7045;
             } else {
-                Flags_GetInfTable(0xC2);
+                Flags_GetInfTable(INFTABLE_C2);
                 retTextId = 0x7016;
             }
             break;
         case 26:
-            if (Flags_GetEventChkInf(0x9) && Flags_GetEventChkInf(0x25) && Flags_GetEventChkInf(0x37)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x7046;
             } else {
-                Flags_GetInfTable(0xC2);
+                Flags_GetInfTable(INFTABLE_C2);
                 retTextId = 0x7018;
             }
             break;
         case 27:
-            if (Flags_GetEventChkInf(0x9) && Flags_GetEventChkInf(0x25) && Flags_GetEventChkInf(0x37)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x7047;
-            } else if (Flags_GetEventChkInf(0x14)) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
                 retTextId = 0x701A;
-            } else if (Flags_GetEventChkInf(0x11)) {
-                if (Flags_GetInfTable(0xC6)) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_INGO_AT_RANCH_BEFORE_TALON_RETURNS)) {
+                if (Flags_GetInfTable(INFTABLE_C6)) {
                     retTextId = 0x701C;
                 } else {
                     retTextId = 0x701B;
@@ -5122,59 +5185,59 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             }
             break;
         case 28:
-            if (Flags_GetEventChkInf(0x9) && Flags_GetEventChkInf(0x25) && Flags_GetEventChkInf(0x37)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x7048;
             } else {
-                Flags_GetInfTable(0xCA);
+                Flags_GetInfTable(INFTABLE_CA);
                 retTextId = 0x701D;
             }
             break;
         case 29:
-            if (Flags_GetEventChkInf(0x9) && Flags_GetEventChkInf(0x25) && Flags_GetEventChkInf(0x37)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x7049;
             } else {
-                Flags_GetInfTable(0xCC);
+                Flags_GetInfTable(INFTABLE_CC);
                 retTextId = 0x701F;
             }
             break;
         case 30:
-            if (Flags_GetEventChkInf(0x9) && Flags_GetEventChkInf(0x25) && Flags_GetEventChkInf(0x37)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x704A;
             } else {
-                Flags_GetInfTable(0xCE);
+                Flags_GetInfTable(INFTABLE_CE);
                 retTextId = 0x7021;
             }
             break;
         case 31:
-            if (Flags_GetEventChkInf(0x9) && Flags_GetEventChkInf(0x25) && Flags_GetEventChkInf(0x37)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x704B;
             } else {
-                Flags_GetInfTable(0xD0);
+                Flags_GetInfTable(INFTABLE_D0);
                 retTextId = 0x7023;
             }
             break;
         case 32:
-            if (Flags_GetEventChkInf(0x9) && Flags_GetEventChkInf(0x25) && Flags_GetEventChkInf(0x37)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x704C;
             } else {
-                Flags_GetInfTable(0xD2);
+                Flags_GetInfTable(INFTABLE_D2);
                 retTextId = 0x7025;
             }
             break;
         case 33:
-            if (Flags_GetEventChkInf(0x9) && Flags_GetEventChkInf(0x25) && Flags_GetEventChkInf(0x37)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x704D;
             } else {
-                Flags_GetInfTable(0xD4);
+                Flags_GetInfTable(INFTABLE_D4);
                 retTextId = 0x7027;
             }
             break;
         case 34:
-            Flags_GetInfTable(0xD6);
+            Flags_GetInfTable(INFTABLE_D6);
             retTextId = 0x403C;
             break;
         case 35:
-            if (Flags_GetInfTable(0xD8)) {
+            if (Flags_GetInfTable(INFTABLE_D8)) {
                 retTextId = 0x5029;
             } else {
                 retTextId = 0x5028;
@@ -5185,17 +5248,17 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 38:
             if (!LINK_IS_ADULT) {
-                if (Flags_GetEventChkInf(0x25)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) {
                     retTextId = 0x3027;
-                } else if (Flags_GetEventChkInf(0x23)) {
+                } else if (Flags_GetEventChkInf(EVENTCHKINF_BOMBED_DODONGOS_CAVERN_ENTRANCE)) {
                     retTextId = 0x3021;
-                } else if (Flags_GetInfTable(0xE0)) {
+                } else if (Flags_GetInfTable(INFTABLE_E0)) {
                     retTextId = 0x302A;
                 } else {
                     retTextId = 0x3008;
                 }
             } else {
-                if (Flags_GetEventChkInf(0x20)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_20)) {
                     retTextId = 0x4043;
                 } else {
                     retTextId = 0x302A;
@@ -5204,15 +5267,15 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 39:
             if (!LINK_IS_ADULT) {
-                if (Flags_GetEventChkInf(0x25)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) {
                     retTextId = 0x3027;
-                } else if (Flags_GetEventChkInf(0x23)) {
+                } else if (Flags_GetEventChkInf(EVENTCHKINF_BOMBED_DODONGOS_CAVERN_ENTRANCE)) {
                     retTextId = 0x3026;
                 } else {
                     retTextId = 0x3009;
                 }
             } else {
-                if (Flags_GetEventChkInf(0x2A)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_2A)) {
                     retTextId = 0x4043;
                 } else {
                     retTextId = 0x302A;
@@ -5221,17 +5284,17 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 40:
             if (!LINK_IS_ADULT) {
-                if (Flags_GetEventChkInf(0x25)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) {
                     retTextId = 0x3027;
-                } else if (Flags_GetEventChkInf(0x23)) {
+                } else if (Flags_GetEventChkInf(EVENTCHKINF_BOMBED_DODONGOS_CAVERN_ENTRANCE)) {
                     retTextId = 0x3026;
-                } else if (Flags_GetInfTable(0xEB)) {
+                } else if (Flags_GetInfTable(INFTABLE_EB)) {
                     retTextId = 0x302B;
                 } else {
                     retTextId = 0x300A;
                 }
             } else {
-                if (Flags_GetEventChkInf(0x2B)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_2B)) {
                     retTextId = 0x4043;
                 } else {
                     retTextId = 0x302A;
@@ -5240,15 +5303,15 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 41:
             if (!LINK_IS_ADULT) {
-                if (Flags_GetEventChkInf(0x25)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) {
                     retTextId = 0x3027;
-                } else if (Flags_GetInfTable(0xF0)) {
+                } else if (Flags_GetInfTable(INFTABLE_F0)) {
                     retTextId = 0x3015;
                 } else {
                     retTextId = 0x3014;
                 }
             } else {
-                if (Flags_GetEventChkInf(0x2C)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_2C)) {
                     retTextId = 0x4043;
                 } else {
                     retTextId = 0x302A;
@@ -5257,15 +5320,15 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 42:
             if (!LINK_IS_ADULT) {
-                if (Flags_GetEventChkInf(0x25)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) {
                     retTextId = 0x3027;
-                } else if (Flags_GetInfTable(0xF4)) {
+                } else if (Flags_GetInfTable(INFTABLE_F4)) {
                     retTextId = 0x3017;
                 } else {
                     retTextId = 0x3016;
                 }
             } else {
-                if (Flags_GetEventChkInf(0x2C)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_2C)) {
                     retTextId = 0x4043;
                 } else {
                     retTextId = 0x302A;
@@ -5274,15 +5337,15 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 43:
             if (!LINK_IS_ADULT) {
-                if (Flags_GetEventChkInf(0x25)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) {
                     retTextId = 0x3027;
-                } else if (Flags_GetInfTable(0xF8)) {
+                } else if (Flags_GetInfTable(INFTABLE_F8)) {
                     retTextId = 0x3019;
                 } else {
                     retTextId = 0x3018;
                 }
             } else {
-                if (Flags_GetEventChkInf(0x2D)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_2D)) {
                     retTextId = 0x4043;
                 } else {
                     retTextId = 0x302A;
@@ -5290,28 +5353,28 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             }
             break;
         case 48:
-            if (Flags_GetEventChkInf(0x25)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) {
                 retTextId = 0x3029;
-            } else if (Flags_GetEventChkInf(0x20) && Flags_GetEventChkInf(0x21)) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_20) && Flags_GetEventChkInf(EVENTCHKINF_21)) {
                 retTextId = 0x301B;
             } else {
                 retTextId = 0x301A;
             }
             break;
         case 49:
-            if (Flags_GetEventChkInf(0x37)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x402D;
-            } else if (Flags_GetEventChkInf(0x30)) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_A_ZORA)) {
                 retTextId = 0x4007;
             } else {
                 retTextId = 0x4006;
             }
             break;
         case 50:
-            if (Flags_GetEventChkInf(0x37)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x402E;
-            } else if (Flags_GetEventChkInf(0x30)) {
-                if (Flags_GetInfTable(0x124)) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_A_ZORA)) {
+                if (Flags_GetInfTable(INFTABLE_124)) {
                     retTextId = 0x4009;
                 } else {
                     retTextId = 0x4008;
@@ -5321,44 +5384,44 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             }
             break;
         case 51:
-            if (Flags_GetEventChkInf(0x37)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x402D;
-            } else if (Flags_GetEventChkInf(0x31)) {
-                if (Flags_GetInfTable(0x12A)) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER)) {
+                if (Flags_GetInfTable(INFTABLE_12A)) {
                     retTextId = 0x400B;
                 } else {
                     retTextId = 0x402F;
                 }
-            } else if (Flags_GetEventChkInf(0x30)) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_A_ZORA)) {
                 retTextId = 0x400A;
             } else {
                 retTextId = 0x4006;
             }
             break;
         case 52:
-            if (Flags_GetEventChkInf(0x37)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x402E;
-            } else if (Flags_GetEventChkInf(0x30)) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_A_ZORA)) {
                 retTextId = 0x400C;
             } else {
                 retTextId = 0x4006;
             }
             break;
         case 53:
-            if (Flags_GetEventChkInf(0x37)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x402D;
-            } else if (Flags_GetEventChkInf(0x33)) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
                 retTextId = 0x4010;
-            } else if (Flags_GetEventChkInf(0x30)) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_A_ZORA)) {
                 retTextId = 0x400F;
             } else {
                 retTextId = 0x4006;
             }
             break;
         case 54:
-            if (Flags_GetEventChkInf(0x37)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 retTextId = 0x402E;
-            } else if (Flags_GetEventChkInf(0x30)) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_A_ZORA)) {
                 retTextId = 0x4011;
             } else {
                 retTextId = 0x4006;
@@ -5366,10 +5429,10 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 55:
             if (!LINK_IS_ADULT) {
-                if (Flags_GetEventChkInf(0x37)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                     retTextId = 0x402B;
-                } else if (Flags_GetEventChkInf(0x31)) {
-                    if (Flags_GetInfTable(0x138)) {
+                } else if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER)) {
+                    if (Flags_GetInfTable(INFTABLE_138)) {
                         retTextId = 0x401C;
                     } else {
                         retTextId = 0x401B;
@@ -5391,7 +5454,7 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             retTextId = 0x5012;
             break;
         case 61:
-            if (Flags_GetInfTable(0x166)) {
+            if (Flags_GetInfTable(INFTABLE_166)) {
                 retTextId = 0x5001;
             } else {
                 retTextId = 0x5000;
@@ -5401,23 +5464,23 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             retTextId = 0x5012;
             break;
         case 63:
-            if (Flags_GetInfTable(0x16A)) {
+            if (Flags_GetInfTable(INFTABLE_16A)) {
                 retTextId = 0x5001;
             } else {
                 retTextId = 0x5000;
             }
             break;
         case 71:
-            if (Flags_GetEventChkInf(0x16)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_INVITED_TO_SING_WITH_CHILD_MALON)) {
                 retTextId = 0x2049;
-            } else if (Flags_GetEventChkInf(0x15)) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_CHILD_MALON_AT_RANCH)) {
                 retTextId = 0x2048;
-            } else if (Flags_GetEventChkInf(0x14)) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
                 retTextId = 0x2047;
-            } else if (Flags_GetEventChkInf(0x12) && !Flags_GetEventChkInf(0x14)) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG) && !Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
                 retTextId = 0x2044;
-            } else if (Flags_GetEventChkInf(0x10)) {
-                if (Flags_GetEventChkInf(0x11)) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_CHILD_MALON_AT_CASTLE_OR_MARKET)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_INGO_AT_RANCH_BEFORE_TALON_RETURNS)) {
                     retTextId = 0x2043;
                 } else {
                     retTextId = 0x2042;
@@ -5428,18 +5491,18 @@ u32 func_80035BFC(PlayState* play, s16 arg1) {
             break;
         case 72:
             if (!LINK_IS_ADULT) {
-                if (Flags_GetEventChkInf(0x14)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
                     retTextId = 0x2040;
-                } else if (Flags_GetInfTable(0x94)) {
+                } else if (Flags_GetInfTable(INFTABLE_94)) {
                     retTextId = 0x2040;
                 } else {
                     retTextId = 0x203F;
                 }
             } else {
-                if (!Flags_GetEventChkInf(0x18)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED)) {
                     if (!IS_DAY) {
                         retTextId = 0x204E;
-                    } else if (Flags_GetInfTable(0x9A)) {
+                    } else if (Flags_GetInfTable(INFTABLE_SPOKE_TO_INGO_ONCE_AS_ADULT)) {
                         retTextId = 0x2031;
                     } else {
                         retTextId = 0x2030;
@@ -5463,204 +5526,204 @@ void func_80036E50(u16 textId, s16 arg1) {
         case 0:
             switch (textId) {
                 case 0x1001:
-                    Flags_SetInfTable(0x0);
+                    Flags_SetInfTable(INFTABLE_GREETED_BY_SARIA);
                     return;
                 case 0x1002:
-                    Flags_SetInfTable(0x1);
+                    Flags_SetInfTable(INFTABLE_01);
                     return;
                 case 0x1031:
-                    Flags_SetEventChkInf(0x3);
-                    Flags_SetInfTable(0x3);
+                    Flags_SetEventChkInf(EVENTCHKINF_COMPLAINED_ABOUT_MIDO);
+                    Flags_SetInfTable(INFTABLE_03);
                     return;
                 case 0x1047:
-                    Flags_SetInfTable(0x5);
+                    Flags_SetInfTable(INFTABLE_05);
                     return;
             }
             return;
         case 1:
             switch (textId) {
                 case 0x102F:
-                    Flags_SetEventChkInf(0x2);
-                    Flags_SetInfTable(0xC);
+                    Flags_SetEventChkInf(EVENTCHKINF_FIRST_SPOKE_TO_MIDO);
+                    Flags_SetInfTable(INFTABLE_0C);
                     return;
                 case 0x1033:
                     Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                            &D_801333E8);
-                    Flags_SetEventChkInf(0x4);
-                    Flags_SetInfTable(0xE);
+                    Flags_SetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD);
+                    Flags_SetInfTable(INFTABLE_0E);
                     return;
                 case 0x1045:
-                    Flags_SetInfTable(0x10);
+                    Flags_SetInfTable(INFTABLE_10);
                     return;
                 case 0x1060:
-                    Flags_SetInfTable(0x15);
+                    Flags_SetInfTable(INFTABLE_15);
                     return;
                 case 0x1067:
-                    Flags_SetEventChkInf(0xA);
-                    Flags_SetInfTable(0x17);
+                    Flags_SetEventChkInf(EVENTCHKINF_PLAYED_SARIAS_SONG_FOR_MIDO_AS_ADULT);
+                    Flags_SetInfTable(INFTABLE_17);
                     return;
                 case 0x1070:
-                    Flags_SetInfTable(0x19);
+                    Flags_SetInfTable(INFTABLE_19);
                     return;
             }
             return;
         case 2:
             if (textId == 0x1056) {
-                Flags_SetInfTable(0x41);
+                Flags_SetInfTable(INFTABLE_41);
             }
             return;
         case 3:
             if (textId == 0x1005) {
-                Flags_SetInfTable(0x1E);
+                Flags_SetInfTable(INFTABLE_1E);
             }
             return;
         case 4:
             if (textId == 0x105D) {
-                Flags_SetInfTable(0x47);
+                Flags_SetInfTable(INFTABLE_47);
             }
             return;
         case 5:
             if (textId == 0x1008) {
-                Flags_SetInfTable(0x22);
+                Flags_SetInfTable(INFTABLE_22);
             }
             return;
         case 6:
             if (textId == 0x100A) {
-                Flags_SetInfTable(0x24);
+                Flags_SetInfTable(INFTABLE_24);
             }
             return;
         case 7:
             if (textId == 0x100C) {
-                Flags_SetInfTable(0x26);
+                Flags_SetInfTable(INFTABLE_26);
             }
             return;
         case 8:
             if (textId == 0x100E) {
-                Flags_SetInfTable(0x28);
+                Flags_SetInfTable(INFTABLE_28);
             }
             if (textId == 0x1059) {
-                Flags_SetInfTable(0x51);
+                Flags_SetInfTable(INFTABLE_51);
             }
             return;
         case 10:
             if (textId == 0x104F) {
-                Flags_SetInfTable(0x59);
+                Flags_SetInfTable(INFTABLE_59);
             }
             return;
         case 13:
             if (textId == 0x1054) {
-                Flags_SetInfTable(0x61);
+                Flags_SetInfTable(INFTABLE_61);
             }
             return;
         case 15:
             if (textId == 0x1062) {
-                Flags_SetInfTable(0x66);
+                Flags_SetInfTable(INFTABLE_66);
             }
             return;
         case 16:
             if (textId == 0x7002) {
-                Flags_SetInfTable(0x6A);
+                Flags_SetInfTable(INFTABLE_6A);
             }
             if (textId == 0x7003) {
-                Flags_SetInfTable(0x6A);
+                Flags_SetInfTable(INFTABLE_6A);
             }
             return;
         case 17:
             if (textId == 0x7007) {
-                Flags_SetInfTable(0x6C);
+                Flags_SetInfTable(INFTABLE_6C);
             }
             return;
         case 18:
             if (textId == 0x7071) {
-                Flags_SetInfTable(0x71);
+                Flags_SetInfTable(INFTABLE_71);
             }
             return;
         case 20:
         case 21:
             if (textId == 0x2010) {
-                Flags_SetInfTable(0x76);
+                Flags_SetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD);
             }
             return;
         case 25:
             if (textId == 0x7016) {
-                Flags_SetInfTable(0xC2);
+                Flags_SetInfTable(INFTABLE_C2);
             }
             return;
         case 26:
             if (textId == 0x7018) {
-                Flags_SetInfTable(0xC4);
+                Flags_SetInfTable(INFTABLE_C4);
             }
             return;
         case 28:
             if (textId == 0x701D) {
-                Flags_SetInfTable(0xCA);
+                Flags_SetInfTable(INFTABLE_CA);
             }
             return;
         case 29:
             if (textId == 0x701F) {
-                Flags_SetInfTable(0xCC);
+                Flags_SetInfTable(INFTABLE_CC);
             }
             return;
         case 30:
             if (textId == 0x7021) {
-                Flags_SetInfTable(0xCE);
+                Flags_SetInfTable(INFTABLE_CE);
             }
             return;
         case 31:
             if (textId == 0x7023) {
-                Flags_SetInfTable(0xD0);
+                Flags_SetInfTable(INFTABLE_D0);
             }
             return;
         case 32:
             if (textId == 0x7025) {
-                Flags_SetInfTable(0xD2);
+                Flags_SetInfTable(INFTABLE_D2);
             }
             return;
         case 33:
             if (textId == 0x7027) {
-                Flags_SetInfTable(0xD4);
+                Flags_SetInfTable(INFTABLE_D4);
             }
             return;
         case 34:
             if (textId == 0x403C) {
-                Flags_SetInfTable(0xD6);
+                Flags_SetInfTable(INFTABLE_D6);
             }
             return;
         case 35:
             if (textId == 0x5028) {
-                Flags_SetInfTable(0xD8);
+                Flags_SetInfTable(INFTABLE_D8);
             }
             return;
         case 38:
             if (textId == 0x3008) {
-                Flags_SetInfTable(0xE0);
+                Flags_SetInfTable(INFTABLE_E0);
             }
             return;
         case 40:
             if (textId == 0x300B) {
-                Flags_SetInfTable(0xEB);
+                Flags_SetInfTable(INFTABLE_EB);
             }
             return;
         case 41:
             if (textId == 0x3014) {
-                Flags_SetInfTable(0xF0);
+                Flags_SetInfTable(INFTABLE_F0);
             }
             return;
         case 42:
             if (textId == 0x3016) {
-                Flags_SetInfTable(0xF4);
+                Flags_SetInfTable(INFTABLE_F4);
             }
             return;
         case 43:
             if (textId == 0x3018) {
-                Flags_SetEventChkInf(0x20);
-                Flags_SetInfTable(0xF8);
+                Flags_SetEventChkInf(EVENTCHKINF_20);
+                Flags_SetInfTable(INFTABLE_F8);
             }
             return;
         case 48:
             if (textId == 0x3020) {
-                Flags_SetEventChkInf(0x22);
-                Flags_SetInfTable(0x113);
+                Flags_SetEventChkInf(EVENTCHKINF_22);
+                Flags_SetInfTable(INFTABLE_113);
             }
             return;
         case 49:
@@ -5668,56 +5731,56 @@ void func_80036E50(u16 textId, s16 arg1) {
         case 53:
         case 54:
             if (textId == 0x4006) {
-                Flags_SetEventChkInf(0x30);
+                Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_A_ZORA);
             }
             return;
         case 50:
             if (textId == 0x4006) {
-                Flags_SetEventChkInf(0x30);
+                Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_A_ZORA);
             }
             if (textId == 0x4008) {
-                Flags_SetInfTable(0x124);
+                Flags_SetInfTable(INFTABLE_124);
             }
             return;
         case 51:
             if (textId == 0x4006) {
-                Flags_SetEventChkInf(0x30);
+                Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_A_ZORA);
             }
             if (textId == 0x400A) {
-                Flags_SetEventChkInf(0x32);
+                Flags_SetEventChkInf(EVENTCHKINF_32);
             }
             if (textId == 0x402F) {
-                Flags_SetInfTable(0x12A);
+                Flags_SetInfTable(INFTABLE_12A);
             }
             return;
         case 55:
             if (textId == 0x401B) {
-                Flags_SetEventChkInf(0x33);
-                Flags_SetInfTable(0x138);
+                Flags_SetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED);
+                Flags_SetInfTable(INFTABLE_138);
             }
             return;
         case 61:
             if (textId == 0x5000) {
-                Flags_SetInfTable(0x166);
+                Flags_SetInfTable(INFTABLE_166);
             }
             return;
         case 63:
             if (textId == 0x5013) {
-                Flags_SetInfTable(0x16A);
+                Flags_SetInfTable(INFTABLE_16A);
             }
             return;
         case 71:
             if (textId == 0x2041) {
-                Flags_SetEventChkInf(0x10);
+                Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_CHILD_MALON_AT_CASTLE_OR_MARKET);
             }
             if (textId == 0x2044) {
-                Flags_SetEventChkInf(0x12);
+                Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG);
             }
             if (textId == 0x2047) {
-                Flags_SetEventChkInf(0x15);
+                Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_CHILD_MALON_AT_RANCH);
             }
             if (textId == 0x2048) {
-                Flags_SetEventChkInf(0x16);
+                Flags_SetEventChkInf(EVENTCHKINF_INVITED_TO_SING_WITH_CHILD_MALON);
             }
             return;
         case 72:
@@ -5732,14 +5795,14 @@ s32 func_800374E0(PlayState* play, Actor* actor, u16 textId) {
     switch (textId) {
         case 0x1035:
             if (msgCtx->choiceIndex == 0) {
-                if (Flags_GetInfTable(0x2A)) {
+                if (Flags_GetInfTable(INFTABLE_2A)) {
                     func_80035B18(play, actor, 0x1036);
                 } else {
                     func_80035B18(play, actor, 0x1041);
                 }
             }
             if (msgCtx->choiceIndex == 1) {
-                if (Flags_GetInfTable(0x2B)) {
+                if (Flags_GetInfTable(INFTABLE_2B)) {
                     func_80035B18(play, actor, 0x1037);
                 } else {
                     func_80035B18(play, actor, 0x1041);
@@ -5749,21 +5812,21 @@ s32 func_800374E0(PlayState* play, Actor* actor, u16 textId) {
             break;
         case 0x1038:
             if (msgCtx->choiceIndex == 0) {
-                if (Flags_GetInfTable(0x2E)) {
+                if (Flags_GetInfTable(INFTABLE_2E)) {
                     func_80035B18(play, actor, 0x1039);
                 } else {
                     func_80035B18(play, actor, 0x1041);
                 }
             }
             if (msgCtx->choiceIndex == 1) {
-                if (Flags_GetInfTable(0x2F)) {
+                if (Flags_GetInfTable(INFTABLE_2F)) {
                     func_80035B18(play, actor, 0x103A);
                 } else {
                     func_80035B18(play, actor, 0x1041);
                 }
             }
             if (msgCtx->choiceIndex == 2) {
-                if (Flags_GetInfTable(0x30)) {
+                if (Flags_GetInfTable(INFTABLE_30)) {
                     func_80035B18(play, actor, 0x103B);
                 } else {
                     func_80035B18(play, actor, 0x1041);
@@ -5784,25 +5847,25 @@ s32 func_800374E0(PlayState* play, Actor* actor, u16 textId) {
             if (msgCtx->choiceTextId == 0x1035) {
                 if (msgCtx->choiceIndex == 0) {
                     func_80035B18(play, actor, 0x1036);
-                    Flags_SetInfTable(0x2A);
+                    Flags_SetInfTable(INFTABLE_2A);
                 }
                 if (msgCtx->choiceIndex == 1) {
                     func_80035B18(play, actor, 0x1037);
-                    Flags_SetInfTable(0x2B);
+                    Flags_SetInfTable(INFTABLE_2B);
                 }
             }
             if (msgCtx->choiceTextId == 0x1038) {
                 if (msgCtx->choiceIndex == 0) {
                     func_80035B18(play, actor, 0x1039);
-                    Flags_SetInfTable(0x2E);
+                    Flags_SetInfTable(INFTABLE_2E);
                 }
                 if (msgCtx->choiceIndex == 1) {
                     func_80035B18(play, actor, 0x103A);
-                    Flags_SetInfTable(0x2F);
+                    Flags_SetInfTable(INFTABLE_2F);
                 }
                 if (msgCtx->choiceIndex == 2) {
                     func_80035B18(play, actor, 0x103B);
-                    Flags_SetInfTable(0x30);
+                    Flags_SetInfTable(INFTABLE_30);
                 }
             }
             ret = 0;
@@ -5829,7 +5892,7 @@ s32 func_800374E0(PlayState* play, Actor* actor, u16 textId) {
             if (msgCtx->choiceIndex == 1) {
                 func_80035B18(play, actor, 0x2032);
             }
-            Flags_SetInfTable(0x9A);
+            Flags_SetInfTable(INFTABLE_SPOKE_TO_INGO_ONCE_AS_ADULT);
             ret = 0;
             break;
         case 0x2036:
@@ -5859,7 +5922,7 @@ s32 func_800374E0(PlayState* play, Actor* actor, u16 textId) {
             ret = 0;
             break;
         case 0x2043:
-            if (Flags_GetEventChkInf(0x12)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG)) {
                 break;
             }
             func_80035B18(play, actor, 0x2044);
@@ -5869,7 +5932,7 @@ s32 func_800374E0(PlayState* play, Actor* actor, u16 textId) {
             break;
         case 0x300A:
             if (msgCtx->choiceIndex == 0) {
-                if (Flags_GetEventChkInf(0x22)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_22)) {
                     func_80035B18(play, actor, 0x300B);
                 } else {
                     func_80035B18(play, actor, 0x300C);
@@ -5885,7 +5948,7 @@ s32 func_800374E0(PlayState* play, Actor* actor, u16 textId) {
                 func_80035B18(play, actor, 0x301D);
             }
             if (msgCtx->choiceIndex == 1) {
-                if (Flags_GetInfTable(0x113)) {
+                if (Flags_GetInfTable(INFTABLE_113)) {
                     func_80035B18(play, actor, 0x301F);
                 } else {
                     func_80035B18(play, actor, 0x301E);

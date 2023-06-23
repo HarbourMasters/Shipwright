@@ -190,22 +190,22 @@ void EnNiw_Init(Actor* thisx, PlayState* play) {
             }
             break;
         case 1:
-            if (gSaveContext.eventChkInf[1] & 0x10) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
                 Actor_Kill(&this->actor);
             }
             break;
         case 3:
-            if (!(gSaveContext.eventChkInf[1] & 0x10)) {
+            if (!Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
                 Actor_Kill(&this->actor);
             }
             break;
         case 5:
-            if (gSaveContext.eventChkInf[1] & 0x100) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED)) {
                 Actor_Kill(&this->actor);
             }
             break;
         case 7:
-            if (!(gSaveContext.eventChkInf[1] & 0x100)) {
+            if (!Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED)) {
                 Actor_Kill(&this->actor);
             }
             break;
@@ -228,7 +228,7 @@ void EnNiw_Init(Actor* thisx, PlayState* play) {
         case 0xD:
         case 0xE:
             Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit2);
-            if (play->sceneNum == SCENE_LINK_HOME && !(gSaveContext.eventChkInf[1] & 0x4000)) {
+            if (play->sceneNum == SCENE_LINK_HOME && !Flags_GetEventChkInf(EVENTCHKINF_WON_COW_IN_MALONS_RACE)) {
                 Actor_Kill(&this->actor);
             }
             break;

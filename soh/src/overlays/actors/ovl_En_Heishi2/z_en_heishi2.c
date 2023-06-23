@@ -191,8 +191,8 @@ void func_80A53278(EnHeishi2* this, PlayState* play) {
         this->unk_30B = 1;
         this->unk_300 = TEXT_STATE_DONE;
         this->actionFunc = func_80A5475C;
-    } else if ((gSaveContext.eventChkInf[0] & 0x200) && (gSaveContext.eventChkInf[2] & 0x20) &&
-               (gSaveContext.eventChkInf[3] & 0x80)) {
+    } else if ((Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) && (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) &&
+               (Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP))) {
         // "Get all spiritual stones!"
         osSyncPrintf(VT_FGCOL(GREEN) " ☆☆☆☆☆ 全部の精霊石GET！ ☆☆☆☆☆ \n" VT_RST);
         this->unk_300 = TEXT_STATE_DONE;
@@ -211,7 +211,7 @@ void func_80A53278(EnHeishi2* this, PlayState* play) {
         this->unk_300 = TEXT_STATE_DONE;
         this->actor.textId = 0x7099;
         this->actionFunc = func_80A5475C;
-    } else if (gSaveContext.eventChkInf[1] & 4) {
+    } else if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG)) {
         if (this->unk_30E == 0) {
             // "Start under the first sleeve!"
             osSyncPrintf(VT_FGCOL(PURPLE) " ☆☆☆☆☆ １回目袖の下開始！ ☆☆☆☆☆ \n" VT_RST);
@@ -354,8 +354,8 @@ void func_80A5399C(EnHeishi2* this, PlayState* play) {
 
     this->unk_30B = 0;
     var = 0;
-    if (gSaveContext.infTable[7] & 0x40) {
-        if (!(gSaveContext.infTable[7] & 0x80)) {
+    if (Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)) {
+        if (!Flags_GetInfTable(INFTABLE_GATE_GUARD_PUT_ON_KEATON_MASK)) {
             if (Player_GetMask(play) == PLAYER_MASK_KEATON) {
                 if (this->unk_309 == 0) {
                     this->actor.textId = 0x200A;
@@ -526,7 +526,7 @@ void func_80A53F30(EnHeishi2* this, PlayState* play) {
 void func_80A54038(EnHeishi2* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
-        gSaveContext.infTable[7] |= 0x40;
+        Flags_SetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD);
         Message_CloseTextbox(play);
         func_8002DF54(play, 0, 7);
         this->actionFunc = func_80A53908;
@@ -541,8 +541,8 @@ void func_80A540C0(EnHeishi2* this, PlayState* play) {
                 this->actor.textId = 0x2020;
                 Message_ContinueTextbox(play, this->actor.textId);
                 Player_UnsetMask(play);
-                gSaveContext.infTable[7] |= 0x80;
-                gSaveContext.itemGetInf[3] |= 0x100;
+                Flags_SetInfTable(INFTABLE_GATE_GUARD_PUT_ON_KEATON_MASK);
+                Flags_SetItemGetInf(ITEMGETINF_38);
                 Item_Give(play, ITEM_SOLD_OUT);
                 if (this->unk_30A != 0) {
                     this->unk_30A = 2;
@@ -848,7 +848,7 @@ void EnHeishi2_Draw(Actor* thisx, PlayState* play) {
 
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnHeishi2_OverrideLimbDraw,
                       EnHeishi2_PostLimbDraw, this);
-    if ((this->type == 5) && (gSaveContext.infTable[7] & 0x80)) {
+    if ((this->type == 5) && (Flags_GetInfTable(INFTABLE_GATE_GUARD_PUT_ON_KEATON_MASK))) {
         linkObjBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_LINK_CHILD);
         if (linkObjBankIndex >= 0) {
             Matrix_Put(&this->mtxf_330);

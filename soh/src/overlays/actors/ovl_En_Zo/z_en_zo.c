@@ -371,7 +371,7 @@ u16 func_80B61024(PlayState* play, Actor* thisx) {
 
     switch (thisx->params & 0x3F) {
         case 8:
-            if (gSaveContext.eventChkInf[3] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_A_ZORA)) {
                 return 0x402A;
             }
             break;
@@ -386,7 +386,7 @@ u16 func_80B61024(PlayState* play, Actor* thisx) {
             if (CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)) {
                 return 0x402D;
             }
-            if (gSaveContext.eventChkInf[3] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_A_ZORA)) {
                 return 0x4007;
             }
             break;
@@ -396,8 +396,8 @@ u16 func_80B61024(PlayState* play, Actor* thisx) {
                 return 0x402E;
             }
 
-            if (gSaveContext.eventChkInf[3] & 1) {
-                return (gSaveContext.infTable[18] & 0x10) ? 0x4009 : 0x4008;
+            if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_A_ZORA)) {
+                return (Flags_GetInfTable(INFTABLE_124)) ? 0x4009 : 0x4008;
             }
             break;
 
@@ -405,10 +405,10 @@ u16 func_80B61024(PlayState* play, Actor* thisx) {
             if (CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)) {
                 return 0x402D;
             }
-            if (gSaveContext.eventChkInf[3] & 2) {
-                return (gSaveContext.infTable[18] & 0x200) ? 0x400B : 0x402F;
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER)) {
+                return (Flags_GetInfTable(INFTABLE_129)) ? 0x400B : 0x402F;
             }
-            if (gSaveContext.eventChkInf[3] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_A_ZORA)) {
                 return 0x400A;
             }
             break;
@@ -417,7 +417,7 @@ u16 func_80B61024(PlayState* play, Actor* thisx) {
             if (CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)) {
                 return 0x402E;
             }
-            if (gSaveContext.eventChkInf[3] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_A_ZORA)) {
                 return 0x400C;
             }
             break;
@@ -427,10 +427,10 @@ u16 func_80B61024(PlayState* play, Actor* thisx) {
                 return 0x402D;
             }
 
-            if (gSaveContext.eventChkInf[3] & 8) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
                 return 0x4010;
             }
-            if (gSaveContext.eventChkInf[3] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_A_ZORA)) {
                 return 0x400F;
             }
             break;
@@ -439,7 +439,7 @@ u16 func_80B61024(PlayState* play, Actor* thisx) {
             if (CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)) {
                 return 0x402E;
             }
-            if (gSaveContext.eventChkInf[3] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_A_ZORA)) {
                 return 0x4011;
             }
             break;
@@ -464,13 +464,13 @@ s16 func_80B61298(PlayState* play, Actor* thisx) {
                 case 0x4021:
                     return NPC_TALK_STATE_IDLE;
                 case 0x4008:
-                    gSaveContext.infTable[18] |= 0x10;
+                    Flags_SetInfTable(INFTABLE_124);
                     break;
                 case 0x402F:
-                    gSaveContext.infTable[18] |= 0x200;
+                    Flags_SetInfTable(INFTABLE_129);
                     break;
             }
-            gSaveContext.eventChkInf[3] |= 1;
+            Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_A_ZORA);
             return NPC_TALK_STATE_IDLE;
 
         case TEXT_STATE_CHOICE:

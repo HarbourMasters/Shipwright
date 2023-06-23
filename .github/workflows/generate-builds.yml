@@ -304,8 +304,7 @@ jobs:
         mv ./x64/Release/soh.pdb ./soh-windows/debug/soh.pdb
         mv ./README.md ./soh-windows/readme.txt
         mv ./build-windows/gamecontrollerdb.txt ./soh-windows/gamecontrollerdb.txt
-        mv ./build-windows/OTRGui/assets ./soh-windows
-        mv ./build-windows/ZAPD/ZAPD.exe ./soh-windows/assets/extractor/ZAPD.exe
+        mv ./x64/Release/assets ./soh-windows
     - name: Download soh.otr
       uses: actions/download-artifact@v3
       with:

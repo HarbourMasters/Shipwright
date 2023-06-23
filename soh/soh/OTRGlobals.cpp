@@ -33,6 +33,7 @@
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/audio/AudioCollection.h"
 #include "Enhancements/audio/AudioEditor.h"
+#include "Enhancements/enhancementTypes.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/randomizer/randomizer.h"
 #include "Enhancements/randomizer/randomizer_entrance_tracker.h"
@@ -109,6 +110,8 @@ CrowdControl* CrowdControl::Instance;
 #include "soh/resource/importer/SkeletonLimbFactory.h"
 #include "soh/resource/importer/TextFactory.h"
 #include "soh/resource/importer/BackgroundFactory.h"
+
+#include "soh/config/ConfigUpdaters.h"
 
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
@@ -789,6 +792,10 @@ extern "C" void InitOTR() {
         CrowdControl::Instance->Disable();
     }
 #endif
+
+    std::shared_ptr<LUS::Config> conf = OTRGlobals::Instance->context->GetConfig(); 
+    conf->RegisterConfigVersionUpdater(std::make_shared<LUS::ConfigVersion1Updater>());
+    conf->RunVersionUpdates();
 }
 
 extern "C" void SaveManager_ThreadPoolWait() {
@@ -1025,10 +1032,10 @@ extern "C" uint32_t ResourceMgr_GetGameVersion(int index) {
 
 uint32_t IsSceneMasterQuest(s16 sceneNum) {
     uint32_t value = 0;
-    uint8_t mqMode = CVarGetInteger("gBetterDebugWarpScreenMQMode", 0);
-    if (mqMode == 1) { // non-mq wants to be mq
+    uint8_t mqMode = CVarGetInteger("gBetterDebugWarpScreenMQMode", WARP_MODE_OVERRIDE_OFF);
+    if (mqMode == WARP_MODE_OVERRIDE_MQ_AS_VANILLA) {
         return 1;
-    } else if (mqMode == 2) { // mq wants to be non-mq
+    } else if (mqMode == WARP_MODE_OVERRIDE_VANILLA_AS_MQ) {
         return 0;
     } else {
         if (OTRGlobals::Instance->HasMasterQuest()) {
@@ -1271,6 +1278,23 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
     }
 
     *gfx = instruction;
+}
+
+extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchName, int destinationIndex, int sourceIndex) {
+    auto res = std::static_pointer_cast<LUS::DisplayList>(
+        LUS::Context::GetInstance()->GetResourceManager()->LoadResource(path));
+
+    Gfx* destinationGfx = (Gfx*)&res->Instructions[destinationIndex];
+    Gfx sourceGfx = res->Instructions[sourceIndex];
+
+    if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
+        originalGfx[path][patchName] = {
+            destinationIndex,
+            *destinationGfx
+        };
+    }
+
+    *destinationGfx = sourceGfx;
 }
 
 extern "C" void ResourceMgr_UnpatchGfxByName(const char* path, const char* patchName) {

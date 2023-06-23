@@ -24,6 +24,8 @@ void BootCommands_Init()
     CVarClear("gRandoGenerating"); // Clear when a crash happened during rando seed generation
     CVarClear("gNewSeedGenerated");
     CVarClear("gOnFileSelectNameEntry"); // Clear when soh is killed on the file name entry page
+    CVarClear("gBetterDebugWarpScreenMQMode");
+    CVarClear("gBetterDebugWarpScreenMQModeScene");
 #if defined(__SWITCH__) || defined(__WIIU__)
     CVarRegisterInteger("gControlNav", 1); // always enable controller nav on switch/wii u
 #endif

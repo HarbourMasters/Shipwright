@@ -76,11 +76,11 @@ u16 EnKz_GetTextNoMaskChild(PlayState* play, EnKz* this) {
     if ((gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY)) ||
         (!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE))) {
         // Allow turning in Ruto's letter even if you have already rescued her
-        if (gSaveContext.n64ddFlag && !(gSaveContext.eventChkInf[3] & 8)) {
+        if (gSaveContext.n64ddFlag && !Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
             player->exchangeItemId = EXCH_ITEM_LETTER_RUTO;
         }
         return 0x402B;
-    } else if (gSaveContext.eventChkInf[3] & 8) {
+    } else if (Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
         return 0x401C;
     } else {
         player->exchangeItemId = EXCH_ITEM_LETTER_RUTO;
@@ -93,7 +93,7 @@ u16 EnKz_GetTextNoMaskAdult(PlayState* play, EnKz* this) {
 
     // this works because both ITEM_NONE and later trade items are > ITEM_FROG
     if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_FROG) {
-        if (!(gSaveContext.infTable[19] & 0x200)) {
+        if (!Flags_GetInfTable(INFTABLE_139)) {
             if (!gSaveContext.n64ddFlag) {
                 return CHECK_OWNED_EQUIP(EQUIP_TUNIC, 2) ? 0x401F : 0x4012;
             } else {
@@ -132,14 +132,14 @@ s16 func_80A9C6C0(PlayState* play, Actor* thisx) {
             ret = NPC_TALK_STATE_IDLE;
             switch (this->actor.textId) {
                 case 0x4012:
-                    gSaveContext.infTable[19] |= 0x200;
+                    Flags_SetInfTable(INFTABLE_139);
                     ret = NPC_TALK_STATE_ACTION;
                     break;
                 case 0x401B:
                     ret = !Message_ShouldAdvance(play) ? NPC_TALK_STATE_TALKING : NPC_TALK_STATE_ACTION;
                     break;
                 case 0x401F:
-                    gSaveContext.infTable[19] |= 0x200;
+                    Flags_SetInfTable(INFTABLE_139);
                     break;
             }
             break;
@@ -243,7 +243,7 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (func_80A9C95C(play, this, &this->interactInfo.talkState, 340.0f, EnKz_GetText, func_80A9C6C0)) {
-        if (((gSaveContext.n64ddFlag && LINK_IS_CHILD) || this->actor.textId == 0x401A) && !(gSaveContext.eventChkInf[3] & 8)) {
+        if (((gSaveContext.n64ddFlag && LINK_IS_CHILD) || this->actor.textId == 0x401A) && !Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
             if (func_8002F368(play) == EXCH_ITEM_LETTER_RUTO) {
                 this->actor.textId = 0x401B;
                 this->sfxPlayed = false;
@@ -267,7 +267,7 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
             }
 
             this->isTrading = false;
-            if (gSaveContext.infTable[19] & 0x200) {
+            if (Flags_GetInfTable(INFTABLE_139)) {
                 this->actor.textId = CHECK_QUEST_ITEM(QUEST_SONG_SERENADE) ? 0x4045 : 0x401A;
                 player->actor.textId = this->actor.textId;
             } else {
@@ -345,21 +345,21 @@ void EnKz_Init(Actor* thisx, PlayState* play) {
     Animation_ChangeByInfo(&this->skelanime, sAnimationInfo, ENKZ_ANIM_0);
 
     if (!gSaveContext.n64ddFlag) {
-        if (gSaveContext.eventChkInf[3] & 8) {
+        if (Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
             EnKz_SetMovedPos(this, play);
         }
     } else {
         int zorasFountain = Randomizer_GetSettingValue(RSK_ZORAS_FOUNTAIN);
         switch (zorasFountain) {
             case 0:
-                if (gSaveContext.eventChkInf[3] & 8) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
                     EnKz_SetMovedPos(this, play);
                 }
                 break;
             case 1:
                 if (LINK_IS_ADULT) {
                     EnKz_SetMovedPos(this, play);
-                } else if (gSaveContext.eventChkInf[3] & 8) {
+                } else if (Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
                     EnKz_SetMovedPos(this, play);
                 }
                 break;
@@ -370,7 +370,7 @@ void EnKz_Init(Actor* thisx, PlayState* play) {
     }
 
     if (LINK_IS_ADULT) {
-        if (!(gSaveContext.infTable[19] & 0x100)) {
+        if (!Flags_GetInfTable(INFTABLE_138)) {
             Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_BG_ICE_SHELTER,
                                this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0,
                                0x04FF);
@@ -434,7 +434,7 @@ void EnKz_Mweep(EnKz* this, PlayState* play) {
         Animation_ChangeByInfo(&this->skelanime, sAnimationInfo, ENKZ_ANIM_1);
         Inventory_ReplaceItem(play, ITEM_LETTER_RUTO, ITEM_BOTTLE);
         EnKz_SetMovedPos(this, play);
-        gSaveContext.eventChkInf[3] |= 8;
+        Flags_SetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED);
         this->actor.speedXZ = 0.0;
         this->actionFunc = EnKz_StopMweep;
     }
@@ -508,8 +508,8 @@ void EnKz_Update(Actor* thisx, PlayState* play) {
     EnKz* this = (EnKz*)thisx;
     s32 pad;
 
-    if (LINK_IS_ADULT && !(gSaveContext.infTable[19] & 0x100)) {
-        gSaveContext.infTable[19] |= 0x100;
+    if (LINK_IS_ADULT && !Flags_GetInfTable(INFTABLE_138)) {
+        Flags_SetInfTable(INFTABLE_138);
     }
     Collider_UpdateCylinder(&this->actor, &this->collider);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);

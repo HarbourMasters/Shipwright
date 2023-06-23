@@ -1417,7 +1417,7 @@ void Inventory_SwapAgeEquipment(void) {
         // When becoming adult, remove swordless flag since we'll get master sword
         // Only in rando to keep swordless link bugs in vanilla
         if (gSaveContext.n64ddFlag) {
-            gSaveContext.infTable[29] &= ~1;
+            Flags_UnsetInfTable(INFTABLE_SWORDLESS);
         }
 
         gSaveContext.childEquips.equipment = gSaveContext.equips.equipment;
@@ -1471,13 +1471,13 @@ void Inventory_SwapAgeEquipment(void) {
         // When becoming child, set swordless flag if player doesn't have kokiri sword
         // Only in rando to keep swordless link bugs in vanilla
         if (gSaveContext.n64ddFlag && (1 << 0 & gSaveContext.inventory.equipment) == 0) {
-            gSaveContext.infTable[29] |= 1;
+            Flags_SetInfTable(INFTABLE_SWORDLESS);
         }
 
         // When using enhancements, set swordless flag if player doesn't have kokiri sword or hasn't equipped a sword yet.
         // Then set the child equips button items to item none to ensure kokiri sword is not equipped
-        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && ((1 << 0 & gSaveContext.inventory.equipment) == 0 || gSaveContext.infTable[29] & 1)) {
-            gSaveContext.infTable[29] |= 1;
+        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && ((1 << 0 & gSaveContext.inventory.equipment) == 0 || Flags_GetInfTable(INFTABLE_SWORDLESS))) {
+            Flags_SetInfTable(INFTABLE_SWORDLESS);
             gSaveContext.childEquips.buttonItems[0] = ITEM_NONE;
         }
 
@@ -1512,7 +1512,7 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
             gSaveContext.equips.equipment &= 0xFFF0;
             // Equips kokiri sword in the inventory screen only if kokiri sword exists in inventory and a sword has been equipped already
-            if (!((1 << 0 & gSaveContext.inventory.equipment) == 0) && !(gSaveContext.infTable[29] & 1)) {
+            if (!((1 << 0 & gSaveContext.inventory.equipment) == 0) && !Flags_GetInfTable(INFTABLE_SWORDLESS)) {
                 gSaveContext.equips.equipment |= 0x0001;
             }
         } else if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE) {
@@ -1543,7 +1543,7 @@ void Inventory_SwapAgeEquipment(void) {
             When becoming child, set swordless flag if player doesn't have kokiri sword
             Only in rando to keep swordless link bugs in vanilla*/
             if (1 << 0 & gSaveContext.inventory.equipment == 0) {
-                gSaveContext.infTable[29] |= 1;
+                Flags_SetInfTable(INFTABLE_SWORDLESS);
             }
 
             //zero out items
@@ -1558,7 +1558,7 @@ void Inventory_SwapAgeEquipment(void) {
 
         if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) &&
             (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
-            gSaveContext.infTable[29] |= 1;
+            Flags_SetInfTable(INFTABLE_SWORDLESS);
             if (gSaveContext.childEquips.equipment == 0) {
                 // force equip kokiri tunic and boots in scenario gSaveContext.childEquips.equipment is uninitialized
                 gSaveContext.equips.equipment &= 0xFFF0;
@@ -2155,8 +2155,8 @@ u8 Item_Give(PlayState* play, u8 item) {
             AMMO(ITEM_SLINGSHOT) = CUR_CAPACITY(UPG_BULLET_BAG);
         }
 
-        if (!(gSaveContext.itemGetInf[1] & 8)) {
-            gSaveContext.itemGetInf[1] |= 8;
+        if (!Flags_GetItemGetInf(ITEMGETINF_13)) {
+            Flags_SetItemGetInf(ITEMGETINF_13);
             return Return_Item(item, MOD_NONE, ITEM_NONE);
         }
 
@@ -2168,8 +2168,8 @@ u8 Item_Give(PlayState* play, u8 item) {
             AMMO(ITEM_SLINGSHOT) = CUR_CAPACITY(UPG_BULLET_BAG);
         }
 
-        if (!(gSaveContext.itemGetInf[1] & 8)) {
-            gSaveContext.itemGetInf[1] |= 8;
+        if (!Flags_GetItemGetInf(ITEMGETINF_13)) {
+            Flags_SetItemGetInf(ITEMGETINF_13);
             return Return_Item(item, MOD_NONE, ITEM_NONE);
         }
 
@@ -2245,8 +2245,8 @@ u8 Item_Give(PlayState* play, u8 item) {
             func_80087708(play, 12, 5);
         }
 
-        if (!(gSaveContext.infTable[25] & 0x100)) {
-            gSaveContext.infTable[25] |= 0x100;
+        if (!Flags_GetInfTable(INFTABLE_198)) {
+            Flags_SetInfTable(INFTABLE_198);
             return Return_Item(item, MOD_NONE, ITEM_NONE);
         }
 
@@ -2261,8 +2261,8 @@ u8 Item_Give(PlayState* play, u8 item) {
             func_80087708(play, 24, 5);
         }
 
-        if (!(gSaveContext.infTable[25] & 0x100)) {
-            gSaveContext.infTable[25] |= 0x100;
+        if (!Flags_GetInfTable(INFTABLE_198)) {
+            Flags_SetInfTable(INFTABLE_198);
             return Return_Item(item, MOD_NONE, ITEM_NONE);
         }
 
@@ -2321,7 +2321,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_WEIRD_EGG) && (item <= ITEM_CLAIM_CHECK)) {
         if ((item == ITEM_SAW) && CVarGetInteger("gDekuNutUpgradeFix", 0) == 0) {
-            gSaveContext.itemGetInf[1] |= 0x8000;
+            Flags_SetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE);
         }
 
         if (item >= ITEM_POCKET_EGG) {
@@ -2670,7 +2670,7 @@ u8 Item_CheckObtainability(u8 item) {
     } else if (item == ITEM_LONGSHOT) {
         return ITEM_NONE;
     } else if ((item == ITEM_SEEDS) || (item == ITEM_SEEDS_30)) {
-        if (!(gSaveContext.itemGetInf[1] & 0x8)) {
+        if (!Flags_GetItemGetInf(ITEMGETINF_13)) {
             return ITEM_NONE;
         } else {
             return ITEM_SEEDS;
@@ -2685,8 +2685,8 @@ u8 Item_CheckObtainability(u8 item) {
         return ITEM_HEART;
     } else if ((item == ITEM_MAGIC_SMALL) || (item == ITEM_MAGIC_LARGE)) {
         // "Magic Pot Get_Inf_Table( 25, 0x0100)=%d"
-        osSyncPrintf("魔法の壷 Get_Inf_Table( 25, 0x0100)=%d\n", gSaveContext.infTable[25] & 0x100);
-        if (!(gSaveContext.infTable[25] & 0x100)) {
+        osSyncPrintf("魔法の壷 Get_Inf_Table( 25, 0x0100)=%d\n", Flags_GetInfTable(INFTABLE_198));
+        if (!Flags_GetInfTable(INFTABLE_198)) {
             return ITEM_NONE;
         } else {
             return item;
@@ -5090,7 +5090,13 @@ void Interface_Draw(PlayState* play) {
         Minimap_Draw(play);
 
         if ((R_PAUSE_MENU_MODE != 2) && (R_PAUSE_MENU_MODE != 3)) {
+            if (CVarGetInteger("gMirroredWorld", 0)) {
+                gSPMatrix(OVERLAY_DISP++, interfaceCtx->view.projectionFlippedPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+            }
             func_8002C124(&play->actorCtx.targetCtx, play); // Draw Z-Target
+            if (CVarGetInteger("gMirroredWorld", 0)) {
+                gSPMatrix(OVERLAY_DISP++, interfaceCtx->view.projectionPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+            }
         }
 
         Gfx_SetupDL_39Overlay(play->state.gfxCtx);
@@ -6076,7 +6082,7 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
             // Draw regular text. Change color based on if the timer is paused, running or the game is completed.
             if (gSaveContext.sohStats.gameComplete) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, 255);
-            } else if (gSaveContext.isBossRushPaused) {
+            } else if (gSaveContext.isBossRushPaused && !gSaveContext.sohStats.rtaTiming) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 150, 150, 150, 255);
             } else {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);

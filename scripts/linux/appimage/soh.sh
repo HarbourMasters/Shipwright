@@ -13,12 +13,17 @@ if [ -z ${SHIP_BIN_DIR+x} ]; then
 export SHIP_BIN_DIR="$HERE/usr/bin"
 fi
 
+if [[ ! -e "$SHIP_HOME"/mods ]]; then
+    mkdir -p "$SHIP_HOME"/mods
+    touch "$SHIP_HOME"/mods/custom_otr_files_go_here.txt
+fi
+
 while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
         for romfile in "$SHIP_HOME"/*.*64
         do
             if [[ -e $romfile ]]; then
                 export ASSETDIR="$(mktemp -d /tmp/assets-XXXXX)"
-                ln -s "$HERE"/usr/bin/{assets,soh.elf,OTRGui} "$ASSETDIR"
+                ln -s "$HERE"/usr/bin/{assets,soh.elf,ZAPD} "$ASSETDIR"
                 export OLDPWD="$PWD"
                 mkdir -p "$ASSETDIR"/tmp
 	            mkdir -p "$ASSETDIR"/Extract

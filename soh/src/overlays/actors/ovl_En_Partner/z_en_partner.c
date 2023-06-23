@@ -574,7 +574,7 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
 
     Input sControlInput = play->state.input[this->actor.params];
 
-    f32 relX = sControlInput.cur.stick_x / 10.0f;
+    f32 relX = sControlInput.cur.stick_x / 10.0f * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
     f32 relY = sControlInput.cur.stick_y / 10.0f;
 
     Vec3f camForward = { GET_ACTIVE_CAM(play)->at.x - GET_ACTIVE_CAM(play)->eye.x, 0.0f,
