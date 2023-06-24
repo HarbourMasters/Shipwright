@@ -288,15 +288,15 @@ u16 func_80A96FD0(PlayState* play, Actor* thisx) {
     EnKo* this = (EnKo*)thisx;
     switch (ENKO_TYPE) {
         case ENKO_TYPE_CHILD_FADO:
-            if (gSaveContext.eventChkInf[4] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 return 0x10DA;
             }
             if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
                 return 0x10D9;
             }
-            return (gSaveContext.infTable[11] & 0x80) ? 0x10D8 : 0x10D7;
+            return (Flags_GetInfTable(INFTABLE_B7)) ? 0x10D8 : 0x10D7;
         case ENKO_TYPE_CHILD_0:
-            if (gSaveContext.eventChkInf[4] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 return 0x1025;
             }
             if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
@@ -304,62 +304,62 @@ u16 func_80A96FD0(PlayState* play, Actor* thisx) {
             }
             return 0x1004;
         case ENKO_TYPE_CHILD_1:
-            if (gSaveContext.eventChkInf[4] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 return 0x1023;
             }
             if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
                 return 0x1043;
             }
-            if (gSaveContext.infTable[1] & 0x4000) {
+            if (Flags_GetInfTable(INFTABLE_1E)) {
                 return 0x1006;
             }
             return 0x1005;
         case ENKO_TYPE_CHILD_2:
-            if (gSaveContext.eventChkInf[4] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 return 0x1022;
             }
             return 0x1007;
         case ENKO_TYPE_CHILD_3:
-            if (gSaveContext.eventChkInf[4] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 return 0x1021;
             }
             if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
                 return 0x1044;
             }
-            if (gSaveContext.infTable[2] & 4) {
+            if (Flags_GetInfTable(INFTABLE_22)) {
                 return 0x1009;
             }
             return 0x1008;
         case ENKO_TYPE_CHILD_4:
-            if (gSaveContext.eventChkInf[4] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 return 0x1097;
             }
             if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
                 return 0x1042;
             }
-            if (gSaveContext.infTable[2] & 0x10) {
+            if (Flags_GetInfTable(INFTABLE_24)) {
                 return 0x100B;
             }
             return 0x100A;
         case ENKO_TYPE_CHILD_5:
-            if (gSaveContext.eventChkInf[4] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 return 0x10B0;
             }
             if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
                 return 0x1043;
             }
-            if (gSaveContext.infTable[2] & 0x40) {
+            if (Flags_GetInfTable(INFTABLE_26)) {
                 return 0x100D;
             }
             return 0x100C;
         case ENKO_TYPE_CHILD_6:
-            if (gSaveContext.eventChkInf[4] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 return 0x10B5;
             }
             if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
                 return 0x1043;
             }
-            if (gSaveContext.infTable[2] & 0x100) {
+            if (Flags_GetInfTable(INFTABLE_28)) {
                 return 0x1019;
             }
             return 0x100E;
@@ -395,7 +395,7 @@ u16 func_80A97338(PlayState* play, Actor* thisx) {
             if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
                 return 0x1072;
             }
-            if (gSaveContext.infTable[4] & 2) {
+            if (Flags_GetInfTable(INFTABLE_41)) {
                 return 0x1056;
             }
             return 0x1055;
@@ -408,7 +408,7 @@ u16 func_80A97338(PlayState* play, Actor* thisx) {
             if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
                 return 0x1074;
             }
-            if (gSaveContext.infTable[4] & 0x80) {
+            if (Flags_GetInfTable(INFTABLE_47)) {
                 return 0x105E;
             }
             return 0x105D;
@@ -428,7 +428,7 @@ u16 func_80A97338(PlayState* play, Actor* thisx) {
             if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
                 return 0x1077;
             }
-            if (gSaveContext.infTable[5] & 2) {
+            if (Flags_GetInfTable(INFTABLE_51)) {
                 return 0x1059;
             }
             return 0x1058;
@@ -441,7 +441,7 @@ u16 func_80A97338(PlayState* play, Actor* thisx) {
             if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
                 return 0x107A;
             }
-            if (gSaveContext.infTable[5] & 0x200) {
+            if (Flags_GetInfTable(INFTABLE_59)) {
                 return 0x1050;
             }
             return 0x104F;
@@ -459,7 +459,7 @@ u16 func_80A97338(PlayState* play, Actor* thisx) {
             if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
                 return 0x107C;
             }
-            if (gSaveContext.infTable[6] & 2) {
+            if (Flags_GetInfTable(INFTABLE_61)) {
                 return 0x1054;
             }
             return 0x1053;
@@ -500,37 +500,37 @@ s16 func_80A97738(PlayState* play, Actor* thisx) {
         case TEXT_STATE_CLOSING:
             switch (this->actor.textId) {
                 case 0x1005:
-                    gSaveContext.infTable[1] |= 0x4000;
+                    Flags_SetInfTable(INFTABLE_1E);
                     break;
                 case 0x1008:
-                    gSaveContext.infTable[2] |= 0x4;
+                    Flags_SetInfTable(INFTABLE_22);
                     break;
                 case 0x100A:
-                    gSaveContext.infTable[2] |= 0x10;
+                    Flags_SetInfTable(INFTABLE_24);
                     break;
                 case 0x100C:
-                    gSaveContext.infTable[2] |= 0x40;
+                    Flags_SetInfTable(INFTABLE_26);
                     break;
                 case 0x100E:
-                    gSaveContext.infTable[2] |= 0x100;
+                    Flags_SetInfTable(INFTABLE_28);
                     break;
                 case 0x104F:
-                    gSaveContext.infTable[5] |= 0x200;
+                    Flags_SetInfTable(INFTABLE_59);
                     break;
                 case 0x1053:
-                    gSaveContext.infTable[6] |= 2;
+                    Flags_SetInfTable(INFTABLE_61);
                     break;
                 case 0x1055:
-                    gSaveContext.infTable[4] |= 2;
+                    Flags_SetInfTable(INFTABLE_41);
                     break;
                 case 0x1058:
-                    gSaveContext.infTable[5] |= 2;
+                    Flags_SetInfTable(INFTABLE_51);
                     break;
                 case 0x105D:
-                    gSaveContext.infTable[4] |= 0x80;
+                    Flags_SetInfTable(INFTABLE_47);
                     break;
                 case 0x10D7:
-                    gSaveContext.infTable[11] |= 0x80;
+                    Flags_SetInfTable(INFTABLE_B7);
                     break;
                 case 0x10BA:
                     return NPC_TALK_STATE_TALKING;
@@ -565,7 +565,7 @@ s16 func_80A97738(PlayState* play, Actor* thisx) {
                         Message_ContinueTextbox(play, this->actor.textId);
                         break;
                     case 0x10B7:
-                        gSaveContext.infTable[11] |= 0x1000;
+                        Flags_SetInfTable(INFTABLE_BC);
 
                     case 0x10B8:
                         this->actor.textId = (play->msgCtx.choiceIndex == 0) ? 0x10BA : 0x10B9;
@@ -587,7 +587,7 @@ s32 EnKo_GetForestQuestState(EnKo* this) {
 
     if (!LINK_IS_ADULT) {
         // Obtained Zelda's Letter
-        if (gSaveContext.eventChkInf[4] & 1) {
+        if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
             return ENKO_FQS_CHILD_SARIA;
         }
         if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
@@ -955,7 +955,7 @@ void func_80A9877C(EnKo* this, PlayState* play) {
         this->actor.textId = INV_CONTENT(ITEM_TRADE_ADULT) > ITEM_ODD_POTION ? 0x10B9 : 0x10DF;
 
         if (func_8002F368(play) == ENKO_TYPE_CHILD_9) {
-            this->actor.textId = (gSaveContext.infTable[11] & 0x1000) ? 0x10B8 : 0x10B7;
+            this->actor.textId = (Flags_GetInfTable(INFTABLE_BC)) ? 0x10B8 : 0x10B7;
             this->unk_210 = 0;
         }
         player->actor.textId = this->actor.textId;
@@ -1077,7 +1077,7 @@ s32 EnKo_GetForestQuestState2(EnKo* this) {
         return CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) ? ENKO_FQS_ADULT_SAVED : ENKO_FQS_ADULT_ENEMY;
     }
     if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
-        return (gSaveContext.eventChkInf[4] & 1) ? ENKO_FQS_CHILD_SARIA : ENKO_FQS_CHILD_STONE;
+        return (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) ? ENKO_FQS_CHILD_SARIA : ENKO_FQS_CHILD_STONE;
     }
     return ENKO_FQS_CHILD_START;
 }
@@ -1193,7 +1193,7 @@ void func_80A99048(EnKo* this, PlayState* play) {
                     return;
                 }
             } else {
-                if (!Flags_GetEventChkInf(7)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD)) {
                     this->collider.dim.height += 200;
                     this->actionFunc = func_80A995CC;
                     return;
@@ -1250,7 +1250,7 @@ void func_80A99560(EnKo* this, PlayState* play) {
         this->actor.textId = 0x10B9;
         Message_ContinueTextbox(play, this->actor.textId);
         this->interactInfo.talkState = NPC_TALK_STATE_TALKING;
-        gSaveContext.itemGetInf[3] |= 2;
+        Flags_SetItemGetInf(ITEMGETINF_31);
         this->actionFunc = func_80A99384;
     }
 }

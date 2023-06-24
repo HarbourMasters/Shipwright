@@ -587,7 +587,7 @@ void Entrance_OverrideWeatherState() {
         return;
     }
     // Lon Lon Ranch (No Epona)
-    if (!Flags_GetEventChkInf(0x18)){ // if you don't have Epona
+    if (!Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED)){ // if you don't have Epona
         switch (gSaveContext.entranceIndex) {
             case 0x0157: // Lon Lon Ranch from HF
             case 0x01F9: // Hyrule Field from LLR
@@ -596,7 +596,7 @@ void Entrance_OverrideWeatherState() {
         }
     }
     // Water Temple
-    if (!(gSaveContext.eventChkInf[4] & 0x0400)) { // have not beaten Water Temple
+    if (!Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) { // have not beaten Water Temple
         switch (gSaveContext.entranceIndex) {
             case 0x019D: // Zora River from behind waterfall
             case 0x01DD: // Zora River from LW water shortcut
@@ -630,7 +630,7 @@ void Entrance_OverrideWeatherState() {
         }
     }
     // Death Mountain Cloudy
-    if (!(gSaveContext.eventChkInf[4] & 0x0200)) { // have not beaten Fire Temple
+    if (!Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) { // have not beaten Fire Temple
         if (gPlayState->nextEntranceIndex == 0x04D6) { // Lost Woods Goron City Shortcut
             gWeatherMode = 2;
             return;

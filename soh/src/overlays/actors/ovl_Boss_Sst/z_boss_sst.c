@@ -395,7 +395,7 @@ void BossSst_HeadSetupIntro(BossSst* this, PlayState* play) {
     Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
     Play_ChangeCameraStatus(play, sCutsceneCamera, CAM_STAT_ACTIVE);
     Math_Vec3f_Copy(&sCameraAt, &player->actor.world.pos);
-    if (gSaveContext.eventChkInf[7] & 0x80) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_BONGO_BONGO_BATTLE)) {
         sCameraEye.z = ROOM_CENTER_Z - 100.0f;
     }
 
@@ -431,7 +431,7 @@ void BossSst_HeadIntro(BossSst* this, PlayState* play) {
         Play_ChangeCameraStatus(play, sCutsceneCamera, CAM_STAT_WAIT);
         Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
         Play_ClearCamera(play, sCutsceneCamera);
-        gSaveContext.eventChkInf[7] |= 0x80;
+        Flags_SetEventChkInf(EVENTCHKINF_BEGAN_BONGO_BONGO_BATTLE);
         BossSst_HeadSetupNeutral(this);
         this->colliderJntSph.base.ocFlags1 |= OC1_ON;
         sHands[LEFT]->colliderJntSph.base.ocFlags1 |= OC1_ON;
@@ -454,7 +454,7 @@ void BossSst_HeadIntro(BossSst* this, PlayState* play) {
                 this->ready = true;
                 func_800AA000(this->actor.xyzDistToPlayerSq, 0xFF, 0x14, 0x96);
                 Audio_PlayActorSound2(&sFloor->dyna.actor, NA_SE_EN_SHADEST_TAIKO_HIGH);
-            } else if (gSaveContext.eventChkInf[7] & 0x80) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_BONGO_BONGO_BATTLE)) {
                 sHands[RIGHT]->actor.draw = BossSst_DrawHand;
                 sHands[LEFT]->actor.draw = BossSst_DrawHand;
                 this->actor.draw = BossSst_DrawHead;
@@ -581,7 +581,7 @@ void BossSst_HeadIntro(BossSst* this, PlayState* play) {
         }
         if (this->timer <= 198) {
             revealStateTimer = 198 - this->timer;
-            if ((gSaveContext.eventChkInf[7] & 0x80) && (revealStateTimer <= 44)) {
+            if ((Flags_GetEventChkInf(EVENTCHKINF_BEGAN_BONGO_BONGO_BATTLE)) && (revealStateTimer <= 44)) {
                 sCameraAt.x += 492.0f * 0.01f;
                 sCameraAt.y += 200.0f * 0.01f;
                 sCameraEye.x -= 80.0f * 0.01f;
@@ -610,7 +610,7 @@ void BossSst_HeadIntro(BossSst* this, PlayState* play) {
                     sCameraEye.y += 125.0f * 0.01f;
                     sCameraEye.z -= 350.0f * 0.01f;
                 } else if (revealStateTimer == 85) {
-                    if (!(gSaveContext.eventChkInf[7] & 0x80)) {
+                    if (!Flags_GetEventChkInf(EVENTCHKINF_BEGAN_BONGO_BONGO_BATTLE)) {
                         TitleCard_InitBossName(play, &play->actorCtx.titleCtx,
                                                SEGMENTED_TO_VIRTUAL(gBongoTitleCardENGTex), 160, 180, 128, 40, true);
                     }
