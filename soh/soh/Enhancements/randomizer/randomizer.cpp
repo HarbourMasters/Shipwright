@@ -348,6 +348,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Timesaver Settings:Complete Mask Quest", RSK_COMPLETE_MASK_QUEST },
     { "Timesaver Settings:Skip Scarecrow's Song", RSK_SKIP_SCARECROWS_SONG },
     { "Timesaver Settings:Enable Glitch-Useful Cutscenes", RSK_ENABLE_GLITCH_CUTSCENES },
+    { "World Settings:MQ Dungeons", RSK_RANDOM_MQ_DUNGEONS },
     { "World Settings:MQ Dungeon Count", RSK_MQ_DUNGEON_COUNT }
 };
 
@@ -1030,6 +1031,15 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_TOKENS;
                         } else if(it.value() == "100 GS Reward") {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_KAK_TOKENS;
+                        }
+                        break;
+                    case RSK_RANDOM_MQ_DUNGEONS:
+                        if (it.value() == "None") {
+                            gSaveContext.randoSettings[index].value = RO_MQ_DUNGEONS_NONE;
+                        } else if (it.value() == "Random Number") {
+                            gSaveContext.randoSettings[index].value = RO_MQ_DUNGEONS_RANDOM_NUMBER;
+                        } else if (it.value() == "Set Number") {
+                            gSaveContext.randoSettings[index].value = RO_MQ_DUNGEONS_SET_NUMBER;
                         }
                         break;
                     case RSK_SKIP_CHILD_ZELDA:
@@ -5409,7 +5419,10 @@ CustomMessage Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEntry) {
             break;
     }
 
-    if (this->masterQuestDungeons.empty() || this->masterQuestDungeons.size() >= 12) {
+    if (this->randoSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_NONE ||
+        (this->randoSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_SET_NUMBER &&
+         this->randoSettings[RSK_MQ_DUNGEON_COUNT] == 12)
+       ) {
         messageEntry.Replace("{{typeHint}}", "");
     } else if (ResourceMgr_IsSceneMasterQuest(sceneNum)) {
         messageEntry.Replace("{{typeHint}}", mapGetItemHints[0][1], mapGetItemHints[1][1], mapGetItemHints[2][1]);

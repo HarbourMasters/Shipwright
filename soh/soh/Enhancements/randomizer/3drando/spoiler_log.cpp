@@ -402,6 +402,15 @@ static void WriteSettings(const bool printAll = false) {
   // 3drando doesn't have a "skip child zelda" setting, manually add it to the spoilerfile
   jsonData["settings"]["Skip Child Zelda"] = Settings::skipChildZelda;
 
+  // 3drando uses an MQ dungeon count of 13 to mean random, manually add that to the spoilerfile as a bool
+  if (Settings::MQDungeonCount.GetSelectedOptionIndex() == 0) {
+    jsonData["settings"]["World Settings:MQ Dungeons"] = "None";
+  } else if (Settings::MQDungeonCount.GetSelectedOptionIndex() == 13) {
+    jsonData["settings"]["World Settings:MQ Dungeons"] = "Random Number";
+  } else {
+    jsonData["settings"]["World Settings:MQ Dungeons"] = "Set Number";
+  }
+
   // spoilerLog.RootElement()->InsertEndChild(parentNode);
 
   //     for (const uint32_t key : allLocations) {
