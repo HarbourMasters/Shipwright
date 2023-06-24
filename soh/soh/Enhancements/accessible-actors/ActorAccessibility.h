@@ -31,6 +31,7 @@ const char* englishName;
     bool runsAlways;//If set, then the distance policy is ignored.
     ActorAccessibilityUserDataInit initUserData;
     ActorAccessibilityUserDataCleanup cleanupUserData;
+    u8 param;
 
 } ActorAccessibilityPolicy;
 
@@ -91,6 +92,7 @@ VA_WALL_CUE,
 VA_CLIMB,
 VA_DOOR,
 VA_AREA_CHANGE,
+VA_MARKER,
 
 } VIRTUAL_ACTOR_TABLE;
 const s16 EVERYWHERE = -32768;//Denotes a virtual actor that is global/ omnipresent.
