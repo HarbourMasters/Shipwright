@@ -125,6 +125,29 @@ void accessible_maruta(AccessibleActor* actor) {
     }
 }
 
+void accessible_area_change(AccessibleActor* actor) {
+    if (actor->variety == AREA_KORIRI) {
+        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_SARIA_MELODY);
+    } else if (actor->variety == AREA_HYRULE_FIELD) {
+        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_HORSE_RUN_LEVEL);
+    }
+}
+
+void accessible_231_dekus(AccessibleActor* actor) {
+    if (actor->actor->params == 1) {
+        actor->currentPitch = 1.0;
+        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EN_NUTS_FAINT);
+    }
+    if (actor->actor->params == 2) {
+        actor->currentPitch = 0.5;
+        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EN_NUTS_FAINT);
+    }
+    if (actor->actor->params == 3) {
+        actor->currentPitch = 1.5;
+        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EN_NUTS_FAINT);
+    }
+
+}
 void ActorAccessibility_Init() {
     const int Npc_Frames = 35;
     ActorAccessibilityPolicy
@@ -216,6 +239,10 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     ActorAccessibility_AddSupportedActor(ACTOR_BG_YDAN_MARUTA, policy);
     ActorAccessibility_InitPolicy(policy, "bombable wall", NULL, NA_SE_EN_OCTAROCK_ROCK);
     ActorAccessibility_AddSupportedActor(ACTOR_BG_BREAKWALL, policy);
+    ActorAccessibility_InitPolicy(policy, "231 dekus", accessible_231_dekus);
+    policy.distance = 2000;
+    policy.n = 50;
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_HINTNUTS, policy);
     //Virtual actor demo.
 //First add support for an actor as you normally would.
     ActorAccessibility_InitPolicy(policy, "Proof of concept actor", accessible_va_prototype);
@@ -232,8 +259,8 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     policy.n = 30;
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(VA_DOOR, policy);
-    ActorAccessibility_InitPolicy(policy, "Area Change", NULL,
-                                  NA_SE_EV_HORSE_RUN_LEVEL); // make callback&find better sound
+    ActorAccessibility_InitPolicy(policy, "Area Change", accessible_area_change);
+    policy.distance = 5000;
     ActorAccessibility_AddSupportedActor(VA_AREA_CHANGE, policy);
     ActorAccessibility_InitPolicy(policy, "marker", NULL,
                                   NA_SE_EV_DIAMOND_SWITCH); 
@@ -257,8 +284,10 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 515.0, 0.0, 647.00 }, { 0, 14702, 0 } });
     ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 1046.0, 0.0, 549.00 }, { 0, 14702, 0 } });
     ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 848.0, 0.0, -323.00 }, { 0, 14702, 0 } });
-    ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE,{ { -317.0, 373.2, -1542.00 }, {0, 14702, 0 }});
-    ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE, { { -1380.0, -67.0, -288.00 }, { 0, 14702, 0 } });
+
+    ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE,{ { -317.0, 373.2, -1542.00 }, {0, 14702, 0 }}, AREA_KORIRI);
+ 
+    ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE, { { -1380.0, -67.0, -288.00 }, { 0, 14702, 0 } }, AREA_HYRULE_FIELD);
 
     list = ActorAccessibility_GetVirtualActorList(85, 2); // Kokiri Forest Room with boulder and korkiri sword
     ActorAccessibility_AddVirtualActor(list, VA_CRAWLSPACE, { { -788.0, 120.0, 1392.00 }, { 0, 14702, 0 } });
@@ -284,7 +313,9 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     list = ActorAccessibility_GetVirtualActorList(0, 0);//deku tree main room
     ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -226.7, 0, 197.0 } });
     ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { 118.6, 0, -286.6 } });
-    ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE, { {0, 0, 640} });
+
+    ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE, { {0, 0, 640} }, AREA_KORIRI);
+    
     ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { 287.4, 368.0, 347.0 } });
     ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { 419.4, 368.0, 173.6 } });
     ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { 323, 567.0, 314.6 } });
