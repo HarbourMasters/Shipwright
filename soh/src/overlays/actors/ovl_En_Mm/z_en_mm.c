@@ -240,7 +240,7 @@ s32 func_80AADAA0(EnMm* this, PlayState* play) {
             if (Message_ShouldAdvance(play)) {
                 Player_UnsetMask(play);
                 Item_Give(play, ITEM_SOLD_OUT);
-                Flags_SetItemGetInf(ITEMGETINF_3B);
+                Flags_SetItemGetInf(ITEMGETINF_SOLD_BUNNY_HOOD);
                 Rupees_ChangeBy(500);
                 player->actor.textId = 0x202E;
                 sp1C = 2;
@@ -266,7 +266,7 @@ s32 EnMm_GetTextId(EnMm* this, PlayState* play) {
 
     textId = Text_GetFaceReaction(play, 0x1C);
 
-    if (Flags_GetItemGetInf(ITEMGETINF_3B)) {
+    if (Flags_GetItemGetInf(ITEMGETINF_SOLD_BUNNY_HOOD)) {
         if (textId == 0) {
             textId = 0x204D;
         }
@@ -430,7 +430,7 @@ void func_80AAE294(EnMm* this, PlayState* play) {
             }
         }
 
-        if (Flags_GetItemGetInf(ITEMGETINF_3B)) {
+        if (Flags_GetItemGetInf(ITEMGETINF_SOLD_BUNNY_HOOD)) {
             this->speedXZ = 10.0f;
             this->skelAnime.playSpeed = 2.0f;
         } else {
@@ -457,7 +457,7 @@ void func_80AAE294(EnMm* this, PlayState* play) {
             }
         }
 
-        if (Flags_GetItemGetInf(ITEMGETINF_3B)) {
+        if (Flags_GetItemGetInf(ITEMGETINF_SOLD_BUNNY_HOOD)) {
             dustPos.x = this->actor.world.pos.x;
             dustPos.y = this->actor.world.pos.y;
             dustPos.z = this->actor.world.pos.z;
@@ -478,7 +478,7 @@ void func_80AAE50C(EnMm* this, PlayState* play) {
         this->sitTimer = 0;
         this->actionFunc = func_80AAE294;
 
-        if (Flags_GetItemGetInf(ITEMGETINF_3B)) {
+        if (Flags_GetItemGetInf(ITEMGETINF_SOLD_BUNNY_HOOD)) {
             EnMm_ChangeAnim(this, RM_ANIM_SPRINT, &this->curAnimIndex);
             this->mouthTexIndex = RM_MOUTH_CLOSED;
         } else {
@@ -524,7 +524,7 @@ void EnMm_Draw(Actor* thisx, PlayState* play) {
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnMm_OverrideLimbDraw, EnMm_PostLimbDraw, this);
 
-    if (Flags_GetItemGetInf(ITEMGETINF_3B)) {
+    if (Flags_GetItemGetInf(ITEMGETINF_SOLD_BUNNY_HOOD)) {
         s32 linkChildObjBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_LINK_CHILD);
 
         if (linkChildObjBankIndex >= 0) {

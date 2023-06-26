@@ -1090,27 +1090,27 @@ void EnGirlA_SetItemDescription(PlayState* play, EnGirlA* this) {
         isMaskFreeToBorrow = false;
         switch (this->actor.params) {
             case SI_KEATON_MASK:
-                if (Flags_GetItemGetInf(ITEMGETINF_38)) {
+                if (Flags_GetItemGetInf(ITEMGETINF_SOLD_KEATON_MASK)) {
                     isMaskFreeToBorrow = true;
                 }
                 break;
             case SI_SPOOKY_MASK:
-                if (Flags_GetItemGetInf(ITEMGETINF_3A)) {
+                if (Flags_GetItemGetInf(ITEMGETINF_SOLD_SPOOKY_MASK)) {
                     isMaskFreeToBorrow = true;
                 }
                 break;
             case SI_SKULL_MASK:
-                if (Flags_GetItemGetInf(ITEMGETINF_39)) {
+                if (Flags_GetItemGetInf(ITEMGETINF_SOLD_SKULL_MASK)) {
                     isMaskFreeToBorrow = true;
                 }
                 break;
             case SI_BUNNY_HOOD:
-                if (Flags_GetItemGetInf(ITEMGETINF_3B)) {
+                if (Flags_GetItemGetInf(ITEMGETINF_SOLD_BUNNY_HOOD)) {
                     isMaskFreeToBorrow = true;
                 }
                 break;
             case SI_MASK_OF_TRUTH:
-                if (Flags_GetItemGetInf(ITEMGETINF_3B)) {
+                if (Flags_GetItemGetInf(ITEMGETINF_SOLD_BUNNY_HOOD)) {
                     isMaskFreeToBorrow = true;
                 }
                 break;
@@ -1184,7 +1184,7 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, PlayState* play) {
         this->actor.objBankIndex = this->objBankIndex;
         switch (this->actor.params) {
             case SI_KEATON_MASK:
-                if (Flags_GetItemGetInf(ITEMGETINF_38)) {
+                if (Flags_GetItemGetInf(ITEMGETINF_SOLD_KEATON_MASK)) {
                     this->actor.textId = 0x70B6;
                 } else {
                     this->actor.textId = itemEntry->itemDescTextId;
@@ -1192,7 +1192,7 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, PlayState* play) {
                 this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
                 break;
             case SI_SPOOKY_MASK:
-                if (Flags_GetItemGetInf(ITEMGETINF_3A)) {
+                if (Flags_GetItemGetInf(ITEMGETINF_SOLD_SPOOKY_MASK)) {
                     this->actor.textId = 0x70B5;
                 } else {
                     this->actor.textId = itemEntry->itemDescTextId;
@@ -1200,7 +1200,7 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, PlayState* play) {
                 this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
                 break;
             case SI_SKULL_MASK:
-                if (Flags_GetItemGetInf(ITEMGETINF_39)) {
+                if (Flags_GetItemGetInf(ITEMGETINF_SOLD_SKULL_MASK)) {
                     this->actor.textId = 0x70B4;
                 } else {
                     this->actor.textId = itemEntry->itemDescTextId;
@@ -1208,7 +1208,7 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, PlayState* play) {
                 this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
                 break;
             case SI_BUNNY_HOOD:
-                if (Flags_GetItemGetInf(ITEMGETINF_3B)) {
+                if (Flags_GetItemGetInf(ITEMGETINF_SOLD_BUNNY_HOOD)) {
                     this->actor.textId = 0x70B7;
                 } else {
                     this->actor.textId = itemEntry->itemDescTextId;
@@ -1216,7 +1216,7 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, PlayState* play) {
                 this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
                 break;
             case SI_MASK_OF_TRUTH:
-                if (Flags_GetItemGetInf(ITEMGETINF_3B)) {
+                if (Flags_GetItemGetInf(ITEMGETINF_SOLD_BUNNY_HOOD)) {
                     this->actor.textId = 0x70BB;
                     this->itemBuyPromptTextId = itemEntry->itemBuyPromptTextId;
                 } else {

@@ -189,7 +189,7 @@ s32 EnCs_GetTalkState(EnCs* this, PlayState* play) {
                 if (this->actor.textId == 0x2026) {
                     Player_UnsetMask(play);
                     Item_Give(play, ITEM_SOLD_OUT);
-                    Flags_SetItemGetInf(ITEMGETINF_3A);
+                    Flags_SetItemGetInf(ITEMGETINF_SOLD_SPOOKY_MASK);
                     Rupees_ChangeBy(30);
                     this->actor.textId = 0x2027;
                     talkState = 2;
@@ -213,7 +213,7 @@ s32 EnCs_GetTextID(EnCs* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     s32 textId = Text_GetFaceReaction(play, 15);
 
-    if (Flags_GetItemGetInf(ITEMGETINF_3A)) {
+    if (Flags_GetItemGetInf(ITEMGETINF_SOLD_SPOOKY_MASK)) {
         if (textId == 0) {
             textId = 0x2028;
         }
@@ -336,14 +336,14 @@ void EnCs_Walk(EnCs* this, PlayState* play) {
         animIndex = this->currentAnimIndex;
 
         if (this->talkState == 0) {
-            if (Flags_GetItemGetInf(ITEMGETINF_3A)) {
+            if (Flags_GetItemGetInf(ITEMGETINF_SOLD_SPOOKY_MASK)) {
                 rnd = Rand_ZeroOne() * 10.0f;
             } else {
                 rnd = Rand_ZeroOne() * 5.0f;
             }
 
             if (rnd == 0) {
-                if (Flags_GetItemGetInf(ITEMGETINF_3A)) {
+                if (Flags_GetItemGetInf(ITEMGETINF_SOLD_SPOOKY_MASK)) {
                     animIndex = 2.0f * Rand_ZeroOne();
                     animIndex = (animIndex == 0) ? ENCS_ANIM_2 : ENCS_ANIM_1;
                 } else {
@@ -472,7 +472,7 @@ void EnCs_Draw(Actor* thisx, PlayState* play) {
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnCs_OverrideLimbDraw, EnCs_PostLimbDraw, &this->actor);
 
-    if (Flags_GetItemGetInf(ITEMGETINF_3A)) {
+    if (Flags_GetItemGetInf(ITEMGETINF_SOLD_SPOOKY_MASK)) {
         s32 childLinkObjectIndex = Object_GetIndex(&play->objectCtx, OBJECT_LINK_CHILD);
 
         // Handle attaching the Spooky Mask to the boy's face

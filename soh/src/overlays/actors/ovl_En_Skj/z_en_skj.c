@@ -341,7 +341,7 @@ void EnSkj_CalculateCenter(EnSkj* this) {
 void EnSkj_SetNaviId(EnSkj* this) {
     switch (this->actor.params) {
         case 0:
-            if (Flags_GetItemGetInf(ITEMGETINF_39)) {
+            if (Flags_GetItemGetInf(ITEMGETINF_SOLD_SKULL_MASK)) {
                 this->actor.naviEnemyId = 0x41; // Skull kid with skull mask
             } else if (Flags_GetItemGetInf(ITEMGETINF_16)) {
                 this->actor.naviEnemyId = 0x40; // Skull kid after Saria's song but no mask
@@ -918,7 +918,7 @@ void EnSkj_WaitInRange(EnSkj* this, PlayState* play) {
         player->actor.world.pos.x = sSmallStumpSkullKid.skullkid->actor.world.pos.x;
         player->actor.world.pos.y = sSmallStumpSkullKid.skullkid->actor.world.pos.y;
         player->actor.world.pos.z = sSmallStumpSkullKid.skullkid->actor.world.pos.z;
-        if ((Player_GetMask(play) == PLAYER_MASK_SKULL) && !Flags_GetItemGetInf(ITEMGETINF_39)) {
+        if ((Player_GetMask(play) == PLAYER_MASK_SKULL) && !Flags_GetItemGetInf(ITEMGETINF_SOLD_SKULL_MASK)) {
             func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
             EnSkj_SetupMaskTrade(this);
         } else {
@@ -929,7 +929,7 @@ void EnSkj_WaitInRange(EnSkj* this, PlayState* play) {
     } else {
         player->stateFlags2 |= 0x800000;
         if (Flags_GetItemGetInf(ITEMGETINF_16)) {
-            if (Flags_GetItemGetInf(ITEMGETINF_39)) {
+            if (Flags_GetItemGetInf(ITEMGETINF_SOLD_SKULL_MASK)) {
                 this->textId = Text_GetFaceReaction(play, 0x15);
                 if (this->textId == 0) {
                     this->textId = 0x1020;
@@ -1168,7 +1168,7 @@ void EnSkj_SetupTakeMask(EnSkj* this, PlayState* play) {
 void EnSkj_TakeMask(EnSkj* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         Rupees_ChangeBy(10);
-        Flags_SetItemGetInf(ITEMGETINF_39);
+        Flags_SetItemGetInf(ITEMGETINF_SOLD_SKULL_MASK);
         EnSkj_SetNaviId(this);
         Player_UnsetMask(play);
         Item_Give(play, ITEM_SOLD_OUT);
@@ -1630,7 +1630,7 @@ s32 EnSkj_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
 void EnSkj_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     OPEN_DISPS(play->state.gfxCtx);
 
-    if ((limbIndex == 11) && (Flags_GetItemGetInf(ITEMGETINF_39))) {
+    if ((limbIndex == 11) && (Flags_GetItemGetInf(ITEMGETINF_SOLD_SKULL_MASK))) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         Matrix_Push();
         Matrix_RotateZYX(-0x4000, 0, 0, MTXMODE_APPLY);
