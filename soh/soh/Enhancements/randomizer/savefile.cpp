@@ -96,10 +96,10 @@ void GiveLinkDekuNuts(int howManyNuts) {
 
 void GiveLinksPocketItem() {
     if (Randomizer_GetSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING) {
-        // GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, (GetItemID)RG_NONE);
-        // StartingItemGive(getItemEntry);
-        // Flags_SetRandomizerInf(RAND_INF_RECEIVED_LIGHT_MEDALLION);
-        // If we re-add the above, we'll get the item on save creation, now it's given on first load
+        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LINKS_POCKET, (GetItemID)RG_NONE);
+        StartingItemGive(getItemEntry);
+        Flags_SetRandomizerInf(RAND_INF_RECEIVED_LIGHT_MEDALLION);
+        // If we comment-out the above, we'll get the item on first save load, currently it's given on save creation
         Flags_SetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL);
     }
 }
@@ -206,11 +206,6 @@ void SetStartingItems() {
 }
 
 extern "C" void Randomizer_InitSaveFile() {
-    // Sets all rando flags to false
-    for (s32 i = 0; i < ARRAY_COUNT(gSaveContext.randomizerInf); i++) {
-        gSaveContext.randomizerInf[i] = 0;
-    }
-
     gSaveContext.cutsceneIndex = 0; // no intro cutscene
     // Starts pending ice traps out at 0 before potentially incrementing them down the line.
     gSaveContext.pendingIceTrapCount = 0;
@@ -336,10 +331,10 @@ extern "C" void Randomizer_InitSaveFile() {
     }
 
     if (Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA)) {
-        // GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_SONG_FROM_IMPA, (GetItemID)RG_ZELDAS_LULLABY);
-        // StartingItemGive(getItemEntry);
-        // Flags_SetRandomizerInf(RAND_INF_RECEIVED_ZELDAS_LULLABY);
-        // If we re-add the above, we'll get the item on save creation, now it's given on first load
+        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_SONG_FROM_IMPA, (GetItemID)RG_ZELDAS_LULLABY);
+        StartingItemGive(getItemEntry);
+        Flags_SetRandomizerInf(RAND_INF_RECEIVED_ZELDAS_LULLABY);
+        // If we comment-out the above, we'll get the item on first save load, currently it's given on save creation
 
         // malon/talon back at ranch
         Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_POCKET_EGG);

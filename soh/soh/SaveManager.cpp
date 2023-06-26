@@ -549,6 +549,10 @@ void SaveManager::InitFileNormal() {
     for (int flag = 0; flag < ARRAY_COUNT(gSaveContext.infTable); flag++) {
         gSaveContext.infTable[flag] = 0;
     }
+    // Sets all randomizerInf flags to false (some are relevant to vanilla, should be renamed at some point)
+    for (int flag = 0; flag < ARRAY_COUNT(gSaveContext.randomizerInf); flag++) {
+        gSaveContext.randomizerInf[flag] = 0;
+    }
     gSaveContext.worldMapAreaData = 0;
     gSaveContext.scarecrowLongSongSet = 0;
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.scarecrowLongSong); i++) {
@@ -676,8 +680,11 @@ void SaveManager::InitFileDebug() {
     gSaveContext.infTable[0] |= 0x5009;
     gSaveContext.infTable[29] = 0; // unset flag from normal file setup
     gSaveContext.eventChkInf[0] |= 0x123F;
+    // Deku Tree Blue warp is marked as used above, so consider dungeon done (No reward to be given) to match behavior of vanilla
+    Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE);
     gSaveContext.eventChkInf[8] |= 1;
-    gSaveContext.eventChkInf[12] |= 0x10;
+    Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
+    Flags_SetRandomizerInf(RAND_INF_RECEIVED_LIGHT_ARROWS);
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
         gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
