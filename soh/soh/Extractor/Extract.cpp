@@ -499,14 +499,7 @@ const char* Extractor::GetZapdVerStr() const {
 }
 
 std::string Extractor::Mkdtemp() {
-    const char* tmpdir;
-
-    #ifdef _WIN32
-        tmpdir = getenv("TEMP");
-    #else
-        tmpdir = "/tmp";
-    #endif
-
+    std::string temp_dir = std::filesystem::temp_directory_path();
     
     // create 6 random alphanumeric characters
     static const char charset[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -520,7 +513,7 @@ std::string Extractor::Mkdtemp() {
     }
     randchr[6] = '\0';
 
-    std::string tmppath = std::string(tmpdir) + "/extractor-" + randchr;
+    std::string tmppath = temp_dir + "/extractor-" + randchr;
     std::filesystem::create_directory(tmppath);
     return tmppath;
 }
