@@ -2101,9 +2101,10 @@ void func_80075B44(PlayState* play) {
                 gSaveContext.bgsDayCount++;
                 gSaveContext.dogIsLost = true;
                 func_80078884(NA_SE_EV_CHICKEN_CRY_M);
-                if ((Inventory_ReplaceItem(play, ITEM_WEIRD_EGG, ITEM_CHICKEN) ||
-                     Inventory_HatchPocketCucco(play)) &&
-                    play->csCtx.state == 0 && !Player_InCsMode(play)) {
+                if (Inventory_ReplaceItem(play, ITEM_WEIRD_EGG, ITEM_CHICKEN) && play->csCtx.state == 0 && !Player_InCsMode(play)) {
+                    Flags_SetRandomizerInf(RAND_INF_WEIRD_EGG_HATCHED);
+                    Message_StartTextbox(play, 0x3066, NULL);
+                } else if (Inventory_HatchPocketCucco(play) && play->csCtx.state == 0 && !Player_InCsMode(play)) {
                     Message_StartTextbox(play, 0x3066, NULL);
                 }
                 play->envCtx.unk_E0++;

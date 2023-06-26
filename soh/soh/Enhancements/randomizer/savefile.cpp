@@ -345,6 +345,9 @@ extern "C" void Randomizer_InitSaveFile() {
         // Got item from impa
         Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
 
+        Flags_SetRandomizerInf(RAND_INF_OBTAINED_WEIRD_EGG);
+        Flags_SetRandomizerInf(RAND_INF_WEIRD_EGG_HATCHED);
+
         gSaveContext.sceneFlags[SCENE_SPOT15].swch |= (1 << 0x4); // move milk crates in hyrule castle to moat
 
         // set this at the end to ensure we always start with the letter
@@ -426,15 +429,29 @@ extern "C" void Randomizer_InitSaveFile() {
         }
     }
 
+    if (Randomizer_GetSettingValue(RSK_STARTING_BUNNY_HOOD)) {
+        Flags_SetItemGetInf(ITEMGETINF_OBTAINED_BUNNY_HOOD);
+        INV_CONTENT(ITEM_MASK_BUNNY) = ITEM_MASK_BUNNY;
+        gSaveContext.sohStats.activeMaskItemId = ITEM_MASK_BUNNY;
+    }
+
     // complete mask quest
     if (Randomizer_GetSettingValue(RSK_COMPLETE_MASK_QUEST)) {
         Flags_SetInfTable(INFTABLE_GATE_GUARD_PUT_ON_KEATON_MASK);
+        Flags_SetItemGetInf(ITEMGETINF_OBTAINED_KEATON_MASK);
+        Flags_SetItemGetInf(ITEMGETINF_OBTAINED_SKULL_MASK);
+        Flags_SetItemGetInf(ITEMGETINF_OBTAINED_SPOOKY_MASK);
+        Flags_SetItemGetInf(ITEMGETINF_OBTAINED_BUNNY_HOOD);
+        Flags_SetItemGetInf(ITEMGETINF_OBTAINED_MASK_OF_TRUTH);
+        Flags_SetItemGetInf(ITEMGETINF_SOLD_KEATON_MASK);
+        Flags_SetItemGetInf(ITEMGETINF_SOLD_SKULL_MASK);
+        Flags_SetItemGetInf(ITEMGETINF_SOLD_SPOOKY_MASK);
+        Flags_SetItemGetInf(ITEMGETINF_SOLD_BUNNY_HOOD);
+        Flags_SetItemGetInf(ITEMGETINF_SOLD_ALL_MASKS);
+        Flags_SetEventChkInf(EVENTCHKINF_PAID_BACK_KEATON_MASK_FEE);
+        Flags_SetEventChkInf(EVENTCHKINF_PAID_BACK_SKULL_MASK_FEE);
+        Flags_SetEventChkInf(EVENTCHKINF_PAID_BACK_SPOOKY_MASK_FEE);
         Flags_SetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE);
-        gSaveContext.itemGetInf[3] |= 0x100;  // Sold Keaton Mask
-        gSaveContext.itemGetInf[3] |= 0x200;  // Sold Skull Mask
-        gSaveContext.itemGetInf[3] |= 0x400;  // Sold Spooky Mask
-        gSaveContext.itemGetInf[3] |= 0x800;  // bunny hood related
-        gSaveContext.itemGetInf[3] |= 0x8000; // Obtained Mask of Truth
     }
 
     SetStartingItems();

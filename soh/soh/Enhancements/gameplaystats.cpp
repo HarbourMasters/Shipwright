@@ -296,6 +296,7 @@ void LoadStatsVersion1() {
 
     SaveManager::Instance->LoadData("heartPieces", gSaveContext.sohStats.heartPieces);
     SaveManager::Instance->LoadData("heartContainers", gSaveContext.sohStats.heartContainers);
+    SaveManager::Instance->LoadData("activeMaskItemId", gSaveContext.sohStats.activeMaskItemId);
     SaveManager::Instance->LoadArray("dungeonKeys", ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.sohStats.dungeonKeys[i]);
     });
@@ -347,6 +348,7 @@ void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
 
     SaveManager::Instance->SaveData("heartPieces", saveContext->sohStats.heartPieces);
     SaveManager::Instance->SaveData("heartContainers", saveContext->sohStats.heartContainers);
+    SaveManager::Instance->SaveData("activeMaskItemId", saveContext->sohStats.activeMaskItemId);
     SaveManager::Instance->SaveArray("dungeonKeys", ARRAY_COUNT(saveContext->sohStats.dungeonKeys), [&](size_t i) {
         SaveManager::Instance->SaveData("", saveContext->sohStats.dungeonKeys[i]);
     });
@@ -660,6 +662,7 @@ void GameplayStatsWindow::DrawElement() {
 void InitStats(bool isDebug) {
     gSaveContext.sohStats.heartPieces = isDebug ? 8 : 0;
     gSaveContext.sohStats.heartContainers = isDebug ? 8 : 0;
+    gSaveContext.sohStats.activeMaskItemId = ITEM_NONE;
     for (int dungeon = 0; dungeon < ARRAY_COUNT(gSaveContext.sohStats.dungeonKeys); dungeon++) {
         gSaveContext.sohStats.dungeonKeys[dungeon] = isDebug ? 8 : 0;
     }

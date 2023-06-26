@@ -95,6 +95,9 @@ typedef struct {
     /*      */ u8 locationsSkipped[RC_MAX];
     /*      */ bool rtaTiming;
     /*      */ uint64_t fileCreatedAt;
+    // Without mask select, you are only allowed to have one active mask at a time. This keeps
+    // track of that while also allowing you to switch to zelda's letter, weird egg, etc
+    /*      */ u8 activeMaskItemId;
 } SohStats;
 
 typedef struct {
@@ -317,7 +320,7 @@ typedef struct {
     /*        */ RandomizerCheck gregCheck;
     /*        */ RandomizerCheck dampeCheck;
     /*        */ u8 seedIcons[5];
-    /*        */ u16 randomizerInf[9];
+    /*        */ u16 randomizerInf[10];
     /*        */ u16 adultTradeItems;
     // #endregion
 } SaveContext; // size = 0x1428

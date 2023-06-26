@@ -358,6 +358,7 @@ extern "C" int AudioPlayer_Buffered(void);
 extern "C" int AudioPlayer_GetDesiredBuffered(void);
 extern "C" void ResourceMgr_LoadDirectory(const char* resName);
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path);
+extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 
 void OTRAudio_Thread() {
@@ -1791,6 +1792,78 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
         return copiedCharLen;
     }
     return 0;
+}
+
+extern "C" u8 GetNextChildTradeItem(u8 forward) {
+    std::vector<u8> possibleItems;
+
+    // We want this separate from the zelda's letter checks because technically they can
+    // get zelda's letter before waking talon up, which would have allowed them to get
+    // into a state where they cannot wake talon up, blocking the lon lon ranch checks
+    if (!Flags_GetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_CASTLE)) {
+        if (Flags_GetRandomizerInf(RAND_INF_WEIRD_EGG_HATCHED)) {
+            possibleItems.push_back(ITEM_CHICKEN);
+        // If weird egg hasn't hatched yet but been obtained
+        } else if (Flags_GetRandomizerInf(RAND_INF_OBTAINED_WEIRD_EGG)) {
+            possibleItems.push_back(ITEM_WEIRD_EGG);
+        }
+    }
+
+    if (!Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)) {
+        if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) possibleItems.push_back(ITEM_LETTER_ZELDA);
+    }
+
+    if (CVarGetInteger("gMaskSelect", 0)) {
+        if (Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)) {
+            if (Flags_GetItemGetInf(ITEMGETINF_OBTAINED_KEATON_MASK)) possibleItems.push_back(ITEM_MASK_KEATON);
+            if (Flags_GetItemGetInf(ITEMGETINF_OBTAINED_SKULL_MASK)) possibleItems.push_back(ITEM_MASK_SKULL);
+            if (Flags_GetItemGetInf(ITEMGETINF_OBTAINED_SPOOKY_MASK)) possibleItems.push_back(ITEM_MASK_SPOOKY);
+            if (Flags_GetItemGetInf(ITEMGETINF_OBTAINED_BUNNY_HOOD)) possibleItems.push_back(ITEM_MASK_BUNNY);
+            if (Flags_GetItemGetInf(ITEMGETINF_SOLD_ALL_MASKS)) {
+                possibleItems.push_back(ITEM_MASK_GORON);
+                possibleItems.push_back(ITEM_MASK_ZORA);
+                possibleItems.push_back(ITEM_MASK_GERUDO);
+                possibleItems.push_back(ITEM_MASK_TRUTH);
+            }
+        // Special case for bunny hood, if we want to start with it we don't care about happy mask shop status
+        } else if (Randomizer_GetSettingValue(RSK_STARTING_BUNNY_HOOD)) {
+            possibleItems.push_back(ITEM_MASK_BUNNY);
+        }
+    } else {
+        // If gMaskSelect is disabled and there is an activeMaskItemId, we only want to add that one mask
+        if (gSaveContext.sohStats.activeMaskItemId != ITEM_NONE) possibleItems.push_back(gSaveContext.sohStats.activeMaskItemId);
+    }
+
+    if (possibleItems.size() == 0) {
+        return ITEM_NONE;
+    }
+
+    auto it = find(possibleItems.begin(), possibleItems.end(), INV_CONTENT(ITEM_TRADE_CHILD));
+    // Fall back to 0 if they happen to have an item they aren't supposed to
+    s8 itemIndex = it == possibleItems.end() ? 0 : (it - possibleItems.begin());
+    s8 maxIndex = possibleItems.size() - 1;
+    
+    if (forward) itemIndex++;
+    else itemIndex--;
+
+    if (itemIndex > maxIndex) {
+        itemIndex = 0;
+    } else if (itemIndex < 0) {
+        itemIndex = maxIndex;
+    }
+
+    return possibleItems[itemIndex];
+}
+
+extern "C" u8 CanChangeChildTradeItem() {
+    if (!gSaveContext.n64ddFlag && !CVarGetInteger("gMaskSelect", 0)) return 0;
+
+    // In vanilla, we only want mask select to work when you already have a mask
+    if (!gSaveContext.n64ddFlag && !(INV_CONTENT(ITEM_TRADE_CHILD) >= ITEM_MASK_KEATON && INV_CONTENT(ITEM_TRADE_CHILD) <= ITEM_MASK_TRUTH)) {
+        return 0;
+    }
+
+    return INV_CONTENT(ITEM_TRADE_CHILD) != GetNextChildTradeItem(0);
 }
 
 extern "C" void Randomizer_LoadSettings(const char* spoilerFileName) {

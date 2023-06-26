@@ -1113,6 +1113,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option StartingWallet;
   extern Option StartingShardOfAgony;
   extern Option StartingDoubleDefense;
+  extern Option StartingBunnyHood;
   extern Option StartingHearts;
   extern Option StartingKokiriEmerald;
   extern Option StartingGoronRuby;

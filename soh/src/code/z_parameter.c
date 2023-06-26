@@ -2324,6 +2324,14 @@ u8 Item_Give(PlayState* play, u8 item) {
             Flags_SetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE);
         }
 
+        if (item == ITEM_WEIRD_EGG) {
+            Flags_SetRandomizerInf(RAND_INF_OBTAINED_WEIRD_EGG);
+        }
+
+        if (item >= ITEM_MASK_KEATON && item <= ITEM_MASK_TRUTH) {
+            gSaveContext.sohStats.activeMaskItemId = item;
+        }
+
         if (item >= ITEM_POCKET_EGG) {
             gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(item);
         }
