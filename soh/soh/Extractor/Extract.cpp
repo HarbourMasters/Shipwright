@@ -528,6 +528,9 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
     const char* version = GetZapdVerStr();
     const char* otrFile = IsMasterQuest() ? "oot-mq.otr" : "oot.otr";
 
+    std::string romPath = std::filesystem::absolute(mCurrentRomPath);
+    installPath = std::filesystem::absolute(installPath);
+    exportdir = std::filesystem::absolute(exportdir);
     // Work this out in the temporary folder
     std::string tempdir = Mkdtemp();
     std::string curdir = std::filesystem::current_path();
@@ -548,7 +551,7 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
     argv[2] = "-i";
     argv[3] = xmlPath;
     argv[4] = "-b";
-    argv[5] = mCurrentRomPath.c_str();
+    argv[5] = romPath.c_str();
     argv[6] = "-fl";
     argv[7] = "assets/extractor/filelists";
     argv[8] = "-gsf";
@@ -576,7 +579,7 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
     ShowWindow(cmdWindow, SW_HIDE);
 #endif
 
-    std::filesystem::rename(otrFile, exportdir);
+    std::filesystem::copy(otrFile, exportdir + "/" + otrFile, std::filesystem::copy_options::overwrite_existing);
 
     // Go back to where this game was executed from
     std::filesystem::current_path(curdir);
