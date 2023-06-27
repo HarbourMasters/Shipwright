@@ -56,7 +56,7 @@ def main():
     parser.add_argument("--non-interactive", help="Runs the script non-interactively for use in build scripts.", dest="non_interactive", action="store_true")
     parser.add_argument("-v", "--verbose", help="Display rom's header checksums and their corresponding xml folder", dest="verbose", action="store_true")
     parser.add_argument("--gen-headers", help="Generate source headers to be checked in", dest="gen_headers", action="store_true")
-    parser.add_argument("--norom", help="Generate only soh.otr to be bundled in the game", dest="norom", action="store_true")
+    parser.add_argument("--norom", help="Generate only soh.otr to be bundled to the game", dest="norom", action="store_true")
 
     args = parser.parse_args()
 
