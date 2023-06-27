@@ -88,6 +88,7 @@
 
 #define GET_ITEMGETINF(flag) (gSaveContext.itemGetInf[(flag) >> 4] & (1 << ((flag) & 0xF)))
 #define SET_ITEMGETINF(flag) (gSaveContext.itemGetInf[(flag) >> 4] |= (1 << ((flag) & 0xF)))
+#define CLEAR_ITEMGETINF(flag) (gSaveContext.itemGetInf[(flag) >> 4] &= ~(1 << ((flag) & 0xF)))
 
 #define GET_INFTABLE(flag) (gSaveContext.infTable[(flag) >> 4] & (1 << ((flag) & 0xF)))
 #define SET_INFTABLE(flag) (gSaveContext.infTable[(flag) >> 4] |= (1 << ((flag) & 0xF)))

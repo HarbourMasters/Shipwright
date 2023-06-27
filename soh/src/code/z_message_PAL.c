@@ -1618,7 +1618,7 @@ void Message_OpenText(PlayState* play, u16 textId) {
         textId += (gSaveContext.inventory.questItems & 0xF0000000 & 0xF0000000) >> 0x1C;
     } else if (!gSaveContext.n64ddFlag && (msgCtx->textId == 0xC && CHECK_OWNED_EQUIP(EQUIP_SWORD, 2))) {
         textId = 0xB; // Traded Giant's Knife for Biggoron Sword
-    } else if (!gSaveContext.n64ddFlag && (msgCtx->textId == 0xB4 && (gSaveContext.eventChkInf[9] & 0x40))) {
+    } else if (!gSaveContext.n64ddFlag && (msgCtx->textId == 0xB4 && (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_CURSED_MAN_IN_SKULL_HOUSE)))) {
         textId = 0xB5; // Destroyed Gold Skulltula
     }
     // Ocarina Staff + Dialog

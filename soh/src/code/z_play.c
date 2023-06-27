@@ -241,7 +241,7 @@ void GivePlayerRandoRewardNocturne(PlayState* play, RandomizerCheck check) {
          gSaveContext.entranceIndex == 0x0191 ||
          gSaveContext.entranceIndex == 0x0195) && LINK_IS_ADULT && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
         CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) && player != NULL &&
-        !Player_InBlockingCsMode(play, player) && !Flags_GetEventChkInf(0xAA)) {
+        !Player_InBlockingCsMode(play, player) && !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL)) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_NOCTURNE_OF_SHADOW);
         GiveItemEntryWithoutActor(play, getItemEntry);
         player->pendingFlag.flagID = 0xAA;
@@ -253,7 +253,7 @@ void GivePlayerRandoRewardRequiem(PlayState* play, RandomizerCheck check) {
     Player* player = GET_PLAYER(play);
 
     if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
-        if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(0xAC) && player != NULL &&
+        if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT) && player != NULL &&
             !Player_InBlockingCsMode(play, player)) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
             GiveItemEntryWithoutActor(play, getItemEntry);
@@ -440,7 +440,7 @@ void GivePlayerRandoRewardSariaGift(PlayState* play, RandomizerCheck check) {
     if (gSaveContext.entranceIndex == 0x05E0) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_ZELDAS_LULLABY);
 
-        if (!Flags_GetEventChkInf(0xC1) && player != NULL && !Player_InBlockingCsMode(play, player)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE) && player != NULL && !Player_InBlockingCsMode(play, player)) {
             GiveItemEntryWithoutActor(play, getItemEntry);
             player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
             player->pendingFlag.flagID = 0xC1;
@@ -469,7 +469,7 @@ void Play_Init(GameState* thisx) {
     // entranceIndex 0x7A, Castle Courtyard - Day from crawlspace
     // entranceIndex 0x400, Zelda's Courtyard
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_CHILD_STEALTH) &&
-        !(gSaveContext.eventChkInf[4] & 1) && !(gSaveContext.eventChkInf[5] & 0x200)) {
+        !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY)) {
         if (gSaveContext.entranceIndex == 0x7A) {
             gSaveContext.entranceIndex = 0x400;
         }
@@ -567,7 +567,7 @@ void Play_Init(GameState* thisx) {
         }
     } else if ((gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_SPOT04) && LINK_IS_ADULT &&
                gSaveContext.sceneSetupIndex < 4) {
-        gSaveContext.sceneSetupIndex = (gSaveContext.eventChkInf[4] & 0x100) ? 3 : 2;
+        gSaveContext.sceneSetupIndex = (Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) ? 3 : 2;
     }
 
     Play_SpawnScene(
@@ -1944,14 +1944,18 @@ void Play_InitScene(PlayState* play, s32 spawn)
 }
 
 void Play_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
+    uint8_t mqMode = CVarGetInteger("gBetterDebugWarpScreenMQMode", WARP_MODE_OVERRIDE_OFF);
+    int16_t mqModeScene = CVarGetInteger("gBetterDebugWarpScreenMQModeScene", -1);
+    if (mqMode != WARP_MODE_OVERRIDE_OFF && sceneNum != mqModeScene) {
+        CVarClear("gBetterDebugWarpScreenMQMode");
+        CVarClear("gBetterDebugWarpScreenMQModeScene");
+    }
 
     OTRPlay_SpawnScene(play, sceneNum, spawn);
 
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         Entrance_OverrideSpawnScene(sceneNum, spawn);
     }
-
-    CVarClear("gBetterDebugWarpScreenMQMode");
 }
 
 void func_800C016C(PlayState* play, Vec3f* src, Vec3f* dest) {

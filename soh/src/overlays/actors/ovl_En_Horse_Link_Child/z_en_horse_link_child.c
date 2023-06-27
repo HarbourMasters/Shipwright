@@ -166,11 +166,11 @@ void EnHorseLinkChild_Init(Actor* thisx, PlayState* play) {
     if (gSaveContext.sceneSetupIndex > 3) {
         func_80A69EC0(this);
     } else if (play->sceneNum == SCENE_SPOT20) {
-        if (!Flags_GetEventChkInf(0x14)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
             Actor_Kill(&this->actor);
             return;
         }
-        this->unk_2A0 = gSaveContext.eventChkInf[1] & 0x40;
+        this->unk_2A0 = Flags_GetEventChkInf(EVENTCHKINF_INVITED_TO_SING_WITH_CHILD_MALON);
         func_80A69EC0(this);
     } else {
         func_80A69EC0(this);
@@ -359,17 +359,17 @@ void func_80A6A068(EnHorseLinkChild* this, PlayState* play) {
         return;
     }
 
-    if (((gSaveContext.eventChkInf[1] & 0x40) && (DREG(53) != 0)) ||
+    if (((Flags_GetEventChkInf(EVENTCHKINF_INVITED_TO_SING_WITH_CHILD_MALON)) && (DREG(53) != 0)) ||
         ((play->sceneNum == SCENE_SPOT20) && (gSaveContext.cutsceneIndex == 0xFFF1))) {
         func_80A6A4DC(this);
     } else {
-        this->unk_2A0 = gSaveContext.eventChkInf[1] & 0x40;
+        this->unk_2A0 = Flags_GetEventChkInf(EVENTCHKINF_INVITED_TO_SING_WITH_CHILD_MALON);
     }
 
     newAnimationIdx = this->animationIdx;
     animationEnded = SkelAnime_Update(&this->skin.skelAnime);
     if (animationEnded || (this->animationIdx == 1) || (this->animationIdx == 0)) {
-        if (gSaveContext.eventChkInf[1] & 0x20) {
+        if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_CHILD_MALON_AT_RANCH)) {
             distFromHome = Math3D_Vec3f_DistXYZ(&this->actor.world.pos, &this->actor.home.pos);
             distLinkFromHome = Math3D_Vec3f_DistXYZ(&player->actor.world.pos, &this->actor.home.pos);
             if (distLinkFromHome > 250.0f) {

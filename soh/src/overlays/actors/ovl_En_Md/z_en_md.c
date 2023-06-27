@@ -380,7 +380,7 @@ u16 EnMd_GetTextKokiriForest(PlayState* play, EnMd* this) {
         return 0x1045;
     }
 
-    if (gSaveContext.eventChkInf[0] & 0x10) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) {
         return 0x1034;
     }
 
@@ -388,7 +388,7 @@ u16 EnMd_GetTextKokiriForest(PlayState* play, EnMd* this) {
         return 0x1033;
     }
 
-    if (gSaveContext.infTable[0] & 0x1000) {
+    if (Flags_GetInfTable(INFTABLE_0C)) {
         return 0x1030;
     }
 
@@ -399,7 +399,7 @@ u16 EnMd_GetTextKokiriHome(PlayState* play, EnMd* this) {
     this->unk_208 = 0;
     this->unk_209 = TEXT_STATE_NONE;
 
-    if (gSaveContext.eventChkInf[4] & 1) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
         return 0x1028;
     }
 
@@ -410,18 +410,18 @@ u16 EnMd_GetTextLostWoods(PlayState* play, EnMd* this) {
     this->unk_208 = 0;
     this->unk_209 = TEXT_STATE_NONE;
 
-    if (gSaveContext.eventChkInf[4] & 0x100) {
-        if (gSaveContext.infTable[1] & 0x200) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) {
+        if (Flags_GetInfTable(INFTABLE_19)) {
             return 0x1071;
         }
         return 0x1070;
     }
 
-    if (gSaveContext.eventChkInf[0] & 0x400) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_PLAYED_SARIAS_SONG_FOR_MIDO_AS_ADULT)) {
         return 0x1068;
     }
 
-    if (gSaveContext.infTable[1] & 0x20) {
+    if (Flags_GetInfTable(INFTABLE_15)) {
         return 0x1061;
     }
 
@@ -458,17 +458,17 @@ s16 func_80AAAF04(PlayState* play, Actor* thisx) {
         case TEXT_STATE_CLOSING:
             switch (this->actor.textId) {
                 case 0x1028:
-                    gSaveContext.eventChkInf[0] |= 0x8000;
+                    Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_ABOUT_SARIA);
                     break;
                 case 0x102F:
-                    gSaveContext.eventChkInf[0] |= 4;
-                    gSaveContext.infTable[0] |= 0x1000;
+                    Flags_SetEventChkInf(EVENTCHKINF_FIRST_SPOKE_TO_MIDO);
+                    Flags_SetInfTable(INFTABLE_0C);
                     break;
                 case 0x1060:
-                    gSaveContext.infTable[1] |= 0x20;
+                    Flags_SetInfTable(INFTABLE_15);
                     break;
                 case 0x1070:
-                    gSaveContext.infTable[1] |= 0x200;
+                    Flags_SetInfTable(INFTABLE_19);
                     break;
                 case 0x1033:
                 case 0x1067:
@@ -505,13 +505,13 @@ u8 EnMd_ShouldSpawn(EnMd* this, PlayState* play) {
     }
 
     if (play->sceneNum == SCENE_SPOT04) {
-        if (!(gSaveContext.eventChkInf[1] & 0x1000) && !(gSaveContext.eventChkInf[4] & 1)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) && !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
             return 1;
         }
     }
 
     if (play->sceneNum == SCENE_KOKIRI_HOME4) {
-        if (((gSaveContext.eventChkInf[1] & 0x1000) != 0) || ((gSaveContext.eventChkInf[4] & 1) != 0)) {
+        if (((Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH)) != 0) || ((Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) != 0)) {
             if (!LINK_IS_ADULT) {
                 return 1;
             }
@@ -638,12 +638,12 @@ void func_80AAB5A4(EnMd* this, PlayState* play) {
 
     if (play->sceneNum != SCENE_KOKIRI_HOME4) {
         if (CVarGetInteger("gDisableKokiriDrawDistance", 0) != 0) {
-            temp = (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !(gSaveContext.eventChkInf[1] & 0x1000) &&
+            temp = (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
                     (play->sceneNum == SCENE_SPOT04))
                        ? 100.0f
                        : 32767.0f;
         } else {
-            temp = (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !(gSaveContext.eventChkInf[1] & 0x1000) &&
+            temp = (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
                     (play->sceneNum == SCENE_SPOT04))
                        ? 100.0f
                        : 400.0f;
@@ -679,11 +679,11 @@ void EnMd_Init(Actor* thisx, PlayState* play) {
     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_ELF, this->actor.world.pos.x,
                        this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, FAIRY_KOKIRI);
 
-    if (((play->sceneNum == SCENE_SPOT04) && !(gSaveContext.eventChkInf[0] & 0x10)) ||
-        ((play->sceneNum == SCENE_SPOT04) && (gSaveContext.eventChkInf[0] & 0x10) &&
+    if (((play->sceneNum == SCENE_SPOT04) && !Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) ||
+        ((play->sceneNum == SCENE_SPOT04) && (Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) &&
          ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) ||
           (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE)))) ||
-        ((play->sceneNum == SCENE_SPOT10) && !(gSaveContext.eventChkInf[0] & 0x400))) {
+        ((play->sceneNum == SCENE_SPOT10) && !Flags_GetEventChkInf(EVENTCHKINF_PLAYED_SARIAS_SONG_FOR_MIDO_AS_ADULT))) {
         this->actor.home.pos = this->actor.world.pos;
         this->actionFunc = func_80AAB948;
         return;
@@ -747,16 +747,16 @@ void func_80AAB948(EnMd* this, PlayState* play) {
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
         if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) ||
             gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE) &&
-            Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) && !(gSaveContext.eventChkInf[1] & 0x1000) &&
+            Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
             (play->sceneNum == SCENE_SPOT04)) {
             play->msgCtx.msgMode = MSGMODE_PAUSED;
         }
 
         if (play->sceneNum == SCENE_SPOT04) {
-            gSaveContext.eventChkInf[0] |= 0x10;
+            Flags_SetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD);
         }
         if (play->sceneNum == SCENE_SPOT10) {
-            gSaveContext.eventChkInf[0] |= 0x400;
+            Flags_SetEventChkInf(EVENTCHKINF_PLAYED_SARIAS_SONG_FOR_MIDO_AS_ADULT);
         }
 
         func_80AAA92C(this, 3);
@@ -816,10 +816,10 @@ void func_80AABD0C(EnMd* this, PlayState* play) {
 
     if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) ||
         gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE) &&
-        Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) && !(gSaveContext.eventChkInf[1] & 0x1000) &&
+        Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
         (play->sceneNum == SCENE_SPOT04)) {
         Message_CloseTextbox(play);
-        gSaveContext.eventChkInf[1] |= 0x1000;
+        Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH);
         Actor_Kill(&this->actor);
         return;
     }
