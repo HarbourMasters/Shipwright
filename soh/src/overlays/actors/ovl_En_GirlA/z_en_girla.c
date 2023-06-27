@@ -7,6 +7,10 @@
 #include "z_en_girla.h"
 #include "vt.h"
 
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/OTRGlobals.h"
+#include <assert.h>
+
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnGirlA_Init(Actor* thisx, PlayState* play);
@@ -69,6 +73,8 @@ void EnGirlA_BuyEvent_ObtainBombchuPack(PlayState* play, EnGirlA* this);
 void EnGirlA_BuyEvent_GoronTunic(PlayState* play, EnGirlA* this);
 void EnGirlA_BuyEvent_ZoraTunic(PlayState* play, EnGirlA* this);
 void EnGirlA_BuyEvent_Randomizer(PlayState* play, EnGirlA* this);
+
+s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
 
 const ActorInit En_GirlA_InitVars = {
     ACTOR_EN_GIRLA,
@@ -406,7 +412,7 @@ void EnGirlA_InitItem(EnGirlA* this, PlayState* play) {
         osSyncPrintf(VT_COL(RED, WHITE));
         osSyncPrintf("引数がおかしいよ(arg_data=%d)！！\n", this->actor.params);
         osSyncPrintf(VT_RST);
-        ASSERT((params >= SI_MAX) && (params < 0));
+        assert((params >= SI_MAX) && (params < 0));
         return;
     }
 
@@ -435,7 +441,7 @@ void EnGirlA_InitItem(EnGirlA* this, PlayState* play) {
         osSyncPrintf(VT_COL(RED, WHITE));
         osSyncPrintf("バンクが無いよ！！(%s)\n", sShopItemDescriptions[params]);
         osSyncPrintf(VT_RST);
-        ASSERT(this->objBankIndex < 0);
+        assert(this->objBankIndex < 0);
         return;
     }
 

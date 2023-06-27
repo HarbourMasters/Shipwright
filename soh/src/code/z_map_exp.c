@@ -4,6 +4,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "textures/map_i_static/map_i_static.h"
 #include "textures/map_grand_static/map_grand_static.h"
+#include <assert.h>
 
 MapData* gMapData;
 
@@ -527,7 +528,7 @@ void Map_Init(PlayState* play) {
     // "ＭＡＰ texture initialization scene_data_ID=%d mapSegment=%x"
     osSyncPrintf("\n\n\nＭＡＰ テクスチャ初期化   scene_data_ID=%d\nmapSegment=%x\n\n", play->sceneNum,
                  interfaceCtx->mapSegment, play);
-    ASSERT(interfaceCtx->mapSegment != NULL);
+    assert(interfaceCtx->mapSegment != NULL);
 
     switch (play->sceneNum) {
         case SCENE_SPOT00:

@@ -11,6 +11,7 @@
 #include "soh/resource/type/Text.h"
 #include <Blob.h>
 #include <memory>
+#include <cassert>
 #include "soh/resource/type/scenecommand/SetCameraSettings.h"
 #include "soh/resource/type/scenecommand/SetCutscenes.h"
 #include "soh/resource/type/scenecommand/SetStartPositionList.h"
@@ -520,7 +521,7 @@ extern "C" s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomN
         roomCtx->curRoom.segment = NULL;
         roomCtx->status = 1;
 
-        ASSERT(roomNum < play->numRooms);
+        assert(roomNum < play->numRooms);
 
         if (roomNum >= play->numRooms)
             return 0; // UH OH

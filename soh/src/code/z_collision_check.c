@@ -2,6 +2,7 @@
 #include "vt.h"
 #include "overlays/effects/ovl_Effect_Ss_HitMark/z_eff_ss_hitmark.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include <assert.h>
 
 typedef s32 (*ColChkResetFunc)(PlayState*, Collider*);
 typedef void (*ColChkBloodFunc)(PlayState*, Collider*, Vec3f*);
@@ -71,7 +72,7 @@ void Collider_DrawPoly(GraphicsContext* gfxCtx, Vec3f* vA, Vec3f* vB, Vec3f* vC,
     gDPPipeSync(POLY_OPA_DISP++);
 
     vtxTbl = Graph_Alloc(gfxCtx, 3 * sizeof(Vtx));
-    ASSERT(vtxTbl != NULL);
+    assert(vtxTbl != NULL);
 
     vtxTbl[0].n.ob[0] = vA->x;
     vtxTbl[0].n.ob[1] = vA->y;
@@ -453,7 +454,7 @@ s32 Collider_SetJntSph(PlayState* play, ColliderJntSph* dest, Actor* actor, Coll
     Collider_SetBase(play, &dest->base, actor, &src->base);
     dest->count = src->count;
     dest->elements = elements;
-    ASSERT(dest->elements != NULL);
+    assert(dest->elements != NULL);
 
     for (destElem = dest->elements, srcElem = src->elements; destElem < dest->elements + dest->count;
          destElem++, srcElem++) {
@@ -790,7 +791,7 @@ s32 Collider_SetTris(PlayState* play, ColliderTris* dest, Actor* actor, Collider
     Collider_SetBase(play, &dest->base, actor, &src->base);
     dest->count = src->count;
     dest->elements = elements;
-    ASSERT(dest->elements != NULL);
+    assert(dest->elements != NULL);
 
     for (destElem = dest->elements, srcElem = src->elements; destElem < dest->elements + dest->count;
          destElem++, srcElem++) {
@@ -1185,7 +1186,7 @@ s32 CollisionCheck_SetAT(PlayState* play, CollisionCheckContext* colChkCtx, Coll
     if (FrameAdvance_IsEnabled(play) == true) {
         return -1;
     }
-    ASSERT(collider->shape <= COLSHAPE_QUAD);
+    assert(collider->shape <= COLSHAPE_QUAD);
     sATResetFuncs[collider->shape](play, collider);
     if (collider->actor != NULL && collider->actor->update == NULL) {
         return -1;
@@ -1210,7 +1211,7 @@ s32 CollisionCheck_SetAT(PlayState* play, CollisionCheckContext* colChkCtx, Coll
  */
 s32 CollisionCheck_SetAT_SAC(PlayState* play, CollisionCheckContext* colChkCtx, Collider* collider,
                              s32 index) {
-    ASSERT(collider->shape <= COLSHAPE_QUAD);
+    assert(collider->shape <= COLSHAPE_QUAD);
 
     if (GameInteractor_SecondCollisionUpdate()) {
         return -1;
@@ -1264,7 +1265,7 @@ s32 CollisionCheck_SetAC(PlayState* play, CollisionCheckContext* colChkCtx, Coll
     if (FrameAdvance_IsEnabled(play) == true) {
         return -1;
     }
-    ASSERT(collider->shape <= COLSHAPE_QUAD);
+    assert(collider->shape <= COLSHAPE_QUAD);
     sACResetFuncs[collider->shape](play, collider);
     if (collider->actor != NULL && collider->actor->update == NULL) {
         return -1;
@@ -1289,7 +1290,7 @@ s32 CollisionCheck_SetAC(PlayState* play, CollisionCheckContext* colChkCtx, Coll
  */
 s32 CollisionCheck_SetAC_SAC(PlayState* play, CollisionCheckContext* colChkCtx, Collider* collider,
                              s32 index) {
-    ASSERT(collider->shape <= COLSHAPE_QUAD);
+    assert(collider->shape <= COLSHAPE_QUAD);
 
     if (GameInteractor_SecondCollisionUpdate()) {
         return -1;
@@ -1344,7 +1345,7 @@ s32 CollisionCheck_SetOC(PlayState* play, CollisionCheckContext* colChkCtx, Coll
         return -1;
     }
 
-    ASSERT(collider->shape <= COLSHAPE_QUAD);
+    assert(collider->shape <= COLSHAPE_QUAD);
 
     sOCResetFuncs[collider->shape](play, collider);
     if (collider->actor != NULL && collider->actor->update == NULL) {
@@ -1379,7 +1380,7 @@ s32 CollisionCheck_SetOC_SAC(PlayState* play, CollisionCheckContext* colChkCtx, 
         return -1;
     }
 
-    ASSERT(collider->shape <= COLSHAPE_QUAD);
+    assert(collider->shape <= COLSHAPE_QUAD);
     sOCResetFuncs[collider->shape](play, collider);
     if (collider->actor != NULL && collider->actor->update == NULL) {
         return -1;
@@ -3022,7 +3023,7 @@ void CollisionCheck_ApplyDamage(PlayState* play, CollisionCheckContext* colChkCt
         return;
     }
 
-    ASSERT(info->acHitInfo != NULL);
+    assert(info->acHitInfo != NULL);
     tbl = collider->actor->colChkInfo.damageTable;
     if (tbl == NULL) {
         damage = (f32)info->acHitInfo->toucher.damage - info->bumper.defense;

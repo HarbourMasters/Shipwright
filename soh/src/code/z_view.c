@@ -3,6 +3,7 @@
 
 #include <string.h>
 #include <math.h>
+#include <assert.h>
 
 #include "soh/frame_interpolation.h"
 
@@ -176,10 +177,10 @@ void func_800AA550(View* view) {
     lrx = view->viewport.rightX - varX;
     lry = view->viewport.bottomY - varY;
 
-    ASSERT(ulx >= 0);
-    ASSERT(uly >= 0);
-    ASSERT(lrx <= SCREEN_WIDTH);
-    ASSERT(lry <= SCREEN_HEIGHT);
+    assert(ulx >= 0);
+    assert(uly >= 0);
+    assert(lrx <= SCREEN_WIDTH);
+    assert(lry <= SCREEN_HEIGHT);
 
     OPEN_DISPS(gfxCtx);
 

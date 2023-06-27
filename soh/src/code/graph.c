@@ -3,9 +3,12 @@
 #include "regs.h"
 
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "soh/Enhancements/debugger/colViewer.h"
 #include "soh/Enhancements/gameconsole.h"
+#include "soh/OTRGlobals.h"
 
 #define GFXPOOL_HEAD_MAGIC 0x1234
 #define GFXPOOL_TAIL_MAGIC 0x5678
@@ -15,6 +18,9 @@ OSTime sGraphSetTaskTime;
 FaultClient sGraphFaultClient;
 CfbInfo sGraphCfbInfos[3];
 FaultClient sGraphUcodeFaultClient;
+
+void Skybox_Setup(PlayState* play, SkyboxContext* skyboxCtx, s16 skyboxId);
+void PadMgr_ThreadEntry(PadMgr* padMgr);
 
 // clang-format off
 UCodeInfo D_8012D230[3] = {
@@ -461,7 +467,7 @@ static void RunFrame()
         {
             osSyncPrintf("確保失敗\n"); // "Failure to secure"
 
-            sprintf(faultMsg, "CLASS SIZE= %d bytes", size);
+            snprintf(faultMsg, sizeof(faultMsg), "CLASS SIZE= %d bytes", size);
             Fault_AddHungupAndCrashImpl("GAME CLASS MALLOC FAILED", faultMsg);
         }
         GameState_Init(runFrameContext.gameState, runFrameContext.ovl->init, &runFrameContext.gfxCtx);
@@ -478,15 +484,15 @@ static void RunFrame()
 
         while (GameState_IsRunning(runFrameContext.gameState))
         {
-            uint64_t ticksA, ticksB;
-            ticksA = GetPerfCounter();
+            //uint64_t ticksA, ticksB;
+            //ticksA = GetPerfCounter();
 
             Graph_StartFrame();
 
             PadMgr_ThreadEntry(&gPadMgr);
 
             Graph_Update(&runFrameContext.gfxCtx, runFrameContext.gameState);
-            ticksB = GetPerfCounter();
+            //ticksB = GetPerfCounter();
 
             Graph_ProcessGfxCommands(runFrameContext.gfxCtx.workBuffer);
 

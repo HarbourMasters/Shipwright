@@ -6,6 +6,7 @@
 
 #include "z_en_vali.h"
 #include "objects/object_vali/object_vali.h"
+#include <stdlib.h>
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_IGNORE_QUAKE)
 
