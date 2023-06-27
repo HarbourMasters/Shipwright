@@ -29,7 +29,7 @@ if(SYSTEM_NAME MATCHES "Windows")
     endif()
 endif()
 
-if(NOT EXISTS ${SOURCE_DIR}/oot.otr AND NOT EXISTS ${SOURCE_DIR}/oot-mq.otr)
+if(NOT ONLYSOHOTR AND (NOT EXISTS ${SOURCE_DIR}/oot.otr AND NOT EXISTS ${SOURCE_DIR}/oot-mq.otr))
     message(FATAL_ERROR "Failed to copy. No OTR files found.")
 endif()
 if(NOT EXISTS ${SOURCE_DIR}/soh.otr)
