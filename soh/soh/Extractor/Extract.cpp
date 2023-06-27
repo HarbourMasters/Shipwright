@@ -6,6 +6,7 @@
 #endif
 #include "Extract.h"
 #include "portable-file-dialogs.h"
+#include <Utils/BitConverter.h>
 
 #ifdef unix
 #include <dirent.h>
@@ -46,7 +47,6 @@
 #include <unordered_map>
 
 extern "C" uint32_t CRC32C(unsigned char* data, size_t dataSize);
-extern "C" void RomToBigEndian(void* rom, size_t romSize);
 
 static constexpr uint32_t OOT_PAL_GC = 0x09465AC3;
 static constexpr uint32_t OOT_PAL_GC_DBG1 = 0x871E1C92; // 03-21-2002 build
@@ -179,7 +179,7 @@ void Extractor::FilterRoms(std::vector<std::string>& roms, RomSearchMode searchM
         inFile.clear();
         inFile.close();
 
-        RomToBigEndian(mRomData.get(), mCurRomSize);
+        BitConverter::RomToBigEndian(mRomData.get(), mCurRomSize);
 
         // Rom doesn't claim to be valid
         // Game type doesn't match search mode
@@ -358,7 +358,7 @@ bool Extractor::ManuallySearchForRom() {
 
     inFile.read((char*)mRomData.get(), mCurRomSize);
     inFile.close();
-    RomToBigEndian(mRomData.get(), mCurRomSize);
+    BitConverter::RomToBigEndian(mRomData.get(), mCurRomSize);
 
     if (!ValidateRom()) {
         return false;
@@ -433,7 +433,7 @@ bool Extractor::Run(RomSearchMode searchMode) {
         inFile.read((char*)mRomData.get(), mCurRomSize);
         inFile.clear();
         inFile.close();
-        RomToBigEndian(mRomData.get(), mCurRomSize);
+        BitConverter::RomToBigEndian(mRomData.get(), mCurRomSize);
 
         int option = ShowRomPickBox(GetRomVerCrc());
 
