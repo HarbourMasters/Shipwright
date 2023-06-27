@@ -499,7 +499,7 @@ const char* Extractor::GetZapdVerStr() const {
 }
 
 std::string Extractor::Mkdtemp() {
-    std::string temp_dir = std::filesystem::temp_directory_path();
+    std::string temp_dir = std::filesystem::temp_directory_path().string();
     
     // create 6 random alphanumeric characters
     static const char charset[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -528,12 +528,12 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
     const char* version = GetZapdVerStr();
     const char* otrFile = IsMasterQuest() ? "oot-mq.otr" : "oot.otr";
 
-    std::string romPath = std::filesystem::absolute(mCurrentRomPath);
-    installPath = std::filesystem::absolute(installPath);
-    exportdir = std::filesystem::absolute(exportdir);
+    std::string romPath = std::filesystem::absolute(mCurrentRomPath).string();
+    installPath = std::filesystem::absolute(installPath).string();
+    exportdir = std::filesystem::absolute(exportdir).string();
     // Work this out in the temporary folder
     std::string tempdir = Mkdtemp();
-    std::string curdir = std::filesystem::current_path();
+    std::string curdir = std::filesystem::current_path().string();
 #ifdef _WIN32
     std::filesystem::copy(installPath + "/assets", tempdir + "/assets",
         std::filesystem::copy_options::recursive | std::filesystem::copy_options::update_existing);
