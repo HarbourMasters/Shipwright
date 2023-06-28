@@ -1,3 +1,4 @@
+#define ENABLE_REMOTE_CONTROL 1
 #include "SohMenuBar.h"
 #include "ImGui/imgui.h"
 #include "regex"
@@ -1331,52 +1332,60 @@ void DrawDeveloperToolsMenu() {
 void DrawRemoteControlMenu() {
     if (ImGui::BeginMenu("Network")) {
         bool isFormValid = GameInteractor::Instance->remoteIPStr[0] != '\0' && GameInteractor::Instance->remotePortStr[0] != '\0';
-        const char* remoteOptions[2] = { "Built-in", "Crowd Control"};
+        const char* remoteOptions[3] = { "Built-in", "Crowd Control", "Anchor"};
 
+        ImGui::BeginDisabled(GameInteractor::Instance->isRemoteInteractorEnabled);
         ImGui::Text("Remote Interaction Scheme");
         if (UIWidgets::EnhancementCombobox("gRemoteGIScheme", remoteOptions, 0)) {
-            if (CVarGetInteger("gRemoteGIScheme", 0) == 1) {
-                strncpy(GameInteractor::Instance->remoteIPStr, "127.0.0.1", MAX_IP_BUFFER_SIZE);
-                strncpy(GameInteractor::Instance->remotePortStr, "43384", MAX_PORT_BUFFER_SIZE);
-                CVarSetString("gRemoteGIIP", "127.0.0.1");
-                CVarSetString("gRemoteGIPort", "43384");
-                isFormValid = true;
-            } else {
+            if (CVarGetInteger("gRemoteGIScheme", 0) == 0) {
                 strncpy(GameInteractor::Instance->remoteIPStr, "", MAX_IP_BUFFER_SIZE);
                 strncpy(GameInteractor::Instance->remotePortStr, "", MAX_PORT_BUFFER_SIZE);
                 CVarSetString("gRemoteGIIP", "");
                 CVarSetString("gRemoteGIPort", "");
                 isFormValid = false;
+            } else if (CVarGetInteger("gRemoteGIScheme", 0) == 1) {
+                strncpy(GameInteractor::Instance->remoteIPStr, "127.0.0.1", MAX_IP_BUFFER_SIZE);
+                strncpy(GameInteractor::Instance->remotePortStr, "43384", MAX_PORT_BUFFER_SIZE);
+                CVarSetString("gRemoteGIIP", "127.0.0.1");
+                CVarSetString("gRemoteGIPort", "43384");
+                isFormValid = true;
+            } else if (CVarGetInteger("gRemoteGIScheme", 0) == 2) {
+                strncpy(GameInteractor::Instance->remoteIPStr, "anchor.proxysaw.dev", MAX_IP_BUFFER_SIZE);
+                strncpy(GameInteractor::Instance->remotePortStr, "43384", MAX_PORT_BUFFER_SIZE);
+                CVarSetString("gRemoteGIIP", "anchor.proxysaw.dev");
+                CVarSetString("gRemoteGIPort", "43384");
+                isFormValid = true;
             }
         }
 
-        ImGui::Text("Remote IP & Port");
-        if (ImGui::InputText("##RemoteIP", GameInteractor::Instance->remoteIPStr, MAX_IP_BUFFER_SIZE)) {
-            if (GameInteractor::Instance->remoteIPStr[0] != '\0') {
-                std::regex ipRegex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$");
-                bool isValidIP = std::regex_match(GameInteractor::Instance->remoteIPStr, ipRegex);
-                isFormValid = isValidIP && GameInteractor::Instance->remotePortStr[0] != '\0';
-                CVarSetString("gRemoteGIIP", isValidIP ? GameInteractor::Instance->remoteIPStr : "");
+        if (CVarGetInteger("gRemoteGIScheme", 0) != 2) {
+            ImGui::Text("Remote IP & Port");
+            if (ImGui::InputText("##RemoteIP", GameInteractor::Instance->remoteIPStr, MAX_IP_BUFFER_SIZE)) {
+                if (GameInteractor::Instance->remoteIPStr[0] != '\0') {
+                    std::regex ipRegex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$");
+                    bool isValidIP = std::regex_match(GameInteractor::Instance->remoteIPStr, ipRegex);
+                    isFormValid = isValidIP && GameInteractor::Instance->remotePortStr[0] != '\0';
+                    CVarSetString("gRemoteGIIP", isValidIP ? GameInteractor::Instance->remoteIPStr : "");
+                }
             }
-        }
 
-        ImGui::SameLine();
-        ImGui::PushItemWidth(ImGui::GetFontSize() * 5);
-        if (ImGui::InputText("##RemotePort", GameInteractor::Instance->remotePortStr, MAX_PORT_BUFFER_SIZE, ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_CallbackCharFilter, UIWidgets::TextFilters::FilterNumbers)) {
-            uint32_t portInput;
-            ImGui::DataTypeApplyFromText(GameInteractor::Instance->remotePortStr, ImGuiDataType_U32, &portInput, "%u");
-            strncpy(GameInteractor::Instance->remotePortStr, std::to_string(portInput).c_str(), MAX_PORT_BUFFER_SIZE);
-            isFormValid = GameInteractor::Instance->remoteIPStr[0] != '\0' && GameInteractor::Instance->remotePortStr[0] != '\0';
-            CVarSetString("gRemoteGIPort", std::to_string(portInput).c_str());
+            ImGui::SameLine();
+            ImGui::PushItemWidth(ImGui::GetFontSize() * 5);
+            if (ImGui::InputText("##RemotePort", GameInteractor::Instance->remotePortStr, MAX_PORT_BUFFER_SIZE, ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_CallbackCharFilter, UIWidgets::TextFilters::FilterNumbers)) {
+                uint32_t portInput;
+                ImGui::DataTypeApplyFromText(GameInteractor::Instance->remotePortStr, ImGuiDataType_U32, &portInput, "%u");
+                strncpy(GameInteractor::Instance->remotePortStr, std::to_string(portInput).c_str(), MAX_PORT_BUFFER_SIZE);
+                isFormValid = GameInteractor::Instance->remoteIPStr[0] != '\0' && GameInteractor::Instance->remotePortStr[0] != '\0';
+                CVarSetString("gRemoteGIPort", std::to_string(portInput).c_str());
+            }
+            ImGui::PopItemWidth();
+            ImGui::Spacing();
+        } else {
+            UIWidgets::PaddedEnhancementSliderInt("Room ID: %d", "##gRemoteGIRoomId", "gRemoteGIRoomId", 1, 999, "%d", 1);
         }
-        ImGui::PopItemWidth();
-        ImGui::Spacing();
-
-        if (!isFormValid && !GameInteractor::Instance->isRemoteInteractorEnabled) {
-            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-            ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-        }
-
+        ImGui::EndDisabled();
+        
+        ImGui::BeginDisabled(!isFormValid && !GameInteractor::Instance->isRemoteInteractorEnabled);
         const char* buttonLabel = GameInteractor::Instance->isRemoteInteractorEnabled ? "Disable" : "Enable";
         if (ImGui::Button(buttonLabel, ImVec2(-1.0f, 0.0f))) {
             if (GameInteractor::Instance->isRemoteInteractorEnabled) {
@@ -1397,10 +1406,26 @@ void DrawRemoteControlMenu() {
                 }
             }
         }
+        ImGui::EndDisabled();
 
-        if (!isFormValid && !GameInteractor::Instance->isRemoteInteractorEnabled) {
-            ImGui::PopItemFlag();
-            ImGui::PopStyleVar();
+        if (GameInteractor::Instance->isRemoteInteractorEnabled) {
+            ImGui::Spacing();
+            if (GameInteractor::Instance->isRemoteInteractorConnected) {
+                ImGui::Text("Connected");
+            } else {
+                ImGui::Text("Connecting...");
+            }
+        }
+
+        if (GameInteractor::Instance->isRemoteInteractorConnected && CVarGetInteger("gRemoteGIScheme", 0) == 2) {
+            ImGui::Spacing();
+            if (ImGui::Button("Push State", ImVec2(ImGui::GetContentRegionAvail().x * 0.4f, 0.0f))) {
+                PushSaveStateToRemote();
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Request State", ImVec2(ImGui::GetContentRegionAvail().x, 0.0f))) {
+                RequestSaveStateFromRemote();
+            }
         }
 
         ImGui::Dummy(ImVec2(0.0f, 0.0f));

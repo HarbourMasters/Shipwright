@@ -32,7 +32,7 @@ protected:
 
 class ParameterizedGameInteractionEffect {
 public:
-    int32_t parameters[2];
+    int32_t parameters[3];
 };
 
 namespace GameInteractionEffect {
@@ -75,6 +75,21 @@ namespace GameInteractionEffect {
         randomBonks,
         playerInvincibility,
         slipperyFloor,
+    };
+
+    class GiveItem: public GameInteractionEffectBase, public ParameterizedGameInteractionEffect {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+    };
+
+    class SetSceneFlag: public GameInteractionEffectBase, public ParameterizedGameInteractionEffect {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+    };
+
+    class SetFlag: public GameInteractionEffectBase, public ParameterizedGameInteractionEffect {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
     };
 
     class ModifyHeartContainers: public GameInteractionEffectBase, public ParameterizedGameInteractionEffect {

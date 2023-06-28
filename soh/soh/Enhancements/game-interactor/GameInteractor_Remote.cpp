@@ -7,6 +7,9 @@
 #include <unordered_map>
 #include <tuple>
 #include <type_traits>
+#include <libultraship/libultraship.h>
+
+#include "soh/Enhancements/mods.h"
 
 // MARK: - Declarations
 
@@ -178,10 +181,54 @@ void GameInteractor::DisableRemoteInteractor() {
 
 void GameInteractor::TransmitMessageToRemote(nlohmann::json payload) {
     std::string jsonPayload = payload.dump();
-    SDLNet_TCP_Send(remoteSocket, jsonPayload.c_str(), jsonPayload.size());
+    SPDLOG_INFO("Sending payload: {}", jsonPayload);
+    jsonPayload += "\n";
+    SDLNet_TCP_Send(remoteSocket, (jsonPayload).c_str(), jsonPayload.size());
 }
 
 // MARK: - Private
+
+std::string GameInteractor::ReceiveDataUntilDelimiter(TCPsocket socket, SDLNet_SocketSet socketSet, const std::string& delimiter) {
+    std::string receivedData;
+    char buffer[512];
+    int bytesReceived = 0;
+    while (isRemoteInteractorEnabled) {
+        // we check first if socket has data, to not block in the TCP_Recv
+        int socketsReady = SDLNet_CheckSockets(socketSet, 0);
+
+        if (socketsReady == -1) {
+            SPDLOG_ERROR("[GameInteractor] SDLNet_CheckSockets: {}", SDLNet_GetError());
+            break;
+        }
+
+        if (socketsReady == 0) {
+            continue;
+        }
+
+        int len = SDLNet_TCP_Recv(socket, buffer, sizeof(buffer));
+        if (len <= 0) {
+            // Either an error occurred or the connection was closed
+            SPDLOG_ERROR("[GameInteractor] SDLNet_TCP_Recv: {}", SDLNet_GetError());
+            break;
+        }
+
+        bytesReceived += len;
+        receivedData.append(buffer, len);
+
+        // Check if the received data contains the delimiter
+        size_t delimiterPos = receivedData.find(delimiter);
+        if (delimiterPos != std::string::npos) {
+            // Extract the complete packet until the delimiter
+            std::string packet = receivedData.substr(0, delimiterPos);
+            // Remove the packet (including the delimiter) from the received data
+            receivedData.erase(0, delimiterPos + delimiter.length());
+            // Return the extracted packet
+            return packet;
+        }
+    }
+
+    return "";
+}
 
 void GameInteractor::ReceiveFromServer() {
     while (isRemoteInteractorEnabled) {
@@ -191,21 +238,7 @@ void GameInteractor::ReceiveFromServer() {
 
             if (remoteSocket) {
                 isRemoteInteractorConnected = true;
-                SPDLOG_TRACE("[GameInteractor] Connection to server established!");
-
-                // transmit supported events to remote
-                nlohmann::json payload;
-                payload["action"] = "identify";
-                payload["supported_events"] = nlohmann::json::array();
-                for (auto& [key, value] : nameToEnum) {
-                    nlohmann::json entry;
-                    entry["event"] = key;
-                    entry["is_removable"] = std::get<1>(value);
-                    entry["takes_param"] = std::get<2>(value);
-                    payload["supported_events"].push_back(entry);
-                }
-                TransmitMessageToRemote(payload);
-
+                SPDLOG_INFO("[GameInteractor] Connection to server established!");
                 break;
             }
         }
@@ -215,35 +248,19 @@ void GameInteractor::ReceiveFromServer() {
             SDLNet_TCP_AddSocket(socketSet, remoteSocket);
         }
 
-        // Listen to socket messages
         while (isRemoteInteractorConnected && remoteSocket && isRemoteInteractorEnabled) {
-            // we check first if socket has data, to not block in the TCP_Recv
-            int socketsReady = SDLNet_CheckSockets(socketSet, 0);
+            std::string receivedData = ReceiveDataUntilDelimiter(remoteSocket, socketSet, "\n");
+            while (!receivedData.empty() && isRemoteInteractorEnabled) {
+                HandleRemoteMessage(receivedData);
 
-            if (socketsReady == -1) {
-                SPDLOG_ERROR("[GameInteractor] SDLNet_CheckSockets: {}", SDLNet_GetError());
-                break;
+                receivedData = ReceiveDataUntilDelimiter(remoteSocket, socketSet, "\n");
             }
-
-            if (socketsReady == 0) {
-                continue;
-            }
-
-            char remoteDataReceived[512];
-            memset(remoteDataReceived, 0, sizeof(remoteDataReceived));
-            int len = SDLNet_TCP_Recv(remoteSocket, &remoteDataReceived, sizeof(remoteDataReceived));
-            if (!len || !remoteSocket || len == -1) {
-                SPDLOG_ERROR("[GameInteractor] SDLNet_TCP_Recv: {}", SDLNet_GetError());
-                break;
-            }
-
-            HandleRemoteMessage(remoteDataReceived);
         }
 
         if (isRemoteInteractorConnected) {
             SDLNet_TCP_Close(remoteSocket);
             isRemoteInteractorConnected = false;
-            SPDLOG_TRACE("[GameInteractor] Ending receiving thread...");
+            SPDLOG_INFO("[GameInteractor] Ending receiving thread...");
         }
     }
 }
@@ -251,7 +268,8 @@ void GameInteractor::ReceiveFromServer() {
 // making it available as it's defined below
 GameInteractionEffectBase* EffectFromJson(std::string name, nlohmann::json payload);
 
-void GameInteractor::HandleRemoteMessage(char message[512]) {
+void GameInteractor::HandleRemoteMessage(std::string message) {
+    SPDLOG_INFO("Recieved payload: {}", message);
     nlohmann::json payload = nlohmann::json::parse(message);
 
     if (remoteForwarder) {
@@ -271,6 +289,34 @@ void GameInteractor::HandleRemoteMessage(char message[512]) {
             } else if (IsType<RemovableGameInteractionEffect>(giEffect)) {
                 dynamic_cast<RemovableGameInteractionEffect*>(giEffect)->Remove();
             }
+        }
+    }
+
+    if (payload["roomId"] == CVarGetInteger("gRemoteGIRoomId", 1)) {
+        if (payload["type"] == "GiveItem") {
+            auto effect = new GameInteractionEffect::GiveItem();
+            effect->parameters[0] = payload["modId"].get<uint16_t>();
+            effect->parameters[1] = payload["getItemId"].get<uint16_t>();
+            effect->Apply();
+        }
+        if (payload["type"] == "SetSceneFlag") {
+            auto effect = new GameInteractionEffect::SetSceneFlag();
+            effect->parameters[0] = payload["sceneNum"].get<int16_t>();
+            effect->parameters[1] = payload["flagType"].get<int16_t>();
+            effect->parameters[2] = payload["flag"].get<int16_t>();
+            effect->Apply();
+        }
+        if (payload["type"] == "SetFlag") {
+            auto effect = new GameInteractionEffect::SetFlag();
+            effect->parameters[0] = payload["flagType"].get<int16_t>();
+            effect->parameters[1] = payload["flag"].get<int16_t>();
+            effect->Apply();
+        }
+        if (payload["type"] == "PushSaveState") {
+            ParseSaveStateFromRemote(payload);
+        }
+        if (payload["type"] == "RequestSaveState") {
+            PushSaveStateToRemote();
         }
     }
 }

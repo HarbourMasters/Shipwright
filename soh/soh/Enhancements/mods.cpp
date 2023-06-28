@@ -7,6 +7,8 @@
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 
+using json = nlohmann::json;
+
 extern "C" {
 #include <z64.h>
 #include "macros.h"
@@ -322,6 +324,172 @@ void RegisterAutoSave() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>([](int32_t sceneNum) { AutoSave(GET_ITEM_NONE); });
 }
 
+void to_json(json& j, const SavedSceneFlags& flags) {
+    j = json{
+        {"chest", flags.chest},
+        {"swch", flags.swch},
+        {"clear", flags.clear},
+        {"collect", flags.collect},
+    };
+}
+
+void from_json(const json& j, SavedSceneFlags& flags) {
+    j.at("chest").get_to(flags.chest);
+    j.at("swch").get_to(flags.swch);
+    j.at("clear").get_to(flags.clear);
+    j.at("collect").get_to(flags.collect);
+}
+
+void to_json(json& j, const Inventory& inventory) {
+    j = json{
+        {"items", inventory.items},
+        {"ammo", inventory.ammo},
+        {"equipment", inventory.equipment},
+        {"upgrades", inventory.upgrades},
+        {"questItems", inventory.questItems},
+        {"dungeonItems", inventory.dungeonItems},
+        {"dungeonKeys", inventory.dungeonKeys},
+        {"defenseHearts", inventory.defenseHearts},
+        {"gsTokens", inventory.gsTokens}
+    };
+}
+
+void from_json(const json& j, Inventory& inventory) {
+    j.at("items").get_to(inventory.items);
+    j.at("ammo").get_to(inventory.ammo);
+    j.at("equipment").get_to(inventory.equipment);
+    j.at("upgrades").get_to(inventory.upgrades);
+    j.at("questItems").get_to(inventory.questItems);
+    j.at("dungeonItems").get_to(inventory.dungeonItems);
+    j.at("dungeonKeys").get_to(inventory.dungeonKeys);
+    j.at("defenseHearts").get_to(inventory.defenseHearts);
+    j.at("gsTokens").get_to(inventory.gsTokens);
+}
+
+void to_json(json& j, const SaveContext& saveContext) {
+    j = json{
+        {"healthCapacity", saveContext.healthCapacity},
+        {"sceneFlags", saveContext.sceneFlags},
+        {"eventChkInf", saveContext.eventChkInf},
+        {"itemGetInf", saveContext.itemGetInf},
+        {"infTable", saveContext.infTable},
+        {"inventory", saveContext.inventory}
+    };
+}
+
+void from_json(const json& j, SaveContext& saveContext) {
+    j.at("healthCapacity").get_to(saveContext.healthCapacity);
+    j.at("sceneFlags").get_to(saveContext.sceneFlags);
+    j.at("eventChkInf").get_to(saveContext.eventChkInf);
+    j.at("itemGetInf").get_to(saveContext.itemGetInf);
+    j.at("infTable").get_to(saveContext.infTable);
+    j.at("inventory").get_to(saveContext.inventory);
+}
+
+void PushSaveStateToRemote() {
+    json payload = gSaveContext;
+    payload["id"] = 1;
+    payload["roomId"] = CVarGetInteger("gRemoteGIRoomId", 1);
+    payload["type"] = "PushSaveState";
+    // manually update current scene flags
+    payload["sceneFlags"][gPlayState->sceneNum]["chest"] = gPlayState->actorCtx.flags.chest;
+    payload["sceneFlags"][gPlayState->sceneNum]["swch"] = gPlayState->actorCtx.flags.swch;
+    payload["sceneFlags"][gPlayState->sceneNum]["clear"] = gPlayState->actorCtx.flags.clear;
+    payload["sceneFlags"][gPlayState->sceneNum]["collect"] = gPlayState->actorCtx.flags.collect;
+
+    GameInteractor::Instance->TransmitMessageToRemote(payload);
+}
+
+void RequestSaveStateFromRemote() {
+    nlohmann::json payload;
+
+    payload["id"] = 1;
+    payload["roomId"] = CVarGetInteger("gRemoteGIRoomId", 1);
+    payload["type"] = "RequestSaveState";
+
+    GameInteractor::Instance->TransmitMessageToRemote(payload);
+}
+
+void ParseSaveStateFromRemote(nlohmann::json payload) {
+    SaveContext loadedData = payload.get<SaveContext>();
+
+    gSaveContext.healthCapacity = loadedData.healthCapacity;
+
+    for (int i = 0; i < 124; i++) {
+        gSaveContext.sceneFlags[i] = loadedData.sceneFlags[i];
+        if (gPlayState->sceneNum == i) {
+            gPlayState->actorCtx.flags.chest = loadedData.sceneFlags[i].chest;
+            gPlayState->actorCtx.flags.swch = loadedData.sceneFlags[i].swch;
+            gPlayState->actorCtx.flags.clear = loadedData.sceneFlags[i].clear;
+            gPlayState->actorCtx.flags.collect = loadedData.sceneFlags[i].collect;
+        }
+    }
+
+    for (int i = 0; i < 14; i++) {
+        gSaveContext.eventChkInf[i] = loadedData.eventChkInf[i];
+    }
+
+    for (int i = 0; i < 4; i++) {
+        gSaveContext.itemGetInf[i] = loadedData.itemGetInf[i];
+    }
+
+    for (int i = 0; i < 30; i++) {
+        gSaveContext.infTable[i] = loadedData.infTable[i];
+    }
+
+    gSaveContext.inventory = loadedData.inventory;
+};
+
+void RegisterAnchorSupport() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadFile>([](int32_t fileNum) {
+        if (!GameInteractor::Instance->isRemoteInteractorConnected) return;
+
+        RequestSaveStateFromRemote();
+    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) {
+        if (!GameInteractor::Instance->isRemoteInteractorConnected) return;
+        if (CVarGetInteger("gFromAnchor", 0)) {
+            CVarClear("gFromAnchor");
+            return;
+        }
+
+        nlohmann::json payload;
+
+        payload["id"] = 1;
+        payload["roomId"] = CVarGetInteger("gRemoteGIRoomId", 1);
+        payload["type"] = "GiveItem";
+        payload["modId"] = itemEntry.modIndex;
+        payload["getItemId"] = itemEntry.getItemId;
+
+        GameInteractor::Instance->TransmitMessageToRemote(payload);
+    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneFlagSet>([](int16_t sceneNum, int16_t flagType, int16_t flag) {
+        if (!GameInteractor::Instance->isRemoteInteractorConnected) return;
+        nlohmann::json payload;
+
+        payload["id"] = 1;
+        payload["roomId"] = CVarGetInteger("gRemoteGIRoomId", 1);
+        payload["type"] = "SetSceneFlag";
+        payload["sceneNum"] = sceneNum;
+        payload["flagType"] = flagType;
+        payload["flag"] = flag;
+
+        GameInteractor::Instance->TransmitMessageToRemote(payload);
+    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnFlagSet>([](int16_t flagType, int16_t flag) {
+        if (!GameInteractor::Instance->isRemoteInteractorConnected) return;
+        nlohmann::json payload;
+
+        payload["id"] = 1;
+        payload["roomId"] = CVarGetInteger("gRemoteGIRoomId", 1);
+        payload["type"] = "SetFlag";
+        payload["flagType"] = flagType;
+        payload["flag"] = flag;
+
+        GameInteractor::Instance->TransmitMessageToRemote(payload);
+    });
+}
+
 void RegisterRupeeDash() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
         if (!CVarGetInteger("gRupeeDash", 0)) {
@@ -613,6 +781,7 @@ void InitMods() {
     RegisterSwitchAge();
     RegisterOcarinaTimeTravel();
     RegisterAutoSave();
+    RegisterAnchorSupport();
     RegisterDaytimeGoldSkultullas();
     RegisterRupeeDash();
     RegisterShadowTag();

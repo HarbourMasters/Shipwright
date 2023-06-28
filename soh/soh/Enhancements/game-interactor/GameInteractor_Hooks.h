@@ -11,6 +11,8 @@ void GameInteractor_ExecuteOnItemReceiveHooks(GetItemEntry itemEntry);
 void GameInteractor_ExecuteOnSaleEndHooks(GetItemEntry itemEntry);
 void GameInteractor_ExecuteOnTransitionEndHooks(int16_t sceneNum);
 void GameInteractor_ExecuteOnSceneInit(int16_t sceneNum);
+void GameInteractor_ExecuteOnSceneFlagSet(int16_t sceneNum, int16_t flagType, int16_t flag);
+void GameInteractor_ExecuteOnFlagSet(int16_t flagType, int16_t flag);
 void GameInteractor_ExecuteOnSceneSpawnActors();
 void GameInteractor_ExecuteOnPlayerUpdate();
 void GameInteractor_ExecuteOnOcarinaSongAction();

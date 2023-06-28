@@ -139,6 +139,7 @@ public:
     char remoteIPStr[MAX_IP_BUFFER_SIZE];
     char remotePortStr[MAX_PORT_BUFFER_SIZE];
     bool isRemoteInteractorEnabled;
+    bool isRemoteInteractorConnected;
 
     void EnableRemoteInteractor();
     void DisableRemoteInteractor();
@@ -167,6 +168,8 @@ public:
     DEFINE_HOOK(OnSaleEnd, void(GetItemEntry itemEntry));
     DEFINE_HOOK(OnTransitionEnd, void(int16_t sceneNum));
     DEFINE_HOOK(OnSceneInit, void(int16_t sceneNum));
+    DEFINE_HOOK(OnSceneFlagSet, void(int16_t sceneNum, int16_t flagType, int16_t flag));
+    DEFINE_HOOK(OnFlagSet, void(int16_t flagType, int16_t flag));
     DEFINE_HOOK(OnSceneSpawnActors, void());
     DEFINE_HOOK(OnPlayerUpdate, void());
     DEFINE_HOOK(OnOcarinaSongAction, void());
@@ -206,6 +209,9 @@ public:
 
     class RawAction {
     public:
+        static void GiveItem(uint16_t modId, uint16_t itemId);
+        static void SetSceneFlag(int16_t sceneNum, int16_t flagType, int16_t flag);
+        static void SetFlag(int16_t flagType, int16_t chestNum);
         static void AddOrRemoveHealthContainers(int16_t amount);
         static void AddOrRemoveMagic(int8_t amount);
         static void HealOrDamagePlayer(int16_t hearts);
@@ -241,11 +247,11 @@ public:
         IPaddress remoteIP;
         TCPsocket remoteSocket;
         std::thread remoteThreadReceive;
-        bool isRemoteInteractorConnected;
         std::function<void(nlohmann::json)> remoteForwarder;
 
         void ReceiveFromServer();
-        void HandleRemoteMessage(char message[512]);
+        void HandleRemoteMessage(std::string message);
+        std::string ReceiveDataUntilDelimiter(TCPsocket socket, SDLNet_SocketSet socketSet, const std::string& delimiter);
     #endif
 };
 

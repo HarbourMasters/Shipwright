@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <nlohmann/json.hpp>
 
 #ifndef MODS_H
 #define MODS_H
@@ -7,6 +8,9 @@
 extern "C" {
 #endif
 
+void PushSaveStateToRemote();
+void RequestSaveStateFromRemote();
+void ParseSaveStateFromRemote(nlohmann::json payload);
 void UpdateDirtPathFixState(int32_t sceneNum);
 void UpdateMirrorModeState(int32_t sceneNum);
 void InitMods();
