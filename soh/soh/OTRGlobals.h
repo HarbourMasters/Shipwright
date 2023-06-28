@@ -6,6 +6,12 @@
 #include "SaveManager.h"
 #include <soh/Enhancements/item-tables/ItemTableTypes.h>
 
+#define GAME_REGION_NTSC 0
+#define GAME_REGION_PAL 1
+
+#define GAME_PLATFORM_N64 0
+#define GAME_PLATFORM_GC 1
+
 #ifdef __cplusplus
 #include <Context.h>
 #include "Enhancements/savestates.h"
@@ -59,6 +65,8 @@ uint32_t ResourceMgr_GameHasMasterQuest();
 uint32_t ResourceMgr_GameHasOriginal();
 uint32_t ResourceMgr_GetNumGameVersions();
 uint32_t ResourceMgr_GetGameVersion(int index);
+uint32_t ResourceMgr_GetGamePlatform(int index);
+uint32_t ResourceMgr_GetGameRegion(int index);
 void ResourceMgr_LoadDirectory(const char* resName);
 char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
 uint8_t ResourceMgr_FileExists(const char* resName);
