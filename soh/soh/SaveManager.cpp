@@ -414,6 +414,10 @@ void SaveManager::InitMeta(int fileNum) {
     }
     fileMetaInfo[fileNum].healthCapacity = gSaveContext.healthCapacity;
     fileMetaInfo[fileNum].questItems = gSaveContext.inventory.questItems;
+    for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].inventoryItems); i++) {
+        fileMetaInfo[fileNum].inventoryItems[i] = gSaveContext.inventory.items[i];
+    }
+    fileMetaInfo[fileNum].equipment = gSaveContext.inventory.equipment;
     fileMetaInfo[fileNum].defense = gSaveContext.inventory.defenseHearts;
     fileMetaInfo[fileNum].health = gSaveContext.health;
 

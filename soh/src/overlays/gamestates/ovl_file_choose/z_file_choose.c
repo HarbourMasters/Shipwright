@@ -5,6 +5,7 @@
 #include "textures/title_static/title_static.h"
 #include "textures/parameter_static/parameter_static.h"
 #include <textures/icon_item_static/icon_item_static.h>
+#include <textures/icon_item_24_static/icon_item_24_static.h>
 #include "soh/frame_interpolation.h"
 #include <GameVersions.h>
 #include "objects/object_mag/object_mag.h"
@@ -17,6 +18,186 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <assert.h>
 
+#define LEFT_OFFSET (int)0x37
+#define TOP_OFFSET  (int)0x5C
+
+typedef struct {
+    s16 left;
+    s16 top;
+} ItemPosition;
+
+typedef struct {
+    Sprite sprite;
+    u8 item;
+    ItemPosition pos;
+} ItemData;
+
+#define SPRITE_ID_OFFSET 1000
+
+#define CREATE_SPRITE(iconTex, texSize, origSpriteId) { iconTex, texSize, texSize, G_IM_FMT_RGBA, G_IM_SIZ_32b, SPRITE_ID_OFFSET + origSpriteId }
+
+#define ICON_SIZE 16
+
+#define INV_IT_POS(x, y) {0x4E + ICON_SIZE * x, 0x00 + ICON_SIZE * y}
+#define EQP_IT_POS(x, y) {0x7E + ICON_SIZE * x, 0x2A + ICON_SIZE * y}
+#define SNG_IT_POS(x, y) {0x4E + ICON_SIZE * x, 0x45 + ICON_SIZE * y}
+#define UPG_IT_POS(i) {0x3E + ICON_SIZE * i, 0x2A}
+
+static ItemData itemData[59] = {
+    {CREATE_SPRITE(dgDekuStickIconTex, 32, 1),        ITEM_STICK,            INV_IT_POS(0, 0)},
+    {CREATE_SPRITE(dgDekuNutIconTex, 32, 0),          ITEM_NUT,              INV_IT_POS(1, 0)},
+    {CREATE_SPRITE(dgBombIconTex, 32, 2),             ITEM_BOMB,             INV_IT_POS(2, 0)},
+    {CREATE_SPRITE(dgFairyBowIconTex, 32, 3),         ITEM_BOW,              INV_IT_POS(3, 0)},
+    {CREATE_SPRITE(dgFireArrowIconTex, 32, 4),        ITEM_ARROW_FIRE,       INV_IT_POS(4, 0)},
+    {CREATE_SPRITE(dgDinsFireIconTex, 32, 5),         ITEM_DINS_FIRE,        INV_IT_POS(5, 0)},
+    {CREATE_SPRITE(dgEmptyBottleIconTex, 32, 20),     ITEM_BOTTLE,           INV_IT_POS(6, 0)},
+
+    {CREATE_SPRITE(dgFairySlingshotIconTex, 32, 6),   ITEM_SLINGSHOT,        INV_IT_POS(0, 1)},
+    {CREATE_SPRITE(dgFairyOcarinaIconTex, 32, 7),     ITEM_OCARINA_FAIRY,    INV_IT_POS(1, 1)},
+    {CREATE_SPRITE(dgBombchuIconTex, 32, 9),          ITEM_BOMBCHU,          INV_IT_POS(2, 1)},
+    {CREATE_SPRITE(dgHookshotIconTex, 32, 10),        ITEM_HOOKSHOT,         INV_IT_POS(3, 1)},
+    {CREATE_SPRITE(dgIceArrowIconTex, 32, 12),        ITEM_ARROW_ICE,        INV_IT_POS(4, 1)},
+    {CREATE_SPRITE(dgFaroresWindIconTex, 32, 13),     ITEM_FARORES_WIND,     INV_IT_POS(5, 1)},
+    {CREATE_SPRITE(dgBunnyHoodIconTex, 32, 37),       ITEM_MASK_BUNNY,       INV_IT_POS(6, 1)},
+
+    {CREATE_SPRITE(dgBoomerangIconTex, 32, 14),       ITEM_BOOMERANG,        INV_IT_POS(0, 2)},
+    {CREATE_SPRITE(dgLensofTruthIconTex, 32, 15),     ITEM_LENS,             INV_IT_POS(1, 2)},
+    {CREATE_SPRITE(dgMagicBeansIconTex, 32, 16),      ITEM_BEAN,             INV_IT_POS(2, 2)},
+    {CREATE_SPRITE(dgMegatonHammerIconTex, 32, 17),   ITEM_HAMMER,           INV_IT_POS(3, 2)},
+    {CREATE_SPRITE(dgLightArrowIconTex, 32, 18),      ITEM_ARROW_LIGHT,      INV_IT_POS(4, 2)},
+    {CREATE_SPRITE(dgNayrusLoveIconTex, 32, 19),      ITEM_NAYRUS_LOVE,      INV_IT_POS(5, 2)},
+    {CREATE_SPRITE(dgClaimCheckIconTex, 32, 53),      ITEM_CLAIM_CHECK,      INV_IT_POS(6, 2)},
+    
+    {CREATE_SPRITE(dgKokiriSwordIconTex, 32, 54),     ITEM_SWORD_KOKIRI,     EQP_IT_POS(0, 0)},
+    {CREATE_SPRITE(dgMasterSwordIconTex, 32, 55),     ITEM_SWORD_MASTER,     EQP_IT_POS(1, 0)},
+    {CREATE_SPRITE(dgBiggoronSwordIconTex, 32, 56),   ITEM_SWORD_BGS,        EQP_IT_POS(2, 0)},
+    
+    {CREATE_SPRITE(dgDekuShieldIconTex, 32, 57),      ITEM_SHIELD_DEKU,      EQP_IT_POS(0, 1)},
+    {CREATE_SPRITE(dgHylianShieldIconTex, 32, 58),    ITEM_SHIELD_HYLIAN,    EQP_IT_POS(1, 1)},
+    {CREATE_SPRITE(dgMirrorShieldIconTex, 32, 59),    ITEM_SHIELD_MIRROR,    EQP_IT_POS(2, 1)},
+    
+    {CREATE_SPRITE(dgKokiriTunicIconTex, 32, 60),     ITEM_TUNIC_KOKIRI,     EQP_IT_POS(0, 2)},
+    {CREATE_SPRITE(dgGoronTunicIconTex, 32, 61),      ITEM_TUNIC_GORON,      EQP_IT_POS(1, 2)},
+    {CREATE_SPRITE(dgZoraTunicIconTex, 32, 62),       ITEM_TUNIC_ZORA,       EQP_IT_POS(2, 2)},
+    
+    {CREATE_SPRITE(dgKokiriBootsIconTex, 32, 63),     ITEM_BOOTS_KOKIRI,     EQP_IT_POS(0, 3)},
+    {CREATE_SPRITE(dgIronBootsIconTex, 32, 64),       ITEM_BOOTS_IRON,       EQP_IT_POS(1, 3)},
+    {CREATE_SPRITE(dgHoverBootsIconTex, 32, 65),      ITEM_BOOTS_HOVER,      EQP_IT_POS(2, 3)},
+
+    {CREATE_SPRITE(dgKokiriEmeraldIconTex, 24, 87),   ITEM_KOKIRI_EMERALD,   {0x19, 0x31}},
+    {CREATE_SPRITE(dgGoronRubyIconTex, 24, 88),       ITEM_GORON_RUBY,       {0x29, 0x31}},
+    {CREATE_SPRITE(dgZoraSapphireIconTex, 24, 89),    ITEM_ZORA_SAPPHIRE,    {0x39, 0x31}},
+    
+    {CREATE_SPRITE(dgForestMedallionIconTex, 24, 81), ITEM_MEDALLION_FOREST, {0x37, 0x0A}},
+    {CREATE_SPRITE(dgFireMedallionIconTex, 24, 82),   ITEM_MEDALLION_FIRE,   {0x37, 0x1A}},
+    {CREATE_SPRITE(dgWaterMedallionIconTex, 24, 83),  ITEM_MEDALLION_WATER,  {0x29, 0x22}},
+    {CREATE_SPRITE(dgSpiritMedallionIconTex, 24, 84), ITEM_MEDALLION_SPIRIT, {0x1B, 0x1A}},
+    {CREATE_SPRITE(dgShadowMedallionIconTex, 24, 85), ITEM_MEDALLION_SHADOW, {0x1B, 0x0A}},
+    {CREATE_SPRITE(dgLightMedallionIconTex, 24, 86),  ITEM_MEDALLION_LIGHT,  {0x29, 0x02}},
+
+    {CREATE_SPRITE(dgGoronsBraceletIconTex, 32, 71),  ITEM_BRACELET,         UPG_IT_POS(0)},
+    {CREATE_SPRITE(dgSilverScaleIconTex, 32, 74),     ITEM_SCALE_SILVER,     UPG_IT_POS(1)},
+    {CREATE_SPRITE(dgSmallKeyIconTex, 24, 97),        ITEM_MAGIC_SMALL,      UPG_IT_POS(2)},
+    {CREATE_SPRITE(dgGerudosCardIconTex, 24, 91),     ITEM_GERUDO_CARD,      UPG_IT_POS(3)},
+    {CREATE_SPRITE(dgStoneOfAgonyIconTex, 24, 90),    ITEM_STONE_OF_AGONY,   {0x6F, 0x51}},
+    
+    {CREATE_SPRITE(dgSongNoteTex, 32, 100),           ITEM_SONG_MINUET,      SNG_IT_POS(0, 0)},
+    {CREATE_SPRITE(dgSongNoteTex, 32, 100),           ITEM_SONG_BOLERO,      SNG_IT_POS(1, 0)},
+    {CREATE_SPRITE(dgSongNoteTex, 32, 100),           ITEM_SONG_SERENADE,    SNG_IT_POS(2, 0)},
+    {CREATE_SPRITE(dgSongNoteTex, 32, 100),           ITEM_SONG_REQUIEM,     SNG_IT_POS(3, 0)},
+    {CREATE_SPRITE(dgSongNoteTex, 32, 100),           ITEM_SONG_NOCTURNE,    SNG_IT_POS(4, 0)},
+    {CREATE_SPRITE(dgSongNoteTex, 32, 100),           ITEM_SONG_PRELUDE,     SNG_IT_POS(5, 0)},
+    {CREATE_SPRITE(dgSongNoteTex, 32, 100),           ITEM_SONG_LULLABY,     SNG_IT_POS(0, 1)},
+    {CREATE_SPRITE(dgSongNoteTex, 32, 100),           ITEM_SONG_EPONA,       SNG_IT_POS(1, 1)},
+    {CREATE_SPRITE(dgSongNoteTex, 32, 100),           ITEM_SONG_SARIA,       SNG_IT_POS(2, 1)},
+    {CREATE_SPRITE(dgSongNoteTex, 32, 100),           ITEM_SONG_SUN,         SNG_IT_POS(3, 1)},
+    {CREATE_SPRITE(dgSongNoteTex, 32, 100),           ITEM_SONG_TIME,        SNG_IT_POS(4, 1)},
+    {CREATE_SPRITE(dgSongNoteTex, 32, 100),           ITEM_SONG_STORMS,      SNG_IT_POS(5, 1)},
+};
+
+static u8 color_product(u8 c1, u8 c2) {
+    u16 prod = (u16)c1 * (u16)c2;
+    u16 div255 = (prod + 1 + (prod >> 8)) >> 8;
+    return (u8)div255;
+}
+
+static const Color_RGBA8 WHITE = {0xFF, 0xFF, 0xFF, 0xFF};
+static const Color_RGBA8 DIM   = {0x40, 0x40, 0x40, 0x90};
+
+struct Color_RGBA8 {
+    u8 r;
+    u8 g;
+    u8 b;
+    u8 a;
+};
+
+void SpriteLoad(FileChooseContext* this, Sprite* sprite);
+void SpriteDraw(FileChooseContext* this, Sprite* sprite, int left, int top, int width, int height);
+
+u8 HasItem(s16 fileIndex, u8 item) {
+    for (int i = 0; i < ARRAY_COUNT(Save_GetSaveMetaInfo(fileIndex)->inventoryItems); i += 1) {
+        u8 it = Save_GetSaveMetaInfo(fileIndex)->inventoryItems[i];
+        if (
+            it == item ||
+            (item == ITEM_BOTTLE && it >= ITEM_BOTTLE && it <= ITEM_POE) ||
+            (item == ITEM_OCARINA_FAIRY && it == ITEM_OCARINA_TIME) || //temporary
+            (item == ITEM_HOOKSHOT && it == ITEM_LONGSHOT) || //temporary
+            (item == ITEM_MASK_BUNNY && it >= ITEM_WEIRD_EGG && it <= ITEM_SOLD_OUT) || //temporary
+            (item == ITEM_CLAIM_CHECK && it >= ITEM_POCKET_EGG && it <= ITEM_CLAIM_CHECK) //temporary
+        ) {
+            return 1;
+        }
+    }
+
+    if (item >= ITEM_SONG_MINUET && item <= ITEM_SONG_STORMS) {
+        return Save_GetSaveMetaInfo(fileIndex)->questItems & (1 << (item - 0x54));
+    }
+
+    if (item >= ITEM_MEDALLION_FOREST && item <= ITEM_MEDALLION_LIGHT) {
+        return Save_GetSaveMetaInfo(fileIndex)->questItems & (1 << (item - 0x66));
+    }
+
+    if (item >= ITEM_KOKIRI_EMERALD && item <= ITEM_GERUDO_CARD) {
+        return Save_GetSaveMetaInfo(fileIndex)->questItems & (1 << (item - 0x5A));
+    }
+
+    if (item >= ITEM_SWORD_KOKIRI && item <= ITEM_SWORD_BGS) {
+        return Save_GetSaveMetaInfo(fileIndex)->equipment & (1 << (item - 0x3B));
+    }
+
+    if (item >= ITEM_SHIELD_DEKU && item <= ITEM_SHIELD_MIRROR) {
+        return Save_GetSaveMetaInfo(fileIndex)->equipment & (1 << (item - 0x3E + 4));
+    }
+
+    if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_TUNIC_ZORA) {
+        return Save_GetSaveMetaInfo(fileIndex)->equipment & (1 << (item - 0x41 + 8));
+    }
+
+    if (item >= ITEM_BOOTS_KOKIRI && item <= ITEM_BOOTS_HOVER) {
+        return Save_GetSaveMetaInfo(fileIndex)->equipment & (1 << (item - 0x44 + 12));
+    }
+
+    return 0;
+}
+
+static void Draw_Items(FileChooseContext* this, s16 fileIndex, u8 alpha) {
+    OPEN_DISPS(this->state.gfxCtx);
+
+    for (int i = 0; i < ARRAY_COUNT(itemData); i += 1) {
+        ItemData data = itemData[i];
+
+        if (HasItem(fileIndex, data.item) != 0) {
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, WHITE.r, WHITE.g, WHITE.b, color_product(WHITE.a, alpha));
+        } else {
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, DIM.r, DIM.g, DIM.b, color_product(DIM.a, alpha));
+        }
+
+        SpriteLoad(this, &data.sprite);
+        SpriteDraw(this, &data.sprite, LEFT_OFFSET + data.pos.left, TOP_OFFSET + data.pos.top, ICON_SIZE, ICON_SIZE);
+    }
+
+    CLOSE_DISPS(this->state.gfxCtx);
+}
 
 #define MIN_QUEST (ResourceMgr_GameHasOriginal() ? FS_QUEST_NORMAL : FS_QUEST_MASTER)
 #define MAX_QUEST FS_QUEST_BOSSRUSH
@@ -1342,9 +1523,11 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
                                &deathCountSplit[2]);
 
         // draw death count
-        for (i = 0, vtxOffset = 0; i < 3; i++, vtxOffset += 4) {
-            FileChoose_DrawCharacter(this->state.gfxCtx, sp54->fontBuf + deathCountSplit[i] * FONT_CHAR_TEX_SIZE,
-                                     vtxOffset);
+        if (CVarGetInteger("gFileSelectMoreInfo", 0) == 0) {
+            for (i = 0, vtxOffset = 0; i < 3; i++, vtxOffset += 4) {
+                FileChoose_DrawCharacter(this->state.gfxCtx, sp54->fontBuf + deathCountSplit[i] * FONT_CHAR_TEX_SIZE,
+                                         vtxOffset);
+            }
         }
 
         gDPPipeSync(POLY_OPA_DISP++);
@@ -1364,40 +1547,46 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
 
         i = Save_GetSaveMetaInfo(fileIndex)->healthCapacity / 0x10;
 
-        // draw hearts
-        for (vtxOffset = 0, j = 0; j < i; j++, vtxOffset += 4) {
-            gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[D_8081284C[fileIndex] + vtxOffset] + 0x30, 4, 0);
+        if (CVarGetInteger("gFileSelectMoreInfo", 0) == 0) {
+            // draw hearts
+            for (vtxOffset = 0, j = 0; j < i; j++, vtxOffset += 4) {
+                gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[D_8081284C[fileIndex] + vtxOffset] + 0x30, 4, 0);
 
-            POLY_OPA_DISP = FileChoose_QuadTextureIA8(POLY_OPA_DISP, sHeartTextures[heartType], 0x10, 0x10, 0);
+                POLY_OPA_DISP = FileChoose_QuadTextureIA8(POLY_OPA_DISP, sHeartTextures[heartType], 0x10, 0x10, 0);
+            }
         }
 
         gDPPipeSync(POLY_OPA_DISP++);
-
-        // draw quest items
-        for (vtxOffset = 0, j = 0; j < 9; j++, vtxOffset += 4) {
-            if (Save_GetSaveMetaInfo(fileIndex)->questItems & gBitFlags[sQuestItemFlags[j]]) {
-                gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[D_8081284C[fileIndex] + vtxOffset] + 0x80, 4, 0);
-                gDPPipeSync(POLY_OPA_DISP++);
-                gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0x00, sQuestItemRed[j], sQuestItemGreen[j], sQuestItemBlue[j],
-                                this->fileInfoAlpha[fileIndex]);
-                gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
-
-                if (j < 3) {
-                    gDPLoadTextureBlock(POLY_OPA_DISP++, sQuestItemTextures[j], G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 16, 0,
-                                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP,
-                                        G_TX_NOMASK, G_TX_NOLOD);
-                    gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
-
-                } else {
-                    POLY_OPA_DISP = FileChoose_QuadTextureIA8(POLY_OPA_DISP, sQuestItemTextures[j], 0x10, 0x10, 0);
-                }
-            }
-        }
 
         // Use file info alpha to match fading
         u8 textAlpha = this->fileInfoAlpha[fileIndex];
         if (textAlpha >= 200) {
             textAlpha = 255;
+        }
+
+        if (CVarGetInteger("gFileSelectMoreInfo", 0) != 0) {
+            Draw_Items(this, fileIndex, textAlpha);
+        } else {
+            // draw quest items
+            for (vtxOffset = 0, j = 0; j < 9; j++, vtxOffset += 4) {
+                if (Save_GetSaveMetaInfo(fileIndex)->questItems & gBitFlags[sQuestItemFlags[j]]) {
+                    gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[D_8081284C[fileIndex] + vtxOffset] + 0x80, 4, 0);
+                    gDPPipeSync(POLY_OPA_DISP++);
+                    gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0x00, sQuestItemRed[j], sQuestItemGreen[j], sQuestItemBlue[j],
+                                    this->fileInfoAlpha[fileIndex]);
+                    gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
+
+                    if (j < 3) {
+                        gDPLoadTextureBlock(POLY_OPA_DISP++, sQuestItemTextures[j], G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 16, 0,
+                                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP,
+                                            G_TX_NOMASK, G_TX_NOLOD);
+                        gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
+
+                    } else {
+                        POLY_OPA_DISP = FileChoose_QuadTextureIA8(POLY_OPA_DISP, sQuestItemTextures[j], 0x10, 0x10, 0);
+                    }
+                }
+            }
         }
 
         // Draw rando seed warning when build version doesn't match for Major or Minor number

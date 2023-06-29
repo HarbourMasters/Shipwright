@@ -19,6 +19,9 @@ typedef struct {
     s16 buildVersionMajor;
     s16 buildVersionMinor;
     s16 buildVersionPatch;
+
+    u8 inventoryItems[24];
+    u16 equipment;
 } SaveFileMetaInfo;
 
 #ifdef __cplusplus
