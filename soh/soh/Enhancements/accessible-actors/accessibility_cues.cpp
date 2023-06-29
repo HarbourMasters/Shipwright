@@ -10,6 +10,8 @@ static const f32 detectionDistance = 500.0;
 static const f32 minInclineDistance = 1.0;
 static const f32 minDeclineDistance = 1.0;
 
+const char* GetLanguageCode();
+
 enum { DISCOVERED_NOTHING = 0,
 DISCOVERED_INCLINE,
 DISCOVERED_DECLINE,

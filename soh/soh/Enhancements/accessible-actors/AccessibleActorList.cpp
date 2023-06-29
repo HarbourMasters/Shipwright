@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <string>
 #include <float.h>
+#include "overlays\actors\ovl_Boss_Goma\z_boss_goma.h"
 //Declarations specific to chests.
 #include "overlays/actors/ovl_En_Box/z_en_box.h"
 extern "C" {
@@ -82,10 +83,16 @@ void accessible_hasi(AccessibleActor* actor) {
     }
 }
     void accessible_switch(AccessibleActor* actor) {
+    Player* player = GET_PLAYER(actor->play);
     ObjSwitch* sw = (ObjSwitch*)actor->actor;
     Vec3f& scale = actor->actor->scale;
     if ((actor->actor->params & 7) == 0) {
-        if (scale.y >= 33.0f / 200.0f) { //(!(Flags_GetSwitch(actor->play, (actor->params >> 8 & 0x3F)))) {
+        if (scale.y >= 33.0f / 200.0f) {
+            if (actor->play->sceneNum == 0 && actor->play->roomCtx.curRoom.num == 5 && actor->xzDistToPlayer < 20) {
+                Audio_PlaySoundGeneral(NA_SE_EV_DIAMOND_SWITCH, &player->actor.world.pos, 4, &actor->basePitch,
+                                     &actor->baseVolume,
+                                      &actor->currentReverb);
+            }
             ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_FOOT_SWITCH);
 }
     }
@@ -107,6 +114,12 @@ void accessible_hasi(AccessibleActor* actor) {
 
     }
 
+}
+
+void accessible_larva(AccessibleActor* actor) {
+    if (actor->actor->bgCheckFlags == 0) {
+        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EN_GOMA_BJR_EGG1);
+    }
 }
 
 void accessible_door(AccessibleActor* actor) {
@@ -148,6 +161,22 @@ void accessible_231_dekus(AccessibleActor* actor) {
     }
 
 }
+
+void accessible_hana(AccessibleActor* actor) {
+    if (actor->actor->params == 1) {
+        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EN_OCTAROCK_ROCK);
+    }
+
+}
+
+void accessible_goma(AccessibleActor* actor) {
+    BossGoma* goma = (BossGoma*)actor->actor;
+    if (goma->visualState == 0) {
+        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_DIAMOND_SWITCH);
+    }
+}
+
+
 void ActorAccessibility_Init() {
     const int Npc_Frames = 35;
     ActorAccessibilityPolicy
@@ -226,7 +255,8 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SYOKUDAI, policy);
     ActorAccessibility_InitPolicy(policy, "Deku Tree Moving Platform", accessible_hasi);
-    policy.distance = 1000;
+    policy.volume = 1.3;
+    policy.distance = 2000;
     ActorAccessibility_AddSupportedActor(ACTOR_BG_YDAN_HASI, policy);
     ActorAccessibility_InitPolicy(policy, "Pot", NULL, NA_SE_EV_POT_BROKEN);
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_TSUBO, policy);
@@ -243,12 +273,26 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     policy.distance = 2000;
     policy.n = 50;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_HINTNUTS, policy);
+    ActorAccessibility_InitPolicy(policy, "uninteractable rocks in kokiri forest", accessible_hana);
+    ActorAccessibility_AddSupportedActor(ACTOR_OBJ_HANA, policy);
+    ActorAccessibility_InitPolicy(policy, "gold skulltula token", accessible_en_pickups);
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_SI, policy);
+    ActorAccessibility_InitPolicy(policy, "goma larva egg", accessible_larva);
+    policy.distance = 1000;
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_GOMA, policy);
+    ActorAccessibility_InitPolicy(policy, "heart canister", accessible_en_pickups);
+    ActorAccessibility_AddSupportedActor(ACTOR_ITEM_B_HEART, policy);
+    ActorAccessibility_InitPolicy(policy, "Goma", accessible_goma);
+    policy.distance = 5000;
+    ActorAccessibility_AddSupportedActor(ACTOR_BOSS_GOMA, policy);
     //Virtual actor demo.
 //First add support for an actor as you normally would.
     ActorAccessibility_InitPolicy(policy, "Proof of concept actor", accessible_va_prototype);
     policy.pitch = 0.5;
     ActorAccessibility_AddSupportedActor(VA_PROTOTYPE, policy);
     ActorAccessibility_InitPolicy(policy, "crawlspace", NULL, NA_SE_EN_MUSI_SINK);
+    policy.volume = 1.5;
+    policy.distance = 3000;
     ActorAccessibility_AddSupportedActor(VA_CRAWLSPACE, policy);
     ActorAccessibility_InitPolicy(policy, "Ladder/climable", NULL, NA_SE_PL_LAND_LADDER);
     policy.volume = 1.5;
