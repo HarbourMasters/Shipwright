@@ -3617,8 +3617,8 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::EnhancementCheckbox("Triforce Hunt", "gTriforceHunt");
                 UIWidgets::InsertHelpHoverText(
                     "Pieces of the Triforce of Courage have been scattered across the world. Find them all to finish the game!\n\n"
-                    "When the required amount of pieces have been found, you'll be granted Ganon's Boss key and the game is saved "
-                    "so you can beat the game by defeating Ganon afterwards if you want to."
+                    "When the required amount of pieces have been found, the game is saved and Ganon's Boss key is placed on "
+                    "the Light Arrow Cutscene so you can beat the game by defeating Ganon afterwards if you want to."
                 );
 
                 if (CVarGetInteger("gTriforceHunt", 0)) {
@@ -5532,7 +5532,7 @@ void CreateTriforcePieceMessages() {
           "Derp",
           "Derp" },
 
-        { "You completed the %yTriforce of&Courage%w! %cGG%w!",
+        { "You completed the %yTriforce%w! %gGG%w!",
           "Derp",
           "Derp" }
     };

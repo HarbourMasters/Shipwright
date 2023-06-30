@@ -85,6 +85,7 @@ typedef enum {
     LACSCONDITION_REWARDS,
     LACSCONDITION_DUNGEONS,
     LACSCONDITION_TOKENS,
+    LACSCONDITION_TRIFORCEHUNT,
 } LACSConditionSetting;
 
 typedef enum {
@@ -92,6 +93,11 @@ typedef enum {
     LACS_OPTION_GREG,
     LACS_OPTION_WILDCARD,
 } LACSRewardOptionsSetting;
+
+typedef enum {
+    TRIFORCE_HUNT_OFF,
+    TRIFORCE_HUNT_ON,
+} TriforceHuntSetting;
 
 typedef enum {
     AGE_CHILD,
@@ -946,6 +952,9 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option BombchusInLogic;
   extern Option AmmoDrops;
   extern Option HeartDropRefill;
+  extern Option TriforceHunt;
+  extern Option TriforceHuntTotal;
+  extern Option TriforceHuntRequired;
   extern Option MQDungeonCount;
   extern Option SetDungeonTypes;
 

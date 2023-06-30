@@ -1060,6 +1060,10 @@ void GenerateItemPool() {
     AddItemsToPool(ItemPool, GC_Vanilla);
   }
 
+  if (Settings::TriforceHunt.Is(TRIFORCE_HUNT_ON)) {
+    AddItemToMainPool(TRIFORCE_PIECE, Settings::TriforceHuntTotal.Value<uint8_t>());
+  }
+
   uint8_t rutoBottles = 1;
   if (ZorasFountain.Is(ZORASFOUNTAIN_OPEN)) {
     rutoBottles = 0;

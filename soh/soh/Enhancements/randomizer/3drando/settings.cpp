@@ -108,6 +108,9 @@ namespace Settings {
   Option BombchusInLogic           = Option::Bool("Bombchus in Logic",      {"Off", "On"},                                                     {bombchuLogicDesc});
   Option AmmoDrops                 = Option::U8  ("Ammo Drops",             {"On", "On + Bombchu", "Off"},                                     {defaultAmmoDropsDesc, bombchuDropsDesc, noAmmoDropsDesc},                                                       OptionCategory::Setting,    AMMODROPS_BOMBCHU);
   Option HeartDropRefill           = Option::U8  ("Heart Drops and Refills",{"On", "No Drop", "No Refill", "Off"},                             {defaultHeartDropsDesc, noHeartDropsDesc, noHeartRefillDesc, scarceHeartsDesc},                                  OptionCategory::Setting,    HEARTDROPREFILL_VANILLA);
+  Option TriforceHunt              = Option::U8  ("Triforce Hunt",          {"Off", "On"},                                                     {triforceHunt});
+  Option TriforceHuntTotal         = Option::U8  ("Triforce Hunt Total Pieces", {NumOpts(0, 50)},                                              {triforceHunt});
+  Option TriforceHuntRequired      = Option::U8  ("Triforce Hunt Required Pieces", {NumOpts(0, 50)},                                           {triforceHunt});
   Option MQDungeonCount            = Option::U8  ("MQ Dungeon Count",       {MultiVecOpts({NumOpts(0, 12), {"Random"}})},                      {mqDungeonCountDesc});
   uint8_t MQSet;
   bool DungeonModesKnown[12];
@@ -124,9 +127,6 @@ namespace Settings {
   Option MQIceCavern               = Option::U8  ("Ice Cavern",           {"Vanilla", "Master Quest", "Random"},                             {setDungeonTypesDesc});
   Option MQGTG                     = Option::U8  ("Training Grounds",     {"Vanilla", "Master Quest", "Random"},                             {setDungeonTypesDesc});
   Option MQCastle                  = Option::U8  ("Ganon's Castle",       {"Vanilla", "Master Quest", "Random"},                             {setDungeonTypesDesc});
-  Option TriforceHunt              = Option::U8  ("Triforce Hunt",        {"Off", "On"},                                                     {triforceHunt});
-  Option TriforceHuntTotal         = Option::U8  ("Triforce Hunt Total Pieces", {NumOpts(0, 50)},                                            {triforceHunt});
-  Option TriforceHuntRequired      = Option::U8  ("Triforce Hunt Required Pieces", {NumOpts(0, 50)},                                         {triforceHunt});
   std::vector<Option *> worldOptions = {
     &RandomizeWorld,
     &StartingAge,
@@ -148,6 +148,9 @@ namespace Settings {
     &BombchusInLogic,
     &AmmoDrops,
     &HeartDropRefill,
+    &TriforceHunt,
+    &TriforceHuntTotal,
+    &TriforceHuntRequired,
     &MQDungeonCount,
     &SetDungeonTypes,
     &MQDeku,
@@ -162,9 +165,6 @@ namespace Settings {
     &MQIceCavern,
     &MQGTG,
     &MQCastle,
-    &TriforceHunt,
-    &TriforceHuntTotal,
-    &TriforceHuntRequired,
   };
   std::vector<Option *> dungeonOptions = {
     &MQDeku,
@@ -3191,7 +3191,9 @@ namespace Settings {
 
     HasNightStart = StartingTime.Is(STARTINGTIME_NIGHT);
 
-    if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_STONES)) {
+    if (TriforceHunt.Is(TRIFORCE_HUNT_ON)) {
+      LACSCondition = LACSCONDITION_TRIFORCEHUNT;
+    } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_STONES)) {
       LACSCondition = LACSCONDITION_STONES;
     } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_MEDALLIONS)) {
       LACSCondition = LACSCONDITION_MEDALLIONS;

@@ -676,7 +676,10 @@ static Text BuildBridgeReqsText() {
 static Text BuildGanonBossKeyText() {
   Text ganonBossKeyText;
 
-  if (GanonsBossKey.Is(GANONSBOSSKEY_START_WITH)) {
+  if (TriforceHunt.Is(TRIFORCE_HUNT_ON)) {
+    ganonBossKeyText = Hint(GANON_BK_TRIFORCE_HINT).GetText();
+
+  } else if (GanonsBossKey.Is(GANONSBOSSKEY_START_WITH)) {
     ganonBossKeyText = Hint(GANON_BK_START_WITH_HINT).GetText();
 
   } else if (GanonsBossKey.Is(GANONSBOSSKEY_VANILLA)) {

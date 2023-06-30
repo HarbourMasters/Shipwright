@@ -3139,20 +3139,19 @@ int32_t StonesRequiredBySettings() {
     int32_t stones = 0;
     if (Settings::Bridge.Is(RAINBOWBRIDGE_STONES)) {
         stones = std::max<int32_t>({ stones, (int32_t)Settings::BridgeStoneCount.Value<uint8_t>() });
-    }
-    if (Settings::Bridge.Is(RAINBOWBRIDGE_REWARDS)) {
+    } else if (Settings::Bridge.Is(RAINBOWBRIDGE_REWARDS)) {
         stones = std::max<int32_t>({ stones, (int32_t)Settings::BridgeRewardCount.Value<uint8_t>() - 6 });
-    }
-    if ((Settings::Bridge.Is(RAINBOWBRIDGE_DUNGEONS)) && (Settings::ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON))) {
+    } else if ((Settings::Bridge.Is(RAINBOWBRIDGE_DUNGEONS)) && (Settings::ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON))) {
         stones = std::max<int32_t>({ stones, (int32_t)Settings::BridgeDungeonCount.Value<uint8_t>() - 6 });
     }
-    if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_STONES)) {
+
+    if (Settings::TriforceHunt.Is(TRIFORCE_HUNT_ON)) {
+        stones = std::max<int32_t>({ stones, 0 });
+    } else if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_STONES)) {
         stones = std::max<int32_t>({ stones, (int32_t)Settings::LACSStoneCount.Value<uint8_t>() });
-    }
-    if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_REWARDS)) {
+    } else if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_REWARDS)) {
         stones = std::max<int32_t>({ stones, (int32_t)Settings::LACSRewardCount.Value<uint8_t>() - 6 });
-    }
-    if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_DUNGEONS)) {
+    } else if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_DUNGEONS)) {
         stones = std::max<int32_t>({ stones, (int32_t)Settings::LACSDungeonCount.Value<uint8_t>() - 6 });
     }
     return stones;
@@ -3162,20 +3161,19 @@ int32_t MedallionsRequiredBySettings() {
     int32_t medallions = 0;
     if (Settings::Bridge.Is(RAINBOWBRIDGE_MEDALLIONS)) {
         medallions = std::max<int32_t>({ medallions, (int32_t)Settings::BridgeMedallionCount.Value<uint8_t>() });
-    }
-    if (Settings::Bridge.Is(RAINBOWBRIDGE_REWARDS)) {
+    } else if (Settings::Bridge.Is(RAINBOWBRIDGE_REWARDS)) {
         medallions = std::max<int32_t>({ medallions, (int32_t)Settings::BridgeRewardCount.Value<uint8_t>() - 3 });
-    }
-    if ((Settings::Bridge.Is(RAINBOWBRIDGE_DUNGEONS)) && (Settings::ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON))) {
+    } else if ((Settings::Bridge.Is(RAINBOWBRIDGE_DUNGEONS)) && (Settings::ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON))) {
         medallions = std::max<int32_t>({ medallions, (int32_t)Settings::BridgeDungeonCount.Value<uint8_t>() - 3 });
     }
-    if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_MEDALLIONS)) {
+
+    if (Settings::TriforceHunt.Is(TRIFORCE_HUNT_ON)) {
+        medallions = std::max<int32_t>({ medallions, 0 });
+    } else if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_MEDALLIONS)) {
         medallions = std::max<int32_t>({ medallions, (int32_t)Settings::LACSMedallionCount.Value<uint8_t>() });
-    }
-    if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_REWARDS)) {
+    } else if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_REWARDS)) {
         medallions = std::max<int32_t>({ medallions, (int32_t)Settings::LACSRewardCount.Value<uint8_t>() - 3 });
-    }
-    if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_DUNGEONS)) {
+    } else if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_DUNGEONS)) {
         medallions = std::max<int32_t>({ medallions, (int32_t)Settings::LACSDungeonCount.Value<uint8_t>() - 3 });
     }
     return medallions;
@@ -3186,7 +3184,10 @@ int32_t TokensRequiredBySettings() {
     if (Settings::Bridge.Is(RAINBOWBRIDGE_TOKENS)) {
         tokens = std::max<int32_t>({ tokens, (int32_t)Settings::BridgeTokenCount.Value<uint8_t>() });
     }
-    if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_TOKENS)) {
+
+    if (Settings::TriforceHunt.Is(TRIFORCE_HUNT_ON)) {
+        tokens = std::max<int32_t>({ tokens, 0 });
+    } else if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_TOKENS)) {
         tokens = std::max<int32_t>({ tokens, (int32_t)Settings::LACSTokenCount.Value<uint8_t>() });
     }
     return tokens;

@@ -169,17 +169,12 @@ extern "C" void Randomizer_DrawTriforcePiece(PlayState* play, GetItemEntry getIt
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-    Matrix_Scale(0.04f, 0.04f, 0.04f, MTXMODE_APPLY);
+    Matrix_Scale(0.035f, 0.035f, 0.035f, MTXMODE_APPLY);
 
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    /*gDPSetGrayscaleColor(POLY_XLU_DISP++, 255, 255, 0, 255);
-    gSPGrayscale(POLY_XLU_DISP++, true);*/
-
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gTriforcePieceDL);
-
-    /*gSPGrayscale(POLY_XLU_DISP++, false);*/
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
