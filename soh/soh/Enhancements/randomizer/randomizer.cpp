@@ -55,6 +55,7 @@ const std::string Randomizer::getItemMessageTableID = "Randomizer";
 const std::string Randomizer::hintMessageTableID = "RandomizerHints";
 const std::string Randomizer::merchantMessageTableID = "RandomizerMerchants";
 const std::string Randomizer::rupeeMessageTableID = "RandomizerRupees";
+const std::string Randomizer::triforcePieceMessageTableID = "RandomizerTriforcePiece";
 const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
 const std::string Randomizer::IceTrapRandoMessageTableID = "RandomizerIceTrap";
 const std::string Randomizer::randoMiscHintsTableID = "RandomizerMiscHints";
@@ -320,6 +321,9 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "World Settings:Mix Interiors", RSK_MIX_INTERIOR_ENTRANCES },
     { "World Settings:Mix Grottos", RSK_MIX_GROTTO_ENTRANCES },
     { "World Settings:Decouple Entrances", RSK_DECOUPLED_ENTRANCES },
+    { "World Settings:Triforce Hunt", RSK_TRIFORCE_HUNT },
+    { "World Settings:Triforce Hunt Total Pieces", RSK_TRIFORCE_HUNT_PIECES_TOTAL },
+    { "World Settings:Triforce Hunt Required Pieces", RSK_TRIFORCE_HUNT_PIECES_REQUIRED },
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY },
     { "Misc Settings:ToT Altar Hint", RSK_TOT_ALTAR_HINT },
@@ -772,6 +776,8 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_BIG_POE_COUNT:
                     case RSK_CUCCO_COUNT:
                     case RSK_STARTING_SKULLTULA_TOKEN:
+                    case RSK_TRIFORCE_HUNT_PIECES_TOTAL:
+                    case RSK_TRIFORCE_HUNT_PIECES_REQUIRED:
                         numericValueString = it.value();
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
                         break;
@@ -879,6 +885,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_DECOUPLED_ENTRANCES:
                     case RSK_SHOPSANITY_PRICES_AFFORDABLE:
                     case RSK_ALL_LOCATIONS_REACHABLE:
+                    case RSK_TRIFORCE_HUNT:
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = RO_GENERIC_OFF;
                         } else if(it.value() == "On") {
@@ -1918,6 +1925,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_BUY_DEKU_NUT_10:
         case RG_BUY_DEKU_STICK_1:
         case RG_BUY_HEART:
+        case RG_TRIFORCE_PIECE:
         default:
             return CAN_OBTAIN;
     }
@@ -3078,6 +3086,10 @@ void GenerateRandomizerImgui(std::string seed = "") {
         cvarSettings[RSK_MQ_DUNGEON_COUNT] = 0;
     }
 
+    cvarSettings[RSK_TRIFORCE_HUNT] = CVarGetInteger("gTriforceHunt", 0);
+    cvarSettings[RSK_TRIFORCE_HUNT_PIECES_TOTAL] = CVarGetInteger("gTriforceHuntTotalPieces", 0);
+    cvarSettings[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = CVarGetInteger("gTriforceHuntRequiredPieces", 0);
+
     // Enable if any of the entrance rando options are enabled.
     cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVarGetInteger("gRandomizeShuffleDungeonsEntrances", RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ||
                                           CVarGetInteger("gRandomizeShuffleBossEntrances", RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) ||
@@ -3577,6 +3589,7 @@ void RandomizerSettingsWindow::DrawElement() {
 
                 UIWidgets::PaddedSeparator();
 
+                // Master Quest Dungeons
                 if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
                     ImGui::PushItemWidth(-FLT_MIN);
                     ImGui::Text("Master Quest Dungeons");
@@ -3597,6 +3610,40 @@ void RandomizerSettingsWindow::DrawElement() {
                             "gRandomizeMqDungeonCount", 1, 12, "", CVarGetInteger("gRandomizeMqDungeonCount", 12), true, true, false);
                     }
                 }
+
+                UIWidgets::PaddedSeparator();
+
+                // Triforce Hunt
+                UIWidgets::EnhancementCheckbox("Triforce Hunt", "gTriforceHunt");
+                UIWidgets::InsertHelpHoverText(
+                    "Pieces of the Triforce of Courage have been scattered across the world. Find them all to finish the game!\n\n"
+                    "When the required amount of pieces have been found, you'll be granted Ganon's Boss key and the game is saved "
+                    "so you can beat the game by defeating Ganon afterwards if you want to."
+                );
+
+                if (CVarGetInteger("gTriforceHunt", 0)) {
+                    // Triforce Hunt (total pieces)
+                    UIWidgets::Spacer(0);
+                    int totalPieces = CVarGetInteger("gTriforceHuntTotalPieces", 20);
+                    ImGui::Text("Triforce Pieces in the world: %d", totalPieces);
+                    UIWidgets::InsertHelpHoverText(
+                        "The amount of Triforce pieces that will be placed in the world. "
+                        "Keep in mind seed generation can fail if more pieces are placed than there are junk items in the item pool."
+                    );
+                    ImGui::SameLine();
+                    UIWidgets::EnhancementSliderInt("", "##TriforceHuntTotalPieces", "gTriforceHuntTotalPieces", 1, 50, "", 20);
+
+                    // Triforce Hunt (required pieces)
+                    int requiredPieces = CVarGetInteger("gTriforceHuntRequiredPieces", 10);
+                    ImGui::Text("Triforce Pieces to win: %d", requiredPieces);
+                    UIWidgets::InsertHelpHoverText(
+                        "The amount of Triforce pieces required to win the game."
+                    );
+                    ImGui::SameLine();
+                    UIWidgets::EnhancementSliderInt("", "##TriforceHuntRequiredPieces", "gTriforceHuntRequiredPieces", 1, totalPieces, "", 10);
+                }
+
+                UIWidgets::PaddedSeparator();
 
                 ImGui::EndChild();
 
@@ -5466,6 +5513,61 @@ CustomMessage Randomizer::GetRupeeMessage(u16 rupeeTextId) {
     return messageEntry;
 }
 
+void CreateTriforcePieceMessages() {
+    CustomMessage TriforcePieceMessages[NUM_TRIFORCE_PIECE_MESSAGES] = {
+
+        { "You found a %yTriforce%w piece!&%g{{current}}%w down, %c{{remaining}}%w to go. It's a start!",
+          "Derp",
+          "Derp" },
+
+        { "You found a %yTriforce%w piece!&%g{{current}}%w down, %c{{remaining}}%w to go. Getting closer!",
+          "Derp",
+          "Derp" },
+
+        { "You found a %yTriforce%w piece!&%g{{current}}%w down, %c{{remaining}}%w to go. Over half-way there!",
+          "Derp",
+          "Derp" },
+
+        { "You found a %yTriforce%w piece!&%g{{current}}%w down, %c{{remaining}}%w to go. Almost done!",
+          "Derp",
+          "Derp" },
+
+        { "You completed the %yTriforce of&Courage%w! %cGG%w!",
+          "Derp",
+          "Derp" }
+    };
+    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
+    customMessageManager->AddCustomMessageTable(Randomizer::triforcePieceMessageTableID);
+    for (unsigned int i = 0; i <= (NUM_TRIFORCE_PIECE_MESSAGES - 1); i++) {
+        customMessageManager->CreateMessage(Randomizer::triforcePieceMessageTableID, i, TriforcePieceMessages[i]);
+    }
+}
+
+CustomMessage Randomizer::GetTriforcePieceMessage() {
+    // Item is only given after the textbox, so reflect that inside the textbox.
+    uint16_t current = gSaveContext.triforcePiecesCollected + 1;
+    uint16_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
+    uint16_t remaining = required - current;
+    float percentageCollected = (float)current / (float)required;
+    uint8_t messageIndex;
+    if (percentageCollected <= 0.25) {
+        messageIndex = 0;
+    } else if (percentageCollected <= 0.5) {
+        messageIndex = 1;
+    } else if (percentageCollected <= 0.75) {
+        messageIndex = 2;
+    } else if (percentageCollected < 1) {
+        messageIndex = 3;
+    } else {
+        messageIndex = 4;
+    }
+    CustomMessage messageEntry =
+        CustomMessageManager::Instance->RetrieveMessage(Randomizer::triforcePieceMessageTableID, messageIndex);
+    messageEntry.Replace("{{current}}", std::to_string(current), std::to_string(current), std::to_string(current));
+    messageEntry.Replace("{{remaining}}", std::to_string(remaining), std::to_string(remaining), std::to_string(remaining));
+    return messageEntry;
+}
+
 void CreateNaviRandoMessages() {
     CustomMessage NaviMessages[NUM_NAVI_MESSAGES] = {
 
@@ -5993,6 +6095,7 @@ void Randomizer::CreateCustomMessages() {
     }};
     CreateGetItemMessages(&getItemMessages);
     CreateRupeeMessages();
+    CreateTriforcePieceMessages();
     CreateNaviRandoMessages();
     CreateIceTrapRandoMessages();
     CreateFireTempleGoronMessages();
@@ -6103,6 +6206,7 @@ void InitRandoItemTable() {
         GET_ITEM(RG_MAGIC_BEAN_PACK,                   OBJECT_GI_BEAN,     GID_BEAN,             TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_MAGIC_BEAN_PACK),
         GET_ITEM(RG_TYCOON_WALLET,                     OBJECT_GI_PURSE,    GID_WALLET_GIANT,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_TYCOON_WALLET),
         GET_ITEM(RG_PROGRESSIVE_BOMBCHUS,              OBJECT_GI_BOMB_2,   GID_BOMBCHU,          0x33,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_PROGRESSIVE_BOMBCHUS),
+        GET_ITEM(RG_TRIFORCE_PIECE,                    OBJECT_GI_BOMB_2,   GID_BOMBCHU,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_TRIFORCE_PIECE),
     };
     ItemTableManager::Instance->AddItemTable(MOD_RANDOMIZER);
     for (int i = 0; i < ARRAY_COUNT(extendedVanillaGetItemTable); i++) {
@@ -6118,6 +6222,8 @@ void InitRandoItemTable() {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawBossKey;
         } else if (randoGetItemTable[i].itemId == RG_DOUBLE_DEFENSE) {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawDoubleDefense;
+        } else if (randoGetItemTable[i].itemId == RG_TRIFORCE_PIECE) {
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawTriforcePiece;
         }
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, randoGetItemTable[i].itemId, randoGetItemTable[i]);
     }

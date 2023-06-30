@@ -44,6 +44,9 @@ static const ALIGN_ASSET(2) char gTitleRandomizerSubtitleTex[] = dgTitleRandomiz
 #define dgTitleBossRushSubtitleTex "__OTR__objects/object_mag/gTitleBossRushSubtitleTex"
 static const ALIGN_ASSET(2) char gTitleBossRushSubtitleTex[] = dgTitleBossRushSubtitleTex;
 
+#define dgTriforcePieceDL "__OTR__objects/object_triforce_piece/gTriforcePieceDL"
+static const ALIGN_ASSET(2) char gTriforcePieceDL[] = dgTriforcePieceDL;
+
 // textures
 #define dgDPad "__OTR__textures/parameter_static/gDPad"
 static const ALIGN_ASSET(2) char gDPadTex[] = dgDPad;

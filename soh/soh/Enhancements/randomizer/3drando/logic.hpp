@@ -143,6 +143,9 @@ extern uint8_t GerudoFortressKeys;
 extern uint8_t GanonsCastleKeys;
 extern uint8_t TreasureGameKeys;
 
+// Triforce Pieces
+extern uint8_t TriforcePieces;
+
 // Boss Keys
 extern bool BossKeyForestTemple;
 extern bool BossKeyFireTemple;

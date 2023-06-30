@@ -2566,6 +2566,11 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
+    if (item == RG_TRIFORCE_PIECE) {
+        gSaveContext.triforcePiecesCollected++;
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
     if (item == RG_PROGRESSIVE_BOMBCHUS) {
         if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
             INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;

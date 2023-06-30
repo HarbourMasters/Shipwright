@@ -304,6 +304,10 @@ string_view mqDungeonCountDesc        = "Specify the number of Master Quest dung
 string_view setDungeonTypesDesc       = "If set, you can choose specific dungeons to be\n" //
                                         "vanilla, MQ, or random";                          //
 /*------------------------------                                                           //
+|        SET MQ DUNGEONS       |                                                           //
+------------------------------*/                                                           //
+string_view triforceHunt              = "Collect all Triforce pieces to win the game!";    //
+/*------------------------------                                                           //
 |   SHUFFLE DUNGEON REWARDS    |                                                           //
 ------------------------------*/                                                           //
 string_view shuffleRewardsEndOfDungeon= "Medallions and Spiritual Stones will be given as\n"

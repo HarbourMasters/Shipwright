@@ -124,6 +124,9 @@ namespace Settings {
   Option MQIceCavern               = Option::U8  ("Ice Cavern",           {"Vanilla", "Master Quest", "Random"},                             {setDungeonTypesDesc});
   Option MQGTG                     = Option::U8  ("Training Grounds",     {"Vanilla", "Master Quest", "Random"},                             {setDungeonTypesDesc});
   Option MQCastle                  = Option::U8  ("Ganon's Castle",       {"Vanilla", "Master Quest", "Random"},                             {setDungeonTypesDesc});
+  Option TriforceHunt              = Option::U8  ("Triforce Hunt",        {"Off", "On"},                                                     {triforceHunt});
+  Option TriforceHuntTotal         = Option::U8  ("Triforce Hunt Total Pieces", {NumOpts(0, 50)},                                            {triforceHunt});
+  Option TriforceHuntRequired      = Option::U8  ("Triforce Hunt Required Pieces", {NumOpts(0, 50)},                                         {triforceHunt});
   std::vector<Option *> worldOptions = {
     &RandomizeWorld,
     &StartingAge,
@@ -159,6 +162,9 @@ namespace Settings {
     &MQIceCavern,
     &MQGTG,
     &MQCastle,
+    &TriforceHunt,
+    &TriforceHuntTotal,
+    &TriforceHuntRequired,
   };
   std::vector<Option *> dungeonOptions = {
     &MQDeku,
@@ -3096,6 +3102,10 @@ namespace Settings {
         dungeons[i]->SetMQ();
       }
     }
+
+    TriforceHunt.SetSelectedIndex(cvarSettings[RSK_TRIFORCE_HUNT]);
+    TriforceHuntTotal.SetSelectedIndex(cvarSettings[RSK_TRIFORCE_HUNT_PIECES_TOTAL]);
+    TriforceHuntRequired.SetSelectedIndex(cvarSettings[RSK_TRIFORCE_HUNT_PIECES_REQUIRED]);
 
     //Set key ring for each dungeon
     for (size_t i = 0; i < dungeons.size(); i++) {

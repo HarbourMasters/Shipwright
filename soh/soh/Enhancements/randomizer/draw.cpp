@@ -9,9 +9,11 @@
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
+#include "objects/object_triforce_spot/object_triforce_spot.h"
+#include "objects/object_triforce_spot/object_triforce_spot.h"
+#include "soh_assets.h"
 
 extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEntry) {
-    s32 pad;
     s8 isColoredKeysEnabled = CVarGetInteger("gRandoMatchKeyColors", 1);
     s16 color_slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_SMALL_KEY;
     s16 colors[9][3] = {
@@ -48,7 +50,6 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
 }
 
 extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEntry) {
-    s32 pad;
     s8 isColoredKeysEnabled = CVarGetInteger("gRandoMatchKeyColors", 1);
     s16 color_slot;
     color_slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_BOSS_KEY;
@@ -99,8 +100,6 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
 }
 
 extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEntry) {
-    s32 pad;
-
     s16 color_slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_KEY_RING;
     s16 colors[9][3] = {
         { 4, 195, 46 },    // Forest Temple
@@ -147,7 +146,6 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
 }
 
 extern "C" void Randomizer_DrawDoubleDefense(PlayState* play, GetItemEntry getItemEntry) {
-    s32 pad;
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
@@ -162,6 +160,26 @@ extern "C" void Randomizer_DrawDoubleDefense(PlayState* play, GetItemEntry getIt
     gSPGrayscale(POLY_XLU_DISP++, false);
 
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiHeartContainerDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+extern "C" void Randomizer_DrawTriforcePiece(PlayState* play, GetItemEntry getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+
+    Matrix_Scale(0.04f, 0.04f, 0.04f, MTXMODE_APPLY);
+
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gDPSetGrayscaleColor(POLY_XLU_DISP++, 255, 255, 0, 255);
+    gSPGrayscale(POLY_XLU_DISP++, true);
+
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gTriforcePieceDL);
+
+    gSPGrayscale(POLY_XLU_DISP++, false);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

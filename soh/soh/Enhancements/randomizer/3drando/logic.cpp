@@ -151,6 +151,9 @@ namespace Logic {
   uint8_t BottomOfTheWellKeys       = 0;
   uint8_t TreasureGameKeys          = 0;
 
+  //Triforce Pieces
+  uint8_t TriforcePieces = 0;
+
   //Boss Keys
   bool BossKeyForestTemple = false;
   bool BossKeyFireTemple   = false;
