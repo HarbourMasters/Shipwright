@@ -6,6 +6,8 @@
 #include "textures/parameter_static/parameter_static.h"
 #include <textures/icon_item_static/icon_item_static.h>
 #include <textures/icon_item_24_static/icon_item_24_static.h>
+#include <textures/icon_item_dungeon_static/icon_item_dungeon_static.h>
+#include <textures/parameter_static/parameter_static.h>
 #include "soh/frame_interpolation.h"
 #include <GameVersions.h>
 #include "objects/object_mag/object_mag.h"
@@ -24,24 +26,26 @@
 typedef struct {
     s16 left;
     s16 top;
-} ItemPosition;
+} IconPosition;
 
 typedef struct {
     s16 width;
     s16 height;
-} ItemSize;
+} IconSize;
 
 typedef struct {
     Sprite sprite;
     Color_RGBA8 color;
     u8 item;
-    ItemPosition pos;
-    ItemSize size;
+    IconPosition pos;
+    IconSize size;
 } ItemData;
 
-#define CREATE_SPRITE_32(iconTex, spriteId) { iconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, spriteId }, {0xFF, 0xFF, 0xFF, 0xFF}
 #define CREATE_SPRITE_24(iconTex, spriteId) { iconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b, spriteId }, {0xFF, 0xFF, 0xFF, 0xFF}
+#define CREATE_SPRITE_32(iconTex, spriteId) { iconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, spriteId }, {0xFF, 0xFF, 0xFF, 0xFF}
 #define CREATE_SPRITE_SONG(colorR, colorG, colorB) { dgSongNoteTex, 16, 24, G_IM_FMT_IA, G_IM_SIZ_8b, 100 }, {colorR, colorG, colorB, 0xFF}
+#define CREATE_SPRITE_RUPEE(colorR, colorG, colorB) { dgRupeeCounterIconTex, 16, 16, G_IM_FMT_IA, G_IM_SIZ_32b, 102 }, {colorR, colorG, colorB, 0xFF}
+#define CREATE_SPRITE_SKULL { dgDungeonMapSkullTex, 16, 16, G_IM_FMT_RGBA, G_IM_SIZ_16b, 104 }, {0xFF, 0xFF, 0xFF, 0xFF}
 
 #define ICON_SIZE 12
 #define SONG_WIDTH 8
@@ -217,6 +221,50 @@ static void DrawItems(FileChooseContext* this, s16 fileIndex, u8 alpha) {
 
     gDPPipeSync(POLY_OPA_DISP++);
     CLOSE_DISPS(this->state.gfxCtx);
+}
+
+typedef struct {
+    Sprite sprite;
+    Color_RGBA8 color;
+    u8 item;
+    IconPosition pos;
+    IconSize size;
+} CounterData;
+
+static CounterData counterData[4] = {
+    {CREATE_SPRITE_24(dgHeartContainerIconTex, 101), ITEM_HEART_CONTAINER, {0x00, 0x00}, SIZE_NORMAL},
+    {CREATE_SPRITE_RUPEE(0xFF, 0x00, 0x00),          ITEM_RUPEE_GREEN,     {0x00, 0x18}, SIZE_NORMAL},
+    {CREATE_SPRITE_24(dgGoldSkulltulaIconTex, 103),  ITEM_SKULL_TOKEN,     {0x00, 0x30}, SIZE_NORMAL},
+    {CREATE_SPRITE_SKULL,                            ITEM_INVALID_8,       {0x00, 0x48}, SIZE_NORMAL}, // Deaths
+};
+
+u16 GetCounterValue(s16 fileIndex, u8 counter) {
+    return 0;
+}
+
+static void DrawCounters(FileChooseContext* this, s16 fileIndex, u8 alpha) {
+    OPEN_DISPS(this->state.gfxCtx);
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+
+    for (int i = 0; i < ARRAY_COUNT(counterData); i += 1) {
+        CounterData* data = &counterData[i];
+
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, data->color.r, data->color.g, data->color.b, color_product(data->color.a, alpha));
+        
+        SpriteLoad(this, &(data->sprite));
+        SpriteDraw(this, &(data->sprite), LEFT_OFFSET + data->pos.left, TOP_OFFSET + data->pos.top, data->size.width, data->size.height);
+
+        //draw count
+    }
+
+    gDPPipeSync(POLY_OPA_DISP++);
+    CLOSE_DISPS(this->state.gfxCtx);
+}
+
+static void DrawMoreInfo(FileChooseContext* this, s16 fileIndex, u8 alpha) {
+    DrawItems(this, fileIndex, alpha);
+    //DrawCounters(this, fileIndex, alpha);
 }
 
 #define MIN_QUEST (ResourceMgr_GameHasOriginal() ? FS_QUEST_NORMAL : FS_QUEST_MASTER)
@@ -535,6 +583,15 @@ void DrawSeedHashSprites(FileChooseContext* this) {
         }
 
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, alpha);
+
+        // Draw Seed Icons for spoiler log
+        if (this->configMode == CM_QUEST_MENU && this->questType[this->buttonIndex] == FS_QUEST_RANDOMIZER && strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0 && fileSelectSpoilerFileLoaded) {
+            u16 xStart = 64;
+            for (unsigned int i = 0; i < 5; i++) {
+                SpriteLoad(this, GetSeedTexture(gSaveContext.seedIcons[i]));
+                SpriteDraw(this, GetSeedTexture(gSaveContext.seedIcons[i]), xStart + (40 * i), 10, 24, 24);
+            }
+        }
     }
 
     gDPPipeSync(POLY_OPA_DISP++);
@@ -1539,7 +1596,7 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
                                &deathCountSplit[2]);
 
         // draw death count
-        if (CVarGetInteger("gFileSelectMoreInfo", 0) == 0) {
+        if (CVarGetInteger("gFileSelectMoreInfo", 0) == 0 || this->menuMode != FS_MENU_MODE_SELECT) {
             for (i = 0, vtxOffset = 0; i < 3; i++, vtxOffset += 4) {
                 FileChoose_DrawCharacter(this->state.gfxCtx, sp54->fontBuf + deathCountSplit[i] * FONT_CHAR_TEX_SIZE,
                                          vtxOffset);
@@ -1563,7 +1620,7 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
 
         i = Save_GetSaveMetaInfo(fileIndex)->healthCapacity / 0x10;
 
-        if (CVarGetInteger("gFileSelectMoreInfo", 0) == 0) {
+        if (CVarGetInteger("gFileSelectMoreInfo", 0) == 0 || this->menuMode != FS_MENU_MODE_SELECT) {
             // draw hearts
             for (vtxOffset = 0, j = 0; j < i; j++, vtxOffset += 4) {
                 gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[D_8081284C[fileIndex] + vtxOffset] + 0x30, 4, 0);
@@ -1580,8 +1637,8 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
             textAlpha = 255;
         }
 
-        if (CVarGetInteger("gFileSelectMoreInfo", 0) != 0) {
-            DrawItems(this, fileIndex, textAlpha);
+        if (CVarGetInteger("gFileSelectMoreInfo", 0) != 0 && this->menuMode == FS_MENU_MODE_SELECT) {
+            DrawMoreInfo(this, fileIndex, textAlpha);
         } else {
             // draw quest items
             for (vtxOffset = 0, j = 0; j < 9; j++, vtxOffset += 4) {
@@ -1901,7 +1958,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                             this->fileInfoAlpha[fileIndex]);
 
             // Draw the small file name box instead when more meta info is enabled
-            if (CVarGetInteger("gFileSelectMoreInfo", 0)) {
+            if (CVarGetInteger("gFileSelectMoreInfo", 0) != 0 && this->menuMode == FS_MENU_MODE_SELECT) {
                 // Location of file 1 small name box vertices
                 gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[68], 4, 0);
 
