@@ -44,14 +44,16 @@ typedef struct {
 #define CREATE_SPRITE_24(iconTex, spriteId) { iconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b, spriteId }, {0xFF, 0xFF, 0xFF, 0xFF}
 #define CREATE_SPRITE_32(iconTex, spriteId) { iconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, spriteId }, {0xFF, 0xFF, 0xFF, 0xFF}
 #define CREATE_SPRITE_SONG(colorR, colorG, colorB) { dgSongNoteTex, 16, 24, G_IM_FMT_IA, G_IM_SIZ_8b, 100 }, {colorR, colorG, colorB, 0xFF}
-#define CREATE_SPRITE_RUPEE(colorR, colorG, colorB) { dgRupeeCounterIconTex, 16, 16, G_IM_FMT_IA, G_IM_SIZ_32b, 102 }, {colorR, colorG, colorB, 0xFF}
+#define CREATE_SPRITE_RUPEE(colorR, colorG, colorB) { dgRupeeCounterIconTex, 16, 16, G_IM_FMT_IA, G_IM_SIZ_8b, 102 }, {colorR, colorG, colorB, 0xFF}
 #define CREATE_SPRITE_SKULL { dgDungeonMapSkullTex, 16, 16, G_IM_FMT_RGBA, G_IM_SIZ_16b, 104 }, {0xFF, 0xFF, 0xFF, 0xFF}
 
 #define ICON_SIZE 12
+#define COUNTER_SIZE 16
 #define SONG_WIDTH 8
 #define SONG_HEIGHT 12
 
 #define SIZE_NORMAL {ICON_SIZE, ICON_SIZE}
+#define SIZE_COUNTER {COUNTER_SIZE, COUNTER_SIZE}
 #define SIZE_SONG {SONG_WIDTH, SONG_HEIGHT}
 
 #define INV_IC_POS(x, y) {0x4E + ICON_SIZE * x, 0x00 + ICON_SIZE * y}
@@ -445,14 +447,53 @@ typedef struct {
     IconSize size;
 } CounterData;
 
-static CounterData counterData[4] = {
-    {CREATE_SPRITE_24(dgHeartContainerIconTex, 101), ITEM_HEART_CONTAINER, {0x00, 0x00}, SIZE_NORMAL},
-    {CREATE_SPRITE_RUPEE(0xFF, 0x00, 0x00),          ITEM_RUPEE_GREEN,     {0x00, 0x18}, SIZE_NORMAL},
-    {CREATE_SPRITE_24(dgGoldSkulltulaIconTex, 103),  ITEM_SKULL_TOKEN,     {0x00, 0x30}, SIZE_NORMAL},
-    {CREATE_SPRITE_SKULL,                            ITEM_INVALID_8,       {0x00, 0x48}, SIZE_NORMAL}, // Deaths
+static CounterData counterData[7] = {
+    {CREATE_SPRITE_24(dgHeartContainerIconTex, 101), ITEM_HEART_CONTAINER, {0x0A, 0x00}, SIZE_COUNTER},
+    {CREATE_SPRITE_RUPEE(0xC8, 0xFF, 0x64),          ITEM_RUPEE_GREEN,     {0x0A, 0x12}, SIZE_COUNTER}, //child wallet
+    {CREATE_SPRITE_RUPEE(0x82, 0x82, 0xFF),          ITEM_RUPEE_BLUE,      {0x0A, 0x12}, SIZE_COUNTER}, //adult wallet
+    {CREATE_SPRITE_RUPEE(0xFF, 0x64, 0x64),          ITEM_RUPEE_RED,       {0x0A, 0x12}, SIZE_COUNTER}, //giant wallet
+    {CREATE_SPRITE_RUPEE(0xFF, 0x5A, 0xFF),          ITEM_RUPEE_PURPLE,    {0x0A, 0x12}, SIZE_COUNTER}, //tycoon wallet
+    {CREATE_SPRITE_24(dgGoldSkulltulaIconTex, 103),  ITEM_SKULL_TOKEN,     {0x0A, 0x24}, SIZE_COUNTER},
+    {CREATE_SPRITE_SKULL,                            ITEM_INVALID_8,       {0x00, 0x36}, SIZE_COUNTER}, //deaths
 };
 
+u8 ShouldRenderCounter(s16 fileIndex, u8 counter) {
+    if (counter == ITEM_RUPEE_GREEN) {
+        return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >> gUpgradeShifts[UPG_WALLET]) == 0;
+    }
+
+    if (counter == ITEM_RUPEE_BLUE) {
+        return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >> gUpgradeShifts[UPG_WALLET]) == 1;
+    }
+
+    if (counter == ITEM_RUPEE_RED) {
+        return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >> gUpgradeShifts[UPG_WALLET]) == 2;
+    }
+
+    if (counter == ITEM_RUPEE_PURPLE) {
+        return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >> gUpgradeShifts[UPG_WALLET]) == 3;
+    }
+
+    return 1;
+}
+
 u16 GetCounterValue(s16 fileIndex, u8 counter) {
+    if (counter == ITEM_HEART_CONTAINER) {
+        return Save_GetSaveMetaInfo(fileIndex)->healthCapacity;
+    }
+
+    if (counter == ITEM_RUPEE_GREEN) {
+        return Save_GetSaveMetaInfo(fileIndex)->rupees;
+    }
+
+    if (counter == ITEM_SKULL_TOKEN) {
+        return Save_GetSaveMetaInfo(fileIndex)->gsTokens;
+    }
+
+    if (counter == ITEM_INVALID_8) {
+        return Save_GetSaveMetaInfo(fileIndex)->deaths;
+    }
+
     return 0;
 }
 
@@ -464,12 +505,14 @@ static void DrawCounters(FileChooseContext* this, s16 fileIndex, u8 alpha) {
     for (int i = 0; i < ARRAY_COUNT(counterData); i += 1) {
         CounterData* data = &counterData[i];
 
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, data->color.r, data->color.g, data->color.b, color_product(data->color.a, alpha));
+        if (ShouldRenderCounter(fileIndex, data->item)) {
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, data->color.r, data->color.g, data->color.b, color_product(data->color.a, alpha));
         
-        SpriteLoad(this, &(data->sprite));
-        SpriteDraw(this, &(data->sprite), LEFT_OFFSET + data->pos.left, TOP_OFFSET + data->pos.top, data->size.width, data->size.height);
+            SpriteLoad(this, &(data->sprite));
+            SpriteDraw(this, &(data->sprite), LEFT_OFFSET + data->pos.left, TOP_OFFSET + data->pos.top, data->size.width, data->size.height);
 
-        //draw count
+            //draw count
+        }
     }
 
     gDPPipeSync(POLY_OPA_DISP++);
@@ -478,7 +521,7 @@ static void DrawCounters(FileChooseContext* this, s16 fileIndex, u8 alpha) {
 
 static void DrawMoreInfo(FileChooseContext* this, s16 fileIndex, u8 alpha) {
     DrawItems(this, fileIndex, alpha);
-    //DrawCounters(this, fileIndex, alpha);
+    DrawCounters(this, fileIndex, alpha);
 }
 
 #define MIN_QUEST (ResourceMgr_GameHasOriginal() ? FS_QUEST_NORMAL : FS_QUEST_MASTER)

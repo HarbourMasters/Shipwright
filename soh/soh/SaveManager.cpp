@@ -422,6 +422,7 @@ void SaveManager::InitMeta(int fileNum) {
     fileMetaInfo[fileNum].isMagicAcquired = gSaveContext.isMagicAcquired;
     fileMetaInfo[fileNum].isDoubleMagicAcquired = gSaveContext.isDoubleMagicAcquired;
     fileMetaInfo[fileNum].rupees = gSaveContext.rupees;
+    fileMetaInfo[fileNum].gsTokens = gSaveContext.inventory.gsTokens;
     fileMetaInfo[fileNum].defense = gSaveContext.inventory.defenseHearts;
     fileMetaInfo[fileNum].health = gSaveContext.health;
 
