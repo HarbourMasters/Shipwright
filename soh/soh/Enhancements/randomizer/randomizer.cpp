@@ -3618,7 +3618,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::InsertHelpHoverText(
                     "Pieces of the Triforce of Courage have been scattered across the world. Find them all to finish the game!\n\n"
                     "When the required amount of pieces have been found, the game is saved and Ganon's Boss key is placed on "
-                    "the Light Arrow Cutscene so you can beat the game by defeating Ganon afterwards if you want to."
+                    "the Light Arrow cutscene so you can beat the game by defeating Ganon afterwards if you want to."
                 );
 
                 if (CVarGetInteger("gTriforceHunt", 0)) {
