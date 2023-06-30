@@ -24,6 +24,8 @@ typedef struct {
     u16 equipment;
     u32 upgrades;
     u8 isMagicAcquired;
+    u8 isDoubleMagicAcquired;
+    s16 rupees;
 } SaveFileMetaInfo;
 
 #ifdef __cplusplus
