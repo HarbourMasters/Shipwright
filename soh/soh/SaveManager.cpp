@@ -418,6 +418,8 @@ void SaveManager::InitMeta(int fileNum) {
         fileMetaInfo[fileNum].inventoryItems[i] = gSaveContext.inventory.items[i];
     }
     fileMetaInfo[fileNum].equipment = gSaveContext.inventory.equipment;
+    fileMetaInfo[fileNum].upgrades = gSaveContext.inventory.upgrades;
+    fileMetaInfo[fileNum].isMagicAcquired = gSaveContext.isMagicAcquired;
     fileMetaInfo[fileNum].defense = gSaveContext.inventory.defenseHearts;
     fileMetaInfo[fileNum].health = gSaveContext.health;
 

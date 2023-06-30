@@ -108,7 +108,7 @@ static ItemData itemData[59] = {
 
     {CREATE_SPRITE_32(dgGoronsBraceletIconTex, 71),  ITEM_BRACELET,         UPG_IT_POS(0, 0), SIZE_NORMAL},
     {CREATE_SPRITE_32(dgSilverScaleIconTex, 74),     ITEM_SCALE_SILVER,     UPG_IT_POS(1, 0), SIZE_NORMAL},
-    {CREATE_SPRITE_24(dgSmallMagicJarIconTex, 97),   ITEM_MAGIC_SMALL,      UPG_IT_POS(2, 0), SIZE_NORMAL},
+    {CREATE_SPRITE_24(dgSmallMagicJarIconTex, 97),   ITEM_SINGLE_MAGIC,     UPG_IT_POS(2, 0), SIZE_NORMAL},
     {CREATE_SPRITE_24(dgGerudosCardIconTex, 91),     ITEM_GERUDO_CARD,      UPG_IT_POS(1, 1), SIZE_NORMAL},
     {CREATE_SPRITE_24(dgStoneOfAgonyIconTex, 90),    ITEM_STONE_OF_AGONY,   UPG_IT_POS(2, 1), SIZE_NORMAL},
     
@@ -161,31 +161,43 @@ u8 HasItem(s16 fileIndex, u8 item) {
     }
 
     if (item >= ITEM_SONG_MINUET && item <= ITEM_SONG_STORMS) {
-        return Save_GetSaveMetaInfo(fileIndex)->questItems & (1 << (item - 0x54));
+        return (Save_GetSaveMetaInfo(fileIndex)->questItems & (1 << (item - 0x54))) != 0;
     }
 
     if (item >= ITEM_MEDALLION_FOREST && item <= ITEM_MEDALLION_LIGHT) {
-        return Save_GetSaveMetaInfo(fileIndex)->questItems & (1 << (item - 0x66));
+        return (Save_GetSaveMetaInfo(fileIndex)->questItems & (1 << (item - 0x66))) != 0;
     }
 
     if (item >= ITEM_KOKIRI_EMERALD && item <= ITEM_GERUDO_CARD) {
-        return Save_GetSaveMetaInfo(fileIndex)->questItems & (1 << (item - 0x5A));
+        return (Save_GetSaveMetaInfo(fileIndex)->questItems & (1 << (item - 0x5A))) != 0;
     }
 
     if (item >= ITEM_SWORD_KOKIRI && item <= ITEM_SWORD_BGS) {
-        return Save_GetSaveMetaInfo(fileIndex)->equipment & (1 << (item - 0x3B));
+        return (Save_GetSaveMetaInfo(fileIndex)->equipment & (1 << (item - 0x3B))) != 0;
     }
 
     if (item >= ITEM_SHIELD_DEKU && item <= ITEM_SHIELD_MIRROR) {
-        return Save_GetSaveMetaInfo(fileIndex)->equipment & (1 << (item - 0x3E + 4));
+        return (Save_GetSaveMetaInfo(fileIndex)->equipment & (1 << (item - 0x3E + 4))) != 0;
     }
 
     if (item >= ITEM_TUNIC_KOKIRI && item <= ITEM_TUNIC_ZORA) {
-        return Save_GetSaveMetaInfo(fileIndex)->equipment & (1 << (item - 0x41 + 8));
+        return (Save_GetSaveMetaInfo(fileIndex)->equipment & (1 << (item - 0x41 + 8))) != 0;
     }
 
     if (item >= ITEM_BOOTS_KOKIRI && item <= ITEM_BOOTS_HOVER) {
-        return Save_GetSaveMetaInfo(fileIndex)->equipment & (1 << (item - 0x44 + 12));
+        return (Save_GetSaveMetaInfo(fileIndex)->equipment & (1 << (item - 0x44 + 12))) != 0;
+    }
+
+    if (item == ITEM_SINGLE_MAGIC) {
+        return Save_GetSaveMetaInfo(fileIndex)->isMagicAcquired;
+    }
+
+    if (item == ITEM_BRACELET) {
+        return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_STRENGTH]) >> gUpgradeShifts[UPG_STRENGTH]) != 0;
+    }
+
+    if (item == ITEM_SCALE_SILVER) {
+        return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_SCALE]) >> gUpgradeShifts[UPG_SCALE]) != 0;
     }
 
     return 0;

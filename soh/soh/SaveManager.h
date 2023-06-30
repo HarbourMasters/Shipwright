@@ -22,6 +22,8 @@ typedef struct {
 
     u8 inventoryItems[24];
     u16 equipment;
+    u32 upgrades;
+    u8 isMagicAcquired;
 } SaveFileMetaInfo;
 
 #ifdef __cplusplus
