@@ -33,14 +33,15 @@ typedef struct {
 
 typedef struct {
     Sprite sprite;
+    Color_RGBA8 color;
     u8 item;
     ItemPosition pos;
     ItemSize size;
 } ItemData;
 
-#define CREATE_SPRITE_32(iconTex, spriteId) { iconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, spriteId }
-#define CREATE_SPRITE_24(iconTex, spriteId) { iconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b, spriteId }
-#define CREATE_SPRITE_SONG { dgSongNoteTex, 16, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b/*G_IM_FMT_IA, G_IM_SIZ_8b*/, 100 }
+#define CREATE_SPRITE_32(iconTex, spriteId) { iconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, spriteId }, {0xFF, 0xFF, 0xFF, 0xFF}
+#define CREATE_SPRITE_24(iconTex, spriteId) { iconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b, spriteId }, {0xFF, 0xFF, 0xFF, 0xFF}
+#define CREATE_SPRITE_SONG(colorR, colorG, colorB) { dgSongNoteTex, 16, 24, G_IM_FMT_IA, G_IM_SIZ_8b, 100 }, {colorR, colorG, colorB, 0xFF}
 
 #define ICON_SIZE 12
 #define SONG_WIDTH 8
@@ -112,18 +113,18 @@ static ItemData itemData[59] = {
     {CREATE_SPRITE_24(dgGerudosCardIconTex, 91),     ITEM_GERUDO_CARD,      UPG_IT_POS(1, 1), SIZE_NORMAL},
     {CREATE_SPRITE_24(dgStoneOfAgonyIconTex, 90),    ITEM_STONE_OF_AGONY,   UPG_IT_POS(2, 1), SIZE_NORMAL},
     
-    {CREATE_SPRITE_SONG,                             ITEM_SONG_LULLABY,     SNG_IT_POS(0, 0), SIZE_SONG},
-    {CREATE_SPRITE_SONG,                             ITEM_SONG_EPONA,       SNG_IT_POS(1, 0), SIZE_SONG},
-    {CREATE_SPRITE_SONG,                             ITEM_SONG_SARIA,       SNG_IT_POS(2, 0), SIZE_SONG},
-    {CREATE_SPRITE_SONG,                             ITEM_SONG_SUN,         SNG_IT_POS(3, 0), SIZE_SONG},
-    {CREATE_SPRITE_SONG,                             ITEM_SONG_TIME,        SNG_IT_POS(4, 0), SIZE_SONG},
-    {CREATE_SPRITE_SONG,                             ITEM_SONG_STORMS,      SNG_IT_POS(5, 0), SIZE_SONG},
-    {CREATE_SPRITE_SONG,                             ITEM_SONG_MINUET,      SNG_IT_POS(0, 1), SIZE_SONG},
-    {CREATE_SPRITE_SONG,                             ITEM_SONG_BOLERO,      SNG_IT_POS(1, 1), SIZE_SONG},
-    {CREATE_SPRITE_SONG,                             ITEM_SONG_SERENADE,    SNG_IT_POS(2, 1), SIZE_SONG},
-    {CREATE_SPRITE_SONG,                             ITEM_SONG_REQUIEM,     SNG_IT_POS(3, 1), SIZE_SONG},
-    {CREATE_SPRITE_SONG,                             ITEM_SONG_NOCTURNE,    SNG_IT_POS(4, 1), SIZE_SONG},
-    {CREATE_SPRITE_SONG,                             ITEM_SONG_PRELUDE,     SNG_IT_POS(5, 1), SIZE_SONG},
+    {CREATE_SPRITE_SONG(224, 107, 255),              ITEM_SONG_LULLABY,     SNG_IT_POS(0, 0), SIZE_SONG},
+    {CREATE_SPRITE_SONG(255, 195, 60),               ITEM_SONG_EPONA,       SNG_IT_POS(1, 0), SIZE_SONG},
+    {CREATE_SPRITE_SONG(127, 255, 137),              ITEM_SONG_SARIA,       SNG_IT_POS(2, 0), SIZE_SONG},
+    {CREATE_SPRITE_SONG(255, 255, 60),               ITEM_SONG_SUN,         SNG_IT_POS(3, 0), SIZE_SONG},
+    {CREATE_SPRITE_SONG(119, 236, 255),              ITEM_SONG_TIME,        SNG_IT_POS(4, 0), SIZE_SONG},
+    {CREATE_SPRITE_SONG(165, 165, 165),              ITEM_SONG_STORMS,      SNG_IT_POS(5, 0), SIZE_SONG},
+    {CREATE_SPRITE_SONG(150, 255, 100),              ITEM_SONG_MINUET,      SNG_IT_POS(0, 1), SIZE_SONG},
+    {CREATE_SPRITE_SONG(255, 80,  40),               ITEM_SONG_BOLERO,      SNG_IT_POS(1, 1), SIZE_SONG},
+    {CREATE_SPRITE_SONG(100, 150, 255),              ITEM_SONG_SERENADE,    SNG_IT_POS(2, 1), SIZE_SONG},
+    {CREATE_SPRITE_SONG(255, 160, 0),                ITEM_SONG_REQUIEM,     SNG_IT_POS(3, 1), SIZE_SONG},
+    {CREATE_SPRITE_SONG(255, 100, 255),              ITEM_SONG_NOCTURNE,    SNG_IT_POS(4, 1), SIZE_SONG},
+    {CREATE_SPRITE_SONG(255, 240, 100),              ITEM_SONG_PRELUDE,     SNG_IT_POS(5, 1), SIZE_SONG},
 };
 
 static u8 color_product(u8 c1, u8 c2) {
@@ -132,15 +133,7 @@ static u8 color_product(u8 c1, u8 c2) {
     return (u8)div255;
 }
 
-static const Color_RGBA8 WHITE = {0xFF, 0xFF, 0xFF, 0xFF};
-static const Color_RGBA8 DIM   = {0x40, 0x40, 0x40, 0x90};
-
-struct Color_RGBA8 {
-    u8 r;
-    u8 g;
-    u8 b;
-    u8 a;
-};
+static const Color_RGBA8 DIM = {0x40, 0x40, 0x40, 0x90};
 
 void SpriteLoad(FileChooseContext* this, Sprite* sprite);
 void SpriteDraw(FileChooseContext* this, Sprite* sprite, int left, int top, int width, int height);
@@ -212,9 +205,9 @@ static void Draw_Items(FileChooseContext* this, s16 fileIndex, u8 alpha) {
         ItemData* data = &itemData[i];
 
         if (HasItem(fileIndex, data->item) != 0) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, WHITE.r, WHITE.g, WHITE.b, color_product(WHITE.a, alpha));
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, data->color.r, data->color.g, data->color.b, color_product(data->color.a, alpha));
         } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, DIM.r, DIM.g, DIM.b, color_product(DIM.a, alpha));
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, color_product(data->color.r, DIM.r), color_product(data->color.g, DIM.g), color_product(data->color.b, DIM.b), color_product(color_product(data->color.a, DIM.a), alpha));
         }
 
         SpriteLoad(this, &(data->sprite));
@@ -475,7 +468,12 @@ void FileChoose_FinishFadeIn(GameState* thisx) {
 void SpriteLoad(FileChooseContext* this, Sprite* sprite) {
     OPEN_DISPS(this->state.gfxCtx);
 
-    if (sprite->im_siz == G_IM_SIZ_16b) {
+    if (sprite->im_siz == G_IM_SIZ_8b) {
+        gDPLoadTextureBlock(POLY_OPA_DISP++, sprite->tex, sprite->im_fmt,
+                            G_IM_SIZ_8b, // @TEMP until I figure out how to use sprite->im_siz
+                            sprite->width, sprite->height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                            G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    } else if (sprite->im_siz == G_IM_SIZ_16b) {
         gDPLoadTextureBlock(POLY_OPA_DISP++, sprite->tex, sprite->im_fmt,
                             G_IM_SIZ_16b, // @TEMP until I figure out how to use sprite->im_siz
                             sprite->width, sprite->height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
