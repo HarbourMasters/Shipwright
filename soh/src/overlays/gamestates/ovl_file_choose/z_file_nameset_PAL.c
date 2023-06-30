@@ -1004,12 +1004,12 @@ void FileChoose_DrawOptionsImpl(GameState* thisx) {
         }
     }
 
-    gDPPipeSync(POLY_OPA_DISP++);
-
     // Pal N64 needs to skip over the extra german vertices to get to brightness vertices
     if (isPalN64) {
         vtx += 8;
     }
+
+    gDPPipeSync(POLY_OPA_DISP++);
 
     // check brightness bars
     gDPLoadTextureBlock_4b(POLY_OPA_DISP++, gFileSelBrightnessCheckTex, G_IM_FMT_IA, 96, 16, 0,
