@@ -599,6 +599,19 @@ void RegisterMirrorModeHandler() {
     });
 }
 
+void RegisterTriforceHuntWarp() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        if (GameInteractor::State::TriforceHuntCreditsWarpActive && !GameInteractor::IsGameplayPaused()) {
+            Play_PerformSave(gPlayState);
+            gPlayState->nextEntranceIndex = 0x6B;
+            gSaveContext.nextCutsceneIndex = 0xFFF2;
+            gPlayState->sceneLoadFlag = 0x14;
+            gPlayState->fadeTransition = 3;
+            GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -621,4 +634,5 @@ void InitMods() {
     RegisterBonkDamage();
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
+    RegisterTriforceHuntWarp();
 }

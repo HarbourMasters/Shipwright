@@ -80,6 +80,10 @@ std::vector<ItemTrackerItem> gregItems = {
     ITEM_TRACKER_ITEM(ITEM_RUPEE_GREEN, 0, DrawItem),
 };
 
+std::vector<ItemTrackerItem> triforcePieces = {
+    ITEM_TRACKER_ITEM(ITEM_TRIFORCE_PIECE, 0, DrawItem),
+};
+
 std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsHorizontal = {
     { SCENE_YDAN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
     { SCENE_DDAN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
@@ -492,7 +496,12 @@ void DrawQuest(ItemTrackerItem item) {
 };
 
 void DrawItem(ItemTrackerItem item) {
-    uint32_t actualItemId = INV_CONTENT(item.id);
+    uint32_t actualItemId;
+    if (item.id != ITEM_TRIFORCE_PIECE) {
+        actualItemId = INV_CONTENT(item.id);
+    } else {
+        item.id = item.id;
+    }
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     bool hasItem = actualItemId != ITEM_NONE;
 
@@ -533,6 +542,11 @@ void DrawItem(ItemTrackerItem item) {
         case ITEM_RUPEE_GREEN:
             actualItemId = item.id;
             hasItem = Flags_GetRandomizerInf(RAND_INF_GREG_FOUND);
+            break;
+        case ITEM_TRIFORCE_PIECE:
+            actualItemId = ITEM_MILK_HALF;
+            hasItem = (bool)OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT);
+            item = actualItemTrackerItemMap[actualItemId];
             break;
     }
 
@@ -863,6 +877,19 @@ void UpdateVectors() {
         mainWindowItems.insert(mainWindowItems.end(), gregItems.begin(), gregItems.end());
     }
 
+    // If we're adding triforce pieces to the main window
+    if (CVarGetInteger("gItemTrackerTriforcePiecesDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) {
+        // If Greg isn't on the main window, add empty items to place the triforce pieces on a new row.
+        if (CVarGetInteger("gItemTrackerGregDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) != SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) {
+            while (mainWindowItems.size() % 6) {
+                mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
+            }
+        }
+
+        // Add triforce pieces
+        mainWindowItems.insert(mainWindowItems.end(), triforcePieces.begin(), triforcePieces.end());
+    }
+
     shouldUpdateVectors = false;
 }
 
@@ -1076,6 +1103,10 @@ void ItemTrackerSettingsWindow::DrawElement() {
         }
     }
     if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Greg", "gItemTrackerGregDisplayType", extendedDisplayTypes, SECTION_DISPLAY_EXTENDED_HIDDEN)) {
+        shouldUpdateVectors = true;
+    }
+
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Triforce Pieces", "gItemTrackerTriforcePiecesDisplayType", displayTypes, SECTION_DISPLAY_HIDDEN)) {
         shouldUpdateVectors = true;
     }
 

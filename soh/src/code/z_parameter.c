@@ -2569,15 +2569,10 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
     if (item == RG_TRIFORCE_PIECE) {
         gSaveContext.triforcePiecesCollected++;
 
-        // Teleport to credits
-        /*
+        // Teleport to credits when goal is reached.
         if (gSaveContext.triforcePiecesCollected >= Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED)) {
-            play->nextEntranceIndex = 0x6B;
-            gSaveContext.nextCutsceneIndex = 0xFFF2;
-            play->sceneLoadFlag = 0x14;
-            play->fadeTransition = 3;
+            GameInteractor_SetTriforceHuntCreditsWarpActive(true);
         }
-        */
 
         return Return_Item_Entry(giEntry, RG_NONE);
     }

@@ -9,8 +9,6 @@
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
-#include "objects/object_triforce_spot/object_triforce_spot.h"
-#include "objects/object_triforce_spot/object_triforce_spot.h"
 #include "soh_assets.h"
 
 extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEntry) {

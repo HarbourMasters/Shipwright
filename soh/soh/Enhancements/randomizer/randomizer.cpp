@@ -3087,8 +3087,8 @@ void GenerateRandomizerImgui(std::string seed = "") {
     }
 
     cvarSettings[RSK_TRIFORCE_HUNT] = CVarGetInteger("gTriforceHunt", 0);
-    cvarSettings[RSK_TRIFORCE_HUNT_PIECES_TOTAL] = CVarGetInteger("gTriforceHuntTotalPieces", 0);
-    cvarSettings[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = CVarGetInteger("gTriforceHuntRequiredPieces", 0);
+    cvarSettings[RSK_TRIFORCE_HUNT_PIECES_TOTAL] = CVarGetInteger("gTriforceHuntTotalPieces", 20);
+    cvarSettings[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = CVarGetInteger("gTriforceHuntRequiredPieces", 10);
 
     // Enable if any of the entrance rando options are enabled.
     cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVarGetInteger("gRandomizeShuffleDungeonsEntrances", RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ||
