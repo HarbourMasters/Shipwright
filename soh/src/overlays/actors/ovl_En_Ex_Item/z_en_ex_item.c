@@ -173,7 +173,8 @@ void EnExItem_WaitForObject(EnExItem* this, PlayState* play) {
             case EXITEM_BOMBCHUS_BOWLING:
                 this->unk_17C = func_8002EBCC;
                 if (gSaveContext.n64ddFlag) {
-                    this->giDrawId = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10).gid;
+                    this->giDrawId =
+                        Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10).gid;
                 } else {
                     this->giDrawId = GID_BOMBCHU;
                 }
@@ -397,7 +398,7 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, PlayState* play) {
         }
     } else {
         GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
-        s32 getItemId;
+        s32          getItemId;
 
         this->actor.draw = NULL;
         func_8002DF54(play, NULL, 7);
@@ -434,7 +435,6 @@ void EnExItem_TargetPrizeGive(EnExItem* this, PlayState* play) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 2000.0f, 1000.0f);
         }
-
     }
 }
 
@@ -562,8 +562,7 @@ void EnExItem_DrawKey(EnExItem* this, PlayState* play, s32 index) {
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_41Opa(play->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(keySegments[index]));
     gSPDisplayList(POLY_OPA_DISP++, gItemDropDL);
 

@@ -17,54 +17,54 @@ typedef void (*EnOssanStateFunc)(struct EnOssan*, PlayState*, Player*);
 #define ColChanMix(c1, c2, m) (c1 - (s32)(c2 * m)) & 0xFF
 
 typedef struct EnOssan {
-    /* 0x0000 */ Actor actor;
-    /* 0x014C */ SkelAnime skelAnime;
+    /* 0x0000 */ Actor             actor;
+    /* 0x014C */ SkelAnime         skelAnime;
     /* 0x0190 */ EnOssanActionFunc actionFunc;
     /* 0x0194 */ void (*obj3ToSeg6Func)(struct EnOssan*, PlayState*);
     /* 0x0198 */ ColliderCylinder collider; // unused
-    /* 0x01E4 */ s16 timer;
-    /* 0x01E6 */ s16 delayTimer;
-    /* 0x01E8 */ s8 objBankIndex1;
-    /* 0x01E9 */ s8 objBankIndex2;
-    /* 0x01EA */ s8 objBankIndex3;
-    /* 0x01EB */ u8 happyMaskShopState;
-    /* 0x01EC */ u8 happyMaskShopkeeperEyeIdx;
-    /* 0x01EE */ s16 headRot;
-    /* 0x01F0 */ s16 headTargetRot;
-    /* 0x01F2 */ s16 eyeTextureIdx;
-    /* 0x01F4 */ s16 blinkTimer;
+    /* 0x01E4 */ s16              timer;
+    /* 0x01E6 */ s16              delayTimer;
+    /* 0x01E8 */ s8               objBankIndex1;
+    /* 0x01E9 */ s8               objBankIndex2;
+    /* 0x01EA */ s8               objBankIndex3;
+    /* 0x01EB */ u8               happyMaskShopState;
+    /* 0x01EC */ u8               happyMaskShopkeeperEyeIdx;
+    /* 0x01EE */ s16              headRot;
+    /* 0x01F0 */ s16              headTargetRot;
+    /* 0x01F2 */ s16              eyeTextureIdx;
+    /* 0x01F4 */ s16              blinkTimer;
     /* 0x01F8 */ void (*blinkFunc)(struct EnOssan*);
-    /* 0x01FC */ s16 stateFlag;
-    /* 0x01FE */ s16 tempStateFlag;
-    /* 0x0200 */ EnGirlA* shelfSlots[8];
+    /* 0x01FC */ s16                  stateFlag;
+    /* 0x01FE */ s16                  tempStateFlag;
+    /* 0x0200 */ EnGirlA*             shelfSlots[8];
     // Shelves are indexed as such:
     /* 7 5  3 1 */
     /* 6 4  2 0 */
-    /* 0x0220 */ EnTana* shelves;
-    /* 0x0224 */ s32 stickAccumX;
-    /* 0x0228 */ s32 stickAccumY;
-    /* 0x022C */ u8 moveHorizontal;
-    /* 0x022D */ u8 moveVertical;
-    /* 0x0230 */ f32 cursorX;
-    /* 0x0234 */ f32 cursorY;
-    /* 0x0238 */ f32 cursorZ;
-    /* 0x023C */ u32 cursorColorR;
-    /* 0x0240 */ u32 cursorColorG;
-    /* 0x0244 */ u32 cursorColorB;
-    /* 0x0248 */ u32 cursorColorA;
-    /* 0x024C */ f32 cursorAnimTween;
-    /* 0x0250 */ u8 cursorAnimState;
-    /* 0x0251 */ u8 drawCursor;
-    /* 0x0252 */ u8 cursorIndex;
+    /* 0x0220 */ EnTana*              shelves;
+    /* 0x0224 */ s32                  stickAccumX;
+    /* 0x0228 */ s32                  stickAccumY;
+    /* 0x022C */ u8                   moveHorizontal;
+    /* 0x022D */ u8                   moveVertical;
+    /* 0x0230 */ f32                  cursorX;
+    /* 0x0234 */ f32                  cursorY;
+    /* 0x0238 */ f32                  cursorZ;
+    /* 0x023C */ u32                  cursorColorR;
+    /* 0x0240 */ u32                  cursorColorG;
+    /* 0x0244 */ u32                  cursorColorB;
+    /* 0x0248 */ u32                  cursorColorA;
+    /* 0x024C */ f32                  cursorAnimTween;
+    /* 0x0250 */ u8                   cursorAnimState;
+    /* 0x0251 */ u8                   drawCursor;
+    /* 0x0252 */ u8                   cursorIndex;
     /* 0x0254 */ StickDirectionPrompt stickLeftPrompt;
     /* 0x028C */ StickDirectionPrompt stickRightPrompt;
-    /* 0x02C4 */ f32 arrowAnimTween;
-    /* 0x02C4 */ f32 stickAnimTween;
-    /* 0x02CC */ u8 arrowAnimState;
-    /* 0x02CD */ u8 stickAnimState;
-    /* 0x02D0 */ f32 shopItemSelectedTween;
-    /* 0x02D4 */ f32 cameraFaceAngle; // stored in degrees
-} EnOssan; // size = 0x02D8
+    /* 0x02C4 */ f32                  arrowAnimTween;
+    /* 0x02C4 */ f32                  stickAnimTween;
+    /* 0x02CC */ u8                   arrowAnimState;
+    /* 0x02CD */ u8                   stickAnimState;
+    /* 0x02D0 */ f32                  shopItemSelectedTween;
+    /* 0x02D4 */ f32                  cameraFaceAngle; // stored in degrees
+} EnOssan;                                             // size = 0x02D8
 
 typedef enum {
     /* 00 */ OSSAN_TYPE_KOKIRI,

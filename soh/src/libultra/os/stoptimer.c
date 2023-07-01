@@ -2,7 +2,7 @@
 
 s32 osStopTimer(OSTimer* timer) {
     register u32 prevInt;
-    OSTimer* next;
+    OSTimer*     next;
 
     if (!timer->next) {
         return -1;

@@ -2,7 +2,8 @@
 #include "objects/object_fz/object_fz.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
+#define FLAGS \
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
 
 void EnFz_Init(Actor* thisx, PlayState* play);
 void EnFz_Destroy(Actor* thisx, PlayState* play);
@@ -213,10 +214,10 @@ void EnFz_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void EnFz_UpdateTargetPos(EnFz* this, PlayState* play) {
-    Vec3f pos;
-    Vec3f hitPos;
-    Vec3f vec1;
-    s32 bgId;
+    Vec3f          pos;
+    Vec3f          hitPos;
+    Vec3f          vec1;
+    s32            bgId;
     CollisionPoly* hitPoly;
 
     pos.x = this->actor.world.pos.x;
@@ -229,8 +230,8 @@ void EnFz_UpdateTargetPos(EnFz* this, PlayState* play) {
     vec1.z = 220.0f;
     Matrix_MultVec3f(&vec1, &this->wallHitPos);
 
-    if (BgCheck_EntityLineTest1(&play->colCtx, &pos, &this->wallHitPos, &hitPos, &hitPoly, true, false, false,
-                                true, &bgId)) {
+    if (BgCheck_EntityLineTest1(&play->colCtx, &pos, &this->wallHitPos, &hitPos, &hitPoly, true, false, false, true,
+                                &bgId)) {
         Math_Vec3f_Copy(&this->wallHitPos, &hitPos);
     }
 
@@ -249,14 +250,14 @@ s32 EnFz_ReachedTarget(EnFz* this, Vec3f* vec) {
 }
 
 void EnFz_Damaged(EnFz* this, PlayState* play, Vec3f* vec, s32 numEffects, f32 unkFloat) {
-    s32 i;
-    Vec3f pos;
-    Vec3f vel;
-    Vec3f accel;
+    s32         i;
+    Vec3f       pos;
+    Vec3f       vel;
+    Vec3f       accel;
     Color_RGBA8 primColor;
     Color_RGBA8 envColor;
-    f32 scale;
-    s32 life;
+    f32         scale;
+    s32         life;
 
     primColor.r = 155;
     primColor.g = 255;
@@ -323,9 +324,8 @@ void EnFz_SpawnIceSmokeActiveState(EnFz* this) {
 void EnFz_ApplyDamage(EnFz* this, PlayState* play) {
     Vec3f vec;
 
-    if (this->isMoving &&
-        ((this->actor.bgCheckFlags & 8) ||
-         (Actor_TestFloorInDirection(&this->actor, play, 60.0f, this->actor.world.rot.y) == 0))) {
+    if (this->isMoving && ((this->actor.bgCheckFlags & 8) ||
+                           (Actor_TestFloorInDirection(&this->actor, play, 60.0f, this->actor.world.rot.y) == 0))) {
         this->actor.bgCheckFlags &= ~8;
         this->isMoving = false;
         this->speedXZ = 0.0f;
@@ -501,8 +501,8 @@ void EnFz_BlowSmoke(EnFz* this, PlayState* play) {
     Vec3f pos;
     Vec3f velocity;
     Vec3f accel;
-    u8 isTimerMod8;
-    s16 primAlpha;
+    u8    isTimerMod8;
+    s16   primAlpha;
 
     if (this->timer == 0) {
         EnFz_SetupDisappear(this);
@@ -612,8 +612,8 @@ void EnFz_BlowSmokeStationary(EnFz* this, PlayState* play) {
     Vec3f pos;
     Vec3f velocity;
     Vec3f accel;
-    u8 isTimerMod8;
-    s16 primAlpha;
+    u8    isTimerMod8;
+    s16   primAlpha;
 
     if (this->counter & 0xC0) {
         EnFz_SetYawTowardsPlayer(this);
@@ -731,8 +731,7 @@ void EnFz_Draw(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, play->state.frames & 0x7F, 32, 32, 1, 0,
                                     (2 * play->state.frames) & 0x7F, 32, 32));
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gDPSetCombineLERP(POLY_XLU_DISP++, TEXEL1, PRIMITIVE, PRIM_LOD_FRAC, TEXEL0, TEXEL1, TEXEL0, PRIMITIVE, TEXEL0,
                           PRIMITIVE, ENVIRONMENT, COMBINED, ENVIRONMENT, COMBINED, 0, ENVIRONMENT, 0);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 128, 155, 255, 255, 255);
@@ -746,7 +745,7 @@ void EnFz_Draw(Actor* thisx, PlayState* play) {
 
 void EnFz_SpawnIceSmokeNoFreeze(EnFz* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel, f32 xyScale) {
     EnFzEffectSsIceSmoke* iceSmoke = this->iceSmoke;
-    s16 i;
+    s16                   i;
 
     for (i = 0; i < ARRAY_COUNT(this->iceSmoke); i++) {
         if (iceSmoke->type == 0) {
@@ -769,7 +768,7 @@ void EnFz_SpawnIceSmokeNoFreeze(EnFz* this, Vec3f* pos, Vec3f* velocity, Vec3f* 
 void EnFz_SpawnIceSmokeFreeze(EnFz* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel, f32 xyScale, f32 xyScaleTarget,
                               s16 primAlpha, u8 isTimerMod8) {
     EnFzEffectSsIceSmoke* iceSmoke = this->iceSmoke;
-    s16 i;
+    s16                   i;
 
     for (i = 0; i < ARRAY_COUNT(this->iceSmoke); i++) {
         if (iceSmoke->type == 0) {
@@ -793,8 +792,8 @@ void EnFz_SpawnIceSmokeFreeze(EnFz* this, Vec3f* pos, Vec3f* velocity, Vec3f* ac
 
 void EnFz_UpdateIceSmoke(EnFz* this, PlayState* play) {
     EnFzEffectSsIceSmoke* iceSmoke = this->iceSmoke;
-    s16 i;
-    Vec3f pos;
+    s16                   i;
+    Vec3f                 pos;
 
     for (i = 0; i < ARRAY_COUNT(this->iceSmoke); i++) {
         if (iceSmoke->type) {
@@ -859,9 +858,9 @@ void EnFz_UpdateIceSmoke(EnFz* this, PlayState* play) {
 
 void EnFz_DrawIceSmoke(EnFz* this, PlayState* play) {
     EnFzEffectSsIceSmoke* iceSmoke = this->iceSmoke;
-    s16 i;
-    GraphicsContext* gfxCtx = play->state.gfxCtx;
-    u8 texLoaded = false;
+    s16                   i;
+    GraphicsContext*      gfxCtx = play->state.gfxCtx;
+    u8                    texLoaded = false;
 
     OPEN_DISPS(gfxCtx);
 
@@ -885,8 +884,7 @@ void EnFz_DrawIceSmoke(EnFz* this, PlayState* play) {
             Matrix_Translate(iceSmoke->pos.x, iceSmoke->pos.y, iceSmoke->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&play->billboardMtxF);
             Matrix_Scale(iceSmoke->xyScale, iceSmoke->xyScale, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gFreezardSteamDL));
         }
 

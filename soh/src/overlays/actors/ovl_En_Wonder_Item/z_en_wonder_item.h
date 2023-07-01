@@ -9,24 +9,24 @@ struct EnWonderItem;
 typedef void (*EnWonderItemUpdateFunc)(struct EnWonderItem*, PlayState*);
 
 typedef struct EnWonderItem {
-    /* 0x0000 */ Actor actor;
+    /* 0x0000 */ Actor                  actor;
     /* 0x014C */ EnWonderItemUpdateFunc updateFunc;
-    /* 0x0150 */ f32 unkHeight; // sets height of dummied out mode 4 
-    /* 0x0154 */ s16 wonderMode;
-    /* 0x0156 */ s16 itemDrop;
-    /* 0x0158 */ s16 numTagPoints;
-    /* 0x015A */ s16 dropCount;
-    /* 0x015C */ s16 timer;
-    /* 0x015E */ s16 tagFlags;
-    /* 0x015A */ s16 tagCount;
-    /* 0x0162 */ s16 switchFlag;
-    /* 0x0164 */ char unk_164[4];
-    /* 0x0168 */ s16 nextTag;
-    /* 0x016A */ s16 timerMod;
-    /* 0x016C */ Vec3f unkPos; // set to initial position by mode bomb soldier, then never used.
-    /* 0x0178 */ char unk_178[8];
-    /* 0x0180 */ ColliderCylinder collider;
-    /* 0x01CC */ char unk_1CC[4];
+    /* 0x0150 */ f32                    unkHeight; // sets height of dummied out mode 4
+    /* 0x0154 */ s16                    wonderMode;
+    /* 0x0156 */ s16                    itemDrop;
+    /* 0x0158 */ s16                    numTagPoints;
+    /* 0x015A */ s16                    dropCount;
+    /* 0x015C */ s16                    timer;
+    /* 0x015E */ s16                    tagFlags;
+    /* 0x015A */ s16                    tagCount;
+    /* 0x0162 */ s16                    switchFlag;
+    /* 0x0164 */ char                   unk_164[4];
+    /* 0x0168 */ s16                    nextTag;
+    /* 0x016A */ s16                    timerMod;
+    /* 0x016C */ Vec3f                  unkPos; // set to initial position by mode bomb soldier, then never used.
+    /* 0x0178 */ char                   unk_178[8];
+    /* 0x0180 */ ColliderCylinder       collider;
+    /* 0x01CC */ char                   unk_1CC[4];
 } EnWonderItem; // size = 0x01D0
 
 typedef enum {

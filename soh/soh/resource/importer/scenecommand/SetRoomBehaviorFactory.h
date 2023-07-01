@@ -5,8 +5,8 @@
 namespace LUS {
 class SetRoomBehaviorFactory : public SceneCommandFactory {
   public:
-    std::shared_ptr<IResource>
-    ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) override;
+    std::shared_ptr<IResource> ReadResource(std::shared_ptr<ResourceInitData> initData,
+                                            std::shared_ptr<BinaryReader>     reader) override;
 };
 
 class SetRoomBehaviorFactoryV0 : public SceneCommandVersionFactory {

@@ -50,8 +50,8 @@ static InitChainEntry sInitChain[] = {
 
 void BgSpot00Hanebasi_Init(Actor* thisx, PlayState* play) {
     BgSpot00Hanebasi* this = (BgSpot00Hanebasi*)thisx;
-    s32 pad;
-    Vec3f chainPos;
+    s32              pad;
+    Vec3f            chainPos;
     CollisionHeader* colHeader = NULL;
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
@@ -82,7 +82,8 @@ void BgSpot00Hanebasi_Init(Actor* thisx, PlayState* play) {
         if (gSaveContext.sceneSetupIndex != 6) {
             // Don't close the bridge in rando to accomodate hyrule castle exit
             if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && CHECK_QUEST_ITEM(QUEST_GORON_RUBY) &&
-                CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE) && !Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE) && !(gSaveContext.n64ddFlag)) {
+                CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE) && !Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE) &&
+                !(gSaveContext.n64ddFlag)) {
                 this->dyna.actor.shape.rot.x = -0x4000;
             }
         }
@@ -167,8 +168,8 @@ void BgSpot00Hanebasi_DoNothing(BgSpot00Hanebasi* this, PlayState* play) {
 
 void BgSpot00Hanebasi_DrawbridgeRiseAndFall(BgSpot00Hanebasi* this, PlayState* play) {
     BgSpot00Hanebasi* child;
-    Actor* childsChild;
-    s16 angle = 80;
+    Actor*            childsChild;
+    s16               angle = 80;
 
     if (Math_ScaledStepToS(&this->dyna.actor.shape.rot.x, this->destAngle, 80)) {
         this->actionFunc = BgSpot00Hanebasi_DrawbridgeWait;
@@ -214,7 +215,8 @@ void BgSpot00Hanebasi_Update(Actor* thisx, PlayState* play) {
     if (this->dyna.actor.params == DT_DRAWBRIDGE) {
         if (play->sceneNum == SCENE_SPOT00) {
             if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && CHECK_QUEST_ITEM(QUEST_GORON_RUBY) &&
-                CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE) && !Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE) && LINK_IS_CHILD) {
+                CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE) && !Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE) &&
+                LINK_IS_CHILD) {
                 Player* player = GET_PLAYER(play);
 
                 if ((player->actor.world.pos.x > -450.0f) && (player->actor.world.pos.x < 450.0f) &&
@@ -259,8 +261,8 @@ void BgSpot00Hanebasi_Update(Actor* thisx, PlayState* play) {
 
 void BgSpot00Hanebasi_DrawTorches(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
-    f32 angle;
-    s32 i;
+    f32        angle;
+    s32        i;
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -287,8 +289,7 @@ void BgSpot00Hanebasi_DrawTorches(Actor* thisx, PlayState* play2) {
         Matrix_RotateY(angle, MTXMODE_APPLY);
         Matrix_Scale(sTorchFlameScale, sTorchFlameScale, sTorchFlameScale, MTXMODE_APPLY);
 
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
 
         FrameInterpolation_RecordCloseChild();
@@ -305,8 +306,7 @@ void BgSpot00Hanebasi_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (thisx->params == DT_DRAWBRIDGE) {
         gSPDisplayList(POLY_OPA_DISP++, gHyruleFieldCastleDrawbridgeDL);

@@ -40,7 +40,7 @@ static InitChainEntry sInitChain[] = {
 void BgSpot18Shutter_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     BgSpot18Shutter* this = (BgSpot18Shutter*)thisx;
-    s32 param = (this->dyna.actor.params >> 8) & 1;
+    s32              param = (this->dyna.actor.params >> 8) & 1;
     CollisionHeader* colHeader = NULL;
 
     DynaPolyActor_Init(&this->dyna, DPM_UNK);

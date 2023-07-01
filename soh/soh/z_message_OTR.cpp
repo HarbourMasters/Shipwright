@@ -13,14 +13,15 @@ extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
 extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
 extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
 extern "C" MessageTableEntry* sStaffMessageEntryTablePtr;
-//extern "C" MessageTableEntry* _message_0xFFFC_nes;	
+// extern "C" MessageTableEntry* _message_0xFFFC_nes;
 
 MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
-    auto file = std::static_pointer_cast<LUS::Text>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(filePath));
+    auto file =
+        std::static_pointer_cast<LUS::Text>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(filePath));
 
     if (file == nullptr)
         return nullptr;
-    
+
     // Allocate room for an additional message
     // OTRTODO: Should not be malloc'ing here. It's fine for now since we check elsewhere that the message table is
     // already null.
@@ -33,8 +34,8 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
             uint32_t kaeporaMsgSize = file->messages[i].msg.size();
             // OTRTODO: Should not be malloc'ing here. It's fine for now since we check elsewhere that the message table
             // is already null.
-            char* kaeporaOg = (char*)malloc(sizeof(char) * kaeporaMsgSize);
-            char* kaeporaPatch = (char*)malloc(sizeof(char) * kaeporaMsgSize);
+            char*    kaeporaOg = (char*)malloc(sizeof(char) * kaeporaMsgSize);
+            char*    kaeporaPatch = (char*)malloc(sizeof(char) * kaeporaMsgSize);
             file->messages[i].msg.copy(kaeporaOg, kaeporaMsgSize, 0);
             file->messages[i].msg.copy(kaeporaPatch, kaeporaMsgSize, 0);
 
@@ -75,8 +76,7 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
     return table;
 }
 
-extern "C" void OTRMessage_Init()
-{
+extern "C" void OTRMessage_Init() {
     // OTRTODO: Added a lot of null checks here so that we don't malloc the table multiple times causing a memory leak.
     // We really ought to fix the implementation such that we aren't malloc'ing new tables.
     // Once we fix the implementation, remove these NULL checks.
@@ -94,7 +94,8 @@ extern "C" void OTRMessage_Init()
         auto file2 =
             std::static_pointer_cast<LUS::Text>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(
                 "text/staff_message_data_static/staff_message_data_static"));
-        // OTRTODO: Should not be malloc'ing here. It's fine for now since we check that the message table is already null.
+        // OTRTODO: Should not be malloc'ing here. It's fine for now since we check that the message table is already
+        // null.
         sStaffMessageEntryTablePtr = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * file2->messages.size());
 
         for (size_t i = 0; i < file2->messages.size(); i++) {

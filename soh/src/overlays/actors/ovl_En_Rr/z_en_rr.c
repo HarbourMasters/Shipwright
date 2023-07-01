@@ -9,7 +9,9 @@
 #include "vt.h"
 #include <assert.h>
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
+#define FLAGS                                                                                                     \
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | \
+     ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
 
 #define RR_MESSAGE_SHIELD (1 << 0)
 #define RR_MESSAGE_TUNIC (1 << 1)
@@ -214,7 +216,7 @@ void EnRr_SetSpeed(EnRr* this, f32 speed) {
 
 void EnRr_SetupReach(EnRr* this) {
     static f32 segmentHeights[] = { 0.0f, 500.0f, 750.0f, 1000.0f, 1000.0f };
-    s32 i;
+    s32        i;
 
     this->reachState = 1;
     this->actionTimer = 20;
@@ -286,8 +288,8 @@ u8 EnRr_GetMessage(u8 shield, u8 tunic) {
 
 void EnRr_SetupReleasePlayer(EnRr* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    u8 shield;
-    u8 tunic;
+    u8      shield;
+    u8      tunic;
 
     this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     this->hasPlayer = false;
@@ -413,7 +415,7 @@ void EnRr_SetupStunned(EnRr* this) {
 }
 
 void EnRr_CollisionCheck(EnRr* this, PlayState* play) {
-    Vec3f hitPos;
+    Vec3f   hitPos;
     Player* player = GET_PLAYER(play);
 
     if (this->collider2.base.acFlags & AC_HIT) {
@@ -841,26 +843,24 @@ static Vec3f sEffectOffsets[] = {
 };
 
 void EnRr_Draw(Actor* thisx, PlayState* play) {
-    s32 pad;
+    s32   pad;
     Vec3f zeroVec;
     EnRr* this = (EnRr*)thisx;
-    s32 i;
+    s32  i;
     Mtx* segMtx = Graph_Alloc(play->state.gfxCtx, 4 * sizeof(Mtx));
 
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x0C, segMtx);
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, (this->scrollTimer * 0) & 0x7F,
-                                (this->scrollTimer * 0) & 0x3F, 32, 16, 1, (this->scrollTimer * 0) & 0x3F,
-                                (this->scrollTimer * -6) & 0x7F, 32, 16));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, (this->scrollTimer * 0) & 0x7F, (this->scrollTimer * 0) & 0x3F,
+                                32, 16, 1, (this->scrollTimer * 0) & 0x3F, (this->scrollTimer * -6) & 0x7F, 32, 16));
     Matrix_Push();
 
     Matrix_Scale((1.0f + this->bodySegs[RR_BASE].scaleMod.x) * this->bodySegs[RR_BASE].scale.x,
                  (1.0f + this->bodySegs[RR_BASE].scaleMod.y) * this->bodySegs[RR_BASE].scale.y,
                  (1.0f + this->bodySegs[RR_BASE].scaleMod.z) * this->bodySegs[RR_BASE].scale.z, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     Matrix_Pop();
     zeroVec.x = 0.0f;
     zeroVec.y = 0.0f;
@@ -885,7 +885,7 @@ void EnRr_Draw(Actor* thisx, PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
     if (this->effectTimer != 0) {
         Vec3f effectPos;
-        s16 effectTimer = this->effectTimer - 1;
+        s16   effectTimer = this->effectTimer - 1;
 
         this->actor.colorFilterTimer++;
         if ((effectTimer & 1) == 0) {
@@ -898,8 +898,7 @@ void EnRr_Draw(Actor* thisx, PlayState* play) {
             if (this->actor.colorFilterParams & 0x4000) {
                 EffectSsEnFire_SpawnVec3f(play, &this->actor, &effectPos, 100, 0, 0, -1);
             } else {
-                EffectSsEnIce_SpawnFlyingVec3f(play, &this->actor, &effectPos, 150, 150, 150, 250, 235, 245, 255,
-                                               3.0f);
+                EffectSsEnIce_SpawnFlyingVec3f(play, &this->actor, &effectPos, 150, 150, 150, 250, 235, 245, 255, 3.0f);
             }
         }
     }

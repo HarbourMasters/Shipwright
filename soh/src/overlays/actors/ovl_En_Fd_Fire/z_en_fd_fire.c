@@ -122,7 +122,7 @@ s32 EnFdFire_CheckCollider(EnFdFire* this, PlayState* play) {
 
 void EnFdFire_Init(Actor* thisx, PlayState* play) {
     EnFdFire* this = (EnFdFire*)thisx;
-    s32 pad;
+    s32     pad;
     Player* player = GET_PLAYER(play);
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 20.0f);
@@ -174,11 +174,11 @@ void EnFdFire_WaitToDie(EnFdFire* this, PlayState* play) {
 
 void EnFdFire_DanceTowardsPlayer(EnFdFire* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 angles[] = {
+    f32     angles[] = {
         0.0f, 210.0f, 60.0f, 270.0f, 120.0f, 330.0f, 180.0f, 30.0f, 240.0f, 90.0f, 300.0f, 150.0f,
     };
     Vec3f pos;
-    s16 idx;
+    s16   idx;
 
     idx = ((play->state.frames / 10) + (this->actor.params & 0x7FFF)) % ARRAY_COUNT(angles);
     pos = player->actor.world.pos;
@@ -242,10 +242,10 @@ void EnFdFire_Draw(Actor* thisx, PlayState* play) {
     EnFdFire* this = (EnFdFire*)thisx;
     Vec3f scale = { 0.0f, 0.0f, 0.0f };
     Vec3f sp90 = { 0.0f, 0.0f, 0.0f };
-    s16 sp8E;
-    f32 sp88;
-    f32 sp84;
-    f32 sp80;
+    s16   sp8E;
+    f32   sp88;
+    f32   sp84;
+    f32   sp80;
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -263,12 +263,11 @@ void EnFdFire_Draw(Actor* thisx, PlayState* play) {
         sp84 = 0.1f;
     }
     Matrix_Scale(1.0f, sp84, 1.0f / sp84, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-    gSPSegment(POLY_XLU_DISP++, 0x8,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
-                                play->state.frames * this->tile2Y, 0x20, 0x80));
+    gSPSegment(
+        POLY_XLU_DISP++, 0x8,
+        Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0, play->state.frames * this->tile2Y, 0x20, 0x80));
     gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, primColors[((this->actor.params & 0x8000) >> 0xF)].r,
                     primColors[((this->actor.params & 0x8000) >> 0xF)].g,
                     primColors[((this->actor.params & 0x8000) >> 0xF)].b,

@@ -135,9 +135,9 @@ void ObjBean_InitCollider(Actor* thisx, PlayState* play) {
 }
 
 void ObjBean_InitDynaPoly(ObjBean* this, PlayState* play, CollisionHeader* collision, s32 moveFlag) {
-    s32 pad;
+    s32              pad;
     CollisionHeader* colHeader;
-    s32 pad2;
+    s32              pad2;
 
     colHeader = NULL;
 
@@ -153,7 +153,7 @@ void ObjBean_InitDynaPoly(ObjBean* this, PlayState* play, CollisionHeader* colli
 
 void ObjBean_FindFloor(ObjBean* this, PlayState* play) {
     Vec3f vec;
-    s32 sp20;
+    s32   sp20;
 
     vec.x = this->dyna.actor.world.pos.x;
     vec.y = this->dyna.actor.world.pos.y + 29.999998f;
@@ -238,17 +238,17 @@ void ObjBean_SetupPath(ObjBean* this, PlayState* play) {
 }
 
 void ObjBean_FollowPath(ObjBean* this, PlayState* play) {
-    Path* path;
-    Vec3f acell;
-    Vec3f pathPointsFloat;
-    f32 speed;
+    Path*  path;
+    Vec3f  acell;
+    Vec3f  pathPointsFloat;
+    f32    speed;
     Vec3s* nextPathPoint;
     Vec3s* currentPoint;
     Vec3s* sp4C;
-    Vec3f sp40;
-    Vec3f sp34;
-    f32 sp30;
-    f32 mag;
+    Vec3f  sp40;
+    Vec3f  sp34;
+    f32    sp30;
+    f32    mag;
 
     Math_StepToF(&this->dyna.actor.speedXZ, sBeanSpeeds[this->unk_1F6].velocity, sBeanSpeeds[this->unk_1F6].accel);
     path = &play->setupPathList[(this->dyna.actor.params >> 8) & 0x1F];
@@ -303,12 +303,12 @@ s32 ObjBean_CheckForHorseTrample(ObjBean* this, PlayState* play) {
 void ObjBean_Break(ObjBean* this, PlayState* play) {
     Vec3f pos;
     Vec3f velocity;
-    f32 temp_f20;
-    s16 angle;
-    s32 scale;
-    s32 i;
-    s16 gravity;
-    s16 arg5;
+    f32   temp_f20;
+    s16   angle;
+    s32   scale;
+    s32   i;
+    s16   gravity;
+    s16   arg5;
 
     angle = 0;
     for (i = 0; i < 36; i++) {
@@ -476,8 +476,7 @@ void ObjBean_Init(Actor* thisx, PlayState* play) {
             if (path == 0x1F) {
                 osSyncPrintf(VT_COL(RED, WHITE));
                 // "No path data?"
-                osSyncPrintf("パスデータが無い？(%s %d)(arg_data %xH)\n", __FILE__, __LINE__,
-                             this->dyna.actor.params);
+                osSyncPrintf("パスデータが無い？(%s %d)(arg_data %xH)\n", __FILE__, __LINE__, this->dyna.actor.params);
                 osSyncPrintf(VT_RST);
                 Actor_Kill(&this->dyna.actor);
                 return;
@@ -485,8 +484,7 @@ void ObjBean_Init(Actor* thisx, PlayState* play) {
             if (play->setupPathList[path].count < 3) {
                 osSyncPrintf(VT_COL(RED, WHITE));
                 // "Incorrect number of path data"
-                osSyncPrintf("パスデータ数が不正(%s %d)(arg_data %xH)\n", __FILE__, __LINE__,
-                             this->dyna.actor.params);
+                osSyncPrintf("パスデータ数が不正(%s %d)(arg_data %xH)\n", __FILE__, __LINE__, this->dyna.actor.params);
                 osSyncPrintf(VT_RST);
                 Actor_Kill(&this->dyna.actor);
                 return;
@@ -690,7 +688,7 @@ void ObjBean_SetupGrowWaterPhase3(ObjBean* this) {
 
 // Fully grown and drops items
 void ObjBean_GrowWaterPhase3(ObjBean* this, PlayState* play) {
-    s32 i;
+    s32   i;
     Vec3f itemDropPos;
 
     this->transformFunc(this);

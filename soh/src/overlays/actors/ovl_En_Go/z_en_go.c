@@ -5,7 +5,8 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS \
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnGo_Init(Actor* thisx, PlayState* play);
 void EnGo_Destroy(Actor* thisx, PlayState* play);
@@ -361,8 +362,8 @@ void EnGo_ChangeAnim(EnGo* this, s32 index) {
 s32 EnGo_IsActorSpawned(EnGo* this, PlayState* play) {
     if (((this->actor.params) & 0xF0) == 0x90) {
         return true;
-    } else if (play->sceneNum == SCENE_HIDAN && !Flags_GetSwitch(play, (this->actor.params) >> 8) &&
-               LINK_IS_ADULT && (this->actor.params & 0xF0) == 0x10) {
+    } else if (play->sceneNum == SCENE_HIDAN && !Flags_GetSwitch(play, (this->actor.params) >> 8) && LINK_IS_ADULT &&
+               (this->actor.params & 0xF0) == 0x10) {
         return true;
     } else if (play->sceneNum == SCENE_SPOT18 && LINK_IS_ADULT && (this->actor.params & 0xF0) == 0x00) {
         return true;
@@ -398,7 +399,7 @@ f32 EnGo_GetGoronSize(EnGo* this) {
 
 void func_80A3F060(EnGo* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s16 npcTrackingMode;
+    s16     npcTrackingMode;
 
     if (this->actionFunc != EnGo_BiggoronActionFunc && this->actionFunc != EnGo_FireGenericActionFunc &&
         this->actionFunc != func_80A40B1C) {
@@ -421,8 +422,8 @@ void func_80A3F0E4(EnGo* this) {
 }
 
 s32 EnGo_IsCameraModified(EnGo* this, PlayState* play) {
-    f32 xyzDist;
-    s16 yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
+    f32     xyzDist;
+    s16     yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
     Camera* camera = play->cameraPtrs[MAIN_CAM];
 
     if (fabsf(yawDiff) > 10920.0f) {
@@ -466,10 +467,10 @@ void EnGo_UpdateShadow(EnGo* this) {
 }
 
 s32 EnGo_FollowPath(EnGo* this, PlayState* play) {
-    Path* path;
+    Path*  path;
     Vec3s* pointPos;
-    f32 xDist;
-    f32 zDist;
+    f32    xDist;
+    f32    zDist;
 
     if ((this->actor.params & 0xF) == 15) {
         return false;
@@ -503,7 +504,7 @@ s32 EnGo_FollowPath(EnGo* this, PlayState* play) {
 }
 
 s32 EnGo_SetMovedPos(EnGo* this, PlayState* play) {
-    Path* path;
+    Path*  path;
     Vec3s* pointPos;
 
     if ((this->actor.params & 0xF) == 0xF) {
@@ -524,8 +525,8 @@ s32 EnGo_SpawnDust(EnGo* this, u8 initialTimer, f32 scale, f32 scaleStep, s32 nu
     Vec3f pos = { 0.0f, 0.0f, 0.0f };
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
     Vec3f accel = { 0.0f, 0.3f, 0.0f };
-    s16 angle;
-    s32 i;
+    s16   angle;
+    s32   i;
 
     pos = this->actor.world.pos; // Overwrites pos
     pos.y = this->actor.floorHeight;
@@ -573,8 +574,8 @@ s32 EnGo_IsRollingOnGround(EnGo* this, s16 unkArg1, f32 unkArg2) {
 
 void func_80A3F908(EnGo* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 float1;
-    s32 isUnkCondition;
+    f32     float1;
+    s32     isUnkCondition;
 
     if (this->actionFunc == EnGo_BiggoronActionFunc || this->actionFunc == EnGo_GoronLinkRolling ||
         this->actionFunc == EnGo_FireGenericActionFunc || this->actionFunc == EnGo_Eyedrops ||
@@ -623,7 +624,7 @@ void func_80A3F908(EnGo* this, PlayState* play) {
 
 void EnGo_Init(Actor* thisx, PlayState* play) {
     EnGo* this = (EnGo*)thisx;
-    s32 pad;
+    s32   pad;
     Vec3f D_80A41B9C = { 0.0f, 0.0f, 0.0f }; // unused
     Vec3f D_80A41BA8 = { 0.0f, 0.0f, 0.0f }; // unused
 
@@ -945,10 +946,10 @@ void func_80A40B1C(EnGo* this, PlayState* play) {
 }
 
 void EnGo_GetItem(EnGo* this, PlayState* play) {
-    f32 xzDist;
-    f32 yDist;
+    f32          xzDist;
+    f32          yDist;
     GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
-    s32 getItemId;
+    s32          getItemId;
 
     if (Actor_HasParent(&this->actor, play)) {
         this->interactInfo.talkState = NPC_TALK_STATE_ACTION;
@@ -1074,8 +1075,7 @@ void EnGo_DrawCurledUp(EnGo* this, PlayState* play) {
     Matrix_Push();
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_OPA_DISP++, gGoronDL_00BD80);
 
@@ -1094,8 +1094,7 @@ void EnGo_DrawRolling(EnGo* this, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Matrix_RotateZYX((s16)(play->state.frames * ((s16)this->actor.speedXZ * 1400)), 0, this->actor.shape.rot.z,
                      MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gGoronDL_00C140);
     Matrix_MultVec3f(&D_80A41BC0, &this->actor.focus.pos);
     Matrix_Pop();
@@ -1106,7 +1105,7 @@ void EnGo_DrawRolling(EnGo* this, PlayState* play) {
 s32 EnGo_OverrideLimbDraw(PlayState* play, s32 limb, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnGo* this = (EnGo*)thisx;
     Vec3s vec1;
-    f32 float1;
+    f32   float1;
 
     if (limb == 17) {
         Matrix_Translate(2800.0f, 0.0f, 0.0f, MTXMODE_APPLY);
@@ -1166,8 +1165,8 @@ void EnGo_Draw(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gGoronCsEyeOpenTex));
         gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gGoronCsMouthNeutralTex));
 
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnGo_OverrideLimbDraw, EnGo_PostLimbDraw, &this->actor);
+        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+                              EnGo_OverrideLimbDraw, EnGo_PostLimbDraw, &this->actor);
         EnGo_DrawDust(this, play);
     }
     CLOSE_DISPS(play->state.gfxCtx);
@@ -1175,8 +1174,8 @@ void EnGo_Draw(Actor* thisx, PlayState* play) {
 
 void EnGo_AddDust(EnGo* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel, u8 initialTimer, f32 scale, f32 scaleStep) {
     EnGoEffect* dustEffect = this->dustEffects;
-    s16 i;
-    s16 timer;
+    s16         i;
+    s16         timer;
 
     for (i = 0; i < ARRAY_COUNT(this->dustEffects); i++, dustEffect++) {
         if (dustEffect->type != 1) {
@@ -1197,8 +1196,8 @@ void EnGo_AddDust(EnGo* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel, u8 init
 
 void EnGo_UpdateDust(EnGo* this) {
     EnGoEffect* dustEffect = this->dustEffects;
-    f32 randomNumber;
-    s16 i;
+    f32         randomNumber;
+    s16         i;
 
     for (i = 0; i < ARRAY_COUNT(this->dustEffects); i++, dustEffect++) {
         if (dustEffect->type) {
@@ -1223,11 +1222,11 @@ void EnGo_UpdateDust(EnGo* this) {
 
 void EnGo_DrawDust(EnGo* this, PlayState* play) {
     static void* dustTex[] = { gDust8Tex, gDust7Tex, gDust6Tex, gDust5Tex, gDust4Tex, gDust3Tex, gDust2Tex, gDust1Tex };
-    EnGoEffect* dustEffect = this->dustEffects;
-    s16 alpha;
-    s16 firstDone;
-    s16 index;
-    s16 i;
+    EnGoEffect*  dustEffect = this->dustEffects;
+    s16          alpha;
+    s16          firstDone;
+    s16          index;
+    s16          i;
 
     OPEN_DISPS(play->state.gfxCtx);
     firstDone = false;
@@ -1248,8 +1247,7 @@ void EnGo_DrawDust(EnGo* this, PlayState* play) {
             Matrix_Translate(dustEffect->pos.x, dustEffect->pos.y, dustEffect->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&play->billboardMtxF);
             Matrix_Scale(dustEffect->scale, dustEffect->scale, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             index = dustEffect->timer * (8.0f / dustEffect->initialTimer);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(dustTex[index]));

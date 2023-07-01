@@ -22,14 +22,14 @@ enum class SkeletonType {
 
 // Model has limbs with only rigid meshes
 typedef struct {
-    /* 0x00 */ void** segment;
+    /* 0x00 */ void**  segment;
     /* 0x04 */ uint8_t limbCount;
 } SkeletonHeader; // size = 0x8
 
 // Model has limbs with flexible meshes
 typedef struct {
     /* 0x00 */ SkeletonHeader sh;
-    /* 0x08 */ uint8_t dListCount;
+    /* 0x08 */ uint8_t        dListCount;
 } FlexSkeletonHeader; // size = 0xC
 
 // typedef struct {
@@ -40,42 +40,42 @@ typedef struct {
 
 typedef struct {
     /* 0x0000 */ SkelCurveLimb** limbs;
-    /* 0x0004 */ uint8_t limbCount;
+    /* 0x0004 */ uint8_t         limbCount;
 } SkelCurveLimbList; // size = 0x8
 
 union SkeletonData {
-    SkeletonHeader skeletonHeader;
+    SkeletonHeader     skeletonHeader;
     FlexSkeletonHeader flexSkeletonHeader;
-    SkelCurveLimbList skelCurveLimbList;
+    SkelCurveLimbList  skelCurveLimbList;
 };
 
 class Skeleton : public Resource<SkeletonData> {
   public:
     using Resource::Resource;
 
-    Skeleton() : Resource(std::shared_ptr<ResourceInitData>()) {}
+    Skeleton() : Resource(std::shared_ptr<ResourceInitData>()) {
+    }
 
     SkeletonData* GetPointer();
-    size_t GetPointerSize();
+    size_t        GetPointerSize();
 
     SkeletonType type;
     SkeletonData skeletonData;
-    
-    LimbType limbType;
-    int limbCount;
-    int dListCount;
-    LimbType limbTableType;
-    int limbTableCount;
-    std::vector<StandardLimb> standardLimbArray;
+
+    LimbType                   limbType;
+    int                        limbCount;
+    int                        dListCount;
+    LimbType                   limbTableType;
+    int                        limbTableCount;
+    std::vector<StandardLimb>  standardLimbArray;
     std::vector<SkelCurveLimb> curveLimbArray;
-    std::vector<std::string> limbTable;
-    std::vector<void*> skeletonHeaderSegments;
+    std::vector<std::string>   limbTable;
+    std::vector<void*>         skeletonHeaderSegments;
 };
 
 // TODO: CLEAN THIS UP LATER
-struct SkeletonPatchInfo 
-{
-    SkelAnime* skelAnime;
+struct SkeletonPatchInfo {
+    SkelAnime*  skelAnime;
     std::string vanillaSkeletonPath;
 };
 
@@ -88,6 +88,5 @@ class SkeletonPatcher {
 
     static std::vector<SkeletonPatchInfo> skeletons;
 };
-
 
 } // namespace LUS

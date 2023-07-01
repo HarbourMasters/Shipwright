@@ -8,9 +8,10 @@ namespace SohGui {
 class SohMenuBar : public LUS::GuiMenuBar {
   public:
     using LUS::GuiMenuBar::GuiMenuBar;
+
   protected:
     void DrawElement() override;
-    void InitElement() override {};
-    void UpdateElement() override {};
+    void InitElement() override{};
+    void UpdateElement() override{};
 };
 } // namespace SohGui

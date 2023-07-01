@@ -24,7 +24,7 @@
 
 typedef struct {
     /* 0x00 */ s16 sceneNum;
-    /* 0x02 */ u8 dListIndex;
+    /* 0x02 */ u8  dListIndex;
     /* 0x04 */ s16 objectId;
 } EnDoorInfo;
 
@@ -44,16 +44,17 @@ struct EnDoor;
 typedef void (*EnDoorActionFunc)(struct EnDoor*, PlayState*);
 
 typedef struct EnDoor {
-    /* 0x0000 */ Actor actor;
+    /* 0x0000 */ Actor     actor;
     /* 0x014C */ SkelAnime skelAnime;
     /* 0x0190 */ u8 animStyle; // Must be at same offset as animStyle in DoorKiller due to the cast in func_80839800
-    /* 0x0191 */ u8 playerIsOpening; // Must be at same offset as playerIsOpening in DoorKiller due to the cast in func_80839800
-    /* 0x0192 */ u8 unk_192;
-    /* 0x0193 */ s8 requiredObjBankIndex;
-    /* 0x0194 */ s8 dListIndex;
-    /* 0x0196 */ s16 lockTimer;
-    /* 0x0198 */ Vec3s jointTable[5];
-    /* 0x01B6 */ Vec3s morphTable[5];
+    /* 0x0191 */ u8
+        playerIsOpening; // Must be at same offset as playerIsOpening in DoorKiller due to the cast in func_80839800
+    /* 0x0192 */ u8               unk_192;
+    /* 0x0193 */ s8               requiredObjBankIndex;
+    /* 0x0194 */ s8               dListIndex;
+    /* 0x0196 */ s16              lockTimer;
+    /* 0x0198 */ Vec3s            jointTable[5];
+    /* 0x01B6 */ Vec3s            morphTable[5];
     /* 0x01D4 */ EnDoorActionFunc actionFunc;
 } EnDoor; // size = 0x01D8
 

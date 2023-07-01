@@ -12,29 +12,29 @@ typedef void (*EnGirlA3Func)(Actor*, PlayState*, s32);
 typedef s32 (*EnGirlA4Func)(PlayState*, struct EnGirlA*);
 
 typedef struct EnGirlA {
-    /* 0x0000 */ Actor actor;
-    /* 0x014C */ SkelAnime skelAnime;
+    /* 0x0000 */ Actor             actor;
+    /* 0x014C */ SkelAnime         skelAnime;
     /* 0x0190 */ EnGirlAActionFunc actionFunc;
-    /* 0x0194 */ s8 objBankIndex;
+    /* 0x0194 */ s8                objBankIndex;
     /* 0x0198 */ EnGirlAActionFunc actionFunc2;
-    /* 0x019C */ s32 isInitialized;
-    /* 0x01A0 */ s16 itemBuyPromptTextId;
-    /* 0x01A4 */ s32 getItemId;
-    /* 0x01A8 */ s16 isInvisible;
-    /* 0x01AC */ EnGirlA2Func setOutOfStockFunc;
-    /* 0x01B0 */ EnGirlA2Func updateStockedItemFunc;
-    /* 0x01B4 */ s16 isSelected;
-    /* 0x01B6 */ s16 yRotationInit;
-    /* 0x01B8 */ s16 yRotation;
-    /* 0x01BC */ EnGirlA4Func canBuyFunc;
-    /* 0x01C0 */ EnGirlA2Func itemGiveFunc;
-    /* 0x01C4 */ EnGirlA2Func buyEventFunc;
-    /* 0x01C8 */ s16 basePrice;
-    /* 0x01CA */ s16 itemCount;
-    /* 0x01CC */ s16 giDrawId;
-    /* 0x01D0 */ EnGirlA3Func hiliteFunc;
+    /* 0x019C */ s32               isInitialized;
+    /* 0x01A0 */ s16               itemBuyPromptTextId;
+    /* 0x01A4 */ s32               getItemId;
+    /* 0x01A8 */ s16               isInvisible;
+    /* 0x01AC */ EnGirlA2Func      setOutOfStockFunc;
+    /* 0x01B0 */ EnGirlA2Func      updateStockedItemFunc;
+    /* 0x01B4 */ s16               isSelected;
+    /* 0x01B6 */ s16               yRotationInit;
+    /* 0x01B8 */ s16               yRotation;
+    /* 0x01BC */ EnGirlA4Func      canBuyFunc;
+    /* 0x01C0 */ EnGirlA2Func      itemGiveFunc;
+    /* 0x01C4 */ EnGirlA2Func      buyEventFunc;
+    /* 0x01C8 */ s16               basePrice;
+    /* 0x01CA */ s16               itemCount;
+    /* 0x01CC */ s16               giDrawId;
+    /* 0x01D0 */ EnGirlA3Func      hiliteFunc;
     /* 0x01D4 */ u8 randoSlotIndex; // used by randomizer to determine which slot this item is for id purposes.
-} EnGirlA; // size = 0x01D4
+} EnGirlA;                          // size = 0x01D4
 
 typedef enum {
     /* 0x00 */ SI_DEKU_NUTS_5,

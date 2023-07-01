@@ -19,7 +19,7 @@ s32 Math3D_PlaneVsLineSegClosestPoint(f32 planeAA, f32 planeAB, f32 planeAC, f32
                                       f32 planeBC, f32 planeBDist, Vec3f* linePointA, Vec3f* linePointB,
                                       Vec3f* closestPoint) {
     static InfiniteLine planeIntersectLine;
-    static Linef planeIntersectSeg;
+    static Linef        planeIntersectSeg;
 
     Vec3f sp34; // unused
 
@@ -48,20 +48,20 @@ s32 Math3D_PlaneVsLineSegClosestPoint(f32 planeAA, f32 planeAB, f32 planeAC, f32
  */
 s32 Math3D_LineVsLineClosestTwoPoints(Vec3f* lineAPointA, Vec3f* lineAPointB, Vec3f* lineBPointA, Vec3f* lineBPointB,
                                       Vec3f* lineAClosestToB, Vec3f* lineBClosestToA) {
-    f32 sqMag;
-    f32 scaleB;
-    f32 lineAx;
-    f32 lineAy;
-    f32 lineAz;
-    f32 lineBx;
-    f32 lineBy;
-    f32 lineBz;
-    f32 compAAlongB;
-    f32 compBAAlongB;
+    f32   sqMag;
+    f32   scaleB;
+    f32   lineAx;
+    f32   lineAy;
+    f32   lineAz;
+    f32   lineBx;
+    f32   lineBy;
+    f32   lineBz;
+    f32   compAAlongB;
+    f32   compBAAlongB;
     Vec3f lineAPerpB;
     Vec3f lineBAPerpB;
-    f32 tA;
-    f32 tB;
+    f32   tA;
+    f32   tB;
 
     lineAx = lineAPointB->x - lineAPointA->x;
     lineAy = lineAPointB->y - lineAPointA->y;
@@ -149,12 +149,12 @@ void Math3D_FindPointOnPlaneIntersect(f32 planeAAxis1Norm, f32 planeAAxis2Norm, 
  */
 s32 Math3D_PlaneVsPlaneNewLine(f32 planeAA, f32 planeAB, f32 planeAC, f32 planeADist, f32 planeBA, f32 planeBB,
                                f32 planeBC, f32 planeBDist, InfiniteLine* intersect) {
-    char pad[4];
+    char  pad[4];
     Vec3f planeANormal;
     Vec3f planeBNormal;
-    f32 dirX;
-    f32 dirY;
-    f32 dirZ;
+    f32   dirX;
+    f32   dirY;
+    f32   dirZ;
 
     VEC_SET(planeANormal, planeAA, planeAB, planeAC);
     VEC_SET(planeBNormal, planeBA, planeBB, planeBC);
@@ -258,11 +258,11 @@ s32 Math3D_CosOut(Vec3f* a, Vec3f* b, f32* dst) {
  */
 void Math3D_Vec3fReflect(Vec3f* vec, Vec3f* normal, Vec3f* reflVec) {
 
-    f32 normScaleY;
+    f32   normScaleY;
     Vec3f negVec;
-    f32 normScaleZ;
-    f32 normScaleX;
-    f32 vecDotNorm;
+    f32   normScaleZ;
+    f32   normScaleX;
+    f32   vecDotNorm;
 
     negVec.x = vec->x * -1.0f;
     negVec.y = vec->y * -1.0f;
@@ -1051,8 +1051,8 @@ s32 Math3D_TriChkPointParaY(Vec3f* v0, Vec3f* v1, Vec3f* v2, f32 ny, f32 z, f32 
 
 s32 Math3D_TriChkLineSegParaYIntersect(Vec3f* v0, Vec3f* v1, Vec3f* v2, f32 nx, f32 ny, f32 nz, f32 originDist, f32 z,
                                        f32 x, f32* yIntersect, f32 y0, f32 y1) {
-    f32 pointADist;
-    f32 pointBDist;
+    f32   pointADist;
+    f32   pointBDist;
     Vec3f planePos;
 
     if (IS_ZERO(ny)) {
@@ -1448,8 +1448,8 @@ s32 Math3D_LineVsSph(Sphere16* sphere, Linef* line) {
     static Vec3f sphLinePerpendicularPoint;
 
     Vec3f lineDiff;
-    f32 temp_f0_2;
-    f32 lineLenSq;
+    f32   temp_f0_2;
+    f32   lineLenSq;
 
     if ((Math3D_PointInSph(sphere, &line->a)) || (Math3D_PointInSph(sphere, &line->b))) {
         // either point of the line is in the sphere.
@@ -1626,23 +1626,23 @@ s32 Math3D_CylVsLineSeg(Cylinder16* cyl, Vec3f* linePointA, Vec3f* linePointB, V
     Vec3f cylToPtA;
     Vec3f cylToPtB;
     Vec3f ptAToPtB;
-    f32 fracA;
-    f32 fracB;
-    f32 fracBase;
-    f32 zero = 0.0f;
-    f32 pad;
-    f32 cylRadiusSq;
-    f32 radSqDiff;
-    f32 distCent2;
-    f32 dot2AB;
-    s32 sideIntA;
-    s32 sideIntB;
-    s32 intBeyondA;
-    s32 intBeyondB;
-    s32 intFlags = 0;
+    f32   fracA;
+    f32   fracB;
+    f32   fracBase;
+    f32   zero = 0.0f;
+    f32   pad;
+    f32   cylRadiusSq;
+    f32   radSqDiff;
+    f32   distCent2;
+    f32   dot2AB;
+    s32   sideIntA;
+    s32   sideIntB;
+    s32   intBeyondA;
+    s32   intBeyondB;
+    s32   intFlags = 0;
     Vec3f intPts[4];
-    s32 count;
-    s32 i;
+    s32   count;
+    s32   i;
 
     if (Math3D_PointInCyl(cyl, linePointA) && Math3D_PointInCyl(cyl, linePointB)) {
         // both points are in the cylinder
@@ -1810,20 +1810,20 @@ s32 Math3D_CylVsLineSeg(Cylinder16* cyl, Vec3f* linePointA, Vec3f* linePointB, V
 s32 Math3D_CylTriVsIntersect(Cylinder16* cyl, TriNorm* tri, Vec3f* intersect) {
     static Sphere16 topSphere;
     static Sphere16 bottomSphere;
-    static Vec3f cylIntersectA;
-    static Vec3f cylIntersectB;
+    static Vec3f    cylIntersectA;
+    static Vec3f    cylIntersectB;
 
-    f32 yIntersect;
-    f32 cylTop;
-    f32 cylBottom;
-    f32 minDistSq;
-    f32 radiusTodistFromCylYIntersectTov0v1;
-    f32 distFromPointAToIntersectASq;
+    f32   yIntersect;
+    f32   cylTop;
+    f32   cylBottom;
+    f32   minDistSq;
+    f32   radiusTodistFromCylYIntersectTov0v1;
+    f32   distFromPointAToIntersectASq;
     Vec3f cylIntersectCenter;
     Vec3f midpointv0v1;
     Vec3f diffMidpointIntersect;
-    f32 distFromCylYIntersectTov0v1;
-    s32 pad;
+    f32   distFromCylYIntersectTov0v1;
+    s32   pad;
 
     cylBottom = (f32)cyl->pos.y + cyl->yShift;
     cylTop = cyl->height + cylBottom;
@@ -1964,7 +1964,7 @@ s32 Math3D_SphVsCylOverlapDist(Sphere16* sph, Cylinder16* cyl, f32* overlapSize)
  */
 s32 Math3D_SphVsCylOverlapCenterDist(Sphere16* sph, Cylinder16* cyl, f32* overlapSize, f32* centerDist) {
     static Cylinderf cylf;
-    static Spheref sphf;
+    static Spheref   sphf;
 
     f32 x;
     f32 z;

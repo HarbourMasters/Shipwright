@@ -9,7 +9,7 @@ struct ItemInbox;
 typedef void (*ItemInboxActionFunc)(struct ItemInbox*, PlayState*);
 
 typedef struct ItemInbox {
-    /* 0x0000 */ Actor actor;
+    /* 0x0000 */ Actor               actor;
     /* 0x014C */ ItemInboxActionFunc actionFunc;
 } ItemInbox; // size = 0x0150
 

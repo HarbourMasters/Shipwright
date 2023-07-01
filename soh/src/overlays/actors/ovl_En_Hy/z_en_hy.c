@@ -76,8 +76,8 @@ static void* sEyeTexturesBOJ2[] = { object_boj_Tex_0005FC, object_boj_Tex_0006FC
 static void* sEyeTexturesBOB[] = { object_bob_Tex_0007C8, object_bob_Tex_000FC8, object_bob_Tex_0017C8, NULL };
 
 typedef struct {
-    /* 0x00 */ s16 objectId;
-    /* 0x04 */ Gfx* headDList;
+    /* 0x00 */ s16    objectId;
+    /* 0x04 */ Gfx*   headDList;
     /* 0x08 */ void** eyeTextures;
 } EnHyHeadInfo; // size = 0xC
 
@@ -102,25 +102,40 @@ typedef enum {
 
 static EnHyHeadInfo sHeadInfo[] = {
     /* ENHY_HEAD_AOB */ { OBJECT_AOB, gDogLadyHeadDL, sEyeTexturesAOB },
-    /* ENHY_HEAD_BOB */ { OBJECT_BOB, object_bob_DL_003B78, sEyeTexturesBOB },
-    /* ENHY_HEAD_BOJ_2 */ { OBJECT_BOJ, object_boj_DL_0026F0, sEyeTexturesBOJ2 },
-    /* ENHY_HEAD_BOJ_3 */ { OBJECT_BOJ, object_boj_DL_0052E0, NULL },
-    /* ENHY_HEAD_BOJ_4 */ { OBJECT_BOJ, object_boj_DL_005528, NULL },
-    /* ENHY_HEAD_BOJ_5 */ { OBJECT_BOJ, object_boj_DL_005738, NULL },
-    /* ENHY_HEAD_BOJ_6 */ { OBJECT_BOJ, object_boj_DL_0059B0, NULL },
-    /* ENHY_HEAD_AHG_7 */ { OBJECT_AHG, object_ahg_DL_0030F0, sEyeTexturesAHG7 },
-    /* ENHY_HEAD_AHG_8 */ { OBJECT_AHG, object_ahg_DL_005508, NULL },
-    /* ENHY_HEAD_AHG_9 */ { OBJECT_AHG, object_ahg_DL_005728, NULL },
-    /* ENHY_HEAD_BBA */ { OBJECT_BBA, object_bba_DL_002948, sEyeTexturesBBA },
-    /* ENHY_HEAD_CNE_11 */ { OBJECT_CNE, gCneHeadBrownHairDL, NULL },
-    /* ENHY_HEAD_CNE_12 */ { OBJECT_CNE, gCneHeadOrangeHairDL, NULL },
-    /* ENHY_HEAD_BJI_13 */ { OBJECT_BJI, object_bji_DL_002560, sEyeTexturesBJI13 },
-    /* ENHY_HEAD_BJI_14 */ { OBJECT_BJI, object_bji_DL_003F68, NULL },
-    /* ENHY_HEAD_COB */ { OBJECT_COB, object_cob_DL_001300, NULL },
+    /* ENHY_HEAD_BOB */
+    { OBJECT_BOB, object_bob_DL_003B78, sEyeTexturesBOB },
+    /* ENHY_HEAD_BOJ_2 */
+    { OBJECT_BOJ, object_boj_DL_0026F0, sEyeTexturesBOJ2 },
+    /* ENHY_HEAD_BOJ_3 */
+    { OBJECT_BOJ, object_boj_DL_0052E0, NULL },
+    /* ENHY_HEAD_BOJ_4 */
+    { OBJECT_BOJ, object_boj_DL_005528, NULL },
+    /* ENHY_HEAD_BOJ_5 */
+    { OBJECT_BOJ, object_boj_DL_005738, NULL },
+    /* ENHY_HEAD_BOJ_6 */
+    { OBJECT_BOJ, object_boj_DL_0059B0, NULL },
+    /* ENHY_HEAD_AHG_7 */
+    { OBJECT_AHG, object_ahg_DL_0030F0, sEyeTexturesAHG7 },
+    /* ENHY_HEAD_AHG_8 */
+    { OBJECT_AHG, object_ahg_DL_005508, NULL },
+    /* ENHY_HEAD_AHG_9 */
+    { OBJECT_AHG, object_ahg_DL_005728, NULL },
+    /* ENHY_HEAD_BBA */
+    { OBJECT_BBA, object_bba_DL_002948, sEyeTexturesBBA },
+    /* ENHY_HEAD_CNE_11 */
+    { OBJECT_CNE, gCneHeadBrownHairDL, NULL },
+    /* ENHY_HEAD_CNE_12 */
+    { OBJECT_CNE, gCneHeadOrangeHairDL, NULL },
+    /* ENHY_HEAD_BJI_13 */
+    { OBJECT_BJI, object_bji_DL_002560, sEyeTexturesBJI13 },
+    /* ENHY_HEAD_BJI_14 */
+    { OBJECT_BJI, object_bji_DL_003F68, NULL },
+    /* ENHY_HEAD_COB */
+    { OBJECT_COB, object_cob_DL_001300, NULL },
 };
 
 typedef struct {
-    /* 0x00 */ s16 objectId;
+    /* 0x00 */ s16                 objectId;
     /* 0x04 */ FlexSkeletonHeader* skeleton;
 } EnHySkeletonInfo; // size = 0x8
 
@@ -137,13 +152,20 @@ typedef enum {
 
 static EnHySkeletonInfo sSkeletonInfo[] = {
     /* ENHY_SKEL_AOB */ { OBJECT_AOB, &gDogLadySkel },
-    /* ENHY_SKEL_BOB */ { OBJECT_BOB, &object_bob_Skel_0000F0 },
-    /* ENHY_SKEL_BOJ */ { OBJECT_BOJ, &object_boj_Skel_0000F0 },
-    /* ENHY_SKEL_AHG */ { OBJECT_AHG, &object_ahg_Skel_0000F0 },
-    /* ENHY_SKEL_BBA */ { OBJECT_BBA, &object_bba_Skel_0000F0 },
-    /* ENHY_SKEL_CNE */ { OBJECT_CNE, &gCneSkel },
-    /* ENHY_SKEL_BJI */ { OBJECT_BJI, &object_bji_Skel_0000F0 },
-    /* ENHY_SKEL_COB */ { OBJECT_COB, &object_cob_Skel_0021F8 },
+    /* ENHY_SKEL_BOB */
+    { OBJECT_BOB, &object_bob_Skel_0000F0 },
+    /* ENHY_SKEL_BOJ */
+    { OBJECT_BOJ, &object_boj_Skel_0000F0 },
+    /* ENHY_SKEL_AHG */
+    { OBJECT_AHG, &object_ahg_Skel_0000F0 },
+    /* ENHY_SKEL_BBA */
+    { OBJECT_BBA, &object_bba_Skel_0000F0 },
+    /* ENHY_SKEL_CNE */
+    { OBJECT_CNE, &gCneSkel },
+    /* ENHY_SKEL_BJI */
+    { OBJECT_BJI, &object_bji_Skel_0000F0 },
+    /* ENHY_SKEL_COB */
+    { OBJECT_COB, &object_cob_Skel_0021F8 },
 };
 
 typedef enum {
@@ -178,42 +200,68 @@ typedef enum {
 
 static AnimationInfo sAnimationInfo[] = {
     /* ENHY_ANIM_0 */ { &gObjOsAnim_092C, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
-    /* ENHY_ANIM_1 */ { &gObjOsAnim_0228, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
-    /* ENHY_ANIM_2 */ { &gObjOsAnim_4CF4, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
-    /* ENHY_ANIM_3 */ { &gObjOsAnim_16EC, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
-    /* ENHY_ANIM_4 */ { &gObjOsAnim_265C, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
-    /* ENHY_ANIM_5 */ { &gObjOsAnim_42AC, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
-    /* ENHY_ANIM_6 */ { &gObjOsAnim_28DC, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
-    /* ENHY_ANIM_7 */ { &gObjOsAnim_2160, 1.0f, 0.0f, -1.0f, 0x00, -10.0f },
-    /* ENHY_ANIM_8 */ { &gObjOsAnim_265C, 1.0f, 0.0f, -1.0f, 0x00, -10.0f },
-    /* ENHY_ANIM_9 */ { &gObjOsAnim_4E90, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
-    /* ENHY_ANIM_10 */ { &gObjOsAnim_1E7C, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
-    /* ENHY_ANIM_11 */ { &gObjOsAnim_0170, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
-    /* ENHY_ANIM_12 */ { &gObjOsAnim_00B4, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
-    /* ENHY_ANIM_13 */ { &gObjOsAnim_3D84, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
-    /* ENHY_ANIM_14 */ { &gObjOsAnim_41F8, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
-    /* ENHY_ANIM_15 */ { &gObjOsAnim_300C, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
-    /* ENHY_ANIM_16 */ { &gObjOsAnim_31B0, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
-    /* ENHY_ANIM_17 */ { &gObjOsAnim_31B0, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
-    /* ENHY_ANIM_18 */ { &gObjOsAnim_2D0C, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
-    /* ENHY_ANIM_19 */ { &gObjOsAnim_2DC0, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
-    /* ENHY_ANIM_20 */ { &gObjOsAnim_4408, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
-    /* ENHY_ANIM_21 */ { &gObjOsAnim_1F18, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
-    /* ENHY_ANIM_22 */ { &gObjOsAnim_4F28, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
-    /* ENHY_ANIM_23 */ { &gObjOsAnim_33B4, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
-    /* ENHY_ANIM_24 */ { &gObjOsAnim_12E8, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
-    /* ENHY_ANIM_25 */ { &gObjOsAnim_0FE4, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
-    /* ENHY_ANIM_26 */ { &gObjOsAnim_0BFC, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
+    /* ENHY_ANIM_1 */
+    { &gObjOsAnim_0228, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
+    /* ENHY_ANIM_2 */
+    { &gObjOsAnim_4CF4, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
+    /* ENHY_ANIM_3 */
+    { &gObjOsAnim_16EC, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
+    /* ENHY_ANIM_4 */
+    { &gObjOsAnim_265C, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
+    /* ENHY_ANIM_5 */
+    { &gObjOsAnim_42AC, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
+    /* ENHY_ANIM_6 */
+    { &gObjOsAnim_28DC, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
+    /* ENHY_ANIM_7 */
+    { &gObjOsAnim_2160, 1.0f, 0.0f, -1.0f, 0x00, -10.0f },
+    /* ENHY_ANIM_8 */
+    { &gObjOsAnim_265C, 1.0f, 0.0f, -1.0f, 0x00, -10.0f },
+    /* ENHY_ANIM_9 */
+    { &gObjOsAnim_4E90, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
+    /* ENHY_ANIM_10 */
+    { &gObjOsAnim_1E7C, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
+    /* ENHY_ANIM_11 */
+    { &gObjOsAnim_0170, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
+    /* ENHY_ANIM_12 */
+    { &gObjOsAnim_00B4, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
+    /* ENHY_ANIM_13 */
+    { &gObjOsAnim_3D84, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
+    /* ENHY_ANIM_14 */
+    { &gObjOsAnim_41F8, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
+    /* ENHY_ANIM_15 */
+    { &gObjOsAnim_300C, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
+    /* ENHY_ANIM_16 */
+    { &gObjOsAnim_31B0, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
+    /* ENHY_ANIM_17 */
+    { &gObjOsAnim_31B0, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
+    /* ENHY_ANIM_18 */
+    { &gObjOsAnim_2D0C, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
+    /* ENHY_ANIM_19 */
+    { &gObjOsAnim_2DC0, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
+    /* ENHY_ANIM_20 */
+    { &gObjOsAnim_4408, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
+    /* ENHY_ANIM_21 */
+    { &gObjOsAnim_1F18, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
+    /* ENHY_ANIM_22 */
+    { &gObjOsAnim_4F28, 1.0f, 0.0f, -1.0f, 0x00, 0.0f },
+    /* ENHY_ANIM_23 */
+    { &gObjOsAnim_33B4, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
+    /* ENHY_ANIM_24 */
+    { &gObjOsAnim_12E8, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
+    /* ENHY_ANIM_25 */
+    { &gObjOsAnim_0FE4, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
+    /* ENHY_ANIM_26 */
+    { &gObjOsAnim_0BFC, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
 };
 
 typedef struct {
-    /* 0x00 */ u8 headInfoIndex;  // EnHyHeadIndex
-    /* 0x01 */ u8 skelInfoIndex2; // EnHySkeletonIndex, see EnHy#objBankIndexSkel2
+    /* 0x00 */ u8          headInfoIndex;  // EnHyHeadIndex
+    /* 0x01 */ u8          skelInfoIndex2; // EnHySkeletonIndex, see EnHy#objBankIndexSkel2
     /* 0x02 */ Color_RGBA8 envColorSeg8;
-    /* 0x06 */ u8 skelInfoIndex1; // EnHySkeletonIndex, see EnHy#objBankIndexSkel1
+    /* 0x06 */ u8          skelInfoIndex1; // EnHySkeletonIndex, see EnHy#objBankIndexSkel1
     /* 0x07 */ Color_RGBA8 envColorSeg9;
-    /* 0x0B */ u8 animInfoIndex; // EnHyAnimationIndex
-} EnHyModelInfo;                 // size = 0xC
+    /* 0x0B */ u8          animInfoIndex; // EnHyAnimationIndex
+} EnHyModelInfo;                          // size = 0xC
 
 static EnHyModelInfo sModelInfo[] = {
     /* ENHY_TYPE_AOB */
@@ -262,94 +310,154 @@ static EnHyModelInfo sModelInfo[] = {
 
 typedef struct {
     /* 0x00 */ Vec3s offset;
-    /* 0x06 */ s16 radius;
-    /* 0x08 */ s16 height;
+    /* 0x06 */ s16   radius;
+    /* 0x08 */ s16   height;
 } EnHyColliderInfo; // size 0xA
 
 static EnHyColliderInfo sColliderInfo[] = {
     /* ENHY_TYPE_AOB */ { { 0, 0, 4 }, 24, 70 },
-    /* ENHY_TYPE_COB */ { { 0, 0, 8 }, 28, 62 },
-    /* ENHY_TYPE_AHG_2 */ { { 0, 0, 4 }, 20, 60 },
-    /* ENHY_TYPE_BOJ_3 */ { { 0, 0, 2 }, 20, 60 },
-    /* ENHY_TYPE_AHG_4 */ { { 0, 0, -2 }, 20, 60 },
-    /* ENHY_TYPE_BOJ_5 */ { { 0, 0, 8 }, 24, 40 },
-    /* ENHY_TYPE_BBA */ { { 0, 0, 10 }, 26, 40 },
-    /* ENHY_TYPE_BJI_7 */ { { 0, 0, 12 }, 26, 58 },
-    /* ENHY_TYPE_CNE_8 */ { { 0, 0, 2 }, 18, 68 },
-    /* ENHY_TYPE_BOJ_9 */ { { 0, 0, 4 }, 20, 60 },
-    /* ENHY_TYPE_BOJ_10 */ { { 0, 0, 4 }, 20, 60 },
-    /* ENHY_TYPE_CNE_11 */ { { 0, 0, 6 }, 20, 64 },
-    /* ENHY_TYPE_BOJ_12 */ { { 0, 0, 0 }, 18, 60 },
-    /* ENHY_TYPE_AHG_13 */ { { 0, 0, 0 }, 16, 60 },
-    /* ENHY_TYPE_BOJ_14 */ { { 0, 0, 0 }, 16, 64 },
-    /* ENHY_TYPE_BJI_15 */ { { 0, 0, 8 }, 20, 58 },
-    /* ENHY_TYPE_BOJ_16 */ { { 4, 0, 0 }, 18, 62 },
-    /* ENHY_TYPE_AHG_17 */ { { 4, 0, 0 }, 18, 62 },
-    /* ENHY_TYPE_BOB_18 */ { { 0, 0, 8 }, 28, 62 },
-    /* ENHY_TYPE_BJI_19 */ { { 0, 0, 0 }, 16, 60 },
-    /* ENHY_TYPE_AHG_20 */ { { 0, 0, 8 }, 20, 58 },
+    /* ENHY_TYPE_COB */
+    { { 0, 0, 8 }, 28, 62 },
+    /* ENHY_TYPE_AHG_2 */
+    { { 0, 0, 4 }, 20, 60 },
+    /* ENHY_TYPE_BOJ_3 */
+    { { 0, 0, 2 }, 20, 60 },
+    /* ENHY_TYPE_AHG_4 */
+    { { 0, 0, -2 }, 20, 60 },
+    /* ENHY_TYPE_BOJ_5 */
+    { { 0, 0, 8 }, 24, 40 },
+    /* ENHY_TYPE_BBA */
+    { { 0, 0, 10 }, 26, 40 },
+    /* ENHY_TYPE_BJI_7 */
+    { { 0, 0, 12 }, 26, 58 },
+    /* ENHY_TYPE_CNE_8 */
+    { { 0, 0, 2 }, 18, 68 },
+    /* ENHY_TYPE_BOJ_9 */
+    { { 0, 0, 4 }, 20, 60 },
+    /* ENHY_TYPE_BOJ_10 */
+    { { 0, 0, 4 }, 20, 60 },
+    /* ENHY_TYPE_CNE_11 */
+    { { 0, 0, 6 }, 20, 64 },
+    /* ENHY_TYPE_BOJ_12 */
+    { { 0, 0, 0 }, 18, 60 },
+    /* ENHY_TYPE_AHG_13 */
+    { { 0, 0, 0 }, 16, 60 },
+    /* ENHY_TYPE_BOJ_14 */
+    { { 0, 0, 0 }, 16, 64 },
+    /* ENHY_TYPE_BJI_15 */
+    { { 0, 0, 8 }, 20, 58 },
+    /* ENHY_TYPE_BOJ_16 */
+    { { 4, 0, 0 }, 18, 62 },
+    /* ENHY_TYPE_AHG_17 */
+    { { 4, 0, 0 }, 18, 62 },
+    /* ENHY_TYPE_BOB_18 */
+    { { 0, 0, 8 }, 28, 62 },
+    /* ENHY_TYPE_BJI_19 */
+    { { 0, 0, 0 }, 16, 60 },
+    /* ENHY_TYPE_AHG_20 */
+    { { 0, 0, 8 }, 20, 58 },
 };
 
 typedef struct {
-    /* 0x00 */ u8 unkPresetIndex;
+    /* 0x00 */ u8  unkPresetIndex;
     /* 0x04 */ f32 unkValueChild;
     /* 0x08 */ f32 unkValueAdult;
 } EnHyInit1Info; // size = 0xC
 
 static EnHyInit1Info sInit1Info[] = {
     /* ENHY_TYPE_AOB */ { 0x06, 20.0f, 10.0f },
-    /* ENHY_TYPE_COB */ { 0x06, 20.0f, 10.0f },
-    /* ENHY_TYPE_AHG_2 */ { 0x07, 40.0f, 20.0f },
-    /* ENHY_TYPE_BOJ_3 */ { 0x06, 20.0f, 10.0f },
-    /* ENHY_TYPE_AHG_4 */ { 0x07, 40.0f, 20.0f },
-    /* ENHY_TYPE_BOJ_5 */ { 0x08, 0.0f, -20.0f },
-    /* ENHY_TYPE_BBA */ { 0x09, 20.0f, 0.0f },
-    /* ENHY_TYPE_BJI_7 */ { 0x09, 20.0f, 0.0f },
-    /* ENHY_TYPE_CNE_8 */ { 0x06, 20.0f, 10.0f },
-    /* ENHY_TYPE_BOJ_9 */ { 0x06, 20.0f, 10.0f },
-    /* ENHY_TYPE_BOJ_10 */ { 0x06, 20.0f, 10.0f },
-    /* ENHY_TYPE_CNE_11 */ { 0x06, 20.0f, 10.0f },
-    /* ENHY_TYPE_BOJ_12 */ { 0x00, 0.0f, 0.0f },
-    /* ENHY_TYPE_AHG_13 */ { 0x06, 20.0f, 10.0f },
-    /* ENHY_TYPE_BOJ_14 */ { 0x06, 20.0f, 10.0f },
-    /* ENHY_TYPE_BJI_15 */ { 0x0A, 20.0f, 0.0f },
-    /* ENHY_TYPE_BOJ_16 */ { 0x06, 20.0f, 10.0f },
-    /* ENHY_TYPE_AHG_17 */ { 0x06, 20.0f, 10.0f },
-    /* ENHY_TYPE_BOB_18 */ { 0x06, 20.0f, 10.0f },
-    /* ENHY_TYPE_BJI_19 */ { 0x06, 20.0f, 10.0f },
-    /* ENHY_TYPE_AHG_20 */ { 0x0A, 20.0f, 0.0f },
+    /* ENHY_TYPE_COB */
+    { 0x06, 20.0f, 10.0f },
+    /* ENHY_TYPE_AHG_2 */
+    { 0x07, 40.0f, 20.0f },
+    /* ENHY_TYPE_BOJ_3 */
+    { 0x06, 20.0f, 10.0f },
+    /* ENHY_TYPE_AHG_4 */
+    { 0x07, 40.0f, 20.0f },
+    /* ENHY_TYPE_BOJ_5 */
+    { 0x08, 0.0f, -20.0f },
+    /* ENHY_TYPE_BBA */
+    { 0x09, 20.0f, 0.0f },
+    /* ENHY_TYPE_BJI_7 */
+    { 0x09, 20.0f, 0.0f },
+    /* ENHY_TYPE_CNE_8 */
+    { 0x06, 20.0f, 10.0f },
+    /* ENHY_TYPE_BOJ_9 */
+    { 0x06, 20.0f, 10.0f },
+    /* ENHY_TYPE_BOJ_10 */
+    { 0x06, 20.0f, 10.0f },
+    /* ENHY_TYPE_CNE_11 */
+    { 0x06, 20.0f, 10.0f },
+    /* ENHY_TYPE_BOJ_12 */
+    { 0x00, 0.0f, 0.0f },
+    /* ENHY_TYPE_AHG_13 */
+    { 0x06, 20.0f, 10.0f },
+    /* ENHY_TYPE_BOJ_14 */
+    { 0x06, 20.0f, 10.0f },
+    /* ENHY_TYPE_BJI_15 */
+    { 0x0A, 20.0f, 0.0f },
+    /* ENHY_TYPE_BOJ_16 */
+    { 0x06, 20.0f, 10.0f },
+    /* ENHY_TYPE_AHG_17 */
+    { 0x06, 20.0f, 10.0f },
+    /* ENHY_TYPE_BOB_18 */
+    { 0x06, 20.0f, 10.0f },
+    /* ENHY_TYPE_BJI_19 */
+    { 0x06, 20.0f, 10.0f },
+    /* ENHY_TYPE_AHG_20 */
+    { 0x0A, 20.0f, 0.0f },
 };
 
 typedef struct {
-    /* 0x00 */ f32 shadowScale;
+    /* 0x00 */ f32   shadowScale;
     /* 0x04 */ Vec3f modelOffset;
-    /* 0x10 */ f32 scale;
-    /* 0x14 */ s8 targetMode;
-    /* 0x18 */ f32 unkRange;
+    /* 0x10 */ f32   scale;
+    /* 0x14 */ s8    targetMode;
+    /* 0x18 */ f32   unkRange;
 } EnHyInit2Info; // size = 0x1C
 
 static EnHyInit2Info sInit2Info[] = {
     /* ENHY_TYPE_AOB */ { 36.0f, { 0.0f, 0.0f, 600.0f }, 0.01f, 0x06, 30.0f },
-    /* ENHY_TYPE_COB */ { 40.0f, { -100.0f, 0.0f, 400.0f }, 0.01f, 0x06, 30.0f },
-    /* ENHY_TYPE_AHG_2 */ { 22.0f, { 0.0f, 0.0f, -200.0f }, 0.01f, 0x06, 30.0f },
-    /* ENHY_TYPE_BOJ_3 */ { 20.0f, { -100.0f, 0.0f, 0.0f }, 0.01f, 0x06, 30.0f },
-    /* ENHY_TYPE_AHG_4 */ { 22.0f, { 0.0f, 0.0f, 0.0f }, 0.01f, 0x06, 30.0f },
-    /* ENHY_TYPE_BOJ_5 */ { 21.0f, { 0.0f, 0.0f, 0.0f }, 0.01f, 0x06, 30.0f },
-    /* ENHY_TYPE_BBA */ { 25.0f, { -100.0f, 0.0f, 600.0f }, 0.01f, 0x06, 30.0f },
-    /* ENHY_TYPE_BJI_7 */ { 28.0f, { -100.0f, 0.0f, 800.0f }, 0.01f, 0x06, 30.0f },
-    /* ENHY_TYPE_CNE_8 */ { 17.0f, { 0.0f, 0.0f, 700.0f }, 0.01f, 0x06, 30.0f },
-    /* ENHY_TYPE_BOJ_9 */ { 18.0f, { 0.0f, 0.0f, 100.0f }, 0.01f, 0x06, 30.0f },
-    /* ENHY_TYPE_BOJ_10 */ { 18.0f, { 0.0f, 0.0f, -200.0f }, 0.01f, 0x06, 30.0f },
-    /* ENHY_TYPE_CNE_11 */ { 17.0f, { 0.0f, 0.0f, 700.0f }, 0.01f, 0x06, 30.0f },
-    /* ENHY_TYPE_BOJ_12 */ { 21.0f, { 0.0f, 0.0f, -300.0f }, 0.01f, 0x06, 30.0f },
-    /* ENHY_TYPE_AHG_13 */ { 20.0f, { 0.0f, 0.0f, -200.0f }, 0.01f, 0x06, 30.0f },
-    /* ENHY_TYPE_BOJ_14 */ { 18.0f, { -200.0f, 0.0f, -200.0f }, 0.01f, 0x06, 30.0f },
-    /* ENHY_TYPE_BJI_15 */ { 27.0f, { -100.0f, 0.0f, 800.0f }, 0.01f, 0x06, 30.0f },
-    /* ENHY_TYPE_BOJ_16 */ { 19.0f, { 400.0f, 0.0f, 0.0f }, 0.01f, 0x04, 30.0f },
-    /* ENHY_TYPE_AHG_17 */ { 19.0f, { 400.0f, 0.0f, 0.0f }, 0.01f, 0x06, 30.0f },
-    /* ENHY_TYPE_BOB_18 */ { 40.0f, { -100.0f, 0.0f, 400.0f }, 0.01f, 0x06, 30.0f },
-    /* ENHY_TYPE_BJI_19 */ { 17.0f, { 0.0f, 0.0f, 700.0f }, 0.01f, 0x06, 30.0f },
-    /* ENHY_TYPE_AHG_20 */ { 20.0f, { 0.0f, 0.0f, -200.0f }, 0.01f, 0x06, 30.0f },
+    /* ENHY_TYPE_COB */
+    { 40.0f, { -100.0f, 0.0f, 400.0f }, 0.01f, 0x06, 30.0f },
+    /* ENHY_TYPE_AHG_2 */
+    { 22.0f, { 0.0f, 0.0f, -200.0f }, 0.01f, 0x06, 30.0f },
+    /* ENHY_TYPE_BOJ_3 */
+    { 20.0f, { -100.0f, 0.0f, 0.0f }, 0.01f, 0x06, 30.0f },
+    /* ENHY_TYPE_AHG_4 */
+    { 22.0f, { 0.0f, 0.0f, 0.0f }, 0.01f, 0x06, 30.0f },
+    /* ENHY_TYPE_BOJ_5 */
+    { 21.0f, { 0.0f, 0.0f, 0.0f }, 0.01f, 0x06, 30.0f },
+    /* ENHY_TYPE_BBA */
+    { 25.0f, { -100.0f, 0.0f, 600.0f }, 0.01f, 0x06, 30.0f },
+    /* ENHY_TYPE_BJI_7 */
+    { 28.0f, { -100.0f, 0.0f, 800.0f }, 0.01f, 0x06, 30.0f },
+    /* ENHY_TYPE_CNE_8 */
+    { 17.0f, { 0.0f, 0.0f, 700.0f }, 0.01f, 0x06, 30.0f },
+    /* ENHY_TYPE_BOJ_9 */
+    { 18.0f, { 0.0f, 0.0f, 100.0f }, 0.01f, 0x06, 30.0f },
+    /* ENHY_TYPE_BOJ_10 */
+    { 18.0f, { 0.0f, 0.0f, -200.0f }, 0.01f, 0x06, 30.0f },
+    /* ENHY_TYPE_CNE_11 */
+    { 17.0f, { 0.0f, 0.0f, 700.0f }, 0.01f, 0x06, 30.0f },
+    /* ENHY_TYPE_BOJ_12 */
+    { 21.0f, { 0.0f, 0.0f, -300.0f }, 0.01f, 0x06, 30.0f },
+    /* ENHY_TYPE_AHG_13 */
+    { 20.0f, { 0.0f, 0.0f, -200.0f }, 0.01f, 0x06, 30.0f },
+    /* ENHY_TYPE_BOJ_14 */
+    { 18.0f, { -200.0f, 0.0f, -200.0f }, 0.01f, 0x06, 30.0f },
+    /* ENHY_TYPE_BJI_15 */
+    { 27.0f, { -100.0f, 0.0f, 800.0f }, 0.01f, 0x06, 30.0f },
+    /* ENHY_TYPE_BOJ_16 */
+    { 19.0f, { 400.0f, 0.0f, 0.0f }, 0.01f, 0x04, 30.0f },
+    /* ENHY_TYPE_AHG_17 */
+    { 19.0f, { 400.0f, 0.0f, 0.0f }, 0.01f, 0x06, 30.0f },
+    /* ENHY_TYPE_BOB_18 */
+    { 40.0f, { -100.0f, 0.0f, 400.0f }, 0.01f, 0x06, 30.0f },
+    /* ENHY_TYPE_BJI_19 */
+    { 17.0f, { 0.0f, 0.0f, 700.0f }, 0.01f, 0x06, 30.0f },
+    /* ENHY_TYPE_AHG_20 */
+    { 20.0f, { 0.0f, 0.0f, -200.0f }, 0.01f, 0x06, 30.0f },
 };
 
 s32 EnHy_FindSkelAndHeadObjects(EnHy* this, PlayState* play) {
@@ -468,22 +576,29 @@ u16 func_80A6F810(PlayState* play, Actor* thisx) {
                 return 0x701A;
             }
         case ENHY_TYPE_BOJ_3:
-            return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? ((Flags_GetInfTable(INFTABLE_C4)) ? 0x7001 : 0x70EB) : 0x7001;
+            return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE))
+                       ? ((Flags_GetInfTable(INFTABLE_C4)) ? 0x7001 : 0x70EB)
+                       : 0x7001;
         case ENHY_TYPE_AHG_4:
-            return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? 0x704B : ((Flags_GetInfTable(INFTABLE_C5)) ? 0x7024 : 0x7023);
+            return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE))
+                       ? 0x704B
+                       : ((Flags_GetInfTable(INFTABLE_C5)) ? 0x7024 : 0x7023);
         case ENHY_TYPE_BOJ_5:
             player->exchangeItemId = EXCH_ITEM_BLUE_FIRE;
             return 0x700C;
         case ENHY_TYPE_BBA:
-            return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? 0x704A : ((Flags_GetInfTable(INFTABLE_C6)) ? 0x7022 : 0x7021);
+            return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE))
+                       ? 0x704A
+                       : ((Flags_GetInfTable(INFTABLE_C6)) ? 0x7022 : 0x7021);
         case ENHY_TYPE_BJI_7:
             if (play->sceneNum == SCENE_KAKARIKO) {
                 return 0x5088;
             } else if (play->sceneNum == SCENE_SPOT01) {
                 return 0x5087;
             } else {
-                return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? 0x704D
-                                                         : ((Flags_GetInfTable(INFTABLE_C7)) ? 0x7028 : 0x7027);
+                return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE))
+                           ? 0x704D
+                           : ((Flags_GetInfTable(INFTABLE_C7)) ? 0x7028 : 0x7027);
             }
         case ENHY_TYPE_CNE_8:
             if (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) {
@@ -497,8 +612,9 @@ u16 func_80A6F810(PlayState* play, Actor* thisx) {
             } else if (play->sceneNum == SCENE_SPOT01) {
                 return CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) ? 0x5080 : 0x507F;
             } else {
-                return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? 0x7049
-                                                         : ((Flags_GetInfTable(INFTABLE_CA)) ? 0x7020 : 0x701F);
+                return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE))
+                           ? 0x7049
+                           : ((Flags_GetInfTable(INFTABLE_CA)) ? 0x7020 : 0x701F);
             }
         case ENHY_TYPE_BOJ_10:
             if (play->sceneNum == SCENE_LABO) {
@@ -506,12 +622,14 @@ u16 func_80A6F810(PlayState* play, Actor* thisx) {
             } else if (play->sceneNum == SCENE_SPOT01) {
                 return CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) ? 0x507C : 0x507B;
             } else {
-                return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? 0x7046
-                                                         : ((Flags_GetInfTable(INFTABLE_CD)) ? 0x7019 : 0x7018);
+                return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE))
+                           ? 0x7046
+                           : ((Flags_GetInfTable(INFTABLE_CD)) ? 0x7019 : 0x7018);
             }
         case ENHY_TYPE_CNE_11:
-            return (Flags_GetInfTable(INFTABLE_ENTERED_HYRULE_CASTLE)) ? ((Flags_GetInfTable(INFTABLE_CC)) ? 0x7014 : 0x70A4)
-                                                      : 0x7014;
+            return (Flags_GetInfTable(INFTABLE_ENTERED_HYRULE_CASTLE))
+                       ? ((Flags_GetInfTable(INFTABLE_CC)) ? 0x7014 : 0x70A4)
+                       : 0x7014;
         case ENHY_TYPE_BOJ_12:
             if (play->sceneNum == SCENE_SPOT01) {
                 return !IS_DAY ? 0x5084 : 0x5083;
@@ -540,7 +658,9 @@ u16 func_80A6F810(PlayState* play, Actor* thisx) {
             }
         case ENHY_TYPE_BOB_18:
             if (!LINK_IS_ADULT) {
-                return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? 0x505F : ((Flags_GetInfTable(INFTABLE_163)) ? 0x505E : 0x505D);
+                return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE))
+                           ? 0x505F
+                           : ((Flags_GetInfTable(INFTABLE_163)) ? 0x505E : 0x505D);
             } else {
                 return (this->unk_330 & 0x800) ? 0x5062 : ((Flags_GetInfTable(INFTABLE_164)) ? 0x5061 : 0x5060);
             }
@@ -666,9 +786,12 @@ s16 func_80A70058(PlayState* play, Actor* thisx) {
                             func_80A6F7CC(this, play, GI_HEART_PIECE);
                         } else {
                             this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_LOST_DOG, GI_HEART_PIECE);
-                            // The follownig line and last arguments of GiveItemEntryFromActor are copied from func_80A6F7CC
+                            // The follownig line and last arguments of GiveItemEntryFromActor are copied from
+                            // func_80A6F7CC
                             this->unkGetItemId = this->getItemEntry.getItemId;
-                            GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
+                            GiveItemEntryFromActor(&this->actor, play, this->getItemEntry,
+                                                   this->actor.xzDistToPlayer + 1.0f,
+                                                   fabsf(this->actor.yDistToPlayer) + 1.0f);
                         }
                     }
                     this->actionFunc = func_80A714C4;
@@ -773,7 +896,7 @@ void func_80A70834(EnHy* this, PlayState* play) {
 
 void func_80A70978(EnHy* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s16 trackingMode;
+    s16     trackingMode;
 
     switch (this->actor.params & 0x7F) {
         case ENHY_TYPE_BOJ_3:
@@ -869,7 +992,8 @@ s32 EnHy_ShouldSpawn(EnHy* this, PlayState* play) {
                 return true;
             } else if (IS_NIGHT) {
                 return false;
-            } else if ((Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) && !Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL)) {
+            } else if ((Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) &&
+                       !Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL)) {
                 return false;
             } else {
                 return true;
@@ -1069,9 +1193,11 @@ void func_80A714C4(EnHy* this, PlayState* play) {
         this->actionFunc = func_80A71530;
     } else {
         if (!gSaveContext.n64ddFlag || this->getItemEntry.getItemId == GI_NONE) {
-            func_8002F434(&this->actor, play, this->unkGetItemId, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
+            func_8002F434(&this->actor, play, this->unkGetItemId, this->actor.xzDistToPlayer + 1.0f,
+                          fabsf(this->actor.yDistToPlayer) + 1.0f);
         } else {
-            GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
+            GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, this->actor.xzDistToPlayer + 1.0f,
+                                   fabsf(this->actor.yDistToPlayer) + 1.0f);
         }
     }
 }
@@ -1124,9 +1250,9 @@ void EnHy_Update(Actor* thisx, PlayState* play) {
 
 s32 EnHy_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnHy* this = (EnHy*)thisx;
-    s32 pad;
-    Vec3s sp48;
-    u8 i;
+    s32     pad;
+    Vec3s   sp48;
+    u8      i;
     UNK_PTR ptr;
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -1171,7 +1297,7 @@ s32 EnHy_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* po
 
 void EnHy_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     EnHy* this = (EnHy*)thisx;
-    s32 pad;
+    s32   pad;
     Vec3f sp3C = { 400.0f, 0.0f, 0.0f };
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -1254,14 +1380,14 @@ void EnHy_Draw(Actor* thisx, PlayState* play) {
                         envColorSeg10.a = 0;
                     }
                     gSPSegment(POLY_OPA_DISP++, 0x0A,
-                               EnHy_SetEnvColor(play->state.gfxCtx, envColorSeg10.r, envColorSeg10.g,
-                                                envColorSeg10.b, envColorSeg10.a));
+                               EnHy_SetEnvColor(play->state.gfxCtx, envColorSeg10.r, envColorSeg10.g, envColorSeg10.b,
+                                                envColorSeg10.a));
                 }
                 break;
         }
 
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnHy_OverrideLimbDraw, EnHy_PostLimbDraw, &this->actor);
+        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+                              EnHy_OverrideLimbDraw, EnHy_PostLimbDraw, &this->actor);
     }
 
     CLOSE_DISPS(play->state.gfxCtx);

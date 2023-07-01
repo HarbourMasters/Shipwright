@@ -120,7 +120,7 @@ void EnGSwitch_Init(Actor* thisx, PlayState* play) {
             this->actor.draw = EnGSwitch_DrawRupee;
             this->actor.shape.yOffset = 700.0f;
 
-            if (CVarGetInteger("gNewDrops", 0) !=0) {
+            if (CVarGetInteger("gNewDrops", 0) != 0) {
                 this->actor.shape.yOffset = 35.0f;
             } else {
                 this->actor.shape.yOffset = 700.0f;
@@ -130,7 +130,7 @@ void EnGSwitch_Init(Actor* thisx, PlayState* play) {
                 osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Ｙｏｕ ａｒｅ Ｓｈｏｃｋ！  ☆☆☆☆☆ %d\n" VT_RST, this->switchFlag);
                 Actor_Kill(&this->actor);
             } else {
-                if (CVarGetInteger("gNewDrops", 0) !=0) {
+                if (CVarGetInteger("gNewDrops", 0) != 0) {
                     Actor_SetScale(&this->actor, 0.6f);
                 } else {
                     Actor_SetScale(&this->actor, 0.03f);
@@ -165,14 +165,14 @@ void EnGSwitch_Init(Actor* thisx, PlayState* play) {
             this->actionFunc = EnGSwitch_WaitForObject;
             break;
         case ENGSWITCH_TARGET_RUPEE:
-            if (CVarGetInteger("gNewDrops", 0) !=0) {
+            if (CVarGetInteger("gNewDrops", 0) != 0) {
                 this->actor.shape.yOffset = 35.0f;
                 Actor_SetScale(&this->actor, 0.9f);
             } else {
                 this->actor.shape.yOffset = 700.0f;
                 Actor_SetScale(&this->actor, 0.05f);
             }
-            
+
             Collider_InitCylinder(play, &this->collider);
             Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
             this->actor.draw = EnGSwitch_DrawRupee;
@@ -196,7 +196,7 @@ void EnGSwitch_Break(EnGSwitch* this, PlayState* play) {
     Vec3f hitPos;
     Vec3f accel = { 0.0f, 0.0f, 0.0f };
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
-    s32 i;
+    s32   i;
 
     randPos.x = this->actor.world.pos.x + Rand_CenteredFloat(40.0f);
     randPos.y = this->actor.world.pos.y + 30.0f + Rand_CenteredFloat(35.0f);
@@ -376,8 +376,8 @@ void EnGSwitch_GalleryRupee(EnGSwitch* this, PlayState* play) {
 }
 
 void EnGSwitch_ArcheryPot(EnGSwitch* this, PlayState* play) {
-    s32 i;
-    s16 angle;
+    s32    i;
+    s16    angle;
     Vec3f* thisPos = &this->actor.world.pos;
 
     this->actor.shape.rot.y += 0x3C0;
@@ -386,12 +386,12 @@ void EnGSwitch_ArcheryPot(EnGSwitch* this, PlayState* play) {
         for (i = 0, angle = 0; i < 30; i++, angle += 0x4E20) {
             Vec3f pos;
             Vec3f vel;
-            f32 sn = Math_SinS(angle);
-            f32 cs = Math_CosS(angle);
-            f32 rand;
-            s32 phi_s0;
-            s32 scale;
-            s32 pad;
+            f32   sn = Math_SinS(angle);
+            f32   cs = Math_CosS(angle);
+            f32   rand;
+            s32   phi_s0;
+            s32   scale;
+            s32   pad;
 
             pos.x = sn * 8.0f;
             pos.y = 10.0f + Rand_CenteredFloat(5.0f);
@@ -476,8 +476,7 @@ void EnGSwitch_DrawPot(Actor* thisx, PlayState* play) {
     if (!this->broken) {
         OPEN_DISPS(play->state.gfxCtx);
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_tsubo_DL_0017C0);
         CLOSE_DISPS(play->state.gfxCtx);
     }
@@ -498,31 +497,34 @@ void EnGSwitch_DrawRupee(Actor* thisx, PlayState* play) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         func_8002EBCC(&this->actor, play, 0);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        if (CVarGetInteger("gNewDrops", 0) !=0) {
+        if (CVarGetInteger("gNewDrops", 0) != 0) {
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
             if (this->type == ENGSWITCH_TARGET_RUPEE) {
                 GetItem_Draw(play, sRupeeTexturesNew[this->colorIdx]);
             } else {
-                Color_RGB8 silverRupeeColor = CVarGetColor24("gCosmetics.Consumable_SilverRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                Color_RGB8 silverRupeeColor =
+                    CVarGetColor24("gCosmetics.Consumable_SilverRupee.Value", (Color_RGB8){ 255, 255, 255 });
                 Gfx_SetupDL_25Opa(play->state.gfxCtx);
-                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                        G_MTX_MODELVIEW | G_MTX_LOAD);
-                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0x80, silverRupeeColor.r, silverRupeeColor.g, silverRupeeColor.b, 255);
-                gDPSetEnvColor(POLY_OPA_DISP++, silverRupeeColor.r / 5, silverRupeeColor.g / 5, silverRupeeColor.b / 5, 255);
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0x80, silverRupeeColor.r, silverRupeeColor.g, silverRupeeColor.b,
+                                255);
+                gDPSetEnvColor(POLY_OPA_DISP++, silverRupeeColor.r / 5, silverRupeeColor.g / 5, silverRupeeColor.b / 5,
+                               255);
                 gSPDisplayList(POLY_OPA_DISP++, gGiRupeeInnerDL);
                 Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                        G_MTX_MODELVIEW | G_MTX_LOAD);
+                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
                 gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 255, 255, 255, 255);
-                gDPSetEnvColor(POLY_XLU_DISP++, silverRupeeColor.r * 0.75f, silverRupeeColor.g * 0.75f, silverRupeeColor.b * 0.75f, 255);
+                gDPSetEnvColor(POLY_XLU_DISP++, silverRupeeColor.r * 0.75f, silverRupeeColor.g * 0.75f,
+                               silverRupeeColor.b * 0.75f, 255);
                 gSPDisplayList(POLY_XLU_DISP++, gGiRupeeOuterDL);
             }
         } else {
             Color_RGB8 rupeeColor;
-            u8 shouldColor = 0;
+            u8         shouldColor = 0;
             switch (this->colorIdx) {
                 case 0:
-                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_GreenRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor =
+                        CVarGetColor24("gCosmetics.Consumable_GreenRupee.Value", (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_GreenRupee.Changed", 0);
                     break;
                 case 1:
@@ -534,7 +536,8 @@ void EnGSwitch_DrawRupee(Actor* thisx, PlayState* play) {
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_RedRupee.Changed", 0);
                     break;
                 case 3:
-                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_PurpleRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor =
+                        CVarGetColor24("gCosmetics.Consumable_PurpleRupee.Value", (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_PurpleRupee.Changed", 0);
                     break;
                 case 4:
@@ -542,7 +545,8 @@ void EnGSwitch_DrawRupee(Actor* thisx, PlayState* play) {
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_GoldRupee.Changed", 0);
                     break;
                 case 5:
-                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_SilverRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor =
+                        CVarGetColor24("gCosmetics.Consumable_SilverRupee.Value", (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_SilverRupee.Changed", 0);
                     break;
             }
@@ -567,13 +571,13 @@ void EnGSwitch_DrawRupee(Actor* thisx, PlayState* play) {
 
 void EnGSwitch_SpawnEffects(EnGSwitch* this, Vec3f* pos, s16 scale, s16 colorIdx) {
     EnGSwitchEffect* effect = this->effects;
-    s16 i;
+    s16              i;
 
     for (i = 0; i < this->numEffects; i++, effect++) {
         if (!effect->flag) {
             Vec3f baseVel;
-            f32 pitch;
-            f32 yaw;
+            f32   pitch;
+            f32   yaw;
 
             effect->epoch++;
             effect->pos = *pos;
@@ -595,8 +599,8 @@ void EnGSwitch_SpawnEffects(EnGSwitch* this, Vec3f* pos, s16 scale, s16 colorIdx
 }
 
 void EnGSwitch_UpdateEffects(EnGSwitch* this, PlayState* play) {
-    Vec3f temp;
-    s16 i;
+    Vec3f            temp;
+    s16              i;
     EnGSwitchEffect* effect = this->effects;
 
     for (i = 0; i < this->numEffects; i++, effect++) {
@@ -625,9 +629,9 @@ void EnGSwitch_UpdateEffects(EnGSwitch* this, PlayState* play) {
 void EnGSwitch_DrawEffects(EnGSwitch* this, PlayState* play) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
     EnGSwitchEffect* effect = this->effects;
-    s16 i;
-    f32 scale;
-    s32 pad;
+    s16              i;
+    f32              scale;
+    s32              pad;
 
     OPEN_DISPS(gfxCtx);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
@@ -640,13 +644,13 @@ void EnGSwitch_DrawEffects(EnGSwitch* this, PlayState* play) {
             Matrix_RotateX(effect->rot.x, MTXMODE_APPLY);
             Matrix_RotateY(effect->rot.y, MTXMODE_APPLY);
             Matrix_RotateZ(effect->rot.z, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             Color_RGB8 rupeeColor;
-            u8 shouldColor = 0;
+            u8         shouldColor = 0;
             switch (effect->colorIdx) {
                 case 0:
-                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_GreenRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor =
+                        CVarGetColor24("gCosmetics.Consumable_GreenRupee.Value", (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_GreenRupee.Changed", 0);
                     break;
                 case 1:
@@ -658,7 +662,8 @@ void EnGSwitch_DrawEffects(EnGSwitch* this, PlayState* play) {
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_RedRupee.Changed", 0);
                     break;
                 case 3:
-                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_PurpleRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor =
+                        CVarGetColor24("gCosmetics.Consumable_PurpleRupee.Value", (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_PurpleRupee.Changed", 0);
                     break;
                 case 4:
@@ -666,7 +671,8 @@ void EnGSwitch_DrawEffects(EnGSwitch* this, PlayState* play) {
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_GoldRupee.Changed", 0);
                     break;
                 case 5:
-                    rupeeColor = CVarGetColor24("gCosmetics.Consumable_SilverRupee.Value", (Color_RGB8){ 255, 255, 255 });
+                    rupeeColor =
+                        CVarGetColor24("gCosmetics.Consumable_SilverRupee.Value", (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_SilverRupee.Changed", 0);
                     break;
             }

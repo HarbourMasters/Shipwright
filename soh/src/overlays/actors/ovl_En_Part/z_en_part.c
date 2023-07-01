@@ -98,7 +98,7 @@ void func_80ACDDE8(EnPart* this, PlayState* play) {
 }
 
 void func_80ACE13C(EnPart* this, PlayState* play) {
-    s32 i;
+    s32   i;
     Vec3f pos;
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
     Vec3f accel = { 0.0f, 0.0f, 0.0f };
@@ -140,8 +140,8 @@ void func_80ACE13C(EnPart* this, PlayState* play) {
                             Rand_CenteredFloat(50.0f);
                     pos.z = this->actor.world.pos.z + Rand_CenteredFloat(60.0f);
                     velocity.y = Rand_ZeroOne() + 1.0f;
-                    EffectSsDtBubble_SpawnColorProfile(play, &pos, &velocity, &accel, Rand_S16Offset(80, 100), 25,
-                                                       0, true);
+                    EffectSsDtBubble_SpawnColorProfile(play, &pos, &velocity, &accel, Rand_S16Offset(80, 100), 25, 0,
+                                                       true);
                 }
                 break;
             case 5:
@@ -152,8 +152,8 @@ void func_80ACE13C(EnPart* this, PlayState* play) {
                     pos.x = this->actor.world.pos.x + Rand_CenteredFloat(25.0f);
                     pos.y = this->actor.world.pos.y + Rand_CenteredFloat(40.0f);
                     pos.z = this->actor.world.pos.z + Rand_CenteredFloat(25.0f);
-                    EffectSsDeadDb_Spawn(play, &pos, &zeroVec, &zeroVec, 40, 7, 255, 255, 255, 255, 0, 0, 255, 1,
-                                         9, true);
+                    EffectSsDeadDb_Spawn(play, &pos, &zeroVec, &zeroVec, 40, 7, 255, 255, 255, 255, 0, 0, 255, 1, 9,
+                                         true);
                 }
                 break;
         }
@@ -209,8 +209,8 @@ void func_80ACE7E8(EnPart* this, PlayState* play) {
     Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
 
     if ((this->actor.parent == NULL) || (this->actor.parent->update == NULL)) {
-        EffectSsDeadDb_Spawn(play, &this->actor.world.pos, &zeroVec, &zeroVec,
-                             (s16)(this->actor.scale.y * 100.0f) * 40, 7, 255, 255, 255, 255, 0, 255, 0, 1, 9, true);
+        EffectSsDeadDb_Spawn(play, &this->actor.world.pos, &zeroVec, &zeroVec, (s16)(this->actor.scale.y * 100.0f) * 40,
+                             7, 255, 255, 255, 255, 0, 255, 0, 1, 9, true);
         Actor_Kill(&this->actor);
         return;
     }
@@ -308,8 +308,7 @@ void EnPart_Draw(Actor* thisx, PlayState* play) {
     }
 
     if (this->displayList != NULL) {
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, this->displayList);
     }
 

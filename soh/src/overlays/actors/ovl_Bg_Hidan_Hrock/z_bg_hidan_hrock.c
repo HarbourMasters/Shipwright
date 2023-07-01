@@ -77,12 +77,12 @@ static InitChainEntry sInitChain[] = {
 void BgHidanHrock_Init(Actor* thisx, PlayState* play) {
     BgHidanHrock* this = (BgHidanHrock*)thisx;
     ColliderTrisElementInit* colliderElementInit;
-    Vec3f vertices[3];
-    f32 cosRotY;
-    f32 sinRotY;
-    s32 i;
-    s32 j;
-    CollisionHeader* collisionHeader = NULL;
+    Vec3f                    vertices[3];
+    f32                      cosRotY;
+    f32                      sinRotY;
+    s32                      i;
+    s32                      j;
+    CollisionHeader*         collisionHeader = NULL;
 
     Actor_ProcessInitChain(thisx, sInitChain);
     this->unk_16A = thisx->params & 0x3F;

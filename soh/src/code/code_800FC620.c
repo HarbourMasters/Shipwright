@@ -20,8 +20,7 @@ char D_80134488[0x18] = {
     0xFF, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00,
 };
 
-s32 Overlay_Load(uintptr_t vRomStart, uintptr_t vRomEnd, void* vRamStart, void* vRamEnd, void* allocatedVRamAddr) 
-{
+s32 Overlay_Load(uintptr_t vRomStart, uintptr_t vRomEnd, void* vRamStart, void* vRamEnd, void* allocatedVRamAddr) {
     return 0;
 
 #if 0
@@ -149,7 +148,7 @@ void* func_800FC948(void* blk, u32 nBlk, u32 blkSize, arg3_800FC948 arg3) {
 void func_800FCA18(void* blk, u32 nBlk, u32 blkSize, arg3_800FCA18 arg3, s32 arg4) {
     uintptr_t pos;
     uintptr_t end;
-    s32 masked_arg2;
+    s32       masked_arg2;
 
     if (blk == 0) {
         return;
@@ -176,7 +175,7 @@ void func_800FCA18(void* blk, u32 nBlk, u32 blkSize, arg3_800FCA18 arg3, s32 arg
 
 void func_800FCB34(void) {
     InitFunc* initFunc = (InitFunc*)&sInitFuncs;
-    u32 nextOffset = initFunc->nextOffset;
+    u32       nextOffset = initFunc->nextOffset;
     InitFunc* prev = NULL;
 
     while (nextOffset != 0) {

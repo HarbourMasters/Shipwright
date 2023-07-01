@@ -636,24 +636,29 @@ typedef struct {
 } SettingsContext;
 
 class Option {
-public:
-    static Option Bool(std::string name_, std::vector<std::string> options_, std::vector<std::string_view> optionDescriptions_, OptionCategory category_ = OptionCategory::Setting, uint8_t defaultOption_ = 0, bool defaultHidden_ = false) {
-        return Option{false, std::move(name_), std::move(options_), std::move(optionDescriptions_), category_, defaultOption_, defaultHidden_};
+  public:
+    static Option Bool(std::string name_, std::vector<std::string> options_,
+                       std::vector<std::string_view> optionDescriptions_,
+                       OptionCategory category_ = OptionCategory::Setting, uint8_t defaultOption_ = 0,
+                       bool defaultHidden_ = false) {
+        return Option{ false,     std::move(name_), std::move(options_), std::move(optionDescriptions_),
+                       category_, defaultOption_,   defaultHidden_ };
     }
 
-    static Option U8(std::string name_, std::vector<std::string> options_, std::vector<std::string_view> optionDescriptions_, OptionCategory category_  = OptionCategory::Setting, uint8_t defaultOption_ = 0, bool defaultHidden_ = false) {
-        return Option{uint8_t{0}, std::move(name_), std::move(options_), std::move(optionDescriptions_), category_, defaultOption_, defaultHidden_};
+    static Option U8(std::string name_, std::vector<std::string> options_,
+                     std::vector<std::string_view> optionDescriptions_,
+                     OptionCategory category_ = OptionCategory::Setting, uint8_t defaultOption_ = 0,
+                     bool defaultHidden_ = false) {
+        return Option{ uint8_t{ 0 }, std::move(name_), std::move(options_), std::move(optionDescriptions_),
+                       category_,    defaultOption_,   defaultHidden_ };
     }
 
-    template <typename T>
-    T Value() const {
+    template <typename T> T Value() const {
         return std::get<T>(var);
     }
 
-    template <typename T>
-    bool Is(T other) const {
-        static_assert(std::is_integral_v<T> || std::is_enum_v<T>,
-                      "T must be an integral type or an enum.");
+    template <typename T> bool Is(T other) const {
+        static_assert(std::is_integral_v<T> || std::is_enum_v<T>, "T must be an integral type or an enum.");
 
         if constexpr ((std::is_integral_v<T> && !std::is_same_v<bool, T>) || std::is_enum_v<T>) {
             return Value<uint8_t>() == static_cast<uint8_t>(other);
@@ -662,8 +667,7 @@ public:
         }
     }
 
-    template <typename T>
-    bool IsNot(T other) const {
+    template <typename T> bool IsNot(T other) const {
         return !Is(other);
     }
 
@@ -697,24 +701,24 @@ public:
     }
 
     bool IsDefaultSelected() {
-      return selectedOption == defaultOption;
+        return selectedOption == defaultOption;
     }
 
     void SetToDefault() {
-      SetSelectedIndex(defaultOption);
-      hidden = defaultHidden;
+        SetSelectedIndex(defaultOption);
+        hidden = defaultHidden;
     }
 
     std::string_view GetSelectedOptionDescription() const {
-      //bounds checking
-      if (selectedOption >= optionDescriptions.size()) {
-        return optionDescriptions[optionDescriptions.size()-1];
-      }
-      return optionDescriptions[selectedOption];
+        // bounds checking
+        if (selectedOption >= optionDescriptions.size()) {
+            return optionDescriptions[optionDescriptions.size() - 1];
+        }
+        return optionDescriptions[selectedOption];
     }
 
     uint8_t GetSelectedOptionIndex() const {
-      return selectedOption;
+        return selectedOption;
     }
 
     void NextOptionIndex() {
@@ -734,680 +738,693 @@ public:
     }
 
     void SetVariable() {
-      if (std::holds_alternative<bool>(var)) {
-        var.emplace<bool>(selectedOption != 0);
-      } else {
-        var.emplace<uint8_t>(selectedOption);
-      }
+        if (std::holds_alternative<bool>(var)) {
+            var.emplace<bool>(selectedOption != 0);
+        } else {
+            var.emplace<uint8_t>(selectedOption);
+        }
     }
 
     void SetDelayedOption() {
-      delayedOption = selectedOption;
+        delayedOption = selectedOption;
     }
 
     void RestoreDelayedOption() {
-      selectedOption = delayedOption;
-      SetVariable();
+        selectedOption = delayedOption;
+        SetVariable();
     }
 
     void SetSelectedIndex(size_t idx) {
-      selectedOption = idx;
-      if (selectedOption >= options.size()) {
-        printf("\x1b[30;0HERROR: Incompatible selection for %s\n", name.c_str());
-        selectedOption = 0;
-      }
+        selectedOption = idx;
+        if (selectedOption >= options.size()) {
+            printf("\x1b[30;0HERROR: Incompatible selection for %s\n", name.c_str());
+            selectedOption = 0;
+        }
 
-      SetVariable();
+        SetVariable();
     }
 
     void SetSelectedIndexByString(std::string newSetting) {
-      using namespace Cosmetics;
+        using namespace Cosmetics;
 
-      //Special case for custom cosmetic settings
-      if (options.size() > CUSTOM_COLOR) {
-        if (newSetting.compare(0, 8, CUSTOM_COLOR_PREFIX) == 0 && options[CUSTOM_COLOR].compare(0, 8, CUSTOM_COLOR_PREFIX) == 0) {
-          SetSelectedIndex(CUSTOM_COLOR);
-          SetSelectedOptionText(newSetting);
-          return;
+        // Special case for custom cosmetic settings
+        if (options.size() > CUSTOM_COLOR) {
+            if (newSetting.compare(0, 8, CUSTOM_COLOR_PREFIX) == 0 &&
+                options[CUSTOM_COLOR].compare(0, 8, CUSTOM_COLOR_PREFIX) == 0) {
+                SetSelectedIndex(CUSTOM_COLOR);
+                SetSelectedOptionText(newSetting);
+                return;
+            }
         }
-      }
 
-      for (size_t i = 0; i < options.size(); i++) {
-        std::string settingName = options[i];
-        if (settingName == newSetting) {
-          SetSelectedIndex(i);
-          return;
+        for (size_t i = 0; i < options.size(); i++) {
+            std::string settingName = options[i];
+            if (settingName == newSetting) {
+                SetSelectedIndex(i);
+                return;
+            }
         }
-      }
     }
 
     void Lock() {
-      locked = true;
+        locked = true;
     }
 
     void Unlock() {
-      locked = false;
+        locked = false;
     }
 
     bool IsLocked() const {
-      return locked;
+        return locked;
     }
 
     void Hide() {
-      hidden = true;
+        hidden = true;
     }
 
     void Unhide() {
-      hidden = false;
+        hidden = false;
     }
 
     bool IsHidden() const {
-      return hidden;
+        return hidden;
     }
 
     bool IsCategory(OptionCategory category) const {
-      return category == this->category;
+        return category == this->category;
     }
 
-private:
-    Option(uint8_t var_, std::string name_, std::vector<std::string> options_, std::vector<std::string_view> optionDescriptions_, OptionCategory category_, uint8_t defaultOption_, bool defaultHidden_)
-          : var(var_), name(std::move(name_)), options(std::move(options_)), optionDescriptions(std::move(optionDescriptions_)), category(category_), defaultOption(defaultOption_), defaultHidden(defaultHidden_) {
+  private:
+    Option(uint8_t var_, std::string name_, std::vector<std::string> options_,
+           std::vector<std::string_view> optionDescriptions_, OptionCategory category_, uint8_t defaultOption_,
+           bool defaultHidden_)
+        : var(var_), name(std::move(name_)), options(std::move(options_)),
+          optionDescriptions(std::move(optionDescriptions_)), category(category_), defaultOption(defaultOption_),
+          defaultHidden(defaultHidden_) {
         selectedOption = defaultOption;
         hidden = defaultHidden;
         SetVariable();
     }
 
-    Option(bool var_, std::string name_, std::vector<std::string> options_, std::vector<std::string_view> optionDescriptions_, OptionCategory category_, uint8_t defaultOption_, bool defaultHidden_)
-          : var(var_), name(std::move(name_)),  options(std::move(options_)), optionDescriptions(std::move(optionDescriptions_)), category(category_), defaultOption(defaultOption_), defaultHidden(defaultHidden_) {
+    Option(bool var_, std::string name_, std::vector<std::string> options_,
+           std::vector<std::string_view> optionDescriptions_, OptionCategory category_, uint8_t defaultOption_,
+           bool defaultHidden_)
+        : var(var_), name(std::move(name_)), options(std::move(options_)),
+          optionDescriptions(std::move(optionDescriptions_)), category(category_), defaultOption(defaultOption_),
+          defaultHidden(defaultHidden_) {
         selectedOption = defaultOption;
         hidden = defaultHidden;
         SetVariable();
     }
 
-  std::variant<bool, uint8_t> var;
-  std::string name;
-  std::vector<std::string> options;
-  std::vector<std::string_view> optionDescriptions;
-  uint8_t selectedOption = 0;
-  uint8_t delayedOption = 0;
-  bool locked = false;
-  bool hidden = false;
-  OptionCategory category;
-  uint8_t defaultOption = 0;
-  bool defaultHidden = false;
+    std::variant<bool, uint8_t>   var;
+    std::string                   name;
+    std::vector<std::string>      options;
+    std::vector<std::string_view> optionDescriptions;
+    uint8_t                       selectedOption = 0;
+    uint8_t                       delayedOption = 0;
+    bool                          locked = false;
+    bool                          hidden = false;
+    OptionCategory                category;
+    uint8_t                       defaultOption = 0;
+    bool                          defaultHidden = false;
 };
 
 enum class MenuType {
-  MainMenu,
-  SubMenu,
-  Action,
+    MainMenu,
+    SubMenu,
+    Action,
 };
 
 class Menu {
   public:
-
-    static Menu SubMenu(std::string name_, std::vector<Option *>* settingsList_, bool printInSpoiler_ = true) {
-      return Menu{std::move(name_), MenuType::SubMenu, std::move(settingsList_), OPTION_SUB_MENU, printInSpoiler_};
+    static Menu SubMenu(std::string name_, std::vector<Option*>* settingsList_, bool printInSpoiler_ = true) {
+        return Menu{ std::move(name_), MenuType::SubMenu, std::move(settingsList_), OPTION_SUB_MENU, printInSpoiler_ };
     }
 
-    static Menu SubMenu(std::string name_, std::vector<Menu *>* itemsList_, bool printInSpoiler_ = true) {
-      return Menu{std::move(name_), MenuType::SubMenu, std::move(itemsList_), SUB_MENU, printInSpoiler_};
+    static Menu SubMenu(std::string name_, std::vector<Menu*>* itemsList_, bool printInSpoiler_ = true) {
+        return Menu{ std::move(name_), MenuType::SubMenu, std::move(itemsList_), SUB_MENU, printInSpoiler_ };
     }
 
     static Menu Action(std::string name_, uint8_t mode_) {
-      return Menu{std::move(name_), MenuType::Action, std::move(mode_)};
+        return Menu{ std::move(name_), MenuType::Action, std::move(mode_) };
     }
 
-    Menu(std::string name_, MenuType type_, std::vector<Option *>* settingsList_, uint8_t mode_, bool printInSpoiler_ = true)
-        : name(std::move(name_)), type(type_), settingsList(std::move(settingsList_)), mode(mode_), printInSpoiler(printInSpoiler_) {}
+    Menu(std::string name_, MenuType type_, std::vector<Option*>* settingsList_, uint8_t mode_,
+         bool printInSpoiler_ = true)
+        : name(std::move(name_)), type(type_), settingsList(std::move(settingsList_)), mode(mode_),
+          printInSpoiler(printInSpoiler_) {
+    }
 
-    Menu(std::string name_, MenuType type_, std::vector<Menu *>* itemsList_, uint8_t mode_, bool printInSpoiler_ = true)
-        : name(std::move(name_)), type(type_), itemsList(std::move(itemsList_)), mode(mode_), printInSpoiler(printInSpoiler_) {}
+    Menu(std::string name_, MenuType type_, std::vector<Menu*>* itemsList_, uint8_t mode_, bool printInSpoiler_ = true)
+        : name(std::move(name_)), type(type_), itemsList(std::move(itemsList_)), mode(mode_),
+          printInSpoiler(printInSpoiler_) {
+    }
 
-    Menu(std::string name_, MenuType type_, uint8_t mode_)
-        : name(std::move(name_)), type(type_), mode(mode_) {}
+    Menu(std::string name_, MenuType type_, uint8_t mode_) : name(std::move(name_)), type(type_), mode(mode_) {
+    }
 
     void ResetMenuIndex() {
-      if (mode == OPTION_SUB_MENU) {
-        for (size_t i = 0; i < settingsList->size(); i++) {
-          if (!settingsList->at(i)->IsLocked() && !settingsList->at(i)->IsHidden()) {
-            menuIdx = i;
-            settingBound = i;
-            return;
-          }
+        if (mode == OPTION_SUB_MENU) {
+            for (size_t i = 0; i < settingsList->size(); i++) {
+                if (!settingsList->at(i)->IsLocked() && !settingsList->at(i)->IsHidden()) {
+                    menuIdx = i;
+                    settingBound = i;
+                    return;
+                }
+            }
         }
-      }
-      menuIdx = 0;
-      settingBound = 0;
+        menuIdx = 0;
+        settingBound = 0;
     }
 
-    std::string name;
-    MenuType type;
-    std::vector<Option *>* settingsList;
-    std::vector<Menu *>* itemsList;
-    uint8_t mode;
-    uint16_t menuIdx = 0;
-    uint16_t settingBound = 0;
-    int selectedSetting = 0;
-    bool printInSpoiler = true;
+    std::string           name;
+    MenuType              type;
+    std::vector<Option*>* settingsList;
+    std::vector<Menu*>*   itemsList;
+    uint8_t               mode;
+    uint16_t              menuIdx = 0;
+    uint16_t              settingBound = 0;
+    int                   selectedSetting = 0;
+    bool                  printInSpoiler = true;
 };
 
 namespace Settings {
-void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks);
-  SettingsContext FillContext();
-  void InitSettings();
-  void SetDefaultSettings();
-  void ResolveExcludedLocationConflicts();
-  void RandomizeAllSettings(const bool selectOptions = false);
-  void ForceChange(uint32_t kDown, Option* currentSetting);
-  const std::vector<Menu*> GetAllOptionMenus();
+void                     UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings,
+                                        std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks);
+SettingsContext          FillContext();
+void                     InitSettings();
+void                     SetDefaultSettings();
+void                     ResolveExcludedLocationConflicts();
+void                     RandomizeAllSettings(const bool selectOptions = false);
+void                     ForceChange(uint32_t kDown, Option* currentSetting);
+const std::vector<Menu*> GetAllOptionMenus();
 
+extern uint32_t               seed;
+extern std::string            version;
+extern std::array<uint8_t, 5> hashIconIndexes;
+extern std::string            hash;
+extern std::string            seedString;
 
-  extern uint32_t seed;
-  extern std::string version;
-  extern std::array<uint8_t, 5> hashIconIndexes;
-  extern std::string hash;
-  extern std::string seedString;
+extern bool skipChildZelda;
 
-  extern bool skipChildZelda;
+extern Option OpenForest;
+extern Option OpenKakariko;
+extern Option OpenDoorOfTime;
+extern Option ZorasFountain;
+extern Option GerudoFortress;
+extern Option Bridge;
+extern Option BridgeStoneCount;
+extern Option BridgeMedallionCount;
+extern Option BridgeRewardCount;
+extern Option BridgeDungeonCount;
+extern Option BridgeTokenCount;
+extern Option BridgeRewardOptions;
+extern Option RandomGanonsTrials;
+extern Option GanonsTrialsCount;
 
-  extern Option OpenForest;
-  extern Option OpenKakariko;
-  extern Option OpenDoorOfTime;
-  extern Option ZorasFountain;
-  extern Option GerudoFortress;
-  extern Option Bridge;
-  extern Option BridgeStoneCount;
-  extern Option BridgeMedallionCount;
-  extern Option BridgeRewardCount;
-  extern Option BridgeDungeonCount;
-  extern Option BridgeTokenCount;
-  extern Option BridgeRewardOptions;
-  extern Option RandomGanonsTrials;
-  extern Option GanonsTrialsCount;
+extern Option  StartingAge;
+extern uint8_t ResolvedStartingAge;
+extern Option  ShuffleEntrances;
+extern Option  ShuffleDungeonEntrances;
+extern Option  ShuffleBossEntrances;
+extern Option  ShuffleOverworldEntrances;
+extern Option  ShuffleInteriorEntrances;
+extern Option  ShuffleGrottoEntrances;
+extern Option  ShuffleOwlDrops;
+extern Option  ShuffleWarpSongs;
+extern Option  ShuffleOverworldSpawns;
+extern Option  MixedEntrancePools;
+extern Option  MixDungeons;
+extern Option  MixOverworld;
+extern Option  MixInteriors;
+extern Option  MixGrottos;
+extern Option  DecoupleEntrances;
+extern Option  BombchusInLogic;
+extern Option  AmmoDrops;
+extern Option  HeartDropRefill;
+extern Option  MQDungeonCount;
+extern Option  SetDungeonTypes;
 
-  extern Option StartingAge;
-  extern uint8_t ResolvedStartingAge;
-  extern Option ShuffleEntrances;
-  extern Option ShuffleDungeonEntrances;
-  extern Option ShuffleBossEntrances;
-  extern Option ShuffleOverworldEntrances;
-  extern Option ShuffleInteriorEntrances;
-  extern Option ShuffleGrottoEntrances;
-  extern Option ShuffleOwlDrops;
-  extern Option ShuffleWarpSongs;
-  extern Option ShuffleOverworldSpawns;
-  extern Option MixedEntrancePools;
-  extern Option MixDungeons;
-  extern Option MixOverworld;
-  extern Option MixInteriors;
-  extern Option MixGrottos;
-  extern Option DecoupleEntrances;
-  extern Option BombchusInLogic;
-  extern Option AmmoDrops;
-  extern Option HeartDropRefill;
-  extern Option MQDungeonCount;
-  extern Option SetDungeonTypes;
+extern Option ShuffleRewards;
+extern Option LinksPocketItem;
+extern Option ShuffleSongs;
+extern Option Shopsanity;
+extern Option ShopsanityPrices;
+extern Option ShopsanityPricesAffordable;
+extern Option Tokensanity;
+extern Option Scrubsanity;
+extern Option ShuffleCows;
+extern Option ShuffleKokiriSword;
+extern Option ShuffleOcarinas;
+extern Option ShuffleWeirdEgg;
+extern Option ShuffleGerudoToken;
+extern Option ShuffleMagicBeans;
+extern Option ShuffleMerchants;
+extern Option ShuffleFrogSongRupees;
+extern Option ShuffleAdultTradeQuest;
+extern Option ShuffleChestMinigame;
+extern Option Shuffle100GSReward;
 
-  extern Option ShuffleRewards;
-  extern Option LinksPocketItem;
-  extern Option ShuffleSongs;
-  extern Option Shopsanity;
-  extern Option ShopsanityPrices;
-  extern Option ShopsanityPricesAffordable;
-  extern Option Tokensanity;
-  extern Option Scrubsanity;
-  extern Option ShuffleCows;
-  extern Option ShuffleKokiriSword;
-  extern Option ShuffleOcarinas;
-  extern Option ShuffleWeirdEgg;
-  extern Option ShuffleGerudoToken;
-  extern Option ShuffleMagicBeans;
-  extern Option ShuffleMerchants;
-  extern Option ShuffleFrogSongRupees;
-  extern Option ShuffleAdultTradeQuest;
-  extern Option ShuffleChestMinigame;
-  extern Option Shuffle100GSReward;
+extern Option  MapsAndCompasses;
+extern Option  Keysanity;
+extern Option  GerudoKeys;
+extern Option  BossKeysanity;
+extern Option  GanonsBossKey;
+extern uint8_t LACSCondition;
+extern Option  LACSStoneCount;
+extern Option  LACSMedallionCount;
+extern Option  LACSRewardCount;
+extern Option  LACSDungeonCount;
+extern Option  LACSTokenCount;
+extern Option  LACSRewardOptions;
+extern Option  KeyRings;
+extern Option  KeyRingsRandomCount;
+extern Option  RingFortress;
+extern Option  RingForest;
+extern Option  RingFire;
+extern Option  RingWater;
+extern Option  RingSpirit;
+extern Option  RingShadow;
+extern Option  RingWell;
+extern Option  RingGtg;
+extern Option  RingCastle;
 
-  extern Option MapsAndCompasses;
-  extern Option Keysanity;
-  extern Option GerudoKeys;
-  extern Option BossKeysanity;
-  extern Option GanonsBossKey;
-  extern uint8_t LACSCondition;
-  extern Option LACSStoneCount;
-  extern Option LACSMedallionCount;
-  extern Option LACSRewardCount;
-  extern Option LACSDungeonCount;
-  extern Option LACSTokenCount;
-  extern Option LACSRewardOptions;
-  extern Option KeyRings;
-  extern Option KeyRingsRandomCount;
-  extern Option RingFortress;
-  extern Option RingForest;
-  extern Option RingFire;
-  extern Option RingWater;
-  extern Option RingSpirit;
-  extern Option RingShadow;
-  extern Option RingWell;
-  extern Option RingGtg;
-  extern Option RingCastle;
+extern Option SkipChildStealth;
+extern Option SkipTowerEscape;
+extern Option SkipEponaRace;
+extern Option SkipMinigamePhases;
+extern Option FreeScarecrow;
+extern Option FourPoesCutscene;
+extern Option LakeHyliaOwl;
+extern Option BigPoeTargetCount;
+extern Option NumRequiredCuccos;
+extern Option KingZoraSpeed;
+extern Option CompleteMaskQuest;
+extern Option EnableGlitchCutscenes;
+extern Option QuickText;
+extern Option SkipSongReplays;
+extern Option KeepFWWarpPoint;
+extern Option FastBunnyHood;
 
-  extern Option SkipChildStealth;
-  extern Option SkipTowerEscape;
-  extern Option SkipEponaRace;
-  extern Option SkipMinigamePhases;
-  extern Option FreeScarecrow;
-  extern Option FourPoesCutscene;
-  extern Option LakeHyliaOwl;
-  extern Option BigPoeTargetCount;
-  extern Option NumRequiredCuccos;
-  extern Option KingZoraSpeed;
-  extern Option CompleteMaskQuest;
-  extern Option EnableGlitchCutscenes;
-  extern Option QuickText;
-  extern Option SkipSongReplays;
-  extern Option KeepFWWarpPoint;
-  extern Option FastBunnyHood;
+extern Option GossipStoneHints;
+extern Option ClearerHints;
+extern Option HintDistribution;
+extern Option AltarHintText;
+extern Option GanondorfHintText;
+extern Option DampeHintText;
+extern Option GregHintText;
+extern Option Kak10GSHintText;
+extern Option Kak20GSHintText;
+extern Option Kak30GSHintText;
+extern Option Kak40GSHintText;
+extern Option Kak50GSHintText;
+extern Option ScrubHintText;
+extern Option WarpSongHints;
+extern Option DamageMultiplier;
+extern Option StartingTime;
+extern Option ChestAnimations;
+extern Option ChestSize;
+extern Option GenerateSpoilerLog;
+extern Option IngameSpoilers;
+extern Option MenuOpeningButton;
+extern Option RandomTrapDmg;
+extern Option BlueFireArrows;
+extern Option SunlightArrows;
+extern bool   HasNightStart;
 
-  extern Option GossipStoneHints;
-  extern Option ClearerHints;
-  extern Option HintDistribution;
-  extern Option AltarHintText;
-  extern Option GanondorfHintText;
-  extern Option DampeHintText;
-  extern Option GregHintText;
-  extern Option Kak10GSHintText;
-  extern Option Kak20GSHintText;
-  extern Option Kak30GSHintText;
-  extern Option Kak40GSHintText;
-  extern Option Kak50GSHintText;
-  extern Option ScrubHintText;
-  extern Option WarpSongHints;
-  extern Option DamageMultiplier;
-  extern Option StartingTime;
-  extern Option ChestAnimations;
-  extern Option ChestSize;
-  extern Option GenerateSpoilerLog;
-  extern Option IngameSpoilers;
-  extern Option MenuOpeningButton;
-  extern Option RandomTrapDmg;
-  extern Option BlueFireArrows;
-  extern Option SunlightArrows;
-  extern bool HasNightStart;
+extern Option FaroresWindAnywhere;
+extern Option StickAsAdult;
+extern Option BoomerangAsAdult;
+extern Option HammerAsChild;
+extern Option SlingshotAsAdult;
+extern Option BowAsChild;
+extern Option HookshotAsChild;
+extern Option IronBootsAsChild;
+extern Option HoverBootsAsChild;
+extern Option MasksAsAdult;
+extern Option KokiriSwordAsAdult;
+extern Option MasterSwordAsChild;
+extern Option BiggoronSwordAsChild;
+extern Option DekuShieldAsAdult;
+extern Option MirrorShieldAsChild;
+extern Option GoronTunicAsChild;
+extern Option ZoraTunicAsChild;
+extern Option GkDurability;
 
-  extern Option FaroresWindAnywhere;
-  extern Option StickAsAdult;
-  extern Option BoomerangAsAdult;
-  extern Option HammerAsChild;
-  extern Option SlingshotAsAdult;
-  extern Option BowAsChild;
-  extern Option HookshotAsChild;
-  extern Option IronBootsAsChild;
-  extern Option HoverBootsAsChild;
-  extern Option MasksAsAdult;
-  extern Option KokiriSwordAsAdult;
-  extern Option MasterSwordAsChild;
-  extern Option BiggoronSwordAsChild;
-  extern Option DekuShieldAsAdult;
-  extern Option MirrorShieldAsChild;
-  extern Option GoronTunicAsChild;
-  extern Option ZoraTunicAsChild;
-  extern Option GkDurability;
+extern Option ItemPoolValue;
+extern Option IceTrapValue;
+extern Option RemoveDoubleDefense;
+extern Option ProgressiveGoronSword;
 
-  extern Option ItemPoolValue;
-  extern Option IceTrapValue;
-  extern Option RemoveDoubleDefense;
-  extern Option ProgressiveGoronSword;
+// Starting Inventory
+extern Option StartingConsumables;
+extern Option StartingMaxRupees;
+extern Option StartingStickCapacity;
+extern Option StartingNutCapacity;
+extern Option StartingBombBag;
+extern Option StartingBombchus;
+extern Option StartingBow;
+extern Option StartingFireArrows;
+extern Option StartingIceArrows;
+extern Option StartingLightArrows;
+extern Option StartingDinsFire;
+extern Option StartingFaroresWind;
+extern Option StartingNayrusLove;
+extern Option StartingSlingshot;
+extern Option StartingBoomerang;
+extern Option StartingLensOfTruth;
+extern Option StartingMagicBean;
+extern Option StartingMegatonHammer;
+extern Option StartingHookshot;
+extern Option StartingIronBoots;
+extern Option StartingHoverBoots;
+extern Option StartingBottle1;
+extern Option StartingBottle2;
+extern Option StartingBottle3;
+extern Option StartingBottle4;
+extern Option StartingRutoBottle;
+extern Option StartingOcarina;
+extern Option StartingZeldasLullaby;
+extern Option StartingEponasSong;
+extern Option StartingSariasSong;
+extern Option StartingSunsSong;
+extern Option StartingSongOfTime;
+extern Option StartingSongOfStorms;
+extern Option StartingMinuetOfForest;
+extern Option StartingBoleroOfFire;
+extern Option StartingSerenadeOfWater;
+extern Option StartingRequiemOfSpirit;
+extern Option StartingNocturneOfShadow;
+extern Option StartingPreludeOfLight;
+extern Option StartingKokiriSword;
+extern Option StartingBiggoronSword;
+extern Option StartingDekuShield;
+extern Option StartingHylianShield;
+extern Option StartingMirrorShield;
+extern Option StartingGoronTunic;
+extern Option StartingZoraTunic;
+extern Option StartingMagicMeter;
+extern Option StartingStrength;
+extern Option StartingScale;
+extern Option StartingWallet;
+extern Option StartingShardOfAgony;
+extern Option StartingDoubleDefense;
+extern Option StartingHearts;
+extern Option StartingKokiriEmerald;
+extern Option StartingGoronRuby;
+extern Option StartingZoraSapphire;
+extern Option StartingForestMedallion;
+extern Option StartingFireMedallion;
+extern Option StartingWaterMedallion;
+extern Option StartingSpiritMedallion;
+extern Option StartingShadowMedallion;
+extern Option StartingLightMedallion;
+extern Option StartingSkulltulaToken;
 
-  //Starting Inventory
-  extern Option StartingConsumables;
-  extern Option StartingMaxRupees;
-  extern Option StartingStickCapacity;
-  extern Option StartingNutCapacity;
-  extern Option StartingBombBag;
-  extern Option StartingBombchus;
-  extern Option StartingBow;
-  extern Option StartingFireArrows;
-  extern Option StartingIceArrows;
-  extern Option StartingLightArrows;
-  extern Option StartingDinsFire;
-  extern Option StartingFaroresWind;
-  extern Option StartingNayrusLove;
-  extern Option StartingSlingshot;
-  extern Option StartingBoomerang;
-  extern Option StartingLensOfTruth;
-  extern Option StartingMagicBean;
-  extern Option StartingMegatonHammer;
-  extern Option StartingHookshot;
-  extern Option StartingIronBoots;
-  extern Option StartingHoverBoots;
-  extern Option StartingBottle1;
-  extern Option StartingBottle2;
-  extern Option StartingBottle3;
-  extern Option StartingBottle4;
-  extern Option StartingRutoBottle;
-  extern Option StartingOcarina;
-  extern Option StartingZeldasLullaby;
-  extern Option StartingEponasSong;
-  extern Option StartingSariasSong;
-  extern Option StartingSunsSong;
-  extern Option StartingSongOfTime;
-  extern Option StartingSongOfStorms;
-  extern Option StartingMinuetOfForest;
-  extern Option StartingBoleroOfFire;
-  extern Option StartingSerenadeOfWater;
-  extern Option StartingRequiemOfSpirit;
-  extern Option StartingNocturneOfShadow;
-  extern Option StartingPreludeOfLight;
-  extern Option StartingKokiriSword;
-  extern Option StartingBiggoronSword;
-  extern Option StartingDekuShield;
-  extern Option StartingHylianShield;
-  extern Option StartingMirrorShield;
-  extern Option StartingGoronTunic;
-  extern Option StartingZoraTunic;
-  extern Option StartingMagicMeter;
-  extern Option StartingStrength;
-  extern Option StartingScale;
-  extern Option StartingWallet;
-  extern Option StartingShardOfAgony;
-  extern Option StartingDoubleDefense;
-  extern Option StartingHearts;
-  extern Option StartingKokiriEmerald;
-  extern Option StartingGoronRuby;
-  extern Option StartingZoraSapphire;
-  extern Option StartingForestMedallion;
-  extern Option StartingFireMedallion;
-  extern Option StartingWaterMedallion;
-  extern Option StartingSpiritMedallion;
-  extern Option StartingShadowMedallion;
-  extern Option StartingLightMedallion;
-  extern Option StartingSkulltulaToken;
+// Logic Settings
+extern Option Logic;
+extern Option LocationsReachable;
+extern Option NightGSExpectSuns;
 
-  //Logic Settings
-  extern Option Logic;
-  extern Option LocationsReachable;
-  extern Option NightGSExpectSuns;
+// Trick Settings
+// New Trick Settings (from ootr https://github.com/ootrandomizer/OoT-Randomizer/blob/Dev/SettingsList.py, additions to
+// this list marked)
+extern Option ToggleAllTricks;
+extern Option LogicVisibleCollision;
+extern Option LogicGrottosWithoutAgony;
+extern Option LogicFewerTunicRequirements;
+extern Option LogicRustedSwitches;
+extern Option LogicFlamingChests;
+extern Option LogicBunnyHoodJump; // NEW not implemented
+extern Option LogicDamageBoost;   // NEW not implemented
+extern Option LogicHoverBoost;    // NEW not implemented
+extern Option LogicAdultKokiriGS;
+extern Option LogicLostWoodsBridge;
+extern Option LogicMidoBackflip;
+extern Option LogicLostWoodsGSBean;
+extern Option LogicCastleStormsGS;
+extern Option LogicManOnRoof;
+extern Option LogicKakarikoTowerGS;
+extern Option LogicAdultWindmillPoH;
+extern Option LogicChildWindmillPoH; // NEW not implemented
+extern Option LogicKakarikoRooftopGS;
+extern Option LogicGraveyardPoH;
+extern Option LogicChildDampeRacePoH;
+extern Option LogicShadowFireArrowEntry;
+extern Option LogicDMTSoilGS;
+extern Option LogicDMTBombable;
+extern Option LogicDMTGSLowerHookshot;
+extern Option LogicDMTGSLowerHovers;
+extern Option LogicDMTGSLowerBean;
+extern Option LogicDMTGSLowerJS; // NEW
+extern Option LogicDMTClimbHovers;
+extern Option LogicDMTGSUpper;
+extern Option LogicBiggoronBolero; // not implemented - unnecessary with SoH rando
+extern Option LogicGoronCityPot;
+extern Option LogicGoronCityPotWithStrength;
+extern Option LogicChildRollingWithStrength;
+extern Option LogicGoronCityLeftMost;
+extern Option LogicGoronCityGrotto;
+extern Option LogicGoronCityLinkGoronDins;
+extern Option LogicCraterBeanPoHWithHovers;
+extern Option LogicCraterBoleroJump;
+extern Option LogicCraterBoulderJS;
+extern Option LogicCraterBoulderSkip;
+extern Option LogicZoraRiverLower;
+extern Option LogicZoraRiverUpper;
+extern Option LogicZoraWithHovers;
+extern Option LogicZoraWithCucco;
+extern Option LogicKingZoraSkip;
+extern Option LogicDomainGS;
+extern Option LogicLabWallGS;
+extern Option LogicLabDiving;
+extern Option LogicWaterHookshotEntry;
+extern Option LogicValleyCrateHovers;
+extern Option LogicGerudoKitchen;
+extern Option LogicGFJump;
+extern Option LogicWastelandBunnyCrossing; // NEW not implemented
+extern Option LogicWastelandCrossing;
+extern Option LogicLensWasteland;
+extern Option LogicReverseWasteland;
+extern Option LogicColossusGS;
+extern Option LogicDekuBasementGS;
+extern Option LogicDekuB1Skip;
+extern Option LogicDekuB1WebsWithBow;
+extern Option LogicDekuMQCompassGS;
+extern Option LogicDekuMQLog;
+extern Option LogicDCScarecrowGS;
+extern Option LogicDCVinesGS;
+extern Option LogicDCStaircase;
+extern Option LogicDCSlingshotSkip;
+extern Option LogicDCScrubRoom;
+extern Option LogicDCJump;
+extern Option LogicDCHammerFloor;
+extern Option LogicDCMQChildBombs;
+extern Option LogicDCMQEyesChild;
+extern Option LogicDCMQEyesAdult;
+extern Option LogicJabuAlcoveJumpDive;
+extern Option LogicJabuBossHover;
+extern Option LogicJabuNearBossRanged;
+extern Option LogicJabuNearBossExplosives;
+extern Option LogicLensJabuMQ;
+extern Option LogicJabuMQRangJump; // not implemented - requires dungeon shortcuts which is not built into rando yet
+extern Option LogicJabuMQSoTGS;
+extern Option LogicLensBotw;
+extern Option LogicChildDeadhand;
+extern Option LogicBotwBasement;
+extern Option LogicBotwMQPits;
+extern Option LogicBotwMQDeadHandKey;
+extern Option LogicForestFirstGS;
+extern Option LogicForestOutdoorEastGS;
+extern Option LogicForestVines;
+extern Option LogicForestOutdoorsLedge;
+extern Option LogicForestDoorFrame;
+extern Option LogicForestOutsideBackdoor;
+extern Option LogicForestMQWellSwim;
+extern Option LogicForestMQBlockPuzzle;
+extern Option LogicForestMQHallwaySwitchJS;
+extern Option LogicForestMQHallwaySwitchHookshot; // not implemented yet
+extern Option LogicForestMQHallwaySwitchBoomerang;
+extern Option LogicFireBossDoorJump;
+extern Option LogicFireSongOfTime;
+extern Option LogicFireStrength;
+extern Option LogicFireScarecrow;
+extern Option LogicFireFlameMaze;
+extern Option LogicFireMQNearBoss;
+extern Option LogicFireMQBlockedChest;
+extern Option LogicFireMQBKChest;
+extern Option LogicFireMQClimb;
+extern Option LogicFireMQMazeSideRoom;
+extern Option LogicFireMQMazeHovers;
+extern Option LogicFireMQMazeJump;
+extern Option LogicFireMQAboveMazeGS;
+extern Option LogicFireMQFlameMaze;
+extern Option LogicWaterTempleTorchLongshot;
+extern Option LogicWaterCrackedWallHovers;
+extern Option LogicWaterCrackedWallNothing;
+extern Option LogicWaterBossKeyRegion;
+extern Option LogicWaterNorthBasementLedgeJump;
+extern Option LogicWaterBKJumpDive;
+extern Option LogicWaterCentralGSFW;
+extern Option LogicWaterCentralGSIrons;
+extern Option LogicWaterCentralBow;
+extern Option LogicWaterFallingPlatformGSHookshot;
+extern Option LogicWaterFallingPlatformGSBoomerang;
+extern Option LogicWaterRiverGS;
+extern Option LogicWaterDragonJumpDive;
+extern Option LogicWaterDragonAdult;
+extern Option LogicWaterDragonChild;
+extern Option LogicWaterMQCentralPillar;
+extern Option LogicWaterMQLockedGS;
+extern Option LogicLensShadow;
+extern Option LogicLensShadowPlatform;
+extern Option LogicLensBongo;
+extern Option LogicShadowUmbrella;
+extern Option LogicShadowUmbrellaGS;
+extern Option LogicShadowFreestandingKey;
+extern Option LogicShadowStatue;
+extern Option LogicShadowBongo; // not implemented - projectiles are not expected for bongo anyways
+extern Option LogicLensShadowMQ;
+extern Option LogicLensShadowMQInvisibleBlades;
+extern Option LogicLensShadowMQPlatform;
+extern Option LogicLensShadowMQDeadHand;
+extern Option LogicShadowMQGap;
+extern Option LogicShadowMQInvisibleBlades;
+extern Option LogicShadowMQHugePit;
+extern Option
+    LogicShadowMQWindyWalkway; // not implemented - requires dungeon shortcuts which is not built into rando yet
+extern Option LogicLensSpirit;
+extern Option LogicSpiritChildBombchu;
+extern Option LogicSpiritLobbyGS;
+extern Option LogicSpiritLowerAdultSwitch;
+extern Option LogicSpiritLobbyJump;
+extern Option LogicSpiritPlatformHookshot; // not implemented - requires boss shortcuts which is not built into rando
+                                           // yet
+extern Option LogicSpiritMapChest;
+extern Option LogicSpiritSunChest;
+extern Option LogicSpiritWall;
+extern Option LogicLensSpiritMQ;
+extern Option LogicSpiritMQSunBlockSoT;
+extern Option LogicSpiritMQSunBlockGS;
+extern Option LogicSpiritMQLowerAdult;
+extern Option LogicSpiritMQFrozenEye;
+extern Option LogicIceBlockGS;
+extern Option LogicIceMQRedIceGS;
+extern Option LogicIceMQScarecrow;
+extern Option LogicLensGtg;
+extern Option LogicGtgWithoutHookshot;
+extern Option LogicGtgFakeWall;
+extern Option LogicLensGtgMQ;
+extern Option LogicGtgMQWithHookshot;
+extern Option LogicGtgMQWithoutHookshot;
+extern Option LogicLensCastle;
+extern Option LogicSpiritTrialHookshot;
+extern Option LogicLensCastleMQ;
+extern Option LogicFireTrialMQ;
+extern Option LogicShadowTrialMQ;
+extern Option LogicLightTrialMQ;
 
-  //Trick Settings
-  //New Trick Settings (from ootr https://github.com/ootrandomizer/OoT-Randomizer/blob/Dev/SettingsList.py, additions to this list marked)
-  extern Option ToggleAllTricks;
-  extern Option LogicVisibleCollision;
-  extern Option LogicGrottosWithoutAgony;
-  extern Option LogicFewerTunicRequirements;
-  extern Option LogicRustedSwitches;
-  extern Option LogicFlamingChests;
-  extern Option LogicBunnyHoodJump; //NEW not implemented
-  extern Option LogicDamageBoost; //NEW not implemented
-  extern Option LogicHoverBoost; //NEW not implemented
-  extern Option LogicAdultKokiriGS;
-  extern Option LogicLostWoodsBridge;
-  extern Option LogicMidoBackflip;
-  extern Option LogicLostWoodsGSBean;
-  extern Option LogicCastleStormsGS;
-  extern Option LogicManOnRoof;
-  extern Option LogicKakarikoTowerGS;
-  extern Option LogicAdultWindmillPoH;
-  extern Option LogicChildWindmillPoH; //NEW not implemented
-  extern Option LogicKakarikoRooftopGS;
-  extern Option LogicGraveyardPoH;
-  extern Option LogicChildDampeRacePoH;
-  extern Option LogicShadowFireArrowEntry;
-  extern Option LogicDMTSoilGS;
-  extern Option LogicDMTBombable;
-  extern Option LogicDMTGSLowerHookshot;
-  extern Option LogicDMTGSLowerHovers;
-  extern Option LogicDMTGSLowerBean;
-  extern Option LogicDMTGSLowerJS; //NEW
-  extern Option LogicDMTClimbHovers;
-  extern Option LogicDMTGSUpper;
-  extern Option LogicBiggoronBolero; //not implemented - unnecessary with SoH rando
-  extern Option LogicGoronCityPot;
-  extern Option LogicGoronCityPotWithStrength;
-  extern Option LogicChildRollingWithStrength;
-  extern Option LogicGoronCityLeftMost;
-  extern Option LogicGoronCityGrotto;
-  extern Option LogicGoronCityLinkGoronDins;
-  extern Option LogicCraterBeanPoHWithHovers;
-  extern Option LogicCraterBoleroJump;
-  extern Option LogicCraterBoulderJS;
-  extern Option LogicCraterBoulderSkip;
-  extern Option LogicZoraRiverLower;
-  extern Option LogicZoraRiverUpper;
-  extern Option LogicZoraWithHovers;
-  extern Option LogicZoraWithCucco;
-  extern Option LogicKingZoraSkip;
-  extern Option LogicDomainGS;
-  extern Option LogicLabWallGS;
-  extern Option LogicLabDiving;
-  extern Option LogicWaterHookshotEntry;
-  extern Option LogicValleyCrateHovers;
-  extern Option LogicGerudoKitchen;
-  extern Option LogicGFJump;
-  extern Option LogicWastelandBunnyCrossing; //NEW not implemented
-  extern Option LogicWastelandCrossing;
-  extern Option LogicLensWasteland;
-  extern Option LogicReverseWasteland;
-  extern Option LogicColossusGS;
-  extern Option LogicDekuBasementGS;
-  extern Option LogicDekuB1Skip;
-  extern Option LogicDekuB1WebsWithBow;
-  extern Option LogicDekuMQCompassGS;
-  extern Option LogicDekuMQLog;
-  extern Option LogicDCScarecrowGS;
-  extern Option LogicDCVinesGS;
-  extern Option LogicDCStaircase;
-  extern Option LogicDCSlingshotSkip;
-  extern Option LogicDCScrubRoom;
-  extern Option LogicDCJump;
-  extern Option LogicDCHammerFloor;
-  extern Option LogicDCMQChildBombs;
-  extern Option LogicDCMQEyesChild;
-  extern Option LogicDCMQEyesAdult;
-  extern Option LogicJabuAlcoveJumpDive;
-  extern Option LogicJabuBossHover;
-  extern Option LogicJabuNearBossRanged;
-  extern Option LogicJabuNearBossExplosives;
-  extern Option LogicLensJabuMQ;
-  extern Option LogicJabuMQRangJump; //not implemented - requires dungeon shortcuts which is not built into rando yet
-  extern Option LogicJabuMQSoTGS;
-  extern Option LogicLensBotw;
-  extern Option LogicChildDeadhand;
-  extern Option LogicBotwBasement;
-  extern Option LogicBotwMQPits;
-  extern Option LogicBotwMQDeadHandKey;
-  extern Option LogicForestFirstGS;
-  extern Option LogicForestOutdoorEastGS;
-  extern Option LogicForestVines;
-  extern Option LogicForestOutdoorsLedge;
-  extern Option LogicForestDoorFrame;
-  extern Option LogicForestOutsideBackdoor;
-  extern Option LogicForestMQWellSwim;
-  extern Option LogicForestMQBlockPuzzle;
-  extern Option LogicForestMQHallwaySwitchJS;
-  extern Option LogicForestMQHallwaySwitchHookshot; //not implemented yet
-  extern Option LogicForestMQHallwaySwitchBoomerang;
-  extern Option LogicFireBossDoorJump;
-  extern Option LogicFireSongOfTime;
-  extern Option LogicFireStrength;
-  extern Option LogicFireScarecrow;
-  extern Option LogicFireFlameMaze;
-  extern Option LogicFireMQNearBoss;
-  extern Option LogicFireMQBlockedChest;
-  extern Option LogicFireMQBKChest;
-  extern Option LogicFireMQClimb;
-  extern Option LogicFireMQMazeSideRoom;
-  extern Option LogicFireMQMazeHovers;
-  extern Option LogicFireMQMazeJump;
-  extern Option LogicFireMQAboveMazeGS;
-  extern Option LogicFireMQFlameMaze;
-  extern Option LogicWaterTempleTorchLongshot;
-  extern Option LogicWaterCrackedWallHovers;
-  extern Option LogicWaterCrackedWallNothing;
-  extern Option LogicWaterBossKeyRegion;
-  extern Option LogicWaterNorthBasementLedgeJump;
-  extern Option LogicWaterBKJumpDive;
-  extern Option LogicWaterCentralGSFW;
-  extern Option LogicWaterCentralGSIrons;
-  extern Option LogicWaterCentralBow;
-  extern Option LogicWaterFallingPlatformGSHookshot;
-  extern Option LogicWaterFallingPlatformGSBoomerang;
-  extern Option LogicWaterRiverGS;
-  extern Option LogicWaterDragonJumpDive;
-  extern Option LogicWaterDragonAdult;
-  extern Option LogicWaterDragonChild;
-  extern Option LogicWaterMQCentralPillar;
-  extern Option LogicWaterMQLockedGS;
-  extern Option LogicLensShadow;
-  extern Option LogicLensShadowPlatform;
-  extern Option LogicLensBongo;
-  extern Option LogicShadowUmbrella;
-  extern Option LogicShadowUmbrellaGS;
-  extern Option LogicShadowFreestandingKey;
-  extern Option LogicShadowStatue;
-  extern Option LogicShadowBongo; //not implemented - projectiles are not expected for bongo anyways
-  extern Option LogicLensShadowMQ;
-  extern Option LogicLensShadowMQInvisibleBlades;
-  extern Option LogicLensShadowMQPlatform;
-  extern Option LogicLensShadowMQDeadHand;
-  extern Option LogicShadowMQGap;
-  extern Option LogicShadowMQInvisibleBlades;
-  extern Option LogicShadowMQHugePit;
-  extern Option LogicShadowMQWindyWalkway; //not implemented - requires dungeon shortcuts which is not built into rando yet
-  extern Option LogicLensSpirit;
-  extern Option LogicSpiritChildBombchu;
-  extern Option LogicSpiritLobbyGS;
-  extern Option LogicSpiritLowerAdultSwitch;
-  extern Option LogicSpiritLobbyJump;
-  extern Option LogicSpiritPlatformHookshot; //not implemented - requires boss shortcuts which is not built into rando yet
-  extern Option LogicSpiritMapChest;
-  extern Option LogicSpiritSunChest;
-  extern Option LogicSpiritWall;
-  extern Option LogicLensSpiritMQ;
-  extern Option LogicSpiritMQSunBlockSoT;
-  extern Option LogicSpiritMQSunBlockGS;
-  extern Option LogicSpiritMQLowerAdult;
-  extern Option LogicSpiritMQFrozenEye;
-  extern Option LogicIceBlockGS;
-  extern Option LogicIceMQRedIceGS;
-  extern Option LogicIceMQScarecrow;
-  extern Option LogicLensGtg;
-  extern Option LogicGtgWithoutHookshot;
-  extern Option LogicGtgFakeWall;
-  extern Option LogicLensGtgMQ;
-  extern Option LogicGtgMQWithHookshot;
-  extern Option LogicGtgMQWithoutHookshot;
-  extern Option LogicLensCastle;
-  extern Option LogicSpiritTrialHookshot;
-  extern Option LogicLensCastleMQ;
-  extern Option LogicFireTrialMQ;
-  extern Option LogicShadowTrialMQ;
-  extern Option LogicLightTrialMQ;
+// Glitch Settings
+extern Option GlitchEquipSwapDins;
+extern Option GlitchEquipSwap;
 
-  
+// Multiplayer Settings
+extern Option MP_Enabled;
+extern Option MP_SharedProgress;
+extern Option MP_SyncId;
+extern Option MP_SharedHealth;
+extern Option MP_SharedRupees;
+extern Option MP_SharedAmmo;
 
-  //Glitch Settings
-  extern Option GlitchEquipSwapDins;
-  extern Option GlitchEquipSwap;
-  
+// Ingame Default Settings
+extern Option ZTargeting;
+extern Option CameraControl;
+extern Option MotionControl;
+extern Option TogglePlayMusic;
+extern Option TogglePlaySFX;
+extern Option SilenceNavi;
+extern Option IgnoreMaskReaction;
 
-  //Multiplayer Settings
-  extern Option MP_Enabled;
-  extern Option MP_SharedProgress;
-  extern Option MP_SyncId;
-  extern Option MP_SharedHealth;
-  extern Option MP_SharedRupees;
-  extern Option MP_SharedAmmo;
+// Cosmetic Settings
+extern Option                 CustomTunicColors;
+extern Option                 ChildTunicColor;
+extern Option                 KokiriTunicColor;
+extern Option                 GoronTunicColor;
+extern Option                 ZoraTunicColor;
+extern Option                 SilverGauntletsColor;
+extern Option                 GoldGauntletsColor;
+extern Option                 CustomNaviColors;
+extern Option                 IdleNaviInnerColor;
+extern Option                 NPCNaviInnerColor;
+extern Option                 EnemyNaviInnerColor;
+extern Option                 PropNaviInnerColor;
+extern Option                 IdleNaviOuterColor;
+extern Option                 NPCNaviOuterColor;
+extern Option                 EnemyNaviOuterColor;
+extern Option                 PropNaviOuterColor;
+extern Option                 CustomTrailEffects;
+extern Option                 SwordTrailInnerColor;
+extern Option                 SwordTrailOuterColor;
+extern Option                 SwordTrailDuration;
+extern Option                 BoomerangTrailColor;
+extern Option                 BoomerangTrailDuration;
+extern Option                 ChosenSimpleMode;
+extern Option                 BombchuTrailInnerColor;
+extern Option                 BombchuTrailOuterColor;
+extern Option                 BombchuTrailDuration;
+extern std::string            finalChildTunicColor;
+extern std::string            finalKokiriTunicColor;
+extern std::string            finalGoronTunicColor;
+extern std::string            finalZoraTunicColor;
+extern std::string            finalSilverGauntletsColor;
+extern std::string            finalGoldGauntletsColor;
+extern std::string            finalIdleNaviInnerColor;
+extern std::string            finalNPCNaviInnerColor;
+extern std::string            finalEnemyNaviInnerColor;
+extern std::string            finalPropNaviInnerColor;
+extern std::string            finalIdleNaviOuterColor;
+extern std::string            finalNPCNaviOuterColor;
+extern std::string            finalEnemyNaviOuterColor;
+extern std::string            finalPropNaviOuterColor;
+extern std::string            finalSwordTrailInnerColor;
+extern std::string            finalSwordTrailOuterColor;
+extern Cosmetics::Color_RGBA8 finalBoomerangColor;
+extern uint8_t                boomerangTrailColorMode;
+extern std::string            finalChuTrailInnerColor;
+extern std::string            finalChuTrailOuterColor;
 
-  //Ingame Default Settings
-  extern Option ZTargeting;
-  extern Option CameraControl;
-  extern Option MotionControl;
-  extern Option TogglePlayMusic;
-  extern Option TogglePlaySFX;
-  extern Option SilenceNavi;
-  extern Option IgnoreMaskReaction;
+extern Option ColoredKeys;
+extern Option ColoredBossKeys;
+extern Option MirrorWorld;
 
-  //Cosmetic Settings
-  extern Option CustomTunicColors;
-  extern Option ChildTunicColor;
-  extern Option KokiriTunicColor;
-  extern Option GoronTunicColor;
-  extern Option ZoraTunicColor;
-  extern Option SilverGauntletsColor;
-  extern Option GoldGauntletsColor;
-  extern Option CustomNaviColors;
-  extern Option IdleNaviInnerColor;
-  extern Option NPCNaviInnerColor;
-  extern Option EnemyNaviInnerColor;
-  extern Option PropNaviInnerColor;
-  extern Option IdleNaviOuterColor;
-  extern Option NPCNaviOuterColor;
-  extern Option EnemyNaviOuterColor;
-  extern Option PropNaviOuterColor;
-  extern Option CustomTrailEffects;
-  extern Option SwordTrailInnerColor;
-  extern Option SwordTrailOuterColor;
-  extern Option SwordTrailDuration;
-  extern Option BoomerangTrailColor;
-  extern Option BoomerangTrailDuration;
-  extern Option ChosenSimpleMode;
-  extern Option BombchuTrailInnerColor;
-  extern Option BombchuTrailOuterColor;
-  extern Option BombchuTrailDuration;
-  extern std::string finalChildTunicColor;
-  extern std::string finalKokiriTunicColor;
-  extern std::string finalGoronTunicColor;
-  extern std::string finalZoraTunicColor;
-  extern std::string finalSilverGauntletsColor;
-  extern std::string finalGoldGauntletsColor;
-  extern std::string finalIdleNaviInnerColor;
-  extern std::string finalNPCNaviInnerColor;
-  extern std::string finalEnemyNaviInnerColor;
-  extern std::string finalPropNaviInnerColor;
-  extern std::string finalIdleNaviOuterColor;
-  extern std::string finalNPCNaviOuterColor;
-  extern std::string finalEnemyNaviOuterColor;
-  extern std::string finalPropNaviOuterColor;
-  extern std::string finalSwordTrailInnerColor;
-  extern std::string finalSwordTrailOuterColor;
-  extern Cosmetics::Color_RGBA8 finalBoomerangColor;
-  extern uint8_t boomerangTrailColorMode;
-  extern std::string finalChuTrailInnerColor;
-  extern std::string finalChuTrailOuterColor;
+extern Option ShuffleMusic;
+extern Option ShuffleBGM;
+extern Option ShuffleFanfares;
+extern Option ShuffleOcaMusic;
+extern Option ShuffleSFX;
+extern Option ShuffleSFXCategorically;
 
-  extern Option ColoredKeys;
-  extern Option ColoredBossKeys;
-  extern Option MirrorWorld;
+extern uint32_t                LinksPocketRewardBitMask;
+extern std::array<uint32_t, 9> rDungeonRewardOverrides;
 
-  extern Option ShuffleMusic;
-  extern Option ShuffleBGM;
-  extern Option ShuffleFanfares;
-  extern Option ShuffleOcaMusic;
-  extern Option ShuffleSFX;
-  extern Option ShuffleSFXCategorically;
+extern uint8_t PlayOption;
 
-  extern uint32_t LinksPocketRewardBitMask;
-  extern std::array<uint32_t, 9> rDungeonRewardOverrides;
+extern std::vector<std::vector<Option*>> excludeLocationsOptionsVector;
+extern std::vector<Menu*>                excludeLocationsMenus;
+extern std::vector<Option*>              startingItemsOptions;
+extern std::vector<Option*>              startingSongsOptions;
+extern std::vector<Option*>              startingEquipmentOptions;
+extern std::vector<Option*>              startingStonesMedallionsOptions;
+extern std::vector<Option*>              startingOthersOptions;
+extern std::vector<Option*>              trickOptions;
+extern std::vector<Option*>              glitchCategories;
+extern std::vector<Option*>              miscGlitches;
 
-  extern uint8_t PlayOption;
+extern std::vector<Menu*> startingInventoryOptions;
+extern std::vector<Menu*> detailedLogicOptions;
 
-  extern std::vector<std::vector<Option *>> excludeLocationsOptionsVector;
-  extern std::vector<Menu *> excludeLocationsMenus;
-  extern std::vector<Option *> startingItemsOptions;
-  extern std::vector<Option *> startingSongsOptions;
-  extern std::vector<Option *> startingEquipmentOptions;
-  extern std::vector<Option *> startingStonesMedallionsOptions;
-  extern std::vector<Option *> startingOthersOptions;
-  extern std::vector<Option *> trickOptions;
-  extern std::vector<Option *> glitchCategories;
-  extern std::vector<Option *> miscGlitches;
+extern std::vector<Menu*> mainMenu;
 
-  extern std::vector<Menu *> startingInventoryOptions;
-  extern std::vector<Menu *> detailedLogicOptions;
-
-  extern std::vector<Menu *> mainMenu;
-
-  extern std::vector<Option *> vanillaLogicDefaults;
-}
+extern std::vector<Option*> vanillaLogicDefaults;
+} // namespace Settings

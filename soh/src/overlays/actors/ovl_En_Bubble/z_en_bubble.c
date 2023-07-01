@@ -122,7 +122,7 @@ void EnBubble_DamagePlayer(EnBubble* this, PlayState* play) {
 }
 
 s32 EnBubble_Explosion(EnBubble* this, PlayState* play) {
-    u32 i;
+    u32   i;
     Vec3f effectAccel;
     Vec3f effectVel;
     Vec3f effectPos;
@@ -199,15 +199,15 @@ void EnBubble_Vec3fNormalize(Vec3f* vec) {
 
 void EnBubble_Fly(EnBubble* this, PlayState* play) {
     CollisionPoly* sp94;
-    Actor* bumpActor;
-    Vec3f sp84;
-    Vec3f sp78;
-    Vec3f sp6C;
-    Vec3f sp60;
-    Vec3f sp54;
-    f32 bounceSpeed;
-    s32 bgId;
-    u8 bounceCount;
+    Actor*         bumpActor;
+    Vec3f          sp84;
+    Vec3f          sp78;
+    Vec3f          sp6C;
+    Vec3f          sp60;
+    Vec3f          sp54;
+    f32            bounceSpeed;
+    s32            bgId;
+    u8             bounceCount;
 
     if (this->colliderSphere.elements[1].info.bumperFlags & BUMP_HIT) {
         bumpActor = this->colliderSphere.base.ac;
@@ -314,8 +314,8 @@ u32 EnBubble_DetectPop(EnBubble* this, PlayState* play) {
 
 void func_809CC774(EnBubble* this) {
     ColliderJntSphElementDim* dim;
-    Vec3f src;
-    Vec3f dest;
+    Vec3f                     src;
+    Vec3f                     dest;
 
     dim = &this->colliderSphere.elements[0].dim;
     src.x = dim->modelSphere.center.x;
@@ -423,8 +423,7 @@ void EnBubble_Draw(Actor* thisx, PlayState* play) {
         Matrix_Scale(this->graphicEccentricity + 1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
         Matrix_RotateZ((-(f32)play->state.frames * (M_PI / 180.0f)) * this->graphicRotSpeed, MTXMODE_APPLY);
 
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gBubbleDL);
     }
 

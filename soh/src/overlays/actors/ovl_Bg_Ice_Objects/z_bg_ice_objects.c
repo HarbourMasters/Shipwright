@@ -21,7 +21,7 @@ void BgIceObjects_Stuck(BgIceObjects* this, PlayState* play);
 
 static Color_RGBA8 sWhite = { 250, 250, 250, 255 };
 static Color_RGBA8 sGray = { 180, 180, 180, 255 };
-static Vec3f sZeroVec = { 0.0f, 0.0f, 0.0f };
+static Vec3f       sZeroVec = { 0.0f, 0.0f, 0.0f };
 
 const ActorInit Bg_Ice_Objects_InitVars = {
     ACTOR_BG_ICE_OBJECTS,
@@ -135,7 +135,7 @@ void BgIceObjects_CheckPits(BgIceObjects* this, PlayState* play) {
 
 void BgIceObjects_Idle(BgIceObjects* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    Actor* thisx = &this->dyna.actor;
+    Actor*  thisx = &this->dyna.actor;
 
     if (this->dyna.unk_150 != 0.0f) {
         player->stateFlags2 &= ~0x10;
@@ -156,10 +156,10 @@ void BgIceObjects_Idle(BgIceObjects* this, PlayState* play) {
 }
 
 void BgIceObjects_Slide(BgIceObjects* this, PlayState* play) {
-    s32 atTarget;
-    Vec3f pos;
-    Vec3f velocity;
-    f32 spread;
+    s32    atTarget;
+    Vec3f  pos;
+    Vec3f  velocity;
+    f32    spread;
     Actor* thisx = &this->dyna.actor;
 
     Math_StepToF(&thisx->speedXZ, 10.0f, 0.5f);
@@ -200,7 +200,7 @@ void BgIceObjects_Slide(BgIceObjects* this, PlayState* play) {
 
 void BgIceObjects_Reset(BgIceObjects* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    Actor* thisx = &this->dyna.actor;
+    Actor*  thisx = &this->dyna.actor;
 
     if (this->dyna.unk_150 != 0.0f) {
         player->stateFlags2 &= ~0x10;

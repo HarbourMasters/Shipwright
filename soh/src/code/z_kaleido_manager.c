@@ -10,28 +10,28 @@
 //    }
 
 #define KALEIDO_OVERLAY(name) \
-{ 0 }
+    { 0 }
 
 KaleidoMgrOverlay gKaleidoMgrOverlayTable[] = {
     KALEIDO_OVERLAY(kaleido_scope),
     KALEIDO_OVERLAY(player_actor),
 };
 
-void* sKaleidoAreaPtr = NULL;
+void*              sKaleidoAreaPtr = NULL;
 KaleidoMgrOverlay* gKaleidoMgrCurOvl = NULL;
-u8 gBossMarkState = 0;
+u8                 gBossMarkState = 0;
 
 void KaleidoManager_LoadOvl(KaleidoMgrOverlay* ovl) {
-    //LOG_CHECK_NULL_POINTER("KaleidoArea_allocp", sKaleidoAreaPtr);
+    // LOG_CHECK_NULL_POINTER("KaleidoArea_allocp", sKaleidoAreaPtr);
 
     ovl->loadedRamAddr = sKaleidoAreaPtr;
     Overlay_Load(ovl->vromStart, ovl->vromEnd, ovl->vramStart, ovl->vramEnd, ovl->loadedRamAddr);
 
-    //osSyncPrintf(VT_FGCOL(GREEN));
-    //osSyncPrintf("OVL(k):Seg:%08x-%08x Ram:%08x-%08x Off:%08x %s\n", ovl->vramStart, ovl->vramEnd, ovl->loadedRamAddr,
-                 //(uintptr_t)ovl->loadedRamAddr + (uintptr_t)ovl->vramEnd - (uintptr_t)ovl->vramStart,
-                 //(uintptr_t)ovl->vramStart - (uintptr_t)ovl->loadedRamAddr, ovl->name);
-    //osSyncPrintf(VT_RST);
+    // osSyncPrintf(VT_FGCOL(GREEN));
+    // osSyncPrintf("OVL(k):Seg:%08x-%08x Ram:%08x-%08x Off:%08x %s\n", ovl->vramStart, ovl->vramEnd,
+    // ovl->loadedRamAddr, (uintptr_t)ovl->loadedRamAddr + (uintptr_t)ovl->vramEnd - (uintptr_t)ovl->vramStart,
+    //(uintptr_t)ovl->vramStart - (uintptr_t)ovl->loadedRamAddr, ovl->name);
+    // osSyncPrintf(VT_RST);
 
     ovl->offset = (uintptr_t)ovl->loadedRamAddr - (uintptr_t)ovl->vramStart;
     gKaleidoMgrCurOvl = ovl;
@@ -49,7 +49,7 @@ void KaleidoManager_ClearOvl(KaleidoMgrOverlay* ovl) {
 void KaleidoManager_Init(PlayState* play) {
     ptrdiff_t largestSize = 0;
     ptrdiff_t size;
-    u32 i;
+    u32       i;
 
     for (i = 0; i < ARRAY_COUNT(gKaleidoMgrOverlayTable); i++) {
         size = (uintptr_t)gKaleidoMgrOverlayTable[i].vramEnd - (uintptr_t)gKaleidoMgrOverlayTable[i].vramStart;

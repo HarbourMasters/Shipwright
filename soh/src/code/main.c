@@ -11,29 +11,29 @@
 #include <libultraship/bridge.h>
 #include "soh/CrashHandlerExp.h"
 
-s32 gScreenWidth = SCREEN_WIDTH;
-s32 gScreenHeight = SCREEN_HEIGHT;
+s32    gScreenWidth = SCREEN_WIDTH;
+s32    gScreenHeight = SCREEN_HEIGHT;
 size_t gSystemHeapSize = 0;
 
-PreNmiBuff* gAppNmiBufferPtr;
+PreNmiBuff*  gAppNmiBufferPtr;
 SchedContext gSchedContext;
-PadMgr gPadMgr;
-IrqMgr gIrqMgr;
-uintptr_t gSegments[NUM_SEGMENTS];
-OSThread sGraphThread;
-u8 sGraphStack[0x1800];
-u8 sSchedStack[0x600];
-u8 sAudioStack[0x800];
-u8 sPadMgrStack[0x500];
-u8 sIrqMgrStack[0x500];
-StackEntry sGraphStackInfo;
-StackEntry sSchedStackInfo;
-StackEntry sAudioStackInfo;
-StackEntry sPadMgrStackInfo;
-StackEntry sIrqMgrStackInfo;
-AudioMgr gAudioMgr;
-OSMesgQueue sSiIntMsgQ;
-OSMesg sSiIntMsgBuf[1];
+PadMgr       gPadMgr;
+IrqMgr       gIrqMgr;
+uintptr_t    gSegments[NUM_SEGMENTS];
+OSThread     sGraphThread;
+u8           sGraphStack[0x1800];
+u8           sSchedStack[0x600];
+u8           sAudioStack[0x800];
+u8           sPadMgrStack[0x500];
+u8           sIrqMgrStack[0x500];
+StackEntry   sGraphStackInfo;
+StackEntry   sSchedStackInfo;
+StackEntry   sAudioStackInfo;
+StackEntry   sPadMgrStackInfo;
+StackEntry   sIrqMgrStackInfo;
+AudioMgr     gAudioMgr;
+OSMesgQueue  sSiIntMsgQ;
+OSMesg       sSiIntMsgBuf[1];
 
 void Main_LogSystemHeap(void) {
     osSyncPrintf(VT_FGCOL(GREEN));
@@ -44,8 +44,7 @@ void Main_LogSystemHeap(void) {
 }
 
 #ifdef _WIN32
-int SDL_main(int argc, char** argv)
-{
+int SDL_main(int argc, char** argv) {
     AllocConsole();
     (void)freopen("CONIN$", "r", stdin);
     (void)freopen("CONOUT$", "w", stdout);
@@ -55,8 +54,7 @@ int SDL_main(int argc, char** argv)
 #endif
 
 #else //_WIN32
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
 #endif
 
     GameConsole_Init();
@@ -72,13 +70,13 @@ int main(int argc, char** argv)
 
 void Main(void* arg) {
     IrqMgrClient irqClient;
-    OSMesgQueue irqMgrMsgQ;
-    OSMesg irqMgrMsgBuf[60];
-    uintptr_t sysHeap;
-    uintptr_t fb;
-    void* debugHeap;
-    size_t debugHeapSize;
-    s16* msg;
+    OSMesgQueue  irqMgrMsgQ;
+    OSMesg       irqMgrMsgBuf[60];
+    uintptr_t    sysHeap;
+    uintptr_t    fb;
+    void*        debugHeap;
+    size_t       debugHeapSize;
+    s16*         msg;
 
     osSyncPrintf("mainproc 実行開始\n"); // "Start running"
     gScreenWidth = SCREEN_WIDTH;

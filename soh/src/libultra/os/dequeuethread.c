@@ -2,7 +2,7 @@
 
 void __osDequeueThread(OSThread** queue, OSThread* thread) {
     register OSThread** a2 = queue;
-    register OSThread* a3 = *a2;
+    register OSThread*  a3 = *a2;
 
     while (a3 != NULL) {
         if (a3 == thread) {

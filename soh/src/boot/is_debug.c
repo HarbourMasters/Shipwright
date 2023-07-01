@@ -40,7 +40,7 @@ void* is_proutSyncPrintf(void* arg, const char* str, u32 count) {
     s32 start;
     s32 end;
 
-    //OTRLogString(str);
+    // OTRLogString(str);
 
     osEPiReadIo(sISVHandle, (u32)&gISVDbgPrnAdrs->magic, &data);
     if (data != ASCII_TO_U32('I', 'S', '6', '4')) {

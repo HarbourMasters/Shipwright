@@ -9,7 +9,7 @@ struct BgMizuUzu;
 typedef void (*BgMizuUzuActionFunc)(struct BgMizuUzu*, PlayState*);
 
 typedef struct BgMizuUzu {
-    /* 0x0000 */ DynaPolyActor dyna;
+    /* 0x0000 */ DynaPolyActor       dyna;
     /* 0x0164 */ BgMizuUzuActionFunc actionFunc;
 } BgMizuUzu; // size = 0x0168
 

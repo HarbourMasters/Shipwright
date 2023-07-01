@@ -57,7 +57,7 @@ void BgSpot01Fusya_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_808AAA50(BgSpot01Fusya* this, PlayState* play) {
-    f32 temp;
+    f32    temp;
     Actor* thisx = &this->actor;
 
     if (CVarGetInteger("gCosmetics.Kak_Windmill_Speed.Changed", 0)) {
@@ -86,8 +86,7 @@ void BgSpot01Fusya_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gKakarikoWindmillSailsDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

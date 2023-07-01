@@ -1,22 +1,22 @@
 #include "global.h"
 
 OSPifRam __osPifInternalBuff;
-u8 __osContLastPoll;
-u8 __osMaxControllers; // always 4
+u8       __osContLastPoll;
+u8       __osMaxControllers; // always 4
 
-OSTimer __osEepromTimer;
+OSTimer     __osEepromTimer;
 OSMesgQueue __osEepromTimerMsgQ;
-OSMesg __osEepromTimerMsg;
+OSMesg      __osEepromTimerMsg;
 
 u32 gOSContInitialized = 0;
 
 #define HALF_SECOND OS_USEC_TO_CYCLES(500000)
 
 s32 osContInit(OSMesgQueue* mq, u8* ctlBitfield, OSContStatus* status) {
-    OSMesg mesg;
-    s32 ret = 0;
-    OSTime currentTime;
-    OSTimer timer;
+    OSMesg      mesg;
+    s32         ret = 0;
+    OSTime      currentTime;
+    OSTimer     timer;
     OSMesgQueue timerqueue;
 
     if (gOSContInitialized) {
@@ -45,10 +45,10 @@ s32 osContInit(OSMesgQueue* mq, u8* ctlBitfield, OSContStatus* status) {
 }
 
 void __osContGetInitData(u8* ctlBitfield, OSContStatus* status) {
-    u8* bufptr;
+    u8*                   bufptr;
     __OSContRequestHeader req;
-    s32 i;
-    u8 bitfieldTemp = 0;
+    s32                   i;
+    u8                    bitfieldTemp = 0;
 
     bufptr = (u8*)(&__osPifInternalBuff);
 
@@ -66,9 +66,9 @@ void __osContGetInitData(u8* ctlBitfield, OSContStatus* status) {
 }
 
 void __osPackRequestData(u8 poll) {
-    u8* bufptr;
+    u8*                   bufptr;
     __OSContRequestHeader req;
-    s32 i;
+    s32                   i;
 
     for (i = 0; i < 0xF; i++) {
         __osPifInternalBuff.ram[i] = 0;

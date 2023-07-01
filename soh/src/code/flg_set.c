@@ -36,15 +36,15 @@ void FlagSet_Update(PlayState* play) {
     };
 
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    Input* input = &play->state.input[0];
-    Gfx* gfx;
-    Gfx* polyOpa;
+    Input*           input = &play->state.input[0];
+    Gfx*             gfx;
+    Gfx*             polyOpa;
 
     OPEN_DISPS(gfxCtx);
 
     {
         GfxPrint printer;
-        s32 pad;
+        s32      pad;
 
         polyOpa = POLY_OPA_DISP;
         gfx = Graph_GfxPlusOne(polyOpa);

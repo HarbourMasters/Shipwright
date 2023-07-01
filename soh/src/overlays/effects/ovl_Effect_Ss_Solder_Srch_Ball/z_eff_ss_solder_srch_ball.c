@@ -10,7 +10,7 @@
 
 #define rUnused regs[1]
 
-u32 EffectSsSolderSrchBall_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsSolderSrchBall_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsSolderSrchBall_Update(PlayState* play, u32 index, EffectSs* this);
 void EffectSsSolderSrchBall_Draw(PlayState* play, u32 index, EffectSs* this);
 
@@ -34,11 +34,11 @@ u32 EffectSsSolderSrchBall_Init(PlayState* play, u32 index, EffectSs* this, void
 }
 
 void EffectSsSolderSrchBall_Update(PlayState* play, u32 index, EffectSs* this) {
-    s32 pad;
-    f32 playerPosDiffX;
-    f32 playerPosDiffY;
-    f32 playerPosDiffZ;
-    s16* linkDetected;
+    s32     pad;
+    f32     playerPosDiffX;
+    f32     playerPosDiffY;
+    f32     playerPosDiffZ;
+    s16*    linkDetected;
     Player* player = GET_PLAYER(play);
 
     linkDetected = this->actor;
@@ -78,20 +78,20 @@ static void ico_sph_subdivide_edge(Vec3f* r, Vec3f* a, Vec3f* b) {
 
 static void draw_ico_sphere(Gfx** p_gfx_p, f32 x, f32 y, f32 z, f32 radius, GraphicsContext* gfxCtx) {
     static Gfx* p_sph_gfx = NULL;
-    static Vtx sph_vtx[42];
-    static Gfx sph_gfx[45];
-    Gfx* sph_gfx_p;
-    s32 i;
+    static Vtx  sph_vtx[42];
+    static Gfx  sph_gfx[45];
+    Gfx*        sph_gfx_p;
+    s32         i;
 
     if (!p_sph_gfx) {
         Vec3f vtx[42];
-        s32 r0_n = 1, r0_m = r0_n / 5, r0_i = 0 + 0;
-        s32 r1_n = 5, r1_m = r1_n / 5, r1_i = r0_i + r0_n;
-        s32 r2_n = 10, r2_m = r2_n / 5, r2_i = r1_i + r1_n;
-        s32 r3_n = 10, r3_m = r3_n / 5, r3_i = r2_i + r2_n;
-        s32 r4_n = 10, r4_m = r4_n / 5, r4_i = r3_i + r3_n;
-        s32 r5_n = 5, r5_m = r5_n / 5, r5_i = r4_i + r4_n;
-        s32 r6_n = 1, r6_m = r6_n / 5, r6_i = r5_i + r5_n;
+        s32   r0_n = 1, r0_m = r0_n / 5, r0_i = 0 + 0;
+        s32   r1_n = 5, r1_m = r1_n / 5, r1_i = r0_i + r0_n;
+        s32   r2_n = 10, r2_m = r2_n / 5, r2_i = r1_i + r1_n;
+        s32   r3_n = 10, r3_m = r3_n / 5, r3_i = r2_i + r2_n;
+        s32   r4_n = 10, r4_m = r4_n / 5, r4_i = r3_i + r3_n;
+        s32   r5_n = 5, r5_m = r5_n / 5, r5_i = r4_i + r4_n;
+        s32   r6_n = 1, r6_m = r6_n / 5, r6_i = r5_i + r5_n;
 
         vtx[r0_i + (0 * r0_m + 0) % r0_n].x = 0.0f;
         vtx[r0_i + (0 * r0_m + 0) % r0_n].y = 1.0f;
@@ -225,12 +225,12 @@ void EffectSsSolderSrchBall_Draw(PlayState* play, u32 index, EffectSs* this) {
     if (CVarGetInteger("gGuardVision", 0) == 0) {
         return;
     }
-    
+
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    u32 rm;
-    u32 blc1;
-    u32 blc2;
-    s16* seenLink = this->actor;
+    u32              rm;
+    u32              blc1;
+    u32              blc2;
+    s16*             seenLink = this->actor;
 
     OPEN_DISPS(play->state.gfxCtx);
     rm = Z_CMP | IM_RD | CVG_DST_FULL | FORCE_BL | ZMODE_XLU;
@@ -242,8 +242,8 @@ void EffectSsSolderSrchBall_Draw(PlayState* play, u32 index, EffectSs* this) {
     gDPPipeSync(POLY_XLU_DISP++);
     gDPSetCycleType(POLY_XLU_DISP++, G_CYC_1CYCLE);
     gDPSetRenderMode(POLY_XLU_DISP++, rm | blc1, rm | blc2);
-    gDPSetCombineLERP(POLY_XLU_DISP++, PRIMITIVE, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, PRIMITIVE, 0, SHADE, 0, 0, 0,
-                      0, ENVIRONMENT);
+    gDPSetCombineLERP(POLY_XLU_DISP++, PRIMITIVE, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, PRIMITIVE, 0, SHADE, 0, 0, 0, 0,
+                      ENVIRONMENT);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);
     if (*seenLink) {
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 0, 0, 255);

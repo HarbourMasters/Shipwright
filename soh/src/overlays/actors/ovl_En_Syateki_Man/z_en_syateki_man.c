@@ -156,9 +156,16 @@ void EnSyatekiMan_Init(Actor* thisx, PlayState* play) {
     EnSyatekiMan* this = (EnSyatekiMan*)thisx;
 
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_INTERIOR_ENTRANCES)) {
-        // If child is in the adult shooting gallery or adult in the child shooting gallery, then despawn the shooting gallery man
-        if ((LINK_IS_CHILD && Entrance_SceneAndSpawnAre(SCENE_SYATEKIJYOU, 0x00)) || //Kakariko Village -> Adult Shooting Gallery, index 003B in the entrance table
-            (LINK_IS_ADULT && Entrance_SceneAndSpawnAre(SCENE_SYATEKIJYOU, 0x01))) { //Market -> Child Shooting Gallery,           index 016D in the entrance table
+        // If child is in the adult shooting gallery or adult in the child shooting gallery, then despawn the shooting
+        // gallery man
+        if ((LINK_IS_CHILD &&
+             Entrance_SceneAndSpawnAre(
+                 SCENE_SYATEKIJYOU,
+                 0x00)) || // Kakariko Village -> Adult Shooting Gallery, index 003B in the entrance table
+            (LINK_IS_ADULT &&
+             Entrance_SceneAndSpawnAre(
+                 SCENE_SYATEKIJYOU,
+                 0x01))) { // Market -> Child Shooting Gallery,           index 016D in the entrance table
             Actor_Kill(thisx);
             return;
         }
@@ -292,7 +299,7 @@ void EnSyatekiMan_StartGame(EnSyatekiMan* this, PlayState* play) {
         Message_CloseTextbox(play);
         gallery = ((EnSyatekiItm*)this->actor.parent);
         if (gallery->actor.update != NULL) {
-            if(CVarGetInteger("gCustomizeShootingGallery", 0) && CVarGetInteger("gInstantShootingGalleryWin", 0)) {
+            if (CVarGetInteger("gCustomizeShootingGallery", 0) && CVarGetInteger("gInstantShootingGalleryWin", 0)) {
                 gallery->hitCount = 10;
                 gallery->signal = ENSYATEKI_END;
             } else {
@@ -354,8 +361,9 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                     this->tempGallery = this->actor.parent;
                     this->actor.parent = NULL;
                     if (!LINK_IS_ADULT) {
-                        if(gSaveContext.n64ddFlag && !Flags_GetTreasure(play, 0x1E)) {
-                            this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_SHOOTING_GALLERY_REWARD, GI_BULLET_BAG_50);
+                        if (gSaveContext.n64ddFlag && !Flags_GetTreasure(play, 0x1E)) {
+                            this->getItemEntry =
+                                Randomizer_GetItemFromKnownCheck(RC_MARKET_SHOOTING_GALLERY_REWARD, GI_BULLET_BAG_50);
                             this->getItemId = this->getItemEntry.getItemId;
                             Flags_SetTreasure(play, 0x1E);
                         } else if (!gSaveContext.n64ddFlag && !Flags_GetItemGetInf(ITEMGETINF_0D)) {
@@ -371,8 +379,9 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                             this->getItemId = GI_RUPEE_PURPLE;
                         }
                     } else {
-                        if(gSaveContext.n64ddFlag && !Flags_GetTreasure(play, 0x1F)) {
-                            this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_SHOOTING_GALLERY_REWARD, GI_QUIVER_50);
+                        if (gSaveContext.n64ddFlag && !Flags_GetTreasure(play, 0x1F)) {
+                            this->getItemEntry =
+                                Randomizer_GetItemFromKnownCheck(RC_KAK_SHOOTING_GALLERY_REWARD, GI_QUIVER_50);
                             this->getItemId = this->getItemEntry.getItemId;
                             Flags_SetTreasure(play, 0x1F);
                         } else if (!gSaveContext.n64ddFlag && !Flags_GetItemGetInf(ITEMGETINF_0E)) {
@@ -404,8 +413,9 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                 case SYATEKI_RESULT_ALMOST:
                     this->timer = 20;
                     s32 ammunition = 15;
-                    if(CVarGetInteger("gCustomizeShootingGallery", 0)) {
-                        ammunition = CVarGetInteger(LINK_IS_ADULT ? "gAdultShootingGalleryAmmunition" : "gChildShootingGalleryAmmunition", 15);
+                    if (CVarGetInteger("gCustomizeShootingGallery", 0)) {
+                        ammunition = CVarGetInteger(
+                            LINK_IS_ADULT ? "gAdultShootingGalleryAmmunition" : "gChildShootingGalleryAmmunition", 15);
                     }
                     func_8008EF44(play, ammunition);
                     this->actionFunc = EnSyatekiMan_RestartGame;
@@ -515,8 +525,7 @@ void EnSyatekiMan_Update(Actor* thisx, PlayState* play) {
     func_80038290(play, &this->actor, &this->headRot, &this->bodyRot, this->actor.focus.pos);
 }
 
-s32 EnSyatekiMan_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                  void* thisx) {
+s32 EnSyatekiMan_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnSyatekiMan* this = (EnSyatekiMan*)thisx;
     s32 turnDirection;
 

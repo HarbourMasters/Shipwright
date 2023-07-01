@@ -97,7 +97,7 @@ static InitChainEntry sInitChain[] = {
 
 void BgHidanDalm_Init(Actor* thisx, PlayState* play) {
     BgHidanDalm* this = (BgHidanDalm*)thisx;
-    s32 pad;
+    s32              pad;
     CollisionHeader* colHeader = NULL;
 
     Actor_ProcessInitChain(thisx, sInitChain);
@@ -154,9 +154,9 @@ void BgHidanDalm_Wait(BgHidanDalm* this, PlayState* play) {
 
 void BgHidanDalm_Shrink(BgHidanDalm* this, PlayState* play) {
     static Vec3f accel = { 0.0f, 0.0f, 0.0f };
-    s32 i;
-    Vec3f velocity;
-    Vec3f pos;
+    s32          i;
+    Vec3f        velocity;
+    Vec3f        pos;
 
     if (Math_StepToF(&this->dyna.actor.scale.x, 0.0f, 0.004f)) {
         func_8002DF54(play, &this->dyna.actor, 7);

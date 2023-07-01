@@ -108,9 +108,9 @@ static InitChainEntry sInitChain[] = {
 };
 
 UNK_TYPE D_80881014 = 0;
-void BgHakaTrap_Init(Actor* thisx, PlayState* play) {
+void     BgHakaTrap_Init(Actor* thisx, PlayState* play) {
     BgHakaTrap* this = (BgHakaTrap*)thisx;
-    s32 pad;
+    s32              pad;
     CollisionHeader* colHeader = NULL;
 
     Actor_ProcessInitChain(thisx, sInitChain);
@@ -204,10 +204,10 @@ void BgHakaTrap_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_8087FFC0(BgHakaTrap* this, PlayState* play) {
-    f32 cosine;
-    Vec3f sp28;
-    f32 sine;
-    f32 zNonNegative;
+    f32     cosine;
+    Vec3f   sp28;
+    f32     sine;
+    f32     zNonNegative;
     Player* player = GET_PLAYER(play);
 
     func_8002DBD0(&this->dyna.actor, &sp28, &player->actor.world.pos);
@@ -229,7 +229,7 @@ void func_8087FFC0(BgHakaTrap* this, PlayState* play) {
 }
 
 static UNK_TYPE D_80881018 = 0;
-void func_808801B8(BgHakaTrap* this, PlayState* play) {
+void            func_808801B8(BgHakaTrap* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if ((D_80880F30 == 0) && (!Player_InCsMode(play))) {
@@ -256,9 +256,9 @@ void func_808801B8(BgHakaTrap* this, PlayState* play) {
 
 void func_808802D8(BgHakaTrap* this, PlayState* play) {
     static Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
-    Vec3f vector;
-    f32 xScale;
-    s32 i;
+    Vec3f        vector;
+    f32          xScale;
+    s32          i;
 
     if (this->timer != 0) {
         this->timer--;
@@ -275,8 +275,7 @@ void func_808802D8(BgHakaTrap* this, PlayState* play) {
         vector.y = Rand_ZeroOne() * 10.0f + this->dyna.actor.world.pos.y + 30.0f;
         vector.z = Rand_CenteredFloat(320.0f) + this->dyna.actor.world.pos.z;
 
-        EffectSsDeadDb_Spawn(play, &vector, &zeroVec, &zeroVec, 130, 20, 255, 255, 150, 170, 255, 0, 0, 1, 9,
-                             false);
+        EffectSsDeadDb_Spawn(play, &vector, &zeroVec, &zeroVec, 130, 20, 255, 255, 150, 170, 255, 0, 0, 1, 9, false);
     }
 
     if (this->timer == 0) {
@@ -352,10 +351,10 @@ void func_808805C0(BgHakaTrap* this, PlayState* play) {
 
 void func_808806BC(BgHakaTrap* this, PlayState* play) {
     Vec3f vector;
-    f32 tempf20;
-    f32 temp;
-    s32 i;
-    s32 sp64;
+    f32   tempf20;
+    f32   temp;
+    s32   i;
+    s32   sp64;
 
     this->dyna.actor.velocity.y *= 1.6f;
 
@@ -370,9 +369,9 @@ void func_808806BC(BgHakaTrap* this, PlayState* play) {
     tempf20 = this->dyna.actor.floorHeight;
 
     for (i = 0; i < 3; i++) {
-        temp = BgCheck_EntityRaycastFloor4(&play->colCtx, &this->dyna.actor.floorPoly, &sp64, &this->dyna.actor,
-                                           &vector) -
-               25.0f;
+        temp =
+            BgCheck_EntityRaycastFloor4(&play->colCtx, &this->dyna.actor.floorPoly, &sp64, &this->dyna.actor, &vector) -
+            25.0f;
         if (tempf20 < temp) {
             tempf20 = temp;
         }
@@ -432,7 +431,7 @@ void func_808809B0(BgHakaTrap* this, PlayState* play) {
 
 void func_808809E4(BgHakaTrap* this, PlayState* play, s16 arg2) {
     Player* player = GET_PLAYER(play);
-    Vec3f sp18;
+    Vec3f   sp18;
 
     func_8002DBD0(&this->dyna.actor, &sp18, &player->actor.world.pos);
 
@@ -523,7 +522,7 @@ void BgHakaTrap_Draw(Actor* thisx, PlayState* play) {
     };
     static Color_RGBA8 D_8088103C = { 0, 0, 0, 0 };
     BgHakaTrap* this = (BgHakaTrap*)thisx;
-    s32 pad;
+    s32   pad;
     Vec3f sp2C;
 
     if (this->actionFunc == func_808802D8) {

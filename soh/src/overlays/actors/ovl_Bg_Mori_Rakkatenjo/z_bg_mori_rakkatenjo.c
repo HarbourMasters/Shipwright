@@ -145,9 +145,9 @@ void BgMoriRakkatenjo_SetupFall(BgMoriRakkatenjo* this) {
 
 void BgMoriRakkatenjo_Fall(BgMoriRakkatenjo* this, PlayState* play) {
     static f32 bounceVel[] = { 4.0f, 1.5f, 0.4f, 0.1f };
-    s32 pad;
-    Actor* thisx = &this->dyna.actor;
-    s32 quake;
+    s32        pad;
+    Actor*     thisx = &this->dyna.actor;
+    s32        quake;
 
     Actor_MoveForward(thisx);
     if ((thisx->velocity.y < 0.0f) && (thisx->world.pos.y <= 403.0f)) {
@@ -227,8 +227,7 @@ void BgMoriRakkatenjo_Draw(Actor* thisx, PlayState* play) {
 
     gSPSegment(POLY_OPA_DISP++, 0x08, play->objectCtx.status[this->moriTexObjIndex].segment);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_OPA_DISP++, gMoriRakkatenjoDL);
 

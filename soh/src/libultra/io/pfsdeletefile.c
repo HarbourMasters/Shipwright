@@ -2,13 +2,13 @@
 #include "global.h"
 
 s32 osPfsDeleteFile(OSPfs* pfs, u16 companyCode, u32 gameCode, u8* gameName, u8* extName) {
-    s32 file_no;
-    s32 ret;
-    __OSInode inode;
-    __OSDir dir;
+    s32           file_no;
+    s32           ret;
+    __OSInode     inode;
+    __OSDir       dir;
     __OSInodeUnit last_page;
-    u8 startpage;
-    u8 bank;
+    u8            startpage;
+    u8            bank;
 
     if ((companyCode == 0) || (gameCode == 0)) {
         return PFS_ERR_INVALID;
@@ -55,7 +55,7 @@ s32 osPfsDeleteFile(OSPfs* pfs, u16 companyCode, u32 gameCode, u8* gameName, u8*
 s32 __osPfsReleasePages(OSPfs* pfs, __OSInode* inode, u8 initialPage, u8 bank, __OSInodeUnit* finalPage) {
     __OSInodeUnit next;
     __OSInodeUnit prev;
-    s32 ret = 0;
+    s32           ret = 0;
 
     next.ipage = (u16)((bank << 8) + initialPage);
 

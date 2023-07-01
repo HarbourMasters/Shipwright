@@ -4,21 +4,21 @@
 
 #define SECTION_PARENT_NONE -1
 typedef struct {
-    u8 valid;
-    u16 deaths;
+    u8   valid;
+    u16  deaths;
     char playerName[8];
-    u16 healthCapacity;
-    u32 questItems;
-    s8 defense;
-    u16 health;
-    u32 requiresMasterQuest;
-    u32 requiresOriginal;
-    u8 seedHash[5];
-    u8 randoSave;
+    u16  healthCapacity;
+    u32  questItems;
+    s8   defense;
+    u16  health;
+    u32  requiresMasterQuest;
+    u32  requiresOriginal;
+    u8   seedHash[5];
+    u8   randoSave;
     char buildVersion[50];
-    s16 buildVersionMajor;
-    s16 buildVersionMinor;
-    s16 buildVersionPatch;
+    s16  buildVersionMajor;
+    s16  buildVersionMinor;
+    s16  buildVersionPatch;
 } SaveFileMetaInfo;
 
 #ifdef __cplusplus
@@ -48,11 +48,11 @@ class SaveManager {
     using PostFunc = void (*)(int version);
 
     typedef struct {
-        std::string name;
-        int version;
+        std::string           name;
+        int                   version;
         SaveManager::SaveFunc func;
-        bool saveWithBase;
-        int parentSection;
+        bool                  saveWithBase;
+        int                   parentSection;
     } SaveFuncInfo;
 
     SaveManager();
@@ -61,7 +61,7 @@ class SaveManager {
     void InitFile(bool isDebug);
     void SaveFile(int fileNum);
     void SaveSection(int fileNum, int sectionID, bool threaded);
-    int GetSaveSectionID(std::string& name);
+    int  GetSaveSectionID(std::string& name);
     void SaveGlobal();
     void LoadFile(int fileNum);
     bool SaveFile_Exist(int fileNum);
@@ -125,19 +125,19 @@ class SaveManager {
     using LoadStructFunc = std::function<void()>;
     void LoadStruct(const std::string& name, LoadStructFunc func);
 
-    static const int MaxFiles = 3;
+    static const int                       MaxFiles = 3;
     std::array<SaveFileMetaInfo, MaxFiles> fileMetaInfo;
 
   private:
     std::filesystem::path GetFileName(int fileNum);
-    nlohmann::json saveBlock;
+    nlohmann::json        saveBlock;
 
     void ConvertFromUnversioned();
     void CreateDefaultGlobal();
 
     void SaveFileThreaded(int fileNum, SaveContext* saveContext, int sectionID);
 
-    void InitMeta(int slotNum);
+    void        InitMeta(int slotNum);
     static void InitFileImpl(bool isDebug);
     static void InitFileNormal();
     static void InitFileDebug();
@@ -157,15 +157,15 @@ class SaveManager {
     using SectionLoadHandler = std::map<int, LoadFunc>;
     std::map<std::string, SectionLoadHandler> sectionLoadHandlers;
 
-    int sectionIndex = SECTION_ID_MAX;
-    std::map<std::string, int> coreSectionIDsByName;
+    int                         sectionIndex = SECTION_ID_MAX;
+    std::map<std::string, int>  coreSectionIDsByName;
     std::map<int, SaveFuncInfo> sectionSaveHandlers;
-    std::map<std::string, int> sectionRegistry;
+    std::map<std::string, int>  sectionRegistry;
 
     std::map<std::string, PostFunc> postHandlers;
 
-    nlohmann::json* currentJsonContext = nullptr;
-    nlohmann::json::iterator currentJsonArrayContext;
+    nlohmann::json*                  currentJsonContext = nullptr;
+    nlohmann::json::iterator         currentJsonArrayContext;
     std::shared_ptr<BS::thread_pool> smThreadPool;
 };
 
@@ -185,7 +185,7 @@ void Save_LoadGlobal(void);
 void Save_AddLoadFunction(char* name, int version, Save_LoadFunc func);
 void Save_AddSaveFunction(char* name, int version, Save_SaveFunc func, bool saveWithBase, int parentSection);
 SaveFileMetaInfo* Save_GetSaveMetaInfo(int fileNum);
-void Save_CopyFile(int from, int to);
-void Save_DeleteFile(int fileNum);
-bool Save_Exist(int fileNum);
+void              Save_CopyFile(int from, int to);
+void              Save_DeleteFile(int fileNum);
+bool              Save_Exist(int fileNum);
 #endif

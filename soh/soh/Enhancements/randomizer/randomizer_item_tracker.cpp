@@ -35,45 +35,65 @@ bool shouldUpdateVectors = true;
 std::vector<ItemTrackerItem> mainWindowItems = {};
 
 std::vector<ItemTrackerItem> inventoryItems = {
-    ITEM_TRACKER_ITEM(ITEM_STICK, 0, DrawItem),     ITEM_TRACKER_ITEM(ITEM_NUT, 0, DrawItem),           ITEM_TRACKER_ITEM(ITEM_BOMB, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_BOW, 0, DrawItem),       ITEM_TRACKER_ITEM(ITEM_ARROW_FIRE, 0, DrawItem),    ITEM_TRACKER_ITEM(ITEM_DINS_FIRE, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_SLINGSHOT, 0, DrawItem), ITEM_TRACKER_ITEM(ITEM_OCARINA_FAIRY, 0, DrawItem), ITEM_TRACKER_ITEM(ITEM_BOMBCHU, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_HOOKSHOT, 0, DrawItem),  ITEM_TRACKER_ITEM(ITEM_ARROW_ICE, 0, DrawItem),     ITEM_TRACKER_ITEM(ITEM_FARORES_WIND, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_BOOMERANG, 0, DrawItem), ITEM_TRACKER_ITEM(ITEM_LENS, 0, DrawItem),          ITEM_TRACKER_ITEM(ITEM_BEAN, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_HAMMER, 0, DrawItem),    ITEM_TRACKER_ITEM(ITEM_ARROW_LIGHT, 0, DrawItem),   ITEM_TRACKER_ITEM(ITEM_NAYRUS_LOVE, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_BOTTLE, 0, DrawBottle),  ITEM_TRACKER_ITEM(ITEM_BOTTLE, 1, DrawBottle),      ITEM_TRACKER_ITEM(ITEM_BOTTLE, 2, DrawBottle),
-    ITEM_TRACKER_ITEM(ITEM_BOTTLE, 3, DrawBottle),  ITEM_TRACKER_ITEM(ITEM_POCKET_EGG, 0, DrawItem),    ITEM_TRACKER_ITEM(ITEM_MASK_KEATON, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_STICK, 0, DrawItem),       ITEM_TRACKER_ITEM(ITEM_NUT, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_BOMB, 0, DrawItem),        ITEM_TRACKER_ITEM(ITEM_BOW, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_ARROW_FIRE, 0, DrawItem),  ITEM_TRACKER_ITEM(ITEM_DINS_FIRE, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_SLINGSHOT, 0, DrawItem),   ITEM_TRACKER_ITEM(ITEM_OCARINA_FAIRY, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_BOMBCHU, 0, DrawItem),     ITEM_TRACKER_ITEM(ITEM_HOOKSHOT, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_ARROW_ICE, 0, DrawItem),   ITEM_TRACKER_ITEM(ITEM_FARORES_WIND, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_BOOMERANG, 0, DrawItem),   ITEM_TRACKER_ITEM(ITEM_LENS, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_BEAN, 0, DrawItem),        ITEM_TRACKER_ITEM(ITEM_HAMMER, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_ARROW_LIGHT, 0, DrawItem), ITEM_TRACKER_ITEM(ITEM_NAYRUS_LOVE, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_BOTTLE, 0, DrawBottle),    ITEM_TRACKER_ITEM(ITEM_BOTTLE, 1, DrawBottle),
+    ITEM_TRACKER_ITEM(ITEM_BOTTLE, 2, DrawBottle),    ITEM_TRACKER_ITEM(ITEM_BOTTLE, 3, DrawBottle),
+    ITEM_TRACKER_ITEM(ITEM_POCKET_EGG, 0, DrawItem),  ITEM_TRACKER_ITEM(ITEM_MASK_KEATON, 0, DrawItem),
 };
 
 std::vector<ItemTrackerItem> equipmentItems = {
-    ITEM_TRACKER_ITEM(ITEM_SWORD_KOKIRI, 1 << 0, DrawEquip),  ITEM_TRACKER_ITEM(ITEM_SWORD_MASTER, 1 << 1, DrawEquip),  ITEM_TRACKER_ITEM(ITEM_SWORD_BGS, 1 << 2, DrawEquip),
-    ITEM_TRACKER_ITEM(ITEM_TUNIC_KOKIRI, 1 << 8, DrawEquip),  ITEM_TRACKER_ITEM(ITEM_TUNIC_GORON, 1 << 9, DrawEquip),   ITEM_TRACKER_ITEM(ITEM_TUNIC_ZORA, 1 << 10, DrawEquip),
-    ITEM_TRACKER_ITEM(ITEM_SHIELD_DEKU, 1 << 4, DrawEquip),   ITEM_TRACKER_ITEM(ITEM_SHIELD_HYLIAN, 1 << 5, DrawEquip), ITEM_TRACKER_ITEM(ITEM_SHIELD_MIRROR, 1 << 6, DrawEquip),
-    ITEM_TRACKER_ITEM(ITEM_BOOTS_KOKIRI, 1 << 12, DrawEquip), ITEM_TRACKER_ITEM(ITEM_BOOTS_IRON, 1 << 13, DrawEquip),   ITEM_TRACKER_ITEM(ITEM_BOOTS_HOVER, 1 << 14, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_SWORD_KOKIRI, 1 << 0, DrawEquip),  ITEM_TRACKER_ITEM(ITEM_SWORD_MASTER, 1 << 1, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_SWORD_BGS, 1 << 2, DrawEquip),     ITEM_TRACKER_ITEM(ITEM_TUNIC_KOKIRI, 1 << 8, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_TUNIC_GORON, 1 << 9, DrawEquip),   ITEM_TRACKER_ITEM(ITEM_TUNIC_ZORA, 1 << 10, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_SHIELD_DEKU, 1 << 4, DrawEquip),   ITEM_TRACKER_ITEM(ITEM_SHIELD_HYLIAN, 1 << 5, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_SHIELD_MIRROR, 1 << 6, DrawEquip), ITEM_TRACKER_ITEM(ITEM_BOOTS_KOKIRI, 1 << 12, DrawEquip),
+    ITEM_TRACKER_ITEM(ITEM_BOOTS_IRON, 1 << 13, DrawEquip),   ITEM_TRACKER_ITEM(ITEM_BOOTS_HOVER, 1 << 14, DrawEquip),
 };
 
 std::vector<ItemTrackerItem> miscItems = {
-    ITEM_TRACKER_ITEM(ITEM_BRACELET, 0, DrawItem),            ITEM_TRACKER_ITEM(ITEM_SCALE_SILVER, 0, DrawItem),        ITEM_TRACKER_ITEM(ITEM_WALLET_ADULT, 0, DrawItem),
-    ITEM_TRACKER_ITEM(ITEM_HEART_CONTAINER, 0, DrawItem),     ITEM_TRACKER_ITEM(ITEM_HEART_PIECE, 0, DrawItem),         ITEM_TRACKER_ITEM(ITEM_MAGIC_SMALL, 0, DrawItem),
-    ITEM_TRACKER_ITEM(QUEST_GERUDO_CARD, 1 << 22, DrawQuest), ITEM_TRACKER_ITEM(QUEST_SKULL_TOKEN, 1 << 23, DrawQuest), ITEM_TRACKER_ITEM(QUEST_STONE_OF_AGONY, 1 << 21, DrawQuest),
+    ITEM_TRACKER_ITEM(ITEM_BRACELET, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_SCALE_SILVER, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_WALLET_ADULT, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_HEART_CONTAINER, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_HEART_PIECE, 0, DrawItem),
+    ITEM_TRACKER_ITEM(ITEM_MAGIC_SMALL, 0, DrawItem),
+    ITEM_TRACKER_ITEM(QUEST_GERUDO_CARD, 1 << 22, DrawQuest),
+    ITEM_TRACKER_ITEM(QUEST_SKULL_TOKEN, 1 << 23, DrawQuest),
+    ITEM_TRACKER_ITEM(QUEST_STONE_OF_AGONY, 1 << 21, DrawQuest),
 };
 
 std::vector<ItemTrackerItem> dungeonRewardStones = {
-    ITEM_TRACKER_ITEM(QUEST_KOKIRI_EMERALD, 1 << 18, DrawQuest), ITEM_TRACKER_ITEM(QUEST_GORON_RUBY, 1 << 19, DrawQuest), ITEM_TRACKER_ITEM(QUEST_ZORA_SAPPHIRE, 1 << 20, DrawQuest),
+    ITEM_TRACKER_ITEM(QUEST_KOKIRI_EMERALD, 1 << 18, DrawQuest),
+    ITEM_TRACKER_ITEM(QUEST_GORON_RUBY, 1 << 19, DrawQuest),
+    ITEM_TRACKER_ITEM(QUEST_ZORA_SAPPHIRE, 1 << 20, DrawQuest),
 };
 
 std::vector<ItemTrackerItem> dungeonRewardMedallions = {
-    ITEM_TRACKER_ITEM(QUEST_MEDALLION_FOREST, 1 << 0, DrawQuest), ITEM_TRACKER_ITEM(QUEST_MEDALLION_FIRE, 1 << 1, DrawQuest),   ITEM_TRACKER_ITEM(QUEST_MEDALLION_WATER, 1 << 2, DrawQuest),
-    ITEM_TRACKER_ITEM(QUEST_MEDALLION_SPIRIT, 1 << 3, DrawQuest), ITEM_TRACKER_ITEM(QUEST_MEDALLION_SHADOW, 1 << 4, DrawQuest), ITEM_TRACKER_ITEM(QUEST_MEDALLION_LIGHT, 1 << 5, DrawQuest),
+    ITEM_TRACKER_ITEM(QUEST_MEDALLION_FOREST, 1 << 0, DrawQuest),
+    ITEM_TRACKER_ITEM(QUEST_MEDALLION_FIRE, 1 << 1, DrawQuest),
+    ITEM_TRACKER_ITEM(QUEST_MEDALLION_WATER, 1 << 2, DrawQuest),
+    ITEM_TRACKER_ITEM(QUEST_MEDALLION_SPIRIT, 1 << 3, DrawQuest),
+    ITEM_TRACKER_ITEM(QUEST_MEDALLION_SHADOW, 1 << 4, DrawQuest),
+    ITEM_TRACKER_ITEM(QUEST_MEDALLION_LIGHT, 1 << 5, DrawQuest),
 };
 
 std::vector<ItemTrackerItem> dungeonRewards = {};
 
 std::vector<ItemTrackerItem> songItems = {
-    ITEM_TRACKER_ITEM(QUEST_SONG_LULLABY, 0, DrawSong), ITEM_TRACKER_ITEM(QUEST_SONG_EPONA, 0, DrawSong),    ITEM_TRACKER_ITEM(QUEST_SONG_SARIA, 0, DrawSong),
-    ITEM_TRACKER_ITEM(QUEST_SONG_SUN, 0, DrawSong),     ITEM_TRACKER_ITEM(QUEST_SONG_TIME, 0, DrawSong),     ITEM_TRACKER_ITEM(QUEST_SONG_STORMS, 0, DrawSong),
-    ITEM_TRACKER_ITEM(QUEST_SONG_MINUET, 0, DrawSong),  ITEM_TRACKER_ITEM(QUEST_SONG_BOLERO, 0, DrawSong),   ITEM_TRACKER_ITEM(QUEST_SONG_SERENADE, 0, DrawSong),
-    ITEM_TRACKER_ITEM(QUEST_SONG_REQUIEM, 0, DrawSong), ITEM_TRACKER_ITEM(QUEST_SONG_NOCTURNE, 0, DrawSong), ITEM_TRACKER_ITEM(QUEST_SONG_PRELUDE, 0, DrawSong),
+    ITEM_TRACKER_ITEM(QUEST_SONG_LULLABY, 0, DrawSong),  ITEM_TRACKER_ITEM(QUEST_SONG_EPONA, 0, DrawSong),
+    ITEM_TRACKER_ITEM(QUEST_SONG_SARIA, 0, DrawSong),    ITEM_TRACKER_ITEM(QUEST_SONG_SUN, 0, DrawSong),
+    ITEM_TRACKER_ITEM(QUEST_SONG_TIME, 0, DrawSong),     ITEM_TRACKER_ITEM(QUEST_SONG_STORMS, 0, DrawSong),
+    ITEM_TRACKER_ITEM(QUEST_SONG_MINUET, 0, DrawSong),   ITEM_TRACKER_ITEM(QUEST_SONG_BOLERO, 0, DrawSong),
+    ITEM_TRACKER_ITEM(QUEST_SONG_SERENADE, 0, DrawSong), ITEM_TRACKER_ITEM(QUEST_SONG_REQUIEM, 0, DrawSong),
+    ITEM_TRACKER_ITEM(QUEST_SONG_NOCTURNE, 0, DrawSong), ITEM_TRACKER_ITEM(QUEST_SONG_PRELUDE, 0, DrawSong),
 };
 
 std::vector<ItemTrackerItem> gregItems = {
@@ -106,7 +126,6 @@ std::vector<ItemTrackerDungeon> itemTrackerDungeonsHorizontal = {
     { SCENE_MEN, { ITEM_KEY_SMALL } },
 };
 
-
 std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsCompact = {
     { SCENE_BMORI1, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
     { SCENE_HIDAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
@@ -135,18 +154,10 @@ std::vector<ItemTrackerDungeon> itemTrackerDungeonsCompact = {
 };
 
 std::map<uint16_t, std::string> itemTrackerDungeonShortNames = {
-    { SCENE_BMORI1, "FRST" },
-    { SCENE_HIDAN, "FIRE" },
-    { SCENE_MIZUSIN, "WATR" },
-    { SCENE_JYASINZOU, "SPRT" },
-    { SCENE_HAKADAN, "SHDW" },
-    { SCENE_HAKADANCH, "BOTW" },
-    { SCENE_YDAN, "DEKU" },
-    { SCENE_DDAN, "DCVN" },
-    { SCENE_BDAN, "JABU" },
-    { SCENE_ICE_DOUKUTO, "ICE" },
-    { SCENE_GANONTIKA, "GANON" },
-    { SCENE_MEN, "GTG" },
+    { SCENE_BMORI1, "FRST" },     { SCENE_HIDAN, "FIRE" },      { SCENE_MIZUSIN, "WATR" },
+    { SCENE_JYASINZOU, "SPRT" },  { SCENE_HAKADAN, "SHDW" },    { SCENE_HAKADANCH, "BOTW" },
+    { SCENE_YDAN, "DEKU" },       { SCENE_DDAN, "DCVN" },       { SCENE_BDAN, "JABU" },
+    { SCENE_ICE_DOUKUTO, "ICE" }, { SCENE_GANONTIKA, "GANON" }, { SCENE_MEN, "GTG" },
     { SCENE_GERUDOWAY, "HIDE" },
 };
 
@@ -212,42 +223,20 @@ std::unordered_map<uint32_t, ItemTrackerItem> actualItemTrackerItemMap = {
     { ITEM_CLAIM_CHECK, ITEM_TRACKER_ITEM(ITEM_CLAIM_CHECK, 0, DrawItem) },
 };
 
-std::vector<uint32_t> buttonMap = {
-    BTN_A,
-    BTN_B,
-    BTN_CUP,
-    BTN_CDOWN,
-    BTN_CLEFT,
-    BTN_CRIGHT,
-    BTN_L,
-    BTN_Z,
-    BTN_R,
-    BTN_START,
-    BTN_DUP,
-    BTN_DDOWN,
-    BTN_DLEFT,
-    BTN_DRIGHT
-};
+std::vector<uint32_t> buttonMap = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
+                                    BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
 
 typedef enum {
-  ITEM_TRACKER_NUMBER_NONE,
-  ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY,
-  ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY,
-  ITEM_TRACKER_NUMBER_CAPACITY,
-  ITEM_TRACKER_NUMBER_AMMO,
+    ITEM_TRACKER_NUMBER_NONE,
+    ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY,
+    ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY,
+    ITEM_TRACKER_NUMBER_CAPACITY,
+    ITEM_TRACKER_NUMBER_AMMO,
 } ItemTrackerNumberOption;
 
-typedef enum {
-    KEYS_COLLECTED_MAX,
-    KEYS_CURRENT_COLLECTED_MAX,
-    KEYS_CURRENT_MAX
-} ItemTrackerKeysNumberOption;
+typedef enum { KEYS_COLLECTED_MAX, KEYS_CURRENT_COLLECTED_MAX, KEYS_CURRENT_MAX } ItemTrackerKeysNumberOption;
 
-typedef enum {
-    SECTION_DISPLAY_HIDDEN,
-    SECTION_DISPLAY_MAIN_WINDOW,
-    SECTION_DISPLAY_SEPARATE
-} ItemTrackerDisplayType;
+typedef enum { SECTION_DISPLAY_HIDDEN, SECTION_DISPLAY_MAIN_WINDOW, SECTION_DISPLAY_SEPARATE } ItemTrackerDisplayType;
 
 typedef enum {
     SECTION_DISPLAY_EXTENDED_HIDDEN,
@@ -257,9 +246,9 @@ typedef enum {
 } ItemTrackerExtendedDisplayType;
 
 struct ItemTrackerNumbers {
-  int currentCapacity;
-  int maxCapacity;
-  int currentAmmo;
+    int currentCapacity;
+    int maxCapacity;
+    int currentAmmo;
 };
 
 bool IsValidSaveFile() {
@@ -302,7 +291,10 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
         case ITEM_WALLET_ADULT:
         case ITEM_WALLET_GIANT:
             result.currentCapacity = CUR_CAPACITY(UPG_WALLET);
-            result.maxCapacity = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS ? 999 : 500;
+            result.maxCapacity =
+                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS
+                    ? 999
+                    : 500;
             result.currentAmmo = gSaveContext.rupees;
             break;
         case ITEM_BOMBCHU:
@@ -374,28 +366,32 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
 #define IM_COL_PURPLE IM_COL32(180, 90, 200, 255)
 
 void DrawItemCount(ItemTrackerItem item) {
-    int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
+    int                iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     ItemTrackerNumbers currentAndMax = GetItemCurrentAndMax(item);
-    ImVec2 p = ImGui::GetCursorScreenPos();
-    int32_t trackerNumberDisplayMode = CVarGetInteger("gItemTrackerCapacityTrack", ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY);
+    ImVec2             p = ImGui::GetCursorScreenPos();
+    int32_t            trackerNumberDisplayMode =
+        CVarGetInteger("gItemTrackerCapacityTrack", ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY);
     int32_t trackerKeyNumberDisplayMode = CVarGetInteger("gItemTrackerKeyTrack", KEYS_COLLECTED_MAX);
 
     if (item.id == ITEM_KEY_SMALL && IsValidSaveFile()) {
         std::string currentString = "";
         std::string maxString = std::to_string(currentAndMax.maxCapacity);
-        ImU32 currentColor = IM_COL_WHITE;
-        ImU32 maxColor = IM_COL_GREEN;
+        ImU32       currentColor = IM_COL_WHITE;
+        ImU32       maxColor = IM_COL_GREEN;
         // "Collected / Max", "Current / Collected / Max", "Current / Max"
-        if (trackerKeyNumberDisplayMode == KEYS_CURRENT_COLLECTED_MAX || trackerKeyNumberDisplayMode == KEYS_CURRENT_MAX) {
-            currentString+= std::to_string(currentAndMax.currentAmmo);
-            currentString+= "/";
+        if (trackerKeyNumberDisplayMode == KEYS_CURRENT_COLLECTED_MAX ||
+            trackerKeyNumberDisplayMode == KEYS_CURRENT_MAX) {
+            currentString += std::to_string(currentAndMax.currentAmmo);
+            currentString += "/";
         }
-        if (trackerKeyNumberDisplayMode == KEYS_COLLECTED_MAX || trackerKeyNumberDisplayMode == KEYS_CURRENT_COLLECTED_MAX) {
-            currentString+= std::to_string(currentAndMax.currentCapacity);
-            currentString+= "/";
+        if (trackerKeyNumberDisplayMode == KEYS_COLLECTED_MAX ||
+            trackerKeyNumberDisplayMode == KEYS_CURRENT_COLLECTED_MAX) {
+            currentString += std::to_string(currentAndMax.currentCapacity);
+            currentString += "/";
         }
 
-        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize((currentString + maxString).c_str()).x / 2), p.y - 14));
+        ImGui::SetCursorScreenPos(
+            ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize((currentString + maxString).c_str()).x / 2), p.y - 14));
         ImGui::PushStyleColor(ImGuiCol_Text, currentColor);
         ImGui::Text(currentString.c_str());
         ImGui::PopStyleColor();
@@ -403,26 +399,25 @@ void DrawItemCount(ItemTrackerItem item) {
         ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
         ImGui::Text(maxString.c_str());
         ImGui::PopStyleColor();
-    } else if (currentAndMax.currentCapacity > 0 && trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_NONE && IsValidSaveFile()) {
+    } else if (currentAndMax.currentCapacity > 0 && trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_NONE &&
+               IsValidSaveFile()) {
         std::string currentString = "";
         std::string maxString = "";
-        ImU32 currentColor = IM_COL_WHITE;
-        ImU32 maxColor = item.id == QUEST_SKULL_TOKEN ? IM_COL_RED : IM_COL_GREEN;
+        ImU32       currentColor = IM_COL_WHITE;
+        ImU32       maxColor = item.id == QUEST_SKULL_TOKEN ? IM_COL_RED : IM_COL_GREEN;
 
         bool shouldAlignToLeft = CVarGetInteger("gItemTrackerCurrentOnLeft", 0) &&
-            trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_CAPACITY &&
-            trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_AMMO;
+                                 trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_CAPACITY &&
+                                 trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_AMMO;
 
         bool shouldDisplayAmmo = trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_AMMO ||
-            trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY ||
-            // These items have a static capacity, so display ammo instead
-            item.id == ITEM_BOMBCHU ||
-            item.id == ITEM_BEAN ||
-            item.id == QUEST_SKULL_TOKEN ||
-            item.id == ITEM_HEART_CONTAINER ||
-            item.id == ITEM_HEART_PIECE;
+                                 trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY ||
+                                 // These items have a static capacity, so display ammo instead
+                                 item.id == ITEM_BOMBCHU || item.id == ITEM_BEAN || item.id == QUEST_SKULL_TOKEN ||
+                                 item.id == ITEM_HEART_CONTAINER || item.id == ITEM_HEART_PIECE;
 
-        bool shouldDisplayMax = !(trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY || trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY);
+        bool shouldDisplayMax = !(trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY ||
+                                  trackerNumberDisplayMode == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY);
 
         if (shouldDisplayAmmo) {
             currentString = std::to_string(currentAndMax.currentAmmo);
@@ -450,7 +445,9 @@ void DrawItemCount(ItemTrackerItem item) {
             }
         }
 
-        float x = shouldAlignToLeft ? p.x : p.x + (iconSize / 2) - (ImGui::CalcTextSize((currentString + maxString).c_str()).x / 2);
+        float x = shouldAlignToLeft
+                      ? p.x
+                      : p.x + (iconSize / 2) - (ImGui::CalcTextSize((currentString + maxString).c_str()).x / 2);
 
         ImGui::SetCursorScreenPos(ImVec2(x, p.y - 14));
         ImGui::PushStyleColor(ImGuiCol_Text, currentColor);
@@ -468,8 +465,9 @@ void DrawItemCount(ItemTrackerItem item) {
 
 void DrawEquip(ItemTrackerItem item) {
     bool hasEquip = (item.data & gSaveContext.inventory.equipment) != 0;
-    int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
-    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasEquip && IsValidSaveFile() ? item.name : item.nameFaded),
+    int  iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
+    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                     hasEquip && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
@@ -477,9 +475,10 @@ void DrawEquip(ItemTrackerItem item) {
 
 void DrawQuest(ItemTrackerItem item) {
     bool hasQuestItem = (item.data & gSaveContext.inventory.questItems) != 0;
-    int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
+    int  iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     ImGui::BeginGroup();
-    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasQuestItem && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                     hasQuestItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     if (item.id == QUEST_SKULL_TOKEN) {
@@ -493,8 +492,8 @@ void DrawQuest(ItemTrackerItem item) {
 
 void DrawItem(ItemTrackerItem item) {
     uint32_t actualItemId = INV_CONTENT(item.id);
-    int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
-    bool hasItem = actualItemId != ITEM_NONE;
+    int      iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
+    bool     hasItem = actualItemId != ITEM_NONE;
 
     if (item.id == ITEM_NONE) {
         return;
@@ -522,7 +521,9 @@ void DrawItem(ItemTrackerItem item) {
         case ITEM_BRACELET:
         case ITEM_GAUNTLETS_SILVER:
         case ITEM_GAUNTLETS_GOLD:
-            actualItemId = CUR_UPG_VALUE(UPG_STRENGTH) == 3 ? ITEM_GAUNTLETS_GOLD : CUR_UPG_VALUE(UPG_STRENGTH) == 2 ? ITEM_GAUNTLETS_SILVER : ITEM_BRACELET;
+            actualItemId = CUR_UPG_VALUE(UPG_STRENGTH) == 3   ? ITEM_GAUNTLETS_GOLD
+                           : CUR_UPG_VALUE(UPG_STRENGTH) == 2 ? ITEM_GAUNTLETS_SILVER
+                                                              : ITEM_BRACELET;
             hasItem = CUR_UPG_VALUE(UPG_STRENGTH) > 0;
             break;
         case ITEM_SCALE_SILVER:
@@ -536,12 +537,14 @@ void DrawItem(ItemTrackerItem item) {
             break;
     }
 
-    if (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end()) {
+    if (hasItem && item.id != actualItemId &&
+        actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end()) {
         item = actualItemTrackerItemMap[actualItemId];
     }
-    
+
     ImGui::BeginGroup();
-    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                     hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     DrawItemCount(item);
@@ -552,14 +555,16 @@ void DrawItem(ItemTrackerItem item) {
 
 void DrawBottle(ItemTrackerItem item) {
     uint32_t actualItemId = gSaveContext.inventory.items[SLOT(item.id) + item.data];
-    bool hasItem = actualItemId != ITEM_NONE;
+    bool     hasItem = actualItemId != ITEM_NONE;
 
-    if (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end()) {
+    if (hasItem && item.id != actualItemId &&
+        actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end()) {
         item = actualItemTrackerItemMap[actualItemId];
     }
 
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
-    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                     hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
     UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
@@ -567,42 +572,45 @@ void DrawBottle(ItemTrackerItem item) {
 
 void DrawDungeonItem(ItemTrackerItem item) {
     uint32_t itemId = item.id;
-    ImU32 dungeonColor = IM_COL_WHITE;
+    ImU32    dungeonColor = IM_COL_WHITE;
     uint32_t bitMask = 1 << (item.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
-    int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
-    bool hasItem = (bitMask & gSaveContext.inventory.dungeonItems[item.data]) != 0;
-    bool hasSmallKey = (gSaveContext.inventory.dungeonKeys[item.data]) >= 0;
+    int      iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
+    bool     hasItem = (bitMask & gSaveContext.inventory.dungeonItems[item.data]) != 0;
+    bool     hasSmallKey = (gSaveContext.inventory.dungeonKeys[item.data]) >= 0;
     ImGui::BeginGroup();
     if (itemId == ITEM_KEY_SMALL) {
-        ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasSmallKey && IsValidSaveFile() ? item.name : item.nameFaded),
+        ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                         hasSmallKey && IsValidSaveFile() ? item.name : item.nameFaded),
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
-    }
-    else {
-        ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+    } else {
+        ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                         hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
 
-    if (ResourceMgr_IsSceneMasterQuest(item.data) && (CHECK_DUNGEON_ITEM(DUNGEON_MAP, item.data) || item.data == SCENE_MEN || item.data == SCENE_GANONTIKA)) {
+    if (ResourceMgr_IsSceneMasterQuest(item.data) &&
+        (CHECK_DUNGEON_ITEM(DUNGEON_MAP, item.data) || item.data == SCENE_MEN || item.data == SCENE_GANONTIKA)) {
         dungeonColor = IM_COL_PURPLE;
     }
 
     if (itemId == ITEM_KEY_SMALL) {
         DrawItemCount(item);
 
-        ImVec2 p = ImGui::GetCursorScreenPos();
+        ImVec2      p = ImGui::GetCursorScreenPos();
         std::string dungeonName = itemTrackerDungeonShortNames[item.data];
-        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - (iconSize + 16)));
+        ImGui::SetCursorScreenPos(
+            ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - (iconSize + 16)));
         ImGui::PushStyleColor(ImGuiCol_Text, dungeonColor);
         ImGui::Text(dungeonName.c_str());
         ImGui::PopStyleColor();
     }
 
-    if (itemId == ITEM_DUNGEON_MAP && 
-        (item.data == SCENE_YDAN || item.data == SCENE_DDAN || item.data == SCENE_BDAN || item.data == SCENE_ICE_DOUKUTO)
-    ) {
-        ImVec2 p = ImGui::GetCursorScreenPos();
+    if (itemId == ITEM_DUNGEON_MAP && (item.data == SCENE_YDAN || item.data == SCENE_DDAN || item.data == SCENE_BDAN ||
+                                       item.data == SCENE_ICE_DOUKUTO)) {
+        ImVec2      p = ImGui::GetCursorScreenPos();
         std::string dungeonName = itemTrackerDungeonShortNames[item.data];
-        ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - (iconSize + 13)));
+        ImGui::SetCursorScreenPos(
+            ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - (iconSize + 13)));
         ImGui::PushStyleColor(ImGuiCol_Text, dungeonColor);
         ImGui::Text(dungeonName.c_str());
         ImGui::PopStyleColor();
@@ -613,12 +621,13 @@ void DrawDungeonItem(ItemTrackerItem item) {
 }
 
 void DrawSong(ItemTrackerItem item) {
-    int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
+    int      iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     uint32_t bitMask = 1 << item.id;
-    bool hasSong = (bitMask & gSaveContext.inventory.questItems) != 0;
-    ImVec2 p = ImGui::GetCursorScreenPos();
+    bool     hasSong = (bitMask & gSaveContext.inventory.questItems) != 0;
+    ImVec2   p = ImGui::GetCursorScreenPos();
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
-    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
+    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                     hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize / 1.5, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     UIWidgets::SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
 }
@@ -641,19 +650,21 @@ void DrawNotes(bool resizeable = false) {
             }
             return 0;
         }
-        static bool TrackerNotesInputTextMultiline(const char* label, ImVector<char>* itemTrackerNotes, const ImVec2& size = ImVec2(0, 0),
-                                                    ImGuiInputTextFlags flags = 0) {
+        static bool TrackerNotesInputTextMultiline(const char* label, ImVector<char>* itemTrackerNotes,
+                                                   const ImVec2& size = ImVec2(0, 0), ImGuiInputTextFlags flags = 0) {
             IM_ASSERT((flags & ImGuiInputTextFlags_CallbackResize) == 0);
-            return ImGui::InputTextMultiline(label, itemTrackerNotes->begin(), (size_t)itemTrackerNotes->size(),
-                                                size, flags | ImGuiInputTextFlags_CallbackResize,
-                                                ItemTrackerNotes::TrackerNotesResizeCallback,
-                                                (void*)itemTrackerNotes);
+            return ImGui::InputTextMultiline(label, itemTrackerNotes->begin(), (size_t)itemTrackerNotes->size(), size,
+                                             flags | ImGuiInputTextFlags_CallbackResize,
+                                             ItemTrackerNotes::TrackerNotesResizeCallback, (void*)itemTrackerNotes);
         }
     };
-    ImVec2 size = resizeable ? ImVec2(-FLT_MIN, ImGui::GetContentRegionAvail().y) : ImVec2(((iconSize + iconSpacing) * 6) - 8, 200);
-    ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size, ImGuiInputTextFlags_AllowTabInput);
+    ImVec2 size = resizeable ? ImVec2(-FLT_MIN, ImGui::GetContentRegionAvail().y)
+                             : ImVec2(((iconSize + iconSpacing) * 6) - 8, 200);
+    ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size,
+                                                     ImGuiInputTextFlags_AllowTabInput);
     if (ImGui::IsItemDeactivatedAfterEdit() && IsValidSaveFile()) {
-        CVarSetString(("gItemTrackerNotes" + std::to_string(gSaveContext.fileNum)).c_str(), std::string(std::begin(itemTrackerNotes), std::end(itemTrackerNotes)).c_str());
+        CVarSetString(("gItemTrackerNotes" + std::to_string(gSaveContext.fileNum)).c_str(),
+                      std::string(std::begin(itemTrackerNotes), std::end(itemTrackerNotes)).c_str());
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     ImGui::EndGroup();
@@ -661,16 +672,18 @@ void DrawNotes(bool resizeable = false) {
 
 // Windowing stuff
 ImVec4 ChromaKeyBackground = { 0, 0, 0, 0 }; // Float value, 1 = 255 in rgb value.
-void BeginFloatingWindows(std::string UniqueName, ImGuiWindowFlags flags = 0) {
+void   BeginFloatingWindows(std::string UniqueName, ImGuiWindowFlags flags = 0) {
     ImGuiWindowFlags windowFlags = flags;
 
     if (windowFlags == 0) {
-        windowFlags |= ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoResize;
+        windowFlags |=
+            ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoResize;
     }
 
     if (CVarGetInteger("gItemTrackerWindowType", TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_FLOATING) {
         ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
-        windowFlags |= ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
+        windowFlags |= ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoTitleBar |
+                       ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
 
         if (!CVarGetInteger("gItemTrackerHudEditMode", 0)) {
             windowFlags |= ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoMove;
@@ -695,12 +708,14 @@ void EndFloatingWindows() {
 void DrawItemsInRows(std::vector<ItemTrackerItem> items, int columns = 6) {
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     int iconSpacing = CVarGetInteger("gItemTrackerIconSpacing", 12);
-    int topPadding = (CVarGetInteger("gItemTrackerWindowType", TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_WINDOW) ? 20 : 0;
+    int topPadding =
+        (CVarGetInteger("gItemTrackerWindowType", TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_WINDOW) ? 20 : 0;
 
     for (int i = 0; i < items.size(); i++) {
         int row = i / columns;
         int column = i % columns;
-        ImGui::SetCursorPos(ImVec2((column * (iconSize + iconSpacing) + 8), (row * (iconSize + iconSpacing)) + 8 + topPadding));
+        ImGui::SetCursorPos(
+            ImVec2((column * (iconSize + iconSpacing) + 8), (row * (iconSize + iconSpacing)) + 8 + topPadding));
         items[i].drawFunc(items[i]);
     }
 }
@@ -714,7 +729,7 @@ void DrawItemsInACircle(std::vector<ItemTrackerItem> items) {
     int iconSpacing = CVarGetInteger("gItemTrackerIconSpacing", 12);
 
     ImVec2 max = ImGui::GetWindowContentRegionMax();
-    float radius = (iconSize + iconSpacing) * 2;
+    float  radius = (iconSize + iconSpacing) * 2;
 
     for (int i = 0; i < items.size(); i++) {
         float angle = (float)i / items.size() * 2.0f * M_PI;
@@ -727,17 +742,18 @@ void DrawItemsInACircle(std::vector<ItemTrackerItem> items) {
 
 /**
  * GetDungeonItemsVector
- * Loops over dungeons and creates vectors of items in the correct order 
+ * Loops over dungeons and creates vectors of items in the correct order
  * to then call DrawItemsInRows
  */
 std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeon> dungeons, int columns = 6) {
-    int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
-    int iconSpacing = CVarGetInteger("gItemTrackerIconSpacing", 12);
+    int                          iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
+    int                          iconSpacing = CVarGetInteger("gItemTrackerIconSpacing", 12);
     std::vector<ItemTrackerItem> dungeonItems = {};
 
     int rowCount = 0;
     for (int i = 0; i < dungeons.size(); i++) {
-        if (dungeons[i].items.size() > rowCount) rowCount = dungeons[i].items.size();
+        if (dungeons[i].items.size() > rowCount)
+            rowCount = dungeons[i].items.size();
     }
 
     for (int i = 0; i < rowCount; i++) {
@@ -769,7 +785,8 @@ std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeo
     }
 
     if (dungeons.size() > columns) {
-        std::vector<ItemTrackerItem> nextDungeonItems = GetDungeonItemsVector(std::vector<ItemTrackerDungeon>(dungeons.begin() + columns, dungeons.end()), columns);
+        std::vector<ItemTrackerItem> nextDungeonItems =
+            GetDungeonItemsVector(std::vector<ItemTrackerDungeon>(dungeons.begin() + columns, dungeons.end()), columns);
         dungeonItems.insert(dungeonItems.end(), nextDungeonItems.begin(), nextDungeonItems.end());
     }
 
@@ -778,7 +795,7 @@ std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeo
 /* ****************************************************** */
 
 void UpdateVectors() {
-    if  (!shouldUpdateVectors) {
+    if (!shouldUpdateVectors) {
         return;
     }
 
@@ -787,7 +804,8 @@ void UpdateVectors() {
     dungeonRewards.insert(dungeonRewards.end(), dungeonRewardMedallions.begin(), dungeonRewardMedallions.end());
 
     dungeonItems.clear();
-    if (CVarGetInteger("gItemTrackerDisplayDungeonItemsHorizontal", 1) && CVarGetInteger("gItemTrackerDungeonItemsDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE) {
+    if (CVarGetInteger("gItemTrackerDisplayDungeonItemsHorizontal", 1) &&
+        CVarGetInteger("gItemTrackerDungeonItemsDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE) {
         if (CVarGetInteger("gItemTrackerDisplayDungeonItemsMaps", 1)) {
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsWithMapsHorizontal, 12);
             // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
@@ -808,22 +826,28 @@ void UpdateVectors() {
     }
 
     mainWindowItems.clear();
-    if (CVarGetInteger("gItemTrackerInventoryItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) {
+    if (CVarGetInteger("gItemTrackerInventoryItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) ==
+        SECTION_DISPLAY_MAIN_WINDOW) {
         mainWindowItems.insert(mainWindowItems.end(), inventoryItems.begin(), inventoryItems.end());
     }
-    if (CVarGetInteger("gItemTrackerEquipmentItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) {
+    if (CVarGetInteger("gItemTrackerEquipmentItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) ==
+        SECTION_DISPLAY_MAIN_WINDOW) {
         mainWindowItems.insert(mainWindowItems.end(), equipmentItems.begin(), equipmentItems.end());
     }
-    if (CVarGetInteger("gItemTrackerMiscItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) {
+    if (CVarGetInteger("gItemTrackerMiscItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) ==
+        SECTION_DISPLAY_MAIN_WINDOW) {
         mainWindowItems.insert(mainWindowItems.end(), miscItems.begin(), miscItems.end());
     }
-    if (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) {
+    if (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) ==
+        SECTION_DISPLAY_MAIN_WINDOW) {
         mainWindowItems.insert(mainWindowItems.end(), dungeonRewardStones.begin(), dungeonRewardStones.end());
         mainWindowItems.insert(mainWindowItems.end(), dungeonRewardMedallions.begin(), dungeonRewardMedallions.end());
     }
     if (CVarGetInteger("gItemTrackerSongsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) {
-        if (CVarGetInteger("gItemTrackerMiscItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW &&
-            CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) != SECTION_DISPLAY_MAIN_WINDOW) {
+        if (CVarGetInteger("gItemTrackerMiscItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) ==
+                SECTION_DISPLAY_MAIN_WINDOW &&
+            CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) !=
+                SECTION_DISPLAY_MAIN_WINDOW) {
             mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
             mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
             mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
@@ -837,9 +861,12 @@ void UpdateVectors() {
     // if we're adding greg to the misc window,
     // and misc isn't on the main window,
     // and it doesn't already have greg, add him
-    if (CVarGetInteger("gItemTrackerGregDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MISC_WINDOW &&
-        CVarGetInteger("gItemTrackerMiscItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) != SECTION_DISPLAY_MAIN_WINDOW &&
-        std::none_of(miscItems.begin(), miscItems.end(), [](ItemTrackerItem item){return item.id == ITEM_RUPEE_GREEN;})) {
+    if (CVarGetInteger("gItemTrackerGregDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) ==
+            SECTION_DISPLAY_EXTENDED_MISC_WINDOW &&
+        CVarGetInteger("gItemTrackerMiscItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) !=
+            SECTION_DISPLAY_MAIN_WINDOW &&
+        std::none_of(miscItems.begin(), miscItems.end(),
+                     [](ItemTrackerItem item) { return item.id == ITEM_RUPEE_GREEN; })) {
 
         miscItems.insert(miscItems.end(), gregItems.begin(), gregItems.end());
     } else {
@@ -853,7 +880,8 @@ void UpdateVectors() {
     }
 
     // if we're adding greg to the main window
-    if (CVarGetInteger("gItemTrackerGregDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) {
+    if (CVarGetInteger("gItemTrackerGregDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) ==
+        SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) {
         // insert empty items until we're on a new row for greg
         while (mainWindowItems.size() % 6) {
             mainWindowItems.push_back(ITEM_TRACKER_ITEM(ITEM_NONE, 0, DrawItem));
@@ -869,53 +897,68 @@ void UpdateVectors() {
 void ItemTrackerWindow::DrawElement() {
     UpdateVectors();
 
-    int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
-    int iconSpacing = CVarGetInteger("gItemTrackerIconSpacing", 12);
-    int comboButton1Mask = buttonMap[CVarGetInteger("gItemTrackerComboButton1", TRACKER_COMBO_BUTTON_L)];
-    int comboButton2Mask = buttonMap[CVarGetInteger("gItemTrackerComboButton2", TRACKER_COMBO_BUTTON_R)];
+    int        iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
+    int        iconSpacing = CVarGetInteger("gItemTrackerIconSpacing", 12);
+    int        comboButton1Mask = buttonMap[CVarGetInteger("gItemTrackerComboButton1", TRACKER_COMBO_BUTTON_L)];
+    int        comboButton2Mask = buttonMap[CVarGetInteger("gItemTrackerComboButton2", TRACKER_COMBO_BUTTON_R)];
     OSContPad* buttonsPressed = LUS::Context::GetInstance()->GetControlDeck()->GetPads();
-    bool comboButtonsHeld = buttonsPressed != nullptr && buttonsPressed[0].button & comboButton1Mask && buttonsPressed[0].button & comboButton2Mask;
-    bool isPaused = CVarGetInteger("gItemTrackerShowOnlyPaused", 0) == 0 || gPlayState != nullptr && gPlayState->pauseCtx.state > 0;
+    bool       comboButtonsHeld = buttonsPressed != nullptr && buttonsPressed[0].button & comboButton1Mask &&
+                            buttonsPressed[0].button & comboButton2Mask;
+    bool isPaused =
+        CVarGetInteger("gItemTrackerShowOnlyPaused", 0) == 0 || gPlayState != nullptr && gPlayState->pauseCtx.state > 0;
 
-    if (CVarGetInteger("gItemTrackerWindowType", TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_WINDOW || isPaused && (CVarGetInteger("gItemTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS ? CVarGetInteger("gItemTrackerEnabled", 0) : comboButtonsHeld)) {
-        if (
-            (CVarGetInteger("gItemTrackerInventoryItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) ||
-            (CVarGetInteger("gItemTrackerEquipmentItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) ||
-            (CVarGetInteger("gItemTrackerMiscItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) ||
-            (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) ||
-            (CVarGetInteger("gItemTrackerSongsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) ||
-            (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW) ||
-            (CVarGetInteger("gItemTrackerGregDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) ||
-            (CVarGetInteger("gItemTrackerNotesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW)
-        ) {
+    if (CVarGetInteger("gItemTrackerWindowType", TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_WINDOW ||
+        isPaused && (CVarGetInteger("gItemTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS
+                         ? CVarGetInteger("gItemTrackerEnabled", 0)
+                         : comboButtonsHeld)) {
+        if ((CVarGetInteger("gItemTrackerInventoryItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) ==
+             SECTION_DISPLAY_MAIN_WINDOW) ||
+            (CVarGetInteger("gItemTrackerEquipmentItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) ==
+             SECTION_DISPLAY_MAIN_WINDOW) ||
+            (CVarGetInteger("gItemTrackerMiscItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) ==
+             SECTION_DISPLAY_MAIN_WINDOW) ||
+            (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) ==
+             SECTION_DISPLAY_MAIN_WINDOW) ||
+            (CVarGetInteger("gItemTrackerSongsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) ==
+             SECTION_DISPLAY_MAIN_WINDOW) ||
+            (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", SECTION_DISPLAY_HIDDEN) ==
+             SECTION_DISPLAY_MAIN_WINDOW) ||
+            (CVarGetInteger("gItemTrackerGregDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) ==
+             SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) ||
+            (CVarGetInteger("gItemTrackerNotesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW)) {
             BeginFloatingWindows("Item Tracker##main window");
             DrawItemsInRows(mainWindowItems, 6);
 
-            if (CVarGetInteger("gItemTrackerNotesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW && CVarGetInteger("gItemTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS) {
+            if (CVarGetInteger("gItemTrackerNotesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW &&
+                CVarGetInteger("gItemTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS) {
                 DrawNotes();
             }
             EndFloatingWindows();
         }
 
-        if (CVarGetInteger("gItemTrackerInventoryItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_SEPARATE) {
+        if (CVarGetInteger("gItemTrackerInventoryItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) ==
+            SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Inventory Items Tracker");
             DrawItemsInRows(inventoryItems);
             EndFloatingWindows();
         }
 
-        if (CVarGetInteger("gItemTrackerEquipmentItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_SEPARATE) {
+        if (CVarGetInteger("gItemTrackerEquipmentItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) ==
+            SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Equipment Items Tracker");
             DrawItemsInRows(equipmentItems, 3);
             EndFloatingWindows();
         }
 
-        if (CVarGetInteger("gItemTrackerMiscItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_SEPARATE) {
+        if (CVarGetInteger("gItemTrackerMiscItemsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) ==
+            SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Misc Items Tracker");
             DrawItemsInRows(miscItems, 4);
             EndFloatingWindows();
         }
 
-        if (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_SEPARATE) {
+        if (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) ==
+            SECTION_DISPLAY_SEPARATE) {
             BeginFloatingWindows("Dungeon Rewards Tracker");
             if (CVarGetInteger("gItemTrackerDungeonRewardsCircle", 0)) {
                 ImGui::BeginGroup();
@@ -950,14 +993,16 @@ void ItemTrackerWindow::DrawElement() {
             EndFloatingWindows();
         }
 
-        if (CVarGetInteger("gItemTrackerGregDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_SEPARATE) {
+        if (CVarGetInteger("gItemTrackerGregDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) ==
+            SECTION_DISPLAY_EXTENDED_SEPARATE) {
             BeginFloatingWindows("Greg Tracker");
             DrawItemsInRows(gregItems);
             EndFloatingWindows();
         }
 
-        if (CVarGetInteger("gItemTrackerNotesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE && CVarGetInteger("gItemTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS) {
-            ImGui::SetNextWindowSize(ImVec2(400,300), ImGuiCond_FirstUseEver);
+        if (CVarGetInteger("gItemTrackerNotesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE &&
+            CVarGetInteger("gItemTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS) {
+            ImGui::SetNextWindowSize(ImVec2(400, 300), ImGuiCond_FirstUseEver);
             BeginFloatingWindows("Personal Notes", ImGuiWindowFlags_NoFocusOnAppearing);
             DrawNotes(true);
             EndFloatingWindows();
@@ -965,16 +1010,19 @@ void ItemTrackerWindow::DrawElement() {
     }
 }
 
-static const char* itemTrackerCapacityTrackOptions[5] = { "No Numbers", "Current Capacity", "Current Ammo", "Current Capacity / Max Capacity", "Current Ammo / Current Capacity" };
+static const char* itemTrackerCapacityTrackOptions[5] = { "No Numbers", "Current Capacity", "Current Ammo",
+                                                          "Current Capacity / Max Capacity",
+                                                          "Current Ammo / Current Capacity" };
 static const char* itemTrackerKeyTrackOptions[3] = { "Collected / Max", "Current / Collected / Max", "Current / Max" };
 static const char* windowTypes[2] = { "Floating", "Window" };
 static const char* displayModes[2] = { "Always", "Combo Button Hold" };
-static const char* buttons[14] = { "A", "B", "C-Up", "C-Down", "C-Left", "C-Right", "L", "Z", "R", "Start", "D-Up", "D-Down", "D-Left", "D-Right" };
+static const char* buttons[14] = { "A", "B", "C-Up",  "C-Down", "C-Left", "C-Right", "L",
+                                   "Z", "R", "Start", "D-Up",   "D-Down", "D-Left",  "D-Right" };
 static const char* displayTypes[3] = { "Hidden", "Main Window", "Separate" };
 static const char* extendedDisplayTypes[4] = { "Hidden", "Main Window", "Misc Window", "Separate" };
 
 void ItemTrackerSettingsWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(600,375), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
 
     if (!ImGui::Begin("Item Tracker Settings", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
@@ -991,7 +1039,9 @@ void ItemTrackerSettingsWindow::DrawElement() {
     ImGui::Text("BG Color");
     ImGui::SameLine();
     ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
-    if (ImGui::ColorEdit4("BG Color##gItemTrackerBgColor", (float*)&ChromaKeyBackground, ImGuiColorEditFlags_AlphaPreview | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_NoLabel)) {
+    if (ImGui::ColorEdit4("BG Color##gItemTrackerBgColor", (float*)&ChromaKeyBackground,
+                          ImGuiColorEditFlags_AlphaPreview | ImGuiColorEditFlags_AlphaBar |
+                              ImGuiColorEditFlags_NoLabel)) {
         CVarSetFloat("gItemTrackerBgColorR", ChromaKeyBackground.x);
         CVarSetFloat("gItemTrackerBgColorG", ChromaKeyBackground.y);
         CVarSetFloat("gItemTrackerBgColorB", ChromaKeyBackground.z);
@@ -1000,7 +1050,8 @@ void ItemTrackerSettingsWindow::DrawElement() {
     }
     ImGui::PopItemWidth();
 
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Window Type", "gItemTrackerWindowType", windowTypes, TRACKER_WINDOW_FLOATING)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Window Type", "gItemTrackerWindowType", windowTypes,
+                                                          TRACKER_WINDOW_FLOATING)) {
         shouldUpdateVectors = true;
     }
 
@@ -1011,27 +1062,36 @@ void ItemTrackerSettingsWindow::DrawElement() {
         if (UIWidgets::PaddedEnhancementCheckbox("Only enable while paused", "gItemTrackerShowOnlyPaused")) {
             shouldUpdateVectors = true;
         }
-        if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Display Mode", "gItemTrackerDisplayType", displayModes, TRACKER_DISPLAY_ALWAYS)) {
+        if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Display Mode", "gItemTrackerDisplayType", displayModes,
+                                                              TRACKER_DISPLAY_ALWAYS)) {
             shouldUpdateVectors = true;
         }
         if (CVarGetInteger("gItemTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_COMBO_BUTTON) {
-            if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 1", "gItemTrackerComboButton1", buttons, TRACKER_COMBO_BUTTON_L)) {
+            if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 1", "gItemTrackerComboButton1", buttons,
+                                                                  TRACKER_COMBO_BUTTON_L)) {
                 shouldUpdateVectors = true;
             }
-            if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 2", "gItemTrackerComboButton2", buttons, TRACKER_COMBO_BUTTON_R)) {
+            if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 2", "gItemTrackerComboButton2", buttons,
+                                                                  TRACKER_COMBO_BUTTON_R)) {
                 shouldUpdateVectors = true;
             }
         }
     }
     UIWidgets::PaddedSeparator();
-    UIWidgets::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gItemTrackerIconSize", 25, 128, "", 36);
-    UIWidgets::EnhancementSliderInt("Icon margins : %dpx", "##ITEMTRACKERSPACING", "gItemTrackerIconSpacing", -5, 50, "", 12);
-    
+    UIWidgets::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gItemTrackerIconSize", 25, 128, "",
+                                    36);
+    UIWidgets::EnhancementSliderInt("Icon margins : %dpx", "##ITEMTRACKERSPACING", "gItemTrackerIconSpacing", -5, 50,
+                                    "", 12);
+
     ImGui::Text("Ammo/Capacity Tracking");
-    UIWidgets::EnhancementCombobox("gItemTrackerCapacityTrack", itemTrackerCapacityTrackOptions, ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY);
+    UIWidgets::EnhancementCombobox("gItemTrackerCapacityTrack", itemTrackerCapacityTrackOptions,
+                                   ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY);
     UIWidgets::InsertHelpHoverText("Customize what the numbers under each item are tracking."
-                                    "\n\nNote: items without capacity upgrades will track ammo even in capacity mode");
-    if (CVarGetInteger("gItemTrackerCapacityTrack", ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY) == ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY || CVarGetInteger("gItemTrackerCapacityTrack", ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY) == ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY) {
+                                   "\n\nNote: items without capacity upgrades will track ammo even in capacity mode");
+    if (CVarGetInteger("gItemTrackerCapacityTrack", ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY) ==
+            ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY ||
+        CVarGetInteger("gItemTrackerCapacityTrack", ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY) ==
+            ITEM_TRACKER_NUMBER_CURRENT_AMMO_ONLY) {
         if (UIWidgets::PaddedEnhancementCheckbox("Align count to left side", "gItemTrackerCurrentOnLeft")) {
             shouldUpdateVectors = true;
         }
@@ -1042,45 +1102,57 @@ void ItemTrackerSettingsWindow::DrawElement() {
 
     ImGui::TableNextColumn();
 
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Inventory", "gItemTrackerInventoryItemsDisplayType", displayTypes, SECTION_DISPLAY_MAIN_WINDOW)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Inventory", "gItemTrackerInventoryItemsDisplayType",
+                                                          displayTypes, SECTION_DISPLAY_MAIN_WINDOW)) {
         shouldUpdateVectors = true;
     }
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Equipment", "gItemTrackerEquipmentItemsDisplayType", displayTypes, SECTION_DISPLAY_MAIN_WINDOW)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Equipment", "gItemTrackerEquipmentItemsDisplayType",
+                                                          displayTypes, SECTION_DISPLAY_MAIN_WINDOW)) {
         shouldUpdateVectors = true;
     }
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Misc", "gItemTrackerMiscItemsDisplayType", displayTypes, SECTION_DISPLAY_MAIN_WINDOW)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Misc", "gItemTrackerMiscItemsDisplayType", displayTypes,
+                                                          SECTION_DISPLAY_MAIN_WINDOW)) {
         shouldUpdateVectors = true;
     }
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Dungeon Rewards", "gItemTrackerDungeonRewardsDisplayType", displayTypes, SECTION_DISPLAY_MAIN_WINDOW)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Dungeon Rewards", "gItemTrackerDungeonRewardsDisplayType",
+                                                          displayTypes, SECTION_DISPLAY_MAIN_WINDOW)) {
         shouldUpdateVectors = true;
     }
-    if (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_SEPARATE) {
-        if (UIWidgets::PaddedEnhancementCheckbox("Circle display", "gItemTrackerDungeonRewardsCircle", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
+    if (CVarGetInteger("gItemTrackerDungeonRewardsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) ==
+        SECTION_DISPLAY_SEPARATE) {
+        if (UIWidgets::PaddedEnhancementCheckbox("Circle display", "gItemTrackerDungeonRewardsCircle", true, true,
+                                                 false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
             shouldUpdateVectors = true;
         }
     }
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Songs", "gItemTrackerSongsDisplayType", displayTypes, SECTION_DISPLAY_MAIN_WINDOW)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Songs", "gItemTrackerSongsDisplayType", displayTypes,
+                                                          SECTION_DISPLAY_MAIN_WINDOW)) {
         shouldUpdateVectors = true;
     }
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Dungeon Items", "gItemTrackerDungeonItemsDisplayType", displayTypes, SECTION_DISPLAY_HIDDEN)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Dungeon Items", "gItemTrackerDungeonItemsDisplayType",
+                                                          displayTypes, SECTION_DISPLAY_HIDDEN)) {
         shouldUpdateVectors = true;
     }
     if (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", SECTION_DISPLAY_HIDDEN) != SECTION_DISPLAY_HIDDEN) {
         if (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE) {
-            if (UIWidgets::PaddedEnhancementCheckbox("Horizontal display", "gItemTrackerDisplayDungeonItemsHorizontal", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
+            if (UIWidgets::PaddedEnhancementCheckbox("Horizontal display", "gItemTrackerDisplayDungeonItemsHorizontal",
+                                                     true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
                 shouldUpdateVectors = true;
             }
         }
-        if (UIWidgets::PaddedEnhancementCheckbox("Maps and compasses", "gItemTrackerDisplayDungeonItemsMaps", true, true, false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
+        if (UIWidgets::PaddedEnhancementCheckbox("Maps and compasses", "gItemTrackerDisplayDungeonItemsMaps", true,
+                                                 true, false, "", UIWidgets::CheckboxGraphics::Cross, true)) {
             shouldUpdateVectors = true;
         }
     }
-    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Greg", "gItemTrackerGregDisplayType", extendedDisplayTypes, SECTION_DISPLAY_EXTENDED_HIDDEN)) {
+    if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Greg", "gItemTrackerGregDisplayType", extendedDisplayTypes,
+                                                          SECTION_DISPLAY_EXTENDED_HIDDEN)) {
         shouldUpdateVectors = true;
     }
 
     if (CVarGetInteger("gItemTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS) {
-        if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Personal notes", "gItemTrackerNotesDisplayType", displayTypes, SECTION_DISPLAY_HIDDEN)) {
+        if (UIWidgets::LabeledRightAlignedEnhancementCombobox("Personal notes", "gItemTrackerNotesDisplayType",
+                                                              displayTypes, SECTION_DISPLAY_HIDDEN)) {
             shouldUpdateVectors = true;
         }
     }
@@ -1096,12 +1168,7 @@ void ItemTrackerWindow::InitElement() {
     float trackerBgG = CVarGetFloat("gItemTrackerBgColorG", 0);
     float trackerBgB = CVarGetFloat("gItemTrackerBgColorB", 0);
     float trackerBgA = CVarGetFloat("gItemTrackerBgColorA", 1);
-    ChromaKeyBackground = {
-        trackerBgR,
-        trackerBgG,
-        trackerBgB,
-        trackerBgA
-    }; // Float value, 1 = 255 in rgb value.
+    ChromaKeyBackground = { trackerBgR, trackerBgG, trackerBgB, trackerBgA }; // Float value, 1 = 255 in rgb value.
     // Crashes when the itemTrackerNotes is empty, so add an empty character to it
     if (itemTrackerNotes.empty()) {
         itemTrackerNotes.push_back(0);

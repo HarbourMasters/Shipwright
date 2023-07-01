@@ -70,8 +70,8 @@ static ColliderQuadInit sQuadInit = {
 
 void EnBx_Init(Actor* thisx, PlayState* play) {
     EnBx* this = (EnBx*)thisx;
-    Vec3f sp48 = { 0.015f, 0.015f, 0.015f };
-    Vec3f sp3C = { 0.0f, 0.0f, 0.0f };
+    Vec3f                 sp48 = { 0.015f, 0.015f, 0.015f };
+    Vec3f                 sp3C = { 0.0f, 0.0f, 0.0f };
     static InitChainEntry sInitChain[] = {
         ICHAIN_F32(targetArrowOffset, 5300, ICHAIN_STOP),
     };
@@ -114,12 +114,12 @@ void EnBx_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_809D1D0C(Actor* thisx, PlayState* play) {
-    Vec3f sp5C = { 8000.0f, 15000.0f, 2500.0f };
-    Vec3f sp50 = { 8000.0f, 10000.0f, 2500.0f };
+    Vec3f        sp5C = { 8000.0f, 15000.0f, 2500.0f };
+    Vec3f        sp50 = { 8000.0f, 10000.0f, 2500.0f };
     static Vec3f D_809D2540 = { -8000.0f, 15000.0f, 2500.0f };
     static Vec3f D_809D254C = { -8000.0f, 10000.0f, 2500.0f };
-    Vec3f sp44;
-    Vec3f sp38;
+    Vec3f        sp44;
+    Vec3f        sp38;
     EnBx* this = (EnBx*)thisx;
 
     Matrix_MultVec3f(&D_809D2540, &sp44);
@@ -133,9 +133,9 @@ void func_809D1D0C(Actor* thisx, PlayState* play) {
 void EnBx_Update(Actor* thisx, PlayState* play) {
     EnBx* this = (EnBx*)thisx;
     Player* player = GET_PLAYER(play);
-    s32 i;
-    s16 tmp32;
-    s32 tmp33;
+    s32     i;
+    s16     tmp32;
+    s32     tmp33;
 
     if ((thisx->xzDistToPlayer <= 70.0f) || (this->collider.base.atFlags & AT_HIT) ||
         (this->collider.base.acFlags & AC_HIT) || (this->colliderQuad.base.atFlags & AT_HIT)) {
@@ -174,8 +174,8 @@ void EnBx_Update(Actor* thisx, PlayState* play) {
             if (!((this->unk_14C + (i << 1)) % 4)) {
                 static Color_RGBA8 primColor = { 255, 255, 255, 255 };
                 static Color_RGBA8 envColor = { 200, 255, 255, 255 };
-                Vec3f pos;
-                s16 yaw;
+                Vec3f              pos;
+                s16                yaw;
 
                 yaw = (s32)Rand_CenteredFloat(12288.0f);
                 yaw = (yaw + (i * 0x4000)) + 0x2000;
@@ -204,9 +204,9 @@ void EnBx_Draw(Actor* thisx, PlayState* play) {
         object_bxa_Tex_0029F0,
     };
     EnBx* this = (EnBx*)thisx;
-    s32 pad;
+    s32  pad;
     Mtx* mtx = Graph_Alloc(play->state.gfxCtx, 4 * sizeof(Mtx));
-    s16 i;
+    s16  i;
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -215,10 +215,8 @@ void EnBx_Draw(Actor* thisx, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x0C, mtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_809D2560[this->actor.params & 0x7F]));
     gSPSegment(POLY_OPA_DISP++, 0x09,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 16, 16, 1, 0, (play->gameplayFrames * -10) % 128,
-                                32, 32));
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 16, 16, 1, 0, (play->gameplayFrames * -10) % 128, 32, 32));
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (this->actor.params & 0x80) {
         func_809D1D0C(&this->actor, play);

@@ -54,7 +54,7 @@ static EnDoorInfo sDoorInfo[] = {
     { SCENE_HAKADAN, 3, OBJECT_HAKA_DOOR },
     { SCENE_HAKADANCH, 3, OBJECT_HAKA_DOOR },
     { SCENE_BMORI1, 0, OBJECT_GAMEPLAY_KEEP }, // Hacky fix, but behavior same as console.
-    // KEEP objects should remain last and in this order
+                                               // KEEP objects should remain last and in this order
     { -1, 0, OBJECT_GAMEPLAY_KEEP },
     { -1, 4, OBJECT_GAMEPLAY_FIELD_KEEP },
 };
@@ -64,7 +64,8 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneForward, 4000, ICHAIN_STOP),
 };
 
-static AnimationHeader* D_809FCECC[] = { &gDoorAdultOpeningLeftAnim, &gDoorChildOpeningLeftAnim, &gDoorAdultOpeningRightAnim, &gDoorChildOpeningRightAnim };
+static AnimationHeader* D_809FCECC[] = { &gDoorAdultOpeningLeftAnim, &gDoorChildOpeningLeftAnim,
+                                         &gDoorAdultOpeningRightAnim, &gDoorChildOpeningRightAnim };
 
 static u8 sDoorAnimOpenFrames[] = { 25, 25, 25, 25 };
 
@@ -82,14 +83,15 @@ void EnDoor_Init(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
     EnDoor* this = (EnDoor*)thisx;
     EnDoorInfo* objectInfo;
-    s32 i;
-    s32 objBankIndex;
-    f32 xOffset;
-    f32 zOffset;
+    s32         i;
+    s32         objBankIndex;
+    f32         xOffset;
+    f32         zOffset;
 
     objectInfo = &sDoorInfo[0];
     Actor_ProcessInitChain(&this->actor, sInitChain);
-    SkelAnime_Init(play, &this->skelAnime, &gDoorSkel, &gDoorAdultOpeningLeftAnim, this->jointTable, this->morphTable, 5);
+    SkelAnime_Init(play, &this->skelAnime, &gDoorSkel, &gDoorAdultOpeningLeftAnim, this->jointTable, this->morphTable,
+                   5);
     for (i = 0; i < ARRAY_COUNT(sDoorInfo) - 2; i++, objectInfo++) {
         if (play->sceneNum == objectInfo->sceneNum) {
             break;
@@ -189,9 +191,9 @@ void EnDoor_SetupType(EnDoor* this, PlayState* play) {
 
 void EnDoor_Idle(EnDoor* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 doorType;
-    Vec3f playerPosRelToDoor;
-    s16 phi_v0;
+    s32     doorType;
+    Vec3f   playerPosRelToDoor;
+    s16     phi_v0;
 
     doorType = this->actor.params >> 7 & 7;
     func_8002DBD0(&this->actor, &playerPosRelToDoor, &player->actor.world.pos);
@@ -275,11 +277,10 @@ void EnDoor_Open(EnDoor* this, PlayState* play) {
             this->actionFunc = EnDoor_Idle;
             this->playerIsOpening = 0;
         } else if (Animation_OnFrame(&this->skelAnime, sDoorAnimOpenFrames[this->animStyle])) {
-            Audio_PlayActorSound2(&this->actor,
-                                  (play->sceneNum == SCENE_HAKADAN || play->sceneNum == SCENE_HAKADANCH ||
-                                   play->sceneNum == SCENE_HIDAN)
-                                      ? NA_SE_EV_IRON_DOOR_OPEN
-                                      : NA_SE_OC_DOOR_OPEN);
+            Audio_PlayActorSound2(&this->actor, (play->sceneNum == SCENE_HAKADAN || play->sceneNum == SCENE_HAKADANCH ||
+                                                 play->sceneNum == SCENE_HIDAN)
+                                                    ? NA_SE_EV_IRON_DOOR_OPEN
+                                                    : NA_SE_OC_DOOR_OPEN);
             if (this->skelAnime.playSpeed < 1.5f) {
                 numEffects = (s32)(Rand_ZeroOne() * 30.0f) + 50;
                 for (i = 0; i < numEffects; i++) {
@@ -287,11 +288,10 @@ void EnDoor_Open(EnDoor* this, PlayState* play) {
                 }
             }
         } else if (Animation_OnFrame(&this->skelAnime, sDoorAnimCloseFrames[this->animStyle])) {
-            Audio_PlayActorSound2(&this->actor,
-                                  (play->sceneNum == SCENE_HAKADAN || play->sceneNum == SCENE_HAKADANCH ||
-                                   play->sceneNum == SCENE_HIDAN)
-                                      ? NA_SE_EV_IRON_DOOR_CLOSE
-                                      : NA_SE_EV_DOOR_CLOSE);
+            Audio_PlayActorSound2(&this->actor, (play->sceneNum == SCENE_HAKADAN || play->sceneNum == SCENE_HAKADANCH ||
+                                                 play->sceneNum == SCENE_HIDAN)
+                                                    ? NA_SE_EV_IRON_DOOR_CLOSE
+                                                    : NA_SE_EV_DOOR_CLOSE);
         }
     }
 }
@@ -303,20 +303,19 @@ void EnDoor_Update(Actor* thisx, PlayState* play) {
 }
 
 s32 EnDoor_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
-    s32 pad;
+    s32                   pad;
     TransitionActorEntry* transitionEntry;
-    Gfx** temp_a2;
-    s32 pad2;
-    s16 phi_v0_2;
-    s32 phi_v0;
+    Gfx**                 temp_a2;
+    s32                   pad2;
+    s16                   phi_v0_2;
+    s32                   phi_v0;
     EnDoor* this = (EnDoor*)thisx;
 
     if (limbIndex == 4) {
         temp_a2 = D_809FCEE4[this->dListIndex];
         transitionEntry = &play->transiActorCtx.list[(u16)this->actor.params >> 0xA];
         rot->z += this->actor.world.rot.y;
-        if ((play->roomCtx.prevRoom.num >= 0) ||
-            (transitionEntry->sides[0].room == transitionEntry->sides[1].room)) {
+        if ((play->roomCtx.prevRoom.num >= 0) || (transitionEntry->sides[0].room == transitionEntry->sides[1].room)) {
             phi_v0_2 = ((this->actor.shape.rot.y + this->skelAnime.jointTable[3].z) + rot->z) -
                        Math_Vec3f_Yaw(&play->view.eye, &this->actor.world.pos);
             *dList = (ABS(phi_v0_2) < 0x4000) ? temp_a2[0] : temp_a2[1];
@@ -338,8 +337,8 @@ void EnDoor_Draw(Actor* thisx, PlayState* play) {
         OPEN_DISPS(play->state.gfxCtx);
 
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnDoor_OverrideLimbDraw,
-                          NULL, &this->actor);
+        SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnDoor_OverrideLimbDraw, NULL,
+                          &this->actor);
         if (this->actor.world.rot.y != 0) {
             if (this->actor.world.rot.y > 0) {
                 gSPDisplayList(POLY_OPA_DISP++, gDoorRightDL);

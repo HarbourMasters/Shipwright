@@ -142,20 +142,20 @@ void DemoGj_PlayExplosionSfx(DemoGj* this, PlayState* play) {
 }
 
 void DemoGj_SpawnSmoke(PlayState* play, Vec3f* pos, f32 arg2) {
-    static Vec3f velocity = { 0.0f, 6.0f, 0.0f };
-    static Vec3f accel = { 0.0f, 0.0f, 0.0f };
+    static Vec3f       velocity = { 0.0f, 6.0f, 0.0f };
+    static Vec3f       accel = { 0.0f, 0.0f, 0.0f };
     static Color_RGBA8 primColor = { 0, 0, 0, 0 };
     static Color_RGBA8 envColor = { 0, 0, 0, 0 };
-    f32 temp = arg2 * 0.2f;
+    f32                temp = arg2 * 0.2f;
 
     func_800283D4(play, pos, &velocity, &accel, &primColor, &envColor, temp * Rand_ZeroOne() + arg2, 15, 90);
 }
 
 void DemoGj_DropCollectible(DemoGj* this, PlayState* play) {
     Vec3f* pos = &this->dyna.actor.world.pos;
-    s16 collectible = DemoGj_GetCollectibleType(this);
-    s32 amount = DemoGj_GetCollectibleAmount(this);
-    s32 i;
+    s16    collectible = DemoGj_GetCollectibleType(this);
+    s32    amount = DemoGj_GetCollectibleAmount(this);
+    s32    i;
 
     for (i = 0; i < amount; i++) {
         Item_DropCollectible(play, pos, collectible);
@@ -165,10 +165,10 @@ void DemoGj_DropCollectible(DemoGj* this, PlayState* play) {
 void DemoGj_Explode(DemoGj* this, PlayState* play, Vec3f* initialPos, Vec3f* direction) {
     Vec3f explosionPos;
     Vec3f velocity;
-    s32 phi_s0;
-    f32 aux;
-    s16 theta = 0;
-    s32 i;
+    s32   phi_s0;
+    f32   aux;
+    s16   theta = 0;
+    s32   i;
 
     for (i = 0; i < 6; i++) {
         explosionPos.x = Math_SinS(theta) * 16.0f;
@@ -240,7 +240,7 @@ static InitChainEntry sInitChain[] = {
 };
 
 void DemoGj_InitCommon(DemoGj* this, PlayState* play, CollisionHeader* header) {
-    s32 pad[3];
+    s32              pad[3];
     CollisionHeader* newHeader;
 
     if (header != NULL) {
@@ -253,8 +253,7 @@ void DemoGj_InitCommon(DemoGj* this, PlayState* play, CollisionHeader* header) {
 }
 
 // TODO: find a better name
-s32 DemoGj_InitSetIndexes(DemoGj* this, PlayState* play, s32 updateMode, s32 drawConfig,
-                          CollisionHeader* header) {
+s32 DemoGj_InitSetIndexes(DemoGj* this, PlayState* play, s32 updateMode, s32 drawConfig, CollisionHeader* header) {
     if (!DemoGj_IsSceneInvalid()) {
         this->updateMode = updateMode;
         this->drawConfig = drawConfig;
@@ -273,8 +272,7 @@ void DemoGj_DrawCommon(DemoGj* this, PlayState* play, Gfx* displayList) {
 
         Gfx_SetupDL_25Opa(gfxCtx);
 
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
-                  G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         gSPDisplayList(POLY_OPA_DISP++, displayList);
         gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);
@@ -284,13 +282,13 @@ void DemoGj_DrawCommon(DemoGj* this, PlayState* play, Gfx* displayList) {
 }
 
 void DemoGj_DrawRotated(DemoGj* this, PlayState* play, Gfx* displayList) {
-    s32 pad;
+    s32              pad;
     GraphicsContext* gfxCtx;
-    s16 x = this->rotationVec.x;
-    s16 y = this->rotationVec.y;
-    s16 z = this->rotationVec.z;
-    s32 pad2;
-    Mtx* matrix;
+    s16              x = this->rotationVec.x;
+    s16              y = this->rotationVec.y;
+    s16              z = this->rotationVec.z;
+    s32              pad2;
+    Mtx*             matrix;
 
     gfxCtx = play->state.gfxCtx;
     matrix = Graph_Alloc(gfxCtx, sizeof(Mtx));
@@ -312,14 +310,14 @@ void DemoGj_DrawRotated(DemoGj* this, PlayState* play, Gfx* displayList) {
 }
 
 void DemoGj_SetupRotation(DemoGj* this, PlayState* play) {
-    f32 yPosition = this->dyna.actor.world.pos.y;
-    f32* yVelocity = &this->dyna.actor.velocity.y;
-    f32* speedXZ = &this->dyna.actor.speedXZ;
+    f32    yPosition = this->dyna.actor.world.pos.y;
+    f32*   yVelocity = &this->dyna.actor.velocity.y;
+    f32*   speedXZ = &this->dyna.actor.speedXZ;
     Vec3s* unk_172 = &this->unk_172;
-    f32 verticalTranslation;
-    Vec3f vec;
-    f32 verticalFactor;
-    f32 xzPlaneFactor;
+    f32    verticalTranslation;
+    Vec3f  vec;
+    f32    verticalFactor;
+    f32    xzPlaneFactor;
 
     switch (DemoGj_GetType(this)) {
         case DEMOGJ_TYPE_RUBBLE_PILE_1:
@@ -456,12 +454,12 @@ s32 DemoGj_IsGanondorfFloatingInAir(DemoGj* this, PlayState* play) {
 }
 
 void DemoGj_SetupMovement(DemoGj* this, PlayState* play) {
-    Actor* actor = &this->dyna.actor;
+    Actor*  actor = &this->dyna.actor;
     Player* player;
-    Vec3f* pos = &actor->world.pos;
-    Vec3s* unk_172;
-    f32 xDistance;
-    f32 zDistance;
+    Vec3f*  pos = &actor->world.pos;
+    Vec3s*  unk_172;
+    f32     xDistance;
+    f32     zDistance;
 
     if (this->ganon != NULL) {
         xDistance = actor->world.pos.x - this->ganon->actor.world.pos.x;
@@ -582,7 +580,7 @@ void func_8097A000(DemoGj* this, PlayState* play) {
 
 void DemoGj_SpawnSmokePreBattle1(DemoGj* this, PlayState* play) {
     static Vec3f pos = { -371.0f, 1188.0f, -303.0f };
-    u32 gameplayFrames;
+    u32          gameplayFrames;
 
     if (!this->isTransformedIntoGanon) {
         gameplayFrames = play->gameplayFrames % 3;
@@ -646,7 +644,7 @@ void func_8097A238(DemoGj* this, PlayState* play) {
 
 void DemoGj_SpawnSmokePreBattle2(DemoGj* this, PlayState* play) {
     static Vec3f pos = { -119.0f, 1056.0f, -147.0f };
-    u32 gameplayFrames;
+    u32          gameplayFrames;
 
     if (!this->isTransformedIntoGanon) {
         gameplayFrames = play->gameplayFrames % 3;
@@ -902,7 +900,7 @@ void func_8097ABB4(DemoGj* this, PlayState* play) {
 
 void DemoGj_SpawnSmokePreBattle3(DemoGj* this, PlayState* play) {
     static Vec3f pos = { -6.0f, 1053.0f, -473.0f };
-    u32 gameplayFrames;
+    u32          gameplayFrames;
 
     if (!this->isTransformedIntoGanon) {
         gameplayFrames = play->gameplayFrames % 3;
@@ -985,11 +983,11 @@ void func_8097AEE8(DemoGj* this, PlayState* play) {
     ColliderCylinder* cylinder0 = &this->cylinders[0];
     ColliderCylinder* cylinder1 = &this->cylinders[1];
     ColliderCylinder* cylinder2 = &this->cylinders[2];
-    Vec3f* actorPos = &this->dyna.actor.world.pos;
-    s32 pad;
-    s16 theta = this->dyna.actor.world.rot.y;
-    f32 cos_theta = Math_CosS(theta);
-    f32 sin_theta = Math_SinS(theta);
+    Vec3f*            actorPos = &this->dyna.actor.world.pos;
+    s32               pad;
+    s16               theta = this->dyna.actor.world.rot.y;
+    f32               cos_theta = Math_CosS(theta);
+    f32               sin_theta = Math_SinS(theta);
 
     cylinder0->dim.pos.z = actorPos->z + (20.0f * cos_theta) - (-20.0f * sin_theta);
     cylinder0->dim.pos.x = actorPos->x + (20.0f * sin_theta) + (-20.0f * cos_theta);
@@ -1005,11 +1003,11 @@ void func_8097AEE8(DemoGj* this, PlayState* play) {
 }
 
 void DemoGj_SetCylindersAsAC(DemoGj* this, PlayState* play) {
-    s32 pad[2];
+    s32       pad[2];
     Collider* cylinder0 = &this->cylinders[0].base;
     Collider* cylinder1 = &this->cylinders[1].base;
     Collider* cylinder2 = &this->cylinders[2].base;
-    s32 pad2[3];
+    s32       pad2[3];
 
     CollisionCheck_SetAC(play, &play->colChkCtx, cylinder0);
     CollisionCheck_SetAC(play, &play->colChkCtx, cylinder1);
@@ -1115,11 +1113,11 @@ void func_8097B450(DemoGj* this, PlayState* play) {
     ColliderCylinder* cylinder0 = &this->cylinders[0];
     ColliderCylinder* cylinder1 = &this->cylinders[1];
     ColliderCylinder* cylinder2 = &this->cylinders[2];
-    Vec3f* actorPos = &this->dyna.actor.world.pos;
-    s32 pad;
-    s16 theta = this->dyna.actor.world.rot.y;
-    f32 cos_theta = Math_CosS(theta);
-    f32 sin_theta = Math_SinS(theta);
+    Vec3f*            actorPos = &this->dyna.actor.world.pos;
+    s32               pad;
+    s16               theta = this->dyna.actor.world.rot.y;
+    f32               cos_theta = Math_CosS(theta);
+    f32               sin_theta = Math_SinS(theta);
 
     cylinder0->dim.pos.z = actorPos->z - (35.0f * sin_theta);
     cylinder0->dim.pos.x = actorPos->x + (35.0f * cos_theta);
@@ -1135,11 +1133,11 @@ void func_8097B450(DemoGj* this, PlayState* play) {
 }
 
 void DemoGj_SetCylindersAsAC2(DemoGj* this, PlayState* play) {
-    s32 pad[2];
+    s32       pad[2];
     Collider* cylinder0 = &this->cylinders[0].base;
     Collider* cylinder1 = &this->cylinders[1].base;
     Collider* cylinder2 = &this->cylinders[2].base;
-    s32 pad2[3];
+    s32       pad2[3];
 
     CollisionCheck_SetAC(play, &play->colChkCtx, cylinder0);
     CollisionCheck_SetAC(play, &play->colChkCtx, cylinder1);
@@ -1272,9 +1270,9 @@ void func_8097B9BC(DemoGj* this, PlayState* play) {
  * Used by DEMOGJ_TYPE_DESTRUCTABLE_RUBBLE_TALL
  */
 void func_8097BA48(DemoGj* this, PlayState* play) {
-    Actor* thisx = &this->dyna.actor;
+    Actor*            thisx = &this->dyna.actor;
     ColliderCylinder* cylinder = &this->cylinders[0];
-    s32 pad[2];
+    s32               pad[2];
 
     if (func_809797E4(this, 4)) {
         Actor_Kill(thisx);
@@ -1402,8 +1400,7 @@ void DemoGj_Init(Actor* thisx, PlayState* play) {
 
         default:
             // "Demo_Gj_Actor_ct There is no such argument!!!!!!!!!!!!!!!!!!!!!!"
-            osSyncPrintf(VT_FGCOL(RED) "Demo_Gj_Actor_ct そんな引数は無い!!!!!!!!!!!!!!!!!!!!!!\n" VT_RST, play,
-                         this);
+            osSyncPrintf(VT_FGCOL(RED) "Demo_Gj_Actor_ct そんな引数は無い!!!!!!!!!!!!!!!!!!!!!!\n" VT_RST, play, this);
             Actor_Kill(&this->dyna.actor);
     }
 }

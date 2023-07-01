@@ -77,16 +77,16 @@ s32 func_800435B4(DynaPolyActor* dynaActor) {
 }
 
 s32 func_800435D8(PlayState* play, DynaPolyActor* dynaActor, s16 arg2, s16 arg3, s16 arg4) {
-    Vec3f posA;
-    Vec3f posB;
-    Vec3f posResult;
-    f32 sin = Math_SinS(dynaActor->unk_158);
-    f32 cos = Math_CosS(dynaActor->unk_158);
-    s32 bgId;
+    Vec3f          posA;
+    Vec3f          posB;
+    Vec3f          posResult;
+    f32            sin = Math_SinS(dynaActor->unk_158);
+    f32            cos = Math_CosS(dynaActor->unk_158);
+    s32            bgId;
     CollisionPoly* poly;
-    f32 a2;
-    f32 a3;
-    f32 sign = (0.0f <= dynaActor->unk_150) ? 1.0f : -1.0f;
+    f32            a2;
+    f32            a3;
+    f32            sign = (0.0f <= dynaActor->unk_150) ? 1.0f : -1.0f;
 
     a2 = (f32)arg2 - 0.1f;
     posA.x = dynaActor->actor.world.pos.x + (a2 * cos);

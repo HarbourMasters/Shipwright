@@ -11,7 +11,7 @@
 
 typedef struct {
     /* 0x0 */ Vec3s unk_0;
-    /* 0x6 */ u8 unk_6;
+    /* 0x6 */ u8    unk_6;
 } unk_D_80A69248; // size = 0x8
 
 void EnHorseGanon_Init(Actor* thisx, PlayState* play);
@@ -116,8 +116,8 @@ void func_80A68660(unk_D_80A69248* data, s32 index, Vec3f* vec) {
 
 void func_80A686A8(EnHorseGanon* this, PlayState* play) {
     Vec3f* tempPos;
-    Vec3f vec;
-    s16 y;
+    Vec3f  vec;
+    s16    y;
 
     func_80A68660(D_80A69248, this->unk_1EC, &vec);
     if (Math3D_Vec3f_DistXYZ(&vec, &this->actor.world.pos) <= 400.0f) {
@@ -268,11 +268,11 @@ void func_80A68DB0(EnHorseGanon* this, PlayState* play) {
 }
 
 void func_80A68E14(EnHorseGanon* this, PlayState* play) {
-    s32 pad;
+    s32            pad;
     CollisionPoly* col;
-    f32 temp_ret;
-    Vec3f v;
-    s32 temp1;
+    f32            temp_ret;
+    Vec3f          v;
+    s32            temp1;
 
     v.x = Math_SinS(this->actor.shape.rot.y) * 30.0f + this->actor.world.pos.x;
     v.y = this->actor.world.pos.y + 60.0f;

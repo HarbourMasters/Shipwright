@@ -3,19 +3,18 @@
 #include "spdlog/spdlog.h"
 
 namespace LUS {
-std::shared_ptr<IResource>
-AudioSequenceFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<AudioSequence>(initData);
+std::shared_ptr<IResource> AudioSequenceFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
+                                                              std::shared_ptr<BinaryReader>     reader) {
+    auto                                    resource = std::make_shared<AudioSequence>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
     switch (resource->GetInitData()->ResourceVersion) {
-    case 2:
-	    factory = std::make_shared<AudioSequenceFactoryV0>();
-	    break;
+        case 2:
+            factory = std::make_shared<AudioSequenceFactoryV0>();
+            break;
     }
 
-    if (factory == nullptr)
-    {
+    if (factory == nullptr) {
         SPDLOG_ERROR("Failed to load AudioSequence with version {}", resource->GetInitData()->ResourceVersion);
         return nullptr;
     }
@@ -26,7 +25,7 @@ AudioSequenceFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, s
 }
 
 void LUS::AudioSequenceFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                                   std::shared_ptr<IResource> resource) {
+                                                  std::shared_ptr<IResource>    resource) {
     std::shared_ptr<AudioSequence> audioSequence = std::static_pointer_cast<AudioSequence>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, audioSequence);
 
@@ -36,7 +35,7 @@ void LUS::AudioSequenceFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
         audioSequence->sequenceData.push_back(reader->ReadChar());
     }
     audioSequence->sequence.seqData = audioSequence->sequenceData.data();
-    
+
     audioSequence->sequence.seqNumber = reader->ReadUByte();
     audioSequence->sequence.medium = reader->ReadUByte();
     audioSequence->sequence.cachePolicy = reader->ReadUByte();

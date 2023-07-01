@@ -84,7 +84,7 @@ void func_808A18FC(BgMoriElevator* this, f32 distTo) {
 
 void BgMoriElevator_Init(Actor* thisx, PlayState* play) {
     BgMoriElevator* this = (BgMoriElevator*)thisx;
-    s32 pad;
+    s32              pad;
     CollisionHeader* colHeader = NULL;
 
     this->unk_172 = sKankyoIsSpawned;
@@ -256,8 +256,7 @@ void BgMoriElevator_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, play->objectCtx.status[this->moriTexObjIndex].segment);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gMoriElevatorDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

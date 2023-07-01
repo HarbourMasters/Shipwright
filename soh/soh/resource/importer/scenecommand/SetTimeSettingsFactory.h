@@ -5,8 +5,8 @@
 namespace LUS {
 class SetTimeSettingsFactory : public SceneCommandFactory {
   public:
-    std::shared_ptr<IResource>
-    ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) override;
+    std::shared_ptr<IResource> ReadResource(std::shared_ptr<ResourceInitData> initData,
+                                            std::shared_ptr<BinaryReader>     reader) override;
 };
 
 class SetTimeSettingsFactoryV0 : public SceneCommandVersionFactory {

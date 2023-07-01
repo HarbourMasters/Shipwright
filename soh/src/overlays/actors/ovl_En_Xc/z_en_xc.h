@@ -116,30 +116,30 @@ typedef enum {
 } EnXcAction;
 
 typedef struct EnXc {
-    /* 0x0000 */ Actor actor;
-    /* 0x014C */ SkelAnime skelAnime;
-    /* 0x0190 */ Vec3s jointTable[17];
-    /* 0x01F6 */ Vec3s morphTable[17];
-    /* 0x025C */ s16 eyeIdx;
-    /* 0x025E */ s16 blinkTimer;
-    /* 0x0260 */ s32 action;
-    /* 0x0264 */ s32 drawMode;
-    /* 0x0268 */ f32 timer;
-    /* 0x026C */ s32 unk_26C;
-    /* 0x0270 */ s32 unk_270; // some sort of flag
-    /* 0x0274 */ s32 unk_274;
-    /* 0x0278 */ s32 triforcePrimColor[4];
-    /* 0x0288 */ s32 triforceEnvColor[4];
-    /* 0x0298 */ f32 triforceScale[3];
-    /* 0x02A4 */ s16 triforceAngle;
-    /* 0x02A8 */ s32 unk_2A8; // sound related
-    /* 0x02AC */ s32 unk_2AC; // sound related
-    /* 0x02B0 */ Vec3f handPos;
-    /* 0x02BC */ s32 unk_2BC; // hand pos related
+    /* 0x0000 */ Actor            actor;
+    /* 0x014C */ SkelAnime        skelAnime;
+    /* 0x0190 */ Vec3s            jointTable[17];
+    /* 0x01F6 */ Vec3s            morphTable[17];
+    /* 0x025C */ s16              eyeIdx;
+    /* 0x025E */ s16              blinkTimer;
+    /* 0x0260 */ s32              action;
+    /* 0x0264 */ s32              drawMode;
+    /* 0x0268 */ f32              timer;
+    /* 0x026C */ s32              unk_26C;
+    /* 0x0270 */ s32              unk_270; // some sort of flag
+    /* 0x0274 */ s32              unk_274;
+    /* 0x0278 */ s32              triforcePrimColor[4];
+    /* 0x0288 */ s32              triforceEnvColor[4];
+    /* 0x0298 */ f32              triforceScale[3];
+    /* 0x02A4 */ s16              triforceAngle;
+    /* 0x02A8 */ s32              unk_2A8; // sound related
+    /* 0x02AC */ s32              unk_2AC; // sound related
+    /* 0x02B0 */ Vec3f            handPos;
+    /* 0x02BC */ s32              unk_2BC; // hand pos related
     /* 0x02C0 */ ColliderCylinder collider;
-    /* 0x030C */ s32 unk_30C;
-    /* 0x0310 */ Actor* flameActor;
-    /* 0x0314 */ NpcInteractInfo interactInfo;
+    /* 0x030C */ s32              unk_30C;
+    /* 0x0310 */ Actor*           flameActor;
+    /* 0x0314 */ NpcInteractInfo  interactInfo;
 } EnXc; // size = 0x033C
 
 #endif

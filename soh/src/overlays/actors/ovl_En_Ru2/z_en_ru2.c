@@ -113,7 +113,7 @@ void EnRu2_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_80AF2608(EnRu2* this) {
-    s32 pad[3];
+    s32  pad[3];
     s16* unk_2A6 = &this->unk_2A6;
     s16* unk_2A4 = &this->unk_2A4;
 
@@ -202,8 +202,8 @@ s32 func_80AF281C(EnRu2* this, PlayState* play, u16 arg2, s32 npcActionIdx) {
 
 void func_80AF2868(EnRu2* this, PlayState* play, u32 npcActionIdx) {
     CsCmdActorAction* csCmdNPCAction = func_80AF27AC(play, npcActionIdx);
-    s16 newRotY;
-    Actor* thisx = &this->actor;
+    s16               newRotY;
+    Actor*            thisx = &this->actor;
 
     if (csCmdNPCAction != NULL) {
         thisx->world.pos.x = csCmdNPCAction->startPos.x;
@@ -245,28 +245,27 @@ void func_80AF2994(EnRu2* this, PlayState* play) {
 
 void func_80AF29DC(EnRu2* this, PlayState* play) {
     Actor* thisx = &this->actor;
-    f32 posX = thisx->world.pos.x;
-    f32 posY = thisx->world.pos.y;
-    f32 posZ = thisx->world.pos.z;
+    f32    posX = thisx->world.pos.x;
+    f32    posY = thisx->world.pos.y;
+    f32    posZ = thisx->world.pos.z;
 
-    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0, 0,
-                       WARP_SAGES);
+    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0, 0, WARP_SAGES);
 }
 
 void func_80AF2A38(EnRu2* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 posX = player->actor.world.pos.x;
-    f32 posY = player->actor.world.pos.y + 50.0f;
-    f32 posZ = player->actor.world.pos.z;
+    f32     posX = player->actor.world.pos.x;
+    f32     posY = player->actor.world.pos.y + 50.0f;
+    f32     posZ = player->actor.world.pos.z;
 
     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_EFFECT, posX, posY, posZ, 0, 0, 0, 10);
     Item_Give(play, ITEM_MEDALLION_WATER);
 }
 
 void func_80AF2AB4(EnRu2* this, PlayState* play) {
-    s32 pad[2];
+    s32     pad[2];
     Player* player;
-    s16 temp;
+    s16     temp;
 
     if ((gSaveContext.chamberCutsceneNum == 2) && (gSaveContext.sceneSetupIndex < 4)) {
         player = GET_PLAYER(play);
@@ -281,7 +280,7 @@ void func_80AF2AB4(EnRu2* this, PlayState* play) {
 }
 
 void func_80AF2B44(EnRu2* this, PlayState* play) {
-    CutsceneContext* csCtx = &play->csCtx;
+    CutsceneContext*  csCtx = &play->csCtx;
     CsCmdActorAction* csCmdNPCAction;
 
     if (csCtx->state != CS_STATE_IDLE) {
@@ -302,7 +301,7 @@ void func_80AF2B94(EnRu2* this) {
 }
 
 void func_80AF2BC0(EnRu2* this, PlayState* play) {
-    AnimationHeader* animation = &gAdultRutoRaisingArmsUpAnim;
+    AnimationHeader*  animation = &gAdultRutoRaisingArmsUpAnim;
     CsCmdActorAction* csCmdNPCAction;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
@@ -405,7 +404,7 @@ void func_80AF2F04(EnRu2* this, PlayState* play) {
 
 void func_80AF2F58(EnRu2* this, PlayState* play) {
     f32* unk_2B0 = &this->unk_2B0;
-    s32 alpha;
+    s32  alpha;
 
     if (func_80AF27D0(this, play, 4, 3)) {
         *unk_2B0 += 1.0f;
@@ -469,9 +468,9 @@ void func_80AF31C8(EnRu2* this, PlayState* play) {
 }
 
 void func_80AF321C(EnRu2* this, PlayState* play) {
-    s32 pad[2];
-    s16 temp = this->unk_2A4;
-    void* tex = sEyeTextures[temp];
+    s32        pad[2];
+    s16        temp = this->unk_2A4;
+    void*      tex = sEyeTextures[temp];
     SkelAnime* skelAnime = &this->skelAnime;
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -483,8 +482,8 @@ void func_80AF321C(EnRu2* this, PlayState* play) {
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, this->alpha);
     gSPSegment(POLY_XLU_DISP++, 0x0C, &D_80116280[0]);
 
-    POLY_XLU_DISP = SkelAnime_DrawFlex(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                                       NULL, NULL, NULL, POLY_XLU_DISP);
+    POLY_XLU_DISP = SkelAnime_DrawFlex(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL,
+                                       NULL, NULL, POLY_XLU_DISP);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -498,8 +497,8 @@ void func_80AF3394(EnRu2* this, PlayState* play) {
 
 void func_80AF33E0(EnRu2* this) {
     f32* unk_2B0 = &this->unk_2B0;
-    f32 temp_f0;
-    s32 temp_f18;
+    f32  temp_f0;
+    s32  temp_f18;
 
     *unk_2B0 += 1.0f;
 
@@ -540,8 +539,8 @@ void func_80AF3530(EnRu2* this, s32 arg1) {
 
 void func_80AF3564(EnRu2* this, PlayState* play) {
     CsCmdActorAction* csCmdNPCAction = func_80AF27AC(play, 3);
-    s32 action;
-    s32 unk_2BC;
+    s32               action;
+    s32               unk_2BC;
 
     if (csCmdNPCAction != NULL) {
         action = csCmdNPCAction->action;
@@ -624,8 +623,8 @@ void func_80AF37CC(EnRu2* this) {
 
 s32 func_80AF383C(EnRu2* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 thisPosX = this->actor.world.pos.x;
-    f32 playerPosX = player->actor.world.pos.x;
+    f32     thisPosX = this->actor.world.pos.x;
+    f32     playerPosX = player->actor.world.pos.x;
 
     if (playerPosX - thisPosX >= -202.0f) {
         return 1;
@@ -659,12 +658,12 @@ void func_80AF390C(EnRu2* this, PlayState* play) {
 }
 
 void func_80AF39DC(EnRu2* this, PlayState* play) {
-    s32 pad;
+    s32             pad;
     MessageContext* msgCtx;
-    s32 pad2;
-    u8 dialogState;
-    Player* player;
-    s32 pad3;
+    s32             pad2;
+    u8              dialogState;
+    Player*         player;
+    s32             pad3;
 
     msgCtx = &play->msgCtx;
     dialogState = Message_GetState(msgCtx);
@@ -799,9 +798,9 @@ void func_80AF3F14(EnRu2* this, PlayState* play) {
 }
 
 void func_80AF3F20(EnRu2* this, PlayState* play) {
-    s32 pad[2];
-    s16 temp = this->unk_2A4;
-    void* tex = sEyeTextures[temp];
+    s32        pad[2];
+    s16        temp = this->unk_2A4;
+    void*      tex = sEyeTextures[temp];
     SkelAnime* skelAnime = &this->skelAnime;
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -813,8 +812,7 @@ void func_80AF3F20(EnRu2* this, PlayState* play) {
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     gSPSegment(POLY_OPA_DISP++, 0x0C, &D_80116280[2]);
 
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL, NULL,
-                          this);
+    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL, NULL, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -831,8 +829,8 @@ void EnRu2_Draw(Actor* thisx, PlayState* play) {
     // our texture cache, and we load the wrong settings for the earrings texture. This patch is a hack that replaces
     // TEXEL1 with TEXEL0, which is most likely the original intention, and all is well.
     Gfx* gfx = ResourceMgr_LoadGfxByName(gAdultRutoHeadDL);
-    Gfx patch = gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, TEXEL0, 0,
-                                  PRIM_LOD_FRAC, COMBINED);
+    Gfx  patch = gsDPSetCombineLERP(TEXEL0, 0, PRIMITIVE, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, TEXEL0, 0,
+                                    PRIM_LOD_FRAC, COMBINED);
     gfx[0xA2] = patch;
 
     if ((this->drawConfig < 0) || (this->drawConfig >= ARRAY_COUNT(sDrawFuncs)) ||

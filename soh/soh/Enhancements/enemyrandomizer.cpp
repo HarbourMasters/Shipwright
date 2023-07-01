@@ -65,43 +65,45 @@ static EnemyEntry randomizedEnemySpawnTable[RANDOMIZED_ENEMY_SPAWN_TABLE_SIZE] =
     // Doesn't work {ACTOR_EN_POH, 0}, // Poe (Seems to rely on other objects?)
     // Doesn't work {ACTOR_EN_POH, 2}, // Poe (composer Sharp) (Seems to rely on other objects?)
     // Doesn't work {ACTOR_EN_POH, 3}, // Poe (composer Flat) (Seems to rely on other objects?)
-    // Doesn't work {ACTOR_EN_OKUTA, 0}, // Octorok (actor directly uses water box collision to handle hiding/popping up)
-    // Doesn't work {ACTOR_EN_REEBA, 0}, // Leever (reliant on surface and also normally used in tandem with a leever spawner, kills itself too quickly otherwise)
-    // Kinda doesn't work { ACTOR_EN_FD, 0 }, // Flare Dancer (jumps out of bounds a lot, and possible cause of crashes because of spawning a ton of flame actors)
+    // Doesn't work {ACTOR_EN_OKUTA, 0}, // Octorok (actor directly uses water box collision to handle hiding/popping
+    // up) Doesn't work {ACTOR_EN_REEBA, 0}, // Leever (reliant on surface and also normally used in tandem with a
+    // leever spawner, kills itself too quickly otherwise) Kinda doesn't work { ACTOR_EN_FD, 0 }, // Flare Dancer (jumps
+    // out of bounds a lot, and possible cause of crashes because of spawning a ton of flame actors)
 };
 
 static int enemiesToRandomize[] = {
-    ACTOR_EN_FIREFLY,   // Keese (including fire/ice)
-    ACTOR_EN_TEST,      // Stalfos
-    ACTOR_EN_TITE,      // Tektite
-    ACTOR_EN_POH,       // Poe (normal, blue rupee, composers
-    ACTOR_EN_OKUTA,     // Octorok
-    ACTOR_EN_WALLMAS,   // Wallmaster
-    ACTOR_EN_DODONGO,   // Dodongo
+    ACTOR_EN_FIREFLY, // Keese (including fire/ice)
+    ACTOR_EN_TEST,    // Stalfos
+    ACTOR_EN_TITE,    // Tektite
+    ACTOR_EN_POH,     // Poe (normal, blue rupee, composers
+    ACTOR_EN_OKUTA,   // Octorok
+    ACTOR_EN_WALLMAS, // Wallmaster
+    ACTOR_EN_DODONGO, // Dodongo
     // ACTOR_EN_REEBA,  // Leever (reliant on spawner (z_e_encount1.c)
-    ACTOR_EN_PEEHAT,    // Flying Peahat, big one spawning larva, larva
-    ACTOR_EN_ZF,        // Lizalfos, dinolfos
-    ACTOR_EN_GOMA,      // Gohma larva (normal, eggs, gohma eggs)
-    ACTOR_EN_BUBBLE,    // Shabom (bubble)
-    ACTOR_EN_DODOJR,    // Baby Dodongo
-    ACTOR_EN_TORCH2,    // Dark Link
-    ACTOR_EN_BILI,      // Biri (small jellyfish)
-    ACTOR_EN_TP,        // Electric Tailparasan
-    ACTOR_EN_ST,        // Skulltula (normal, big, invisible)
-    ACTOR_EN_BW,        // Torch Slug
-    ACTOR_EN_EIYER,     // Stinger (land)
-    ACTOR_EN_MB,        // Moblins (Club, spear)
-    ACTOR_EN_DEKUBABA,  // Deku Baba (small, large)
-    ACTOR_EN_AM,        // Armos (enemy variant)
-    ACTOR_EN_DEKUNUTS,  // Mad Scrub (single attack, triple attack)
-    ACTOR_EN_VALI,      // Bari (big jellyfish) (spawns very high up)
-    ACTOR_EN_BB,        // Bubble (flying skull enemy) (all colors)
-    ACTOR_EN_YUKABYUN,  // Flying Floor Tile
-    ACTOR_EN_VM,        // Beamos
-    ACTOR_EN_FLOORMAS,  // Floormaster
-    ACTOR_EN_RD,        // Redead, Gibdo
-    ACTOR_EN_SW,        // Skullwalltula
-    // ACTOR_EN_FD,     // Flare Dancer (can be randomized, but not randomized to, so keeping it in vanilla locations means it atleast shows up in the game
+    ACTOR_EN_PEEHAT,   // Flying Peahat, big one spawning larva, larva
+    ACTOR_EN_ZF,       // Lizalfos, dinolfos
+    ACTOR_EN_GOMA,     // Gohma larva (normal, eggs, gohma eggs)
+    ACTOR_EN_BUBBLE,   // Shabom (bubble)
+    ACTOR_EN_DODOJR,   // Baby Dodongo
+    ACTOR_EN_TORCH2,   // Dark Link
+    ACTOR_EN_BILI,     // Biri (small jellyfish)
+    ACTOR_EN_TP,       // Electric Tailparasan
+    ACTOR_EN_ST,       // Skulltula (normal, big, invisible)
+    ACTOR_EN_BW,       // Torch Slug
+    ACTOR_EN_EIYER,    // Stinger (land)
+    ACTOR_EN_MB,       // Moblins (Club, spear)
+    ACTOR_EN_DEKUBABA, // Deku Baba (small, large)
+    ACTOR_EN_AM,       // Armos (enemy variant)
+    ACTOR_EN_DEKUNUTS, // Mad Scrub (single attack, triple attack)
+    ACTOR_EN_VALI,     // Bari (big jellyfish) (spawns very high up)
+    ACTOR_EN_BB,       // Bubble (flying skull enemy) (all colors)
+    ACTOR_EN_YUKABYUN, // Flying Floor Tile
+    ACTOR_EN_VM,       // Beamos
+    ACTOR_EN_FLOORMAS, // Floormaster
+    ACTOR_EN_RD,       // Redead, Gibdo
+    ACTOR_EN_SW,       // Skullwalltula
+    // ACTOR_EN_FD,     // Flare Dancer (can be randomized, but not randomized to, so keeping it in vanilla locations
+    // means it atleast shows up in the game
     ACTOR_EN_SB,        // Shell Blade
     ACTOR_EN_KAREBABA,  // Withered Deku Baba
     ACTOR_EN_RR,        // Like-Like
@@ -116,8 +118,8 @@ static int enemiesToRandomize[] = {
     ACTOR_EN_CROW       // Guay
 };
 
-extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *posX, f32 *posY, f32 *posZ, int16_t *rotX,
-                                      int16_t *rotY, int16_t *rotZ, int16_t *params) {
+extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t* actorId, f32* posX, f32* posY, f32* posZ, int16_t* rotX,
+                                      int16_t* rotY, int16_t* rotZ, int16_t* params) {
 
     uint32_t isMQ = ResourceMgr_IsSceneMasterQuest(play->sceneNum);
 
@@ -125,7 +127,8 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
     // This should probably be handled on OTR generation in the future when object dependency is fully removed.
     // Remove bats and skulltulas from graveyard.
     // Remove octorok in lost woods.
-    if (((*actorId == ACTOR_EN_FIREFLY || (*actorId == ACTOR_EN_SW && *params == 0)) && play->sceneNum == SCENE_SPOT02) ||
+    if (((*actorId == ACTOR_EN_FIREFLY || (*actorId == ACTOR_EN_SW && *params == 0)) &&
+         play->sceneNum == SCENE_SPOT02) ||
         (*actorId == ACTOR_EN_OKUTA && play->sceneNum == SCENE_SPOT10)) {
         return 0;
     }
@@ -169,8 +172,8 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
         // the new actor on the ground. This way enemies don't spawn very high in the sky, and gives us control
         // over height offsets per enemy from a proven grounded position.
         CollisionPoly poly;
-        Vec3f pos;
-        f32 raycastResult;
+        Vec3f         pos;
+        f32           raycastResult;
 
         pos.x = *posX;
         pos.y = *posY + 50;
@@ -183,7 +186,8 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
         }
 
         // Get randomized enemy ID and parameter.
-        uint32_t seed = play->sceneNum + *actorId + (int)*posX + (int)*posY + (int)*posZ + *rotX + *rotY + *rotZ + *params;
+        uint32_t seed =
+            play->sceneNum + *actorId + (int)*posX + (int)*posY + (int)*posZ + *rotX + *rotY + *rotZ + *params;
         EnemyEntry randomEnemy = GetRandomizedEnemyEntry(seed);
 
         int8_t timesRandomized = 1;
@@ -234,7 +238,10 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
 
 EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
     if (CVarGetInteger("gRandomizedEnemies", ENEMY_RANDOMIZER_OFF) == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
-        uint32_t finalSeed = seed + (gSaveContext.n64ddFlag ? (gSaveContext.seedIcons[0] + gSaveContext.seedIcons[1] + gSaveContext.seedIcons[2] + gSaveContext.seedIcons[3] + gSaveContext.seedIcons[4]) : gSaveContext.sohStats.fileCreatedAt);
+        uint32_t finalSeed = seed + (gSaveContext.n64ddFlag ? (gSaveContext.seedIcons[0] + gSaveContext.seedIcons[1] +
+                                                               gSaveContext.seedIcons[2] + gSaveContext.seedIcons[3] +
+                                                               gSaveContext.seedIcons[4])
+                                                            : gSaveContext.sohStats.fileCreatedAt);
         Random_Init(finalSeed);
     }
 
@@ -275,7 +282,8 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
                 // break the thrones in the room to access a button.
                 case ACTOR_EN_IK:
                     return (params != 1280 && !(isMQ && sceneNum == SCENE_GANONTIKA && roomNum == 17));
-                // Only randomize the intitial spawn of the huge jellyfish. It spawns another copy when hit with a sword.
+                // Only randomize the intitial spawn of the huge jellyfish. It spawns another copy when hit with a
+                // sword.
                 case ACTOR_EN_VALI:
                     return (params == -1);
                 // Don't randomize lizalfos in Doodong's Cavern because the gates won't work correctly otherwise.
@@ -284,17 +292,18 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
                 // Don't randomize the Wolfos in SFM because it's needed to open the gate.
                 case ACTOR_EN_WF:
                     return (params != 7936);
-                // Don't randomize the Stalfos in Forest Temple because other enemies fall through the hole and don't trigger the platform.
-                // Don't randomize the Stalfos spawning on the boat in Shadow Temple, as randomizing them places the new enemies
-                // down in the river.
+                // Don't randomize the Stalfos in Forest Temple because other enemies fall through the hole and don't
+                // trigger the platform. Don't randomize the Stalfos spawning on the boat in Shadow Temple, as
+                // randomizing them places the new enemies down in the river.
                 case ACTOR_EN_TEST:
                     return (params != 1 && !(sceneNum == SCENE_HAKADAN && roomNum == 21));
                 // Only randomize the enemy variant of Armos Statue.
                 // Leave one Armos unrandomized in the Spirit Temple room where an armos is needed to push down a button
                 case ACTOR_EN_AM:
                     return ((params == -1 || params == 255) && !(sceneNum == SCENE_JYASINZOU && posX == 2141));
-                // Don't randomize Shell Blades and Spikes in the underwater portion in Water Temple as it's impossible to kill
-                // most other enemies underwater with just hookshot and they're required to be killed for a grate to open.
+                // Don't randomize Shell Blades and Spikes in the underwater portion in Water Temple as it's impossible
+                // to kill most other enemies underwater with just hookshot and they're required to be killed for a
+                // grate to open.
                 case ACTOR_EN_SB:
                 case ACTOR_EN_NY:
                     return (!(!isMQ && sceneNum == SCENE_MIZUSIN && roomNum == 2));
@@ -330,7 +339,8 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
         // Deku Tree
         case SCENE_YDAN:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 9)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 4 || roomNum == 6 || roomNum == 9 || roomNum == 10)));
+                    !(isMQ && enemiesToExcludeClearRooms &&
+                      (roomNum == 4 || roomNum == 6 || roomNum == 9 || roomNum == 10)));
         // Dodongo's Cavern
         case SCENE_DDAN:
             return (!(!isMQ && enemiesToExcludeClearRooms && roomNum == 15) &&
@@ -342,8 +352,10 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
                     !(isMQ && enemiesToExcludeClearRooms && (roomNum == 11 || roomNum == 14)));
         // Forest Temple
         case SCENE_BMORI1:
-            return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 6 || roomNum == 10 || roomNum == 18 || roomNum == 21)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 5 || roomNum == 6 || roomNum == 18 || roomNum == 21)));
+            return (!(!isMQ && enemiesToExcludeClearRooms &&
+                      (roomNum == 6 || roomNum == 10 || roomNum == 18 || roomNum == 21)) &&
+                    !(isMQ && enemiesToExcludeClearRooms &&
+                      (roomNum == 5 || roomNum == 6 || roomNum == 18 || roomNum == 21)));
         // Fire Temple
         case SCENE_HIDAN:
             return (!(!isMQ && enemiesToExcludeClearRooms && roomNum == 15) &&
@@ -354,23 +366,31 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
                     !(isMQ && enemiesToExcludeClearRooms && (roomNum == 13 || roomNum == 18)));
         // Spirit Temple
         case SCENE_JYASINZOU:
-            return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 10 || roomNum == 17 || roomNum == 20)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 2 || roomNum == 4 || roomNum == 10 || roomNum == 15 || roomNum == 19 || roomNum == 20)));
+            return (!(!isMQ && enemiesToExcludeClearRooms &&
+                      (roomNum == 1 || roomNum == 10 || roomNum == 17 || roomNum == 20)) &&
+                    !(isMQ && enemiesToExcludeClearRooms &&
+                      (roomNum == 1 || roomNum == 2 || roomNum == 4 || roomNum == 10 || roomNum == 15 ||
+                       roomNum == 19 || roomNum == 20)));
         // Shadow Temple
         case SCENE_HAKADAN:
-            return (!(!isMQ && enemiesToExcludeClearRooms && 
-                        (roomNum == 1 || roomNum == 7 || roomNum == 11 || roomNum == 14 || roomNum == 16 || roomNum == 17 || roomNum == 19 || roomNum == 20)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 6 || roomNum == 7 || roomNum == 11 || roomNum == 14 || roomNum == 20)));
+            return (
+                !(!isMQ && enemiesToExcludeClearRooms &&
+                  (roomNum == 1 || roomNum == 7 || roomNum == 11 || roomNum == 14 || roomNum == 16 || roomNum == 17 ||
+                   roomNum == 19 || roomNum == 20)) &&
+                !(isMQ && enemiesToExcludeClearRooms &&
+                  (roomNum == 1 || roomNum == 6 || roomNum == 7 || roomNum == 11 || roomNum == 14 || roomNum == 20)));
         // Ganon's Castle Trials
         case SCENE_GANONTIKA:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 2 || roomNum == 5 || roomNum == 9)) &&
-                    !(isMQ && enemiesToExcludeClearRooms && (roomNum == 0 || roomNum == 2 || roomNum == 5 || roomNum == 9)));
+                    !(isMQ && enemiesToExcludeClearRooms &&
+                      (roomNum == 0 || roomNum == 2 || roomNum == 5 || roomNum == 9)));
         // Ice Caverns
         case SCENE_ICE_DOUKUTO:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 7)) &&
                     !(isMQ && enemiesToExcludeClearRooms && (roomNum == 3 || roomNum == 7)));
         // Bottom of the Well
-        // Exclude Dark Link from room with holes in the floor because it can pull you in a like-like making the player fall down.
+        // Exclude Dark Link from room with holes in the floor because it can pull you in a like-like making the player
+        // fall down.
         case SCENE_HAKADANCH:
             return (!(!isMQ && enemy.id == ACTOR_EN_TORCH2 && roomNum == 3));
         // Don't allow Dark Link in areas with lava void out zones as it voids out the player as well.
@@ -379,18 +399,21 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
             return (!(enemy.id == ACTOR_EN_TORCH2 && roomNum == 6) &&
                     !(!isMQ && enemiesToExcludeTimedRooms && (roomNum == 1 || roomNum == 7)) &&
                     !(!isMQ && enemiesToExcludeClearRooms && (roomNum == 3 || roomNum == 5 || roomNum == 10)) &&
-                    !(isMQ && enemiesToExcludeTimedRooms && (roomNum == 1 || roomNum == 3 || roomNum == 5 || roomNum == 7)) &&
+                    !(isMQ && enemiesToExcludeTimedRooms &&
+                      (roomNum == 1 || roomNum == 3 || roomNum == 5 || roomNum == 7)) &&
                     !(isMQ && enemiesToExcludeClearRooms && roomNum == 10));
         // Don't allow certain enemies in Ganon's Tower because they would spawn up on the ceilling,
         // becoming impossible to kill.
         // Ganon's Tower.
         case SCENE_GANON:
-            return (!(enemiesToExcludeClearRooms || enemy.id == ACTOR_EN_VALI || (enemy.id == ACTOR_EN_ZF && enemy.params == -1)));
+            return (!(enemiesToExcludeClearRooms || enemy.id == ACTOR_EN_VALI ||
+                      (enemy.id == ACTOR_EN_ZF && enemy.params == -1)));
         // Ganon's Tower Escape.
         case SCENE_GANON_SONOGO:
             return (!((enemiesToExcludeTimedRooms || (enemy.id == ACTOR_EN_ZF && enemy.params == -1)) && roomNum == 1));
-        // Don't allow big stalchildren, big peahats and the large Bari (jellyfish) during the Gohma fight because they can clip into Gohma
-        // and it crashes the game. Likely because Gohma on the ceilling can't handle collision with other enemies.
+        // Don't allow big stalchildren, big peahats and the large Bari (jellyfish) during the Gohma fight because they
+        // can clip into Gohma and it crashes the game. Likely because Gohma on the ceilling can't handle collision with
+        // other enemies.
         case SCENE_YDAN_BOSS:
             return (!enemiesToExcludeTimedRooms && !(enemy.id == ACTOR_EN_SKB && enemy.params == 20) &&
                     !(enemy.id == ACTOR_EN_PEEHAT && enemy.params == -1));

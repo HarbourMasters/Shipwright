@@ -15,7 +15,7 @@ void DoorGerudo_Update(Actor* thisx, PlayState* play);
 void DoorGerudo_Draw(Actor* thisx, PlayState* play);
 
 void func_8099485C(DoorGerudo* this, PlayState* play);
-s32 func_80994750(DoorGerudo* this, PlayState* play);
+s32  func_80994750(DoorGerudo* this, PlayState* play);
 void func_8099496C(DoorGerudo* this, PlayState* play);
 void func_809949C8(DoorGerudo* this, PlayState* play);
 
@@ -62,8 +62,8 @@ void DoorGerudo_Destroy(Actor* thisx, PlayState* play) {
 
 f32 func_809946BC(PlayState* play, DoorGerudo* this, f32 arg2, f32 arg3, f32 arg4) {
     Player* player = GET_PLAYER(play);
-    Vec3f playerPos;
-    Vec3f sp1C;
+    Vec3f   playerPos;
+    Vec3f   sp1C;
 
     playerPos.x = player->actor.world.pos.x;
     playerPos.y = player->actor.world.pos.y + arg2;
@@ -79,8 +79,8 @@ f32 func_809946BC(PlayState* play, DoorGerudo* this, f32 arg2, f32 arg3, f32 arg
 
 s32 func_80994750(DoorGerudo* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 temp_f0;
-    s16 rotYDiff;
+    f32     temp_f0;
+    s16     rotYDiff;
 
     if (!Player_InCsMode(play)) {
         temp_f0 = func_809946BC(play, this, 0.0f, 20.0f, 15.0f);
@@ -148,8 +148,7 @@ void DoorGerudo_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gGerudoCellDoorDL);
 
     if (this->unk_166 != 0) {

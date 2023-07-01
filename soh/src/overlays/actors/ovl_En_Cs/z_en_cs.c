@@ -12,7 +12,7 @@ void EnCs_Draw(Actor* thisx, PlayState* play);
 void EnCs_Walk(EnCs* this, PlayState* play);
 void EnCs_Talk(EnCs* this, PlayState* play);
 void EnCs_Wait(EnCs* this, PlayState* play);
-s32 EnCs_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx);
+s32  EnCs_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx);
 void EnCs_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx);
 
 const ActorInit En_Cs_InitVars = {
@@ -211,7 +211,7 @@ s32 EnCs_GetTalkState(EnCs* this, PlayState* play) {
 
 s32 EnCs_GetTextID(EnCs* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 textId = Text_GetFaceReaction(play, 15);
+    s32     textId = Text_GetFaceReaction(play, 15);
 
     if (Flags_GetItemGetInf(ITEMGETINF_3A)) {
         if (textId == 0) {
@@ -269,7 +269,7 @@ s32 EnCs_GetwaypointCount(Path* pathList, s32 pathIndex) {
 }
 
 s32 EnCs_GetPathPoint(Path* pathList, Vec3f* dest, s32 pathIndex, s32 waypoint) {
-    Path* path = pathList;
+    Path*  path = pathList;
     Vec3s* pathPos;
 
     path += pathIndex;
@@ -283,12 +283,12 @@ s32 EnCs_GetPathPoint(Path* pathList, Vec3f* dest, s32 pathIndex, s32 waypoint) 
 }
 
 s32 EnCs_HandleWalking(EnCs* this, PlayState* play) {
-    f32 xDiff;
-    f32 zDiff;
+    f32   xDiff;
+    f32   zDiff;
     Vec3f pathPos;
-    s32 waypointCount;
-    s16 walkAngle1;
-    s16 walkAngle2;
+    s32   waypointCount;
+    s16   walkAngle1;
+    s16   walkAngle2;
 
     EnCs_GetPathPoint(play->setupPathList, &pathPos, this->path, this->waypoint);
     xDiff = pathPos.x - this->actor.world.pos.x;

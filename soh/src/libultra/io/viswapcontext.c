@@ -1,14 +1,14 @@
 #include "global.h"
 
 void __osViSwapContext(void) {
-    register OSViMode* viMode;
+    register OSViMode*    viMode;
     register OSViContext* viNext;
-    u32 origin;
-    u32 hStart;
-    u32 vstart;
-    u32 sp34;
-    u32 field;
-    register u32 s2;
+    u32                   origin;
+    u32                   hStart;
+    u32                   vstart;
+    u32                   sp34;
+    u32                   field;
+    register u32          s2;
 
     field = 0;
     viNext = __osViNext;

@@ -1,8 +1,8 @@
 #include "global.h"
 
-OSMesg osSiMesgBuff[SIAccessQueueSize];
+OSMesg      osSiMesgBuff[SIAccessQueueSize];
 OSMesgQueue gOSSiMessageQueue;
-u32 gOSSiAccessQueueCreated = 0;
+u32         gOSSiAccessQueueCreated = 0;
 
 void __osSiCreateAccessQueue(void) {
     gOSSiAccessQueueCreated = 1;

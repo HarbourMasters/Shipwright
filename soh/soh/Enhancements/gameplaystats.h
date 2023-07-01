@@ -1,43 +1,46 @@
 #pragma once
 
 // When using RTA timing
-    // get the diff since the save was created,
-    // unless the game is complete in which we use the defeated ganon timestamp
+// get the diff since the save was created,
+// unless the game is complete in which we use the defeated ganon timestamp
 // When not using RTA timing
-    // Total gameplay time is tracked in tenths of seconds
-    // I.E. game time counts frames at 20fps/2, pause time counts frames at 30fps/3
-    // Frame counts in z_play.c and z_kaleido_scope_call.c
-#define GAMEPLAYSTAT_TOTAL_TIME (gSaveContext.sohStats.rtaTiming ?\
-    (!gSaveContext.sohStats.gameComplete ?\
-        (!gSaveContext.sohStats.fileCreatedAt ? 0 : ((GetUnixTimestamp() - gSaveContext.sohStats.fileCreatedAt) / 100)) :\
-        (gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON])) :\
-    (gSaveContext.sohStats.playTimer / 2 + gSaveContext.sohStats.pauseTimer / 3))
-#define CURRENT_MODE_TIMER (CVarGetInteger("gGameplayStats.RoomBreakdown", 0) ?\
-    gSaveContext.sohStats.roomTimer :\
-    gSaveContext.sohStats.sceneTimer)
+// Total gameplay time is tracked in tenths of seconds
+// I.E. game time counts frames at 20fps/2, pause time counts frames at 30fps/3
+// Frame counts in z_play.c and z_kaleido_scope_call.c
+#define GAMEPLAYSTAT_TOTAL_TIME                                                              \
+    (gSaveContext.sohStats.rtaTiming                                                         \
+         ? (!gSaveContext.sohStats.gameComplete                                              \
+                ? (!gSaveContext.sohStats.fileCreatedAt                                      \
+                       ? 0                                                                   \
+                       : ((GetUnixTimestamp() - gSaveContext.sohStats.fileCreatedAt) / 100)) \
+                : (gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON]))             \
+         : (gSaveContext.sohStats.playTimer / 2 + gSaveContext.sohStats.pauseTimer / 3))
+#define CURRENT_MODE_TIMER                                                               \
+    (CVarGetInteger("gGameplayStats.RoomBreakdown", 0) ? gSaveContext.sohStats.roomTimer \
+                                                       : gSaveContext.sohStats.sceneTimer)
 
-void InitStatTracker();
+void  InitStatTracker();
 char* GameplayStats_GetCurrentTime();
 
 typedef enum {
     // 0x00 to 0x9B (0 to 155) used for getting items,
     // piggybacked off enum "ItemID" in z64item.h
 
-    /* 0xA0 */ TIMESTAMP_DEFEAT_GOHMA = 0xA0,   // z_boss_goma.c
-    /* 0xA1 */ TIMESTAMP_DEFEAT_KING_DODONGO,   // z_boss_dodongo.c
-    /* 0xA2 */ TIMESTAMP_DEFEAT_BARINADE,       // z_boss_va.c
-    /* 0xA3 */ TIMESTAMP_DEFEAT_PHANTOM_GANON,  // z_boss_ganondrof.c
-    /* 0xA4 */ TIMESTAMP_DEFEAT_VOLVAGIA,       // z_boss_fd2.c
-    /* 0xA5 */ TIMESTAMP_DEFEAT_MORPHA,         // z_boss_mo.c
-    /* 0xA6 */ TIMESTAMP_DEFEAT_BONGO_BONGO,    // z_boss_sst.c
-    /* 0xA7 */ TIMESTAMP_DEFEAT_TWINROVA,       // z_boss_tw.c
-    /* 0xA8 */ TIMESTAMP_DEFEAT_GANONDORF,      // z_boss_ganon.c
-    /* 0xA9 */ TIMESTAMP_DEFEAT_GANON,          // z_boss_ganon2.c
-    /* 0xA9 */ TIMESTAMP_BOSSRUSH_FINISH,       // z_boss_ganon2.c
-    /* 0xAA */ TIMESTAMP_FOUND_GREG,            // z_parameter.c
+    /* 0xA0 */ TIMESTAMP_DEFEAT_GOHMA = 0xA0,  // z_boss_goma.c
+    /* 0xA1 */ TIMESTAMP_DEFEAT_KING_DODONGO,  // z_boss_dodongo.c
+    /* 0xA2 */ TIMESTAMP_DEFEAT_BARINADE,      // z_boss_va.c
+    /* 0xA3 */ TIMESTAMP_DEFEAT_PHANTOM_GANON, // z_boss_ganondrof.c
+    /* 0xA4 */ TIMESTAMP_DEFEAT_VOLVAGIA,      // z_boss_fd2.c
+    /* 0xA5 */ TIMESTAMP_DEFEAT_MORPHA,        // z_boss_mo.c
+    /* 0xA6 */ TIMESTAMP_DEFEAT_BONGO_BONGO,   // z_boss_sst.c
+    /* 0xA7 */ TIMESTAMP_DEFEAT_TWINROVA,      // z_boss_tw.c
+    /* 0xA8 */ TIMESTAMP_DEFEAT_GANONDORF,     // z_boss_ganon.c
+    /* 0xA9 */ TIMESTAMP_DEFEAT_GANON,         // z_boss_ganon2.c
+    /* 0xA9 */ TIMESTAMP_BOSSRUSH_FINISH,      // z_boss_ganon2.c
+    /* 0xAA */ TIMESTAMP_FOUND_GREG,           // z_parameter.c
     /* 0xAB */ TIMESTAMP_MAX
 
-}GameplayStatTimestamp;
+} GameplayStatTimestamp;
 
 typedef enum {
     // Enemies defeated

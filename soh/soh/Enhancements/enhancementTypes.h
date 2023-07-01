@@ -4,18 +4,9 @@ typedef enum {
     WARP_MODE_OVERRIDE_VANILLA_AS_MQ,
 } BetterDebugWarpOverrideMQMode;
 
-typedef enum {
-    CSMC_DISABLED,
-    CSMC_BOTH,
-    CSMC_TEXTURE,
-    CSMC_SIZE
-} ChestStyleMatchesContentsType;
+typedef enum { CSMC_DISABLED, CSMC_BOTH, CSMC_TEXTURE, CSMC_SIZE } ChestStyleMatchesContentsType;
 
-typedef enum {
-    BUNNY_HOOD_VANILLA,
-    BUNNY_HOOD_FAST_AND_JUMP,
-    BUNNY_HOOD_FAST
-} BunnyHoodMode;
+typedef enum { BUNNY_HOOD_VANILLA, BUNNY_HOOD_FAST_AND_JUMP, BUNNY_HOOD_FAST } BunnyHoodMode;
 
 typedef enum {
     MIRRORED_WORLD_OFF,
@@ -35,13 +26,7 @@ typedef enum {
     ENEMY_RANDOMIZER_RANDOM_SEEDED,
 } EnemyRandomizerMode;
 
-typedef enum {
-    FASTFILE_1,
-    FASTFILE_2,
-    FASTFILE_3,
-    FASTFILE_MAP_SELECT,
-    FASTFILE_FILE_SELECT
-} FastFileSelectTarget;
+typedef enum { FASTFILE_1, FASTFILE_2, FASTFILE_3, FASTFILE_MAP_SELECT, FASTFILE_FILE_SELECT } FastFileSelectTarget;
 
 typedef enum {
     AUTOSAVE_OFF,

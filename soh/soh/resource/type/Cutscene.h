@@ -48,17 +48,17 @@ class Cutscene : public Resource<uint32_t> {
   public:
     using Resource::Resource;
 
-    Cutscene() : Resource(std::shared_ptr<ResourceInitData>()) {}
+    Cutscene() : Resource(std::shared_ptr<ResourceInitData>()) {
+    }
 
     uint32_t* GetPointer();
-    size_t GetPointerSize();
+    size_t    GetPointerSize();
 
-    uint32_t numCommands;
-    uint32_t endFrame;
+    uint32_t              numCommands;
+    uint32_t              endFrame;
     std::vector<uint32_t> commands;
 };
 } // namespace LUS
-
 
 /////////////
 

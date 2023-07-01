@@ -9,11 +9,11 @@ struct BgIceShelter;
 typedef void (*BgIceShelterActionFunc)(struct BgIceShelter*, PlayState*);
 
 typedef struct BgIceShelter {
-    /* 0x0000 */ DynaPolyActor dyna;
+    /* 0x0000 */ DynaPolyActor          dyna;
     /* 0x0164 */ BgIceShelterActionFunc actionFunc;
-    /* 0x0168 */ ColliderCylinder cylinder1;
-    /* 0x01B4 */ ColliderCylinder cylinder2;
-    /* 0x0200 */ s16 alpha;
+    /* 0x0168 */ ColliderCylinder       cylinder1;
+    /* 0x01B4 */ ColliderCylinder       cylinder2;
+    /* 0x0200 */ s16                    alpha;
 } BgIceShelter; // size = 0x0204
 
 #endif

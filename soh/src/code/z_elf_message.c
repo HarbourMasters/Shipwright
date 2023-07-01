@@ -84,10 +84,10 @@ u32 func_8006BE88(ElfMessage** msgp) {
 
 u32 func_8006BF1C(ElfMessage** msgp) {
     ElfMessage* msg = *msgp;
-    u32 sp44[10];
-    s32 temp1 = 0;
-    s32 temp2 = 0;
-    s32 temp3;
+    u32         sp44[10];
+    s32         temp1 = 0;
+    s32         temp2 = 0;
+    s32         temp3;
 
     do {
         sp44[temp2] = ElfMessage_CheckCondition(msg);
@@ -150,7 +150,7 @@ u16 ElfMessage_GetTextFromMsgs(ElfMessage* msg) {
 }
 
 u16 ElfMessage_GetSariaText(PlayState* play) {
-    Player* player = GET_PLAYER(play);
+    Player*     player = GET_PLAYER(play);
     ElfMessage* msgs;
 
     if (!LINK_IS_ADULT) {

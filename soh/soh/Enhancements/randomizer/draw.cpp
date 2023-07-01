@@ -12,7 +12,7 @@
 
 extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEntry) {
     s32 pad;
-    s8 isColoredKeysEnabled = CVarGetInteger("gRandoMatchKeyColors", 1);
+    s8  isColoredKeysEnabled = CVarGetInteger("gRandoMatchKeyColors", 1);
     s16 color_slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_SMALL_KEY;
     s16 colors[9][3] = {
         { 4, 195, 46 },    // Forest Temple
@@ -49,7 +49,7 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
 
 extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEntry) {
     s32 pad;
-    s8 isColoredKeysEnabled = CVarGetInteger("gRandoMatchKeyColors", 1);
+    s8  isColoredKeysEnabled = CVarGetInteger("gRandoMatchKeyColors", 1);
     s16 color_slot;
     color_slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_BOSS_KEY;
     s16 colors[6][3] = {
@@ -133,7 +133,7 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
     Matrix_RotateZ(-(0.20f * 2), MTXMODE_APPLY);
     for (int i = 0; i < 5; i++) {
         gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
-                G_MTX_MODELVIEW | G_MTX_LOAD);
+                  G_MTX_MODELVIEW | G_MTX_LOAD);
         Matrix_Translate(3.12f, -0.34f, 17.53f, MTXMODE_APPLY);
         Matrix_RotateX(-0.31f, MTXMODE_APPLY);
         Matrix_RotateY(0.19f, MTXMODE_APPLY);
@@ -151,8 +151,9 @@ extern "C" void Randomizer_DrawDoubleDefense(PlayState* play, GetItemEntry getIt
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-   
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
 
     gDPSetGrayscaleColor(POLY_XLU_DISP++, 255, 255, 255, 255);
     gSPGrayscale(POLY_XLU_DISP++, true);

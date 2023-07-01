@@ -2,7 +2,7 @@
 #include "global.h"
 
 s32 __osPfsInodeCacheChannel = -1;
-u8 __osPfsInodeCacheBank = 250;
+u8  __osPfsInodeCacheBank = 250;
 
 u16 __osSumcalc(u8* ptr, s32 length) {
     s32 i;
@@ -30,9 +30,9 @@ s32 __osIdCheckSum(u16* ptr, u16* checkSum, u16* idSum) {
 
 s32 __osRepairPackId(OSPfs* pfs, __OSPackId* badid, __OSPackId* newid) {
     s32 ret = 0;
-    u8 temp[BLOCKSIZE];
-    u8 comp[BLOCKSIZE];
-    u8 mask = 0;
+    u8  temp[BLOCKSIZE];
+    u8  comp[BLOCKSIZE];
+    u8  mask = 0;
     s32 i, j = 0;
     u16 index[4];
 
@@ -158,12 +158,12 @@ s32 __osCheckPackId(OSPfs* pfs, __OSPackId* check) {
 }
 
 s32 __osGetId(OSPfs* pfs) {
-    u16 sum;
-    u16 isum;
-    u8 temp[BLOCKSIZE];
+    u16         sum;
+    u16         isum;
+    u8          temp[BLOCKSIZE];
     __OSPackId* id;
-    __OSPackId newid;
-    s32 ret;
+    __OSPackId  newid;
+    s32         ret;
 
     if (pfs->activebank != 0) {
         if ((ret = __osPfsSelectBank(pfs, 0)) != 0) {
@@ -219,7 +219,7 @@ s32 __osGetId(OSPfs* pfs) {
 }
 
 s32 __osCheckId(OSPfs* pfs) {
-    u8 temp[BLOCKSIZE];
+    u8  temp[BLOCKSIZE];
     s32 ret;
 
     if (pfs->activebank != 0) {
@@ -249,7 +249,7 @@ s32 __osCheckId(OSPfs* pfs) {
 }
 
 s32 __osPfsRWInode(OSPfs* pfs, __OSInode* inode, u8 flag, u8 bank) {
-    u8 sum;
+    u8  sum;
     s32 j;
     s32 ret;
     s32 offset;

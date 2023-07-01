@@ -243,10 +243,10 @@ void func_80AAD014(EnMk* this, PlayState* play) {
 }
 
 void EnMk_Wait(EnMk* this, PlayState* play) {
-    s16 angle;
-    s32 swimFlag;
+    s16     angle;
+    s32     swimFlag;
     Player* player = GET_PLAYER(play);
-    s32 playerExchangeItem;
+    s32     playerExchangeItem;
 
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         playerExchangeItem = func_8002F368(play);
@@ -256,8 +256,7 @@ void EnMk_Wait(EnMk* this, PlayState* play) {
             this->actionFunc = func_80AACA40;
         } else {
             // Skip eye drop text on rando if Link went in the water, so you can still receive the dive check
-            if (INV_CONTENT(ITEM_ODD_MUSHROOM) == ITEM_EYEDROPS &&
-                (!gSaveContext.n64ddFlag || this->swimFlag == 0)) {
+            if (INV_CONTENT(ITEM_ODD_MUSHROOM) == ITEM_EYEDROPS && (!gSaveContext.n64ddFlag || this->swimFlag == 0)) {
                 player->actor.textId = 0x4032;
                 this->actionFunc = func_80AACA40;
             } else {
@@ -316,10 +315,10 @@ void EnMk_Wait(EnMk* this, PlayState* play) {
 
 void EnMk_Update(Actor* thisx, PlayState* play) {
     EnMk* this = (EnMk*)thisx;
-    s32 pad;
-    Vec3s vec;
+    s32     pad;
+    Vec3s   vec;
     Player* player;
-    s16 swimFlag;
+    s16     swimFlag;
 
     Collider_UpdateCylinder(&this->actor, &this->collider);
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);

@@ -4,15 +4,15 @@
 #include <libultraship/libultra.h>
 #include "global.h"
 
-extern u8 gAmmoItems[];
-extern s16 D_8082AAEC[];
-extern s16 D_8082AB2C[];
-extern u8 gEquipAgeReqs[][4];
-extern u8 gAreaGsFlags[];
+extern u8   gAmmoItems[];
+extern s16  D_8082AAEC[];
+extern s16  D_8082AB2C[];
+extern u8   gEquipAgeReqs[][4];
+extern u8   gAreaGsFlags[];
 extern bool gSelectingMask;
 
 void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx);
-s32 KaleidoScope_UpdateQuestStatusPoint(PauseContext* pauseCtx, s32 point);
+s32  KaleidoScope_UpdateQuestStatusPoint(PauseContext* pauseCtx, s32 point);
 void KaleidoScope_DrawDebugEditor(PlayState* play);
 void KaleidoScope_DrawPlayerWork(PlayState* play);
 void KaleidoScope_DrawEquipment(PlayState* play);

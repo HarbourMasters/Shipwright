@@ -3,14 +3,14 @@
 
 typedef struct {
     /* 0x00 */ void* texture;
-    /* 0x04 */ u32 imageFormat;
-    /* 0x08 */ u32 imageSize;
-    /* 0x0C */ u32 textureWidth;
-    /* 0x10 */ u32 textureHeight;
-    /* 0x14 */ u32 rectWidth;
-    /* 0x18 */ u32 rectHeight;
-    /* 0x1C */ u32 dsdx;
-    /* 0x20 */ u32 dtdy;
+    /* 0x04 */ u32   imageFormat;
+    /* 0x08 */ u32   imageSize;
+    /* 0x0C */ u32   textureWidth;
+    /* 0x10 */ u32   textureHeight;
+    /* 0x14 */ u32   rectWidth;
+    /* 0x18 */ u32   rectHeight;
+    /* 0x1C */ u32   dsdx;
+    /* 0x20 */ u32   dtdy;
 } PauseMapMarkInfo; // size = 0x24
 
 static PauseMapMarkInfo sMapMarkInfoTable[] = {
@@ -38,7 +38,7 @@ extern PauseMapMarksData gPauseMapMarkDataTableMasterQuest[];
 void PauseMapMark_Init(PlayState* play) {
     gBossMarkState = 0;
     gBossMarkScale = 1.0f;
-    if(ResourceMgr_IsGameMasterQuest()) {
+    if (ResourceMgr_IsGameMasterQuest()) {
         gLoadedPauseMarkDataTable = gPauseMapMarkDataTableMasterQuest;
     } else {
         gLoadedPauseMarkDataTable = gPauseMapMarkDataTable;
@@ -50,11 +50,11 @@ void PauseMapMark_Clear(PlayState* play) {
 }
 
 void PauseMapMark_DrawForDungeon(PlayState* play) {
-    PauseMapMarkData* mapMarkData;
+    PauseMapMarkData*  mapMarkData;
     PauseMapMarkPoint* markPoint;
-    PauseMapMarkInfo* markInfo;
-    f32 scale;
-    s32 i = 0;
+    PauseMapMarkInfo*  markInfo;
+    f32                scale;
+    s32                i = 0;
 
     mapMarkData = &gLoadedPauseMarkDataTable[R_MAP_TEX_INDEX >> 1][i];
 

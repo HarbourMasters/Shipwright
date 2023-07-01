@@ -7,11 +7,11 @@
 #include "soh/frame_interpolation.h"
 
 #define LIGHTS_BUFFER_SIZE 32
-//#define LIGHTS_BUFFER_SIZE 1024 // Kill me
+// #define LIGHTS_BUFFER_SIZE 1024 // Kill me
 
 typedef struct {
-    /* 0x000 */ s32 numOccupied;
-    /* 0x004 */ s32 searchIndex;
+    /* 0x000 */ s32       numOccupied;
+    /* 0x004 */ s32       searchIndex;
     /* 0x008 */ LightNode buf[LIGHTS_BUFFER_SIZE];
 } LightsBuffer; // size = 0x188
 
@@ -63,7 +63,7 @@ void Lights_Reset(Lights* lights, u8 ambentR, u8 ambentG, u8 ambentB) {
  */
 void Lights_Draw(Lights* lights, GraphicsContext* gfxCtx) {
     Light* light;
-    s32 i;
+    s32    i;
 
 #if 1
 
@@ -99,11 +99,11 @@ Light* Lights_FindSlot(Lights* lights) {
 }
 
 void Lights_BindPoint(Lights* lights, LightParams* params, Vec3f* vec) {
-    f32 xDiff;
-    f32 yDiff;
-    f32 zDiff;
-    f32 posDiff;
-    f32 scale;
+    f32    xDiff;
+    f32    yDiff;
+    f32    zDiff;
+    f32    posDiff;
+    f32    scale;
     Light* light;
 
     if (vec != NULL) {
@@ -158,7 +158,7 @@ void Lights_BindDirectional(Lights* lights, LightParams* params, Vec3f* vec) {
  */
 void Lights_BindAll(Lights* lights, LightNode* listHead, Vec3f* vec) {
     LightsBindFunc bindFuncs[] = { Lights_BindPoint, Lights_BindDirectional, Lights_BindPoint };
-    LightInfo* info;
+    LightInfo*     info;
 
     while (listHead != NULL) {
         info = listHead->info;
@@ -290,7 +290,7 @@ void LightContext_RemoveLight(PlayState* play, LightContext* lightCtx, LightNode
 Lights* Lights_NewAndDraw(GraphicsContext* gfxCtx, u8 ambientR, u8 ambientG, u8 ambientB, u8 numLights, u8 r, u8 g,
                           u8 b, s8 x, s8 y, s8 z) {
     Lights* lights;
-    s32 i;
+    s32     i;
 
     lights = Graph_Alloc(gfxCtx, sizeof(Lights));
 
@@ -327,13 +327,13 @@ Lights* Lights_New(GraphicsContext* gfxCtx, u8 ambientR, u8 ambientG, u8 ambient
 }
 
 void Lights_GlowCheckPrepare(PlayState* play) {
-    LightNode* node;
+    LightNode*  node;
     LightPoint* params;
-    Vec3f pos;
-    Vec3f multDest;
-    f32 wDest;
-    f32 wX;
-    f32 wY;
+    Vec3f       pos;
+    Vec3f       multDest;
+    f32         wDest;
+    f32         wX;
+    f32         wY;
 
     node = play->lightCtx.listHead;
 
@@ -341,8 +341,8 @@ void Lights_GlowCheckPrepare(PlayState* play) {
         params = &node->info->params.point;
 
         if (node->info->type == LIGHT_POINT_GLOW) {
-            f32 x, y;
-            u32 shrink;
+            f32      x, y;
+            u32      shrink;
             uint32_t height;
 
             pos.x = params->x;
@@ -365,15 +365,15 @@ void Lights_GlowCheckPrepare(PlayState* play) {
 }
 
 void Lights_GlowCheck(PlayState* play) {
-    LightNode* node;
+    LightNode*  node;
     LightPoint* params;
-    Vec3f pos;
-    Vec3f multDest;
-    f32 wDest;
-    f32 wX;
-    f32 wY;
-    s32 wZ;
-    s32 zBuf;
+    Vec3f       pos;
+    Vec3f       multDest;
+    f32         wDest;
+    f32         wX;
+    f32         wY;
+    s32         wZ;
+    s32         zBuf;
 
     node = play->lightCtx.listHead;
 
@@ -381,8 +381,8 @@ void Lights_GlowCheck(PlayState* play) {
         params = &node->info->params.point;
 
         if (node->info->type == LIGHT_POINT_GLOW) {
-            f32 x, y;
-            u32 shrink;
+            f32      x, y;
+            u32      shrink;
             uint32_t height;
 
             pos.x = params->x;
@@ -400,7 +400,7 @@ void Lights_GlowCheck(PlayState* play) {
             if ((multDest.z > 1.0f) && y >= shrink && y <= SCREEN_HEIGHT - shrink) {
                 wZ = (s32)((multDest.z * wDest) * 16352.0f) + 16352;
                 zBuf = OTRGetPixelDepth(x, y) * 4;
-        
+
                 if (wZ < (zBuf >> 3)) {
                     params->drawGlow = true;
                 }
@@ -411,7 +411,7 @@ void Lights_GlowCheck(PlayState* play) {
 }
 
 void Lights_DrawGlow(PlayState* play) {
-    s32 pad;
+    s32        pad;
     LightNode* node;
 
     node = play->lightCtx.listHead;
@@ -424,10 +424,10 @@ void Lights_DrawGlow(PlayState* play) {
     gSPDisplayList(POLY_XLU_DISP++, gGlowCircleTextureLoadDL);
 
     while (node != NULL) {
-        LightInfo* info;
+        LightInfo*  info;
         LightPoint* params;
-        f32 scale;
-        s32 pad[4];
+        f32         scale;
+        s32         pad[4];
 
         info = node->info;
         params = &info->params.point;
@@ -439,8 +439,7 @@ void Lights_DrawGlow(PlayState* play) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, params->color[0], params->color[1], params->color[2], 50);
             Matrix_Translate(params->x, params->y, params->z, MTXMODE_NEW);
             Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gGlowCircleDL);
             FrameInterpolation_RecordCloseChild();
         }

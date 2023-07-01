@@ -9,7 +9,9 @@
 #include "objects/object_po_sisters/object_po_sisters.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_HOOKSHOT_DRAGS | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_ARROW_DRAGGABLE)
+#define FLAGS                                                                                                  \
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_HOOKSHOT_DRAGS | \
+     ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_ARROW_DRAGGABLE)
 
 void EnPoSisters_Init(Actor* thisx, PlayState* play);
 void EnPoSisters_Destroy(Actor* thisx, PlayState* play);
@@ -190,8 +192,8 @@ void EnPoSisters_Init(Actor* thisx, PlayState* play) {
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 50.0f);
-    SkelAnime_Init(play, &this->skelAnime, &gPoeSistersSkel, &gPoeSistersSwayAnim, this->jointTable,
-                   this->morphTable, 12);
+    SkelAnime_Init(play, &this->skelAnime, &gPoeSistersSkel, &gPoeSistersSwayAnim, this->jointTable, this->morphTable,
+                   12);
     this->unk_22E.r = 255;
     this->unk_22E.g = 255;
     this->unk_22E.b = 210;
@@ -243,9 +245,9 @@ void EnPoSisters_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_80AD9240(EnPoSisters* this, s32 arg1, Vec3f* arg2) {
-    f32 temp_f20 = SQ(arg1) * 0.1f;
+    f32    temp_f20 = SQ(arg1) * 0.1f;
     Vec3f* vec;
-    s32 i;
+    s32    i;
 
     for (i = 0; i < this->unk_198; i++) {
         vec = &this->unk_234[i];
@@ -348,7 +350,7 @@ void func_80AD9718(EnPoSisters* this) {
 
 void func_80AD97C8(EnPoSisters* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 sp20;
+    f32     sp20;
 
     if (this->unk_195 == 0 || this->actionFunc != func_80ADAAA4) {
         if ((player->swordState == 0 || player->meleeWeaponAnimation >= 24) &&
@@ -409,8 +411,8 @@ void func_80AD9AA8(EnPoSisters* this, PlayState* play) {
                                 this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0x800, true);
     Actor* actor3 = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_PO_SISTERS, this->actor.world.pos.x,
                                 this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0xC00, true);
-    s32 pad;
-    s32 pad1;
+    s32    pad;
+    s32    pad1;
 
     if (actor1 == NULL || actor2 == NULL || actor3 == NULL) {
         if (actor1 != NULL) {
@@ -447,8 +449,8 @@ void func_80AD9C24(EnPoSisters* this, PlayState* play) {
         vec.x = this->actor.world.pos.x;
         vec.y = this->actor.world.pos.y + 45.0f;
         vec.z = this->actor.world.pos.z;
-        EffectSsDeadDb_Spawn(play, &vec, &sZeroVector, &sZeroVector, 150, 0, 255, 255, 255, 155, 150, 150, 150, 1,
-                             9, 0);
+        EffectSsDeadDb_Spawn(play, &vec, &sZeroVector, &sZeroVector, 150, 0, 255, 255, 255, 155, 150, 150, 150, 1, 9,
+                             0);
     }
     Lights_PointSetColorAndRadius(&this->lightInfo, 0, 0, 0, 0);
     this->actionFunc = func_80ADB338;
@@ -581,7 +583,7 @@ void func_80ADA2BC(EnPoSisters* this, PlayState* play) {
 }
 
 void func_80ADA35C(EnPoSisters* this, PlayState* play) {
-    f32 targetY;
+    f32     targetY;
     Player* player = GET_PLAYER(play);
 
     if (this->actionFunc == func_80ADBF58) {
@@ -640,7 +642,7 @@ void func_80ADA530(EnPoSisters* this, PlayState* play) {
 
 void func_80ADA6A0(EnPoSisters* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s16 temp_v0;
+    s16     temp_v0;
 
     SkelAnime_Update(&this->skelAnime);
     temp_v0 = this->actor.yawTowardsPlayer - player->actor.shape.rot.y;
@@ -854,7 +856,7 @@ void func_80ADB2B8(EnPoSisters* this, PlayState* play) {
 }
 
 void func_80ADB338(EnPoSisters* this, PlayState* play) {
-    Player* player = GET_PLAYER(play);
+    Player*      player = GET_PLAYER(play);
     EnPoSisters* realMeg = (EnPoSisters*)this->actor.parent;
 
     if (this->unk_195 == 0) {
@@ -902,7 +904,7 @@ void func_80ADB51C(EnPoSisters* this, PlayState* play) {
     f32 temp_f2;
     s16 phi_v0;
     s16 phi_a2;
-    u8 temp;
+    u8  temp;
 
     SkelAnime_Update(&this->skelAnime);
     temp_f2 = this->skelAnime.endFrame * 0.5f;
@@ -1192,7 +1194,7 @@ void EnPoSisters_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     EnPoSisters* this = (EnPoSisters*)thisx;
     s16 temp;
-    
+
     if (this->collider.base.atFlags & AT_HIT) {
         this->collider.base.atFlags &= ~AT_HIT;
         func_80AD9568(this);
@@ -1212,7 +1214,7 @@ void EnPoSisters_Update(Actor* thisx, PlayState* play) {
             Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 0.0f, 5);
         } else {
             Vec3f vec;
-            s32 sp34;
+            s32   sp34;
 
             vec.x = this->actor.world.pos.x;
             vec.y = this->actor.world.pos.y + 10.0f;
@@ -1284,8 +1286,8 @@ void func_80ADC55C(EnPoSisters* this) {
     }
 }
 
-s32 EnPoSisters_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                 void* thisx, Gfx** gfxP) {
+s32 EnPoSisters_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
+                                 Gfx** gfxP) {
     EnPoSisters* this = (EnPoSisters*)thisx;
     Color_RGBA8* color;
 
@@ -1312,15 +1314,13 @@ s32 EnPoSisters_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Ve
     return false;
 }
 
-void EnPoSisters_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx,
-                              Gfx** gfxP) {
+void EnPoSisters_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx, Gfx** gfxP) {
     EnPoSisters* this = (EnPoSisters*)thisx;
     s32 i;
     s32 pad;
 
     if (this->actionFunc == func_80ADAFC0 && this->unk_19A >= 8 && limbIndex == 9) {
-        gSPMatrix((*gfxP)++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix((*gfxP)++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList((*gfxP)++, gPoSistersBurnDL);
     }
     if (limbIndex == 8 && this->actionFunc != func_80ADB2B8) {
@@ -1334,7 +1334,7 @@ void EnPoSisters_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
         }
         if (this->unk_198 > 0) {
             Color_RGBA8* color = &D_80ADD6F0[this->unk_194];
-            f32 temp_f2 = Rand_ZeroOne() * 0.3f + 0.7f;
+            f32          temp_f2 = Rand_ZeroOne() * 0.3f + 0.7f;
 
             if (this->actionFunc == func_80ADB17C || this->actionFunc == func_80ADBD38 ||
                 this->actionFunc == func_80ADBEE8) {
@@ -1357,13 +1357,13 @@ void EnPoSisters_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
 
 void EnPoSisters_Draw(Actor* thisx, PlayState* play) {
     EnPoSisters* this = (EnPoSisters*)thisx;
-    u8 phi_s5 = 0;
-    f32 phi_f20;
-    s32 i;
-    u8 spE7 = 0;
+    u8           phi_s5 = 0;
+    f32          phi_f20;
+    s32          i;
+    u8           spE7 = 0;
     Color_RGBA8* temp_s1 = &D_80ADD700[this->unk_194];
     Color_RGBA8* temp_s7 = &D_80ADD6F0[this->unk_194];
-    s32 pad;
+    s32          pad;
 
     OPEN_DISPS(play->state.gfxCtx);
     func_80ADC55C(this);
@@ -1373,24 +1373,23 @@ void EnPoSisters_Draw(Actor* thisx, PlayState* play) {
         gDPSetEnvColor(POLY_OPA_DISP++, this->unk_22E.r, this->unk_22E.g, this->unk_22E.b, this->unk_22E.a);
         gSPSegment(POLY_OPA_DISP++, 0x09, D_80116280 + 2);
         POLY_OPA_DISP =
-            SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                           EnPoSisters_OverrideLimbDraw, EnPoSisters_PostLimbDraw, &this->actor, POLY_OPA_DISP);
+            SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnPoSisters_OverrideLimbDraw,
+                           EnPoSisters_PostLimbDraw, &this->actor, POLY_OPA_DISP);
     } else {
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 255, this->unk_22E.a);
         gSPSegment(POLY_XLU_DISP++, 0x09, D_80116280);
         POLY_XLU_DISP =
-            SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                           EnPoSisters_OverrideLimbDraw, EnPoSisters_PostLimbDraw, &this->actor, POLY_XLU_DISP);
+            SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnPoSisters_OverrideLimbDraw,
+                           EnPoSisters_PostLimbDraw, &this->actor, POLY_XLU_DISP);
     }
     if (!(this->unk_199 & 0x80)) {
         Matrix_Put(&this->unk_2F8);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gPoSistersTorchDL);
     }
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
-                                (play->gameplayFrames * -20) % 512, 0x20, 0x80));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0, (play->gameplayFrames * -20) % 512, 0x20,
+                                0x80));
     gDPSetEnvColor(POLY_XLU_DISP++, temp_s1->r, temp_s1->g, temp_s1->b, temp_s1->a);
     if (this->actionFunc == func_80ADB17C) {
         if (this->unk_19A < 32) {
@@ -1429,8 +1428,7 @@ void EnPoSisters_Draw(Actor* thisx, PlayState* play) {
             phi_f20 = CLAMP(phi_f20, 0.5f, 0.8f) * 0.007f;
         }
         Matrix_Scale(phi_f20, phi_f20, phi_f20, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
         FrameInterpolation_RecordCloseChild();
     }

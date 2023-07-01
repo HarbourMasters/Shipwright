@@ -1,9 +1,9 @@
 #include "global.h"
 
 OSTime osGetTime(void) {
-    u32 count;
-    u32 base;
-    OSTime t;
+    u32          count;
+    u32          base;
+    OSTime       t;
     register u32 prevInt = __osDisableInt();
 
     count = osGetCount();

@@ -9,7 +9,7 @@ void Sample_HandleStateChange(SampleContext* this) {
 
 void Sample_Draw(SampleContext* this) {
     GraphicsContext* gfxCtx = this->state.gfxCtx;
-    View* view = &this->view;
+    View*            view = &this->view;
 
     OPEN_DISPS(gfxCtx);
 
@@ -50,7 +50,7 @@ void Sample_Destroy(GameState* thisx) {
 }
 
 void Sample_SetupView(SampleContext* this) {
-    View* view = &this->view;
+    View*            view = &this->view;
     GraphicsContext* gfxCtx = this->state.gfxCtx;
 
     View_Init(view, gfxCtx);

@@ -132,7 +132,7 @@ void GameInteractor::RawAction::GiveOrTakeShield(int32_t shield) {
     // 'shield' being a negative number means taking that shield.
 
     Player* player = GET_PLAYER(gPlayState);
-    int8_t shieldToCheck = PLAYER_SHIELD_NONE;
+    int8_t  shieldToCheck = PLAYER_SHIELD_NONE;
 
     if (shield < 0) {
         shield = shield * -1;
@@ -183,7 +183,7 @@ void GameInteractor::RawAction::UpdateActor(void* refActor) {
     // Update actor again outside of their normal update cycle.
 
     Actor* actor = static_cast<Actor*>(refActor);
-    
+
     // Sometimes the actor is destroyed in the previous Update, so check if the update function still exists.
     if (actor->update != NULL) {
         // Fix for enemies sometimes taking a "fake" hit, where their invincibility timer is
@@ -232,7 +232,7 @@ void GameInteractor::RawAction::SetTimeOfDay(uint32_t time) {
 void GameInteractor::RawAction::SetCollisionViewer(bool active) {
     CVarSetInteger("gColViewerEnabled", active);
     CVarSetInteger("gColViewerDecal", active);
-    
+
     if (active) {
         CVarSetInteger("gColViewerScene", COLVIEW_TRANSPARENT);
         CVarSetInteger("gColViewerBgActors", COLVIEW_TRANSPARENT);
@@ -252,8 +252,8 @@ void GameInteractor::RawAction::SetCosmeticsColor(uint8_t cosmeticCategory, uint
     newColor.g = 255;
     newColor.b = 255;
     newColor.a = 255;
-    
-    switch (colorValue) { 
+
+    switch (colorValue) {
         case GI_COLOR_RED:
             newColor.r = 200;
             newColor.g = 30;
@@ -303,7 +303,7 @@ void GameInteractor::RawAction::SetCosmeticsColor(uint8_t cosmeticCategory, uint
             break;
     }
 
-    switch (cosmeticCategory) { 
+    switch (cosmeticCategory) {
         case GI_COSMETICS_TUNICS:
             CVarSetColor("gCosmetics.Link_KokiriTunic.Value", newColor);
             CVarSetInteger("gCosmetics.Link_KokiriTunic.Changed", 1);
@@ -341,20 +341,12 @@ void GameInteractor::RawAction::SetCosmeticsColor(uint8_t cosmeticCategory, uint
 }
 
 void GameInteractor::RawAction::RandomizeCosmeticsColors(bool excludeBiddingWarColors) {
-    const char* cvarsToLock[12] = { 
-        "gCosmetics.Link_KokiriTunic.Locked",
-        "gCosmetics.Link_GoronTunic.Locked",
-        "gCosmetics.Link_ZoraTunic.Locked",
-        "gCosmetics.Navi_EnemyPrimary.Locked",
-        "gCosmetics.Navi_EnemySecondary.Locked",
-        "gCosmetics.Navi_IdlePrimary.Locked",
-        "gCosmetics.Navi_IdleSecondary.Locked",
-        "gCosmetics.Navi_NPCPrimary.Locked",
-        "gCosmetics.Navi_NPCSecondary.Locked",
-        "gCosmetics.Navi_PropsPrimary.Locked",
-        "gCosmetics.Navi_PropsSecondary.Locked",
-        "gCosmetics.Link_Hair.Locked"
-    };
+    const char* cvarsToLock[12] = { "gCosmetics.Link_KokiriTunic.Locked",    "gCosmetics.Link_GoronTunic.Locked",
+                                    "gCosmetics.Link_ZoraTunic.Locked",      "gCosmetics.Navi_EnemyPrimary.Locked",
+                                    "gCosmetics.Navi_EnemySecondary.Locked", "gCosmetics.Navi_IdlePrimary.Locked",
+                                    "gCosmetics.Navi_IdleSecondary.Locked",  "gCosmetics.Navi_NPCPrimary.Locked",
+                                    "gCosmetics.Navi_NPCSecondary.Locked",   "gCosmetics.Navi_PropsPrimary.Locked",
+                                    "gCosmetics.Navi_PropsSecondary.Locked", "gCosmetics.Link_Hair.Locked" };
 
     if (excludeBiddingWarColors) {
         for (uint8_t i = 0; i < 12; i++) {
@@ -379,7 +371,7 @@ void GameInteractor::RawAction::EmulateRandomButtonPress(uint32_t chancePercenta
     uint32_t emulatedButton;
     uint32_t randomNumber = rand();
     uint32_t possibleButtons[14] = { BTN_CRIGHT, BTN_CLEFT, BTN_CDOWN, BTN_CUP,   BTN_R, BTN_L, BTN_DRIGHT,
-                             BTN_DLEFT,  BTN_DDOWN, BTN_DUP,   BTN_START, BTN_Z, BTN_B, BTN_A };
+                                     BTN_DLEFT,  BTN_DDOWN, BTN_DUP,   BTN_START, BTN_Z, BTN_B, BTN_A };
 
     emulatedButton = possibleButtons[randomNumber % 14];
 
@@ -419,7 +411,8 @@ void GameInteractor::RawAction::SetPlayerInvincibility(bool active) {
     }
 }
 
-GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams) {
+GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset(uint32_t enemyId,
+                                                                                 int32_t  enemyParams) {
 
     if (!GameInteractor::CanSpawnActor()) {
         return GameInteractionEffectQueryResult::TemporarilyNotPossible;
@@ -461,8 +454,8 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
 
     // Raycast to the ground from randomly generated point.
     CollisionPoly poly;
-    Vec3f pos;
-    f32 raycastResult;
+    Vec3f         pos;
+    f32           raycastResult;
 
     pos.x = player->actor.world.pos.x + posXOffset;
     pos.y = player->actor.world.pos.y + 50;
@@ -488,13 +481,15 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
             pos.x += 10;
             pos.y += 10;
             pos.z += 10;
-            if (Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, pos.x, pos.y, pos.z, 0, 0, 0, enemyParams, 0) == NULL) {
+            if (Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, pos.x, pos.y, pos.z, 0, 0, 0, enemyParams, 0) ==
+                NULL) {
                 return GameInteractionEffectQueryResult::TemporarilyNotPossible;
             }
         }
         return GameInteractionEffectQueryResult::Possible;
     } else {
-        if (Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, pos.x, pos.y, pos.z, 0, 0, 0, enemyParams, 0) != NULL) {
+        if (Actor_Spawn(&gPlayState->actorCtx, gPlayState, enemyId, pos.x, pos.y, pos.z, 0, 0, 0, enemyParams, 0) !=
+            NULL) {
             return GameInteractionEffectQueryResult::Possible;
         }
     }
@@ -512,8 +507,9 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnActor(uint32_t 
 
     if (actorId == ACTOR_EN_NIW) {
         // Spawn Cucco and make it angry
-        EnNiw* cucco = (EnNiw*)Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorId, player->actor.world.pos.x,
-                                           player->actor.world.pos.y + 2200, player->actor.world.pos.z, 0, 0, 0, actorParams, 0);
+        EnNiw* cucco =
+            (EnNiw*)Actor_Spawn(&gPlayState->actorCtx, gPlayState, actorId, player->actor.world.pos.x,
+                                player->actor.world.pos.y + 2200, player->actor.world.pos.z, 0, 0, 0, actorParams, 0);
         if (cucco == NULL) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         }
@@ -522,8 +518,9 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnActor(uint32_t 
         return GameInteractionEffectQueryResult::Possible;
     } else if (actorId == ACTOR_EN_BOM) {
         // Spawn a bomb, make it explode instantly when params is set to 1 to emulate spawning an explosion
-        EnBom* bomb = (EnBom*)Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_BOM, player->actor.world.pos.x,
-                                   player->actor.world.pos.y + 30, player->actor.world.pos.z, 0, 0, 0, BOMB_BODY, true);
+        EnBom* bomb =
+            (EnBom*)Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_BOM, player->actor.world.pos.x,
+                                player->actor.world.pos.y + 30, player->actor.world.pos.z, 0, 0, 0, BOMB_BODY, true);
 
         if (bomb == NULL) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
@@ -543,5 +540,4 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnActor(uint32_t 
     }
 
     return GameInteractionEffectQueryResult::TemporarilyNotPossible;
-    
 }

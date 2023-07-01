@@ -6,8 +6,9 @@
 #include "vt.h"
 
 // Init mode: Initial setup as the file select is starting up, fades and slides in various menu elements
-// Config mode: Handles the bulk of the file select, various configuration tasks like picking a file, copy/erase, and the options menu
-// Select mode: Displays the selected file with various details about it, and allows the player to confirm and open it
+// Config mode: Handles the bulk of the file select, various configuration tasks like picking a file, copy/erase, and
+// the options menu Select mode: Displays the selected file with various details about it, and allows the player to
+// confirm and open it
 typedef enum {
     /* 0 */ FS_MENU_MODE_INIT,
     /* 1 */ FS_MENU_MODE_CONFIG,
@@ -179,35 +180,35 @@ typedef enum {
     /* 03 */ FS_QUEST_BOSSRUSH,
 } FileSelectQuest;
 
-void FileChoose_SetupCopySource(GameState* thisx); 
-void FileChoose_SelectCopySource(GameState* thisx); 
-void FileChoose_SetupCopyDest1(GameState* thisx); 
-void FileChoose_SetupCopyDest2(GameState* thisx); 
-void FileChoose_SelectCopyDest(GameState* thisx); 
-void FileChoose_ExitToCopySource1(GameState* thisx); 
-void FileChoose_ExitToCopySource2(GameState* thisx); 
-void FileChoose_SetupCopyConfirm1(GameState* thisx); 
-void FileChoose_SetupCopyConfirm2(GameState* thisx); 
-void FileChoose_CopyConfirm(GameState* thisx); 
-void FileChoose_ReturnToCopyDest(GameState* thisx); 
-void FileChoose_CopyAnim1(GameState* thisx); 
-void FileChoose_CopyAnim2(GameState* thisx); 
-void FileChoose_CopyAnim3(GameState* thisx); 
-void FileChoose_CopyAnim4(GameState* thisx); 
-void FileChoose_CopyAnim5(GameState* thisx); 
+void FileChoose_SetupCopySource(GameState* thisx);
+void FileChoose_SelectCopySource(GameState* thisx);
+void FileChoose_SetupCopyDest1(GameState* thisx);
+void FileChoose_SetupCopyDest2(GameState* thisx);
+void FileChoose_SelectCopyDest(GameState* thisx);
+void FileChoose_ExitToCopySource1(GameState* thisx);
+void FileChoose_ExitToCopySource2(GameState* thisx);
+void FileChoose_SetupCopyConfirm1(GameState* thisx);
+void FileChoose_SetupCopyConfirm2(GameState* thisx);
+void FileChoose_CopyConfirm(GameState* thisx);
+void FileChoose_ReturnToCopyDest(GameState* thisx);
+void FileChoose_CopyAnim1(GameState* thisx);
+void FileChoose_CopyAnim2(GameState* thisx);
+void FileChoose_CopyAnim3(GameState* thisx);
+void FileChoose_CopyAnim4(GameState* thisx);
+void FileChoose_CopyAnim5(GameState* thisx);
 
-void FileChoose_ExitCopyToMain(GameState* thisx); 
-void FileChoose_SetupEraseSelect(GameState* thisx); 
-void FileChoose_EraseSelect(GameState* thisx); 
-void FileChoose_SetupEraseConfirm1(GameState* thisx); 
-void FileChoose_SetupEraseConfirm2(GameState* thisx); 
-void FileChoose_EraseConfirm(GameState* thisx); 
-void FileChoose_ExitToEraseSelect1(GameState* thisx); 
-void FileChoose_ExitToEraseSelect2(GameState* thisx); 
-void FileChoose_EraseAnim1(GameState* thisx); 
-void FileChoose_EraseAnim2(GameState* thisx); 
-void FileChoose_EraseAnim3(GameState* thisx); 
-void FileChoose_ExitEraseToMain(GameState* thisx); 
+void FileChoose_ExitCopyToMain(GameState* thisx);
+void FileChoose_SetupEraseSelect(GameState* thisx);
+void FileChoose_EraseSelect(GameState* thisx);
+void FileChoose_SetupEraseConfirm1(GameState* thisx);
+void FileChoose_SetupEraseConfirm2(GameState* thisx);
+void FileChoose_EraseConfirm(GameState* thisx);
+void FileChoose_ExitToEraseSelect1(GameState* thisx);
+void FileChoose_ExitToEraseSelect2(GameState* thisx);
+void FileChoose_EraseAnim1(GameState* thisx);
+void FileChoose_EraseAnim2(GameState* thisx);
+void FileChoose_EraseAnim3(GameState* thisx);
+void FileChoose_ExitEraseToMain(GameState* thisx);
 
 void FileChoose_UpdateKeyboardCursor(GameState* thisx);
 void FileChoose_StartNameEntry(GameState* thisx);
@@ -224,8 +225,8 @@ void FileChoose_DrawOptions(GameState* thisx);
 void FileChoose_DrawNameEntry(GameState* thisx);
 void FileChoose_DrawCharacter(GraphicsContext* gfxCtx, void* texture, s16 vtx);
 
-void HandleMouseInput(Input* input);
-u8 HandleMouseCursor(FileChooseContext* thisx, Input* input, int minx, int miny, int maxx, int maxy);
+void  HandleMouseInput(Input* input);
+u8    HandleMouseCursor(FileChooseContext* thisx, Input* input, int minx, int miny, int maxx, int maxy);
 Vec2f HandleMouseCursorSplit(FileChooseContext* thisx, Input* input, int minx, int miny, int maxx, int maxy, int countx,
                              int county);
 

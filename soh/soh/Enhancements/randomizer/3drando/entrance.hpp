@@ -37,10 +37,8 @@ enum class EntranceType {
 };
 
 class Entrance {
-public:
-
-    Entrance(uint32_t connectedRegion_, std::vector<ConditionFn> conditions_met_)
-        : connectedRegion(connectedRegion_) {
+  public:
+    Entrance(uint32_t connectedRegion_, std::vector<ConditionFn> conditions_met_) : connectedRegion(connectedRegion_) {
         conditions_met.resize(2);
         for (size_t i = 0; i < conditions_met_.size(); i++) {
             conditions_met[i] = conditions_met_[i];
@@ -73,11 +71,10 @@ public:
 
     void SetName(std::string name_ = "") {
         if (name_ == "") {
-          name = AreaTable(parentRegion)->regionName + " -> " + AreaTable(connectedRegion)->regionName;
+            name = AreaTable(parentRegion)->regionName + " -> " + AreaTable(connectedRegion)->regionName;
         } else {
-          name = std::move(name_);
+            name = std::move(name_);
         }
-
     }
 
     std::string GetName() const {
@@ -85,28 +82,34 @@ public:
     }
 
     void printAgeTimeAccess() {
-      CitraPrint("Name: ");
-      CitraPrint(name);
-      auto message = "Child Day:   " + std::to_string(CheckConditionAtAgeTime(Logic::IsChild, Logic::AtDay))   + "\t"
-                     "Child Night: " + std::to_string(CheckConditionAtAgeTime(Logic::IsChild, Logic::AtNight)) + "\t"
-                     "Adult Day:   " + std::to_string(CheckConditionAtAgeTime(Logic::IsAdult, Logic::AtDay))   + "\t"
-                     "Adult Night: " + std::to_string(CheckConditionAtAgeTime(Logic::IsAdult, Logic::AtNight));
-      CitraPrint(message);
+        CitraPrint("Name: ");
+        CitraPrint(name);
+        auto message = "Child Day:   " + std::to_string(CheckConditionAtAgeTime(Logic::IsChild, Logic::AtDay)) +
+                       "\t"
+                       "Child Night: " +
+                       std::to_string(CheckConditionAtAgeTime(Logic::IsChild, Logic::AtNight)) +
+                       "\t"
+                       "Adult Day:   " +
+                       std::to_string(CheckConditionAtAgeTime(Logic::IsAdult, Logic::AtDay)) +
+                       "\t"
+                       "Adult Night: " +
+                       std::to_string(CheckConditionAtAgeTime(Logic::IsAdult, Logic::AtNight));
+        CitraPrint(message);
     }
 
     bool ConditionsMet(bool allAgeTimes = false) const {
 
         Area* parent = AreaTable(parentRegion);
-        int conditionsMet = 0;
+        int   conditionsMet = 0;
 
         if (allAgeTimes && !parent->AllAccess()) {
             return false;
         }
 
-        //check all possible day/night condition combinations
-        conditionsMet = (parent->childDay   && CheckConditionAtAgeTime(Logic::IsChild, Logic::AtDay, allAgeTimes))   +
+        // check all possible day/night condition combinations
+        conditionsMet = (parent->childDay && CheckConditionAtAgeTime(Logic::IsChild, Logic::AtDay, allAgeTimes)) +
                         (parent->childNight && CheckConditionAtAgeTime(Logic::IsChild, Logic::AtNight, allAgeTimes)) +
-                        (parent->adultDay   && CheckConditionAtAgeTime(Logic::IsAdult, Logic::AtDay, allAgeTimes))   +
+                        (parent->adultDay && CheckConditionAtAgeTime(Logic::IsAdult, Logic::AtDay, allAgeTimes)) +
                         (parent->adultNight && CheckConditionAtAgeTime(Logic::IsAdult, Logic::AtNight, allAgeTimes));
 
         return conditionsMet && (!allAgeTimes || conditionsMet == 4);
@@ -116,12 +119,12 @@ public:
         return connectedRegion;
     }
 
-    //set the logic to be a specific age and time of day and see if the condition still holds
+    // set the logic to be a specific age and time of day and see if the condition still holds
     bool CheckConditionAtAgeTime(bool& age, bool& time, bool passAnyway = false) const {
 
         Logic::IsChild = false;
         Logic::IsAdult = false;
-        Logic::AtDay   = false;
+        Logic::AtDay = false;
         Logic::AtNight = false;
 
         time = true;
@@ -237,7 +240,7 @@ public:
     }
 
     uint32_t Disconnect() {
-        AreaTable(connectedRegion)->entrances.remove_if([this](const auto entrance){return this == entrance;});
+        AreaTable(connectedRegion)->entrances.remove_if([this](const auto entrance) { return this == entrance; });
         uint32_t previouslyConnected = connectedRegion;
         connectedRegion = NONE;
         return previouslyConnected;
@@ -249,7 +252,7 @@ public:
     }
 
     Entrance* GetNewTarget() {
-        AreaTable(ROOT)->AddExit(ROOT, connectedRegion, []{return true;});
+        AreaTable(ROOT)->AddExit(ROOT, connectedRegion, [] { return true; });
         Entrance* targetEntrance = AreaTable(ROOT)->GetExit(connectedRegion);
         targetEntrance->SetReplacement(this);
         targetEntrance->SetName(GetParentRegion()->regionName + " -> " + GetConnectedRegion()->regionName);
@@ -264,28 +267,28 @@ public:
         return assumed;
     }
 
-private:
-    uint32_t parentRegion;
-    uint32_t connectedRegion;
+  private:
+    uint32_t                 parentRegion;
+    uint32_t                 connectedRegion;
     std::vector<ConditionFn> conditions_met;
 
-    //Entrance Randomizer stuff
+    // Entrance Randomizer stuff
     EntranceType type = EntranceType::None;
-    Entrance* target = nullptr;
-    Entrance* reverse = nullptr;
-    Entrance* assumed = nullptr;
-    Entrance* replacement = nullptr;
-    int16_t index = 0xFFFF;
-    int16_t blueWarp = 0;
-    bool shuffled = false;
-    bool primary = false;
-    bool addedToPool = false;
-    bool decoupled = false;
-    std::string name = "";
+    Entrance*    target = nullptr;
+    Entrance*    reverse = nullptr;
+    Entrance*    assumed = nullptr;
+    Entrance*    replacement = nullptr;
+    int16_t      index = 0xFFFF;
+    int16_t      blueWarp = 0;
+    bool         shuffled = false;
+    bool         primary = false;
+    bool         addedToPool = false;
+    bool         decoupled = false;
+    std::string  name = "";
 };
 
 int  ShuffleAllEntrances();
 void CreateEntranceOverrides();
 
 extern std::vector<std::list<Entrance*>> playthroughEntrances;
-extern bool noRandomEntrances;
+extern bool                              noRandomEntrances;

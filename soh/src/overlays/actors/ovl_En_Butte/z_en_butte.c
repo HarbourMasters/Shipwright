@@ -111,9 +111,9 @@ void EnButte_UpdateTransformationEffect(void) {
 
 void EnButte_DrawTransformationEffect(EnButte* this, PlayState* play) {
     static Vec3f D_809CE3C4 = { 0.0f, 0.0f, -3.0f };
-    Vec3f sp5C;
-    s32 alpha;
-    Vec3s camDir;
+    Vec3f        sp5C;
+    s32          alpha;
+    Vec3s        camDir;
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -130,8 +130,7 @@ void EnButte_DrawTransformationEffect(EnButte* this, PlayState* play) {
     Matrix_SetTranslateRotateYXZ(this->actor.focus.pos.x + sp5C.x, this->actor.focus.pos.y + sp5C.y,
                                  this->actor.focus.pos.z + sp5C.z, &camDir);
     Matrix_Scale(sTransformationEffectScale, sTransformationEffectScale, sTransformationEffectScale, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 200, 200, 180, alpha);
     gDPSetEnvColor(POLY_XLU_DISP++, 200, 200, 210, 255);
     gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gEffFlash1DL));
@@ -159,8 +158,7 @@ void EnButte_Init(Actor* thisx, PlayState* play) {
         this->actor.uncullZoneScale = 200.0f;
     }
 
-    SkelAnime_Init(play, &this->skelAnime, &gButterflySkel, &gButterflyAnim, this->jointTable, this->morphTable,
-                   8);
+    SkelAnime_Init(play, &this->skelAnime, &gButterflySkel, &gButterflyAnim, this->jointTable, this->morphTable, 8);
     Collider_InitJntSph(play, &this->collider);
     Collider_SetJntSph(play, &this->collider, &this->actor, &sColliderInit, this->colliderItems);
     this->actor.colChkInfo.mass = 0;
@@ -217,13 +215,13 @@ void EnButte_SetupFlyAround(EnButte* this) {
 
 void EnButte_FlyAround(EnButte* this, PlayState* play) {
     EnButteFlightParams* flightParams = &sFlyAroundParams[this->flightParamsIdx];
-    s16 yaw;
-    Player* player = GET_PLAYER(play);
-    f32 distSqFromHome;
-    f32 maxDistSqFromHome;
-    f32 minAnimSpeed;
-    f32 animSpeed;
-    s16 rotStep;
+    s16                  yaw;
+    Player*              player = GET_PLAYER(play);
+    f32                  distSqFromHome;
+    f32                  maxDistSqFromHome;
+    f32                  minAnimSpeed;
+    f32                  animSpeed;
+    s16                  rotStep;
 
     distSqFromHome = Math3D_Dist2DSq(this->actor.world.pos.x, this->actor.world.pos.z, this->actor.home.pos.x,
                                      this->actor.home.pos.z);
@@ -272,8 +270,7 @@ void EnButte_FlyAround(EnButte* this, PlayState* play) {
         EnButte_SelectFlightParams(this, &sFlyAroundParams[this->flightParamsIdx]);
     }
 
-    if (((this->actor.params & 1) == 1) && (player->heldItemAction == PLAYER_IA_STICK) &&
-        (this->swordDownTimer <= 0) &&
+    if (((this->actor.params & 1) == 1) && (player->heldItemAction == PLAYER_IA_STICK) && (this->swordDownTimer <= 0) &&
         ((Math3D_Dist2DSq(player->actor.world.pos.x, player->actor.world.pos.z, this->actor.home.pos.x,
                           this->actor.home.pos.z) < SQ(120.0f)) ||
          (this->actor.xzDistToPlayer < 60.0f))) {
@@ -292,15 +289,15 @@ void EnButte_SetupFollowLink(EnButte* this) {
 }
 
 void EnButte_FollowLink(EnButte* this, PlayState* play) {
-    static s32 D_809CE410 = 1500;
+    static s32           D_809CE410 = 1500;
     EnButteFlightParams* flightParams = &sFollowLinkParams[this->flightParamsIdx];
-    Player* player = GET_PLAYER(play);
-    f32 distSqFromHome;
-    Vec3f swordTip;
-    f32 animSpeed;
-    f32 minAnimSpeed;
-    f32 distSqFromSword;
-    s16 yaw;
+    Player*              player = GET_PLAYER(play);
+    f32                  distSqFromHome;
+    Vec3f                swordTip;
+    f32                  animSpeed;
+    f32                  minAnimSpeed;
+    f32                  distSqFromSword;
+    s16                  yaw;
 
     func_809CD634(this);
     Math_SmoothStepToF(&this->actor.speedXZ, flightParams->speedXZTarget, flightParams->speedXZScale,

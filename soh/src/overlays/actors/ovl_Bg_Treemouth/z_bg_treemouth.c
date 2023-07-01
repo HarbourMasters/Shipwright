@@ -73,11 +73,13 @@ void BgTreemouth_Init(Actor* thisx, PlayState* play) {
 
     if ((gSaveContext.sceneSetupIndex < 4) && !LINK_IS_ADULT) {
         BgTreemouth_SetupAction(this, func_808BC8B8);
-    // If dungeon entrance randomizer is on, keep the tree mouth open
-    // when Link is adult and sword & shield have been shown to Mido
-    } else if ((LINK_IS_ADULT && (!gSaveContext.n64ddFlag ||
-        Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ||
-        !Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) || (gSaveContext.sceneSetupIndex == 7)) {
+        // If dungeon entrance randomizer is on, keep the tree mouth open
+        // when Link is adult and sword & shield have been shown to Mido
+    } else if ((LINK_IS_ADULT &&
+                    (!gSaveContext.n64ddFlag ||
+                     Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ||
+                !Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) ||
+               (gSaveContext.sceneSetupIndex == 7)) {
         this->unk_168 = 0.0f;
         BgTreemouth_SetupAction(this, BgTreemouth_DoNothing);
     } else {
@@ -119,8 +121,7 @@ void func_808BC6F8(BgTreemouth* this, PlayState* play) {
         this->unk_168 = 1.0f;
     }
 
-    if ((gSaveContext.sceneSetupIndex == 6) && (play->csCtx.frames >= 0x2BD) &&
-        (play->state.frames % 8 == 0)) {
+    if ((gSaveContext.sceneSetupIndex == 6) && (play->csCtx.frames >= 0x2BD) && (play->state.frames % 8 == 0)) {
         sp34.x = (Rand_ZeroOne() * 1158.0f) + 3407.0f;
         sp34.y = 970.0f;
         sp34.z = (Rand_ZeroOne() * 2026.0f) + -2163.0f;
@@ -248,8 +249,7 @@ void BgTreemouth_Draw(Actor* thisx, PlayState* play) {
     }
 
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, alpha * 0.1f);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gDekuTreeMouthDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

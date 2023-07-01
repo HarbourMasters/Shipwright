@@ -125,7 +125,8 @@ void GameInteractor_ExecuteOnUpdateFileQuestSelection(uint8_t questIndex) {
 }
 
 void GameInteractor_ExecuteOnUpdateFileBossRushOptionSelection(uint8_t optionIndex, uint8_t optionValue) {
-    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileBossRushOptionSelection>(optionIndex, optionValue);
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileBossRushOptionSelection>(optionIndex,
+                                                                                                optionValue);
 }
 
 void GameInteractor_ExecuteOnUpdateFileNameSelection(int16_t charCode) {

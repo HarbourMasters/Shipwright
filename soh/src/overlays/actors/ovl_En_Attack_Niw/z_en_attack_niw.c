@@ -181,11 +181,11 @@ s32 func_809B55EC(EnAttackNiw* this, PlayState* play) {
 }
 
 void func_809B5670(EnAttackNiw* this, PlayState* play) {
-    s16 sp4E;
-    s16 sp4C;
-    f32 tmpf1;
-    f32 tmpf2;
-    f32 tmpf3;
+    s16   sp4E;
+    s16   sp4C;
+    f32   tmpf1;
+    f32   tmpf2;
+    f32   tmpf3;
     Vec3f sp34;
 
     this->actor.speedXZ = 10.0f;
@@ -298,10 +298,10 @@ void func_809B5C18(EnAttackNiw* this, PlayState* play) {
 void EnAttackNiw_Update(Actor* thisx, PlayState* play) {
     f32 tmpf1;
     EnAttackNiw* this = (EnAttackNiw*)thisx;
-    EnNiw* cucco;
-    Player* player = GET_PLAYER(play);
-    s32 pad;
-    Vec3f sp30;
+    EnNiw*     cucco;
+    Player*    player = GET_PLAYER(play);
+    s32        pad;
+    Vec3f      sp30;
     PlayState* play2 = play;
 
     this->unk_28C++;

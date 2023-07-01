@@ -7,18 +7,18 @@
      ((p).inode_t.page < 0x80))
 
 s32 osPfsChecker(OSPfs* pfs) {
-    s32 j;
-    s32 ret;
-    __OSInodeUnit next;
-    __OSInode checkedInode;
-    __OSInode tempInode;
-    __OSDir tempDir;
-    __OSInodeUnit nextNodeInFile[16];
+    s32            j;
+    s32            ret;
+    __OSInodeUnit  next;
+    __OSInode      checkedInode;
+    __OSInode      tempInode;
+    __OSDir        tempDir;
+    __OSInodeUnit  nextNodeInFile[16];
     __OSInodeCache cache;
-    s32 fixed = 0;
-    u8 bank, prevBank = 254;
-    s32 cc, cl;
-    s32 offset;
+    s32            fixed = 0;
+    u8             bank, prevBank = 254;
+    s32            cc, cl;
+    s32            offset;
 
     ret = __osCheckId(pfs);
     if (ret == PFS_ERR_NEW_PACK) {
@@ -126,13 +126,13 @@ s32 osPfsChecker(OSPfs* pfs) {
 
 // Original name: corrupted_init (probably needs better name)
 s32 func_80105788(OSPfs* pfs, __OSInodeCache* cache) {
-    s32 i;
-    s32 n;
-    s32 offset;
-    u8 bank;
+    s32           i;
+    s32           n;
+    s32           offset;
+    u8            bank;
     __OSInodeUnit tpage;
-    __OSInode tempInode;
-    s32 ret;
+    __OSInode     tempInode;
+    s32           ret;
 
     for (i = 0; i < PFS_INODE_DIST_MAP; i++) {
         cache->map[i] = 0;
@@ -163,7 +163,7 @@ s32 func_80105A60(OSPfs* pfs, __OSInodeUnit fpage, __OSInodeCache* cache) {
     s32 j;
     s32 n;
     s32 hit = 0;
-    u8 bank;
+    u8  bank;
     s32 offset;
     s32 ret = 0;
 

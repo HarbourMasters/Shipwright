@@ -13,10 +13,10 @@
 #define GFXPOOL_HEAD_MAGIC 0x1234
 #define GFXPOOL_TAIL_MAGIC 0x5678
 
-OSTime sGraphUpdateTime;
-OSTime sGraphSetTaskTime;
+OSTime      sGraphUpdateTime;
+OSTime      sGraphSetTaskTime;
 FaultClient sGraphFaultClient;
-CfbInfo sGraphCfbInfos[3];
+CfbInfo     sGraphCfbInfos[3];
 FaultClient sGraphUcodeFaultClient;
 
 void Skybox_Setup(PlayState* play, SkyboxContext* skyboxCtx, s16 skyboxId);
@@ -46,7 +46,7 @@ void Graph_FaultClient() {
 }
 
 void Graph_DisassembleUCode(Gfx* workBuf) {
-    #if 0
+#if 0
     UCodeDisas disassembler;
 
     if (HREG(80) == 7 && HREG(81) != 0) {
@@ -79,11 +79,11 @@ void Graph_DisassembleUCode(Gfx* workBuf) {
         }
         UCodeDisas_Destroy(&disassembler);
     }
-    #endif
+#endif
 }
 
 void Graph_UCodeFaultClient(Gfx* workBuf) {
-    #if 0
+#if 0
     UCodeDisas disassembler;
 
     UCodeDisas_Init(&disassembler);
@@ -92,7 +92,7 @@ void Graph_UCodeFaultClient(Gfx* workBuf) {
     //UCodeDisas_SetCurUCode(&disassembler, D_80155F50);
     UCodeDisas_Disassemble(&disassembler, workBuf);
     UCodeDisas_Destroy(&disassembler);
-    #endif
+#endif
 }
 
 void Graph_InitTHGA(GraphicsContext* gfxCtx) {
@@ -145,7 +145,7 @@ GameStateOverlay* Graph_GetNextGameState(GameState* gameState) {
 }
 
 void Graph_Init(GraphicsContext* gfxCtx) {
-    memset(gfxCtx,0, sizeof(GraphicsContext));
+    memset(gfxCtx, 0, sizeof(GraphicsContext));
     gfxCtx->gfxPoolIdx = 0;
     gfxCtx->fbIdx = 0;
     gfxCtx->viMode = NULL;
@@ -164,15 +164,15 @@ void Graph_Destroy(GraphicsContext* gfxCtx) {
 
 void Graph_TaskSet00(GraphicsContext* gfxCtx) {
     static Gfx* D_8012D260 = NULL;
-    static s32 sGraphCfbInfoIdx = 0;
+    static s32  sGraphCfbInfoIdx = 0;
 
-    OSTime time;
-    OSTimer timer;
-    OSMesg msg;
+    OSTime    time;
+    OSTimer   timer;
+    OSMesg    msg;
     OSTask_t* task = &gfxCtx->task.list.t;
     OSScTask* scTask = &gfxCtx->task;
-    CfbInfo* cfb;
-    s32 pad1;
+    CfbInfo*  cfb;
+    s32       pad1;
 
     D_8016A528 = osGetTime() - sGraphSetTaskTime - D_8016A558;
 
@@ -180,8 +180,8 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx) {
 
     osRecvMesg(&gfxCtx->queue, &msg, OS_MESG_BLOCK);
     osStopTimer(&timer);
-    //OTRTODO - Proper GFX crash handler
-    #if 0
+// OTRTODO - Proper GFX crash handler
+#if 0
     if (msg == (OSMesg)666) {
         osSyncPrintf(VT_FGCOL(RED));
         osSyncPrintf("RCPが帰ってきませんでした。"); // "RCP did not return."
@@ -200,7 +200,7 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx) {
         }
         Fault_AddHungupAndCrashImpl("RCP is HUNG UP!!", "Oh! MY GOD!!");
     }
-    #endif
+#endif
     osRecvMesg(&gfxCtx->queue, &msg, OS_MESG_NOBLOCK);
 
     D_8012D260 = gfxCtx->workBuffer;
@@ -386,7 +386,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
 
     {
         OSTime time = osGetTime();
-        s32 pad[4];
+        s32    pad[4];
 
         D_8016A538 = gRSPGFXTotalTime;
         D_8016A530 = gRSPAudioTotalTime;
@@ -401,8 +401,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
         sGraphUpdateTime = time;
     }
 
-    if (CVarGetInteger("gDebugEnabled", 0))
-    {
+    if (CVarGetInteger("gDebugEnabled", 0)) {
         if (CHECK_BTN_ALL(gameState->input[0].press.button, BTN_Z) &&
             CHECK_BTN_ALL(gameState->input[0].cur.button, BTN_L | BTN_R)) {
             gSaveContext.gameMode = 0;
@@ -423,22 +422,20 @@ uint64_t GetFrequency();
 uint64_t GetPerfCounter();
 
 static struct RunFrameContext {
-    GraphicsContext gfxCtx;
-    GameState* gameState;
+    GraphicsContext   gfxCtx;
+    GameState*        gameState;
     GameStateOverlay* nextOvl;
     GameStateOverlay* ovl;
-    int state;
+    int               state;
 } runFrameContext;
-
 
 extern AudioMgr gAudioMgr;
 
 extern void ProcessSaveStateRequests(void);
 
-static void RunFrame()
-{
-    u32 size;
-    char faultMsg[0x50];
+static void RunFrame() {
+    u32         size;
+    char        faultMsg[0x50];
     static bool hasSetupSkybox = false;
 
     switch (runFrameContext.state) {
@@ -453,8 +450,7 @@ static void RunFrame()
     osSyncPrintf("グラフィックスレッド実行開始\n"); // "Start graphic thread execution"
     Graph_Init(&runFrameContext.gfxCtx);
 
-    while (runFrameContext.nextOvl)
-    {
+    while (runFrameContext.nextOvl) {
         runFrameContext.ovl = runFrameContext.nextOvl;
         Overlay_LoadGameState(runFrameContext.ovl);
 
@@ -463,8 +459,7 @@ static void RunFrame()
 
         runFrameContext.gameState = SYSTEM_ARENA_MALLOC_DEBUG(size);
 
-        if (!runFrameContext.gameState)
-        {
+        if (!runFrameContext.gameState) {
             osSyncPrintf("確保失敗\n"); // "Failure to secure"
 
             snprintf(faultMsg, sizeof(faultMsg), "CLASS SIZE= %d bytes", size);
@@ -482,27 +477,25 @@ static void RunFrame()
 
         uint64_t freq = GetFrequency();
 
-        while (GameState_IsRunning(runFrameContext.gameState))
-        {
-            //uint64_t ticksA, ticksB;
-            //ticksA = GetPerfCounter();
+        while (GameState_IsRunning(runFrameContext.gameState)) {
+            // uint64_t ticksA, ticksB;
+            // ticksA = GetPerfCounter();
 
             Graph_StartFrame();
 
             PadMgr_ThreadEntry(&gPadMgr);
 
             Graph_Update(&runFrameContext.gfxCtx, runFrameContext.gameState);
-            //ticksB = GetPerfCounter();
+            // ticksB = GetPerfCounter();
 
             Graph_ProcessGfxCommands(runFrameContext.gfxCtx.workBuffer);
 
-
-            //uint64_t diff = (ticksB - ticksA) / (freq / 1000);
-            //printf("Frame simulated in %ims\n", diff);
+            // uint64_t diff = (ticksB - ticksA) / (freq / 1000);
+            // printf("Frame simulated in %ims\n", diff);
             runFrameContext.state = 1;
             ProcessSaveStateRequests();
             return;
-            nextFrame:;
+        nextFrame:;
         }
 
         runFrameContext.nextOvl = Graph_GetNextGameState(runFrameContext.gameState);
@@ -513,7 +506,7 @@ static void RunFrame()
     Graph_Destroy(&runFrameContext.gfxCtx);
     osSyncPrintf("グラフィックスレッド実行終了\n"); // "End of graphic thread execution"
 
-    //Graph_Update(gfxCtxTest, gameStateTest);
+    // Graph_Update(gfxCtxTest, gameStateTest);
     exit(0);
 }
 
@@ -586,7 +579,7 @@ Gfx* Graph_BranchDlist(Gfx* gfx, Gfx* dst) {
 }
 
 void* Graph_DlistAlloc(Gfx** gfx, size_t size) {
-    u8* ptr;
+    u8*  ptr;
     Gfx* dst;
 
     size = ((size + 7) & ~7),

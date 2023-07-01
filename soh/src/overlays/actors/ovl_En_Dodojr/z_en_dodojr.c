@@ -70,8 +70,8 @@ void EnDodojr_Init(Actor* thisx, PlayState* play) {
     EnDodojr* this = (EnDodojr*)thisx;
 
     ActorShape_Init(&this->actor.shape, 0.0f, NULL, 18.0f);
-    SkelAnime_Init(play, &this->skelAnime, &object_dodojr_Skel_0020E0, &object_dodojr_Anim_0009D4,
-                   this->jointTable, this->morphTable, 15);
+    SkelAnime_Init(play, &this->skelAnime, &object_dodojr_Skel_0020E0, &object_dodojr_Anim_0009D4, this->jointTable,
+                   this->morphTable, 15);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, DamageTable_Get(4), &sColChkInit);
@@ -100,11 +100,11 @@ void func_809F64D0(EnDodojr* this) {
 void func_809F6510(EnDodojr* this, PlayState* play, s32 count) {
     Color_RGBA8 prim = { 170, 130, 90, 255 };
     Color_RGBA8 env = { 100, 60, 20, 0 };
-    Vec3f velocity = { 0.0f, 0.0f, 0.0f };
-    Vec3f accel = { 0.0f, 0.3f, 0.0f };
-    Vec3f pos;
-    s16 angle = ((Rand_ZeroOne() - 0.5f) * 65536.0f);
-    s32 i;
+    Vec3f       velocity = { 0.0f, 0.0f, 0.0f };
+    Vec3f       accel = { 0.0f, 0.3f, 0.0f };
+    Vec3f       pos;
+    s16         angle = ((Rand_ZeroOne() - 0.5f) * 65536.0f);
+    s32         i;
 
     pos.y = this->dustPos.y;
 
@@ -122,10 +122,10 @@ void func_809F6510(EnDodojr* this, PlayState* play, s32 count) {
 void func_809F6730(EnDodojr* this, PlayState* play, Vec3f* arg2) {
     Color_RGBA8 prim = { 170, 130, 90, 255 };
     Color_RGBA8 env = { 100, 60, 20, 0 };
-    Vec3f velocity = { 0.0f, 0.0f, 0.0f };
-    Vec3f accel = { 0.0f, 0.3f, 0.0f };
-    Vec3f pos;
-    s16 angle = ((Rand_ZeroOne() - 0.5f) * 65536.0f);
+    Vec3f       velocity = { 0.0f, 0.0f, 0.0f };
+    Vec3f       accel = { 0.0f, 0.3f, 0.0f };
+    Vec3f       pos;
+    s16         angle = ((Rand_ZeroOne() - 0.5f) * 65536.0f);
 
     pos.y = this->actor.floorHeight;
 
@@ -226,11 +226,11 @@ void func_809F6C24(EnDodojr* this) {
 
 s32 func_809F6CA4(EnDodojr* this, PlayState* play) {
     Actor* bomb;
-    Vec3f unkVec = { 99999.0f, 99999.0f, 99999.0f };
-    s32 retVar = 0;
-    f32 xDist;
-    f32 yDist;
-    f32 zDist;
+    Vec3f  unkVec = { 99999.0f, 99999.0f, 99999.0f };
+    s32    retVar = 0;
+    f32    xDist;
+    f32    yDist;
+    f32    zDist;
 
     bomb = play->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].head;
     this->bomb = NULL;
@@ -279,11 +279,11 @@ s32 func_809F6DD0(EnDodojr* this) {
 }
 
 void func_809F6E54(EnDodojr* this, PlayState* play) {
-    f32 angles[] = { 0.0f, 210.0f, 60.0f, 270.0f, 120.0f, 330.0f, 180.0f, 30.0f, 240.0f, 90.0f, 300.0f, 150.0f };
-    s32 pad;
+    f32     angles[] = { 0.0f, 210.0f, 60.0f, 270.0f, 120.0f, 330.0f, 180.0f, 30.0f, 240.0f, 90.0f, 300.0f, 150.0f };
+    s32     pad;
     Player* player = GET_PLAYER(play);
-    Vec3f pos;
-    s16 angleIndex;
+    Vec3f   pos;
+    s16     angleIndex;
 
     if ((this->bomb == NULL) || (this->bomb->update == NULL) ||
         ((this->bomb != NULL) && (this->bomb->parent != NULL))) {
@@ -297,9 +297,9 @@ void func_809F6E54(EnDodojr* this, PlayState* play) {
     }
 
     if (Math_Vec3f_DistXYZ(&this->actor.world.pos, &pos) > 80.0f) {
-        angleIndex = (s16)(this->actor.home.pos.x + this->actor.home.pos.y + this->actor.home.pos.z +
-                           play->state.frames / 30) %
-                     12;
+        angleIndex =
+            (s16)(this->actor.home.pos.x + this->actor.home.pos.y + this->actor.home.pos.z + play->state.frames / 30) %
+            12;
         angleIndex = ABS(angleIndex);
         pos.x += 80.0f * sinf(angles[angleIndex]);
         pos.z += 80.0f * cosf(angles[angleIndex]);
@@ -392,9 +392,9 @@ void func_809F72A4(EnDodojr* this, PlayState* play) {
 }
 
 void func_809F73AC(EnDodojr* this, PlayState* play) {
-    f32 lastFrame = Animation_GetLastFrame(&object_dodojr_Anim_000860);
+    f32     lastFrame = Animation_GetLastFrame(&object_dodojr_Anim_000860);
     Player* player = GET_PLAYER(play);
-    f32 dist;
+    f32     dist;
 
     if (!(this->actor.xzDistToPlayer >= 320.0f)) {
         dist = this->actor.world.pos.y - player->actor.world.pos.y;

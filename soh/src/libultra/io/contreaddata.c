@@ -16,9 +16,9 @@ s32 osContStartReadData(OSMesgQueue* mq) {
 }
 
 void osContGetReadData(OSContPad* contData) {
-    u8* bufptr = (u8*)(&__osPifInternalBuff);
+    u8*                bufptr = (u8*)(&__osPifInternalBuff);
     __OSContReadHeader read;
-    s32 i;
+    s32                i;
 
     for (i = 0; i < __osMaxControllers; i++, bufptr += sizeof(read), contData++) {
         read = *((__OSContReadHeader*)bufptr);
@@ -32,9 +32,9 @@ void osContGetReadData(OSContPad* contData) {
 }
 
 void __osPackReadData(void) {
-    u8* bufptr = (u8*)(&__osPifInternalBuff);
+    u8*                bufptr = (u8*)(&__osPifInternalBuff);
     __OSContReadHeader read;
-    s32 i;
+    s32                i;
 
     for (i = 0; i < 0xF; i++) {
         __osPifInternalBuff.ram[i] = 0;

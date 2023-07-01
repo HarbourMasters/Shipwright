@@ -196,9 +196,9 @@ void BgHidanFwbig_Move(BgHidanFwbig* this, PlayState* play) {
 
 void BgHidanFwbig_MoveCollider(BgHidanFwbig* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    Vec3f projPos;
-    f32 cs;
-    f32 sn;
+    Vec3f   projPos;
+    f32     cs;
+    f32     sn;
 
     func_8002DBD0(&this->actor, &projPos, &player->actor.world.pos);
     projPos.z = ((projPos.z >= 0.0f) ? 1.0f : -1.0f) * 25.0f * -1.0f;
@@ -269,8 +269,7 @@ void BgHidanFwbig_Draw(Actor* thisx, PlayState* play) {
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->gameplayFrames % 0x80, 0, 0x20, 0x40, 1, 0,
                                 (u8)(play->gameplayFrames * -15), 0x20, 0x40));
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_XLU_DISP++, gFireTempleBigFireWallDL);
 

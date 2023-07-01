@@ -4,7 +4,6 @@
 
 ActorDB* ActorDB::Instance;
 
-
 #define DEFINE_ACTOR(name, _1, _2) extern "C" ActorInit name##_InitVars;
 #define DEFINE_ACTOR_INTERNAL(name, _1, _2) extern "C" ActorInit name##_InitVars;
 #define DEFINE_ACTOR_UNSET(_0)
@@ -17,7 +16,7 @@ ActorDB* ActorDB::Instance;
 
 struct AddPair {
     std::string name;
-    ActorInit& init;
+    ActorInit&  init;
 };
 
 #define DEFINE_ACTOR_INTERNAL(name, _1, allocType) { #name, name##_InitVars },
@@ -474,7 +473,8 @@ ActorDB::ActorDB() {
 
 // Adds an actor at the given index. The name must be unique.
 ActorDB::Entry& ActorDB::AddEntry(const std::string& name, const std::string& desc, size_t index) {
-    assert(!nameTable.contains(name)); // TODO this should maybe throw instead. We'll need to think about error handling for mods that try to declare the same actor.
+    assert(!nameTable.contains(name)); // TODO this should maybe throw instead. We'll need to think about error handling
+                                       // for mods that try to declare the same actor.
 
     if (db.size() < (index + 1)) {
         db.resize(index + 1);
@@ -512,7 +512,8 @@ ActorDB::Entry& ActorDB::AddEntry(const std::string& name, const std::string& de
     return entry;
 }
 
-// Adds an actor with the new ActorDBInit struct. The id assigned to the actor is dynamic. Use the return Entry or RetrieveId to get it.
+// Adds an actor with the new ActorDBInit struct. The id assigned to the actor is dynamic. Use the return Entry or
+// RetrieveId to get it.
 ActorDB::Entry& ActorDB::AddEntry(const ActorDBInit& init) {
     Entry& entry = AddEntry(init.name, init.desc, nextFreeId);
 
@@ -593,7 +594,8 @@ static ActorDBInit EnPartnerInit = {
     "En_Partner",
     "Ivan",
     ACTORCAT_ITEMACTION,
-    (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT | ACTOR_FLAG_CAN_PRESS_SWITCH),
+    (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT |
+     ACTOR_FLAG_CAN_PRESS_SWITCH),
     OBJECT_GAMEPLAY_KEEP,
     sizeof(EnPartner),
     (ActorFunc)EnPartner_Init,

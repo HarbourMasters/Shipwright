@@ -6,8 +6,8 @@
 namespace LUS {
 class BackgroundFactory : public ResourceFactory {
   public:
-    std::shared_ptr<IResource>
-    ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) override;
+    std::shared_ptr<IResource> ReadResource(std::shared_ptr<ResourceInitData> initData,
+                                            std::shared_ptr<BinaryReader>     reader) override;
 };
 
 class BackgroundFactoryV0 : public ResourceVersionFactory {

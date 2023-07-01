@@ -265,8 +265,8 @@ void EnTite_SetupAttack(EnTite* this) {
 }
 
 void EnTite_Attack(EnTite* this, PlayState* play) {
-    s16 angleToPlayer;
-    s32 attackState;
+    s16   angleToPlayer;
+    s32   attackState;
     Vec3f ripplePos;
 
     if (SkelAnime_Update(&this->skelAnime) != 0) {
@@ -878,8 +878,8 @@ void EnTite_CheckDamage(Actor* thisx, PlayState* play) {
             }
         }
         // If hammer has recently hit the floor and player is close to tektite, flip over
-    } else if ((thisx->colChkInfo.health != 0) && (play->actorCtx.unk_02 != 0) &&
-               (thisx->xzDistToPlayer <= 400.0f) && (thisx->bgCheckFlags & 1)) {
+    } else if ((thisx->colChkInfo.health != 0) && (play->actorCtx.unk_02 != 0) && (thisx->xzDistToPlayer <= 400.0f) &&
+               (thisx->bgCheckFlags & 1)) {
         if (this->flipState == TEKTITE_FLIPPED) {
             EnTite_SetupFlipUpright(this);
         } else if ((this->action >= TEKTITE_IDLE) || (this->action >= TEKTITE_IDLE)) {
@@ -890,10 +890,10 @@ void EnTite_CheckDamage(Actor* thisx, PlayState* play) {
 
 void EnTite_Update(Actor* thisx, PlayState* play) {
     EnTite* this = (EnTite*)thisx;
-    char pad[0x4];
+    char           pad[0x4];
     CollisionPoly* floorPoly;
-    WaterBox* waterBox;
-    f32 waterSurfaceY;
+    WaterBox*      waterBox;
+    f32            waterSurfaceY;
 
     EnTite_CheckDamage(thisx, play);
     // Stay still if hit by immunity damage type this frame
@@ -905,29 +905,29 @@ void EnTite_Update(Actor* thisx, PlayState* play) {
         if ((this->actor.params == TEKTITE_BLUE) && (thisx->bgCheckFlags & 0x20)) {
             floorPoly = thisx->floorPoly;
             if ((((play->gameplayFrames % 8) == 0) || (thisx->velocity.y < 0.0f)) &&
-                (WaterBox_GetSurfaceImpl(play, &play->colCtx, this->backRightFootPos.x,
-                                         this->backRightFootPos.z, &waterSurfaceY, &waterBox)) &&
+                (WaterBox_GetSurfaceImpl(play, &play->colCtx, this->backRightFootPos.x, this->backRightFootPos.z,
+                                         &waterSurfaceY, &waterBox)) &&
                 (this->backRightFootPos.y <= waterSurfaceY)) {
                 this->backRightFootPos.y = waterSurfaceY;
                 EffectSsGRipple_Spawn(play, &this->backRightFootPos, 0, 220, 0);
             }
             if (((((play->gameplayFrames + 2) % 8) == 0) || (thisx->velocity.y < 0.0f)) &&
-                (WaterBox_GetSurfaceImpl(play, &play->colCtx, this->backLeftFootPos.x,
-                                         this->backLeftFootPos.z, &waterSurfaceY, &waterBox)) &&
+                (WaterBox_GetSurfaceImpl(play, &play->colCtx, this->backLeftFootPos.x, this->backLeftFootPos.z,
+                                         &waterSurfaceY, &waterBox)) &&
                 (this->backLeftFootPos.y <= waterSurfaceY)) {
                 this->backLeftFootPos.y = waterSurfaceY;
                 EffectSsGRipple_Spawn(play, &this->backLeftFootPos, 0, 220, 0);
             }
             if (((((play->gameplayFrames + 4) % 8) == 0) || (thisx->velocity.y < 0.0f)) &&
-                (WaterBox_GetSurfaceImpl(play, &play->colCtx, this->frontLeftFootPos.x,
-                                         this->frontLeftFootPos.z, &waterSurfaceY, &waterBox)) &&
+                (WaterBox_GetSurfaceImpl(play, &play->colCtx, this->frontLeftFootPos.x, this->frontLeftFootPos.z,
+                                         &waterSurfaceY, &waterBox)) &&
                 (this->frontLeftFootPos.y <= waterSurfaceY)) {
                 this->frontLeftFootPos.y = waterSurfaceY;
                 EffectSsGRipple_Spawn(play, &this->frontLeftFootPos, 0, 220, 0);
             }
             if (((((play->gameplayFrames + 1) % 8) == 0) || (thisx->velocity.y < 0.0f)) &&
-                (WaterBox_GetSurfaceImpl(play, &play->colCtx, this->frontRightFootPos.x,
-                                         this->frontRightFootPos.z, &waterSurfaceY, &waterBox)) &&
+                (WaterBox_GetSurfaceImpl(play, &play->colCtx, this->frontRightFootPos.x, this->frontRightFootPos.z,
+                                         &waterSurfaceY, &waterBox)) &&
                 (this->frontRightFootPos.y <= waterSurfaceY)) {
                 this->frontRightFootPos.y = waterSurfaceY;
                 EffectSsGRipple_Spawn(play, &this->frontRightFootPos, 0, 220, 0);
@@ -995,8 +995,7 @@ void EnTite_Draw(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(object_tite_Tex_001F00));
         gSPSegment(POLY_OPA_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(object_tite_Tex_002100));
     }
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, EnTite_PostLimbDraw,
-                      thisx);
+    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, EnTite_PostLimbDraw, thisx);
     CLOSE_DISPS(play->state.gfxCtx);
 
     if (this->spawnIceTimer != 0) {
@@ -1005,7 +1004,7 @@ void EnTite_Draw(Actor* thisx, PlayState* play) {
         this->spawnIceTimer--;
         if ((this->spawnIceTimer & 3) == 0) {
             Vec3f iceChunk;
-            s32 idx = this->spawnIceTimer >> 2;
+            s32   idx = this->spawnIceTimer >> 2;
 
             iceChunk.x = thisx->world.pos.x + sIceChunks[idx].x;
             iceChunk.y = thisx->world.pos.y + sIceChunks[idx].y;

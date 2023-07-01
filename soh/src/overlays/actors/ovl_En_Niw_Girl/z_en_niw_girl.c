@@ -54,13 +54,12 @@ static ColliderCylinderInit sCylinderInit = {
 
 void EnNiwGirl_Init(Actor* thisx, PlayState* play) {
     EnNiwGirl* this = (EnNiwGirl*)thisx;
-    s32 pad;
+    s32   pad;
     Vec3f vec1;
     Vec3f vec2;
-    s32 pad2;
+    s32   pad2;
 
-    SkelAnime_InitFlex(play, &this->skelAnime, &gNiwGirlSkel, &gNiwGirlRunAnim, this->jointTable, this->morphTable,
-                       17);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gNiwGirlSkel, &gNiwGirlRunAnim, this->jointTable, this->morphTable, 17);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     this->actor.targetMode = 6;
@@ -107,8 +106,8 @@ void EnNiwGirl_Jump(EnNiwGirl* this, PlayState* play) {
 
 void func_80AB9210(EnNiwGirl* this, PlayState* play) {
     Path* path = &play->setupPathList[this->path];
-    f32 xDistBetween;
-    f32 zDistBetween;
+    f32   xDistBetween;
+    f32   zDistBetween;
 
     SkelAnime_Update(&this->skelAnime);
     Math_ApproachF(&this->actor.speedXZ, 3.0f, 0.2f, 0.4f);
@@ -192,7 +191,7 @@ void func_80AB94D0(EnNiwGirl* this, PlayState* play) {
 void EnNiwGirl_Update(Actor* thisx, PlayState* play) {
     EnNiwGirl* this = (EnNiwGirl*)thisx;
     EnNiwGirlActionFunc tempActionFunc;
-    Player* player = GET_PLAYER(play);
+    Player*             player = GET_PLAYER(play);
 
     Actor_SetScale(&this->actor, 0.013f);
     this->unkUpTimer++;
@@ -232,8 +231,7 @@ void EnNiwGirl_Update(Actor* thisx, PlayState* play) {
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
 }
 
-s32 EnNiwGirlOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                              void* thisx) {
+s32 EnNiwGirlOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnNiwGirl* this = (EnNiwGirl*)thisx;
 
     if (limbIndex == 3) {
@@ -251,7 +249,7 @@ static Vec3f sConstVec3f = { 0.2f, 0.2f, 0.2f };
 void EnNiwGirl_Draw(Actor* thisx, PlayState* play) {
     static void* eyeTextures[] = { gNiwGirlEyeOpenTex, gNiwGirlEyeHalfTex, gNiwGirlEyeClosedTex };
     EnNiwGirl* this = (EnNiwGirl*)thisx;
-    s32 pad;
+    s32   pad;
     Vec3f sp4C = sConstVec3f;
 
     OPEN_DISPS(play->state.gfxCtx);

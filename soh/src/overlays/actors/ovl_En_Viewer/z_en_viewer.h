@@ -37,14 +37,14 @@ typedef enum {
 } EnViewerShadowType;
 
 typedef struct {
-    /* 0x00 */ s16 skeletonObject;
-    /* 0x02 */ s16 animObject;
-    /* 0x04 */ u8 scale; // divided by 100.0f
-    /* 0x05 */ s8 yOffset; // multiplied by 100
-    /* 0x06 */ u8 shadowType;
-    /* 0x07 */ u8 shadowScale;
-    /* 0x08 */ u8 drawType;
-    /* 0x0C */ void* skeletonHeaderSeg;
+    /* 0x00 */ s16              skeletonObject;
+    /* 0x02 */ s16              animObject;
+    /* 0x04 */ u8               scale;   // divided by 100.0f
+    /* 0x05 */ s8               yOffset; // multiplied by 100
+    /* 0x06 */ u8               shadowType;
+    /* 0x07 */ u8               shadowScale;
+    /* 0x08 */ u8               drawType;
+    /* 0x0C */ void*            skeletonHeaderSeg;
     /* 0x10 */ AnimationHeader* anim;
 } EnViewerInitData; // size = 0x14
 
@@ -52,22 +52,22 @@ typedef struct {
     /* 0x00 */ Vec3f startPos;
     /* 0x0C */ Vec3f endPos;
     /* 0x18 */ Vec3f pos;
-    /* 0x24 */ f32 lerpFactorSpeed;
-    /* 0x28 */ f32 scale;
-    /* 0x2C */ f32 lerpFactor;
-    /* 0x30 */ u8 state;
-    u32 epoch;
+    /* 0x24 */ f32   lerpFactorSpeed;
+    /* 0x28 */ f32   scale;
+    /* 0x2C */ f32   lerpFactor;
+    /* 0x30 */ u8    state;
+    u32              epoch;
 } EnViewerFireEffect; // size = 0x34
 
 typedef struct EnViewer {
-    /* 0x0000 */ Actor actor;
-    /* 0x014C */ Skin skin;
-    /* 0x01DC */ s8 animObjBankIndex;
-    /* 0x01DD */ u8 drawFuncIndex;
+    /* 0x0000 */ Actor              actor;
+    /* 0x014C */ Skin               skin;
+    /* 0x01DC */ s8                 animObjBankIndex;
+    /* 0x01DD */ u8                 drawFuncIndex;
     /* 0x01E0 */ EnViewerActionFunc actionFunc;
-    /* 0x01E4 */ u8 unused;
-    /* 0x01E5 */ u8 state;
-    /* 0x01E6 */ u8 isVisible;
+    /* 0x01E4 */ u8                 unused;
+    /* 0x01E5 */ u8                 state;
+    /* 0x01E6 */ u8                 isVisible;
     /* 0x01E8 */ EnViewerFireEffect fireEffects[20];
 } EnViewer; // size = 0x05F8
 

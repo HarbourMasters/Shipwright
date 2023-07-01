@@ -21,32 +21,34 @@
 #define BOTTOM_WIDTH 40
 #define SCREEN_HEIGHT 30
 
-#define RESET   "\x1b[0m"
-#define DIM     "\x1b[2m"
+#define RESET "\x1b[0m"
+#define DIM "\x1b[2m"
 
-#define BLACK   "\x1b[30m"
-#define RED     "\x1b[31m"
-#define GREEN   "\x1b[32m"
-#define YELLOW  "\x1b[33m"
-#define BLUE    "\x1b[34m"
+#define BLACK "\x1b[30m"
+#define RED "\x1b[31m"
+#define GREEN "\x1b[32m"
+#define YELLOW "\x1b[33m"
+#define BLUE "\x1b[34m"
 #define MEGANTA "\x1b[35m"
-#define CYAN    "\x1b[36m"
-#define WHITE   "\x1b[37m"
+#define CYAN "\x1b[36m"
+#define WHITE "\x1b[37m"
 
-void ModeChangeInit();
-void UpdateOptionSubMenu(uint32_t kDown);
-void UpdatePresetsMenu(uint32_t kdown);
-void UpdateResetToDefaultsMenu(uint32_t kdown);
-void UpdateGenerateMenu(uint32_t kDown);
-void PrintMainMenu();
-void PrintOptionSubMenu();
-void PrintSubMenu();
-void PrintPresetsMenu();
-void PrintResetToDefaultsMenu();
-void PrintGenerateMenu();
-void ClearDescription();
-void PrintOptionDescription();
-std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSetting, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks, std::string seedInput);
+void        ModeChangeInit();
+void        UpdateOptionSubMenu(uint32_t kDown);
+void        UpdatePresetsMenu(uint32_t kdown);
+void        UpdateResetToDefaultsMenu(uint32_t kdown);
+void        UpdateGenerateMenu(uint32_t kDown);
+void        PrintMainMenu();
+void        PrintOptionSubMenu();
+void        PrintSubMenu();
+void        PrintPresetsMenu();
+void        PrintResetToDefaultsMenu();
+void        PrintGenerateMenu();
+void        ClearDescription();
+void        PrintOptionDescription();
+std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSetting,
+                               std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
+                               std::string seedInput);
 std::string GetInput(const char* hintText);
 
 extern void MenuInit();

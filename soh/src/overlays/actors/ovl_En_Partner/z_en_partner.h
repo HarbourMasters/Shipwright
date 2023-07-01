@@ -21,28 +21,28 @@ typedef struct EnPartner {
 
     Color_RGBAf innerColor;
     Color_RGBAf outerColor;
-    LightInfo lightInfoGlow;
-    LightNode* lightNodeGlow;
-    LightInfo lightInfoNoGlow;
-    LightNode* lightNodeNoGlow;
+    LightInfo   lightInfoGlow;
+    LightNode*  lightNodeGlow;
+    LightInfo   lightInfoNoGlow;
+    LightNode*  lightNodeNoGlow;
 
     f32 yVelocity;
 
-    u8 canMove;
-    u8 usedItem;
-    u8 usedItemButton;
-    u8 usedSpell;
-    u8 damageTimer;
+    u8  canMove;
+    u8  usedItem;
+    u8  usedItemButton;
+    u8  usedSpell;
+    u8  damageTimer;
     s16 magicTimer;
 
-    u8 shouldDraw;
+    u8  shouldDraw;
     s16 itemTimer;
 
     GetItemEntry entry;
-    WeaponInfo stickWeaponInfo;
+    WeaponInfo   stickWeaponInfo;
 
     EnBoom* boomerangActor;
-    Actor* hookshotTarget;
+    Actor*  hookshotTarget;
 } EnPartner;
 
 #ifdef __cplusplus

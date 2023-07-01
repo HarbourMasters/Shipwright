@@ -10,14 +10,14 @@
 
 namespace LUS {
 typedef struct {
-    /* 0x00 */ u8    type;
+    /* 0x00 */ u8 type;
 } PolygonBase;
 
 typedef struct {
     /* 0x00 */ PolygonBase base;
-    /* 0x01 */ u8    num; // number of dlist entries
-    /* 0x04 */ void* start;
-    /* 0x08 */ void* end;
+    /* 0x01 */ u8          num; // number of dlist entries
+    /* 0x04 */ void*       start;
+    /* 0x08 */ void*       end;
 } PolygonType0; // size = 0xC
 
 typedef struct {
@@ -36,8 +36,8 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ PolygonBase base;
-    /* 0x01 */ u8    format; // 1 = single, 2 = multi
-    /* 0x04 */ Gfx*  dlist;
+    /* 0x01 */ u8          format; // 1 = single, 2 = multi
+    /* 0x04 */ Gfx*        dlist;
     union {
         struct {
             /* 0x08 */ void* source;
@@ -51,7 +51,7 @@ typedef struct {
             /* 0x1C */ u16   tlutCount;
         } single;
         struct {
-            /* 0x08 */ u8    count;
+            /* 0x08 */ u8       count;
             /* 0x0C */ BgImage* list;
         } multi;
     };
@@ -59,9 +59,9 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ PolygonBase base;
-    /* 0x01 */ u8    num; // number of dlist entries
-    /* 0x04 */ void* start;
-    /* 0x08 */ void* end;
+    /* 0x01 */ u8          num; // number of dlist entries
+    /* 0x04 */ void*       start;
+    /* 0x08 */ void*       end;
 } PolygonType2; // size = 0xC
 
 typedef union {
@@ -88,16 +88,16 @@ class SetMesh : public SceneCommand<MeshHeader> {
     using SceneCommand::SceneCommand;
 
     MeshHeader* GetPointer();
-    size_t GetPointerSize();
+    size_t      GetPointerSize();
 
     uint32_t numPoly;
-    uint8_t data;
-    uint8_t meshHeaderType;
+    uint8_t  data;
+    uint8_t  meshHeaderType;
 
-    std::vector<PolygonDlist> dlists;
+    std::vector<PolygonDlist>  dlists;
     std::vector<PolygonDlist2> dlists2;
-    std::vector<std::string> imagePaths;
-    std::vector<BgImage> images;
-    MeshHeader meshHeader;
+    std::vector<std::string>   imagePaths;
+    std::vector<BgImage>       images;
+    MeshHeader                 meshHeader;
 };
 }; // namespace LUS

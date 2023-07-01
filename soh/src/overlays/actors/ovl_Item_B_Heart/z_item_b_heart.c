@@ -62,7 +62,8 @@ void ItemBHeart_Update(Actor* thisx, PlayState* play) {
         if (!gSaveContext.n64ddFlag) {
             func_8002F434(&this->actor, play, GI_HEART_CONTAINER_2, 30.0f, 40.0f);
         } else {
-            GetItemEntry getItemEntry = Randomizer_GetItemFromActor(this->actor.id, play->sceneNum, this->actor.params, GI_HEART_CONTAINER_2);
+            GetItemEntry getItemEntry =
+                Randomizer_GetItemFromActor(this->actor.id, play->sceneNum, this->actor.params, GI_HEART_CONTAINER_2);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 30.0f, 40.0f);
         }
     }
@@ -84,7 +85,7 @@ void func_80B85264(ItemBHeart* this, PlayState* play) {
 void ItemBHeart_Draw(Actor* thisx, PlayState* play) {
     ItemBHeart* this = (ItemBHeart*)thisx;
     Actor* actorIt;
-    u8 flag = false;
+    u8     flag = false;
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -99,19 +100,17 @@ void ItemBHeart_Draw(Actor* thisx, PlayState* play) {
     }
 
     if (gSaveContext.n64ddFlag) {
-        GetItemEntry_Draw(play, Randomizer_GetItemFromActor(this->actor.id, 
-            play->sceneNum,this->actor.params, GI_HEART_CONTAINER_2));
+        GetItemEntry_Draw(play, Randomizer_GetItemFromActor(this->actor.id, play->sceneNum, this->actor.params,
+                                                            GI_HEART_CONTAINER_2));
     } else {
         if (flag) {
             Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gGiHeartBorderDL);
             gSPDisplayList(POLY_XLU_DISP++, gGiHeartContainerDL);
         } else {
             Gfx_SetupDL_25Opa(play->state.gfxCtx);
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gGiHeartBorderDL);
             gSPDisplayList(POLY_OPA_DISP++, gGiHeartContainerDL);
         }

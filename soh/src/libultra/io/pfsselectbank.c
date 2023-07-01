@@ -2,7 +2,7 @@
 #include "global.h"
 
 s32 __osPfsSelectBank(OSPfs* pfs, u8 bank) {
-    u8 temp[BLOCKSIZE];
+    u8  temp[BLOCKSIZE];
     s32 i;
     s32 ret = 0;
 

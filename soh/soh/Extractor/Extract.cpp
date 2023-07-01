@@ -46,7 +46,7 @@
 #include <unordered_map>
 
 extern "C" uint32_t CRC32C(unsigned char* data, size_t dataSize);
-extern "C" void RomToBigEndian(void* rom, size_t romSize);
+extern "C" void     RomToBigEndian(void* rom, size_t romSize);
 
 static constexpr uint32_t OOT_PAL_GC = 0x09465AC3;
 static constexpr uint32_t OOT_PAL_GC_DBG1 = 0x871E1C92; // 03-21-2002 build
@@ -56,11 +56,8 @@ static constexpr uint32_t OOT_PAL_10 = 0xB044B569;
 static constexpr uint32_t OOT_PAL_11 = 0xB2055FBD;
 
 static const std::unordered_map<uint32_t, const char*> verMap = {
-    { OOT_PAL_GC, "PAL Gamecube" },
-    { OOT_PAL_GC_DBG1, "PAL Debug 1" },
-    { OOT_PAL_GC_DBG2, "PAL Debug 2" },
-    { OOT_PAL_GC_MQ_DBG, "PAL MQ Debug" },
-    { OOT_PAL_11, "PAL N64 1.1" },
+    { OOT_PAL_GC, "PAL Gamecube" },        { OOT_PAL_GC_DBG1, "PAL Debug 1" }, { OOT_PAL_GC_DBG2, "PAL Debug 2" },
+    { OOT_PAL_GC_MQ_DBG, "PAL MQ Debug" }, { OOT_PAL_11, "PAL N64 1.1" },
 };
 
 // TODO only check the first 54MB of the rom.
@@ -80,7 +77,6 @@ enum class ButtonId : int {
     NO,
     FIND,
 };
-
 
 void Extractor::ShowErrorBox(const char* title, const char* text) {
 #ifdef _WIN32
@@ -103,10 +99,10 @@ void Extractor::ShowCrcErrorBox() const {
 }
 
 int Extractor::ShowRomPickBox(uint32_t verCrc) const {
-    std::unique_ptr<char[]> boxBuffer = std::make_unique<char[]>(mCurrentRomPath.size() + 100);
-    SDL_MessageBoxData boxData = { 0 };
+    std::unique_ptr<char[]>  boxBuffer = std::make_unique<char[]>(mCurrentRomPath.size() + 100);
+    SDL_MessageBoxData       boxData = { 0 };
     SDL_MessageBoxButtonData buttons[3] = { { 0 } };
-    int ret;
+    int                      ret;
 
     buttons[0].buttonid = 0;
     buttons[0].text = "Yes";
@@ -136,7 +132,7 @@ int Extractor::ShowYesNoBox(const char* title, const char* box) {
 #ifdef _WIN32
     ret = MessageBoxA(nullptr, box, title, MB_YESNO | MB_ICONQUESTION);
 #else
-    SDL_MessageBoxData boxData = { 0 };
+    SDL_MessageBoxData       boxData = { 0 };
     SDL_MessageBoxButtonData buttons[2] = { { 0 } };
 
     buttons[0].buttonid = IDYES;
@@ -161,7 +157,7 @@ void Extractor::SetRomInfo(const std::string& path) {
 }
 
 void Extractor::FilterRoms(std::vector<std::string>& roms, RomSearchMode searchMode) {
-    std::ifstream inFile;
+    std::ifstream                      inFile;
     std::vector<std::string>::iterator it = roms.begin();
 
     while (it != roms.end()) {
@@ -183,8 +179,7 @@ void Extractor::FilterRoms(std::vector<std::string>& roms, RomSearchMode searchM
 
         // Rom doesn't claim to be valid
         // Game type doesn't match search mode
-        if (!verMap.contains(GetRomVerCrc()) ||
-            (searchMode == RomSearchMode::Vanilla && IsMasterQuest()) ||
+        if (!verMap.contains(GetRomVerCrc()) || (searchMode == RomSearchMode::Vanilla && IsMasterQuest()) ||
             (searchMode == RomSearchMode::MQ && !IsMasterQuest())) {
             it = roms.erase(it);
             continue;
@@ -197,7 +192,7 @@ void Extractor::FilterRoms(std::vector<std::string>& roms, RomSearchMode searchM
 void Extractor::GetRoms(std::vector<std::string>& roms) {
 #ifdef _WIN32
     WIN32_FIND_DATAA ffd;
-    HANDLE h = FindFirstFileA(".\\*", &ffd);
+    HANDLE           h = FindFirstFileA(".\\*", &ffd);
 
     do {
         if (!(ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
@@ -213,7 +208,7 @@ void Extractor::GetRoms(std::vector<std::string>& roms) {
     //}
 #elif unix
     // Open the directory of the app.
-    DIR* d = opendir(".");
+    DIR*           d = opendir(".");
     struct dirent* dir;
 
     if (d != NULL) {
@@ -227,8 +222,7 @@ void Extractor::GetRoms(std::vector<std::string>& roms) {
 
                 // Get the position of the extension character.
                 char* ext = strrchr(dir->d_name, '.');
-                if (ext != NULL && (strcmp(ext, ".z64") == 0 || strcmp(ext, ".n64") == 0 ||
-                    strcmp(ext, ".v64") == 0)) {
+                if (ext != NULL && (strcmp(ext, ".z64") == 0 || strcmp(ext, ".n64") == 0 || strcmp(ext, ".v64") == 0)) {
                     roms.push_back(dir->d_name);
                 }
             }
@@ -250,14 +244,15 @@ void Extractor::GetRoms(std::vector<std::string>& roms) {
 bool Extractor::GetRomPathFromBox() {
 #ifdef _WIN32
     OPENFILENAMEA box = { 0 };
-    char nameBuffer[512];
+    char          nameBuffer[512];
     nameBuffer[0] = 0;
 
     box.lStructSize = sizeof(box);
     box.lpstrFile = nameBuffer;
     box.nMaxFile = sizeof(nameBuffer) / sizeof(nameBuffer[0]);
     box.lpstrTitle = "Open Rom";
-    box.Flags = OFN_NOCHANGEDIR | OFN_ENABLESIZING | OFN_FILEMUSTEXIST | OFN_LONGNAMES | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
+    box.Flags =
+        OFN_NOCHANGEDIR | OFN_ENABLESIZING | OFN_FILEMUSTEXIST | OFN_LONGNAMES | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY;
     box.lpstrFilter = "N64 Roms\0*.z64;*.v64;*.n64\0\0";
     if (!GetOpenFileNameA(&box)) {
         DWORD err = CommDlgExtendedError();
@@ -284,7 +279,7 @@ bool Extractor::GetRomPathFromBox() {
         return false;
     }
     mCurrentRomPath = nameBuffer;
-    #else
+#else
     auto selection = pfd::open_file("Select a file", ".", { "N64 Roms", "*.z64 *.n64 *.v64" }).result();
 
     if (selection.empty()) {
@@ -292,7 +287,7 @@ bool Extractor::GetRomPathFromBox() {
     }
 
     mCurrentRomPath = selection[0];
-    #endif
+#endif
     mCurRomSize = GetCurRomSize();
     return true;
 }
@@ -373,7 +368,9 @@ bool Extractor::ManuallySearchForRomMatchingType(RomSearchMode searchMode) {
     }
 
     char msgBuf[150];
-    snprintf(msgBuf, 150, "The selected rom does not match the expected game type\nExpected type: %s.\n\nDo you want to search again?",
+    snprintf(
+        msgBuf, 150,
+        "The selected rom does not match the expected game type\nExpected type: %s.\n\nDo you want to search again?",
         searchMode == RomSearchMode::MQ ? "Master Quest" : "Vanilla");
 
     while ((searchMode == RomSearchMode::Vanilla && IsMasterQuest()) ||
@@ -398,7 +395,7 @@ bool Extractor::ManuallySearchForRomMatchingType(RomSearchMode searchMode) {
 
 bool Extractor::Run(RomSearchMode searchMode) {
     std::vector<std::string> roms;
-    std::ifstream inFile;
+    std::ifstream            inFile;
 
     GetRoms(roms);
     FilterRoms(roms, searchMode);
@@ -499,11 +496,11 @@ const char* Extractor::GetZapdVerStr() const {
 extern "C" int zapd_main(int argc, char** argv);
 
 bool Extractor::CallZapd() {
-    constexpr int argc = 16;
-    char xmlPath[1024];
-    char confPath[1024];
+    constexpr int                 argc = 16;
+    char                          xmlPath[1024];
+    char                          confPath[1024];
     std::array<const char*, argc> argv;
-    const char* version = GetZapdVerStr();
+    const char*                   version = GetZapdVerStr();
 
     snprintf(xmlPath, 1024, "assets/extractor/xmls/%s", version);
     snprintf(confPath, 1024, "assets/extractor/Config_%s.xml", version);
@@ -529,7 +526,8 @@ bool Extractor::CallZapd() {
     // Grab a handle to the command window.
     HWND cmdWindow = GetConsoleWindow();
 
-    // Normally the command window is hidden. We want the window to be shown here so the user can see the progess of the extraction.
+    // Normally the command window is hidden. We want the window to be shown here so the user can see the progess of the
+    // extraction.
     ShowWindow(cmdWindow, SW_SHOW);
     SetWindowPos(cmdWindow, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
 #endif
@@ -543,4 +541,3 @@ bool Extractor::CallZapd() {
 
     return 0;
 }
-

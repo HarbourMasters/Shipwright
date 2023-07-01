@@ -179,7 +179,7 @@ void EnFhgFire_Destroy(Actor* thisx, PlayState* play) {
 
 void EnFhgFire_LightningStrike(EnFhgFire* this, PlayState* play) {
     Camera* camera = Play_GetCamera(play, 0);
-    s16 i;
+    s16     i;
 
     switch (this->work[FHGFIRE_FIRE_MODE]) {
         case STRIKE_INIT:
@@ -197,8 +197,8 @@ void EnFhgFire_LightningStrike(EnFhgFire* this, PlayState* play) {
                 this->work[FHGFIRE_TIMER] = 37;
                 this->actor.world.pos.y -= 200.0f;
 
-                Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE,
-                                   this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, 500, 0, 0,
+                Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE, this->actor.world.pos.x,
+                                   this->actor.world.pos.y, this->actor.world.pos.z, 500, 0, 0,
                                    FHGFIRE_LIGHTNING_BURST);
                 {
                     Vec3f sp7C;
@@ -226,15 +226,15 @@ void EnFhgFire_LightningStrike(EnFhgFire* this, PlayState* play) {
                 s16 randY = (Rand_ZeroOne() < 0.5f) ? 0x1000 : 0;
 
                 for (i = 0; i < 8; i++) {
-                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE,
-                                       this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, 0,
-                                       (i * 0x2000) + randY, 0x4000, FHGFIRE_LIGHTNING_TRAIL + i);
+                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE, this->actor.world.pos.x,
+                                       this->actor.world.pos.y, this->actor.world.pos.z, 0, (i * 0x2000) + randY,
+                                       0x4000, FHGFIRE_LIGHTNING_TRAIL + i);
                 }
 
                 for (i = 0; i < 8; i++) {
-                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE,
-                                       this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, 0,
-                                       (i * 0x2000) + randY, 0, FHGFIRE_LIGHTNING_SHOCK);
+                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE, this->actor.world.pos.x,
+                                       this->actor.world.pos.y, this->actor.world.pos.z, 0, (i * 0x2000) + randY, 0,
+                                       FHGFIRE_LIGHTNING_SHOCK);
                 }
             }
 
@@ -283,7 +283,7 @@ void EnFhgFire_LightningTrail(EnFhgFire* this, PlayState* play) {
 
 void EnFhgFire_LightningShock(EnFhgFire* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    Vec3f pos;
+    Vec3f   pos;
 
     if (this->collider.base.atFlags & AT_HIT) {
         this->collider.base.atFlags &= ~AT_HIT;
@@ -323,8 +323,7 @@ void EnFhgFire_LightningBurst(EnFhgFire* this, PlayState* play) {
         play->envCtx.unk_D6 = 0x14;
     }
     if (this->work[FHGFIRE_FX_TIMER] >= 48) {
-        play->envCtx.screenFillColor[0] = play->envCtx.screenFillColor[1] =
-            play->envCtx.screenFillColor[2] = 255;
+        play->envCtx.screenFillColor[0] = play->envCtx.screenFillColor[1] = play->envCtx.screenFillColor[2] = 255;
 
         if ((this->work[FHGFIRE_TIMER] % 2) != 0) {
             play->envCtx.screenFillColor[3] = 70;
@@ -375,7 +374,7 @@ void EnFhgFire_LightningBurst(EnFhgFire* this, PlayState* play) {
 
 void EnFhgFire_SpearLight(EnFhgFire* this, PlayState* play) {
     BossGanondrof* bossGnd;
-    s16 i;
+    s16            i;
 
     osSyncPrintf("yari hikari 1\n");
     bossGnd = (BossGanondrof*)this->actor.parent;
@@ -402,8 +401,8 @@ void EnFhgFire_SpearLight(EnFhgFire* this, PlayState* play) {
             ballPos.z = Rand_CenteredFloat(20.0f) + this->actor.world.pos.z;
             ballAccel.y = -0.08f;
 
-            EffectSsFhgFlash_SpawnLightBall(play, &ballPos, &ballVel, &ballAccel,
-                                            (s16)(Rand_ZeroOne() * 80.0f) + 150, FHGFLASH_LIGHTBALL_GREEN);
+            EffectSsFhgFlash_SpawnLightBall(play, &ballPos, &ballVel, &ballAccel, (s16)(Rand_ZeroOne() * 80.0f) + 150,
+                                            FHGFLASH_LIGHTBALL_GREEN);
         }
     }
 
@@ -413,15 +412,15 @@ void EnFhgFire_SpearLight(EnFhgFire* this, PlayState* play) {
 }
 
 void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play) {
-    f32 dxL;
-    f32 dyL;
-    f32 dzL;
-    f32 dxzL;
-    f32 dxPG;
-    f32 dyPG;
-    f32 dzPG;
-    u8 killMode = BALL_FIZZLE;
-    u8 canBottleReflect1;
+    f32     dxL;
+    f32     dyL;
+    f32     dzL;
+    f32     dxzL;
+    f32     dxPG;
+    f32     dyPG;
+    f32     dzPG;
+    u8      killMode = BALL_FIZZLE;
+    u8      canBottleReflect1;
     Player* player = GET_PLAYER(play);
 
     if (this->work[FHGFIRE_KILL_TIMER] != 0) {
@@ -431,7 +430,7 @@ void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play) {
             return;
         }
     } else {
-        s32 canBottleReflect2;
+        s32            canBottleReflect2;
         BossGanondrof* bossGnd = (BossGanondrof*)this->actor.parent;
 
         dxPG = bossGnd->targetPos.x - this->actor.world.pos.x;
@@ -449,8 +448,8 @@ void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play) {
         }
         this->actor.shape.rot.z += (s16)(Rand_ZeroOne() * 0x4E20) + 0x4000;
         {
-            u8 lightBallColor1 = FHGFLASH_LIGHTBALL_GREEN;
-            s16 i1;
+            u8    lightBallColor1 = FHGFLASH_LIGHTBALL_GREEN;
+            s16   i1;
             Vec3f spD4;
             Vec3f spC8 = { 0.0f, 0.0f, 0.0f };
             Vec3f spBC = { 0.0f, 0.0f, 0.0f };
@@ -478,11 +477,11 @@ void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play) {
                         : false;
                 if ((this->collider.base.acFlags & AC_HIT) || canBottleReflect1) {
                     ColliderInfo* hurtbox = this->collider.info.acHitInfo;
-                    s16 i2;
-                    Vec3f spA8;
-                    Vec3f sp9C = { 0.0f, -0.5f, 0.0f };
-                    s16 angleModX;
-                    s16 angleModY;
+                    s16           i2;
+                    Vec3f         spA8;
+                    Vec3f         sp9C = { 0.0f, -0.5f, 0.0f };
+                    s16           angleModX;
+                    s16           angleModY;
 
                     for (i2 = 0; i2 < 30; i2++) {
                         spA8.x = Rand_CenteredFloat(20.0f);
@@ -564,7 +563,7 @@ void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play) {
                 break;
             case FHGFIRE_LIGHT_REFLECT:
                 if (this->work[FHGFIRE_TIMER] == 0) {
-                    s16 i3;
+                    s16   i3;
                     Vec3f sp88;
                     Vec3f sp7C = { 0.0f, -0.5f, 0.0f };
 
@@ -590,8 +589,8 @@ void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play) {
         if (this->work[FHGFIRE_FX_TIMER] == 0) {
             Actor_UpdateBgCheckInfo(play, &this->actor, 50.0f, 50.0f, 100.0f, 7);
             if ((this->actor.bgCheckFlags & 0x19) || killMode) {
-                u8 lightBallColor2 = FHGFLASH_LIGHTBALL_GREEN;
-                s16 i4;
+                u8    lightBallColor2 = FHGFLASH_LIGHTBALL_GREEN;
+                s16   i4;
                 Vec3f sp6C;
                 Vec3f sp60 = { 0.0f, -1.0f, 0.0f };
 
@@ -607,9 +606,9 @@ void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play) {
                                                     (s16)(Rand_ZeroOne() * 50.0f) + 100, lightBallColor2);
                 }
                 if (killMode == BALL_BURST) {
-                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE,
-                                       this->actor.world.pos.x, player->actor.world.pos.y + 20.0f,
-                                       this->actor.world.pos.z, 0xC8, 0, 0, FHGFIRE_LIGHTNING_BURST);
+                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FHG_FIRE, this->actor.world.pos.x,
+                                       player->actor.world.pos.y + 20.0f, this->actor.world.pos.z, 0xC8, 0, 0,
+                                       FHGFIRE_LIGHTNING_BURST);
                 }
                 bossGnd->flyMode = GND_FLY_NEUTRAL;
                 this->work[FHGFIRE_KILL_TIMER] = 30;
@@ -638,7 +637,7 @@ void EnFhgFire_EnergyBall(EnFhgFire* this, PlayState* play) {
 
 void EnFhgFire_PhantomWarp(EnFhgFire* this, PlayState* play) {
     EnfHG* horse = (EnfHG*)this->actor.parent;
-    f32 scrollDirection;
+    f32    scrollDirection;
 
     this->fwork[FHGFIRE_WARP_TEX_1_X] += 25.0f * this->fwork[FHGFIRE_WARP_TEX_SPEED];
     this->fwork[FHGFIRE_WARP_TEX_1_Y] -= 40.0f * this->fwork[FHGFIRE_WARP_TEX_SPEED];
@@ -707,8 +706,7 @@ void EnFhgFire_Draw(Actor* thisx, PlayState* play) {
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, (s8)this->fwork[FHGFIRE_ALPHA]);
         gDPSetEnvColor(POLY_XLU_DISP++, 165, 255, 75, 0);
         gDPPipeSync(POLY_XLU_DISP++);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gPhantomLightningBlastDL));
     } else if ((this->actor.params == FHGFIRE_SPEAR_LIGHT) || (this->actor.params == FHGFIRE_ENERGY_BALL)) {
         osSyncPrintf("yari hikari draw 1\n");
@@ -723,8 +721,7 @@ void EnFhgFire_Draw(Actor* thisx, PlayState* play) {
         }
         gDPPipeSync(POLY_XLU_DISP++);
         Matrix_RotateZ((this->actor.shape.rot.z / (f32)0x8000) * 3.1416f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gPhantomEnergyBallDL);
     } else if ((this->actor.params == FHGFIRE_WARP_EMERGE) || (this->actor.params == FHGFIRE_WARP_RETREAT) ||
                (this->actor.params == FHGFIRE_WARP_DEATH)) {
@@ -732,8 +729,7 @@ void EnFhgFire_Draw(Actor* thisx, PlayState* play) {
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, (u8)this->fwork[FHGFIRE_WARP_ALPHA]);
         gDPSetEnvColor(POLY_XLU_DISP++, 90, 50, 95, (s8)(this->fwork[FHGFIRE_WARP_ALPHA] * 0.5f));
         gDPPipeSync(POLY_XLU_DISP++);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, (s16)this->fwork[FHGFIRE_WARP_TEX_1_X],
                                     (s16)this->fwork[FHGFIRE_WARP_TEX_1_Y], 0x40, 0x40, 1,
@@ -747,8 +743,7 @@ void EnFhgFire_Draw(Actor* thisx, PlayState* play) {
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, (s8)this->fwork[FHGFIRE_ALPHA]);
         gDPSetEnvColor(POLY_XLU_DISP++, 0, 255, 30, 0);
         gDPPipeSync(POLY_XLU_DISP++);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gPhantomLightningDL);
         osSyncPrintf("FF DRAW 2\n");
     }

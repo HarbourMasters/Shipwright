@@ -34,7 +34,7 @@ const ActorInit Bg_Spot15_Saku_InitVars = {
 void BgSpot15Saku_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     BgSpot15Saku* this = (BgSpot15Saku*)thisx;
-    s32 pad2;
+    s32              pad2;
     CollisionHeader* colHeader = NULL;
 
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
@@ -99,8 +99,7 @@ void BgSpot15Saku_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gLonLonCorralFenceDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

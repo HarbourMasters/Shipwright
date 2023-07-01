@@ -18,7 +18,7 @@ void ObjTsubo_Draw(Actor* thisx, PlayState* play);
 
 void ObjTsubo_SpawnCollectible(ObjTsubo* this, PlayState* play);
 void ObjTsubo_ApplyGravity(ObjTsubo* this);
-s32 ObjTsubo_SnapToFloor(ObjTsubo* this, PlayState* play);
+s32  ObjTsubo_SnapToFloor(ObjTsubo* this, PlayState* play);
 void ObjTsubo_InitCollider(Actor* thisx, PlayState* play);
 void ObjTsubo_AirBreak(ObjTsubo* this, PlayState* play);
 void ObjTsubo_WaterBreak(ObjTsubo* this, PlayState* play);
@@ -87,8 +87,7 @@ void ObjTsubo_SpawnCollectible(ObjTsubo* this, PlayState* play) {
     s16 dropParams = this->actor.params & 0x1F;
 
     if ((dropParams >= ITEM00_RUPEE_GREEN) && (dropParams <= ITEM00_BOMBS_SPECIAL)) {
-        Item_DropCollectible(play, &this->actor.world.pos,
-                             (dropParams | (((this->actor.params >> 9) & 0x3F) << 8)));
+        Item_DropCollectible(play, &this->actor.world.pos, (dropParams | (((this->actor.params >> 9) & 0x3F) << 8)));
     }
 }
 
@@ -101,9 +100,9 @@ void ObjTsubo_ApplyGravity(ObjTsubo* this) {
 
 s32 ObjTsubo_SnapToFloor(ObjTsubo* this, PlayState* play) {
     CollisionPoly* floorPoly;
-    Vec3f pos;
-    s32 bgID;
-    f32 floorY;
+    Vec3f          pos;
+    s32            bgID;
+    f32            floorY;
 
     pos.x = this->actor.world.pos.x;
     pos.y = this->actor.world.pos.y + 20.0f;
@@ -155,15 +154,15 @@ void ObjTsubo_Destroy(Actor* thisx, PlayState* play2) {
 }
 
 void ObjTsubo_AirBreak(ObjTsubo* this, PlayState* play) {
-    s32 pad;
-    f32 rand;
-    s16 angle;
+    s32   pad;
+    f32   rand;
+    s16   angle;
     Vec3f pos;
     Vec3f velocity;
-    f32 sins;
-    f32 coss;
-    s32 arg5;
-    s32 i;
+    f32   sins;
+    f32   coss;
+    s32   arg5;
+    s32   i;
 
     for (i = 0, angle = 0; i < 15; i++, angle += 0x4E20) {
         sins = Math_SinS(angle);
@@ -192,12 +191,12 @@ void ObjTsubo_AirBreak(ObjTsubo* this, PlayState* play) {
 }
 
 void ObjTsubo_WaterBreak(ObjTsubo* this, PlayState* play) {
-    s32 pad[2];
-    s16 angle;
+    s32   pad[2];
+    s16   angle;
     Vec3f pos = this->actor.world.pos;
     Vec3f velocity;
-    s32 phi_s0;
-    s32 i;
+    s32   phi_s0;
+    s32   i;
 
     pos.y += this->actor.yDistToWater;
     EffectSsGSplash_Spawn(play, &pos, NULL, NULL, 0, 400);

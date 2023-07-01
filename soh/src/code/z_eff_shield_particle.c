@@ -14,7 +14,7 @@ static Vtx sVertices[5] = {
 // original name: "EffectShieldParticle_ct"
 void EffectShieldParticle_Init(void* thisx, void* initParamsx) {
     EffectShieldParticle* this = (EffectShieldParticle*)thisx;
-    EffectShieldParticleInit* initParams = (EffectShieldParticleInit*)initParamsx;
+    EffectShieldParticleInit*    initParams = (EffectShieldParticleInit*)initParamsx;
     EffectShieldParticleElement* elem;
 
     if ((this != NULL) && (initParams != NULL)) {
@@ -154,8 +154,8 @@ void EffectShieldParticle_GetColors(EffectShieldParticle* this, Color_RGBA8* pri
 void EffectShieldParticle_Draw(void* thisx, GraphicsContext* gfxCtx) {
     EffectShieldParticle* this = (EffectShieldParticle*)thisx;
     EffectShieldParticleElement* elem;
-    Color_RGBA8 primColor;
-    Color_RGBA8 envColor;
+    Color_RGBA8                  primColor;
+    Color_RGBA8                  envColor;
 
     OPEN_DISPS(gfxCtx);
 
@@ -188,9 +188,9 @@ void EffectShieldParticle_Draw(void* thisx, GraphicsContext* gfxCtx) {
             MtxF sp104;
             MtxF spC4;
             MtxF sp84;
-            f32 temp1 = (s16)((elem->endX + elem->startX) * 0.5f);
-            f32 temp2 = elem->endX - elem->startX;
-            f32 temp3 = (s16)((temp2 * (1.0f / 64.0f)) / 0.02f);
+            f32  temp1 = (s16)((elem->endX + elem->startX) * 0.5f);
+            f32  temp2 = elem->endX - elem->startX;
+            f32  temp3 = (s16)((temp2 * (1.0f / 64.0f)) / 0.02f);
 
             if (temp3 < 1.0f) {
                 temp3 = 1.0f;
@@ -214,7 +214,7 @@ void EffectShieldParticle_Draw(void* thisx, GraphicsContext* gfxCtx) {
             gSPMatrix(POLY_XLU_DISP++, mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPVertex(POLY_XLU_DISP++, sVertices, 4, 0);
             gSP2Triangles(POLY_XLU_DISP++, 0, 1, 2, 0, 0, 3, 1, 0);
-            
+
             FrameInterpolation_RecordCloseChild();
         }
     }

@@ -20,7 +20,7 @@
 #define rObjBankIdx regs[11]
 #define rColorIdx regs[12]
 
-u32 EffectSsKakera_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsKakera_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsKakera_Draw(PlayState* play, u32 index, EffectSs* this);
 void EffectSsKakera_Update(PlayState* play, u32 index, EffectSs* this);
 
@@ -33,7 +33,7 @@ EffectSsInit Effect_Ss_Kakera_InitVars = {
 
 u32 EffectSsKakera_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsKakeraInitParams* initParams = (EffectSsKakeraInitParams*)initParamsx;
-    s32 objId;
+    s32                       objId;
 
     this->pos = initParams->pos;
     this->velocity = initParams->velocity;
@@ -88,10 +88,10 @@ f32 func_809A9818(f32 arg0, f32 arg1) {
 
 void EffectSsKakera_Draw(PlayState* play, u32 index, EffectSs* this) {
     static Color_RGB8 colors[] = { { 255, 255, 255 }, { 235, 170, 130 } };
-    GraphicsContext* gfxCtx = play->state.gfxCtx;
-    s32 pad;
-    f32 scale;
-    s32 colorIdx;
+    GraphicsContext*  gfxCtx = play->state.gfxCtx;
+    s32               pad;
+    f32               scale;
+    s32               colorIdx;
 
     scale = this->rScale / 256.0f;
     colorIdx = this->rColorIdx;
@@ -112,8 +112,7 @@ void EffectSsKakera_Draw(PlayState* play, u32 index, EffectSs* this) {
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
 
     if ((((this->rReg4 >> 7) & 1) << 7) == 0x80) {
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
         if (colorIdx >= 0) {
@@ -122,8 +121,7 @@ void EffectSsKakera_Draw(PlayState* play, u32 index, EffectSs* this) {
 
         gSPDisplayList(POLY_XLU_DISP++, this->gfx);
     } else {
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
         if (colorIdx >= 0) {
@@ -221,8 +219,8 @@ f32 func_809A9E68(f32 arg0, s32 arg1) {
 
 s32 func_809A9E88(EffectSs* this, Vec3f* diff, f32 dist) {
     static f32 D_809AA558[] = { 0.05f, 1.0f };
-    s32 temp_v0;
-    f32 phi_f0;
+    s32        temp_v0;
+    f32        phi_f0;
 
     temp_v0 = this->rReg0 & 3;
 
@@ -243,7 +241,7 @@ s32 func_809A9E88(EffectSs* this, Vec3f* diff, f32 dist) {
 
 s32 func_809A9F10(EffectSs* this, Vec3f* diff, f32 dist) {
     static f32 D_809AA560[] = { 4.0f, 0.1f, 0.3f, 0.9f, -0.1f, -0.3f, -0.9f };
-    s32 temp_v0;
+    s32        temp_v0;
 
     temp_v0 = (this->rReg0 >> 2) & 7;
 
@@ -256,8 +254,8 @@ s32 func_809A9F10(EffectSs* this, Vec3f* diff, f32 dist) {
 
 s32 func_809A9F4C(EffectSs* this, Vec3f* diff, f32 dist) {
     static f32 D_809AA57C[] = { 0.1f, 1.0f, 6.0f };
-    s32 temp_v0;
-    f32 phi_f0;
+    s32        temp_v0;
+    f32        phi_f0;
 
     temp_v0 = (this->rReg0 >> 5) & 3;
 
@@ -307,7 +305,7 @@ s32 func_809AA0B8(EffectSs* this, Vec3f* diff, f32 dist) {
 
 s32 func_809AA0EC(EffectSs* this) {
     Vec3f diff;
-    f32 dist;
+    f32   dist;
 
     func_809A9DC0(this);
 
@@ -348,7 +346,7 @@ s32 func_809AA0EC(EffectSs* this) {
 
 void func_809AA230(EffectSs* this, PlayState* play) {
     static f32 D_809AA5B0[] = { 10.0f, 20.0f, 40.0f };
-    Player* player = GET_PLAYER(play);
+    Player*    player = GET_PLAYER(play);
 
     if (this->rReg8 == 0) {
         if ((((this->rReg4 >> 4) & 1) * 0x10) == 0x10) {

@@ -47,10 +47,10 @@ void func_80891AC0(BgIceShutter* this) {
 
 void BgIceShutter_Init(Actor* thisx, PlayState* play) {
     BgIceShutter* this = (BgIceShutter*)thisx;
-    f32 sp24;
+    f32              sp24;
     CollisionHeader* colHeader;
-    s32 sp28;
-    f32 temp_f6;
+    s32              sp28;
+    f32              temp_f6;
 
     colHeader = NULL;
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);

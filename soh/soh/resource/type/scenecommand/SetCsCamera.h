@@ -17,7 +17,7 @@ class SetCsCamera : public SceneCommand<CsCamera> {
     using SceneCommand::SceneCommand;
 
     CsCamera* GetPointer();
-    size_t GetPointerSize();
+    size_t    GetPointerSize();
 
     CsCamera csCamera;
 };

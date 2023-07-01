@@ -42,9 +42,9 @@ void ObjBlockstop_Destroy(Actor* thisx, PlayState* play) {
 void ObjBlockstop_Update(Actor* thisx, PlayState* play) {
     ObjBlockstop* this = (ObjBlockstop*)thisx;
     DynaPolyActor* dynaPolyActor;
-    Vec3f sp4C;
-    s32 bgId;
-    s32 pad;
+    Vec3f          sp4C;
+    s32            bgId;
+    s32            pad;
 
     if (BgCheck_EntityLineTest2(&play->colCtx, &this->actor.home.pos, &this->actor.world.pos, &sp4C,
                                 &this->actor.floorPoly, false, false, true, true, &bgId, &this->actor)) {

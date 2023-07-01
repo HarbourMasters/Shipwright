@@ -41,7 +41,7 @@ static InitChainEntry sInitChain[] = {
 
 void BgHakaHuta_Init(Actor* thisx, PlayState* play) {
     BgHakaHuta* this = (BgHakaHuta*)thisx;
-    s16 pad;
+    s16              pad;
     CollisionHeader* colHeader = NULL;
 
     Actor_ProcessInitChain(thisx, sInitChain);
@@ -64,16 +64,16 @@ void BgHakaHuta_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void BgHakaHuta_SpawnDust(BgHakaHuta* this, PlayState* play) {
-    static Vec3f sEffectAccel[] = { 0.0f, 0.0f, 0.0f };
+    static Vec3f       sEffectAccel[] = { 0.0f, 0.0f, 0.0f };
     static Color_RGBA8 primColor = { 30, 20, 50, 255 };
     static Color_RGBA8 envColor = { 0, 0, 0, 255 };
-    f32 scale;
-    f32 phi_f20;
-    Vec3f effectPos;
-    Vec3f effectVel;
-    s32 i;
-    f32 new_Xpos;
-    f32 xPosOffset;
+    f32                scale;
+    f32                phi_f20;
+    Vec3f              effectPos;
+    Vec3f              effectVel;
+    s32                i;
+    f32                new_Xpos;
+    f32                xPosOffset;
 
     phi_f20 = (this->dyna.actor.world.rot.y == 0) ? 1.0f : -1.0f;
     effectVel.y = 0.0f;
@@ -172,9 +172,9 @@ void BgHakaHuta_SlideOpen(BgHakaHuta* this, PlayState* play) {
 void func_8087D720(BgHakaHuta* this, PlayState* play) {
     static Vec3f D_8087D958 = { 30.0f, 0.0f, 0.0f };
     static Vec3f D_8087D964 = { 0.03258f, 0.3258f, -0.9449f };
-    MtxF mtx;
-    Vec3f vec;
-    s32 quakeIndex;
+    MtxF         mtx;
+    Vec3f        vec;
+    s32          quakeIndex;
 
     this->counter++;
     if (this->counter == 6) {

@@ -98,7 +98,7 @@ static DoorKillerTextureEntry sDoorTextures[4] = {
 
 void DoorKiller_Init(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
-    f32 randF;
+    f32        randF;
     DoorKiller* this = (DoorKiller*)thisx;
     s32 bankIndex;
     s32 i;
@@ -212,15 +212,15 @@ void DoorKiller_SpawnRubble(Actor* thisx, PlayState* play) {
     Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_KILLER, thisx->world.pos.x, thisx->world.pos.y + 9.0f,
                 thisx->world.pos.z, thisx->shape.rot.x, thisx->shape.rot.y, thisx->shape.rot.z,
                 DOOR_KILLER_RUBBLE_PIECE_1, true);
-    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_KILLER, thisx->world.pos.x + 7.88f,
-                thisx->world.pos.y + 39.8f, thisx->world.pos.z, thisx->shape.rot.x, thisx->shape.rot.y,
-                thisx->shape.rot.z, DOOR_KILLER_RUBBLE_PIECE_2, true);
-    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_KILLER, thisx->world.pos.x - 15.86f,
-                thisx->world.pos.y + 61.98f, thisx->world.pos.z, thisx->shape.rot.x, thisx->shape.rot.y,
-                thisx->shape.rot.z, DOOR_KILLER_RUBBLE_PIECE_3, true);
-    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_KILLER, thisx->world.pos.x + 3.72f,
-                thisx->world.pos.y + 85.1f, thisx->world.pos.z, thisx->shape.rot.x, thisx->shape.rot.y,
-                thisx->shape.rot.z, DOOR_KILLER_RUBBLE_PIECE_4, true);
+    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_KILLER, thisx->world.pos.x + 7.88f, thisx->world.pos.y + 39.8f,
+                thisx->world.pos.z, thisx->shape.rot.x, thisx->shape.rot.y, thisx->shape.rot.z,
+                DOOR_KILLER_RUBBLE_PIECE_2, true);
+    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_KILLER, thisx->world.pos.x - 15.86f, thisx->world.pos.y + 61.98f,
+                thisx->world.pos.z, thisx->shape.rot.x, thisx->shape.rot.y, thisx->shape.rot.z,
+                DOOR_KILLER_RUBBLE_PIECE_3, true);
+    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_KILLER, thisx->world.pos.x + 3.72f, thisx->world.pos.y + 85.1f,
+                thisx->world.pos.z, thisx->shape.rot.x, thisx->shape.rot.y, thisx->shape.rot.z,
+                DOOR_KILLER_RUBBLE_PIECE_4, true);
 }
 
 /**
@@ -350,8 +350,8 @@ void DoorKiller_FallOver(DoorKiller* this, PlayState* play) {
         Vec3f velocity = { 0.0f, 0.0f, 0.0f };
         Vec3f accel = { 0.0f, 1.0f, 0.0f };
         Vec3f pos;
-        s32 j;
-        f32 randF;
+        s32   j;
+        f32   randF;
 
         for (j = 0; j != 20; j++) {
             pos.y = 0.0f;
@@ -370,7 +370,7 @@ void DoorKiller_FallOver(DoorKiller* this, PlayState* play) {
         }
     }
     if (!(this->hasHitPlayerOrGround & 1)) {
-        Vec3f playerPosRelToDoor;
+        Vec3f   playerPosRelToDoor;
         Player* player = GET_PLAYER(play);
         func_8002DBD0(&this->actor, &playerPosRelToDoor, &player->actor.world.pos);
         if ((fabsf(playerPosRelToDoor.y) < 20.0f) && (fabsf(playerPosRelToDoor.x) < 20.0f) &&
@@ -431,8 +431,8 @@ void DoorKiller_WaitBeforeWobble(DoorKiller* this, PlayState* play) {
 
 void DoorKiller_Wait(DoorKiller* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    Vec3f playerPosRelToDoor;
-    s16 angleToFacingPlayer;
+    Vec3f   playerPosRelToDoor;
+    s16     angleToFacingPlayer;
 
     func_8002DBD0(&this->actor, &playerPosRelToDoor, &player->actor.world.pos);
 
@@ -531,14 +531,14 @@ void DoorKiller_DrawDoor(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
     DoorKiller_SetTexture(&this->actor, play);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, NULL, NULL);
+    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount, NULL,
+                          NULL, NULL);
 }
 
 void DoorKiller_DrawRubble(Actor* thisx, PlayState* play) {
     static Gfx* dLists[] = { object_door_killer_DL_001250, object_door_killer_DL_001550, object_door_killer_DL_0017B8,
                              object_door_killer_DL_001A58 };
-    s32 rubblePieceIndex = (thisx->params & 0xFF) - 1;
+    s32         rubblePieceIndex = (thisx->params & 0xFF) - 1;
     DoorKiller* this = (DoorKiller*)thisx;
 
     if ((this->timer >= 20) || ((this->timer & 1) == 0)) {

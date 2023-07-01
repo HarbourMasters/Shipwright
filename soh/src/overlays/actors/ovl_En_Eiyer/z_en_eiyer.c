@@ -122,8 +122,7 @@ void EnEiyer_Init(Actor* thisx, PlayState* play) {
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     ActorShape_Init(&this->actor.shape, 600.0f, ActorShadow_DrawCircle, 65.0f);
-    SkelAnime_Init(play, &this->skelanime, &gStingerSkel, &gStingerIdleAnim, this->jointTable, this->morphTable,
-                   19);
+    SkelAnime_Init(play, &this->skelanime, &gStingerSkel, &gStingerIdleAnim, this->jointTable, this->morphTable, 19);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sColCylInit);
     CollisionCheck_SetInfo(&this->actor.colChkInfo, &sDamageTable, &sColChkInfoInit);
@@ -139,7 +138,7 @@ void EnEiyer_Init(Actor* thisx, PlayState* play) {
 
         if (this->actor.params == 0) {
             Actor* child = this->actor.child;
-            s32 clonesSpawned;
+            s32    clonesSpawned;
 
             for (clonesSpawned = 0; clonesSpawned != 3; clonesSpawned++) {
                 if (child == NULL) {
@@ -454,7 +453,7 @@ void EnEiyer_Glide(EnEiyer* this, PlayState* play) {
 
 void EnEiyer_StartAttack(EnEiyer* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    Vec3f focus;
+    Vec3f   focus;
 
     SkelAnime_Update(&this->skelanime);
 

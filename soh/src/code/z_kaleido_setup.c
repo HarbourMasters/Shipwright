@@ -10,15 +10,16 @@ f32 sKaleidoSetupEyeZ1[] = { 0.0f, -64.0f, 0.0f, 64.0f };
 
 void KaleidoSetup_Update(PlayState* play) {
     PauseContext* pauseCtx = &play->pauseCtx;
-    Input* input = &play->state.input[0];
+    Input*        input = &play->state.input[0];
 
     if (pauseCtx->state == 0 && pauseCtx->debugState == 0 && play->gameOverCtx.state == GAMEOVER_INACTIVE &&
         play->sceneLoadFlag == 0 && play->transitionMode == 0 && gSaveContext.cutsceneIndex < 0xFFF0 &&
-        gSaveContext.nextCutsceneIndex < 0xFFF0 && !Play_InCsMode(play) &&
-        play->shootingGalleryStatus <= 1 && gSaveContext.magicState != 8 && gSaveContext.magicState != 9 &&
+        gSaveContext.nextCutsceneIndex < 0xFFF0 && !Play_InCsMode(play) && play->shootingGalleryStatus <= 1 &&
+        gSaveContext.magicState != 8 && gSaveContext.magicState != 9 &&
         (play->sceneNum != SCENE_BOWLING || !Flags_GetSwitch(play, 0x38))) {
 
-        if (CVarGetInteger("gCheatEasyPauseBufferFrameAdvance", 0) == 2 && !CHECK_BTN_ALL(input->press.button, BTN_START)) {
+        if (CVarGetInteger("gCheatEasyPauseBufferFrameAdvance", 0) == 2 &&
+            !CHECK_BTN_ALL(input->press.button, BTN_START)) {
             CVarSetInteger("gCheatEasyPauseBufferFrameAdvance", 0);
         }
 
@@ -26,14 +27,15 @@ void KaleidoSetup_Update(PlayState* play) {
             if (BREG(0)) {
                 pauseCtx->debugState = 3;
             }
-        } else if ((CHECK_BTN_ALL(input->press.button, BTN_START) && !CVarGetInteger("gCheatEasyPauseBufferFrameAdvance", 0)) || CVarGetInteger("gCheatEasyPauseBufferFrameAdvance", 0) == 1) {
+        } else if ((CHECK_BTN_ALL(input->press.button, BTN_START) &&
+                    !CVarGetInteger("gCheatEasyPauseBufferFrameAdvance", 0)) ||
+                   CVarGetInteger("gCheatEasyPauseBufferFrameAdvance", 0) == 1) {
             gSaveContext.unk_13EE = gSaveContext.unk_13EA;
 
             if (CHECK_BTN_ALL(input->cur.button, BTN_L))
                 CVarSetInteger("gPauseTriforce", 1);
             else
                 CVarSetInteger("gPauseTriforce", 0);
-
 
             WREG(16) = -175;
             WREG(17) = 155;
@@ -73,7 +75,7 @@ void KaleidoSetup_Update(PlayState* play) {
 
 void KaleidoSetup_Init(PlayState* play) {
     PauseContext* pauseCtx = &play->pauseCtx;
-    u64 temp = 0; // Necessary to match
+    u64           temp = 0; // Necessary to match
 
     pauseCtx->state = 0;
     pauseCtx->debugState = 0;

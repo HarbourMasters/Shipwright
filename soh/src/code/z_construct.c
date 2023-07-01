@@ -8,8 +8,8 @@ void func_80110990(PlayState* play) {
 
 void func_801109B0(PlayState* play) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
-    u32 parameterSize;
-    u8 temp;
+    u32               parameterSize;
+    u8                temp;
 
     gSaveContext.sunsSongState = SUNSSONG_INACTIVE;
     gSaveContext.unk_13E8 = gSaveContext.unk_13EA = 0;
@@ -53,8 +53,8 @@ void func_801109B0(PlayState* play) {
     interfaceCtx->doActionSegment[1] = gCheckDoActionENGTex;
     interfaceCtx->doActionSegment[2] = gReturnDoActionENGTex;
 
-    interfaceCtx->iconItemSegment = GAMESTATE_ALLOC_MC(
-        &play->state, 0x1000 * ARRAY_COUNT(gSaveContext.equips.buttonItems));
+    interfaceCtx->iconItemSegment =
+        GAMESTATE_ALLOC_MC(&play->state, 0x1000 * ARRAY_COUNT(gSaveContext.equips.buttonItems));
 
     // "Icon Item Texture Initialization = %x"
     osSyncPrintf("アイコンアイテム テクスチャ初期=%x\n", 0x4000);
@@ -137,7 +137,7 @@ void func_801109B0(PlayState* play) {
 
 void Message_Init(PlayState* play) {
     MessageContext* msgCtx = &play->msgCtx;
-    s32 pad;
+    s32             pad;
 
     Message_SetTables();
 

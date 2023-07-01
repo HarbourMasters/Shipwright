@@ -87,7 +87,7 @@ void TransitionWipe_Draw(void* thisx, Gfx** gfxP) {
     Gfx* gfx = *gfxP;
     Mtx* modelView;
     TransitionWipe* this = (TransitionWipe*)thisx;
-    s32 pad[4];
+    s32  pad[4];
     Gfx* tex;
     Gfx* wipeDl = sWipeDList;
 

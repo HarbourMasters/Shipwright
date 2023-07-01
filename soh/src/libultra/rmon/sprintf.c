@@ -13,7 +13,7 @@ s32 vsprintf(char* dst, const char* fmt, va_list args) {
 }
 
 s32 sprintf(char* dst, const char* fmt, ...) {
-    s32 ret;
+    s32     ret;
     va_list args;
     va_start(args, fmt);
 

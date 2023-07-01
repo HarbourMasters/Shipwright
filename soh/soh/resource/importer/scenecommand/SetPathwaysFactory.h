@@ -5,8 +5,8 @@
 namespace LUS {
 class SetPathwaysFactory : public SceneCommandFactory {
   public:
-    std::shared_ptr<IResource>
-    ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) override;
+    std::shared_ptr<IResource> ReadResource(std::shared_ptr<ResourceInitData> initData,
+                                            std::shared_ptr<BinaryReader>     reader) override;
 };
 
 class SetPathwaysFactoryV0 : public SceneCommandVersionFactory {

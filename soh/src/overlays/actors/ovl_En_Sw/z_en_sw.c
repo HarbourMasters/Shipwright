@@ -7,7 +7,7 @@ void EnSw_Init(Actor* thisx, PlayState* play);
 void EnSw_Destroy(Actor* thisx, PlayState* play);
 void EnSw_Update(Actor* thisx, PlayState* play);
 void EnSw_Draw(Actor* thisx, PlayState* play);
-s32 func_80B0DFFC(EnSw* this, PlayState* play);
+s32  func_80B0DFFC(EnSw* this, PlayState* play);
 void func_80B0D364(EnSw* this, PlayState* play);
 void func_80B0E5E0(EnSw* this, PlayState* play);
 void func_80B0D590(EnSw* this, PlayState* play);
@@ -15,7 +15,7 @@ void func_80B0E90C(EnSw* this, PlayState* play);
 void func_80B0E9BC(EnSw* this, PlayState* play);
 void func_80B0E728(EnSw* this, PlayState* play);
 void func_80B0DC7C(EnSw* this, PlayState* play);
-s32 func_80B0C0CC(EnSw* this, PlayState* play, s32);
+s32  func_80B0C0CC(EnSw* this, PlayState* play, s32);
 void func_80B0D3AC(EnSw* this, PlayState* play);
 void func_80B0DB00(EnSw* this, PlayState* play);
 void func_80B0D878(EnSw* this, PlayState* play);
@@ -73,9 +73,9 @@ void EnSw_CrossProduct(Vec3f* a, Vec3f* b, Vec3f* dst) {
 s32 func_80B0BE20(EnSw* this, CollisionPoly* poly) {
     Vec3f sp44;
     Vec3f sp38;
-    f32 sp34;
-    f32 temp_f0;
-    s32 pad;
+    f32   sp34;
+    f32   temp_f0;
+    s32   pad;
 
     this->actor.floorPoly = poly;
     sp44.x = COLPOLY_GET_NORMAL(poly->normal.x);
@@ -117,7 +117,7 @@ s32 func_80B0BE20(EnSw* this, CollisionPoly* poly) {
 
 CollisionPoly* func_80B0C020(PlayState* play, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, s32* arg4) {
     CollisionPoly* sp3C;
-    s32 pad;
+    s32            pad;
 
     if (!BgCheck_EntityLineTest1(&play->colCtx, arg1, arg2, arg3, &sp3C, true, true, true, false, arg4)) {
         return NULL;
@@ -137,15 +137,15 @@ CollisionPoly* func_80B0C020(PlayState* play, Vec3f* arg1, Vec3f* arg2, Vec3f* a
 s32 func_80B0C0CC(EnSw* this, PlayState* play, s32 arg2) {
     CollisionPoly* temp_v0_2;
     CollisionPoly* temp_s1;
-    Vec3f sp9C;
-    Vec3f sp90;
-    Vec3f sp84;
-    Vec3f sp78;
-    s32 pad;
-    s32 sp70;
-    s32 sp6C;
-    s32 phi_s1;
-    s32 sp64;
+    Vec3f          sp9C;
+    Vec3f          sp90;
+    Vec3f          sp84;
+    Vec3f          sp78;
+    s32            pad;
+    s32            sp70;
+    s32            sp6C;
+    s32            phi_s1;
+    s32            sp64;
 
     sp64 = 0;
     this->unk_42C = 1;
@@ -225,9 +225,9 @@ void EnSw_MoveGoldLater(EnSw* this, PlayState* play) {
 
 void EnSw_Init(Actor* thisx, PlayState* play) {
     EnSw* this = (EnSw*)thisx;
-    s32 phi_v0;
+    s32   phi_v0;
     Vec3f sp4C = { 0.0f, 0.0f, 0.0f };
-    s32 pad;
+    s32   pad;
 
     if (thisx->params & 0x8000) {
         phi_v0 = (((thisx->params - 0x8000) & 0xE000) >> 0xD) + 1;
@@ -317,8 +317,7 @@ void EnSw_Init(Actor* thisx, PlayState* play) {
 
     // If a normal GS failed to get attached to a poly during init
     // try once more on the next frame via a custom action func
-    if ((((thisx->params & 0xE000) >> 0xD) == 1 ||
-         ((thisx->params & 0xE000) >> 0xD) == 2) &&
+    if ((((thisx->params & 0xE000) >> 0xD) == 1 || ((thisx->params & 0xE000) >> 0xD) == 2) &&
         this->actor.floorPoly == NULL) {
         this->actionFunc = EnSw_MoveGoldLater;
     }
@@ -410,9 +409,9 @@ void func_80B0CBE8(EnSw* this, PlayState* play) {
 
 s32 func_80B0CCF4(EnSw* this, f32* arg1) {
     CollisionPoly* temp_v1;
-    f32 temp_f0;
-    Vec3f sp6C;
-    MtxF sp2C;
+    f32            temp_f0;
+    Vec3f          sp6C;
+    MtxF           sp2C;
 
     if (this->actor.floorPoly == NULL) {
         return false;
@@ -468,11 +467,11 @@ void func_80B0CEA8(EnSw* this, PlayState* play) {
 void func_80B0CF44(EnSw* this, PlayState* play, s32 cnt) {
     Color_RGBA8 primColor = { 80, 80, 50, 255 };
     Color_RGBA8 envColor = { 100, 100, 80, 0 };
-    Vec3f velocity = { 0.0f, 0.0f, 0.0f };
-    Vec3f accel = { 0.0f, 0.3f, 0.0f };
-    Vec3f pos;
-    s16 angle = (Rand_ZeroOne() - 0.5f) * 65536.0f;
-    s32 i;
+    Vec3f       velocity = { 0.0f, 0.0f, 0.0f };
+    Vec3f       accel = { 0.0f, 0.3f, 0.0f };
+    Vec3f       pos;
+    s16         angle = (Rand_ZeroOne() - 0.5f) * 65536.0f;
+    s32         i;
 
     for (i = cnt; i >= 0; i--, angle += (s16)(0x10000 / cnt)) {
         accel.x = (Rand_ZeroOne() - 0.5f) * 2.0f;
@@ -487,11 +486,11 @@ void func_80B0CF44(EnSw* this, PlayState* play, s32 cnt) {
 void func_80B0D14C(EnSw* this, PlayState* play, s32 cnt) {
     Color_RGBA8 primColor = { 80, 80, 50, 255 };
     Color_RGBA8 envColor = { 100, 100, 80, 0 };
-    Vec3f velocity = { 0.0f, 0.0f, 0.0f };
-    Vec3f accel = { 0.0f, 0.3f, 0.0f };
-    Vec3f pos;
-    s16 angle = (Rand_ZeroOne() - 0.5f) * 65536.0f;
-    s32 i;
+    Vec3f       velocity = { 0.0f, 0.0f, 0.0f };
+    Vec3f       accel = { 0.0f, 0.3f, 0.0f };
+    Vec3f       pos;
+    s16         angle = (Rand_ZeroOne() - 0.5f) * 65536.0f;
+    s32         i;
 
     for (i = cnt; i >= 0; i--, angle += (s16)(0x10000 / cnt)) {
         accel.x = (Rand_ZeroOne() - 0.5f) * 2.0f;
@@ -570,7 +569,8 @@ void func_80B0D590(EnSw* this, PlayState* play) {
             this->collider.elements[0].info.ocElemFlags = 1;
         }
 
-        Math_ApproachF(&this->actor.scale.x, !IS_DAY || CVarGetInteger("gNightGSAlwaysSpawn", 0) ? 0.02f : 0.0f, 0.2f, 0.01f);
+        Math_ApproachF(&this->actor.scale.x, !IS_DAY || CVarGetInteger("gNightGSAlwaysSpawn", 0) ? 0.02f : 0.0f, 0.2f,
+                       0.01f);
         Actor_SetScale(&this->actor, this->actor.scale.x);
     }
 
@@ -620,11 +620,11 @@ void func_80B0D590(EnSw* this, PlayState* play) {
 
 void func_80B0D878(EnSw* this, PlayState* play) {
     Actor* temp_v0;
-    Vec3f pos;
-    Vec3f velAndAccel = { 0.0f, 0.5f, 0.0f };
-    f32 x;
-    f32 y;
-    f32 z;
+    Vec3f  pos;
+    Vec3f  velAndAccel = { 0.0f, 0.5f, 0.0f };
+    f32    x;
+    f32    y;
+    f32    z;
 
     if (Animation_OnFrame(&this->skelAnime, this->skelAnime.endFrame) == 1) {
         func_80B0CEA8(this, play);
@@ -638,9 +638,9 @@ void func_80B0D878(EnSw* this, PlayState* play) {
         x = (this->unk_364.x * 10.0f);
         y = (this->unk_364.y * 10.0f);
         z = (this->unk_364.z * 10.0f);
-        temp_v0 = Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_SI,
-                                        this->actor.world.pos.x + x, this->actor.world.pos.y + y,
-                                        this->actor.world.pos.z + z, 0, 0, 0, this->actor.params);
+        temp_v0 =
+            Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_SI, this->actor.world.pos.x + x,
+                               this->actor.world.pos.y + y, this->actor.world.pos.z + z, 0, 0, 0, this->actor.params);
         if (temp_v0 != NULL) {
             temp_v0->parent = NULL;
         }
@@ -653,8 +653,7 @@ void func_80B0D878(EnSw* this, PlayState* play) {
         pos.y += 10.0f + ((Rand_ZeroOne() - 0.5f) * 6.0f);
         pos.x += (Rand_ZeroOne() - 0.5f) * 32.0f;
         pos.z += (Rand_ZeroOne() - 0.5f) * 32.0f;
-        EffectSsDeadDb_Spawn(play, &pos, &velAndAccel, &velAndAccel, 42, 0, 255, 255, 255, 255, 255, 0, 0, 1, 9,
-                             true);
+        EffectSsDeadDb_Spawn(play, &pos, &velAndAccel, &velAndAccel, 42, 0, 255, 255, 255, 255, 255, 0, 0, 1, 9, true);
     }
 }
 
@@ -692,8 +691,7 @@ void func_80B0DC7C(EnSw* this, PlayState* play) {
         pos.y = ((Rand_ZeroOne() - 0.5f) * 6.0f) + (this->actor.world.pos.y + 10.0f);
         pos.x = ((Rand_ZeroOne() - 0.5f) * 32.0f) + this->actor.world.pos.x;
         pos.z = ((Rand_ZeroOne() - 0.5f) * 32.0f) + this->actor.world.pos.z;
-        EffectSsDeadDb_Spawn(play, &pos, &velAndAccel, &velAndAccel, 42, 0, 255, 255, 255, 255, 255, 0, 0, 1, 9,
-                             1);
+        EffectSsDeadDb_Spawn(play, &pos, &velAndAccel, &velAndAccel, 42, 0, 255, 255, 255, 255, 255, 0, 0, 1, 9, 1);
         this->actor.shape.rot.x += 0x1000;
         this->actor.shape.rot.z += 0x1000;
     } else {
@@ -712,10 +710,10 @@ s16 func_80B0DE34(EnSw* this, Vec3f* arg1) {
 }
 
 s32 func_80B0DEA8(EnSw* this, PlayState* play, s32 arg2) {
-    Player* player = GET_PLAYER(play);
+    Player*        player = GET_PLAYER(play);
     CollisionPoly* sp58;
-    s32 sp54;
-    Vec3f sp48;
+    s32            sp54;
+    Vec3f          sp48;
 
     if (!(player->stateFlags1 & 0x200000) && arg2) {
         return false;
@@ -725,8 +723,8 @@ s32 func_80B0DEA8(EnSw* this, PlayState* play, s32 arg2) {
         return false;
     } else if (Math_Vec3f_DistXYZ(&this->actor.world.pos, &player->actor.world.pos) >= 130.0f) {
         return false;
-    } else if (!BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &player->actor.world.pos, &sp48,
-                                        &sp58, true, false, false, true, &sp54)) {
+    } else if (!BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &player->actor.world.pos, &sp48, &sp58,
+                                        true, false, false, true, &sp54)) {
         return true;
     } else {
         return false;
@@ -734,11 +732,11 @@ s32 func_80B0DEA8(EnSw* this, PlayState* play, s32 arg2) {
 }
 
 s32 func_80B0DFFC(EnSw* this, PlayState* play) {
-    s32 pad;
+    s32            pad;
     CollisionPoly* sp60;
-    s32 sp5C;
-    Vec3f sp50;
-    s32 sp4C = true;
+    s32            sp5C;
+    Vec3f          sp50;
+    s32            sp4C = true;
 
     if (this->collider.base.ocFlags1 & OC1_HIT) {
         this->collider.base.acFlags &= ~AC_HIT;
@@ -748,16 +746,16 @@ s32 func_80B0DFFC(EnSw* this, PlayState* play) {
                                         false, false, true, &sp5C)) {
         sp4C = false;
     } else if (((play->state.frames % 4) == 1) &&
-               BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &this->unk_460, &sp50, &sp60, true,
-                                       false, false, true, &sp5C)) {
+               BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &this->unk_460, &sp50, &sp60, true, false,
+                                       false, true, &sp5C)) {
         sp4C = false;
     } else if (((play->state.frames % 4) == 2) &&
                !BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &this->subCamId, &sp50, &sp60, true,
                                         false, false, true, &sp5C)) {
         sp4C = false;
     } else if (((play->state.frames % 4) == 3) &&
-               BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &this->unk_478, &sp50, &sp60, true,
-                                       false, false, true, &sp5C)) {
+               BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &this->unk_478, &sp50, &sp60, true, false,
+                                       false, true, &sp5C)) {
         sp4C = false;
     }
 
@@ -806,7 +804,7 @@ void func_80B0E314(EnSw* this, Vec3f arg1, f32 arg4) {
 
 s32 func_80B0E430(EnSw* this, f32 arg1, s16 arg2, s32 arg3, PlayState* play) {
     Camera* activeCam;
-    f32 lastFrame = Animation_GetLastFrame(&object_st_Anim_000304);
+    f32     lastFrame = Animation_GetLastFrame(&object_st_Anim_000304);
 
     if (DECR(this->unk_388) != 0) {
         Math_SmoothStepToF(&this->skelAnime.playSpeed, 0.0f, 0.6f, 1000.0f, 0.01f);
@@ -857,7 +855,7 @@ void func_80B0E5E0(EnSw* this, PlayState* play) {
 
 void func_80B0E728(EnSw* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 pad;
+    s32     pad;
 
     if (DECR(this->unk_442) != 0) {
         if (func_80B0DEA8(this, play, 1)) {

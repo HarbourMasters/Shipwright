@@ -14,7 +14,7 @@ void JpegUtils_ProcessQuantizationTable(u8* dqt, JpegQuantizationTable* qt, u8 c
 }
 
 s32 JpegUtils_ParseHuffmanCodesLengths(u8* ptr, u8* codesLengths) {
-    u8 off = 1;
+    u8  off = 1;
     s16 count = 0;
     s16 idx = 1;
 
@@ -34,7 +34,7 @@ s32 JpegUtils_ParseHuffmanCodesLengths(u8* ptr, u8* codesLengths) {
 s32 JpegUtils_GetHuffmanCodes(u8* codesLengths, u16* codes) {
     s16 idx = 0;
     u16 code = 0;
-    u8 lastLen = codesLengths[0];
+    u8  lastLen = codesLengths[0];
 
     while (true) {
         while (true) {
@@ -60,7 +60,7 @@ s32 JpegUtils_GetHuffmanCodes(u8* codesLengths, u16* codes) {
 }
 
 s32 JpegUtils_SetHuffmanTable(u8* data, JpegHuffmanTable* ht, u16* codes) {
-    u8 idx;
+    u8  idx;
     u16 codeOff = 0;
 
     for (idx = 0; idx < 0x10; idx++) {
@@ -98,7 +98,7 @@ u32 JpegUtils_ProcessHuffmanTableImpl(u8* data, JpegHuffmanTable* ht, u8* codesL
 }
 
 u32 JpegUtils_ProcessHuffmanTable(u8* dht, JpegHuffmanTable* ht, u8* codesLengths, u16* codes, u8 count) {
-    u8 idx;
+    u8  idx;
     u32 codeCount;
 
     for (idx = 0; idx < count; idx++) {
@@ -118,7 +118,7 @@ u32 JpegUtils_ProcessHuffmanTable(u8* dht, JpegHuffmanTable* ht, u8* codesLength
 
 void JpegUtils_SetHuffmanTableOld(u8* data, JpegHuffmanTableOld* ht, u8* codesLengths, u16* codes, s16 count, u8 isAc) {
     s16 idx;
-    u8 a;
+    u8  a;
 
     for (idx = 0; idx < count; idx++) {
         a = data[idx];
@@ -133,7 +133,7 @@ void JpegUtils_SetHuffmanTableOld(u8* data, JpegHuffmanTableOld* ht, u8* codesLe
 }
 
 u32 JpegUtils_ProcessHuffmanTableImplOld(u8* dht, JpegHuffmanTableOld* ht, u8* codesLengths, u16* codes) {
-    u8 isAc = *dht++ >> 4;
+    u8  isAc = *dht++ >> 4;
     s16 count2;
     s32 count;
 

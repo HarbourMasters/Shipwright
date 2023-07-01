@@ -18,7 +18,7 @@ void TransitionTriforce_Start(void* thisx) {
 void* TransitionTriforce_Init(void* thisx) {
     TransitionTriforce* this = (TransitionTriforce*)thisx;
 
-    memset(this,0, sizeof(*this));
+    memset(this, 0, sizeof(*this));
     guOrtho(&this->projection, -160.0f, 160.0f, -120.0f, 120.0f, -1000.0f, 1000.0f, 1.0f);
     this->transPos = 1.0f;
     this->state = 2;
@@ -70,7 +70,7 @@ void TransitionTriforce_SetState(void* thisx, s32 state) {
 void TransitionTriforce_Draw(void* thisx, Gfx** gfxP) {
     Gfx* gfx = *gfxP;
     Mtx* modelView;
-    f32 scale;
+    f32  scale;
     TransitionTriforce* this = (TransitionTriforce*)thisx;
     s32 pad;
     f32 rotation = this->transPos * 360.0f;

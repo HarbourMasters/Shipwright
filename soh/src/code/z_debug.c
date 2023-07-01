@@ -1,9 +1,9 @@
 #include "global.h"
 
 typedef struct {
-    u8 x;
-    u8 y;
-    u8 colorId;
+    u8   x;
+    u8   y;
+    u8   colorId;
     char text[0x15];
 } PrintTextBuffer;
 
@@ -12,11 +12,11 @@ typedef struct {
     u16 held;
 } InputCombo;
 
-GameInfo* gGameInfo;
-s32 D_8015FA94; // no known symbols
+GameInfo*       gGameInfo;
+s32             D_8015FA94; // no known symbols
 PrintTextBuffer D_8015FA98[0x16];
 
-s16 D_8011E0B0 = 0; // PrintTextBuffer index
+s16         D_8011E0B0 = 0; // PrintTextBuffer index
 Color_RGBA8 printTextColors[] = {
     { 255, 255, 32, 192 }, { 255, 150, 128, 192 }, { 128, 96, 0, 64 },     { 192, 128, 16, 128 },
     { 255, 192, 32, 128 }, { 230, 230, 220, 64 },  { 128, 150, 255, 128 }, { 128, 255, 32, 128 },
@@ -56,8 +56,8 @@ void func_8006375C(s32 arg0, s32 arg1, const char* text) {
 // Copy Camera Debugger Text
 void func_8006376C(u8 x, u8 y, u8 colorId, const char* text) {
     PrintTextBuffer* buf;
-    char* bufText;
-    s16 i;
+    char*            bufText;
+    s16              i;
 
     buf = &D_8015FA98[D_8011E0B0];
     if (D_8011E0B0 < 0x16) {
@@ -80,10 +80,10 @@ void func_8006376C(u8 x, u8 y, u8 colorId, const char* text) {
 
 // Draw Text
 void func_80063828(GfxPrint* printer) {
-    s32 i;
-    Color_RGBA8* color;
+    s32              i;
+    Color_RGBA8*     color;
     PrintTextBuffer* buffer;
-    char* text;
+    char*            text;
 
     i = 0;
     if (D_8011E0B0 > 0) {
@@ -103,11 +103,11 @@ void func_80063828(GfxPrint* printer) {
 // Edit REG
 void func_8006390C(Input* input) {
 
-    s32 dpad;
-    s32 regGroup;
-    s32 increment;
+    s32         dpad;
+    s32         regGroup;
+    s32         increment;
     InputCombo* input_combo;
-    s32 i;
+    s32         i;
 
     if (!CVarGetInteger("gDebugEnabled", 0))
         return;
@@ -186,10 +186,10 @@ void func_8006390C(Input* input) {
 
 // Draw Memory Viewer
 void func_80063C04(GfxPrint* printer) {
-    s32 i;
-    s32 page = (gGameInfo->regPage * REG_PER_PAGE) - REG_PER_PAGE;
-    s32 regGroup = (gGameInfo->regGroup * REG_PAGES + gGameInfo->regPage) * REG_PER_PAGE - REG_PER_PAGE;
-    s32 pad;
+    s32  i;
+    s32  page = (gGameInfo->regPage * REG_PER_PAGE) - REG_PER_PAGE;
+    s32  regGroup = (gGameInfo->regGroup * REG_PAGES + gGameInfo->regPage) * REG_PER_PAGE - REG_PER_PAGE;
+    s32  pad;
     char name[3];
 
     if (!CVarGetInteger("gDebugEnabled", 0))
@@ -214,10 +214,10 @@ void func_80063C04(GfxPrint* printer) {
 }
 
 void func_80063D7C(GraphicsContext* gfxCtx) {
-    Gfx* sp7C;
-    Gfx* sp78;
+    Gfx*     sp7C;
+    Gfx*     sp78;
     GfxPrint printer;
-    Gfx* tempRet;
+    Gfx*     tempRet;
 
     if (!CVarGetInteger("gDebugEnabled", 0))
         return;

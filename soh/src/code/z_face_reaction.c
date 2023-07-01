@@ -72,5 +72,4 @@ u16 Text_GetFaceReaction(PlayState* play, u32 reactionSet) {
     } else {
         return sReactionTextIds[reactionSet][currentMask];
     }
-
 }

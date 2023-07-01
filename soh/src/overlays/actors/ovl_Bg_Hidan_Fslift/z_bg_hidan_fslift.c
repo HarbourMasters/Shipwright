@@ -42,15 +42,15 @@ void BgHidanFslift_Init(Actor* thisx, PlayState* play) {
     s32 pad1;
     BgHidanFslift* this = (BgHidanFslift*)thisx;
     CollisionHeader* colHeader = NULL;
-    s32 pad2;
+    s32              pad2;
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_PLAYER);
     CollisionHeader_GetVirtual(&gFireTempleHookshotElevatorCol, &colHeader);
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, colHeader);
-    if (Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_OBJ_HSBLOCK,
-                           this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y + 40.0f,
-                           this->dyna.actor.world.pos.z + -28.0f, 0, 0, 0, 2) == NULL) {
+    if (Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_OBJ_HSBLOCK, this->dyna.actor.world.pos.x,
+                           this->dyna.actor.world.pos.y + 40.0f, this->dyna.actor.world.pos.z + -28.0f, 0, 0, 0,
+                           2) == NULL) {
         Actor_Kill(&this->dyna.actor);
         return;
     }

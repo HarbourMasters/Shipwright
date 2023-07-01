@@ -11,7 +11,7 @@
 // this ends up having no effect because the texture provided does not use segment 6
 #define rType regs[11]
 
-u32 EffectSsGSplash_Init(PlayState* play, u32 index, EffectSs* this, void* initParams);
+u32  EffectSsGSplash_Init(PlayState* play, u32 index, EffectSs* this, void* initParams);
 void EffectSsGSplash_Draw(PlayState* play, u32 index, EffectSs* this);
 void EffectSsGSplash_Update(PlayState* play, u32 index, EffectSs* this);
 
@@ -22,7 +22,7 @@ EffectSsInit Effect_Ss_G_Splash_InitVars = {
 
 u32 EffectSsGSplash_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsGSplashInitParams* initParams = (EffectSsGSplashInitParams*)initParamsx;
-    Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
+    Vec3f                      zeroVec = { 0.0f, 0.0f, 0.0f };
 
     this->velocity = this->accel = zeroVec;
     this->pos = initParams->pos;

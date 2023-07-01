@@ -34,8 +34,8 @@ void EnFish_Unique_SwimIdle(EnFish* this, PlayState* play);
 
 // Used in the cutscene functions
 static Actor* D_80A17010 = NULL;
-static f32 D_80A17014 = 0.0f;
-static f32 D_80A17018 = 0.0f;
+static f32    D_80A17014 = 0.0f;
+static f32    D_80A17018 = 0.0f;
 
 static ColliderJntSphElementInit sJntSphElementsInit[1] = {
     {
@@ -133,8 +133,7 @@ void EnFish_Init(Actor* thisx, PlayState* play) {
     s16 params = this->actor.params;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
-    SkelAnime_InitFlex(play, &this->skelAnime, &gFishSkel, &gFishInWaterAnim, this->jointTable, this->morphTable,
-                       7);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gFishSkel, &gFishInWaterAnim, this->jointTable, this->morphTable, 7);
     Collider_InitJntSph(play, &this->collider);
     Collider_SetJntSph(play, &this->collider, &this->actor, &sJntSphInit, this->colliderItems);
     this->actor.colChkInfo.mass = 50;
@@ -167,9 +166,9 @@ void EnFish_SetYOffset(EnFish* this) {
 }
 
 s32 EnFish_InBottleRange(EnFish* this, PlayState* play) {
-    s32 pad;
+    s32     pad;
     Player* player = GET_PLAYER(play);
-    Vec3f sp1C;
+    Vec3f   sp1C;
 
     if (this->actor.xzDistToPlayer < 32.0f) {
         sp1C.x = (Math_SinS(this->actor.yawTowardsPlayer + 0x8000) * 16.0f) + player->actor.world.pos.x;
@@ -321,12 +320,12 @@ void EnFish_Respawning_SetupApproachPlayer(EnFish* this) {
 }
 
 void EnFish_Respawning_ApproachPlayer(EnFish* this, PlayState* play) {
-    s32 pad;
+    s32     pad;
     Player* player = GET_PLAYER(play);
-    s32 pad2;
-    Vec3f sp38;
-    s16 yaw;
-    s16 temp_a0_2;
+    s32     pad2;
+    Vec3f   sp38;
+    s16     yaw;
+    s16     temp_a0_2;
 
     EnFish_SetYOffset(this);
     Math_SmoothStepToF(&this->actor.speedXZ, 1.8f, 0.1f, 0.5f, 0.0f);
@@ -537,12 +536,12 @@ void EnFish_Unique_SetupSwimIdle(EnFish* this) {
 void EnFish_Unique_SwimIdle(EnFish* this, PlayState* play) {
     static f32 speedStopping[] = { 0.0f, 0.04f, 0.09f };
     static f32 speedMoving[] = { 0.5f, 0.1f, 0.15f };
-    f32 playSpeed;
-    u32 frames = play->gameplayFrames;
-    f32* speed;
-    s32 pad2;
-    f32 extraPlaySpeed;
-    s32 pad3;
+    f32        playSpeed;
+    u32        frames = play->gameplayFrames;
+    f32*       speed;
+    s32        pad2;
+    f32        extraPlaySpeed;
+    s32        pad3;
 
     if (this->actor.xzDistToPlayer < 60.0f) {
         if (this->timer < 12) {
@@ -620,18 +619,18 @@ void EnFish_Cutscene_WiggleFlyingThroughAir(EnFish* this, PlayState* play) {
 }
 
 void EnFish_UpdateCutscene(EnFish* this, PlayState* play) {
-    s32 pad;
-    s32 pad2;
+    s32               pad;
+    s32               pad2;
     CsCmdActorAction* csAction = play->csCtx.npcActions[1];
-    Vec3f startPos;
-    Vec3f endPos;
-    f32 progress;
-    s32 bgId;
+    Vec3f             startPos;
+    Vec3f             endPos;
+    f32               progress;
+    s32               bgId;
 
     if (csAction == NULL) {
         // "Warning : DEMO ended without dousa (action) 3 termination being called"
-        osSyncPrintf("Warning : dousa 3 消滅 が呼ばれずにデモが終了した(%s %d)(arg_data 0x%04x)\n", __FILE__,
-                     __LINE__, this->actor.params);
+        osSyncPrintf("Warning : dousa 3 消滅 が呼ばれずにデモが終了した(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
+                     this->actor.params);
         EnFish_ClearCutsceneData(this);
         Actor_Kill(&this->actor);
         return;
@@ -672,8 +671,8 @@ void EnFish_UpdateCutscene(EnFish* this, PlayState* play) {
     this->actor.world.pos.y = (endPos.y - startPos.y) * progress + startPos.y + D_80A17014;
     this->actor.world.pos.z = (endPos.z - startPos.z) * progress + startPos.z;
 
-    this->actor.floorHeight = BgCheck_EntityRaycastFloor4(&play->colCtx, &this->actor.floorPoly, &bgId,
-                                                          &this->actor, &this->actor.world.pos);
+    this->actor.floorHeight =
+        BgCheck_EntityRaycastFloor4(&play->colCtx, &this->actor.floorPoly, &bgId, &this->actor, &this->actor.world.pos);
 }
 
 // Update functions and Draw
@@ -764,7 +763,7 @@ void EnFish_Draw(Actor* thisx, PlayState* play) {
     EnFish* this = (EnFish*)thisx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, NULL, NULL);
+    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount, NULL,
+                          NULL, NULL);
     Collider_UpdateSpheres(0, &this->collider);
 }

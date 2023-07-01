@@ -12,7 +12,9 @@
 #include <overlays/actors/ovl_En_Bom/z_en_bom.h>
 #include <overlays/actors/ovl_Obj_Switch/z_obj_switch.h>
 
-#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT | ACTOR_FLAG_CAN_PRESS_SWITCH)
+#define FLAGS                                                                                         \
+    (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT | \
+     ACTOR_FLAG_CAN_PRESS_SWITCH)
 
 void EnPartner_Init(Actor* thisx, PlayState* play);
 void EnPartner_Destroy(Actor* thisx, PlayState* play);
@@ -22,7 +24,7 @@ void EnPartner_SpawnSparkles(EnPartner* this, PlayState* play, s32 sparkleLife);
 
 void func_808328EC(Player* this, u16 sfxId);
 void func_808429B4(PlayState* play, s32 speed, s32 y, s32 countdown);
-s32 spawn_boomerang_ivan(EnPartner* this, PlayState* play);
+s32  spawn_boomerang_ivan(EnPartner* this, PlayState* play);
 
 static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 8, ICHAIN_STOP),
@@ -60,9 +62,9 @@ static CollisionCheckInfoInit sCCInfoInit = { 0, 12, 60, MASS_HEAVY };
 
 void EnPartner_Init(Actor* thisx, PlayState* play) {
     EnPartner* this = (EnPartner*)thisx;
-    s32 pad;
+    s32     pad;
     Player* player = GET_PLAYER(play);
-    s32 i;
+    s32     i;
 
     this->usedItem = 0xFF;
     this->canMove = 1;
@@ -104,7 +106,7 @@ void EnPartner_Init(Actor* thisx, PlayState* play) {
                               255, 200, 0);
     this->lightNodeNoGlow = LightContext_InsertLight(play, &play->lightCtx, &this->lightInfoNoGlow);
 
-	thisx->room = -1;
+    thisx->room = -1;
 }
 
 void EnPartner_Destroy(Actor* thisx, PlayState* play) {
@@ -143,10 +145,10 @@ void EnPartner_UpdateLights(EnPartner* this, PlayState* play) {
 void EnPartner_SpawnSparkles(EnPartner* this, PlayState* play, s32 sparkleLife) {
     static Vec3f sparkleVelocity = { 0.0f, -0.05f, 0.0f };
     static Vec3f sparkleAccel = { 0.0f, -0.025f, 0.0f };
-    s32 pad;
-    Vec3f sparklePos;
-    Color_RGBA8 primColor;
-    Color_RGBA8 envColor;
+    s32          pad;
+    Vec3f        sparklePos;
+    Color_RGBA8  primColor;
+    Color_RGBA8  envColor;
 
     sparklePos.x = Rand_CenteredFloat(6.0f) + this->actor.world.pos.x;
     sparklePos.y = (Rand_ZeroOne() * 6.0f) + this->actor.world.pos.y + 5;
@@ -160,8 +162,8 @@ void EnPartner_SpawnSparkles(EnPartner* this, PlayState* play, s32 sparkleLife) 
     envColor.g = this->outerColor.g;
     envColor.b = this->outerColor.b;
 
-    EffectSsKiraKira_SpawnDispersed(play, &sparklePos, &sparkleVelocity, &sparkleAccel, &primColor, &envColor,
-                                    1500, sparkleLife);
+    EffectSsKiraKira_SpawnDispersed(play, &sparklePos, &sparkleVelocity, &sparkleAccel, &primColor, &envColor, 1500,
+                                    sparkleLife);
 }
 
 Vec3f Vec3fNormalize(Vec3f vec) {
@@ -276,7 +278,7 @@ void UseHammer(Actor* thisx, PlayState* play, u8 started) {
         if (started == 1) {
             this->itemTimer = 10;
             static Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
-            Vec3f shockwavePos = this->actor.world.pos;
+            Vec3f        shockwavePos = this->actor.world.pos;
 
             func_808429B4(play, 27767, 7, 20);
             func_8002F7DC(&this->actor, NA_SE_IT_HAMMER_HIT);
@@ -297,8 +299,8 @@ void UseBombchus(Actor* thisx, PlayState* play, u8 started) {
         if (started == 1) {
             if (AMMO(ITEM_BOMBCHU) > 0) {
                 this->itemTimer = 10;
-                EnBom* bomb = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x, this->actor.world.pos.y + 7,
-                            this->actor.world.pos.z, 0, 0, 0, 0, false);
+                EnBom* bomb = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
+                                          this->actor.world.pos.y + 7, this->actor.world.pos.z, 0, 0, 0, 0, false);
                 bomb->timer = 0;
                 Inventory_ChangeAmmo(ITEM_BOMBCHU, -1);
             } else {
@@ -465,7 +467,7 @@ void UseSpell(Actor* thisx, PlayState* play, u8 started, u8 spellType) {
                     GET_PLAYER(play)->ivanFloating = 0;
                     break;
             }
-            
+
             this->usedSpell = 0;
         }
 
@@ -475,13 +477,13 @@ void UseSpell(Actor* thisx, PlayState* play, u8 started, u8 spellType) {
                 Vec3f newBasePos[3];
 
                 switch (this->usedSpell) {
-                    case 1: //Din's
+                    case 1: // Din's
                         GET_PLAYER(play)->ivanDamageMultiplier = 2;
                         break;
-                    case 2: //Nayru's
+                    case 2: // Nayru's
                         GET_PLAYER(play)->invincibilityTimer = -10;
                         break;
-                    case 3: //Farore's
+                    case 3: // Farore's
                         GET_PLAYER(play)->hoverBootsTimer = 10;
                         GET_PLAYER(play)->ivanFloating = 1;
                         break;
@@ -753,11 +755,11 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
 }
 
 s32 EnPartner_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
-                           Gfx** gfx) {
+                               Gfx** gfx) {
     static Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
-    s32 pad;
-    f32 scale;
-    Vec3f mtxMult;
+    s32          pad;
+    f32          scale;
+    Vec3f        mtxMult;
     EnPartner* this = (EnPartner*)thisx;
 
     if (limbIndex == 8) {
@@ -773,10 +775,10 @@ s32 EnPartner_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3
 
 void DrawOrb(Actor* thisx, PlayState* play, u8 color) {
     EnPartner* this = (EnPartner*)thisx;
-    Vec3f pos;
+    Vec3f   pos;
     Player* player = GET_PLAYER(play);
-    s32 pad;
-    f32 sp6C = play->state.frames & 0x1F;
+    s32     pad;
+    f32     sp6C = play->state.frames & 0x1F;
 
     pos = this->actor.world.pos;
     pos.y += 5.0f;
@@ -820,14 +822,13 @@ void DrawOrb(Actor* thisx, PlayState* play, u8 color) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-
 void EnPartner_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     f32 alphaScale;
     s32 envAlpha;
     EnPartner* this = (EnPartner*)thisx;
-    s32 pad1;
-    Gfx* dListHead;
+    s32     pad1;
+    Gfx*    dListHead;
     Player* player = GET_PLAYER(play);
 
     if (play->pauseCtx.state != 0 && this->usedItem != 0xFF) {

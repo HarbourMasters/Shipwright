@@ -2,7 +2,7 @@
 
 #define BUFF_LEN 0x20
 
-s16 _Ldunscale(s16*, _Pft*);
+s16  _Ldunscale(s16*, _Pft*);
 void _Genld(_Pft*, u8, u8*, s16, s16);
 
 const f64 D_800122E0[] = { 10e0L, 10e1L, 10e3L, 10e7L, 10e15L, 10e31L, 10e63L, 10e127L, 10e255L };
@@ -41,7 +41,7 @@ const f64 D_800122E0[] = { 10e0L, 10e1L, 10e3L, 10e7L, 10e15L, 10e31L, 10e63L, 1
 #endif
 
 void _Ldtob(_Pft* args, u8 type) {
-    u8 buff[BUFF_LEN];
+    u8  buff[BUFF_LEN];
     u8* ptr = buff;
     u32 sp70;
     f64 val = args->v.ld;
@@ -50,15 +50,15 @@ void _Ldtob(_Pft* args, u8 type) {
     s16 nsig;
     s16 exp;
 
-    s32 i;
-    s32 n;
-    f64 factor;
-    s32 gen;
-    s32 j;
-    s32 lo;
+    s32    i;
+    s32    n;
+    f64    factor;
+    s32    gen;
+    s32    j;
+    s32    lo;
     ldiv_t qr;
-    u8 drop;
-    s32 n2;
+    u8     drop;
+    s32    n2;
 
     if (args->prec < 0) {
         args->prec = 6;
@@ -152,7 +152,7 @@ void _Ldtob(_Pft* args, u8 type) {
 
 s16 _Ldunscale(s16* pex, _Pft* px) {
     u16* ps = (u16*)px;
-    s16 xchar = (ps[_D0] & _DMASK) >> _DOFF;
+    s16  xchar = (ps[_D0] & _DMASK) >> _DOFF;
 
     if (xchar == _DMAX) { /* NaN or INF */
         *pex = 0;

@@ -1998,11 +1998,9 @@ void HintTable_Init() {
     hintTable[JUNK68] = HintText::Junk({
         // obscure text
         Text{ "They say Ganon's tail is vulnerable to nuts, arrows, swords, explosives, hammers...^...sticks, seeds, "
-              "boomerangs...^...rods, shovels, iron balls, angry bees...",
-              /*french*/
+              "boomerangs...^...rods, shovels, iron balls, angry bees...", /*french*/
               "Selon moi, la queue de Ganon est vulnérable aux noix, flèches, épées, bombes, marteaux...^...bâtons, "
-              "graines, boomerangs...^...baguettes, pelles, boulets de fer, abeilles enragées...",
-              /*spanish*/
+              "graines, boomerangs...^...baguettes, pelles, boulets de fer, abeilles enragées...", /*spanish*/
               "Según dicen, la cola de Ganon es vulnerable a nueces, flechas, espadas, explosivos, "
               "martillos...^...palos, semillas, bumeráns...^...cetros, palas, bolas de hierro, abejas..." },
     });
@@ -2078,23 +2076,30 @@ void HintTable_Init() {
     "Erreur 0x69a504:&Traduction manquante^C'est de la faute à Purple Hato!&J'vous jure!"
 
     hintTable[JUNK78] = HintText::Junk({
-        //obscure text
-        Text{"They say blarg...^...or at least briaguya does.", /*french*/"Tout ce que j'ai à dire, c'est blarg...^... 'fin c'est plutôt ce que briaguya dirait.", /*spanish*/"blarg"},
+        // obscure text
+        Text{ "They say blarg...^...or at least briaguya does.",
+              /*french*/ "Tout ce que j'ai à dire, c'est blarg...^... 'fin c'est plutôt ce que briaguya dirait.",
+              /*spanish*/ "blarg" },
     });
 
     hintTable[JUNK79] = HintText::Junk({
-        //obscure text
-        Text{"They say this peace is what all true warriors strive for.", /*french*/"Selon moi, cette paix est ce pour quoi luttent tous les vrais guerriers.", /*spanish*/"blarg"},
+        // obscure text
+        Text{ "They say this peace is what all true warriors strive for.",
+              /*french*/ "Selon moi, cette paix est ce pour quoi luttent tous les vrais guerriers.",
+              /*spanish*/ "blarg" },
     });
 
     hintTable[JUNK80] = HintText::Junk({
-        //obscure text
-        Text{"They say this ship is what all true gamers strive for.", /*french*/"Selon moi, cette version du port est ce pour quoi luttent tous les vrais gamers.", /*spanish*/"blarg"},
+        // obscure text
+        Text{ "They say this ship is what all true gamers strive for.",
+              /*french*/ "Selon moi, cette version du port est ce pour quoi luttent tous les vrais gamers.",
+              /*spanish*/ "blarg" },
     });
 
     hintTable[JUNK81] = HintText::Junk({
-        //obscure text
-        Text{"They say that Glowsticks can be found in the Raveyard.", /*french*/"On peut trouver des Bâtons Lumineux sur le dancefloor du cimetière.", /*spanish*/"blarg"},
+        // obscure text
+        Text{ "They say that Glowsticks can be found in the Raveyard.",
+              /*french*/ "On peut trouver des Bâtons Lumineux sur le dancefloor du cimetière.", /*spanish*/ "blarg" },
     });
 
     hintTable[JUNK_WTC_1] = HintText::Junk({
@@ -2145,7 +2150,8 @@ void HintTable_Init() {
     });
 
     hintTable[JUNK_WTC_11] = HintText::Junk({
-        Text{ "They say tea is best enjoyed...^\"\"With your fellow monsters.\"\"", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+        Text{ "They say tea is best enjoyed...^\"\"With your fellow monsters.\"\"", HINT_TEXT_NEEDS_TRANSLATION_FR,
+              "blarg" },
     });
 
     hintTable[JUNK_WTC_12] = HintText::Junk({
@@ -2189,9 +2195,10 @@ void HintTable_Init() {
     });
 
     hintTable[JUNK_SEI_9] = HintText::Junk({
-        Text{ "They say no thanks, I can't drink coffee&late at night, it keeps me up.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+        Text{ "They say no thanks, I can't drink coffee&late at night, it keeps me up.", HINT_TEXT_NEEDS_TRANSLATION_FR,
+              "blarg" },
     });
-    
+
     hintTable[JUNK_SEI_10] = HintText::Junk({
         Text{ "They say it's not a lie if you believe it.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
     });
@@ -2207,9 +2214,10 @@ void HintTable_Init() {
     hintTable[JUNK_SEI_13] = HintText::Junk({
         Text{ "They say the jerk store called,^they're running out of YOU.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
     });
-    
+
     hintTable[JUNK_SEI_14] = HintText::Junk({
-        Text{ "They say when you look annoyed all the time,&people thing you are busy.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+        Text{ "They say when you look annoyed all the time,&people thing you are busy.", HINT_TEXT_NEEDS_TRANSLATION_FR,
+              "blarg" },
     });
 
     hintTable[JUNK_SEI_15] = HintText::Junk({
@@ -2222,7 +2230,8 @@ void HintTable_Init() {
     });
 
     hintTable[JUNK_SEI_17] = HintText::Junk({
-        Text{ "They say he threatened to move the ship to New Jersey&just to upset people.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+        Text{ "They say he threatened to move the ship to New Jersey&just to upset people.",
+              HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
     });
 
     hintTable[JUNK_SEI_18] = HintText::Junk({
@@ -2240,7 +2249,7 @@ void HintTable_Init() {
     hintTable[JUNK_SEI_21] = HintText::Junk({
         Text{ "They say don't trust men in capes.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
     });
-    
+
     hintTable[JUNK_SEI_22] = HintText::Junk({
         Text{ "They say @'s uncle works for Nintendo.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
     });
@@ -2250,7 +2259,8 @@ void HintTable_Init() {
     });
 
     hintTable[JUNK_SEI_24] = HintText::Junk({
-        Text{ "They say there is no better harmony&than the black and white cookie.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+        Text{ "They say there is no better harmony&than the black and white cookie.", HINT_TEXT_NEEDS_TRANSLATION_FR,
+              "blarg" },
     });
 
     hintTable[JUNK_SEI_25] = HintText::Junk({
@@ -2262,7 +2272,8 @@ void HintTable_Init() {
     });
 
     hintTable[JUNK_SEI_27] = HintText::Junk({
-        Text{ "They say a donation has been made in your name&to the human fund.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+        Text{ "They say a donation has been made in your name&to the human fund.", HINT_TEXT_NEEDS_TRANSLATION_FR,
+              "blarg" },
     });
 
     hintTable[JUNK_SEI_28] = HintText::Junk({
@@ -2270,7 +2281,8 @@ void HintTable_Init() {
     });
 
     hintTable[JUNK_SEI_29] = HintText::Junk({
-        Text{ "They say if every instinct you have is wrong...^... then the opposite would have to be right.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+        Text{ "They say if every instinct you have is wrong...^... then the opposite would have to be right.",
+              HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
     });
 
     hintTable[JUNK_OTR_MEANS_1] = HintText::Junk({
@@ -2369,12 +2381,11 @@ void HintTable_Init() {
     });
 
     hintTable[JUNK_MISC_2] = HintText::Junk({
-        Text {"They say... No", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg"},
-     });
-
-    hintTable[JUNK_MISC_3] = HintText::Junk({ 
-        Text{ "They say BIG RIGS: OTR", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" } 
+        Text{ "They say... No", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
     });
+
+    hintTable[JUNK_MISC_3] =
+        HintText::Junk({ Text{ "They say BIG RIGS: OTR", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" } });
 
     hintTable[JUNK_MISC_4] = HintText::Junk({
         Text{ "They say you wanted to see me %pMr. Kenix%w?", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
@@ -2448,7 +2459,6 @@ void HintTable_Init() {
         Text{ "They say tutturu~.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
     });
 
-
     hintTable[JUNK_SG_5] = HintText::Junk({
         Text{ "They say im not Christina!.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
     });
@@ -2458,12 +2468,12 @@ void HintTable_Init() {
     });
 
     hintTable[JUNK_SG_7] = HintText::Junk({
-        Text{ "They say when you're on a chicken bender&grab a box of chicken tenders.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
+        Text{ "They say when you're on a chicken bender&grab a box of chicken tenders.", HINT_TEXT_NEEDS_TRANSLATION_FR,
+              "blarg" },
     });
 
     hintTable[JUNK_SG_8] = HintText::Junk({
-        Text{ "Juicy Chicken #1! Wow!.", HINT_TEXT_NEEDS_TRANSLATION_FR,
-              "blarg" },
+        Text{ "Juicy Chicken #1! Wow!.", HINT_TEXT_NEEDS_TRANSLATION_FR, "blarg" },
     });
 
     /*--------------------------
@@ -2587,61 +2597,85 @@ void HintTable_Init() {
     |      BOSS HINT TEXT      |
     ---------------------------*/
 
-    hintTable[QUEEN_GOHMA] = HintText::Boss({
-                       // obscure text
-                       Text{"the #Parasitic Armored Arachnid# holds", /*french*/"le #monstre insectoïde géant# possède", /*spanish*/"el #arácnido parasitario acorazado# porta"},
-                     }, {},
-                       //clear text
-                       Text{"#Queen Gohma# holds", /*french*/"la #Reine Gohma# possède", /*spanish*/"la #Reina Goma# porta"});
+    hintTable[QUEEN_GOHMA] = HintText::Boss(
+        {
+            // obscure text
+            Text{ "the #Parasitic Armored Arachnid# holds", /*french*/ "le #monstre insectoïde géant# possède",
+                  /*spanish*/ "el #arácnido parasitario acorazado# porta" },
+        },
+        {},
+        // clear text
+        Text{ "#Queen Gohma# holds", /*french*/ "la #Reine Gohma# possède", /*spanish*/ "la #Reina Goma# porta" });
 
-    hintTable[KING_DODONGO] = HintText::Boss({
-                       //obscure text
-                       Text{"the #Infernal Dinosaur# holds", /*french*/"le #dinosaure infernal# possède", /*spanish*/"el #dinosaurio infernal# porta"},
-                     }, {},
-                       //clear text
-                       Text{"#King Dodongo# holds", /*french*/"le #Roi Dodongo# possède", /*spanish*/"el #Rey Dodongo# porta"});
+    hintTable[KING_DODONGO] = HintText::Boss(
+        {
+            // obscure text
+            Text{ "the #Infernal Dinosaur# holds", /*french*/ "le #dinosaure infernal# possède",
+                  /*spanish*/ "el #dinosaurio infernal# porta" },
+        },
+        {},
+        // clear text
+        Text{ "#King Dodongo# holds", /*french*/ "le #Roi Dodongo# possède", /*spanish*/ "el #Rey Dodongo# porta" });
 
-    hintTable[BARINADE] = HintText::Boss({
-                       //obscure text
-                       Text{"the #Bio-Electric Anemone# holds", /*french*/"l'#anémone bioélectrique# possède", /*spanish*/"la #anémona bioeléctrica# porta"},
-                     }, {},
-                       //clear text
-                       Text{"#Barinade# holds", /*french*/"#Barinade# possède", /*spanish*/"#Barinade# porta"});
+    hintTable[BARINADE] = HintText::Boss(
+        {
+            // obscure text
+            Text{ "the #Bio-Electric Anemone# holds", /*french*/ "l'#anémone bioélectrique# possède",
+                  /*spanish*/ "la #anémona bioeléctrica# porta" },
+        },
+        {},
+        // clear text
+        Text{ "#Barinade# holds", /*french*/ "#Barinade# possède", /*spanish*/ "#Barinade# porta" });
 
-    hintTable[PHANTOM_GANON] = HintText::Boss({
-                       //obscure text
-                       Text{"the #Evil Spirit from Beyond# holds", /*french*/"l'#esprit maléfique de l'au-delà# possède", /*spanish*/"el #espíritu maligno de ultratumba# porta"},
-                     }, {},
-                       //clear text
-                       Text{"#Phantom Ganon# holds", /*french*/"#Ganon Spectral# possède", /*spanish*/"#Ganon Fantasma# porta"});
+    hintTable[PHANTOM_GANON] = HintText::Boss(
+        {
+            // obscure text
+            Text{ "the #Evil Spirit from Beyond# holds", /*french*/ "l'#esprit maléfique de l'au-delà# possède",
+                  /*spanish*/ "el #espíritu maligno de ultratumba# porta" },
+        },
+        {},
+        // clear text
+        Text{ "#Phantom Ganon# holds", /*french*/ "#Ganon Spectral# possède", /*spanish*/ "#Ganon Fantasma# porta" });
 
-    hintTable[VOLVAGIA] = HintText::Boss({
-                       //obscure text
-                       Text{"the #Subterranean Lava Dragon# holds", /*french*/"le #dragon des profondeurs# possède", /*spanish*/"el #dragón de lava subterráneo# porta"},
-                     }, {},
-                       //clear text
-                       Text{"#Volvagia# holds", /*french*/"#Volvagia# possède", /*spanish*/"#Volvagia# porta"});
+    hintTable[VOLVAGIA] = HintText::Boss(
+        {
+            // obscure text
+            Text{ "the #Subterranean Lava Dragon# holds", /*french*/ "le #dragon des profondeurs# possède",
+                  /*spanish*/ "el #dragón de lava subterráneo# porta" },
+        },
+        {},
+        // clear text
+        Text{ "#Volvagia# holds", /*french*/ "#Volvagia# possède", /*spanish*/ "#Volvagia# porta" });
 
-    hintTable[MORPHA] = HintText::Boss({
-                       //obscure text
-                       Text{"the #Giant Aquatic Amoeba# holds", /*french*/"l'#amibe aquatique géante# possède", /*spanish*/"la #ameba acuática gigante# porta"},
-                     }, {},
-                       //clear text
-                       Text{"#Morpha# holds", /*french*/"#Morpha# possède", /*spanish*/"#Morpha# porta"});
+    hintTable[MORPHA] = HintText::Boss(
+        {
+            // obscure text
+            Text{ "the #Giant Aquatic Amoeba# holds", /*french*/ "l'#amibe aquatique géante# possède",
+                  /*spanish*/ "la #ameba acuática gigante# porta" },
+        },
+        {},
+        // clear text
+        Text{ "#Morpha# holds", /*french*/ "#Morpha# possède", /*spanish*/ "#Morpha# porta" });
 
-    hintTable[BONGO_BONGO] = HintText::Boss({
-                       //obscure text
-                       Text{"the #Phantom Shadow Beast# holds", /*french*/"le #monstre de l'ombre# possède", /*spanish*/"la #alimaña oscura espectral# porta"},
-                     }, {},
-                       //clear text
-                       Text{"#Bongo Bongo# holds", /*french*/"#Bongo Bongo# possède", /*spanish*/"#Bongo Bongo# porta"});
+    hintTable[BONGO_BONGO] = HintText::Boss(
+        {
+            // obscure text
+            Text{ "the #Phantom Shadow Beast# holds", /*french*/ "le #monstre de l'ombre# possède",
+                  /*spanish*/ "la #alimaña oscura espectral# porta" },
+        },
+        {},
+        // clear text
+        Text{ "#Bongo Bongo# holds", /*french*/ "#Bongo Bongo# possède", /*spanish*/ "#Bongo Bongo# porta" });
 
-    hintTable[TWINROVA] = HintText::Boss({
-                       //obscure text
-                       Text{"the #Sorceress Sisters# hold", /*french*/"#les sorcières jumelles# possède", /*spanish*/"las #hermanas hechiceras# portan"},
-                     }, {},
-                       //clear text
-                       Text{"#Twinrova# holds", /*french*/"#Twinrova# possède", /*spanish*/"#Birova# porta"});
+    hintTable[TWINROVA] = HintText::Boss(
+        {
+            // obscure text
+            Text{ "the #Sorceress Sisters# hold", /*french*/ "#les sorcières jumelles# possède",
+                  /*spanish*/ "las #hermanas hechiceras# portan" },
+        },
+        {},
+        // clear text
+        Text{ "#Twinrova# holds", /*french*/ "#Twinrova# possède", /*spanish*/ "#Birova# porta" });
     //
     // [LINKS_POCKET_BOSS] = HintText::Boss({
     //                    //obscure text
@@ -2668,8 +2702,8 @@ void HintTable_Init() {
         // obscure text
         Text{ "The awakened ones require&the Shadow and Spirit Medallions&as well as the Light Arrows.",
               /*french*/
-              "Les êtres de sagesse attendront&le héros muni des %rMédaillons de&l'Ombre et l'Esprit%w et des&%yFlèches de Lumière%w.",
-              /*spanish*/
+              "Les êtres de sagesse attendront&le héros muni des %rMédaillons de&l'Ombre et l'Esprit%w et "
+              "des&%yFlèches de Lumière%w.", /*spanish*/
               "Los sabios aguardarán a que el héroe&obtenga tanto el #Medallón de las&Sombras y el del Espíritu# junto "
               "a la #flecha de luz#." },
     });
@@ -2677,8 +2711,8 @@ void HintTable_Init() {
     hintTable[BRIDGE_STONES_HINT] = HintText::Bridge({
         // obscure text                                                  singular        plural
         Text{
-            "The awakened ones will&await for the Hero to collect&%d |Spiritual Stone|Spiritual Stones|.",
-            /*french*/ "Les êtres de sagesse attendront&le héros muni de %r%d |Pierre&Ancestrale|Pierres&Ancestrales|%w.",
+            "The awakened ones will&await for the Hero to collect&%d |Spiritual Stone|Spiritual Stones|.", /*french*/
+            "Les êtres de sagesse attendront&le héros muni de %r%d |Pierre&Ancestrale|Pierres&Ancestrales|%w.",
             /*spanish*/ "Los sabios aguardarán a que el héroe&obtenga #%d |piedra espiritual|piedras espirituales|#." },
     });
 
@@ -2692,10 +2726,9 @@ void HintTable_Init() {
     hintTable[BRIDGE_REWARDS_HINT] = HintText::Bridge({
         // obscure text                                                  singular                     plural
         Text{ "The awakened ones will await&for the Hero to collect&%d |Spiritual Stone or Medallion|Spiritual Stones "
-              "and Medallions|.",
-              /*french*/
-              "Les êtres de sagesse attendront&le héros muni de %r%d |Pierre&Ancestrale ou Médaillon|Pierres&Ancestrales ou Médaillons|%w.",
-              /*spanish*/
+              "and Medallions|.", /*french*/
+              "Les êtres de sagesse attendront&le héros muni de %r%d |Pierre&Ancestrale ou "
+              "Médaillon|Pierres&Ancestrales ou Médaillons|%w.", /*spanish*/
               "Los sabios aguardarán a que el héroe&obtenga #%d |piedra espiritual o medallón|piedras espirtuales y "
               "medallones|#." },
     });
@@ -2709,9 +2742,10 @@ void HintTable_Init() {
 
     hintTable[BRIDGE_TOKENS_HINT] = HintText::Bridge({
         // obscure text
-        Text{ "The awakened ones will await&for the Hero to collect&%d |Gold Skulltula Token|Gold Skulltula Tokens|.",
-              /*french*/ "Les êtres de sagesse attendront&le héros muni de %r%d |Symbole|Symboles| &de Skulltula d'or%w.",
-              /*spanish*/ "Los sabios aguardarán a que el héroe&obtenga #%d |símbolo|símbolos| de&skulltula dorada#." },
+        Text{
+            "The awakened ones will await&for the Hero to collect&%d |Gold Skulltula Token|Gold Skulltula Tokens|.",
+            /*french*/ "Les êtres de sagesse attendront&le héros muni de %r%d |Symbole|Symboles| &de Skulltula d'or%w.",
+            /*spanish*/ "Los sabios aguardarán a que el héroe&obtenga #%d |símbolo|símbolos| de&skulltula dorada#." },
     });
 
     hintTable[BRIDGE_GREG_HINT] = HintText::Bridge({
@@ -2776,9 +2810,12 @@ void HintTable_Init() {
 
     hintTable[GANON_BK_SKULLTULA_HINT] = HintText::GanonsBossKey({
         // obscure text
-        Text { "And the %revil one%w's key will be&provided by the cursed rich man&once %r100 Gold Skulltula Tokens%w&are retrieved.",
-              /*french*/ "Aussi, la %rclé du Malin%w sera&donnée par l'homme maudit une&fois que %r100 Symboles de&Skulltula d'or%w auront été trouvés.",
-              /*spanish*/ "Y el rico maldito entregará la llave&del #señor de mal# tras obtener&100 símbolos de skulltula dorada#."},
+        Text{
+            "And the %revil one%w's key will be&provided by the cursed rich man&once %r100 Gold Skulltula Tokens%w&are "
+            "retrieved.", /*french*/
+            "Aussi, la %rclé du Malin%w sera&donnée par l'homme maudit une&fois que %r100 Symboles de&Skulltula d'or%w "
+            "auront été trouvés.", /*spanish*/
+            "Y el rico maldito entregará la llave&del #señor de mal# tras obtener&100 símbolos de skulltula dorada#." },
     });
 
     /*--------------------------
@@ -2787,58 +2824,63 @@ void HintTable_Init() {
 
     hintTable[LACS_VANILLA_HINT] = HintText::LACS({
         // obscure text
-        Text{
-            "And the %revil one%w's key will be&provided by Zelda once the&%rShadow and Spirit Medallions%w&are retrieved.",
-            /*french*/ "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois que &les %rMédaillons de l'Ombre et de&l'Esprit%w seront récupérés.",
-            /*spanish*/
-            "Y Zelda entregará la llave&del #señor del mal# tras obtener&#el medallón de las sombras y del "
-            "espíritu#." },
+        Text{ "And the %revil one%w's key will be&provided by Zelda once the&%rShadow and Spirit Medallions%w&are "
+              "retrieved.", /*french*/
+              "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois que &les %rMédaillons de l'Ombre et "
+              "de&l'Esprit%w seront récupérés.", /*spanish*/
+              "Y Zelda entregará la llave&del #señor del mal# tras obtener&#el medallón de las sombras y del "
+              "espíritu#." },
     });
 
     hintTable[LACS_MEDALLIONS_HINT] = HintText::LACS({
         // obscure text                                                     singular      plural
-        Text{ "And the %revil one%w's key will be&provided by Zelda once %r%d&|Medallion%w is|Medallions%w are| retrieved.",
-              /*french*/ "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d Médaillon%w aura été&récupéré|que&%r%d Médaillons%w auront été&récupérés|.",
+        Text{ "And the %revil one%w's key will be&provided by Zelda once %r%d&|Medallion%w is|Medallions%w are| "
+              "retrieved.", /*french*/
+              "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d Médaillon%w aura "
+              "été&récupéré|que&%r%d Médaillons%w auront été&récupérés|.",
               /*spanish*/ "Y Zelda entregará la llave&del #señor del mal# tras obtener&#%d |medallón|medallones|#." },
     });
 
     hintTable[LACS_STONES_HINT] = HintText::LACS({
         // obscure text                                                     singular            plural
-        Text{
-            "And the %revil one%w's key will be&provided by Zelda once %r%d&|Spiritual Stone%w is|Spiritual Stones%w are| "
-            "retrieved.",
-            /*french*/ "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d Pierre Ancestrale%w aura été&récupérée|que&%r%d Pierres Ancestrales%w auront été&récupérées|.",
-            /*spanish*/
-            "Y Zelda entregará la llave&del #señor del mal# tras obtener&#%d |piedra espiritual|piedras "
-            "espirituales|#." },
+        Text{ "And the %revil one%w's key will be&provided by Zelda once %r%d&|Spiritual Stone%w is|Spiritual Stones%w "
+              "are| "
+              "retrieved.", /*french*/
+              "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d Pierre Ancestrale%w aura "
+              "été&récupérée|que&%r%d Pierres Ancestrales%w auront été&récupérées|.", /*spanish*/
+              "Y Zelda entregará la llave&del #señor del mal# tras obtener&#%d |piedra espiritual|piedras "
+              "espirituales|#." },
     });
 
     hintTable[LACS_REWARDS_HINT] = HintText::LACS({
         // obscure text                                                     singular                         plural
-        Text{ "And the %revil one%w's key will be&provided by Zelda once %r%d&|Spiritual Stone or Medallion%w&"
-              "is|Spiritual Stones and Medallions%w&are| retrieved.",
-              /*french*/
-              "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d Pierre Ancestrale ou %d&Médaillon%w sera récupéré|que&%r%d Pierres Ancestrales et&Médaillons%w seront récupérés|.",
-              /*spanish*/
-              "Y Zelda entregará la llave&del #señor del mal# tras obtener&#%d |piedra espiritual o medallón|piedras "
-              "espirituales o medallones|#." },
+        Text{
+            "And the %revil one%w's key will be&provided by Zelda once %r%d&|Spiritual Stone or Medallion%w&"
+            "is|Spiritual Stones and Medallions%w&are| retrieved.", /*french*/
+            "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d Pierre Ancestrale ou "
+            "%d&Médaillon%w sera récupéré|que&%r%d Pierres Ancestrales et&Médaillons%w seront récupérés|.", /*spanish*/
+            "Y Zelda entregará la llave&del #señor del mal# tras obtener&#%d |piedra espiritual o medallón|piedras "
+            "espirituales o medallones|#." },
     });
 
     hintTable[LACS_DUNGEONS_HINT] = HintText::LACS({
         // obscure text                                                     singular    plural
         Text{ "And the %revil one%w's key will be&provided by Zelda once %r%d&|Dungeon%w is|Dungeons%w are| conquered.",
-              /*french*/ "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d donjon %wsera conquis|que&%r%d donjons%w seront conquis|.",
+              /*french*/
+              "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d donjon %wsera conquis|que&%r%d "
+              "donjons%w seront conquis|.",
               /*spanish*/ "Y Zelda entregará la llave&del #señor del mal# tras completar&#%d |mazmorra|mazmorras|#." },
     });
 
     hintTable[LACS_TOKENS_HINT] = HintText::LACS({
         // obscure text                                                     singular                 plural
-        Text{ "And the %revil one%w's key will be&provided by Zelda once %r%d |Gold&Skulltula Token%w is|Gold&Skulltula "
-              "Tokens%w are| retrieved.",
-              /*french*/ "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d symbole de Skulltula d'or&%wsera récupuéré|que &%r%d symboles de Skulltula d'or&%wseront recupérés|.",
-              /*spanish*/
-              "Y Zelda entregará la llave&del #señor del mal# tras obtener&#%d |símbolo|símbolos| de&skulltula "
-              "dorada#." },
+        Text{
+            "And the %revil one%w's key will be&provided by Zelda once %r%d |Gold&Skulltula Token%w is|Gold&Skulltula "
+            "Tokens%w are| retrieved.", /*french*/
+            "Aussi, la %rclé du Malin%w sera&fournie par Zelda une fois |qu'&%r%d symbole de Skulltula d'or&%wsera "
+            "récupuéré|que &%r%d symboles de Skulltula d'or&%wseront recupérés|.", /*spanish*/
+            "Y Zelda entregará la llave&del #señor del mal# tras obtener&#%d |símbolo|símbolos| de&skulltula "
+            "dorada#." },
     });
     /*--------------------------
     |     TRIAL HINT TEXT      |
@@ -2909,24 +2951,22 @@ void HintTable_Init() {
     hintTable[ADULT_ALTAR_TEXT_START] = HintText::Altar({
         // obscure text
         Text{ "An awakening voice from the Sacred&Realm will call those destined to be&Sages, who dwell in the five "
-              "temples.",
-              /*french*/
+              "temples.", /*french*/
               "Quand le mal aura triomphé, une voix&du Saint Royaume appellera ceux&cachés dans les cinq temples, "
-              "destinés^à être Sages.",
-              /*spanish*/
+              "destinés^à être Sages.", /*spanish*/
               "Cuando el mal lo impregne todo, desde el Reino Sagrado surgirá una voz que hará despertar a los sabios "
               "que moran en los #cinco templos#." },
     });
 
     hintTable[ADULT_ALTAR_TEXT_END] = HintText::Altar({
         // obscure text
-        Text{
-            "$kTogether with the Hero of Time,&the awakened ones will return&the light of peace to the world...",
-            /*french*/
-            "$kEnsemble avec le Héros du &Temps, ces Sages emprisonneront&le mal et réinstaureront la&lumière de paix "
-            "dans le monde...",
-            /*spanish*/
-            "Con el Héroe del Tiempo, aquellos&que despierten detendrán el mal y&volverán al mundo de luz la paz..." },
+        Text{ "$kTogether with the Hero of Time,&the awakened ones will return&the light of peace to the "
+              "world...", /*french*/
+              "$kEnsemble avec le Héros du &Temps, ces Sages emprisonneront&le mal et réinstaureront "
+              "la&lumière de paix "
+              "dans le monde...", /*spanish*/
+              "Con el Héroe del Tiempo, aquellos&que despierten detendrán el mal y&volverán al mundo de luz la "
+              "paz..." },
     });
 
     /*--------------------------
@@ -2935,12 +2975,13 @@ void HintTable_Init() {
 
     hintTable[VALIDATION_LINE] = HintText::Validation({
         // obscure text
-        Text{ "Hmph... Since you made it this far, I'll let you know what glorious prize of Ganon's you likely missed "
-              "out on in my tower.^Behold...^",
-              /*french*/
-              "Pah! Puisque tu t'es rendu ici, je te dirai quel trésor tu as manqué dans ma tour.^Et c'est...^",
-              /*spanish*/
-              "Mmm... Ya que has llegado hasta aquí, te diré qué preciado objeto de mi propiedad puedes haberte dejado "
+        Text{ "Hmph... Since you made it this far, I'll let you know what glorious prize of Ganon's you "
+              "likely missed "
+              "out on in my tower.^Behold...^", /*french*/
+              "Pah! Puisque tu t'es rendu ici, je te dirai quel trésor tu as manqué dans ma tour.^Et "
+              "c'est...^", /*spanish*/
+              "Mmm... Ya que has llegado hasta aquí, te diré qué preciado objeto de mi propiedad puedes "
+              "haberte dejado "
               "en mi torre.^He aquí...^" },
     });
 
@@ -2950,12 +2991,12 @@ void HintTable_Init() {
 
     hintTable[LIGHT_ARROW_LOCATION_HINT] = HintText::LightArrow({
         // obscure text
-        Text{
-            "Ha ha ha... You'll never beat me by reflecting my lightning bolts and unleashing the arrows from ",
-            /*french*/
-            "Ha ha ha... Pauvre fou! Tu ne pourras jamais me vaincre sans les flèches que j'ai cachées dans ",
-            /*spanish*/
-            "Ja, ja, ja... Nunca me derrotarás reflejando mis esferas de energía y desplegando la flecha de luz de " },
+        Text{ "Ha ha ha... You'll never beat me by reflecting my lightning bolts and unleashing the arrows "
+              "from ", /*french*/
+              "Ha ha ha... Pauvre fou! Tu ne pourras jamais me vaincre sans les flèches que j'ai cachées "
+              "dans ", /*spanish*/
+              "Ja, ja, ja... Nunca me derrotarás reflejando mis esferas de energía y desplegando la flecha "
+              "de luz de " },
     });
 
     hintTable[YOUR_POCKET] = HintText::Exclude({
@@ -2992,11 +3033,9 @@ void HintTable_Init() {
     hintTable[GANON_LINE04] = HintText::GanonLine({
         // obscure text
         Text{ "You'll never deflect my bolts of energy with your sword, then shoot me with those Light Arrows you "
-              "happen to have.",
-              /*french*/
+              "happen to have.", /*french*/
               "Ne perds pas ton temps à frapper mes éclairs d'énergie avec ton épée et me tirer avec tes flèches de "
-              "Lumière!",
-              /*spanish*/
+              "Lumière!", /*spanish*/
               "Nunca reflejarás mis esferas de energía con tu espada, para después dispararme con las flechas de luz "
               "que tendrás." },
     });
@@ -3011,11 +3050,9 @@ void HintTable_Init() {
     hintTable[GANON_LINE06] = HintText::GanonLine({
         // obscure text
         Text{ "Zelda is probably going to do something stupid, like send you back to your own timeline.^So this is "
-              "quite meaningless. Do you really want to save this moron?",
-              /*french*/
+              "quite meaningless. Do you really want to save this moron?", /*french*/
               "Même si je suis vaincu... Zelda te renverra dans ton ère, et je reviendrai conquérir!^Telle est la "
-              "prophécie d'Hyrule Historia!",
-              /*spanish*/
+              "prophécie d'Hyrule Historia!", /*spanish*/
               "Seguro que Zelda trata de hacer alguna tontería, como enviarte de vuelta a tu línea temporal.^No tiene "
               "ningún sentido alguno. ¿De verdad quieres salvar a esa tonta?" },
     });
@@ -3023,11 +3060,9 @@ void HintTable_Init() {
     hintTable[GANON_LINE07] = HintText::GanonLine({
         // obscure text
         Text{ "What about Zelda makes you think&she'd be a better ruler than I?^I saved Lon Lon Ranch,&fed the "
-              "hungry,&and my castle floats.",
-              /*french*/
+              "hungry,&and my castle floats.", /*french*/
               "Zelda ne sera jamais un meilleur monarque que moi!^J'ai un château volant, mes sujets sont des belles "
-              "amazones... et mes Moblins sont clairement plus puissants que jamais!",
-              /*spanish*/
+              "amazones... et mes Moblins sont clairement plus puissants que jamais!", /*spanish*/
               "¿Qué te hace pensar que Zelda gobierna mejor que yo?^Yo he salvado el Rancho Lon Lon,&he alimentado a "
               "los hambrientos&y hasta hago que mi castillo flote." },
     });
@@ -3037,8 +3072,7 @@ void HintTable_Init() {
         Text{ "I've learned this spell,&it's really neat,&I'll keep it later&for your treat!",
               /*french*/
               "Gamin, ton destin achève,&sous mon sort tu périras!&Cette partie ne fut pas brève,&et cette mort, tu "
-              "subiras!",
-              /*spanish*/
+              "subiras!", /*spanish*/
               "Veamos ahora que harás,&la batalla ha de comenzar,&te enviaré de una vez al más allá,&¿listo para "
               "afrontar la verdad?" },
     });
@@ -3062,8 +3096,7 @@ void HintTable_Init() {
         Text{ "Today, let's begin down&'The Hero is Defeated' timeline.",
               /*french*/
               "Si tu me vaincs, Hyrule sera englouti... mais si tu meurs, on aura A Link to the Past, le meilleur opus "
-              "de la série!",
-              /*spanish*/
+              "de la série!", /*spanish*/
               "Hoy daremos lugar a la línea temporal del Héroe Derrotado.&¡Prepárate para el culmen de esta saga!" },
     });
 
@@ -3087,27 +3120,27 @@ void HintTable_Init() {
 
     hintTable[CARPET_SALESMAN_DIALOG_FIRST] = HintText::MerchantsDialogs({
         // obscure text
-        Text{ "Welcome!^I am selling stuff, strange and rare, from&all over the world to everybody. Today's&special "
-              "is...^",
-              /*french*/
-              "Bienvenue!^Je vends des objets rares et merveilleux du&monde entier. En spécial aujourd'hui...^",
-              /*spanish*/
-              "¡Acércate!^Vendo productos extraños y difíciles de&encontrar... De todo el mundo a todo el&mundo. La "
+        Text{ "Welcome!^I am selling stuff, strange and rare, from&all over the world to everybody. "
+              "Today's&special "
+              "is...^", /*french*/
+              "Bienvenue!^Je vends des objets rares et merveilleux du&monde entier. En spécial "
+              "aujourd'hui...^", /*spanish*/
+              "¡Acércate!^Vendo productos extraños y difíciles de&encontrar... De todo el mundo a todo "
+              "el&mundo. La "
               "oferta de hoy es...^¡" },
     });
 
     hintTable[CARPET_SALESMAN_DIALOG_SECOND] = HintText::MerchantsDialogs({
         // obscure text
-        Text{
-            "! Terrifying!&I won't tell you what it is until I see the&money...^How about #200 Rupees#?&&" +
-                TWO_WAY_CHOICE() + "#Buy&Don't buy#",
-            /*french*/
-                "! Un&concentré de puissance! Mais montre tes&rubis avant que je te dise ce que c'est...^Disons #200 "
-                "rubis#?&&" +
-                TWO_WAY_CHOICE() + "#Acheter&Ne pas acheter#",
-            /*spanish*/
-                "! ¡Terrorífico!&No te revelaré su nombre hasta que&vea el dinero...^#200 rupias#, ¿qué te parece?&&" +
-                TWO_WAY_CHOICE() + "#Comprar&No comprar#" },
+        Text{ "! Terrifying!&I won't tell you what it is until I see the&money...^How about #200 Rupees#?&&" +
+                  TWO_WAY_CHOICE() + "#Buy&Don't buy#",
+              /*french*/
+              "! Un&concentré de puissance! Mais montre tes&rubis avant que je te dise ce que c'est...^Disons #200 "
+              "rubis#?&&" +
+                  TWO_WAY_CHOICE() + "#Acheter&Ne pas acheter#",
+              /*spanish*/
+              "! ¡Terrorífico!&No te revelaré su nombre hasta que&vea el dinero...^#200 rupias#, ¿qué te parece?&&" +
+                  TWO_WAY_CHOICE() + "#Comprar&No comprar#" },
     });
 
     hintTable[CARPET_SALESMAN_DIALOG_THIRD] = HintText::MerchantsDialogs({

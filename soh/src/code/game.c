@@ -5,22 +5,21 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-SpeedMeter D_801664D0;
+SpeedMeter      D_801664D0;
 struct_801664F0 D_801664F0;
 struct_80166500 D_80166500;
-VisMono sMonoColors;
-ViMode sViMode;
-FaultClient sGameFaultClient;
-u16 sLastButtonPressed;
+VisMono         sMonoColors;
+ViMode          sViMode;
+FaultClient     sGameFaultClient;
+u16             sLastButtonPressed;
 
 // Forward declared, because this in a C++ header.
-int gfx_create_framebuffer(uint32_t width, uint32_t height);
+int  gfx_create_framebuffer(uint32_t width, uint32_t height);
 void gfx_texture_cache_clear();
-
 
 void GameState_FaultPrint(void) {
     static char sBtnChars[] = "ABZSuldr*+LRudlr";
-    s32 i;
+    s32         i;
 
     osSyncPrintf("last_button=%04x\n", sLastButtonPressed);
     FaultDrawer_DrawText(120, 180, "%08x", sLastButtonPressed);
@@ -70,8 +69,8 @@ void GameState_SetFBFilter(Gfx** gfx) {
 
 void func_800C4344(GameState* gameState) {
     Input* selectedInput;
-    s32 hexDumpSize;
-    u16 hReg82;
+    s32    hexDumpSize;
+    u16    hReg82;
 
     if (HREG(80) == 0x14) {
         __osMalloc_FreeBlockTest_Enable = HREG(82);
@@ -126,7 +125,7 @@ void GameState_DrawInputDisplay(u16 input, Gfx** gfx) {
         GPACK_RGBA5551(255, 0, 0, 1),     GPACK_RGBA5551(120, 120, 120, 1), GPACK_RGBA5551(0, 255, 0, 1),
         GPACK_RGBA5551(0, 0, 255, 1),
     };
-    s32 i, j, k;
+    s32  i, j, k;
     Gfx* gfxP = *gfx;
 
     gDPPipeSync(gfxP++);
@@ -167,7 +166,7 @@ void GameState_Draw(GameState* gameState, GraphicsContext* gfxCtx) {
     }
 
     if (R_ENABLE_AUDIO_DBG & 1) {
-        s32 pad;
+        s32      pad;
         GfxPrint printer;
 
         GfxPrint_Init(&printer);
@@ -245,10 +244,9 @@ int fbTest = -1;
 void GameState_Update(GameState* gameState) {
     GraphicsContext* gfxCtx = gameState->gfxCtx;
 
-    if (fbTest == -1)
-    {
+    if (fbTest == -1) {
         fbTest = gfx_create_framebuffer(64, 112);
-        //fbTest = gfx_create_framebuffer(256, 512);
+        // fbTest = gfx_create_framebuffer(256, 512);
     }
 
     GameState_SetFrameBuffer(gfxCtx);
@@ -352,11 +350,11 @@ void GameState_InitArena(GameState* gameState, size_t size) {
 
 void GameState_Realloc(GameState* gameState, size_t size) {
     GameAlloc* alloc = &gameState->alloc;
-    void* gameArena;
-    u32 systemMaxFree;
-    u32 systemFree;
-    u32 systemAlloc;
-    void* thaBufp = gameState->tha.bufp;
+    void*      gameArena;
+    u32        systemMaxFree;
+    u32        systemFree;
+    u32        systemAlloc;
+    void*      thaBufp = gameState->tha.bufp;
 
     THA_Dt(&gameState->tha);
     GameAlloc_Free(alloc, thaBufp);
@@ -464,7 +462,8 @@ void GameState_Destroy(GameState* gameState) {
 
     osSyncPrintf("game デストラクタ終了\n"); // "game destructor end"
 
-    // Performing clear skeletons before unload resources fixes an actor heap corruption crash due to the skeleton patching system.
+    // Performing clear skeletons before unload resources fixes an actor heap corruption crash due to the skeleton
+    // patching system.
     ResourceMgr_ClearSkeletons();
 
     if (CVarGetInteger("gAltAssets", 0)) {
@@ -485,8 +484,7 @@ u32 GameState_IsRunning(GameState* gameState) {
     return gameState->running;
 }
 
-void* GameState_Alloc(GameState* gameState, size_t size, char* file, s32 line)
-{
+void* GameState_Alloc(GameState* gameState, size_t size, char* file, s32 line) {
     void* ret;
 
     if (THA_IsCrash(&gameState->tha)) {

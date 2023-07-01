@@ -72,8 +72,7 @@ void EnHeishi3_Init(Actor* thisx, PlayState* play) {
     }
     Actor_SetScale(&this->actor, 0.01f);
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f);
-    SkelAnime_Init(play, &this->skelAnime, &gEnHeishiSkel, &gEnHeishiIdleAnim, this->jointTable, this->morphTable,
-                   17);
+    SkelAnime_Init(play, &this->skelAnime, &gEnHeishiSkel, &gEnHeishiIdleAnim, this->jointTable, this->morphTable, 17);
     this->actor.colChkInfo.mass = MASS_IMMOVABLE;
     this->actor.targetMode = 6;
     Collider_InitCylinder(play, &this->collider);
@@ -110,9 +109,9 @@ void EnHeishi3_SetupGuardType(EnHeishi3* this, PlayState* play) {
  **/
 void EnHeishi3_StandSentinelInGrounds(EnHeishi3* this, PlayState* play) {
     Player* player;
-    s16 yawDiff;
-    s16 yawDiffNew;
-    f32 sightRange;
+    s16     yawDiff;
+    s16     yawDiffNew;
+    f32     sightRange;
 
     player = GET_PLAYER(play);
     SkelAnime_Update(&this->skelAnime);
@@ -231,8 +230,7 @@ void EnHeishi3_Update(Actor* thisx, PlayState* play) {
     CollisionCheck_SetOC(play, &play->colChkCtx, &this->collider.base);
 }
 
-s32 EnHeishi3_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                               void* thisx) {
+s32 EnHeishi3_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnHeishi3* this = (EnHeishi3*)thisx;
 
     if (limbIndex == 9) {

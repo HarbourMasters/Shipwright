@@ -20,7 +20,7 @@
 #define rPlaySound regs[10]
 #define rReg11 regs[11]
 
-u32 EffectSsDeadDb_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsDeadDb_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsDeadDb_Draw(PlayState* play, u32 index, EffectSs* this);
 void EffectSsDeadDb_Update(PlayState* play, u32 index, EffectSs* this);
 
@@ -64,11 +64,11 @@ static void* sTextures[] = {
 
 void EffectSsDeadDb_Draw(PlayState* play, u32 index, EffectSs* this) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    MtxF mfTrans;
-    MtxF mfScale;
-    MtxF mfResult;
-    Mtx* mtx;
-    f32 scale;
+    MtxF             mfTrans;
+    MtxF             mfScale;
+    MtxF             mfResult;
+    Mtx*             mtx;
+    f32              scale;
 
     OPEN_DISPS(gfxCtx);
 

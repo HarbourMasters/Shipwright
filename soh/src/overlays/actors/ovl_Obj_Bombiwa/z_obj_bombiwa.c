@@ -100,10 +100,10 @@ void ObjBombiwa_Destroy(Actor* thisx, PlayState* play2) {
 void ObjBombiwa_Break(ObjBombiwa* this, PlayState* play) {
     Vec3f pos;
     Vec3f velocity;
-    Gfx* dlist;
-    s16 arg5;
-    s16 scale;
-    s32 i;
+    Gfx*  dlist;
+    s16   arg5;
+    s16   scale;
+    s32   i;
 
     dlist = object_bombiwa_DL_0009E0;
     for (i = 0; i < ARRAY_COUNT(sEffectScales); i++) {

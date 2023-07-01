@@ -51,9 +51,9 @@ void BgMoriBigst_SetupAction(BgMoriBigst* this, BgMoriBigstActionFunc actionFunc
 }
 
 void BgMoriBigst_InitDynapoly(BgMoriBigst* this, PlayState* play, CollisionHeader* collision, s32 moveFlag) {
-    s32 pad;
+    s32              pad;
     CollisionHeader* colHeader = NULL;
-    s32 pad2;
+    s32              pad2;
 
     DynaPolyActor_Init(&this->dyna, moveFlag);
     CollisionHeader_GetVirtual(collision, &colHeader);
@@ -131,8 +131,8 @@ void BgMoriBigst_SetupStalfosFight(BgMoriBigst* this, PlayState* play) {
 
     BgMoriBigst_SetupAction(this, BgMoriBigst_StalfosFight);
     Flags_UnsetClear(play, this->dyna.actor.room);
-    stalfos = Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_EN_TEST, 209.0f, 827.0f,
-                                 -3320.0f, 0, 0, 0, 1);
+    stalfos = Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_EN_TEST, 209.0f, 827.0f, -3320.0f, 0,
+                                 0, 0, 1);
     if (stalfos != NULL) {
         this->dyna.actor.child = NULL;
         this->dyna.actor.home.rot.z++;
@@ -192,8 +192,8 @@ void BgMoriBigst_SetupStalfosPairFight(BgMoriBigst* this, PlayState* play) {
 
     BgMoriBigst_SetupAction(this, BgMoriBigst_StalfosPairFight);
     Flags_UnsetClear(play, this->dyna.actor.room);
-    stalfos1 = Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_EN_TEST, 70.0f, 827.0f,
-                                  -3383.0f, 0, 0, 0, 5);
+    stalfos1 = Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_EN_TEST, 70.0f, 827.0f, -3383.0f, 0,
+                                  0, 0, 5);
     if (stalfos1 != NULL) {
         this->dyna.actor.child = NULL;
         this->dyna.actor.home.rot.z++;
@@ -201,8 +201,8 @@ void BgMoriBigst_SetupStalfosPairFight(BgMoriBigst* this, PlayState* play) {
         // "Warning: 3-1 Stalfos failure"
         osSyncPrintf("Warning : 第３-1スタルフォス発生失敗\n");
     }
-    stalfos2 = Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_EN_TEST, 170.0f, 827.0f,
-                                  -3260.0f, 0, 0, 0, 5);
+    stalfos2 = Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_EN_TEST, 170.0f, 827.0f, -3260.0f, 0,
+                                  0, 0, 5);
     if (stalfos2 != NULL) {
         this->dyna.actor.child = NULL;
         this->dyna.actor.home.rot.z++;
@@ -214,9 +214,11 @@ void BgMoriBigst_SetupStalfosPairFight(BgMoriBigst* this, PlayState* play) {
 }
 
 void BgMoriBigst_StalfosPairFight(BgMoriBigst* this, PlayState* play) {
-    if ((this->dyna.actor.home.rot.z == 0 || 
-        // Check if all enemies are defeated instead of the regular stalfos when enemy randomizer or crowd control is on.
-        (Flags_GetTempClear(play, this->dyna.actor.room) && (CVarGetInteger("gRandomizedEnemies", 0) || (CVarGetInteger("gCrowdControl", 0))))) && 
+    if ((this->dyna.actor.home.rot.z == 0 ||
+         // Check if all enemies are defeated instead of the regular stalfos when enemy randomizer or crowd control is
+         // on.
+         (Flags_GetTempClear(play, this->dyna.actor.room) &&
+          (CVarGetInteger("gRandomizedEnemies", 0) || (CVarGetInteger("gCrowdControl", 0))))) &&
         !Player_InCsMode(play)) {
         Flags_SetSwitch(play, (this->dyna.actor.params >> 8) & 0x3F);
         BgMoriBigst_SetupDone(this, play);
@@ -252,8 +254,7 @@ void BgMoriBigst_Draw(Actor* thisx, PlayState* play) {
 
     gSPSegment(POLY_OPA_DISP++, 0x08, play->objectCtx.status[this->moriTexObjIndex].segment);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_OPA_DISP++, gMoriBigstDL);
     CLOSE_DISPS(play->state.gfxCtx);

@@ -148,7 +148,7 @@ void func_8088CEC0(BgHidanSekizou* this, s32 arg1, s16 arg2) {
 void BgHidanSekizou_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     BgHidanSekizou* this = (BgHidanSekizou*)thisx;
-    s32 i;
+    s32              i;
     CollisionHeader* colHeader = NULL;
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
@@ -185,17 +185,17 @@ void BgHidanSekizou_Destroy(Actor* thisx, PlayState* play2) {
 
 void func_8088D434(BgHidanSekizou* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 i;
-    s32 isAligned[2];
-    s32 isClose;
-    s32 phi_s4;
+    s32     i;
+    s32     isAligned[2];
+    s32     isClose;
+    s32     phi_s4;
 
     isClose = this->dyna.actor.xzDistToPlayer < 300.0f;
     isAligned[0] = fabsf(this->dyna.actor.world.pos.x - player->actor.world.pos.x) < 80.0f;
     isAligned[1] = fabsf(this->dyna.actor.world.pos.z - player->actor.world.pos.z) < 80.0f;
     phi_s4 = 0;
     for (i = 0; i < 4; i++) {
-        s16 diff;
+        s16  diff;
         s16* temp = &this->unk_168[i];
 
         DECR(*temp);
@@ -318,9 +318,7 @@ Gfx* func_8088D9F4(PlayState* play, BgHidanSekizou* this, s16 arg2, MtxF* arg3, 
     arg3->xw = (temp_f2 * arg4) + this->dyna.actor.world.pos.x;
     arg3->yw = this->dyna.actor.world.pos.y + 30.0f + (.7f * phi_f12);
     arg3->zw = (temp_f2 * arg5) + this->dyna.actor.world.pos.z;
-    gSPMatrix(arg7++,
-              Matrix_MtxFToMtx(MATRIX_CHECKFLOATS(arg3),
-                               Graph_Alloc(play->state.gfxCtx, sizeof(Mtx))),
+    gSPMatrix(arg7++, Matrix_MtxFToMtx(MATRIX_CHECKFLOATS(arg3), Graph_Alloc(play->state.gfxCtx, sizeof(Mtx))),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(arg7++, gFireTempleFireballDL);
@@ -329,14 +327,14 @@ Gfx* func_8088D9F4(PlayState* play, BgHidanSekizou* this, s16 arg2, MtxF* arg3, 
 }
 
 Gfx* func_8088DC50(PlayState* play, BgHidanSekizou* this, s16 arg2, s16 arg3, Gfx* arg4) {
-    s32 pad;
-    s16 temp_v1;
-    s32 phi_s1;
-    s32 phi_s2;
-    f32 temp_f20;
-    f32 temp_f22;
+    s32  pad;
+    s16  temp_v1;
+    s32  phi_s1;
+    s32  phi_s2;
+    f32  temp_f20;
+    f32  temp_f22;
     MtxF sp68;
-    s32 i;
+    s32  i;
 
     if (arg3 < 4) {
         phi_s1 = 4 - arg3;
@@ -397,8 +395,7 @@ void BgHidanSekizou_Draw(Actor* thisx, PlayState* play2) {
 
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     if (this->dyna.actor.params == 0) {
         gSPDisplayList(POLY_OPA_DISP++, gFireTempleStationaryFlamethrowerShortDL);
     } else {
@@ -408,15 +405,15 @@ void BgHidanSekizou_Draw(Actor* thisx, PlayState* play2) {
     if (this->dyna.actor.params == 0) {
         if (this->unk_168[0] > 0) {
             if ((s16)(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) - this->dyna.actor.shape.rot.y) >= 0) {
-                POLY_XLU_DISP = func_8088DC50(play, this, this->dyna.actor.shape.rot.y + 0x2000, this->unk_168[0],
-                                              POLY_XLU_DISP);
-                POLY_XLU_DISP = func_8088DC50(play, this, this->dyna.actor.shape.rot.y - 0x2000, this->unk_168[0],
-                                              POLY_XLU_DISP);
+                POLY_XLU_DISP =
+                    func_8088DC50(play, this, this->dyna.actor.shape.rot.y + 0x2000, this->unk_168[0], POLY_XLU_DISP);
+                POLY_XLU_DISP =
+                    func_8088DC50(play, this, this->dyna.actor.shape.rot.y - 0x2000, this->unk_168[0], POLY_XLU_DISP);
             } else {
-                POLY_XLU_DISP = func_8088DC50(play, this, this->dyna.actor.shape.rot.y - 0x2000, this->unk_168[0],
-                                              POLY_XLU_DISP);
-                POLY_XLU_DISP = func_8088DC50(play, this, this->dyna.actor.shape.rot.y + 0x2000, this->unk_168[0],
-                                              POLY_XLU_DISP);
+                POLY_XLU_DISP =
+                    func_8088DC50(play, this, this->dyna.actor.shape.rot.y - 0x2000, this->unk_168[0], POLY_XLU_DISP);
+                POLY_XLU_DISP =
+                    func_8088DC50(play, this, this->dyna.actor.shape.rot.y + 0x2000, this->unk_168[0], POLY_XLU_DISP);
             }
         }
     } else {

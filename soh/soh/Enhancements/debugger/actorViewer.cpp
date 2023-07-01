@@ -23,33 +23,20 @@ extern PlayState* gPlayState;
 }
 
 typedef struct {
-    u16 id;
-    u16 params;
+    u16   id;
+    u16   params;
     Vec3f pos;
     Vec3s rot;
 } ActorInfo;
 
-typedef enum {
-    LIST,
-    TARGET,
-    HELD,
-    INTERACT
-} RetrievalMethod;
+typedef enum { LIST, TARGET, HELD, INTERACT } RetrievalMethod;
 
-std::array<const char*, 12> acMapping = { 
-    "Switch",
-    "Background (Prop type 1)",
-    "Player",
-    "Bomb",
-    "NPC",
-    "Enemy",
-    "Prop type 2",
-    "Item/Action",
-    "Misc.",
-    "Boss",
-    "Door",
-    "Chest"
-};
+std::array<const char*, 12> acMapping = { "Switch",      "Background (Prop type 1)",
+                                          "Player",      "Bomb",
+                                          "NPC",         "Enemy",
+                                          "Prop type 2", "Item/Action",
+                                          "Misc.",       "Boss",
+                                          "Door",        "Chest" };
 
 const std::string GetActorDescription(u16 id) {
     return ActorDB::Instance->RetrieveEntry(id).entry.valid ? ActorDB::Instance->RetrieveEntry(id).entry.desc : "???";
@@ -86,7 +73,7 @@ void PopulateActorDropdown(int i, std::vector<Actor*>& data) {
     }
     if (gPlayState != nullptr) {
         ActorListEntry currList = gPlayState->actorCtx.actorLists[i];
-        Actor* currAct = currList.head;
+        Actor*         currAct = currList.head;
         if (currAct != nullptr) {
             while (currAct != nullptr) {
                 data.push_back(currAct);
@@ -96,7 +83,6 @@ void PopulateActorDropdown(int i, std::vector<Actor*>& data) {
     }
 }
 
-
 void ActorViewerWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Actor Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
@@ -104,18 +90,18 @@ void ActorViewerWindow::DrawElement() {
         return;
     }
 
-    static Actor* display;
-    static Actor empty{};
-    static Actor* fetch = NULL;
-    static ActorInfo newActor = {0,0, {0, 0, 0}, {0, 0, 0}};
-    static bool needs_reset = false;
-    static ImU16 one = 1;
-    static int actor;
-    static int category = 0;
-    static RetrievalMethod rm;
-    static std::string filler = "Please select";
+    static Actor*              display;
+    static Actor               empty{};
+    static Actor*              fetch = NULL;
+    static ActorInfo           newActor = { 0, 0, { 0, 0, 0 }, { 0, 0, 0 } };
+    static bool                needs_reset = false;
+    static ImU16               one = 1;
+    static int                 actor;
+    static int                 category = 0;
+    static RetrievalMethod     rm;
+    static std::string         filler = "Please select";
     static std::vector<Actor*> list;
-    static u16 lastSceneId = 0;
+    static u16                 lastSceneId = 0;
 
     if (gPlayState != nullptr) {
         needs_reset = lastSceneId != gPlayState->sceneNum;
@@ -295,8 +281,8 @@ void ActorViewerWindow::DrawElement() {
 
             if (ImGui::Button("Fetch from Link")) {
                 Player* player = GET_PLAYER(gPlayState);
-                Vec3f newPos = player->actor.world.pos;
-                Vec3s newRot = player->actor.world.rot;
+                Vec3f   newPos = player->actor.world.pos;
+                Vec3s   newRot = player->actor.world.rot;
                 newActor.pos = newPos;
                 newActor.rot = newRot;
             }
@@ -319,7 +305,7 @@ void ActorViewerWindow::DrawElement() {
                                            newActor.pos.y, newActor.pos.z, newActor.rot.x, newActor.rot.y,
                                            newActor.rot.z, newActor.params);
                     } else {
-                        func_80078884(NA_SE_SY_ERROR);                    
+                        func_80078884(NA_SE_SY_ERROR);
                     }
                 }
             }
@@ -340,7 +326,6 @@ void ActorViewerWindow::DrawElement() {
             needs_reset = false;
         }
     }
-    
 
     ImGui::End();
 }

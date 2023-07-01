@@ -3,7 +3,7 @@
 #include <string.h>
 
 void PadUtils_Init(Input* input) {
-    memset(input,0, sizeof(Input));
+    memset(input, 0, sizeof(Input));
 }
 
 void func_800FCB70(void) {

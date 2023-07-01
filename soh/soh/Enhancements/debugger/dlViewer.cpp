@@ -23,18 +23,15 @@ extern PlayState* gPlayState;
 char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
 }
 
-char searchString[64] = "";
-int displayListsSearchResultsCount;
+char   searchString[64] = "";
+int    displayListsSearchResultsCount;
 char** displayListsSearchResults;
-char* activeDisplayList = nullptr;
+char*  activeDisplayList = nullptr;
 
 std::map<int, std::string> cmdMap = {
-    { G_SETPRIMCOLOR, "gsDPSetPrimColor" },
-    { G_SETENVCOLOR, "gsDPSetEnvColor" },
-    { G_RDPPIPESYNC, "gsDPPipeSync" },
-    { G_SETGRAYSCALE, "gsSPGrayscale" },
-    { G_SETINTENSITY, "gsDPSetGrayscaleColor" },
-    { G_LOADTLUT, "gsDPLoadTLUT" },
+    { G_SETPRIMCOLOR, "gsDPSetPrimColor" },      { G_SETENVCOLOR, "gsDPSetEnvColor" },
+    { G_RDPPIPESYNC, "gsDPPipeSync" },           { G_SETGRAYSCALE, "gsSPGrayscale" },
+    { G_SETINTENSITY, "gsDPSetGrayscaleColor" }, { G_LOADTLUT, "gsDPLoadTLUT" },
     { G_ENDDL, "gsSPEndDisplayList" },
 };
 
@@ -46,7 +43,8 @@ void DLViewerWindow::DrawElement() {
     }
 
     if (ImGui::InputText("Search Display Lists", searchString, ARRAY_COUNT(searchString))) {
-        displayListsSearchResults = ResourceMgr_ListFiles(("*" + std::string(searchString) + "*DL").c_str(), &displayListsSearchResultsCount);
+        displayListsSearchResults =
+            ResourceMgr_ListFiles(("*" + std::string(searchString) + "*DL").c_str(), &displayListsSearchResultsCount);
     }
 
     if (ImGui::BeginCombo("Active Display List", activeDisplayList)) {
@@ -59,12 +57,14 @@ void DLViewerWindow::DrawElement() {
         ImGui::EndCombo();
     }
     if (activeDisplayList != nullptr) {
-        auto res = std::static_pointer_cast<LUS::DisplayList>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(activeDisplayList));
+        auto res = std::static_pointer_cast<LUS::DisplayList>(
+            LUS::Context::GetInstance()->GetResourceManager()->LoadResource(activeDisplayList));
         for (int i = 0; i < res->Instructions.size(); i++) {
             std::string id = "##CMD" + std::to_string(i);
-            Gfx* gfx = (Gfx*)&res->Instructions[i];
-            int cmd = gfx->words.w0 >> 24;
-            if (cmdMap.find(cmd) == cmdMap.end()) continue;
+            Gfx*        gfx = (Gfx*)&res->Instructions[i];
+            int         cmd = gfx->words.w0 >> 24;
+            if (cmdMap.find(cmd) == cmdMap.end())
+                continue;
 
             std::string cmdLabel = cmdMap.at(cmd);
 
@@ -93,7 +93,8 @@ void DLViewerWindow::DrawElement() {
                 ImGui::EndCombo();
             }
             ImGui::PopItemWidth();
-            if (gfx->words.w0 >> 24 == G_SETPRIMCOLOR || gfx->words.w0 >> 24 == G_SETINTENSITY || gfx->words.w0 >> 24 == G_SETENVCOLOR) {
+            if (gfx->words.w0 >> 24 == G_SETPRIMCOLOR || gfx->words.w0 >> 24 == G_SETINTENSITY ||
+                gfx->words.w0 >> 24 == G_SETENVCOLOR) {
                 uint8_t r = _SHIFTR(gfx->words.w1, 24, 8);
                 uint8_t g = _SHIFTR(gfx->words.w1, 16, 8);
                 uint8_t b = _SHIFTR(gfx->words.w1, 8, 8);
@@ -117,13 +118,12 @@ void DLViewerWindow::DrawElement() {
                 }
                 ImGui::PopItemWidth();
             }
-            if (gfx->words.w0 >> 24 == G_RDPPIPESYNC) {
-            }
+            if (gfx->words.w0 >> 24 == G_RDPPIPESYNC) {}
             if (gfx->words.w0 >> 24 == G_SETGRAYSCALE) {
                 bool* state = (bool*)&gfx->words.w1;
                 ImGui::SameLine();
                 if (ImGui::Checkbox(("state" + id).c_str(), state)) {
-                    // 
+                    //
                 }
             }
             ImGui::EndGroup();

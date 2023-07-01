@@ -9,9 +9,9 @@ struct BgGndSoulmeiro;
 typedef void (*BgGndSoulmeiroActionFunc)(struct BgGndSoulmeiro*, PlayState*);
 
 typedef struct BgGndSoulmeiro {
-    /* 0x0000 */ Actor actor;
-    /* 0x014C */ ColliderCylinder collider;
-    /* 0x0198 */ u16 unk_198;
+    /* 0x0000 */ Actor                    actor;
+    /* 0x014C */ ColliderCylinder         collider;
+    /* 0x0198 */ u16                      unk_198;
     /* 0x019C */ BgGndSoulmeiroActionFunc actionFunc;
 } BgGndSoulmeiro; // size = 0x01A0
 

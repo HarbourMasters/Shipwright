@@ -68,15 +68,15 @@ void EnChanger_Destroy(Actor* thisx, PlayState* play) {
 void EnChanger_Init(Actor* thisx, PlayState* play2) {
     EnChanger* this = (EnChanger*)thisx;
     PlayState* play = play2;
-    s16 leftChestParams;
-    s16 rightChestParams;
-    s16 rewardChestParams;
-    s16 minigameRoomNum;
-    s16 rightChestItem;
-    s16 leftChestItem;
-    s16 temp_v1_3;
-    s16 new_var;
-    s32 rewardParams;
+    s16        leftChestParams;
+    s16        rightChestParams;
+    s16        rewardChestParams;
+    s16        minigameRoomNum;
+    s16        rightChestItem;
+    s16        leftChestItem;
+    s16        temp_v1_3;
+    s16        new_var;
+    s32        rewardParams;
 
     minigameRoomNum = play->roomCtx.curRoom.num - 1;
     if (minigameRoomNum < 0) {
@@ -102,8 +102,8 @@ void EnChanger_Init(Actor* thisx, PlayState* play2) {
     if (play->roomCtx.curRoom.num >= 6) {
         rewardChestParams = ((Flags_GetItemGetInf(ITEMGETINF_1B)) ? (0x4EA0) : (0x4EC0));
         rewardChestParams = sTreasureFlags[5] | rewardChestParams;
-        this->finalChest = (EnBox*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_BOX,
-                                                      20.0f, 20.0f, -2500.0f, 0, 0x7FFF, 0, rewardChestParams);
+        this->finalChest = (EnBox*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_BOX, 20.0f, 20.0f,
+                                                      -2500.0f, 0, 0x7FFF, 0, rewardChestParams);
         if (this->finalChest != NULL) {
             if (this->roomChestsOpened) {
                 Flags_SetTreasure(play, rewardChestParams & 0x1F);
@@ -166,17 +166,16 @@ void EnChanger_Init(Actor* thisx, PlayState* play2) {
         if (this->roomChestsOpened) {
             Flags_SetTreasure(play, this->leftChestNum & 0x1F);
         } else {
-            Actor_Spawn(
-                &play->actorCtx, play, ACTOR_ITEM_ETCETERA, sLeftChestPos[play->roomCtx.curRoom.num].x,
-                sLeftChestPos[play->roomCtx.curRoom.num].y, sLeftChestPos[play->roomCtx.curRoom.num].z, 0, 0,
-                0, ((this->leftChestNum & 0x1F) << 8) + (leftChestItem & 0xFF), true);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_ETCETERA, sLeftChestPos[play->roomCtx.curRoom.num].x,
+                        sLeftChestPos[play->roomCtx.curRoom.num].y, sLeftChestPos[play->roomCtx.curRoom.num].z, 0, 0, 0,
+                        ((this->leftChestNum & 0x1F) << 8) + (leftChestItem & 0xFF), true);
         }
     }
 
     this->rightChest = (EnBox*)Actor_SpawnAsChild(
         &play->actorCtx, &this->actor, play, ACTOR_EN_BOX, sRightChestPos[play->roomCtx.curRoom.num].x,
-        sRightChestPos[play->roomCtx.curRoom.num].y, sRightChestPos[play->roomCtx.curRoom.num].z, 0, 0x3FFF,
-        0, rightChestParams);
+        sRightChestPos[play->roomCtx.curRoom.num].y, sRightChestPos[play->roomCtx.curRoom.num].z, 0, 0x3FFF, 0,
+        rightChestParams);
 
     if (this->rightChest != NULL) {
         // "Right treasure generation (what does it contain?)"
@@ -195,9 +194,8 @@ void EnChanger_Init(Actor* thisx, PlayState* play2) {
             return;
         }
 
-        Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_ETCETERA,
-                    sRightChestPos[play->roomCtx.curRoom.num].x, sRightChestPos[play->roomCtx.curRoom.num].y,
-                    sRightChestPos[play->roomCtx.curRoom.num].z, 0, 0, 0,
+        Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_ETCETERA, sRightChestPos[play->roomCtx.curRoom.num].x,
+                    sRightChestPos[play->roomCtx.curRoom.num].y, sRightChestPos[play->roomCtx.curRoom.num].z, 0, 0, 0,
                     ((this->rightChestNum & 0x1F) << 8) + (rightChestItem & 0xFF), true);
     }
 
@@ -220,11 +218,11 @@ void EnChanger_Wait(EnChanger* this, PlayState* play) {
 
 // Spawns the EnExItem showing what was in the other chest
 void EnChanger_OpenChests(EnChanger* this, PlayState* play) {
-    f32 zPos;
-    f32 yPos;
-    f32 xPos;
-    s16 temp_s0;
-    s16 temp_s0_2;
+    f32    zPos;
+    f32    yPos;
+    f32    xPos;
+    s16    temp_s0;
+    s16    temp_s0_2;
     EnBox* left;
     EnBox* right;
 
@@ -247,8 +245,7 @@ void EnChanger_OpenChests(EnChanger* this, PlayState* play) {
                     temp_s0_2 = (s16)(this->rightChestGetItemId - GI_RUPEE_GREEN_LOSE) + EXITEM_CHEST;
                     // "Open right treasure (chest)"
                     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 右宝開く ☆☆☆☆☆ %d\n" VT_RST, temp_s0_2);
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_ITEM, xPos, yPos, zPos, 0, 0, 0,
-                                temp_s0_2, true);
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_ITEM, xPos, yPos, zPos, 0, 0, 0, temp_s0_2, true);
                 }
                 break;
             case CHEST_RIGHT:
@@ -263,8 +260,7 @@ void EnChanger_OpenChests(EnChanger* this, PlayState* play) {
                     temp_s0_2 = (s16)(this->leftChestGetItemId - 0x72) + 0xA;
                     // "Open left treasure (chest)"
                     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 左宝開く ☆☆☆☆☆ %d\n" VT_RST, temp_s0_2);
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_ITEM, xPos, yPos, zPos, 0, 0, 0,
-                                temp_s0_2, true);
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_ITEM, xPos, yPos, zPos, 0, 0, 0, temp_s0_2, true);
                 }
                 break;
         }

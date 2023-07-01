@@ -73,11 +73,10 @@ void EnHeishi1_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     EnHeishi1* this = (EnHeishi1*)thisx;
     Vec3f rupeePos;
-    s32 i;
+    s32   i;
 
     Actor_SetScale(&this->actor, 0.01f);
-    SkelAnime_Init(play, &this->skelAnime, &gEnHeishiSkel, &gEnHeishiIdleAnim, this->jointTable, this->morphTable,
-                   17);
+    SkelAnime_Init(play, &this->skelAnime, &gEnHeishiSkel, &gEnHeishiIdleAnim, this->jointTable, this->morphTable, 17);
 
     this->type = (this->actor.params >> 8) & 0xFF;
     this->path = this->actor.params & 0xFF;
@@ -120,7 +119,8 @@ void EnHeishi1_Init(Actor* thisx, PlayState* play) {
     // eventChkInf[4] & 1 = Got Zelda's Letter
     // eventChkInf[5] & 0x200 = Got item from impa
     // eventChkInf[8] & 1 = Ocarina thrown in moat
-    bool metZelda = (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) && (Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY));
+    bool metZelda = (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) &&
+                    (Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY));
 
     if (this->type != 5) {
         if ((gSaveContext.dayTime < 0xB888 || IS_DAY) &&
@@ -132,7 +132,7 @@ void EnHeishi1_Init(Actor* thisx, PlayState* play) {
         }
     } else {
         if ((gSaveContext.dayTime >= 0xB889) || !IS_DAY ||
-            (!gSaveContext.n64ddFlag && Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) || 
+            (!gSaveContext.n64ddFlag && Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ||
             (gSaveContext.n64ddFlag && metZelda)) {
             this->actionFunc = EnHeishi1_SetupWaitNight;
         } else {
@@ -159,11 +159,11 @@ void EnHeishi1_SetupWalk(EnHeishi1* this, PlayState* play) {
 }
 
 void EnHeishi1_Walk(EnHeishi1* this, PlayState* play) {
-    Path* path;
+    Path*  path;
     Vec3s* pointPos;
-    f32 pathDiffX;
-    f32 pathDiffZ;
-    s16 randOffset;
+    f32    pathDiffX;
+    f32    pathDiffZ;
+    s16    randOffset;
 
     SkelAnime_Update(&this->skelAnime);
 
@@ -398,11 +398,11 @@ void EnHeishi1_WaitNight(EnHeishi1* this, PlayState* play) {
 
 void EnHeishi1_Update(Actor* thisx, PlayState* play) {
     EnHeishi1* this = (EnHeishi1*)thisx;
-    s16 path;
-    u8 i;
-    s32 pad;
+    s16     path;
+    u8      i;
+    s32     pad;
     Player* player = GET_PLAYER(play);
-    s32 pad2;
+    s32     pad2;
     Camera* activeCam;
 
     this->activeTimer++;
@@ -488,8 +488,7 @@ void EnHeishi1_Update(Actor* thisx, PlayState* play) {
     }
 }
 
-s32 EnHeishi1_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                               void* thisx) {
+s32 EnHeishi1_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnHeishi1* this = (EnHeishi1*)thisx;
 
     // turn the guards head to match the direction he is looking

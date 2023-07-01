@@ -2,12 +2,12 @@
 #include "global.h"
 
 s32 osPfsFileState(OSPfs* pfs, s32 fileNo, OSPfsState* state) {
-    s32 ret;
-    s32 pages;
-    __OSInode inode;
-    __OSDir dir;
+    s32           ret;
+    s32           pages;
+    __OSInode     inode;
+    __OSDir       dir;
     __OSInodeUnit page;
-    u8 bank;
+    u8            bank;
 
     if (fileNo >= pfs->dir_size || fileNo < 0) {
         return PFS_ERR_INVALID;

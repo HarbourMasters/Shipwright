@@ -40,7 +40,7 @@ static InitChainEntry sInitChain[] = {
 
 void BgHakaShip_Init(Actor* thisx, PlayState* play) {
     BgHakaShip* this = (BgHakaShip*)thisx;
-    s32 pad;
+    s32              pad;
     CollisionHeader* colHeader = NULL;
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
@@ -112,7 +112,7 @@ void BgHakaShip_CutsceneStationary(BgHakaShip* this, PlayState* play) {
 }
 
 void BgHakaShip_Move(BgHakaShip* this, PlayState* play) {
-    f32 distanceFromHome;
+    f32    distanceFromHome;
     Actor* child;
 
     if (this->counter) {
@@ -201,28 +201,24 @@ void BgHakaShip_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     if (this->dyna.actor.params == 0) {
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_haka_objects_DL_00D330);
         angleTemp = this->yOffset * (M_PI / 0x8000);
         Matrix_Translate(-3670.0f, 620.0f, 1150.0f, MTXMODE_APPLY);
         Matrix_RotateZ(angleTemp, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_haka_objects_DL_005A70);
         Matrix_Translate(0.0f, 0.0f, -2300.0f, MTXMODE_APPLY);
         Matrix_RotateZ(-(2.0f * angleTemp), MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_haka_objects_DL_005A70);
     } else {
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_haka_objects_DL_00E910);
     }
     CLOSE_DISPS(play->state.gfxCtx);
     if (this->actionFunc == BgHakaShip_CutsceneStationary || this->actionFunc == BgHakaShip_Move) {
-        s32 pad;
+        s32   pad;
         Vec3f sp2C;
 
         sp2C.x = this->dyna.actor.world.pos.x + -367.0f;

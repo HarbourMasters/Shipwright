@@ -312,4 +312,4 @@ static u8 D_809071EC[] = { 3, 2, 2, 1, 3, 3, 1, 3, 3, 1, 0, 3, 1, 0, 3 };
 #include "overlays/ovl_Boss_Ganon2/ovl_Boss_Ganon2.h"
 
 // padding
-//static u32 D_809071FC[2] = { 0 };
+// static u32 D_809071FC[2] = { 0 };

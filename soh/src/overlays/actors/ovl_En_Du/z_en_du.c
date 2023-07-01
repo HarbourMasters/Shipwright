@@ -157,7 +157,8 @@ s16 func_809FDCDC(PlayState* play, Actor* actor) {
 s32 func_809FDDB4(EnDu* this, PlayState* play) {
     if (play->sceneNum == SCENE_SPOT18 && LINK_IS_CHILD) {
         return 1;
-    } else if (play->sceneNum == SCENE_HIDAN && !Flags_GetInfTable(INFTABLE_SPOKE_TO_DARUNIA_IN_FIRE_TEMPLE) && LINK_IS_ADULT) {
+    } else if (play->sceneNum == SCENE_HIDAN && !Flags_GetInfTable(INFTABLE_SPOKE_TO_DARUNIA_IN_FIRE_TEMPLE) &&
+               LINK_IS_ADULT) {
         return 1;
     }
     return 0;
@@ -165,7 +166,7 @@ s32 func_809FDDB4(EnDu* this, PlayState* play) {
 
 void func_809FDE24(EnDu* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s16 trackingMode = NPC_TRACKING_PLAYER_AUTO_TURN;
+    s16     trackingMode = NPC_TRACKING_PLAYER_AUTO_TURN;
 
     if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
         trackingMode = NPC_TRACKING_NONE;
@@ -436,10 +437,10 @@ void func_809FE798(EnDu* this, PlayState* play) {
 }
 
 void func_809FE890(EnDu* this, PlayState* play) {
-    f32 frame;
-    Vec3f startPos;
-    Vec3f endPos;
-    Vec3f velocity = { 0.0f, 0.0f, 0.0f };
+    f32               frame;
+    Vec3f             startPos;
+    Vec3f             endPos;
+    Vec3f             velocity = { 0.0f, 0.0f, 0.0f };
     CsCmdActorAction* csAction;
 
     if (play->csCtx.state == CS_STATE_IDLE || gSaveContext.n64ddFlag) {
@@ -519,7 +520,7 @@ void func_809FEB08(EnDu* this, PlayState* play) {
         return;
     }
     if ((!gSaveContext.n64ddFlag && CUR_UPG_VALUE(UPG_STRENGTH) <= 0) ||
-         (gSaveContext.n64ddFlag && !Flags_GetTreasure(play, 0x1E))) {
+        (gSaveContext.n64ddFlag && !Flags_GetTreasure(play, 0x1E))) {
         if (gSaveContext.n64ddFlag) {
             Flags_SetTreasure(play, 0x1E);
         }
@@ -597,8 +598,7 @@ void EnDu_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 }
 
-s32 EnDu_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
-                          Gfx** gfx) {
+s32 EnDu_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx, Gfx** gfx) {
     EnDu* this = (EnDu*)thisx;
     Vec3s sp1C;
 

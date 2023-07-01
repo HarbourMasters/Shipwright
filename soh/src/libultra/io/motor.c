@@ -46,9 +46,9 @@ s32 __osMotorAccess(OSPfs* pfs, u32 vibrate) {
 }
 
 void _MakeMotorData(s32 channel, OSPifRam* buf) {
-    u8* bufptr = (u8*)buf;
+    u8*               bufptr = (u8*)buf;
     __OSContRamHeader mempakwr;
-    s32 i;
+    s32               i;
 
     mempakwr.unk_00 = 0xFF;
     mempakwr.txsize = 0x23;
@@ -70,7 +70,7 @@ void _MakeMotorData(s32 channel, OSPifRam* buf) {
 
 s32 osMotorInit(OSMesgQueue* ctrlrqueue, OSPfs* pfs, s32 channel) {
     s32 ret;
-    u8 sp24[BLOCKSIZE];
+    u8  sp24[BLOCKSIZE];
 
     pfs->queue = ctrlrqueue;
     pfs->channel = channel;

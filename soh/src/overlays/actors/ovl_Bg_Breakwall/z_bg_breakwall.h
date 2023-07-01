@@ -9,11 +9,11 @@ struct BgBreakwall;
 typedef void (*BgBreakwallActionFunc)(struct BgBreakwall*, PlayState*);
 
 typedef struct BgBreakwall {
-    /* 0x0000 */ DynaPolyActor dyna;
-    /* 0x0164 */ Gfx* bombableWallDList;
-    /* 0x0168 */ s8 colType;
-    /* 0x0169 */ s8 bankIndex;
-    /* 0x016C */ ColliderQuad collider;
+    /* 0x0000 */ DynaPolyActor         dyna;
+    /* 0x0164 */ Gfx*                  bombableWallDList;
+    /* 0x0168 */ s8                    colType;
+    /* 0x0169 */ s8                    bankIndex;
+    /* 0x016C */ ColliderQuad          collider;
     /* 0x01EC */ BgBreakwallActionFunc actionFunc;
 } BgBreakwall; // size = 0x01F0
 

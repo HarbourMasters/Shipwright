@@ -1,10 +1,10 @@
 #include "global.h"
 #include <string.h>
 
-u8 sYaz0DataBuffer[0x400];
+u8        sYaz0DataBuffer[0x400];
 uintptr_t sYaz0CurDataEnd;
 uintptr_t sYaz0CurRomStart;
-u32 sYaz0CurSize;
+u32       sYaz0CurSize;
 uintptr_t sYaz0MaxPtr;
 
 void* Yaz0_FirstDMA(void) {

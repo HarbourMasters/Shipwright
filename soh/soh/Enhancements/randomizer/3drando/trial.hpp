@@ -4,12 +4,12 @@
 
 #include "text.hpp"
 
-//This is probably overkill for a small amount of information, but we can add
-//stuff later if we want
+// This is probably overkill for a small amount of information, but we can add
+// stuff later if we want
 
 namespace Trial {
 class TrialInfo {
-public:
+  public:
     TrialInfo(const Text name_);
     ~TrialInfo();
 
@@ -33,9 +33,9 @@ public:
         skipped = true;
     }
 
-private:
-      Text name;
-      bool skipped = true;
+  private:
+    Text name;
+    bool skipped = true;
 };
 
 extern TrialInfo ForestTrial;
@@ -48,4 +48,4 @@ extern TrialInfo LightTrial;
 using TrialArray = std::array<TrialInfo*, 6>;
 
 extern const TrialArray trialList;
-} //namespace Trial
+} // namespace Trial

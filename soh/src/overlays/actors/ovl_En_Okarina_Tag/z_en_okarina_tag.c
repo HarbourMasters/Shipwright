@@ -107,7 +107,7 @@ void EnOkarinaTag_Init(Actor* thisx, PlayState* play) {
 
 void func_80ABEF2C(EnOkarinaTag* this, PlayState* play) {
     Player* player;
-    u16 ocarinaSong;
+    u16     ocarinaSong;
 
     player = GET_PLAYER(play);
     this->unk_15A++;
@@ -160,12 +160,9 @@ void func_80ABF0CC(EnOkarinaTag* this, PlayState* play) {
             return;
         }
         if (this->unk_158 != 0) {
-            if ((play->msgCtx.ocarinaMode == OCARINA_MODE_05) ||
-                (play->msgCtx.ocarinaMode == OCARINA_MODE_06) ||
-                (play->msgCtx.ocarinaMode == OCARINA_MODE_07) ||
-                (play->msgCtx.ocarinaMode == OCARINA_MODE_08) ||
-                (play->msgCtx.ocarinaMode == OCARINA_MODE_09) ||
-                (play->msgCtx.ocarinaMode == OCARINA_MODE_0A) ||
+            if ((play->msgCtx.ocarinaMode == OCARINA_MODE_05) || (play->msgCtx.ocarinaMode == OCARINA_MODE_06) ||
+                (play->msgCtx.ocarinaMode == OCARINA_MODE_07) || (play->msgCtx.ocarinaMode == OCARINA_MODE_08) ||
+                (play->msgCtx.ocarinaMode == OCARINA_MODE_09) || (play->msgCtx.ocarinaMode == OCARINA_MODE_0A) ||
                 (play->msgCtx.ocarinaMode == OCARINA_MODE_0D)) {
                 if (this->switchFlag >= 0) {
                     Flags_SetSwitch(play, this->switchFlag);
@@ -234,7 +231,8 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
     if (play->msgCtx.ocarinaMode == OCARINA_MODE_04) {
         this->actionFunc = func_80ABF28C;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
-        if (!gSaveContext.n64ddFlag || (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_DOOR_OF_TIME) != RO_DOOROFTIME_CLOSED)) {
+        if (!gSaveContext.n64ddFlag ||
+            (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_DOOR_OF_TIME) != RO_DOOROFTIME_CLOSED)) {
             func_80078884(NA_SE_SY_CORRECT_CHIME);
         }
         if (this->switchFlag >= 0) {
@@ -276,7 +274,7 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
                 // Don't start the cutscene in a rando save.
                 if (!(gSaveContext.n64ddFlag)) {
                     play->csCtx.segment = LINK_IS_ADULT ? SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_003C80)
-                                                             : SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_005020);
+                                                        : SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_005020);
                     gSaveContext.cutsceneTrigger = 1;
                 }
                 Flags_SetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB);

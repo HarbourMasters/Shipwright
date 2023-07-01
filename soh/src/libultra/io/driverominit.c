@@ -6,7 +6,7 @@ OSPiHandle* osDriveRomInit(void) {
     register s32 status;
     register u32 a;
     register u32 prevInt;
-    static u32 D_8000AC70 = 1;
+    static u32   D_8000AC70 = 1;
 
     __osPiGetAccess();
 

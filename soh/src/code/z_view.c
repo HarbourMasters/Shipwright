@@ -76,9 +76,8 @@ void View_GetParams(View* view, Vec3f* eye, Vec3f* lookAt, Vec3f* up) {
     *eye = view->eye;
     *lookAt = view->lookAt;
     *up = view->up;
-    //view->flags |= 1;
+    // view->flags |= 1;
 }
-
 
 void func_800AA358(View* view, Vec3f* eye, Vec3f* lookAt, Vec3f* up) {
     if (eye->x == lookAt->x && eye->z == lookAt->z) {
@@ -109,7 +108,7 @@ void View_GetScale(View* view, f32* scale) {
 void func_800AA460(View* view, f32 fovy, f32 near, f32 far) {
     view->fovy = fovy;
     view->zNear = near;
-    //view->zNear = -30;
+    // view->zNear = -30;
     view->zFar = far;
     view->flags |= 4;
 }
@@ -123,7 +122,7 @@ void func_800AA48C(View* view, f32* fovy, f32* near, f32* far) {
 void func_800AA4A8(View* view, f32 fovy, f32 near, f32 far) {
     view->fovy = fovy;
     view->zNear = near;
-    //view->zNear = -30;
+    // view->zNear = -30;
     view->zFar = far;
     view->flags |= 8;
     view->scale = 1.0f;
@@ -145,13 +144,13 @@ void View_GetViewport(View* view, Viewport* viewport) {
 }
 
 void func_800AA550(View* view) {
-    s32 varY;
-    s32 varX;
-    s32 pad;
-    s32 ulx;
-    s32 uly;
-    s32 lrx;
-    s32 lry;
+    s32              varY;
+    s32              varX;
+    s32              pad;
+    s32              ulx;
+    s32              uly;
+    s32              lrx;
+    s32              lry;
     GraphicsContext* gfxCtx = view->gfxCtx;
 
     varY = ShrinkWindow_GetCurrentVal();
@@ -292,13 +291,13 @@ static float sqr(float a) {
 }
 
 s32 func_800AAA9C(View* view) {
-    f32 aspect;
-    s32 width;
-    s32 height;
-    Vp* vp;
-    Mtx* projection;
-    Mtx* projectionFlipped;
-    Mtx* viewing;
+    f32              aspect;
+    s32              width;
+    s32              height;
+    Vp*              vp;
+    Mtx*             projection;
+    Mtx*             projectionFlipped;
+    Mtx*             viewing;
     GraphicsContext* gfxCtx = view->gfxCtx;
 
     OPEN_DISPS(gfxCtx);
@@ -337,8 +336,8 @@ s32 func_800AAA9C(View* view) {
 
     func_800ABE74(view->eye.x, view->eye.y, view->eye.z);
     MtxF viewingF;
-    guLookAtF(viewingF.mf, view->eye.x, view->eye.y, view->eye.z, view->lookAt.x, view->lookAt.y, view->lookAt.z, view->up.x,
-             view->up.y, view->up.z);
+    guLookAtF(viewingF.mf, view->eye.x, view->eye.y, view->eye.z, view->lookAt.x, view->lookAt.y, view->lookAt.z,
+              view->up.x, view->up.y, view->up.z);
 
     // Some heuristics to identify instant camera movements and skip interpolation in that case
 
@@ -360,9 +359,12 @@ s32 func_800AAA9C(View* view) {
     odiry /= odir_dist;
     odirz /= odir_dist;
 
-    float eye_dist = sqrtf(sqr(view->eye.x - old_view.eye.x) + sqr(view->eye.y - old_view.eye.y) + sqr(view->eye.z - old_view.eye.z));
-    float look_dist = sqrtf(sqr(view->lookAt.x - old_view.lookAt.x) + sqr(view->lookAt.y - old_view.lookAt.y) + sqr(view->lookAt.z - old_view.lookAt.z));
-    float up_dist = sqrtf(sqr(view->up.x - old_view.up.x) + sqr(view->up.y - old_view.up.y) + sqr(view->up.z - old_view.up.z));
+    float eye_dist = sqrtf(sqr(view->eye.x - old_view.eye.x) + sqr(view->eye.y - old_view.eye.y) +
+                           sqr(view->eye.z - old_view.eye.z));
+    float look_dist = sqrtf(sqr(view->lookAt.x - old_view.lookAt.x) + sqr(view->lookAt.y - old_view.lookAt.y) +
+                            sqr(view->lookAt.z - old_view.lookAt.z));
+    float up_dist =
+        sqrtf(sqr(view->up.x - old_view.up.x) + sqr(view->up.y - old_view.up.y) + sqr(view->up.z - old_view.up.z));
     float d_dist = sqrtf(sqr(dirx - odirx) + sqr(diry - odiry) + sqr(dirz - odirz));
 
     bool dont_interpolate = false;
@@ -419,7 +421,7 @@ s32 func_800AAA9C(View* view) {
     }
 
     if (QREG(88) & 1) {
-        s32 i;
+        s32  i;
         MtxF mf;
 
         osSyncPrintf("fovy %f near %f far %f scale %f aspect %f normal %08x\n", view->fovy, view->zNear, view->zFar,
@@ -457,15 +459,15 @@ s32 func_800AAA9C(View* view) {
 
     view->viewing = *viewing;
 
-
     /*if (eye_dist > 1 || look_dist > 1 || abs(up_dist) > 0.1 || abs(d_dist) > 0.1)
-        printf("%d %f %f %f, %f %f %f, %f %f %f, %f %f %f %f %d\n", (int)view->fovy, view->eye.x, view->eye.y, view->eye.z, view->lookAt.x, view->lookAt.y, view->lookAt.z,
-           view->up.x, view->up.y, view->up.z, eye_dist, look_dist, up_dist, d_dist, dont_interpolate);*/
+        printf("%d %f %f %f, %f %f %f, %f %f %f, %f %f %f %f %d\n", (int)view->fovy, view->eye.x, view->eye.y,
+       view->eye.z, view->lookAt.x, view->lookAt.y, view->lookAt.z, view->up.x, view->up.y, view->up.z, eye_dist,
+       look_dist, up_dist, d_dist, dont_interpolate);*/
 
     old_view = *view;
 
     if (QREG(88) & 2) {
-        s32 i;
+        s32  i;
         MtxF mf;
 
         Matrix_MtxToMtxF(view->viewingPtr, &mf);
@@ -486,8 +488,8 @@ s32 func_800AAA9C(View* view) {
 }
 
 s32 func_800AB0A8(View* view) {
-    Vp* vp;
-    Mtx* projection;
+    Vp*              vp;
+    Mtx*             projection;
     GraphicsContext* gfxCtx = view->gfxCtx;
 
     OPEN_DISPS(gfxCtx);
@@ -523,9 +525,9 @@ s32 func_800AB0A8(View* view) {
 }
 
 s32 func_800AB2C4(View* view) {
-    Vp* vp;
-    Mtx* projection;
-    Mtx* projectionFlipped;
+    Vp*              vp;
+    Mtx*             projection;
+    Mtx*             projectionFlipped;
     GraphicsContext* gfxCtx;
 
     gfxCtx = view->gfxCtx;
@@ -573,13 +575,13 @@ s32 func_800AB2C4(View* view) {
 }
 
 s32 func_800AB560(View* view) {
-    s32 pad[2];
-    f32 aspect;
-    s32 width;
-    s32 height;
-    Vp* vp;
-    Mtx* projection;
-    Mtx* viewing;
+    s32              pad[2];
+    f32              aspect;
+    s32              width;
+    s32              height;
+    Vp*              vp;
+    Mtx*             projection;
+    Mtx*             viewing;
     GraphicsContext* gfxCtx = view->gfxCtx;
 
     OPEN_DISPS(gfxCtx);
@@ -645,13 +647,13 @@ s32 func_800AB944(View* view) {
 }
 
 s32 func_800AB9EC(View* view, s32 arg1, Gfx** gfxp) {
-    Gfx* gfx = *gfxp;
+    Gfx*             gfx = *gfxp;
     GraphicsContext* gfxCtx = view->gfxCtx;
-    s32 width;
-    s32 height;
-    Vp* vp;
-    Mtx* projection;
-    Mtx* viewing;
+    s32              width;
+    s32              height;
+    Vp*              vp;
+    Mtx*             projection;
+    Mtx*             viewing;
 
     arg1 = (view->flags & arg1) | (arg1 >> 4);
 

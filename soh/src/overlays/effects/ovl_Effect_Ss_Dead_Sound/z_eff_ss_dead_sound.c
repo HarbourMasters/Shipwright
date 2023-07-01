@@ -9,7 +9,7 @@
 #define rSfxId regs[10]
 #define rRepeatMode regs[11] // sound is replayed every update. unused in the original game
 
-u32 EffectSsDeadSound_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsDeadSound_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsDeadSound_Update(PlayState* play, u32 index, EffectSs* this);
 
 EffectSsInit Effect_Ss_Dead_Sound_InitVars = {

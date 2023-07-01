@@ -22,9 +22,9 @@ class SetStartPositionList : public SceneCommand<ActorEntry> {
     using SceneCommand::SceneCommand;
 
     ActorEntry* GetPointer();
-    size_t GetPointerSize();
+    size_t      GetPointerSize();
 
-    uint32_t numStartPositions;
+    uint32_t                numStartPositions;
     std::vector<ActorEntry> startPositions;
 };
 }; // namespace LUS

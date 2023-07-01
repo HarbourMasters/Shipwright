@@ -6,17 +6,17 @@
 
 void EffectBlure_AddVertex(EffectBlure* this, Vec3f* p1, Vec3f* p2) {
     EffectBlureElement* elem;
-    s32 numElements;
-    Vec3f sp16C;
-    Vec3f sp160;
-    Vec3f sp154;
-    f32 scale;
-    MtxF sp110;
-    MtxF spD0;
-    MtxF sp90;
-    MtxF sp50;
-    Vec3f sp44;
-    Vec3f sp38;
+    s32                 numElements;
+    Vec3f               sp16C;
+    Vec3f               sp160;
+    Vec3f               sp154;
+    f32                 scale;
+    MtxF                sp110;
+    MtxF                spD0;
+    MtxF                sp90;
+    MtxF                sp50;
+    Vec3f               sp44;
+    Vec3f               sp38;
 
     if (this != NULL) {
         numElements = this->numElements;
@@ -72,14 +72,14 @@ void EffectBlure_AddVertex(EffectBlure* this, Vec3f* p1, Vec3f* p2) {
     }
 }
 
-//dumb doo doo command to change the type of an object's blur on the fly. Link's Swords with unique trail colors.
+// dumb doo doo command to change the type of an object's blur on the fly. Link's Swords with unique trail colors.
 void EffectBlure_ChangeType(EffectBlure* this, int type) {
     this->trailType = type;
 }
 
 void EffectBlure_AddSpace(EffectBlure* this) {
     EffectBlureElement* elem;
-    s32 numElements;
+    s32                 numElements;
 
     if (this != NULL) {
         numElements = this->numElements;
@@ -99,7 +99,7 @@ void EffectBlure_AddSpace(EffectBlure* this) {
 
 void EffectBlure_InitElements(EffectBlure* this) {
     EffectBlureElement* elem;
-    s32 i;
+    s32                 i;
 
     this->numElements = 0;
 
@@ -201,11 +201,11 @@ void EffectBlure_Destroy(void* thisx) {
 
 s32 EffectBlure_Update(void* thisx) {
     EffectBlure* this = (EffectBlure*)thisx;
-    s32 i;
+    s32         i;
     Color_RGBA8 color;
-    u8 changed = 0;
+    u8          changed = 0;
 
-    switch (this->trailType) { //there HAS to be a better way to do this.
+    switch (this->trailType) { // there HAS to be a better way to do this.
         case 2:
             if (CVarGetInteger("gCosmetics.Trails_Boomerang.Changed", 0)) {
                 color = CVarGetColor("gCosmetics.Trails_Boomerang.Value", (Color_RGBA8){ 255, 255, 100, 255 });
@@ -367,9 +367,9 @@ void EffectBlure_UpdateFlags(EffectBlureElement* elem) {
     } else {
         EffectBlureElement* prev = elem - 1;
         EffectBlureElement* next = elem + 1;
-        f32 sp34;
-        f32 sp30;
-        f32 sp2C;
+        f32                 sp34;
+        f32                 sp30;
+        f32                 sp2C;
 
         Math_Vec3s_DiffToVec3f(&sp64, &elem->p1, &prev->p1);
         Math_Vec3s_DiffToVec3f(&sp58, &elem->p2, &prev->p2);
@@ -392,8 +392,8 @@ void EffectBlure_UpdateFlags(EffectBlureElement* elem) {
 
 void EffectBlure_GetComputedValues(EffectBlure* this, s32 index, f32 ratio, Vec3s* vec1, Vec3s* vec2,
                                    Color_RGBA8* color1, Color_RGBA8* color2) {
-    Vec3s sp30;
-    f32 mode4Param;
+    Vec3s               sp30;
+    f32                 mode4Param;
     EffectBlureElement* elem = &this->elements[index];
 
     switch (this->calcMode) {
@@ -481,15 +481,15 @@ void EffectBlure_SetupSmooth(EffectBlure* this, GraphicsContext* gfxCtx) {
 void EffectBlure_DrawElemNoInterpolation(EffectBlure* this, EffectBlureElement* elem, s32 index,
                                          GraphicsContext* gfxCtx) {
     static Vtx_t baseVtx = VTX_T(0, 0, 0, 0, 0, 255, 255, 255, 255);
-    Vtx* vtx;
-    Vec3s sp8C;
-    Vec3s sp84;
-    f32 ratio;
-    Color_RGBA8 sp7C;
-    Color_RGBA8 sp78;
-    Vec3f sp6C;
-    Vec3f sp60;
-    Vec3f sp54;
+    Vtx*         vtx;
+    Vec3s        sp8C;
+    Vec3s        sp84;
+    f32          ratio;
+    Color_RGBA8  sp7C;
+    Color_RGBA8  sp78;
+    Vec3f        sp6C;
+    Vec3f        sp60;
+    Vec3f        sp54;
 
     OPEN_DISPS(gfxCtx);
 
@@ -573,30 +573,30 @@ void EffectBlure_DrawElemNoInterpolation(EffectBlure* this, EffectBlureElement* 
 void EffectBlure_DrawElemHermiteInterpolation(EffectBlure* this, EffectBlureElement* elem, s32 index,
                                               GraphicsContext* gfxCtx) {
     static Vtx_t baseVtx = VTX_T(0, 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-    Vtx* vtx;
-    Vec3s sp1EC;
-    Vec3s sp1E4;
-    f32 ratio;
-    Color_RGBA8 sp1DC;
-    Color_RGBA8 sp1D8;
-    Vec3f sp1CC;
-    Vec3f sp1C0;
-    Vec3f sp1B4;
-    Vec3f sp1A8;
-    Color_RGBA8 sp1A4;
-    Color_RGBA8 sp1A0;
-    Color_RGBA8 sp19C;
-    Color_RGBA8 sp198;
-    Vec3f sp18C;
-    Vec3f sp180;
-    Vec3f sp174;
-    Vec3f sp168;
-    s32 i;
-    Vec3f sp158;
-    Vec3f sp14C;
-    Color_RGBA8 sp148;
-    Color_RGBA8 sp144;
-    Vec3f sp138;
+    Vtx*         vtx;
+    Vec3s        sp1EC;
+    Vec3s        sp1E4;
+    f32          ratio;
+    Color_RGBA8  sp1DC;
+    Color_RGBA8  sp1D8;
+    Vec3f        sp1CC;
+    Vec3f        sp1C0;
+    Vec3f        sp1B4;
+    Vec3f        sp1A8;
+    Color_RGBA8  sp1A4;
+    Color_RGBA8  sp1A0;
+    Color_RGBA8  sp19C;
+    Color_RGBA8  sp198;
+    Vec3f        sp18C;
+    Vec3f        sp180;
+    Vec3f        sp174;
+    Vec3f        sp168;
+    s32          i;
+    Vec3f        sp158;
+    Vec3f        sp14C;
+    Color_RGBA8  sp148;
+    Color_RGBA8  sp144;
+    Vec3f        sp138;
 
     OPEN_DISPS(gfxCtx);
 
@@ -684,18 +684,18 @@ void EffectBlure_DrawElemHermiteInterpolation(EffectBlure* this, EffectBlureElem
         vtx[1].v.cn[3] = sp144.a;
 
         for (i = 1; i < 8; i++) {
-            s32 j1 = 2 * i;
-            s32 j2 = 2 * i + 1;
+            s32   j1 = 2 * i;
+            s32   j2 = 2 * i + 1;
             Vec3f spE0;
-            f32 temp_f28 = i / 7.0f;                               // t
-            f32 temp_f0 = temp_f28 * temp_f28;                     // t^2
-            f32 temp_f2 = temp_f0 * temp_f28;                      // t^3
-            f32 temp_f20 = temp_f2 - temp_f0;                      // t^3 - t^2
-            f32 temp_f22 = temp_f2 - 2.0f * temp_f0 + temp_f28;    // t^3 - 2t^2 + t
-            f32 temp_f24 = 2.0f * temp_f2 - temp_f0 * 3.0f + 1.0f; // 2t^3 - 3t^2 + 1
-            f32 temp_f26 = temp_f0 * 3.0f - 2.0f * temp_f2;        // 3t^2 - 2t^3
-            s32 pad1;
-            s32 pad2;
+            f32   temp_f28 = i / 7.0f;                               // t
+            f32   temp_f0 = temp_f28 * temp_f28;                     // t^2
+            f32   temp_f2 = temp_f0 * temp_f28;                      // t^3
+            f32   temp_f20 = temp_f2 - temp_f0;                      // t^3 - t^2
+            f32   temp_f22 = temp_f2 - 2.0f * temp_f0 + temp_f28;    // t^3 - 2t^2 + t
+            f32   temp_f24 = 2.0f * temp_f2 - temp_f0 * 3.0f + 1.0f; // 2t^3 - 3t^2 + 1
+            f32   temp_f26 = temp_f0 * 3.0f - 2.0f * temp_f2;        // 3t^2 - 2t^3
+            s32   pad1;
+            s32   pad2;
 
             // p = (2t^3 - 3t^2 + 1)p0 + (3t^2 - 2t^3)p1 + (t^3 - 2t^2 + t)m0 + (t^3 - t^2)m1
             spE0.x = (temp_f24 * sp1CC.x) + (temp_f26 * sp18C.x) + (temp_f22 * sp1B4.x) + (temp_f20 * sp174.x);
@@ -746,12 +746,12 @@ void EffectBlure_DrawElemHermiteInterpolation(EffectBlure* this, EffectBlureElem
 void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
     EffectBlure* this = this2;
     EffectBlureElement* elem;
-    s32 i;
-    MtxF spDC;
-    MtxF sp9C;
-    MtxF sp5C;
-    Mtx* mtx;
-    static s32 epoch = 0;
+    s32                 i;
+    MtxF                spDC;
+    MtxF                sp9C;
+    MtxF                sp5C;
+    Mtx*                mtx;
+    static s32          epoch = 0;
     epoch++;
 
     OPEN_DISPS(gfxCtx);
@@ -795,7 +795,6 @@ void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
         } else {
             EffectBlure_DrawElemHermiteInterpolation(this, elem, i, gfxCtx);
         }
-        
     }
 
     FrameInterpolation_RecordCloseChild();
@@ -856,14 +855,14 @@ void EffectBlure_DrawSimpleVertices(GraphicsContext* gfxCtx, EffectBlure* this, 
         Vec3f sp1B0;
         Vec3f sp1A4;
         Vec3f sp198;
-        f32 alphaRatio;
-        MtxF sp154;
-        MtxF sp114;
-        MtxF spD4;
-        MtxF sp94;
-        f32 scale;
-        s32 i;
-        s32 j;
+        f32   alphaRatio;
+        MtxF  sp154;
+        MtxF  sp114;
+        MtxF  spD4;
+        MtxF  sp94;
+        f32   scale;
+        s32   i;
+        s32   j;
 
         j = 0;
 
@@ -936,17 +935,17 @@ Vtx_t D_801157CC[] = {
 
 void EffectBlure_DrawSimple(EffectBlure* this2, GraphicsContext* gfxCtx) {
     EffectBlure* this = this2;
-    Vtx* vtx;
-    Vtx* vtxIter;
+    Vtx*                vtx;
+    Vtx*                vtxIter;
     EffectBlureElement* elem;
-    s32 vtxCount;
-    s32 i;
-    s32 j;
-    Vec3s sp74;
-    Vec3s sp6C;
-    f32 ratio;
-    Color_RGBA8 sp64;
-    Color_RGBA8 sp60;
+    s32                 vtxCount;
+    s32                 i;
+    s32                 j;
+    Vec3s               sp74;
+    Vec3s               sp6C;
+    f32                 ratio;
+    Color_RGBA8         sp64;
+    Color_RGBA8         sp60;
 
     if (this->numElements >= 2) {
         vtxCount = this->numElements * 4;
@@ -1030,12 +1029,12 @@ void EffectBlure_DrawSimple(EffectBlure* this2, GraphicsContext* gfxCtx) {
 
 void EffectBlure_Draw(void* thisx, GraphicsContext* gfxCtx) {
     EffectBlure* this = (EffectBlure*)thisx;
-    Vtx* vtx;
+    Vtx*                vtx;
     EffectBlureElement* elem;
-    s32 i;
-    s32 j;
-    s32 phi_t2;
-    static s32 epoch = 0;
+    s32                 i;
+    s32                 j;
+    s32                 phi_t2;
+    static s32          epoch = 0;
     epoch++;
 
     FrameInterpolation_RecordOpenChild(this, 0);
@@ -1134,7 +1133,6 @@ void EffectBlure_Draw(void* thisx, GraphicsContext* gfxCtx) {
                         } else {
                             gSP1Quadrangle(POLY_XLU_DISP++, j - 2, j - 1, j + 1, j, 0);
 
-                
                             if (this->unkFlag == 1) {
                                 phi_t2 = 0;
                             }

@@ -9,9 +9,9 @@
 
 namespace LUS {
 typedef struct {
-  uint8_t hour;
-  uint8_t minute;
-  uint8_t timeIncrement;
+    uint8_t hour;
+    uint8_t minute;
+    uint8_t timeIncrement;
 } TimeSettings;
 
 class SetTimeSettings : public SceneCommand<TimeSettings> {
@@ -19,7 +19,7 @@ class SetTimeSettings : public SceneCommand<TimeSettings> {
     using SceneCommand::SceneCommand;
 
     TimeSettings* GetPointer();
-    size_t GetPointerSize();
+    size_t        GetPointerSize();
 
     TimeSettings settings;
 };

@@ -15,7 +15,7 @@ class SetCollisionHeader : public SceneCommand<CollisionHeaderData> {
     using SceneCommand::SceneCommand;
 
     CollisionHeaderData* GetPointer();
-    size_t GetPointerSize();
+    size_t               GetPointerSize();
 
     std::string fileName;
 

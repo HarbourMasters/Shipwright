@@ -113,9 +113,9 @@ void EnIshi_InitCollider(Actor* thisx, PlayState* play) {
 
 s32 EnIshi_SnapToFloor(EnIshi* this, PlayState* play, f32 arg2) {
     CollisionPoly* poly;
-    Vec3f pos;
-    s32 bgId;
-    f32 floorY;
+    Vec3f          pos;
+    s32            bgId;
+    f32            floorY;
 
     pos.x = this->actor.world.pos.x;
     pos.y = this->actor.world.pos.y + 30.0f;
@@ -136,11 +136,11 @@ s32 EnIshi_SnapToFloor(EnIshi* this, PlayState* play, f32 arg2) {
 
 void EnIshi_SpawnFragmentsSmall(EnIshi* this, PlayState* play) {
     static s16 scales[] = { 16, 13, 11, 9, 7, 5 };
-    s32 pad;
-    Vec3f velocity;
-    Vec3f pos;
-    s16 phi_v0;
-    s32 i;
+    s32        pad;
+    Vec3f      velocity;
+    Vec3f      pos;
+    s16        phi_v0;
+    s32        i;
 
     for (i = 0; i < ARRAY_COUNT(scales); i++) {
         pos.x = this->actor.world.pos.x + (Rand_ZeroOne() - 0.5f) * 8.0f;
@@ -171,14 +171,14 @@ void EnIshi_SpawnFragmentsSmall(EnIshi* this, PlayState* play) {
 
 void EnIshi_SpawnFragmentsLarge(EnIshi* this, PlayState* play) {
     static s16 scales[] = { 145, 135, 120, 100, 70, 50, 45, 40, 35 };
-    Actor* thisx = &this->actor;
-    Vec3f velocity;
-    Vec3f pos;
-    s16 angle = 0x1000;
-    s32 i;
-    f32 rand;
-    s16 phi_v0;
-    s16 phi_v1;
+    Actor*     thisx = &this->actor;
+    Vec3f      velocity;
+    Vec3f      pos;
+    s16        angle = 0x1000;
+    s32        i;
+    f32        rand;
+    s16        phi_v0;
+    s16        phi_v1;
 
     for (i = 0; i < ARRAY_COUNT(scales); i++) {
         angle += 0x4E20;
@@ -210,8 +210,8 @@ void EnIshi_SpawnFragmentsLarge(EnIshi* this, PlayState* play) {
             phi_v0 = 69;
             phi_v1 = -320;
         }
-        EffectSsKakera_Spawn(play, &pos, &velocity, &this->actor.world.pos, phi_v1, phi_v0, 30, 5, 0, scales[i], 5,
-                             2, 70, KAKERA_COLOR_WHITE, OBJECT_GAMEPLAY_FIELD_KEEP, gSilverRockFragmentsDL);
+        EffectSsKakera_Spawn(play, &pos, &velocity, &this->actor.world.pos, phi_v1, phi_v0, 30, 5, 0, scales[i], 5, 2,
+                             70, KAKERA_COLOR_WHITE, OBJECT_GAMEPLAY_FIELD_KEEP, gSilverRockFragmentsDL);
     }
 }
 
@@ -280,8 +280,9 @@ void EnIshi_SpawnBugs(EnIshi* this, PlayState* play) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
-        Actor* bug = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_INSECT, this->actor.world.pos.x,
-                                 this->actor.world.pos.y, this->actor.world.pos.z, 0, Rand_ZeroOne() * 0xFFFF, 0, 1, true);
+        Actor* bug =
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_INSECT, this->actor.world.pos.x, this->actor.world.pos.y,
+                        this->actor.world.pos.z, 0, Rand_ZeroOne() * 0xFFFF, 0, 1, true);
 
         if (bug == NULL) {
             break;
@@ -353,8 +354,8 @@ void EnIshi_SetupWait(EnIshi* this) {
 
 void EnIshi_Wait(EnIshi* this, PlayState* play) {
     static u16 liftSounds[] = { NA_SE_PL_PULL_UP_ROCK, NA_SE_PL_PULL_UP_BIGROCK };
-    s32 pad;
-    s16 type = this->actor.params & 1;
+    s32        pad;
+    s16        type = this->actor.params & 1;
 
     if (Actor_HasParent(&this->actor, play)) {
         EnIshi_SetupLiftedUp(this);
@@ -423,10 +424,10 @@ void EnIshi_SetupFly(EnIshi* this) {
 }
 
 void EnIshi_Fly(EnIshi* this, PlayState* play) {
-    s32 pad;
-    s16 type = this->actor.params & 1;
-    s32 pad2;
-    s32 quakeIdx;
+    s32   pad;
+    s16   type = this->actor.params & 1;
+    s32   pad2;
+    s32   quakeIdx;
     Vec3f contactPos;
 
     if (this->actor.bgCheckFlags & 9) {
@@ -492,8 +493,7 @@ void EnIshi_DrawLarge(EnIshi* this, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
     gSPDisplayList(POLY_OPA_DISP++, gSilverRockDL);
 

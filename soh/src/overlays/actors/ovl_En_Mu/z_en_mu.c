@@ -15,7 +15,7 @@ void EnMu_Update(Actor* thisx, PlayState* play);
 void EnMu_Draw(Actor* thisx, PlayState* play);
 
 void EnMu_Pose(EnMu* this, PlayState* play);
-s16 EnMu_UpdateTalkState(PlayState* play, Actor* thisx);
+s16  EnMu_UpdateTalkState(PlayState* play, Actor* thisx);
 
 static ColliderCylinderInit D_80AB0BD0 = {
     {
@@ -57,9 +57,9 @@ void EnMu_SetupAction(EnMu* this, EnMuActionFunc actionFunc) {
 }
 
 void EnMu_Interact(EnMu* this, PlayState* play) {
-    u8 textIdOffset[] = { 0x42, 0x43, 0x3F, 0x41, 0x3E };
-    u8 bitmask[] = { 0x01, 0x02, 0x04, 0x08, 0x10 };
-    u8 textFlags;
+    u8  textIdOffset[] = { 0x42, 0x43, 0x3F, 0x41, 0x3E };
+    u8  bitmask[] = { 0x01, 0x02, 0x04, 0x08, 0x10 };
+    u8  textFlags;
     s32 randomIndex;
     s32 i;
 
@@ -154,8 +154,8 @@ void EnMu_Pose(EnMu* this, PlayState* play) {
 
 void EnMu_Update(Actor* thisx, PlayState* play) {
     EnMu* this = (EnMu*)thisx;
-    s32 pad;
-    f32 talkDist;
+    s32   pad;
+    f32   talkDist;
     Vec3s pos;
 
     pos.x = this->actor.world.pos.x;
@@ -205,7 +205,7 @@ void EnMu_Draw(Actor* thisx, PlayState* play) {
         { { 100, 130, 235, 0 }, { 160, 250, 60, 0 }, { 90, 60, 20, 0 }, { 30, 240, 200, 0 }, { 140, 70, 20, 0 } },
         { { 140, 70, 20, 0 }, { 30, 240, 200, 0 }, { 90, 60, 20, 0 }, { 160, 250, 60, 0 }, { 100, 130, 235, 0 } }
     };
-    u8 segmentId[] = { 0x08, 0x09, 0x0A, 0x0B, 0x0C };
+    u8  segmentId[] = { 0x08, 0x09, 0x0A, 0x0B, 0x0C };
     s32 i;
 
     OPEN_DISPS(play->state.gfxCtx);

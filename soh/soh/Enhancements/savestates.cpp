@@ -26,14 +26,18 @@
 extern "C" PlayState* gPlayState;
 
 template <> struct fmt::formatter<RequestType> {
-    constexpr auto parse(format_parse_context& ctx) { return ctx.begin(); }
+    constexpr auto parse(format_parse_context& ctx) {
+        return ctx.begin();
+    }
 
-    template <typename FormatContext>
-    auto format(const RequestType& type, FormatContext& ctx) {
+    template <typename FormatContext> auto format(const RequestType& type, FormatContext& ctx) {
         switch (type) {
-            case RequestType::SAVE: return fmt::format_to(ctx.out(), "Save");
-            case RequestType::LOAD: return fmt::format_to(ctx.out(), "Load");
-            default: return fmt::format_to(ctx.out(), "Unknown");
+            case RequestType::SAVE:
+                return fmt::format_to(ctx.out(), "Save");
+            case RequestType::LOAD:
+                return fmt::format_to(ctx.out(), "Load");
+            default:
+                return fmt::format_to(ctx.out(), "Unknown");
         }
     }
 };
@@ -43,8 +47,8 @@ template <> struct fmt::formatter<RequestType> {
 #define LIGHTS_BUFFER_SIZE 32
 
 typedef struct {
-    /* 0x000 */ s32 numOccupied;
-    /* 0x004 */ s32 searchIndex;
+    /* 0x000 */ s32       numOccupied;
+    /* 0x004 */ s32       searchIndex;
     /* 0x008 */ LightNode buf[LIGHTS_BUFFER_SIZE];
 } LightsBuffer; // size = 0x188
 
@@ -54,43 +58,43 @@ typedef struct SaveStateInfo {
     unsigned char sysHeapCopy[SYSTEM_HEAP_SIZE];
     unsigned char audioHeapCopy[AUDIO_HEAP_SIZE];
 
-    SaveContext saveContextCopy;
-    GameInfo gameInfoCopy;
+    SaveContext  saveContextCopy;
+    GameInfo     gameInfoCopy;
     LightsBuffer lightBufferCopy;
     AudioContext audioContextCopy;
-    MtxF mtxStackCopy[20]; // always 20 matricies
-    MtxF currentMtxCopy;
-    uint32_t rngSeed;
-    int16_t blueWarpTimerCopy; /* From door_warp_1 */
+    MtxF         mtxStackCopy[20]; // always 20 matricies
+    MtxF         currentMtxCopy;
+    uint32_t     rngSeed;
+    int16_t      blueWarpTimerCopy; /* From door_warp_1 */
 
-    SeqScriptState seqScriptStateCopy[4];// Unrelocated
+    SeqScriptState seqScriptStateCopy[4]; // Unrelocated
     unk_D_8016E750 unk_D_8016E750Copy[4];
 
     ActiveSound gActiveSoundsCopy[7][MAX_CHANNELS_PER_BANK];
-    uint8_t gSoundBankMutedCopy[7];
+    uint8_t     gSoundBankMutedCopy[7];
 
-    u8 D_801333F0_copy;
-    u8 gAudioSfxSwapOff_copy;
+    u8       D_801333F0_copy;
+    u8       gAudioSfxSwapOff_copy;
     uint16_t gAudioSfxSwapSource_copy[10];
     uint16_t gAudioSfxSwapTarget_copy[10];
-    uint8_t gAudioSfxSwapMode_copy[10];
+    uint8_t  gAudioSfxSwapMode_copy[10];
     void (*D_801755D0_copy)(void);
     MapMarkData** sLoadedMarkDataTableCopy;
 
-    //Static Data
+    // Static Data
 
-    //Camera data
-    int32_t sInitRegs_copy;
-    int32_t gDbgCamEnabled_copy;
-    int32_t sDbgModeIdx_copy;
-    int16_t sNextUID_copy;             
-    int32_t sCameraInterfaceFlags_copy;
-    int32_t sCameraInterfaceAlpha_copy;
-    int32_t sCameraShrinkWindowVal_copy;
-    int32_t D_8011D3AC_copy;
-    int32_t sDemo5PrevAction12Frame_copy;
-    int32_t sDemo5PrevSfxFrame_copy;
-    int32_t D_8011D3F0_copy;
+    // Camera data
+    int32_t        sInitRegs_copy;
+    int32_t        gDbgCamEnabled_copy;
+    int32_t        sDbgModeIdx_copy;
+    int16_t        sNextUID_copy;
+    int32_t        sCameraInterfaceFlags_copy;
+    int32_t        sCameraInterfaceAlpha_copy;
+    int32_t        sCameraShrinkWindowVal_copy;
+    int32_t        D_8011D3AC_copy;
+    int32_t        sDemo5PrevAction12Frame_copy;
+    int32_t        sDemo5PrevSfxFrame_copy;
+    int32_t        D_8011D3F0_copy;
     OnePointCsFull D_8011D6AC_copy[3];
     OnePointCsFull D_8011D724_copy[3];
     OnePointCsFull D_8011D79C_copy[3];
@@ -99,64 +103,64 @@ typedef struct SaveStateInfo {
     OnePointCsFull D_8011D8DC_copy[3];
     OnePointCsFull D_8011D954_copy[4];
     OnePointCsFull D_8011D9F4_copy[3];
-    int16_t depthPhase_copy;
-    int16_t screenPlanePhase_copy;
-    int32_t sOOBTimer_copy;
-    f32 D_8015CE50_copy;
-    f32 D_8015CE54_copy;
-    CamColChk D_8015CE58_copy;
+    int16_t        depthPhase_copy;
+    int16_t        screenPlanePhase_copy;
+    int32_t        sOOBTimer_copy;
+    f32            D_8015CE50_copy;
+    f32            D_8015CE54_copy;
+    CamColChk      D_8015CE58_copy;
 
-    //Gameover
+    // Gameover
     uint16_t gGameOverTimer_copy;
 
-    //One point demo
-    uint32_t sPrevFrameCs1100_copy;
+    // One point demo
+    uint32_t            sPrevFrameCs1100_copy;
     CutsceneCameraPoint D_8012013C_copy[14];
     CutsceneCameraPoint D_8012021C_copy[14];
     CutsceneCameraPoint D_801204D4_copy[14];
     CutsceneCameraPoint D_801205B4_copy[14];
-    OnePointCsFull D_801208EC_copy[3];
-    OnePointCsFull D_80120964_copy[2];
-    OnePointCsFull D_801209B4_copy[4];
-    OnePointCsFull D_80120ACC_copy[5];
-    OnePointCsFull D_80120B94_copy[11];
-    OnePointCsFull D_80120D4C_copy[7];
-    OnePointCsFull D_80120FA4_copy[6];
-    OnePointCsFull D_80121184_copy[2];
-    OnePointCsFull D_801211D4_copy[2];
-    OnePointCsFull D_8012133C_copy[3];
-    OnePointCsFull D_801213B4_copy[5];
-    OnePointCsFull D_8012151C_copy[2];
-    OnePointCsFull D_8012156C_copy[2];
-    OnePointCsFull D_801215BC_copy[1];
-    OnePointCsFull D_80121C24_copy[7];
-    OnePointCsFull D_80121D3C_copy[3];
-    OnePointCsFull D_80121F1C_copy[4];
-    OnePointCsFull D_80121FBC_copy[4];
-    OnePointCsFull D_801220D4_copy[5];
-    OnePointCsFull D_80122714_copy[4];
-    OnePointCsFull D_80122CB4_copy[2];
-    OnePointCsFull D_80122D04_copy[2];
-    OnePointCsFull D_80122E44_copy[2][7];
-    OnePointCsFull D_8012313C_copy[3];
-    OnePointCsFull D_801231B4_copy[4];
-    OnePointCsFull D_80123254_copy[2];
-    OnePointCsFull D_801232A4_copy[1];
-    OnePointCsFull D_80123894_copy[3];
-    OnePointCsFull D_8012390C_copy[2];
-    OnePointCsFull D_8012395C_copy[3];
-    OnePointCsFull D_801239D4_copy[3];
+    OnePointCsFull      D_801208EC_copy[3];
+    OnePointCsFull      D_80120964_copy[2];
+    OnePointCsFull      D_801209B4_copy[4];
+    OnePointCsFull      D_80120ACC_copy[5];
+    OnePointCsFull      D_80120B94_copy[11];
+    OnePointCsFull      D_80120D4C_copy[7];
+    OnePointCsFull      D_80120FA4_copy[6];
+    OnePointCsFull      D_80121184_copy[2];
+    OnePointCsFull      D_801211D4_copy[2];
+    OnePointCsFull      D_8012133C_copy[3];
+    OnePointCsFull      D_801213B4_copy[5];
+    OnePointCsFull      D_8012151C_copy[2];
+    OnePointCsFull      D_8012156C_copy[2];
+    OnePointCsFull      D_801215BC_copy[1];
+    OnePointCsFull      D_80121C24_copy[7];
+    OnePointCsFull      D_80121D3C_copy[3];
+    OnePointCsFull      D_80121F1C_copy[4];
+    OnePointCsFull      D_80121FBC_copy[4];
+    OnePointCsFull      D_801220D4_copy[5];
+    OnePointCsFull      D_80122714_copy[4];
+    OnePointCsFull      D_80122CB4_copy[2];
+    OnePointCsFull      D_80122D04_copy[2];
+    OnePointCsFull      D_80122E44_copy[2][7];
+    OnePointCsFull      D_8012313C_copy[3];
+    OnePointCsFull      D_801231B4_copy[4];
+    OnePointCsFull      D_80123254_copy[2];
+    OnePointCsFull      D_801232A4_copy[1];
+    OnePointCsFull      D_80123894_copy[3];
+    OnePointCsFull      D_8012390C_copy[2];
+    OnePointCsFull      D_8012395C_copy[3];
+    OnePointCsFull      D_801239D4_copy[3];
 
     uint16_t gTimeIncrement_copy;
 
-    //Overlay static data
-    //  z_bg_ddan_kd
+    // Overlay static data
+    //   z_bg_ddan_kd
     Vec3f sBgDdanKdVelocity_copy;
     Vec3f sBgDdanKdAccel_copy;
 
     // z_bg_dodoago
     s16 sBgDodoagoFirstExplosiveFlag_copy;
-    u8 sBgDodoagoDisableBombCatcher_copy;
+    u8  sBgDodoagoDisableBombCatcher_copy;
     s32 sBgDodoagoTimer_copy;
 
     // z_bg_haka_trap
@@ -175,7 +179,7 @@ typedef struct SaveStateInfo {
     // z_bg_po_event
     uint8_t sBgPoEventBlocksAtRest_copy;
     uint8_t sBgPoEventPuzzleState_copy;
-    float sBgPoEventblockPushDist_copy;
+    float   sBgPoEventblockPushDist_copy;
 
     // z_bg_relay_objects
     uint32_t D_808A9508_copy;
@@ -184,37 +188,37 @@ typedef struct SaveStateInfo {
     int16_t D_808B85D0_copy;
 
     // z_boss_ganon
-    uint32_t sBossGanonSeed1_copy;
-    uint32_t sBossGanonSeed2_copy;
-    uint32_t sBossGanonSeed3_copy;
-    void* sBossGanonGanondorf_copy;
-    void* sBossGanonZelda_copy;
-    void* sBossGanonCape_copy;
+    uint32_t        sBossGanonSeed1_copy;
+    uint32_t        sBossGanonSeed2_copy;
+    uint32_t        sBossGanonSeed3_copy;
+    void*           sBossGanonGanondorf_copy;
+    void*           sBossGanonZelda_copy;
+    void*           sBossGanonCape_copy;
     GanondorfEffect sBossGanonEffectBuf_copy[200];
 
     // z_boss_ganon
-    uint32_t sBossGanonSeed1;
-    uint32_t sBossGanonSeed2;
-    uint32_t sBossGanonSeed3;
-    void* sBossGanonGanondorf;
-    void* sBossGanonZelda;
-    void* sBossGanonCape;
+    uint32_t        sBossGanonSeed1;
+    uint32_t        sBossGanonSeed2;
+    uint32_t        sBossGanonSeed3;
+    void*           sBossGanonGanondorf;
+    void*           sBossGanonZelda;
+    void*           sBossGanonCape;
     GanondorfEffect sBossGanonEffectBuf[200];
 
     // z_boss_ganon2
-    Vec3f D_8090EB20_copy;
-    int8_t D_80910638_copy;
-    void* sBossGanon2Zelda_copy;
-    void* D_8090EB30_copy;
-    int32_t sBossGanon2Seed1_copy;
-    int32_t sBossGanon2Seed2_copy;
-    int32_t sBossGanon2Seed3_copy;
-    Vec3f D_809105D8_copy[4];
-    Vec3f D_80910608_copy[4];
+    Vec3f            D_8090EB20_copy;
+    int8_t           D_80910638_copy;
+    void*            sBossGanon2Zelda_copy;
+    void*            D_8090EB30_copy;
+    int32_t          sBossGanon2Seed1_copy;
+    int32_t          sBossGanon2Seed2_copy;
+    int32_t          sBossGanon2Seed3_copy;
+    Vec3f            D_809105D8_copy[4];
+    Vec3f            D_80910608_copy[4];
     BossGanon2Effect sBossGanon2Particles_copy[100];
 
     // z_boss_tw
-    uint8_t sTwInitalized_copy;
+    uint8_t      sTwInitalized_copy;
     BossTwEffect sTwEffects_copy[150];
 
     // z_demo_6k
@@ -230,7 +234,7 @@ typedef struct SaveStateInfo {
     int32_t sSlugGroup_copy;
 
     // z_en_clear_tag
-    uint8_t sClearTagIsEffectInitialized_copy;
+    uint8_t          sClearTagIsEffectInitialized_copy;
     EnClearTagEffect sClearTagEffects_copy[CLEAR_TAG_EFFECT_MAX_COUNT];
 
     // z_en_fr
@@ -240,7 +244,7 @@ typedef struct SaveStateInfo {
     uint8_t sSpawnNum_copy;
 
     // z_en_insect
-    float D_80A7DEB0_copy;
+    float   D_80A7DEB0_copy;
     int16_t D_80A7DEB4_copy;
     int16_t D_80A7DEB8_copy;
 
@@ -255,8 +259,8 @@ typedef struct SaveStateInfo {
 
     // z_en_po_field
     int32_t sEnPoFieldNumSpawned_copy;
-    Vec3s sEnPoFieldSpawnPositions_copy[10];
-    u8 sEnPoFieldSpawnSwitchFlags_copy[10];
+    Vec3s   sEnPoFieldSpawnPositions_copy[10];
+    u8      sEnPoFieldSpawnSwitchFlags_copy[10];
 
     // z_en_takara_man
     uint8_t sTakaraIsInitialized_copy;
@@ -281,66 +285,64 @@ typedef struct SaveStateInfo {
     // z_en_heishi1
     uint32_t sHeishi1PlayerIsCaughtCopy;
 
-
-    //Misc static data
-    // z_map_exp
+    // Misc static data
+    //  z_map_exp
 
     s16 sPlayerInitialPosX_copy;
     s16 sPlayerInitialPosZ_copy;
     s16 sPlayerInitialDirection_copy;
 
     // code_800E(something. fill me in later)
-    u8 sOcarinaInpEnabled_copy;
-    s8 D_80130F10_copy;
-    u8 sCurOcarinaBtnVal_copy;
-    u8 sPrevOcarinaNoteVal_copy;
-    u8 sCurOcarinaBtnIdx_copy;
-    u8 sLearnSongLastBtn_copy;
+    u8  sOcarinaInpEnabled_copy;
+    s8  D_80130F10_copy;
+    u8  sCurOcarinaBtnVal_copy;
+    u8  sPrevOcarinaNoteVal_copy;
+    u8  sCurOcarinaBtnIdx_copy;
+    u8  sLearnSongLastBtn_copy;
     f32 D_80130F24_copy;
     f32 D_80130F28_copy;
-    s8 D_80130F2C_copy;
-    s8 D_80130F30_copy;
-    s8 D_80130F34_copy;
-    u8 sDisplayedNoteValue_copy;
-    u8 sPlaybackState_copy;
+    s8  D_80130F2C_copy;
+    s8  D_80130F30_copy;
+    s8  D_80130F34_copy;
+    u8  sDisplayedNoteValue_copy;
+    u8  sPlaybackState_copy;
     u32 D_80130F3C_copy;
     u32 sNotePlaybackTimer_copy;
     u16 sPlaybackNotePos_copy;
     u16 sStaffPlaybackPos_copy;
 
-    u32 sCurOcarinaBtnPress_copy;
-    u32 D_8016BA10_copy;
-    u32 sPrevOcarinaBtnPress_copy;
-    s32 D_8016BA18_copy;
-    s32 D_8016BA1C_copy;
-    u8 sCurOcarinaSong_copy[8];
-    u8 sOcarinaSongAppendPos_copy;
-    u8 sOcarinaHasStartedSong_copy;
-    u8 sOcarinaSongNoteStartIdx_copy;
-    u8 sOcarinaSongCnt_copy;
-    u16 sOcarinaAvailSongs_copy;
-    u8 sStaffPlayingPos_copy;
-    u16 sLearnSongPos_copy[0x10];
-    u16 D_8016BA50_copy[0x10];
-    u16 D_8016BA70_copy[0x10];
-    u8 sLearnSongExpectedNote_copy[0x10];
+    u32         sCurOcarinaBtnPress_copy;
+    u32         D_8016BA10_copy;
+    u32         sPrevOcarinaBtnPress_copy;
+    s32         D_8016BA18_copy;
+    s32         D_8016BA1C_copy;
+    u8          sCurOcarinaSong_copy[8];
+    u8          sOcarinaSongAppendPos_copy;
+    u8          sOcarinaHasStartedSong_copy;
+    u8          sOcarinaSongNoteStartIdx_copy;
+    u8          sOcarinaSongCnt_copy;
+    u16         sOcarinaAvailSongs_copy;
+    u8          sStaffPlayingPos_copy;
+    u16         sLearnSongPos_copy[0x10];
+    u16         D_8016BA50_copy[0x10];
+    u16         D_8016BA70_copy[0x10];
+    u8          sLearnSongExpectedNote_copy[0x10];
     OcarinaNote D_8016BAA0_copy;
-    u8 sAudioHasMalonBgm_copy;
-    f32 sAudioMalonBgmDist_copy;
+    u8          sAudioHasMalonBgm_copy;
+    f32         sAudioMalonBgmDist_copy;
 
     // Message_PAL
     s16 sOcarinaNoteBufPos_copy;
     s16 sOcarinaNoteBufLen_copy;
-    u8 sOcarinaNoteBuf_copy[12];
+    u8  sOcarinaNoteBuf_copy[12];
 
-    u8 D_8014B2F4_copy;
-    u8 sTextboxSkipped_copy;
+    u8  D_8014B2F4_copy;
+    u8  sTextboxSkipped_copy;
     u16 sNextTextId_copy;
     s16 sLastPlayedSong_copy;
     s16 sHasSunsSong_copy;
     s16 sMessageHasSetSfx_copy;
     u16 sOcarinaSongBitFlags_copy;
-
 
 } SaveStateInfo;
 
@@ -351,8 +353,8 @@ class SaveState {
     SaveState(std::shared_ptr<SaveStateMgr> mgr, unsigned int slot);
 
   private:
-    unsigned int slot;
-    std::shared_ptr<SaveStateMgr> saveStateMgr;
+    unsigned int                   slot;
+    std::shared_ptr<SaveStateMgr>  saveStateMgr;
     std::shared_ptr<SaveStateInfo> info;
 
     void Save(void);
@@ -375,27 +377,29 @@ class SaveState {
 SaveStateMgr::SaveStateMgr() {
     this->SetCurrentSlot(0);
 }
-SaveStateMgr::~SaveStateMgr() { 
+SaveStateMgr::~SaveStateMgr() {
     this->states.clear();
 }
 
-SaveState::SaveState(std::shared_ptr<SaveStateMgr> mgr, unsigned int slot) : saveStateMgr(mgr), slot(slot), info(nullptr) {
+SaveState::SaveState(std::shared_ptr<SaveStateMgr> mgr, unsigned int slot)
+    : saveStateMgr(mgr), slot(slot), info(nullptr) {
     this->info = std::make_shared<SaveStateInfo>();
 }
 
 void SaveState::BackupSeqScriptState(void) {
     for (unsigned int i = 0; i < 4; i++) {
         info->seqScriptStateCopy[i].value = gAudioContext.seqPlayers[i].scriptState.value;
-        
+
         info->seqScriptStateCopy[i].remLoopIters[0] = gAudioContext.seqPlayers[i].scriptState.remLoopIters[0];
         info->seqScriptStateCopy[i].remLoopIters[1] = gAudioContext.seqPlayers[i].scriptState.remLoopIters[1];
         info->seqScriptStateCopy[i].remLoopIters[2] = gAudioContext.seqPlayers[i].scriptState.remLoopIters[2];
         info->seqScriptStateCopy[i].remLoopIters[3] = gAudioContext.seqPlayers[i].scriptState.remLoopIters[3];
-        
+
         info->seqScriptStateCopy[i].depth = gAudioContext.seqPlayers[i].scriptState.depth;
-        
-        info->seqScriptStateCopy[i].pc = (u8*)((uintptr_t)gAudioContext.seqPlayers[i].scriptState.pc - (uintptr_t)gAudioHeap);
-        
+
+        info->seqScriptStateCopy[i].pc =
+            (u8*)((uintptr_t)gAudioContext.seqPlayers[i].scriptState.pc - (uintptr_t)gAudioHeap);
+
         info->seqScriptStateCopy[i].stack[0] =
             (u8*)((uintptr_t)gAudioContext.seqPlayers[i].scriptState.stack[0] - (uintptr_t)gAudioHeap);
         info->seqScriptStateCopy[i].stack[1] =
@@ -611,7 +615,7 @@ void SaveState::SaveOverlayStaticData(void) {
 
     info->D_80A7DEB0_copy = D_80A7DEB0;
     info->D_80A7DEB4_copy = D_80A7DEB4;
-    info->D_80A7DEB8_copy = D_80A7DEB8; 
+    info->D_80A7DEB8_copy = D_80A7DEB8;
     info->sRockRotSpeedX_copy = sRockRotSpeedX;
     info->sRockRotSpeedY_copy = sRockRotSpeedY;
     info->D_80AB85E0_copy = D_80AB85E0;
@@ -619,7 +623,8 @@ void SaveState::SaveOverlayStaticData(void) {
     info->sUpperRiverSpawned_copy = sUpperRiverSpawned;
     info->sEnPoFieldNumSpawned_copy = sEnPoFieldNumSpawned;
     memcpy(info->sEnPoFieldSpawnPositions_copy, sEnPoFieldSpawnPositions, sizeof(info->sEnPoFieldSpawnPositions_copy));
-    memcpy(info->sEnPoFieldSpawnSwitchFlags_copy, sEnPoFieldSpawnSwitchFlags, sizeof(info->sEnPoFieldSpawnSwitchFlags_copy));
+    memcpy(info->sEnPoFieldSpawnSwitchFlags_copy, sEnPoFieldSpawnSwitchFlags,
+           sizeof(info->sEnPoFieldSpawnSwitchFlags_copy));
 
     info->sTakaraIsInitialized_copy = sTakaraIsInitialized;
     info->D_80B41D90_copy = D_80B41D90;
@@ -633,9 +638,8 @@ void SaveState::SaveOverlayStaticData(void) {
     info->D_80B5A4BC_copy = D_80B5A4BC;
     info->sKankyoIsSpawned_copy = sKankyoIsSpawned;
     info->sTrailingFairies_copy = sTrailingFairies;
-    
-    info->sHeishi1PlayerIsCaughtCopy = sHeishi1PlayerIsCaught;
 
+    info->sHeishi1PlayerIsCaughtCopy = sHeishi1PlayerIsCaught;
 }
 
 void SaveState::LoadOverlayStaticData(void) {
@@ -691,7 +695,8 @@ void SaveState::LoadOverlayStaticData(void) {
     sUpperRiverSpawned = info->sUpperRiverSpawned_copy;
     sEnPoFieldNumSpawned = info->sEnPoFieldNumSpawned_copy;
     memcpy(sEnPoFieldSpawnPositions, info->sEnPoFieldSpawnPositions_copy, sizeof(info->sEnPoFieldSpawnPositions_copy));
-    memcpy(sEnPoFieldSpawnSwitchFlags, info->sEnPoFieldSpawnSwitchFlags_copy, sizeof(info->sEnPoFieldSpawnSwitchFlags_copy));
+    memcpy(sEnPoFieldSpawnSwitchFlags, info->sEnPoFieldSpawnSwitchFlags_copy,
+           sizeof(info->sEnPoFieldSpawnSwitchFlags_copy));
 
     sTakaraIsInitialized = info->sTakaraIsInitialized_copy;
     D_80B41D90 = info->D_80B41D90_copy;
@@ -735,7 +740,6 @@ void SaveState::SaveMiscCodeData(void) {
     info->sPlaybackNotePos_copy = sPlaybackNotePos;
     info->sStaffPlaybackPos_copy = sStaffPlaybackPos;
 
-
     info->sCurOcarinaBtnPress_copy = sCurOcarinaBtnPress;
     info->D_8016BA10_copy = D_8016BA10;
     info->sPrevOcarinaBtnPress_copy = sPrevOcarinaBtnPress;
@@ -756,7 +760,6 @@ void SaveState::SaveMiscCodeData(void) {
     info->sAudioHasMalonBgm_copy = sAudioHasMalonBgm;
     info->sAudioMalonBgmDist_copy = sAudioMalonBgmDist;
     info->sDisplayedNoteValue_copy = sDisplayedNoteValue;
-
 
     info->sOcarinaNoteBufPos_copy = sOcarinaNoteBufPos;
     info->sOcarinaNoteBufLen_copy = sOcarinaNoteBufLen;
@@ -816,7 +819,7 @@ void SaveState::LoadMiscCodeData(void) {
     sAudioHasMalonBgm = info->sAudioHasMalonBgm_copy;
     sAudioMalonBgmDist = info->sAudioMalonBgmDist_copy;
     sDisplayedNoteValue = info->sDisplayedNoteValue_copy;
-    
+
     sOcarinaNoteBufPos = info->sOcarinaNoteBufPos_copy;
     sOcarinaNoteBufLen = info->sOcarinaNoteBufLen_copy;
     memcpy(sOcarinaNoteBuf, info->sOcarinaNoteBuf_copy, sizeof(sOcarinaNoteBuf));
@@ -828,8 +831,6 @@ void SaveState::LoadMiscCodeData(void) {
     sHasSunsSong = info->sHasSunsSong_copy;
     sMessageHasSetSfx = info->sMessageHasSetSfx_copy;
     sOcarinaSongBitFlags = info->sOcarinaSongBitFlags_copy;
-
-
 }
 
 extern "C" void ProcessSaveStateRequests(void) {
@@ -837,7 +838,8 @@ extern "C" void ProcessSaveStateRequests(void) {
 }
 
 void SaveStateMgr::SetCurrentSlot(unsigned int slot) {
-    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "slot %u set", slot);
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true,
+                                                                                               "slot %u set", slot);
     this->currentSlot = slot;
 }
 
@@ -848,24 +850,27 @@ unsigned int SaveStateMgr::GetCurrentSlot(void) {
 void SaveStateMgr::ProcessSaveStateRequests(void) {
     while (!this->requests.empty()) {
         const auto& request = this->requests.front();
-        
+
         switch (request.type) {
             case RequestType::SAVE:
                 if (!this->states.contains(request.slot)) {
-                    this->states[request.slot] = std::make_shared<SaveState>(OTRGlobals::Instance->gSaveStateMgr, request.slot);
+                    this->states[request.slot] =
+                        std::make_shared<SaveState>(OTRGlobals::Instance->gSaveStateMgr, request.slot);
                 }
                 this->states[request.slot]->Save();
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "saved state %u", request.slot);
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(
+                    1.0f, true, "saved state %u", request.slot);
                 break;
             case RequestType::LOAD:
                 if (this->states.contains(request.slot)) {
                     this->states[request.slot]->Load();
-                    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "loaded state %u", request.slot);
+                    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(
+                        1.0f, true, "loaded state %u", request.slot);
                 } else {
                     SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
                 }
                 break;
-            [[unlikely]] default: 
+            [[unlikely]] default:
                 SPDLOG_ERROR("Invalid SaveState request type: {}", request.type);
                 break;
         }
@@ -876,11 +881,12 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
 SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
     if (gPlayState == nullptr) {
         SPDLOG_ERROR("[SOH] Can not save or load a state outside of \"GamePlay\"");
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "states not available here", request.slot);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(
+            1.0f, true, "states not available here", request.slot);
         return SaveStateReturn::FAIL_WRONG_GAMESTATE;
     }
 
-    switch (request.type) { 
+    switch (request.type) {
         case RequestType::SAVE:
             requests.push(request);
             return SaveStateReturn::SUCCESS;
@@ -890,10 +896,11 @@ SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
                 return SaveStateReturn::SUCCESS;
             } else {
                 SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "state slot %u empty", request.slot);
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(
+                    1.0f, true, "state slot %u empty", request.slot);
                 return SaveStateReturn::FAIL_INVALID_SLOT;
             }
-        [[unlikely]] default: 
+        [[unlikely]] default:
             SPDLOG_ERROR("Invalid SaveState request type: {}", request.type);
             return SaveStateReturn::FAIL_BAD_REQUEST;
     }
@@ -910,16 +917,13 @@ void SaveState::Save(void) {
 
     memcpy(info->gActiveSoundsCopy, gActiveSounds, sizeof(gActiveSounds));
     memcpy(&info->gSoundBankMutedCopy, gSoundBankMuted, sizeof(info->gSoundBankMutedCopy));
-    
+
     info->D_801333F0_copy = D_801333F0;
     info->gAudioSfxSwapOff_copy = gAudioSfxSwapOff;
 
-    memcpy(&info->gAudioSfxSwapSource_copy, gAudioSfxSwapSource,
-           sizeof(info->gAudioSfxSwapSource_copy));
-    memcpy(&info->gAudioSfxSwapTarget_copy, gAudioSfxSwapTarget,
-           sizeof(info->gAudioSfxSwapTarget_copy));
-    memcpy(&info->gAudioSfxSwapMode_copy, gAudioSfxSwapMode, 
-        sizeof(info->gAudioSfxSwapMode_copy));
+    memcpy(&info->gAudioSfxSwapSource_copy, gAudioSfxSwapSource, sizeof(info->gAudioSfxSwapSource_copy));
+    memcpy(&info->gAudioSfxSwapTarget_copy, gAudioSfxSwapTarget, sizeof(info->gAudioSfxSwapTarget_copy));
+    memcpy(&info->gAudioSfxSwapMode_copy, gAudioSfxSwapMode, sizeof(info->gAudioSfxSwapMode_copy));
 
     info->D_801755D0_copy = D_801755D0;
 
@@ -929,13 +933,12 @@ void SaveState::Save(void) {
     memcpy(&info->mtxStackCopy, sMatrixStack, sizeof(MtxF) * 20);
     memcpy(&info->currentMtxCopy, sCurrentMatrix, sizeof(MtxF));
 
-    //Various static data
+    // Various static data
     info->blueWarpTimerCopy = sWarpTimerTarget;
     BackupCameraData();
     SaveOnePointDemoData();
     SaveOverlayStaticData();
     SaveMiscCodeData();
-
 }
 
 void SaveState::Load(void) {
@@ -959,18 +962,14 @@ void SaveState::Load(void) {
     D_801333F0 = info->D_801333F0_copy;
     gAudioSfxSwapOff = info->gAudioSfxSwapOff_copy;
 
-    memcpy(gAudioSfxSwapSource, &info->gAudioSfxSwapSource_copy,
-           sizeof(info->gAudioSfxSwapSource_copy));
-    memcpy(gAudioSfxSwapTarget, &info->gAudioSfxSwapTarget_copy,
-           sizeof(info->gAudioSfxSwapTarget_copy));
-    memcpy(gAudioSfxSwapMode, &info->gAudioSfxSwapMode_copy,
-           sizeof(info->gAudioSfxSwapMode_copy));
-    
-    //Various static data
+    memcpy(gAudioSfxSwapSource, &info->gAudioSfxSwapSource_copy, sizeof(info->gAudioSfxSwapSource_copy));
+    memcpy(gAudioSfxSwapTarget, &info->gAudioSfxSwapTarget_copy, sizeof(info->gAudioSfxSwapTarget_copy));
+    memcpy(gAudioSfxSwapMode, &info->gAudioSfxSwapMode_copy, sizeof(info->gAudioSfxSwapMode_copy));
+
+    // Various static data
     D_801755D0 = info->D_801755D0_copy;
     LoadCameraData();
     LoadOnePointDemoData();
     LoadOverlayStaticData();
     LoadMiscCodeData();
-
 }

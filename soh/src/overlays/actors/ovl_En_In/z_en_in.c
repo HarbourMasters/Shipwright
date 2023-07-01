@@ -128,7 +128,7 @@ u16 func_80A78FB0(PlayState* play) {
 
 u16 func_80A79010(PlayState* play) {
     Player* player = GET_PLAYER(play);
-    u16 temp_v0 = Text_GetFaceReaction(play, 25);
+    u16     temp_v0 = Text_GetFaceReaction(play, 25);
 
     if (temp_v0 != 0) {
         return temp_v0;
@@ -318,7 +318,7 @@ s16 func_80A79500(PlayState* play, Actor* thisx) {
 
 void func_80A795C8(EnIn* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s16 npcTrackingMode;
+    s16     npcTrackingMode;
 
     if (this->skelAnime.animation == &object_in_Anim_0003B4 || this->skelAnime.animation == &object_in_Anim_001BE0 ||
         this->skelAnime.animation == &object_in_Anim_013D60) {
@@ -444,9 +444,9 @@ void func_80A79BAC(EnIn* this, PlayState* play, s32 index, u32 arg3) {
 
 void func_80A79C78(EnIn* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    Vec3f sp48;
-    Vec3f sp3C;
-    Vec3s zeroVec = { 0, 0, 0 };
+    Vec3f   sp48;
+    Vec3f   sp3C;
+    Vec3s   zeroVec = { 0, 0, 0 };
 
     this->camId = Play_CreateSubCamera(play);
     Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
@@ -481,7 +481,7 @@ static s32 D_80A7B998 = 0;
 void EnIn_Init(Actor* thisx, PlayState* play) {
     EnIn* this = (EnIn*)thisx;
     RespawnData* respawn = &gSaveContext.respawn[RESPAWN_MODE_DOWN];
-    Vec3f respawnPos;
+    Vec3f        respawnPos;
 
     this->ingoObjBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_IN);
     if (this->ingoObjBankIndex < 0 && this->actor.params > 0) {
@@ -654,8 +654,8 @@ void func_80A7A4C8(EnIn* this, PlayState* play) {
 
 void func_80A7A568(EnIn* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 phi_a2;
-    s32 phi_a3;
+    s32     phi_a2;
+    s32     phi_a3;
 
     if (!Flags_GetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO) && (player->stateFlags1 & 0x800000)) {
         Flags_SetInfTable(INFTABLE_AB);
@@ -798,8 +798,8 @@ void func_80A7AA40(EnIn* this, PlayState* play) {
 
 void func_80A7ABD4(EnIn* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    Vec3f sp48;
-    Vec3f sp3C;
+    Vec3f   sp48;
+    Vec3f   sp3C;
 
     if (player->rideActor != NULL) {
         player->rideActor->freezeTimer = 10;
@@ -863,8 +863,8 @@ void func_80A7AE84(EnIn* this, PlayState* play) {
 
 void func_80A7AEF0(EnIn* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 yaw;
-    Vec3f pos = this->actor.world.pos;
+    s32     yaw;
+    Vec3f   pos = this->actor.world.pos;
 
     pos.x += 90.0f * Math_SinS(this->actor.shape.rot.y);
     pos.z += 90.0f * Math_CosS(this->actor.shape.rot.y);
@@ -927,12 +927,13 @@ void EnIn_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
     if (this->actionFunc != func_80A7A304) {
         func_80A79AB4(this, play);
-        if (gSaveContext.timer2Value < 6 && gSaveContext.timer2State != 0 && this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
+        if (gSaveContext.timer2Value < 6 && gSaveContext.timer2State != 0 &&
+            this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
             if (Actor_ProcessTalkRequest(&this->actor, play)) {}
         } else {
             Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState,
-                          ((this->actor.targetMode == 6) ? 80.0f : 320.0f) + this->collider.dim.radius, func_80A79168,
-                          func_80A79500);
+                              ((this->actor.targetMode == 6) ? 80.0f : 320.0f) + this->collider.dim.radius,
+                              func_80A79168, func_80A79500);
             if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
                 this->unk_1FA = this->unk_1F8;
                 this->unk_1F8 = Message_GetState(&play->msgCtx);
@@ -1000,8 +1001,8 @@ void EnIn_Draw(Actor* thisx, PlayState* play) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
         gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gIngoHeadGradient2Tex));
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnIn_OverrideLimbDraw, EnIn_PostLimbDraw, &this->actor);
+        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+                              EnIn_OverrideLimbDraw, EnIn_PostLimbDraw, &this->actor);
     }
     CLOSE_DISPS(play->state.gfxCtx);
 }

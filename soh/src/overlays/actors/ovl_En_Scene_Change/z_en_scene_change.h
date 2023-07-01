@@ -9,7 +9,7 @@ struct EnSceneChange;
 typedef void (*EnSceneChangeActionFunc)(struct EnSceneChange*, PlayState*);
 
 typedef struct EnSceneChange {
-    /* 0x0000 */ Actor actor;
+    /* 0x0000 */ Actor                   actor;
     /* 0x014C */ EnSceneChangeActionFunc actionFunc;
 } EnSceneChange; // size = 0x0150
 

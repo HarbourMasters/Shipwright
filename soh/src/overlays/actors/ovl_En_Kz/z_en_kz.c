@@ -198,10 +198,10 @@ void EnKz_UpdateEyes(EnKz* this) {
 s32 func_80A9C95C(PlayState* play, EnKz* this, s16* talkState, f32 unkf, NpcGetTextIdFunc getTextId,
                   NpcUpdateTalkStateFunc updateTalkState) {
     Player* player = GET_PLAYER(play);
-    s16 sp32;
-    s16 sp30;
-    f32 xzDistToPlayer;
-    f32 yaw;
+    s16     sp32;
+    s16     sp30;
+    f32     xzDistToPlayer;
+    f32     yaw;
 
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         *talkState = NPC_TALK_STATE_TALKING;
@@ -243,7 +243,8 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (func_80A9C95C(play, this, &this->interactInfo.talkState, 340.0f, EnKz_GetText, func_80A9C6C0)) {
-        if (((gSaveContext.n64ddFlag && LINK_IS_CHILD) || this->actor.textId == 0x401A) && !Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
+        if (((gSaveContext.n64ddFlag && LINK_IS_CHILD) || this->actor.textId == 0x401A) &&
+            !Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
             if (func_8002F368(play) == EXCH_ITEM_LETTER_RUTO) {
                 this->actor.textId = 0x401B;
                 this->sfxPlayed = false;
@@ -284,10 +285,10 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
 }
 
 s32 EnKz_FollowPath(EnKz* this, PlayState* play) {
-    Path* path;
+    Path*  path;
     Vec3s* pointPos;
-    f32 pathDiffX;
-    f32 pathDiffZ;
+    f32    pathDiffX;
+    f32    pathDiffZ;
 
     if ((this->actor.params & 0xFF00) == 0xFF00) {
         return 0;
@@ -312,7 +313,7 @@ s32 EnKz_FollowPath(EnKz* this, PlayState* play) {
 }
 
 s32 EnKz_SetMovedPos(EnKz* this, PlayState* play) {
-    Path* path;
+    Path*  path;
     Vec3s* lastPointPos;
 
     if ((this->actor.params & 0xFF00) == 0xFF00) {
@@ -371,9 +372,8 @@ void EnKz_Init(Actor* thisx, PlayState* play) {
 
     if (LINK_IS_ADULT) {
         if (!Flags_GetInfTable(INFTABLE_138)) {
-            Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_BG_ICE_SHELTER,
-                               this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0,
-                               0x04FF);
+            Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_BG_ICE_SHELTER, this->actor.world.pos.x,
+                               this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0x04FF);
         }
         this->actionFunc = EnKz_Wait;
     } else {
@@ -461,9 +461,9 @@ void EnKz_Wait(EnKz* this, PlayState* play) {
 
 void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
     GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
-    s32 getItemId;
-    f32 xzRange;
-    f32 yRange;
+    s32          getItemId;
+    f32          xzRange;
+    f32          yRange;
 
     if (Actor_HasParent(&this->actor, play)) {
         this->actor.parent = NULL;

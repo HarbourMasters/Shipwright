@@ -77,9 +77,9 @@ void EnNwc_ChickNoop(EnNwcChick* chick, EnNwc* this, PlayState* play) {
 
 void EnNwc_ChickBgCheck(EnNwcChick* chick, PlayState* play) {
     CollisionPoly* outPoly;
-    s32 bgId;
-    Vec3f outPos;
-    f32 dy;
+    s32            bgId;
+    Vec3f          outPos;
+    f32            dy;
 
     chick->bgFlags &= ~CHICK_BG_WALL & ~CHICK_BG_FLOOR;
     outPos.x = chick->pos.x;
@@ -111,12 +111,12 @@ void EnNwc_ChickFall(EnNwcChick* chick, EnNwc* this, PlayState* play) {
 }
 
 void EnNwc_UpdateChicks(EnNwc* this, PlayState* play) {
-    static EnNwcChickFunc chickActionFuncs[] = { EnNwc_ChickNoop, EnNwc_ChickFall };
-    EnNwcChick* chick = this->chicks;
+    static EnNwcChickFunc  chickActionFuncs[] = { EnNwc_ChickNoop, EnNwc_ChickFall };
+    EnNwcChick*            chick = this->chicks;
     ColliderJntSphElement* element = this->collider.elements;
-    Vec3f prevChickPos;
-    s32 i;
-    f32 test;
+    Vec3f                  prevChickPos;
+    s32                    i;
+    f32                    test;
 
     prevChickPos.y = 99999.9f;
     for (i = 0; i < this->count; i++, prevChickPos = chick->pos, chick++, element++) {
@@ -148,11 +148,11 @@ void EnNwc_UpdateChicks(EnNwc* this, PlayState* play) {
 }
 
 void EnNwc_DrawChicks(EnNwc* this, PlayState* play) {
-    s32 i;
-    Gfx* dList1;
-    Gfx* dList2;
-    Gfx* dList3;
-    MtxF floorMat;
+    s32         i;
+    Gfx*        dList1;
+    Gfx*        dList2;
+    Gfx*        dList3;
+    MtxF        floorMat;
     EnNwcChick* chick;
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -198,8 +198,7 @@ void EnNwc_DrawChicks(EnNwc* this, PlayState* play) {
             Matrix_Put(&floorMat);
             Matrix_RotateY(chick->rot.y * (M_PI / 0x8000), MTXMODE_APPLY);
             Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gCuccoChickShadowDL);
             FrameInterpolation_RecordCloseChild();
         }
@@ -210,10 +209,10 @@ void EnNwc_DrawChicks(EnNwc* this, PlayState* play) {
 void EnNwc_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     EnNwc* this = (EnNwc*)thisx;
-    ColliderJntSphElementInit elementInits[16];
+    ColliderJntSphElementInit  elementInits[16];
     ColliderJntSphElementInit* element;
-    EnNwcChick* chick;
-    s32 i;
+    EnNwcChick*                chick;
+    s32                        i;
 
     element = sJntSphInit.elements = elementInits;
     for (i = 0; i < 16; i++, element++) {

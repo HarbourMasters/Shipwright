@@ -10,23 +10,23 @@ typedef void (*EnExItemActionFunc)(struct EnExItem* this, PlayState* play);
 typedef void (*EnExItemLightFunc)(Actor*, PlayState*, s32);
 
 typedef struct EnExItem {
-    /* 0x0000 */ Actor actor;
+    /* 0x0000 */ Actor              actor;
     /* 0x014C */ EnExItemActionFunc actionFunc;
-    /* 0x0150 */ s16 getItemObjId;
-    /* 0x0152 */ s16 type;
-    /* 0x0152 */ s16 unusedParam;
-    /* 0x0156 */ s16 giDrawId;
-    /* 0x0158 */ s16 stopRotate;
-    /* 0x015A */ s16 timer;
-    /* 0x015A */ s16 chestKillTimer;
-    /* 0x015A */ s16 prizeRotateTimer;
-    /* 0x0160 */ s16 killItem;
-    /* 0x0164 */ f32 scale;
-    /* 0x0168 */ f32 unkFloat; // set to the same value as scale, but unused
-    /* 0x016C */ s8 objectIdx;
-    /* 0x0170 */ Vec3f initPos; // unused
-    /* 0x017C */ EnExItemLightFunc unk_17C;
-    /* 0x0180 */ EnExItemLightFunc unk_180;
+    /* 0x0150 */ s16                getItemObjId;
+    /* 0x0152 */ s16                type;
+    /* 0x0152 */ s16                unusedParam;
+    /* 0x0156 */ s16                giDrawId;
+    /* 0x0158 */ s16                stopRotate;
+    /* 0x015A */ s16                timer;
+    /* 0x015A */ s16                chestKillTimer;
+    /* 0x015A */ s16                prizeRotateTimer;
+    /* 0x0160 */ s16                killItem;
+    /* 0x0164 */ f32                scale;
+    /* 0x0168 */ f32                unkFloat; // set to the same value as scale, but unused
+    /* 0x016C */ s8                 objectIdx;
+    /* 0x0170 */ Vec3f              initPos; // unused
+    /* 0x017C */ EnExItemLightFunc  unk_17C;
+    /* 0x0180 */ EnExItemLightFunc  unk_180;
 } EnExItem; // size = 0x0184
 
 typedef enum {

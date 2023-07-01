@@ -1,11 +1,11 @@
 #include "global.h"
 
 s32 osSetTimer(OSTimer* timer, OSTime countdown, OSTime interval, OSMesgQueue* mq, OSMesg msg) {
-    OSTime time;
+    OSTime   time;
     OSTimer* next;
-    u32 count;
-    u32 value;
-    u32 prevInt;
+    u32      count;
+    u32      value;
+    u32      prevInt;
 
     timer->next = NULL;
     timer->prev = NULL;

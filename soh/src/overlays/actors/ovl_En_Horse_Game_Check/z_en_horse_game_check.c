@@ -135,8 +135,8 @@ void EnHorseGameCheck_FinishIngoRace(EnHorseGameCheckIngoRace* this, PlayState* 
 
 s32 EnHorseGameCheck_UpdateIngoRace(EnHorseGameCheckBase* base, PlayState* play) {
     EnHorseGameCheckIngoRace* this = (EnHorseGameCheckIngoRace*)base;
-    Player* player = GET_PLAYER(play);
-    s32 i;
+    Player*  player = GET_PLAYER(play);
+    s32      i;
     EnHorse* ingoHorse;
     EnHorse* horse;
 
@@ -240,7 +240,7 @@ s32 EnHorseGameCheck_DestroyGerudoArchery(EnHorseGameCheckBase* base, PlayState*
 
 s32 EnHorseGameCheck_UpdateGerudoArchery(EnHorseGameCheckBase* base, PlayState* play) {
     EnHorseGameCheckGerudoArchery* this = (EnHorseGameCheckGerudoArchery*)base;
-    Player* player = GET_PLAYER(play);
+    Player*  player = GET_PLAYER(play);
     EnHorse* horse = (EnHorse*)player->rideActor;
 
     if (horse == NULL) {
@@ -315,8 +315,8 @@ void EnHorseGameCheck_FinishMalonRace(EnHorseGameCheckMalonRace* this, PlayState
 
 s32 EnHorseGameCheck_UpdateMalonRace(EnHorseGameCheckBase* base, PlayState* play) {
     EnHorseGameCheckMalonRace* this = (EnHorseGameCheckMalonRace*)base;
-    s32 i;
-    Player* player = GET_PLAYER(play);
+    s32      i;
+    Player*  player = GET_PLAYER(play);
     EnHorse* horse;
 
     if (!(this->raceFlags & MALONRACE_PLAYER_ON_MARK) && AT_FINISH_LINE(player->rideActor)) {
@@ -341,7 +341,7 @@ s32 EnHorseGameCheck_UpdateMalonRace(EnHorseGameCheckBase* base, PlayState* play
     this->startTimer++;
     if (this->result == MALONRACE_NO_RESULT) {
         Player* player2 = player;
-        f32 dist;
+        f32     dist;
 
         for (i = 0; i < 16; i++) {
             if ((this->lapCount == 0) && (i >= 8)) {

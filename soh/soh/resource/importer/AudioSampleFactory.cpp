@@ -3,20 +3,20 @@
 #include "spdlog/spdlog.h"
 
 namespace LUS {
-std::shared_ptr<IResource>
-AudioSampleFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<AudioSample>(initData);
+std::shared_ptr<IResource> AudioSampleFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
+                                                            std::shared_ptr<BinaryReader>     reader) {
+    auto                                    resource = std::make_shared<AudioSample>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
     switch (resource->GetInitData()->ResourceVersion) {
-    case 2:
-	factory = std::make_shared<AudioSampleFactoryV0>();
-	break;
+        case 2:
+            factory = std::make_shared<AudioSampleFactoryV0>();
+            break;
     }
 
     if (factory == nullptr) {
         SPDLOG_ERROR("Failed to load AudioSample with version {}", resource->GetInitData()->ResourceVersion);
-	return nullptr;
+        return nullptr;
     }
 
     factory->ParseFileBinary(reader, resource);
@@ -25,8 +25,7 @@ AudioSampleFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std
 }
 
 void LUS::AudioSampleFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                                 std::shared_ptr<IResource> resource)
-{
+                                                std::shared_ptr<IResource>    resource) {
     std::shared_ptr<AudioSample> audioSample = std::static_pointer_cast<AudioSample>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, audioSample);
 
@@ -68,7 +67,6 @@ void LUS::AudioSampleFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> re
 }
 } // namespace LUS
 
-
 /*
 in ResourceMgr_LoadAudioSample we used to have
 --------------
@@ -100,10 +98,8 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
         drwav_uint32 sampleRate;
         drwav_uint64 totalPcm;
         drmp3_int16* pcmData =
-            drwav_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->BufferSize, &channels, &sampleRate, &totalPcm, NULL);
-        sampleC->size = totalPcm;
-        sampleC->sampleAddr = (uint8_t*)pcmData;
-        sampleC->codec = CODEC_S16;
+            drwav_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->BufferSize, &channels, &sampleRate, &totalPcm,
+NULL); sampleC->size = totalPcm; sampleC->sampleAddr = (uint8_t*)pcmData; sampleC->codec = CODEC_S16;
 
         sampleC->loop = new AdpcmLoop;
         sampleC->loop->start = 0;

@@ -112,7 +112,7 @@ void BgGndFiremeiro_Shake(BgGndFiremeiro* this, PlayState* play) {
 
 void BgGndFiremeiro_Rise(BgGndFiremeiro* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    Actor* thisx = &this->dyna.actor;
+    Actor*  thisx = &this->dyna.actor;
 
     if ((player->currentBoots != PLAYER_BOOTS_HOVER) && func_8004356C(&this->dyna)) { // Player standing on it
         if (thisx->world.pos.y < this->initPos.y) {
@@ -142,8 +142,7 @@ void BgGndFiremeiro_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gFireTrialPlatformDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

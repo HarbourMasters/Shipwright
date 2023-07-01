@@ -70,7 +70,7 @@ static InitChainEntry sInitChain[] = {
 
 void BgHidanRock_Init(Actor* thisx, PlayState* play) {
     BgHidanRock* this = (BgHidanRock*)thisx;
-    s32 pad;
+    s32              pad;
     CollisionHeader* colHeader = NULL;
 
     Actor_ProcessInitChain(thisx, sInitChain);
@@ -120,11 +120,11 @@ void func_8088B24C(BgHidanRock* this) {
     this->actionFunc = func_8088B990;
 }
 
-f32 D_8088BFC0 = 0.0f;
+f32  D_8088BFC0 = 0.0f;
 void func_8088B268(BgHidanRock* this, PlayState* play) {
-    f32 sp2C;
-    s32 temp_v1;
-    s32 frame;
+    f32     sp2C;
+    s32     temp_v1;
+    s32     frame;
     Player* player = GET_PLAYER(play);
 
     if (this->dyna.unk_150 != 0.0f) {
@@ -372,8 +372,7 @@ void func_8088BC40(PlayState* play, BgHidanRock* this) {
     Matrix_Scale(6.0f, this->unk_16C, 6.0f, MTXMODE_APPLY);
 
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sVerticalFlamesTexs[play->gameplayFrames & 7]));
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gFireTempleBigVerticalFlameDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

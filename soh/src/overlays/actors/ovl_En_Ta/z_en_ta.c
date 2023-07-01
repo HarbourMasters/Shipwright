@@ -103,8 +103,7 @@ void EnTa_Init(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 36.0f);
-    SkelAnime_InitFlex(play, &this->skelAnime, &gTalonSkel, &gTalonStandAnim, this->jointTable, this->morphTable,
-                       17);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gTalonSkel, &gTalonStandAnim, this->jointTable, this->morphTable, 17);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
 
@@ -577,7 +576,7 @@ void func_80B15034(EnTa* this, PlayState* play) {
 
 s32 func_80B150AC(EnTa* this, PlayState* play, s32 idx) {
     Player* player = GET_PLAYER(play);
-    Actor* interactRangeActor;
+    Actor*  interactRangeActor;
 
     if (player->stateFlags1 & 0x800) {
         interactRangeActor = player->interactRangeActor;

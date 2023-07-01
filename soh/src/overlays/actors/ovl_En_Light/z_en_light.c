@@ -31,8 +31,8 @@ const ActorInit En_Light_InitVars = {
 
 typedef struct {
     /* 0x00 */ Color_RGBA8 primColor;
-    /* 0x04 */ Color_RGB8 envColor;
-    /* 0x07 */ u8 scale;
+    /* 0x04 */ Color_RGB8  envColor;
+    /* 0x07 */ u8          scale;
 } FlameParams;
 
 static FlameParams D_80A9E840[] = {
@@ -89,9 +89,9 @@ void EnLight_UpdatePosRot(EnLight* this, PlayState* play) {
 }
 
 void EnLight_Update(Actor* thisx, PlayState* play) {
-    f32 intensity;
+    f32          intensity;
     FlameParams* flameParams;
-    s16 radius;
+    s16          radius;
     EnLight* this = (EnLight*)thisx;
 
     flameParams = &D_80A9E840[this->actor.params & 0xF];
@@ -108,7 +108,7 @@ void EnLight_Update(Actor* thisx, PlayState* play) {
 }
 
 void EnLight_UpdateSwitch(Actor* thisx, PlayState* play) {
-    f32 intensity;
+    f32          intensity;
     FlameParams* flameParams;
     EnLight* this = (EnLight*)thisx;
     f32 scale;
@@ -152,9 +152,9 @@ void EnLight_UpdateSwitch(Actor* thisx, PlayState* play) {
 
 void EnLight_Draw(Actor* thisx, PlayState* play) {
     EnLight* this = (EnLight*)thisx;
-    s32 pad;
+    s32          pad;
     FlameParams* flameParams;
-    Gfx* dList;
+    Gfx*         dList;
 
     flameParams = &D_80A9E840[this->actor.params & 0xF];
 
@@ -163,9 +163,8 @@ void EnLight_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     if (this->actor.params >= 0) {
-        gSPSegment(
-            POLY_XLU_DISP++, 0x08,
-            Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0, (this->timer * -20) & 511, 32, 128));
+        gSPSegment(POLY_XLU_DISP++, 0x08,
+                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0, (this->timer * -20) & 511, 32, 128));
 
         dList = gEffFire1DL;
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, flameParams->primColor.r, flameParams->primColor.g,
@@ -190,8 +189,7 @@ void EnLight_Draw(Actor* thisx, PlayState* play) {
     }
 
     Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, dList);
 
     CLOSE_DISPS(play->state.gfxCtx);

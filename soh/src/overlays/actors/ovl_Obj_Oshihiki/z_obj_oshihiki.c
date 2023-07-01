@@ -85,9 +85,9 @@ static Vec2f sFaceDirection[] = {
 };
 
 void ObjOshihiki_InitDynapoly(ObjOshihiki* this, PlayState* play, CollisionHeader* collision, s32 moveFlag) {
-    s32 pad;
+    s32              pad;
     CollisionHeader* colHeader = NULL;
-    s32 pad2;
+    s32              pad2;
 
     DynaPolyActor_Init(&this->dyna, moveFlag);
     CollisionHeader_GetVirtual(collision, &colHeader);
@@ -245,8 +245,8 @@ void ObjOshihiki_SetTexture(ObjOshihiki* this, PlayState* play) {
 void ObjOshihiki_SetColor(ObjOshihiki* this, PlayState* play) {
     Color_RGB8* src;
     Color_RGB8* color = &this->color;
-    s16 paramsColorIdx;
-    s32 i;
+    s16         paramsColorIdx;
+    s32         i;
 
     paramsColorIdx = (this->dyna.actor.params >> 6) & 3;
 
@@ -276,7 +276,7 @@ void ObjOshihiki_Init(Actor* thisx, PlayState* play2) {
     // can be guaranteed accessible
     if (gSaveContext.n64ddFlag && LINK_IS_CHILD && ResourceMgr_IsGameMasterQuest() &&
         play->sceneNum == SCENE_JYASINZOU && thisx->room == 6 && // Spirit Temple silver block hallway
-        thisx->params == 0x9C7) { // Silver block that is marked as in the hole
+        thisx->params == 0x9C7) {                                // Silver block that is marked as in the hole
         Actor_Kill(thisx);
         return;
     }
@@ -327,10 +327,10 @@ void ObjOshihiki_SetFloors(ObjOshihiki* this, PlayState* play) {
     s32 i;
 
     for (i = 0; i < 5; i++) {
-        Vec3f colCheckPoint;
-        Vec3f colCheckOffset;
+        Vec3f           colCheckPoint;
+        Vec3f           colCheckOffset;
         CollisionPoly** floorPoly;
-        s32* floorBgId;
+        s32*            floorBgId;
 
         colCheckOffset.x = sColCheckPoints[i].x * (this->dyna.actor.scale.x * 10.0f);
         colCheckOffset.y = sColCheckPoints[i].y * (this->dyna.actor.scale.y * 10.0f);
@@ -342,8 +342,8 @@ void ObjOshihiki_SetFloors(ObjOshihiki* this, PlayState* play) {
 
         floorPoly = &this->floorPolys[i];
         floorBgId = &this->floorBgIds[i];
-        this->floorHeights[i] = BgCheck_EntityRaycastFloor6(&play->colCtx, floorPoly, floorBgId, &this->dyna.actor,
-                                                            &colCheckPoint, 0.0f);
+        this->floorHeights[i] =
+            BgCheck_EntityRaycastFloor6(&play->colCtx, floorPoly, floorBgId, &this->dyna.actor, &colCheckPoint, 0.0f);
     }
 }
 
@@ -418,11 +418,11 @@ s32 ObjOshihiki_CheckWall(PlayState* play, s16 angle, f32 direction, ObjOshihiki
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        Vec3f faceVtx;
-        Vec3f faceVtxNext;
-        Vec3f posResult;
-        Vec3f faceVtxOffset;
-        s32 bgId;
+        Vec3f          faceVtx;
+        Vec3f          faceVtxNext;
+        Vec3f          posResult;
+        Vec3f          faceVtxOffset;
+        s32            bgId;
         CollisionPoly* outPoly;
 
         faceVtxOffset.x = (sFaceVtx[i].x * this->dyna.actor.scale.x * 10.0f) + sFaceDirection[i].x;
@@ -435,8 +435,8 @@ s32 ObjOshihiki_CheckWall(PlayState* play, s16 angle, f32 direction, ObjOshihiki
         faceVtxNext.x = faceVtx.x + maxDist * sn;
         faceVtxNext.y = faceVtx.y;
         faceVtxNext.z = faceVtx.z + maxDist * cs;
-        if (BgCheck_EntityLineTest3(&play->colCtx, &faceVtx, &faceVtxNext, &posResult, &outPoly, true, false,
-                                    false, true, &bgId, &this->dyna.actor, 0.0f)) {
+        if (BgCheck_EntityLineTest3(&play->colCtx, &faceVtx, &faceVtxNext, &posResult, &outPoly, true, false, false,
+                                    true, &bgId, &this->dyna.actor, 0.0f)) {
             return true;
         }
     }
@@ -444,7 +444,7 @@ s32 ObjOshihiki_CheckWall(PlayState* play, s16 angle, f32 direction, ObjOshihiki
 }
 
 s32 ObjOshihiki_MoveWithBlockUnder(ObjOshihiki* this, PlayState* play) {
-    s32 pad;
+    s32          pad;
     ObjOshihiki* blockUnder = ObjOshihiki_GetBlockUnder(this, play);
 
     if ((blockUnder != NULL) && (blockUnder->stateFlags & PUSHBLOCK_SETUP_PUSH) &&
@@ -475,7 +475,7 @@ void ObjOshihiki_SetupOnScene(ObjOshihiki* this, PlayState* play) {
 }
 
 void ObjOshihiki_OnScene(ObjOshihiki* this, PlayState* play) {
-    s32 pad;
+    s32     pad;
     Player* player = GET_PLAYER(play);
 
     this->stateFlags |= PUSHBLOCK_ON_SCENE;
@@ -502,8 +502,8 @@ void ObjOshihiki_SetupOnActor(ObjOshihiki* this, PlayState* play) {
 }
 
 void ObjOshihiki_OnActor(ObjOshihiki* this, PlayState* play) {
-    s32 bgId;
-    Player* player = GET_PLAYER(play);
+    s32            bgId;
+    Player*        player = GET_PLAYER(play);
     DynaPolyActor* dynaPolyActor;
 
     this->stateFlags |= PUSHBLOCK_ON_ACTOR;
@@ -562,10 +562,10 @@ void ObjOshihiki_SetupPush(ObjOshihiki* this, PlayState* play) {
 }
 
 void ObjOshihiki_Push(ObjOshihiki* this, PlayState* play) {
-    Actor* thisx = &this->dyna.actor;
+    Actor*  thisx = &this->dyna.actor;
     Player* player = GET_PLAYER(play);
-    f32 pushDistSigned;
-    s32 stopFlag;
+    f32     pushDistSigned;
+    s32     stopFlag;
 
     this->pushSpeed = this->pushSpeed + (CVarGetInteger("gFasterBlockPush", 0) * 0.25) + 0.5f;
     this->stateFlags |= PUSHBLOCK_PUSH;
@@ -629,10 +629,9 @@ void ObjOshihiki_Fall(ObjOshihiki* this, PlayState* play) {
             ObjOshihiki_SetupOnActor(this, play);
         }
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BLOCK_BOUND);
-        Audio_PlayActorSound2(&this->dyna.actor,
-                              SurfaceType_GetSfx(&play->colCtx, this->floorPolys[this->highestFloor],
-                                                 this->floorBgIds[this->highestFloor]) +
-                                  SFX_FLAG);
+        Audio_PlayActorSound2(&this->dyna.actor, SurfaceType_GetSfx(&play->colCtx, this->floorPolys[this->highestFloor],
+                                                                    this->floorBgIds[this->highestFloor]) +
+                                                     SFX_FLAG);
     }
 }
 
@@ -671,8 +670,7 @@ void ObjOshihiki_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(this->texture));
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     switch (play->sceneNum) {
         case SCENE_YDAN:

@@ -37,19 +37,19 @@ typedef enum {
 } BossFdCutsceneState;
 
 typedef struct {
-    /* 0x00 */ Vec3f pos;
-    /* 0x0C */ Vec3f velocity;
-    /* 0x18 */ Vec3f accel;
-    /* 0x24 */ u8 type;
-    /* 0x25 */ u8 timer1;
+    /* 0x00 */ Vec3f      pos;
+    /* 0x0C */ Vec3f      velocity;
+    /* 0x18 */ Vec3f      accel;
+    /* 0x24 */ u8         type;
+    /* 0x25 */ u8         timer1;
     /* 0x26 */ Color_RGB8 color;
-    /* 0x2A */ s16 alpha;
-    /* 0x2C */ s16 timer2;
-    /* 0x2E */ s16 kbAngle;
-    /* 0x30 */ f32 scale;
-    /* 0x34 */ f32 bFdFxFloat1;
-    /* 0x38 */ f32 bFdFxFloat2;
-    u32 epoch;
+    /* 0x2A */ s16        alpha;
+    /* 0x2C */ s16        timer2;
+    /* 0x2E */ s16        kbAngle;
+    /* 0x30 */ f32        scale;
+    /* 0x34 */ f32        bFdFxFloat1;
+    /* 0x38 */ f32        bFdFxFloat2;
+    u32                   epoch;
 } BossFdEffect; // size = 0x3C
 
 #define BOSSFD_EFFECT_COUNT 180
@@ -70,7 +70,7 @@ typedef enum {
 
 typedef struct {
     /* 0x000 */ Vec3f pos[30];
-    /* 0x168 */ f32 scale[30];
+    /* 0x168 */ f32   scale[30];
     /* 0x1E0 */ Vec3f head;
 } BossFdMane; // size = 0x1EC
 
@@ -84,10 +84,10 @@ typedef struct {
     /* 0x54 */ Vec3f eyeMaxVel;
     /* 0x60 */ Vec3f nextAt;
     /* 0x6C */ Vec3f atMaxVel;
-    /* 0x78 */ f32 speedMod;
-    /* 0x7C */ f32 accel;
-    /* 0x80 */ f32 yMod;
-    /* 0x84 */ f32 shake;
+    /* 0x78 */ f32   speedMod;
+    /* 0x7C */ f32   accel;
+    /* 0x80 */ f32   yMod;
+    /* 0x84 */ f32   shake;
 } BossFdCam; // size = 0x88
 
 typedef enum {
@@ -144,43 +144,43 @@ typedef enum {
 } BossFdF32Var;
 
 typedef struct BossFd {
-    /* 0x0000 */ Actor actor;
-    /* 0x014C */ SkelAnime skelAnimeHead;
-    /* 0x0190 */ SkelAnime skelAnimeRightArm;
-    /* 0x01D4 */ SkelAnime skelAnimeLeftArm;
-    /* 0x0218 */ BossFdActionFunc actionFunc;
-    /* 0x021C */ s16 fireBreathTimer;
-    /* 0x021E */ s16 skinSegments;
-    /* 0x0220 */ u8 fogMode;
-    /* 0x0222 */ s16 work[BFD_SHORT_COUNT];
-    /* 0x0248 */ s16 timers[6];
-    /* 0x0254 */ f32 fwork[BFD_FLOAT_COUNT];
-    /* 0x02BC */ Vec3f targetPosition;
-    /* 0x02C8 */ Vec3f holePosition;
-    /* 0x02D4 */ u8 holeIndex;
-    /* 0x02D5 */ u8 eyeState;
-    /* 0x02D6 */ u8 platformSignal;
-    /* 0x02D7 */ u8 faceExposed;
-    /* 0x02D8 */ u8 handoffSignal;
-    /* 0x02DC */ Vec3f bodySegsRot[100];
-    /* 0x078C */ Vec3f bodySegsPos[100];
-    /* 0x0C3C */ Vec3f rightArmRot[4];
-    /* 0x0C6C */ Vec3f leftArmRot[4];
-    /* 0x0C9C */ Vec3f fireManeRot[30];
-    /* 0x0E04 */ BossFdMane centerMane;
-    /* 0x0FF0 */ BossFdMane rightMane;
-    /* 0x11DC */ BossFdMane leftMane;
-    /* 0x13C8 */ f32 flattenMane;
-    /* 0x13CC */ f32 jawOpening;
-    /* 0x13D0 */ s16 bodyFallApart[18];
-    /* 0x13F4 */ Vec3f headPos;
-    /* 0x1400 */ s16 introFlyState;
-    /* 0x1402 */ s16 introState;
-    /* 0x1404 */ s16 introCamera;
-    /* 0x1408 */ BossFdCam camData;
-    /* 0x1490 */ ColliderJntSph collider;
+    /* 0x0000 */ Actor                 actor;
+    /* 0x014C */ SkelAnime             skelAnimeHead;
+    /* 0x0190 */ SkelAnime             skelAnimeRightArm;
+    /* 0x01D4 */ SkelAnime             skelAnimeLeftArm;
+    /* 0x0218 */ BossFdActionFunc      actionFunc;
+    /* 0x021C */ s16                   fireBreathTimer;
+    /* 0x021E */ s16                   skinSegments;
+    /* 0x0220 */ u8                    fogMode;
+    /* 0x0222 */ s16                   work[BFD_SHORT_COUNT];
+    /* 0x0248 */ s16                   timers[6];
+    /* 0x0254 */ f32                   fwork[BFD_FLOAT_COUNT];
+    /* 0x02BC */ Vec3f                 targetPosition;
+    /* 0x02C8 */ Vec3f                 holePosition;
+    /* 0x02D4 */ u8                    holeIndex;
+    /* 0x02D5 */ u8                    eyeState;
+    /* 0x02D6 */ u8                    platformSignal;
+    /* 0x02D7 */ u8                    faceExposed;
+    /* 0x02D8 */ u8                    handoffSignal;
+    /* 0x02DC */ Vec3f                 bodySegsRot[100];
+    /* 0x078C */ Vec3f                 bodySegsPos[100];
+    /* 0x0C3C */ Vec3f                 rightArmRot[4];
+    /* 0x0C6C */ Vec3f                 leftArmRot[4];
+    /* 0x0C9C */ Vec3f                 fireManeRot[30];
+    /* 0x0E04 */ BossFdMane            centerMane;
+    /* 0x0FF0 */ BossFdMane            rightMane;
+    /* 0x11DC */ BossFdMane            leftMane;
+    /* 0x13C8 */ f32                   flattenMane;
+    /* 0x13CC */ f32                   jawOpening;
+    /* 0x13D0 */ s16                   bodyFallApart[18];
+    /* 0x13F4 */ Vec3f                 headPos;
+    /* 0x1400 */ s16                   introFlyState;
+    /* 0x1402 */ s16                   introState;
+    /* 0x1404 */ s16                   introCamera;
+    /* 0x1408 */ BossFdCam             camData;
+    /* 0x1490 */ ColliderJntSph        collider;
     /* 0x14B0 */ ColliderJntSphElement elements[19];
-    /* 0x1970 */ BossFdEffect effects[180];
+    /* 0x1970 */ BossFdEffect          effects[180];
 } BossFd; // size = 0x43A0
 
 #endif

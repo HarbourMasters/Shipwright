@@ -16,7 +16,7 @@ void EnToryo_Update(Actor* thisx, PlayState* play);
 void EnToryo_Draw(Actor* thisx, PlayState* play);
 
 void func_80B20914(EnToryo* this, PlayState* play);
-s32 EnToryo_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx);
+s32  EnToryo_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx);
 void EnToryo_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx);
 
 const ActorInit En_Toryo_InitVars = {
@@ -120,8 +120,7 @@ void EnToryo_Init(Actor* thisx, PlayState* play) {
     }
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 42.0f);
-    SkelAnime_InitFlex(play, &this->skelAnime, &object_toryo_Skel_007150, NULL, this->jointTable, this->morphTable,
-                       17);
+    SkelAnime_InitFlex(play, &this->skelAnime, &object_toryo_Skel_007150, NULL, this->jointTable, this->morphTable, 17);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, &sDamageTable, &sColChkInfoInit);
@@ -143,9 +142,9 @@ void EnToryo_Destroy(Actor* thisx, PlayState* play) {
 }
 
 s32 func_80B203D8(EnToryo* this, PlayState* play) {
-    s32 pad;
+    s32     pad;
     Player* player = GET_PLAYER(play);
-    s32 ret = 1;
+    s32     ret = 1;
 
     switch (Message_GetState(&play->msgCtx)) {
         case TEXT_STATE_NONE:
@@ -216,9 +215,9 @@ s32 func_80B203D8(EnToryo* this, PlayState* play) {
 }
 
 s32 func_80B205CC(EnToryo* this, PlayState* play) {
-    s32 pad;
+    s32     pad;
     Player* player = GET_PLAYER(play);
-    s32 ret = 5;
+    s32     ret = 5;
 
     switch (Message_GetState(&play->msgCtx)) {
         case TEXT_STATE_NONE:
@@ -288,8 +287,8 @@ s32 func_80B206A0(EnToryo* this, PlayState* play) {
 
 void func_80B20768(EnToryo* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s16 sp32;
-    s16 sp30;
+    s16     sp32;
+    s16     sp30;
 
     if (this->unk_1E4 == 3) {
         Actor_ProcessTalkRequest(&this->actor, play);
@@ -361,8 +360,8 @@ void func_80B20914(EnToryo* this, PlayState* play) {
 void EnToryo_Update(Actor* thisx, PlayState* play) {
     EnToryo* this = (EnToryo*)thisx;
     ColliderCylinder* collider = &this->collider;
-    Player* player = GET_PLAYER(play);
-    f32 rot;
+    Player*           player = GET_PLAYER(play);
+    f32               rot;
 
     Collider_UpdateCylinder(thisx, collider);
     CollisionCheck_SetOC(play, &play->colChkCtx, (Collider*)collider);
@@ -396,8 +395,7 @@ void EnToryo_Draw(Actor* thisx, PlayState* play) {
                           EnToryo_OverrideLimbDraw, EnToryo_PostLimbDraw, this);
 }
 
-s32 EnToryo_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                             void* thisx) {
+s32 EnToryo_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnToryo* this = (EnToryo*)thisx;
 
     if ((this->stateFlags & 8)) {

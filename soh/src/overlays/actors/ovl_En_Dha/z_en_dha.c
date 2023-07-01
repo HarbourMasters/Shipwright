@@ -192,15 +192,15 @@ void EnDha_SetupWait(EnDha* this) {
 }
 
 void EnDha_Wait(EnDha* this, PlayState* play) {
-    Vec3f zeroVec = { 0.0f, 0.0f, 0.0f }; // unused
-    Vec3f armPosMultiplier1 = { 0.0f, 0.0f, 55.0f };
-    Vec3f armPosMultiplier2 = { 0.0f, 0.0f, -54.0f };
+    Vec3f   zeroVec = { 0.0f, 0.0f, 0.0f }; // unused
+    Vec3f   armPosMultiplier1 = { 0.0f, 0.0f, 55.0f };
+    Vec3f   armPosMultiplier2 = { 0.0f, 0.0f, -54.0f };
     Player* player = GET_PLAYER(play);
-    s32 pad;
-    s32 pad2;
-    Vec3f playerPos = player->actor.world.pos;
-    Vec3s angle;
-    s16 yaw;
+    s32     pad;
+    s32     pad2;
+    Vec3f   playerPos = player->actor.world.pos;
+    Vec3s   angle;
+    s16     yaw;
 
     playerPos.x += Math_SinS(player->actor.shape.rot.y) * -5.0f;
     playerPos.z += Math_CosS(player->actor.shape.rot.y) * -5.0f;
@@ -340,8 +340,8 @@ void EnDha_SetupDeath(EnDha* this) {
 }
 
 void EnDha_Die(EnDha* this, PlayState* play) {
-    s16 angle;
-    Vec3f vec;
+    s16     angle;
+    Vec3f   vec;
     Player* player = GET_PLAYER(play);
 
     if ((player->stateFlags2 & 0x80) && (&this->actor == player->actor.parent)) {

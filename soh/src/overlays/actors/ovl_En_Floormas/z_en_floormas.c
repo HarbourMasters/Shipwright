@@ -123,8 +123,8 @@ static InitChainEntry sInitChain[] = {
 void EnFloormas_Init(Actor* thisx, PlayState* play2) {
     EnFloormas* this = (EnFloormas*)thisx;
     PlayState* play = play2;
-    s32 invisble;
-    s32 pad;
+    s32        invisble;
+    s32        pad;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 50.0f);
@@ -150,16 +150,16 @@ void EnFloormas_Init(Actor* thisx, PlayState* play2) {
     } else {
         // spawn first small floormaster
         this->actor.parent =
-            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_FLOORMAS, this->actor.world.pos.x,
-                        this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, invisble + SPAWN_SMALL, true);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_FLOORMAS, this->actor.world.pos.x, this->actor.world.pos.y,
+                        this->actor.world.pos.z, 0, 0, 0, invisble + SPAWN_SMALL, true);
         if (this->actor.parent == NULL) {
             Actor_Kill(&this->actor);
             return;
         }
         // spawn 2nd small floormaster
         this->actor.child =
-            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_FLOORMAS, this->actor.world.pos.x,
-                        this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, invisble + SPAWN_SMALL, true);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_FLOORMAS, this->actor.world.pos.x, this->actor.world.pos.y,
+                        this->actor.world.pos.z, 0, 0, 0, invisble + SPAWN_SMALL, true);
         if (this->actor.child == NULL) {
             Actor_Kill(this->actor.parent);
             Actor_Kill(&this->actor);
@@ -321,7 +321,7 @@ void EnFloormas_SetupSmDecideAction(EnFloormas* this) {
 void EnFloormas_SetupSmShrink(EnFloormas* this, PlayState* play) {
     static Vec3f velocity = { 0.0f, 0.0f, 0.0f };
     static Vec3f accel = { 0.0f, 0.0f, 0.0f };
-    Vec3f pos;
+    Vec3f        pos;
 
     this->actor.speedXZ = 0.0f;
     this->actor.velocity.y = 0.0f;
@@ -429,7 +429,7 @@ void EnFloormas_SetupFreeze(EnFloormas* this) {
 }
 
 void EnFloormas_Die(EnFloormas* this, PlayState* play) {
-    //Originally was doing > 0.004f, better fix thanks Gary :D
+    // Originally was doing > 0.004f, better fix thanks Gary :D
     if (this->actor.scale.x > (f32)0.004f) {
         // split
         this->actor.shape.rot.y = this->actor.yawTowardsPlayer + 0x8000;
@@ -528,8 +528,8 @@ void EnFloormas_Run(EnFloormas* this, PlayState* play) {
 
 void EnFloormas_Turn(EnFloormas* this, PlayState* play) {
     char pad[4];
-    f32 sp30;
-    f32 sp2C;
+    f32  sp30;
+    f32  sp2C;
 
     if (SkelAnime_Update(&this->skelAnime)) {
         EnFloormas_SetupStand(this);
@@ -568,8 +568,8 @@ void EnFloormas_Hover(EnFloormas* this, PlayState* play) {
 
 void EnFloormas_Slide(EnFloormas* this, PlayState* play) {
     static Vec3f accel = { 0.0f, 0.0f, 0.0f };
-    Vec3f pos;
-    Vec3f velocity;
+    Vec3f        pos;
+    Vec3f        velocity;
 
     pos.x = this->actor.world.pos.x;
     pos.z = this->actor.world.pos.z;
@@ -700,7 +700,7 @@ void EnFloormas_SmWalk(EnFloormas* this, PlayState* play) {
 
 void EnFloormas_SmDecideAction(EnFloormas* this, PlayState* play) {
     Actor* primaryFloormas;
-    s32 isAgainstWall;
+    s32    isAgainstWall;
 
     SkelAnime_Update(&this->skelAnime);
     if (Animation_OnFrame(&this->skelAnime, 0.0f) || Animation_OnFrame(&this->skelAnime, 18.0f)) {
@@ -765,11 +765,11 @@ void EnFloormas_JumpAtLink(EnFloormas* this, PlayState* play) {
 }
 
 void EnFloormas_GrabLink(EnFloormas* this, PlayState* play) {
-    Player* player = GET_PLAYER(play);
+    Player*     player = GET_PLAYER(play);
     EnFloormas* parent;
     EnFloormas* child;
-    f32 yDelta;
-    f32 xzDelta;
+    f32         yDelta;
+    f32         xzDelta;
 
     if (SkelAnime_Update(&this->skelAnime)) {
         if (this->skelAnime.playSpeed > 0.0f) {
@@ -868,9 +868,9 @@ void EnFloormas_SmSlaveJumpAtMaster(EnFloormas* this, PlayState* play) {
 void EnFloormas_Merge(EnFloormas* this, PlayState* play) {
     EnFloormas* parent;
     EnFloormas* child;
-    s32 mergeCnt;
-    f32 prevScale;
-    f32 curScale;
+    s32         mergeCnt;
+    f32         prevScale;
+    f32         curScale;
 
     mergeCnt = 0;
 
@@ -1013,8 +1013,8 @@ void EnFloormas_ColliderCheck(EnFloormas* this, PlayState* play) {
                     }
                 } else {
                     if (this->actor.colChkInfo.damageEffect == 2) {
-                        EffectSsFCircle_Spawn(play, &this->actor, &this->actor.world.pos,
-                                              this->actor.scale.x * 4000.0f, this->actor.scale.x * 4000.0f);
+                        EffectSsFCircle_Spawn(play, &this->actor, &this->actor.world.pos, this->actor.scale.x * 4000.0f,
+                                              this->actor.scale.x * 4000.0f);
                     }
                     EnFloormas_SetupTakeDamage(this);
                 }
@@ -1084,8 +1084,8 @@ void EnFloormas_Update(Actor* thisx, PlayState* play) {
     }
 }
 
-s32 EnFloormas_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                void* thisx, Gfx** gfx) {
+s32 EnFloormas_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
+                                Gfx** gfx) {
     EnFloormas* this = (EnFloormas*)thisx;
 
     if (limbIndex == 1) {

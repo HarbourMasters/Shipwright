@@ -4,7 +4,8 @@
 #include "overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS \
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnGoma_Init(Actor* thisx, PlayState* play);
 void EnGoma_Destroy(Actor* thisx, PlayState* play);
@@ -96,7 +97,7 @@ static ColliderCylinderInit D_80A4B7CC = {
     { 15, 30, 10, { 0, 0, 0 } },
 };
 
-u8 sSpawnNum = 0;
+u8           sSpawnNum = 0;
 static Vec3f sDeadEffectVel = { 0.0f, 0.0f, 0.0f };
 
 static InitChainEntry sInitChain[] = {
@@ -198,8 +199,8 @@ void EnGoma_SetupFlee(EnGoma* this) {
 void EnGoma_Flee(EnGoma* this, PlayState* play) {
     SkelAnime_Update(&this->skelanime);
     Math_ApproachF(&this->actor.speedXZ, 20.0f / 3.0f, 0.5f, 2.0f);
-    Math_ApproachS(&this->actor.world.rot.y,
-                   Actor_WorldYawTowardActor(&this->actor, &GET_PLAYER(play)->actor) + 0x8000, 3, 2000);
+    Math_ApproachS(&this->actor.world.rot.y, Actor_WorldYawTowardActor(&this->actor, &GET_PLAYER(play)->actor) + 0x8000,
+                   3, 2000);
     Math_ApproachS(&this->actor.shape.rot.y, this->actor.world.rot.y, 2, 3000);
 
     if (this->actionTimer == 0) {
@@ -271,7 +272,7 @@ void EnGoma_EggFallToGround(EnGoma* this, PlayState* play) {
 
 void EnGoma_Egg(EnGoma* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 i;
+    s32     i;
 
     this->eggSquishAngle += 1.0f;
     Math_ApproachF(&this->eggSquishAmount, 0.1f, 1.0f, 0.005f);
@@ -293,8 +294,8 @@ void EnGoma_Egg(EnGoma* this, PlayState* play) {
             pos.x = Rand_CenteredFloat(30.0f) + this->actor.world.pos.x;
             pos.y = Rand_ZeroFloat(30.0f) + this->actor.world.pos.y;
             pos.z = Rand_CenteredFloat(30.0f) + this->actor.world.pos.z;
-            EffectSsHahen_Spawn(play, &pos, &vel, &acc, 0, (s16)(Rand_ZeroOne() * 5.0f) + 10, HAHEN_OBJECT_DEFAULT,
-                                10, NULL);
+            EffectSsHahen_Spawn(play, &pos, &vel, &acc, 0, (s16)(Rand_ZeroOne() * 5.0f) + 10, HAHEN_OBJECT_DEFAULT, 10,
+                                NULL);
         }
     }
 }
@@ -609,13 +610,13 @@ void EnGoma_LookAtPlayer(EnGoma* this, PlayState* play) {
 
 void EnGoma_UpdateHit(EnGoma* this, PlayState* play) {
     static Vec3f sShieldKnockbackVel = { 0.0f, 0.0f, 20.0f };
-    Player* player = GET_PLAYER(play);
+    Player*      player = GET_PLAYER(play);
 
     if (this->hurtTimer != 0) {
         this->hurtTimer--;
     } else {
         ColliderInfo* acHitInfo;
-        u8 swordDamage;
+        u8            swordDamage;
 
         if ((this->colCyl1.base.atFlags & 2) && this->actionFunc == EnGoma_Jump) {
             EnGoma_SetupLand(this);
@@ -703,7 +704,7 @@ void EnGoma_SetFloorRot(EnGoma* this) {
 
 void EnGoma_Update(Actor* thisx, PlayState* play) {
     EnGoma* this = (EnGoma*)thisx;
-    s32 pad;
+    s32     pad;
     Player* player = GET_PLAYER(play);
 
     if (this->actionTimer != 0) {
@@ -794,8 +795,8 @@ void EnGoma_Draw(Actor* thisx, PlayState* play) {
         case ENGOMA_NORMAL:
             this->actor.naviEnemyId = 0x03;
             Matrix_Translate(this->actor.world.pos.x,
-                             this->actor.world.pos.y + ((this->actor.shape.yOffset * this->actor.scale.y) +
-                                                        play->mainCamera.skyboxOffset.y),
+                             this->actor.world.pos.y +
+                                 ((this->actor.shape.yOffset * this->actor.scale.y) + play->mainCamera.skyboxOffset.y),
                              this->actor.world.pos.z, MTXMODE_NEW);
             Matrix_RotateX(this->slopePitch / (f32)0x8000 * M_PI, MTXMODE_APPLY);
             Matrix_RotateZ(this->slopeRoll / (f32)0x8000 * M_PI, MTXMODE_APPLY);
@@ -803,8 +804,8 @@ void EnGoma_Draw(Actor* thisx, PlayState* play) {
             Matrix_RotateX(this->actor.shape.rot.x / (f32)0x8000 * M_PI, MTXMODE_APPLY);
             Matrix_RotateZ(this->actor.shape.rot.z / (f32)0x8000 * M_PI, MTXMODE_APPLY);
             Matrix_Scale(this->actor.scale.x, this->actor.scale.y, this->actor.scale.z, MTXMODE_APPLY);
-            SkelAnime_DrawOpa(play, this->skelanime.skeleton, this->skelanime.jointTable, EnGoma_OverrideLimbDraw,
-                              NULL, this);
+            SkelAnime_DrawOpa(play, this->skelanime.skeleton, this->skelanime.jointTable, EnGoma_OverrideLimbDraw, NULL,
+                              this);
             break;
 
         case ENGOMA_EGG:
@@ -822,15 +823,13 @@ void EnGoma_Draw(Actor* thisx, PlayState* play) {
             Matrix_RotateY(-(this->eggSquishAngle * 0.15f), MTXMODE_APPLY);
             Matrix_Translate(0.0f, this->eggYOffset, 0.0f, MTXMODE_APPLY);
             Matrix_RotateX(this->eggPitch, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gObjectGolEggDL);
             Matrix_Pop();
             break;
 
         case ENGOMA_HATCH_DEBRIS:
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gBrownFragmentDL);
             break;
 
@@ -856,7 +855,7 @@ void EnGoma_Debris(EnGoma* this, PlayState* play) {
 
 void EnGoma_SpawnHatchDebris(EnGoma* this, PlayState* play2) {
     PlayState* play = play2;
-    s16 i;
+    s16        i;
 
     if (this->actor.params < 6) {
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 40, NA_SE_EN_GOMA_BJR_EGG2);
@@ -865,20 +864,19 @@ void EnGoma_SpawnHatchDebris(EnGoma* this, PlayState* play2) {
     }
 
     for (i = 0; i < 15; i++) {
-        Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_GOMA,
-                           Rand_CenteredFloat(10.0f) + this->actor.world.pos.x,
-                           Rand_CenteredFloat(10.0f) + this->actor.world.pos.y + 15.0f,
-                           Rand_CenteredFloat(10.0f) + this->actor.world.pos.z, 0, Rand_CenteredFloat(0x10000 - 0.01f),
-                           0, i + 10);
+        Actor_SpawnAsChild(
+            &play->actorCtx, &this->actor, play, ACTOR_EN_GOMA, Rand_CenteredFloat(10.0f) + this->actor.world.pos.x,
+            Rand_CenteredFloat(10.0f) + this->actor.world.pos.y + 15.0f,
+            Rand_CenteredFloat(10.0f) + this->actor.world.pos.z, 0, Rand_CenteredFloat(0x10000 - 0.01f), 0, i + 10);
     }
 }
 
 void EnGoma_BossLimb(EnGoma* this, PlayState* play) {
-    Vec3f vel = { 0.0f, 0.0f, 0.0f };
-    Vec3f accel = { 0.0f, 1.0f, 0.0f };
+    Vec3f       vel = { 0.0f, 0.0f, 0.0f };
+    Vec3f       accel = { 0.0f, 1.0f, 0.0f };
     Color_RGBA8 primColor = { 255, 255, 255, 255 };
     Color_RGBA8 envColor = { 0, 100, 255, 255 };
-    Vec3f pos;
+    Vec3f       pos;
 
     this->actor.world.pos.y -= 5.0f;
     Actor_UpdateBgCheckInfo(play, &this->actor, 50.0f, 50.0f, 100.0f, 4);

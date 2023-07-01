@@ -166,9 +166,9 @@ void EnReeba_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_80AE4F40(EnReeba* this, PlayState* play) {
-    f32 frames = Animation_GetLastFrame(&object_reeba_Anim_0001E4);
+    f32     frames = Animation_GetLastFrame(&object_reeba_Anim_0001E4);
     Player* player = GET_PLAYER(play);
-    s16 playerSpeed;
+    s16     playerSpeed;
 
     Animation_Change(&this->skelanime, &object_reeba_Anim_0001E4, 2.0f, 0.0f, frames, ANIMMODE_LOOP, -10.0f);
 
@@ -195,13 +195,13 @@ void func_80AE4F40(EnReeba* this, PlayState* play) {
 
 void func_80AE5054(EnReeba* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 playerLinearVel;
+    f32     playerLinearVel;
 
     SkelAnime_Update(&this->skelanime);
 
     if ((play->gameplayFrames % 4) == 0) {
-        Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale, 1,
-                                 8.0f, 500, 10, true);
+        Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale, 1, 8.0f,
+                                 500, 10, true);
     }
 
     if (this->unk_278 == 0) {
@@ -341,8 +341,8 @@ void func_80AE56E0(EnReeba* this, PlayState* play) {
 
     if ((this->unk_284 + 10.0f) <= this->actor.shape.yOffset) {
         if ((play->gameplayFrames % 4) == 0) {
-            Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale, 1,
-                                     8.0f, 500, 10, true);
+            Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, this->actor.shape.shadowScale, 1, 8.0f,
+                                     500, 10, true);
         }
 
         Math_ApproachF(&this->actor.shape.yOffset, this->unk_284, 1.0f, this->unk_288);
@@ -388,7 +388,7 @@ void func_80AE58EC(EnReeba* this, PlayState* play) {
 
 void func_80AE5938(EnReeba* this, PlayState* play) {
     Vec3f pos;
-    f32 scale;
+    f32   scale;
 
     if (this->unk_278 != 0) {
         if (this->actor.speedXZ < 0.0f) {
@@ -422,7 +422,7 @@ void func_80AE5938(EnReeba* this, PlayState* play) {
 
 void func_80AE5A9C(EnReeba* this, PlayState* play) {
     Vec3f pos;
-    f32 scale;
+    f32   scale;
 
     if (this->unk_278 != 0) {
         if ((this->unk_27E == 2) && ((this->unk_278 & 0xF) == 0)) {

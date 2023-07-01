@@ -13,7 +13,7 @@
 #define rYaw regs[10]
 #define rScale regs[11]
 
-u32 EffectSsFcircle_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsFcircle_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsFcircle_Draw(PlayState* play, u32 index, EffectSs* this);
 void EffectSsFcircle_Update(PlayState* play, u32 index, EffectSs* this);
 
@@ -44,10 +44,10 @@ u32 EffectSsFcircle_Init(PlayState* play, u32 index, EffectSs* this, void* initP
 
 void EffectSsFcircle_Draw(PlayState* play, u32 index, EffectSs* this) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    s32 pad;
-    f32 yScale;
-    f32 xzScale;
-    f32 scale;
+    s32              pad;
+    f32              yScale;
+    f32              xzScale;
+    f32              scale;
 
     OPEN_DISPS(gfxCtx);
 
@@ -58,8 +58,7 @@ void EffectSsFcircle_Draw(PlayState* play, u32 index, EffectSs* this) {
     Matrix_Translate(this->pos.x, this->pos.y, this->pos.z, MTXMODE_NEW);
     Matrix_Scale(xzScale, yScale, xzScale, MTXMODE_APPLY);
     Matrix_RotateY(this->rYaw * (M_PI / 0x8000), MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x08,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->gameplayFrames % 128, 0, 32, 64, 1, 0,

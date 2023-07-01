@@ -47,7 +47,7 @@ typedef enum {
 typedef union ItemOverride_Key {
     uint32_t all;
     struct {
-        char pad_;
+        char    pad_;
         uint8_t scene;
         uint8_t type;
         uint8_t flag;
@@ -58,13 +58,13 @@ typedef union ItemOverride_Value {
     uint32_t all;
     struct {
         uint16_t itemId;
-        uint8_t player;
-        uint8_t looksLikeItemId;
+        uint8_t  player;
+        uint8_t  looksLikeItemId;
     };
 } ItemOverride_Value;
 
 typedef struct ItemOverride {
-    ItemOverride_Key key;
+    ItemOverride_Key   key;
     ItemOverride_Value value;
 } ItemOverride;
 
@@ -85,11 +85,14 @@ enum class ItemLocationType {
 class SpoilerCollectionCheck {
   public:
     SpoilerCollectionCheckType type = SpoilerCollectionCheckType::SPOILER_CHK_NONE;
-    uint8_t scene = 0;
-    uint8_t flag = 0;
+    uint8_t                    scene = 0;
+    uint8_t                    flag = 0;
 
-    SpoilerCollectionCheck() {}
-    SpoilerCollectionCheck(SpoilerCollectionCheckType type_, uint8_t scene_, uint8_t flag_) : type(type_), scene(scene_), flag(flag_) {}
+    SpoilerCollectionCheck() {
+    }
+    SpoilerCollectionCheck(SpoilerCollectionCheckType type_, uint8_t scene_, uint8_t flag_)
+        : type(type_), scene(scene_), flag(flag_) {
+    }
 
     static auto None() {
         return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_NONE, 0x00, 0x00);
@@ -142,7 +145,7 @@ class SpoilerCollectionCheck {
     static auto BigPoePoints() {
         return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_POE_POINTS, 0x00, 0x00);
     }
-    
+
     static auto Gravedigger(uint8_t scene, uint8_t flag) {
         return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_GRAVEDIGGER, scene, flag);
     }
@@ -165,47 +168,53 @@ class SpoilerCollectionCheck {
 };
 
 class ItemLocation {
-public:
+  public:
     ItemLocation() = default;
-    ItemLocation(RandomizerCheck rc_, uint8_t scene_, ItemLocationType type_, uint8_t flag_, std::string name_, uint32_t hintKey_, uint32_t vanillaItem_, std::vector<Category> categories_, uint16_t price_ = 0, SpoilerCollectionCheck collectionCheck_ = SpoilerCollectionCheck(), SpoilerCollectionCheckGroup collectionCheckGroup_ = SpoilerCollectionCheckGroup::GROUP_NO_GROUP)
-        : rc(rc_), scene(scene_), type(type_), flag(flag_), name(std::move(name_)), hintKey(hintKey_), vanillaItem(vanillaItem_), categories(std::move(categories_)), price(price_), collectionCheck(collectionCheck_), collectionCheckGroup(collectionCheckGroup_) {}
+    ItemLocation(RandomizerCheck rc_, uint8_t scene_, ItemLocationType type_, uint8_t flag_, std::string name_,
+                 uint32_t hintKey_, uint32_t vanillaItem_, std::vector<Category> categories_, uint16_t price_ = 0,
+                 SpoilerCollectionCheck      collectionCheck_ = SpoilerCollectionCheck(),
+                 SpoilerCollectionCheckGroup collectionCheckGroup_ = SpoilerCollectionCheckGroup::GROUP_NO_GROUP)
+        : rc(rc_), scene(scene_), type(type_), flag(flag_), name(std::move(name_)), hintKey(hintKey_),
+          vanillaItem(vanillaItem_), categories(std::move(categories_)), price(price_),
+          collectionCheck(collectionCheck_), collectionCheckGroup(collectionCheckGroup_) {
+    }
 
     ItemOverride_Key Key() const {
         ItemOverride_Key key;
         key.all = 0;
 
         key.scene = scene;
-        key.type = static_cast<uint8_t>(type); //TODO make sure these match up
+        key.type = static_cast<uint8_t>(type); // TODO make sure these match up
         key.flag = flag;
         return key;
     }
 
     RandomizerCheck GetRandomizerCheck() const {
-      return rc;
+        return rc;
     }
 
     SpoilerCollectionCheck GetCollectionCheck() const {
-      return collectionCheck;
+        return collectionCheck;
     }
 
     SpoilerCollectionCheckGroup GetCollectionCheckGroup() const {
-      return collectionCheckGroup;
+        return collectionCheckGroup;
     }
 
     uint8_t GetScene() const {
-      return scene;
+        return scene;
     }
 
     uint8_t GetFlag() const {
-      return flag;
+        return flag;
     }
 
     bool IsAddedToPool() const {
-      return addedToPool;
+        return addedToPool;
     }
 
     void AddToPool() {
-      addedToPool = true;
+        addedToPool = true;
     }
 
     const uint32_t GetHintKey() const {
@@ -213,19 +222,19 @@ public:
     }
 
     void RemoveFromPool() {
-      addedToPool = false;
+        addedToPool = false;
     }
 
     const std::string& GetName() const {
-      return name;
+        return name;
     }
 
     const Text& GetPlacedItemName() const {
-      return ItemTable(placedItem).GetName();
+        return ItemTable(placedItem).GetName();
     }
 
     const Item& GetPlacedItem() const {
-      return ItemTable(placedItem);
+        return ItemTable(placedItem);
     }
 
     uint32_t GetPlacedItemKey() const {
@@ -233,279 +242,402 @@ public:
     }
 
     uint32_t GetPlaceduint32_t() const {
-      return placedItem;
+        return placedItem;
     }
 
     void SetPlacedItem(const uint32_t item) {
-      placedItem = item;
-      SetPrice(ItemTable(placedItem).GetPrice());
+        placedItem = item;
+        SetPrice(ItemTable(placedItem).GetPrice());
     }
 
-    //Saves an item to be set as placedItem later
+    // Saves an item to be set as placedItem later
     void SetDelayedItem(const uint32_t item) {
-      delayedItem = item;
+        delayedItem = item;
     }
 
-    //Place the vanilla item in this location
+    // Place the vanilla item in this location
     void PlaceVanillaItem() {
-      placedItem = vanillaItem;
+        placedItem = vanillaItem;
     }
 
     void ApplyPlacedItemEffect() {
-      ItemTable(placedItem).ApplyEffect();
+        ItemTable(placedItem).ApplyEffect();
     }
 
-    //Set placedItem as item saved in SetDelayedItem
+    // Set placedItem as item saved in SetDelayedItem
     void SaveDelayedItem() {
-      placedItem = delayedItem;
-      delayedItem = NONE;
+        placedItem = delayedItem;
+        delayedItem = NONE;
     }
 
     uint16_t GetPrice() const {
-      if (ItemTable(placedItem).GetItemType() == ITEMTYPE_SHOP) {
-        return ItemTable(placedItem).GetPrice();
-      }
-      return price;
+        if (ItemTable(placedItem).GetItemType() == ITEMTYPE_SHOP) {
+            return ItemTable(placedItem).GetPrice();
+        }
+        return price;
     }
 
     void SetPrice(uint16_t price_) {
-      //don't override price if the price was set for shopsanity/scrubsanity
-      if (hasShopsanityPrice || hasScrubsanityPrice) {
-        return;
-      }
-      price = price_;
+        // don't override price if the price was set for shopsanity/scrubsanity
+        if (hasShopsanityPrice || hasScrubsanityPrice) {
+            return;
+        }
+        price = price_;
     }
 
     void SetShopsanityPrice(uint16_t price_) {
-      price = price_;
-      hasShopsanityPrice = true;
+        price = price_;
+        hasShopsanityPrice = true;
     }
 
     void SetScrubsanityPrice(uint16_t price_) {
-      price = price_;
-      hasScrubsanityPrice = true;
+        price = price_;
+        hasScrubsanityPrice = true;
     }
 
     bool HasShopsanityPrice() const {
-      return hasShopsanityPrice;
+        return hasShopsanityPrice;
     }
 
     bool HasScrubsanityPrice() const {
-      return hasScrubsanityPrice;
+        return hasScrubsanityPrice;
     }
 
     bool IsExcluded() const {
-      return excludedOption.Value<bool>();
+        return excludedOption.Value<bool>();
     }
 
     bool IsCategory(Category category) const {
-      return std::any_of(categories.begin(), categories.end(),
-                         [category](auto entry) { return entry == category; });
+        return std::any_of(categories.begin(), categories.end(), [category](auto entry) { return entry == category; });
     }
 
     bool IsDungeon() const {
-      return (type != ItemLocationType::GSToken && (scene < 0x0E || (scene > 0x10 && scene < 0x1A))) || (type == ItemLocationType::GSToken && scene < 0x0A);
+        return (type != ItemLocationType::GSToken && (scene < 0x0E || (scene > 0x10 && scene < 0x1A))) ||
+               (type == ItemLocationType::GSToken && scene < 0x0A);
     }
 
     bool IsOverworld() const {
-      return !IsDungeon();
+        return !IsDungeon();
     }
 
     bool IsShop() const {
         return (scene >= 0x2C && scene <= 0x32);
     }
 
-    Option * GetExcludedOption() {
-      return &excludedOption;
+    Option* GetExcludedOption() {
+        return &excludedOption;
     }
 
     const uint32_t Getuint32_t() const {
-      return hintKey;
+        return hintKey;
     }
 
     const HintText& GetHint() const {
-      return Hint(hintKey);
+        return Hint(hintKey);
     }
 
     bool IsHintedAt() const {
-      return hintedAt;
+        return hintedAt;
     }
 
     void SetAsHinted() {
-      hintedAt = true;
+        hintedAt = true;
     }
 
     bool IsHidden() const {
-      return hidden;
+        return hidden;
     }
 
     void SetHidden(const bool hidden_) {
-      hidden = hidden_;
+        hidden = hidden_;
     }
 
     bool IsHintable() const {
-      return isHintable;
+        return isHintable;
     }
 
     void SetHintedLocation(uint32_t location) {
-      hintedLocation = location;
+        hintedLocation = location;
     }
 
     uint32_t GetHintedLocation() {
-      return hintedLocation;
+        return hintedLocation;
     }
 
     void SetHintType(HintType type) {
-      hintType = type;
+        hintType = type;
     }
 
     HintType GetHintType() {
-      return hintType;
+        return hintType;
     }
 
-    void SetHintedRegion (std::string region) {
-      hintedRegion = region;
+    void SetHintedRegion(std::string region) {
+        hintedRegion = region;
     }
 
     std::string GetHintedRegion() {
-      return hintedRegion;
+        return hintedRegion;
     }
 
     void SetAsHintable() {
-      isHintable = true;
+        isHintable = true;
     }
 
     void SetParentRegion(uint32_t region) {
-      parentRegion = region;
+        parentRegion = region;
     }
 
     uint32_t GetParentRegionKey() const {
-      return parentRegion;
+        return parentRegion;
     }
 
     void AddExcludeOption() {
-      //setting description  /*--------------------------------------------------*/
-      std::string_view desc = "Decide which locations you want to exclude from\n"
-                              "the location pool. Locations that require an item\n"
-                              "to be placed at them based on your current\n"
-                              "settings cannot be excluded and won't be shown\n"
-                              "unless you change your settings.\n"
-                              "\n"
-                              "If you exclude too many locations, it might not\n"
-                              "be possible to fill the world.";
+        // setting description  /*--------------------------------------------------*/
+        std::string_view desc = "Decide which locations you want to exclude from\n"
+                                "the location pool. Locations that require an item\n"
+                                "to be placed at them based on your current\n"
+                                "settings cannot be excluded and won't be shown\n"
+                                "unless you change your settings.\n"
+                                "\n"
+                                "If you exclude too many locations, it might not\n"
+                                "be possible to fill the world.";
 
-      //add option to forbid any location from progress items
-      if (name.length() < 23) {
-        excludedOption = Option::Bool(name, {"Include", "Exclude"}, {desc});
-      } else {
-        //insert a newline character if the text is too long for one row
-        size_t lastSpace = name.rfind(' ', 23);
-        std::string settingText = name;
-        settingText.replace(lastSpace, 1, "\n ");
+        // add option to forbid any location from progress items
+        if (name.length() < 23) {
+            excludedOption = Option::Bool(name, { "Include", "Exclude" }, { desc });
+        } else {
+            // insert a newline character if the text is too long for one row
+            size_t      lastSpace = name.rfind(' ', 23);
+            std::string settingText = name;
+            settingText.replace(lastSpace, 1, "\n ");
 
-        excludedOption = Option::Bool(settingText, {"Include", "Exclude"}, {desc});
-      }
-      
-      // RANDOTODO: this without string compares and loops
-      bool alreadyAdded = false;
-      for(const Option* location : Settings::excludeLocationsOptionsVector[collectionCheckGroup]) {
-        if (location->GetName() == excludedOption.GetName()) {
-          alreadyAdded = true;
+            excludedOption = Option::Bool(settingText, { "Include", "Exclude" }, { desc });
         }
-      }
-      if (!alreadyAdded) {
-        Settings::excludeLocationsOptionsVector[collectionCheckGroup].push_back(&excludedOption);
-      }
+
+        // RANDOTODO: this without string compares and loops
+        bool alreadyAdded = false;
+        for (const Option* location : Settings::excludeLocationsOptionsVector[collectionCheckGroup]) {
+            if (location->GetName() == excludedOption.GetName()) {
+                alreadyAdded = true;
+            }
+        }
+        if (!alreadyAdded) {
+            Settings::excludeLocationsOptionsVector[collectionCheckGroup].push_back(&excludedOption);
+        }
     }
 
-    static auto Base(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(), SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
-        return ItemLocation{rc, scene, ItemLocationType::Base, flag, std::move(name), hintKey, vanillaItem, std::move(categories), 0, collectionCheck, collectionCheckGroup};
+    static auto Base(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey,
+                     const uint32_t vanillaItem, std::vector<Category>&& categories,
+                     SpoilerCollectionCheck      collectionCheck = SpoilerCollectionCheck(),
+                     SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+        return ItemLocation{ rc,
+                             scene,
+                             ItemLocationType::Base,
+                             flag,
+                             std::move(name),
+                             hintKey,
+                             vanillaItem,
+                             std::move(categories),
+                             0,
+                             collectionCheck,
+                             collectionCheckGroup };
     }
 
-    static auto Chest(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
-        return ItemLocation{rc, scene, ItemLocationType::Chest, flag, std::move(name), hintKey, vanillaItem, std::move(categories), 0, SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_CHEST, scene, flag), collectionCheckGroup};
+    static auto Chest(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey,
+                      const uint32_t vanillaItem, std::vector<Category>&& categories,
+                      SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+        return ItemLocation{ rc,
+                             scene,
+                             ItemLocationType::Chest,
+                             flag,
+                             std::move(name),
+                             hintKey,
+                             vanillaItem,
+                             std::move(categories),
+                             0,
+                             SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_CHEST, scene, flag),
+                             collectionCheckGroup };
     }
 
-    static auto Chest(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck, SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
-        return ItemLocation{rc, scene, ItemLocationType::Chest, flag, std::move(name), hintKey, vanillaItem, std::move(categories), 0, collectionCheck, collectionCheckGroup};
+    static auto Chest(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey,
+                      const uint32_t vanillaItem, std::vector<Category>&& categories,
+                      SpoilerCollectionCheck      collectionCheck,
+                      SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+        return ItemLocation{ rc,
+                             scene,
+                             ItemLocationType::Chest,
+                             flag,
+                             std::move(name),
+                             hintKey,
+                             vanillaItem,
+                             std::move(categories),
+                             0,
+                             collectionCheck,
+                             collectionCheckGroup };
     }
 
-    static auto Collectable(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
-        return ItemLocation{rc, scene, ItemLocationType::Collectable, flag, std::move(name), hintKey, vanillaItem, std::move(categories), 0, SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_COLLECTABLE, scene, flag), collectionCheckGroup};
+    static auto
+    Collectable(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey,
+                const uint32_t vanillaItem, std::vector<Category>&& categories,
+                SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+        return ItemLocation{ rc,
+                             scene,
+                             ItemLocationType::Collectable,
+                             flag,
+                             std::move(name),
+                             hintKey,
+                             vanillaItem,
+                             std::move(categories),
+                             0,
+                             SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_COLLECTABLE, scene, flag),
+                             collectionCheckGroup };
     }
 
-    static auto Collectable(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck, SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
-        return ItemLocation{rc, scene, ItemLocationType::Collectable, flag, std::move(name), hintKey, vanillaItem, std::move(categories), 0, collectionCheck, collectionCheckGroup};
+    static auto
+    Collectable(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey,
+                const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck,
+                SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+        return ItemLocation{ rc,
+                             scene,
+                             ItemLocationType::Collectable,
+                             flag,
+                             std::move(name),
+                             hintKey,
+                             vanillaItem,
+                             std::move(categories),
+                             0,
+                             collectionCheck,
+                             collectionCheckGroup };
     }
 
-    static auto GSToken(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey, std::vector<Category>&& categories, SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
-        return ItemLocation{rc, scene, ItemLocationType::GSToken, flag, std::move(name), hintKey, GOLD_SKULLTULA_TOKEN, std::move(categories), 0, SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_GOLD_SKULLTULA, scene, flag), collectionCheckGroup};
+    static auto
+    GSToken(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey,
+            std::vector<Category>&&     categories,
+            SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+        return ItemLocation{ rc,
+                             scene,
+                             ItemLocationType::GSToken,
+                             flag,
+                             std::move(name),
+                             hintKey,
+                             GOLD_SKULLTULA_TOKEN,
+                             std::move(categories),
+                             0,
+                             SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_GOLD_SKULLTULA, scene,
+                                                    flag),
+                             collectionCheckGroup };
     }
 
-    static auto GrottoScrub(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(), SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
-        return ItemLocation{rc, scene, ItemLocationType::GrottoScrub, flag, std::move(name), hintKey, vanillaItem, std::move(categories), 0, collectionCheck, collectionCheckGroup};
+    static auto
+    GrottoScrub(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey,
+                const uint32_t vanillaItem, std::vector<Category>&& categories,
+                SpoilerCollectionCheck      collectionCheck = SpoilerCollectionCheck(),
+                SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+        return ItemLocation{ rc,
+                             scene,
+                             ItemLocationType::GrottoScrub,
+                             flag,
+                             std::move(name),
+                             hintKey,
+                             vanillaItem,
+                             std::move(categories),
+                             0,
+                             collectionCheck,
+                             collectionCheckGroup };
     }
 
-    static auto Delayed(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(), SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
-        return ItemLocation{rc, scene, ItemLocationType::Delayed, flag, std::move(name), hintKey, vanillaItem, std::move(categories), 0, collectionCheck, collectionCheckGroup};
+    static auto
+    Delayed(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey,
+            const uint32_t vanillaItem, std::vector<Category>&& categories,
+            SpoilerCollectionCheck      collectionCheck = SpoilerCollectionCheck(),
+            SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+        return ItemLocation{ rc,
+                             scene,
+                             ItemLocationType::Delayed,
+                             flag,
+                             std::move(name),
+                             hintKey,
+                             vanillaItem,
+                             std::move(categories),
+                             0,
+                             collectionCheck,
+                             collectionCheckGroup };
     }
 
-    static auto Reward(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(), SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
-        return ItemLocation{rc, scene, ItemLocationType::TempleReward, flag, std::move(name), hintKey, vanillaItem, std::move(categories), 0, collectionCheck, collectionCheckGroup};
+    static auto Reward(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey,
+                       const uint32_t vanillaItem, std::vector<Category>&& categories,
+                       SpoilerCollectionCheck      collectionCheck = SpoilerCollectionCheck(),
+                       SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+        return ItemLocation{ rc,
+                             scene,
+                             ItemLocationType::TempleReward,
+                             flag,
+                             std::move(name),
+                             hintKey,
+                             vanillaItem,
+                             std::move(categories),
+                             0,
+                             collectionCheck,
+                             collectionCheckGroup };
     }
 
-    static auto OtherHint(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, std::vector<Category>&& categories) {
-        return ItemLocation{rc, scene, ItemLocationType::OtherHint, flag, std::move(name), NONE, NONE, std::move(categories)};
+    static auto OtherHint(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name,
+                          std::vector<Category>&& categories) {
+        return ItemLocation{ rc,   scene, ItemLocationType::OtherHint, flag, std::move(name),
+                             NONE, NONE,  std::move(categories) };
     }
 
-    static auto HintStone(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, std::vector<Category>&& categories) {
-        return ItemLocation{rc, scene, ItemLocationType::HintStone, flag, std::move(name), NONE, NONE, std::move(categories)};
+    static auto HintStone(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name,
+                          std::vector<Category>&& categories) {
+        return ItemLocation{ rc,   scene, ItemLocationType::HintStone, flag, std::move(name),
+                             NONE, NONE,  std::move(categories) };
     }
 
     void ResetVariables() {
-      checked = false;
-      addedToPool = false;
-      placedItem = NONE;
-      delayedItem = NONE;
-      hintedAt = false;
-      isHintable = false;
-      price = 0;
-      hasShopsanityPrice =  false;
-      hasScrubsanityPrice =  false;
-      hidden = false;
+        checked = false;
+        addedToPool = false;
+        placedItem = NONE;
+        delayedItem = NONE;
+        hintedAt = false;
+        isHintable = false;
+        price = 0;
+        hasShopsanityPrice = false;
+        hasScrubsanityPrice = false;
+        hidden = false;
     }
 
-private:
-    RandomizerCheck rc;
-    uint8_t scene;
+  private:
+    RandomizerCheck  rc;
+    uint8_t          scene;
     ItemLocationType type;
-    uint8_t flag;
-    bool checked = false;
+    uint8_t          flag;
+    bool             checked = false;
 
-    std::string name;
-    uint32_t hintKey = NONE;
-    uint32_t vanillaItem = NONE;
-    bool hintedAt = false;
-    std::vector<Category> categories;
-    bool addedToPool = false;
-    uint32_t placedItem = NONE;
-    uint32_t hintedLocation = NONE;
-    HintType hintType;
-    std::string hintedRegion;
-    uint32_t delayedItem = NONE;
-    Option excludedOption = Option::Bool(name, {"Include", "Exclude"}, {"", ""});
-    uint16_t price = 0;
-    SpoilerCollectionCheck collectionCheck;
+    std::string                 name;
+    uint32_t                    hintKey = NONE;
+    uint32_t                    vanillaItem = NONE;
+    bool                        hintedAt = false;
+    std::vector<Category>       categories;
+    bool                        addedToPool = false;
+    uint32_t                    placedItem = NONE;
+    uint32_t                    hintedLocation = NONE;
+    HintType                    hintType;
+    std::string                 hintedRegion;
+    uint32_t                    delayedItem = NONE;
+    Option                      excludedOption = Option::Bool(name, { "Include", "Exclude" }, { "", "" });
+    uint16_t                    price = 0;
+    SpoilerCollectionCheck      collectionCheck;
     SpoilerCollectionCheckGroup collectionCheckGroup;
-    bool isHintable = false;
-    uint32_t parentRegion = NONE;
-    bool hasShopsanityPrice = false;
-    bool hasScrubsanityPrice = false;
-    bool hidden = false;
+    bool                        isHintable = false;
+    uint32_t                    parentRegion = NONE;
+    bool                        hasShopsanityPrice = false;
+    bool                        hasScrubsanityPrice = false;
+    bool                        hidden = false;
 };
 
 class ItemOverride_Compare {
-public:
+  public:
     bool operator()(ItemOverride lhs, ItemOverride rhs) const {
         return lhs.key.all < rhs.key.all;
     }
@@ -527,15 +659,15 @@ extern std::vector<uint32_t> overworldLocations;
 extern std::vector<uint32_t> allLocations;
 extern std::vector<uint32_t> everyPossibleLocation;
 
-//set of overrides to write to the patch
+// set of overrides to write to the patch
 extern std::set<ItemOverride, ItemOverride_Compare> overrides;
 extern std::unordered_map<RandomizerCheck, uint8_t> iceTrapModels;
 
 extern std::vector<std::vector<uint32_t>> playthroughLocations;
-extern std::vector<uint32_t> wothLocations;
-extern bool playthroughBeatable;
-extern bool allLocationsReachable;
-extern bool showItemProgress;
+extern std::vector<uint32_t>              wothLocations;
+extern bool                               playthroughBeatable;
+extern bool                               allLocationsReachable;
+extern bool                               showItemProgress;
 
 extern uint16_t itemsPlaced;
 
@@ -543,8 +675,8 @@ void GenerateLocationPool();
 void PlaceItemInLocation(uint32_t loc, uint32_t item, bool applyEffectImmediately = false, bool setHidden = false);
 std::vector<uint32_t> GetLocations(const std::vector<uint32_t>& locationPool, Category categoryInclude,
                                    Category categoryExclude = Category::cNull);
-void LocationReset();
-void ItemReset();
-void HintReset();
-void AddExcludedOptions();
-void CreateItemOverrides();
+void                  LocationReset();
+void                  ItemReset();
+void                  HintReset();
+void                  AddExcludedOptions();
+void                  CreateItemOverrides();

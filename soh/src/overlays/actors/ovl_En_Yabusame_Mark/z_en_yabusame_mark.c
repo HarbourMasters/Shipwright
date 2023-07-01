@@ -120,11 +120,11 @@ void func_80B42F74(EnYabusameMark* this, PlayState* play) {
     Vec3f effectVelocity = { 0.0f, 0.0f, 0.0f };
     Vec3f arrowHitPos;
     Vec3f distanceFromCenter;
-    s32 pad;
-    s32 scoreIndex;
-    f32 scoreDistance100;
-    f32 scoreDistance60;
-    f32 scoreDistance30;
+    s32   pad;
+    s32   scoreIndex;
+    f32   scoreDistance100;
+    f32   scoreDistance60;
+    f32   scoreDistance30;
 
     if (this->collider.base.acFlags & AC_HIT) {
         this->collider.base.acFlags &= ~AC_HIT;
@@ -189,7 +189,7 @@ void func_80B42F74(EnYabusameMark* this, PlayState* play) {
 void EnYabusameMark_Update(Actor* thisx, PlayState* play) {
     EnYabusameMark* this = (EnYabusameMark*)thisx;
     Vec3f* vertexArray;
-    u32 arrayIndex;
+    u32    arrayIndex;
 
     this->actionFunc(this, play);
     arrayIndex = this->typeIndex * 4;

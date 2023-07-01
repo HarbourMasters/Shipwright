@@ -182,7 +182,7 @@ OSScTask* func_800C89D4(SchedContext* sc, OSScTask* task) {
 }
 
 s32 Sched_Schedule(SchedContext* sc, OSScTask** sp, OSScTask** dp, s32 state) {
-    s32 ret = state;
+    s32       ret = state;
     OSScTask* gfxTask = sc->gfxListHead;
     OSScTask* audioTask = sc->audioListHead;
 
@@ -292,8 +292,8 @@ void Sched_RunTask(SchedContext* sc, OSScTask* spTask, OSScTask* dpTask) {
 void Sched_HandleEntry(SchedContext* sc) {
     OSScTask* nextRSP = NULL;
     OSScTask* nextRDP = NULL;
-    s32 state;
-    OSMesg msg = OS_MESG_PTR(NULL);
+    s32       state;
+    OSMesg    msg = OS_MESG_PTR(NULL);
 
     while (osRecvMesg(&sc->cmdQ, &msg, OS_MESG_NOBLOCK) != -1) {
         Sched_QueueTask(sc, msg.ptr);
@@ -355,7 +355,7 @@ void Sched_HandleRSPDone(SchedContext* sc) {
     OSScTask* curRSPTask;
     OSScTask* nextRSP = NULL;
     OSScTask* nextRDP = NULL;
-    s32 state;
+    s32       state;
 
     assert(sc->curRSPTask != NULL);
 
@@ -403,7 +403,7 @@ void Sched_HandleRDPDone(SchedContext* sc) {
     OSScTask* curTask;
     OSScTask* nextRSP = NULL;
     OSScTask* nextRDP = NULL;
-    s32 state;
+    s32       state;
 
     gRDPTotalTime = osGetTime() - sRDPStartTime;
     assert(sc->curRDPTask != NULL);
@@ -430,7 +430,7 @@ void Sched_SendEntryMsg(SchedContext* sc) {
 }
 
 void Sched_ThreadEntry(void* arg) {
-    OSMesg msg;
+    OSMesg        msg;
     SchedContext* sc = (SchedContext*)arg;
 
     msg.ptr = NULL;
@@ -480,7 +480,7 @@ void Sched_ThreadEntry(void* arg) {
 }
 
 void Sched_Init(SchedContext* sc, void* stack, OSPri priority, UNK_TYPE arg3, UNK_TYPE arg4, IrqMgr* irqMgr) {
-    memset(sc,0, sizeof(SchedContext));
+    memset(sc, 0, sizeof(SchedContext));
     sc->unk_24C = 1;
     osCreateMesgQueue(&sc->interruptQ, sc->intBuf, 8);
     osCreateMesgQueue(&sc->cmdQ, sc->cmdMsgBuf, 8);

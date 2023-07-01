@@ -2,15 +2,15 @@
 
 void guRotateF(f32 m[4][4], f32 a, f32 x, f32 y, f32 z) {
     static f32 D_80134D10 = M_PI / 180.0f;
-    f32 sine;
-    f32 cosine;
-    f32 ab;
-    f32 bc;
-    f32 ca;
-    f32 t;
-    f32 xs;
-    f32 ys;
-    f32 zs;
+    f32        sine;
+    f32        cosine;
+    f32        ab;
+    f32        bc;
+    f32        ca;
+    f32        t;
+    f32        xs;
+    f32        ys;
+    f32        zs;
 
     guNormalize(&x, &y, &z);
 

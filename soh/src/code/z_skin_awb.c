@@ -6,13 +6,13 @@
  * Initialises the Vtx buffers used for limb at index `limbIndex`
  */
 void Skin_InitAnimatedLimb(PlayState* play, Skin* skin, s32 limbIndex) {
-    s32 i;
-    SkinLimb** skeleton = SEGMENTED_TO_VIRTUAL(skin->skeletonHeader->segment);
+    s32                   i;
+    SkinLimb**            skeleton = SEGMENTED_TO_VIRTUAL(skin->skeletonHeader->segment);
     SkinAnimatedLimbData* animatedLimbData =
         SEGMENTED_TO_VIRTUAL(((SkinLimb*)SEGMENTED_TO_VIRTUAL(skeleton[limbIndex]))->segment);
     SkinLimbModif* limbModifications = SEGMENTED_TO_VIRTUAL(animatedLimbData->limbModifications);
     SkinLimbModif* modifEntry;
-    SkinVertex* skinVtxEntry;
+    SkinVertex*    skinVtxEntry;
 
     for (i = 0; i < ARRAY_COUNT(skin->vtxTable->buf); i++) {
         Vtx* vtxBuf = skin->vtxTable[limbIndex].buf[i];
@@ -41,9 +41,9 @@ void Skin_Init(PlayState* play, Skin* skin, SkeletonHeader* skeletonHeader, Anim
     if (ResourceMgr_OTRSigCheck(skeletonHeader))
         skeletonHeader = ResourceMgr_LoadSkeletonByName(skeletonHeader, NULL);
 
-    s32 limbCount;
-    s32 i;
-    SkinLimb** skeleton;
+    s32             limbCount;
+    s32             i;
+    SkinLimb**      skeleton;
     SkeletonHeader* virtSkelHeader = SEGMENTED_TO_VIRTUAL(skeletonHeader);
 
     skin->limbCount = virtSkelHeader->limbCount;
@@ -58,7 +58,7 @@ void Skin_Init(PlayState* play, Skin* skin, SkeletonHeader* skeletonHeader, Anim
 
     for (i = 0; i < limbCount; i++) {
         SkinLimbVtx* vtxEntry = &skin->vtxTable[i];
-        SkinLimb* limb = SEGMENTED_TO_VIRTUAL(skeleton[i]);
+        SkinLimb*    limb = SEGMENTED_TO_VIRTUAL(skeleton[i]);
 
         if ((limb->segmentType != SKIN_LIMB_TYPE_ANIMATED) || (limb->segment == NULL)) {
             vtxEntry->index = 0;
@@ -70,12 +70,10 @@ void Skin_Init(PlayState* play, Skin* skin, SkeletonHeader* skeletonHeader, Anim
 
             vtxEntry->index = 0;
 
-            vtxEntry->buf[0] =
-                ZELDA_ARENA_MALLOC_DEBUG(animatedLimbData->totalVtxCount * sizeof(Vtx));
+            vtxEntry->buf[0] = ZELDA_ARENA_MALLOC_DEBUG(animatedLimbData->totalVtxCount * sizeof(Vtx));
             assert(vtxEntry->buf[0] != NULL);
 
-            vtxEntry->buf[1] =
-                ZELDA_ARENA_MALLOC_DEBUG(animatedLimbData->totalVtxCount * sizeof(Vtx));
+            vtxEntry->buf[1] = ZELDA_ARENA_MALLOC_DEBUG(animatedLimbData->totalVtxCount * sizeof(Vtx));
             assert(vtxEntry->buf[1] != NULL);
 
             Skin_InitAnimatedLimb(play, skin, i);
@@ -112,11 +110,11 @@ void Skin_Free(PlayState* play, Skin* skin) {
 }
 
 s32 func_800A698C(Skin* skin, SkinLimb** skeleton, MtxF* limbMatrices, u8 parentIndex, u8 limbIndex) {
-    s32 pad;
+    s32       pad;
     SkinLimb* limb = SEGMENTED_TO_VIRTUAL(skeleton[limbIndex]);
-    MtxF* mtx;
-    s32 ret;
-    MtxF sp28;
+    MtxF*     mtx;
+    s32       ret;
+    MtxF      sp28;
 
     if (parentIndex == LIMB_DONE) {
         SkinMatrix_GetClear(&mtx);
@@ -148,17 +146,17 @@ s32 func_800A698C(Skin* skin, SkinLimb** skeleton, MtxF* limbMatrices, u8 parent
  * Recursively applies matrix tranformations to each limb
  */
 s32 Skin_ApplyAnimTransformations(Skin* skin, MtxF* limbMatrices, Actor* actor, s32 setTranslation) {
-    s32 i;
-    s32 pad;
-    f32 yRot;
-    f32 xRot;
-    f32 zRot;
-    s32 ret;
-    f32 yTransl;
-    f32 xTransl;
-    f32 zTransl;
+    s32        i;
+    s32        pad;
+    f32        yRot;
+    f32        xRot;
+    f32        zRot;
+    s32        ret;
+    f32        yTransl;
+    f32        xTransl;
+    f32        zTransl;
     SkinLimb** skeleton = SEGMENTED_TO_VIRTUAL(skin->skeletonHeader->segment);
-    Vec3s* jointRot = &skin->skelAnime.jointTable[0];
+    Vec3s*     jointRot = &skin->skelAnime.jointTable[0];
 
     jointRot++;
 

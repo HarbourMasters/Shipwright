@@ -18,11 +18,11 @@ extern s16 gGameOverTimer;
 
 void GameOver_Update(PlayState* play) {
     GameOverContext* gameOverCtx = &play->gameOverCtx;
-    s16 i;
-    s16 j;
-    s32 v90;
-    s32 v91;
-    s32 v92;
+    s16              i;
+    s16              j;
+    s32              v90;
+    s32              v91;
+    s32              v92;
 
     switch (gameOverCtx->state) {
         case GAMEOVER_DEATH_START:
@@ -47,7 +47,7 @@ void GameOver_Update(PlayState* play) {
                         }
                     }
                 }
-			}
+            }
 
             // restore "temporary B" to the B Button if not a sword item
             if (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI &&

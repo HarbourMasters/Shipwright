@@ -17,7 +17,7 @@ void PreRender_SetValuesSave(PreRender* this, u32 width, u32 height, void* fbuf,
 }
 
 void PreRender_Init(PreRender* this) {
-    memset(this,0, sizeof(PreRender));
+    memset(this, 0, sizeof(PreRender));
     ListAlloc_Init(&this->alloc);
 }
 
@@ -38,9 +38,9 @@ void PreRender_Destroy(PreRender* this) {
 
 void func_800C0F28(PreRender* this, Gfx** gfxp, void* buf, void* bufSave) {
     Gfx* gfx;
-    s32 x;
-    s32 x2;
-    s32 dx;
+    s32  x;
+    s32  x2;
+    s32  dx;
 
     LOG_CHECK_NULL_POINTER("this", this);
     LOG_CHECK_NULL_POINTER("glistpp", gfxp);
@@ -86,9 +86,9 @@ void func_800C0F28(PreRender* this, Gfx** gfxp, void* buf, void* bufSave) {
 
 void func_800C1258(PreRender* this, Gfx** gfxp) {
     Gfx* gfx;
-    s32 y;
-    s32 y2;
-    s32 dy;
+    s32  y;
+    s32  y2;
+    s32  dy;
 
     LOG_CHECK_NULL_POINTER("this", this);
     LOG_CHECK_NULL_POINTER("glistpp", gfxp);
@@ -136,9 +136,9 @@ void func_800C1258(PreRender* this, Gfx** gfxp) {
 
 void func_800C170C(PreRender* this, Gfx** gfxp, void* fbuf, void* fbufSave, u32 r, u32 g, u32 b, u32 a) {
     Gfx* gfx;
-    s32 x;
-    s32 x2;
-    s32 dx;
+    s32  x;
+    s32  x2;
+    s32  dx;
 
     LOG_CHECK_NULL_POINTER("this", this);
     LOG_CHECK_NULL_POINTER("glistpp", gfxp);
@@ -192,9 +192,9 @@ void func_800C1AE8(PreRender* this, Gfx** gfxp, void* fbuf, void* fbufSave) {
 
 void func_800C1B24(PreRender* this, Gfx** gfxp, void* fbuf, void* cvgSave) {
     Gfx* gfx;
-    s32 x;
-    s32 x2;
-    s32 dx;
+    s32  x;
+    s32  x2;
+    s32  dx;
 
     LOG_CHECK_NULL_POINTER("this", this);
     LOG_CHECK_NULL_POINTER("glistpp", gfxp);
@@ -253,7 +253,7 @@ void func_800C1F20(PreRender* this, Gfx** gfxp) {
     LOG_CHECK_NULL_POINTER("this->fbuf", this->fbuf);
 
     if ((this->fbufSave != NULL) && (this->fbuf != NULL)) {
-         func_800C1AE8(this, gfxp, this->fbuf, this->fbufSave);
+        func_800C1AE8(this, gfxp, this->fbuf, this->fbufSave);
     }
 }
 
@@ -288,10 +288,10 @@ void func_800C2118(PreRender* this, Gfx** gfxp) {
 
 void func_800C213C(PreRender* this, Gfx** gfxp) {
     Gfx* gfx;
-    s32 y;
-    s32 y2;
-    s32 dy;
-    s32 rtile = 1;
+    s32  y;
+    s32  y2;
+    s32  dy;
+    s32  rtile = 1;
 
     if (this->cvgSave != NULL) {
         LOG_CHECK_NULL_POINTER("this", this);
@@ -353,26 +353,26 @@ void func_800C24E0(PreRender* this, Gfx** gfxp) {
 }
 
 void func_800C2500(PreRender* this, s32 x, s32 y) {
-    s32 i;
-    s32 j;
-    s32 buffA[3 * 5];
-    s32 buffR[3 * 5];
-    s32 buffG[3 * 5];
-    s32 buffB[3 * 5];
-    s32 x1;
-    s32 y1;
-    s32 pad;
-    s32 pxR;
-    s32 pxG;
-    s32 pxB;
-    s32 pxR2;
-    s32 pxG2;
-    s32 pxB2;
+    s32          i;
+    s32          j;
+    s32          buffA[3 * 5];
+    s32          buffR[3 * 5];
+    s32          buffG[3 * 5];
+    s32          buffB[3 * 5];
+    s32          x1;
+    s32          y1;
+    s32          pad;
+    s32          pxR;
+    s32          pxG;
+    s32          pxB;
+    s32          pxR2;
+    s32          pxG2;
+    s32          pxB2;
     Color_RGBA16 pxIn;
     Color_RGBA16 pxOut;
-    u32 pxR3;
-    u32 pxG3;
-    u32 pxB3;
+    u32          pxR3;
+    u32          pxG3;
+    u32          pxB3;
 
     /*
     Picture this as a 3x5 rectangle where the middle pixel (index 7) correspond to (x, y)
@@ -495,7 +495,7 @@ void func_800C2FE4(PreRender* this) {
 
         for (x = 1; x < this->width - 1; x++) {
             Color_RGBA16 pxOut;
-            s32 a = this->cvgSave[x + y * this->width];
+            s32          a = this->cvgSave[x + y * this->width];
 
             a >>= 5;
             if (a == 7) {

@@ -6,7 +6,7 @@ __OSEventState __osEventStateTab[OS_NUM_EVENTS + 1];
 u32 __osPreNMI = false;
 
 void osSetEventMesg(OSEvent e, OSMesgQueue* mq, OSMesg msg) {
-    register u32 prevInt = __osDisableInt();
+    register u32    prevInt = __osDisableInt();
     __OSEventState* msgs = &__osEventStateTab[e];
 
     msgs->queue = mq;

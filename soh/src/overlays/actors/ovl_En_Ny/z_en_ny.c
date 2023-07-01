@@ -289,7 +289,7 @@ void func_80ABD11C(EnNy* this, PlayState* play) {
 }
 
 s32 EnNy_CollisionCheck(EnNy* this, PlayState* play) {
-    u8 sp3F;
+    u8    sp3F;
     Vec3f effectPos;
 
     sp3F = 0;
@@ -411,8 +411,8 @@ void EnNy_Update(Actor* thisx, PlayState* play) {
 }
 
 void EnNy_SetupDie(EnNy* this, PlayState* play) {
-    s32 effectScale;
-    s32 i;
+    s32   effectScale;
+    s32   i;
     Vec3f effectPos;
     Vec3f effectVelocity = { 0.0f, 0.0f, 0.0f };
     Vec3f effectAccel = { 0.0f, 0.1f, 0.0f };
@@ -424,8 +424,8 @@ void EnNy_SetupDie(EnNy* this, PlayState* play) {
                 effectPos.y = Rand_CenteredFloat(30.0f) + this->actor.world.pos.y;
                 effectPos.z = Rand_CenteredFloat(30.0f) + this->actor.world.pos.z;
                 effectScale = Rand_S16Offset(0x50, 0x64);
-                EffectSsDtBubble_SpawnColorProfile(play, &effectPos, &effectVelocity, &effectAccel, effectScale,
-                                                   25, 0, 1);
+                EffectSsDtBubble_SpawnColorProfile(play, &effectPos, &effectVelocity, &effectAccel, effectScale, 25, 0,
+                                                   1);
             }
             for (i = 0; i < 0x14; i++) {
                 effectPos.x = Rand_CenteredFloat(30.0f) + this->actor.world.pos.x;
@@ -496,8 +496,8 @@ void EnNy_UpdateDeath(Actor* thisx, PlayState* play) {
 void EnNy_UpdateUnused(Actor* thisx, PlayState* play2) {
     EnNy* this = (EnNy*)thisx;
     PlayState* play = play2;
-    f32 sp3C;
-    f32 temp_f0;
+    f32        sp3C;
+    f32        temp_f0;
 
     sp3C = this->unk_1E0 - 0.25f;
     this->timer++;
@@ -531,8 +531,7 @@ void EnNy_Draw(Actor* thisx, PlayState* play) {
     Collider_UpdateSpheres(0, &this->collider);
     func_8002ED80(&this->actor, play, 1);
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPPipeSync(POLY_XLU_DISP++);
     gDPSetRenderMode(POLY_XLU_DISP++, G_RM_PASS, G_RM_AA_ZB_XLU_SURF2);
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, this->unk_1D8);
@@ -545,15 +544,14 @@ void EnNy_Draw(Actor* thisx, PlayState* play) {
         Matrix_Scale(this->unk_1E0, this->unk_1E0, this->unk_1E0, MTXMODE_APPLY);
         func_8002EBCC(&this->actor, play, 1);
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gEnNySpikeDL);
     }
     CLOSE_DISPS(play->state.gfxCtx);
     if (this->unk_1CA != 0) {
-        Vec3f tempVec;
+        Vec3f  tempVec;
         Vec3f* fireOffset;
-        s16 temp;
+        s16    temp;
 
         temp = this->unk_1CA - 1;
         this->actor.colorFilterTimer++;
@@ -570,8 +568,8 @@ void EnNy_Draw(Actor* thisx, PlayState* play) {
 void EnNy_DrawDeathEffect(Actor* thisx, PlayState* play) {
     EnNy* this = (EnNy*)thisx;
     Vec3f* temp;
-    f32 scale;
-    s32 i;
+    f32    scale;
+    s32    i;
 
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
@@ -585,17 +583,16 @@ void EnNy_DrawDeathEffect(Actor* thisx, PlayState* play) {
             Matrix_Translate(temp->x, temp->y, temp->z, MTXMODE_NEW);
             scale = this->actor.scale.x * 0.4f * (1.0f + (i * 0.04f));
             Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gEnNyRockBodyDL);
             FrameInterpolation_RecordCloseChild();
         }
     }
     CLOSE_DISPS(play->state.gfxCtx);
     if (this->unk_1CA != 0) {
-        Vec3f tempVec;
+        Vec3f  tempVec;
         Vec3f* fireOffset;
-        s16 fireOffsetIndex;
+        s16    fireOffsetIndex;
 
         fireOffsetIndex = this->unk_1CA - 1;
         this->actor.colorFilterTimer++;

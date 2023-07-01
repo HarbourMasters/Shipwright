@@ -91,9 +91,9 @@ static InitChainEntry sInitChain[] = {
 static Vec3f D_8086E0E0 = { 0.0f, 140.0f, 0.0f };
 
 void BgBdanSwitch_InitDynaPoly(BgBdanSwitch* this, PlayState* play, CollisionHeader* collision, s32 flag) {
-    s16 pad1;
+    s16              pad1;
     CollisionHeader* colHeader = NULL;
-    s16 pad2;
+    s16              pad2;
 
     DynaPolyActor_Init(&this->dyna, flag);
     CollisionHeader_GetVirtual(collision, &colHeader);
@@ -193,8 +193,7 @@ void BgBdanSwitch_Init(Actor* thisx, PlayState* play) {
             }
             break;
         default:
-            osSyncPrintf("不正な ARG_DATA(arg_data 0x%04x)(%s %d)\n", this->dyna.actor.params, __FILE__,
-                         __LINE__);
+            osSyncPrintf("不正な ARG_DATA(arg_data 0x%04x)(%s %d)\n", this->dyna.actor.params, __FILE__, __LINE__);
             Actor_Kill(&this->dyna.actor);
             return;
     }

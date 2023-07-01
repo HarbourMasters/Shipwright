@@ -60,7 +60,7 @@ const ActorInit Object_Kankyo_InitVars = {
     (ActorResetFunc)ObjectKankyo_Reset,
 };
 
-u8 sKankyoIsSpawned = false;
+u8  sKankyoIsSpawned = false;
 s16 sTrailingFairies = 0;
 
 void ObjectKankyo_SetupAction(ObjectKankyo* this, ObjectKankyoActionFunc action) {
@@ -193,24 +193,24 @@ void ObjectKankyo_Snow(ObjectKankyo* this, PlayState* play) {
 
 void ObjectKankyo_Fairies(ObjectKankyo* this, PlayState* play) {
     static Vec3f sSoundPos = { 0.0f, 0.0f, 0.0f };
-    Player* player;
-    f32 dist;
-    s32 playerMoved;
-    f32 dx;
-    f32 dy;
-    f32 dz;
-    f32 viewForwardsX;
-    f32 viewForwardsY;
-    f32 viewForwardsZ;
-    f32 maxDist;
-    f32 baseX;
-    f32 baseY;
-    f32 baseZ;
-    Vec3f vec1 = { 0.0f, 0.0f, 0.0f };
-    Vec3f vec2 = { 0.0f, 0.0f, 0.0f };
-    f32 random;
-    s16 i;
-    Vec3f viewForwards;
+    Player*      player;
+    f32          dist;
+    s32          playerMoved;
+    f32          dx;
+    f32          dy;
+    f32          dz;
+    f32          viewForwardsX;
+    f32          viewForwardsY;
+    f32          viewForwardsZ;
+    f32          maxDist;
+    f32          baseX;
+    f32          baseY;
+    f32          baseZ;
+    Vec3f        vec1 = { 0.0f, 0.0f, 0.0f };
+    Vec3f        vec2 = { 0.0f, 0.0f, 0.0f };
+    f32          random;
+    s16          i;
+    Vec3f        viewForwards;
 
     player = GET_PLAYER(play);
 
@@ -515,10 +515,10 @@ void ObjectKankyo_Draw(Actor* thisx, PlayState* play) {
 void ObjectKankyo_DrawFairies(ObjectKankyo* this2, PlayState* play2) {
     ObjectKankyo* this = this2;
     PlayState* play = play2;
-    f32 alphaScale;
-    Vec3f vec1 = { 0.0f, 0.0f, 0.0f };
-    Vec3f vec2 = { 0.0f, 0.0f, 0.0f };
-    s16 i;
+    f32        alphaScale;
+    Vec3f      vec1 = { 0.0f, 0.0f, 0.0f };
+    Vec3f      vec2 = { 0.0f, 0.0f, 0.0f };
+    s16        i;
 
     if (!(play->cameraPtrs[0]->unk_14C & 0x100)) {
         OPEN_DISPS(play->state.gfxCtx);
@@ -602,20 +602,20 @@ void ObjectKankyo_DrawFairies(ObjectKankyo* this2, PlayState* play2) {
 void ObjectKankyo_DrawSnow(ObjectKankyo* this2, PlayState* play2) {
     ObjectKankyo* this = this2;
     PlayState* play = play2;
-    f32 dist;
-    f32 dx;
-    f32 dy;
-    f32 dz;
-    f32 maxDist;
-    f32 temp;
-    f32 baseX;
-    f32 baseY;
-    f32 baseZ;
-    Vec3f vec1 = { 0.0f, 0.0f, 0.0f };
-    Vec3f vec2 = { 0.0f, 0.0f, 0.0f };
-    s16 i;
-    s32 pad;
-    s32 pad2;
+    f32        dist;
+    f32        dx;
+    f32        dy;
+    f32        dz;
+    f32        maxDist;
+    f32        temp;
+    f32        baseX;
+    f32        baseY;
+    f32        baseZ;
+    Vec3f      vec1 = { 0.0f, 0.0f, 0.0f };
+    Vec3f      vec2 = { 0.0f, 0.0f, 0.0f };
+    s16        i;
+    s32        pad;
+    s32        pad2;
 
     if (!(play->cameraPtrs[0]->unk_14C & 0x100)) {
         OPEN_DISPS(play->state.gfxCtx);
@@ -719,8 +719,7 @@ void ObjectKankyo_DrawSnow(ObjectKankyo* this2, PlayState* play2) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 200, 200, 200, 180);
             gDPSetEnvColor(POLY_XLU_DISP++, 200, 200, 200, 180);
 
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_LOAD);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_LOAD);
 
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gDust5Tex));
 
@@ -827,14 +826,13 @@ void ObjectKankyo_SunGraveSpark(ObjectKankyo* this, PlayState* play) {
 void ObjectKankyo_DrawSunGraveSpark(ObjectKankyo* this2, PlayState* play2) {
     ObjectKankyo* this = this2;
     PlayState* play = play2;
-    Vec3f start;
-    Vec3f end;
-    f32 weight;
+    Vec3f      start;
+    Vec3f      end;
+    f32        weight;
 
     OPEN_DISPS(play->state.gfxCtx);
     if (play->csCtx.state != 0) {
-        if (play->csCtx.npcActions[1] != NULL && play->csCtx.npcActions[1]->action == 2 &&
-            this->requiredObjectLoaded) {
+        if (play->csCtx.npcActions[1] != NULL && play->csCtx.npcActions[1]->action == 2 && this->requiredObjectLoaded) {
             // apparently, light waves with larger amplitudes look brighter, so the name 'amplitude' kind of works here
             if (this->effects[0].state == 0) {
                 this->effects[0].amplitude += 1.0f / 7.0f;
@@ -862,8 +860,8 @@ void ObjectKankyo_DrawSunGraveSpark(ObjectKankyo* this2, PlayState* play2) {
             end.y = play->csCtx.npcActions[1]->endPos.y;
             end.z = play->csCtx.npcActions[1]->endPos.z;
 
-            weight = Environment_LerpWeight(play->csCtx.npcActions[1]->endFrame,
-                                            play->csCtx.npcActions[1]->startFrame, play->csCtx.frames);
+            weight = Environment_LerpWeight(play->csCtx.npcActions[1]->endFrame, play->csCtx.npcActions[1]->startFrame,
+                                            play->csCtx.frames);
             Matrix_Translate((end.x - start.x) * weight + start.x, (end.y - start.y) * weight + start.y,
                              (end.z - start.z) * weight + start.z, MTXMODE_NEW);
             Matrix_Scale(this->effects[0].size, this->effects[0].size, this->effects[0].size, MTXMODE_APPLY);
@@ -876,8 +874,7 @@ void ObjectKankyo_DrawSunGraveSpark(ObjectKankyo* this2, PlayState* play2) {
                            this->effects[0].alpha);
 
             Matrix_Mult(&play->billboardMtxF, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_LOAD);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_LOAD);
 
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_80BA5900[this->effects[0].timer]));
             gDPPipeSync(POLY_XLU_DISP++);
@@ -934,12 +931,12 @@ void ObjectKankyo_DrawBeams(ObjectKankyo* this2, PlayState* play2) {
     };
     ObjectKankyo* this = this2;
     PlayState* play = play2;
-    s16 i;
-    f32 beamX[] = { 430.0f, 860.0f, 430.0f, -426.0f, -862.0f, -440.0f };
-    f32 beamY[] = { 551.0f, 551.0f, 551.0f, 554.0f, 551.0f, 547.0f };
-    f32 beamZ[] = { -96.0f, -840.0f, -1585.0f, -1578.0f, -840.0f, -78.0f };
-    f32 beamYaw[] = { 29.9f, 90.0f, 150.0f, 30.0f, 90.0f, -30.1f };
-    f32 beamPitch[] = { 103.4f, 103.8f, 103.6f, -103.4f, -103.5f, 103.5f };
+    s16        i;
+    f32        beamX[] = { 430.0f, 860.0f, 430.0f, -426.0f, -862.0f, -440.0f };
+    f32        beamY[] = { 551.0f, 551.0f, 551.0f, 554.0f, 551.0f, 547.0f };
+    f32        beamZ[] = { -96.0f, -840.0f, -1585.0f, -1578.0f, -840.0f, -78.0f };
+    f32        beamYaw[] = { 29.9f, 90.0f, 150.0f, 30.0f, 90.0f, -30.1f };
+    f32        beamPitch[] = { 103.4f, 103.8f, 103.6f, -103.4f, -103.5f, 103.5f };
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -956,12 +953,10 @@ void ObjectKankyo_DrawBeams(ObjectKankyo* this2, PlayState* play2) {
                 gDPSetPrimColor(POLY_XLU_DISP++, 0, 128, sBeamPrimColors[i].r, sBeamPrimColors[i].g,
                                 sBeamPrimColors[i].b, 128);
                 gDPSetEnvColor(POLY_XLU_DISP++, sBeamEnvColors[i].r, sBeamEnvColors[i].g, sBeamEnvColors[i].b, 128);
-                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                          G_MTX_LOAD);
+                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_LOAD);
                 gSPSegment(POLY_XLU_DISP++, 0x08,
-                           Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->state.frames * 5,
-                                            play->state.frames * 10, 32, 64, 1, play->state.frames * 5,
-                                            play->state.frames * 10, 32, 64));
+                           Gfx_TwoTexScroll(play->state.gfxCtx, 0, play->state.frames * 5, play->state.frames * 10, 32,
+                                            64, 1, play->state.frames * 5, play->state.frames * 10, 32, 64));
                 gSPDisplayList(POLY_XLU_DISP++, gDemoKekkaiDL_005FF0);
                 FrameInterpolation_RecordCloseChild();
             }

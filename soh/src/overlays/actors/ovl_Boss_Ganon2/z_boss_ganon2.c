@@ -11,7 +11,8 @@
 
 #include <string.h>
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS \
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void BossGanon2_Init(Actor* thisx, PlayState* play);
 void BossGanon2_Destroy(Actor* thisx, PlayState* play);
@@ -69,7 +70,6 @@ Vec3f D_809105D8[4];
 Vec3f D_80910608[4];
 
 s8 D_80910638;
-
 
 void BossGanon2_InitRand(s32 seedInit0, s32 seedInit1, s32 seedInit2) {
     sBossGanon2Seed1 = seedInit0;
@@ -134,7 +134,7 @@ void func_808FD210(PlayState* play, Vec3f* arg1) {
 
 void func_808FD27C(PlayState* play, Vec3f* position, Vec3f* velocity, f32 scale) {
     BossGanon2Effect* effect = play->specialEffects;
-    s16 i;
+    s16               i;
 
     for (i = 0; i < ARRAY_COUNT(sBossGanon2Particles); i++, effect++) {
         if (effect->type == 0) {
@@ -205,12 +205,12 @@ void func_808FD5C4(BossGanon2* this, PlayState* play) {
 }
 
 void func_808FD5F4(BossGanon2* this, PlayState* play) {
-    s16 pad;
-    u8 sp8D;
+    s16     pad;
+    u8      sp8D;
     Player* player;
-    s32 objectIdx;
-    s32 zero = 0;
-    s32 pad2;
+    s32     objectIdx;
+    s32     zero = 0;
+    s32     pad2;
 
     sp8D = false;
     player = GET_PLAYER(play);
@@ -226,7 +226,7 @@ void func_808FD5F4(BossGanon2* this, PlayState* play) {
                 Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, this->unk_39E, CAM_STAT_ACTIVE);
                 sBossGanon2Zelda = (EnZl3*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_ZL3, 970.0f,
-                                                    1086.0f, -200.0f, 0, 0, 0, 1);
+                                                              1086.0f, -200.0f, 0, 0, 0, 1);
                 sBossGanon2Zelda->unk_3C8 = 0;
                 sBossGanon2Zelda->actor.world.pos.x = 970.0f;
                 sBossGanon2Zelda->actor.world.pos.y = 1086.0f;
@@ -709,9 +709,9 @@ void func_808FD5F4(BossGanon2* this, PlayState* play) {
             }
             if (this->csTimer == 80) {
                 BossGanon2_SetObjectSegment(this, play, OBJECT_GANON2, false);
-                TitleCard_InitBossName(play, &play->actorCtx.titleCtx,
-                                       SEGMENTED_TO_VIRTUAL(gGanonTitleCardENGTex), 160, 180, 128, 40, true);
-                                       //It has translation but they are all the same. they all say "GANON" only
+                TitleCard_InitBossName(play, &play->actorCtx.titleCtx, SEGMENTED_TO_VIRTUAL(gGanonTitleCardENGTex), 160,
+                                       180, 128, 40, true);
+                // It has translation but they are all the same. they all say "GANON" only
             }
             this->unk_3A4.x = ((this->actor.world.pos.x + 500.0f) - 350.0f) + 100.0f;
             this->unk_3A4.y = this->actor.world.pos.y;
@@ -760,8 +760,8 @@ void func_808FD5F4(BossGanon2* this, PlayState* play) {
             }
             if (this->csTimer >= 229) {
                 play->envCtx.fillScreen = true;
-                play->envCtx.screenFillColor[0] = play->envCtx.screenFillColor[1] =
-                    play->envCtx.screenFillColor[2] = 255;
+                play->envCtx.screenFillColor[0] = play->envCtx.screenFillColor[1] = play->envCtx.screenFillColor[2] =
+                    255;
                 play->envCtx.screenFillColor[3] = 100;
                 if (this->csTimer == 234) {
                     Vec3f sp68;
@@ -949,7 +949,7 @@ void func_808FF898(BossGanon2* this, PlayState* play) {
                     if (SQ(this->unk_218.x - gj->dyna.actor.world.pos.x) +
                             SQ(this->unk_218.z - gj->dyna.actor.world.pos.z) <
                         SQ(100.0f)) {
-                        s32 pad;
+                        s32   pad;
                         Vec3f sp28;
 
                         Matrix_RotateY(((this->actor.shape.rot.y / (f32)0x8000) * M_PI) + 0.5f, MTXMODE_NEW);
@@ -1311,15 +1311,15 @@ void func_80900818(BossGanon2* this, PlayState* play) {
 }
 
 void func_80900890(BossGanon2* this, PlayState* play) {
-    Vec3f sp5C;
-    Vec3f sp50;
+    Vec3f   sp5C;
+    Vec3f   sp50;
     Camera* sp4C;
     Player* player;
     Camera* temp_v0;
     Camera* temp_v0_2;
-    s32 pad;
-    f32 temp_f12;
-    f32 temp_f2;
+    s32     pad;
+    f32     temp_f12;
+    f32     temp_f2;
 
     sp4C = Play_GetCamera(play, MAIN_CAM);
     player = GET_PLAYER(play);
@@ -1479,7 +1479,7 @@ void func_8090109C(BossGanon2* this, PlayState* play) {
     static Color_RGBA8 sPrimColor = { 0, 120, 0, 255 };
     static Color_RGBA8 sEnvColor = { 0, 120, 0, 255 };
 
-    if(CVarGetInteger("gRedGanonBlood", 0)) {
+    if (CVarGetInteger("gRedGanonBlood", 0)) {
         sPrimColor.r = 120;
         sPrimColor.g = 0;
 
@@ -1501,19 +1501,18 @@ void func_8090109C(BossGanon2* this, PlayState* play) {
         pos.x = this->unk_1B8.x;
         pos.y = this->unk_1B8.y;
         pos.z = this->unk_1B8.z;
-        func_8002836C(play, &pos, &velocity, &accel, &sPrimColor, &sEnvColor, (s16)Rand_ZeroFloat(50.0f) + 50, 0,
-                      17);
+        func_8002836C(play, &pos, &velocity, &accel, &sPrimColor, &sEnvColor, (s16)Rand_ZeroFloat(50.0f) + 50, 0, 17);
     }
 }
 
 void func_8090120C(BossGanon2* this, PlayState* play) {
     Player* player;
-    f32 temp_f14;
-    f32 temp_f12;
+    f32     temp_f14;
+    f32     temp_f12;
     Camera* temp_v0_2;
-    s16 temp_a0_2;
-    f32 phi_f0;
-    s32 phi_a1;
+    s16     temp_a0_2;
+    f32     phi_f0;
+    s32     phi_a1;
 
     player = GET_PLAYER(play);
     this->csTimer++;
@@ -1878,11 +1877,11 @@ void func_8090120C(BossGanon2* this, PlayState* play) {
 
 void func_80902348(BossGanon2* this, PlayState* play) {
     Player* player;
-    f32 temp_f2;
-    f32 temp_f12;
-    s16 i;
-    s16 j;
-    s16 phi_v0_2;
+    f32     temp_f2;
+    f32     temp_f12;
+    s16     i;
+    s16     j;
+    s16     phi_v0_2;
 
     if (this->unk_316 == 0) {
         for (i = 0; i < ARRAY_COUNT(this->unk_864); i++) {
@@ -1923,10 +1922,10 @@ void func_80902348(BossGanon2* this, PlayState* play) {
 }
 
 void func_80902524(BossGanon2* this, PlayState* play) {
-    s8 temp_v0_4;
+    s8            temp_v0_4;
     ColliderInfo* acHitInfo;
-    s16 i;
-    u8 phi_v1_2;
+    s16           i;
+    u8            phi_v1_2;
 
     osSyncPrintf("this->no_hit_time %d\n", this->unk_316);
     if (this->unk_316 != 0 || ((this->unk_334 == 0) && (this->actionFunc == func_80900890))) {
@@ -2003,14 +2002,14 @@ void func_80902524(BossGanon2* this, PlayState* play) {
 
 void BossGanon2_Update(Actor* thisx, PlayState* play) {
     BossGanon2* this = (BossGanon2*)thisx;
-    s32 pad;
-    s16 i;
-    f32 phi_f2;
-    u16 i2;
+    s32   pad;
+    s16   i;
+    f32   phi_f2;
+    u16   i2;
     Vec3f sp58;
     Vec3f sp4C;
-    f32 angle;
-    f32 sp44;
+    f32   angle;
+    f32   sp44;
 
     if ((this->unk_337 == 0) || (this->unk_337 == 2)) {
         BossGanon2_SetObjectSegment(this, play, OBJECT_GANON_ANIME3, false);
@@ -2171,8 +2170,7 @@ void BossGanon2_Update(Actor* thisx, PlayState* play) {
             play->envCtx.unk_BE = 6;
             play->envCtx.unk_BD = 7;
             Math_ApproachF(&this->unk_33C, 0.69f, 1.0f, 0.05f);
-            play->envCtx.unk_D8 =
-                (Math_SinS(play->gameplayFrames * 0x5000) * 0.15f) + (0.15f + this->unk_33C);
+            play->envCtx.unk_D8 = (Math_SinS(play->gameplayFrames * 0x5000) * 0.15f) + (0.15f + this->unk_33C);
             break;
         case 55:
             play->envCtx.unk_BE = 2;
@@ -2183,8 +2181,7 @@ void BossGanon2_Update(Actor* thisx, PlayState* play) {
             play->envCtx.unk_BE = 2;
             play->envCtx.unk_BD = 8;
             Math_ApproachF(&this->unk_33C, 0.69f, 1.0f, 0.05f);
-            play->envCtx.unk_D8 =
-                (Math_SinS(play->gameplayFrames * 0x7000) * 0.15f) + (0.15f + this->unk_33C);
+            play->envCtx.unk_D8 = (Math_SinS(play->gameplayFrames * 0x7000) * 0.15f) + (0.15f + this->unk_33C);
             break;
         case 7:
             play->envCtx.unk_BE = 0;
@@ -2239,25 +2236,25 @@ void BossGanon2_Update(Actor* thisx, PlayState* play) {
 }
 
 void func_809034E4(Vec3f* arg0, Vec3f* arg1) {
-    Vtx* vtx;
+    Vtx*  vtx;
     Vec3f sp2D0;
-    s16 temp_s1;
-    s16 temp_a1;
-    s16 sp2CA;
-    s16 sp2C8;
-    s16 i;
-    u8 phi_s2;
-    u8 temp_s4;
-    u8 temp_s4_2;
-    f32 temp_f12;
+    s16   temp_s1;
+    s16   temp_a1;
+    s16   sp2CA;
+    s16   sp2C8;
+    s16   i;
+    u8    phi_s2;
+    u8    temp_s4;
+    u8    temp_s4_2;
+    f32   temp_f12;
     Vec3f temp_f20;
     Vec3f temp_f2;
     Vec3f temp_f22;
-    f32 sp294;
-    f32 phi_f30;
-    f32 temp_f28;
-    f32 temp_f26;
-    s32 pad[3];
+    f32   sp294;
+    f32   phi_f30;
+    f32   temp_f28;
+    f32   temp_f26;
+    s32   pad[3];
     Vec3f sp18C[20];
     Vec3f sp9C[20];
 
@@ -2442,14 +2439,12 @@ void func_80903F38(BossGanon2* this, PlayState* play) {
     }
 
     if (D_80910638 >= 4) {
-        gSPSegment(
-            POLY_XLU_DISP++, 0x08,
-            Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 32, 1, play->gameplayFrames * 18, 0, 32, 32));
+        gSPSegment(POLY_XLU_DISP++, 0x08,
+                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 32, 1, play->gameplayFrames * 18, 0, 32, 32));
         gDPPipeSync(POLY_XLU_DISP++);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, D_80907080);
         Matrix_Translate(0.0f, 0.0f, 0.0f, MTXMODE_NEW);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, ovl_Boss_Ganon2_DL_00BB80);
     }
 
@@ -2471,8 +2466,7 @@ void func_80904108(BossGanon2* this, PlayState* play) {
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 128);
         Matrix_Translate(-200.0f, 1086.0f, -200.0f, MTXMODE_NEW);
         Matrix_Scale(0.098000005f, 0.1f, 0.098000005f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(ovl_Boss_Ganon2_DL_00E1C0));
         Matrix_Pop();
 
@@ -2521,8 +2515,7 @@ void func_80904340(BossGanon2* this, PlayState* play) {
                 Matrix_RotateY(M_PI, MTXMODE_APPLY);
             }
 
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(ovl_Boss_Ganon2_DL_00D798));
             FrameInterpolation_RecordCloseChild();
         }
@@ -2546,8 +2539,7 @@ void func_8090464C(BossGanon2* this, PlayState* play) {
         Matrix_ReplaceRotation(&play->billboardMtxF);
         Matrix_RotateZ(-0.2f, MTXMODE_APPLY);
         Matrix_Scale(0.6f, 0.6f, 1.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(ovl_Boss_Ganon2_DL_00CCD8));
         Matrix_Pop();
 
@@ -2555,8 +2547,7 @@ void func_8090464C(BossGanon2* this, PlayState* play) {
     }
 }
 
-s32 BossGanon2_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                void* thisx) {
+s32 BossGanon2_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     s32 pad;
     BossGanon2* this = (BossGanon2*)thisx;
 
@@ -2624,15 +2615,13 @@ void BossGanon2_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s*
     if ((limbIndex == 7) || (limbIndex == 13)) {
         Matrix_Push();
         Matrix_Scale(this->unk_224, this->unk_224, this->unk_224, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, *dList);
         Matrix_Pop();
     } else if ((limbIndex == 33) || (limbIndex == 34)) {
         Matrix_Push();
         Matrix_Scale(this->unk_228, this->unk_228, this->unk_228, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, *dList);
         Matrix_Pop();
     }
@@ -2678,10 +2667,9 @@ void func_80904D88(BossGanon2* this, PlayState* play) {
             Matrix_ReplaceRotation(&play->billboardMtxF);
             Matrix_Scale(this->unk_30C, this->unk_30C, this->unk_30C, MTXMODE_APPLY);
             Matrix_RotateZ(Rand_CenteredFloat(M_PI), MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, ovl_Boss_Ganon2_DL_00B378);
-            
+
             FrameInterpolation_RecordCloseChild();
         }
     }
@@ -2699,17 +2687,15 @@ void func_80904FC8(BossGanon2* this, PlayState* play) {
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 200);
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 200, 0, 0);
         gSPDisplayList(POLY_XLU_DISP++, ovl_Boss_Ganon2_DL_00B308);
-        Matrix_Translate(sBossGanon2Zelda->actor.world.pos.x, sBossGanon2Zelda->actor.world.pos.y + 80.0f, sBossGanon2Zelda->actor.world.pos.z,
-                         MTXMODE_NEW);
+        Matrix_Translate(sBossGanon2Zelda->actor.world.pos.x, sBossGanon2Zelda->actor.world.pos.y + 80.0f,
+                         sBossGanon2Zelda->actor.world.pos.z, MTXMODE_NEW);
         Matrix_ReplaceRotation(&play->billboardMtxF);
         Matrix_Scale(this->unk_384, this->unk_384, this->unk_384, MTXMODE_APPLY);
         Matrix_RotateZ(this->unk_388, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(ovl_Boss_Ganon2_DL_00B378));
         Matrix_RotateZ(this->unk_388 * -2.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(ovl_Boss_Ganon2_DL_00B378));
     }
 
@@ -2718,7 +2704,7 @@ void func_80904FC8(BossGanon2* this, PlayState* play) {
 
 void func_8090523C(BossGanon2* this, PlayState* play) {
     Player* player;
-    f32 phi_f20;
+    f32     phi_f20;
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -2746,10 +2732,9 @@ void func_8090523C(BossGanon2* this, PlayState* play) {
             Matrix_ReplaceRotation(&play->billboardMtxF);
             Matrix_Scale(200.0f * phi_f20, 200.0f * phi_f20, 1.0f, MTXMODE_APPLY);
             Matrix_RotateZ(Rand_ZeroFloat(2.0f * M_PI), MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(ovl_Boss_Ganon2_DL_00B378));
-            
+
             FrameInterpolation_RecordCloseChild();
         }
     }
@@ -2767,8 +2752,7 @@ void BossGanon2_PostLimbDraw2(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
     if (limbIndex == 11) {
         OPEN_DISPS(play->state.gfxCtx);
 
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gGanondorfEyesDL));
 
         CLOSE_DISPS(play->state.gfxCtx);
@@ -2790,13 +2774,13 @@ void func_80905674(BossGanon2* this, PlayState* play) {
                                     this->unk_19C * -8, 32, 32));
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 170, (s16)this->unk_37C);
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 200, 0, 128);
-        Matrix_Translate(sBossGanon2Zelda->actor.world.pos.x + 100.0f, sBossGanon2Zelda->actor.world.pos.y + 35.0f + 7.0f,
+        Matrix_Translate(sBossGanon2Zelda->actor.world.pos.x + 100.0f,
+                         sBossGanon2Zelda->actor.world.pos.y + 35.0f + 7.0f,
                          sBossGanon2Zelda->actor.world.pos.z - 100.0f, MTXMODE_NEW);
         Matrix_RotateY(-M_PI / 4.0f, MTXMODE_APPLY);
         Matrix_Scale(0.040000003f, 0.040000003f, this->unk_380, MTXMODE_APPLY);
         Matrix_RotateX(M_PI / 2.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(ovl_Boss_Ganon2_DL_00EC40));
         Matrix_Pop();
 
@@ -2835,8 +2819,7 @@ void BossGanon2_Draw(Actor* thisx, PlayState* play) {
             Matrix_Translate(0.0f, -4000.0f, 4000.0f, MTXMODE_APPLY);
             Matrix_RotateX(this->unk_394, MTXMODE_APPLY);
             Matrix_Translate(0.0f, 4000.0f, -4000.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                   this->skelAnime.dListCount, BossGanon2_OverrideLimbDraw, BossGanon2_PostLimbDraw,
                                   this);
@@ -2882,11 +2865,11 @@ void BossGanon2_Draw(Actor* thisx, PlayState* play) {
 }
 
 void func_80905DA8(BossGanon2* this, PlayState* play) {
-    s32 pad[5];
-    Player* player = GET_PLAYER(play);
+    s32               pad[5];
+    Player*           player = GET_PLAYER(play);
     BossGanon2Effect* effect = play->specialEffects;
-    Vec3f sp78;
-    s16 i;
+    Vec3f             sp78;
+    s16               i;
 
     for (i = 0; i < ARRAY_COUNT(sBossGanon2Particles); i++, effect++) {
         if (effect->type != 0) {
@@ -2944,10 +2927,10 @@ void func_80905DA8(BossGanon2* this, PlayState* play) {
 }
 
 void func_809060E8(PlayState* play) {
-    s16 alpha;
-    u8 usingObjectGEff = false;
+    s16               alpha;
+    u8                usingObjectGEff = false;
     BossGanon2Effect* effect;
-    s16 i;
+    s16               i;
     BossGanon2Effect* effects;
 
     effects = effect = play->specialEffects;
@@ -2961,8 +2944,8 @@ void func_809060E8(PlayState* play) {
             FrameInterpolation_RecordOpenChild("Ganon 809060E8 0", i);
 
             Vec3f spA0;
-            f32 temp_f0;
-            f32 angle;
+            f32   temp_f0;
+            f32   angle;
 
             Gfx_SetupDL_25Xlu(play->state.gfxCtx);
             spA0.x = play->envCtx.dirLight1.params.dir.x;
@@ -2973,8 +2956,7 @@ void func_809060E8(PlayState* play) {
             Matrix_Scale(0.03f, 0.03f, 0.03f, MTXMODE_APPLY);
             Matrix_RotateY(effect->unk_38.z, MTXMODE_APPLY);
             Matrix_RotateX(effect->unk_38.y, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_OPA_DISP++, 0x08,
                        Gfx_TexScroll(play->state.gfxCtx, 0, 0 - (play->gameplayFrames & 0x7F), 32, 32));
             gSPDisplayList(POLY_OPA_DISP++, ovl_Boss_Ganon2_DL_0103A8);
@@ -2990,10 +2972,9 @@ void func_809060E8(PlayState* play) {
             Matrix_Translate(effect->position.x + temp_f0, 1086.0f, (effect->position.z - 1.0f) + temp_f0, MTXMODE_NEW);
             Matrix_RotateY(angle, MTXMODE_APPLY);
             Matrix_Scale(1.0f, 0.0f, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, ovl_Boss_Ganon2_DL_00F188);
-            
+
             FrameInterpolation_RecordCloseChild();
         }
     }
@@ -3013,10 +2994,9 @@ void func_809060E8(PlayState* play) {
             Matrix_RotateY(effect->unk_38.z, MTXMODE_APPLY);
             Matrix_RotateX(effect->unk_38.y, MTXMODE_APPLY);
             Matrix_RotateZ(effect->unk_38.x, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gGanonRubbleDL);
-            
+
             FrameInterpolation_RecordCloseChild();
         }
     }
@@ -3025,16 +3005,16 @@ void func_809060E8(PlayState* play) {
 }
 
 void func_80906538(BossGanon2* this, u8* shadowTexture, f32 arg2) {
-    s16 temp_t0;
-    s16 temp_v0;
-    s16 temp_a3;
-    s16 phi_v1;
-    s16 phi_a1;
-    s16 i;
-    f32 lerpx;
-    s16 j;
-    f32 lerpy;
-    f32 lerpz;
+    s16   temp_t0;
+    s16   temp_v0;
+    s16   temp_a3;
+    s16   phi_v1;
+    s16   phi_a1;
+    s16   i;
+    f32   lerpx;
+    s16   j;
+    f32   lerpy;
+    f32   lerpz;
     Vec3f sp70;
     Vec3f sp64;
 
@@ -3102,7 +3082,7 @@ void func_80906538(BossGanon2* this, u8* shadowTexture, f32 arg2) {
 }
 
 void BossGanon2_GenShadowTexture(void* shadowTexture, BossGanon2* this, PlayState* play) {
-    s16 i;
+    s16  i;
     u32* p = shadowTexture;
 
     for (i = 0; i < 1024; i++, p++) {
@@ -3117,9 +3097,9 @@ void BossGanon2_GenShadowTexture(void* shadowTexture, BossGanon2* this, PlayStat
 }
 
 void BossGanon2_DrawShadowTexture(void* shadowTexture, BossGanon2* this, PlayState* play) {
-    s32 pad;
+    s32              pad;
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    s16 alpha;
+    s16              alpha;
 
     OPEN_DISPS(gfxCtx);
 
@@ -3135,8 +3115,7 @@ void BossGanon2_DrawShadowTexture(void* shadowTexture, BossGanon2* this, PlaySta
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
     Matrix_Translate(this->actor.world.pos.x, this->actor.floorHeight, this->actor.world.pos.z - 20.0f, MTXMODE_NEW);
     Matrix_Scale(1.65f, 1.0f, 1.65f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, ovl_Boss_Ganon2_DL_00B3D0);
     gDPLoadTextureBlock(POLY_OPA_DISP++, shadowTexture, G_IM_FMT_I, G_IM_SIZ_8b, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, 6, 6, G_TX_NOLOD, G_TX_NOLOD);

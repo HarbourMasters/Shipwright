@@ -31,7 +31,7 @@ void SAPISpeechSynthesizer::DoUninitialize() {
 }
 
 std::wstring CharToWideString(std::string text) {
-    int textSize = MultiByteToWideChar(CP_UTF8, 0, &text[0], (int)text.size(), NULL, 0);
+    int          textSize = MultiByteToWideChar(CP_UTF8, 0, &text[0], (int)text.size(), NULL, 0);
     std::wstring wstrTo(textSize, 0);
     MultiByteToWideChar(CP_UTF8, 0, &text[0], (int)text.size(), &wstrTo[0], textSize);
     return wstrTo;

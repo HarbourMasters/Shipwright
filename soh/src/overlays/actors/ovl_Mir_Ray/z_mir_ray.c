@@ -114,7 +114,7 @@ static InitChainEntry sInitChain[] = {
 };
 
 void MirRay_SetupCollider(MirRay* this) {
-    Vec3f colliderOffset;
+    Vec3f            colliderOffset;
     MirRayDataEntry* dataEntry = &sMirRayData[this->actor.params];
 
     colliderOffset.x = (this->poolPt.x - this->sourcePt.x) * dataEntry->unk_10;
@@ -129,10 +129,10 @@ void MirRay_SetupCollider(MirRay* this) {
 // Set up a light point between source point and reflection point. Reflection point is the pool point (for windows) or
 // at the player position (for mirrors)
 void MirRay_MakeShieldLight(MirRay* this, PlayState* play) {
-    Player* player = GET_PLAYER(play);
+    Player*          player = GET_PLAYER(play);
     MirRayDataEntry* dataEntry = &sMirRayData[this->actor.params];
-    Vec3f reflectionPt;
-    Vec3s lightPt;
+    Vec3f            reflectionPt;
+    Vec3s            lightPt;
 
     if (MirRay_CheckInFrustum(&this->sourcePt, &this->poolPt, player->actor.world.pos.x,
                               player->actor.world.pos.y + 30.0f, player->actor.world.pos.z, this->sourceEndRad,
@@ -264,13 +264,13 @@ void MirRay_Update(Actor* thisx, PlayState* play) {
 }
 
 void MirRay_SetIntensity(MirRay* this, PlayState* play) {
-    f32 sp4C[3];
-    f32 temp_f0;
-    f32 temp_f0_2;
-    f32 temp_f2_2;
-    s32 pad;
+    f32     sp4C[3];
+    f32     temp_f0;
+    f32     temp_f0_2;
+    f32     temp_f2_2;
+    s32     pad;
     Player* player = GET_PLAYER(play);
-    MtxF* shieldMtx = &player->shieldMf;
+    MtxF*   shieldMtx = &player->shieldMf;
 
     this->reflectIntensity = 0.0f;
 
@@ -308,14 +308,14 @@ void MirRay_SetIntensity(MirRay* this, PlayState* play) {
 // Draws six images, one for each corner of the shield, by finding the intersection of a line segment from the corner
 // perpendicular to the shield with the nearest collision (if any).
 void MirRay_SetupReflectionPolys(MirRay* this, PlayState* play, MirRayShieldReflection* reflection) {
-    Player* player = GET_PLAYER(play);
-    MtxF* shieldMtx;
-    s32 i;
-    Vec3f posA;
-    Vec3f posB;
-    Vec3f posResult;
+    Player*        player = GET_PLAYER(play);
+    MtxF*          shieldMtx;
+    s32            i;
+    Vec3f          posA;
+    Vec3f          posB;
+    Vec3f          posResult;
     CollisionPoly* outPoly;
-    Vec3f sp60;
+    Vec3f          sp60;
 
     shieldMtx = &player->shieldMf;
 
@@ -365,20 +365,20 @@ void MirRay_RemoveSimilarReflections(MirRayShieldReflection* reflection) {
 
 // Creates the reflected beam's collider (to interact with objects) and places and orients the shield images
 void MirRay_ReflectedBeam(MirRay* this, PlayState* play, MirRayShieldReflection* reflection) {
-    Player* player = GET_PLAYER(play);
-    s32 i;
-    f32 temp_f0;
-    Vec3f vecB;
-    Vec3f vecD;
-    Vec3f sp118;
-    Vec3f sp10C;
-    Vec3f sp100;
-    Vec3f intersection;
-    Vec3f spE8;
-    Vec3f normalVec;
-    MtxF* shieldMtx;
-    Vec3f vecA;
-    Vec3f vecC;
+    Player*                 player = GET_PLAYER(play);
+    s32                     i;
+    f32                     temp_f0;
+    Vec3f                   vecB;
+    Vec3f                   vecD;
+    Vec3f                   sp118;
+    Vec3f                   sp10C;
+    Vec3f                   sp100;
+    Vec3f                   intersection;
+    Vec3f                   spE8;
+    Vec3f                   normalVec;
+    MtxF*                   shieldMtx;
+    Vec3f                   vecA;
+    Vec3f                   vecC;
     MirRayShieldReflection* currentReflection;
 
     shieldMtx = &player->shieldMf;
@@ -478,10 +478,10 @@ void MirRay_ReflectedBeam(MirRay* this, PlayState* play, MirRayShieldReflection*
 
 void MirRay_Draw(Actor* thisx, PlayState* play) {
     MirRay* this = (MirRay*)thisx;
-    Player* player = GET_PLAYER(play);
-    s32 i;
+    Player*                player = GET_PLAYER(play);
+    s32                    i;
     MirRayShieldReflection reflection[6];
-    s32 temp;
+    s32                    temp;
 
     this->reflectIntensity = 0.0f;
     if ((D_80B8E670 == 0) && !this->unLit && Player_HasMirrorShieldSetToDraw(play)) {
@@ -492,8 +492,7 @@ void MirRay_Draw(Actor* thisx, PlayState* play) {
 
             Gfx_SetupDL_25Xlu(play->state.gfxCtx);
             Matrix_Scale(1.0f, 1.0f, this->reflectIntensity * 5.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 150, (s16)(temp = this->reflectIntensity * 100.0f));
             gSPDisplayList(POLY_XLU_DISP++, gShieldBeamGlowDL);
             MirRay_SetupReflectionPolys(this, play, reflection);
@@ -535,12 +534,12 @@ void MirRay_Draw(Actor* thisx, PlayState* play) {
 // Computes if the Point (pointx, pointy, pointz) lies within the right conical frustum with one end centred at vecA
 // with radius radiusA, the other at vecB with radius radiusB
 s32 MirRay_CheckInFrustum(Vec3f* vecA, Vec3f* vecB, f32 pointx, f32 pointy, f32 pointz, s16 radiusA, s16 radiusB) {
-    f32 coneRadius;
-    f32 closestPtx;
-    f32 closestPty;
-    f32 closestPtz;
+    f32   coneRadius;
+    f32   closestPtx;
+    f32   closestPty;
+    f32   closestPtz;
     Vec3f vecdiff;
-    f32 dist;
+    f32   dist;
     Vec3f sp5C;
     Vec3f sp50;
     Vec3f sp44;

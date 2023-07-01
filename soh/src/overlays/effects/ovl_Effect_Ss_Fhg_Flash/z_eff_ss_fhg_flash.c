@@ -14,7 +14,7 @@
 #define rParam regs[4]
 #define rScale regs[8]
 
-u32 EffectSsFhgFlash_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsFhgFlash_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsFhgFlash_DrawLightBall(PlayState* play, u32 index, EffectSs* this);
 void EffectSsFhgFlash_UpdateLightBall(PlayState* play, u32 index, EffectSs* this);
 void EffectSsFhgFlash_DrawShock(PlayState* play, u32 index, EffectSs* this);
@@ -26,15 +26,15 @@ EffectSsInit Effect_Ss_Fhg_Flash_InitVars = {
 };
 
 static UNK_TYPE D_809A5178[258];
-static Gfx D_809A5100[15];
+static Gfx      D_809A5100[15];
 
 u32 EffectSsFhgFlash_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsFhgFlashInitParams* initParams = (EffectSsFhgFlashInitParams*)initParamsx;
-    s32 pad;
-    s32 objBankIdx;
-    Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
-    Vec3f sp34 = { 0.0f, -1000.0f, 0.0f };
-    void* oldSeg6;
+    s32                         pad;
+    s32                         objBankIdx;
+    Vec3f                       zeroVec = { 0.0f, 0.0f, 0.0f };
+    Vec3f                       sp34 = { 0.0f, -1000.0f, 0.0f };
+    void*                       oldSeg6;
 
     if (initParams->type == FHGFLASH_LIGHTBALL) {
         objBankIdx = Object_GetIndex(&play->objectCtx, OBJECT_FHG);
@@ -86,9 +86,9 @@ static Color_RGB8 sColors[] = {
 
 void EffectSsFhgFlash_DrawLightBall(PlayState* play, u32 index, EffectSs* this) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    s32 pad;
-    f32 scale;
-    void* object;
+    s32              pad;
+    f32              scale;
+    void*            object;
 
     scale = this->rScale / 100.0f;
     object = play->objectCtx.status[this->rObjBankIdx].segment;
@@ -105,8 +105,7 @@ void EffectSsFhgFlash_DrawLightBall(PlayState* play, u32 index, EffectSs* this) 
     gDPPipeSync(POLY_XLU_DISP++);
     Matrix_ReplaceRotation(&play->billboardMtxF);
     Matrix_RotateZ((this->rXZRot / 32768.0f) * 3.1416f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, this->gfx);
 
     CLOSE_DISPS(gfxCtx);
@@ -114,8 +113,8 @@ void EffectSsFhgFlash_DrawLightBall(PlayState* play, u32 index, EffectSs* this) 
 
 void EffectSsFhgFlash_DrawShock(PlayState* play, u32 index, EffectSs* this) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    s32 pad;
-    f32 scale;
+    s32              pad;
+    f32              scale;
 
     scale = this->rScale / 100.0f;
 
@@ -138,8 +137,7 @@ void EffectSsFhgFlash_DrawShock(PlayState* play, u32 index, EffectSs* this) {
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, this->rAlpha);
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 255, 155, 0);
     Matrix_RotateZ((this->rXZRot / 32768.0f) * 3.1416f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, this->gfx);
 
     CLOSE_DISPS(gfxCtx);
@@ -169,10 +167,10 @@ void EffectSsFhgFlash_UpdateLightBall(PlayState* play, u32 index, EffectSs* this
 }
 
 void EffectSsFhgFlash_UpdateShock(PlayState* play, u32 index, EffectSs* this) {
-    s16 randBodypart;
-    Player* player;
+    s16            randBodypart;
+    Player*        player;
     BossGanondrof* phantomGanon;
-    s16 rand;
+    s16            rand;
 
     rand = (Rand_ZeroOne() * 20000.0f);
     this->rXZRot = (this->rXZRot + rand) + 0x4000;

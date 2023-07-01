@@ -48,7 +48,9 @@ void EnEncount2_Init(Actor* thisx, PlayState* play) {
         // "☆☆☆☆☆ Death Mountain Encount2 set ☆☆☆☆☆"
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ デスマウンテンエンカウント２セットされました ☆☆☆☆☆ %d\n" VT_RST,
                      this->actor.params);
-        if (LINK_IS_ADULT && (Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP))) { // flag for having used fire temple blue warp
+        if (LINK_IS_ADULT &&
+            (Flags_GetEventChkInf(
+                EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP))) { // flag for having used fire temple blue warp
             Actor_Kill(thisx);
         }
     } else {
@@ -62,9 +64,9 @@ void EnEncount2_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnEncount2_Wait(EnEncount2* this, PlayState* play) {
-    s32 pad;
-    s16 quakeIndex;
-    s16 spawnerState;
+    s32     pad;
+    s16     quakeIndex;
+    s16     spawnerState;
     Player* player = GET_PLAYER(play);
 
     spawnerState = ENCOUNT2_INACTIVE;
@@ -116,20 +118,20 @@ void EnEncount2_Wait(EnEncount2* this, PlayState* play) {
 }
 
 void EnEncount2_SpawnRocks(EnEncount2* this, PlayState* play) {
-    Player* player = GET_PLAYER(play);
+    Player*     player = GET_PLAYER(play);
     EnFireRock* spawnedRock;
-    f32 tempVec1X;
-    f32 tempVec1Y;
-    f32 tempVec1Z;
-    f32 magnitude;
-    f32 tempVec2X;
-    f32 tempVec2Y;
-    f32 tempVec2Z;
-    f32 particleScale;
-    Vec3f particlePos;
-    s16 spawnedRockType;
-    s16 spawnerState;
-    s16 maxRocks;
+    f32         tempVec1X;
+    f32         tempVec1Y;
+    f32         tempVec1Z;
+    f32         magnitude;
+    f32         tempVec2X;
+    f32         tempVec2Y;
+    f32         tempVec2Z;
+    f32         particleScale;
+    Vec3f       particlePos;
+    s16         spawnedRockType;
+    s16         spawnerState;
+    s16         maxRocks;
 
     this->envEffectsTimer++;
 
@@ -229,9 +231,8 @@ void EnEncount2_SpawnRocks(EnEncount2* this, PlayState* play) {
                     tempVec2Z = Rand_CenteredFloat(70.0f) + player->actor.world.pos.z;
                 }
             }
-            spawnedRock =
-                (EnFireRock*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FIRE_ROCK,
-                                                tempVec2X, tempVec1Y, tempVec2Z, 0, 0, 0, spawnedRockType);
+            spawnedRock = (EnFireRock*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_FIRE_ROCK,
+                                                          tempVec2X, tempVec1Y, tempVec2Z, 0, 0, 0, spawnedRockType);
             if (spawnedRock != NULL) {
                 spawnedRock->spawner = this;
                 this->numSpawnedRocks++;
@@ -291,7 +292,7 @@ void EnEncount2_Draw(Actor* thisx, PlayState* play) {
 
 void EnEncount2_ParticleInit(EnEncount2* this, Vec3f* particlePos, f32 scale) {
     EnEncount2Particle* particle = this->particles;
-    s16 i;
+    s16                 i;
 
     for (i = 0; i < ARRAY_COUNT(this->particles); i++, particle++) {
         if (!particle->isAlive) {
@@ -311,10 +312,10 @@ void EnEncount2_ParticleInit(EnEncount2* this, Vec3f* particlePos, f32 scale) {
 }
 
 void EnEncount2_ParticleUpdate(EnEncount2* this, PlayState* play) {
-    s16 i;
+    s16                 i;
     EnEncount2Particle* particle = this->particles;
-    Player* player = GET_PLAYER(play);
-    Vec3f targetPos;
+    Player*             player = GET_PLAYER(play);
+    Vec3f               targetPos;
 
     for (i = 0; i < ARRAY_COUNT(this->particles); particle++, i++) {
         if (particle->isAlive) {
@@ -343,9 +344,9 @@ void EnEncount2_ParticleUpdate(EnEncount2* this, PlayState* play) {
 void EnEncount2_ParticleDraw(Actor* thisx, PlayState* play) {
     EnEncount2* this = (EnEncount2*)thisx;
     EnEncount2Particle* particle = this->particles;
-    GraphicsContext* gfxCtx = play->state.gfxCtx;
-    s16 i;
-    s32 objBankIndex;
+    GraphicsContext*    gfxCtx = play->state.gfxCtx;
+    s16                 i;
+    s32                 objBankIndex;
 
     OPEN_DISPS(gfxCtx);
 

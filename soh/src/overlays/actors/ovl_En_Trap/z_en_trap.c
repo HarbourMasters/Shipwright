@@ -122,19 +122,19 @@ void EnTrap_Destroy(Actor* thisx, PlayState* play) {
 
 void EnTrap_Update(Actor* thisx, PlayState* play) {
     EnTrap* this = (EnTrap*)thisx;
-    Vec3f posTemp;
-    s16 angleToKnockPlayer;
-    s16 angleToCollidedActor;
-    s16 touchingActor;
-    s16 blockedOnReturn;
-    s32 pad;
-    s16 angleToWall;
-    Vec3f icePos;
-    Vec3f posAhead;
-    Vec3f colPoint;         // unused return value from function
-    CollisionPoly* colPoly; // unused return value from function
-    s32 bgId;               // unused return value from function
-    f32 temp_cond;
+    Vec3f          posTemp;
+    s16            angleToKnockPlayer;
+    s16            angleToCollidedActor;
+    s16            touchingActor;
+    s16            blockedOnReturn;
+    s32            pad;
+    s16            angleToWall;
+    Vec3f          icePos;
+    Vec3f          posAhead;
+    Vec3f          colPoint; // unused return value from function
+    CollisionPoly* colPoly;  // unused return value from function
+    s32            bgId;     // unused return value from function
+    f32            temp_cond;
 
     touchingActor = false;
     blockedOnReturn = false;

@@ -115,8 +115,8 @@ void EnDekunuts_Init(Actor* thisx, PlayState* play) {
         thisx->flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE);
     } else {
         ActorShape_Init(&thisx->shape, 0.0f, ActorShadow_DrawCircle, 35.0f);
-        SkelAnime_Init(play, &this->skelAnime, &gDekuNutsSkel, &gDekuNutsStandAnim, this->jointTable,
-                       this->morphTable, 25);
+        SkelAnime_Init(play, &this->skelAnime, &gDekuNutsSkel, &gDekuNutsStandAnim, this->jointTable, this->morphTable,
+                       25);
         Collider_InitCylinder(play, &this->collider);
         Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
         CollisionCheck_SetInfo(&thisx->colChkInfo, &sDamageTable, &sColChkInfoInit);
@@ -126,8 +126,8 @@ void EnDekunuts_Init(Actor* thisx, PlayState* play) {
             this->shotsPerRound = 1;
         }
         EnDekunuts_SetupWait(this);
-        Actor_SpawnAsChild(&play->actorCtx, thisx, play, ACTOR_EN_DEKUNUTS, thisx->world.pos.x,
-                           thisx->world.pos.y, thisx->world.pos.z, 0, thisx->world.rot.y, 0, DEKUNUTS_FLOWER);
+        Actor_SpawnAsChild(&play->actorCtx, thisx, play, ACTOR_EN_DEKUNUTS, thisx->world.pos.x, thisx->world.pos.y,
+                           thisx->world.pos.z, 0, thisx->world.rot.y, 0, DEKUNUTS_FLOWER);
     }
 }
 
@@ -426,15 +426,15 @@ void EnDekunuts_BeStunned(EnDekunuts* this, PlayState* play) {
 void EnDekunuts_Die(EnDekunuts* this, PlayState* play) {
     static Vec3f effectVelAndAccel = { 0.0f, 0.0f, 0.0f };
 
-    s32 pad;
+    s32   pad;
     Vec3f effectPos;
 
     if (SkelAnime_Update(&this->skelAnime)) {
         effectPos.x = this->actor.world.pos.x;
         effectPos.y = this->actor.world.pos.y + 18.0f;
         effectPos.z = this->actor.world.pos.z;
-        EffectSsDeadDb_Spawn(play, &effectPos, &effectVelAndAccel, &effectVelAndAccel, 200, 0, 255, 255, 255, 255,
-                             150, 150, 150, 1, 13, 1);
+        EffectSsDeadDb_Spawn(play, &effectPos, &effectVelAndAccel, &effectVelAndAccel, 200, 0, 255, 255, 255, 255, 150,
+                             150, 150, 1, 13, 1);
         effectPos.y = this->actor.world.pos.y + 10.0f;
         EffectSsHahen_SpawnBurst(play, &effectPos, 3.0f, 0, 12, 3, 15, HAHEN_OBJECT_DEFAULT, 10, NULL);
         Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x30);
@@ -479,8 +479,7 @@ void EnDekunuts_Update(Actor* thisx, PlayState* play) {
         EnDekunuts_ColliderCheck(this, play);
         this->actionFunc(this, play);
         Actor_MoveForward(&this->actor);
-        Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, this->collider.dim.radius, this->collider.dim.height,
-                                0x1D);
+        Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, this->collider.dim.radius, this->collider.dim.height, 0x1D);
         Collider_UpdateCylinder(&this->actor, &this->collider);
         if (this->collider.base.acFlags & AC_ON) {
             CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
@@ -497,8 +496,7 @@ void EnDekunuts_Update(Actor* thisx, PlayState* play) {
     }
 }
 
-s32 EnDekunuts_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                void* thisx) {
+s32 EnDekunuts_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnDekunuts* this = (EnDekunuts*)thisx;
     f32 x;
     f32 y;
@@ -534,7 +532,7 @@ void EnDekunuts_Draw(Actor* thisx, PlayState* play) {
     if (this->actor.params == DEKUNUTS_FLOWER) {
         Gfx_DrawDListOpa(play, gDekuNutsFlowerDL);
     } else {
-        SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnDekunuts_OverrideLimbDraw,
-                          NULL, this);
+        SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnDekunuts_OverrideLimbDraw, NULL,
+                          this);
     }
 }

@@ -185,7 +185,7 @@ void EnIk_SetupAction(EnIk* this, EnIkActionFunc actionFunc) {
 
 void func_80A74398(Actor* thisx, PlayState* play) {
     EnIk* this = (EnIk*)thisx;
-    s32 pad;
+    s32              pad;
     EffectBlureInit1 blureInit;
 
     thisx->update = func_80A75FA0;
@@ -236,8 +236,9 @@ void func_80A74398(Actor* thisx, PlayState* play) {
 
     if (this->switchFlags != 0xFF) {
         // In vanilla gameplay, Iron Knuckles are despawned based on specific flags in specific scenarios.
-        // In Enemy Randomizer and Crowd Control, this made the Iron Knuckles despawn when the same flag was set by other objects.
-        // Instead, rely on the "Clear enemy room" flag when in Enemy Randomizer for Iron Knuckles that aren't Nabooru.
+        // In Enemy Randomizer and Crowd Control, this made the Iron Knuckles despawn when the same flag was set by
+        // other objects. Instead, rely on the "Clear enemy room" flag when in Enemy Randomizer for Iron Knuckles that
+        // aren't Nabooru.
         if ((Flags_GetSwitch(play, this->switchFlags) && !enemyRandoCCActive) ||
             (thisx->params != 0 && Flags_GetClear(play, play->roomCtx.curRoom.num) && enemyRandoCCActive)) {
             Actor_Kill(thisx);
@@ -646,7 +647,7 @@ void func_80A7598C(EnIk* this) {
 void func_80A75A38(EnIk* this, PlayState* play) {
     if (SkelAnime_Update(&this->skelAnime)) {
         if ((this->actor.colChkInfo.health == 0) && (this->unk_2F9 != 0)) {
-            s32 i;
+            s32   i;
             Vec3f pos;
             Vec3f sp7C = { 0.0f, 0.5f, 0.0f };
 
@@ -662,7 +663,8 @@ void func_80A75A38(EnIk* this, PlayState* play) {
                 Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xB0);
                 // Don't set flag when Enemy Rando or CrowdControl are on.
                 // Instead Iron Knuckles rely on the "clear room" flag.
-                if (this->switchFlags != 0xFF && !CVarGetInteger("gRandomizedEnemies", 0) && !CVarGetInteger("gCrowdControl", 0)) {
+                if (this->switchFlags != 0xFF && !CVarGetInteger("gRandomizedEnemies", 0) &&
+                    !CVarGetInteger("gCrowdControl", 0)) {
                     Flags_SetSwitch(play, this->switchFlags);
                 }
                 Actor_Kill(&this->actor);
@@ -674,11 +676,11 @@ void func_80A75A38(EnIk* this, PlayState* play) {
 }
 
 void func_80A75C38(EnIk* this, PlayState* play) {
-    f32 temp_f0;
-    u8 pad;
-    u8 pad2;
-    u8 prevHealth;
-    s32 temp_v0_3;
+    f32   temp_f0;
+    u8    pad;
+    u8    pad2;
+    u8    prevHealth;
+    s32   temp_v0_3;
     Vec3f sp38;
 
     if ((this->unk_2F8 == 3) || (this->unk_2F8 == 2)) {
@@ -756,9 +758,9 @@ void func_80A75C38(EnIk* this, PlayState* play) {
 
 void func_80A75FA0(Actor* thisx, PlayState* play) {
     EnIk* this = (EnIk*)thisx;
-    s32 pad;
+    s32     pad;
     Player* player = GET_PLAYER(play);
-    u8 prevInvincibilityTimer;
+    u8      prevInvincibilityTimer;
 
     this->unk_2FA = this->unk_2FB;
     func_80A75C38(this, play);
@@ -810,7 +812,7 @@ Gfx* func_80A761B0(GraphicsContext* gfxCtx, u8 primR, u8 primG, u8 primB, u8 env
 
     gDPPipeSync(displayListHead++);
     if (CVarGetInteger("gCosmetics.NPC_IronKnuckles.Changed", 0)) {
-        Color_RGB8 color = CVarGetColor24("gCosmetics.NPC_IronKnuckles.Value", (Color_RGB8){primR, primG, primB});
+        Color_RGB8 color = CVarGetColor24("gCosmetics.NPC_IronKnuckles.Value", (Color_RGB8){ primR, primG, primB });
         gDPSetPrimColor(displayListHead++, 0, 0, color.r, color.g, color.b, 255);
     } else {
         gDPSetPrimColor(displayListHead++, 0, 0, primR, primG, primB, 255);
@@ -877,15 +879,14 @@ void EnIk_PostLimbDraw3(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
         BodyBreak_SetInfo(&this->bodyBreak, limbIndex, 26, 27, 28, dList, BODYBREAK_OBJECT_DEFAULT);
     }
     if (limbIndex == 12) {
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         if (this->actor.params != 0) {
             gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_019E08);
         } else {
             gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016D88);
         }
     } else if (limbIndex == 17) {
-        s32 i;
+        s32   i;
         Vec3f sp9C[3];
         Vec3f sp78[3];
 
@@ -916,13 +917,11 @@ void EnIk_PostLimbDraw3(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
 
     switch (limbIndex) {
         case 22:
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016F88);
             break;
         case 24:
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016EE8);
             break;
         case 26:
@@ -1018,16 +1017,16 @@ void func_80A76E2C(EnIk* this, PlayState* play, Vec3f* pos) {
     };
 
     if (this->unk_4D4 == 0) {
-        s32 pad;
+        s32   pad;
         Vec3f effectVelocity = { 0.0f, 0.0f, 0.0f };
         Vec3f effectAccel = { 0.0f, 0.3f, 0.0f };
-        s32 i;
+        s32   i;
 
         for (i = ARRAY_COUNT(D_80A78514) - 1; i >= 0; i--) {
             Color_RGBA8 primColor = { 200, 200, 200, 255 };
             Color_RGBA8 envColor = { 150, 150, 150, 0 };
-            s32 temp_v0;
-            Vec3f effectPos;
+            s32         temp_v0;
+            Vec3f       effectPos;
 
             Matrix_MultVec3f(&D_80A78514[i], &effectPos);
             temp_v0 = (Rand_ZeroOne() * 20.0f) - 10.0f;
@@ -1116,8 +1115,8 @@ void func_80A772A4(EnIk* this) {
 
 void func_80A772EC(EnIk* this, PlayState* play) {
     static Vec3f D_80A78FA0;
-    s32 pad[2];
-    f32 wDest;
+    s32          pad[2];
+    f32          wDest;
 
     SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, &this->actor.world.pos, &D_80A78FA0, &wDest);
     Audio_PlaySoundGeneral(NA_SE_EN_IRONNACK_DEAD, &D_80A78FA0, 4, &D_801333E0, &D_801333E0, &D_801333E8);
@@ -1127,8 +1126,7 @@ void func_80A7735C(EnIk* this, PlayState* play) {
     s32 pad[3];
     f32 frames = Animation_GetLastFrame(&object_ik_Anim_0203D8);
 
-    SkelAnime_InitFlex(play, &this->skelAnime, &object_ik_Skel_0205C0, NULL, this->jointTable, this->morphTable,
-                       30);
+    SkelAnime_InitFlex(play, &this->skelAnime, &object_ik_Skel_0205C0, NULL, this->jointTable, this->morphTable, 30);
     Animation_Change(&this->skelAnime, &object_ik_Anim_0203D8, 1.0f, 0.0f, frames, ANIMMODE_ONCE, 0.0f);
     this->action = 3;
     this->drawMode = 2;
@@ -1189,27 +1187,23 @@ void EnIk_PostLimbDraw2(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
             EnIk* this = (EnIk*)thisx;
 
             if (EnIk_curFrame(&this->actor) < 30.0f) {
-                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016D88);
             }
         } break;
         case 22:
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016F88);
             break;
         case 24:
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016EE8);
             break;
         case 26: {
             EnIk* this = (EnIk*)thisx;
 
             if (EnIk_curFrame(&this->actor) < 30.0f) {
-                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016BE0);
             }
         } break;
@@ -1217,8 +1211,7 @@ void EnIk_PostLimbDraw2(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
             EnIk* this = (EnIk*)thisx;
 
             if (EnIk_curFrame(&this->actor) < 30.0f) {
-                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016CD8);
             }
         } break;
@@ -1228,8 +1221,8 @@ void EnIk_PostLimbDraw2(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
 
 void func_80A77844(EnIk* this, PlayState* play) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    SkelAnime* skelAnime = &this->skelAnime;
-    s32 pad[2];
+    SkelAnime*       skelAnime = &this->skelAnime;
+    s32              pad[2];
 
     OPEN_DISPS(gfxCtx);
 
@@ -1247,8 +1240,8 @@ void func_80A77844(EnIk* this, PlayState* play) {
 
 void func_80A779DC(EnIk* this, PlayState* play) {
     CsCmdActorAction* npcAction = EnIk_GetNpcAction(play, 4);
-    u32 action;
-    u32 currentNpcAction;
+    u32               action;
+    u32               currentNpcAction;
 
     if (npcAction != NULL) {
         action = npcAction->action;
@@ -1348,28 +1341,23 @@ void EnIk_PostLimbDraw1(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
 
     switch (limbIndex) {
         case 12:
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016D88);
             break;
         case 22:
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016F88);
             break;
         case 24:
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016EE8);
             break;
         case 26:
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016BE0);
             break;
         case 27:
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016CD8);
             break;
     }
@@ -1382,8 +1370,8 @@ void func_80A77ED0(EnIk* this, PlayState* play) {
 
 void func_80A77EDC(EnIk* this, PlayState* play) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    SkelAnime* skelAnime = &this->skelAnime;
-    s32 pad[2];
+    SkelAnime*       skelAnime = &this->skelAnime;
+    s32              pad[2];
 
     OPEN_DISPS(gfxCtx);
 
@@ -1447,19 +1435,18 @@ void func_80A781CC(Actor* thisx, PlayState* play) {
             gSaveContext.cutsceneTrigger = 1;
             Actor_SetScale(&this->actor, 0.01f);
         } else {
-        // Because no CS in rando, we hide the death of the knuckle by spawning flames and kill the actor
+            // Because no CS in rando, we hide the death of the knuckle by spawning flames and kill the actor
             if ((this->actor.colChkInfo.health <= 10)) {
-                s32 i;
+                s32   i;
                 Vec3f pos;
                 Vec3f sp7C = { 0.0f, 0.5f, 0.0f };
-                int flameAmount = 100;
+                int   flameAmount = 100;
 
                 for (i = flameAmount; i >= 0; i--) {
                     pos.x = this->actor.world.pos.x + Rand_CenteredFloat(120.0f);
                     pos.z = this->actor.world.pos.z + Rand_CenteredFloat(120.0f);
                     pos.y = this->actor.world.pos.y + 20.0f + Rand_CenteredFloat(120.0f);
-                    EffectSsDeadDb_Spawn(play, &pos, &sp7C, &sp7C, 100, 0, 255, 255, 255, 255, 0, 0, 255, 1, 9,
-                                            true);
+                    EffectSsDeadDb_Spawn(play, &pos, &sp7C, &sp7C, 100, 0, 255, 255, 255, 255, 0, 0, 255, 1, 9, true);
                 }
                 Actor_Kill(&this->actor);
             }
@@ -1479,14 +1466,15 @@ void EnIk_Init(Actor* thisx, PlayState* play) {
         Actor_Kill(&this->actor);
     } else {
         ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f);
-        SkelAnime_InitFlex(play, &this->skelAnime, &object_ik_Skel_01E178, &object_ik_Anim_00C114,
-                           this->jointTable, this->morphTable, 30);
+        SkelAnime_InitFlex(play, &this->skelAnime, &object_ik_Skel_01E178, &object_ik_Anim_00C114, this->jointTable,
+                           this->morphTable, 30);
         func_80A74398(&this->actor, play);
         func_80A780D0(this, play);
     }
 
     // Immediately trigger Iron Knuckle for Enemy Rando and Crowd Control
-    if ((CVarGetInteger("gRandomizedEnemies", 0) || CVarGetInteger("gCrowdControl", 0)) && (thisx->params == 2 || thisx->params == 3)) {
+    if ((CVarGetInteger("gRandomizedEnemies", 0) || CVarGetInteger("gCrowdControl", 0)) &&
+        (thisx->params == 2 || thisx->params == 3)) {
         this->skelAnime.playSpeed = 1.0f;
     }
 }

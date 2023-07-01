@@ -251,7 +251,7 @@ void EnBili_SetupStunned(EnBili* this) {
 }
 
 void EnBili_SetupFrozen(EnBili* this, PlayState* play) {
-    s32 i;
+    s32   i;
     Vec3f effectPos;
 
     if (!(this->actor.flags & ACTOR_FLAG_DRAGGED_BY_ARROW)) {
@@ -363,9 +363,9 @@ void EnBili_SpawnedFlyApart(EnBili* this, PlayState* play) {
 void EnBili_DischargeLightning(EnBili* this, PlayState* play) {
     static Color_RGBA8 primColor = { 255, 255, 255, 255 };
     static Color_RGBA8 envColor = { 200, 255, 255, 255 };
-    s32 i;
-    Vec3f effectPos;
-    s16 effectYaw;
+    s32                i;
+    Vec3f              effectPos;
+    s16                effectYaw;
 
     for (i = 0; i < 4; i++) {
         if (!((this->timer + (i << 1)) % 4)) {
@@ -475,9 +475,9 @@ void EnBili_Burnt(EnBili* this, PlayState* play) {
 void EnBili_Die(EnBili* this, PlayState* play) {
     static Vec3f effectVelocity = { 0.0f, 0.0f, 0.0f };
     static Vec3f effectAccel = { 0.0f, 0.0f, 0.0f };
-    s16 effectScale;
-    Vec3f effectPos;
-    s32 i;
+    s16          effectScale;
+    Vec3f        effectPos;
+    s32          i;
 
     if (this->actor.draw != NULL) {
         if (this->actor.flags & ACTOR_FLAG_DRAGGED_BY_ARROW) {
@@ -501,11 +501,11 @@ void EnBili_Die(EnBili* this, PlayState* play) {
             effectScale = Rand_S16Offset(40, 40);
 
             if (Rand_ZeroOne() < 0.7f) {
-                EffectSsDtBubble_SpawnColorProfile(play, &effectPos, &effectVelocity, &effectAccel, effectScale,
-                                                   25, 2, 1);
+                EffectSsDtBubble_SpawnColorProfile(play, &effectPos, &effectVelocity, &effectAccel, effectScale, 25, 2,
+                                                   1);
             } else {
-                EffectSsDtBubble_SpawnColorProfile(play, &effectPos, &effectVelocity, &effectAccel, effectScale,
-                                                   25, 0, 1);
+                EffectSsDtBubble_SpawnColorProfile(play, &effectPos, &effectVelocity, &effectAccel, effectScale, 25, 0,
+                                                   1);
             }
         }
     } else {
@@ -729,7 +729,7 @@ s32 EnBili_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* 
                             Gfx** gfx) {
     EnBili* this = (EnBili*)thisx;
     Vec3f limbScale = { 1.0f, 1.0f, 1.0f };
-    f32 curFrame = this->skelAnime.curFrame;
+    f32   curFrame = this->skelAnime.curFrame;
 
     if (limbIndex == EN_BILI_LIMB_OUTER_HOOD) {
         EnBili_PulseLimb3(this, curFrame, &limbScale);
@@ -767,7 +767,7 @@ void EnBili_Draw(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_XLU_DISP++, 0x09, D_809C1700);
     }
 
-    POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                                   EnBili_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
+    POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnBili_OverrideLimbDraw,
+                                   NULL, this, POLY_XLU_DISP);
     CLOSE_DISPS(play->state.gfxCtx);
 }

@@ -14,7 +14,7 @@ void EnAni_Destroy(Actor* thisx, PlayState* play);
 void EnAni_Update(Actor* thisx, PlayState* play);
 void EnAni_Draw(Actor* thisx, PlayState* play);
 
-s32 EnAni_SetText(EnAni* this, PlayState* play, u16 textId);
+s32  EnAni_SetText(EnAni* this, PlayState* play, u16 textId);
 void func_809B04F0(EnAni* this, PlayState* play);
 void func_809B0524(EnAni* this, PlayState* play);
 void func_809B0558(EnAni* this, PlayState* play);
@@ -74,8 +74,8 @@ void EnAni_Init(Actor* thisx, PlayState* play) {
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     ActorShape_Init(&this->actor.shape, -2800.0f, ActorShadow_DrawCircle, 36.0f);
-    SkelAnime_InitFlex(play, &this->skelAnime, &gRoofManSkel, &gRoofManIdleAnim, this->jointTable,
-                       this->morphTable, 0x10);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gRoofManSkel, &gRoofManIdleAnim, this->jointTable, this->morphTable,
+                       0x10);
     Animation_PlayOnce(&this->skelAnime, &gRoofManIdleAnim);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);

@@ -134,8 +134,8 @@ void BgHakaSgami_Init(Actor* thisx, PlayState* play) {
     static u8 sP2EndColor[] = { 150, 150, 150, 20 };
     BgHakaSgami* this = (BgHakaSgami*)thisx;
     EffectBlureInit1 blureInit;
-    s32 i;
-    ColliderTris* colliderScythe = &this->colliderScythe;
+    s32              i;
+    ColliderTris*    colliderScythe = &this->colliderScythe;
 
     Actor_ProcessInitChain(thisx, sInitChain);
 
@@ -215,12 +215,12 @@ void BgHakaSgami_Spin(BgHakaSgami* this, PlayState* play) {
         { 380.0f, 50.0f, 50.0f },
         { 310.0f, 33.0f, 0.0f },
     };
-    s32 i;
-    s32 j;
-    Vec3f scytheVertices[3];
-    f32 actorRotYSin;
-    f32 actorRotYCos;
-    s32 iterateCount;
+    s32                      i;
+    s32                      j;
+    Vec3f                    scytheVertices[3];
+    f32                      actorRotYSin;
+    f32                      actorRotYCos;
+    s32                      iterateCount;
     ColliderTrisElementInit* elementInit;
 
     if (this->timer != 0) {

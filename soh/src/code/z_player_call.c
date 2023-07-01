@@ -1,6 +1,8 @@
 #include "global.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA | ACTOR_FLAG_CAN_PRESS_SWITCH)
+#define FLAGS                                                                                                     \
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | \
+     ACTOR_FLAG_NO_FREEZE_OCARINA | ACTOR_FLAG_CAN_PRESS_SWITCH)
 
 void (*sPlayerCallInitFunc)(Actor* thisx, PlayState* play);
 void (*sPlayerCallDestroyFunc)(Actor* thisx, PlayState* play);

@@ -3,7 +3,6 @@
 #include "assets/overlays/ovl_File_Choose/ovl_file_choose.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-
 static s16 D_808124C0[] = {
     0x0002, 0x0003, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0001, 0x0002, 0x0000, 0x0001,
     0x0001, 0x0002, 0x0001, 0x0001, 0x0004, 0x0002, 0x0002, 0x0002, 0x0001, 0x0001, 0x0000, 0x0002, 0x0000, 0x0001,
@@ -113,12 +112,12 @@ static s16 sLastKbdX = -1;
  */
 void FileChoose_SetNameEntryVtx(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
-    Font* font = &this->font;
-    s16 phi_s0;
-    s16 phi_t1;
-    u8 temp;
-    s16 phi_v0;
-    char* filename = Save_GetSaveMetaInfo(this->buttonIndex)->playerName;
+    Font*      font = &this->font;
+    s16        phi_s0;
+    s16        phi_t1;
+    u8         temp;
+    s16        phi_v0;
+    char*      filename = Save_GetSaveMetaInfo(this->buttonIndex)->playerName;
     Color_RGB8 Background_Color = { this->windowColor[0], this->windowColor[1], this->windowColor[2] };
 
     OPEN_DISPS(this->state.gfxCtx);
@@ -137,8 +136,7 @@ void FileChoose_SetNameEntryVtx(GameState* thisx) {
 
     phi_s0 = 0x10;
     for (phi_t1 = 0; phi_t1 < 2; phi_t1++, phi_s0 += 4) {
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
-                        255);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2], 255);
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
         gDPLoadTextureBlock(POLY_OPA_DISP++, sBackspaceEndTextures[gSaveContext.language][phi_t1], G_IM_FMT_IA,
                             G_IM_SIZ_16b, sBackspaceEndWidths[phi_t1], 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
@@ -214,8 +212,7 @@ void FileChoose_SetNameEntryVtx(GameState* thisx) {
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->nameEntryBoxAlpha);
 
     for (phi_v0 = 0, phi_s0 = 0; phi_s0 < 0x20; phi_s0 += 4, phi_v0++) {
-        FileChoose_DrawCharacter(this->state.gfxCtx, font->fontBuf + filename[phi_v0] * FONT_CHAR_TEX_SIZE,
-                                 phi_s0);
+        FileChoose_DrawCharacter(this->state.gfxCtx, font->fontBuf + filename[phi_v0] * FONT_CHAR_TEX_SIZE, phi_s0);
     }
 
     this->nameEntryVtx[0x25].v.tc[0] = this->nameEntryVtx[0x26].v.tc[1] = this->nameEntryVtx[0x27].v.tc[0] =
@@ -234,9 +231,9 @@ void FileChoose_SetNameEntryVtx(GameState* thisx) {
 void FileChoose_DrawKeyboard(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Font* font = &this->font;
-    s16 i = 0;
-    s16 tmp;
-    s16 vtx = 0;
+    s16   i = 0;
+    s16   tmp;
+    s16   vtx = 0;
 
     OPEN_DISPS(this->state.gfxCtx);
 
@@ -265,13 +262,13 @@ void FileChoose_DrawKeyboard(GameState* thisx) {
 
 void FileChoose_DrawNameEntry(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
-    Font* font = &this->font;
-    Input* input = &this->state.input[0];
-    s16 i;
-    s16 tmp;
-    u16 dayTime;
-    s16 validName;
-    char* filename = Save_GetSaveMetaInfo(this->buttonIndex)->playerName;
+    Font*      font = &this->font;
+    Input*     input = &this->state.input[0];
+    s16        i;
+    s16        tmp;
+    u16        dayTime;
+    s16        validName;
+    char*      filename = Save_GetSaveMetaInfo(this->buttonIndex)->playerName;
     Color_RGB8 Background_Color = { this->windowColor[0], this->windowColor[1], this->windowColor[2] };
 
     OPEN_DISPS(this->state.gfxCtx);
@@ -324,8 +321,8 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetCombineLERP(POLY_OPA_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0, TEXEL0, 0,
                       PRIMITIVE, 0);
-    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->highlightColor[0], this->highlightColor[1],
-                    this->highlightColor[2], this->highlightColor[3]);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->highlightColor[0], this->highlightColor[1], this->highlightColor[2],
+                    this->highlightColor[3]);
     gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelCharHighlightTex, G_IM_FMT_I, G_IM_SIZ_8b, 24, 24, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
@@ -526,8 +523,8 @@ void FileChoose_StartNameEntry(GameState* thisx) {
 void FileChoose_UpdateKeyboardCursor(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
-    s16 prevKbdX;
-    bool dpad = CVarGetInteger("gDpadText", 0);
+    s16    prevKbdX;
+    bool   dpad = CVarGetInteger("gDpadText", 0);
 
     this->kbdButton = 99;
 
@@ -683,7 +680,7 @@ static s8 sLastOptionButtonIndex = -1;
 void FileChoose_UpdateOptionsMenu(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
-    bool dpad = CVarGetInteger("gDpadText", 0);
+    bool   dpad = CVarGetInteger("gDpadText", 0);
 
     if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
@@ -736,7 +733,7 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         sSelectedSetting ^= 1;
     }
-    
+
     if (sSelectedSetting == FS_SETTING_AUDIO) {
         if (sLastOptionButtonIndex != gSaveContext.audioSetting) {
             GameInteractor_ExecuteOnUpdateFileAudioSelection(gSaveContext.audioSetting);
@@ -753,8 +750,8 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
 
 typedef struct {
     /* 0x00 */ void* texture[3];
-    /* 0x0C */ u16 width[3];
-    /* 0x12 */ u16 height;
+    /* 0x0C */ u16   width[3];
+    /* 0x12 */ u16   height;
 } OptionsMenuTextureInfo; // size = 0x14
 
 static OptionsMenuTextureInfo gOptionsMenuHeaders[] = {
@@ -822,7 +819,7 @@ void FileChoose_DrawOptionsImpl(GameState* thisx) {
     static s16 cursorEnvBlue = 0;
     static s16 cursorPulseDir = 1;
     static s16 cursorFlashTimer = 20;
-    s16 cursorPrimColors[][3] = {
+    s16        cursorPrimColors[][3] = {
         { 255, 255, 255 },
         { 0, 255, 255 },
     };
@@ -1014,16 +1011,14 @@ void FileChoose_DrawOptionsImpl(GameState* thisx) {
 
     Matrix_Push();
     Matrix_Translate(0.0f, 0.1f, 0.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPVertex(POLY_OPA_DISP++, gOptionsDividerTopVtx, 4, 0);
     gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
     Matrix_Pop();
 
     Matrix_Push();
     Matrix_Translate(0.0f, 0.2f, 0.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPVertex(POLY_OPA_DISP++, gOptionsDividerMiddleVtx, 4, 0);
     gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
@@ -1031,8 +1026,7 @@ void FileChoose_DrawOptionsImpl(GameState* thisx) {
 
     Matrix_Push();
     Matrix_Translate(0.0f, 0.4f, 0.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPVertex(POLY_OPA_DISP++, gOptionsDividerBottomVtx, 4, 0);
     gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
     Matrix_Pop();

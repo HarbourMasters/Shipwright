@@ -13,10 +13,11 @@ class PlayerAnimation : public Resource<int16_t> {
   public:
     using Resource::Resource;
 
-    PlayerAnimation() : Resource(std::shared_ptr<ResourceInitData>()) {}
+    PlayerAnimation() : Resource(std::shared_ptr<ResourceInitData>()) {
+    }
 
     int16_t* GetPointer();
-    size_t GetPointerSize();
+    size_t   GetPointerSize();
 
     std::vector<int16_t> limbRotData;
 };

@@ -85,7 +85,7 @@ void TransitionFade_Update(void* thisx, s32 updateRate) {
 
 void TransitionFade_Draw(void* thisx, Gfx** gfxP) {
     TransitionFade* this = (TransitionFade*)thisx;
-    Gfx* gfx;
+    Gfx*             gfx;
     Color_RGBA8_u32* color = &this->fadeColor;
 
     if (color->a > 0) {

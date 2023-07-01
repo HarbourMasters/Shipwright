@@ -5,13 +5,13 @@
 #include "global.h"
 
 typedef struct {
-    /* 0x00 */ Vec3f pos;
-    /* 0x0C */ Vec3f velocity;
-    /* 0x18 */ Vec3f accel;
-    /* 0x24 */ s16 scale;
-    /* 0x26 */ u8 param;
+    /* 0x00 */ Vec3f  pos;
+    /* 0x0C */ Vec3f  velocity;
+    /* 0x18 */ Vec3f  accel;
+    /* 0x24 */ s16    scale;
+    /* 0x26 */ u8     param;
     /* 0x28 */ Actor* actor;
-    /* 0x2C */ u8 type;
+    /* 0x2C */ u8     type;
 } EffectSsFhgFlashInitParams; // size = 0x30
 
 typedef enum {
@@ -36,7 +36,5 @@ typedef enum {
     /* 0x01 */ FHGFLASH_SHOCK_PLAYER,
     /* 0x02 */ FHGFLASH_SHOCK_PG
 } FhgFlashLightningParam;
-
-
 
 #endif

@@ -20,7 +20,7 @@
 #define rScaleStep regs[9]
 #define rDepth regs[10]
 
-u32 EffectSsBomb2_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsBomb2_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsBomb2_DrawFade(PlayState* play, u32 index, EffectSs* this);
 void EffectSsBomb2_DrawLayered(PlayState* play, u32 index, EffectSs* this);
 void EffectSsBomb2_Update(PlayState* play, u32 index, EffectSs* this);
@@ -67,13 +67,13 @@ void EffectSsBomb2_DrawFade(PlayState* play, u32 index, EffectSs* this) {
         gEffBombExplosion5Tex, gEffBombExplosion6Tex, gEffBombExplosion7Tex, gEffBombExplosion8Tex,
     };
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    MtxF mfTrans;
-    MtxF mfScale;
-    MtxF mfResult;
-    MtxF mfTrans11DA0;
-    Mtx* mtx;
-    s32 pad;
-    f32 scale;
+    MtxF             mfTrans;
+    MtxF             mfScale;
+    MtxF             mfResult;
+    MtxF             mfTrans11DA0;
+    Mtx*             mtx;
+    s32              pad;
+    f32              scale;
 
     OPEN_DISPS(gfxCtx);
 
@@ -104,18 +104,18 @@ void EffectSsBomb2_DrawLayered(PlayState* play, u32 index, EffectSs* this) {
         gEffBombExplosion5Tex, gEffBombExplosion6Tex, gEffBombExplosion7Tex, gEffBombExplosion8Tex,
     };
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    MtxF mfTrans;
-    MtxF mfScale;
-    MtxF mfResult;
-    MtxF mfTrans11DA0;
-    MtxF mtx2F;
-    Mtx* mtx2;
-    Mtx* mtx;
-    s32 pad[3];
-    f32 scale;
-    f32 depth;
-    f32 layer2Scale = 0.925f;
-    s32 i;
+    MtxF             mfTrans;
+    MtxF             mfScale;
+    MtxF             mfResult;
+    MtxF             mfTrans11DA0;
+    MtxF             mtx2F;
+    Mtx*             mtx2;
+    Mtx*             mtx;
+    s32              pad[3];
+    f32              scale;
+    f32              depth;
+    f32              layer2Scale = 0.925f;
+    s32              i;
 
     OPEN_DISPS(gfxCtx);
 

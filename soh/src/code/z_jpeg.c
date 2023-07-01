@@ -18,8 +18,7 @@
 /**
  * Configures and schedules a JPEG decoder task and waits for it to finish.
  */
-void Jpeg_ScheduleDecoderTask(JpegContext* ctx) 
-{
+void Jpeg_ScheduleDecoderTask(JpegContext* ctx) {
 #if 0
     static OSTask_t sJpegTask = {
         M_NJPEGTASK,          // type
@@ -74,7 +73,7 @@ void Jpeg_ScheduleDecoderTask(JpegContext* ctx)
  */
 void Jpeg_CopyToZbuffer(u16* src, u16* zbuffer, s32 x, s32 y) {
     u16* dst = zbuffer + (((y * SCREEN_WIDTH) + x) * 16);
-    s32 i;
+    s32  i;
 
     for (i = 0; i < 16; i++) {
         dst[0] = src[0];
@@ -234,18 +233,18 @@ void Jpeg_ParseMarkers(u8* ptr, JpegContext* ctx) {
 }
 
 s32 Jpeg_Decode(void* data, void* zbuffer, void* work, u32 workSize) {
-    s32 y;
-    s32 x;
-    u32 j;
-    u32 i;
-    JpegContext ctx;
+    s32              y;
+    s32              x;
+    u32              j;
+    u32              i;
+    JpegContext      ctx;
     JpegHuffmanTable hTables[4];
-    JpegDecoder decoder;
+    JpegDecoder      decoder;
     JpegDecoderState state;
-    JpegWork* workBuff;
-    OSTime diff;
-    OSTime time;
-    OSTime curTime;
+    JpegWork*        workBuff;
+    OSTime           diff;
+    OSTime           time;
+    OSTime           curTime;
 
     workBuff = work;
 

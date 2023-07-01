@@ -125,7 +125,7 @@ extern string_view shopPriceStarter;
 extern string_view shopPriceAdult;
 extern string_view shopPriceGiant;
 extern string_view shopPriceTycoon;
-extern string_view shopPriceAffordable;   
+extern string_view shopPriceAffordable;
 
 extern string_view tokensOff;
 extern string_view tokensDungeon;

@@ -1,13 +1,13 @@
 #include "global.h"
 
 StackEntry sBootThreadInfo;
-OSThread sIdleThread;
-u8 sIdleThreadStack[0x400];
+OSThread   sIdleThread;
+u8         sIdleThreadStack[0x400];
 StackEntry sIdleThreadInfo;
-u8 sBootThreadStack[0x400];
+u8         sBootThreadStack[0x400];
 
 void cleararena(void) {
-    //bzero(_dmadataSegmentStart, osMemSize - OS_K0_TO_PHYSICAL(_dmadataSegmentStart));
+    // bzero(_dmadataSegmentStart, osMemSize - OS_K0_TO_PHYSICAL(_dmadataSegmentStart));
 }
 
 void bootproc(void) {

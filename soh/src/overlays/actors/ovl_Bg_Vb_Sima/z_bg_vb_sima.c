@@ -70,10 +70,10 @@ void BgVbSima_SpawnEmber(BossFdEffect* effect, Vec3f* position, Vec3f* velocity,
 void BgVbSima_Update(Actor* thisx, PlayState* play) {
     static Color_RGBA8 colorYellow = { 255, 255, 0, 255 };
     static Color_RGBA8 colorRed = { 255, 10, 0, 255 };
-    s32 pad;
+    s32                pad;
     BgVbSima* this = (BgVbSima*)thisx;
     BossFd* bossFd = (BossFd*)this->dyna.actor.parent;
-    f32 minus1 = -1.0f;
+    f32     minus1 = -1.0f;
 
     this->shakeTimer++;
     if (!Flags_GetClear(play, play->roomCtx.curRoom.num)) {
@@ -90,16 +90,16 @@ void BgVbSima_Update(Actor* thisx, PlayState* play) {
             Actor_Kill(&this->dyna.actor);
         }
         if (bossFd->platformSignal != VBSIMA_STAND) {
-            s16 i2;
-            s16 i1;
+            s16   i2;
+            s16   i1;
             Vec3f splashVel;
             Vec3f splashAcc;
             Vec3f splashPos;
             Vec3f emberPos;
             Vec3f emberVel;
             Vec3f emberAcc;
-            f32 edgeX;
-            f32 edgeZ;
+            f32   edgeX;
+            f32   edgeZ;
 
             for (i1 = 0; i1 < 10; i1++) {
                 if (Rand_ZeroOne() < 0.33f) {
@@ -152,8 +152,7 @@ void BgVbSima_Update(Actor* thisx, PlayState* play) {
 void BgVbSima_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gVolvagiaPlatformDL);
     CLOSE_DISPS(play->state.gfxCtx);
 }

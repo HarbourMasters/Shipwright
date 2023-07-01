@@ -37,12 +37,12 @@ s32 _Printf(PrintCallback pfn, void* arg, const char* fmt, va_list ap) {
 
     while (true) {
         static const char fchar[] = " +-#0";
-        static const u32 fbit[] = { FLAGS_SPACE, FLAGS_PLUS, FLAGS_MINUS, FLAGS_HASH, FLAGS_ZERO, 0 };
+        static const u32  fbit[] = { FLAGS_SPACE, FLAGS_PLUS, FLAGS_MINUS, FLAGS_HASH, FLAGS_ZERO, 0 };
 
-        const u8* s = (u8*)fmt;
-        u8 c;
+        const u8*   s = (u8*)fmt;
+        u8          c;
         const char* t;
-        u8 ac[0x20];
+        u8          ac[0x20];
 
         while ((c = *s) != 0 && c != '%') {
             s++;

@@ -51,9 +51,9 @@ static InitChainEntry sInitChain[] = {
 void BgMizuShutter_Init(BgMizuShutter* thisx, PlayState* play) {
     s32 pad;
     BgMizuShutter* this = (BgMizuShutter*)thisx;
-    s32 pad2;
+    s32              pad2;
     CollisionHeader* sp30 = NULL;
-    s32 pad3;
+    s32              pad3;
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     this->displayList = sDisplayLists[SIZE_PARAM];
@@ -160,8 +160,7 @@ void BgMizuShutter_Draw(BgMizuShutter* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (this->displayList != NULL) {
         gSPDisplayList(POLY_OPA_DISP++, this->displayList);

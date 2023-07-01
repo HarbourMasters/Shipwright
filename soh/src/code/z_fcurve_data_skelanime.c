@@ -18,7 +18,7 @@ s32 SkelCurve_Init(PlayState* play, SkelAnimeCurve* skelCurve, SkelCurveLimbList
     if (ResourceMgr_OTRSigCheck(limbListSeg))
         limbListSeg = ResourceMgr_LoadSkeletonByName(limbListSeg, NULL);
 
-    SkelCurveLimb** limbs;
+    SkelCurveLimb**    limbs;
     SkelCurveLimbList* limbList = SEGMENTED_TO_VIRTUAL(limbListSeg);
 
     skelCurve->limbCount = limbList->limbCount;
@@ -46,22 +46,22 @@ void SkelCurve_SetAnim(SkelAnimeCurve* skelCurve, TransformUpdateIndex* transUpd
 }
 
 s32 SkelCurve_Update(PlayState* play, SkelAnimeCurve* skelCurve) {
-    s16* transforms;
-    u8* transformRefIdx;
+    s16*                  transforms;
+    u8*                   transformRefIdx;
     TransformUpdateIndex* transformIndex;
-    u16* transformCopyValues;
-    s32 i;
-    s32 ret = 0;
-    s32 k;
-    TransformData* transData;
-    f32 transformValue;
-    s32 j;
+    u16*                  transformCopyValues;
+    s32                   i;
+    s32                   ret = 0;
+    s32                   k;
+    TransformData*        transData;
+    f32                   transformValue;
+    s32                   j;
 
     transformIndex = SEGMENTED_TO_VIRTUAL(skelCurve->transUpdIdx);
-    
+
     if (ResourceMgr_OTRSigCheck(transformIndex))
         transformIndex = ResourceMgr_LoadAnimByName(transformIndex);
-    
+
     transformRefIdx = SEGMENTED_TO_VIRTUAL(transformIndex->refIndex);
     transData = SEGMENTED_TO_VIRTUAL(transformIndex->transformData);
     transformCopyValues = SEGMENTED_TO_VIRTUAL(transformIndex->copyValues);
@@ -108,12 +108,11 @@ void SkelCurve_DrawLimb(PlayState* play, s32 limbIndex, SkelAnimeCurve* skelCurv
 
     Matrix_Push();
 
-    if (overrideLimbDraw == NULL ||
-        (overrideLimbDraw != NULL && overrideLimbDraw(play, skelCurve, limbIndex, data))) {
-        Vec3f scale;
-        Vec3s rot;
-        Vec3f pos;
-        Gfx* dList;
+    if (overrideLimbDraw == NULL || (overrideLimbDraw != NULL && overrideLimbDraw(play, skelCurve, limbIndex, data))) {
+        Vec3f  scale;
+        Vec3s  rot;
+        Vec3f  pos;
+        Gfx*   dList;
         Vec3s* transform = (Vec3s*)&skelCurve->transforms[limbIndex];
 
         scale.x = transform->x / 1024.0f;
@@ -178,8 +177,8 @@ void SkelCurve_DrawLimb(PlayState* play, s32 limbIndex, SkelAnimeCurve* skelCurv
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void SkelCurve_Draw(Actor* actor, PlayState* play, SkelAnimeCurve* skelCurve,
-                    OverrideCurveLimbDraw overrideLimbDraw, PostCurveLimbDraw postLimbDraw, s32 lod, void* data) {
+void SkelCurve_Draw(Actor* actor, PlayState* play, SkelAnimeCurve* skelCurve, OverrideCurveLimbDraw overrideLimbDraw,
+                    PostCurveLimbDraw postLimbDraw, s32 lod, void* data) {
     if (skelCurve->transforms != NULL) {
         SkelCurve_DrawLimb(play, 0, skelCurve, overrideLimbDraw, postLimbDraw, lod, data);
     }

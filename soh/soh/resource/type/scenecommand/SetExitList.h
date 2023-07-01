@@ -13,7 +13,7 @@ class SetExitList : public SceneCommand<uint16_t> {
     using SceneCommand::SceneCommand;
 
     uint16_t* GetPointer();
-    size_t GetPointerSize();
+    size_t    GetPointerSize();
 
     uint32_t numExits;
 

@@ -3,8 +3,8 @@
 #include "spdlog/spdlog.h"
 
 namespace LUS {
-void SceneCommandVersionFactory::ReadCommandId(std::shared_ptr<ISceneCommand> command, std::shared_ptr<BinaryReader> reader) {
+void SceneCommandVersionFactory::ReadCommandId(std::shared_ptr<ISceneCommand> command,
+                                               std::shared_ptr<BinaryReader>  reader) {
     command->cmdId = (SceneCommandID)reader->ReadInt32();
 }
-}
-    
+} // namespace LUS

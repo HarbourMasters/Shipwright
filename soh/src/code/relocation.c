@@ -1,23 +1,23 @@
 #include "global.h"
 
 void Overlay_Relocate(void* allocatedVRamAddress, OverlayRelocationSection* overlayInfo, void* vRamAddress) {
-    u32 sections[4];
-    u32 relocatedValue;
-    u32 dbg;
-    u32 relocOffset;
-    u32 relocData;
-    uintptr_t unrelocatedAddress;
-    u32 i;
+    u32        sections[4];
+    u32        relocatedValue;
+    u32        dbg;
+    u32        relocOffset;
+    u32        relocData;
+    uintptr_t  unrelocatedAddress;
+    u32        i;
     uintptr_t* relocDataP;
-    u32* luiRefs[32];
-    u32 luiVals[32];
-    uintptr_t relocatedAddress;
-    u32 reloc;
-    uintptr_t vaddr;
-    u32* luiInstRef;
-    uintptr_t allocu32 = (uintptr_t)allocatedVRamAddress;
-    u32* regValP;
-    u32 isLoNeg;
+    u32*       luiRefs[32];
+    u32        luiVals[32];
+    uintptr_t  relocatedAddress;
+    u32        reloc;
+    uintptr_t  vaddr;
+    u32*       luiInstRef;
+    uintptr_t  allocu32 = (uintptr_t)allocatedVRamAddress;
+    u32*       regValP;
+    u32        isLoNeg;
 
     relocOffset = 0;
     relocatedValue = 0;
@@ -105,8 +105,8 @@ void Overlay_Relocate(void* allocatedVRamAddress, OverlayRelocationSection* over
             case 0x6000000:
                 if (gOverlayLogSeverity >= 3) {
                     osSyncPrintf("%02d %08x %08x %08x ", dbg, relocDataP, relocatedValue, relocatedAddress);
-                    osSyncPrintf(" %08x %08x %08x %08x\n", ((uintptr_t)relocDataP + (uintptr_t)vRamAddress) - allocu32, relocData,
-                                 unrelocatedAddress, relocOffset);
+                    osSyncPrintf(" %08x %08x %08x %08x\n", ((uintptr_t)relocDataP + (uintptr_t)vRamAddress) - allocu32,
+                                 relocData, unrelocatedAddress, relocOffset);
                 }
         }
     }

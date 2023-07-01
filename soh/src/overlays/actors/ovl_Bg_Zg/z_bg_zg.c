@@ -16,8 +16,8 @@ void BgZg_Update(Actor* thisx, PlayState* play);
 void BgZg_Draw(Actor* thisx, PlayState* play);
 
 void func_808C0C50(BgZg* this);
-s32 func_808C0C98(BgZg* this, PlayState* play);
-s32 func_808C0CC8(BgZg* this);
+s32  func_808C0C98(BgZg* this, PlayState* play);
+s32  func_808C0CC8(BgZg* this);
 void func_808C0CD4(BgZg* this, PlayState* play);
 void func_808C0D08(BgZg* this, PlayState* play);
 void func_808C0EEC(BgZg* this, PlayState* play);
@@ -126,8 +126,7 @@ void func_808C0EEC(BgZg* this, PlayState* play) {
     OPEN_DISPS(localGfxCtx);
 
     Gfx_SetupDL_25Opa(localGfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(localGfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(localGfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseBarsDL);
 
     CLOSE_DISPS(localGfxCtx);

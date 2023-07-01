@@ -62,8 +62,8 @@ void EnBrob_Init(Actor* thisx, PlayState* play) {
     EnBrob* this = (EnBrob*)thisx;
     CollisionHeader* colHeader = NULL;
 
-    SkelAnime_InitFlex(play, &this->skelAnime, &object_brob_Skel_0015D8, &object_brob_Anim_001750,
-                       this->jointTable, this->morphTable, 10);
+    SkelAnime_InitFlex(play, &this->skelAnime, &object_brob_Skel_0015D8, &object_brob_Anim_001750, this->jointTable,
+                       this->morphTable, 10);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
     CollisionHeader_GetVirtual(&object_brob_Col_001A70, &colHeader);
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, colHeader);
@@ -222,9 +222,9 @@ void func_809CB354(EnBrob* this, PlayState* play) {
 
 void func_809CB458(EnBrob* this, PlayState* play) {
     Vec3f pos;
-    f32 dist1;
-    f32 dist2;
-    s32 i;
+    f32   dist1;
+    f32   dist2;
+    s32   i;
 
     SkelAnime_Update(&this->skelAnime);
     if (Animation_OnFrame(&this->skelAnime, 0) && (this->timer != 0)) {
@@ -326,6 +326,6 @@ void EnBrob_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Matrix_Translate(0.0f, this->unk_1AE, 0.0f, MTXMODE_APPLY);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, EnBrob_PostLimbDraw, this);
+    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount, NULL,
+                          EnBrob_PostLimbDraw, this);
 }

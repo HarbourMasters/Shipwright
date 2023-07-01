@@ -2,8 +2,8 @@
 
 f32 func_8006C510(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5) {
     char pad[0x1C];
-    f32 sq = SQ(arg0);
-    f32 cube = sq * arg0;
+    f32  sq = SQ(arg0);
+    f32  cube = sq * arg0;
 
     return (((cube + cube) - sq * 3.0f) + 1.0f) * arg2 + (sq * 3.0f - (cube + cube)) * arg3 +
            ((cube - (sq + sq)) + arg0) * arg4 * arg1 + (cube - sq) * arg5 * arg1;

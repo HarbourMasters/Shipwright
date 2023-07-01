@@ -67,12 +67,12 @@ static u8 sAlphaIndices[] = {
 void OceffWipe_Draw(Actor* thisx, PlayState* play) {
     u32 scroll = play->state.frames & 0xFF;
     OceffWipe* this = (OceffWipe*)thisx;
-    f32 z;
-    s32 pad;
-    u8 alphaTable[3];
-    s32 i;
+    f32   z;
+    s32   pad;
+    u8    alphaTable[3];
+    s32   i;
     Vec3f eye;
-    Vtx* vtxPtr;
+    Vtx*  vtxPtr;
     Vec3f vec;
 
     eye = GET_ACTIVE_CAM(play)->eye;
@@ -110,8 +110,7 @@ void OceffWipe_Draw(Actor* thisx, PlayState* play) {
     Matrix_ReplaceRotation(&play->billboardMtxF);
     Matrix_Translate(0.0f, 0.0f, -z, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (this->actor.params != OCEFF_WIPE_ZL) {
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 170, 255, 255, 255);

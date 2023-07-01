@@ -91,17 +91,17 @@ void EnEncount1_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnEncount1_SpawnLeevers(EnEncount1* this, PlayState* play) {
-    Player* player = GET_PLAYER(play);
-    s32 floorType;
-    f32 spawnDist;
-    s32 spawnParams;
-    s16 spawnLimit;
-    s16 spawnAngle;
-    Vec3f spawnPos;
+    Player*        player = GET_PLAYER(play);
+    s32            floorType;
+    f32            spawnDist;
+    s32            spawnParams;
+    s16            spawnLimit;
+    s16            spawnAngle;
+    Vec3f          spawnPos;
     CollisionPoly* floorPoly;
-    s32 bgId;
-    f32 floorY;
-    EnReeba* leever;
+    s32            bgId;
+    f32            floorY;
+    EnReeba*       leever;
 
     this->outOfRangeTimer = 0;
     spawnPos = this->actor.world.pos;
@@ -138,10 +138,10 @@ void EnEncount1_SpawnLeevers(EnEncount1* this, PlayState* play) {
                 }
                 spawnPos.y = floorY;
 
-                leever = (EnReeba*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_REEBA,
-                                                      spawnPos.x, spawnPos.y, spawnPos.z, 0, 0, 0, spawnParams);
+                leever = (EnReeba*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_REEBA, spawnPos.x,
+                                                      spawnPos.y, spawnPos.z, 0, 0, 0, spawnParams);
 
-                        if (leever != NULL) {
+                if (leever != NULL) {
                     this->curNumSpawn++;
                     leever->unk_280 = this->leeverIndex++;
                     if (this->leeverIndex >= 5) {
@@ -174,11 +174,11 @@ void EnEncount1_SpawnLeevers(EnEncount1* this, PlayState* play) {
 }
 
 void EnEncount1_SpawnTektites(EnEncount1* this, PlayState* play) {
-    Player* player = GET_PLAYER(play);
-    s32 bgId;
+    Player*        player = GET_PLAYER(play);
+    s32            bgId;
     CollisionPoly* floorPoly;
-    Vec3f spawnPos;
-    f32 floorY;
+    Vec3f          spawnPos;
+    f32            floorY;
 
     if (this->timer == 0) {
         this->timer = 10;
@@ -196,8 +196,8 @@ void EnEncount1_SpawnTektites(EnEncount1* this, PlayState* play) {
                     return;
                 }
                 spawnPos.y = floorY;
-                if (Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_TITE, spawnPos.x,
-                                       spawnPos.y, spawnPos.z, 0, 0, 0, TEKTITE_RED) != NULL) { // Red tektite
+                if (Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_TITE, spawnPos.x, spawnPos.y,
+                                       spawnPos.z, 0, 0, 0, TEKTITE_RED) != NULL) { // Red tektite
                     this->curNumSpawn++;
                     this->totalNumSpawn++;
                 } else {
@@ -212,17 +212,17 @@ void EnEncount1_SpawnTektites(EnEncount1* this, PlayState* play) {
 }
 
 void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, PlayState* play) {
-    Player* player = GET_PLAYER(play);
-    f32 spawnDist;
-    s16 spawnAngle;
-    s16 spawnId;
-    s16 spawnParams;
-    s16 kcOver10;
-    s16 tempmod;
-    Vec3f spawnPos;
+    Player*        player = GET_PLAYER(play);
+    f32            spawnDist;
+    s16            spawnAngle;
+    s16            spawnId;
+    s16            spawnParams;
+    s16            kcOver10;
+    s16            tempmod;
+    Vec3f          spawnPos;
     CollisionPoly* floorPoly;
-    s32 bgId;
-    f32 floorY;
+    s32            bgId;
+    f32            floorY;
 
     if (play->sceneNum != SCENE_SPOT00) {
         if ((fabsf(player->actor.world.pos.y - this->actor.world.pos.y) > 100.0f) ||
@@ -243,10 +243,10 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, PlayState* play) {
     // enemies because it's much more difficult tracking how many enemies specifically spawned by this spawner have
     // been spawned and/or killed.
     int8_t enemyCount = play->actorCtx.actorLists[ACTORCAT_ENEMY].length;
-    if ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) || 
-            (CVarGetInteger("gRandomizedEnemies", 0) && enemyCount < 15)) {
-        while ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) || 
-                (CVarGetInteger("gRandomizedEnemies", 0) && enemyCount < 15)) {
+    if ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) ||
+        (CVarGetInteger("gRandomizedEnemies", 0) && enemyCount < 15)) {
+        while ((this->curNumSpawn < this->maxCurSpawns && this->totalNumSpawn < this->maxTotalSpawns) ||
+               (CVarGetInteger("gRandomizedEnemies", 0) && enemyCount < 15)) {
             if (play->sceneNum == SCENE_SPOT00) {
                 if ((player->unk_89E == 0) || (player->actor.floorBgId != BGCHECK_SCENE) ||
                     !(player->actor.bgCheckFlags & 1) || (player->stateFlags1 & 0x08000000)) {
@@ -299,8 +299,8 @@ void EnEncount1_SpawnStalchildOrWolfos(EnEncount1* this, PlayState* play) {
                 }
                 this->killCount++;
             }
-            if (Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, spawnId, spawnPos.x, spawnPos.y,
-                                   spawnPos.z, 0, 0, 0, spawnParams) != NULL) {
+            if (Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, spawnId, spawnPos.x, spawnPos.y, spawnPos.z, 0,
+                                   0, 0, spawnParams) != NULL) {
                 this->curNumSpawn++;
                 if (this->curNumSpawn >= this->maxCurSpawns) {
                     this->fieldSpawnTimer = 100;

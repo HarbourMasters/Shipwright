@@ -93,8 +93,8 @@ static InitChainEntry sInitChain[] = {
 void EnBa_Init(Actor* thisx, PlayState* play) {
     EnBa* this = (EnBa*)thisx;
     Vec3f sp38 = D_809B80E4;
-    s32 pad;
-    s16 i;
+    s32   pad;
+    s16   i;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     this->actor.world.pos.y = this->actor.home.pos.y + 100.0f;
@@ -142,9 +142,9 @@ void EnBa_SetupIdle(EnBa* this) {
 
 void EnBa_Idle(EnBa* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 i;
-    s32 pad;
-    Vec3s sp5C;
+    s32     i;
+    s32     pad;
+    Vec3s   sp5C;
 
     if ((this->actor.colChkInfo.mass == MASS_IMMOVABLE) && (this->actor.xzDistToPlayer > 175.0f)) {
         Math_SmoothStepToF(&this->actor.world.pos.y, this->actor.home.pos.y + 330.0f, 1.0f, 7.0f, 0.0f);
@@ -232,10 +232,10 @@ void EnBa_SetupSwingAtPlayer(EnBa* this) {
 
 void EnBa_SwingAtPlayer(EnBa* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s16 temp;
-    s16 i;
-    Vec3s sp58;
-    s16 phi_fp;
+    s16     temp;
+    s16     i;
+    Vec3s   sp58;
+    s16     phi_fp;
 
     Math_SmoothStepToF(&this->actor.world.pos.y, this->actor.home.pos.y + 60.0f, 1.0f, 10.0f, 0.0f);
     if ((this->actor.xzDistToPlayer <= 175.0f) || (this->unk_31A != 0)) {
@@ -333,7 +333,7 @@ void func_809B7174(EnBa* this) {
 }
 
 void EnBa_RecoilFromDamage(EnBa* this, PlayState* play) {
-    s32 i;
+    s32   i;
     Vec3s sp6C;
 
     Math_SmoothStepToF(&this->actor.world.pos.y, this->actor.home.pos.y + 330.0f, 1.0f, 30.0f, 0.0f);
@@ -379,9 +379,9 @@ void EnBa_RecoilFromDamage(EnBa* this, PlayState* play) {
 }
 
 void func_809B75A0(EnBa* this, PlayState* play2) {
-    s16 unk_temp;
-    s32 i;
-    Vec3f sp74 = { 0.0f, 0.0f, 0.0f };
+    s16        unk_temp;
+    s32        i;
+    Vec3f      sp74 = { 0.0f, 0.0f, 0.0f };
     PlayState* play = play2;
 
     this->unk_31C = 2500;
@@ -389,8 +389,8 @@ void func_809B75A0(EnBa* this, PlayState* play2) {
     this->unk_14C = 0;
 
     for (i = 7; i < 14; i++) {
-        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BA, this->unk_158[i].x, this->unk_158[i].y,
-                    this->unk_158[i].z, 0, 0, 0, EN_BA_DEAD_BLOB, true);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BA, this->unk_158[i].x, this->unk_158[i].y, this->unk_158[i].z, 0,
+                    0, 0, EN_BA_DEAD_BLOB, true);
     }
     unk_temp = Math_Vec3f_Pitch(&this->actor.world.pos, &this->unk_158[0]) + 0x8000;
     Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 1, this->unk_31C, 0);
@@ -412,8 +412,8 @@ void func_809B75A0(EnBa* this, PlayState* play2) {
 
 void EnBa_Die(EnBa* this, PlayState* play) {
     Vec3f sp6C = { 0.0f, 0.0f, 0.0f };
-    s16 temp;
-    s32 i;
+    s16   temp;
+    s32   i;
 
     if (this->unk_31A != 0) {
         this->actor.speedXZ = 30.0f;
@@ -477,9 +477,9 @@ static void* D_809B8118[] = {
 
 void EnBa_Draw(Actor* thisx, PlayState* play) {
     EnBa* this = (EnBa*)thisx;
-    s32 pad;
-    s16 i;
-    Mtx* mtx = Graph_Alloc(play->state.gfxCtx, sizeof(Mtx) * 14);
+    s32   pad;
+    s16   i;
+    Mtx*  mtx = Graph_Alloc(play->state.gfxCtx, sizeof(Mtx) * 14);
     Vec3f unused = { 0.0f, 0.0f, 448.0f };
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -488,9 +488,9 @@ void EnBa_Draw(Actor* thisx, PlayState* play) {
         Matrix_Push();
         gSPSegment(POLY_OPA_DISP++, 0x0C, mtx);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_809B8118[this->actor.params]));
-        gSPSegment(POLY_OPA_DISP++, 0x09,
-                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 16, 16, 1, 0,
-                                    (play->gameplayFrames * -10) % 128, 32, 32));
+        gSPSegment(
+            POLY_OPA_DISP++, 0x09,
+            Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 16, 16, 1, 0, (play->gameplayFrames * -10) % 128, 32, 32));
         for (i = 0; i < 14; i++, mtx++) {
             FrameInterpolation_RecordOpenChild(this, this->epoch + i * 25);
 
@@ -513,18 +513,15 @@ void EnBa_Draw(Actor* thisx, PlayState* play) {
             FrameInterpolation_RecordCloseChild();
         }
         Matrix_Pop();
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_bxa_DL_000890);
     } else {
         gSPSegment(POLY_OPA_DISP++, 0x08,
                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, (play->gameplayFrames * 2) % 128,
-                                    (play->gameplayFrames * 2) % 128, 32, 32, 1,
-                                    (play->gameplayFrames * -5) % 128, (play->gameplayFrames * -5) % 128, 32,
-                                    32));
+                                    (play->gameplayFrames * 2) % 128, 32, 32, 1, (play->gameplayFrames * -5) % 128,
+                                    (play->gameplayFrames * -5) % 128, 32, 32));
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 125, 100, 255);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_bxa_DL_001D80);
     }
     CLOSE_DISPS(play->state.gfxCtx);

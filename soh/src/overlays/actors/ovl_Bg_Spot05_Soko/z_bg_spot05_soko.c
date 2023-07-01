@@ -43,7 +43,7 @@ void BgSpot05Soko_Init(Actor* thisx, PlayState* play) {
     s32 pad1;
     BgSpot05Soko* this = (BgSpot05Soko*)thisx;
     CollisionHeader* colHeader = NULL;
-    s32 pad2;
+    s32              pad2;
 
     Actor_ProcessInitChain(thisx, sInitChain);
     this->switchFlag = (thisx->params >> 8) & 0xFF;

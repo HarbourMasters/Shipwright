@@ -4,7 +4,8 @@
 #include "scenes/overworld/spot04/spot04_scene.h"
 #include "scenes/overworld/spot05/spot05_scene.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
+#define FLAGS \
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void EnSa_Init(Actor* thisx, PlayState* play);
 void EnSa_Destroy(Actor* thisx, PlayState* play);
@@ -218,8 +219,8 @@ s16 func_80AF56F4(PlayState* play, Actor* thisx) {
 }
 
 void func_80AF57D8(EnSa* this, PlayState* play) {
-    if (play->sceneNum != SCENE_SPOT05 ||
-        ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) < 0x1555 || this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
+    if (play->sceneNum != SCENE_SPOT05 || ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) < 0x1555 ||
+        this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
         Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->collider.dim.radius + 30.0f,
                           func_80AF55E0, func_80AF56F4);
     }
@@ -383,7 +384,8 @@ s32 func_80AF5DFC(EnSa* this, PlayState* play) {
         }
     }
     if (play->sceneNum == SCENE_KOKIRI_HOME5 && !LINK_IS_ADULT &&
-        INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY && !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
+        INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_OCARINA_FAIRY &&
+        !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
         return 1;
     }
     if (play->sceneNum == SCENE_SPOT05 && (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER))) {
@@ -403,7 +405,7 @@ s32 func_80AF5DFC(EnSa* this, PlayState* play) {
 
 void func_80AF5F34(EnSa* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s16 trackingMode = NPC_TRACKING_PLAYER_AUTO_TURN;
+    s16     trackingMode = NPC_TRACKING_PLAYER_AUTO_TURN;
 
     if (play->sceneNum == SCENE_SPOT04) {
         trackingMode = (this->actionFunc == func_80AF68E4) ? NPC_TRACKING_NONE : NPC_TRACKING_FULL_BODY;
@@ -645,13 +647,13 @@ void func_80AF683C(EnSa* this, PlayState* play) {
 }
 
 void func_80AF68E4(EnSa* this, PlayState* play) {
-    s16 phi_v0;
-    Vec3f startPos;
-    Vec3f endPos;
-    Vec3f D_80AF7448 = { 0.0f, 0.0f, 0.0f };
+    s16               phi_v0;
+    Vec3f             startPos;
+    Vec3f             endPos;
+    Vec3f             D_80AF7448 = { 0.0f, 0.0f, 0.0f };
     CsCmdActorAction* csAction;
-    f32 temp_f0;
-    f32 gravity;
+    f32               temp_f0;
+    f32               gravity;
 
     if ((gSaveContext.cutsceneTrigger != 1) && (play->csCtx.state == CS_STATE_IDLE)) {
         this->actionFunc = func_80AF6B20;
@@ -680,7 +682,7 @@ void func_80AF68E4(EnSa* this, PlayState* play) {
             EnSa_ChangeAnim(this, csAction->action);
             this->unk_210 = csAction->action;
         }
-        //if (phi_v0) {}
+        // if (phi_v0) {}
         if (csAction->action == 3) {
             if (this->unk_20C == 0) {
                 phi_v0 = 0;
@@ -749,8 +751,7 @@ void EnSa_Update(Actor* thisx, PlayState* play) {
     if (this->actionFunc != func_80AF68E4) {
         if (CVarGetInteger("gDisableKokiriDrawDistance", 0) != 0) {
             this->alpha = func_80034DD4(&this->actor, play, this->alpha, 32767);
-        }
-        else {
+        } else {
             this->alpha = func_80034DD4(&this->actor, play, this->alpha, 400.0f);
         }
     } else {
@@ -777,10 +778,9 @@ void EnSa_Update(Actor* thisx, PlayState* play) {
     func_80AF5F34(this, play);
 }
 
-s32 EnSa_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
-                          Gfx** gfx) {
+s32 EnSa_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx, Gfx** gfx) {
     EnSa* this = (EnSa*)thisx;
-    s32 pad;
+    s32   pad;
     Vec3s sp18;
 
     if (limbIndex == 16) {

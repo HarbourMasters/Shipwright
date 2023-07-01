@@ -18,8 +18,7 @@ extern BootCommandFunc BootCommands_Command_LoadFileSelect(char** argv, s32 argc
 static BootCommand sCommands[] = { { "--skiplogo", BootCommands_Command_SkipLogo },
                                    { "--loadfileselect", BootCommands_Command_LoadFileSelect } };
 
-void BootCommands_Init()
-{
+void BootCommands_Init() {
     // Clears vars to prevent randomizer menu from being disabled
     CVarClear("gRandoGenerating"); // Clear when a crash happened during rando seed generation
     CVarClear("gNewSeedGenerated");
@@ -31,9 +30,8 @@ void BootCommands_Init()
 #endif
 }
 
-//void BootCommands_ParseBootArgs(char* str)
-void BootCommands_ParseBootArgs(s32 argc, char** argv)
-{
+// void BootCommands_ParseBootArgs(char* str)
+void BootCommands_ParseBootArgs(s32 argc, char** argv) {
     s32 i;
 
     // Parse the commands

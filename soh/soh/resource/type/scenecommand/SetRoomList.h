@@ -9,7 +9,6 @@
 #include "RomFile.h"
 #include <libultraship/libultra/types.h>
 
-
 namespace LUS {
 // typedef struct {
 //     /* 0x00 */ uintptr_t vromStart;
@@ -22,11 +21,11 @@ class SetRoomList : public SceneCommand<RomFile> {
     using SceneCommand::SceneCommand;
 
     RomFile* GetPointer();
-    size_t GetPointerSize();
+    size_t   GetPointerSize();
 
     uint32_t numRooms;
 
     std::vector<std::string> fileNames;
-    std::vector<RomFile> rooms;
+    std::vector<RomFile>     rooms;
 };
 }; // namespace LUS

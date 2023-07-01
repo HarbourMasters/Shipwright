@@ -64,7 +64,7 @@ extern "C" {
 #ifndef USE_CRC_TABLE
 uint32_t CRC32C(unsigned char* data, size_t dataSize) {
     uint32_t ret = 0xFFFFFFFF;
-    int64_t sizeSigned = dataSize;
+    int64_t  sizeSigned = dataSize;
 
 #if defined(_M_X64) || defined(__x86_64__) || defined(__aarch64__)
     while ((sizeSigned -= sizeof(uint64_t)) >= 0) {
@@ -97,7 +97,7 @@ uint32_t CRC32C(unsigned char* data, size_t dataSize) {
 #else
 uint32_t CRC32C(const void* buf, size_t size) {
     const uint8_t* p = buf;
-    uint32_t crc = 0xFFFFFFFF;
+    uint32_t       crc = 0xFFFFFFFF;
 
     while (size--)
         crc = crc32Table[(crc ^ *p++) & 0xff] ^ (crc >> 8);

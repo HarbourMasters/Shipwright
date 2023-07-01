@@ -9,7 +9,7 @@
 
 #define rScale regs[0]
 
-u32 EffectSsBubble_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsBubble_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsBubble_Draw(PlayState* play, u32 index, EffectSs* this);
 void EffectSsBubble_Update(PlayState* play, u32 index, EffectSs* this);
 
@@ -39,14 +39,13 @@ u32 EffectSsBubble_Init(PlayState* play, u32 index, EffectSs* this, void* initPa
 
 void EffectSsBubble_Draw(PlayState* play, u32 index, EffectSs* this) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    f32 scale = this->rScale / 100.0f;
+    f32              scale = this->rScale / 100.0f;
 
     OPEN_DISPS(gfxCtx);
 
     Matrix_Translate(this->pos.x, this->pos.y, this->pos.z, MTXMODE_NEW);
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     Gfx_SetupDL_25Opa(gfxCtx);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
     gDPSetEnvColor(POLY_OPA_DISP++, 150, 150, 150, 0);
@@ -58,8 +57,8 @@ void EffectSsBubble_Draw(PlayState* play, u32 index, EffectSs* this) {
 
 void EffectSsBubble_Update(PlayState* play, u32 index, EffectSs* this) {
     WaterBox* waterBox;
-    f32 waterSurfaceY;
-    Vec3f ripplePos;
+    f32       waterSurfaceY;
+    Vec3f     ripplePos;
 
     waterSurfaceY = this->pos.y;
 

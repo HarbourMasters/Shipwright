@@ -2,11 +2,11 @@
 #include "global.h"
 
 s32 osPfsFindFile(OSPfs* pfs, u16 companyCode, u32 gameCode, u8* gameName, u8* extName, s32* fileNo) {
-    s32 j;
-    s32 i;
+    s32     j;
+    s32     i;
     __OSDir dir;
-    s32 ret = 0;
-    s32 err;
+    s32     ret = 0;
+    s32     err;
 
     if (!(pfs->status & PFS_INITIALIZED)) {
         return PFS_ERR_INVALID;

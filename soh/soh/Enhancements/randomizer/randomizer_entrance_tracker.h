@@ -45,16 +45,16 @@ typedef struct {
 } EntranceDataSceneAndSpawn;
 
 typedef struct {
-    int16_t index;
-    int16_t reverseIndex;
+    int16_t                                index;
+    int16_t                                reverseIndex;
     std::vector<EntranceDataSceneAndSpawn> scenes;
-    std::string source;
-    std::string destination;
-    SpoilerEntranceGroup srcGroup;
-    SpoilerEntranceGroup dstGroup;
-    TrackerEntranceType type;
-    std::string metaTag;
-    uint8_t oneExit;
+    std::string                            source;
+    std::string                            destination;
+    SpoilerEntranceGroup                   srcGroup;
+    SpoilerEntranceGroup                   dstGroup;
+    TrackerEntranceType                    type;
+    std::string                            metaTag;
+    uint8_t                                oneExit;
 } EntranceData;
 
 typedef enum {
@@ -66,15 +66,19 @@ typedef enum {
 } TrackerEntranceGroupingType;
 
 typedef struct {
-    uint8_t EntranceCount;
+    uint8_t  EntranceCount;
     uint16_t GroupEntranceCounts[TRACKER_GROUP_TYPE_COUNT][SPOILER_ENTRANCE_GROUP_COUNT];
     uint16_t GroupOffsets[TRACKER_GROUP_TYPE_COUNT][SPOILER_ENTRANCE_GROUP_COUNT];
 } EntranceTrackingData;
 
 extern EntranceTrackingData gEntranceTrackingData;
 
-#define SINGLE_SCENE_INFO(scene) {{ scene, -1 }}
-#define SCENE_NO_SPAWN(scene) { scene, -1 }
+#define SINGLE_SCENE_INFO(scene) \
+    {                            \
+        { scene, -1 }            \
+    }
+#define SCENE_NO_SPAWN(scene) \
+    { scene, -1 }
 
 void SetCurrentGrottoIDForTracker(int16_t entranceIndex);
 void SetLastEntranceOverrideForTracker(int16_t entranceIndex);
@@ -87,5 +91,5 @@ class EntranceTrackerWindow : public LUS::GuiWindow {
 
     void InitElement() override;
     void DrawElement() override;
-    void UpdateElement() override {};
+    void UpdateElement() override{};
 };

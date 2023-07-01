@@ -18,7 +18,7 @@
 #define rObjBankIdx regs[10]
 #define rYAccelStep regs[11] // has no effect due to how it's implemented
 
-u32 EffectSsDFire_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsDFire_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsDFire_Draw(PlayState* play, u32 index, EffectSs* this);
 void EffectSsDFire_Update(PlayState* play, u32 index, EffectSs* this);
 
@@ -29,7 +29,7 @@ EffectSsInit Effect_Ss_D_Fire_InitVars = {
 
 u32 EffectSsDFire_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsDFireInitParams* initParams = (EffectSsDFireInitParams*)initParamsx;
-    s32 objBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_DODONGO);
+    s32                      objBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_DODONGO);
 
     if (objBankIndex >= 0) {
         this->pos = initParams->pos;
@@ -60,14 +60,14 @@ static void* sTextures[] = { gDodongoFire0Tex, gDodongoFire1Tex, gDodongoFire2Te
 
 void EffectSsDFire_Draw(PlayState* play, u32 index, EffectSs* this) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    MtxF mfTrans;
-    MtxF mfScale;
-    MtxF mfResult;
-    MtxF mfTrans11DA0;
-    s32 pad;
-    void* object;
-    Mtx* mtx;
-    f32 scale;
+    MtxF             mfTrans;
+    MtxF             mfScale;
+    MtxF             mfResult;
+    MtxF             mfTrans11DA0;
+    s32              pad;
+    void*            object;
+    Mtx*             mtx;
+    f32              scale;
 
     object = play->objectCtx.status[this->rObjBankIdx].segment;
 

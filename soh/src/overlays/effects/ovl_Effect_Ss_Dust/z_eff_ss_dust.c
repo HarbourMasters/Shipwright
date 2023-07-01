@@ -21,7 +21,7 @@
 #define rDrawFlags regs[11]
 #define rLifespan regs[12]
 
-u32 EffectSsDust_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsDust_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsDust_Update(PlayState* play, u32 index, EffectSs* this);
 void EffectSsBlast_UpdateFire(PlayState* play, u32 index, EffectSs* this);
 void EffectSsDust_Draw(PlayState* play, u32 index, EffectSs* this);
@@ -37,7 +37,7 @@ static EffectSsUpdateFunc sUpdateFuncs[] = {
 };
 
 u32 EffectSsDust_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
-    s32 randColorOffset;
+    s32                     randColorOffset;
     EffectSsDustInitParams* initParams = (EffectSsDustInitParams*)initParamsx;
 
     Math_Vec3f_Copy(&this->pos, &initParams->pos);
@@ -81,13 +81,13 @@ void EffectSsDust_Draw(PlayState* play, u32 index, EffectSs* this) {
         gDust1Tex, gDust2Tex, gDust3Tex, gDust4Tex, gDust5Tex, gDust6Tex, gDust7Tex, gDust8Tex,
     };
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    MtxF mfTrans;
-    MtxF mfScale;
-    MtxF mfResult;
-    MtxF mfTrans11DA0;
-    s32 pad;
-    Mtx* mtx;
-    f32 scale;
+    MtxF             mfTrans;
+    MtxF             mfScale;
+    MtxF             mfResult;
+    MtxF             mfTrans11DA0;
+    s32              pad;
+    Mtx*             mtx;
+    f32              scale;
 
     OPEN_DISPS(gfxCtx);
 

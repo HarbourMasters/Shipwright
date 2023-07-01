@@ -312,9 +312,9 @@ void func_80A69EC0(EnHorseLinkChild* this) {
 
 void func_80A69F5C(EnHorseLinkChild* this, PlayState* play) {
     Player* player;
-    s16 yawDiff;
-    s32 yawSign;
-    s32 yawOffset;
+    s16     yawDiff;
+    s32     yawSign;
+    s32     yawOffset;
 
     if ((this->animationIdx == 4) || (this->animationIdx == 3) || (this->animationIdx == 2)) {
         player = GET_PLAYER(play);
@@ -342,11 +342,11 @@ void func_80A69F5C(EnHorseLinkChild* this, PlayState* play) {
 
 void func_80A6A068(EnHorseLinkChild* this, PlayState* play) {
     Player* player;
-    f32 distFromLink;
-    s32 animationEnded;
-    s32 newAnimationIdx;
-    f32 distFromHome;
-    f32 distLinkFromHome;
+    f32     distFromLink;
+    s32     animationEnded;
+    s32     newAnimationIdx;
+    f32     distFromHome;
+    f32     distLinkFromHome;
 
     func_80A69F5C(this, play);
     player = GET_PLAYER(play);
@@ -480,8 +480,8 @@ void func_80A6A724(EnHorseLinkChild* this) {
 
 void func_80A6A7D0(EnHorseLinkChild* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 dist;
-    s32 newAnimationIdx;
+    f32     dist;
+    s32     newAnimationIdx;
 
     this->timer++;
     if (this->timer > 300) {
@@ -548,7 +548,7 @@ static EnHorseLinkChildActionFunc sActionFuncs[] = {
 };
 
 static void* sEyeTextures[] = { gChildEponaEyeOpenTex, gChildEponaEyeHalfTex, gChildEponaEyeCloseTex };
-static u8 sEyeIndexOrder[] = { 0, 1, 2, 1 };
+static u8    sEyeIndexOrder[] = { 0, 1, 2, 1 };
 
 void EnHorseLinkChild_Update(Actor* thisx, PlayState* play) {
     EnHorseLinkChild* this = (EnHorseLinkChild*)thisx;
@@ -621,6 +621,5 @@ void EnHorseLinkChild_Draw(Actor* thisx, PlayState* play) {
     EnHorseLinkChild* this = (EnHorseLinkChild*)thisx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    func_800A6360(&this->actor, play, &this->skin, EnHorseLinkChild_PostDraw, EnHorseLinkChild_OverrideLimbDraw,
-                  true);
+    func_800A6360(&this->actor, play, &this->skin, EnHorseLinkChild_PostDraw, EnHorseLinkChild_OverrideLimbDraw, true);
 }

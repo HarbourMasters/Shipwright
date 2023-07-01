@@ -188,14 +188,14 @@ void func_809CE9A8(EnBw* this) {
 
 void func_809CEA24(EnBw* this, PlayState* play) {
     CollisionPoly* sp74 = NULL;
-    Vec3f sp68;
-    u32 sp64 = 0;
-    s16 sp62;
-    s16 sp60;
-    f32 sp5C;
-    f32 sp58;
-    Player* player = GET_PLAYER(play);
-    Player* player2 = GET_PLAYER(play);
+    Vec3f          sp68;
+    u32            sp64 = 0;
+    s16            sp62;
+    s16            sp60;
+    f32            sp5C;
+    f32            sp58;
+    Player*        player = GET_PLAYER(play);
+    Player*        player2 = GET_PLAYER(play);
 
     SkelAnime_Update(&this->skelAnime);
     this->unk_244 = this->unk_250 + 0.1f;
@@ -226,8 +226,8 @@ void func_809CEA24(EnBw* this, PlayState* play) {
         this->color1.g = sp60;
     }
     if ((((play->gameplayFrames % 4) == (u32)this->actor.params) && (this->actor.speedXZ != 0.0f) &&
-         (sp64 = BgCheck_AnyLineTest2(&play->colCtx, &this->actor.world.pos, &this->unk_264, &sp68, &sp74, 1, 0, 0,
-                                      1))) ||
+         (sp64 =
+              BgCheck_AnyLineTest2(&play->colCtx, &this->actor.world.pos, &this->unk_264, &sp68, &sp74, 1, 0, 0, 1))) ||
         (this->unk_222 == 0)) {
         if (sp74 != NULL) {
             sp74 = SEGMENTED_TO_VIRTUAL(sp74);
@@ -305,8 +305,8 @@ void func_809CEA24(EnBw* this, PlayState* play) {
                 }
             }
         } else if (this->unk_221 == 0) {
-            sp64 = BgCheck_AnyLineTest2(&play->colCtx, &this->actor.world.pos, &player->actor.world.pos, &sp68,
-                                        &sp74, 1, 0, 0, 1);
+            sp64 = BgCheck_AnyLineTest2(&play->colCtx, &this->actor.world.pos, &player->actor.world.pos, &sp68, &sp74,
+                                        1, 0, 0, 1);
             if (sp64 != 0) {
                 sp74 = SEGMENTED_TO_VIRTUAL(sp74);
                 sp60 = Math_FAtan2F(sp74->normal.x, sp74->normal.z) * ((f32)0x8000 / M_PI);
@@ -325,8 +325,7 @@ void func_809CEA24(EnBw* this, PlayState* play) {
     if (this->unk_224 != 0) {
         this->unk_224--;
     }
-    if ((this->unk_234 == 0) &&
-        !Actor_TestFloorInDirection(&this->actor, play, 50.0f, this->unk_236 + this->unk_238)) {
+    if ((this->unk_234 == 0) && !Actor_TestFloorInDirection(&this->actor, play, 50.0f, this->unk_236 + this->unk_238)) {
         if (this->unk_238 != 0x4000) {
             this->unk_238 = 0x4000;
         } else {
@@ -438,7 +437,7 @@ void func_809CF8F0(EnBw* this) {
 
 void func_809CF984(EnBw* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 floorPolyType;
+    s32     floorPolyType;
 
     Math_SmoothStepToF(&this->actor.speedXZ, 0.0f, 1.0f, 0.5f, 0.0f);
     this->unk_222 += 250;
@@ -727,8 +726,7 @@ void func_809D0584(EnBw* this, PlayState* play) {
                 this->unk_248 = 0.0f;
             }
         }
-        if ((play->actorCtx.unk_02 != 0) && (this->actor.xzDistToPlayer <= 400.0f) &&
-            (this->actor.bgCheckFlags & 1)) {
+        if ((play->actorCtx.unk_02 != 0) && (this->actor.xzDistToPlayer <= 400.0f) && (this->actor.bgCheckFlags & 1)) {
             if (this->unk_220 == 5) {
                 this->unk_23C = 0;
                 func_809CFF10(this);
@@ -743,9 +741,9 @@ void func_809D0584(EnBw* this, PlayState* play) {
 void EnBw_Update(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
     EnBw* this = (EnBw*)thisx;
-    Vec3f velocity = { 0.0f, 0.0f, 0.0f };
-    Vec3f accel = { 0.0f, 0.0f, 0.0f };
-    s32 pad[3]; // probably an unused Vec3f
+    Vec3f       velocity = { 0.0f, 0.0f, 0.0f };
+    Vec3f       accel = { 0.0f, 0.0f, 0.0f };
+    s32         pad[3]; // probably an unused Vec3f
     Color_RGBA8 sp50 = { 255, 200, 0, 255 };
     Color_RGBA8 sp4C = { 255, 80, 0, 255 };
     Color_RGBA8 sp48 = { 0, 0, 0, 255 };
@@ -810,8 +808,7 @@ void EnBw_Update(Actor* thisx, PlayState* play2) {
     thisx->focus.pos.y += 5.0f;
 }
 
-s32 EnBw_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
-                          Gfx** gfx) {
+s32 EnBw_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx, Gfx** gfx) {
     EnBw* this = (EnBw*)thisx;
 
     if (limbIndex == 1) {
@@ -827,8 +824,7 @@ s32 EnBw_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* po
             Matrix_RotateZ(-(this->unk_258 * 0.1f), MTXMODE_APPLY);
             Matrix_RotateY(-(this->unk_258 * 0.13f), MTXMODE_APPLY);
             Matrix_RotateX(-(this->unk_258 * 0.115f), MTXMODE_APPLY);
-            gSPMatrix((*gfx)++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix((*gfx)++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList((*gfx)++, *dList);
             Matrix_Pop();
             return 1;
@@ -843,11 +839,11 @@ static Vec3f sIceOffsets[] = {
 };
 
 void EnBw_Draw(Actor* thisx, PlayState* play2) {
-    Vec3f spAC = { 0.0f, 0.0f, 0.0f };
+    Vec3f      spAC = { 0.0f, 0.0f, 0.0f };
     PlayState* play = play2;
     EnBw* this = (EnBw*)thisx;
     Vec3f icePos;
-    s32 iceIndex;
+    s32   iceIndex;
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -884,13 +880,12 @@ void EnBw_Draw(Actor* thisx, PlayState* play2) {
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 0);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
-                                (play->gameplayFrames * -20) % 0x200, 0x20, 0x80));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0, (play->gameplayFrames * -20) % 0x200,
+                                0x20, 0x80));
     gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 0, 255);
     Matrix_Scale(this->unk_248 * 0.01f, this->unk_248 * 0.01f, this->unk_248 * 0.01f, MTXMODE_APPLY);
     Matrix_ReplaceRotation(&play->billboardMtxF);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
 
     if (this->iceTimer != 0) {

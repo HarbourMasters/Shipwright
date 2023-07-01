@@ -53,7 +53,7 @@ f32 OLib_ClampMaxDist(f32 val, f32 max) {
 Vec3f* OLib_Vec3fDistNormalize(Vec3f* dest, Vec3f* a, Vec3f* b) {
     Vec3f v1;
     Vec3f v2;
-    f32 dist;
+    f32   dist;
 
     v1.x = b->x - a->x;
     v1.y = b->y - a->y;
@@ -75,10 +75,10 @@ Vec3f* OLib_Vec3fDistNormalize(Vec3f* dest, Vec3f* a, Vec3f* b) {
  */
 Vec3f* OLib_VecSphToVec3f(Vec3f* dest, VecSph* sph) {
     Vec3f v;
-    f32 sinPitch;
-    f32 cosPitch;
-    f32 sinYaw;
-    f32 cosYaw;
+    f32   sinPitch;
+    f32   cosPitch;
+    f32   sinYaw;
+    f32   cosYaw;
 
     if (CVarGetInteger("gFixCameraDrift", 0)) {
         cosPitch = Math_AccurateCosS(sph->pitch);
@@ -91,7 +91,6 @@ Vec3f* OLib_VecSphToVec3f(Vec3f* dest, VecSph* sph) {
         sinPitch = Math_SinS(sph->pitch);
         sinYaw = Math_SinS(sph->yaw);
     }
-    
 
     v.x = sph->r * sinPitch * sinYaw;
     v.y = sph->r * cosPitch;

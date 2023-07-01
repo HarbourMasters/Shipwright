@@ -36,7 +36,7 @@ static s16 sSlotItems[] = {
 
 void KaleidoScope_DrawDebugEditorText(Gfx** gfxp) {
     GfxPrint printer;
-    s32 pad[2];
+    s32      pad[2];
 
     GfxPrint_Init(&printer);
     GfxPrint_Open(&printer, *gfxp);
@@ -94,21 +94,21 @@ void KaleidoScope_DrawDigit(PlayState* play, s32 digit, s32 rectLeft, s32 rectTo
 }
 
 void KaleidoScope_DrawDebugEditor(PlayState* play) {
-    static s16 curSection = 0;
-    static s16 curRow = 0;
-    static s32 prevDBtnInput = 0;
-    static s32 heldDBtnTimer = 0;
+    static s16    curSection = 0;
+    static s16    curRow = 0;
+    static s32    prevDBtnInput = 0;
+    static s32    heldDBtnTimer = 0;
     PauseContext* pauseCtx = &play->pauseCtx;
-    Input* input = &play->state.input[0];
-    Gfx* gfx;
-    Gfx* gfxRef;
-    s16 spD8[4];
-    s16 slot;
-    s16 i;
-    s16 j;
-    s16 x;
-    s16 y;
-    s32 dBtnInput = input->cur.button & (BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT);
+    Input*        input = &play->state.input[0];
+    Gfx*          gfx;
+    Gfx*          gfxRef;
+    s16           spD8[4];
+    s16           slot;
+    s16           i;
+    s16           j;
+    s16           x;
+    s16           y;
+    s32           dBtnInput = input->cur.button & (BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT);
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -304,8 +304,7 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
     KaleidoScope_DrawDigit(play, spD8[3], 165, 185);
 
     // Heart Pieces (X / 4)
-    KaleidoScope_DrawDigit(play, ((gSaveContext.inventory.questItems & 0xF0000000) & 0xF0000000) >> 0x1C, 210,
-                           185);
+    KaleidoScope_DrawDigit(play, ((gSaveContext.inventory.questItems & 0xF0000000) & 0xF0000000) >> 0x1C, 210, 185);
 
     // Handles navigating the menu to different sections with the D-Pad
     // When the same direction is held, registers the input periodically based on a timer

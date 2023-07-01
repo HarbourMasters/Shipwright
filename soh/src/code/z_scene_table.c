@@ -819,10 +819,8 @@ EntranceInfo gEntranceTable[] = {
 //            (u32)_##title##SegmentRomEnd, unk_10, config, unk_12, 0                                  \
 //    }
 
-#define TITLED_SCENE(name, title, unk_10, config, unk_12)                                            \
-    {                                                                                                \
-        {0, 0, #name}, {0, 0, #title}, unk_10, config, unk_12, 0                         \
-    }
+#define TITLED_SCENE(name, title, unk_10, config, unk_12) \
+    { { 0, 0, #name }, { 0, 0, #title }, unk_10, config, unk_12, 0 }
 
 //#define UNTITLED_SCENE(name, unk_10, config, unk_12) \
     //{ (u32) _##name##SegmentRomStart, (u32)_##name##SegmentRomEnd, 0, 0, unk_10, config, unk_12, 0 }
@@ -999,8 +997,8 @@ void func_800995DC(PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x09,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - (gameplayFrames % 128), (gameplayFrames * 1) % 128,
-                                32, 32, 1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - (gameplayFrames % 128), (gameplayFrames * 1) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
 
     gDPPipeSync(POLY_XLU_DISP++);
     gDPSetEnvColor(POLY_XLU_DISP++, 128, 128, 128, 128);
@@ -1044,8 +1042,8 @@ void* sDCLavaFloorTextures[] = {
 
 // Scene Draw Config 20 - Dodongo's Cavern
 void func_80099878(PlayState* play) {
-    u32 gameplayFrames;
-    s32 pad;
+    u32  gameplayFrames;
+    s32  pad;
     Gfx* displayListHead = Graph_Alloc(play->state.gfxCtx, 2 * sizeof(Gfx[3]));
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -1053,7 +1051,8 @@ void func_80099878(PlayState* play) {
     gameplayFrames = play->gameplayFrames;
     if (ResourceMgr_IsGameMasterQuest()) {
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gDCEntranceTextures_MQ[gSaveContext.nightFlag]));
-        gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sDCLavaFloorTextures_MQ[(s32)(gameplayFrames & 14) >> 1]));
+        gSPSegment(POLY_OPA_DISP++, 0x09,
+                   SEGMENTED_TO_VIRTUAL(sDCLavaFloorTextures_MQ[(s32)(gameplayFrames & 14) >> 1]));
     } else {
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gDCEntranceTextures[gSaveContext.nightFlag]));
         gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sDCLavaFloorTextures[(s32)(gameplayFrames & 14) >> 1]));
@@ -1088,7 +1087,7 @@ void func_80099878(PlayState* play) {
 
 // Scene Draw Config 30
 void func_80099BD8(PlayState* play) {
-    f32 temp;
+    f32  temp;
     Gfx* displayListHead = Graph_Alloc(play->state.gfxCtx, 18 * sizeof(Gfx));
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -1157,11 +1156,10 @@ void func_8009A45C(PlayState* play) {
     gameplayFrames = play->gameplayFrames;
     gSPSegment(POLY_XLU_DISP++, 0x08, Gfx_TexScroll(play->state.gfxCtx, 0, (gameplayFrames * 1) % 64, 256, 16));
     gSPSegment(POLY_XLU_DISP++, 0x09,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - (gameplayFrames % 128), (gameplayFrames * 1) % 128,
-                                32, 32, 1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
-    gSPSegment(
-        POLY_OPA_DISP++, 0x0A,
-        Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 32, 1, 0, 127 - (gameplayFrames * 1) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - (gameplayFrames % 128), (gameplayFrames * 1) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
+    gSPSegment(POLY_OPA_DISP++, 0x0A,
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 32, 1, 0, 127 - (gameplayFrames * 1) % 128, 32, 32));
     gSPSegment(POLY_OPA_DISP++, 0x0B, Gfx_TexScroll(play->state.gfxCtx, 0, (gameplayFrames * 1) % 128, 32, 32));
     gSPSegment(POLY_XLU_DISP++, 0x0C,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, (gameplayFrames * 50) % 2048, 8, 512, 1, 0,
@@ -1191,11 +1189,11 @@ void func_8009A798(PlayState* play) {
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
 
     gSPSegment(POLY_OPA_DISP++, 0x0A,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
     gSPSegment(POLY_XLU_DISP++, 0x09,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - (gameplayFrames * 1) % 128,
-                                (gameplayFrames * 1) % 256, 32, 64, 1, 0, 0, 32, 128));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - (gameplayFrames * 1) % 128, (gameplayFrames * 1) % 256, 32,
+                                64, 1, 0, 0, 32, 128));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
@@ -1214,11 +1212,11 @@ void func_8009A9DC(PlayState* play) {
 
     gameplayFrames = play->gameplayFrames;
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 3) % 256, 32,
-                                64, 1, gameplayFrames % 128, (gameplayFrames * 3) % 256, 32, 64));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 3) % 256, 32, 64,
+                                1, gameplayFrames % 128, (gameplayFrames * 3) % 256, 32, 64));
     gSPSegment(POLY_XLU_DISP++, 0x09,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 3) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 3) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 3) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 3) % 128, 32, 32));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
@@ -1255,8 +1253,8 @@ void func_8009ACA8(PlayState* play) {
 
     gameplayFrames = play->gameplayFrames;
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 3) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 3) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 3) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 3) % 128, 32, 32));
     gSPSegment(POLY_XLU_DISP++, 0x09, Gfx_TexScroll(play->state.gfxCtx, 0, gameplayFrames % 64, 256, 16));
 
     gDPPipeSync(POLY_OPA_DISP++);
@@ -1312,9 +1310,11 @@ void func_8009AFE0(PlayState* play) {
     { s32 pad[2]; }
 
     if (ResourceMgr_IsGameMasterQuest()) {
-        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sThievesHideoutEntranceTextures_MQ[gSaveContext.nightFlag]));
+        gSPSegment(POLY_XLU_DISP++, 0x08,
+                   SEGMENTED_TO_VIRTUAL(sThievesHideoutEntranceTextures_MQ[gSaveContext.nightFlag]));
     } else {
-        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sThievesHideoutEntranceTextures[gSaveContext.nightFlag]));
+        gSPSegment(POLY_XLU_DISP++, 0x08,
+                   SEGMENTED_TO_VIRTUAL(sThievesHideoutEntranceTextures[gSaveContext.nightFlag]));
     }
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -1345,54 +1345,54 @@ void func_8009B0FC(PlayState* play) {
 
     if (spB0 == 1) {
         gSPSegment(POLY_OPA_DISP++, 0x08,
-                   Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 1, 0, 32, 32, 1, 0, 0, 32, 32,
-                                            0, 0, 0, spAC));
+                   Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 1, 0, 32, 32, 1, 0, 0, 32, 32, 0, 0,
+                                            0, spAC));
     } else if (spB0 < 1) {
         gSPSegment(POLY_OPA_DISP++, 0x08,
-                   Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 1, 0, 32, 32, 1, 0, 0, 32, 32,
-                                            0, 0, 0, 255));
+                   Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 1, 0, 32, 32, 1, 0, 0, 32, 32, 0, 0,
+                                            0, 255));
     } else {
         gSPSegment(POLY_OPA_DISP++, 0x08,
-                   Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 1, 0, 32, 32, 1, 0, 0, 32, 32,
-                                            0, 0, 0, 160));
+                   Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 1, 0, 32, 32, 1, 0, 0, 32, 32, 0, 0,
+                                            0, 160));
     }
 
     if (spB0 == 2) {
         gSPSegment(POLY_OPA_DISP++, 0x09,
-                   Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 1, 0, 32, 32, 1, 0, 0, 32, 32,
-                                            0, 0, 0, spAC));
+                   Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 1, 0, 32, 32, 1, 0, 0, 32, 32, 0, 0,
+                                            0, spAC));
     } else if (spB0 < 2) {
         gSPSegment(POLY_OPA_DISP++, 0x09,
-                   Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 1, 0, 32, 32, 1, 0, 0, 32, 32,
-                                            0, 0, 0, 255));
+                   Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 1, 0, 32, 32, 1, 0, 0, 32, 32, 0, 0,
+                                            0, 255));
     } else {
         gSPSegment(POLY_OPA_DISP++, 0x09,
-                   Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 1, 0, 32, 32, 1, 0, 0, 32, 32,
-                                            0, 0, 0, 160));
+                   Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 1, 0, 32, 32, 1, 0, 0, 32, 32, 0, 0,
+                                            0, 160));
     }
 
     if (spB0 != 0) {
         gSPSegment(POLY_OPA_DISP++, 0x0A,
-                   Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 1, 0, 32, 32, 1, 0, 0, 32, 32,
-                                            0, 0, 0, 160));
+                   Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 1, 0, 32, 32, 1, 0, 0, 32, 32, 0, 0,
+                                            0, 160));
         gSPSegment(POLY_OPA_DISP++, 0x0B,
-                   Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 3, 0, 32, 32, 1, 0, 0, 32, 32,
-                                            0, 0, 0, 180));
+                   Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 3, 0, 32, 32, 1, 0, 0, 32, 32, 0, 0,
+                                            0, 180));
     } else {
         gSPSegment(POLY_OPA_DISP++, 0x0A,
-                   Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, (gameplayFrames * 1) % 128, 0, 32, 32, 1, 0, 0,
-                                            32, 32, 0, 0, 0, 160 + (s32)((spAC / 200.0f) * 95.0f)));
+                   Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, (gameplayFrames * 1) % 128, 0, 32, 32, 1, 0, 0, 32,
+                                            32, 0, 0, 0, 160 + (s32)((spAC / 200.0f) * 95.0f)));
         gSPSegment(POLY_OPA_DISP++, 0x0B,
-                   Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 3, 0, 32, 32, 1, 0, 0, 32, 32,
-                                            0, 0, 0, 185 + (s32)((spAC / 200.0f) * 70.0f)));
+                   Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 3, 0, 32, 32, 1, 0, 0, 32, 32, 0, 0,
+                                            0, 185 + (s32)((spAC / 200.0f) * 70.0f)));
     }
 
     gSPSegment(POLY_XLU_DISP++, 0x0C,
-               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 1, gameplayFrames * 1, 32, 32, 1,
-                                        0, 127 - (gameplayFrames * 1), 32, 32, 0, 0, 0, 128));
+               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 1, gameplayFrames * 1, 32, 32, 1, 0,
+                                        127 - (gameplayFrames * 1), 32, 32, 0, 0, 0, 128));
     gSPSegment(POLY_XLU_DISP++, 0x0D,
-               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 4, 0, 32, 32, 1,
-                                        gameplayFrames * 4, 0, 32, 32, 0, 0, 0, 128));
+               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames * 4, 0, 32, 32, 1, gameplayFrames * 4, 0,
+                                        32, 32, 0, 0, 0, 128));
 
     { s32 pad[2]; }
 
@@ -1441,12 +1441,11 @@ void func_8009BAA4(PlayState* play) {
 
     gameplayFrames = play->gameplayFrames;
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 3) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 3) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 3) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 3) % 128, 32, 32));
 
     if (play->sceneNum == SCENE_HAIRAL_NIWA) {
-        gSPSegment(POLY_XLU_DISP++, 0x09,
-                   Gfx_TexScroll(play->state.gfxCtx, 0, (gameplayFrames * 10) % 256, 32, 64));
+        gSPSegment(POLY_XLU_DISP++, 0x09, Gfx_TexScroll(play->state.gfxCtx, 0, (gameplayFrames * 10) % 256, 32, 64));
     }
 
     gDPPipeSync(POLY_OPA_DISP++);
@@ -1461,7 +1460,7 @@ void func_8009BAA4(PlayState* play) {
 // Scene Draw Config 36
 void func_8009BC44(PlayState* play) {
     u32 gameplayFrames;
-    s8 sp83;
+    s8  sp83;
 
     sp83 = coss((play->gameplayFrames * 1500) & 0xFFFF) >> 8;
 
@@ -1470,17 +1469,15 @@ void func_8009BC44(PlayState* play) {
     gameplayFrames = play->gameplayFrames;
 
     if (play->sceneNum == SCENE_GANON_TOU) {
-        gSPSegment(POLY_XLU_DISP++, 0x09,
-                   Gfx_TexScroll(play->state.gfxCtx, 0, (gameplayFrames * 1) % 256, 64, 64));
+        gSPSegment(POLY_XLU_DISP++, 0x09, Gfx_TexScroll(play->state.gfxCtx, 0, (gameplayFrames * 1) % 256, 64, 64));
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 255 - (gameplayFrames * 1) % 256, 64, 64, 1, 0,
                                     (gameplayFrames * 1) % 256, 64, 64));
     }
 
     gSPSegment(POLY_OPA_DISP++, 0x0B,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 255 - (gameplayFrames * 1) % 128,
-                                (gameplayFrames * 1) % 128, 32, 32, 1, (gameplayFrames * 1) % 128,
-                                (gameplayFrames * 1) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 255 - (gameplayFrames * 1) % 128, (gameplayFrames * 1) % 128, 32,
+                                32, 1, (gameplayFrames * 1) % 128, (gameplayFrames * 1) % 128, 32, 32));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
@@ -1517,7 +1514,7 @@ void func_8009BEEC(PlayState* play) {
 // Scene Draw Config 38
 void func_8009C0AC(PlayState* play) {
     u32 gameplayFrames;
-    s8 sp7B;
+    s8  sp7B;
 
     sp7B = coss((play->gameplayFrames * 1500) & 0xFFFF) >> 8;
 
@@ -1572,11 +1569,11 @@ void func_8009C3EC(PlayState* play) {
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sIceCavernEntranceTextures[gSaveContext.nightFlag]));
     }
     gSPSegment(POLY_OPA_DISP++, 0x09,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
     gSPSegment(POLY_XLU_DISP++, 0x0A,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
 
     { s32 pad[2]; }
 
@@ -1626,10 +1623,9 @@ void func_8009C8B8(PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x08,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 32, 1, 0, (gameplayFrames * 1) % 128, 32, 32));
     gSPSegment(POLY_XLU_DISP++, 0x0A,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
-    gSPSegment(POLY_XLU_DISP++, 0x09,
-               Gfx_TexScroll(play->state.gfxCtx, 0, 255 - (gameplayFrames * 10) % 256, 32, 64));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
+    gSPSegment(POLY_XLU_DISP++, 0x09, Gfx_TexScroll(play->state.gfxCtx, 0, 255 - (gameplayFrames * 10) % 256, 32, 64));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
@@ -1648,8 +1644,8 @@ void func_8009CAC0(PlayState* play) {
 
     gameplayFrames = play->gameplayFrames;
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
@@ -1678,11 +1674,11 @@ void func_8009CC00(PlayState* play) {
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sGTGEntranceTextures[gSaveContext.nightFlag]));
     }
     gSPSegment(POLY_OPA_DISP++, 0x09,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
     gSPSegment(POLY_XLU_DISP++, 0x0A,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
 
     { s32 pad[2]; }
 
@@ -1722,10 +1718,9 @@ void func_8009CF84(PlayState* play) {
 
     gameplayFrames = play->gameplayFrames;
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScrollPrimColor(play->state.gfxCtx, 0, 127 - gameplayFrames % 128,
-                                         (gameplayFrames * 1) % 128, 32, 32, 1, gameplayFrames % 128,
-                                         (gameplayFrames * 1) % 128, 32, 32, 255, 255, 255,
-                                         play->roomCtx.unk_74[0] + 127));
+               Gfx_TwoTexScrollPrimColor(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128,
+                                         32, 32, 1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32, 255, 255,
+                                         255, play->roomCtx.unk_74[0] + 127));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
@@ -1743,14 +1738,11 @@ void func_8009D0E8(PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     gameplayFrames = play->gameplayFrames;
-    gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TexScroll(play->state.gfxCtx, 127 - (gameplayFrames * 4) % 128, 0, 32, 32));
+    gSPSegment(POLY_XLU_DISP++, 0x08, Gfx_TexScroll(play->state.gfxCtx, 127 - (gameplayFrames * 4) % 128, 0, 32, 32));
     gSPSegment(POLY_OPA_DISP++, 0x09, Gfx_TexScroll(play->state.gfxCtx, 0, (gameplayFrames * 5) % 64, 16, 16));
-    gSPSegment(POLY_OPA_DISP++, 0x0A,
-               Gfx_TexScroll(play->state.gfxCtx, 0, 63 - (gameplayFrames * 2) % 64, 16, 16));
-    gSPSegment(
-        POLY_XLU_DISP++, 0x0B,
-        Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 127 - (gameplayFrames * 3) % 128, 32, 32, 1, 0, 0, 32, 32));
+    gSPSegment(POLY_OPA_DISP++, 0x0A, Gfx_TexScroll(play->state.gfxCtx, 0, 63 - (gameplayFrames * 2) % 64, 16, 16));
+    gSPSegment(POLY_XLU_DISP++, 0x0B,
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 127 - (gameplayFrames * 3) % 128, 32, 32, 1, 0, 0, 32, 32));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
@@ -1773,7 +1765,8 @@ void func_8009D31C(PlayState* play) {
     { s32 pad[2]; }
 
     if (ResourceMgr_IsGameMasterQuest()) {
-        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sLonLonHouseEntranceTextures_MQ[gSaveContext.nightFlag]));
+        gSPSegment(POLY_XLU_DISP++, 0x08,
+                   SEGMENTED_TO_VIRTUAL(sLonLonHouseEntranceTextures_MQ[gSaveContext.nightFlag]));
     } else {
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sLonLonHouseEntranceTextures[gSaveContext.nightFlag]));
     }
@@ -1859,16 +1852,17 @@ void func_8009D758(PlayState* play) {
 
     gameplayFrames = play->gameplayFrames;
     if (ResourceMgr_IsGameMasterQuest()) {
-        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sForestTempleEntranceTextures_MQ[gSaveContext.nightFlag]));
+        gSPSegment(POLY_XLU_DISP++, 0x08,
+                   SEGMENTED_TO_VIRTUAL(sForestTempleEntranceTextures_MQ[gSaveContext.nightFlag]));
     } else {
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sForestTempleEntranceTextures[gSaveContext.nightFlag]));
     }
     gSPSegment(POLY_XLU_DISP++, 0x09,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
     gSPSegment(POLY_OPA_DISP++, 0x0A,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
 
     { s32 pad[2]; }
 
@@ -1893,7 +1887,8 @@ void func_8009D974(PlayState* play) {
     { s32 pad[2]; }
 
     if (ResourceMgr_IsGameMasterQuest()) {
-        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sSpiritTempleEntranceTextures_MQ[gSaveContext.nightFlag]));
+        gSPSegment(POLY_XLU_DISP++, 0x08,
+                   SEGMENTED_TO_VIRTUAL(sSpiritTempleEntranceTextures_MQ[gSaveContext.nightFlag]));
     } else {
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sSpiritTempleEntranceTextures[gSaveContext.nightFlag]));
     }
@@ -1903,7 +1898,7 @@ void func_8009D974(PlayState* play) {
 
 // Scene Draw Config 1
 void func_8009DA30(PlayState* play) {
-    u32 gameplayFrames;
+    u32  gameplayFrames;
     Gfx* displayListHead;
 
     displayListHead = Graph_Alloc(play->state.gfxCtx, 3 * sizeof(Gfx));
@@ -1912,11 +1907,11 @@ void func_8009DA30(PlayState* play) {
 
     gameplayFrames = play->gameplayFrames;
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 3) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 3) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 3) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 3) % 128, 32, 32));
     gSPSegment(POLY_XLU_DISP++, 0x09,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 10) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 10) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 10) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 10) % 128, 32, 32));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
@@ -1981,14 +1976,14 @@ void func_8009DE78(PlayState* play) {
 
     gameplayFrames = play->gameplayFrames;
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 6) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 6) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 6) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 6) % 128, 32, 32));
     gSPSegment(POLY_XLU_DISP++, 0x09,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 3) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 3) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 3) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 3) % 128, 32, 32));
     gSPSegment(POLY_XLU_DISP++, 0x0A,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
@@ -2001,9 +1996,9 @@ void func_8009DE78(PlayState* play) {
 
 // Scene Draw Config 4
 void func_8009E0B8(PlayState* play) {
-    u32 gameplayFrames;
-    u8 spA3;
-    u16 spA0;
+    u32  gameplayFrames;
+    u8   spA3;
+    u16  spA0;
     Gfx* displayListHead;
 
     spA3 = 128;
@@ -2014,11 +2009,11 @@ void func_8009E0B8(PlayState* play) {
 
     gameplayFrames = play->gameplayFrames;
     gSPSegment(POLY_XLU_DISP++, 0x09,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 10) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 10) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 10) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 10) % 128, 32, 32));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
@@ -2030,7 +2025,8 @@ void func_8009E0B8(PlayState* play) {
         spA3 = 255 - (u8)play->roomCtx.unk_74[0];
     } else if (gSaveContext.sceneSetupIndex == 6) {
         spA0 = play->roomCtx.unk_74[0] + 500;
-    } else if (((gSaveContext.sceneSetupIndex < 4) || LINK_IS_ADULT) && (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD))) {
+    } else if (((gSaveContext.sceneSetupIndex < 4) || LINK_IS_ADULT) &&
+               (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD))) {
         spA0 = 2150;
     }
 
@@ -2046,8 +2042,8 @@ void func_8009E0B8(PlayState* play) {
     gSPEndDisplayList(displayListHead);
 
     gSPSegment(POLY_OPA_DISP++, 0x0C,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, (s16)(-play->roomCtx.unk_74[0] * 0.02f), 32, 16, 1,
-                                0, (s16)(-play->roomCtx.unk_74[0] * 0.02f), 32, 16));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, (s16)(-play->roomCtx.unk_74[0] * 0.02f), 32, 16, 1, 0,
+                                (s16)(-play->roomCtx.unk_74[0] * 0.02f), 32, 16));
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -2058,17 +2054,18 @@ void func_8009E54C(PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    if ((gSaveContext.sceneSetupIndex > 3) || (LINK_IS_ADULT && !Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER))) {
+    if ((gSaveContext.sceneSetupIndex > 3) ||
+        (LINK_IS_ADULT && !Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER))) {
         play->roomCtx.unk_74[0] = 87;
     }
 
     gameplayFrames = play->gameplayFrames;
     gSPSegment(POLY_OPA_DISP++, 0x08,
-               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames, gameplayFrames, 32, 32, 1, 0, 0, 32,
-                                        32, 0, 0, 0, play->roomCtx.unk_74[0] + 168));
+               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, gameplayFrames, gameplayFrames, 32, 32, 1, 0, 0, 32, 32,
+                                        0, 0, 0, play->roomCtx.unk_74[0] + 168));
     gSPSegment(POLY_OPA_DISP++, 0x09,
-               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, -gameplayFrames, -gameplayFrames, 32, 32, 1, 0, 0,
-                                        16, 64, 0, 0, 0, play->roomCtx.unk_74[0] + 168));
+               Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, -gameplayFrames, -gameplayFrames, 32, 32, 1, 0, 0, 16,
+                                        64, 0, 0, 0, play->roomCtx.unk_74[0] + 168));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 255, 128);
@@ -2097,9 +2094,10 @@ void func_8009E730(PlayState* play) {
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
-    
+
     if (ResourceMgr_IsGameMasterQuest()) {
-        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sZorasDomainEntranceTextures_MQ[gSaveContext.nightFlag]));
+        gSPSegment(POLY_XLU_DISP++, 0x08,
+                   SEGMENTED_TO_VIRTUAL(sZorasDomainEntranceTextures_MQ[gSaveContext.nightFlag]));
     } else {
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sZorasDomainEntranceTextures[gSaveContext.nightFlag]));
     }
@@ -2150,9 +2148,8 @@ void func_8009EAD8(PlayState* play) {
     gSPSegment(POLY_XLU_DISP++, 0x0A,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, (gameplayFrames * 2) % 128, 32, 32, 1, 0,
                                 (gameplayFrames * 2) % 128, 32, 32));
-    gSPSegment(
-        POLY_OPA_DISP++, 0x0B,
-        Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 32, 1, 0, 127 - (gameplayFrames * 3) % 128, 32, 32));
+    gSPSegment(POLY_OPA_DISP++, 0x0B,
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 32, 1, 0, 127 - (gameplayFrames * 3) % 128, 32, 32));
     gSPSegment(POLY_XLU_DISP++, 0x0C,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, (gameplayFrames * 1) % 128, 32, 32, 1, 0,
                                 (gameplayFrames * 1) % 128, 32, 32));
@@ -2176,9 +2173,9 @@ void func_8009EE44(PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     gameplayFrames = play->gameplayFrames;
-    gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, gameplayFrames % 128, 0, 32, 16, 1, gameplayFrames % 128, 0,
-                                32, 16));
+    gSPSegment(
+        POLY_XLU_DISP++, 0x08,
+        Gfx_TwoTexScroll(play->state.gfxCtx, 0, gameplayFrames % 128, 0, 32, 16, 1, gameplayFrames % 128, 0, 32, 16));
     gSPSegment(POLY_XLU_DISP++, 0x09,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, gameplayFrames % 128, 32, 32, 1,
                                 gameplayFrames % 128, gameplayFrames % 128, 32, 32));
@@ -2189,7 +2186,7 @@ void func_8009EE44(PlayState* play) {
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
 
-	bool playerHasCojiro = INV_CONTENT(ITEM_COJIRO) == ITEM_COJIRO;
+    bool playerHasCojiro = INV_CONTENT(ITEM_COJIRO) == ITEM_COJIRO;
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
         playerHasCojiro = PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_COJIRO);
     }
@@ -2251,12 +2248,12 @@ void func_8009F270(PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     gameplayFrames = play->gameplayFrames;
-    gSPSegment(POLY_OPA_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, gameplayFrames % 128, 32, 32, 1, 0, gameplayFrames % 128,
-                                32, 32));
-    gSPSegment(POLY_XLU_DISP++, 0x09,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, gameplayFrames % 128, 32, 32, 1, 0, gameplayFrames % 128,
-                                32, 32));
+    gSPSegment(
+        POLY_OPA_DISP++, 0x08,
+        Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, gameplayFrames % 128, 32, 32, 1, 0, gameplayFrames % 128, 32, 32));
+    gSPSegment(
+        POLY_XLU_DISP++, 0x09,
+        Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, gameplayFrames % 128, 32, 32, 1, 0, gameplayFrames % 128, 32, 32));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
@@ -2275,11 +2272,11 @@ void func_8009F40C(PlayState* play) {
 
     gameplayFrames = play->gameplayFrames;
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 10) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 10) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 10) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 10) % 128, 32, 32));
     gSPSegment(POLY_XLU_DISP++, 0x09,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 3) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 3) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 3) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 3) % 128, 32, 32));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
@@ -2327,8 +2324,8 @@ void func_8009F5D4(PlayState* play) {
 
 // Scene Draw Config 15
 void func_8009F7D4(PlayState* play) {
-    s8 sp6F = coss((play->gameplayFrames * 1500) & 0xFFFF) >> 8;
-    s8 sp6E = coss((play->gameplayFrames * 1500) & 0xFFFF) >> 8;
+    s8  sp6F = coss((play->gameplayFrames * 1500) & 0xFFFF) >> 8;
+    s8  sp6E = coss((play->gameplayFrames * 1500) & 0xFFFF) >> 8;
     u32 gameplayFrames;
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -2337,9 +2334,9 @@ void func_8009F7D4(PlayState* play) {
     sp6F = (sp6F >> 1) + 192;
     sp6E = (sp6E >> 1) + 192;
 
-    gSPSegment(POLY_OPA_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, gameplayFrames % 128, 32, 32, 1, 0, gameplayFrames % 128,
-                                32, 32));
+    gSPSegment(
+        POLY_OPA_DISP++, 0x08,
+        Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, gameplayFrames % 128, 32, 32, 1, 0, gameplayFrames % 128, 32, 32));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, sp6F, sp6E, 255, 128);
@@ -2363,8 +2360,8 @@ void func_8009F9D0(PlayState* play) {
 
     gameplayFrames = play->gameplayFrames;
     gSPSegment(POLY_OPA_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 127 - gameplayFrames % 128, 32, 32, 1,
-                                gameplayFrames % 128, 0, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 127 - gameplayFrames % 128, 32, 32, 1, gameplayFrames % 128,
+                                0, 32, 32));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
@@ -2420,9 +2417,8 @@ void func_8009FC90(PlayState* play) {
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 127 - gameplayFrames % 128, 32, 32, 1,
                                 127 - gameplayFrames % 128, 0, 32, 32));
     gSPSegment(POLY_OPA_DISP++, 0x09,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, (gameplayFrames * 3) % 128,
-                                127 - (gameplayFrames * 6) % 128, 32, 32, 1, (gameplayFrames * 6) % 128,
-                                127 - (gameplayFrames * 3) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, (gameplayFrames * 3) % 128, 127 - (gameplayFrames * 6) % 128, 32,
+                                32, 1, (gameplayFrames * 6) % 128, 127 - (gameplayFrames * 3) % 128, 32, 32));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 64);
@@ -2438,23 +2434,23 @@ f32 D_8012A398 = 0.0f;
 void func_8009FE58(PlayState* play) {
     static s16 D_8012A39C = 538;
     static s16 D_8012A3A0 = 4272;
-    u32 gameplayFrames;
-    f32 temp;
+    u32        gameplayFrames;
+    f32        temp;
 
     OPEN_DISPS(play->state.gfxCtx);
 
     gameplayFrames = play->gameplayFrames;
     if (play->sceneNum == SCENE_BDAN) {
         gSPSegment(POLY_OPA_DISP++, 0x08,
-                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, gameplayFrames % 128, (gameplayFrames * 2) % 128, 32,
-                                    32, 1, 127 - gameplayFrames % 128, (gameplayFrames * 2) % 128, 32, 32));
+                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, gameplayFrames % 128, (gameplayFrames * 2) % 128, 32, 32, 1,
+                                    127 - gameplayFrames % 128, (gameplayFrames * 2) % 128, 32, 32));
         gSPSegment(POLY_OPA_DISP++, 0x0B,
                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 255 - (gameplayFrames * 4) % 256, 32, 64, 1, 0,
                                     255 - (gameplayFrames * 4) % 256, 32, 64));
     } else {
-        gSPSegment(POLY_OPA_DISP++, 0x08,
-                   Gfx_TexScroll(play->state.gfxCtx, (127 - (gameplayFrames * 1)) % 128,
-                                 (gameplayFrames * 1) % 128, 32, 32));
+        gSPSegment(
+            POLY_OPA_DISP++, 0x08,
+            Gfx_TexScroll(play->state.gfxCtx, (127 - (gameplayFrames * 1)) % 128, (gameplayFrames * 1) % 128, 32, 32));
     }
 
     gDPPipeSync(POLY_OPA_DISP++);
@@ -2472,9 +2468,9 @@ void func_8009FE58(PlayState* play) {
 
         if (play->pauseCtx.state == 0) {
             View_SetDistortionOrientation(&play->view,
-                                 ((360.00018f / 65535.0f) * (M_PI / 180.0f)) * temp * Math_CosS(D_8012A39C),
-                                 ((360.00018f / 65535.0f) * (M_PI / 180.0f)) * temp * Math_SinS(D_8012A39C),
-                                 ((360.00018f / 65535.0f) * (M_PI / 180.0f)) * temp * Math_SinS(D_8012A3A0));
+                                          ((360.00018f / 65535.0f) * (M_PI / 180.0f)) * temp * Math_CosS(D_8012A39C),
+                                          ((360.00018f / 65535.0f) * (M_PI / 180.0f)) * temp * Math_SinS(D_8012A39C),
+                                          ((360.00018f / 65535.0f) * (M_PI / 180.0f)) * temp * Math_SinS(D_8012A3A0));
             View_SetDistortionScale(&play->view, 1.f + (0.79999995f * temp * Math_SinS(D_8012A3A0)),
                                     1.f + (0.39999998f * temp * Math_CosS(D_8012A3A0)),
                                     1.f + (1 * temp * Math_CosS(D_8012A39C)));
@@ -2500,7 +2496,7 @@ void func_8009FE58(PlayState* play) {
                 }
                 break;
         }
-        
+
         if (play->pauseCtx.state == 0) {
             D_8012A398 += 0.15f + (play->roomCtx.unk_74[1] * 0.001f);
         }
@@ -2525,14 +2521,14 @@ void func_800A0334(PlayState* play) {
 
     gameplayFrames = play->gameplayFrames;
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 512, 32,
-                                128, 1, gameplayFrames % 128, (gameplayFrames * 1) % 512, 32, 128));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 512, 32, 128,
+                                1, gameplayFrames % 128, (gameplayFrames * 1) % 512, 32, 128));
     gSPSegment(POLY_XLU_DISP++, 0x09,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
     gSPSegment(POLY_OPA_DISP++, 0x0A,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32,
-                                32, 1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32,
+                                1, gameplayFrames % 128, (gameplayFrames * 1) % 128, 32, 32));
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
@@ -2560,8 +2556,7 @@ void func_800A059C(PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     gameplayFrames = play->gameplayFrames;
-    gSPSegment(POLY_OPA_DISP++, 0x08,
-               Gfx_TexScroll(play->state.gfxCtx, 127 - (gameplayFrames * 2) % 128, 0, 32, 64));
+    gSPSegment(POLY_OPA_DISP++, 0x08, Gfx_TexScroll(play->state.gfxCtx, 127 - (gameplayFrames * 2) % 128, 0, 32, 64));
     gSPSegment(POLY_OPA_DISP++, 0x09, Gfx_TexScroll(play->state.gfxCtx, 0, (gameplayFrames * 2) % 512, 128, 128));
 
     gDPPipeSync(POLY_OPA_DISP++);

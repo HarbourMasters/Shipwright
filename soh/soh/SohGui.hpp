@@ -26,17 +26,17 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    void enableBetaQuest();
-    void disableBetaQuest();
+void enableBetaQuest();
+void disableBetaQuest();
 #ifdef __cplusplus
 }
 #endif
 
 namespace SohGui {
-    void SetupHooks();
-    void SetupGuiElements();
-    void Draw();
-    void Destroy();
-}
+void SetupHooks();
+void SetupGuiElements();
+void Draw();
+void Destroy();
+} // namespace SohGui
 
 #endif /* SohGui_hpp */

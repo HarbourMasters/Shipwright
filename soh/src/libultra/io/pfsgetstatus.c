@@ -4,8 +4,8 @@
 OSPifRam gPifMempakBuf;
 
 s32 __osPfsGetStatus(OSMesgQueue* queue, s32 channel) {
-    s32 ret = 0;
-    OSMesg msg;
+    s32          ret = 0;
+    OSMesg       msg;
     OSContStatus data;
 
     __osPfsInodeCacheBank = 250;
@@ -29,9 +29,9 @@ s32 __osPfsGetStatus(OSMesgQueue* queue, s32 channel) {
 }
 
 void __osPfsRequestOneChannel(s32 channel, u8 poll) {
-    u8* bufptr;
+    u8*                          bufptr;
     __OSContRequestHeaderAligned req;
-    s32 idx;
+    s32                          idx;
 
     __osContLastPoll = CONT_CMD_END;
     gPifMempakBuf.status = CONT_CMD_READ_BUTTON;
@@ -55,9 +55,9 @@ void __osPfsRequestOneChannel(s32 channel, u8 poll) {
 }
 
 void __osPfsGetOneChannelData(s32 channel, OSContStatus* contData) {
-    u8* bufptr = (u8*)&gPifMempakBuf;
+    u8*                          bufptr = (u8*)&gPifMempakBuf;
     __OSContRequestHeaderAligned req;
-    s32 idx;
+    s32                          idx;
 
     for (idx = 0; idx < channel; idx++) {
         bufptr++;

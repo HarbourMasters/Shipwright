@@ -10,14 +10,14 @@
 
 typedef struct {
     s16 entranceIndex;
-    s8 content;
-    s8 scene;
+    s8  content;
+    s8  scene;
 } GrottoLoadInfo;
 
 typedef struct {
-    s16 entranceIndex;
-    s8 room;
-    s16 angle;
+    s16   entranceIndex;
+    s8    room;
+    s16   angle;
     Vec3f pos;
 } GrottoReturnInfo;
 
@@ -29,6 +29,6 @@ void Grotto_ForceGrottoReturnOnSpecialEntrance(void);
 void Grotto_ForceGrottoReturn(void);
 void Grotto_ForceRegularVoidOut(void);
 void Grotto_SanitizeEntranceType(void);
-s16 Grotto_GetRenamedGrottoIndexFromOriginal(s8 content, s8 scene);
+s16  Grotto_GetRenamedGrottoIndexFromOriginal(s8 content, s8 scene);
 
 #endif //_RANDO_GROTTO_H_

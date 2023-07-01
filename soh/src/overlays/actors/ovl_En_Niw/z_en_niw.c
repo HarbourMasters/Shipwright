@@ -345,10 +345,10 @@ void func_80AB5BF8(EnNiw* this, PlayState* play, s16 arg2) {
 }
 
 void EnNiw_SpawnAttackCucco(EnNiw* this, PlayState* play) {
-    f32 viewX;
-    f32 viewY;
-    f32 viewZ;
-    Vec3f attackCuccoPos;
+    f32    viewX;
+    f32    viewY;
+    f32    viewZ;
+    Vec3f  attackCuccoPos;
     Actor* attackCucco;
 
     if ((this->timer5 == 0) && (this->unk_296 < 7)) {
@@ -358,8 +358,8 @@ void EnNiw_SpawnAttackCucco(EnNiw* this, PlayState* play) {
         attackCuccoPos.x = ((Rand_ZeroOne() - 0.5f) * viewX) + play->view.eye.x;
         attackCuccoPos.y = Rand_CenteredFloat(0.3f) + ((play->view.eye.y + 50.0f) + (viewY * 0.5f));
         attackCuccoPos.z = ((Rand_ZeroOne() - 0.5f) * viewZ) + play->view.eye.z;
-        attackCucco = Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_ATTACK_NIW,
-                                         attackCuccoPos.x, attackCuccoPos.y, attackCuccoPos.z, 0, 0, 0, 0);
+        attackCucco = Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_ATTACK_NIW, attackCuccoPos.x,
+                                         attackCuccoPos.y, attackCuccoPos.z, 0, 0, 0, 0);
 
         if (attackCucco != NULL) {
             this->unk_296++;
@@ -586,11 +586,11 @@ void func_80AB6570(EnNiw* this, PlayState* play) {
 }
 
 void func_80AB6A38(EnNiw* this, PlayState* play) {
-    Path* path;
+    Path*  path;
     Vec3s* pointPos;
-    f32 pathDiffX;
-    f32 pathDiffZ;
-    s16 pathIndex = this->path - 1;
+    f32    pathDiffX;
+    f32    pathDiffZ;
+    s16    pathIndex = this->path - 1;
 
     if (this->path == 0) {
         this->unk_2AC.x = this->unk_2B8.x = this->actor.world.pos.x;
@@ -881,19 +881,19 @@ void EnNiw_Update(Actor* thisx, PlayState* play) {
     s32 pad1;
     EnNiw* this = (EnNiw*)thisx;
     Player* player = GET_PLAYER(play);
-    s16 i;
-    s16 featherCount;
-    Vec3f zeroVec1 = { 0.0f, 0.0f, 0.0f };
-    Vec3f zeroVec2 = { 0.0f, 0.0f, 0.0f };
-    Vec3f pos;
-    Vec3f vel;
-    Vec3f accel;
-    s32 pad2;
-    f32 scale;
-    Vec3f cam;
-    f32 dist;
-    f32 camResult;
-    s32 pad3[10];
+    s16     i;
+    s16     featherCount;
+    Vec3f   zeroVec1 = { 0.0f, 0.0f, 0.0f };
+    Vec3f   zeroVec2 = { 0.0f, 0.0f, 0.0f };
+    Vec3f   pos;
+    Vec3f   vel;
+    Vec3f   accel;
+    s32     pad2;
+    f32     scale;
+    Vec3f   cam;
+    f32     dist;
+    f32     camResult;
+    s32     pad3[10];
 
     this->unk_294++;
 
@@ -1134,7 +1134,7 @@ s32 EnNiw_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
 
 void EnNiw_Draw(Actor* thisx, PlayState* play) {
     EnNiw* this = (EnNiw*)thisx;
-    Vec3f scale = { 0.15f, 0.15f, 0.15f };
+    Vec3f            scale = { 0.15f, 0.15f, 0.15f };
     GraphicsContext* gfxCtx = play->state.gfxCtx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
@@ -1149,7 +1149,7 @@ void EnNiw_Draw(Actor* thisx, PlayState* play) {
 }
 
 void EnNiw_FeatherSpawn(EnNiw* this, Vec3f* pos, Vec3f* vel, Vec3f* accel, f32 scale) {
-    s16 i;
+    s16           i;
     EnNiwFeather* feather = this->feathers;
 
     for (i = 0; i < ARRAY_COUNT(this->feathers); i++, feather++) {
@@ -1169,7 +1169,7 @@ void EnNiw_FeatherSpawn(EnNiw* this, Vec3f* pos, Vec3f* vel, Vec3f* accel, f32 s
 }
 
 void EnNiw_FeatherUpdate(EnNiw* this, PlayState* play) {
-    s16 i;
+    s16           i;
     EnNiwFeather* feather = this->feathers;
 
     for (i = 0; i < ARRAY_COUNT(this->feathers); i++, feather++) {
@@ -1200,11 +1200,11 @@ void EnNiw_FeatherUpdate(EnNiw* this, PlayState* play) {
 }
 
 void EnNiw_FeatherDraw(EnNiw* this, PlayState* play) {
-    u8 flag = 0;
-    s16 i;
-    s32 pad;
+    u8               flag = 0;
+    s16              i;
+    s32              pad;
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    EnNiwFeather* feather = &this->feathers[0];
+    EnNiwFeather*    feather = &this->feathers[0];
 
     OPEN_DISPS(gfxCtx);
 
@@ -1222,8 +1222,7 @@ void EnNiw_FeatherDraw(EnNiw* this, PlayState* play) {
             Matrix_Scale(feather->scale, feather->scale, 1.0f, MTXMODE_APPLY);
             Matrix_RotateZ(feather->unk_30, MTXMODE_APPLY);
             Matrix_Translate(0.0f, -1000.0f, 0.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gCuccoEffectFeatherModelDL);
             FrameInterpolation_RecordCloseChild();
         }

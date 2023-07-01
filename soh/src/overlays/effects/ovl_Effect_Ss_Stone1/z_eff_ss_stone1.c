@@ -9,7 +9,7 @@
 
 #define rReg0 regs[0]
 
-u32 EffectSsStone1_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsStone1_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsStone1_Draw(PlayState* play, u32 index, EffectSs* this);
 void EffectSsStone1_Update(PlayState* play, u32 index, EffectSs* this);
 
@@ -19,7 +19,7 @@ EffectSsInit Effect_Ss_Stone1_InitVars = {
 };
 
 typedef struct {
-    /* 0x00 */ void* texture;
+    /* 0x00 */ void*       texture;
     /* 0x04 */ Color_RGBA8 primColor;
     /* 0x08 */ Color_RGBA8 envColor;
 } EffStoneDrawInfo;
@@ -37,7 +37,7 @@ static EffStoneDrawInfo sDrawInfo[] = {
 
 u32 EffectSsStone1_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsStone1InitParams* initParams = (EffectSsStone1InitParams*)initParamsx;
-    Vec3f pos = initParams->pos;
+    Vec3f                     pos = initParams->pos;
 
     this->pos = pos;
     this->vec = pos;
@@ -50,11 +50,11 @@ u32 EffectSsStone1_Init(PlayState* play, u32 index, EffectSs* this, void* initPa
 }
 
 void EffectSsStone1_Draw(PlayState* play, u32 index, EffectSs* this) {
-    GraphicsContext* gfxCtx = play->state.gfxCtx;
+    GraphicsContext*  gfxCtx = play->state.gfxCtx;
     EffStoneDrawInfo* drawParams = &sDrawInfo[this->life];
-    Vec3f mfVec;
-    f32 mfW;
-    f32 scale;
+    Vec3f             mfVec;
+    f32               mfW;
+    f32               scale;
 
     OPEN_DISPS(gfxCtx);
 
@@ -62,8 +62,7 @@ void EffectSsStone1_Draw(PlayState* play, u32 index, EffectSs* this) {
     scale = (mfW < 1500.0f) ? 3.0f : (mfW / 1500.0f) * 3.0f;
     Matrix_Translate(this->pos.x, this->pos.y, this->pos.z, MTXMODE_NEW);
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     Gfx_SetupDL_61Xlu(gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(drawParams->texture));
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, drawParams->primColor.r, drawParams->primColor.g, drawParams->primColor.b,

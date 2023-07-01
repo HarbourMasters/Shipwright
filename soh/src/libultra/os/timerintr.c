@@ -1,10 +1,10 @@
 #include "global.h"
 
-OSTimer __osBaseTimer;
-OSTime __osCurrentTime;
-u32 __osBaseCounter;
-u32 __osViIntrCount;
-u32 __osTimerCounter;
+OSTimer  __osBaseTimer;
+OSTime   __osCurrentTime;
+u32      __osBaseCounter;
+u32      __osViIntrCount;
+u32      __osTimerCounter;
 OSTimer* __osTimerList = &__osBaseTimer;
 
 void __osTimerServicesInit(void) {
@@ -21,8 +21,8 @@ void __osTimerServicesInit(void) {
 
 void __osTimerInterrupt(void) {
     OSTimer* timer;
-    u32 sp20;
-    u32 sp1c;
+    u32      sp20;
+    u32      sp1c;
 
     if (__osTimerList->next == __osTimerList) {
         return;
@@ -61,7 +61,7 @@ void __osTimerInterrupt(void) {
 
 void __osSetTimerIntr(OSTime time) {
     OSTime newTime;
-    u32 prevInt;
+    u32    prevInt;
 
     if (time < 468) {
         time = 468;
@@ -77,8 +77,8 @@ void __osSetTimerIntr(OSTime time) {
 
 OSTime __osInsertTimer(OSTimer* timer) {
     OSTimer* nextTimer;
-    u64 timerValue;
-    u32 prevInt = __osDisableInt();
+    u64      timerValue;
+    u32      prevInt = __osDisableInt();
 
     for (nextTimer = __osTimerList->next, timerValue = timer->value;
          nextTimer != __osTimerList && timerValue > nextTimer->value;
