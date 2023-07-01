@@ -66,7 +66,7 @@ typedef struct {
 #define UPG_IC_POS(x, y) {0x5A + ICON_SIZE * x, 0x2A + ICON_SIZE * y}
 #define STN_IC_POS(i) {0x29 + ICON_SIZE * i, 0x31}
 
-static ItemData itemData[87] = {
+static ItemData itemData[88] = {
     {CREATE_SPRITE_32(dgDekuStickIconTex, 1),            ITEM_STICK,            INV_IC_POS(0, 0), SIZE_NORMAL},
     {CREATE_SPRITE_32(dgDekuNutIconTex, 0),              ITEM_NUT,              INV_IC_POS(1, 0), SIZE_NORMAL},
     {CREATE_SPRITE_32(dgBombIconTex, 2),                 ITEM_BOMB,             INV_IC_POS(2, 0), SIZE_NORMAL},
@@ -164,6 +164,8 @@ static ItemData itemData[87] = {
     {CREATE_SPRITE_SONG(255, 160, 0),                    ITEM_SONG_REQUIEM,     SNG_IC_POS(3, 1), SIZE_SONG},
     {CREATE_SPRITE_SONG(255, 100, 255),                  ITEM_SONG_NOCTURNE,    SNG_IC_POS(4, 1), SIZE_SONG},
     {CREATE_SPRITE_SONG(255, 240, 100),                  ITEM_SONG_PRELUDE,     SNG_IC_POS(5, 1), SIZE_SONG},
+
+    {CREATE_SPRITE_24(dgHeartContainerIconTex, 101),     ITEM_DOUBLE_DEFENSE,   {0x05, -0x04},    SIZE_COUNTER},
 };
 
 static u8 color_product(u8 c1, u8 c2) {
@@ -239,6 +241,10 @@ u8 HasItem(s16 fileIndex, u8 item) {
 
     if (item == ITEM_SCALE_GOLDEN) {
         return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_SCALE]) >> gUpgradeShifts[UPG_SCALE]) == 2;
+    }
+
+    if (item == ITEM_DOUBLE_DEFENSE) {
+        return Save_GetSaveMetaInfo(fileIndex)->isDoubleDefenseAcquired;
     }
 
     //greg
@@ -419,6 +425,10 @@ u8 ShouldRenderItem(s16 fileIndex, u8 item) {
     }
     
     if (item == ITEM_CLAIM_CHECK && HasItem(fileIndex, ITEM_CLAIM_CHECK) == 0) {
+        return 0;
+    }
+
+    if (item == ITEM_DOUBLE_DEFENSE && !Save_GetSaveMetaInfo(fileIndex)->isDoubleDefenseAcquired) {
         return 0;
     }
 
