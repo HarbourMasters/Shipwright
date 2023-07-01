@@ -423,6 +423,7 @@ void SaveManager::InitMeta(int fileNum) {
     fileMetaInfo[fileNum].isDoubleMagicAcquired = gSaveContext.isDoubleMagicAcquired;
     fileMetaInfo[fileNum].rupees = gSaveContext.rupees;
     fileMetaInfo[fileNum].gsTokens = gSaveContext.inventory.gsTokens;
+    fileMetaInfo[fileNum].gregFound = Flags_GetRandomizerInf(RAND_INF_GREG_FOUND);
     fileMetaInfo[fileNum].defense = gSaveContext.inventory.defenseHearts;
     fileMetaInfo[fileNum].health = gSaveContext.health;
 

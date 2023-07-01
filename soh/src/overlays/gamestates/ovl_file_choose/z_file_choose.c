@@ -66,7 +66,7 @@ typedef struct {
 #define UPG_IC_POS(x, y) {0x5A + ICON_SIZE * x, 0x2A + ICON_SIZE * y}
 #define STN_IC_POS(i) {0x29 + ICON_SIZE * i, 0x31}
 
-static ItemData itemData[86] = {
+static ItemData itemData[87] = {
     {CREATE_SPRITE_32(dgDekuStickIconTex, 1),            ITEM_STICK,            INV_IC_POS(0, 0), SIZE_NORMAL},
     {CREATE_SPRITE_32(dgDekuNutIconTex, 0),              ITEM_NUT,              INV_IC_POS(1, 0), SIZE_NORMAL},
     {CREATE_SPRITE_32(dgBombIconTex, 2),                 ITEM_BOMB,             INV_IC_POS(2, 0), SIZE_NORMAL},
@@ -148,6 +148,7 @@ static ItemData itemData[86] = {
     {CREATE_SPRITE_32(dgGoldenScaleIconTex, 74),         ITEM_SCALE_GOLDEN,     UPG_IC_POS(1, 0), SIZE_NORMAL},
     {CREATE_SPRITE_24(dgSmallMagicJarIconTex, 97),       ITEM_SINGLE_MAGIC,     UPG_IC_POS(2, 0), SIZE_NORMAL},
     {CREATE_SPRITE_24(dgBigMagicJarIconTex, 97),         ITEM_DOUBLE_MAGIC,     UPG_IC_POS(2, 0), SIZE_NORMAL},
+    {CREATE_SPRITE_RUPEE(0xC8, 0xFF, 0x64),              ITEM_RUPEE_GREEN,      UPG_IC_POS(0, 1), SIZE_NORMAL},
     {CREATE_SPRITE_24(dgGerudosCardIconTex, 91),         ITEM_GERUDO_CARD,      UPG_IC_POS(1, 1), SIZE_NORMAL},
     {CREATE_SPRITE_24(dgStoneOfAgonyIconTex, 90),        ITEM_STONE_OF_AGONY,   UPG_IC_POS(2, 1), SIZE_NORMAL},
 
@@ -238,6 +239,11 @@ u8 HasItem(s16 fileIndex, u8 item) {
 
     if (item == ITEM_SCALE_GOLDEN) {
         return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_SCALE]) >> gUpgradeShifts[UPG_SCALE]) == 2;
+    }
+
+    //greg
+    if (item == ITEM_RUPEE_GREEN) {
+        return Save_GetSaveMetaInfo(fileIndex)->gregFound;
     }
 
     return 0;
@@ -414,6 +420,11 @@ u8 ShouldRenderItem(s16 fileIndex, u8 item) {
     
     if (item == ITEM_CLAIM_CHECK && HasItem(fileIndex, ITEM_CLAIM_CHECK) == 0) {
         return 0;
+    }
+
+    //greg
+    if (item == ITEM_RUPEE_GREEN) {
+        return Save_GetSaveMetaInfo(fileIndex)->randoSave;
     }
 
     return 1;
