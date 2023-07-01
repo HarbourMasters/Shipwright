@@ -28,7 +28,7 @@ void func_80AE7FDC(EnRl* this, PlayState* play);
 void func_80AE7D94(EnRl* this, PlayState* play);
 
 static void* D_80AE81A0[] = { object_rl_Tex_003620, object_rl_Tex_003960, object_rl_Tex_003B60 };
-static s32 D_80AE81AC = 0;
+static s32   D_80AE81AC = 0;
 
 void EnRl_Destroy(Actor* thisx, PlayState* play) {
     EnRl* this = (EnRl*)thisx;
@@ -37,7 +37,7 @@ void EnRl_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_80AE72D0(EnRl* this) {
-    s32 pad[3];
+    s32  pad[3];
     s16* timer = &this->timer;
     s16* eyeTextureIndex = &this->eyeTextureIndex;
 
@@ -113,14 +113,13 @@ void func_80AE7544(EnRl* this, PlayState* play) {
 }
 
 void func_80AE7590(EnRl* this, PlayState* play) {
-    s32 pad;
+    s32     pad;
     Player* player;
-    Vec3f pos;
-    s16 sceneNum = play->sceneNum;
+    Vec3f   pos;
+    s16     sceneNum = play->sceneNum;
 
     if (gSaveContext.sceneSetupIndex == 4 && sceneNum == SCENE_KENJYANOMA && play->csCtx.state != CS_STATE_IDLE &&
-        play->csCtx.npcActions[6] != NULL && play->csCtx.npcActions[6]->action == 2 &&
-        !this->lightMedallionGiven) {
+        play->csCtx.npcActions[6] != NULL && play->csCtx.npcActions[6]->action == 2 && !this->lightMedallionGiven) {
         player = GET_PLAYER(play);
         pos.x = player->actor.world.pos.x;
         pos.y = player->actor.world.pos.y + 80.0f;
@@ -210,7 +209,7 @@ void func_80AE7954(EnRl* this, PlayState* play) {
 
 void func_80AE79A4(EnRl* this, PlayState* play) {
     f32* unk_19C = &this->unk_19C;
-    s32 alpha = 255;
+    s32  alpha = 255;
 
     if (func_80AE74B4(this, play, 4, 0)) {
         *unk_19C += 1.0f;
@@ -296,9 +295,9 @@ void func_80AE7D40(EnRl* this, PlayState* play) {
 }
 
 void func_80AE7D94(EnRl* this, PlayState* play) {
-    s32 pad[2];
-    s16 temp = this->eyeTextureIndex;
-    void* tex = D_80AE81A0[temp];
+    s32        pad[2];
+    s16        temp = this->eyeTextureIndex;
+    void*      tex = D_80AE81A0[temp];
     SkelAnime* skelAnime = &this->skelAnime;
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -310,8 +309,8 @@ void func_80AE7D94(EnRl* this, PlayState* play) {
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, this->alpha);
     gSPSegment(POLY_XLU_DISP++, 0x0C, D_80116280);
 
-    POLY_XLU_DISP = SkelAnime_DrawFlex(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                                       NULL, NULL, NULL, POLY_XLU_DISP);
+    POLY_XLU_DISP = SkelAnime_DrawFlex(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL,
+                                       NULL, NULL, POLY_XLU_DISP);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -345,9 +344,9 @@ void func_80AE7FD0(EnRl* this, PlayState* play) {
 }
 
 void func_80AE7FDC(EnRl* this, PlayState* play) {
-    s32 pad[2];
-    s16 temp = this->eyeTextureIndex;
-    void* tex = D_80AE81A0[temp];
+    s32        pad[2];
+    s16        temp = this->eyeTextureIndex;
+    void*      tex = D_80AE81A0[temp];
     SkelAnime* skelAnime = &this->skelAnime;
 
     OPEN_DISPS(play->state.gfxCtx);

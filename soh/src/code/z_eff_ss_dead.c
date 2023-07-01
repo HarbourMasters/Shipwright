@@ -1,9 +1,9 @@
 #include "global.h"
 
 void func_80026230(PlayState* play, Color_RGBA8* color, s16 arg2, s16 arg3) {
-    f32 cos;
+    f32  cos;
     Gfx* displayListHead;
-    f32 absCos;
+    f32  absCos;
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -28,7 +28,7 @@ void func_80026230(PlayState* play, Color_RGBA8* color, s16 arg2, s16 arg3) {
 
 void func_80026400(PlayState* play, Color_RGBA8* color, s16 arg2, s16 arg3) {
     Gfx* displayListHead;
-    f32 cos;
+    f32  cos;
 
     if (arg3 != 0) {
         OPEN_DISPS(play->state.gfxCtx);
@@ -58,9 +58,9 @@ void func_80026608(PlayState* play) {
 }
 
 void func_80026690(PlayState* play, Color_RGBA8* color, s16 arg2, s16 arg3) {
-    f32 cos;
+    f32  cos;
     Gfx* displayListHead;
-    f32 absCos;
+    f32  absCos;
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -84,7 +84,7 @@ void func_80026690(PlayState* play, Color_RGBA8* color, s16 arg2, s16 arg3) {
 }
 
 void func_80026860(PlayState* play, Color_RGBA8* color, s16 arg2, s16 arg3) {
-    f32 cos;
+    f32  cos;
     Gfx* displayListHead;
 
     OPEN_DISPS(play->state.gfxCtx);

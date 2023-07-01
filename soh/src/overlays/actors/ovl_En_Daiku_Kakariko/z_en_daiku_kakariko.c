@@ -158,8 +158,7 @@ void EnDaikuKakariko_Init(Actor* thisx, PlayState* play) {
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 40.0f);
 
-    SkelAnime_InitFlex(play, &this->skelAnime, &object_daiku_Skel_007958, NULL, this->jointTable, this->morphTable,
-                       17);
+    SkelAnime_InitFlex(play, &this->skelAnime, &object_daiku_Skel_007958, NULL, this->jointTable, this->morphTable, 17);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
 
@@ -231,8 +230,8 @@ s32 EnDaikuKakariko_GetTalkState(EnDaikuKakariko* this, PlayState* play) {
 
 void EnDaikuKakariko_HandleTalking(EnDaikuKakariko* this, PlayState* play) {
     static s32 maskReactionSets[] = { 1, 2, 3, 4 };
-    s16 sp26;
-    s16 sp24;
+    s16        sp26;
+    s16        sp24;
 
     if (this->talkState == 2) {
         this->talkState = EnDaikuKakariko_GetTalkState(this, play);
@@ -352,15 +351,15 @@ void EnDaikuKakariko_StopRunning(EnDaikuKakariko* this, PlayState* play) {
 }
 
 void EnDaikuKakariko_Run(EnDaikuKakariko* this, PlayState* play) {
-    s32 pad;
-    Path* path;
+    s32    pad;
+    Path*  path;
     Vec3s* pathPos;
-    f32 xDist;
-    f32 zDist;
-    s16 runAngle;
-    f32 runDist;
-    s16 angleStepDiff;
-    s32 run;
+    f32    xDist;
+    f32    zDist;
+    s16    runAngle;
+    f32    runDist;
+    s16    angleStepDiff;
+    s32    run;
 
     do {
         path = &play->setupPathList[(this->actor.params >> 8) & 0xFF];
@@ -456,9 +455,9 @@ void EnDaikuKakariko_Run(EnDaikuKakariko* this, PlayState* play) {
 
 void EnDaikuKakariko_Update(Actor* thisx, PlayState* play) {
     EnDaikuKakariko* this = (EnDaikuKakariko*)thisx;
-    s32 pad;
+    s32     pad;
     Player* player = GET_PLAYER(play);
-    s32 pad2;
+    s32     pad2;
 
     if (this->currentAnimIndex == 3) {
         if (((s32)this->skelAnime.curFrame == 6) || ((s32)this->skelAnime.curFrame == 15)) {
@@ -495,8 +494,7 @@ void EnDaikuKakariko_Update(Actor* thisx, PlayState* play) {
     Math_SmoothStepToS(&this->neckAngle.x, this->neckAngleTarget.x, 1, 1820, 0);
 }
 
-s32 EnDaikuKakariko_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                     void* thisx) {
+s32 EnDaikuKakariko_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnDaikuKakariko* this = (EnDaikuKakariko*)thisx;
     Vec3s angle;
 
@@ -527,8 +525,8 @@ s32 EnDaikuKakariko_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList
 }
 
 void EnDaikuKakariko_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
-    static Gfx* carpenterHeadDLists[] = { object_daiku_DL_005BD0, object_daiku_DL_005AC0, object_daiku_DL_005990,
-                                          object_daiku_DL_005880 };
+    static Gfx*  carpenterHeadDLists[] = { object_daiku_DL_005BD0, object_daiku_DL_005AC0, object_daiku_DL_005990,
+                                           object_daiku_DL_005880 };
     static Vec3f unkVec = { 700.0f, 1100.0f, 0.0f };
     EnDaikuKakariko* this = (EnDaikuKakariko*)thisx;
 

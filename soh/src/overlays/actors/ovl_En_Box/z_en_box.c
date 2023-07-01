@@ -75,30 +75,30 @@ static InitChainEntry sInitChain[] = {
 };
 
 static UNK_TYPE sUnused;
-GetItemEntry sItem;
+GetItemEntry    sItem;
 
-Gfx gSkullTreasureChestChestSideAndLidDL[116] = {0};
-Gfx gGoldTreasureChestChestSideAndLidDL[116] = {0};
-Gfx gKeyTreasureChestChestSideAndLidDL[116] = {0};
-Gfx gChristmasRedTreasureChestChestSideAndLidDL[116] = {0};
-Gfx gChristmasGreenTreasureChestChestSideAndLidDL[116] = {0};
-Gfx gSkullTreasureChestChestFrontDL[128] = {0};
-Gfx gGoldTreasureChestChestFrontDL[128] = {0};
-Gfx gKeyTreasureChestChestFrontDL[128] = {0};
-Gfx gChristmasRedTreasureChestChestFrontDL[128] = {0};
-Gfx gChristmasGreenTreasureChestChestFrontDL[128] = {0};
-u8 hasCreatedRandoChestTextures = 0;
-u8 hasChristmasChestTexturesAvailable = 0;
+Gfx gSkullTreasureChestChestSideAndLidDL[116] = { 0 };
+Gfx gGoldTreasureChestChestSideAndLidDL[116] = { 0 };
+Gfx gKeyTreasureChestChestSideAndLidDL[116] = { 0 };
+Gfx gChristmasRedTreasureChestChestSideAndLidDL[116] = { 0 };
+Gfx gChristmasGreenTreasureChestChestSideAndLidDL[116] = { 0 };
+Gfx gSkullTreasureChestChestFrontDL[128] = { 0 };
+Gfx gGoldTreasureChestChestFrontDL[128] = { 0 };
+Gfx gKeyTreasureChestChestFrontDL[128] = { 0 };
+Gfx gChristmasRedTreasureChestChestFrontDL[128] = { 0 };
+Gfx gChristmasGreenTreasureChestChestFrontDL[128] = { 0 };
+u8  hasCreatedRandoChestTextures = 0;
+u8  hasChristmasChestTexturesAvailable = 0;
 
 void EnBox_SetupAction(EnBox* this, EnBoxActionFunc actionFunc) {
     this->actionFunc = actionFunc;
 }
 
 void EnBox_ClipToGround(EnBox* this, PlayState* play) {
-    f32 newY;
+    f32            newY;
     CollisionPoly* poly;
-    s32 bgId;
-    Vec3f pos;
+    s32            bgId;
+    Vec3f          pos;
 
     pos = this->dyna.actor.world.pos;
     pos.y += 1.0f;
@@ -113,8 +113,8 @@ void EnBox_Init(Actor* thisx, PlayState* play2) {
     EnBox* this = (EnBox*)thisx;
     AnimationHeader* anim;
     CollisionHeader* colHeader;
-    f32 animFrameStart;
-    f32 endFrame;
+    f32              animFrameStart;
+    f32              endFrame;
 
     animFrameStart = 0.0f;
     anim = sAnimations[((void)0, gSaveContext.linkAge)];
@@ -193,7 +193,8 @@ void EnBox_Init(Actor* thisx, PlayState* play2) {
     Animation_Change(&this->skelanime, anim, 1.5f, animFrameStart, endFrame, ANIMMODE_ONCE, 0.0f);
 
     if (gSaveContext.n64ddFlag) {
-        this->getItemEntry = Randomizer_GetItemFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
+        this->getItemEntry = Randomizer_GetItemFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params,
+                                                         this->dyna.actor.params >> 5 & 0x7F);
     } else {
         this->getItemEntry = ItemTable_RetrieveEntry(MOD_NONE, this->dyna.actor.params >> 5 & 0x7F);
     }
@@ -240,7 +241,7 @@ void EnBox_RandomDustKinematic(EnBox* this, Vec3f* pos, Vec3f* velocity, Vec3f* 
  * Spawns dust randomly around the chest when the chest hits the ground after falling (FALL types)
  */
 void EnBox_SpawnDust(EnBox* this, PlayState* play) {
-    s32 i;
+    s32   i;
     Vec3f pos;
     Vec3f velocity;
     Vec3f accel;
@@ -309,7 +310,7 @@ void EnBox_FallOnSwitchFlag(EnBox* this, PlayState* play) {
 
 // used for types 9, 10
 void func_809C9700(EnBox* this, PlayState* play) {
-    s32 treasureFlag = this->dyna.actor.params & 0x1F;
+    s32     treasureFlag = this->dyna.actor.params & 0x1F;
     Player* player = GET_PLAYER(play);
 
     if (treasureFlag >= ENBOX_TREASURE_FLAG_UNK_MIN && treasureFlag < ENBOX_TREASURE_FLAG_UNK_MAX) {
@@ -385,8 +386,8 @@ void EnBox_AppearInit(EnBox* this, PlayState* play) {
     if (func_8005B198() == this->dyna.actor.category || this->unk_1A8 != 0) {
         EnBox_SetupAction(this, EnBox_AppearAnimation);
         this->unk_1A8 = 0;
-        Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_KANKYO, this->dyna.actor.home.pos.x,
-                    this->dyna.actor.home.pos.y, this->dyna.actor.home.pos.z, 0, 0, 0, 0x0011, true);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_KANKYO, this->dyna.actor.home.pos.x, this->dyna.actor.home.pos.y,
+                    this->dyna.actor.home.pos.z, 0, 0, 0, 0x0011, true);
         Audio_PlaySoundGeneral(NA_SE_EV_TRE_BOX_APPEAR, &this->dyna.actor.projectedPos, 4, &D_801333E0, &D_801333E0,
                                &D_801333E8);
     }
@@ -413,12 +414,12 @@ void EnBox_AppearAnimation(EnBox* this, PlayState* play) {
  * Chest is ready to be open
  */
 void EnBox_WaitOpen(EnBox* this, PlayState* play) {
-    f32 frameCount;
+    f32              frameCount;
     AnimationHeader* anim;
-    s32 linkAge;
-    s32 pad;
-    Vec3f sp4C;
-    Player* player;
+    s32              linkAge;
+    s32              pad;
+    Vec3f            sp4C;
+    Player*          player;
 
     this->alpha = 255;
     this->movementFlags |= ENBOX_MOVE_IMMOBILE;
@@ -449,19 +450,19 @@ void EnBox_WaitOpen(EnBox* this, PlayState* play) {
         // treasure chest game rando
         if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
             if (gSaveContext.n64ddFlag && play->sceneNum == 16 && (this->dyna.actor.params & 0x60) != 0x20) {
-                if((this->dyna.actor.params & 0xF) < 2) {
+                if ((this->dyna.actor.params & 0xF) < 2) {
                     Flags_SetCollectible(play, 0x1B);
                 }
-                if((this->dyna.actor.params & 0xF) >= 2 && (this->dyna.actor.params & 0xF) < 4) {
+                if ((this->dyna.actor.params & 0xF) >= 2 && (this->dyna.actor.params & 0xF) < 4) {
                     Flags_SetCollectible(play, 0x1C);
                 }
-                if((this->dyna.actor.params & 0xF) >= 4 && (this->dyna.actor.params & 0xF) < 6) {
+                if ((this->dyna.actor.params & 0xF) >= 4 && (this->dyna.actor.params & 0xF) < 6) {
                     Flags_SetCollectible(play, 0x1D);
                 }
-                if((this->dyna.actor.params & 0xF) >= 6 && (this->dyna.actor.params & 0xF) < 8) {
+                if ((this->dyna.actor.params & 0xF) >= 6 && (this->dyna.actor.params & 0xF) < 8) {
                     Flags_SetCollectible(play, 0x1E);
                 }
-                if((this->dyna.actor.params & 0xF) >= 8 && (this->dyna.actor.params & 0xF) < 10) {
+                if ((this->dyna.actor.params & 0xF) >= 8 && (this->dyna.actor.params & 0xF) < 10) {
                     Flags_SetCollectible(play, 0x1F);
                 }
             }
@@ -471,34 +472,35 @@ void EnBox_WaitOpen(EnBox* this, PlayState* play) {
         func_8002DBD0(&this->dyna.actor, &sp4C, &player->actor.world.pos);
         if (sp4C.z > -50.0f && sp4C.z < 0.0f && fabsf(sp4C.y) < 10.0f && fabsf(sp4C.x) < 20.0f &&
             Player_IsFacingActor(&this->dyna.actor, 0x3000, play)) {
-            sItem = Randomizer_GetItemFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params, this->dyna.actor.params >> 5 & 0x7F);
+            sItem = Randomizer_GetItemFromActor(this->dyna.actor.id, play->sceneNum, this->dyna.actor.params,
+                                                this->dyna.actor.params >> 5 & 0x7F);
             GetItemEntry blueRupee = ItemTable_RetrieveEntry(MOD_NONE, GI_RUPEE_BLUE);
-            
+
             // RANDOTODO treasure chest game rando
             if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
                 if (gSaveContext.n64ddFlag && play->sceneNum == 16 && (this->dyna.actor.params & 0x60) != 0x20) {
-                    if((this->dyna.actor.params & 0xF) < 2) {
-                        if(Flags_GetCollectible(play, 0x1B)) {
+                    if ((this->dyna.actor.params & 0xF) < 2) {
+                        if (Flags_GetCollectible(play, 0x1B)) {
                             sItem = blueRupee;
                         }
                     }
-                    if((this->dyna.actor.params & 0xF) >= 2 && (this->dyna.actor.params & 0xF) < 4) {
-                        if(Flags_GetCollectible(play, 0x1C)) {
+                    if ((this->dyna.actor.params & 0xF) >= 2 && (this->dyna.actor.params & 0xF) < 4) {
+                        if (Flags_GetCollectible(play, 0x1C)) {
                             sItem = blueRupee;
                         }
                     }
-                    if((this->dyna.actor.params & 0xF) >= 4 && (this->dyna.actor.params & 0xF) < 6) {
-                        if(Flags_GetCollectible(play, 0x1D)) {
+                    if ((this->dyna.actor.params & 0xF) >= 4 && (this->dyna.actor.params & 0xF) < 6) {
+                        if (Flags_GetCollectible(play, 0x1D)) {
                             sItem = blueRupee;
                         }
                     }
-                    if((this->dyna.actor.params & 0xF) >= 6 && (this->dyna.actor.params & 0xF) < 8) {
-                        if(Flags_GetCollectible(play, 0x1E)) {
+                    if ((this->dyna.actor.params & 0xF) >= 6 && (this->dyna.actor.params & 0xF) < 8) {
+                        if (Flags_GetCollectible(play, 0x1E)) {
                             sItem = blueRupee;
                         }
                     }
-                    if((this->dyna.actor.params & 0xF) >= 8 && (this->dyna.actor.params & 0xF) < 10) {
-                        if(Flags_GetCollectible(play, 0x1F)) {
+                    if ((this->dyna.actor.params & 0xF) >= 8 && (this->dyna.actor.params & 0xF) < 10) {
+                        if (Flags_GetCollectible(play, 0x1F)) {
                             sItem = blueRupee;
                         }
                     }
@@ -571,7 +573,7 @@ void EnBox_SpawnIceSmoke(EnBox* this, PlayState* play) {
     Vec3f pos;
     Vec3f vel = { 0.0f, 1.0f, 0.0f };
     Vec3f accel = { 0.0f, 0.0f, 0.0f };
-    f32 f0;
+    f32   f0;
 
     this->iceSmokeTimer++;
     func_8002F974(&this->dyna.actor, NA_SE_EN_MIMICK_BREATH - SFX_FLAG);
@@ -627,30 +629,32 @@ void EnBox_Update(Actor* thisx, PlayState* play) {
     }
 
     if (((!gSaveContext.n64ddFlag && ((this->dyna.actor.params >> 5 & 0x7F) == 0x7C)) ||
-         (gSaveContext.n64ddFlag && ABS(sItem.getItemId) == RG_ICE_TRAP)) && 
-        this->actionFunc == EnBox_Open && this->skelanime.curFrame > 45 &&
-        this->iceSmokeTimer < 100) EnBox_SpawnIceSmoke(this, play);
+         (gSaveContext.n64ddFlag && ABS(sItem.getItemId) == RG_ICE_TRAP)) &&
+        this->actionFunc == EnBox_Open && this->skelanime.curFrame > 45 && this->iceSmokeTimer < 100)
+        EnBox_SpawnIceSmoke(this, play);
 }
 
 void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     EnBox_CreateExtraChestTextures();
-    int csmc = CVarGetInteger("gChestSizeAndTextureMatchesContents", CSMC_DISABLED);
-    int requiresStoneAgony = CVarGetInteger("gChestSizeDependsStoneOfAgony", 0);
+    int             csmc = CVarGetInteger("gChestSizeAndTextureMatchesContents", CSMC_DISABLED);
+    int             requiresStoneAgony = CVarGetInteger("gChestSizeDependsStoneOfAgony", 0);
     GetItemCategory getItemCategory;
 
     int isVanilla = csmc == CSMC_DISABLED || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)) ||
-        (play->sceneNum == SCENE_TAKARAYA && this->dyna.actor.room != 6); // Exclude treasure game chests except for the final room
+                    (play->sceneNum == SCENE_TAKARAYA &&
+                     this->dyna.actor.room != 6); // Exclude treasure game chests except for the final room
 
     if (!isVanilla) {
         getItemCategory = this->getItemEntry.getItemCategory;
         // If they don't have bombchu's yet consider the bombchu item major
         if (this->getItemEntry.gid == GID_BOMBCHU && INV_CONTENT(ITEM_BOMBCHU) != ITEM_BOMBCHU) {
             getItemCategory = ITEM_CATEGORY_MAJOR;
-        // If it's a bottle and they already have one, consider the item lesser
-        } else if (
-            (this->getItemEntry.modIndex == MOD_RANDOMIZER && this->getItemEntry.getItemId >= RG_BOTTLE_WITH_RED_POTION && this->getItemEntry.getItemId <= RG_BOTTLE_WITH_BIG_POE) ||
-            (this->getItemEntry.modIndex == MOD_NONE && (this->getItemEntry.getItemId == GI_BOTTLE || this->getItemEntry.getItemId == GI_MILK_BOTTLE))
-        ) {
+            // If it's a bottle and they already have one, consider the item lesser
+        } else if ((this->getItemEntry.modIndex == MOD_RANDOMIZER &&
+                    this->getItemEntry.getItemId >= RG_BOTTLE_WITH_RED_POTION &&
+                    this->getItemEntry.getItemId <= RG_BOTTLE_WITH_BIG_POE) ||
+                   (this->getItemEntry.modIndex == MOD_NONE &&
+                    (this->getItemEntry.getItemId == GI_BOTTLE || this->getItemEntry.getItemId == GI_MILK_BOTTLE))) {
             if (gSaveContext.inventory.items[SLOT_BOTTLE_1] != ITEM_NONE) {
                 getItemCategory = ITEM_CATEGORY_LESSER;
             }
@@ -764,7 +768,8 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
 }
 
 void EnBox_CreateExtraChestTextures() {
-    if (hasCreatedRandoChestTextures) return;
+    if (hasCreatedRandoChestTextures)
+        return;
     Gfx gTreasureChestChestTextures[] = {
         gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gSkullTreasureChestFrontTex),
         gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gSkullTreasureChestSideAndTopTex),
@@ -779,7 +784,7 @@ void EnBox_CreateExtraChestTextures() {
     };
 
     Gfx* frontCmd = ResourceMgr_LoadGfxByName(gTreasureChestChestFrontDL);
-    int frontIndex = 0;
+    int  frontIndex = 0;
     while (frontCmd->words.w0 >> 24 != G_ENDDL) {
         gSkullTreasureChestChestFrontDL[frontIndex] = *frontCmd;
         gGoldTreasureChestChestFrontDL[frontIndex] = *frontCmd;
@@ -817,7 +822,7 @@ void EnBox_CreateExtraChestTextures() {
     gChristmasGreenTreasureChestChestFrontDL[50] = gTreasureChestChestTextures[9];
 
     Gfx* sideCmd = ResourceMgr_LoadGfxByName(gTreasureChestChestSideAndLidDL);
-    int sideIndex = 0;
+    int  sideIndex = 0;
     while (sideCmd->words.w0 >> 24 != G_ENDDL) {
         gSkullTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
         gGoldTreasureChestChestSideAndLidDL[sideIndex] = *sideCmd;
@@ -858,12 +863,10 @@ void EnBox_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
     s32 pad;
 
     if (limbIndex == 1) {
-        gSPMatrix((*gfx)++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix((*gfx)++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList((*gfx)++, this->boxBodyDL);
     } else if (limbIndex == 3) {
-        gSPMatrix((*gfx)++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix((*gfx)++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList((*gfx)++, this->boxLidDL);
     }
 }

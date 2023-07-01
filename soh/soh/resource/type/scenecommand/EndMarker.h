@@ -17,7 +17,7 @@ class EndMarker : public SceneCommand<Marker> {
     using SceneCommand::SceneCommand;
 
     Marker* GetPointer();
-    size_t GetPointerSize();
+    size_t  GetPointerSize();
 
     Marker endMarker;
 };

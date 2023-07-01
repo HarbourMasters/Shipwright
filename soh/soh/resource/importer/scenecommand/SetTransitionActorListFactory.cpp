@@ -4,19 +4,19 @@
 
 namespace LUS {
 std::shared_ptr<IResource> SetTransitionActorListFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
-                                                                      std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<SetTransitionActorList>(initData);
+                                                                       std::shared_ptr<BinaryReader>     reader) {
+    auto                                    resource = std::make_shared<SetTransitionActorList>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
     switch (resource->GetInitData()->ResourceVersion) {
-    case 0:
-	    factory = std::make_shared<SetTransitionActorListFactoryV0>();
-	    break;
+        case 0:
+            factory = std::make_shared<SetTransitionActorListFactoryV0>();
+            break;
     }
 
     if (factory == nullptr) {
         SPDLOG_ERROR("Failed to load SetTransitionActorList with version {}", resource->GetInitData()->ResourceVersion);
-	return nullptr;
+        return nullptr;
     }
 
     factory->ParseFileBinary(reader, resource);
@@ -25,12 +25,13 @@ std::shared_ptr<IResource> SetTransitionActorListFactory::ReadResource(std::shar
 }
 
 void LUS::SetTransitionActorListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<IResource> resource) {
-    std::shared_ptr<SetTransitionActorList> setTransitionActorList = std::static_pointer_cast<SetTransitionActorList>(resource);
+                                                           std::shared_ptr<IResource>    resource) {
+    std::shared_ptr<SetTransitionActorList> setTransitionActorList =
+        std::static_pointer_cast<SetTransitionActorList>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setTransitionActorList);
 
     ReadCommandId(setTransitionActorList, reader);
-	
+
     setTransitionActorList->numTransitionActors = reader->ReadUInt32();
     setTransitionActorList->transitionActorList.reserve(setTransitionActorList->numTransitionActors);
     for (uint32_t i = 0; i < setTransitionActorList->numTransitionActors; i++) {

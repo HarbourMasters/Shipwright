@@ -16,10 +16,10 @@ typedef enum {
 } ObjLightswitch_Type;
 
 typedef struct ObjLightswitch {
-    /* 0x0000 */ Actor actor;
+    /* 0x0000 */ Actor                    actor;
     /* 0x014C */ ObjLightswitchActionFunc actionFunc;
-    /* 0x0150 */ ColliderJntSph collider;
-    /* 0x0170 */ ColliderJntSphElement colliderItems[1];
+    /* 0x0150 */ ColliderJntSph           collider;
+    /* 0x0170 */ ColliderJntSphElement    colliderItems[1];
     /* 0x01B0 */ s16 timer;       // collision-related threshold and controls animation/logic when turning on/off
     /* 0x01B2 */ s16 toggleDelay; // timer ticking down used for delaying tuning on/off or disappearing, can be bypassed
     /* 0x01B4 */ s16 faceTextureIndex; // texture used by the center part of the sun
@@ -27,7 +27,7 @@ typedef struct ObjLightswitch {
     /* 0x01BC */ s16 alpha;            // (0-255 alpha) << 6
     /* 0x01BE */ s16 flameRingRot;
     /* 0x01C0 */ s16 flameRingRotSpeed;
-    /* 0x01C2 */ u8 prevFrameACflags;
+    /* 0x01C2 */ u8  prevFrameACflags;
 } ObjLightswitch; // size = 0x01C4
 
 #endif

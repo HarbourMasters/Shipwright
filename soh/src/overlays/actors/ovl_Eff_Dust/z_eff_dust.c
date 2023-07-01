@@ -115,11 +115,11 @@ void EffDust_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void EffDust_UpdateFunc_8099DB28(EffDust* this, PlayState* play) {
-    s16 theta;
-    s16 fi;
+    s16  theta;
+    s16  fi;
     f32* distanceTraveled = this->distanceTraveled;
-    s32 i;
-    s32 j;
+    s32  i;
+    s32  j;
 
     for (i = 0; i < 64; i++) {
         if ((*distanceTraveled) < 1.0f) {
@@ -144,11 +144,11 @@ void EffDust_UpdateFunc_8099DB28(EffDust* this, PlayState* play) {
 }
 
 void EffDust_UpdateFunc_8099DD74(EffDust* this, PlayState* play) {
-    s16 theta;
-    s16 fi;
+    s16  theta;
+    s16  fi;
     f32* distanceTraveled = this->distanceTraveled;
-    s32 i;
-    s32 j;
+    s32  i;
+    s32  j;
 
     for (i = 0; i < 64; i++) {
         if ((*distanceTraveled) < 1.0f) {
@@ -173,12 +173,12 @@ void EffDust_UpdateFunc_8099DD74(EffDust* this, PlayState* play) {
 }
 
 void EffDust_UpdateFunc_8099DFC0(EffDust* this, PlayState* play) {
-    s16 theta;
+    s16     theta;
     Player* player = GET_PLAYER(play);
-    Actor* parent = this->actor.parent;
-    f32* distanceTraveled = this->distanceTraveled;
-    s32 i;
-    s32 j;
+    Actor*  parent = this->actor.parent;
+    f32*    distanceTraveled = this->distanceTraveled;
+    s32     i;
+    s32     j;
 
     if (parent == NULL || parent->update == NULL || !(player->stateFlags1 & 0x1000)) {
         if (this->life != 0) {
@@ -263,12 +263,12 @@ void EffDust_Update(Actor* thisx, PlayState* play) {
 
 void EffDust_DrawFunc_8099E4F4(Actor* thisx, PlayState* play2) {
     EffDust* this = (EffDust*)thisx;
-    PlayState* play = play2;
+    PlayState*       play = play2;
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    Vec3f* initialPositions;
-    f32* distanceTraveled;
-    s32 i;
-    f32 aux;
+    Vec3f*           initialPositions;
+    f32*             distanceTraveled;
+    s32              i;
+    f32              aux;
 
     OPEN_DISPS(gfxCtx);
 
@@ -296,8 +296,7 @@ void EffDust_DrawFunc_8099E4F4(Actor* thisx, PlayState* play2) {
             Matrix_Scale(this->scalingFactor, this->scalingFactor, this->scalingFactor, MTXMODE_APPLY);
             Matrix_Mult(&play->billboardMtxF, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gEffSparklesDL));
         }
 
@@ -312,13 +311,13 @@ void EffDust_DrawFunc_8099E4F4(Actor* thisx, PlayState* play2) {
 
 void EffDust_DrawFunc_8099E784(Actor* thisx, PlayState* play2) {
     EffDust* this = (EffDust*)thisx;
-    PlayState* play = play2;
+    PlayState*       play = play2;
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    f32* distanceTraveled;
-    Vec3f* initialPositions;
-    s32 i;
-    f32 aux;
-    Player* player = GET_PLAYER(play);
+    f32*             distanceTraveled;
+    Vec3f*           initialPositions;
+    s32              i;
+    f32              aux;
+    Player*          player = GET_PLAYER(play);
 
     OPEN_DISPS(gfxCtx);
 
@@ -359,8 +358,7 @@ void EffDust_DrawFunc_8099E784(Actor* thisx, PlayState* play2) {
 
             Matrix_ReplaceRotation(&play->billboardMtxF);
 
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gEffSparklesDL));
         }
 

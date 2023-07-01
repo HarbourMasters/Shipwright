@@ -9,107 +9,43 @@
 #include <vector>
 
 typedef struct BossRushSetting {
-    std::array<std::string, LANGUAGE_MAX> name;
+    std::array<std::string, LANGUAGE_MAX>              name;
     std::vector<std::array<std::string, LANGUAGE_MAX>> choices;
 } BossRushSetting;
 
-BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = { 
-    {
-        { "BOSSES:", "BOSSE:", "BOSS:" },
-        {
-            { "All", "Alle", "Tous" },
-            { "Child", "Kind", "Enfant" },
-            { "Adult", "Erwachsener", "Adulte" },
-            { "Ganondorf & Ganon", "Ganondorf & Ganon", "Ganondorf & Ganon" }
-        }
-    },
-    {
-        { "HEARTS:", "HERZEN:", "COEURS:" },
-        {
-            { "10", "10", "10" },
-            { "15", "15", "15" },
-            { "20", "20", "20" },
-            { "3", "3", "3" },
-            { "5", "5", "5" },
-            { "7", "7", "7" }
-        }
-    },
-    {
-        { "AMMO:", "MUNITION:", "MUNITIONS:" },
-        {
-            { "Limited", "Limitiert", "Limitées" },
-            { "Full", "Voll", "Pleines" },
-            { "Maxed", "Maximum", "Maximum" }
-        }
-    },
-    {
-        { "HEAL:", "REGENERATION:", "SOIN:" },
-        {
-            { "Before Ganondorf", "Vor Ganondorf", "Avant Ganondorf" },
-            { "Every Boss", "Bei jedem Boss", "Tous les Boss" },
-            { "Never", "Niemals", "Jamais" }
-        }
-    },
-    {
-        { "HYPER BOSSES:", "HYPER-BOSSE:", "HYPER BOSS:" },
-        {
-            { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
-        }
-    },
-    {
-        { "MAGIC:", "MAGIE:", "MAGIE:" },
-        {
-            { "Single", "Einzel", "Simple" },
-            { "Double", "Doppel", "Double" }
-        }
-    },
-    {
-        { "BIG. SWORD:", "BIG.-SCHWERT:", "EPÉE DE BIG.:" },
-        {
-            { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
-        }
-    },
-    {
-        { "BOTTLE:", "FLASCHEN:", "BOUTEILLE:" },
-        {
-            { "No", "Nein", "Non" },
-            { "Empty", "Leer", "Vide" },
-            { "Fairy", "Fee", "Fée" },
-            { "Red Potion", "Rotes Elixier", "Potion Rouge" },
-            { "Green Potion", "Grünes Elixier", "Potion Verte" },
-            { "Blue Potion", "Blaues Elixier", "Potion Bleue" }
-        }
-    },
-    {
-        { "LONGSHOT:", "ENTERHAKEN:", "SUPER GRAPPIN:" },
-        {
-            { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
-        }
-    },
-    {
-        { "HOVER BOOTS:", "GLEITSTIEFEL:", "BOTTES DES AIRS:" },
-        {
-            { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
-        }
-    },
-    {
-        { "BUNNY HOOD:", "HASENOHREN:", "MASQUE DU LAPIN:" },
-        {
-            { "No", "Nein", "Non" },
-            { "Yes", "Ja", "Oui" }
-        }
-    },
-    {
-        { "TIMER:", "TIMER:", "TIMER:" },
-        {
-            { "Yes", "Ja", "Oui" },
-            { "No", "Nein", "Non" }
-        }
-    }
+BossRushSetting BossRushOptions[BOSSRUSH_OPTIONS_AMOUNT] = {
+    { { "BOSSES:", "BOSSE:", "BOSS:" },
+      { { "All", "Alle", "Tous" },
+        { "Child", "Kind", "Enfant" },
+        { "Adult", "Erwachsener", "Adulte" },
+        { "Ganondorf & Ganon", "Ganondorf & Ganon", "Ganondorf & Ganon" } } },
+    { { "HEARTS:", "HERZEN:", "COEURS:" },
+      { { "10", "10", "10" },
+        { "15", "15", "15" },
+        { "20", "20", "20" },
+        { "3", "3", "3" },
+        { "5", "5", "5" },
+        { "7", "7", "7" } } },
+    { { "AMMO:", "MUNITION:", "MUNITIONS:" },
+      { { "Limited", "Limitiert", "Limitées" }, { "Full", "Voll", "Pleines" }, { "Maxed", "Maximum", "Maximum" } } },
+    { { "HEAL:", "REGENERATION:", "SOIN:" },
+      { { "Before Ganondorf", "Vor Ganondorf", "Avant Ganondorf" },
+        { "Every Boss", "Bei jedem Boss", "Tous les Boss" },
+        { "Never", "Niemals", "Jamais" } } },
+    { { "HYPER BOSSES:", "HYPER-BOSSE:", "HYPER BOSS:" }, { { "No", "Nein", "Non" }, { "Yes", "Ja", "Oui" } } },
+    { { "MAGIC:", "MAGIE:", "MAGIE:" }, { { "Single", "Einzel", "Simple" }, { "Double", "Doppel", "Double" } } },
+    { { "BIG. SWORD:", "BIG.-SCHWERT:", "EPÉE DE BIG.:" }, { { "No", "Nein", "Non" }, { "Yes", "Ja", "Oui" } } },
+    { { "BOTTLE:", "FLASCHEN:", "BOUTEILLE:" },
+      { { "No", "Nein", "Non" },
+        { "Empty", "Leer", "Vide" },
+        { "Fairy", "Fee", "Fée" },
+        { "Red Potion", "Rotes Elixier", "Potion Rouge" },
+        { "Green Potion", "Grünes Elixier", "Potion Verte" },
+        { "Blue Potion", "Blaues Elixier", "Potion Bleue" } } },
+    { { "LONGSHOT:", "ENTERHAKEN:", "SUPER GRAPPIN:" }, { { "No", "Nein", "Non" }, { "Yes", "Ja", "Oui" } } },
+    { { "HOVER BOOTS:", "GLEITSTIEFEL:", "BOTTES DES AIRS:" }, { { "No", "Nein", "Non" }, { "Yes", "Ja", "Oui" } } },
+    { { "BUNNY HOOD:", "HASENOHREN:", "MASQUE DU LAPIN:" }, { { "No", "Nein", "Non" }, { "Yes", "Ja", "Oui" } } },
+    { { "TIMER:", "TIMER:", "TIMER:" }, { { "Yes", "Ja", "Oui" }, { "No", "Nein", "Non" } } }
 };
 
 const char* BossRush_GetSettingName(uint8_t optionIndex, uint8_t language) {
@@ -179,31 +115,31 @@ void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
             } else {
                 play->nextEntranceIndex = 0x000C;
             }
-        // King Dodongo & Volvagia
+            // King Dodongo & Volvagia
         } else if (warpPosX == 100 && warpPosZ == -170) {
             if (gSaveContext.linkAge == LINK_AGE_CHILD) {
                 play->nextEntranceIndex = 0x040B;
             } else {
                 play->nextEntranceIndex = 0x0305;
             }
-        // Barinade & Morb
+            // Barinade & Morb
         } else if (warpPosX == 199 && warpPosZ == 0) {
             if (gSaveContext.linkAge == LINK_AGE_CHILD) {
                 play->nextEntranceIndex = 0x0301;
             } else {
                 play->nextEntranceIndex = 0x0417;
             }
-        // Twinrova
+            // Twinrova
         } else if (warpPosX == 100 && warpPosZ == 170) {
             play->nextEntranceIndex = 0x05EC;
-        // Bongo Bongo
+            // Bongo Bongo
         } else if (warpPosX == -100 && warpPosZ == 170) {
             play->nextEntranceIndex = 0x0413;
-        // Ganondork
+            // Ganondork
         } else if (warpPosX == -199 && warpPosZ == 0) {
             play->nextEntranceIndex = 0x041F;
         }
-    // If coming from a boss room, teleport back to Chamber of Sages and set flag.
+        // If coming from a boss room, teleport back to Chamber of Sages and set flag.
     } else {
         play->nextEntranceIndex = SCENE_HAIRAL_NIWA2;
 
@@ -214,7 +150,7 @@ void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
             // Change to Adult Link.
             if (gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_ALL) {
                 BossRush_SetEquipment(LINK_AGE_ADULT);
-            // Warp to credits.
+                // Warp to credits.
             } else if (gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) {
                 play->nextEntranceIndex = 0x6B;
                 gSaveContext.nextCutsceneIndex = 0xFFF2;
@@ -308,7 +244,7 @@ void BossRush_InitSave() {
 
     // Set health
     uint16_t health = 16;
-    switch (gSaveContext.bossRushOptions[BR_OPTIONS_HEARTS]) { 
+    switch (gSaveContext.bossRushOptions[BR_OPTIONS_HEARTS]) {
         case BR_CHOICE_HEARTS_7:
             health *= 7;
             break;
@@ -351,10 +287,9 @@ void BossRush_InitSave() {
 
     // Set items
     std::array<u8, 24> brItems = {
-        ITEM_STICK,     ITEM_NUT,  ITEM_BOMB, ITEM_BOW,      ITEM_NONE,        ITEM_NONE,
-        ITEM_SLINGSHOT, ITEM_NONE, ITEM_NONE, ITEM_HOOKSHOT, ITEM_NONE,        ITEM_NONE,
-        ITEM_BOOMERANG, ITEM_LENS, ITEM_NONE, ITEM_HAMMER,   ITEM_ARROW_LIGHT, ITEM_NONE,
-        ITEM_NONE,      ITEM_NONE, ITEM_NONE, ITEM_NONE,     ITEM_NONE,        ITEM_NONE,
+        ITEM_STICK,       ITEM_NUT,      ITEM_BOMB, ITEM_BOW,  ITEM_NONE,      ITEM_NONE, ITEM_SLINGSHOT, ITEM_NONE,
+        ITEM_NONE,        ITEM_HOOKSHOT, ITEM_NONE, ITEM_NONE, ITEM_BOOMERANG, ITEM_LENS, ITEM_NONE,      ITEM_HAMMER,
+        ITEM_ARROW_LIGHT, ITEM_NONE,     ITEM_NONE, ITEM_NONE, ITEM_NONE,      ITEM_NONE, ITEM_NONE,      ITEM_NONE,
     };
 
     if (gSaveContext.bossRushOptions[BR_OPTIONS_LONGSHOT] == BR_CHOICE_LONGSHOT_YES) {
@@ -464,7 +399,7 @@ void BossRush_SetEquipment(uint8_t linkAge) {
 
         Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
         Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_DEKU);
-    // Set Adult equipment.
+        // Set Adult equipment.
     } else {
         brButtonItems = { ITEM_SWORD_MASTER, ITEM_BOW,  ITEM_HAMMER, ITEM_BOMB,
                           ITEM_NONE,         ITEM_NONE, ITEM_NONE,   ITEM_NONE };

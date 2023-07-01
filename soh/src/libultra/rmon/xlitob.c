@@ -6,12 +6,12 @@ u8 D_8000AF70[] = "0123456789abcdef";
 u8 D_8000AF84[] = "0123456789ABCDEF";
 
 void _Litob(_Pft* args, u8 type) {
-    u8 buff[BUFF_LEN];
+    u8        buff[BUFF_LEN];
     const u8* numMap;
-    s32 base;
-    s32 idx;
-    u64 num;
-    lldiv_t quotrem;
+    s32       base;
+    s32       idx;
+    u64       num;
+    lldiv_t   quotrem;
 
     if (type == 'X') {
         numMap = D_8000AF84;

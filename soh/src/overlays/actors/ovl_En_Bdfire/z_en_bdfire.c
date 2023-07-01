@@ -83,7 +83,7 @@ void EnBdfire_Destroy(Actor* thisx, PlayState* play) {
 
 void func_809BC2A4(EnBdfire* this, PlayState* play) {
     BossDodongo* kingDodongo;
-    s32 temp;
+    s32          temp;
 
     kingDodongo = (BossDodongo*)this->actor.parent;
     this->actor.world.pos.x = kingDodongo->firePos.x;
@@ -120,13 +120,13 @@ void func_809BC2A4(EnBdfire* this, PlayState* play) {
 }
 
 void func_809BC598(EnBdfire* this, PlayState* play) {
-    s16 phi_v1_2;
-    Player* player = GET_PLAYER(play);
-    f32 distToBurn;
+    s16          phi_v1_2;
+    Player*      player = GET_PLAYER(play);
+    f32          distToBurn;
     BossDodongo* bossDodongo;
-    s16 i;
-    s16 phi_v1;
-    s32 temp;
+    s16          i;
+    s16          phi_v1;
+    s32          temp;
 
     bossDodongo = ((BossDodongo*)this->actor.parent);
     this->unk_158 = bossDodongo->unk_1A2;
@@ -217,8 +217,7 @@ void EnBdfire_DrawFire(EnBdfire* this, PlayState* play) {
     gDPSetEnvColor(POLY_XLU_DISP++, 200, 0, 0, 0);
     gSPSegment(POLY_XLU_DISP++, 8, SEGMENTED_TO_VIRTUAL(D_809BCB10[temp]));
     Matrix_Translate(0.0f, 11.0f, 0.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, object_kingdodongo_DL_01D950);
     CLOSE_DISPS(play->state.gfxCtx);
 }

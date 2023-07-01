@@ -19,12 +19,12 @@
 #include <boost_custom/container_hash/hash_32.hpp>
 
 namespace {
-bool seedChanged;
-uint16_t pastSeedLength;
+bool                     seedChanged;
+uint16_t                 pastSeedLength;
 std::vector<std::string> presetEntries;
-std::vector<Menu*> menuList;
-Option* currentSetting;
-Menu* currentMenu;
+std::vector<Menu*>       menuList;
+Option*                  currentSetting;
+Menu*                    currentMenu;
 } // namespace
 
 void PrintTopScreen() {
@@ -476,44 +476,45 @@ void PrintPresetsMenu() {
 }
 
 void PrintResetToDefaultsMenu() {
-  printf("\x1b[10;4HPress A to reset to default settings.");
-  printf("\x1b[12;4HPress B to return to the preset menu.");
+    printf("\x1b[10;4HPress A to reset to default settings.");
+    printf("\x1b[12;4HPress B to return to the preset menu.");
 }
 
 void PrintGenerateMenu() {
-  printf("\x1b[3;%dHHow will you play?", 1+(BOTTOM_WIDTH-18)/2);
-  std::vector<std::string> playOptions = {"3ds Console", "Citra Emulator"};
+    printf("\x1b[3;%dHHow will you play?", 1 + (BOTTOM_WIDTH - 18) / 2);
+    std::vector<std::string> playOptions = { "3ds Console", "Citra Emulator" };
 
-  for (uint8_t i = 0; i < playOptions.size(); i++) {
+    for (uint8_t i = 0; i < playOptions.size(); i++) {
 
-    std::string option = playOptions[i];
-    uint8_t row = 6 + (i * 2);
-    //make the current selection green
-    if (currentMenu->menuIdx == i) {
-      printf("\x1b[%d;%dH%s>",   row, 14, GREEN);
-      printf("\x1b[%d;%dH%s%s",  row, 15, option.c_str(), RESET);
-    } else {
-      printf("\x1b[%d;%dH%s",    row, 15, option.c_str());
+        std::string option = playOptions[i];
+        uint8_t     row = 6 + (i * 2);
+        // make the current selection green
+        if (currentMenu->menuIdx == i) {
+            printf("\x1b[%d;%dH%s>", row, 14, GREEN);
+            printf("\x1b[%d;%dH%s%s", row, 15, option.c_str(), RESET);
+        } else {
+            printf("\x1b[%d;%dH%s", row, 15, option.c_str());
+        }
     }
-  }
 }
 
 void ClearDescription() {
-  //clear the previous description
-  std::string spaces = "";
-  spaces.append(9 * TOP_WIDTH, ' ');
-  printf("\x1b[22;0H%s", spaces.c_str());
+    // clear the previous description
+    std::string spaces = "";
+    spaces.append(9 * TOP_WIDTH, ' ');
+    printf("\x1b[22;0H%s", spaces.c_str());
 }
 
 void PrintOptionDescription() {
-  ClearDescription();
-  std::string_view description = currentSetting->GetSelectedOptionDescription();
+    ClearDescription();
+    std::string_view description = currentSetting->GetSelectedOptionDescription();
 
-  printf("\x1b[22;0H%s", description.data());
+    printf("\x1b[22;0H%s", description.data());
 }
 
-std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
-    std::string seedString) {
+std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings,
+                               std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
+                               std::string seedString) {
 
     srand(time(NULL));
     // if a blank seed was entered, make a random one
@@ -523,9 +524,7 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
         int count;
         try {
             count = std::stoi(seedString.substr(18), nullptr);
-        } catch (std::invalid_argument &e) {
-            count = 1;
-        } catch (std::out_of_range &e) {
+        } catch (std::invalid_argument& e) { count = 1; } catch (std::out_of_range& e) {
             count = 1;
         }
         Playthrough::Playthrough_Repeat(cvarSettings, excludedLocations, enabledTricks, count);

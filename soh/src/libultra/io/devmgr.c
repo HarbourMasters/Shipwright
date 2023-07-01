@@ -2,15 +2,15 @@
 #include "ultra64/internal.h"
 
 void __osDevMgrMain(void* arg) {
-    OSIoMesg* ioMesg;
-    OSMesg sp70;
-    OSMesg sp6C;
-    OSMgrArgs* arg0 = (OSMgrArgs*)arg;
+    OSIoMesg*      ioMesg;
+    OSMesg         sp70;
+    OSMesg         sp6C;
+    OSMgrArgs*     arg0 = (OSMgrArgs*)arg;
     __OSTranxInfo* transfer;
     __OSBlockInfo* block;
-    s32 phi_s2;
-    s32 phi_s0;
-    u32 sp54;
+    s32            phi_s2;
+    s32            phi_s0;
+    u32            sp54;
 
     ioMesg = NULL;
 

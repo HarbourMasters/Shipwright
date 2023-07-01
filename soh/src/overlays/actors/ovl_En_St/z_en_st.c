@@ -7,7 +7,8 @@
 #include "z_en_st.h"
 #include "objects/object_st/object_st.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS \
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnSt_Init(Actor* thisx, PlayState* play);
 void EnSt_Destroy(Actor* thisx, PlayState* play);
@@ -137,11 +138,11 @@ void EnSt_SetupAction(EnSt* this, EnStActionFunc actionFunc) {
 void EnSt_SpawnDust(EnSt* this, PlayState* play, s32 dustCnt) {
     Color_RGBA8 primColor = { 170, 130, 90, 255 };
     Color_RGBA8 envColor = { 100, 60, 20, 0 };
-    Vec3f dustVel = { 0.0f, 0.0f, 0.0f };
-    Vec3f dustAccel = { 0.0f, 0.3f, 0.0f };
-    Vec3f dustPos;
-    s16 yAngle;
-    s32 i;
+    Vec3f       dustVel = { 0.0f, 0.0f, 0.0f };
+    Vec3f       dustAccel = { 0.0f, 0.3f, 0.0f };
+    Vec3f       dustPos;
+    s16         yAngle;
+    s32         i;
 
     yAngle = (Rand_ZeroOne() - 0.5f) * 65536.0f;
     dustPos.y = this->actor.floorHeight;
@@ -177,12 +178,12 @@ void EnSt_SpawnDeadEffect(EnSt* this, PlayState* play) {
 
 s32 EnSt_CreateBlureEffect(PlayState* play) {
     EffectBlureInit1 blureInit;
-    u8 p1StartColor[] = { 255, 255, 255, 75 };
-    u8 p2StartColor[] = { 255, 255, 255, 75 };
-    u8 p1EndColor[] = { 255, 255, 255, 0 };
-    u8 p2EndColor[] = { 255, 255, 255, 0 };
-    s32 i;
-    s32 blureIdx;
+    u8               p1StartColor[] = { 255, 255, 255, 75 };
+    u8               p2StartColor[] = { 255, 255, 255, 75 };
+    u8               p1EndColor[] = { 255, 255, 255, 0 };
+    u8               p2EndColor[] = { 255, 255, 255, 0 };
+    s32              i;
+    s32              blureIdx;
 
     for (i = 0; i < 4; i++) {
         blureInit.p1StartColor[i] = p1StartColor[i];
@@ -205,8 +206,8 @@ s32 EnSt_CreateBlureEffect(PlayState* play) {
  */
 s32 EnSt_CheckCeilingPos(EnSt* this, PlayState* play) {
     CollisionPoly* poly;
-    s32 bgId;
-    Vec3f checkPos;
+    s32            bgId;
+    Vec3f          checkPos;
 
     checkPos.x = this->actor.world.pos.x;
     checkPos.y = this->actor.world.pos.y + 1000.0f;
@@ -301,7 +302,7 @@ void EnSt_InitColliders(EnSt* this, PlayState* play) {
 
 void EnSt_CheckBodyStickHit(EnSt* this, PlayState* play) {
     ColliderInfo* body = &this->colCylinder[0].info;
-    Player* player = GET_PLAYER(play);
+    Player*       player = GET_PLAYER(play);
 
     if (player->unk_860 != 0) {
         body->bumper.dmgFlags |= 2;
@@ -338,7 +339,7 @@ s32 EnSt_SetCylinderOC(EnSt* this, PlayState* play) {
         { -40.0f, 0.0f, 0.0f },
     };
     Vec3f cylPos;
-    s32 i;
+    s32   i;
 
     for (i = 0; i < 3; i++) {
         cylPos = this->actor.world.pos;
@@ -377,8 +378,8 @@ void EnSt_UpdateCylinders(EnSt* this, PlayState* play) {
 
 s32 EnSt_CheckHitLink(EnSt* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 hit;
-    s32 i;
+    s32     hit;
+    s32     i;
 
     for (i = 0, hit = 0; i < 3; i++) {
         if (((this->colCylinder[i + 3].base.ocFlags2 & OC2_HIT_PLAYER) != 0) == 0) {
@@ -420,8 +421,8 @@ s32 EnSt_CheckHitFrontside(EnSt* this) {
 
 s32 EnSt_CheckHitBackside(EnSt* this, PlayState* play) {
     ColliderCylinder* cyl = &this->colCylinder[0];
-    s32 flags = 0; // ac hit flags from colliders 0 and 1
-    s32 hit = false;
+    s32               flags = 0; // ac hit flags from colliders 0 and 1
+    s32               hit = false;
 
     if (cyl->base.acFlags & AC_HIT) {
         cyl->base.acFlags &= ~AC_HIT;
@@ -572,11 +573,11 @@ s32 EnSt_DecrStunTimer(EnSt* this) {
  * face the player
  */
 void EnSt_UpdateYaw(EnSt* this, PlayState* play) {
-    u16 yawDir = 0;
+    u16   yawDir = 0;
     Vec3s rot;
-    s16 yawDiff;
-    s16 timer;
-    s16 yawTarget;
+    s16   yawDiff;
+    s16   timer;
+    s16   yawTarget;
 
     // Shake towards the end of the stun.
     if (this->stunTimer != 0) {
@@ -690,7 +691,7 @@ void EnSt_Bob(EnSt* this, PlayState* play) {
 
 s32 EnSt_IsCloseToPlayer(EnSt* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 yDist;
+    f32     yDist;
 
     if (this->takeDamageSpinTimer != 0) {
         // skull is spinning from damage.
@@ -741,8 +742,8 @@ s32 EnSt_IsCloseToGround(EnSt* this) {
 void EnSt_Sway(EnSt* this) {
     Vec3f amtToTranslate;
     Vec3f translatedPos;
-    f32 swayAmt;
-    s16 rotAngle;
+    f32   swayAmt;
+    s16   rotAngle;
 
     if (this->swayTimer != 0) {
 
@@ -1012,7 +1013,7 @@ void EnSt_StartOnCeilingOrGround(EnSt* this, PlayState* play) {
 
 void EnSt_Update(Actor* thisx, PlayState* play) {
     EnSt* this = (EnSt*)thisx;
-    s32 pad;
+    s32         pad;
     Color_RGBA8 color = { 0, 0, 0, 0 };
 
     if (this->actor.flags & ACTOR_FLAG_DRAGGED_BY_ARROW) {

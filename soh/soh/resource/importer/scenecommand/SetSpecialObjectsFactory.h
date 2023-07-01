@@ -5,8 +5,8 @@
 namespace LUS {
 class SetSpecialObjectsFactory : public SceneCommandFactory {
   public:
-    std::shared_ptr<IResource>
-    ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) override;
+    std::shared_ptr<IResource> ReadResource(std::shared_ptr<ResourceInitData> initData,
+                                            std::shared_ptr<BinaryReader>     reader) override;
 };
 
 class SetSpecialObjectsFactoryV0 : public SceneCommandVersionFactory {

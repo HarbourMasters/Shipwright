@@ -2,13 +2,13 @@
 #include "global.h"
 
 s32 osPfsIsPlug(OSMesgQueue* mq, u8* pattern) {
-    s32 ret = 0;
-    OSMesg msg;
-    u8 bitpattern;
+    s32          ret = 0;
+    OSMesg       msg;
+    u8           bitpattern;
     OSContStatus contData[MAXCONTROLLERS];
-    s32 channel;
-    u8 bits = 0;
-    s32 crcErrorCount = 3;
+    s32          channel;
+    u8           bits = 0;
+    s32          crcErrorCount = 3;
 
     __osSiGetAccess();
 
@@ -45,9 +45,9 @@ s32 osPfsIsPlug(OSMesgQueue* mq, u8* pattern) {
 }
 
 void __osPfsRequestData(u8 poll) {
-    u8* bufPtr = (u8*)&gPifMempakBuf;
+    u8*                   bufPtr = (u8*)&gPifMempakBuf;
     __OSContRequestHeader req;
-    s32 i;
+    s32                   i;
 
     __osContLastPoll = poll;
 
@@ -70,10 +70,10 @@ void __osPfsRequestData(u8 poll) {
 }
 
 void __osPfsGetInitData(u8* pattern, OSContStatus* contData) {
-    u8* bufptr;
+    u8*                   bufptr;
     __OSContRequestHeader req;
-    s32 i;
-    u8 bits = 0;
+    s32                   i;
+    u8                    bits = 0;
 
     bufptr = (u8*)&gPifMempakBuf;
 

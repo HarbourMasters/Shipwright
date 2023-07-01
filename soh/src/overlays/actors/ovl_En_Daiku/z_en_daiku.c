@@ -6,7 +6,7 @@
 
 typedef struct {
     Vec3f eyePosDeltaLocal;
-    s32 maxFramesActive;
+    s32   maxFramesActive;
 } EnDaikuEscapeSubCamParam;
 
 // state flags
@@ -38,7 +38,7 @@ void EnDaiku_InitEscape(EnDaiku* this, PlayState* play);
 void EnDaiku_EscapeRotate(EnDaiku* this, PlayState* play);
 void EnDaiku_InitSubCamera(EnDaiku* this, PlayState* play);
 void EnDaiku_EscapeRun(EnDaiku* this, PlayState* play);
-s32 EnDaiku_OverrideLimbDraw(PlayState* play, s32 limb, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx);
+s32  EnDaiku_OverrideLimbDraw(PlayState* play, s32 limb, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx);
 void EnDaiku_PostLimbDraw(PlayState* play, s32 limb, Gfx** dList, Vec3s* rot, void* thisx);
 
 const ActorInit En_Daiku_InitVars = {
@@ -173,8 +173,7 @@ void EnDaiku_Init(Actor* thisx, PlayState* play) {
     this->actor.shape.rot.z = 0;
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 40.0f);
-    SkelAnime_InitFlex(play, &this->skelAnime, &object_daiku_Skel_007958, NULL, this->jointTable, this->morphTable,
-                       17);
+    SkelAnime_InitFlex(play, &this->skelAnime, &object_daiku_Skel_007958, NULL, this->jointTable, this->morphTable, 17);
 
     if (!noKill) {
         Actor_Kill(&this->actor);
@@ -274,7 +273,8 @@ void EnDaiku_UpdateText(EnDaiku* this, PlayState* play) {
                 if (this->stateFlags & ENDAIKU_STATEFLAG_GERUDODEFEATED) {
                     freedCount = 0;
                     for (carpenterType = 0; carpenterType < 4; carpenterType++) {
-                        if (gSaveContext.eventChkInf[EVENTCHKINF_CARPENTERS_FREE_INDEX] & EVENTCHKINF_CARPENTERS_FREE_MASK(carpenterType)) {
+                        if (gSaveContext.eventChkInf[EVENTCHKINF_CARPENTERS_FREE_INDEX] &
+                            EVENTCHKINF_CARPENTERS_FREE_MASK(carpenterType)) {
                             freedCount++;
                         }
                     }
@@ -354,8 +354,8 @@ void EnDaiku_TentIdle(EnDaiku* this, PlayState* play) {
  */
 void EnDaiku_Jailed(EnDaiku* this, PlayState* play) {
     EnGeldB* gerudo;
-    s32 temp_t9;
-    s32 temp_v1;
+    s32      temp_t9;
+    s32      temp_v1;
 
     if (!(this->stateFlags & ENDAIKU_STATEFLAG_GERUDOFIGHTING)) {
         EnDaiku_UpdateText(this, play);
@@ -391,18 +391,19 @@ void EnDaiku_WaitFreedom(EnDaiku* this, PlayState* play) {
  * The carpenter is free, initializes his running away animation
  */
 void EnDaiku_InitEscape(EnDaiku* this, PlayState* play) {
-    Path* path;
-    f32 dxz;
-    f32 dx;
-    f32 dz;
+    Path*  path;
+    f32    dxz;
+    f32    dx;
+    f32    dz;
     Vec3s* pointPos;
-    s32 exitLoop;
+    s32    exitLoop;
 
     Audio_PlayFanfare(NA_BGM_APPEAR);
     EnDaiku_ChangeAnim(this, ENDAIKU_ANIM_RUN, &this->currentAnimIndex);
     this->stateFlags &= ~(ENDAIKU_STATEFLAG_1 | ENDAIKU_STATEFLAG_2);
 
-    gSaveContext.eventChkInf[EVENTCHKINF_CARPENTERS_FREE_INDEX] |= EVENTCHKINF_CARPENTERS_FREE_MASK(this->actor.params & 3);
+    gSaveContext.eventChkInf[EVENTCHKINF_CARPENTERS_FREE_INDEX] |=
+        EVENTCHKINF_CARPENTERS_FREE_MASK(this->actor.params & 3);
 
     this->actor.gravity = -1.0f;
     this->escapeSubCamTimer = sEscapeSubCamParams[this->actor.params & 3].maxFramesActive;
@@ -441,7 +442,7 @@ void EnDaiku_EscapeRotate(EnDaiku* this, PlayState* play) {
 }
 
 void EnDaiku_InitSubCamera(EnDaiku* this, PlayState* play) {
-    s32 pad;
+    s32   pad;
     Vec3f eyePosDeltaLocal;
     Vec3f eyePosDeltaWorld;
 
@@ -487,8 +488,8 @@ void EnDaiku_UpdateSubCamera(EnDaiku* this, PlayState* play) {
 
 void EnDaiku_EscapeSuccess(EnDaiku* this, PlayState* play) {
     static Vec3f D_809E4148 = { 0.0f, 0.0f, 120.0f };
-    Actor* gerudoGuard;
-    Vec3f vec;
+    Actor*       gerudoGuard;
+    Vec3f        vec;
 
     Play_ClearCamera(play, this->subCamId);
     Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
@@ -513,13 +514,13 @@ void EnDaiku_EscapeSuccess(EnDaiku* this, PlayState* play) {
  * The carpenter is running away
  */
 void EnDaiku_EscapeRun(EnDaiku* this, PlayState* play) {
-    s32 pad1;
-    Path* path;
-    s16 ry;
-    f32 dx;
-    f32 dz;
-    s32 pad2;
-    f32 dxz;
+    s32    pad1;
+    Path*  path;
+    s16    ry;
+    f32    dx;
+    f32    dz;
+    s32    pad2;
+    f32    dxz;
     Vec3s* pointPos;
 
     path = &play->setupPathList[this->actor.params >> 4 & 0xF];
@@ -557,7 +558,7 @@ void EnDaiku_EscapeRun(EnDaiku* this, PlayState* play) {
 
 void EnDaiku_Update(Actor* thisx, PlayState* play) {
     EnDaiku* this = (EnDaiku*)thisx;
-    s32 curFrame;
+    s32     curFrame;
     Player* player = GET_PLAYER(play);
 
     if (this->currentAnimIndex == ENDAIKU_ANIM_RUN) {
@@ -626,8 +627,8 @@ s32 EnDaiku_OverrideLimbDraw(PlayState* play, s32 limb, Gfx** dList, Vec3f* pos,
 }
 
 void EnDaiku_PostLimbDraw(PlayState* play, s32 limb, Gfx** dList, Vec3s* rot, void* thisx) {
-    static Gfx* hairDLists[] = { object_daiku_DL_005BD0, object_daiku_DL_005AC0, object_daiku_DL_005990,
-                                 object_daiku_DL_005880 };
+    static Gfx*  hairDLists[] = { object_daiku_DL_005BD0, object_daiku_DL_005AC0, object_daiku_DL_005990,
+                                  object_daiku_DL_005880 };
     static Vec3f targetPosHeadLocal = { 700, 1100, 0 };
     EnDaiku* this = (EnDaiku*)thisx;
 

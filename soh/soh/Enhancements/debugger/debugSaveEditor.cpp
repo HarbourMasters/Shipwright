@@ -25,123 +25,119 @@ extern PlayState* gPlayState;
 }
 
 typedef struct {
-    uint32_t id;
+    uint32_t    id;
     std::string name;
     std::string nameFaded;
     std::string texturePath;
 } ItemMapEntry;
 
-#define ITEM_MAP_ENTRY(id)                              \
-    {                                                   \
-        id, {                                           \
-            id, #id, #id "_Faded", static_cast<char*>(gItemIcons[id]) \
-        }                                               \
+#define ITEM_MAP_ENTRY(id)                                                \
+    {                                                                     \
+        id, { id, #id, #id "_Faded", static_cast<char*>(gItemIcons[id]) } \
     }
 
 // Maps items ids to info for use in ImGui
-std::map<uint32_t, ItemMapEntry> itemMapping = {
-    ITEM_MAP_ENTRY(ITEM_STICK),
-    ITEM_MAP_ENTRY(ITEM_NUT),
-    ITEM_MAP_ENTRY(ITEM_BOMB),
-    ITEM_MAP_ENTRY(ITEM_BOW),
-    ITEM_MAP_ENTRY(ITEM_ARROW_FIRE),
-    ITEM_MAP_ENTRY(ITEM_DINS_FIRE),
-    ITEM_MAP_ENTRY(ITEM_SLINGSHOT),
-    ITEM_MAP_ENTRY(ITEM_OCARINA_FAIRY),
-    ITEM_MAP_ENTRY(ITEM_OCARINA_TIME),
-    ITEM_MAP_ENTRY(ITEM_BOMBCHU),
-    ITEM_MAP_ENTRY(ITEM_HOOKSHOT),
-    ITEM_MAP_ENTRY(ITEM_LONGSHOT),
-    ITEM_MAP_ENTRY(ITEM_ARROW_ICE),
-    ITEM_MAP_ENTRY(ITEM_FARORES_WIND),
-    ITEM_MAP_ENTRY(ITEM_BOOMERANG),
-    ITEM_MAP_ENTRY(ITEM_LENS),
-    ITEM_MAP_ENTRY(ITEM_BEAN),
-    ITEM_MAP_ENTRY(ITEM_HAMMER),
-    ITEM_MAP_ENTRY(ITEM_ARROW_LIGHT),
-    ITEM_MAP_ENTRY(ITEM_NAYRUS_LOVE),
-    ITEM_MAP_ENTRY(ITEM_BOTTLE),
-    ITEM_MAP_ENTRY(ITEM_POTION_RED),
-    ITEM_MAP_ENTRY(ITEM_POTION_GREEN),
-    ITEM_MAP_ENTRY(ITEM_POTION_BLUE),
-    ITEM_MAP_ENTRY(ITEM_FAIRY),
-    ITEM_MAP_ENTRY(ITEM_FISH),
-    ITEM_MAP_ENTRY(ITEM_MILK_BOTTLE),
-    ITEM_MAP_ENTRY(ITEM_LETTER_RUTO),
-    ITEM_MAP_ENTRY(ITEM_BLUE_FIRE),
-    ITEM_MAP_ENTRY(ITEM_BUG),
-    ITEM_MAP_ENTRY(ITEM_BIG_POE),
-    ITEM_MAP_ENTRY(ITEM_MILK_HALF),
-    ITEM_MAP_ENTRY(ITEM_POE),
-    ITEM_MAP_ENTRY(ITEM_WEIRD_EGG),
-    ITEM_MAP_ENTRY(ITEM_CHICKEN),
-    ITEM_MAP_ENTRY(ITEM_LETTER_ZELDA),
-    ITEM_MAP_ENTRY(ITEM_MASK_KEATON),
-    ITEM_MAP_ENTRY(ITEM_MASK_SKULL),
-    ITEM_MAP_ENTRY(ITEM_MASK_SPOOKY),
-    ITEM_MAP_ENTRY(ITEM_MASK_BUNNY),
-    ITEM_MAP_ENTRY(ITEM_MASK_GORON),
-    ITEM_MAP_ENTRY(ITEM_MASK_ZORA),
-    ITEM_MAP_ENTRY(ITEM_MASK_GERUDO),
-    ITEM_MAP_ENTRY(ITEM_MASK_TRUTH),
-    ITEM_MAP_ENTRY(ITEM_SOLD_OUT),
-    ITEM_MAP_ENTRY(ITEM_POCKET_EGG),
-    ITEM_MAP_ENTRY(ITEM_POCKET_CUCCO),
-    ITEM_MAP_ENTRY(ITEM_COJIRO),
-    ITEM_MAP_ENTRY(ITEM_ODD_MUSHROOM),
-    ITEM_MAP_ENTRY(ITEM_ODD_POTION),
-    ITEM_MAP_ENTRY(ITEM_SAW),
-    ITEM_MAP_ENTRY(ITEM_SWORD_BROKEN),
-    ITEM_MAP_ENTRY(ITEM_PRESCRIPTION),
-    ITEM_MAP_ENTRY(ITEM_FROG),
-    ITEM_MAP_ENTRY(ITEM_EYEDROPS),
-    ITEM_MAP_ENTRY(ITEM_CLAIM_CHECK),
-    ITEM_MAP_ENTRY(ITEM_BOW_ARROW_FIRE),
-    ITEM_MAP_ENTRY(ITEM_BOW_ARROW_ICE),
-    ITEM_MAP_ENTRY(ITEM_BOW_ARROW_LIGHT),
-    ITEM_MAP_ENTRY(ITEM_SWORD_KOKIRI),
-    ITEM_MAP_ENTRY(ITEM_SWORD_MASTER),
-    ITEM_MAP_ENTRY(ITEM_SWORD_BGS),
-    ITEM_MAP_ENTRY(ITEM_SHIELD_DEKU),
-    ITEM_MAP_ENTRY(ITEM_SHIELD_HYLIAN),
-    ITEM_MAP_ENTRY(ITEM_SHIELD_MIRROR),
-    ITEM_MAP_ENTRY(ITEM_TUNIC_KOKIRI),
-    ITEM_MAP_ENTRY(ITEM_TUNIC_GORON),
-    ITEM_MAP_ENTRY(ITEM_TUNIC_ZORA),
-    ITEM_MAP_ENTRY(ITEM_BOOTS_KOKIRI),
-    ITEM_MAP_ENTRY(ITEM_BOOTS_IRON),
-    ITEM_MAP_ENTRY(ITEM_BOOTS_HOVER),
-    ITEM_MAP_ENTRY(ITEM_BULLET_BAG_30),
-    ITEM_MAP_ENTRY(ITEM_BULLET_BAG_40),
-    ITEM_MAP_ENTRY(ITEM_BULLET_BAG_50),
-    ITEM_MAP_ENTRY(ITEM_QUIVER_30),
-    ITEM_MAP_ENTRY(ITEM_QUIVER_40),
-    ITEM_MAP_ENTRY(ITEM_QUIVER_50),
-    ITEM_MAP_ENTRY(ITEM_BOMB_BAG_20),
-    ITEM_MAP_ENTRY(ITEM_BOMB_BAG_30),
-    ITEM_MAP_ENTRY(ITEM_BOMB_BAG_40),
-    ITEM_MAP_ENTRY(ITEM_BRACELET),
-    ITEM_MAP_ENTRY(ITEM_GAUNTLETS_SILVER),
-    ITEM_MAP_ENTRY(ITEM_GAUNTLETS_GOLD),
-    ITEM_MAP_ENTRY(ITEM_SCALE_SILVER),
-    ITEM_MAP_ENTRY(ITEM_SCALE_GOLDEN),
-    ITEM_MAP_ENTRY(ITEM_SWORD_KNIFE),
-    ITEM_MAP_ENTRY(ITEM_WALLET_ADULT),
-    ITEM_MAP_ENTRY(ITEM_WALLET_GIANT),
-    ITEM_MAP_ENTRY(ITEM_SEEDS),
-    ITEM_MAP_ENTRY(ITEM_FISHING_POLE),
-    ITEM_MAP_ENTRY(ITEM_KEY_BOSS),
-    ITEM_MAP_ENTRY(ITEM_COMPASS),
-    ITEM_MAP_ENTRY(ITEM_DUNGEON_MAP),
-    ITEM_MAP_ENTRY(ITEM_KEY_SMALL),
-    ITEM_MAP_ENTRY(ITEM_HEART_CONTAINER),
-    ITEM_MAP_ENTRY(ITEM_HEART_PIECE),
-    ITEM_MAP_ENTRY(ITEM_MAGIC_SMALL),
-    ITEM_MAP_ENTRY(ITEM_MAGIC_LARGE)
-};
+std::map<uint32_t, ItemMapEntry> itemMapping = { ITEM_MAP_ENTRY(ITEM_STICK),
+                                                 ITEM_MAP_ENTRY(ITEM_NUT),
+                                                 ITEM_MAP_ENTRY(ITEM_BOMB),
+                                                 ITEM_MAP_ENTRY(ITEM_BOW),
+                                                 ITEM_MAP_ENTRY(ITEM_ARROW_FIRE),
+                                                 ITEM_MAP_ENTRY(ITEM_DINS_FIRE),
+                                                 ITEM_MAP_ENTRY(ITEM_SLINGSHOT),
+                                                 ITEM_MAP_ENTRY(ITEM_OCARINA_FAIRY),
+                                                 ITEM_MAP_ENTRY(ITEM_OCARINA_TIME),
+                                                 ITEM_MAP_ENTRY(ITEM_BOMBCHU),
+                                                 ITEM_MAP_ENTRY(ITEM_HOOKSHOT),
+                                                 ITEM_MAP_ENTRY(ITEM_LONGSHOT),
+                                                 ITEM_MAP_ENTRY(ITEM_ARROW_ICE),
+                                                 ITEM_MAP_ENTRY(ITEM_FARORES_WIND),
+                                                 ITEM_MAP_ENTRY(ITEM_BOOMERANG),
+                                                 ITEM_MAP_ENTRY(ITEM_LENS),
+                                                 ITEM_MAP_ENTRY(ITEM_BEAN),
+                                                 ITEM_MAP_ENTRY(ITEM_HAMMER),
+                                                 ITEM_MAP_ENTRY(ITEM_ARROW_LIGHT),
+                                                 ITEM_MAP_ENTRY(ITEM_NAYRUS_LOVE),
+                                                 ITEM_MAP_ENTRY(ITEM_BOTTLE),
+                                                 ITEM_MAP_ENTRY(ITEM_POTION_RED),
+                                                 ITEM_MAP_ENTRY(ITEM_POTION_GREEN),
+                                                 ITEM_MAP_ENTRY(ITEM_POTION_BLUE),
+                                                 ITEM_MAP_ENTRY(ITEM_FAIRY),
+                                                 ITEM_MAP_ENTRY(ITEM_FISH),
+                                                 ITEM_MAP_ENTRY(ITEM_MILK_BOTTLE),
+                                                 ITEM_MAP_ENTRY(ITEM_LETTER_RUTO),
+                                                 ITEM_MAP_ENTRY(ITEM_BLUE_FIRE),
+                                                 ITEM_MAP_ENTRY(ITEM_BUG),
+                                                 ITEM_MAP_ENTRY(ITEM_BIG_POE),
+                                                 ITEM_MAP_ENTRY(ITEM_MILK_HALF),
+                                                 ITEM_MAP_ENTRY(ITEM_POE),
+                                                 ITEM_MAP_ENTRY(ITEM_WEIRD_EGG),
+                                                 ITEM_MAP_ENTRY(ITEM_CHICKEN),
+                                                 ITEM_MAP_ENTRY(ITEM_LETTER_ZELDA),
+                                                 ITEM_MAP_ENTRY(ITEM_MASK_KEATON),
+                                                 ITEM_MAP_ENTRY(ITEM_MASK_SKULL),
+                                                 ITEM_MAP_ENTRY(ITEM_MASK_SPOOKY),
+                                                 ITEM_MAP_ENTRY(ITEM_MASK_BUNNY),
+                                                 ITEM_MAP_ENTRY(ITEM_MASK_GORON),
+                                                 ITEM_MAP_ENTRY(ITEM_MASK_ZORA),
+                                                 ITEM_MAP_ENTRY(ITEM_MASK_GERUDO),
+                                                 ITEM_MAP_ENTRY(ITEM_MASK_TRUTH),
+                                                 ITEM_MAP_ENTRY(ITEM_SOLD_OUT),
+                                                 ITEM_MAP_ENTRY(ITEM_POCKET_EGG),
+                                                 ITEM_MAP_ENTRY(ITEM_POCKET_CUCCO),
+                                                 ITEM_MAP_ENTRY(ITEM_COJIRO),
+                                                 ITEM_MAP_ENTRY(ITEM_ODD_MUSHROOM),
+                                                 ITEM_MAP_ENTRY(ITEM_ODD_POTION),
+                                                 ITEM_MAP_ENTRY(ITEM_SAW),
+                                                 ITEM_MAP_ENTRY(ITEM_SWORD_BROKEN),
+                                                 ITEM_MAP_ENTRY(ITEM_PRESCRIPTION),
+                                                 ITEM_MAP_ENTRY(ITEM_FROG),
+                                                 ITEM_MAP_ENTRY(ITEM_EYEDROPS),
+                                                 ITEM_MAP_ENTRY(ITEM_CLAIM_CHECK),
+                                                 ITEM_MAP_ENTRY(ITEM_BOW_ARROW_FIRE),
+                                                 ITEM_MAP_ENTRY(ITEM_BOW_ARROW_ICE),
+                                                 ITEM_MAP_ENTRY(ITEM_BOW_ARROW_LIGHT),
+                                                 ITEM_MAP_ENTRY(ITEM_SWORD_KOKIRI),
+                                                 ITEM_MAP_ENTRY(ITEM_SWORD_MASTER),
+                                                 ITEM_MAP_ENTRY(ITEM_SWORD_BGS),
+                                                 ITEM_MAP_ENTRY(ITEM_SHIELD_DEKU),
+                                                 ITEM_MAP_ENTRY(ITEM_SHIELD_HYLIAN),
+                                                 ITEM_MAP_ENTRY(ITEM_SHIELD_MIRROR),
+                                                 ITEM_MAP_ENTRY(ITEM_TUNIC_KOKIRI),
+                                                 ITEM_MAP_ENTRY(ITEM_TUNIC_GORON),
+                                                 ITEM_MAP_ENTRY(ITEM_TUNIC_ZORA),
+                                                 ITEM_MAP_ENTRY(ITEM_BOOTS_KOKIRI),
+                                                 ITEM_MAP_ENTRY(ITEM_BOOTS_IRON),
+                                                 ITEM_MAP_ENTRY(ITEM_BOOTS_HOVER),
+                                                 ITEM_MAP_ENTRY(ITEM_BULLET_BAG_30),
+                                                 ITEM_MAP_ENTRY(ITEM_BULLET_BAG_40),
+                                                 ITEM_MAP_ENTRY(ITEM_BULLET_BAG_50),
+                                                 ITEM_MAP_ENTRY(ITEM_QUIVER_30),
+                                                 ITEM_MAP_ENTRY(ITEM_QUIVER_40),
+                                                 ITEM_MAP_ENTRY(ITEM_QUIVER_50),
+                                                 ITEM_MAP_ENTRY(ITEM_BOMB_BAG_20),
+                                                 ITEM_MAP_ENTRY(ITEM_BOMB_BAG_30),
+                                                 ITEM_MAP_ENTRY(ITEM_BOMB_BAG_40),
+                                                 ITEM_MAP_ENTRY(ITEM_BRACELET),
+                                                 ITEM_MAP_ENTRY(ITEM_GAUNTLETS_SILVER),
+                                                 ITEM_MAP_ENTRY(ITEM_GAUNTLETS_GOLD),
+                                                 ITEM_MAP_ENTRY(ITEM_SCALE_SILVER),
+                                                 ITEM_MAP_ENTRY(ITEM_SCALE_GOLDEN),
+                                                 ITEM_MAP_ENTRY(ITEM_SWORD_KNIFE),
+                                                 ITEM_MAP_ENTRY(ITEM_WALLET_ADULT),
+                                                 ITEM_MAP_ENTRY(ITEM_WALLET_GIANT),
+                                                 ITEM_MAP_ENTRY(ITEM_SEEDS),
+                                                 ITEM_MAP_ENTRY(ITEM_FISHING_POLE),
+                                                 ITEM_MAP_ENTRY(ITEM_KEY_BOSS),
+                                                 ITEM_MAP_ENTRY(ITEM_COMPASS),
+                                                 ITEM_MAP_ENTRY(ITEM_DUNGEON_MAP),
+                                                 ITEM_MAP_ENTRY(ITEM_KEY_SMALL),
+                                                 ITEM_MAP_ENTRY(ITEM_HEART_CONTAINER),
+                                                 ITEM_MAP_ENTRY(ITEM_HEART_PIECE),
+                                                 ITEM_MAP_ENTRY(ITEM_MAGIC_SMALL),
+                                                 ITEM_MAP_ENTRY(ITEM_MAGIC_LARGE) };
 
 std::map<uint32_t, ItemMapEntry> gregMapping = {
-    {ITEM_RUPEE_GREEN, {ITEM_RUPEE_GREEN, "ITEM_RUPEE_GREEN", "ITEM_RUPEE_GREEN_Faded", gRupeeCounterIconTex}}
+    { ITEM_RUPEE_GREEN, { ITEM_RUPEE_GREEN, "ITEM_RUPEE_GREEN", "ITEM_RUPEE_GREEN_Faded", gRupeeCounterIconTex } }
 };
 
 // Maps entries in the GS flag array to the area name it represents
@@ -182,17 +178,15 @@ u8 gAllAmmoItems[] = {
 };
 
 typedef struct {
-    uint32_t id;
+    uint32_t    id;
     std::string name;
     std::string nameFaded;
     std::string texturePath;
 } QuestMapEntry;
 
-#define QUEST_MAP_ENTRY(id, tex)                              \
-    {                                                   \
-        id, {                                           \
-            id, #id, #id "_Faded", tex \
-        }                                               \
+#define QUEST_MAP_ENTRY(id, tex)           \
+    {                                      \
+        id, { id, #id, #id "_Faded", tex } \
     }
 
 // Maps quest items ids to info for use in ImGui
@@ -212,57 +206,52 @@ std::map<uint32_t, QuestMapEntry> questMapping = {
 };
 
 typedef struct {
-    uint32_t id;
+    uint32_t    id;
     std::string name;
     std::string nameFaded;
-    ImVec4 color;
+    ImVec4      color;
 } SongMapEntry;
 
-#define SONG_MAP_ENTRY(id, r, g, b)       \
-    {                                  \
-            id, #id, #id "_Faded", ImVec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f) \
-    }
+#define SONG_MAP_ENTRY(id, r, g, b) \
+    { id, #id, #id "_Faded", ImVec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f) }
 
 // Maps song ids to info for use in ImGui
 std::array<SongMapEntry, 12> songMapping = { {
-    SONG_MAP_ENTRY(QUEST_SONG_LULLABY,  224, 107, 255),
-    SONG_MAP_ENTRY(QUEST_SONG_EPONA,    255, 195, 60),
-    SONG_MAP_ENTRY(QUEST_SONG_SARIA,    127, 255, 137),
-    SONG_MAP_ENTRY(QUEST_SONG_SUN,      255, 255, 60),
-    SONG_MAP_ENTRY(QUEST_SONG_TIME,     119, 236, 255),
-    SONG_MAP_ENTRY(QUEST_SONG_STORMS,   165, 165, 165),
-    SONG_MAP_ENTRY(QUEST_SONG_MINUET,   150, 255, 100),
-    SONG_MAP_ENTRY(QUEST_SONG_BOLERO,   255, 80,  40),
+    SONG_MAP_ENTRY(QUEST_SONG_LULLABY, 224, 107, 255),
+    SONG_MAP_ENTRY(QUEST_SONG_EPONA, 255, 195, 60),
+    SONG_MAP_ENTRY(QUEST_SONG_SARIA, 127, 255, 137),
+    SONG_MAP_ENTRY(QUEST_SONG_SUN, 255, 255, 60),
+    SONG_MAP_ENTRY(QUEST_SONG_TIME, 119, 236, 255),
+    SONG_MAP_ENTRY(QUEST_SONG_STORMS, 165, 165, 165),
+    SONG_MAP_ENTRY(QUEST_SONG_MINUET, 150, 255, 100),
+    SONG_MAP_ENTRY(QUEST_SONG_BOLERO, 255, 80, 40),
     SONG_MAP_ENTRY(QUEST_SONG_SERENADE, 100, 150, 255),
-    SONG_MAP_ENTRY(QUEST_SONG_REQUIEM,  255, 160, 0),
+    SONG_MAP_ENTRY(QUEST_SONG_REQUIEM, 255, 160, 0),
     SONG_MAP_ENTRY(QUEST_SONG_NOCTURNE, 255, 100, 255),
-    SONG_MAP_ENTRY(QUEST_SONG_PRELUDE,  255, 240, 100),
+    SONG_MAP_ENTRY(QUEST_SONG_PRELUDE, 255, 240, 100),
 } };
 
-#define VANILLA_SONG_MAP_ENTRY(id, r, g, b)       \
-    {                                  \
-            id, #id "_Vanilla", #id "_Vanilla_Faded", ImVec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f) \
-    }
+#define VANILLA_SONG_MAP_ENTRY(id, r, g, b) \
+    { id, #id "_Vanilla", #id "_Vanilla_Faded", ImVec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f) }
 
 // Maps song ids to info for use in ImGui
 std::array<SongMapEntry, 12> vanillaSongMapping = { {
-    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_LULLABY,  255, 255, 255),
-    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_EPONA,    255, 255, 255),
-    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_SARIA,    255, 255, 255),
-    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_SUN,      255, 255, 255),
-    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_TIME,     255, 255, 255),
-    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_STORMS,   255, 255, 255),
-    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_MINUET,   150, 255, 100),
-    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_BOLERO,   255, 80,  40),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_LULLABY, 255, 255, 255),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_EPONA, 255, 255, 255),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_SARIA, 255, 255, 255),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_SUN, 255, 255, 255),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_TIME, 255, 255, 255),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_STORMS, 255, 255, 255),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_MINUET, 150, 255, 100),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_BOLERO, 255, 80, 40),
     VANILLA_SONG_MAP_ENTRY(QUEST_SONG_SERENADE, 100, 150, 255),
-    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_REQUIEM,  255, 160, 0),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_REQUIEM, 255, 160, 0),
     VANILLA_SONG_MAP_ENTRY(QUEST_SONG_NOCTURNE, 255, 100, 255),
-    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_PRELUDE,  255, 240, 100),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_PRELUDE, 255, 240, 100),
 } };
 
 // Encapsulates what is drawn by the passed-in function within a border
-template<typename T>
-void DrawGroupWithBorder(T&& drawFunc) {
+template <typename T> void DrawGroupWithBorder(T&& drawFunc) {
     // First group encapsulates the inner portion and border
     ImGui::BeginGroup();
 
@@ -281,20 +270,21 @@ void DrawGroupWithBorder(T&& drawFunc) {
     ImVec2 p1 = ImGui::GetItemRectMax();
     p1.x += padding.x;
     ImVec4 borderCol = ImGui::GetStyle().Colors[ImGuiCol_Border];
-    ImGui::GetWindowDrawList()->AddRect(p0, p1, IM_COL32(borderCol.x * 255, borderCol.y * 255, borderCol.z * 255, borderCol.w * 255));
+    ImGui::GetWindowDrawList()->AddRect(
+        p0, p1, IM_COL32(borderCol.x * 255, borderCol.y * 255, borderCol.z * 255, borderCol.w * 255));
 
     ImGui::EndGroup();
 }
 
 char z2ASCII(int code) {
     int ret;
-    if (code < 10) { //Digits
+    if (code < 10) { // Digits
         ret = code + 0x30;
-    } else if (code >= 10 && code < 36) { //Uppercase letters
+    } else if (code >= 10 && code < 36) { // Uppercase letters
         ret = code + 0x37;
-    } else if (code >= 36 && code < 62) { //Lowercase letters
+    } else if (code >= 36 && code < 62) { // Lowercase letters
         ret = code + 0x3D;
-    } else if (code == 62) { //Space
+    } else if (code == 62) { // Space
         ret = code - 0x1E;
     } else if (code == 63 || code == 64) { // _ and .
         ret = code - 0x12;
@@ -302,13 +292,12 @@ char z2ASCII(int code) {
         ret = code;
     }
     return char(ret);
-
 }
 
 void DrawInfoTab() {
     // TODO Needs a better method for name changing but for now this will work.
     std::string name;
-    ImU16 one = 1;
+    ImU16       one = 1;
     for (int i = 0; i < 8; i++) {
         char letter = z2ASCII(gSaveContext.playerName[i]);
         name += letter;
@@ -456,9 +445,9 @@ void DrawInfoTab() {
 
     ImGui::InputScalar("Timer 2 Value", ImGuiDataType_S16, &gSaveContext.timer2Value, &one, NULL);
     UIWidgets::InsertHelpHoverText("Time, in seconds");
-     
+
     const char* audioName;
-    switch (gSaveContext.audioSetting) { 
+    switch (gSaveContext.audioSetting) {
         case 0:
             audioName = "Stereo";
             break;
@@ -491,13 +480,13 @@ void DrawInfoTab() {
         ImGui::EndCombo();
     }
     UIWidgets::InsertHelpHoverText("Sound setting");
-    
+
     bool n64DDFlag = gSaveContext.n64ddFlag != 0;
     if (ImGui::Checkbox("64 DD file?", &n64DDFlag)) {
         gSaveContext.n64ddFlag = n64DDFlag;
     }
     UIWidgets::InsertHelpHoverText("WARNING! If you save, your file may be locked! Use caution!");
-    
+
     if (ImGui::BeginCombo("Z Target Mode", gSaveContext.zTargetSetting ? "Hold" : "Switch")) {
         if (ImGui::Selectable("Switch")) {
             gSaveContext.zTargetSetting = 0;
@@ -509,105 +498,104 @@ void DrawInfoTab() {
     }
     UIWidgets::InsertHelpHoverText("Z-Targeting behavior");
 
-
     ImGui::PushItemWidth(ImGui::GetFontSize() * 10);
-    static std::array<const char*, 7> minigameHS = { "Horseback Archery", 
-        "Big Poe Points",                                            
-        "Fishing",
-        "Malon's Obstacle Course",                                    
-        "Running Man Race",
-        "?",
-        "Dampe's Race" };
-    
+    static std::array<const char*, 7> minigameHS = { "Horseback Archery", "Big Poe Points",
+                                                     "Fishing",           "Malon's Obstacle Course",
+                                                     "Running Man Race",  "?",
+                                                     "Dampe's Race" };
+
     if (ImGui::TreeNode("Minigames")) {
         for (int i = 0; i < 7; i++) {
-            if(i == 2 && ImGui::TreeNode("Fishing") ){ //fishing has a few more flags to it
+            if (i == 2 && ImGui::TreeNode("Fishing")) { // fishing has a few more flags to it
                 u8 fishSize = gSaveContext.highScores[i] & 0x7F;
-                if(ImGui::InputScalar("Child Size Record",ImGuiDataType_U8,&fishSize)){
-                    gSaveContext.highScores[i]&=~0x7F;
-                    gSaveContext.highScores[i]|=fishSize & 0x7F;
+                if (ImGui::InputScalar("Child Size Record", ImGuiDataType_U8, &fishSize)) {
+                    gSaveContext.highScores[i] &= ~0x7F;
+                    gSaveContext.highScores[i] |= fishSize & 0x7F;
                 }
                 char fishMsg[64];
-                std::sprintf(fishMsg,"Weight: %2.0f lbs",((SQ(fishSize)*.0036)+.5));
+                std::sprintf(fishMsg, "Weight: %2.0f lbs", ((SQ(fishSize) * .0036) + .5));
                 UIWidgets::InsertHelpHoverText(fishMsg);
-                bool FishBool = gSaveContext.highScores[i]&0x80;
+                bool FishBool = gSaveContext.highScores[i] & 0x80;
                 if (ImGui::Checkbox("Cheated as Child", &FishBool)) {
-                        gSaveContext.highScores[i] &= ~0x80;
-                        gSaveContext.highScores[i] |= (0x80 * FishBool);
+                    gSaveContext.highScores[i] &= ~0x80;
+                    gSaveContext.highScores[i] |= (0x80 * FishBool);
                 }
                 UIWidgets::InsertHelpHoverText("Used the Sinking lure to catch it.");
-                fishSize=(gSaveContext.highScores[i] & 0x7F000000)>>0x18;
-                if(ImGui::InputScalar("Adult Size Record",ImGuiDataType_U8,&fishSize)){
-                    gSaveContext.highScores[i]&=~0x7F000000;
-                    gSaveContext.highScores[i]|=(fishSize & 0x7F) << 0x18;
+                fishSize = (gSaveContext.highScores[i] & 0x7F000000) >> 0x18;
+                if (ImGui::InputScalar("Adult Size Record", ImGuiDataType_U8, &fishSize)) {
+                    gSaveContext.highScores[i] &= ~0x7F000000;
+                    gSaveContext.highScores[i] |= (fishSize & 0x7F) << 0x18;
                 }
-                std::sprintf(fishMsg,"Weight: %2.0f lbs",((SQ(fishSize)*.0036)+.5));
+                std::sprintf(fishMsg, "Weight: %2.0f lbs", ((SQ(fishSize) * .0036) + .5));
                 UIWidgets::InsertHelpHoverText(fishMsg);
                 FishBool = gSaveContext.highScores[i] & 0x80000000;
                 if (ImGui::Checkbox("Cheated as Adult", &FishBool)) {
-                        gSaveContext.highScores[i] &= ~0x80000000;
-                        gSaveContext.highScores[i] |= (0x80000000 * FishBool);
+                    gSaveContext.highScores[i] &= ~0x80000000;
+                    gSaveContext.highScores[i] |= (0x80000000 * FishBool);
                 }
                 UIWidgets::InsertHelpHoverText("Used the Sinking lure to catch it.");
-                FishBool = gSaveContext.highScores[i]&0x100;
+                FishBool = gSaveContext.highScores[i] & 0x100;
                 if (ImGui::Checkbox("Played as Child", &FishBool)) {
-                        gSaveContext.highScores[i] &= ~0x100;
-                        gSaveContext.highScores[i] |= (0x100 * FishBool);
+                    gSaveContext.highScores[i] &= ~0x100;
+                    gSaveContext.highScores[i] |= (0x100 * FishBool);
                 }
                 UIWidgets::InsertHelpHoverText("Played at least one game as a child");
-                FishBool = gSaveContext.highScores[i]&0x200;
+                FishBool = gSaveContext.highScores[i] & 0x200;
                 if (ImGui::Checkbox("Played as Adult", &FishBool)) {
-                        gSaveContext.highScores[i] &= ~0x200;
-                        gSaveContext.highScores[i] |= (0x200 * FishBool);
+                    gSaveContext.highScores[i] &= ~0x200;
+                    gSaveContext.highScores[i] |= (0x200 * FishBool);
                 }
                 UIWidgets::InsertHelpHoverText("Played at least one game as an adult");
-                FishBool = gSaveContext.highScores[i]&0x400;
+                FishBool = gSaveContext.highScores[i] & 0x400;
                 if (ImGui::Checkbox("Got Prize as Child", &FishBool)) {
-                        gSaveContext.highScores[i] &= ~0x400;
-                        gSaveContext.highScores[i] |= (0x400 * FishBool);
+                    gSaveContext.highScores[i] &= ~0x400;
+                    gSaveContext.highScores[i] |= (0x400 * FishBool);
                 }
-                UIWidgets::InsertHelpHoverText("Got the prize item (Heart Piece, unless rando.)\nunlocks Sinking Lure for Child Link.");
-                FishBool = gSaveContext.highScores[i]&0x800;
+                UIWidgets::InsertHelpHoverText(
+                    "Got the prize item (Heart Piece, unless rando.)\nunlocks Sinking Lure for Child Link.");
+                FishBool = gSaveContext.highScores[i] & 0x800;
                 if (ImGui::Checkbox("Got Prize as Adult", &FishBool)) {
-                        gSaveContext.highScores[i] &= ~0x800;
-                        gSaveContext.highScores[i] |= (0x800 * FishBool);
+                    gSaveContext.highScores[i] &= ~0x800;
+                    gSaveContext.highScores[i] |= (0x800 * FishBool);
                 }
-                UIWidgets::InsertHelpHoverText("Got the prize item (Golden Scale, unless rando.)\nUnlocks Sinking Lure for Adult Link.");
+                UIWidgets::InsertHelpHoverText(
+                    "Got the prize item (Golden Scale, unless rando.)\nUnlocks Sinking Lure for Adult Link.");
                 FishBool = gSaveContext.highScores[i] & 0x1000;
                 if (ImGui::Checkbox("Stole Owner's Hat", &FishBool)) {
-                        gSaveContext.highScores[i] &= ~0x1000;
-                        gSaveContext.highScores[i] |= (0x1000 * FishBool);
+                    gSaveContext.highScores[i] &= ~0x1000;
+                    gSaveContext.highScores[i] |= (0x1000 * FishBool);
                 }
                 UIWidgets::InsertHelpHoverText("The owner's now visibly bald when Adult Link.");
-                fishSize=(gSaveContext.highScores[i] & 0xFF0000)>>16;
-                if(ImGui::InputScalar("Times Played",ImGuiDataType_U8,&fishSize)){
-                    gSaveContext.highScores[i]&=~0xFF0000;
-                    gSaveContext.highScores[i]|=(fishSize) << 16;
+                fishSize = (gSaveContext.highScores[i] & 0xFF0000) >> 16;
+                if (ImGui::InputScalar("Times Played", ImGuiDataType_U8, &fishSize)) {
+                    gSaveContext.highScores[i] &= ~0xFF0000;
+                    gSaveContext.highScores[i] |= (fishSize) << 16;
                 }
                 UIWidgets::InsertHelpHoverText("Determines weather and school size during dawn/dusk.");
-                
+
                 ImGui::TreePop();
                 continue;
             }
-            
-            if (i == 5) { //HS_UNK_05 is unused
+
+            if (i == 5) { // HS_UNK_05 is unused
                 continue;
             }
             std::string minigameLbl = minigameHS[i];
             ImGui::InputScalar(minigameLbl.c_str(), ImGuiDataType_S32, &gSaveContext.highScores[i], &one, NULL);
         }
-        
+
         ImGui::TreePop();
     }
-    
+
     ImGui::PopItemWidth();
 }
 
 void DrawBGSItemFlag(uint8_t itemID) {
     const ItemMapEntry& slotEntry = itemMapping[itemID];
-    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name),
+                 ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
     ImGui::SameLine();
-    int tradeIndex = itemID - ITEM_POCKET_EGG;
+    int  tradeIndex = itemID - ITEM_POCKET_EGG;
     bool hasItem = (gSaveContext.adultTradeItems & (1 << tradeIndex)) != 0;
     bool shouldHaveItem = hasItem;
     ImGui::Checkbox(("##adultTradeFlag" + std::to_string(itemID)).c_str(), &shouldHaveItem);
@@ -632,8 +620,8 @@ void DrawInventoryTab() {
 
     for (int32_t y = 0; y < 4; y++) {
         for (int32_t x = 0; x < 6; x++) {
-            int32_t index = x + y * 6;
-            static int32_t selectedIndex = -1;
+            int32_t            index = x + y * 6;
+            static int32_t     selectedIndex = -1;
             static const char* itemPopupPicker = "itemPopupPicker";
 
             ImGui::PushID(index);
@@ -647,8 +635,9 @@ void DrawInventoryTab() {
             uint8_t item = gSaveContext.inventory.items[index];
             if (item != ITEM_NONE) {
                 const ItemMapEntry& slotEntry = itemMapping.find(item)->second;
-                if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0),
-                                       ImVec2(1, 1), 0)) {
+                if (ImGui::ImageButton(
+                        LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name),
+                        ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 0)) {
                     selectedIndex = index;
                     ImGui::OpenPopup(itemPopupPicker);
                 }
@@ -695,14 +684,15 @@ void DrawInventoryTab() {
                         ImGui::SameLine();
                     }
                     const ItemMapEntry& slotEntry = possibleItems[pickerIndex];
-                    if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f),
-                                           ImVec2(0, 0), ImVec2(1, 1), 0)) {
+                    if (ImGui::ImageButton(
+                            LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name),
+                            ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 0)) {
                         gSaveContext.inventory.items[selectedIndex] = slotEntry.id;
-                        // Set adult trade item flag if you're playing adult trade shuffle in rando  
+                        // Set adult trade item flag if you're playing adult trade shuffle in rando
                         if (gSaveContext.n64ddFlag &&
                             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
-                            selectedIndex == SLOT_TRADE_ADULT &&
-                            slotEntry.id >= ITEM_POCKET_EGG && slotEntry.id <= ITEM_CLAIM_CHECK) {
+                            selectedIndex == SLOT_TRADE_ADULT && slotEntry.id >= ITEM_POCKET_EGG &&
+                            slotEntry.id <= ITEM_CLAIM_CHECK) {
                             gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(slotEntry.id);
                         }
                         ImGui::CloseCurrentPopup();
@@ -733,7 +723,8 @@ void DrawInventoryTab() {
             ImGui::PushItemWidth(32.0f);
             ImGui::BeginGroup();
 
-            ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemMapping[item].name), ImVec2(32.0f, 32.0f));
+            ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemMapping[item].name),
+                         ImVec2(32.0f, 32.0f));
             ImGui::InputScalar("##ammoInput", ImGuiDataType_S8, &AMMO(item));
 
             ImGui::EndGroup();
@@ -741,11 +732,11 @@ void DrawInventoryTab() {
             ImGui::PopID();
         }
     }
-    
+
     // Trade quest flags are only used when shuffling the trade sequence, so
     // don't show this if it isn't needed.
-    if (gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE)
-        && ImGui::TreeNode("Adult trade quest items")) {
+    if (gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
+        ImGui::TreeNode("Adult trade quest items")) {
         for (int i = ITEM_POCKET_EGG; i <= ITEM_CLAIM_CHECK; i++) {
             DrawBGSItemFlag(i);
         }
@@ -759,9 +750,10 @@ void DrawFlagTableArray16(const FlagTable& flagTable, uint16_t row, uint16_t& fl
     for (int32_t flagIndex = 15; flagIndex >= 0; flagIndex--) {
         ImGui::SameLine();
         ImGui::PushID(flagIndex);
-        bool hasDescription = !!flagTable.flagDescriptions.contains(row * 16 + flagIndex);
+        bool     hasDescription = !!flagTable.flagDescriptions.contains(row * 16 + flagIndex);
         uint32_t bitMask = 1 << flagIndex;
-        ImGui::PushStyleColor(ImGuiCol_FrameBg, hasDescription ? ImVec4(0.16f, 0.29f, 0.48f, 0.54f) : ImVec4(0.16f, 0.29f, 0.48f, 0.24f));
+        ImGui::PushStyleColor(ImGuiCol_FrameBg,
+                              hasDescription ? ImVec4(0.16f, 0.29f, 0.48f, 0.54f) : ImVec4(0.16f, 0.29f, 0.48f, 0.24f));
         bool flag = (flags & bitMask) != 0;
         if (ImGui::Checkbox("##check", &flag)) {
             if (flag) {
@@ -802,9 +794,9 @@ void DrawFlagsTab() {
                 ImGui::Text("stateFlags3");
                 UIWidgets::DrawFlagArray8("stateFlags3", player->stateFlags3);
             });
-            
+
             ImGui::SameLine();
-            
+
             DrawGroupWithBorder([&]() {
                 ImGui::Text("unk_6AE");
                 UIWidgets::DrawFlagArray16("unk_6AE", player->unk_6AE);
@@ -939,7 +931,7 @@ void DrawFlagsTab() {
                 gSaveContext.sceneFlags[gPlayState->sceneNum].chest = act->flags.chest;
             }
             UIWidgets::SetLastItemHoverText("Save current scene flags. Normally happens on scene exit");
-            
+
             if (ImGui::Button("Clear Flags")) {
                 act->flags.swch = 0;
                 act->flags.clear = 0;
@@ -947,7 +939,6 @@ void DrawFlagsTab() {
                 act->flags.chest = 0;
             }
             UIWidgets::SetLastItemHoverText("Clear current scene flags. Reload scene to see changes");
-
 
             ImGui::EndGroup();
         } else {
@@ -1071,10 +1062,12 @@ void DrawFlagsTab() {
 
         // If playing a Randomizer Save with Shuffle Skull Tokens on anything other than "Off" we don't want to keep
         // GS Token Count updated, since Gold Skulltulas killed will not correlate to GS Tokens Collected.
-        if (!(gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF)) {
+        if (!(gSaveContext.n64ddFlag &&
+              OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF)) {
             static bool keepGsCountUpdated = true;
             ImGui::Checkbox("Keep GS Count Updated", &keepGsCountUpdated);
-            UIWidgets::InsertHelpHoverText("Automatically adjust the number of gold skulltula tokens acquired based on set flags.");
+            UIWidgets::InsertHelpHoverText(
+                "Automatically adjust the number of gold skulltula tokens acquired based on set flags.");
             int32_t gsCount = 0;
             if (keepGsCountUpdated) {
                 for (int32_t gsFlagIndex = 0; gsFlagIndex < 6; gsFlagIndex++) {
@@ -1148,8 +1141,8 @@ void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const 
     uint8_t item = items[CUR_UPG_VALUE(categoryId)];
     if (item != ITEM_NONE) {
         const ItemMapEntry& slotEntry = itemMapping[item];
-        if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0),
-                               ImVec2(1, 1), 0)) {
+        if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name),
+                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 0)) {
             ImGui::OpenPopup(upgradePopupPicker);
         }
     } else {
@@ -1176,8 +1169,9 @@ void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const 
                 UIWidgets::SetLastItemHoverText("None");
             } else {
                 const ItemMapEntry& slotEntry = itemMapping[items[pickerIndex]];
-                if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0),
-                                       ImVec2(1, 1), 0)) {
+                if (ImGui::ImageButton(
+                        LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name),
+                        ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 0)) {
                     Inventory_ChangeUpgrade(categoryId, pickerIndex);
                     ImGui::CloseCurrentPopup();
                 }
@@ -1209,11 +1203,12 @@ void DrawEquipmentTab() {
         }
 
         ImGui::PushID(i);
-        uint32_t bitMask = 1 << i;
-        bool hasEquip = (bitMask & gSaveContext.inventory.equipment) != 0;
+        uint32_t            bitMask = 1 << i;
+        bool                hasEquip = (bitMask & gSaveContext.inventory.equipment) != 0;
         const ItemMapEntry& entry = itemMapping[equipmentValues[i]];
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-        if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasEquip ? entry.name : entry.nameFaded),
+        if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                                   hasEquip ? entry.name : entry.nameFaded),
                                ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 0)) {
             if (hasEquip) {
                 gSaveContext.inventory.equipment &= ~bitMask;
@@ -1281,7 +1276,8 @@ void DrawEquipmentTab() {
         "Giant (500)",
     };
     // only display Tycoon wallet if you're in a save file that would allow it.
-    if (gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS) {
+    if (gSaveContext.n64ddFlag &&
+        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS) {
         const std::string walletName = "Tycoon (999)";
         walletNamesImpl.push_back(walletName);
     }
@@ -1309,10 +1305,11 @@ void DrawEquipmentTab() {
 // Draws a toggleable icon for a quest item that is faded when disabled
 void DrawQuestItemButton(uint32_t item) {
     const QuestMapEntry& entry = questMapping[item];
-    uint32_t bitMask = 1 << entry.id;
-    bool hasQuestItem = (bitMask & gSaveContext.inventory.questItems) != 0;
+    uint32_t             bitMask = 1 << entry.id;
+    bool                 hasQuestItem = (bitMask & gSaveContext.inventory.questItems) != 0;
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-    if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded),
+    if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                               hasQuestItem ? entry.name : entry.nameFaded),
                            ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 0)) {
         if (hasQuestItem) {
             gSaveContext.inventory.questItems &= ~bitMask;
@@ -1328,9 +1325,10 @@ void DrawQuestItemButton(uint32_t item) {
 void DrawDungeonItemButton(uint32_t item, uint32_t scene) {
     const ItemMapEntry& entry = itemMapping[item];
     uint32_t bitMask = 1 << (entry.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
-    bool hasItem = (bitMask & gSaveContext.inventory.dungeonItems[scene]) != 0;
+    bool     hasItem = (bitMask & gSaveContext.inventory.dungeonItems[scene]) != 0;
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-    if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem ? entry.name : entry.nameFaded),
+    if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                               hasItem ? entry.name : entry.nameFaded),
                            ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 0)) {
         if (hasItem) {
             gSaveContext.inventory.dungeonItems[scene] &= ~bitMask;
@@ -1375,9 +1373,10 @@ void DrawQuestStatusTab() {
         }
 
         uint32_t bitMask = 1 << entry.id;
-        bool hasQuestItem = (bitMask & gSaveContext.inventory.questItems) != 0;
+        bool     hasQuestItem = (bitMask & gSaveContext.inventory.questItems) != 0;
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-        if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded),
+        if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                                   hasQuestItem ? entry.name : entry.nameFaded),
                                ImVec2(16.0f, 24.0f), ImVec2(0, 0), ImVec2(1, 1), 0)) {
             if (hasQuestItem) {
                 gSaveContext.inventory.questItems &= ~bitMask;
@@ -1393,7 +1392,7 @@ void DrawQuestStatusTab() {
     UIWidgets::InsertHelpHoverText("Number of gold skulltula tokens aquired");
 
     uint32_t bitMask = 1 << QUEST_SKULL_TOKEN;
-    bool gsUnlocked = (bitMask & gSaveContext.inventory.questItems) != 0;
+    bool     gsUnlocked = (bitMask & gSaveContext.inventory.questItems) != 0;
     if (ImGui::Checkbox("GS unlocked", &gsUnlocked)) {
         if (gsUnlocked) {
             gSaveContext.inventory.questItems |= bitMask;
@@ -1440,13 +1439,18 @@ void DrawQuestStatusTab() {
 
         if (dungeonItemsScene != SCENE_BDAN_BOSS) {
             float lineHeight = ImGui::GetTextLineHeightWithSpacing();
-            ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemMapping[ITEM_KEY_SMALL].name), ImVec2(lineHeight, lineHeight));
+            ImGui::Image(
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemMapping[ITEM_KEY_SMALL].name),
+                ImVec2(lineHeight, lineHeight));
             ImGui::SameLine();
-            if (ImGui::InputScalar("##Keys", ImGuiDataType_S8, gSaveContext.inventory.dungeonKeys + dungeonItemsScene)) {
-                gSaveContext.sohStats.dungeonKeys[dungeonItemsScene] = gSaveContext.inventory.dungeonKeys[dungeonItemsScene];
+            if (ImGui::InputScalar("##Keys", ImGuiDataType_S8,
+                                   gSaveContext.inventory.dungeonKeys + dungeonItemsScene)) {
+                gSaveContext.sohStats.dungeonKeys[dungeonItemsScene] =
+                    gSaveContext.inventory.dungeonKeys[dungeonItemsScene];
             };
         } else {
-            // dungeonItems is size 20 but dungeonKeys is size 19, so there are no keys for the last scene (Barinade's Lair)
+            // dungeonItems is size 20 but dungeonKeys is size 19, so there are no keys for the last scene (Barinade's
+            // Lair)
             ImGui::Text("Barinade's Lair does not have small keys");
         }
     });
@@ -1456,7 +1460,7 @@ void DrawQuestStatusTab() {
 
 void DrawPlayerTab() {
     if (gPlayState != nullptr) {
-        Player* player = GET_PLAYER(gPlayState);
+        Player*     player = GET_PLAYER(gPlayState);
         const char* curSword;
         const char* curShield;
         const char* curTunic;
@@ -1464,7 +1468,7 @@ void DrawPlayerTab() {
 
         switch (player->currentSwordItemId) {
             case ITEM_SWORD_KOKIRI:
-                curSword = "Kokiri Sword"; 
+                curSword = "Kokiri Sword";
                 break;
             case ITEM_SWORD_MASTER:
                 curSword = "Master Sword";
@@ -1586,7 +1590,7 @@ void DrawPlayerTab() {
         UIWidgets::InsertHelpHoverText("This will change Link's age when you load a map");
 
         ImGui::Separator();
-        
+
         ImGui::Text("Link's Current Equipment");
         ImGui::PushItemWidth(ImGui::GetFontSize() * 15);
         if (ImGui::BeginCombo("Sword", curSword)) {
@@ -1619,7 +1623,7 @@ void DrawPlayerTab() {
                     player->currentSwordItemId = ITEM_SWORD_BGS;
                     gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KNIFE;
                 }
-                
+
                 Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_BGS);
             }
             if (ImGui::Selectable("Fishing Pole")) {
@@ -1628,7 +1632,6 @@ void DrawPlayerTab() {
                 Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_MASTER);
             }
             ImGui::EndCombo();
-
         }
         if (ImGui::BeginCombo("Shield", curShield)) {
             if (ImGui::Selectable("None")) {
@@ -1695,7 +1698,8 @@ void DrawPlayerTab() {
             if (CVarGetInteger("gDpadEquips", 0)) {
                 ImGui::NewLine();
                 ImGui::Text("Current D-pad Equips");
-                ImGui::InputScalar("D-pad Up  ", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[4], &one, NULL); // Two spaces at the end for aligning, not elegant but it's working
+                ImGui::InputScalar("D-pad Up  ", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[4], &one,
+                                   NULL); // Two spaces at the end for aligning, not elegant but it's working
                 ImGui::SameLine();
                 ImGui::InputScalar("D-pad Down", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[5], &one, NULL);
                 // Intentionnal to not put everything on the same line, else it's taking too much for lower resolution.
@@ -1706,7 +1710,7 @@ void DrawPlayerTab() {
         });
 
         ImGui::Text("Player State");
-        uint8_t bit[32] = {};
+        uint8_t  bit[32] = {};
         uint32_t flags[3] = { player->stateFlags1, player->stateFlags2, player->stateFlags3 };
         std::vector<std::vector<std::string>> flag_strs = { state1, state2, state3 };
 
@@ -1780,19 +1784,25 @@ void SaveEditorWindow::DrawElement() {
 void SaveEditorWindow::InitElement() {
     // Load item icons into ImGui
     for (const auto& entry : itemMapping) {
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, ImVec4(1, 1, 1, 1));
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath,
+                                                                           ImVec4(1, 1, 1, 1));
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(
+            entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
     }
     for (const auto& entry : gregMapping) {
         ImVec4 gregGreen = ImVec4(42.0f / 255.0f, 169.0f / 255.0f, 40.0f / 255.0f, 1.0f);
         ImVec4 gregFadedGreen = gregGreen;
         gregFadedGreen.w = 0.3f;
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, gregGreen);
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, gregFadedGreen);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath,
+                                                                           gregGreen);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded,
+                                                                           entry.second.texturePath, gregFadedGreen);
     }
     for (const auto& entry : questMapping) {
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, ImVec4(1, 1, 1, 1));
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath,
+                                                                           ImVec4(1, 1, 1, 1));
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(
+            entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
     }
     for (const auto& entry : songMapping) {
         LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.name, gSongNoteTex, entry.color);

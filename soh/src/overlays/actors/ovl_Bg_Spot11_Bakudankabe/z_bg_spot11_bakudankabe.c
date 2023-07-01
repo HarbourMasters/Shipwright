@@ -64,9 +64,9 @@ void func_808B2180(BgSpot11Bakudankabe* this, PlayState* play) {
 
 void func_808B2218(BgSpot11Bakudankabe* this, PlayState* play) {
     Actor* thisx = &this->dyna.actor;
-    Vec3f burstDepthY;
-    Vec3f burstDepthX;
-    s32 i;
+    Vec3f  burstDepthY;
+    Vec3f  burstDepthX;
+    s32    i;
 
     burstDepthX.z = 0;
     burstDepthX.x = 0;
@@ -97,8 +97,8 @@ void func_808B2218(BgSpot11Bakudankabe* this, PlayState* play) {
         } else {
             rotationSpeed = 33;
         }
-        EffectSsKakera_Spawn(play, &burstDepthY, &burstDepthX, &burstDepthY, gravityInfluence, rotationSpeed, 0x1E,
-                             4, 0, scale, 1, 3, 80, KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_FIELD_KEEP, gFieldKakeraDL);
+        EffectSsKakera_Spawn(play, &burstDepthY, &burstDepthX, &burstDepthY, gravityInfluence, rotationSpeed, 0x1E, 4,
+                             0, scale, 1, 3, 80, KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_FIELD_KEEP, gFieldKakeraDL);
     }
     Math_Vec3f_Sum(&thisx->world.pos, &D_808B272C, &burstDepthY);
     func_80033480(play, &burstDepthY, 70, 4, 110, 160, 1);
@@ -110,7 +110,7 @@ void func_808B2218(BgSpot11Bakudankabe* this, PlayState* play) {
 
 void BgSpot11Bakudankabe_Init(Actor* thisx, PlayState* play) {
     BgSpot11Bakudankabe* this = (BgSpot11Bakudankabe*)thisx;
-    s32 pad;
+    s32              pad;
     CollisionHeader* colHeader = NULL;
 
     DynaPolyActor_Init(&this->dyna, DPM_UNK);

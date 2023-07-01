@@ -121,8 +121,8 @@ void ShotSun_TriggerFairy(ShotSun* this, PlayState* play) {
 
 void func_80BADF0C(ShotSun* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 pad;
-    s32 params = this->actor.params & 0xFF;
+    s32     pad;
+    s32     params = this->actor.params & 0xFF;
 
     if (Math3D_Vec3fDistSq(&this->actor.world.pos, &player->actor.world.pos) > 22500.0f) {
         this->unk_1A4 = 0;
@@ -153,11 +153,11 @@ void func_80BADF0C(ShotSun* this, PlayState* play) {
 }
 
 void ShotSun_UpdateHyliaSun(ShotSun* this, PlayState* play) {
-    Vec3s cylinderPos;
-    Player* player = GET_PLAYER(play);
+    Vec3s     cylinderPos;
+    Player*   player = GET_PLAYER(play);
     EnItem00* collectible;
-    s32 pad;
-    Vec3f spawnPos;
+    s32       pad;
+    Vec3f     spawnPos;
 
     if (this->collider.base.acFlags & AC_HIT) {
         func_80078884(NA_SE_SY_CORRECT_CHIME);

@@ -275,30 +275,11 @@ std::vector<std::string> itemNames = {
 };
 
 std::vector<std::string> questItemNames = {
-        "Forest Medallion",
-        "Fire Medallion",
-        "Water Medallion",
-        "Spirit Medallion",
-        "Shadow Medallion",
-        "Light Medallion",
-        "Minuet of Forest",
-        "Bolero of Fire",
-        "Serenade of Water",
-        "Requiem of Spirit",
-        "Nocturne of Shadow",
-        "Prelude of Light",
-        "Zelda's Lullaby",
-        "Epona's Song",
-        "Saria's Song",
-        "Sun's Song",
-        "Song of Time",
-        "Song of Storms",
-        "Kokiri's Emerald",
-        "Goron's Ruby",
-        "Zora's Sapphire",
-        "Stone of Agony",
-        "Gerudo's Card",
-        "Gold Skulltula Token",
+    "Forest Medallion",   "Fire Medallion",   "Water Medallion", "Spirit Medallion",     "Shadow Medallion",
+    "Light Medallion",    "Minuet of Forest", "Bolero of Fire",  "Serenade of Water",    "Requiem of Spirit",
+    "Nocturne of Shadow", "Prelude of Light", "Zelda's Lullaby", "Epona's Song",         "Saria's Song",
+    "Sun's Song",         "Song of Time",     "Song of Storms",  "Kokiri's Emerald",     "Goron's Ruby",
+    "Zora's Sapphire",    "Stone of Agony",   "Gerudo's Card",   "Gold Skulltula Token",
 };
 
 const std::string& SohUtils::GetSceneName(int32_t scene) {

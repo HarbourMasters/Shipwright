@@ -6,12 +6,12 @@
 #define F3DZEX_FLAG(set, unset) \
     { set, #set, #unset }
 #define F3DZEX_RENDERMODE(name, mask) \
-    { #name, name, mask }
-#define F3DZEX_SETRENDERMACRO(name, shift, len, value0, value1, value2, value3)                 \
-    {                                                                                           \
-        name, shift, len, {                                                                     \
-            { #value0, value0 }, { #value1, value1 }, { #value2, value2 }, { #value3, value3 }, \
-        }                                                                                       \
+    {                                 \
+#name, name, mask             \
+    }
+#define F3DZEX_SETRENDERMACRO(name, shift, len, value0, value1, value2, value3)                                   \
+    {                                                                                                             \
+        name, shift, len, { { #value0, value0 }, { #value1, value1 }, { #value2, value2 }, { #value3, value3 }, } \
     }
 
 #define DISAS_LOG        \

@@ -211,14 +211,14 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32_DIV1000(gravity, -3000, ICHAIN_STOP),
 };
 
-//static Vec3f sUnusedOffset = { 1100.0f, -700.0f, 0.0f };
+// static Vec3f sUnusedOffset = { 1100.0f, -700.0f, 0.0f };
 
 void EnGeldB_SetupAction(EnGeldB* this, EnGeldBActionFunc actionFunc) {
     this->actionFunc = actionFunc;
 }
 
 void EnGeldB_Init(Actor* thisx, PlayState* play) {
-    s32 pad;
+    s32              pad;
     EffectBlureInit1 blureInit;
     EnGeldB* this = (EnGeldB*)thisx;
 
@@ -275,10 +275,10 @@ void EnGeldB_Destroy(Actor* thisx, PlayState* play) {
 
 s32 EnGeldB_ReactToPlayer(PlayState* play, EnGeldB* this, s16 arg2) {
     Player* player = GET_PLAYER(play);
-    Actor* thisx = &this->actor;
-    s16 angleToWall;
-    s16 angleToLink;
-    Actor* bomb;
+    Actor*  thisx = &this->actor;
+    s16     angleToWall;
+    s16     angleToLink;
+    Actor*  bomb;
 
     angleToWall = thisx->wallYaw - thisx->shape.rot.y;
     angleToWall = ABS(angleToWall);
@@ -357,8 +357,7 @@ void EnGeldB_SetupWait(EnGeldB* this) {
 }
 
 void EnGeldB_Wait(EnGeldB* this, PlayState* play) {
-    if ((this->invisible && !Flags_GetSwitch(play, this->actor.home.rot.z)) ||
-        this->actor.xzDistToPlayer > 300.0f) {
+    if ((this->invisible && !Flags_GetSwitch(play, this->actor.home.rot.z)) || this->actor.xzDistToPlayer > 300.0f) {
         this->actor.shape.rot.y = this->actor.world.rot.y = this->actor.yawTowardsPlayer;
         this->actor.world.pos.y = this->actor.floorHeight + 120.0f;
     } else {
@@ -422,8 +421,8 @@ void EnGeldB_SetupReady(EnGeldB* this) {
 
 void EnGeldB_Ready(EnGeldB* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 pad;
-    s16 angleToLink;
+    s32     pad;
+    s16     angleToLink;
 
     SkelAnime_Update(&this->skelAnime);
     if (this->lookTimer != 0) {
@@ -484,10 +483,10 @@ void EnGeldB_SetupAdvance(EnGeldB* this, PlayState* play) {
 }
 
 void EnGeldB_Advance(EnGeldB* this, PlayState* play) {
-    s32 thisKeyFrame;
-    s32 prevKeyFrame;
-    s32 playSpeed;
-    s16 facingAngletoLink;
+    s32     thisKeyFrame;
+    s32     prevKeyFrame;
+    s32     playSpeed;
+    s16     facingAngletoLink;
     Player* player = GET_PLAYER(play);
 
     if (!EnGeldB_DodgeRanged(play, this)) {
@@ -573,7 +572,7 @@ void EnGeldB_SetupRollForward(EnGeldB* this) {
 
 void EnGeldB_RollForward(EnGeldB* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s16 facingAngleToLink = player->actor.shape.rot.y - this->actor.shape.rot.y;
+    s16     facingAngleToLink = player->actor.shape.rot.y - this->actor.shape.rot.y;
 
     if (SkelAnime_Update(&this->skelAnime)) {
         this->invisible = false;
@@ -647,12 +646,12 @@ void EnGeldB_SetupCircle(EnGeldB* this) {
 }
 
 void EnGeldB_Circle(EnGeldB* this, PlayState* play) {
-    s16 angleBehindLink;
-    s16 phi_v1;
-    s32 nextKeyFrame;
-    s32 thisKeyFrame;
-    s32 pad;
-    s32 prevKeyFrame;
+    s16     angleBehindLink;
+    s16     phi_v1;
+    s32     nextKeyFrame;
+    s32     thisKeyFrame;
+    s32     pad;
+    s32     prevKeyFrame;
     Player* player = GET_PLAYER(play);
 
     Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 1, 0xFA0, 1);
@@ -670,8 +669,8 @@ void EnGeldB_Circle(EnGeldB* this, PlayState* play) {
                 this->actor.speedXZ = 8.0f;
             }
         }
-        if ((this->actor.bgCheckFlags & 8) || !Actor_TestFloorInDirection(&this->actor, play, this->actor.speedXZ,
-                                                                          this->actor.shape.rot.y + 0x3E80)) {
+        if ((this->actor.bgCheckFlags & 8) ||
+            !Actor_TestFloorInDirection(&this->actor, play, this->actor.speedXZ, this->actor.shape.rot.y + 0x3E80)) {
             if (this->actor.bgCheckFlags & 8) {
                 if (this->actor.speedXZ >= 0.0f) {
                     phi_v1 = this->actor.shape.rot.y + 0x3E80;
@@ -736,9 +735,9 @@ void EnGeldB_Circle(EnGeldB* this, PlayState* play) {
 }
 
 void EnGeldB_SetupSpinDodge(EnGeldB* this, PlayState* play) {
-    s16 sp3E;
+    s16     sp3E;
     Player* player = GET_PLAYER(play);
-    f32 lastFrame = Animation_GetLastFrame(&gGerudoRedSidestepAnim);
+    f32     lastFrame = Animation_GetLastFrame(&gGerudoRedSidestepAnim);
 
     Animation_Change(&this->skelAnime, &gGerudoRedSidestepAnim, 1.0f, 0.0f, lastFrame, ANIMMODE_LOOP_INTERP, 0.0f);
     sp3E = player->actor.shape.rot.y;
@@ -846,8 +845,8 @@ void EnGeldB_SetupSlash(EnGeldB* this) {
 
 void EnGeldB_Slash(EnGeldB* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s16 angleFacingLink = player->actor.shape.rot.y - this->actor.shape.rot.y;
-    s16 angleToLink = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
+    s16     angleFacingLink = player->actor.shape.rot.y - this->actor.shape.rot.y;
+    s16     angleToLink = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
 
     angleFacingLink = ABS(angleFacingLink);
     angleToLink = ABS(angleToLink);
@@ -904,8 +903,8 @@ void EnGeldB_SetupSpinAttack(EnGeldB* this) {
 
 void EnGeldB_SpinAttack(EnGeldB* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s16 angleFacingLink;
-    s16 angleToLink;
+    s16     angleFacingLink;
+    s16     angleToLink;
 
     if (this->spinAttackState < 2) {
         if (this->swordCollider.base.atFlags & AT_BOUNCED) {
@@ -1127,9 +1126,9 @@ void EnGeldB_SetupBlock(EnGeldB* this) {
 
 void EnGeldB_Block(EnGeldB* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 pad;
-    s16 angleToLink;
-    s16 angleFacingLink;
+    s32     pad;
+    s16     angleToLink;
+    s16     angleFacingLink;
 
     if (this->timer != 0) {
         this->timer--;
@@ -1179,9 +1178,9 @@ void EnGeldB_Block(EnGeldB* this, PlayState* play) {
 }
 
 void EnGeldB_SetupSidestep(EnGeldB* this, PlayState* play) {
-    s16 linkAngle;
+    s16     linkAngle;
     Player* player;
-    f32 lastFrame = Animation_GetLastFrame(&gGerudoRedSidestepAnim);
+    f32     lastFrame = Animation_GetLastFrame(&gGerudoRedSidestepAnim);
 
     Animation_Change(&this->skelAnime, &gGerudoRedSidestepAnim, 1.0f, 0.0f, lastFrame, ANIMMODE_LOOP_INTERP, 0.0f);
     player = GET_PLAYER(play);
@@ -1203,12 +1202,12 @@ void EnGeldB_SetupSidestep(EnGeldB* this, PlayState* play) {
 }
 
 void EnGeldB_Sidestep(EnGeldB* this, PlayState* play) {
-    s16 behindLinkAngle;
-    s16 phi_v1;
+    s16     behindLinkAngle;
+    s16     phi_v1;
     Player* player = GET_PLAYER(play);
-    s32 thisKeyFrame;
-    s32 prevKeyFrame;
-    f32 playSpeed;
+    s32     thisKeyFrame;
+    s32     prevKeyFrame;
+    f32     playSpeed;
 
     Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 1, 0xBB8, 1);
     behindLinkAngle = player->actor.shape.rot.y + 0x8000;
@@ -1278,7 +1277,7 @@ void EnGeldB_Sidestep(EnGeldB* this, PlayState* play) {
                 this->timer = (Rand_ZeroOne() * 5.0f) + 1.0f;
             } else {
                 Player* player2 = GET_PLAYER(play);
-                s16 angleFacingPlayer2 = player2->actor.shape.rot.y - this->actor.shape.rot.y;
+                s16     angleFacingPlayer2 = player2->actor.shape.rot.y - this->actor.shape.rot.y;
 
                 this->actor.world.rot.y = this->actor.shape.rot.y;
                 if ((this->actor.xzDistToPlayer <= 45.0f) && !Actor_OtherIsTargeted(play, &this->actor) &&
@@ -1354,7 +1353,7 @@ void EnGeldB_TurnHead(EnGeldB* this, PlayState* play) {
 }
 
 void EnGeldB_CollisionCheck(EnGeldB* this, PlayState* play) {
-    s32 pad;
+    s32       pad;
     EnItem00* key;
 
     if (this->blockCollider.base.acFlags & AC_BOUNCED) {
@@ -1430,8 +1429,7 @@ void EnGeldB_Update(Actor* thisx, PlayState* play) {
     }
 }
 
-s32 EnGeldB_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                             void* thisx) {
+s32 EnGeldB_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnGeldB* this = (EnGeldB*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -1463,8 +1461,8 @@ void EnGeldB_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* ro
     static Vec3f swordQuadOffset3 = { -3000.0f, -2000.0f, -1300.0f };
     static Vec3f swordQuadOffset2 = { 1000.0f, 1000.0f, 0.0f };
     static Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
-    Vec3f swordTip;
-    Vec3f swordHilt;
+    Vec3f        swordTip;
+    Vec3f        swordHilt;
     EnGeldB* this = (EnGeldB*)thisx;
     s32 bodyPart = -1;
 
@@ -1552,7 +1550,7 @@ void EnGeldB_Draw(Actor* thisx, PlayState* play) {
     };
     static void* eyeTextures[] = { gGerudoRedEyeOpenTex, gGerudoRedEyeHalfTex, gGerudoRedEyeShutTex,
                                    gGerudoRedEyeHalfTex };
-    s32 pad;
+    s32          pad;
     EnGeldB* this = (EnGeldB*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -1587,10 +1585,10 @@ void EnGeldB_Draw(Actor* thisx, PlayState* play) {
     if ((this->action != GELDB_WAIT) || !this->invisible) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->blinkState]));
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnGeldB_OverrideLimbDraw, EnGeldB_PostLimbDraw, this);
+        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+                              EnGeldB_OverrideLimbDraw, EnGeldB_PostLimbDraw, this);
         if (this->action == GELDB_BLOCK) {
-            s32 i;
+            s32   i;
             Vec3f blockTrisVtx0[3];
             Vec3f blockTrisVtx1[3];
 
@@ -1608,8 +1606,8 @@ void EnGeldB_Draw(Actor* thisx, PlayState* play) {
             if ((this->iceTimer % 4) == 0) {
                 s32 iceIndex = this->iceTimer >> 2;
 
-                EffectSsEnIce_SpawnFlyingVec3s(play, thisx, &this->bodyPartsPos[iceIndex], 150, 150, 150, 250, 235,
-                                               245, 255, 1.5f);
+                EffectSsEnIce_SpawnFlyingVec3s(play, thisx, &this->bodyPartsPos[iceIndex], 150, 150, 150, 250, 235, 245,
+                                               255, 1.5f);
             }
         }
     }

@@ -1,19 +1,19 @@
 #include "global.h"
 #include "ultra64/internal.h"
 
-OSThread viThread;
-u8 viThreadStack[0x1000];
+OSThread    viThread;
+u8          viThreadStack[0x1000];
 OSMesgQueue viEventQueue;
-OSMesg viEventBuf[6];
-OSIoMesg viRetraceMsg;
-OSIoMesg viCounterMsg;
-OSMgrArgs __osViDevMgr = { 0 };
-u32 __additional_scanline = 0;
+OSMesg      viEventBuf[6];
+OSIoMesg    viRetraceMsg;
+OSIoMesg    viCounterMsg;
+OSMgrArgs   __osViDevMgr = { 0 };
+u32         __additional_scanline = 0;
 
 void viMgrMain(void*);
 
 void osCreateViManager(OSPri pri) {
-    u32 prevInt;
+    u32   prevInt;
     OSPri newPri;
     OSPri currentPri;
 
@@ -58,9 +58,9 @@ void osCreateViManager(OSPri pri) {
 void viMgrMain(void* vargs) {
     static u16 viRetrace;
     OSMgrArgs* args;
-    u32 addTime;
-    OSIoMesg* mesg = NULL;
-    u32 temp = 0; // always 0
+    u32        addTime;
+    OSIoMesg*  mesg = NULL;
+    u32        temp = 0; // always 0
 
     viRetrace = __osViGetCurrentContext()->retraceCount;
     if (viRetrace == 0) {

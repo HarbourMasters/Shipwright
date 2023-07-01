@@ -2,24 +2,24 @@
 
 // MARK: - State Definitions
 
-bool GameInteractor::State::NoUIActive = 0;
-GILinkSize GameInteractor::State::LinkSize = GI_LINK_SIZE_NORMAL;
-bool GameInteractor::State::InvisibleLinkActive = 0;
-bool GameInteractor::State::OneHitKOActive = 0;
-bool GameInteractor::State::PacifistModeActive = 0;
-bool GameInteractor::State::DisableZTargetingActive = 0;
-bool GameInteractor::State::ReverseControlsActive = 0;
-int32_t GameInteractor::State::DefenseModifier = 0;
-int32_t GameInteractor::State::RunSpeedModifier = 0;
+bool           GameInteractor::State::NoUIActive = 0;
+GILinkSize     GameInteractor::State::LinkSize = GI_LINK_SIZE_NORMAL;
+bool           GameInteractor::State::InvisibleLinkActive = 0;
+bool           GameInteractor::State::OneHitKOActive = 0;
+bool           GameInteractor::State::PacifistModeActive = 0;
+bool           GameInteractor::State::DisableZTargetingActive = 0;
+bool           GameInteractor::State::ReverseControlsActive = 0;
+int32_t        GameInteractor::State::DefenseModifier = 0;
+int32_t        GameInteractor::State::RunSpeedModifier = 0;
 GIGravityLevel GameInteractor::State::GravityLevel = GI_GRAVITY_LEVEL_NORMAL;
-uint32_t GameInteractor::State::EmulatedButtons = 0;
-uint8_t GameInteractor::State::RandomBombFuseTimerActive = 0;
-uint8_t GameInteractor::State::DisableLedgeGrabsActive = 0;
-uint8_t GameInteractor::State::RandomWindActive = 0;
-uint8_t GameInteractor::State::RandomWindSecondsSinceLastDirectionChange = 0;
-uint8_t GameInteractor::State::RandomBonksActive = 0;
-uint8_t GameInteractor::State::SlipperyFloorActive = 0;
-uint8_t GameInteractor::State::SecondCollisionUpdate = 0;
+uint32_t       GameInteractor::State::EmulatedButtons = 0;
+uint8_t        GameInteractor::State::RandomBombFuseTimerActive = 0;
+uint8_t        GameInteractor::State::DisableLedgeGrabsActive = 0;
+uint8_t        GameInteractor::State::RandomWindActive = 0;
+uint8_t        GameInteractor::State::RandomWindSecondsSinceLastDirectionChange = 0;
+uint8_t        GameInteractor::State::RandomBonksActive = 0;
+uint8_t        GameInteractor::State::SlipperyFloorActive = 0;
+uint8_t        GameInteractor::State::SecondCollisionUpdate = 0;
 
 void GameInteractor::State::SetPacifistMode(bool active) {
     PacifistModeActive = active;

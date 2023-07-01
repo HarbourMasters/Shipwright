@@ -70,7 +70,7 @@ FaultDrawer sFaultDrawerDefault = {
 };
 
 FaultDrawer sFaultDrawerStruct;
-char D_8016B6C0[0x20];
+char        D_8016B6C0[0x20];
 
 void FaultDrawer_SetOsSyncPrintfEnabled(u32 enabled) {
     sFaultDrawerStruct.osSyncPrintfEnabled = enabled;
@@ -78,11 +78,11 @@ void FaultDrawer_SetOsSyncPrintfEnabled(u32 enabled) {
 
 void FaultDrawer_DrawRecImpl(s32 xStart, s32 yStart, s32 xEnd, s32 yEnd, u16 color) {
     u16* fb;
-    s32 x, y;
-    s32 xDiff = sFaultDrawerStruct.w - xStart;
-    s32 yDiff = sFaultDrawerStruct.h - yStart;
-    s32 xSize = xEnd - xStart + 1;
-    s32 ySize = yEnd - yStart + 1;
+    s32  x, y;
+    s32  xDiff = sFaultDrawerStruct.w - xStart;
+    s32  yDiff = sFaultDrawerStruct.h - yStart;
+    s32  xSize = xEnd - xStart + 1;
+    s32  ySize = yEnd - yStart + 1;
 
     if (xDiff > 0 && yDiff > 0) {
         if (xDiff < xSize) {
@@ -106,14 +106,14 @@ void FaultDrawer_DrawRecImpl(s32 xStart, s32 yStart, s32 xEnd, s32 yEnd, u16 col
 }
 
 void FaultDrawer_DrawChar(char c) {
-    u16* fb;
-    s32 x, y;
-    const u32* dataPtr;
-    u32 data;
-    s32 cursorX = sFaultDrawerStruct.cursorX;
-    s32 cursorY = sFaultDrawerStruct.cursorY;
+    u16*        fb;
+    s32         x, y;
+    const u32*  dataPtr;
+    u32         data;
+    s32         cursorX = sFaultDrawerStruct.cursorX;
+    s32         cursorY = sFaultDrawerStruct.cursorY;
     const u32** fontData = &sFaultDrawerStruct.fontData;
-    s32 shift = c % 4;
+    s32         shift = c % 4;
 
     dataPtr = &fontData[0][(((c / 8) * 16) + ((c & 4) >> 2))];
     fb = sFaultDrawerStruct.fb + (sFaultDrawerStruct.w * cursorY) + cursorX;

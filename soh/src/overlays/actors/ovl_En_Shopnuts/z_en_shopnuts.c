@@ -70,7 +70,7 @@ void EnShopnuts_Init(Actor* thisx, PlayState* play) {
     Collider_UpdateCylinder(&this->actor, &this->collider);
 
     if (gSaveContext.n64ddFlag) {
-        s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
+        s16           respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
         ScrubIdentity scrubIdentity = Randomizer_IdentifyScrub(play->sceneNum, this->actor.params, respawnData);
 
         if (scrubIdentity.isShuffled && Flags_GetRandomizerInf(scrubIdentity.randomizerInf)) {
@@ -267,8 +267,7 @@ void EnShopnuts_Update(Actor* thisx, PlayState* play) {
     }
 }
 
-s32 EnShopnuts_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                void* thisx) {
+s32 EnShopnuts_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnShopnuts* this = (EnShopnuts*)thisx;
 
     if ((limbIndex == 9) && (this->actionFunc == EnShopnuts_ThrowNut)) {
@@ -303,8 +302,7 @@ void EnShopnuts_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s*
         }
 
         Matrix_Scale(x, y, z, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gBusinessScrubNoseDL);
         CLOSE_DISPS(play->state.gfxCtx);
     }

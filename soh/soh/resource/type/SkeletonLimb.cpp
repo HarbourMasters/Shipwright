@@ -6,7 +6,7 @@ SkeletonLimbData* SkeletonLimb::GetPointer() {
 }
 
 size_t SkeletonLimb::GetPointerSize() {
-    switch(limbType) {
+    switch (limbType) {
         case LimbType::Standard:
             return sizeof(limbData.standardLimb);
         case LimbType::LOD:

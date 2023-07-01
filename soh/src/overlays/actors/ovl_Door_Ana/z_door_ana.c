@@ -20,7 +20,7 @@ void DoorAna_WaitClosed(DoorAna* this, PlayState* play);
 void DoorAna_WaitOpen(DoorAna* this, PlayState* play);
 void DoorAna_GrabPlayer(DoorAna* this, PlayState* play);
 
-s16 GetChestGameRandoGiDrawId(s8 room, s16 ogDrawId, PlayState* play);
+s16  GetChestGameRandoGiDrawId(s8 room, s16 ogDrawId, PlayState* play);
 void Grotto_OverrideActorEntrance(Actor* thisx);
 
 const ActorInit Door_Ana_InitVars = {
@@ -129,7 +129,7 @@ void DoorAna_WaitClosed(DoorAna* this, PlayState* play) {
 // update routine for grottos that are open
 void DoorAna_WaitOpen(DoorAna* this, PlayState* play) {
     Player* player;
-    s32 destinationIdx;
+    s32     destinationIdx;
 
     player = GET_PLAYER(play);
     if (Math_StepToF(&this->actor.scale.x, 0.01f, 0.001f)) {
@@ -152,9 +152,8 @@ void DoorAna_WaitOpen(DoorAna* this, PlayState* play) {
 
             DoorAna_SetupAction(this, DoorAna_GrabPlayer);
         } else {
-            if (!Player_InCsMode(play) && !(player->stateFlags1 & 0x8800000) &&
-                this->actor.xzDistToPlayer <= 15.0f && -50.0f <= this->actor.yDistToPlayer &&
-                this->actor.yDistToPlayer <= 15.0f) {
+            if (!Player_InCsMode(play) && !(player->stateFlags1 & 0x8800000) && this->actor.xzDistToPlayer <= 15.0f &&
+                -50.0f <= this->actor.yDistToPlayer && this->actor.yDistToPlayer <= 15.0f) {
                 player->stateFlags1 |= 0x80000000;
                 this->actor.targetMode = 1;
             } else {
@@ -188,8 +187,7 @@ void DoorAna_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gGrottoDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

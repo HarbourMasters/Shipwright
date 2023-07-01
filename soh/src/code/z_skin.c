@@ -5,13 +5,13 @@ MtxF gSkinLimbMatrices[60]; // holds matrices for each limb of the skeleton curr
 static s32 sUnused;
 
 void Skin_UpdateVertices(MtxF* mtx, SkinVertex* skinVertices, SkinLimbModif* modifEntry, Vtx* vtxBuf, Vec3f* pos) {
-    Vtx* vtx;
+    Vtx*        vtx;
     SkinVertex* vertexEntry;
-    f32 xwTemp;
-    f32 ywTemp;
-    f32 zwTemp;
-    Vec3f normal;
-    Vec3f sp64;
+    f32         xwTemp;
+    f32         ywTemp;
+    f32         zwTemp;
+    Vec3f       normal;
+    Vec3f       sp64;
 
     for (vertexEntry = skinVertices; vertexEntry < &skinVertices[modifEntry->vtxCount]; vertexEntry++) {
         vtx = &vtxBuf[vertexEntry->index];
@@ -43,21 +43,21 @@ void Skin_UpdateVertices(MtxF* mtx, SkinVertex* skinVertices, SkinLimbModif* mod
 }
 
 void Skin_ApplyLimbModifications(GraphicsContext* gfxCtx, Skin* skin, s32 limbIndex, s32 arg3) {
-    s32 modifCount;
-    SkinLimb** skeleton;
-    SkinLimb* limb;
+    s32                   modifCount;
+    SkinLimb**            skeleton;
+    SkinLimb*             limb;
     SkinAnimatedLimbData* data;
-    SkinLimbModif* modif;
-    SkinLimbVtx* vtxEntry;
-    s32 transformCount;
-    f32 scale;
-    SkinVertex* skinVertices;
-    SkinTransformation* limbTransformations;
-    Vtx* vtxBuf;
-    SkinLimbModif* modifications;
-    Vec3f vtxPoint;
-    Vec3f spD0;
-    SkinTransformation* transformationEntry;
+    SkinLimbModif*        modif;
+    SkinLimbVtx*          vtxEntry;
+    s32                   transformCount;
+    f32                   scale;
+    SkinVertex*           skinVertices;
+    SkinTransformation*   limbTransformations;
+    Vtx*                  vtxBuf;
+    SkinLimbModif*        modifications;
+    Vec3f                 vtxPoint;
+    Vec3f                 spD0;
+    SkinTransformation*   transformationEntry;
 
     OPEN_DISPS(gfxCtx);
 
@@ -138,7 +138,7 @@ void Skin_ApplyLimbModifications(GraphicsContext* gfxCtx, Skin* skin, s32 limbIn
  * The vertices of this limb are modified dynamically
  */
 void Skin_DrawAnimatedLimb(GraphicsContext* gfxCtx, Skin* skin, s32 limbIndex, s32 arg3, s32 drawFlags) {
-    SkinLimb** skeleton;
+    SkinLimb**            skeleton;
     SkinAnimatedLimbData* data;
 
     OPEN_DISPS(gfxCtx);
@@ -159,9 +159,9 @@ void Skin_DrawAnimatedLimb(GraphicsContext* gfxCtx, Skin* skin, s32 limbIndex, s
  * Draw a limb of type SKIN_LIMB_TYPE_NORMAL, of the skeleton `skin` at index `limbIndex`
  */
 void Skin_DrawLimb(GraphicsContext* gfxCtx, Skin* skin, s32 limbIndex, Gfx* dlistOverride, s32 drawFlags) {
-    Gfx* gfx = dlistOverride;
+    Gfx*       gfx = dlistOverride;
     SkinLimb** skeleton;
-    s32 pad;
+    s32        pad;
 
     OPEN_DISPS(gfxCtx);
 
@@ -187,11 +187,11 @@ void Skin_DrawLimb(GraphicsContext* gfxCtx, Skin* skin, s32 limbIndex, Gfx* dlis
 
 void Skin_DrawImpl(Actor* actor, PlayState* play, Skin* skin, SkinPostDraw postDraw,
                    SkinOverrideLimbDraw overrideLimbDraw, s32 setTranslation, s32 arg6, s32 drawFlags) {
-    s32 i;
-    s32 segmentType;
-    SkinLimb** skeleton;
+    s32              i;
+    s32              segmentType;
+    SkinLimb**       skeleton;
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    s32 pad;
+    s32              pad;
 
     OPEN_DISPS(gfxCtx);
 

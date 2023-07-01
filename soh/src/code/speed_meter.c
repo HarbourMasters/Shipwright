@@ -1,19 +1,19 @@
 #include "global.h"
 #include "vt.h"
 
-volatile OSTime D_8016A520;
-volatile OSTime D_8016A528;
-volatile OSTime D_8016A530;
-volatile OSTime D_8016A538;
-volatile OSTime D_8016A540;
-volatile OSTime D_8016A548;
-volatile OSTime D_8016A550;
-volatile OSTime D_8016A558;
-volatile OSTime gRSPAudioTotalTime;
-volatile OSTime gRSPGFXTotalTime;
-volatile OSTime gRSPOtherTotalTime;
-volatile OSTime D_8016A578;
-volatile OSTime gRDPTotalTime;
+volatile OSTime      D_8016A520;
+volatile OSTime      D_8016A528;
+volatile OSTime      D_8016A530;
+volatile OSTime      D_8016A538;
+volatile OSTime      D_8016A540;
+volatile OSTime      D_8016A548;
+volatile OSTime      D_8016A550;
+volatile OSTime      D_8016A558;
+volatile OSTime      gRSPAudioTotalTime;
+volatile OSTime      gRSPGFXTotalTime;
+volatile OSTime      gRSPOtherTotalTime;
+volatile OSTime      D_8016A578;
+volatile OSTime      gRDPTotalTime;
 SpeedMeterTimeEntry* sSpeedMeterTimeEntryPtr;
 
 SpeedMeterTimeEntry sSpeedMeterTimeEntryArray[] = {
@@ -42,14 +42,14 @@ void SpeedMeter_Destroy(SpeedMeter* this) {
 }
 
 void SpeedMeter_DrawTimeEntries(SpeedMeter* this, GraphicsContext* gfxCtx) {
-    s32 pad[2];
-    u32 baseX = 32;
-    s32 temp;
-    s32 i;
-    s32 uly;
-    s32 lry;
+    s32  pad[2];
+    u32  baseX = 32;
+    s32  temp;
+    s32  i;
+    s32  uly;
+    s32  lry;
     View view;
-    u32 pad2[3];
+    u32  pad2[3];
     Gfx* gfx;
 
     uly = this->y;
@@ -114,7 +114,7 @@ void SpeedMeter_InitAllocEntry(SpeedMeterAllocEntry* this, u32 maxval, u32 val, 
 }
 
 void SpeedMeter_DrawAllocEntry(SpeedMeterAllocEntry* this, GraphicsContext* gfxCtx) {
-    s32 usedOff;
+    s32  usedOff;
     View view;
     Gfx* gfx;
 
@@ -151,19 +151,19 @@ void SpeedMeter_DrawAllocEntry(SpeedMeterAllocEntry* this, GraphicsContext* gfxC
 }
 
 void SpeedMeter_DrawAllocEntries(SpeedMeter* meter, GraphicsContext* gfxCtx, GameState* state) {
-    s32 pad[2];
-    u32 ulx = 30;
-    u32 lrx = 290;
+    s32                  pad[2];
+    u32                  ulx = 30;
+    u32                  lrx = 290;
     SpeedMeterAllocEntry entry;
-    u32 temp;
-    s32 y;
-    TwoHeadGfxArena* thga;
-    u32 zeldaFreeMax;
-    u32 zeldaFree;
-    u32 zeldaAlloc;
-    s32 sysFreeMax;
-    s32 sysFree;
-    s32 sysAlloc;
+    u32                  temp;
+    s32                  y;
+    TwoHeadGfxArena*     thga;
+    u32                  zeldaFreeMax;
+    u32                  zeldaFree;
+    u32                  zeldaAlloc;
+    s32                  sysFreeMax;
+    s32                  sysFree;
+    s32                  sysAlloc;
 
     y = 212;
     if (SREG(0) > 2) {

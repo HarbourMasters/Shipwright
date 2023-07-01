@@ -65,7 +65,7 @@ void BgDdanKd_SetupAction(BgDdanKd* this, BgDdanKdActionFunc actionFunc) {
 
 void BgDdanKd_Init(Actor* thisx, PlayState* play) {
     BgDdanKd* this = (BgDdanKd*)thisx;
-    s32 pad;
+    s32              pad;
     CollisionHeader* colHeader = NULL;
 
     this->prevExplosive = NULL;
@@ -127,7 +127,7 @@ Vec3f sBgDdanKdAccel = { 0.0f, -0.45f, 0.0f };
 void BgDdanKd_LowerStairs(BgDdanKd* this, PlayState* play) {
     Vec3f pos1;
     Vec3f pos2;
-    f32 effectStrength;
+    f32   effectStrength;
 
     Math_SmoothStepToF(&this->dyna.actor.speedXZ, 4.0f, 0.5f, 0.025f, 0.0f);
     func_800AA000(500.0f, 0x78, 0x14, 0xA);

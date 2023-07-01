@@ -9,9 +9,9 @@ struct EnWeatherTag;
 typedef void (*EnWeatherTagActionFunc)(struct EnWeatherTag*, PlayState*);
 
 typedef struct EnWeatherTag {
-    /* 0x0000 */ Actor actor;
+    /* 0x0000 */ Actor                  actor;
     /* 0x014C */ EnWeatherTagActionFunc actionFunc;
-    /* 0x0150 */ char unk_150[0x04];
+    /* 0x0150 */ char                   unk_150[0x04];
 } EnWeatherTag; // size = 0x0154
 
 typedef enum {

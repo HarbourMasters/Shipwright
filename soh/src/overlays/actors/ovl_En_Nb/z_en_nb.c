@@ -101,9 +101,9 @@ s32 EnNb_GetType(EnNb* this) {
 
 void EnNb_UpdatePath(EnNb* this, PlayState* play) {
     Vec3s* pointPos;
-    Path* pathList;
-    s32 pad;
-    s32 path;
+    Path*  pathList;
+    s32    pad;
+    s32    path;
 
     pathList = play->setupPathList;
 
@@ -135,7 +135,7 @@ void EnNb_SetupCollider(Actor* thisx, PlayState* play) {
 }
 
 void EnNb_UpdateCollider(EnNb* this, PlayState* play) {
-    s32 pad[4];
+    s32               pad[4];
     ColliderCylinder* collider = &this->collider;
 
     Collider_UpdateCylinder(&this->actor, collider);
@@ -144,7 +144,7 @@ void EnNb_UpdateCollider(EnNb* this, PlayState* play) {
 
 void EnNb_Destroy(Actor* thisx, PlayState* play) {
     EnNb* this = (EnNb*)thisx;
-    
+
     D_80AB4318 = 0;
     Collider_DestroyCylinder(play, &this->collider);
 
@@ -168,7 +168,7 @@ void func_80AB1040(EnNb* this, PlayState* play) {
 }
 
 void func_80AB10C4(EnNb* this) {
-    s32 pad2[2];
+    s32    pad2[2];
     Vec3s* tempPtr;
     Vec3s* tempPtr2;
 
@@ -181,7 +181,7 @@ void func_80AB10C4(EnNb* this) {
 }
 
 void EnNb_UpdateEyes(EnNb* this) {
-    s32 pad[3];
+    s32  pad[3];
     s16* blinkTimer = &this->blinkTimer;
     s16* eyeIdx = &this->eyeIdx;
 
@@ -240,8 +240,8 @@ CsCmdActorAction* EnNb_GetNpcCsAction(PlayState* play, s32 npcActionIdx) {
 
 void EnNb_SetupCsPosRot(EnNb* this, PlayState* play, s32 npcActionIdx) {
     CsCmdActorAction* csCmdNPCAction = EnNb_GetNpcCsAction(play, npcActionIdx);
-    s16 newRotY;
-    Actor* thisx = &this->actor;
+    s16               newRotY;
+    Actor*            thisx = &this->actor;
 
     if (csCmdNPCAction != NULL) {
         thisx->world.pos.x = csCmdNPCAction->startPos.x;
@@ -275,7 +275,7 @@ s32 func_80AB13D8(EnNb* this, PlayState* play, u16 arg2, s32 npcActionIdx) {
 
 void EnNb_SetInitialCsPosRot(EnNb* this, PlayState* play, s32 npcActionIdx) {
     CsCmdActorAction* csCmdNPCAction = EnNb_GetNpcCsAction(play, npcActionIdx);
-    Actor* thisx = &this->actor;
+    Actor*            thisx = &this->actor;
 
     if (csCmdNPCAction != NULL) {
         thisx->world.pos.x = csCmdNPCAction->startPos.x;
@@ -314,18 +314,16 @@ void EnNb_SpawnBlueWarp(EnNb* this, PlayState* play) {
     f32 posY = this->actor.world.pos.y;
     f32 posZ = this->actor.world.pos.z;
 
-    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0, 0,
-                       WARP_SAGES);
+    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0, 0, WARP_SAGES);
 }
 
 void EnNb_GiveMedallion(EnNb* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 posX = player->actor.world.pos.x;
-    f32 posY = player->actor.world.pos.y + 50.0f;
-    f32 posZ = player->actor.world.pos.z;
+    f32     posX = player->actor.world.pos.x;
+    f32     posY = player->actor.world.pos.y + 50.0f;
+    f32     posZ = player->actor.world.pos.z;
 
-    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_EFFECT, posX, posY, posZ, 0, 0, 0,
-                       0xC);
+    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_EFFECT, posX, posY, posZ, 0, 0, 0, 0xC);
     Item_Give(play, ITEM_MEDALLION_SPIRIT);
 }
 
@@ -334,7 +332,7 @@ void EnNb_ComeUpImpl(EnNb* this, PlayState* play) {
 }
 
 void EnNb_SetupChamberCsImpl(EnNb* this, PlayState* play) {
-    s32 pad[2];
+    s32     pad[2];
     Player* player;
 
     if ((gSaveContext.chamberCutsceneNum == 3) && (gSaveContext.sceneSetupIndex < 4)) {
@@ -348,7 +346,7 @@ void EnNb_SetupChamberCsImpl(EnNb* this, PlayState* play) {
 }
 
 void EnNb_SetupChamberWarpImpl(EnNb* this, PlayState* play) {
-    CutsceneContext* csCtx = &play->csCtx;
+    CutsceneContext*  csCtx = &play->csCtx;
     CsCmdActorAction* csCmdNPCAction;
 
     if (csCtx->state != CS_STATE_IDLE) {
@@ -369,7 +367,7 @@ void EnNb_SetupDefaultChamberIdle(EnNb* this) {
 }
 
 void EnNb_SetupArmRaise(EnNb* this, PlayState* play) {
-    AnimationHeader* animation = &gNabooruRaisingArmsGivingMedallionAnim;
+    AnimationHeader*  animation = &gNabooruRaisingArmsGivingMedallionAnim;
     CsCmdActorAction* csCmdNPCAction;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
@@ -477,7 +475,7 @@ void EnNb_SetupHide(EnNb* this, PlayState* play) {
 
 void EnNb_CheckToFade(EnNb* this, PlayState* play) {
     f32* alphaTimer = &this->alphaTimer;
-    s32 alpha;
+    s32  alpha;
 
     if (func_80AB1390(this, play, 4, 1)) {
         *alphaTimer += 1.0f;
@@ -544,9 +542,9 @@ void EnNb_CreateLightOrb(EnNb* this, PlayState* play) {
 }
 
 void EnNb_DrawTransparency(EnNb* this, PlayState* play) {
-    s32 pad[2];
-    s16 eyeSegIdx = this->eyeIdx;
-    void* eyeTex = sEyeTextures[eyeSegIdx];
+    s32        pad[2];
+    s16        eyeSegIdx = this->eyeIdx;
+    void*      eyeTex = sEyeTextures[eyeSegIdx];
     SkelAnime* skelAnime = &this->skelAnime;
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -556,8 +554,8 @@ void EnNb_DrawTransparency(EnNb* this, PlayState* play) {
     gSPSegment(POLY_XLU_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTex));
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, this->alpha);
     gSPSegment(POLY_XLU_DISP++, 0x0C, &D_80116280[0]);
-    POLY_XLU_DISP = SkelAnime_DrawFlex(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                                       NULL, NULL, NULL, POLY_XLU_DISP);
+    POLY_XLU_DISP = SkelAnime_DrawFlex(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL,
+                                       NULL, NULL, POLY_XLU_DISP);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -583,15 +581,15 @@ void EnNb_PlayAgonySFX(EnNb* this, PlayState* play) {
 
 void EnNb_SetPosInPortal(EnNb* this, PlayState* play) {
     CsCmdActorAction* csCmdNPCAction = EnNb_GetNpcCsAction(play, 1);
-    Vec3f* pos = &this->actor.world.pos;
-    f32 f0;
-    s32 pad;
-    Vec3f startPos;
-    Vec3f endPos;
+    Vec3f*            pos = &this->actor.world.pos;
+    f32               f0;
+    s32               pad;
+    Vec3f             startPos;
+    Vec3f             endPos;
 
     if (csCmdNPCAction != NULL) {
-        f0 = Environment_LerpWeightAccelDecel(csCmdNPCAction->endFrame, csCmdNPCAction->startFrame,
-                                              play->csCtx.frames, 4, 4);
+        f0 = Environment_LerpWeightAccelDecel(csCmdNPCAction->endFrame, csCmdNPCAction->startFrame, play->csCtx.frames,
+                                              4, 4);
         startPos.x = csCmdNPCAction->startPos.x;
         startPos.y = csCmdNPCAction->startPos.y;
         startPos.z = csCmdNPCAction->startPos.z;
@@ -638,8 +636,8 @@ void EnNb_SetupKidnap(EnNb* this) {
 
 void EnNb_CheckKidnapCsMode(EnNb* this, PlayState* play) {
     CsCmdActorAction* csCmdNPCAction = EnNb_GetNpcCsAction(play, 1);
-    s32 action;
-    s32 previousCsAction;
+    s32               action;
+    s32               previousCsAction;
 
     if (csCmdNPCAction != NULL) {
         action = csCmdNPCAction->action;
@@ -750,9 +748,9 @@ void func_80AB26C8(EnNb* this) {
 }
 
 void func_80AB26DC(EnNb* this, PlayState* play) {
-    s32 pad;
+    s32              pad;
     AnimationHeader* animation = &gNabooruCollapseFromStandingToKneelingTransitionAnim;
-    f32 lastFrame = Animation_GetLastFrame(animation);
+    f32              lastFrame = Animation_GetLastFrame(animation);
 
     EnNb_SetupCsPosRot(this, play, 1);
     Animation_Change(&this->skelAnime, animation, 1.0f, 0.0f, lastFrame, ANIMMODE_ONCE, 0.0f);
@@ -763,7 +761,7 @@ void func_80AB26DC(EnNb* this, PlayState* play) {
 
 void EnNb_SetupKneel(EnNb* this) {
     AnimationHeader* animation = &gNabooruCollapseFromStandingToKneelingTransitionAnim;
-    f32 lastFrame = Animation_GetLastFrame(animation);
+    f32              lastFrame = Animation_GetLastFrame(animation);
 
     Animation_Change(&this->skelAnime, animation, 1.0f, 0.0f, lastFrame, ANIMMODE_ONCE, 0.0f);
     this->action = NB_KNEEL;
@@ -783,7 +781,7 @@ void EnNb_CheckIfKneeling(EnNb* this, s32 animFinished) {
 
 void EnNb_SetupLookRight(EnNb* this) {
     AnimationHeader* animation = &gNabooruOnAllFoursToOnOneKneeLookingRightTransitionAnim;
-    f32 lastFrame = Animation_GetLastFrame(animation);
+    f32              lastFrame = Animation_GetLastFrame(animation);
 
     Animation_Change(&this->skelAnime, animation, 1.0f, 0.0f, lastFrame, ANIMMODE_ONCE, -8.0f);
     this->action = NB_LOOK_RIGHT;
@@ -803,7 +801,7 @@ void EnNb_CheckIfLookingRight(EnNb* this, s32 animFinished) {
 
 void EnNb_SetupLookLeft(EnNb* this) {
     AnimationHeader* animation = &gNabooruOnOneKneeTurningHeadRightToLeftTransitionAnim;
-    f32 lastFrame = Animation_GetLastFrame(animation);
+    f32              lastFrame = Animation_GetLastFrame(animation);
 
     Animation_Change(&this->skelAnime, animation, 1.0f, 0.0f, lastFrame, ANIMMODE_ONCE, -8.0f);
     this->action = NB_LOOK_LEFT;
@@ -829,7 +827,7 @@ void EnNb_SetupDemo6KInConfrontation(EnNb* this, PlayState* play, s32 animFinish
 
 void EnNb_SetupRun(EnNb* this) {
     AnimationHeader* animation = &gNabooruKneeingToRunningToHitAnim;
-    f32 lastFrame = Animation_GetLastFrame(animation);
+    f32              lastFrame = Animation_GetLastFrame(animation);
 
     Animation_Change(&this->skelAnime, animation, 1.0f, 0.0f, lastFrame, ANIMMODE_ONCE, -8.0f);
     this->action = NB_RUN;
@@ -845,8 +843,8 @@ void EnNb_SetupConfrontationDestroy(EnNb* this) {
 
 void EnNb_CheckConfrontationCsMode(EnNb* this, PlayState* play) {
     CsCmdActorAction* csCmdNPCAction;
-    s32 csAction;
-    s32 previousCsAction;
+    s32               csAction;
+    s32               previousCsAction;
 
     csCmdNPCAction = EnNb_GetNpcCsAction(play, 1);
     if (csCmdNPCAction != NULL) {
@@ -954,7 +952,7 @@ void EnNb_ConfrontationDestroy(EnNb* this, PlayState* play) {
 }
 
 void func_80AB2E70(EnNb* this, PlayState* play) {
-    s32 pad;
+    s32        pad;
     SkelAnime* skelAnime = &this->skelAnime;
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -981,11 +979,11 @@ s32 func_80AB2FC0(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
 }
 
 void func_80AB2FE4(EnNb* this, PlayState* play) {
-    s32 pad;
-    s16 eyeIdx = this->eyeIdx;
+    s32        pad;
+    s16        eyeIdx = this->eyeIdx;
     SkelAnime* skelAnime = &this->skelAnime;
-    void* eyeTexture = sEyeTextures[eyeIdx];
-    s32 pad1;
+    void*      eyeTexture = sEyeTextures[eyeIdx];
+    s32        pad1;
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -994,8 +992,8 @@ void func_80AB2FE4(EnNb* this, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     gSPSegment(POLY_OPA_DISP++, 0x0C, &D_80116280[2]);
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, func_80AB2FC0,
-                          NULL, &this->actor);
+    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, func_80AB2FC0, NULL,
+                          &this->actor);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1009,7 +1007,7 @@ void EnNb_SetupCreditsSpawn(EnNb* this, PlayState* play) {
 
 void EnNb_SetAlphaInCredits(EnNb* this) {
     f32* alphaTimer = &this->alphaTimer;
-    s32 alpha;
+    s32  alpha;
 
     this->alphaTimer++;
 
@@ -1049,8 +1047,8 @@ void EnNb_CheckIfLookingUp(EnNb* this, s32 animFinished) {
 
 void EnNb_CheckCreditsCsModeImpl(EnNb* this, PlayState* play) {
     CsCmdActorAction* csCmdNPCAction = EnNb_GetNpcCsAction(play, 1);
-    s32 action;
-    s32 previousCsAction;
+    s32               action;
+    s32               previousCsAction;
 
     if (csCmdNPCAction != NULL) {
         action = csCmdNPCAction->action;
@@ -1125,11 +1123,11 @@ void EnNb_CrawlspaceSpawnCheck(EnNb* this, PlayState* play) {
 
 void func_80AB359C(EnNb* this) {
     PosRot* world = &this->actor.world;
-    Vec3f* initialPos = &this->initialPos;
-    Vec3f* finalPos = &this->finalPos;
-    f32 f0;
-    u16 temp_t1;
-    s16 temp_2;
+    Vec3f*  initialPos = &this->initialPos;
+    Vec3f*  finalPos = &this->finalPos;
+    f32     f0;
+    u16     temp_t1;
+    s16     temp_2;
 
     this->movementTimer++;
     temp_2 = kREG(17);
@@ -1150,10 +1148,10 @@ void EnNb_SetNoticeSFX(EnNb* this) {
 
 s32 EnNb_GetNoticedStatus(EnNb* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 playerX = player->actor.world.pos.x;
-    f32 playerZ = player->actor.world.pos.z;
-    f32 thisX = this->actor.world.pos.x;
-    f32 thisZ = this->actor.world.pos.z;
+    f32     playerX = player->actor.world.pos.x;
+    f32     playerZ = player->actor.world.pos.z;
+    f32     thisX = this->actor.world.pos.x;
+    f32     thisZ = this->actor.world.pos.z;
 
     if (SQ(playerX - thisX) + SQ(playerZ - thisZ) < SQ(80.0f)) {
         return true;
@@ -1222,7 +1220,7 @@ void EnNb_SetupPathMovement(EnNb* this, PlayState* play) {
 
 void EnNb_SetTextIdAsChild(EnNb* this, PlayState* play) {
     s32 pad;
-    u8 choiceIndex;
+    u8  choiceIndex;
     s32 pad1;
     u16 textId;
 
@@ -1430,8 +1428,7 @@ void EnNb_Init(Actor* thisx, PlayState* play) {
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f);
     EnNb_SetupCollider(thisx, play);
-    SkelAnime_InitFlex(play, &this->skelAnime, &gNabooruSkel, NULL, this->jointTable, this->morphTable,
-                       NB_LIMB_MAX);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gNabooruSkel, NULL, this->jointTable, this->morphTable, NB_LIMB_MAX);
 
     switch (EnNb_GetType(this)) {
         case NB_TYPE_DEMO02:
@@ -1458,7 +1455,7 @@ void EnNb_Init(Actor* thisx, PlayState* play) {
 s32 EnNb_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnNb* this = (EnNb*)thisx;
     NpcInteractInfo* interactInfo = &this->interactInfo;
-    s32 ret = false;
+    s32              ret = false;
 
     if (this->headTurnFlag != 0) {
         if (limbIndex == NB_LIMB_TORSO) {
@@ -1496,11 +1493,11 @@ void EnNb_DrawNothing(EnNb* this, PlayState* play) {
 }
 
 void EnNb_DrawDefault(EnNb* this, PlayState* play) {
-    s32 pad;
-    s16 eyeIdx = this->eyeIdx;
+    s32        pad;
+    s16        eyeIdx = this->eyeIdx;
     SkelAnime* skelAnime = &this->skelAnime;
-    void* eyeTexture = sEyeTextures[eyeIdx];
-    s32 pad1;
+    void*      eyeTexture = sEyeTextures[eyeIdx];
+    s32        pad1;
 
     OPEN_DISPS(play->state.gfxCtx);
 

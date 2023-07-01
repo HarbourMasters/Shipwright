@@ -10,17 +10,16 @@
 #include "RomFile.h"
 #include <libultraship/libultra/types.h>
 
-
 namespace LUS {
 
 class SetAlternateHeaders : public SceneCommand<void> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    void*  GetPointer();
     size_t GetPointerSize();
 
-    uint32_t numHeaders;
+    uint32_t                            numHeaders;
     std::vector<std::shared_ptr<Scene>> headers;
 };
 }; // namespace LUS

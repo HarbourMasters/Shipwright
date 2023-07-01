@@ -44,9 +44,9 @@ const ActorInit En_Ex_Ruppy_InitVars = {
 void EnExRuppy_Init(Actor* thisx, PlayState* play) {
     EnExRuppy* this = (EnExRuppy*)thisx;
     EnDivingGame* divingGame;
-    f32 temp1;
-    f32 temp2;
-    s16 temp3;
+    f32           temp1;
+    f32           temp2;
+    s16           temp3;
 
     this->type = this->actor.params;
     // "Index"
@@ -55,8 +55,8 @@ void EnExRuppy_Init(Actor* thisx, PlayState* play) {
 
     switch (this->type) {
         case 0:
-            
-            if (CVarGetInteger("gNewDrops", 0) !=0) {
+
+            if (CVarGetInteger("gNewDrops", 0) != 0) {
                 this->unk_160 = 0.3f;
             } else {
                 this->unk_160 = 0.01f;
@@ -105,7 +105,7 @@ void EnExRuppy_Init(Actor* thisx, PlayState* play) {
                     }
                 }
             }
-            if (CVarGetInteger("gNewDrops", 0) !=0) {
+            if (CVarGetInteger("gNewDrops", 0) != 0) {
                 this->actor.shape.shadowScale = 0.3f;
                 this->actor.shape.yOffset = 35.0f;
             } else {
@@ -123,14 +123,14 @@ void EnExRuppy_Init(Actor* thisx, PlayState* play) {
         case 2: // Giant pink ruppe that explodes when you touch it
             if (this->type == 1) {
                 this->colorIdx = 4;
-                if (CVarGetInteger("gNewDrops", 0) !=0) {
+                if (CVarGetInteger("gNewDrops", 0) != 0) {
                     Actor_SetScale(&this->actor, 2.0f);
                 } else {
                     Actor_SetScale(&this->actor, 0.1f);
                 }
             } else {
                 this->colorIdx = (s16)Rand_ZeroFloat(3.99f) + 1;
-                if (CVarGetInteger("gNewDrops", 0) !=0) {
+                if (CVarGetInteger("gNewDrops", 0) != 0) {
                     Actor_SetScale(thisx, 0.4f);
                 } else {
                     Actor_SetScale(thisx, 0.02f);
@@ -139,7 +139,7 @@ void EnExRuppy_Init(Actor* thisx, PlayState* play) {
             this->actor.gravity = -3.0f;
             // "Wow Coin"
             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ わーなーコイン ☆☆☆☆☆ \n" VT_RST);
-            if (CVarGetInteger("gNewDrops", 0) !=0) {
+            if (CVarGetInteger("gNewDrops", 0) != 0) {
                 this->actor.shape.shadowScale = 0.3f;
                 this->actor.shape.yOffset = 35.0f;
             } else {
@@ -151,7 +151,7 @@ void EnExRuppy_Init(Actor* thisx, PlayState* play) {
             break;
 
         case 3: // Spawned by the guard in Hyrule courtyard
-            if (CVarGetInteger("gNewDrops", 0) !=0) {
+            if (CVarGetInteger("gNewDrops", 0) != 0) {
                 Actor_SetScale(&this->actor, 0.4f);
             } else {
                 Actor_SetScale(&this->actor, 0.02f);
@@ -170,7 +170,7 @@ void EnExRuppy_Init(Actor* thisx, PlayState* play) {
             this->actor.gravity = -3.0f;
             // "Normal rupee"
             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ ノーマルルピー ☆☆☆☆☆ \n" VT_RST);
-            if (CVarGetInteger("gNewDrops", 0) !=0) {
+            if (CVarGetInteger("gNewDrops", 0) != 0) {
                 this->actor.shape.shadowScale = 0.3f;
                 this->actor.shape.yOffset = 35.0f;
             } else {
@@ -184,7 +184,7 @@ void EnExRuppy_Init(Actor* thisx, PlayState* play) {
         case 4: // Progress markers in the shooting gallery
             this->actor.gravity = -3.0f;
             this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
-            if (CVarGetInteger("gNewDrops", 0) !=0) {
+            if (CVarGetInteger("gNewDrops", 0) != 0) {
                 Actor_SetScale(&this->actor, 0.3f);
                 this->actor.shape.shadowScale = 0.3f;
                 this->actor.shape.yOffset = -1365.0f;
@@ -205,14 +205,14 @@ void EnExRuppy_Destroy(Actor* thisx, PlayState* play) {
 void EnExRuppy_SpawnSparkles(EnExRuppy* this, PlayState* play, s16 numSparkles, s32 movementType) {
     static Vec3f velocities[] = { { 0.0f, 0.1f, 0.0f }, { 0.0f, 0.0f, 0.0f } };
     static Vec3f accelerations[] = { { 0.0f, 0.01f, 0.0f }, { 0.0f, 0.0f, 0.0f } };
-    Vec3f pos;
-    Vec3f velocity;
-    Vec3f accel;
-    Color_RGBA8 primColor;
-    Color_RGBA8 envColor;
-    s32 i;
-    s16 scale;
-    s16 life;
+    Vec3f        pos;
+    Vec3f        velocity;
+    Vec3f        accel;
+    Color_RGBA8  primColor;
+    Color_RGBA8  envColor;
+    s32          i;
+    s16          scale;
+    s16          life;
 
     if (numSparkles < 1) {
         numSparkles = 1;
@@ -264,7 +264,7 @@ void EnExRuppy_DropIntoWater(EnExRuppy* this, PlayState* play) {
 
 void EnExRuppy_EnterWater(EnExRuppy* this, PlayState* play) {
     EnDivingGame* divingGame = (EnDivingGame*)this->actor.parent;
-    f32 temp_f2;
+    f32           temp_f2;
 
     if ((divingGame != NULL) && (divingGame->actor.update != NULL) && (divingGame->unk_2A2 == 2)) {
         this->invisible = false;
@@ -285,8 +285,8 @@ void EnExRuppy_EnterWater(EnExRuppy* this, PlayState* play) {
 
 void EnExRuppy_Sink(EnExRuppy* this, PlayState* play) {
     EnDivingGame* divingGame;
-    Vec3f pos;
-    s32 pad;
+    Vec3f         pos;
+    s32           pad;
 
     if ((this->actor.bgCheckFlags & 0x20) && (this->actor.yDistToWater > 15.0f)) {
         pos = this->actor.world.pos;
@@ -306,9 +306,9 @@ void EnExRuppy_Sink(EnExRuppy* this, PlayState* play) {
 
 void EnExRuppy_WaitInGame(EnExRuppy* this, PlayState* play) {
     EnDivingGame* divingGame;
-    Vec3f D_80A0B388 = { 0.0f, 0.1f, 0.0f };
-    Vec3f D_80A0B394 = { 0.0f, 0.0f, 0.0f };
-    f32 localConst = 30.0f;
+    Vec3f         D_80A0B388 = { 0.0f, 0.1f, 0.0f };
+    Vec3f         D_80A0B394 = { 0.0f, 0.0f, 0.0f };
+    f32           localConst = 30.0f;
 
     if (this->timer == 0) {
         this->timer = 10;
@@ -342,17 +342,17 @@ void EnExRuppy_Kill(EnExRuppy* this, PlayState* play) {
 
 typedef struct {
     /* 0x000 */ Actor actor;
-    /* 0x14C */ char unk_14C[0x11A];
-    /* 0x226 */ s16 unk_226;
+    /* 0x14C */ char  unk_14C[0x11A];
+    /* 0x226 */ s16   unk_226;
 } EnExRuppyParentActor; // Unclear what actor was intended to spawn this.
 
 void EnExRuppy_WaitToBlowUp(EnExRuppy* this, PlayState* play) {
     EnExRuppyParentActor* parent;
-    Vec3f accel = { 0.0f, 0.1f, 0.0f };
-    Vec3f velocity = { 0.0f, 0.0f, 0.0f };
-    f32 distToBlowUp = 50.0f;
-    s16 explosionScale;
-    s16 explosionScaleStep;
+    Vec3f                 accel = { 0.0f, 0.1f, 0.0f };
+    Vec3f                 velocity = { 0.0f, 0.0f, 0.0f };
+    f32                   distToBlowUp = 50.0f;
+    s16                   explosionScale;
+    s16                   explosionScaleStep;
 
     if (this->type == 2) {
         distToBlowUp = 30.0f;
@@ -374,8 +374,7 @@ void EnExRuppy_WaitToBlowUp(EnExRuppy* this, PlayState* play) {
             explosionScale = 20;
             explosionScaleStep = 6;
         }
-        EffectSsBomb2_SpawnLayered(play, &this->actor.world.pos, &velocity, &accel, explosionScale,
-                                   explosionScaleStep);
+        EffectSsBomb2_SpawnLayered(play, &this->actor.world.pos, &velocity, &accel, explosionScale, explosionScaleStep);
         func_8002F71C(play, &this->actor, 2.0f, this->actor.yawTowardsPlayer, 0.0f);
         Audio_PlayActorSound2(&this->actor, NA_SE_IT_BOMB_EXPLOSION);
         Actor_Kill(&this->actor);
@@ -393,7 +392,7 @@ void EnExRuppy_WaitAsCollectible(EnExRuppy* this, PlayState* play) {
 }
 
 void EnExRuppy_GalleryTarget(EnExRuppy* this, PlayState* play) {
-    if (CVarGetInteger("gNewDrops", 0) !=0) {
+    if (CVarGetInteger("gNewDrops", 0) != 0) {
         if (this->galleryFlag) {
             Math_ApproachF(&this->actor.shape.yOffset, 35.0f, 0.5f, 200.0f);
         } else {
@@ -436,10 +435,10 @@ void EnExRuppy_Draw(Actor* thisx, PlayState* play) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         func_8002EBCC(thisx, play, 0);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        if (CVarGetInteger("gNewDrops", 0) !=0) {
+        if (CVarGetInteger("gNewDrops", 0) != 0) {
             if (this->type == 4 && this->colorIdx >= 3) {
-                //For some reason the red rupee target become purple.
-                //when using new drops it will show as Gold and that wrong it need to be red.
+                // For some reason the red rupee target become purple.
+                // when using new drops it will show as Gold and that wrong it need to be red.
                 this->colorIdx = 2;
             }
             GetItem_Draw(play, rupeeTexturesNew[this->colorIdx]);

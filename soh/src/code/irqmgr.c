@@ -1,10 +1,10 @@
 #include "global.h"
 #include "vt.h"
 
-vu32 gIrqMgrResetStatus = 0;
+vu32            gIrqMgrResetStatus = 0;
 volatile OSTime sIrqMgrResetTime = 0;
 volatile OSTime gIrqMgrRetraceTime = 0;
-u32 sIrqMgrRetraceCount = 0;
+u32             sIrqMgrRetraceCount = 0;
 
 #define RETRACE_MSG 666
 #define PRE_NMI_MSG 669
@@ -43,7 +43,7 @@ void IrqMgr_AddClient(IrqMgr* this, IrqMgrClient* c, OSMesgQueue* msgQ) {
 void IrqMgr_RemoveClient(IrqMgr* this, IrqMgrClient* c) {
     IrqMgrClient* iter = this->clients;
     IrqMgrClient* lastIter = NULL;
-    OSIntMask prevInt;
+    OSIntMask     prevInt;
 
     LOG_CHECK_NULL_POINTER("this", this);
     LOG_CHECK_NULL_POINTER("c", c);

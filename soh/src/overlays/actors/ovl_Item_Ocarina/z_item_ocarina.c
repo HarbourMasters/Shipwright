@@ -58,7 +58,8 @@ void ItemOcarina_Init(Actor* thisx, PlayState* play) {
             break;
         case 3:
             ItemOcarina_SetupAction(this, ItemOcarina_WaitInWater);
-            if (!Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE) || (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_OCARINA_OF_TIME))) {
+            if (!Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE) ||
+                (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_OCARINA_OF_TIME))) {
                 Actor_Kill(thisx);
                 return;
             }

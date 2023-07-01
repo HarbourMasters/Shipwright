@@ -22,9 +22,9 @@ class SetActorList : public SceneCommand<ActorEntry> {
     using SceneCommand::SceneCommand;
 
     ActorEntry* GetPointer();
-    size_t GetPointerSize();
+    size_t      GetPointerSize();
 
-    uint32_t numActors;
+    uint32_t                numActors;
     std::vector<ActorEntry> actorList;
 };
 }; // namespace LUS

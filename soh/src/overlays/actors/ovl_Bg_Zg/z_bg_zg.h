@@ -11,8 +11,8 @@ typedef void (*BgZgDrawFunc)(struct BgZg*, PlayState*);
 
 typedef struct BgZg {
     /* 0x0000 */ DynaPolyActor dyna;
-    /* 0x0164 */ s32 action;
-    /* 0x0168 */ s32 drawConfig;
+    /* 0x0164 */ s32           action;
+    /* 0x0168 */ s32           drawConfig;
 } BgZg; // size = 0x016C
 
 #endif

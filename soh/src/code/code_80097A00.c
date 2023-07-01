@@ -190,8 +190,8 @@ void Inventory_ChangeEquipment(s16 equipment, u16 value) {
 
 u8 Inventory_DeleteEquipment(PlayState* play, s16 equipment) {
     Player* player = GET_PLAYER(play);
-    s32 pad;
-    u16 sp26 = gSaveContext.equips.equipment & gEquipMasks[equipment];
+    s32     pad;
+    u16     sp26 = gSaveContext.equips.equipment & gEquipMasks[equipment];
 
     // "Erasing equipment item = %d  zzz=%d"
     osSyncPrintf("装備アイテム抹消 = %d  zzz=%d\n", equipment, sp26);

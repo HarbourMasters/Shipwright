@@ -85,7 +85,7 @@ static CollisionCheckInfoInit sColChkInfoInit = { 10, 35, 100, MASS_HEAVY };
 
 typedef struct {
     /* 0x0 */ Vec3s unk_0;
-    /* 0x6 */ u8 unk_6;
+    /* 0x6 */ u8    unk_6;
 } unknownStruct; // size = 0x8
 
 static unknownStruct D_80A6E240[] = {
@@ -112,9 +112,9 @@ void func_80A6D8D0(unknownStruct* data, s32 index, Vec3f* vec) {
 }
 
 void func_80A6D918(EnHorseZelda* this, PlayState* play) {
-    s32 pad;
+    s32   pad;
     Vec3f sp28;
-    s16 yawDiff;
+    s16   yawDiff;
 
     func_80A6D8D0(D_80A6E240, this->unk_1EC, &sp28);
     if (Math3D_Vec3f_DistXYZ(&sp28, &this->actor.world.pos) <= 400.0f) {
@@ -214,11 +214,11 @@ void func_80A6DDFC(EnHorseZelda* this, PlayState* play) {
 }
 
 void func_80A6DE38(EnHorseZelda* this, PlayState* play) {
-    s32 pad;
+    s32            pad;
     CollisionPoly* poly;
-    s32 pad2;
-    Vec3f pos;
-    s32 bgId;
+    s32            pad2;
+    Vec3f          pos;
+    s32            bgId;
 
     pos.x = (Math_SinS(this->actor.shape.rot.y) * 30.0f) + this->actor.world.pos.x;
     pos.y = this->actor.world.pos.y + 60.0f;

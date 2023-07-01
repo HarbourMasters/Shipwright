@@ -122,9 +122,9 @@ void BgJyaGoroiwa_SetupMove(BgJyaGoroiwa* this) {
 
 void BgJyaGoroiwa_Move(BgJyaGoroiwa* this, PlayState* play) {
     Actor* thisx = &this->actor;
-    s16 relYawTowardsPlayer;
-    f32 speedXZsqBase = (-100.0f - thisx->world.pos.y) * 2.5f;
-    f32 posYfac;
+    s16    relYawTowardsPlayer;
+    f32    speedXZsqBase = (-100.0f - thisx->world.pos.y) * 2.5f;
+    f32    posYfac;
 
     if (speedXZsqBase < 0.01f) {
         speedXZsqBase = 0.01f;
@@ -198,8 +198,8 @@ void BgJyaGoroiwa_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     BgJyaGoroiwa* this = (BgJyaGoroiwa*)thisx;
     Player* player = GET_PLAYER(play);
-    s32 bgId;
-    Vec3f pos;
+    s32     bgId;
+    Vec3f   pos;
 
     if (!(player->stateFlags1 & 0x300000C0)) {
         this->actionFunc(this, play);

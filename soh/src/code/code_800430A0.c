@@ -2,9 +2,9 @@
 #include "vt.h"
 
 void func_800430A0(CollisionContext* colCtx, s32 bgId, Actor* actor) {
-    MtxF prevTransform;
-    MtxF prevTransformInv;
-    MtxF curTransform;
+    MtxF  prevTransform;
+    MtxF  prevTransformInv;
+    MtxF  curTransform;
     Vec3f pos;
     Vec3f tempPos;
 
@@ -74,7 +74,7 @@ void func_80043334(CollisionContext* colCtx, Actor* actor, s32 bgId) {
  * `actor` is the actor to update
  */
 s32 func_800433A4(CollisionContext* colCtx, s32 bgId, Actor* actor) {
-    s32 result = false;
+    s32            result = false;
     DynaPolyActor* dynaActor;
 
     if (DynaPoly_IsBgIdBgActor(bgId) == false) {

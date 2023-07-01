@@ -8,25 +8,22 @@
 #define MAX_CVARS 2048
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
-typedef enum
-{
+typedef enum {
     CONSOLECOMMAND_RESULT_SUCCESS,
     CONSOLECOMMAND_RESULT_INVALIDARGS,
     CONSOLECOMMAND_RESULT_INVALIDCOMMAND,
     CONSOLECOMMAND_RESULT_FAILURE
 } ConsoleCommandResult;
 
-typedef ConsoleCommandResult(*ConsoleCommandFunc)(char** argv, s32 argc); // Returns the number of arguments it read
+typedef ConsoleCommandResult (*ConsoleCommandFunc)(char** argv, s32 argc); // Returns the number of arguments it read
 
-typedef struct ConsoleCommand
-{
-    char* name;
+typedef struct ConsoleCommand {
+    char*              name;
     ConsoleCommandFunc func;
-    char* description;
+    char*              description;
 } ConsoleCommand;
 
 extern PlayState* gPlayState;

@@ -9,8 +9,8 @@
 
 namespace LUS {
 typedef struct {
-  int8_t cameraMovement;
-  int32_t worldMapArea;
+    int8_t  cameraMovement;
+    int32_t worldMapArea;
 } CameraSettings;
 
 class SetCameraSettings : public SceneCommand<CameraSettings> {
@@ -18,7 +18,7 @@ class SetCameraSettings : public SceneCommand<CameraSettings> {
     using SceneCommand::SceneCommand;
 
     CameraSettings* GetPointer();
-    size_t GetPointerSize();
+    size_t          GetPointerSize();
 
     CameraSettings settings;
 };

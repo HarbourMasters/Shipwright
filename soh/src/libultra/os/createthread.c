@@ -8,7 +8,7 @@ OSThread* __osFaultedThread = NULL;
 
 void osCreateThread(OSThread* thread, OSId id, void (*entry)(void*), void* arg, void* sp, OSPri pri) {
     register u32 prevInt;
-    OSIntMask mask;
+    OSIntMask    mask;
 
     thread->id = id;
     thread->priority = pri;

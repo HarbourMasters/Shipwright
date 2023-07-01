@@ -2,7 +2,7 @@
 #include <libultraship/libultra.h>
 #include "global.h"
 
-#define ROUND(num) floorf((num) * 100) / 100;
+#define ROUND(num) floorf((num)*100) / 100;
 
 void Audio_SequenceChannelProcessSound(SequenceChannel* channel, s32 recalculateVolume, s32 b) {
     f32 channelVolume;
@@ -109,13 +109,13 @@ s16 Audio_GetVibratoPitchChange(VibratoState* vib) {
 }
 
 f32 Audio_GetVibratoFreqScale(VibratoState* vib) {
-    static f32 D_80130510 = 0.0f;
-    static s32 D_80130514 = 0;
-    f32 pitchChange;
-    f32 extent;
-    f32 invExtent;
-    f32 result;
-    f32 temp;
+    static f32       D_80130510 = 0.0f;
+    static s32       D_80130514 = 0;
+    f32              pitchChange;
+    f32              extent;
+    f32              invExtent;
+    f32              result;
+    f32              temp;
     SequenceChannel* channel = vib->channel;
 
     if (vib->delay != 0) {
@@ -182,7 +182,7 @@ void Audio_NoteVibratoUpdate(Note* note) {
 }
 
 void Audio_NoteVibratoInit(Note* note) {
-    VibratoState* vib;
+    VibratoState*    vib;
     SequenceChannel* channel;
 
     note->playbackState.vibratoFreqScale = 1.0f;

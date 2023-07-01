@@ -140,9 +140,9 @@ static void CrashHandler_WriteActorData(char* buffer, size_t* pos) {
     for (unsigned int i = 0; i < ACTORCAT_MAX; i++) {
 
         ActorListEntry* entry = &gPlayState->actorCtx.actorLists[i];
-        Actor* cur;
+        Actor*          cur;
 
-        if(entry->length == 0) {
+        if (entry->length == 0) {
             continue;
         }
         WRITE_VAR_LINE(buffer, pos, "Actor Cat: ", sCatToStrArray[i]);
@@ -170,7 +170,7 @@ extern "C" void CrashHandler_PrintSohData(char* buffer, size_t* pos) {
     if (gPlayState != nullptr) {
         append_line(buffer, pos, "Actors:");
         CrashHandler_WriteActorData(buffer, pos);
-        
+
         WRITE_VAR_LINE(buffer, pos, "Scene: ", sSceneIdToStrArray[gPlayState->sceneNum]);
 
         snprintf(intCharBuffer, sizeof(intCharBuffer), "%i", gPlayState->roomCtx.curRoom.num);

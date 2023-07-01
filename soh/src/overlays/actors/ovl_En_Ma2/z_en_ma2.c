@@ -1,7 +1,9 @@
 #include "z_en_ma2.h"
 #include "objects/object_ma2/object_ma2.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
+#define FLAGS                                                                                                      \
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | \
+     ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void EnMa2_Init(Actor* thisx, PlayState* play);
 void EnMa2_Destroy(Actor* thisx, PlayState* play);
@@ -12,7 +14,7 @@ u16 func_80AA19A0(PlayState* play, Actor* this);
 s16 func_80AA1A38(PlayState* play, Actor* this);
 
 void func_80AA1AE4(EnMa2* this, PlayState* play);
-s32 func_80AA1C68(EnMa2* this);
+s32  func_80AA1C68(EnMa2* this);
 void EnMa2_UpdateEyes(EnMa2* this);
 void func_80AA1DB4(EnMa2* this, PlayState* play);
 void func_80AA2018(EnMa2* this, PlayState* play);
@@ -124,7 +126,7 @@ s16 func_80AA1A38(PlayState* play, Actor* thisx) {
 
 void func_80AA1AE4(EnMa2* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s16 trackingMode;
+    s16     trackingMode;
 
     if ((this->interactInfo.talkState == NPC_TALK_STATE_IDLE) && (this->skelAnime.animation == &gMalonAdultSingAnim)) {
         trackingMode = NPC_TRACKING_NONE;
@@ -374,8 +376,8 @@ void EnMa2_Draw(Actor* thisx, PlayState* play) {
 
     EnMa2* this = (EnMa2*)thisx;
     Camera* camera;
-    f32 someFloat;
-    s32 pad;
+    f32     someFloat;
+    s32     pad;
 
     OPEN_DISPS(play->state.gfxCtx);
 

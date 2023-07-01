@@ -106,7 +106,7 @@ void DemoSa_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_8098E480(DemoSa* this) {
-    s32 pad[2];
+    s32  pad[2];
     s16* eyeIndex = &this->eyeIndex;
     s16* blinkTimer = &this->blinkTimer;
 
@@ -225,22 +225,20 @@ void func_8098E7FC(DemoSa* this, PlayState* play) {
 
 void func_8098E86C(DemoSa* this, PlayState* play) {
     Vec3f* world = &this->actor.world.pos;
-    f32 posX = world->x;
-    f32 posY = world->y;
-    f32 posZ = world->z;
+    f32    posX = world->x;
+    f32    posY = world->y;
+    f32    posZ = world->z;
 
-    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0, 0,
-                       WARP_SAGES);
+    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0, 0, WARP_SAGES);
 }
 
 void func_8098E8C8(DemoSa* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 posX = player->actor.world.pos.x;
-    f32 posY = player->actor.world.pos.y + 80.0f;
-    f32 posZ = player->actor.world.pos.z;
+    f32     posX = player->actor.world.pos.x;
+    f32     posY = player->actor.world.pos.y + 80.0f;
+    f32     posZ = player->actor.world.pos.z;
 
-    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_EFFECT, posX, posY, posZ, 0, 0, 0,
-                       0xB);
+    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_EFFECT, posX, posY, posZ, 0, 0, 0, 0xB);
     Item_Give(play, ITEM_MEDALLION_FOREST);
 }
 
@@ -249,7 +247,7 @@ void func_8098E944(DemoSa* this, PlayState* play) {
 }
 
 void func_8098E960(DemoSa* this, PlayState* play) {
-    s32 pad[2];
+    s32     pad[2];
     Player* player;
 
     if ((gSaveContext.chamberCutsceneNum == 0) && (gSaveContext.sceneSetupIndex < 4)) {
@@ -360,9 +358,9 @@ void func_8098ECCC(DemoSa* this, PlayState* play) {
 }
 
 void func_8098ECF4(DemoSa* this, PlayState* play) {
-    s32 pad[2];
+    s32        pad[2];
     SkelAnime* skelAnime = &this->skelAnime;
-    f32 frameCount = Animation_GetLastFrame(&gSariaSealGanonAnim);
+    f32        frameCount = Animation_GetLastFrame(&gSariaSealGanonAnim);
 
     SkelAnime_InitFlex(play, skelAnime, &gSariaSkel, NULL, NULL, NULL, 0);
     Animation_Change(skelAnime, &gSariaSealGanonAnim, 1.0f, 0.0f, frameCount, ANIMMODE_ONCE, 0.0f);
@@ -402,7 +400,7 @@ void func_8098EEA8(DemoSa* this, PlayState* play) {
 }
 
 void func_8098EEFC(DemoSa* this, PlayState* play) {
-    s32 alpha = 255;
+    s32  alpha = 255;
     f32* unk_1A0 = &this->unk_1A0;
 
     if (func_8098E654(this, play, 4, 4)) {
@@ -465,12 +463,12 @@ void func_8098F16C(DemoSa* this, PlayState* play) {
 }
 
 void DemoSa_DrawXlu(DemoSa* this, PlayState* play) {
-    s32 pad[2];
-    s16 eyeIndex = this->eyeIndex;
-    void* sp78 = sEyeTextures[eyeIndex];
-    s16 mouthIndex = this->mouthIndex;
-    s32 pad2;
-    void* sp6C = sMouthTextures[mouthIndex];
+    s32        pad[2];
+    s16        eyeIndex = this->eyeIndex;
+    void*      sp78 = sEyeTextures[eyeIndex];
+    s16        mouthIndex = this->mouthIndex;
+    s32        pad2;
+    void*      sp6C = sMouthTextures[mouthIndex];
     SkelAnime* skelAnime = &this->skelAnime;
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -483,8 +481,8 @@ void DemoSa_DrawXlu(DemoSa* this, PlayState* play) {
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, this->alpha);
     gSPSegment(POLY_XLU_DISP++, 0x0C, D_80116280);
 
-    POLY_XLU_DISP = SkelAnime_DrawFlex(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                                       NULL, NULL, NULL, POLY_XLU_DISP);
+    POLY_XLU_DISP = SkelAnime_DrawFlex(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL,
+                                       NULL, NULL, POLY_XLU_DISP);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -509,9 +507,9 @@ void func_8098F420(DemoSa* this, PlayState* play) {
 }
 
 void func_8098F480(DemoSa* this) {
-    s32 alpha = 255;
+    s32  alpha = 255;
     f32* unk_1A0 = &this->unk_1A0;
-    f32 temp_f0;
+    f32  temp_f0;
 
     *unk_1A0 += 1.0f;
     temp_f0 = kREG(17) + 10.0f;
@@ -554,8 +552,8 @@ void func_8098F610(DemoSa* this, s32 arg1) {
 }
 
 void func_8098F654(DemoSa* this, PlayState* play) {
-    s32 unk_1AC;
-    s32 action;
+    s32               unk_1AC;
+    s32               action;
     CsCmdActorAction* npcAction = DemoSa_GetNpcAction(play, 4);
 
     if (npcAction != NULL) {
@@ -619,8 +617,8 @@ void func_8098F83C(DemoSa* this, PlayState* play) {
     Vec3f* thisPos = &this->actor.world.pos;
 
     SkelAnime_InitFlex(play, &this->skelAnime, &gSariaSkel, &gSariaWaitOnBridgeAnim, NULL, NULL, 0);
-    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_ELF, thisPos->x, thisPos->y, thisPos->z,
-                       0, 0, 0, FAIRY_KOKIRI);
+    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_ELF, thisPos->x, thisPos->y, thisPos->z, 0, 0, 0,
+                       FAIRY_KOKIRI);
     this->action = 16;
     this->drawConfig = 0;
     this->actor.shape.shadowAlpha = 0;
@@ -629,9 +627,9 @@ void func_8098F83C(DemoSa* this, PlayState* play) {
 }
 
 void func_8098F8F8(DemoSa* this) {
-    s32 alpha = 255;
+    s32  alpha = 255;
     f32* unk_1A0 = &this->unk_1A0;
-    f32 temp_f0;
+    f32  temp_f0;
 
     *unk_1A0 += 1.0f;
     temp_f0 = kREG(17) + 10.0f;
@@ -699,8 +697,8 @@ void func_8098FB34(DemoSa* this, s32 arg1) {
 }
 
 void func_8098FB68(DemoSa* this, PlayState* play) {
-    s32 unk_1AC;
-    s32 action;
+    s32               unk_1AC;
+    s32               action;
     CsCmdActorAction* npcAction = DemoSa_GetNpcAction(play, 1);
 
     if (npcAction != NULL) {
@@ -803,12 +801,12 @@ void DemoSa_DrawNothing(DemoSa* this, PlayState* play) {
 }
 
 void DemoSa_DrawOpa(DemoSa* this, PlayState* play) {
-    s32 pad[2];
-    s16 eyeIndex = this->eyeIndex;
-    void* eyeTex = sEyeTextures[eyeIndex];
-    s32 pad2;
-    s16 mouthIndex = this->mouthIndex;
-    void* mouthTex = sMouthTextures[mouthIndex];
+    s32        pad[2];
+    s16        eyeIndex = this->eyeIndex;
+    void*      eyeTex = sEyeTextures[eyeIndex];
+    s32        pad2;
+    s16        mouthIndex = this->mouthIndex;
+    void*      mouthTex = sMouthTextures[mouthIndex];
     SkelAnime* skelAnime = &this->skelAnime;
 
     OPEN_DISPS(play->state.gfxCtx);

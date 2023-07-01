@@ -192,7 +192,7 @@ void func_8096D64C(DemoEc* this, PlayState* play) {
 }
 
 void DemoEc_UpdateEyes(DemoEc* this) {
-    s32 pad[3];
+    s32  pad[3];
     s16* blinkTimer = &this->blinkTimer;
     s16* eyeTexIndex = &this->eyeTexIndex;
 
@@ -216,11 +216,11 @@ void DemoEc_InitSkelAnime(DemoEc* this, PlayState* play, FlexSkeletonHeader* ske
 }
 
 void DemoEc_ChangeAnimation(DemoEc* this, AnimationHeader* animation, u8 mode, f32 transitionRate, s32 reverse) {
-    f32 frameCount;
-    f32 startFrame;
+    f32              frameCount;
+    f32              startFrame;
     AnimationHeader* anim;
-    f32 playbackSpeed;
-    s16 frameCountS;
+    f32              playbackSpeed;
+    s16              frameCountS;
 
     anim = SEGMENTED_TO_VIRTUAL(animation);
     frameCountS = Animation_GetLastFrame(anim);
@@ -248,11 +248,11 @@ Gfx* DemoEc_AllocColorDList(GraphicsContext* gfxCtx, u8* color) {
     return dList;
 }
 
-void DemoEc_DrawSkeleton(DemoEc* this, PlayState* play, void* eyeTexture, void* arg3,
-                         OverrideLimbDraw overrideLimbDraw, PostLimbDraw postLimbDraw) {
+void DemoEc_DrawSkeleton(DemoEc* this, PlayState* play, void* eyeTexture, void* arg3, OverrideLimbDraw overrideLimbDraw,
+                         PostLimbDraw postLimbDraw) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    SkelAnime* skelAnime = &this->skelAnime;
-    s32 pad;
+    SkelAnime*       skelAnime = &this->skelAnime;
+    s32              pad;
 
     OPEN_DISPS(gfxCtx);
 
@@ -274,11 +274,11 @@ void DemoEc_DrawSkeleton(DemoEc* this, PlayState* play, void* eyeTexture, void* 
     CLOSE_DISPS(gfxCtx);
 }
 
-void DemoEc_DrawSkeletonCustomColor(DemoEc* this, PlayState* play, Gfx* arg2, Gfx* arg3, u8* color1,
-                                    u8* color2, OverrideLimbDraw overrideLimbDraw, PostLimbDraw postLimbDraw) {
-    s32 pad;
+void DemoEc_DrawSkeletonCustomColor(DemoEc* this, PlayState* play, Gfx* arg2, Gfx* arg3, u8* color1, u8* color2,
+                                    OverrideLimbDraw overrideLimbDraw, PostLimbDraw postLimbDraw) {
+    s32              pad;
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    SkelAnime* skelAnime = &this->skelAnime;
+    SkelAnime*       skelAnime = &this->skelAnime;
 
     OPEN_DISPS(gfxCtx);
 
@@ -312,8 +312,8 @@ void DemoEc_DrawSkeletonCustomColor(DemoEc* this, PlayState* play, Gfx* arg2, Gf
 }
 
 void DemoEc_UseDrawObject(DemoEc* this, PlayState* play) {
-    s32 pad[2];
-    s32 drawObjBankIndex = this->drawObjBankIndex;
+    s32              pad[2];
+    s32              drawObjBankIndex = this->drawObjBankIndex;
     GraphicsContext* gfxCtx = play->state.gfxCtx;
 
     OPEN_DISPS(gfxCtx);
@@ -488,10 +488,10 @@ void DemoEc_UpdateDancingKokiriGirl(DemoEc* this, PlayState* play) {
 
 void DemoEc_DrawKokiriGirl(DemoEc* this, PlayState* play) {
     static void* eyeTextures[] = { gKw1EyeOpenTex, gKw1EyeHalfTex, gKw1EyeClosedTex };
-    static u8 color1[] = { 70, 190, 60, 255 };
-    static u8 color2[] = { 100, 30, 0, 255 };
-    s32 eyeTexIndex = this->eyeTexIndex;
-    void* eyeTexture = eyeTextures[eyeTexIndex];
+    static u8    color1[] = { 70, 190, 60, 255 };
+    static u8    color2[] = { 100, 30, 0, 255 };
+    s32          eyeTexIndex = this->eyeTexIndex;
+    void*        eyeTexture = eyeTextures[eyeTexIndex];
 
     DemoEc_DrawSkeletonCustomColor(this, play, eyeTexture, NULL, color1, color2, NULL, NULL);
 }
@@ -521,8 +521,8 @@ void DemoEc_DrawOldMan(DemoEc* this, PlayState* play) {
     };
     static u8 color1[] = { 0, 50, 100, 255 };
     static u8 color2[] = { 0, 50, 160, 255 };
-    s32 eyeTexIndex = this->eyeTexIndex;
-    void* eyeTexture = eyeTextures[eyeTexIndex];
+    s32       eyeTexIndex = this->eyeTexIndex;
+    void*     eyeTexture = eyeTextures[eyeTexIndex];
 
     DemoEc_DrawSkeletonCustomColor(this, play, eyeTexture, NULL, color1, color2, NULL, NULL);
 }
@@ -553,8 +553,8 @@ void DemoEc_DrawBeardedMan(DemoEc* this, PlayState* play) {
     };
     static u8 color1[] = { 255, 255, 255, 255 };
     static u8 color2[] = { 255, 255, 255, 255 };
-    s32 eyeTexIndex = this->eyeTexIndex;
-    void* eyeTexture = eyeTextures[eyeTexIndex];
+    s32       eyeTexIndex = this->eyeTexIndex;
+    void*     eyeTexture = eyeTextures[eyeTexIndex];
 
     DemoEc_DrawSkeletonCustomColor(this, play, eyeTexture, NULL, color1, color2, NULL, NULL);
 }
@@ -583,7 +583,7 @@ void DemoEc_DrawWoman(DemoEc* this, PlayState* play) {
         object_bob_Tex_000FC8,
         object_bob_Tex_0017C8,
     };
-    s32 eyeTexIndex = this->eyeTexIndex;
+    s32   eyeTexIndex = this->eyeTexIndex;
     void* eyeTexture = eyeTextures[eyeTexIndex];
 
     DemoEc_DrawSkeleton(this, play, eyeTexture, NULL, NULL, NULL);
@@ -648,8 +648,8 @@ void DemoEc_UpdateCarpenter(DemoEc* this, PlayState* play) {
     DemoEc_UpdateBgFlags(this, play);
 }
 
-s32 DemoEc_CarpenterOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                     void* thisx, Gfx** gfx) {
+s32 DemoEc_CarpenterOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
+                                     Gfx** gfx) {
     DemoEc* this = (DemoEc*)thisx;
 
     if (limbIndex == 1) {
@@ -689,8 +689,7 @@ Gfx* DemoEc_GetCarpenterPostLimbDList(DemoEc* this) {
     }
 }
 
-void DemoEc_CarpenterPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx,
-                                  Gfx** gfx) {
+void DemoEc_CarpenterPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx, Gfx** gfx) {
     DemoEc* this = (DemoEc*)thisx;
     Gfx* postLimbDList;
 
@@ -736,8 +735,7 @@ Gfx* DemoEc_GetGerudoPostLimbDList(DemoEc* this) {
     }
 }
 
-void DemoEc_GerudoPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx,
-                               Gfx** gfx) {
+void DemoEc_GerudoPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx, Gfx** gfx) {
     DemoEc* this = (DemoEc*)thisx;
     Gfx* postLimbDList;
 
@@ -753,7 +751,7 @@ void DemoEc_DrawGerudo(DemoEc* this, PlayState* play) {
         gGerudoWhiteEyeHalfTex,
         gGerudoWhiteEyeClosedTex,
     };
-    s32 eyeTexIndex = this->eyeTexIndex;
+    s32   eyeTexIndex = this->eyeTexIndex;
     void* eyeTexture = eyeTextures[eyeTexIndex];
 
     DemoEc_DrawSkeleton(this, play, eyeTexture, NULL, NULL, DemoEc_GerudoPostLimbDraw);
@@ -779,8 +777,8 @@ void DemoEc_UpdateDancingZora(DemoEc* this, PlayState* play) {
 
 void DemoEc_DrawDancingZora(DemoEc* this, PlayState* play) {
     static void* eyeTextures[] = { gZoraEyeOpenTex, gZoraEyeHalfTex, gZoraEyeClosedTex };
-    s32 eyeTexIndex = this->eyeTexIndex;
-    void* eyeTexture = eyeTextures[eyeTexIndex];
+    s32          eyeTexIndex = this->eyeTexIndex;
+    void*        eyeTexture = eyeTextures[eyeTexIndex];
 
     DemoEc_DrawSkeleton(this, play, eyeTexture, NULL, NULL, NULL);
 }
@@ -822,7 +820,7 @@ void func_8096F26C(DemoEc* this, s32 arg1) {
 
 void func_8096F2B0(DemoEc* this, PlayState* play, s32 arg2) {
     CsCmdActorAction* npcAction;
-    s32 sp18;
+    s32               sp18;
 
     npcAction = DemoEc_GetNpcAction(play, arg2);
 
@@ -864,8 +862,8 @@ void func_8096F3D4(DemoEc* this, PlayState* play) {
 
 void DemoEc_DrawKingZora(DemoEc* this, PlayState* play) {
     static void* eyeTextures[] = { gKzEyeOpenTex, gKzEyeHalfTex, gKzEyeClosedTex, gKzEyeOpen2Tex };
-    s32 eyeTexIndex = this->eyeTexIndex;
-    void* eyeTexture = eyeTextures[eyeTexIndex];
+    s32          eyeTexIndex = this->eyeTexIndex;
+    void*        eyeTexture = eyeTextures[eyeTexIndex];
 
     DemoEc_DrawSkeleton(this, play, eyeTexture, NULL, NULL, NULL);
 }
@@ -896,7 +894,7 @@ void func_8096F544(DemoEc* this, s32 changeAnim) {
 
 void func_8096F578(DemoEc* this, PlayState* play, s32 arg2) {
     CsCmdActorAction* npcAction;
-    s32 sp18;
+    s32               sp18;
 
     npcAction = DemoEc_GetNpcAction(play, arg2);
     if (npcAction != NULL) {
@@ -935,7 +933,7 @@ void DemoEc_DrawMido(DemoEc* this, PlayState* play) {
         gMidoEyeClosedTex,
         gMidoEyeAngryTex,
     };
-    s32 eyeTexIndex = this->eyeTexIndex;
+    s32   eyeTexIndex = this->eyeTexIndex;
     void* eyeTexture = eyeTextures[eyeTexIndex];
 
     DemoEc_DrawSkeleton(this, play, eyeTexture, NULL, NULL, NULL);
@@ -997,7 +995,7 @@ void DemoEc_DrawCuccoLady(DemoEc* this, PlayState* play) {
         gCuccoLadyEyeHalfTex,
         gCuccoLadyEyeClosedTex,
     };
-    s32 eyeTexIndex = this->eyeTexIndex;
+    s32   eyeTexIndex = this->eyeTexIndex;
     void* eyeTexture = eyeTextures[eyeTexIndex];
 
     DemoEc_DrawSkeleton(this, play, eyeTexture, NULL, NULL, NULL);
@@ -1027,7 +1025,7 @@ void DemoEc_DrawPotionShopOwner(DemoEc* this, PlayState* play) {
         gPotionShopkeeperEyeHalfTex,
         gPotionShopkeeperEyeClosedTex,
     };
-    s32 eyeTexIndex = this->eyeTexIndex;
+    s32   eyeTexIndex = this->eyeTexIndex;
     void* eyeTexture = eyeTextures[eyeTexIndex];
 
     DemoEc_DrawSkeleton(this, play, eyeTexture, NULL, NULL, NULL);
@@ -1072,8 +1070,7 @@ void DemoEc_UpdateFishingOwner(DemoEc* this, PlayState* play) {
     DemoEc_UpdateBgFlags(this, play);
 }
 
-void DemoEc_FishingOwnerPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx,
-                                     Gfx** gfx) {
+void DemoEc_FishingOwnerPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx, Gfx** gfx) {
     DemoEc* this = (DemoEc*)thisx;
 
     if ((limbIndex == 8) && !(HIGH_SCORE(HS_FISHING) & 0x1000)) {
@@ -1087,7 +1084,7 @@ void DemoEc_DrawFishingOwner(DemoEc* this, PlayState* play) {
         gFishingOwnerEyeHalfTex,
         gFishingOwnerEyeClosedTex,
     };
-    s32 eyeTexIndex = this->eyeTexIndex;
+    s32   eyeTexIndex = this->eyeTexIndex;
     void* eyeTexture = eyeTextures[eyeTexIndex];
 
     DemoEc_DrawSkeleton(this, play, eyeTexture, NULL, NULL, DemoEc_FishingOwnerPostLimbDraw);
@@ -1114,17 +1111,17 @@ void DempEc_UpdateBombchuShopOwner(DemoEc* this, PlayState* play) {
 void DemoEc_DrawBombchuShopOwner(DemoEc* this, PlayState* play) {
     static void* eyeTextures[] = { gBombchuShopkeeperEyeOpenTex, gBombchuShopkeeperEyeHalfTex,
                                    gBombchuShopkeeperEyeClosedTex };
-    s32 eyeTexIndex = this->eyeTexIndex;
-    void* eyeTexture = eyeTextures[eyeTexIndex];
+    s32          eyeTexIndex = this->eyeTexIndex;
+    void*        eyeTexture = eyeTextures[eyeTexIndex];
 
     DemoEc_DrawSkeleton(this, play, eyeTexture, NULL, NULL, NULL);
 }
 
 void DemoEc_InitGorons(DemoEc* this, PlayState* play) {
-    s32 pad[2];
+    s32              pad[2];
     AnimationHeader* animation;
-    f32 goronScale;
-    Vec3f* scale = &this->actor.scale;
+    f32              goronScale;
+    Vec3f*           scale = &this->actor.scale;
 
     DemoEc_UseDrawObject(this, play);
     DemoEc_InitSkelAnime(this, play, &gGoronSkel);
@@ -1165,8 +1162,8 @@ void DemoEc_UpdateGorons(DemoEc* this, PlayState* play) {
 
 void DemoEc_DrawGorons(DemoEc* this, PlayState* play) {
     static void* eyeTextures[] = { gGoronCsEyeOpenTex, gGoronCsEyeHalfTex, gGoronCsEyeClosedTex };
-    s32 eyeTexIndex = this->eyeTexIndex;
-    void* eyeTexture = eyeTextures[eyeTexIndex];
+    s32          eyeTexIndex = this->eyeTexIndex;
+    void*        eyeTexture = eyeTextures[eyeTexIndex];
 
     DemoEc_DrawSkeleton(this, play, eyeTexture, gGoronCsMouthNeutralTex, NULL, NULL);
 }
@@ -1191,8 +1188,8 @@ void DemoEc_UpdateMalon(DemoEc* this, PlayState* play) {
 
 void DemoEc_DrawMalon(DemoEc* this, PlayState* play) {
     static void* eyeTextures[] = { gMalonAdultEyeOpenTex, gMalonAdultEyeHalfTex, gMalonAdultEyeClosedTex };
-    s32 eyeTexIndex = this->eyeTexIndex;
-    void* eyeTexture = eyeTextures[eyeTexIndex];
+    s32          eyeTexIndex = this->eyeTexIndex;
+    void*        eyeTexture = eyeTextures[eyeTexIndex];
 
     DemoEc_DrawSkeleton(this, play, eyeTexture, gMalonAdultMouthHappyTex, NULL, NULL);
 }
@@ -1270,8 +1267,7 @@ void DemoEc_InitCommon(DemoEc* this, PlayState* play) {
         return;
     }
 
-    if (Object_IsLoaded(&play->objectCtx, primaryBankIndex) &&
-        Object_IsLoaded(&play->objectCtx, secondaryBankIndex)) {
+    if (Object_IsLoaded(&play->objectCtx, primaryBankIndex) && Object_IsLoaded(&play->objectCtx, secondaryBankIndex)) {
 
         this->drawObjBankIndex = primaryBankIndex;
         this->animObjBankIndex = secondaryBankIndex;

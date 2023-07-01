@@ -155,7 +155,8 @@ void Sram_OpenSave() {
     }
 
     // if zelda cutscene has been watched but lullaby was not obtained, restore cutscene and take away letter
-    if ((Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) && !CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) && !gSaveContext.n64ddFlag) {
+    if ((Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) && !CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) &&
+        !gSaveContext.n64ddFlag) {
         i = gSaveContext.eventChkInf[4] & ~1;
         gSaveContext.eventChkInf[4] = i;
 
@@ -194,10 +195,10 @@ void Sram_OpenSave() {
 }
 
 void Sram_InitSave(FileChooseContext* fileChooseCtx) {
-    u16 offset;
-    u16 j;
+    u16  offset;
+    u16  j;
     u16* ptr;
-    u16 checksum;
+    u16  checksum;
 
     if (fileChooseCtx->buttonIndex != 0 || !CVarGetInteger("gDebugEnabled", 0)) {
         Sram_InitNewSave();
@@ -210,7 +211,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
     gSaveContext.dayTime = 0x6AAB;
     gSaveContext.cutsceneIndex = 0xFFF1;
 
-    if ((fileChooseCtx->buttonIndex == 0 && CVarGetInteger("gDebugEnabled", 0)) || CVarGetInteger("gNaviSkipCutscene", 0)) {
+    if ((fileChooseCtx->buttonIndex == 0 && CVarGetInteger("gDebugEnabled", 0)) ||
+        CVarGetInteger("gNaviSkipCutscene", 0)) {
         gSaveContext.cutsceneIndex = 0;
     }
 
@@ -218,7 +220,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.playerName[offset] = Save_GetSaveMetaInfo(fileChooseCtx->buttonIndex)->playerName[offset];
     }
 
-    if (fileChooseCtx->questType[fileChooseCtx->buttonIndex] == 2 && strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0) {
+    if (fileChooseCtx->questType[fileChooseCtx->buttonIndex] == 2 &&
+        strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0) {
         // Set N64DD Flags for save file
         fileChooseCtx->n64ddFlags[fileChooseCtx->buttonIndex] = 1;
         fileChooseCtx->n64ddFlag = 1;

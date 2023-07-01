@@ -3,9 +3,9 @@
 #include "spdlog/spdlog.h"
 
 namespace LUS {
-std::shared_ptr<IResource>
-BackgroundFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<Background>(initData);
+std::shared_ptr<IResource> BackgroundFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
+                                                           std::shared_ptr<BinaryReader>     reader) {
+    auto                                    resource = std::make_shared<Background>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
     switch (resource->GetInitData()->ResourceVersion) {

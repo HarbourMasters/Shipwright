@@ -2,12 +2,12 @@
 #include "global.h"
 
 s32 osPfsInitPak(OSMesgQueue* queue, OSPfs* pfs, s32 channel) {
-    s32 ret;
-    u16 sum;
-    u16 isum;
-    u8 temp[BLOCKSIZE];
+    s32         ret;
+    u16         sum;
+    u16         isum;
+    u8          temp[BLOCKSIZE];
     __OSPackId* id;
-    __OSPackId newid;
+    __OSPackId  newid;
 
     __osSiGetAccess();
 
@@ -79,9 +79,9 @@ s32 osPfsInitPak(OSMesgQueue* queue, OSPfs* pfs, s32 channel) {
 s32 __osPfsCheckRamArea(OSPfs* pfs) {
     s32 i = 0;
     s32 ret = 0;
-    u8 temp1[BLOCKSIZE];
-    u8 temp2[BLOCKSIZE];
-    u8 saveReg[BLOCKSIZE];
+    u8  temp1[BLOCKSIZE];
+    u8  temp2[BLOCKSIZE];
+    u8  saveReg[BLOCKSIZE];
 
     if ((ret = __osPfsSelectBank(pfs, PFS_ID_BANK_256K)) != 0) {
         return ret;

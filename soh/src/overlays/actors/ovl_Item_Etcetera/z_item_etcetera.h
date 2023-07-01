@@ -9,12 +9,12 @@ struct ItemEtcetera;
 typedef void (*ItemEtceteraActionFunc)(struct ItemEtcetera*, PlayState*);
 
 typedef struct ItemEtcetera {
-    /* 0x0000 */ Actor actor;
+    /* 0x0000 */ Actor                  actor;
     /* 0x014C */ ItemEtceteraActionFunc futureActionFunc;
-    /* 0x0150 */ s16 giDrawId;
-    /* 0x0152 */ s16 getItemId;
-    /* 0x0154 */ u8 objBankIndex;
-    /* 0x0158 */ ActorFunc drawFunc;
+    /* 0x0150 */ s16                    giDrawId;
+    /* 0x0152 */ s16                    getItemId;
+    /* 0x0154 */ u8                     objBankIndex;
+    /* 0x0158 */ ActorFunc              drawFunc;
     /* 0x015C */ ItemEtceteraActionFunc actionFunc;
 } ItemEtcetera; // size = 0x0160
 

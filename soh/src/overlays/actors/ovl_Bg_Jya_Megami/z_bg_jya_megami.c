@@ -57,10 +57,10 @@ static ColliderJntSphInit sJntSphInit = {
 
 typedef struct {
     /* 0x00 */ Vec3f unk_00;
-    /* 0x0C */ f32 velX;
-    /* 0x10 */ s16 rotVelX;
-    /* 0x12 */ s16 rotVelY;
-    /* 0x14 */ s16 delay;
+    /* 0x0C */ f32   velX;
+    /* 0x10 */ s16   rotVelX;
+    /* 0x12 */ s16   rotVelY;
+    /* 0x14 */ s16   delay;
 } BgJyaMegamiPieceInit; // size = 0x18
 
 static BgJyaMegamiPieceInit sPiecesInit[] = {
@@ -107,7 +107,7 @@ static InitChainEntry sInitChain[] = {
 };
 
 void BgJyaMegami_InitDynaPoly(BgJyaMegami* this, PlayState* play, CollisionHeader* collision, s32 flag) {
-    s32 pad;
+    s32              pad;
     CollisionHeader* colHeader = NULL;
 
     DynaPolyActor_Init(&this->dyna, flag);
@@ -124,7 +124,7 @@ void BgJyaMegami_InitCollider(BgJyaMegami* this, PlayState* play) {
 
 void BgJyaMegami_SpawnEffect(PlayState* play, Vec3f* pos, Vec3f* velocity, s32 num, s32 arg4) {
     Vec3f spB4;
-    s32 i;
+    s32   i;
 
     for (i = 0; i < num; i++) {
         s32 idx = ((s16)(Rand_ZeroOne() * 8.0f)) & D_8089B17C[arg4];
@@ -140,7 +140,7 @@ void BgJyaMegami_SpawnEffect(PlayState* play, Vec3f* pos, Vec3f* velocity, s32 n
 }
 
 void BgJyaMegami_SetupSpawnEffect(BgJyaMegami* this, PlayState* play, f32 arg2) {
-    s32 i;
+    s32   i;
     Vec3f pos;
 
     for (i = 0; i < ARRAY_COUNT(this->pieces); i++) {
@@ -224,12 +224,12 @@ void BgJyaMegami_SetupExplode(BgJyaMegami* this) {
 }
 
 void BgJyaMegami_Explode(BgJyaMegami* this, PlayState* play) {
-    static Vec3f sVec = { 0.0f, 0.0f, 0.0f };
-    BgJyaMegamiPiece* temp;
-    u32 i;
-    Vec3f sp8C;
+    static Vec3f          sVec = { 0.0f, 0.0f, 0.0f };
+    BgJyaMegamiPiece*     temp;
+    u32                   i;
+    Vec3f                 sp8C;
     BgJyaMegamiPieceInit* temp2;
-    s32 pad;
+    s32                   pad;
 
     this->explosionTimer++;
     if (this->explosionTimer == 30) {
@@ -304,8 +304,7 @@ void BgJyaMegami_DrawFace(BgJyaMegami* this, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRightSideCrumbles[this->crumbleIndex]));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sLeftSideCrumbles[this->crumbleIndex]));
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gMegami1DL);
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -318,9 +317,9 @@ static Gfx* sDLists[] = {
 };
 
 void BgJyaMegami_DrawExplode(BgJyaMegami* this, PlayState* play) {
-    s32 pad;
+    s32               pad;
     BgJyaMegamiPiece* piece;
-    u32 i;
+    u32               i;
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -339,10 +338,9 @@ void BgJyaMegami_DrawExplode(BgJyaMegami* this, PlayState* play) {
         Matrix_Translate(sPiecesInit[i].unk_00.x * -10.0f, sPiecesInit[i].unk_00.y * -10.0f,
                          sPiecesInit[i].unk_00.z * -10.0f, MTXMODE_APPLY);
 
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, sDLists[i]);
-        
+
         FrameInterpolation_RecordCloseChild();
     }
 

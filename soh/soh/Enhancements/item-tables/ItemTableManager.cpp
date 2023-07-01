@@ -22,7 +22,7 @@ bool ItemTableManager::AddItemEntry(uint16_t tableID, uint16_t getItemID, GetIte
 
 GetItemEntry ItemTableManager::RetrieveItemEntry(uint16_t tableID, uint16_t getItemID) {
     try {
-        ItemTable* itemTable = RetrieveItemTable(tableID);
+        ItemTable*   itemTable = RetrieveItemTable(tableID);
         GetItemEntry getItemEntry = itemTable->at(getItemID);
         getItemEntry.drawItemId = getItemEntry.itemId;
         getItemEntry.drawModIndex = getItemEntry.modIndex;

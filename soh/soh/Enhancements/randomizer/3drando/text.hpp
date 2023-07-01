@@ -6,12 +6,11 @@
 #define SINGULAR 1
 
 class Text {
-public:
+  public:
     Text() = default;
     Text(std::string english_, std::string french_, std::string spanish_)
-      : english(std::move(english_)),
-        french(std::move(french_)),
-        spanish(std::move(spanish_)) {}
+        : english(std::move(english_)), french(std::move(french_)), spanish(std::move(spanish_)) {
+    }
 
     const std::string& GetEnglish() const {
         return english;
@@ -31,12 +30,12 @@ public:
         return english;
     }
 
-    Text operator+ (const Text& right) const {
-        return Text{english + right.GetEnglish(), french + right.GetFrench(), spanish + right.GetSpanish()};
+    Text operator+(const Text& right) const {
+        return Text{ english + right.GetEnglish(), french + right.GetFrench(), spanish + right.GetSpanish() };
     }
 
-    Text operator+ (const std::string& right) const {
-        return Text{english + right, french + right, spanish + right};
+    Text operator+(const std::string& right) const {
+        return Text{ english + right, french + right, spanish + right };
     }
 
     bool operator==(const Text& right) const {
@@ -49,11 +48,11 @@ public:
 
     void Replace(std::string oldStr, std::string newStr) {
 
-        for (std::string* str : {&english, &french, &spanish}) {
+        for (std::string* str : { &english, &french, &spanish }) {
             size_t position = str->find(oldStr);
             while (position != std::string::npos) {
-              str->replace(position, oldStr.length(), newStr);
-              position = str->find(oldStr);
+                str->replace(position, oldStr.length(), newStr);
+                position = str->find(oldStr);
             }
         }
     }
@@ -61,15 +60,15 @@ public:
     // Convert first char to upper case
     Text Capitalize(void) const {
         Text cap = *this + "";
-        for (std::string* str : {&cap.english, &cap.french, &cap.spanish}) {
+        for (std::string* str : { &cap.english, &cap.french, &cap.spanish }) {
             (*str)[0] = std::toupper((*str)[0]);
         }
         return cap;
     }
 
-    //find the appropriate bars that separate singular from plural
+    // find the appropriate bars that separate singular from plural
     void SetForm(int form) {
-        for (std::string* str : {&english, &french, &spanish}) {
+        for (std::string* str : { &english, &french, &spanish }) {
 
             size_t firstBar = str->find('|');
             if (firstBar != std::string::npos) {
@@ -89,7 +88,7 @@ public:
                 }
             }
         }
-        //remove the remaining bar
+        // remove the remaining bar
         this->Replace("|", "");
     }
 

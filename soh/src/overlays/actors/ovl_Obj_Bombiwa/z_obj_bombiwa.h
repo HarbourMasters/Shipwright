@@ -7,7 +7,7 @@
 struct ObjBombiwa;
 
 typedef struct ObjBombiwa {
-    /* 0x0000 */ Actor actor;
+    /* 0x0000 */ Actor            actor;
     /* 0x014C */ ColliderCylinder collider;
 } ObjBombiwa; // size = 0x0198
 

@@ -8,13 +8,11 @@
 
 namespace Dungeon {
 class DungeonInfo {
-public:
-    DungeonInfo(std::string name_, uint32_t hintKey_, uint32_t map_, uint32_t compass_, uint32_t smallKey_, uint32_t keyRing_, uint32_t bossKey_,
-              uint8_t vanillaKeyCount_, uint8_t mqKeyCount_,
-                std::vector<uint32_t> vanillaLocations_,
-                std::vector<uint32_t> mqLocations_,
-                std::vector<uint32_t> sharedLocations_,
-                std::vector<uint32_t> bossRoomLocations_);
+  public:
+    DungeonInfo(std::string name_, uint32_t hintKey_, uint32_t map_, uint32_t compass_, uint32_t smallKey_,
+                uint32_t keyRing_, uint32_t bossKey_, uint8_t vanillaKeyCount_, uint8_t mqKeyCount_,
+                std::vector<uint32_t> vanillaLocations_, std::vector<uint32_t> mqLocations_,
+                std::vector<uint32_t> sharedLocations_, std::vector<uint32_t> bossRoomLocations_);
     ~DungeonInfo();
 
     const std::string& GetName() const {
@@ -71,18 +69,18 @@ public:
     // Gets all dungeon locations (MQ + Vanilla)
     std::vector<uint32_t> GetEveryLocation() const;
 
-private:
-    std::string name;
-    uint32_t hintKey;
-    uint32_t map;
-    uint32_t compass;
-    uint32_t smallKey;
-    uint32_t keyRing;
-    uint32_t bossKey;
-    uint8_t vanillaKeyCount;
-    uint8_t mqKeyCount;
-    bool masterQuest = false;
-    bool hasKeyRing = false;
+  private:
+    std::string           name;
+    uint32_t              hintKey;
+    uint32_t              map;
+    uint32_t              compass;
+    uint32_t              smallKey;
+    uint32_t              keyRing;
+    uint32_t              bossKey;
+    uint8_t               vanillaKeyCount;
+    uint8_t               mqKeyCount;
+    bool                  masterQuest = false;
+    bool                  hasKeyRing = false;
     std::vector<uint32_t> vanillaLocations;
     std::vector<uint32_t> mqLocations;
     std::vector<uint32_t> sharedLocations;

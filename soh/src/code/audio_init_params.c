@@ -1,6 +1,6 @@
 #include "global.h"
 
-u8 D_8016F0E0[0xA0]; // unused
+u8           D_8016F0E0[0xA0]; // unused
 AudioContext gAudioContext;
 void (*D_801755D0)(void);
 s32 D_801755D8[3]; // unused

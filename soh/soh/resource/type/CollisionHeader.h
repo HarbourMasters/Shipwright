@@ -23,7 +23,7 @@ typedef struct {
                              // Value ranges from -0x7FFF to 0x7FFF, representing -1.0 to 1.0; 0x8000 is invalid
 
     /* 0x0E */ s16 dist; // Plane distance from origin along the normal
-} CollisionPoly; // size = 0x10
+} CollisionPoly;         // size = 0x10
 
 typedef struct {
     /* 0x00 */ s16 xMin;
@@ -40,8 +40,8 @@ typedef struct {
 } WaterBox; // size = 0x10
 
 typedef struct {
-    /* 0x00 */ u16 cameraSType;
-    /* 0x02 */ s16 numCameras;
+    /* 0x00 */ u16    cameraSType;
+    /* 0x02 */ s16    numCameras;
     /* 0x04 */ Vec3s* camPosData;
 } CamData;
 
@@ -52,29 +52,29 @@ typedef struct {
     // 0x0800_0000 = wall damage
 } SurfaceType;
 
-
 typedef struct {
-    /* 0x00 */ Vec3s minBounds; // minimum coordinates of poly bounding box
-    /* 0x06 */ Vec3s maxBounds; // maximum coordinates of poly bounding box
-    /* 0x0C */ u16 numVertices;
-    /* 0x10 */ Vec3s* vtxList;
-    /* 0x14 */ u16 numPolygons;
+    /* 0x00 */ Vec3s          minBounds; // minimum coordinates of poly bounding box
+    /* 0x06 */ Vec3s          maxBounds; // maximum coordinates of poly bounding box
+    /* 0x0C */ u16            numVertices;
+    /* 0x10 */ Vec3s*         vtxList;
+    /* 0x14 */ u16            numPolygons;
     /* 0x18 */ CollisionPoly* polyList;
-    /* 0x1C */ SurfaceType* surfaceTypeList;
-    /* 0x20 */ CamData* cameraDataList;
-    /* 0x24 */ u16 numWaterBoxes;
-    /* 0x28 */ WaterBox* waterBoxes;
-    size_t cameraDataListLen; // OTRTODO: Added to allow for bounds checking the cameraDataList.
-} CollisionHeaderData; // original name: BGDataInfo
+    /* 0x1C */ SurfaceType*   surfaceTypeList;
+    /* 0x20 */ CamData*       cameraDataList;
+    /* 0x24 */ u16            numWaterBoxes;
+    /* 0x28 */ WaterBox*      waterBoxes;
+    size_t                    cameraDataListLen; // OTRTODO: Added to allow for bounds checking the cameraDataList.
+} CollisionHeaderData;                           // original name: BGDataInfo
 
 class CollisionHeader : public Resource<CollisionHeaderData> {
-public:
+  public:
     using Resource::Resource;
 
-    CollisionHeader() : Resource(std::shared_ptr<ResourceInitData>()) {}
+    CollisionHeader() : Resource(std::shared_ptr<ResourceInitData>()) {
+    }
 
     CollisionHeaderData* GetPointer();
-    size_t GetPointerSize();
+    size_t               GetPointerSize();
 
     CollisionHeaderData collisionHeaderData;
 
@@ -82,15 +82,15 @@ public:
 
     std::vector<CollisionPoly> polygons;
 
-    uint32_t surfaceTypesCount;
+    uint32_t                 surfaceTypesCount;
     std::vector<SurfaceType> surfaceTypes;
 
-    uint32_t camDataCount;
+    uint32_t             camDataCount;
     std::vector<CamData> camData;
     std::vector<int32_t> camPosDataIndices;
 
-    int32_t camPosCount;
-    Vec3s camPosDataZero;
+    int32_t            camPosCount;
+    Vec3s              camPosDataZero;
     std::vector<Vec3s> camPosData;
 
     std::vector<WaterBox> waterBoxes;

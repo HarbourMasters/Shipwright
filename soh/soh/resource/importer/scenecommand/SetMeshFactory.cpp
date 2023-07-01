@@ -4,19 +4,18 @@
 #include "libultraship/libultraship.h"
 
 namespace LUS {
-std::shared_ptr<IResource>
-SetMeshFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<SetMesh>(initData);
+std::shared_ptr<IResource> SetMeshFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
+                                                        std::shared_ptr<BinaryReader>     reader) {
+    auto                                    resource = std::make_shared<SetMesh>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
     switch (resource->GetInitData()->ResourceVersion) {
-    case 0:
-        factory = std::make_shared<SetMeshFactoryV0>();
-        break;
+        case 0:
+            factory = std::make_shared<SetMeshFactoryV0>();
+            break;
     }
 
-    if (factory == nullptr)
-    {
+    if (factory == nullptr) {
         SPDLOG_ERROR("Failed to load SetMesh with version {}", resource->GetInitData()->ResourceVersion);
         return nullptr;
     }
@@ -26,14 +25,12 @@ SetMeshFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::sh
     return resource;
 }
 
-void LUS::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<IResource> resource)
-{
+void LUS::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader, std::shared_ptr<IResource> resource) {
     std::shared_ptr<SetMesh> setMesh = std::static_pointer_cast<SetMesh>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setMesh);
 
     ReadCommandId(setMesh, reader);
-    
+
     setMesh->data = reader->ReadInt8();
 
     setMesh->meshHeader.base.type = reader->ReadInt8();
@@ -46,7 +43,8 @@ void LUS::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader
         } else if (setMesh->meshHeader.base.type == 2) {
             setMesh->meshHeader.polygon2.num = polyNum;
         } else {
-            SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}", setMesh->meshHeader.base.type);
+            SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}",
+                         setMesh->meshHeader.base.type);
         }
     }
 
@@ -60,7 +58,7 @@ void LUS::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader
         if (setMesh->meshHeader.base.type == 0) {
             PolygonDlist dlist;
 
-            int32_t polyType = reader->ReadInt8(); // Unused
+            int32_t     polyType = reader->ReadInt8(); // Unused
             std::string meshOpa = reader->ReadString();
             std::string meshXlu = reader->ReadString();
 
@@ -104,7 +102,8 @@ void LUS::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader
                 if (setMesh->meshHeader.polygon1.format == 1) {
                     setMesh->meshHeader.polygon1.single.source = image.source;
                     setMesh->meshHeader.polygon1.single.unk_0C = image.unk_0C;
-                    setMesh->meshHeader.polygon1.single.tlut = (void*)image.tlut; // OTRTODO: type of bgimage.tlut should be uintptr_t
+                    setMesh->meshHeader.polygon1.single.tlut =
+                        (void*)image.tlut; // OTRTODO: type of bgimage.tlut should be uintptr_t
                     setMesh->meshHeader.polygon1.single.width = image.width;
                     setMesh->meshHeader.polygon1.single.height = image.height;
                     setMesh->meshHeader.polygon1.single.fmt = image.fmt;
@@ -133,7 +132,7 @@ void LUS::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader
             setMesh->dlists.push_back(pType);
         } else if (setMesh->meshHeader.base.type == 2) {
             PolygonDlist2 dlist;
-            
+
             int32_t polyType = reader->ReadInt8(); // Unused
             dlist.pos.x = reader->ReadInt16();
             dlist.pos.y = reader->ReadInt16();
@@ -150,7 +149,8 @@ void LUS::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader
 
             setMesh->dlists2.push_back(dlist);
         } else {
-            SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}", setMesh->meshHeader.base.type);
+            SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}",
+                         setMesh->meshHeader.base.type);
         }
     }
 
@@ -162,7 +162,8 @@ void LUS::SetMeshFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader
         setMesh->meshHeader.polygon1.multi.list = setMesh->images.data();
         setMesh->meshHeader.polygon1.dlist = (Gfx*)setMesh->dlists.data();
     } else {
-        SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}", setMesh->meshHeader.base.type);
+        SPDLOG_ERROR("Tried to load mesh in SetMesh scene header with type that doesn't exist: {}",
+                     setMesh->meshHeader.base.type);
     }
 }
 

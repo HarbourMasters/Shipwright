@@ -6,10 +6,10 @@
 // original name: "spark"
 void EffectSpark_Init(void* thisx, void* initParamsx) {
     EffectSpark* this = (EffectSpark*)thisx;
-    EffectSparkInit* initParams = (EffectSparkInit*)initParamsx;
+    EffectSparkInit*    initParams = (EffectSparkInit*)initParamsx;
     EffectSparkElement* elem;
-    f32 velocityNorm;
-    s32 i;
+    f32                 velocityNorm;
+    s32                 i;
 
     if ((this != NULL) && (initParams != NULL)) {
         if ((initParams->uDiv == 0) || (initParams->vDiv == 0)) {
@@ -103,7 +103,7 @@ void EffectSpark_Destroy(void* thisx) {
 s32 EffectSpark_Update(void* thisx) {
     EffectSpark* this = (EffectSpark*)thisx;
     EffectSparkElement* elem;
-    s32 i;
+    s32                 i;
 
     if (this == NULL) {
         osSyncPrintf("EffectSparkInfo_proc():Spark Pointer is NULL\n");
@@ -135,25 +135,25 @@ void EffectSpark_Draw(void* thisx, GraphicsContext* gfxCtx) {
     Vtx* vertices;
     EffectSpark* this = (EffectSpark*)thisx;
     PlayState* play = Effect_GetPlayState();
-    s32 i;
-    s32 j;
-    u8 sp1D3;
-    u8 sp1D2;
-    u8 sp1D1;
-    u8 sp1D0;
-    u8 sp1CF;
-    u8 sp1CE;
-    u8 sp1CD;
-    u8 sp1CC;
-    u8 sp1CB;
-    u8 sp1CA;
-    u8 sp1C9;
-    u8 sp1C8;
-    u8 sp1C7;
-    u8 sp1C6;
-    u8 sp1C5;
-    u8 sp1C4;
-    f32 ratio;
+    s32        i;
+    s32        j;
+    u8         sp1D3;
+    u8         sp1D2;
+    u8         sp1D1;
+    u8         sp1D0;
+    u8         sp1CF;
+    u8         sp1CE;
+    u8         sp1CD;
+    u8         sp1CC;
+    u8         sp1CB;
+    u8         sp1CA;
+    u8         sp1C9;
+    u8         sp1C8;
+    u8         sp1C7;
+    u8         sp1C6;
+    u8         sp1C5;
+    u8         sp1C4;
+    f32        ratio;
 
     FrameInterpolation_RecordOpenChild(this, 0);
     OPEN_DISPS(gfxCtx);
@@ -203,13 +203,13 @@ void EffectSpark_Draw(void* thisx, GraphicsContext* gfxCtx) {
         sp1C4 = this->colorStart[3].a + ((f32)this->colorEnd[3].a - (f32)this->colorStart[3].a) * ratio;
 
         for (i = 0; i < this->numElements; i++) {
-            MtxF sp12C;
-            MtxF spEC;
-            MtxF spAC;
-            MtxF sp6C;
+            MtxF                sp12C;
+            MtxF                spEC;
+            MtxF                spAC;
+            MtxF                sp6C;
             EffectSparkElement* elem = &this->elements[i];
-            Mtx* mtx;
-            f32 temp;
+            Mtx*                mtx;
+            f32                 temp;
 
             FrameInterpolation_RecordOpenChild(elem, elem->epoch);
 

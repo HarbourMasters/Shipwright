@@ -67,23 +67,22 @@ static ColliderCylinderInit sCylinderInit = {
 static CollisionCheckInfoInit2 sColChkInfoInit = { 0, 0, 0, 0, MASS_IMMOVABLE };
 
 static void* sFaEyes[] = { gFaEyeOpenTex, gFaEyeHalfTex, gFaEyeClosedTex, NULL };
-static void* sKw1Eyes[] = { gKw1EyeOpenTex , gKw1EyeHalfTex,
-                            gKw1EyeClosedTex, NULL };
+static void* sKw1Eyes[] = { gKw1EyeOpenTex, gKw1EyeHalfTex, gKw1EyeClosedTex, NULL };
 
 typedef struct {
-    /* 0x0 */ s16 objectId;
-    /* 0x4 */ Gfx* dList;
+    /* 0x0 */ s16    objectId;
+    /* 0x4 */ Gfx*   dList;
     /* 0x8 */ void** eyeTextures;
 } EnKoHead; // size = 0xC
 
 static EnKoHead sHead[] = {
-    { OBJECT_KM1, gKm1DL , NULL },
+    { OBJECT_KM1, gKm1DL, NULL },
     { OBJECT_KW1, object_kw1_DL_002C10, sKw1Eyes },
     { OBJECT_FA, gFaDL, sFaEyes },
 };
 
 typedef struct {
-    /* 0x0 */ s16 objectId;
+    /* 0x0 */ s16                 objectId;
     /* 0x4 */ FlexSkeletonHeader* flexSkeletonHeader;
 } EnKoSkeleton; // size = 0x8
 
@@ -168,25 +167,37 @@ static AnimationInfo sAnimationInfo[] = {
 
 static u8 sOsAnimeLookup[13][5] = {
     /* ENKO_TYPE_CHILD_0    */ { ENKO_ANIM_8, ENKO_ANIM_9, ENKO_ANIM_9, ENKO_ANIM_14, ENKO_ANIM_11 },
-    /* ENKO_TYPE_CHILD_1    */ { ENKO_ANIM_2, ENKO_ANIM_12, ENKO_ANIM_2, ENKO_ANIM_13, ENKO_ANIM_13 },
-    /* ENKO_TYPE_CHILD_2    */ { ENKO_ANIM_11, ENKO_ANIM_11, ENKO_ANIM_11, ENKO_ANIM_15, ENKO_ANIM_9 },
-    /* ENKO_TYPE_CHILD_3    */ { ENKO_ANIM_0, ENKO_ANIM_16, ENKO_ANIM_16, ENKO_ANIM_17, ENKO_ANIM_18 },
-    /* ENKO_TYPE_CHILD_4    */ { ENKO_ANIM_19, ENKO_ANIM_19, ENKO_ANIM_20, ENKO_ANIM_10, ENKO_ANIM_9 },
-    /* ENKO_TYPE_CHILD_5    */ { ENKO_ANIM_3, ENKO_ANIM_3, ENKO_ANIM_3, ENKO_ANIM_3, ENKO_ANIM_3 },
-    /* ENKO_TYPE_CHILD_6    */ { ENKO_ANIM_4, ENKO_ANIM_22, ENKO_ANIM_22, ENKO_ANIM_4, ENKO_ANIM_23 },
-    /* ENKO_TYPE_CHILD_7    */ { ENKO_ANIM_24, ENKO_ANIM_16, ENKO_ANIM_16, ENKO_ANIM_25, ENKO_ANIM_16 },
-    /* ENKO_TYPE_CHILD_8    */ { ENKO_ANIM_26, ENKO_ANIM_15, ENKO_ANIM_15, ENKO_ANIM_26, ENKO_ANIM_15 },
-    /* ENKO_TYPE_CHILD_9    */ { ENKO_ANIM_3, ENKO_ANIM_3, ENKO_ANIM_3, ENKO_ANIM_27, ENKO_ANIM_27 },
-    /* ENKO_TYPE_CHILD_10   */ { ENKO_ANIM_2, ENKO_ANIM_2, ENKO_ANIM_2, ENKO_ANIM_2, ENKO_ANIM_22 },
-    /* ENKO_TYPE_CHILD_11   */ { ENKO_ANIM_14, ENKO_ANIM_14, ENKO_ANIM_14, ENKO_ANIM_14, ENKO_ANIM_14 },
-    /* ENKO_TYPE_CHILD_FADO */ { ENKO_ANIM_5, ENKO_ANIM_5, ENKO_ANIM_5, ENKO_ANIM_5, ENKO_ANIM_5 },
+    /* ENKO_TYPE_CHILD_1    */
+    { ENKO_ANIM_2, ENKO_ANIM_12, ENKO_ANIM_2, ENKO_ANIM_13, ENKO_ANIM_13 },
+    /* ENKO_TYPE_CHILD_2    */
+    { ENKO_ANIM_11, ENKO_ANIM_11, ENKO_ANIM_11, ENKO_ANIM_15, ENKO_ANIM_9 },
+    /* ENKO_TYPE_CHILD_3    */
+    { ENKO_ANIM_0, ENKO_ANIM_16, ENKO_ANIM_16, ENKO_ANIM_17, ENKO_ANIM_18 },
+    /* ENKO_TYPE_CHILD_4    */
+    { ENKO_ANIM_19, ENKO_ANIM_19, ENKO_ANIM_20, ENKO_ANIM_10, ENKO_ANIM_9 },
+    /* ENKO_TYPE_CHILD_5    */
+    { ENKO_ANIM_3, ENKO_ANIM_3, ENKO_ANIM_3, ENKO_ANIM_3, ENKO_ANIM_3 },
+    /* ENKO_TYPE_CHILD_6    */
+    { ENKO_ANIM_4, ENKO_ANIM_22, ENKO_ANIM_22, ENKO_ANIM_4, ENKO_ANIM_23 },
+    /* ENKO_TYPE_CHILD_7    */
+    { ENKO_ANIM_24, ENKO_ANIM_16, ENKO_ANIM_16, ENKO_ANIM_25, ENKO_ANIM_16 },
+    /* ENKO_TYPE_CHILD_8    */
+    { ENKO_ANIM_26, ENKO_ANIM_15, ENKO_ANIM_15, ENKO_ANIM_26, ENKO_ANIM_15 },
+    /* ENKO_TYPE_CHILD_9    */
+    { ENKO_ANIM_3, ENKO_ANIM_3, ENKO_ANIM_3, ENKO_ANIM_27, ENKO_ANIM_27 },
+    /* ENKO_TYPE_CHILD_10   */
+    { ENKO_ANIM_2, ENKO_ANIM_2, ENKO_ANIM_2, ENKO_ANIM_2, ENKO_ANIM_22 },
+    /* ENKO_TYPE_CHILD_11   */
+    { ENKO_ANIM_14, ENKO_ANIM_14, ENKO_ANIM_14, ENKO_ANIM_14, ENKO_ANIM_14 },
+    /* ENKO_TYPE_CHILD_FADO */
+    { ENKO_ANIM_5, ENKO_ANIM_5, ENKO_ANIM_5, ENKO_ANIM_5, ENKO_ANIM_5 },
 };
 
 typedef struct {
-    /* 0x0 */ u8 headId;
-    /* 0x1 */ u8 bodyId;
+    /* 0x0 */ u8          headId;
+    /* 0x1 */ u8          bodyId;
     /* 0x4 */ Color_RGBA8 tunicColor;
-    /* 0x8 */ u8 legsId;
+    /* 0x8 */ u8          legsId;
     /* 0xC */ Color_RGBA8 bootsColor;
 } EnKoModelInfo; // size = 0x10
 
@@ -198,40 +209,64 @@ typedef enum {
 
 static EnKoModelInfo sModelInfo[] = {
     /* ENKO_TYPE_CHILD_0    */ { KO_BOY, KO_BOY, { 0, 130, 70, 255 }, KO_BOY, { 110, 170, 20, 255 } },
-    /* ENKO_TYPE_CHILD_1    */ { KO_GIRL, KO_GIRL, { 70, 190, 60, 255 }, KO_GIRL, { 100, 30, 0, 255 } },
-    /* ENKO_TYPE_CHILD_2    */ { KO_BOY, KO_BOY, { 0, 130, 70, 255 }, KO_BOY, { 110, 170, 20, 255 } },
-    /* ENKO_TYPE_CHILD_3    */ { KO_BOY, KO_BOY, { 0, 130, 70, 255 }, KO_BOY, { 110, 170, 20, 255 } },
-    /* ENKO_TYPE_CHILD_4    */ { KO_BOY, KO_BOY, { 0, 130, 70, 255 }, KO_BOY, { 110, 170, 20, 255 } },
-    /* ENKO_TYPE_CHILD_5    */ { KO_GIRL, KO_GIRL, { 70, 190, 60, 255 }, KO_GIRL, { 100, 30, 0, 255 } },
-    /* ENKO_TYPE_CHILD_6    */ { KO_GIRL, KO_GIRL, { 70, 190, 60, 255 }, KO_GIRL, { 100, 30, 0, 255 } },
-    /* ENKO_TYPE_CHILD_7    */ { KO_BOY, KO_BOY, { 0, 130, 70, 255 }, KO_BOY, { 110, 170, 20, 255 } },
-    /* ENKO_TYPE_CHILD_8    */ { KO_BOY, KO_BOY, { 0, 130, 70, 255 }, KO_BOY, { 110, 170, 20, 255 } },
-    /* ENKO_TYPE_CHILD_9    */ { KO_GIRL, KO_GIRL, { 70, 190, 60, 255 }, KO_GIRL, { 100, 30, 0, 255 } },
-    /* ENKO_TYPE_CHILD_10   */ { KO_GIRL, KO_GIRL, { 70, 190, 60, 255 }, KO_GIRL, { 100, 30, 0, 255 } },
-    /* ENKO_TYPE_CHILD_11   */ { KO_BOY, KO_BOY, { 0, 130, 70, 255 }, KO_BOY, { 110, 170, 20, 255 } },
-    /* ENKO_TYPE_CHILD_FADO */ { KO_FADO, KO_GIRL, { 70, 190, 60, 255 }, KO_GIRL, { 100, 30, 0, 255 } },
+    /* ENKO_TYPE_CHILD_1    */
+    { KO_GIRL, KO_GIRL, { 70, 190, 60, 255 }, KO_GIRL, { 100, 30, 0, 255 } },
+    /* ENKO_TYPE_CHILD_2    */
+    { KO_BOY, KO_BOY, { 0, 130, 70, 255 }, KO_BOY, { 110, 170, 20, 255 } },
+    /* ENKO_TYPE_CHILD_3    */
+    { KO_BOY, KO_BOY, { 0, 130, 70, 255 }, KO_BOY, { 110, 170, 20, 255 } },
+    /* ENKO_TYPE_CHILD_4    */
+    { KO_BOY, KO_BOY, { 0, 130, 70, 255 }, KO_BOY, { 110, 170, 20, 255 } },
+    /* ENKO_TYPE_CHILD_5    */
+    { KO_GIRL, KO_GIRL, { 70, 190, 60, 255 }, KO_GIRL, { 100, 30, 0, 255 } },
+    /* ENKO_TYPE_CHILD_6    */
+    { KO_GIRL, KO_GIRL, { 70, 190, 60, 255 }, KO_GIRL, { 100, 30, 0, 255 } },
+    /* ENKO_TYPE_CHILD_7    */
+    { KO_BOY, KO_BOY, { 0, 130, 70, 255 }, KO_BOY, { 110, 170, 20, 255 } },
+    /* ENKO_TYPE_CHILD_8    */
+    { KO_BOY, KO_BOY, { 0, 130, 70, 255 }, KO_BOY, { 110, 170, 20, 255 } },
+    /* ENKO_TYPE_CHILD_9    */
+    { KO_GIRL, KO_GIRL, { 70, 190, 60, 255 }, KO_GIRL, { 100, 30, 0, 255 } },
+    /* ENKO_TYPE_CHILD_10   */
+    { KO_GIRL, KO_GIRL, { 70, 190, 60, 255 }, KO_GIRL, { 100, 30, 0, 255 } },
+    /* ENKO_TYPE_CHILD_11   */
+    { KO_BOY, KO_BOY, { 0, 130, 70, 255 }, KO_BOY, { 110, 170, 20, 255 } },
+    /* ENKO_TYPE_CHILD_FADO */
+    { KO_FADO, KO_GIRL, { 70, 190, 60, 255 }, KO_GIRL, { 100, 30, 0, 255 } },
 };
 
 typedef struct {
-    /* 0x0 */ s8 targetMode;
+    /* 0x0 */ s8  targetMode;
     /* 0x4 */ f32 lookDist; // extended by collider radius
     /* 0x8 */ f32 appearDist;
 } EnKoInteractInfo; // size = 0xC
 
 static EnKoInteractInfo sInteractInfo[] = {
     /* ENKO_TYPE_CHILD_0    */ { 6, 30.0f, 180.0f },
-    /* ENKO_TYPE_CHILD_1    */ { 6, 30.0f, 180.0f },
-    /* ENKO_TYPE_CHILD_2    */ { 6, 30.0f, 180.0f },
-    /* ENKO_TYPE_CHILD_3    */ { 6, 30.0f, 180.0f },
-    /* ENKO_TYPE_CHILD_4    */ { 6, 30.0f, 180.0f },
-    /* ENKO_TYPE_CHILD_5    */ { 1, 30.0f, 240.0f },
-    /* ENKO_TYPE_CHILD_6    */ { 6, 30.0f, 180.0f },
-    /* ENKO_TYPE_CHILD_7    */ { 6, 30.0f, 180.0f },
-    /* ENKO_TYPE_CHILD_8    */ { 6, 30.0f, 180.0f },
-    /* ENKO_TYPE_CHILD_9    */ { 6, 30.0f, 180.0f },
-    /* ENKO_TYPE_CHILD_10   */ { 6, 30.0f, 180.0f },
-    /* ENKO_TYPE_CHILD_11   */ { 6, 30.0f, 180.0f },
-    /* ENKO_TYPE_CHILD_FADO */ { 6, 30.0f, 180.0f },
+    /* ENKO_TYPE_CHILD_1    */
+    { 6, 30.0f, 180.0f },
+    /* ENKO_TYPE_CHILD_2    */
+    { 6, 30.0f, 180.0f },
+    /* ENKO_TYPE_CHILD_3    */
+    { 6, 30.0f, 180.0f },
+    /* ENKO_TYPE_CHILD_4    */
+    { 6, 30.0f, 180.0f },
+    /* ENKO_TYPE_CHILD_5    */
+    { 1, 30.0f, 240.0f },
+    /* ENKO_TYPE_CHILD_6    */
+    { 6, 30.0f, 180.0f },
+    /* ENKO_TYPE_CHILD_7    */
+    { 6, 30.0f, 180.0f },
+    /* ENKO_TYPE_CHILD_8    */
+    { 6, 30.0f, 180.0f },
+    /* ENKO_TYPE_CHILD_9    */
+    { 6, 30.0f, 180.0f },
+    /* ENKO_TYPE_CHILD_10   */
+    { 6, 30.0f, 180.0f },
+    /* ENKO_TYPE_CHILD_11   */
+    { 6, 30.0f, 180.0f },
+    /* ENKO_TYPE_CHILD_FADO */
+    { 6, 30.0f, 180.0f },
 };
 
 s32 EnKo_AreObjectsAvailable(EnKo* this, PlayState* play) {
@@ -607,18 +642,30 @@ s32 EnKo_GetForestQuestState(EnKo* this) {
 f32 func_80A97BC0(EnKo* this) {
     f32 D_80A9A62C[13][5] = {
         /* ENKO_TYPE_CHILD_0    */ { 0.0f, 0.0f, 0.0f, -30.0f, -20.0f },
-        /* ENKO_TYPE_CHILD_1    */ { 0.0f, 0.0f, 0.0f, -20.0f, -10.0f },
-        /* ENKO_TYPE_CHILD_2    */ { 0.0f, 0.0f, 0.0f, -30.0f, -20.0f },
-        /* ENKO_TYPE_CHILD_3    */ { -10.0f, 10.0f, 10.0f, -10.0f, -30.0f },
-        /* ENKO_TYPE_CHILD_4    */ { 0.0f, 0.0f, 0.0f, -10.0f, -20.0f },
-        /* ENKO_TYPE_CHILD_5    */ { 0.0f, 0.0f, 0.0f, -20.0f, -20.0f },
-        /* ENKO_TYPE_CHILD_6    */ { 0.0f, 0.0f, 0.0f, -10.0f, -20.0f },
-        /* ENKO_TYPE_CHILD_7    */ { 10.0f, 10.0f, 10.0f, -60.0f, -20.0f },
-        /* ENKO_TYPE_CHILD_8    */ { -10.0f, -10.0f, -20.0f, -30.0f, -30.0f },
-        /* ENKO_TYPE_CHILD_9    */ { -10.0f, -10.0f, -10.0f, -40.0f, -40.0f },
-        /* ENKO_TYPE_CHILD_10   */ { 0.0f, 0.0f, 0.0f, -10.0f, -20.0f },
-        /* ENKO_TYPE_CHILD_11   */ { -10.0f, -10.0f, -20.0f, -30.0f, -30.0f },
-        /* ENKO_TYPE_CHILD_FADO */ { 0.0f, 0.0f, 0.0f, -20.0f, -20.0f },
+        /* ENKO_TYPE_CHILD_1    */
+        { 0.0f, 0.0f, 0.0f, -20.0f, -10.0f },
+        /* ENKO_TYPE_CHILD_2    */
+        { 0.0f, 0.0f, 0.0f, -30.0f, -20.0f },
+        /* ENKO_TYPE_CHILD_3    */
+        { -10.0f, 10.0f, 10.0f, -10.0f, -30.0f },
+        /* ENKO_TYPE_CHILD_4    */
+        { 0.0f, 0.0f, 0.0f, -10.0f, -20.0f },
+        /* ENKO_TYPE_CHILD_5    */
+        { 0.0f, 0.0f, 0.0f, -20.0f, -20.0f },
+        /* ENKO_TYPE_CHILD_6    */
+        { 0.0f, 0.0f, 0.0f, -10.0f, -20.0f },
+        /* ENKO_TYPE_CHILD_7    */
+        { 10.0f, 10.0f, 10.0f, -60.0f, -20.0f },
+        /* ENKO_TYPE_CHILD_8    */
+        { -10.0f, -10.0f, -20.0f, -30.0f, -30.0f },
+        /* ENKO_TYPE_CHILD_9    */
+        { -10.0f, -10.0f, -10.0f, -40.0f, -40.0f },
+        /* ENKO_TYPE_CHILD_10   */
+        { 0.0f, 0.0f, 0.0f, -10.0f, -20.0f },
+        /* ENKO_TYPE_CHILD_11   */
+        { -10.0f, -10.0f, -20.0f, -30.0f, -30.0f },
+        /* ENKO_TYPE_CHILD_FADO */
+        { 0.0f, 0.0f, 0.0f, -20.0f, -20.0f },
     };
 
     if (LINK_IS_ADULT && ENKO_TYPE == ENKO_TYPE_CHILD_FADO) {
@@ -630,18 +677,30 @@ f32 func_80A97BC0(EnKo* this) {
 u8 func_80A97C7C(EnKo* this) {
     u8 D_80A9A730[13][5] = {
         /* ENKO_TYPE_CHILD_0    */ { 1, 1, 1, 0, 1 },
-        /* ENKO_TYPE_CHILD_1    */ { 1, 1, 1, 1, 1 },
-        /* ENKO_TYPE_CHILD_2    */ { 1, 1, 1, 0, 1 },
-        /* ENKO_TYPE_CHILD_3    */ { 1, 1, 1, 0, 1 },
-        /* ENKO_TYPE_CHILD_4    */ { 1, 1, 1, 0, 1 },
-        /* ENKO_TYPE_CHILD_5    */ { 0, 0, 0, 0, 0 },
-        /* ENKO_TYPE_CHILD_6    */ { 1, 1, 1, 1, 1 },
-        /* ENKO_TYPE_CHILD_7    */ { 1, 1, 1, 0, 1 },
-        /* ENKO_TYPE_CHILD_8    */ { 0, 0, 0, 0, 0 },
-        /* ENKO_TYPE_CHILD_9    */ { 0, 0, 0, 0, 0 },
-        /* ENKO_TYPE_CHILD_10   */ { 1, 1, 1, 1, 1 },
-        /* ENKO_TYPE_CHILD_11   */ { 0, 0, 0, 0, 0 },
-        /* ENKO_TYPE_CHILD_FADO */ { 1, 1, 1, 1, 1 },
+        /* ENKO_TYPE_CHILD_1    */
+        { 1, 1, 1, 1, 1 },
+        /* ENKO_TYPE_CHILD_2    */
+        { 1, 1, 1, 0, 1 },
+        /* ENKO_TYPE_CHILD_3    */
+        { 1, 1, 1, 0, 1 },
+        /* ENKO_TYPE_CHILD_4    */
+        { 1, 1, 1, 0, 1 },
+        /* ENKO_TYPE_CHILD_5    */
+        { 0, 0, 0, 0, 0 },
+        /* ENKO_TYPE_CHILD_6    */
+        { 1, 1, 1, 1, 1 },
+        /* ENKO_TYPE_CHILD_7    */
+        { 1, 1, 1, 0, 1 },
+        /* ENKO_TYPE_CHILD_8    */
+        { 0, 0, 0, 0, 0 },
+        /* ENKO_TYPE_CHILD_9    */
+        { 0, 0, 0, 0, 0 },
+        /* ENKO_TYPE_CHILD_10   */
+        { 1, 1, 1, 1, 1 },
+        /* ENKO_TYPE_CHILD_11   */
+        { 0, 0, 0, 0, 0 },
+        /* ENKO_TYPE_CHILD_FADO */
+        { 1, 1, 1, 1, 1 },
     };
 
     return D_80A9A730[ENKO_TYPE][EnKo_GetForestQuestState(this)];
@@ -950,7 +1009,8 @@ void func_80A9877C(EnKo* this, PlayState* play) {
             return;
         }
     }
-    if (Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->lookDist, func_80A97610, func_80A97738) &&
+    if (Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->lookDist, func_80A97610,
+                          func_80A97738) &&
         ENKO_TYPE == ENKO_TYPE_CHILD_FADO && play->sceneNum == SCENE_SPOT10) {
         this->actor.textId = INV_CONTENT(ITEM_TRADE_ADULT) > ITEM_ODD_POTION ? 0x10B9 : 0x10DF;
 
@@ -1048,7 +1108,7 @@ s32 EnKo_CanSpawn(EnKo* this, PlayState* play) {
 
 void EnKo_Blink(EnKo* this) {
     void** eyeTextures;
-    s32 headId;
+    s32    headId;
 
     if (DECR(this->blinkTimer) == 0) {
         headId = sModelInfo[ENKO_TYPE].headId;
@@ -1062,7 +1122,7 @@ void EnKo_Blink(EnKo* this) {
 }
 
 void func_80A98CD8(EnKo* this) {
-    s32 type = ENKO_TYPE;
+    s32               type = ENKO_TYPE;
     EnKoInteractInfo* info = &sInteractInfo[type];
 
     this->actor.targetMode = info->targetMode;
@@ -1103,7 +1163,7 @@ void func_80A98DB4(EnKo* this, PlayState* play) {
         this->appearDist = 180.0f;
         Math_SmoothStepToF(&this->modelAlpha, (this->appearDist < dist) ? 0.0f : 255.0f, 0.3f, 40.0f, 1.0f);
     }
-    
+
     if (this->modelAlpha < 10.0f) {
         this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     } else {
@@ -1154,8 +1214,8 @@ void func_80A99048(EnKo* this, PlayState* play) {
         this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
         this->actor.objBankIndex = this->legsObjectBankIdx;
         gSegments[6] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[this->actor.objBankIndex].segment);
-        SkelAnime_InitFlex(play, &this->skelAnime, sSkeleton[sModelInfo[ENKO_TYPE].legsId].flexSkeletonHeader,
-                           NULL, this->jointTable, this->morphTable, 16);
+        SkelAnime_InitFlex(play, &this->skelAnime, sSkeleton[sModelInfo[ENKO_TYPE].legsId].flexSkeletonHeader, NULL,
+                           this->jointTable, this->morphTable, 16);
         ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 18.0f);
         gSegments[6] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[this->osAnimeBankIndex].segment);
         Collider_InitCylinder(play, &this->collider);
@@ -1257,9 +1317,9 @@ void func_80A99560(EnKo* this, PlayState* play) {
 
 void func_80A995CC(EnKo* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 temp_f2;
-    f32 phi_f0;
-    s16 homeYawToPlayer = Math_Vec3f_Yaw(&this->actor.home.pos, &player->actor.world.pos);
+    f32     temp_f2;
+    f32     phi_f0;
+    s16     homeYawToPlayer = Math_Vec3f_Yaw(&this->actor.home.pos, &player->actor.world.pos);
 
     this->actor.world.pos.x = this->actor.home.pos.x;
     this->actor.world.pos.x += 80.0f * Math_SinS(homeYawToPlayer);
@@ -1313,13 +1373,12 @@ void EnKo_Update(Actor* thisx, PlayState* play) {
     CollisionCheck_SetOC(play, &play->colChkCtx, &collider->base);
 }
 
-s32 EnKo_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
-                          Gfx** gfx) {
+s32 EnKo_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx, Gfx** gfx) {
     EnKo* this = (EnKo*)thisx;
     void* eyeTexture;
     Vec3s sp40;
-    u8 headId;
-    s32 pad;
+    u8    headId;
+    s32   pad;
 
     if (limbIndex == 15) {
         gSPSegment((*gfx)++, 0x06, play->objectCtx.status[this->headObjectBankIdx].segment);
@@ -1392,8 +1451,7 @@ void EnKo_Draw(Actor* thisx, PlayState* play) {
                    EnKo_SetEnvColor(play->state.gfxCtx, tunicColor.r, tunicColor.g, tunicColor.b, 255));
         gSPSegment(POLY_OPA_DISP++, 0x09,
                    EnKo_SetEnvColor(play->state.gfxCtx, bootsColor.r, bootsColor.g, bootsColor.b, 255));
-        func_80034BA0(play, &this->skelAnime, EnKo_OverrideLimbDraw, EnKo_PostLimbDraw, &this->actor,
-                      this->modelAlpha);
+        func_80034BA0(play, &this->skelAnime, EnKo_OverrideLimbDraw, EnKo_PostLimbDraw, &this->actor, this->modelAlpha);
     } else if ((s16)this->modelAlpha != 0) {
         tunicColor.a = this->modelAlpha;
         bootsColor.a = this->modelAlpha;
@@ -1401,8 +1459,7 @@ void EnKo_Draw(Actor* thisx, PlayState* play) {
                    EnKo_SetEnvColor(play->state.gfxCtx, tunicColor.r, tunicColor.g, tunicColor.b, tunicColor.a));
         gSPSegment(POLY_XLU_DISP++, 0x09,
                    EnKo_SetEnvColor(play->state.gfxCtx, bootsColor.r, bootsColor.g, bootsColor.b, bootsColor.a));
-        func_80034CC4(play, &this->skelAnime, EnKo_OverrideLimbDraw, EnKo_PostLimbDraw, &this->actor,
-                      this->modelAlpha);
+        func_80034CC4(play, &this->skelAnime, EnKo_OverrideLimbDraw, EnKo_PostLimbDraw, &this->actor, this->modelAlpha);
     }
     CLOSE_DISPS(play->state.gfxCtx);
 }

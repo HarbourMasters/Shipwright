@@ -3,11 +3,11 @@
 
 #include <stddef.h>
 
-//#ifndef __cplusplus
-//#define NULL ((void*)0)
-//#else
-//#define NULL nullptr
-//#endif
+// #ifndef __cplusplus
+// #define NULL ((void*)0)
+// #else
+// #define NULL nullptr
+// #endif
 
 #if 0
 #define size_t unsigned long
@@ -15,7 +15,7 @@
 
 #endif
 
-//typedef unsigned long size_t;
-//typedef long ssize_t;
+// typedef unsigned long size_t;
+// typedef long ssize_t;
 
 #endif

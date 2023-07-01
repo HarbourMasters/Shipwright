@@ -68,9 +68,9 @@ static InitChainEntry sInitChain[] = {
 };
 
 void BgJya1flift_InitDynapoly(BgJya1flift* this, PlayState* play, CollisionHeader* collision, s32 moveFlag) {
-    s32 pad;
+    s32              pad;
     CollisionHeader* colHeader = NULL;
-    s32 pad2;
+    s32              pad2;
 
     DynaPolyActor_Init(&this->dyna, moveFlag);
     CollisionHeader_GetVirtual(collision, &colHeader);
@@ -182,7 +182,7 @@ void BgJya1flift_DelayMove(BgJya1flift* this, PlayState* play) {
 void BgJya1flift_Update(Actor* thisx, PlayState* play2) {
     BgJya1flift* this = (BgJya1flift*)thisx;
     PlayState* play = play2;
-    s32 tempIsRiding;
+    s32        tempIsRiding;
 
     // Room 0 is the first room and 6 is the room that the lift starts on
     if (play->roomCtx.curRoom.num == 6 || play->roomCtx.curRoom.num == 0) {

@@ -2,7 +2,8 @@
 #include "overlays/actors/ovl_En_Skjneedle/z_en_skjneedle.h"
 #include "objects/object_skj/object_skj.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
+#define FLAGS \
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void EnSkj_Init(Actor* thisx, PlayState* play);
 void EnSkj_Destroy(Actor* thisx, PlayState* play);
@@ -40,8 +41,8 @@ void EnSkj_SetupDie(EnSkj* this);
 void func_80AFF1F0(EnSkj* this);
 void EnSkj_OfferNextRound(EnSkj* this, PlayState* play);
 void EnSkj_SetupAskForMask(EnSkj* this, PlayState* play);
-f32 EnSkj_GetItemXzRange(EnSkj* this);
-s32 EnSkj_CollisionCheck(EnSkj* this, PlayState* play);
+f32  EnSkj_GetItemXzRange(EnSkj* this);
+s32  EnSkj_CollisionCheck(EnSkj* this, PlayState* play);
 void EnSkj_SetupTakeMask(EnSkj* this, PlayState* play);
 void EnSkj_TurnPlayer(EnSkj* this, Player* player);
 
@@ -153,7 +154,7 @@ typedef enum {
 } SkullKidAction;
 
 typedef struct {
-    u8 unk_0;
+    u8     unk_0;
     EnSkj* skullkid;
 } EnSkjUnkStruct;
 
@@ -365,8 +366,8 @@ void EnSkj_Init(Actor* thisx, PlayState* play2) {
     s16 type = (thisx->params >> 0xA) & 0x3F;
     EnSkj* this = (EnSkj*)thisx;
     PlayState* play = play2;
-    s32 pad;
-    Player* player;
+    s32        pad;
+    Player*    player;
 
     Actor_ProcessInitChain(thisx, sInitChain);
     switch (type) {
@@ -478,8 +479,8 @@ s32 EnSkj_RangeCheck(Player* player, EnSkj* this) {
 
 f32 EnSkj_GetItemXzRange(EnSkj* this) {
     EnSkj* temp_v0;
-    f32 zDiff;
-    f32 xDiff;
+    f32    zDiff;
+    f32    xDiff;
 
     temp_v0 = sSmallStumpSkullKid.skullkid;
     xDiff = temp_v0->actor.world.pos.x - this->actor.world.pos.x;
@@ -492,9 +493,9 @@ f32 EnSkj_GetItemYRange(EnSkj* this) {
 }
 
 s32 EnSkj_ShootNeedle(EnSkj* this, PlayState* play) {
-    s32 pad;
-    Vec3f pos;
-    Vec3f pos2;
+    s32          pad;
+    Vec3f        pos;
+    Vec3f        pos2;
     EnSkjneedle* needle;
 
     pos.x = 1.5f;
@@ -508,8 +509,9 @@ s32 EnSkj_ShootNeedle(EnSkj* this, PlayState* play) {
     pos2.z += this->actor.world.pos.z;
     pos2.y = this->actor.world.pos.y + 27.0f;
 
-    needle = (EnSkjneedle*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SKJNEEDLE, pos2.x, pos2.y, pos2.z,
-                                       this->actor.shape.rot.x, this->actor.shape.rot.y, this->actor.shape.rot.z, 0, true);
+    needle =
+        (EnSkjneedle*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SKJNEEDLE, pos2.x, pos2.y, pos2.z,
+                                  this->actor.shape.rot.x, this->actor.shape.rot.y, this->actor.shape.rot.z, 0, true);
     if (needle != NULL) {
         needle->killTimer = 100;
         needle->actor.speedXZ = 24.0f;
@@ -520,7 +522,7 @@ s32 EnSkj_ShootNeedle(EnSkj* this, PlayState* play) {
 
 void EnSkj_SpawnBlood(PlayState* play, Vec3f* pos) {
     EffectSparkInit effect;
-    s32 sp20;
+    s32             sp20;
 
     effect.position.x = pos->x;
     effect.position.y = pos->y;
@@ -578,7 +580,7 @@ void EnSkj_SpawnBlood(PlayState* play, Vec3f* pos) {
 }
 
 s32 EnSkj_CollisionCheck(EnSkj* this, PlayState* play) {
-    s16 yawDiff;
+    s16   yawDiff;
     Vec3f effectPos;
 
     if (!((this->unk_2D3 == 0) || (D_80B01EA0 != 0) || !(this->collider.base.acFlags & AC_HIT))) {
@@ -688,7 +690,7 @@ void EnSkj_SetupWaitToShootNeedle(EnSkj* this) {
 }
 
 void EnSkj_WaitToShootNeedle(EnSkj* this, PlayState* play) {
-    u8 val;
+    u8  val;
     s16 lastFrame = Animation_GetLastFrame(&gSkullKidShootNeedleAnim);
 
     if ((this->skelAnime.curFrame == lastFrame) && (this->needleShootTimer == 0)) {
@@ -808,11 +810,11 @@ void EnSkj_SetupStand(EnSkj* this) {
 void EnSkj_Fight(EnSkj* this, PlayState* play) {
     Vec3f pos1;
     Vec3f pos2;
-    s32 pad[3];
-    f32 prevPosX;
-    f32 prevPosZ;
-    f32 phi_f14;
-    s16 yawDistToPlayer;
+    s32   pad[3];
+    f32   prevPosX;
+    f32   prevPosZ;
+    f32   phi_f14;
+    s16   yawDistToPlayer;
 
     if (this->needleShootTimer == 0) {
         EnSkj_SetupWaitToShootNeedle(this);
@@ -867,7 +869,7 @@ void EnSkj_SpawnDeathEffect(EnSkj* this, PlayState* play) {
     Vec3f effectPos;
     Vec3f effectVel;
     Vec3f effectAccel;
-    u32 phi_v0;
+    u32   phi_v0;
 
     phi_v0 = this->alpha - 4;
 
@@ -889,8 +891,7 @@ void EnSkj_SpawnDeathEffect(EnSkj* this, PlayState* play) {
     effectVel.y = 0.0f;
     effectVel.x = 0.0f;
 
-    EffectSsDeadDb_Spawn(play, &effectPos, &effectVel, &effectAccel, 100, 10, 255, 255, 255, 255, 0, 0, 255, 1, 9,
-                         1);
+    EffectSsDeadDb_Spawn(play, &effectPos, &effectVel, &effectAccel, 100, 10, 255, 255, 255, 255, 0, 0, 255, 1, 9, 1);
 }
 
 void EnSkj_SetupWaitInRange(EnSkj* this) {
@@ -955,8 +956,8 @@ void EnSkj_WaitForSong(EnSkj* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     // Played a song thats not Saria's song
-    if (!Flags_GetItemGetInf(ITEMGETINF_16) && ((play->msgCtx.msgMode == MSGMODE_OCARINA_FAIL) ||
-                                                 (play->msgCtx.msgMode == MSGMODE_OCARINA_FAIL_NO_TEXT))) {
+    if (!Flags_GetItemGetInf(ITEMGETINF_16) &&
+        ((play->msgCtx.msgMode == MSGMODE_OCARINA_FAIL) || (play->msgCtx.msgMode == MSGMODE_OCARINA_FAIL_NO_TEXT))) {
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
         Message_CloseTextbox(play);
         player->unk_6A8 = &this->actor;
@@ -1039,10 +1040,12 @@ void EnSkj_SariaSongTalk(EnSkj* this, PlayState* play) {
         } else {
             func_80AFFE24(this);
             if (!gSaveContext.n64ddFlag) {
-                func_8002F434(&this->actor, play, GI_HEART_PIECE, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
+                func_8002F434(&this->actor, play, GI_HEART_PIECE, EnSkj_GetItemXzRange(this),
+                              EnSkj_GetItemYRange(this));
             } else {
                 GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_SKULL_KID, GI_HEART_PIECE);
-                GiveItemEntryFromActor(&this->actor, play, getItemEntry, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
+                GiveItemEntryFromActor(&this->actor, play, getItemEntry, EnSkj_GetItemXzRange(this),
+                                       EnSkj_GetItemYRange(this));
             }
         }
     }
@@ -1061,7 +1064,8 @@ void func_80AFFE44(EnSkj* this, PlayState* play) {
             func_8002F434(&this->actor, play, GI_HEART_PIECE, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_SKULL_KID, GI_HEART_PIECE);
-            GiveItemEntryFromActor(&this->actor, play, getItemEntry, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
+            GiveItemEntryFromActor(&this->actor, play, getItemEntry, EnSkj_GetItemXzRange(this),
+                                   EnSkj_GetItemYRange(this));
         }
     }
 }
@@ -1208,7 +1212,7 @@ void EnSkj_SetupWaitForTextClear(EnSkj* this) {
 }
 
 void EnSkj_SariasSongWaitForTextClear(EnSkj* this, PlayState* play) {
-    u8 state = Message_GetState(&play->msgCtx);
+    u8      state = Message_GetState(&play->msgCtx);
     Player* player = GET_PLAYER(play);
 
     if (state == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
@@ -1295,7 +1299,7 @@ void EnSkj_LeaveOcarinaGame(EnSkj* this, PlayState* play) {
 
 void EnSkj_Update(Actor* thisx, PlayState* play) {
     Vec3f dropPos;
-    s32 pad;
+    s32   pad;
     EnSkj* this = (EnSkj*)thisx;
 
     D_80B01EA0 = Actor_ProcessTalkRequest(&this->actor, play);
@@ -1405,7 +1409,7 @@ void EnSkj_WaitForOcarina(EnSkj* this, PlayState* play) {
 }
 
 void EnSkj_StartOcarinaMinigame(EnSkj* this, PlayState* play) {
-    u8 dialogState = Message_GetState(&play->msgCtx);
+    u8      dialogState = Message_GetState(&play->msgCtx);
     Player* player = GET_PLAYER(play);
 
     EnSkj_TurnPlayer(this, player);
@@ -1634,8 +1638,7 @@ void EnSkj_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         Matrix_Push();
         Matrix_RotateZYX(-0x4000, 0, 0, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gSkullKidSkullMaskDL);
         Matrix_Pop();
     }

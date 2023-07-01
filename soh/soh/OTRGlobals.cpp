@@ -49,7 +49,7 @@
 #include <Utils/StringHelper.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
 
-#if not defined (__SWITCH__) && not defined(__WIIU__)
+#if not defined(__SWITCH__) && not defined(__WIIU__)
 #include "Extractor/Extract.h"
 #endif
 
@@ -67,7 +67,6 @@
 #elif defined(__WIIU__)
 #include <port/wiiu/WiiUImpl.h>
 #endif
-
 
 #include "Enhancements/custom-message/CustomMessageTypes.h"
 #include <functions.h>
@@ -113,22 +112,23 @@ CrowdControl* CrowdControl::Instance;
 
 #include "soh/config/ConfigUpdaters.h"
 
-OTRGlobals* OTRGlobals::Instance;
-SaveManager* SaveManager::Instance;
+OTRGlobals*           OTRGlobals::Instance;
+SaveManager*          SaveManager::Instance;
 CustomMessageManager* CustomMessageManager::Instance;
-ItemTableManager* ItemTableManager::Instance;
-GameInteractor* GameInteractor::Instance;
-AudioCollection* AudioCollection::Instance;
-SpeechSynthesizer* SpeechSynthesizer::Instance;
+ItemTableManager*     ItemTableManager::Instance;
+GameInteractor*       GameInteractor::Instance;
+AudioCollection*      AudioCollection::Instance;
+SpeechSynthesizer*    SpeechSynthesizer::Instance;
 
-extern "C" char** cameraStrings;
+extern "C" char**                         cameraStrings;
 std::vector<std::shared_ptr<std::string>> cameraStdStrings;
 
 Color_RGB8 kokiriColor = { 0x1E, 0x69, 0x1B };
 Color_RGB8 goronColor = { 0x64, 0x14, 0x00 };
 Color_RGB8 zoraColor = { 0x00, 0xEC, 0x64 };
 
-// OTRTODO: A lot of these left in Japanese are used by the mempak manager. LUS does not currently support mempaks. Ignore unused ones.
+// OTRTODO: A lot of these left in Japanese are used by the mempak manager. LUS does not currently support mempaks.
+// Ignore unused ones.
 const char* constCameraStrings[] = {
     "INSUFFICIENT",
     "KEYFRAMES",
@@ -146,7 +146,7 @@ const char* constCameraStrings[] = {
     "E MODE FIX",
     "E MODE ABS",
     GFXP_HIRAGANA "ｶﾞﾒﾝ" GFXP_KATAKANA "   ﾃﾞﾓ", // OTRTODO: Unused, get a translation! Number 15
-    GFXP_HIRAGANA "ｶﾞﾒﾝ   ﾌﾂｳ", // OTRTODO: Unused, get a translation! Number 16
+    GFXP_HIRAGANA "ｶﾞﾒﾝ   ﾌﾂｳ",                  // OTRTODO: Unused, get a translation! Number 16
     "P TIME  MAX",
     GFXP_KATAKANA "ﾘﾝｸ" GFXP_HIRAGANA "    ｷｵｸ", // OTRTODO: Unused, get a translation! Number 18
     GFXP_KATAKANA "ﾘﾝｸ" GFXP_HIRAGANA "     ﾑｼ", // OTRTODO: Unused, get a translation! Number 19
@@ -173,7 +173,7 @@ const char* constCameraStrings[] = {
     GFXP_HIRAGANA "ｦﾐﾂｹﾗﾚﾏｾﾝ",
     GFXP_KATAKANA "ﾌｧｲﾙ " GFXP_HIRAGANA "ｦ",
     GFXP_HIRAGANA "ｼﾃﾓｲｲﾃﾞｽｶ?",
-    GFXP_HIRAGANA "ｹﾞﾝｻﾞｲﾍﾝｼｭｳﾁｭｳﾉ", // OTRTODO: Unused, get a translation! Number 43
+    GFXP_HIRAGANA "ｹﾞﾝｻﾞｲﾍﾝｼｭｳﾁｭｳﾉ",              // OTRTODO: Unused, get a translation! Number 43
     GFXP_KATAKANA "ﾌｧｲﾙ" GFXP_HIRAGANA "ﾊﾊｷｻﾚﾏｽ", // OTRTODO: Unused, get a translation! Number 44
     GFXP_HIRAGANA "ﾊｲ",
     GFXP_HIRAGANA "ｲｲｴ",
@@ -195,7 +195,7 @@ const char* constCameraStrings[] = {
     "FOV              ",
     "N FRAME          ",
     "Z ROT            ",
-    GFXP_KATAKANA  "ﾓ-ﾄﾞ        ", // OTRTODO: Unused, need translation. Number 65
+    GFXP_KATAKANA "ﾓ-ﾄﾞ        ", // OTRTODO: Unused, need translation. Number 65
     "  R FOCUS   ",
     "PMAX              ",
     "DEPTH             ",
@@ -208,10 +208,10 @@ const char* constCameraStrings[] = {
 
 OTRGlobals::OTRGlobals() {
     std::vector<std::string> OTRFiles;
-    std::string mqPath = LUS::Context::GetPathRelativeToAppDirectory("oot-mq.otr");
-    if (std::filesystem::exists(mqPath)) { 
+    std::string              mqPath = LUS::Context::GetPathRelativeToAppDirectory("oot-mq.otr");
+    if (std::filesystem::exists(mqPath)) {
         OTRFiles.push_back(mqPath);
-    } 
+    }
     std::string ootPath = LUS::Context::GetPathRelativeToAppDirectory("oot.otr");
     if (std::filesystem::exists(ootPath)) {
         OTRFiles.push_back(ootPath);
@@ -230,39 +230,39 @@ OTRGlobals::OTRGlobals() {
             }
         }
     }
-    std::unordered_set<uint32_t> ValidHashes = { 
-        OOT_PAL_MQ,
-        OOT_NTSC_JP_MQ,
-        OOT_NTSC_US_MQ,
-        OOT_PAL_GC_MQ_DBG,
-        OOT_NTSC_US_10,
-        OOT_NTSC_US_11,
-        OOT_NTSC_US_12,
-        OOT_PAL_10,
-        OOT_PAL_11,
-        OOT_NTSC_JP_GC_CE,
-        OOT_NTSC_JP_GC,
-        OOT_NTSC_US_GC,
-        OOT_PAL_GC,
-        OOT_PAL_GC_DBG1,
-        OOT_PAL_GC_DBG2
-    };
+    std::unordered_set<uint32_t> ValidHashes = { OOT_PAL_MQ,     OOT_NTSC_JP_MQ,    OOT_NTSC_US_MQ, OOT_PAL_GC_MQ_DBG,
+                                                 OOT_NTSC_US_10, OOT_NTSC_US_11,    OOT_NTSC_US_12, OOT_PAL_10,
+                                                 OOT_PAL_11,     OOT_NTSC_JP_GC_CE, OOT_NTSC_JP_GC, OOT_NTSC_US_GC,
+                                                 OOT_PAL_GC,     OOT_PAL_GC_DBG1,   OOT_PAL_GC_DBG2 };
     // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
     context = LUS::Context::CreateInstance("Ship of Harkinian", "soh", "shipofharkinian.json", OTRFiles, {}, 3);
 
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Animation, "Animation", std::make_shared<LUS::AnimationFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_PlayerAnimation, "PlayerAnimation", std::make_shared<LUS::PlayerAnimationFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Room, "Room", std::make_shared<LUS::SceneFactory>()); // Is room scene? maybe?
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_CollisionHeader, "CollisionHeader", std::make_shared<LUS::CollisionHeaderFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Skeleton, "Skeleton", std::make_shared<LUS::SkeletonFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_SkeletonLimb, "SkeletonLimb", std::make_shared<LUS::SkeletonLimbFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Path, "Path", std::make_shared<LUS::PathFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Cutscene, "Cutscene", std::make_shared<LUS::CutsceneFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Text, "Text", std::make_shared<LUS::TextFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_AudioSample, "AudioSample", std::make_shared<LUS::AudioSampleFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_AudioSoundFont, "AudioSoundFont", std::make_shared<LUS::AudioSoundFontFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_AudioSequence, "AudioSequence", std::make_shared<LUS::AudioSequenceFactory>());
-    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Background, "Background", std::make_shared<LUS::BackgroundFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        LUS::ResourceType::SOH_Animation, "Animation", std::make_shared<LUS::AnimationFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        LUS::ResourceType::SOH_PlayerAnimation, "PlayerAnimation", std::make_shared<LUS::PlayerAnimationFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        LUS::ResourceType::SOH_Room, "Room", std::make_shared<LUS::SceneFactory>()); // Is room scene? maybe?
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        LUS::ResourceType::SOH_CollisionHeader, "CollisionHeader", std::make_shared<LUS::CollisionHeaderFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        LUS::ResourceType::SOH_Skeleton, "Skeleton", std::make_shared<LUS::SkeletonFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        LUS::ResourceType::SOH_SkeletonLimb, "SkeletonLimb", std::make_shared<LUS::SkeletonLimbFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Path, "Path",
+                                                                                std::make_shared<LUS::PathFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        LUS::ResourceType::SOH_Cutscene, "Cutscene", std::make_shared<LUS::CutsceneFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Text, "Text",
+                                                                                std::make_shared<LUS::TextFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        LUS::ResourceType::SOH_AudioSample, "AudioSample", std::make_shared<LUS::AudioSampleFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        LUS::ResourceType::SOH_AudioSoundFont, "AudioSoundFont", std::make_shared<LUS::AudioSoundFontFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        LUS::ResourceType::SOH_AudioSequence, "AudioSequence", std::make_shared<LUS::AudioSequenceFactory>());
+    context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(
+        LUS::ResourceType::SOH_Background, "Background", std::make_shared<LUS::BackgroundFactory>());
 
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandomizer = std::make_shared<Randomizer>();
@@ -270,8 +270,9 @@ OTRGlobals::OTRGlobals() {
     hasMasterQuest = hasOriginal = false;
 
     // Move the camera strings from read only memory onto the heap (writable memory)
-    // This is in OTRGlobals right now because this is a place that will only ever be run once at the beginning of startup.
-    // We should probably find some code in db_camera that does initialization and only run once, and then dealloc on deinitialization.
+    // This is in OTRGlobals right now because this is a place that will only ever be run once at the beginning of
+    // startup. We should probably find some code in db_camera that does initialization and only run once, and then
+    // dealloc on deinitialization.
     cameraStrings = (char**)malloc(sizeof(constCameraStrings));
     for (int32_t i = 0; i < sizeof(constCameraStrings) / sizeof(char*); i++) {
         // OTRTODO: never deallocated...
@@ -340,7 +341,8 @@ uint32_t OTRGlobals::GetInterpolationFPS() {
         return LUS::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate();
     }
 
-    return std::min<uint32_t>(LUS::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate(), CVarGetInteger("gInterpolationFPS", 20));
+    return std::min<uint32_t>(LUS::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate(),
+                              CVarGetInteger("gInterpolationFPS", 20));
 }
 
 struct ExtensionEntry {
@@ -348,16 +350,16 @@ struct ExtensionEntry {
     std::string ext;
 };
 
-extern uintptr_t clearMtx;
-extern "C" Mtx gMtxClear;
-extern "C" MtxF gMtxFClear;
-extern "C" void OTRMessage_Init();
-extern "C" void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
-extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
-extern "C" int AudioPlayer_Buffered(void);
-extern "C" int AudioPlayer_GetDesiredBuffered(void);
-extern "C" void ResourceMgr_LoadDirectory(const char* resName);
-extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path);
+extern uintptr_t                                clearMtx;
+extern "C" Mtx                                  gMtxClear;
+extern "C" MtxF                                 gMtxFClear;
+extern "C" void                                 OTRMessage_Init();
+extern "C" void                                 AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
+extern "C" void                                 AudioPlayer_Play(const uint8_t* buf, uint32_t len);
+extern "C" int                                  AudioPlayer_Buffered(void);
+extern "C" int                                  AudioPlayer_GetDesiredBuffered(void);
+extern "C" void                                 ResourceMgr_LoadDirectory(const char* resName);
+extern "C" SequenceData                         ResourceMgr_LoadSeqByName(const char* path);
 std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 
 void OTRAudio_Thread() {
@@ -373,21 +375,21 @@ void OTRAudio_Thread() {
             }
         }
         std::unique_lock<std::mutex> Lock(audio.mutex);
-        //AudioMgr_ThreadEntry(&gAudioMgr);
-        // 528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
-        // in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
-        //#define SAMPLES_HIGH 560
-        //#define SAMPLES_LOW 528
-        // PAL values
-        //#define SAMPLES_HIGH 656
-        //#define SAMPLES_LOW 624
+// AudioMgr_ThreadEntry(&gAudioMgr);
+//  528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
+//  in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
+// #define SAMPLES_HIGH 560
+// #define SAMPLES_LOW 528
+//  PAL values
+// #define SAMPLES_HIGH 656
+// #define SAMPLES_LOW 624
 
-        // 44KHZ values
-        #define SAMPLES_HIGH 752
-        #define SAMPLES_LOW 720
+// 44KHZ values
+#define SAMPLES_HIGH 752
+#define SAMPLES_LOW 720
 
-        #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1 )
-        #define NUM_AUDIO_CHANNELS 2
+#define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1)
+#define NUM_AUDIO_CHANNELS 2
 
         int samples_left = AudioPlayer_Buffered();
         u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
@@ -395,10 +397,12 @@ void OTRAudio_Thread() {
         // 3 is the maximum authentic frame divisor.
         s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
         for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
-            AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
+            AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS),
+                                           num_audio_samples);
         }
 
-        AudioPlayer_Play((u8*)audio_buffer, num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
+        AudioPlayer_Play((u8*)audio_buffer,
+                         num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
 
         audio.processing = false;
         audio.cv_from_thread.notify_one();
@@ -406,8 +410,7 @@ void OTRAudio_Thread() {
 }
 
 // C->C++ Bridge
-extern "C" void OTRAudio_Init()
-{
+extern "C" void OTRAudio_Init() {
     // Precache all our samples, sequences, etc...
     ResourceMgr_LoadDirectory("audio");
 
@@ -431,129 +434,249 @@ extern "C" void OTRAudio_Exit() {
 
 extern "C" void VanillaItemTable_Init() {
     static GetItemEntry getItemTable[] = {
-        GET_ITEM(ITEM_BOMBS_5,          OBJECT_GI_BOMB_1,        GID_BOMB,             0x32, 0x59, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BOMBS_5),
-        GET_ITEM(ITEM_NUTS_5,           OBJECT_GI_NUTS,          GID_NUTS,             0x34, 0x0C, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_NUTS_5),
-        GET_ITEM(ITEM_BOMBCHU,          OBJECT_GI_BOMB_2,        GID_BOMBCHU,          0x33, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BOMBCHUS_10),
-        GET_ITEM(ITEM_BOW,              OBJECT_GI_BOW,           GID_BOW,              0x31, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_BOW),
-        GET_ITEM(ITEM_SLINGSHOT,        OBJECT_GI_PACHINKO,      GID_SLINGSHOT,        0x30, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_SLINGSHOT),
-        GET_ITEM(ITEM_BOOMERANG,        OBJECT_GI_BOOMERANG,     GID_BOOMERANG,        0x35, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_BOOMERANG),
-        GET_ITEM(ITEM_STICK,            OBJECT_GI_STICK,         GID_STICK,            0x37, 0x0D, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_STICKS_1),
-        GET_ITEM(ITEM_HOOKSHOT,         OBJECT_GI_HOOKSHOT,      GID_HOOKSHOT,         0x36, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_HOOKSHOT),
-        GET_ITEM(ITEM_LONGSHOT,         OBJECT_GI_HOOKSHOT,      GID_LONGSHOT,         0x4F, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_LONGSHOT),
-        GET_ITEM(ITEM_LENS,             OBJECT_GI_GLASSES,       GID_LENS,             0x39, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_LENS),
-        GET_ITEM(ITEM_LETTER_ZELDA,     OBJECT_GI_LETTER,        GID_LETTER_ZELDA,     0x69, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_LETTER_ZELDA),
-        GET_ITEM(ITEM_OCARINA_TIME,     OBJECT_GI_OCARINA,       GID_OCARINA_TIME,     0x3A, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_OCARINA_OOT),
-        GET_ITEM(ITEM_HAMMER,           OBJECT_GI_HAMMER,        GID_HAMMER,           0x38, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_HAMMER),
-        GET_ITEM(ITEM_COJIRO,           OBJECT_GI_NIWATORI,      GID_COJIRO,           0x02, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_COJIRO),
-        GET_ITEM(ITEM_BOTTLE,           OBJECT_GI_BOTTLE,        GID_BOTTLE,           0x42, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_BOTTLE),
-        GET_ITEM(ITEM_POTION_RED,       OBJECT_GI_LIQUID,        GID_POTION_RED,       0x43, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_POTION_RED),
-        GET_ITEM(ITEM_POTION_GREEN,     OBJECT_GI_LIQUID,        GID_POTION_GREEN,     0x44, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_POTION_GREEN),
-        GET_ITEM(ITEM_POTION_BLUE,      OBJECT_GI_LIQUID,        GID_POTION_BLUE,      0x45, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_POTION_BLUE),
-        GET_ITEM(ITEM_FAIRY,            OBJECT_GI_BOTTLE,        GID_BOTTLE,           0x46, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_FAIRY),
-        GET_ITEM(ITEM_MILK_BOTTLE,      OBJECT_GI_MILK,          GID_MILK,             0x98, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_MILK_BOTTLE),
-        GET_ITEM(ITEM_LETTER_RUTO,      OBJECT_GI_BOTTLE_LETTER, GID_LETTER_RUTO,      0x99, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_LETTER_RUTO),
-        GET_ITEM(ITEM_BEAN,             OBJECT_GI_BEAN,          GID_BEAN,             0x48, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_BEAN),
-        GET_ITEM(ITEM_MASK_SKULL,       OBJECT_GI_SKJ_MASK,      GID_MASK_SKULL,       0x10, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_MASK_SKULL),
-        GET_ITEM(ITEM_MASK_SPOOKY,      OBJECT_GI_REDEAD_MASK,   GID_MASK_SPOOKY,      0x11, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_MASK_SPOOKY),
-        GET_ITEM(ITEM_CHICKEN,          OBJECT_GI_NIWATORI,      GID_CHICKEN,          0x48, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_CHICKEN),
-        GET_ITEM(ITEM_MASK_KEATON,      OBJECT_GI_KI_TAN_MASK,   GID_MASK_KEATON,      0x12, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_MASK_KEATON),
-        GET_ITEM(ITEM_MASK_BUNNY,       OBJECT_GI_RABIT_MASK,    GID_MASK_BUNNY,       0x13, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_MASK_BUNNY),
-        GET_ITEM(ITEM_MASK_TRUTH,       OBJECT_GI_TRUTH_MASK,    GID_MASK_TRUTH,       0x17, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_MASK_TRUTH),
-        GET_ITEM(ITEM_POCKET_EGG,       OBJECT_GI_EGG,           GID_EGG,              0x01, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_POCKET_EGG),
-        GET_ITEM(ITEM_POCKET_CUCCO,     OBJECT_GI_NIWATORI,      GID_CHICKEN,          0x48, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_POCKET_CUCCO),
-        GET_ITEM(ITEM_ODD_MUSHROOM,     OBJECT_GI_MUSHROOM,      GID_ODD_MUSHROOM,     0x03, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_ODD_MUSHROOM),
-        GET_ITEM(ITEM_ODD_POTION,       OBJECT_GI_POWDER,        GID_ODD_POTION,       0x04, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_ODD_POTION),
-        GET_ITEM(ITEM_SAW,              OBJECT_GI_SAW,           GID_SAW,              0x05, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_SAW),
-        GET_ITEM(ITEM_SWORD_BROKEN,     OBJECT_GI_BROKENSWORD,   GID_SWORD_BROKEN,     0x08, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_SWORD_BROKEN),
-        GET_ITEM(ITEM_PRESCRIPTION,     OBJECT_GI_PRESCRIPTION,  GID_PRESCRIPTION,     0x09, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_PRESCRIPTION),
-        GET_ITEM(ITEM_FROG,             OBJECT_GI_FROG,          GID_FROG,             0x0D, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_FROG),
-        GET_ITEM(ITEM_EYEDROPS,         OBJECT_GI_EYE_LOTION,    GID_EYEDROPS,         0x0E, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_EYEDROPS),
-        GET_ITEM(ITEM_CLAIM_CHECK,      OBJECT_GI_TICKETSTONE,   GID_CLAIM_CHECK,      0x0A, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_CLAIM_CHECK),
-        GET_ITEM(ITEM_SWORD_KOKIRI,     OBJECT_GI_SWORD_1,       GID_SWORD_KOKIRI,     0xA4, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_SWORD_KOKIRI),
-        GET_ITEM(ITEM_SWORD_BGS,        OBJECT_GI_LONGSWORD,     GID_SWORD_BGS,        0x4B, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_SWORD_KNIFE),
-        GET_ITEM(ITEM_SHIELD_DEKU,      OBJECT_GI_SHIELD_1,      GID_SHIELD_DEKU,      0x4C, 0xA0, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,          MOD_NONE, GI_SHIELD_DEKU),
-        GET_ITEM(ITEM_SHIELD_HYLIAN,    OBJECT_GI_SHIELD_2,      GID_SHIELD_HYLIAN,    0x4D, 0xA0, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,          MOD_NONE, GI_SHIELD_HYLIAN),
-        GET_ITEM(ITEM_SHIELD_MIRROR,    OBJECT_GI_SHIELD_3,      GID_SHIELD_MIRROR,    0x4E, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_SHIELD_MIRROR),
-        GET_ITEM(ITEM_TUNIC_GORON,      OBJECT_GI_CLOTHES,       GID_TUNIC_GORON,      0x50, 0xA0, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_TUNIC_GORON),
-        GET_ITEM(ITEM_TUNIC_ZORA,       OBJECT_GI_CLOTHES,       GID_TUNIC_ZORA,       0x51, 0xA0, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_TUNIC_ZORA),
-        GET_ITEM(ITEM_BOOTS_IRON,       OBJECT_GI_BOOTS_2,       GID_BOOTS_IRON,       0x53, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_BOOTS_IRON),
-        GET_ITEM(ITEM_BOOTS_HOVER,      OBJECT_GI_HOVERBOOTS,    GID_BOOTS_HOVER,      0x54, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_BOOTS_HOVER),
-        GET_ITEM(ITEM_QUIVER_40,        OBJECT_GI_ARROWCASE,     GID_QUIVER_40,        0x56, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_QUIVER_40),
-        GET_ITEM(ITEM_QUIVER_50,        OBJECT_GI_ARROWCASE,     GID_QUIVER_50,        0x57, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_QUIVER_50),
-        GET_ITEM(ITEM_BOMB_BAG_20,      OBJECT_GI_BOMBPOUCH,     GID_BOMB_BAG_20,      0x58, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_BOMB_BAG_20),
-        GET_ITEM(ITEM_BOMB_BAG_30,      OBJECT_GI_BOMBPOUCH,     GID_BOMB_BAG_30,      0x59, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_BOMB_BAG_30),
-        GET_ITEM(ITEM_BOMB_BAG_40,      OBJECT_GI_BOMBPOUCH,     GID_BOMB_BAG_40,      0x5A, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_BOMB_BAG_40),
-        GET_ITEM(ITEM_GAUNTLETS_SILVER, OBJECT_GI_GLOVES,        GID_GAUNTLETS_SILVER, 0x5B, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_GAUNTLETS_SILVER),
-        GET_ITEM(ITEM_GAUNTLETS_GOLD,   OBJECT_GI_GLOVES,        GID_GAUNTLETS_GOLD,   0x5C, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_GAUNTLETS_GOLD),
-        GET_ITEM(ITEM_SCALE_SILVER,     OBJECT_GI_SCALE,         GID_SCALE_SILVER,     0xCD, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_SCALE_SILVER),
-        GET_ITEM(ITEM_SCALE_GOLDEN,     OBJECT_GI_SCALE,         GID_SCALE_GOLDEN,     0xCE, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_SCALE_GOLD),
-        GET_ITEM(ITEM_STONE_OF_AGONY,   OBJECT_GI_MAP,           GID_STONE_OF_AGONY,   0x68, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_STONE_OF_AGONY),
-        GET_ITEM(ITEM_GERUDO_CARD,      OBJECT_GI_GERUDO,        GID_GERUDO_CARD,      0x7B, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_GERUDO_CARD),
-        GET_ITEM(ITEM_OCARINA_FAIRY,    OBJECT_GI_OCARINA_0,     GID_OCARINA_FAIRY,    0x4A, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_OCARINA_FAIRY),
-        GET_ITEM(ITEM_SEEDS,            OBJECT_GI_SEED,          GID_SEEDS,            0xDC, 0x50, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_SEEDS_5),
-        GET_ITEM(ITEM_HEART_CONTAINER,  OBJECT_GI_HEARTS,        GID_HEART_CONTAINER,  0xC6, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_HEART_CONTAINER),
-        GET_ITEM(ITEM_HEART_PIECE_2,    OBJECT_GI_HEARTS,        GID_HEART_PIECE,      0xC2, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_HEART_PIECE),
-        GET_ITEM(ITEM_KEY_BOSS,         OBJECT_GI_BOSSKEY,       GID_KEY_BOSS,         0xC7, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,        MOD_NONE, GI_KEY_BOSS),
-        GET_ITEM(ITEM_COMPASS,          OBJECT_GI_COMPASS,       GID_COMPASS,          0x67, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_COMPASS),
-        GET_ITEM(ITEM_DUNGEON_MAP,      OBJECT_GI_MAP,           GID_DUNGEON_MAP,      0x66, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_MAP),
-        GET_ITEM(ITEM_KEY_SMALL,        OBJECT_GI_KEY,           GID_KEY_SMALL,        0x60, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY,       MOD_NONE, GI_KEY_SMALL),
-        GET_ITEM(ITEM_MAGIC_SMALL,      OBJECT_GI_MAGICPOT,      GID_MAGIC_SMALL,      0x52, 0x6F, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_MAGIC_SMALL),
-        GET_ITEM(ITEM_MAGIC_LARGE,      OBJECT_GI_MAGICPOT,      GID_MAGIC_LARGE,      0x52, 0x6E, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_MAGIC_LARGE),
-        GET_ITEM(ITEM_WALLET_ADULT,     OBJECT_GI_PURSE,         GID_WALLET_ADULT,     0x5E, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_WALLET_ADULT),
-        GET_ITEM(ITEM_WALLET_GIANT,     OBJECT_GI_PURSE,         GID_WALLET_GIANT,     0x5F, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_WALLET_GIANT),
-        GET_ITEM(ITEM_WEIRD_EGG,        OBJECT_GI_EGG,           GID_EGG,              0x9A, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_WEIRD_EGG),
-        GET_ITEM(ITEM_HEART,            OBJECT_GI_HEART,         GID_HEART,            0x55, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_HEART),
-        GET_ITEM(ITEM_ARROWS_SMALL,     OBJECT_GI_ARROW,         GID_ARROWS_SMALL,     0xE6, 0x48, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_ARROWS_SMALL),
-        GET_ITEM(ITEM_ARROWS_MEDIUM,    OBJECT_GI_ARROW,         GID_ARROWS_MEDIUM,    0xE6, 0x49, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_ARROWS_MEDIUM),
-        GET_ITEM(ITEM_ARROWS_LARGE,     OBJECT_GI_ARROW,         GID_ARROWS_LARGE,     0xE6, 0x4A, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_ARROWS_LARGE),
-        GET_ITEM(ITEM_RUPEE_GREEN,      OBJECT_GI_RUPY,          GID_RUPEE_GREEN,      0x6F, 0x00, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_GREEN),
-        GET_ITEM(ITEM_RUPEE_BLUE,       OBJECT_GI_RUPY,          GID_RUPEE_BLUE,       0xCC, 0x01, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_BLUE),
-        GET_ITEM(ITEM_RUPEE_RED,        OBJECT_GI_RUPY,          GID_RUPEE_RED,        0xF0, 0x02, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_RED),
-        GET_ITEM(ITEM_HEART_CONTAINER,  OBJECT_GI_HEARTS,        GID_HEART_CONTAINER,  0xC6, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_HEART_CONTAINER_2),
-        GET_ITEM(ITEM_MILK,             OBJECT_GI_MILK,          GID_MILK,             0x98, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_MILK),
-        GET_ITEM(ITEM_MASK_GORON,       OBJECT_GI_GOLONMASK,     GID_MASK_GORON,       0x14, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_MASK_GORON),
-        GET_ITEM(ITEM_MASK_ZORA,        OBJECT_GI_ZORAMASK,      GID_MASK_ZORA,        0x15, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_MASK_ZORA),
-        GET_ITEM(ITEM_MASK_GERUDO,      OBJECT_GI_GERUDOMASK,    GID_MASK_GERUDO,      0x16, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_MASK_GERUDO),
-        GET_ITEM(ITEM_BRACELET,         OBJECT_GI_BRACELET,      GID_BRACELET,         0x79, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_BRACELET),
-        GET_ITEM(ITEM_RUPEE_PURPLE,     OBJECT_GI_RUPY,          GID_RUPEE_PURPLE,     0xF1, 0x14, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_PURPLE),
-        GET_ITEM(ITEM_RUPEE_GOLD,       OBJECT_GI_RUPY,          GID_RUPEE_GOLD,       0xF2, 0x13, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,          MOD_NONE, GI_RUPEE_GOLD),
-        GET_ITEM(ITEM_SWORD_BGS,        OBJECT_GI_LONGSWORD,     GID_SWORD_BGS,        0x0C, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_SWORD_BGS),
-        GET_ITEM(ITEM_ARROW_FIRE,       OBJECT_GI_M_ARROW,       GID_ARROW_FIRE,       0x70, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_ARROW_FIRE),
-        GET_ITEM(ITEM_ARROW_ICE,        OBJECT_GI_M_ARROW,       GID_ARROW_ICE,        0x71, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_ARROW_ICE),
-        GET_ITEM(ITEM_ARROW_LIGHT,      OBJECT_GI_M_ARROW,       GID_ARROW_LIGHT,      0x72, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_ARROW_LIGHT),
-        GET_ITEM(ITEM_SKULL_TOKEN,      OBJECT_GI_SUTARU,        GID_SKULL_TOKEN,      0xB4, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SKULLTULA_TOKEN, MOD_NONE, GI_SKULL_TOKEN),
-        GET_ITEM(ITEM_DINS_FIRE,        OBJECT_GI_GODDESS,       GID_DINS_FIRE,        0xAD, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_DINS_FIRE),
-        GET_ITEM(ITEM_FARORES_WIND,     OBJECT_GI_GODDESS,       GID_FARORES_WIND,     0xAE, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_FARORES_WIND),
-        GET_ITEM(ITEM_NAYRUS_LOVE,      OBJECT_GI_GODDESS,       GID_NAYRUS_LOVE,      0xAF, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,           MOD_NONE, GI_NAYRUS_LOVE),
-        GET_ITEM(ITEM_BULLET_BAG_30,    OBJECT_GI_DEKUPOUCH,     GID_BULLET_BAG,       0x07, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_BULLET_BAG_30),
-        GET_ITEM(ITEM_BULLET_BAG_40,    OBJECT_GI_DEKUPOUCH,     GID_BULLET_BAG,       0x07, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_BULLET_BAG_40),
-        GET_ITEM(ITEM_STICKS_5,         OBJECT_GI_STICK,         GID_STICK,            0x37, 0x0D, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_STICKS_5),
-        GET_ITEM(ITEM_STICKS_10,        OBJECT_GI_STICK,         GID_STICK,            0x37, 0x0D, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_STICKS_10),
-        GET_ITEM(ITEM_NUTS_5,           OBJECT_GI_NUTS,          GID_NUTS,             0x34, 0x0C, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_NUTS_5_2),
-        GET_ITEM(ITEM_NUTS_10,          OBJECT_GI_NUTS,          GID_NUTS,             0x34, 0x0C, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_NUTS_10),
-        GET_ITEM(ITEM_BOMB,             OBJECT_GI_BOMB_1,        GID_BOMB,             0x32, 0x59, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BOMBS_1),
-        GET_ITEM(ITEM_BOMBS_10,         OBJECT_GI_BOMB_1,        GID_BOMB,             0x32, 0x59, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BOMBS_10),
-        GET_ITEM(ITEM_BOMBS_20,         OBJECT_GI_BOMB_1,        GID_BOMB,             0x32, 0x59, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BOMBS_20),
-        GET_ITEM(ITEM_BOMBS_30,         OBJECT_GI_BOMB_1,        GID_BOMB,             0x32, 0x59, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BOMBS_30),
-        GET_ITEM(ITEM_SEEDS_30,         OBJECT_GI_SEED,          GID_SEEDS,            0xDC, 0x50, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_SEEDS_30),
-        GET_ITEM(ITEM_BOMBCHUS_5,       OBJECT_GI_BOMB_2,        GID_BOMBCHU,          0x33, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BOMBCHUS_5),
-        GET_ITEM(ITEM_BOMBCHUS_20,      OBJECT_GI_BOMB_2,        GID_BOMBCHU,          0x33, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BOMBCHUS_20),
-        GET_ITEM(ITEM_FISH,             OBJECT_GI_FISH,          GID_FISH,             0x47, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_FISH),
-        GET_ITEM(ITEM_BUG,              OBJECT_GI_INSECT,        GID_BUG,              0x7A, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BUGS),
-        GET_ITEM(ITEM_BLUE_FIRE,        OBJECT_GI_FIRE,          GID_BLUE_FIRE,        0x5D, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BLUE_FIRE),
-        GET_ITEM(ITEM_POE,              OBJECT_GI_GHOST,         GID_POE,              0x97, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_POE),
-        GET_ITEM(ITEM_BIG_POE,          OBJECT_GI_GHOST,         GID_BIG_POE,          0xF9, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_JUNK,            MOD_NONE, GI_BIG_POE),
-        GET_ITEM(ITEM_KEY_SMALL,        OBJECT_GI_KEY,           GID_KEY_SMALL,        0xF3, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY,       MOD_NONE, GI_DOOR_KEY),
-        GET_ITEM(ITEM_RUPEE_GREEN,      OBJECT_GI_RUPY,          GID_RUPEE_GREEN,      0xF4, 0x00, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_GREEN_LOSE),
-        GET_ITEM(ITEM_RUPEE_BLUE,       OBJECT_GI_RUPY,          GID_RUPEE_BLUE,       0xF5, 0x01, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_BLUE_LOSE),
-        GET_ITEM(ITEM_RUPEE_RED,        OBJECT_GI_RUPY,          GID_RUPEE_RED,        0xF6, 0x02, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_RED_LOSE),
-        GET_ITEM(ITEM_RUPEE_PURPLE,     OBJECT_GI_RUPY,          GID_RUPEE_PURPLE,     0xF7, 0x14, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,            MOD_NONE, GI_RUPEE_PURPLE_LOSE),
-        GET_ITEM(ITEM_HEART_PIECE_2,    OBJECT_GI_HEARTS,        GID_HEART_PIECE,      0xFA, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_HEART_PIECE_WIN),
-        GET_ITEM(ITEM_STICK_UPGRADE_20, OBJECT_GI_STICK,         GID_STICK,            0x90, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,          MOD_NONE, GI_STICK_UPGRADE_20),
-        GET_ITEM(ITEM_STICK_UPGRADE_30, OBJECT_GI_STICK,         GID_STICK,            0x91, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,          MOD_NONE, GI_STICK_UPGRADE_30),
-        GET_ITEM(ITEM_NUT_UPGRADE_30,   OBJECT_GI_NUTS,          GID_NUTS,             0xA7, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,          MOD_NONE, GI_NUT_UPGRADE_30),
-        GET_ITEM(ITEM_NUT_UPGRADE_40,   OBJECT_GI_NUTS,          GID_NUTS,             0xA8, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,          MOD_NONE, GI_NUT_UPGRADE_40),
-        GET_ITEM(ITEM_BULLET_BAG_50,    OBJECT_GI_DEKUPOUCH,     GID_BULLET_BAG_50,    0x6C, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,          MOD_NONE, GI_BULLET_BAG_50),
+        GET_ITEM(ITEM_BOMBS_5, OBJECT_GI_BOMB_1, GID_BOMB, 0x32, 0x59, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE,
+                 GI_BOMBS_5),
+        GET_ITEM(ITEM_NUTS_5, OBJECT_GI_NUTS, GID_NUTS, 0x34, 0x0C, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE,
+                 GI_NUTS_5),
+        GET_ITEM(ITEM_BOMBCHU, OBJECT_GI_BOMB_2, GID_BOMBCHU, 0x33, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,
+                 MOD_NONE, GI_BOMBCHUS_10),
+        GET_ITEM(ITEM_BOW, OBJECT_GI_BOW, GID_BOW, 0x31, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE, GI_BOW),
+        GET_ITEM(ITEM_SLINGSHOT, OBJECT_GI_PACHINKO, GID_SLINGSHOT, 0x30, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_SLINGSHOT),
+        GET_ITEM(ITEM_BOOMERANG, OBJECT_GI_BOOMERANG, GID_BOOMERANG, 0x35, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_BOOMERANG),
+        GET_ITEM(ITEM_STICK, OBJECT_GI_STICK, GID_STICK, 0x37, 0x0D, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE,
+                 GI_STICKS_1),
+        GET_ITEM(ITEM_HOOKSHOT, OBJECT_GI_HOOKSHOT, GID_HOOKSHOT, 0x36, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_HOOKSHOT),
+        GET_ITEM(ITEM_LONGSHOT, OBJECT_GI_HOOKSHOT, GID_LONGSHOT, 0x4F, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_LONGSHOT),
+        GET_ITEM(ITEM_LENS, OBJECT_GI_GLASSES, GID_LENS, 0x39, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE,
+                 GI_LENS),
+        GET_ITEM(ITEM_LETTER_ZELDA, OBJECT_GI_LETTER, GID_LETTER_ZELDA, 0x69, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_MAJOR, MOD_NONE, GI_LETTER_ZELDA),
+        GET_ITEM(ITEM_OCARINA_TIME, OBJECT_GI_OCARINA, GID_OCARINA_TIME, 0x3A, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_MAJOR, MOD_NONE, GI_OCARINA_OOT),
+        GET_ITEM(ITEM_HAMMER, OBJECT_GI_HAMMER, GID_HAMMER, 0x38, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE,
+                 GI_HAMMER),
+        GET_ITEM(ITEM_COJIRO, OBJECT_GI_NIWATORI, GID_COJIRO, 0x02, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_COJIRO),
+        GET_ITEM(ITEM_BOTTLE, OBJECT_GI_BOTTLE, GID_BOTTLE, 0x42, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE,
+                 GI_BOTTLE),
+        GET_ITEM(ITEM_POTION_RED, OBJECT_GI_LIQUID, GID_POTION_RED, 0x43, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK,
+                 MOD_NONE, GI_POTION_RED),
+        GET_ITEM(ITEM_POTION_GREEN, OBJECT_GI_LIQUID, GID_POTION_GREEN, 0x44, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK,
+                 MOD_NONE, GI_POTION_GREEN),
+        GET_ITEM(ITEM_POTION_BLUE, OBJECT_GI_LIQUID, GID_POTION_BLUE, 0x45, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK,
+                 MOD_NONE, GI_POTION_BLUE),
+        GET_ITEM(ITEM_FAIRY, OBJECT_GI_BOTTLE, GID_BOTTLE, 0x46, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE,
+                 GI_FAIRY),
+        GET_ITEM(ITEM_MILK_BOTTLE, OBJECT_GI_MILK, GID_MILK, 0x98, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE,
+                 GI_MILK_BOTTLE),
+        GET_ITEM(ITEM_LETTER_RUTO, OBJECT_GI_BOTTLE_LETTER, GID_LETTER_RUTO, 0x99, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_MAJOR, MOD_NONE, GI_LETTER_RUTO),
+        GET_ITEM(ITEM_BEAN, OBJECT_GI_BEAN, GID_BEAN, 0x48, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_MAJOR, MOD_NONE,
+                 GI_BEAN),
+        GET_ITEM(ITEM_MASK_SKULL, OBJECT_GI_SKJ_MASK, GID_MASK_SKULL, 0x10, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_MASK_SKULL),
+        GET_ITEM(ITEM_MASK_SPOOKY, OBJECT_GI_REDEAD_MASK, GID_MASK_SPOOKY, 0x11, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_MAJOR, MOD_NONE, GI_MASK_SPOOKY),
+        GET_ITEM(ITEM_CHICKEN, OBJECT_GI_NIWATORI, GID_CHICKEN, 0x48, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_CHICKEN),
+        GET_ITEM(ITEM_MASK_KEATON, OBJECT_GI_KI_TAN_MASK, GID_MASK_KEATON, 0x12, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_MAJOR, MOD_NONE, GI_MASK_KEATON),
+        GET_ITEM(ITEM_MASK_BUNNY, OBJECT_GI_RABIT_MASK, GID_MASK_BUNNY, 0x13, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_MAJOR, MOD_NONE, GI_MASK_BUNNY),
+        GET_ITEM(ITEM_MASK_TRUTH, OBJECT_GI_TRUTH_MASK, GID_MASK_TRUTH, 0x17, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_MAJOR, MOD_NONE, GI_MASK_TRUTH),
+        GET_ITEM(ITEM_POCKET_EGG, OBJECT_GI_EGG, GID_EGG, 0x01, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE,
+                 GI_POCKET_EGG),
+        GET_ITEM(ITEM_POCKET_CUCCO, OBJECT_GI_NIWATORI, GID_CHICKEN, 0x48, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_POCKET_CUCCO),
+        GET_ITEM(ITEM_ODD_MUSHROOM, OBJECT_GI_MUSHROOM, GID_ODD_MUSHROOM, 0x03, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_MAJOR, MOD_NONE, GI_ODD_MUSHROOM),
+        GET_ITEM(ITEM_ODD_POTION, OBJECT_GI_POWDER, GID_ODD_POTION, 0x04, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_ODD_POTION),
+        GET_ITEM(ITEM_SAW, OBJECT_GI_SAW, GID_SAW, 0x05, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE, GI_SAW),
+        GET_ITEM(ITEM_SWORD_BROKEN, OBJECT_GI_BROKENSWORD, GID_SWORD_BROKEN, 0x08, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_MAJOR, MOD_NONE, GI_SWORD_BROKEN),
+        GET_ITEM(ITEM_PRESCRIPTION, OBJECT_GI_PRESCRIPTION, GID_PRESCRIPTION, 0x09, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_MAJOR, MOD_NONE, GI_PRESCRIPTION),
+        GET_ITEM(ITEM_FROG, OBJECT_GI_FROG, GID_FROG, 0x0D, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE,
+                 GI_FROG),
+        GET_ITEM(ITEM_EYEDROPS, OBJECT_GI_EYE_LOTION, GID_EYEDROPS, 0x0E, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_EYEDROPS),
+        GET_ITEM(ITEM_CLAIM_CHECK, OBJECT_GI_TICKETSTONE, GID_CLAIM_CHECK, 0x0A, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_MAJOR, MOD_NONE, GI_CLAIM_CHECK),
+        GET_ITEM(ITEM_SWORD_KOKIRI, OBJECT_GI_SWORD_1, GID_SWORD_KOKIRI, 0xA4, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_MAJOR, MOD_NONE, GI_SWORD_KOKIRI),
+        GET_ITEM(ITEM_SWORD_BGS, OBJECT_GI_LONGSWORD, GID_SWORD_BGS, 0x4B, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_SWORD_KNIFE),
+        GET_ITEM(ITEM_SHIELD_DEKU, OBJECT_GI_SHIELD_1, GID_SHIELD_DEKU, 0x4C, 0xA0, CHEST_ANIM_SHORT,
+                 ITEM_CATEGORY_LESSER, MOD_NONE, GI_SHIELD_DEKU),
+        GET_ITEM(ITEM_SHIELD_HYLIAN, OBJECT_GI_SHIELD_2, GID_SHIELD_HYLIAN, 0x4D, 0xA0, CHEST_ANIM_SHORT,
+                 ITEM_CATEGORY_LESSER, MOD_NONE, GI_SHIELD_HYLIAN),
+        GET_ITEM(ITEM_SHIELD_MIRROR, OBJECT_GI_SHIELD_3, GID_SHIELD_MIRROR, 0x4E, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_MAJOR, MOD_NONE, GI_SHIELD_MIRROR),
+        GET_ITEM(ITEM_TUNIC_GORON, OBJECT_GI_CLOTHES, GID_TUNIC_GORON, 0x50, 0xA0, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_LESSER, MOD_NONE, GI_TUNIC_GORON),
+        GET_ITEM(ITEM_TUNIC_ZORA, OBJECT_GI_CLOTHES, GID_TUNIC_ZORA, 0x51, 0xA0, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER,
+                 MOD_NONE, GI_TUNIC_ZORA),
+        GET_ITEM(ITEM_BOOTS_IRON, OBJECT_GI_BOOTS_2, GID_BOOTS_IRON, 0x53, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_BOOTS_IRON),
+        GET_ITEM(ITEM_BOOTS_HOVER, OBJECT_GI_HOVERBOOTS, GID_BOOTS_HOVER, 0x54, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_MAJOR, MOD_NONE, GI_BOOTS_HOVER),
+        GET_ITEM(ITEM_QUIVER_40, OBJECT_GI_ARROWCASE, GID_QUIVER_40, 0x56, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER,
+                 MOD_NONE, GI_QUIVER_40),
+        GET_ITEM(ITEM_QUIVER_50, OBJECT_GI_ARROWCASE, GID_QUIVER_50, 0x57, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER,
+                 MOD_NONE, GI_QUIVER_50),
+        GET_ITEM(ITEM_BOMB_BAG_20, OBJECT_GI_BOMBPOUCH, GID_BOMB_BAG_20, 0x58, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_MAJOR, MOD_NONE, GI_BOMB_BAG_20),
+        GET_ITEM(ITEM_BOMB_BAG_30, OBJECT_GI_BOMBPOUCH, GID_BOMB_BAG_30, 0x59, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_LESSER, MOD_NONE, GI_BOMB_BAG_30),
+        GET_ITEM(ITEM_BOMB_BAG_40, OBJECT_GI_BOMBPOUCH, GID_BOMB_BAG_40, 0x5A, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_LESSER, MOD_NONE, GI_BOMB_BAG_40),
+        GET_ITEM(ITEM_GAUNTLETS_SILVER, OBJECT_GI_GLOVES, GID_GAUNTLETS_SILVER, 0x5B, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_MAJOR, MOD_NONE, GI_GAUNTLETS_SILVER),
+        GET_ITEM(ITEM_GAUNTLETS_GOLD, OBJECT_GI_GLOVES, GID_GAUNTLETS_GOLD, 0x5C, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_MAJOR, MOD_NONE, GI_GAUNTLETS_GOLD),
+        GET_ITEM(ITEM_SCALE_SILVER, OBJECT_GI_SCALE, GID_SCALE_SILVER, 0xCD, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_SCALE_SILVER),
+        GET_ITEM(ITEM_SCALE_GOLDEN, OBJECT_GI_SCALE, GID_SCALE_GOLDEN, 0xCE, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_SCALE_GOLD),
+        GET_ITEM(ITEM_STONE_OF_AGONY, OBJECT_GI_MAP, GID_STONE_OF_AGONY, 0x68, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_MAJOR, MOD_NONE, GI_STONE_OF_AGONY),
+        GET_ITEM(ITEM_GERUDO_CARD, OBJECT_GI_GERUDO, GID_GERUDO_CARD, 0x7B, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_GERUDO_CARD),
+        GET_ITEM(ITEM_OCARINA_FAIRY, OBJECT_GI_OCARINA_0, GID_OCARINA_FAIRY, 0x4A, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_MAJOR, MOD_NONE, GI_OCARINA_FAIRY),
+        GET_ITEM(ITEM_SEEDS, OBJECT_GI_SEED, GID_SEEDS, 0xDC, 0x50, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE,
+                 GI_SEEDS_5),
+        GET_ITEM(ITEM_HEART_CONTAINER, OBJECT_GI_HEARTS, GID_HEART_CONTAINER, 0xC6, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_LESSER, MOD_NONE, GI_HEART_CONTAINER),
+        GET_ITEM(ITEM_HEART_PIECE_2, OBJECT_GI_HEARTS, GID_HEART_PIECE, 0xC2, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_LESSER, MOD_NONE, GI_HEART_PIECE),
+        GET_ITEM(ITEM_KEY_BOSS, OBJECT_GI_BOSSKEY, GID_KEY_BOSS, 0xC7, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_BOSS_KEY,
+                 MOD_NONE, GI_KEY_BOSS),
+        GET_ITEM(ITEM_COMPASS, OBJECT_GI_COMPASS, GID_COMPASS, 0x67, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER,
+                 MOD_NONE, GI_COMPASS),
+        GET_ITEM(ITEM_DUNGEON_MAP, OBJECT_GI_MAP, GID_DUNGEON_MAP, 0x66, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER,
+                 MOD_NONE, GI_MAP),
+        GET_ITEM(ITEM_KEY_SMALL, OBJECT_GI_KEY, GID_KEY_SMALL, 0x60, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY,
+                 MOD_NONE, GI_KEY_SMALL),
+        GET_ITEM(ITEM_MAGIC_SMALL, OBJECT_GI_MAGICPOT, GID_MAGIC_SMALL, 0x52, 0x6F, CHEST_ANIM_SHORT,
+                 ITEM_CATEGORY_JUNK, MOD_NONE, GI_MAGIC_SMALL),
+        GET_ITEM(ITEM_MAGIC_LARGE, OBJECT_GI_MAGICPOT, GID_MAGIC_LARGE, 0x52, 0x6E, CHEST_ANIM_SHORT,
+                 ITEM_CATEGORY_JUNK, MOD_NONE, GI_MAGIC_LARGE),
+        GET_ITEM(ITEM_WALLET_ADULT, OBJECT_GI_PURSE, GID_WALLET_ADULT, 0x5E, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_WALLET_ADULT),
+        GET_ITEM(ITEM_WALLET_GIANT, OBJECT_GI_PURSE, GID_WALLET_GIANT, 0x5F, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_WALLET_GIANT),
+        GET_ITEM(ITEM_WEIRD_EGG, OBJECT_GI_EGG, GID_EGG, 0x9A, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR, MOD_NONE,
+                 GI_WEIRD_EGG),
+        GET_ITEM(ITEM_HEART, OBJECT_GI_HEART, GID_HEART, 0x55, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE,
+                 GI_HEART),
+        GET_ITEM(ITEM_ARROWS_SMALL, OBJECT_GI_ARROW, GID_ARROWS_SMALL, 0xE6, 0x48, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,
+                 MOD_NONE, GI_ARROWS_SMALL),
+        GET_ITEM(ITEM_ARROWS_MEDIUM, OBJECT_GI_ARROW, GID_ARROWS_MEDIUM, 0xE6, 0x49, CHEST_ANIM_SHORT,
+                 ITEM_CATEGORY_JUNK, MOD_NONE, GI_ARROWS_MEDIUM),
+        GET_ITEM(ITEM_ARROWS_LARGE, OBJECT_GI_ARROW, GID_ARROWS_LARGE, 0xE6, 0x4A, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,
+                 MOD_NONE, GI_ARROWS_LARGE),
+        GET_ITEM(ITEM_RUPEE_GREEN, OBJECT_GI_RUPY, GID_RUPEE_GREEN, 0x6F, 0x00, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,
+                 MOD_NONE, GI_RUPEE_GREEN),
+        GET_ITEM(ITEM_RUPEE_BLUE, OBJECT_GI_RUPY, GID_RUPEE_BLUE, 0xCC, 0x01, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,
+                 MOD_NONE, GI_RUPEE_BLUE),
+        GET_ITEM(ITEM_RUPEE_RED, OBJECT_GI_RUPY, GID_RUPEE_RED, 0xF0, 0x02, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,
+                 MOD_NONE, GI_RUPEE_RED),
+        GET_ITEM(ITEM_HEART_CONTAINER, OBJECT_GI_HEARTS, GID_HEART_CONTAINER, 0xC6, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_LESSER, MOD_NONE, GI_HEART_CONTAINER_2),
+        GET_ITEM(ITEM_MILK, OBJECT_GI_MILK, GID_MILK, 0x98, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE,
+                 GI_MILK),
+        GET_ITEM(ITEM_MASK_GORON, OBJECT_GI_GOLONMASK, GID_MASK_GORON, 0x14, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_MASK_GORON),
+        GET_ITEM(ITEM_MASK_ZORA, OBJECT_GI_ZORAMASK, GID_MASK_ZORA, 0x15, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_MASK_ZORA),
+        GET_ITEM(ITEM_MASK_GERUDO, OBJECT_GI_GERUDOMASK, GID_MASK_GERUDO, 0x16, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_MAJOR, MOD_NONE, GI_MASK_GERUDO),
+        GET_ITEM(ITEM_BRACELET, OBJECT_GI_BRACELET, GID_BRACELET, 0x79, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_BRACELET),
+        GET_ITEM(ITEM_RUPEE_PURPLE, OBJECT_GI_RUPY, GID_RUPEE_PURPLE, 0xF1, 0x14, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,
+                 MOD_NONE, GI_RUPEE_PURPLE),
+        GET_ITEM(ITEM_RUPEE_GOLD, OBJECT_GI_RUPY, GID_RUPEE_GOLD, 0xF2, 0x13, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,
+                 MOD_NONE, GI_RUPEE_GOLD),
+        GET_ITEM(ITEM_SWORD_BGS, OBJECT_GI_LONGSWORD, GID_SWORD_BGS, 0x0C, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_SWORD_BGS),
+        GET_ITEM(ITEM_ARROW_FIRE, OBJECT_GI_M_ARROW, GID_ARROW_FIRE, 0x70, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_ARROW_FIRE),
+        GET_ITEM(ITEM_ARROW_ICE, OBJECT_GI_M_ARROW, GID_ARROW_ICE, 0x71, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_ARROW_ICE),
+        GET_ITEM(ITEM_ARROW_LIGHT, OBJECT_GI_M_ARROW, GID_ARROW_LIGHT, 0x72, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_ARROW_LIGHT),
+        GET_ITEM(ITEM_SKULL_TOKEN, OBJECT_GI_SUTARU, GID_SKULL_TOKEN, 0xB4, 0x80, CHEST_ANIM_SHORT,
+                 ITEM_CATEGORY_SKULLTULA_TOKEN, MOD_NONE, GI_SKULL_TOKEN),
+        GET_ITEM(ITEM_DINS_FIRE, OBJECT_GI_GODDESS, GID_DINS_FIRE, 0xAD, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_DINS_FIRE),
+        GET_ITEM(ITEM_FARORES_WIND, OBJECT_GI_GODDESS, GID_FARORES_WIND, 0xAE, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_MAJOR, MOD_NONE, GI_FARORES_WIND),
+        GET_ITEM(ITEM_NAYRUS_LOVE, OBJECT_GI_GODDESS, GID_NAYRUS_LOVE, 0xAF, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_MAJOR,
+                 MOD_NONE, GI_NAYRUS_LOVE),
+        GET_ITEM(ITEM_BULLET_BAG_30, OBJECT_GI_DEKUPOUCH, GID_BULLET_BAG, 0x07, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_LESSER, MOD_NONE, GI_BULLET_BAG_30),
+        GET_ITEM(ITEM_BULLET_BAG_40, OBJECT_GI_DEKUPOUCH, GID_BULLET_BAG, 0x07, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_LESSER, MOD_NONE, GI_BULLET_BAG_40),
+        GET_ITEM(ITEM_STICKS_5, OBJECT_GI_STICK, GID_STICK, 0x37, 0x0D, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE,
+                 GI_STICKS_5),
+        GET_ITEM(ITEM_STICKS_10, OBJECT_GI_STICK, GID_STICK, 0x37, 0x0D, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE,
+                 GI_STICKS_10),
+        GET_ITEM(ITEM_NUTS_5, OBJECT_GI_NUTS, GID_NUTS, 0x34, 0x0C, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE,
+                 GI_NUTS_5_2),
+        GET_ITEM(ITEM_NUTS_10, OBJECT_GI_NUTS, GID_NUTS, 0x34, 0x0C, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE,
+                 GI_NUTS_10),
+        GET_ITEM(ITEM_BOMB, OBJECT_GI_BOMB_1, GID_BOMB, 0x32, 0x59, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE,
+                 GI_BOMBS_1),
+        GET_ITEM(ITEM_BOMBS_10, OBJECT_GI_BOMB_1, GID_BOMB, 0x32, 0x59, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE,
+                 GI_BOMBS_10),
+        GET_ITEM(ITEM_BOMBS_20, OBJECT_GI_BOMB_1, GID_BOMB, 0x32, 0x59, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE,
+                 GI_BOMBS_20),
+        GET_ITEM(ITEM_BOMBS_30, OBJECT_GI_BOMB_1, GID_BOMB, 0x32, 0x59, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE,
+                 GI_BOMBS_30),
+        GET_ITEM(ITEM_SEEDS_30, OBJECT_GI_SEED, GID_SEEDS, 0xDC, 0x50, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK, MOD_NONE,
+                 GI_SEEDS_30),
+        GET_ITEM(ITEM_BOMBCHUS_5, OBJECT_GI_BOMB_2, GID_BOMBCHU, 0x33, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,
+                 MOD_NONE, GI_BOMBCHUS_5),
+        GET_ITEM(ITEM_BOMBCHUS_20, OBJECT_GI_BOMB_2, GID_BOMBCHU, 0x33, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,
+                 MOD_NONE, GI_BOMBCHUS_20),
+        GET_ITEM(ITEM_FISH, OBJECT_GI_FISH, GID_FISH, 0x47, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE,
+                 GI_FISH),
+        GET_ITEM(ITEM_BUG, OBJECT_GI_INSECT, GID_BUG, 0x7A, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE,
+                 GI_BUGS),
+        GET_ITEM(ITEM_BLUE_FIRE, OBJECT_GI_FIRE, GID_BLUE_FIRE, 0x5D, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK,
+                 MOD_NONE, GI_BLUE_FIRE),
+        GET_ITEM(ITEM_POE, OBJECT_GI_GHOST, GID_POE, 0x97, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE, GI_POE),
+        GET_ITEM(ITEM_BIG_POE, OBJECT_GI_GHOST, GID_BIG_POE, 0xF9, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_JUNK, MOD_NONE,
+                 GI_BIG_POE),
+        GET_ITEM(ITEM_KEY_SMALL, OBJECT_GI_KEY, GID_KEY_SMALL, 0xF3, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY,
+                 MOD_NONE, GI_DOOR_KEY),
+        GET_ITEM(ITEM_RUPEE_GREEN, OBJECT_GI_RUPY, GID_RUPEE_GREEN, 0xF4, 0x00, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,
+                 MOD_NONE, GI_RUPEE_GREEN_LOSE),
+        GET_ITEM(ITEM_RUPEE_BLUE, OBJECT_GI_RUPY, GID_RUPEE_BLUE, 0xF5, 0x01, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,
+                 MOD_NONE, GI_RUPEE_BLUE_LOSE),
+        GET_ITEM(ITEM_RUPEE_RED, OBJECT_GI_RUPY, GID_RUPEE_RED, 0xF6, 0x02, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,
+                 MOD_NONE, GI_RUPEE_RED_LOSE),
+        GET_ITEM(ITEM_RUPEE_PURPLE, OBJECT_GI_RUPY, GID_RUPEE_PURPLE, 0xF7, 0x14, CHEST_ANIM_SHORT, ITEM_CATEGORY_JUNK,
+                 MOD_NONE, GI_RUPEE_PURPLE_LOSE),
+        GET_ITEM(ITEM_HEART_PIECE_2, OBJECT_GI_HEARTS, GID_HEART_PIECE, 0xFA, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_LESSER, MOD_NONE, GI_HEART_PIECE_WIN),
+        GET_ITEM(ITEM_STICK_UPGRADE_20, OBJECT_GI_STICK, GID_STICK, 0x90, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,
+                 MOD_NONE, GI_STICK_UPGRADE_20),
+        GET_ITEM(ITEM_STICK_UPGRADE_30, OBJECT_GI_STICK, GID_STICK, 0x91, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,
+                 MOD_NONE, GI_STICK_UPGRADE_30),
+        GET_ITEM(ITEM_NUT_UPGRADE_30, OBJECT_GI_NUTS, GID_NUTS, 0xA7, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,
+                 MOD_NONE, GI_NUT_UPGRADE_30),
+        GET_ITEM(ITEM_NUT_UPGRADE_40, OBJECT_GI_NUTS, GID_NUTS, 0xA8, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_LESSER,
+                 MOD_NONE, GI_NUT_UPGRADE_40),
+        GET_ITEM(ITEM_BULLET_BAG_50, OBJECT_GI_DEKUPOUCH, GID_BULLET_BAG_50, 0x6C, 0x80, CHEST_ANIM_LONG,
+                 ITEM_CATEGORY_LESSER, MOD_NONE, GI_BULLET_BAG_50),
         GET_ITEM_NONE,
         GET_ITEM_NONE,
         GET_ITEM_NONE // GI_MAX - if you need to add to this table insert it before this entry.
@@ -565,135 +688,134 @@ extern "C" void VanillaItemTable_Init() {
         // that table was accessed used `GetItemID - 1`. This allows the
         // "first" item of the new map to start at 1, syncing it up with
         // the GetItemID values and removing the need for the `- 1`
-        ItemTableManager::Instance->AddItemEntry(MOD_NONE, i+1, getItemTable[i]);
+        ItemTableManager::Instance->AddItemEntry(MOD_NONE, i + 1, getItemTable[i]);
     }
 }
 
-std::unordered_map<uint32_t, uint32_t> ItemIDtoGetItemID{
-    { ITEM_ARROWS_LARGE, GI_ARROWS_LARGE },
-    { ITEM_ARROWS_MEDIUM, GI_ARROWS_MEDIUM },
-    { ITEM_ARROWS_SMALL, GI_ARROWS_SMALL },
-    { ITEM_ARROW_FIRE, GI_ARROW_FIRE },
-    { ITEM_ARROW_ICE, GI_ARROW_ICE },
-    { ITEM_ARROW_LIGHT, GI_ARROW_LIGHT },
-    { ITEM_BEAN, GI_BEAN },
-    { ITEM_BIG_POE, GI_BIG_POE },
-    { ITEM_BLUE_FIRE, GI_BLUE_FIRE },
-    { ITEM_BOMB, GI_BOMBS_1 },
-    { ITEM_BOMBCHU, GI_BOMBCHUS_10 },
-    { ITEM_BOMBCHUS_20, GI_BOMBCHUS_20 },
-    { ITEM_BOMBCHUS_5, GI_BOMBCHUS_5 },
-    { ITEM_BOMBS_10, GI_BOMBS_10 },
-    { ITEM_BOMBS_20, GI_BOMBS_20 },
-    { ITEM_BOMBS_30, GI_BOMBS_30 },
-    { ITEM_BOMBS_5, GI_BOMBS_5 },
-    { ITEM_BOMB_BAG_20, GI_BOMB_BAG_20 },
-    { ITEM_BOMB_BAG_30, GI_BOMB_BAG_30 },
-    { ITEM_BOMB_BAG_40, GI_BOMB_BAG_40 },
-    { ITEM_BOOMERANG, GI_BOOMERANG },
-    { ITEM_BOOTS_HOVER, GI_BOOTS_HOVER },
-    { ITEM_BOOTS_IRON, GI_BOOTS_IRON },
-    { ITEM_BOTTLE, GI_BOTTLE },
-    { ITEM_BOW, GI_BOW },
-    { ITEM_BRACELET, GI_BRACELET },
-    { ITEM_BUG, GI_BUGS },
-    { ITEM_BULLET_BAG_30, GI_BULLET_BAG_30 },
-    { ITEM_BULLET_BAG_40, GI_BULLET_BAG_40 },
-    { ITEM_BULLET_BAG_50, GI_BULLET_BAG_50 }, { ITEM_CHICKEN, GI_CHICKEN },
-    { ITEM_CLAIM_CHECK, GI_CLAIM_CHECK },
-    { ITEM_COJIRO, GI_COJIRO },
-    { ITEM_COMPASS, GI_COMPASS },
-    { ITEM_DINS_FIRE, GI_DINS_FIRE },
-    { ITEM_DUNGEON_MAP, GI_MAP },
-    { ITEM_EYEDROPS, GI_EYEDROPS },
-    { ITEM_FAIRY, GI_FAIRY },
-    { ITEM_FARORES_WIND, GI_FARORES_WIND },
-    { ITEM_FISH, GI_FISH },
-    { ITEM_FROG, GI_FROG },
-    { ITEM_GAUNTLETS_GOLD, GI_GAUNTLETS_GOLD },
-    { ITEM_GAUNTLETS_SILVER, GI_GAUNTLETS_SILVER },
-    { ITEM_GERUDO_CARD, GI_GERUDO_CARD },
-    { ITEM_HAMMER, GI_HAMMER },
-    { ITEM_HEART, GI_HEART },
-    { ITEM_HEART_CONTAINER, GI_HEART_CONTAINER },
-    { ITEM_HEART_CONTAINER, GI_HEART_CONTAINER_2 },
-    { ITEM_HEART_PIECE_2, GI_HEART_PIECE },
-    { ITEM_HEART_PIECE_2, GI_HEART_PIECE_WIN },
-    { ITEM_HOOKSHOT, GI_HOOKSHOT },
-    { ITEM_KEY_BOSS, GI_KEY_BOSS },
-    { ITEM_KEY_SMALL, GI_DOOR_KEY },
-    { ITEM_KEY_SMALL, GI_KEY_SMALL },
-    { ITEM_LENS, GI_LENS },
-    { ITEM_LETTER_RUTO, GI_LETTER_RUTO },
-    { ITEM_LETTER_ZELDA, GI_LETTER_ZELDA },
-    { ITEM_LONGSHOT, GI_LONGSHOT },
-    { ITEM_MAGIC_LARGE, GI_MAGIC_LARGE },
-    { ITEM_MAGIC_SMALL, GI_MAGIC_SMALL },
-    { ITEM_MASK_BUNNY, GI_MASK_BUNNY },
-    { ITEM_MASK_GERUDO, GI_MASK_GERUDO },
-    { ITEM_MASK_GORON, GI_MASK_GORON },
-    { ITEM_MASK_KEATON, GI_MASK_KEATON },
-    { ITEM_MASK_SKULL, GI_MASK_SKULL },
-    { ITEM_MASK_SPOOKY, GI_MASK_SPOOKY },
-    { ITEM_MASK_TRUTH, GI_MASK_TRUTH },
-    { ITEM_MASK_ZORA, GI_MASK_ZORA },
-    { ITEM_MILK, GI_MILK },
-    { ITEM_MILK_BOTTLE, GI_MILK_BOTTLE },
-    { ITEM_NAYRUS_LOVE, GI_NAYRUS_LOVE },
-    { ITEM_NUT, GI_NUTS_5 },
-    { ITEM_NUTS_10, GI_NUTS_10 },
-    { ITEM_NUTS_5, GI_NUTS_5 },
-    { ITEM_NUTS_5, GI_NUTS_5_2 },
-    { ITEM_NUT_UPGRADE_30, GI_NUT_UPGRADE_30 },
-    { ITEM_NUT_UPGRADE_40, GI_NUT_UPGRADE_40 },
-    { ITEM_OCARINA_FAIRY, GI_OCARINA_FAIRY },
-    { ITEM_OCARINA_TIME, GI_OCARINA_OOT },
-    { ITEM_ODD_MUSHROOM, GI_ODD_MUSHROOM },
-    { ITEM_ODD_POTION, GI_ODD_POTION },
-    { ITEM_POCKET_CUCCO, GI_POCKET_CUCCO },
-    { ITEM_POCKET_EGG, GI_POCKET_EGG },
-    { ITEM_POE, GI_POE },
-    { ITEM_POTION_BLUE, GI_POTION_BLUE },
-    { ITEM_POTION_GREEN, GI_POTION_GREEN },
-    { ITEM_POTION_RED, GI_POTION_RED },
-    { ITEM_PRESCRIPTION, GI_PRESCRIPTION },
-    { ITEM_QUIVER_40, GI_QUIVER_40 },
-    { ITEM_QUIVER_50, GI_QUIVER_50 },
-    { ITEM_RUPEE_BLUE, GI_RUPEE_BLUE },
-    { ITEM_RUPEE_BLUE, GI_RUPEE_BLUE_LOSE },
-    { ITEM_RUPEE_GOLD, GI_RUPEE_GOLD },
-    { ITEM_RUPEE_GREEN, GI_RUPEE_GREEN },
-    { ITEM_RUPEE_GREEN, GI_RUPEE_GREEN_LOSE },
-    { ITEM_RUPEE_PURPLE, GI_RUPEE_PURPLE },
-    { ITEM_RUPEE_PURPLE, GI_RUPEE_PURPLE_LOSE },
-    { ITEM_RUPEE_RED, GI_RUPEE_RED },
-    { ITEM_RUPEE_RED, GI_RUPEE_RED_LOSE },
-    { ITEM_SAW, GI_SAW },
-    { ITEM_SCALE_GOLDEN, GI_SCALE_GOLD },
-    { ITEM_SCALE_SILVER, GI_SCALE_SILVER },
-    { ITEM_SEEDS, GI_SEEDS_5 },
-    { ITEM_SEEDS_30, GI_SEEDS_30 },
-    { ITEM_SHIELD_DEKU, GI_SHIELD_DEKU },
-    { ITEM_SHIELD_HYLIAN, GI_SHIELD_HYLIAN },
-    { ITEM_SHIELD_MIRROR, GI_SHIELD_MIRROR },
-    { ITEM_SKULL_TOKEN, GI_SKULL_TOKEN },
-    { ITEM_SLINGSHOT, GI_SLINGSHOT },
-    { ITEM_STICK, GI_STICKS_1 },
-    { ITEM_STICKS_10, GI_STICKS_10 },
-    { ITEM_STICKS_5, GI_STICKS_5 },
-    { ITEM_STICK_UPGRADE_20, GI_STICK_UPGRADE_20 },
-    { ITEM_STICK_UPGRADE_30, GI_STICK_UPGRADE_30 },
-    { ITEM_STONE_OF_AGONY, GI_STONE_OF_AGONY },
-    { ITEM_SWORD_BGS, GI_SWORD_BGS },
-    { ITEM_SWORD_BGS, GI_SWORD_KNIFE },
-    { ITEM_SWORD_BROKEN, GI_SWORD_BROKEN },
-    { ITEM_SWORD_KOKIRI, GI_SWORD_KOKIRI },
-    { ITEM_TUNIC_GORON, GI_TUNIC_GORON },
-    { ITEM_TUNIC_ZORA, GI_TUNIC_ZORA },
-    { ITEM_WALLET_ADULT, GI_WALLET_ADULT },
-    { ITEM_WALLET_GIANT, GI_WALLET_GIANT },
-    { ITEM_WEIRD_EGG, GI_WEIRD_EGG }
-};
+std::unordered_map<uint32_t, uint32_t> ItemIDtoGetItemID{ { ITEM_ARROWS_LARGE, GI_ARROWS_LARGE },
+                                                          { ITEM_ARROWS_MEDIUM, GI_ARROWS_MEDIUM },
+                                                          { ITEM_ARROWS_SMALL, GI_ARROWS_SMALL },
+                                                          { ITEM_ARROW_FIRE, GI_ARROW_FIRE },
+                                                          { ITEM_ARROW_ICE, GI_ARROW_ICE },
+                                                          { ITEM_ARROW_LIGHT, GI_ARROW_LIGHT },
+                                                          { ITEM_BEAN, GI_BEAN },
+                                                          { ITEM_BIG_POE, GI_BIG_POE },
+                                                          { ITEM_BLUE_FIRE, GI_BLUE_FIRE },
+                                                          { ITEM_BOMB, GI_BOMBS_1 },
+                                                          { ITEM_BOMBCHU, GI_BOMBCHUS_10 },
+                                                          { ITEM_BOMBCHUS_20, GI_BOMBCHUS_20 },
+                                                          { ITEM_BOMBCHUS_5, GI_BOMBCHUS_5 },
+                                                          { ITEM_BOMBS_10, GI_BOMBS_10 },
+                                                          { ITEM_BOMBS_20, GI_BOMBS_20 },
+                                                          { ITEM_BOMBS_30, GI_BOMBS_30 },
+                                                          { ITEM_BOMBS_5, GI_BOMBS_5 },
+                                                          { ITEM_BOMB_BAG_20, GI_BOMB_BAG_20 },
+                                                          { ITEM_BOMB_BAG_30, GI_BOMB_BAG_30 },
+                                                          { ITEM_BOMB_BAG_40, GI_BOMB_BAG_40 },
+                                                          { ITEM_BOOMERANG, GI_BOOMERANG },
+                                                          { ITEM_BOOTS_HOVER, GI_BOOTS_HOVER },
+                                                          { ITEM_BOOTS_IRON, GI_BOOTS_IRON },
+                                                          { ITEM_BOTTLE, GI_BOTTLE },
+                                                          { ITEM_BOW, GI_BOW },
+                                                          { ITEM_BRACELET, GI_BRACELET },
+                                                          { ITEM_BUG, GI_BUGS },
+                                                          { ITEM_BULLET_BAG_30, GI_BULLET_BAG_30 },
+                                                          { ITEM_BULLET_BAG_40, GI_BULLET_BAG_40 },
+                                                          { ITEM_BULLET_BAG_50, GI_BULLET_BAG_50 },
+                                                          { ITEM_CHICKEN, GI_CHICKEN },
+                                                          { ITEM_CLAIM_CHECK, GI_CLAIM_CHECK },
+                                                          { ITEM_COJIRO, GI_COJIRO },
+                                                          { ITEM_COMPASS, GI_COMPASS },
+                                                          { ITEM_DINS_FIRE, GI_DINS_FIRE },
+                                                          { ITEM_DUNGEON_MAP, GI_MAP },
+                                                          { ITEM_EYEDROPS, GI_EYEDROPS },
+                                                          { ITEM_FAIRY, GI_FAIRY },
+                                                          { ITEM_FARORES_WIND, GI_FARORES_WIND },
+                                                          { ITEM_FISH, GI_FISH },
+                                                          { ITEM_FROG, GI_FROG },
+                                                          { ITEM_GAUNTLETS_GOLD, GI_GAUNTLETS_GOLD },
+                                                          { ITEM_GAUNTLETS_SILVER, GI_GAUNTLETS_SILVER },
+                                                          { ITEM_GERUDO_CARD, GI_GERUDO_CARD },
+                                                          { ITEM_HAMMER, GI_HAMMER },
+                                                          { ITEM_HEART, GI_HEART },
+                                                          { ITEM_HEART_CONTAINER, GI_HEART_CONTAINER },
+                                                          { ITEM_HEART_CONTAINER, GI_HEART_CONTAINER_2 },
+                                                          { ITEM_HEART_PIECE_2, GI_HEART_PIECE },
+                                                          { ITEM_HEART_PIECE_2, GI_HEART_PIECE_WIN },
+                                                          { ITEM_HOOKSHOT, GI_HOOKSHOT },
+                                                          { ITEM_KEY_BOSS, GI_KEY_BOSS },
+                                                          { ITEM_KEY_SMALL, GI_DOOR_KEY },
+                                                          { ITEM_KEY_SMALL, GI_KEY_SMALL },
+                                                          { ITEM_LENS, GI_LENS },
+                                                          { ITEM_LETTER_RUTO, GI_LETTER_RUTO },
+                                                          { ITEM_LETTER_ZELDA, GI_LETTER_ZELDA },
+                                                          { ITEM_LONGSHOT, GI_LONGSHOT },
+                                                          { ITEM_MAGIC_LARGE, GI_MAGIC_LARGE },
+                                                          { ITEM_MAGIC_SMALL, GI_MAGIC_SMALL },
+                                                          { ITEM_MASK_BUNNY, GI_MASK_BUNNY },
+                                                          { ITEM_MASK_GERUDO, GI_MASK_GERUDO },
+                                                          { ITEM_MASK_GORON, GI_MASK_GORON },
+                                                          { ITEM_MASK_KEATON, GI_MASK_KEATON },
+                                                          { ITEM_MASK_SKULL, GI_MASK_SKULL },
+                                                          { ITEM_MASK_SPOOKY, GI_MASK_SPOOKY },
+                                                          { ITEM_MASK_TRUTH, GI_MASK_TRUTH },
+                                                          { ITEM_MASK_ZORA, GI_MASK_ZORA },
+                                                          { ITEM_MILK, GI_MILK },
+                                                          { ITEM_MILK_BOTTLE, GI_MILK_BOTTLE },
+                                                          { ITEM_NAYRUS_LOVE, GI_NAYRUS_LOVE },
+                                                          { ITEM_NUT, GI_NUTS_5 },
+                                                          { ITEM_NUTS_10, GI_NUTS_10 },
+                                                          { ITEM_NUTS_5, GI_NUTS_5 },
+                                                          { ITEM_NUTS_5, GI_NUTS_5_2 },
+                                                          { ITEM_NUT_UPGRADE_30, GI_NUT_UPGRADE_30 },
+                                                          { ITEM_NUT_UPGRADE_40, GI_NUT_UPGRADE_40 },
+                                                          { ITEM_OCARINA_FAIRY, GI_OCARINA_FAIRY },
+                                                          { ITEM_OCARINA_TIME, GI_OCARINA_OOT },
+                                                          { ITEM_ODD_MUSHROOM, GI_ODD_MUSHROOM },
+                                                          { ITEM_ODD_POTION, GI_ODD_POTION },
+                                                          { ITEM_POCKET_CUCCO, GI_POCKET_CUCCO },
+                                                          { ITEM_POCKET_EGG, GI_POCKET_EGG },
+                                                          { ITEM_POE, GI_POE },
+                                                          { ITEM_POTION_BLUE, GI_POTION_BLUE },
+                                                          { ITEM_POTION_GREEN, GI_POTION_GREEN },
+                                                          { ITEM_POTION_RED, GI_POTION_RED },
+                                                          { ITEM_PRESCRIPTION, GI_PRESCRIPTION },
+                                                          { ITEM_QUIVER_40, GI_QUIVER_40 },
+                                                          { ITEM_QUIVER_50, GI_QUIVER_50 },
+                                                          { ITEM_RUPEE_BLUE, GI_RUPEE_BLUE },
+                                                          { ITEM_RUPEE_BLUE, GI_RUPEE_BLUE_LOSE },
+                                                          { ITEM_RUPEE_GOLD, GI_RUPEE_GOLD },
+                                                          { ITEM_RUPEE_GREEN, GI_RUPEE_GREEN },
+                                                          { ITEM_RUPEE_GREEN, GI_RUPEE_GREEN_LOSE },
+                                                          { ITEM_RUPEE_PURPLE, GI_RUPEE_PURPLE },
+                                                          { ITEM_RUPEE_PURPLE, GI_RUPEE_PURPLE_LOSE },
+                                                          { ITEM_RUPEE_RED, GI_RUPEE_RED },
+                                                          { ITEM_RUPEE_RED, GI_RUPEE_RED_LOSE },
+                                                          { ITEM_SAW, GI_SAW },
+                                                          { ITEM_SCALE_GOLDEN, GI_SCALE_GOLD },
+                                                          { ITEM_SCALE_SILVER, GI_SCALE_SILVER },
+                                                          { ITEM_SEEDS, GI_SEEDS_5 },
+                                                          { ITEM_SEEDS_30, GI_SEEDS_30 },
+                                                          { ITEM_SHIELD_DEKU, GI_SHIELD_DEKU },
+                                                          { ITEM_SHIELD_HYLIAN, GI_SHIELD_HYLIAN },
+                                                          { ITEM_SHIELD_MIRROR, GI_SHIELD_MIRROR },
+                                                          { ITEM_SKULL_TOKEN, GI_SKULL_TOKEN },
+                                                          { ITEM_SLINGSHOT, GI_SLINGSHOT },
+                                                          { ITEM_STICK, GI_STICKS_1 },
+                                                          { ITEM_STICKS_10, GI_STICKS_10 },
+                                                          { ITEM_STICKS_5, GI_STICKS_5 },
+                                                          { ITEM_STICK_UPGRADE_20, GI_STICK_UPGRADE_20 },
+                                                          { ITEM_STICK_UPGRADE_30, GI_STICK_UPGRADE_30 },
+                                                          { ITEM_STONE_OF_AGONY, GI_STONE_OF_AGONY },
+                                                          { ITEM_SWORD_BGS, GI_SWORD_BGS },
+                                                          { ITEM_SWORD_BGS, GI_SWORD_KNIFE },
+                                                          { ITEM_SWORD_BROKEN, GI_SWORD_BROKEN },
+                                                          { ITEM_SWORD_KOKIRI, GI_SWORD_KOKIRI },
+                                                          { ITEM_TUNIC_GORON, GI_TUNIC_GORON },
+                                                          { ITEM_TUNIC_ZORA, GI_TUNIC_ZORA },
+                                                          { ITEM_WALLET_ADULT, GI_WALLET_ADULT },
+                                                          { ITEM_WALLET_GIANT, GI_WALLET_GIANT },
+                                                          { ITEM_WEIRD_EGG, GI_WEIRD_EGG } };
 
 extern "C" int32_t GetGIID(uint32_t itemID) {
     if (ItemIDtoGetItemID.contains(itemID)) {
@@ -707,8 +829,8 @@ extern "C" void OTRExtScanner() {
 
     for (auto& rPath : lst) {
         std::vector<std::string> raw = StringHelper::Split(rPath, ".");
-        std::string ext = raw[raw.size() - 1];
-        std::string nPath = rPath.substr(0, rPath.size() - (ext.size() + 1));
+        std::string              ext = raw[raw.size() - 1];
+        std::string              nPath = rPath.substr(0, rPath.size() - (ext.size() + 1));
         replace(nPath.begin(), nPath.end(), '\\', '/');
 
         ExtensionCache[nPath] = { rPath, ext };
@@ -716,9 +838,9 @@ extern "C" void OTRExtScanner() {
 }
 
 extern "C" void InitOTR() {
-#if not defined (__SWITCH__) && not defined(__WIIU__)
+#if not defined(__SWITCH__) && not defined(__WIIU__)
     if (!std::filesystem::exists(LUS::Context::GetPathRelativeToAppDirectory("oot-mq.otr")) &&
-        !std::filesystem::exists(LUS::Context::GetPathRelativeToAppDirectory("oot.otr"))){
+        !std::filesystem::exists(LUS::Context::GetPathRelativeToAppDirectory("oot.otr"))) {
         bool generatedOtrIsMQ = false;
         if (Extractor::ShowYesNoBox("No OTR Files", "No OTR files found. Generate one now?") == IDYES) {
             Extractor extract;
@@ -734,7 +856,9 @@ extern "C" void InitOTR() {
         if (Extractor::ShowYesNoBox("Extraction Complete", "ROM Extracted. Extract another?") == IDYES) {
             Extractor extract;
             if (!extract.Run(generatedOtrIsMQ ? RomSearchMode::Vanilla : RomSearchMode::MQ)) {
-                Extractor::ShowErrorBox("Error", "An error occured, an OTR file may have been generated by a different step. Continuing...");
+                Extractor::ShowErrorBox(
+                    "Error",
+                    "An error occured, an OTR file may have been generated by a different step. Continuing...");
             } else {
                 extract.CallZapd();
             }
@@ -763,7 +887,7 @@ extern "C" void InitOTR() {
     SpeechSynthesizer::Instance = new SAPISpeechSynthesizer();
     SpeechSynthesizer::Instance->Init();
 #endif
-    
+
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     OTRAudio_Init();
@@ -775,7 +899,7 @@ extern "C" void InitOTR() {
     ActorDB::AddBuiltInCustomActors();
 
     time_t now = time(NULL);
-    tm *tm_now = localtime(&now);
+    tm*    tm_now = localtime(&now);
     if (tm_now->tm_mon == 11 && tm_now->tm_mday >= 24 && tm_now->tm_mday <= 25) {
         CVarRegisterInteger("gLetItSnow", 1);
     } else {
@@ -793,7 +917,7 @@ extern "C" void InitOTR() {
     }
 #endif
 
-    std::shared_ptr<LUS::Config> conf = OTRGlobals::Instance->context->GetConfig(); 
+    std::shared_ptr<LUS::Config> conf = OTRGlobals::Instance->context->GetConfig();
     conf->RegisterConfigVersionUpdater(std::make_shared<LUS::ConfigVersion1Updater>());
     conf->RunVersionUpdates();
 }
@@ -810,7 +934,8 @@ extern "C" void DeinitOTR() {
     CrowdControl::Instance->Shutdown();
 #endif
 
-    // Destroying gui here because we have shared ptrs to LUS objects which output to SPDLOG which is destroyed before these shared ptrs.
+    // Destroying gui here because we have shared ptrs to LUS objects which output to SPDLOG which is destroyed before
+    // these shared ptrs.
     SohGui::Destroy();
 
     OTRGlobals::Instance->context = nullptr;
@@ -870,7 +995,7 @@ extern "C" void Graph_StartFrame() {
 
     switch (dwScancode) {
         case KbScancode::LUS_KB_F5: {
-            const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
+            const unsigned int    slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
             const SaveStateReturn stateReturn =
                 OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::SAVE });
 
@@ -897,7 +1022,7 @@ extern "C" void Graph_StartFrame() {
             break;
         }
         case KbScancode::LUS_KB_F7: {
-            const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
+            const unsigned int    slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
             const SaveStateReturn stateReturn =
                 OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::LOAD });
 
@@ -954,12 +1079,12 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     audio.cv_to_thread.notify_one();
     std::vector<std::unordered_map<Mtx*, MtxF>> mtx_replacements;
-    int target_fps = OTRGlobals::Instance->GetInterpolationFPS();
-    static int last_fps;
-    static int last_update_rate;
-    static int time;
-    int fps = target_fps;
-    int original_fps = 60 / R_UPDATE_RATE;
+    int                                         target_fps = OTRGlobals::Instance->GetInterpolationFPS();
+    static int                                  last_fps;
+    static int                                  last_update_rate;
+    static int                                  time;
+    int                                         fps = target_fps;
+    int                                         original_fps = 60 / R_UPDATE_RATE;
 
     if (target_fps == 20 || original_fps > target_fps) {
         fps = original_fps;
@@ -986,7 +1111,8 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     OTRGlobals::Instance->context->GetWindow()->SetTargetFps(fps);
 
     int threshold = CVarGetInteger("gExtraLatencyThreshold", 80);
-    OTRGlobals::Instance->context->GetWindow()->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
+    OTRGlobals::Instance->context->GetWindow()->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2
+                                                                                                                : 1);
 
     RunCommands(commands, mtx_replacements);
 
@@ -1007,9 +1133,8 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     }
 
     // OTRTODO: FIGURE OUT END FRAME POINT
-   /* if (OTRGlobals::Instance->context->lastScancode != -1)
-        OTRGlobals::Instance->context->lastScancode = -1;*/
-
+    /* if (OTRGlobals::Instance->context->lastScancode != -1)
+         OTRGlobals::Instance->context->lastScancode = -1;*/
 }
 
 float divisor_num = 0.0f;
@@ -1032,7 +1157,7 @@ extern "C" uint32_t ResourceMgr_GetGameVersion(int index) {
 
 uint32_t IsSceneMasterQuest(s16 sceneNum) {
     uint32_t value = 0;
-    uint8_t mqMode = CVarGetInteger("gBetterDebugWarpScreenMQMode", WARP_MODE_OVERRIDE_OFF);
+    uint8_t  mqMode = CVarGetInteger("gBetterDebugWarpScreenMQMode", WARP_MODE_OVERRIDE_OFF);
     if (mqMode == WARP_MODE_OVERRIDE_MQ_AS_VANILLA) {
         return 1;
     } else if (mqMode == WARP_MODE_OVERRIDE_VANILLA_AS_MQ) {
@@ -1045,8 +1170,7 @@ uint32_t IsSceneMasterQuest(s16 sceneNum) {
                 value = 1;
             } else {
                 value = 0;
-                if (gSaveContext.n64ddFlag &&
-                    !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty() &&
+                if (gSaveContext.n64ddFlag && !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.empty() &&
                     OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(sceneNum)) {
                     value = 1;
                 }
@@ -1086,7 +1210,7 @@ extern "C" void ResourceMgr_DirtyDirectory(const char* resName) {
 // OTRTODO: There is probably a more elegant way to go about this...
 // Kenix: This is definitely leaking memory when it's called.
 extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize) {
-    auto lst = LUS::Context::GetInstance()->GetResourceManager()->GetArchive()->ListFiles(searchMask);
+    auto   lst = LUS::Context::GetInstance()->GetResourceManager()->GetArchive()->ListFiles(searchMask);
     char** result = (char**)malloc(lst->size() * sizeof(char*));
 
     for (size_t i = 0; i < lst->size(); i++) {
@@ -1102,7 +1226,7 @@ extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize)
 
 extern "C" uint8_t ResourceMgr_FileExists(const char* filePath) {
     std::string path = filePath;
-    if(path.substr(0, 7) == "__OTR__"){
+    if (path.substr(0, 7) == "__OTR__") {
         path = path.substr(7);
     }
 
@@ -1126,11 +1250,11 @@ std::shared_ptr<LUS::IResource> GetResourceByNameHandlingMQ(const char* path) {
 
 extern "C" char* GetResourceDataByNameHandlingMQ(const char* path) {
     auto res = GetResourceByNameHandlingMQ(path);
-    
+
     if (res == nullptr) {
         return nullptr;
     }
-    
+
     return (char*)res->GetRawPointer();
 }
 
@@ -1153,8 +1277,7 @@ extern "C" uint8_t ResourceMgr_ResourceIsBackground(char* texPath) {
     return res->GetInitData()->Type == LUS::ResourceType::SOH_Background;
 }
 
-extern "C" char* ResourceMgr_LoadJPEG(char* data, size_t dataSize)
-{
+extern "C" char* ResourceMgr_LoadJPEG(char* data, size_t dataSize) {
     static char* finalBuffer = 0;
 
     if (finalBuffer == 0)
@@ -1164,16 +1287,16 @@ extern "C" char* ResourceMgr_LoadJPEG(char* data, size_t dataSize)
     int h;
     int comp;
 
-    unsigned char* pixels = stbi_load_from_memory((const unsigned char*)data, 320 * 240 * 2, &w, &h, &comp, STBI_rgb_alpha);
-    //unsigned char* pixels = stbi_load_from_memory((const unsigned char*)data, 480 * 240 * 2, &w, &h, &comp, STBI_rgb_alpha);
+    unsigned char* pixels =
+        stbi_load_from_memory((const unsigned char*)data, 320 * 240 * 2, &w, &h, &comp, STBI_rgb_alpha);
+    // unsigned char* pixels = stbi_load_from_memory((const unsigned char*)data, 480 * 240 * 2, &w, &h, &comp,
+    // STBI_rgb_alpha);
     int idx = 0;
 
-    for (int y = 0; y < h; y++)
-    {
-        for (int x = 0; x < w; x++)
-        {
+    for (int y = 0; y < h; y++) {
+        for (int x = 0; x < w; x++) {
             uint16_t* bufferTest = (uint16_t*)finalBuffer;
-            int pixelIdx = ((y * w) + x) * 4;
+            int       pixelIdx = ((y * w) + x) * 4;
 
             uint8_t r = pixels[pixelIdx + 0] / 8;
             uint8_t g = pixels[pixelIdx + 1] / 8;
@@ -1212,7 +1335,7 @@ extern "C" char* ResourceMgr_LoadIfDListByName(const char* filePath) {
 
     if (res->GetInitData()->Type == LUS::ResourceType::DisplayList)
         return (char*)&((std::static_pointer_cast<LUS::DisplayList>(res))->Instructions[0]);
-    
+
     return nullptr;
 }
 
@@ -1226,13 +1349,11 @@ extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
     return (char*)&anim->limbRotData[0];
 }
 
-extern "C" void ResourceMgr_PushCurrentDirectory(char* path)
-{
+extern "C" void ResourceMgr_PushCurrentDirectory(char* path) {
     gfx_push_current_dir(path);
 }
 
-extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path)
-{
+extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path) {
     auto res = std::static_pointer_cast<LUS::DisplayList>(GetResourceByNameHandlingMQ(path));
     return (Gfx*)&res->Instructions[0];
 }
@@ -1244,8 +1365,8 @@ typedef struct {
 
 std::unordered_map<std::string, std::unordered_map<std::string, GfxPatch>> originalGfx;
 
-// Attention! This is primarily for cosmetics & bug fixes. For things like mods and model replacement you should be using OTRs
-// instead (When that is available). Index can be found using the commented out section below.
+// Attention! This is primarily for cosmetics & bug fixes. For things like mods and model replacement you should be
+// using OTRs instead (When that is available). Index can be found using the commented out section below.
 extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchName, int index, Gfx instruction) {
     auto res = std::static_pointer_cast<LUS::DisplayList>(
         LUS::Context::GetInstance()->GetResourceManager()->LoadResource(path));
@@ -1258,7 +1379,8 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
             // SPDLOG_INFO("index:{} command:{}", i, gfx->words.w0 >> 24);
             // Log only SetPrimColors
             if (gfx->words.w0 >> 24 == 250) {
-                SPDLOG_INFO("index:{} r:{} g:{} b:{} a:{}", i, _SHIFTR(gfx->words.w1, 24, 8), _SHIFTR(gfx->words.w1, 16, 8), _SHIFTR(gfx->words.w1, 8, 8), _SHIFTR(gfx->words.w1, 0, 8));
+                SPDLOG_INFO("index:{} r:{} g:{} b:{} a:{}", i, _SHIFTR(gfx->words.w1, 24, 8), _SHIFTR(gfx->words.w1, 16,
+    8), _SHIFTR(gfx->words.w1, 8, 8), _SHIFTR(gfx->words.w1, 0, 8));
             }
         }
     }*/
@@ -1271,27 +1393,22 @@ extern "C" void ResourceMgr_PatchGfxByName(const char* path, const char* patchNa
     Gfx* gfx = (Gfx*)&res->Instructions[index];
 
     if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
-        originalGfx[path][patchName] = {
-            index,
-            *gfx
-        };
+        originalGfx[path][patchName] = { index, *gfx };
     }
 
     *gfx = instruction;
 }
 
-extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchName, int destinationIndex, int sourceIndex) {
+extern "C" void ResourceMgr_PatchGfxCopyCommandByName(const char* path, const char* patchName, int destinationIndex,
+                                                      int sourceIndex) {
     auto res = std::static_pointer_cast<LUS::DisplayList>(
         LUS::Context::GetInstance()->GetResourceManager()->LoadResource(path));
 
     Gfx* destinationGfx = (Gfx*)&res->Instructions[destinationIndex];
-    Gfx sourceGfx = res->Instructions[sourceIndex];
+    Gfx  sourceGfx = res->Instructions[sourceIndex];
 
     if (!originalGfx.contains(path) || !originalGfx[path].contains(patchName)) {
-        originalGfx[path][patchName] = {
-            destinationIndex,
-            *destinationGfx
-        };
+        originalGfx[path][patchName] = { destinationIndex, *destinationGfx };
     }
 
     *destinationGfx = sourceGfx;
@@ -1309,8 +1426,7 @@ extern "C" void ResourceMgr_UnpatchGfxByName(const char* path, const char* patch
     }
 }
 
-extern "C" char* ResourceMgr_LoadArrayByName(const char* path)
-{
+extern "C" char* ResourceMgr_LoadArrayByName(const char* path) {
     auto res = std::static_pointer_cast<LUS::Array>(GetResourceByNameHandlingMQ(path));
 
     return (char*)res->Scalars.data();
@@ -1323,30 +1439,30 @@ extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
     //     return (char*)res->CachedGameAsset;
     // else
     // {
-        Vec3s* data = (Vec3s*)malloc(sizeof(Vec3s) * res->Scalars.size());
+    Vec3s* data = (Vec3s*)malloc(sizeof(Vec3s) * res->Scalars.size());
 
-        for (size_t i = 0; i < res->Scalars.size(); i += 3) {
-            data[(i / 3)].x = res->Scalars[i + 0].s16;
-            data[(i / 3)].y = res->Scalars[i + 1].s16;
-            data[(i / 3)].z = res->Scalars[i + 2].s16;
-        }
+    for (size_t i = 0; i < res->Scalars.size(); i += 3) {
+        data[(i / 3)].x = res->Scalars[i + 0].s16;
+        data[(i / 3)].y = res->Scalars[i + 1].s16;
+        data[(i / 3)].z = res->Scalars[i + 2].s16;
+    }
 
-        // res->CachedGameAsset = data;
+    // res->CachedGameAsset = data;
 
-        return (char*)data;
+    return (char*)data;
     // }
 }
 
 extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path) {
-    return (CollisionHeader*) ResourceGetDataByName(path);
+    return (CollisionHeader*)ResourceGetDataByName(path);
 }
 
 extern "C" Vtx* ResourceMgr_LoadVtxByName(char* path) {
-    return (Vtx*) ResourceGetDataByName(path);
+    return (Vtx*)ResourceGetDataByName(path);
 }
 
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path) {
-    SequenceData* sequence = (SequenceData*) ResourceGetDataByName(path);
+    SequenceData* sequence = (SequenceData*)ResourceGetDataByName(path);
     return *sequence;
 }
 
@@ -1354,79 +1470,76 @@ std::map<std::string, SoundFontSample*> cachedCustomSFs;
 
 extern "C" SoundFontSample* ReadCustomSample(const char* path) {
     return nullptr;
-/*
-    if (!ExtensionCache.contains(path))
+    /*
+        if (!ExtensionCache.contains(path))
+            return nullptr;
+
+        ExtensionEntry entry = ExtensionCache[path];
+
+        auto sampleRaw = LUS::Context::GetInstance()->GetResourceManager()->LoadFile(entry.path);
+        uint32_t* strem = (uint32_t*)sampleRaw->Buffer.get();
+        uint8_t* strem2 = (uint8_t*)strem;
+
+        SoundFontSample* sampleC = new SoundFontSample;
+
+        if (entry.ext == "wav") {
+            drwav_uint32 channels;
+            drwav_uint32 sampleRate;
+            drwav_uint64 totalPcm;
+            drmp3_int16* pcmData =
+                drwav_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->BufferSize, &channels, &sampleRate,
+       &totalPcm, NULL); sampleC->size = totalPcm; sampleC->sampleAddr = (uint8_t*)pcmData; sampleC->codec = CODEC_S16;
+
+            sampleC->loop = new AdpcmLoop;
+            sampleC->loop->start = 0;
+            sampleC->loop->end = sampleC->size - 1;
+            sampleC->loop->count = 0;
+            sampleC->sampleRateMagicValue = 'RIFF';
+            sampleC->sampleRate = sampleRate;
+
+            cachedCustomSFs[path] = sampleC;
+            return sampleC;
+        } else if (entry.ext == "mp3") {
+            drmp3_config mp3Info;
+            drmp3_uint64 totalPcm;
+            drmp3_int16* pcmData =
+                drmp3_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->BufferSize, &mp3Info, &totalPcm, NULL);
+
+            sampleC->size = totalPcm * mp3Info.channels * sizeof(short);
+            sampleC->sampleAddr = (uint8_t*)pcmData;
+            sampleC->codec = CODEC_S16;
+
+            sampleC->loop = new AdpcmLoop;
+            sampleC->loop->start = 0;
+            sampleC->loop->end = sampleC->size;
+            sampleC->loop->count = 0;
+            sampleC->sampleRateMagicValue = 'RIFF';
+            sampleC->sampleRate = mp3Info.sampleRate;
+
+            cachedCustomSFs[path] = sampleC;
+            return sampleC;
+        }
+
         return nullptr;
-
-    ExtensionEntry entry = ExtensionCache[path];
-
-    auto sampleRaw = LUS::Context::GetInstance()->GetResourceManager()->LoadFile(entry.path);
-    uint32_t* strem = (uint32_t*)sampleRaw->Buffer.get();
-    uint8_t* strem2 = (uint8_t*)strem;
-
-    SoundFontSample* sampleC = new SoundFontSample;
-
-    if (entry.ext == "wav") {
-        drwav_uint32 channels;
-        drwav_uint32 sampleRate;
-        drwav_uint64 totalPcm;
-        drmp3_int16* pcmData =
-            drwav_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->BufferSize, &channels, &sampleRate, &totalPcm, NULL);
-        sampleC->size = totalPcm;
-        sampleC->sampleAddr = (uint8_t*)pcmData;
-        sampleC->codec = CODEC_S16;
-
-        sampleC->loop = new AdpcmLoop;
-        sampleC->loop->start = 0;
-        sampleC->loop->end = sampleC->size - 1;
-        sampleC->loop->count = 0;
-        sampleC->sampleRateMagicValue = 'RIFF';
-        sampleC->sampleRate = sampleRate;
-
-        cachedCustomSFs[path] = sampleC;
-        return sampleC;
-    } else if (entry.ext == "mp3") {
-        drmp3_config mp3Info;
-        drmp3_uint64 totalPcm;
-        drmp3_int16* pcmData =
-            drmp3_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->BufferSize, &mp3Info, &totalPcm, NULL);
-
-        sampleC->size = totalPcm * mp3Info.channels * sizeof(short);
-        sampleC->sampleAddr = (uint8_t*)pcmData;
-        sampleC->codec = CODEC_S16;
-
-        sampleC->loop = new AdpcmLoop;
-        sampleC->loop->start = 0;
-        sampleC->loop->end = sampleC->size;
-        sampleC->loop->count = 0;
-        sampleC->sampleRateMagicValue = 'RIFF';
-        sampleC->sampleRate = mp3Info.sampleRate;
-
-        cachedCustomSFs[path] = sampleC;
-        return sampleC;
-    }
-
-    return nullptr;
-*/
+    */
 }
 
 extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path) {
-    return (SoundFontSample*) ResourceGetDataByName(path);
+    return (SoundFontSample*)ResourceGetDataByName(path);
 }
 
 extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
-    return (SoundFont*) ResourceGetDataByName(path);
+    return (SoundFont*)ResourceGetDataByName(path);
 }
 
-extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
-{
-	uintptr_t i = (uintptr_t)(imgData);
+extern "C" int ResourceMgr_OTRSigCheck(char* imgData) {
+    uintptr_t i = (uintptr_t)(imgData);
 
-// if (i == 0xD9000000 || i == 0xE7000000 || (i & 1) == 1)
+    // if (i == 0xD9000000 || i == 0xE7000000 || (i & 1) == 1)
     if ((i & 1) == 1)
         return 0;
 
-// if ((i & 0xFF000000) != 0xAB000000 && (i & 0xFF000000) != 0xCD000000 && i != 0) {
+    // if ((i & 0xFF000000) != 0xAB000000 && (i & 0xFF000000) != 0xCD000000 && i != 0) {
     if (i != 0) {
         if (imgData[0] == '_' && imgData[1] == '_' && imgData[2] == 'O' && imgData[3] == 'T' && imgData[4] == 'R' &&
             imgData[5] == '_' && imgData[6] == '_')
@@ -1437,11 +1550,11 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
 }
 
 extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
-    return (AnimationHeaderCommon*) ResourceGetDataByName(path);
+    return (AnimationHeaderCommon*)ResourceGetDataByName(path);
 }
 
 extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime) {
-    std::string pathStr = std::string(path);
+    std::string              pathStr = std::string(path);
     static const std::string sOtr = "__OTR__";
 
     if (pathStr.starts_with(sOtr)) {
@@ -1454,11 +1567,11 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, Skel
         pathStr = LUS::IResource::gAltAssetPrefix + pathStr;
     }
 
-    SkeletonHeader* skelHeader = (SkeletonHeader*) ResourceGetDataByName(pathStr.c_str());
+    SkeletonHeader* skelHeader = (SkeletonHeader*)ResourceGetDataByName(pathStr.c_str());
 
     // If there isn't an alternate model, load the regular one
     if (isAlt && skelHeader == NULL) {
-        skelHeader = (SkeletonHeader*) ResourceGetDataByName(path);
+        skelHeader = (SkeletonHeader*)ResourceGetDataByName(path);
     }
 
     // This function is only called when a skeleton is initialized.
@@ -1486,7 +1599,8 @@ extern "C" s32* ResourceMgr_LoadCSByName(const char* path) {
 }
 
 std::filesystem::path GetSaveFile(std::shared_ptr<LUS::Config> Conf) {
-    const std::string fileName = Conf->GetString("Game.SaveName", LUS::Context::GetPathRelativeToAppDirectory("oot_save.sav"));
+    const std::string fileName =
+        Conf->GetString("Game.SaveName", LUS::Context::GetPathRelativeToAppDirectory("oot_save.sav"));
     std::filesystem::path saveFile = std::filesystem::absolute(fileName);
 
     if (!exists(saveFile.parent_path())) {
@@ -1506,7 +1620,7 @@ void OTRGlobals::CheckSaveFile(size_t sramSize) const {
     const std::shared_ptr<LUS::Config> pConf = Instance->context->GetConfig();
 
     std::filesystem::path savePath = GetSaveFile(pConf);
-    std::fstream saveFile(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
+    std::fstream          saveFile(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
     if (saveFile.fail()) {
         saveFile.open(savePath, std::fstream::in | std::fstream::out | std::fstream::binary | std::fstream::app);
         for (int i = 0; i < sramSize; ++i) {
@@ -1526,11 +1640,11 @@ extern "C" void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
 
 std::wstring StringToU16(const std::string& s) {
     std::vector<unsigned long> result;
-    size_t i = 0;
+    size_t                     i = 0;
     while (i < s.size()) {
         unsigned long uni;
-        size_t nbytes;
-        bool error = false;
+        size_t        nbytes;
+        bool          error = false;
         unsigned char c = s[i++];
         if (c < 0x80) { // ascii
             uni = c;
@@ -1572,7 +1686,8 @@ std::wstring StringToU16(const std::string& s) {
 
 int CopyStringToCharBuffer(const std::string& inputStr, char* buffer, const int maxBufferSize) {
     if (!inputStr.empty()) {
-        // Prevent potential horrible overflow due to implicit conversion of maxBufferSize to an unsigned. Prevents negatives.
+        // Prevent potential horrible overflow due to implicit conversion of maxBufferSize to an unsigned. Prevents
+        // negatives.
         memset(buffer, 0, std::max<int>(0, maxBufferSize));
         // Gaurentee that this value will be greater than 0, regardless of passed variables.
         const int copiedCharLen = std::min<int>(std::max<int>(0, maxBufferSize - 1), inputStr.length());
@@ -1625,10 +1740,11 @@ extern "C" uint32_t OTRGetCurrentHeight() {
 }
 
 Color_RGB8 GetColorForControllerLED() {
-    auto brightness = CVarGetFloat("gLedBrightness", 1.0f) / 1.0f;
+    auto       brightness = CVarGetFloat("gLedBrightness", 1.0f) / 1.0f;
     Color_RGB8 color = { 0, 0, 0 };
     if (brightness > 0.0f) {
-        LEDColorSource source = static_cast<LEDColorSource>(CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL));
+        LEDColorSource source =
+            static_cast<LEDColorSource>(CVarGetInteger("gLedColorSource", LED_SOURCE_TUNIC_ORIGINAL));
         bool criticalOverride = CVarGetInteger("gLedCriticalOverride", 1);
         if (gPlayState && (source == LED_SOURCE_TUNIC_ORIGINAL || source == LED_SOURCE_TUNIC_COSMETICS)) {
             switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
@@ -1720,10 +1836,10 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
 
 extern "C" int Controller_ShouldRumble(size_t slot) {
     auto controlDeck = LUS::Context::GetInstance()->GetControlDeck();
-    
+
     if (slot < controlDeck->GetNumConnectedPorts()) {
         auto physicalDevice = controlDeck->GetDeviceFromPortIndex(slot);
-        
+
         if (physicalDevice->GetProfile(slot)->UseRumble && physicalDevice->CanRumble()) {
             return 1;
         }
@@ -1756,7 +1872,7 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
                                 "&"
                                 "Nein!"
                                 "%w\x02",
-				"\x04\x1A\x08"
+                                "\x04\x1A\x08"
                                 "D\x96sirez-vous l'\x96quiper maintenant?"
                                 "\x09&&"
                                 "\x1B%g"
@@ -1777,7 +1893,7 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
     }
     std::string str;
     std::string FixedBaseStr(src);
-    int RemoveControlChar = FixedBaseStr.find_first_of("\x02");
+    int         RemoveControlChar = FixedBaseStr.find_first_of("\x02");
 
     if (RemoveControlChar != std::string::npos) {
         FixedBaseStr = FixedBaseStr.substr(0, RemoveControlChar);
@@ -1862,7 +1978,8 @@ extern "C" GetItemEntry Randomizer_GetItemFromActor(s16 actorId, s16 sceneNum, s
     return OTRGlobals::Instance->gRandomizer->GetItemFromActor(actorId, sceneNum, actorParams, ogId);
 }
 
-extern "C" GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s16 sceneNum, s16 actorParams, GetItemID ogId) {
+extern "C" GetItemEntry Randomizer_GetItemFromActorWithoutObtainabilityCheck(s16 actorId, s16 sceneNum, s16 actorParams,
+                                                                             GetItemID ogId) {
     return OTRGlobals::Instance->gRandomizer->GetItemFromActor(actorId, sceneNum, actorParams, ogId, false);
 }
 
@@ -1870,7 +1987,8 @@ extern "C" GetItemEntry Randomizer_GetItemFromKnownCheck(RandomizerCheck randomi
     return OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(randomizerCheck, ogId);
 }
 
-extern "C" GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
+extern "C" GetItemEntry Randomizer_GetItemFromKnownCheckWithoutObtainabilityCheck(RandomizerCheck randomizerCheck,
+                                                                                  GetItemID       ogId) {
     return OTRGlobals::Instance->gRandomizer->GetItemFromKnownCheck(randomizerCheck, ogId, false);
 }
 
@@ -1885,47 +2003,52 @@ CustomMessage Randomizer_GetCustomGetItemMessage(Player* player) {
     } else {
         giid = player->getItemId;
     }
-    const CustomMessage getItemText = CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, giid);
+    const CustomMessage getItemText =
+        CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, giid);
     return getItemText;
 }
 
 extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
     MessageContext* msgCtx = &play->msgCtx;
-    uint16_t textId = msgCtx->textId;
-    Font* font = &msgCtx->font;
-    char* buffer = font->msgBuf;
-    const int maxBufferSize = sizeof(font->msgBuf);
-    CustomMessage messageEntry;
-    s16 actorParams = 0;
+    uint16_t        textId = msgCtx->textId;
+    Font*           font = &msgCtx->font;
+    char*           buffer = font->msgBuf;
+    const int       maxBufferSize = sizeof(font->msgBuf);
+    CustomMessage   messageEntry;
+    s16             actorParams = 0;
     if (gSaveContext.n64ddFlag) {
         if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
             Player* player = GET_PLAYER(play);
             if (player->getItemEntry.getItemId == RG_ICE_TRAP) {
                 u16 iceTrapTextId = Random(0, NUM_ICE_TRAP_MESSAGES);
-                messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, iceTrapTextId);
+                messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID,
+                                                                               iceTrapTextId);
                 if (CVarGetInteger("gLetItSnow", 0)) {
-                    messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::IceTrapRandoMessageTableID, NUM_ICE_TRAP_MESSAGES + 1);
+                    messageEntry = CustomMessageManager::Instance->RetrieveMessage(
+                        Randomizer::IceTrapRandoMessageTableID, NUM_ICE_TRAP_MESSAGES + 1);
                 }
-            } else if (player->getItemEntry.getItemId >= RG_DEKU_TREE_MAP && player->getItemEntry.getItemId <= RG_ICE_CAVERN_MAP) {
+            } else if (player->getItemEntry.getItemId >= RG_DEKU_TREE_MAP &&
+                       player->getItemEntry.getItemId <= RG_ICE_CAVERN_MAP) {
                 messageEntry = OTRGlobals::Instance->gRandomizer->GetMapGetItemMessageWithHint(player->getItemEntry);
             } else {
                 messageEntry = Randomizer_GetCustomGetItemMessage(player);
             }
-        } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != RO_GOSSIP_STONES_NONE &&
-            (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_NOTHING ||
-             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_TRUTH &&
-              Player_GetMask(play) == PLAYER_MASK_TRUTH) ||
-             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_STONE && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
+        } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS &&
+                   Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != RO_GOSSIP_STONES_NONE &&
+                   (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_NOTHING ||
+                    (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_TRUTH &&
+                     Player_GetMask(play) == PLAYER_MASK_TRUTH) ||
+                    (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == RO_GOSSIP_STONES_NEED_STONE &&
+                     CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
 
-            Actor* stone = GET_PLAYER(play)->targetActor; 
+            Actor* stone = GET_PLAYER(play)->targetActor;
             actorParams = stone->params;
 
             // if we're in a generic grotto
             if (play->sceneNum == 62 && actorParams == 14360) {
                 // look for the chest in the actorlist to determine
                 // which grotto we're in
-                int numOfActorLists =
-                    sizeof(play->actorCtx.actorLists) / sizeof(play->actorCtx.actorLists[0]);
+                int numOfActorLists = sizeof(play->actorCtx.actorLists) / sizeof(play->actorCtx.actorLists[0]);
                 for (int i = 0; i < numOfActorLists; i++) {
                     if (play->actorCtx.actorLists[i].length) {
                         if (play->actorCtx.actorLists[i].head->id == 10) {
@@ -1936,51 +2059,66 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 }
             }
 
-            RandomizerCheck hintCheck =
-                Randomizer_GetCheckFromActor(stone->id, play->sceneNum, actorParams);
+            RandomizerCheck hintCheck = Randomizer_GetCheckFromActor(stone->id, play->sceneNum, actorParams);
 
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, hintCheck);
         } else if ((textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT)) {
             // rando hints at altar
-            messageEntry = (LINK_IS_ADULT)
-               ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT)
-               : CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD);
+            messageEntry =
+                (LINK_IS_ADULT)
+                    ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT)
+                    : CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD);
         } else if (textId == TEXT_GANONDORF) {
-            if (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT || !Randomizer_GetSettingValue(RSK_GANONDORF_LIGHT_ARROWS_HINT)) {
-                messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF_NOHINT);
+            if (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT ||
+                !Randomizer_GetSettingValue(RSK_GANONDORF_LIGHT_ARROWS_HINT)) {
+                messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID,
+                                                                               TEXT_GANONDORF_NOHINT);
             } else {
-                messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF);
+                messageEntry =
+                    CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF);
             }
-        // textId: TEXT_SCRUB_RANDOM + (randomizerInf - RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT)
+            // textId: TEXT_SCRUB_RANDOM + (randomizerInf -
+            // RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT)
         } else if (textId >= TEXT_SCRUB_RANDOM && textId <= TEXT_SCRUB_RANDOM + NUM_SCRUBS) {
-            RandomizerInf randoInf = (RandomizerInf)((textId - TEXT_SCRUB_RANDOM) + RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT);
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, TEXT_SCRUB_RANDOM, Randomizer_GetSettingValue(RSK_SCRUB_TEXT_HINT) == RO_GENERIC_OFF);
-        // Shop items each have two message entries, second one offset by NUM_SHOP_ITEMS
-        // textId: TEXT_SHOP_ITEM_RANDOM + (randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1)
-        // textId: TEXT_SHOP_ITEM_RANDOM + ((randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1) + NUM_SHOP_ITEMS)
+            RandomizerInf randoInf =
+                (RandomizerInf)((textId - TEXT_SCRUB_RANDOM) +
+                                RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT);
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
+                randoInf, TEXT_SCRUB_RANDOM, Randomizer_GetSettingValue(RSK_SCRUB_TEXT_HINT) == RO_GENERIC_OFF);
+            // Shop items each have two message entries, second one offset by NUM_SHOP_ITEMS
+            // textId: TEXT_SHOP_ITEM_RANDOM + (randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1)
+            // textId: TEXT_SHOP_ITEM_RANDOM + ((randomizerInf - RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1) + NUM_SHOP_ITEMS)
         } else if (textId >= TEXT_SHOP_ITEM_RANDOM && textId <= TEXT_SHOP_ITEM_RANDOM + (NUM_SHOP_ITEMS * 2)) {
             if (textId < TEXT_SHOP_ITEM_RANDOM + NUM_SHOP_ITEMS) {
-                RandomizerInf randoInf = (RandomizerInf)((textId - TEXT_SHOP_ITEM_RANDOM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
+                RandomizerInf randoInf =
+                    (RandomizerInf)((textId - TEXT_SHOP_ITEM_RANDOM) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
                 messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, TEXT_SHOP_ITEM_RANDOM);
             } else {
-                RandomizerInf randoInf = (RandomizerInf)((textId - (TEXT_SHOP_ITEM_RANDOM + NUM_SHOP_ITEMS)) + RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
-                messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, TEXT_SHOP_ITEM_RANDOM_CONFIRM);
+                RandomizerInf randoInf = (RandomizerInf)((textId - (TEXT_SHOP_ITEM_RANDOM + NUM_SHOP_ITEMS)) +
+                                                         RAND_INF_SHOP_ITEMS_KF_SHOP_ITEM_1);
+                messageEntry =
+                    OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, TEXT_SHOP_ITEM_RANDOM_CONFIRM);
             }
         } else if (CVarGetInteger("gRandomizeRupeeNames", 1) &&
                    (textId == TEXT_BLUE_RUPEE || textId == TEXT_RED_RUPEE || textId == TEXT_PURPLE_RUPEE ||
-                   textId == TEXT_HUGE_RUPEE)) {
+                    textId == TEXT_HUGE_RUPEE)) {
             messageEntry = Randomizer::GetRupeeMessage(textId);
             // In rando, replace Navi's general overworld hints with rando-related gameplay tips
         } else if (CVarGetInteger("gRandoRelevantNavi", 1) && textId >= 0x0140 && textId <= 0x015F) {
             u16 naviTextId = Random(0, NUM_NAVI_MESSAGES);
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
+            messageEntry =
+                CustomMessageManager::Instance->RetrieveMessage(Randomizer::NaviRandoMessageTableID, naviTextId);
         } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS) && textId == TEXT_BEAN_SALESMAN) {
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN);
-        } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF && (textId == TEXT_MEDIGORON ||
-          (textId == TEXT_GRANNYS_SHOP && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP) &&
-                    (Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) || INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK)) ||
-          (textId == TEXT_CARPET_SALESMAN_1 && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)) ||
-          (textId == TEXT_CARPET_SALESMAN_2 && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)))) {
+            messageEntry =
+                CustomMessageManager::Instance->RetrieveMessage(Randomizer::merchantMessageTableID, TEXT_BEAN_SALESMAN);
+        } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
+                   (textId == TEXT_MEDIGORON ||
+                    (textId == TEXT_GRANNYS_SHOP && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP) &&
+                     (Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) ||
+                      INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK)) ||
+                    (textId == TEXT_CARPET_SALESMAN_1 && !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)) ||
+                    (textId == TEXT_CARPET_SALESMAN_2 &&
+                     !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN)))) {
             RandomizerInf randoInf;
             if (textId == TEXT_MEDIGORON) {
                 randoInf = RAND_INF_MERCHANTS_MEDIGORON;
@@ -1989,7 +2127,8 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             } else {
                 randoInf = RAND_INF_MERCHANTS_CARPET_SALESMAN;
             }
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(randoInf, textId, Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_ON_HINT);
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetMerchantMessage(
+                randoInf, textId, Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_ON_HINT);
         } else if (Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) &&
                    (textId == TEXT_BUY_BOMBCHU_10_DESC || textId == TEXT_BUY_BOMBCHU_10_PROMPT)) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
@@ -2000,17 +2139,19 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                 messageEntry = OTRGlobals::Instance->gRandomizer->GetCursedSkullMessage(actorParams);
             }
         } else if (Randomizer_GetSettingValue(RSK_DAMPES_DIARY_HINT) && textId == TEXT_DAMPES_DIARY) {
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY);
-        } else if (play->sceneNum == SCENE_TAKARAYA &&
-                   Randomizer_GetSettingValue(RSK_GREG_HINT) &&
+            messageEntry =
+                CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY);
+        } else if (play->sceneNum == SCENE_TAKARAYA && Randomizer_GetSettingValue(RSK_GREG_HINT) &&
                    (textId == 0x704C || textId == 0x6E || textId == 0x84)) {
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_CHEST_GAME_PROCEED);
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID,
+                                                                           TEXT_CHEST_GAME_PROCEED);
         } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS) &&
                    (textId >= TEXT_WARP_MINUET_OF_FOREST && textId <= TEXT_WARP_PRELUDE_OF_LIGHT)) {
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetWarpSongMessage(textId, Randomizer_GetSettingValue(RSK_WARP_SONG_HINTS) == RO_GENERIC_ON);
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetWarpSongMessage(
+                textId, Randomizer_GetSettingValue(RSK_WARP_SONG_HINTS) == RO_GENERIC_ON);
         } else if (textId == TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI || textId == TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, textId);
-        } else if (textId == 0x3052 || (textId >= 0x3069 && textId <= 0x3070)) { //Fire Temple gorons
+        } else if (textId == 0x3052 || (textId >= 0x3069 && textId <= 0x3070)) { // Fire Temple gorons
             u16 choice = Random(0, NUM_GORON_MESSAGES);
             messageEntry = OTRGlobals::Instance->gRandomizer->GetGoronMessage(choice);
         }
@@ -2049,7 +2190,8 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_MARKET_GUARD_NIGHT);
     }
     if (textId == TEXT_RANDO_SAVE_VERSION_WARNING) {
-        messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_RANDO_SAVE_VERSION_WARNING);
+        messageEntry =
+            CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, TEXT_RANDO_SAVE_VERSION_WARNING);
     }
     font->charTexBuf[0] = (messageEntry.GetTextBoxType() << 4) | messageEntry.GetTextBoxPosition();
     switch (gSaveContext.language) {

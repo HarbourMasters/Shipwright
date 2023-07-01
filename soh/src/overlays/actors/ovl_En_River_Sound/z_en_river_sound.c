@@ -59,7 +59,7 @@ void EnRiverSound_Destroy(Actor* thisx, PlayState* play) {
 
 s32 func_80AE6A54(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3) {
     Vec3f vec[3];
-    f32 temp;
+    f32   temp;
 
     vec[0].x = arg0->x - arg2->x;
     vec[0].y = arg0->y - arg2->y;
@@ -94,14 +94,14 @@ s32 func_80AE6A54(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3) {
  * Returns true if the distance between the `hearPos` and `soundPos` is less than 10000, false if not.
  */
 s32 EnRiverSound_GetSoundPos(Vec3s* points, s32 numPoints, Vec3f* hearPos, Vec3f* soundPos) {
-    s32 i;
-    s32 pointIdx;
-    s32 sp78[2] = { 0, 0 };
-    Vec3f pointLoc;
-    Vec3f sp60;
-    Vec3f sp54;
-    Vec3f vec;
-    f32 pointDist = 10000.0f;
+    s32    i;
+    s32    pointIdx;
+    s32    sp78[2] = { 0, 0 };
+    Vec3f  pointLoc;
+    Vec3f  sp60;
+    Vec3f  sp54;
+    Vec3f  vec;
+    f32    pointDist = 10000.0f;
     Vec3s* point;
 
     for (i = 0; i < numPoints; i++) {
@@ -165,8 +165,8 @@ s32 EnRiverSound_GetSoundPos(Vec3s* points, s32 numPoints, Vec3f* hearPos, Vec3f
 }
 
 void EnRiverSound_Update(Actor* thisx, PlayState* play) {
-    Path* path;
-    Vec3f* pos;
+    Path*   path;
+    Vec3f*  pos;
     Player* player = GET_PLAYER(play);
     EnRiverSound* this = (EnRiverSound*)thisx;
     s32 sp34;
@@ -176,8 +176,7 @@ void EnRiverSound_Update(Actor* thisx, PlayState* play) {
         pos = &thisx->world.pos;
 
         if (EnRiverSound_GetSoundPos(SEGMENTED_TO_VIRTUAL(path->points), path->count, &player->actor.world.pos, pos)) {
-            if (BgCheck_EntityRaycastFloor4(&play->colCtx, &thisx->floorPoly, &sp34, thisx, pos) !=
-                BGCHECK_Y_MIN) {
+            if (BgCheck_EntityRaycastFloor4(&play->colCtx, &thisx->floorPoly, &sp34, thisx, pos) != BGCHECK_Y_MIN) {
                 // Get the sound volume pitch based on the speed of the river current under the actor
                 this->soundPitchIndex = SurfaceType_GetConveyorSpeed(&play->colCtx, thisx->floorPoly, sp34);
             } else {

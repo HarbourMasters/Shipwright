@@ -9,7 +9,7 @@ struct BgSpot01Idosoko;
 typedef void (*BgSpot01IdosokoActionFunc)(struct BgSpot01Idosoko*, PlayState*);
 
 typedef struct BgSpot01Idosoko {
-    /* 0x0000 */ DynaPolyActor dyna;
+    /* 0x0000 */ DynaPolyActor             dyna;
     /* 0x0164 */ BgSpot01IdosokoActionFunc actionFunc;
 } BgSpot01Idosoko; // size = 0x0168
 

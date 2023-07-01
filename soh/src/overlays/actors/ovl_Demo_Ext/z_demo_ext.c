@@ -89,8 +89,8 @@ void DemoExt_FinishClosing(DemoExt* this) {
 
 void DemoExt_CheckCsMode(DemoExt* this, PlayState* play) {
     CsCmdActorAction* csCmdNPCAction = DemoExt_GetNpcAction(play, 5);
-    s32 csAction;
-    s32 previousCsAction;
+    s32               csAction;
+    s32               previousCsAction;
 
     if (csCmdNPCAction != NULL) {
         csAction = csCmdNPCAction->action;
@@ -120,7 +120,7 @@ void DemoExt_CheckCsMode(DemoExt* this, PlayState* play) {
 void DemoExt_SetScrollAndRotation(DemoExt* this) {
     s16* scrollIncr = this->scrollIncr;
     s16* curScroll = this->curScroll;
-    s32 i;
+    s32  i;
 
     for (i = 3; i != 0; i--) {
         curScroll[i] += scrollIncr[i];
@@ -130,7 +130,7 @@ void DemoExt_SetScrollAndRotation(DemoExt* this) {
 
 void DemoExt_SetColorsAndScales(DemoExt* this) {
     Vec3f* scale = &this->scale;
-    f32 shrinkFactor;
+    f32    shrinkFactor;
 
     shrinkFactor = ((kREG(35) + 40.0f) - this->alphaTimer) / (kREG(35) + 40.0f);
     if (shrinkFactor < 0.0f) {
@@ -183,10 +183,10 @@ void DemoExt_DrawNothing(Actor* thisx, PlayState* play) {
 
 void DemoExt_DrawVortex(Actor* thisx, PlayState* play) {
     DemoExt* this = (DemoExt*)thisx;
-    Mtx* mtx;
+    Mtx*             mtx;
     GraphicsContext* gfxCtx;
-    s16* curScroll;
-    Vec3f* scale;
+    s16*             curScroll;
+    Vec3f*           scale;
 
     scale = &this->scale;
     gfxCtx = play->state.gfxCtx;

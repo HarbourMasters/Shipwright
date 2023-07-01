@@ -65,11 +65,11 @@ void EnWallTubo_FindGirl(EnWallTubo* this, PlayState* play) {
 
 void EnWallTubo_DetectChu(EnWallTubo* this, PlayState* play) {
     EnBomChu* chu;
-    s32 pad;
-    Vec3f effAccel = { 0.0f, 0.1f, 0.0f };
-    Vec3f effVelocity = { 0.0f, 0.0f, 0.0f };
-    Vec3f chuPosDiff;
-    s16 quakeIndex;
+    s32       pad;
+    Vec3f     effAccel = { 0.0f, 0.1f, 0.0f };
+    Vec3f     effVelocity = { 0.0f, 0.0f, 0.0f };
+    Vec3f     chuPosDiff;
+    s16       quakeIndex;
 
     if (this->chuGirl->minigamePlayStatus != 0) {
         if (play->cameraPtrs[MAIN_CAM]->setting == CAM_SET_CHU_BOWLING) {
@@ -108,9 +108,9 @@ void EnWallTubo_DetectChu(EnWallTubo* this, PlayState* play) {
 
 void EnWallTubo_SetWallFall(EnWallTubo* this, PlayState* play) {
     BgBowlWall* wall;
-    Vec3f effAccel = { 0.0f, 0.1f, 0.0f };
-    Vec3f effVelocity = { 0.0f, 0.0f, 0.0f };
-    Vec3f effPos;
+    Vec3f       effAccel = { 0.0f, 0.1f, 0.0f };
+    Vec3f       effVelocity = { 0.0f, 0.0f, 0.0f };
+    Vec3f       effPos;
 
     if ((play->gameplayFrames & 1) == 0) {
         effPos.x = this->explosionCenter.x + Rand_CenteredFloat(300.0f);

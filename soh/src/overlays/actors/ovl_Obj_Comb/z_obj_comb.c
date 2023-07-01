@@ -71,15 +71,15 @@ void ObjComb_Break(ObjComb* this, PlayState* play) {
     Vec3f pos1;
     Vec3f pos;
     Vec3f velocity;
-    Gfx* dlist = gFieldBeehiveFragmentDL;
-    s16 scale;
-    s16 angle = 0;
-    s16 gravity;
-    u8 arg5;
-    u8 arg6;
-    f32 rand1;
-    f32 rand2;
-    s32 i;
+    Gfx*  dlist = gFieldBeehiveFragmentDL;
+    s16   scale;
+    s16   angle = 0;
+    s16   gravity;
+    u8    arg5;
+    u8    arg6;
+    f32   rand1;
+    f32   rand2;
+    s32   i;
 
     for (i = 0; i < 31; i++) {
         angle += 0x4E20;
@@ -118,8 +118,8 @@ void ObjComb_Break(ObjComb* this, PlayState* play) {
             arg5 = 32;
         }
 
-        EffectSsKakera_Spawn(play, &pos, &velocity, &pos, gravity, arg5, arg6, 4, 0, scale, 0, 0, 80,
-                             KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_FIELD_KEEP, dlist);
+        EffectSsKakera_Spawn(play, &pos, &velocity, &pos, gravity, arg5, arg6, 4, 0, scale, 0, 0, 80, KAKERA_COLOR_NONE,
+                             OBJECT_GAMEPLAY_FIELD_KEEP, dlist);
     }
 
     pos.x = this->actor.world.pos.x;
@@ -217,8 +217,7 @@ void ObjComb_Draw(Actor* thisx, PlayState* play) {
     Matrix_Translate(0, -(this->actor.scale.y * 118.0f), 0, MTXMODE_APPLY);
     Matrix_Scale(this->actor.scale.x, this->actor.scale.y, this->actor.scale.z, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_OPA_DISP++, gFieldBeehiveDL);
 

@@ -141,12 +141,12 @@ void func_80B86BC8(ItemShield* this, PlayState* play) {
 
 void func_80B86CA8(ItemShield* this, PlayState* play) {
     static Vec3f D_80B871F4 = { 0.0f, 0.0f, 0.0f };
-    static f32 D_80B87200[] = { 0.3f, 0.6f,  0.9f, 1.0f,  1.0f, 1.0f,  1.0f, 1.0f,
-                                1.0f, 0.85f, 0.7f, 0.55f, 0.4f, 0.25f, 0.1f, 0.0f };
-    static f32 D_80B87240[] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.8f,
-                                0.6f, 0.4f, 0.2f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
-    s32 i;
-    s32 temp;
+    static f32   D_80B87200[] = { 0.3f, 0.6f,  0.9f, 1.0f,  1.0f, 1.0f,  1.0f, 1.0f,
+                                  1.0f, 0.85f, 0.7f, 0.55f, 0.4f, 0.25f, 0.1f, 0.0f };
+    static f32   D_80B87240[] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.8f,
+                                  0.6f, 0.4f, 0.2f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+    s32          i;
+    s32          temp;
 
     Actor_MoveForward(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, 10.0f, 0.0f, 5);
@@ -157,8 +157,7 @@ void func_80B86CA8(ItemShield* this, PlayState* play) {
         D_80B871F4.x = this->unk_1A8[i].x;
         D_80B871F4.y = this->unk_1A8[i].y + (this->actor.shape.yOffset * 0.01f) + (D_80B87200[temp] * -10.0f * 0.2f);
         D_80B871F4.z = this->unk_1A8[i].z;
-        EffectSsFireTail_SpawnFlame(play, &this->actor, &D_80B871F4, D_80B87200[temp] * 0.2f, -1,
-                                    D_80B87240[temp]);
+        EffectSsFireTail_SpawnFlame(play, &this->actor, &D_80B871F4, D_80B87200[temp] * 0.2f, -1, D_80B87240[temp]);
         if (this->unk_19E[i] != 0) {
             this->unk_19E[i]--;
         } else if (this->timer > 16) {
@@ -184,9 +183,9 @@ void func_80B86CA8(ItemShield* this, PlayState* play) {
 }
 
 void func_80B86F68(ItemShield* this, PlayState* play) {
-    s32 pad;
+    s32     pad;
     Player* player = GET_PLAYER(play);
-    MtxF* shield = &player->shieldMf;
+    MtxF*   shield = &player->shieldMf;
 
     this->actor.world.pos.x = shield->xw;
     this->actor.world.pos.y = shield->yw;
@@ -222,8 +221,7 @@ void ItemShield_Draw(Actor* thisx, PlayState* play) {
     if (!(this->unk_19C & 2)) {
         OPEN_DISPS(play->state.gfxCtx);
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, SEGMENTED_TO_VIRTUAL(gLinkChildDekuShieldDL));
         CLOSE_DISPS(play->state.gfxCtx);
     }

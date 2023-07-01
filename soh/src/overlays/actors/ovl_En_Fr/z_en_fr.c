@@ -4,7 +4,8 @@
 #include "objects/object_fr/object_fr.h"
 #include <assert.h>
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
+#define FLAGS \
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void EnFr_Init(Actor* thisx, PlayState* play);
 void EnFr_Destroy(Actor* thisx, PlayState* play);
@@ -41,11 +42,11 @@ void EnFr_ContinueFrogSong(EnFr* this, PlayState* play);
 void EnFr_OcarinaMistake(EnFr* this, PlayState* play);
 
 // Reward Functions
-void EnFr_SetupReward(EnFr* this, PlayState* play, u8 unkCondition);
-void EnFr_PrintTextBox(EnFr* this, PlayState* play);
-void EnFr_TalkBeforeReward(EnFr* this, PlayState* play);
+void            EnFr_SetupReward(EnFr* this, PlayState* play, u8 unkCondition);
+void            EnFr_PrintTextBox(EnFr* this, PlayState* play);
+void            EnFr_TalkBeforeReward(EnFr* this, PlayState* play);
 RandomizerCheck EnFr_RandomizerCheckFromSongIndex(u16 songIndex);
-void EnFr_SetReward(EnFr* this, PlayState* play);
+void            EnFr_SetReward(EnFr* this, PlayState* play);
 
 // Deactivate
 void EnFr_Deactivate(EnFr* this, PlayState* play);
@@ -96,7 +97,6 @@ EnFrPointers sEnFrPointers = {
         NULL,
     },
 };
-
 
 // Flags for gSaveContext.eventChkInf[13]
 static u16 sSongIndex[] = {
@@ -264,11 +264,11 @@ void EnFr_Update(Actor* thisx, PlayState* play) {
         sEnFrPointers.frogs[frogIndex] = this;
         Actor_ProcessInitChain(&this->actor, sInitChain);
         // frog
-        SkelAnime_InitFlex(play, &this->skelAnime, &object_fr_Skel_00B498, &object_fr_Anim_001534,
-                           this->jointTable, this->morphTable, 24);
+        SkelAnime_InitFlex(play, &this->skelAnime, &object_fr_Skel_00B498, &object_fr_Anim_001534, this->jointTable,
+                           this->morphTable, 24);
         // butterfly
-        SkelAnime_Init(play, &this->skelAnimeButterfly, &gButterflySkel, &gButterflyAnim,
-                       this->jointTableButterfly, this->morphTableButterfly, 8);
+        SkelAnime_Init(play, &this->skelAnimeButterfly, &gButterflySkel, &gButterflyAnim, this->jointTableButterfly,
+                       this->morphTableButterfly, 8);
         // When playing the song for the HP, the frog with the next note and the butterfly turns on its lightsource
         this->lightNode = LightContext_InsertLight(play, &play->lightCtx, &this->lightInfo);
         Lights_PointNoGlowSetInfo(&this->lightInfo, this->actor.home.pos.x, this->actor.home.pos.y,
@@ -317,10 +317,10 @@ void EnFr_Destroy(Actor* thisx, PlayState* play) {
 
 void EnFr_IsDivingIntoWater(EnFr* this, PlayState* play) {
     WaterBox* waterBox;
-    f32 waterSurface;
+    f32       waterSurface;
 
-    if (WaterBox_GetSurfaceImpl(play, &play->colCtx, this->actor.world.pos.x, this->actor.world.pos.z,
-                                &waterSurface, &waterBox)) {
+    if (WaterBox_GetSurfaceImpl(play, &play->colCtx, this->actor.world.pos.x, this->actor.world.pos.z, &waterSurface,
+                                &waterBox)) {
         this->isBelowWaterSurfacePrevious = this->isBelowWaterSurfaceCurrent;
         this->isBelowWaterSurfaceCurrent = this->actor.world.pos.y <= waterSurface ? true : false;
     }
@@ -530,8 +530,8 @@ void EnFr_SetScaleActive(EnFr* this, PlayState* play) {
 }
 
 void EnFr_ButterflyPath(EnFr* this, PlayState* play) {
-    s16 rotY = this->actor.shape.rot.y;
-    f32 sin;
+    s16   rotY = this->actor.shape.rot.y;
+    f32   sin;
     Vec3f vec1;
     Vec3f vec2;
 
@@ -576,7 +576,7 @@ void EnFr_UpdateActive(Actor* thisx, PlayState* play) {
 
 s32 EnFr_SetupJumpingUp(EnFr* this, s32 frogIndex) {
     EnFr* frog = sEnFrPointers.frogs[frogIndex];
-    u8 semitone;
+    u8    semitone;
 
     if (frog != NULL && frog->isJumpingUp == false) {
         semitone = frog->growingScaleIndex == 3 ? sLargeFrogNotes[frogIndex] : sSmallFrogNotes[frogIndex];
@@ -627,11 +627,11 @@ void EnFr_Activate(EnFr* this, PlayState* play) {
 void EnFr_ActivateCheckFrogSong(EnFr* this, PlayState* play) {
     if (sEnFrPointers.flags == 11) {
         // Check if all 6 child songs have been played for the frogs
-        if ((Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_ZL))        // ZL
+        if ((Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_ZL))           // ZL
             && (Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_EPONA))     // Epona
-            && (Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_SARIA))    // Saria
-            && (Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_SUNS))     // Suns
-            && (Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_SOT))    // SoT
+            && (Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_SARIA))     // Saria
+            && (Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_SUNS))      // Suns
+            && (Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_SOT))       // SoT
             && (Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_STORMS))) { // SoS
             this->actionFunc = EnFr_TalkBeforeFrogSong;
             this->songIndex = FROG_CHOIR_SONG;
@@ -645,7 +645,7 @@ void EnFr_ActivateCheckFrogSong(EnFr* this, PlayState* play) {
 
 void func_80A1BE98(EnFr* this, PlayState* play) {
     EnFr* frog;
-    s32 frogIndex;
+    s32   frogIndex;
 
     for (frogIndex = 0; frogIndex < ARRAY_COUNT(sEnFrPointers.frogs); frogIndex++) {
         frog = sEnFrPointers.frogs[frogIndex];
@@ -684,7 +684,7 @@ void EnFr_ListeningToOcarinaNotes(EnFr* this, PlayState* play) {
         case OCARINA_MODE_04:
             EnFr_OcarinaMistake(this, play);
             break;
-        case OCARINA_MODE_01:                           // Ocarina note played, but no song played
+        case OCARINA_MODE_01:                      // Ocarina note played, but no song played
             switch (play->msgCtx.lastOcaNoteIdx) { // Jumping frogs in open ocarina based on ocarina note played
                 case OCARINA_NOTE_D4:
                     EnFr_SetupJumpingUp(this, FROG_BLUE);
@@ -711,7 +711,7 @@ void EnFr_ListeningToOcarinaNotes(EnFr* this, PlayState* play) {
 
 void EnFr_ChildSong(EnFr* this, PlayState* play) {
     EnFr* frog;
-    u8 songIndex;
+    u8    songIndex;
 
     if (this->jumpCounter < 48) {
         if (this->jumpCounter % 4 == 0) {
@@ -759,8 +759,8 @@ void EnFr_TalkBeforeFrogSong(EnFr* this, PlayState* play) {
 
 void EnFr_CheckOcarinaInputFrogSong(u8 ocarinaNote) {
     EnFr* frog;
-    s32 frogIndexButterfly;
-    s32 frogIndex;
+    s32   frogIndexButterfly;
+    s32   frogIndex;
 
     switch (ocarinaNote) {
         case 0:
@@ -786,7 +786,7 @@ void EnFr_CheckOcarinaInputFrogSong(u8 ocarinaNote) {
 }
 
 void EnFr_DeactivateButterfly() {
-    s32 frogIndex;
+    s32   frogIndex;
     EnFr* frog;
 
     for (frogIndex = 0; frogIndex < ARRAY_COUNT(sEnFrPointers.frogs); frogIndex++) {
@@ -817,10 +817,10 @@ void EnFr_SetupFrogSong(EnFr* this, PlayState* play) {
 }
 
 s32 EnFr_IsFrogSongComplete(EnFr* this, PlayState* play) {
-    u8 index;
-    u8 ocarinaNote;
+    u8              index;
+    u8              ocarinaNote;
     MessageContext* msgCtx = &play->msgCtx;
-    u8 ocarinaNoteIndex;
+    u8              ocarinaNoteIndex;
 
     if (this->ocarinaNote == (*msgCtx).lastOcaNoteIdx) { // required to match, possibly an array?
         this->ocarinaNoteIndex++;
@@ -851,9 +851,9 @@ void EnFr_OcarinaMistake(EnFr* this, PlayState* play) {
 }
 
 void EnFr_ContinueFrogSong(EnFr* this, PlayState* play) {
-    s32 counter;
+    s32   counter;
     EnFr* frog;
-    s32 i;
+    s32   i;
 
     if (this->frogSongTimer == 0) {
         EnFr_OcarinaMistake(this, play);
@@ -958,7 +958,8 @@ void EnFr_SetReward(EnFr* this, PlayState* play) {
             if (!gSaveContext.n64ddFlag) {
                 this->reward = GI_RUPEE_PURPLE;
             } else {
-                this->getItemEntry = Randomizer_GetItemFromKnownCheck(EnFr_RandomizerCheckFromSongIndex(songIndex), GI_RUPEE_PURPLE);
+                this->getItemEntry =
+                    Randomizer_GetItemFromKnownCheck(EnFr_RandomizerCheckFromSongIndex(songIndex), GI_RUPEE_PURPLE);
                 this->reward = this->getItemEntry.getItemId;
             }
         } else {
@@ -994,7 +995,7 @@ void EnFr_SetReward(EnFr* this, PlayState* play) {
 void EnFr_Deactivate(EnFr* this, PlayState* play) {
     EnFr* frogLoop1;
     EnFr* frogLoop2;
-    s32 frogIndex;
+    s32   frogIndex;
 
     // Originally was going to have separate butterfly actor
     // Changed to include butterfly as part of frog actor
@@ -1056,7 +1057,8 @@ void EnFr_GiveReward(EnFr* this, PlayState* play) {
 }
 
 void EnFr_SetIdle(EnFr* this, PlayState* play) {
-    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play) || (gSaveContext.n64ddFlag && this->reward == RG_ICE_TRAP)) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play) ||
+        (gSaveContext.n64ddFlag && this->reward == RG_ICE_TRAP)) {
         this->actionFunc = EnFr_Idle;
     }
 }
@@ -1087,8 +1089,7 @@ void EnFr_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, 
         OPEN_DISPS(play->state.gfxCtx);
         Matrix_Push();
         Matrix_ReplaceRotation(&play->billboardMtxF);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, *dList);
         Matrix_Pop();
         CLOSE_DISPS(play->state.gfxCtx);

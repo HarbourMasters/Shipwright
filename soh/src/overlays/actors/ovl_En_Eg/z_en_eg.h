@@ -10,6 +10,6 @@ typedef void (*EnEgActionFunc)(struct EnEg*, PlayState*);
 
 typedef struct EnEg {
     /* 0x0000 */ Actor actor;
-    /* 0x014C */ s32 action;
+    /* 0x014C */ s32   action;
 } EnEg; // size = 0x0154
 #endif

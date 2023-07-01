@@ -8,7 +8,9 @@
 #include "vt.h"
 #include "objects/object_ka/object_ka.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA | ACTOR_FLAG_NO_LOCKON)
+#define FLAGS                                                                                \
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | \
+     ACTOR_FLAG_NO_FREEZE_OCARINA | ACTOR_FLAG_NO_LOCKON)
 
 static ColliderCylinderInit sCylinderInit = {
     {
@@ -116,13 +118,13 @@ void func_80A90264(EnKakasi2* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     this->unk_194++;
-    
+
     bool skipScarecrow = play->msgCtx.msgMode == MSGMODE_OCARINA_PLAYING &&
-                            ((CVarGetInteger("gSkipScarecrow", 0) && gSaveContext.scarecrowSpawnSongSet) ||
-                            (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_SCARECROWS_SONG)));
+                         ((CVarGetInteger("gSkipScarecrow", 0) && gSaveContext.scarecrowSpawnSongSet) ||
+                          (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_SCARECROWS_SONG)));
 
     if ((BREG(1) != 0) || skipScarecrow && (this->actor.xzDistToPlayer < this->maxSpawnDistance.x) &&
-        (fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < this->maxSpawnDistance.y)) {
+                              (fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < this->maxSpawnDistance.y)) {
         this->actor.draw = func_80A90948;
         Collider_InitCylinder(play, &this->collider);
         Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
@@ -151,8 +153,7 @@ void func_80A90264(EnKakasi2* this, PlayState* play) {
             this->actor.draw = func_80A90948;
             Collider_InitCylinder(play, &this->collider);
             Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
-            SkelAnime_InitFlex(play, &this->skelAnime, &object_ka_Skel_0065B0, &object_ka_Anim_000214, NULL, NULL,
-                               0);
+            SkelAnime_InitFlex(play, &this->skelAnime, &object_ka_Skel_0065B0, &object_ka_Anim_000214, NULL, NULL, 0);
             OnePointCutscene_Attention(play, &this->actor);
             func_80078884(NA_SE_SY_CORRECT_CHIME);
 
@@ -245,6 +246,6 @@ void func_80A90948(Actor* thisx, PlayState* play) {
     EnKakasi2* this = (EnKakasi2*)thisx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, NULL, this);
+    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount, NULL,
+                          NULL, this);
 }

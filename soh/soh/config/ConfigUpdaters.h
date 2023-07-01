@@ -2,8 +2,8 @@
 
 namespace LUS {
 class ConfigVersion1Updater : public ConfigVersionUpdater {
-    public:
+  public:
     ConfigVersion1Updater();
     void Update(Config* conf);
 };
-}
+} // namespace LUS

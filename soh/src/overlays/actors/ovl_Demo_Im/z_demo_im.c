@@ -104,7 +104,7 @@ const ActorInit Demo_Im_InitVars = {
 };
 
 void func_80984BE0(DemoIm* this) {
-    s32 pad[3];
+    s32  pad[3];
     s16* blinkTimer = &this->blinkTimer;
     s16* eyeIndex = &this->eyeIndex;
 
@@ -165,7 +165,7 @@ void DemoIm_UpdateCollider(DemoIm* this, PlayState* play) {
 }
 
 void func_80984DB8(DemoIm* this) {
-    s32 pad[2];
+    s32    pad[2];
     Vec3s* headRot = &this->interactInfo.headRot;
     Vec3s* torsoRot = &this->interactInfo.torsoRot;
 
@@ -178,8 +178,8 @@ void func_80984DB8(DemoIm* this) {
 
 void func_80984E58(DemoIm* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s16 yawDiff;
-    s16 npcTrackingMode;
+    s16     yawDiff;
+    s16     npcTrackingMode;
 
     this->interactInfo.trackPos = player->actor.world.pos;
     this->interactInfo.yOffset = kREG(16) + 4.0f;
@@ -223,7 +223,7 @@ s32 DemoIm_IsCsStateIdle(PlayState* play) {
 }
 
 CsCmdActorAction* DemoIm_GetNpcAction(PlayState* play, s32 actionIdx) {
-    s32 pad[2];
+    s32               pad[2];
     CsCmdActorAction* ret = NULL;
 
     if (!DemoIm_IsCsStateIdle(play)) {
@@ -306,18 +306,16 @@ void func_80985358(DemoIm* this, PlayState* play) {
     f32 posY = this->actor.world.pos.y;
     f32 posZ = this->actor.world.pos.z;
 
-    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0, 0,
-                       WARP_SAGES);
+    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0, 0, WARP_SAGES);
 }
 
 void func_809853B4(DemoIm* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 playerX = player->actor.world.pos.x;
-    f32 playerY = player->actor.world.pos.y + 80.0f;
-    f32 playerZ = player->actor.world.pos.z;
+    f32     playerX = player->actor.world.pos.x;
+    f32     playerY = player->actor.world.pos.y + 80.0f;
+    f32     playerZ = player->actor.world.pos.z;
 
-    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_EFFECT, playerX, playerY, playerZ, 0,
-                       0, 0, 0xD);
+    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_EFFECT, playerX, playerY, playerZ, 0, 0, 0, 0xD);
     Item_Give(play, ITEM_MEDALLION_SHADOW);
 }
 
@@ -456,7 +454,7 @@ void func_80985948(DemoIm* this, PlayState* play) {
 
 void func_809859E0(DemoIm* this, PlayState* play) {
     f32* unk_268 = &this->unk_268;
-    s32 alpha = 255;
+    s32  alpha = 255;
 
     if (func_809850E8(this, play, 4, 5)) {
         *unk_268 += 1.0f;
@@ -519,9 +517,9 @@ void func_80985C94(DemoIm* this, PlayState* play) {
 }
 
 void DemoIm_DrawTranslucent(DemoIm* this, PlayState* play) {
-    s32 pad[2];
-    s16 eyeIndex = this->eyeIndex;
-    void* eyeTex = sEyeTextures[eyeIndex];
+    s32        pad[2];
+    s16        eyeIndex = this->eyeIndex;
+    void*      eyeTex = sEyeTextures[eyeIndex];
     SkelAnime* skelAnime = &this->skelAnime;
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -533,8 +531,8 @@ void DemoIm_DrawTranslucent(DemoIm* this, PlayState* play) {
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, this->alpha);
     gSPSegment(POLY_XLU_DISP++, 0x0C, &D_80116280[0]);
 
-    POLY_XLU_DISP = SkelAnime_DrawFlex(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                                       NULL, NULL, NULL, POLY_XLU_DISP);
+    POLY_XLU_DISP = SkelAnime_DrawFlex(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL,
+                                       NULL, NULL, POLY_XLU_DISP);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -736,10 +734,10 @@ void func_809865F8(DemoIm* this, PlayState* play, s32 arg2) {
         if (*unk_278 >= 0.0f) {
             if (this->unk_27C == 0) {
                 Vec3f* thisPos = &this->actor.world.pos;
-                s16 shapeRotY = this->actor.shape.rot.y;
-                f32 spawnPosX = thisPos->x + (Math_SinS(shapeRotY) * 30.0f);
-                f32 spawnPosY = thisPos->y;
-                f32 spawnPosZ = thisPos->z + (Math_CosS(shapeRotY) * 30.0f);
+                s16    shapeRotY = this->actor.shape.rot.y;
+                f32    spawnPosX = thisPos->x + (Math_SinS(shapeRotY) * 30.0f);
+                f32    spawnPosY = thisPos->y;
+                f32    spawnPosZ = thisPos->z + (Math_CosS(shapeRotY) * 30.0f);
 
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ARROW, spawnPosX, spawnPosY, spawnPosZ, 0xFA0,
                             this->actor.shape.rot.y, 0, ARROW_CS_NUT, true);
@@ -830,8 +828,8 @@ void func_809869B0(DemoIm* this, PlayState* play) {
 
 s32 func_809869F8(DemoIm* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 playerPosX = player->actor.world.pos.x;
-    f32 thisPosX = this->actor.world.pos.x;
+    f32     playerPosX = player->actor.world.pos.x;
+    f32     thisPosX = this->actor.world.pos.x;
 
     if ((thisPosX - (kREG(16) + 30.0f) > playerPosX) && !(this->actor.flags & ACTOR_FLAG_ACTIVE)) {
         return true;
@@ -842,8 +840,8 @@ s32 func_809869F8(DemoIm* this, PlayState* play) {
 
 s32 func_80986A5C(DemoIm* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 playerPosX = player->actor.world.pos.x;
-    f32 thisPosX = this->actor.world.pos.x;
+    f32     playerPosX = player->actor.world.pos.x;
+    f32     thisPosX = this->actor.world.pos.x;
 
     if ((thisPosX - (kREG(17) + 130.0f) < playerPosX) && (!Play_InCsMode(play))) {
         return true;
@@ -906,8 +904,7 @@ void func_80986BF8(DemoIm* this, PlayState* play) {
 void GivePlayerRandoRewardImpa(Actor* impa, PlayState* play, RandomizerCheck check) {
     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_ZELDAS_LULLABY);
 
-    if (impa->parent != NULL && impa->parent->id == GET_PLAYER(play)->actor.id &&
-        !Flags_GetTreasure(play, 0x1F)) {
+    if (impa->parent != NULL && impa->parent->id == GET_PLAYER(play)->actor.id && !Flags_GetTreasure(play, 0x1F)) {
         Flags_SetTreasure(play, 0x1F);
     } else if (!Flags_GetTreasure(play, 0x1F) && !Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA)) {
         GiveItemEntryFromActor(impa, play, getItemEntry, 75.0f, 50.0f);
@@ -1035,8 +1032,8 @@ void func_80987018(DemoIm* this, PlayState* play) {
 
 void func_80987064(DemoIm* this) {
     f32* unk_268 = &this->unk_268;
-    f32 temp;
-    s32 alpha = 255;
+    f32  temp;
+    s32  alpha = 255;
 
     *unk_268 += 1.0f;
     temp = kREG(17) + 10.0f;
@@ -1217,9 +1214,9 @@ void DemoIm_DrawNothing(DemoIm* this, PlayState* play) {
 }
 
 void DemoIm_DrawSolid(DemoIm* this, PlayState* play) {
-    s32 pad[2];
-    s16 eyeIndex = this->eyeIndex;
-    void* eyeTexture = sEyeTextures[eyeIndex];
+    s32        pad[2];
+    s16        eyeIndex = this->eyeIndex;
+    void*      eyeTexture = sEyeTextures[eyeIndex];
     SkelAnime* skelAnime = &this->skelAnime;
 
     OPEN_DISPS(play->state.gfxCtx);

@@ -14,7 +14,7 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 extern SaveContext gSaveContext;
-extern PlayState* gPlayState;
+extern PlayState*  gPlayState;
 
 uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 }
@@ -106,8 +106,9 @@ void RegisterInfiniteNayrusLove() {
 
 void RegisterMoonJumpOnL() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!gPlayState) return;
-        
+        if (!gPlayState)
+            return;
+
         if (CVarGetInteger("gMoonJumpOnL", 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
 
@@ -118,10 +119,10 @@ void RegisterMoonJumpOnL() {
     });
 }
 
-
 void RegisterInfiniteISG() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!gPlayState) return;
+        if (!gPlayState)
+            return;
 
         if (CVarGetInteger("gEzISG", 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
@@ -132,7 +133,8 @@ void RegisterInfiniteISG() {
 
 void RegisterUnrestrictedItems() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!gPlayState) return;
+        if (!gPlayState)
+            return;
 
         if (CVarGetInteger("gNoRestrictItems", 0) != 0) {
             u8 sunsBackup = gPlayState->interfaceCtx.restrictions.sunsSong;
@@ -160,13 +162,14 @@ void RegisterFreezeTime() {
 /// Switches Link's age and respawns him at the last entrance he entered.
 void RegisterSwitchAge() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        static bool warped = false;
-        static Vec3f playerPos;
-        static int16_t playerYaw;
+        static bool         warped = false;
+        static Vec3f        playerPos;
+        static int16_t      playerYaw;
         static RoomContext* roomCtx;
-        static s32 roomNum;
+        static s32          roomNum;
 
-        if (!gPlayState) return;
+        if (!gPlayState)
+            return;
 
         if (CVarGetInteger("gSwitchAge", 0) && !warped) {
             playerPos = GET_PLAYER(gPlayState)->actor.world.pos;
@@ -177,14 +180,13 @@ void RegisterSwitchAge() {
             warped = true;
         }
 
-        if (warped && gPlayState->sceneLoadFlag != 0x0014 &&
-            gSaveContext.nextTransitionType == 255) {
+        if (warped && gPlayState->sceneLoadFlag != 0x0014 && gSaveContext.nextTransitionType == 255) {
             GET_PLAYER(gPlayState)->actor.shape.rot.y = playerYaw;
             GET_PLAYER(gPlayState)->actor.world.pos = playerPos;
             if (roomNum != roomCtx->curRoom.num) {
-                func_8009728C(gPlayState, roomCtx, roomNum); //load original room
-                //func_800973FC(gPlayState, &gPlayState->roomCtx); // commit to room load?
-                func_80097534(gPlayState, roomCtx);  // load map for new room (unloading the previous room)
+                func_8009728C(gPlayState, roomCtx, roomNum); // load original room
+                // func_800973FC(gPlayState, &gPlayState->roomCtx); // commit to room load?
+                func_80097534(gPlayState, roomCtx); // load map for new room (unloading the previous room)
             }
             warped = false;
             CVarSetInteger("gSwitchAge", 0);
@@ -201,18 +203,20 @@ void RegisterOcarinaTimeTravel() {
         }
 
         Actor* player = &GET_PLAYER(gPlayState)->actor;
-        Actor* nearbyTimeBlockEmpty = Actor_FindNearby(gPlayState, player, ACTOR_OBJ_WARP2BLOCK, ACTORCAT_ITEMACTION, 300.0f);
+        Actor* nearbyTimeBlockEmpty =
+            Actor_FindNearby(gPlayState, player, ACTOR_OBJ_WARP2BLOCK, ACTORCAT_ITEMACTION, 300.0f);
         Actor* nearbyTimeBlock = Actor_FindNearby(gPlayState, player, ACTOR_OBJ_TIMEBLOCK, ACTORCAT_ITEMACTION, 300.0f);
         Actor* nearbyOcarinaSpot = Actor_FindNearby(gPlayState, player, ACTOR_EN_OKARINA_TAG, ACTORCAT_PROP, 120.0f);
         Actor* nearbyDoorOfTime = Actor_FindNearby(gPlayState, player, ACTOR_DOOR_TOKI, ACTORCAT_BG, 500.0f);
         Actor* nearbyFrogs = Actor_FindNearby(gPlayState, player, ACTOR_EN_FR, ACTORCAT_NPC, 300.0f);
-        uint8_t hasMasterSword = (gBitFlags[ITEM_SWORD_MASTER - ITEM_SWORD_KOKIRI] << gEquipShifts[EQUIP_SWORD]) & gSaveContext.inventory.equipment;
+        uint8_t hasMasterSword = (gBitFlags[ITEM_SWORD_MASTER - ITEM_SWORD_KOKIRI] << gEquipShifts[EQUIP_SWORD]) &
+                                 gSaveContext.inventory.equipment;
         uint8_t hasOcarinaOfTime = (INV_CONTENT(ITEM_OCARINA_TIME) == ITEM_OCARINA_TIME);
         // If TimeTravel + Player have the Ocarina of Time + Have Master Sword + is in proper range
         // TODO: Once Swordless Adult is fixed: Remove the Master Sword check
-        if (((CVarGetInteger("gTimeTravel", 0) == 1 && hasOcarinaOfTime) || CVarGetInteger("gTimeTravel", 0) == 2) && hasMasterSword &&
-            gPlayState->msgCtx.lastPlayedSong == OCARINA_SONG_TIME && !nearbyTimeBlockEmpty && !nearbyTimeBlock &&
-            !nearbyOcarinaSpot && !nearbyFrogs) {
+        if (((CVarGetInteger("gTimeTravel", 0) == 1 && hasOcarinaOfTime) || CVarGetInteger("gTimeTravel", 0) == 2) &&
+            hasMasterSword && gPlayState->msgCtx.lastPlayedSong == OCARINA_SONG_TIME && !nearbyTimeBlockEmpty &&
+            !nearbyTimeBlock && !nearbyOcarinaSpot && !nearbyFrogs) {
 
             if (gSaveContext.n64ddFlag) {
                 CVarSetInteger("gSwitchTimeline", 1);
@@ -232,13 +236,19 @@ void AutoSave(GetItemEntry itemEntry) {
     // Don't autosave in the Chamber of Sages since resuming from that map breaks the game
     // Don't autosave during the Ganon fight when picking up the Master Sword
     // Don't autosave in grottos since resuming from grottos breaks the game.
-    if ((CVarGetInteger("gAutosave", AUTOSAVE_OFF) != AUTOSAVE_OFF) && (gPlayState != NULL) && (gSaveContext.pendingSale == ITEM_NONE) &&
-        (gPlayState->gameplayFrames > 60 && gSaveContext.cutsceneIndex < 0xFFF0) && (gPlayState->sceneNum != SCENE_GANON_DEMO)) {
-        if (((CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS) || (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_ALL_ITEMS)) && (item != ITEM_NONE)) {
+    if ((CVarGetInteger("gAutosave", AUTOSAVE_OFF) != AUTOSAVE_OFF) && (gPlayState != NULL) &&
+        (gSaveContext.pendingSale == ITEM_NONE) &&
+        (gPlayState->gameplayFrames > 60 && gSaveContext.cutsceneIndex < 0xFFF0) &&
+        (gPlayState->sceneNum != SCENE_GANON_DEMO)) {
+        if (((CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS) ||
+             (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_ALL_ITEMS)) &&
+            (item != ITEM_NONE)) {
             // Autosave for all items
             performSave = true;
 
-        } else if (((CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS) || (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_MAJOR_ITEMS)) && (item != ITEM_NONE)) {
+        } else if (((CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS) ||
+                    (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_MAJOR_ITEMS)) &&
+                   (item != ITEM_NONE)) {
             // Autosave for major items
             if (itemEntry.modIndex == 0) {
                 switch (item) {
@@ -295,7 +305,7 @@ void AutoSave(GetItemEntry itemEntry) {
             performSave = true;
         }
         if ((gPlayState->sceneNum == SCENE_YOUSEI_IZUMI_TATE) || (gPlayState->sceneNum == SCENE_KAKUSIANA) ||
-                (gPlayState->sceneNum == SCENE_KENJYANOMA)) {
+            (gPlayState->sceneNum == SCENE_KENJYANOMA)) {
             if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS ||
                 CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS ||
                 CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION) {
@@ -317,9 +327,12 @@ void AutoSave(GetItemEntry itemEntry) {
 }
 
 void RegisterAutoSave() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) { AutoSave(itemEntry); });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSaleEnd>([](GetItemEntry itemEntry) { AutoSave(itemEntry); });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>([](int32_t sceneNum) { AutoSave(GET_ITEM_NONE); });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(
+        [](GetItemEntry itemEntry) { AutoSave(itemEntry); });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSaleEnd>(
+        [](GetItemEntry itemEntry) { AutoSave(itemEntry); });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>(
+        [](int32_t sceneNum) { AutoSave(GET_ITEM_NONE); });
 }
 
 void RegisterRupeeDash() {
@@ -327,11 +340,11 @@ void RegisterRupeeDash() {
         if (!CVarGetInteger("gRupeeDash", 0)) {
             return;
         }
-        
+
         // Initialize Timer
         static uint16_t rupeeDashTimer = 0;
-        uint16_t rdmTime = CVarGetInteger("gDashInterval", 5) * 20;
-        
+        uint16_t        rdmTime = CVarGetInteger("gDashInterval", 5) * 20;
+
         // Did time change by DashInterval?
         if (rupeeDashTimer >= rdmTime) {
             rupeeDashTimer = 0;
@@ -347,7 +360,7 @@ void RegisterRupeeDash() {
 }
 
 void RegisterShadowTag() {
-    static bool shouldSpawn = false;
+    static bool     shouldSpawn = false;
     static uint16_t delayTimer = 60;
 
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
@@ -372,9 +385,9 @@ void RegisterShadowTag() {
 }
 
 struct DayTimeGoldSkulltulas {
-    uint16_t scene;
-    uint16_t room;
-    bool forChild;
+    uint16_t                scene;
+    uint16_t                room;
+    bool                    forChild;
     std::vector<ActorEntry> actorEntries;
 };
 
@@ -432,28 +445,26 @@ void RegisterHyperBosses() {
         // Run the update function a second time to make bosses move and act twice as fast.
 
         Player* player = GET_PLAYER(gPlayState);
-        Actor* actor = static_cast<Actor*>(refActor);
+        Actor*  actor = static_cast<Actor*>(refActor);
 
-        uint8_t isBossActor =
-            actor->id == ACTOR_BOSS_GOMA ||                              // Gohma
-            actor->id == ACTOR_BOSS_DODONGO ||                           // King Dodongo
-            actor->id == ACTOR_EN_BDFIRE ||                              // King Dodongo Fire Breath
-            actor->id == ACTOR_BOSS_VA ||                                // Barinade
-            actor->id == ACTOR_BOSS_GANONDROF ||                         // Phantom Ganon
-            actor->id == ACTOR_EN_FHG_FIRE ||                            // Phantom Ganon/Ganondorf Energy Ball/Thunder
-            actor->id == ACTOR_EN_FHG ||                                 // Phantom Ganon's Horse
-            actor->id == ACTOR_BOSS_FD || actor->id == ACTOR_BOSS_FD2 || // Volvagia (grounded/flying)
-            actor->id == ACTOR_EN_VB_BALL ||                             // Volvagia Rocks
-            actor->id == ACTOR_BOSS_MO ||                                // Morpha
-            actor->id == ACTOR_BOSS_SST ||                               // Bongo Bongo
-            actor->id == ACTOR_BOSS_TW ||                                // Twinrova
-            actor->id == ACTOR_BOSS_GANON ||                             // Ganondorf
-            actor->id == ACTOR_BOSS_GANON2;                              // Ganon
+        uint8_t isBossActor = actor->id == ACTOR_BOSS_GOMA ||      // Gohma
+                              actor->id == ACTOR_BOSS_DODONGO ||   // King Dodongo
+                              actor->id == ACTOR_EN_BDFIRE ||      // King Dodongo Fire Breath
+                              actor->id == ACTOR_BOSS_VA ||        // Barinade
+                              actor->id == ACTOR_BOSS_GANONDROF || // Phantom Ganon
+                              actor->id == ACTOR_EN_FHG_FIRE ||    // Phantom Ganon/Ganondorf Energy Ball/Thunder
+                              actor->id == ACTOR_EN_FHG ||         // Phantom Ganon's Horse
+                              actor->id == ACTOR_BOSS_FD || actor->id == ACTOR_BOSS_FD2 || // Volvagia (grounded/flying)
+                              actor->id == ACTOR_EN_VB_BALL ||                             // Volvagia Rocks
+                              actor->id == ACTOR_BOSS_MO ||                                // Morpha
+                              actor->id == ACTOR_BOSS_SST ||                               // Bongo Bongo
+                              actor->id == ACTOR_BOSS_TW ||                                // Twinrova
+                              actor->id == ACTOR_BOSS_GANON ||                             // Ganondorf
+                              actor->id == ACTOR_BOSS_GANON2;                              // Ganon
 
-        uint8_t hyperBossesActive =
-            CVarGetInteger("gHyperBosses", 0) ||
-            (gSaveContext.isBossRush &&
-             gSaveContext.bossRushOptions[BR_OPTIONS_HYPERBOSSES] == BR_CHOICE_HYPERBOSSES_YES);
+        uint8_t hyperBossesActive = CVarGetInteger("gHyperBosses", 0) ||
+                                    (gSaveContext.isBossRush &&
+                                     gSaveContext.bossRushOptions[BR_OPTIONS_HYPERBOSSES] == BR_CHOICE_HYPERBOSSES_YES);
 
         // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
         if (hyperBossesActive && isBossActor && !Player_InBlockingCsMode(gPlayState, player)) {
@@ -479,7 +490,7 @@ void RegisterHyperEnemies() {
         // Run the update function a second time to make enemies and minibosses move and act twice as fast.
 
         Player* player = GET_PLAYER(gPlayState);
-        Actor* actor = static_cast<Actor*>(refActor);
+        Actor*  actor = static_cast<Actor*>(refActor);
 
         // Some enemies are not in the ACTORCAT_ENEMY category, and some are that aren't really enemies.
         bool isEnemy = actor->category == ACTORCAT_ENEMY || actor->id == ACTOR_EN_TORCH2;
@@ -528,7 +539,7 @@ void RegisterBonkDamage() {
             default:
                 break;
         }
-        
+
         Health_ChangeBy(gPlayState, -bonkDamage);
         // Set invincibility to make Link flash red as a visual damage indicator.
         Player* player = GET_PLAYER(gPlayState);
@@ -549,14 +560,13 @@ void UpdateDirtPathFixState(int32_t sceneNum) {
 }
 
 void RegisterMenuPathFix() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>([](int32_t sceneNum) {
-        UpdateDirtPathFixState(sceneNum);
-    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTransitionEnd>(
+        [](int32_t sceneNum) { UpdateDirtPathFixState(sceneNum); });
 }
 
 void UpdateMirrorModeState(int32_t sceneNum) {
     static bool prevMirroredWorld = false;
-    bool nextMirroredWorld = false;
+    bool        nextMirroredWorld = false;
 
     int16_t mirroredMode = CVarGetInteger("gMirroredWorldMode", MIRRORED_WORLD_OFF);
     int16_t inDungeon = (sceneNum >= SCENE_YDAN && sceneNum <= SCENE_GANONTIKA_SONOGO && sceneNum != SCENE_GERUDOWAY) ||
@@ -565,21 +575,23 @@ void UpdateMirrorModeState(int32_t sceneNum) {
 
     if (mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) {
         uint32_t seed = sceneNum + (gSaveContext.n64ddFlag ? (gSaveContext.seedIcons[0] + gSaveContext.seedIcons[1] +
-                        gSaveContext.seedIcons[2] + gSaveContext.seedIcons[3] + gSaveContext.seedIcons[4]) : gSaveContext.sohStats.fileCreatedAt);
+                                                              gSaveContext.seedIcons[2] + gSaveContext.seedIcons[3] +
+                                                              gSaveContext.seedIcons[4])
+                                                           : gSaveContext.sohStats.fileCreatedAt);
         Random_Init(seed);
     }
 
     bool randomMirror = Random(0, 2) == 1;
 
-    if (
-        mirroredMode == MIRRORED_WORLD_ALWAYS ||
+    if (mirroredMode == MIRRORED_WORLD_ALWAYS ||
         ((mirroredMode == MIRRORED_WORLD_RANDOM || mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED) && randomMirror) ||
         // Dungeon modes
-        (inDungeon && (mirroredMode == MIRRORED_WORLD_DUNGEONS_All ||
-         (mirroredMode == MIRRORED_WORLD_DUNGEONS_VANILLA && !ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
-         (mirroredMode == MIRRORED_WORLD_DUNGEONS_MQ && ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
-         ((mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) && randomMirror)))
-    ) {
+        (inDungeon &&
+         (mirroredMode == MIRRORED_WORLD_DUNGEONS_All ||
+          (mirroredMode == MIRRORED_WORLD_DUNGEONS_VANILLA && !ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
+          (mirroredMode == MIRRORED_WORLD_DUNGEONS_MQ && ResourceMgr_IsSceneMasterQuest(sceneNum)) ||
+          ((mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) &&
+           randomMirror)))) {
         nextMirroredWorld = true;
         CVarSetInteger("gMirroredWorld", 1);
     } else {
@@ -594,9 +606,8 @@ void UpdateMirrorModeState(int32_t sceneNum) {
 }
 
 void RegisterMirrorModeHandler() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
-        UpdateMirrorModeState(sceneNum);
-    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>(
+        [](int32_t sceneNum) { UpdateMirrorModeState(sceneNum); });
 }
 
 void InitMods() {

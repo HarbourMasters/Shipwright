@@ -4,8 +4,8 @@
 #include <string.h>
 
 QuakeRequest sQuakeRequest[4];
-s16 D_80126250 = 1;
-s16 sQuakeRequestCount = 0;
+s16          D_80126250 = 1;
+s16          sQuakeRequestCount = 0;
 
 s16 (*sQuakeCallbacks[])(QuakeRequest*, ShakeInfo*) = {
     NULL, Quake_Callback1, Quake_Callback2, Quake_Callback3, Quake_Callback4, Quake_Callback5, Quake_Callback6,
@@ -27,10 +27,10 @@ void Quake_UpdateShakeInfo(QuakeRequest* req, ShakeInfo* shake, f32 y, f32 x) {
     Vec3f* unk50 = &req->cam->at;
     Vec3f* unk5C = &req->cam->eye;
 
-    Vec3f vec;
+    Vec3f  vec;
     VecSph struc2;
     VecSph struc1;
-    Vec3f vec2;
+    Vec3f  vec2;
 
     if (req->unk_1C) {
         vec.x = 0;
@@ -151,7 +151,7 @@ s16 Quake_GetFreeIndex(void) {
 }
 
 QuakeRequest* Quake_AddImpl(Camera* cam, u32 callbackIdx) {
-    s16 idx = Quake_GetFreeIndex();
+    s16           idx = Quake_GetFreeIndex();
     QuakeRequest* req = &sQuakeRequest[idx];
 
     memset(req, 0, sizeof(QuakeRequest));
@@ -308,18 +308,18 @@ u32 Quake_RemoveFromIdx(s16 idx) {
 }
 
 s16 Quake_Calc(Camera* camera, QuakeCamCalc* camData) {
-    f32 max;
-    f32 max2;
+    f32           max;
+    f32           max2;
     QuakeRequest* req;
-    ShakeInfo shake;
-    f32 absSpeedDiv;
-    s16* temp;
-    u32 pad2;
-    s32 idx;
-    s32 ret;
-    u32 eq;
-    Vec3f vec;
-    PlayState* play;
+    ShakeInfo     shake;
+    f32           absSpeedDiv;
+    s16*          temp;
+    u32           pad2;
+    s32           idx;
+    s32           ret;
+    u32           eq;
+    Vec3f         vec;
+    PlayState*    play;
 
     play = camera->play;
     vec.x = 0.0f;

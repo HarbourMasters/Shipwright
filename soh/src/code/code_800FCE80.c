@@ -36,11 +36,11 @@ f32 Math_FAtanTaylorQF(f32 x) {
         -1.0f / 3, +1.0f / 5, -1.0f / 7, +1.0f / 9, -1.0f / 11, +1.0f / 13, -1.0f / 15, +1.0f / 17, 0.0f,
     };
 
-    f32 poly = x;
-    f32 sq = SQ(x);
-    f32 exp = x * sq;
+    f32        poly = x;
+    f32        sq = SQ(x);
+    f32        exp = x * sq;
     const f32* c = coeffs;
-    f32 term;
+    f32        term;
 
     while (1) {
         term = *c++ * exp;

@@ -18,7 +18,7 @@ extern "C" {
 #include <z64.h>
 #include "variables.h"
 extern PlayState* gPlayState;
-uint64_t GetUnixTimestamp();
+uint64_t          GetUnixTimestamp();
 }
 
 const char* const sceneMappings[] = {
@@ -123,7 +123,7 @@ const char* const sceneMappings[] = {
     "Goron City",
     "Lon Lon Ranch",
     "Outside Ganon's Castle",
-    //Debug Rooms
+    // Debug Rooms
     "Test Map",
     "Test Room",
     "Depth Test",
@@ -229,32 +229,32 @@ const char* const countMappings[] = {
     "Start:",
 };
 
-#define COLOR_WHITE      ImVec4(1.00f, 1.00f, 1.00f, 1.00f)
-#define COLOR_RED        ImVec4(1.00f, 0.00f, 0.00f, 1.00f)
-#define COLOR_GREEN      ImVec4(0.10f, 1.00f, 0.10f, 1.00f)
-#define COLOR_BLUE       ImVec4(0.00f, 0.33f, 1.00f, 1.00f)
-#define COLOR_PURPLE     ImVec4(0.54f, 0.19f, 0.89f, 1.00f)
-#define COLOR_YELLOW     ImVec4(1.00f, 1.00f, 0.00f, 1.00f)
-#define COLOR_ORANGE     ImVec4(1.00f, 0.67f, 0.11f, 1.00f)
+#define COLOR_WHITE ImVec4(1.00f, 1.00f, 1.00f, 1.00f)
+#define COLOR_RED ImVec4(1.00f, 0.00f, 0.00f, 1.00f)
+#define COLOR_GREEN ImVec4(0.10f, 1.00f, 0.10f, 1.00f)
+#define COLOR_BLUE ImVec4(0.00f, 0.33f, 1.00f, 1.00f)
+#define COLOR_PURPLE ImVec4(0.54f, 0.19f, 0.89f, 1.00f)
+#define COLOR_YELLOW ImVec4(1.00f, 1.00f, 0.00f, 1.00f)
+#define COLOR_ORANGE ImVec4(1.00f, 0.67f, 0.11f, 1.00f)
 #define COLOR_LIGHT_BLUE ImVec4(0.00f, 0.88f, 1.00f, 1.00f)
-#define COLOR_GREY       ImVec4(0.78f, 0.78f, 0.78f, 1.00f)
+#define COLOR_GREY ImVec4(0.78f, 0.78f, 0.78f, 1.00f)
 
-char itemTimestampDisplayName[TIMESTAMP_MAX][21] = { "" };
+char   itemTimestampDisplayName[TIMESTAMP_MAX][21] = { "" };
 ImVec4 itemTimestampDisplayColor[TIMESTAMP_MAX];
 
 typedef struct {
-    char name[40];
-    u32 time;
+    char   name[40];
+    u32    time;
     ImVec4 color;
-    bool isRoom;
-}TimestampInfo;
+    bool   isRoom;
+} TimestampInfo;
 
 // Timestamps are an array of structs, each with a name, time, and color
 // Names and colors are set up at the bottom of this file
 // Times are stored in gSaveContext.sohStats.itemTimestamp
 TimestampInfo itemTimestampDisplay[TIMESTAMP_MAX];
 TimestampInfo sceneTimestampDisplay[8191];
-//std::vector<TimestampInfo> sceneTimestampDisplay;
+// std::vector<TimestampInfo> sceneTimestampDisplay;
 
 std::string formatTimestampGameplayStat(uint32_t value) {
     uint32_t sec = value / 10;
@@ -279,8 +279,8 @@ std::string formatHexOnlyGameplayStat(uint32_t value) {
 
 extern "C" char* GameplayStats_GetCurrentTime() {
     std::string timeString = formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME).c_str();
-    const int stringLength = timeString.length();
-    char* timeChar = new char[stringLength + 1];
+    const int   stringLength = timeString.length();
+    char*       timeChar = new char[stringLength + 1];
     strcpy(timeChar, timeString.c_str());
     return timeChar;
 }
@@ -288,7 +288,8 @@ extern "C" char* GameplayStats_GetCurrentTime() {
 void LoadStatsVersion1() {
     std::string buildVersion;
     SaveManager::Instance->LoadData("buildVersion", buildVersion);
-    strncpy(gSaveContext.sohStats.buildVersion, buildVersion.c_str(), ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1);
+    strncpy(gSaveContext.sohStats.buildVersion, buildVersion.c_str(),
+            ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1);
     gSaveContext.sohStats.buildVersion[ARRAY_COUNT(gSaveContext.sohStats.buildVersion) - 1] = 0;
     SaveManager::Instance->LoadData("buildVersionMajor", gSaveContext.sohStats.buildVersionMajor);
     SaveManager::Instance->LoadData("buildVersionMinor", gSaveContext.sohStats.buildVersionMinor);
@@ -306,37 +307,38 @@ void LoadStatsVersion1() {
     SaveManager::Instance->LoadArray("itemTimestamps", ARRAY_COUNT(gSaveContext.sohStats.itemTimestamp), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.sohStats.itemTimestamp[i]);
     });
-    SaveManager::Instance->LoadArray("sceneTimestamps", ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps), [&](size_t i) {
-        SaveManager::Instance->LoadStruct("", [&]() {
-            int scene, room, sceneTime, roomTime, isRoom;
-            SaveManager::Instance->LoadData("scene", scene);
-            SaveManager::Instance->LoadData("room", room);
-            SaveManager::Instance->LoadData("sceneTime", sceneTime);
-            SaveManager::Instance->LoadData("roomTime", roomTime);
-            SaveManager::Instance->LoadData("isRoom", isRoom);
-            if (scene == 0 && room == 0 && sceneTime == 0 && roomTime == 0 && isRoom == 0) {
-                return;
-            }
-            gSaveContext.sohStats.sceneTimestamps[i].scene = scene;
-            gSaveContext.sohStats.sceneTimestamps[i].room = room;
-            gSaveContext.sohStats.sceneTimestamps[i].sceneTime = sceneTime;
-            gSaveContext.sohStats.sceneTimestamps[i].roomTime = roomTime;
-            gSaveContext.sohStats.sceneTimestamps[i].isRoom = isRoom;
+    SaveManager::Instance->LoadArray(
+        "sceneTimestamps", ARRAY_COUNT(gSaveContext.sohStats.sceneTimestamps), [&](size_t i) {
+            SaveManager::Instance->LoadStruct("", [&]() {
+                int scene, room, sceneTime, roomTime, isRoom;
+                SaveManager::Instance->LoadData("scene", scene);
+                SaveManager::Instance->LoadData("room", room);
+                SaveManager::Instance->LoadData("sceneTime", sceneTime);
+                SaveManager::Instance->LoadData("roomTime", roomTime);
+                SaveManager::Instance->LoadData("isRoom", isRoom);
+                if (scene == 0 && room == 0 && sceneTime == 0 && roomTime == 0 && isRoom == 0) {
+                    return;
+                }
+                gSaveContext.sohStats.sceneTimestamps[i].scene = scene;
+                gSaveContext.sohStats.sceneTimestamps[i].room = room;
+                gSaveContext.sohStats.sceneTimestamps[i].sceneTime = sceneTime;
+                gSaveContext.sohStats.sceneTimestamps[i].roomTime = roomTime;
+                gSaveContext.sohStats.sceneTimestamps[i].isRoom = isRoom;
+            });
         });
-    });
     SaveManager::Instance->LoadData("tsIdx", gSaveContext.sohStats.tsIdx);
     SaveManager::Instance->LoadArray("counts", ARRAY_COUNT(gSaveContext.sohStats.count), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.sohStats.count[i]);
     });
-    SaveManager::Instance->LoadArray("scenesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.scenesDiscovered), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.sohStats.scenesDiscovered[i]);
-    });
-    SaveManager::Instance->LoadArray("entrancesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.sohStats.entrancesDiscovered[i]);
-    });
-    SaveManager::Instance->LoadArray("locationsSkipped", ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.sohStats.locationsSkipped[i]);
-    });
+    SaveManager::Instance->LoadArray(
+        "scenesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.scenesDiscovered),
+        [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.sohStats.scenesDiscovered[i]); });
+    SaveManager::Instance->LoadArray(
+        "entrancesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered),
+        [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.sohStats.entrancesDiscovered[i]); });
+    SaveManager::Instance->LoadArray(
+        "locationsSkipped", ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped),
+        [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.sohStats.locationsSkipped[i]); });
 }
 
 void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
@@ -357,30 +359,32 @@ void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
     SaveManager::Instance->SaveArray("itemTimestamps", ARRAY_COUNT(saveContext->sohStats.itemTimestamp), [&](size_t i) {
         SaveManager::Instance->SaveData("", saveContext->sohStats.itemTimestamp[i]);
     });
-    SaveManager::Instance->SaveArray("sceneTimestamps", ARRAY_COUNT(saveContext->sohStats.sceneTimestamps), [&](size_t i) {
-        if (saveContext->sohStats.sceneTimestamps[i].scene != 254 && saveContext->sohStats.sceneTimestamps[i].room != 254) {
-            SaveManager::Instance->SaveStruct("", [&]() {
-                SaveManager::Instance->SaveData("scene", saveContext->sohStats.sceneTimestamps[i].scene);
-                SaveManager::Instance->SaveData("room", saveContext->sohStats.sceneTimestamps[i].room);
-                SaveManager::Instance->SaveData("sceneTime", saveContext->sohStats.sceneTimestamps[i].sceneTime);
-                SaveManager::Instance->SaveData("roomTime", saveContext->sohStats.sceneTimestamps[i].roomTime);
-                SaveManager::Instance->SaveData("isRoom", saveContext->sohStats.sceneTimestamps[i].isRoom);
-            });
-        }
-    });
+    SaveManager::Instance->SaveArray(
+        "sceneTimestamps", ARRAY_COUNT(saveContext->sohStats.sceneTimestamps), [&](size_t i) {
+            if (saveContext->sohStats.sceneTimestamps[i].scene != 254 &&
+                saveContext->sohStats.sceneTimestamps[i].room != 254) {
+                SaveManager::Instance->SaveStruct("", [&]() {
+                    SaveManager::Instance->SaveData("scene", saveContext->sohStats.sceneTimestamps[i].scene);
+                    SaveManager::Instance->SaveData("room", saveContext->sohStats.sceneTimestamps[i].room);
+                    SaveManager::Instance->SaveData("sceneTime", saveContext->sohStats.sceneTimestamps[i].sceneTime);
+                    SaveManager::Instance->SaveData("roomTime", saveContext->sohStats.sceneTimestamps[i].roomTime);
+                    SaveManager::Instance->SaveData("isRoom", saveContext->sohStats.sceneTimestamps[i].isRoom);
+                });
+            }
+        });
     SaveManager::Instance->SaveData("tsIdx", saveContext->sohStats.tsIdx);
     SaveManager::Instance->SaveArray("counts", ARRAY_COUNT(saveContext->sohStats.count), [&](size_t i) {
         SaveManager::Instance->SaveData("", saveContext->sohStats.count[i]);
     });
-    SaveManager::Instance->SaveArray("scenesDiscovered", ARRAY_COUNT(saveContext->sohStats.scenesDiscovered), [&](size_t i) {
-        SaveManager::Instance->SaveData("", saveContext->sohStats.scenesDiscovered[i]);
-    });
-    SaveManager::Instance->SaveArray("entrancesDiscovered", ARRAY_COUNT(saveContext->sohStats.entrancesDiscovered), [&](size_t i) {
-        SaveManager::Instance->SaveData("", saveContext->sohStats.entrancesDiscovered[i]);
-    });
-    SaveManager::Instance->SaveArray("locationsSkipped", ARRAY_COUNT(saveContext->sohStats.locationsSkipped), [&](size_t i) {
-        SaveManager::Instance->SaveData("", saveContext->sohStats.locationsSkipped[i]);
-    });
+    SaveManager::Instance->SaveArray(
+        "scenesDiscovered", ARRAY_COUNT(saveContext->sohStats.scenesDiscovered),
+        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->sohStats.scenesDiscovered[i]); });
+    SaveManager::Instance->SaveArray(
+        "entrancesDiscovered", ARRAY_COUNT(saveContext->sohStats.entrancesDiscovered),
+        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->sohStats.entrancesDiscovered[i]); });
+    SaveManager::Instance->SaveArray(
+        "locationsSkipped", ARRAY_COUNT(saveContext->sohStats.locationsSkipped),
+        [&](size_t i) { SaveManager::Instance->SaveData("", saveContext->sohStats.locationsSkipped[i]); });
 }
 
 void GameplayStatsRow(const char* label, std::string value, ImVec4 color = COLOR_WHITE) {
@@ -397,7 +401,7 @@ bool compareTimestampInfoByTime(const TimestampInfo& a, const TimestampInfo& b) 
     return CVarGetInteger("gGameplayStats.TimestampsReverse", 0) ? a.time > b.time : a.time < b.time;
 }
 
-const char* ResolveSceneID(int sceneID, int roomID){
+const char* ResolveSceneID(int sceneID, int roomID) {
     if (sceneID == SCENE_KAKUSIANA) {
         switch (roomID) {
             case 0:
@@ -430,7 +434,7 @@ const char* ResolveSceneID(int sceneID, int roomID){
                 return "Big Skulltula Grotto";
         };
     } else if (sceneID == SCENE_HAKASITARELAY) {
-        //Only the last room of Dampe's Grave (rm 6) is considered the windmill
+        // Only the last room of Dampe's Grave (rm 6) is considered the windmill
         return roomID == 6 ? "Windmill" : "Dampe's Grave";
     } else if (sceneID < SCENE_ID_MAX) {
         return sceneMappings[sceneID];
@@ -443,23 +447,32 @@ void DrawGameplayStatsHeader() {
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
     ImGui::BeginTable("gameplayStatsHeader", 1, ImGuiTableFlags_BordersOuter);
     ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
-    GameplayStatsRow("Build Version:", (char*) gBuildVersion);
+    GameplayStatsRow("Build Version:", (char*)gBuildVersion);
     if (gSaveContext.sohStats.rtaTiming) {
-        GameplayStatsRow("Total Time (RTA):", formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME), gSaveContext.sohStats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
+        GameplayStatsRow("Total Time (RTA):", formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME),
+                         gSaveContext.sohStats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
     } else {
-        GameplayStatsRow("Total Game Time:", formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME), gSaveContext.sohStats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
+        GameplayStatsRow("Total Game Time:", formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME),
+                         gSaveContext.sohStats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
     }
     if (CVarGetInteger("gGameplayStats.ShowAdditionalTimers", 0)) { // !Only display total game time
-        GameplayStatsRow("Gameplay Time:", formatTimestampGameplayStat(gSaveContext.sohStats.playTimer / 2), COLOR_GREY);
-        GameplayStatsRow("Pause Menu Time:", formatTimestampGameplayStat(gSaveContext.sohStats.pauseTimer / 3), COLOR_GREY);
-        GameplayStatsRow("Time in scene:", formatTimestampGameplayStat(gSaveContext.sohStats.sceneTimer / 2), COLOR_LIGHT_BLUE);
-        GameplayStatsRow("Time in room:", formatTimestampGameplayStat(gSaveContext.sohStats.roomTimer / 2), COLOR_LIGHT_BLUE);
+        GameplayStatsRow("Gameplay Time:", formatTimestampGameplayStat(gSaveContext.sohStats.playTimer / 2),
+                         COLOR_GREY);
+        GameplayStatsRow("Pause Menu Time:", formatTimestampGameplayStat(gSaveContext.sohStats.pauseTimer / 3),
+                         COLOR_GREY);
+        GameplayStatsRow("Time in scene:", formatTimestampGameplayStat(gSaveContext.sohStats.sceneTimer / 2),
+                         COLOR_LIGHT_BLUE);
+        GameplayStatsRow("Time in room:", formatTimestampGameplayStat(gSaveContext.sohStats.roomTimer / 2),
+                         COLOR_LIGHT_BLUE);
     }
     if (gPlayState != NULL && CVarGetInteger("gGameplayStats.ShowDebugInfo", 0)) { // && display debug info
         GameplayStatsRow("play->sceneNum:", formatHexGameplayStat(gPlayState->sceneNum), COLOR_YELLOW);
-        GameplayStatsRow("gSaveContext.entranceIndex:", formatHexGameplayStat(gSaveContext.entranceIndex), COLOR_YELLOW);
-        GameplayStatsRow("gSaveContext.cutsceneIndex:", formatHexOnlyGameplayStat(gSaveContext.cutsceneIndex), COLOR_YELLOW);
-        GameplayStatsRow("play->roomCtx.curRoom.num:", formatIntGameplayStat(gPlayState->roomCtx.curRoom.num), COLOR_YELLOW);
+        GameplayStatsRow("gSaveContext.entranceIndex:", formatHexGameplayStat(gSaveContext.entranceIndex),
+                         COLOR_YELLOW);
+        GameplayStatsRow("gSaveContext.cutsceneIndex:", formatHexOnlyGameplayStat(gSaveContext.cutsceneIndex),
+                         COLOR_YELLOW);
+        GameplayStatsRow("play->roomCtx.curRoom.num:", formatIntGameplayStat(gPlayState->roomCtx.curRoom.num),
+                         COLOR_YELLOW);
     }
     ImGui::EndTable();
     ImGui::PopStyleVar(1);
@@ -481,12 +494,12 @@ void DrawGameplayStatsTimestampsTab() {
     for (int i = 0; i < TIMESTAMP_MAX; i++) {
         // To be shown, the entry must have a non-zero time and a string for its display name
         if (itemTimestampDisplay[i].time > 0 && strnlen(itemTimestampDisplay[i].name, 21) > 1) {
-            GameplayStatsRow(itemTimestampDisplay[i].name, formatTimestampGameplayStat(itemTimestampDisplay[i].time), itemTimestampDisplay[i].color);
+            GameplayStatsRow(itemTimestampDisplay[i].name, formatTimestampGameplayStat(itemTimestampDisplay[i].time),
+                             itemTimestampDisplay[i].color);
         }
     }
     ImGui::EndTable();
     ImGui::PopStyleVar(1);
-
 }
 
 void DrawGameplayStatsCountsTab() {
@@ -517,7 +530,8 @@ void DrawGameplayStatsCountsTab() {
     ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
     GameplayStatsRow("Enemies Defeated:", formatIntGameplayStat(enemiesDefeated));
     if (enemiesDefeated > 0) {
-        ImGui::TableNextRow(); ImGui::TableNextColumn();
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn();
         if (ImGui::TreeNodeEx("Enemy Details...", ImGuiTreeNodeFlags_NoTreePushOnOpen)) {
             for (int i = COUNT_ENEMIES_DEFEATED_ANUBIS; i <= COUNT_ENEMIES_DEFEATED_WOLFOS; i++) {
                 if (i == COUNT_ENEMIES_DEFEATED_FLOORMASTER) {
@@ -534,7 +548,8 @@ void DrawGameplayStatsCountsTab() {
     GameplayStatsRow("Chests Opened:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_CHESTS_OPENED]));
     GameplayStatsRow("Ammo Used:", formatIntGameplayStat(ammoUsed));
     if (ammoUsed > 0) {
-        ImGui::TableNextRow(); ImGui::TableNextColumn();
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn();
         if (ImGui::TreeNodeEx("Ammo Details...", ImGuiTreeNodeFlags_NoTreePushOnOpen)) {
             for (int i = COUNT_AMMO_USED_STICK; i <= COUNT_AMMO_USED_BEAN; i++) {
                 GameplayStatsRow(countMappings[i], formatIntGameplayStat(gSaveContext.sohStats.count[i]));
@@ -545,8 +560,10 @@ void DrawGameplayStatsCountsTab() {
     GameplayStatsRow("Sword Swings:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_SWORD_SWINGS]));
     GameplayStatsRow("Steps Taken:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_STEPS]));
     // If using MM Bunny Hood enhancement, show how long it's been equipped (not counting pause time)
-    if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA || gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
-        GameplayStatsRow("Bunny Hood Time:", formatTimestampGameplayStat(gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] / 2));
+    if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA ||
+        gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
+        GameplayStatsRow("Bunny Hood Time:",
+                         formatTimestampGameplayStat(gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] / 2));
     }
     GameplayStatsRow("Rolls:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_ROLLS]));
     GameplayStatsRow("Bonks:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_BONKS]));
@@ -558,7 +575,8 @@ void DrawGameplayStatsCountsTab() {
     GameplayStatsRow("Bushes Cut:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_BUSHES_CUT]));
     GameplayStatsRow("Buttons Pressed:", formatIntGameplayStat(buttonPresses));
     if (buttonPresses > 0) {
-        ImGui::TableNextRow(); ImGui::TableNextColumn();
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn();
         if (ImGui::TreeNodeEx("Buttons...", ImGuiTreeNodeFlags_NoTreePushOnOpen)) {
             for (int i = COUNT_BUTTON_PRESSES_A; i <= COUNT_BUTTON_PRESSES_START; i++) {
                 GameplayStatsRow(countMappings[i], formatIntGameplayStat(gSaveContext.sohStats.count[i]));
@@ -571,16 +589,19 @@ void DrawGameplayStatsCountsTab() {
 
 void DrawGameplayStatsBreakdownTab() {
     for (int i = 0; i < gSaveContext.sohStats.tsIdx; i++) {
-        std::string sceneName = ResolveSceneID(gSaveContext.sohStats.sceneTimestamps[i].scene, gSaveContext.sohStats.sceneTimestamps[i].room);
+        std::string sceneName = ResolveSceneID(gSaveContext.sohStats.sceneTimestamps[i].scene,
+                                               gSaveContext.sohStats.sceneTimestamps[i].room);
         std::string name;
-        if (CVarGetInteger("gGameplayStats.RoomBreakdown", 0) && gSaveContext.sohStats.sceneTimestamps[i].scene != SCENE_KAKUSIANA) {
-            name = fmt::format("{:s} Room {:d}", sceneName, gSaveContext.sohStats.sceneTimestamps[i].room);    
+        if (CVarGetInteger("gGameplayStats.RoomBreakdown", 0) &&
+            gSaveContext.sohStats.sceneTimestamps[i].scene != SCENE_KAKUSIANA) {
+            name = fmt::format("{:s} Room {:d}", sceneName, gSaveContext.sohStats.sceneTimestamps[i].room);
         } else {
             name = sceneName;
         }
         strcpy(sceneTimestampDisplay[i].name, name.c_str());
-        sceneTimestampDisplay[i].time = CVarGetInteger("gGameplayStats.RoomBreakdown", 0) ? 
-            gSaveContext.sohStats.sceneTimestamps[i].roomTime : gSaveContext.sohStats.sceneTimestamps[i].sceneTime;
+        sceneTimestampDisplay[i].time = CVarGetInteger("gGameplayStats.RoomBreakdown", 0)
+                                            ? gSaveContext.sohStats.sceneTimestamps[i].roomTime
+                                            : gSaveContext.sohStats.sceneTimestamps[i].sceneTime;
         sceneTimestampDisplay[i].color = COLOR_GREY;
         sceneTimestampDisplay[i].isRoom = gSaveContext.sohStats.sceneTimestamps[i].isRoom;
     }
@@ -590,14 +611,16 @@ void DrawGameplayStatsBreakdownTab() {
     ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
     for (int i = 0; i < gSaveContext.sohStats.tsIdx; i++) {
         TimestampInfo tsInfo = sceneTimestampDisplay[i];
-        bool canShow = !tsInfo.isRoom || CVarGetInteger("gGameplayStats.RoomBreakdown", 0);
+        bool          canShow = !tsInfo.isRoom || CVarGetInteger("gGameplayStats.RoomBreakdown", 0);
         if (tsInfo.time > 0 && strnlen(tsInfo.name, 40) > 1 && canShow) {
             GameplayStatsRow(tsInfo.name, formatTimestampGameplayStat(tsInfo.time), tsInfo.color);
         }
     }
     std::string toPass;
     if (CVarGetInteger("gGameplayStats.RoomBreakdown", 0) && gSaveContext.sohStats.sceneNum != SCENE_KAKUSIANA) {
-        toPass = fmt::format("{:s} Room {:d}", ResolveSceneID(gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum), gSaveContext.sohStats.roomNum);
+        toPass =
+            fmt::format("{:s} Room {:d}", ResolveSceneID(gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum),
+                        gSaveContext.sohStats.roomNum);
     } else {
         toPass = ResolveSceneID(gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum);
     }
@@ -608,19 +631,21 @@ void DrawGameplayStatsBreakdownTab() {
 
 void DrawGameplayStatsOptionsTab() {
     UIWidgets::PaddedEnhancementCheckbox("Show in-game total timer", "gGameplayStats.ShowIngameTimer", true, false);
-    UIWidgets::InsertHelpHoverText("Keep track of the timer as an in-game HUD element. The position of the timer can be changed in the Cosmetics Editor.");
-    UIWidgets::PaddedEnhancementCheckbox("Show latest timestamps on top", "gGameplayStats.TimestampsReverse", true, false);
+    UIWidgets::InsertHelpHoverText("Keep track of the timer as an in-game HUD element. The position of the timer can "
+                                   "be changed in the Cosmetics Editor.");
+    UIWidgets::PaddedEnhancementCheckbox("Show latest timestamps on top", "gGameplayStats.TimestampsReverse", true,
+                                         false);
     UIWidgets::PaddedEnhancementCheckbox("Room Breakdown", "gGameplayStats.RoomBreakdown", true, false);
     ImGui::SameLine();
-    UIWidgets::InsertHelpHoverText("Allows a more in-depth perspective of time spent in a certain map.");   
+    UIWidgets::InsertHelpHoverText("Allows a more in-depth perspective of time spent in a certain map.");
     UIWidgets::PaddedEnhancementCheckbox("RTA Timing on new files", "gGameplayStats.RTATiming", true, false);
     ImGui::SameLine();
-    UIWidgets::InsertHelpHoverText(
-        "Timestamps are relative to starting timestamp rather than in game time, usually necessary for races/speedruns.\n\n"
-        "Starting timestamp is on first non-c-up input after intro cutscene.\n\n"
-        "NOTE: THIS NEEDS TO BE SET BEFORE CREATING A FILE TO TAKE EFFECT"
-    );   
-    UIWidgets::PaddedEnhancementCheckbox("Show additional detail timers", "gGameplayStats.ShowAdditionalTimers", true, false);
+    UIWidgets::InsertHelpHoverText("Timestamps are relative to starting timestamp rather than in game time, usually "
+                                   "necessary for races/speedruns.\n\n"
+                                   "Starting timestamp is on first non-c-up input after intro cutscene.\n\n"
+                                   "NOTE: THIS NEEDS TO BE SET BEFORE CREATING A FILE TO TAKE EFFECT");
+    UIWidgets::PaddedEnhancementCheckbox("Show additional detail timers", "gGameplayStats.ShowAdditionalTimers", true,
+                                         false);
     UIWidgets::PaddedEnhancementCheckbox("Show Debug Info", "gGameplayStats.ShowDebugInfo");
 }
 
@@ -652,7 +677,7 @@ void GameplayStatsWindow::DrawElement() {
         }
         ImGui::EndTabBar();
     }
-   
+
     ImGui::Text("Note: Gameplay stats are saved to the current file and will be\nlost if you quit without saving.");
 
     ImGui::End();
@@ -692,7 +717,8 @@ void InitStats(bool isDebug) {
         gSaveContext.sohStats.locationsSkipped[rc] = 0;
     }
 
-    strncpy(gSaveContext.sohStats.buildVersion, (const char*) gBuildVersion, sizeof(gSaveContext.sohStats.buildVersion) - 1);
+    strncpy(gSaveContext.sohStats.buildVersion, (const char*)gBuildVersion,
+            sizeof(gSaveContext.sohStats.buildVersion) - 1);
     gSaveContext.sohStats.buildVersion[sizeof(gSaveContext.sohStats.buildVersion) - 1] = 0;
     gSaveContext.sohStats.buildVersionMajor = gBuildVersionMajor;
     gSaveContext.sohStats.buildVersionMinor = gBuildVersionMinor;
@@ -704,95 +730,95 @@ void SetupDisplayNames() {
     // To add a timestamp for an item or event, add it to this list and ensure
     // it has a corresponding entry in the enum (see gameplaystats.h)
 
-    strcpy(itemTimestampDisplayName[ITEM_BOW],              "Fairy Bow:          ");
-    strcpy(itemTimestampDisplayName[ITEM_ARROW_FIRE],       "Fire Arrows:        ");
-    strcpy(itemTimestampDisplayName[ITEM_DINS_FIRE],        "Din's Fire:         ");
-    strcpy(itemTimestampDisplayName[ITEM_SLINGSHOT],        "Slingshot:          ");
-    strcpy(itemTimestampDisplayName[ITEM_OCARINA_FAIRY],    "Fairy Ocarina:      ");
-    strcpy(itemTimestampDisplayName[ITEM_OCARINA_TIME],     "Ocarina of Time:    ");
-    strcpy(itemTimestampDisplayName[ITEM_BOMBCHU],          "Bombchus:           ");
-    strcpy(itemTimestampDisplayName[ITEM_HOOKSHOT],         "Hookshot:           ");
-    strcpy(itemTimestampDisplayName[ITEM_LONGSHOT],         "Longshot:           ");
-    strcpy(itemTimestampDisplayName[ITEM_ARROW_ICE],        "Ice Arrows:         ");
-    strcpy(itemTimestampDisplayName[ITEM_FARORES_WIND],     "Farore's Wind:      ");
-    strcpy(itemTimestampDisplayName[ITEM_BOOMERANG],        "Boomerang:          ");
-    strcpy(itemTimestampDisplayName[ITEM_LENS],             "Lens of Truth:      ");
-    strcpy(itemTimestampDisplayName[ITEM_HAMMER],           "Megaton Hammer:     ");
-    strcpy(itemTimestampDisplayName[ITEM_ARROW_LIGHT],      "Light Arrows:       ");
-    strcpy(itemTimestampDisplayName[ITEM_BOTTLE],           "Bottle:             ");
-    strcpy(itemTimestampDisplayName[ITEM_LETTER_ZELDA],     "Zelda's Letter:     ");
-    strcpy(itemTimestampDisplayName[ITEM_SWORD_KOKIRI],     "Kokiri Sword:       ");
-    strcpy(itemTimestampDisplayName[ITEM_SWORD_MASTER],     "Master Sword:       ");
-    strcpy(itemTimestampDisplayName[ITEM_SWORD_BGS],        "Biggoron's Sword:   ");
-    strcpy(itemTimestampDisplayName[ITEM_SHIELD_DEKU],      "Deku Shield:        ");
-    strcpy(itemTimestampDisplayName[ITEM_SHIELD_HYLIAN],    "Hylian Shield:      ");
-    strcpy(itemTimestampDisplayName[ITEM_SHIELD_MIRROR],    "Mirror Shield:      ");
-    strcpy(itemTimestampDisplayName[ITEM_TUNIC_GORON],      "Goron Tunic:        ");
-    strcpy(itemTimestampDisplayName[ITEM_TUNIC_ZORA],       "Zora Tunic:         ");
-    strcpy(itemTimestampDisplayName[ITEM_BOOTS_IRON],       "Iron Boots:         ");
-    strcpy(itemTimestampDisplayName[ITEM_BOOTS_HOVER],      "Hover Boots:        ");
-    strcpy(itemTimestampDisplayName[ITEM_BOMB_BAG_20],      "Bomb Bag:           ");
-    strcpy(itemTimestampDisplayName[ITEM_BRACELET],         "Goron's Bracelet:   ");
+    strcpy(itemTimestampDisplayName[ITEM_BOW], "Fairy Bow:          ");
+    strcpy(itemTimestampDisplayName[ITEM_ARROW_FIRE], "Fire Arrows:        ");
+    strcpy(itemTimestampDisplayName[ITEM_DINS_FIRE], "Din's Fire:         ");
+    strcpy(itemTimestampDisplayName[ITEM_SLINGSHOT], "Slingshot:          ");
+    strcpy(itemTimestampDisplayName[ITEM_OCARINA_FAIRY], "Fairy Ocarina:      ");
+    strcpy(itemTimestampDisplayName[ITEM_OCARINA_TIME], "Ocarina of Time:    ");
+    strcpy(itemTimestampDisplayName[ITEM_BOMBCHU], "Bombchus:           ");
+    strcpy(itemTimestampDisplayName[ITEM_HOOKSHOT], "Hookshot:           ");
+    strcpy(itemTimestampDisplayName[ITEM_LONGSHOT], "Longshot:           ");
+    strcpy(itemTimestampDisplayName[ITEM_ARROW_ICE], "Ice Arrows:         ");
+    strcpy(itemTimestampDisplayName[ITEM_FARORES_WIND], "Farore's Wind:      ");
+    strcpy(itemTimestampDisplayName[ITEM_BOOMERANG], "Boomerang:          ");
+    strcpy(itemTimestampDisplayName[ITEM_LENS], "Lens of Truth:      ");
+    strcpy(itemTimestampDisplayName[ITEM_HAMMER], "Megaton Hammer:     ");
+    strcpy(itemTimestampDisplayName[ITEM_ARROW_LIGHT], "Light Arrows:       ");
+    strcpy(itemTimestampDisplayName[ITEM_BOTTLE], "Bottle:             ");
+    strcpy(itemTimestampDisplayName[ITEM_LETTER_ZELDA], "Zelda's Letter:     ");
+    strcpy(itemTimestampDisplayName[ITEM_SWORD_KOKIRI], "Kokiri Sword:       ");
+    strcpy(itemTimestampDisplayName[ITEM_SWORD_MASTER], "Master Sword:       ");
+    strcpy(itemTimestampDisplayName[ITEM_SWORD_BGS], "Biggoron's Sword:   ");
+    strcpy(itemTimestampDisplayName[ITEM_SHIELD_DEKU], "Deku Shield:        ");
+    strcpy(itemTimestampDisplayName[ITEM_SHIELD_HYLIAN], "Hylian Shield:      ");
+    strcpy(itemTimestampDisplayName[ITEM_SHIELD_MIRROR], "Mirror Shield:      ");
+    strcpy(itemTimestampDisplayName[ITEM_TUNIC_GORON], "Goron Tunic:        ");
+    strcpy(itemTimestampDisplayName[ITEM_TUNIC_ZORA], "Zora Tunic:         ");
+    strcpy(itemTimestampDisplayName[ITEM_BOOTS_IRON], "Iron Boots:         ");
+    strcpy(itemTimestampDisplayName[ITEM_BOOTS_HOVER], "Hover Boots:        ");
+    strcpy(itemTimestampDisplayName[ITEM_BOMB_BAG_20], "Bomb Bag:           ");
+    strcpy(itemTimestampDisplayName[ITEM_BRACELET], "Goron's Bracelet:   ");
     strcpy(itemTimestampDisplayName[ITEM_GAUNTLETS_SILVER], "Silver Gauntlets:   ");
-    strcpy(itemTimestampDisplayName[ITEM_GAUNTLETS_GOLD],   "Gold Gauntlets:     ");
-    strcpy(itemTimestampDisplayName[ITEM_SCALE_SILVER],     "Silver Scale:       ");
-    strcpy(itemTimestampDisplayName[ITEM_SCALE_GOLDEN],     "Gold Scale:         ");
-    strcpy(itemTimestampDisplayName[ITEM_WALLET_ADULT],     "Adult's Wallet:     ");
-    strcpy(itemTimestampDisplayName[ITEM_WALLET_GIANT],     "Giant's Wallet:     ");
-    strcpy(itemTimestampDisplayName[ITEM_WEIRD_EGG],        "Weird Egg:          ");
-    strcpy(itemTimestampDisplayName[ITEM_GERUDO_CARD],      "Gerudo's Card:      ");
-    strcpy(itemTimestampDisplayName[ITEM_COJIRO],           "Cojiro:             ");
-    strcpy(itemTimestampDisplayName[ITEM_POCKET_EGG],       "Pocket Egg:         ");
-    strcpy(itemTimestampDisplayName[ITEM_MASK_SKULL],       "Skull Mask:         ");
-    strcpy(itemTimestampDisplayName[ITEM_MASK_SPOOKY],      "Spooky Mask:        ");
-    strcpy(itemTimestampDisplayName[ITEM_MASK_KEATON],      "Keaton Mask:        ");
-    strcpy(itemTimestampDisplayName[ITEM_MASK_BUNNY],       "Bunny Hood:         ");
-    strcpy(itemTimestampDisplayName[ITEM_ODD_MUSHROOM],     "Odd Mushroom:       ");
-    strcpy(itemTimestampDisplayName[ITEM_ODD_POTION],       "Odd Potion:         ");
-    strcpy(itemTimestampDisplayName[ITEM_SAW],              "Poacher's Saw:      ");
-    strcpy(itemTimestampDisplayName[ITEM_SWORD_BROKEN],     "Broken Goron Sword: ");
-    strcpy(itemTimestampDisplayName[ITEM_PRESCRIPTION],     "Prescription:       ");
-    strcpy(itemTimestampDisplayName[ITEM_FROG],             "Eyeball Frog:       ");
-    strcpy(itemTimestampDisplayName[ITEM_EYEDROPS],         "Eye Drops:          ");
-    strcpy(itemTimestampDisplayName[ITEM_CLAIM_CHECK],      "Claim Check:        ");
-    strcpy(itemTimestampDisplayName[ITEM_SONG_MINUET],      "Minuet of Forest:   ");
-    strcpy(itemTimestampDisplayName[ITEM_SONG_BOLERO],      "Bolero of Fire:     ");
-    strcpy(itemTimestampDisplayName[ITEM_SONG_SERENADE],    "Serenade of Water:  ");
-    strcpy(itemTimestampDisplayName[ITEM_SONG_REQUIEM],     "Requiem of Spirit:  ");
-    strcpy(itemTimestampDisplayName[ITEM_SONG_NOCTURNE],    "Nocturne of Shadow: ");
-    strcpy(itemTimestampDisplayName[ITEM_SONG_PRELUDE],     "Prelude of Light:   ");
-    strcpy(itemTimestampDisplayName[ITEM_SONG_LULLABY],     "Zelda's Lullaby:    ");
-    strcpy(itemTimestampDisplayName[ITEM_SONG_EPONA],       "Epona's Song:       ");
-    strcpy(itemTimestampDisplayName[ITEM_SONG_SARIA],       "Saria's Song:       ");
-    strcpy(itemTimestampDisplayName[ITEM_SONG_SUN],         "Sun's Song:         ");
-    strcpy(itemTimestampDisplayName[ITEM_SONG_TIME],        "Song of Time:       ");
-    strcpy(itemTimestampDisplayName[ITEM_SONG_STORMS],      "Song of Storms:     ");
+    strcpy(itemTimestampDisplayName[ITEM_GAUNTLETS_GOLD], "Gold Gauntlets:     ");
+    strcpy(itemTimestampDisplayName[ITEM_SCALE_SILVER], "Silver Scale:       ");
+    strcpy(itemTimestampDisplayName[ITEM_SCALE_GOLDEN], "Gold Scale:         ");
+    strcpy(itemTimestampDisplayName[ITEM_WALLET_ADULT], "Adult's Wallet:     ");
+    strcpy(itemTimestampDisplayName[ITEM_WALLET_GIANT], "Giant's Wallet:     ");
+    strcpy(itemTimestampDisplayName[ITEM_WEIRD_EGG], "Weird Egg:          ");
+    strcpy(itemTimestampDisplayName[ITEM_GERUDO_CARD], "Gerudo's Card:      ");
+    strcpy(itemTimestampDisplayName[ITEM_COJIRO], "Cojiro:             ");
+    strcpy(itemTimestampDisplayName[ITEM_POCKET_EGG], "Pocket Egg:         ");
+    strcpy(itemTimestampDisplayName[ITEM_MASK_SKULL], "Skull Mask:         ");
+    strcpy(itemTimestampDisplayName[ITEM_MASK_SPOOKY], "Spooky Mask:        ");
+    strcpy(itemTimestampDisplayName[ITEM_MASK_KEATON], "Keaton Mask:        ");
+    strcpy(itemTimestampDisplayName[ITEM_MASK_BUNNY], "Bunny Hood:         ");
+    strcpy(itemTimestampDisplayName[ITEM_ODD_MUSHROOM], "Odd Mushroom:       ");
+    strcpy(itemTimestampDisplayName[ITEM_ODD_POTION], "Odd Potion:         ");
+    strcpy(itemTimestampDisplayName[ITEM_SAW], "Poacher's Saw:      ");
+    strcpy(itemTimestampDisplayName[ITEM_SWORD_BROKEN], "Broken Goron Sword: ");
+    strcpy(itemTimestampDisplayName[ITEM_PRESCRIPTION], "Prescription:       ");
+    strcpy(itemTimestampDisplayName[ITEM_FROG], "Eyeball Frog:       ");
+    strcpy(itemTimestampDisplayName[ITEM_EYEDROPS], "Eye Drops:          ");
+    strcpy(itemTimestampDisplayName[ITEM_CLAIM_CHECK], "Claim Check:        ");
+    strcpy(itemTimestampDisplayName[ITEM_SONG_MINUET], "Minuet of Forest:   ");
+    strcpy(itemTimestampDisplayName[ITEM_SONG_BOLERO], "Bolero of Fire:     ");
+    strcpy(itemTimestampDisplayName[ITEM_SONG_SERENADE], "Serenade of Water:  ");
+    strcpy(itemTimestampDisplayName[ITEM_SONG_REQUIEM], "Requiem of Spirit:  ");
+    strcpy(itemTimestampDisplayName[ITEM_SONG_NOCTURNE], "Nocturne of Shadow: ");
+    strcpy(itemTimestampDisplayName[ITEM_SONG_PRELUDE], "Prelude of Light:   ");
+    strcpy(itemTimestampDisplayName[ITEM_SONG_LULLABY], "Zelda's Lullaby:    ");
+    strcpy(itemTimestampDisplayName[ITEM_SONG_EPONA], "Epona's Song:       ");
+    strcpy(itemTimestampDisplayName[ITEM_SONG_SARIA], "Saria's Song:       ");
+    strcpy(itemTimestampDisplayName[ITEM_SONG_SUN], "Sun's Song:         ");
+    strcpy(itemTimestampDisplayName[ITEM_SONG_TIME], "Song of Time:       ");
+    strcpy(itemTimestampDisplayName[ITEM_SONG_STORMS], "Song of Storms:     ");
     strcpy(itemTimestampDisplayName[ITEM_MEDALLION_FOREST], "Forest Medallion:   ");
-    strcpy(itemTimestampDisplayName[ITEM_MEDALLION_FIRE],   "Fire Medallion:     ");
-    strcpy(itemTimestampDisplayName[ITEM_MEDALLION_WATER],  "Water Medallion:    ");
+    strcpy(itemTimestampDisplayName[ITEM_MEDALLION_FIRE], "Fire Medallion:     ");
+    strcpy(itemTimestampDisplayName[ITEM_MEDALLION_WATER], "Water Medallion:    ");
     strcpy(itemTimestampDisplayName[ITEM_MEDALLION_SPIRIT], "Spirit Medallion:   ");
     strcpy(itemTimestampDisplayName[ITEM_MEDALLION_SHADOW], "Shadow Medallion:   ");
-    strcpy(itemTimestampDisplayName[ITEM_MEDALLION_LIGHT],  "Light Medallion:    ");
-    strcpy(itemTimestampDisplayName[ITEM_KOKIRI_EMERALD],   "Kokiri's Emerald:   ");
-    strcpy(itemTimestampDisplayName[ITEM_GORON_RUBY],       "Goron's Ruby:       ");
-    strcpy(itemTimestampDisplayName[ITEM_ZORA_SAPPHIRE],    "Zora's Sapphire:    ");
-    strcpy(itemTimestampDisplayName[ITEM_KEY_BOSS],         "Ganon's Boss Key:   ");
-    strcpy(itemTimestampDisplayName[ITEM_SINGLE_MAGIC],     "Magic:              ");
-    strcpy(itemTimestampDisplayName[ITEM_DOUBLE_DEFENSE],   "Double Defense:     ");
+    strcpy(itemTimestampDisplayName[ITEM_MEDALLION_LIGHT], "Light Medallion:    ");
+    strcpy(itemTimestampDisplayName[ITEM_KOKIRI_EMERALD], "Kokiri's Emerald:   ");
+    strcpy(itemTimestampDisplayName[ITEM_GORON_RUBY], "Goron's Ruby:       ");
+    strcpy(itemTimestampDisplayName[ITEM_ZORA_SAPPHIRE], "Zora's Sapphire:    ");
+    strcpy(itemTimestampDisplayName[ITEM_KEY_BOSS], "Ganon's Boss Key:   ");
+    strcpy(itemTimestampDisplayName[ITEM_SINGLE_MAGIC], "Magic:              ");
+    strcpy(itemTimestampDisplayName[ITEM_DOUBLE_DEFENSE], "Double Defense:     ");
 
     // Other events
-    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GOHMA],         "Gohma Defeated:     ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_KING_DODONGO],  "KD Defeated:        ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_BARINADE],      "Barinade Defeated:  ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GOHMA], "Gohma Defeated:     ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_KING_DODONGO], "KD Defeated:        ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_BARINADE], "Barinade Defeated:  ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_PHANTOM_GANON], "PG Defeated:        ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_VOLVAGIA],      "Volvagia Defeated:  ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_MORPHA],        "Morpha Defeated:    ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_BONGO_BONGO],   "Bongo Defeated:     ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_TWINROVA],      "Twinrova Defeated:  ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANONDORF],     "Ganondorf Defeated: ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANON],         "Ganon Defeated:     ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_FINISH],      "Boss Rush Finished: ");
-    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GREG],           "Greg Found:         ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_VOLVAGIA], "Volvagia Defeated:  ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_MORPHA], "Morpha Defeated:    ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_BONGO_BONGO], "Bongo Defeated:     ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_TWINROVA], "Twinrova Defeated:  ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANONDORF], "Ganondorf Defeated: ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANON], "Ganon Defeated:     ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_FINISH], "Boss Rush Finished: ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GREG], "Greg Found:         ");
 }
 
 void SetupDisplayColors() {

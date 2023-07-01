@@ -63,20 +63,68 @@ void EnArrow_SetupAction(EnArrow* this, EnArrowActionFunc actionFunc) {
 
 void EnArrow_Init(Actor* thisx, PlayState* play) {
     static EffectBlureInit2 blureNormal = {
-        0, 4, 0, { 0, 255, 200, 255 },   { 0, 255, 255, 255 }, { 0, 255, 200, 0 }, { 0, 255, 255, 0 }, 16,
-        0, 1, 0, { 255, 255, 170, 255 }, { 0, 150, 0, 0 }, 0,
+        0,
+        4,
+        0,
+        { 0, 255, 200, 255 },
+        { 0, 255, 255, 255 },
+        { 0, 255, 200, 0 },
+        { 0, 255, 255, 0 },
+        16,
+        0,
+        1,
+        0,
+        { 255, 255, 170, 255 },
+        { 0, 150, 0, 0 },
+        0,
     };
     static EffectBlureInit2 blureFire = {
-        0, 4, 0, { 0, 255, 200, 255 }, { 0, 255, 255, 255 }, { 0, 255, 200, 0 }, { 0, 255, 255, 0 }, 16,
-        0, 1, 0, { 255, 200, 0, 255 }, { 255, 0, 0, 0 }, 0,
+        0,
+        4,
+        0,
+        { 0, 255, 200, 255 },
+        { 0, 255, 255, 255 },
+        { 0, 255, 200, 0 },
+        { 0, 255, 255, 0 },
+        16,
+        0,
+        1,
+        0,
+        { 255, 200, 0, 255 },
+        { 255, 0, 0, 0 },
+        0,
     };
     static EffectBlureInit2 blureIce = {
-        0, 4, 0, { 0, 255, 200, 255 },   { 0, 255, 255, 255 }, { 0, 255, 200, 0 }, { 0, 255, 255, 0 }, 16,
-        0, 1, 0, { 170, 255, 255, 255 }, { 0, 100, 255, 0 }, 0,
+        0,
+        4,
+        0,
+        { 0, 255, 200, 255 },
+        { 0, 255, 255, 255 },
+        { 0, 255, 200, 0 },
+        { 0, 255, 255, 0 },
+        16,
+        0,
+        1,
+        0,
+        { 170, 255, 255, 255 },
+        { 0, 100, 255, 0 },
+        0,
     };
     static EffectBlureInit2 blureLight = {
-        0, 4, 0, { 0, 255, 200, 255 },   { 0, 255, 255, 255 }, { 0, 255, 200, 0 }, { 0, 255, 255, 0 }, 16,
-        0, 1, 0, { 255, 255, 170, 255 }, { 255, 255, 0, 0 }, 0,
+        0,
+        4,
+        0,
+        { 0, 255, 200, 255 },
+        { 0, 255, 255, 255 },
+        { 0, 255, 200, 0 },
+        { 0, 255, 255, 0 },
+        16,
+        0,
+        1,
+        0,
+        { 255, 255, 170, 255 },
+        { 255, 255, 0, 0 },
+        0,
     };
     static u32 dmgFlags[] = {
         0x00000800, 0x00000020, 0x00000020, 0x00000800, 0x00001000,
@@ -90,7 +138,8 @@ void EnArrow_Init(Actor* thisx, PlayState* play) {
         blureNormal.altEnvColor = (Color_RGBA8){ 0, 150, 0, 0 };
     }
     if (CVarGetInteger("gCosmetics.Arrows_NormalSecondary.Changed", 0)) {
-        blureNormal.altPrimColor = CVarGetColor("gCosmetics.Arrows_NormalSecondary.Value", (Color_RGBA8){ 255, 255, 170, 255 });
+        blureNormal.altPrimColor =
+            CVarGetColor("gCosmetics.Arrows_NormalSecondary.Value", (Color_RGBA8){ 255, 255, 170, 255 });
     } else {
         blureNormal.altPrimColor = (Color_RGBA8){ 255, 255, 170, 255 };
     }
@@ -118,12 +167,14 @@ void EnArrow_Init(Actor* thisx, PlayState* play) {
     }
 
     if (CVarGetInteger("gCosmetics.Arrows_LightPrimary.Changed", 0)) {
-        blureLight.altEnvColor = CVarGetColor("gCosmetics.Arrows_LightPrimary.Value", (Color_RGBA8){ 255, 255, 0, 255 });
+        blureLight.altEnvColor =
+            CVarGetColor("gCosmetics.Arrows_LightPrimary.Value", (Color_RGBA8){ 255, 255, 0, 255 });
     } else {
         blureLight.altEnvColor = (Color_RGBA8){ 255, 255, 0, 255 };
     }
     if (CVarGetInteger("gCosmetics.Arrows_LightSecondary.Changed", 0)) {
-        blureLight.altPrimColor = CVarGetColor("gCosmetics.Arrows_LightSecondary.Value", (Color_RGBA8){ 255, 255, 170, 0 });
+        blureLight.altPrimColor =
+            CVarGetColor("gCosmetics.Arrows_LightSecondary.Value", (Color_RGBA8){ 255, 255, 170, 0 });
     } else {
         blureLight.altPrimColor = (Color_RGBA8){ 255, 255, 170, 0 };
     }
@@ -250,12 +301,12 @@ void func_809B3CEC(PlayState* play, EnArrow* this) {
 
 void EnArrow_CarryActor(EnArrow* this, PlayState* play) {
     CollisionPoly* hitPoly;
-    Vec3f posDiffLastFrame;
-    Vec3f actorNextPos;
-    Vec3f hitPos;
-    f32 temp_f12;
-    f32 scale;
-    s32 bgId;
+    Vec3f          posDiffLastFrame;
+    Vec3f          actorNextPos;
+    Vec3f          hitPos;
+    f32            temp_f12;
+    f32            scale;
+    s32            bgId;
 
     Math_Vec3f_Diff(&this->actor.world.pos, &this->unk_210, &posDiffLastFrame);
 
@@ -271,8 +322,8 @@ void EnArrow_CarryActor(EnArrow* this, PlayState* play) {
             Math_Vec3f_Scale(&posDiffLastFrame, scale);
             Math_Vec3f_Sum(&this->hitActor->world.pos, &posDiffLastFrame, &actorNextPos);
 
-            if (BgCheck_EntityLineTest1(&play->colCtx, &this->hitActor->world.pos, &actorNextPos, &hitPos,
-                                        &hitPoly, true, true, true, true, &bgId)) {
+            if (BgCheck_EntityLineTest1(&play->colCtx, &this->hitActor->world.pos, &actorNextPos, &hitPos, &hitPoly,
+                                        true, true, true, true, &bgId)) {
                 this->hitActor->world.pos.x = hitPos.x + ((actorNextPos.x <= hitPos.x) ? 1.0f : -1.0f);
                 this->hitActor->world.pos.y = hitPos.y + ((actorNextPos.y <= hitPos.y) ? 1.0f : -1.0f);
                 this->hitActor->world.pos.z = hitPos.z + ((actorNextPos.z <= hitPos.z) ? 1.0f : -1.0f);
@@ -285,14 +336,14 @@ void EnArrow_CarryActor(EnArrow* this, PlayState* play) {
 
 void EnArrow_Fly(EnArrow* this, PlayState* play) {
     CollisionPoly* hitPoly;
-    s32 bgId;
-    Vec3f hitPoint;
-    Vec3f posCopy;
-    s32 atTouched;
-    u16 sfxId;
-    Actor* hitActor;
-    Vec3f sp60;
-    Vec3f sp54;
+    s32            bgId;
+    Vec3f          hitPoint;
+    Vec3f          posCopy;
+    s32            atTouched;
+    u16            sfxId;
+    Actor*         hitActor;
+    Vec3f          sp60;
+    Vec3f          sp54;
 
     if (DECR(this->timer) == 0) {
         Actor_Kill(&this->actor);
@@ -316,8 +367,8 @@ void EnArrow_Fly(EnArrow* this, PlayState* play) {
 
             if (this->actor.params == ARROW_NUT) {
                 iREG(50) = -1;
-                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_M_FIRE1, this->actor.world.pos.x,
-                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_M_FIRE1, this->actor.world.pos.x, this->actor.world.pos.y,
+                            this->actor.world.pos.z, 0, 0, 0, 0, true);
                 sfxId = NA_SE_IT_DEKU;
             } else {
                 sfxId = NA_SE_IT_SLING_REFLECT;
@@ -448,8 +499,8 @@ void EnArrow_Update(Actor* thisx, PlayState* play) {
                                this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
         }
     } else if (this->actor.params == ARROW_NORMAL_LIT) {
-        static Vec3f velocity = { 0.0f, 0.5f, 0.0f };
-        static Vec3f accel = { 0.0f, 0.5f, 0.0f };
+        static Vec3f       velocity = { 0.0f, 0.5f, 0.0f };
+        static Vec3f       accel = { 0.0f, 0.5f, 0.0f };
         static Color_RGBA8 primColor = { 255, 255, 100, 255 };
         static Color_RGBA8 envColor = { 255, 50, 0, 0 };
         // spawn dust for the flame
@@ -461,9 +512,9 @@ void func_809B4800(EnArrow* this, PlayState* play) {
     static Vec3f D_809B4E88 = { 0.0f, 400.0f, 1500.0f };
     static Vec3f D_809B4E94 = { 0.0f, -400.0f, 1500.0f };
     static Vec3f D_809B4EA0 = { 0.0f, 0.0f, -300.0f };
-    Vec3f sp44;
-    Vec3f sp38;
-    s32 addBlureVertex;
+    Vec3f        sp44;
+    Vec3f        sp38;
+    s32          addBlureVertex;
 
     Matrix_MultVec3f(&D_809B4EA0, &this->unk_21C);
 
@@ -496,7 +547,7 @@ void func_809B4800(EnArrow* this, PlayState* play) {
 void EnArrow_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     EnArrow* this = (EnArrow*)thisx;
-    u8 alpha;
+    u8  alpha;
     f32 scale;
 
     if (this->actor.params <= ARROW_0E) {
@@ -523,12 +574,10 @@ void EnArrow_Draw(Actor* thisx, PlayState* play) {
         Matrix_Push();
         Matrix_Mult(&play->billboardMtxF, MTXMODE_APPLY);
         // redundant check because this is contained in an if block for non-zero speed
-        Matrix_RotateZ(
-            (this->actor.speedXZ == 0.0f) ? 0.0f : ((play->gameplayFrames & 0xFF) * 4000) * (M_PI / 0x8000),
-            MTXMODE_APPLY);
+        Matrix_RotateZ((this->actor.speedXZ == 0.0f) ? 0.0f : ((play->gameplayFrames & 0xFF) * 4000) * (M_PI / 0x8000),
+                       MTXMODE_APPLY);
         Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                    G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffSparklesDL);
         Matrix_Pop();
         Matrix_RotateY(this->actor.world.rot.y * (M_PI / 0x8000), MTXMODE_APPLY);

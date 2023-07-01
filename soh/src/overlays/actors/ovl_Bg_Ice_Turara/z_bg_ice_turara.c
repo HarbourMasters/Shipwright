@@ -62,7 +62,7 @@ static InitChainEntry sInitChain[] = {
 
 void BgIceTurara_Init(Actor* thisx, PlayState* play) {
     BgIceTurara* this = (BgIceTurara*)thisx;
-    s32 pad;
+    s32              pad;
     CollisionHeader* colHeader = NULL;
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
@@ -89,13 +89,13 @@ void BgIceTurara_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void BgIceTurara_Break(BgIceTurara* this, PlayState* play, f32 arg2) {
-    static Vec3f accel = { 0.0f, -1.0f, 0.0f };
+    static Vec3f       accel = { 0.0f, -1.0f, 0.0f };
     static Color_RGBA8 primColor = { 170, 255, 255, 255 };
     static Color_RGBA8 envColor = { 0, 50, 100, 255 };
-    Vec3f vel;
-    Vec3f pos;
-    s32 j;
-    s32 i;
+    Vec3f              vel;
+    Vec3f              pos;
+    s32                j;
+    s32                i;
 
     SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 30, NA_SE_EV_ICE_BROKEN);
     for (i = 0; i < 2; i++) {
@@ -108,8 +108,7 @@ void BgIceTurara_Break(BgIceTurara* this, PlayState* play, f32 arg2) {
             vel.z = Rand_CenteredFloat(7.0f);
             vel.y = (Rand_ZeroOne() * 4.0f) + 8.0f;
 
-            EffectSsEnIce_Spawn(play, &pos, (Rand_ZeroOne() * 0.2f) + 0.1f, &vel, &accel, &primColor, &envColor,
-                                30);
+            EffectSsEnIce_Spawn(play, &pos, (Rand_ZeroOne() * 0.2f) + 0.1f, &vel, &accel, &primColor, &envColor, 30);
         }
     }
 }

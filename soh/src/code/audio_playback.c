@@ -4,16 +4,16 @@
 extern bool gUseLegacySD;
 
 void Audio_InitNoteSub(Note* note, NoteSubEu* sub, NoteSubAttributes* attrs) {
-    f32 volRight, volLeft;
-    s32 smallPanIndex;
-    u64 pad;
-    u8 strongLeft;
-    u8 strongRight;
-    f32 vel;
-    u8 pan;
-    u8 reverbVol;
+    f32        volRight, volLeft;
+    s32        smallPanIndex;
+    u64        pad;
+    u8         strongLeft;
+    u8         strongRight;
+    f32        vel;
+    u8         pan;
+    u8         reverbVol;
     StereoData sp24;
-    s32 stereoHeadsetEffects = note->playbackState.stereoHeadsetEffects;
+    s32        stereoHeadsetEffects = note->playbackState.stereoHeadsetEffects;
 
     vel = attrs->velocity;
     pan = attrs->pan;
@@ -161,16 +161,16 @@ void Audio_NoteDisable(Note* note) {
 }
 
 void Audio_ProcessNotes(void) {
-    s32 pad[2];
-    NoteAttributes* attrs;
-    NoteSubEu* noteSubEu2;
-    NoteSubEu* noteSubEu;
-    Note* note;
+    s32                pad[2];
+    NoteAttributes*    attrs;
+    NoteSubEu*         noteSubEu2;
+    NoteSubEu*         noteSubEu;
+    Note*              note;
     NotePlaybackState* playbackState;
-    NoteSubAttributes subAttrs;
-    u8 bookOffset;
-    f32 scale;
-    s32 i;
+    NoteSubAttributes  subAttrs;
+    u8                 bookOffset;
+    f32                scale;
+    s32                i;
 
     for (i = 0; i < gAudioContext.numNotes; i++) {
         note = &gAudioContext.notes[i];
@@ -264,7 +264,7 @@ void Audio_ProcessNotes(void) {
                 subAttrs.unk_16 = attrs->unk_6;
                 bookOffset = noteSubEu->bitField1.bookOffset;
             } else {
-                SequenceLayer* layer = playbackState->parentLayer;
+                SequenceLayer*   layer = playbackState->parentLayer;
                 SequenceChannel* channel = layer->channel;
 
                 subAttrs.frequency = layer->noteFreqScale;
@@ -301,7 +301,6 @@ void Audio_ProcessNotes(void) {
 
             subAttrs.frequency *= resampRate;
 
-
             subAttrs.velocity *= scale;
             Audio_InitNoteSub(note, noteSubEu2, &subAttrs);
             noteSubEu->bitField1.bookOffset = bookOffset;
@@ -334,7 +333,7 @@ Instrument* Audio_GetInstrumentInner(s32 fontId, s32 instId) {
         return NULL;
     }
 
-    int instCnt = 0;
+    int        instCnt = 0;
     SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
 
     if (instId >= sf->numInstruments)
@@ -362,12 +361,11 @@ Drum* Audio_GetDrum(s32 fontId, s32 drumId) {
         return NULL;
     }
 
-    
     SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
     if (drumId < sf->numDrums) {
         drum = sf->drums[drumId];
     }
-    
+
     if (drum == NULL) {
         gAudioContext.audioErrorFlags = ((fontId << 8) + drumId) + 0x5000000;
     }
@@ -439,10 +437,10 @@ s32 Audio_SetFontInstrument(s32 instrumentType, s32 fontId, s32 index, void* val
 }
 
 void Audio_SeqLayerDecayRelease(SequenceLayer* layer, s32 target) {
-    Note* note;
-    NoteAttributes* attrs;
+    Note*            note;
+    NoteAttributes*  attrs;
     SequenceChannel* chan;
-    s32 i;
+    s32              i;
 
     if (layer == NO_LAYER) {
         return;
@@ -541,7 +539,7 @@ void Audio_SeqLayerNoteRelease(SequenceLayer* layer) {
 s32 Audio_BuildSyntheticWave(Note* note, SequenceLayer* layer, s32 waveId) {
     f32 freqScale;
     f32 ratio;
-    u8 sampleCountIndex;
+    u8  sampleCountIndex;
 
     if (waveId < 128) {
         waveId = 128;
@@ -622,7 +620,7 @@ void Audio_InitNoteFreeList(void) {
 }
 
 void Audio_NotePoolClear(NotePool* pool) {
-    s32 i;
+    s32            i;
     AudioListItem* source;
     AudioListItem* cur;
     AudioListItem* dest;
@@ -662,9 +660,9 @@ void Audio_NotePoolClear(NotePool* pool) {
 }
 
 void Audio_NotePoolFill(NotePool* pool, s32 count) {
-    s32 i;
-    s32 j;
-    Note* note;
+    s32            i;
+    s32            j;
+    Note*          note;
     AudioListItem* source;
     AudioListItem* dest;
 
@@ -755,10 +753,10 @@ Note* Audio_FindNodeWithPrioLessThan(AudioListItem* list, s32 limit) {
 }
 
 void Audio_NoteInitForLayer(Note* note, SequenceLayer* layer) {
-    s32 pad[3];
-    s16 instId;
+    s32                pad[3];
+    s16                instId;
     NotePlaybackState* playback = &note->playbackState;
-    NoteSubEu* sub = &note->noteSubEu;
+    NoteSubEu*         sub = &note->noteSubEu;
 
     note->playbackState.prevParentLayer = NO_LAYER;
     note->playbackState.parentLayer = layer;
@@ -827,8 +825,8 @@ Note* Audio_AllocNoteFromDecaying(NotePool* pool, SequenceLayer* layer) {
 Note* Audio_AllocNoteFromActive(NotePool* pool, SequenceLayer* layer) {
     Note* rNote;
     Note* aNote;
-    s32 rPriority;
-    s32 aPriority;
+    s32   rPriority;
+    s32   aPriority;
 
     rPriority = aPriority = 0x10;
     rNote = Audio_FindNodeWithPrioLessThan(&pool->releasing, layer->channel->notePriority);
@@ -861,7 +859,7 @@ Note* Audio_AllocNoteFromActive(NotePool* pool, SequenceLayer* layer) {
 
 Note* Audio_AllocNote(SequenceLayer* layer) {
     Note* ret;
-    u32 policy = layer->channel->noteAllocPolicy;
+    u32   policy = layer->channel->noteAllocPolicy;
 
     if (policy & 1) {
         ret = layer->note;
@@ -924,7 +922,7 @@ null_return:
 
 void Audio_NoteInitAll(void) {
     Note* note;
-    s32 i;
+    s32   i;
 
     for (i = 0; i < gAudioContext.numNotes; i++) {
         note = &gAudioContext.notes[i];

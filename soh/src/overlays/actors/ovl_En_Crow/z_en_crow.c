@@ -145,8 +145,8 @@ void EnCrow_SetupDiveAttack(EnCrow* this) {
 }
 
 void EnCrow_SetupDamaged(EnCrow* this, PlayState* play) {
-    s32 i;
-    f32 scale;
+    s32   i;
+    f32   scale;
     Vec3f iceParticlePos;
 
     this->actor.speedXZ *= Math_CosS(this->actor.world.rot.x);
@@ -231,8 +231,8 @@ void EnCrow_SetupRespawn(EnCrow* this) {
 
 void EnCrow_FlyIdle(EnCrow* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 skelanimeUpdated;
-    s16 var;
+    s32     skelanimeUpdated;
+    s16     var;
 
     SkelAnime_Update(&this->skelAnime);
     skelanimeUpdated = Animation_OnFrame(&this->skelAnime, 0.0f);
@@ -288,9 +288,9 @@ void EnCrow_FlyIdle(EnCrow* this, PlayState* play) {
 
 void EnCrow_DiveAttack(EnCrow* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 facingPlayer;
-    Vec3f pos;
-    s16 target;
+    s32     facingPlayer;
+    Vec3f   pos;
+    s16     target;
 
     SkelAnime_Update(&this->skelAnime);
     if (this->timer != 0) {
@@ -316,9 +316,8 @@ void EnCrow_DiveAttack(EnCrow* this, PlayState* play) {
         Math_ApproachS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 4, 0xC00);
     }
 
-    if ((this->timer == 0) || (Player_GetMask(play) == PLAYER_MASK_SKULL) ||
-        (this->collider.base.atFlags & AT_HIT) || (this->actor.bgCheckFlags & 9) ||
-        (player->stateFlags1 & 0x00800000) || (this->actor.yDistToWater > -40.0f)) {
+    if ((this->timer == 0) || (Player_GetMask(play) == PLAYER_MASK_SKULL) || (this->collider.base.atFlags & AT_HIT) ||
+        (this->actor.bgCheckFlags & 9) || (player->stateFlags1 & 0x00800000) || (this->actor.yDistToWater > -40.0f)) {
         if (this->collider.base.atFlags & AT_HIT) {
             this->collider.base.atFlags &= ~AT_HIT;
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_KAICHO_ATTACK);

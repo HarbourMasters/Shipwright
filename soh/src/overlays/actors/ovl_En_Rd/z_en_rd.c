@@ -1,7 +1,8 @@
 #include "z_en_rd.h"
 #include "objects/object_rd/object_rd.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
+#define FLAGS \
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
 
 void EnRd_Init(Actor* thisx, PlayState* play);
 void EnRd_Destroy(Actor* thisx, PlayState* play);
@@ -109,7 +110,7 @@ static Vec3f D_80AE4918 = { 0.0f, 0.0f, 0.0f };
 static Color_RGBA8 D_80AE4924 = { 200, 200, 255, 255 };
 static Color_RGBA8 D_80AE4928 = { 0, 0, 255, 0 };
 
-static Vec3f D_80AE492C = { 0.0f, 0.0f, 0.0f };
+static Vec3f       D_80AE492C = { 0.0f, 0.0f, 0.0f };
 static Color_RGBA8 D_80AE4938 = { 200, 200, 255, 255 };
 static Color_RGBA8 D_80AE493C = { 0, 0, 255, 0 };
 
@@ -143,12 +144,12 @@ void EnRd_Init(Actor* thisx, PlayState* play) {
     }
 
     if (thisx->params >= -1) {
-        SkelAnime_InitFlex(play, &this->skelAnime, &gRedeadSkel, &gGibdoRedeadIdleAnim,
-                           this->jointTable, this->morphTable, 26);
+        SkelAnime_InitFlex(play, &this->skelAnime, &gRedeadSkel, &gGibdoRedeadIdleAnim, this->jointTable,
+                           this->morphTable, 26);
         thisx->naviEnemyId = 0x2A;
     } else {
-        SkelAnime_InitFlex(play, &this->skelAnime, &gGibdoSkel, &gGibdoRedeadIdleAnim,
-                           this->jointTable, this->morphTable, 26);
+        SkelAnime_InitFlex(play, &this->skelAnime, &gGibdoSkel, &gGibdoRedeadIdleAnim, this->jointTable,
+                           this->morphTable, 26);
         thisx->naviEnemyId = 0x2D;
     }
 
@@ -254,7 +255,8 @@ void func_80AE2744(EnRd* this, PlayState* play) {
             // Without the height check, redeads/gibdos can freeze the player from insane distances in
             // vertical rooms (like the first room in Deku Tree), making these rooms nearly unplayable.
             s8 enemyRandoCCActive = CVarGetInteger("gRandomizedEnemies", 0) || CVarGetInteger("gCrowdControl", 0);
-            if (!enemyRandoCCActive || (enemyRandoCCActive && this->actor.yDistToPlayer <= 100.0f && this->actor.yDistToPlayer >= -100.0f)) {
+            if (!enemyRandoCCActive ||
+                (enemyRandoCCActive && this->actor.yDistToPlayer <= 100.0f && this->actor.yDistToPlayer >= -100.0f)) {
                 if ((this->actor.params != 2) && (this->unk_305 == 0)) {
                     func_80AE37BC(this);
                 } else {
@@ -305,20 +307,20 @@ void func_80AE2A10(EnRd* this, PlayState* play) {
 }
 
 void func_80AE2B90(EnRd* this, PlayState* play) {
-    Animation_Change(&this->skelAnime, &gGibdoRedeadWalkAnim, 1.0f, 4.0f,
-                     Animation_GetLastFrame(&gGibdoRedeadWalkAnim), ANIMMODE_LOOP_INTERP, -4.0f);
+    Animation_Change(&this->skelAnime, &gGibdoRedeadWalkAnim, 1.0f, 4.0f, Animation_GetLastFrame(&gGibdoRedeadWalkAnim),
+                     ANIMMODE_LOOP_INTERP, -4.0f);
     this->actor.speedXZ = 0.4f;
     this->unk_31B = 4;
     EnRd_SetupAction(this, func_80AE2C1C);
 }
 
 void func_80AE2C1C(EnRd* this, PlayState* play) {
-    Vec3f sp44 = D_80AE4918;
+    Vec3f       sp44 = D_80AE4918;
     Color_RGBA8 sp40 = D_80AE4924;
     Color_RGBA8 sp3C = D_80AE4928;
-    Player* player = GET_PLAYER(play);
-    s32 pad;
-    s16 sp32 = this->actor.yawTowardsPlayer - this->actor.shape.rot.y - this->unk_30E - this->unk_310;
+    Player*     player = GET_PLAYER(play);
+    s32         pad;
+    s16         sp32 = this->actor.yawTowardsPlayer - this->actor.shape.rot.y - this->unk_30E - this->unk_310;
 
     this->skelAnime.playSpeed = this->actor.speedXZ;
     Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 1, 0xFA, 0);
@@ -383,8 +385,8 @@ void func_80AE2F50(EnRd* this, PlayState* play) {
 
 void func_80AE2FD0(EnRd* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 pad;
-    s16 targetY = Actor_WorldYawTowardPoint(&this->actor, &this->actor.home.pos);
+    s32     pad;
+    s16     targetY = Actor_WorldYawTowardPoint(&this->actor, &this->actor.home.pos);
 
     if (Actor_WorldDistXYZToPoint(&this->actor, &this->actor.home.pos) >= 5.0f) {
         Math_SmoothStepToS(&this->actor.shape.rot.y, targetY, 1, 0x1C2, 0);
@@ -433,8 +435,8 @@ void func_80AE31DC(EnRd* this) {
 
 void func_80AE3260(EnRd* this, PlayState* play) {
     if (this->actor.parent != NULL) {
-        s32 pad;
-        s16 targetY;
+        s32   pad;
+        s16   targetY;
         Vec3f thisPos = this->actor.parent->world.pos;
 
         targetY = Actor_WorldYawTowardPoint(&this->actor, &thisPos);
@@ -479,7 +481,7 @@ void func_80AE33F0(EnRd* this) {
 }
 
 void func_80AE3454(EnRd* this, PlayState* play) {
-    s32 pad;
+    s32     pad;
     Player* player = GET_PLAYER(play);
 
     if (SkelAnime_Update(&this->skelAnime)) {
@@ -556,11 +558,11 @@ void func_80AE37BC(EnRd* this) {
 }
 
 void func_80AE3834(EnRd* this, PlayState* play) {
-    Vec3f sp34 = D_80AE492C;
+    Vec3f       sp34 = D_80AE492C;
     Color_RGBA8 sp30 = D_80AE4938;
     Color_RGBA8 sp2C = D_80AE493C;
-    Player* player = GET_PLAYER(play);
-    s16 temp_v0 = this->actor.yawTowardsPlayer - this->actor.shape.rot.y - this->unk_30E - this->unk_310;
+    Player*     player = GET_PLAYER(play);
+    s16         temp_v0 = this->actor.yawTowardsPlayer - this->actor.shape.rot.y - this->unk_30E - this->unk_310;
 
     if (ABS(temp_v0) < 0x2008) {
         if (!(this->unk_312 & 0x80) && !CVarGetInteger("gNoRedeadFreeze", 0)) {
@@ -590,8 +592,8 @@ void func_80AE3978(EnRd* this, PlayState* play) {
 }
 
 void func_80AE39D4(EnRd* this) {
-    Animation_Change(&this->skelAnime, &gGibdoRedeadStandUpAnim, -1.0f, Animation_GetLastFrame(&gGibdoRedeadStandUpAnim),
-                     0.0f, ANIMMODE_ONCE, -4.0f);
+    Animation_Change(&this->skelAnime, &gGibdoRedeadStandUpAnim, -1.0f,
+                     Animation_GetLastFrame(&gGibdoRedeadStandUpAnim), 0.0f, ANIMMODE_ONCE, -4.0f);
     this->unk_31B = 6;
     EnRd_SetupAction(this, func_80AE3A54);
 }
@@ -752,7 +754,7 @@ void func_80AE3F9C(EnRd* this, PlayState* play) {
 }
 
 void func_80AE4114(EnRd* this, PlayState* play) {
-    s32 pad;
+    s32     pad;
     Player* player = GET_PLAYER(play);
 
     if ((gSaveContext.sunsSongState != SUNSSONG_INACTIVE) && (this->actor.shape.rot.x == 0) && (this->unk_318 == 0) &&
@@ -805,7 +807,7 @@ void EnRd_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     EnRd* this = (EnRd*)thisx;
     Player* player = GET_PLAYER(play);
-    s32 pad2;
+    s32     pad2;
 
     func_80AE4114(this, play);
 
@@ -844,8 +846,7 @@ void EnRd_Update(Actor* thisx, PlayState* play) {
     }
 }
 
-s32 EnRd_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
-                          Gfx** gfx) {
+s32 EnRd_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx, Gfx** gfx) {
     EnRd* this = (EnRd*)thisx;
 
     if (limbIndex == 23) {
@@ -859,7 +860,7 @@ s32 EnRd_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* po
 void EnRd_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx, Gfx** gfx) {
     Vec3f sp2C = D_80AE4940;
     EnRd* this = (EnRd*)thisx;
-    s32 idx = -1;
+    s32   idx = -1;
     Vec3f destPos;
 
     if ((this->unk_31A != 0) || ((this->actor.colorFilterTimer != 0) && (this->actor.colorFilterParams & 0x4000))) {
@@ -916,9 +917,9 @@ void EnRd_Draw(Actor* thisx, PlayState* play) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, this->unk_314);
         gSPSegment(POLY_OPA_DISP++, 8, &D_80116280[2]);
-        POLY_OPA_DISP = SkelAnime_DrawFlex(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                                           this->skelAnime.dListCount, EnRd_OverrideLimbDraw, EnRd_PostLimbDraw, this,
-                                           POLY_OPA_DISP);
+        POLY_OPA_DISP =
+            SkelAnime_DrawFlex(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+                               EnRd_OverrideLimbDraw, EnRd_PostLimbDraw, this, POLY_OPA_DISP);
         func_80033C30(&thisPos, &D_80AE4958, 255, play);
         if (this->unk_31A != 0) {
             thisx->colorFilterTimer++;
@@ -933,8 +934,8 @@ void EnRd_Draw(Actor* thisx, PlayState* play) {
         gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, this->unk_314);
         gSPSegment(POLY_XLU_DISP++, 8, &D_80116280[0]);
         POLY_XLU_DISP =
-            SkelAnime_DrawFlex(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                               this->skelAnime.dListCount, EnRd_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
+            SkelAnime_DrawFlex(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+                               EnRd_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
 
         func_80033C30(&thisPos, &D_80AE4958, this->unk_314, play);
     }

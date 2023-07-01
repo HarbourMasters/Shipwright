@@ -9,10 +9,10 @@
 
 namespace LUS {
 typedef struct {
-  uint8_t unk;
-  uint8_t skyboxId;
-  uint8_t weather;
-  uint8_t indoors;
+    uint8_t unk;
+    uint8_t skyboxId;
+    uint8_t weather;
+    uint8_t indoors;
 } SkyboxSettings;
 
 class SetSkyboxSettings : public SceneCommand<SkyboxSettings> {
@@ -20,7 +20,7 @@ class SetSkyboxSettings : public SceneCommand<SkyboxSettings> {
     using SceneCommand::SceneCommand;
 
     SkyboxSettings* GetPointer();
-    size_t GetPointerSize();
+    size_t          GetPointerSize();
 
     SkyboxSettings settings;
 };

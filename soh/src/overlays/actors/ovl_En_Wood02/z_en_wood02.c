@@ -105,8 +105,7 @@ s32 EnWood02_SpawnZoneCheck(EnWood02* this, PlayState* play, Vec3f* pos) {
         return true;
     }
 
-    SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, pos, &this->actor.projectedPos,
-                                 &this->actor.projectedW);
+    SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, pos, &this->actor.projectedPos, &this->actor.projectedW);
 
     phi_f12 = ((this->actor.projectedW == 0.0f) ? 1000.0f : fabsf(1.0f / this->actor.projectedW));
 
@@ -124,11 +123,11 @@ s32 EnWood02_SpawnZoneCheck(EnWood02* this, PlayState* play, Vec3f* pos) {
  * memory usage down in Hyrule Field. */
 void EnWood02_SpawnOffspring(EnWood02* this, PlayState* play) {
     EnWood02* childWood;
-    s16* childSpawnAngle;
-    Vec3f childPos;
-    s16 extraRot;
-    s16 childParams;
-    s32 i;
+    s16*      childSpawnAngle;
+    Vec3f     childPos;
+    s16       extraRot;
+    s16       childParams;
+    s32       i;
 
     for (i = 4; i >= 0; i--) {
         if ((this->unk_14E[i] & 0x7F) == 0) {
@@ -148,9 +147,9 @@ void EnWood02_SpawnOffspring(EnWood02* this, PlayState* play) {
                 } else {
                     childParams = (((this->drawType & 0xF0) << 4) | (this->actor.params + 1));
                 }
-                childWood = (EnWood02*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play,
-                                                          ACTOR_EN_WOOD02, childPos.x, childPos.y, childPos.z,
-                                                          this->actor.world.rot.x, *childSpawnAngle, 0, childParams);
+                childWood = (EnWood02*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_WOOD02,
+                                                          childPos.x, childPos.y, childPos.z, this->actor.world.rot.x,
+                                                          *childSpawnAngle, 0, childParams);
                 if (childWood != NULL) {
                     childWood->unk_14E[0] = i;
                     this->unk_14E[i] |= 1;
@@ -164,20 +163,20 @@ void EnWood02_SpawnOffspring(EnWood02* this, PlayState* play) {
 }
 
 void EnWood02_Init(Actor* thisx, PlayState* play2) {
-    s16 spawnType;
-    f32 actorScale;
+    s16        spawnType;
+    f32        actorScale;
     PlayState* play = play2;
     EnWood02* this = (EnWood02*)thisx;
     CollisionPoly* outPoly;
-    s32 bgId;
-    f32 floorY;
-    s16 extraRot;
+    s32            bgId;
+    f32            floorY;
+    s16            extraRot;
 
     // The tree in Kakariko's day scene does not have the same params to spawn the GS
     // as the night scene, For the always spawn GS enhancement we apply the needed
     // params to have the GS drop when bonking
-    if ((this->actor.params & 0xFF) == WOOD_TREE_CONICAL_MEDIUM && IS_DAY &&
-        play->sceneNum == SCENE_SPOT01 && CVarGetInteger("gNightGSAlwaysSpawn", 0)) {
+    if ((this->actor.params & 0xFF) == WOOD_TREE_CONICAL_MEDIUM && IS_DAY && play->sceneNum == SCENE_SPOT01 &&
+        CVarGetInteger("gNightGSAlwaysSpawn", 0)) {
         this->actor.params = 0x2001;
         this->actor.home.rot.z = 0x71;
     }
@@ -315,13 +314,13 @@ void EnWood02_Destroy(Actor* thisx, PlayState* play) {
 void EnWood02_Update(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
     EnWood02* this = (EnWood02*)thisx;
-    f32 wobbleAmplitude;
-    u8 new_var;
-    u8 phi_v0;
-    s32 pad;
+    f32   wobbleAmplitude;
+    u8    new_var;
+    u8    phi_v0;
+    s32   pad;
     Vec3f dropsSpawnPt;
-    s32 i;
-    s32 leavesParams;
+    s32   i;
+    s32   leavesParams;
 
     // Despawn extra trees in a group if out of range
     if ((this->spawnType == WOOD_SPAWN_SPAWNED) && (this->actor.parent != NULL)) {
@@ -357,8 +356,8 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
                 if (this->actor.home.rot.z != 0) {
                     this->actor.home.rot.z &= 0x1FFF;
                     this->actor.home.rot.z |= 0xE000;
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SW, dropsSpawnPt.x, dropsSpawnPt.y,
-                                dropsSpawnPt.z, 0, this->actor.world.rot.y, 0, this->actor.home.rot.z, true);
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SW, dropsSpawnPt.x, dropsSpawnPt.y, dropsSpawnPt.z, 0,
+                                this->actor.world.rot.y, 0, this->actor.home.rot.z, true);
                     this->actor.home.rot.z = 0;
                 }
             }
@@ -374,8 +373,8 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_TREE_SWING);
 
                 for (i = 3; i >= 0; i--) {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_WOOD02, dropsSpawnPt.x, dropsSpawnPt.y,
-                                dropsSpawnPt.z, 0, Rand_CenteredFloat(65535.0f), 0, leavesParams, true);
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_WOOD02, dropsSpawnPt.x, dropsSpawnPt.y, dropsSpawnPt.z,
+                                0, Rand_CenteredFloat(65535.0f), 0, leavesParams, true);
                 }
             }
             this->unk_14C = -0x15;
@@ -427,11 +426,11 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
 
 void EnWood02_Draw(Actor* thisx, PlayState* play) {
     EnWood02* this = (EnWood02*)thisx;
-    s16 type;
+    s16              type;
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    u8 red;
-    u8 green;
-    u8 blue;
+    u8               red;
+    u8               green;
+    u8               blue;
 
     OPEN_DISPS(gfxCtx);
     type = this->actor.params;
@@ -459,13 +458,11 @@ void EnWood02_Draw(Actor* thisx, PlayState* play) {
     } else if (D_80B3BF70[this->drawType & 0xF] != NULL) {
         Gfx_DrawDListOpa(play, D_80B3BF54[this->drawType & 0xF]);
         gDPSetEnvColor(POLY_XLU_DISP++, red, green, blue, 0);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, D_80B3BF70[this->drawType & 0xF]);
     } else {
         Gfx_SetupDL_25Xlu(gfxCtx);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, D_80B3BF54[this->drawType & 0xF]);
     }
 

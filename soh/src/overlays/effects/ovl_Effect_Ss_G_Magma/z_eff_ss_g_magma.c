@@ -7,7 +7,7 @@
 #include "z_eff_ss_g_magma.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 
-u32 EffectSsGMagma_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsGMagma_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsGMagma_Draw(PlayState* play, u32 index, EffectSs* this);
 void EffectSsGMagma_Update(PlayState* play, u32 index, EffectSs* this);
 
@@ -18,7 +18,7 @@ EffectSsInit Effect_Ss_G_Magma_InitVars = {
 
 u32 EffectSsGMagma_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsGMagmaInitParams* initParams = (EffectSsGMagmaInitParams*)initParamsx;
-    Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
+    Vec3f                     zeroVec = { 0.0f, 0.0f, 0.0f };
 
     this->velocity = this->accel = zeroVec;
     this->pos = initParams->pos;

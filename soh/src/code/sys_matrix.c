@@ -66,8 +66,8 @@ void Matrix_Mult(MtxF* mf, u8 mode) {
 void Matrix_Translate(f32 x, f32 y, f32 z, u8 mode) {
     FrameInterpolation_RecordMatrixTranslate(x, y, z, mode);
     MtxF* cmf = sCurrentMatrix;
-    f32 tx;
-    f32 ty;
+    f32   tx;
+    f32   ty;
 
     if (mode == MTXMODE_APPLY) {
         tx = cmf->xx;
@@ -112,10 +112,10 @@ void Matrix_Scale(f32 x, f32 y, f32 z, u8 mode) {
 void Matrix_RotateX(f32 x, u8 mode) {
     FrameInterpolation_RecordMatrixRotate1Coord(0, x, mode);
     MtxF* cmf;
-    f32 sin;
-    f32 cos;
-    f32 temp1;
-    f32 temp2;
+    f32   sin;
+    f32   cos;
+    f32   temp1;
+    f32   temp2;
 
     if (mode == MTXMODE_APPLY) {
         if (x != 0) {
@@ -177,10 +177,10 @@ void Matrix_RotateX(f32 x, u8 mode) {
 void Matrix_RotateY(f32 y, u8 mode) {
     FrameInterpolation_RecordMatrixRotate1Coord(1, y, mode);
     MtxF* cmf;
-    f32 sin;
-    f32 cos;
-    f32 temp1;
-    f32 temp2;
+    f32   sin;
+    f32   cos;
+    f32   temp1;
+    f32   temp2;
 
     if (mode == MTXMODE_APPLY) {
         if (y != 0) {
@@ -242,10 +242,10 @@ void Matrix_RotateY(f32 y, u8 mode) {
 void Matrix_RotateZ(f32 z, u8 mode) {
     FrameInterpolation_RecordMatrixRotate1Coord(2, z, mode);
     MtxF* cmf;
-    f32 sin;
-    f32 cos;
-    f32 temp1;
-    f32 temp2;
+    f32   sin;
+    f32   cos;
+    f32   temp1;
+    f32   temp2;
 
     if (mode == MTXMODE_APPLY) {
         if (z != 0) {
@@ -313,10 +313,10 @@ void Matrix_RotateZ(f32 z, u8 mode) {
 void Matrix_RotateZYX(s16 x, s16 y, s16 z, u8 mode) {
     FrameInterpolation_RecordMatrixRotateZYX(x, y, z, mode);
     MtxF* cmf = sCurrentMatrix;
-    f32 temp1;
-    f32 temp2;
-    f32 sin;
-    f32 cos;
+    f32   temp1;
+    f32   temp2;
+    f32   sin;
+    f32   cos;
 
     if (mode == MTXMODE_APPLY) {
         sin = Math_SinS(z);
@@ -404,10 +404,10 @@ void Matrix_RotateZYX(s16 x, s16 y, s16 z, u8 mode) {
 void Matrix_TranslateRotateZYX(Vec3f* translation, Vec3s* rotation) {
     FrameInterpolation_RecordMatrixTranslateRotateZYX(translation, rotation);
     MtxF* cmf = sCurrentMatrix;
-    f32 sin = Math_SinS(rotation->z);
-    f32 cos = Math_CosS(rotation->z);
-    f32 temp1;
-    f32 temp2;
+    f32   sin = Math_SinS(rotation->z);
+    f32   cos = Math_CosS(rotation->z);
+    f32   temp1;
+    f32   temp2;
 
     temp1 = cmf->xx;
     temp2 = cmf->xy;
@@ -490,10 +490,10 @@ void Matrix_TranslateRotateZYX(Vec3f* translation, Vec3s* rotation) {
  */
 void Matrix_SetTranslateRotateYXZ(f32 translateX, f32 translateY, f32 translateZ, Vec3s* rot) {
     MtxF* cmf = sCurrentMatrix;
-    f32 temp1 = Math_SinS(rot->y);
-    f32 temp2 = Math_CosS(rot->y);
-    f32 cos;
-    f32 sin;
+    f32   temp1 = Math_SinS(rot->y);
+    f32   temp2 = Math_CosS(rot->y);
+    f32   cos;
+    f32   sin;
 
     cmf->xx = temp2;
     cmf->zx = -temp1;
@@ -557,7 +557,7 @@ Mtx* Matrix_ToMtx(Mtx* dest, char* file, s32 line) {
     FrameInterpolation_RecordMatrixToMtx(dest, file, line);
     guMtxF2L(Matrix_CheckFloats(sCurrentMatrix, file, line), dest);
     return dest;
-    //return Matrix_MtxFToMtx(MATRIX_CHECKFLOATS(sCurrentMatrix), dest);
+    // return Matrix_MtxFToMtx(MATRIX_CHECKFLOATS(sCurrentMatrix), dest);
 }
 
 Mtx* Matrix_NewMtx(GraphicsContext* gfxCtx, char* file, s32 line) {
@@ -648,9 +648,9 @@ void Matrix_Transpose(MtxF* mf) {
 void Matrix_ReplaceRotation(MtxF* mf) {
     FrameInterpolation_RecordMatrixReplaceRotation(mf);
     MtxF* cmf = sCurrentMatrix;
-    f32 acc;
-    f32 temp;
-    f32 curColNorm;
+    f32   acc;
+    f32   temp;
+    f32   curColNorm;
 
     // compute the Euclidean norm of the first column of the current matrix
     acc = cmf->xx;
@@ -801,13 +801,13 @@ void Matrix_MtxFToZYXRotS(MtxF* mf, Vec3s* rotDest, s32 flag) {
 void Matrix_RotateAxis(f32 angle, Vec3f* axis, u8 mode) {
     FrameInterpolation_RecordMatrixRotateAxis(angle, axis, mode);
     MtxF* cmf;
-    f32 sin;
-    f32 cos;
-    f32 rCos;
-    f32 temp1;
-    f32 temp2;
-    f32 temp3;
-    f32 temp4;
+    f32   sin;
+    f32   cos;
+    f32   rCos;
+    f32   temp1;
+    f32   temp2;
+    f32   temp3;
+    f32   temp4;
 
     if (mode == MTXMODE_APPLY) {
         if (angle != 0) {
@@ -903,7 +903,7 @@ MtxF* Matrix_CheckFloats(MtxF* mf, char* file, s32 line) {
                              "\\ %12.6f %12.6f %12.6f %12.6f /\n",
                              file, line, "mf", mf->xx, mf->xy, mf->xz, mf->xw, mf->yx, mf->yy, mf->yz, mf->yw, mf->zx,
                              mf->zy, mf->zz, mf->zw, mf->wx, mf->wy, mf->wz, mf->ww);
-                //Fault_AddHungupAndCrash(file, line);
+                // Fault_AddHungupAndCrash(file, line);
             }
         }
     }
@@ -940,7 +940,7 @@ void Matrix_SetTranslateUniformScaleMtx(Mtx* mtx, f32 scale, f32 translateX, f32
 void Matrix_SetTranslateUniformScaleMtx2(Mtx* mtx, f32 scale, f32 translateX, f32 translateY, f32 translateZ) {
     u16* intPart = (u16*)&mtx->m[0][0];
     u16* fracPart = (u16*)&mtx->m[2][0];
-    u32 fixedPoint;
+    u32  fixedPoint;
 
     fixedPoint = (s32)(scale * 0x10000);
     fracPart[0] = fixedPoint & 0xFFFF;
@@ -993,7 +993,7 @@ void Matrix_SetTranslateScaleMtx1(Mtx* mtx, f32 scaleX, f32 scaleY, f32 scaleZ, 
                                   f32 translateZ) {
     u16* intPart = (u16*)&mtx->m[0][0];
     u16* fracPart = (u16*)&mtx->m[2][0];
-    u32 fixedPoint;
+    u32  fixedPoint;
 
     fixedPoint = (s32)(scaleX * 0x10000);
     intPart[0] = (fixedPoint >> 16) & 0xFFFF;
@@ -1044,11 +1044,8 @@ void Matrix_SetTranslateScaleMtx1(Mtx* mtx, f32 scaleX, f32 scaleY, f32 scaleZ, 
 
 void Matrix_SetTranslateScaleMtx2(Mtx* mtx, f32 scaleX, f32 scaleY, f32 scaleZ, f32 translateX, f32 translateY,
                                   f32 translateZ) {
-    MtxF mtxf = { {
-            { scaleX, 0, 0, 0 },
-            { 0, scaleY, 0, 0 },
-            { 0, 0, scaleZ, 0 },
-            { translateX, translateY, translateZ, 1 }
-        } };
+    MtxF mtxf = {
+        { { scaleX, 0, 0, 0 }, { 0, scaleY, 0, 0 }, { 0, 0, scaleZ, 0 }, { translateX, translateY, translateZ, 1 } }
+    };
     guMtxF2L(&mtxf, mtx);
 }

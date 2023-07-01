@@ -47,7 +47,7 @@ void BgGndDarkmeiro_ToggleBlock(BgGndDarkmeiro* this, PlayState* play) {
 }
 
 void BgGndDarkmeiro_Init(Actor* thisx, PlayState* play2) {
-    PlayState* play = play2;
+    PlayState*       play = play2;
     CollisionHeader* colHeader = NULL;
     BgGndDarkmeiro* this = (BgGndDarkmeiro*)thisx;
 

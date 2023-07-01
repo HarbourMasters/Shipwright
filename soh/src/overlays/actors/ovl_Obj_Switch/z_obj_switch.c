@@ -184,9 +184,9 @@ void ObjSwitch_RotateY(Vec3f* dest, Vec3f* src, s16 angle) {
 }
 
 void ObjSwitch_InitDynapoly(ObjSwitch* this, PlayState* play, CollisionHeader* collision, s32 moveFlag) {
-    s32 pad;
+    s32              pad;
     CollisionHeader* colHeader = NULL;
-    s32 pad2;
+    s32              pad2;
 
     DynaPolyActor_Init(&this->dyna, moveFlag);
     CollisionHeader_GetVirtual(collision, &colHeader);
@@ -214,9 +214,9 @@ void ObjSwitch_InitJntSphCollider(ObjSwitch* this, PlayState* play, ColliderJntS
 
 void ObjSwitch_InitTrisCollider(ObjSwitch* this, PlayState* play, ColliderTrisInit* colliderTrisInit) {
     ColliderTris* colliderTris = &this->tris.col;
-    s32 i;
-    s32 j;
-    Vec3f pos[3];
+    s32           i;
+    s32           j;
+    Vec3f         pos[3];
 
     Collider_InitTris(play, colliderTris);
     Collider_SetTris(play, colliderTris, &this->dyna.actor, colliderTrisInit, this->tris.items);
@@ -234,9 +234,9 @@ void ObjSwitch_InitTrisCollider(ObjSwitch* this, PlayState* play, ColliderTrisIn
 Actor* ObjSwitch_SpawnIce(ObjSwitch* this, PlayState* play) {
     Actor* thisx = &this->dyna.actor;
 
-    return Actor_SpawnAsChild(&play->actorCtx, thisx, play, ACTOR_OBJ_ICE_POLY, thisx->world.pos.x,
-                              thisx->world.pos.y, thisx->world.pos.z, thisx->world.rot.x, thisx->world.rot.y,
-                              thisx->world.rot.z, (this->dyna.actor.params >> 8 & 0x3F) << 8);
+    return Actor_SpawnAsChild(&play->actorCtx, thisx, play, ACTOR_OBJ_ICE_POLY, thisx->world.pos.x, thisx->world.pos.y,
+                              thisx->world.pos.z, thisx->world.rot.x, thisx->world.rot.y, thisx->world.rot.z,
+                              (this->dyna.actor.params >> 8 & 0x3F) << 8);
 }
 
 void ObjSwitch_SetOn(ObjSwitch* this, PlayState* play) {
@@ -489,7 +489,7 @@ void ObjSwitch_FloorRelease(ObjSwitch* this, PlayState* play) {
 
 s32 ObjSwitch_EyeIsHit(ObjSwitch* this) {
     Actor* collidingActor;
-    s16 yawDiff;
+    s16    yawDiff;
 
     if ((this->tris.col.base.acFlags & AC_HIT) && !(this->unk_17F & 2)) {
         collidingActor = this->tris.col.base.ac;
@@ -728,14 +728,13 @@ void ObjSwitch_DrawEye(ObjSwitch* this, PlayState* play) {
         { gEyeSwitchSilverOpenTex, gEyeSwitchSilverHalfTex, gEyeSwitchSilverClosedTex, gEyeSwitchSilverClosedTex },
     };
     static Gfx* eyeDlists[] = { gEyeSwitch1DL, gEyeSwitch2DL };
-    s32 pad;
-    s32 subType = (this->dyna.actor.params >> 4 & 7);
+    s32         pad;
+    s32         subType = (this->dyna.actor.params >> 4 & 7);
 
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[subType][this->eyeTexIndex]));
     gSPDisplayList(POLY_OPA_DISP++, eyeDlists[subType]);
 
@@ -747,9 +746,9 @@ void ObjSwitch_DrawCrystal(ObjSwitch* this, PlayState* play) {
                                 gCrystalSwitchCoreXluDL };
     static Gfx* opaDLists[] = { gCrystalSwitchCoreOpaDL, gCrystalSwitchDiamondOpaDL, NULL, NULL,
                                 gCrystalSwitchCoreOpaDL };
-    s32 pad1;
-    s32 pad2;
-    s32 subType;
+    s32         pad1;
+    s32         pad2;
+    s32         subType;
 
     subType = (this->dyna.actor.params >> 4 & 7);
     func_8002ED80(&this->dyna.actor, play, 0);
@@ -757,8 +756,7 @@ void ObjSwitch_DrawCrystal(ObjSwitch* this, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, xluDLists[subType]);
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -766,8 +764,7 @@ void ObjSwitch_DrawCrystal(ObjSwitch* this, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (subType == OBJSWITCH_SUBTYPE_CRYSTAL_1) {
         gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(this->crystalSubtype1texture));

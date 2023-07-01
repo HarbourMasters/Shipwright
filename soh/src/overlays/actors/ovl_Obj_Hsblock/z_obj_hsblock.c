@@ -54,9 +54,9 @@ void ObjHsblock_SetupAction(ObjHsblock* this, ObjHsblockActionFunc actionFunc) {
 }
 
 void func_80B93B68(ObjHsblock* this, PlayState* play, CollisionHeader* collision, s32 moveFlags) {
-    s32 pad;
+    s32              pad;
     CollisionHeader* colHeader = NULL;
-    s32 pad2[2];
+    s32              pad2[2];
 
     DynaPolyActor_Init(&this->dyna, moveFlags);
     CollisionHeader_GetVirtual(collision, &colHeader);
@@ -69,9 +69,9 @@ void func_80B93B68(ObjHsblock* this, PlayState* play, CollisionHeader* collision
 
 void func_80B93BF0(ObjHsblock* this, PlayState* play) {
     if ((this->dyna.actor.params >> 5) & 1) {
-        Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_OBJ_ICE_POLY,
-                           this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z,
-                           this->dyna.actor.world.rot.x, this->dyna.actor.world.rot.y, this->dyna.actor.world.rot.z, 1);
+        Actor_SpawnAsChild(&play->actorCtx, &this->dyna.actor, play, ACTOR_OBJ_ICE_POLY, this->dyna.actor.world.pos.x,
+                           this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z, this->dyna.actor.world.rot.x,
+                           this->dyna.actor.world.rot.y, this->dyna.actor.world.rot.z, 1);
     }
 }
 
@@ -147,14 +147,13 @@ void ObjHsblock_Update(Actor* thisx, PlayState* play) {
 
 void ObjHsblock_Draw(Actor* thisx, PlayState* play) {
     Color_RGB8* color;
-    Color_RGB8 defaultColor;
+    Color_RGB8  defaultColor;
 
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (play->sceneNum == SCENE_HIDAN) {
         color = &sFireTempleColor;

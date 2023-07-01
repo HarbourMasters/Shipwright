@@ -97,9 +97,9 @@ void Effect_InitContext(PlayState* play) {
 }
 
 void Effect_Add(PlayState* play, s32* pIndex, s32 type, u8 arg3, u8 arg4, void* initParams) {
-    s32 i;
-    u32 slotFound;
-    void* effect = NULL;
+    s32           i;
+    u32           slotFound;
+    void*         effect = NULL;
     EffectStatus* status = NULL;
 
     *pIndex = TOTAL_EFFECT_COUNT;

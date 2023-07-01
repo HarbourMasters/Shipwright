@@ -67,7 +67,7 @@ void EnBomChu_Init(Actor* thisx, PlayState* play) {
     static u8 p2EndColor[] = { 100, 0, 0, 50 };
     EnBomChu* this = (EnBomChu*)thisx;
     EffectBlureInit1 blureInit;
-    s32 i;
+    s32              i;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     Collider_InitJntSph(play, &this->collider);
@@ -105,10 +105,10 @@ void EnBomChu_Destroy(Actor* thisx, PlayState* play) {
 
 void EnBomChu_Explode(EnBomChu* this, PlayState* play) {
     EnBom* bomb;
-    s32 i;
+    s32    i;
 
-    bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
-                               this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, BOMB_BODY, true);
+    bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x, this->actor.world.pos.y,
+                               this->actor.world.pos.z, 0, 0, 0, BOMB_BODY, true);
     if (bomb != NULL) {
         bomb->timer = 0;
     }
@@ -134,10 +134,10 @@ void EnBomChu_CrossProduct(Vec3f* a, Vec3f* b, Vec3f* dest) {
 void EnBomChu_UpdateFloorPoly(EnBomChu* this, CollisionPoly* floorPoly, PlayState* play) {
     Vec3f normal;
     Vec3f vec;
-    f32 angle;
-    f32 magnitude;
-    f32 normDotUp;
-    MtxF mf;
+    f32   angle;
+    f32   magnitude;
+    f32   normDotUp;
+    MtxF  mf;
 
     if (CVarGetInteger("gBombchusOOB", 0) && floorPoly == NULL) {
         EnBomChu_Explode(this, play);
@@ -177,7 +177,6 @@ void EnBomChu_UpdateFloorPoly(EnBomChu* this, CollisionPoly* floorPoly, PlayStat
             this->axisForwards.z *= 1.0f / magnitude;
 
             this->axisUp = normal;
-
 
             // mf = (axisLeft | axisUp | axisForwards)
 
@@ -249,14 +248,14 @@ void EnBomChu_WaitForRelease(EnBomChu* this, PlayState* play) {
 void EnBomChu_Move(EnBomChu* this, PlayState* play) {
     CollisionPoly* polySide;
     CollisionPoly* polyUpDown;
-    s32 bgIdSide;
-    s32 bgIdUpDown;
-    s32 i;
-    f32 lineLength;
-    Vec3f posA;
-    Vec3f posB;
-    Vec3f posSide;
-    Vec3f posUpDown;
+    s32            bgIdSide;
+    s32            bgIdUpDown;
+    s32            i;
+    f32            lineLength;
+    Vec3f          posA;
+    Vec3f          posB;
+    Vec3f          posSide;
+    Vec3f          posUpDown;
 
     this->actor.speedXZ = 8.0f;
     lineLength = this->actor.speedXZ * 2.0f;
@@ -392,16 +391,16 @@ void EnBomChu_Update(Actor* thisx, PlayState* play2) {
     static Vec3f blureP1Model = { 0.0f, 7.0f, -6.0f };
     static Vec3f blureP2LeftModel = { 12.0f, 0.0f, -5.0f };
     static Vec3f blureP2RightModel = { -12.0f, 0.0f, -5.0f };
-    PlayState* play = play2;
+    PlayState*   play = play2;
     EnBomChu* this = (EnBomChu*)thisx;
-    s16 yaw;
-    f32 sin;
-    f32 cos;
-    f32 tempX;
-    Vec3f blureP1;
-    Vec3f blureP2;
+    s16       yaw;
+    f32       sin;
+    f32       cos;
+    f32       tempX;
+    Vec3f     blureP1;
+    Vec3f     blureP2;
     WaterBox* waterBox;
-    f32 waterY;
+    f32       waterY;
 
     if (this->actor.floorBgId != BGCHECK_SCENE) {
         yaw = this->actor.shape.rot.y;
@@ -456,8 +455,8 @@ void EnBomChu_Update(Actor* thisx, PlayState* play2) {
 
         waterY = this->actor.world.pos.y;
 
-        if (WaterBox_GetSurface1(play, &play->colCtx, this->actor.world.pos.x, this->actor.world.pos.z,
-                                 &waterY, &waterBox)) {
+        if (WaterBox_GetSurface1(play, &play->colCtx, this->actor.world.pos.x, this->actor.world.pos.z, &waterY,
+                                 &waterBox)) {
             this->actor.yDistToWater = waterY - this->actor.world.pos.y;
 
             if (this->actor.yDistToWater < 0.0f) {
@@ -482,15 +481,14 @@ void EnBomChu_Update(Actor* thisx, PlayState* play2) {
     }
 }
 
-
 const Color_RGB8 BombchuColorOriginal = { 209, 34, -35 };
 
 void EnBomChu_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     EnBomChu* this = (EnBomChu*)thisx;
-    f32 colorIntensity;
-    s32 blinkHalfPeriod;
-    s32 blinkTime;
+    f32        colorIntensity;
+    s32        blinkHalfPeriod;
+    s32        blinkTime;
     Color_RGB8 BombchuCol = CVarGetColor24("gBombTrailCol", BombchuColorOriginal);
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -518,15 +516,14 @@ void EnBomChu_Draw(Actor* thisx, PlayState* play) {
     if (CVarGetInteger("gCosmetics.Equipment_ChuBody.Changed", 0)) {
         Color_RGB8 color = CVarGetColor24("gCosmetics.Equipment_ChuBody.Value", (Color_RGB8){ 209.0f, 34.0f, -35.0f });
         gDPSetEnvColor(POLY_OPA_DISP++, (colorIntensity * color.r), (colorIntensity * color.g),
-                   (colorIntensity * color.b), 255);
+                       (colorIntensity * color.b), 255);
     } else {
         gDPSetEnvColor(POLY_OPA_DISP++, 9.0f + (colorIntensity * 209.0f), 9.0f + (colorIntensity * 34.0f),
-                   35.0f + (colorIntensity * -35.0f), 255);
+                       35.0f + (colorIntensity * -35.0f), 255);
     }
 
     Matrix_Translate(this->visualJitter * (1.0f / BOMBCHU_SCALE), 0.0f, 0.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gBombchuDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

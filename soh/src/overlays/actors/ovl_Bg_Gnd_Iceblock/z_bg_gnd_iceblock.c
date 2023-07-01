@@ -37,9 +37,9 @@ const ActorInit Bg_Gnd_Iceblock_InitVars = {
     NULL,
 };
 
-static Color_RGBA8 sWhite = { 250, 250, 250, 255 };
-static Color_RGBA8 sGray = { 180, 180, 180, 255 };
-static Vec3f sZeroVec = { 0.0f, 0.0f, 0.0f };
+static Color_RGBA8    sWhite = { 250, 250, 250, 255 };
+static Color_RGBA8    sGray = { 180, 180, 180, 255 };
+static Vec3f          sZeroVec = { 0.0f, 0.0f, 0.0f };
 static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
@@ -95,7 +95,7 @@ void BgGndIceblock_Destroy(Actor* thisx, PlayState* play) {
 
 void BgGndIceblock_SetPosition(BgGndIceblock* this, s32 blockPosition) {
     Actor* thisx = &this->dyna.actor;
-    u8 xPosIdx[22] = {
+    u8     xPosIdx[22] = {
         0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 6, 6, 6, 6, 6, 6,
     };
     u8 zPosIdx[22] = {
@@ -251,7 +251,7 @@ void BgGndIceblock_Idle(BgGndIceblock* this, PlayState* play) {
 
 void BgGndIceblock_Reset(BgGndIceblock* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    Actor* thisx = &this->dyna.actor;
+    Actor*  thisx = &this->dyna.actor;
 
     if (this->dyna.unk_150 != 0.0f) {
         player->stateFlags2 &= ~0x10;
@@ -302,10 +302,10 @@ void BgGndIceblock_Hole(BgGndIceblock* this, PlayState* play) {
 }
 
 void BgGndIceblock_Slide(BgGndIceblock* this, PlayState* play) {
-    s32 atTarget;
-    Vec3f pos;
-    Vec3f velocity;
-    f32 spread;
+    s32    atTarget;
+    Vec3f  pos;
+    Vec3f  velocity;
+    f32    spread;
     Actor* thisx = &this->dyna.actor;
 
     Math_StepToF(&thisx->speedXZ, 10.0f, 0.5f);

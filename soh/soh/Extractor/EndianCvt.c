@@ -15,7 +15,6 @@
     (((uint32_t)BSWAP16((uint16_t)((value)&0xffff)) << 16) | (uint32_t)BSWAP16((uint16_t)((value) >> 16)))
 #endif
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -1,7 +1,8 @@
 #include "z_en_bigokuta.h"
 #include "objects/object_bigokuta/object_bigokuta.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS \
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnBigokuta_Init(Actor* thisx, PlayState* play);
 void EnBigokuta_Destroy(Actor* thisx, PlayState* play);
@@ -28,7 +29,7 @@ void func_809BD1C8(EnBigokuta* this, PlayState* play);
 
 static Color_RGBA8 sEffectPrimColor = { 255, 255, 255, 255 };
 static Color_RGBA8 sEffectEnvColor = { 100, 255, 255, 255 };
-static Vec3f sEffectPosAccel = { 0.0f, 0.0f, 0.0f };
+static Vec3f       sEffectPosAccel = { 0.0f, 0.0f, 0.0f };
 
 const ActorInit En_Bigokuta_InitVars = {
     ACTOR_EN_BIGOKUTA,
@@ -208,7 +209,7 @@ void func_809BCE3C(EnBigokuta* this) {
 
 void func_809BCEBC(EnBigokuta* this, PlayState* play) {
     Vec3f pos;
-    f32 yDistFromHome = this->actor.world.pos.y - this->actor.home.pos.y;
+    f32   yDistFromHome = this->actor.world.pos.y - this->actor.home.pos.y;
 
     pos.x = this->actor.world.pos.x;
     pos.y = this->actor.home.pos.y + 3.0f;
@@ -221,7 +222,7 @@ void func_809BCEBC(EnBigokuta* this, PlayState* play) {
 
 void func_809BCF68(EnBigokuta* this, PlayState* play) {
     Vec3f effectPos;
-    s16 rot;
+    s16   rot;
 
     if (play->gameplayFrames & 1) {
         rot = Rand_S16Offset(0x1200, 0xC00) + this->actor.shape.rot.y - this->unk_194 * 0xA00;
@@ -252,7 +253,7 @@ void func_809BCF68(EnBigokuta* this, PlayState* play) {
 }
 
 void func_809BD1C8(EnBigokuta* this, PlayState* play) {
-    s32 i;
+    s32   i;
     Vec3f effectPos;
 
     effectPos.y = this->actor.world.pos.y;
@@ -479,10 +480,10 @@ void func_809BDB90(EnBigokuta* this, PlayState* play) {
 
 void func_809BDC08(EnBigokuta* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s16 phi_v0;
-    s16 pad;
-    s16 phi_v1;
-    Vec3f sp28;
+    s16     phi_v0;
+    s16     pad;
+    s16     phi_v1;
+    Vec3f   sp28;
 
     SkelAnime_Update(&this->skelAnime);
     if (Animation_OnFrame(&this->skelAnime, 0.0f)) {
@@ -575,7 +576,7 @@ void func_809BDFC8(EnBigokuta* this, PlayState* play) {
 
 void func_809BE058(EnBigokuta* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 speedXZ;
+    f32     speedXZ;
 
     if (this->unk_196 != 0) {
         this->unk_196--;
@@ -637,8 +638,8 @@ void func_809BE26C(EnBigokuta* this, PlayState* play) {
             effectPos.x = this->actor.world.pos.x;
             effectPos.y = this->actor.world.pos.y + 150.0f;
             effectPos.z = this->actor.world.pos.z;
-            func_8002829C(play, &effectPos, &sEffectPosAccel, &sEffectPosAccel, &sEffectPrimColor,
-                          &sEffectEnvColor, 1200, 20);
+            func_8002829C(play, &effectPos, &sEffectPosAccel, &sEffectPosAccel, &sEffectPrimColor, &sEffectEnvColor,
+                          1200, 20);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_OCTAROCK_DEAD2);
         }
         if (this->unk_198 == 0 && Math_StepToF(&this->actor.scale.y, 0.0f, 0.001f)) {
@@ -773,7 +774,7 @@ void EnBigokuta_UpdateDamage(EnBigokuta* this, PlayState* play) {
 
 void EnBigokuta_Update(Actor* thisx, PlayState* play2) {
     EnBigokuta* this = (EnBigokuta*)thisx;
-    s32 i;
+    s32        i;
     PlayState* play = play2;
 
     func_809BE798(this, play);
@@ -811,10 +812,9 @@ void EnBigokuta_Update(Actor* thisx, PlayState* play2) {
     func_809BCEBC(this, play);
 }
 
-s32 EnBigokuta_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                void* thisx) {
+s32 EnBigokuta_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnBigokuta* this = (EnBigokuta*)thisx;
-    u8 intensity;
+    u8  intensity;
     f32 temp_f0;
     s32 temp_hi;
 
@@ -891,8 +891,8 @@ void EnBigokuta_Draw(Actor* thisx, PlayState* play) {
                 Matrix_RotateY(-rotY, MTXMODE_APPLY);
             }
         }
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnBigokuta_OverrideLimbDraw, NULL, this);
+        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+                              EnBigokuta_OverrideLimbDraw, NULL, this);
     } else {
         Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x0C, D_80116280);

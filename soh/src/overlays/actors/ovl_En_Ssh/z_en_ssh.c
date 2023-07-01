@@ -1,7 +1,8 @@
 #include "z_en_ssh.h"
 #include "objects/object_ssh/object_ssh.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
+#define FLAGS \
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 #define SSH_STATE_STUNNED (1 << 0)
 #define SSH_STATE_GROUND_START (1 << 2)
@@ -128,12 +129,12 @@ void EnSsh_SpawnShockwave(EnSsh* this, PlayState* play) {
 
 s32 EnSsh_CreateBlureEffect(PlayState* play) {
     EffectBlureInit1 blureInit;
-    u8 p1StartColor[] = { 255, 255, 255, 75 };
-    u8 p2StartColor[] = { 255, 255, 255, 75 };
-    u8 p1EndColor[] = { 255, 255, 255, 0 };
-    u8 p2EndColor[] = { 255, 255, 255, 0 };
-    s32 i;
-    s32 blureIdx;
+    u8               p1StartColor[] = { 255, 255, 255, 75 };
+    u8               p2StartColor[] = { 255, 255, 255, 75 };
+    u8               p1EndColor[] = { 255, 255, 255, 0 };
+    u8               p2EndColor[] = { 255, 255, 255, 0 };
+    s32              i;
+    s32              blureIdx;
 
     for (i = 0; i < 4; i++) {
         blureInit.p1StartColor[i] = p1StartColor[i];
@@ -152,14 +153,14 @@ s32 EnSsh_CreateBlureEffect(PlayState* play) {
 
 s32 EnSsh_CheckCeilingPos(EnSsh* this, PlayState* play) {
     CollisionPoly* poly;
-    s32 bgId;
-    Vec3f posB;
+    s32            bgId;
+    Vec3f          posB;
 
     posB.x = this->actor.world.pos.x;
     posB.y = this->actor.world.pos.y + 1000.0f;
     posB.z = this->actor.world.pos.z;
-    if (!BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &posB, &this->ceilingPos, &poly, false,
-                                 false, true, true, &bgId)) {
+    if (!BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &posB, &this->ceilingPos, &poly, false, false,
+                                 true, true, &bgId)) {
         return false;
     } else {
         return true;
@@ -220,7 +221,7 @@ f32 EnSsh_SetAnimation(EnSsh* this, s32 animIndex) {
         &object_ssh_Anim_000304, &object_ssh_Anim_000304, &object_ssh_Anim_005BE8,
     };
     f32 playbackSpeed[] = { 1.0f, 4.0f, 1.0f, 1.0f, 8.0f, 6.0f, 2.0f };
-    u8 mode[] = { 3, 3, 1, 3, 1, 1, 1 };
+    u8  mode[] = { 3, 3, 1, 3, 1, 1, 1 };
     f32 frameCount = Animation_GetLastFrame(animation[animIndex]);
     s32 pad;
 
@@ -351,7 +352,7 @@ void EnSsh_Bob(EnSsh* this, PlayState* play) {
 
 s32 EnSsh_IsCloseToLink(EnSsh* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 yDist;
+    f32     yDist;
 
     if (this->stateFlags & SSH_STATE_GROUND_START) {
         return true;
@@ -404,8 +405,8 @@ s32 EnSsh_IsCloseToGround(EnSsh* this) {
 void EnSsh_Sway(EnSsh* this) {
     Vec3f swayVecBase;
     Vec3f swayVec;
-    f32 temp;
-    s16 swayAngle;
+    f32   temp;
+    s16   swayAngle;
 
     if (this->swayTimer != 0) {
         this->swayAngle += 0x640;
@@ -432,7 +433,7 @@ void EnSsh_Sway(EnSsh* this) {
 
 void EnSsh_CheckBodyStickHit(EnSsh* this, PlayState* play) {
     ColliderInfo* info = &this->colCylinder[0].info;
-    Player* player = GET_PLAYER(play);
+    Player*       player = GET_PLAYER(play);
 
     if (player->unk_860 != 0) {
         info->bumper.dmgFlags |= 2;
@@ -493,7 +494,7 @@ s32 EnSsh_CheckHitFront(EnSsh* this) {
 
 s32 EnSsh_CheckHitBack(EnSsh* this, PlayState* play) {
     ColliderCylinder* cyl = &this->colCylinder[0];
-    s32 hit = false;
+    s32               hit = false;
 
     if (cyl->base.acFlags & AC_HIT) {
         cyl->base.acFlags &= ~AC_HIT;
@@ -565,7 +566,7 @@ s32 EnSsh_SetCylinderOC(EnSsh* this, PlayState* play) {
         { -40.0f, 0.0f, 0.0f },
     };
     Vec3f cylPos;
-    s32 i;
+    s32   i;
 
     for (i = 0; i < 3; i++) {
         cylPos = this->actor.world.pos;

@@ -134,7 +134,7 @@ void EnTp_Init(Actor* thisx, PlayState* play2) {
     EnTp* this = (EnTp*)thisx;
     EnTp* now;
     EnTp* next;
-    s32 i;
+    s32   i;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     this->actor.targetMode = 3;
@@ -289,7 +289,7 @@ void EnTp_SetupDie(EnTp* this) {
     }
     this->actionIndex = TAILPASARAN_ACTION_DIE;
     EnTp_SetupAction(this, EnTp_Die);
-    if (this->actor.params == TAILPASARAN_HEAD) {  // Only count the head, otherwise each body segment will increment
+    if (this->actor.params == TAILPASARAN_HEAD) { // Only count the head, otherwise each body segment will increment
         gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TAILPASARAN]++;
     }
 }
@@ -299,8 +299,8 @@ void EnTp_SetupDie(EnTp* this) {
  */
 void EnTp_Die(EnTp* this, PlayState* play) {
     EnTp* now;
-    s16 i;
-    s32 pad;
+    s16   i;
+    s32   pad;
     Vec3f effectVelAccel = { 0.0f, 0.5f, 0.0f };
     Vec3f effectPos = { 0.0f, 0.0f, 0.0f };
 
@@ -311,20 +311,20 @@ void EnTp_Die(EnTp* this, PlayState* play) {
             effectPos.x = ((Rand_ZeroOne() - 0.5f) * 15.0f) + this->actor.world.pos.x;
             effectPos.z = ((Rand_ZeroOne() - 0.5f) * 15.0f) + this->actor.world.pos.z;
             effectPos.y = ((Rand_ZeroOne() - 0.5f) * 5.0f) + this->actor.world.pos.y;
-            EffectSsDeadDb_Spawn(play, &effectPos, &effectVelAccel, &effectVelAccel, 100, 0, 255, 255, 255, 255, 0,
-                                 0, 255, 1, 9, 1);
+            EffectSsDeadDb_Spawn(play, &effectPos, &effectVelAccel, &effectVelAccel, 100, 0, 255, 255, 255, 255, 0, 0,
+                                 255, 1, 9, 1);
 
             effectPos.x = ((Rand_ZeroOne() - 0.5f) * 15.0f) + this->actor.world.pos.x;
             effectPos.z = ((Rand_ZeroOne() - 0.5f) * 15.0f) + this->actor.world.pos.z;
             effectPos.y = ((Rand_ZeroOne() - 0.5f) * 5.0f) + this->actor.world.pos.y;
-            EffectSsDeadDb_Spawn(play, &effectPos, &effectVelAccel, &effectVelAccel, 100, 0, 255, 255, 255, 255, 0,
-                                 0, 255, 1, 9, 1);
+            EffectSsDeadDb_Spawn(play, &effectPos, &effectVelAccel, &effectVelAccel, 100, 0, 255, 255, 255, 255, 0, 0,
+                                 255, 1, 9, 1);
             Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x50);
         } else {
             for (i = 0; i < 1; i++) {
-                now =
-                    (EnTp*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TP, this->actor.world.pos.x,
-                                       this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, TAILPASARAN_FRAGMENT, true);
+                now = (EnTp*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TP, this->actor.world.pos.x,
+                                         this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0,
+                                         TAILPASARAN_FRAGMENT, true);
 
                 if (now != NULL) {
                     Actor_SetScale(&now->actor, this->actor.scale.z * 0.5f);
@@ -376,7 +376,7 @@ void EnTp_Head_SetupTakeOff(EnTp* this) {
  * Flies up and loops around until it makes for Player
  */
 void EnTp_Head_TakeOff(EnTp* this, PlayState* play) {
-    s32 pad;
+    s32     pad;
     Player* player = GET_PLAYER(play);
 
     Math_SmoothStepToF(&this->actor.speedXZ, 2.5f, 0.1f, 0.2f, 0.0f);
@@ -434,7 +434,7 @@ void EnTp_Head_SetupWait(EnTp* this) {
  */
 void EnTp_Head_Wait(EnTp* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s16 yaw;
+    s16     yaw;
 
     this->unk_15C--;
 
@@ -492,14 +492,14 @@ void EnTp_Head_SetupBurrowReturnHome(EnTp* this) {
 }
 
 void EnTp_Head_BurrowReturnHome(EnTp* this, PlayState* play) {
-    static Vec3f bubbleAccel = { 0.0f, -0.5f, 0.0f };
+    static Vec3f       bubbleAccel = { 0.0f, -0.5f, 0.0f };
     static Color_RGBA8 bubblePrimColor = { 255, 255, 255, 255 };
     static Color_RGBA8 bubbleEnvColor = { 150, 150, 150, 0 };
-    Vec3f bubbleVelocity;
-    Vec3f bubblePos;
-    s32 closeToFloor;
-    EnTp* now;
-    s16 temp_v0; // Required to match, usage can maybe be improved
+    Vec3f              bubbleVelocity;
+    Vec3f              bubblePos;
+    s32                closeToFloor;
+    EnTp*              now;
+    s16                temp_v0; // Required to match, usage can maybe be improved
 
     closeToFloor = false;
     temp_v0 = this->timer;
@@ -569,8 +569,8 @@ void EnTp_Head_BurrowReturnHome(EnTp* this, PlayState* play) {
 }
 
 void EnTp_UpdateDamage(EnTp* this, PlayState* play) {
-    s32 phi_s2;
-    s32 phi_s4;
+    s32   phi_s2;
+    s32   phi_s4;
     EnTp* head; // Can eliminate this and just use now, but they're used differently
     EnTp* now;
 
@@ -650,13 +650,13 @@ void EnTp_UpdateDamage(EnTp* this, PlayState* play) {
 void EnTp_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     EnTp* this = (EnTp*)thisx;
-    Vec3f kiraVelocity = { 0.0f, 0.0f, 0.0f };
-    Vec3f kiraAccel = { 0.0f, -0.6f, 0.0f };
-    Vec3f kiraPos;
+    Vec3f       kiraVelocity = { 0.0f, 0.0f, 0.0f };
+    Vec3f       kiraAccel = { 0.0f, -0.6f, 0.0f };
+    Vec3f       kiraPos;
     Color_RGBA8 kiraPrimColor = { 0, 0, 255, 255 };
     Color_RGBA8 kiraEnvColor = { 0, 0, 0, 0 };
-    Player* player = GET_PLAYER(play);
-    s16 yawToWall;
+    Player*     player = GET_PLAYER(play);
+    s16         yawToWall;
 
     if (player->stateFlags1 & 0x4000000) { // Shielding
         this->damageEffect = TAILPASARAN_DMGEFF_NONE;
@@ -739,8 +739,7 @@ void EnTp_Draw(Actor* thisx, PlayState* play) {
         if ((thisx->params <= TAILPASARAN_HEAD) || (thisx->params == TAILPASARAN_HEAD_DYING)) {
             Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gTailpasaranHeadDL);
 
             Matrix_Translate(0.0f, 0.0f, 8.0f, MTXMODE_APPLY);
@@ -756,8 +755,7 @@ void EnTp_Draw(Actor* thisx, PlayState* play) {
             gDPPipeSync(POLY_XLU_DISP++);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gTailpasaranTailSegmentTex));
             gDPPipeSync(POLY_XLU_DISP++);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gTailpasaranTailSegmentDL);
         }
     }

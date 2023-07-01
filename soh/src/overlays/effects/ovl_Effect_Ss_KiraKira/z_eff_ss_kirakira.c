@@ -21,7 +21,7 @@
 #define rScale regs[11]
 #define rLifespan regs[12]
 
-u32 EffectSsKiraKira_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsKiraKira_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsKiraKira_Draw(PlayState* play, u32 index, EffectSs* this);
 void func_809AABF0(PlayState* play, u32 index, EffectSs* this);
 void func_809AACAC(PlayState* play, u32 index, EffectSs* this);
@@ -76,15 +76,15 @@ u32 EffectSsKiraKira_Init(PlayState* play, u32 index, EffectSs* this, void* init
 
 void EffectSsKiraKira_Draw(PlayState* play, u32 index, EffectSs* this) {
     GraphicsContext* gfxCtx;
-    f32 scale;
-    s32 pad;
-    MtxF mfTrans;
-    MtxF mfRotY;
-    MtxF mfScale;
-    MtxF mfTrans11DA0;
-    MtxF mfTrans11DA0RotY;
-    MtxF mfResult;
-    Mtx* mtx;
+    f32              scale;
+    s32              pad;
+    MtxF             mfTrans;
+    MtxF             mfRotY;
+    MtxF             mfScale;
+    MtxF             mfTrans11DA0;
+    MtxF             mfTrans11DA0RotY;
+    MtxF             mfResult;
+    Mtx*             mtx;
 
     scale = this->rScale / 10000.0f;
     gfxCtx = play->state.gfxCtx;

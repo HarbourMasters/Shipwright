@@ -83,7 +83,7 @@ void func_8099375C(DemoTreLgt* this, PlayState* play) {
 
 void func_809937B4(DemoTreLgt* this, PlayState* play, f32 currentFrame) {
     SkelAnimeCurve* skelCurve = &this->skelCurve;
-    s32 pad[2];
+    s32             pad[2];
 
     this->action = DEMO_TRE_LGT_ACTION_ANIMATE;
 

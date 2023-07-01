@@ -6,7 +6,7 @@ s32 __osContRamWrite(OSMesgQueue* mq, s32 channel, u16 address, u8* buffer, s32 
     s32 i;
     u8* ptr;
     s32 retry = 2;
-    u8 crc;
+    u8  crc;
 
     if ((force != PFS_FORCE) && (address < PFS_LABEL_AREA) && (address != 0)) {
         return 0;

@@ -71,8 +71,8 @@ s32 func_8097C870(DemoGo* this) {
 
 void func_8097C8A8(DemoGo* this, PlayState* play) {
     Actor* thisx = &this->actor;
-    Vec3f sp20;
-    f32 sp1C;
+    Vec3f  sp20;
+    f32    sp1C;
 
     if ((thisx->params == 0) || (thisx->params == 1)) {
         SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, &thisx->world.pos, &sp20, &sp1C);
@@ -89,7 +89,7 @@ void DemoGo_Destroy(Actor* thisx, PlayState* play) {
 void func_8097C930(DemoGo* this) {
     s16* something = &this->unk_192;
     s16* other = &this->unk_190;
-    s32 pad[3];
+    s32  pad[3];
 
     if (DECR(*something) == 0) {
         *something = Rand_S16Offset(60, 60);
@@ -117,21 +117,21 @@ void func_8097CA30(DemoGo* this, PlayState* play) {
 }
 
 void func_8097CA78(DemoGo* this, PlayState* play) {
-    s16 pad;
+    s16   pad;
     Vec3f vec = this->actor.world.pos;
     func_80033480(play, &vec, kREG(11) + 100.0f, kREG(12) + 0xA, kREG(13) + 0x12C, kREG(14), 0);
     func_8097C9B8(this);
 }
 
 void func_8097CB0C(DemoGo* this, PlayState* play) {
-    Actor* thisx = &this->actor;
-    PosRot* world = &thisx->world;
-    CutsceneContext* csCtx = &play->csCtx;
+    Actor*            thisx = &this->actor;
+    PosRot*           world = &thisx->world;
+    CutsceneContext*  csCtx = &play->csCtx;
     CsCmdActorAction* npcAction;
-    f32 temp_ret;
-    s32 pad;
-    Vec3f startPos;
-    Vec3f endPos;
+    f32               temp_ret;
+    s32               pad;
+    Vec3f             startPos;
+    Vec3f             endPos;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
         npcAction = csCtx->npcActions[func_8097C870(this)];
@@ -168,10 +168,10 @@ void func_8097CCC0(DemoGo* this) {
 
 void func_8097CCE0(DemoGo* this, PlayState* play) {
     CsCmdActorAction* npcAction;
-    Actor* thisx = &this->actor;
-    s32 rotYDelta;
-    s32 newRotY;
-    s32 thisRotY;
+    Actor*            thisx = &this->actor;
+    s32               rotYDelta;
+    s32               newRotY;
+    s32               thisRotY;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
         npcAction = play->csCtx.npcActions[func_8097C870(this)];
@@ -197,7 +197,7 @@ s32 DemoGo_UpdateSkelAnime(DemoGo* this) {
 
 s32 func_8097CDB0(DemoGo* this, PlayState* play, u16 npcAction) {
     CutsceneContext* csCtx = &play->csCtx;
-    s32 actionIdx = func_8097C870(this);
+    s32              actionIdx = func_8097C870(this);
 
     if ((csCtx->state != CS_STATE_IDLE) && (csCtx->npcActions[actionIdx] != NULL) &&
         (csCtx->npcActions[actionIdx]->action == npcAction)) {
@@ -220,7 +220,7 @@ void func_8097CE20(DemoGo* this, PlayState* play) {
 }
 
 void func_8097CE78(DemoGo* this, PlayState* play) {
-    CutsceneContext* csCtx = &play->csCtx;
+    CutsceneContext*  csCtx = &play->csCtx;
     CsCmdActorAction* npcAction;
 
     if (play->csCtx.state != CS_STATE_IDLE) {
@@ -325,11 +325,11 @@ void func_8097D290(DemoGo* this, PlayState* play) {
 }
 
 void func_8097D29C(DemoGo* this, PlayState* play) {
-    s32 pad;
-    s16 eyeTexIdx = this->unk_190;
+    s32        pad;
+    s16        eyeTexIdx = this->unk_190;
     SkelAnime* skelAnime = &this->skelAnime;
-    void* eyeTexture = sEyeTextures[eyeTexIdx];
-    void* mouthTexture = gGoronCsMouthSmileTex;
+    void*      eyeTexture = sEyeTextures[eyeTexIdx];
+    void*      mouthTexture = gGoronCsMouthSmileTex;
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -337,8 +337,7 @@ void func_8097D29C(DemoGo* this, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(mouthTexture));
 
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL, NULL,
-                          this);
+    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL, NULL, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

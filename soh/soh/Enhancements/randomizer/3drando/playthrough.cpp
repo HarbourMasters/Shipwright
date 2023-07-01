@@ -11,7 +11,8 @@
 
 namespace Playthrough {
 
-int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks) {
+int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings,
+                     std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks) {
     // initialize the RNG with just the seed incase any settings need to be
     // resolved to something random
     Random_Init(seed);
@@ -83,7 +84,9 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
 }
 
 // used for generating a lot of seeds at once
-int Playthrough_Repeat(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks, int count /*= 1*/) {
+int Playthrough_Repeat(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings,
+                       std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
+                       int count /*= 1*/) {
     printf("\x1b[0;0HGENERATING %d SEEDS", count);
     uint32_t repeatedSeed = 0;
     for (int i = 0; i < count; i++) {

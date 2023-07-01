@@ -15,7 +15,7 @@
 #define rObjBankIdx regs[5]
 #define rMinLife regs[6]
 
-u32 EffectSsHahen_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsHahen_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsHahen_DrawGray(PlayState* play, u32 index, EffectSs* this);
 void EffectSsHahen_Draw(PlayState* play, u32 index, EffectSs* this);
 void EffectSsHahen_Update(PlayState* play, u32 index, EffectSs* this);
@@ -68,8 +68,8 @@ u32 EffectSsHahen_Init(PlayState* play, u32 index, EffectSs* this, void* initPar
 
 void EffectSsHahen_Draw(PlayState* play, u32 index, EffectSs* this) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    s32 pad;
-    f32 scale = this->rScale * 0.001f;
+    s32              pad;
+    f32              scale = this->rScale * 0.001f;
 
     OPEN_DISPS(gfxCtx);
 
@@ -81,8 +81,7 @@ void EffectSsHahen_Draw(PlayState* play, u32 index, EffectSs* this) {
     Matrix_RotateY(this->rYaw * 0.01f, MTXMODE_APPLY);
     Matrix_RotateX(this->rPitch * 0.01f, MTXMODE_APPLY);
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPDisplayList(POLY_OPA_DISP++, this->gfx);
 
@@ -92,8 +91,8 @@ void EffectSsHahen_Draw(PlayState* play, u32 index, EffectSs* this) {
 // in the original game this function is hardcoded to be used only by the skull pots in Shadow Temple
 void EffectSsHahen_DrawGray(PlayState* play, u32 index, EffectSs* this) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    s32 pad;
-    f32 scale = this->rScale * 0.001f;
+    s32              pad;
+    f32              scale = this->rScale * 0.001f;
 
     OPEN_DISPS(gfxCtx);
 
@@ -105,8 +104,7 @@ void EffectSsHahen_DrawGray(PlayState* play, u32 index, EffectSs* this) {
     Matrix_RotateY(this->rYaw * 0.01f, MTXMODE_APPLY);
     Matrix_RotateX(this->rPitch * 0.01f, MTXMODE_APPLY);
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gDPSetCombineLERP(POLY_OPA_DISP++, SHADE, 0, PRIMITIVE, 0, SHADE, 0, PRIMITIVE, 0, SHADE, 0, PRIMITIVE, 0, SHADE, 0,
                       PRIMITIVE, 0);

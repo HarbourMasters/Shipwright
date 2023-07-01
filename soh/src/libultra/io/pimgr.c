@@ -3,13 +3,13 @@
 
 OSMgrArgs __osPiDevMgr = { 0 };
 
-OSPiHandle __Dom1SpeedParam;
-OSPiHandle __Dom2SpeedParam;
-OSThread piThread;
-u8 piStackThread[0x1000];
+OSPiHandle  __Dom1SpeedParam;
+OSPiHandle  __Dom2SpeedParam;
+OSThread    piThread;
+u8          piStackThread[0x1000];
 OSMesgQueue piEventQueue;
-OSMesg piEventBuf[2];
-OSThread __osThreadSave;
+OSMesg      piEventBuf[2];
+OSThread    __osThreadSave;
 
 OSPiHandle* __osPiTable = NULL;
 OSPiHandle* __osCurrentHandle[] = {
@@ -18,7 +18,7 @@ OSPiHandle* __osCurrentHandle[] = {
 };
 
 void osCreatePiManager(OSPri pri, OSMesgQueue* cmdQ, OSMesg* cmdBuf, s32 cmdMsgCnt) {
-    u32 prevInt;
+    u32   prevInt;
     OSPri newPri;
     OSPri currentPri;
 

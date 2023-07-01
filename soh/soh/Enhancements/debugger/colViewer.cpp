@@ -59,14 +59,19 @@ void ColViewerWindow::DrawElement() {
     }
     UIWidgets::EnhancementCheckbox("Enabled", "gColViewerEnabled");
 
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Scene", "gColViewerScene", ColRenderSettingNames, COLVIEW_DISABLED);
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Bg Actors", "gColViewerBgActors", ColRenderSettingNames, COLVIEW_DISABLED);
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Col Check", "gColViewerColCheck", ColRenderSettingNames, COLVIEW_DISABLED);
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Waterbox", "gColViewerWaterbox", ColRenderSettingNames, COLVIEW_DISABLED);
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Scene", "gColViewerScene", ColRenderSettingNames,
+                                                      COLVIEW_DISABLED);
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Bg Actors", "gColViewerBgActors", ColRenderSettingNames,
+                                                      COLVIEW_DISABLED);
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Col Check", "gColViewerColCheck", ColRenderSettingNames,
+                                                      COLVIEW_DISABLED);
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Waterbox", "gColViewerWaterbox", ColRenderSettingNames,
+                                                      COLVIEW_DISABLED);
 
     UIWidgets::EnhancementCheckbox("Apply as decal", "gColViewerDecal");
-    UIWidgets::InsertHelpHoverText("Applies the collision as a decal display. This can be useful if there is z-fighting occuring "
-                        "with the scene geometry, but can cause other artifacts.");
+    UIWidgets::InsertHelpHoverText(
+        "Applies the collision as a decal display. This can be useful if there is z-fighting occuring "
+        "with the scene geometry, but can cause other artifacts.");
     UIWidgets::EnhancementCheckbox("Shaded", "gColViewerShaded");
     UIWidgets::InsertHelpHoverText("Applies the scene's shading to the collision display.");
 
@@ -77,12 +82,12 @@ void ColViewerWindow::DrawElement() {
 
         UIWidgets::EnhancementColor("Normal", "gColViewerColorNormal", scene_col, ImVec4(255, 255, 255, 255), false);
         UIWidgets::EnhancementColor("Hookshot", "gColViewerColorHookshot", hookshot_col, ImVec4(128, 128, 255, 255),
-                                   false);
+                                    false);
         UIWidgets::EnhancementColor("Entrance", "gColViewerColorEntrance", entrance_col, ImVec4(0, 255, 0, 255), false);
         UIWidgets::EnhancementColor("Special Surface (Grass/Sand/Etc)", "gColViewerColorSpecialSurface",
-                                   specialSurface_col, ImVec4(192, 255, 192, 255), false);
+                                    specialSurface_col, ImVec4(192, 255, 192, 255), false);
         UIWidgets::EnhancementColor("Interactable (Vines/Crawlspace/Etc)", "gColViewerColorInteractable",
-                                   interactable_col, ImVec4(192, 0, 192, 255), false);
+                                    interactable_col, ImVec4(192, 0, 192, 255), false);
         UIWidgets::EnhancementColor("Slope", "gColViewerColorSlope", slope_col, ImVec4(255, 255, 128, 255), false);
         UIWidgets::EnhancementColor("Void", "gColViewerColorVoid", void_col, ImVec4(255, 0, 0, 255), false);
         UIWidgets::EnhancementColor("OC", "gColViewerColorOC", oc_col, ImVec4(255, 255, 255, 255), false);
@@ -129,8 +134,8 @@ void CreateCylinderData() {
     cylinderVtx.push_back(gdSPDefVtxN(0, 128, 0, 0, 0, 0, 127, 0, 0xFF)); // Top center vertex
     // Create two rings of vertices
     for (int i = 0; i < CYL_DIVS; ++i) {
-        short vtx_x = floorf(0.5f + cosf(2.f * M_PI * i / CYL_DIVS) * 128.f);
-        short vtx_z = floorf(0.5f - sinf(2.f * M_PI * i / CYL_DIVS) * 128.f);
+        short       vtx_x = floorf(0.5f + cosf(2.f * M_PI * i / CYL_DIVS) * 128.f);
+        short       vtx_z = floorf(0.5f - sinf(2.f * M_PI * i / CYL_DIVS) * 128.f);
         signed char norm_x = cosf(2.f * M_PI * i / CYL_DIVS) * 127.f;
         signed char norm_z = -sinf(2.f * M_PI * i / CYL_DIVS) * 127.f;
         cylinderVtx.push_back(gdSPDefVtxN(vtx_x, 0, vtx_z, 0, 0, norm_x, 0, norm_z, 0xFF));
@@ -189,15 +194,15 @@ void CreateSphereFace(std::vector<std::tuple<size_t, size_t, size_t>>& faces, in
 
     // Create 3 new verticies at the midpoints
     Vec3f vs[3] = {
-        Vec3f{(v0.n.ob[0] + v1.n.ob[0]) / 2.0f, (v0.n.ob[1] + v1.n.ob[1]) / 2.0f, (v0.n.ob[2] + v1.n.ob[2]) / 2.0f},
-        Vec3f{(v1.n.ob[0] + v2.n.ob[0]) / 2.0f, (v1.n.ob[1] + v2.n.ob[1]) / 2.0f, (v1.n.ob[2] + v2.n.ob[2]) / 2.0f},
-        Vec3f{(v2.n.ob[0] + v0.n.ob[0]) / 2.0f, (v2.n.ob[1] + v0.n.ob[1]) / 2.0f, (v2.n.ob[2] + v0.n.ob[2]) / 2.0f}
+        Vec3f{ (v0.n.ob[0] + v1.n.ob[0]) / 2.0f, (v0.n.ob[1] + v1.n.ob[1]) / 2.0f, (v0.n.ob[2] + v1.n.ob[2]) / 2.0f },
+        Vec3f{ (v1.n.ob[0] + v2.n.ob[0]) / 2.0f, (v1.n.ob[1] + v2.n.ob[1]) / 2.0f, (v1.n.ob[2] + v2.n.ob[2]) / 2.0f },
+        Vec3f{ (v2.n.ob[0] + v0.n.ob[0]) / 2.0f, (v2.n.ob[1] + v0.n.ob[1]) / 2.0f, (v2.n.ob[2] + v0.n.ob[2]) / 2.0f }
     };
 
     // Normalize vertex positions so they are on the sphere
     for (int32_t vAddIndex = 0; vAddIndex < 3; vAddIndex++) {
         Vec3f& v = vs[vAddIndex];
-        float mag = sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
+        float  mag = sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
         v.x /= mag;
         v.y /= mag;
         v.z /= mag;
@@ -216,20 +221,20 @@ void CreateSphereData() {
     float d = (1.0f + sqrtf(5.0f)) / 2.0f;
 
     // Create the 12 starting verticies, 4 on each rectangle
-    base.emplace_back(Vec3f({-1, d, 0}));
-    base.emplace_back(Vec3f({1, d, 0}));
-    base.emplace_back(Vec3f({-1, -d, 0}));
-    base.emplace_back(Vec3f({1, -d, 0}));
+    base.emplace_back(Vec3f({ -1, d, 0 }));
+    base.emplace_back(Vec3f({ 1, d, 0 }));
+    base.emplace_back(Vec3f({ -1, -d, 0 }));
+    base.emplace_back(Vec3f({ 1, -d, 0 }));
 
-    base.emplace_back(Vec3f({0, -1, d}));
-    base.emplace_back(Vec3f({0, 1, d}));
-    base.emplace_back(Vec3f({0, -1, -d}));
-    base.emplace_back(Vec3f({0, 1, -d}));
+    base.emplace_back(Vec3f({ 0, -1, d }));
+    base.emplace_back(Vec3f({ 0, 1, d }));
+    base.emplace_back(Vec3f({ 0, -1, -d }));
+    base.emplace_back(Vec3f({ 0, 1, -d }));
 
-    base.emplace_back(Vec3f({d, 0, -1}));
-    base.emplace_back(Vec3f({d, 0, 1}));
-    base.emplace_back(Vec3f({-d, 0, -1}));
-    base.emplace_back(Vec3f({-d, 0, 1}));
+    base.emplace_back(Vec3f({ d, 0, -1 }));
+    base.emplace_back(Vec3f({ d, 0, 1 }));
+    base.emplace_back(Vec3f({ -d, 0, -1 }));
+    base.emplace_back(Vec3f({ -d, 0, 1 }));
 
     // Normalize verticies so they are on the unit sphere
     for (Vec3f& v : base) {
@@ -292,7 +297,7 @@ void InitGfx(std::vector<Gfx>& gfx, ColRenderSetting setting) {
     uint32_t rm;
     uint32_t blc1;
     uint32_t blc2;
-    uint8_t alpha;
+    uint8_t  alpha;
     uint64_t cm;
     uint32_t gm;
 
@@ -455,8 +460,8 @@ void DrawBgActorCollision() {
     for (int32_t bgIndex = 0; bgIndex < BG_ACTOR_MAX; bgIndex++) {
         if (gPlayState->colCtx.dyna.bgActorFlags[bgIndex] & 1) {
             BgActor& bg = gPlayState->colCtx.dyna.bgActors[bgIndex];
-            Mtx m;
-            MtxF mf;
+            Mtx      m;
+            MtxF     mf;
             SkinMatrix_SetTranslateRotateYXZScale(&mf, bg.curTransform.scale.x, bg.curTransform.scale.y,
                                                   bg.curTransform.scale.z, bg.curTransform.rot.x, bg.curTransform.rot.y,
                                                   bg.curTransform.rot.z, bg.curTransform.pos.x, bg.curTransform.pos.y,
@@ -500,11 +505,11 @@ void DrawColCheckList(std::vector<Gfx>& dl, Collider** objects, int32_t count) {
                 for (int32_t sphereIndex = 0; sphereIndex < jntSph->count; sphereIndex++) {
                     ColliderJntSphElement* sph = &jntSph->elements[sphereIndex];
 
-                    Mtx m;
+                    Mtx  m;
                     MtxF mf;
                     SkinMatrix_SetTranslate(&mf, sph->dim.worldSphere.center.x, sph->dim.worldSphere.center.y,
                                             sph->dim.worldSphere.center.z);
-                    MtxF ms;
+                    MtxF    ms;
                     int32_t radius = sph->dim.worldSphere.radius == 0 ? 1 : sph->dim.worldSphere.radius;
                     SkinMatrix_SetScale(&ms, radius / 128.0f, radius / 128.0f, radius / 128.0f);
                     MtxF dest;
@@ -520,10 +525,10 @@ void DrawColCheckList(std::vector<Gfx>& dl, Collider** objects, int32_t count) {
             case COLSHAPE_CYLINDER: {
                 ColliderCylinder* cyl = (ColliderCylinder*)col;
 
-                Mtx m;
+                Mtx  m;
                 MtxF mt;
                 SkinMatrix_SetTranslate(&mt, cyl->dim.pos.x, cyl->dim.pos.y + cyl->dim.yShift, cyl->dim.pos.z);
-                MtxF ms;
+                MtxF    ms;
                 int32_t radius = cyl->dim.radius == 0 ? 1 : cyl->dim.radius;
                 SkinMatrix_SetScale(&ms, radius / 128.0f, cyl->dim.height / 128.0f, radius / 128.0f);
                 MtxF dest;
@@ -579,14 +584,17 @@ void DrawColCheckCollision() {
 
     CollisionCheckContext& col = gPlayState->colChkCtx;
 
-    dl.push_back(gsDPSetPrimColor(0, 0, CVarGetInteger("gColViewerColorOCR", 255), CVarGetInteger("gColViewerColorOCG", 255),
-                                  CVarGetInteger("gColViewerColorOCB", 255), 255));
+    dl.push_back(gsDPSetPrimColor(0, 0, CVarGetInteger("gColViewerColorOCR", 255),
+                                  CVarGetInteger("gColViewerColorOCG", 255), CVarGetInteger("gColViewerColorOCB", 255),
+                                  255));
     DrawColCheckList(dl, col.colOC, col.colOCCount);
-    dl.push_back(gsDPSetPrimColor(0, 0, CVarGetInteger("gColViewerColorACR", 0), CVarGetInteger("gColViewerColorACG", 0),
-                                  CVarGetInteger("gColViewerColorACB", 255), 255));
+    dl.push_back(gsDPSetPrimColor(0, 0, CVarGetInteger("gColViewerColorACR", 0),
+                                  CVarGetInteger("gColViewerColorACG", 0), CVarGetInteger("gColViewerColorACB", 255),
+                                  255));
     DrawColCheckList(dl, col.colAC, col.colACCount);
-    dl.push_back(gsDPSetPrimColor(0, 0, CVarGetInteger("gColViewerColorATR", 255), CVarGetInteger("gColViewerColorATG", 0),
-                                  CVarGetInteger("gColViewerColorATB", 0), 255));
+    dl.push_back(gsDPSetPrimColor(0, 0, CVarGetInteger("gColViewerColorATR", 255),
+                                  CVarGetInteger("gColViewerColorATG", 0), CVarGetInteger("gColViewerColorATB", 0),
+                                  255));
 
     DrawColCheckList(dl, col.colAT, col.colATCount);
 }
@@ -617,7 +625,7 @@ void DrawWaterbox(std::vector<Gfx>& dl, WaterBox* water, float water_max_depth =
 }
 
 extern "C" WaterBox zdWaterBox;
-extern "C" f32 zdWaterBoxMinY;
+extern "C" f32      zdWaterBoxMinY;
 
 // Draws all waterboxes
 void DrawWaterboxList() {

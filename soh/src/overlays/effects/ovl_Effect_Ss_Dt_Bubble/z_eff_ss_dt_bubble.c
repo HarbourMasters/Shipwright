@@ -19,7 +19,7 @@
 #define rScale regs[9]
 #define rLifespan regs[10]
 
-u32 EffectSsDtBubble_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsDtBubble_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsDtBubble_Draw(PlayState* play, u32 index, EffectSs* this);
 void EffectSsDtBubble_Update(PlayState* play, u32 index, EffectSs* this);
 
@@ -74,15 +74,14 @@ u32 EffectSsDtBubble_Init(PlayState* play, u32 index, EffectSs* this, void* init
 
 void EffectSsDtBubble_Draw(PlayState* play, u32 index, EffectSs* this) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    f32 scale;
+    f32              scale;
 
     OPEN_DISPS(gfxCtx);
 
     scale = this->rScale * 0.004f;
     Matrix_Translate(this->pos.x, this->pos.y, this->pos.z, MTXMODE_NEW);
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     Gfx_SetupDL_25Xlu2(gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, this->rPrimColorR, this->rPrimColorG, this->rPrimColorB,
                     (this->rPrimColorA * this->life) / this->rLifespan);

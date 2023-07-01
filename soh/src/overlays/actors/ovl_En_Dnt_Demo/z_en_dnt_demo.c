@@ -56,8 +56,10 @@ static s16 sResultTable[8][7] = {
 
 static s16 sResultValues[3][2] = {
     /* DNT_LIKE */ { DNT_SIGNAL_HIDE, DNT_ACTION_LOW_RUPEES },
-    /* DNT_HATE */ { DNT_SIGNAL_HIDE, DNT_ACTION_ATTACK },
-    /* DNT_LOVE */ { DNT_SIGNAL_DANCE, DNT_ACTION_DANCE },
+    /* DNT_HATE */
+    { DNT_SIGNAL_HIDE, DNT_ACTION_ATTACK },
+    /* DNT_LOVE */
+    { DNT_SIGNAL_DANCE, DNT_ACTION_DANCE },
 };
 
 static Vec3f sScrubPos[] = {
@@ -80,9 +82,9 @@ void EnDntDemo_Init(Actor* thisx, PlayState* play2) {
     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ デグナッツお面品評会開始 ☆☆☆☆☆ \n" VT_RST);
     for (i = 0; i < 9; i++) {
         this->scrubPos[i] = sScrubPos[i];
-        this->scrubs[i] = (EnDntNomal*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play,
-                                                          ACTOR_EN_DNT_NOMAL, this->scrubPos[i].x, this->scrubPos[i].y,
-                                                          this->scrubPos[i].z, 0, 0, 0, i + ENDNTNOMAL_STAGE);
+        this->scrubs[i] = (EnDntNomal*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_DNT_NOMAL,
+                                                          this->scrubPos[i].x, this->scrubPos[i].y, this->scrubPos[i].z,
+                                                          0, 0, 0, i + ENDNTNOMAL_STAGE);
         if (this->scrubs[i] != NULL) {
             // "zako zako" [small fries]
             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ ザコザコ ☆☆☆☆☆ %x\n" VT_RST, this->scrubs[i]);
@@ -109,7 +111,7 @@ void EnDntDemo_Judge(EnDntDemo* this, PlayState* play) {
     s16 rand9;
     s16 maskIdx;
     s16 resultIdx;
-    u8 ignore;
+    u8  ignore;
     s32 i;
 
     if (this->leaderSignal != DNT_SIGNAL_NONE) {
@@ -140,7 +142,8 @@ void EnDntDemo_Judge(EnDntDemo* this, PlayState* play) {
             switch (Player_GetMask(play)) {
                 case PLAYER_MASK_SKULL:
                     if (!Flags_GetTreasure(play, 0x1F) && !Player_InBlockingCsMode(play, player)) {
-                        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_SKULL_MASK, GI_STICK_UPGRADE_30);
+                        GetItemEntry getItemEntry =
+                            Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_SKULL_MASK, GI_STICK_UPGRADE_30);
                         GiveItemEntryWithoutActor(play, getItemEntry);
                         player->pendingFlag.flagID = 0x1F;
                         player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
@@ -148,7 +151,8 @@ void EnDntDemo_Judge(EnDntDemo* this, PlayState* play) {
                     break;
                 case PLAYER_MASK_TRUTH:
                     if (!Flags_GetTreasure(play, 0x1E) && !Player_InBlockingCsMode(play, player)) {
-                        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_MASK_OF_TRUTH, GI_NUT_UPGRADE_40);
+                        GetItemEntry getItemEntry =
+                            Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_MASK_OF_TRUTH, GI_NUT_UPGRADE_40);
                         GiveItemEntryWithoutActor(play, getItemEntry);
                         player->pendingFlag.flagID = 0x1E;
                         player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
@@ -187,7 +191,8 @@ void EnDntDemo_Judge(EnDntDemo* this, PlayState* play) {
                         break;
                     }
                 case PLAYER_MASK_TRUTH:
-                    if (!Flags_GetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE) && (Player_GetMask(play) != PLAYER_MASK_SKULL)) {
+                    if (!Flags_GetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE) &&
+                        (Player_GetMask(play) != PLAYER_MASK_SKULL)) {
                         Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                                &D_801333E8);
                         this->prize = DNT_PRIZE_NUTS;
@@ -306,9 +311,9 @@ void EnDntDemo_Results(EnDntDemo* this, PlayState* play) {
         this->actionFunc = EnDntDemo_Prize;
     } else if (this->prize == DNT_PRIZE_STICK) {
         for (i = 0; i < 9; i++) {
-            s16 offsetAngle = -this->leader->actor.shape.rot.y;
+            s16   offsetAngle = -this->leader->actor.shape.rot.y;
             Vec3f leaderPos = this->leader->actor.world.pos;
-            f32 offsetDist;
+            f32   offsetDist;
 
             if (!(i & 1)) {
                 offsetAngle -= 0x59D8;

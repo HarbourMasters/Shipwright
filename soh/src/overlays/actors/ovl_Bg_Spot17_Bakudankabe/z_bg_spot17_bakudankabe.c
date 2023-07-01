@@ -37,12 +37,12 @@ static InitChainEntry sInitChain[] = {
 };
 
 void func_808B6BC0(BgSpot17Bakudankabe* this, PlayState* play) {
-    s32 pad[2];
-    s32 i;
+    s32   pad[2];
+    s32   i;
     Vec3f burstDepthY;
     Vec3f burstDepthX;
-    f32 sinY;
-    f32 cosY;
+    f32   sinY;
+    f32   cosY;
 
     sinY = Math_SinS(this->dyna.actor.shape.rot.y);
     cosY = Math_CosS(this->dyna.actor.shape.rot.y);
@@ -80,8 +80,8 @@ void func_808B6BC0(BgSpot17Bakudankabe* this, PlayState* play) {
         } else {
             rotationSpeed = 33;
         }
-        EffectSsKakera_Spawn(play, &burstDepthY, &burstDepthX, &burstDepthY, gravityInfluence, rotationSpeed, 0x1E,
-                             4, 0, scale, 1, 3, 80, KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_FIELD_KEEP, gFieldKakeraDL);
+        EffectSsKakera_Spawn(play, &burstDepthY, &burstDepthX, &burstDepthY, gravityInfluence, rotationSpeed, 0x1E, 4,
+                             0, scale, 1, 3, 80, KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_FIELD_KEEP, gFieldKakeraDL);
     }
     Math_Vec3f_Copy(&burstDepthY, &this->dyna.actor.world.pos);
     func_80033480(play, &burstDepthY, 60.0f, 4, 110, 160, 1);
@@ -93,7 +93,7 @@ void func_808B6BC0(BgSpot17Bakudankabe* this, PlayState* play) {
 
 void BgSpot17Bakudankabe_Init(Actor* thisx, PlayState* play) {
     BgSpot17Bakudankabe* this = (BgSpot17Bakudankabe*)thisx;
-    s32 pad;
+    s32              pad;
     CollisionHeader* colHeader = NULL;
 
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
@@ -125,15 +125,14 @@ void BgSpot17Bakudankabe_Update(Actor* thisx, PlayState* play) {
 
 void BgSpot17Bakudankabe_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
-    s8 r = coss(play->gameplayFrames * 1500) >> 8;
-    s8 g = coss(play->gameplayFrames * 1500) >> 8;
+    s8  r = coss(play->gameplayFrames * 1500) >> 8;
+    s8  g = coss(play->gameplayFrames * 1500) >> 8;
 
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     r = (r >> 1) + 0xC0;
     g = (g >> 1) + 0xC0;
@@ -148,8 +147,7 @@ void BgSpot17Bakudankabe_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gCraterBombableWallCracksDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

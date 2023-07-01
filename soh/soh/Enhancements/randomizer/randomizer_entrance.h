@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-//Entrance Table Data: https://wiki.cloudmodding.com/oot/Entrance_Table_(Data)
-//Accessed June 2021, published content date at the time was 14 March 2020, at 21:47
+// Entrance Table Data: https://wiki.cloudmodding.com/oot/Entrance_Table_(Data)
+// Accessed June 2021, published content date at the time was 14 March 2020, at 21:47
 
 #define ENTRANCE_TABLE_SIZE 0x0614
 
@@ -30,7 +30,7 @@
 #define SHUFFLEABLE_BOSS_COUNT 8
 
 #define SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT 66 // Max entrance rando index is 0x0820, (2080 / 32 == 65) + 1
-#define SAVEFILE_SCENES_DISCOVERED_IDX_COUNT 4 // Max scene ID is 0x6E, (110 / 32 == 3) + 1
+#define SAVEFILE_SCENES_DISCOVERED_IDX_COUNT 4     // Max scene ID is 0x6E, (110 / 32 == 3) + 1
 
 typedef struct {
     int16_t index;
@@ -44,26 +44,26 @@ typedef struct {
 extern "C" {
 #endif
 
-void Entrance_Init(void);
-void Entrance_ResetEntranceTable(void);
-uint8_t Entrance_EntranceIsNull(EntranceOverride* entranceOverride);
-int16_t Entrance_GetOverride(int16_t index);
-int16_t Entrance_OverrideNextIndex(int16_t nextEntranceIndex);
-int16_t Entrance_OverrideDynamicExit(int16_t dynamicExitIndex);
+void     Entrance_Init(void);
+void     Entrance_ResetEntranceTable(void);
+uint8_t  Entrance_EntranceIsNull(EntranceOverride* entranceOverride);
+int16_t  Entrance_GetOverride(int16_t index);
+int16_t  Entrance_OverrideNextIndex(int16_t nextEntranceIndex);
+int16_t  Entrance_OverrideDynamicExit(int16_t dynamicExitIndex);
 uint32_t Entrance_SceneAndSpawnAre(uint8_t scene, uint8_t spawn);
-void Entrance_SetGameOverEntrance(void);
-void Entrance_SetSavewarpEntrance(void);
-void Entrance_SetWarpSongEntrance(void);
-void Entrance_OverrideBlueWarp(void);
-void Entrance_OverrideCutsceneEntrance(uint16_t cutsceneCmd);
-void Entrance_HandleEponaState(void);
-void Entrance_OverrideWeatherState(void);
-void Entrance_OverrideGeurdoGuardCapture(void);
-void Entrance_OverrideSpawnScene(int32_t sceneNum, int32_t spawn);
-int32_t Entrance_OverrideSpawnSceneRoom(int32_t sceneNum, int32_t spawn, int32_t room);
-void Entrance_EnableFW(void);
-uint8_t Entrance_GetIsEntranceDiscovered(uint16_t entranceIndex);
-void Entrance_SetEntranceDiscovered(uint16_t entranceIndex);
+void     Entrance_SetGameOverEntrance(void);
+void     Entrance_SetSavewarpEntrance(void);
+void     Entrance_SetWarpSongEntrance(void);
+void     Entrance_OverrideBlueWarp(void);
+void     Entrance_OverrideCutsceneEntrance(uint16_t cutsceneCmd);
+void     Entrance_HandleEponaState(void);
+void     Entrance_OverrideWeatherState(void);
+void     Entrance_OverrideGeurdoGuardCapture(void);
+void     Entrance_OverrideSpawnScene(int32_t sceneNum, int32_t spawn);
+int32_t  Entrance_OverrideSpawnSceneRoom(int32_t sceneNum, int32_t spawn, int32_t room);
+void     Entrance_EnableFW(void);
+uint8_t  Entrance_GetIsEntranceDiscovered(uint16_t entranceIndex);
+void     Entrance_SetEntranceDiscovered(uint16_t entranceIndex);
 #ifdef __cplusplus
 }
 #endif

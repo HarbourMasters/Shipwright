@@ -35,7 +35,7 @@ const ActorInit Bg_Gate_Shutter_InitVars = {
 
 void BgGateShutter_Init(Actor* thisx, PlayState* play) {
     BgGateShutter* this = (BgGateShutter*)thisx;
-    s32 pad[2];
+    s32              pad[2];
     CollisionHeader* colHeader = NULL;
 
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
@@ -130,8 +130,7 @@ void BgGateShutter_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gKakarikoGuardGateDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

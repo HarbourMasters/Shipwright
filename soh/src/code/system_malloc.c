@@ -5,7 +5,7 @@
 #define LOG_SEVERITY_ERROR 2
 #define LOG_SEVERITY_VERBOSE 3
 
-s32 gSystemArenaLogSeverity = LOG_SEVERITY_NOLOG;
+s32   gSystemArenaLogSeverity = LOG_SEVERITY_NOLOG;
 Arena gSystemArena;
 
 void SystemArena_CheckPointer(void* ptr, size_t size, const char* name, const char* action) {
@@ -71,7 +71,7 @@ void SystemArena_FreeDebug(void* ptr, const char* file, s32 line) {
 }
 
 void* SystemArena_Calloc(size_t num, size_t size) {
-    void* ret;
+    void*  ret;
     size_t n = num * size;
 
     ret = __osMalloc(&gSystemArena, n);

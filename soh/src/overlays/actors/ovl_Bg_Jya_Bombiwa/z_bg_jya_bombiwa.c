@@ -64,9 +64,9 @@ static InitChainEntry sInitChain[] = {
 };
 
 void BgJyaBombiwa_SetupDynaPoly(BgJyaBombiwa* this, PlayState* play, CollisionHeader* collision, s32 flag) {
-    s16 pad1;
+    s16              pad1;
     CollisionHeader* colHeader = NULL;
-    s16 pad2;
+    s16              pad2;
 
     DynaPolyActor_Init(&this->dyna, flag);
     CollisionHeader_GetVirtual(collision, &colHeader);
@@ -119,11 +119,11 @@ void BgJyaBombiwa_Destroy(Actor* thisx, PlayState* play) {
 void BgJyaBombiwa_Break(BgJyaBombiwa* this, PlayState* play) {
     Vec3f pos;
     Vec3f velocity;
-    s16 arg5;
-    s8 arg6;
-    s8 arg7;
-    s32 i;
-    s16 scale;
+    s16   arg5;
+    s8    arg6;
+    s8    arg7;
+    s32   i;
+    s16   scale;
 
     for (i = 0; i < 16; i++) {
         pos.x = ((Rand_ZeroOne() * 80.0f) + this->dyna.actor.world.pos.x) - 40.0f;

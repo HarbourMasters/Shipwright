@@ -9,7 +9,7 @@
 
 namespace LUS {
 typedef struct {
-  int8_t echo;
+    int8_t echo;
 } EchoSettings;
 
 class SetEchoSettings : public SceneCommand<EchoSettings> {
@@ -17,7 +17,7 @@ class SetEchoSettings : public SceneCommand<EchoSettings> {
     using SceneCommand::SceneCommand;
 
     EchoSettings* GetPointer();
-    size_t GetPointerSize();
+    size_t        GetPointerSize();
 
     EchoSettings settings;
 };

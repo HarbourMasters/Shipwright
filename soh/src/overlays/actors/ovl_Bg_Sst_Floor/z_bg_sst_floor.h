@@ -8,9 +8,9 @@ struct BgSstFloor;
 
 typedef struct BgSstFloor {
     /* 0x0000 */ DynaPolyActor dyna;
-    /* 0x014C */ s16 drumPhase;
-    /* 0x0166 */ s16 drumAmp;
-    /* 0x0168 */ s16 drumHeight;
+    /* 0x014C */ s16           drumPhase;
+    /* 0x0166 */ s16           drumAmp;
+    /* 0x0168 */ s16           drumHeight;
 } BgSstFloor; // size = 0x016C
 
 typedef enum {

@@ -27,17 +27,17 @@ Gfx D_8012B000[] = {
 };
 
 void TransitionUnk_InitGraphics(TransitionUnk* this) {
-    s32 row2;
-    s32 pad2;
-    s32 pad3;
+    s32    row2;
+    s32    pad2;
+    s32    pad3;
     Vtx_t* vtx2;
-    s32 frame;
-    s32 rowTex;
-    s32 row;
-    Gfx* gfx;
-    Vtx* vtx;
-    s32 col;
-    s32 colTex;
+    s32    frame;
+    s32    rowTex;
+    s32    row;
+    Gfx*   gfx;
+    Vtx*   vtx;
+    s32    col;
+    s32    colTex;
 
     guMtxIdent(&this->modelView);
     guMtxIdent(&this->unk_98);
@@ -167,9 +167,9 @@ TransitionUnk* TransitionUnk_Init(TransitionUnk* this, s32 row, s32 col) {
 }
 
 void TransitionUnk_SetData(TransitionUnk* this) {
-    s32 col;
+    s32  col;
     Vtx* vtx;
-    s32 row;
+    s32  row;
 
     for (col = 0; col < this->col + 1; col++) {
         for (row = 0; row < this->row + 1; row++) {

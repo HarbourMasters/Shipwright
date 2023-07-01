@@ -13,16 +13,16 @@ void EnSi_Destroy(Actor* thisx, PlayState* play);
 void EnSi_Update(Actor* thisx, PlayState* play);
 void EnSi_Draw(Actor* thisx, PlayState* play);
 
-s32 func_80AFB748(EnSi* this, PlayState* play);
+s32  func_80AFB748(EnSi* this, PlayState* play);
 void func_80AFB768(EnSi* this, PlayState* play);
 void func_80AFB89C(EnSi* this, PlayState* play);
 void func_80AFB950(EnSi* this, PlayState* play);
 void Randomizer_UpdateSkullReward(EnSi* this, PlayState* play);
 void Randomizer_GiveSkullReward(EnSi* this, PlayState* play);
 
-s32 textId = 0xB4;
-s32 giveItemId = ITEM_SKULL_TOKEN;
-s32 getItemId;
+s32          textId = 0xB4;
+s32          giveItemId = ITEM_SKULL_TOKEN;
+s32          getItemId;
 GetItemEntry getItem;
 
 static ColliderCylinderInit sCylinderInit = {

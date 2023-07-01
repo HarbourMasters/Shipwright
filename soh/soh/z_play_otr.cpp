@@ -7,14 +7,13 @@
 #include "vt.h"
 #include <Vertex.h>
 
-extern "C" void Play_InitScene(PlayState * play, s32 spawn);
-extern "C" void Play_InitEnvironment(PlayState * play, s16 skyboxId);
-void OTRPlay_InitScene(PlayState* play, s32 spawn);
-s32 OTRScene_ExecuteCommands(PlayState* play, LUS::Scene* scene);
+extern "C" void Play_InitScene(PlayState* play, s32 spawn);
+extern "C" void Play_InitEnvironment(PlayState* play, s16 skyboxId);
+void            OTRPlay_InitScene(PlayState* play, s32 spawn);
+s32             OTRScene_ExecuteCommands(PlayState* play, LUS::Scene* scene);
 
-//LUS::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
-LUS::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
-{
+// LUS::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
+LUS::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName) {
     auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResource(fileName);
     return res.get();
 }
@@ -27,7 +26,7 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
     play->sceneNum = sceneNum;
     play->sceneConfig = scene->config;
 
-    //osSyncPrintf("\nSCENE SIZE %fK\n", (scene->sceneFile.vromEnd - scene->sceneFile.vromStart) / 1024.0f);
+    // osSyncPrintf("\nSCENE SIZE %fK\n", (scene->sceneFile.vromEnd - scene->sceneFile.vromStart) / 1024.0f);
 
     std::string sceneVersion;
     if (IsGameMasterQuest()) {
@@ -35,13 +34,13 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
     } else {
         sceneVersion = "nonmq";
     }
-    std::string scenePath = StringHelper::Sprintf("scenes/%s/%s/%s", sceneVersion.c_str(), scene->sceneFile.fileName, scene->sceneFile.fileName);
+    std::string scenePath = StringHelper::Sprintf("scenes/%s/%s/%s", sceneVersion.c_str(), scene->sceneFile.fileName,
+                                                  scene->sceneFile.fileName);
 
     play->sceneSegment = OTRPlay_LoadFile(play, scenePath.c_str());
 
     // Failed to load scene... default to doodongs cavern
-    if (play->sceneSegment == nullptr) 
-    {
+    if (play->sceneSegment == nullptr) {
         lusprintf(__FILE__, __LINE__, 2, "Unable to load scene %s... Defaulting to Doodong's Cavern!\n",
                   scenePath.c_str());
         OTRPlay_SpawnScene(play, 0x01, 0);
@@ -50,7 +49,7 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
 
     scene->unk_13 = 0;
 
-    //gSegments[2] = VIRTUAL_TO_PHYSICAL(play->sceneSegment);
+    // gSegments[2] = VIRTUAL_TO_PHYSICAL(play->sceneSegment);
 
     OTRPlay_InitScene(play, spawn);
     auto roomSize = func_80096FE8(play, &play->roomCtx);
@@ -85,7 +84,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
                                                .get());
 
     auto data2 = ResourceMgr_LoadVtxByCRC(0x68d4ea06044e228f);*/
-    
+
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneInit>(play->sceneNum);
 
     volatile int a = 0;

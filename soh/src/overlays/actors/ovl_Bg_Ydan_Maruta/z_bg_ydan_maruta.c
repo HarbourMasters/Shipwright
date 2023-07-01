@@ -78,11 +78,11 @@ static InitChainEntry sInitChain[] = {
 void BgYdanMaruta_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     BgYdanMaruta* this = (BgYdanMaruta*)thisx;
-    Vec3f sp4C[3];
-    s32 i;
-    f32 sinRotY;
-    f32 cosRotY;
-    CollisionHeader* colHeader = NULL;
+    Vec3f                    sp4C[3];
+    s32                      i;
+    f32                      sinRotY;
+    f32                      cosRotY;
+    CollisionHeader*         colHeader = NULL;
     ColliderTrisElementInit* triInit;
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);

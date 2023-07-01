@@ -13,7 +13,7 @@ struct OceffWipe;
 
 typedef struct OceffWipe {
     /* 0x0000 */ Actor actor;
-    /* 0x014C */ s16 timer;
+    /* 0x014C */ s16   timer;
 } OceffWipe; // size = 0x0150
 
 #endif

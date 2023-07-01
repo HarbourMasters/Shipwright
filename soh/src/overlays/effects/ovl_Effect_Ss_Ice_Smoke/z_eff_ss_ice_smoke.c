@@ -11,7 +11,7 @@
 #define rAlpha regs[1]
 #define rScale regs[2]
 
-u32 EffectSsIceSmoke_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsIceSmoke_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsIceSmoke_Draw(PlayState* play, u32 index, EffectSs* this);
 void EffectSsIceSmoke_Update(PlayState* play, u32 index, EffectSs* this);
 
@@ -22,9 +22,9 @@ EffectSsInit Effect_Ss_Ice_Smoke_InitVars = {
 
 u32 EffectSsIceSmoke_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsIceSmokeInitParams* initParams = (EffectSsIceSmokeInitParams*)initParamsx;
-    s32 pad;
-    s32 objBankIdx;
-    void* oldSeg6;
+    s32                         pad;
+    s32                         objBankIdx;
+    void*                       oldSeg6;
 
     objBankIdx = Object_GetIndex(&play->objectCtx, OBJECT_FZ);
 
@@ -51,11 +51,11 @@ u32 EffectSsIceSmoke_Init(PlayState* play, u32 index, EffectSs* this, void* init
 }
 
 void EffectSsIceSmoke_Draw(PlayState* play, u32 index, EffectSs* this) {
-    s32 pad;
+    s32   pad;
     void* object;
-    Mtx* mtx;
-    f32 scale;
-    s32 objBankIdx;
+    Mtx*  mtx;
+    f32   scale;
+    s32   objBankIdx;
 
     object = play->objectCtx.status[this->rObjBankIdx].segment;
 
@@ -71,9 +71,8 @@ void EffectSsIceSmoke_Draw(PlayState* play, u32 index, EffectSs* this) {
         gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gFreezardSteamStartDL));
         gDPPipeSync(POLY_XLU_DISP++);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 195, 235, 235, this->rAlpha);
-        gSPSegment(
-            POLY_XLU_DISP++, 0x08,
-            Gfx_TwoTexScroll(play->state.gfxCtx, 0, this->life * 3, this->life * 15, 32, 64, 1, 0, 0, 32, 32));
+        gSPSegment(POLY_XLU_DISP++, 0x08,
+                   Gfx_TwoTexScroll(play->state.gfxCtx, 0, this->life * 3, this->life * 15, 32, 64, 1, 0, 0, 32, 32));
         Matrix_Translate(this->pos.x, this->pos.y, this->pos.z, MTXMODE_NEW);
         Matrix_ReplaceRotation(&play->billboardMtxF);
         scale = this->rScale * 0.0001f;

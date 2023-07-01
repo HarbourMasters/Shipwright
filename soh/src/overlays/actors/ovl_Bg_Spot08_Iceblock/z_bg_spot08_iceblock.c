@@ -39,11 +39,10 @@ void BgSpot08Iceblock_SetupAction(BgSpot08Iceblock* this, BgSpot08IceblockAction
     this->actionFunc = actionFunc;
 }
 
-void BgSpot08Iceblock_InitDynaPoly(BgSpot08Iceblock* this, PlayState* play, CollisionHeader* collision,
-                                   s32 flags) {
-    s32 pad;
+void BgSpot08Iceblock_InitDynaPoly(BgSpot08Iceblock* this, PlayState* play, CollisionHeader* collision, s32 flags) {
+    s32              pad;
     CollisionHeader* colHeader = NULL;
-    s32 pad2;
+    s32              pad2;
 
     DynaPolyActor_Init(&this->dyna, flags);
     CollisionHeader_GetVirtual(collision, &colHeader);
@@ -140,8 +139,8 @@ s32 BgSpot08Iceblock_NormalizeVector(Vec3f* dest, Vec3f* v) {
 
 static Vec3f sVerticalVector = { 0.0f, 1.0f, 0.0f };
 static Vec3f sZeroVector = { 0.0f, 0.0f, 0.0f };
-static f32 sInertias[] = { 1.0f / 70000000, 1.0f / 175000000, 1.0f / 700000000 };
-static f32 sDampingFactors[] = { 0.96f, 0.96f, 0.98f };
+static f32   sInertias[] = { 1.0f / 70000000, 1.0f / 175000000, 1.0f / 700000000 };
+static f32   sDampingFactors[] = { 0.96f, 0.96f, 0.98f };
 
 static f32 sRollSins[] = {
     0.22495104f, // sin(13 degrees)
@@ -160,19 +159,19 @@ static f32 sRollCoss[] = {
  * and combines them to produce a matrix that rotates the actor to match the surface normal
  */
 void BgSpot08Iceblock_Roll(BgSpot08Iceblock* this, PlayState* play) {
-    f32 deviationFromVertSq;
-    f32 stabilityCorrection;
-    Vec3f surfaceNormalHorizontal;
-    Vec3f playerCentroidDiff;
-    Vec3f playerMoment;
-    Vec3f surfaceNormalHorizontalScaled;
-    Vec3f randomNutation;
-    Vec3f tempVec; // reused with different meanings
-    Vec3f torqueDirection;
-    f32 playerCentroidDist;
-    s32 rollDataIndex;
-    MtxF mtx;
-    s32 pad;
+    f32     deviationFromVertSq;
+    f32     stabilityCorrection;
+    Vec3f   surfaceNormalHorizontal;
+    Vec3f   playerCentroidDiff;
+    Vec3f   playerMoment;
+    Vec3f   surfaceNormalHorizontalScaled;
+    Vec3f   randomNutation;
+    Vec3f   tempVec; // reused with different meanings
+    Vec3f   torqueDirection;
+    f32     playerCentroidDist;
+    s32     rollDataIndex;
+    MtxF    mtx;
+    s32     pad;
     Player* player = GET_PLAYER(play);
 
     switch (this->dyna.actor.params & 0xFF) {

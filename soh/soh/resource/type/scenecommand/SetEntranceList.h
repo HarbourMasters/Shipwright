@@ -19,7 +19,7 @@ class SetEntranceList : public SceneCommand<EntranceEntry> {
     using SceneCommand::SceneCommand;
 
     EntranceEntry* GetPointer();
-    size_t GetPointerSize();
+    size_t         GetPointerSize();
 
     uint32_t numEntrances;
 

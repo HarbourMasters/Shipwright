@@ -351,7 +351,7 @@ void IChain_Apply_f32div1000(u8* ptr, InitChainEntry* ichain) {
 
 void IChain_Apply_Vec3f(u8* ptr, InitChainEntry* ichain) {
     Vec3f* vec = (Vec3f*)(ptr + ichain->offset);
-    f32 val = ichain->value;
+    f32    val = ichain->value;
 
     vec->z = val;
     vec->y = val;
@@ -360,7 +360,7 @@ void IChain_Apply_Vec3f(u8* ptr, InitChainEntry* ichain) {
 
 void IChain_Apply_Vec3fdiv1000(u8* ptr, InitChainEntry* ichain) {
     Vec3f* vec = (Vec3f*)(ptr + ichain->offset);
-    f32 val;
+    f32    val;
 
     osSyncPrintf("pp=%x data=%f\n", vec, ichain->value / 1000.0f);
     val = ichain->value / 1000.0f;
@@ -372,7 +372,7 @@ void IChain_Apply_Vec3fdiv1000(u8* ptr, InitChainEntry* ichain) {
 
 void IChain_Apply_Vec3s(u8* ptr, InitChainEntry* ichain) {
     Vec3s* vec = (Vec3s*)(ptr + ichain->offset);
-    s16 val = ichain->value;
+    s16    val = ichain->value;
 
     vec->z = val;
     vec->y = val;

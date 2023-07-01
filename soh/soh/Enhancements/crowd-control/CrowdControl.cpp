@@ -100,7 +100,8 @@ void CrowdControl::ListenToServer() {
                 // If another timed effect is already active that conflicts with the incoming effect.
                 bool isConflictingEffectActive = false;
                 for (Effect* effect : activeEffects) {
-                    if (effect != incomingEffect && effect->category == incomingEffect->category && effect->id < incomingEffect->id) {
+                    if (effect != incomingEffect && effect->category == incomingEffect->category &&
+                        effect->id < incomingEffect->id) {
                         isConflictingEffectActive = true;
                         EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, EffectResult::Retry);
                         break;
@@ -139,14 +140,14 @@ void CrowdControl::ProcessActiveEffects() {
         auto it = activeEffects.begin();
 
         while (it != activeEffects.end()) {
-            Effect *effect = *it;
+            Effect*      effect = *it;
             EffectResult result = CrowdControl::ExecuteEffect(effect);
 
             if (result == EffectResult::Success) {
                 // If time remaining has reached 0, we have finished the effect.
                 if (effect->timeRemaining <= 0) {
                     it = activeEffects.erase(std::remove(activeEffects.begin(), activeEffects.end(), effect),
-                                        activeEffects.end());
+                                             activeEffects.end());
                     GameInteractor::RemoveEffect(effect->giEffect);
                     delete effect;
                 } else {
@@ -154,9 +155,9 @@ void CrowdControl::ProcessActiveEffects() {
                     if (effect->isPaused) {
                         effect->isPaused = false;
                         EmitMessage(tcpsock, effect->id, effect->timeRemaining, EffectResult::Resumed);
-                    // If not paused before, subtract time from the timer and send a Success event if
-                    // the result is different from the last time this was ran.
-                    // Timed events are put on a thread that runs once per second.
+                        // If not paused before, subtract time from the timer and send a Success event if
+                        // the result is different from the last time this was ran.
+                        // Timed events are put on a thread that runs once per second.
                     } else {
                         effect->timeRemaining -= 1000;
                         if (result != effect->lastExecutionResult) {
@@ -239,9 +240,9 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
     Effect* effect = new Effect();
     effect->lastExecutionResult = EffectResult::Initiate;
     effect->id = dataReceived["id"];
-    auto parameters = dataReceived["parameters"];
+    auto     parameters = dataReceived["parameters"];
     uint32_t receivedParameter = 0;
-    auto effectName = dataReceived["code"].get<std::string>();
+    auto     effectName = dataReceived["code"].get<std::string>();
 
     if (parameters.size() > 0) {
         receivedParameter = dataReceived["parameters"][0];

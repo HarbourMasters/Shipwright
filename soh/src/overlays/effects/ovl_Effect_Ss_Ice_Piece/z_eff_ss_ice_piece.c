@@ -13,7 +13,7 @@
 #define rRotSpeed regs[3]
 #define rScale regs[4]
 
-u32 EffectSsIcePiece_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsIcePiece_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsIcePiece_Draw(PlayState* play, u32 index, EffectSs* this);
 void EffectSsIcePiece_Update(PlayState* play, u32 index, EffectSs* this);
 
@@ -44,10 +44,10 @@ u32 EffectSsIcePiece_Init(PlayState* play, u32 index, EffectSs* this, void* init
 
 void EffectSsIcePiece_Draw(PlayState* play, u32 index, EffectSs* this) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    s32 pad;
-    f32 scale;
-    u32 frames;
-    f32 alpha;
+    s32              pad;
+    f32              scale;
+    u32              frames;
+    f32              alpha;
 
     scale = this->rScale * 0.01f;
     frames = play->state.frames;
@@ -65,8 +65,7 @@ void EffectSsIcePiece_Draw(PlayState* play, u32 index, EffectSs* this) {
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
     Matrix_RotateY(this->rYaw * (M_PI / 0x8000), MTXMODE_APPLY);
     Matrix_RotateX(this->rPitch * (M_PI / 0x8000), MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 50, 100, (s32)alpha & 0xFF);
     func_8003435C(&this->pos, play);

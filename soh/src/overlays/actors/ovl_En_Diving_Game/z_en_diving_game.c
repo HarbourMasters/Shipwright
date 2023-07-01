@@ -114,7 +114,7 @@ void EnDivingGame_Destroy(Actor* thisx, PlayState* play) {
 
 void EnDivingGame_SpawnRuppy(EnDivingGame* this, PlayState* play) {
     EnExRuppy* rupee;
-    Vec3f rupeePos;
+    Vec3f      rupeePos;
 
     rupeePos.x = (Rand_ZeroOne() - 0.5f) * 30.0f + this->actor.world.pos.x;
     rupeePos.y = (Rand_ZeroOne() - 0.5f) * 20.0f + (this->actor.world.pos.y + 30.0f);
@@ -252,7 +252,8 @@ void EnDivingGame_HandlePlayChoice(EnDivingGame* this, PlayState* play) {
                 this->allRupeesThrown = this->state = this->phase = this->unk_2A2 = this->grabbedRupeesCounter = 0;
                 break;
         }
-        if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_SILVER_SCALE) || this->actor.textId == 0x85 || this->actor.textId == 0x2D) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_SILVER_SCALE) || this->actor.textId == 0x85 ||
+            this->actor.textId == 0x2D) {
             Message_ContinueTextbox(play, this->actor.textId);
             this->unk_292 = TEXT_STATE_EVENT;
             this->actionFunc = func_809EE048;
@@ -495,7 +496,7 @@ void EnDivingGame_Update(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
     EnDivingGame* this = (EnDivingGame*)thisx;
     Player* player = GET_PLAYER(play);
-    Vec3f pos;
+    Vec3f   pos;
 
     if (this->csCameraTimer != 0) {
         this->csCameraTimer--;
@@ -546,8 +547,7 @@ Gfx* EnDivingGame_EmptyDList(GraphicsContext* gfxCtx) {
     return displayList;
 }
 
-s32 EnDivingGame_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                  void* thisx) {
+s32 EnDivingGame_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnDivingGame* this = (EnDivingGame*)thisx;
     s32 pad;
 

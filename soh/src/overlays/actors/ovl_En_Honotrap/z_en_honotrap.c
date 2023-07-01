@@ -156,12 +156,12 @@ void EnHonotrap_GetNormal(Vec3f* normal, Vec3f* vec) {
 void EnHonotrap_InitEye(Actor* thisx, PlayState* play) {
     s32 pad;
     EnHonotrap* this = (EnHonotrap*)thisx;
-    s32 i;
-    s32 j;
+    s32    i;
+    s32    j;
     Vec3f* vtx;
-    Vec3f triangle[3];
-    f32 cos;
-    f32 sin;
+    Vec3f  triangle[3];
+    f32    cos;
+    f32    sin;
 
     Actor_SetScale(thisx, 0.1f);
     sin = Math_SinS(thisx->home.rot.y);
@@ -355,9 +355,9 @@ void EnHonotrap_SetupFlameMove(EnHonotrap* this) {
 }
 
 void EnHonotrap_FlameMove(EnHonotrap* this, PlayState* play) {
-    s32 pad;
+    s32   pad;
     Vec3f speed;
-    s32 ready;
+    s32   ready;
 
     Math_StepToF(&this->speedMod, 13.0f, 0.5f);
     speed.x = fabsf(this->speedMod * this->actor.velocity.x);
@@ -371,9 +371,9 @@ void EnHonotrap_FlameMove(EnHonotrap* this, PlayState* play) {
 
     if (this->collider.tris.base.atFlags & AT_BOUNCED) {
         Player* player = GET_PLAYER(play);
-        Vec3f shieldNorm;
-        Vec3f tempVel;
-        Vec3f shieldVec;
+        Vec3f   shieldNorm;
+        Vec3f   tempVel;
+        Vec3f   shieldVec;
 
         shieldVec.x = -player->shieldMf.xz;
         shieldVec.y = -player->shieldMf.yz;
@@ -422,7 +422,7 @@ void EnHonotrap_FlameChase(EnHonotrap* this, PlayState* play) {
     Actor_UpdateBgCheckInfo(play, &this->actor, 7.0f, 10.0f, 0.0f, 0x1D);
     if (this->collider.cyl.base.atFlags & AT_BOUNCED) {
         Player* player = GET_PLAYER(play);
-        Vec3s shieldRot;
+        Vec3s   shieldRot;
 
         Matrix_MtxFToYXZRotS(&player->shieldMf, &shieldRot, false);
         this->actor.world.rot.y = ((shieldRot.y * 2) - this->actor.world.rot.y) + 0x8000;
@@ -457,7 +457,7 @@ void EnHonotrap_FlameVanish(EnHonotrap* this, PlayState* play) {
 void EnHonotrap_Update(Actor* thisx, PlayState* play) {
     static Vec3f velocity = { 0.0f, 0.0f, 0.0f };
     static Vec3f accel = { 0.0f, 0.1f, 0.0f };
-    s32 pad;
+    s32          pad;
     EnHonotrap* this = (EnHonotrap*)thisx;
 
     if (this->timer > 0) {
@@ -499,8 +499,7 @@ void EnHonotrap_DrawEye(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeState]));
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gEyeSwitch2DL);
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -522,8 +521,7 @@ void EnHonotrap_DrawFlame(Actor* thisx, PlayState* play) {
     Matrix_RotateY((s16)(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) - this->actor.shape.rot.y + 0x8000) *
                        (M_PI / 0x8000),
                    MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
 
     CLOSE_DISPS(play->state.gfxCtx);

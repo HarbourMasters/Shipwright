@@ -41,7 +41,7 @@ static InitChainEntry sInitChain[] = {
 };
 
 void func_80B9A9D0(ObjMure3* this, PlayState* play) {
-    s32 i;
+    s32   i;
     Vec3f spawnPos;
 
     Math_Vec3f_Copy(&spawnPos, &this->actor.world.pos);
@@ -56,11 +56,11 @@ void func_80B9A9D0(ObjMure3* this, PlayState* play) {
 }
 
 void func_80B9AA90(ObjMure3* this, PlayState* play) {
-    s32 i;
+    s32   i;
     Vec3f spawnPos;
-    f32 sn = Math_SinS(this->actor.world.rot.y);
-    f32 cos = Math_CosS(this->actor.world.rot.y);
-    f32 radius;
+    f32   sn = Math_SinS(this->actor.world.rot.y);
+    f32   cos = Math_CosS(this->actor.world.rot.y);
+    f32   radius;
 
     spawnPos.y = this->actor.world.pos.y;
 
@@ -77,9 +77,9 @@ void func_80B9AA90(ObjMure3* this, PlayState* play) {
 }
 
 void func_80B9ABA0(ObjMure3* this, PlayState* play) {
-    s32 i;
+    s32   i;
     Vec3f spawnPos;
-    s16 yRot;
+    s16   yRot;
 
     spawnPos.y = this->actor.world.pos.y;
     yRot = this->actor.world.rot.y;

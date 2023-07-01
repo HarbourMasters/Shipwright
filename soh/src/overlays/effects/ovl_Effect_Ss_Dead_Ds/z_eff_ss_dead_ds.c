@@ -17,7 +17,7 @@
 #define rAlphaStep regs[10]
 #define rHalfOfLife regs[11]
 
-u32 EffectSsDeadDs_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsDeadDs_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsDeadDs_Draw(PlayState* play, u32 index, EffectSs* this);
 void EffectSsDeadDs_Update(PlayState* play, u32 index, EffectSs* this);
 
@@ -46,13 +46,13 @@ u32 EffectSsDeadDs_Init(PlayState* play, u32 index, EffectSs* this, void* initPa
 }
 
 void EffectSsDeadDs_Draw(PlayState* play, u32 index, EffectSs* this) {
-    s32 pad;
-    f32 scale;
-    s32 pad1;
-    s32 pad2;
-    MtxF mf;
-    f32 temp;
-    Vec3f pos;
+    s32            pad;
+    f32            scale;
+    s32            pad1;
+    s32            pad2;
+    MtxF           mf;
+    f32            temp;
+    Vec3f          pos;
     CollisionPoly* floorPoly;
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -99,8 +99,7 @@ void EffectSsDeadDs_Draw(PlayState* play, u32 index, EffectSs* this) {
     Matrix_RotateZYX(this->rRoll, this->rPitch, this->rYaw, MTXMODE_APPLY);
     Matrix_RotateX(1.57f, MTXMODE_APPLY);
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetCombineLERP(POLY_XLU_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0,
                       PRIMITIVE, 0);
     gSPDisplayList(POLY_XLU_DISP++, gLensFlareCircleDL);

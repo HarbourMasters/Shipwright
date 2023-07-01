@@ -3,12 +3,12 @@
 #include "ultra64/pfs.h"
 
 s32 osPfsFreeBlocks(OSPfs* pfs, s32* leftoverBytes) {
-    s32 j;
-    s32 pages = 0;
+    s32       j;
+    s32       pages = 0;
     __OSInode inode;
-    s32 ret = 0;
-    u8 bank;
-    s32 offset;
+    s32       ret = 0;
+    u8        bank;
+    s32       offset;
 
     if (!(pfs->status & PFS_INITIALIZED)) {
         return (PFS_ERR_INVALID);

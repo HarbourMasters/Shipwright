@@ -140,7 +140,7 @@ void CustomMessage::ReplaceSpecialCharacters() {
     // add special characters
     for (std::string* str : { &english, &french, &german }) {
         for (auto specialCharacterPair : textBoxSpecialCharacters) {
-            size_t start_pos = 0;
+            size_t      start_pos = 0;
             std::string textBoxSpecialCharacterString = ""s;
             textBoxSpecialCharacterString += specialCharacterPair.second;
             while ((start_pos = str->find(specialCharacterPair.first, start_pos)) != std::string::npos) {
@@ -155,7 +155,7 @@ const char* Interface_ReplaceSpecialCharacters(char text[]) {
     std::string textString(text);
 
     for (auto specialCharacterPair : textBoxSpecialCharacters) {
-        size_t start_pos = 0;
+        size_t      start_pos = 0;
         std::string textBoxSpecialCharacterString = ""s;
         textBoxSpecialCharacterString += specialCharacterPair.second;
         while ((start_pos = textString.find(specialCharacterPair.first, start_pos)) != std::string::npos) {
@@ -213,7 +213,7 @@ bool CustomMessageManager::InsertCustomMessage(std::string tableID, uint16_t tex
         return false;
     }
     auto& messageTable = foundMessageTable->second;
-    auto messageInsertResult = messageTable.emplace(textID, messages);
+    auto  messageInsertResult = messageTable.emplace(textID, messages);
     return messageInsertResult.second;
 }
 
@@ -234,7 +234,7 @@ CustomMessage CustomMessageManager::RetrieveMessage(std::string tableID, uint16_
     if (foundMessageTable == messageTables.end()) {
         throw(MessageNotFoundException(tableID, textID));
     }
-    CustomMessageTable messageTable = foundMessageTable->second;
+    CustomMessageTable                                          messageTable = foundMessageTable->second;
     std::unordered_map<uint16_t, CustomMessage>::const_iterator foundMessage = messageTable.find(textID);
     if (foundMessage == messageTable.end()) {
         throw(MessageNotFoundException(tableID, textID));
@@ -253,7 +253,7 @@ bool CustomMessageManager::ClearMessageTable(std::string tableID) {
     return true;
 }
 
-bool CustomMessageManager::AddCustomMessageTable(std::string tableID) { 
+bool CustomMessageManager::AddCustomMessageTable(std::string tableID) {
     CustomMessageTable newMessageTable;
     return messageTables.emplace(tableID, newMessageTable).second;
 }

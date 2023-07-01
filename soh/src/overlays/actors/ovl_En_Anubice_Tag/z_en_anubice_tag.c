@@ -61,7 +61,7 @@ void EnAnubiceTag_SpawnAnubis(EnAnubiceTag* this, PlayState* play) {
 
 void EnAnubiceTag_ManageAnubis(EnAnubiceTag* this, PlayState* play) {
     EnAnubice* anubis;
-    Vec3f offset;
+    Vec3f      offset;
 
     if (this->anubis != NULL) {
         anubis = this->anubis;

@@ -74,7 +74,7 @@ void func_80B533B0(Actor* thisx, PlayState* play) {
 
 void func_80B533FC(EnZl3* this, PlayState* play) {
     ColliderCylinder* collider = &this->collider;
-    s32 pad[4];
+    s32               pad[4];
 
     Collider_UpdateCylinder(&this->actor, collider);
     CollisionCheck_SetOC(play, &play->colChkCtx, &collider->base);
@@ -108,7 +108,7 @@ BossGanon2* func_80B53488(EnZl3* this, PlayState* play) {
 }
 
 void EnZl3_UpdateEyes(EnZl3* this) {
-    s32 pad[2];
+    s32  pad[2];
     s16* eyeTexIndex = &this->eyeTexIndex;
     s16* blinkTimer = &this->blinkTimer;
 
@@ -131,7 +131,7 @@ void EnZl3_setMouthIndex(EnZl3* this, s16 index) {
 
 void func_80B5357C(EnZl3* this, PlayState* play) {
     Vec3f* thisPos = &this->actor.world.pos;
-    Vec3f sp20;
+    Vec3f  sp20;
 
     sp20.x = thisPos->x + ((Rand_ZeroOne() - 0.5f) * 10.0f);
     sp20.y = thisPos->y;
@@ -152,7 +152,7 @@ void func_80B536B4(EnZl3* this) {
 }
 
 void func_80B536C4(EnZl3* this) {
-    s32 pad[2];
+    s32    pad[2];
     Vec3s* vec1 = &this->interactInfo.headRot;
     Vec3s* vec2 = &this->interactInfo.torsoRot;
 
@@ -171,11 +171,11 @@ void func_80B53764(EnZl3* this, PlayState* play) {
 }
 
 s32 func_80B537E8(EnZl3* this) {
-    s16 yawTowardsPlayer = this->actor.yawTowardsPlayer;
+    s16  yawTowardsPlayer = this->actor.yawTowardsPlayer;
     s16* rotY = &this->actor.world.rot.y;
     s16* unk_3D0 = &this->unk_3D0;
-    s16 retVal;
-    s16 pad[2];
+    s16  retVal;
+    s16  pad[2];
 
     Math_SmoothStepToS(unk_3D0, ABS((s16)(yawTowardsPlayer - *rotY)), 5, 6200, 100);
     retVal = Math_SmoothStepToS(rotY, yawTowardsPlayer, 5, *unk_3D0, 100);
@@ -184,7 +184,7 @@ s32 func_80B537E8(EnZl3* this) {
 }
 
 void func_80B538B0(EnZl3* this) {
-    s16 yawTowardsPlayer = this->actor.yawTowardsPlayer;
+    s16  yawTowardsPlayer = this->actor.yawTowardsPlayer;
     s16* rotY = &this->actor.world.rot.y;
 
     if (ABS((s16)(yawTowardsPlayer - *rotY)) >= 0x1556) {
@@ -222,9 +222,9 @@ void func_80B53980(EnZl3* thisx, s16 y, s32 idx) {
 
     if (this->unk_2FC != 0) {
         SkelAnime* skelAnime = &this->skelAnime;
-        s32 temp25C = this->unk_25C[idx];
-        s32 temp28C = (s16)(y + this->unk_28C[idx]);
-        s32 temp2BC = y - this->unk_2BC[idx];
+        s32        temp25C = this->unk_25C[idx];
+        s32        temp28C = (s16)(y + this->unk_28C[idx]);
+        s32        temp2BC = y - this->unk_2BC[idx];
 
         if ((s32)fabsf(temp2BC) > 0x8000) {
             if (y2 > 0) {
@@ -280,14 +280,14 @@ void func_80B53980(EnZl3* thisx, s16 y, s32 idx) {
 
 void func_80B53B64(EnZl3* this, s16 z, s32 idx) {
     SkelAnime* skelAnime = &this->skelAnime;
-    s32 action = this->action;
-    s32 phi_a1;
-    s32 idx25C;
-    s16 temp_t1;
-    s32 temp_a0;
-    s32 phi_v0;
-    s32 phi_v1;
-    s32 phi_v1_2;
+    s32        action = this->action;
+    s32        phi_a1;
+    s32        idx25C;
+    s16        temp_t1;
+    s32        temp_a0;
+    s32        phi_v0;
+    s32        phi_v1;
+    s32        phi_v1_2;
 
     if (idx == 2) {
         phi_a1 = 15000;
@@ -597,14 +597,13 @@ void func_80B54360(EnZl3* this, s16 arg1, s32 arg2) {
     this->unk_2BC[arg2] = arg1;
 }
 
-s32 func_80B5458C(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
-                  Gfx** gfx) {
+s32 func_80B5458C(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx, Gfx** gfx) {
     s32 pad[3];
     EnZl3* this = (EnZl3*)thisx;
-    s16* unk_28C = this->unk_28C;
-    Mtx* sp78;
-    MtxF sp38;
-    Vec3s sp30;
+    s16*   unk_28C = this->unk_28C;
+    Mtx*   sp78;
+    MtxF   sp38;
+    Vec3s  sp30;
     Vec3s* unk_3F8_unk_08 = &this->interactInfo.headRot;
     Vec3s* unk_3F8_unk_0E = &this->interactInfo.torsoRot;
 
@@ -703,9 +702,9 @@ s32 func_80B5458C(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
 
 void EnZl3_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx, Gfx** gfx) {
     EnZl3* this = (EnZl3*)thisx;
-    s32 pad;
+    s32   pad;
     Vec3f sp34;
-    s32 pad2;
+    s32   pad2;
     Vec3f sp24;
     Vec3f sp18;
 
@@ -785,8 +784,8 @@ void func_80B54F18(EnZl3* this, PlayState* play) {
         f32 posY = this->actor.world.pos.y + (kREG(5) + -26.0f);
         f32 posZ = this->actor.world.pos.z;
 
-        Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0x4000,
-                           0, WARP_PURPLE_CRYSTAL);
+        Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0x4000, 0,
+                           WARP_PURPLE_CRYSTAL);
         this->unk_2F8 = 1;
     }
 }
@@ -1028,8 +1027,8 @@ void func_80B5585C(EnZl3* this) {
 }
 
 void func_80B558A8(EnZl3* this) {
-    s32 pad[4];
-    s16 thisRotY = this->actor.world.rot.y;
+    s32    pad[4];
+    s16    thisRotY = this->actor.world.rot.y;
     Vec3f* unk_338 = &this->unk_338;
 
     *unk_338 = this->unk_32C = this->actor.world.pos;
@@ -1043,8 +1042,8 @@ void func_80B559C4(EnZl3* this) {
     Vec3f* thisPos = &this->actor.world.pos;
     Vec3f* unk_32C = &this->unk_32C;
     Vec3f* unk_338 = &this->unk_338;
-    f32 temp_f0 = Environment_LerpWeightAccelDecel(Animation_GetLastFrame(&gZelda2Anime2Anim_005248), 0,
-                                                   (s32)this->skelAnime.curFrame, 3, 3);
+    f32    temp_f0 = Environment_LerpWeightAccelDecel(Animation_GetLastFrame(&gZelda2Anime2Anim_005248), 0,
+                                                      (s32)this->skelAnime.curFrame, 3, 3);
 
     thisPos->x = unk_32C->x + (temp_f0 * (unk_338->x - unk_32C->x));
     thisPos->z = unk_32C->z + (temp_f0 * (unk_338->z - unk_32C->z));
@@ -1294,7 +1293,7 @@ void func_80B56474(EnZl3* this, s32 arg1) {
 }
 
 void func_80B564A8(EnZl3* this, PlayState* play) {
-    s32 temp_v0;
+    s32  temp_v0;
     s32* val = &D_80B5A494;
 
     temp_v0 = func_80B5396C(this);
@@ -1550,8 +1549,8 @@ void func_80B56DEC(EnZl3* this) {
 }
 
 void func_80B56E38(EnZl3* this, PlayState* play) {
-    s32 pad[2];
-    s32 sfxId;
+    s32        pad[2];
+    s32        sfxId;
     SkelAnime* sp20 = &this->skelAnime;
 
     if ((Animation_OnFrame(sp20, 6.0f) || Animation_OnFrame(sp20, 0.0f)) && (this->actor.bgCheckFlags & 1)) {
@@ -1570,7 +1569,7 @@ s32 func_80B56EE4(EnZl3* this, PlayState* play) {
 }
 
 void func_80B56F10(EnZl3* this, PlayState* play) {
-    s32 waypoint;
+    s32   waypoint;
     Path* pathHead = play->setupPathList;
 
     if (pathHead != NULL) {
@@ -1595,7 +1594,7 @@ s32 func_80B56F8C(EnZl3* this, s32 arg1) {
 
 Vec3s* func_80B56FAC(EnZl3* this, s32 arg1) {
     Vec3s* point;
-    Path* pathList = this->unk_30C;
+    Path*  pathList = this->unk_30C;
 
     if ((pathList != NULL) && func_80B56F8C(this, arg1)) {
         point = &((Vec3s*)SEGMENTED_TO_VIRTUAL(pathList->points))[arg1];
@@ -1655,7 +1654,7 @@ s32 func_80B571FC(EnZl3* this) {
 }
 
 void func_80B57240(EnZl3* this) {
-    s32 temp_a1 = func_80B571FC(this);
+    s32  temp_a1 = func_80B571FC(this);
     s16* rotY = &this->actor.world.rot.y;
 
     Math_SmoothStepToS(rotY, temp_a1, 2, 6400, 1000);
@@ -1664,7 +1663,7 @@ void func_80B57240(EnZl3* this) {
 
 void func_80B57298(EnZl3* this) {
     s16* rotY = &this->actor.world.rot.y;
-    s16 temp_a1 = func_80B571A8(this);
+    s16  temp_a1 = func_80B571A8(this);
 
     Math_SmoothStepToS(rotY, temp_a1, 2, 6400, 1000);
     this->actor.shape.rot.y = *rotY;
@@ -1710,10 +1709,10 @@ s32 func_80B573C8(EnZl3* this, PlayState* play) {
 
 s32 func_80B573FC(EnZl3* this, PlayState* play, f32 arg2) {
     Player* player = GET_PLAYER(play);
-    f32 playerX = player->actor.world.pos.x;
-    f32 playerZ = player->actor.world.pos.z;
-    f32 thisX = this->actor.world.pos.x;
-    f32 thisZ = this->actor.world.pos.z;
+    f32     playerX = player->actor.world.pos.x;
+    f32     playerZ = player->actor.world.pos.z;
+    f32     thisX = this->actor.world.pos.x;
+    f32     thisZ = this->actor.world.pos.z;
 
     if (SQ(playerX - thisX) + SQ(playerZ - thisZ) < SQ(arg2)) {
         return 1;
@@ -1722,18 +1721,18 @@ s32 func_80B573FC(EnZl3* this, PlayState* play, f32 arg2) {
 }
 
 s32 func_80B57458(EnZl3* this, PlayState* play) {
-    Vec3f* thisPos = &this->actor.world.pos;
-    f32 thisX = thisPos->x;
-    f32 thisZ = thisPos->z;
+    Vec3f*  thisPos = &this->actor.world.pos;
+    f32     thisX = thisPos->x;
+    f32     thisZ = thisPos->z;
     Player* player = GET_PLAYER(play);
-    Vec3f* playerPos = &player->actor.world.pos;
-    s32 pad;
-    f32 playerX = playerPos->x;
-    f32 playerZ = playerPos->z;
-    f32 temp_f12 = playerX - thisX;
-    f32 temp_f13 = playerZ - thisZ;
-    s16 temp_v0;
-    s16 temp_v1 = func_80B571A8(this);
+    Vec3f*  playerPos = &player->actor.world.pos;
+    s32     pad;
+    f32     playerX = playerPos->x;
+    f32     playerZ = playerPos->z;
+    f32     temp_f12 = playerX - thisX;
+    f32     temp_f13 = playerZ - thisZ;
+    s16     temp_v0;
+    s16     temp_v1 = func_80B571A8(this);
 
     if (temp_f12 == 0.0f && temp_f13 == 0.0f) {
         return 1;
@@ -1811,19 +1810,19 @@ void func_80B5772C(EnZl3* this, PlayState* play) {
 
 void func_80B57754(EnZl3* this, PlayState* play) {
     if (gSaveContext.magicState == 0) {
-        Actor_Spawn(&play->actorCtx, play, ACTOR_OCEFF_WIPE4, this->actor.world.pos.x,
-                    this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 1, true);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_OCEFF_WIPE4, this->actor.world.pos.x, this->actor.world.pos.y,
+                    this->actor.world.pos.z, 0, 0, 0, 1, true);
         func_80B56DA4(this);
     }
 }
 
 void func_80B577BC(PlayState* play, Vec3f* vec) {
-    s32 pad;
+    s32     pad;
     Player* player = GET_PLAYER(play);
-    Vec3f* playerPos = &player->actor.world.pos;
-    f32 posX = vec->x;
-    f32 posY = vec->y;
-    f32 posZ = vec->z;
+    Vec3f*  playerPos = &player->actor.world.pos;
+    f32     posX = vec->x;
+    f32     posY = vec->y;
+    f32     posZ = vec->z;
 
     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TEST, posX, posY, posZ, 0,
                 (Math_FAtan2F(playerPos->x - posX, playerPos->z - posZ) * (0x8000 / M_PI)), 0, 5, true);
@@ -1835,8 +1834,8 @@ void func_80B57858(PlayState* play) {
 }
 
 s32 func_80B57890(EnZl3* this, PlayState* play) {
-    s8 pad[2];
-    u8 curSpawn = play->curSpawn;
+    s8  pad[2];
+    u8  curSpawn = play->curSpawn;
     s16 sceneNum = play->sceneNum;
     s32 result = func_80B54DB4(this);
 
@@ -1903,14 +1902,14 @@ void func_80B57AAC(EnZl3* this, s32 arg1, AnimationHeader* arg2) {
 }
 
 void func_80B57AE0(EnZl3* this, PlayState* play) {
-    s32 pad;
-    s16 shapeRotY = this->actor.shape.rot.y;
-    s32 pad2;
+    s32    pad;
+    s16    shapeRotY = this->actor.shape.rot.y;
+    s32    pad2;
     Vec3f* unk_354 = &this->unk_354;
     Vec3f* unk_348 = &this->unk_348;
     Vec3s* temp_v0;
-    f32 xDiff;
-    f32 zDiff;
+    f32    xDiff;
+    f32    zDiff;
 
     this->unk_344 = 0;
     this->unk_314 += 1;
@@ -1954,7 +1953,7 @@ void func_80B57CB4(EnZl3* this, PlayState* play) {
     Vec3f* unk_348 = &this->unk_348;
     Vec3f* unk_354 = &this->unk_354;
     Vec3f* thisPos = &this->actor.world.pos;
-    f32 temp_f0;
+    f32    temp_f0;
 
     this->unk_344 += 1;
     temp_f0 = Environment_LerpWeightAccelDecel(this->unk_346, 0, this->unk_344, 3, 3);
@@ -1968,14 +1967,14 @@ void func_80B57D60(EnZl3* this, PlayState* play) {
 }
 
 s32 func_80B57D80(EnZl3* this, PlayState* play) {
-    s32 pad;
-    s16* sp32 = &this->actor.shape.rot.y;
+    s32              pad;
+    s16*             sp32 = &this->actor.shape.rot.y;
     NpcInteractInfo* interactInfo = &this->interactInfo;
-    Player* player = GET_PLAYER(play);
-    s32 unk_314 = this->unk_314;
-    s16 temp_v0 = func_80B57104(this, unk_314);
-    s32 pad2;
-    s16 phi_v1;
+    Player*          player = GET_PLAYER(play);
+    s32              unk_314 = this->unk_314;
+    s16              temp_v0 = func_80B57104(this, unk_314);
+    s32              pad2;
+    s16              phi_v1;
 
     interactInfo->trackPos.y = player->actor.world.pos.y;
     interactInfo->trackPos.x = (Math_SinS(temp_v0) * this->actor.xzDistToPlayer) + this->actor.world.pos.x;
@@ -2028,9 +2027,9 @@ s32 func_80B57F84(EnZl3* this, PlayState* play) {
 }
 
 void func_80B58014(EnZl3* this, PlayState* play) {
-    s32 pad;
+    s32     pad;
     Player* player = GET_PLAYER(play);
-    s8 invincibilityTimer = player->invincibilityTimer;
+    s8      invincibilityTimer = player->invincibilityTimer;
 
     if (func_80B57324(this, play)) {
         func_80B54E14(this, &gZelda2Anime2Anim_003FF8, 0, -11.0f, 0);
@@ -2072,7 +2071,7 @@ void func_80B58214(EnZl3* this, PlayState* play) {
 
 void func_80B58268(EnZl3* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s8 invincibilityTimer = player->invincibilityTimer;
+    s8      invincibilityTimer = player->invincibilityTimer;
 
     if ((invincibilityTimer <= 0) && (player->fallDistance <= 50)) {
         func_80B54E14(this, &gZelda2Anime2Anim_009FBC, 0, -11.0f, 0);
@@ -2083,7 +2082,7 @@ void func_80B58268(EnZl3* this, PlayState* play) {
 
 void func_80B582C8(EnZl3* this, PlayState* play) {
     f32* unk_3CC = &this->unk_3CC;
-    s32 pad;
+    s32  pad;
 
     if (*unk_3CC == kREG(14) + 10.0f) {
         *unk_3CC += 1.0f;
@@ -2108,10 +2107,10 @@ void func_80B582C8(EnZl3* this, PlayState* play) {
 }
 
 void func_80B584B4(EnZl3* this, PlayState* play) {
-    s32 pad;
+    s32     pad;
     Player* player = GET_PLAYER(play);
-    s8 invincibilityTimer = player->invincibilityTimer;
-    Actor* nearbyEnTest = Actor_FindNearby(play, &this->actor, -1, ACTORCAT_ENEMY, 8000.0f);
+    s8      invincibilityTimer = player->invincibilityTimer;
+    Actor*  nearbyEnTest = Actor_FindNearby(play, &this->actor, -1, ACTORCAT_ENEMY, 8000.0f);
 
     if (D_80B5A4BC == 0) {
         if ((nearbyEnTest == NULL) && (!Play_InCsMode(play))) {
@@ -2136,7 +2135,7 @@ void func_80B584B4(EnZl3* this, PlayState* play) {
 }
 
 void func_80B58624(EnZl3* this, PlayState* play) {
-    s32 pad[4];
+    s32  pad[4];
     f32* unk_3CC = &this->unk_3CC;
 
     if (*unk_3CC == (kREG(18) + 10.0f)) {
@@ -2200,7 +2199,7 @@ s32 func_80B58938(EnZl3* this, PlayState* play) {
 s32 func_80B5899C(EnZl3* this, PlayState* play) {
     if ((this->actor.bgCheckFlags & 1)) {
         Player* player = GET_PLAYER(play);
-        s8 invincibilityTimer = player->invincibilityTimer;
+        s8      invincibilityTimer = player->invincibilityTimer;
 
         if ((invincibilityTimer > 0) || (player->fallDistance >= 0x33)) {
             func_80B54E14(this, &gZelda2Anime2Anim_007664, 2, -11.0f, 0);
@@ -2220,7 +2219,7 @@ void func_80B58A1C(EnZl3* this, PlayState* play) {
 
 void func_80B58A50(EnZl3* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s8 invincibilityTimer = player->invincibilityTimer;
+    s8      invincibilityTimer = player->invincibilityTimer;
 
     if ((invincibilityTimer <= 0) && (player->fallDistance <= 50)) {
         func_80B54E14(this, &gZelda2Anime2Anim_009BE4, 0, -11.0f, 0);
@@ -2246,14 +2245,14 @@ void func_80B58AAC(EnZl3* this, PlayState* play) {
 }
 
 void func_80B58C08(EnZl3* this, PlayState* play) {
-    s32 pad[2];
+    s32    pad[2];
     Vec3f* unk_348 = &this->unk_348;
     Vec3f* unk_354 = &this->unk_354;
     Vec3f* thisPos = &this->actor.world.pos;
-    s32 unk_344;
-    s32 unk_346;
-    s32 sp28;
-    f32 temp_f0;
+    s32    unk_344;
+    s32    unk_346;
+    s32    sp28;
+    f32    temp_f0;
 
     this->unk_344 += 1;
 
@@ -2443,8 +2442,7 @@ void func_80B593D0(EnZl3* this, PlayState* play) {
     func_80B58C08(this, play);
 }
 
-s32 func_80B5944C(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
-                  Gfx** gfx) {
+s32 func_80B5944C(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx, Gfx** gfx) {
     if (limbIndex == 14) {
         Mtx* mtx = Graph_Alloc(play->state.gfxCtx, sizeof(Mtx) * 7);
         EnZl3* this = (EnZl3*)thisx;
@@ -2616,10 +2614,10 @@ void func_80B59B6C(EnZl3* this, PlayState* play) {
 }
 
 void func_80B59DB8(EnZl3* this, PlayState* play) {
-    s32 pad;
+    s32            pad;
     ObjectContext* objCtx = &play->objectCtx;
-    s32 objIndex = Object_GetIndex(objCtx, OBJECT_ZL2_ANIME2);
-    s32 pad2;
+    s32            objIndex = Object_GetIndex(objCtx, OBJECT_ZL2_ANIME2);
+    s32            pad2;
 
     if (objIndex < 0) {
         osSyncPrintf(VT_FGCOL(RED) "En_Zl3_main_bankアニメーションのバンクを読めない!!!!!!!!!!!!\n" VT_RST);
@@ -2655,7 +2653,7 @@ void EnZl3_Update(Actor* thisx, PlayState* play) {
 void EnZl3_Init(Actor* thisx, PlayState* play) {
     EnZl3* this = (EnZl3*)thisx;
     ActorShape* shape = &this->actor.shape;
-    s32 pad;
+    s32         pad;
 
     osSyncPrintf("ゼルダ姫のEn_Zl3_Actor_ct通すよ!!!!!!!!!!!!!!!!!!!!!!!!!\n");
     ActorShape_Init(shape, 0.0f, ActorShadow_DrawCircle, 30.0f);
@@ -2696,13 +2694,13 @@ void func_80B59FE8(EnZl3* this, PlayState* play) {
 }
 
 void func_80B59FF4(EnZl3* this, PlayState* play) {
-    s32 pad[2];
-    s16 eyeTexIndex = this->eyeTexIndex;
-    void* eyeTex = sEyeTextures[eyeTexIndex];
-    s16 mouthTexIndex = this->mouthTexIndex;
+    s32        pad[2];
+    s16        eyeTexIndex = this->eyeTexIndex;
+    void*      eyeTex = sEyeTextures[eyeTexIndex];
+    s16        mouthTexIndex = this->mouthTexIndex;
     SkelAnime* skelAnime = &this->skelAnime;
-    void* mouthTex = sMouthTextures[mouthTexIndex];
-    s32 pad2;
+    void*      mouthTex = sMouthTextures[mouthTexIndex];
+    s32        pad2;
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -2721,13 +2719,13 @@ void func_80B59FF4(EnZl3* this, PlayState* play) {
 }
 
 void func_80B5A1D0(EnZl3* this, PlayState* play) {
-    s32 pad[2];
-    s16 eyeTexIndex = this->eyeTexIndex;
-    void* eyeTex = sEyeTextures[eyeTexIndex];
-    s16 mouthTexIndex = this->mouthTexIndex;
+    s32        pad[2];
+    s16        eyeTexIndex = this->eyeTexIndex;
+    void*      eyeTex = sEyeTextures[eyeTexIndex];
+    s16        mouthTexIndex = this->mouthTexIndex;
     SkelAnime* skelAnime = &this->skelAnime;
-    void* mouthTex = sMouthTextures[mouthTexIndex];
-    s32 pad2;
+    void*      mouthTex = sMouthTextures[mouthTexIndex];
+    s32        pad2;
 
     OPEN_DISPS(play->state.gfxCtx);
 

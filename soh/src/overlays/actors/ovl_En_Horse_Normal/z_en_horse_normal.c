@@ -12,11 +12,11 @@
 
 typedef struct {
     Vec3s pos;
-    u8 unk_06; // this may be a s16 if the always-0 following byte is actually not padding
+    u8    unk_06; // this may be a s16 if the always-0 following byte is actually not padding
 } EnHorseNormalUnkStruct1;
 
 typedef struct {
-    s32 len;
+    s32                      len;
     EnHorseNormalUnkStruct1* items;
 } EnHorseNormalUnkStruct2;
 
@@ -162,7 +162,7 @@ void func_80A6B250(EnHorseNormal* this) {
 
 f32 func_80A6B30C(EnHorseNormal* this) {
     static f32 D_80A6D4C8[] = { 1.0f, 1.0f, 1.0f, 1.0f, 1.5f, 1.5f, 1.5f, 1.5f, 1.0f };
-    f32 result;
+    f32        result;
 
     if (this->animationIdx == 4) {
         result = D_80A6D4C8[this->animationIdx] * this->actor.speedXZ * (1 / 2.0f);
@@ -287,11 +287,11 @@ void func_80A6B91C(EnHorseNormal* this, PlayState* play) {
 }
 
 void EnHorseNormal_FollowPath(EnHorseNormal* this, PlayState* play) {
-    Path* path = &play->setupPathList[this->actor.params & 0xF];
+    Path*  path = &play->setupPathList[this->actor.params & 0xF];
     Vec3s* pointPos = SEGMENTED_TO_VIRTUAL(path->points);
-    f32 dx;
-    f32 dz;
-    s32 pad;
+    f32    dx;
+    f32    dz;
+    s32    pad;
 
     pointPos += this->waypoint;
     dx = pointPos->x - this->actor.world.pos.x;
@@ -367,8 +367,8 @@ void func_80A6BD7C(EnHorseNormal* this) {
 void EnHorseNormal_Wander(EnHorseNormal* this, PlayState* play) {
     static s32 D_80A6D4F4[] = { 0, 1, 4, 5, 6, 2, 3 };
     static s32 D_80A6D510[] = { 0, 0, 2, 2, 1, 1, 1, 3, 3 };
-    s32 phi_t0 = this->animationIdx;
-    s32 pad;
+    s32        phi_t0 = this->animationIdx;
+    s32        pad;
 
     switch (D_80A6D510[this->animationIdx]) {
         case 0:
@@ -547,11 +547,11 @@ void EnHorseNormal_WaitClone(EnHorseNormal* this, PlayState* play) {
 }
 
 void func_80A6C8E0(EnHorseNormal* this, PlayState* play) {
-    s32 pad;
+    s32            pad;
     CollisionPoly* sp38;
-    s32 pad2;
-    Vec3f sp28;
-    s32 sp24;
+    s32            pad2;
+    Vec3f          sp28;
+    s32            sp24;
 
     sp28.x = (Math_SinS(this->actor.shape.rot.y) * 30.0f) + this->actor.world.pos.x;
     sp28.y = this->actor.world.pos.y + 60.0f;
@@ -646,12 +646,12 @@ void EnHorseNormal_Draw(Actor* thisx, PlayState* play) {
     func_800A6330(&this->actor, play, &this->skin, EnHorseNormal_PostDraw, true);
 
     if (this->action == HORSE_WAIT_CLONE) {
-        MtxF skinMtx;
-        Mtx* mtx1;
+        MtxF  skinMtx;
+        Mtx*  mtx1;
         Vec3f clonePos = { 0.0f, 0.0f, 0.0f };
-        s16 cloneRotY;
-        f32 distFromGround = this->actor.world.pos.y - this->actor.floorHeight;
-        f32 temp_f0_4;
+        s16   cloneRotY;
+        f32   distFromGround = this->actor.world.pos.y - this->actor.floorHeight;
+        f32   temp_f0_4;
 
         if (play->sceneNum == SCENE_MALON_STABLE) {
             if (this->actor.world.pos.x == 355.0f && this->actor.world.pos.y == 0.0f &&

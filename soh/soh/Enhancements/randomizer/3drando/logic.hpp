@@ -113,7 +113,7 @@ extern bool SpiritTrialClear;
 extern bool ShadowTrialClear;
 extern bool LightTrialClear;
 
-//Greg
+// Greg
 extern bool Greg;
 
 // Progression Items
@@ -157,7 +157,7 @@ extern uint8_t GoldSkulltulaTokens;
 // Bottle Count, with and without Ruto's Letter
 extern uint8_t Bottles;
 extern uint8_t NumBottles;
-extern bool NoBottles;
+extern bool    NoBottles;
 
 // item and bottle drops
 extern bool DekuNutDrop;
@@ -195,7 +195,7 @@ extern bool MagicRefill;
 
 extern uint8_t PieceOfHeart;
 extern uint8_t HeartContainer;
-extern bool DoubleDefense;
+extern bool    DoubleDefense;
 
 /* --- HELPERS --- */
 /* These are used to simplify reading the logic, but need to be updated
@@ -294,9 +294,9 @@ extern bool BuiltRainbowBridge;
 extern bool CanTriggerLACS;
 
 // Other
-extern bool AtDay;
-extern bool AtNight;
-extern bool LinksCow;
+extern bool    AtDay;
+extern bool    AtNight;
+extern bool    LinksCow;
 extern uint8_t Age;
 
 // Events

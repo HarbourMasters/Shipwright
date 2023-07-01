@@ -4,19 +4,18 @@
 #include "libultraship/libultraship.h"
 
 namespace LUS {
-std::shared_ptr<IResource>
-AudioSoundFontFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<AudioSoundFont>(initData);
+std::shared_ptr<IResource> AudioSoundFontFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
+                                                               std::shared_ptr<BinaryReader>     reader) {
+    auto                                    resource = std::make_shared<AudioSoundFont>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
     switch (resource->GetInitData()->ResourceVersion) {
-    case 2:
-	factory = std::make_shared<AudioSoundFontFactoryV0>();
-	break;
+        case 2:
+            factory = std::make_shared<AudioSoundFontFactoryV0>();
+            break;
     }
 
-    if (factory == nullptr)
-    {
+    if (factory == nullptr) {
         SPDLOG_ERROR("Failed to load AudioSoundFont with version {}", resource->GetInitData()->ResourceVersion);
         return nullptr;
     }
@@ -27,14 +26,14 @@ AudioSoundFontFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, 
 }
 
 void LUS::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                                    std::shared_ptr<IResource> resource) {
+                                                   std::shared_ptr<IResource>    resource) {
     std::shared_ptr<AudioSoundFont> audioSoundFont = std::static_pointer_cast<AudioSoundFont>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, audioSoundFont);
 
     audioSoundFont->soundFont.fntIndex = reader->ReadInt32();
     audioSoundFont->medium = reader->ReadInt8();
     audioSoundFont->cachePolicy = reader->ReadInt8();
-    
+
     audioSoundFont->data1 = reader->ReadUInt16();
     audioSoundFont->soundFont.sampleBankId1 = audioSoundFont->data1 >> 8;
     audioSoundFont->soundFont.sampleBankId2 = audioSoundFont->data1 & 0xFF;
@@ -44,10 +43,10 @@ void LUS::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader>
 
     uint32_t drumCount = reader->ReadUInt32();
     audioSoundFont->soundFont.numDrums = drumCount;
-    
+
     uint32_t instrumentCount = reader->ReadUInt32();
     audioSoundFont->soundFont.numInstruments = instrumentCount;
-    
+
     uint32_t soundEffectCount = reader->ReadUInt32();
     audioSoundFont->soundFont.numSfx = soundEffectCount;
 
@@ -67,7 +66,7 @@ void LUS::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader>
         drumEnvelopes.reserve(audioSoundFont->drumEnvelopeCounts[i]);
         for (uint32_t j = 0; j < audioSoundFont->drumEnvelopeCounts.back(); j++) {
             AdsrEnvelope env;
-            
+
             int16_t delay = reader->ReadInt16();
             int16_t arg = reader->ReadInt16();
 
@@ -79,7 +78,7 @@ void LUS::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader>
         audioSoundFont->drumEnvelopeArrays.push_back(drumEnvelopes);
         drum.envelope = audioSoundFont->drumEnvelopeArrays.back().data();
 
-        bool hasSample = reader->ReadInt8();
+        bool        hasSample = reader->ReadInt8();
         std::string sampleFileName = reader->ReadString();
         drum.sound.tuning = reader->ReadFloat();
 
@@ -127,7 +126,7 @@ void LUS::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader>
 
         bool hasLowNoteSoundFontEntry = reader->ReadInt8();
         if (hasLowNoteSoundFontEntry) {
-            bool hasSampleRef = reader->ReadInt8();
+            bool        hasSampleRef = reader->ReadInt8();
             std::string sampleFileName = reader->ReadString();
             instrument.lowNotesSound.tuning = reader->ReadFloat();
             auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(sampleFileName.c_str());
@@ -139,7 +138,7 @@ void LUS::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader>
 
         bool hasNormalNoteSoundFontEntry = reader->ReadInt8();
         if (hasNormalNoteSoundFontEntry) {
-            bool hasSampleRef = reader->ReadInt8();
+            bool        hasSampleRef = reader->ReadInt8();
             std::string sampleFileName = reader->ReadString();
             instrument.normalNotesSound.tuning = reader->ReadFloat();
             auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(sampleFileName.c_str());
@@ -151,7 +150,7 @@ void LUS::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader>
 
         bool hasHighNoteSoundFontEntry = reader->ReadInt8();
         if (hasHighNoteSoundFontEntry) {
-            bool hasSampleRef = reader->ReadInt8();
+            bool        hasSampleRef = reader->ReadInt8();
             std::string sampleFileName = reader->ReadString();
             instrument.highNotesSound.tuning = reader->ReadFloat();
             auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(sampleFileName.c_str());
@@ -161,11 +160,8 @@ void LUS::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader>
             instrument.highNotesSound.tuning = 0;
         }
 
-        
         audioSoundFont->instruments.push_back(instrument);
-        audioSoundFont->instrumentAddresses.push_back(isValidEntry ? 
-                                                      &audioSoundFont->instruments.back() :
-                                                      nullptr);
+        audioSoundFont->instrumentAddresses.push_back(isValidEntry ? &audioSoundFont->instruments.back() : nullptr);
     }
     audioSoundFont->soundFont.instruments = audioSoundFont->instrumentAddresses.data();
 
@@ -176,13 +172,13 @@ void LUS::AudioSoundFontFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader>
 
         bool hasSFEntry = reader->ReadInt8();
         if (hasSFEntry) {
-            bool hasSampleRef = reader->ReadInt8();
+            bool        hasSampleRef = reader->ReadInt8();
             std::string sampleFileName = reader->ReadString();
             soundEffect.tuning = reader->ReadFloat();
             auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResourceProcess(sampleFileName.c_str());
             soundEffect.sample = static_cast<Sample*>(res ? res->GetRawPointer() : nullptr);
         }
-        
+
         audioSoundFont->soundEffects.push_back(soundEffect);
     }
     audioSoundFont->soundFont.soundEffects = audioSoundFont->soundEffects.data();

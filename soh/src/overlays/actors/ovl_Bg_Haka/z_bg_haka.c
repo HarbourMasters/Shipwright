@@ -40,7 +40,7 @@ static InitChainEntry sInitChain[] = {
 
 void BgHaka_Init(Actor* thisx, PlayState* play) {
     BgHaka* this = (BgHaka*)thisx;
-    s32 pad;
+    s32              pad;
     CollisionHeader* colHeader = NULL;
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
@@ -91,7 +91,7 @@ void func_8087B7E8(BgHaka* this, PlayState* play) {
 
 void func_8087B938(BgHaka* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 sp38;
+    s32     sp38;
 
     this->dyna.actor.speedXZ += 0.05f;
     this->dyna.actor.speedXZ = CLAMP_MAX(this->dyna.actor.speedXZ, 1.5f);
@@ -103,7 +103,7 @@ void func_8087B938(BgHaka* this, PlayState* play) {
     if (sp38 != 0) {
         this->dyna.unk_150 = 0.0f;
         this->state = 1;
-        u8 allPulled = 1;
+        u8     allPulled = 1;
         Actor* actor = play->actorCtx.actorLists[ACTORCAT_BG].head;
 
         while (actor != NULL) {
@@ -117,9 +117,8 @@ void func_8087B938(BgHaka* this, PlayState* play) {
         if (this->dyna.actor.params == 1) {
             func_80078884(NA_SE_SY_CORRECT_CHIME);
         } else if (!IS_DAY && play->sceneNum == SCENE_SPOT02) {
-            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_POH, this->dyna.actor.home.pos.x,
-                        this->dyna.actor.home.pos.y, this->dyna.actor.home.pos.z, 0, this->dyna.actor.shape.rot.y, 0,
-                        1, true);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_EN_POH, this->dyna.actor.home.pos.x, this->dyna.actor.home.pos.y,
+                        this->dyna.actor.home.pos.z, 0, this->dyna.actor.shape.rot.y, 0, 1, true);
         }
 
         // un tss un tss
@@ -152,7 +151,7 @@ void func_8087BAAC(BgHaka* this, PlayState* play) {
 
 void func_8087BAE4(BgHaka* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 pad;
+    s32     pad;
 
     if (this->dyna.actor.params != 0) {
         this->dyna.actor.params -= 1;
@@ -176,16 +175,16 @@ void BgHaka_Update(Actor* thisx, PlayState* play) {
 u16 graveHue = 0;
 
 void BgHaka_Draw(Actor* thisx, PlayState* play) {
-    u16 index = thisx->world.pos.x + thisx->world.pos.z;
-    float frequency = 0.01f;
+    u16        index = thisx->world.pos.x + thisx->world.pos.z;
+    float      frequency = 0.01f;
     Color_RGB8 newColor;
     newColor.r = sin(frequency * ((graveHue + index) % 360) + 0) * 127 + 128;
     newColor.g = sin(frequency * ((graveHue + index) % 360) + 2) * 127 + 128;
     newColor.b = sin(frequency * ((graveHue + index) % 360) + 4) * 127 + 128;
 
     graveHue++;
-    if (graveHue >= 360) graveHue = 0;
-
+    if (graveHue >= 360)
+        graveHue = 0;
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -207,15 +206,13 @@ void BgHaka_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gGravestoneStoneDL);
     if (((BgHaka*)thisx)->state == 2) {
         gSPGrayscale(POLY_OPA_DISP++, false);
     }
     Matrix_Translate(0.0f, 0.0f, thisx->minVelocityY * 10.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gGravestoneEarthDL);
 
     CLOSE_DISPS(play->state.gfxCtx);

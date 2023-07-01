@@ -10,7 +10,7 @@
 #define rScale regs[0]
 #define rTexIdx regs[1]
 
-u32 EffectSsBomb_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsBomb_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsBomb_Draw(PlayState* play, u32 index, EffectSs* this);
 void EffectSsBomb_Update(PlayState* play, u32 index, EffectSs* this);
 
@@ -43,14 +43,14 @@ void EffectSsBomb_Draw(PlayState* play, u32 index, EffectSs* this) {
         gEffBombExplosion4Tex,
     };
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    MtxF mfTrans;
-    MtxF mfScale;
-    MtxF mfResult;
-    MtxF mfTrans11DA0;
-    Mtx* mtx;
-    s32 pad;
-    f32 scale;
-    s16 color;
+    MtxF             mfTrans;
+    MtxF             mfScale;
+    MtxF             mfResult;
+    MtxF             mfTrans11DA0;
+    Mtx*             mtx;
+    s32              pad;
+    f32              scale;
+    s16              color;
 
     OPEN_DISPS(gfxCtx);
 

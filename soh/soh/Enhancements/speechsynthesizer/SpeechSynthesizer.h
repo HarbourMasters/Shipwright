@@ -15,8 +15,8 @@ class SpeechSynthesizer {
     static SpeechSynthesizer* Instance;
     SpeechSynthesizer();
 
-    bool Init(void);
-    void Uninitialize(void);
+    bool         Init(void);
+    void         Uninitialize(void);
     virtual void Speak(const char* text, const char* language) = 0;
 
     bool IsInitialized(void);

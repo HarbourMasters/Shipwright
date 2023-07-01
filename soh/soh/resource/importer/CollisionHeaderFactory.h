@@ -6,8 +6,8 @@
 namespace LUS {
 class CollisionHeaderFactory : public ResourceFactory {
   public:
-    std::shared_ptr<IResource>
-    ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) override;
+    std::shared_ptr<IResource> ReadResource(std::shared_ptr<ResourceInitData> initData,
+                                            std::shared_ptr<BinaryReader>     reader) override;
 };
 
 class CollisionHeaderFactoryV0 : public ResourceVersionFactory {

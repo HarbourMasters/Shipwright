@@ -9,8 +9,8 @@
 
 namespace LUS {
 typedef struct {
-  uint8_t skyboxDisabled;
-  uint8_t sunMoonDisabled;
+    uint8_t skyboxDisabled;
+    uint8_t sunMoonDisabled;
 } SkyboxModifier;
 
 class SetSkyboxModifier : public SceneCommand<SkyboxModifier> {
@@ -18,7 +18,7 @@ class SetSkyboxModifier : public SceneCommand<SkyboxModifier> {
     using SceneCommand::SceneCommand;
 
     SkyboxModifier* GetPointer();
-    size_t GetPointerSize();
+    size_t          GetPointerSize();
 
     SkyboxModifier modifier;
 };

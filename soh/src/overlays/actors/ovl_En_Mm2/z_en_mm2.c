@@ -32,7 +32,7 @@ void EnMm2_Draw(Actor* thisx, PlayState* play);
 void func_80AAF3C0(EnMm2* this, PlayState* play);
 void func_80AAF57C(EnMm2* this, PlayState* play);
 void func_80AAF668(EnMm2* this, PlayState* play);
-s32 EnMm2_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx);
+s32  EnMm2_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx);
 void EnMm2_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx);
 
 const ActorInit En_Mm2_InitVars = {

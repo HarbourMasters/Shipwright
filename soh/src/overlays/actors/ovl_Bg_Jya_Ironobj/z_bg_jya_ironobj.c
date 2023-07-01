@@ -96,16 +96,16 @@ void BgJyaIronobj_InitCylinder(BgJyaIronobj* this, PlayState* play) {
  * Spawns particles for the destroyed pillar
  */
 void BgJyaIronobj_SpawnPillarParticles(BgJyaIronobj* this, PlayState* play, EnIk* enIk) {
-    s32 i;
-    s32 j;
-    s16 unkArg5;
-    f32 temp_f22;
+    s32   i;
+    s32   j;
+    s16   unkArg5;
+    f32   temp_f22;
     Vec3f pos;
     Vec3f vel;
-    f32 coss;
-    s16 rotY;
-    f32 sins;
-    s32 pad[2];
+    f32   coss;
+    s16   rotY;
+    f32   sins;
+    s32   pad[2];
 
     if (enIk->unk_2FF <= 0 || enIk->unk_2FF >= 4) {
         osSyncPrintf("Error 攻撃方法が分からない(%s %d)\n", __FILE__, __LINE__, enIk->unk_2FF);
@@ -147,8 +147,8 @@ void BgJyaIronobj_SpawnPillarParticles(BgJyaIronobj* this, PlayState* play, EnIk
         vel.x = 2.0f * ((Rand_ZeroOne() * 6.0f) - 3.0f) + (Rand_ZeroOne() * sins * 8.0f * temp_f22);
         vel.y = (Rand_ZeroOne() * 8.0f) - 3.0f;
         vel.z = 2.0f * ((Rand_ZeroOne() * 6.0f) - 3.0f) + (Rand_ZeroOne() * coss * 8.0f * temp_f22);
-        EffectSsKakera_Spawn(play, &pos, &vel, &pos, -350, unkArg5, D_80899500[j & 7], 4, 0, D_808994E0[j & 7], 0,
-                             5, D_808994F0[j & 7], -1, OBJECT_JYA_IRON, gObjectJyaIronDL_000880);
+        EffectSsKakera_Spawn(play, &pos, &vel, &pos, -350, unkArg5, D_80899500[j & 7], 4, 0, D_808994E0[j & 7], 0, 5,
+                             D_808994F0[j & 7], -1, OBJECT_JYA_IRON, gObjectJyaIronDL_000880);
         if (Rand_ZeroOne() < 0.26f) {
             func_80033480(play, &pos, 200.0f, 1, D_808994E0[j & 7] * 4 + 60, D_808994E0[j & 7] * 4 + 80, 1);
         }
@@ -159,16 +159,16 @@ void BgJyaIronobj_SpawnPillarParticles(BgJyaIronobj* this, PlayState* play, EnIk
  * Spawns particles for the destroyed throne
  */
 void BgJyaIronobj_SpawnThoneParticles(BgJyaIronobj* this, PlayState* play, EnIk* enIk) {
-    s32 i;
-    s32 j;
-    s16 unkArg5;
-    f32 temp_f22;
+    s32   i;
+    s32   j;
+    s16   unkArg5;
+    f32   temp_f22;
     Vec3f pos;
     Vec3f vel;
-    f32 coss;
-    s16 rotY;
-    f32 sins;
-    s32 pad[2];
+    f32   coss;
+    s16   rotY;
+    f32   sins;
+    s32   pad[2];
 
     if (enIk->unk_2FF <= 0 || enIk->unk_2FF >= 4) {
         osSyncPrintf("Error 攻撃方法が分からない(%s %d)\n", __FILE__, __LINE__, enIk->unk_2FF);
@@ -216,7 +216,7 @@ void BgJyaIronobj_SpawnThoneParticles(BgJyaIronobj* this, PlayState* play, EnIk*
 
 void BgJyaIronobj_Init(Actor* thisx, PlayState* play) {
     BgJyaIronobj* this = (BgJyaIronobj*)thisx;
-    s32 pad;
+    s32              pad;
     CollisionHeader* colHeader = NULL;
 
     DynaPolyActor_Init(&this->dyna, 0);
@@ -240,17 +240,16 @@ void func_808992D8(BgJyaIronobj* this) {
 
 void func_808992E8(BgJyaIronobj* this, PlayState* play) {
     static BgJyaIronobjIkFunc particleFunc[] = { BgJyaIronobj_SpawnPillarParticles, BgJyaIronobj_SpawnThoneParticles };
-    Actor* actor;
-    Vec3f dropPos;
-    s32 i;
+    Actor*                    actor;
+    Vec3f                     dropPos;
+    s32                       i;
 
     if (this->colCylinder.base.acFlags & AC_HIT) {
         actor = this->colCylinder.base.ac;
         this->colCylinder.base.acFlags &= ~AC_HIT;
         if (actor != NULL && actor->id == ACTOR_EN_IK) {
             particleFunc[this->dyna.actor.params & 1](this, play, (EnIk*)actor);
-            SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 80,
-                                               NA_SE_EN_IRONNACK_BREAK_PILLAR);
+            SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 80, NA_SE_EN_IRONNACK_BREAK_PILLAR);
             dropPos.x = this->dyna.actor.world.pos.x;
             dropPos.y = this->dyna.actor.world.pos.y + 20.0f;
             dropPos.z = this->dyna.actor.world.pos.z;

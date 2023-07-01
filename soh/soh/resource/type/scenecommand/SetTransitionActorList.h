@@ -12,8 +12,8 @@
 namespace LUS {
 typedef struct {
     struct {
-        s8 room;    // Room to switch to
-        s8 effects; // How the camera reacts during the transition
+        s8 room;           // Room to switch to
+        s8 effects;        // How the camera reacts during the transition
     } /* 0x00 */ sides[2]; // 0 = front, 1 = back
     /* 0x04 */ s16   id;
     /* 0x06 */ Vec3s pos;
@@ -26,9 +26,9 @@ class SetTransitionActorList : public SceneCommand<TransitionActorEntry> {
     using SceneCommand::SceneCommand;
 
     TransitionActorEntry* GetPointer();
-    size_t GetPointerSize();
+    size_t                GetPointerSize();
 
-    uint32_t numTransitionActors;
+    uint32_t                          numTransitionActors;
     std::vector<TransitionActorEntry> transitionActorList;
 };
 }; // namespace LUS

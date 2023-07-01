@@ -5,7 +5,7 @@
 #define LOG_SEVERITY_ERROR 2
 #define LOG_SEVERITY_VERBOSE 3
 
-s32 gZeldaArenaLogSeverity = LOG_SEVERITY_ERROR;
+s32   gZeldaArenaLogSeverity = LOG_SEVERITY_ERROR;
 Arena sZeldaArena;
 
 void ZeldaArena_CheckPointer(void* ptr, size_t size, const char* name, const char* action) {
@@ -70,12 +70,12 @@ void ZeldaArena_FreeDebug(void* ptr, const char* file, s32 line) {
 }
 
 void* ZeldaArena_Calloc(size_t num, size_t size) {
-    void* ret;
+    void*  ret;
     size_t n = num * size;
 
     ret = __osMalloc(&sZeldaArena, n);
     if (ret != NULL) {
-        memset(ret, 0,n);
+        memset(ret, 0, n);
     }
 
     ZeldaArena_CheckPointer(ret, n, "zelda_calloc", "確保");

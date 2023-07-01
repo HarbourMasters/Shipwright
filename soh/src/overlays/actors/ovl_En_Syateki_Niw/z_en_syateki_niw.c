@@ -221,16 +221,16 @@ void func_80B11DEC(EnSyatekiNiw* this, PlayState* play) {
 }
 
 void func_80B11E78(EnSyatekiNiw* this, PlayState* play) {
-    Vec3f dustVelocity = { 0.0f, 0.0f, 0.0f };
-    Vec3f dustAccel = { 0.0f, 0.2f, 0.0f };
+    Vec3f       dustVelocity = { 0.0f, 0.0f, 0.0f };
+    Vec3f       dustAccel = { 0.0f, 0.2f, 0.0f };
     Color_RGBA8 dustPrimColor = { 0, 0, 0, 255 };
     Color_RGBA8 dustEnvColor = { 0, 0, 0, 255 };
-    Vec3f dustPos;
-    f32 tmpf2;
-    f32 sp4C;
-    f32 sp50;
-    f32 tmpf1;
-    s16 sp4A;
+    Vec3f       dustPos;
+    f32         tmpf2;
+    f32         sp4C;
+    f32         sp50;
+    f32         tmpf1;
+    s16         sp4A;
 
     if ((this->unk_29C != 0) && (this->unk_29E == 0) && (this->actor.bgCheckFlags & 1)) {
         this->unk_29C = 0;
@@ -369,7 +369,7 @@ void func_80B123A8(EnSyatekiNiw* this, PlayState* play) {
 
 void func_80B12460(EnSyatekiNiw* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 phi_f16 = 0.0f;
+    f32     phi_f16 = 0.0f;
 
     player->actor.freezeTimer = 10;
     switch (this->unk_29A) {
@@ -577,8 +577,8 @@ void func_80B12BA4(EnSyatekiNiw* this, PlayState* play) {
 
 void EnSyatekiNiw_Update(Actor* thisx, PlayState* play) {
     EnSyatekiNiw* this = (EnSyatekiNiw*)thisx;
-    s32 pad;
-    s16 i;
+    s32   pad;
+    s16   i;
     Vec3f sp90 = { 0.0f, 0.0f, 0.0f };
     Vec3f sp84 = { 0.0f, 0.0f, 0.0f };
     Vec3f sp78;
@@ -669,8 +669,7 @@ void EnSyatekiNiw_Update(Actor* thisx, PlayState* play) {
     }
 }
 
-s32 SyatekiNiw_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                void* thisx) {
+s32 SyatekiNiw_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnSyatekiNiw* this = (EnSyatekiNiw*)thisx;
     Vec3f sp0 = { 0.0f, 0.0f, 0.0f };
 
@@ -703,15 +702,15 @@ void EnSyatekiNiw_Draw(Actor* thisx, PlayState* play) {
             func_80026230(play, &sp30, 0, 0x14);
         }
 
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, SyatekiNiw_OverrideLimbDraw, NULL, this);
+        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+                              SyatekiNiw_OverrideLimbDraw, NULL, this);
         func_80026608(play);
         func_80B13464(this, play);
     }
 }
 
 void func_80B131B8(EnSyatekiNiw* this, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4) {
-    s16 i;
+    s16             i;
     EnSyatekiNiw_1* ptr = &this->unk_348[0];
 
     for (i = 0; i < 5; i++, ptr++) {
@@ -731,7 +730,7 @@ void func_80B131B8(EnSyatekiNiw* this, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f3
 }
 
 void func_80B132A8(EnSyatekiNiw* this, PlayState* play) {
-    s16 i;
+    s16             i;
     EnSyatekiNiw_1* ptr = &this->unk_348[0];
 
     for (i = 0; i < 5; i++, ptr++) {
@@ -762,9 +761,9 @@ void func_80B132A8(EnSyatekiNiw* this, PlayState* play) {
 
 void func_80B13464(EnSyatekiNiw* this, PlayState* play) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    s16 i;
-    EnSyatekiNiw_1* ptr = &this->unk_348[0];
-    u8 flag = 0;
+    s16              i;
+    EnSyatekiNiw_1*  ptr = &this->unk_348[0];
+    u8               flag = 0;
 
     OPEN_DISPS(gfxCtx);
 
@@ -784,8 +783,7 @@ void func_80B13464(EnSyatekiNiw* this, PlayState* play) {
             Matrix_RotateZ(ptr->unk_30, MTXMODE_APPLY);
             Matrix_Translate(0.0f, -1000.0f, 0.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gCuccoEffectFeatherModelDL);
             FrameInterpolation_RecordCloseChild();
         }

@@ -29,13 +29,16 @@ typedef enum GetItemCategory {
     /* 0x05 */ ITEM_CATEGORY_MAJOR,
 } GetItemCategory;
 
-#define GET_ITEM(itemId, objectId, drawId, textId, field, chestAnim, itemCategory, modIndex, getItemId) \
-    { itemId, field, (chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1), textId, objectId, modIndex, getItemId, drawId, true, ITEM_FROM_NPC, itemCategory, NULL }
+#define GET_ITEM(itemId, objectId, drawId, textId, field, chestAnim, itemCategory, modIndex, getItemId)                \
+    {                                                                                                                  \
+        itemId, field, (chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1), textId, objectId, modIndex, getItemId, \
+            drawId, true, ITEM_FROM_NPC, itemCategory, NULL                                                            \
+    }
 
 #define GET_ITEM_NONE \
     { ITEM_NONE, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_JUNK, NULL }
 
-typedef struct PlayState PlayState;
+typedef struct PlayState    PlayState;
 typedef struct GetItemEntry GetItemEntry;
 
 typedef void (*CustomDrawFunc)(PlayState* play, GetItemEntry* getItemEntry);
@@ -43,16 +46,19 @@ typedef void (*CustomDrawFunc)(PlayState* play, GetItemEntry* getItemEntry);
 typedef struct GetItemEntry {
     /* 0x00 */ uint16_t itemId;
     /* 0x01 */ uint16_t field; // various bit-packed data
-    /* 0x02 */ int16_t gi;     // defines the draw id and chest opening animation
+    /* 0x02 */ int16_t  gi;    // defines the draw id and chest opening animation
     /* 0x03 */ uint16_t textId;
     /* 0x04 */ uint16_t objectId;
     /* 0x06 */ uint16_t modIndex; // 0 = Vanilla, 1 = Randomizer, future mods will increment up?
-    /* 0x08 */ int16_t getItemId;
+    /* 0x08 */ int16_t  getItemId;
     /* 0x0A */ uint16_t gid; // Stores the GID value unmodified for future reference.
-    /* 0x0C */ uint16_t collectable; // determines whether the item can be collected on the overworld. Will be true in most cases.
-    /* 0x0E */ GetItemFrom getItemFrom;
+    /* 0x0C */ uint16_t
+        collectable; // determines whether the item can be collected on the overworld. Will be true in most cases.
+    /* 0x0E */ GetItemFrom     getItemFrom;
     /* 0x0F */ GetItemCategory getItemCategory; // Primarily made and used for chest size/texture matches contents
-    /* 0x10 */ uint16_t drawItemId; // Will be a copy of itemId unless the item is an ice trap. Needed for particles to function on ice traps.
-    /* 0x11 */ uint16_t drawModIndex; // Will be a copy of modIndex unless the item is an ice trap. Needed for particles to function on ice traps.
-    CustomDrawFunc drawFunc;
+    /* 0x10 */ uint16_t drawItemId; // Will be a copy of itemId unless the item is an ice trap. Needed for particles to
+                                    // function on ice traps.
+    /* 0x11 */ uint16_t drawModIndex; // Will be a copy of modIndex unless the item is an ice trap. Needed for particles
+                                      // to function on ice traps.
+    CustomDrawFunc      drawFunc;
 }; // size = 0x11

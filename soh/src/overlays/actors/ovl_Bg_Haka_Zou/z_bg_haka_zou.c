@@ -134,8 +134,8 @@ void BgHakaZou_Destroy(Actor* thisx, PlayState* play) {
 void func_808828F4(BgHakaZou* this, PlayState* play) {
     Vec3f effectPos;
     Vec3f effectVelocity;
-    f32 rand;
-    s32 i;
+    f32   rand;
+    s32   i;
 
     effectVelocity.x = 0.0f;
     effectVelocity.y = 1.0f;
@@ -222,12 +222,12 @@ void func_80882BDC(BgHakaZou* this, PlayState* play) {
 }
 
 void func_80882CC4(BgHakaZou* this, PlayState* play) {
-    s32 i;
-    s32 j;
+    s32   i;
+    s32   j;
     Vec3f actorSpawnPos;
-    f32 sin;
-    f32 cos;
-    s32 pad;
+    f32   sin;
+    f32   cos;
+    s32   pad;
 
     sin = Math_SinS(this->dyna.actor.shape.rot.y - 0x4000) * 40.0f;
     cos = Math_CosS(this->dyna.actor.shape.rot.y - 0x4000) * 40.0f;
@@ -238,8 +238,8 @@ void func_80882CC4(BgHakaZou* this, PlayState* play) {
             actorSpawnPos.z = this->dyna.actor.world.pos.z + (j - 1) * cos;
             actorSpawnPos.y = this->dyna.actor.world.pos.y + (i - 1) * 55;
 
-            Actor_Spawn(&play->actorCtx, play, ACTOR_BG_HAKA_ZOU, actorSpawnPos.x, actorSpawnPos.y,
-                        actorSpawnPos.z, 0, this->dyna.actor.shape.rot.y, 0, this->dyna.actor.params + 2, true);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_BG_HAKA_ZOU, actorSpawnPos.x, actorSpawnPos.y, actorSpawnPos.z, 0,
+                        this->dyna.actor.shape.rot.y, 0, this->dyna.actor.params + 2, true);
             func_800286CC(play, &actorSpawnPos, &sZeroVec, &sZeroVec, 1000, 50);
         }
     }
@@ -247,9 +247,9 @@ void func_80882CC4(BgHakaZou* this, PlayState* play) {
 
 void func_80882E54(BgHakaZou* this, PlayState* play) {
     Vec3f fragmentPos;
-    s32 i;
-    s32 j;
-    s32 num = 25;
+    s32   i;
+    s32   j;
+    s32   num = 25;
 
     fragmentPos.x = this->collider.dim.pos.x;
     fragmentPos.y = this->collider.dim.pos.y;
@@ -346,8 +346,8 @@ void func_80883254(BgHakaZou* this, PlayState* play) {
 
 void func_80883328(BgHakaZou* this, PlayState* play) {
     Vec3f effectPos;
-    s32 i;
-    s32 j;
+    s32   i;
+    s32   j;
 
     this->dyna.actor.world.rot.x += this->dyna.actor.world.rot.x / 8.0f;
 

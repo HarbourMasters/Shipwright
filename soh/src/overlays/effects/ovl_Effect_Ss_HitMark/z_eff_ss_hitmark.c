@@ -17,7 +17,7 @@
 #define rEnvColorB regs[7]
 #define rScale regs[8]
 
-u32 EffectSsHitMark_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsHitMark_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsHitMark_Draw(PlayState* play, u32 index, EffectSs* this);
 void EffectSsHitMark_Update(PlayState* play, u32 index, EffectSs* this);
 
@@ -42,7 +42,7 @@ EffectSsInit Effect_Ss_HitMark_InitVars = {
 };
 
 u32 EffectSsHitMark_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
-    s32 colorIdx;
+    s32                        colorIdx;
     EffectSsHitMarkInitParams* initParams = (EffectSsHitMarkInitParams*)initParamsx;
     this->pos = initParams->pos;
     this->gfx = SEGMENTED_TO_VIRTUAL(gEffHitMarkDL);
@@ -71,13 +71,13 @@ u32 EffectSsHitMark_Init(PlayState* play, u32 index, EffectSs* this, void* initP
 
 void EffectSsHitMark_Draw(PlayState* play, u32 index, EffectSs* this) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    MtxF mfTrans;
-    MtxF mfScale;
-    MtxF mfResult;
-    MtxF mfTrans11DA0;
-    Mtx* mtx;
-    f32 scale;
-    s32 pad;
+    MtxF             mfTrans;
+    MtxF             mfScale;
+    MtxF             mfResult;
+    MtxF             mfTrans11DA0;
+    Mtx*             mtx;
+    f32              scale;
+    s32              pad;
 
     OPEN_DISPS(gfxCtx);
 

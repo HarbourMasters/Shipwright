@@ -3,9 +3,9 @@
 
 void func_800D2E30(UnkRumbleStruct* arg0) {
     static u8 D_8012DBB0 = 1;
-    s32 i;
-    s32 unk_a3;
-    s32 index = -1;
+    s32       i;
+    s32       unk_a3;
+    s32       index = -1;
 
     for (i = 0; i < 4; i++) {
         arg0->rumbleEnable[i] = 0;
@@ -110,7 +110,7 @@ void func_800D2E30(UnkRumbleStruct* arg0) {
 }
 
 void func_800D3140(UnkRumbleStruct* arg0) {
-    memset(arg0, 0,sizeof(UnkRumbleStruct));
+    memset(arg0, 0, sizeof(UnkRumbleStruct));
     arg0->unk_104 = 2;
     arg0->unk_105 = 1;
 }

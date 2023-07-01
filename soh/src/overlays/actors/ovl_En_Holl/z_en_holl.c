@@ -101,14 +101,14 @@ void EnHoll_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnHoll_Destroy(Actor* thisx, PlayState* play) {
-    s32 transitionActorIdx = (u16)thisx->params >> 0xA;
+    s32                   transitionActorIdx = (u16)thisx->params >> 0xA;
     TransitionActorEntry* transitionEntry = &play->transiActorCtx.list[transitionActorIdx];
 
     transitionEntry->id = -transitionEntry->id;
 }
 
 void EnHoll_SwapRooms(PlayState* play) {
-    Room tempRoom;
+    Room         tempRoom;
     RoomContext* roomCtx = &play->roomCtx;
 
     tempRoom = roomCtx->curRoom;
@@ -120,10 +120,10 @@ void EnHoll_SwapRooms(PlayState* play) {
 // Horizontal Planes
 void func_80A58DD4(EnHoll* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 phi_t0 = ((play->sceneNum == SCENE_JYASINZOU) ? 1 : 0) & 0xFFFFFFFF;
-    Vec3f vec;
-    f32 absZ;
-    s32 transitionActorIdx;
+    s32     phi_t0 = ((play->sceneNum == SCENE_JYASINZOU) ? 1 : 0) & 0xFFFFFFFF;
+    Vec3f   vec;
+    f32     absZ;
+    s32     transitionActorIdx;
 
     func_8002DBD0(&this->actor, &vec, &player->actor.world.pos);
     this->side = (vec.z < 0.0f) ? 0 : 1;
@@ -156,11 +156,11 @@ void func_80A58DD4(EnHoll* this, PlayState* play) {
 // Horizontal Planes
 void func_80A59014(EnHoll* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 useViewEye = gDbgCamEnabled || play->csCtx.state != CS_STATE_IDLE;
-    Vec3f vec;
-    s32 temp;
-    f32 planeHalfWidth;
-    f32 absZ;
+    s32     useViewEye = gDbgCamEnabled || play->csCtx.state != CS_STATE_IDLE;
+    Vec3f   vec;
+    s32     temp;
+    f32     planeHalfWidth;
+    f32     absZ;
 
     func_8002DBD0(&this->actor, &vec, (useViewEye) ? &play->view.eye : &player->actor.world.pos);
     planeHalfWidth = (((this->actor.params >> 6) & 7) == 6) ? PLANE_HALFWIDTH : PLANE_HALFWIDTH_2;
@@ -168,10 +168,10 @@ void func_80A59014(EnHoll* this, PlayState* play) {
     temp = EnHoll_IsKokiriSetup8();
     if (temp || (PLANE_Y_MIN < vec.y && vec.y < PLANE_Y_MAX && fabsf(vec.x) < planeHalfWidth &&
                  (absZ = fabsf(vec.z), 100.0f > absZ && absZ > 50.0f))) {
-        s32 transitionActorIdx = (u16)this->actor.params >> 0xA;
-        s32 side = (vec.z < 0.0f) ? 0 : 1;
+        s32                   transitionActorIdx = (u16)this->actor.params >> 0xA;
+        s32                   side = (vec.z < 0.0f) ? 0 : 1;
         TransitionActorEntry* transitionEntry = &play->transiActorCtx.list[transitionActorIdx];
-        s32 room = transitionEntry->sides[side].room;
+        s32                   room = transitionEntry->sides[side].room;
 
         this->actor.room = room;
         if (temp) {}
@@ -187,8 +187,8 @@ void func_80A59014(EnHoll* this, PlayState* play) {
 // Vertical Planes
 void func_80A591C0(EnHoll* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 absY = fabsf(this->actor.yDistToPlayer);
-    s32 transitionActorIdx;
+    f32     absY = fabsf(this->actor.yDistToPlayer);
+    s32     transitionActorIdx;
 
     if (this->actor.xzDistToPlayer < 500.0f && absY < 700.0f) {
         transitionActorIdx = (u16)this->actor.params >> 0xA;
@@ -247,7 +247,7 @@ void func_80A593A4(EnHoll* this, PlayState* play) {
 // Vertical Planes
 void func_80A59520(EnHoll* this, PlayState* play) {
     f32 absY;
-    s8 side;
+    s8  side;
     s32 transitionActorIdx;
 
     if (this->actor.xzDistToPlayer < 120.0f) {
@@ -267,10 +267,10 @@ void func_80A59520(EnHoll* this, PlayState* play) {
 // Horizontal Planes
 void func_80A59618(EnHoll* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    Vec3f vec;
-    f32 absZ;
-    s32 side;
-    s32 transitionActorIdx;
+    Vec3f   vec;
+    f32     absZ;
+    s32     side;
+    s32     transitionActorIdx;
 
     if (!Flags_GetSwitch(play, this->actor.params & 0x3F)) {
         if (this->unk_14F != 0) {
@@ -325,7 +325,7 @@ void EnHoll_Update(Actor* thisx, PlayState* play) {
 void EnHoll_Draw(Actor* thisx, PlayState* play) {
     EnHoll* this = (EnHoll*)thisx;
     Gfx* gfxP;
-    u32 setupDlIdx;
+    u32  setupDlIdx;
 
     // Only draw the plane if not invisible
     if (this->planeAlpha != 0) {
@@ -343,8 +343,7 @@ void EnHoll_Draw(Actor* thisx, PlayState* play) {
             Matrix_RotateY(M_PI, MTXMODE_APPLY);
         }
 
-        gSPMatrix(gfxP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(gfxP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gDPSetPrimColor(gfxP++, 0, 0, 0, 0, 0, (u8)this->planeAlpha);
         gSPDisplayList(gfxP++, sPlaneDL);
 

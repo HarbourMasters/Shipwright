@@ -7,7 +7,7 @@
 #include "z_eff_ss_g_fire.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 
-u32 EffectSsGFire_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsGFire_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsGFire_Draw(PlayState* play, u32 index, EffectSs* this);
 void EffectSsGFire_Update(PlayState* play, u32 index, EffectSs* this);
 
@@ -18,7 +18,7 @@ EffectSsInit Effect_Ss_G_Fire_InitVars = {
 
 u32 EffectSsGFire_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx) {
     EffectSsGFireInitParams* initParams = (EffectSsGFireInitParams*)initParamsx;
-    Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
+    Vec3f                    zeroVec = { 0.0f, 0.0f, 0.0f };
 
     this->velocity = this->accel = zeroVec;
     this->pos = initParams->pos;

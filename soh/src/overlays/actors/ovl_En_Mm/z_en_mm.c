@@ -34,9 +34,9 @@ void func_80AAE598(EnMm* this, PlayState* play);
 void func_80AAE294(EnMm* this, PlayState* play);
 void func_80AAE50C(EnMm* this, PlayState* play);
 void func_80AAE224(EnMm* this, PlayState* play);
-s32 func_80AADA70(void);
+s32  func_80AADA70(void);
 
-s32 EnMm_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx);
+s32  EnMm_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx);
 void EnMm_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void*);
 
 const ActorInit En_Mm_InitVars = {
@@ -213,9 +213,9 @@ s32 func_80AADA70(void) {
 }
 
 s32 func_80AADAA0(EnMm* this, PlayState* play) {
-    s32 pad;
+    s32     pad;
     Player* player = GET_PLAYER(play);
-    s32 sp1C = 1;
+    s32     sp1C = 1;
 
     switch (Message_GetState(&play->msgCtx)) {
         case TEXT_STATE_NONE:
@@ -262,7 +262,7 @@ s32 func_80AADAA0(EnMm* this, PlayState* play) {
 
 s32 EnMm_GetTextId(EnMm* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 textId;
+    s32     textId;
 
     textId = Text_GetFaceReaction(play, 0x1C);
 
@@ -281,9 +281,9 @@ s32 EnMm_GetTextId(EnMm* this, PlayState* play) {
 
 void func_80AADCD0(EnMm* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 yawDiff;
-    s16 sp26;
-    s16 sp24;
+    f32     yawDiff;
+    s16     sp26;
+    s16     sp24;
 
     if (this->unk_1E0 == 2) {
         Message_ContinueTextbox(play, player->actor.textId);
@@ -328,11 +328,11 @@ s32 func_80AADE60(Path* pathList, Vec3f* pos, s32 pathNum, s32 waypoint) {
 }
 
 s32 func_80AADEF0(EnMm* this, PlayState* play) {
-    f32 xDiff;
-    f32 zDiff;
+    f32   xDiff;
+    f32   zDiff;
     Vec3f waypointPos;
-    s32 phi_a2;
-    s32 phi_v1;
+    s32   phi_a2;
+    s32   phi_v1;
 
     func_80AADE60(play->setupPathList, &waypointPos, this->path, this->waypoint);
 
@@ -410,7 +410,7 @@ void func_80AAE224(EnMm* this, PlayState* play) {
 }
 
 void func_80AAE294(EnMm* this, PlayState* play) {
-    f32 floorYNorm;
+    f32   floorYNorm;
     Vec3f dustPos;
 
     if (!Player_InCsMode(play)) {
@@ -514,7 +514,7 @@ void EnMm_Update(Actor* thisx, PlayState* play) {
 
 void EnMm_Draw(Actor* thisx, PlayState* play) {
     static void* mouthTextures[] = { gRunningManMouthOpenTex, gRunningManMouthClosedTex };
-    s32 pad;
+    s32          pad;
     EnMm* this = (EnMm*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -528,9 +528,9 @@ void EnMm_Draw(Actor* thisx, PlayState* play) {
         s32 linkChildObjBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_LINK_CHILD);
 
         if (linkChildObjBankIndex >= 0) {
-            Mtx* mtx;
+            Mtx*  mtx;
             Vec3s sp50;
-            Mtx* mtx2;
+            Mtx*  mtx2;
 
             mtx = Graph_Alloc(play->state.gfxCtx, sizeof(Mtx) * 2);
 

@@ -12,9 +12,9 @@ typedef struct {
 #define GET_PLAYER_IDX(cmd) (cmd & 0xF000000) >> 24
 
 Struct_8016E320 D_8016E320[4][5];
-u8 D_8016E348[4];
-u32 sAudioSeqCmds[0x100];
-unk_D_8016E750 D_8016E750[4];
+u8              D_8016E348[4];
+u32             sAudioSeqCmds[0x100];
+unk_D_8016E750  D_8016E750[4];
 
 u8 sSeqCmdWrPos = 0;
 u8 sSeqCmdRdPos = 0;
@@ -37,7 +37,7 @@ u8 D_80133418 = 0;
     Audio_ProcessSeqCmd(0x40000000 | ((u8)playerIdx << 24) | ((u8)volFadeTimer << 16) | ((u8)(volScale * 127.0f)));
 
 void func_800F9280(u8 playerIdx, u8 seqId, u8 arg2, u16 fadeTimer) {
-    u8 i;
+    u8  i;
     u16 dur;
     s32 pad;
 
@@ -104,18 +104,18 @@ void Audio_ProcessSeqCmd(u32 cmd) {
     u16 fadeTimer;
     u16 channelMask;
     u16 val;
-    u8 oldSpec;
-    u8 spec;
-    u8 op;
-    u8 subOp;
-    u8 playerIdx;
+    u8  oldSpec;
+    u8  spec;
+    u8  op;
+    u8  subOp;
+    u8  playerIdx;
     u16 seqId;
-    u8 seqArgs;
-    u8 found;
-    u8 port;
-    u8 duration;
-    u8 chanIdx;
-    u8 i;
+    u8  seqArgs;
+    u8  found;
+    u8  port;
+    u8  duration;
+    u8  chanIdx;
+    u8  i;
     s32 new_var;
     f32 freqScale;
 
@@ -369,12 +369,11 @@ void Audio_ProcessSeqCmd(u32 cmd) {
 extern f32 D_80130F24;
 extern f32 D_80130F28;
 
-void Audio_QueueSeqCmd(u32 cmd) 
-{
+void Audio_QueueSeqCmd(u32 cmd) {
     u8 op = cmd >> 28;
     if (op == 0 || op == 2 || op == 12) {
-        u8 seqId = cmd & 0xFF;
-        u8 playerIdx = GET_PLAYER_IDX(cmd);
+        u8  seqId = cmd & 0xFF;
+        u8  playerIdx = GET_PLAYER_IDX(cmd);
         u16 newSeqId = AudioEditor_GetReplacementSeq(seqId);
         gAudioContext.seqReplaced[playerIdx] = (seqId != newSeqId);
         gAudioContext.seqToPlay[playerIdx] = newSeqId;
@@ -433,7 +432,7 @@ void func_800FA18C(u8 playerIdx, u8 arg1) {
 
 void Audio_SetVolScale(u8 playerIdx, u8 scaleIdx, u8 targetVol, u8 volFadeTimer) {
     f32 volScale;
-    u8 i;
+    u8  i;
 
     D_8016E750[playerIdx].volScales[scaleIdx] = targetVol & 0x7F;
 
@@ -454,18 +453,18 @@ void func_800FA3DC(void) {
     u16 temp_lo;
     u16 temp_v1;
     u16 phi_a2;
-    u8 temp_v0_4;
-    u8 temp_a0;
-    u8 temp_s1;
-    u8 temp_s0_3;
-    u8 temp_a3_3;
+    u8  temp_v0_4;
+    u8  temp_a0;
+    u8  temp_s1;
+    u8  temp_s0_3;
+    u8  temp_a3_3;
     s32 pad[3];
     u32 dummy;
     f32 phi_f0;
-    u8 phi_t0;
-    u8 playerIdx;
-    u8 j;
-    u8 k;
+    u8  phi_t0;
+    u8  playerIdx;
+    u8  j;
+    u8  k;
 
     for (playerIdx = 0; playerIdx < 4; playerIdx++) {
         if (D_8016E750[playerIdx].unk_260 != 0) {

@@ -103,10 +103,10 @@ s32 EnFw_DoBounce(EnFw* this, s32 totalBounces, f32 yVelocity) {
 }
 
 s32 EnFw_PlayerInRange(EnFw* this, PlayState* play) {
-    Player* player = GET_PLAYER(play);
+    Player*        player = GET_PLAYER(play);
     CollisionPoly* poly;
-    s32 bgId;
-    Vec3f collisionPos;
+    s32            bgId;
+    Vec3f          collisionPos;
 
     if (this->actor.xzDistToPlayer > 300.0f) {
         return false;
@@ -116,8 +116,8 @@ s32 EnFw_PlayerInRange(EnFw* this, PlayState* play) {
         return false;
     }
 
-    if (BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &player->actor.world.pos, &collisionPos,
-                                &poly, true, false, false, true, &bgId)) {
+    if (BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &player->actor.world.pos, &collisionPos, &poly,
+                                true, false, false, true, &bgId)) {
         return false;
     }
 
@@ -125,7 +125,7 @@ s32 EnFw_PlayerInRange(EnFw* this, PlayState* play) {
 }
 
 Vec3f* EnFw_GetPosAdjAroundCircle(Vec3f* dst, EnFw* this, f32 radius, s16 dir) {
-    s16 angle;
+    s16   angle;
     Vec3f posAdj;
 
     // increase rotation around circle ~30 degrees.
@@ -140,7 +140,7 @@ Vec3f* EnFw_GetPosAdjAroundCircle(Vec3f* dst, EnFw* this, f32 radius, s16 dir) {
 
 s32 EnFw_CheckCollider(EnFw* this, PlayState* play) {
     ColliderInfo* info;
-    s32 phi_return;
+    s32           phi_return;
 
     if (this->collider.base.acFlags & AC_HIT) {
         info = &this->collider.elements[0].info;
@@ -169,8 +169,8 @@ s32 EnFw_SpawnDust(EnFw* this, u8 timer, f32 scale, f32 scaleStep, s32 dustCnt, 
     Vec3f pos = { 0.0f, 0.0f, 0.0f };
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
     Vec3f accel = { 0.0f, 0.0f, 0.0f };
-    s16 angle;
-    s32 i;
+    s16   angle;
+    s32   i;
 
     pos = this->actor.world.pos;
     pos.y = this->actor.floorHeight + 2.0f;
@@ -192,8 +192,7 @@ s32 EnFw_SpawnDust(EnFw* this, u8 timer, f32 scale, f32 scaleStep, s32 dustCnt, 
 void EnFw_Init(Actor* thisx, PlayState* play) {
     EnFw* this = (EnFw*)thisx;
 
-    SkelAnime_InitFlex(play, &this->skelAnime, &gFlareDancerCoreSkel, NULL, this->jointTable, this->morphTable,
-                       11);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gFlareDancerCoreSkel, NULL, this->jointTable, this->morphTable, 11);
     Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENFW_ANIM_0);
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 20.0f);
     Collider_InitJntSph(play, &this->collider);
@@ -220,9 +219,9 @@ void EnFw_Bounce(EnFw* this, PlayState* play) {
 }
 
 void EnFw_Run(EnFw* this, PlayState* play) {
-    f32 tmpAngle;
-    s16 phi_v0;
-    f32 facingDir;
+    f32    tmpAngle;
+    s16    phi_v0;
+    f32    facingDir;
     EnBom* bomb;
     Actor* flareDancer;
 
@@ -376,8 +375,7 @@ void EnFw_Update(Actor* thisx, PlayState* play) {
     }
 }
 
-s32 EnFw_OverrideLimbDraw(PlayState* playState, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                          void* thisx) {
+s32 EnFw_OverrideLimbDraw(PlayState* playState, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     return false;
 }
 
@@ -413,7 +411,7 @@ void EnFw_Draw(Actor* thisx, PlayState* play) {
 void EnFw_AddDust(EnFw* this, Vec3f* initialPos, Vec3f* initialSpeed, Vec3f* accel, u8 initialTimer, f32 scale,
                   f32 scaleStep) {
     EnFwEffect* eff = this->effects;
-    s16 i;
+    s16         i;
 
     for (i = 0; i < ARRAY_COUNT(this->effects); i++, eff++) {
         if (eff->type != 1) {
@@ -432,7 +430,7 @@ void EnFw_AddDust(EnFw* this, Vec3f* initialPos, Vec3f* initialSpeed, Vec3f* acc
 
 void EnFw_UpdateDust(EnFw* this) {
     EnFwEffect* eff = this->effects;
-    s16 i;
+    s16         i;
 
     for (i = 0; i < ARRAY_COUNT(this->effects); i++, eff++) {
         if (eff->type != 0) {
@@ -457,10 +455,10 @@ void EnFw_DrawDust(EnFw* this, PlayState* play) {
         gDust8Tex, gDust7Tex, gDust6Tex, gDust5Tex, gDust4Tex, gDust3Tex, gDust2Tex, gDust1Tex,
     };
     EnFwEffect* eff = this->effects;
-    s16 firstDone;
-    s16 alpha;
-    s16 i;
-    s16 idx;
+    s16         firstDone;
+    s16         alpha;
+    s16         i;
+    s16         idx;
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -484,8 +482,7 @@ void EnFw_DrawDust(EnFw* this, PlayState* play) {
             Matrix_Translate(eff->pos.x, eff->pos.y, eff->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&play->billboardMtxF);
             Matrix_Scale(eff->scale, eff->scale, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             idx = eff->timer * (8.0f / eff->initialTimer);
             gSPSegment(POLY_XLU_DISP++, 0x8, SEGMENTED_TO_VIRTUAL(dustTextures[idx]));
             gSPDisplayList(POLY_XLU_DISP++, gFlareDancerSquareParticleDL);

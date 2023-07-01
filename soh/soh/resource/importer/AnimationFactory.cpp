@@ -3,9 +3,9 @@
 #include "spdlog/spdlog.h"
 
 namespace LUS {
-std::shared_ptr<IResource>
-AnimationFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<Animation>(initData);
+std::shared_ptr<IResource> AnimationFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
+                                                          std::shared_ptr<BinaryReader>     reader) {
+    auto                                    resource = std::make_shared<Animation>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
     switch (resource->GetInitData()->ResourceVersion) {
@@ -24,7 +24,8 @@ AnimationFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::
     return resource;
 }
 
-void LUS::AnimationFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader, std::shared_ptr<IResource> resource) {
+void LUS::AnimationFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+                                              std::shared_ptr<IResource>    resource) {
     std::shared_ptr<Animation> animation = std::static_pointer_cast<Animation>(resource);
 
     ResourceVersionFactory::ParseFileBinary(reader, animation);

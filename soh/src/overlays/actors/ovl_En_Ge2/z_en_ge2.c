@@ -40,7 +40,7 @@ void EnGe2_Destroy(Actor* thisx, PlayState* play);
 void EnGe2_Update(Actor* thisx, PlayState* play);
 void EnGe2_Draw(Actor* thisx, PlayState* play);
 
-s32 EnGe2_CheckCarpentersFreed(void);
+s32  EnGe2_CheckCarpentersFreed(void);
 void EnGe2_CaptureClose(EnGe2* this, PlayState* play);
 void EnGe2_CaptureCharge(EnGe2* this, PlayState* play);
 void EnGe2_CaptureTurn(EnGe2* this, PlayState* play);
@@ -201,10 +201,10 @@ s32 Ge2_DetectPlayerInAction(PlayState* play, EnGe2* this) {
 }
 
 s32 Ge2_DetectPlayerInUpdate(PlayState* play, EnGe2* this, Vec3f* pos, s16 yRot, f32 yDetectRange) {
-    Player* player = GET_PLAYER(play);
-    Vec3f posResult;
+    Player*        player = GET_PLAYER(play);
+    Vec3f          posResult;
     CollisionPoly* outPoly;
-    f32 visionScale;
+    f32            visionScale;
 
     visionScale = (!IS_DAY ? 0.75f : 1.5f);
 
@@ -233,7 +233,7 @@ s32 EnGe2_CheckCarpentersFreed(void) {
         } else {
             return 0;
         }
-    } 
+    }
 
     if (CHECK_FLAG_ALL(gSaveContext.eventChkInf[EVENTCHKINF_CARPENTERS_FREE_INDEX] &
                            (EVENTCHKINF_CARPENTERS_FREE_MASK_ALL | 0xF0),
@@ -310,12 +310,12 @@ void EnGe2_CaptureTurn(EnGe2* this, PlayState* play) {
 }
 
 void EnGe2_KnockedOut(EnGe2* this, PlayState* play) {
-    static Vec3f effectVelocity = { 0.0f, -0.05f, 0.0f };
-    static Vec3f effectAccel = { 0.0f, -0.025f, 0.0f };
+    static Vec3f       effectVelocity = { 0.0f, -0.05f, 0.0f };
+    static Vec3f       effectAccel = { 0.0f, -0.025f, 0.0f };
     static Color_RGBA8 effectPrimColor = { 255, 255, 255, 0 };
     static Color_RGBA8 effectEnvColor = { 255, 150, 0, 0 };
-    s32 effectAngle;
-    Vec3f effectPos;
+    s32                effectAngle;
+    Vec3f              effectPos;
 
     this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     if (this->stateFlags & GE2_STATE_ANIMCOMPLETE) {
@@ -485,7 +485,7 @@ void EnGe2_GiveCard(EnGe2* this, PlayState* play) {
         Message_CloseTextbox(play);
         this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
         this->actionFunc = EnGe2_WaitTillCardGiven;
-         if (!gSaveContext.n64ddFlag) {
+        if (!gSaveContext.n64ddFlag) {
             func_8002F434(&this->actor, play, GI_GERUDO_CARD, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD);
@@ -598,8 +598,7 @@ void EnGe2_Update(Actor* thisx, PlayState* play) {
     } else {
         this->actionFunc(this, play);
 
-        if (Ge2_DetectPlayerInUpdate(play, this, &this->actor.focus.pos, this->actor.shape.rot.y,
-                                     this->yDetectRange)) {
+        if (Ge2_DetectPlayerInUpdate(play, this, &this->actor.focus.pos, this->actor.shape.rot.y, this->yDetectRange)) {
             // "Discovered!"
             osSyncPrintf(VT_FGCOL(GREEN) "発見!!!!!!!!!!!!\n" VT_RST);
             EnGe2_SetupCapturePlayer(this, play);
@@ -675,7 +674,7 @@ void EnGe2_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
 
 void EnGe2_Draw(Actor* thisx, PlayState* play) {
     static void* eyeTextures[] = { gGerudoPurpleEyeOpenTex, gGerudoPurpleEyeHalfTex, gGerudoPurpleEyeClosedTex };
-    s32 pad;
+    s32          pad;
     EnGe2* this = (EnGe2*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);

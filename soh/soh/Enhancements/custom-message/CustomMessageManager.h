@@ -30,17 +30,17 @@ class CustomMessage {
     CustomMessage(std::string english_, std::string german_, std::string french_,
                   TextBoxType type_ = TEXTBOX_TYPE_BLACK, TextBoxPosition position_ = TEXTBOX_POS_BOTTOM);
 
-    const std::string& GetEnglish() const;
-    const std::string& GetFrench() const;
-    const std::string& GetGerman() const;
-    const TextBoxType& GetTextBoxType() const;
+    const std::string&     GetEnglish() const;
+    const std::string&     GetFrench() const;
+    const std::string&     GetGerman() const;
+    const TextBoxType&     GetTextBoxType() const;
     const TextBoxPosition& GetTextBoxPosition() const;
 
     CustomMessage operator+(const CustomMessage& right) const;
     CustomMessage operator+(const std::string& right) const;
-    void operator+=(const std::string& right);
-    bool operator==(const CustomMessage& right) const;
-    bool operator!=(const CustomMessage& right) const;
+    void          operator+=(const std::string& right);
+    bool          operator==(const CustomMessage& right) const;
+    bool          operator!=(const CustomMessage& right) const;
 
     /**
      * @brief Finds an instance of oldStr in each language of the CustomMessage
@@ -104,10 +104,10 @@ class CustomMessage {
     const std::string WAIT_FOR_INPUT() const;
     const std::string PLAYER_NAME() const;
 
-    std::string english = "";
-    std::string french = "";
-    std::string german = "";
-    TextBoxType type = TEXTBOX_TYPE_BLACK;
+    std::string     english = "";
+    std::string     french = "";
+    std::string     german = "";
+    TextBoxType     type = TEXTBOX_TYPE_BLACK;
     TextBoxPosition position = TEXTBOX_POS_BOTTOM;
 };
 
@@ -192,7 +192,7 @@ class CustomMessageManager {
 class MessageNotFoundException : public std::exception {
   private:
     std::string messageTableId;
-    uint16_t textId;
+    uint16_t    textId;
 
   public:
     MessageNotFoundException(std::string messageTableId_, uint16_t textId_)

@@ -70,8 +70,8 @@ static ColliderCylinderInit sCylinderInitHard = {
     { 50, 120, 0, { 0, 0, 0 } },
 };
 
-static f32 sScale[] = { 0.5f, 1.0f, 1.5f };
-static s16 sOffsetY[] = { -25, 0, -20 };
+static f32         sScale[] = { 0.5f, 1.0f, 1.5f };
+static s16         sOffsetY[] = { -25, 0, -20 };
 static Color_RGBA8 sColorWhite = { 250, 250, 250, 255 };
 static Color_RGBA8 sColorGray = { 180, 180, 180, 255 };
 
@@ -114,8 +114,8 @@ void ObjIcePoly_Destroy(Actor* thisx, PlayState* play) {
 
 void ObjIcePoly_Idle(ObjIcePoly* this, PlayState* play) {
     static Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
-    s32 pad;
-    Vec3f pos;
+    s32          pad;
+    Vec3f        pos;
 
     if (this->colliderIce.base.acFlags & AC_HIT) {
         this->meltTimer = -this->colliderIce.info.acHitInfo->toucher.damage;
@@ -143,7 +143,7 @@ void ObjIcePoly_Melt(ObjIcePoly* this, PlayState* play) {
     Vec3f accel;
     Vec3f vel;
     Vec3f pos;
-    s32 i;
+    s32   i;
 
     accel.x = 0.0f;
     accel.y = this->actor.scale.y;
@@ -198,8 +198,7 @@ void ObjIcePoly_Draw(Actor* thisx, PlayState* play) {
     func_8002ED80(&this->actor, play, 0);
     Matrix_RotateZYX(0x500, 0, -0x500, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPSegment(POLY_XLU_DISP++, 0x08,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, play->gameplayFrames % 0x100, 0x20, 0x10, 1, 0,
                                 (play->gameplayFrames * 2) % 0x100, 0x40, 0x20));

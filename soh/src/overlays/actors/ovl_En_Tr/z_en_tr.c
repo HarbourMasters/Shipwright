@@ -97,8 +97,8 @@ void EnTr_Init(Actor* thisx, PlayState* play) {
 
     switch (this->actor.params) {
         case TR_KOUME:
-            SkelAnime_InitFlex(play, &this->skelAnime, &object_tr_Skel_011688, &object_tr_Anim_003FC8,
-                               this->jointTable, this->morphTable, 27);
+            SkelAnime_InitFlex(play, &this->skelAnime, &object_tr_Skel_011688, &object_tr_Anim_003FC8, this->jointTable,
+                               this->morphTable, 27);
             Animation_PlayOnce(&this->skelAnime, &object_tr_Anim_003FC8);
             this->animation = NULL;
             EnTr_SetupAction(this, EnTr_ChooseAction1);
@@ -106,8 +106,8 @@ void EnTr_Init(Actor* thisx, PlayState* play) {
             break;
 
         case TR_KOTAKE:
-            SkelAnime_InitFlex(play, &this->skelAnime, &object_tr_Skel_00C530, &object_tr_Anim_001CDC,
-                               this->jointTable, this->morphTable, 27);
+            SkelAnime_InitFlex(play, &this->skelAnime, &object_tr_Skel_00C530, &object_tr_Anim_001CDC, this->jointTable,
+                               this->morphTable, 27);
             Animation_PlayOnce(&this->skelAnime, &object_tr_Anim_001CDC);
             this->animation = NULL;
             EnTr_SetupAction(this, EnTr_ChooseAction1);
@@ -164,9 +164,9 @@ void EnTr_ChooseAction2(EnTr* this, PlayState* play) {
                     EnTr_SetupAction(this, EnTr_CrySpellcast);
                     this->animation = D_80B24378[this->actor.params];
                     this->timer = 39;
-                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_6K,
-                                       this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, 0, 0,
-                                       0, this->actor.params + 9);
+                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_6K, this->actor.world.pos.x,
+                                       this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0,
+                                       this->actor.params + 9);
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_FANTOM_MASIC1);
                     break;
 
@@ -212,16 +212,16 @@ void EnTr_FlyKidnapCutscene(EnTr* this, PlayState* play) {
 }
 
 void func_80B23254(EnTr* this, PlayState* play, s32 arg2, f32 arg3, f32 scale) {
-    Vec3f pos;
-    Vec3f velocity;
-    Vec3f accel;
-    Vec3f sp58;
+    Vec3f        pos;
+    Vec3f        velocity;
+    Vec3f        accel;
+    Vec3f        sp58;
     Color_RGBA8* primColor;
     Color_RGBA8* envColor;
-    Vec3f cameraEye = GET_ACTIVE_CAM(play)->eye;
-    s16 yaw = Math_Vec3f_Yaw(&cameraEye, &this->actor.world.pos);
-    s16 reversePitch = -Math_Vec3f_Pitch(&cameraEye, &this->actor.world.pos);
-    f32 sp3C;
+    Vec3f        cameraEye = GET_ACTIVE_CAM(play)->eye;
+    s16          yaw = Math_Vec3f_Yaw(&cameraEye, &this->actor.world.pos);
+    s16          reversePitch = -Math_Vec3f_Pitch(&cameraEye, &this->actor.world.pos);
+    f32          sp3C;
 
     accel.x = accel.z = 0.0f;
     sp3C = Math_SinS(yaw);
@@ -443,8 +443,8 @@ void EnTr_Draw(Actor* thisx, PlayState* play) {
         Gfx_SetupDL_37Opa(play->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->eyeIndex]));
         func_8002EBCC(&this->actor, play, 0);
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnTr_OverrideLimbDraw, NULL, this);
+        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+                              EnTr_OverrideLimbDraw, NULL, this);
         CLOSE_DISPS(play->state.gfxCtx);
     }
 }
@@ -459,9 +459,9 @@ f32 func_80B23FDC(PlayState* play, s32 actionIndex) {
 void func_80B24038(EnTr* this, PlayState* play, s32 actionIndex) {
     Vec3f startPos;
     Vec3f endPos;
-    f32 temp_f0;
-    f32 temp_f0_2;
-    f32 phi_f12;
+    f32   temp_f0;
+    f32   temp_f0_2;
+    f32   phi_f12;
 
     startPos.x = play->csCtx.npcActions[actionIndex]->startPos.x;
     startPos.y = play->csCtx.npcActions[actionIndex]->startPos.y;

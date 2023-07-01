@@ -51,9 +51,9 @@ static ColliderCylinderInit sCylinderInit = {
     { 20, 50, 0, { 0, 0, 0 } },
 };
 
-static EnGe3ActionFunc sActionFuncs[] = { EnGe3_WaitLookAtPlayer };
+static EnGe3ActionFunc  sActionFuncs[] = { EnGe3_WaitLookAtPlayer };
 static AnimationHeader* sAnimations[] = { &gGerudoRedStandAnim }; // Idle with right hand on hip and left over mouth
-static u8 sAnimationModes[] = { ANIMMODE_LOOP };
+static u8               sAnimationModes[] = { ANIMMODE_LOOP };
 
 void EnGe3_ChangeAction(EnGe3* this, s32 i) {
     this->actionFunc = sActionFuncs[i];

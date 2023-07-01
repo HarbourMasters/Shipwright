@@ -15,7 +15,7 @@ void DemoDu_Update(Actor* thisx, PlayState* play);
 void DemoDu_Draw(Actor* thisx, PlayState* play);
 void DemoDu_Reset(void);
 
-//static s32 sUnused = 0;
+// static s32 sUnused = 0;
 
 #include "z_demo_du_cutscene_data.c" EARLY
 
@@ -48,7 +48,7 @@ void DemoDu_Destroy(Actor* thisx, PlayState* play) {
 void DemoDu_UpdateEyes(DemoDu* this) {
     s16* blinkTimer = &this->blinkTimer;
     s16* eyeTexIndex = &this->eyeTexIndex;
-    s32 pad[3];
+    s32  pad[3];
 
     if (DECR(*blinkTimer) == 0) {
         *blinkTimer = Rand_S16Offset(60, 60);
@@ -78,7 +78,7 @@ void DemoDu_CsAfterGanon_Reset(DemoDu* this) {
     this->unk_1A4 = 0.0f;
 }
 
-s32 D_8096CE94 = false;
+s32  D_8096CE94 = false;
 void DemoDu_CsAfterGanon_CheckIfShouldReset(DemoDu* this, PlayState* play) {
 
     if (play->csCtx.state == CS_STATE_IDLE) {
@@ -129,7 +129,7 @@ s32 DemoDu_IsNpcNotDoingThisAction(DemoDu* this, PlayState* play, u16 action, s3
 
 void DemoDu_MoveToNpcPos(DemoDu* this, PlayState* play, s32 idx) {
     CsCmdActorAction* npcAction = DemoDu_GetNpcAction(play, idx);
-    s32 pad;
+    s32               pad;
 
     if (npcAction != NULL) {
         this->actor.world.pos.x = npcAction->startPos.x;
@@ -171,16 +171,15 @@ void DemoDu_CsFireMedallion_SpawnDoorWarp(DemoDu* this, PlayState* play) {
     f32 posY = this->actor.world.pos.y;
     f32 posZ = this->actor.world.pos.z;
 
-    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0, 0,
-                       WARP_SAGES);
+    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, posX, posY, posZ, 0, 0, 0, WARP_SAGES);
 }
 
 // Gives the Fire Medallion to Link.
 void func_80969F38(DemoDu* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 posX = player->actor.world.pos.x;
-    f32 posY = player->actor.world.pos.y + 80.0f;
-    f32 posZ = player->actor.world.pos.z;
+    f32     posX = player->actor.world.pos.x;
+    f32     posY = player->actor.world.pos.y + 80.0f;
+    f32     posZ = player->actor.world.pos.z;
 
     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DEMO_EFFECT, posX, posY, posZ, 0, 0, 0,
                        DEMO_EFFECT_MEDAL_FIRE);
@@ -318,7 +317,7 @@ void DemoDu_CsPlaySfx_DaruniaFalling(PlayState* play) {
 // Cutscene: Darunia gives Link the Goron's Ruby.
 void DemoDu_CsPlaySfx_DaruniaHitsLink(PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 pad;
+    s32     pad;
 
     func_80078914(&player->actor.projectedPos, NA_SE_EN_DARUNIA_HIT_LINK);
     Audio_PlaySoundGeneral(NA_SE_VO_LI_DAMAGE_S_KID, &player->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
@@ -377,7 +376,7 @@ void DemoDu_CsGoronsRuby_UpdateFaceTextures(DemoDu* this, PlayState* play) {
 }
 
 void func_8096A630(DemoDu* this, PlayState* play) {
-    s32 pad;
+    s32   pad;
     Vec3f pos = this->actor.world.pos;
 
     pos.y += kREG(5);
@@ -393,19 +392,19 @@ void DemoDu_CsGoronsRuby_SpawnDustWhenHittingLink(DemoDu* this, PlayState* play)
     };
 
     if (Animation_OnFrame(&this->skelAnime, 31.0f) || Animation_OnFrame(&this->skelAnime, 41.0f)) {
-        s32 pad[2];
-        s32 i;
+        s32     pad[2];
+        s32     i;
         Player* player = GET_PLAYER(play);
-        Vec3f* headPos = &player->bodyPartsPos[PLAYER_LIMB_HEAD];
-        Vec3f velocity = { 0.0f, 0.0f, 0.0f };
-        Vec3f accel = { 0.0f, 0.3f, 0.0f };
-        s32 pad2;
+        Vec3f*  headPos = &player->bodyPartsPos[PLAYER_LIMB_HEAD];
+        Vec3f   velocity = { 0.0f, 0.0f, 0.0f };
+        Vec3f   accel = { 0.0f, 0.3f, 0.0f };
+        s32     pad2;
 
         for (i = 4; i >= 0; --i) {
             Color_RGBA8 primColor = { 190, 150, 110, 255 };
             Color_RGBA8 envColor = { 120, 80, 40, 255 };
-            s32 colorDelta;
-            Vec3f position;
+            s32         colorDelta;
+            Vec3f       position;
 
             if (Animation_OnFrame(&this->skelAnime, 31.0f)) {
                 position.x = dustPosOffsets[i + 5].x + headPos->x;
@@ -426,8 +425,8 @@ void DemoDu_CsGoronsRuby_SpawnDustWhenHittingLink(DemoDu* this, PlayState* play)
             envColor.g += colorDelta;
             envColor.b += colorDelta;
 
-            func_8002829C(play, &position, &velocity, &accel, &primColor, &envColor,
-                          Rand_ZeroOne() * 40.0f + 200.0f, 0);
+            func_8002829C(play, &position, &velocity, &accel, &primColor, &envColor, Rand_ZeroOne() * 40.0f + 200.0f,
+                          0);
         }
 
         DemoDu_CsPlaySfx_DaruniaHitsLink(play);
@@ -435,14 +434,14 @@ void DemoDu_CsGoronsRuby_SpawnDustWhenHittingLink(DemoDu* this, PlayState* play)
 }
 
 void DemoDu_CsGoronsRuby_DaruniaFalling(DemoDu* this, PlayState* play) {
-    s32 pad;
+    s32              pad;
     CutsceneContext* csCtx = &play->csCtx;
 
     if (csCtx->state != CS_STATE_IDLE) {
         CsCmdActorAction* npcAction = csCtx->npcActions[2];
-        Vec3f startPos;
-        Vec3f endPos;
-        Vec3f* pos = &this->actor.world.pos;
+        Vec3f             startPos;
+        Vec3f             endPos;
+        Vec3f*            pos = &this->actor.world.pos;
 
         if (npcAction != NULL) {
             f32 traveledPercent = Environment_LerpWeight(npcAction->endFrame, npcAction->startFrame, csCtx->frames);
@@ -731,7 +730,7 @@ void DemoDu_CsAfterGanon_AdvanceTo01(DemoDu* this, PlayState* play) {
 
 void DemoDu_CsAfterGanon_AdvanceTo02(DemoDu* this, PlayState* play) {
     f32* unk_1A4 = &this->unk_1A4;
-    s32 shadowAlpha = 255;
+    s32  shadowAlpha = 255;
 
     if (DemoDu_IsNpcDoingThisAction(this, play, 4, 2)) {
         *unk_1A4 += 1.0f;
@@ -798,11 +797,11 @@ void DemoDu_UpdateCs_AG_02(DemoDu* this, PlayState* play) {
 void DemoDu_Draw_02(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
     DemoDu* this = (DemoDu*)thisx;
-    s16 eyeTexIndex = this->eyeTexIndex;
-    void* eyeTexture = sEyeTextures[eyeTexIndex];
-    s32 pad;
-    s16 mouthTexIndex = this->mouthTexIndex;
-    void* mouthTexture = sMouthTextures[mouthTexIndex];
+    s16        eyeTexIndex = this->eyeTexIndex;
+    void*      eyeTexture = sEyeTextures[eyeTexIndex];
+    s32        pad;
+    s16        mouthTexIndex = this->mouthTexIndex;
+    void*      mouthTexture = sMouthTextures[mouthTexIndex];
     SkelAnime* skelAnime = &this->skelAnime;
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -817,8 +816,8 @@ void DemoDu_Draw_02(Actor* thisx, PlayState* play2) {
 
     gSPSegment(POLY_XLU_DISP++, 0x0C, &D_80116280[0]);
 
-    POLY_XLU_DISP = SkelAnime_DrawFlex(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, 0,
-                                       0, 0, POLY_XLU_DISP);
+    POLY_XLU_DISP = SkelAnime_DrawFlex(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, 0, 0, 0,
+                                       POLY_XLU_DISP);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -832,8 +831,8 @@ void DemoDu_InitCs_Credits(DemoDu* this, PlayState* play) {
 }
 
 void DemoDu_CsCredits_UpdateShadowAlpha(DemoDu* this) {
-    s32 shadowAlpha = 255;
-    f32 temp_f0;
+    s32  shadowAlpha = 255;
+    f32  temp_f0;
     f32* unk_1A4;
 
     this->unk_1A4 += 1.0f;
@@ -993,11 +992,11 @@ void DemoDu_Draw_NoDraw(Actor* thisx, PlayState* play2) {
 void DemoDu_Draw_01(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
     DemoDu* this = (DemoDu*)thisx;
-    s16 eyeTexIndex = this->eyeTexIndex;
-    void* eyeTexture = sEyeTextures[eyeTexIndex];
-    s32 pad;
-    s16 mouthTexIndex = this->mouthTexIndex;
-    void* mouthTexture = sMouthTextures[mouthTexIndex];
+    s16        eyeTexIndex = this->eyeTexIndex;
+    void*      eyeTexture = sEyeTextures[eyeTexIndex];
+    s32        pad;
+    s16        mouthTexIndex = this->mouthTexIndex;
+    void*      mouthTexture = sMouthTextures[mouthTexIndex];
     SkelAnime* skelAnime = &this->skelAnime;
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -1012,8 +1011,7 @@ void DemoDu_Draw_01(Actor* thisx, PlayState* play2) {
 
     gSPSegment(POLY_OPA_DISP++, 0x0C, &D_80116280[2]);
 
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL, NULL,
-                          this);
+    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL, NULL, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

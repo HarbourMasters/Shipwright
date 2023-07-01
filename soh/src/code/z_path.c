@@ -13,8 +13,8 @@ Path* Path_GetByIndex(PlayState* play, s16 index, s16 max) {
 }
 
 f32 Path_OrientAndGetDistSq(Actor* actor, Path* path, s16 waypoint, s16* yaw) {
-    f32 dx;
-    f32 dz;
+    f32    dx;
+    f32    dz;
     Vec3s* pointPos;
 
     if (path == NULL) {

@@ -116,7 +116,7 @@ void EnSda_Update(Actor* thisx, PlayState* play) {
 void EnSda_Draw(Actor* thisx, PlayState* play) {
     EnSda* this = (EnSda*)thisx;
     Player* player;
-    u8* shadowTexture = Graph_Alloc(play->state.gfxCtx, 0x1000);
+    u8*     shadowTexture = Graph_Alloc(play->state.gfxCtx, 0x1000);
 
     osSyncPrintf("SDA DRAW \n");
 
@@ -137,14 +137,14 @@ void EnSda_Draw(Actor* thisx, PlayState* play) {
 }
 
 void func_80AF8F60(Player* player, u8* shadowTexture, f32 arg2) {
-    s16 temp_t0;
-    s16 temp_t1;
-    s16 temp_v1;
-    s16 temp_v0;
-    s16 phi_a0;
-    s16 phi_a3;
-    s16 i;
-    s16 j;
+    s16   temp_t0;
+    s16   temp_t1;
+    s16   temp_v1;
+    s16   temp_v0;
+    s16   phi_a0;
+    s16   phi_a3;
+    s16   i;
+    s16   j;
     Vec3f lerp;
     Vec3f sp88;
     Vec3f sp7C;
@@ -236,18 +236,18 @@ void func_80AF8F60(Player* player, u8* shadowTexture, f32 arg2) {
 }
 
 void func_80AF95C4(EnSda* this, u8* shadowTexture, Player* player, PlayState* play) {
-    s16 temp_t0;
-    s16 temp_t1;
-    s16 temp_v0;
-    s16 temp_v1;
-    s16 phi_a0;
-    s16 phi_a3;
-    s16 i;
-    s16 j;
+    s16   temp_t0;
+    s16   temp_t1;
+    s16   temp_v0;
+    s16   temp_v1;
+    s16   phi_a0;
+    s16   phi_a3;
+    s16   i;
+    s16   j;
     Vec3f sp194;
     Vec3f sp188;
-    s32* shadowTextureTemp32;
-    u8* shadowTextureTemp;
+    s32*  shadowTextureTemp32;
+    u8*   shadowTextureTemp;
     Vec3s sp178;
     Vec3f sp16C;
     Vec3f sp64[22];
@@ -333,10 +333,10 @@ void func_80AF95C4(EnSda* this, u8* shadowTexture, Player* player, PlayState* pl
 }
 
 void func_80AF9C70(u8* shadowTexture, Player* player, PlayState* play) {
-    s32 pad;
-    f32 tempx;
-    f32 tempz;
-    s16 phi_s1;
+    s32              pad;
+    f32              tempx;
+    f32              tempz;
+    s16              phi_s1;
     GraphicsContext* gfxCtx = play->state.gfxCtx;
 
     OPEN_DISPS(gfxCtx);
@@ -353,18 +353,17 @@ void func_80AF9C70(u8* shadowTexture, Player* player, PlayState* play) {
             20.0f;
     Matrix_Translate(tempx, 0.0f, tempz, MTXMODE_APPLY);
     Matrix_Scale(((BREG(56) - 250) / 1000.0f) + 0.6f, 1.0f, ((BREG(59) - 250) / 1000.0f) + 0.6f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, D_80AFA3D8);
     gDPLoadTextureBlock(POLY_XLU_DISP++, shadowTexture, G_IM_FMT_I, G_IM_SIZ_8b, 0x40, 0x40, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 6, 6, G_TX_NOLOD, G_TX_NOLOD);
-    gSPInvalidateTexCache(POLY_XLU_DISP++, (uintptr_t)shadowTexture); // Don't remember this texture, it will only be used this frame.
+    gSPInvalidateTexCache(POLY_XLU_DISP++,
+                          (uintptr_t)shadowTexture); // Don't remember this texture, it will only be used this frame.
     gSPDisplayList(POLY_XLU_DISP++, D_80AFA3F8);
 
     for (phi_s1 = 0; phi_s1 < KREG(78); phi_s1++) {
         Matrix_Scale((KREG(79) / 100.0f) + 1.0f, 1.0f, (KREG(79) / 100.0f) + 1.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, D_80AFA3F8);
     }
     osSyncPrintf("SDA D 2\n");

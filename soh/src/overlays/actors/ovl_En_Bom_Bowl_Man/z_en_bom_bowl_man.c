@@ -4,7 +4,9 @@
 #include "overlays/actors/ovl_En_Ex_Item/z_en_ex_item.h"
 #include "objects/object_bg/object_bg.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_LOCKON)
+#define FLAGS                                                                                                      \
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | \
+     ACTOR_FLAG_NO_LOCKON)
 
 typedef enum {
     /* 0 */ CHU_GIRL_EYES_ASLEEP,
@@ -48,13 +50,13 @@ const ActorInit En_Bom_Bowl_Man_InitVars = {
 };
 
 void EnBomBowlMan_Init(Actor* thisx, PlayState* play2) {
-    static f32 cuccoColliderDims[][3] = { { 16.0f, 46.0f, 0.0f }, { 36.0f, 56.0f, 0.0f } };
+    static f32   cuccoColliderDims[][3] = { { 16.0f, 46.0f, 0.0f }, { 36.0f, 56.0f, 0.0f } };
     static Vec3f cuccoSpawnPos[] = { { 60, -60, -430 }, { 0, -120, -620 } };
-    static f32 cuccoScales[] = { 0.01f, 0.03f };
+    static f32   cuccoScales[] = { 0.01f, 0.03f };
     EnBomBowlMan* this = (EnBomBowlMan*)thisx;
     EnSyatekiNiw* cucco;
-    s32 i;
-    PlayState* play = play2;
+    s32           i;
+    PlayState*    play = play2;
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f);
     SkelAnime_InitFlex(play, &this->skelAnime, &gChuGirlSkel, &gChuGirlNoddingOffAnim, this->jointTable,
@@ -69,7 +71,8 @@ void EnBomBowlMan_Init(Actor* thisx, PlayState* play2) {
     Actor_SetScale(&this->actor, 0.013f);
 
     for (i = 0; i < 2; i++) {
-        if(CVarGetInteger("gCustomizeBombchuBowling", 0) && CVarGetInteger(i == 0 ? "gBombchuBowlingNoSmallCucco" : "gBombchuBowlingNoBigCucco", 0)) {
+        if (CVarGetInteger("gCustomizeBombchuBowling", 0) &&
+            CVarGetInteger(i == 0 ? "gBombchuBowlingNoSmallCucco" : "gBombchuBowlingNoBigCucco", 0)) {
             continue;
         }
 
@@ -271,9 +274,8 @@ void EnBomBowMan_RunGame(EnBomBowlMan* this, PlayState* play) {
             osSyncPrintf(VT_FGCOL(PURPLE) "☆☆☆☆☆ 中央ＨＩＴ！！！！ ☆☆☆☆☆ \n" VT_RST);
         }
 
-        if ((play->bombchuBowlingStatus == -1) &&
-            (play->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].length == 0) && (this->bowlPit->status == 0) &&
-            (this->wallStatus[0] != 1) && (this->wallStatus[1] != 1)) {
+        if ((play->bombchuBowlingStatus == -1) && (play->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].length == 0) &&
+            (this->bowlPit->status == 0) && (this->wallStatus[0] != 1) && (this->wallStatus[1] != 1)) {
             this->gameResult = 2; // Lost
             // "Bombchu lost"
             osSyncPrintf(VT_FGCOL(PURPLE) "☆☆☆☆☆ ボムチュウ消化 ☆☆☆☆☆ \n" VT_RST);
@@ -327,10 +329,9 @@ void EnBomBowlMan_HandlePlayChoice(EnBomBowlMan* this, PlayState* play) {
                     Rupees_ChangeBy(-30);
                     this->minigamePlayStatus = 1;
                     this->wallStatus[0] = this->wallStatus[1] = 0;
-                    if(CVarGetInteger("gCustomizeBombchuBowling", 0)) {
+                    if (CVarGetInteger("gCustomizeBombchuBowling", 0)) {
                         play->bombchuBowlingStatus = CVarGetInteger("gBombchuBowlingAmmunition", 10);
-                    }
-                    else {
+                    } else {
                         play->bombchuBowlingStatus = 10;
                     }
                     Flags_SetSwitch(play, 0x38);
@@ -464,11 +465,10 @@ void EnBomBowMan_ChooseShowPrize(EnBomBowlMan* this, PlayState* play) {
             this->prizeIndex = BREG(7) - 1;
         }
 
-        this->exItem = (EnExItem*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_EX_ITEM,
-                                                     sPrizePosOffset[this->prizeIndex].x + 148.0f,
-                                                     sPrizePosOffset[this->prizeIndex].y + 40.0f,
-                                                     sPrizePosOffset[this->prizeIndex].z + 300.0f, 0,
-                                                     sPrizeRot[this->prizeIndex], 0, this->prizeIndex + EXITEM_COUNTER);
+        this->exItem = (EnExItem*)Actor_SpawnAsChild(
+            &play->actorCtx, &this->actor, play, ACTOR_EN_EX_ITEM, sPrizePosOffset[this->prizeIndex].x + 148.0f,
+            sPrizePosOffset[this->prizeIndex].y + 40.0f, sPrizePosOffset[this->prizeIndex].z + 300.0f, 0,
+            sPrizeRot[this->prizeIndex], 0, this->prizeIndex + EXITEM_COUNTER);
 
         if (!this->startedPlaying) {
             this->bowlPit = (EnBomBowlPit*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play,
@@ -557,8 +557,7 @@ void EnBomBowlMan_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 }
 
-s32 EnBomBowlMan_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                  void* thisx) {
+s32 EnBomBowlMan_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnBomBowlMan* this = (EnBomBowlMan*)thisx;
 
     if (limbIndex == 4) { // head

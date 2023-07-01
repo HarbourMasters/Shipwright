@@ -11,55 +11,59 @@
 #include "soh/Enhancements/boss-rush/BossRushTypes.h"
 
 typedef enum {
-    /* 0x0 */ MAGIC_STATE_IDLE, // Regular gameplay
+    /* 0x0 */ MAGIC_STATE_IDLE,          // Regular gameplay
     /* 0x1 */ MAGIC_STATE_CONSUME_SETUP, // Sets the speed at which magic border flashes
-    /* 0x2 */ MAGIC_STATE_CONSUME, // Consume magic until target is reached or no more magic is available
+    /* 0x2 */ MAGIC_STATE_CONSUME,       // Consume magic until target is reached or no more magic is available
     /* 0x3 */ MAGIC_STATE_METER_FLASH_1, // Flashes border and freezes Dark Link
     /* 0x4 */ MAGIC_STATE_METER_FLASH_2, // Flashes border and draws yellow magic to preview target consumption
-    /* 0x5 */ MAGIC_STATE_RESET, // Reset colors and return to idle
+    /* 0x5 */ MAGIC_STATE_RESET,         // Reset colors and return to idle
     /* 0x6 */ MAGIC_STATE_METER_FLASH_3, // Flashes border with no additional behaviour
-    /* 0x7 */ MAGIC_STATE_CONSUME_LENS, // Magic slowly consumed by lens.
+    /* 0x7 */ MAGIC_STATE_CONSUME_LENS,  // Magic slowly consumed by lens.
     /* 0x8 */ MAGIC_STATE_STEP_CAPACITY, // Step `magicCapacity` to full capacity
-    /* 0x9 */ MAGIC_STATE_FILL, // Add magic until magicFillTarget is reached.
-    /* 0xA */ MAGIC_STATE_ADD // Add requested magic
+    /* 0x9 */ MAGIC_STATE_FILL,          // Add magic until magicFillTarget is reached.
+    /* 0xA */ MAGIC_STATE_ADD            // Add requested magic
 } MagicState;
 
 typedef enum {
-    /* 0 */ MAGIC_CONSUME_NOW, // Consume Magic immediately without preview
-    /* 1 */ MAGIC_CONSUME_WAIT_NO_PREVIEW, // Sets consume target but waits to consume. No yellow magic preview to target consumption. Unused
-    /* 2 */ MAGIC_CONSUME_NOW_ALT, // Identical behaviour to MAGIC_CONSUME_NOW. Unused
-    /* 3 */ MAGIC_CONSUME_LENS, // Lens consumption
-    /* 4 */ MAGIC_CONSUME_WAIT_PREVIEW, // Sets consume target but waits to consume. Draws yellow magic to target consumption
-    /* 5 */ MAGIC_ADD // Sets a target to add magic
+    /* 0 */ MAGIC_CONSUME_NOW,             // Consume Magic immediately without preview
+    /* 1 */ MAGIC_CONSUME_WAIT_NO_PREVIEW, // Sets consume target but waits to consume. No yellow magic preview to
+                                           // target consumption. Unused
+    /* 2 */ MAGIC_CONSUME_NOW_ALT,         // Identical behaviour to MAGIC_CONSUME_NOW. Unused
+    /* 3 */ MAGIC_CONSUME_LENS,            // Lens consumption
+    /* 4 */ MAGIC_CONSUME_WAIT_PREVIEW,    // Sets consume target but waits to consume. Draws yellow magic to target
+                                           // consumption
+    /* 5 */ MAGIC_ADD                      // Sets a target to add magic
 } MagicChangeType;
 
 #define MAGIC_NORMAL_METER 0x30
 #define MAGIC_DOUBLE_METER (2 * MAGIC_NORMAL_METER)
 
 typedef struct {
-    /* 0x00 */ u8 buttonItems[8]; // SOH [Enhancements] Changed from 4 to 8 to support Dpad equips
-    /* 0x04 */ u8 cButtonSlots[7]; // SOH [Enhancements] Changed from 3 to 7 to support Dpad equips
-    /* 0x08 */ u16 equipment; // a mask where each nibble corresponds to a type of equipment `EquipmentType`, and each nibble is a piece `EquipValue*`
-} ItemEquips; // size = 0x0A
+    /* 0x00 */ u8  buttonItems[8];  // SOH [Enhancements] Changed from 4 to 8 to support Dpad equips
+    /* 0x04 */ u8  cButtonSlots[7]; // SOH [Enhancements] Changed from 3 to 7 to support Dpad equips
+    /* 0x08 */ u16 equipment; // a mask where each nibble corresponds to a type of equipment `EquipmentType`, and each
+                              // nibble is a piece `EquipValue*`
+} ItemEquips;                 // size = 0x0A
 
 typedef struct {
-    /* 0x00 */ u8 items[24];
-    /* 0x18 */ s8 ammo[16];
-    /* 0x28 */ u16 equipment; // a mask where each nibble corresponds to a type of equipment `EquipmentType`, and each bit to an owned piece `EquipInv*`
+    /* 0x00 */ u8  items[24];
+    /* 0x18 */ s8  ammo[16];
+    /* 0x28 */ u16 equipment; // a mask where each nibble corresponds to a type of equipment `EquipmentType`, and each
+                              // bit to an owned piece `EquipInv*`
     /* 0x2C */ u32 upgrades;
     /* 0x30 */ u32 questItems;
-    /* 0x34 */ u8 dungeonItems[20];
-    /* 0x48 */ s8 dungeonKeys[19];
-    /* 0x5B */ s8 defenseHearts;
+    /* 0x34 */ u8  dungeonItems[20];
+    /* 0x48 */ s8  dungeonKeys[19];
+    /* 0x5B */ s8  defenseHearts;
     /* 0x5C */ s16 gsTokens;
 } Inventory; // size = 0x5E
 
 typedef struct {
     u16 scene;
-    u8 room;
+    u8  room;
     u32 sceneTime;
     u32 roomTime;
-    u8 isRoom;
+    u8  isRoom;
 } SceneTimestamp;
 
 typedef enum { // Pre-existing IDs for save sections in base code
@@ -72,29 +76,29 @@ typedef enum { // Pre-existing IDs for save sections in base code
 } SaveFuncIDs;
 
 typedef struct {
-    /*      */ char buildVersion[50];
-    /*      */ s16 buildVersionMajor;
-    /*      */ s16 buildVersionMinor;
-    /*      */ s16 buildVersionPatch;
-    /*      */ u8 heartPieces;
-    /*      */ u8 heartContainers;
-    /*      */ u8 dungeonKeys[19];
-    /*      */ u32 playTimer;
-    /*      */ u32 pauseTimer;
-    /*      */ u32 sceneTimer;
-    /*      */ u32 roomTimer;
-    /*      */ s16 sceneNum;
-    /*      */ s8 roomNum;
-    /*      */ bool gameComplete;
-    /*      */ u32 itemTimestamp[TIMESTAMP_MAX];
+    /*      */ char           buildVersion[50];
+    /*      */ s16            buildVersionMajor;
+    /*      */ s16            buildVersionMinor;
+    /*      */ s16            buildVersionPatch;
+    /*      */ u8             heartPieces;
+    /*      */ u8             heartContainers;
+    /*      */ u8             dungeonKeys[19];
+    /*      */ u32            playTimer;
+    /*      */ u32            pauseTimer;
+    /*      */ u32            sceneTimer;
+    /*      */ u32            roomTimer;
+    /*      */ s16            sceneNum;
+    /*      */ s8             roomNum;
+    /*      */ bool           gameComplete;
+    /*      */ u32            itemTimestamp[TIMESTAMP_MAX];
     /*      */ SceneTimestamp sceneTimestamps[8191];
-    /*      */ u32 tsIdx;
-    /*      */ u32 count[COUNT_MAX];
-    /*      */ u32 entrancesDiscovered[SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT];
-    /*      */ u32 scenesDiscovered[SAVEFILE_SCENES_DISCOVERED_IDX_COUNT];
-    /*      */ u8 locationsSkipped[RC_MAX];
-    /*      */ bool rtaTiming;
-    /*      */ uint64_t fileCreatedAt;
+    /*      */ u32            tsIdx;
+    /*      */ u32            count[COUNT_MAX];
+    /*      */ u32            entrancesDiscovered[SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT];
+    /*      */ u32            scenesDiscovered[SAVEFILE_SCENES_DISCOVERED_IDX_COUNT];
+    /*      */ u8             locationsSkipped[RC_MAX];
+    /*      */ bool           rtaTiming;
+    /*      */ uint64_t       fileCreatedAt;
 } SohStats;
 
 typedef struct {
@@ -108,9 +112,9 @@ typedef struct {
 } SavedSceneFlags; // size = 0x1C
 
 typedef struct {
-    /* 0x00 */ s16 scene; // Upstream TODO: sceneId
+    /* 0x00 */ s16   scene; // Upstream TODO: sceneId
     /* 0x02 */ Vec3s pos;
-    /* 0x08 */ s16 angle;
+    /* 0x08 */ s16   angle;
 } HorseData; // size = 0x0A
 
 /**
@@ -128,197 +132,199 @@ typedef enum {
 
 typedef struct {
     /* 0x00 */ Vec3f pos;
-    /* 0x0C */ s16 yaw;
-    /* 0x0E */ s16 playerParams;
-    /* 0x10 */ s16 entranceIndex;
-    /* 0x12 */ u8 roomIndex;
-    /* 0x13 */ s8 data;
-    /* 0x14 */ u32 tempSwchFlags;
-    /* 0x18 */ u32 tempCollectFlags;
+    /* 0x0C */ s16   yaw;
+    /* 0x0E */ s16   playerParams;
+    /* 0x10 */ s16   entranceIndex;
+    /* 0x12 */ u8    roomIndex;
+    /* 0x13 */ s8    data;
+    /* 0x14 */ u32   tempSwchFlags;
+    /* 0x18 */ u32   tempCollectFlags;
 } RespawnData; // size = 0x1C
 
 typedef struct {
     /* 0x00 */ Vec3i pos;
-    /* 0x0C */ s32 yaw;
-    /* 0x10 */ s32 playerParams;
-    /* 0x14 */ s32 entranceIndex;
-    /* 0x18 */ s32 roomIndex;
-    /* 0x1C */ s32 set;
-    /* 0x20 */ s32 tempSwchFlags;
-    /* 0x24 */ s32 tempCollectFlags;
+    /* 0x0C */ s32   yaw;
+    /* 0x10 */ s32   playerParams;
+    /* 0x14 */ s32   entranceIndex;
+    /* 0x18 */ s32   roomIndex;
+    /* 0x1C */ s32   set;
+    /* 0x20 */ s32   tempSwchFlags;
+    /* 0x24 */ s32   tempCollectFlags;
 } FaroresWindData; // size = 0x28
 
 typedef struct {
-    RandomizerCheck check;
+    RandomizerCheck   check;
     RandomizerGetData get;
 } ItemLocationRando;
 
 typedef struct {
-    RandomizerCheck check;
-    RandomizerCheck hintedCheck;
-    RandomizerGet rGet;
+    RandomizerCheck     check;
+    RandomizerCheck     hintedCheck;
+    RandomizerGet       rGet;
     RandomizerCheckArea area;
-    HintType type;
-    char hintText[200];
+    HintType            type;
+    char                hintText[200];
 } HintLocationRando;
 
 typedef struct {
     RandomizerSettingKey key;
-    u8 value;
+    u8                   value;
 } RandoSetting;
 
 typedef struct {
-    /* 0x0000 */ s32 entranceIndex; // start of `save` substruct, originally called "memory"
-    /* 0x0004 */ s32 linkAge; // 0: Adult; 1: Child (see enum `LinkAge`)
-    /* 0x0008 */ s32 cutsceneIndex;
-    /* 0x000C */ u16 dayTime; // "zelda_time"
-    /* 0x0010 */ s32 nightFlag;
-    /* 0x0014 */ s32 totalDays;
-    /* 0x0018 */ s32 bgsDayCount; // increments with totalDays, can be cleared with `Environment_ClearBgsDayCount`
-    /* 0x001C */ char newf[6]; // string "ZELDAZ". start of `info` substruct, originally called "information"
-    /* 0x0022 */ u16 deaths;
+    /* 0x0000 */ s32  entranceIndex; // start of `save` substruct, originally called "memory"
+    /* 0x0004 */ s32  linkAge;       // 0: Adult; 1: Child (see enum `LinkAge`)
+    /* 0x0008 */ s32  cutsceneIndex;
+    /* 0x000C */ u16  dayTime; // "zelda_time"
+    /* 0x0010 */ s32  nightFlag;
+    /* 0x0014 */ s32  totalDays;
+    /* 0x0018 */ s32  bgsDayCount; // increments with totalDays, can be cleared with `Environment_ClearBgsDayCount`
+    /* 0x001C */ char newf[6];     // string "ZELDAZ". start of `info` substruct, originally called "information"
+    /* 0x0022 */ u16  deaths;
     /* 0x0024 */ char playerName[8];
-    /* 0x002C */ s16 n64ddFlag;
-    /* 0x002E */ s16 healthCapacity; // "max_life"
-    /* 0x0030 */ s16 health; // "now_life"
-    /* 0x0032 */ s8 magicLevel; // 0 for no magic/new load, 1 for magic, 2 for double magic
-    /* 0x0033 */ s8 magic; // current magic available for use
-    /* 0x0034 */ s16 rupees;
-    /* 0x0036 */ u16 swordHealth;
-    /* 0x0038 */ u16 naviTimer;
-    /* 0x003A */ u8 isMagicAcquired;
+    /* 0x002C */ s16  n64ddFlag;
+    /* 0x002E */ s16  healthCapacity; // "max_life"
+    /* 0x0030 */ s16  health;         // "now_life"
+    /* 0x0032 */ s8   magicLevel;     // 0 for no magic/new load, 1 for magic, 2 for double magic
+    /* 0x0033 */ s8   magic;          // current magic available for use
+    /* 0x0034 */ s16  rupees;
+    /* 0x0036 */ u16  swordHealth;
+    /* 0x0038 */ u16  naviTimer;
+    /* 0x003A */ u8   isMagicAcquired;
     /* 0x003B */ char unk_3B[0x01];
-    /* 0x003C */ u8 isDoubleMagicAcquired;
-    /* 0x003D */ u8 isDoubleDefenseAcquired;
-    /* 0x003E */ u8 bgsFlag;
-    /* 0x003F */ u8 ocarinaGameRoundNum;
-    /* 0x0040 */ ItemEquips childEquips;
-    /* 0x004A */ ItemEquips adultEquips;
-    /* 0x0054 */ u32 unk_54; // this may be incorrect, currently used for alignment
-    /* 0x0058 */ char unk_58[0x0E];
-    /* 0x0066 */ s16 savedSceneNum; // Upstream TODO: sceneId
-    /* 0x0068 */ ItemEquips equips;
-    /* 0x0074 */ Inventory inventory;
+    /* 0x003C */ u8   isDoubleMagicAcquired;
+    /* 0x003D */ u8   isDoubleDefenseAcquired;
+    /* 0x003E */ u8   bgsFlag;
+    /* 0x003F */ u8   ocarinaGameRoundNum;
+    /* 0x0040 */ ItemEquips      childEquips;
+    /* 0x004A */ ItemEquips      adultEquips;
+    /* 0x0054 */ u32             unk_54; // this may be incorrect, currently used for alignment
+    /* 0x0058 */ char            unk_58[0x0E];
+    /* 0x0066 */ s16             savedSceneNum; // Upstream TODO: sceneId
+    /* 0x0068 */ ItemEquips      equips;
+    /* 0x0074 */ Inventory       inventory;
     /* 0x00D4 */ SavedSceneFlags sceneFlags[124];
     /* 0x0E64 */ FaroresWindData fw;
-    /* 0x0E8C */ char unk_E8C[0x10];
-    /* 0x0E9C */ s32 gsFlags[6];
-    /* 0x0EB4 */ char unk_EB4[0x4];
-    /* 0x0EB8 */ s32 highScores[7];
-    /* 0x0ED4 */ u16 eventChkInf[14]; // "event_chk_inf"
-    /* 0x0EF0 */ u16 itemGetInf[4]; // "item_get_inf"
-    /* 0x0EF8 */ u16 infTable[30]; // "inf_table"
-    /* 0x0F34 */ char unk_F34[0x04];
-    /* 0x0F38 */ u32 worldMapAreaData; // "area_arrival"
-    /* 0x0F3C */ char unk_F3C[0x4];
-    /* 0x0F40 */ u8 scarecrowLongSongSet;
-    /* 0x0F41 */ OcarinaNote scarecrowLongSong[108]; // Upstream TODO: Audio
-    /* 0x12A1 */ char unk_12A1[0x24];
-    /* 0x12C5 */ u8 scarecrowSpawnSongSet;
-    /* 0x12C6 */ OcarinaNote scarecrowSpawnSong[16]; // Upstream TODO: Audio
-    /* 0x1346 */ char unk_1346[0x02];
-    /* 0x1348 */ HorseData horseData;
-    /* 0x1352 */ u16 checksum; // "check_sum"
-    /* 0x1354 */ s32 fileNum; // "file_no"
-    /* 0x1358 */ char unk_1358[0x0004];
-    /* 0x135C */ s32 gameMode;
-    /* 0x1360 */ s32 sceneSetupIndex; // "counter" // Upstream TODO: sceneLayer
-    /* 0x1364 */ s32 respawnFlag; // "restart_flag"
-    /* 0x1368 */ RespawnData respawn[RESPAWN_MODE_MAX]; // "restart_data"
-    /* 0x13BC */ f32 entranceSpeed;
-    /* 0x13C0 */ u16 entranceSound;
-    /* 0x13C2 */ char unk_13C2[0x0001];
-    /* 0x13C3 */ u8 retainWeatherMode;
-    /* 0x13C4 */ s16 dogParams;
-    /* 0x13C6 */ u8 textTriggerFlags;
-    /* 0x13C7 */ u8 showTitleCard;
-    /* 0x13C8 */ s16 nayrusLoveTimer;
-    /* 0x13CA */ char unk_13CA[0x0002];
-    /* 0x13CC */ s16 rupeeAccumulator;
-    /* 0x13CE */ s16 timer1State;
-    /* 0x13D0 */ s16 timer1Value;
-    /* 0x13D2 */ s16 timer2State;
-    /* 0x13D4 */ s16 timer2Value;
-    /* 0x13D6 */ s16 timerX[2];
-    /* 0x13DA */ s16 timerY[2];
-    /* 0x13DE */ char unk_13DE[0x0002];
-    /* 0x13E0 */ u8 seqId;
-    /* 0x13E1 */ u8 natureAmbienceId;
-    /* 0x13E2 */ u8 buttonStatus[9]; // SOH [Enhancements] Changed from 5 to 9 to support Dpad equips
-    /* 0x13E7 */ u8 unk_13E7; // alpha related
-    /* 0x13E8 */ u16 unk_13E8; // alpha type?
-    /* 0x13EA */ u16 unk_13EA; // also alpha type?
-    /* 0x13EC */ u16 unk_13EC; // alpha type counter?
-    /* 0x13EE */ u16 unk_13EE; // previous alpha type?
-    /* 0x13F0 */ s16 magicState; // determines magic meter behavior on each frame
-    /* 0x13F2 */ s16 prevMagicState; // used to resume the previous state after adding or filling magic
-    /* 0x13F4 */ s16 magicCapacity; // maximum magic available
-    /* 0x13F6 */ s16 magicFillTarget; // target used to fill magic. Target can either be full capacity (Magic_Fill, magic upgrades), or the saved magic amount (loading a file, game over)
-    /* 0x13F8 */ s16 magicTarget; // target for magic to step to when adding or consuming magic
-    /* 0x13FA */ u16 eventInf[4]; // "event_inf"
-    /* 0x1402 */ u16 mapIndex; // intended for maps/minimaps but commonly used as the dungeon index
-    /* 0x1404 */ u16 minigameState;
-    /* 0x1406 */ u16 minigameScore; // "yabusame_total"
+    /* 0x0E8C */ char            unk_E8C[0x10];
+    /* 0x0E9C */ s32             gsFlags[6];
+    /* 0x0EB4 */ char            unk_EB4[0x4];
+    /* 0x0EB8 */ s32             highScores[7];
+    /* 0x0ED4 */ u16             eventChkInf[14]; // "event_chk_inf"
+    /* 0x0EF0 */ u16             itemGetInf[4];   // "item_get_inf"
+    /* 0x0EF8 */ u16             infTable[30];    // "inf_table"
+    /* 0x0F34 */ char            unk_F34[0x04];
+    /* 0x0F38 */ u32             worldMapAreaData; // "area_arrival"
+    /* 0x0F3C */ char            unk_F3C[0x4];
+    /* 0x0F40 */ u8              scarecrowLongSongSet;
+    /* 0x0F41 */ OcarinaNote     scarecrowLongSong[108]; // Upstream TODO: Audio
+    /* 0x12A1 */ char            unk_12A1[0x24];
+    /* 0x12C5 */ u8              scarecrowSpawnSongSet;
+    /* 0x12C6 */ OcarinaNote     scarecrowSpawnSong[16]; // Upstream TODO: Audio
+    /* 0x1346 */ char            unk_1346[0x02];
+    /* 0x1348 */ HorseData       horseData;
+    /* 0x1352 */ u16             checksum; // "check_sum"
+    /* 0x1354 */ s32             fileNum;  // "file_no"
+    /* 0x1358 */ char            unk_1358[0x0004];
+    /* 0x135C */ s32             gameMode;
+    /* 0x1360 */ s32             sceneSetupIndex;           // "counter" // Upstream TODO: sceneLayer
+    /* 0x1364 */ s32             respawnFlag;               // "restart_flag"
+    /* 0x1368 */ RespawnData     respawn[RESPAWN_MODE_MAX]; // "restart_data"
+    /* 0x13BC */ f32             entranceSpeed;
+    /* 0x13C0 */ u16             entranceSound;
+    /* 0x13C2 */ char            unk_13C2[0x0001];
+    /* 0x13C3 */ u8              retainWeatherMode;
+    /* 0x13C4 */ s16             dogParams;
+    /* 0x13C6 */ u8              textTriggerFlags;
+    /* 0x13C7 */ u8              showTitleCard;
+    /* 0x13C8 */ s16             nayrusLoveTimer;
+    /* 0x13CA */ char            unk_13CA[0x0002];
+    /* 0x13CC */ s16             rupeeAccumulator;
+    /* 0x13CE */ s16             timer1State;
+    /* 0x13D0 */ s16             timer1Value;
+    /* 0x13D2 */ s16             timer2State;
+    /* 0x13D4 */ s16             timer2Value;
+    /* 0x13D6 */ s16             timerX[2];
+    /* 0x13DA */ s16             timerY[2];
+    /* 0x13DE */ char            unk_13DE[0x0002];
+    /* 0x13E0 */ u8              seqId;
+    /* 0x13E1 */ u8              natureAmbienceId;
+    /* 0x13E2 */ u8              buttonStatus[9]; // SOH [Enhancements] Changed from 5 to 9 to support Dpad equips
+    /* 0x13E7 */ u8              unk_13E7;        // alpha related
+    /* 0x13E8 */ u16             unk_13E8;        // alpha type?
+    /* 0x13EA */ u16             unk_13EA;        // also alpha type?
+    /* 0x13EC */ u16             unk_13EC;        // alpha type counter?
+    /* 0x13EE */ u16             unk_13EE;        // previous alpha type?
+    /* 0x13F0 */ s16             magicState;      // determines magic meter behavior on each frame
+    /* 0x13F2 */ s16             prevMagicState;  // used to resume the previous state after adding or filling magic
+    /* 0x13F4 */ s16             magicCapacity;   // maximum magic available
+    /* 0x13F6 */ s16  magicFillTarget; // target used to fill magic. Target can either be full capacity (Magic_Fill,
+                                       // magic upgrades), or the saved magic amount (loading a file, game over)
+    /* 0x13F8 */ s16  magicTarget;     // target for magic to step to when adding or consuming magic
+    /* 0x13FA */ u16  eventInf[4];     // "event_inf"
+    /* 0x1402 */ u16  mapIndex;        // intended for maps/minimaps but commonly used as the dungeon index
+    /* 0x1404 */ u16  minigameState;
+    /* 0x1406 */ u16  minigameScore; // "yabusame_total"
     /* 0x1408 */ char unk_1408[0x0001];
-    /* 0x1409 */ u8 language; // NTSC 0: Japanese; 1: English | PAL 0: English; 1: German; 2: French
-    /* 0x140A */ u8 audioSetting;
+    /* 0x1409 */ u8   language; // NTSC 0: Japanese; 1: English | PAL 0: English; 1: German; 2: French
+    /* 0x140A */ u8   audioSetting;
     /* 0x140B */ char unk_140B[0x0001];
-    /* 0x140C */ u8 zTargetSetting; // 0: Switch; 1: Hold
-    /* 0x140E */ u16 forcedSeqId; // immediately start playing the sequence if set
-    /* 0x1410 */ u8 cutsceneTransitionControl; // context dependent usage: can either trigger a delayed fade or control fill alpha
-    /* 0x1411 */ char unk_1411[0x0001];
-    /* 0x1412 */ u16 nextCutsceneIndex;
-    /* 0x1414 */ u8 cutsceneTrigger;
-    /* 0x1415 */ u8 chamberCutsceneNum;
-    /* 0x1416 */ u16 nextDayTime; // "next_zelda_time"
-    /* 0x1418 */ u8 transFadeDuration;
-    /* 0x1419 */ u8 transWipeSpeed;
-    /* 0x141A */ u16 skyboxTime;
-    /* 0x141C */ u8 dogIsLost;
-    /* 0x141D */ u8 nextTransitionType;
-    /* 0x141E */ char unk_141E[0x0002];
-    /* 0x1420 */ s16 worldMapArea;
-    /* 0x1422 */ s16 sunsSongState; // controls the effects of suns song
-    /* 0x1424 */ s16 healthAccumulator;
-    /* 0x1426 */ u16 pendingSale;
-    /* 0x1428 */ u16 pendingSaleMod;
+    /* 0x140C */ u8   zTargetSetting; // 0: Switch; 1: Hold
+    /* 0x140E */ u16  forcedSeqId;    // immediately start playing the sequence if set
+    /* 0x1410 */ u8
+        cutsceneTransitionControl; // context dependent usage: can either trigger a delayed fade or control fill alpha
+    /* 0x1411 */ char              unk_1411[0x0001];
+    /* 0x1412 */ u16               nextCutsceneIndex;
+    /* 0x1414 */ u8                cutsceneTrigger;
+    /* 0x1415 */ u8                chamberCutsceneNum;
+    /* 0x1416 */ u16               nextDayTime; // "next_zelda_time"
+    /* 0x1418 */ u8                transFadeDuration;
+    /* 0x1419 */ u8                transWipeSpeed;
+    /* 0x141A */ u16               skyboxTime;
+    /* 0x141C */ u8                dogIsLost;
+    /* 0x141D */ u8                nextTransitionType;
+    /* 0x141E */ char              unk_141E[0x0002];
+    /* 0x1420 */ s16               worldMapArea;
+    /* 0x1422 */ s16               sunsSongState; // controls the effects of suns song
+    /* 0x1424 */ s16               healthAccumulator;
+    /* 0x1426 */ u16               pendingSale;
+    /* 0x1428 */ u16               pendingSaleMod;
     // #region SOH [General]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to SoH
-    /*        */ uint32_t isMasterQuest;
-    /*        */ uint32_t isBossRush;
-    /*        */ uint32_t isBossRushPaused;
-    /*        */ uint8_t bossRushOptions[BOSSRUSH_OPTIONS_AMOUNT];
-    /*        */ u8 mqDungeonCount;
-    /*        */ u8 pendingIceTrapCount;
-    /*        */ SohStats sohStats;
-    /*        */ u8 temporaryWeapon;
-    /*        */ FaroresWindData backupFW;
+    /*        */ uint32_t          isMasterQuest;
+    /*        */ uint32_t          isBossRush;
+    /*        */ uint32_t          isBossRushPaused;
+    /*        */ uint8_t           bossRushOptions[BOSSRUSH_OPTIONS_AMOUNT];
+    /*        */ u8                mqDungeonCount;
+    /*        */ u8                pendingIceTrapCount;
+    /*        */ SohStats          sohStats;
+    /*        */ u8                temporaryWeapon;
+    /*        */ FaroresWindData   backupFW;
     // #endregion
     // #region SOH [Randomizer]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to Randomizer
-    /*        */ RandoSetting randoSettings[300];
+    /*        */ RandoSetting      randoSettings[300];
     /*        */ ItemLocationRando itemLocations[RC_MAX];
     /*        */ HintLocationRando hintLocations[50];
-    /*        */ EntranceOverride entranceOverrides[ENTRANCE_OVERRIDES_MAX_COUNT];
-    /*        */ char childAltarText[250];
-    /*        */ char adultAltarText[750];
-    /*        */ RandomizerCheck rewardCheck[9];
-    /*        */ char ganonHintText[150];
-    /*        */ char gregHintText[250];
-    /*        */ char ganonText[250];
-    /*        */ char dampeText[150];
-    /*        */ char warpMinuetText[100];
-    /*        */ char warpBoleroText[100];
-    /*        */ char warpSerenadeText[100];
-    /*        */ char warpRequiemText[100];
-    /*        */ char warpNocturneText[100];
-    /*        */ char warpPreludeText[100];
-    /*        */ RandomizerCheck ganonHintCheck;
-    /*        */ RandomizerCheck gregCheck;
-    /*        */ RandomizerCheck dampeCheck;
-    /*        */ u8 seedIcons[5];
-    /*        */ u16 randomizerInf[9];
-    /*        */ u16 adultTradeItems;
+    /*        */ EntranceOverride  entranceOverrides[ENTRANCE_OVERRIDES_MAX_COUNT];
+    /*        */ char              childAltarText[250];
+    /*        */ char              adultAltarText[750];
+    /*        */ RandomizerCheck   rewardCheck[9];
+    /*        */ char              ganonHintText[150];
+    /*        */ char              gregHintText[250];
+    /*        */ char              ganonText[250];
+    /*        */ char              dampeText[150];
+    /*        */ char              warpMinuetText[100];
+    /*        */ char              warpBoleroText[100];
+    /*        */ char              warpSerenadeText[100];
+    /*        */ char              warpRequiemText[100];
+    /*        */ char              warpNocturneText[100];
+    /*        */ char              warpPreludeText[100];
+    /*        */ RandomizerCheck   ganonHintCheck;
+    /*        */ RandomizerCheck   gregCheck;
+    /*        */ RandomizerCheck   dampeCheck;
+    /*        */ u8                seedIcons[5];
+    /*        */ u16               randomizerInf[9];
+    /*        */ u16               adultTradeItems;
     // #endregion
 } SaveContext; // size = 0x1428
 
@@ -337,7 +343,7 @@ typedef enum {
 } ChamberCutsceneNum;
 
 typedef enum {
-    /* 0x00 */ HS_HBA,          // horseback archery
+    /* 0x00 */ HS_HBA, // horseback archery
     /* 0x01 */ HS_POE_POINTS,
     /* 0x02 */ HS_FISHING,
     /* 0x03 */ HS_HORSE_RACE,
@@ -348,9 +354,9 @@ typedef enum {
 
 typedef enum {
     /* 0 */ SUNSSONG_INACTIVE,
-    /* 1 */ SUNSSONG_START, // the suns ocarina effect signals that the song has finished playing
+    /* 1 */ SUNSSONG_START,      // the suns ocarina effect signals that the song has finished playing
     /* 2 */ SUNSSONG_SPEED_TIME, // suns was played where time passes, speed up the advancement of time
-    /* 3 */ SUNSSONG_SPECIAL // time does not advance, but signals the song was played. used for freezing redeads
+    /* 3 */ SUNSSONG_SPECIAL     // time does not advance, but signals the song was played. used for freezing redeads
 } SunsSongState;
 
 typedef enum {
@@ -375,14 +381,11 @@ typedef enum {
     /* 1 */ LINK_AGE_CHILD
 } LinkAge;
 
-
-
 /*
  *
  * SaveContext flags
  *
  */
-
 
 /*
  * SaveContext.eventChkInf
@@ -470,7 +473,8 @@ typedef enum {
 #define EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO_INDEX 6
 #define EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO_SHIFT 11
 #define EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO_MASK (1 << EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO_SHIFT)
-#define EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO ((EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO_INDEX << 4) | EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO_SHIFT)
+#define EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO \
+    ((EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO_INDEX << 4) | EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO_SHIFT)
 
 #define EVENTCHKINF_6E 0x6E
 #define EVENTCHKINF_SPOKE_TO_KAEPORA_BY_LOST_WOODS 0x6F
@@ -496,11 +500,9 @@ typedef enum {
 #define EVENTCHKINF_CARPENTERS_FREE_SHIFT(n) (0 + (n))
 #define EVENTCHKINF_CARPENTERS_FREE_MASK(n) (1 << EVENTCHKINF_CARPENTERS_FREE_SHIFT(n))
 #define EVENTCHKINF_CARPENTERS_FREE(n) ((EVENTCHKINF_CARPENTERS_FREE_INDEX << 4) | EVENTCHKINF_CARPENTERS_FREE_SHIFT(n))
-#define EVENTCHKINF_CARPENTERS_FREE_MASK_ALL (\
-      EVENTCHKINF_CARPENTERS_FREE_MASK(0)     \
-    | EVENTCHKINF_CARPENTERS_FREE_MASK(1)     \
-    | EVENTCHKINF_CARPENTERS_FREE_MASK(2)     \
-    | EVENTCHKINF_CARPENTERS_FREE_MASK(3)    )
+#define EVENTCHKINF_CARPENTERS_FREE_MASK_ALL                                                                           \
+    (EVENTCHKINF_CARPENTERS_FREE_MASK(0) | EVENTCHKINF_CARPENTERS_FREE_MASK(1) | EVENTCHKINF_CARPENTERS_FREE_MASK(2) | \
+     EVENTCHKINF_CARPENTERS_FREE_MASK(3))
 #define GET_EVENTCHKINF_CARPENTERS_FREE_ALL() \
     CHECK_FLAG_ALL(gSaveContext.eventChkInf[EVENTCHKINF_CARPENTERS_FREE_INDEX], EVENTCHKINF_CARPENTERS_FREE_MASK_ALL)
 
@@ -548,27 +550,33 @@ typedef enum {
 
 // 0xD0-0xD6
 #define EVENTCHKINF_SONGS_FOR_FROGS_INDEX 13
-#define EVENTCHKINF_SONGS_FOR_FROGS_CHOIR_SHIFT  0
-#define EVENTCHKINF_SONGS_FOR_FROGS_ZL_SHIFT     1
-#define EVENTCHKINF_SONGS_FOR_FROGS_EPONA_SHIFT  2
-#define EVENTCHKINF_SONGS_FOR_FROGS_SUNS_SHIFT   3
-#define EVENTCHKINF_SONGS_FOR_FROGS_SARIA_SHIFT  4
-#define EVENTCHKINF_SONGS_FOR_FROGS_SOT_SHIFT    5
+#define EVENTCHKINF_SONGS_FOR_FROGS_CHOIR_SHIFT 0
+#define EVENTCHKINF_SONGS_FOR_FROGS_ZL_SHIFT 1
+#define EVENTCHKINF_SONGS_FOR_FROGS_EPONA_SHIFT 2
+#define EVENTCHKINF_SONGS_FOR_FROGS_SUNS_SHIFT 3
+#define EVENTCHKINF_SONGS_FOR_FROGS_SARIA_SHIFT 4
+#define EVENTCHKINF_SONGS_FOR_FROGS_SOT_SHIFT 5
 #define EVENTCHKINF_SONGS_FOR_FROGS_STORMS_SHIFT 6
-#define EVENTCHKINF_SONGS_FOR_FROGS_CHOIR_MASK  (1 << EVENTCHKINF_SONGS_FOR_FROGS_CHOIR_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_ZL_MASK     (1 << EVENTCHKINF_SONGS_FOR_FROGS_ZL_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_EPONA_MASK  (1 << EVENTCHKINF_SONGS_FOR_FROGS_EPONA_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_SUNS_MASK   (1 << EVENTCHKINF_SONGS_FOR_FROGS_SUNS_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_SARIA_MASK  (1 << EVENTCHKINF_SONGS_FOR_FROGS_SARIA_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_SOT_MASK    (1 << EVENTCHKINF_SONGS_FOR_FROGS_SOT_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_CHOIR_MASK (1 << EVENTCHKINF_SONGS_FOR_FROGS_CHOIR_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_ZL_MASK (1 << EVENTCHKINF_SONGS_FOR_FROGS_ZL_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_EPONA_MASK (1 << EVENTCHKINF_SONGS_FOR_FROGS_EPONA_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_SUNS_MASK (1 << EVENTCHKINF_SONGS_FOR_FROGS_SUNS_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_SARIA_MASK (1 << EVENTCHKINF_SONGS_FOR_FROGS_SARIA_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_SOT_MASK (1 << EVENTCHKINF_SONGS_FOR_FROGS_SOT_SHIFT)
 #define EVENTCHKINF_SONGS_FOR_FROGS_STORMS_MASK (1 << EVENTCHKINF_SONGS_FOR_FROGS_STORMS_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_CHOIR  ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_CHOIR_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_ZL     ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_ZL_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_EPONA  ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_EPONA_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_SUNS   ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_SUNS_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_SARIA  ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_SARIA_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_SOT    ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_SOT_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_STORMS ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_STORMS_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_CHOIR \
+    ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_CHOIR_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_ZL ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_ZL_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_EPONA \
+    ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_EPONA_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_SUNS \
+    ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_SUNS_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_SARIA \
+    ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_SARIA_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_SOT \
+    ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_SOT_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_STORMS \
+    ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_STORMS_SHIFT)
 
 // 0xDA-0xDE
 #define EVENTCHKINF_SKULLTULA_REWARD_INDEX 13
@@ -577,7 +585,6 @@ typedef enum {
 #define EVENTCHKINF_SKULLTULA_REWARD_30_MASK (1 << 12)
 #define EVENTCHKINF_SKULLTULA_REWARD_40_MASK (1 << 13)
 #define EVENTCHKINF_SKULLTULA_REWARD_50_MASK (1 << 14)
-
 
 /*
  * SaveContext.itemGetInf
@@ -636,7 +643,6 @@ typedef enum {
 #define ITEMGETINF_3A 0x3A
 #define ITEMGETINF_3B 0x3B
 #define ITEMGETINF_3F 0x3F
-
 
 /*
  * SaveContext.infTable
@@ -798,7 +804,6 @@ typedef enum {
 #define INFTABLE_1DX_INDEX 29
 #define INFTABLE_SWORDLESS 0x1D0
 
-
 /*
  * SaveContext.eventInf
  */
@@ -858,7 +863,6 @@ typedef enum {
     gSaveContext.eventInf[EVENTINF_HORSES_INDEX] = \
         (gSaveContext.eventInf[EVENTINF_HORSES_INDEX] & ~EVENTINF_HORSES_0F_MASK) | ((v) << EVENTINF_HORSES_0F_SHIFT)
 
-
 #define EVENTINF_MARATHON_ACTIVE 0x10
 
 // 0x20-0x24
@@ -870,7 +874,5 @@ typedef enum {
 #define EVENTINF_24_MASK (1 << 4)
 
 #define EVENTINF_30 0x30
-
-
 
 #endif

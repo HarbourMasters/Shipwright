@@ -6,7 +6,7 @@
 s32 osAiSetNextBuffer(void* buf, size_t size) {
     static u8 D_80130500 = false;
     uintptr_t bufAdjusted = (uintptr_t)buf;
-    s32 status;
+    s32       status;
 
     if (D_80130500) {
         bufAdjusted = (uintptr_t)buf - 0x2000;

@@ -9,20 +9,20 @@ struct EnDntDemo;
 typedef void (*EnDntDemoActionFunc)(struct EnDntDemo*, PlayState*);
 
 typedef struct EnDntDemo {
-    /* 0x0000 */ Actor actor;
+    /* 0x0000 */ Actor               actor;
     /* 0x014C */ EnDntDemoActionFunc actionFunc;
-    /* 0x0150 */ s16 judgeTimer;
-    /* 0x0152 */ s16 unkTimer1;
-    /* 0x0154 */ s16 unkTimer2;
-    /* 0x0156 */ s16 debugArrowTimer;
-    /* 0x0158 */ s16 leaderSignal;
-    /* 0x015A */ s16 action;
-    /* 0x015C */ s16 prize;
-    /* 0x015E */ s16 subCamera;
-    /* 0x0160 */ Vec3f scrubPos[9];
-    /* 0x01CC */ Vec3f leaderPos;
-    /* 0x01D8 */ struct EnDntNomal* scrubs[9];
-    /* 0x01FC */ struct EnDntJiji* leader;
+    /* 0x0150 */ s16                 judgeTimer;
+    /* 0x0152 */ s16                 unkTimer1;
+    /* 0x0154 */ s16                 unkTimer2;
+    /* 0x0156 */ s16                 debugArrowTimer;
+    /* 0x0158 */ s16                 leaderSignal;
+    /* 0x015A */ s16                 action;
+    /* 0x015C */ s16                 prize;
+    /* 0x015E */ s16                 subCamera;
+    /* 0x0160 */ Vec3f               scrubPos[9];
+    /* 0x01CC */ Vec3f               leaderPos;
+    /* 0x01D8 */ struct EnDntNomal*  scrubs[9];
+    /* 0x01FC */ struct EnDntJiji*   leader;
 } EnDntDemo; // size = 0x0200
 
 typedef enum {

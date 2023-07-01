@@ -1,5 +1,4 @@
 #include "debug.hpp"
 
-void CitraPrint (std::string_view str) {
-
+void CitraPrint(std::string_view str) {
 }

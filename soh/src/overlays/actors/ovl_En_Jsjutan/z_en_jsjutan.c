@@ -38,7 +38,7 @@ static s32 sUnused[2] = { 0, 0 };
 
 void EnJsjutan_Init(Actor* thisx, PlayState* play) {
     EnJsjutan* this = (EnJsjutan*)thisx;
-    s32 pad;
+    s32              pad;
     CollisionHeader* header = NULL;
 
     this->dyna.actor.flags &= ~ACTOR_FLAG_TARGETABLE;
@@ -57,9 +57,9 @@ void EnJsjutan_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_80A89860(EnJsjutan* this, PlayState* play) {
-    s16 i;
-    Vtx* oddVtx;
-    Vtx* evenVtx;
+    s16   i;
+    Vtx*  oddVtx;
+    Vtx*  evenVtx;
     Vec3f actorPos = this->dyna.actor.world.pos;
 
     oddVtx = ResourceMgr_LoadVtxByName(SEGMENTED_TO_VIRTUAL(gShadowOddVtx));
@@ -81,41 +81,41 @@ void func_80A89860(EnJsjutan* this, PlayState* play) {
 }
 
 void func_80A89A6C(EnJsjutan* this, PlayState* play) {
-    u8 isPlayerOnTop = false; // sp127
-    s16 i;
-    s16 j;
-    Vtx* carpetVtx;
-    Vtx* shadowVtx;
-    Vtx* phi_s0_2;
-    Vec3f sp108;
-    Vec3f spFC;
-    Actor* actorProfessor;
-    Actor* actorBeanGuy;
-    f32 dxVtx;
-    f32 dyVtx;
-    f32 dzVtx;
-    f32 distVtx;
+    u8      isPlayerOnTop = false; // sp127
+    s16     i;
+    s16     j;
+    Vtx*    carpetVtx;
+    Vtx*    shadowVtx;
+    Vtx*    phi_s0_2;
+    Vec3f   sp108;
+    Vec3f   spFC;
+    Actor*  actorProfessor;
+    Actor*  actorBeanGuy;
+    f32     dxVtx;
+    f32     dyVtx;
+    f32     dzVtx;
+    f32     distVtx;
     // 0 if no actor in that index of diffToTracked
-    u8 spE0[3];
+    u8      spE0[3];
     // Tracks distance to other actors.
     // Index 0 is always the Magic Carpet Man. 1 and 2 could be bombs, or EnMk and EnMs if in credits.
-    f32 spD4[3]; // diffToTracked X
-    f32 spC8[3]; // diffToTracked Y
-    f32 spBC[3]; // diffToTracked Z
+    f32     spD4[3]; // diffToTracked X
+    f32     spC8[3]; // diffToTracked Y
+    f32     spBC[3]; // diffToTracked Z
     // Tracks distance to Link
-    f32 spB8; // diffToPlayer X
-    f32 spB4; // diffToPlayer Y
-    f32 spB0; // diffToPlayer Z
-    f32 weight;
-    f32 spA8; // wave amplitude (?)
-    f32 offset;
-    f32 maxOffset;
-    f32 maxAmp;
-    f32 waveform;
+    f32     spB8; // diffToPlayer X
+    f32     spB4; // diffToPlayer Y
+    f32     spB0; // diffToPlayer Z
+    f32     weight;
+    f32     spA8; // wave amplitude (?)
+    f32     offset;
+    f32     maxOffset;
+    f32     maxAmp;
+    f32     waveform;
     Player* player = GET_PLAYER(play);
-    Actor* parent = this->dyna.actor.parent;
-    Actor* actorExplosive = play->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].head;
-    u8 isInCreditsScene = false; // sp8B
+    Actor*  parent = this->dyna.actor.parent;
+    Actor*  actorExplosive = play->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].head;
+    u8      isInCreditsScene = false; // sp8B
 
     if (play->gameplayFrames % 2 != 0) {
         carpetVtx = SEGMENTED_TO_VIRTUAL(sCarpetOddVtx);
@@ -370,8 +370,8 @@ void EnJsjutan_Update(Actor* thisx, PlayState* play2) {
 void EnJsjutan_Draw(Actor* thisx, PlayState* play2) {
     EnJsjutan* this = (EnJsjutan*)thisx;
     PlayState* play = play2;
-    s16 i;
-    Actor* parent = thisx->parent;
+    s16        i;
+    Actor*     parent = thisx->parent;
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -414,8 +414,7 @@ void EnJsjutan_Draw(Actor* thisx, PlayState* play2) {
     Matrix_Translate(thisx->world.pos.x, 3.0f, thisx->world.pos.z, MTXMODE_NEW);
     Matrix_Scale(thisx->scale.x, 1.0f, thisx->scale.z, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     // Draws the carpet's shadow texture.
     gSPSegmentLoadRes(POLY_OPA_DISP++, 0x0C, sShadowTex);
@@ -434,8 +433,7 @@ void EnJsjutan_Draw(Actor* thisx, PlayState* play2) {
     Matrix_Translate(thisx->world.pos.x, this->unk_168 + 3.0f, thisx->world.pos.z, MTXMODE_NEW);
     Matrix_Scale(thisx->scale.x, thisx->scale.y, thisx->scale.z, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     // Draws the carpet's texture.
     gSPDisplayList(POLY_OPA_DISP++, sCarpetMaterialDL);
 

@@ -134,16 +134,15 @@ void ObjMure_GetSpawnPos(Vec3f* outPos, Vec3f* inPos, s32 ptn, s32 idx) {
 
 void ObjMure_SpawnActors0(ObjMure* this, PlayState* play) {
     ActorContext* ac;
-    s32 i;
-    Vec3f pos;
-    s32 pad;
-    s32 maxChildren = ObjMure_GetMaxChildSpawns(this);
+    s32           i;
+    Vec3f         pos;
+    s32           pad;
+    s32           maxChildren = ObjMure_GetMaxChildSpawns(this);
 
     for (i = 0; i < maxChildren; i++) {
         if (this->children[i] != NULL) {
             // "Error: I already have a child(%s %d)(arg_data 0x%04x)"
-            osSyncPrintf("Error : 既に子供がいる(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
-                         this->actor.params);
+            osSyncPrintf("Error : 既に子供がいる(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__, this->actor.params);
         }
         switch (this->childrenStates[i]) {
             case OBJMURE_CHILD_STATE_1:
@@ -179,10 +178,10 @@ void ObjMure_SpawnActors0(ObjMure* this, PlayState* play) {
 
 void ObjMure_SpawnActors1(ObjMure* this, PlayState* play) {
     ActorContext* ac = (ActorContext*)play; // fake match
-    Actor* actor = &this->actor;
-    Vec3f spawnPos;
-    s32 maxChildren = ObjMure_GetMaxChildSpawns(this);
-    s32 i;
+    Actor*        actor = &this->actor;
+    Vec3f         spawnPos;
+    s32           maxChildren = ObjMure_GetMaxChildSpawns(this);
+    s32           i;
 
     for (i = 0; i < maxChildren; i++) {
         if (this->children[i] != NULL) {

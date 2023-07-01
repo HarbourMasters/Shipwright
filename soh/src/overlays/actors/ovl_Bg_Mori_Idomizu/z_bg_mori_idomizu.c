@@ -71,8 +71,7 @@ void BgMoriIdomizu_Init(Actor* thisx, PlayState* play) {
     if (this->moriTexObjIndex < 0) {
         Actor_Kill(&this->actor);
         // "Bank danger!"
-        osSyncPrintf("Error : バンク危険！(arg_data 0x%04x)(%s %d)\n", this->actor.params, __FILE__,
-                     __LINE__);
+        osSyncPrintf("Error : バンク危険！(arg_data 0x%04x)(%s %d)\n", this->actor.params, __FILE__, __LINE__);
         return;
     }
     BgMoriIdomizu_SetupWaitForMoriTex(this);
@@ -108,9 +107,9 @@ void BgMoriIdomizu_SetupMain(BgMoriIdomizu* this) {
 }
 
 void BgMoriIdomizu_Main(BgMoriIdomizu* this, PlayState* play) {
-    s8 roomNum;
+    s8     roomNum;
     Actor* thisx = &this->actor;
-    s32 switchFlagSet;
+    s32    switchFlagSet;
 
     roomNum = play->roomCtx.curRoom.num;
     switchFlagSet = Flags_GetSwitch(play, thisx->params & 0x3F);
@@ -167,8 +166,7 @@ void BgMoriIdomizu_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPSegment(POLY_XLU_DISP++, 0x08, play->objectCtx.status[this->moriTexObjIndex].segment);
 

@@ -8,7 +8,8 @@
 #include "objects/object_fu/object_fu.h"
 #include "scenes/indoors/hakasitarelay/hakasitarelay_scene.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
+#define FLAGS \
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 #define FU_RESET_LOOK_ANGLE (1 << 0)
 #define FU_WAIT (1 << 1)
@@ -241,7 +242,7 @@ void EnFu_TeachSong(EnFu* this, PlayState* play) {
 
 void EnFu_WaitAdult(EnFu* this, PlayState* play) {
     static s16 yawDiff;
-    Player* player = GET_PLAYER(play);
+    Player*    player = GET_PLAYER(play);
 
     yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
     if ((Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SONG_OF_STORMS))) {
@@ -324,7 +325,7 @@ void EnFu_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, 
 void EnFu_Draw(Actor* thisx, PlayState* play) {
     static void* sEyesSegments[] = { gWindmillManEyeClosedTex, gWindmillManEyeAngryTex };
     static void* sMouthSegments[] = { gWindmillManMouthOpenTex, gWindmillManMouthAngryTex };
-    s32 pad;
+    s32          pad;
     EnFu* this = (EnFu*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);

@@ -9,8 +9,8 @@
 namespace LUS {
 class SceneFactory : public ResourceFactory {
   public:
-    std::shared_ptr<IResource>
-    ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) override;
+    std::shared_ptr<IResource> ReadResource(std::shared_ptr<ResourceInitData> initData,
+                                            std::shared_ptr<BinaryReader>     reader) override;
 
     // Doing something very similar to what we do on the ResourceLoader.
     // Eventually, scene commands should be moved up to the ResourceLoader as well.
@@ -23,7 +23,9 @@ class SceneFactoryV0 : public ResourceVersionFactory {
   public:
     void ParseFileBinary(std::shared_ptr<BinaryReader> reader, std::shared_ptr<IResource> resource) override;
     void ParseSceneCommands(std::shared_ptr<Scene> scene, std::shared_ptr<BinaryReader> reader);
-protected:
-    std::shared_ptr<ISceneCommand> ParseSceneCommand(std::shared_ptr<Scene> scene, std::shared_ptr<BinaryReader> reader, uint32_t index);
+
+  protected:
+    std::shared_ptr<ISceneCommand> ParseSceneCommand(std::shared_ptr<Scene> scene, std::shared_ptr<BinaryReader> reader,
+                                                     uint32_t index);
 };
 }; // namespace LUS

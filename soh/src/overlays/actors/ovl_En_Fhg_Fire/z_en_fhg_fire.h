@@ -54,16 +54,16 @@ typedef enum {
 } FhgFireF32Var;
 
 typedef struct EnFhgFire {
-    /* 0x0000 */ Actor actor;
+    /* 0x0000 */ Actor               actor;
     /* 0x014C */ EnFhgFireUpdateFunc updateFunc;
-    /* 0x0150 */ s16 work[FHGFIRE_SHORT_COUNT];
-    /* 0x0160 */ f32 fwork[FHGFIRE_FLOAT_COUNT];
-    /* 0x019C */ LightNode* lightNode;
-    /* 0x01A0 */ LightInfo lightInfo;
-    /* 0x01B0 */ ColliderCylinder collider;
-    /* 0x01FC */ u8 lensFlareOn;
-    /* 0x01FE */ s16 lensFlareTimer;
-    /* 0x0200 */ f32 lensFlareScale;
+    /* 0x0150 */ s16                 work[FHGFIRE_SHORT_COUNT];
+    /* 0x0160 */ f32                 fwork[FHGFIRE_FLOAT_COUNT];
+    /* 0x019C */ LightNode*          lightNode;
+    /* 0x01A0 */ LightInfo           lightInfo;
+    /* 0x01B0 */ ColliderCylinder    collider;
+    /* 0x01FC */ u8                  lensFlareOn;
+    /* 0x01FE */ s16                 lensFlareTimer;
+    /* 0x0200 */ f32                 lensFlareScale;
 } EnFhgFire; // size = 0x0204
 
 #endif

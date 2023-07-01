@@ -68,8 +68,8 @@ void EnBird_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_809C1CAC(EnBird* this, s16 params) {
-    f32 frameCount = Animation_GetLastFrame(&gBirdFlyAnim);
-    f32 playbackSpeed = this->unk_19C ? 0.0f : 1.0f;
+    f32              frameCount = Animation_GetLastFrame(&gBirdFlyAnim);
+    f32              playbackSpeed = this->unk_19C ? 0.0f : 1.0f;
     AnimationHeader* anim = &gBirdFlyAnim;
 
     this->unk_198 = Rand_S16Offset(5, 0x23);

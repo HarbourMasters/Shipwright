@@ -124,8 +124,8 @@ void DemoIk_SpawnDeadDb(DemoIk* this, PlayState* play) {
     if (DemoIk_CheckCue(play, 5, index)) {
         Vec3f pos;
         Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
-        s32 startIndex;
-        s32 endIndex;
+        s32   startIndex;
+        s32   endIndex;
 
         if (index == 5) {
             startIndex = 0;
@@ -158,10 +158,10 @@ void DemoIk_MoveToStartPos(DemoIk* this, PlayState* play, s32 index) {
 }
 
 void DemoIk_Type1Init(DemoIk* this, PlayState* play) {
-    s32 pad[3];
-    SkeletonHeader* skeleton;
+    s32              pad[3];
+    SkeletonHeader*  skeleton;
     AnimationHeader* animation;
-    f32 phi_f0;
+    f32              phi_f0;
 
     switch (this->actor.params) {
         case 0:
@@ -266,13 +266,11 @@ void DemoIk_Type1PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
     if (limbIndex == 1) {
         switch (this->actor.params) {
             case 0:
-                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016BE0);
                 break;
             case 2:
-                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016F88);
                 break;
         }
@@ -281,9 +279,9 @@ void DemoIk_Type1PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
 }
 
 void DemoIk_Type1Draw(DemoIk* this, PlayState* play) {
-    s32 pad[2];
+    s32              pad[2];
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    SkelAnime* skelAnime = &this->skelAnime;
+    SkelAnime*       skelAnime = &this->skelAnime;
 
     OPEN_DISPS(gfxCtx);
     func_8002EBCC(&this->actor, play, 0);
@@ -297,9 +295,9 @@ void DemoIk_Type1Draw(DemoIk* this, PlayState* play) {
 }
 
 void DemoIk_Type2Init(DemoIk* this, PlayState* play) {
-    s32 pad[2];
+    s32                 pad[2];
     FlexSkeletonHeader* skeleton;
-    AnimationHeader* animation;
+    AnimationHeader*    animation;
 
     switch (this->actor.params) {
         case 3:
@@ -405,8 +403,7 @@ void DemoIk_Type2Action2(DemoIk* this, PlayState* play) {
     func_80984048(this, play);
 }
 
-s32 DemoIk_Type2OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                 void* thisx) {
+s32 DemoIk_Type2OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     DemoIk* this = (DemoIk*)thisx;
 
     if ((limbIndex == 1) && (DemoIk_GetCurFrame(this) < 30.0f)) {
@@ -418,29 +415,25 @@ s32 DemoIk_Type2OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 void DemoIk_Type2PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     DemoIk* this = (DemoIk*)thisx;
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    f32 frame = DemoIk_GetCurFrame(this);
+    f32              frame = DemoIk_GetCurFrame(this);
 
     OPEN_DISPS(gfxCtx);
     if (limbIndex == 1 && (frame >= 30.0f)) {
         switch (this->actor.params) {
             case 3:
-                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_017028);
                 break;
             case 4:
-                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_017170);
                 break;
             case 5:
-                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016BE0);
                 break;
             default:
-                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016CD8);
                 break;
         }
@@ -449,9 +442,9 @@ void DemoIk_Type2PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
 }
 
 void DemoIk_Type2Draw(DemoIk* this, PlayState* play) {
-    s32 pad[2];
+    s32              pad[2];
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    SkelAnime* skelAnime = &this->skelAnime;
+    SkelAnime*       skelAnime = &this->skelAnime;
 
     OPEN_DISPS(gfxCtx);
     func_8002EBCC(&this->actor, play, 0);

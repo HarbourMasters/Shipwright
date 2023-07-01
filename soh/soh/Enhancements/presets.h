@@ -33,15 +33,15 @@ enum RandomizerPreset {
 };
 
 typedef struct PresetEntry {
-    const char* cvar;
-    PresetEntryType type;
+    const char*                               cvar;
+    PresetEntryType                           type;
     std::variant<int32_t, float, const char*> value;
 } PresetEntry;
 
 #define PRESET_ENTRY_S32(cvar, value) \
-    { cvar,    PRESET_ENTRY_TYPE_S32, value }
+    { cvar, PRESET_ENTRY_TYPE_S32, value }
 #define PRESET_ENTRY_FLOAT(cvar, value) \
-    { cvar,  PRESET_ENTRY_TYPE_FLOAT, value }
+    { cvar, PRESET_ENTRY_TYPE_FLOAT, value }
 #define PRESET_ENTRY_STRING(cvar, value) \
     { cvar, PRESET_ENTRY_TYPE_STRING, value }
 
@@ -913,67 +913,76 @@ const std::vector<PresetEntry> hellModePresetEntries = {
 };
 
 typedef struct PresetDefinition {
-    const char* label;
-    const char* description;
+    const char*              label;
+    const char*              description;
     std::vector<PresetEntry> entries;
 } PresetDefinition;
 
 typedef struct PresetTypeDefinition {
-    std::vector<const char*> cvarsToClear;
+    std::vector<const char*>             cvarsToClear;
     std::map<uint16_t, PresetDefinition> presets;
 } PresetTypeDefinition;
 
 const std::map<PresetType, PresetTypeDefinition> presetTypes = {
-    { PRESET_TYPE_ENHANCEMENTS, { enhancementsCvars, {
-        { ENHANCEMENT_PRESET_DEFAULT, {
-            "Default",
-            "Reset all options to their default values.",
-            {},
-        } },
-        { ENHANCEMENT_PRESET_VANILLA_PLUS, {
-            "Vanilla Plus",
-            "Adds Quality of Life features that enhance your experience, but don't alter gameplay. Recommended for a first playthrough of OoT.",
-            vanillaPlusPresetEntries,
-        } },
-        { ENHANCEMENT_PRESET_ENHANCED, {
-            "Enhanced",
-            "The \"Vanilla Plus\" preset, but with more quality of life enhancements that might alter gameplay slightly. Recommended for returning players.",
-            enhancedPresetEntries
-        } },
-        { ENHANCEMENT_PRESET_RANDOMIZER, {
-            "Randomizer",
-            "The \"Enhanced\" preset, plus any other enhancements that are recommended for playing Randomizer.",
-            randomizerPresetEntries
-        } },
-    } } },
-    { PRESET_TYPE_RANDOMIZER, { randomizerCvars, {
-        { RANDOMIZER_PRESET_DEFAULT, {
-            "Default",
-            "Reset all options to their default values.",
-            {},
-        } },
-        { RANDOMIZER_PRESET_SPOCK_RACE, {
-            "Spock Race",
-            "Race preset used for the official Ship of Harkinian race on June 3rd 2023. The following settings are notable:\n" \
-            "- Rainbow Bridge is set to Greg\n" \
-            "- Ganons Boss Key is 5 dungeon rewards\n" \
-            "- Shopsanity and Scrubsanity enabled\n" \
-            "- All locations reachable is off\n", \
-            spockRacePresetEntries,
-        } },
-        { RANDOMIZER_PRESET_S6, {
-            "S6 Tournament (Adapted)",
-            "Matches OOTR S6 tournament settings as close as we can get with the options available in SoH. The following differences are notable:\n" \
-            "- Both child and adult overworld spawns are randomized\n" \
-            "- Dungeon rewards are shuffled at the end of dungeons, rather than at the end of their own dungeon\n" \
-            "- Full adult trade sequence is shuffled instead of the selected 4\n" \
-            "- Hint distribution no \"tournament\" mode, falling back to balanced",
-            s6PresetEntries,
-        } },
-        { RANDOMIZER_PRESET_HELL_MODE, {
-            "Hell Mode",
-            "All settings maxed but still using glitchless logic. Expect pain.",
-            hellModePresetEntries
-        } },
-    } } }
+    { PRESET_TYPE_ENHANCEMENTS,
+      { enhancementsCvars,
+        {
+            { ENHANCEMENT_PRESET_DEFAULT,
+              {
+                  "Default",
+                  "Reset all options to their default values.",
+                  {},
+              } },
+            { ENHANCEMENT_PRESET_VANILLA_PLUS,
+              {
+                  "Vanilla Plus",
+                  "Adds Quality of Life features that enhance your experience, but don't alter gameplay. Recommended "
+                  "for a first playthrough of OoT.",
+                  vanillaPlusPresetEntries,
+              } },
+            { ENHANCEMENT_PRESET_ENHANCED,
+              { "Enhanced",
+                "The \"Vanilla Plus\" preset, but with more quality of life enhancements that might alter gameplay "
+                "slightly. Recommended for returning players.",
+                enhancedPresetEntries } },
+            { ENHANCEMENT_PRESET_RANDOMIZER,
+              { "Randomizer",
+                "The \"Enhanced\" preset, plus any other enhancements that are recommended for playing Randomizer.",
+                randomizerPresetEntries } },
+        } } },
+    { PRESET_TYPE_RANDOMIZER,
+      { randomizerCvars,
+        {
+            { RANDOMIZER_PRESET_DEFAULT,
+              {
+                  "Default",
+                  "Reset all options to their default values.",
+                  {},
+              } },
+            { RANDOMIZER_PRESET_SPOCK_RACE,
+              {
+                  "Spock Race",
+                  "Race preset used for the official Ship of Harkinian race on June 3rd 2023. The following settings "
+                  "are notable:\n"
+                  "- Rainbow Bridge is set to Greg\n"
+                  "- Ganons Boss Key is 5 dungeon rewards\n"
+                  "- Shopsanity and Scrubsanity enabled\n"
+                  "- All locations reachable is off\n",
+                  spockRacePresetEntries,
+              } },
+            { RANDOMIZER_PRESET_S6,
+              {
+                  "S6 Tournament (Adapted)",
+                  "Matches OOTR S6 tournament settings as close as we can get with the options available in SoH. The "
+                  "following differences are notable:\n"
+                  "- Both child and adult overworld spawns are randomized\n"
+                  "- Dungeon rewards are shuffled at the end of dungeons, rather than at the end of their own dungeon\n"
+                  "- Full adult trade sequence is shuffled instead of the selected 4\n"
+                  "- Hint distribution no \"tournament\" mode, falling back to balanced",
+                  s6PresetEntries,
+              } },
+            { RANDOMIZER_PRESET_HELL_MODE,
+              { "Hell Mode", "All settings maxed but still using glitchless logic. Expect pain.",
+                hellModePresetEntries } },
+        } } }
 };

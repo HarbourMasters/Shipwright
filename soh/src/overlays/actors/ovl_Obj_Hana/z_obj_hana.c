@@ -51,10 +51,10 @@ static CollisionCheckInfoInit sColChkInfoInit = { 0, 12, 60, MASS_IMMOVABLE };
 
 typedef struct {
     /* 0x00 */ Gfx* dList;
-    /* 0x04 */ f32 scale;
-    /* 0x08 */ f32 yOffset;
-    /* 0x0C */ s16 radius;
-    /* 0x0E */ s16 height;
+    /* 0x04 */ f32  scale;
+    /* 0x08 */ f32  yOffset;
+    /* 0x0C */ s16  radius;
+    /* 0x0E */ s16  height;
 } HanaParams; // size = 0x10
 
 static HanaParams sHanaParams[] = {
@@ -72,7 +72,7 @@ static InitChainEntry sInitChain[] = {
 
 void ObjHana_Init(Actor* thisx, PlayState* play) {
     ObjHana* this = (ObjHana*)thisx;
-    s16 type = this->actor.params & 3;
+    s16         type = this->actor.params & 3;
     HanaParams* params = &sHanaParams[type];
 
     Actor_ProcessInitChain(&this->actor, sInitChain);

@@ -315,10 +315,10 @@ f32 EnElf_GetColorValue(s32 colorFlag) {
 
 void EnElf_Init(Actor* thisx, PlayState* play) {
     EnElf* this = (EnElf*)thisx;
-    s32 pad;
+    s32     pad;
     Player* player = GET_PLAYER(play);
-    s32 colorConfig;
-    s32 i;
+    s32     colorConfig;
+    s32     i;
 
     Actor_ProcessInitChain(thisx, sInitChain);
     SkelAnime_Init(play, &this->skelAnime, &gFairySkel, &gFairyAnim, this->jointTable, this->morphTable, 15);
@@ -400,8 +400,8 @@ void EnElf_Init(Actor* thisx, PlayState* play) {
             func_80A01C38(this, 8);
 
             for (i = 0; i < 8; i++) {
-                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, thisx->world.pos.x,
-                            thisx->world.pos.y - 30.0f, thisx->world.pos.z, 0, 0, 0, FAIRY_HEAL, true);
+                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, thisx->world.pos.x, thisx->world.pos.y - 30.0f,
+                            thisx->world.pos.z, 0, 0, 0, FAIRY_HEAL, true);
             }
             break;
         default:
@@ -539,10 +539,10 @@ void func_80A02F2C(EnElf* this, Vec3f* targetPos) {
 }
 
 void func_80A03018(EnElf* this, PlayState* play) {
-    s32 pad[2];
+    s32     pad[2];
     Player* player = GET_PLAYER(play);
-    s16 targetYaw;
-    Vec3f* unk_28C = &this->unk_28C;
+    s16     targetYaw;
+    Vec3f*  unk_28C = &this->unk_28C;
 
     Math_SmoothStepToF(&this->actor.speedXZ, this->unk_2B8, 0.2f, 0.5f, 0.01f);
 
@@ -601,9 +601,9 @@ void func_80A03148(EnElf* this, Vec3f* arg1, f32 arg2, f32 arg3, f32 arg4) {
 
 void func_80A0329C(EnElf* this, PlayState* play) {
     Player* refActor = GET_PLAYER(play);
-    s32 pad;
+    s32     pad;
     Player* player = GET_PLAYER(play);
-    f32 heightDiff;
+    f32     heightDiff;
 
     SkelAnime_Update(&this->skelAnime);
 
@@ -631,19 +631,15 @@ void func_80A0329C(EnElf* this, PlayState* play) {
 
         if ((heightDiff > 0.0f) && (heightDiff < 60.0f)) {
             if (!func_80A01F90(&this->actor.world.pos, &refActor->actor.world.pos, 10.0f)) {
-                if (CVarGetInteger("gFairyEffect", 0) && !(this->fairyFlags & FAIRY_FLAG_BIG))
-                {
-                    if (CVarGetInteger("gFairyPercentRestore", 0))
-                    {
-                        Health_ChangeBy(play, (gSaveContext.healthCapacity * CVarGetInteger("gFairyHealth", 100) / 100 + 15) / 16 * 16);
-                    }
-                    else
-                    {
+                if (CVarGetInteger("gFairyEffect", 0) && !(this->fairyFlags & FAIRY_FLAG_BIG)) {
+                    if (CVarGetInteger("gFairyPercentRestore", 0)) {
+                        Health_ChangeBy(play,
+                                        (gSaveContext.healthCapacity * CVarGetInteger("gFairyHealth", 100) / 100 + 15) /
+                                            16 * 16);
+                    } else {
                         Health_ChangeBy(play, CVarGetInteger("gFairyHealth", 8) * 16);
                     }
-                }
-                else
-                {
+                } else {
                     Health_ChangeBy(play, 128);
                 }
                 if (this->fairyFlags & FAIRY_FLAG_BIG) {
@@ -683,7 +679,7 @@ void func_80A0329C(EnElf* this, PlayState* play) {
 }
 
 void func_80A0353C(EnElf* this, PlayState* play) {
-    Vec3f parentPos;
+    Vec3f  parentPos;
     Actor* parent;
 
     SkelAnime_Update(&this->skelAnime);
@@ -822,7 +818,7 @@ void func_80A03AB0(EnElf* this, PlayState* play) {
 }
 
 void EnElf_UpdateLights(EnElf* this, PlayState* play) {
-    s16 glowLightRadius;
+    s16     glowLightRadius;
     Player* player;
 
     glowLightRadius = 100;
@@ -850,12 +846,12 @@ void EnElf_UpdateLights(EnElf* this, PlayState* play) {
 }
 
 void func_80A03CF8(EnElf* this, PlayState* play) {
-    Vec3f nextPos;
-    Vec3f prevPos;
+    Vec3f   nextPos;
+    Vec3f   prevPos;
     Player* player = GET_PLAYER(play);
-    Actor* arrowPointedActor;
-    f32 xScale;
-    f32 distFromLinksHead;
+    Actor*  arrowPointedActor;
+    f32     xScale;
+    f32     distFromLinksHead;
 
     func_80A0461C(this, play);
     func_80A03AB0(this, play);
@@ -1013,10 +1009,10 @@ void EnElf_ChangeColor(Color_RGBAf* dest, Color_RGBAf* newColor, Color_RGBAf* cu
 }
 
 void func_80A04414(EnElf* this, PlayState* play) {
-    Actor* arrowPointedActor = play->actorCtx.targetCtx.arrowPointedActor;
+    Actor*  arrowPointedActor = play->actorCtx.targetCtx.arrowPointedActor;
     Player* player = GET_PLAYER(play);
-    f32 transitionRate;
-    u16 targetSound;
+    f32     transitionRate;
+    u16     targetSound;
 
     if (play->actorCtx.targetCtx.unk_40 != 0.0f) {
         this->unk_2C6 = 0;
@@ -1069,8 +1065,8 @@ void func_80A04414(EnElf* this, PlayState* play) {
 }
 
 void func_80A0461C(EnElf* this, PlayState* play) {
-    s32 temp;
-    Actor* arrowPointedActor;
+    s32     temp;
+    Actor*  arrowPointedActor;
     Player* player = GET_PLAYER(play);
 
     if (play->csCtx.state != CS_STATE_IDLE) {
@@ -1193,10 +1189,10 @@ void func_80A0461C(EnElf* this, PlayState* play) {
 void EnElf_SpawnSparkles(EnElf* this, PlayState* play, s32 sparkleLife) {
     static Vec3f sparkleVelocity = { 0.0f, -0.05f, 0.0f };
     static Vec3f sparkleAccel = { 0.0f, -0.025f, 0.0f };
-    s32 pad;
-    Vec3f sparklePos;
-    Color_RGBA8 primColor;
-    Color_RGBA8 envColor;
+    s32          pad;
+    Vec3f        sparklePos;
+    Color_RGBA8  primColor;
+    Color_RGBA8  envColor;
 
     sparklePos.x = Rand_CenteredFloat(6.0f) + this->actor.world.pos.x;
     sparklePos.y = (Rand_ZeroOne() * 6.0f) + this->actor.world.pos.y;
@@ -1210,8 +1206,8 @@ void EnElf_SpawnSparkles(EnElf* this, PlayState* play, s32 sparkleLife) {
     envColor.g = this->outerColor.g;
     envColor.b = this->outerColor.b;
 
-    EffectSsKiraKira_SpawnDispersed(play, &sparklePos, &sparkleVelocity, &sparkleAccel, &primColor, &envColor,
-                                    1000, sparkleLife);
+    EffectSsKiraKira_SpawnDispersed(play, &sparklePos, &sparkleVelocity, &sparkleAccel, &primColor, &envColor, 1000,
+                                    sparkleLife);
 }
 
 void func_80A04D90(EnElf* this, PlayState* play) {
@@ -1225,9 +1221,9 @@ void func_80A04D90(EnElf* this, PlayState* play) {
 
 // move to talk to player
 void func_80A04DE4(EnElf* this, PlayState* play) {
-    Vec3f headCopy;
+    Vec3f   headCopy;
     Player* player = GET_PLAYER(play);
-    Vec3f naviRefPos;
+    Vec3f   naviRefPos;
 
     if (this->fairyFlags & 0x10) {
         naviRefPos = play->actorCtx.targetCtx.naviRefPos;
@@ -1378,8 +1374,8 @@ void func_80A052F4(Actor* thisx, PlayState* play) {
 }
 
 void func_80A053F0(Actor* thisx, PlayState* play) {
-    u8 unk2C7;
-    s32 pad;
+    u8      unk2C7;
+    s32     pad;
     Player* player = GET_PLAYER(play);
     EnElf* this = (EnElf*)thisx;
 
@@ -1442,8 +1438,8 @@ void func_80A053F0(Actor* thisx, PlayState* play) {
 
     if (this->unk_2A4 > 0.0f) {
         Math_StepToF(&this->unk_2A4, 0.0f, 0.05f);
-        Environment_AdjustLights(play, SQ(this->unk_2A4) * this->unk_2A4, player->actor.projectedPos.z + 780.0f,
-                                 0.2f, 0.5f);
+        Environment_AdjustLights(play, SQ(this->unk_2A4) * this->unk_2A4, player->actor.projectedPos.z + 780.0f, 0.2f,
+                                 0.5f);
     }
 
     // temp probably fake match
@@ -1475,9 +1471,9 @@ void EnElf_Update(Actor* thisx, PlayState* play) {
 s32 EnElf_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
                            Gfx** gfx) {
     static Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
-    s32 pad;
-    f32 scale;
-    Vec3f mtxMult;
+    s32          pad;
+    f32          scale;
+    Vec3f        mtxMult;
     EnElf* this = (EnElf*)thisx;
 
     if (limbIndex == 8) {
@@ -1509,8 +1505,8 @@ void EnElf_Draw(Actor* thisx, PlayState* play) {
     f32 alphaScale;
     s32 envAlpha;
     EnElf* this = (EnElf*)thisx;
-    s32 pad1;
-    Gfx* dListHead;
+    s32     pad1;
+    Gfx*    dListHead;
     Player* player = GET_PLAYER(play);
 
     if ((this->unk_2A8 != 8) && !(this->fairyFlags & 8)) {
@@ -1549,10 +1545,10 @@ void EnElf_Draw(Actor* thisx, PlayState* play) {
 }
 
 void EnElf_GetCutsceneNextPos(Vec3f* vec, PlayState* play, s32 action) {
-    Vec3f startPos;
-    Vec3f endPos;
+    Vec3f             startPos;
+    Vec3f             endPos;
     CsCmdActorAction* npcAction = play->csCtx.npcActions[action];
-    f32 lerp;
+    f32               lerp;
 
     startPos.x = npcAction->startPos.x;
     startPos.y = npcAction->startPos.y;

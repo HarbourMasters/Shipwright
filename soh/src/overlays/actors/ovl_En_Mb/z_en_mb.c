@@ -258,9 +258,9 @@ void EnMb_SetupAction(EnMb* this, EnMbActionFunc actionFunc) {
 
 void EnMb_Init(Actor* thisx, PlayState* play) {
     EnMb* this = (EnMb*)thisx;
-    s32 pad;
+    s32     pad;
     Player* player = GET_PLAYER(play);
-    s16 relYawFromPlayer;
+    s16     relYawFromPlayer;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 46.0f);
@@ -275,8 +275,8 @@ void EnMb_Init(Actor* thisx, PlayState* play) {
 
     switch (this->actor.params) {
         case ENMB_TYPE_SPEAR_GUARD:
-            SkelAnime_InitFlex(play, &this->skelAnime, &gEnMbSpearSkel, &gEnMbSpearStandStillAnim,
-                               this->jointTable, this->morphTable, 28);
+            SkelAnime_InitFlex(play, &this->skelAnime, &gEnMbSpearSkel, &gEnMbSpearStandStillAnim, this->jointTable,
+                               this->morphTable, 28);
             this->actor.colChkInfo.health = 2;
             this->actor.colChkInfo.mass = MASS_HEAVY;
             this->maxHomeDist = 1000.0f;
@@ -313,8 +313,8 @@ void EnMb_Init(Actor* thisx, PlayState* play) {
             EnMb_SetupClubWaitPlayerNear(this);
             break;
         default: /* Spear Patrol */
-            SkelAnime_InitFlex(play, &this->skelAnime, &gEnMbSpearSkel, &gEnMbSpearStandStillAnim,
-                               this->jointTable, this->morphTable, 28);
+            SkelAnime_InitFlex(play, &this->skelAnime, &gEnMbSpearSkel, &gEnMbSpearStandStillAnim, this->jointTable,
+                               this->morphTable, 28);
 
             Actor_SetScale(&this->actor, 0.014f);
             this->path = (thisx->params & 0xFF00) >> 8;
@@ -348,7 +348,7 @@ void EnMb_FaceWaypoint(EnMb* this, PlayState* play) {
 }
 
 void EnMb_NextWaypoint(EnMb* this, PlayState* play) {
-    Path* path;
+    Path*  path;
     Vec3s* waypointPos;
 
     path = &play->setupPathList[this->path];
@@ -374,13 +374,13 @@ void EnMb_NextWaypoint(EnMb* this, PlayState* play) {
  */
 s32 EnMb_IsPlayerInCorridor(EnMb* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 xFromPlayer;
-    f32 zFromPlayer;
-    f32 cos;
-    f32 sin;
-    f32 xFromPlayerAbs;
-    f32 zFromPlayerAbs;
-    s16 alignedYaw = 0;
+    f32     xFromPlayer;
+    f32     zFromPlayer;
+    f32     cos;
+    f32     sin;
+    f32     xFromPlayerAbs;
+    f32     zFromPlayerAbs;
+    s16     alignedYaw = 0;
 
     if ((this->actor.world.rot.y < -0x62A2) || (this->actor.world.rot.y > 0x62A2)) {
         alignedYaw = -0x8000;
@@ -407,13 +407,13 @@ s32 EnMb_IsPlayerInCorridor(EnMb* this, PlayState* play) {
 }
 
 void EnMb_FindWaypointTowardsPlayer(EnMb* this, PlayState* play) {
-    Path* path = &play->setupPathList[this->path];
-    s16 yawToWaypoint;
-    Vec3f waypointPosF;
+    Path*  path = &play->setupPathList[this->path];
+    s16    yawToWaypoint;
+    Vec3f  waypointPosF;
     Vec3s* waypointPosS;
-    s16 yawPlayerToWaypoint;
-    s32 i;
-    s32 waypoint;
+    s16    yawPlayerToWaypoint;
+    s32    i;
+    s32    waypoint;
 
     for (waypoint = 0, i = path->count - 1; i >= 0; i--, waypoint++) {
         waypointPosS = (Vec3s*)SEGMENTED_TO_VIRTUAL(path->points) + waypoint;
@@ -732,9 +732,9 @@ void EnMb_ClubWaitAfterAttack(EnMb* this, PlayState* play) {
  */
 void EnMb_SpearPatrolEndCharge(EnMb* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 lastFrame;
-    s16 relYawFromPlayer;
-    s16 yawPlayerToWaypoint;
+    f32     lastFrame;
+    s16     relYawFromPlayer;
+    s16     yawPlayerToWaypoint;
 
     if ((player->stateFlags2 & 0x80) && player->actor.parent == &this->actor) {
         player->stateFlags2 &= ~0x80;
@@ -834,22 +834,23 @@ void EnMb_SpearGuardPrepareAndCharge(EnMb* this, PlayState* play) {
 
 void EnMb_ClubAttack(EnMb* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 pad;
-    Vec3f effSpawnPos;
-    Vec3f effWhiteShockwaveDynamics = { 0.0f, 0.0f, 0.0f };
-    f32 flamesParams[] = { 18.0f, 18.0f, 0.0f };
-    s16 flamesUnused[] = { 20, 40, 0 };
-    s16 relYawTarget[] = { -0x9C4, 0, 0xDAC };
+    s32     pad;
+    Vec3f   effSpawnPos;
+    Vec3f   effWhiteShockwaveDynamics = { 0.0f, 0.0f, 0.0f };
+    f32     flamesParams[] = { 18.0f, 18.0f, 0.0f };
+    s16     flamesUnused[] = { 20, 40, 0 };
+    s16     relYawTarget[] = { -0x9C4, 0, 0xDAC };
 
     // Rotate Club Moblin towards player in Enemy Randomizer because they're
     // borderline useless otherwise in most scenarios.
     if (!CVarGetInteger("gRandomizedEnemies", 0)) {
-        Math_SmoothStepToS(&this->actor.shape.rot.y, relYawTarget[this->attack - 1] + this->actor.world.rot.y, 1, 0x2EE, 0);
+        Math_SmoothStepToS(&this->actor.shape.rot.y, relYawTarget[this->attack - 1] + this->actor.world.rot.y, 1, 0x2EE,
+                           0);
     } else {
         Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
         Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
     }
-    
+
     if (this->attackCollider.base.atFlags & AT_HIT) {
         this->attackCollider.base.atFlags &= ~AT_HIT;
         if (this->attackCollider.base.at == &player->actor) {
@@ -893,8 +894,8 @@ void EnMb_ClubAttack(EnMb* this, PlayState* play) {
             if (!CVarGetInteger("gRandomizedEnemies", 0)) {
                 Camera_AddQuake(&play->mainCamera, 2, 0x19, 5);
             }
-            func_800358DC(&this->actor, &effSpawnPos, &this->actor.world.rot, flamesParams, 20, flamesUnused, play,
-                          -1, 0);
+            func_800358DC(&this->actor, &effSpawnPos, &this->actor.world.rot, flamesParams, 20, flamesUnused, play, -1,
+                          0);
             EnMb_SetupClubWaitAfterAttack(this);
         }
     } else {
@@ -912,9 +913,9 @@ void EnMb_ClubAttack(EnMb* this, PlayState* play) {
  */
 void EnMb_SpearPatrolPrepareAndCharge(EnMb* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 prevFrame;
-    s32 hasHitPlayer = false;
-    s32 endCharge = !Actor_TestFloorInDirection(&this->actor, play, 110.0f, this->actor.world.rot.y);
+    s32     prevFrame;
+    s32     hasHitPlayer = false;
+    s32     endCharge = !Actor_TestFloorInDirection(&this->actor, play, 110.0f, this->actor.world.rot.y);
 
     prevFrame = (s32)this->skelAnime.curFrame;
     if (SkelAnime_Update(&this->skelAnime)) {
@@ -992,9 +993,9 @@ void EnMb_SpearPatrolPrepareAndCharge(EnMb* this, PlayState* play) {
  */
 void EnMb_SpearPatrolImmediateCharge(EnMb* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 prevFrame;
-    s32 hasHitPlayer = false;
-    s32 endCharge = !Actor_TestFloorInDirection(&this->actor, play, 110.0f, this->actor.world.rot.y);
+    s32     prevFrame;
+    s32     hasHitPlayer = false;
+    s32     endCharge = !Actor_TestFloorInDirection(&this->actor, play, 110.0f, this->actor.world.rot.y);
 
     prevFrame = (s32)this->skelAnime.curFrame;
     SkelAnime_Update(&this->skelAnime);
@@ -1117,15 +1118,15 @@ void EnMb_ClubDead(EnMb* this, PlayState* play) {
     if (SkelAnime_Update(&this->skelAnime)) {
         if (this->timer1 > 0) {
             Vec3f effZeroVec = { 0.0f, 0.0f, 0.0f };
-            s32 i;
+            s32   i;
 
             this->timer1--;
             for (i = 4; i >= 0; i--) {
                 effPos.x = Rand_CenteredFloat(240.0f) + effPosBase.x;
                 effPos.y = Rand_CenteredFloat(15.0f) + (effPosBase.y + 20.0f);
                 effPos.z = Rand_CenteredFloat(240.0f) + effPosBase.z;
-                EffectSsDeadDb_Spawn(play, &effPos, &effZeroVec, &effZeroVec, 230, 7, 255, 255, 255, 255, 0, 255,
-                                     0, 1, 9, true);
+                EffectSsDeadDb_Spawn(play, &effPos, &effZeroVec, &effZeroVec, 230, 7, 255, 255, 255, 255, 0, 255, 0, 1,
+                                     9, true);
             }
         } else {
             Item_DropCollectibleRandom(play, &this->actor, &effPos, 0xC0);
@@ -1143,14 +1144,14 @@ void EnMb_ClubDead(EnMb* this, PlayState* play) {
  * Walk around the home point, face and charge the player if close.
  */
 void EnMb_SpearGuardWalk(EnMb* this, PlayState* play) {
-    s32 prevFrame;
-    s32 beforeCurFrame;
-    s32 pad1;
-    s32 pad2;
+    s32     prevFrame;
+    s32     beforeCurFrame;
+    s32     pad1;
+    s32     pad2;
     Player* player = GET_PLAYER(play);
-    s16 relYawTowardsPlayer = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
-    s16 yawTowardsHome;
-    f32 playSpeedAbs;
+    s16     relYawTowardsPlayer = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
+    s16     yawTowardsHome;
+    f32     playSpeedAbs;
 
     relYawTowardsPlayer = ABS(relYawTowardsPlayer);
     Math_SmoothStepToF(&this->actor.speedXZ, 0.59999996f, 0.1f, 1.0f, 0.0f);
@@ -1261,8 +1262,8 @@ void EnMb_SpearPatrolWalkTowardsWaypoint(EnMb* this, PlayState* play) {
 
 void EnMb_ClubWaitPlayerNear(EnMb* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 pad;
-    s16 relYawFromPlayer = this->actor.world.rot.y - this->actor.yawTowardsPlayer;
+    s32     pad;
+    s16     relYawFromPlayer = this->actor.world.rot.y - this->actor.yawTowardsPlayer;
 
     // Rotate Club Moblin towards player in Enemy Randomizer because they're
     // borderline useless otherwise in most scenarios.
@@ -1278,7 +1279,8 @@ void EnMb_ClubWaitPlayerNear(EnMb* this, PlayState* play) {
         // Without the height check, the Moblin will attack (and play the sound effect) a lot even though
         // the Moblin is very far away from the player in vertical rooms (like the first room in Deku Tree).
         s8 enemyRando = CVarGetInteger("gRandomizedEnemies", 0);
-        if (!enemyRando || (enemyRando && this->actor.yDistToPlayer <= 100.0f && this->actor.yDistToPlayer >= -100.0f)) {
+        if (!enemyRando ||
+            (enemyRando && this->actor.yDistToPlayer <= 100.0f && this->actor.yDistToPlayer >= -100.0f)) {
             EnMb_SetupClubAttack(this);
         }
     }
@@ -1349,7 +1351,7 @@ void EnMb_SpearDead(EnMb* this, PlayState* play) {
     if (SkelAnime_Update(&this->skelAnime)) {
         if (this->timer1 > 0) {
             Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
-            s32 i;
+            s32   i;
             Vec3f effPos;
 
             this->actor.shape.shadowScale = 0.0f;
@@ -1359,8 +1361,8 @@ void EnMb_SpearDead(EnMb* this, PlayState* play) {
                 effPos.y = Rand_CenteredFloat(15.0f) + (this->actor.world.pos.y + 20.0f);
                 effPos.z = Rand_CenteredFloat(110.0f) + this->actor.world.pos.z;
 
-                EffectSsDeadDb_Spawn(play, &effPos, &zeroVec, &zeroVec, 100, 7, 255, 255, 255, 255, 0, 255, 0, 1,
-                                     9, true);
+                EffectSsDeadDb_Spawn(play, &effPos, &zeroVec, &zeroVec, 100, 7, 255, 255, 255, 255, 0, 255, 0, 1, 9,
+                                     true);
             }
         } else {
             Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xE0);
@@ -1493,7 +1495,7 @@ void EnMb_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, 
     static Vec3f feetPos = { 0.0f, 0.0f, 0.0f };
     static Vec3f effSpawnPosModel = { 0.0f, -8000.0f, 0.0f };
     static Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
-    s32 bodyPart = -1;
+    s32          bodyPart = -1;
     EnMb* this = (EnMb*)thisx;
     Vec3f bodyPartPos;
 
@@ -1560,16 +1562,16 @@ void EnMb_Draw(Actor* thisx, PlayState* play) {
         { -4000.0f, 0.0f, 3500.0f },
         { 4000.0f, 0.0f, 3500.0f },
     };
-    s32 i;
-    f32 scale;
+    s32   i;
+    f32   scale;
     Vec3f frontShieldingTri0[3];
     Vec3f frontShieldingTri1[3];
-    s32 bodyPartIdx;
+    s32   bodyPartIdx;
     EnMb* this = (EnMb*)thisx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, EnMb_PostLimbDraw, thisx);
+    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount, NULL,
+                          EnMb_PostLimbDraw, thisx);
 
     if (thisx->params != ENMB_TYPE_CLUB) {
         if (this->attack > ENMB_ATTACK_NONE) {
@@ -1596,8 +1598,8 @@ void EnMb_Draw(Actor* thisx, PlayState* play) {
                 scale = 4.0f;
             }
             bodyPartIdx = this->iceEffectTimer >> 2;
-            EffectSsEnIce_SpawnFlyingVec3s(play, thisx, &this->bodyPartsPos[bodyPartIdx], 150, 150, 150, 250, 235,
-                                           245, 255, scale);
+            EffectSsEnIce_SpawnFlyingVec3s(play, thisx, &this->bodyPartsPos[bodyPartIdx], 150, 150, 150, 250, 235, 245,
+                                           255, scale);
         }
     }
 }

@@ -41,7 +41,7 @@ void EnWf_SetupSidestep(EnWf* this, PlayState* play);
 void EnWf_Sidestep(EnWf* this, PlayState* play);
 void EnWf_SetupDie(EnWf* this);
 void EnWf_Die(EnWf* this, PlayState* play);
-s32 EnWf_DodgeRanged(PlayState* play, EnWf* this);
+s32  EnWf_DodgeRanged(PlayState* play, EnWf* this);
 
 static ColliderJntSphElementInit sJntSphItemsInit[4] = {
     {
@@ -285,10 +285,10 @@ void EnWf_Destroy(Actor* thisx, PlayState* play) {
 
 s32 EnWf_ChangeAction(PlayState* play, EnWf* this, s16 mustChoose) {
     Player* player = GET_PLAYER(play);
-    s32 pad;
-    s16 wallYawDiff;
-    s16 playerYawDiff;
-    Actor* explosive;
+    s32     pad;
+    s16     wallYawDiff;
+    s16     playerYawDiff;
+    Actor*  explosive;
 
     wallYawDiff = this->actor.wallYaw - this->actor.shape.rot.y;
     wallYawDiff = ABS(wallYawDiff);
@@ -389,7 +389,8 @@ void EnWf_WaitToAppear(EnWf* this, PlayState* play) {
 
             // Disable miniboss music with Enemy Randomizer because the music would keep
             // playing if the enemy was never defeated, which is common with Enemy Randomizer.
-            if ((this->actor.params != WOLFOS_NORMAL) && (this->switchFlag != 0xFF) && !CVarGetInteger("gRandomizedEnemies", 0)) {
+            if ((this->actor.params != WOLFOS_NORMAL) && (this->switchFlag != 0xFF) &&
+                !CVarGetInteger("gRandomizedEnemies", 0)) {
                 func_800F5ACC(NA_BGM_MINI_BOSS);
             }
         }
@@ -422,8 +423,8 @@ void EnWf_SetupWait(EnWf* this) {
 
 void EnWf_Wait(EnWf* this, PlayState* play) {
     Player* player;
-    s32 pad;
-    s16 angle;
+    s32     pad;
+    s16     angle;
 
     player = GET_PLAYER(play);
     SkelAnime_Update(&this->skelAnime);
@@ -493,13 +494,13 @@ void EnWf_SetupRunAtPlayer(EnWf* this, PlayState* play) {
 }
 
 void EnWf_RunAtPlayer(EnWf* this, PlayState* play) {
-    s32 animPrevFrame;
-    s32 sp58;
-    s32 pad;
-    f32 baseRange = 0.0f;
-    s16 playerFacingAngleDiff;
+    s32     animPrevFrame;
+    s32     sp58;
+    s32     pad;
+    f32     baseRange = 0.0f;
+    s16     playerFacingAngleDiff;
     Player* player = GET_PLAYER(play);
-    s32 playSpeed;
+    s32     playSpeed;
 
     if (!EnWf_DodgeRanged(play, this)) {
         Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 1, 0x2EE, 0);
@@ -631,13 +632,13 @@ void EnWf_SetupRunAroundPlayer(EnWf* this) {
 }
 
 void EnWf_RunAroundPlayer(EnWf* this, PlayState* play) {
-    s16 angle1;
-    s16 angle2;
-    s32 pad;
-    f32 baseRange = 0.0f;
-    s32 animPrevFrame;
-    s32 animFrameSpeedDiff;
-    s32 animSpeed;
+    s16     angle1;
+    s16     angle2;
+    s32     pad;
+    f32     baseRange = 0.0f;
+    s32     animPrevFrame;
+    s32     animFrameSpeedDiff;
+    s32     animSpeed;
     Player* player = GET_PLAYER(play);
 
     Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer + this->runAngle, 1, 4000, 1);
@@ -732,9 +733,9 @@ void EnWf_SetupSlash(EnWf* this) {
 
 void EnWf_Slash(EnWf* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s16 shapeAngleDiff = player->actor.shape.rot.y - this->actor.shape.rot.y;
-    s16 yawAngleDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
-    s32 curFrame = this->skelAnime.curFrame;
+    s16     shapeAngleDiff = player->actor.shape.rot.y - this->actor.shape.rot.y;
+    s16     yawAngleDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
+    s32     curFrame = this->skelAnime.curFrame;
 
     shapeAngleDiff = ABS(shapeAngleDiff);
     yawAngleDiff = ABS(yawAngleDiff);
@@ -802,8 +803,8 @@ void EnWf_SetupRecoilFromBlockedSlash(EnWf* this) {
 
 void EnWf_RecoilFromBlockedSlash(EnWf* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s16 angle1 = player->actor.shape.rot.y - this->actor.shape.rot.y;
-    s16 angle2 = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
+    s16     angle1 = player->actor.shape.rot.y - this->actor.shape.rot.y;
+    s16     angle2 = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
 
     angle1 = ABS(angle1);
     angle2 = ABS(angle2);
@@ -1011,7 +1012,7 @@ void EnWf_SetupBlocking(EnWf* this) {
 
 void EnWf_Blocking(EnWf* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 pad;
+    s32     pad;
 
     if (this->actionTimer != 0) {
         this->actionTimer--;
@@ -1060,9 +1061,9 @@ void EnWf_Blocking(EnWf* this, PlayState* play) {
 }
 
 void EnWf_SetupSidestep(EnWf* this, PlayState* play) {
-    s16 angle;
+    s16     angle;
     Player* player;
-    f32 lastFrame = Animation_GetLastFrame(&gWolfosRunningAnim);
+    f32     lastFrame = Animation_GetLastFrame(&gWolfosRunningAnim);
 
     Animation_Change(&this->skelAnime, &gWolfosRunningAnim, 1.0f, 0.0f, lastFrame, ANIMMODE_LOOP_INTERP, -4.0f);
 
@@ -1090,12 +1091,12 @@ void EnWf_SetupSidestep(EnWf* this, PlayState* play) {
 }
 
 void EnWf_Sidestep(EnWf* this, PlayState* play) {
-    s16 angleDiff1;
+    s16     angleDiff1;
     Player* player = GET_PLAYER(play);
-    s32 animPrevFrame;
-    s32 animFrameSpeedDiff;
-    s32 animSpeed;
-    f32 baseRange = 0.0f;
+    s32     animPrevFrame;
+    s32     animFrameSpeedDiff;
+    s32     animSpeed;
+    f32     baseRange = 0.0f;
 
     Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer + this->runAngle, 1, 3000, 1);
 
@@ -1156,7 +1157,7 @@ void EnWf_Sidestep(EnWf* this, PlayState* play) {
                 this->actionTimer = (Rand_ZeroOne() * 3.0f) + 1.0f;
             } else {
                 Player* player2 = GET_PLAYER(play);
-                s16 angleDiff2 = player2->actor.shape.rot.y - this->actor.yawTowardsPlayer;
+                s16     angleDiff2 = player2->actor.shape.rot.y - this->actor.yawTowardsPlayer;
 
                 this->actor.world.rot.y = this->actor.shape.rot.y;
 
@@ -1223,7 +1224,7 @@ void EnWf_Die(EnWf* this, PlayState* play) {
 
         Actor_Kill(&this->actor);
     } else {
-        s32 i;
+        s32   i;
         Vec3f pos;
         Vec3f velAndAccel = { 0.0f, 0.5f, 0.0f };
 
@@ -1233,8 +1234,8 @@ void EnWf_Die(EnWf* this, PlayState* play) {
             pos.x = Rand_CenteredFloat(60.0f) + this->actor.world.pos.x;
             pos.z = Rand_CenteredFloat(60.0f) + this->actor.world.pos.z;
             pos.y = Rand_CenteredFloat(50.0f) + (this->actor.world.pos.y + 20.0f);
-            EffectSsDeadDb_Spawn(play, &pos, &velAndAccel, &velAndAccel, 100, 0, 255, 255, 255, 255, 0, 0, 255, 1,
-                                 9, true);
+            EffectSsDeadDb_Spawn(play, &pos, &velAndAccel, &velAndAccel, 100, 0, 255, 255, 255, 255, 0, 0, 255, 1, 9,
+                                 true);
         }
     }
 }
@@ -1452,8 +1453,8 @@ void EnWf_Draw(Actor* thisx, PlayState* play) {
             gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sWolfosWhiteEyeTextures[this->eyeIndex]));
         }
 
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnWf_OverrideLimbDraw, EnWf_PostLimbDraw, &this->actor);
+        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+                              EnWf_OverrideLimbDraw, EnWf_PostLimbDraw, &this->actor);
 
         if (this->fireTimer != 0) {
             this->actor.colorFilterTimer++;

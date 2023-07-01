@@ -81,14 +81,14 @@ void EnTuboTrap_DropCollectible(EnTuboTrap* this, PlayState* play) {
 }
 
 void EnTuboTrap_SpawnEffectsOnLand(EnTuboTrap* this, PlayState* play) {
-    f32 rand;
-    f32 cos;
-    f32 sin;
-    Vec3f pos;
-    Vec3f velocity;
-    s16 var;
-    s32 arg5;
-    s32 i;
+    f32    rand;
+    f32    cos;
+    f32    sin;
+    Vec3f  pos;
+    Vec3f  velocity;
+    s16    var;
+    s32    arg5;
+    s32    i;
     Vec3f* actorPos = &this->actor.world.pos;
 
     for (i = 0, var = 0; i < 15; i++, var += 20000) {
@@ -115,23 +115,22 @@ void EnTuboTrap_SpawnEffectsOnLand(EnTuboTrap* this, PlayState* play) {
             arg5 = 32;
         }
 
-        EffectSsKakera_Spawn(play, &pos, &velocity, actorPos, -240, arg5, 10, 10, 0,
-                             (Rand_ZeroOne() * 65.0f) + 15.0f, 0, 32, 60, KAKERA_COLOR_NONE,
-                             OBJECT_GAMEPLAY_DANGEON_KEEP, gPotFragmentDL);
+        EffectSsKakera_Spawn(play, &pos, &velocity, actorPos, -240, arg5, 10, 10, 0, (Rand_ZeroOne() * 65.0f) + 15.0f,
+                             0, 32, 60, KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_DANGEON_KEEP, gPotFragmentDL);
     }
 
     func_80033480(play, actorPos, 30.0f, 4, 20, 50, 0);
 }
 
 void EnTuboTrap_SpawnEffectsInWater(EnTuboTrap* this, PlayState* play) {
-    f32 rand;
-    f32 cos;
-    f32 sin;
-    Vec3f pos;
-    Vec3f velocity;
-    s16 var;
-    s32 arg5;
-    s32 i;
+    f32    rand;
+    f32    cos;
+    f32    sin;
+    Vec3f  pos;
+    Vec3f  velocity;
+    s16    var;
+    s32    arg5;
+    s32    i;
     Vec3f* actorPos = &this->actor.world.pos;
 
     pos = *actorPos;
@@ -161,9 +160,8 @@ void EnTuboTrap_SpawnEffectsInWater(EnTuboTrap* this, PlayState* play) {
             arg5 = 32;
         }
 
-        EffectSsKakera_Spawn(play, &pos, &velocity, actorPos, -180, arg5, 30, 30, 0,
-                             (Rand_ZeroOne() * 65.0f) + 15.0f, 0, 32, 70, KAKERA_COLOR_NONE,
-                             OBJECT_GAMEPLAY_DANGEON_KEEP, gPotFragmentDL);
+        EffectSsKakera_Spawn(play, &pos, &velocity, actorPos, -180, arg5, 30, 30, 0, (Rand_ZeroOne() * 65.0f) + 15.0f,
+                             0, 32, 70, KAKERA_COLOR_NONE, OBJECT_GAMEPLAY_DANGEON_KEEP, gPotFragmentDL);
     }
 }
 
@@ -227,7 +225,7 @@ void EnTuboTrap_HandleImpact(EnTuboTrap* this, PlayState* play) {
 
 void EnTuboTrap_WaitForProximity(EnTuboTrap* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 targetHeight;
+    f32     targetHeight;
 
     if (BREG(2) != 0) {
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ わて     ☆☆☆☆☆ %f\n" VT_RST, this->actor.world.pos.y);   // "You"

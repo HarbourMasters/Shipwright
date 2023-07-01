@@ -7,7 +7,6 @@
 
 using RandomizerHash = std::array<std::string, 5>;
 
-
 typedef enum {
     SPOILER_CHK_NONE,
     SPOILER_CHK_ALWAYS_COLLECTED,
@@ -78,38 +77,38 @@ typedef enum {
 #define SPOILER_STRING_DATA_SIZE 16384
 
 typedef struct {
-    std::string LocationStr;
-    std::string ItemStr;
-    uint16_t LocationStrOffset;
-    uint16_t ItemStrOffset;
-    SpoilerCollectionCheckType CollectionCheckType;
-    uint8_t LocationScene;
-    uint8_t LocationFlag;
+    std::string                 LocationStr;
+    std::string                 ItemStr;
+    uint16_t                    LocationStrOffset;
+    uint16_t                    ItemStrOffset;
+    SpoilerCollectionCheckType  CollectionCheckType;
+    uint8_t                     LocationScene;
+    uint8_t                     LocationFlag;
     SpoilerCollectionCheckGroup Group;
-    SpoilerItemCollectType CollectType;
-    SpoilerItemRevealType RevealType;
+    SpoilerItemCollectType      CollectType;
+    SpoilerItemRevealType       RevealType;
 } SpoilerItemLocation;
 
 typedef struct {
-    uint8_t ItemCount;
+    uint8_t  ItemCount;
     uint16_t ItemLocationsOffset;
 } SpoilerSphere;
 
 typedef struct {
-    uint8_t SphereCount;
-    uint16_t ItemLocationsCount;
-    SpoilerSphere Spheres[SPOILER_SPHERES_MAX];
+    uint8_t             SphereCount;
+    uint16_t            ItemLocationsCount;
+    SpoilerSphere       Spheres[SPOILER_SPHERES_MAX];
     SpoilerItemLocation ItemLocations[SPOILER_ITEMS_MAX];
-    uint16_t SphereItemLocations[SPOILER_ITEMS_MAX];
-    char StringData[SPOILER_STRING_DATA_SIZE];
-    uint16_t GroupItemCounts[SPOILER_COLLECTION_GROUP_COUNT];
-    uint16_t GroupOffsets[SPOILER_COLLECTION_GROUP_COUNT];
+    uint16_t            SphereItemLocations[SPOILER_ITEMS_MAX];
+    char                StringData[SPOILER_STRING_DATA_SIZE];
+    uint16_t            GroupItemCounts[SPOILER_COLLECTION_GROUP_COUNT];
+    uint16_t            GroupOffsets[SPOILER_COLLECTION_GROUP_COUNT];
 } SpoilerData;
 
-void GenerateHash();
+void                  GenerateHash();
 const RandomizerHash& GetRandomizerHash();
 
 void WriteIngameSpoilerLog();
 
-const char* SpoilerLog_Write(int language);
+const char*        SpoilerLog_Write(int language);
 const SpoilerData& GetSpoilerData();

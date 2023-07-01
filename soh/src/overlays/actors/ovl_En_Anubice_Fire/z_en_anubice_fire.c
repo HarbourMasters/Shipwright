@@ -94,14 +94,14 @@ void func_809B26EC(EnAnubiceFire* this, PlayState* play) {
 }
 
 void func_809B27D8(EnAnubiceFire* this, PlayState* play) {
-    s32 pad;
-    Vec3f velocity = { 0.0f, 0.0f, 0.0f };
-    Vec3f accel = { 0.0f, 0.0f, 0.0f };
-    Vec3f pos;
+    s32         pad;
+    Vec3f       velocity = { 0.0f, 0.0f, 0.0f };
+    Vec3f       accel = { 0.0f, 0.0f, 0.0f };
+    Vec3f       pos;
     Color_RGBA8 primColor = { 255, 255, 0, 255 };
     Color_RGBA8 envColor = { 255, 0, 0, 255 };
-    Vec3f sp84 = { 0.0f, 0.0f, 0.0f };
-    Vec3f sp78 = { 0.0f, 0.0f, 0.0f };
+    Vec3f       sp84 = { 0.0f, 0.0f, 0.0f };
+    Vec3f       sp78 = { 0.0f, 0.0f, 0.0f };
 
     this->actor.world.rot.z += 5000;
     if (this->unk_15A == 0) {
@@ -145,13 +145,13 @@ void func_809B27D8(EnAnubiceFire* this, PlayState* play) {
 }
 
 void func_809B2B48(EnAnubiceFire* this, PlayState* play) {
-    Vec3f velocity = { 0.0f, 0.0f, 0.0f };
-    Vec3f accel = { 0.0f, 0.0f, 0.0f };
-    Vec3f pos;
+    Vec3f       velocity = { 0.0f, 0.0f, 0.0f };
+    Vec3f       accel = { 0.0f, 0.0f, 0.0f };
+    Vec3f       pos;
     Color_RGBA8 primColor = { 255, 255, 0, 255 };
     Color_RGBA8 envColor = { 255, 0, 0, 255 };
-    s32 pad;
-    s32 i;
+    s32         pad;
+    s32         i;
 
     if (this->unk_15C == 0) {
         for (i = 0; i < 20; i++) {
@@ -246,8 +246,7 @@ void EnAnubiceFire_Draw(Actor* thisx, PlayState* play) {
             Matrix_ReplaceRotation(&play->billboardMtxF);
             Matrix_RotateZ(this->actor.world.rot.z + i * 1000.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_XLU_DISP++, gAnubiceFireAttackDL);
         }

@@ -19,7 +19,7 @@
 #define rScale regs[9]
 #define rScaleStep regs[10]
 
-u32 EffectSsGSpk_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsGSpk_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsGSpk_Update(PlayState* play, u32 index, EffectSs* this);
 void EffectSsGSpk_UpdateNoAccel(PlayState* play, u32 index, EffectSs* this);
 void EffectSsGSpk_Draw(PlayState* play, u32 index, EffectSs* this);
@@ -73,13 +73,13 @@ void EffectSsGSpk_Draw(PlayState* play, u32 index, EffectSs* this) {
         gEffSpark4Tex,
     };
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    MtxF mfTrans;
-    MtxF mfScale;
-    MtxF mfResult;
-    MtxF mfTrans11DA0;
-    Mtx* mtx;
-    f32 scale;
-    s32 pad;
+    MtxF             mfTrans;
+    MtxF             mfScale;
+    MtxF             mfResult;
+    MtxF             mfTrans11DA0;
+    Mtx*             mtx;
+    f32              scale;
+    s32              pad;
 
     OPEN_DISPS(gfxCtx);
 

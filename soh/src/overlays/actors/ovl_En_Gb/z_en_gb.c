@@ -152,18 +152,18 @@ void func_80A2F180(EnGb* this) {
 
 void EnGb_Init(Actor* thisx, PlayState* play) {
     EnGb* this = (EnGb*)thisx;
-    s32 pad;
+    s32              pad;
     CollisionHeader* colHeader = NULL;
-    s32 i;
-    f32 rand;
-    Vec3f focusOffset;
+    s32              i;
+    f32              rand;
+    Vec3f            focusOffset;
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
     CollisionHeader_GetVirtual(&gPoeSellerCol, &colHeader);
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
-    SkelAnime_InitFlex(play, &this->skelAnime, &gPoeSellerSkel, &gPoeSellerIdleAnim, this->jointTable,
-                       this->morphTable, 12);
+    SkelAnime_InitFlex(play, &this->skelAnime, &gPoeSellerSkel, &gPoeSellerIdleAnim, this->jointTable, this->morphTable,
+                       12);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinderType1(play, &this->collider, &this->dyna.actor, &sCylinderInit);
 
@@ -229,7 +229,7 @@ void EnGb_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_80A2F608(EnGb* this) {
-    s32 i;
+    s32   i;
     Vec3f sp48;
     Vec3f sp3C;
 
@@ -411,8 +411,8 @@ void func_80A2FC70(EnGb* this, PlayState* play) {
 void EnGb_Update(Actor* thisx, PlayState* play2) {
     EnGb* this = (EnGb*)thisx;
     PlayState* play = play2;
-    s32 i;
-    f32 rand;
+    s32        i;
+    f32        rand;
 
     this->frameTimer++;
     SkelAnime_Update(&this->skelAnime);
@@ -447,8 +447,8 @@ void EnGb_Draw(Actor* thisx, PlayState* play) {
     Lights_PointNoGlowSetInfo(&this->lightInfo, this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y,
                               this->dyna.actor.world.pos.z, this->lightColor.r, this->lightColor.g, this->lightColor.b,
                               this->lightColor.a);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, NULL, &this->dyna.actor);
+    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount, NULL,
+                          NULL, &this->dyna.actor);
     EnGb_DrawCagedSouls(this, play);
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -558,8 +558,7 @@ void EnGb_DrawCagedSouls(EnGb* this, PlayState* play) {
         }
         Matrix_Scale(0.007f, 0.007f, 1.0f, MTXMODE_APPLY);
 
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gPoeSellerCagedSoulDL);
 
         Matrix_Pop();

@@ -8,7 +8,8 @@
 #include "objects/object_md/object_md.h"
 #include "overlays/actors/ovl_En_Elf/z_en_elf.h"
 
-#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
+#define FLAGS \
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void EnMd_Init(Actor* thisx, PlayState* play);
 void EnMd_Destroy(Actor* thisx, PlayState* play);
@@ -375,8 +376,8 @@ u16 EnMd_GetTextKokiriForest(PlayState* play, EnMd* this) {
     // In rando, skip talking about the tree being dead so we can have the prompt for sword and shield instead
     if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) ||
         (gSaveContext.n64ddFlag && Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD) &&
-        Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE) &&
-        !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH))) {
+         Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE) &&
+         !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH))) {
         return 0x1045;
     }
 
@@ -497,7 +498,7 @@ u8 EnMd_ShouldSpawn(EnMd* this, PlayState* play) {
         if (Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD) &&
             Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
             (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER) ||
-            Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD))) {
+             Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD))) {
             return play->sceneNum == SCENE_KOKIRI_HOME4 && !LINK_IS_ADULT;
         }
 
@@ -505,13 +506,15 @@ u8 EnMd_ShouldSpawn(EnMd* this, PlayState* play) {
     }
 
     if (play->sceneNum == SCENE_SPOT04) {
-        if (!Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) && !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
+            !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
             return 1;
         }
     }
 
     if (play->sceneNum == SCENE_KOKIRI_HOME4) {
-        if (((Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH)) != 0) || ((Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) != 0)) {
+        if (((Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH)) != 0) ||
+            ((Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) != 0)) {
             if (!LINK_IS_ADULT) {
                 return 1;
             }
@@ -537,10 +540,10 @@ void EnMd_UpdateEyes(EnMd* this) {
 
 void func_80AAB158(EnMd* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s16 absYawDiff;
-    s16 trackingMode;
-    s16 temp2;
-    s16 yawDiff;
+    s16     absYawDiff;
+    s16     trackingMode;
+    s16     temp2;
+    s16     yawDiff;
 
     if (this->actor.xzDistToPlayer < 170.0f) {
         yawDiff = (f32)this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
@@ -586,10 +589,10 @@ void func_80AAB158(EnMd* this, PlayState* play) {
 }
 
 u8 EnMd_FollowPath(EnMd* this, PlayState* play) {
-    Path* path;
+    Path*  path;
     Vec3s* pointPos;
-    f32 pathDiffX;
-    f32 pathDiffZ;
+    f32    pathDiffX;
+    f32    pathDiffZ;
 
     if ((this->actor.params & 0xFF00) == 0xFF00) {
         return 0;
@@ -615,7 +618,7 @@ u8 EnMd_FollowPath(EnMd* this, PlayState* play) {
 }
 
 u8 EnMd_SetMovedPos(EnMd* this, PlayState* play) {
-    Path* path;
+    Path*  path;
     Vec3s* lastPointPos;
 
     if ((this->actor.params & 0xFF00) == 0xFF00) {
@@ -638,17 +641,19 @@ void func_80AAB5A4(EnMd* this, PlayState* play) {
 
     if (play->sceneNum != SCENE_KOKIRI_HOME4) {
         if (CVarGetInteger("gDisableKokiriDrawDistance", 0) != 0) {
-            temp = (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
+            temp = (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) &&
+                    !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
                     (play->sceneNum == SCENE_SPOT04))
                        ? 100.0f
                        : 32767.0f;
         } else {
-            temp = (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
+            temp = (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) &&
+                    !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
                     (play->sceneNum == SCENE_SPOT04))
                        ? 100.0f
                        : 400.0f;
         }
-        
+
         this->alpha = func_80034DD4(&this->actor, play, this->alpha, temp);
         this->actor.shape.shadowAlpha = this->alpha;
     } else {
@@ -722,9 +727,9 @@ void func_80AAB8F8(EnMd* this, PlayState* play) {
 
 void func_80AAB948(EnMd* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    f32 temp;
-    Actor* actorToBlock = &GET_PLAYER(play)->actor;
-    s16 yaw;
+    f32     temp;
+    Actor*  actorToBlock = &GET_PLAYER(play)->actor;
+    s16     yaw;
 
     func_80AAAA24(this);
 
@@ -746,8 +751,9 @@ void func_80AAB948(EnMd* this, PlayState* play) {
 
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
         if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) ||
-            gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE) &&
-            Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
+             gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE) &&
+                 Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) &&
+            !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
             (play->sceneNum == SCENE_SPOT04)) {
             play->msgCtx.msgMode = MSGMODE_PAUSED;
         }
@@ -815,9 +821,9 @@ void func_80AABD0C(EnMd* this, PlayState* play) {
     }
 
     if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) ||
-        gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE) &&
-        Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
-        (play->sceneNum == SCENE_SPOT04)) {
+         gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE) &&
+             Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) &&
+        !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) && (play->sceneNum == SCENE_SPOT04)) {
         Message_CloseTextbox(play);
         Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH);
         Actor_Kill(&this->actor);
@@ -847,8 +853,7 @@ void EnMd_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 }
 
-s32 EnMd_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx,
-                          Gfx** gfx) {
+s32 EnMd_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx, Gfx** gfx) {
     EnMd* this = (EnMd*)thisx;
     Vec3s vec;
 

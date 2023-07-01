@@ -52,9 +52,9 @@ static CollisionCheckInfoInit2 sColChkInfoInit = { 0, 0, 0, 0, MASS_IMMOVABLE };
 
 void EnHata_Init(Actor* thisx, PlayState* play) {
     EnHata* this = (EnHata*)thisx;
-    s32 pad;
+    s32              pad;
     CollisionHeader* colHeader = NULL;
-    f32 frameCount = Animation_GetLastFrame(&gFlagpoleFlapAnim);
+    f32              frameCount = Animation_GetLastFrame(&gFlagpoleFlapAnim);
 
     Actor_SetScale(&this->dyna.actor, 1.0f / 75.0f);
     SkelAnime_Init(play, &this->skelAnime, &gFlagpoleSkel, &gFlagpoleFlapAnim, NULL, NULL, 0);
@@ -81,10 +81,10 @@ void EnHata_Destroy(Actor* thisx, PlayState* play) {
 void EnHata_Update(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
     EnHata* this = (EnHata*)thisx;
-    s32 pitch;
+    s32   pitch;
     Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
     Vec3f windVec;
-    f32 sin;
+    f32   sin;
 
     SkelAnime_Update(&this->skelAnime);
     // Rotate to hang down by default

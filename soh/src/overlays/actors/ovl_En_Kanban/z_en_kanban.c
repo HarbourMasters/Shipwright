@@ -115,46 +115,82 @@ static u16 sPartFlags[] = {
 
 static Vec3f sPieceOffsets[] = {
     /* WHOLE_SIGN   */ { 0.0f, 44.0f, 0.0f },
-    /* UPPER_HALF   */ { 0.0f, 50.0f, 0.0f },
-    /* LOWER_HALF   */ { 0.0f, 38.0f, 0.0f },
-    /* RIGHT_HALF  */ { 10.0f, 44.0f, 0.0f },
-    /* LEFT_HALF  */ { -10.0f, 44.0f, 0.0f },
-    /* 2ND_QUAD   */ { -10.0f, 50.0f, 0.0f },
-    /* 1ST_QUAD    */ { 10.0f, 50.0f, 0.0f },
-    /* 3RD_QUAD   */ { -10.0f, 38.0f, 0.0f },
-    /* 4TH_QUAD    */ { 10.0f, 38.0f, 0.0f },
-    /* UPPER_LEFT  */ { -7.5f, 51.0f, 0.0f },
-    /* LEFT_UPPER */ { -12.5f, 48.0f, 0.0f },
-    /* LEFT_LOWER */ { -12.5f, 40.0f, 0.0f },
-    /* LOWER_LEFT  */ { -7.5f, 37.0f, 0.0f },
-    /* UPPER_RIGHT  */ { 7.5f, 51.0f, 0.0f },
-    /* RIGHT_UPPER */ { 12.5f, 48.0f, 0.0f },
-    /* RIGHT_LOWER */ { 12.5f, 40.0f, 0.0f },
-    /* LOWER_RIGHT  */ { 7.5f, 37.0f, 0.0f },
-    /* POST_UPPER   */ { 0.0f, 50.0f, 0.0f },
-    /* POST_LOWER   */ { 0.0f, 38.0f, 0.0f },
+    /* UPPER_HALF   */
+    { 0.0f, 50.0f, 0.0f },
+    /* LOWER_HALF   */
+    { 0.0f, 38.0f, 0.0f },
+    /* RIGHT_HALF  */
+    { 10.0f, 44.0f, 0.0f },
+    /* LEFT_HALF  */
+    { -10.0f, 44.0f, 0.0f },
+    /* 2ND_QUAD   */
+    { -10.0f, 50.0f, 0.0f },
+    /* 1ST_QUAD    */
+    { 10.0f, 50.0f, 0.0f },
+    /* 3RD_QUAD   */
+    { -10.0f, 38.0f, 0.0f },
+    /* 4TH_QUAD    */
+    { 10.0f, 38.0f, 0.0f },
+    /* UPPER_LEFT  */
+    { -7.5f, 51.0f, 0.0f },
+    /* LEFT_UPPER */
+    { -12.5f, 48.0f, 0.0f },
+    /* LEFT_LOWER */
+    { -12.5f, 40.0f, 0.0f },
+    /* LOWER_LEFT  */
+    { -7.5f, 37.0f, 0.0f },
+    /* UPPER_RIGHT  */
+    { 7.5f, 51.0f, 0.0f },
+    /* RIGHT_UPPER */
+    { 12.5f, 48.0f, 0.0f },
+    /* RIGHT_LOWER */
+    { 12.5f, 40.0f, 0.0f },
+    /* LOWER_RIGHT  */
+    { 7.5f, 37.0f, 0.0f },
+    /* POST_UPPER   */
+    { 0.0f, 50.0f, 0.0f },
+    /* POST_LOWER   */
+    { 0.0f, 38.0f, 0.0f },
 };
 
 static Vec3f sPieceSizes[] = {
     /* WHOLE_SIGN */ { 1500.0f, 1000.0f, 0.0f },
-    /* UPPER_HALF */ { 1500.0f, 500.0f, 0.0f },
-    /* LOWER_HALF */ { 1500.0f, 500.0f, 0.0f },
-    /* RIGHT_HALF  */ { 700.0f, 1000.0f, 0.0f },
-    /* LEFT_HALF   */ { 700.0f, 1000.0f, 0.0f },
-    /* 2ND_QUAD    */ { 700.0f, 500.0f, 0.0f },
-    /* 1ST_QUAD    */ { 700.0f, 500.0f, 0.0f },
-    /* 3RD_QUAD    */ { 700.0f, 500.0f, 0.0f },
-    /* 4TH_QUAD    */ { 700.0f, 500.0f, 0.0f },
-    /* UPPER_LEFT  */ { 700.0f, 500.0f, 0.0f },
-    /* LEFT_UPPER  */ { 700.0f, 500.0f, 0.0f },
-    /* LEFT_LOWER  */ { 700.0f, 500.0f, 0.0f },
-    /* LOWER_LEFT  */ { 700.0f, 500.0f, 0.0f },
-    /* UPPER_RIGHT */ { 700.0f, 500.0f, 0.0f },
-    /* RIGHT_UPPER */ { 700.0f, 500.0f, 0.0f },
-    /* RIGHT_LOWER */ { 700.0f, 500.0f, 0.0f },
-    /* LOWER_RIGHT */ { 700.0f, 500.0f, 0.0f },
-    /* POST_UPPER  */ { 200.0f, 500.0f, 0.0f },
-    /* POST_LOWER  */ { 200.0f, 500.0f, 0.0f },
+    /* UPPER_HALF */
+    { 1500.0f, 500.0f, 0.0f },
+    /* LOWER_HALF */
+    { 1500.0f, 500.0f, 0.0f },
+    /* RIGHT_HALF  */
+    { 700.0f, 1000.0f, 0.0f },
+    /* LEFT_HALF   */
+    { 700.0f, 1000.0f, 0.0f },
+    /* 2ND_QUAD    */
+    { 700.0f, 500.0f, 0.0f },
+    /* 1ST_QUAD    */
+    { 700.0f, 500.0f, 0.0f },
+    /* 3RD_QUAD    */
+    { 700.0f, 500.0f, 0.0f },
+    /* 4TH_QUAD    */
+    { 700.0f, 500.0f, 0.0f },
+    /* UPPER_LEFT  */
+    { 700.0f, 500.0f, 0.0f },
+    /* LEFT_UPPER  */
+    { 700.0f, 500.0f, 0.0f },
+    /* LEFT_LOWER  */
+    { 700.0f, 500.0f, 0.0f },
+    /* LOWER_LEFT  */
+    { 700.0f, 500.0f, 0.0f },
+    /* UPPER_RIGHT */
+    { 700.0f, 500.0f, 0.0f },
+    /* RIGHT_UPPER */
+    { 700.0f, 500.0f, 0.0f },
+    /* RIGHT_LOWER */
+    { 700.0f, 500.0f, 0.0f },
+    /* LOWER_RIGHT */
+    { 700.0f, 500.0f, 0.0f },
+    /* POST_UPPER  */
+    { 200.0f, 500.0f, 0.0f },
+    /* POST_LOWER  */
+    { 200.0f, 500.0f, 0.0f },
 };
 
 static u8 sCutTypes[] = {
@@ -251,13 +287,13 @@ void EnKanban_Message(EnKanban* this, PlayState* play) {
 }
 
 void EnKanban_Update(Actor* thisx, PlayState* play2) {
-    u8 bounced = false;
+    u8         bounced = false;
     PlayState* play = play2;
     EnKanban* this = (EnKanban*)thisx;
     EnKanban* signpost;
     EnKanban* piece;
-    Player* player = GET_PLAYER(play);
-    Vec3f offset;
+    Player*   player = GET_PLAYER(play);
+    Vec3f     offset;
 
     this->frameCount++;
     switch (this->actionState) {
@@ -283,8 +319,8 @@ void EnKanban_Update(Actor* thisx, PlayState* play2) {
                                                       this->actor.shape.rot.y, this->actor.shape.rot.z, ENKANBAN_PIECE);
                 if (piece != NULL) {
                     ColliderInfo* hitItem = this->collider.info.acHitInfo;
-                    s16 yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
-                    u8 i;
+                    s16           yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
+                    u8            i;
 
                     if (hitItem->toucher.dmgFlags & 0x700) {
                         this->cutType = sCutTypes[player->meleeWeaponAnimation];
@@ -424,7 +460,7 @@ void EnKanban_Update(Actor* thisx, PlayState* play2) {
             f32 tempY;
             f32 tempZ;
             f32 tempYDistToWater;
-            u8 onGround;
+            u8  onGround;
 
             Actor_MoveForward(&this->actor);
             Actor_UpdateBgCheckInfo(play, &this->actor, 30.0f, 30.0f, 50.0f, 5);
@@ -548,8 +584,8 @@ void EnKanban_Update(Actor* thisx, PlayState* play2) {
                 this->actor.shape.rot.x += this->direction * 0x7D0;
             }
             if (bounced) {
-                s16 dustCount;
-                s16 j;
+                s16   dustCount;
+                s16   j;
                 Vec3f velocity = { 0.0f, 0.0f, 0.0f };
                 Vec3f accel;
                 Vec3f pos;
@@ -662,9 +698,9 @@ void EnKanban_Update(Actor* thisx, PlayState* play2) {
             }
             if (this->bounceX == 0) {
                 Actor* bomb = play->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].head;
-                f32 dx;
-                f32 dy;
-                f32 dz;
+                f32    dx;
+                f32    dy;
+                f32    dz;
 
                 while (bomb != NULL) {
                     if (bomb->params != 1) {
@@ -810,8 +846,7 @@ void EnKanban_Draw(Actor* thisx, PlayState* play) {
         Matrix_RotateX((this->spinRot.x / (f32)0x8000) * M_PI, MTXMODE_APPLY);
         Matrix_RotateY((this->spinRot.z / (f32)0x8000) * M_PI, MTXMODE_APPLY);
         Matrix_Translate(this->offset.x, this->offset.y, this->offset.z - 100.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         for (i = 0; i < ARRAY_COUNT(sPartFlags); i++) {
             if (sPartFlags[i] & this->partFlags) {
                 gSPDisplayList(POLY_OPA_DISP++, sDisplayLists[i]);
@@ -819,8 +854,7 @@ void EnKanban_Draw(Actor* thisx, PlayState* play) {
         }
     } else {
         Matrix_Translate(0.0f, 0.0f, -100.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         if (this->partFlags == 0xFFFF) {
             gSPDisplayList(POLY_OPA_DISP++, gSignRectangularDL);
         } else {
@@ -839,8 +873,7 @@ void EnKanban_Draw(Actor* thisx, PlayState* play) {
             gDPPipeSync(POLY_XLU_DISP++);
             gDPSetPrimColor(POLY_XLU_DISP++, 0x00, 0x00, 255, 255, 255, this->cutMarkAlpha);
             gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 150, 0);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_kanban_DL_001630);
         }
     }
@@ -878,8 +911,7 @@ void EnKanban_Draw(Actor* thisx, PlayState* play) {
             Matrix_RotateX((this->spinRot.x / (f32)0x8000) * M_PI, MTXMODE_APPLY);
             Matrix_RotateY((this->spinRot.z / (f32)0x8000) * M_PI, MTXMODE_APPLY);
             Matrix_Translate(this->offset.x, this->offset.y, this->offset.z, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             for (i = 0; i < 0x400; i++) {
                 if (sShadowTexFlags[i] & this->partFlags) {

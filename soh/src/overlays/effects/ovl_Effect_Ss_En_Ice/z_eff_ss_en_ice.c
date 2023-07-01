@@ -21,7 +21,7 @@
 #define rAlphaMode regs[11]
 #define rScale regs[12]
 
-u32 EffectSsEnIce_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
+u32  EffectSsEnIce_Init(PlayState* play, u32 index, EffectSs* this, void* initParamsx);
 void EffectSsEnIce_Draw(PlayState* play, u32 index, EffectSs* this);
 void EffectSsEnIce_Update(PlayState* play, u32 index, EffectSs* this);
 void EffectSsEnIce_UpdateFlying(PlayState* play, u32 index, EffectSs* this);
@@ -87,11 +87,11 @@ u32 EffectSsEnIce_Init(PlayState* play, u32 index, EffectSs* this, void* initPar
 
 void EffectSsEnIce_Draw(PlayState* play, u32 index, EffectSs* this) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
-    s32 pad;
-    f32 scale;
-    Vec3f hiliteLightDir;
-    u32 gameplayFrames;
-    f32 alpha;
+    s32              pad;
+    f32              scale;
+    Vec3f            hiliteLightDir;
+    u32              gameplayFrames;
+    f32              alpha;
 
     scale = this->rScale * 0.01f;
     gameplayFrames = play->gameplayFrames;
@@ -113,8 +113,7 @@ void EffectSsEnIce_Draw(PlayState* play, u32 index, EffectSs* this) {
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
     Matrix_RotateY(this->rYaw * (M_PI / 0x8000), MTXMODE_APPLY);
     Matrix_RotateX(this->rPitch * (M_PI / 0x8000), MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     hiliteLightDir.x = 89.8f;
     hiliteLightDir.y = 0.0f;
