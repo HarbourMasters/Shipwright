@@ -1,8 +1,7 @@
 #include <libultraship/bridge.h>
 #include "draw.h"
 #include "z64.h"
-#include "macros.h"
-#include "functions.h"
+#include "global.h"
 #include "randomizerTypes.h"
 #include <array>
 #include "objects/object_gi_key/object_gi_key.h"
@@ -10,6 +9,10 @@
 #include "objects/object_gi_hearts/object_gi_hearts.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "soh_assets.h"
+
+extern "C" {
+extern SaveContext gSaveContext;
+}
 
 extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEntry) {
     s8 isColoredKeysEnabled = CVarGetInteger("gRandoMatchKeyColors", 1);
@@ -172,7 +175,14 @@ extern "C" void Randomizer_DrawTriforcePiece(PlayState* play, GetItemEntry getIt
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gTriforcePieceDL);
+    uint16_t current = gSaveContext.triforcePiecesCollected;
+    uint16_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
+    
+    if (current < required) {
+        gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gTriforcePieceDL);
+    } else {
+        gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gTriforcePieceCompletedDL);
+    }
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
