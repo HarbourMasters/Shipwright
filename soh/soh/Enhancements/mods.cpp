@@ -599,15 +599,24 @@ void RegisterMirrorModeHandler() {
     });
 }
 
-void RegisterTriforceHuntWarp() {
+f32 triforcePieceScale;
+
+void RegisterTriforceHunt() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        if (GameInteractor::State::TriforceHuntCreditsWarpActive && !GameInteractor::IsGameplayPaused()) {
-            Play_PerformSave(gPlayState);
-            gPlayState->nextEntranceIndex = 0x6B;
-            gSaveContext.nextCutsceneIndex = 0xFFF2;
-            gPlayState->sceneLoadFlag = 0x14;
-            gPlayState->fadeTransition = 3;
-            GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
+        if (!GameInteractor::IsGameplayPaused()) {
+            if (GameInteractor::State::TriforceHuntCreditsWarpActive) {
+                Play_PerformSave(gPlayState);
+                gPlayState->nextEntranceIndex = 0x6B;
+                gSaveContext.nextCutsceneIndex = 0xFFF2;
+                gPlayState->sceneLoadFlag = 0x14;
+                gPlayState->fadeTransition = 3;
+                GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
+            }
+
+            if (GameInteractor::State::TriforceHuntPieceGiven) {
+                triforcePieceScale = 0.0f;
+                GameInteractor::State::TriforceHuntPieceGiven = 0;
+            }
         }
     });
 }
@@ -634,5 +643,5 @@ void InitMods() {
     RegisterBonkDamage();
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
-    RegisterTriforceHuntWarp();
+    RegisterTriforceHunt();
 }

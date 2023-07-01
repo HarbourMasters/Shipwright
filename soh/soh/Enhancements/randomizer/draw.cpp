@@ -175,12 +175,52 @@ extern "C" void Randomizer_DrawTriforcePiece(PlayState* play, GetItemEntry getIt
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gTriforcePieceDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+// Seperate draw function for drawing the Triforce piece when in the GI state.
+// Needed for delaying showing the triforce piece slightly so the triforce shard doesn't
+// suddenly snap to the completed triforce because the piece is given mid textbox.
+// Also makes it so the overworld models don't turn into the completed model when
+// the player has exactly the required amount of pieces.
+extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+
     uint16_t current = gSaveContext.triforcePiecesCollected;
     uint16_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
+
+    Matrix_Scale(triforcePieceScale, triforcePieceScale, triforcePieceScale, MTXMODE_APPLY);
+
+    // For creating a delay before showing the model so the model doesn't swap visually when the triforce piece
+    // is given when the textbox just appears.
+    if (triforcePieceScale < 0.0001f) {
+        triforcePieceScale += 0.00003f;
+    }
     
-    if (current < required) {
+    // Animation. When not the completed triforce, create delay before showing the piece to bypass interpolation.
+    // If the completed triforce, make it grow slowly.
+    if (current != required) {
+        if (triforcePieceScale > 0.00008f && triforcePieceScale < 0.034f) {
+            triforcePieceScale = 0.034f;
+        } else if (triforcePieceScale < 0.035f) {
+            triforcePieceScale += 0.0005f;
+        }
+    } else if (triforcePieceScale > 0.00008f && triforcePieceScale < 0.035f) { 
+        triforcePieceScale += 0.0005f;
+    }
+
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    // Show piece when not currently completing the triforce. Use the scale to create a delay so interpolation doesn't
+    // make the triforce twitch when the size is set to a higher value.
+    if (current != required && triforcePieceScale > 0.035f) {
         gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gTriforcePieceDL);
-    } else {
+    } else if (current == required && triforcePieceScale > 0.00008f) {
         gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gTriforcePieceCompletedDL);
     }
 

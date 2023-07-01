@@ -2568,9 +2568,10 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
 
     if (item == RG_TRIFORCE_PIECE) {
         gSaveContext.triforcePiecesCollected++;
+        GameInteractor_SetTriforceHuntPieceGiven(true);
 
         // Teleport to credits when goal is reached.
-        if (gSaveContext.triforcePiecesCollected >= Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED)) {
+        if (gSaveContext.triforcePiecesCollected == Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED)) {
             GameInteractor_SetTriforceHuntCreditsWarpActive(true);
         }
 
