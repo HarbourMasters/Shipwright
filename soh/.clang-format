@@ -11,6 +11,13 @@ BinPackArguments: true
 BinPackParameters: true
 AlignAfterOpenBracket: Align
 AlignOperands: true
+AlignConsecutiveDeclarations:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: true
+AlignTrailingComments:
+  Kind: Always
+  OverEmptyLines: 1
 BreakBeforeTernaryOperators: true
 BreakBeforeBinaryOperators: None
 AllowShortBlocksOnASingleLine: true

@@ -21,6 +21,12 @@ fi
 echo "Formatting C files. This will take a bit"
 echo "Running clang-format..."
 clang-format ${FORMAT_OPTS} src/**/*.c
+clang-format ${FORMAT_OPTS} src/**/*.h
+clang-format ${FORMAT_OPTS} soh/**/*.h
+clang-format ${FORMAT_OPTS} soh/**/*.c
+clang-format ${FORMAT_OPTS} soh/**/*.cpp
+clang-format ${FORMAT_OPTS} soh/**/*.hpp
+clang-format ${FORMAT_OPTS} include/**/*.h
 echo "Running clang-tidy..."
 clang-tidy ${TIDY_OPTS} src/**/*.c -- ${COMPILER_OPTS} &> /dev/null
 echo "Adding missing final new lines..."
