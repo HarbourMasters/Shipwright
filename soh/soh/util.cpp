@@ -272,6 +272,7 @@ std::vector<std::string> itemNames = {
     "Deku Stick Upgrade (30)",
     "Deku Nut Upgrade (30)",
     "Deku Nut Upgrade (40)",
+    "Triforce Piece"
 };
 
 std::vector<std::string> questItemNames = {

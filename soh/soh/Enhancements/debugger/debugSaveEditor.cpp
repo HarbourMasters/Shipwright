@@ -10,6 +10,7 @@
 #include <string>
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
+#include "soh_assets.h"
 
 extern "C" {
 #include <z64.h>
@@ -142,6 +143,10 @@ std::map<uint32_t, ItemMapEntry> itemMapping = {
 
 std::map<uint32_t, ItemMapEntry> gregMapping = {
     {ITEM_RUPEE_GREEN, {ITEM_RUPEE_GREEN, "ITEM_RUPEE_GREEN", "ITEM_RUPEE_GREEN_Faded", gRupeeCounterIconTex}}
+};
+
+std::map<uint32_t, ItemMapEntry> triforcePieceMapping = {
+    {ITEM_TRIFORCE_PIECE, {ITEM_TRIFORCE_PIECE, "ITEM_TRIFORCE_PIECE", "ITEM_TRIFORCE_PIECE_Faded", gTriforcePieceTex}}
 };
 
 // Maps entries in the GS flag array to the area name it represents
@@ -1789,6 +1794,10 @@ void SaveEditorWindow::InitElement() {
         gregFadedGreen.w = 0.3f;
         LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, gregGreen);
         LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, gregFadedGreen);
+    }
+    for (const auto& entry : triforcePieceMapping) {
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, ImVec4(1, 1, 1, 1));
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
     }
     for (const auto& entry : questMapping) {
         LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, ImVec4(1, 1, 1, 1));

@@ -57,6 +57,9 @@ static const ALIGN_ASSET(2) char gArrowUpTex[] = dgArrowUp;
 #define dgArrowDown "__OTR__textures/parameter_static/gArrowDown"
 static const ALIGN_ASSET(2) char gArrowDownTex[] = dgArrowDown;
 
+#define dgTriforcePiece "__OTR__textures/parameter_static/gTriforcePiece"
+static const ALIGN_ASSET(2) char gTriforcePieceTex[] = dgTriforcePiece;
+
 #define dgFileSelMQButtonTex "__OTR__textures/title_static/gFileSelMQButtonTex"
 static const ALIGN_ASSET(2) char gFileSelMQButtonTex[] = dgFileSelMQButtonTex;
 

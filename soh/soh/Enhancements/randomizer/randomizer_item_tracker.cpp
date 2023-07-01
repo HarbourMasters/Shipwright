@@ -464,6 +464,31 @@ void DrawItemCount(ItemTrackerItem item) {
         ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
         ImGui::Text(maxString.c_str());
         ImGui::PopStyleColor();
+    } else if (item.id == ITEM_TRIFORCE_PIECE && gSaveContext.n64ddFlag &&
+               OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) && IsValidSaveFile()) {
+        std::string currentString = "";
+        std::string requiredString = "";
+        std::string maxString = "";
+        uint8_t piecesRequired = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
+        uint8_t piecesTotal = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL);
+        ImU32 currentColor = gSaveContext.triforcePiecesCollected >= piecesRequired ? IM_COL_GREEN : IM_COL_WHITE;
+        ImU32 maxColor = IM_COL_GREEN;
+
+        currentString += std::to_string(gSaveContext.triforcePiecesCollected);
+        currentString += "/";
+        currentString += std::to_string(piecesRequired);
+        currentString += "/";
+        maxString += std::to_string(piecesTotal);
+
+        ImGui::SetCursorScreenPos(
+            ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize((currentString + maxString).c_str()).x / 2), p.y - 14));
+        ImGui::PushStyleColor(ImGuiCol_Text, currentColor);
+        ImGui::Text(currentString.c_str());
+        ImGui::PopStyleColor();
+        ImGui::SameLine(0, 0.0f);
+        ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
+        ImGui::Text(maxString.c_str());
+        ImGui::PopStyleColor();
     } else {
         ImGui::SetCursorScreenPos(ImVec2(p.x, p.y - 14));
         ImGui::Text("");
@@ -496,12 +521,8 @@ void DrawQuest(ItemTrackerItem item) {
 };
 
 void DrawItem(ItemTrackerItem item) {
-    uint32_t actualItemId;
-    if (item.id != ITEM_TRIFORCE_PIECE) {
-        actualItemId = INV_CONTENT(item.id);
-    } else {
-        item.id = item.id;
-    }
+
+    uint32_t actualItemId = INV_CONTENT(item.id);
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     bool hasItem = actualItemId != ITEM_NONE;
 
@@ -544,9 +565,8 @@ void DrawItem(ItemTrackerItem item) {
             hasItem = Flags_GetRandomizerInf(RAND_INF_GREG_FOUND);
             break;
         case ITEM_TRIFORCE_PIECE:
-            actualItemId = ITEM_MILK_HALF;
-            hasItem = (bool)OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT);
-            item = actualItemTrackerItemMap[actualItemId];
+            actualItemId = item.id;
+            hasItem = gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT);
             break;
     }
 
@@ -555,9 +575,10 @@ void DrawItem(ItemTrackerItem item) {
     }
     
     ImGui::BeginGroup();
-    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
-                 ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
 
+    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
+                    ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+    
     DrawItemCount(item);
     ImGui::EndGroup();
 
