@@ -10,6 +10,7 @@ __pycache__/
 cmake-build-**
 venv/
 .cache/
+.cache/*
 
 # Project-specific ignores
 build/
