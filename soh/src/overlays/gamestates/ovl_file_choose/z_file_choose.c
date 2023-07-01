@@ -20,9 +20,6 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include <assert.h>
 
-#define LEFT_OFFSET (int)0x37
-#define TOP_OFFSET  (int)0x5C
-
 typedef struct {
     s16 left;
     s16 top;
@@ -46,11 +43,18 @@ typedef struct {
 #define CREATE_SPRITE_SONG(colorR, colorG, colorB) { dgSongNoteTex, 16, 24, G_IM_FMT_IA, G_IM_SIZ_8b, 100 }, {colorR, colorG, colorB, 0xFF}
 #define CREATE_SPRITE_RUPEE(colorR, colorG, colorB) { dgRupeeCounterIconTex, 16, 16, G_IM_FMT_IA, G_IM_SIZ_8b, 102 }, {colorR, colorG, colorB, 0xFF}
 #define CREATE_SPRITE_SKULL { dgDungeonMapSkullTex, 16, 16, G_IM_FMT_RGBA, G_IM_SIZ_16b, 104 }, {0xFF, 0xFF, 0xFF, 0xFF}
+#define CREATE_SPRITE_COUNTER_DIGIT(i) { dgAmmoDigit##i##Tex, 8, 8, G_IM_FMT_IA, G_IM_SIZ_8b, 105+i }
 
 #define ICON_SIZE 12
 #define COUNTER_SIZE 16
 #define SONG_WIDTH 8
 #define SONG_HEIGHT 12
+
+#define LEFT_OFFSET (int)0x37
+#define TOP_OFFSET  (int)0x5C
+
+#define COUNTER_DIGITS_LEFT_OFFSET COUNTER_SIZE / 2
+#define COUNTER_DIGITS_TOP_OFFSET 13
 
 #define SIZE_NORMAL {ICON_SIZE, ICON_SIZE}
 #define SIZE_COUNTER {COUNTER_SIZE, COUNTER_SIZE}
@@ -448,13 +452,26 @@ typedef struct {
 } CounterData;
 
 static CounterData counterData[7] = {
-    {CREATE_SPRITE_24(dgHeartContainerIconTex, 101), ITEM_HEART_CONTAINER, {0x0A, 0x00}, SIZE_COUNTER},
-    {CREATE_SPRITE_RUPEE(0xC8, 0xFF, 0x64),          ITEM_RUPEE_GREEN,     {0x0A, 0x12}, SIZE_COUNTER}, //child wallet
-    {CREATE_SPRITE_RUPEE(0x82, 0x82, 0xFF),          ITEM_RUPEE_BLUE,      {0x0A, 0x12}, SIZE_COUNTER}, //adult wallet
-    {CREATE_SPRITE_RUPEE(0xFF, 0x64, 0x64),          ITEM_RUPEE_RED,       {0x0A, 0x12}, SIZE_COUNTER}, //giant wallet
-    {CREATE_SPRITE_RUPEE(0xFF, 0x5A, 0xFF),          ITEM_RUPEE_PURPLE,    {0x0A, 0x12}, SIZE_COUNTER}, //tycoon wallet
-    {CREATE_SPRITE_24(dgGoldSkulltulaIconTex, 103),  ITEM_SKULL_TOKEN,     {0x0A, 0x24}, SIZE_COUNTER},
-    {CREATE_SPRITE_SKULL,                            ITEM_INVALID_8,       {0x00, 0x36}, SIZE_COUNTER}, //deaths
+    {CREATE_SPRITE_24(dgHeartContainerIconTex, 101), ITEM_HEART_CONTAINER, {0x05, 0x00}, SIZE_COUNTER},
+    {CREATE_SPRITE_RUPEE(0xC8, 0xFF, 0x64),          ITEM_RUPEE_GREEN,     {0x05, 0x15}, SIZE_COUNTER}, //child wallet
+    {CREATE_SPRITE_RUPEE(0x82, 0x82, 0xFF),          ITEM_RUPEE_BLUE,      {0x05, 0x15}, SIZE_COUNTER}, //adult wallet
+    {CREATE_SPRITE_RUPEE(0xFF, 0x64, 0x64),          ITEM_RUPEE_RED,       {0x05, 0x15}, SIZE_COUNTER}, //giant wallet
+    {CREATE_SPRITE_RUPEE(0xFF, 0x5A, 0xFF),          ITEM_RUPEE_PURPLE,    {0x05, 0x15}, SIZE_COUNTER}, //tycoon wallet
+    {CREATE_SPRITE_24(dgGoldSkulltulaIconTex, 103),  ITEM_SKULL_TOKEN,     {0x05, 0x2A}, SIZE_COUNTER},
+    {CREATE_SPRITE_SKULL,                            ITEM_INVALID_8,       {0x48, 0x2A}, SIZE_COUNTER}, //deaths
+};
+
+static Sprite counterDigitSprites[10] = {
+    CREATE_SPRITE_COUNTER_DIGIT(0),
+    CREATE_SPRITE_COUNTER_DIGIT(1),
+    CREATE_SPRITE_COUNTER_DIGIT(2),
+    CREATE_SPRITE_COUNTER_DIGIT(3),
+    CREATE_SPRITE_COUNTER_DIGIT(4),
+    CREATE_SPRITE_COUNTER_DIGIT(5),
+    CREATE_SPRITE_COUNTER_DIGIT(6),
+    CREATE_SPRITE_COUNTER_DIGIT(7),
+    CREATE_SPRITE_COUNTER_DIGIT(8),
+    CREATE_SPRITE_COUNTER_DIGIT(9),
 };
 
 u8 ShouldRenderCounter(s16 fileIndex, u8 counter) {
@@ -477,12 +494,13 @@ u8 ShouldRenderCounter(s16 fileIndex, u8 counter) {
     return 1;
 }
 
-u16 GetCounterValue(s16 fileIndex, u8 counter) {
+u16 GetCurrentCounterValue(s16 fileIndex, u8 counter) {
+    //one heart is 16 healthCapacity
     if (counter == ITEM_HEART_CONTAINER) {
-        return Save_GetSaveMetaInfo(fileIndex)->healthCapacity;
+        return Save_GetSaveMetaInfo(fileIndex)->healthCapacity / 16;
     }
 
-    if (counter == ITEM_RUPEE_GREEN) {
+    if (counter == ITEM_RUPEE_GREEN || counter == ITEM_RUPEE_BLUE || counter == ITEM_RUPEE_RED || counter == ITEM_RUPEE_PURPLE) {
         return Save_GetSaveMetaInfo(fileIndex)->rupees;
     }
 
@@ -495,6 +513,91 @@ u16 GetCounterValue(s16 fileIndex, u8 counter) {
     }
 
     return 0;
+}
+
+u16 GetMaxCounterValue(s16 fileIndex, u8 counter) {
+    if (counter == ITEM_HEART_CONTAINER) {
+        return 20;
+    }
+
+    if (counter == ITEM_RUPEE_GREEN) {
+        return 99;
+    }
+
+    if (counter == ITEM_RUPEE_BLUE) {
+        return 200;
+    }
+
+    if (counter == ITEM_RUPEE_RED) {
+        return 500;
+    }
+
+    if (counter == ITEM_RUPEE_PURPLE) {
+        return 999;
+    }
+
+    if (counter == ITEM_SKULL_TOKEN) {
+        return 100;
+    }
+
+    //this is fine because if the value is 0 the number will be grey
+    if (counter == ITEM_INVALID_8) {
+        return 0;
+    }
+
+    return 0;
+}
+
+void DrawCounterValue(FileChooseContext* this, s16 fileIndex, u8 alpha, CounterData* data) {
+    u16 currentValue;
+    u16 maxValue;
+    s16 hundreds;
+    s16 tens;
+
+    OPEN_DISPS(this->state.gfxCtx);
+
+    currentValue = GetCurrentCounterValue(fileIndex, data->item);
+    maxValue = GetMaxCounterValue(fileIndex, data->item);
+
+    for (hundreds = 0; currentValue >= 100; hundreds++) {
+        currentValue -= 100;
+    }
+
+    for (tens = 0; currentValue >= 10; tens++) {
+        currentValue -= 10;
+    }
+
+    gDPPipeSync(POLY_KAL_DISP++);
+
+    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, alpha);
+
+    if (currentValue == 0) {
+        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 130, 130, 130, alpha);
+    } else if (currentValue == maxValue) {
+        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 120, 255, 0, alpha);
+    }
+    
+    if (hundreds != 0) {
+        SpriteLoad(this, &counterDigitSprites[hundreds]);
+        SpriteDraw(this, &counterDigitSprites[hundreds], LEFT_OFFSET + COUNTER_DIGITS_LEFT_OFFSET - 8 + data->pos.left, TOP_OFFSET + COUNTER_DIGITS_TOP_OFFSET + data->pos.top, 8, 8);
+
+        SpriteLoad(this, &counterDigitSprites[tens]);
+        SpriteDraw(this, &counterDigitSprites[tens], LEFT_OFFSET + COUNTER_DIGITS_LEFT_OFFSET + data->pos.left, TOP_OFFSET + COUNTER_DIGITS_TOP_OFFSET + data->pos.top, 8, 8);
+
+        SpriteLoad(this, &counterDigitSprites[currentValue]);
+        SpriteDraw(this, &counterDigitSprites[currentValue], LEFT_OFFSET + COUNTER_DIGITS_LEFT_OFFSET + 8 + data->pos.left, TOP_OFFSET + COUNTER_DIGITS_TOP_OFFSET + data->pos.top, 8, 8);
+    } else if (tens != 0) {
+        SpriteLoad(this, &counterDigitSprites[tens]);
+        SpriteDraw(this, &counterDigitSprites[tens], LEFT_OFFSET + COUNTER_DIGITS_LEFT_OFFSET - 4 + data->pos.left, TOP_OFFSET + COUNTER_DIGITS_TOP_OFFSET + data->pos.top, 8, 8);
+
+        SpriteLoad(this, &counterDigitSprites[currentValue]);
+        SpriteDraw(this, &counterDigitSprites[currentValue], LEFT_OFFSET + COUNTER_DIGITS_LEFT_OFFSET + 4 + data->pos.left, TOP_OFFSET + COUNTER_DIGITS_TOP_OFFSET + data->pos.top, 8, 8);
+    } else {
+        SpriteLoad(this, &counterDigitSprites[currentValue]);
+        SpriteDraw(this, &counterDigitSprites[currentValue], LEFT_OFFSET + COUNTER_DIGITS_LEFT_OFFSET + data->pos.left, TOP_OFFSET + COUNTER_DIGITS_TOP_OFFSET + data->pos.top, 8, 8);
+    }
+
+    CLOSE_DISPS(this->state.gfxCtx);
 }
 
 static void DrawCounters(FileChooseContext* this, s16 fileIndex, u8 alpha) {
@@ -511,7 +614,7 @@ static void DrawCounters(FileChooseContext* this, s16 fileIndex, u8 alpha) {
             SpriteLoad(this, &(data->sprite));
             SpriteDraw(this, &(data->sprite), LEFT_OFFSET + data->pos.left, TOP_OFFSET + data->pos.top, data->size.width, data->size.height);
 
-            //draw count
+            DrawCounterValue(this, fileIndex, alpha, data);
         }
     }
 
