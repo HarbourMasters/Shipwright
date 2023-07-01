@@ -110,7 +110,7 @@ s32 func_808B3AAC(BgSpot15Rrbox* this, PlayState* play) {
         }
 
         if (rotY < 0x2000 && rotY > -0x6000) {
-            return gSaveContext.eventChkInf[1] & 0x10;
+            return Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE);
         }
         return true;
     }

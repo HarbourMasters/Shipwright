@@ -70,7 +70,7 @@ void EnMk_Init(Actor* thisx, PlayState* play) {
     this->swimFlag = 0;
     this->actor.targetMode = 6;
 
-    if (gSaveContext.itemGetInf[1] & 1) {
+    if (Flags_GetItemGetInf(ITEMGETINF_10)) {
         this->flags |= 4;
     }
 }
@@ -216,7 +216,7 @@ void func_80AACFA0(EnMk* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         this->actor.parent = NULL;
         this->actionFunc = func_80AACA40;
-        gSaveContext.itemGetInf[1] |= 1;
+        Flags_SetItemGetInf(ITEMGETINF_10);
     } else {
         // not sure when/how/if this is getting called
         if (!gSaveContext.n64ddFlag) {
@@ -264,7 +264,7 @@ void EnMk_Wait(EnMk* this, PlayState* play) {
                 switch (playerExchangeItem) {
                     case EXCH_ITEM_NONE:
                         if (this->swimFlag >= 8) {
-                            if (gSaveContext.itemGetInf[1] & 1) {
+                            if (Flags_GetItemGetInf(ITEMGETINF_10)) {
                                 player->actor.textId = 0x4075;
                                 this->actionFunc = func_80AACA40;
                             } else {

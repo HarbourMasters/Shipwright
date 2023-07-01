@@ -130,13 +130,13 @@ void EnfHG_Intro(EnfHG* this, PlayState* play) {
             if ((fabsf(player->actor.world.pos.x - (GND_BOSSROOM_CENTER_X + 0.0f)) < 100.0f) &&
                 (fabsf(player->actor.world.pos.z - (GND_BOSSROOM_CENTER_Z + 315.0f)) < 100.0f)) {
                 this->cutsceneState = INTRO_START;
-                if (gSaveContext.eventChkInf[7] & 4) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_PHANTOM_GANON_BATTLE)) {
                     this->timers[0] = 57;
                 }
             }
             break;
         case INTRO_START:
-            if (gSaveContext.eventChkInf[7] & 4) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_PHANTOM_GANON_BATTLE)) {
                 if (this->timers[0] == 55) {
                     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_SHUTTER,
                                        GND_BOSSROOM_CENTER_X + 0.0f, GND_BOSSROOM_CENTER_Y - 97.0f,
@@ -161,7 +161,7 @@ void EnfHG_Intro(EnfHG* this, PlayState* play) {
             this->timers[0] = 60;
             this->actor.world.pos.y = GND_BOSSROOM_CENTER_Y - 7.0f;
             Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x100FF);
-            gSaveContext.eventChkInf[7] |= 4;
+            Flags_SetEventChkInf(EVENTCHKINF_BEGAN_PHANTOM_GANON_BATTLE);
             Flags_SetSwitch(play, 0x23);
         case INTRO_FENCE:
             player->actor.world.pos.x = GND_BOSSROOM_CENTER_X + 0.0f;

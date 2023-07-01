@@ -181,7 +181,7 @@ void BgDodoago_WaitExplosives(BgDodoago* this, PlayState* play) {
             sBgDodoagoFirstExplosiveFlag = true;
             sBgDodoagoTimer = 50;
         }
-    } else if (Flags_GetEventChkInf(0xB0)) {
+    } else if (Flags_GetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN)) {
         Collider_UpdateCylinder(&this->dyna.actor, &this->colliderMain);
         Collider_UpdateCylinder(&this->dyna.actor, &this->colliderLeft);
         Collider_UpdateCylinder(&this->dyna.actor, &this->colliderRight);
@@ -311,7 +311,7 @@ void BgDodoago_Update(Actor* thisx, PlayState* play) {
 void BgDodoago_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
-    if (Flags_GetEventChkInf(0xB0)) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN)) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

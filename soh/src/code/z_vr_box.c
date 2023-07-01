@@ -2,6 +2,7 @@
 #include "vt.h"
 
 #include <stdlib.h>
+#include <assert.h>
 
 #include "z64environment.h"
 #include "assets/textures/backgrounds/vr_ALVR_static.h"
@@ -961,24 +962,24 @@ void Skybox_Init(GameState* state, SkyboxContext* skyboxCtx, s16 skyboxId) {
 
         if (skyboxCtx->unk_140 != 0) {
             skyboxCtx->dListBuf = GAMESTATE_ALLOC_MC(state, 8 * 150 * sizeof(Gfx));
-            ASSERT(skyboxCtx->dListBuf != NULL);
+            assert(skyboxCtx->dListBuf != NULL);
 
             skyboxCtx->roomVtx = GAMESTATE_ALLOC_MC(state, 256 * sizeof(Vtx));
-            ASSERT(skyboxCtx->roomVtx != NULL);
+            assert(skyboxCtx->roomVtx != NULL);
 
             func_800AEFC8(skyboxCtx, skyboxId);
         } else {
             skyboxCtx->dListBuf = GAMESTATE_ALLOC_MC(state, 12 * 150 * sizeof(Gfx));
-            ASSERT(skyboxCtx->dListBuf != NULL);
+            assert(skyboxCtx->dListBuf != NULL);
 
             if (skyboxId == SKYBOX_CUTSCENE_MAP) {
                 skyboxCtx->roomVtx = GAMESTATE_ALLOC_MC(state, 192 * sizeof(Vtx));
-                ASSERT(skyboxCtx->roomVtx != NULL);
+                assert(skyboxCtx->roomVtx != NULL);
 
                 func_800AF178(skyboxCtx, 6);
             } else {
                 skyboxCtx->roomVtx = GAMESTATE_ALLOC_MC(state, 160 * sizeof(Vtx));
-                ASSERT(skyboxCtx->roomVtx != NULL);
+                assert(skyboxCtx->roomVtx != NULL);
 
                 func_800AF178(skyboxCtx, 5);
             }

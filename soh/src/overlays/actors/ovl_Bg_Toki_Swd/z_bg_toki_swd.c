@@ -112,14 +112,14 @@ void BgTokiSwd_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_808BAF40(BgTokiSwd* this, PlayState* play) {
-    if (((gSaveContext.eventChkInf[4] & 0x8000) == 0) && (gSaveContext.sceneSetupIndex < 4) &&
+    if (((Flags_GetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER)) == 0) && (gSaveContext.sceneSetupIndex < 4) &&
         Actor_IsFacingAndNearPlayer(&this->actor, 800.0f, 0x7530) && !Play_InCsMode(play)) {
-        gSaveContext.eventChkInf[4] |= 0x8000;
+        Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
         play->csCtx.segment = D_808BBD90;
         gSaveContext.cutsceneTrigger = 1;
     }
 
-    if (!LINK_IS_ADULT || (gSaveContext.eventChkInf[5] & 0x20 && !gSaveContext.n64ddFlag) || gSaveContext.n64ddFlag) {
+    if (!LINK_IS_ADULT || (Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && !gSaveContext.n64ddFlag) || gSaveContext.n64ddFlag) {
         if (Actor_HasParent(&this->actor, play)) {
             if (!LINK_IS_ADULT) {
                 Item_Give(play, ITEM_SWORD_MASTER);

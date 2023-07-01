@@ -9,6 +9,7 @@
 #include "scenes/overworld/spot06/spot06_scene.h"
 #include "scenes/overworld/spot16/spot16_scene.h"
 #include "vt.h"
+#include <assert.h>
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -162,7 +163,7 @@ void EnOwl_Init(Actor* thisx, PlayState* play) {
             this->actionFunc = EnOwl_WaitHyruleCastle;
             break;
         case OWL_KAKARIKO:
-            if (gSaveContext.eventChkInf[4] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 // has zelda's letter
                 osSyncPrintf("フクロウ退避\n"); // "Owl evacuation"
                 Actor_Kill(&this->actor);
@@ -172,7 +173,7 @@ void EnOwl_Init(Actor* thisx, PlayState* play) {
             this->actionFunc = EnOwl_WaitKakariko;
             break;
         case OWL_HYLIA_GERUDO:
-            if (gSaveContext.eventChkInf[4] & 8) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_OCARINA_OF_TIME)) {
                 // has ocarina of time
                 osSyncPrintf("フクロウ退避\n"); // "Owl evacuation"
                 Actor_Kill(&this->actor);
@@ -184,7 +185,7 @@ void EnOwl_Init(Actor* thisx, PlayState* play) {
             this->actionFunc = EnOwl_WaitLakeHylia;
             break;
         case OWL_ZORA_RIVER:
-            if ((gSaveContext.eventChkInf[3] & 0x200) || !(gSaveContext.eventChkInf[4] & 1)) {
+            if ((Flags_GetEventChkInf(EVENTCHKINF_OPENED_ZORAS_DOMAIN)) || !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 // opened zora's domain or has zelda's letter
                 osSyncPrintf("フクロウ退避\n"); // "Owl evacuation"
                 Actor_Kill(&this->actor);
@@ -394,7 +395,7 @@ void EnOwl_WaitOutsideKokiri(EnOwl* this, PlayState* play) {
 
         this->actionFunc = EnOwl_ConfirmKokiriMessage;
         // spoke to owl by lost woods
-        gSaveContext.eventChkInf[6] |= 0x8000;
+        Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_KAEPORA_BY_LOST_WOODS);
     }
 }
 
@@ -451,7 +452,7 @@ void func_80ACAB88(EnOwl* this, PlayState* play) {
         switch (index) {
             case OWL_REPEAT:
                 // obtained zelda's letter
-                if (gSaveContext.eventChkInf[4] & 1) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                     Message_ContinueTextbox(play, 0x206D);
                 } else {
                     Message_ContinueTextbox(play, 0x206C);
@@ -604,12 +605,12 @@ void func_80ACB148(EnOwl* this, PlayState* play) {
 }
 
 void EnOwl_WaitHyliaShortcut(EnOwl* this, PlayState* play) {
-    u16 textId = (gSaveContext.infTable[25] & 0x20) ? 0x4004 : 0x4003;
+    u16 textId = (Flags_GetInfTable(INFTABLE_SPOKE_TO_KAEPORA_IN_LAKE_HYLIA)) ? 0x4004 : 0x4003;
 
     // Spoke to Owl in Lake Hylia
     EnOwl_LookAtLink(this, play);
     if (func_80ACA558(this, play, textId)) {
-        gSaveContext.infTable[25] |= 0x20;
+        Flags_SetInfTable(INFTABLE_SPOKE_TO_KAEPORA_IN_LAKE_HYLIA);
         Audio_PlayFanfare(NA_BGM_OWL);
         this->actionFunc = func_80ACB148;
     }
@@ -989,7 +990,7 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                     this->actor.draw = NULL;
                     break;
                 default:
-                    ASSERT(0);
+                    assert(0);
                     break;
             }
 

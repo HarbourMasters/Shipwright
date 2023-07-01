@@ -1,5 +1,6 @@
 #include "global.h"
 #include <string.h>
+#include <assert.h>
 
 // (Note: 80 = SCREEN_HEIGHT/3, see VisMono_DrawTexture)
 // This may not have been kept up-to-date with the code, 1+1+1+80*(7+2+2+3)+1+1 makes more sense
@@ -101,7 +102,7 @@ void VisMono_Draw(VisMono* this, Gfx** gfxp) {
             LOG_ADDRESS("mono_dl + (1+3+1+1+80*(7+2+2+3)+1)", monoDL + DLSIZE);
             LOG_ADDRESS("(1+3+1+1+80*(7+2+2+3)+1)", DLSIZE);
         }
-        ASSERT(glistpEnd <= monoDL + DLSIZE);
+        assert(glistpEnd <= monoDL + DLSIZE);
     }
 
     gDPPipeSync(gfx++);
@@ -131,6 +132,6 @@ void VisMono_DrawOld(VisMono* this) {
     if (!this->monoDl) {
         this->monoDl = SYSTEM_ARENA_MALLOC_DEBUG(DLSIZE * sizeof(Gfx));
         glistpEnd = VisMono_DrawTexture(this, this->monoDl);
-        ASSERT(glistpEnd <= this->monoDl + DLSIZE);
+        assert(glistpEnd <= this->monoDl + DLSIZE);
     }
 }

@@ -443,7 +443,7 @@ void func_808B5950(BgSpot16Bombstone* this, PlayState* play) {
         OnePointCutscene_Init(play, 4180, 50, NULL, MAIN_CAM);
 
         Flags_SetSwitch(play, this->switchFlag);
-        gSaveContext.eventChkInf[2] |= 8;
+        Flags_SetEventChkInf(EVENTCHKINF_BOMBED_DODONGOS_CAVERN_ENTRANCE);
 
         func_808B5A78(this);
     } else {

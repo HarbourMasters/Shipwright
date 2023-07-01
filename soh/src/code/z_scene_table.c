@@ -2030,7 +2030,7 @@ void func_8009E0B8(PlayState* play) {
         spA3 = 255 - (u8)play->roomCtx.unk_74[0];
     } else if (gSaveContext.sceneSetupIndex == 6) {
         spA0 = play->roomCtx.unk_74[0] + 500;
-    } else if (((gSaveContext.sceneSetupIndex < 4) || LINK_IS_ADULT) && (gSaveContext.eventChkInf[0] & 0x80)) {
+    } else if (((gSaveContext.sceneSetupIndex < 4) || LINK_IS_ADULT) && (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD))) {
         spA0 = 2150;
     }
 
@@ -2058,7 +2058,7 @@ void func_8009E54C(PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    if ((gSaveContext.sceneSetupIndex > 3) || (LINK_IS_ADULT && !(gSaveContext.eventChkInf[6] & 0x200))) {
+    if ((gSaveContext.sceneSetupIndex > 3) || (LINK_IS_ADULT && !Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER))) {
         play->roomCtx.unk_74[0] = 87;
     }
 
