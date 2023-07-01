@@ -540,9 +540,8 @@ u16 GetMaxCounterValue(s16 fileIndex, u8 counter) {
         return 100;
     }
 
-    //this is fine because if the value is 0 the number will be grey
     if (counter == ITEM_INVALID_8) {
-        return 0;
+        return 999;
     }
 
     return 0;
@@ -556,6 +555,11 @@ void DrawCounterValue(FileChooseContext* this, s16 fileIndex, u8 alpha, CounterD
 
     currentValue = GetCurrentCounterValue(fileIndex, data->item);
     maxValue = GetMaxCounterValue(fileIndex, data->item);
+
+    //to prevent crashes if you use the save editor
+    if (currentValue > 999) {
+        currentValue = 999;
+    }
 
     OPEN_DISPS(this->state.gfxCtx);
     gDPPipeSync(POLY_KAL_DISP++);
