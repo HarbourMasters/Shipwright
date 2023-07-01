@@ -573,15 +573,15 @@ void DrawCounterValue(FileChooseContext* this, s16 fileIndex, u8 alpha, CounterD
     }
 
     OPEN_DISPS(this->state.gfxCtx);
-    gDPPipeSync(POLY_KAL_DISP++);
+    gDPPipeSync(POLY_OPA_DISP++);
     gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
     if (currentValue == 0) {
-        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 130, 130, 130, alpha);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 130, 130, 130, alpha);
     } else if (currentValue == maxValue) {
-        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 120, 255, 0, alpha);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 120, 255, 0, alpha);
     } else {
-        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, alpha);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, alpha);
     }
 
     for (hundreds = 0; currentValue >= 100; hundreds++) {
@@ -612,7 +612,7 @@ void DrawCounterValue(FileChooseContext* this, s16 fileIndex, u8 alpha, CounterD
         SpriteDraw(this, &counterDigitSprites[currentValue], LEFT_OFFSET + COUNTER_DIGITS_LEFT_OFFSET + data->pos.left, TOP_OFFSET + COUNTER_DIGITS_TOP_OFFSET + data->pos.top, 8, 8);
     }
 
-    gDPPipeSync(POLY_KAL_DISP++);
+    gDPPipeSync(POLY_OPA_DISP++);
     CLOSE_DISPS(this->state.gfxCtx);
 }
 
