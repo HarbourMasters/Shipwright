@@ -2080,17 +2080,19 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                             CLOSE_DISPS(play->state.gfxCtx);
                             break;
                         case PLAYER_SHIELD_HYLIAN:
-                            OPEN_DISPS(play->state.gfxCtx);
+                            if (!Player_IsChildWithHylianShield(this)) {
+                                OPEN_DISPS(play->state.gfxCtx);
 
-                            if (LINK_IS_CHILD) {
-                                Matrix_Scale(.80f, .80f, .80f, MTXMODE_APPLY);
+                                if (LINK_IS_CHILD) {
+                                    Matrix_Scale(.80f, .80f, .80f, MTXMODE_APPLY);
+                                }
+
+                                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHylianShieldAndSheathNearDL);
+
+                                CLOSE_DISPS(play->state.gfxCtx);
                             }
-
-                            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHylianShieldAndSheathNearDL);
-
-                            CLOSE_DISPS(play->state.gfxCtx);
                             break;
                         case PLAYER_SHIELD_MIRROR:
                             OPEN_DISPS(play->state.gfxCtx);
@@ -2104,6 +2106,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                             gSPDisplayList(POLY_OPA_DISP++, gLinkAdultMirrorShieldAndSheathNearDL);
 
                             CLOSE_DISPS(play->state.gfxCtx);
+                            break;
                     }
                 }
                 if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN &&
