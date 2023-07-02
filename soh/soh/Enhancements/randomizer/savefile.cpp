@@ -294,6 +294,10 @@ extern "C" void Randomizer_InitSaveFile() {
         Flags_SetInfTable(INFTABLE_SPOKE_TO_DARUNIA_IN_FIRE_TEMPLE); // Darunia in Fire Temple
     }
 
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHILD_WALLET) == RO_GENERIC_OFF) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_WALLET);
+    }
+
     // Give Link's pocket item
     GiveLinksPocketItem();
 

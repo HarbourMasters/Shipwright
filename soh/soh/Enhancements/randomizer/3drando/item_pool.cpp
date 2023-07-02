@@ -692,6 +692,10 @@ void GenerateItemPool() {
     PlaceItemInLocation(HF_OCARINA_OF_TIME_ITEM, PROGRESSIVE_OCARINA, false, true);
   }
 
+  if (ShuffleChildWallet) {
+    AddItemToMainPool(PROGRESSIVE_WALLET);
+  }
+
   if (ShuffleCows) {
     //9 total cow locations
     for (uint8_t i = 0; i < 9; i++) {

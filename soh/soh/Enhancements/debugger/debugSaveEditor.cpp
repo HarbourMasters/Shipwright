@@ -1285,6 +1285,11 @@ void DrawEquipmentTab() {
         const std::string walletName = "Tycoon (999)";
         walletNamesImpl.push_back(walletName);
     }
+    // only display the no wallet option if you're in a save file that would allow it.
+    if (gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_CHILD_WALLET) != RO_GENERIC_OFF) {
+        const std::string walletName = "None";
+        walletNamesImpl.push_back(walletName);
+    }
     // copy it to const value for display in ImGui.
     const std::vector<std::string> walletNames = walletNamesImpl;
     DrawUpgrade("Wallet", UPG_WALLET, walletNames);

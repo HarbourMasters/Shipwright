@@ -62,7 +62,9 @@ bool LocationAccess::CanBuy() const {
 
   //Check if wallet is large enough to buy item
   bool SufficientWallet = true;
-  if (Location(location)->GetPrice() > 500) {
+  if (ProgressiveWallet == 4) {//no wallet
+    SufficientWallet = Location(location)->GetPrice() == 0;
+  } else if (Location(location)->GetPrice() > 500) {
     SufficientWallet = ProgressiveWallet >= 3;
   } else if (Location(location)->GetPrice() > 200) {
     SufficientWallet = ProgressiveWallet >= 2;
