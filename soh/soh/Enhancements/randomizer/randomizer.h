@@ -28,7 +28,7 @@ class Randomizer {
     std::string ganonHintText;
     std::string ganonText;
     std::string dampeText;
-    std::unordered_map<RandomizerSettingKey, u16> randoSettings;
+    std::unordered_map<RandomizerSettingKey, u8> randoSettings;
     void ParseRandomizerSettingsFile(const char* spoilerFileName);
     void ParseHintLocationsFile(const char* spoilerFileName);
     void ParseRequiredTrialsFile(const char* spoilerFileName);

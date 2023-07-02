@@ -3146,7 +3146,6 @@ int32_t StonesRequiredBySettings() {
     if ((Settings::Bridge.Is(RAINBOWBRIDGE_DUNGEONS)) && (Settings::ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON))) {
         stones = std::max<int32_t>({ stones, (int32_t)Settings::BridgeDungeonCount.Value<uint8_t>() - 6 });
     }
-
     if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_STONES)) {
         stones = std::max<int32_t>({ stones, (int32_t)Settings::LACSStoneCount.Value<uint8_t>() });
     }
@@ -3170,7 +3169,6 @@ int32_t MedallionsRequiredBySettings() {
     if ((Settings::Bridge.Is(RAINBOWBRIDGE_DUNGEONS)) && (Settings::ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON))) {
         medallions = std::max<int32_t>({ medallions, (int32_t)Settings::BridgeDungeonCount.Value<uint8_t>() - 3 });
     }
-
     if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_MEDALLIONS)) {
         medallions = std::max<int32_t>({ medallions, (int32_t)Settings::LACSMedallionCount.Value<uint8_t>() });
     }
@@ -3188,7 +3186,6 @@ int32_t TokensRequiredBySettings() {
     if (Settings::Bridge.Is(RAINBOWBRIDGE_TOKENS)) {
         tokens = std::max<int32_t>({ tokens, (int32_t)Settings::BridgeTokenCount.Value<uint8_t>() });
     }
-
     if (Settings::GanonsBossKey.Is(GANONSBOSSKEY_LACS_TOKENS)) {
         tokens = std::max<int32_t>({ tokens, (int32_t)Settings::LACSTokenCount.Value<uint8_t>() });
     }

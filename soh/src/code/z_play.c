@@ -390,46 +390,40 @@ void GivePlayerRandoRewardZeldaLightArrowsGift(PlayState* play, RandomizerCheck 
 
     u8 meetsRequirements = 0;
 
-    if (Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT)) {
-        if (gSaveContext.triforcePiecesCollected >= Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED)) {
-            meetsRequirements = true;
-        }
-    } else {
-        switch (Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY)) {
-            case RO_GANON_BOSS_KEY_LACS_STONES:
-                if ((CheckStoneCount() + CheckLACSRewardCount()) >= Randomizer_GetSettingValue(RSK_LACS_STONE_COUNT)) {
-                    meetsRequirements = true;
-                }
-                break;
-            case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
-                if ((CheckMedallionCount() + CheckLACSRewardCount()) >=
-                    Randomizer_GetSettingValue(RSK_LACS_MEDALLION_COUNT)) {
-                    meetsRequirements = true;
-                }
-                break;
-            case RO_GANON_BOSS_KEY_LACS_REWARDS:
-                if ((CheckMedallionCount() + CheckStoneCount() + CheckLACSRewardCount()) >=
-                    Randomizer_GetSettingValue(RSK_LACS_REWARD_COUNT)) {
-                    meetsRequirements = true;
-                }
-                break;
-            case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
-                if ((CheckDungeonCount() + CheckLACSRewardCount()) >=
-                    Randomizer_GetSettingValue(RSK_LACS_DUNGEON_COUNT)) {
-                    meetsRequirements = true;
-                }
-                break;
-            case RO_GANON_BOSS_KEY_LACS_TOKENS:
-                if (gSaveContext.inventory.gsTokens >= Randomizer_GetSettingValue(RSK_LACS_TOKEN_COUNT)) {
-                    meetsRequirements = true;
-                }
-                break;
-            default:
-                if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
-                    meetsRequirements = true;
-                }
-                break;
-        }
+    switch (Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY)) {
+        case RO_GANON_BOSS_KEY_LACS_STONES:
+            if ((CheckStoneCount() + CheckLACSRewardCount()) >= Randomizer_GetSettingValue(RSK_LACS_STONE_COUNT)) {
+                meetsRequirements = true;
+            }
+            break;
+        case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
+            if ((CheckMedallionCount() + CheckLACSRewardCount()) >=
+                Randomizer_GetSettingValue(RSK_LACS_MEDALLION_COUNT)) {
+                meetsRequirements = true;
+            }
+            break;
+        case RO_GANON_BOSS_KEY_LACS_REWARDS:
+            if ((CheckMedallionCount() + CheckStoneCount() + CheckLACSRewardCount()) >=
+                Randomizer_GetSettingValue(RSK_LACS_REWARD_COUNT)) {
+                meetsRequirements = true;
+            }
+            break;
+        case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
+            if ((CheckDungeonCount() + CheckLACSRewardCount()) >=
+                Randomizer_GetSettingValue(RSK_LACS_DUNGEON_COUNT)) {
+                meetsRequirements = true;
+            }
+            break;
+        case RO_GANON_BOSS_KEY_LACS_TOKENS:
+            if (gSaveContext.inventory.gsTokens >= Randomizer_GetSettingValue(RSK_LACS_TOKEN_COUNT)) {
+                meetsRequirements = true;
+            }
+            break;
+        default:
+            if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
+                meetsRequirements = true;
+            }
+            break;
     }
 
     if (meetsRequirements && LINK_IS_ADULT &&
