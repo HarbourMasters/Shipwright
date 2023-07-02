@@ -275,6 +275,42 @@ static std::vector<RandomizerCheck> GetAccessibleGossipStones(const RandomizerCh
   return accessibleGossipStones;
 }
 
+bool IsReachableWithout(uint32_t locToCheck, uint32_t excludedCheck, bool resetAfter = true){
+  //temporarily remove the hinted location's item, and then perform a
+  //reachability search for this check
+  uint32_t originalItem = ctx->GetItemLocation(excludedCheck)->GetPlaceduint32_t();
+  ctx->GetItemLocation(excludedCheck)->SetPlacedItem(NONE);
+  LogicReset();
+  const std::vector<uint32_t> rechableWithout = GetAccessibleLocations({locToCheck});
+  ctx->GetItemLocation(excludedCheck)->SetPlacedItem(originalItem);
+  if (resetAfter){
+    //if resetAfter is on, reset logic we are done
+    LogicReset();
+  }
+  if (rechableWithout.empty()) {
+    return false;
+  }
+  return true;
+}
+
+bool IsReachableWithout(uint32_t locToCheck, uint32_t excludedCheck, bool resetAfter = true){
+  //temporarily remove the hinted location's item, and then perform a
+  //reachability search for this check
+  uint32_t originalItem = Location(excludedCheck)->GetPlaceduint32_t();
+  Location(excludedCheck)->SetPlacedItem(NONE);
+  LogicReset();
+  const std::vector<uint32_t> rechableWithout = GetAccessibleLocations({locToCheck});
+  Location(excludedCheck)->SetPlacedItem(originalItem);
+  if (resetAfter){
+    //if resetAfter is on, reset logic we are done
+    LogicReset();
+  }
+  if (rechableWithout.empty()) {
+    return false;
+  }
+  return true;
+}
+
 static void AddHint(Text hint, const RandomizerCheck gossipStone, const std::vector<uint8_t>& colors = {}, HintType hintType = HINT_TYPE_ITEM, const RandomizerCheck hintedLocation = RC_UNKNOWN_CHECK) {
   //save hints as dummy items for writing to the spoiler log
   //NewItem(gossipStone, Item{RG_HINT, hint, ITEMTYPE_EVENT, GI_RUPEE_BLUE_LOSE, false, &noVariable, NONE});
@@ -617,6 +653,9 @@ void CreateGanonText() {
           hint.GetText() + "%r" +
           GetHintRegion(ctx->GetItemLocation(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
       lightArrowHintLoc = Rando::StaticData::GetLocation(lightArrowLocation[0])->GetName();
+    if (IsReachableWithout(RH_GANONDORF_HINT,lightArrowLocation[0],true)){
+      ctx->GetItemLocation(lightArrowLocation[0])->SetAsHinted();
+    }
   }
   ganonHintText = ganonHintText + "!";
 
@@ -630,7 +669,9 @@ static Text BuildDungeonRewardText(const RandomizerGet itemKey) {
     RandomizerCheck location = FilterFromPool(ctx->allLocations, [itemKey, ctx](const RandomizerCheck loc) {
         return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == itemKey;
     })[0];
-    ctx->GetItemLocation(location)->SetAsHinted();
+    if (IsReachableWithout(itemKey, location, true) || ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON)){
+      ctx->GetItemLocation(location)->SetAsHinted();
+    }
 
     std::string rewardString = "$" + std::to_string(itemKey - RG_KOKIRI_EMERALD);
 
@@ -846,6 +887,10 @@ void CreateDampesDiaryText() {
   RandomizerCheck location = FilterFromPool(ctx->allLocations, [item, ctx](const RandomizerCheck loc) {
       return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == item;
   })[0];
+  if (IsReachableWithout(RC_DAMPE_HINT,location,true)){
+    ctx->GetItemLocation(location)->SetAsHinted();
+  }
+
   Text area = GetHintRegion(ctx->GetItemLocation(location)->GetParentRegionKey())->GetHint().GetText();
   Text temp1 = Text{
     "Whoever reads this, please enter %r", 
@@ -875,6 +920,9 @@ void CreateGregRupeeHint() {
       return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_GREG_RUPEE;
   })[0];
   Text area = GetHintRegion(ctx->GetItemLocation(location)->GetParentRegionKey())->GetHint().GetText();
+  if (IsReachableWithout(RC_GREG_HINT,location,true)){
+    ctx->GetItemLocation(location)->SetAsHinted();
+  }
 
   Text temp1 = Text{
     "By the way, if you're interested, I saw the shiniest %gGreen Rupee%w somewhere in%r ",
@@ -983,6 +1031,23 @@ void CreateAllHints() {
   uint8_t remainingDungeonWothHints = hintSetting.dungeonsWothLimit;
   uint8_t remainingDungeonBarrenHints = hintSetting.dungeonsBarrenLimit;
 
+  // Apply Special hint exclusions with no requirements
+  if (Settings::Kak10GSHintText){
+      Location(KAK_10_GOLD_SKULLTULA_REWARD)->SetAsHinted();
+  }
+  if (Settings::Kak20GSHintText){
+      Location(KAK_20_GOLD_SKULLTULA_REWARD)->SetAsHinted();
+  }
+  if (Settings::Kak30GSHintText){
+      Location(KAK_30_GOLD_SKULLTULA_REWARD)->SetAsHinted();
+  }
+  if (Settings::Kak40GSHintText){
+      Location(KAK_40_GOLD_SKULLTULA_REWARD)->SetAsHinted();
+  }
+  if (Settings::Kak50GSHintText){
+      Location(KAK_50_GOLD_SKULLTULA_REWARD)->SetAsHinted();
+  }
+
   // Add 'always' location hints
   if (hintSetting.distTable[static_cast<int>(HINT_TYPE_ALWAYS)].copies > 0) {
       // Only filter locations that had a random item placed at them (e.g. don't get cow locations if shuffle cows is
@@ -997,7 +1062,7 @@ void CreateAllHints() {
 
       for (auto& hint : conditionalAlwaysHints) {
           RandomizerCheck loc = hint.first;
-          if (hint.second() && ctx->GetItemLocation(loc)->IsHintable() && !ctx->GetItemLocation(loc)->IsHintedAt()) {
+          if (hint.second() && ctx->GetItemLocation(loc)->IsHintable()) {
               alwaysHintLocations.push_back(loc);
           }
       }

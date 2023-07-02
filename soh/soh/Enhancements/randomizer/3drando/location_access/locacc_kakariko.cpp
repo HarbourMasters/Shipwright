@@ -267,7 +267,10 @@ void AreaTable_Init_Kakariko() {
                   Entrance(RR_KAK_WINDMILL,  {[]{return IsAdult && CanPlay(SongOfTime);}}),
   });
 
-  areaTable[RR_GRAVEYARD_DAMPES_HOUSE] = Area("Graveyard Dampes House", "Graveyard Dampes House", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[RR_GRAVEYARD_DAMPES_HOUSE] = Area("Graveyard Dampes House", "Graveyard Dampes House", RHT_NONE, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LocationAccess(RC_DAMPE_HINT, {[]{return IsAdult;}}),
+                }, {
                   //Exits
                   Entrance(RR_THE_GRAVEYARD, {[]{return true;}}),
   });

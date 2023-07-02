@@ -1349,6 +1349,8 @@ typedef enum {
     RC_ZR_OPEN_GROTTO_GOSSIP_STONE,
     RC_GANONDORF_HINT,
     RC_TRIFORCE_COMPLETED,
+    RC_DAMPE_HINT,
+    RC_GREG_HINT,
     RC_MAX
 } RandomizerCheck;
 

@@ -3203,9 +3203,9 @@ std::array<ConditionalAlwaysHint, 9> conditionalAlwaysHints = {
     std::make_pair(RC_HF_OCARINA_OF_TIME_ITEM, []() { return StonesRequiredBySettings() < 2; }),
     std::make_pair(RC_SHEIK_IN_KAKARIKO, []() { return MedallionsRequiredBySettings() < 5; }),
     std::make_pair(RC_DMT_TRADE_CLAIM_CHECK, []() { return false; }),
-    std::make_pair(RC_KAK_30_GOLD_SKULLTULA_REWARD, []() { return TokensRequiredBySettings() < 30; }),
-    std::make_pair(RC_KAK_40_GOLD_SKULLTULA_REWARD, []() { return TokensRequiredBySettings() < 40; }),
-    std::make_pair(RC_KAK_50_GOLD_SKULLTULA_REWARD, []() { return TokensRequiredBySettings() < 50; })
+    std::make_pair(RC_KAK_30_GOLD_SKULLTULA_REWARD, []() { return TokensRequiredBySettings() < 30 && !Settings::Kak30GSHintText; }),
+    std::make_pair(RC_KAK_40_GOLD_SKULLTULA_REWARD, []() { return TokensRequiredBySettings() < 40 && !Settings::Kak40GSHintText; }),
+    std::make_pair(RC_KAK_50_GOLD_SKULLTULA_REWARD, []() { return TokensRequiredBySettings() < 50 && !Settings::Kak50GSHintText; })
 };
 
 const HintText& Hint(const RandomizerHintTextKey hintKey) {
