@@ -1099,11 +1099,10 @@ int Fill() {
       ctx->CreateItemOverrides();
       CreateEntranceOverrides();
       //Always execute ganon hint generation for the funny line  
-      CreateGanonAndSheikText();
+      CreateGanonText();
       CreateAltarText();
       CreateDampesDiaryText();
       CreateGregRupeeHint();
-      CreateSariaText();
       if (GossipStoneHints.IsNot(HINTS_NO_HINTS)) {
         printf("\x1b[10;10HCreating Hints...");
         CreateAllHints();
