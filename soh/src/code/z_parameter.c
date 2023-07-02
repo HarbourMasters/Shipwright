@@ -6,6 +6,7 @@
 #include "soh_assets.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+
 #include "libultraship/bridge.h"
 #include "soh/Enhancements/gameplaystats.h"
 #include "soh/Enhancements/boss-rush/BossRushTypes.h"
@@ -13,15 +14,13 @@
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
 
-#ifdef _MSC_VER
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
 #include <assert.h>
-#endif
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-
+#include "soh/Enhancements/randomizer/randomizer_grotto.h"
 
 #define DO_ACTION_TEX_WIDTH() 48
 #define DO_ACTION_TEX_HEIGHT() 16

@@ -6,6 +6,7 @@
 
 #include "z_en_elf.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include <assert.h>
 
 #define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
@@ -404,7 +405,7 @@ void EnElf_Init(Actor* thisx, PlayState* play) {
             }
             break;
         default:
-            ASSERT(0);
+            assert(0);
             break;
     }
 
@@ -814,7 +815,7 @@ void func_80A03AB0(EnElf* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
 
     if (this->func_2C8 == NULL) {
-        ASSERT(this->func_2C8 == NULL);
+        assert(this->func_2C8 == NULL);
     }
 
     this->func_2C8(this, play);

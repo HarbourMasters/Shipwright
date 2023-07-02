@@ -10,10 +10,12 @@
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #include <libultraship/libultraship.h>
 
 #include <time.h>
+#include <assert.h>
 
 void* D_8012D1F0 = NULL;
 //UNK_TYPE D_8012D1F4 = 0; // unused
@@ -33,12 +35,17 @@ PlayState* gPlayState;
 
 s16 gEnPartnerId;
 
+void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn);
+
+void enableBetaQuest();
+void disableBetaQuest();
+
 void func_800BC450(PlayState* play) {
     Camera_ChangeDataIdx(GET_ACTIVE_CAM(play), play->unk_1242B - 1);
 }
 
 void func_800BC490(PlayState* play, s16 point) {
-    ASSERT(point == 1 || point == 2);
+    assert(point == 1 || point == 2);
 
     play->unk_1242B = point;
 
