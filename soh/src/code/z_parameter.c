@@ -2572,6 +2572,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
 
         // Teleport to credits when goal is reached.
         if (gSaveContext.triforcePiecesCollected == Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED)) {
+            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] = GAMEPLAYSTAT_TOTAL_TIME;
             GameInteractor_SetTriforceHuntCreditsWarpActive(true);
         }
 
