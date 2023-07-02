@@ -5,10 +5,10 @@
 	<ClearGeometryMode G_CULL_FRONT="1" G_TEXTURE_GEN_LINEAR="1" />
 	<SetOtherMode Cmd="G_SETOTHERMODE_H" Sft="4" Length="20" G_AD_NOISE="1" G_CD_MAGICSQ="1" G_CK_NONE="1" G_TC_FILT="1" G_TF_BILERP="1" G_TL_TILE="1" G_TD_CLAMP="1" G_TP_PERSP="1" G_CYC_2CYCLE="1" G_PM_NPRIMITIVE="1" />
 	<SetOtherMode Cmd="G_SETOTHERMODE_L" Sft="0" Length="32" G_AC_NONE="1" G_ZS_PIXEL="1" G_RM_FOG_SHADE_A="1" G_RM_AA_ZB_OPA_SURF2="1" />
-	<Texture S="3932" T="1966" Level="0" Tile="0" On="1"/>
+	<Texture S="1966" T="1966" Level="0" Tile="0" On="1"/>
 	<SetTextureLUT Mode="G_TT_NONE"/>
 	<TileSync/>
-	<SetTextureImage Path="objects/object_triforce_piece/noise_tex" Format="G_IM_FMT_RGBA" Size="G_IM_SIZ_16b_LOAD_BLOCK" Width="1"/>
+	<SetTextureImage Path="objects/object_triforce_piece_2/noise_tex" Format="G_IM_FMT_RGBA" Size="G_IM_SIZ_16b_LOAD_BLOCK" Width="1"/>
 	<SetTile Format="G_IM_FMT_RGBA" Size="G_IM_SIZ_16b_LOAD_BLOCK" Line="0" TMem="0" Tile="7" Palette="0" Cms0="G_TX_WRAP" Cms1="G_TX_NOMIRROR" Cmt0="G_TX_WRAP" Cmt1="G_TX_NOMIRROR" MaskS="5" ShiftS="0" MaskT="5" ShiftT="0"/>
 	<LoadSync/>
 	<LoadBlock Tile="7" Uls="0" Ult="0" Lrs="1023" Dxt="256"/>

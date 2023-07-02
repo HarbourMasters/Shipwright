@@ -1,7 +1,10 @@
 #include <libultraship/bridge.h>
 #include "draw.h"
 #include "z64.h"
-#include "global.h"
+#include "macros.h"
+#include "functions.h"
+#include "variables.h"
+#include "soh/OTRGlobals.h"
 #include "randomizerTypes.h"
 #include <array>
 #include "objects/object_gi_key/object_gi_key.h"
@@ -165,17 +168,32 @@ extern "C" void Randomizer_DrawDoubleDefense(PlayState* play, GetItemEntry getIt
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+Gfx* Randomizer_GetTriforcePieceDL(uint8_t index) {
+    switch (index) {
+        case 1:
+            return (Gfx*)gTriforcePiece1DL;
+        case 2:
+            return (Gfx*)gTriforcePiece2DL;
+        default:
+            return (Gfx*)gTriforcePiece0DL;
+    }
+}
+
 extern "C" void Randomizer_DrawTriforcePiece(PlayState* play, GetItemEntry getItemEntry) {
     OPEN_DISPS(play->state.gfxCtx);
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+
+    uint16_t current = gSaveContext.triforcePiecesCollected;
 
     Matrix_Scale(0.035f, 0.035f, 0.035f, MTXMODE_APPLY);
 
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gTriforcePieceDL);
+    Gfx* triforcePieceDL = Randomizer_GetTriforcePieceDL(current % 3);
+
+    gSPDisplayList(POLY_XLU_DISP++, triforcePieceDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -219,7 +237,11 @@ extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry get
     // Show piece when not currently completing the triforce. Use the scale to create a delay so interpolation doesn't
     // make the triforce twitch when the size is set to a higher value.
     if (current != required && triforcePieceScale > 0.035f) {
-        gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gTriforcePieceDL);
+        // Get shard DL. Remove one before division to account for triforce piece given in the textbox
+        // to match up the shard from the overworld model.
+        Gfx* triforcePieceDL = Randomizer_GetTriforcePieceDL((current - 1) % 3);
+
+        gSPDisplayList(POLY_XLU_DISP++, triforcePieceDL);
     } else if (current == required && triforcePieceScale > 0.00008f) {
         gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gTriforcePieceCompletedDL);
     }

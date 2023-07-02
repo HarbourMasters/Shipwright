@@ -44,8 +44,14 @@ static const ALIGN_ASSET(2) char gTitleRandomizerSubtitleTex[] = dgTitleRandomiz
 #define dgTitleBossRushSubtitleTex "__OTR__objects/object_mag/gTitleBossRushSubtitleTex"
 static const ALIGN_ASSET(2) char gTitleBossRushSubtitleTex[] = dgTitleBossRushSubtitleTex;
 
-#define dgTriforcePieceDL "__OTR__objects/object_triforce_piece/gTriforcePieceDL"
-static const ALIGN_ASSET(2) char gTriforcePieceDL[] = dgTriforcePieceDL;
+#define dgTriforcePiece0DL "__OTR__objects/object_triforce_piece_0/gTriforcePiece0DL"
+static const ALIGN_ASSET(2) char gTriforcePiece0DL[] = dgTriforcePiece0DL;
+
+#define dgTriforcePiece1DL "__OTR__objects/object_triforce_piece_1/gTriforcePiece1DL"
+static const ALIGN_ASSET(2) char gTriforcePiece1DL[] = dgTriforcePiece1DL;
+
+#define dgTriforcePiece2DL "__OTR__objects/object_triforce_piece_2/gTriforcePiece2DL"
+static const ALIGN_ASSET(2) char gTriforcePiece2DL[] = dgTriforcePiece2DL;
 
 #define dgTriforcePieceCompletedDL "__OTR__objects/object_triforce_completed/gTriforcePieceCompletedDL"
 static const ALIGN_ASSET(2) char gTriforcePieceCompletedDL[] = dgTriforcePieceCompletedDL;
