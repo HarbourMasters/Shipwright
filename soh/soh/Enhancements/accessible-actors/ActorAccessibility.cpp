@@ -1,9 +1,15 @@
 #include "ActorAccessibility.h"
+#include "AccessibleAudioEngine.h"
+#include "libultraship/libultraship.h"
+#include "soh/Enhancements/audio/AudioDecoder.h"
+#include "soh/resource/type/AudioSample.h"
+
 #include <map>
 #include <random>
 #include <vector>
 #include <functions.h>
 #include <macros.h>
+#include "ResourceType.h"
 const int MAX_DB_REDUCTION = 20; // This is the amount in DB that a sound will be reduced by when it is at the maximum distance from the player.
 typedef struct {
     union {
@@ -20,41 +26,57 @@ typedef std::map<Actor*, uint64_t> TrackedActors_t;//Maps real actors to interna
 typedef std::map<uint64_t, AccessibleActor> AccessibleActorList_t;//Maps internal IDs to wrapped actor objects. These actors can be real or virtual.
 typedef std::vector<AccessibleActor> VAList_t;//Denotes a list of virtual actors specific to a single room.
 typedef std::map<s32, VAList_t> VAZones_t;//Maps room/ scene indices to their corresponding virtual actor collections.
-
-SupportedActors_t supportedActors;
-TrackedActors_t trackedActors;
-AccessibleActorList_t accessibleActorList;
+class ActorAccessibility {
+  public:
+      bool isOn = false;
+    uint64_t nextActorID;
+    SupportedActors_t supportedActors;
+    TrackedActors_t trackedActors;
+    AccessibleActorList_t accessibleActorList;
     VAZones_t vaZones;
+    AccessibleAudioEngine* audioEngine;
+};
+static ActorAccessibility* aa;
 
 uint64_t ActorAccessibility_GetNextID() {
-    static uint64_t NextActorID = 0;
-    uint64_t result = NextActorID;
-    NextActorID++;
+    uint64_t result = aa->nextActorID;
+    aa->nextActorID++;
     return result;
 }
-void ActorAccessibility_InitPolicy(ActorAccessibilityPolicy& policy, const char* englishName, ActorAccessibilityCallback callback, s16 sfx) {
-    policy.callback = callback;
-    policy.distance = 500;
-    policy.englishName = englishName;
-    policy.n = 20;
-    policy.pitch = 1.5;
-    policy.runsAlways = false;
-    policy.sound = sfx;
-    policy.volume = 1.0;
-    policy.initUserData = NULL;
-    policy.cleanupUserData = NULL;
-    policy.param = NULL;
+void ActorAccessibility_Init() {
+    aa = new ActorAccessibility();
+    ActorAccessibility_InitAudio();
+    ActorAccessibility_InitActors();
+    //ActorAccessibility_PlayExternalSound(NULL, "Witch Cackles 2");
+
+}
+void ActorAccessibility_Shutdown() {
+    ActorAccessibility_ShutdownAudio();
+    delete aa;
+}
+    void ActorAccessibility_InitPolicy(ActorAccessibilityPolicy * policy, const char* englishName,
+                                       ActorAccessibilityCallback callback, s16 sfx) {
+    policy->callback = callback;
+    policy->distance = 500;
+    policy->englishName = englishName;
+    policy->n = 20;
+    policy->pitch = 1.5;
+    policy->runsAlways = false;
+    policy->sound = sfx;
+    policy->volume = 1.0;
+    policy->initUserData = NULL;
+    policy->cleanupUserData = NULL;
 
 }
 
     void ActorAccessibility_AddSupportedActor(s16 type, ActorAccessibilityPolicy policy) {
-    supportedActors[type] = policy;
+    aa->supportedActors[type] = policy;
 
 }
 
 ActorAccessibilityPolicy* ActorAccessibility_GetPolicyForActor(s16 type) {
-    SupportedActors_t::iterator i = supportedActors.find(type);
-     if (i == supportedActors.end())
+    SupportedActors_t::iterator i = aa->supportedActors.find(type);
+     if (i == aa->supportedActors.end())
          return NULL;
      return &(i->second);
 
@@ -78,17 +100,14 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         //Stagger the start times so that all of the sounds don't play at exactly the same time.
         accessibleActor.frameCount = ActorAccessibility_GetRandomStartingFrameCount(0, policy->n);
         accessibleActor.basePitch = policy->pitch;
-
-        accessibleActor.currentPitch = policy->pitch;
-        accessibleActor.baseVolume = policy->volume;
-        accessibleActor.currentVolume = policy->volume;
-
-        accessibleActor.currentVolume = 1.0;
-        accessibleActor.currentReverb = 0;
         accessibleActor.policy = *policy;
-        trackedActors[actor] = accessibleActor.instanceID;
-        accessibleActorList[accessibleActor.instanceID] = accessibleActor;
-        AccessibleActor& savedActor = accessibleActorList[accessibleActor.instanceID];
+        accessibleActor.currentPitch = accessibleActor.policy.pitch;
+        accessibleActor.baseVolume = accessibleActor.policy.volume;
+        accessibleActor.currentVolume = accessibleActor.policy.volume;
+        accessibleActor.currentReverb = 0;
+        aa->trackedActors[actor] = accessibleActor.instanceID;
+        aa->accessibleActorList[accessibleActor.instanceID] = accessibleActor;
+        AccessibleActor& savedActor = aa->accessibleActorList[accessibleActor.instanceID];
         if (policy->initUserData && !policy->initUserData(&savedActor)) {
             ActorAccessibility_RemoveTrackedActor(actor);
 
@@ -97,17 +116,17 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
 
     }
     void ActorAccessibility_RemoveTrackedActor(Actor* actor) {
-        TrackedActors_t::iterator i = trackedActors.find(actor);
-        if (i == trackedActors.end())
+        TrackedActors_t::iterator i = aa->trackedActors.find(actor);
+        if (i == aa->trackedActors.end())
             return;
         uint64_t id = i->second;
-        trackedActors.erase(i);
-        AccessibleActorList_t::iterator i2 = accessibleActorList.find(id);
-        if (i2 == accessibleActorList.end())
+        aa->trackedActors.erase(i);
+        AccessibleActorList_t::iterator i2 = aa->accessibleActorList.find(id);
+        if (i2 == aa->accessibleActorList.end())
             return;
         if (i2->second.policy.cleanupUserData)
             i2->second.policy.cleanupUserData(&i2->second);
-        accessibleActorList.erase(i2);
+        aa->accessibleActorList.erase(i2);
 
     }
 
@@ -181,7 +200,7 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
             return;
 
         //Real actors.
-        for (AccessibleActorList_t::iterator i = accessibleActorList.begin(); i != accessibleActorList.end(); i++)
+        for (AccessibleActorList_t::iterator i = aa->accessibleActorList.begin(); i != aa->accessibleActorList.end(); i++)
             ActorAccessibility_RunAccessibilityForActor(play, &i->second);
 //Virtual actors in the "everywhere" group.
         VAList_t* list = (VAList_t*)ActorAccessibility_GetVirtualActorList(EVERYWHERE, 0);
@@ -192,8 +211,8 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         list = (VAList_t*)ActorAccessibility_GetVirtualActorList(play->sceneNum, play->roomCtx.curRoom.num);
         for (VAList_t::iterator i = list->begin(); i != list->end(); i++)
             ActorAccessibility_RunAccessibilityForActor(play, &(*i));
-
-
+//Processes external audio engine.
+        ActorAccessibility_PrepareNextAudioFrame();
     }
 //Virtual actor config.
     VirtualActorList* ActorAccessibility_GetVirtualActorList(s16 sceneNum, s8 roomNum)
@@ -204,11 +223,11 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         if (sceneNum == EVERYWHERE)
             sr.values.sceneIndex = EVERYWHERE;
 
-        VAList_t* l = &vaZones[sr.raw];
+        VAList_t* l = &aa->vaZones[sr.raw];
         return (VirtualActorList*)l;
 
     }
-    AccessibleActor* ActorAccessibility_AddVirtualActor(VirtualActorList* list, VIRTUAL_ACTOR_TABLE type, PosRot where, s16 var)
+    AccessibleActor* ActorAccessibility_AddVirtualActor(VirtualActorList* list, VIRTUAL_ACTOR_TABLE type, PosRot where)
     {
         ActorAccessibilityPolicy* policy = ActorAccessibility_GetPolicyForActor(type);
         if (policy == NULL)
@@ -227,7 +246,6 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         actor.isDrawn = 1;
         actor.play = NULL;
         actor.world = where;
-        actor.variety = var;
         actor.policy = *policy;
         VAList_t* l = (VAList_t*)list;
         l->push_back(actor);
@@ -239,5 +257,69 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
             return NULL; // Probably a malloc error preventing user data initialization.
         }
         return savedActor;
+
+    }
+//External audio engine stuff.
+    bool ActorAccessibility_InitAudio() {
+        try {
+            aa->audioEngine = new AccessibleAudioEngine();
+        } catch (...) {
+            aa->audioEngine = NULL;
+            return false;
+        }
+        return true;
+    }
+    void ActorAccessibility_ShutdownAudio() {
+        delete aa->audioEngine;
+    }
+    void ActorAccessibility_MixAccessibleAudioWithGameAudio(int16_t* ogBuffer, uint32_t nFrames) {
+        aa->audioEngine->mix(ogBuffer, nFrames);
+
+    }
+    void ActorAccessibility_PlayExternalSound(void* handle, const char* path) {
+        aa->audioEngine->playSound((uint64_t)handle, path);
+
+    }
+    void ActorAccessibility_PrepareNextAudioFrame() {
+        aa->audioEngine->prepare();
+
+    }
+    void ActorAccessibility_DecodeAndCacheSamples() {
+        auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResource("audio/samples/Witch Cackles 2");
+        LUS::AudioSample* sample = reinterpret_cast<LUS::AudioSample*>(res.get());
+        AudioDecoder decoder;
+        decoder.setSample(sample);
+
+
+        auto files = LUS::Context::GetInstance()->GetResourceManager()->GetArchive()->ListFiles("audio/samples/*");
+        int samplesFound = 0;
+        for (int i = 0; i < files->size(); i++) {
+            std::string& path = (*files)[i];
+            auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResource(path);
+            if (res == nullptr)
+                continue;
+            auto type = res->GetInitData()->Type;
+            if (type != LUS::ResourceType::SOH_AudioSample)
+                continue;
+            samplesFound++;
+
+            LUS::AudioSample* sample = reinterpret_cast<LUS::AudioSample*>(res.get());
+                //Skip a few samples which appear to be undecodable due to missing information.
+            if (sample->book.book == NULL)
+                continue;
+            if (path == "audio/samples/Bird Chirp 1")
+                continue;//Corrupted file.
+            AudioDecoder decoder;
+            int16_t* wav = NULL;
+            size_t wavSize = decoder.decodeToWav(sample, &wav);
+//Who cares about the path: let's keep only the file names for ease of use.
+            std::string fileName = path.substr(path.find_last_of('/') + 1);
+            aa->audioEngine->cacheDecodedSample(fileName, wav, wavSize);
+            std::string newpath = "c:\\users\\caturria\\oot samples\\" + fileName + ".wav";
+            FILE* f = fopen(newpath.c_str(), "wb");
+            fwrite(wav, 1, wavSize, f);
+            fclose(f);
+
+        }
 
     }

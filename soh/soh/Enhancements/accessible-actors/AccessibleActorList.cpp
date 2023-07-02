@@ -139,7 +139,7 @@ void accessible_maruta(AccessibleActor* actor) {
 }
 
 void accessible_area_change(AccessibleActor* actor) {
-    if (actor->variety == AREA_KORIRI) {
+    if (actor->variety == AREA_KOKIRI) {
         ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_SARIA_MELODY);
     } else if (actor->variety == AREA_HYRULE_FIELD) {
         ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_HORSE_RUN_LEVEL);
@@ -177,14 +177,14 @@ void accessible_goma(AccessibleActor* actor) {
 }
 
 
-void ActorAccessibility_Init() {
+void ActorAccessibility_InitActors() {
     const int Npc_Frames = 35;
     ActorAccessibilityPolicy
         policy; 
-    ActorAccessibility_InitPolicy(policy, "Rock", accessible_en_ishi);
+    ActorAccessibility_InitPolicy(&policy, "Rock", accessible_en_ishi, 0);
     ActorAccessibility_AddSupportedActor(ACTOR_EN_ISHI, policy);
 
-    ActorAccessibility_InitPolicy(policy, "Kokiri Child", accessible_en_NPC_Gen);
+    ActorAccessibility_InitPolicy(&policy, "Kokiri Child", accessible_en_NPC_Gen, 0);
     policy.n = Npc_Frames;
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_KO, policy);
@@ -198,11 +198,11 @@ void ActorAccessibility_Init() {
     policy.englishName = "Gossip Stone";
     policy.pitch = 0.75;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_GS, policy);
-    ActorAccessibility_InitPolicy(policy, "Bush", NULL, NA_SE_PL_PULL_UP_PLANT);
+    ActorAccessibility_InitPolicy(&policy, "Bush", NULL, NA_SE_PL_PULL_UP_PLANT);
     ActorAccessibility_AddSupportedActor(ACTOR_EN_KUSA, policy);
-    ActorAccessibility_InitPolicy(policy, "Chest", accessible_en_chest);
+    ActorAccessibility_InitPolicy(&policy, "Chest", accessible_en_chest, 0);
     ActorAccessibility_AddSupportedActor(ACTOR_EN_BOX, policy);
-    ActorAccessibility_InitPolicy(policy, "Sign", accessible_en_Sign);
+    ActorAccessibility_InitPolicy(&policy, "Sign", accessible_en_Sign, 0);
     policy.n = 40;
 policy.pitch = 1.6;
 ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
@@ -211,102 +211,97 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     // will probably just get replaced with ghost actors anyways
     // ActorAccessibility_AddSupporte dActor(ACTOR_EN_HOLL, "Room Changing Plane", NULL, 30, 500, 1.0, 1.0,
     //                                      NA_SE_EV_STONEDOOR_STOP /*NOT SURE YET*/);
-    ActorAccessibility_InitPolicy(policy, "Bean patch", NULL, NA_SE_EN_MUSI_SINK);
+    ActorAccessibility_InitPolicy(&policy, "Bean patch", NULL, NA_SE_EN_MUSI_SINK);
     policy.n = 60;
     policy.distance = 2400;
     policy.pitch = 1.3;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_BEAN, policy);
-    ActorAccessibility_InitPolicy(policy, "Collectible", accessible_en_pickups);
+    ActorAccessibility_InitPolicy(&policy, "Collectible", accessible_en_pickups, 0);
     policy.n = 40;
     policy.pitch = 1.4;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_ITEM00, policy);
-    ActorAccessibility_InitPolicy(policy, "Gerudo Guard", accessible_en_gerudo);
+    ActorAccessibility_InitPolicy(&policy, "Gerudo Guard", accessible_en_gerudo, 0);
     policy.n = Npc_Frames;
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_GE1, policy);
-    ActorAccessibility_InitPolicy(policy, "Brown Bombable Rock", accessible_en_ishi);
+    ActorAccessibility_InitPolicy(&policy, "Brown Bombable Rock", accessible_en_ishi, 0);
     policy.n = 30;
     policy.pitch = 0.7;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_BOMBIWA, policy); // Improve?
-    ActorAccessibility_InitPolicy(policy, "Grotto Door", accessible_grotto);
+    ActorAccessibility_InitPolicy(&policy, "Grotto Door", accessible_grotto, 0);
     policy.n = 30;
     policy.pitch = 1.0;
     ActorAccessibility_AddSupportedActor(ACTOR_DOOR_ANA, policy);
-    ActorAccessibility_InitPolicy(policy, "Web", NULL, NA_SE_EV_WEB_BROKEN);
+    ActorAccessibility_InitPolicy(&policy, "Web", NULL, NA_SE_EV_WEB_BROKEN);
     policy.n = 40;
     policy.distance = 5000;
     policy.pitch = 1.2;
     ActorAccessibility_AddSupportedActor(ACTOR_BG_YDAN_SP, policy);
                                          
-    ActorAccessibility_InitPolicy(policy, "Shutter Door", accessible_door);
+    ActorAccessibility_InitPolicy(&policy, "Shutter Door", accessible_door, 0);
     policy.n = 30;
         policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_DOOR_SHUTTER, policy);
-        ActorAccessibility_InitPolicy(policy, "Switch", accessible_switch);
+        ActorAccessibility_InitPolicy(&policy, "Switch", accessible_switch, 0);
     policy.n = 30;
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SWITCH, policy);
-    ActorAccessibility_InitPolicy(policy, "Pushable Block", accessible_test);
+    ActorAccessibility_InitPolicy(&policy, "Pushable Block", accessible_test, 0);
     policy.n = 30;
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_OSHIHIKI, policy);
-    ActorAccessibility_InitPolicy(policy, "Torch", accessible_torches);
+    ActorAccessibility_InitPolicy(&policy, "Torch", accessible_torches, 0);
     policy.n = 50;
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SYOKUDAI, policy);
-    ActorAccessibility_InitPolicy(policy, "Deku Tree Moving Platform", accessible_hasi);
+    ActorAccessibility_InitPolicy(&policy, "Deku Tree Moving Platform", accessible_hasi, 0);
     policy.volume = 1.3;
     policy.distance = 2000;
     ActorAccessibility_AddSupportedActor(ACTOR_BG_YDAN_HASI, policy);
-    ActorAccessibility_InitPolicy(policy, "Pot", NULL, NA_SE_EV_POT_BROKEN);
+    ActorAccessibility_InitPolicy(&policy, "Pot", NULL, NA_SE_EV_POT_BROKEN);
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_TSUBO, policy);
-    ActorAccessibility_InitPolicy(policy, "Deku Tree Entrance", NULL, NA_SE_EV_FANTOM_WARP_L);
+    ActorAccessibility_InitPolicy(&policy, "Deku Tree Entrance", NULL, NA_SE_EV_FANTOM_WARP_L);
     policy.distance = 5000;
     ActorAccessibility_AddSupportedActor(ACTOR_BG_TREEMOUTH, policy);
-    ActorAccessibility_InitPolicy(policy, "Platform collapsable", NULL, NA_SE_EV_BLOCK_SHAKE);
+    ActorAccessibility_InitPolicy(&policy, "Platform collapsable", NULL, NA_SE_EV_BLOCK_SHAKE);
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_LIFT, policy);
-    ActorAccessibility_InitPolicy(policy, "Ladder in Slingshot Room", accessible_maruta);
+    ActorAccessibility_InitPolicy(&policy, "Ladder in Slingshot Room", accessible_maruta, 0);
     ActorAccessibility_AddSupportedActor(ACTOR_BG_YDAN_MARUTA, policy);
-    ActorAccessibility_InitPolicy(policy, "bombable wall", NULL, NA_SE_EN_OCTAROCK_ROCK);
+    ActorAccessibility_InitPolicy(&policy, "bombable wall", NULL, NA_SE_EN_OCTAROCK_ROCK);
     ActorAccessibility_AddSupportedActor(ACTOR_BG_BREAKWALL, policy);
-    ActorAccessibility_InitPolicy(policy, "231 dekus", accessible_231_dekus);
+    ActorAccessibility_InitPolicy(&policy, "231 dekus", accessible_231_dekus, 0);
     policy.distance = 2000;
     policy.n = 50;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_HINTNUTS, policy);
-    ActorAccessibility_InitPolicy(policy, "uninteractable rocks in kokiri forest", accessible_hana);
+    ActorAccessibility_InitPolicy(&policy, "uninteractable rocks in kokiri forest", accessible_hana, 0);
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_HANA, policy);
-    ActorAccessibility_InitPolicy(policy, "gold skulltula token", accessible_en_pickups);
+    ActorAccessibility_InitPolicy(&policy, "gold skulltula token", accessible_en_pickups, 0);
     ActorAccessibility_AddSupportedActor(ACTOR_EN_SI, policy);
-    ActorAccessibility_InitPolicy(policy, "goma larva egg", accessible_larva);
+    ActorAccessibility_InitPolicy(&policy, "goma larva egg", accessible_larva, 0);
     policy.distance = 1000;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_GOMA, policy);
-    ActorAccessibility_InitPolicy(policy, "heart canister", accessible_en_pickups);
+    ActorAccessibility_InitPolicy(&policy, "heart canister", accessible_en_pickups, 0);
     ActorAccessibility_AddSupportedActor(ACTOR_ITEM_B_HEART, policy);
-    ActorAccessibility_InitPolicy(policy, "Goma", accessible_goma);
+    ActorAccessibility_InitPolicy(&policy, "Goma", accessible_goma, 0);
     policy.distance = 5000;
     ActorAccessibility_AddSupportedActor(ACTOR_BOSS_GOMA, policy);
-    //Virtual actor demo.
-//First add support for an actor as you normally would.
-    ActorAccessibility_InitPolicy(policy, "Proof of concept actor", accessible_va_prototype);
-    policy.pitch = 0.5;
-    ActorAccessibility_AddSupportedActor(VA_PROTOTYPE, policy);
-    ActorAccessibility_InitPolicy(policy, "crawlspace", NULL, NA_SE_EN_MUSI_SINK);
+    ActorAccessibility_InitPolicy(&policy, "crawlspace", NULL, NA_SE_EN_MUSI_SINK);
     policy.volume = 1.5;
     policy.distance = 3000;
     ActorAccessibility_AddSupportedActor(VA_CRAWLSPACE, policy);
-    ActorAccessibility_InitPolicy(policy, "Ladder/climable", NULL, NA_SE_PL_LAND_LADDER);
+    ActorAccessibility_InitPolicy(&policy, "Ladder/climable", NULL, NA_SE_PL_LAND_LADDER);
     policy.volume = 1.5;
     policy.pitch = 1.3;
     policy.distance = 5000;
     ActorAccessibility_AddSupportedActor(VA_CLIMB, policy);
-    ActorAccessibility_InitPolicy(policy, "Door", NULL, NA_SE_OC_DOOR_OPEN);
+    ActorAccessibility_InitPolicy(&policy, "Door", NULL, NA_SE_OC_DOOR_OPEN);
     policy.n = 30;
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(VA_DOOR, policy);
-    ActorAccessibility_InitPolicy(policy, "Area Change", accessible_area_change);
+    ActorAccessibility_InitPolicy(&policy, "Area Change", accessible_area_change, 0);
     policy.distance = 5000;
     ActorAccessibility_AddSupportedActor(VA_AREA_CHANGE, policy);
-    ActorAccessibility_InitPolicy(policy, "marker", NULL,
+    ActorAccessibility_InitPolicy(&policy, "marker", NULL,
                                   NA_SE_EV_DIAMOND_SWITCH); 
     policy.pitch = 1.7;
     ActorAccessibility_AddSupportedActor(VA_MARKER, policy);
@@ -314,11 +309,9 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
                                                                 // location (scene
                                                        // and room
                                            // number).
-    VirtualActorList* list = ActorAccessibility_GetVirtualActorList(3, 17);//Forest temple basement.
-//Now place the actor.
-    ActorAccessibility_AddVirtualActor(list, VA_PROTOTYPE, { { 299.16, -779, -1807.22 }, { 0, 14702, 0 } });
+                                                VirtualActorList* list = ActorAccessibility_GetVirtualActorList(85, 0); // Kokiri Forest
 
-    list = ActorAccessibility_GetVirtualActorList(85, 0); // Kokiri Forest
+//Now place the actor.
     ActorAccessibility_AddVirtualActor(list, VA_CRAWLSPACE, { { -784.0, 120.0, 1046.00 }, { 0, 14702, 0 } });
     ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -547.0, 60.0, -1036.00 }, { 0, 14702, 0 } });
     ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -29.0, -80.0, 983.00 }, { 0, 14702, 0 } });
@@ -328,12 +321,12 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 515.0, 0.0, 647.00 }, { 0, 14702, 0 } });
     ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 1046.0, 0.0, 549.00 }, { 0, 14702, 0 } });
     ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 848.0, 0.0, -323.00 }, { 0, 14702, 0 } });
-
-    ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE,{ { -317.0, 373.2, -1542.00 }, {0, 14702, 0 }}, AREA_KORIRI);
+    
+    //ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE,{ { -317.0, 373.2, -1542.00 }, {0, 14702, 0 }}, AREA_KORIRI);
  
-    ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE, { { -1380.0, -67.0, -288.00 }, { 0, 14702, 0 } }, AREA_HYRULE_FIELD);
+    //ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE, { { -1380.0, -67.0, -288.00 }, { 0, 14702, 0 } }, AREA_HYRULE_FIELD);
 
-    list = ActorAccessibility_GetVirtualActorList(85, 2); // Kokiri Forest Room with boulder and korkiri sword
+    list = ActorAccessibility_GetVirtualActorList(85, 2); // Kokiri Forest Room with boulder and kokiri sword
     ActorAccessibility_AddVirtualActor(list, VA_CRAWLSPACE, { { -788.0, 120.0, 1392.00 }, { 0, 14702, 0 } });
 
     list = ActorAccessibility_GetVirtualActorList(38, 0); //know-it-all house
@@ -358,7 +351,7 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -226.7, 0, 197.0 } });
     ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { 118.6, 0, -286.6 } });
 
-    ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE, { {0, 0, 640} }, AREA_KORIRI);
+    //ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE, { {0, 0, 640} }, AREA_KORIRI);
     
     ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { 287.4, 368.0, 347.0 } });
     ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { 419.4, 368.0, 173.6 } });

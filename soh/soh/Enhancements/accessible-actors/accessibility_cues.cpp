@@ -392,7 +392,7 @@ else {
         }
 
         // The virtual cue actors travel in lines relative to Link's angle.
-        rot = ActorAccessibility_ComputeRelativeAngle(player->actor.world.rot, relRot);
+        rot = ActorAccessibility_ComputeRelativeAngle(&player->actor.world.rot, &relRot);
         Vec3f velocity;
 
         velocity.x = Math_SinS(rot.y);
@@ -479,11 +479,11 @@ void ActorAccessibility_CleanupTerrainCueState(AccessibleActor* actor) {
 
 }
 //Computes a relative angle based on Link's (or some other actor's) current angle.
-Vec3s ActorAccessibility_ComputeRelativeAngle(Vec3s& origin, Vec3s& offset) {
-    Vec3s rot = origin;
-    rot.x += offset.x;
-    rot.y += offset.y;
-    rot.z += offset.z;
+Vec3s ActorAccessibility_ComputeRelativeAngle(Vec3s* origin, Vec3s* offset) {
+    Vec3s rot = *origin;
+    rot.x += offset->x;
+    rot.y += offset->y;
+    rot.z += offset->z;
     return rot;
 
 }
@@ -617,7 +617,7 @@ Vec3s rot = computeRelativeAngle(player->actor.world.rot, actor->world.rot);
 void ActorAccessibility_InitCues() {
 
 ActorAccessibilityPolicy policy;
-    ActorAccessibility_InitPolicy(policy, "Terrain cue helper", accessible_va_terrain_cue);
+    ActorAccessibility_InitPolicy(&policy, "Terrain cue helper", accessible_va_terrain_cue, 0);
         policy.n = 1;
         policy.runsAlways = true;
         policy.distance = 500;
