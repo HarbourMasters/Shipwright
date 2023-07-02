@@ -511,7 +511,7 @@ namespace Logic {
     GoldenGauntlets = ProgressiveStrength   >= 3;
     SilverScale     = ProgressiveScale      >= 1;
     GoldScale       = ProgressiveScale      >= 2;
-    AdultsWallet    = ProgressiveWallet     >= 1 && ProgressiveWallet != 4;
+    AdultsWallet    = ProgressiveWallet     >= 2;
     MasterSword     = MasterSword   || IsAdult;
     BiggoronSword   = BiggoronSword || ProgressiveGiantKnife >= 2;
 
@@ -845,7 +845,7 @@ namespace Logic {
      ProgressiveScale      = 0;
      ProgressiveHookshot   = 0;
      ProgressiveBow        = 0;
-     ProgressiveWallet     = ShuffleChildWallet.Is(true) ? 4 : 0;
+     ProgressiveWallet     = ShuffleChildWallet.Is(true) ? 0 : 1;
      ProgressiveStrength   = 0;
      ProgressiveOcarina    = 0;
      ProgressiveGiantKnife = 0;
