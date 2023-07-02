@@ -665,10 +665,10 @@ void GenerateItemPool() {
   if (TriforceHunt.Is(TRIFORCE_HUNT_ON)) {
     //IceTrapModels.push_back(GI_TRIFORCE_PIECE);
     AddItemToMainPool(TRIFORCE_PIECE, Settings::TriforceHuntTotal.Value<uint8_t>());
-    PlaceItemInLocation(TRIFORCE_COMPLETED, TRIFORCE);
+    PlaceItemInLocation(TRIFORCE_COMPLETED, TRIFORCE); // Win condition
     PlaceItemInLocation(GANON, GetJunkItem(), false, true);
   } else {
-    PlaceItemInLocation(GANON, TRIFORCE); // The Triforce is only used to make sure Ganon is accessible
+    PlaceItemInLocation(GANON, TRIFORCE); // Win condition
   }
 
   //Fixed item locations
