@@ -43,6 +43,7 @@ void ActorAccessibility_InitPolicy(ActorAccessibilityPolicy& policy, const char*
     policy.volume = 1.0;
     policy.initUserData = NULL;
     policy.cleanupUserData = NULL;
+    policy.param = NULL;
 
 }
 
@@ -207,7 +208,7 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         return (VirtualActorList*)l;
 
     }
-    AccessibleActor* ActorAccessibility_AddVirtualActor(VirtualActorList* list, VIRTUAL_ACTOR_TABLE type, PosRot where)
+    AccessibleActor* ActorAccessibility_AddVirtualActor(VirtualActorList* list, VIRTUAL_ACTOR_TABLE type, PosRot where, s16 var)
     {
         ActorAccessibilityPolicy* policy = ActorAccessibility_GetPolicyForActor(type);
         if (policy == NULL)
@@ -226,6 +227,7 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         actor.isDrawn = 1;
         actor.play = NULL;
         actor.world = where;
+        actor.variety = var;
         actor.policy = *policy;
         VAList_t* l = (VAList_t*)list;
         l->push_back(actor);

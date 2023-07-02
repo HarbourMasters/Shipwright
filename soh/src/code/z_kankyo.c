@@ -214,6 +214,11 @@ LightInfo sSGameOverLightInfo;
 u8 sGameOverLightsIntensity;
 u16 D_8015FDB0;
 
+void LoadSkyboxPalette(SkyboxContext* skyboxCtx, int paletteIndex, char* palTex, int width,
+                       int height);
+void LoadSkyboxTex(SkyboxContext* skyboxCtx, int segmentIndex, int imageIndex, char* tex, int width, int height, int offsetW, int offsetH);
+void Skybox_Update(SkyboxContext* skyboxCtx);
+
 s32 func_8006F0A0(s32 a0) {
     s32 ret = ((a0 >> 4 & 0x7FF) << D_8011FAF0[a0 >> 15 & 7].unk_00) + D_8011FAF0[a0 >> 15 & 7].unk_04;
 

@@ -6,6 +6,8 @@
 
 #include "global.h"
 
+void Sram_InitDebugSave(void);
+
 void Opening_SetupTitleScreen(OpeningContext* this) {
     gSaveContext.gameMode = 1;
     this->state.running = false;

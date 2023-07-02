@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <string>
 #include <float.h>
+#include "overlays\actors\ovl_Boss_Goma\z_boss_goma.h"
 //Declarations specific to chests.
 #include "overlays/actors/ovl_En_Box/z_en_box.h"
 extern "C" {
@@ -82,10 +83,16 @@ void accessible_hasi(AccessibleActor* actor) {
     }
 }
     void accessible_switch(AccessibleActor* actor) {
+    Player* player = GET_PLAYER(actor->play);
     ObjSwitch* sw = (ObjSwitch*)actor->actor;
     Vec3f& scale = actor->actor->scale;
     if ((actor->actor->params & 7) == 0) {
-        if (scale.y >= 33.0f / 200.0f) { //(!(Flags_GetSwitch(actor->play, (actor->params >> 8 & 0x3F)))) {
+        if (scale.y >= 33.0f / 200.0f) {
+            if (actor->play->sceneNum == 0 && actor->play->roomCtx.curRoom.num == 5 && actor->xzDistToPlayer < 20) {
+                Audio_PlaySoundGeneral(NA_SE_EV_DIAMOND_SWITCH, &player->actor.world.pos, 4, &actor->basePitch,
+                                     &actor->baseVolume,
+                                      &actor->currentReverb);
+            }
             ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_FOOT_SWITCH);
 }
     }
@@ -109,6 +116,12 @@ void accessible_hasi(AccessibleActor* actor) {
 
 }
 
+void accessible_larva(AccessibleActor* actor) {
+    if (actor->actor->bgCheckFlags == 0) {
+        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EN_GOMA_BJR_EGG1);
+    }
+}
+
 void accessible_door(AccessibleActor* actor) {
     ActorAccessibility_PlaySpecialSound(actor, NA_SE_OC_DOOR_OPEN);
 }
@@ -124,6 +137,45 @@ void accessible_maruta(AccessibleActor* actor) {
         ActorAccessibility_PlaySpecialSound(actor, NA_SE_PL_LAND_LADDER);
     }
 }
+
+void accessible_area_change(AccessibleActor* actor) {
+    if (actor->variety == AREA_KORIRI) {
+        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_SARIA_MELODY);
+    } else if (actor->variety == AREA_HYRULE_FIELD) {
+        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_HORSE_RUN_LEVEL);
+    }
+}
+
+void accessible_231_dekus(AccessibleActor* actor) {
+    if (actor->actor->params == 1) {
+        actor->currentPitch = 1.0;
+        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EN_NUTS_FAINT);
+    }
+    if (actor->actor->params == 2) {
+        actor->currentPitch = 0.5;
+        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EN_NUTS_FAINT);
+    }
+    if (actor->actor->params == 3) {
+        actor->currentPitch = 1.5;
+        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EN_NUTS_FAINT);
+    }
+
+}
+
+void accessible_hana(AccessibleActor* actor) {
+    if (actor->actor->params == 1) {
+        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EN_OCTAROCK_ROCK);
+    }
+
+}
+
+void accessible_goma(AccessibleActor* actor) {
+    BossGoma* goma = (BossGoma*)actor->actor;
+    if (goma->visualState == 0) {
+        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_DIAMOND_SWITCH);
+    }
+}
+
 
 void ActorAccessibility_Init() {
     const int Npc_Frames = 35;
@@ -203,7 +255,8 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SYOKUDAI, policy);
     ActorAccessibility_InitPolicy(policy, "Deku Tree Moving Platform", accessible_hasi);
-    policy.distance = 1000;
+    policy.volume = 1.3;
+    policy.distance = 2000;
     ActorAccessibility_AddSupportedActor(ACTOR_BG_YDAN_HASI, policy);
     ActorAccessibility_InitPolicy(policy, "Pot", NULL, NA_SE_EV_POT_BROKEN);
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_TSUBO, policy);
@@ -216,12 +269,30 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     ActorAccessibility_AddSupportedActor(ACTOR_BG_YDAN_MARUTA, policy);
     ActorAccessibility_InitPolicy(policy, "bombable wall", NULL, NA_SE_EN_OCTAROCK_ROCK);
     ActorAccessibility_AddSupportedActor(ACTOR_BG_BREAKWALL, policy);
+    ActorAccessibility_InitPolicy(policy, "231 dekus", accessible_231_dekus);
+    policy.distance = 2000;
+    policy.n = 50;
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_HINTNUTS, policy);
+    ActorAccessibility_InitPolicy(policy, "uninteractable rocks in kokiri forest", accessible_hana);
+    ActorAccessibility_AddSupportedActor(ACTOR_OBJ_HANA, policy);
+    ActorAccessibility_InitPolicy(policy, "gold skulltula token", accessible_en_pickups);
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_SI, policy);
+    ActorAccessibility_InitPolicy(policy, "goma larva egg", accessible_larva);
+    policy.distance = 1000;
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_GOMA, policy);
+    ActorAccessibility_InitPolicy(policy, "heart canister", accessible_en_pickups);
+    ActorAccessibility_AddSupportedActor(ACTOR_ITEM_B_HEART, policy);
+    ActorAccessibility_InitPolicy(policy, "Goma", accessible_goma);
+    policy.distance = 5000;
+    ActorAccessibility_AddSupportedActor(ACTOR_BOSS_GOMA, policy);
     //Virtual actor demo.
 //First add support for an actor as you normally would.
     ActorAccessibility_InitPolicy(policy, "Proof of concept actor", accessible_va_prototype);
     policy.pitch = 0.5;
     ActorAccessibility_AddSupportedActor(VA_PROTOTYPE, policy);
     ActorAccessibility_InitPolicy(policy, "crawlspace", NULL, NA_SE_EN_MUSI_SINK);
+    policy.volume = 1.5;
+    policy.distance = 3000;
     ActorAccessibility_AddSupportedActor(VA_CRAWLSPACE, policy);
     ActorAccessibility_InitPolicy(policy, "Ladder/climable", NULL, NA_SE_PL_LAND_LADDER);
     policy.volume = 1.5;
@@ -232,8 +303,8 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     policy.n = 30;
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(VA_DOOR, policy);
-    ActorAccessibility_InitPolicy(policy, "Area Change", NULL,
-                                  NA_SE_EV_HORSE_RUN_LEVEL); // make callback&find better sound
+    ActorAccessibility_InitPolicy(policy, "Area Change", accessible_area_change);
+    policy.distance = 5000;
     ActorAccessibility_AddSupportedActor(VA_AREA_CHANGE, policy);
     ActorAccessibility_InitPolicy(policy, "marker", NULL,
                                   NA_SE_EV_DIAMOND_SWITCH); 
@@ -257,8 +328,10 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 515.0, 0.0, 647.00 }, { 0, 14702, 0 } });
     ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 1046.0, 0.0, 549.00 }, { 0, 14702, 0 } });
     ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 848.0, 0.0, -323.00 }, { 0, 14702, 0 } });
-    ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE,{ { -317.0, 373.2, -1542.00 }, {0, 14702, 0 }});
-    ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE, { { -1380.0, -67.0, -288.00 }, { 0, 14702, 0 } });
+
+    ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE,{ { -317.0, 373.2, -1542.00 }, {0, 14702, 0 }}, AREA_KORIRI);
+ 
+    ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE, { { -1380.0, -67.0, -288.00 }, { 0, 14702, 0 } }, AREA_HYRULE_FIELD);
 
     list = ActorAccessibility_GetVirtualActorList(85, 2); // Kokiri Forest Room with boulder and korkiri sword
     ActorAccessibility_AddVirtualActor(list, VA_CRAWLSPACE, { { -788.0, 120.0, 1392.00 }, { 0, 14702, 0 } });
@@ -284,7 +357,9 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     list = ActorAccessibility_GetVirtualActorList(0, 0);//deku tree main room
     ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -226.7, 0, 197.0 } });
     ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { 118.6, 0, -286.6 } });
-    ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE, { {0, 0, 640} });
+
+    ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE, { {0, 0, 640} }, AREA_KORIRI);
+    
     ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { 287.4, 368.0, 347.0 } });
     ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { 419.4, 368.0, 173.6 } });
     ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { 323, 567.0, 314.6 } });

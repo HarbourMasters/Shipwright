@@ -4,14 +4,16 @@
 #include "functions.h"
 extern "C" {
 s32 func_80839768(PlayState* play, Player* p, Vec3f* arg2, CollisionPoly** arg3, s32* arg4, Vec3f* arg5);
-
+#include "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.h"
+#include "soh/Enhancements/tts/tts.h"
 }
-
 static const f32 detectionDistance = 500.0;
 static const f32 minInclineDistance = 5.0;
 static const f32 minDeclineDistance = 5.0;
 static Player fakePlayer;//Used for wall height detection.
 static Vec3f D_80854798 = { 0.0f, 18.0f, 0.0f }; // From z_player.c.
+
+const char* GetLanguageCode();
 
 enum { DISCOVERED_NOTHING = 0,
 DISCOVERED_INCLINE,
@@ -453,7 +455,7 @@ if (currentSound)
 
 typedef struct {
     TerrainCueDirection directions[3]; // Directly ahead of Link, 90 degrees to his left and 90 degrees to his right.
-
+    int previousAction; //previous action icon state
 }TerrainCueState;
 
     //Callback for initialization of terrain cue state.
@@ -464,6 +466,7 @@ bool ActorAccessibility_InitTerrainCueState(AccessibleActor* actor) {
     state->directions[0].init(actor, { 0, 0, 0 });
     state->directions[1].init(actor, { 0, 16384, 0 });
     state->directions[2].init(actor, { 0, -16384, 0 });
+    state->previousAction = DO_ACTION_NONE;
 
     actor->userData = state;
     return true;
@@ -484,13 +487,57 @@ Vec3s ActorAccessibility_ComputeRelativeAngle(Vec3s& origin, Vec3s& offset) {
     return rot;
 
 }
-        void accessible_va_terrain_cue(AccessibleActor * actor) {
+
+
+void accessible_va_terrain_cue(AccessibleActor * actor) {
 
     TerrainCueState* state = (TerrainCueState*)actor->userData;
             for (int i = 0; i < 3; i++)
             state->directions[i].scan();
 
+    int currentState = actor->play->interfaceCtx.unk_1F0;
+    Player* player = GET_PLAYER(actor->play);
+
+    if (state->previousAction != currentState) {
+        //Audio_PlaySoundGeneral(NA_SE_EV_DIAMOND_SWITCH, &player->actor.world.pos, 4, &actor->basePitch,
+        //                       &actor->baseVolume,
+        //                       &actor->currentReverb);
+        switch (currentState) { 
+            case DO_ACTION_CHECK:
+                SpeechSynthesizer::Instance->Speak("Check", GetLanguageCode());
+                break;
+            case DO_ACTION_CLIMB:
+                SpeechSynthesizer::Instance->Speak("Climb", GetLanguageCode());
+                break;
+            case DO_ACTION_ENTER:
+                SpeechSynthesizer::Instance->Speak("Enter", GetLanguageCode());
+                break;
+            case DO_ACTION_GRAB:
+                SpeechSynthesizer::Instance->Speak("Grab", GetLanguageCode());
+                break;
+            case DO_ACTION_OPEN:
+                SpeechSynthesizer::Instance->Speak("Open", GetLanguageCode());
+                break;
+            case DO_ACTION_SPEAK:
+                SpeechSynthesizer::Instance->Speak("Speak", GetLanguageCode());
+                break;
+            case DO_ACTION_STOP:
+                SpeechSynthesizer::Instance->Speak("Stop", GetLanguageCode()); // possibly disable? not sure what it does
+                break;
+            default:
+                break;
+        }
+
+        
+        
+        state->previousAction = currentState;
+    } else {
+        state->previousAction = currentState;
     }
+}
+
+
+    
         /*
          void accessible_va_wall_cue(AccessibleActor* actor) {
     Player* player = GET_PLAYER(actor->play);
@@ -562,6 +609,11 @@ Vec3s rot = computeRelativeAngle(player->actor.world.rot, actor->world.rot);
     }
     */
 
+
+
+
+
+
 void ActorAccessibility_InitCues() {
 
 ActorAccessibilityPolicy policy;
@@ -575,4 +627,6 @@ ActorAccessibilityPolicy policy;
         ActorAccessibility_AddSupportedActor(VA_TERRAIN_CUE, policy);
         VirtualActorList* list = ActorAccessibility_GetVirtualActorList(EVERYWHERE, 0);
         ActorAccessibility_AddVirtualActor(list, VA_TERRAIN_CUE, { { 0, 0, 0 }, { 0, 0, 0 } });
+
+    
     }

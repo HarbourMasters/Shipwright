@@ -31,7 +31,7 @@ const char* englishName;
     bool runsAlways;//If set, then the distance policy is ignored.
     ActorAccessibilityUserDataInit initUserData;
     ActorAccessibilityUserDataCleanup cleanupUserData;
-    u8 param;
+    s32 param;
 
 } ActorAccessibilityPolicy;
 
@@ -57,7 +57,7 @@ struct AccessibleActor
     f32 baseVolume;
     f32 currentVolume;
     f32 basePitch;
-    
+    s16 variety;
     f32 currentPitch;
     s8 currentReverb;
     // Add more state as needed.
@@ -95,10 +95,26 @@ VA_AREA_CHANGE,
 VA_MARKER,
 
 } VIRTUAL_ACTOR_TABLE;
+
+typedef enum {
+    AREA_KORIRI=2000,
+    AREA_HYRULE_FIELD,
+    AREA_HYRULE_CASTLE,
+    AREA_ToT,
+    AREA_ZORA,
+    AREA_VILLAGE,
+    AREA_GORON,
+    AREA_DM,
+    AREA_GRAVEYARD,
+    AREA_LAKE,
+    AREA_GERUDO,
+    AREA_OASIS,
+
+} AREA_MARKER_TABLE;
 const s16 EVERYWHERE = -32768;//Denotes a virtual actor that is global/ omnipresent.
 
     //Get the list of virtual actors for a given scene and room index.
 VirtualActorList* ActorAccessibility_GetVirtualActorList(s16 sceneNum, s8 roomNum);
-AccessibleActor* ActorAccessibility_AddVirtualActor(VirtualActorList* list, VIRTUAL_ACTOR_TABLE type, PosRot where);
+AccessibleActor* ActorAccessibility_AddVirtualActor(VirtualActorList* list, VIRTUAL_ACTOR_TABLE type, PosRot where, s16 var=NULL);
 
 #endif
