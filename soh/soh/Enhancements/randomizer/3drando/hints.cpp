@@ -274,6 +274,24 @@ static std::vector<uint32_t> GetAccessibleGossipStones(const uint32_t hintedLoca
   return accessibleGossipStones;
 }
 
+bool IsReachableWithout(uint32_t locToCheck, uint32_t excludedCheck, bool resetAfter = true){
+  //temporarily remove the hinted location's item, and then perform a
+  //reachability search for this check
+  uint32_t originalItem = Location(excludedCheck)->GetPlaceduint32_t();
+  Location(excludedCheck)->SetPlacedItem(NONE);
+  LogicReset();
+  const std::vector<uint32_t> rechableWithout = GetAccessibleLocations({locToCheck});
+  Location(excludedCheck)->SetPlacedItem(originalItem);
+  if (resetAfter){
+    //if resetAfter is on, reset logic we are done
+    LogicReset();
+  }
+  if (rechableWithout.empty()) {
+    return false;
+  }
+  return true;
+}
+
 static void AddHint(Text hint, const uint32_t gossipStone, const std::vector<uint8_t>& colors = {}, HintType hintType = HINT_TYPE_ITEM, const uint32_t hintedLocation = NONE) {
   //save hints as dummy items for writing to the spoiler log
   NewItem(gossipStone, Item{RG_HINT, hint, ITEMTYPE_EVENT, GI_RUPEE_BLUE_LOSE, false, &noVariable, NONE});
@@ -604,6 +622,9 @@ void CreateGanonText() {
   } else {
     ganonHintText = hint.GetText()+GetHintRegion(Location(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
     lightArrowHintLoc = Location(lightArrowLocation[0])->GetName();
+    if (IsReachableWithout(GANONDORF_HINT,lightArrowLocation[0],true)){
+      Location(lightArrowLocation[0])->SetAsHinted();
+    }
   }
   ganonHintText = ganonHintText + "!";
 
@@ -613,7 +634,9 @@ void CreateGanonText() {
 //Find the location which has the given itemKey and create the generic altar text for the reward
 static Text BuildDungeonRewardText(const uint32_t itemKey) {
   uint32_t location = FilterFromPool(allLocations, [itemKey](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == itemKey;})[0];
-  Location(location)->SetAsHinted();
+  if (IsReachableWithout(itemKey, location, true) || ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON)){
+    Location(location)->SetAsHinted();
+  }
 
   std::string rewardString = "$" + std::to_string(itemKey - KOKIRI_EMERALD);
 
@@ -812,6 +835,10 @@ void CreateDampesDiaryText() {
 
   uint32_t item = PROGRESSIVE_HOOKSHOT;
   uint32_t location = FilterFromPool(allLocations, [item](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == item;})[0];
+  if (IsReachableWithout(DAMPE_HINT,location,true)){
+    Location(location)->SetAsHinted();
+  }
+  
   Text area = GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText();
   Text temp1 = Text{
     "Whoever reads this, please enter %g", 
@@ -837,6 +864,9 @@ void CreateGregRupeeHint() {
 
   uint32_t location = FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetPlacedItemKey() == GREG_RUPEE;})[0];
   Text area = GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText();
+  if (IsReachableWithout(GREG_HINT,location,true)){
+    Location(location)->SetAsHinted();
+  }
 
   Text temp1 = Text{
     "By the way, if you're interested, I saw the shiniest %gGreen Rupee%w somewhere in%g ",
@@ -942,6 +972,23 @@ void CreateAllHints() {
   uint8_t remainingDungeonWothHints = hintSetting.dungeonsWothLimit;
   uint8_t remainingDungeonBarrenHints = hintSetting.dungeonsBarrenLimit;
 
+  // Apply Special hint exclusions with no requirements
+  if (Settings::Kak10GSHintText){
+      Location(KAK_10_GOLD_SKULLTULA_REWARD)->SetAsHinted();
+  }
+  if (Settings::Kak20GSHintText){
+      Location(KAK_20_GOLD_SKULLTULA_REWARD)->SetAsHinted();
+  }
+  if (Settings::Kak30GSHintText){
+      Location(KAK_30_GOLD_SKULLTULA_REWARD)->SetAsHinted();
+  }
+  if (Settings::Kak40GSHintText){
+      Location(KAK_40_GOLD_SKULLTULA_REWARD)->SetAsHinted();
+  }
+  if (Settings::Kak50GSHintText){
+      Location(KAK_50_GOLD_SKULLTULA_REWARD)->SetAsHinted();
+  }
+
   // Add 'always' location hints
   if (hintSetting.distTable[static_cast<int>(HINT_TYPE_ALWAYS)].copies > 0) {
     // Only filter locations that had a random item placed at them (e.g. don't get cow locations if shuffle cows is off)
@@ -954,7 +1001,7 @@ void CreateAllHints() {
 
     for (auto& hint : conditionalAlwaysHints) {
         uint32_t loc = hint.first;
-        if (hint.second() && Location(loc)->IsHintable() && !Location(loc)->IsHintedAt()) {
+        if (hint.second() && Location(loc)->IsHintable()) { // && !Location(loc)->IsHintedAt()) { This looks useless now, buggy with my changes
             alwaysHintLocations.push_back(loc);
         }
     }
