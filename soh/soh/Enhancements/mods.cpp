@@ -32,7 +32,7 @@ void ReloadSceneTogglingLinkAge() {
 
 void RegisterInfiniteMoney() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (CVarGetInteger("gInfiniteMoney", 0) != 0) {
+        if (CVarGetInteger("gInfiniteMoney", 0) != 0 && Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
             if (gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
                 gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
             }
@@ -599,6 +599,14 @@ void RegisterMirrorModeHandler() {
     });
 }
 
+void RegisterNoWallet() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
+            gSaveContext.rupees = 0;
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -621,4 +629,5 @@ void InitMods() {
     RegisterBonkDamage();
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
+    RegisterNoWallet();
 }
