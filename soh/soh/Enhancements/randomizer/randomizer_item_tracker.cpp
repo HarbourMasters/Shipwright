@@ -248,6 +248,11 @@ typedef enum {
 } ItemTrackerKeysNumberOption;
 
 typedef enum {
+    TRIFORCE_PIECE_COLLECTED_REQUIRED,
+    TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX
+} ItemTrackerTriforcePieceNumberOption;
+
+typedef enum {
     SECTION_DISPLAY_HIDDEN,
     SECTION_DISPLAY_MAIN_WINDOW,
     SECTION_DISPLAY_SEPARATE
@@ -473,12 +478,18 @@ void DrawItemCount(ItemTrackerItem item) {
         uint8_t piecesTotal = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_TOTAL);
         ImU32 currentColor = gSaveContext.triforcePiecesCollected >= piecesRequired ? IM_COL_GREEN : IM_COL_WHITE;
         ImU32 maxColor = IM_COL_GREEN;
+        int32_t trackerTriforcePieceNumberDisplayMode = CVarGetInteger("gItemTrackerTriforcePieceTrack", TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX);
 
         currentString += std::to_string(gSaveContext.triforcePiecesCollected);
         currentString += "/";
-        currentString += std::to_string(piecesRequired);
-        currentString += "/";
-        maxString += std::to_string(piecesTotal);
+        // gItemTrackerTriforcePieceTrack
+        if (trackerTriforcePieceNumberDisplayMode == TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX) {
+            currentString += std::to_string(piecesRequired);
+            currentString += "/";
+            maxString += std::to_string(piecesTotal);
+        } else if (trackerTriforcePieceNumberDisplayMode == TRIFORCE_PIECE_COLLECTED_REQUIRED) {
+            maxString += std::to_string(piecesRequired);
+        }
 
         ImGui::SetCursorScreenPos(
             ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize((currentString + maxString).c_str()).x / 2), p.y - 14));
@@ -899,7 +910,7 @@ void UpdateVectors() {
     }
 
     // If we're adding triforce pieces to the main window
-    if (CVarGetInteger("gItemTrackerTriforcePiecesDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) {
+    if (CVarGetInteger("gItemTrackerTriforcePiecesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW) {
         // If Greg isn't on the main window, add empty items to place the triforce pieces on a new row.
         if (CVarGetInteger("gItemTrackerGregDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) != SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) {
             while (mainWindowItems.size() % 6) {
@@ -934,6 +945,7 @@ void ItemTrackerWindow::DrawElement() {
             (CVarGetInteger("gItemTrackerSongsDisplayType", SECTION_DISPLAY_MAIN_WINDOW) == SECTION_DISPLAY_MAIN_WINDOW) ||
             (CVarGetInteger("gItemTrackerDungeonItemsDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW) ||
             (CVarGetInteger("gItemTrackerGregDisplayType", SECTION_DISPLAY_EXTENDED_HIDDEN) == SECTION_DISPLAY_EXTENDED_MAIN_WINDOW) ||
+            (CVarGetInteger("gItemTrackerTriforcePiecesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW) ||
             (CVarGetInteger("gItemTrackerNotesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_MAIN_WINDOW)
         ) {
             BeginFloatingWindows("Item Tracker##main window");
@@ -1004,6 +1016,12 @@ void ItemTrackerWindow::DrawElement() {
             EndFloatingWindows();
         }
 
+        if (CVarGetInteger("gItemTrackerTriforcePiecesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE) {
+            BeginFloatingWindows("Triforce Piece Tracker");
+            DrawItemsInRows(triforcePieces);
+            EndFloatingWindows();
+        }
+
         if (CVarGetInteger("gItemTrackerNotesDisplayType", SECTION_DISPLAY_HIDDEN) == SECTION_DISPLAY_SEPARATE && CVarGetInteger("gItemTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_ALWAYS) {
             ImGui::SetNextWindowSize(ImVec2(400,300), ImGuiCond_FirstUseEver);
             BeginFloatingWindows("Personal Notes", ImGuiWindowFlags_NoFocusOnAppearing);
@@ -1015,6 +1033,7 @@ void ItemTrackerWindow::DrawElement() {
 
 static const char* itemTrackerCapacityTrackOptions[5] = { "No Numbers", "Current Capacity", "Current Ammo", "Current Capacity / Max Capacity", "Current Ammo / Current Capacity" };
 static const char* itemTrackerKeyTrackOptions[3] = { "Collected / Max", "Current / Collected / Max", "Current / Max" };
+static const char* itemTrackerTriforcePieceTrackOptions[2] = { "Collected / Required", "Collected / Required / Max" };
 static const char* windowTypes[2] = { "Floating", "Window" };
 static const char* displayModes[2] = { "Always", "Combo Button Hold" };
 static const char* buttons[14] = { "A", "B", "C-Up", "C-Down", "C-Left", "C-Right", "L", "Z", "R", "Start", "D-Up", "D-Down", "D-Left", "D-Right" };
@@ -1075,6 +1094,8 @@ void ItemTrackerSettingsWindow::DrawElement() {
     UIWidgets::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gItemTrackerIconSize", 25, 128, "", 36);
     UIWidgets::EnhancementSliderInt("Icon margins : %dpx", "##ITEMTRACKERSPACING", "gItemTrackerIconSpacing", -5, 50, "", 12);
     
+    UIWidgets::Spacer(0);
+
     ImGui::Text("Ammo/Capacity Tracking");
     UIWidgets::EnhancementCombobox("gItemTrackerCapacityTrack", itemTrackerCapacityTrackOptions, ITEM_TRACKER_NUMBER_CURRENT_CAPACITY_ONLY);
     UIWidgets::InsertHelpHoverText("Customize what the numbers under each item are tracking."
@@ -1084,9 +1105,18 @@ void ItemTrackerSettingsWindow::DrawElement() {
             shouldUpdateVectors = true;
         }
     }
+
+    UIWidgets::Spacer(0);
+
     ImGui::Text("Key Count Tracking");
     UIWidgets::EnhancementCombobox("gItemTrackerKeyTrack", itemTrackerKeyTrackOptions, KEYS_COLLECTED_MAX);
     UIWidgets::InsertHelpHoverText("Customize what numbers are shown for key tracking.");
+
+    UIWidgets::Spacer(0);
+
+    ImGui::Text("Triforce Piece Count Tracking");
+    UIWidgets::EnhancementCombobox("gItemTrackerTriforcePieceTrack", itemTrackerTriforcePieceTrackOptions, TRIFORCE_PIECE_COLLECTED_REQUIRED_MAX);
+    UIWidgets::InsertHelpHoverText("Customize what numbers are shown for triforce piece tracking.");
 
     ImGui::TableNextColumn();
 
