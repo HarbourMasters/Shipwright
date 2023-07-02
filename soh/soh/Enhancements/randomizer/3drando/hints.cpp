@@ -676,10 +676,7 @@ static Text BuildBridgeReqsText() {
 static Text BuildGanonBossKeyText() {
   Text ganonBossKeyText;
 
-  if (TriforceHunt.Is(TRIFORCE_HUNT_ON)) {
-    ganonBossKeyText = Hint(GANON_BK_TRIFORCE_HINT).GetText();
-
-  } else if (GanonsBossKey.Is(GANONSBOSSKEY_START_WITH)) {
+  if (GanonsBossKey.Is(GANONSBOSSKEY_START_WITH)) {
     ganonBossKeyText = Hint(GANON_BK_START_WITH_HINT).GetText();
 
   } else if (GanonsBossKey.Is(GANONSBOSSKEY_VANILLA)) {
@@ -717,6 +714,9 @@ static Text BuildGanonBossKeyText() {
 
   } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_TOKENS)) {
     ganonBossKeyText = BuildCountReq(LACS_TOKENS_HINT, LACSTokenCount);
+
+  } else if (GanonsBossKey.Is(GANONSBOSSKEY_TRIFORCE)) {
+    ganonBossKeyText = Hint(GANON_BK_TRIFORCE_HINT).GetText();
   }
 
   return Text()+"$b"+ganonBossKeyText+"^";

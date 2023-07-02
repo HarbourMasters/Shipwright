@@ -1603,6 +1603,7 @@ typedef enum {
     RO_GANON_BOSS_KEY_LACS_DUNGEONS,
     RO_GANON_BOSS_KEY_LACS_TOKENS,
     RO_GANON_BOSS_KEY_KAK_TOKENS,
+    RO_GANON_BOSS_KEY_TRIFORCE_HUNT,
 } RandoOptionGanonsBossKey;
 
 // LACS Reward Options settings (Standard rewards, Greg as reward, Greg as wildcard)

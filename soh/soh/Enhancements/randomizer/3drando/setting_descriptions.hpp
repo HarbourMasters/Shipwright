@@ -198,6 +198,7 @@ extern string_view ganonKeyOverworld;
 extern string_view ganonKeyAnywhere;
 extern string_view ganonKeyLACS;
 extern string_view ganonKey100GS;
+extern string_view ganonKeyTriforce;
 
 extern string_view lacsStoneCountDesc;
 extern string_view lacsMedallionCountDesc;

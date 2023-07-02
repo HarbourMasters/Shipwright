@@ -235,9 +235,9 @@ namespace Settings {
                                                                          {gerudoKeysVanilla, gerudoKeysAnyDungeon, gerudoKeysOverworld, gerudoKeysAnywhere});
   Option BossKeysanity       = Option::U8  ("Boss Keys",                 {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"},
                                                                          {bossKeyStartWith, bossKeyVanilla, bossKeyOwnDungeon, bossKeyAnyDungeon, bossKeyOverworld, bossKeyAnywhere},                                                                              OptionCategory::Setting,    BOSSKEYSANITY_OWN_DUNGEON);
-  Option GanonsBossKey       = Option::U8  ("Ganon's Boss Key",          {"Vanilla", "Own dungeon", "Start with", "Any Dungeon", "Overworld", "Anywhere", "LACS-Vanilla", "LACS-Stones", "LACS-Medallions", "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens", "100 GS Reward"},
-                                                                         {ganonKeyVanilla, ganonKeyOwnDungeon, ganonKeyStartWith, ganonKeyAnyDungeon, ganonKeyOverworld, ganonKeyAnywhere, ganonKeyLACS, ganonKey100GS},                                           OptionCategory::Setting,    GANONSBOSSKEY_VANILLA);
-  uint8_t LACSCondition           = 0;
+  Option GanonsBossKey       = Option::U8  ("Ganon's Boss Key",          {"Vanilla", "Own dungeon", "Start with", "Any Dungeon", "Overworld", "Anywhere", "LACS-Vanilla", "LACS-Stones", "LACS-Medallions", "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens", "100 GS Reward", "Triforce Hunt"},
+                                                                         {ganonKeyVanilla, ganonKeyOwnDungeon, ganonKeyStartWith, ganonKeyAnyDungeon, ganonKeyOverworld, ganonKeyAnywhere, ganonKeyLACS, ganonKey100GS, ganonKeyTriforce},                       OptionCategory::Setting,    GANONSBOSSKEY_VANILLA);
+  uint8_t LACSCondition      = 0;
   Option LACSStoneCount      = Option::U8  ("Stone Count",             {NumOpts(0, 4)},                                                        {lacsStoneCountDesc},                                                                                             OptionCategory::Setting,    1,                          true);
   Option LACSMedallionCount  = Option::U8  ("Medallion Count",         {NumOpts(0, 7)},                                                        {lacsMedallionCountDesc},                                                                                         OptionCategory::Setting,    1,                          true);
   Option LACSRewardCount     = Option::U8  ("Reward Count",            {NumOpts(0, 10)},                                                       {lacsRewardCountDesc},                                                                                            OptionCategory::Setting,    1,                          true);
@@ -2998,7 +2998,11 @@ namespace Settings {
     Keysanity.SetSelectedIndex(cvarSettings[RSK_KEYSANITY]);
     GerudoKeys.SetSelectedIndex(cvarSettings[RSK_GERUDO_KEYS]);
     BossKeysanity.SetSelectedIndex(cvarSettings[RSK_BOSS_KEYSANITY]);
-    GanonsBossKey.SetSelectedIndex(cvarSettings[RSK_GANONS_BOSS_KEY]);
+    if (cvarSettings[RSK_TRIFORCE_HUNT]) {
+      GanonsBossKey.SetSelectedIndex(RO_GANON_BOSS_KEY_TRIFORCE_HUNT);
+    } else {
+      GanonsBossKey.SetSelectedIndex(cvarSettings[RSK_GANONS_BOSS_KEY]);
+    }
     LACSStoneCount.SetSelectedIndex(cvarSettings[RSK_LACS_STONE_COUNT]);
     LACSMedallionCount.SetSelectedIndex(cvarSettings[RSK_LACS_MEDALLION_COUNT]);
     LACSRewardCount.SetSelectedIndex(cvarSettings[RSK_LACS_REWARD_COUNT]);
@@ -3191,9 +3195,7 @@ namespace Settings {
 
     HasNightStart = StartingTime.Is(STARTINGTIME_NIGHT);
 
-    if (TriforceHunt.Is(TRIFORCE_HUNT_ON)) {
-      LACSCondition = LACSCONDITION_TRIFORCEHUNT;
-    } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_STONES)) {
+    if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_STONES)) {
       LACSCondition = LACSCONDITION_STONES;
     } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_MEDALLIONS)) {
       LACSCondition = LACSCONDITION_MEDALLIONS;

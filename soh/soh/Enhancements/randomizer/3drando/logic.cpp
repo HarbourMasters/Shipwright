@@ -628,9 +628,7 @@ namespace Logic {
                      (LACSCondition == LACSCONDITION_MEDALLIONS && MedallionCount + (Greg && GregInLogic ? 1 : 0) >= LACSMedallionCount.Value<uint8_t>())            ||
                      (LACSCondition == LACSCONDITION_REWARDS    && StoneCount + MedallionCount + (Greg && GregInLogic ? 1 : 0) >= LACSRewardCount.Value<uint8_t>())  ||
                      (LACSCondition == LACSCONDITION_DUNGEONS   && DungeonCount + (Greg && GregInLogic ? 1 : 0) >= LACSDungeonCount.Value<uint8_t>())                ||
-                     (LACSCondition == LACSCONDITION_TOKENS     && GoldSkulltulaTokens >= LACSTokenCount.Value<uint8_t>())                                           ||
-                     (LACSCondition == LACSCONDITION_TRIFORCEHUNT && TriforcePieces >= TriforceHuntRequired.Value<uint8_t>());
-
+                     (LACSCondition == LACSCONDITION_TOKENS     && GoldSkulltulaTokens >= LACSTokenCount.Value<uint8_t>());
   }
 
   bool SmallKeys(Key dungeon, uint8_t requiredAmount) {

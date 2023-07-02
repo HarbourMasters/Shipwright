@@ -1037,6 +1037,8 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_TOKENS;
                         } else if(it.value() == "100 GS Reward") {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_KAK_TOKENS;
+                        } else if(it.value() == "Triforce Hunt") {
+                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_TRIFORCE_HUNT;
                         }
                         break;
                     case RSK_SKIP_CHILD_ZELDA:
