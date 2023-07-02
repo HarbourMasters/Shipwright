@@ -3633,7 +3633,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                                        "gRandomizeMqDungeonsDekuTree");
                         UIWidgets::EnhancementCheckbox("Dodongo's Cavern##RandomizeMqDungeons",
                                                        "gRandomizeMqDungeonsDodongosCavern");
-                        UIWidgets::EnhancementCheckbox("Inside Jabu Jabu##RandomizeMqDungeons",
+                        UIWidgets::EnhancementCheckbox("Jabu Jabu's Belly##RandomizeMqDungeons",
                                                        "gRandomizeMqDungeonsJabuJabu");
                         UIWidgets::EnhancementCheckbox("Forest Temple##RandomizeMqDungeons",
                                                        "gRandomizeMqDungeonsForestTemple");
@@ -3649,7 +3649,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                                        "gRandomizeMqDungeonsBottomOfTheWell");
                         UIWidgets::EnhancementCheckbox("Ice Cavern##RandomizeMqDungeons",
                                                        "gRandomizeMqDungeonsIceCavern");
-                        UIWidgets::EnhancementCheckbox("GTG##RandomizeMqDungeons", "gRandomizeMqDungeonsGTG");
+                        UIWidgets::EnhancementCheckbox("Gerudo Training Grounds##RandomizeMqDungeons", "gRandomizeMqDungeonsGTG");
                         UIWidgets::EnhancementCheckbox("Ganon's Castle##RandomizeMqDungeons",
                                                        "gRandomizeMqDungeonsGanonsCastle");
                     }
