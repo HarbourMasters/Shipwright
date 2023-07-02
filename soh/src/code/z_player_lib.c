@@ -7,7 +7,7 @@
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "soh/Enhancements/Randomizer/draw.h"
+#include "soh/Enhancements/randomizer/draw.h"
 
 #include <stdlib.h>
 
