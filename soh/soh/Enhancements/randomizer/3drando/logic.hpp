@@ -301,6 +301,7 @@ extern bool AtDay;
 extern bool AtNight;
 extern bool LinksCow;
 extern uint8_t Age;
+extern bool CanCompleteTriforce;
 
 // Events
 extern bool ShowedMidoSwordAndShield;

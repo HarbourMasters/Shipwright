@@ -380,7 +380,7 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
     if (Settings::ShuffleCows) {
       auto impasHouseFrontHintRegion = GetHintRegionHintKey(KAK_IMPAS_HOUSE);
       auto impasHouseBackHintRegion = GetHintRegionHintKey(KAK_IMPAS_HOUSE_BACK);
-      if (impasHouseFrontHintRegion != NONE && impasHouseBackHintRegion != NONE && impasHouseBackHintRegion != LINKS_POCKET && impasHouseFrontHintRegion != LINKS_POCKET && impasHouseBackHintRegion != impasHouseFrontHintRegion) {
+      if (impasHouseFrontHintRegion != NONE && impasHouseBackHintRegion != NONE && impasHouseBackHintRegion != ROOT && impasHouseFrontHintRegion != ROOT && impasHouseBackHintRegion != impasHouseFrontHintRegion) {
         auto message = "Kak Impas House entrances are not in the same hint area\n";
         SPDLOG_DEBUG(message);
         return false;

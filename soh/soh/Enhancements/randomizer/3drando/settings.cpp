@@ -2115,6 +2115,13 @@ namespace Settings {
       IncludeAndHide({KAK_100_GOLD_SKULLTULA_REWARD});
     }
 
+    //Force include Triforce Hunt if it's off
+    if (TriforceHunt) {
+      Unhide({ TRIFORCE_COMPLETED });
+    } else {
+      IncludeAndHide({ TRIFORCE_COMPLETED });
+    }
+
     //Force include Map and Compass Chests when Vanilla
     std::vector<uint32_t> mapChests = GetLocations(everyPossibleLocation, Category::cVanillaMap);
     std::vector<uint32_t> compassChests = GetLocations(everyPossibleLocation, Category::cVanillaCompass);

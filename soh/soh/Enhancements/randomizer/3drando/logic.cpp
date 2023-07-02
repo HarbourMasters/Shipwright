@@ -313,6 +313,7 @@ namespace Logic {
   bool AtDay         = false;
   bool AtNight       = false;
   uint8_t Age             = 0;
+  bool CanCompleteTriforce = false;
 
   //Events
   bool ShowedMidoSwordAndShield  = false;
@@ -629,7 +630,7 @@ namespace Logic {
                      (LACSCondition == LACSCONDITION_REWARDS    && StoneCount + MedallionCount + (Greg && GregInLogic ? 1 : 0) >= LACSRewardCount.Value<uint8_t>())  ||
                      (LACSCondition == LACSCONDITION_DUNGEONS   && DungeonCount + (Greg && GregInLogic ? 1 : 0) >= LACSDungeonCount.Value<uint8_t>())                ||
                      (LACSCondition == LACSCONDITION_TOKENS     && GoldSkulltulaTokens >= LACSTokenCount.Value<uint8_t>());
-
+    CanCompleteTriforce = TriforcePieces >= TriforceHuntRequired.Value<uint8_t>();
   }
 
   bool SmallKeys(Key dungeon, uint8_t requiredAmount) {

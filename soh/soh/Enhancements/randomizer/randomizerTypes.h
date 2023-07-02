@@ -847,6 +847,7 @@ typedef enum {
     RC_ZR_NEAR_GROTTOS_GOSSIP_STONE,
     RC_ZR_OPEN_GROTTO_GOSSIP_STONE,
     RC_GANONDORF_HINT,
+    RC_TRIFORCE_COMPLETED,
     RC_MAX
 } RandomizerCheck;
 
@@ -1302,9 +1303,9 @@ typedef enum {
     RG_BUY_RED_POTION_40,
     RG_BUY_RED_POTION_50,
     RG_TRIFORCE,
+    RG_TRIFORCE_PIECE,
     RG_HINT,
     RG_TYCOON_WALLET,
-    RG_TRIFORCE_PIECE,
     RG_MAX
 } RandomizerGet;
 
