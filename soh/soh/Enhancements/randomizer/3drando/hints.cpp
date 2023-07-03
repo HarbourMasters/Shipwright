@@ -632,9 +632,11 @@ void CreateGanonText() {
 }
 
 //Find the location which has the given itemKey and create the generic altar text for the reward
-static Text BuildDungeonRewardText(const uint32_t itemKey) {
+static Text BuildDungeonRewardText(const uint32_t itemKey, bool isChild) {
   uint32_t location = FilterFromPool(allLocations, [itemKey](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == itemKey;})[0];
-  if (IsReachableWithout(itemKey, location, true) || ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON)){
+  uint32_t altarLoc = ALTAR_HINT_ADULT;
+  if(isChild){altarLoc = ALTAR_HINT_CHILD;}
+  if (IsReachableWithout(altarLoc, location, true) || ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON)){
     Location(location)->SetAsHinted();
   }
 
@@ -763,11 +765,11 @@ void CreateAltarText() {
     childAltarText = Hint(SPIRITUAL_STONE_TEXT_START).GetText()+"^"+
     //Spiritual Stones
         (StartingKokiriEmerald.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                                : BuildDungeonRewardText(KOKIRI_EMERALD)) +
+                                                : BuildDungeonRewardText(KOKIRI_EMERALD, true)) +
         (StartingGoronRuby.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                            : BuildDungeonRewardText(GORON_RUBY)) +
+                                            : BuildDungeonRewardText(GORON_RUBY, true)) +
         (StartingZoraSapphire.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                              : BuildDungeonRewardText(ZORA_SAPPHIRE)) +
+                                              : BuildDungeonRewardText(ZORA_SAPPHIRE, true)) +
     //How to open Door of Time, the event trigger is necessary to read the altar multiple times
     BuildDoorOfTimeText();
   } else {
@@ -782,17 +784,17 @@ void CreateAltarText() {
     adultAltarText = adultAltarText +
     //Medallion Areas
         (StartingLightMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                                : BuildDungeonRewardText(LIGHT_MEDALLION)) +
+                                                : BuildDungeonRewardText(LIGHT_MEDALLION, false)) +
         (StartingForestMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                                  : BuildDungeonRewardText(FOREST_MEDALLION)) +
+                                                  : BuildDungeonRewardText(FOREST_MEDALLION, false)) +
         (StartingFireMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                                : BuildDungeonRewardText(FIRE_MEDALLION)) +
+                                                : BuildDungeonRewardText(FIRE_MEDALLION, false)) +
         (StartingWaterMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                                : BuildDungeonRewardText(WATER_MEDALLION)) +
+                                                : BuildDungeonRewardText(WATER_MEDALLION, false)) +
         (StartingSpiritMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                                  : BuildDungeonRewardText(SPIRIT_MEDALLION)) +
+                                                  : BuildDungeonRewardText(SPIRIT_MEDALLION, false)) +
         (StartingShadowMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                                  : BuildDungeonRewardText(SHADOW_MEDALLION));
+                                                  : BuildDungeonRewardText(SHADOW_MEDALLION, false));
   }
   adultAltarText = adultAltarText + 
   //Bridge requirement

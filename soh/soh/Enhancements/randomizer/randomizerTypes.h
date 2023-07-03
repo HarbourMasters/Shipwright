@@ -857,12 +857,11 @@ typedef enum {
     RC_ZR_NEAR_GROTTOS_GOSSIP_STONE,
     RC_ZR_OPEN_GROTTO_GOSSIP_STONE,
     RC_GANONDORF_HINT,
-<<<<<<< HEAD
     RC_TRIFORCE_COMPLETED,
-=======
     RC_DAMPE_HINT,
     RC_GREG_HINT,
->>>>>>> 6042cd1a (Initial implementation of no-duplicates of special hints)
+    RC_ALTAR_HINT_CHILD,
+    RC_ALTAR_HINT_ADULT,
     RC_MAX
 } RandomizerCheck;
 
