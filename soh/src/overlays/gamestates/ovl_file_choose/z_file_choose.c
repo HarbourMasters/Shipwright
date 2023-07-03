@@ -464,22 +464,32 @@ static void DrawItems(FileChooseContext* this, s16 fileIndex, u8 alpha) {
     CLOSE_DISPS(this->state.gfxCtx);
 }
 
+typedef enum {
+    /* 0x00 */ COUNTER_HEALTH,
+    /* 0x01 */ COUNTER_WALLET_CHILD,
+    /* 0x02 */ COUNTER_WALLET_ADULT,
+    /* 0x03 */ COUNTER_WALLET_GIANT,
+    /* 0x04 */ COUNTER_WALLET_TYCOON,
+    /* 0x04 */ COUNTER_SKULLTULLAS,
+    /* 0x04 */ COUNTER_DEATHS,
+} CounterID;
+
 typedef struct {
     Sprite sprite;
     Color_RGBA8 color;
-    u8 item;
+    u8 id;
     IconPosition pos;
     IconSize size;
 } CounterData;
 
 static CounterData counterData[7] = {
-    {CREATE_SPRITE_24(dgHeartContainerIconTex, 101), ITEM_HEART_CONTAINER, {0x05, 0x00}, SIZE_COUNTER},
-    {CREATE_SPRITE_RUPEE(0xC8, 0xFF, 0x64),          ITEM_RUPEE_GREEN,     {0x05, 0x15}, SIZE_COUNTER}, //child wallet
-    {CREATE_SPRITE_RUPEE(0x82, 0x82, 0xFF),          ITEM_RUPEE_BLUE,      {0x05, 0x15}, SIZE_COUNTER}, //adult wallet
-    {CREATE_SPRITE_RUPEE(0xFF, 0x64, 0x64),          ITEM_RUPEE_RED,       {0x05, 0x15}, SIZE_COUNTER}, //giant wallet
-    {CREATE_SPRITE_RUPEE(0xFF, 0x5A, 0xFF),          ITEM_RUPEE_PURPLE,    {0x05, 0x15}, SIZE_COUNTER}, //tycoon wallet
-    {CREATE_SPRITE_24(dgGoldSkulltulaIconTex, 103),  ITEM_SKULL_TOKEN,     {0x05, 0x2A}, SIZE_COUNTER},
-    {CREATE_SPRITE_SKULL,                            ITEM_INVALID_8,       {0x48, 0x2A}, SIZE_COUNTER}, //deaths
+    {CREATE_SPRITE_24(dgHeartContainerIconTex, 101), COUNTER_HEALTH,        {0x05, 0x00}, SIZE_COUNTER},
+    {CREATE_SPRITE_RUPEE(0xC8, 0xFF, 0x64),          COUNTER_WALLET_CHILD,  {0x05, 0x15}, SIZE_COUNTER},
+    {CREATE_SPRITE_RUPEE(0x82, 0x82, 0xFF),          COUNTER_WALLET_ADULT,  {0x05, 0x15}, SIZE_COUNTER},
+    {CREATE_SPRITE_RUPEE(0xFF, 0x64, 0x64),          COUNTER_WALLET_GIANT,  {0x05, 0x15}, SIZE_COUNTER},
+    {CREATE_SPRITE_RUPEE(0xFF, 0x5A, 0xFF),          COUNTER_WALLET_TYCOON, {0x05, 0x15}, SIZE_COUNTER},
+    {CREATE_SPRITE_24(dgGoldSkulltulaIconTex, 103),  COUNTER_SKULLTULLAS,   {0x05, 0x2A}, SIZE_COUNTER},
+    {CREATE_SPRITE_SKULL,                            COUNTER_DEATHS,        {0x48, 0x2A}, SIZE_COUNTER},
 };
 
 static Sprite counterDigitSprites[10] = {
@@ -495,20 +505,20 @@ static Sprite counterDigitSprites[10] = {
     CREATE_SPRITE_COUNTER_DIGIT(9),
 };
 
-u8 ShouldRenderCounter(s16 fileIndex, u8 counter) {
-    if (counter == ITEM_RUPEE_GREEN) {
+u8 ShouldRenderCounter(s16 fileIndex, u8 counterId) {
+    if (counterId == COUNTER_WALLET_CHILD) {
         return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >> gUpgradeShifts[UPG_WALLET]) == 0;
     }
 
-    if (counter == ITEM_RUPEE_BLUE) {
+    if (counterId == COUNTER_WALLET_ADULT) {
         return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >> gUpgradeShifts[UPG_WALLET]) == 1;
     }
 
-    if (counter == ITEM_RUPEE_RED) {
+    if (counterId == COUNTER_WALLET_GIANT) {
         return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >> gUpgradeShifts[UPG_WALLET]) == 2;
     }
 
-    if (counter == ITEM_RUPEE_PURPLE) {
+    if (counterId == COUNTER_WALLET_TYCOON) {
         return ((Save_GetSaveMetaInfo(fileIndex)->upgrades & gUpgradeMasks[UPG_WALLET]) >> gUpgradeShifts[UPG_WALLET]) == 3;
     }
 
@@ -517,19 +527,19 @@ u8 ShouldRenderCounter(s16 fileIndex, u8 counter) {
 
 u16 GetCurrentCounterValue(s16 fileIndex, u8 counter) {
     //one heart is 16 healthCapacity
-    if (counter == ITEM_HEART_CONTAINER) {
+    if (counter == COUNTER_HEALTH) {
         return Save_GetSaveMetaInfo(fileIndex)->healthCapacity / 16;
     }
 
-    if (counter == ITEM_RUPEE_GREEN || counter == ITEM_RUPEE_BLUE || counter == ITEM_RUPEE_RED || counter == ITEM_RUPEE_PURPLE) {
+    if (counter >= COUNTER_WALLET_CHILD && counter <= COUNTER_WALLET_TYCOON) {
         return Save_GetSaveMetaInfo(fileIndex)->rupees;
     }
 
-    if (counter == ITEM_SKULL_TOKEN) {
+    if (counter == COUNTER_SKULLTULLAS) {
         return Save_GetSaveMetaInfo(fileIndex)->gsTokens;
     }
 
-    if (counter == ITEM_INVALID_8) {
+    if (counter == COUNTER_DEATHS) {
         return Save_GetSaveMetaInfo(fileIndex)->deaths;
     }
 
@@ -537,31 +547,31 @@ u16 GetCurrentCounterValue(s16 fileIndex, u8 counter) {
 }
 
 u16 GetMaxCounterValue(s16 fileIndex, u8 counter) {
-    if (counter == ITEM_HEART_CONTAINER) {
+    if (counter == COUNTER_HEALTH) {
         return 20;
     }
 
-    if (counter == ITEM_RUPEE_GREEN) {
+    if (counter == COUNTER_WALLET_CHILD) {
         return 99;
     }
 
-    if (counter == ITEM_RUPEE_BLUE) {
+    if (counter == COUNTER_WALLET_ADULT) {
         return 200;
     }
 
-    if (counter == ITEM_RUPEE_RED) {
+    if (counter == COUNTER_WALLET_GIANT) {
         return 500;
     }
 
-    if (counter == ITEM_RUPEE_PURPLE) {
+    if (counter == COUNTER_WALLET_TYCOON) {
         return 999;
     }
 
-    if (counter == ITEM_SKULL_TOKEN) {
+    if (counter == COUNTER_SKULLTULLAS) {
         return 100;
     }
 
-    if (counter == ITEM_INVALID_8) {
+    if (counter == COUNTER_DEATHS) {
         return 999;
     }
 
@@ -574,8 +584,8 @@ void DrawCounterValue(FileChooseContext* this, s16 fileIndex, u8 alpha, CounterD
     s16 hundreds;
     s16 tens;
 
-    currentValue = GetCurrentCounterValue(fileIndex, data->item);
-    maxValue = GetMaxCounterValue(fileIndex, data->item);
+    currentValue = GetCurrentCounterValue(fileIndex, data->id);
+    maxValue = GetMaxCounterValue(fileIndex, data->id);
 
     //to prevent crashes if you use the save editor
     if (currentValue > 999) {
@@ -634,7 +644,7 @@ static void DrawCounters(FileChooseContext* this, s16 fileIndex, u8 alpha) {
     for (int i = 0; i < ARRAY_COUNT(counterData); i += 1) {
         CounterData* data = &counterData[i];
 
-        if (ShouldRenderCounter(fileIndex, data->item)) {
+        if (ShouldRenderCounter(fileIndex, data->id)) {
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, data->color.r, data->color.g, data->color.b, color_product(data->color.a, alpha));
         
             SpriteLoad(this, &(data->sprite));
@@ -903,19 +913,25 @@ void FileChoose_FinishFadeIn(GameState* thisx) {
 void SpriteLoad(FileChooseContext* this, Sprite* sprite) {
     OPEN_DISPS(this->state.gfxCtx);
 
+    /*
+     * Due to macro expansion and the token-pasting operator (##), we cannot pass sprite->im_siz in directly.
+     * Instead we must call gDPLoadTextureBlock with the raw IM_SIZ define name itself to properly expand the correct
+     * defines internally.
+     */
+
     if (sprite->im_siz == G_IM_SIZ_8b) {
         gDPLoadTextureBlock(POLY_OPA_DISP++, sprite->tex, sprite->im_fmt,
-                            G_IM_SIZ_8b, // @TEMP until I figure out how to use sprite->im_siz
+                            G_IM_SIZ_8b,
                             sprite->width, sprite->height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     } else if (sprite->im_siz == G_IM_SIZ_16b) {
         gDPLoadTextureBlock(POLY_OPA_DISP++, sprite->tex, sprite->im_fmt,
-                            G_IM_SIZ_16b, // @TEMP until I figure out how to use sprite->im_siz
+                            G_IM_SIZ_16b,
                             sprite->width, sprite->height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     } else {
         gDPLoadTextureBlock(POLY_OPA_DISP++, sprite->tex, sprite->im_fmt,
-                            G_IM_SIZ_32b, // @TEMP until I figure out how to use sprite->im_siz
+                            G_IM_SIZ_32b,
                             sprite->width, sprite->height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     }
