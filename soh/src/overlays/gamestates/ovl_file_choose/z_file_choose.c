@@ -257,115 +257,115 @@ u8 HasItem(s16 fileIndex, u8 item) {
 
 u8 ShouldRenderItem(s16 fileIndex, u8 item) {
     //strength
-    if (item == ITEM_BRACELET && (HasItem(fileIndex, ITEM_GAUNTLETS_SILVER) != 0 || HasItem(fileIndex, ITEM_GAUNTLETS_GOLD) != 0)) {
+    if (item == ITEM_BRACELET && (HasItem(fileIndex, ITEM_GAUNTLETS_SILVER) || HasItem(fileIndex, ITEM_GAUNTLETS_GOLD))) {
         return 0;
     }
 
-    if (item == ITEM_GAUNTLETS_SILVER && HasItem(fileIndex, ITEM_GAUNTLETS_SILVER) == 0) {
+    if (item == ITEM_GAUNTLETS_SILVER && !HasItem(fileIndex, ITEM_GAUNTLETS_SILVER)) {
         return 0;
     }
 
-    if (item == ITEM_GAUNTLETS_GOLD && HasItem(fileIndex, ITEM_GAUNTLETS_GOLD) == 0) {
+    if (item == ITEM_GAUNTLETS_GOLD && !HasItem(fileIndex, ITEM_GAUNTLETS_GOLD)) {
         return 0;
     }
 
     //magic
-    if (item == ITEM_SINGLE_MAGIC && HasItem(fileIndex, ITEM_DOUBLE_MAGIC) != 0) {
+    if (item == ITEM_SINGLE_MAGIC && HasItem(fileIndex, ITEM_DOUBLE_MAGIC)) {
         return 0;
     }
 
-    if (item == ITEM_DOUBLE_MAGIC && HasItem(fileIndex, ITEM_DOUBLE_MAGIC) == 0) {
+    if (item == ITEM_DOUBLE_MAGIC && !HasItem(fileIndex, ITEM_DOUBLE_MAGIC)) {
         return 0;
     }
 
     //scales
-    if (item == ITEM_SCALE_SILVER && HasItem(fileIndex, ITEM_SCALE_GOLDEN) != 0) {
+    if (item == ITEM_SCALE_SILVER && HasItem(fileIndex, ITEM_SCALE_GOLDEN)) {
         return 0;
     }
 
-    if (item == ITEM_SCALE_GOLDEN && HasItem(fileIndex, ITEM_SCALE_GOLDEN) == 0) {
+    if (item == ITEM_SCALE_GOLDEN && !HasItem(fileIndex, ITEM_SCALE_GOLDEN)) {
         return 0;
     }
 
     //hookshot/longshot
-    if (item == ITEM_HOOKSHOT && HasItem(fileIndex, ITEM_LONGSHOT) != 0) {
+    if (item == ITEM_HOOKSHOT && HasItem(fileIndex, ITEM_LONGSHOT)) {
         return 0;
     }
 
-    if (item == ITEM_LONGSHOT && HasItem(fileIndex, ITEM_LONGSHOT) == 0) {
+    if (item == ITEM_LONGSHOT && !HasItem(fileIndex, ITEM_LONGSHOT)) {
         return 0;
     }
 
     //ocarinas
-    if (item == ITEM_OCARINA_FAIRY && HasItem(fileIndex, ITEM_OCARINA_TIME) != 0) {
+    if (item == ITEM_OCARINA_FAIRY && HasItem(fileIndex, ITEM_OCARINA_TIME)) {
         return 0;
     }
 
-    if (item == ITEM_OCARINA_TIME && HasItem(fileIndex, ITEM_OCARINA_TIME) == 0) {
+    if (item == ITEM_OCARINA_TIME && !HasItem(fileIndex, ITEM_OCARINA_TIME)) {
         return 0;
     }
 
     //trade child
-    if (item == ITEM_WEIRD_EGG && HasItem(fileIndex, ITEM_WEIRD_EGG) == 0) {
+    if (item == ITEM_WEIRD_EGG && !HasItem(fileIndex, ITEM_WEIRD_EGG)) {
         return 0;
     }
 
-    if (item == ITEM_CHICKEN && HasItem(fileIndex, ITEM_CHICKEN) == 0) {
+    if (item == ITEM_CHICKEN && !HasItem(fileIndex, ITEM_CHICKEN)) {
         return 0;
     }
 
-    if (item == ITEM_LETTER_ZELDA && HasItem(fileIndex, ITEM_LETTER_ZELDA) == 0) {
+    if (item == ITEM_LETTER_ZELDA && !HasItem(fileIndex, ITEM_LETTER_ZELDA)) {
         return 0;
     }
 
     if (
         item == ITEM_MASK_KEATON &&
         (
-            HasItem(fileIndex, ITEM_WEIRD_EGG) != 0 ||
-            HasItem(fileIndex, ITEM_CHICKEN) != 0 ||
-            HasItem(fileIndex, ITEM_LETTER_ZELDA) != 0 ||
-            HasItem(fileIndex, ITEM_MASK_SKULL) != 0 ||
-            HasItem(fileIndex, ITEM_MASK_SPOOKY) != 0 ||
-            HasItem(fileIndex, ITEM_MASK_BUNNY) != 0 ||
-            HasItem(fileIndex, ITEM_MASK_GORON) != 0 ||
-            HasItem(fileIndex, ITEM_MASK_ZORA) != 0 ||
-            HasItem(fileIndex, ITEM_MASK_GERUDO) != 0 ||
-            HasItem(fileIndex, ITEM_MASK_TRUTH) != 0 ||
-            HasItem(fileIndex, ITEM_SOLD_OUT) != 0
+            HasItem(fileIndex, ITEM_WEIRD_EGG) ||
+            HasItem(fileIndex, ITEM_CHICKEN) ||
+            HasItem(fileIndex, ITEM_LETTER_ZELDA) ||
+            HasItem(fileIndex, ITEM_MASK_SKULL) ||
+            HasItem(fileIndex, ITEM_MASK_SPOOKY) ||
+            HasItem(fileIndex, ITEM_MASK_BUNNY) ||
+            HasItem(fileIndex, ITEM_MASK_GORON) ||
+            HasItem(fileIndex, ITEM_MASK_ZORA) ||
+            HasItem(fileIndex, ITEM_MASK_GERUDO) ||
+            HasItem(fileIndex, ITEM_MASK_TRUTH) ||
+            HasItem(fileIndex, ITEM_SOLD_OUT)
         )
     ) {
         return 0;
     }
 
-    if (item == ITEM_MASK_SKULL && HasItem(fileIndex, ITEM_MASK_SKULL) == 0) {
+    if (item == ITEM_MASK_SKULL && !HasItem(fileIndex, ITEM_MASK_SKULL)) {
         return 0;
     }
 
-    if (item == ITEM_MASK_SPOOKY && HasItem(fileIndex, ITEM_MASK_SPOOKY) == 0) {
+    if (item == ITEM_MASK_SPOOKY && !HasItem(fileIndex, ITEM_MASK_SPOOKY)) {
         return 0;
     }
 
-    if (item == ITEM_MASK_BUNNY && HasItem(fileIndex, ITEM_MASK_BUNNY) == 0) {
+    if (item == ITEM_MASK_BUNNY && !HasItem(fileIndex, ITEM_MASK_BUNNY)) {
         return 0;
     }
 
-    if (item == ITEM_MASK_GORON && HasItem(fileIndex, ITEM_MASK_GORON) == 0) {
+    if (item == ITEM_MASK_GORON && !HasItem(fileIndex, ITEM_MASK_GORON)) {
         return 0;
     }
 
-    if (item == ITEM_MASK_ZORA && HasItem(fileIndex, ITEM_MASK_ZORA) == 0) {
+    if (item == ITEM_MASK_ZORA && !HasItem(fileIndex, ITEM_MASK_ZORA)) {
         return 0;
     }
 
-    if (item == ITEM_MASK_GERUDO && HasItem(fileIndex, ITEM_MASK_GERUDO) == 0) {
+    if (item == ITEM_MASK_GERUDO && !HasItem(fileIndex, ITEM_MASK_GERUDO)) {
         return 0;
     }
 
-    if (item == ITEM_MASK_TRUTH && HasItem(fileIndex, ITEM_MASK_TRUTH) == 0) {
+    if (item == ITEM_MASK_TRUTH && !HasItem(fileIndex, ITEM_MASK_TRUTH)) {
         return 0;
     }
 
-    if (item == ITEM_SOLD_OUT && HasItem(fileIndex, ITEM_SOLD_OUT) == 0) {
+    if (item == ITEM_SOLD_OUT && !HasItem(fileIndex, ITEM_SOLD_OUT)) {
         return 0;
     }
 
@@ -373,58 +373,58 @@ u8 ShouldRenderItem(s16 fileIndex, u8 item) {
     if (
         item == ITEM_POCKET_EGG &&
         (
-            HasItem(fileIndex, ITEM_POCKET_CUCCO) != 0 ||
-            HasItem(fileIndex, ITEM_COJIRO) != 0 ||
-            HasItem(fileIndex, ITEM_ODD_MUSHROOM) != 0 ||
-            HasItem(fileIndex, ITEM_ODD_POTION) != 0 ||
-            HasItem(fileIndex, ITEM_SAW) != 0 ||
-            HasItem(fileIndex, ITEM_SWORD_BROKEN) != 0 ||
-            HasItem(fileIndex, ITEM_PRESCRIPTION) != 0 ||
-            HasItem(fileIndex, ITEM_FROG) != 0 ||
-            HasItem(fileIndex, ITEM_EYEDROPS) != 0 ||
-            HasItem(fileIndex, ITEM_CLAIM_CHECK) != 0
+            HasItem(fileIndex, ITEM_POCKET_CUCCO) ||
+            HasItem(fileIndex, ITEM_COJIRO) ||
+            HasItem(fileIndex, ITEM_ODD_MUSHROOM) ||
+            HasItem(fileIndex, ITEM_ODD_POTION) ||
+            HasItem(fileIndex, ITEM_SAW) ||
+            HasItem(fileIndex, ITEM_SWORD_BROKEN) ||
+            HasItem(fileIndex, ITEM_PRESCRIPTION) ||
+            HasItem(fileIndex, ITEM_FROG) ||
+            HasItem(fileIndex, ITEM_EYEDROPS) ||
+            HasItem(fileIndex, ITEM_CLAIM_CHECK)
         )
     ) {
         return 0;
     }
 
-    if (item == ITEM_POCKET_CUCCO && HasItem(fileIndex, ITEM_POCKET_CUCCO) == 0) {
+    if (item == ITEM_POCKET_CUCCO && !HasItem(fileIndex, ITEM_POCKET_CUCCO)) {
         return 0;
     }
     
-    if (item == ITEM_COJIRO && HasItem(fileIndex, ITEM_COJIRO) == 0) {
+    if (item == ITEM_COJIRO && !HasItem(fileIndex, ITEM_COJIRO)) {
         return 0;
     }
     
-    if (item == ITEM_ODD_MUSHROOM && HasItem(fileIndex, ITEM_ODD_MUSHROOM) == 0) {
+    if (item == ITEM_ODD_MUSHROOM && !HasItem(fileIndex, ITEM_ODD_MUSHROOM)) {
         return 0;
     }
     
-    if (item == ITEM_ODD_POTION && HasItem(fileIndex, ITEM_ODD_POTION) == 0) {
+    if (item == ITEM_ODD_POTION && !HasItem(fileIndex, ITEM_ODD_POTION)) {
         return 0;
     }
     
-    if (item == ITEM_SAW && HasItem(fileIndex, ITEM_SAW) == 0) {
+    if (item == ITEM_SAW && !HasItem(fileIndex, ITEM_SAW)) {
         return 0;
     }
     
-    if (item == ITEM_SWORD_BROKEN && HasItem(fileIndex, ITEM_SWORD_BROKEN) == 0) {
+    if (item == ITEM_SWORD_BROKEN && !HasItem(fileIndex, ITEM_SWORD_BROKEN)) {
         return 0;
     }
     
-    if (item == ITEM_PRESCRIPTION && HasItem(fileIndex, ITEM_PRESCRIPTION) == 0) {
+    if (item == ITEM_PRESCRIPTION && !HasItem(fileIndex, ITEM_PRESCRIPTION)) {
         return 0;
     }
     
-    if (item == ITEM_FROG && HasItem(fileIndex, ITEM_FROG) == 0) {
+    if (item == ITEM_FROG && !HasItem(fileIndex, ITEM_FROG)) {
         return 0;
     }
     
-    if (item == ITEM_EYEDROPS && HasItem(fileIndex, ITEM_EYEDROPS) == 0) {
+    if (item == ITEM_EYEDROPS && !HasItem(fileIndex, ITEM_EYEDROPS)) {
         return 0;
     }
     
-    if (item == ITEM_CLAIM_CHECK && HasItem(fileIndex, ITEM_CLAIM_CHECK) == 0) {
+    if (item == ITEM_CLAIM_CHECK && !HasItem(fileIndex, ITEM_CLAIM_CHECK)) {
         return 0;
     }
 
@@ -448,8 +448,8 @@ static void DrawItems(FileChooseContext* this, s16 fileIndex, u8 alpha) {
     for (int i = 0; i < ARRAY_COUNT(itemData); i += 1) {
         ItemData* data = &itemData[i];
 
-        if (ShouldRenderItem(fileIndex, data->item) != 0) {
-            if (HasItem(fileIndex, data->item) != 0) {
+        if (ShouldRenderItem(fileIndex, data->item)) {
+            if (HasItem(fileIndex, data->item)) {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, data->color.r, data->color.g, data->color.b, color_product(data->color.a, alpha));
             } else {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, color_product(data->color.r, DIM.r), color_product(data->color.g, DIM.g), color_product(data->color.b, DIM.b), color_product(color_product(data->color.a, DIM.a), alpha));
