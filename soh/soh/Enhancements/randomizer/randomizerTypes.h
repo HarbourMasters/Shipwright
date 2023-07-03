@@ -1351,6 +1351,8 @@ typedef enum {
     RC_TRIFORCE_COMPLETED,
     RC_DAMPE_HINT,
     RC_GREG_HINT,
+    RC_ALTAR_HINT_CHILD,
+    RC_ALTAR_HINT_ADULT,
     RC_MAX
 } RandomizerCheck;
 
