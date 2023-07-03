@@ -78,7 +78,6 @@
 #include "objects/object_gi_sword_1/object_gi_sword_1.h"
 #include "objects/object_st/object_st.h"
 
-#include "soh/Enhancements/randomizer/draw.h"
 #include "soh_assets.h"
 
 // "Get Item" Model Draw Functions

@@ -200,9 +200,9 @@ extern "C" void Randomizer_DrawTriforcePiece(PlayState* play, GetItemEntry getIt
 
 // Seperate draw function for drawing the Triforce piece when in the GI state.
 // Needed for delaying showing the triforce piece slightly so the triforce shard doesn't
-// suddenly snap to the completed triforce because the piece is given mid textbox.
-// Also makes it so the overworld models don't turn into the completed model when
-// the player has exactly the required amount of pieces.
+// suddenly snap to the new piece model or completed triforce because the piece is
+// given mid textbox. Also makes it so the overworld models don't turn into the completed
+// model when the player has exactly the required amount of pieces.
 extern "C" void Randomizer_DrawTriforcePieceGI(PlayState* play, GetItemEntry getItemEntry) {
     OPEN_DISPS(play->state.gfxCtx);
 

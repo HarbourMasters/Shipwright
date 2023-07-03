@@ -4245,7 +4245,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     "100 GS Reward - Ganon's Boss Key will be awarded by the cursed rich man after you collect 100 Gold Skulltula Tokens."
                 );
                 bool disableGBK = CVarGetInteger("gRandomizeTriforceHunt", 0);
-                static const char* disableGBKText = "This option is disabled because Triforce Hunt is enabled. Ganon's Boss key will be given on Triforce Hunt completion.";
+                static const char* disableGBKText = "This option is disabled because Triforce Hunt is enabled. Ganon's Boss key will instead be given to you after Triforce Hunt completion.";
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey,
                                                RO_GANON_BOSS_KEY_VANILLA, disableGBK, disableGBKText,
                                                RO_GANON_BOSS_KEY_VANILLA);

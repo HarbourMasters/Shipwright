@@ -588,7 +588,7 @@ void DrawItem(ItemTrackerItem item) {
     ImGui::BeginGroup();
 
     ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem && IsValidSaveFile() ? item.name : item.nameFaded),
-                    ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
+                 ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     
     DrawItemCount(item);
     ImGui::EndGroup();

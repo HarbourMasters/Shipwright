@@ -602,7 +602,7 @@ void InitTrickNames() {
   trickNameTable[GI_TRIFORCE_PIECE] = {
      Text{"Piece of Cheese", "Piece of Cheese", "Piece of Cheese"},
      Text{"Triforce Shard", "Triforce Shard", "Triforce Shard"},
-     Text{"Yellow Rock", "Yellow Rock", "Yellow Rock"}};
+     Text{"Shiny Rock", "Shiny Rock", "Shiny Rock"}};
 
 /*
   //Names for individual upgrades, in case progressive names are replaced
