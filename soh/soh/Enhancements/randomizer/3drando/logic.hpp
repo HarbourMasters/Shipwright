@@ -211,6 +211,7 @@ extern bool SilverGauntlets;
 extern bool GoldenGauntlets;
 extern bool SilverScale;
 extern bool GoldScale;
+extern bool ChildWallet;
 extern bool AdultsWallet;
 
 extern bool ChildScarecrow;
