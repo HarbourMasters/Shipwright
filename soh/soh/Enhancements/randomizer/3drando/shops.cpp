@@ -383,9 +383,9 @@ void InitTrickNames() {
      Text{"Progressive Clawshot", "Grappin-griffe (prog.)", "Zarpa progresiva"},
      Text{"Progressive Gripshot", "Grappince (prog.)", "Enganchador progresivo"}};
   trickNameTable[0x81] = {
-     Text{"Progressive Glove", "Gant de puissance (prog.)", "Guanteletes progresivos"},
-     Text{"Progressive Power Bracelet", "Bracelet de force (prog.)", "Brasaletes progresivos"},
-     Text{"Progressive Magic Bracelet", "Bracelet magique (prog.)", "Manoplas progresivas"}};
+     Text{"Power Glove", "Gant de puissance (prog.)", "Guanteletes progresivos"},
+     Text{"Power Bracelet", "Bracelet de force (prog.)", "Brasaletes progresivos"},
+     Text{"Magic Bracelet", "Bracelet magique (prog.)", "Manoplas progresivas"}};
   trickNameTable[0x82] = {
      Text{"Progressive Bomb Capacity", "Capacité de bombes (prog.)", "Mayor capacidad de bombas"},
      Text{"Progressive Bomb Pack", "Paquet de bombes (prog.)", "Zurrón de bombas progresivo"},
