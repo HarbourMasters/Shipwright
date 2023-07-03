@@ -1030,6 +1030,52 @@ extern "C" uint32_t ResourceMgr_GetGameVersion(int index) {
     return LUS::Context::GetInstance()->GetResourceManager()->GetArchive()->GetGameVersions()[index];
 }
 
+extern "C" uint32_t ResourceMgr_GetGamePlatform(int index) {
+    uint32_t version = LUS::Context::GetInstance()->GetResourceManager()->GetArchive()->GetGameVersions()[index];
+
+    switch (version) {
+        case OOT_NTSC_US_10:
+        case OOT_NTSC_US_11:
+        case OOT_NTSC_US_12:
+        case OOT_PAL_10:
+        case OOT_PAL_11:
+            return GAME_PLATFORM_N64;
+        case OOT_NTSC_JP_GC:
+        case OOT_NTSC_US_GC:
+        case OOT_PAL_GC:
+        case OOT_NTSC_JP_MQ:
+        case OOT_NTSC_US_MQ:
+        case OOT_PAL_MQ:
+        case OOT_PAL_GC_DBG1:
+        case OOT_PAL_GC_DBG2:
+        case OOT_PAL_GC_MQ_DBG:
+            return GAME_PLATFORM_GC;
+    }
+}
+
+extern "C" uint32_t ResourceMgr_GetGameRegion(int index) {
+    uint32_t version = LUS::Context::GetInstance()->GetResourceManager()->GetArchive()->GetGameVersions()[index];
+
+    switch (version) {
+        case OOT_NTSC_US_10:
+        case OOT_NTSC_US_11:
+        case OOT_NTSC_US_12:
+        case OOT_NTSC_JP_GC:
+        case OOT_NTSC_US_GC:
+        case OOT_NTSC_JP_MQ:
+        case OOT_NTSC_US_MQ:
+            return GAME_REGION_NTSC;
+        case OOT_PAL_10:
+        case OOT_PAL_11:
+        case OOT_PAL_GC:
+        case OOT_PAL_MQ:
+        case OOT_PAL_GC_DBG1:
+        case OOT_PAL_GC_DBG2:
+        case OOT_PAL_GC_MQ_DBG:
+            return GAME_REGION_PAL;
+    }
+}
+
 uint32_t IsSceneMasterQuest(s16 sceneNum) {
     uint32_t value = 0;
     uint8_t mqMode = CVarGetInteger("gBetterDebugWarpScreenMQMode", WARP_MODE_OVERRIDE_OFF);
