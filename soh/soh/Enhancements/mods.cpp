@@ -627,7 +627,7 @@ void RegisterTriforceHunt() {
             uint8_t requiredPieces = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
             
             // Give Boss Key when player loads back into the savefile.
-            if (currentPieces >= requiredPieces && gPlayState->nextEntranceIndex != 0x6B &&
+            if (currentPieces >= requiredPieces && gPlayState->sceneLoadFlag != 0x14 &&
                 (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANON]) == 0) {
                 GetItemEntry getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY);
                 GiveItemEntryWithoutActor(gPlayState, getItemEntry);

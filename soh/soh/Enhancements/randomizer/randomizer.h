@@ -14,7 +14,7 @@
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
 #define MAX_SEED_STRING_SIZE 1024
-#define NUM_TRIFORCE_PIECE_MESSAGES 5
+#define NUM_TRIFORCE_PIECE_MESSAGES 6
 #define NUM_NAVI_MESSAGES 19
 #define NUM_ICE_TRAP_MESSAGES 23
 #define NUM_GORON_MESSAGES 9

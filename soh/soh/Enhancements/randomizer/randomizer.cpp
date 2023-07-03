@@ -3619,8 +3619,9 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::EnhancementCheckbox("Triforce Hunt", "gTriforceHunt");
                 UIWidgets::InsertHelpHoverText(
                     "Pieces of the Triforce of Courage have been scattered across the world. Find them all to finish the game!\n\n"
-                    "When the required amount of pieces have been found, the game is saved and Ganon's Boss key is placed on "
-                    "the Light Arrow cutscene so you can beat the game by defeating Ganon afterwards if you want to."
+                    "When the required amount of pieces have been found, the game is saved and Ganon's Boss key is given "
+                    "to you when you load back into the game if you desire to beat Ganon afterwards.\n\n"
+                    "Keep in mind Ganon might not be logically beatable when \"All Locations Reachable\" is turned off."
                 );
 
                 if (CVarGetInteger("gTriforceHunt", 0)) {
@@ -5518,25 +5519,29 @@ CustomMessage Randomizer::GetRupeeMessage(u16 rupeeTextId) {
 void CreateTriforcePieceMessages() {
     CustomMessage TriforcePieceMessages[NUM_TRIFORCE_PIECE_MESSAGES] = {
 
-        { "You found a %yTriforce%w piece!&%g{{current}}%w down, %c{{remaining}}%w to go. It's a start!",
+        { "You found a %yTriforce Piece%w!&%g{{current}}%w down, %c{{remaining}}%w to go. It's a start!",
           "Derp",
           "Derp" },
 
-        { "You found a %yTriforce%w piece!&%g{{current}}%w down, %c{{remaining}}%w to go. Getting closer!",
+        { "You found a %yTriforce Piece%w!&%g{{current}}%w down, %c{{remaining}}%w to go. Progress!",
           "Derp",
           "Derp" },
 
-        { "You found a %yTriforce%w piece!&%g{{current}}%w down, %c{{remaining}}%w to go. Over half-way there!",
+        { "You found a %yTriforce Piece%w!&%g{{current}}%w down, %c{{remaining}}%w to go. Over half-way&there!",
           "Derp",
           "Derp" },
 
-        { "You found a %yTriforce%w piece!&%g{{current}}%w down, %c{{remaining}}%w to go. Almost done!",
+        { "You found a %yTriforce Piece%w!&%g{{current}}%w down, %c{{remaining}}%w to go. Almost done!",
           "Derp",
           "Derp" },
 
-        { "You completed the %yTriforce%w! %gGG%w!",
+        { "You completed the %yTriforce of&Courage%w! %gGG%w!",
           "Derp",
-          "Derp" }
+          "Derp" },
+
+        { "You found a spare %yTriforce Piece%w!&You only needed %c{{required}}%w, but you have %g{{current}}%w!",
+          "Derp",
+          "Derp" },
     };
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::triforcePieceMessageTableID);
@@ -5552,6 +5557,7 @@ CustomMessage Randomizer::GetTriforcePieceMessage() {
     uint16_t remaining = required - current;
     float percentageCollected = (float)current / (float)required;
     uint8_t messageIndex;
+
     if (percentageCollected <= 0.25) {
         messageIndex = 0;
     } else if (percentageCollected <= 0.5) {
@@ -5560,13 +5566,17 @@ CustomMessage Randomizer::GetTriforcePieceMessage() {
         messageIndex = 2;
     } else if (percentageCollected < 1) {
         messageIndex = 3;
-    } else {
+    } else if (current == required) {
         messageIndex = 4;
+    } else {
+        messageIndex = 5;
     }
+
     CustomMessage messageEntry =
         CustomMessageManager::Instance->RetrieveMessage(Randomizer::triforcePieceMessageTableID, messageIndex);
     messageEntry.Replace("{{current}}", std::to_string(current), std::to_string(current), std::to_string(current));
     messageEntry.Replace("{{remaining}}", std::to_string(remaining), std::to_string(remaining), std::to_string(remaining));
+    messageEntry.Replace("{{required}}", std::to_string(required), std::to_string(required), std::to_string(required));
     return messageEntry;
 }
 
