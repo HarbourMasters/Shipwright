@@ -7,5 +7,7 @@ namespace SohUtils {
 
     const std::string& GetItemName(int32_t item);
 
+    const std::string& GetRandomizerItemName(int32_t item);
+
     const std::string& GetQuestItemName(int32_t item);
 } // namespace SohUtils
