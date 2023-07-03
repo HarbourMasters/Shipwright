@@ -917,14 +917,19 @@ void LocationTable_Init() {
     locationTable[DMT_STORMS_GROTTO_GOSSIP_STONE]        = ItemLocation::HintStone(RC_DMT_STORMS_GROTTO_GOSSIP_STONE,  "DMT Storms Grotto Gossip Stone");
     locationTable[DMC_UPPER_GROTTO_GOSSIP_STONE]         = ItemLocation::HintStone(RC_DMC_UPPER_GROTTO_GOSSIP_STONE,   "DMC Upper Grotto Gossip Stone");
 
-
     locationTable[GANONDORF_HINT]                        = ItemLocation::OtherHint(RC_GANONDORF_HINT,                  "Ganondorf Hint");
 <<<<<<< HEAD
     locationTable[TRIFORCE_COMPLETED]                    = ItemLocation::Reward (RC_TRIFORCE_COMPLETED, 0xFF, "Completed Triforce", NONE, TRIFORCE_COMPLETED, {}, SpoilerCollectionCheck::None(), SpoilerCollectionCheckGroup::GROUP_NO_GROUP);
 =======
     locationTable[DAMPE_HINT]                            = ItemLocation::OtherHint(RC_DAMPE_HINT,                      "Dampe's Diary Hint");
     locationTable[GREG_HINT]                             = ItemLocation::OtherHint(RC_GREG_HINT,                       "Greg Hint");
+<<<<<<< HEAD
 >>>>>>> 6042cd1a (Initial implementation of no-duplicates of special hints)
+=======
+    locationTable[ALTAR_HINT_CHILD]                      = ItemLocation::OtherHint(RC_ALTAR_HINT_CHILD,                "ToT Child Altar Text");
+    locationTable[ALTAR_HINT_ADULT]                      = ItemLocation::OtherHint(RC_ALTAR_HINT_ADULT,                "ToT Adult Altar Text");
+
+>>>>>>> 9dd1158a (stupid fixes)
 
     for (int i = NONE; i != KEY_ENUM_MAX; i++)
         locationLookupTable.insert(std::make_pair(locationTable[i].GetRandomizerCheck(), static_cast<Key>(i)));
@@ -1599,6 +1604,10 @@ void LocationReset() {
 
   Location(GANONDORF_HINT)->RemoveFromPool();
   Location(DAMPE_HINT)->RemoveFromPool();
+  Location(GREG_HINT)->RemoveFromPool();
+  Location(ALTAR_HINT_CHILD)->RemoveFromPool();
+  Location(ALTAR_HINT_ADULT)->RemoveFromPool();
+ 
 }
 
 void ItemReset() {

@@ -702,7 +702,9 @@ static Text BuildDungeonRewardText(const RandomizerGet itemKey, bool isChild) {
     RandomizerCheck location = FilterFromPool(ctx->allLocations, [itemKey, ctx](const RandomizerCheck loc) {
         return ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == itemKey;
     })[0];
-    ctx->GetItemLocation(location)->SetAsHinted();
+    if (IsReachableWithout(altarLoc, location, true) || ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON)){ //RANDOTODO check if works properly
+      ctx->GetItemLocation(location)->SetAsHinted();
+    }
 
     std::string rewardString = "$" + std::to_string(itemKey - RG_KOKIRI_EMERALD);
 
