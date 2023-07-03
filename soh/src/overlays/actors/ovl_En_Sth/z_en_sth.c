@@ -9,6 +9,8 @@
 #include "objects/object_ahg/object_ahg.h"
 #include "objects/object_boj/object_boj.h"
 #include <assert.h>
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include <math.h>
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -298,6 +300,7 @@ void EnSth_GiveReward(EnSth* this, PlayState* play) {
         this->actor.parent = NULL;
         EnSth_SetupAction(this, EnSth_RewardObtainedTalk);
         gSaveContext.eventChkInf[EVENTCHKINF_SKULLTULA_REWARD_INDEX] |= this->eventFlag;
+        GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, (EVENTCHKINF_SKULLTULA_REWARD_INDEX << 4) + (int)log2(this->eventFlag));
     } else {
         EnSth_GivePlayerItem(this, play);
     }

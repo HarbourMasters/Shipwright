@@ -666,6 +666,7 @@ void Flags_SetSwitch(PlayState* play, s32 flag) {
     } else {
         play->actorCtx.flags.tempSwch |= (1 << (flag - 0x20));
     }
+    GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_SWITCH, flag);
 }
 
 /**
@@ -677,6 +678,7 @@ void Flags_UnsetSwitch(PlayState* play, s32 flag) {
     } else {
         play->actorCtx.flags.tempSwch &= ~(1 << (flag - 0x20));
     }
+    GameInteractor_ExecuteOnSceneFlagUnset(play->sceneNum, FLAG_SCENE_SWITCH, flag);
 }
 
 /**
@@ -724,6 +726,7 @@ s32 Flags_GetTreasure(PlayState* play, s32 flag) {
  */
 void Flags_SetTreasure(PlayState* play, s32 flag) {
     play->actorCtx.flags.chest |= (1 << flag);
+    GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_TREASURE, flag);
 }
 
 /**
@@ -738,6 +741,7 @@ s32 Flags_GetClear(PlayState* play, s32 flag) {
  */
 void Flags_SetClear(PlayState* play, s32 flag) {
     play->actorCtx.flags.clear |= (1 << flag);
+    GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_CLEAR, flag);
 }
 
 /**
@@ -745,6 +749,7 @@ void Flags_SetClear(PlayState* play, s32 flag) {
  */
 void Flags_UnsetClear(PlayState* play, s32 flag) {
     play->actorCtx.flags.clear &= ~(1 << flag);
+    GameInteractor_ExecuteOnSceneFlagUnset(play->sceneNum, FLAG_SCENE_CLEAR, flag);
 }
 
 /**
@@ -790,6 +795,7 @@ void Flags_SetCollectible(PlayState* play, s32 flag) {
             play->actorCtx.flags.tempCollect |= (1 << (flag - 0x20));
         }
     }
+    GameInteractor_ExecuteOnSceneFlagSet(play->sceneNum, FLAG_SCENE_COLLECTIBLE, flag);
 }
 
 void func_8002CDE4(PlayState* play, TitleCardContext* titleCtx) {
@@ -4703,6 +4709,7 @@ s32 Flags_GetEventChkInf(s32 flag) {
  */
 void Flags_SetEventChkInf(s32 flag) {
     gSaveContext.eventChkInf[flag >> 4] |= (1 << (flag & 0xF));
+    GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, flag);
 }
 
 /**
@@ -4710,6 +4717,7 @@ void Flags_SetEventChkInf(s32 flag) {
  */
 void Flags_UnsetEventChkInf(s32 flag) {
     gSaveContext.eventChkInf[flag >> 4] &= ~(1 << (flag & 0xF));
+    GameInteractor_ExecuteOnFlagUnset(FLAG_EVENT_CHECK_INF, flag);
 }
 
 /**
@@ -4724,6 +4732,7 @@ s32 Flags_GetItemGetInf(s32 flag) {
  */
 void Flags_SetItemGetInf(s32 flag) {
     gSaveContext.itemGetInf[flag >> 4] |= (1 << (flag & 0xF));
+    GameInteractor_ExecuteOnFlagSet(FLAG_ITEM_GET_INF, flag);
 }
 
 /**
@@ -4731,6 +4740,7 @@ void Flags_SetItemGetInf(s32 flag) {
  */
 void Flags_UnsetItemGetInf(s32 flag) {
     gSaveContext.itemGetInf[flag >> 4] &= ~(1 << (flag & 0xF));
+    GameInteractor_ExecuteOnFlagUnset(FLAG_ITEM_GET_INF, flag);
 }
 
 /**
@@ -4745,6 +4755,7 @@ s32 Flags_GetInfTable(s32 flag) {
  */
 void Flags_SetInfTable(s32 flag) {
     gSaveContext.infTable[flag >> 4] |= (1 << (flag & 0xF));
+    GameInteractor_ExecuteOnFlagSet(FLAG_INF_TABLE, flag);
 }
 
 /**
@@ -4752,6 +4763,7 @@ void Flags_SetInfTable(s32 flag) {
  */
 void Flags_UnsetInfTable(s32 flag) {
     gSaveContext.infTable[flag >> 4] &= ~(1 << (flag & 0xF));
+    GameInteractor_ExecuteOnFlagUnset(FLAG_INF_TABLE, flag);
 }
 
 /**
@@ -4766,6 +4778,7 @@ s32 Flags_GetEventInf(s32 flag) {
  */
 void Flags_SetEventInf(s32 flag) {
     gSaveContext.eventInf[flag >> 4] |= (1 << (flag & 0xF));
+    GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_INF, flag);
 }
 
 /**
@@ -4773,6 +4786,7 @@ void Flags_SetEventInf(s32 flag) {
  */
 void Flags_UnsetEventInf(s32 flag) {
     gSaveContext.eventInf[flag >> 4] &= ~(1 << (flag & 0xF));
+    GameInteractor_ExecuteOnFlagUnset(FLAG_EVENT_INF, flag);
 }
 
 /**
@@ -4787,6 +4801,7 @@ s32 Flags_GetRandomizerInf(RandomizerInf flag) {
  */
 void Flags_SetRandomizerInf(RandomizerInf flag) {
     gSaveContext.randomizerInf[flag >> 4] |= (1 << (flag & 0xF));
+    GameInteractor_ExecuteOnFlagSet(FLAG_RANDOMIZER_INF, flag);
 }
 
 /**
@@ -4794,6 +4809,7 @@ void Flags_SetRandomizerInf(RandomizerInf flag) {
  */
 void Flags_UnsetRandomizerInf(RandomizerInf flag) {
     gSaveContext.randomizerInf[flag >> 4] &= ~(1 << (flag & 0xF));
+    GameInteractor_ExecuteOnFlagUnset(FLAG_RANDOMIZER_INF, flag);
 }
 
 u32 func_80035BFC(PlayState* play, s16 arg1) {
