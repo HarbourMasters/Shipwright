@@ -98,12 +98,12 @@ void AreaTable_Init_GerudoValley() {
                   //Events
                   EventAccess(&CarpenterRescue, {[]{return CanFinishGerudoFortress;}}),
                   EventAccess(&GF_GateOpen,     {[]{return IsAdult && GerudoToken;}}),
-                  EventAccess(&GtG_GateOpen,    {[]{return GtG_GateOpen || (IsAdult && GerudoToken);}}),
+                  EventAccess(&GtG_GateOpen,    {[]{return GtG_GateOpen || (IsAdult && GerudoToken && ChildWallet);}}),
                 }, {
                   //Locations
                   LocationAccess(GF_CHEST,              {[]{return CanUse(HOVER_BOOTS) || (IsAdult && CanUse(SCARECROW)) || CanUse(LONGSHOT);}}),
-                  LocationAccess(GF_HBA_1000_POINTS,    {[]{return GerudoToken && CanRideEpona && Bow && AtDay;}}),
-                  LocationAccess(GF_HBA_1500_POINTS,    {[]{return GerudoToken && CanRideEpona && Bow && AtDay;}}),
+                  LocationAccess(GF_HBA_1000_POINTS,    {[]{return ChildWallet && GerudoToken && CanRideEpona && Bow && AtDay;}}),
+                  LocationAccess(GF_HBA_1500_POINTS,    {[]{return ChildWallet && GerudoToken && CanRideEpona && Bow && AtDay;}}),
                   LocationAccess(GF_NORTH_F1_CARPENTER, {[]{return  IsAdult || KokiriSword || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD);}}),
                   LocationAccess(GF_NORTH_F2_CARPENTER, {[]{return (IsAdult || KokiriSword || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD)) && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen);}}),
                   LocationAccess(GF_SOUTH_F1_CARPENTER, {[]{return  IsAdult || KokiriSword || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD);}}),

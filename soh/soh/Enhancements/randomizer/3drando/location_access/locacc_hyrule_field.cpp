@@ -158,8 +158,8 @@ void AreaTable_Init_HyruleField() {
 
   areaTable[LH_FISHING_HOLE] = Area("LH Fishing Hole", "LH Fishing Hole", NONE, DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(LH_CHILD_FISHING, {[]{return IsChild;}}),
-                  LocationAccess(LH_ADULT_FISHING, {[]{return IsAdult;}}),
+                  LocationAccess(LH_CHILD_FISHING, {[]{return ChildWallet && IsChild;}}),
+                  LocationAccess(LH_ADULT_FISHING, {[]{return ChildWallet && IsAdult;}}),
                 }, {
                   //Exits
                   Entrance(LH_FISHING_ISLAND, {[]{return true;}}),
@@ -197,7 +197,7 @@ void AreaTable_Init_HyruleField() {
 
   areaTable[LLR_TALONS_HOUSE] = Area("LLR Talons House", "LLR Talons House", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(LLR_TALONS_CHICKENS, {[]{return IsChild && AtDay && ZeldasLetter;}}),
+                  LocationAccess(LLR_TALONS_CHICKENS, {[]{return ChildWallet && IsChild && AtDay && ZeldasLetter;}}),
                 }, {
                   //Exits
                   Entrance(LON_LON_RANCH, {[]{return true;}}),

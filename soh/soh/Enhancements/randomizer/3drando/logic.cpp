@@ -223,6 +223,7 @@ namespace Logic {
   bool GoldenGauntlets  = false;
   bool SilverScale      = false;
   bool GoldScale        = false;
+  bool ChildWallet      = false;
   bool AdultsWallet     = false;
 
   bool ChildScarecrow   = false;
@@ -511,6 +512,7 @@ namespace Logic {
     GoldenGauntlets = ProgressiveStrength   >= 3;
     SilverScale     = ProgressiveScale      >= 1;
     GoldScale       = ProgressiveScale      >= 2;
+    ChildWallet     = ProgressiveWallet     >= 1;
     AdultsWallet    = ProgressiveWallet     >= 2;
     MasterSword     = MasterSword   || IsAdult;
     BiggoronSword   = BiggoronSword || ProgressiveGiantKnife >= 2;
@@ -537,7 +539,7 @@ namespace Logic {
     Fairy        = HasBottle && FairyAccess;
 
     FoundBombchus   = (BombchuDrop || Bombchus || Bombchus5 || Bombchus10 || Bombchus20);
-    CanPlayBowling  = (BombchusInLogic && FoundBombchus) || (!BombchusInLogic && BombBag);
+    CanPlayBowling  = ChildWallet && ((BombchusInLogic && FoundBombchus) || (!BombchusInLogic && BombBag));
     HasBombchus     = (BuyBombchus10 || BuyBombchus20 || (AmmoDrops.Is(AMMODROPS_BOMBCHU) && FoundBombchus));
 
     HasExplosives =  Bombs || (BombchusInLogic && HasBombchus);
@@ -936,6 +938,7 @@ namespace Logic {
      GoldenGauntlets  = false;
      SilverScale      = false;
      GoldScale        = false;
+     ChildWallet      = false;
      AdultsWallet     = false;
 
      ChildScarecrow   = false;

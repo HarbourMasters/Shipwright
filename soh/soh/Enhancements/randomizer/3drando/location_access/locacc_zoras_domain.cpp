@@ -23,7 +23,7 @@ void AreaTable_Init_ZorasDomain() {
                   EventAccess(&BugShrub,         {[]{return BugShrub         || CanCutShrubs;}}),
                 }, {
                   //Locations
-                  LocationAccess(ZR_MAGIC_BEAN_SALESMAN,               {[]{return IsChild;}}),
+                  LocationAccess(ZR_MAGIC_BEAN_SALESMAN,               {[]{return ChildWallet && IsChild;}}),
                   LocationAccess(ZR_FROGS_OCARINA_GAME,                {[]{return IsChild && CanPlay(ZeldasLullaby) && CanPlay(SariasSong) && CanPlay(SunsSong) && CanPlay(EponasSong) && CanPlay(SongOfTime) && CanPlay(SongOfStorms);}}),
                   LocationAccess(ZR_FROGS_IN_THE_RAIN,                 {[]{return IsChild && CanPlay(SongOfStorms);}}),
                   LocationAccess(ZR_FROGS_ZELDAS_LULLABY,              {[]{return IsChild && CanPlay(ZeldasLullaby);}}),
@@ -91,7 +91,7 @@ void AreaTable_Init_ZorasDomain() {
                   EventAccess(&DeliverLetter,     {[]{return DeliverLetter     || (RutosLetter && IsChild && ZorasFountain.IsNot(ZORASFOUNTAIN_OPEN));}}),
                 }, {
                   //Locations
-                  LocationAccess(ZD_DIVING_MINIGAME,     {[]{return IsChild;}}),
+                  LocationAccess(ZD_DIVING_MINIGAME,     {[]{return ChildWallet && IsChild;}}),
                   LocationAccess(ZD_CHEST,               {[]{return IsChild && CanUse(STICKS);}}),
                   LocationAccess(ZD_KING_ZORA_THAWED,    {[]{return KingZoraThawed;}}),
                   LocationAccess(ZD_TRADE_PRESCRIPTION,  {[]{return KingZoraThawed && Prescription;}}),
