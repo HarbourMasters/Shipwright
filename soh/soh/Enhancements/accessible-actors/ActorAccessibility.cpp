@@ -47,7 +47,6 @@ void ActorAccessibility_Init() {
     aa = new ActorAccessibility();
     ActorAccessibility_InitAudio();
     ActorAccessibility_InitActors();
-    //ActorAccessibility_PlayExternalSound(NULL, "Witch Cackles 2");
 
 }
 void ActorAccessibility_Shutdown() {
@@ -285,11 +284,6 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
 
     }
     void ActorAccessibility_DecodeAndCacheSamples() {
-        auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResource("audio/samples/Witch Cackles 2");
-        LUS::AudioSample* sample = reinterpret_cast<LUS::AudioSample*>(res.get());
-        AudioDecoder decoder;
-        decoder.setSample(sample);
-
 
         auto files = LUS::Context::GetInstance()->GetResourceManager()->GetArchive()->ListFiles("audio/samples/*");
         int samplesFound = 0;
@@ -315,11 +309,6 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
 //Who cares about the path: let's keep only the file names for ease of use.
             std::string fileName = path.substr(path.find_last_of('/') + 1);
             aa->audioEngine->cacheDecodedSample(fileName, wav, wavSize);
-            std::string newpath = "c:\\users\\caturria\\oot samples\\" + fileName + ".wav";
-            FILE* f = fopen(newpath.c_str(), "wb");
-            fwrite(wav, 1, wavSize, f);
-            fclose(f);
-
         }
 
     }

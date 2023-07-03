@@ -112,7 +112,7 @@ CrowdControl* CrowdControl::Instance;
 #include "soh/resource/importer/BackgroundFactory.h"
 
 #include "soh/config/ConfigUpdaters.h"
-
+#include "soh/Enhancements/accessible-actors/ActorAccessibility.h"
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
 CustomMessageManager* CustomMessageManager::Instance;
@@ -396,8 +396,11 @@ void OTRAudio_Thread() {
         s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
         for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
             AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
-        }
+            // Give accessibility a chance to merge its own audio in.
+            ActorAccessibility_MixAccessibleAudioWithGameAudio(
+                audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
 
+        }
         AudioPlayer_Play((u8*)audio_buffer, num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
 
         audio.processing = false;

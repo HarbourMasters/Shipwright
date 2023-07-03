@@ -60,13 +60,12 @@ int main(int argc, char** argv)
 #endif
 
     GameConsole_Init();
+    ActorAccessibility_Init();//Needs to happen before OTR.
     InitOTR();
     // TODO: Was moved to below InitOTR because it requires window to be setup. But will be late to catch crashes.
     CrashHandlerRegisterCallback(CrashHandler_PrintSohData);
     BootCommands_Init();
-    ActorAccessibility_Init();
-
-
+    ActorAccessibility_DecodeAndCacheSamples();
     Main(0);
     DeinitOTR();
     return 0;
