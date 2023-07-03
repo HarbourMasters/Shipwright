@@ -2428,6 +2428,9 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_BUY_RED_POTION_50:
             return true;
         case RG_PROGRESSIVE_WALLET:
+            if (!Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
+                return false;
+            }
             if (CUR_UPG_VALUE(UPG_WALLET) < 2) {
                 return true;
             } else {
