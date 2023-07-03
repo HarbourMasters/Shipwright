@@ -18,7 +18,7 @@ public:
     virtual GameInteractionEffectQueryResult CanBeRemoved();
     GameInteractionEffectQueryResult Apply();
     GameInteractionEffectQueryResult Remove();
-    int32_t parameters[2];
+    int32_t parameters[3];
 
   protected:
     virtual void _Apply() = 0;
@@ -26,6 +26,26 @@ public:
 };
 
 namespace GameInteractionEffect {
+    class SetSceneFlag: public GameInteractionEffectBase {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+    };
+
+    class UnsetSceneFlag: public GameInteractionEffectBase {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+    };
+
+    class SetFlag: public GameInteractionEffectBase {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+    };
+
+    class UnsetFlag: public GameInteractionEffectBase {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+    };
+
     class ModifyHeartContainers: public GameInteractionEffectBase {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
