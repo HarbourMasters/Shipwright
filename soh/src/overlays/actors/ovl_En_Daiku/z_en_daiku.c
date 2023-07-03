@@ -1,6 +1,8 @@
 #include "z_en_daiku.h"
 #include "overlays/actors/ovl_En_GeldB/z_en_geldb.h"
 #include "objects/object_daiku/object_daiku.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include <math.h>
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -403,6 +405,7 @@ void EnDaiku_InitEscape(EnDaiku* this, PlayState* play) {
     this->stateFlags &= ~(ENDAIKU_STATEFLAG_1 | ENDAIKU_STATEFLAG_2);
 
     gSaveContext.eventChkInf[EVENTCHKINF_CARPENTERS_FREE_INDEX] |= EVENTCHKINF_CARPENTERS_FREE_MASK(this->actor.params & 3);
+    GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, (EVENTCHKINF_CARPENTERS_FREE_INDEX << 4) + (int)log2(EVENTCHKINF_CARPENTERS_FREE_MASK(this->actor.params & 3)));
 
     this->actor.gravity = -1.0f;
     this->escapeSubCamTimer = sEscapeSubCamParams[this->actor.params & 3].maxFramesActive;

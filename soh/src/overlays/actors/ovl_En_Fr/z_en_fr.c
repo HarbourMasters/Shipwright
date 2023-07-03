@@ -3,6 +3,8 @@
 #include "vt.h"
 #include "objects/object_fr/object_fr.h"
 #include <assert.h>
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include <math.h>
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
@@ -955,6 +957,7 @@ void EnFr_SetReward(EnFr* this, PlayState* play) {
     if ((songIndex >= FROG_ZL) && (songIndex <= FROG_SOT)) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
+            GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, (EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) + (int)log2(sSongIndex[songIndex]));
             if (!gSaveContext.n64ddFlag) {
                 this->reward = GI_RUPEE_PURPLE;
             } else {
@@ -967,6 +970,7 @@ void EnFr_SetReward(EnFr* this, PlayState* play) {
     } else if (songIndex == FROG_STORMS) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
+            GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, (EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) + (int)log2(sSongIndex[songIndex]));
             if (!gSaveContext.n64ddFlag) {
                 this->reward = GI_HEART_PIECE;
             } else {
@@ -979,6 +983,7 @@ void EnFr_SetReward(EnFr* this, PlayState* play) {
     } else if (songIndex == FROG_CHOIR_SONG) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
+            GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, (EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) + (int)log2(sSongIndex[songIndex]));
             if (!gSaveContext.n64ddFlag) {
                 this->reward = GI_HEART_PIECE;
             } else {

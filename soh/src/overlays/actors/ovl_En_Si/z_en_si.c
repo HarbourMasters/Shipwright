@@ -5,6 +5,7 @@
  */
 
 #include "z_en_si.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOOKSHOT_DRAGS)
 
@@ -180,6 +181,7 @@ void func_80AFB950(EnSi* this, PlayState* play) {
         player->actor.freezeTimer = 10;
     } else {
         SET_GS_FLAGS((this->actor.params & 0x1F00) >> 8, this->actor.params & 0xFF);
+        GameInteractor_ExecuteOnFlagSet(FLAG_GS_TOKEN, this->actor.params);
         Actor_Kill(&this->actor);
     }
 }
