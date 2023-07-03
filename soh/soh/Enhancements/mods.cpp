@@ -32,7 +32,7 @@ void ReloadSceneTogglingLinkAge() {
 
 void RegisterInfiniteMoney() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (CVarGetInteger("gInfiniteMoney", 0) != 0 && Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
+        if (CVarGetInteger("gInfiniteMoney", 0) != 0 && (!gSaveContext.n64ddFlag || Flags_GetRandomizerInf(RAND_INF_HAS_WALLET))) {
             if (gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
                 gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
             }
