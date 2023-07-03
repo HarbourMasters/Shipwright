@@ -3088,9 +3088,9 @@ void GenerateRandomizerImgui(std::string seed = "") {
         cvarSettings[RSK_MQ_DUNGEON_COUNT] = 0;
     }
 
-    cvarSettings[RSK_TRIFORCE_HUNT] = CVarGetInteger("gTriforceHunt", 0);
-    cvarSettings[RSK_TRIFORCE_HUNT_PIECES_TOTAL] = CVarGetInteger("gTriforceHuntTotalPieces", 20);
-    cvarSettings[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = CVarGetInteger("gTriforceHuntRequiredPieces", 10);
+    cvarSettings[RSK_TRIFORCE_HUNT] = CVarGetInteger("gRandomizeTriforceHunt", 0);
+    cvarSettings[RSK_TRIFORCE_HUNT_PIECES_TOTAL] = CVarGetInteger("gRandomizeTriforceHuntTotalPieces", 20);
+    cvarSettings[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = CVarGetInteger("gRandomizeTriforceHuntRequiredPieces", 10);
 
     // Enable if any of the entrance rando options are enabled.
     cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVarGetInteger("gRandomizeShuffleDungeonsEntrances", RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ||
@@ -3616,7 +3616,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Triforce Hunt
-                UIWidgets::EnhancementCheckbox("Triforce Hunt", "gTriforceHunt");
+                UIWidgets::EnhancementCheckbox("Triforce Hunt", "gRandomizeTriforceHunt");
                 UIWidgets::InsertHelpHoverText(
                     "Pieces of the Triforce of Courage have been scattered across the world. Find them all to finish the game!\n\n"
                     "When the required amount of pieces have been found, the game is saved and Ganon's Boss key is given "
@@ -3624,26 +3624,26 @@ void RandomizerSettingsWindow::DrawElement() {
                     "Keep in mind Ganon might not be logically beatable when \"All Locations Reachable\" is turned off."
                 );
 
-                if (CVarGetInteger("gTriforceHunt", 0)) {
+                if (CVarGetInteger("gRandomizeTriforceHunt", 0)) {
                     // Triforce Hunt (total pieces)
                     UIWidgets::Spacer(0);
-                    int totalPieces = CVarGetInteger("gTriforceHuntTotalPieces", 20);
+                    int totalPieces = CVarGetInteger("gRandomizeTriforceHuntTotalPieces", 20);
                     ImGui::Text("Triforce Pieces in the world: %d", totalPieces);
                     UIWidgets::InsertHelpHoverText(
                         "The amount of Triforce pieces that will be placed in the world. "
                         "Keep in mind seed generation can fail if more pieces are placed than there are junk items in the item pool."
                     );
                     ImGui::SameLine();
-                    UIWidgets::EnhancementSliderInt("", "##TriforceHuntTotalPieces", "gTriforceHuntTotalPieces", 1, 50, "", 20);
+                    UIWidgets::EnhancementSliderInt("", "##TriforceHuntTotalPieces", "gRandomizeTriforceHuntTotalPieces", 1, 50, "", 20);
 
                     // Triforce Hunt (required pieces)
-                    int requiredPieces = CVarGetInteger("gTriforceHuntRequiredPieces", 10);
+                    int requiredPieces = CVarGetInteger("gRandomizeTriforceHuntRequiredPieces", 10);
                     ImGui::Text("Triforce Pieces to win: %d", requiredPieces);
                     UIWidgets::InsertHelpHoverText(
                         "The amount of Triforce pieces required to win the game."
                     );
                     ImGui::SameLine();
-                    UIWidgets::EnhancementSliderInt("", "##TriforceHuntRequiredPieces", "gTriforceHuntRequiredPieces", 1, totalPieces, "", 10);
+                    UIWidgets::EnhancementSliderInt("", "##TriforceHuntRequiredPieces", "gRandomizeTriforceHuntRequiredPieces", 1, totalPieces, "", 10);
                 }
 
                 UIWidgets::PaddedSeparator();
@@ -4244,7 +4244,11 @@ void RandomizerSettingsWindow::DrawElement() {
                     "\n"
                     "100 GS Reward - Ganon's Boss Key will be awarded by the cursed rich man after you collect 100 Gold Skulltula Tokens."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, RO_GANON_BOSS_KEY_VANILLA);
+                bool disableGBK = CVarGetInteger("gRandomizeTriforceHunt", 0);
+                static const char* disableGBKText = "This option is disabled because Triforce Hunt is enabled. Ganon's Boss key will be given on Triforce Hunt completion.";
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey,
+                                               RO_GANON_BOSS_KEY_VANILLA, disableGBK, disableGBKText,
+                                               RO_GANON_BOSS_KEY_VANILLA);
                 ImGui::PopItemWidth();
                 switch (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA)) {
                     case RO_GANON_BOSS_KEY_LACS_STONES:
