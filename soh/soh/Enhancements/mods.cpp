@@ -601,7 +601,7 @@ void RegisterMirrorModeHandler() {
 
 void RegisterNoWallet() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
+        if (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
             gSaveContext.rupees = 0;
         }
     });
