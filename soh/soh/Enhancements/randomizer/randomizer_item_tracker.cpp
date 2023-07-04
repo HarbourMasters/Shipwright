@@ -1041,7 +1041,7 @@ static const char* displayTypes[3] = { "Hidden", "Main Window", "Separate" };
 static const char* extendedDisplayTypes[4] = { "Hidden", "Main Window", "Misc Window", "Separate" };
 
 void ItemTrackerSettingsWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(600,375), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(733, 472), ImGuiCond_FirstUseEver);
 
     if (!ImGui::Begin("Item Tracker Settings", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
