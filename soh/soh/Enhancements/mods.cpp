@@ -609,7 +609,6 @@ void RegisterTriforceHunt() {
 
             // Warp to credits
             if (GameInteractor::State::TriforceHuntCreditsWarpActive) {
-                Play_PerformSave(gPlayState);
                 gPlayState->nextEntranceIndex = 0x6B;
                 gSaveContext.nextCutsceneIndex = 0xFFF2;
                 gPlayState->sceneLoadFlag = 0x14;
