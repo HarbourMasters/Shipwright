@@ -1870,53 +1870,16 @@ u8 Item_Give(PlayState* play, u8 item) {
         gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_BOOTS_KOKIRI] << gEquipShifts[EQUIP_BOOTS]);
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item == ITEM_KEY_BOSS) || (item == ITEM_COMPASS) || (item == ITEM_DUNGEON_MAP)) {
-        // Boss Key, Compass, and Dungeon Map exceptions for rando.
-        // Rando should never be able to get here for Link's Pocket unless something goes wrong,
-        // but we check for a play here so the game won't crash if we do somehow get here.
-        if (gSaveContext.n64ddFlag && play != NULL) {
-            if (play->sceneNum == 13) { // ganon's castle -> ganon's tower
-                gSaveContext.inventory.dungeonItems[10] |= 1;
-            } else if (play->sceneNum == 92) { // Desert Colossus -> Spirit Temple.
-                gSaveContext.inventory.dungeonItems[6] |= gBitFlags[item - ITEM_KEY_BOSS];
-            } else {
-                gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
-            }
-        } else {
-            gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
-        }
+        gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_KEY_SMALL) {
-        // Small key exceptions for rando with keysanity off.
-        // Rando should never be able to get here for Link's Pocket unless something goes wrong,
-        // but we check for a play here so the game won't crash if we do somehow get here.
-        if (gSaveContext.n64ddFlag && play != NULL) {
-            if (play->sceneNum == 10) { // ganon's tower -> ganon's castle
-                gSaveContext.sohStats.dungeonKeys[13]++;
-                if (gSaveContext.inventory.dungeonKeys[13] < 0) {
-                    gSaveContext.inventory.dungeonKeys[13] = 1;
-                } else {
-                    gSaveContext.inventory.dungeonKeys[13]++;
-                }
-                return Return_Item(item, MOD_NONE, ITEM_NONE);
-            }
-
-            if (play->sceneNum == 92) { // Desert Colossus -> Spirit Temple.
-                gSaveContext.sohStats.dungeonKeys[6]++;
-                if (gSaveContext.inventory.dungeonKeys[6] < 0) {
-                    gSaveContext.inventory.dungeonKeys[6] = 1;
-                } else {
-                    gSaveContext.inventory.dungeonKeys[6]++;
-                }
-                return Return_Item(item, MOD_NONE, ITEM_NONE);
-            }
-        }
-        gSaveContext.sohStats.dungeonKeys[gSaveContext.mapIndex]++;
         if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] < 0) {
             gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] = 1;
+            return Return_Item(item, MOD_NONE, ITEM_NONE);
         } else {
             gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]++;
+            return Return_Item(item, MOD_NONE, ITEM_NONE);
         }
-        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item == ITEM_QUIVER_30) || (item == ITEM_BOW)) {
         if (CUR_UPG_VALUE(UPG_QUIVER) == 0) {
             Inventory_ChangeUpgrade(UPG_QUIVER, 1);
