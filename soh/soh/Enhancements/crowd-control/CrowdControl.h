@@ -1,4 +1,4 @@
-#ifdef ENABLE_CROWD_CONTROL
+#ifdef ENABLE_REMOTE_CONTROL
 
 #ifndef _CROWDCONTROL_C
 #define _CROWDCONTROL_C
@@ -73,24 +73,17 @@ class CrowdControl {
             EffectResult lastExecutionResult;
         } Effect;
         
-        std::thread ccThreadReceive;
         std::thread ccThreadProcess;
 
-        TCPsocket tcpsock;
-        IPaddress ip;
-
         bool isEnabled;
-        bool connected;
-
-        char received[512];
 
         std::vector<Effect*> activeEffects;
         std::mutex activeEffectsMutex;
 
-        void ListenToServer();
+        void HandleRemoteData(char payload[512]);
         void ProcessActiveEffects();
 
-        void EmitMessage(TCPsocket socket, uint32_t eventId, long timeRemaining, EffectResult status);
+        void EmitMessage(uint32_t eventId, long timeRemaining, EffectResult status);
         Effect* ParseMessage(char payload[512]);
         EffectResult ExecuteEffect(Effect* effect);
         EffectResult CanApplyEffect(Effect *effect);
@@ -98,8 +91,6 @@ class CrowdControl {
 
     public:
         static CrowdControl* Instance;
-        void Init();
-        void Shutdown();
         void Enable();
         void Disable();
 };
