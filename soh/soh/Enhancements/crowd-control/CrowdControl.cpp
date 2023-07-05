@@ -1,4 +1,4 @@
-#ifdef ENABLE_CROWD_CONTROL
+#ifdef ENABLE_REMOTE_CONTROL
 
 #include "CrowdControl.h"
 #include "CrowdControlTypes.h"
@@ -17,25 +17,17 @@ extern "C" {
 extern PlayState* gPlayState;
 }
 
-void CrowdControl::Init() {
-    SDLNet_Init();
-}
-
-void CrowdControl::Shutdown() {
-    SDLNet_Quit();
-}
-
 void CrowdControl::Enable() {
     if (isEnabled) {
         return;
     }
 
-    if (SDLNet_ResolveHost(&ip, "127.0.0.1", 43384) == -1) {
-        SPDLOG_ERROR("[CrowdControl] SDLNet_ResolveHost: {}", SDLNet_GetError());
-    }
-
     isEnabled = true;
-    ccThreadReceive = std::thread(&CrowdControl::ListenToServer, this);
+    GameInteractor::Instance->EnableRemoteInteractor();
+    GameInteractor::Instance->RegisterRemoteJsonHandler([&](nlohmann::json payload) {
+        HandleRemoteData(payload);
+    });
+
     ccThreadProcess = std::thread(&CrowdControl::ProcessActiveEffects, this);
 }
 
@@ -45,87 +37,42 @@ void CrowdControl::Disable() {
     }
 
     isEnabled = false;
-    ccThreadReceive.join();
     ccThreadProcess.join();
+    GameInteractor::Instance->DisableRemoteInteractor();
 }
 
-void CrowdControl::ListenToServer() {
-    while (isEnabled) {
-        while (!connected && isEnabled) {
-            SPDLOG_TRACE("[CrowdControl] Attempting to make connection to server...");
-            tcpsock = SDLNet_TCP_Open(&ip);
+void CrowdControl::HandleRemoteData(nlohmann::json payload) {
+    Effect* incomingEffect = ParseMessage(payload);
+    if (!incomingEffect) {
+        return;
+    }
 
-            if (tcpsock) {
-                connected = true;
-                SPDLOG_TRACE("[CrowdControl] Connection to server established!");
+    // If effect is not a timed effect, execute and return result.
+    if (!incomingEffect->timeRemaining) {
+        EffectResult result = CrowdControl::ExecuteEffect(incomingEffect);
+        EmitMessage(incomingEffect->id, incomingEffect->timeRemaining, result);
+    } else {
+        // If another timed effect is already active that conflicts with the incoming effect.
+        bool isConflictingEffectActive = false;
+        for (Effect* effect : activeEffects) {
+            if (effect != incomingEffect && effect->category == incomingEffect->category && effect->id < incomingEffect->id) {
+                isConflictingEffectActive = true;
+                EmitMessage(incomingEffect->id, incomingEffect->timeRemaining, EffectResult::Retry);
                 break;
             }
         }
 
-        SDLNet_SocketSet socketSet = SDLNet_AllocSocketSet(1);
-        if (tcpsock) {
-            SDLNet_TCP_AddSocket(socketSet, tcpsock);
-        }
-
-        // Listen to socket messages
-        while (connected && tcpsock && isEnabled) {
-            // we check first if socket has data, to not block in the TCP_Recv
-            int socketsReady = SDLNet_CheckSockets(socketSet, 0);
-
-            if (socketsReady == -1) {
-                SPDLOG_ERROR("[CrowdControl] SDLNet_CheckSockets: {}", SDLNet_GetError());
-                break;
+        if (!isConflictingEffectActive) {
+            // Check if effect can be applied, if it can't, let CC know.
+            EffectResult result = CrowdControl::CanApplyEffect(incomingEffect);
+            if (result == EffectResult::Retry || result == EffectResult::Failure) {
+                EmitMessage(incomingEffect->id, incomingEffect->timeRemaining, result);
+                return;
             }
 
-            if (socketsReady == 0) {
-                continue;
-            }
-
-            int len = SDLNet_TCP_Recv(tcpsock, &received, sizeof(received));
-            if (!len || !tcpsock || len == -1) {
-                SPDLOG_ERROR("[CrowdControl] SDLNet_TCP_Recv: {}", SDLNet_GetError());
-                break;
-            }
-
-            Effect* incomingEffect = ParseMessage(received);
-            if (!incomingEffect) {
-                continue;
-            }
-
-            // If effect is not a timed effect, execute and return result.
-            if (!incomingEffect->timeRemaining) {
-                EffectResult result = CrowdControl::ExecuteEffect(incomingEffect);
-                EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, result);
-            } else {
-                // If another timed effect is already active that conflicts with the incoming effect.
-                bool isConflictingEffectActive = false;
-                for (Effect* effect : activeEffects) {
-                    if (effect != incomingEffect && effect->category == incomingEffect->category && effect->id < incomingEffect->id) {
-                        isConflictingEffectActive = true;
-                        EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, EffectResult::Retry);
-                        break;
-                    }
-                }
-
-                if (!isConflictingEffectActive) {
-                    // Check if effect can be applied, if it can't, let CC know.
-                    EffectResult result = CrowdControl::CanApplyEffect(incomingEffect);
-                    if (result == EffectResult::Retry || result == EffectResult::Failure) {
-                        EmitMessage(tcpsock, incomingEffect->id, incomingEffect->timeRemaining, result);
-                        continue;
-                    }
-
-                    activeEffectsMutex.lock();
-                    activeEffects.push_back(incomingEffect);
-                    activeEffectsMutex.unlock();
-                }
-            }
-        }
-
-        if (connected) {
-            SDLNet_TCP_Close(tcpsock);
-            connected = false;
-            SPDLOG_TRACE("[CrowdControl] Ending Listen thread...");
+            activeEffectsMutex.lock();
+            activeEffects.push_back(incomingEffect);
+            activeEffectsMutex.unlock();
         }
     }
 }
@@ -147,13 +94,13 @@ void CrowdControl::ProcessActiveEffects() {
                 if (effect->timeRemaining <= 0) {
                     it = activeEffects.erase(std::remove(activeEffects.begin(), activeEffects.end(), effect),
                                         activeEffects.end());
-                    GameInteractor::RemoveEffect(effect->giEffect);
+                    GameInteractor::RemoveEffect(dynamic_cast<RemovableGameInteractionEffect*>(effect->giEffect));
                     delete effect;
                 } else {
                     // If we have a success after previously being paused, tell CC to resume timer.
                     if (effect->isPaused) {
                         effect->isPaused = false;
-                        EmitMessage(tcpsock, effect->id, effect->timeRemaining, EffectResult::Resumed);
+                        EmitMessage(effect->id, effect->timeRemaining, EffectResult::Resumed);
                     // If not paused before, subtract time from the timer and send a Success event if
                     // the result is different from the last time this was ran.
                     // Timed events are put on a thread that runs once per second.
@@ -161,7 +108,7 @@ void CrowdControl::ProcessActiveEffects() {
                         effect->timeRemaining -= 1000;
                         if (result != effect->lastExecutionResult) {
                             effect->lastExecutionResult = result;
-                            EmitMessage(tcpsock, effect->id, effect->timeRemaining, EffectResult::Success);
+                            EmitMessage(effect->id, effect->timeRemaining, EffectResult::Success);
                         }
                     }
                     it++;
@@ -169,7 +116,7 @@ void CrowdControl::ProcessActiveEffects() {
             } else { // Timed effects only do Success or Retry
                 if (!effect->isPaused && effect->timeRemaining > 0) {
                     effect->isPaused = true;
-                    EmitMessage(tcpsock, effect->id, effect->timeRemaining, EffectResult::Paused);
+                    EmitMessage(effect->id, effect->timeRemaining, EffectResult::Paused);
                 }
                 it++;
             }
@@ -182,7 +129,7 @@ void CrowdControl::ProcessActiveEffects() {
     SPDLOG_TRACE("[CrowdControl] Ending Process thread...");
 }
 
-void CrowdControl::EmitMessage(TCPsocket socket, uint32_t eventId, long timeRemaining, EffectResult status) {
+void CrowdControl::EmitMessage(uint32_t eventId, long timeRemaining, EffectResult status) {
     nlohmann::json payload;
 
     payload["id"] = eventId;
@@ -190,8 +137,9 @@ void CrowdControl::EmitMessage(TCPsocket socket, uint32_t eventId, long timeRema
     payload["timeRemaining"] = timeRemaining;
     payload["status"] = status;
 
-    std::string jsonPayload = payload.dump();
-    SDLNet_TCP_Send(socket, jsonPayload.c_str(), jsonPayload.size() + 1);
+    SPDLOG_INFO("[CrowdControl] Sending payload:\n{}", payload.dump());
+
+    GameInteractor::Instance->TransmitJsonToRemote(payload);
 }
 
 CrowdControl::EffectResult CrowdControl::ExecuteEffect(Effect* effect) {
@@ -229,12 +177,13 @@ CrowdControl::EffectResult CrowdControl::TranslateGiEnum(GameInteractionEffectQu
     return result;
 }
 
-CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
-    nlohmann::json dataReceived = nlohmann::json::parse(payload, nullptr, false);
-    if (dataReceived.is_discarded()) {
-        SPDLOG_ERROR("Error parsing JSON");
+CrowdControl::Effect* CrowdControl::ParseMessage(nlohmann::json dataReceived) {
+    if (!dataReceived.contains("id") || !dataReceived.contains("type")) {
+        SPDLOG_ERROR("[CrowdControl] Invalid payload received:\n{}", dataReceived);
         return nullptr;
     }
+
+    SPDLOG_INFO("[CrowdControl] Received payload:\n{}", dataReceived.dump());
 
     Effect* effect = new Effect();
     effect->lastExecutionResult = EffectResult::Initiate;
@@ -333,13 +282,13 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->category = kEffectCatDamageTaken;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyDefenseModifier();
-            effect->giEffect->parameters[0] = 2;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = 2;
             break;
         case kEffectTakeDoubleDamage:
             effect->category = kEffectCatDamageTaken;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyDefenseModifier();
-            effect->giEffect->parameters[0] = -2;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = -2;
             break;
         case kEffectOneHitKo:
             effect->category = kEffectCatDamageTaken;
@@ -356,37 +305,37 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->category = kEffectCatSpeed;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyRunSpeedModifier();
-            effect->giEffect->parameters[0] = 2;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = 2;
             break;
         case kEffectDecreaseSpeed:
             effect->category = kEffectCatSpeed;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyRunSpeedModifier();
-            effect->giEffect->parameters[0] = -2;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = -2;
             break;
         case kEffectLowGravity:
             effect->category = kEffectCatGravity;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyGravity();
-            effect->giEffect->parameters[0] = GI_GRAVITY_LEVEL_LIGHT;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_GRAVITY_LEVEL_LIGHT;
             break;
         case kEffectHighGravity:
             effect->category = kEffectCatGravity;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyGravity();
-            effect->giEffect->parameters[0] = GI_GRAVITY_LEVEL_HEAVY;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_GRAVITY_LEVEL_HEAVY;
             break;
         case kEffectForceIronBoots:
             effect->category = kEffectCatBoots;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ForceEquipBoots();
-            effect->giEffect->parameters[0] = PLAYER_BOOTS_IRON;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = PLAYER_BOOTS_IRON;
             break;
         case kEffectForceHoverBoots:
             effect->category = kEffectCatBoots;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ForceEquipBoots();
-            effect->giEffect->parameters[0] = PLAYER_BOOTS_HOVER;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = PLAYER_BOOTS_HOVER;
             break;
         case kEffectSlipperyFloor:
             effect->category = kEffectCatSlipperyFloor;
@@ -412,23 +361,23 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
         // Hurt or Heal Link
         case kEffectEmptyHeart:
             effect->giEffect = new GameInteractionEffect::ModifyHealth();
-            effect->giEffect->parameters[0] = receivedParameter * -1;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter * -1;
             break;
         case kEffectFillHeart:
             effect->giEffect = new GameInteractionEffect::ModifyHealth();
-            effect->giEffect->parameters[0] = receivedParameter;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter;
             break;
         case kEffectKnockbackLinkWeak:
             effect->giEffect = new GameInteractionEffect::KnockbackPlayer();
-            effect->giEffect->parameters[0] = 1;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = 1;
             break;
         case kEffectKnockbackLinkStrong:
             effect->giEffect = new GameInteractionEffect::KnockbackPlayer();
-            effect->giEffect->parameters[0] = 3;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = 3;
             break;
         case kEffectKnockbackLinkMega:
             effect->giEffect = new GameInteractionEffect::KnockbackPlayer();
-            effect->giEffect->parameters[0] = 6;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = 6;
             break;
         case kEffectBurnLink:
             effect->giEffect = new GameInteractionEffect::BurnPlayer();
@@ -441,109 +390,109 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             break;
         case kEffectKillLink:
             effect->giEffect = new GameInteractionEffect::SetPlayerHealth();
-            effect->giEffect->parameters[0] = 0;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = 0;
             break;
 
         // Give Items and Consumables
         case kEffectAddHeartContainer:
             effect->giEffect = new GameInteractionEffect::ModifyHeartContainers();
-            effect->giEffect->parameters[0] = 1;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = 1;
             break;
         case kEffectFillMagic:
             effect->giEffect = new GameInteractionEffect::FillMagic();
             break;
         case kEffectAddRupees:
             effect->giEffect = new GameInteractionEffect::ModifyRupees();
-            effect->giEffect->parameters[0] = receivedParameter;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter;
             break;
         case kEffectGiveDekuShield:
             effect->giEffect = new GameInteractionEffect::GiveOrTakeShield();
-            effect->giEffect->parameters[0] = ITEM_SHIELD_DEKU;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = ITEM_SHIELD_DEKU;
             break;
         case kEffectGiveHylianShield:
             effect->giEffect = new GameInteractionEffect::GiveOrTakeShield();
-            effect->giEffect->parameters[0] = ITEM_SHIELD_HYLIAN;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = ITEM_SHIELD_HYLIAN;
             break;
         case kEffectRefillSticks:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
-            effect->giEffect->parameters[0] = receivedParameter;
-            effect->giEffect->parameters[1] = ITEM_STICK;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_STICK;
             break;
         case kEffectRefillNuts:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
-            effect->giEffect->parameters[0] = receivedParameter;
-            effect->giEffect->parameters[1] = ITEM_NUT;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_NUT;
             break;
         case kEffectRefillBombs:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
-            effect->giEffect->parameters[0] = receivedParameter;
-            effect->giEffect->parameters[1] = ITEM_BOMB;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_BOMB;
             break;
         case kEffectRefillSeeds:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
-            effect->giEffect->parameters[0] = receivedParameter;
-            effect->giEffect->parameters[1] = ITEM_SLINGSHOT;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_SLINGSHOT;
             break;
         case kEffectRefillArrows:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
-            effect->giEffect->parameters[0] = receivedParameter;
-            effect->giEffect->parameters[1] = ITEM_BOW;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_BOW;
             break;
         case kEffectRefillBombchus:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
-            effect->giEffect->parameters[0] = receivedParameter;
-            effect->giEffect->parameters[1] = ITEM_BOMBCHU;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_BOMBCHU;
             break;
 
         // Take Items and Consumables
         case kEffectRemoveHeartContainer:
             effect->giEffect = new GameInteractionEffect::ModifyHeartContainers();
-            effect->giEffect->parameters[0] = -1;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = -1;
             break;
         case kEffectEmptyMagic:
             effect->giEffect = new GameInteractionEffect::EmptyMagic();
             break;
         case kEffectRemoveRupees:
             effect->giEffect = new GameInteractionEffect::ModifyRupees();
-            effect->giEffect->parameters[0] = receivedParameter * -1;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter * -1;
             break;
         case kEffectTakeDekuShield:
             effect->giEffect = new GameInteractionEffect::GiveOrTakeShield();
-            effect->giEffect->parameters[0] = -ITEM_SHIELD_DEKU;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = -ITEM_SHIELD_DEKU;
             break;
         case kEffectTakeHylianShield:
             effect->giEffect = new GameInteractionEffect::GiveOrTakeShield();
-            effect->giEffect->parameters[0] = -ITEM_SHIELD_HYLIAN;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = -ITEM_SHIELD_HYLIAN;
             break;
         case kEffectTakeSticks:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
-            effect->giEffect->parameters[0] = receivedParameter * -1;
-            effect->giEffect->parameters[1] = ITEM_STICK;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter * -1;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_STICK;
             break;
         case kEffectTakeNuts:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
-            effect->giEffect->parameters[0] = receivedParameter * -1;
-            effect->giEffect->parameters[1] = ITEM_NUT;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter * -1;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_NUT;
             break;
         case kEffectTakeBombs:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
-            effect->giEffect->parameters[0] = receivedParameter * -1;
-            effect->giEffect->parameters[1] = ITEM_BOMB;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter * -1;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_BOMB;
             break;
         case kEffectTakeSeeds:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
-            effect->giEffect->parameters[0] = receivedParameter * -1;
-            effect->giEffect->parameters[1] = ITEM_SLINGSHOT;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter * -1;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_SLINGSHOT;
             break;
         case kEffectTakeArrows:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
-            effect->giEffect->parameters[0] = receivedParameter * -1;
-            effect->giEffect->parameters[1] = ITEM_BOW;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter * -1;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_BOW;
             break;
         case kEffectTakeBombchus:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
-            effect->giEffect->parameters[0] = receivedParameter * -1;
-            effect->giEffect->parameters[1] = ITEM_BOMBCHU;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = receivedParameter * -1;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = ITEM_BOMBCHU;
             break;
 
         // Link Size Modifiers
@@ -551,25 +500,25 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->category = kEffectCatLinkSize;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
-            effect->giEffect->parameters[0] = GI_LINK_SIZE_GIANT;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_LINK_SIZE_GIANT;
             break;
         case kEffectMinishLink:
             effect->category = kEffectCatLinkSize;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
-            effect->giEffect->parameters[0] = GI_LINK_SIZE_MINISH;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_LINK_SIZE_MINISH;
             break;
         case kEffectPaperLink:
             effect->category = kEffectCatLinkSize;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
-            effect->giEffect->parameters[0] = GI_LINK_SIZE_PAPER;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_LINK_SIZE_PAPER;
             break;
         case kEffectSquishedLink:
             effect->category = kEffectCatLinkSize;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::ModifyLinkSize();
-            effect->giEffect->parameters[0] = GI_LINK_SIZE_SQUISHED;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_LINK_SIZE_SQUISHED;
             break;
         case kEffectInvisibleLink:
             effect->category = kEffectCatLinkSize;
@@ -585,11 +534,11 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             break;
         case kEffectSetTimeToDawn:
             effect->giEffect = new GameInteractionEffect::SetTimeOfDay();
-            effect->giEffect->parameters[0] = GI_TIMEOFDAY_DAWN;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_TIMEOFDAY_DAWN;
             break;
         case kEffectSetTimeToDusk:
             effect->giEffect = new GameInteractionEffect::SetTimeOfDay();
-            effect->giEffect->parameters[0] = GI_TIMEOFDAY_DUSK;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_TIMEOFDAY_DUSK;
             break;
 
         // Visual Effects
@@ -632,186 +581,186 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->category = kEffectCatRandomButtons;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::PressRandomButton();
-            effect->giEffect->parameters[0] = 30;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = 30;
             break;
         case kEffectClearCbuttons:
             effect->giEffect = new GameInteractionEffect::ClearAssignedButtons();
-            effect->giEffect->parameters[0] = GI_BUTTONS_CBUTTONS;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_BUTTONS_CBUTTONS;
             break;
         case kEffectClearDpad:
             effect->giEffect = new GameInteractionEffect::ClearAssignedButtons();
-            effect->giEffect->parameters[0] = GI_BUTTONS_DPAD;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_BUTTONS_DPAD;
             break;
 
         // Teleport Player
         case kEffectTpLinksHouse:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
-            effect->giEffect->parameters[0] = GI_TP_DEST_LINKSHOUSE;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_TP_DEST_LINKSHOUSE;
             break;
         case kEffectTpMinuet:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
-            effect->giEffect->parameters[0] = GI_TP_DEST_MINUET;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_TP_DEST_MINUET;
             break;
         case kEffectTpBolero:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
-            effect->giEffect->parameters[0] = GI_TP_DEST_BOLERO;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_TP_DEST_BOLERO;
             break;
         case kEffectTpSerenade:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
-            effect->giEffect->parameters[0] = GI_TP_DEST_SERENADE;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_TP_DEST_SERENADE;
             break;
         case kEffectTpRequiem:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
-            effect->giEffect->parameters[0] = GI_TP_DEST_REQUIEM;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_TP_DEST_REQUIEM;
             break;
         case kEffectTpNocturne:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
-            effect->giEffect->parameters[0] = GI_TP_DEST_NOCTURNE;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_TP_DEST_NOCTURNE;
             break;
         case kEffectTpPrelude:
             effect->giEffect = new GameInteractionEffect::TeleportPlayer();
-            effect->giEffect->parameters[0] = GI_TP_DEST_PRELUDE;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_TP_DEST_PRELUDE;
             break;
 
         // Tunic Color (Bidding War)
         case kEffectTunicRed:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
-            effect->giEffect->parameters[1] = GI_COLOR_RED;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_TUNICS;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_RED;
             break;
         case kEffectTunicGreen:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
-            effect->giEffect->parameters[1] = GI_COLOR_GREEN;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_TUNICS;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_GREEN;
             break;
         case kEffectTunicBlue:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
-            effect->giEffect->parameters[1] = GI_COLOR_BLUE;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_TUNICS;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_BLUE;
             break;
         case kEffectTunicOrange:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
-            effect->giEffect->parameters[1] = GI_COLOR_ORANGE;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_TUNICS;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_ORANGE;
             break;
         case kEffectTunicYellow:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
-            effect->giEffect->parameters[1] = GI_COLOR_YELLOW;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_TUNICS;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_YELLOW;
             break;
         case kEffectTunicPurple:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
-            effect->giEffect->parameters[1] = GI_COLOR_PURPLE;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_TUNICS;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_PURPLE;
             break;
         case kEffectTunicPink:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
-            effect->giEffect->parameters[1] = GI_COLOR_PINK;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_TUNICS;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_PINK;
             break;
         case kEffectTunicBrown:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
-            effect->giEffect->parameters[1] = GI_COLOR_BROWN;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_TUNICS;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_BROWN;
             break;
         case kEffectTunicBlack:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_TUNICS;
-            effect->giEffect->parameters[1] = GI_COLOR_BLACK;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_TUNICS;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_BLACK;
             break;
 
         // Navi Color (Bidding War)
         case kEffectNaviRed:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
-            effect->giEffect->parameters[1] = GI_COLOR_RED;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_NAVI;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_RED;
             break;
         case kEffectNaviGreen:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
-            effect->giEffect->parameters[1] = GI_COLOR_GREEN;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_NAVI;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_GREEN;
             break;
         case kEffectNaviBlue:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
-            effect->giEffect->parameters[1] = GI_COLOR_BLUE;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_NAVI;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_BLUE;
             break;
         case kEffectNaviOrange:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
-            effect->giEffect->parameters[1] = GI_COLOR_ORANGE;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_NAVI;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_ORANGE;
             break;
         case kEffectNaviYellow:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
-            effect->giEffect->parameters[1] = GI_COLOR_YELLOW;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_NAVI;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_YELLOW;
             break;
         case kEffectNaviPurple:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
-            effect->giEffect->parameters[1] = GI_COLOR_PURPLE;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_NAVI;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_PURPLE;
             break;
         case kEffectNaviPink:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
-            effect->giEffect->parameters[1] = GI_COLOR_PINK;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_NAVI;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_PINK;
             break;
         case kEffectNaviBrown:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
-            effect->giEffect->parameters[1] = GI_COLOR_BROWN;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_NAVI;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_BROWN;
             break;
         case kEffectNaviBlack:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_NAVI;
-            effect->giEffect->parameters[1] = GI_COLOR_BLACK;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_NAVI;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_BLACK;
             break;
 
         // Link's Hair Color (Bidding War)
         case kEffectHairRed:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
-            effect->giEffect->parameters[1] = GI_COLOR_RED;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_HAIR;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_RED;
             break;
         case kEffectHairGreen:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
-            effect->giEffect->parameters[1] = GI_COLOR_GREEN;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_HAIR;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_GREEN;
             break;
         case kEffectHairBlue:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
-            effect->giEffect->parameters[1] = GI_COLOR_BLUE;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_HAIR;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_BLUE;
             break;
         case kEffectHairOrange:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
-            effect->giEffect->parameters[1] = GI_COLOR_ORANGE;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_HAIR;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_ORANGE;
             break;
         case kEffectHairYellow:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
-            effect->giEffect->parameters[1] = GI_COLOR_YELLOW;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_HAIR;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_YELLOW;
             break;
         case kEffectHairPurple:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
-            effect->giEffect->parameters[1] = GI_COLOR_PURPLE;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_HAIR;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_PURPLE;
             break;
         case kEffectHairPink:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
-            effect->giEffect->parameters[1] = GI_COLOR_PINK;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_HAIR;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_PINK;
             break;
         case kEffectHairBrown:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
-            effect->giEffect->parameters[1] = GI_COLOR_BROWN;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_HAIR;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_BROWN;
             break;
         case kEffectHairBlack:
             effect->giEffect = new GameInteractionEffect::SetCosmeticsColor();
-            effect->giEffect->parameters[0] = GI_COSMETICS_HAIR;
-            effect->giEffect->parameters[1] = GI_COLOR_BLACK;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[0] = GI_COSMETICS_HAIR;
+            dynamic_cast<ParameterizedGameInteractionEffect*>(effect->giEffect)->parameters[1] = GI_COLOR_BLACK;
             break;
 
         default:
