@@ -409,7 +409,8 @@ typedef enum {
     FLAG_ITEM_GET_INF,
     FLAG_INF_TABLE,
     FLAG_EVENT_INF,
-    FLAG_RANDOMIZER_INF
+    FLAG_RANDOMIZER_INF,
+    FLAG_GS_TOKEN,
 } FlagType;
 
 typedef struct {
