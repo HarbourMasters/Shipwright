@@ -3089,8 +3089,8 @@ void GenerateRandomizerImgui(std::string seed = "") {
     }
 
     cvarSettings[RSK_TRIFORCE_HUNT] = CVarGetInteger("gRandomizeTriforceHunt", 0);
-    cvarSettings[RSK_TRIFORCE_HUNT_PIECES_TOTAL] = CVarGetInteger("gRandomizeTriforceHuntTotalPieces", 20);
-    cvarSettings[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = CVarGetInteger("gRandomizeTriforceHuntRequiredPieces", 10);
+    cvarSettings[RSK_TRIFORCE_HUNT_PIECES_TOTAL] = CVarGetInteger("gRandomizeTriforceHuntTotalPieces", 30);
+    cvarSettings[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = CVarGetInteger("gRandomizeTriforceHuntRequiredPieces", 20);
 
     // Enable if any of the entrance rando options are enabled.
     cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVarGetInteger("gRandomizeShuffleDungeonsEntrances", RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ||
@@ -3627,23 +3627,23 @@ void RandomizerSettingsWindow::DrawElement() {
                 if (CVarGetInteger("gRandomizeTriforceHunt", 0)) {
                     // Triforce Hunt (total pieces)
                     UIWidgets::Spacer(0);
-                    int totalPieces = CVarGetInteger("gRandomizeTriforceHuntTotalPieces", 20);
+                    int totalPieces = CVarGetInteger("gRandomizeTriforceHuntTotalPieces", 30);
                     ImGui::Text("Triforce Pieces in the world: %d", totalPieces);
                     UIWidgets::InsertHelpHoverText(
                         "The amount of Triforce pieces that will be placed in the world. "
                         "Keep in mind seed generation can fail if more pieces are placed than there are junk items in the item pool."
                     );
                     ImGui::SameLine();
-                    UIWidgets::EnhancementSliderInt("", "##TriforceHuntTotalPieces", "gRandomizeTriforceHuntTotalPieces", 1, 50, "", 20);
+                    UIWidgets::EnhancementSliderInt("", "##TriforceHuntTotalPieces", "gRandomizeTriforceHuntTotalPieces", 1, 100, "", 30);
 
                     // Triforce Hunt (required pieces)
-                    int requiredPieces = CVarGetInteger("gRandomizeTriforceHuntRequiredPieces", 10);
+                    int requiredPieces = CVarGetInteger("gRandomizeTriforceHuntRequiredPieces", 20);
                     ImGui::Text("Triforce Pieces to win: %d", requiredPieces);
                     UIWidgets::InsertHelpHoverText(
                         "The amount of Triforce pieces required to win the game."
                     );
                     ImGui::SameLine();
-                    UIWidgets::EnhancementSliderInt("", "##TriforceHuntRequiredPieces", "gRandomizeTriforceHuntRequiredPieces", 1, totalPieces, "", 10);
+                    UIWidgets::EnhancementSliderInt("", "##TriforceHuntRequiredPieces", "gRandomizeTriforceHuntRequiredPieces", 1, totalPieces, "", 20);
                 }
 
                 UIWidgets::PaddedSeparator();
@@ -5525,27 +5525,27 @@ void CreateTriforcePieceMessages() {
 
         { "You found a %yTriforce Piece%w!&%g{{current}}%w down, %c{{remaining}}%w to go. It's a start!",
           "Derp",
-          "Derp" },
+          "Vous avez trouvé un %yFragment de&la Triforce%w! Il vous en reste %c{{remaining}}%w&à trouver. C'est un début!" },
 
         { "You found a %yTriforce Piece%w!&%g{{current}}%w down, %c{{remaining}}%w to go. Progress!",
           "Derp",
-          "Derp" },
+          "Vous avez trouvé un %yFragment de&la Triforce%w! Il vous en reste %c{{remaining}}%w à&trouver. Ça avance!" },
 
         { "You found a %yTriforce Piece%w!&%g{{current}}%w down, %c{{remaining}}%w to go. Over half-way&there!",
           "Derp",
-          "Derp" },
+          "Vous avez trouvé un %yFragment de&la Triforce%w! Il vous en reste %c{{remaining}}%w à&trouver. Il reste un peu moins&que la moitié!" },
 
         { "You found a %yTriforce Piece%w!&%g{{current}}%w down, %c{{remaining}}%w to go. Almost done!",
           "Derp",
-          "Derp" },
+          "Vous avez trouvé un %yFragment de&la Triforce%w! Il vous en reste %c{{remaining}}%w à&trouver. C'est presque terminé!" },
 
         { "You completed the %yTriforce of&Courage%w! %gGG%w!",
           "Derp",
-          "Derp" },
+          "Vous avez complété la %yTriforce&du Courage%w! %gFélicitations%w!" },
 
         { "You found a spare %yTriforce Piece%w!&You only needed %c{{required}}%w, but you have %g{{current}}%w!",
           "Derp",
-          "Derp" },
+          "Vous avez trouvé un %yFragment de&Triforce%w en plus! Vous n'aviez besoin que de&%c{{required}}%w, mais vous en avez&%g{{current}}%w en tout!" },
     };
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::triforcePieceMessageTableID);
