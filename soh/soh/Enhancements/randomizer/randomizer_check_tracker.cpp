@@ -755,7 +755,7 @@ void LoadFile() {
     Teardown();
     LoadSettings();
     TrySetAreas();
-    SaveManager::Instance->LoadArray("checkTrackerData", sizeof(gSaveContext.checkTrackerData), [](size_t i) {
+    SaveManager::Instance->LoadArray("trackerDataCheck", sizeof(gSaveContext.checkTrackerData), [](size_t i) {
         SaveManager::Instance->LoadData("", ((RandomizerCheckTrackerData*)&gSaveContext.checkTrackerData)[i]);
         RandomizerCheckTrackerData entry = gSaveContext.checkTrackerData[i];
         RandomizerCheck rc = static_cast<RandomizerCheck>(i);
