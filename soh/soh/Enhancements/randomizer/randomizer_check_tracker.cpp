@@ -329,14 +329,7 @@ RandomizerCheckArea GetCheckArea() {
         ENTRANCE_RANDO_GROTTO_EXIT_START + GetCurrentGrottoId() : gSaveContext.entranceIndex);
     RandomizerCheckArea area = RCAREA_INVALID;
     if (ent != nullptr && !IsAreaScene(scene) && ent->type != ENTRANCE_TYPE_DUNGEON) {
-        if (ent->dstGroup == ENTRANCE_GROUP_GERUDO_VALLEY && ent->source == "GF") {
-            area = RCAREA_GERUDO_FORTRESS;
-        } else if (ent->dstGroup == ENTRANCE_GROUP_HAUNTED_WASTELAND && (ent->source == "Colossus Grotto" || ent->source == "Desert Colossus")) {
-            area = RCAREA_DESERT_COLOSSUS;
-        }
-        else {
-            area = AreaFromEntranceGroup[ent->dstGroup];
-        }
+        area = AreaFromEntranceGroup[ent->dstGroup];
     }
     if (area == RCAREA_INVALID) {
         if (grottoScene && (GetCurrentGrottoId() == -1) && (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) == RO_GENERIC_OFF)) {
@@ -1371,7 +1364,7 @@ void DrawLocation(RandomizerCheckObject rcObj) {
  
     // Draw button - for Skipped/Seen/Scummed/Unchecked only
     if (status == RCSHOW_UNCHECKED || status == RCSHOW_SEEN || status == RCSHOW_SCUMMED || skipped) {
-        if (ImGui::ArrowButton(std::to_string(rcObj.rc).c_str(), skipped ? ImGuiDir_Left : ImGuiDir_Right)) {
+        if (UIWidgets::StateButton(std::to_string(rcObj.rc).c_str(), skipped ? ICON_FA_PLUS : ICON_FA_TIMES)) {
             if (skipped) {
                 gSaveContext.checkTrackerData[rcObj.rc].skipped = false;
                 areaChecksGotten[rcObj.rcArea]--;
@@ -1381,6 +1374,7 @@ void DrawLocation(RandomizerCheckObject rcObj) {
             }
             UpdateOrdering(rcObj.rcArea);
             UpdateInventoryChecks();
+            SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
         }
     } else {
         ImGui::InvisibleButton("", ImVec2(20.0f, 10.0f));
