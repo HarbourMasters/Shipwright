@@ -736,6 +736,8 @@ void SaveTrackerData(SaveContext* saveContext, int sectionID, bool gameSave) {
         if (saveContext->checkTrackerData[i].status == RCSHOW_COLLECTED) {
             if (gameSave || savedFrames > 0) {
                 gSaveContext.checkTrackerData[i].status = saveContext->checkTrackerData[i].status = RCSHOW_SAVED;
+                UpdateAllOrdering();
+                UpdateInventoryChecks();
             } else {
                 saveContext->checkTrackerData[i].status = RCSHOW_SCUMMED;
             }
@@ -747,7 +749,7 @@ void SaveTrackerData(SaveContext* saveContext, int sectionID, bool gameSave) {
 void SaveFile(SaveContext* saveContext, int sectionID, bool fullSave) {
     SaveTrackerData(saveContext, sectionID, fullSave);
     if (fullSave) {
-        savedFrames = 20;
+        savedFrames = 40;
     }
 }
 
