@@ -6329,6 +6329,7 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
         this->stateFlags1 &= ~(PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_ITEM_OVER_HEAD);
         this->actor.colChkInfo.damage = 0;
         func_80837C0C(play, this, 3, 0.0f, 0.0f, 0, 20);
+        GameInteractor_ExecuteOnItemReceiveHooks(ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_ICE_TRAP));
         this->getItemId = GI_NONE;
         this->getItemEntry = (GetItemEntry) GET_ITEM_NONE;
         // Gameplay stats: Increment Ice Trap count
@@ -6361,7 +6362,6 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
                     Player_SetPendingFlag(this, play);
                     Message_StartTextbox(play, 0xF8, NULL);
                     Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
-                    GameInteractor_ExecuteOnItemReceiveHooks(this->getItemEntry);
                     gSaveContext.pendingIceTrapCount++;
                     return 1;
                 }
@@ -12790,7 +12790,6 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
                 this->unk_862 = 0;
                 gSaveContext.pendingIceTrapCount++;
                 Player_SetPendingFlag(this, play);
-                GameInteractor_ExecuteOnItemReceiveHooks(giEntry);
             }
 
             this->getItemId = GI_NONE;

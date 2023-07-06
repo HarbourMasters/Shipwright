@@ -9,6 +9,7 @@
 typedef enum {
     GI_SCHEME_BUILT_IN,
     GI_SCHEME_CROWD_CONTROL,
+    GI_SCHEME_ANCHOR,
 } GIScheme;
 
 typedef enum {
@@ -220,6 +221,7 @@ public:
         static void SetFlag(int16_t flagType, int16_t chestNum);
         static void UnsetFlag(int16_t flagType, int16_t chestNum);
         static void AddOrRemoveHealthContainers(int16_t amount);
+        static void GiveItem(uint16_t modId, uint16_t itemId);
         static void AddOrRemoveMagic(int8_t amount);
         static void HealOrDamagePlayer(int16_t hearts);
         static void SetPlayerHealth(int16_t hearts);

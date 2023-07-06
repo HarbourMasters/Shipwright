@@ -78,8 +78,10 @@
 #ifdef ENABLE_REMOTE_CONTROL
 #include "Enhancements/crowd-control/CrowdControl.h"
 #include "Enhancements/game-interactor/GameInteractor_BuiltIn.h"
+#include "Enhancements/game-interactor/GameInteractor_Anchor.h"
 CrowdControl* CrowdControl::Instance;
 GameInteractorBuiltIn* GameInteractorBuiltIn::Instance;
+GameInteractorAnchor* GameInteractorAnchor::Instance;
 #endif
 
 #include "Enhancements/mods.h"
@@ -801,6 +803,7 @@ extern "C" void InitOTR() {
 #ifdef ENABLE_REMOTE_CONTROL
     CrowdControl::Instance = new CrowdControl();
     GameInteractorBuiltIn::Instance = new GameInteractorBuiltIn();
+    GameInteractorAnchor::Instance = new GameInteractorAnchor();
 #endif
 
     clearMtx = (uintptr_t)&gMtxClear;
@@ -832,6 +835,9 @@ extern "C" void InitOTR() {
             case GI_SCHEME_CROWD_CONTROL:
                 CrowdControl::Instance->Enable();
                 break;
+            case GI_SCHEME_ANCHOR:
+                GameInteractorAnchor::Instance->Enable();
+                break;
         }
     }
 #endif
@@ -856,6 +862,9 @@ extern "C" void DeinitOTR() {
                 break;
             case GI_SCHEME_CROWD_CONTROL:
                 CrowdControl::Instance->Disable();
+                break;
+            case GI_SCHEME_ANCHOR:
+                GameInteractorAnchor::Instance->Disable();
                 break;
         }
     }

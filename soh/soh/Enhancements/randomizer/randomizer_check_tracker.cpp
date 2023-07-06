@@ -9,6 +9,9 @@
 #include "3drando/item_location.hpp"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "randomizerTypes.h"
+#ifdef ENABLE_REMOTE_CONTROL
+#include "soh/Enhancements/game-interactor/GameInteractor_Anchor.h"
+#endif
 
 
 extern "C" {
@@ -819,9 +822,15 @@ void DrawLocation(RandomizerCheckObject rcObj, RandomizerCheckShow* thisCheckSta
             if (skipped) {
                 gSaveContext.sohStats.locationsSkipped[rcObj.rc] = 0;
                 *thisCheckStatus = RCSHOW_UNCHECKED;
+#ifdef ENABLE_REMOTE_CONTROL
+                Anchor_SkipLocation(rcObj.rc, false);
+#endif
             } else {
                 gSaveContext.sohStats.locationsSkipped[rcObj.rc] = 1;
                 *thisCheckStatus = RCSHOW_SKIPPED;
+#ifdef ENABLE_REMOTE_CONTROL
+                Anchor_SkipLocation(rcObj.rc, true);
+#endif
             }
         }
     } else {

@@ -785,6 +785,17 @@ void func_80AAB948(EnMd* this, PlayState* play) {
             player->stateFlags2 |= 0x800000;
         }
     }
+
+    // #region SOH [Co-op]
+    if (Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD) && this->interactInfo.talkState == NPC_TALK_STATE_IDLE && (play->sceneNum == SCENE_SPOT04)) {
+        func_80AAA92C(this, 3);
+        func_80AAA93C(this);
+        this->waypoint = 1;
+        this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
+        this->actionFunc = func_80AABD0C;
+        this->actor.speedXZ = 1.5f;
+    }
+    // #endregion
 }
 
 void func_80AABC10(EnMd* this, PlayState* play) {

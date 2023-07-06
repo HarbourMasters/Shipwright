@@ -741,6 +741,13 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
     EnItem00* this = (EnItem00*)thisx;
     s32 pad;
 
+    // #region SOH [Co-op]
+    if (Flags_GetCollectible(play, this->collectibleFlag)) {
+        Actor_Kill(&this->actor);
+        return;
+    }
+    // #endregion
+
 	// OTRTODO: remove special case for bombchu when its 2D drop is implemented
     if (CVarGetInteger("gNewDrops", 0) || this->actor.params == ITEM00_BOMBCHU) { //set the rotation system on selected model only :)
         if ((this->actor.params == ITEM00_RUPEE_GREEN) || (this->actor.params == ITEM00_RUPEE_BLUE) ||

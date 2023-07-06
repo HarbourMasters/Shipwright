@@ -10,6 +10,9 @@
 #include "objects/object_hidan_objects/object_hidan_objects.h"
 #include "objects/object_mizu_objects/object_mizu_objects.h"
 #include "objects/object_haka_door/object_haka_door.h"
+#ifdef ENABLE_REMOTE_CONTROL
+#include "soh/Enhancements/game-interactor/GameInteractor_Anchor.h"
+#endif
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -201,6 +204,9 @@ void EnDoor_Idle(EnDoor* this, PlayState* play) {
                                    (player->stateFlags1 & 0x8000000) ? 0.75f : 1.5f);
         if (this->lockTimer != 0) {
             gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]--;
+#ifdef ENABLE_REMOTE_CONTROL
+            Anchor_UpdateKeyCount(gSaveContext.mapIndex, gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]);
+#endif
             Flags_SetSwitch(play, this->actor.params & 0x3F);
             Audio_PlayActorSound2(&this->actor, NA_SE_EV_CHAIN_KEY_UNLOCK);
         }
@@ -230,6 +236,12 @@ void EnDoor_Idle(EnDoor* this, PlayState* play) {
             this->actionFunc = EnDoor_AjarOpen;
         }
     }
+
+    // #region SOH [Co-op]
+    if (Flags_GetSwitch(play, this->actor.params & 0x3F)) {
+        DECR(this->lockTimer);
+    }
+    // #endregion
 }
 
 void EnDoor_WaitForCheck(EnDoor* this, PlayState* play) {

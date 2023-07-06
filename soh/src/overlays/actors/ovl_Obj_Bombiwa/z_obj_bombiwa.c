@@ -126,7 +126,7 @@ void ObjBombiwa_Update(Actor* thisx, PlayState* play) {
     s32 pad;
 
     if ((func_80033684(play, &this->actor) != NULL) ||
-        ((this->collider.base.acFlags & AC_HIT) && (this->collider.info.acHitInfo->toucher.dmgFlags & 0x40000040))) {
+        ((this->collider.base.acFlags & AC_HIT) && (this->collider.info.acHitInfo->toucher.dmgFlags & 0x40000040)) || Flags_GetSwitch(play, this->actor.params & 0x3F)) {
         ObjBombiwa_Break(this, play);
         Flags_SetSwitch(play, this->actor.params & 0x3F);
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 80, NA_SE_EV_WALL_BROKEN);

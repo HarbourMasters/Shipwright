@@ -6,6 +6,9 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
+#ifdef ENABLE_REMOTE_CONTROL
+#include "soh/Enhancements/game-interactor/GameInteractor_Anchor.h"
+#endif
 
 extern "C" {
 #include <z64.h>
@@ -621,4 +624,7 @@ void InitMods() {
     RegisterBonkDamage();
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
+    #ifdef ENABLE_REMOTE_CONTROL
+    Anchor_RegisterHooks();
+    #endif
 }

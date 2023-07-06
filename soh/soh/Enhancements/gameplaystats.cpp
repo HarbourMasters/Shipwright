@@ -13,6 +13,9 @@ extern "C" {
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
 #include "soh/Enhancements/enhancementTypes.h"
+#ifdef ENABLE_REMOTE_CONTROL
+#include "soh/Enhancements/game-interactor/GameInteractor_Anchor.h"
+#endif
 
 extern "C" {
 #include <z64.h>
@@ -443,7 +446,11 @@ void DrawGameplayStatsHeader() {
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
     ImGui::BeginTable("gameplayStatsHeader", 1, ImGuiTableFlags_BordersOuter);
     ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
+#ifdef ENABLE_REMOTE_CONTROL
+    GameplayStatsRow("Build Version:", GameInteractorAnchor::clientVersion);
+#else
     GameplayStatsRow("Build Version:", (char*) gBuildVersion);
+#endif
     if (gSaveContext.sohStats.rtaTiming) {
         GameplayStatsRow("Total Time (RTA):", formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME), gSaveContext.sohStats.gameComplete ? COLOR_GREEN : COLOR_WHITE);
     } else {
