@@ -732,7 +732,7 @@ void InitTrackerData(bool isDebug) {
 }
 
 void SaveTrackerData(SaveContext* saveContext, int sectionID, bool gameSave) {
-    SaveManager::Instance->SaveArray("checkTrackerData", ARRAY_COUNT(saveContext->checkTrackerData), [&](size_t i) {
+    SaveManager::Instance->SaveArray("trackerDataCheck", ARRAY_COUNT(saveContext->checkTrackerData), [&](size_t i) {
         if (saveContext->checkTrackerData[i].status == RCSHOW_COLLECTED) {
             if (gameSave || savedFrames > 0) {
                 gSaveContext.checkTrackerData[i].status = saveContext->checkTrackerData[i].status = RCSHOW_SAVED;
