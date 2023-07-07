@@ -188,7 +188,7 @@ namespace Settings {
   Option ShuffleCows            = Option::Bool("Shuffle Cows",           {"Off", "On"},                                                     {shuffleCowsDesc});
   Option ShuffleKokiriSword     = Option::Bool("Shuffle Kokiri Sword",   {"Off", "On"},                                                     {kokiriSwordDesc});
   Option ShuffleOcarinas        = Option::Bool("Shuffle Ocarinas",       {"Off", "On"},                                                     {ocarinasDesc});
-  Option ShuffleChildWallet     = Option::Bool("Shuffle Child Wallet",   {"Off", "On"},                                                     {childWalletDesc});
+  Option ShuffleChildWallet     = Option::Bool("Shuffle Child's Wallet", {"Off", "On"},                                                     {childWalletDesc});
   Option ShuffleWeirdEgg        = Option::Bool("Shuffle Weird Egg",      {"Off", "On"},                                                     {weirdEggDesc});
   Option ShuffleGerudoToken     = Option::Bool("Shuffle Gerudo Card",    {"Off", "On"},                                                     {gerudoTokenDesc});
   Option ShuffleMagicBeans      = Option::Bool("Shuffle Magic Beans",    {"Off", "On"},                                                     {magicBeansDesc});

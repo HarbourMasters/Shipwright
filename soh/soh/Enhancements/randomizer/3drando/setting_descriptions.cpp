@@ -423,10 +423,10 @@ string_view ocarinasDesc              = "Enabling this shuffles the Fairy Ocarin
                                         "This will require finding an Ocarina before being\n"
                                         "able to play songs.";                             //
 /*------------------------------                                                           //
-|     SHUFFLE CHILD WALLET     |                                                           //
+|    SHUFFLE CHILD'S WALLET    |                                                           //
 ------------------------------*/                                                           //
-string_view childWalletDesc           = "Enabling this shuffles the Child Wallet into the\n"
-                                        "item pool.";                                      //
+string_view childWalletDesc           = "Enabling this shuffles the Child's Wallet into\n" //
+                                        "the item pool.";                                  //
 /*------------------------------                                                           //
 |      SHUFFLE WEIRD EGG       |                                                           //
 ------------------------------*/                                                           //

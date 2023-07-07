@@ -258,7 +258,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
     { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
     { "Shuffle Settings:Shuffle Ocarinas", RSK_SHUFFLE_OCARINA },
-    { "Shuffle Settings:Shuffle Child Wallet", RSK_SHUFFLE_CHILD_WALLET },
+    { "Shuffle Settings:Shuffle Child's Wallet", RSK_SHUFFLE_CHILD_WALLET },
     { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
     { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS },
     { "Shuffle Settings:Shuffle Kokiri Sword", RSK_SHUFFLE_KOKIRI_SWORD },
@@ -3859,7 +3859,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 UIWidgets::EnhancementCheckbox(Settings::ShuffleChildWallet.GetName().c_str(), "gRandomizeShuffleChildWallet");
-                UIWidgets::InsertHelpHoverText("Enabling this shuffles the Child Wallet into the item pool.");
+                UIWidgets::InsertHelpHoverText("Enabling this shuffles the Child's Wallet into the item pool.");
 
                 UIWidgets::PaddedSeparator();
 
@@ -6006,7 +6006,7 @@ void Randomizer::CreateCustomMessages() {
 			"Du erhältst die %rGoldene&Geldbörse%w! Die größte aller&Geldbörsen! Jetzt kannst Du bis&zu %y999 Rubine%w mit dir führen!",
 			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y999 rubis%w!&C'est gigantesque!"),
         GIMESSAGE(RG_CHILD_WALLET, ITEM_WALLET_ADULT,
-			"You got a %rChild Wallet%w!&Now you can carry&up to %y99 rupees%w!",
+			"You got a %rChild's Wallet%w!&Now you can carry&up to %y99 rupees%w!",
 			"Du erhältst die %rGoldene&Geldbörse%w! Jetzt kannst Du bis&zu %y99 Rubine%w mit dir führen!",//FIXME: still says tycoon
 			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y99 rubis%w!")//FIXME: still says tycoon
     }};
