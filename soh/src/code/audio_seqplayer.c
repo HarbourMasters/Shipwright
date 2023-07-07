@@ -3,6 +3,8 @@
 #include <libultraship/libultra.h>
 #include "global.h"
 
+#include "soh/Enhancements/audio/AudioEditor.h"
+
 extern char** sequenceMap;
 
 #define PORTAMENTO_IS_SPECIAL(x) ((x).mode & 0x80)

@@ -48,6 +48,8 @@ void BgSpot06Objects_WaterPlaneCutsceneWait(BgSpot06Objects* this, PlayState* pl
 void BgSpot06Objects_WaterPlaneCutsceneRise(BgSpot06Objects* this, PlayState* play);
 void BgSpot06Objects_WaterPlaneCutsceneLower(BgSpot06Objects* this, PlayState* play);
 
+s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
+
 const ActorInit Bg_Spot06_Objects_InitVars = {
     ACTOR_BG_SPOT06_OBJECTS,
     ACTORCAT_PROP,
