@@ -376,6 +376,15 @@ else {
         //Perform all terrain detection and sound book keeping. Call once per frame.
     void scan() {
         Player* player = GET_PLAYER(actor->play);
+        static int x = 0;
+        if (x == 100) {
+            Audio_PlayActorSound2(&player->actor, NA_SE_EN_MOFER_CORE_ROLL);
+            //x = 0;
+        }
+
+
+        x++;
+
         if (player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE) {
             destroyCurrentSound();
             return;

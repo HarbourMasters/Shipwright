@@ -395,7 +395,8 @@ void OTRAudio_Thread() {
         // 3 is the maximum authentic frame divisor.
         s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
         for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
-            AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
+            AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS),
+                                           num_audio_samples);
             // Give accessibility a chance to merge its own audio in.
             ActorAccessibility_MixAccessibleAudioWithGameAudio(
                 audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
@@ -997,7 +998,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     last_update_rate = R_UPDATE_RATE;
 
     {
-        std::unique_lock<std::mutex> Lock(audio.mutex);
+            std::unique_lock<std::mutex> Lock(audio.mutex);
         while (audio.processing) {
             audio.cv_from_thread.wait(Lock);
         }
@@ -2098,3 +2099,39 @@ extern "C" void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex) {
 extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement) {
     gfx_register_blended_texture(name, mask, replacement);
 }
+
+void OTRAudio_SfxCaptureThread() {
+    while (audio.running) {
+        {
+            std::unique_lock<std::mutex> Lock(audio.mutex);
+            while (!audio.processing && audio.running) {
+                audio.cv_to_thread.wait(Lock);
+            }
+
+            if (!audio.running) {
+                break;
+            }
+        }
+        std::unique_lock<std::mutex> Lock(audio.mutex);
+        ActorAccessibility_DoSoundExtractionStep();
+        audio.processing = false;
+        audio.cv_from_thread.notify_one();
+    }
+}
+
+    extern "C" void OTRAudio_InstallSfxCaptureThread() {
+    OTRAudio_Exit();
+    audio.running = true;
+    audio.thread = std::thread(OTRAudio_SfxCaptureThread);
+
+    }
+    extern "C" void OTRAudio_UninstallSfxCaptureThread()
+    {
+    OTRAudio_Exit();
+    audio.running = true;
+    audio.thread = std::thread(OTRAudio_Thread);
+    }
+    std::unique_lock<std::mutex> OTRAudio_Lock()
+    {
+    return std::unique_lock<std::mutex>(audio.mutex);
+    }

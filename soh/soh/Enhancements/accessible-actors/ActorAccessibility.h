@@ -134,6 +134,15 @@ void ActorAccessibility_PrepareNextAudioFrame();
 // Call once at start of game to build a complete cache of the game's audio samples. This differs from the game's own
 // sample cache as this is fully decoded for use with the external player.
 void ActorAccessibility_DecodeAndCacheSamples();
+//Decode an audio sample to a wav file. This is used for R&D; it is not called during normal opperation.
+void ActorAccessibility_DecodeSampleToFile(SoundFontSample* sample, const char* path);
+void ActorAccessibility_HandleSoundExtractionMode(PlayState* play);
+//This is called by the audio thread when it's ready to try to pull sfx from the game.
+void ActorAccessibility_DoSoundExtractionStep();
+void ActorAccessibility_ReportSynthesisLoop(int noteLength);
+void ActorAccessibility_LatencyControl(int value);
+
 #ifdef __cplusplus
 }
+
 #endif

@@ -752,6 +752,10 @@ void Play_Update(PlayState* play) {
     Input* input;
     u32 i;
     s32 pad2;
+    if (play->sceneNum == 81 && CVarGetInteger("gExtractSfx", 0) != 0) {
+        ActorAccessibility_HandleSoundExtractionMode(play);
+         return;
+    }
 
     input = play->state.input;
 

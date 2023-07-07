@@ -147,14 +147,19 @@ void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement);
 void SaveManager_ThreadPoolWait();
 
 int32_t GetGIID(uint32_t itemID);
+
 #endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 uint64_t GetUnixTimestamp();
+void OTRAudio_InstallSfxCaptureThread();
+void OTRAudio_UninstallSfxCaptureThread();
 #ifdef __cplusplus
 };
+std::unique_lock<std::mutex> OTRAudio_Lock();
+
 #endif
 
 #endif

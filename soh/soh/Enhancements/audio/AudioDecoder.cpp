@@ -15,7 +15,6 @@ static inline int16_t clamp16(int32_t v) {
 }
 
     AudioDecoder::AudioDecoder() {
-    sample = NULL;
         prev1 = 0;
         prev2 = 0;
 
@@ -26,7 +25,11 @@ AudioDecoder::~AudioDecoder()
 }
 void AudioDecoder::setSample(LUS::AudioSample* sample)
 {
-        this->sample = sample;
+        this->sample.codec = sample->sample.codec;
+        this->sample.loop.start = sample->sample.loop->start;
+        this->sample.loop.end = sample->sample.loop->end;
+        this->sample.loop.count = sample->sample.loop->count;
+
         if (sample->book.book == nullptr)
         memset(adpcm_table, 0, 8 * 2 * 8 * 2);
         else
@@ -38,7 +41,24 @@ void AudioDecoder::setSample(LUS::AudioSample* sample)
         inStart = in;
         inEnd = in + sample->sample.size;
 }
-size_t AudioDecoder::decode(int16_t* out, size_t nSamples) {
+void AudioDecoder::setSample(SoundFontSample* sample) {
+        this->sample.codec = sample->codec;
+        this->sample.loop.start = sample->loop->start;
+        this->sample.loop.end = sample->loop->end;
+        this->sample.loop.count = sample->loop->count;
+
+        if (sample->book->book == nullptr)
+        memset(adpcm_table, 0, 8 * 2 * 8 * 2);
+        else
+        memcpy(adpcm_table, sample->book->book,
+               16 * sample->book->order * sample->book->npredictors);
+        prev1 = 0;
+        prev2 = 0;
+        in = sample->sampleAddr;
+        inStart = in;
+        inEnd = in + sample->size;
+}
+    size_t AudioDecoder::decode(int16_t * out, size_t nSamples) {
         size_t samplesOut = 0;
         size_t nbytes = nSamples * 2;
         // Prevent the decoder from using more output bytes than declared to be available by the callee.
@@ -53,7 +73,7 @@ size_t AudioDecoder::decode(int16_t* out, size_t nSamples) {
         for (i = 0; i < 2; i++) {
             int16_t ins[8];
             int j, k;
-            if (sample->sample.codec == CODEC_SMALL_ADPCM) {
+            if (sample.codec == CODEC_SMALL_ADPCM) {
                 for (j = 0; j < 2; j++) {
                     ins[j * 4] = (((*in >> 6) << 30) >> 30) << shift;
                     ins[j * 4 + 1] = ((((*in >> 4) & 0x3) << 30) >> 30) << shift;
@@ -85,10 +105,9 @@ size_t AudioDecoder::decode(int16_t* out, size_t nSamples) {
 
 }
 
-size_t AudioDecoder::decodeToWav    (LUS::AudioSample* sample, int16_t** buffer)
+size_t AudioDecoder::decodeToWav    (int16_t** buffer)
 {
         int16_t* wavOut = nullptr;
-        setSample(sample);
 
         drwav_data_format format;
         format.bitsPerSample = 16;
@@ -96,9 +115,9 @@ size_t AudioDecoder::decodeToWav    (LUS::AudioSample* sample, int16_t** buffer)
         format.container = drwav_container_riff;
         format.format = DR_WAVE_FORMAT_PCM;
 //Todo: figure out how to really determine the sample rate. CODEC_ADPCM tends to stream at higher rates (usually 20KHZ) while CODEC_SMALL_ADPCM is usually around 14000. They're still not consistent though.
-        if (sample->sample.codec == CODEC_ADPCM)
+        if (sample.codec == CODEC_ADPCM)
         format.sampleRate = 20000;
-        else if (sample->sample.codec = CODEC_SMALL_ADPCM)
+        else if (sample.codec = CODEC_SMALL_ADPCM)
         format.sampleRate = 14000;
         else
         throw std::runtime_error("AudioDecoder: Unsupported codec.");
@@ -108,7 +127,11 @@ size_t AudioDecoder::decodeToWav    (LUS::AudioSample* sample, int16_t** buffer)
         throw std::runtime_error("AudioDecoder: Unable to initialize wave writer.");
         int16_t chunk[WAV_DECODE_CHUNK_SIZE];
         //Don't decode past the end of the loop.
-        size_t samplesLeft = sample->sample.loop->end;
+        size_t samplesLeft = sample.loop.end;
+        //Unless the loop is 0?
+        if (samplesLeft == 0)
+        samplesLeft = sample.loop.count;
+
         while (samplesLeft > 0) {
         size_t samplesRead = decode(chunk, WAV_DECODE_CHUNK_SIZE);
         if (samplesRead > samplesLeft)

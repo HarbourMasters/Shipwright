@@ -371,6 +371,8 @@ extern f32 D_80130F28;
 
 void Audio_QueueSeqCmd(u32 cmd) 
 {
+    if (CVarGetInteger("gExtractSfx", 0))
+        return;
     u8 op = cmd >> 28;
     if (op == 0 || op == 2 || op == 12) {
         u8 seqId = cmd & 0xFF;
