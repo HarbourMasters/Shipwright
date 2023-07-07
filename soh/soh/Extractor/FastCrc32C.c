@@ -3,12 +3,17 @@
 
 #ifdef _WIN32
 #include <immintrin.h>
-#elif ((defined(__GNUC__) && defined(__x86_64__) || defined(__i386__)) && defined(__SSE4_2__))
+#include <cpuid.h>
+#elif ((defined(__GNUC__) && defined(__x86_64__) || defined(__i386__)))
+// Force the compiler to assume we have support for the CRC32 intrinsic. We will check for our selves later.
+#pragma GCC target("crc32")
+
 #include <nmmintrin.h>
+#include <cpuid.h>
 #elif defined(__aarch64__) && defined(__ARM_FEATURE_CRC32)
 // Nothing cause its a compiler builtin
 #else
-#define USE_CRC_TABLE
+#define NO_CRC_INTRIN
 #endif
 
 #if defined(__aarch64__) && defined(__ARM_FEATURE_CRC32)
@@ -16,14 +21,13 @@
 #define INTRIN_CRC32_32(crc, value) __asm__("crc32cw %w[c], %w[c], %w[v]" : [c] "+r"(crc) : [v] "r"(value))
 #define INTRIN_CRC32_16(crc, value) __asm__("crc32ch %w[c], %w[c], %w[v]" : [c] "+r"(crc) : [v] "r"(value))
 #define INTRIN_CRC32_8(crc, value) __asm__("crc32cb %w[c], %w[c], %w[v]" : [c] "+r"(crc) : [v] "r"(value))
-#elif defined(__SSE4_2__) || defined(_MSC_VER)
+#elif defined(__GNUC__) || defined(_MSC_VER)
 #define INTRIN_CRC32_64(crc, data) crc = _mm_crc32_u64(crc, data)
 #define INTRIN_CRC32_32(crc, data) crc = _mm_crc32_u32(crc, data)
 #define INTRIN_CRC32_16(crc, data) crc = _mm_crc32_u16(crc, data)
 #define INTRIN_CRC32_8(crc, data) crc = _mm_crc32_u8(crc, data)
 #endif
 
-#ifdef USE_CRC_TABLE
 static const uint32_t crc32Table[256] = {
     0x00000000L, 0xF26B8303L, 0xE13B70F7L, 0x1350F3F4L, 0xC79A971FL, 0x35F1141CL, 0x26A1E7E8L, 0xD4CA64EBL, 0x8AD958CFL,
     0x78B2DBCCL, 0x6BE22838L, 0x9989AB3BL, 0x4D43CFD0L, 0xBF284CD3L, 0xAC78BF27L, 0x5E133C24L, 0x105EC76FL, 0xE235446CL,
@@ -55,14 +59,10 @@ static const uint32_t crc32Table[256] = {
     0xE03E9C81L, 0x34F4F86AL, 0xC69F7B69L, 0xD5CF889DL, 0x27A40B9EL, 0x79B737BAL, 0x8BDCB4B9L, 0x988C474DL, 0x6AE7C44EL,
     0xBE2DA0A5L, 0x4C4623A6L, 0x5F16D052L, 0xAD7D5351L
 };
-#endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#ifndef NO_CRC_INTRIN
 
-#ifndef USE_CRC_TABLE
-uint32_t CRC32C(unsigned char* data, size_t dataSize) {
+static uint32_t CRC32IntrinImpl(unsigned char* data, size_t dataSize) {
     uint32_t ret = 0xFFFFFFFF;
     int64_t sizeSigned = dataSize;
 
@@ -94,17 +94,31 @@ uint32_t CRC32C(unsigned char* data, size_t dataSize) {
 
     return ~ret;
 }
-#else
-uint32_t CRC32C(const void* buf, size_t size) {
-    const uint8_t* p = buf;
+#endif
+
+static uint32_t CRC32TableImpl(unsigned char* data, size_t dataSize) {
+    const uint8_t* p = data;
     uint32_t crc = 0xFFFFFFFF;
 
-    while (size--)
+    while (dataSize--)
         crc = crc32Table[(crc ^ *p++) & 0xff] ^ (crc >> 8);
 
     return ~crc;
 }
+
+uint32_t CRC32C(unsigned char* data, size_t dataSize) {
+#ifndef NO_CRC_INTRIN
+    // Test to make sure the CPU supports the CRC32 intrinsic
+    unsigned int cpuidData[4];
+#ifdef _WIN32
+    __cpuid(cpuidData, 1);
+#else
+    __get_cpuid(1, &cpuidData[0], &cpuidData[1], &cpuidData[2], &cpuidData[3]);
 #endif
-#ifdef __cplusplus
+
+    if (cpuidData[2] & (1 << 20)) { // bit_SSE4_2
+        return CRC32IntrinImpl(data, dataSize);
+    }
+#endif
+    return CRC32TableImpl(data, dataSize);
 }
-#endif
