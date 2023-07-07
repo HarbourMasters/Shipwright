@@ -3,7 +3,7 @@
 
 #ifdef _WIN32
 #include <immintrin.h>
-#include <cpuid.h>
+#include <intrin.h>
 #elif ((defined(__GNUC__) && defined(__x86_64__) || defined(__i386__)))
 // Force the compiler to assume we have support for the CRC32 intrinsic. We will check for our selves later.
 #pragma GCC target("crc32")
