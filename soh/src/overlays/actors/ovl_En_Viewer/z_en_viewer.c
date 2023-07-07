@@ -15,6 +15,7 @@
 #include "objects/object_ganon/object_ganon.h"
 #include "objects/object_opening_demo1/object_opening_demo1.h"
 #include "soh/frame_interpolation.h"
+#include <assert.h>
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -170,10 +171,10 @@ void EnViewer_InitImpl(EnViewer* this, PlayState* play) {
     EnViewerInitData* initData = &sInitData[this->actor.params >> 8];
     s32 skelObjBankIndex = Object_GetIndex(&play->objectCtx, initData->skeletonObject);
 
-    ASSERT(skelObjBankIndex >= 0);
+    assert(skelObjBankIndex >= 0);
 
     this->animObjBankIndex = Object_GetIndex(&play->objectCtx, initData->animObject);
-    ASSERT(this->animObjBankIndex >= 0);
+    assert(this->animObjBankIndex >= 0);
 
     if (!Object_IsLoaded(&play->objectCtx, skelObjBankIndex) ||
         !Object_IsLoaded(&play->objectCtx, this->animObjBankIndex)) {

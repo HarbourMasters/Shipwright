@@ -27,6 +27,8 @@ void gSPDisplayList(Gfx* pkt, Gfx* dl);
 void gSPDisplayListOffset(Gfx* pkt, Gfx* dl, int offset);
 void gSPVertex(Gfx* pkt, uintptr_t v, int n, int v0);
 void gSPInvalidateTexCache(Gfx* pkt, uintptr_t texAddr);
+void gDPSetTextureImageFB(Gfx* pkt, u32 format, u32 size, u32 width, int fb);
+
 
 void cleararena(void);
 void bootproc(void);
@@ -180,6 +182,7 @@ void __osSetWatchLo(u32);
 
 EnItem00* Item_DropCollectible(PlayState* play, Vec3f* spawnPos, s16 params);
 EnItem00* Item_DropCollectible2(PlayState* play, Vec3f* spawnPos, s16 params);
+void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry giEntry);
 void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnPos, s16 params);
 void EffectBlure_ChangeType(EffectBlure* this, int type);
 void EffectBlure_AddVertex(EffectBlure* this, Vec3f* p1, Vec3f* p2);
@@ -569,6 +572,9 @@ void Flags_UnsetRandomizerInf(RandomizerInf flag);
 u16 func_80037C30(PlayState* play, s16 arg1);
 s32 func_80037D98(PlayState* play, Actor* actor, s16 arg2, s32* arg3);
 s32 func_80038290(PlayState* play, Actor* actor, Vec3s* arg2, Vec3s* arg3, Vec3f arg4);
+GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, PlayState* play);
+s16 GetChestGameRandoGiDrawId(s8 room, s16 ogDrawId, PlayState* play);
+
 // ? func_80038600(?);
 u16 DynaSSNodeList_GetNextNodeIdx(DynaSSNodeList*);
 void func_80038A28(CollisionPoly* poly, f32 tx, f32 ty, f32 tz, MtxF* dest);
@@ -1207,10 +1213,12 @@ Gfx* Gfx_SetupDL_66(Gfx* gfx);
 Gfx* func_800947AC(Gfx* gfx);
 void Gfx_SetupDL_42Opa(GraphicsContext* gfxCtx);
 void Gfx_SetupDL_42Overlay(GraphicsContext* gfxCtx);
+void Gfx_SetupDL_42Kal(GraphicsContext* gfxCtx);
 void Gfx_SetupDL_27Xlu(GraphicsContext* gfxCtx);
 void Gfx_SetupDL_60NoCDXlu(GraphicsContext* gfxCtx);
 void Gfx_SetupDL_61Xlu(GraphicsContext* gfxCtx);
 void Gfx_SetupDL_56Ptr(Gfx** gfxp);
+void Gfx_SetupDL_39Kal(GraphicsContext* gfxp);
 Gfx* Gfx_BranchTexScroll(Gfx** gfxp, u32 x, u32 y, s32 width, s32 height);
 Gfx* func_80094E78(GraphicsContext* gfxCtx, u32 x, u32 y);
 Gfx* Gfx_TexScroll(GraphicsContext* gfxCtx, u32 x, u32 y, s32 width, s32 height);
@@ -1345,6 +1353,7 @@ void SkinMatrix_Vec3fMtxFMultXYZW(MtxF* mf, Vec3f* src, Vec3f* xyzDest, f32* wDe
 void SkinMatrix_Vec3fMtxFMultXYZ(MtxF* mf, Vec3f* src, Vec3f* dest);
 void SkinMatrix_MtxFMtxFMult(MtxF* mfA, MtxF* mfB, MtxF* dest);
 void SkinMatrix_GetClear(MtxF** mf);
+void SkinMatrix_Clear(MtxF* mf);
 void SkinMatrix_MtxFCopy(MtxF* src, MtxF* dest);
 s32 SkinMatrix_Invert(MtxF* src, MtxF* dest);
 void SkinMatrix_SetScale(MtxF* mf, f32 x, f32 y, f32 z);
@@ -2101,6 +2110,7 @@ void PreviewSequence(u16 seqId);
 void func_800F5B58(void);
 void func_800F5BF0(u8 natureAmbienceId);
 void Audio_PlayFanfare(u16);
+void Audio_PlayFanfare_Rando(GetItemEntry getItem);
 void func_800F5C2C(void);
 void func_800F5E18(u8 playerIdx, u16 seqId, u8 fadeTimer, s8 arg3, s8 arg4);
 void Audio_SetSequenceMode(u8 seqMode);

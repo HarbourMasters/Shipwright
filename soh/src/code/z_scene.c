@@ -1,6 +1,7 @@
 #include "global.h"
 #include "vt.h"
 #include "soh/ActorDB.h"
+#include <assert.h>
 
 RomFile sNaviMsgFiles[];
 
@@ -15,7 +16,7 @@ s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId) {
     osSyncPrintf("num=%d adrs=%x end=%x\n", objectCtx->num, (uintptr_t)objectCtx->status[objectCtx->num].segment + size,
                  objectCtx->spaceEnd);
 
-    ASSERT(((objectCtx->num < OBJECT_EXCHANGE_BANK_MAX) &&
+    assert(((objectCtx->num < OBJECT_EXCHANGE_BANK_MAX) &&
             (((uintptr_t)objectCtx->status[objectCtx->num].segment + size) < (uintptr_t)objectCtx->spaceEnd)));
 
     DmaMgr_SendRequest1(objectCtx->status[objectCtx->num].segment, gObjectTable[objectId].vromStart, size,
@@ -153,7 +154,7 @@ void* func_800982FC(ObjectContext* objectCtx, s32 bankIndex, s16 objectId) {
 
     nextPtr = (void*)ALIGN16((uintptr_t)status->segment + size);
 
-    ASSERT(nextPtr < objectCtx->spaceEnd);
+    assert(nextPtr < objectCtx->spaceEnd);
 
     // "Object exchange free size=%08x"
     osSyncPrintf("オブジェクト入れ替え空きサイズ=%08x\n", (uintptr_t)objectCtx->spaceEnd - (uintptr_t)nextPtr);
@@ -284,7 +285,7 @@ void Scene_CommandObjectList(PlayState* play, SceneCmd* cmd) {
         status++;
     }
 
-    ASSERT(cmd->objectList.num <= OBJECT_EXCHANGE_BANK_MAX);
+    assert(cmd->objectList.num <= OBJECT_EXCHANGE_BANK_MAX);
 
     while (k < cmd->objectList.num) {
         nextPtr = func_800982FC(&play->objectCtx, i, *objectEntry);

@@ -2,6 +2,7 @@
 #include "objects/object_box/object_box.h"
 #include "soh_assets.h"
 #include "soh/Enhancements/enhancementTypes.h"
+#include <assert.h>
 
 #define FLAGS 0
 
@@ -872,7 +873,7 @@ Gfx* EnBox_EmptyDList(GraphicsContext* gfxCtx) {
     Gfx* dList;
 
     dList = Graph_Alloc(gfxCtx, sizeof(Gfx));
-    ASSERT(dList != NULL);
+    assert(dList != NULL);
 
     dListHead = dList;
     gSPEndDisplayList(dListHead++);
@@ -886,7 +887,7 @@ Gfx* func_809CA4A0(GraphicsContext* gfxCtx) {
     Gfx* dListHead;
 
     dListHead = Graph_Alloc(gfxCtx, 2 * sizeof(Gfx));
-    ASSERT(dListHead != NULL);
+    assert(dListHead != NULL);
 
     dList = dListHead;
     gDPSetRenderMode(dListHead++,
@@ -904,7 +905,7 @@ Gfx* func_809CA518(GraphicsContext* gfxCtx) {
     Gfx* dListHead;
 
     dListHead = Graph_Alloc(gfxCtx, 2 * sizeof(Gfx));
-    ASSERT(dListHead != NULL);
+    assert(dListHead != NULL);
 
     dList = dListHead;
     gDPSetRenderMode(dListHead++,

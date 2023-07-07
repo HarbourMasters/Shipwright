@@ -8,6 +8,8 @@
 #define NUM_DUNGEONS 8
 #define NUM_COWS 10
 
+void Save_LoadFile(void);
+
 /**
  *  Initialize new save.
  *  This save has an empty inventory with 3 hearts and single magic.
