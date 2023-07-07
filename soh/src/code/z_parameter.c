@@ -1074,7 +1074,7 @@ void func_80083108(PlayState* play) {
                         (gSaveContext.equips.buttonItems[0] == ITEM_BOMBCHU) ||
                         (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
                         if ((gSaveContext.equips.buttonItems[0] != ITEM_NONE) || (gSaveContext.infTable[29] == 0)) {
-                            if (swordlessShuffleFlag) {
+                            if (swordlessShuffleFlag && gSaveContext.buttonStatus[0] != ITEM_SWORD_BGS) {
                                 gSaveContext.buttonStatus[0] = 255;
                             }
                             gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
