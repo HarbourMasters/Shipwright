@@ -426,7 +426,10 @@ string_view ocarinasDesc              = "Enabling this shuffles the Fairy Ocarin
 |    SHUFFLE CHILD'S WALLET    |                                                           //
 ------------------------------*/                                                           //
 string_view childWalletDesc           = "Enabling this shuffles the Child's Wallet into\n" //
-                                        "the item pool.";                                  //
+                                        "the item pool.\n"                                 //
+                                        "\n"                                               //
+                                        "You will not be able to carry any rupees until\n" //
+                                        "you find a wallet.";                              //
 /*------------------------------                                                           //
 |      SHUFFLE WEIRD EGG       |                                                           //
 ------------------------------*/                                                           //

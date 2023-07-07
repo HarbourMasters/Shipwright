@@ -3859,7 +3859,11 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 UIWidgets::EnhancementCheckbox(Settings::ShuffleChildWallet.GetName().c_str(), "gRandomizeShuffleChildWallet");
-                UIWidgets::InsertHelpHoverText("Enabling this shuffles the Child's Wallet into the item pool.");
+                UIWidgets::InsertHelpHoverText(
+                    "Enabling this shuffles the Child's Wallet into the item pool.\n"
+                    "\n"
+                    "You will not be able to carry any rupees until you find a wallet."
+                );
 
                 UIWidgets::PaddedSeparator();
 
