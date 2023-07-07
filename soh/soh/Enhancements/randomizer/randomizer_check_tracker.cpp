@@ -52,6 +52,7 @@ bool initialized;
 bool doAreaScroll;
 bool doInitialize;
 bool previousShowHidden = false;
+bool hideShopRightChecks = true;
 
 bool checkCollected = false;
 int checkLoops = 0;
@@ -1142,6 +1143,7 @@ void LoadSettings() {
     show100SkullReward = gSaveContext.n64ddFlag ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_100_GS_REWARD) == RO_GENERIC_YES
         : false;
+    hideShopRightChecks = gSaveContext.n64ddFlag ? CVarGetInteger("gCheckTrackerOptionHideRightShopChecks", 1) : false;
 
     if (gSaveContext.n64ddFlag) {
         switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS)) {
@@ -1195,7 +1197,7 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
                 rcObj.vOrMQ == RCVORMQ_MQ && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId) ||
                 rcObj.vOrMQ == RCVORMQ_VANILLA && !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId)
                 ) &&
-            (rcObj.rcType != RCTYPE_SHOP || showShops) &&
+            (rcObj.rcType != RCTYPE_SHOP || (showShops && (!hideShopRightChecks || hideShopRightChecks && rcObj.actorParams > 0x03))) &&
             (rcObj.rcType != RCTYPE_SCRUB ||
                 showScrubs ||
                 rcObj.rc == RC_LW_DEKU_SCRUB_NEAR_BRIDGE || // The 3 scrubs that are always randomized
@@ -1555,7 +1557,9 @@ void CheckTrackerSettingsWindow::DrawElement() {
         }
     }
     UIWidgets::EnhancementCheckbox("Vanilla/MQ Dungeon Spoilers", "gCheckTrackerOptionMQSpoilers");
-    UIWidgets::Tooltip("If enabled, Vanilla/MQ dungeons will show on the tracker immediately. Otherwise, Vanilla/MQ dungeon locations must be unlocked. ");
+    UIWidgets::Tooltip("If enabled, Vanilla/MQ dungeons will show on the tracker immediately. Otherwise, Vanilla/MQ dungeon locations must be unlocked.");
+    UIWidgets::EnhancementCheckbox("Hide right-side shop item checks", "gCheckTrackerOptionHideRightShopChecks");
+    UIWidgets::Tooltip("If enabled, will prevent the tracker from displaying slots 1-4 in all shops. Requires save reload.");
 
     ImGui::TableNextColumn();
 
