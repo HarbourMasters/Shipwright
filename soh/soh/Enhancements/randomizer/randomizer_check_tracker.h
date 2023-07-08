@@ -51,6 +51,7 @@ void InitTrackerData(bool isDebug);
 void SetLastItemGetRC(RandomizerCheck rc);
 void CheckTrackerDialogClosed();
 bool IsGameRunning();
+void ToggleShopRightChecks();
 } // namespace CheckTracker
 
 
