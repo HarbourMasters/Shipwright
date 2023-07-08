@@ -8,8 +8,9 @@
 #include <string>
 #include <unordered_map>
 #define AAE_SOUND_ACTION_BATCH_SIZE 64
+class IResource;
 struct DecodedSample {
-    void* data;//This data is in wave format.
+    void* data;//A wav file.
     size_t dataSize;
 };
 struct SoundAction {
@@ -17,6 +18,7 @@ struct SoundAction {
                      // address of an object with which the sound is associated is recommended.
     uint8_t command; // One of the items belonging to AAE_COMMANDS.
         std::string path; // If command is AAE_START, this is the path to the desired resource.
+    bool looping;//If command is AAE_START, specifies whether or not the sound should loop.
         uint32_t frames; // If command is AAE_PREPARE, this tells the engine how many PCM frames to get ready.
 };
 
@@ -30,7 +32,6 @@ class AccessibleAudioEngine {
     std::condition_variable cv;
     std::mutex mtx;
     std::unordered_map<uint64_t, ma_sound> sounds;
-    std::unordered_map<std::string, DecodedSample> decodedSampleCache;
     SoundAction outgoingSoundActions[AAE_SOUND_ACTION_BATCH_SIZE];//Allows batch delivery of SoundActions to the FIFO to minimize the amount of time spent locking and unlocking.
     int nextOutgoingSoundAction;
     int framesUntilGC;
@@ -55,13 +56,16 @@ class AccessibleAudioEngine {
     void doPrepare(SoundAction& action);
 //Run every so often to clean up expired sound handles.
     void garbageCollect();
+    //Run MiniAudio's jobs.
+    void processAudioJobs();
+
   public:
     AccessibleAudioEngine();
     ~AccessibleAudioEngine();
         //Mix the game's audio with this engine's audio to produce the final mix. To be performed exclusively in the audio thread. Mixing is done in-place (meaning the buffer containing the game's audio is overwritten with the mixed content).
     void mix(int16_t* ogBuffer, uint32_t nFrames);
 //Start playing a sound.
-    void playSound(uint64_t handle, const char* path);
+    void playSound(uint64_t handle, const char* path, bool looping);
     //Schedule the preparation of output for delivery.
     void prepare();
     void cacheDecodedSample(std::string& path, void* data, size_t size);

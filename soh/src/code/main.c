@@ -65,9 +65,9 @@ int main(int argc, char** argv)
     // TODO: Was moved to below InitOTR because it requires window to be setup. But will be late to catch crashes.
     CrashHandlerRegisterCallback(CrashHandler_PrintSohData);
     BootCommands_Init();
-    ActorAccessibility_DecodeAndCacheSamples();
     Main(0);
     DeinitOTR();
+    ActorAccessibility_Shutdown();
     return 0;
 }
 

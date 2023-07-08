@@ -752,9 +752,16 @@ void Play_Update(PlayState* play) {
     Input* input;
     u32 i;
     s32 pad2;
-    if (play->sceneNum == 81 && CVarGetInteger("gExtractSfx", 0) != 0) {
-        ActorAccessibility_HandleSoundExtractionMode(play);
-         return;
+    //Support locking down the game on the title screen for the purposes of SFX extraction. Be careful to avoid checking CVars every frame.
+    static int sfxExtractionMode = -1;
+    if (play->sceneNum == 81) // Title screen.
+    {
+        if (sfxExtractionMode != 0)
+            sfxExtractionMode = CVarGetInteger("gExtractSfx", 0);
+        if (sfxExtractionMode == 1) {
+            ActorAccessibility_HandleSoundExtractionMode(play);
+            return;
+        }
     }
 
     input = play->state.input;

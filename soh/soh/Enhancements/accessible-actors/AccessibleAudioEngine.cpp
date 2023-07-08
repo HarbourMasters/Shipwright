@@ -10,6 +10,7 @@
 #define AAE_GC_INTERVAL 20 * 60//How often, in frames, do we clean up sound handles that are no longer active.
 #define NOMINMAX//because Windows is a joke.
 #include "AccessibleAudioEngine.h"
+
 extern "C" {
 int AudioPlayer_GetDesiredBuffered();
 }
@@ -58,31 +59,29 @@ nFrames -= framesObtained;
         ma_pcm_rb_commit_read(&preparedOutput, framesObtained);
 
     }
+
     return ogNFrames;
 
 }
 void AccessibleAudioEngine::doPrepare(SoundAction& action)
 {
     framesUntilGC--;
-    int spaceAvailable = ma_pcm_rb_available_write(&preparedOutput);
-    int framesLeftToRender = AAE_MAX_BUFFER_SIZE - spaceAvailable;
-    int nFrames = AudioPlayer_GetDesiredBuffered() - framesLeftToRender;
-    if (nFrames > spaceAvailable)
-        nFrames = spaceAvailable;
+    int nFrames = ma_pcm_rb_available_write(&preparedOutput);
     if (nFrames <= 0)
         return;
 
-    if (spaceAvailable == 0)
-            return;
-
     float* chunk;
     while (nFrames > 0) {
+        //This should not loop more than twice.
         uint32_t nextChunk = nFrames;
-        ma_pcm_rb_acquire_write(&preparedOutput, &nextChunk, (void**)&chunk);
+        ma_pcm_rb_acquire_write(&preparedOutput, &nextChunk, (void**)&chunk);//Might reduce nextChunk if there isn't enough buffer space available to accommodate the request.
         uint64_t framesRead = 0;
         ma_engine_read_pcm_frames(&engine, chunk, nextChunk, &framesRead);
-        ma_pcm_rb_commit_write(&preparedOutput, (uint32_t) framesRead);
-        nFrames -= framesRead;
+        //Even if we get fewer frames than expected, we should still submit a full buffer of silence.
+        if (framesRead < nextChunk)
+            ma_silence_pcm_frames(chunk + (framesRead * 2), (nextChunk - framesRead), ma_format_f32, 2);
+        ma_pcm_rb_commit_write(&preparedOutput, (uint32_t) nextChunk);
+        nFrames -= nextChunk;
 
     }
 
@@ -123,6 +122,7 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
     bool shouldTerminate = false;
         SoundAction incomingSoundActions[AAE_SOUND_ACTION_BATCH_SIZE];
         while (true) {
+        processAudioJobs();
             if (framesUntilGC <= 0)
                 garbageCollect();
 
@@ -163,6 +163,7 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
     }
         if (ma_sound_init_from_file(&engine, action.path.c_str(), 0, NULL, NULL, sound) != MA_SUCCESS)
             return;
+        ma_sound_set_looping(sound, action.looping);
         ma_sound_start(sound);
 
     }
@@ -178,6 +179,13 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
                 i++;
         }
         framesUntilGC = AAE_GC_INTERVAL;
+    }
+    void AccessibleAudioEngine::processAudioJobs()
+    {
+        ma_job job;
+        while (ma_resource_manager_next_job(&resourceManager, &job) == MA_SUCCESS)
+            ma_job_process(&job);
+
     }
     AccessibleAudioEngine::AccessibleAudioEngine() {
         initialized = 0;
@@ -241,11 +249,12 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
     }
 
     }
-void AccessibleAudioEngine::playSound(uint64_t handle, const char* path) {
+void AccessibleAudioEngine::playSound(uint64_t handle, const char* path, bool looping) {
         SoundAction& action = getNextOutgoingSoundAction();
     action.handle = handle;
         action.command = AAE_START;
     action.path = path;
+        action.looping = looping;
     }
 void AccessibleAudioEngine::prepare() {
         SoundAction& action = getNextOutgoingSoundAction();
@@ -254,10 +263,6 @@ void AccessibleAudioEngine::prepare() {
         postSoundActions();
     }
 void AccessibleAudioEngine::cacheDecodedSample(std::string& path, void* data, size_t size) {
-        DecodedSample sample;
-        sample.data = data;
-        sample.dataSize = size;
-        decodedSampleCache[path] = sample;
 //The data is stored in wave format, so we register it with MiniAudio as an encoded asset as opposed to a decoded one.
         ma_resource_manager_register_encoded_data(&resourceManager, path.c_str(), data, size);
     }

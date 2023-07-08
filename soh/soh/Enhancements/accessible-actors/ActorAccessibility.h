@@ -81,6 +81,14 @@ void ActorAccessibility_AddSupportedActor(s16 type, ActorAccessibilityPolicy pol
 void ActorAccessibility_RunAccessibilityForActor(PlayState* play, AccessibleActor* actor);
 void ActorAccessibility_RunAccessibilityForAllActors(PlayState* play);
 void ActorAccessibility_PlaySpecialSound(AccessibleActor* actor, s16 sfxId);
+/*
+*Play sounds (usually from the game) using the external sound engine.
+* actor: pointer to an AccessibleActor object.
+* slot: Allows multiple sounds to be assigned to a single actor. The maximum number of slots per actor is sizeof(AccessibleActor). In other words far more than one could ever reasonably use.
+* sfxId: one of the game's sfx IDs. Note that this plays prerendered sounds.
+*/
+void ActorAccessibility_PlaySpecialSound2(AccessibleActor* actor, int slot, s16 sfxId);
+
 f32 ActorAccessibility_ComputeCurrentVolume(f32 maxDistance, f32 xzDistToPlayer);
 // Computes a relative angle based on Link's (or some other actor's) current angle.
 Vec3s ActorAccessibility_ComputeRelativeAngle(Vec3s* origin, Vec3s* offset);
@@ -127,15 +135,12 @@ bool ActorAccessibility_InitAudio();
 void ActorAccessibility_ShutdownAudio();
 // Combine the games' audio with the output from AccessibleAudioEngine. To be called exclusively from the audio thread.
 void ActorAccessibility_MixAccessibleAudioWithGameAudio(int16_t* ogBuffer, uint32_t nFrames);
-// Play a sound using the external audio engine.
-void ActorAccessibility_PlayExternalSound(void* handle, const char* path);
+//Map one of the game's sfx to a path which as understood by the external audio engine.
+bool ActorAccessibility_MapSfxToExternalAudio(int sfxId);
+    // Play a sound using the external audio engine. This call is the lowest level and should generally not be used directly.
+void ActorAccessibility_PlayExternalSound(void* handle, const char* path, bool looping);
 // Call once per frame to tell the audio engine to start working on the latest batch of queued instructions.
 void ActorAccessibility_PrepareNextAudioFrame();
-// Call once at start of game to build a complete cache of the game's audio samples. This differs from the game's own
-// sample cache as this is fully decoded for use with the external player.
-void ActorAccessibility_DecodeAndCacheSamples();
-//Decode an audio sample to a wav file. This is used for R&D; it is not called during normal opperation.
-void ActorAccessibility_DecodeSampleToFile(SoundFontSample* sample, const char* path);
 void ActorAccessibility_HandleSoundExtractionMode(PlayState* play);
 //This is called by the audio thread when it's ready to try to pull sfx from the game.
 void ActorAccessibility_DoSoundExtractionStep();

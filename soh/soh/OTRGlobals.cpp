@@ -230,6 +230,11 @@ OTRGlobals::OTRGlobals() {
             }
         }
     }
+        std::string sohAccessibilityPath = LUS::Context::GetPathRelativeToAppDirectory("accessibility.otr");
+        if (std::filesystem::exists(sohAccessibilityPath)) {
+            OTRFiles.push_back(sohAccessibilityPath);
+        }
+
     std::unordered_set<uint32_t> ValidHashes = { 
         OOT_PAL_MQ,
         OOT_NTSC_JP_MQ,
