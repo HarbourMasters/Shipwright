@@ -1,12 +1,18 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#ifdef __llvm__
+#pragma clang attribute push(__attribute__((target("crc32"))), apply_to = function)
+#elif __GNUC__
+#pragma GCC push_options
+#pragma GCC target("sse4.2")
+#endif
+
 #ifdef _WIN32
 #include <immintrin.h>
 #include <intrin.h>
 #elif ((defined(__GNUC__) && defined(__x86_64__) || defined(__i386__)))
 // Force the compiler to assume we have support for the CRC32 intrinsic. We will check for our selves later.
-#pragma GCC target("crc32")
 
 #include <nmmintrin.h>
 #include <cpuid.h>
@@ -119,6 +125,12 @@ uint32_t CRC32C(unsigned char* data, size_t dataSize) {
     if (cpuidData[2] & (1 << 20)) { // bit_SSE4_2
         return CRC32IntrinImpl(data, dataSize);
     }
-#endif
+#endif // NO_CRC_INTRIN
     return CRC32TableImpl(data, dataSize);
 }
+
+#ifdef __clang_major__
+#pragma clang attribute pop
+#else
+#pragma GCC pop_options
+#endif
