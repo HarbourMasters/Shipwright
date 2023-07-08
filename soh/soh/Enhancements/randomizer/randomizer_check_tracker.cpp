@@ -55,7 +55,7 @@ bool previousShowHidden = false;
 
 bool checkCollected = false;
 int checkLoops = 0;
-int checkCounter = 0;
+int curCheckCounter = 0;
 u16 savedFrames = 0;
 bool messageCloseCheck = false;
 bool pendingSaleCheck = false;
@@ -324,12 +324,18 @@ RandomizerCheckArea AreaFromEntranceGroup[] = {
 
 RandomizerCheckArea GetCheckArea() {
     auto scene = static_cast<SceneID>(gPlayState->sceneNum);
-    bool grottoScene = (scene == SCENE_KAKUSIANA || scene == SCENE_YOUSEI_IZUMI_TATE || scene == SCENE_YOUSEI_IZUMI_YOKO);
+    bool grottoScene = (scene == SCENE_KAKUSIANA || scene == SCENE_YOUSEI_IZUMI_TATE);
     const EntranceData* ent = GetEntranceData(grottoScene ?
         ENTRANCE_RANDO_GROTTO_EXIT_START + GetCurrentGrottoId() : gSaveContext.entranceIndex);
     RandomizerCheckArea area = RCAREA_INVALID;
     if (ent != nullptr && !IsAreaScene(scene) && ent->type != ENTRANCE_TYPE_DUNGEON) {
-        area = AreaFromEntranceGroup[ent->dstGroup];
+        if (ent->source == "Desert Colossus" || ent->destination == "Desert Colossus") {
+            area = RCAREA_DESERT_COLOSSUS;
+        } else if (ent->source == "Gerudo Fortress" || ent->destination == "Gerudo Fortress") {
+            area = RCAREA_GERUDO_FORTRESS;
+        } else {
+            area = AreaFromEntranceGroup[ent->dstGroup];
+        }
     }
     if (area == RCAREA_INVALID) {
         if (grottoScene && (GetCurrentGrottoId() == -1) && (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) == RO_GENERIC_OFF)) {
@@ -455,14 +461,14 @@ bool CheckByArea(RandomizerCheckArea area = RCAREA_INVALID, GetItemEntry giEntry
         }
         return true;
     } else if (area != RCAREA_INVALID) {
-        auto areaToCheck = area == checkArea ? area : checkArea;
-        auto areaChecks = checksByArea.find(areaToCheck)->second;
-        if (checkCounter >= areaChecks.size()) {
-            checkCounter = 0;
+        //auto curAreaToCheck = area == checkArea ? area : checkArea;
+        auto curAreaChecks = checksByArea.find(checkArea)->second;
+        if (curCheckCounter >= curAreaChecks.size()) {
+            curCheckCounter = 0;
             checkLoops++;
         }
-        auto rco = areaChecks.at(checkCounter);
-        return EvaluateCheck(rco);
+        auto rcoCur = curAreaChecks.at(curCheckCounter);
+        return EvaluateCheck(rcoCur);
     }
 }
 
@@ -551,10 +557,10 @@ void CheckTrackerFrame() {
         for (int i = 0; i < 6; i++) {
             if (CheckChecks()) {
                 checkCollected = false;
-                checkCounter = 0;
+                curCheckCounter = 0;
                 break;
             } else {
-                checkCounter++;
+                curCheckCounter++;
             }
         }
         if (checkLoops > 10) {
@@ -562,7 +568,7 @@ void CheckTrackerFrame() {
             checkLoops = 0;
         }
     }
-    if (savedFrames > 0) {
+    if (savedFrames > 0 && !pendingSaleCheck) {
         savedFrames--;
     }
 }
@@ -659,6 +665,26 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
         pendingSaleCheck = true;
         return;
     }
+    if (scene == SCENE_YOUSEI_IZUMI_YOKO) {
+        if (checkArea == RCAREA_HYRULE_CASTLE) {
+            SetCheckCollected(RC_HC_GREAT_FAIRY_REWARD);
+        } else if (checkArea == RCAREA_DESERT_COLOSSUS) {
+            SetCheckCollected(RC_COLOSSUS_GREAT_FAIRY_REWARD);
+        } else if (checkArea == RCAREA_ZORAS_FOUNTAIN) {
+            SetCheckCollected(RC_ZF_GREAT_FAIRY_REWARD);
+        }
+        return;
+    }
+    if (scene == SCENE_DAIYOUSEI_IZUMI) {
+        if (checkArea == RCAREA_HYRULE_CASTLE) {
+            SetCheckCollected(RC_OGC_GREAT_FAIRY_REWARD);
+        } else if (checkArea == RCAREA_DEATH_MOUNTAIN_TRAIL) {
+            SetCheckCollected(RC_DMT_GREAT_FAIRY_REWARD);
+        } else if (checkArea == RCAREA_DEATH_MOUNTAIN_CRATER) {
+            SetCheckCollected(RC_DMC_GREAT_FAIRY_REWARD);
+        }
+        return;
+    }
     if (scene == SCENE_SPOT11 && (gSaveContext.entranceIndex == 485 || gSaveContext.entranceIndex == 489)) {
         if (EvaluateCheck(RandomizerCheckObjects::GetAllRCObjects().find(RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST)->second) ||
             EvaluateCheck(RandomizerCheckObjects::GetAllRCObjects().find(RC_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST)->second)) {
@@ -670,26 +696,6 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
             SetCheckCollected(RC_MARKET_SHOOTING_GALLERY_REWARD);
         } else {
             SetCheckCollected(RC_KAK_SHOOTING_GALLERY_REWARD);
-        }
-        return;
-    }
-    if (scene == SCENE_YOUSEI_IZUMI_YOKO) {
-        if (gSaveContext.lastScene == SCENE_SPOT15) {
-            SetCheckCollected(RC_HC_GREAT_FAIRY_REWARD);
-        } else if (gSaveContext.lastScene == SCENE_SPOT11) {
-            SetCheckCollected(RC_COLOSSUS_GREAT_FAIRY_REWARD);
-        } else if (gSaveContext.lastScene == SCENE_SPOT08) {
-            SetCheckCollected(RC_ZF_GREAT_FAIRY_REWARD);
-        }
-        return;
-    }
-    if (scene == SCENE_DAIYOUSEI_IZUMI) {
-        if (gSaveContext.lastScene == SCENE_GANON_TOU) {
-            SetCheckCollected(RC_OGC_GREAT_FAIRY_REWARD);
-        } else if (gSaveContext.lastScene == SCENE_SPOT16) {
-            SetCheckCollected(RC_DMT_GREAT_FAIRY_REWARD);
-        } else if (gSaveContext.lastScene == SCENE_SPOT17) {
-            SetCheckCollected(RC_DMC_GREAT_FAIRY_REWARD);
         }
         return;
     }
@@ -732,7 +738,7 @@ void InitTrackerData(bool isDebug) {
 }
 
 void SaveTrackerData(SaveContext* saveContext, int sectionID, bool gameSave) {
-    SaveManager::Instance->SaveArray("trackerDataCheck", ARRAY_COUNT(saveContext->checkTrackerData), [&](size_t i) {
+    SaveManager::Instance->SaveArray("checks", ARRAY_COUNT(saveContext->checkTrackerData), [&](size_t i) {
         if (saveContext->checkTrackerData[i].status == RCSHOW_COLLECTED) {
             if (gameSave || savedFrames > 0) {
                 gSaveContext.checkTrackerData[i].status = saveContext->checkTrackerData[i].status = RCSHOW_SAVED;
@@ -740,7 +746,11 @@ void SaveTrackerData(SaveContext* saveContext, int sectionID, bool gameSave) {
                 saveContext->checkTrackerData[i].status = RCSHOW_SCUMMED;
             }
         }
-        SaveManager::Instance->SaveData("", saveContext->checkTrackerData[i]);
+        SaveManager::Instance->SaveStruct("", [&]() {
+            SaveManager::Instance->SaveData("status", saveContext->checkTrackerData[i].status);
+            SaveManager::Instance->SaveData("skipped", saveContext->checkTrackerData[i].skipped);
+            SaveManager::Instance->SaveData("hintItem", saveContext->checkTrackerData[i].hintItem);
+        });
     });
 }
 
@@ -755,8 +765,12 @@ void LoadFile() {
     Teardown();
     LoadSettings();
     TrySetAreas();
-    SaveManager::Instance->LoadArray("checkTrackerData", sizeof(gSaveContext.checkTrackerData), [](size_t i) {
-        SaveManager::Instance->LoadData("", ((RandomizerCheckTrackerData*)&gSaveContext.checkTrackerData)[i]);
+    SaveManager::Instance->LoadArray("checks", RC_MAX, [](size_t i) {
+        SaveManager::Instance->LoadStruct("", [&]() {
+            SaveManager::Instance->LoadData("status", gSaveContext.checkTrackerData[i].status);
+            SaveManager::Instance->LoadData("skipped", gSaveContext.checkTrackerData[i].skipped);
+            SaveManager::Instance->LoadData("hintItem", gSaveContext.checkTrackerData[i].hintItem);
+        });
         RandomizerCheckTrackerData entry = gSaveContext.checkTrackerData[i];
         RandomizerCheck rc = static_cast<RandomizerCheck>(i);
         if (rc == RC_UNKNOWN_CHECK || rc == RC_LINKS_POCKET || rc == RC_MAX ||
@@ -894,8 +908,6 @@ void CheckTrackerWindow::DrawElement() {
     ImGui::SameLine();
     if (ImGui::Button("Recheck Area")) {
         CheckChecks(GET_ITEM_NONE, true);
-        //EnqueueSave(gSaveContext.fileNum, false);
-        //SaveTrackerData(gSaveContext.fileNum, true, false);
         UpdateAllOrdering();
         UpdateInventoryChecks();
     }
@@ -1594,8 +1606,8 @@ void CheckTrackerWindow::InitElement() {
     Color_Saved_Extra           = CVarGetColor("gCheckTrackerSavedExtraColor",            Color_Saved_Extra_Default);
 
     SaveManager::Instance->AddInitFunction(InitTrackerData);
-    sectionId = SaveManager::Instance->AddSaveFunction("checkTracker", 1, SaveFile, true, -1);
-    SaveManager::Instance->AddLoadFunction("checkTracker", 1, LoadFile);
+    sectionId = SaveManager::Instance->AddSaveFunction("trackerData", 1, SaveFile, true, -1);
+    SaveManager::Instance->AddLoadFunction("trackerData", 1, LoadFile);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadFile>([](uint32_t fileNum) {
         doInitialize = true;
     });
