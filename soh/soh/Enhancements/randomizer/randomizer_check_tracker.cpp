@@ -540,6 +540,7 @@ void CheckTrackerTransition(uint32_t sceneNum) {
     if (!IsGameRunning()) {
         return;
     }
+    gSaveContext;
     if (transitionCheck) {
         transitionCheck = false;
         checkCollected = true;
@@ -942,13 +943,6 @@ void CheckTrackerWindow::DrawElement() {
     for (auto& [rcArea, objs] : checksByArea) {
         RandomizerCheckArea thisArea = currentArea;
 
-        if (sceneId == SCENE_SHOP1) {
-            if (gSaveContext.linkAge == 1) {
-                thisArea = RCAREA_MARKET;
-            } else {
-                thisArea = RCAREA_KAKARIKO_VILLAGE;
-            }
-        }
         const int areaChecksTotal = static_cast<int>(objs.size());
         thisAreaFullyChecked = (areaChecksGotten[rcArea] == areaChecksTotal);
         //Last Area needs to be cleaned up
