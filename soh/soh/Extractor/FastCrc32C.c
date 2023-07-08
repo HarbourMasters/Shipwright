@@ -1,9 +1,11 @@
 #include <stdint.h>
 #include <stddef.h>
 
-#ifdef __llvm__
+// Force the compiler to assume we have support for the CRC32 intrinsic. We will check for our selves later.
+// Clang will define both __llvm__ and __GNUC__ but GCC will only define __GNUC__. So we need to check for __llvm__ first.
+#if ((defined(__llvm__) && defined(__x86_64__) || defined(__i386__)))
 #pragma clang attribute push(__attribute__((target("crc32"))), apply_to = function)
-#elif __GNUC__
+#elif ((defined(__GNUC__) && defined(__x86_64__) || defined(__i386__)))
 #pragma GCC push_options
 #pragma GCC target("sse4.2")
 #endif
@@ -12,8 +14,6 @@
 #include <immintrin.h>
 #include <intrin.h>
 #elif ((defined(__GNUC__) && defined(__x86_64__) || defined(__i386__)))
-// Force the compiler to assume we have support for the CRC32 intrinsic. We will check for our selves later.
-
 #include <nmmintrin.h>
 #include <cpuid.h>
 #elif defined(__aarch64__) && defined(__ARM_FEATURE_CRC32)
@@ -118,6 +118,8 @@ uint32_t CRC32C(unsigned char* data, size_t dataSize) {
     unsigned int cpuidData[4];
 #ifdef _WIN32
     __cpuid(cpuidData, 1);
+#elif __APPLE__
+    do_cpuid(1,cpuidData);
 #else
     __get_cpuid(1, &cpuidData[0], &cpuidData[1], &cpuidData[2], &cpuidData[3]);
 #endif
@@ -129,8 +131,9 @@ uint32_t CRC32C(unsigned char* data, size_t dataSize) {
     return CRC32TableImpl(data, dataSize);
 }
 
-#ifdef __clang_major__
+#if ((defined(__llvm__) && defined(__x86_64__) || defined(__i386__)))
 #pragma clang attribute pop
-#else
+#elif ((defined(__GNUC__) && defined(__x86_64__) || defined(__i386__)))
 #pragma GCC pop_options
+#else
 #endif
