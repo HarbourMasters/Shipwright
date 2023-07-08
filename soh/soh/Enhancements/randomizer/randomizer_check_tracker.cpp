@@ -463,7 +463,7 @@ bool CheckByArea(RandomizerCheckArea area = RCAREA_INVALID, GetItemEntry giEntry
         return true;
     } else if (area != RCAREA_INVALID) {
         auto areaChecks = checksByArea.find(checkArea)->second;
-        if (checkCounter >= curAreaChecks.size()) {
+        if (checkCounter >= areaChecks.size()) {
             checkCounter = 0;
             checkLoops++;
         }
@@ -690,14 +690,6 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
             EvaluateCheck(RandomizerCheckObjects::GetAllRCObjects().find(RC_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST)->second)) {
             return;
         }
-    }
-    if (scene == SCENE_SYATEKIJYOU) {
-        if (gSaveContext.linkAge == 1) {
-            SetCheckCollected(RC_MARKET_SHOOTING_GALLERY_REWARD);
-        } else {
-            SetCheckCollected(RC_KAK_SHOOTING_GALLERY_REWARD);
-        }
-        return;
     }
     if (GET_PLAYER(gPlayState) == nullptr) {
         transitionCheck = true;
