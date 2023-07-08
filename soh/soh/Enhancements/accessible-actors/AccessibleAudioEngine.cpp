@@ -111,6 +111,7 @@ void AccessibleAudioEngine::postSoundActions(){
 void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
     std::scoped_lock<std::mutex> lock(mtx);
     soundActions.push_front(action);
+    cv.notify_one();
 }
     SoundAction& AccessibleAudioEngine::getNextOutgoingSoundAction() {
     if (nextOutgoingSoundAction >= AAE_SOUND_ACTION_BATCH_SIZE)
@@ -131,8 +132,7 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
                 SoundAction& action = incomingSoundActions[i];
                 switch (action.command) {
                     case AAE_TERMINATE:
-                        shouldTerminate = true;
-                        break;
+                        return;
                     case AAE_START:
                         doPlaySound(action);
                         break;
@@ -141,11 +141,7 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
                         break;
 
                 }
-                if (shouldTerminate)
-                    break;
             }
-            if (shouldTerminate)
-                break;
 
     }
 }

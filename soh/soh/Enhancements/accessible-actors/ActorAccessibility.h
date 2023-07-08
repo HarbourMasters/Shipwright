@@ -136,7 +136,7 @@ void ActorAccessibility_ShutdownAudio();
 // Combine the games' audio with the output from AccessibleAudioEngine. To be called exclusively from the audio thread.
 void ActorAccessibility_MixAccessibleAudioWithGameAudio(int16_t* ogBuffer, uint32_t nFrames);
 //Map one of the game's sfx to a path which as understood by the external audio engine.
-bool ActorAccessibility_MapSfxToExternalAudio(int sfxId);
+bool ActorAccessibility_MapSfxToExternalAudio(s16 sfxId);
     // Play a sound using the external audio engine. This call is the lowest level and should generally not be used directly.
 void ActorAccessibility_PlayExternalSound(void* handle, const char* path, bool looping);
 // Call once per frame to tell the audio engine to start working on the latest batch of queued instructions.

@@ -10,9 +10,6 @@ class SfxExtractor {
     s16 currentSfx;
     std::vector<int16_t> tempStorage; // Stores raw audio data for the sfx currently being ripped.
     int16_t* tempBuffer;              // Raw pointer to the above vector.
-    int retrievalAttempts; // Counts failures. If the game doesn't render nonzero samples after being asked to play a
-                           // sound, we count it as an attempt. If we still don't have output after five attempts, we'll
-                           // skip the sound.
     int progressMilestones[9]; // Implements progress reports after every 10 percent.
     // Check if a buffer contains meaningful audio output.
     bool isAllZero(int16_t* buffer, size_t count);

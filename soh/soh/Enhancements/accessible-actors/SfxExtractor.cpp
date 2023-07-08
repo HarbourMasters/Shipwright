@@ -6,6 +6,7 @@
 #include "z64.h"
 #include "functions.h"
 #include "soh/OTRGlobals.h"
+#include "SfxTable.h"
 const char* GetLanguageCode();
 extern "C" {
 extern Vec3f D_801333D4;
@@ -91,14 +92,7 @@ void SfxExtractor::renderOutput() {
 }
 void SfxExtractor::setup() {
     try {
-        SpeechSynthesizer::Instance->Speak("Welcome to the Ship of Harkinian accessible asset extraction program. "
-                                           "Today, we're going to speedrun the "
-                                           "process of capturing all of the sounds in the game and preparing them "
-                                           "for use as accessibility tools. I "
-                                           "expect this process to take about 10 minutes to complete. You'll be "
-                                           "treated to progress reports along the "
-                                           "way. You can cancel this process by closing the game. Please stand by.",
-                                           GetLanguageCode());
+        SpeechSynthesizer::Instance->Speak("Sfx extraction speedrun initiated. Please wait. This will take a few minutes.", GetLanguageCode());
         // Kill the audio thread so we can take control.
         captureThreadState = CT_WAITING;
         OTRAudio_InstallSfxCaptureThread();
@@ -113,21 +107,8 @@ void SfxExtractor::setup() {
         tempBuffer = tempStorage.data();
 
         // Build are master sfx extraction todo list.
-        for (s16 i = NA_SE_PL_WALK_GROUND; i <= NA_SE_PL_YOBI_DATA14; i++)
-            sfxToRip.push(i);
-        for (s16 i = NA_SE_IT_SWORD_IMPACT; i <= NA_SE_IT_YOBI18; i++)
-            sfxToRip.push(i);
-        for (s16 i = NA_SE_EV_DOOR_OPEN; i <= NA_SE_EV_YOBI25; i++)
-            sfxToRip.push(i);
-        for (s16 i = NA_SE_EN_FLOORMASTER_SLIDING; i <= NA_SE_EN_YOBI30; i++)
-            sfxToRip.push(i);
-        for (s16 i = NA_SE_SY_WIN_OPEN; i <= NA_SE_SY_YOBI17; i++)
-            sfxToRip.push(i);
-        for (s16 i = NA_SE_OC_OCARINA; i <= NA_SE_OC_HIBIKI_ISHI; i++)
-            sfxToRip.push(i);
-        // The last set excludes the final few as they mostly crash the game due to samples with missing data.
-        for (s16 i = NA_SE_VO_LI_SWORD_N; i < NA_SE_VO_DUMMY_0x7d; i++)
-            sfxToRip.push(i);
+        for (int i = 0; i < sfxCount; i++)
+            sfxToRip.push(sfxTable[i]);
 
         currentStep = STEP_MAIN;
         for (int i = 1; i < 10; i++)
@@ -144,9 +125,11 @@ void SfxExtractor::ripNextSfx() {
     }
     // Was the last sfx a loop? If so then we need to stop it, and then we need to run audio out to nowhere for as long
     // as it takes to get back to a blank slate.
-    if (Audio_IsSfxPlaying(currentSfx)) {
-        Audio_StopSfxById(currentSfx);
+    if (currentSfx != -1) {
+        Audio_StopSfxByPos(&D_801333D4);
         captureThreadState = CT_PRIMING;
+        currentSfx = -1;
+
         return;
     }
     if (sfxToRip.empty()) {
@@ -158,7 +141,6 @@ void SfxExtractor::ripNextSfx() {
     sfxToRip.pop();
     startOfInput = 0;
     endOfInput = 0;
-    retrievalAttempts = 0;
     Audio_PlaySoundGeneral(currentSfx, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
 
     {
@@ -230,14 +212,14 @@ void SfxExtractor::captureCallback() {
     size_t samplesLeft = SFX_EXTRACTION_BUFFER_SIZE;
     bool outputStarted = false;
     endOfInput = 0;
-
+    int waitTime = 0;
     while (samplesLeft > 0) {
         AudioMgr_CreateNextAudioBuffer(mark, SFX_EXTRACTION_ONE_FRAME);
 
         if (!outputStarted && isAllZero(mark, SFX_EXTRACTION_ONE_FRAME * 2)) {
-            retrievalAttempts++;
-            if (retrievalAttempts < 5)
-                continue;                     // Game is not ready to deliver, try again.
+waitTime++;
+            if (waitTime < 300)
+                continue;//Output is silent, allow more time for audio to begin.
             captureThreadState = CT_FINISHED; // Sound is unavailable, so skip over it and move on.
             return;
         }

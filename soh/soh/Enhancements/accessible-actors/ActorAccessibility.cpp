@@ -29,6 +29,11 @@ typedef std::map<Actor*, uint64_t> TrackedActors_t;//Maps real actors to interna
 typedef std::map<uint64_t, AccessibleActor> AccessibleActorList_t;//Maps internal IDs to wrapped actor objects. These actors can be real or virtual.
 typedef std::vector<AccessibleActor> VAList_t;//Denotes a list of virtual actors specific to a single room.
 typedef std::map<s32, VAList_t> VAZones_t;//Maps room/ scene indices to their corresponding virtual actor collections.
+typedef struct {
+    std::string hexName;
+    std::shared_ptr<LUS::IResource> resource;
+}SfxRecord;
+
 class ActorAccessibility {
   public:
       bool isOn = false;
@@ -39,6 +44,7 @@ class ActorAccessibility {
     VAZones_t vaZones;
     AccessibleAudioEngine* audioEngine;
     SfxExtractor sfxExtractor;
+    std::unordered_map<s16, SfxRecord> sfxMap;//Maps internal sfx to external (prerendered) resources.
 
 };
 static ActorAccessibility* aa;
@@ -280,9 +286,31 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         aa->audioEngine->mix(ogBuffer, nFrames);
 
     }
-    void ActorAccessibility_MapSfxToExternalAudio(s16 sfxId)
+    bool ActorAccessibility_MapSfxToExternalAudio(s16 sfxId)
     {
-        std::string fullPath = SfxExtractor::getExternalFileName(sfxId);
+        SfxRecord* record;
+        auto it = aa->sfxMap.find(sfxId);
+        if (it == aa->sfxMap.end())
+        {
+            SfxRecord tempRecord;
+            std::string fullPath = SfxExtractor::getExternalFileName(sfxId);
+            auto list = LUS::Context::GetInstance()->GetResourceManager()->GetArchive()->ListFiles("accessibility/audio/*");
+            
+            auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadFile(fullPath);
+
+            if (res == nullptr)
+            return false;//Resource doesn't exist, user's gotta run the extractor.
+            //tempRecord.resource = res;
+            std::stringstream ss;
+            ss << std::setw(4) << std::setfill('0') << std::hex << sfxId;
+            tempRecord.hexName = ss.str();
+            aa->sfxMap[sfxId] = tempRecord;
+            record = &aa->sfxMap[sfxId];
+
+        } else
+            record = &it->second;
+
+        return true;
 
     }
     void ActorAccessibility_PlayExternalSound(void* handle, const char* path, bool looping) {

@@ -378,6 +378,8 @@ else {
         Player* player = GET_PLAYER(actor->play);
         static int x = 0;
         if (x == 100) {
+            ActorAccessibility_MapSfxToExternalAudio(NA_SE_EN_MOFER_CORE_ROLL);
+
             ActorAccessibility_PlayExternalSound(NULL, "c:\\users\\caturria\\laction.wav", true);
 
             //x = 0;
