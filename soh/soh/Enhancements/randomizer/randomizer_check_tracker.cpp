@@ -564,7 +564,7 @@ void CheckTrackerFrame() {
                 checkCounter++;
             }
         }
-        if (checkLoops > 10) {
+        if (checkLoops > 15) {
             checkCollected = false;
             checkLoops = 0;
         }
@@ -702,7 +702,7 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
     }
     if (gPlayState->msgCtx.msgMode != MSGMODE_NONE && rc != RC_UNKNOWN_CHECK) {
         RandomizerCheckObject rco = RandomizerCheckObjects::GetAllRCObjects().find(rc)->second;
-        if (rco.rcType == RCTYPE_SKULL_TOKEN && giEntry.itemId != ITEM_SKULL_TOKEN) {
+        if (!(rco.rcType == RCTYPE_SKULL_TOKEN && giEntry.itemId == ITEM_SKULL_TOKEN)) {
             messageCloseCheck = true;
             return;
         }

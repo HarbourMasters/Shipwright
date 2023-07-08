@@ -2676,6 +2676,10 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                 if((actorParams & 0xF) < 10) specialRc = RC_MARKET_TREASURE_CHEST_GAME_ITEM_5;
             }
             break;
+        case SCENE_SPOT05:
+            if (actorId == ACTOR_EN_SA) {
+                specialRc = RC_SONG_FROM_SARIA;
+            }
         case SCENE_SHRINE:
         case SCENE_SHRINE_N:
         case SCENE_SHRINE_R:
