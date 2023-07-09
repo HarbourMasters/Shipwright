@@ -22,11 +22,6 @@
 #define NO_CRC_INTRIN
 #endif
 
-#ifdef __APPLE__
-#include <cpuid.h>
-extern void do_cpuid(uint32_t selector, uint32_t *data);
-#endif
-
 #if defined(__aarch64__) && defined(__ARM_FEATURE_CRC32)
 #define INTRIN_CRC32_64(crc, value) __asm__("crc32cx %w[c], %w[c], %x[v]" : [c] "+r"(crc) : [v] "r"(value))
 #define INTRIN_CRC32_32(crc, value) __asm__("crc32cw %w[c], %w[c], %w[v]" : [c] "+r"(crc) : [v] "r"(value))
@@ -124,7 +119,8 @@ uint32_t CRC32C(unsigned char* data, size_t dataSize) {
 #ifdef _WIN32
     __cpuid(cpuidData, 1);
 #elif __APPLE__
-    do_cpuid(1,cpuidData);
+// I'm 99% sure there are no Macs that run a version of MacOS that also don't support this intrinsic
+   return CRC32IntrinImpl(data, dataSize);
 #else
     __get_cpuid(1, &cpuidData[0], &cpuidData[1], &cpuidData[2], &cpuidData[3]);
 #endif
