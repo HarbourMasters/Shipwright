@@ -24,6 +24,7 @@
 
 #ifdef __APPLE__
 #include <cpuid.h>
+extern void do_cpuid(uint32_t selector, uint32_t *data);
 #endif
 
 #if defined(__aarch64__) && defined(__ARM_FEATURE_CRC32)
