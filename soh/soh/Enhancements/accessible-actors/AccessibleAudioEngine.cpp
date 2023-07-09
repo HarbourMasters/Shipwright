@@ -20,6 +20,7 @@ int AudioPlayer_GetDesiredBuffered();
 enum AAE_COMMANDS {
     AAE_START = 0,
     AAE_STOP,
+    AAE_STOP_ALL,
     AAE_PITCH,
     AAE_VOLUME,
     AAE_PAN,
@@ -99,10 +100,11 @@ int AccessibleAudioEngine::getSoundActions(SoundAction* dest, int limit) {
     while (soundActions.empty())
         cv.wait(lock);
     int actionsOut = 0;
-    while (!soundActions.empty()) {
+    while (!soundActions.empty() && limit > 0) {
         dest[actionsOut] = soundActions.front();
         soundActions.pop_front();
         actionsOut++;
+        limit--;
     }
     return actionsOut;
 
@@ -147,6 +149,10 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
                     case AAE_STOP:
                         doStopSound(action);
                         break;
+                    case AAE_STOP_ALL:
+                        doStopAllSounds(action);
+                        break;
+
                     case AAE_PITCH:
                         doSetPitch(action);
                         break;
@@ -219,6 +225,21 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
             return;
         ma_sound_uninit(&slot->sound);
         slot->active = false;
+
+    }
+    void AccessibleAudioEngine::doStopAllSounds(SoundAction& action)
+    {
+        auto it = sounds.find(action.handle);
+        if (it == sounds.end())
+            return;
+        SoundSlots& slots = it->second;
+        for (int i = 0; i < AAE_SLOTS_PER_HANDLE; i++)
+        {
+            if (slots[i].active)
+            ma_sound_uninit(&slots[i].sound);
+
+        }
+        sounds.erase(it);
 
     }
     void AccessibleAudioEngine::doSetPitch(SoundAction& action)
@@ -369,8 +390,12 @@ void AccessibleAudioEngine::stopSound(uintptr_t handle, int slot) {
         action.handle = (uintptr_t) handle;
         action.slot = slot;
     }
-void AccessibleAudioEngine::setPitch(uintptr_t handle, int slot, float pitch)
-{
+void AccessibleAudioEngine::stopAllSounds(uintptr_t handle) {
+        SoundAction& action = getNextOutgoingSoundAction();
+        action.command = AAE_STOP_ALL;
+        action.handle = handle;
+    }
+    void AccessibleAudioEngine::setPitch(uintptr_t handle, int slot, float pitch) {
         if (slot < 0 || slot >= AAE_SLOTS_PER_HANDLE)
             return;
         SoundAction& action = getNextOutgoingSoundAction();

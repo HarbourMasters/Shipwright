@@ -12,7 +12,7 @@
 
 #include <sstream>
 #include "File.h"
-#define MAX_DB_REDUCTION 20// This is the amount in DB that a sound will be reduced by when it is at the maximum distance
+#define MAX_DB_REDUCTION 35// This is the amount in DB that a sound will be reduced by when it is at the maximum distance
                         // from the player.
 
 typedef struct {
@@ -116,6 +116,8 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         accessibleActor.baseVolume = accessibleActor.policy.volume;
         accessibleActor.currentVolume = accessibleActor.policy.volume;
         accessibleActor.currentReverb = 0;
+        for (int i = 0; i < NUM_MANAGED_SOUND_SLOTS; i++)
+            accessibleActor.managedSoundSlots[i] = false;
         aa->trackedActors[actor] = accessibleActor.instanceID;
         aa->accessibleActorList[accessibleActor.instanceID] = accessibleActor;
         AccessibleActor& savedActor = aa->accessibleActorList[accessibleActor.instanceID];
@@ -137,6 +139,7 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
             return;
         if (i2->second.policy.cleanupUserData)
             i2->second.policy.cleanupUserData(&i2->second);
+        ActorAccessibility_StopAllSoundsForActor(&i2->second);
         aa->accessibleActorList.erase(i2);
 
     }
@@ -169,6 +172,10 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
     {
         aa->audioEngine->stopSound((uintptr_t) handle, slot);
 
+    }
+    void ActorAccessibility_StopAllSounds(void* handle)
+    {
+        aa->audioEngine->stopAllSounds((uintptr_t)handle);
     }
     void ActorAccessibility_SetSoundPitch(void* handle, int slot, float pitch)
     {
@@ -203,6 +210,32 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         aa->audioEngine->setPan((uintptr_t)handle, slot, pan);
 
     }
+    void ActorAccessibility_PlaySoundForActor(AccessibleActor* actor, int slot, s16 sfxId, bool looping)
+    {
+        if (slot < 0 || slot > NUM_MANAGED_SOUND_SLOTS)
+            return;
+        ActorAccessibility_PlaySound(actor, slot, sfxId, looping);
+        ActorAccessibility_SetSoundPitch(actor, slot, actor->policy.pitch);
+        ActorAccessibility_SetSoundVolume(actor, slot, actor->currentVolume);
+        ActorAccessibility_SetSoundPan(actor, slot, &actor->projectedPos);
+        actor->managedSoundSlots[slot] = true;
+
+    }
+    void ActorAccessibility_StopSoundForActor(AccessibleActor* actor, int slot)
+    {
+        if (slot < 0 || slot >= NUM_MANAGED_SOUND_SLOTS)
+            return;
+        ActorAccessibility_StopSound(actor, slot);
+        actor->managedSoundSlots[slot] = false;
+    }
+    void ActorAccessibility_StopAllSoundsForActor(AccessibleActor* actor)
+
+    {
+        ActorAccessibility_StopAllSounds(actor);
+        for (int i = 0; i < NUM_MANAGED_SOUND_SLOTS; i++)
+            actor->managedSoundSlots[i] = false;
+    }
+
     bool ActorAccessibility_IsRealActor(AccessibleActor* actor) {
         return actor->actor != NULL;
 
@@ -234,7 +267,17 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
 
         }
             actor->currentVolume = ActorAccessibility_ComputeCurrentVolume(actor->policy.distance, actor->xzDistToPlayer);
+//Send sound parameters to the new audio engine. Eventually remove the old stuff once all actors are carried over.
+            for (int i = 0; i < NUM_MANAGED_SOUND_SLOTS; i++)
+            {
+                if (actor->managedSoundSlots[i])
+                {
+            ActorAccessibility_SetSoundVolume(actor, i, actor->currentVolume);
+            ActorAccessibility_SetSoundPan(actor, i, &actor->projectedPos);
+           //Judgement call: pitch changes are rare enough that it doesn't make sense to pay the cost of updating it every frame. If you want a pitch change, call the function as needed.
 
+            }
+            }
         actor->frameCount--;
         if (actor->frameCount > 0)
             return;
@@ -248,7 +291,7 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         if (actor->policy.callback != NULL)
             actor->policy.callback(actor);
         else
-            ActorAccessibility_PlaySpecialSound(actor, actor->policy.sound);
+            ActorAccessibility_PlaySoundForActor(actor, 0, actor->policy.sound, false);
 
     }
     void ActorAccessibility_RunAccessibilityForAllActors(PlayState* play) {
@@ -303,6 +346,9 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         actor.isDrawn = 1;
         actor.play = NULL;
         actor.world = where;
+        for (int i = 0; i < NUM_MANAGED_SOUND_SLOTS; i++)
+            actor.managedSoundSlots[i] = 0;
+
         actor.policy = *policy;
         VAList_t* l = (VAList_t*)list;
         l->push_back(actor);

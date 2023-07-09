@@ -83,6 +83,8 @@ SoundSlot* findSound(SoundAction& action);
     //Ready a sound for playback.
     void doPlaySound(SoundAction& action);
     void doStopSound(SoundAction& action);
+    void doStopAllSounds(SoundAction& action);
+
     void doSetPitch(SoundAction& action);
     void doSetVolume(SoundAction& action);
     void doSetPan(SoundAction& action);
@@ -110,6 +112,9 @@ SoundSlot* findSound(SoundAction& action);
 //Start playing a sound.
     void playSound(uintptr_t handle, int slot, const char* path, bool looping);
     void stopSound(uintptr_t handle, int slot);
+    //Stop all sounds belonging to a handle.
+    void stopAllSounds(uintptr_t handle);
+
     void setPitch(uintptr_t handle, int slot, float pitch);
     void setVolume(uintptr_t handle, int slot, float volume);
     void setPan(uintptr_t handle, int slot, float pan);

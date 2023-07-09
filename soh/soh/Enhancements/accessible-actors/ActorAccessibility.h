@@ -4,6 +4,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+    #define NUM_MANAGED_SOUND_SLOTS 10 //How many auto-managed sound slots can any given actor have? this can differ from AAE_SLOTS_PER_HANDLE, but cannot be greater.
 struct AccessibleActor;
 typedef struct AccessibleActor AccessibleActor;
 // A callback that is run regularely as the game progresses in order to provide accessibility services for an actor.
@@ -62,6 +63,8 @@ struct AccessibleActor {
 
     f32 currentPitch;
     s8 currentReverb;
+    bool managedSoundSlots[NUM_MANAGED_SOUND_SLOTS];//These have their attenuation and panning parameters updated every frame automatically.
+
     // Add more state as needed.
     ActorAccessibilityPolicy policy; // A copy, so it can be customized on a per-actor basis if needed.
     void* userData;                  // Set by the policy. Can be anything.
@@ -82,15 +85,17 @@ void ActorAccessibility_RunAccessibilityForActor(PlayState* play, AccessibleActo
 void ActorAccessibility_RunAccessibilityForAllActors(PlayState* play);
 void ActorAccessibility_PlaySpecialSound(AccessibleActor* actor, s16 sfxId);
 /*
-*Play sounds (usually from the game) using the external sound engine.
+*Play sounds (usually from the game) using the external sound engine. This is probably not the function you want to call most of the time (see below).
 * handle: pointer to an arbitrary object. This object can be anything as it's only used as a classifier, but it's recommended that you use an AccessibleActor* as your handle whenever possible. Using AccessibleActor* as the handle gives you automatic cleanup when the actor is killed.
 * slot: Allows multiple sounds to be assigned to a single handle. The maximum number of slots per actor is 10 by default (but can be controlled by modifying AAE_SLOTS_PER_HANDLE).
 * sfxId: one of the game's sfx IDs. Note that this plays prerendered sounds which you must have previously prepared.
-* *looping: whether to play the sound just once or on a continuous loop.
+ *looping: whether to play the sound just once or on a continuous loop.
 */
 void ActorAccessibility_PlaySound(void* actor, int slot, s16 sfxId, bool looping);
 //Stop a sound. Todo: consider making this a short fade instead of just cutting it off.
 void ActorAccessibility_StopSound(void* handle, int slot);
+void ActorAccessibility_StopAllSounds(void* handle);
+
 void ActorAccessibility_SetSoundPitch(void* handle, int slot, float pitch);
 void ActorAccessibility_SetListenerPos(Vec3f* pos);
 void ActorAccessibility_SetSoundPos(void* handle, int slot, Vec3f* pos);
@@ -98,8 +103,16 @@ void ActorAccessibility_SetMaxDistance(void* handle, int slot, float distance);
 
 void ActorAccessibility_SetSoundVolume(void* handle, int slot, float volume);
 void ActorAccessibility_SetSoundPan(void* handle, int slot, Vec3f* projectedPos);
+/*
+* Play a sound on behalf of an AccessibleActor.
+* This version includes automatic sound management: pitch, panning and attenuation parameters will be updated automatically based on the actor's position.
+* 
+*/
+void ActorAccessibility_PlaySoundForActor(AccessibleActor* actor, int slot, s16 sfxId, bool looping);
+void ActorAccessibility_StopSoundForActor(AccessibleActor* actor, int slot);
+void ActorAccessibility_StopAllSoundsForActor(AccessibleActor* actor);
 f32 ActorAccessibility_ComputeCurrentVolume(f32 maxDistance, f32 xzDistToPlayer);
-// Computes a relative angle based on Link's (or some other actor's) current angle.
+    // Computes a relative angle based on Link's (or some other actor's) current angle.
 Vec3s ActorAccessibility_ComputeRelativeAngle(Vec3s* origin, Vec3s* offset);
 void ActorAccessibility_InitCues();
 // Stuff related to lists of virtual actors.

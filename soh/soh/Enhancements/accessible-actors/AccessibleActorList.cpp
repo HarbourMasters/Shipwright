@@ -22,11 +22,11 @@ void accessible_va_wall_cue(AccessibleActor* actor);
     // Begin actor-specific policy callbacks.
 
 void accessible_en_ishi(AccessibleActor* actor) {
-    ActorAccessibility_PlaySpecialSound(actor, NA_SE_EN_OCTAROCK_ROCK);
+    ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_OCTAROCK_ROCK, false);
 }
 
 void accessible_en_NPC_Gen(AccessibleActor* actor) {
-    ActorAccessibility_PlaySpecialSound(actor, NA_SE_VO_NB_LAUGH);
+    ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_VO_NB_LAUGH, false);
 
 }
 void accessible_en_chest(AccessibleActor* actor) {
@@ -38,48 +38,48 @@ void accessible_en_chest(AccessibleActor* actor) {
     s32 treasureFlag = actor->actor->params & 0x1F;
 
     if (!(treasureFlag >= 20 && treasureFlag < 32)) {
-        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_TBOX_UNLOCK);
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_TBOX_UNLOCK, false);
     }
 }
 
 void accessible_en_gerudo(AccessibleActor* actor) {
-    ActorAccessibility_PlaySpecialSound(actor, NA_SE_VO_NB_LAUGH);//update sound for ones that detect you
+    ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_VO_NB_LAUGH, false);//update sound for ones that detect you
 }
 
 void accessible_en_Sign(AccessibleActor* actor) {
-    ActorAccessibility_PlaySpecialSound(actor, NA_SE_IT_REFLECTION_WOOD);
+    ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_IT_REFLECTION_WOOD, false);
 }
 
 void accessible_en_pickups(AccessibleActor* actor) {
-    ActorAccessibility_PlaySpecialSound(actor, NA_SE_EN_NUTS_DAMAGE);
+    ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_NUTS_DAMAGE, false);
 }
 
 void accessible_test(AccessibleActor* actor) {
-    ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_FOOT_SWITCH);
+    ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_FOOT_SWITCH, false);
 }
 
 void accessible_grotto(AccessibleActor* actor) {
     if ((actor->actor->params & 0x300) == 0) {
-        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_DROP_FALL);
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_DROP_FALL, false);
     }
 }
 
 void accessible_torches(AccessibleActor* actor) {
     if ((actor->actor->params) == 4230 || (actor->actor->params) == 4220 || (actor->actor->params) == 4227) {
-        ActorAccessibility_PlaySpecialSound(actor, NA_SE_IT_BOMB_IGNIT);
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_IT_BOMB_IGNIT, false);
     }
     if ((actor->actor->params) == 9216 || (actor->actor->params) == 962) {
-        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EN_ANUBIS_FIRE);
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_ANUBIS_FIRE, false);
     }
 }
 
 void accessible_hasi(AccessibleActor* actor) {
     if ((actor->actor->params) == 0) {
-        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_BLOCK_SHAKE);
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_BLOCK_SHAKE, false);
     }
 
     else if ((actor->actor->params) == 1) {
-        ActorAccessibility_PlaySpecialSound(actor, NA_SE_PL_DAMAGE);
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_PL_DAMAGE, false);
     }
 }
     void accessible_switch(AccessibleActor* actor) {
@@ -89,28 +89,26 @@ void accessible_hasi(AccessibleActor* actor) {
     if ((actor->actor->params & 7) == 0) {
         if (scale.y >= 33.0f / 200.0f) {
             if (actor->play->sceneNum == 0 && actor->play->roomCtx.curRoom.num == 5 && actor->xzDistToPlayer < 20) {
-                Audio_PlaySoundGeneral(NA_SE_EV_DIAMOND_SWITCH, &player->actor.world.pos, 4, &actor->basePitch,
-                                     &actor->baseVolume,
-                                      &actor->currentReverb);
+                ActorAccessibility_PlaySound(actor, 0, NA_SE_EV_DIAMOND_SWITCH, false);//Should result in same behaviour.
             }
-            ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_FOOT_SWITCH);
+            ActorAccessibility_PlaySoundForActor(actor, 1, NA_SE_EV_FOOT_SWITCH, false);
 }
     }
     else if ((actor->actor->params & 7) == 1) {
         if (scale.y >= 33.0f / 200.0f) { //(!(Flags_GetSwitch(actor->play, (actor->params >> 8 & 0x3F)))) {
-            ActorAccessibility_PlaySpecialSound(actor, NA_SE_IT_HAMMER_HIT);
+            ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_IT_HAMMER_HIT, false);
         }
     } 
     else if ((actor->actor->params & 7) == 2) {
         if (sw->eyeTexIndex == 0) { //(!(Flags_GetSwitch(actor->play, (actor->params >> 8 & 0x3F))))
                                     // make it only play for open eye
 
-            ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_FOOT_SWITCH);
+            ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_FOOT_SWITCH, false);
         }
     }
 
     else {
-        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_DIAMOND_SWITCH);
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_DIAMOND_SWITCH, false);
 
     }
 
@@ -118,53 +116,51 @@ void accessible_hasi(AccessibleActor* actor) {
 
 void accessible_larva(AccessibleActor* actor) {
     if (actor->actor->bgCheckFlags == 0) {
-        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EN_GOMA_BJR_EGG1);
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_GOMA_BJR_EGG1, false);
     }
 }
 
 void accessible_door(AccessibleActor* actor) {
-    ActorAccessibility_PlaySpecialSound(actor, NA_SE_OC_DOOR_OPEN);
+    ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_OC_DOOR_OPEN, false);
 }
 void accessible_va_prototype(AccessibleActor* actor) {
 
     Player* player = GET_PLAYER(actor->play);
-    ActorAccessibility_PlaySpecialSound(actor, NA_SE_IT_BOMB_EXPLOSION);
+    ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_IT_BOMB_EXPLOSION, false);
 
 }
 
 void accessible_maruta(AccessibleActor* actor) {
     if (actor->actor->params == 1) {
-        ActorAccessibility_PlaySpecialSound(actor, NA_SE_PL_LAND_LADDER);
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_PL_LAND_LADDER, false);
     }
 }
 
 void accessible_area_change(AccessibleActor* actor) {
     if (actor->variety == AREA_KOKIRI) {
-        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_SARIA_MELODY);
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_SARIA_MELODY, false);
     } else if (actor->variety == AREA_HYRULE_FIELD) {
-        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_HORSE_RUN_LEVEL);
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_HORSE_RUN_LEVEL, false);
     }
 }
 
 void accessible_231_dekus(AccessibleActor* actor) {
+    ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_NUTS_FAINT, false);
     if (actor->actor->params == 1) {
-        actor->currentPitch = 1.0;
-        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EN_NUTS_FAINT);
+        ActorAccessibility_SetSoundPitch(actor, 0, 1.0);
     }
     if (actor->actor->params == 2) {
-        actor->currentPitch = 0.5;
-        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EN_NUTS_FAINT);
+        ActorAccessibility_SetSoundPitch(actor, 0, 0.5);
     }
     if (actor->actor->params == 3) {
-        actor->currentPitch = 1.5;
-        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EN_NUTS_FAINT);
+        ActorAccessibility_SetSoundPitch(actor, 0, 1.5);
     }
 
 }
 
 void accessible_hana(AccessibleActor* actor) {
     if (actor->actor->params == 1) {
-        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EN_OCTAROCK_ROCK);
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_OCTAROCK_ROCK, false);
     }
 
 }
@@ -172,19 +168,12 @@ void accessible_hana(AccessibleActor* actor) {
 void accessible_goma(AccessibleActor* actor) {
     BossGoma* goma = (BossGoma*)actor->actor;
     if (goma->visualState == 0) {
-        ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_DIAMOND_SWITCH);
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_DIAMOND_SWITCH, false);
     }
 }
 
 void accessible_door_of_time(AccessibleActor* actor) {
-    Player* player = GET_PLAYER(actor->play);
-    static int frames = 0; // Please don't do frame counting like this.
-    frames++;
-    if (frames % 20 == 0)
-    ActorAccessibility_PlaySound(actor, 0, NA_SE_EV_DIAMOND_SWITCH, false);
-    ActorAccessibility_SetSoundPan(actor, 0, &actor->projectedPos);
-
-
+    ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_DIAMOND_SWITCH, false);
 }
 
 void ActorAccessibility_InitActors() {
@@ -297,7 +286,6 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     ActorAccessibility_AddSupportedActor(ACTOR_BOSS_GOMA, policy);
 
     ActorAccessibility_InitPolicy(&policy, "door of time", accessible_door_of_time, 0);
-    policy.n = 1;
     ActorAccessibility_AddSupportedActor(ACTOR_BG_MJIN, policy);
 
     ActorAccessibility_InitPolicy(&policy, "crawlspace", NULL, NA_SE_EN_MUSI_SINK);
