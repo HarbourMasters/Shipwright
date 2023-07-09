@@ -176,6 +176,10 @@ void accessible_goma(AccessibleActor* actor) {
     }
 }
 
+void accessible_door_of_time(AccessibleActor* actor) {
+    ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_DIAMOND_SWITCH);
+
+}
 
 void ActorAccessibility_InitActors() {
     const int Npc_Frames = 35;
@@ -285,6 +289,10 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     ActorAccessibility_InitPolicy(&policy, "Goma", accessible_goma, 0);
     policy.distance = 5000;
     ActorAccessibility_AddSupportedActor(ACTOR_BOSS_GOMA, policy);
+
+    ActorAccessibility_InitPolicy(&policy, "door of time", accessible_door_of_time);
+    ActorAccessibility_AddSupportedActor(ACTOR_DOOR_TOKI, policy);
+
     ActorAccessibility_InitPolicy(&policy, "crawlspace", NULL, NA_SE_EN_MUSI_SINK);
     policy.volume = 1.5;
     policy.distance = 3000;
