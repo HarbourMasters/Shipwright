@@ -34,12 +34,15 @@ class TerrainCueSound {
     s8 currentReverb;
     // Call to start playback.
     void play() {
-        Audio_PlaySoundGeneral(currentSFX, &terrainProjectedPos, 255, &currentPitch, &currentVolume, &currentReverb);
+        ActorAccessibility_PlaySound(this, 0, currentSFX, false);
+        ActorAccessibility_SetSoundPan(this, 0, &terrainProjectedPos);
+        ActorAccessibility_SetSoundVolume(this, 0, currentVolume);
+        ActorAccessibility_SetSoundPitch(this, 0, currentPitch);
     }
 
     // Call when terrain is no longer present to stop playback.
     virtual void stop() {
-        Audio_StopSfxByTokenAndId(255, currentSFX);
+        ActorAccessibility_StopSound(this, 0);
     }
 
     //Custom terrain sound behaviour.
@@ -56,6 +59,10 @@ class TerrainCueSound {
         // Set xzDistToPlayer.
         xzDistToPlayer = Math_Vec3f_DistXZ(&terrainPos, &player->actor.world.pos);
         currentVolume = ActorAccessibility_ComputeCurrentVolume(actor->policy.distance, xzDistToPlayer);
+        ActorAccessibility_SetSoundPan(this, 0, &terrainProjectedPos);
+        ActorAccessibility_SetSoundVolume(this, 0, currentVolume);
+        ActorAccessibility_SetSoundPitch(this, 0, currentPitch);
+
     }
 
   public:
