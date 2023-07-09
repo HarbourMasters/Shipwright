@@ -92,12 +92,12 @@ void ActorAccessibility_PlaySound(void* actor, int slot, s16 sfxId, bool looping
 //Stop a sound. Todo: consider making this a short fade instead of just cutting it off.
 void ActorAccessibility_StopSound(void* handle, int slot);
 void ActorAccessibility_SetSoundPitch(void* handle, int slot, float pitch);
-void ActorAccessibility_SetListenerPos(Vec3f* pos, Vec3s* rot, Vec3f* vel);
-void ActorAccessibility_SetSoundPos(void* handle, int slot, Vec3f* pos, Vec3s* rot, Vec3f* vel);
+void ActorAccessibility_SetListenerPos(Vec3f* pos);
+void ActorAccessibility_SetSoundPos(void* handle, int slot, Vec3f* pos);
 void ActorAccessibility_SetMaxDistance(void* handle, int slot, float distance);
 
 void ActorAccessibility_SetSoundVolume(void* handle, int slot, float volume);
-
+void ActorAccessibility_SetSoundPan(void* handle, int slot, Vec3f* projectedPos);
 f32 ActorAccessibility_ComputeCurrentVolume(f32 maxDistance, f32 xzDistToPlayer);
 // Computes a relative angle based on Link's (or some other actor's) current angle.
 Vec3s ActorAccessibility_ComputeRelativeAngle(Vec3s* origin, Vec3s* offset);

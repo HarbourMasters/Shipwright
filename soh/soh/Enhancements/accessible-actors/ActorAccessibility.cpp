@@ -175,21 +175,13 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         aa->audioEngine->setPitch((uintptr_t)handle, slot, pitch);
 
     }
-    void ActorAccessibility_SetListenerPos(Vec3f* pos, Vec3s* rot, Vec3f* vel)
+    void ActorAccessibility_SetListenerPos(Vec3f* pos)
     {
-        Vec3f fRot;
-        fRot.x = rot->x / 32767;
-        fRot.y = rot->y / 32767;
-        fRot.z = rot->z / 32767;
-        aa->audioEngine->setListenerPosition(pos->x, pos->y, pos->z, fRot.x, fRot.y, fRot.z, vel->x, vel->y, vel->z);
+        aa->audioEngine->setListenerPosition(pos->x, pos->y, pos->z);
 
     }
-    void ActorAccessibility_SetSoundPos(void* handle, int slot, Vec3f* pos, Vec3s* rot, Vec3f* vel) {
-        Vec3f fRot;
-        fRot.x = rot->x / 32767;
-        fRot.y = rot->y / 32767;
-        fRot.z = rot->z / 32767;
-        aa->audioEngine->setSoundPosition((uintptr_t) handle, slot, pos->x, pos->y, pos->z, fRot.x, fRot.y, fRot.z, vel->x, vel->y, vel->z);
+    void ActorAccessibility_SetSoundPos(void* handle, int slot, Vec3f* pos) {
+        aa->audioEngine->setSoundPosition((uintptr_t) handle, slot, pos->x, pos->y, pos->z);
     }
     void ActorAccessibility_SetMaxDistance(void* handle, int slot, float distance)
     {
@@ -199,6 +191,16 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
     void ActorAccessibility_SetSoundVolume(void* handle, int slot, float volume)
     {
         aa->audioEngine->setVolume((uintptr_t)handle, slot, volume);
+
+    }
+    void ActorAccessibility_SetSoundPan(void* handle, int slot, Vec3f* projectedPos)
+    {
+        float pan = projectedPos->x / 270;
+        if (pan < -1.0)
+            pan = -1.0;
+        if (pan > 1.0)
+            pan = 1.0;
+        aa->audioEngine->setPan((uintptr_t)handle, slot, pan);
 
     }
     bool ActorAccessibility_IsRealActor(AccessibleActor* actor) {

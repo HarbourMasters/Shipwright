@@ -22,6 +22,8 @@ enum AAE_COMMANDS {
     AAE_STOP,
     AAE_PITCH,
     AAE_VOLUME,
+    AAE_PAN,
+
     AAE_LISTENER, //Set the listener's position and direction.
 AAE_POS,//Set the sound source's position and direction.
 AAE_DIST,//Set max distance.
@@ -151,6 +153,9 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
                     case AAE_VOLUME:
                         doSetVolume(action);
                         break;
+                    case AAE_PAN:
+                        doSetPan(action);
+
                     case AAE_DIST:
                         doSetMaxDistance(action);
 
@@ -201,16 +206,10 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
             sounds[action.handle] = temp;
         sound = &sounds[action.handle][action.slot];
     }
-        if (ma_sound_init_from_file(&engine, action.path.c_str(), 0, NULL, NULL, &sound->sound) != MA_SUCCESS)
+    if (ma_sound_init_from_file(&engine, action.path.c_str(), MA_SOUND_FLAG_NO_SPATIALIZATION, NULL, NULL,
+                                &sound->sound) != MA_SUCCESS)
             return;
         ma_sound_set_looping(&sound->sound, action.looping);
-        ma_sound_set_min_gain(&sound->sound, 0.0);
-        ma_sound_set_max_gain(&sound->sound, 1.0);
-        ma_sound_set_min_distance(&sound->sound, 0);
-        ma_sound_set_max_distance(&sound->sound, 50000);
-        ma_sound_set_rolloff(&sound->sound, 0.01);
-
-        ma_sound_set_cone(&sound->sound, ma_degrees_to_radians_f(0), ma_degrees_to_radians_f(360), 1.0);
         ma_sound_start(&sound->sound);
         sound->active = true;
     }
@@ -238,22 +237,19 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
         ma_sound_set_volume(&slot->sound, action.pitch);
 
     }
-    void AccessibleAudioEngine::doSetListenerPos(SoundAction& action)
-    {
-        ma_engine_listener_set_position(&engine, 0, action.posX, action.posY, action.posZ);
-        ma_engine_listener_set_direction(&engine, 0, action.rotX, action.rotY, action.rotZ);
-        ma_engine_listener_set_velocity(&engine, 0, action.velX, action.velY, action.velZ);
-
-    }
-    void AccessibleAudioEngine::doSetSoundPos(SoundAction& action)
+    void AccessibleAudioEngine::doSetPan(SoundAction& action)
     {
         SoundSlot* slot = findSound(action);
         if (slot == NULL)
             return;
-        ma_sound_set_position(&slot->sound, action.posX, action.posY, action.posZ);
-        ma_sound_set_direction(&slot->sound, action.rotX, action.rotY, action.rotZ);
-        ma_sound_set_velocity(&slot->sound, action.velX, action.velY, action.velZ);
+        ma_sound_set_pan(&slot->sound, action.pan);
+    }
+    void AccessibleAudioEngine::doSetListenerPos(SoundAction& action)
+    {
 
+    }
+    void AccessibleAudioEngine::doSetSoundPos(SoundAction& action)
+    {
     }
     void AccessibleAudioEngine::doSetMaxDistance(SoundAction& action)
     {
@@ -386,6 +382,7 @@ void AccessibleAudioEngine::setPitch(uintptr_t handle, int slot, float pitch)
     }
 void AccessibleAudioEngine::setVolume(uintptr_t handle, int slot, float volume)
 {
+
         if (slot < 0 || slot >= AAE_SLOTS_PER_HANDLE)
             return;
         SoundAction& action = getNextOutgoingSoundAction();
@@ -394,22 +391,26 @@ void AccessibleAudioEngine::setVolume(uintptr_t handle, int slot, float volume)
         action.slot = slot;
         action.volume = volume;
     }
-void AccessibleAudioEngine::setListenerPosition(float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float velX, float velY, float velZ)
-{
+void AccessibleAudioEngine::setPan(uintptr_t handle, int slot, float pan) {
+
+        if (slot < 0 || slot >= AAE_SLOTS_PER_HANDLE)
+            return;
+        SoundAction& action = getNextOutgoingSoundAction();
+        action.command = AAE_PAN;
+        action.handle = handle;
+        action.slot = slot;
+        action.pan = pan;
+    }
+
+        
+    void AccessibleAudioEngine::setListenerPosition(float posX, float posY, float posZ) {
         SoundAction& action = getNextOutgoingSoundAction();
         action.command = AAE_LISTENER;
         action.posX = posX;
         action.posY = posY;
         action.posZ = posZ;
-        action.rotX = rotX;
-        action.rotY = rotY;
-        action.rotZ = rotZ;
-        action.velX = velX;
-        action.velY = velY;
-        action.velZ = velZ;
     }
-void AccessibleAudioEngine::setSoundPosition(uintptr_t handle, int slot, float posX, float posY, float posZ, float rotX, float rotY, float rotZ,
-                                                float velX, float velY, float velZ) {
+void AccessibleAudioEngine::setSoundPosition(uintptr_t handle, int slot, float posX, float posY, float posZ) {
         if (slot < 0 || slot >= AAE_SLOTS_PER_HANDLE)
             return;
         SoundAction& action = getNextOutgoingSoundAction();
@@ -419,12 +420,6 @@ void AccessibleAudioEngine::setSoundPosition(uintptr_t handle, int slot, float p
         action.posX = posX;
         action.posY = posY;
         action.posZ = posZ;
-        action.rotX = rotX;
-        action.rotY = rotY;
-        action.rotZ = rotZ;
-        action.velX = velX;
-        action.velY = velY;
-        action.velZ = velZ;
 }
 void AccessibleAudioEngine::setMaxDistance(uintptr_t handle, int slot, float distance)
 {

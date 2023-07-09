@@ -26,6 +26,8 @@ struct SoundAction {
         union {
             float pitch;
             float volume;
+            float pan;
+
             float distance;
         };
 
@@ -83,6 +85,8 @@ SoundSlot* findSound(SoundAction& action);
     void doStopSound(SoundAction& action);
     void doSetPitch(SoundAction& action);
     void doSetVolume(SoundAction& action);
+    void doSetPan(SoundAction& action);
+
     void doSetListenerPos(SoundAction& action);
     void doSetSoundPos(SoundAction& action);
     void doSetMaxDistance(SoundAction& actoun);
@@ -108,9 +112,10 @@ SoundSlot* findSound(SoundAction& action);
     void stopSound(uintptr_t handle, int slot);
     void setPitch(uintptr_t handle, int slot, float pitch);
     void setVolume(uintptr_t handle, int slot, float volume);
-    void setListenerPosition(float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float velX, float velY, float velZ);
-    void setSoundPosition(uintptr_t handle, int slot, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float velX,
-                             float velY, float velZ);
+    void setPan(uintptr_t handle, int slot, float pan);
+
+    void setListenerPosition(float posX, float posY, float posZ);
+    void setSoundPosition(uintptr_t handle, int slot, float posX, float posY, float posZ);
     void setMaxDistance(uintptr_t handle, int slot, float distance);
 
 
