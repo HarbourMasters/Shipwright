@@ -11,6 +11,7 @@
 #include "SfxExtractor.h"
 
 #include <sstream>
+#include "File.h"
 #define MAX_DB_REDUCTION 20// This is the amount in DB that a sound will be reduced by when it is at the maximum distance
                         // from the player.
 
@@ -31,7 +32,7 @@ typedef std::vector<AccessibleActor> VAList_t;//Denotes a list of virtual actors
 typedef std::map<s32, VAList_t> VAZones_t;//Maps room/ scene indices to their corresponding virtual actor collections.
 typedef struct {
     std::string hexName;
-    std::shared_ptr<LUS::IResource> resource;
+    std::shared_ptr<LUS::File> resource;
 }SfxRecord;
 
 class ActorAccessibility {
@@ -157,6 +158,49 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
     void ActorAccessibility_PlaySpecialSound(AccessibleActor* actor, s16 sfxId) {
         Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &actor->currentPitch, &actor->currentVolume, &actor->currentReverb);
     }
+    const char* ActorAccessibility_MapSfxToExternalAudio(s16 sfxId);
+
+    void ActorAccessibility_PlaySound(void* handle, int slot, s16 sfxId, bool looping)
+    {
+        const char* path = ActorAccessibility_MapSfxToExternalAudio(sfxId);
+        aa->audioEngine->playSound((uintptr_t)handle, slot, path, looping);
+    }
+    void ActorAccessibility_StopSound(void* handle, int slot)
+    {
+        aa->audioEngine->stopSound((uintptr_t) handle, slot);
+
+    }
+    void ActorAccessibility_SetSoundPitch(void* handle, int slot, float pitch)
+    {
+        aa->audioEngine->setPitch((uintptr_t)handle, slot, pitch);
+
+    }
+    void ActorAccessibility_SetListenerPos(Vec3f* pos, Vec3s* rot, Vec3f* vel)
+    {
+        Vec3f fRot;
+        fRot.x = rot->x / 32767;
+        fRot.y = rot->y / 32767;
+        fRot.z = rot->z / 32767;
+        aa->audioEngine->setListenerPosition(pos->x, pos->y, pos->z, fRot.x, fRot.y, fRot.z, vel->x, vel->y, vel->z);
+
+    }
+    void ActorAccessibility_SetSoundPos(void* handle, int slot, Vec3f* pos, Vec3s* rot, Vec3f* vel) {
+        Vec3f fRot;
+        fRot.x = rot->x / 32767;
+        fRot.y = rot->y / 32767;
+        fRot.z = rot->z / 32767;
+        aa->audioEngine->setSoundPosition((uintptr_t) handle, slot, pos->x, pos->y, pos->z, fRot.x, fRot.y, fRot.z, vel->x, vel->y, vel->z);
+    }
+    void ActorAccessibility_SetMaxDistance(void* handle, int slot, float distance)
+    {
+        aa->audioEngine->setMaxDistance((uintptr_t)handle, slot, distance);
+
+    }
+    void ActorAccessibility_SetSoundVolume(void* handle, int slot, float volume)
+    {
+        aa->audioEngine->setVolume((uintptr_t)handle, slot, volume);
+
+    }
     bool ActorAccessibility_IsRealActor(AccessibleActor* actor) {
         return actor->actor != NULL;
 
@@ -169,6 +213,7 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         actor->isDrawn = actor->actor->isDrawn;
 
     }
+    void ActorAccessibility_PrepareNextAudioFrame();
 
     void ActorAccessibility_RunAccessibilityForActor(PlayState* play, AccessibleActor* actor) {
         actor->play = play;
@@ -286,7 +331,9 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         aa->audioEngine->mix(ogBuffer, nFrames);
 
     }
-    bool ActorAccessibility_MapSfxToExternalAudio(s16 sfxId)
+    // Map one of the game's sfx to a path which as understood by the external audio engine. The returned token is a
+    // short hex string that can be passed directly to the audio engine.
+    const char* ActorAccessibility_MapSfxToExternalAudio(s16 sfxId)
     {
         SfxRecord* record;
         auto it = aa->sfxMap.find(sfxId);
@@ -294,29 +341,27 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         {
             SfxRecord tempRecord;
             std::string fullPath = SfxExtractor::getExternalFileName(sfxId);
-            auto list = LUS::Context::GetInstance()->GetResourceManager()->GetArchive()->ListFiles("accessibility/audio/*");
-            
             auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadFile(fullPath);
 
-            if (res == nullptr)
-            return false;//Resource doesn't exist, user's gotta run the extractor.
-            //tempRecord.resource = res;
+if(res == nullptr)
+return NULL;//Resource doesn't exist, user's gotta run the extractor.
+            tempRecord.resource = res;
             std::stringstream ss;
             ss << std::setw(4) << std::setfill('0') << std::hex << sfxId;
             tempRecord.hexName = ss.str();
             aa->sfxMap[sfxId] = tempRecord;
             record = &aa->sfxMap[sfxId];
-
+            aa->audioEngine->cacheDecodedSample(record->hexName, record->resource->Buffer.data(),
+                                                record->resource->Buffer.size());
         } else
             record = &it->second;
 
-        return true;
+        return record->hexName.c_str();
+
 
     }
-    void ActorAccessibility_PlayExternalSound(void* handle, const char* path, bool looping) {
-        aa->audioEngine->playSound((uint64_t)handle, path, looping);
+    // Call once per frame to tell the audio engine to start working on the latest batch of queued instructions.
 
-    }
     void ActorAccessibility_PrepareNextAudioFrame() {
         aa->audioEngine->prepare();
 

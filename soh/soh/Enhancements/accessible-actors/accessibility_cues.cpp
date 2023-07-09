@@ -377,15 +377,17 @@ else {
     void scan() {
         Player* player = GET_PLAYER(actor->play);
         static int x = 0;
+        ActorAccessibility_SetListenerPos(&player->actor.world.pos, &player->actor.world.rot, &player->actor.velocity);
+
         if (x == 100) {
-            ActorAccessibility_MapSfxToExternalAudio(NA_SE_EN_MOFER_CORE_ROLL);
-
-            ActorAccessibility_PlayExternalSound(NULL, "c:\\users\\caturria\\laction.wav", true);
-
-            //x = 0;
+            ActorAccessibility_PlaySound(NULL, 0, NA_SE_EN_MOFER_CORE_ROLL, true);
+            ActorAccessibility_SetSoundPos(NULL, 0, &player->actor.world.pos, &player->actor.world.rot,
+                                              &player->actor.velocity);
+            //ActorAccessibility_SetMaxDistance(NULL, 0, 500);
         }
 
-
+        if (x == 200)
+            ActorAccessibility_SetSoundPitch(NULL, 0, 2.0);
         x++;
 
         if (player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE) {

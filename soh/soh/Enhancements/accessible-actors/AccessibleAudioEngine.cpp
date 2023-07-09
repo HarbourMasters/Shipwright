@@ -17,9 +17,15 @@ int AudioPlayer_GetDesiredBuffered();
 #include <math.h>
 #include <algorithm>
 #include <stdexcept>
- enum AAE_COMMANDS{
-AAE_START = 0,
-AAE_STOP,
+enum AAE_COMMANDS {
+    AAE_START = 0,
+    AAE_STOP,
+    AAE_PITCH,
+    AAE_VOLUME,
+    AAE_LISTENER, //Set the listener's position and direction.
+AAE_POS,//Set the sound source's position and direction.
+AAE_DIST,//Set max distance.
+
 AAE_PREPARE,
 AAE_TERMINATE,
 };
@@ -136,6 +142,25 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
                     case AAE_START:
                         doPlaySound(action);
                         break;
+                    case AAE_STOP:
+                        doStopSound(action);
+                        break;
+                    case AAE_PITCH:
+                        doSetPitch(action);
+                        break;
+                    case AAE_VOLUME:
+                        doSetVolume(action);
+                        break;
+                    case AAE_DIST:
+                        doSetMaxDistance(action);
+
+                    case AAE_LISTENER:
+                        doSetListenerPos(action);
+                        break;
+                    case AAE_POS:
+                        doSetSoundPos(action);
+                        break;
+
                     case AAE_PREPARE:
                         doPrepare(action);
                         break;
@@ -145,32 +170,115 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
 
     }
 }
+    SoundSlot* AccessibleAudioEngine::findSound(SoundAction& action)
+    {
+    if (action.slot < 0 || action.slot >= AAE_SLOTS_PER_HANDLE)
+            return NULL;
+    auto i = sounds.find(action.handle);
+    if (i == sounds.end())
+            return NULL;
+    SoundSlot& target = i->second[action.slot];
+    if (!target.active)
+    return NULL;
+    return &target;
 
-    void AccessibleAudioEngine::doPlaySound(SoundAction& action) {
-    ma_sound* sound;
-    if (sounds.contains(action.handle)) {
-        sound = &sounds[action.handle];
-        ma_sound_uninit(sound);
-        }
-    else {
-        ma_sound temp;
-            sounds[action.handle] = temp;
-        sound = &sounds[action.handle];
     }
-        if (ma_sound_init_from_file(&engine, action.path.c_str(), 0, NULL, NULL, sound) != MA_SUCCESS)
+    void AccessibleAudioEngine::doPlaySound(SoundAction& action) {
+    SoundSlot* sound;
+    if (sounds.contains(action.handle)) {
+            sound = &sounds[action.handle][action.slot];
+            if (sound->active) {
+                ma_sound_uninit(&sound->sound);
+                sound->active = false;
+            }
+    }
+
+    else {
+        SoundSlots temp;
+        for (int i = 0; i < AAE_SLOTS_PER_HANDLE; i++)
+                    temp[i].active = false;
+                    
+            sounds[action.handle] = temp;
+        sound = &sounds[action.handle][action.slot];
+    }
+        if (ma_sound_init_from_file(&engine, action.path.c_str(), 0, NULL, NULL, &sound->sound) != MA_SUCCESS)
             return;
-        ma_sound_set_looping(sound, action.looping);
-        ma_sound_start(sound);
+        ma_sound_set_looping(&sound->sound, action.looping);
+        ma_sound_set_min_gain(&sound->sound, 0.0);
+        ma_sound_set_max_gain(&sound->sound, 1.0);
+        ma_sound_set_min_distance(&sound->sound, 0);
+        ma_sound_set_max_distance(&sound->sound, 50000);
+        ma_sound_set_rolloff(&sound->sound, 0.01);
+
+        ma_sound_set_cone(&sound->sound, ma_degrees_to_radians_f(0), ma_degrees_to_radians_f(360), 1.0);
+        ma_sound_start(&sound->sound);
+        sound->active = true;
+    }
+    void AccessibleAudioEngine::doStopSound(SoundAction& action) {
+        SoundSlot* slot = findSound(action);
+        if (slot == NULL)
+            return;
+        ma_sound_uninit(&slot->sound);
+        slot->active = false;
+
+    }
+    void AccessibleAudioEngine::doSetPitch(SoundAction& action)
+    {
+        SoundSlot* slot = findSound(action);
+        if (slot == NULL)
+            return;
+        ma_sound_set_pitch(&slot->sound, action.pitch);
+
+    }
+    void AccessibleAudioEngine::doSetVolume(SoundAction& action)
+    {
+        SoundSlot* slot = findSound(action);
+        if (slot == NULL)
+            return;
+        ma_sound_set_volume(&slot->sound, action.pitch);
+
+    }
+    void AccessibleAudioEngine::doSetListenerPos(SoundAction& action)
+    {
+        ma_engine_listener_set_position(&engine, 0, action.posX, action.posY, action.posZ);
+        ma_engine_listener_set_direction(&engine, 0, action.rotX, action.rotY, action.rotZ);
+        ma_engine_listener_set_velocity(&engine, 0, action.velX, action.velY, action.velZ);
+
+    }
+    void AccessibleAudioEngine::doSetSoundPos(SoundAction& action)
+    {
+        SoundSlot* slot = findSound(action);
+        if (slot == NULL)
+            return;
+        ma_sound_set_position(&slot->sound, action.posX, action.posY, action.posZ);
+        ma_sound_set_direction(&slot->sound, action.rotX, action.rotY, action.rotZ);
+        ma_sound_set_velocity(&slot->sound, action.velX, action.velY, action.velZ);
+
+    }
+    void AccessibleAudioEngine::doSetMaxDistance(SoundAction& action)
+    {
+        SoundSlot* slot = findSound(action);
+        if (slot == NULL)
+            return;
+        ma_sound_set_max_distance(&slot->sound, action.distance);
 
     }
     void AccessibleAudioEngine::garbageCollect()
         {
         for (auto i = sounds.begin(); i != sounds.end(); ) {
-            if (!ma_sound_is_playing(&i->second)) {
-                ma_sound_uninit(&i->second);
-                i = sounds.erase(i);
-            }
+            int deadSlots = 0;
+            for (int x = 0; x < AAE_SLOTS_PER_HANDLE; x++) {
+                    if (!i->second[x].active)
+                    deadSlots++;
+                    else if (!ma_sound_is_playing(&i->second[x].sound)) {
+                    ma_sound_uninit(&i->second[x].sound);
+                    i->second[x].active = false;
+                    deadSlots++;
 
+                    }
+            }
+                    if (deadSlots == AAE_SLOTS_PER_HANDLE) // Entire batch is garbage.
+                    i = sounds.erase(i);
             else
                 i++;
         }
@@ -202,6 +310,8 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
     ec.noDevice = true;
     ec.sampleRate = AAE_SAMPLE_RATE;
     ec.pResourceManager = &resourceManager;
+    ec.listenerCount = 1;
+
     if (ma_engine_init(&ec, &engine) != MA_SUCCESS)
         destroyAndThrow("AccessibleAudioEngine: Unable to initialize the audio engine.");
     initialized = 3;
@@ -245,14 +355,89 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
     }
 
     }
-void AccessibleAudioEngine::playSound(uint64_t handle, const char* path, bool looping) {
+void AccessibleAudioEngine::playSound(uintptr_t handle, int slot, const char* path, bool looping) {
+    if (slot < 0 || slot >= AAE_SLOTS_PER_HANDLE)
+            return;
         SoundAction& action = getNextOutgoingSoundAction();
     action.handle = handle;
+        action.slot = slot;
         action.command = AAE_START;
     action.path = path;
         action.looping = looping;
     }
-void AccessibleAudioEngine::prepare() {
+void AccessibleAudioEngine::stopSound(uintptr_t handle, int slot) {
+        if (slot < 0 || slot >= AAE_SLOTS_PER_HANDLE)
+            return;
+        SoundAction& action = getNextOutgoingSoundAction();
+        action.command = AAE_STOP;
+        action.handle = (uintptr_t) handle;
+        action.slot = slot;
+    }
+void AccessibleAudioEngine::setPitch(uintptr_t handle, int slot, float pitch)
+{
+        if (slot < 0 || slot >= AAE_SLOTS_PER_HANDLE)
+            return;
+        SoundAction& action = getNextOutgoingSoundAction();
+        action.command = AAE_PITCH;
+        action.handle = handle;
+        action.slot = slot;
+        action.pitch = pitch;
+
+    }
+void AccessibleAudioEngine::setVolume(uintptr_t handle, int slot, float volume)
+{
+        if (slot < 0 || slot >= AAE_SLOTS_PER_HANDLE)
+            return;
+        SoundAction& action = getNextOutgoingSoundAction();
+        action.command = AAE_VOLUME;
+        action.handle = handle;
+        action.slot = slot;
+        action.volume = volume;
+    }
+void AccessibleAudioEngine::setListenerPosition(float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float velX, float velY, float velZ)
+{
+        SoundAction& action = getNextOutgoingSoundAction();
+        action.command = AAE_LISTENER;
+        action.posX = posX;
+        action.posY = posY;
+        action.posZ = posZ;
+        action.rotX = rotX;
+        action.rotY = rotY;
+        action.rotZ = rotZ;
+        action.velX = velX;
+        action.velY = velY;
+        action.velZ = velZ;
+    }
+void AccessibleAudioEngine::setSoundPosition(uintptr_t handle, int slot, float posX, float posY, float posZ, float rotX, float rotY, float rotZ,
+                                                float velX, float velY, float velZ) {
+        if (slot < 0 || slot >= AAE_SLOTS_PER_HANDLE)
+            return;
+        SoundAction& action = getNextOutgoingSoundAction();
+        action.command = AAE_POS;
+        action.handle = handle;
+        action.slot = slot;
+        action.posX = posX;
+        action.posY = posY;
+        action.posZ = posZ;
+        action.rotX = rotX;
+        action.rotY = rotY;
+        action.rotZ = rotZ;
+        action.velX = velX;
+        action.velY = velY;
+        action.velZ = velZ;
+}
+void AccessibleAudioEngine::setMaxDistance(uintptr_t handle, int slot, float distance)
+{
+        if (slot < 0 || slot >= AAE_SLOTS_PER_HANDLE)
+            return;
+        SoundAction& action = getNextOutgoingSoundAction();
+        action.command = AAE_DIST;
+        action.handle = handle;
+        action.slot = slot;
+        action.distance = distance;
+
+}
+    void AccessibleAudioEngine::prepare() {
         SoundAction& action = getNextOutgoingSoundAction();
         action.command = AAE_PREPARE;
 //This is called once at the end of every frame, so now is the time to post all of the accumulated commands.

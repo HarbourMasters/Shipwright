@@ -83,11 +83,20 @@ void ActorAccessibility_RunAccessibilityForAllActors(PlayState* play);
 void ActorAccessibility_PlaySpecialSound(AccessibleActor* actor, s16 sfxId);
 /*
 *Play sounds (usually from the game) using the external sound engine.
-* actor: pointer to an AccessibleActor object.
-* slot: Allows multiple sounds to be assigned to a single actor. The maximum number of slots per actor is sizeof(AccessibleActor). In other words far more than one could ever reasonably use.
-* sfxId: one of the game's sfx IDs. Note that this plays prerendered sounds.
+* handle: pointer to an arbitrary object. This object can be anything as it's only used as a classifier, but it's recommended that you use an AccessibleActor* as your handle whenever possible. Using AccessibleActor* as the handle gives you automatic cleanup when the actor is killed.
+* slot: Allows multiple sounds to be assigned to a single handle. The maximum number of slots per actor is 10 by default (but can be controlled by modifying AAE_SLOTS_PER_HANDLE).
+* sfxId: one of the game's sfx IDs. Note that this plays prerendered sounds which you must have previously prepared.
+* *looping: whether to play the sound just once or on a continuous loop.
 */
-void ActorAccessibility_PlaySpecialSound2(AccessibleActor* actor, int slot, s16 sfxId);
+void ActorAccessibility_PlaySound(void* actor, int slot, s16 sfxId, bool looping);
+//Stop a sound. Todo: consider making this a short fade instead of just cutting it off.
+void ActorAccessibility_StopSound(void* handle, int slot);
+void ActorAccessibility_SetSoundPitch(void* handle, int slot, float pitch);
+void ActorAccessibility_SetListenerPos(Vec3f* pos, Vec3s* rot, Vec3f* vel);
+void ActorAccessibility_SetSoundPos(void* handle, int slot, Vec3f* pos, Vec3s* rot, Vec3f* vel);
+void ActorAccessibility_SetMaxDistance(void* handle, int slot, float distance);
+
+void ActorAccessibility_SetSoundVolume(void* handle, int slot, float volume);
 
 f32 ActorAccessibility_ComputeCurrentVolume(f32 maxDistance, f32 xzDistToPlayer);
 // Computes a relative angle based on Link's (or some other actor's) current angle.
@@ -135,17 +144,9 @@ bool ActorAccessibility_InitAudio();
 void ActorAccessibility_ShutdownAudio();
 // Combine the games' audio with the output from AccessibleAudioEngine. To be called exclusively from the audio thread.
 void ActorAccessibility_MixAccessibleAudioWithGameAudio(int16_t* ogBuffer, uint32_t nFrames);
-//Map one of the game's sfx to a path which as understood by the external audio engine.
-bool ActorAccessibility_MapSfxToExternalAudio(s16 sfxId);
-    // Play a sound using the external audio engine. This call is the lowest level and should generally not be used directly.
-void ActorAccessibility_PlayExternalSound(void* handle, const char* path, bool looping);
-// Call once per frame to tell the audio engine to start working on the latest batch of queued instructions.
-void ActorAccessibility_PrepareNextAudioFrame();
 void ActorAccessibility_HandleSoundExtractionMode(PlayState* play);
 //This is called by the audio thread when it's ready to try to pull sfx from the game.
 void ActorAccessibility_DoSoundExtractionStep();
-void ActorAccessibility_ReportSynthesisLoop(int noteLength);
-void ActorAccessibility_LatencyControl(int value);
 
 #ifdef __cplusplus
 }
