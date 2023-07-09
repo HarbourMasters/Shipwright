@@ -290,8 +290,8 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     policy.distance = 5000;
     ActorAccessibility_AddSupportedActor(ACTOR_BOSS_GOMA, policy);
 
-    ActorAccessibility_InitPolicy(&policy, "door of time", accessible_door_of_time);
-    ActorAccessibility_AddSupportedActor(ACTOR_DOOR_TOKI, policy);
+    ActorAccessibility_InitPolicy(&policy, "door of time", accessible_door_of_time, 0);
+    ActorAccessibility_AddSupportedActor(ACTOR_BG_MJIN, policy);
 
     ActorAccessibility_InitPolicy(&policy, "crawlspace", NULL, NA_SE_EN_MUSI_SINK);
     policy.volume = 1.5;
