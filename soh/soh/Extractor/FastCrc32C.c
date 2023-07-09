@@ -16,12 +16,14 @@
 #elif ((defined(__GNUC__) && defined(__x86_64__) || defined(__i386__)))
 #include <nmmintrin.h>
 #include <cpuid.h>
-#elif defined (__APPLE__)
-#include <cpuid.h>
 #elif defined(__aarch64__) && defined(__ARM_FEATURE_CRC32)
 // Nothing cause its a compiler builtin
 #else
 #define NO_CRC_INTRIN
+#endif
+
+#ifdef __APPLE__
+#include <cpuid.h>
 #endif
 
 #if defined(__aarch64__) && defined(__ARM_FEATURE_CRC32)
