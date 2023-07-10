@@ -2709,6 +2709,11 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                 }
             }
             break;
+        case SCENE_NAKANIWA:
+            if (actorId == ACTOR_DEMO_IM) {
+                specialRc = RC_SONG_FROM_IMPA;
+            }
+            break;
         case SCENE_SPOT01:
             switch (actorId) {
                 case ACTOR_EN_NIW_LADY:

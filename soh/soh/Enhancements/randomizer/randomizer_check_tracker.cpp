@@ -666,26 +666,6 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
         pendingSaleCheck = true;
         return;
     }
-    if (scene == SCENE_YOUSEI_IZUMI_YOKO) {
-        if (checkArea == RCAREA_HYRULE_CASTLE) {
-            SetCheckCollected(RC_HC_GREAT_FAIRY_REWARD);
-        } else if (checkArea == RCAREA_DESERT_COLOSSUS) {
-            SetCheckCollected(RC_COLOSSUS_GREAT_FAIRY_REWARD);
-        } else if (checkArea == RCAREA_ZORAS_FOUNTAIN) {
-            SetCheckCollected(RC_ZF_GREAT_FAIRY_REWARD);
-        }
-        return;
-    }
-    if (scene == SCENE_DAIYOUSEI_IZUMI) {
-        if (checkArea == RCAREA_HYRULE_CASTLE) {
-            SetCheckCollected(RC_OGC_GREAT_FAIRY_REWARD);
-        } else if (checkArea == RCAREA_DEATH_MOUNTAIN_TRAIL) {
-            SetCheckCollected(RC_DMT_GREAT_FAIRY_REWARD);
-        } else if (checkArea == RCAREA_DEATH_MOUNTAIN_CRATER) {
-            SetCheckCollected(RC_DMC_GREAT_FAIRY_REWARD);
-        }
-        return;
-    }
     if (scene == SCENE_SPOT11 && (gSaveContext.entranceIndex == 485 || gSaveContext.entranceIndex == 489)) {
         if (EvaluateCheck(RandomizerCheckObjects::GetAllRCObjects().find(RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST)->second) ||
             EvaluateCheck(RandomizerCheckObjects::GetAllRCObjects().find(RC_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST)->second)) {
@@ -699,6 +679,25 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
     RandomizerCheck rc = RC_UNKNOWN_CHECK;
     if (gPlayState->lastCheck != nullptr) {
         rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(gPlayState->lastCheck->id, scene, gPlayState->lastCheck->params);
+    }
+    if (rc == RC_UNKNOWN_CHECK) {
+        if (scene == SCENE_YOUSEI_IZUMI_YOKO) {
+            if (checkArea == RCAREA_HYRULE_CASTLE) {
+                rc = RC_HC_GREAT_FAIRY_REWARD;
+            } else if (checkArea == RCAREA_DESERT_COLOSSUS) {
+                rc = RC_COLOSSUS_GREAT_FAIRY_REWARD;
+            } else if (checkArea == RCAREA_ZORAS_FOUNTAIN) {
+                rc = RC_ZF_GREAT_FAIRY_REWARD;
+            }
+        } else if (scene == SCENE_DAIYOUSEI_IZUMI) {
+            if (checkArea == RCAREA_HYRULE_CASTLE) {
+                rc = RC_OGC_GREAT_FAIRY_REWARD;
+            } else if (checkArea == RCAREA_DEATH_MOUNTAIN_TRAIL) {
+                rc = RC_DMT_GREAT_FAIRY_REWARD;
+            } else if (checkArea == RCAREA_DEATH_MOUNTAIN_CRATER) {
+                rc = RC_DMC_GREAT_FAIRY_REWARD;
+            }
+        }
     }
     if (gPlayState->msgCtx.msgMode != MSGMODE_NONE && rc != RC_UNKNOWN_CHECK) {
         RandomizerCheckObject rco = RandomizerCheckObjects::GetAllRCObjects().find(rc)->second;
