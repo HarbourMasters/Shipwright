@@ -34,7 +34,7 @@ class TerrainCueSound {
     s8 currentReverb;
     // Call to start playback.
     void play() {
-        ActorAccessibility_PlaySound(this, 0, currentSFX, false);
+        ActorAccessibility_PlaySound(this, 0, currentSFX, true);
         ActorAccessibility_SetSoundPan(this, 0, &terrainProjectedPos);
         ActorAccessibility_SetSoundVolume(this, 0, currentVolume);
         ActorAccessibility_SetSoundPitch(this, 0, currentPitch);
@@ -325,15 +325,6 @@ else {
 
     }
 
-    // choose to discover either a wall or a climbable ledge depending on wall height.
-    void discoverWallOrLedge(Vec3f pos, CollisionPoly* poly) {
-        Player* player = GET_PLAYER(actor->play);
-        if (findWallHeight(pos, poly) <= player->ageProperties->unk_0C) // Ledge at top of wall can be reached.
-            discoverLedge(pos, true);
-        else
-            discoverWall(pos);
-    }
-
      //Check if traveling from point A to point B is obstructed by a wall.
     CollisionPoly* checkWall(Vec3f& pos, Vec3f& prevPos, Vec3f& collisionPos) {
         Player* player = GET_PLAYER(actor->play);
@@ -341,6 +332,8 @@ else {
         s32 bgId;
         BgCheck_EntitySphVsWall3(&actor->play->colCtx, &collisionPos, &pos, &prevPos, wallCheckRadius, &poly, &bgId,
                                  NULL, wallCheckHeight);
+        if (bgId != BGCHECK_SCENE)
+            return NULL;//Todo: improve this. Some actors, but not most, really do qualify as wall collision.
         return poly;
 
     }
@@ -398,7 +391,6 @@ else {
             wallCheckHeight = 26.0f;
             ceilingCheckHeight = player->ageProperties->unk_00;
         }
-
         // The virtual cue actors travel in lines relative to Link's angle.
         rot = ActorAccessibility_ComputeRelativeAngle(&player->actor.world.rot, &relRot);
         Vec3f velocity;
@@ -432,7 +424,9 @@ else {
                 break;//Probe is out of bounds.
             }
             distToTravel -= (step + fabs(pos.y - pos.y));
-            if (pos.y < prevPos.y && fabs(pos.y - prevPos.y) >= 10)
+            if (pos.y < prevPos.y && fabs(pos.y - prevPos.y) >= 10 &&
+                player->stateFlags1 & PLAYER_STATE1_CLIMBING_LEDGE == 0 &&
+                player->stateFlags1 & PLAYER_STATE1_CLIMBING_LADDER == 0)
             {
                     //This is a fall.
                     discoverLedge(pos);
@@ -441,17 +435,18 @@ else {
                 }
             Vec3f wallPos;
                 CollisionPoly* wallPoly = checkWall(pos, prevPos, wallPos);
-            if (wallPoly) {
-
-//Ignore wall collisions that aren't *almost* head-on.
-                if (isHeadOnCollision (wallPos, velocity))
-                {
-                        discoverWallOrLedge(wallPos, wallPoly);
-
-                        break;
-                    }
-
-            }
+            if (wallPoly == NULL)
+                    continue;
+            if (findWallHeight(pos, wallPoly) <= player->ageProperties->unk_0C) {
+                    // Ledge at top of wall can be reached.
+                    discoverLedge(pos, true);
+                    break;
+                        }
+            if (isHeadOnCollision(pos, velocity))
+            {
+                discoverWall(pos);
+                break;
+}
 
         }
             //Emit sound from the discovered position.
