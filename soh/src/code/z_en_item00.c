@@ -380,6 +380,7 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
             this->unk_158 = 0;
             Actor_SetScale(&this->actor, 0.03f);
             this->scale = 0.03f;
+            // Offset keys in randomizer slightly higher for their GID replacement
             if (!gSaveContext.n64ddFlag) {
                 yOffset = 350.0f;
             } else {
@@ -782,7 +783,8 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
         this->actor.params == ITEM00_BOMBS_SPECIAL || this->actor.params == ITEM00_BOMBCHU) {
         // OTRTODO: remove special case for bombchu when its 2D drop is implemented
         if (CVarGetInteger("gNewDrops", 0) || this->actor.params == ITEM00_BOMBCHU ||
-            (gSaveContext.n64ddFlag && this->actor.params == ITEM00_SMALL_KEY)) { // 
+            // Keys in randomizer need to always rotate for their GID replacement
+            (gSaveContext.n64ddFlag && this->actor.params == ITEM00_SMALL_KEY)) {
             this->actor.shape.rot.y += 960;
         } else {
             this->actor.shape.rot.y = 0;
@@ -1039,12 +1041,11 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                     mtxScale = 17.5f;
                     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
                     GetItem_Draw(play, GID_RUPEE_PURPLE);
-                    break;
                 } else {
                     // All rupees fallthrough here when 3d drops are off
                     EnItem00_DrawRupee(this, play);
-                    break;
                 }
+                break;
             case ITEM00_HEART_PIECE:
                 if (CVarGetInteger("gNewDrops", 0) && !gSaveContext.n64ddFlag) {
                     mtxScale = 21.0f;
@@ -1058,12 +1059,14 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                 EnItem00_DrawHeartContainer(this, play);
                 break;
             case ITEM00_HEART:
+                // Only change despawn-able recovery hearts
                 if (CVarGetInteger("gNewDrops", 0) && this->unk_15A >= 0) {
                     mtxScale = 16.0f;
                     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
                     GetItem_Draw(play, GID_HEART);
                     break;
                 } else {
+                    // Overworld hearts that are always 3D
                     if (this->unk_15A < 0) {
                         if (this->unk_15A == -1) {
                             s8 bankIndex = Object_GetIndex(&play->objectCtx, OBJECT_GI_HEART);
@@ -1151,12 +1154,11 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                     mtxScale = 8.0f;
                     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
                     GetItem_Draw(play, GID_KEY_SMALL);
-                    break;
                 } else {
                     // All collectibles fallthrough here when 3d drops are off
                     EnItem00_DrawCollectible(this, play);
-                    break;
                 }
+                break;
             case ITEM00_BOMBCHU:
                 // OTRTODO: Stop forcing chu drops to be 3D when the texture is added
                 mtxScale = 9.0f;
