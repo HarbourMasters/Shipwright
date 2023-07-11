@@ -6,6 +6,9 @@
 
 #include "z_en_si.h"
 
+extern void func_8083C148(Player*, PlayState*);
+extern void func_80078884(uint16_t);
+
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOOKSHOT_DRAGS)
 
 void EnSi_Init(Actor* thisx, PlayState* play);
