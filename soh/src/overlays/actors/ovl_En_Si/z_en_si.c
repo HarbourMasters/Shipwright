@@ -181,6 +181,12 @@ void func_80AFB950(EnSi* this, PlayState* play) {
     } else {
         SET_GS_FLAGS((this->actor.params & 0x1F00) >> 8, this->actor.params & 0xFF);
         Actor_Kill(&this->actor);
+        if (gSaveContext.pendingIceTrapCount > 0 && player->heldItemId == 11) {
+            player->actor.freezeTimer = 0;
+            func_8083C148(GET_PLAYER(play), play);
+            func_80078884(NA_SE_SY_CAMERA_ZOOM_UP);
+            player->currentYaw = player->actor.shape.rot.y;
+        }
     }
 }
 
