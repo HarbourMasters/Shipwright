@@ -2,6 +2,7 @@
 #include "overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "overlays/effects/ovl_Effect_Ss_Dead_Sound/z_eff_ss_dead_sound.h"
+#include "textures/icon_item_static/icon_item_static.h"
 
 #define FLAGS 0
 
@@ -70,7 +71,6 @@ static void* sItemDropTex[] = {
     gDropRecoveryHeartTex, gDropBombTex,       gDropArrows1Tex,   gDropArrows2Tex,
     gDropArrows3Tex,       gDropBombTex,       gDropDekuNutTex,   gDropDekuStickTex,
     gDropMagicLargeTex,    gDropMagicSmallTex, gDropDekuSeedsTex, gDropKeySmallTex,
-    // OTRTODO: use 2D bombchu texture
 };
 
 static u8 sItemDropIds[] = {
@@ -781,8 +781,7 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
         (this->actor.params >= ITEM00_ARROWS_SMALL && this->actor.params <= ITEM00_SMALL_KEY) ||
         this->actor.params == ITEM00_BOMBS_A || this->actor.params == ITEM00_ARROWS_SINGLE ||
         this->actor.params == ITEM00_BOMBS_SPECIAL || this->actor.params == ITEM00_BOMBCHU) {
-        // OTRTODO: remove special case for bombchu when its 2D drop is implemented
-        if (CVarGetInteger("gNewDrops", 0) || this->actor.params == ITEM00_BOMBCHU ||
+        if (CVarGetInteger("gNewDrops", 0) ||
             // Keys in randomizer need to always rotate for their GID replacement
             (gSaveContext.n64ddFlag && this->actor.params == ITEM00_SMALL_KEY)) {
             this->actor.shape.rot.y += 960;
@@ -1149,6 +1148,13 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                     GetItem_Draw(play, GID_SEEDS);
                     break;
                 }
+            case ITEM00_BOMBCHU:
+                if (CVarGetInteger("gNewDrops", 0)) {
+                    mtxScale = 9.0f;
+                    Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
+                    GetItem_Draw(play, GID_BOMBCHU);
+                    break;
+                }
             case ITEM00_SMALL_KEY:
                 if (CVarGetInteger("gNewDrops", 0) && !gSaveContext.n64ddFlag) {
                     mtxScale = 8.0f;
@@ -1158,12 +1164,6 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                     // All collectibles fallthrough here when 3d drops are off
                     EnItem00_DrawCollectible(this, play);
                 }
-                break;
-            case ITEM00_BOMBCHU:
-                // OTRTODO: Stop forcing chu drops to be 3D when the texture is added
-                mtxScale = 9.0f;
-                Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-                GetItem_Draw(play, GID_BOMBCHU);
                 break;
             case ITEM00_SHIELD_DEKU:
                 GetItem_Draw(play, GID_SHIELD_DEKU);
@@ -1351,6 +1351,13 @@ void EnItem00_DrawRupee(EnItem00* this, PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+static const Vtx customDropVtx[] = {
+    VTX(-250, -250, 0, 0 << 5, 0 << 5, 255, 255, 255, 255),
+    VTX(250, -250, 0, 32 << 5, 0 << 5, 255, 255, 255, 255),
+    VTX(-250, 250, 0, 0 << 5, 32 << 5, 255, 255, 255, 255),
+    VTX(250, 250, 0, 32 << 5, 32 << 5, 255, 255, 255, 255),
+};
+
 /**
  * Draw Function used for most collectible types of En_Item00 (ammo, bombs, sticks, nuts, magic...).
  */
@@ -1369,6 +1376,34 @@ void EnItem00_DrawCollectible(EnItem00* this, PlayState* play) {
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
         EnItem00_CustomItemsParticles(&this->actor, play, this->randoGiEntry);
         GetItemEntry_Draw(play, this->randoGiEntry);
+    } else if (this->actor.params == ITEM00_BOMBCHU) {
+        OPEN_DISPS(play->state.gfxCtx);
+
+        Matrix_ReplaceRotation(&play->billboardMtxF);
+        // Need to flip vertically as drop icons are normally upside down, but here
+        // we are using the inventory/C-Button for th bombchu icon
+        Matrix_Scale(1.0f, -1.0f, 1.0f, MTXMODE_APPLY);
+
+        POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
+
+        POLY_OPA_DISP = Gfx_SetupDL_66(POLY_OPA_DISP);
+
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                  G_MTX_MODELVIEW | G_MTX_LOAD);
+
+        gDPPipeSync(POLY_OPA_DISP++);
+        gDPSetTexturePersp(POLY_OPA_DISP++, G_TP_PERSP);
+        gDPSetTextureLOD(POLY_OPA_DISP++, G_TL_TILE);
+        gDPSetTextureFilter(POLY_OPA_DISP++, G_TF_BILERP);
+        gDPSetTextureConvert(POLY_OPA_DISP++, G_TC_FILT);
+        gDPSetTextureLUT(POLY_OPA_DISP++, G_TT_NONE);
+        gDPLoadTextureBlock(POLY_OPA_DISP++, gBombchuIconTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0,
+                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                            G_TX_NOLOD);
+        gSPVertex(POLY_OPA_DISP++, customDropVtx, 4, 0);
+        gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
+
+        CLOSE_DISPS(play->state.gfxCtx);
     } else {
         s32 texIndex = this->actor.params - 3;
 
@@ -1378,9 +1413,6 @@ void EnItem00_DrawCollectible(EnItem00* this, PlayState* play) {
 
         if (this->actor.params == ITEM00_BOMBS_SPECIAL) {
             texIndex = 1;
-        // OTRTODO: 2D bombchu drops
-        //} else if (this->actor.params == ITEM00_BOMBCHU) {
-        //    texIndex = 12;
         } else if (this->actor.params >= ITEM00_ARROWS_SMALL) {
             texIndex -= 3;
         }
