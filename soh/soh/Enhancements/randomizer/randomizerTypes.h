@@ -847,6 +847,7 @@ typedef enum {
     RC_ZR_NEAR_GROTTOS_GOSSIP_STONE,
     RC_ZR_OPEN_GROTTO_GOSSIP_STONE,
     RC_GANONDORF_HINT,
+    RC_TRIFORCE_COMPLETED,
     RC_MAX
 } RandomizerCheck;
 
@@ -1302,6 +1303,7 @@ typedef enum {
     RG_BUY_RED_POTION_40,
     RG_BUY_RED_POTION_50,
     RG_TRIFORCE,
+    RG_TRIFORCE_PIECE,
     RG_HINT,
     RG_TYCOON_WALLET,
     RG_MAX
@@ -1439,6 +1441,9 @@ typedef enum {
     RSK_ALL_LOCATIONS_REACHABLE,
     RSK_SHUFFLE_BOSS_ENTRANCES,
     RSK_SHUFFLE_100_GS_REWARD,
+    RSK_TRIFORCE_HUNT,
+    RSK_TRIFORCE_HUNT_PIECES_TOTAL,
+    RSK_TRIFORCE_HUNT_PIECES_REQUIRED,
     RSK_MAX
 } RandomizerSettingKey;
 
@@ -1599,6 +1604,7 @@ typedef enum {
     RO_GANON_BOSS_KEY_LACS_DUNGEONS,
     RO_GANON_BOSS_KEY_LACS_TOKENS,
     RO_GANON_BOSS_KEY_KAK_TOKENS,
+    RO_GANON_BOSS_KEY_TRIFORCE_HUNT,
 } RandoOptionGanonsBossKey;
 
 // LACS Reward Options settings (Standard rewards, Greg as reward, Greg as wildcard)

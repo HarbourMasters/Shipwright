@@ -494,7 +494,9 @@ static std::vector<uint32_t> CalculateBarrenRegions() {
     if (Location(loc)->GetPlacedItem().IsMajorItem() || ElementInContainer(loc, wothLocations)) {
       AddElementsToPool(potentiallyUsefulLocations, std::vector{loc});
     } else {
-      if (loc != LINKS_POCKET) { //Nobody cares to know if Link's Pocket is barren
+      // Link's Pocket & Triforce Hunt "reward" shouldn't be considered for barren areas because it's clear what
+      // they have to a player.
+      if (loc != LINKS_POCKET && loc != TRIFORCE_COMPLETED) { 
         AddElementsToPool(barrenLocations, std::vector{loc});
       }
     }
@@ -714,6 +716,9 @@ static Text BuildGanonBossKeyText() {
 
   } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_TOKENS)) {
     ganonBossKeyText = BuildCountReq(LACS_TOKENS_HINT, LACSTokenCount);
+
+  } else if (GanonsBossKey.Is(GANONSBOSSKEY_TRIFORCE_HUNT)) {
+    ganonBossKeyText = Hint(GANON_BK_TRIFORCE_HINT).GetText();
   }
 
   return Text()+"$b"+ganonBossKeyText+"^";

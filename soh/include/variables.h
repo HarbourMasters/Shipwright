@@ -171,6 +171,7 @@ extern "C"
 	extern u8 gWalkSpeedToggle1;
 	extern u8 gWalkSpeedToggle2;
 	extern f32 iceTrapScale;
+	extern f32 triforcePieceScale;
 
 	extern const s16 D_8014A6C0[];
 #define gTatumsPerBeat (D_8014A6C0[1])

@@ -2552,6 +2552,20 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
+    if (item == RG_TRIFORCE_PIECE) {
+        gSaveContext.triforcePiecesCollected++;
+        GameInteractor_SetTriforceHuntPieceGiven(true);
+
+        // Teleport to credits when goal is reached.
+        if (gSaveContext.triforcePiecesCollected == Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED)) {
+            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] = GAMEPLAYSTAT_TOTAL_TIME;
+            Play_PerformSave(play);
+            GameInteractor_SetTriforceHuntCreditsWarpActive(true);
+        }
+
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
     if (item == RG_PROGRESSIVE_BOMBCHUS) {
         if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
             INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;

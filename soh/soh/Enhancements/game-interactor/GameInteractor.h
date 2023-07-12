@@ -89,6 +89,8 @@ uint8_t GameInteractor_GetRandomWindActive();
 uint8_t GameInteractor_GetRandomBonksActive();
 uint8_t GameInteractor_GetSlipperyFloorActive();
 uint8_t GameInteractor_SecondCollisionUpdate();
+void GameInteractor_SetTriforceHuntPieceGiven(uint8_t state);
+void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
 #ifdef __cplusplus
 }
 #endif
@@ -134,6 +136,8 @@ public:
         static uint8_t RandomBonksActive;
         static uint8_t SlipperyFloorActive;
         static uint8_t SecondCollisionUpdate;
+        static uint8_t TriforceHuntPieceGiven;
+        static uint8_t TriforceHuntCreditsWarpActive;
 
         static void SetPacifistMode(bool active);
     };

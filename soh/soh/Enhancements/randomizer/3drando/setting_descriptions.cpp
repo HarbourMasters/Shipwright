@@ -304,6 +304,10 @@ string_view mqDungeonCountDesc        = "Specify the number of Master Quest dung
 string_view setDungeonTypesDesc       = "If set, you can choose specific dungeons to be\n" //
                                         "vanilla, MQ, or random";                          //
 /*------------------------------                                                           //
+|        SET MQ DUNGEONS       |                                                           //
+------------------------------*/                                                           //
+string_view triforceHunt              = "Collect all Triforce pieces to win the game!";    //
+/*------------------------------                                                           //
 |   SHUFFLE DUNGEON REWARDS    |                                                           //
 ------------------------------*/                                                           //
 string_view shuffleRewardsEndOfDungeon= "Medallions and Spiritual Stones will be given as\n"
@@ -602,6 +606,9 @@ string_view ganonKeyLACS              = "These settings put the boss key on the 
 string_view ganonKey100GS             = "Ganon's Castle Boss Key is given to you by the\n" //
                                         "cursed rich man in the House of Skulltula after\n"//
                                         "you collect all 100 Gold Skulltula Tokens.";      //
+string_view ganonKeyTriforce          = "Ganon's Castle Boss Key is given to you after\n"  //
+                                        "collecting the required amount of triforce\n"     //
+                                        "pieces during Triforce Hunt.";                    //
 /*------------------------------                                                           //
 |        LACS CONDITIONS       |                                                           //
 ------------------------------*/                                                           //

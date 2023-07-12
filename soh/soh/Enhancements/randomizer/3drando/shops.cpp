@@ -599,6 +599,10 @@ void InitTrickNames() {
      Text{"Health Container", "Réceptacle d'énergie", "Contenedor de amor"},
      Text{"Recovery Heart", "Quart de coeur", "Corazón"},
      Text{"Piece of Heart", "Coeur d'énergie", "Pieza de corazón"}};
+  trickNameTable[GI_TRIFORCE_PIECE] = {
+     Text{"Piece of Cheese", "Piece of Cheese", "Piece of Cheese"},
+     Text{"Triforce Shard", "Triforce Shard", "Triforce Shard"},
+     Text{"Shiny Rock", "Shiny Rock", "Shiny Rock"}};
 
 /*
   //Names for individual upgrades, in case progressive names are replaced

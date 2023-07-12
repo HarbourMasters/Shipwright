@@ -98,6 +98,8 @@ extern string_view scarceHeartsDesc;
 extern string_view mqDungeonCountDesc;
 extern string_view setDungeonTypesDesc;
 
+extern string_view triforceHunt;
+
 extern string_view shuffleRewardsEndOfDungeon;
 extern string_view shuffleRewardsAnyDungeon;
 extern string_view shuffleRewardsOverworld;
@@ -196,6 +198,7 @@ extern string_view ganonKeyOverworld;
 extern string_view ganonKeyAnywhere;
 extern string_view ganonKeyLACS;
 extern string_view ganonKey100GS;
+extern string_view ganonKeyTriforce;
 
 extern string_view lacsStoneCountDesc;
 extern string_view lacsMedallionCountDesc;
