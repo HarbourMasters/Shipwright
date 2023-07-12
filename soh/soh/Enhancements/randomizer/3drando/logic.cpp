@@ -847,6 +847,7 @@ namespace Logic {
      ProgressiveScale      = 0;
      ProgressiveHookshot   = 0;
      ProgressiveBow        = 0;
+     //If we're not shuffling child's wallet, we start with it (wallet 1)
      ProgressiveWallet     = ShuffleChildWallet.Is(true) ? 0 : 1;
      ProgressiveStrength   = 0;
      ProgressiveOcarina    = 0;
