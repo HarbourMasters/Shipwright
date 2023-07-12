@@ -200,12 +200,15 @@ void ActorAccessibility_InitActors() {
     ActorAccessibility_InitPolicy(&policy, "Bush", NULL, NA_SE_PL_PULL_UP_PLANT);
     ActorAccessibility_AddSupportedActor(ACTOR_EN_KUSA, policy);
     ActorAccessibility_InitPolicy(&policy, "Chest", accessible_en_chest, 0);
+    policy.pitch = 1.1;
+    policy.distance = 1000;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_BOX, policy);
     ActorAccessibility_InitPolicy(&policy, "Sign", accessible_en_Sign, 0);
     policy.n = 40;
-policy.pitch = 1.6;
-ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
-//ACTOR_EN_A_OBJ has exactly the same configuration.
+    policy.pitch = 1.6;
+    policy.distance = 800;
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
+    //ACTOR_EN_A_OBJ has exactly the same configuration.
     ActorAccessibility_AddSupportedActor(ACTOR_EN_A_OBJ, policy);
     // will probably just get replaced with ghost actors anyways
     // ActorAccessibility_AddSupporte dActor(ACTOR_EN_HOLL, "Room Changing Plane", NULL, 30, 500, 1.0, 1.0,
@@ -233,7 +236,7 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
     ActorAccessibility_AddSupportedActor(ACTOR_DOOR_ANA, policy);
     ActorAccessibility_InitPolicy(&policy, "Web", NULL, NA_SE_EV_WEB_BROKEN);
     policy.n = 40;
-    policy.distance = 5000;
+    policy.distance = 2000;
     policy.pitch = 1.2;
     ActorAccessibility_AddSupportedActor(ACTOR_BG_YDAN_SP, policy);
                                          
@@ -290,16 +293,17 @@ ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
 
     ActorAccessibility_InitPolicy(&policy, "crawlspace", NULL, NA_SE_EN_MUSI_SINK);
     policy.volume = 1.5;
-    policy.distance = 3000;
+    policy.distance = 2000;
     ActorAccessibility_AddSupportedActor(VA_CRAWLSPACE, policy);
     ActorAccessibility_InitPolicy(&policy, "Ladder/climable", NULL, NA_SE_PL_LAND_LADDER);
     policy.volume = 1.5;
     policy.pitch = 1.3;
-    policy.distance = 5000;
+    policy.distance = 2000;
     ActorAccessibility_AddSupportedActor(VA_CLIMB, policy);
     ActorAccessibility_InitPolicy(&policy, "Door", NULL, NA_SE_OC_DOOR_OPEN);
     policy.n = 30;
     policy.pitch = 1.1;
+    policy.distance = 1000;
     ActorAccessibility_AddSupportedActor(VA_DOOR, policy);
     ActorAccessibility_InitPolicy(&policy, "Area Change", accessible_area_change, 0);
     policy.distance = 5000;
