@@ -158,6 +158,7 @@ void to_json(json& j, const SaveContext& saveContext) {
         {"inventory", saveContext.inventory},
         {"sohStats", saveContext.sohStats},
         {"adultTradeItems", saveContext.adultTradeItems},
+        {"triforcePiecesCollected", saveContext.triforcePiecesCollected},
     };
 }
 
@@ -179,11 +180,12 @@ void from_json(const json& j, SaveContext& saveContext) {
     j.at("inventory").get_to(saveContext.inventory);
     j.at("sohStats").get_to(saveContext.sohStats);
     j.at("adultTradeItems").get_to(saveContext.adultTradeItems);
+    j.contains("triforcePiecesCollected") ? j.at("triforcePiecesCollected").get_to(saveContext.triforcePiecesCollected) : gSaveContext.triforcePiecesCollected;
 }
 
 std::map<uint32_t, AnchorClient> GameInteractorAnchor::AnchorClients = {};
 std::vector<uint32_t> GameInteractorAnchor::FairyIndexToClientId = {};
-std::string GameInteractorAnchor::clientVersion = "Anchor Build 7";
+std::string GameInteractorAnchor::clientVersion = "Anchor + Triforce Hunt 2";
 std::string GameInteractorAnchor::seed = "00000";
 std::vector<std::pair<uint16_t, int16_t>> receivedItems = {};
 std::vector<AnchorMessage> anchorMessages = {};
