@@ -119,12 +119,13 @@ void func_80AFB768(EnSi* this, PlayState* play) {
                 Message_StartTextbox(play, textId, NULL);
 
                 if (gSaveContext.n64ddFlag) {
-                    if (getItemId == RG_ICE_TRAP) {
-                        Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
-                    } else {
+                    if (getItemId != RG_ICE_TRAP) {
+                        Randomizer_GiveSkullReward(this, play);
                         Audio_PlayFanfare_Rando(getItem);
+                    } else {
+                        gSaveContext.pendingIceTrapCount++;
+                        Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
                     }
-                    Randomizer_GiveSkullReward(this, play);
                 } else {
                     Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
                 }
@@ -156,12 +157,12 @@ void func_80AFB89C(EnSi* this, PlayState* play) {
         Message_StartTextbox(play, textId, NULL);
 
         if (gSaveContext.n64ddFlag) {
+            Randomizer_GiveSkullReward(this, play);
             if (getItemId == RG_ICE_TRAP) {
                 Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
             } else {
                 Audio_PlayFanfare_Rando(getItem);
             }
-            Randomizer_GiveSkullReward(this, play);
         } else {
             Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
         }

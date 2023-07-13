@@ -893,6 +893,7 @@ void CheckTrackerWindow::DrawElement() {
     if (ImGui::Button("Expand All")) {
         optCollapseAll = false;
         optExpandAll = true;
+        doAreaScroll = true;
     }
     ImGui::SameLine();
     if (ImGui::Button("Collapse All")) {
