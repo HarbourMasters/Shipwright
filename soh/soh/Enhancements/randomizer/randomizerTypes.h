@@ -24,6 +24,7 @@ typedef struct {
 typedef enum {
     RCSHOW_UNCHECKED,
     RCSHOW_SEEN,
+    RCSHOW_IDENTIFIED,
     RCSHOW_SCUMMED,
     RCSHOW_COLLECTED,
     RCSHOW_SAVED,
@@ -1454,6 +1455,7 @@ typedef enum {
 typedef struct {
     RandomizerCheckShow status;
     uint16_t skipped;
+    int16_t price;
     uint16_t hintItem;
 } RandomizerCheckTrackerData;
 
