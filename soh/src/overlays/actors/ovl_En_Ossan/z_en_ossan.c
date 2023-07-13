@@ -1004,6 +1004,7 @@ void EnOssan_State_FacingShopkeeper(EnOssan* this, PlayState* play, Player* play
                 Interface_SetDoAction(play, DO_ACTION_DECIDE);
                 this->stickLeftPrompt.isEnabled = false;
                 func_80078884(NA_SE_SY_CURSOR);
+                GameInteractor_ExecuteOnShopSlotChangeHooks(this->cursorIndex, this->shelfSlots[this->cursorIndex]->basePrice);
             }
         } else if ((this->stickAccumX > 0) || (dpad && CHECK_BTN_ALL(input->press.button, dRight))) {
             nextIndex = EnOssan_SetCursorIndexFromNeutral(this, 0);
@@ -1013,6 +1014,7 @@ void EnOssan_State_FacingShopkeeper(EnOssan* this, PlayState* play, Player* play
                 Interface_SetDoAction(play, DO_ACTION_DECIDE);
                 this->stickRightPrompt.isEnabled = false;
                 func_80078884(NA_SE_SY_CURSOR);
+                GameInteractor_ExecuteOnShopSlotChangeHooks(this->cursorIndex, this->shelfSlots[this->cursorIndex]->basePrice);
             }
         }
     }
@@ -1276,6 +1278,7 @@ void EnOssan_State_BrowseLeftShelf(EnOssan* this, PlayState* play, Player* playe
         }
         EnOssan_CursorUpDown(this, play);
         if (this->cursorIndex != prevIndex) {
+            GameInteractor_ExecuteOnShopSlotChangeHooks(this->cursorIndex, this->shelfSlots[this->cursorIndex]->basePrice);
             Message_ContinueTextbox(play, this->shelfSlots[this->cursorIndex]->actor.textId);
             func_80078884(NA_SE_SY_CURSOR);
         }
@@ -1345,6 +1348,7 @@ void EnOssan_State_BrowseRightShelf(EnOssan* this, PlayState* play, Player* play
         }
         EnOssan_CursorUpDown(this, play);
         if (this->cursorIndex != prevIndex) {
+            GameInteractor_ExecuteOnShopSlotChangeHooks(this->cursorIndex, this->shelfSlots[this->cursorIndex]->basePrice);
             Message_ContinueTextbox(play, this->shelfSlots[this->cursorIndex]->actor.textId);
             func_80078884(NA_SE_SY_CURSOR);
         }
