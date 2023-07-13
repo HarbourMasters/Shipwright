@@ -8,13 +8,13 @@ using namespace Settings;
 void AreaTable_Init_LostWoods() {
   areaTable[KOKIRI_FOREST] = Area("Kokiri Forest", "Kokiri Forest", KOKIRI_FOREST, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&BeanPlantFairy,           {[]{return BeanPlantFairy   || (CanPlantBean(KOKIRI_FOREST) && CanPlay(SongOfStorms));}}),
+                  EventAccess(&BeanPlantFairy,           {[]{return BeanPlantFairy   || (CanPlantBean(KOKIRI_FOREST) && CanPlay(SongOfStorms, Song::SONG_STORMS));}}),
                   EventAccess(&GossipStoneFairy,         {[]{return GossipStoneFairy || CanSummonGossipFairyWithoutSuns;}}),
                   EventAccess(&ShowedMidoSwordAndShield, {[]{return ShowedMidoSwordAndShield || (IsChild && KokiriSword && DekuShield);}}),
                 }, {
                   //Locations
                   LocationAccess(KF_KOKIRI_SWORD_CHEST,   {[]{return IsChild;}}),
-                  LocationAccess(KF_GS_KNOW_IT_ALL_HOUSE, {[]{return IsChild && CanChildAttack && AtNight && (HasNightStart || CanLeaveForest || CanPlay(SunsSong)) && CanGetNightTimeGS;}}),
+                  LocationAccess(KF_GS_KNOW_IT_ALL_HOUSE, {[]{return IsChild && CanChildAttack && AtNight && (HasNightStart || CanLeaveForest || CanPlay(SunsSong, Song::SONG_SUN)) && CanGetNightTimeGS;}}),
                   LocationAccess(KF_GS_BEAN_PATCH,        {[]{return CanPlantBugs && CanChildAttack;}}),
                   LocationAccess(KF_GS_HOUSE_OF_TWINS,    {[]{return IsAdult && AtNight && (HookshotOrBoomerang || (LogicAdultKokiriGS && CanUse(HOVER_BOOTS))) && CanGetNightTimeGS;}}),
                   LocationAccess(KF_GOSSIP_STONE,         {[]{return true;}}),
@@ -49,7 +49,7 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[KF_LINKS_HOUSE] = Area("KF Link's House", "KF Link's House", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(KF_LINKS_HOUSE_COW, {[]{return IsAdult && CanPlay(EponasSong) && LinksCow;}}),
+                  LocationAccess(KF_LINKS_HOUSE_COW, {[]{return IsAdult && CanPlay(EponasSong, Song::SONG_EPONA) && LinksCow;}}),
                 }, {
                   //Exits
                   Entrance(KOKIRI_FOREST, {[]{return true;}})
@@ -115,11 +115,11 @@ void AreaTable_Init_LostWoods() {
                   EventAccess(&OddMushroomAccess, {[]{return OddMushroomAccess || (IsAdult && (CojiroAccess || Cojiro));}}),
                   EventAccess(&PoachersSawAccess, {[]{return PoachersSawAccess || (IsAdult && OddPoulticeAccess);}}),
                   EventAccess(&GossipStoneFairy,  {[]{return GossipStoneFairy  || CanSummonGossipFairyWithoutSuns;}}),
-                  EventAccess(&BeanPlantFairy,    {[]{return BeanPlantFairy    || CanPlay(SongOfStorms);}}),
+                  EventAccess(&BeanPlantFairy,    {[]{return BeanPlantFairy    || CanPlay(SongOfStorms, Song::SONG_STORMS);}}),
                   EventAccess(&BugShrub,          {[]{return IsChild && CanCutShrubs;}}),
                 }, {
                   //Locations
-                  LocationAccess(LW_SKULL_KID,                 {[]{return IsChild && CanPlay(SariasSong);}}),
+                  LocationAccess(LW_SKULL_KID,                 {[]{return IsChild && CanPlay(SariasSong, Song::SONG_SARIA);}}),
                   LocationAccess(LW_TRADE_COJIRO,              {[]{return IsAdult && Cojiro;}}),
                   LocationAccess(LW_TRADE_ODD_POTION,        {[]{return IsAdult && OddPoultice && Cojiro;}}),
                   LocationAccess(LW_OCARINA_MEMORY_GAME,       {[]{return IsChild && Ocarina;}}),
@@ -133,7 +133,7 @@ void AreaTable_Init_LostWoods() {
                   Entrance(GC_WOODS_WARP,            {[]{return true;}}),
                   Entrance(LW_BRIDGE,                {[]{return CanLeaveForest && ((IsAdult && (CanPlantBean(THE_LOST_WOODS) || LogicLostWoodsBridge)) || CanUse(HOVER_BOOTS) || CanUse(LONGSHOT));}}),
                   Entrance(ZORAS_RIVER,              {[]{return CanLeaveForest && (CanDive || CanUse(IRON_BOOTS));}}),
-                  Entrance(LW_BEYOND_MIDO,           {[]{return IsChild || CanPlay(SariasSong) || LogicMidoBackflip;}}),
+                  Entrance(LW_BEYOND_MIDO,           {[]{return IsChild || CanPlay(SariasSong, Song::SONG_SARIA) || LogicMidoBackflip;}}),
                   Entrance(LW_NEAR_SHORTCUTS_GROTTO, {[]{return Here(THE_LOST_WOODS, []{return CanBlastOrSmash;});}}),
   });
 
@@ -149,7 +149,7 @@ void AreaTable_Init_LostWoods() {
                 }, {
                   //Exits
                   Entrance(LW_FOREST_EXIT,   {[]{return true;}}),
-                  Entrance(THE_LOST_WOODS,   {[]{return IsChild || CanPlay(SariasSong);}}),
+                  Entrance(THE_LOST_WOODS,   {[]{return IsChild || CanPlay(SariasSong, Song::SONG_SARIA);}}),
                   Entrance(SFM_ENTRYWAY,     {[]{return true;}}),
                   Entrance(DEKU_THEATER,     {[]{return true;}}),
                   Entrance(LW_SCRUBS_GROTTO, {[]{return Here(LW_BEYOND_MIDO, []{return CanBlastOrSmash;});}}),

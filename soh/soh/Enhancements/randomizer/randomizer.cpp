@@ -258,6 +258,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
     { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
     { "Shuffle Settings:Shuffle Ocarinas", RSK_SHUFFLE_OCARINA },
+    { "Shuffle Settings:Shuffle Ocarina Buttons", RSK_SHUFFLE_OCARINA_BUTTONS },
     { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
     { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS },
     { "Shuffle Settings:Shuffle Kokiri Sword", RSK_SHUFFLE_KOKIRI_SWORD },
@@ -824,6 +825,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHUFFLE_FROG_SONG_RUPEES:
                     case RSK_SHUFFLE_100_GS_REWARD:
                     case RSK_SHUFFLE_OCARINA:
+                    case RSK_SHUFFLE_OCARINA_BUTTONS:
                     case RSK_STARTING_DEKU_SHIELD:
                     case RSK_STARTING_KOKIRI_SWORD:
                     case RSK_STARTING_ZELDAS_LULLABY:
@@ -1899,6 +1901,17 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_LIGHT_MEDALLION:
             return !CHECK_QUEST_ITEM(QUEST_MEDALLION_LIGHT) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
+        case RG_OCARINA_A_BUTTON:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+        case RG_OCARINA_C_LEFT_BUTTON:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+        case RG_OCARINA_C_RIGHT_BUTTON:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+        case RG_OCARINA_C_UP_BUTTON:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+        case RG_OCARINA_C_DOWN_BUTTON:
+            return Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN;
+
         case RG_RECOVERY_HEART:
         case RG_GREEN_RUPEE:
         case RG_GREG_RUPEE:
@@ -2303,6 +2316,18 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
             return GI_HEART_PIECE_WIN;
         case RG_TREASURE_GAME_GREEN_RUPEE:
             return GI_RUPEE_GREEN_LOSE;
+
+        case RG_OCARINA_A_BUTTON:
+            return (GetItemID)RG_OCARINA_A_BUTTON;
+        case RG_OCARINA_C_LEFT_BUTTON:
+            return (GetItemID)RG_OCARINA_C_LEFT_BUTTON;
+        case RG_OCARINA_C_RIGHT_BUTTON:
+            return (GetItemID)RG_OCARINA_C_RIGHT_BUTTON;
+        case RG_OCARINA_C_UP_BUTTON:
+            return (GetItemID)RG_OCARINA_C_UP_BUTTON;
+        case RG_OCARINA_C_DOWN_BUTTON:
+            return (GetItemID)RG_OCARINA_C_DOWN_BUTTON;
+
         default:
             if (!IsItemVanilla(randoGet)) {
                 return (GetItemID)randoGet;
@@ -2949,6 +2974,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_STARTING_OCARINA] = CVarGetInteger("gRandomizeStartingOcarina", 0);
     cvarSettings[RSK_SHUFFLE_OCARINA] = CVarGetInteger("gRandomizeShuffleOcarinas", 0) ||
                                         CVarGetInteger("gRandomizeStartingOcarina", 0);
+    cvarSettings[RSK_SHUFFLE_OCARINA_BUTTONS] = CVarGetInteger("gRandomizeShuffleOcarinaButtons", 0);
     cvarSettings[RSK_STARTING_KOKIRI_SWORD] = CVarGetInteger("gRandomizeStartingKokiriSword", 0);
     cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD] = CVarGetInteger("gRandomizeShuffleKokiriSword", 0) ||
                                              CVarGetInteger("gRandomizeStartingKokiriSword", 0);
@@ -3844,6 +3870,15 @@ void RandomizerSettingsWindow::DrawElement() {
                     "Enabling this shuffles the Fairy Ocarina and the Ocarina of Time into the item pool.\n"
                     "\n"
                     "This will require finding an Ocarina before being able to play songs."
+                );
+
+                UIWidgets::PaddedSeparator();
+
+                UIWidgets::EnhancementCheckbox(Settings::ShuffleOcarinaButtons.GetName().c_str(), "gRandomizeShuffleOcarinaButtons", false);
+                UIWidgets::InsertHelpHoverText(
+                    "Enabling this shuffles the Ocarina buttons into the item pool.\n"
+                    "\n"
+                    "This will require finding the buttons before being able to use them in songs."
                 );
 
                 UIWidgets::PaddedSeparator();
@@ -5759,7 +5794,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 56> getItemMessages = {{
+    const std::array<GetItemMessage, 61> getItemMessages = {{
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
 			"You found %gGreg%w!",
 			"%gGreg%w! Du hast ihn wirklich gefunden!",
@@ -5989,7 +6024,28 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE(RG_TYCOON_WALLET, ITEM_WALLET_GIANT,
 			"You got a %rTycoon's Wallet%w!&It's gigantic! Now you can carry&up to %y999 rupees%w!",
 			"Du erhältst die %rGoldene&Geldbörse%w! Die größte aller&Geldbörsen! Jetzt kannst Du bis&zu %y999 Rubine%w mit dir führen!",
-			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y999 rubis%w!&C'est gigantesque!")
+			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y999 rubis%w!&C'est gigantesque!"),
+
+        GIMESSAGE(RG_OCARINA_A_BUTTON, ITEM_STONE_OF_AGONY,
+            "You got the %rA button%w&for the ocarina!&You can now use it&while playing songs!",
+			"!!!",
+			"!!!"),
+        GIMESSAGE(RG_OCARINA_C_LEFT_BUTTON, ITEM_STONE_OF_AGONY,
+            "You got the %rC Left button%w&for the ocarina!&You can now use it&while playing songs!",
+			"!!!",
+			"!!!"),
+        GIMESSAGE(RG_OCARINA_C_RIGHT_BUTTON, ITEM_STONE_OF_AGONY,
+            "You got the %rC Right button%w&for the ocarina!&You can now use it&while playing songs!",
+			"!!!",
+			"!!!"),
+        GIMESSAGE(RG_OCARINA_C_UP_BUTTON, ITEM_STONE_OF_AGONY,
+            "You got the %rC Up button%w&for the ocarina!&You can now use it&while playing songs!",
+			"!!!",
+			"!!!"),
+        GIMESSAGE(RG_OCARINA_C_DOWN_BUTTON, ITEM_STONE_OF_AGONY,
+            "You got the %rC Down button%w&for the ocarina!&You can now use it&while playing songs!",
+			"!!!",
+			"!!!")
     }};
     CreateGetItemMessages(&getItemMessages);
     CreateRupeeMessages();
@@ -6103,6 +6159,11 @@ void InitRandoItemTable() {
         GET_ITEM(RG_MAGIC_BEAN_PACK,                   OBJECT_GI_BEAN,     GID_BEAN,             TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_MAGIC_BEAN_PACK),
         GET_ITEM(RG_TYCOON_WALLET,                     OBJECT_GI_PURSE,    GID_WALLET_GIANT,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_TYCOON_WALLET),
         GET_ITEM(RG_PROGRESSIVE_BOMBCHUS,              OBJECT_GI_BOMB_2,   GID_BOMBCHU,          0x33,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_PROGRESSIVE_BOMBCHUS),
+        GET_ITEM(RG_OCARINA_A_BUTTON,                  OBJECT_GI_MAP,      GID_STONE_OF_AGONY,   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_OCARINA_A_BUTTON),
+        GET_ITEM(RG_OCARINA_C_LEFT_BUTTON,             OBJECT_GI_MAP,      GID_STONE_OF_AGONY,   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_OCARINA_C_LEFT_BUTTON),
+        GET_ITEM(RG_OCARINA_C_RIGHT_BUTTON,            OBJECT_GI_MAP,      GID_STONE_OF_AGONY,   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_OCARINA_C_RIGHT_BUTTON),
+        GET_ITEM(RG_OCARINA_C_UP_BUTTON,               OBJECT_GI_MAP,      GID_STONE_OF_AGONY,   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_OCARINA_C_UP_BUTTON),
+        GET_ITEM(RG_OCARINA_C_DOWN_BUTTON,             OBJECT_GI_MAP,      GID_STONE_OF_AGONY,   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_OCARINA_C_DOWN_BUTTON),
     };
     ItemTableManager::Instance->AddItemTable(MOD_RANDOMIZER);
     for (int i = 0; i < ARRAY_COUNT(extendedVanillaGetItemTable); i++) {

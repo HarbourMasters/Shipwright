@@ -24,12 +24,12 @@ void AreaTable_Init_GerudoValley() {
   areaTable[GV_UPPER_STREAM] = Area("GV Upper Stream", "Gerudo Valley", GERUDO_VALLEY, DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&GossipStoneFairy, {[]{return GossipStoneFairy || CanSummonGossipFairy;}}),
-                  EventAccess(&BeanPlantFairy,   {[]{return BeanPlantFairy   || (CanPlantBean(GV_UPPER_STREAM) && CanPlay(SongOfStorms));}}),
+                  EventAccess(&BeanPlantFairy,   {[]{return BeanPlantFairy   || (CanPlantBean(GV_UPPER_STREAM) && CanPlay(SongOfStorms, Song::SONG_STORMS));}}),
                 }, {
                   //Locations
                   LocationAccess(GV_WATERFALL_FREESTANDING_POH, {[]{return true;}}),
                   LocationAccess(GV_GS_BEAN_PATCH,              {[]{return CanPlantBugs && CanChildAttack;}}),
-                  LocationAccess(GV_COW,                        {[]{return IsChild && CanPlay(EponasSong);}}),
+                  LocationAccess(GV_COW,                        {[]{return IsChild && CanPlay(EponasSong, Song::SONG_EPONA);}}),
                   LocationAccess(GV_GOSSIP_STONE,               {[]{return true;}}),
                 }, {
                   //Exits
@@ -165,7 +165,7 @@ void AreaTable_Init_GerudoValley() {
 
   areaTable[DESERT_COLOSSUS] = Area("Desert Colossus", "Desert Colossus", DESERT_COLOSSUS, DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&FairyPond, {[]{return FairyPond || CanPlay(SongOfStorms);}}),
+                  EventAccess(&FairyPond, {[]{return FairyPond || CanPlay(SongOfStorms, Song::SONG_STORMS);}}),
                   EventAccess(&BugRock,   {[]{return true;}}),
                 }, {
                   //Locations
@@ -192,7 +192,7 @@ void AreaTable_Init_GerudoValley() {
 
   areaTable[COLOSSUS_GREAT_FAIRY_FOUNTAIN] = Area("Colossus Great Fairy Fountain", "Colossus Great Fairy Fountain", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(COLOSSUS_GREAT_FAIRY_REWARD, {[]{return CanPlay(ZeldasLullaby);}}),
+                  LocationAccess(COLOSSUS_GREAT_FAIRY_REWARD, {[]{return CanPlay(ZeldasLullaby, Song::SONG_LULLABY);}}),
                 }, {
                   //Exits
                   Entrance(DESERT_COLOSSUS, {[]{return true;}}),

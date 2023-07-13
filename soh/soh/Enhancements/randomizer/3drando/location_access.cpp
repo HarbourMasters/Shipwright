@@ -266,12 +266,12 @@ void AreaTable_Init() {
                   //Exits
                   Entrance(CHILD_SPAWN,             {[]{return IsChild;}}),
                   Entrance(ADULT_SPAWN,             {[]{return IsAdult;}}),
-                  Entrance(MINUET_OF_FOREST_WARP,   {[]{return CanPlay(MinuetOfForest);}}),
-                  Entrance(BOLERO_OF_FIRE_WARP,     {[]{return CanPlay(BoleroOfFire)     && CanLeaveForest;}}),
-                  Entrance(SERENADE_OF_WATER_WARP,  {[]{return CanPlay(SerenadeOfWater)  && CanLeaveForest;}}),
-                  Entrance(NOCTURNE_OF_SHADOW_WARP, {[]{return CanPlay(NocturneOfShadow) && CanLeaveForest;}}),
-                  Entrance(REQUIEM_OF_SPIRIT_WARP,  {[]{return CanPlay(RequiemOfSpirit)  && CanLeaveForest;}}),
-                  Entrance(PRELUDE_OF_LIGHT_WARP,   {[]{return CanPlay(PreludeOfLight)   && CanLeaveForest;}}),
+                  Entrance(MINUET_OF_FOREST_WARP,   {[]{return CanPlay(MinuetOfForest, Song::SONG_MINUET);}}),
+                  Entrance(BOLERO_OF_FIRE_WARP,     {[]{return CanPlay(BoleroOfFire, Song::SONG_BOLERO)     && CanLeaveForest;}}),
+                  Entrance(SERENADE_OF_WATER_WARP,  {[]{return CanPlay(SerenadeOfWater, Song::SONG_SERENADE)  && CanLeaveForest;}}),
+                  Entrance(NOCTURNE_OF_SHADOW_WARP, {[]{return CanPlay(NocturneOfShadow, Song::SONG_NOCTURNE) && CanLeaveForest;}}),
+                  Entrance(REQUIEM_OF_SPIRIT_WARP,  {[]{return CanPlay(RequiemOfSpirit, Song::SONG_REQUIEM)  && CanLeaveForest;}}),
+                  Entrance(PRELUDE_OF_LIGHT_WARP,   {[]{return CanPlay(PreludeOfLight, Song::SONG_PRELUDE)   && CanLeaveForest;}}),
   });
 
   areaTable[CHILD_SPAWN] = Area("Child Spawn", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {

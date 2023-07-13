@@ -438,6 +438,7 @@ typedef struct {
     uint8_t shuffleCows;
     uint8_t shuffleKokiriSword;
     uint8_t shuffleOcarinas;
+    uint8_t shuffleOcarinaButtons;
     uint8_t shuffleWeirdEgg;
     uint8_t shuffleGerudoToken;
     uint8_t shuffleMagicBeans;
@@ -960,6 +961,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option ShuffleCows;
   extern Option ShuffleKokiriSword;
   extern Option ShuffleOcarinas;
+  extern Option ShuffleOcarinaButtons;
   extern Option ShuffleWeirdEgg;
   extern Option ShuffleGerudoToken;
   extern Option ShuffleMagicBeans;

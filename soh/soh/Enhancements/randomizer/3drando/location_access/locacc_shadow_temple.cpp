@@ -73,7 +73,7 @@ void AreaTable_Init_ShadowTemple() {
                   LocationAccess(SHADOW_TEMPLE_GS_NEAR_SHIP,            {[]{return CanUse(LONGSHOT) && SmallKeys(SHADOW_TEMPLE, 4, 5);}}),
                 }, {
                   //Exits
-                  Entrance(SHADOW_TEMPLE_BEYOND_BOAT, {[]{return CanPlay(ZeldasLullaby) && SmallKeys(SHADOW_TEMPLE, 4, 5);}}),
+                  Entrance(SHADOW_TEMPLE_BEYOND_BOAT, {[]{return CanPlay(ZeldasLullaby, Song::SONG_LULLABY) && SmallKeys(SHADOW_TEMPLE, 4, 5);}}),
   });
 
   areaTable[SHADOW_TEMPLE_BEYOND_BOAT] = Area("Shadow Temple Beyond Boat", "Shadow Temple", SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -103,7 +103,7 @@ void AreaTable_Init_ShadowTemple() {
   areaTable[SHADOW_TEMPLE_MQ_DEAD_HAND_AREA] = Area("Shadow Temple MQ Dead Hand Area", "Shadow Temple", SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(SHADOW_TEMPLE_MQ_COMPASS_CHEST,     {[]{return true;}}),
-                  LocationAccess(SHADOW_TEMPLE_MQ_HOVER_BOOTS_CHEST, {[]{return CanPlay(SongOfTime) && IsAdult && CanUse(BOW);}}),
+                  LocationAccess(SHADOW_TEMPLE_MQ_HOVER_BOOTS_CHEST, {[]{return CanPlay(SongOfTime, Song::SONG_TIME) && IsAdult && CanUse(BOW);}}),
   }, {});
 
   areaTable[SHADOW_TEMPLE_MQ_FIRST_BEAMOS] = Area("Shadow Temple MQ First Beamos", "Shadow Temple", SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -118,10 +118,10 @@ void AreaTable_Init_ShadowTemple() {
 
   areaTable[SHADOW_TEMPLE_MQ_UPPER_HUGE_PIT] = Area("Shadow Temple MQ Upper Huge Pit", "Shadow Temple", SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_VISIBLE_CHEST,   {[]{return CanPlay(SongOfTime) || (LogicShadowMQInvisibleBlades && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO));}}),
-                    //Trick: CanPlay(SongOfTime) || (LogicShadowMQInvisibleBlades && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO))
-                  LocationAccess(SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_INVISIBLE_CHEST, {[]{return CanPlay(SongOfTime) || (LogicShadowMQInvisibleBlades && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO));}}),
-                    //Trick: CanPlay(SongOfTime) || (LogicShadowMQInvisibleBlades && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO))
+                  LocationAccess(SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_VISIBLE_CHEST,   {[]{return CanPlay(SongOfTime, Song::SONG_TIME) || (LogicShadowMQInvisibleBlades && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO));}}),
+                    //Trick: CanPlay(SongOfTime, Song::SONG_TIME) || (LogicShadowMQInvisibleBlades && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO))
+                  LocationAccess(SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_INVISIBLE_CHEST, {[]{return CanPlay(SongOfTime, Song::SONG_TIME) || (LogicShadowMQInvisibleBlades && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO));}}),
+                    //Trick: CanPlay(SongOfTime, Song::SONG_TIME) || (LogicShadowMQInvisibleBlades && DamageMultiplier.IsNot(DAMAGEMULTIPLIER_OHKO))
   }, {
                   //Exits
                   Entrance(SHADOW_TEMPLE_MQ_LOWER_HUGE_PIT, {[]{return HasFireSource || LogicShadowMQHugePit;}}),
@@ -154,7 +154,7 @@ void AreaTable_Init_ShadowTemple() {
                   LocationAccess(SHADOW_TEMPLE_MQ_GS_AFTER_WIND,           {[]{return true;}}),
   }, {
                   //Exits
-                  Entrance(SHADOW_TEMPLE_MQ_BEYOND_BOAT, {[]{return CanPlay(ZeldasLullaby) && SmallKeys(SHADOW_TEMPLE, 5);}}),
+                  Entrance(SHADOW_TEMPLE_MQ_BEYOND_BOAT, {[]{return CanPlay(ZeldasLullaby, Song::SONG_LULLABY) && SmallKeys(SHADOW_TEMPLE, 5);}}),
   });
 
   areaTable[SHADOW_TEMPLE_MQ_BEYOND_BOAT] = Area("Shadow Temple MQ Beyond Boat", "Shadow Temple", SHADOW_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
@@ -163,7 +163,7 @@ void AreaTable_Init_ShadowTemple() {
                   LocationAccess(SHADOW_TEMPLE_MQ_GS_NEAR_BOSS,   {[]{return Bow || (LogicShadowStatue && HasBombchus);}}),
   }, {
                   //Exits
-                  Entrance(SHADOW_TEMPLE_MQ_INVISIBLE_MAZE, {[]{return Bow && CanPlay(SongOfTime) && IsAdult && CanUse(LONGSHOT);}}),
+                  Entrance(SHADOW_TEMPLE_MQ_INVISIBLE_MAZE, {[]{return Bow && CanPlay(SongOfTime, Song::SONG_TIME) && IsAdult && CanUse(LONGSHOT);}}),
                   Entrance(SHADOW_TEMPLE_BOSS_ENTRYWAY,     {[]{return (CanUse(BOW) || (LogicShadowStatue && HasBombchus)) && CanUse(HOVER_BOOTS) && BossKeyShadowTemple;}}),
   });
 

@@ -110,12 +110,12 @@ void AreaTable_Init_Kakariko() {
 
   areaTable[KAK_IMPAS_HOUSE_NEAR_COW] = Area("Kak Impas House Near Cow", "Kak Impas House", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(KAK_IMPAS_HOUSE_COW, {[]{return CanPlay(EponasSong);}}),
+                  LocationAccess(KAK_IMPAS_HOUSE_COW, {[]{return CanPlay(EponasSong, Song::SONG_EPONA);}}),
   }, {});
 
   areaTable[KAK_WINDMILL] = Area("Kak Windmill", "Windmill and Dampes Grave", NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&DrainWell, {[]{return DrainWell || (IsChild && CanPlay(SongOfStorms));}}),
+                  EventAccess(&DrainWell, {[]{return DrainWell || (IsChild && CanPlay(SongOfStorms, Song::SONG_STORMS));}}),
                 }, {
                   //Locations
                   LocationAccess(KAK_WINDMILL_FREESTANDING_POH, {[]{return CanUse(BOOMERANG) || DampesWindmillAccess || (IsAdult && LogicAdultWindmillPoH) || (IsChild && CanJumpslash && LogicChildWindmillPoH);}}),
@@ -202,7 +202,7 @@ void AreaTable_Init_Kakariko() {
   areaTable[THE_GRAVEYARD] = Area("The Graveyard", "The Graveyard", THE_GRAVEYARD, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&ButterflyFairy, {[]{return ButterflyFairy || (CanUse(STICKS) && AtDay);}}),
-                  EventAccess(&BeanPlantFairy, {[]{return BeanPlantFairy || (CanPlantBean(THE_GRAVEYARD) && CanPlay(SongOfStorms));}}),
+                  EventAccess(&BeanPlantFairy, {[]{return BeanPlantFairy || (CanPlantBean(THE_GRAVEYARD) && CanPlay(SongOfStorms, Song::SONG_STORMS));}}),
                   EventAccess(&BugRock,        {[]{return true;}}),
                 }, {
                   //Locations
@@ -213,7 +213,7 @@ void AreaTable_Init_Kakariko() {
                 }, {
                   //Exits
                   Entrance(GRAVEYARD_SHIELD_GRAVE,       {[]{return IsAdult || AtNight;}}),
-                  Entrance(GRAVEYARD_COMPOSERS_GRAVE,    {[]{return CanPlay(ZeldasLullaby);}}),
+                  Entrance(GRAVEYARD_COMPOSERS_GRAVE,    {[]{return CanPlay(ZeldasLullaby, Song::SONG_LULLABY);}}),
                   Entrance(GRAVEYARD_HEART_PIECE_GRAVE,  {[]{return IsAdult || AtNight;}}),
                   Entrance(GRAVEYARD_DAMPES_GRAVE,       {[]{return IsAdult;}}),
                   Entrance(GRAVEYARD_DAMPES_HOUSE,       {[]{return IsAdult || AtDampeTime;}}), //TODO: This needs to be handled
@@ -232,7 +232,7 @@ void AreaTable_Init_Kakariko() {
 
   areaTable[GRAVEYARD_HEART_PIECE_GRAVE] = Area("Graveyard Heart Piece Grave", "Graveyard Heart Piece Grave", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(GRAVEYARD_HEART_PIECE_GRAVE_CHEST, {[]{return CanPlay(SunsSong);}}),
+                  LocationAccess(GRAVEYARD_HEART_PIECE_GRAVE_CHEST, {[]{return CanPlay(SunsSong, Song::SONG_SUN);}}),
                 }, {
                   //Exits
                   Entrance(THE_GRAVEYARD, {[]{return true;}}),
@@ -250,7 +250,7 @@ void AreaTable_Init_Kakariko() {
   areaTable[GRAVEYARD_DAMPES_GRAVE] = Area("Graveyard Dampes Grave", "Windmill and Dampes Grave", NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&NutPot,               {[]{return true;}}),
-                  EventAccess(&DampesWindmillAccess, {[]{return DampesWindmillAccess || (IsAdult && CanPlay(SongOfTime));}}),
+                  EventAccess(&DampesWindmillAccess, {[]{return DampesWindmillAccess || (IsAdult && CanPlay(SongOfTime, Song::SONG_TIME));}}),
                 }, {
                   //Locations
                   LocationAccess(GRAVEYARD_HOOKSHOT_CHEST,              {[]{return true;}}),
@@ -258,7 +258,7 @@ void AreaTable_Init_Kakariko() {
                 }, {
                   //Exits
                   Entrance(THE_GRAVEYARD, {[]{return true;}}),
-                  Entrance(KAK_WINDMILL,  {[]{return IsAdult && CanPlay(SongOfTime);}}),
+                  Entrance(KAK_WINDMILL,  {[]{return IsAdult && CanPlay(SongOfTime, Song::SONG_TIME);}}),
   });
 
   areaTable[GRAVEYARD_DAMPES_HOUSE] = Area("Graveyard Dampes House", "Graveyard Dampes House", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {

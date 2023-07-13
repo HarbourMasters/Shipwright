@@ -692,6 +692,14 @@ void GenerateItemPool() {
     PlaceItemInLocation(HF_OCARINA_OF_TIME_ITEM, PROGRESSIVE_OCARINA, false, true);
   }
 
+  if (ShuffleOcarinaButtons) {
+    AddItemToMainPool(OCARINA_A_BUTTON);
+    AddItemToMainPool(OCARINA_C_LEFT_BUTTON);
+    AddItemToMainPool(OCARINA_C_RIGHT_BUTTON);
+    AddItemToMainPool(OCARINA_C_UP_BUTTON);
+    AddItemToMainPool(OCARINA_C_DOWN_BUTTON);
+  }
+
   if (ShuffleCows) {
     //9 total cow locations
     for (uint8_t i = 0; i < 9; i++) {

@@ -259,6 +259,29 @@ constexpr std::array DungeonColors = {
                 UNSKIPPABLE()+ITEM_OBTAINED(ITEM_WALLET_GIANT)+INSTANT_TEXT_ON()+"You got a "+COLOR(QM_RED)+"Tycoon's Wallet"+COLOR(QM_WHITE)+"!"+INSTANT_TEXT_OFF()+NEWLINE()+"It's gigantic! Now you can carry"+NEWLINE()+"up to "+COLOR(QM_YELLOW)+"999 "+COLOR(QM_WHITE)+COLOR(QM_YELLOW)+"Rupees"+COLOR(QM_WHITE)+"!"+MESSAGE_END(),
                 UNSKIPPABLE()+ITEM_OBTAINED(ITEM_WALLET_GIANT)+INSTANT_TEXT_ON()+"Vous obtenez la "+COLOR(QM_RED)+"Bourse de Magnat"+COLOR(QM_WHITE)+"!"+INSTANT_TEXT_OFF()+NEWLINE()+"Elle peut contenir jusqu'à "+COLOR(QM_YELLOW)+"999 "+COLOR(QM_WHITE)+COLOR(QM_YELLOW)+"rubis"+COLOR(QM_WHITE)+"!"+NEWLINE()+"C'est gigantesque!"+MESSAGE_END(),
                 UNSKIPPABLE()+ITEM_OBTAINED(ITEM_WALLET_GIANT)+INSTANT_TEXT_ON()+"¡Has conseguido una "+COLOR(QM_RED)+"bolsa para ricachones"+COLOR(QM_WHITE)+"!"+INSTANT_TEXT_OFF()+NEWLINE()+"¡Qué descomunal! Ya puedes llevar"+NEWLINE()+"hasta "+COLOR(QM_YELLOW)+"999 "+COLOR(QM_WHITE)+COLOR(QM_YELLOW)+"rupias"+COLOR(QM_WHITE)+"!"+MESSAGE_END());
+        
+        //ocarina buttons
+        CreateMessage(0x09F9, 0, 2, 3,
+                UNSKIPPABLE()+ITEM_OBTAINED(ITEM_STONE_OF_AGONY)+INSTANT_TEXT_ON()+"You got the "+COLOR(QM_RED)+"A button"+COLOR(QM_WHITE)+NEWLINE()+"for the ocarina!"+INSTANT_TEXT_OFF()+NEWLINE()+"You can now use it"+NEWLINE()+"while playing songs!"+MESSAGE_END(),
+                UNSKIPPABLE()+ITEM_OBTAINED(ITEM_STONE_OF_AGONY)+INSTANT_TEXT_ON()+"!!!"+MESSAGE_END(),//FIXME: missing translation
+                UNSKIPPABLE()+ITEM_OBTAINED(ITEM_STONE_OF_AGONY)+INSTANT_TEXT_ON()+"!!!"+MESSAGE_END());//FIXME: missing translation
+        CreateMessage(0x09FA, 0, 2, 3,
+                UNSKIPPABLE()+ITEM_OBTAINED(ITEM_STONE_OF_AGONY)+INSTANT_TEXT_ON()+"You got the "+COLOR(QM_RED)+"C Left button"+COLOR(QM_WHITE)+NEWLINE()+"for the ocarina!"+INSTANT_TEXT_OFF()+NEWLINE()+"You can now use it"+NEWLINE()+"while playing songs!"+MESSAGE_END(),
+                UNSKIPPABLE()+ITEM_OBTAINED(ITEM_STONE_OF_AGONY)+INSTANT_TEXT_ON()+"!!!"+MESSAGE_END(),//FIXME: missing translation
+                UNSKIPPABLE()+ITEM_OBTAINED(ITEM_STONE_OF_AGONY)+INSTANT_TEXT_ON()+"!!!"+MESSAGE_END());//FIXME: missing translation
+        CreateMessage(0x09FB, 0, 2, 3,
+                UNSKIPPABLE()+ITEM_OBTAINED(ITEM_STONE_OF_AGONY)+INSTANT_TEXT_ON()+"You got the "+COLOR(QM_RED)+"C Right button"+COLOR(QM_WHITE)+NEWLINE()+"for the ocarina!"+INSTANT_TEXT_OFF()+NEWLINE()+"You can now use it"+NEWLINE()+"while playing songs!"+MESSAGE_END(),
+                UNSKIPPABLE()+ITEM_OBTAINED(ITEM_STONE_OF_AGONY)+INSTANT_TEXT_ON()+"!!!"+MESSAGE_END(),//FIXME: missing translation
+                UNSKIPPABLE()+ITEM_OBTAINED(ITEM_STONE_OF_AGONY)+INSTANT_TEXT_ON()+"!!!"+MESSAGE_END());//FIXME: missing translation
+        CreateMessage(0x09FC, 0, 2, 3,
+                UNSKIPPABLE()+ITEM_OBTAINED(ITEM_STONE_OF_AGONY)+INSTANT_TEXT_ON()+"You got the "+COLOR(QM_RED)+"C Up button"+COLOR(QM_WHITE)+NEWLINE()+"for the ocarina!"+INSTANT_TEXT_OFF()+NEWLINE()+"You can now use it"+NEWLINE()+"while playing songs!"+MESSAGE_END(),
+                UNSKIPPABLE()+ITEM_OBTAINED(ITEM_STONE_OF_AGONY)+INSTANT_TEXT_ON()+"!!!"+MESSAGE_END(),//FIXME: missing translation
+                UNSKIPPABLE()+ITEM_OBTAINED(ITEM_STONE_OF_AGONY)+INSTANT_TEXT_ON()+"!!!"+MESSAGE_END());//FIXME: missing translation
+        CreateMessage(0x09FD, 0, 2, 3,
+                UNSKIPPABLE()+ITEM_OBTAINED(ITEM_STONE_OF_AGONY)+INSTANT_TEXT_ON()+"You got the "+COLOR(QM_RED)+"C Down button"+COLOR(QM_WHITE)+NEWLINE()+"for the ocarina!"+INSTANT_TEXT_OFF()+NEWLINE()+"You can now use it"+NEWLINE()+"while playing songs!"+MESSAGE_END(),
+                UNSKIPPABLE()+ITEM_OBTAINED(ITEM_STONE_OF_AGONY)+INSTANT_TEXT_ON()+"!!!"+MESSAGE_END(),//FIXME: missing translation
+                UNSKIPPABLE()+ITEM_OBTAINED(ITEM_STONE_OF_AGONY)+INSTANT_TEXT_ON()+"!!!"+MESSAGE_END());//FIXME: missing translation
+
         //Saria's Song Default Hint
         CreateMessage(0x0A00, 0, 2, 3,
             UNSKIPPABLE()+"Have you tried talking to the gossip"+NEWLINE()+ "stones around Hyrule? They might have"+NEWLINE()+"some good advice... Hee hee!"+WAIT_FOR_INPUT()+"If you learn something from the gossip stones,"+NEWLINE()+"I will remember it!"+EVENT_TRIGGER()+MESSAGE_END(),

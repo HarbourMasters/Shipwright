@@ -61,7 +61,7 @@ void AreaTable_Init_HyruleField() {
   areaTable[HF_COW_GROTTO] = Area("HF Cow Grotto", "HF Cow Grotto", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
                   LocationAccess(HF_GS_COW_GROTTO,           {[]{return HasFireSource && HookshotOrBoomerang;}}),
-                  LocationAccess(HF_COW_GROTTO_COW,          {[]{return HasFireSource && CanPlay(EponasSong);}}),
+                  LocationAccess(HF_COW_GROTTO_COW,          {[]{return HasFireSource && CanPlay(EponasSong, Song::SONG_EPONA);}}),
                   LocationAccess(HF_COW_GROTTO_GOSSIP_STONE, {[]{return HasFireSource;}}),
                 }, {
                   //Exits
@@ -104,7 +104,7 @@ void AreaTable_Init_HyruleField() {
   areaTable[LAKE_HYLIA] = Area("Lake Hylia", "Lake Hylia", LAKE_HYLIA, DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&GossipStoneFairy, {[]{return GossipStoneFairy || CanSummonGossipFairy;}}),
-                  EventAccess(&BeanPlantFairy,   {[]{return BeanPlantFairy   || (CanPlantBean(LAKE_HYLIA) && CanPlay(SongOfStorms));}}),
+                  EventAccess(&BeanPlantFairy,   {[]{return BeanPlantFairy   || (CanPlantBean(LAKE_HYLIA) && CanPlay(SongOfStorms, Song::SONG_STORMS));}}),
                   EventAccess(&ButterflyFairy,   {[]{return ButterflyFairy   || CanUse(STICKS);}}),
                   EventAccess(&BugShrub,         {[]{return BugShrub         || (IsChild && CanCutShrubs);}}),
                   EventAccess(&ChildScarecrow,   {[]{return ChildScarecrow   || (IsChild && Ocarina);}}),
@@ -177,8 +177,8 @@ void AreaTable_Init_HyruleField() {
 
   areaTable[LON_LON_RANCH] = Area("Lon Lon Ranch", "Lon Lon Ranch", LON_LON_RANCH, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&Epona,    {[]{return Epona    || (CanPlay(EponasSong) && IsAdult && AtDay);}}),
-                  EventAccess(&LinksCow, {[]{return LinksCow || (CanPlay(EponasSong) && IsAdult && AtDay);}}),
+                  EventAccess(&Epona,    {[]{return Epona    || (CanPlay(EponasSong, Song::SONG_EPONA) && IsAdult && AtDay);}}),
+                  EventAccess(&LinksCow, {[]{return LinksCow || (CanPlay(EponasSong, Song::SONG_EPONA) && IsAdult && AtDay);}}),
                 }, {
                   //Locations
                   LocationAccess(SONG_FROM_MALON,     {[]{return IsChild && ZeldasLetter && Ocarina && AtDay;}}),
@@ -205,8 +205,8 @@ void AreaTable_Init_HyruleField() {
 
   areaTable[LLR_STABLES] = Area("LLR Stables", "LLR Stables", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(LLR_STABLES_LEFT_COW,  {[]{return CanPlay(EponasSong);}}),
-                  LocationAccess(LLR_STABLES_RIGHT_COW, {[]{return CanPlay(EponasSong);}}),
+                  LocationAccess(LLR_STABLES_LEFT_COW,  {[]{return CanPlay(EponasSong, Song::SONG_EPONA);}}),
+                  LocationAccess(LLR_STABLES_RIGHT_COW, {[]{return CanPlay(EponasSong, Song::SONG_EPONA);}}),
                 }, {
                   //Exits
                   Entrance(LON_LON_RANCH, {[]{return true;}}),
@@ -215,8 +215,8 @@ void AreaTable_Init_HyruleField() {
   areaTable[LLR_TOWER] = Area("LLR Tower", "LLR Tower", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(LLR_FREESTANDING_POH, {[]{return IsChild;}}),
-                  LocationAccess(LLR_TOWER_LEFT_COW,   {[]{return CanPlay(EponasSong);}}),
-                  LocationAccess(LLR_TOWER_RIGHT_COW,  {[]{return CanPlay(EponasSong);}}),
+                  LocationAccess(LLR_TOWER_LEFT_COW,   {[]{return CanPlay(EponasSong, Song::SONG_EPONA);}}),
+                  LocationAccess(LLR_TOWER_RIGHT_COW,  {[]{return CanPlay(EponasSong, Song::SONG_EPONA);}}),
                 }, {
                   //Exits
                   Entrance(LON_LON_RANCH, {[]{return true;}}),

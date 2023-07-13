@@ -80,7 +80,7 @@ void AreaTable_Init_GanonsCastle() {
                   EventAccess(&ShadowTrialClear, {[]{return CanUse(LIGHT_ARROWS) && Hammer && ((FireArrows && (LogicLensCastle || CanUse(LENS_OF_TRUTH))) || (CanUse(LONGSHOT) && (CanUse(HOVER_BOOTS) || (DinsFire && (LogicLensCastle || CanUse(LENS_OF_TRUTH))))));}}),
                 }, {
                   //Locations
-                  LocationAccess(GANONS_CASTLE_SHADOW_TRIAL_FRONT_CHEST,            {[]{return CanUse(FIRE_ARROWS) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || CanPlay(SongOfTime) || IsChild;}}),
+                  LocationAccess(GANONS_CASTLE_SHADOW_TRIAL_FRONT_CHEST,            {[]{return CanUse(FIRE_ARROWS) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || CanPlay(SongOfTime, Song::SONG_TIME) || IsChild;}}),
                   LocationAccess(GANONS_CASTLE_SHADOW_TRIAL_GOLDEN_GAUNTLETS_CHEST, {[]{return CanUse(FIRE_ARROWS) || (CanUse(LONGSHOT) && (CanUse(HOVER_BOOTS) || CanUse(DINS_FIRE)));}}),
   }, {});
 
@@ -106,7 +106,7 @@ void AreaTable_Init_GanonsCastle() {
                   LocationAccess(GANONS_CASTLE_LIGHT_TRIAL_SECOND_RIGHT_CHEST,      {[]{return true;}}),
                   LocationAccess(GANONS_CASTLE_LIGHT_TRIAL_THIRD_RIGHT_CHEST,       {[]{return true;}}),
                   LocationAccess(GANONS_CASTLE_LIGHT_TRIAL_INVISIBLE_ENEMIES_CHEST, {[]{return LogicLensCastle || CanUse(LENS_OF_TRUTH);}}),
-                  LocationAccess(GANONS_CASTLE_LIGHT_TRIAL_LULLABY_CHEST,           {[]{return CanPlay(ZeldasLullaby) && SmallKeys(GANONS_CASTLE, 1);}}),
+                  LocationAccess(GANONS_CASTLE_LIGHT_TRIAL_LULLABY_CHEST,           {[]{return CanPlay(ZeldasLullaby, Song::SONG_LULLABY) && SmallKeys(GANONS_CASTLE, 1);}}),
   }, {});
   }
 
@@ -153,7 +153,7 @@ void AreaTable_Init_GanonsCastle() {
 
   areaTable[GANONS_CASTLE_MQ_FOREST_TRIAL] = Area("Ganon's Castle MQ Forest Trial", "Ganons Castle", GANONS_CASTLE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&ForestTrialClear, {[]{return IsAdult && CanUse(LIGHT_ARROWS) && CanPlay(SongOfTime);}}),
+                  EventAccess(&ForestTrialClear, {[]{return IsAdult && CanUse(LIGHT_ARROWS) && CanPlay(SongOfTime, Song::SONG_TIME);}}),
   }, {
                   //Locations
                   LocationAccess(GANONS_CASTLE_MQ_FOREST_TRIAL_EYE_SWITCH_CHEST,        {[]{return (IsAdult && CanUse(BOW)) || (IsChild && CanUse(SLINGSHOT));}}),
@@ -207,7 +207,7 @@ void AreaTable_Init_GanonsCastle() {
                     //Trick: IsAdult && CanUse(LIGHT_ARROWS) && SmallKeys(GANONS_CASTLE, 3) && (LogicLensCastleMQ || CanUse(LENS_OF_TRUTH)) && (Hookshot || LogicLightTrialMQ)
   }, {
                   //Locations
-                  LocationAccess(GANONS_CASTLE_MQ_LIGHT_TRIAL_LULLABY_CHEST, {[]{return CanPlay(ZeldasLullaby);}}),
+                  LocationAccess(GANONS_CASTLE_MQ_LIGHT_TRIAL_LULLABY_CHEST, {[]{return CanPlay(ZeldasLullaby, Song::SONG_LULLABY);}}),
   }, {});
   }
 }

@@ -524,16 +524,36 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
 
                     s16 Notes_alpha = D_8082A150[sp218];
                     if (D_8082A124[sp218] == 0) {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, Notes_alpha);
+                        if (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A)) {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 191, 191, 191, Notes_alpha);
+                        } else {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, Notes_alpha);
+                        }
                     } else {
                         if (D_8082A124[sp218] == OCARINA_NOTE_D5) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b, Notes_alpha);
+                            if (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP)) {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 191, 191, 191, Notes_alpha);
+                            } else {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b, Notes_alpha);
+                            }
                         } else if (D_8082A124[sp218] == OCARINA_NOTE_B4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, Notes_alpha);
+                            if (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT)) {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 191, 191, 191, Notes_alpha);
+                            } else {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, Notes_alpha);
+                            }
                         } else if (D_8082A124[sp218] == OCARINA_NOTE_A4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, Notes_alpha);
+                            if (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT)) {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 191, 191, 191, Notes_alpha);
+                            } else {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, Notes_alpha);
+                            }
                         } else if (D_8082A124[sp218] == OCARINA_NOTE_F4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, Notes_alpha);
+                            if (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN)) {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 191, 191, 191, Notes_alpha);
+                            } else {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, Notes_alpha);
+                            }
                         } else {
                             gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cButtonsColor.r, cButtonsColor.g, cButtonsColor.b, Notes_alpha);
                         }
@@ -565,16 +585,36 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                 if (pauseCtx->unk_1E4 == 8) {
                     s16 Notes_alpha = 200;
                     if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == 0) {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, Notes_alpha);
+                        if (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A)) {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 191, 191, 191, Notes_alpha);
+                        } else {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, Notes_alpha);
+                        }
                     } else {
                         if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_D5) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b, Notes_alpha);
+                            if (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP)) {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 191, 191, 191, Notes_alpha);
+                            } else {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b, Notes_alpha);
+                            }
                         } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_B4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, Notes_alpha);
+                            if (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT)) {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 191, 191, 191, Notes_alpha);
+                            } else {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, Notes_alpha);
+                            }
                         } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_A4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, Notes_alpha);
+                            if (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT)) {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 191, 191, 191, Notes_alpha);
+                            } else {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, Notes_alpha);
+                            }
                         } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_F4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, Notes_alpha);
+                            if (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN)) {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 191, 191, 191, Notes_alpha);
+                            } else {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, Notes_alpha);
+                            }
                         } else {
                             gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cButtonsColor.r, cButtonsColor.g, cButtonsColor.b, Notes_alpha);
                         }
@@ -631,16 +671,36 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
 
                     s16 Notes_alpha = D_8082A150[phi_s3];
                     if (D_8082A124[phi_s3] == 0) {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, Notes_alpha);
+                        if (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A)) {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 191, 191, 191, Notes_alpha);
+                        } else {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, Notes_alpha);
+                        }
                     } else {
                         if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_D5) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b, Notes_alpha);
+                            if (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP)) {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 191, 191, 191, Notes_alpha);
+                            } else {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cUpButtonColor.r, cUpButtonColor.g, cUpButtonColor.b, Notes_alpha);
+                            }
                         } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_B4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, Notes_alpha);
+                            if (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT)) {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 191, 191, 191, Notes_alpha);
+                            } else {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cLeftButtonColor.r, cLeftButtonColor.g, cLeftButtonColor.b, Notes_alpha);
+                            }
                         } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_A4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, Notes_alpha);
+                            if (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT)) {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 191, 191, 191, Notes_alpha);
+                            } else {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cRightButtonColor.r, cRightButtonColor.g, cRightButtonColor.b, Notes_alpha);
+                            }
                         } else if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == OCARINA_NOTE_F4) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, Notes_alpha);
+                            if (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN)) {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 191, 191, 191, Notes_alpha);
+                            } else {
+                                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cDownButtonColor.r, cDownButtonColor.g, cDownButtonColor.b, Notes_alpha);
+                            }
                         } else {
                             gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, cButtonsColor.r, cButtonsColor.g, cButtonsColor.b, Notes_alpha);
                         }

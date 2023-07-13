@@ -79,8 +79,8 @@ void AreaTable_Init_IceCavern() {
                   //Locations
                   LocationAccess(ICE_CAVERN_MQ_COMPASS_CHEST,    {[]{return true;}}),
                   LocationAccess(ICE_CAVERN_MQ_FREESTANDING_POH, {[]{return HasExplosives;}}),
-                  LocationAccess(ICE_CAVERN_MQ_GS_RED_ICE,       {[]{return CanPlay(SongOfTime) || LogicIceMQRedIceGS;}}),
-                    //Trick: CanPlay(SongOfTime) || LogicIceMQRedIceGS
+                  LocationAccess(ICE_CAVERN_MQ_GS_RED_ICE,       {[]{return CanPlay(SongOfTime, Song::SONG_TIME) || LogicIceMQRedIceGS;}}),
+                    //Trick: CanPlay(SongOfTime, Song::SONG_TIME) || LogicIceMQRedIceGS
   }, {});
   }
 }

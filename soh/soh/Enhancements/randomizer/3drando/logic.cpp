@@ -242,6 +242,12 @@ namespace Logic {
   bool Fairy            = false;
   bool BottleWithBigPoe = false;
 
+  bool OcarinaAButton      = false;
+  bool OcarinaCLeftButton  = false;
+  bool OcarinaCRightButton = false;
+  bool OcarinaCUpButton    = false;
+  bool OcarinaCDownButton  = false;
+
   bool FoundBombchus    = false;
   bool CanPlayBowling   = false;
   bool HasBombchus      = false;
@@ -368,8 +374,38 @@ namespace Logic {
   bool BuyDekuShieldPast        = false;
   bool TimeTravelPast           = false;
 
-  bool CanPlay(bool song) {
-    return Ocarina && song;
+  bool CanPlay(bool hasSong, Song song) {
+    switch (song) {
+      case Song::SONG_MINUET:
+        break;
+      case Song::SONG_BOLERO:
+        break;
+      case Song::SONG_SERENADE:
+        break;
+      case Song::SONG_REQUIEM:
+        break;
+      case Song::SONG_NOCTURNE:
+        break;
+      case Song::SONG_PRELUDE:
+        break;
+
+      case Song::SONG_LULLABY:
+        break;
+      case Song::SONG_EPONA:
+        break;
+      case Song::SONG_SARIA:
+        break;
+      case Song::SONG_SUN:
+        break;
+      case Song::SONG_TIME:
+        break;
+      case Song::SONG_STORMS:
+        break;
+
+      case Song::SONG_SCARECROW:
+        break;
+    }
+    return Ocarina && hasSong;
   }
 
   static bool IsMagicItem(uint32_t item) {
@@ -516,8 +552,8 @@ namespace Logic {
     BiggoronSword   = BiggoronSword || ProgressiveGiantKnife >= 2;
 
     ScarecrowSong    = ScarecrowSong || FreeScarecrow || (ChildScarecrow && AdultScarecrow);
-    Scarecrow        = Hookshot && CanPlay(ScarecrowSong);
-    DistantScarecrow = Longshot && CanPlay(ScarecrowSong);
+    Scarecrow        = Hookshot && CanPlay(ScarecrowSong, Song::SONG_SCARECROW);
+    DistantScarecrow = Longshot && CanPlay(ScarecrowSong, Song::SONG_SCARECROW);
 
     //Drop Access
     DekuStickDrop = StickPot || DekuBabaSticks;
@@ -566,7 +602,7 @@ namespace Logic {
     CanDive         = ProgressiveScale >= 1;
     CanLeaveForest  = OpenForest.IsNot(OPENFOREST_CLOSED) || IsAdult || DekuTreeClear || ShuffleInteriorEntrances || ShuffleOverworldEntrances;
     CanPlantBugs    = IsChild && Bugs;
-    CanRideEpona    = IsAdult && Epona && CanPlay(EponasSong);
+    CanRideEpona    = IsAdult && Epona && CanPlay(EponasSong, Song::SONG_EPONA);
     CanSummonGossipFairy            = Ocarina && (ZeldasLullaby || EponasSong || SongOfTime || SunsSong);
     CanSummonGossipFairyWithoutSuns = Ocarina && (ZeldasLullaby || EponasSong || SongOfTime);
     Hearts          = BaseHearts + HeartContainer + (PieceOfHeart >> 2);
@@ -579,9 +615,9 @@ namespace Logic {
     CanTakeDamageTwice  = (Fairy && NumBottles >= 2) || ((EffectiveHealth == 2) && (CanUse(NAYRUS_LOVE) || Fairy)) || (EffectiveHealth > 2);
     //CanPlantBean        = IsChild && (MagicBean || MagicBeanPack);
     CanOpenBombGrotto   = CanBlastOrSmash       && (ShardOfAgony || LogicGrottosWithoutAgony);
-    CanOpenStormGrotto  = CanPlay(SongOfStorms) && (ShardOfAgony || LogicGrottosWithoutAgony);
+    CanOpenStormGrotto  = CanPlay(SongOfStorms, Song::SONG_STORMS) && (ShardOfAgony || LogicGrottosWithoutAgony);
     HookshotOrBoomerang = CanUse(HOOKSHOT) || CanUse(BOOMERANG);
-    CanGetNightTimeGS   = (CanPlay(SunsSong) || !NightGSExpectSuns);
+    CanGetNightTimeGS   = (CanPlay(SunsSong, Song::SONG_SUN) || !NightGSExpectSuns);
 
     GuaranteeTradePath     = ShuffleInteriorEntrances || ShuffleOverworldEntrances || LogicBiggoronBolero || CanBlastOrSmash || StopGCRollingGoronAsAdult;
   //GuaranteeHint          = (hints == "Mask" && MaskofTruth) || (hints == "Agony") || (hints != "Mask" && hints != "Agony");
@@ -837,6 +873,13 @@ namespace Logic {
 
      //Greg
      Greg = false;
+
+     //Ocarina C Buttons
+     OcarinaAButton = ShuffleOcarinaButtons.Is(true) ? 0 : 1;
+     OcarinaCLeftButton = ShuffleOcarinaButtons.Is(true) ? 0 : 1;
+     OcarinaCRightButton = ShuffleOcarinaButtons.Is(true) ? 0 : 1;
+     OcarinaCUpButton = ShuffleOcarinaButtons.Is(true) ? 0 : 1;
+     OcarinaCDownButton = ShuffleOcarinaButtons.Is(true) ? 0 : 1;
 
      //Progressive Items
      ProgressiveBulletBag  = 0;

@@ -188,6 +188,7 @@ namespace Settings {
   Option ShuffleCows            = Option::Bool("Shuffle Cows",           {"Off", "On"},                                                     {shuffleCowsDesc});
   Option ShuffleKokiriSword     = Option::Bool("Shuffle Kokiri Sword",   {"Off", "On"},                                                     {kokiriSwordDesc});
   Option ShuffleOcarinas        = Option::Bool("Shuffle Ocarinas",       {"Off", "On"},                                                     {ocarinasDesc});
+  Option ShuffleOcarinaButtons  = Option::Bool("Shuffle Ocarina Buttons",{"Off", "On"},                                                     {ocarinaButtonsDesc});
   Option ShuffleWeirdEgg        = Option::Bool("Shuffle Weird Egg",      {"Off", "On"},                                                     {weirdEggDesc});
   Option ShuffleGerudoToken     = Option::Bool("Shuffle Gerudo Card",    {"Off", "On"},                                                     {gerudoTokenDesc});
   Option ShuffleMagicBeans      = Option::Bool("Shuffle Magic Beans",    {"Off", "On"},                                                     {magicBeansDesc});
@@ -209,6 +210,7 @@ namespace Settings {
     &ShuffleCows,
     &ShuffleKokiriSword,
     &ShuffleOcarinas,
+    &ShuffleOcarinaButtons,
     &ShuffleWeirdEgg,
     &ShuffleGerudoToken,
     &ShuffleMagicBeans,
@@ -1595,6 +1597,7 @@ namespace Settings {
     ctx.shuffleCows          = (ShuffleCows) ? 1 : 0;
     ctx.shuffleKokiriSword   = (ShuffleKokiriSword) ? 1 : 0;
     ctx.shuffleOcarinas      = (ShuffleOcarinas) ? 1 : 0;
+    ctx.shuffleOcarinaButtons = (ShuffleOcarinaButtons) ? 1 : 0;
     ctx.shuffleWeirdEgg      = (ShuffleWeirdEgg) ? 1 : 0;
     ctx.shuffleGerudoToken   = (ShuffleGerudoToken) ? 1 : 0;
     ctx.shuffleMagicBeans    = (ShuffleMagicBeans) ? 1 : 0;
@@ -2894,6 +2897,7 @@ namespace Settings {
     ShuffleCows.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_COWS]);
     ShuffleKokiriSword.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD]);
     ShuffleOcarinas.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_OCARINA]);
+    ShuffleOcarinaButtons.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_OCARINA_BUTTONS]);
 
     // Shuffle Entrances
     ShuffleEntrances.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_ENTRANCES]);

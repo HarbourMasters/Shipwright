@@ -197,6 +197,12 @@ extern uint8_t PieceOfHeart;
 extern uint8_t HeartContainer;
 extern bool DoubleDefense;
 
+extern bool OcarinaAButton;
+extern bool OcarinaCLeftButton;
+extern bool OcarinaCRightButton;
+extern bool OcarinaCUpButton;
+extern bool OcarinaCDownButton;
+
 /* --- HELPERS --- */
 /* These are used to simplify reading the logic, but need to be updated
 /  every time a base value is updated.                       */
@@ -359,8 +365,25 @@ enum class GlitchDifficulty {
     HERO,
 };
 
+enum class Song {
+    SONG_MINUET,
+    SONG_BOLERO,
+    SONG_SERENADE,
+    SONG_REQUIEM,
+    SONG_NOCTURNE,
+    SONG_PRELUDE,
+    SONG_LULLABY,
+    SONG_EPONA,
+    SONG_SARIA,
+    SONG_SUN,
+    SONG_TIME,
+    SONG_STORMS,
+
+    SONG_SCARECROW
+};
+
 void UpdateHelpers();
-bool CanPlay(bool song);
+bool CanPlay(bool hasSong, Song song);
 bool CanUse(uint32_t itemName);
 bool HasProjectile(HasProjectileAge age);
 bool SmallKeys(Key dungeon, uint8_t requiredAmount);

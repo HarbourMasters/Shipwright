@@ -2559,6 +2559,26 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
+    if (item == RG_OCARINA_A_BUTTON) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_A);
+    }
+
+    if (item == RG_OCARINA_C_LEFT_BUTTON) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT);
+    }
+
+    if (item == RG_OCARINA_C_RIGHT_BUTTON) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT);
+    }
+
+    if (item == RG_OCARINA_C_UP_BUTTON) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP);
+    }
+
+    if (item == RG_OCARINA_C_DOWN_BUTTON) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
+    }
+
     if (item == RG_GREG_RUPEE) {
         Rupees_ChangeBy(1);
         Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);

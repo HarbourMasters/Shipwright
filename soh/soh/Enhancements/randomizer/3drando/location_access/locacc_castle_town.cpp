@@ -56,7 +56,7 @@ void AreaTable_Init_CastleTown() {
                 }, {
                   //Exits
                   Entrance(TOT_ENTRANCE,            {[]{return true;}}),
-                  Entrance(TOT_BEYOND_DOOR_OF_TIME, {[]{return OpenDoorOfTime.Is(OPENDOOROFTIME_OPEN) || (CanPlay(SongOfTime) && (OpenDoorOfTime.Is(OPENDOOROFTIME_SONGONLY) || (HasAllStones && OcarinaOfTime)));}}),
+                  Entrance(TOT_BEYOND_DOOR_OF_TIME, {[]{return OpenDoorOfTime.Is(OPENDOOROFTIME_OPEN) || (CanPlay(SongOfTime, Song::SONG_TIME) && (OpenDoorOfTime.Is(OPENDOOROFTIME_SONGONLY) || (HasAllStones && OcarinaOfTime)));}}),
   });
 
   areaTable[TOT_BEYOND_DOOR_OF_TIME] = Area("Beyond Door of Time", "Beyond Door of Time", TEMPLE_OF_TIME, NO_DAY_NIGHT_CYCLE, {
@@ -109,7 +109,7 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[HC_GREAT_FAIRY_FOUNTAIN] = Area("HC Great Fairy Fountain", "HC Great Fairy Fountain", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(HC_GREAT_FAIRY_REWARD, {[]{return CanPlay(ZeldasLullaby);}}),
+                  LocationAccess(HC_GREAT_FAIRY_REWARD, {[]{return CanPlay(ZeldasLullaby, Song::SONG_LULLABY);}}),
                 }, {
                   //Exits
                   Entrance(CASTLE_GROUNDS, {[]{return true;}}),
@@ -144,7 +144,7 @@ void AreaTable_Init_CastleTown() {
 
   areaTable[OGC_GREAT_FAIRY_FOUNTAIN] = Area("OGC Great Fairy Fountain", "OGC Great Fairy Fountain", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(OGC_GREAT_FAIRY_REWARD, {[]{return CanPlay(ZeldasLullaby);}}),
+                  LocationAccess(OGC_GREAT_FAIRY_REWARD, {[]{return CanPlay(ZeldasLullaby, Song::SONG_LULLABY);}}),
                 }, {
                   //Exits
                   Entrance(CASTLE_GROUNDS, {[]{return true;}}),
@@ -190,7 +190,7 @@ void AreaTable_Init_CastleTown() {
   areaTable[MARKET_MASK_SHOP] = Area("Market Mask Shop", "Market Mask Shop", NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&SkullMask,   {[]{return SkullMask   || (ZeldasLetter && (CompleteMaskQuest ||  ChildCanAccess(KAKARIKO_VILLAGE)));}}),
-                  EventAccess(&MaskOfTruth, {[]{return MaskOfTruth || (SkullMask && (CompleteMaskQuest || (ChildCanAccess(THE_LOST_WOODS) && CanPlay(SariasSong) && AreaTable(THE_GRAVEYARD)->childDay && ChildCanAccess(HYRULE_FIELD) && HasAllStones)));}}),
+                  EventAccess(&MaskOfTruth, {[]{return MaskOfTruth || (SkullMask && (CompleteMaskQuest || (ChildCanAccess(THE_LOST_WOODS) && CanPlay(SariasSong, Song::SONG_SARIA) && AreaTable(THE_GRAVEYARD)->childDay && ChildCanAccess(HYRULE_FIELD) && HasAllStones)));}}),
                 }, {}, {
                   //Exits
                   Entrance(THE_MARKET, {[]{return true;}}),

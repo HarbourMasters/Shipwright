@@ -95,7 +95,7 @@ void AreaTable_Init_FireTemple() {
                   //Exits
                   Entrance(FIRE_TEMPLE_FIRST_ROOM,                {[]{return SmallKeys(FIRE_TEMPLE, 2);}}),
                   Entrance(FIRE_TEMPLE_BIG_LAVA_ROOM_NORTH_GORON, {[]{return true;}}),
-                  Entrance(FIRE_TEMPLE_BIG_LAVA_ROOM_NORTH_TILES, {[]{return IsAdult && (CanPlay(SongOfTime) || LogicFireSongOfTime);}}),
+                  Entrance(FIRE_TEMPLE_BIG_LAVA_ROOM_NORTH_TILES, {[]{return IsAdult && (CanPlay(SongOfTime, Song::SONG_TIME) || LogicFireSongOfTime);}}),
                   Entrance(FIRE_TEMPLE_BIG_LAVA_ROOM_SOUTH_GORON, {[]{return IsAdult && HasExplosives;}}),
                   Entrance(FIRE_TEMPLE_FIRE_PILLAR_ROOM,          {[]{return SmallKeys(FIRE_TEMPLE, 3);}}),
   });
@@ -252,11 +252,11 @@ void AreaTable_Init_FireTemple() {
 
   areaTable[FIRE_TEMPLE_WEST_CENTRAL_LOWER] = Area("Fire Temple West Central Lower", "Fire Temple", FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(FIRE_TEMPLE_HIGHEST_GORON_CHEST, {[]{return Here(FIRE_TEMPLE_WEST_CENTRAL_UPPER, []{return (CanPlay(SongOfTime) || LogicRustedSwitches) && CanUse(MEGATON_HAMMER);});}}),
+                  LocationAccess(FIRE_TEMPLE_HIGHEST_GORON_CHEST, {[]{return Here(FIRE_TEMPLE_WEST_CENTRAL_UPPER, []{return (CanPlay(SongOfTime, Song::SONG_TIME) || LogicRustedSwitches) && CanUse(MEGATON_HAMMER);});}}),
                 }, {
                   //Exits
                   Entrance(FIRE_TEMPLE_FIRE_MAZE_ROOM,     {[]{return SmallKeys(FIRE_TEMPLE, 8);}}),
-                  Entrance(FIRE_TEMPLE_WEST_CENTRAL_UPPER, {[]{return IsAdult && CanPlay(SongOfTime);}}),
+                  Entrance(FIRE_TEMPLE_WEST_CENTRAL_UPPER, {[]{return IsAdult && CanPlay(SongOfTime, Song::SONG_TIME);}}),
                   Entrance(FIRE_TEMPLE_LATE_FIRE_MAZE,     {[]{return true;}}),
   });
 
@@ -364,13 +364,13 @@ void AreaTable_Init_FireTemple() {
 
   areaTable[FIRE_TEMPLE_MQ_UPPER_MAZE] = Area("Fire Temple MQ Upper Maze", "Fire Temple", FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  //EventAccess(&WallFairy, {[]{return WallFairy || (IsAdult && (((CanPlay(SongOfTime) && CanUse(HOOKSHOT) && HasExplosives) || CanUse(LONGSHOT))));}}),
+                  //EventAccess(&WallFairy, {[]{return WallFairy || (IsAdult && (((CanPlay(SongOfTime, Song::SONG_TIME) && CanUse(HOOKSHOT) && HasExplosives) || CanUse(LONGSHOT))));}}),
                   EventAccess(&FairyPot,  {[]{return SmallKeys(FIRE_TEMPLE, 3);}}),
   }, {
                   //Locations
                   LocationAccess(FIRE_TEMPLE_MQ_LIZALFOS_MAZE_UPPER_CHEST, {[]{return true;}}),
                   LocationAccess(FIRE_TEMPLE_MQ_COMPASS_CHEST,             {[]{return HasExplosives;}}),
-                  LocationAccess(FIRE_TEMPLE_MQ_GS_SKULL_ON_FIRE,          {[]{return IsAdult && ((CanPlay(SongOfTime) && CanUse(HOOKSHOT) && HasExplosives) || CanUse(LONGSHOT));}}),
+                  LocationAccess(FIRE_TEMPLE_MQ_GS_SKULL_ON_FIRE,          {[]{return IsAdult && ((CanPlay(SongOfTime, Song::SONG_TIME) && CanUse(HOOKSHOT) && HasExplosives) || CanUse(LONGSHOT));}}),
   }, {
                   //Exits
                   Entrance(FIRE_TEMPLE_MQ_UPPER, {[]{return SmallKeys(FIRE_TEMPLE, 3) && IsAdult && ((CanUse(BOW) && CanUse(HOOKSHOT)) || CanUse(FIRE_ARROWS));}}),
@@ -382,8 +382,8 @@ void AreaTable_Init_FireTemple() {
                     //Trick: (IsAdult && CanUse(HOOKSHOT)) || LogicFireMQFlameMaze
                   LocationAccess(FIRE_TEMPLE_MQ_CHEST_ON_FIRE,               {[]{return ((IsAdult && CanUse(HOOKSHOT)) || LogicFireMQFlameMaze) && SmallKeys(FIRE_TEMPLE, 4);}}),
                     //Trick: ((IsAdult && CanUse(HOOKSHOT)) || LogicFireMQFlameMaze) && SmallKeys(FIRE_TEMPLE, 4)
-                  LocationAccess(FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_SIDE_ROOM, {[]{return CanPlay(SongOfTime) || HoverBoots || LogicFireMQFlameMaze;}}),
-                    //Trick: CanPlay(SongOfTime) || HoverBoots || LogicFireMQFlameMaze
+                  LocationAccess(FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_SIDE_ROOM, {[]{return CanPlay(SongOfTime, Song::SONG_TIME) || HoverBoots || LogicFireMQFlameMaze;}}),
+                    //Trick: CanPlay(SongOfTime, Song::SONG_TIME) || HoverBoots || LogicFireMQFlameMaze
                   LocationAccess(FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_CENTER,    {[]{return HasExplosives;}}),
                   LocationAccess(FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_WALL_MAZE,     {[]{return (IsAdult && CanUse(HOOKSHOT) && SmallKeys(FIRE_TEMPLE, 5)) || (LogicFireMQAboveMazeGS && IsAdult && CanUse(LONGSHOT));}}),
                     //Trick: (IsAdult && CanUse(HOOKSHOT) && SmallKeys(FIRE_TEMPLE, 5)) || (LogicFireMQAboveMazeGS && IsAdult && CanUse(LONGSHOT))

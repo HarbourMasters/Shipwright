@@ -60,10 +60,10 @@ void AreaTable_Init_GerudoTrainingGrounds() {
 
   areaTable[GERUDO_TRAINING_GROUNDS_LAVA_ROOM] = Area("Gerudo Training Grounds Lava Room", "Gerudo Training Grounds", GERUDO_TRAINING_GROUNDS, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(GERUDO_TRAINING_GROUNDS_UNDERWATER_SILVER_RUPEE_CHEST, {[]{return CanUse(HOOKSHOT) && CanPlay(SongOfTime) && IronBoots && WaterTimer >= 24;}}),
+                  LocationAccess(GERUDO_TRAINING_GROUNDS_UNDERWATER_SILVER_RUPEE_CHEST, {[]{return CanUse(HOOKSHOT) && CanPlay(SongOfTime, Song::SONG_TIME) && IronBoots && WaterTimer >= 24;}}),
                 }, {
                   //Exits
-                  Entrance(GERUDO_TRAINING_GROUNDS_CENTRAL_MAZE_RIGHT, {[]{return CanPlay(SongOfTime) || IsChild;}}),
+                  Entrance(GERUDO_TRAINING_GROUNDS_CENTRAL_MAZE_RIGHT, {[]{return CanPlay(SongOfTime, Song::SONG_TIME) || IsChild;}}),
                   Entrance(GERUDO_TRAINING_GROUNDS_HAMMER_ROOM,        {[]{return CanUse(LONGSHOT)  || (CanUse(HOVER_BOOTS) && CanUse(HOOKSHOT));}}),
   });
 
@@ -164,8 +164,8 @@ void AreaTable_Init_GerudoTrainingGrounds() {
                   LocationAccess(GERUDO_TRAINING_GROUNDS_MQ_HEAVY_BLOCK_CHEST,        {[]{return CanUse(SILVER_GAUNTLETS);}}),
   }, {
                   //Exits
-                  Entrance(GERUDO_TRAINING_GROUNDS_MQ_BACK_AREAS, {[]{return IsAdult && (LogicLensGtgMQ || CanUse(LENS_OF_TRUTH)) && BlueFire && (CanPlay(SongOfTime) || (LogicGtgFakeWall && IsAdult && CanUse(HOVER_BOOTS)));}}),
-                    //Trick: IsAdult && (LogicLensGtgMQ || CanUse(LENS_OF_TRUTH)) && BlueFire && (CanPlay(SongOfTime) || (LogicGtgFakeWall && IsAdult && CanUse(HOVER_BOOTS)))
+                  Entrance(GERUDO_TRAINING_GROUNDS_MQ_BACK_AREAS, {[]{return IsAdult && (LogicLensGtgMQ || CanUse(LENS_OF_TRUTH)) && BlueFire && (CanPlay(SongOfTime, Song::SONG_TIME) || (LogicGtgFakeWall && IsAdult && CanUse(HOVER_BOOTS)));}}),
+                    //Trick: IsAdult && (LogicLensGtgMQ || CanUse(LENS_OF_TRUTH)) && BlueFire && (CanPlay(SongOfTime, Song::SONG_TIME) || (LogicGtgFakeWall && IsAdult && CanUse(HOVER_BOOTS)))
   });
 
   areaTable[GERUDO_TRAINING_GROUNDS_MQ_BACK_AREAS] = Area("Gerudo Training Grounds MQ Back Areas", "Gerudo Training Grounds", GERUDO_TRAINING_GROUNDS, NO_DAY_NIGHT_CYCLE, {}, {
