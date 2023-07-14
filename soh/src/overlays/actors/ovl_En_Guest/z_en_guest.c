@@ -8,6 +8,7 @@
 #include "objects/object_os_anime/object_os_anime.h"
 #include "objects/object_boj/object_boj.h"
 #include "vt.h"
+#include <assert.h>
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -62,7 +63,7 @@ void EnGuest_Init(Actor* thisx, PlayState* play) {
             // "No such bank!!"
             osSyncPrintf("%s[%d] : バンクが無いよ！！\n", __FILE__, __LINE__);
             osSyncPrintf(VT_RST);
-            ASSERT(this->osAnimeBankIndex < 0);
+            assert(this->osAnimeBankIndex < 0);
         }
     }
 }

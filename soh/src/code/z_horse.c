@@ -1,5 +1,6 @@
 #include "global.h"
 #include "vt.h"
+#include <assert.h>
 
 s32 func_8006CFC0(s32 scene) {
     s32 validScenes[] = { SCENE_SPOT00, SCENE_SPOT06, SCENE_SPOT09, SCENE_SPOT12, SCENE_SPOT20 };
@@ -52,7 +53,7 @@ void func_8006D0EC(PlayState* play, Player* player) {
                                         player->actor.world.pos.y, player->actor.world.pos.z, player->actor.shape.rot.x,
                                         player->actor.shape.rot.y, player->actor.shape.rot.z, 9, true);
 
-        ASSERT(player->rideActor != NULL);
+        assert(player->rideActor != NULL);
 
         Actor_MountHorse(play, player, player->rideActor);
         func_8002DE74(play, player);
@@ -70,7 +71,7 @@ void func_8006D0EC(PlayState* play, Player* player) {
     } else if ((gSaveContext.entranceIndex == 1230) && (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED))) {
         Actor* horseActor =
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, -25.0f, 0.0f, -1600.0f, 0, -0x4000, 0, 1, true);
-        ASSERT(horseActor != NULL);
+        assert(horseActor != NULL);
     } else if ((play->sceneNum == gSaveContext.horseData.scene) &&
                (((Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) != 0) && (!gSaveContext.n64ddFlag ||
                (gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_SONG_EPONA) &&
@@ -83,7 +84,7 @@ void func_8006D0EC(PlayState* play, Player* player) {
             Actor* horseActor = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE,
                                             gSaveContext.horseData.pos.x, gSaveContext.horseData.pos.y,
                                             gSaveContext.horseData.pos.z, 0, gSaveContext.horseData.angle, 0, 1, true);
-            ASSERT(horseActor != NULL);
+            assert(horseActor != NULL);
             if (play->sceneNum == SCENE_SPOT12) {
                 horseActor->room = -1;
             }
@@ -97,7 +98,7 @@ void func_8006D0EC(PlayState* play, Player* player) {
     } else if ((play->sceneNum == SCENE_SPOT20) && !Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) && (DREG(1) == 0)) {
         Actor* horseActor =
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, 0.0f, 0.0f, -500.0f, 0, 0, 0, 1, true);
-        ASSERT(horseActor != NULL);
+        assert(horseActor != NULL);
     } else if (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) || (DREG(1) != 0)) {
         for (i = 0; i < ARRAY_COUNT(horseSpawns); i++) {
             HorseSpawn* horseSpawn = &horseSpawns[i];
@@ -105,7 +106,7 @@ void func_8006D0EC(PlayState* play, Player* player) {
                 Actor* horseActor =
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, horseSpawn->pos.x, horseSpawn->pos.y,
                                 horseSpawn->pos.z, 0, horseSpawn->angle, 0, horseSpawn->type, true);
-                ASSERT(horseActor != NULL);
+                assert(horseActor != NULL);
                 if (play->sceneNum == SCENE_SPOT12) {
                     horseActor->room = -1;
                 }
@@ -155,7 +156,7 @@ void func_8006D684(PlayState* play, Player* player) {
 
         player->rideActor = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, spawnPos.x, spawnPos.y,
                                         spawnPos.z, 0, player->actor.world.rot.y, 0, 7, true);
-        ASSERT(player->rideActor != NULL);
+        assert(player->rideActor != NULL);
 
         Actor_MountHorse(play, player, player->rideActor);
         func_8002DE74(play, player);
@@ -164,7 +165,7 @@ void func_8006D684(PlayState* play, Player* player) {
                (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) == 0) && (DREG(1) == 0)) {
         player->rideActor =
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE, 894.0f, 0.0f, -2084.0f, 0, -0x7FFF, 0, 5, true);
-        ASSERT(player->rideActor != NULL);
+        assert(player->rideActor != NULL);
 
         Actor_MountHorse(play, player, player->rideActor);
         func_8002DE74(play, player);
@@ -194,7 +195,7 @@ void func_8006D684(PlayState* play, Player* player) {
                     player->rideActor = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE,
                                                     D_8011F9B8[i].pos.x, D_8011F9B8[i].pos.y, D_8011F9B8[i].pos.z, 0,
                                                     player->actor.world.rot.y, 0, D_8011F9B8[i].type, true);
-                    ASSERT(player->rideActor != NULL);
+                    assert(player->rideActor != NULL);
 
                     Actor_MountHorse(play, player, player->rideActor);
                     func_8002DE74(play, player);
@@ -209,7 +210,7 @@ void func_8006D684(PlayState* play, Player* player) {
                     player->rideActor = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HORSE,
                                                     D_8011F9B8[i].pos.x, D_8011F9B8[i].pos.y, D_8011F9B8[i].pos.z, 0,
                                                     D_8011F9B8[i].angle, 0, D_8011F9B8[i].type | temp, true);
-                    ASSERT(player->rideActor != NULL);
+                    assert(player->rideActor != NULL);
 
                     player->actor.world.pos.x = D_8011F9B8[i].pos.x;
                     player->actor.world.pos.y = D_8011F9B8[i].pos.y;

@@ -1466,7 +1466,7 @@ void DrawLocation(RandomizerCheckObject rcObj) {
                         txt = OTRGlobals::Instance->gRandomizer->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.rgID][gSaveContext.language];
                     }
                     if (status == RCSHOW_IDENTIFIED) {
-                        txt += std::format(" - {}", gSaveContext.checkTrackerData[rcObj.rc].price);
+                        txt += fmt::format(" - {}", gSaveContext.checkTrackerData[rcObj.rc].price);
                     }
                 } else {
                     if (IsHeartPiece(rcObj.ogItemId)) {
@@ -1615,7 +1615,7 @@ void CheckTrackerSettingsWindow::DrawElement() {
     }
     UIWidgets::EnhancementCheckbox("Vanilla/MQ Dungeon Spoilers", "gCheckTrackerOptionMQSpoilers");
     UIWidgets::Tooltip("If enabled, Vanilla/MQ dungeons will show on the tracker immediately. Otherwise, Vanilla/MQ dungeon locations must be unlocked.");
-    UIWidgets::EnhancementCheckbox("Hide right-side shop item checks", "gCheckTrackerOptionHideRightShopChecks");
+    UIWidgets::EnhancementCheckbox("Hide right-side shop item checks", "gCheckTrackerOptionHideRightShopChecks", false, "", UIWidgets::CheckboxGraphics::Cross, true);
     UIWidgets::Tooltip("If enabled, will prevent the tracker from displaying slots 1-4 in all shops. Requires save reload.");
 
     ImGui::TableNextColumn();
