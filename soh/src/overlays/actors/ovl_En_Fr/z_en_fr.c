@@ -2,6 +2,7 @@
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "vt.h"
 #include "objects/object_fr/object_fr.h"
+#include <assert.h>
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
@@ -227,7 +228,7 @@ void EnFr_Init(Actor* thisx, PlayState* play) {
             // "The argument is wrong!!"
             osSyncPrintf("%s[%d] : 引数が間違っている！！(%d)\n", __FILE__, __LINE__, this->actor.params);
             osSyncPrintf(VT_RST);
-            ASSERT((this->actor.params >= 6) || (this->actor.params < 0));
+            assert((this->actor.params >= 6) || (this->actor.params < 0));
         }
 
         this->objBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_GAMEPLAY_FIELD_KEEP);
@@ -237,7 +238,7 @@ void EnFr_Init(Actor* thisx, PlayState* play) {
             // "There is no bank!!"
             osSyncPrintf("%s[%d] : バンクが無いよ！！\n", __FILE__, __LINE__);
             osSyncPrintf(VT_RST);
-            ASSERT(this->objBankIndex < 0);
+            assert(this->objBankIndex < 0);
         }
     }
 }

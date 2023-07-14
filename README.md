@@ -15,16 +15,8 @@ If you're having any trouble after reading through this `README`, feel free ask 
 
 The Ship does not include any copyrighted assets.  You are required to provide a supported copy of the game.
 
-### 1. Check your `sha1`
-You can verify you have a supported copy of the game by checking the `sha1` hash. There are many ways to do this, one of the simplest is using the [`hasher-js`](https://github.com/snarfblam/hasher-js) webapp hosted at https://www.romhacking.net/hash/.
-
-| Supported Version | `sha1` |
-| - | - |
-| PAL 1.1 | `cfbb98d392e4a9d39da8285d10cbef3974c2f012` |
-| PAL GC | `0227d7c0074f2d0ac935631990da8ec5914597b4` |
-| PAL GC (Debug) | `cee6bc3c2a634b41728f2af8da54d9bf8cc14099` |
-| PAL MQ (Debug) | `079b855b943d6ad8bd1eb026c0ed169ecbdac7da` |
-| PAL MQ (Debug) | `50bebedad9e0f10746a52b07239e47fa6c284d03` | 
+### 1. Verify your ROM dump
+You can verify you have dumped a supported copy of the game by using the compatibility checker at https://ship.equipment/. If you'd prefer to manually validate your ROM dump, you can cross-reference its `sha1` hash with the hashes [here](docs/supportedHashes.json).
 
 ### 2. Download The Ship of Harkinian from [Discord](https://discord.com/invite/shipofharkinian)
 The latest release is available in the most recent post in the `#downloads` channel.

@@ -1,5 +1,6 @@
 #include <libultraship/libultra.h>
 #include "global.h"
+#include "soh/Enhancements/audio/AudioEditor.h"
 
 // TODO: can these macros be shared between files? code_800F9280 seems to use
 // versions without any casts...
