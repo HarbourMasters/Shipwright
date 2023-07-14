@@ -78,6 +78,9 @@
 #include "objects/object_gi_sword_1/object_gi_sword_1.h"
 #include "objects/object_st/object_st.h"
 
+#include "soh_assets.h"
+#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+
 // "Get Item" Model Draw Functions
 void GetItem_DrawMaskOrBombchu(PlayState* play, s16 drawId);
 void GetItem_DrawSoldOut(PlayState* play, s16 drawId);
@@ -110,6 +113,7 @@ void GetItem_DrawJewelKokiri(PlayState* play, s16 drawId);
 void GetItem_DrawJewelGoron(PlayState* play, s16 drawId);
 void GetItem_DrawJewelZora(PlayState* play, s16 drawId);
 void GetItem_DrawGenericMusicNote(PlayState* play, s16 drawId);
+void GetItem_DrawOcarinaButton(PlayState* play, s16 drawId);
 
 typedef struct {
     /* 0x00 */ void (*drawFunc)(PlayState*, s16);
@@ -384,7 +388,12 @@ DrawItemTableEntry sDrawItemTable[] = {
     { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } }, //Saria's song
     { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } }, //Sun's song
     { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } }, //Song of time
-    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } } //Song of storms
+    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } }, //Song of storms
+    { GetItem_DrawOcarinaButton, { gOcarinaAButtonDL } }, //Ocarina A Button
+    { GetItem_DrawOcarinaButton, { gOcarinaCLeftButtonDL } }, //Ocarina C Left Button
+    { GetItem_DrawOcarinaButton, { gOcarinaCRightButtonDL } }, //Ocarina C Right Button
+    { GetItem_DrawOcarinaButton, { gOcarinaCUpButtonDL } }, //Ocarina C Up Button
+    { GetItem_DrawOcarinaButton, { gOcarinaCDownButtonDL } } //Ocarina C Down Button
 };
 
 /**
@@ -834,6 +843,57 @@ void GetItem_DrawGenericMusicNote(PlayState* play, s16 drawId) {
 
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx,  __FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
     gDPSetGrayscaleColor(POLY_XLU_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
+    gSPGrayscale(POLY_XLU_DISP++, true);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[0]);
+    gSPGrayscale(POLY_XLU_DISP++, false);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+void GetItem_DrawOcarinaButton(PlayState* play, s16 drawId) {
+    Color_RGB8 aButtonColor = { 80, 150, 255 };
+    if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
+        aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+        aButtonColor = (Color_RGB8){ 80, 255, 150 };
+    }
+
+    Color_RGB8 cButtonsColor = { 255, 255, 50 };
+    if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
+        cButtonsColor = CVarGetColor24("gCosmetics.Hud_CButtons.Value", cButtonsColor);
+    }
+    Color_RGB8 cUpButtonColor = cButtonsColor;
+    if (CVarGetInteger("gCosmetics.Hud_CUpButton.Changed", 0)) {
+        cUpButtonColor = CVarGetColor24("gCosmetics.Hud_CUpButton.Value", cUpButtonColor);
+    }
+    Color_RGB8 cDownButtonColor = cButtonsColor;
+    if (CVarGetInteger("gCosmetics.Hud_CDownButton.Changed", 0)) {
+        cDownButtonColor = CVarGetColor24("gCosmetics.Hud_CDownButton.Value", cDownButtonColor);
+    }
+    Color_RGB8 cLeftButtonColor = cButtonsColor;
+    if (CVarGetInteger("gCosmetics.Hud_CLeftButton.Changed", 0)) {
+        cLeftButtonColor = CVarGetColor24("gCosmetics.Hud_CLeftButton.Value", cLeftButtonColor);
+    }
+    Color_RGB8 cRightButtonColor = cButtonsColor;
+    if (CVarGetInteger("gCosmetics.Hud_CRightButton.Changed", 0)) {
+        cRightButtonColor = CVarGetColor24("gCosmetics.Hud_CRightButton.Value", cRightButtonColor);
+    }
+
+    s16 slot = drawId - 127;
+    
+    Color_RGB8 colors[] = {
+        aButtonColor,
+        cLeftButtonColor,
+        cRightButtonColor,
+        cUpButtonColor,
+        cDownButtonColor
+    };
+
+    OPEN_DISPS(play->state.gfxCtx);
+
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx,  __FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
+    gDPSetGrayscaleColor(POLY_XLU_DISP++, colors[slot].r, colors[slot].g, colors[slot].b, 255);
     gSPGrayscale(POLY_XLU_DISP++, true);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[0]);

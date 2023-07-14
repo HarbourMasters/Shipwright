@@ -44,6 +44,21 @@ static const ALIGN_ASSET(2) char gTitleRandomizerSubtitleTex[] = dgTitleRandomiz
 #define dgTitleBossRushSubtitleTex "__OTR__objects/object_mag/gTitleBossRushSubtitleTex"
 static const ALIGN_ASSET(2) char gTitleBossRushSubtitleTex[] = dgTitleBossRushSubtitleTex;
 
+#define dgOcarinaAButtonDL "__OTR__objects/object_ocarina_a_button/gOcarinaAButtonDL"
+static const ALIGN_ASSET(2) char gOcarinaAButtonDL[] = dgOcarinaAButtonDL;
+
+#define dgOcarinaCLeftButtonDL "__OTR__objects/object_ocarina_a_button/gOcarinaAButtonDL"
+static const ALIGN_ASSET(2) char gOcarinaCLeftButtonDL[] = dgOcarinaCLeftButtonDL;
+
+#define dgOcarinaCRightButtonDL "__OTR__objects/object_ocarina_a_button/gOcarinaAButtonDL"
+static const ALIGN_ASSET(2) char gOcarinaCRightButtonDL[] = dgOcarinaCRightButtonDL;
+
+#define dgOcarinaCUpButtonDL "__OTR__objects/object_ocarina_a_button/gOcarinaAButtonDL"
+static const ALIGN_ASSET(2) char gOcarinaCUpButtonDL[] = dgOcarinaCUpButtonDL;
+
+#define dgOcarinaCDownButtonDL "__OTR__objects/object_ocarina_a_button/gOcarinaAButtonDL"
+static const ALIGN_ASSET(2) char gOcarinaCDownButtonDL[] = dgOcarinaCDownButtonDL;
+
 // textures
 #define dgDPad "__OTR__textures/parameter_static/gDPad"
 static const ALIGN_ASSET(2) char gDPadTex[] = dgDPad;
