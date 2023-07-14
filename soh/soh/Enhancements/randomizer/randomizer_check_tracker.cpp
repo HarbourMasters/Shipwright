@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 #include <set>
-#include <format>
 #include <libultraship/libultraship.h>
 #include "3drando/item_location.hpp"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -1471,7 +1470,7 @@ void DrawLocation(RandomizerCheckObject rcObj) {
                         txt = OTRGlobals::Instance->gRandomizer->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.rgID][gSaveContext.language];
                     }
                     if (status == RCSHOW_IDENTIFIED) {
-                        txt += std::format(" - {}", gSaveContext.checkTrackerData[rcObj.rc].price);
+                        txt += fmt::format(" - {}", gSaveContext.checkTrackerData[rcObj.rc].price);
                     }
                 } else {
                     if (IsHeartPiece(rcObj.ogItemId)) {
