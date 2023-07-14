@@ -269,7 +269,7 @@ std::string GetSequenceTypeName(SeqType type) {
         case SEQ_SFX:
             return "SFX";
         case SEQ_VOICE:
-            return "Link's Voice";
+            return "VOICE";
         case SEQ_INSTRUMENT:
             return "Instrument";
         case SEQ_BGM_CUSTOM:
@@ -344,8 +344,11 @@ void AudioEditor::DrawElement() {
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Sound Effects")) {
-            Draw_SfxTab("voice", SEQ_VOICE);
             Draw_SfxTab("sfx", SEQ_SFX);
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Voices")) {
+            Draw_SfxTab("voice", SEQ_VOICE);
             ImGui::EndTabItem();
         }
 
@@ -382,6 +385,9 @@ void AudioEditor::DrawElement() {
                     CVarSetFloat("gLinkVoiceFreqMultiplier", 1.0f);
                     LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 }
+                UIWidgets::EnhancementCheckbox("Mix Sound Effects and Voices together", "gSFXVoiceMix");
+                UIWidgets::InsertHelpHoverText(
+                    "Allows the sounds listed in both Sound Effects and Voices to be mixed into each other.");
 
                 ImGui::NewLine();
                 ImGui::PushItemWidth(-FLT_MIN);
