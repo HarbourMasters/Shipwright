@@ -276,6 +276,7 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
 
     SaveManager::Instance->SaveArray("itemLocations", RC_MAX, [&](size_t i) {
         SaveManager::Instance->SaveStruct("", [&]() {
+            gSaveContext;
             SaveManager::Instance->SaveData("rgID", saveContext->itemLocations[i].get.rgID);
             SaveManager::Instance->SaveData("fakeRgID", saveContext->itemLocations[i].get.fakeRgID);
             SaveManager::Instance->SaveData("trickName", saveContext->itemLocations[i].get.trickName);

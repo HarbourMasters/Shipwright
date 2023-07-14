@@ -2676,6 +2676,10 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                 if((actorParams & 0xF) < 10) specialRc = RC_MARKET_TREASURE_CHEST_GAME_ITEM_5;
             }
             break;
+        case SCENE_SPOT05:
+            if (actorId == ACTOR_EN_SA) {
+                specialRc = RC_SONG_FROM_SARIA;
+            }
         case SCENE_SHRINE:
         case SCENE_SHRINE_N:
         case SCENE_SHRINE_R:
@@ -2703,6 +2707,11 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                     case 4: specialRc = RC_KAK_40_GOLD_SKULLTULA_REWARD; break;
                     case 5: specialRc = RC_KAK_50_GOLD_SKULLTULA_REWARD; break;
                 }
+            }
+            break;
+        case SCENE_NAKANIWA:
+            if (actorId == ACTOR_DEMO_IM) {
+                specialRc = RC_SONG_FROM_IMPA;
             }
             break;
         case SCENE_SPOT01:
