@@ -385,9 +385,6 @@ void AudioEditor::DrawElement() {
                     CVarSetFloat("gLinkVoiceFreqMultiplier", 1.0f);
                     LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 }
-                UIWidgets::EnhancementCheckbox("Mix Sound Effects and Voices together", "gSFXVoiceMix");
-                UIWidgets::InsertHelpHoverText(
-                    "Allows the sounds listed in both Sound Effects and Voices to be mixed into each other.");
 
                 ImGui::NewLine();
                 ImGui::PushItemWidth(-FLT_MIN);
