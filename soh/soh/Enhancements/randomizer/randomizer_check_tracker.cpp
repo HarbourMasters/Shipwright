@@ -233,10 +233,6 @@ void LinksPocket() {
     }
 }
 
-bool IsGameRunning() {
-    return gPlayState != nullptr && gSaveContext.fileNum < 10;
-}
-
 void TrySetAreas() {
     if (checksByArea.empty()) {
         for (int i = RCAREA_KOKIRI_FOREST; i < RCAREA_INVALID; i++) {

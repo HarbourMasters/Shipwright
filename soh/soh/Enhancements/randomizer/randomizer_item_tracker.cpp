@@ -566,7 +566,7 @@ void DrawItem(ItemTrackerItem item) {
             break;
     }
 
-    if (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end()) {
+    if (IsGameRunning() && (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end())) {
         item = actualItemTrackerItemMap[actualItemId];
     }
     
@@ -584,7 +584,7 @@ void DrawBottle(ItemTrackerItem item) {
     uint32_t actualItemId = gSaveContext.inventory.items[SLOT(item.id) + item.data];
     bool hasItem = actualItemId != ITEM_NONE;
 
-    if (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end()) {
+    if (IsGameRunning() && (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end())) {
         item = actualItemTrackerItemMap[actualItemId];
     }
 

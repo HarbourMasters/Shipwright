@@ -276,7 +276,6 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
 
     SaveManager::Instance->SaveArray("itemLocations", RC_MAX, [&](size_t i) {
         SaveManager::Instance->SaveStruct("", [&]() {
-            gSaveContext;
             SaveManager::Instance->SaveData("rgID", saveContext->itemLocations[i].get.rgID);
             SaveManager::Instance->SaveData("fakeRgID", saveContext->itemLocations[i].get.fakeRgID);
             SaveManager::Instance->SaveData("trickName", saveContext->itemLocations[i].get.trickName);
@@ -462,6 +461,7 @@ void SaveManager::InitFileNormal() {
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
         gSaveContext.playerName[i] = 0x3E;
     }
+    gSaveContext.n64ddFlag = 0;
     gSaveContext.healthCapacity = 0x30;
     gSaveContext.health = 0x30;
     gSaveContext.magicLevel = 0;
@@ -604,6 +604,7 @@ void SaveManager::InitFileDebug() {
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.playerName); i++) {
         gSaveContext.playerName[i] = sPlayerName[i];
     }
+    gSaveContext.n64ddFlag = 0;
     gSaveContext.healthCapacity = 0xE0;
     gSaveContext.health = 0xE0;
     gSaveContext.magicLevel = 0;
@@ -1388,9 +1389,6 @@ void SaveManager::LoadBaseVersion3() {
         SaveManager::Instance->LoadArray("entrancesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.entrancesDiscovered[i]);
         });
-        /*SaveManager::Instance->LoadArray("locationsSkipped", ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped), [](size_t i) {
-            SaveManager::Instance->LoadData("", gSaveContext.sohStats.locationsSkipped[i]);
-        });*/
     });
     SaveManager::Instance->LoadArray("sceneFlags", ARRAY_COUNT(gSaveContext.sceneFlags), [](size_t i) {
         SaveManager::Instance->LoadStruct("", [&i]() {

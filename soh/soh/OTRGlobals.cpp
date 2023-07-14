@@ -343,6 +343,10 @@ uint32_t OTRGlobals::GetInterpolationFPS() {
     return std::min<uint32_t>(LUS::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate(), CVarGetInteger("gInterpolationFPS", 20));
 }
 
+bool IsGameRunning() {
+    return gPlayState != nullptr && gSaveContext.fileNum < 10;
+}
+
 struct ExtensionEntry {
     std::string path;
     std::string ext;

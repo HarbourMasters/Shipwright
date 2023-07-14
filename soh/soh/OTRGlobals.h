@@ -38,6 +38,7 @@ private:
 };
 
 uint32_t IsGameMasterQuest();
+bool IsGameRunning();
 #endif
 
 #ifndef __cplusplus
