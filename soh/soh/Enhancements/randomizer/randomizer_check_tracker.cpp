@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <set>
+#include <format>
 #include <libultraship/libultraship.h>
 #include "3drando/item_location.hpp"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
