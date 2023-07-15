@@ -50,6 +50,14 @@ void GameInteractor_ExecuteOnPlayerBonk() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerBonk>();
 }
 
+void GameInteractor_ExecuteOnPlayDestroy() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayDestroy>();
+}
+
+void GameInteractor_ExecuteOnPlayDrawEnd() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayDrawEnd>();
+}
+
 // MARK: -  Save Files
 
 void GameInteractor_ExecuteOnSaveFile(int32_t fileNum) {

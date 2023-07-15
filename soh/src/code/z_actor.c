@@ -1228,6 +1228,8 @@ void Actor_Destroy(Actor* actor, PlayState* play) {
         // "No Actor class destruct [%s]"
         osSyncPrintf("Ａｃｔｏｒクラス デストラクトがありません [%s]\n" VT_RST, ActorDB_Retrieve(actor->id)->name);
     }
+
+    NameTag_RemoveAllForActor(actor);
 }
 
 void func_8002D7EC(Actor* actor) {

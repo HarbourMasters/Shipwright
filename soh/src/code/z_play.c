@@ -171,6 +171,7 @@ void Play_Destroy(GameState* thisx) {
     PlayState* play = (PlayState*)thisx;
     Player* player = GET_PLAYER(play);
 
+    GameInteractor_ExecuteOnPlayDestroy();
 
     // Only initialize the frame counter when exiting the title screen
     if (gSaveContext.fileNum == 0xFF) {
@@ -1712,6 +1713,8 @@ void Play_Draw(PlayState* play) {
                 }
             }
         }
+
+        GameInteractor_ExecuteOnPlayDrawEnd();
 
         // Reset the inverted culling
         if (CVarGetInteger("gMirroredWorld", 0)) {
