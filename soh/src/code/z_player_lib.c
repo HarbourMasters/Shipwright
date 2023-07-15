@@ -471,7 +471,7 @@ void Player_SetModels(Player* this, s32 modelGroup) {
 
     if ((CVarGetInteger("gBowSlingShotAmmoFix", 0) && !CVarGetInteger("gAltLinkEquip", 0)) &&
         this->rightHandType == 11) { // If holding Bow/Slingshot without new DList system
-        this->rightHandDLists = &sPlayerDListGroupsAlt[this->rightHandType][Player_HoldsSlingshot(this)];
+        this->rightHandDLists = &sPlayerDListGroups[this->rightHandType][Player_HoldsSlingshot(this)];
     }
 
     // Sheath
@@ -2005,7 +2005,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkKokiriSwordInSheathDL);
+                        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkKokiriSwordSheathDL);
 
                         CLOSE_DISPS(play->state.gfxCtx);
                         if (this->leftHandType != 2 && this->leftHandType != 3) {
