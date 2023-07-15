@@ -1850,9 +1850,9 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                     CLOSE_DISPS(play->state.gfxCtx);
                     break;
             }
-            //I don't know why these need to be here, they shouldn't, but if they aren't,
-            //Song cutscenes make the ocarinas dissapear.
-            if (this->itemAction == PLAYER_IA_OCARINA_FAIRY || this->rightHandType == 13) {
+            //Ocarinas check to see if the item is being used instead of rightHandType.
+            //Otherwise, cutscenes for learning Ocarina songs don't work properly.
+            if (this->itemAction == PLAYER_IA_OCARINA_FAIRY) {
                 OPEN_DISPS(play->state.gfxCtx);
 
                 if (LINK_IS_ADULT) {
@@ -1867,7 +1867,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                 CLOSE_DISPS(play->state.gfxCtx);
             }
-            if (this->itemAction == PLAYER_IA_OCARINA_TIME || this->rightHandType == 14) {
+            if (this->itemAction == PLAYER_IA_OCARINA_TIME) {
                 OPEN_DISPS(play->state.gfxCtx);
 
                 if (LINK_IS_ADULT) {
