@@ -6179,6 +6179,8 @@ void InitRandoItemTable() {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawBossKey;
         } else if (randoGetItemTable[i].itemId == RG_DOUBLE_DEFENSE) {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawDoubleDefense;
+        } else if (randoGetItemTable[i].itemId >= RG_OCARINA_A_BUTTON && randoGetItemTable[i].itemId <= RG_OCARINA_C_DOWN_BUTTON) {
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawOcarinaButton;
         }
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, randoGetItemTable[i].itemId, randoGetItemTable[i]);
     }

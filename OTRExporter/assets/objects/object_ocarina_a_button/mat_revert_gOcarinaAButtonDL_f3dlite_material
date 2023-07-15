@@ -1,9 +1,0 @@
-<DisplayList Version="0">
-	<PipeSync/>
-	<SetGeometryMode  />
-	<ClearGeometryMode G_FOG="1"  />
-	<SetCycleType G_CYC_1CYCLE="1"/>
-	<PipelineMode G_PM_1PRIMITIVE="1"/>
-	<EndDisplayList/>
-</DisplayList>
-
