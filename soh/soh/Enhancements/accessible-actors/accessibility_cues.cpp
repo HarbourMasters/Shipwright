@@ -546,8 +546,10 @@ else {
                 discoverSpike(pos);
                     break;
             }
-            if (findWallHeight(pos, wallPoly) <= player->ageProperties->unk_0C) {
+            f32 wallHeight = findWallHeight(pos, wallPoly);
+            if(wallHeight <= player->ageProperties->unk_0C) {
                     // Ledge at top of wall can be reached.
+                    if (wallHeight > 10.0)
                     discoverLedge(pos, true);
                     break;
                         }
