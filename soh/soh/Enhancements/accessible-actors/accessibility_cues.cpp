@@ -4,6 +4,7 @@
 #include "functions.h"
 extern "C" {
 s32 func_80839768(PlayState* play, Player* p, Vec3f* arg2, CollisionPoly** arg3, s32* arg4, Vec3f* arg5);
+void func_8083E298(CollisionPoly* arg0, Vec3f* arg1, s16* arg2);
 #include "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 #include "soh/Enhancements/tts/tts.h"
 }
@@ -229,11 +230,16 @@ class Spike : protected TerrainCueSound {
     f32 wallCheckHeight;
     f32 wallCheckRadius;
     f32 ceilingCheckHeight;
+    f32 probeSpeed;//Approximate for now.
+    Vec3f velocity;
+    Vec3f expectedVelocity;
     int terrainDiscovered;
-    CollisionPoly floorPoly;
+    CollisionPoly* floorPoly;
     CollisionPoly* wallPoly;
-    s32 bgId;
-
+    s32 wallBgId;
+    s32 floorBgId;
+    f32 pushedSpeed;
+    s16 pushedYaw;
     union {
         Incline incline;
         Decline decline;
@@ -367,12 +373,66 @@ else {
      //Check if traveling from point A to point B is obstructed by a wall.
     CollisionPoly* checkWall(Vec3f& pos, Vec3f& prevPos, Vec3f& collisionPos) {
         Player* player = GET_PLAYER(actor->play);
-        BgCheck_EntitySphVsWall3(&actor->play->colCtx, &collisionPos, &pos, &prevPos, wallCheckRadius, &wallPoly, &bgId,
+        BgCheck_EntitySphVsWall3(&actor->play->colCtx, &collisionPos, &pos, &prevPos, wallCheckRadius, &wallPoly, &wallBgId,
                                  NULL, wallCheckHeight);
         return wallPoly;
 
     }
+//Another copy/modify job from z_player.c. This function sets windspeed and wind direction, which are used for pushing the player up and down slopes. "Inspired" by func_8083E318.
 
+    s32 computePushedSpeedEtc() {
+        s32 pad;
+        s16 sp4A;
+        Vec3f sp3C;
+        s16 sp3A;
+        f32 temp1;
+        f32 temp2;
+        s16 temp3;
+        PlayState* play = actor->play;
+
+        if (SurfaceType_GetSlope(&play->colCtx, floorPoly, floorBgId) == 1) {
+            sp4A = Math_Atan2S(velocity.z, velocity.x);
+            func_8083E298(floorPoly, &sp3C, &sp3A);
+            temp3 = sp3A - sp4A;
+
+            if (ABS(temp3) > 16000) {
+                temp1 = (1.0f - sp3C.y) * 40.0f;
+                temp2 = (temp1 * temp1) * 0.015f;
+                if (temp2 < 1.2f) {
+                    temp2 = 1.2f;
+                }
+                pushedYaw = sp3A;
+                Math_StepToF(&pushedSpeed, temp1, temp2);
+            }
+        } 
+        else
+                Math_StepToF(&this->pushedSpeed, 0.0f, 1.0f); // Todo: only step by 0.5F when in water.
+        return 0;
+    }
+    void setVelocity()
+    {
+
+        velocity.x = Math_SinS(rot.y) * probeSpeed;
+        velocity.y = 10.0;
+        velocity.z = Math_CosS(rot.y) * probeSpeed;
+        expectedVelocity = velocity;
+
+        computePushedSpeedEtc();
+        if (pushedSpeed == 0.0)
+                return;
+        velocity.x +=pushedSpeed * Math_SinS(pushedYaw);
+        velocity.z += pushedSpeed * Math_CosS(pushedYaw);
+
+    }
+//Check if we're being pushed away from our intended destination.
+    bool isPushedAway()
+    {
+        f32 dist = Math_Vec3f_DistXZ(&velocity, &expectedVelocity);
+        if (dist >= probeSpeed)
+                return true;
+        return false;
+
+    }
   public:
     // Initialize a TerrainCueDirection based on a relative angle.
     void init(AccessibleActor* actor, Vec3s rot) {
@@ -389,15 +449,18 @@ else {
         pos.y += velocity.y;
         pos.z += velocity.z;
         f32 floorHeight = 0;
-        floorHeight = BgCheck_AnyRaycastFloor1(&actor->play->colCtx, &floorPoly, &pos);
+        floorHeight = BgCheck_EntityRaycastFloor3(&actor->play->colCtx, &floorPoly, &floorBgId, &pos);
         if (floorHeight == BGCHECK_Y_MIN)
             return false;// I'm guessing this means out of bounds?
         pos.y = floorHeight;
         if (!BgCheck_PosInStaticBoundingBox(&actor->play->colCtx, &pos))
             return false;//Out of bounds.
+
         return true;
     }
     bool isHeadOnCollision(Vec3f& wallPos, Vec3f& velocity) {
+        return true;
+
         Vec3f pos = wallPos;
         if (!move(pos, velocity))
             return true;//Arbitrary, but hopefully this can't happen under normal gameplay circumstances.
@@ -427,39 +490,43 @@ else {
         }
         // The virtual cue actors travel in lines relative to Link's angle.
         rot = ActorAccessibility_ComputeRelativeAngle(&player->actor.world.rot, &relRot);
-        Vec3f velocity;
-
-        velocity.x = Math_SinS(rot.y);
-        velocity.y = 10.0;
-        velocity.z = Math_CosS(rot.y);
+        pushedSpeed = 0.0;
+        pushedYaw = 0;
+        probeSpeed = 5.5;//Approximately running speed.
         // Draw a line from Link's position to the max detection distance based on the configured relative angle.
         Vec3f pos = player->actor.world.pos;
-        f32 step = fabs(velocity.x + velocity.z);
         f32 distToTravel = detectionDistance;
         Vec3f collisionResult;
         s32 bgId = 0;
 //Don't be fooled: link being in the air does not mean we've found a dropoff. I mean... it could mean that, but it's a little too late to do anything about it at that point anyway.
 
-        if (player->stateFlags3 & PLAYER_STATE3_MIDAIR || player->stateFlags2&PLAYER_STATE2_HOPPING) {
+        if (player->stateFlags3 & PLAYER_STATE3_MIDAIR || player->stateFlags2 & PLAYER_STATE2_HOPPING) {
             f32 floorHeight = 0;
-            floorHeight = BgCheck_AnyRaycastFloor1(&actor->play->colCtx, &floorPoly, &pos);
+            floorHeight = BgCheck_EntityRaycastFloor3(&actor->play->colCtx, &floorPoly, &floorBgId, &pos);
             if (floorHeight == BGCHECK_Y_MIN)
-                return;//Link is about to void out of bounds or something.
+                return; // Link is about to void out of bounds or something.
             pos.y = floorHeight;
-
+        } else {
+            floorPoly = player->actor.floorPoly;
+            floorBgId = player->actor.floorBgId;
         }
-
         while (distToTravel >= 0) {
             Vec3f prevPos = pos;
+            setVelocity();
+            f32 step = fabs(velocity.x + velocity.z);
+
             if (!move(pos, velocity)) {
                 destroyCurrentSound();
                 break;//Probe is out of bounds.
             }
             distToTravel -= (step + fabs(pos.y - pos.y));
+            if (isPushedAway())
+            {
+                //Call this a wall for now.
+                discoverWall(pos);
+                break;
 
-            //attempt to detect slopes that are too steep to climb.
-            u32 slope = SurfaceType_GetSlope(&actor->play->colCtx, &floorPoly, BGCHECK_SCENE);
-
+            }
             if (pos.y < prevPos.y && fabs(pos.y - prevPos.y) >= 10)
             {
                     //This is a fall.
