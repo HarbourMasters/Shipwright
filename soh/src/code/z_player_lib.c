@@ -3,6 +3,7 @@
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "objects/object_link_boy/object_link_boy.h"
 #include "objects/object_link_child/object_link_child.h"
+#include "soh_assets.h"
 #include "objects/object_triforce_spot/object_triforce_spot.h"
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
 
@@ -294,6 +295,11 @@ Gfx* sFirstPersonForearmDLs[] = {
 Gfx* sFirstPersonRightHandHoldingWeaponDLs[] = {
     gLinkAdultRightHandHoldingBowFirstPersonDL,
     gLinkChildRightArmStretchedSlingshotDL,
+};
+
+Gfx* sFirstPersonRightHandDLs[] = {
+    gLinkAdultFPSHandDL,
+    gLinkChildFPSHandDL,
 };
 
 // Indexed by model types (left hand, right hand, sheath or waist)
@@ -1208,7 +1214,7 @@ s32 Player_OverrideLimbDrawGameplayFirstPerson(PlayState* play, s32 limbIndex, G
                 }
             }
             if (CVarGetInteger("gAltLinkEquip", 0))
-                *dList = sFirstPersonRightHandHoldingWeaponDLs[gSaveContext.linkAge];
+                *dList = sFirstPersonRightHandDLs[gSaveContext.linkAge];
             else
                 *dList = Player_HoldsHookshot(this) ? gLinkAdultRightHandHoldingHookshotFarDL //despite the name, this is the FPS hookshot
                                                 : sFirstPersonRightHandHoldingWeaponDLs[firstPersonWeaponIndex];
@@ -1552,7 +1558,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                            gSPDisplayList(POLY_OPA_DISP++, gLinkChildLeftFistAndKokiriSwordNearDL);
+                            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkKokiriSwordDL);
 
                             CLOSE_DISPS(play->state.gfxCtx);
 
@@ -1570,7 +1576,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftHandHoldingMasterSwordNearDL);
+                            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkMasterSwordDL);
 
                             CLOSE_DISPS(play->state.gfxCtx);
 
@@ -1590,7 +1596,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                             }
                             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                         G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHandHoldingBrokenGiantsKnifeDL);
+                            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkBrokenLongswordDL);
                             CLOSE_DISPS(play->state.gfxCtx);
 
                             if (LINK_IS_CHILD) {
@@ -1605,7 +1611,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                             }
                             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftHandHoldingBgsNearDL);
+                            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkLongswordDL);
                             CLOSE_DISPS(play->state.gfxCtx);
                         }
                     }
@@ -1619,7 +1625,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                    gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftHandHoldingHammerNearDL);
+                    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkHammerDL);
 
                     CLOSE_DISPS(play->state.gfxCtx);
 
@@ -1637,7 +1643,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                        gSPDisplayList(POLY_OPA_DISP++, gLinkChildLeftFistAndBoomerangNearDL);
+                        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkBoomerangDL);
 
                         CLOSE_DISPS(play->state.gfxCtx);
 
@@ -1656,7 +1662,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                    gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftHandHoldingMasterSwordNearDL);
+                    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkMasterSwordDL);
 
                     CLOSE_DISPS(play->state.gfxCtx);
                     break;
@@ -1709,14 +1715,19 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
             gDPSetEnvColor(POLY_XLU_DISP++, bottleColor->r, bottleColor->g, bottleColor->b, 0);
 
-            if (this->itemAction != PLAYER_IA_BOTTLE && CVarGetInteger("gMMBottles", 0)) {
+            if (this->itemAction != PLAYER_IA_BOTTLE && CVarGetInteger("gAltLinkEquip", 0)) {
                 gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_XLU_DISP++, sBottleContentDLists[(gSaveContext.linkAge)]);
+                gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gLinkBottleContentsDL);
             }
 
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(POLY_XLU_DISP++, sBottleDLists[(gSaveContext.linkAge)]);
+            if (this->itemAction != PLAYER_IA_BOTTLE && CVarGetInteger("gAltLinkEquip", 0)) {
+                gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gLinkBottleDL);
+            }
+            else {
+                gSPDisplayList(POLY_XLU_DISP++, sBottleDLists[(gSaveContext.linkAge)]);
+            }
             CLOSE_DISPS(play->state.gfxCtx);
         }
 
@@ -1764,7 +1775,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                        gSPDisplayList(POLY_OPA_DISP++, gLinkChildRightFistAndDekuShieldNearDL);
+                        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkDekuShieldDL);
 
                         CLOSE_DISPS(play->state.gfxCtx);
                     } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_HYLIAN) &&
@@ -1777,7 +1788,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                        gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightHandHoldingHylianShieldNearDL);
+                        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkHylianShieldDL);
 
                         CLOSE_DISPS(play->state.gfxCtx);
                     } else if ((CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_MIRROR)) {
@@ -1789,7 +1800,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                        gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightHandHoldingMirrorShieldNearDL);
+                        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkMirrorShieldDL);
 
                         CLOSE_DISPS(play->state.gfxCtx);
                         // slingshot
@@ -1805,8 +1816,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                        gSPDisplayList(POLY_OPA_DISP++,
-                                       gLinkChildRightHandHoldingSlingshotNearDL);
+                        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkSlingshotDL);
 
                         CLOSE_DISPS(play->state.gfxCtx);
                     } else {
@@ -1821,7 +1831,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-                        gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightHandHoldingBowNearDL);
+                        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkBowDL);
 
                         CLOSE_DISPS(play->state.gfxCtx);
                     }
@@ -1835,7 +1845,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                    gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightHandHoldingHookshotNearDL);
+                    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkHookshotDL);
 
                     CLOSE_DISPS(play->state.gfxCtx);
                     break;
@@ -1853,7 +1863,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-                gSPDisplayList(POLY_OPA_DISP++, gLinkChildRightHandHoldingFairyOcarinaNearDL);
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkFairyOcarinaDL);
 
                 CLOSE_DISPS(play->state.gfxCtx);
             }
@@ -1868,7 +1878,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-                gSPDisplayList(POLY_OPA_DISP++, gLinkChildRightHandAndOotNearDL);
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkOcarinaOfTimeDL);
 
                 CLOSE_DISPS(play->state.gfxCtx);
             }
@@ -1995,7 +2005,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                        gSPDisplayList(POLY_OPA_DISP++, gLinkChildSheathNearDL);
+                        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkKokiriSwordInSheathDL);
 
                         CLOSE_DISPS(play->state.gfxCtx);
                         if (this->leftHandType != 2 && this->leftHandType != 3) {
@@ -2003,7 +2013,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                            gSPDisplayList(POLY_OPA_DISP++, gLinkChildSwordAndSheathNearDL);
+                            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkKokiriSwordInSheathDL);
 
                             CLOSE_DISPS(play->state.gfxCtx);
                         }
@@ -2020,7 +2030,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                        gSPDisplayList(POLY_OPA_DISP++, gLinkAdultSheathNearDL);
+                        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkMasterSwordSheathDL);
 
                         CLOSE_DISPS(play->state.gfxCtx);
                         if (this->leftHandType != 2 && this->leftHandType != 3) {
@@ -2028,7 +2038,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultMasterSwordAndSheathNearDL);
+                            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkMasterSwordInSheathDL);
 
                             CLOSE_DISPS(play->state.gfxCtx);
                         }
@@ -2045,8 +2055,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                        gSPDisplayList(POLY_OPA_DISP++,
-                                       gLinkAdultHylianShieldSwordAndSheathNearDL); // repurposes otherwise unused DLS
+                        gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkLongswordSheathDL);
 
                         CLOSE_DISPS(play->state.gfxCtx);
                         if (this->leftHandType != 4) {
@@ -2055,8 +2064,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                             gSPDisplayList(
-                                POLY_OPA_DISP++,
-                                gLinkAdultMirrorShieldSwordAndSheathNearDL); // repurposes otherwise unused DLS
+                                POLY_OPA_DISP++, (Gfx*)gLinkLongswordInSheathDL);
 
                             CLOSE_DISPS(play->state.gfxCtx);
                         }
@@ -2075,7 +2083,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                            gSPDisplayList(POLY_OPA_DISP++, gLinkChildDekuShieldAndSheathNearDL);
+                            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkDekuShieldOnBackDL);
 
                             CLOSE_DISPS(play->state.gfxCtx);
                             break;
@@ -2089,7 +2097,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHylianShieldAndSheathNearDL);
+                                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkHylianShieldOnBackDL);
 
                                 CLOSE_DISPS(play->state.gfxCtx);
                             }
@@ -2103,7 +2111,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultMirrorShieldAndSheathNearDL);
+                            gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkMirrorShieldOnBackDL);
 
                             CLOSE_DISPS(play->state.gfxCtx);
                             break;
@@ -2115,7 +2123,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
                     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                    gSPDisplayList(POLY_OPA_DISP++, gLinkChildHylianShieldAndSheathNearDL);
+                    gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkHylianShieldOnChildBackDL);
 
                     CLOSE_DISPS(play->state.gfxCtx);
                 }
@@ -2154,7 +2162,7 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
 
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkChildLeftFistAndKokiriSwordNearDL); //
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkKokiriSwordDL); //
 
                 CLOSE_DISPS(play->state.gfxCtx);
 
@@ -2172,7 +2180,7 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
 
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftHandHoldingMasterSwordNearDL); //
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkMasterSwordDL); //
 
                 CLOSE_DISPS(play->state.gfxCtx);
 
@@ -2190,7 +2198,7 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
                 }
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHandHoldingBrokenGiantsKnifeDL);
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkBrokenLongswordDL);
                 CLOSE_DISPS(play->state.gfxCtx);
 
                 if (LINK_IS_CHILD) {
@@ -2205,7 +2213,7 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
                 }
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftHandHoldingBgsNearDL); //
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkLongswordDL); //
                 CLOSE_DISPS(play->state.gfxCtx);
             }
         }
@@ -2222,7 +2230,7 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
 
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkChildRightFistAndDekuShieldNearDL); //
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkDekuShieldDL); //
 
                 CLOSE_DISPS(play->state.gfxCtx);
             }
@@ -2238,7 +2246,7 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
 
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightHandHoldingHylianShieldNearDL); //
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkHylianShieldDL); //
 
                 CLOSE_DISPS(play->state.gfxCtx);
             }
@@ -2253,7 +2261,7 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
 
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightHandHoldingMirrorShieldNearDL); //
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkMirrorShieldDL); //
 
                 CLOSE_DISPS(play->state.gfxCtx);
                 // slingshot
@@ -2272,7 +2280,7 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
 
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkChildSheathNearDL);
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkKokiriSwordSheathDL);
 
                 CLOSE_DISPS(play->state.gfxCtx);
                 if (LINK_IS_ADULT) {
@@ -2289,7 +2297,7 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
 
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultSheathNearDL);
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkMasterSwordSheathDL);
 
                 CLOSE_DISPS(play->state.gfxCtx);
                 if (LINK_IS_CHILD) {
@@ -2307,7 +2315,7 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++,
-                               gLinkAdultHylianShieldSwordAndSheathNearDL); // repurposes otherwise unused DLS
+                               (Gfx*)gLinkLongswordSheathDL); // repurposes otherwise unused DLS
 
                 CLOSE_DISPS(play->state.gfxCtx);
                 if (LINK_IS_CHILD) {
@@ -2321,7 +2329,7 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
 
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkChildHylianShieldAndSheathNearDL);
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkHylianShieldOnChildBackDL);
 
                 CLOSE_DISPS(play->state.gfxCtx);
             }
@@ -2336,7 +2344,7 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
 
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkChildDekuShieldAndSheathNearDL);
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkDekuShieldOnBackDL);
 
                 CLOSE_DISPS(play->state.gfxCtx);
             }
@@ -2352,7 +2360,7 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
 
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHylianShieldAndSheathNearDL);
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkHylianShieldOnBackDL);
 
                 CLOSE_DISPS(play->state.gfxCtx);
             }
@@ -2367,7 +2375,7 @@ void Player_PostLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s
 
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultMirrorShieldAndSheathNearDL);
+                gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gLinkMirrorShieldOnBackDL);
 
                 CLOSE_DISPS(play->state.gfxCtx);
             }
