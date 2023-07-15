@@ -402,11 +402,13 @@ else {
                     temp2 = 1.2f;
                 }
                 pushedYaw = sp3A;
-                Math_StepToF(&pushedSpeed, temp1, temp2);
+                pushedSpeed = temp1 / probeSpeed;
+                // Math_StepToF(&pushedSpeed / probeSpeed, temp1, temp2);
             }
-        } 
-        else
-                Math_StepToF(&this->pushedSpeed, 0.0f, 1.0f); // Todo: only step by 0.5F when in water.
+        } else
+            pushedSpeed = 0.0;
+
+                //Math_StepToF(&this->pushedSpeed, 0.0f, 1.0f); // Todo: only step by 0.5F when in water.
         return 0;
     }
     void setVelocity()
@@ -492,7 +494,7 @@ else {
         rot = ActorAccessibility_ComputeRelativeAngle(&player->actor.world.rot, &relRot);
         pushedSpeed = 0.0;
         pushedYaw = 0;
-        probeSpeed = 5.5;//Approximately running speed.
+        probeSpeed = 1.0;//Experiment with this.
         // Draw a line from Link's position to the max detection distance based on the configured relative angle.
         Vec3f pos = player->actor.world.pos;
         f32 distToTravel = detectionDistance;
