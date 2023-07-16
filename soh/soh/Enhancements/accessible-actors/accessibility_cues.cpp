@@ -464,14 +464,16 @@ else {
         prevPos = pos;
         rot.y = ogRot.y + 16384;
         bool clockwiseTest = proveClimbableStep();
+        f32 clockwiseY = pos.y;
         rot.y = ogRot.y - 16384;
         pos = prevPos;
 
         bool counterclockwiseTest = proveClimbableStep();
+        f32 counterclockwiseY = pos.y;
         rot.y = ogRot.y;
         pos = ogPos;
 
-        return clockwiseTest && counterclockwiseTest;
+        return clockwiseTest && counterclockwiseTest && fabs(clockwiseY - counterclockwiseY) < 10.0;
 
     }
 
