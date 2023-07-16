@@ -239,6 +239,9 @@ class Spike : protected TerrainCueSound {
     s32 wallBgId;
     s32 floorBgId;
     f32 pushedSpeed;
+    bool disabled;//Only used for debugging.
+    bool trackingMode;//A debugging feature which forces Link to move along the probe's path. Used to catch collision violations and other disagreements between how Link moves and how the probe travels.
+
     s16 pushedYaw;
     union {
         Incline incline;
@@ -444,8 +447,11 @@ else {
         terrainDiscovered = DISCOVERED_NOTHING;
         currentSound = NULL;
 
+        disabled = false;
+        trackingMode = false;
+
     }
-//Move a probe to its next point along a line, ensuring that it remains on the floor. Returns false if the move would put the probe out of bounds. Does not take walls into account.
+    //Move a probe to its next point along a line, ensuring that it remains on the floor. Returns false if the move would put the probe out of bounds. Does not take walls into account.
     bool move(Vec3f& pos, Vec3f& velocity) {
         pos.x += velocity.x;
         pos.y += velocity.y;
@@ -480,6 +486,10 @@ else {
             destroyCurrentSound();
             return;
         }
+        if (disabled)
+            return;
+        if (trackingMode)
+            destroyCurrentSound();
         // Adapted from code in z_player.c, lines 10000 - 10008.
         if (player->stateFlags2 & PLAYER_STATE2_CRAWLING) {
             wallCheckRadius = 10.0f;
@@ -498,6 +508,8 @@ else {
         // Draw a line from Link's position to the max detection distance based on the configured relative angle.
         Vec3f pos = player->actor.world.pos;
         f32 distToTravel = detectionDistance;
+        if (trackingMode)
+            distToTravel = 1.0;
         Vec3f collisionResult;
         s32 bgId = 0;
 //Don't be fooled: link being in the air does not mean we've found a dropoff. I mean... it could mean that, but it's a little too late to do anything about it at that point anyway.
@@ -560,9 +572,14 @@ else {
 }
 
         }
+        if (trackingMode)
+player->actor.world.pos = pos;
             //Emit sound from the discovered position.
 if (currentSound)
             currentSound->update(pos);
+if (currentSound && trackingMode)
+disabled = true;
+
     }
 
     };
