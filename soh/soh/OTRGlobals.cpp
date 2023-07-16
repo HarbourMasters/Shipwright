@@ -347,6 +347,10 @@ uint32_t OTRGlobals::GetInterpolationFPS() {
     return std::min<uint32_t>(LUS::Context::GetInstance()->GetWindow()->GetCurrentRefreshRate(), CVarGetInteger("gInterpolationFPS", 20));
 }
 
+bool IsGameRunning() {
+    return gPlayState != nullptr && gSaveContext.fileNum < 10;
+}
+
 struct ExtensionEntry {
     std::string path;
     std::string ext;
@@ -2183,4 +2187,8 @@ extern "C" void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex) {
 
 extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement) {
     gfx_register_blended_texture(name, mask, replacement);
+}
+
+extern "C" void CheckTracker_OnMessageClose() {
+    CheckTracker::CheckTrackerDialogClosed();
 }

@@ -92,7 +92,6 @@ typedef struct {
     /*      */ u32 count[COUNT_MAX];
     /*      */ u32 entrancesDiscovered[SAVEFILE_ENTRANCES_DISCOVERED_IDX_COUNT];
     /*      */ u32 scenesDiscovered[SAVEFILE_SCENES_DISCOVERED_IDX_COUNT];
-    /*      */ u8 locationsSkipped[RC_MAX];
     /*      */ bool rtaTiming;
     /*      */ uint64_t fileCreatedAt;
 } SohStats;
@@ -293,6 +292,7 @@ typedef struct {
     /*        */ SohStats sohStats;
     /*        */ u8 temporaryWeapon;
     /*        */ FaroresWindData backupFW;
+    /*        */ RandomizerCheckTrackerData checkTrackerData[RC_MAX];
     // #endregion
     // #region SOH [Randomizer]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to Randomizer
@@ -319,6 +319,7 @@ typedef struct {
     /*        */ u8 seedIcons[5];
     /*        */ u16 randomizerInf[9];
     /*        */ u16 adultTradeItems;
+    /*        */ u32 lastScene;
     /*        */ u8 triforcePiecesCollected;
     // #endregion
 } SaveContext; // size = 0x1428

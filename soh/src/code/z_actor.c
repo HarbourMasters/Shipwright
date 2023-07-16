@@ -2012,6 +2012,8 @@ s32 GiveItemEntryFromActor(Actor* actor, PlayState* play, GetItemEntry getItemEn
             ((!gSaveContext.n64ddFlag && ((getItemEntry.getItemId > GI_NONE) && (getItemEntry.getItemId < GI_MAX))) || 
                 (gSaveContext.n64ddFlag && ((getItemEntry.getItemId > RG_NONE) && (getItemEntry.getItemId < RG_MAX))))) ||
                     (!(player->stateFlags1 & 0x20000800))) {
+            gPlayState->lastCheck = actor;
+
             if ((actor->xzDistToPlayer < xzRange) && (fabsf(actor->yDistToPlayer) < yRange)) {
                 s16 yawDiff = actor->yawTowardsPlayer - player->actor.shape.rot.y;
                 s32 absYawDiff = ABS(yawDiff);

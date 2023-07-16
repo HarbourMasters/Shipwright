@@ -270,6 +270,8 @@ void SaveManager::LoadRandomizerVersion2() {
         SaveManager::Instance->LoadData("", scene);
         randomizer->masterQuestDungeons.emplace(scene);
     });
+
+    SaveManager::Instance->LoadData("lastScene", gSaveContext.lastScene, (uint32_t)0);
 }
 
 void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool fullSave) {
@@ -350,8 +352,9 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
         masterQuestDungeons.push_back(scene);
     }
     SaveManager::Instance->SaveArray("masterQuestDungeons", masterQuestDungeons.size(), [&](size_t i) {
-        SaveManager::Instance->SaveData("", masterQuestDungeons[i]);
-    });
+        SaveManager::Instance->SaveData("", masterQuestDungeons[i]); });
+
+    SaveManager::Instance->SaveData("lastScene", gSaveContext.lastScene);
 }
 
 void SaveManager::Init() {
@@ -1390,9 +1393,6 @@ void SaveManager::LoadBaseVersion3() {
         });
         SaveManager::Instance->LoadArray("entrancesDiscovered", ARRAY_COUNT(gSaveContext.sohStats.entrancesDiscovered), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.sohStats.entrancesDiscovered[i]);
-        });
-        SaveManager::Instance->LoadArray("locationsSkipped", ARRAY_COUNT(gSaveContext.sohStats.locationsSkipped), [](size_t i) {
-            SaveManager::Instance->LoadData("", gSaveContext.sohStats.locationsSkipped[i]);
         });
     });
     SaveManager::Instance->LoadArray("sceneFlags", ARRAY_COUNT(gSaveContext.sceneFlags), [](size_t i) {

@@ -79,7 +79,7 @@ uint8_t Anchor_GetClientScene(uint32_t fairyIndex);
 PosRot Anchor_GetClientPosition(uint32_t fairyIndex);
 Color_RGB8 Anchor_GetClientColor(uint32_t fairyIndex);
 void Anchor_SpawnClientFairies();
-void Anchor_SkipLocation(uint32_t locationIndex, bool skipped);
+void Anchor_UpdateCheckData(uint32_t locationIndex);
 void Anchor_UpdateBeansBought(uint8_t amount);
 void Anchor_ConsumeAdultTradeItem(uint8_t itemId);
 void Anchor_UpdateKeyCount(int16_t sceneNum, int8_t amount);

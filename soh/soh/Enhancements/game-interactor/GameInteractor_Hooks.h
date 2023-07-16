@@ -21,6 +21,7 @@ void GameInteractor_ExecuteOnOcarinaSongAction();
 void GameInteractor_ExecuteOnActorUpdate(void* actor);
 void GameInteractor_ExecuteOnPlayerBonk();
 void GameInteractor_ExecuteOnOcarinaSongAction();
+void GameInteractor_ExecuteOnShopSlotChangeHooks(uint8_t cursorIndex, int16_t price);
 
 // MARK: -  Save Files
 void GameInteractor_ExecuteOnSaveFile(int32_t fileNum);

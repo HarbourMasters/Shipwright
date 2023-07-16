@@ -7,6 +7,7 @@
 #include <libultraship/libultra.h>
 #include "z64item.h"
 #include <memory>
+#include <nlohmann/json.hpp>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include "soh/Enhancements/randomizer/randomizer_tricks.h"
@@ -36,7 +37,6 @@ class Randomizer {
     void ParseItemLocationsFile(const char* spoilerFileName, bool silent);
     void ParseEntranceDataFile(const char* spoilerFileName, bool silent);
     bool IsItemVanilla(RandomizerGet randoGet);
-    GetItemEntry GetItemEntryFromRGData(RandomizerGetData rgData, GetItemID ogItemId, bool checkObtainability = true);
     int16_t GetVanillaMerchantPrice(RandomizerCheck check);
 
   public:
@@ -76,6 +76,7 @@ class Randomizer {
     RandomizerInf GetRandomizerInfFromCheck(RandomizerCheck rc);
     RandomizerGetData GetRandomizerGetDataFromActor(s16 actorId, s16 sceneNum, s16 actorParams);
     RandomizerGetData GetRandomizerGetDataFromKnownCheck(RandomizerCheck randomizerCheck);
+    GetItemEntry GetItemEntryFromRGData(RandomizerGetData rgData, GetItemID ogItemId, bool checkObtainability = true);
     std::string GetChildAltarText() const;
     std::string GetAdultAltarText() const;
     std::string GetGanonText() const;

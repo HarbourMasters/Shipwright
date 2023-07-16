@@ -465,6 +465,7 @@ void Play_Init(GameState* thisx) {
     s32 i;
     u8 tempSetupIndex;
     s32 pad[2];
+    gPlayState->lastCheck = NULL;
 
     // Skip Child Stealth when option is enabled, Zelda's Letter isn't obtained and Impa's reward hasn't been received
     // eventChkInf[4] & 1 = Got Zelda's Letter
@@ -949,6 +950,11 @@ void Play_Update(PlayState* play) {
 
                 case 3:
                     if (play->transitionCtx.isDone(&play->transitionCtx) != 0) {
+                        if (play->sceneNum != SCENE_KAKUSIANA && play->sceneNum != SCENE_YOUSEI_IZUMI_YOKO && play->sceneNum != SCENE_YOUSEI_IZUMI_TATE &&
+                            play->sceneNum != SCENE_SHOP1 && play->sceneNum != SCENE_DAIYOUSEI_IZUMI && play->sceneNum != SCENE_TOKINOMA) {
+                            gSaveContext.lastScene = play->sceneNum;
+                        }
+
                         if (play->transitionCtx.transitionType >= 56) {
                             if (play->sceneLoadFlag == -0x14) {
                                 play->transitionCtx.destroy(&play->transitionCtx);
@@ -976,6 +982,7 @@ void Play_Update(PlayState* play) {
                                 R_UPDATE_RATE = 3;
                             }
                             
+                            // Transition end for standard transitions
                             GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
                         }
                         play->sceneLoadFlag = 0;
@@ -1084,6 +1091,9 @@ void Play_Update(PlayState* play) {
                             R_UPDATE_RATE = 3;
                             play->sceneLoadFlag = 0;
                             play->transitionMode = 0;
+
+                            // Transition end for sandstorm effect going into Wasteland (transition interrupted just before the end to keep some haze)
+                            GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
                         }
                     } else {
                         if (play->envCtx.sandstormEnvA == 255) {
@@ -1092,6 +1102,12 @@ void Play_Update(PlayState* play) {
                             gSaveContext.entranceIndex = play->nextEntranceIndex;
                             play->sceneLoadFlag = 0;
                             play->transitionMode = 0;
+                        }
+
+                        if (play->sceneNum != SCENE_KAKUSIANA && play->sceneNum != SCENE_YOUSEI_IZUMI_YOKO &&
+                            play->sceneNum != SCENE_YOUSEI_IZUMI_TATE && play->sceneNum != SCENE_SHOP1 &&
+                            play->sceneNum != SCENE_DAIYOUSEI_IZUMI && play->sceneNum != SCENE_TOKINOMA) {
+                            gSaveContext.lastScene = play->sceneNum;
                         }
                     }
                     break;
@@ -1119,6 +1135,9 @@ void Play_Update(PlayState* play) {
                             play->sceneLoadFlag = 0;
                             play->transitionMode = 0;
                         }
+
+                        // Transition end for sandstorm effect (delayed until effect is finished)
+                        GameInteractor_ExecuteOnTransitionEndHooks(play->sceneNum);
                     }
                     break;
 

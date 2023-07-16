@@ -101,6 +101,7 @@ void func_80AFB768(EnSi* this, PlayState* play) {
 
             if (this->collider.base.ocFlags2 & OC2_HIT_PLAYER) {
                 this->collider.base.ocFlags2 &= ~OC2_HIT_PLAYER;
+                gPlayState->lastCheck = &this->actor;
 
                 if (gSaveContext.n64ddFlag) {
                     Randomizer_UpdateSkullReward(this, play);
@@ -239,6 +240,7 @@ void Randomizer_UpdateSkullReward(EnSi* this, PlayState* play) {
 
 void Randomizer_GiveSkullReward(EnSi* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
+    gPlayState->lastCheck = &this->actor;
 
     if (getItem.modIndex == MOD_NONE) {
         // RANDOTOD: Move this into Item_Give() or some other more central location

@@ -5,6 +5,7 @@
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include <soh/Enhancements/randomizer/adult_trade_shuffle.h>
+#include <soh/Enhancements/randomizer/randomizer_check_tracker.h>
 #include <soh/util.h>
 #include <nlohmann/json.hpp>
 
@@ -129,13 +130,11 @@ void from_json(const json& j, Inventory& inventory) {
 
 void to_json(json& j, const SohStats& sohStats) {
     j = json{
-        {"locationsSkipped", sohStats.locationsSkipped},
         {"fileCreatedAt", sohStats.fileCreatedAt},
     };
 }
 
 void from_json(const json& j, SohStats& sohStats) {
-    j.at("locationsSkipped").get_to(sohStats.locationsSkipped);
     j.contains("fileCreatedAt") ? j.at("fileCreatedAt").get_to(sohStats.fileCreatedAt) : gSaveContext.sohStats.fileCreatedAt;
 }
 
@@ -158,6 +157,7 @@ void to_json(json& j, const SaveContext& saveContext) {
         {"inventory", saveContext.inventory},
         {"sohStats", saveContext.sohStats},
         {"adultTradeItems", saveContext.adultTradeItems},
+        {"checkTrackerData", saveContext.checkTrackerData},
         {"triforcePiecesCollected", saveContext.triforcePiecesCollected},
     };
 }
@@ -180,6 +180,7 @@ void from_json(const json& j, SaveContext& saveContext) {
     j.at("inventory").get_to(saveContext.inventory);
     j.at("sohStats").get_to(saveContext.sohStats);
     j.at("adultTradeItems").get_to(saveContext.adultTradeItems);
+    j.at("checkTrackerData").get_to(saveContext.checkTrackerData);
     j.contains("triforcePiecesCollected") ? j.at("triforcePiecesCollected").get_to(saveContext.triforcePiecesCollected) : gSaveContext.triforcePiecesCollected;
 }
 
@@ -267,6 +268,7 @@ void GameInteractorAnchor::HandleRemoteJson(nlohmann::json payload) {
         auto effect = new GameInteractionEffect::GiveItem();
         effect->parameters[0] = payload["modId"].get<uint16_t>();
         effect->parameters[1] = payload["getItemId"].get<int16_t>();
+        CheckTracker::AddRemoteCheckArea(payload["checkArea"].get<RandomizerCheckArea>());
         CVarSetInteger("gFromGI", 1);
         receivedItems.push_back({ payload["modId"].get<uint16_t>(), payload["getItemId"].get<int16_t>() });
         if (effect->Apply() == Possible) {
@@ -395,8 +397,10 @@ void GameInteractorAnchor::HandleRemoteJson(nlohmann::json payload) {
             GameInteractorAnchor::AnchorClients[clientId].seed = client.seed;
         }
     }
-    if (payload["type"] == "SKIP_LOCATION" && GameInteractor::IsSaveLoaded()) {
-        gSaveContext.sohStats.locationsSkipped[payload["locationIndex"].get<uint32_t>()] = payload["skipped"].get<bool>();
+    if (payload["type"] == "UPDATE_CHECK_DATA" && GameInteractor::IsSaveLoaded()) {
+        auto check = payload["locationIndex"].get<uint32_t>();
+        auto data = payload["checkData"].get<RandomizerCheckTrackerData>();
+        CheckTracker::UpdateCheck(check, data);
     }
     if (payload["type"] == "UPDATE_BEANS_BOUGHT" && GameInteractor::IsSaveLoaded()) {
         BEANS_BOUGHT = payload["amount"].get<uint8_t>();
@@ -486,11 +490,18 @@ void Anchor_ParseSaveStateFromRemote(nlohmann::json payload) {
         gSaveContext.gsFlags[i] = loadedData.gsFlags[i];
     }
 
-    for (int i = 0; i < 746; i++) {
-        if (!gSaveContext.sohStats.locationsSkipped[i]) {
-            gSaveContext.sohStats.locationsSkipped[i] = loadedData.sohStats.locationsSkipped[i];
+    CheckTracker::ClearAreaTotals();
+    for (int i = 2; i < RC_MAX; i++) {
+        if (gSaveContext.checkTrackerData[i].status == RCSHOW_SAVED || gSaveContext.checkTrackerData[i].skipped) {
+            CheckTracker::AddToChecksCollected(static_cast<RandomizerCheck>(i));
         }
+        gSaveContext.checkTrackerData[i].status = loadedData.checkTrackerData[i].status;
+        gSaveContext.checkTrackerData[i].skipped = loadedData.checkTrackerData[i].skipped;
+        gSaveContext.checkTrackerData[i].price = loadedData.checkTrackerData[i].price;
+        gSaveContext.checkTrackerData[i].hintItem = loadedData.checkTrackerData[i].hintItem;
     }
+
+    CheckTracker::UpdateAllOrdering();
 
     // Restore master sword state
     u8 hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_SWORD, 1);
@@ -594,6 +605,7 @@ void Anchor_RegisterHooks() {
         payload["type"] = "GIVE_ITEM";
         payload["modId"] = itemEntry.tableId;
         payload["getItemId"] = itemEntry.getItemId;
+        payload["checkArea"] = CheckTracker::GetCheckArea();
 
         GameInteractorAnchor::Instance->TransmitJsonToRemote(payload);
     });
@@ -673,14 +685,14 @@ void Anchor_RegisterHooks() {
     });
 }
 
-void Anchor_SkipLocation(uint32_t locationIndex, bool skipped) {
+void Anchor_UpdateCheckData(uint32_t locationIndex) {
     if (!GameInteractor::Instance->isRemoteInteractorConnected || !GameInteractor::Instance->IsSaveLoaded()) return;
 
     nlohmann::json payload;
 
-    payload["type"] = "SKIP_LOCATION";
+    payload["type"] = "UPDATE_CHECK_DATA";
     payload["locationIndex"] = locationIndex;
-    payload["skipped"] = skipped;
+    payload["checkData"] = gSaveContext.checkTrackerData[locationIndex];
 
     GameInteractorAnchor::Instance->TransmitJsonToRemote(payload);
 }

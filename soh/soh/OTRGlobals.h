@@ -38,6 +38,7 @@ private:
 };
 
 uint32_t IsGameMasterQuest();
+bool IsGameRunning();
 #endif
 
 #ifndef __cplusplus
@@ -145,6 +146,7 @@ void EntranceTracker_SetCurrentGrottoID(s16 entranceIndex);
 void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex);
 void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement);
 void SaveManager_ThreadPoolWait();
+void CheckTracker_OnMessageClose();
 
 GetItemID GetGetItemIDFromItemID(ItemID itemID);
 RandomizerGet GetRandomizerGetFromItemID(ItemID itemID);

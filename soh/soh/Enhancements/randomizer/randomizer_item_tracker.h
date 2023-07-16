@@ -15,6 +15,10 @@ typedef struct ItemTrackerItem {
     void (*drawFunc)(ItemTrackerItem);
 } ItemTrackerItem;
 
+bool HasSong(ItemTrackerItem);
+bool HasQuestItem(ItemTrackerItem);
+bool HasEqItem(ItemTrackerItem);
+
 #define ITEM_TRACKER_ITEM(id, data, drawFunc)     \
     {                                             \
         id, #id, #id "_Faded", data, drawFunc     \
