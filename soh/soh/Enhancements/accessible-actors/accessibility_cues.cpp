@@ -226,6 +226,8 @@ class Spike : protected TerrainCueSound {
 {
     AccessibleActor* actor;
     Vec3f pos;
+    Vec3f prevPos;
+
 
     Vec3s relRot;//Relative angle.
     Vec3s rot;//Actual angle.
@@ -239,6 +241,7 @@ class Spike : protected TerrainCueSound {
     CollisionPoly* floorPoly;
     CollisionPoly* wallPoly;
     s32 wallBgId;
+    f32 wallHeight;
     s32 floorBgId;
     f32 pushedSpeed;
     bool disabled;//Only used for debugging.
@@ -409,7 +412,7 @@ else {
                     temp2 = 1.2f;
                 }
                 pushedYaw = sp3A;
-                pushedSpeed = temp1 / probeSpeed;
+                pushedSpeed = temp1;
                 // Math_StepToF(&pushedSpeed / probeSpeed, temp1, temp2);
             }
         } else
@@ -442,6 +445,36 @@ else {
         return false;
 
     }
+    bool proveClimbableStep()
+    {
+        setVelocity();
+        if (!move(pos, velocity))
+                return false;
+        if (isPushedAway())
+                return false;
+        Vec3f wallPos;
+        if (checkWall(prevPos, pos, wallPos))
+                return false;
+        return true;
+    }
+    bool proveClimbable() {
+        Vec3s ogRot = rot;
+        Vec3f ogPos = pos;
+        pos.y += wallHeight;
+        prevPos = pos;
+        rot.y = ogRot.y + 16384;
+        bool clockwiseTest = proveClimbableStep();
+        rot.y = ogRot.y - 16384;
+        pos = prevPos;
+
+        bool counterclockwiseTest = proveClimbableStep();
+        rot.y = ogRot.y;
+        pos = ogPos;
+
+        return clockwiseTest && counterclockwiseTest;
+
+    }
+
   public:
     // Initialize a TerrainCueDirection based on a relative angle.
     void init(AccessibleActor* actor, Vec3s rot) {
@@ -510,7 +543,7 @@ else {
         rot = ActorAccessibility_ComputeRelativeAngle(&player->actor.world.rot, &relRot);
         pushedSpeed = 0.0;
         pushedYaw = 0;
-        probeSpeed = 1.0;//Experiment with this.
+        probeSpeed = 5.5;//Experiment with this.
         // Draw a line from Link's position to the max detection distance based on the configured relative angle.
         if (!trackingModeStarted)
         pos = player->actor.world.pos;
@@ -535,7 +568,7 @@ else {
             floorBgId = player->actor.floorBgId;
         }
         while (distToTravel >= 0) {
-            Vec3f prevPos = pos;
+            prevPos = pos;
             setVelocity();
             f32 step = fabs(velocity.x + velocity.z);
 
@@ -568,11 +601,14 @@ else {
                 discoverSpike(pos);
                     break;
             }
-            f32 wallHeight = findWallHeight(pos, wallPoly);
+            wallHeight = findWallHeight(pos, wallPoly);
             if(wallHeight <= player->ageProperties->unk_0C) {
                     // Ledge at top of wall can be reached.
-                    if (wallHeight > 10.0)
+                    if (proveClimbable())
                     discoverLedge(pos, true);
+                    else
+                    discoverWall(pos);
+
                     break;
                         }
             if (isHeadOnCollision(pos, velocity))
