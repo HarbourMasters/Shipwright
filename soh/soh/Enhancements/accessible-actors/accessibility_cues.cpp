@@ -225,6 +225,8 @@ class Spike : protected TerrainCueSound {
     class TerrainCueDirection
 {
     AccessibleActor* actor;
+    Vec3f pos;
+
     Vec3s relRot;//Relative angle.
     Vec3s rot;//Actual angle.
     f32 wallCheckHeight;
@@ -241,6 +243,8 @@ class Spike : protected TerrainCueSound {
     f32 pushedSpeed;
     bool disabled;//Only used for debugging.
     bool trackingMode;//A debugging feature which forces Link to move along the probe's path. Used to catch collision violations and other disagreements between how Link moves and how the probe travels.
+    bool trackingModeStarted;
+
 
     s16 pushedYaw;
     union {
@@ -449,6 +453,8 @@ else {
 
         disabled = false;
         trackingMode = false;
+        trackingModeStarted = false;
+
 
     }
     //Move a probe to its next point along a line, ensuring that it remains on the floor. Returns false if the move would put the probe out of bounds. Does not take walls into account.
@@ -506,7 +512,11 @@ else {
         pushedYaw = 0;
         probeSpeed = 1.0;//Experiment with this.
         // Draw a line from Link's position to the max detection distance based on the configured relative angle.
-        Vec3f pos = player->actor.world.pos;
+        if (!trackingModeStarted)
+        pos = player->actor.world.pos;
+        if (trackingMode)
+            trackingModeStarted = true;
+
         f32 distToTravel = detectionDistance;
         if (trackingMode)
             distToTravel = 1.0;
@@ -577,8 +587,12 @@ player->actor.world.pos = pos;
             //Emit sound from the discovered position.
 if (currentSound)
             currentSound->update(pos);
-if (currentSound && trackingMode)
+if (currentSound && trackingMode) {
 disabled = true;
+trackingMode = false;
+trackingModeStarted = false;
+}
+
 
     }
 
