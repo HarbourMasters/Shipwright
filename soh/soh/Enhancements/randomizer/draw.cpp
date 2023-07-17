@@ -197,7 +197,7 @@ extern "C" void Randomizer_DrawOcarinaButton(PlayState* play, GetItemEntry* getI
         cRightButtonColor = CVarGetColor24("gCosmetics.Hud_CRightButton.Value", cRightButtonColor);
     }
 
-    s16 slot = getItemEntry->getItemId - RG_OCARINA_A_BUTTON;
+    s16 slot = getItemEntry->drawItemId - RG_OCARINA_A_BUTTON;
     
     Gfx* dLists[] = {
         (Gfx*)gOcarinaAButtonDL,
