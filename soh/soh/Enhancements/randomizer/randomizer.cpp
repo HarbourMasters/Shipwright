@@ -4435,8 +4435,10 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Skip Scarecrow Song
-                UIWidgets::EnhancementCheckbox(Settings::FreeScarecrow.GetName().c_str(),
-                                               "gRandomizeSkipScarecrowsSong");
+                // Disabled when Shuffle Ocarina Buttons is active
+                bool disableSkipScarecrowsSong = CVarGetInteger("gRandomizeShuffleOcarinaButtons", 0);
+                static const char* disableSkipScarecrowsSongText = "This option is disabled because \"Shuffle Ocarina Buttons\" is enabled";
+                UIWidgets::EnhancementCheckbox(Settings::FreeScarecrow.GetName().c_str(), "gRandomizeSkipScarecrowsSong", disableSkipScarecrowsSong, disableSkipScarecrowsSongText);
                 UIWidgets::InsertHelpHoverText(
                     "Start with the ability to summon Pierre the scarecrow. Pulling out an ocarina in the usual locations will automatically summon him."
                 );
