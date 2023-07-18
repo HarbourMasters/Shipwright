@@ -377,32 +377,71 @@ namespace Logic {
   bool CanPlay(bool hasSong, Song song) {
     switch (song) {
       case Song::SONG_MINUET:
+        if (!OcarinaAButton || !OcarinaCLeftButton || !OcarinaCRightButton || !OcarinaCUpButton) {
+          return false;
+        }
         break;
       case Song::SONG_BOLERO:
+        if (!OcarinaAButton || !OcarinaCRightButton || !OcarinaCDownButton) {
+          return false;
+        }
         break;
       case Song::SONG_SERENADE:
+        if (!OcarinaAButton || !OcarinaCLeftButton || !OcarinaCRightButton  || !OcarinaCDownButton) {
+          return false;
+        }
         break;
       case Song::SONG_REQUIEM:
+        if (!OcarinaAButton || !OcarinaCRightButton || !OcarinaCDownButton) {
+          return false;
+        }
         break;
       case Song::SONG_NOCTURNE:
+        if (!OcarinaAButton || !OcarinaCLeftButton || !OcarinaCRightButton || !OcarinaCDownButton) {
+          return false;
+        }
         break;
       case Song::SONG_PRELUDE:
+        if (!OcarinaCLeftButton || !OcarinaCRightButton || !OcarinaCUpButton) {
+          return false;
+        }
         break;
 
       case Song::SONG_LULLABY:
+        if (!OcarinaCLeftButton || !OcarinaCRightButton || !OcarinaCUpButton) {
+          return false;
+        }
         break;
       case Song::SONG_EPONA:
+        if (!OcarinaCLeftButton || !OcarinaCRightButton || !OcarinaCUpButton) {
+            return false;
+        }
         break;
       case Song::SONG_SARIA:
+        if (!OcarinaCLeftButton || !OcarinaCRightButton || !OcarinaCDownButton) {
+          return false;
+        }
         break;
       case Song::SONG_SUN:
+        if (!OcarinaCRightButton || !OcarinaCUpButton || !OcarinaCDownButton) {
+          return false;
+        }
         break;
       case Song::SONG_TIME:
+        if (!OcarinaAButton || !OcarinaCRightButton || !OcarinaCDownButton) {
+          return false;
+        }
         break;
       case Song::SONG_STORMS:
+        if (!OcarinaAButton || !OcarinaCUpButton || !OcarinaCDownButton) {
+          return false;
+        }
         break;
 
-      case Song::SONG_SCARECROW:
+      case Song::SONG_SCARECROW://you need at least 2 buttons for scarecrow song
+        if (OcarinaAButton + OcarinaCLeftButton + OcarinaCRightButton + OcarinaCUpButton + OcarinaCDownButton < 2) {
+          return false;
+        }
         break;
     }
     return Ocarina && hasSong;
