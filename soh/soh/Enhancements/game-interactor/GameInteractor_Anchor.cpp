@@ -268,8 +268,8 @@ void GameInteractorAnchor::HandleRemoteJson(nlohmann::json payload) {
         auto effect = new GameInteractionEffect::GiveItem();
         effect->parameters[0] = payload["modId"].get<uint16_t>();
         effect->parameters[1] = payload["getItemId"].get<int16_t>();
-        CheckTracker::AddRemoteCheckArea(payload["checkArea"].get<RandomizerCheckArea>());
         CVarSetInteger("gFromGI", 1);
+        CheckTracker::AddItemReceived(ItemTableManager::Instance->RetrieveItemEntry(effect->parameters[0], effect->parameters[1]));
         receivedItems.push_back({ payload["modId"].get<uint16_t>(), payload["getItemId"].get<int16_t>() });
         if (effect->Apply() == Possible) {
             GetItemEntry getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(effect->parameters[0], effect->parameters[1]);
@@ -492,7 +492,7 @@ void Anchor_ParseSaveStateFromRemote(nlohmann::json payload) {
 
     CheckTracker::ClearAreaTotals();
     for (int i = 2; i < RC_MAX; i++) {
-        if (gSaveContext.checkTrackerData[i].status == RCSHOW_SAVED || gSaveContext.checkTrackerData[i].skipped) {
+        if (loadedData.checkTrackerData[i].status == RCSHOW_SAVED || loadedData.checkTrackerData[i].skipped) {
             CheckTracker::AddToChecksCollected(static_cast<RandomizerCheck>(i));
         }
         gSaveContext.checkTrackerData[i].status = loadedData.checkTrackerData[i].status;
@@ -605,7 +605,6 @@ void Anchor_RegisterHooks() {
         payload["type"] = "GIVE_ITEM";
         payload["modId"] = itemEntry.tableId;
         payload["getItemId"] = itemEntry.getItemId;
-        payload["checkArea"] = CheckTracker::GetCheckArea();
 
         GameInteractorAnchor::Instance->TransmitJsonToRemote(payload);
     });
@@ -693,6 +692,9 @@ void Anchor_UpdateCheckData(uint32_t locationIndex) {
     payload["type"] = "UPDATE_CHECK_DATA";
     payload["locationIndex"] = locationIndex;
     payload["checkData"] = gSaveContext.checkTrackerData[locationIndex];
+    if (gSaveContext.checkTrackerData[locationIndex].status == RCSHOW_COLLECTED) {
+        payload["checkData"]["status"] = RCSHOW_SAVED;
+    }
 
     GameInteractorAnchor::Instance->TransmitJsonToRemote(payload);
 }

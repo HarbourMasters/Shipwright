@@ -1,4 +1,4 @@
-#ifdef __cplusplus 
+ï»¿#ifdef __cplusplus 
 #include "randomizer_check_tracker.h"
 #include "randomizer_entrance_tracker.h"
 #include "randomizer_item_tracker.h"
@@ -86,8 +86,6 @@ bool doInitialize;
 bool previousShowHidden = false;
 bool hideShopRightChecks = true;
 
-std::vector<RandomizerCheckArea> remoteAreas;
-
 bool checkCollected = false;
 bool remoteCheckCollected = false;
 int checkLoops = 0;
@@ -107,7 +105,6 @@ std::map<uint32_t, RandomizerCheck> startingShopItem = { { SCENE_KOKIRI_SHOP, RC
                                                          { SCENE_ZOORA, RC_ZD_SHOP_ITEM_1 },
                                                          { SCENE_GOLON, RC_GC_SHOP_ITEM_1 } };
 
-//std::map<RandomizerCheck, RandomizerCheckShow> checkStatusMap;
 std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checksByArea;
 bool areasFullyChecked[RCAREA_INVALID];
 u32 areasSpoiled = 0;
@@ -119,7 +116,8 @@ RandomizerCheck lastItemGetCheck = RC_UNKNOWN_CHECK;
 RandomizerCheck lastLocationChecked = RC_UNKNOWN_CHECK;
 RandomizerCheckArea previousArea = RCAREA_INVALID;
 RandomizerCheckArea currentArea = RCAREA_INVALID;
-RandomizerCheckArea checkArea = RCAREA_INVALID;
+std::vector<RandomizerCheckArea> checkAreas;
+std::vector<GetItemEntry> itemsReceived;
 OSContPad* trackerButtonsPressed;
 SceneID checkScene = SCENE_ID_MAX;
 SceneID lastScene = SCENE_ID_MAX;
@@ -132,7 +130,7 @@ int tickCounter = 0;
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
 bool CompareChecks(RandomizerCheckObject, RandomizerCheckObject);
 void DrawLocation(RandomizerCheckObject);
-bool CheckByArea(RandomizerCheckArea, bool);
+bool CheckByArea(RandomizerCheckArea);
 void EndFloatWindows();
 bool HasItemBeenCollected(RandomizerCheck);
 void LoadSettings();
@@ -169,8 +167,8 @@ Color_RGBA8 Color_Skipped_Main_Default              = { 160, 160, 160, 255 };   
 Color_RGBA8 Color_Skipped_Extra_Default             = { 160, 160, 160, 255 };   // Grey
 Color_RGBA8 Color_Seen_Extra_Default                = { 255, 255, 255, 255 };   // TODO
 Color_RGBA8 Color_Hinted_Extra_Default              = { 255, 255, 255, 255 };   // TODO
-Color_RGBA8 Color_Collected_Extra_Default = { 242, 101, 34, 255 };              // Orange
-Color_RGBA8 Color_Scummed_Extra_Default = { 0, 174, 239, 255 };                 // Blue
+Color_RGBA8 Color_Collected_Extra_Default           = { 242, 101,  34, 255 };   // Orange
+Color_RGBA8 Color_Scummed_Extra_Default             = {   0, 174, 239, 255 };   // Blue
 Color_RGBA8 Color_Saved_Extra_Default               = {   0, 185,   0, 255 };   // Green
 
 Color_RGBA8 Color_Background = { 0, 0, 0, 255 };
@@ -200,30 +198,30 @@ std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT,
 std::map<GetItemID, Text> itemNames = {
     { GI_HOOKSHOT,          Text{ "Hookshot",            "Grappin",                  "Gancho" } },
     { GI_LONGSHOT,          Text{ "Longshot",            "Super-Grappin",            "Supergancho" } },
-    { GI_OCARINA_FAIRY,     Text{ "Fairy Ocarina",       "Ocarina des fées",         "Ocarina de las Hadas" } },
+    { GI_OCARINA_FAIRY,     Text{ "Fairy Ocarina",       "Ocarina des fÃ©es",         "Ocarina de las Hadas" } },
     { GI_OCARINA_OOT,       Text{ "Ocarina of Time",     "Ocarina du Temps",         "Ocarina del Tiempo" } },
     { GI_BOMB_BAG_20,       Text{ "Bomb Bag",            "Sac de Bombes",            "Saco de bombas" } },
-    { GI_BOMB_BAG_30,       Text{ "Bomb Bag Upgrade",    "Sac de Bombes améliorer",  "Saco de bombas mejora" } },
-    { GI_BOMB_BAG_40,       Text{ "Bomb Bag Upgrade",    "Sac de Bombes améliorer",  "Saco de bombas mejora" } },
-    { GI_BOW,               Text{ "Fairy Bow",           "Arc des Fées",             "Arco de las Hadas" } },
-    { GI_QUIVER_40,         Text{ "Quiver Upgrade",      "Carquois améliorer",       "Carcaj grande" } },
-    { GI_QUIVER_50,         Text{ "Quiver Upgrade",      "Carquois améliorer",       "Carcaj grande" } },
-    { GI_SLINGSHOT,         Text{ "Fairy Slingshot",     "Lance-Pierre des Fées",    "Resortera de las hadas" } },
-    { GI_BULLET_BAG_40,     Text{ "Bullet Bag Upgrade",  "Sac de graines améliorer", "Bolsa de semillas deku mejora" } },
-    { GI_BULLET_BAG_50,     Text{ "Bullet Bag Upgrade",  "Sac de graines améliorer", "Bolsa de semillas deku mejora" } },
+    { GI_BOMB_BAG_30,       Text{ "Bomb Bag Upgrade",    "Sac de Bombes amÃ©liorer",  "Saco de bombas mejora" } },
+    { GI_BOMB_BAG_40,       Text{ "Bomb Bag Upgrade",    "Sac de Bombes amÃ©liorer",  "Saco de bombas mejora" } },
+    { GI_BOW,               Text{ "Fairy Bow",           "Arc des FÃ©es",             "Arco de las Hadas" } },
+    { GI_QUIVER_40,         Text{ "Quiver Upgrade",      "Carquois amÃ©liorer",       "Carcaj grande" } },
+    { GI_QUIVER_50,         Text{ "Quiver Upgrade",      "Carquois amÃ©liorer",       "Carcaj grande" } },
+    { GI_SLINGSHOT,         Text{ "Fairy Slingshot",     "Lance-Pierre des FÃ©es",    "Resortera de las hadas" } },
+    { GI_BULLET_BAG_40,     Text{ "Bullet Bag Upgrade",  "Sac de graines amÃ©liorer", "Bolsa de semillas deku mejora" } },
+    { GI_BULLET_BAG_50,     Text{ "Bullet Bag Upgrade",  "Sac de graines amÃ©liorer", "Bolsa de semillas deku mejora" } },
     { GI_BRACELET,          Text{ "Goron's Bracelet",    "Bracelet Goron",           "Brazalete de los Goron" } },
     { GI_GAUNTLETS_SILVER,  Text{ "Silver Gauntlets",    "Gantelets d'argent",       "Guantes de plata" } },
     { GI_GAUNTLETS_GOLD,    Text{ "Golden Gauntlets",    "Gantelets d'or",           "Guantes de oro" } },
-    { GI_SCALE_SILVER,      Text{ "Silver Scale",        "Écaille d'argent",         "Escama de Plata" } },
-    { GI_SCALE_GOLD,        Text{ "Golden Scale",        "Écaille d'or",             "Escama de Oro" } },
+    { GI_SCALE_SILVER,      Text{ "Silver Scale",        "Ã‰caille d'argent",         "Escama de Plata" } },
+    { GI_SCALE_GOLD,        Text{ "Golden Scale",        "Ã‰caille d'or",             "Escama de Oro" } },
     { GI_WALLET_ADULT,      Text{ "Adult Wallet",        "Grande Bourse",            "Bolsa de adulto" } },
-    { GI_WALLET_GIANT,      Text{ "Giant Wallet",        "Bourse de Géant",          "Bolsa gigante" } },
-    { GI_NUT_UPGRADE_30,    Text{ "Deku Nut Capacity",   "Capacité de noix Mojo",    "Capacidad de nueces deku" } },
-    { GI_NUT_UPGRADE_40,    Text{ "Deku Nut Capacity",   "Capacité de noix Mojo",    "Capacidad de nueces deku" } },
-    { GI_STICK_UPGRADE_20,  Text{ "Deku Stick Capacity", "Capacité de Bâtons Mojo",  "Capacidad de palos deku" } },
-    { GI_STICK_UPGRADE_30,  Text{ "Deku Stick Capacity", "Capacité de Bâtons Mojo",  "Capacidad de palos deku" } }
-    //{GI_,                       Text{"Magic Meter",                     "Jauge de Magie",                   "Poder mágico"}},
-    //{RG_ENHANCED_MAGIC_METER,              Text{"Enhanced Magic Meter",            "Jauge de Magie améliorée",         "Poder mágico mejorado"}},
+    { GI_WALLET_GIANT,      Text{ "Giant Wallet",        "Bourse de GÃ©ant",          "Bolsa gigante" } },
+    { GI_NUT_UPGRADE_30,    Text{ "Deku Nut Capacity",   "CapacitÃ© de noix Mojo",    "Capacidad de nueces deku" } },
+    { GI_NUT_UPGRADE_40,    Text{ "Deku Nut Capacity",   "CapacitÃ© de noix Mojo",    "Capacidad de nueces deku" } },
+    { GI_STICK_UPGRADE_20,  Text{ "Deku Stick Capacity", "CapacitÃ© de BÃ¢tons Mojo",  "Capacidad de palos deku" } },
+    { GI_STICK_UPGRADE_30,  Text{ "Deku Stick Capacity", "CapacitÃ© de BÃ¢tons Mojo",  "Capacidad de palos deku" } }
+    //{GI_,                       Text{"Magic Meter",                     "Jauge de Magie",                   "Poder mÃ¡gico"}},
+    //{RG_ENHANCED_MAGIC_METER,              Text{"Enhanced Magic Meter",            "Jauge de Magie amÃ©liorÃ©e",         "Poder mÃ¡gico mejorado"}},
 
 };
 
@@ -274,8 +272,9 @@ void TrySetAreas() {
     }
 }
 
-void SetCheckCollected(RandomizerCheck rc, bool remoteCheck = false) {
-    gSaveContext.checkTrackerData[rc].status = remoteCheck ? RCSHOW_SAVED : RCSHOW_COLLECTED;
+void SetCheckCollected(RandomizerCheck rc) {
+    gSaveContext.checkTrackerData[rc].status = autoSaved ? RCSHOW_SAVED : RCSHOW_COLLECTED;
+    autoSaved = false;
     RandomizerCheckObject rcObj;
     if (rc == RC_GIFT_FROM_SAGES && !gSaveContext.n64ddFlag) {
         rcObj = RCO_RAORU;
@@ -287,8 +286,12 @@ void SetCheckCollected(RandomizerCheck rc, bool remoteCheck = false) {
     } else {
         gSaveContext.checkTrackerData[rc].skipped = false;
     }
-    autoSaved = false;
+    checkAreas.erase(checkAreas.begin());
     SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
+
+#ifdef ENABLE_REMOTE_CONTROL
+    Anchor_UpdateCheckData(rc);
+#endif
 
     doAreaScroll = true;
     UpdateOrdering(rcObj.rcArea);
@@ -351,8 +354,7 @@ RandomizerCheckArea AreaFromEntranceGroup[] = {
 RandomizerCheckArea GetCheckArea() {
     auto scene = static_cast<SceneID>(gPlayState->sceneNum);
     bool grottoScene = (scene == SCENE_KAKUSIANA || scene == SCENE_YOUSEI_IZUMI_TATE);
-    const EntranceData* ent = GetEntranceData(grottoScene ? ENTRANCE_RANDO_GROTTO_EXIT_START + GetCurrentGrottoId()
-                                                          : gSaveContext.entranceIndex);
+    const EntranceData* ent = GetEntranceData(grottoScene ? ENTRANCE_RANDO_GROTTO_EXIT_START + GetCurrentGrottoId() : gSaveContext.entranceIndex);
     RandomizerCheckArea area = RCAREA_INVALID;
     if (ent != nullptr && !IsAreaScene(scene) && ent->type != ENTRANCE_TYPE_DUNGEON) {
         if (ent->source == "Desert Colossus" || ent->destination == "Desert Colossus") {
@@ -383,40 +385,38 @@ std::vector<SceneID> skipScenes = { SCENE_GANON_BOSS, SCENE_GANON_FINAL, SCENE_G
 std::vector<SceneID> scenesToCheck = { SCENE_YOUSEI_IZUMI_YOKO, SCENE_YOUSEI_IZUMI_TATE, SCENE_KAKUSIANA,
                                        SCENE_TOKINOMA, SCENE_SHOP1 };
 
-bool EvaluateCheck(RandomizerCheckObject rco, bool remoteCheck = false) {
+bool EvaluateCheck(RandomizerCheckObject rco) {
     if (HasItemBeenCollected(rco.rc) && gSaveContext.checkTrackerData[rco.rc].status != RCSHOW_COLLECTED &&
         gSaveContext.checkTrackerData[rco.rc].status != RCSHOW_SAVED) {
-        SetCheckCollected(rco.rc, remoteCheck);
+        SetCheckCollected(rco.rc);
         return true;
     }
     return false;
+}
+
+void AddItemReceived(GetItemEntry giEntry) {
+    itemsReceived.push_back(giEntry);
 }
 
 void AddToChecksCollected(RandomizerCheck rc) {
     areaChecksGotten[RandomizerCheckObjects::GetAllRCObjects().find(rc)->second.rcArea]++;
 }
 
-bool CheckByArea(RandomizerCheckArea area, bool remoteCheck) {
+void StartChecking() {
+    checkCounter = 0;
+}
+
+bool CheckByArea(RandomizerCheckArea area = RCAREA_INVALID) {
     if (area == RCAREA_INVALID) {
-        area = GetCheckArea();
+        area = checkAreas.front();
     }
     if (area != RCAREA_INVALID) {
         auto areaChecks = checksByArea.find(area)->second;
-        if (remoteCheck) {
-            if (remoteCheckCounter >= areaChecks.size()) {
-                remoteCheckCounter = 0;
-                remoteCheckLoops++;
-            }
-            auto rco = areaChecks.at(remoteCheckCounter);
-            return EvaluateCheck(rco, remoteCheck);
-        } else {
-            if (checkCounter >= areaChecks.size()) {
-                checkCounter = 0;
-                checkLoops++;
-            }
-            auto rco = areaChecks.at(checkCounter);
-            return EvaluateCheck(rco);
+        if (checkCounter >= areaChecks.size()) {
+            checkCounter = 0;
         }
+        auto rco = areaChecks.at(checkCounter);
+        return EvaluateCheck(rco);
     }
 }
 
@@ -522,10 +522,6 @@ bool HasItemBeenCollected(RandomizerCheck rc) {
     return false;
 }
 
-void AddRemoteCheckArea(RandomizerCheckArea area) {
-    remoteAreas.push_back(area);
-}
-
 void ClearAreaTotals() {
     for (auto& [rcArea, vec] : checksByArea) {
         areaChecksGotten[rcArea] = 0;
@@ -535,7 +531,7 @@ void ClearAreaTotals() {
 void CheckTrackerDialogClosed() {
     if (messageCloseCheck) {
         messageCloseCheck = false;
-        checkCollected = true;
+        StartChecking();
     }
 }
 
@@ -559,7 +555,7 @@ void CheckTrackerTransition(uint32_t sceneNum) {
     gSaveContext;
     if (transitionCheck) {
         transitionCheck = false;
-        checkCollected = true;
+        StartChecking();
     }
     doAreaScroll = true;
     previousArea = currentArea;
@@ -581,30 +577,14 @@ void CheckTrackerFrame() {
     if (!IsGameRunning()) {
         return;
     }
-    if (!remoteAreas.empty()) {
+    if (!checkAreas.empty()) {
         for (int i = 0; i < 10; i++) {
-            if (CheckByArea(remoteAreas.front(), true)) {
-                remoteAreas.erase(remoteAreas.begin());
-                remoteCheckCounter = 0;
-                break;
-            } else {
-                remoteCheckCounter++;
-            }
-        }
-    }
-    if (checkCollected) {
-        for (int i = 0; i < 10; i++) {
-            if (CheckByArea(GetCheckArea(), false)) {
-                checkCollected = false;
+            if (CheckByArea()) {
                 checkCounter = 0;
                 break;
             } else {
                 checkCounter++;
             }
-        }
-        if (checkLoops > 15) {
-            checkCollected = false;
-            checkLoops = 0;
         }
     }
     if (savedFrames > 0 && !pendingSaleCheck) {
@@ -615,7 +595,7 @@ void CheckTrackerFrame() {
 void CheckTrackerSaleEnd(GetItemEntry giEntry) {
     if (pendingSaleCheck) {
         pendingSaleCheck = false;
-        checkCollected = true;
+        StartChecking();
     }
 }
 
@@ -623,8 +603,12 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
     if (!IsGameRunning() || vector_contains_scene(skipScenes, gPlayState->sceneNum)) {
         return;
     }
-    if (!remoteAreas.empty()) {
-        return;
+    if (!itemsReceived.empty()) {
+        auto remoteEntry = itemsReceived.back();
+        if (remoteEntry.modIndex == giEntry.modIndex && remoteEntry.getItemId == giEntry.getItemId) {
+            itemsReceived.pop_back();
+            return;
+        }
     }
     auto scene = static_cast<SceneID>(gPlayState->sceneNum);
     // Vanilla special item checks
@@ -702,27 +686,16 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
         }
     }
     checkScene = scene;
-    checkArea = GetCheckArea();
-    if (gSaveContext.pendingSale != ITEM_NONE) {
-        pendingSaleCheck = true;
-        return;
-    }
+    auto checkArea = GetCheckArea();
     if (scene == SCENE_SPOT11 && (gSaveContext.entranceIndex == 485 || gSaveContext.entranceIndex == 489)) {
-        if (EvaluateCheck(
-                RandomizerCheckObjects::GetAllRCObjects().find(RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST)->second) ||
-            EvaluateCheck(
-                RandomizerCheckObjects::GetAllRCObjects().find(RC_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST)->second)) {
+        if (EvaluateCheck(RandomizerCheckObjects::GetAllRCObjects().find(RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST)->second) ||
+            EvaluateCheck(RandomizerCheckObjects::GetAllRCObjects().find(RC_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST)->second)) {
             return;
         }
     }
-    if (GET_PLAYER(gPlayState) == nullptr) {
-        transitionCheck = true;
-        return;
-    }
     RandomizerCheck rc = RC_UNKNOWN_CHECK;
     if (gPlayState->lastCheck != nullptr) {
-        rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(gPlayState->lastCheck->id, scene,
-                                                                  gPlayState->lastCheck->params);
+        rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(gPlayState->lastCheck->id, scene,  gPlayState->lastCheck->params);
     }
     if (rc == RC_UNKNOWN_CHECK) {
         if (scene == SCENE_YOUSEI_IZUMI_YOKO) {
@@ -743,15 +716,9 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
             }
         }
     }
-    if (gPlayState->msgCtx.msgMode != MSGMODE_NONE && rc != RC_UNKNOWN_CHECK) {
-        RandomizerCheckObject rco = RandomizerCheckObjects::GetAllRCObjects().find(rc)->second;
-        if (!(rco.rcType == RCTYPE_SKULL_TOKEN && giEntry.itemId == ITEM_SKULL_TOKEN)) {
-            messageCloseCheck = true;
-            return;
-        }
-    }
     if (gSaveContext.n64ddFlag || (!gSaveContext.n64ddFlag && giEntry.getItemCategory != ITEM_CATEGORY_JUNK)) {
-        checkCollected = true;
+        checkAreas.push_back(checkArea);
+        StartChecking();
     }
 }
 
@@ -874,7 +841,6 @@ void Teardown() {
     areasSpoiled = 0;
     checkCollected = false;
     checkLoops = 0;
-    remoteAreas.clear();
 
     lastLocationChecked = RC_UNKNOWN_CHECK;
 }
