@@ -1,9 +1,14 @@
 <DisplayList Version="0">
 	<ClearGeometryMode G_LIGHTING="1" />
 	<LoadVertices Path="objects/object_ocarina_c_left_button/gOcarinaCLeftButtonDL_vtx_cull" VertexBufferIndex="0" VertexOffset="0" Count="8"/>
+	<SetGeometryMode G_LIGHTING="1" />
 	<CullDisplayList Start="0" End="7"/>
-	<CallDisplayList Path="objects/object_ocarina_c_left_button/mat_gOcarinaCLeftButtonDL_material"/>
+	<CallDisplayList Path="objects/object_ocarina_c_left_button/mat_gOcarinaCLeftButtonDL_f3dlite_ocarina_C_button_surface"/>
 	<CallDisplayList Path="objects/object_ocarina_c_left_button/gOcarinaCLeftButtonDL_tri_0"/>
+	<CallDisplayList Path="objects/object_ocarina_c_left_button/mat_revert_gOcarinaCLeftButtonDL_f3dlite_ocarina_C_button_surface"/>
+	<CallDisplayList Path="objects/object_ocarina_c_left_button/mat_gOcarinaCLeftButtonDL_f3dlite_ocarina_C_button_edge"/>
+	<CallDisplayList Path="objects/object_ocarina_c_left_button/gOcarinaCLeftButtonDL_tri_1"/>
+	<CallDisplayList Path="objects/object_ocarina_c_left_button/mat_revert_gOcarinaCLeftButtonDL_f3dlite_ocarina_C_button_edge"/>
 	<PipeSync/>
 	<SetGeometryMode G_LIGHTING="1" />
 	<ClearGeometryMode G_TEXTURE_GEN="1" />

@@ -1955,57 +1955,57 @@ void HintTable_Init_Item() {
 
     hintTable[OCARINA_A_BUTTON] = HintText::Item({
                        //obscure text
-                       Text{"a cyclinder", /*french*/"!!!", /*spanish*/"un cilindro"},
+                       Text{"a cyclinder", /*french*/"un cylindre", /*spanish*/"un cilindro"},
                      }, {
                        //ambiguous text
-                       Text{"something melodic", /*french*/"!!!", /*spanish*/"algo melódico"},
+                       Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"},
                      },
                        //clear text
-                       Text{"an Ocarina A Button", /*french*/"!!!", /*spanish*/"un botón A de Ocarina"}
+                       Text{"an Ocarina A Button", /*french*/"la Touche A de l'Ocarina", /*spanish*/"un botón A de Ocarina"}
     );
 
     hintTable[OCARINA_C_LEFT_BUTTON] = HintText::Item({
                        //obscure text
-                       Text{"a cyclinder", /*french*/"!!!", /*spanish*/"un cilindro"},
+                       Text{"a cyclinder", /*french*/"un cylindre", /*spanish*/"un cilindro"},
                      }, {
                        //ambiguous text
-                       Text{"something melodic", /*french*/"!!!", /*spanish*/"algo melódico"},
+                       Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"},
                      },
                        //clear text
-                       Text{"an Ocarina C Left Button", /*french*/"!!!", /*spanish*/"un botón C izquierdo de Ocarina"}
+                       Text{"an Ocarina C Left Button", /*french*/"la Touche C-Gauche de l'Ocarina", /*spanish*/"un botón C izquierdo de Ocarina"}
     );
 
     hintTable[OCARINA_C_RIGHT_BUTTON] = HintText::Item({
                        //obscure text
-                       Text{"a cyclinder", /*french*/"!!!", /*spanish*/"un cilindro"},
+                       Text{"a cyclinder", /*french*/"un cylindre", /*spanish*/"un cilindro"},
                      }, {
                        //ambiguous text
-                       Text{"something melodic", /*french*/"!!!", /*spanish*/"algo melódico"},
+                       Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"},
                      },
                        //clear text
-                       Text{"an Ocarina C Right Button", /*french*/"!!!", /*spanish*/"un botón C derecho de Ocarina"}
+                       Text{"an Ocarina C Right Button", /*french*/"la Touche C-Droit de l'Ocarina", /*spanish*/"un botón C derecho de Ocarina"}
     );
 
     hintTable[OCARINA_C_UP_BUTTON] = HintText::Item({
                        //obscure text
-                       Text{"a cyclinder", /*french*/"!!!", /*spanish*/"un cilindro"},
+                       Text{"a cyclinder", /*french*/"un cylindre", /*spanish*/"un cilindro"},
                      }, {
                        //ambiguous text
-                       Text{"something melodic", /*french*/"!!!", /*spanish*/"algo melódico"},
+                       Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"},
                      },
                        //clear text
-                       Text{"an Ocarina C Up Button", /*french*/"!!!", /*spanish*/"un botón C superior de Ocarina"}
+                       Text{"an Ocarina C Up Button", /*french*/"la Touche C-Haut de l'Ocarina", /*spanish*/"un botón C superior de Ocarina"}
     );
 
     hintTable[OCARINA_C_DOWN_BUTTON] = HintText::Item({
                        //obscure text
-                       Text{"a cyclinder", /*french*/"!!!", /*spanish*/"un cilindro"},
+                       Text{"a cyclinder", /*french*/"un cylindre", /*spanish*/"un cilindro"},
                      }, {
                        //ambiguous text
-                       Text{"something melodic", /*french*/"!!!", /*spanish*/"algo melódico"},
+                       Text{"something melodic", /*french*/"quelque chose de mélodieux", /*spanish*/"algo melódico"},
                      },
                        //clear text
-                       Text{"an Ocarina C Down Button", /*french*/"!!!", /*spanish*/"un botón C inferior de Ocarina"}
+                       Text{"an Ocarina C Down Button", /*french*/"la Touche C-Bas de l'Ocarina", /*spanish*/"un botón C inferior de Ocarina"}
     );
 
     // [HINT_ERROR] = HintText::Item({
