@@ -10,6 +10,7 @@
 #include "soh/Enhancements/enemyrandomizer.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/nametag.h"
 
 #include "soh/ActorDB.h"
 
@@ -1212,6 +1213,8 @@ void Actor_Init(Actor* actor, PlayState* play) {
         //Actor_SetObjectDependency(play, actor);
         actor->init(actor, play);
         actor->init = NULL;
+
+        GameInteractor_ExecuteOnActorInit(actor);
 
         // For enemy health bar we need to know the max health during init
         if (actor->category == ACTORCAT_ENEMY) {
