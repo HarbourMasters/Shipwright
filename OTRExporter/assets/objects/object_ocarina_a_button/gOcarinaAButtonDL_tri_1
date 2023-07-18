@@ -1,5 +1,5 @@
 <DisplayList Version="0">
-	<LoadVertices Path="objects/object_ocarina_a_button//gOcarinaAButtonDL_vtx_1" VertexBufferIndex="0" VertexOffset="0" Count="31"/>
+	<LoadVertices Path="objects/object_ocarina_a_button/gOcarinaAButtonDL_vtx_1" VertexBufferIndex="0" VertexOffset="0" Count="31"/>
 	<Triangles2 V00="0" V01="1" V02="2" Flag0="0" V10="3" V11="4" V12="5" Flag1="0"/>
 	<Triangles2 V00="6" V01="3" V02="5" Flag0="0" V10="6" V11="5" V12="7" Flag1="0"/>
 	<Triangles2 V00="5" V01="8" V02="7" Flag0="0" V10="7" V11="9" V12="6" Flag1="0"/>
