@@ -336,6 +336,12 @@ class Spike : protected TerrainCueSound {
     f32 findWallHeight(Vec3f& pos, CollisionPoly* poly) {
         Player* player = GET_PLAYER(actor->play);
         f32 wallHeight;
+        if (ABS(wallPoly->normal.y) >= 600)
+        {
+            wallHeight = 399.96002f;
+            return wallHeight;
+
+        }
         D_80854798.y = 18.0f;
         D_80854798.z = player->ageProperties->unk_38 + 10.0f;
         f32 wallYaw = Math_Atan2S(poly->normal.z, poly->normal.x);
@@ -461,6 +467,24 @@ else {
         Vec3s ogRot = rot;
         Vec3f ogPos = pos;
         pos.y += wallHeight;
+//Find the floor up here.
+        probeSpeed = 1.0;
+        bool foundFloor = false;
+        for (int i = 0; i < 100; i++) {
+                setVelocity();
+                if (!move(pos, velocity))
+                return false;
+                if (pos.y >= ogPos.y + wallHeight) {
+                foundFloor = true;
+                break;
+                } else
+                pos.y = ogPos.y + wallHeight;
+
+        }
+        probeSpeed = 5.5;
+
+        if (!foundFloor)
+                return false;
         prevPos = pos;
         rot.y = ogRot.y + 16384;
         bool clockwiseTest = proveClimbableStep();
@@ -606,10 +630,10 @@ else {
             wallHeight = findWallHeight(pos, wallPoly);
             if(wallHeight <= player->ageProperties->unk_0C) {
                     // Ledge at top of wall can be reached.
-                    if (proveClimbable())
+                    //if (proveClimbable())
                     discoverLedge(pos, true);
-                    else
-                    discoverWall(pos);
+                    //else
+                    //discoverWall(pos);
 
                     break;
                         }
