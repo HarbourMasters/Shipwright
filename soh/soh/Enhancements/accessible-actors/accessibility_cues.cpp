@@ -474,7 +474,7 @@ else {
                 setVelocity();
                 if (!move(pos, velocity))
                 return false;
-                if (pos.y >= ogPos.y + wallHeight) {
+                if (pos.y >= ogPos.y + wallHeight-10) {
                 foundFloor = true;
                 break;
                 } else
@@ -497,7 +497,7 @@ else {
         rot.y = ogRot.y;
         pos = ogPos;
 
-        return clockwiseTest && counterclockwiseTest && fabs(clockwiseY - counterclockwiseY) < 10.0;
+        return clockwiseTest && counterclockwiseTest && (fabs(clockwiseY - counterclockwiseY) < 10.0 || fabs(clockwiseY - counterclockwiseY)>wallHeight-5.0);
 
     }
 
@@ -630,10 +630,12 @@ else {
             wallHeight = findWallHeight(pos, wallPoly);
             if(wallHeight <= player->ageProperties->unk_0C) {
                     // Ledge at top of wall can be reached.
-                    //if (proveClimbable())
+                if (proveClimbable()) {
                     discoverLedge(pos, true);
-                    //else
-                    //discoverWall(pos);
+                } else {
+                    discoverWall(pos);
+                }
+                    
 
                     break;
                         }
