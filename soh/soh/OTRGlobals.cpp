@@ -240,22 +240,32 @@ OTRGlobals::OTRGlobals() {
 
     std::string modOrderJsonPath = LUS::Context::GetPathRelativeToAppBundle("load-order.json");
     if (std::filesystem::exists(modOrderJsonPath)) {
-        std::cout << "\nMod file located at: " << modOrderJsonPath;
+        spdlog::info("\nMod file located at: {}", modOrderJsonPath);
         std::ifstream modJson(modOrderJsonPath);
         json modData = json::parse(modJson);
         std::string modCountStr = modData.at("List-size");
         int modCountInt = std::stoi(modCountStr);
-        std::cout << "\nMod order size is: " << modCountInt + 1 << "\n";
+        spdlog::info("\nMod order size is: {} ", modCountInt + 1, "\n");
         int iter_count = 0;
         while (iter_count <= modCountInt) {
-              if (std::filesystem::exists(modData.at(std::to_string(iter_count)))) {
-                  std::cout << "\nMod found in: " << modData.at(std::to_string(iter_count)) << "\n";
-                  OTRFiles.push_back(modData.at(std::to_string(iter_count)));
-              }
-              iter_count += 1;
+            if (std::filesystem::exists(modData.at(std::to_string(iter_count)))) {
+                spdlog::info("\nMod found in: {}{}", modData.at(std::to_string(iter_count)), "\n");
+                OTRFiles.push_back(modData.at(std::to_string(iter_count)));
+            }
+            iter_count += 1;
         }
     } else {
-        std::cout << "Could not find JSON file";
+        spdlog::warn("\nCould not find 'load-order.json' file, loading from mods folder...\n");
+        std::string patchesPath = LUS::Context::GetPathRelativeToAppDirectory("mods");
+        if (patchesPath.length() > 0 && std::filesystem::exists(patchesPath)) {
+            if (std::filesystem::is_directory(patchesPath)) {
+                for (const auto& p : std::filesystem::recursive_directory_iterator(patchesPath)) {
+                    if (StringHelper::IEquals(p.path().extension().string(), ".otr")) {
+                        OTRFiles.push_back(p.path().generic_string());
+                    }
+                }
+            }
+        }
     }
 
     std::unordered_set<uint32_t> ValidHashes = { 
