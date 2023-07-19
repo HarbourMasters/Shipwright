@@ -224,22 +224,13 @@ OTRGlobals::OTRGlobals() {
     if (std::filesystem::exists(sohOtrPath)) {
         OTRFiles.push_back(sohOtrPath);
     }
-    //Old Method Start
-    // std::string patchesPath = LUS::Context::GetPathRelativeToAppDirectory("mods");
-    // if (patchesPath.length() > 0 && std::filesystem::exists(patchesPath)) {
-    //     if (std::filesystem::is_directory(patchesPath)) {
-    //         for (const auto& p : std::filesystem::recursive_directory_iterator(patchesPath)) {
-    //             if (StringHelper::IEquals(p.path().extension().string(), ".otr")) {
-    //                 OTRFiles.push_back(p.path().generic_string());
-    //             }
-    //         }
-    //     }
-    // }
-    //Old Method Ends
-    //New Method
 
+    //Attempts to find a 'load-order.json' file, if it fails to find one it will fallback to the previous behavior of how mods are loaded.
     std::string modOrderJsonPath = LUS::Context::GetPathRelativeToAppBundle("load-order.json");
     if (std::filesystem::exists(modOrderJsonPath)) {
+        //Ideally I would like to put some sort of error handling here to prevent improperly formated .json files from preventing the program from running.
+        //(example: when its looking for non-existant indexes.)
+        //If anyone knows how to go about that in a way that the game continues execution please feel free.
         spdlog::info("\nMod file located at: {}", modOrderJsonPath);
         std::ifstream modJson(modOrderJsonPath);
         json modData = json::parse(modJson);
@@ -261,6 +252,7 @@ OTRGlobals::OTRGlobals() {
             if (std::filesystem::is_directory(patchesPath)) {
                 for (const auto& p : std::filesystem::recursive_directory_iterator(patchesPath)) {
                     if (StringHelper::IEquals(p.path().extension().string(), ".otr")) {
+                        spdlog::info("\nMod Found in: {}{}", p.path().generic_string(), "\n");
                         OTRFiles.push_back(p.path().generic_string());
                     }
                 }
