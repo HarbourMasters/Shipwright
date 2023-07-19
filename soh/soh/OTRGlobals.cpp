@@ -245,9 +245,9 @@ OTRGlobals::OTRGlobals() {
         json modData = json::parse(modJson);
         std::string modCountStr = modData.at("List-size");
         int modCountInt = std::stoi(modCountStr);
-        std::cout << "\nMod order size is: " << modCountInt << "\n";
+        std::cout << "\nMod order size is: " << modCountInt + 1 << "\n";
         int iter_count = 0;
-        while (iter_count < modCountInt) {
+        while (iter_count <= modCountInt) {
               if (std::filesystem::exists(modData.at(std::to_string(iter_count)))) {
                   std::cout << "\nMod found in: " << modData.at(std::to_string(iter_count)) << "\n";
                   OTRFiles.push_back(modData.at(std::to_string(iter_count)));
