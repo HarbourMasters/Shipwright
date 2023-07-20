@@ -96,6 +96,7 @@ std::map<RandomizerCheck, RandomizerCheckObject> rcObjects = {
 
     RC_OBJECT(RC_LH_CHILD_FISHING,                                            RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_LAKE_HYLIA,             ACTOR_ID_MAX,       SCENE_TURIBORI,                       0x00,                        GI_NONE,             "Child Fishing", "LH Child Fishing"),
     RC_OBJECT(RC_LH_ADULT_FISHING,                                            RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_LAKE_HYLIA,             ACTOR_ID_MAX,       SCENE_TURIBORI,                       0x00,                        GI_NONE,             "Adult Fishing", "LH Adult Fishing"),
+    RC_OBJECT(RC_LH_HYLIAN_LOACH,                                             RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_LAKE_HYLIA,             ACTOR_ID_MAX,       SCENE_TURIBORI,                       0x00,                        GI_NONE,             "Hylian Loach Reward", "LH Hylian Loach Reward"),
     RC_OBJECT(RC_LH_LAB_DIVE,                                                 RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_LAKE_HYLIA,             ACTOR_ID_MAX,       SCENE_HYLIA_LABO,                     0x00,                        GI_NONE,             "Lab Dive", "LH Lab Dive"),
     RC_OBJECT(RC_LH_TRADE_FROG,                                               RCVORMQ_BOTH,    RCTYPE_ADULT_TRADE,  RCAREA_LAKE_HYLIA,             ACTOR_ID_MAX,       SCENE_HYLIA_LABO,                     0x00,                        GI_NONE,             "Lab Trade Eyeball Frog", "LH Lab Trade Eyeball Frog"),
     RC_OBJECT(RC_LH_UNDERWATER_ITEM,                                          RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_LAKE_HYLIA,             ACTOR_ID_MAX,       SCENE_SPOT06,                         0x00,                        GI_NONE,             "Underwater Item", "LH Underwater Item"),
@@ -953,6 +954,7 @@ void RandomizerCheckObjects::UpdateImGuiVisibility() {
             (locationIt.rcType != RCTYPE_COW || CVarGetInteger("gRandomizeShuffleCows", RO_GENERIC_NO)) &&
             (locationIt.rcType != RCTYPE_ADULT_TRADE || CVarGetInteger("gRandomizeShuffleAdultTrade", RO_GENERIC_NO)) &&
             (locationIt.rc != RC_KF_KOKIRI_SWORD_CHEST || CVarGetInteger("gRandomizeShuffleKokiriSword", RO_GENERIC_NO)) &&
+            (locationIt.rc != RC_LH_HYLIAN_LOACH || CVarGetInteger("gRandomizeShuffleHylianLoachReward", RO_GENERIC_NO)) &&
             (locationIt.rc != RC_ZR_MAGIC_BEAN_SALESMAN || CVarGetInteger("gRandomizeShuffleBeans", RO_GENERIC_NO)) &&
             (locationIt.rc != RC_HC_MALON_EGG || CVarGetInteger("gRandomizeShuffleWeirdEgg", RO_GENERIC_NO)) &&
             (locationIt.rcType != RCTYPE_FROG_SONG || CVarGetInteger("gRandomizeShuffleFrogSongRupees", RO_GENERIC_NO)) &&

@@ -740,6 +740,12 @@ void GenerateItemPool() {
     PlaceItemInLocation(ZR_FROGS_SONG_OF_TIME, PURPLE_RUPEE, false, true);
   }
 
+  if (ShuffleHylianLoachReward) {
+    AddItemToMainPool(PURPLE_RUPEE);
+  } else {
+    PlaceItemInLocation(LH_HYLIAN_LOACH, PURPLE_RUPEE, false, true);
+  }
+
   if (ShuffleAdultTradeQuest) {
     AddItemToMainPool(POCKET_EGG);
     AddItemToMainPool(COJIRO);

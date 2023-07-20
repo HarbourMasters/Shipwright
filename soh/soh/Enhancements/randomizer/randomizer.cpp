@@ -261,6 +261,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
     { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS },
     { "Shuffle Settings:Shuffle Kokiri Sword", RSK_SHUFFLE_KOKIRI_SWORD },
+    { "Shuffle Settings:Shuffle Hylian Loach Reward", RSK_SHUFFLE_HYLIAN_LOACH_REWARD },
     { "Shuffle Settings:Shuffle Weird Egg", RSK_SHUFFLE_WEIRD_EGG },
     { "Shuffle Settings:Shuffle Frog Song Rupees", RSK_SHUFFLE_FROG_SONG_RUPEES },
     { "Shuffle Settings:Shuffle Merchants", RSK_SHUFFLE_MERCHANTS },
@@ -820,6 +821,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHUFFLE_ADULT_TRADE:
                     case RSK_SHUFFLE_MAGIC_BEANS:
                     case RSK_SHUFFLE_KOKIRI_SWORD:
+                    case RSK_SHUFFLE_HYLIAN_LOACH_REWARD:
                     case RSK_SHUFFLE_WEIRD_EGG:
                     case RSK_SHUFFLE_FROG_SONG_RUPEES:
                     case RSK_SHUFFLE_100_GS_REWARD:
@@ -2989,6 +2991,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
                                             CVarGetInteger("gRandomizeShuffleWeirdEgg", 0));
     cvarSettings[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] = CVarGetInteger("gRandomizeShuffleGerudoToken", 0);
     cvarSettings[RSK_SHUFFLE_FROG_SONG_RUPEES] = CVarGetInteger("gRandomizeShuffleFrogSongRupees", 0);
+    cvarSettings[RSK_SHUFFLE_HYLIAN_LOACH_REWARD] = CVarGetInteger("gRandomizeShuffleHylianLoachReward", 0);
     cvarSettings[RSK_ITEM_POOL] = CVarGetInteger("gRandomizeItemPool", RO_ITEM_POOL_BALANCED);
     cvarSettings[RSK_ICE_TRAPS] = CVarGetInteger("gRandomizeIceTraps", RO_ICE_TRAPS_NORMAL);
     cvarSettings[RSK_TOT_ALTAR_HINT] = CVarGetInteger("gRandomizeAltarHint", RO_GENERIC_ON);
@@ -3977,6 +3980,15 @@ void RandomizerSettingsWindow::DrawElement() {
                     "\n"
                     "This setting does not effect the item earned from playing\n"
                     "the Song of Storms and the frog song minigame."
+                );
+
+                UIWidgets::PaddedSeparator();
+
+                // Shuffle Hylian Loach Reward
+                UIWidgets::EnhancementCheckbox(Settings::ShuffleHylianLoachReward.GetName().c_str(), "gRandomizeShuffleHylianLoachReward");
+                UIWidgets::InsertHelpHoverText(
+                    "Shuffles a Purple Rupee into to the item pool, and allows\n"
+                    "you to earn an item by catching the hylian loach at the fishing pond."
                 );
 
                 UIWidgets::PaddedSeparator();

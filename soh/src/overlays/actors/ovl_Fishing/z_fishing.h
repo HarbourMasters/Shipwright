@@ -58,6 +58,9 @@ typedef struct Fishing {
     /* 0x0220 */ LightInfo lightInfo;
     /* 0x0230 */ ColliderJntSph collider;
     /* 0x0250 */ ColliderJntSphElement colliderElements[12];
-} Fishing; // size = 0x0550
+
+    //SOH
+    /* 0x0550 */ u8 caughtHylianLoach;
+} Fishing; // size = 0x0551
 
 #endif

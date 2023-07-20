@@ -4921,27 +4921,27 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                     switch (play->msgCtx.choiceIndex) {
                         case 0:
                             if (D_80B7A670 == 0.0f) {
-                                this->actor.textId = 0x408C;
+                                this->actor.textId = 0x408C;//no fish
                                 this->unk_15C = 20;
                             } else if (D_80B7E07C == 0 && !gSaveContext.n64ddFlag) {
                                 D_80B7A678 = D_80B7A670;
                                 if ((s16)D_80B7E078 < (s16)D_80B7A670) {
                                     if (D_80B7E07E == 2) {
-                                        this->actor.textId = 0x40B0;
+                                        this->actor.textId = 0x40B0;//new record with sinking lure
                                     } else {
-                                        this->actor.textId = 0x4086;
+                                        this->actor.textId = 0x4086;//new record
                                     }
                                     this->unk_15C = 11;
                                 } else {
-                                    this->actor.textId = 0x408B;
+                                    this->actor.textId = 0x408B;//there's bigger fishes
                                     this->unk_15C = 20;
                                 }
-                            } else if (!gSaveContext.n64ddFlag) {
-                                this->actor.textId = 0x409B;
+                            } else if (!gSaveContext.n64ddFlag || Randomizer_GetSettingValue(RSK_SHUFFLE_HYLIAN_LOACH_REWARD)) {
+                                this->actor.textId = 0x409B;//loach
                                 this->unk_15C = 11;
-                            }
-                            else {
-                                this->actor.textId = 0x4086;
+                                this->caughtHylianLoach = 1;
+                            } else {
+                                this->actor.textId = 0x4086;//new record
                                 this->unk_15C = 11;
                             }
                             Message_ContinueTextbox(play, this->actor.textId);
@@ -5073,7 +5073,14 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                         }
                     }
                 } else {
-                    getItemId = GI_RUPEE_PURPLE;
+                    if (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_CAUGHT_LOACH)) {
+                        Flags_SetRandomizerInf(RAND_INF_CAUGHT_LOACH);
+                        getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_HYLIAN_LOACH, GI_RUPEE_PURPLE);
+                        getItemId = getItemEntry.getItemId;
+                    } else {
+                        getItemId = GI_RUPEE_PURPLE;
+                    }
+                    
                     D_80B7A670 = 0.0f;
                 }
 

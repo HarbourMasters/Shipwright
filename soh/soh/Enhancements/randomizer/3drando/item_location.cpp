@@ -54,6 +54,7 @@ void LocationTable_Init() {
     //Lake Hylia
     locationTable[LH_CHILD_FISHING]                      = ItemLocation::Base       (RC_LH_CHILD_FISHING,                           0x49, 0x3E, "LH Child Fishing",                     LH_CHILD_FISHING,                      PIECE_OF_HEART,            {Category::cLakeHylia, Category::cMinigame,},                                                                         SpoilerCollectionCheck::Fishing(0x02),                   SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
     locationTable[LH_ADULT_FISHING]                      = ItemLocation::Base       (RC_LH_ADULT_FISHING,                           0x49, 0x38, "LH Adult Fishing",                     LH_ADULT_FISHING,                      PROGRESSIVE_SCALE,         {Category::cLakeHylia, Category::cMinigame,},                                                                         SpoilerCollectionCheck::Fishing(0x03),                   SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
+    locationTable[LH_HYLIAN_LOACH]                       = ItemLocation::Base       (RC_LH_HYLIAN_LOACH,                            0x49, 0x44, "LH Hylian Loach Reward",               LH_HYLIAN_LOACH,                       PURPLE_RUPEE,              {Category::cLakeHylia, Category::cMinigame,},                                                                         SpoilerCollectionCheck::RandomizerInf(0x49, 0x1F),       SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
     locationTable[LH_LAB_DIVE]                           = ItemLocation::Base       (RC_LH_LAB_DIVE,                                0x38, 0x3E, "LH Lab Dive",                          LH_LAB_DIVE,                           PIECE_OF_HEART,            {Category::cLakeHylia,},                                                                                              SpoilerCollectionCheck::ItemGetInf(24),                  SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
     locationTable[LH_TRADE_FROG]                         = ItemLocation::Base       (RC_LH_TRADE_FROG,                              0x38, 0x25, "LH Lab Trade Eyeball Frog",            LH_TRADE_FROG,                         EYEDROPS,                  {Category::cLakeHylia, Category::cAdultTrade},                                                                        SpoilerCollectionCheck::RandomizerInf(0x38, 0x1F),       SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
     locationTable[LH_UNDERWATER_ITEM]                    = ItemLocation::Base       (RC_LH_UNDERWATER_ITEM,                         0x57, 0x15, "LH Underwater Item",                   LH_UNDERWATER_ITEM,                    RUTOS_LETTER,              {Category::cLakeHylia,},                                                                                              SpoilerCollectionCheck::EventChkInf(0x31),               SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
@@ -1179,6 +1180,7 @@ std::vector<uint32_t> overworldLocations = {
   //Lake Hylia
   LH_CHILD_FISHING,
   LH_ADULT_FISHING,
+  LH_HYLIAN_LOACH,
   LH_LAB_DIVE,
   LH_TRADE_FROG,
   LH_UNDERWATER_ITEM,

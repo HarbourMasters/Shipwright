@@ -154,6 +154,8 @@ extern string_view merchantsHintsDesc;
 
 extern string_view frogSongRupeesDesc;
 
+extern string_view hylianLoachRewardDesc;
+
 extern string_view adultTradeDesc;
 
 extern string_view chestMinigameDesc;

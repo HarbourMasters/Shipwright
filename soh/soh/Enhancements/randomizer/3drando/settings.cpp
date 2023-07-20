@@ -193,6 +193,7 @@ namespace Settings {
   Option ShuffleMagicBeans      = Option::Bool("Shuffle Magic Beans",    {"Off", "On"},                                                     {magicBeansDesc});
   Option ShuffleMerchants       = Option::U8  ("Shuffle Merchants",      {"Off", "On (No Hints)", "On (With Hints)"},                       {merchantsDesc, merchantsHintsDesc});
   Option ShuffleFrogSongRupees  = Option::Bool("Shuffle Frog Song Rupees",{"Off", "On"},                                                    {frogSongRupeesDesc});
+  Option ShuffleHylianLoachReward = Option::Bool("Shuffle Hylian Loach Reward",{"Off", "On"},                                                    {hylianLoachRewardDesc});
   Option ShuffleAdultTradeQuest = Option::Bool("Shuffle Adult Trade",    {"Off", "On"},                                                     {adultTradeDesc});
   Option ShuffleChestMinigame   = Option::U8  ("Shuffle Chest Minigame", {"Off", "On (Separate)", "On (Pack)"},                             {chestMinigameDesc});
   Option Shuffle100GSReward     = Option::Bool("Shuffle 100 GS Reward",  {"Off", "On"},                                                     {shuffle100GsDesc});
@@ -214,6 +215,7 @@ namespace Settings {
     &ShuffleMagicBeans,
     &ShuffleMerchants,
     &ShuffleFrogSongRupees,
+    &ShuffleHylianLoachReward,
     &ShuffleAdultTradeQuest,
     &ShuffleChestMinigame,
     &Shuffle100GSReward,
@@ -1600,6 +1602,7 @@ namespace Settings {
     ctx.shuffleMagicBeans    = (ShuffleMagicBeans) ? 1 : 0;
     ctx.shuffleMerchants     = ShuffleMerchants.Value<uint8_t>();
     ctx.shuffleFrogSongRupees= (ShuffleFrogSongRupees) ? 1 : 0;
+    ctx.shuffleHylianLoachReward= (ShuffleHylianLoachReward) ? 1 : 0;
     ctx.shuffleAdultTradeQuest = (ShuffleAdultTradeQuest) ? 1 : 0;
     ctx.shuffleChestMinigame = ShuffleChestMinigame.Value<uint8_t>();
     ctx.shuffle100GsReward   = (Shuffle100GSReward) ? 1 : 0;
@@ -2081,6 +2084,13 @@ namespace Settings {
       IncludeAndHide({ZR_FROGS_SARIAS_SONG});
       IncludeAndHide({ZR_FROGS_SUNS_SONG});
       IncludeAndHide({ZR_FROGS_SONG_OF_TIME});
+    }
+
+    //Force include hylian loach reward if it's not shuffled
+    if (ShuffleHylianLoachReward) {
+      Unhide({LH_HYLIAN_LOACH});
+    } else {
+      IncludeAndHide({LH_HYLIAN_LOACH});
     }
 
     //Force include adult trade quest if Shuffle Adult Trade Quest is off
@@ -2608,6 +2618,7 @@ namespace Settings {
     &ShuffleMagicBeans,
     &ShuffleMerchants,
     &ShuffleFrogSongRupees,
+    &ShuffleHylianLoachReward,
     &ShuffleAdultTradeQuest,
     &Shuffle100GSReward,
     &GossipStoneHints,
@@ -2925,6 +2936,7 @@ namespace Settings {
     
     ShuffleGerudoToken.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]);
     ShuffleFrogSongRupees.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_FROG_SONG_RUPEES]);
+    ShuffleHylianLoachReward.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_HYLIAN_LOACH_REWARD]);
 
     ShuffleAdultTradeQuest.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_ADULT_TRADE]);
     ShuffleMagicBeans.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_MAGIC_BEANS]);
