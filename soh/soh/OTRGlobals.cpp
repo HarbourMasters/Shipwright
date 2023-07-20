@@ -225,29 +225,38 @@ OTRGlobals::OTRGlobals() {
         OTRFiles.push_back(sohOtrPath);
     }
 
+    std::string patchesPath = LUS::Context::GetPathRelativeToAppDirectory("mods");
     //Attempts to find a 'load-order.json' file, if it fails to find one it will fallback to the previous behavior of how mods are loaded.
-    std::string modOrderJsonPath = LUS::Context::GetPathRelativeToAppBundle("load-order.json");
-    if (std::filesystem::exists(modOrderJsonPath)) {
+    std::string sohJsonPath = LUS::Context::GetPathRelativeToAppBundle("shipofharkinian.json");
+    
+    bool useLoadOrder = false;
+    if (std::filesystem::exists(sohJsonPath)) {
         //Ideally I would like to put some sort of error handling here to prevent improperly formated .json files from preventing the program from running.
         //(example: when its looking for non-existant indexes.)
         //If anyone knows how to go about that in a way that the game continues execution please feel free.
-        spdlog::info("\nMod file located at: {}", modOrderJsonPath);
-        std::ifstream modJson(modOrderJsonPath);
-        json modData = json::parse(modJson);
-        std::string modCountStr = modData.at("List-size");
-        int modCountInt = std::stoi(modCountStr);
-        spdlog::info("\nMod order size is: {} ", modCountInt + 1, "\n");
-        int iter_count = 0;
-        while (iter_count <= modCountInt) {
-            if (std::filesystem::exists(modData.at(std::to_string(iter_count)))) {
-                spdlog::info("\nMod found in: {}{}", modData.at(std::to_string(iter_count)), "\n");
-                OTRFiles.push_back(modData.at(std::to_string(iter_count)));
+        std::ifstream sohJsonData(sohJsonPath);
+        json modData = json::parse(sohJsonData);
+        if (modData.contains("Mod-Load-Order")) {
+            useLoadOrder = true;
+            spdlog::info("\nLoading mods using load order from shipofharknian.json...\n");
+            int modCountInt = modData["Mod-Load-Order"]["List-size"];
+            spdlog::info("\nThe mod count is: {} ", modCountInt, "\n");
+            int iter_count = 1;
+            while (iter_count <= modCountInt) {
+                std::string foundModEntry = modData["Mod-Load-Order"][std::to_string(iter_count)];
+                std::string gotModPath = patchesPath + "/" + foundModEntry;
+                if (std::filesystem::exists(gotModPath)) {
+                    spdlog::info("\nMod file {} found!{}", gotModPath, "\n");
+                    OTRFiles.push_back(gotModPath);
+                } else {
+                    spdlog::warn("\nMod file {} missing...{}", gotModPath, "\n");
+                }
+                iter_count += 1;
             }
-            iter_count += 1;
         }
-    } else {
-        spdlog::warn("\nCould not find 'load-order.json' file, loading from mods folder...\n");
-        std::string patchesPath = LUS::Context::GetPathRelativeToAppDirectory("mods");
+    } 
+    if (useLoadOrder == false) {
+        spdlog::info("\nLoad order listing not found in shipofharknian.json, loading attempts to load mods from mods folder...\n");
         if (patchesPath.length() > 0 && std::filesystem::exists(patchesPath)) {
             if (std::filesystem::is_directory(patchesPath)) {
                 for (const auto& p : std::filesystem::recursive_directory_iterator(patchesPath)) {
