@@ -559,6 +559,9 @@ void DrawEnhancementsMenu() {
                     "- Obtained the Master Sword\n"
                     "- Not within range of Time Block\n"
                     "- Not within range of Ocarina playing spots");
+                
+                UIWidgets::PaddedEnhancementCheckbox("Always Hylian Loaches", "gAlwaysHylianLoaches", true, false);
+                UIWidgets::Tooltip("There will always be Hylian Loaches in the fishing pond instead of only every 4 attempts");
                 ImGui::EndMenu();
             }
 
@@ -1192,6 +1195,8 @@ void DrawCheatsMenu() {
         UIWidgets::Tooltip("This syncs the ingame time with the real world time");
         UIWidgets::PaddedEnhancementCheckbox("No ReDead/Gibdo Freeze", "gNoRedeadFreeze", true, false);
         UIWidgets::Tooltip("Prevents ReDeads and Gibdos from being able to freeze you with their scream");
+        UIWidgets::PaddedEnhancementCheckbox("All fish are Hylian Loaches", "gAllHylianLoaches", true, false);
+        UIWidgets::Tooltip("Every fish in the fishing pond will always be a Hylian Loach");
 
         {
             static int32_t betaQuestEnabled = CVarGetInteger("gEnableBetaQuest", 0);

@@ -968,7 +968,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
                            ENKANBAN_FISHING);
         Actor_Spawn(&play->actorCtx, play, ACTOR_FISHING, 0.0f, 0.0f, 0.0f, 0, 0, 0, 200, true);
 
-        if ((KREG(1) == 1) || ((D_80B7E07D & 3) == 3)) {
+        if ((KREG(1) == 1) || ((D_80B7E07D & 3) == 3 || CVarGetInteger("gAlwaysHylianLoaches", 0))) {
             if (sLinkAge != 1) {
                 fishCount = 16;
             } else {
@@ -983,7 +983,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
                         sFishInits[i].pos.z, 0, Rand_ZeroFloat(0x10000), 0, 100 + i, true);
         }
     } else {
-        if ((thisx->params < 115) || (thisx->params == 200)) {
+        if ((thisx->params < 115 && !CVarGetInteger("gAllHylianLoaches", 0)) || (thisx->params == 200)) {//200 is the display fish
             SkelAnime_InitFlex(play, &this->skelAnime, &gFishingFishSkel, &gFishingFishAnim, NULL, NULL, 0);
             Animation_MorphToLoop(&this->skelAnime, &gFishingFishAnim, 0.0f);
         } else {
@@ -1003,7 +1003,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
             this->unk_158 = 10;
             this->unk_15A = 10;
 
-            this->unk_150 = sFishInits[thisx->params - 100].unk_00;
+            this->unk_150 = CVarGetInteger("gAllHylianLoaches", 0) ? 1 : sFishInits[thisx->params - 100].unk_00;
             this->unk_1A8 = sFishInits[thisx->params - 100].unk_0C;
             this->unk_1AC = sFishInits[thisx->params - 100].unk_08;
 
@@ -4936,12 +4936,8 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                                     this->actor.textId = 0x408B;//there's bigger fishes
                                     this->unk_15C = 20;
                                 }
-                            } else if (!gSaveContext.n64ddFlag || Randomizer_GetSettingValue(RSK_SHUFFLE_HYLIAN_LOACH_REWARD)) {
-                                this->actor.textId = 0x409B;//loach
-                                this->unk_15C = 11;
-                                this->caughtHylianLoach = 1;
                             } else {
-                                this->actor.textId = 0x4086;//new record
+                                this->actor.textId = 0x409B;//loach
                                 this->unk_15C = 11;
                             }
                             Message_ContinueTextbox(play, this->actor.textId);
