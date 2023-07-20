@@ -983,7 +983,8 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
                         sFishInits[i].pos.z, 0, Rand_ZeroFloat(0x10000), 0, 100 + i, true);
         }
     } else {
-        if ((thisx->params < 115 && !CVarGetInteger("gAllHylianLoaches", 0)) || (thisx->params == 200)) {//200 is the display fish
+        u8 allHylianLoaches = CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gAllHylianLoaches", 0);
+        if ((thisx->params < 115 && !allHylianLoaches) || (thisx->params == 200)) {//200 is the display fish
             SkelAnime_InitFlex(play, &this->skelAnime, &gFishingFishSkel, &gFishingFishAnim, NULL, NULL, 0);
             Animation_MorphToLoop(&this->skelAnime, &gFishingFishAnim, 0.0f);
         } else {
@@ -1003,7 +1004,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
             this->unk_158 = 10;
             this->unk_15A = 10;
 
-            this->unk_150 = CVarGetInteger("gAllHylianLoaches", 0) ? 1 : sFishInits[thisx->params - 100].unk_00;
+            this->unk_150 = allHylianLoaches ? 1 : sFishInits[thisx->params - 100].unk_00;
             this->unk_1A8 = sFishInits[thisx->params - 100].unk_0C;
             this->unk_1AC = sFishInits[thisx->params - 100].unk_08;
 
