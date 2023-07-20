@@ -83,6 +83,8 @@ void from_json(const json& j, AnchorClient& client) {
     j.contains("color") ? j.at("color").get_to(client.color) : client.color = {255, 255, 255};
     j.contains("seed") ? j.at("seed").get_to(client.seed) : client.seed = "???";
     j.contains("scene") ? j.at("scene").get_to(client.scene) : client.scene = SCENE_ID_MAX;
+    j.contains("roomIndex") ? j.at("roomIndex").get_to(client.roomIndex) : client.roomIndex = 0;
+    j.contains("entranceIndex") ? j.at("entranceIndex").get_to(client.entranceIndex) : client.entranceIndex = 0;
     j.contains("posRot") ? j.at("posRot").get_to(client.posRot) : client.posRot = { -9999, -9999, -9999, 0, 0, 0 };
 }
 
@@ -186,7 +188,7 @@ void from_json(const json& j, SaveContext& saveContext) {
 
 std::map<uint32_t, AnchorClient> GameInteractorAnchor::AnchorClients = {};
 std::vector<uint32_t> GameInteractorAnchor::FairyIndexToClientId = {};
-std::string GameInteractorAnchor::clientVersion = "Anchor + Triforce Hunt 2";
+std::string GameInteractorAnchor::clientVersion = "Anchor 8 + Triforce Hunt + Tracker Rework 2";
 std::string GameInteractorAnchor::seed = "00000";
 std::vector<std::pair<uint16_t, int16_t>> receivedItems = {};
 std::vector<AnchorMessage> anchorMessages = {};
@@ -335,6 +337,8 @@ void GameInteractorAnchor::HandleRemoteJson(nlohmann::json payload) {
 
         if (GameInteractorAnchor::AnchorClients.contains(clientId)) {
             GameInteractorAnchor::AnchorClients[clientId].scene = payload["sceneNum"].get<int16_t>();
+            GameInteractorAnchor::AnchorClients[clientId].roomIndex = payload.contains("roomIndex") ? payload.at("roomIndex").get<int16_t>() : 0;
+            GameInteractorAnchor::AnchorClients[clientId].entranceIndex = payload.contains("entranceIndex") ? payload.at("entranceIndex").get<int16_t>() : 0;
             GameInteractorAnchor::AnchorClients[clientId].posRot = payload["posRot"].get<PosRot>();
         }
     }
@@ -357,6 +361,8 @@ void GameInteractorAnchor::HandleRemoteJson(nlohmann::json payload) {
                     client.color,
                     client.seed,
                     SCENE_ID_MAX,
+                    0,
+                    0,
                     { -9999, -9999, -9999, 0, 0, 0 }
                 };
                 Anchor_DisplayMessage({
@@ -674,6 +680,8 @@ void Anchor_RegisterHooks() {
 
         payload["type"] = "CLIENT_UPDATE";
         payload["sceneNum"] = gPlayState->sceneNum;
+        payload["roomIndex"] = gPlayState->roomCtx.curRoom.num;
+        payload["entranceIndex"] = gSaveContext.entranceIndex;
         payload["posRot"] = player->actor.world;
         payload["quiet"] = true;
 
@@ -755,11 +763,22 @@ void AnchorPlayerLocationWindow::DrawElement() {
         ImGui::TextColored(ImVec4(0.5, 0.5, 0.5, 1), "%s", SohUtils::GetSceneName(gPlayState->sceneNum).c_str());
     }
     for (auto& [clientId, client] : GameInteractorAnchor::AnchorClients) {
+        ImGui::PushID(clientId);
         ImGui::Text("%s", client.name.c_str());
         if (client.scene < SCENE_ID_MAX) {
             ImGui::SameLine();
             ImGui::TextColored(ImVec4(0.5, 0.5, 0.5, 1), "%s", SohUtils::GetSceneName(client.scene).c_str());
+            if (gPlayState != NULL && client.scene != SCENE_KAKUSIANA && client.entranceIndex != 0) {
+                ImGui::SameLine();
+                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
+                if (ImGui::Button(ICON_FA_CHEVRON_RIGHT, ImVec2(ImGui::GetFontSize() * 1.0f, ImGui::GetFontSize() * 1.0f))) {
+                    Play_SetRespawnData(gPlayState, RESPAWN_MODE_DOWN, client.entranceIndex, client.roomIndex, 0xDFF, &client.posRot.pos, client.posRot.rot.y);
+                    Play_TriggerVoidOut(gPlayState);
+                }
+                ImGui::PopStyleVar();
+            }
         }
+        ImGui::PopID();
     }
 
     ImGui::End();

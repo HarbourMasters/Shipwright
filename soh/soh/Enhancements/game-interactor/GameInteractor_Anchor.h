@@ -14,6 +14,8 @@ typedef struct {
     Color_RGB8 color;
     std::string seed;
     uint8_t scene;
+    uint8_t roomIndex;
+    uint32_t entranceIndex;
     PosRot posRot;
 } AnchorClient;
 
