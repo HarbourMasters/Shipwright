@@ -193,7 +193,7 @@ namespace Settings {
   Option ShuffleMagicBeans      = Option::Bool("Shuffle Magic Beans",    {"Off", "On"},                                                     {magicBeansDesc});
   Option ShuffleMerchants       = Option::U8  ("Shuffle Merchants",      {"Off", "On (No Hints)", "On (With Hints)"},                       {merchantsDesc, merchantsHintsDesc});
   Option ShuffleFrogSongRupees  = Option::Bool("Shuffle Frog Song Rupees",{"Off", "On"},                                                    {frogSongRupeesDesc});
-  Option ShuffleHylianLoachReward = Option::Bool("Shuffle Hylian Loach Reward",{"Off", "On"},                                                    {hylianLoachRewardDesc});
+  Option ShuffleHyruleLoachReward = Option::Bool("Shuffle Hyrule Loach Reward",{"Off", "On"},                                                    {hyruleLoachRewardDesc});
   Option ShuffleAdultTradeQuest = Option::Bool("Shuffle Adult Trade",    {"Off", "On"},                                                     {adultTradeDesc});
   Option ShuffleChestMinigame   = Option::U8  ("Shuffle Chest Minigame", {"Off", "On (Separate)", "On (Pack)"},                             {chestMinigameDesc});
   Option Shuffle100GSReward     = Option::Bool("Shuffle 100 GS Reward",  {"Off", "On"},                                                     {shuffle100GsDesc});
@@ -215,7 +215,7 @@ namespace Settings {
     &ShuffleMagicBeans,
     &ShuffleMerchants,
     &ShuffleFrogSongRupees,
-    &ShuffleHylianLoachReward,
+    &ShuffleHyruleLoachReward,
     &ShuffleAdultTradeQuest,
     &ShuffleChestMinigame,
     &Shuffle100GSReward,
@@ -332,6 +332,7 @@ namespace Settings {
   Option GanondorfHintText   = Option::Bool("Ganondorf LA Hint",      {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    1);  
   Option DampeHintText       = Option::Bool("Dampe's Diary Hint",     {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);
   Option GregHintText        = Option::Bool("Greg the Rupee Hint",    {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);  
+  Option LoachHintText       = Option::Bool("Hyrule Loach Hint",      {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);
   Option WarpSongHints       = Option::Bool("Warp Songs Hints",       {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);
   Option Kak10GSHintText     = Option::Bool("10 GS Hint",             {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);  
   Option Kak20GSHintText     = Option::Bool("20 GS Hint",             {"Off", "On"},                                                          {"", ""},                                                                                                         OptionCategory::Setting,    0);  
@@ -361,6 +362,7 @@ namespace Settings {
     &GanondorfHintText,
     &DampeHintText,
     &GregHintText,
+    &LoachHintText,
     &WarpSongHints,
     &Kak10GSHintText,
     &Kak20GSHintText,
@@ -1602,7 +1604,7 @@ namespace Settings {
     ctx.shuffleMagicBeans    = (ShuffleMagicBeans) ? 1 : 0;
     ctx.shuffleMerchants     = ShuffleMerchants.Value<uint8_t>();
     ctx.shuffleFrogSongRupees= (ShuffleFrogSongRupees) ? 1 : 0;
-    ctx.shuffleHylianLoachReward= (ShuffleHylianLoachReward) ? 1 : 0;
+    ctx.shuffleHyruleLoachReward= (ShuffleHyruleLoachReward) ? 1 : 0;
     ctx.shuffleAdultTradeQuest = (ShuffleAdultTradeQuest) ? 1 : 0;
     ctx.shuffleChestMinigame = ShuffleChestMinigame.Value<uint8_t>();
     ctx.shuffle100GsReward   = (Shuffle100GSReward) ? 1 : 0;
@@ -2086,11 +2088,11 @@ namespace Settings {
       IncludeAndHide({ZR_FROGS_SONG_OF_TIME});
     }
 
-    //Force include hylian loach reward if it's not shuffled
-    if (ShuffleHylianLoachReward) {
-      Unhide({LH_HYLIAN_LOACH});
+    //Force include hyrule loach reward if it's not shuffled
+    if (ShuffleHyruleLoachReward) {
+      Unhide({LH_HYRULE_LOACH});
     } else {
-      IncludeAndHide({LH_HYLIAN_LOACH});
+      IncludeAndHide({LH_HYRULE_LOACH});
     }
 
     //Force include adult trade quest if Shuffle Adult Trade Quest is off
@@ -2618,7 +2620,7 @@ namespace Settings {
     &ShuffleMagicBeans,
     &ShuffleMerchants,
     &ShuffleFrogSongRupees,
-    &ShuffleHylianLoachReward,
+    &ShuffleHyruleLoachReward,
     &ShuffleAdultTradeQuest,
     &Shuffle100GSReward,
     &GossipStoneHints,
@@ -2936,7 +2938,7 @@ namespace Settings {
     
     ShuffleGerudoToken.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]);
     ShuffleFrogSongRupees.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_FROG_SONG_RUPEES]);
-    ShuffleHylianLoachReward.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_HYLIAN_LOACH_REWARD]);
+    ShuffleHyruleLoachReward.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_HYRULE_LOACH_REWARD]);
 
     ShuffleAdultTradeQuest.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_ADULT_TRADE]);
     ShuffleMagicBeans.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_MAGIC_BEANS]);
@@ -2987,6 +2989,7 @@ namespace Settings {
     GanondorfHintText.SetSelectedIndex(cvarSettings[RSK_GANONDORF_LIGHT_ARROWS_HINT]);
     DampeHintText.SetSelectedIndex(cvarSettings[RSK_DAMPES_DIARY_HINT]);
     GregHintText.SetSelectedIndex(cvarSettings[RSK_GREG_HINT]);
+    LoachHintText.SetSelectedIndex(cvarSettings[RSK_LOACH_HINT]);
     WarpSongHints.SetSelectedIndex(cvarSettings[RSK_WARP_SONG_HINTS]);
     Kak10GSHintText.SetSelectedIndex(cvarSettings[RSK_KAK_10_SKULLS_HINT]);
     Kak20GSHintText.SetSelectedIndex(cvarSettings[RSK_KAK_20_SKULLS_HINT]);

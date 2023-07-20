@@ -218,6 +218,9 @@ void SaveManager::LoadRandomizerVersion2() {
     std::string gregHintText;
     SaveManager::Instance->LoadData("gregHintText", gregHintText);
     memcpy(gSaveContext.gregHintText, gregHintText.c_str(), gregHintText.length());
+    std::string loachHintText;
+    SaveManager::Instance->LoadData("loachHintText", loachHintText);
+    memcpy(gSaveContext.loachHintText, loachHintText.c_str(), loachHintText.length());
     std::string warpMinuetText;
     SaveManager::Instance->LoadData("warpMinuetText", warpMinuetText);
     memcpy(gSaveContext.warpMinuetText, warpMinuetText.c_str(), warpMinuetText.length());

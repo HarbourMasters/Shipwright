@@ -740,10 +740,10 @@ void GenerateItemPool() {
     PlaceItemInLocation(ZR_FROGS_SONG_OF_TIME, PURPLE_RUPEE, false, true);
   }
 
-  if (ShuffleHylianLoachReward) {
+  if (ShuffleHyruleLoachReward) {
     AddItemToMainPool(PURPLE_RUPEE);
   } else {
-    PlaceItemInLocation(LH_HYLIAN_LOACH, PURPLE_RUPEE, false, true);
+    PlaceItemInLocation(LH_HYRULE_LOACH, PURPLE_RUPEE, false, true);
   }
 
   if (ShuffleAdultTradeQuest) {

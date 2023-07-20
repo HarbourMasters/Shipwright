@@ -74,7 +74,7 @@ static const char* englishRupeeNames[170] = {
     "Extinction Points", "Floopies",         "Flurbos",          "FPS",              "Friends",
     "Frog Coins",        "Gald",             "Gekz",             "Gems",             "Gil",
     "Glimmer",           "Glitches",         "Gold",             "Gold Dragons",     "Goober Dollars",
-    "Green Herbs",       "Greg Siblings",    "Gummybears",       "Hell",             "Hylian Loaches",
+    "Green Herbs",       "Greg Siblings",    "Gummybears",       "Hell",             "Hyrule Loaches",
     "Ice Traps",         "ISK",              "Jiggies",          "KF7 Ammo",         "Kinstones",
     "Kremcoins",         "Kroner",           "Leaves ",          "Lemmings",         "Lien",
     "Lira",              "Lumber",           "Lungmen Dollars",  "Macca",            "Mana",
@@ -261,7 +261,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Settings:Shuffle Adult Trade", RSK_SHUFFLE_ADULT_TRADE },
     { "Shuffle Settings:Shuffle Magic Beans", RSK_SHUFFLE_MAGIC_BEANS },
     { "Shuffle Settings:Shuffle Kokiri Sword", RSK_SHUFFLE_KOKIRI_SWORD },
-    { "Shuffle Settings:Shuffle Hylian Loach Reward", RSK_SHUFFLE_HYLIAN_LOACH_REWARD },
+    { "Shuffle Settings:Shuffle Hyrule Loach Reward", RSK_SHUFFLE_HYRULE_LOACH_REWARD },
     { "Shuffle Settings:Shuffle Weird Egg", RSK_SHUFFLE_WEIRD_EGG },
     { "Shuffle Settings:Shuffle Frog Song Rupees", RSK_SHUFFLE_FROG_SONG_RUPEES },
     { "Shuffle Settings:Shuffle Merchants", RSK_SHUFFLE_MERCHANTS },
@@ -327,6 +327,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Misc Settings:Ganondorf LA Hint", RSK_GANONDORF_LIGHT_ARROWS_HINT },
     { "Misc Settings:Dampe's Diary Hint", RSK_DAMPES_DIARY_HINT },
     { "Misc Settings:Greg the Rupee Hint", RSK_GREG_HINT },
+    { "Misc Settings:Hyrule Loach Hint", RSK_LOACH_HINT },
     { "Misc Settings:10 GS Hint", RSK_KAK_10_SKULLS_HINT },
     { "Misc Settings:20 GS Hint", RSK_KAK_20_SKULLS_HINT },
     { "Misc Settings:30 GS Hint", RSK_KAK_30_SKULLS_HINT },
@@ -466,6 +467,12 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
             CustomMessage(gSaveContext.gregHintText,
                 gSaveContext.gregHintText,
                 gSaveContext.gregHintText)
+        );
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_FISHING_TALK_ABOUT_SOMETHING,
+            CustomMessage(gSaveContext.loachHintText,
+                gSaveContext.loachHintText,
+                gSaveContext.loachHintText)
         );
 
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT,
@@ -821,7 +828,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHUFFLE_ADULT_TRADE:
                     case RSK_SHUFFLE_MAGIC_BEANS:
                     case RSK_SHUFFLE_KOKIRI_SWORD:
-                    case RSK_SHUFFLE_HYLIAN_LOACH_REWARD:
+                    case RSK_SHUFFLE_HYRULE_LOACH_REWARD:
                     case RSK_SHUFFLE_WEIRD_EGG:
                     case RSK_SHUFFLE_FROG_SONG_RUPEES:
                     case RSK_SHUFFLE_100_GS_REWARD:
@@ -851,6 +858,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_GANONDORF_LIGHT_ARROWS_HINT:
                     case RSK_DAMPES_DIARY_HINT:
                     case RSK_GREG_HINT:
+                    case RSK_LOACH_HINT:
                     case RSK_KAK_10_SKULLS_HINT:
                     case RSK_KAK_20_SKULLS_HINT:
                     case RSK_KAK_30_SKULLS_HINT:
@@ -1301,6 +1309,11 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         strncpy(gSaveContext.gregHintText, formattedGregJsonText.c_str(), sizeof(gSaveContext.gregHintText) - 1);
         gSaveContext.gregHintText[sizeof(gSaveContext.gregHintText) - 1] = 0;
         gSaveContext.gregCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["gregLoc"]];
+
+        std::string loachJsonText = spoilerFileJson["loachText"].get<std::string>();
+        std::string formattedLoachJsonText = FormatJsonHintText(loachJsonText);
+        strncpy(gSaveContext.loachHintText, formattedLoachJsonText.c_str(), sizeof(gSaveContext.loachHintText) - 1);
+        gSaveContext.loachHintText[sizeof(gSaveContext.loachHintText) - 1] = 0;
 
         std::string warpMinuetJsonText = spoilerFileJson["warpMinuetText"].get<std::string>();
         strncpy(gSaveContext.warpMinuetText, warpMinuetJsonText.c_str(), sizeof(gSaveContext.warpMinuetText) - 1);
@@ -2991,13 +3004,14 @@ void GenerateRandomizerImgui(std::string seed = "") {
                                             CVarGetInteger("gRandomizeShuffleWeirdEgg", 0));
     cvarSettings[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] = CVarGetInteger("gRandomizeShuffleGerudoToken", 0);
     cvarSettings[RSK_SHUFFLE_FROG_SONG_RUPEES] = CVarGetInteger("gRandomizeShuffleFrogSongRupees", 0);
-    cvarSettings[RSK_SHUFFLE_HYLIAN_LOACH_REWARD] = CVarGetInteger("gRandomizeShuffleHylianLoachReward", 0);
+    cvarSettings[RSK_SHUFFLE_HYRULE_LOACH_REWARD] = CVarGetInteger("gRandomizeShuffleHyruleLoachReward", 0);
     cvarSettings[RSK_ITEM_POOL] = CVarGetInteger("gRandomizeItemPool", RO_ITEM_POOL_BALANCED);
     cvarSettings[RSK_ICE_TRAPS] = CVarGetInteger("gRandomizeIceTraps", RO_ICE_TRAPS_NORMAL);
     cvarSettings[RSK_TOT_ALTAR_HINT] = CVarGetInteger("gRandomizeAltarHint", RO_GENERIC_ON);
     cvarSettings[RSK_GANONDORF_LIGHT_ARROWS_HINT] = CVarGetInteger("gRandomizeLAHint", RO_GENERIC_ON);
     cvarSettings[RSK_DAMPES_DIARY_HINT] = CVarGetInteger("gRandomizeDampeHint", RO_GENERIC_OFF);
     cvarSettings[RSK_GREG_HINT] = CVarGetInteger("gRandomizeGregHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_LOACH_HINT] = CVarGetInteger("gRandomizeHyruleLoachHint", RO_GENERIC_OFF);
     cvarSettings[RSK_WARP_SONG_HINTS] = CVarGetInteger("gRandomizeWarpSongText", RO_GENERIC_OFF);
     cvarSettings[RSK_SCRUB_TEXT_HINT] = CVarGetInteger("gRandomizeScrubText", RO_GENERIC_OFF);
     cvarSettings[RSK_KAK_10_SKULLS_HINT] = CVarGetInteger("gRandomize10GSHint", RO_GENERIC_OFF);
@@ -3984,11 +3998,11 @@ void RandomizerSettingsWindow::DrawElement() {
 
                 UIWidgets::PaddedSeparator();
 
-                // Shuffle Hylian Loach Reward
-                UIWidgets::EnhancementCheckbox(Settings::ShuffleHylianLoachReward.GetName().c_str(), "gRandomizeShuffleHylianLoachReward");
+                // Shuffle Hyrule Loach Reward
+                UIWidgets::EnhancementCheckbox(Settings::ShuffleHyruleLoachReward.GetName().c_str(), "gRandomizeShuffleHyruleLoachReward");
                 UIWidgets::InsertHelpHoverText(
                     "Shuffles a Purple Rupee into to the item pool, and allows\n"
-                    "you to earn an item by catching the hylian loach at the fishing pond."
+                    "you to earn an item by catching the hyrule loach at the fishing pond."
                 );
 
                 UIWidgets::PaddedSeparator();
@@ -4536,6 +4550,9 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::InsertHelpHoverText("Reading the diary of Dampé the gravekeeper as adult will tell you the location of one of the Hookshots.");
                 UIWidgets::PaddedEnhancementCheckbox("Greg the Green Rupee", "gRandomizeGregHint", true, false);
                 UIWidgets::InsertHelpHoverText("Talking to the chest game owner after buying a key will tell you the location of Greg the Green Rupee.");
+                UIWidgets::PaddedEnhancementCheckbox("Hyrule Loach Reward", "gRandomizeHyruleLoachHint", true, false, !CVarGetInteger("gRandomizeShuffleHyruleLoachReward", RO_GENERIC_OFF),
+                 "This option is disabled since the Hyrule Loach reward is not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
+                UIWidgets::InsertHelpHoverText("Talking to the fishing pond owner and asking to talk about something will tell you what's the reward for the Hyrule Loach.");
                 UIWidgets::PaddedEnhancementCheckbox("Warp Song text", "gRandomizeWarpSongText", true, false, !CVarGetInteger("gRandomizeShuffleWarpSongs", RO_GENERIC_OFF),
                  "This option is disabled since warp songs are not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::InsertHelpHoverText("Playing a warp song will tell you where it leads. (If warp song destinations are vanilla, this is always enabled.)");

@@ -1086,6 +1086,7 @@ int Fill() {
       CreateAltarText();
       CreateDampesDiaryText();
       CreateGregRupeeHint();
+      CreateLoachText();
       CreateWarpSongTexts();
       return 1;
     }

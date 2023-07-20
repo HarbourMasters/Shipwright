@@ -2013,6 +2013,16 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
         } else if (textId == 0x3052 || (textId >= 0x3069 && textId <= 0x3070)) { //Fire Temple gorons
             u16 choice = Random(0, NUM_GORON_MESSAGES);
             messageEntry = OTRGlobals::Instance->gRandomizer->GetGoronMessage(choice);
+        } else if (Randomizer_GetSettingValue(RSK_LOACH_HINT) &&
+                    (
+                        textId == 0x4096 ||
+                        textId == 0x408D ||
+                        textId == 0x408E ||
+                        textId == 0x408F ||
+                        textId == 0x4094 ||
+                        textId == 0x4095
+                    )) {
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_FISHING_TALK_ABOUT_SOMETHING);
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {

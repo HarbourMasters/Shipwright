@@ -160,7 +160,7 @@ void AreaTable_Init_HyruleField() {
                   //Locations
                   LocationAccess(LH_CHILD_FISHING, {[]{return IsChild;}}),
                   LocationAccess(LH_ADULT_FISHING, {[]{return IsAdult;}}),
-                  LocationAccess(LH_HYLIAN_LOACH,  {[]{return true;}}),
+                  LocationAccess(LH_HYRULE_LOACH,  {[]{return true;}}),
                 }, {
                   //Exits
                   Entrance(LH_FISHING_ISLAND, {[]{return true;}}),

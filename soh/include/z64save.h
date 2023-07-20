@@ -305,6 +305,7 @@ typedef struct {
     /*        */ RandomizerCheck rewardCheck[9];
     /*        */ char ganonHintText[150];
     /*        */ char gregHintText[250];
+    /*        */ char loachHintText[250];
     /*        */ char ganonText[250];
     /*        */ char dampeText[150];
     /*        */ char warpMinuetText[100];

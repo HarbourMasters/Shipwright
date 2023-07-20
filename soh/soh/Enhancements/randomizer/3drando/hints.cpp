@@ -134,6 +134,7 @@ Text ganonText;
 Text ganonHintText;
 Text dampesText;
 Text gregText;
+Text loachText;
 Text warpMinuetText;
 Text warpBoleroText;
 Text warpSerenadeText;
@@ -166,6 +167,10 @@ Text& GetDampeHintText() {
 
 Text& GetGregHintText() {
   return gregText;
+}
+
+Text& GetLoachHintText() {
+  return loachText;
 }
 
 Text& GetWarpMinuetText() {
@@ -813,6 +818,29 @@ void CreateDampesDiaryText() {
   
   dampesText = temp1 + area + temp2;
   dampeHintLoc = Location(location)->GetName();
+}
+
+void CreateLoachText() {
+  if (!LoachHintText) {
+    loachText = Text();
+    return;
+  }
+
+  Text item = Location(LH_HYRULE_LOACH)->GetPlacedItemName();
+
+  Text temp1 = Text{
+    "What?^You wanna know about the %rHyrule Loach%w?^It's a big fish, but it's so rare that I'll give my %g",
+    "",
+    ""
+  };
+
+  Text temp2 = Text{
+    "%w to anyone who catches it. Seriously!",
+    "",
+    ""
+  };
+
+  loachText = temp1 + item + temp2;
 }
 
 void CreateGregRupeeHint() {

@@ -443,7 +443,7 @@ typedef struct {
     uint8_t shuffleMagicBeans;
     uint8_t shuffleMerchants;
     uint8_t shuffleFrogSongRupees;
-    uint8_t shuffleHylianLoachReward;
+    uint8_t shuffleHyruleLoachReward;
     uint8_t shuffleAdultTradeQuest;
     uint8_t shuffleChestMinigame;
     uint8_t shuffle100GsReward;
@@ -966,7 +966,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option ShuffleMagicBeans;
   extern Option ShuffleMerchants;
   extern Option ShuffleFrogSongRupees;
-  extern Option ShuffleHylianLoachReward;
+  extern Option ShuffleHyruleLoachReward;
   extern Option ShuffleAdultTradeQuest;
   extern Option ShuffleChestMinigame;
   extern Option Shuffle100GSReward;
@@ -1019,6 +1019,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option GanondorfHintText;
   extern Option DampeHintText;
   extern Option GregHintText;
+  extern Option LoachHintText;
   extern Option Kak10GSHintText;
   extern Option Kak20GSHintText;
   extern Option Kak30GSHintText;

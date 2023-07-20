@@ -470,11 +470,11 @@ string_view frogSongRupeesDesc        = "Enabling this adds 5 Purple Rupees to t
                                         "Lullaby, Epona's Song, Saria's Song, Sun's Song,\n"
                                         "and Song of Time to the frogs in Zora's River.\n";//
 /*------------------------------                                                           //
-|  SHUFFLE HYLIAN LOACH REWARD |                                                           //
+|  SHUFFLE HYRULE LOACH REWARD |                                                           //
 ------------------------------*/                                                           //
-string_view hylianLoachRewardDesc     = "Enabling this adds a Purple Rupee to the item\n"  //
+string_view hyruleLoachRewardDesc     = "Enabling this adds a Purple Rupee to the item\n"  //
                                         "pool and shuffles the reward from catching the\n" //
-                                        "Hylian Loach.\n";                                 //
+                                        "Hyrule Loach.\n";                                 //
 /*------------------------------                                                           //
 |     SHUFFLE ADULT TRADE      |                                                           //
 ------------------------------*/                                                           //

@@ -663,6 +663,7 @@ static void WriteHints(int language) {
     std::string unformattedGanonHintText;
     std::string unformattedDampesText;
     std::string unformattedGregText;
+    std::string unformattedLoachText;
 
     switch (language) {
         case 0:
@@ -671,6 +672,7 @@ static void WriteHints(int language) {
             unformattedGanonHintText = GetGanonHintText().GetEnglish();
             unformattedDampesText = GetDampeHintText().GetEnglish();
             unformattedGregText = GetGregHintText().GetEnglish();
+            unformattedLoachText = GetLoachHintText().GetEnglish();
             jsonData["warpMinuetText"] = GetWarpMinuetText().GetEnglish();
             jsonData["warpBoleroText"] = GetWarpBoleroText().GetEnglish();
             jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetEnglish();
@@ -685,6 +687,7 @@ static void WriteHints(int language) {
             unformattedGanonHintText = GetGanonHintText().GetFrench();
             unformattedDampesText = GetDampeHintText().GetFrench();
             unformattedGregText = GetGregHintText().GetFrench();
+            unformattedLoachText = GetLoachHintText().GetFrench();
             jsonData["warpMinuetText"] = GetWarpMinuetText().GetFrench();
             jsonData["warpBoleroText"] = GetWarpBoleroText().GetFrench();
             jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetFrench();
@@ -725,6 +728,7 @@ static void WriteHints(int language) {
     std::string ganonHintText = AutoFormatHintTextString(unformattedGanonHintText);
     std::string dampesText = AutoFormatHintTextString(unformattedDampesText);
     std::string gregText = AutoFormatHintTextString(unformattedGregText);
+    std::string loachText = AutoFormatHintTextString(unformattedLoachText);
 
     jsonData["ganonText"] = ganonText;
     jsonData["ganonHintText"] = ganonHintText;
@@ -733,6 +737,7 @@ static void WriteHints(int language) {
     jsonData["dampeHintLoc"] = GetDampeHintLoc();
     jsonData["gregText"] = gregText;
     jsonData["gregLoc"] = GetItemLocation(GREG_RUPEE)->GetName();
+    jsonData["loachText"] = loachText;
 
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;

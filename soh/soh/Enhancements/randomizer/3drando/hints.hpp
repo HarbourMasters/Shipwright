@@ -206,6 +206,7 @@ extern void CreateMerchantsHints();
 extern void CreateWarpSongTexts();
 extern void CreateDampesDiaryText();
 extern void CreateGregRupeeHint();
+extern void CreateLoachText();
 extern void CreateGanonText();
 extern void CreateAltarText();
 
@@ -215,6 +216,7 @@ Text& GetGanonText();
 Text& GetGanonHintText();
 Text& GetDampeHintText();
 Text& GetGregHintText();
+Text& GetLoachHintText();
 
 Text& GetWarpMinuetText();
 Text& GetWarpBoleroText();
