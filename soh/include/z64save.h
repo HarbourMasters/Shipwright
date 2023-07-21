@@ -317,7 +317,7 @@ typedef struct {
     /*        */ RandomizerCheck gregCheck;
     /*        */ RandomizerCheck dampeCheck;
     /*        */ u8 seedIcons[5];
-    /*        */ u16 randomizerInf[9];
+    /*        */ u16 randomizerInf[10];
     /*        */ u16 adultTradeItems;
     // #endregion
 } SaveContext; // size = 0x1428
