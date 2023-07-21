@@ -1,5 +1,0 @@
-<Root>
-    <File Name="object_gi_heart" Segment="6">
-        <DList Name="gGiRecoveryHeartDL" Offset="0x00E0"/>
-    </File>
-</Root>
