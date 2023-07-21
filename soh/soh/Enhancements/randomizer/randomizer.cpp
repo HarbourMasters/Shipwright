@@ -2669,7 +2669,7 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_DMT_TRADE_BROKEN_SWORD,                                      RAND_INF_ADULT_TRADES_DMT_TRADE_BROKEN_SWORD },
     { RC_LH_TRADE_FROG,                                               RAND_INF_ADULT_TRADES_LH_TRADE_FROG },
     { RC_DMT_TRADE_EYEDROPS,                                          RAND_INF_ADULT_TRADES_DMT_TRADE_EYEDROPS },
-
+    { RC_LH_HYRULE_LOACH,                                             RAND_INF_CAUGHT_LOACH },
 };
 
 RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams = 0x00) {
