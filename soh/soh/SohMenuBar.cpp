@@ -865,6 +865,8 @@ void DrawEnhancementsMenu() {
 
             UIWidgets::PaddedEnhancementCheckbox("Disable Crit wiggle", "gDisableCritWiggle", true, false);
             UIWidgets::Tooltip("Disable random camera wiggle at low health");
+            UIWidgets::PaddedEnhancementCheckbox("Enemy Health Bars", "gEnemyHealthBar", true, false);
+            UIWidgets::Tooltip("Renders a health bar for enemies when Z-Targeted");
 
             ImGui::EndMenu();
         }
