@@ -226,14 +226,9 @@ OTRGlobals::OTRGlobals() {
     }
 
     std::string patchesPath = LUS::Context::GetPathRelativeToAppDirectory("mods");
-    //Attempts to find a 'load-order.json' file, if it fails to find one it will fallback to the previous behavior of how mods are loaded.
     std::string sohJsonPath = LUS::Context::GetPathRelativeToAppBundle("shipofharkinian.json");
-    
     bool useLoadOrder = false;
     if (std::filesystem::exists(sohJsonPath)) {
-        //Ideally I would like to put some sort of error handling here to prevent improperly formated .json files from preventing the program from running.
-        //(example: when its looking for non-existant indexes.)
-        //If anyone knows how to go about that in a way that the game continues execution please feel free.
         std::ifstream sohJsonData(sohJsonPath);
         json modData = json::parse(sohJsonData);
         if (modData.contains("Mod-Load-Order")) {
