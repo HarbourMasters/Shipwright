@@ -742,15 +742,8 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
             return gSaveContext.itemGetInf[flag / 16] & INDEX_TO_16BIT_LITTLE_ENDIAN_BITMASK(flag);
         case SpoilerCollectionCheckType::SPOILER_CHK_MAGIC_BEANS:
             return BEANS_BOUGHT >= 10;
-        case SpoilerCollectionCheckType::SPOILER_CHK_MINIGAME:
-            if (obj.rc == RC_LH_CHILD_FISHING)
-                return HIGH_SCORE(HS_FISHING) & 0x400;
-            if (obj.rc == RC_LH_ADULT_FISHING)
-                return HIGH_SCORE(HS_FISHING) & 0x800;
         case SpoilerCollectionCheckType::SPOILER_CHK_NONE:
             return false;
-        case SpoilerCollectionCheckType::SPOILER_CHK_POE_POINTS:
-            return gSaveContext.highScores[HS_POE_POINTS] >= 1000;
         case SpoilerCollectionCheckType::SPOILER_CHK_GRAVEDIGGER:
             // Gravedigger has a fix in place that means one of two save locations. Check both.
             return (gSaveContext.itemGetInf[1] & 0x1000) || // vanilla flag
