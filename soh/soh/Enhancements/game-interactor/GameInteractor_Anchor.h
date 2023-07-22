@@ -83,6 +83,7 @@ Color_RGB8 Anchor_GetClientColor(uint32_t fairyIndex);
 void Anchor_SpawnClientFairies();
 void Anchor_UpdateCheckData(uint32_t locationIndex);
 void Anchor_UpdateBeansBought(uint8_t amount);
+void Anchor_UpdateBeansCount(uint8_t amount);
 void Anchor_ConsumeAdultTradeItem(uint8_t itemId);
 void Anchor_UpdateKeyCount(int16_t sceneNum, int8_t amount);
 

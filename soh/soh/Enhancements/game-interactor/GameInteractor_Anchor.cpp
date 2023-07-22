@@ -5,6 +5,7 @@
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include <soh/Enhancements/randomizer/adult_trade_shuffle.h>
+#include <soh/Enhancements/nametag.h>
 #include <soh/Enhancements/randomizer/randomizer_check_tracker.h>
 #include <soh/util.h>
 #include <nlohmann/json.hpp>
@@ -188,7 +189,7 @@ void from_json(const json& j, SaveContext& saveContext) {
 
 std::map<uint32_t, AnchorClient> GameInteractorAnchor::AnchorClients = {};
 std::vector<uint32_t> GameInteractorAnchor::FairyIndexToClientId = {};
-std::string GameInteractorAnchor::clientVersion = "Anchor 8 + Triforce Hunt + Tracker Rework 2";
+std::string GameInteractorAnchor::clientVersion = "Anchor 9 + Triforce Hunt + Tracker Rework";
 std::string GameInteractorAnchor::seed = "00000";
 std::vector<std::pair<uint16_t, int16_t>> receivedItems = {};
 std::vector<AnchorMessage> anchorMessages = {};
@@ -411,6 +412,9 @@ void GameInteractorAnchor::HandleRemoteJson(nlohmann::json payload) {
     if (payload["type"] == "UPDATE_BEANS_BOUGHT" && GameInteractor::IsSaveLoaded()) {
         BEANS_BOUGHT = payload["amount"].get<uint8_t>();
     }
+    if (payload["type"] == "UPDATE_BEANS_COUNT" && GameInteractor::IsSaveLoaded()) {
+        AMMO(ITEM_BEAN) = payload["amount"].get<uint8_t>();
+    }
     if (payload["type"] == "CONSUME_ADULT_TRADE_ITEM" && GameInteractor::IsSaveLoaded()) {
         uint8_t itemId = payload["itemId"].get<uint8_t>();
         gSaveContext.adultTradeItems &= ~ADULT_TRADE_FLAG(itemId);
@@ -525,9 +529,9 @@ void Anchor_ParseSaveStateFromRemote(nlohmann::json payload) {
         }
     }
 
-    // Restore ammo if it's non-zero
+    // Restore ammo if it's non-zero, unless it's beans
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.inventory.ammo); i++) {
-        if (gSaveContext.inventory.ammo[i] != 0) {
+        if (gSaveContext.inventory.ammo[i] != 0 && i != SLOT(ITEM_BEAN) && i != SLOT(ITEM_BEAN + 1)) {
             loadedData.inventory.ammo[i] = gSaveContext.inventory.ammo[i];
         }
     }
@@ -578,7 +582,8 @@ void Anchor_SpawnClientFairies() {
     uint32_t i = 0;
     for (auto [clientId, client] : GameInteractorAnchor::AnchorClients) {
         GameInteractorAnchor::FairyIndexToClientId.push_back(clientId);
-        Actor_Spawn(&gPlayState->actorCtx, gPlayState, gEnPartnerId, -9999.0, -9999.0, -9999.0, 0, 0, 0, 3 + i, false);
+        auto fairy = Actor_Spawn(&gPlayState->actorCtx, gPlayState, gEnPartnerId, -9999.0, -9999.0, -9999.0, 0, 0, 0, 3 + i, false);
+        NameTag_RegisterForActor(fairy, client.name.c_str());
         i++;
     }
 }
@@ -718,6 +723,17 @@ void Anchor_UpdateBeansBought(uint8_t amount) {
     GameInteractorAnchor::Instance->TransmitJsonToRemote(payload);
 }
 
+void Anchor_UpdateBeansCount(uint8_t amount) {
+    if (!GameInteractor::Instance->isRemoteInteractorConnected || !GameInteractor::Instance->IsSaveLoaded()) return;
+
+    nlohmann::json payload;
+
+    payload["type"] = "UPDATE_BEANS_COUNT";
+    payload["amount"] = amount;
+
+    GameInteractorAnchor::Instance->TransmitJsonToRemote(payload);
+}
+
 void Anchor_ConsumeAdultTradeItem(uint8_t itemId) {
     if (!GameInteractor::Instance->isRemoteInteractorConnected || !GameInteractor::Instance->IsSaveLoaded()) return;
 
@@ -768,7 +784,7 @@ void AnchorPlayerLocationWindow::DrawElement() {
         if (client.scene < SCENE_ID_MAX) {
             ImGui::SameLine();
             ImGui::TextColored(ImVec4(0.5, 0.5, 0.5, 1), "%s", SohUtils::GetSceneName(client.scene).c_str());
-            if (gPlayState != NULL && client.scene != SCENE_KAKUSIANA && client.entranceIndex != 0) {
+            if (gPlayState != NULL && client.scene != SCENE_KAKUSIANA && client.scene != SCENE_ID_MAX) {
                 ImGui::SameLine();
                 ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
                 if (ImGui::Button(ICON_FA_CHEVRON_RIGHT, ImVec2(ImGui::GetFontSize() * 1.0f, ImGui::GetFontSize() * 1.0f))) {

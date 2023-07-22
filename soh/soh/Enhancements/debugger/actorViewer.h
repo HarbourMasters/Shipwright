@@ -7,6 +7,6 @@ class ActorViewerWindow : public LUS::GuiWindow {
     using GuiWindow::GuiWindow;
 
     void DrawElement() override;
-    void InitElement() override {};
+    void InitElement() override;
     void UpdateElement() override {};
 };
