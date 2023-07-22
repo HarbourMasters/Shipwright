@@ -402,9 +402,9 @@ void AddToChecksCollected(RandomizerCheck rc) {
     areaChecksGotten[RandomizerCheckObjects::GetAllRCObjects().find(rc)->second.rcArea]++;
 }
 
-void StartChecking() {
-    checkCounter = 0;
-}
+//void StartChecking() {
+//    checkCollected = false;
+//}
 
 bool CheckByArea(RandomizerCheckArea area = RCAREA_INVALID) {
     if (area == RCAREA_INVALID) {
@@ -414,6 +414,7 @@ bool CheckByArea(RandomizerCheckArea area = RCAREA_INVALID) {
         auto areaChecks = checksByArea.find(area)->second;
         if (checkCounter >= areaChecks.size()) {
             checkCounter = 0;
+            checkLoops++;
         }
         auto rco = areaChecks.at(checkCounter);
         return EvaluateCheck(rco);
@@ -524,7 +525,6 @@ void ClearAreaTotals() {
 void CheckTrackerDialogClosed() {
     if (messageCloseCheck) {
         messageCloseCheck = false;
-        StartChecking();
     }
 }
 
@@ -548,7 +548,6 @@ void CheckTrackerTransition(uint32_t sceneNum) {
     gSaveContext;
     if (transitionCheck) {
         transitionCheck = false;
-        StartChecking();
     }
     doAreaScroll = true;
     previousArea = currentArea;
@@ -570,7 +569,7 @@ void CheckTrackerFrame() {
     if (!IsGameRunning()) {
         return;
     }
-    if (!checkAreas.empty()) {
+    if (!checkAreas.empty() && !transitionCheck && !messageCloseCheck && !pendingSaleCheck) {
         for (int i = 0; i < 10; i++) {
             if (CheckByArea()) {
                 checkCounter = 0;
@@ -579,8 +578,12 @@ void CheckTrackerFrame() {
                 checkCounter++;
             }
         }
+        if (checkLoops > 15) {
+            checkAreas.erase(checkAreas.begin());
+            checkLoops = 0;
+        }
     }
-    if (savedFrames > 0 && !pendingSaleCheck) {
+    if (savedFrames > 0 && !pendingSaleCheck && !messageCloseCheck) {
         savedFrames--;
     }
 }
@@ -588,7 +591,6 @@ void CheckTrackerFrame() {
 void CheckTrackerSaleEnd(GetItemEntry giEntry) {
     if (pendingSaleCheck) {
         pendingSaleCheck = false;
-        StartChecking();
     }
 }
 
@@ -680,6 +682,11 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
     }
     checkScene = scene;
     auto checkArea = GetCheckArea();
+    if (gSaveContext.pendingSale != ITEM_NONE) {
+        pendingSaleCheck = true;
+        checkAreas.push_back(checkArea);
+        return;
+    }
     if (scene == SCENE_SPOT11 && (gSaveContext.entranceIndex == 485 || gSaveContext.entranceIndex == 489)) {
         if (EvaluateCheck(RandomizerCheckObjects::GetAllRCObjects().find(RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST)->second) ||
             EvaluateCheck(RandomizerCheckObjects::GetAllRCObjects().find(RC_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST)->second)) {
@@ -709,9 +716,17 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
             }
         }
     }
+    if (gPlayState->msgCtx.msgMode != MSGMODE_NONE && rc != RC_UNKNOWN_CHECK) {
+        RandomizerCheckObject rco = RandomizerCheckObjects::GetAllRCObjects().find(rc)->second;
+        if (!(rco.rcType == RCTYPE_SKULL_TOKEN && giEntry.itemId == ITEM_SKULL_TOKEN)) {
+            checkAreas.push_back(checkArea);
+            messageCloseCheck = true;
+            return;
+        }
+    }
     if (gSaveContext.n64ddFlag || (!gSaveContext.n64ddFlag && giEntry.getItemCategory != ITEM_CATEGORY_JUNK)) {
         checkAreas.push_back(checkArea);
-        StartChecking();
+        checkCollected = true;
     }
 }
 
