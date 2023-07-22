@@ -109,8 +109,8 @@ namespace Settings {
   Option AmmoDrops                 = Option::U8  ("Ammo Drops",             {"On", "On + Bombchu", "Off"},                                     {defaultAmmoDropsDesc, bombchuDropsDesc, noAmmoDropsDesc},                                                       OptionCategory::Setting,    AMMODROPS_BOMBCHU);
   Option HeartDropRefill           = Option::U8  ("Heart Drops and Refills",{"On", "No Drop", "No Refill", "Off"},                             {defaultHeartDropsDesc, noHeartDropsDesc, noHeartRefillDesc, scarceHeartsDesc},                                  OptionCategory::Setting,    HEARTDROPREFILL_VANILLA);
   Option TriforceHunt              = Option::U8  ("Triforce Hunt",          {"Off", "On"},                                                     {triforceHunt});
-  Option TriforceHuntTotal         = Option::U8  ("Triforce Hunt Total Pieces", {NumOpts(0, 50)},                                              {triforceHunt});
-  Option TriforceHuntRequired      = Option::U8  ("Triforce Hunt Required Pieces", {NumOpts(0, 50)},                                           {triforceHunt});
+  Option TriforceHuntTotal         = Option::U8  ("Triforce Hunt Total Pieces", {NumOpts(0, 100)},                                             {triforceHunt});
+  Option TriforceHuntRequired      = Option::U8  ("Triforce Hunt Required Pieces", {NumOpts(0, 100)},                                          {triforceHunt});
   Option MQDungeonCount            = Option::U8  ("MQ Dungeon Count",       {MultiVecOpts({NumOpts(0, 12), {"Random"}})},                      {mqDungeonCountDesc});
   uint8_t MQSet;
   bool DungeonModesKnown[12];
