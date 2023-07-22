@@ -3713,8 +3713,7 @@ void Interface_DrawEnemyHealthBar(TargetContext* targetCtx, PlayState* play) {
 
             projTargetCenter.x = (SCREEN_WIDTH / 2) * (projTargetCenter.x * projTargetCappedInvW);
             projTargetCenter.x = projTargetCenter.x * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
-            projTargetCenter.x =
-                CLAMP(projTargetCenter.x, (-SCREEN_WIDTH / 2) + halfBarWidth, (SCREEN_WIDTH / 2) - halfBarWidth);
+            projTargetCenter.x = CLAMP(projTargetCenter.x, (-SCREEN_WIDTH / 2) + halfBarWidth, (SCREEN_WIDTH / 2) - halfBarWidth);
 
             projTargetCenter.y = (SCREEN_HEIGHT / 2) * (projTargetCenter.y * projTargetCappedInvW);
             projTargetCenter.y = projTargetCenter.y - healthbar_offsetY + healthbar_actorOffset;
