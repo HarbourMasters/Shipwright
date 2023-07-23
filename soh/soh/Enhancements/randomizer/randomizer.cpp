@@ -3973,7 +3973,10 @@ void RandomizerSettingsWindow::DrawElement() {
                     "A Giant's Knife and a pack of Bombchus will be added to the item pool, and "
                     "one of the bottles will contain a Blue Potion.\n\n"
                     "On (no hints) - Salesmen will be included but won't tell you what you'll get.\n"
-                    "On (with hints) - Salesmen will be included and you'll know what you're buying."
+                    "On (with hints) - Salesmen will be included and you'll know what you're buying.\n"
+                    "\n"
+                    "Granny's item will only be offered after you have traded in the Odd Mushroom when Shuffle Adult Trade is on. "
+                    "Otherwise when off, you will need to have found the Claim Check to buy her item (simulating the trade quest is complete)."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleMerchants", randoShuffleMerchants, RO_SHUFFLE_MERCHANTS_OFF);
 
