@@ -29,6 +29,7 @@ class Extractor {
     std::unique_ptr<unsigned char[]> mRomData = std::make_unique<unsigned char[]>(MB64);
     std::string mCurrentRomPath;
     size_t mCurRomSize = 0;
+    uint32_t mRomDataModified = 0;
 
     bool GetRomPathFromBox();
 
@@ -36,6 +37,8 @@ class Extractor {
     size_t GetCurRomSize() const;
     bool ValidateAndFixRom();
     bool ValidateRomSize() const;
+
+    void HandleModifiedRomData() const;
 
     bool ValidateRom(bool skipCrcBox = false);
     const char* GetZapdVerStr() const;

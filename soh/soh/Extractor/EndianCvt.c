@@ -19,21 +19,22 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-void RomToBigEndian(void* rom, size_t romSize) {
+uint32_t RomToBigEndian(void* rom, size_t romSize) {
     uint8_t firstbyte = ((uint8_t*)rom)[0];
 
     switch (firstbyte) {
         case 0x80:  // BE
-            return; // Already BE, no need to swap
-        case 0x37:
+            return 0; // Already BE, no need to swap
+        case 0x37: // Half endian
             for (size_t pos = 0; pos < (romSize / 2); pos++) {
                 ((uint16_t*)rom)[pos] = BSWAP16(((uint16_t*)rom)[pos]);
             }
-            return;
-        case 0x40:
+            return 1;
+        case 0x40: // Little endian
             for (size_t pos = 0; pos < (romSize / 4); pos++) {
                 ((uint32_t*)rom)[pos] = BSWAP32(((uint32_t*)rom)[pos]);
             }
+            return 1;
     }
 }
 
