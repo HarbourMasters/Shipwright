@@ -39,7 +39,7 @@ void func_800DDE3C(void) {
 }
 
 void AudioHeap_ResetLoadStatus(void) {
-    s32 i;
+    size_t i;
 
     for (i = 0; i < 0x30; i++) {
         if (gAudioContext.fontLoadStatus[i] != 5) {

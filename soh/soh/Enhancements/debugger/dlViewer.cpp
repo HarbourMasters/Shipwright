@@ -60,7 +60,7 @@ void DLViewerWindow::DrawElement() {
     }
     if (activeDisplayList != nullptr) {
         auto res = std::static_pointer_cast<LUS::DisplayList>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(activeDisplayList));
-        for (int i = 0; i < res->Instructions.size(); i++) {
+        for (size_t i = 0; i < res->Instructions.size(); i++) {
             std::string id = "##CMD" + std::to_string(i);
             Gfx* gfx = (Gfx*)&res->Instructions[i];
             int cmd = gfx->words.w0 >> 24;

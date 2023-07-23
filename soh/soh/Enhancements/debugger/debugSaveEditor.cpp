@@ -690,7 +690,7 @@ void DrawInventoryTab() {
                     }
                 }
 
-                for (int32_t pickerIndex = 0; pickerIndex < possibleItems.size(); pickerIndex++) {
+                for (size_t pickerIndex = 0; pickerIndex < possibleItems.size(); pickerIndex++) {
                     if (((pickerIndex + 1) % 8) != 0) {
                         ImGui::SameLine();
                     }
@@ -746,7 +746,7 @@ void DrawInventoryTab() {
     // don't show this if it isn't needed.
     if (gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE)
         && ImGui::TreeNode("Adult trade quest items")) {
-        for (int i = ITEM_POCKET_EGG; i <= ITEM_CLAIM_CHECK; i++) {
+        for (unsigned int i = ITEM_POCKET_EGG; i <= ITEM_CLAIM_CHECK; i++) {
             DrawBGSItemFlag(i);
         }
         ImGui::TreePop();
@@ -1085,14 +1085,13 @@ void DrawFlagsTab() {
         }
     });
 
-    for (int i = 0; i < flagTables.size(); i++) {
-        const FlagTable& flagTable = flagTables[i];
+    for (const auto& flagTable : flagTables) {
         if (flagTable.flagTableType == RANDOMIZER_INF && !gSaveContext.n64ddFlag && !gSaveContext.isBossRush) {
             continue;
         }
 
         if (ImGui::TreeNode(flagTable.name)) {
-            for (int j = 0; j < flagTable.size + 1; j++) {
+            for (unsigned int j = 0; j < flagTable.size + 1; j++) {
                 DrawGroupWithBorder([&]() {
                     ImGui::Text(fmt::format("{:<2x}", j).c_str());
                     switch (flagTable.flagTableType) {
@@ -1125,7 +1124,7 @@ void DrawUpgrade(const std::string& categoryName, int32_t categoryId, const std:
     ImGui::SameLine();
     ImGui::PushID(categoryName.c_str());
     if (ImGui::BeginCombo("##upgrade", names[CUR_UPG_VALUE(categoryId)].c_str())) {
-        for (int32_t i = 0; i < names.size(); i++) {
+        for (size_t i = 0; i < names.size(); i++) {
             if (ImGui::Selectable(names[i].c_str())) {
                 Inventory_ChangeUpgrade(categoryId, i);
             }
@@ -1193,13 +1192,13 @@ void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const 
 }
 
 void DrawEquipmentTab() {
-    const std::vector<uint8_t> equipmentValues = {
+    const static std::array<uint8_t, 16> equipmentValues = {
         ITEM_SWORD_KOKIRI, ITEM_SWORD_MASTER,  ITEM_SWORD_BGS,     ITEM_SWORD_BROKEN,
         ITEM_SHIELD_DEKU,  ITEM_SHIELD_HYLIAN, ITEM_SHIELD_MIRROR, ITEM_NONE,
         ITEM_TUNIC_KOKIRI, ITEM_TUNIC_GORON,   ITEM_TUNIC_ZORA,    ITEM_NONE,
         ITEM_BOOTS_KOKIRI, ITEM_BOOTS_IRON,    ITEM_BOOTS_HOVER,   ITEM_NONE,
     };
-    for (int32_t i = 0; i < equipmentValues.size(); i++) {
+    for (size_t i = 0; i < equipmentValues.size(); i++) {
         // Skip over unused 4th slots for shields, boots, and tunics
         if (equipmentValues[i] == ITEM_NONE) {
             continue;
@@ -1345,14 +1344,14 @@ void DrawDungeonItemButton(uint32_t item, uint32_t scene) {
 void DrawQuestStatusTab() {
     ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
 
-    for (int32_t i = QUEST_MEDALLION_FOREST; i < QUEST_MEDALLION_LIGHT + 1; i++) {
+    for (unsigned int i = QUEST_MEDALLION_FOREST; i < QUEST_MEDALLION_LIGHT + 1; i++) {
         if (i != QUEST_MEDALLION_FOREST) {
             ImGui::SameLine();
         }
         DrawQuestItemButton(i);
     }
 
-    for (int32_t i = QUEST_KOKIRI_EMERALD; i < QUEST_ZORA_SAPPHIRE + 1; i++) {
+    for (unsigned int i = QUEST_KOKIRI_EMERALD; i < QUEST_ZORA_SAPPHIRE + 1; i++) {
         if (i != QUEST_KOKIRI_EMERALD) {
             ImGui::SameLine();
         }
@@ -1405,7 +1404,7 @@ void DrawQuestStatusTab() {
 
     int32_t pohCount = (gSaveContext.inventory.questItems & 0xF0000000) >> 28;
     if (ImGui::BeginCombo("PoH count", std::to_string(pohCount).c_str())) {
-        for (int32_t i = 0; i < 4; i++) {
+        for (uint32_t i = 0; i < 4; i++) {
             if (ImGui::Selectable(std::to_string(i).c_str(), pohCount == i)) {
                 gSaveContext.inventory.questItems &= ~0xF0000000;
                 gSaveContext.inventory.questItems |= (i << 28);
@@ -1421,7 +1420,7 @@ void DrawQuestStatusTab() {
         static int32_t dungeonItemsScene = SCENE_YDAN;
         ImGui::PushItemWidth(-ImGui::GetWindowWidth() * 0.35f);
         if (ImGui::BeginCombo("##DungeonSelect", SohUtils::GetSceneName(dungeonItemsScene).c_str())) {
-            for (int32_t dungeonIndex = SCENE_YDAN; dungeonIndex < SCENE_BDAN_BOSS + 1; dungeonIndex++) {
+            for (uint32_t dungeonIndex = SCENE_YDAN; dungeonIndex < SCENE_BDAN_BOSS + 1; dungeonIndex++) {
                 if (ImGui::Selectable(SohUtils::GetSceneName(dungeonIndex).c_str(),
                                       dungeonIndex == dungeonItemsScene)) {
                     dungeonItemsScene = dungeonIndex;
@@ -1710,11 +1709,11 @@ void DrawPlayerTab() {
         uint32_t flags[3] = { player->stateFlags1, player->stateFlags2, player->stateFlags3 };
         std::vector<std::vector<std::string>> flag_strs = { state1, state2, state3 };
 
-        for (int j = 0; j <= 2; j++) {
+        for (uint32_t j = 0; j <= 2; j++) {
             DrawGroupWithBorder([&]() {
                 ImGui::Text("State Flags %d", j + 1);
                 std::vector<std::string> state = flag_strs[j];
-                for (int i = 0; i <= 31; i++) {
+                for (uint32_t i = 0; i <= 31; i++) {
                     bit[i] = ((flags[j] >> i) & 1);
                     if (bit[i] != 0) {
                         ImGui::Text("%s", state[i].c_str());

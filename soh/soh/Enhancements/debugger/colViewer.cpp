@@ -271,7 +271,7 @@ void CreateSphereData() {
 
     size_t vtxStartIndex = sphereVtx.size();
     sphereVtx.reserve(sphereVtx.size() + faces.size() * 3);
-    for (int32_t faceIndex = 0; faceIndex < faces.size(); faceIndex++) {
+    for (size_t faceIndex = 0; faceIndex < faces.size(); faceIndex++) {
         sphereVtx.push_back(sphereVtx[std::get<0>(faces[faceIndex])]);
         sphereVtx.push_back(sphereVtx[std::get<1>(faces[faceIndex])]);
         sphereVtx.push_back(sphereVtx[std::get<2>(faces[faceIndex])]);
@@ -348,7 +348,7 @@ void DrawDynapoly(std::vector<Gfx>& dl, CollisionHeader* col, int32_t bgId) {
     // This saves several hundred commands in larger scenes
     bool previousPoly = false;
 
-    for (int i = 0; i < col->numPolygons; i++) {
+    for (unsigned int i = 0; i < col->numPolygons; i++) {
         CollisionPoly* poly = &col->polyList[i];
 
         if (SurfaceType_IsHookshotSurface(&gPlayState->colCtx, poly, bgId)) {

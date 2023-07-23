@@ -194,7 +194,7 @@ ZRom::ZRom(std::string romPath)
 
     std::vector<uint8_t> decompressedData(1);
 
-	for (int i = 0; i < lines.size(); i++)
+	for (size_t i = 0; i < lines.size(); i++)
 	{
 		lines[i] = StringHelper::Strip(lines[i], "\r");
 		const int romOffset = version.offset + (DMA_ENTRY_SIZE * i);

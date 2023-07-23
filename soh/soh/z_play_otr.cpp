@@ -29,13 +29,13 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
 
     //osSyncPrintf("\nSCENE SIZE %fK\n", (scene->sceneFile.vromEnd - scene->sceneFile.vromStart) / 1024.0f);
 
-    std::string sceneVersion;
+    const char* sceneVersion;
     if (IsGameMasterQuest()) {
         sceneVersion = "mq";
     } else {
         sceneVersion = "nonmq";
     }
-    std::string scenePath = StringHelper::Sprintf("scenes/%s/%s/%s", sceneVersion.c_str(), scene->sceneFile.fileName, scene->sceneFile.fileName);
+    std::string scenePath = StringHelper::Sprintf("scenes/%s/%s/%s", sceneVersion, scene->sceneFile.fileName, scene->sceneFile.fileName);
 
     play->sceneSegment = OTRPlay_LoadFile(play, scenePath.c_str());
 
@@ -87,6 +87,4 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     auto data2 = ResourceMgr_LoadVtxByCRC(0x68d4ea06044e228f);*/
     
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneInit>(play->sceneNum);
-
-    volatile int a = 0;
 }

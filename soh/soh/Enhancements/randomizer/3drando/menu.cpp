@@ -391,7 +391,7 @@ void PrintOptionSubMenu() {
     }
 
     // print menu name
-    printf("\x1b[0;%dH%s", 1 + (BOTTOM_WIDTH - currentMenu->name.length()) / 2, currentMenu->name.c_str());
+    printf("\x1b[0;%zu%s", 1 + (BOTTOM_WIDTH - currentMenu->name.length()) / 2, currentMenu->name.c_str());
 
     // keep count of hidden settings to not make blank spaces appear in the list
     hiddenSettings = 0;
@@ -427,7 +427,7 @@ void PrintOptionSubMenu() {
 }
 
 void PrintSubMenu() {
-    printf("\x1b[0;%dH%s", 1 + (BOTTOM_WIDTH - currentMenu->name.length()) / 2, currentMenu->name.c_str());
+    printf("\x1b[0;%zu%s", 1 + (BOTTOM_WIDTH - currentMenu->name.length()) / 2, currentMenu->name.c_str());
 
     for (uint8_t i = 0; i < MAX_SUBMENUS_ON_SCREEN; i++) {
         if (i >= currentMenu->itemsList->size())
@@ -557,7 +557,7 @@ std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t>
         Settings::Keysanity.RestoreDelayedOption();
     }
     std::ostringstream fileNameStream;
-    for (int i = 0; i < Settings::hashIconIndexes.size(); i++) {
+    for (size_t i = 0; i < Settings::hashIconIndexes.size(); i++) {
         if (i) {
             fileNameStream << '-';
         }

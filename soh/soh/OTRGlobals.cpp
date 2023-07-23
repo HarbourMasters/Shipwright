@@ -273,7 +273,7 @@ OTRGlobals::OTRGlobals() {
     // This is in OTRGlobals right now because this is a place that will only ever be run once at the beginning of startup.
     // We should probably find some code in db_camera that does initialization and only run once, and then dealloc on deinitialization.
     cameraStrings = (char**)malloc(sizeof(constCameraStrings));
-    for (int32_t i = 0; i < sizeof(constCameraStrings) / sizeof(char*); i++) {
+    for (size_t i = 0; i < sizeof(constCameraStrings) / sizeof(char*); i++) {
         // OTRTODO: never deallocated...
         auto dup = strdup(constCameraStrings[i]);
         cameraStrings[i] = dup;
@@ -1509,7 +1509,7 @@ void OTRGlobals::CheckSaveFile(size_t sramSize) const {
     std::fstream saveFile(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
     if (saveFile.fail()) {
         saveFile.open(savePath, std::fstream::in | std::fstream::out | std::fstream::binary | std::fstream::app);
-        for (int i = 0; i < sramSize; ++i) {
+        for (size_t i = 0; i < sramSize; ++i) {
             saveFile.write("\0", 1);
         }
     }
@@ -1777,7 +1777,7 @@ extern "C" int GetEquipNowMessage(char* buffer, char* src, const int maxBufferSi
     }
     std::string str;
     std::string FixedBaseStr(src);
-    int RemoveControlChar = FixedBaseStr.find_first_of("\x02");
+    const size_t RemoveControlChar = FixedBaseStr.find_first_of("\x02");
 
     if (RemoveControlChar != std::string::npos) {
         FixedBaseStr = FixedBaseStr.substr(0, RemoveControlChar);

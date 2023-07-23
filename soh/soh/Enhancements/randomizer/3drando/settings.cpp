@@ -3165,7 +3165,7 @@ namespace Settings {
     }
 
     if (StartingAge.Is(AGE_RANDOM)) {
-      int choice = Random(0, 2); //50% chance of each
+      uint32_t choice = Random(0, 2); //50% chance of each
       if (choice == 0) {
         ResolvedStartingAge = AGE_CHILD;
         StartingAge.SetSelectedIndex(AGE_CHILD);

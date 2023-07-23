@@ -448,7 +448,7 @@ void SortEntranceListByType(EntranceOverride* entranceList, u8 byDest) {
 
                 size_t entranceIndex = byDest ? tempList[j].override : tempList[j].index;
 
-                if (entranceData[i].type == k && entranceIndex == entranceData[i].index) {
+                if (entranceData[i].type == k && entranceIndex == (size_t)entranceData[i].index) {
                     entranceList[idx] = tempList[j];
                     idx++;
                     break;

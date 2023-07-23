@@ -62,10 +62,10 @@ class Skeleton : public Resource<SkeletonData> {
     SkeletonData skeletonData;
     
     LimbType limbType;
-    int limbCount;
-    int dListCount;
+    uint32_t limbCount;
+    uint32_t dListCount;
     LimbType limbTableType;
-    int limbTableCount;
+    uint32_t limbTableCount;
     std::vector<StandardLimb> standardLimbArray;
     std::vector<SkelCurveLimb> curveLimbArray;
     std::vector<std::string> limbTable;

@@ -129,7 +129,7 @@ void ActorViewerWindow::DrawElement() {
         }
         lastSceneId = gPlayState->sceneNum;
         if (ImGui::BeginCombo("Actor Type", acMapping[category])) {
-            for (int i = 0; i < acMapping.size(); i++) {
+            for (size_t i = 0; i < acMapping.size(); i++) {
                 if (ImGui::Selectable(acMapping[i])) {
                     category = i;
                     PopulateActorDropdown(category, list);
@@ -144,7 +144,7 @@ void ActorViewerWindow::DrawElement() {
                 PopulateActorDropdown(category, list);
                 lastSceneId = gPlayState->sceneNum;
             }
-            for (int i = 0; i < list.size(); i++) {
+            for (size_t i = 0; i < list.size(); i++) {
                 std::string label = std::to_string(i) + ": " + ActorDB::Instance->RetrieveEntry(list[i]->id).name;
                 std::string description = GetActorDescription(list[i]->id);
                 if (description != "")

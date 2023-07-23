@@ -586,7 +586,7 @@ void Teardown() {
     areasSpoiled = 0;
     checks.clear();
     lastLocationChecked = RC_UNKNOWN_CHECK;
-    for (int i = 0; i < sizeof(areaChecksTotal); i++) {
+    for (size_t i = 0; i < sizeof(areaChecksTotal); i++) {
         areaChecksTotal[i] = 0;
         areaChecksGotten[i] = 0;
     }
@@ -668,7 +668,7 @@ void UpdateOrdering(bool init) {
     //sort each area individually
     int startOffset = 0;
     int endOffset = 0;
-    for (int x = 0; x < sizeof(areaChecksTotal); x++) {
+    for (size_t x = 0; x < sizeof(areaChecksTotal); x++) {
         endOffset = startOffset + areaChecksTotal[x];
         std::sort(checks.begin() + startOffset, checks.begin() + endOffset, CompareCheckObject);
         startOffset += areaChecksTotal[x];

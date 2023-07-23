@@ -150,63 +150,24 @@ bool Scene_CommandMeshHeader(PlayState* play, LUS::ISceneCommand* cmd) {
 extern "C" void* func_800982FC(ObjectContext* objectCtx, s32 bankIndex, s16 objectId);
 
 bool Scene_CommandObjectList(PlayState* play, LUS::ISceneCommand* cmd) {
-    // LUS::SetObjectList* cmdObj = static_pointer_cast<LUS::SetObjectList>(cmd);
     LUS::SetObjectList* cmdObj = (LUS::SetObjectList*)cmd;
-
-    s32 i;
     s32 j;
-    s32 k;
-    ObjectStatus* status;
-    ObjectStatus* status2;
-    ObjectStatus* firstStatus;
-    // s16* objectEntry = SEGMENTED_TO_VIRTUAL(cmd->objectList.segment);
-    s16* objectEntry = (s16*)cmdObj->GetRawPointer();
-    void* nextPtr;
-
-    k = 0;
-    // i = play->objectCtx.unk_09;
-    i = 0;
-    firstStatus = &play->objectCtx.status[0];
-    status = &play->objectCtx.status[i];
-
-    for (int i = 0; i < cmdObj->objects.size(); i++) {
+    
+    for (const auto obj : cmdObj->objects) {
         bool alreadyIncluded = false;
 
-        for (int j = 0; j < play->objectCtx.num; j++) {
-            if (play->objectCtx.status[j].id == cmdObj->objects[i]) {
+        for (unsigned int j = 0; j < play->objectCtx.num; j++) {
+            if (play->objectCtx.status[j].id == obj) {
                 alreadyIncluded = true;
                 break;
             }
         }
 
         if (!alreadyIncluded) {
-            play->objectCtx.status[play->objectCtx.num++].id = cmdObj->objects[i];
+            play->objectCtx.status[play->objectCtx.num++].id = obj;
             func_80031A28(play, &play->actorCtx);
         }
     }
-
-    /*
-    while (i < play->objectCtx.num) {
-        if (status->id != *objectEntry) {
-            status2 = &play->objectCtx.status[i];
-            for (j = i; j < play->objectCtx.num; j++) {
-                status2->id = OBJECT_INVALID;
-                status2++;
-            }
-            play->objectCtx.num = i;
-            func_80031A28(play, &play->actorCtx);
-
-            continue;
-        }
-
-        i++;
-        k++;
-        objectEntry++;
-        status++;
-    }
-
-    play->objectCtx.num = i;
-    */
 
     return false;
 }
@@ -453,7 +414,7 @@ bool (*sceneCommands[])(PlayState*, LUS::ISceneCommand*) = {
     Scene_CommandSkyboxSettings,      // SCENE_CMD_ID_SKYBOX_SETTINGS
     Scene_CommandSkyboxDisables,      // SCENE_CMD_ID_SKYBOX_DISABLES
     Scene_CommandExitList,            // SCENE_CMD_ID_EXIT_LIST
-    NULL,                             // SCENE_CMD_ID_END
+    nullptr,                          // SCENE_CMD_ID_END
     Scene_CommandSoundSettings,       // SCENE_CMD_ID_SOUND_SETTINGS
     Scene_CommandEchoSettings,        // SCENE_CMD_ID_ECHO_SETTINGS
     Scene_CommandCutsceneData,        // SCENE_CMD_ID_CUTSCENE_DATA
@@ -464,8 +425,8 @@ bool (*sceneCommands[])(PlayState*, LUS::ISceneCommand*) = {
 s32 OTRScene_ExecuteCommands(PlayState* play, LUS::Scene* scene) {
     LUS::SceneCommandID cmdCode;
 
-    for (int i = 0; i < scene->commands.size(); i++) {
-        auto sceneCmd = scene->commands[i];
+    /*for (int i = 0; i < scene->commands.size(); i++)*/ 
+    for (const auto& sceneCmd : scene->commands) {
 
         if (sceneCmd == nullptr) // UH OH
             continue;

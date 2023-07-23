@@ -697,7 +697,7 @@ void DrawItemsInRows(std::vector<ItemTrackerItem> items, int columns = 6) {
     int iconSpacing = CVarGetInteger("gItemTrackerIconSpacing", 12);
     int topPadding = (CVarGetInteger("gItemTrackerWindowType", TRACKER_WINDOW_FLOATING) == TRACKER_WINDOW_WINDOW) ? 20 : 0;
 
-    for (int i = 0; i < items.size(); i++) {
+    for (size_t i = 0; i < items.size(); i++) {
         int row = i / columns;
         int column = i % columns;
         ImGui::SetCursorPos(ImVec2((column * (iconSize + iconSpacing) + 8), (row * (iconSize + iconSpacing)) + 8 + topPadding));
@@ -716,7 +716,7 @@ void DrawItemsInACircle(std::vector<ItemTrackerItem> items) {
     ImVec2 max = ImGui::GetWindowContentRegionMax();
     float radius = (iconSize + iconSpacing) * 2;
 
-    for (int i = 0; i < items.size(); i++) {
+    for (size_t i = 0; i < items.size(); i++) {
         float angle = (float)i / items.size() * 2.0f * M_PI;
         float x = (radius / 2.0f) * cos(angle) + max.x / 2.0f;
         float y = (radius / 2.0f) * sin(angle) + max.y / 2.0f;
@@ -735,13 +735,13 @@ std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeo
     int iconSpacing = CVarGetInteger("gItemTrackerIconSpacing", 12);
     std::vector<ItemTrackerItem> dungeonItems = {};
 
-    int rowCount = 0;
-    for (int i = 0; i < dungeons.size(); i++) {
+    unsigned int rowCount = 0;
+    for (size_t i = 0; i < dungeons.size(); i++) {
         if (dungeons[i].items.size() > rowCount) rowCount = dungeons[i].items.size();
     }
 
-    for (int i = 0; i < rowCount; i++) {
-        for (int j = 0; j < MIN(dungeons.size(), columns); j++) {
+    for (unsigned int i = 0; i < rowCount; i++) {
+        for (unsigned int j = 0; j < MIN(dungeons.size(), columns); j++) {
             if (dungeons[j].items.size() > i) {
                 switch (dungeons[j].items[i]) {
                     case ITEM_KEY_SMALL:

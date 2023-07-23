@@ -87,9 +87,9 @@ bool Parse(const fs::path& xmlFilePath, const fs::path& basePath, const fs::path
 void BuildAssetTexture(const fs::path& pngFilePath, TextureType texType, const fs::path& outPath);
 void BuildAssetBackground(const fs::path& imageFilePath, const fs::path& outPath);
 void BuildAssetBlob(const fs::path& blobFilePath, const fs::path& outPath);
-int ExtractFunc(int workerID, int fileListSize, std::string fileListItem, ZFileMode fileMode);
+int ExtractFunc(size_t workerID, size_t fileListSize, std::string fileListItem, ZFileMode fileMode);
 
-volatile int numWorkersLeft = 0;
+std::atomic_int32_t numWorkersLeft = 0;
 
 extern void ImportExporters();
 
@@ -304,15 +304,15 @@ extern "C" int zapd_main(int argc, char* argv[])
 				bool parseSuccessful;
 
 				auto start = std::chrono::steady_clock::now();
-				int fileListSize = fileList.size();
+				size_t fileListSize = fileList.size();
 				Globals::Instance->singleThreaded = false;
 
-				for (int i = 0; i < fileListSize; i++)
+				for (size_t i = 0; i < fileListSize; i++)
 					Globals::Instance->workerData[i] = new FileWorker();
 
 				numWorkersLeft = fileListSize;
 
-				for (int i = 0; i < fileListSize; i++)
+				for (size_t i = 0; i < fileListSize; i++)
 				{
 					if (Globals::Instance->singleThreaded)
 					{
@@ -342,7 +342,7 @@ extern "C" int zapd_main(int argc, char* argv[])
 				auto diff =
 					std::chrono::duration_cast<std::chrono::seconds>(end - start).count();
 
-				printf("Generated OTR File Data in %i seconds\n", diff);
+				printf("Generated OTR File Data in %jd seconds\n", diff);
  			}
 			else
 			{
@@ -391,7 +391,6 @@ extern "C" int zapd_main(int argc, char* argv[])
 	if (exporterSet != nullptr && exporterSet->endProgramFunc != nullptr)
 		exporterSet->endProgramFunc();
 
-end:
 	delete exporterSet;
 
 	//Globals::Instance->GetExporterSet() = nullptr; //TODO NULL this out. Compiler complains about lvalue assignment.
@@ -400,11 +399,11 @@ end:
 	return 0;
 }
 
-int ExtractFunc(int workerID, int fileListSize, std::string fileListItem, ZFileMode fileMode)
+int ExtractFunc(size_t workerID, size_t fileListSize, std::string fileListItem, ZFileMode fileMode)
 {
 	bool parseSuccessful;
 
-	printf("(%i / %i): %s\n", (workerID + 1), fileListSize, fileListItem.c_str());
+	printf("(%zu / %zu): %s\n", (workerID + 1), fileListSize, fileListItem.c_str());
 
 	for (auto& extFile : Globals::Instance->cfg.externalFiles)
 	{
@@ -430,7 +429,7 @@ int ExtractFunc(int workerID, int fileListSize, std::string fileListItem, ZFileM
 
 	if (Globals::Instance->singleThreaded)
 	{
-		for (int i = 0; i < Globals::Instance->files.size(); i++)
+		for (size_t i = 0; i < Globals::Instance->files.size(); i++)
 		{
 			delete Globals::Instance->files[i];
 			Globals::Instance->files.erase(Globals::Instance->files.begin() + i);
@@ -443,7 +442,7 @@ int ExtractFunc(int workerID, int fileListSize, std::string fileListItem, ZFileM
 	}
 	else
 	{
-		for (int i = 0; i < Globals::Instance->workerData[workerID]->files.size(); i++)
+		for (size_t i = 0; i < Globals::Instance->workerData[workerID]->files.size(); i++)
 		{
 			delete Globals::Instance->workerData[workerID]->files[i];
 			Globals::Instance->workerData[workerID]->files.erase(

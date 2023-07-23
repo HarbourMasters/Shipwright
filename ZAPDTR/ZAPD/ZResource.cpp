@@ -296,11 +296,10 @@ void ZResource::GetSourceOutputCode([[maybe_unused]] const std::string& prefix)
 			ZArray* arr = (ZArray*)this;
 			if (arr->resList[0]->GetResourceType() == ZResourceType::Vertex)
 			{
-				for (int i = 0; i < arr->resList.size(); i++)
+				decl->vertexHack.reserve(arr->resList.size());
+				for (const auto& res : arr->resList)
 				{
-					ZVtx* vtx = (ZVtx*)arr->resList[i];
-					decl->vertexHack.push_back(vtx);
-
+					decl->vertexHack.push_back((ZVtx*)res);
 				}
 			}
 		}

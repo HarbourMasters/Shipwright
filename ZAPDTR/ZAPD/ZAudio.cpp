@@ -361,13 +361,15 @@ void ZAudio::ParseRawData()
 	sampleBankTable = ParseAudioTable(codeData, gSampleBankTableOffset);
 
 	// SEQEUNCE FONT TABLE PARSING
-	for (int i = 0; i < sequenceTable.size(); i++)
+	fontIndices.reserve(sequenceTable.size());
+	for (size_t i = 0; i < sequenceTable.size(); i++)
 	{
 		uint16_t idx = BitConverter::ToUInt16BE(codeData, gSequenceFontTableOffset + (i * 2));
 		uint8_t numFonts = codeData[gSequenceFontTableOffset + (idx++)];
 		std::vector<uint32_t> fontIds;
+		fontIds.reserve(numFonts);
 
-		for (int j = 0; j < numFonts; j++)
+		for (unsigned int j = 0; j < numFonts; j++)
 		{
 			uint8_t fontId = codeData[gSequenceFontTableOffset + (idx++)];
 			fontIds.push_back(fontId);
@@ -378,15 +380,16 @@ void ZAudio::ParseRawData()
 
 
 	// SAMPLE/FONT PARSING
-	for (int i = 0; i < soundFontTable.size(); i++)
+	for (auto& sft : soundFontTable)
 	{
-		ParseSoundFont(audioBankData, audioTableData, sampleBankTable, soundFontTable[i]);
+		ParseSoundFont(audioBankData, audioTableData, sampleBankTable, sft);
 	}
 
 	// SEQUENCE PARSING
-	for (int i = 0; i < sequenceTable.size(); i++)
+	sequences.reserve(sequenceTable.size());
+	for (size_t i = 0; i < sequenceTable.size(); i++)
 	{
-		int seqDestIdx = i;
+		size_t seqDestIdx = i;
 
 		if (sequenceTable[i].size == 0)
 			seqDestIdx = sequenceTable[i].ptr;

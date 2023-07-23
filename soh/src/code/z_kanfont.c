@@ -197,11 +197,11 @@ void Font_LoadMessageBoxIcon(Font* font, u16 icon) {
 void Font_LoadOrderedFont(Font* font) {
     size_t len;
     size_t jj;
-    s32 fontStatic;
+    //s32 fontStatic;
     u8* fontBuf;
-    s32 codePointIndex;
-    s32 fontBufIndex;
-    s32 offset;
+    u32 codePointIndex;
+    u32 fontBufIndex;
+    u32 offset;
 
     len = strlen(_message_0xFFFC_nes);
     memcpy(font->msgBuf, _message_0xFFFC_nes, len);
@@ -217,7 +217,7 @@ void Font_LoadOrderedFont(Font* font) {
 
         if (font->msgBuf[codePointIndex] != MESSAGE_NEWLINE) {
             fontBuf = font->fontBuf + fontBufIndex * 8;
-            fontStatic = _nes_font_staticSegmentRomStart;
+            //fontStatic = _nes_font_staticSegmentRomStart;
 
             osSyncPrintf("nes_mes_buf[%d]=%d\n", codePointIndex, font->msgBuf[codePointIndex]);
 

@@ -858,10 +858,10 @@ void ZFile::GenerateSourceHeaderFiles()
 		auto pathList = StringHelper::Split(xmlPath, "/");
 		std::string outPath = "";
 
-		for (int i = 0; i < 3; i++)
+		for (unsigned int i = 0; i < 3; i++)
 			outPath += pathList[i] + "/";
 
-		for (int i = 5; i < pathList.size(); i++)
+		for (size_t i = 5; i < pathList.size(); i++)
 		{
 			if (i == pathList.size() - 1)
 			{

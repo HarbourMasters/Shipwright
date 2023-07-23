@@ -298,7 +298,7 @@ Item& ItemFromGIID(const int giid) {
 //at gossip stone locations.
 void NewItem(const uint32_t itemKey, const Item item) {
     if (itemKey <= BUY_RED_POTION_50) {
-      printf("\x1b[25;0HWARNING: ATTEMPTED TO OVERWRITE ITEM %lu\n", itemKey);
+      printf("\x1b[25;0HWARNING: ATTEMPTED TO OVERWRITE ITEM %u\n", itemKey);
       return;
     }
 

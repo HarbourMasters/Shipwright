@@ -570,7 +570,7 @@ void DrawGameplayStatsCountsTab() {
 }
 
 void DrawGameplayStatsBreakdownTab() {
-    for (int i = 0; i < gSaveContext.sohStats.tsIdx; i++) {
+    for (uint32_t i = 0; i < gSaveContext.sohStats.tsIdx; i++) {
         std::string sceneName = ResolveSceneID(gSaveContext.sohStats.sceneTimestamps[i].scene, gSaveContext.sohStats.sceneTimestamps[i].room);
         std::string name;
         if (CVarGetInteger("gGameplayStats.RoomBreakdown", 0) && gSaveContext.sohStats.sceneTimestamps[i].scene != SCENE_KAKUSIANA) {
@@ -588,7 +588,7 @@ void DrawGameplayStatsBreakdownTab() {
     ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, { 4.0f, 4.0f });
     ImGui::BeginTable("gameplayStatsCounts", 1, ImGuiTableFlags_BordersOuter);
     ImGui::TableSetupColumn("stat", ImGuiTableColumnFlags_WidthStretch);
-    for (int i = 0; i < gSaveContext.sohStats.tsIdx; i++) {
+    for (uint32_t i = 0; i < gSaveContext.sohStats.tsIdx; i++) {
         TimestampInfo tsInfo = sceneTimestampDisplay[i];
         bool canShow = !tsInfo.isRoom || CVarGetInteger("gGameplayStats.RoomBreakdown", 0);
         if (tsInfo.time > 0 && strnlen(tsInfo.name, 40) > 1 && canShow) {
@@ -796,7 +796,7 @@ void SetupDisplayNames() {
 }
 
 void SetupDisplayColors() {
-    for (int i = 0; i < TIMESTAMP_MAX; i++) {
+    for (unsigned int i = 0; i < TIMESTAMP_MAX; i++) {
         switch (i) {
             case ITEM_SONG_MINUET:
             case ITEM_KOKIRI_EMERALD:

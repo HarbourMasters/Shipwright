@@ -563,7 +563,7 @@ char* OldMain(char* infilename)
 		s32 lastState[16];
 		s32 decoded[16];
 		s16 guess[16];
-		s16 origGuess[16];
+		//s16 origGuess[16];
 
 		memcpy(lastState, state, sizeof(state));
 
@@ -572,10 +572,10 @@ char* OldMain(char* infilename)
 		memcpy(decoded, state, sizeof(state));
 
 		// Create a guess from that, by clamping to 16 bits
-		for (s32 i = 0; i < 16; i++)
-		{
-			origGuess[i] = clamp_bits(state[i], 16);
-		}
+		//for (s32 i = 0; i < 16; i++)
+		//{
+		//	origGuess[i] = clamp_bits(state[i], 16);
+		//}
 
 		memcpy(state, decoded, sizeof(state));
 		memcpy(outputBuf + currPos * 2, decoded, sizeof(decoded));

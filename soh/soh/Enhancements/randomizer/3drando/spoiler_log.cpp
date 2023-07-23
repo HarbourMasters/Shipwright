@@ -880,7 +880,7 @@ const char* SpoilerLog_Write(int language) {
 
     std::string jsonString = jsonData.dump(4);
     std::ostringstream fileNameStream;
-    for (int i = 0; i < Settings::hashIconIndexes.size(); i ++) {
+    for (size_t i = 0; i < Settings::hashIconIndexes.size(); i ++) {
         if (i) {
             fileNameStream << '-';
         }
