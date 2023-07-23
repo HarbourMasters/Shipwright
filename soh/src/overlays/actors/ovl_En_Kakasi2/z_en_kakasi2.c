@@ -139,7 +139,7 @@ void func_80A90264(EnKakasi2* this, PlayState* play) {
         this->actionFunc = func_80A904D8;
     } else if ((this->actor.xzDistToPlayer < this->maxSpawnDistance.x) &&
                (fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < this->maxSpawnDistance.y) &&
-               (gSaveContext.eventChkInf[9] & 0x1000)) {
+               (Flags_GetEventChkInf(EVENTCHKINF_PLAYED_SONG_FOR_SCARECROW_AS_ADULT))) {
 
         this->unk_194 = 0;
         if (play->msgCtx.ocarinaMode == OCARINA_MODE_0B) {

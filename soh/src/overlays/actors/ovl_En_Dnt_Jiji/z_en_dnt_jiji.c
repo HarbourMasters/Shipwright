@@ -286,7 +286,7 @@ void EnDntJiji_GivePrize(EnDntJiji* this, PlayState* play) {
             osSyncPrintf("実 \n");
             osSyncPrintf("実 \n");
             osSyncPrintf("実 \n");
-            gSaveContext.itemGetInf[1] |= 0x8000;
+            Flags_SetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE);
         } else {
             // "stick"
             osSyncPrintf("棒 \n");
@@ -295,7 +295,7 @@ void EnDntJiji_GivePrize(EnDntJiji* this, PlayState* play) {
             osSyncPrintf("棒 \n");
             osSyncPrintf("棒 \n");
             osSyncPrintf("棒 \n");
-            gSaveContext.itemGetInf[1] |= 0x4000;
+            Flags_SetItemGetInf(ITEMGETINF_OBTAINED_STICK_UPGRADE_FROM_STAGE);
         }
         this->actor.textId = 0;
         if ((this->stage != NULL) && (this->stage->actor.update != NULL)) {

@@ -1,6 +1,8 @@
 #pragma once
 #include "stdint.h"
 
+#ifdef __cplusplus
+
 #include <libultraship/libultraship.h>
 #include <ImGui/imgui.h>
 
@@ -16,3 +18,13 @@ class AudioEditor : public LUS::GuiWindow {
 
 void AudioEditor_RandomizeAll();
 void AudioEditor_ResetAll();
+
+extern "C" {
+#endif
+
+u16 AudioEditor_GetReplacementSeq(u16 seqId);
+
+
+#ifdef __cplusplus
+}
+#endif

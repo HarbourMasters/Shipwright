@@ -353,7 +353,7 @@ void BossDodongo_IntroCutscene(BossDodongo* this, PlayState* play) {
                 this->cameraAt.z = player->actor.world.pos.z;
             }
 
-            if (gSaveContext.eventChkInf[7] & 2) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_KING_DODONGO_BATTLE)) {
                 if (this->unk_198 == 100) {
                     this->actor.world.pos.x = -1114.0f;
                     this->actor.world.pos.z = -2804.0f;
@@ -394,7 +394,7 @@ void BossDodongo_IntroCutscene(BossDodongo* this, PlayState* play) {
         case 4:
             Math_SmoothStepToF(&this->unk_20C, 0.0f, 1.0f, 0.01f, 0.0f);
 
-            if (gSaveContext.eventChkInf[7] & 2) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_KING_DODONGO_BATTLE)) {
                 phi_f0 = -50.0f;
             } else {
                 phi_f0 = 0.0f;
@@ -422,7 +422,7 @@ void BossDodongo_IntroCutscene(BossDodongo* this, PlayState* play) {
             }
 
             if (this->unk_198 == 0x5A) {
-                if (!(gSaveContext.eventChkInf[7] & 2)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_BEGAN_KING_DODONGO_BATTLE)) {
                     TitleCard_InitBossName(play, &play->actorCtx.titleCtx,
                                            SEGMENTED_TO_VIRTUAL(gKingDodongoTitleCardENGTex), 160, 180, 128, 40, true);
                 }
@@ -441,7 +441,7 @@ void BossDodongo_IntroCutscene(BossDodongo* this, PlayState* play) {
                 this->unk_1DA = 50;
                 this->unk_1BC = 0;
                 player->actor.shape.rot.y = -0x4002;
-                gSaveContext.eventChkInf[7] |= 2;
+                Flags_SetEventChkInf(EVENTCHKINF_BEGAN_KING_DODONGO_BATTLE);
             }
             break;
     }

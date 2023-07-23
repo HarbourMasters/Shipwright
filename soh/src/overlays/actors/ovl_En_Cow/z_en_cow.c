@@ -127,7 +127,7 @@ void EnCow_Init(Actor* thisx, PlayState* play) {
                     Actor_Kill(&this->actor);
                     return;
                 }
-                if (!(gSaveContext.eventChkInf[1] & 0x4000)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_WON_COW_IN_MALONS_RACE)) {
                     Actor_Kill(&this->actor);
                     return;
                 }

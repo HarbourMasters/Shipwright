@@ -6,6 +6,7 @@
 #include "soh_assets.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+
 #include "libultraship/bridge.h"
 #include "soh/Enhancements/gameplaystats.h"
 #include "soh/Enhancements/boss-rush/BossRushTypes.h"
@@ -13,15 +14,13 @@
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
 
-#ifdef _MSC_VER
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
 #include <assert.h>
-#endif
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
-
+#include "soh/Enhancements/randomizer/randomizer_grotto.h"
 
 #define DO_ACTION_TEX_WIDTH() 48
 #define DO_ACTION_TEX_HEIGHT() 16
@@ -1417,7 +1416,7 @@ void Inventory_SwapAgeEquipment(void) {
         // When becoming adult, remove swordless flag since we'll get master sword
         // Only in rando to keep swordless link bugs in vanilla
         if (gSaveContext.n64ddFlag) {
-            gSaveContext.infTable[29] &= ~1;
+            Flags_UnsetInfTable(INFTABLE_SWORDLESS);
         }
 
         gSaveContext.childEquips.equipment = gSaveContext.equips.equipment;
@@ -1471,13 +1470,13 @@ void Inventory_SwapAgeEquipment(void) {
         // When becoming child, set swordless flag if player doesn't have kokiri sword
         // Only in rando to keep swordless link bugs in vanilla
         if (gSaveContext.n64ddFlag && (1 << 0 & gSaveContext.inventory.equipment) == 0) {
-            gSaveContext.infTable[29] |= 1;
+            Flags_SetInfTable(INFTABLE_SWORDLESS);
         }
 
         // When using enhancements, set swordless flag if player doesn't have kokiri sword or hasn't equipped a sword yet.
         // Then set the child equips button items to item none to ensure kokiri sword is not equipped
-        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && ((1 << 0 & gSaveContext.inventory.equipment) == 0 || gSaveContext.infTable[29] & 1)) {
-            gSaveContext.infTable[29] |= 1;
+        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && ((1 << 0 & gSaveContext.inventory.equipment) == 0 || Flags_GetInfTable(INFTABLE_SWORDLESS))) {
+            Flags_SetInfTable(INFTABLE_SWORDLESS);
             gSaveContext.childEquips.buttonItems[0] = ITEM_NONE;
         }
 
@@ -1512,7 +1511,7 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
             gSaveContext.equips.equipment &= 0xFFF0;
             // Equips kokiri sword in the inventory screen only if kokiri sword exists in inventory and a sword has been equipped already
-            if (!((1 << 0 & gSaveContext.inventory.equipment) == 0) && !(gSaveContext.infTable[29] & 1)) {
+            if (!((1 << 0 & gSaveContext.inventory.equipment) == 0) && !Flags_GetInfTable(INFTABLE_SWORDLESS)) {
                 gSaveContext.equips.equipment |= 0x0001;
             }
         } else if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE) {
@@ -1543,7 +1542,7 @@ void Inventory_SwapAgeEquipment(void) {
             When becoming child, set swordless flag if player doesn't have kokiri sword
             Only in rando to keep swordless link bugs in vanilla*/
             if (1 << 0 & gSaveContext.inventory.equipment == 0) {
-                gSaveContext.infTable[29] |= 1;
+                Flags_SetInfTable(INFTABLE_SWORDLESS);
             }
 
             //zero out items
@@ -1558,7 +1557,7 @@ void Inventory_SwapAgeEquipment(void) {
 
         if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) &&
             (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
-            gSaveContext.infTable[29] |= 1;
+            Flags_SetInfTable(INFTABLE_SWORDLESS);
             if (gSaveContext.childEquips.equipment == 0) {
                 // force equip kokiri tunic and boots in scenario gSaveContext.childEquips.equipment is uninitialized
                 gSaveContext.equips.equipment &= 0xFFF0;
@@ -2155,8 +2154,8 @@ u8 Item_Give(PlayState* play, u8 item) {
             AMMO(ITEM_SLINGSHOT) = CUR_CAPACITY(UPG_BULLET_BAG);
         }
 
-        if (!(gSaveContext.itemGetInf[1] & 8)) {
-            gSaveContext.itemGetInf[1] |= 8;
+        if (!Flags_GetItemGetInf(ITEMGETINF_13)) {
+            Flags_SetItemGetInf(ITEMGETINF_13);
             return Return_Item(item, MOD_NONE, ITEM_NONE);
         }
 
@@ -2168,8 +2167,8 @@ u8 Item_Give(PlayState* play, u8 item) {
             AMMO(ITEM_SLINGSHOT) = CUR_CAPACITY(UPG_BULLET_BAG);
         }
 
-        if (!(gSaveContext.itemGetInf[1] & 8)) {
-            gSaveContext.itemGetInf[1] |= 8;
+        if (!Flags_GetItemGetInf(ITEMGETINF_13)) {
+            Flags_SetItemGetInf(ITEMGETINF_13);
             return Return_Item(item, MOD_NONE, ITEM_NONE);
         }
 
@@ -2245,8 +2244,8 @@ u8 Item_Give(PlayState* play, u8 item) {
             func_80087708(play, 12, 5);
         }
 
-        if (!(gSaveContext.infTable[25] & 0x100)) {
-            gSaveContext.infTable[25] |= 0x100;
+        if (!Flags_GetInfTable(INFTABLE_198)) {
+            Flags_SetInfTable(INFTABLE_198);
             return Return_Item(item, MOD_NONE, ITEM_NONE);
         }
 
@@ -2261,8 +2260,8 @@ u8 Item_Give(PlayState* play, u8 item) {
             func_80087708(play, 24, 5);
         }
 
-        if (!(gSaveContext.infTable[25] & 0x100)) {
-            gSaveContext.infTable[25] |= 0x100;
+        if (!Flags_GetInfTable(INFTABLE_198)) {
+            Flags_SetInfTable(INFTABLE_198);
             return Return_Item(item, MOD_NONE, ITEM_NONE);
         }
 
@@ -2321,7 +2320,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_WEIRD_EGG) && (item <= ITEM_CLAIM_CHECK)) {
         if ((item == ITEM_SAW) && CVarGetInteger("gDekuNutUpgradeFix", 0) == 0) {
-            gSaveContext.itemGetInf[1] |= 0x8000;
+            Flags_SetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE);
         }
 
         if (item >= ITEM_POCKET_EGG) {
@@ -2670,7 +2669,7 @@ u8 Item_CheckObtainability(u8 item) {
     } else if (item == ITEM_LONGSHOT) {
         return ITEM_NONE;
     } else if ((item == ITEM_SEEDS) || (item == ITEM_SEEDS_30)) {
-        if (!(gSaveContext.itemGetInf[1] & 0x8)) {
+        if (!Flags_GetItemGetInf(ITEMGETINF_13)) {
             return ITEM_NONE;
         } else {
             return ITEM_SEEDS;
@@ -2685,8 +2684,8 @@ u8 Item_CheckObtainability(u8 item) {
         return ITEM_HEART;
     } else if ((item == ITEM_MAGIC_SMALL) || (item == ITEM_MAGIC_LARGE)) {
         // "Magic Pot Get_Inf_Table( 25, 0x0100)=%d"
-        osSyncPrintf("魔法の壷 Get_Inf_Table( 25, 0x0100)=%d\n", gSaveContext.infTable[25] & 0x100);
-        if (!(gSaveContext.infTable[25] & 0x100)) {
+        osSyncPrintf("魔法の壷 Get_Inf_Table( 25, 0x0100)=%d\n", Flags_GetInfTable(INFTABLE_198));
+        if (!Flags_GetInfTable(INFTABLE_198)) {
             return ITEM_NONE;
         } else {
             return item;
@@ -3638,6 +3637,175 @@ void Interface_DrawMagicBar(PlayState* play) {
             gSPWideTextureRectangle(OVERLAY_DISP++, rMagicFillX << 2, (magicBarY + 3) << 2,
                                 (rMagicFillX + gSaveContext.magic) << 2, (magicBarY + 10) << 2, G_TX_RENDERTILE, 0,
                                 0, 1 << 10, 1 << 10);
+        }
+    }
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+static Vtx sEnemyHealthVtx[12];
+
+// Build vertex coordinates for a quad command
+// In order of top left, top right, bottom left, then bottom right
+// Supports flipping the texture horizontally
+void Interface_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart, s32 width, s32 height, u8 flippedH) {
+    vtxList[0].v.ob[0] = xStart;
+    vtxList[0].v.ob[1] = yStart;
+    vtxList[0].v.tc[0] = (flippedH ? width : 0) << 5;
+    vtxList[0].v.tc[1] = 0 << 5;
+
+    vtxList[1].v.ob[0] = xStart + width;
+    vtxList[1].v.ob[1] = yStart;
+    vtxList[1].v.tc[0] = (flippedH ? width * 2 : width) << 5;
+    vtxList[1].v.tc[1] = 0 << 5;
+
+    vtxList[2].v.ob[0] = xStart;
+    vtxList[2].v.ob[1] = yStart + height;
+    vtxList[2].v.tc[0] = (flippedH ? width : 0) << 5;
+    vtxList[2].v.tc[1] = height << 5;
+
+    vtxList[3].v.ob[0] = xStart + width;
+    vtxList[3].v.ob[1] = yStart + height;
+    vtxList[3].v.tc[0] = (flippedH ? width * 2 : width) << 5;
+    vtxList[3].v.tc[1] = height << 5;
+}
+
+// Draws an enemy health bar using the magic bar textures and positions it in a similar way to Z-Targeting
+void Interface_DrawEnemyHealthBar(TargetContext* targetCtx, PlayState* play) {
+    InterfaceContext* interfaceCtx = &play->interfaceCtx;
+    Player* player = GET_PLAYER(play);
+    Actor* actor = targetCtx->targetedActor;
+
+    Vec3f projTargetCenter;
+    f32 projTargetCappedInvW;
+
+    Color_RGBA8 healthbar_red = { 255, 0, 0, 255 };
+    Color_RGBA8 healthbar_border = { 255, 255, 255, 255 };
+    s16 healthbar_fillWidth = 64;
+    s16 healthbar_actorOffset = 40;
+    s32 healthbar_offsetX = CVarGetInteger("gCosmetics.Hud_EnemyHealthBarPosX", 0);
+    s32 healthbar_offsetY = CVarGetInteger("gCosmetics.Hud_EnemyHealthBarPosY", 0);
+    s8 anchorType = CVarGetInteger("gCosmetics.Hud_EnemyHealthBarPosType", ENEMYHEALTH_ANCHOR_ACTOR);
+
+    if (CVarGetInteger("gCosmetics.Hud_EnemyHealthBar.Changed", 0)) {
+        healthbar_red = CVarGetColor("gCosmetics.Hud_EnemyHealthBar.Value", healthbar_red);
+    }
+    if (CVarGetInteger("gCosmetics.Hud_EnemyHealthBorder.Changed", 0)) {
+        healthbar_border = CVarGetColor("gCosmetics.Hud_EnemyHealthBorder.Value", healthbar_border);
+    }
+    if (CVarGetInteger("gCosmetics.Hud_EnemyHealthBarWidth.Changed", 0)) {
+        healthbar_fillWidth = CVarGetInteger("gCosmetics.Hud_EnemyHealthBarWidth.Value", healthbar_fillWidth);
+    }
+
+    OPEN_DISPS(play->state.gfxCtx);
+
+    if (targetCtx->unk_48 != 0 && actor != NULL && actor->category == ACTORCAT_ENEMY) {
+        s16 texHeight = 16;
+        s16 endTexWidth = 8;
+        f32 scaleY = -0.75f;
+        f32 scaledHeight = -texHeight * scaleY;
+        f32 halfBarWidth = endTexWidth + (healthbar_fillWidth / 2);
+        s16 healthBarFill = ((f32)actor->colChkInfo.health / actor->maximumHealth) * healthbar_fillWidth;
+
+        if (anchorType == ENEMYHEALTH_ANCHOR_ACTOR) {
+            // Get actor projected position
+            func_8002BE04(play, &targetCtx->targetCenterPos, &projTargetCenter, &projTargetCappedInvW);
+
+            projTargetCenter.x = (SCREEN_WIDTH / 2) * (projTargetCenter.x * projTargetCappedInvW);
+            projTargetCenter.x = projTargetCenter.x * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
+            projTargetCenter.x = CLAMP(projTargetCenter.x, (-SCREEN_WIDTH / 2) + halfBarWidth,
+                                       (SCREEN_WIDTH / 2) - halfBarWidth);
+
+            projTargetCenter.y = (SCREEN_HEIGHT / 2) * (projTargetCenter.y * projTargetCappedInvW);
+            projTargetCenter.y = projTargetCenter.y - healthbar_offsetY + healthbar_actorOffset;
+            projTargetCenter.y = CLAMP(projTargetCenter.y, (-SCREEN_HEIGHT / 2) + (scaledHeight / 2),
+                                       (SCREEN_HEIGHT / 2) - (scaledHeight / 2));
+        } else if (anchorType == ENEMYHEALTH_ANCHOR_TOP) {
+            projTargetCenter.x = healthbar_offsetX;
+            projTargetCenter.y = (SCREEN_HEIGHT / 2) - (scaledHeight / 2) - healthbar_offsetY;
+        } else if (anchorType == ENEMYHEALTH_ANCHOR_BOTTOM) {
+            projTargetCenter.x = healthbar_offsetX;
+            projTargetCenter.y = (-SCREEN_HEIGHT / 2) + (scaledHeight / 2) - healthbar_offsetY;
+        }
+
+        // Health bar border end left
+        Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[0], -halfBarWidth, -texHeight / 2, endTexWidth, texHeight, 0);
+        // Health bar border middle
+        Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[4], -halfBarWidth + endTexWidth, -texHeight / 2,
+                                        healthbar_fillWidth, texHeight, 0);
+        // Health bar border end right
+        Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[8], halfBarWidth - endTexWidth, -texHeight / 2, endTexWidth,
+                                        texHeight, 1);
+        // Health bar fill
+        Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[12], -halfBarWidth + endTexWidth, (-texHeight / 2) + 3,
+                                        healthBarFill, 7, 0);
+
+        if (((!(player->stateFlags1 & 0x40)) || (actor != player->unk_664)) && targetCtx->unk_44 < 500.0f) {
+            f32 slideInOffsetY = 0;
+
+            // Slide in the health bar from edge of the screen (mimic the Z-Target triangles fly in)
+            if (anchorType == ENEMYHEALTH_ANCHOR_ACTOR && targetCtx->unk_44 > 120.0f) {
+                slideInOffsetY = (targetCtx->unk_44 - 120.0f) / 2;
+                // Slide in from the top if the bar is placed on the top half of the screen
+                if (healthbar_offsetY - healthbar_actorOffset <= 0) {
+                    slideInOffsetY *= -1;
+                }
+            }
+
+            // Setup DL for overlay disp
+            Gfx_SetupDL_39Overlay(play->state.gfxCtx);
+
+            Matrix_Translate(projTargetCenter.x, projTargetCenter.y - slideInOffsetY, 0, MTXMODE_NEW);
+            Matrix_Scale(1.0f, scaleY, 1.0f, MTXMODE_APPLY);
+            gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+
+            // Health bar border
+            gDPPipeSync(OVERLAY_DISP++);
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, healthbar_border.r, healthbar_border.g, healthbar_border.b,
+                            healthbar_border.a);
+            gDPSetEnvColor(OVERLAY_DISP++, 100, 50, 50, 255);
+
+            gSPVertex(OVERLAY_DISP++, sEnemyHealthVtx, 16, 0);
+
+            gDPLoadTextureBlock(OVERLAY_DISP++, gMagicMeterEndTex, G_IM_FMT_IA, G_IM_SIZ_8b, endTexWidth, texHeight, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                G_TX_NOLOD, G_TX_NOLOD);
+
+            gSP1Quadrangle(OVERLAY_DISP++, 0, 2, 3, 1, 0);
+
+            gDPLoadTextureBlock(OVERLAY_DISP++, gMagicMeterMidTex, G_IM_FMT_IA, G_IM_SIZ_8b, 24, texHeight, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                G_TX_NOLOD, G_TX_NOLOD);
+
+            gSP1Quadrangle(OVERLAY_DISP++, 4, 6, 7, 5, 0);
+
+            gDPLoadTextureBlock(OVERLAY_DISP++, gMagicMeterEndTex, G_IM_FMT_IA, G_IM_SIZ_8b, endTexWidth, texHeight, 0,
+                                G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 3, G_TX_NOMASK, G_TX_NOLOD,
+                                G_TX_NOLOD);
+
+            gSP1Quadrangle(OVERLAY_DISP++, 8, 10, 11, 9, 0);
+
+            // Health bar fill
+            Matrix_Push();
+            Matrix_Translate(-0.375f, -0.5f, 0, MTXMODE_APPLY);
+            gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+
+            gDPPipeSync(OVERLAY_DISP++);
+            gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, 0, 0, 0, PRIMITIVE,
+                              PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, 0, 0, 0, PRIMITIVE);
+            gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
+
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, healthbar_red.r, healthbar_red.g, healthbar_red.b, healthbar_red.a);
+
+            gDPLoadMultiBlock_4b(OVERLAY_DISP++, gMagicMeterFillTex, 0, G_TX_RENDERTILE, G_IM_FMT_I, 16, texHeight, 0,
+                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                 G_TX_NOLOD, G_TX_NOLOD);
+
+            gSPVertex(OVERLAY_DISP++, &sEnemyHealthVtx[12], 4, 0);
+
+            gSP1Quadrangle(OVERLAY_DISP++, 0, 2, 3, 1, 0);
+
+            Matrix_Pop();
         }
     }
 
@@ -5096,6 +5264,11 @@ void Interface_Draw(PlayState* play) {
             func_8002C124(&play->actorCtx.targetCtx, play); // Draw Z-Target
             if (CVarGetInteger("gMirroredWorld", 0)) {
                 gSPMatrix(OVERLAY_DISP++, interfaceCtx->view.projectionPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+            }
+
+            // Render enemy health bar after Z-target to leverage set variables
+            if (CVarGetInteger("gEnemyHealthBar", 0)) {
+                Interface_DrawEnemyHealthBar(&play->actorCtx.targetCtx, play);
             }
         }
 

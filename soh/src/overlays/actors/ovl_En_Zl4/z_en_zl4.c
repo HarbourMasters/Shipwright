@@ -237,7 +237,7 @@ void GivePlayerRandoRewardZeldaChild(EnZl4* zelda, PlayState* play, RandomizerCh
         GiveItemEntryFromActor(&zelda->actor, play, getItemEntry, 10000.0f, 100.0f);
     } else if (Flags_GetTreasure(play, 0x1E) && !Player_InBlockingCsMode(play, GET_PLAYER(play))) {
         gSaveContext.unk_13EE = 0x32;
-        gSaveContext.eventChkInf[4] |= 1;
+        Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER);
     }
 }
 
@@ -398,7 +398,7 @@ void EnZl4_Init(Actor* thisx, PlayState* play) {
     if (gSaveContext.sceneSetupIndex >= 4) {
         Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_0);
         this->actionFunc = EnZl4_TheEnd;
-    } else if (gSaveContext.eventChkInf[4] & 1) {
+    } else if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
         Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_0);
         this->actionFunc = EnZl4_Idle;
     } else {
@@ -1208,7 +1208,7 @@ void EnZl4_Cutscene(EnZl4* this, PlayState* play) {
             if (EnZl4_CsMakePlan(this, play)) {
                 func_8002DF54(play, &this->actor, 7);
                 gSaveContext.unk_13EE = 0x32;
-                gSaveContext.eventChkInf[4] |= 1;
+                Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER);
                 this->actionFunc = EnZl4_Idle;
             }
             break;

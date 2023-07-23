@@ -1,5 +1,8 @@
 #include "global.h"
 #include "vt.h"
+#include <string.h>
+#include <stdio.h>
+#include <assert.h>
 
 #define ANIM_INTERP 1
 
@@ -865,7 +868,7 @@ void AnimationContext_SetLoadFrame(PlayState* play, LinkAnimationHeader* animati
 
         char animPath[2048];
 
-        sprintf(animPath, "misc/link_animetion/gPlayerAnimData_%06X", (((uintptr_t)linkAnimHeader->segment - 0x07000000)));
+        snprintf(animPath, sizeof(animPath), "misc/link_animetion/gPlayerAnimData_%06X", (((uintptr_t)linkAnimHeader->segment - 0x07000000)));
 
         //printf("Streaming %s, seg = %08X\n", animPath, linkAnimHeader->segment);
 
@@ -1108,7 +1111,7 @@ void SkelAnime_InitLink(PlayState* play, SkelAnime* skelAnime, FlexSkeletonHeade
         skelAnime->jointTable = ZELDA_ARENA_MALLOC_DEBUG(allocSize);
         skelAnime->morphTable = ZELDA_ARENA_MALLOC_DEBUG(allocSize);
     } else {
-        ASSERT(limbBufCount == limbCount);
+        assert(limbBufCount == limbCount);
 
         skelAnime->jointTable = (Vec3s*)ALIGN16((uintptr_t)jointTable);
         skelAnime->morphTable = (Vec3s*)ALIGN16((uintptr_t)morphTable);
@@ -1441,7 +1444,7 @@ s32 SkelAnime_Init(PlayState* play, SkelAnime* skelAnime, SkeletonHeader* skelet
         skelAnime->morphTable =
             ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->morphTable));
     } else {
-        ASSERT(limbCount == skelAnime->limbCount);
+        assert(limbCount == skelAnime->limbCount);
         skelAnime->jointTable = jointTable;
         skelAnime->morphTable = morphTable;
     }
@@ -1477,7 +1480,7 @@ s32 SkelAnime_InitFlex(PlayState* play, SkelAnime* skelAnime, FlexSkeletonHeader
         skelAnime->morphTable =
             ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->morphTable));
     } else {
-        ASSERT(limbCount == skelAnime->limbCount);
+        assert(limbCount == skelAnime->limbCount);
         skelAnime->jointTable = jointTable;
         skelAnime->morphTable = morphTable;
     }

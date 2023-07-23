@@ -78,9 +78,9 @@ void EnShopnuts_Init(Actor* thisx, PlayState* play) {
         }
     }
 
-    if (((this->actor.params == 0x0002) && (gSaveContext.itemGetInf[0] & 0x800)) ||
-        ((this->actor.params == 0x0009) && (gSaveContext.infTable[25] & 4)) ||
-        ((this->actor.params == 0x000A) && (gSaveContext.infTable[25] & 8))) {
+    if (((this->actor.params == 0x0002) && (Flags_GetItemGetInf(ITEMGETINF_0B))) ||
+        ((this->actor.params == 0x0009) && (Flags_GetInfTable(INFTABLE_192))) ||
+        ((this->actor.params == 0x000A) && (Flags_GetInfTable(INFTABLE_193)))) {
         Actor_Kill(&this->actor);
     } else {
         EnShopnuts_SetupWait(this);
