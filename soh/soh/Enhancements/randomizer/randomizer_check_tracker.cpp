@@ -70,7 +70,6 @@ bool showGanonBossKey;
 bool showOcarinas;
 bool show100SkullReward;
 bool showLinksPocket;
-bool showSongFromImpa;
 bool fortressFast;
 bool fortressNormal;
 
@@ -232,7 +231,7 @@ void DefaultCheckData(RandomizerCheck rc) {
 
 void SongFromImpa() {
     if (gSaveContext.n64ddFlag) {
-        if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_CHILD_ZELDA) == RO_GENERIC_ON && gSaveContext.n64ddFlag && showSongFromImpa) {
+        if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_CHILD_ZELDA) == RO_GENERIC_ON && gSaveContext.n64ddFlag) {
             if (gSaveContext.checkTrackerData[RC_SONG_FROM_IMPA].status != RCSHOW_SAVED) {
                 gSaveContext.checkTrackerData[RC_SONG_FROM_IMPA].status = RCSHOW_SAVED;
             }
@@ -1120,10 +1119,6 @@ void LoadSettings() {
     showLinksPocket = gSaveContext.n64ddFlag ? // don't show Link's Pocket if not randomizer, or if rando and pocket is disabled
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING
         :false;
-    showSongFromImpa = gSaveContext.n64ddFlag ? // don't show Song from Impa if skipChildZelda is on and songs are shuffled anywhere
-        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_CHILD_ZELDA) == RO_GENERIC_ON && 
-        OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SONGS) == RO_SONG_SHUFFLE_SONG_LOCATIONS
-        :false;
     hideShopRightChecks = gSaveContext.n64ddFlag ? CVarGetInteger("gCheckTrackerOptionHideRightShopChecks", 1) : false;
 
     if (gSaveContext.n64ddFlag) {
@@ -1174,7 +1169,6 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
             (rcObj.rcType != RCTYPE_CHEST_GAME) &&      // don't show non final reward chest game checks until we support shuffling them
             (rcObj.rc != RC_HC_ZELDAS_LETTER) &&        // don't show zeldas letter until we support shuffling it
             (rcObj.rc != RC_LINKS_POCKET || showLinksPocket) &&
-            (rcObj.rc != RC_SONG_FROM_IMPA || showSongFromImpa) &&
             (!RandomizerCheckObjects::AreaIsDungeon(rcObj.rcArea) ||
                 rcObj.vOrMQ == RCVORMQ_BOTH ||
                 rcObj.vOrMQ == RCVORMQ_MQ && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId) ||
