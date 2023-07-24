@@ -172,7 +172,6 @@ u8 Message_ShouldAdvanceSilent(PlayState* play) {
  * input from the player.
  */
 void Message_CloseTextbox(PlayState* play) {
-    // OnMessageClose ?
     MessageContext* msgCtx = &play->msgCtx;
 
     if (msgCtx->msgLength != 0) {

@@ -97,7 +97,6 @@ class Randomizer {
     static void CreateCustomMessages();
     static CustomMessage GetRupeeMessage(u16 rupeeTextId);
     bool CheckContainsVanillaItem(RandomizerCheck randoCheck);
-    void RegisterTrackerHooks();
 };
 
 #ifdef __cplusplus

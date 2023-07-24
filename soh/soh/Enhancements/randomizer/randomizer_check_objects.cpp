@@ -4,22 +4,6 @@
 #include <libultraship/bridge.h>
 #include "z64.h"
 
-/*
-typedef struct {
-    RandomizerCheck rc;
-    RandomizerCheckVanillaOrMQ vOrMQ;
-    RandomizerCheckType rcType;
-    RandomizerCheckArea rcArea;
-    ActorID actorId;
-    SceneID sceneId;
-    s32 actorParams;
-    GetItemId ogItemId;
-    bool visibleInImgui;
-    std::string rcShortName;
-    std::string rcSpoilerName;
-} RandomizerCheckObject;
-*/
-
 //            RandomizerCheck,                                                RCVORMQ,         RCTYPE,              RCAREA,                        ActorId,            SceneId,                              ActorParams,                 OG ItemID,           "Short name", "Spoiler name", vanillaCheck
 std::map<RandomizerCheck, RandomizerCheckObject> rcObjects = {
     RC_OBJECT(RC_KF_KOKIRI_SWORD_CHEST,                                       RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_KOKIRI_FOREST,          ACTOR_EN_BOX,       SCENE_SPOT04,                         1248,                        GI_SWORD_KOKIRI,     "Kokiri Sword Chest", "KF Kokiri Sword Chest", true),
