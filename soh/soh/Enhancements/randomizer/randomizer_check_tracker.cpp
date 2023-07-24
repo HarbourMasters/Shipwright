@@ -256,8 +256,7 @@ std::vector<RandomizerCheckObject> checks;
 void LinksPocket() {
     if (gSaveContext.n64ddFlag) {
         if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING ||
-            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_DUNGEON_REWARDS) ==
-                RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
+            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_DUNGEON_REWARDS) == RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
             DefaultCheckData(RC_LINKS_POCKET);
             gSaveContext.checkTrackerData[RC_LINKS_POCKET].status = RCSHOW_SAVED;
         }
@@ -366,8 +365,7 @@ RandomizerCheckArea GetCheckArea() {
         }
     }
     if (area == RCAREA_INVALID) {
-        if (grottoScene && (GetCurrentGrottoId() == -1) &&
-            (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) == RO_GENERIC_OFF)) {
+        if (grottoScene && (GetCurrentGrottoId() == -1) && (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_GROTTO_ENTRANCES) == RO_GENERIC_OFF)) {
             area = previousArea;
         } else {
             area = RandomizerCheckObjects::GetRCAreaBySceneID(scene);
@@ -380,14 +378,12 @@ bool vector_contains_scene(std::vector<SceneID> vec, const int16_t scene) {
     return std::any_of(vec.begin(), vec.end(), [&](const auto& x) { return x == scene; });
 }
 
-std::vector<SceneID> skipScenes = { SCENE_GANON_BOSS, SCENE_GANON_FINAL, SCENE_GANON_DEMO, SCENE_GANONTIKA_SONOGO,
-                                    SCENE_GANON_SONOGO };
-std::vector<SceneID> scenesToCheck = { SCENE_YOUSEI_IZUMI_YOKO, SCENE_YOUSEI_IZUMI_TATE, SCENE_KAKUSIANA,
-                                       SCENE_TOKINOMA, SCENE_SHOP1 };
+std::vector<SceneID> skipScenes = {SCENE_GANON_BOSS, SCENE_GANON_FINAL, SCENE_GANON_DEMO, SCENE_GANONTIKA_SONOGO, SCENE_GANON_SONOGO};
+std::vector<SceneID> scenesToCheck = {SCENE_YOUSEI_IZUMI_YOKO, SCENE_YOUSEI_IZUMI_TATE, SCENE_KAKUSIANA, SCENE_TOKINOMA, SCENE_SHOP1};
 
 bool EvaluateCheck(RandomizerCheckObject rco) {
     if (HasItemBeenCollected(rco.rc) && gSaveContext.checkTrackerData[rco.rc].status != RCSHOW_COLLECTED &&
-        gSaveContext.checkTrackerData[rco.rc].status != RCSHOW_SAVED) {
+            gSaveContext.checkTrackerData[rco.rc].status != RCSHOW_SAVED) {
         SetCheckCollected(rco.rc);
         return true;
     }
@@ -401,10 +397,6 @@ void AddItemReceived(GetItemEntry giEntry) {
 void AddToChecksCollected(RandomizerCheck rc) {
     areaChecksGotten[RandomizerCheckObjects::GetAllRCObjects().find(rc)->second.rcArea]++;
 }
-
-//void StartChecking() {
-//    checkCollected = false;
-//}
 
 bool CheckByArea(RandomizerCheckArea area = RCAREA_INVALID) {
     if (area == RCAREA_INVALID) {
@@ -688,14 +680,12 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
         return;
     }
     if (scene == SCENE_SPOT11 && (gSaveContext.entranceIndex == 485 || gSaveContext.entranceIndex == 489)) {
-        if (EvaluateCheck(RandomizerCheckObjects::GetAllRCObjects().find(RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST)->second) ||
-            EvaluateCheck(RandomizerCheckObjects::GetAllRCObjects().find(RC_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST)->second)) {
-            return;
-        }
+        checkAreas.push_back(RCAREA_SPIRIT_TEMPLE);
+        return;
     }
     RandomizerCheck rc = RC_UNKNOWN_CHECK;
     if (gPlayState->lastCheck != nullptr) {
-        rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(gPlayState->lastCheck->id, scene,  gPlayState->lastCheck->params);
+        rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(gPlayState->lastCheck->id, scene, gPlayState->lastCheck->params);
     }
     if (rc == RC_UNKNOWN_CHECK) {
         if (scene == SCENE_YOUSEI_IZUMI_YOKO) {
@@ -798,8 +788,7 @@ void LoadFile() {
         } else {
             entry2 = RandomizerCheckObjects::GetAllRCObjects().find(rc)->second;
         }
-        if (!IsVisibleInCheckTracker(entry2))
-            return;
+        if (!IsVisibleInCheckTracker(entry2)) return;
 
         checksByArea.find(entry2.rcArea)->second.push_back(entry2);
         if (entry.status == RCSHOW_SAVED || entry.skipped) {
@@ -826,7 +815,6 @@ void LoadFile() {
         }
         RandomizerCheckObject linksPocket = { RC_LINKS_POCKET, RCVORMQ_BOTH, RCTYPE_LINKS_POCKET, startingArea, ACTOR_ID_MAX, SCENE_ID_MAX, 0x00, GI_NONE, false, "Link's Pocket", "Link's Pocket" };
         
-
         checksByArea.find(startingArea)->second.push_back(linksPocket);
         areaChecksGotten[startingArea]++;
     }

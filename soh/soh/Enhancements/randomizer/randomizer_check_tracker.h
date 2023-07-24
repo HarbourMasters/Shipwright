@@ -58,7 +58,6 @@ RandomizerCheckArea GetCheckArea();
 void CheckTrackerDialogClosed();
 void ToggleShopRightChecks();
 void UpdateCheck(uint32_t, RandomizerCheckTrackerData);
-
 } // namespace CheckTracker
 
 void to_json(nlohmann::json& j, const RandomizerCheckTrackerData& rctd);
