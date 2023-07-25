@@ -892,6 +892,7 @@ std::map<SceneID, RandomizerCheckArea> RandomizerCheckObjects::GetAllRCAreaBySce
             rcAreaBySceneID[(SceneID)id] = RCAREA_MARKET;
         }
         rcAreaBySceneID[SCENE_TOKINOMA] = RCAREA_MARKET;
+        rcAreaBySceneID[SCENE_HAIRAL_NIWA] = RCAREA_HYRULE_CASTLE;
     }
     return rcAreaBySceneID;
 }

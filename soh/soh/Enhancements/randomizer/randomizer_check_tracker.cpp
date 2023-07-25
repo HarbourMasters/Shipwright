@@ -279,7 +279,9 @@ void SetCheckCollected(RandomizerCheck rc) {
     } else {
         gSaveContext.checkTrackerData[rc].skipped = false;
     }
-    checkAreas.erase(checkAreas.begin());
+    if (!checkAreas.empty()) {
+        checkAreas.erase(checkAreas.begin());
+    }
     SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
 
     doAreaScroll = true;
@@ -647,6 +649,12 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
             return;
         } else if (giEntry.itemId == ITEM_BRACELET) {
             SetCheckCollected(RC_GC_DARUNIAS_JOY);
+            return;
+        } else if (giEntry.itemId == ITEM_LETTER_ZELDA) {
+            SetCheckCollected(RC_HC_ZELDAS_LETTER);
+            return;
+        } else if (giEntry.itemId == ITEM_WEIRD_EGG) {
+            SetCheckCollected(RC_HC_MALON_EGG);
             return;
         }
     }
