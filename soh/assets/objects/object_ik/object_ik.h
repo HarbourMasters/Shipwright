@@ -152,14 +152,14 @@ static const ALIGN_ASSET(2) char object_ik_DL_0151F0[] = dobject_ik_DL_0151F0;
 #define dobject_ik_DL_015380 "__OTR__objects/object_ik/object_ik_DL_015380"
 static const ALIGN_ASSET(2) char object_ik_DL_015380[] = dobject_ik_DL_015380;
 
-#define dobject_ik_DL_0154E0 "__OTR__objects/object_ik/object_ik_DL_0154E0"
-static const ALIGN_ASSET(2) char object_ik_DL_0154E0[] = dobject_ik_DL_0154E0;
+#define dgIronKnuckleNabooruHelmetDL "__OTR__objects/object_ik/gIronKnuckleNabooruHelmetDL"
+static const ALIGN_ASSET(2) char gIronKnuckleNabooruHelmetDL[] = dgIronKnuckleNabooruHelmetDL;
 
-#define dobject_ik_DL_015840 "__OTR__objects/object_ik/object_ik_DL_015840"
-static const ALIGN_ASSET(2) char object_ik_DL_015840[] = dobject_ik_DL_015840;
+#define dgIronKnuckleAxeDL "__OTR__objects/object_ik/gIronKnuckleAxeDL"
+static const ALIGN_ASSET(2) char gIronKnuckleAxeDL[] = dgIronKnuckleAxeDL;
 
-#define dobject_ik_DL_015B00 "__OTR__objects/object_ik/object_ik_DL_015B00"
-static const ALIGN_ASSET(2) char object_ik_DL_015B00[] = dobject_ik_DL_015B00;
+#define dgIronKnuckleShockedNabooruHeadDL "__OTR__objects/object_ik/gIronKnuckleShockedNabooruHeadDL"
+static const ALIGN_ASSET(2) char gIronKnuckleShockedNabooruHeadDL[] = dgIronKnuckleShockedNabooruHeadDL;
 
 #define dobject_ik_DL_016118 "__OTR__objects/object_ik/object_ik_DL_016118"
 static const ALIGN_ASSET(2) char object_ik_DL_016118[] = dobject_ik_DL_016118;
@@ -179,14 +179,14 @@ static const ALIGN_ASSET(2) char object_ik_DL_016568[] = dobject_ik_DL_016568;
 #define dobject_ik_DL_016658 "__OTR__objects/object_ik/object_ik_DL_016658"
 static const ALIGN_ASSET(2) char object_ik_DL_016658[] = dobject_ik_DL_016658;
 
-#define dobject_ik_DL_016748 "__OTR__objects/object_ik/object_ik_DL_016748"
-static const ALIGN_ASSET(2) char object_ik_DL_016748[] = dobject_ik_DL_016748;
+#define dgIronKnuckleSplitHelmetLeftDL "__OTR__objects/object_ik/gIronKnuckleSplitHelmetLeftDL"
+static const ALIGN_ASSET(2) char gIronKnuckleSplitHelmetLeftDL[] = dgIronKnuckleSplitHelmetLeftDL;
 
-#define dobject_ik_DL_0169E8 "__OTR__objects/object_ik/object_ik_DL_0169E8"
-static const ALIGN_ASSET(2) char object_ik_DL_0169E8[] = dobject_ik_DL_0169E8;
+#define dgIronKnuckleSplitHelmetRightDL "__OTR__objects/object_ik/gIronKnuckleSplitHelmetRightDL"
+static const ALIGN_ASSET(2) char gIronKnuckleSplitHelmetRightDL[] = dgIronKnuckleSplitHelmetRightDL;
 
-#define dobject_ik_DL_016BE0 "__OTR__objects/object_ik/object_ik_DL_016BE0"
-static const ALIGN_ASSET(2) char object_ik_DL_016BE0[] = dobject_ik_DL_016BE0;
+#define dgIronKnuckleArmorRivetAndSymbolDL "__OTR__objects/object_ik/gIronKnuckleArmorRivetAndSymbolDL"
+static const ALIGN_ASSET(2) char gIronKnuckleArmorRivetAndSymbolDL[] = dgIronKnuckleArmorRivetAndSymbolDL;
 
 #define dobject_ik_DL_016CD8 "__OTR__objects/object_ik/object_ik_DL_016CD8"
 static const ALIGN_ASSET(2) char object_ik_DL_016CD8[] = dobject_ik_DL_016CD8;
@@ -227,17 +227,17 @@ static const ALIGN_ASSET(2) char object_ik_Tex_017638[] = dobject_ik_Tex_017638;
 #define dobject_ik_Tex_0176B8 "__OTR__objects/object_ik/object_ik_Tex_0176B8"
 static const ALIGN_ASSET(2) char object_ik_Tex_0176B8[] = dobject_ik_Tex_0176B8;
 
-#define dobject_ik_DL_018E78 "__OTR__objects/object_ik/object_ik_DL_018E78"
-static const ALIGN_ASSET(2) char object_ik_DL_018E78[] = dobject_ik_DL_018E78;
+#define dgIronKnuckleHelmetDL "__OTR__objects/object_ik/gIronKnuckleHelmetDL"
+static const ALIGN_ASSET(2) char gIronKnuckleHelmetDL[] = dgIronKnuckleHelmetDL;
 
-#define dobject_ik_DL_019100 "__OTR__objects/object_ik/object_ik_DL_019100"
-static const ALIGN_ASSET(2) char object_ik_DL_019100[] = dobject_ik_DL_019100;
+#define dgIronKnuckleGerudoHeadDL "__OTR__objects/object_ik/gIronKnuckleGerudoHeadDL"
+static const ALIGN_ASSET(2) char gIronKnuckleGerudoHeadDL[] = dgIronKnuckleGerudoHeadDL;
 
-#define dobject_ik_DL_019E08 "__OTR__objects/object_ik/object_ik_DL_019E08"
-static const ALIGN_ASSET(2) char object_ik_DL_019E08[] = dobject_ik_DL_019E08;
+#define dgIronKnuckleHelmetMarkingDL "__OTR__objects/object_ik/gIronKnuckleHelmetMarkingDL"
+static const ALIGN_ASSET(2) char gIronKnuckleHelmetMarkingDL[] = dgIronKnuckleHelmetMarkingDL;
 
-#define dobject_ik_DL_01BA78 "__OTR__objects/object_ik/object_ik_DL_01BA78"
-static const ALIGN_ASSET(2) char object_ik_DL_01BA78[] = dobject_ik_DL_01BA78;
+#define dgIronKnuckleTorsoDL "__OTR__objects/object_ik/gIronKnuckleTorsoDL"
+static const ALIGN_ASSET(2) char gIronKnuckleTorsoDL[] = dgIronKnuckleTorsoDL;
 
 #define dobject_ik_DL_01BE98 "__OTR__objects/object_ik/object_ik_DL_01BE98"
 static const ALIGN_ASSET(2) char object_ik_DL_01BE98[] = dobject_ik_DL_01BE98;

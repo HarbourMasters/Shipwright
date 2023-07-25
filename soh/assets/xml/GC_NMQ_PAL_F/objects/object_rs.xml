@@ -1,14 +1,14 @@
 <Root>
     <File Name="object_rs" Segment="6">
         <Animation Name="object_rs_Anim_00065C" Offset="0x65C"/>
-        <DList Name="object_rs_DL_001FA0" Offset="0x1FA0"/>
-        <DList Name="object_rs_DL_0021F8" Offset="0x21F8"/>
-        <DList Name="object_rs_DL_0025F8" Offset="0x25F8"/>
-        <DList Name="object_rs_DL_002730" Offset="0x2730"/>
-        <DList Name="object_rs_DL_002860" Offset="0x2860"/>
-        <DList Name="object_rs_DL_002A70" Offset="0x2A70"/>
-        <DList Name="object_rs_DL_002BA8" Offset="0x2BA8"/>
-        <DList Name="object_rs_DL_002CD8" Offset="0x2CD8"/>
+        <DList Name="gBombchuShopkeeperTorsoDL" Offset="0x1FA0"/>
+        <DList Name="gBombchuShopkeeperHeadDL" Offset="0x21F8"/>
+        <DList Name="gBombchuShopkeeperRightUpperArmDL" Offset="0x25F8"/>
+        <DList Name="gBombchuShopkeeperRightForearmDL" Offset="0x2730"/>
+        <DList Name="gBombchuShopkeeperRightHandDL" Offset="0x2860"/>
+        <DList Name="gBombchuShopkeeperLeftUpperArmDL" Offset="0x2A70"/>
+        <DList Name="gBombchuShopkeeperLeftForearmDL" Offset="0x2BA8"/>
+        <DList Name="gBombchuShopkeeperLeftHandDL" Offset="0x2CD8"/>
         <Texture Name="object_rs_TLUT_002EE8" OutName="tlut_00002EE8" Format="rgba16" Width="16" Height="16" Offset="0x2EE8"/>
         <Texture Name="object_rs_Tex_0030E8" OutName="tex_000030E8" Format="ci8" Width="8" Height="8" Offset="0x30E8" TlutOffset="0x2EE8"/>
         <Texture Name="object_rs_Tex_003128" OutName="tex_00003128" Format="ci8" Width="8" Height="8" Offset="0x3128" TlutOffset="0x2EE8"/>

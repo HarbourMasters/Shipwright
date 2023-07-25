@@ -826,11 +826,11 @@ s32 EnIk_OverrideLimbDraw3(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
 
     if (limbIndex == 12) {
         if (this->actor.params != 0) {
-            *dList = object_ik_DL_018E78;
+            *dList = gIronKnuckleHelmetDL;
         }
     } else if (limbIndex == 13) {
         if (this->actor.params != 0) {
-            *dList = object_ik_DL_019100;
+            *dList = gIronKnuckleGerudoHeadDL;
         }
     } else if ((limbIndex == 26) || (limbIndex == 27)) {
         if ((this->unk_2FA & 1)) {
@@ -880,7 +880,7 @@ void EnIk_PostLimbDraw3(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         if (this->actor.params != 0) {
-            gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_019E08);
+            gSPDisplayList(POLY_XLU_DISP++, gIronKnuckleHelmetMarkingDL);
         } else {
             gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016D88);
         }
@@ -929,7 +929,7 @@ void EnIk_PostLimbDraw3(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
             if (!(this->unk_2FA & 1)) {
                 gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016BE0);
+                gSPDisplayList(POLY_XLU_DISP++, gIronKnuckleArmorRivetAndSymbolDL);
             }
             break;
         case 27:
@@ -1210,7 +1210,7 @@ void EnIk_PostLimbDraw2(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
             if (EnIk_curFrame(&this->actor) < 30.0f) {
                 gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016BE0);
+                gSPDisplayList(POLY_XLU_DISP++, gIronKnuckleArmorRivetAndSymbolDL);
             }
         } break;
         case 27: {
@@ -1365,7 +1365,7 @@ void EnIk_PostLimbDraw1(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
         case 26:
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016BE0);
+            gSPDisplayList(POLY_XLU_DISP++, gIronKnuckleArmorRivetAndSymbolDL);
             break;
         case 27:
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),

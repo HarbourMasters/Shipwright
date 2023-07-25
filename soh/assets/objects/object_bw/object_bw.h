@@ -5,20 +5,20 @@
 #define dobject_bw_Anim_000228 "__OTR__objects/object_bw/object_bw_Anim_000228"
 static const ALIGN_ASSET(2) char object_bw_Anim_000228[] = dobject_bw_Anim_000228;
 
-#define dobject_bw_DL_0002C0 "__OTR__objects/object_bw/object_bw_DL_0002C0"
-static const ALIGN_ASSET(2) char object_bw_DL_0002C0[] = dobject_bw_DL_0002C0;
+#define dgTorchSlugLeftLowerEyestalkDL "__OTR__objects/object_bw/gTorchSlugLeftLowerEyestalkDL"
+static const ALIGN_ASSET(2) char gTorchSlugLeftLowerEyestalkDL[] = dgTorchSlugLeftLowerEyestalkDL;
 
-#define dobject_bw_DL_0003E8 "__OTR__objects/object_bw/object_bw_DL_0003E8"
-static const ALIGN_ASSET(2) char object_bw_DL_0003E8[] = dobject_bw_DL_0003E8;
+#define dgTorchSlugLeftUpperEyestalkDL "__OTR__objects/object_bw/gTorchSlugLeftUpperEyestalkDL"
+static const ALIGN_ASSET(2) char gTorchSlugLeftUpperEyestalkDL[] = dgTorchSlugLeftUpperEyestalkDL;
 
-#define dobject_bw_DL_000558 "__OTR__objects/object_bw/object_bw_DL_000558"
-static const ALIGN_ASSET(2) char object_bw_DL_000558[] = dobject_bw_DL_000558;
+#define dgTorchSlugRightLowerEyestalkDL "__OTR__objects/object_bw/gTorchSlugRightLowerEyestalkDL"
+static const ALIGN_ASSET(2) char gTorchSlugRightLowerEyestalkDL[] = dgTorchSlugRightLowerEyestalkDL;
 
-#define dobject_bw_DL_000680 "__OTR__objects/object_bw/object_bw_DL_000680"
-static const ALIGN_ASSET(2) char object_bw_DL_000680[] = dobject_bw_DL_000680;
+#define dgTorchSlugRightUpperEyestalkDL "__OTR__objects/object_bw/gTorchSlugRightUpperEyestalkDL"
+static const ALIGN_ASSET(2) char gTorchSlugRightUpperEyestalkDL[] = dgTorchSlugRightUpperEyestalkDL;
 
-#define dobject_bw_DL_001050 "__OTR__objects/object_bw/object_bw_DL_001050"
-static const ALIGN_ASSET(2) char object_bw_DL_001050[] = dobject_bw_DL_001050;
+#define dgTorchSlugBodyDL "__OTR__objects/object_bw/gTorchSlugBodyDL"
+static const ALIGN_ASSET(2) char gTorchSlugBodyDL[] = dgTorchSlugBodyDL;
 
 #define dobject_bw_Tex_001240 "__OTR__objects/object_bw/object_bw_Tex_001240"
 static const ALIGN_ASSET(2) char object_bw_Tex_001240[] = dobject_bw_Tex_001240;

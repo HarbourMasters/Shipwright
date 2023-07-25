@@ -58,18 +58,18 @@
         <Texture Name="object_ik_Tex_011960" OutName="tex_011960" Format="ia8" Width="16" Height="16" Offset="0x11960"/>
         <DList Name="object_ik_DL_0151F0" Offset="0x151F0"/>
         <DList Name="object_ik_DL_015380" Offset="0x15380"/>
-        <DList Name="object_ik_DL_0154E0" Offset="0x154E0"/>
-        <DList Name="object_ik_DL_015840" Offset="0x15840"/>
-        <DList Name="object_ik_DL_015B00" Offset="0x15B00"/>
+        <DList Name="gIronKnuckleNabooruHelmetDL" Offset="0x154E0"/>
+        <DList Name="gIronKnuckleAxeDL" Offset="0x15840"/>
+        <DList Name="gIronKnuckleShockedNabooruHeadDL" Offset="0x15B00"/>
         <DList Name="object_ik_DL_016118" Offset="0x16118"/>
         <DList Name="object_ik_DL_016278" Offset="0x16278"/>
         <DList Name="object_ik_DL_016340" Offset="0x16340"/>
         <DList Name="object_ik_DL_0164A0" Offset="0x164A0"/>
         <DList Name="object_ik_DL_016568" Offset="0x16568"/>
         <DList Name="object_ik_DL_016658" Offset="0x16658"/>
-        <DList Name="object_ik_DL_016748" Offset="0x16748"/>
-        <DList Name="object_ik_DL_0169E8" Offset="0x169E8"/>
-        <DList Name="object_ik_DL_016BE0" Offset="0x16BE0"/>
+        <DList Name="gIronKnuckleSplitHelmetLeftDL" Offset="0x16748"/>
+        <DList Name="gIronKnuckleSplitHelmetRightDL" Offset="0x169E8"/>
+        <DList Name="gIronKnuckleArmorRivetAndSymbolDL" Offset="0x16BE0"/>
         <DList Name="object_ik_DL_016CD8" Offset="0x16CD8"/>
         <DList Name="object_ik_DL_016D88" Offset="0x16D88"/>
         <DList Name="object_ik_DL_016EE8" Offset="0x16EE8"/>
@@ -83,10 +83,10 @@
         <Texture Name="object_ik_Tex_0175B8" OutName="tex_0175B8" Format="ci8" Width="8" Height="16" Offset="0x175B8" TlutOffset="0x17288"/>
         <Texture Name="object_ik_Tex_017638" OutName="tex_017638" Format="ci8" Width="8" Height="16" Offset="0x17638" TlutOffset="0x17288"/>
         <Texture Name="object_ik_Tex_0176B8" OutName="tex_0176B8" Format="ci8" Width="16" Height="16" Offset="0x176B8" TlutOffset="0x17288"/>
-        <DList Name="object_ik_DL_018E78" Offset="0x18E78"/>
-        <DList Name="object_ik_DL_019100" Offset="0x19100"/>
-        <DList Name="object_ik_DL_019E08" Offset="0x19E08"/>
-        <DList Name="object_ik_DL_01BA78" Offset="0x1BA78"/>
+        <DList Name="gIronKnuckleHelmetDL" Offset="0x18E78"/>
+        <DList Name="gIronKnuckleGerudoHeadDL" Offset="0x19100"/>
+        <DList Name="gIronKnuckleHelmetMarkingDL" Offset="0x19E08"/>
+        <DList Name="gIronKnuckleTorsoDL" Offset="0x1BA78"/>
         <DList Name="object_ik_DL_01BE98" Offset="0x1BE98"/>
         <DList Name="object_ik_DL_01C130" Offset="0x1C130"/>
         <DList Name="object_ik_DL_01C2B8" Offset="0x1C2B8"/>

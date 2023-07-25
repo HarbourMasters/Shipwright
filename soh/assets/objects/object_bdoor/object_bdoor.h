@@ -5,14 +5,14 @@
 #define dobject_bdoor_Tex_000000 "__OTR__objects/object_bdoor/object_bdoor_Tex_000000"
 static const ALIGN_ASSET(2) char object_bdoor_Tex_000000[] = dobject_bdoor_Tex_000000;
 
-#define dobject_bdoor_DL_0010C0 "__OTR__objects/object_bdoor/object_bdoor_DL_0010C0"
-static const ALIGN_ASSET(2) char object_bdoor_DL_0010C0[] = dobject_bdoor_DL_0010C0;
+#define dgBossDoorDL "__OTR__objects/object_bdoor/gBossDoorDL"
+static const ALIGN_ASSET(2) char gBossDoorDL[] = dgBossDoorDL;
 
-#define dobject_bdoor_DL_001400 "__OTR__objects/object_bdoor/object_bdoor_DL_001400"
-static const ALIGN_ASSET(2) char object_bdoor_DL_001400[] = dobject_bdoor_DL_001400;
+#define dgBossDoorLockDL "__OTR__objects/object_bdoor/gBossDoorLockDL"
+static const ALIGN_ASSET(2) char gBossDoorLockDL[] = dgBossDoorLockDL;
 
-#define dobject_bdoor_DL_001530 "__OTR__objects/object_bdoor/object_bdoor_DL_001530"
-static const ALIGN_ASSET(2) char object_bdoor_DL_001530[] = dobject_bdoor_DL_001530;
+#define dgBossDoorChainDL "__OTR__objects/object_bdoor/gBossDoorChainDL"
+static const ALIGN_ASSET(2) char gBossDoorChainDL[] = dgBossDoorChainDL;
 
 #define dobject_bdoor_Tex_0015C0 "__OTR__objects/object_bdoor/object_bdoor_Tex_0015C0"
 static const ALIGN_ASSET(2) char object_bdoor_Tex_0015C0[] = dobject_bdoor_Tex_0015C0;

@@ -1,11 +1,11 @@
 <Root>
     <File Name="object_bw" Segment="6">
         <Animation Name="object_bw_Anim_000228" Offset="0x228"/>
-        <DList Name="object_bw_DL_0002C0" Offset="0x2C0"/>
-        <DList Name="object_bw_DL_0003E8" Offset="0x3E8"/>
-        <DList Name="object_bw_DL_000558" Offset="0x558"/>
-        <DList Name="object_bw_DL_000680" Offset="0x680"/>
-        <DList Name="object_bw_DL_001050" Offset="0x1050"/>
+        <DList Name="gTorchSlugLeftLowerEyestalkDL" Offset="0x2C0"/>
+        <DList Name="gTorchSlugLeftUpperEyestalkDL" Offset="0x3E8"/>
+        <DList Name="gTorchSlugRightLowerEyestalkDL" Offset="0x558"/>
+        <DList Name="gTorchSlugRightUpperEyestalkDL" Offset="0x680"/>
+        <DList Name="gTorchSlugBodyDL" Offset="0x1050"/>
         <Texture Name="object_bw_Tex_001240" OutName="tex_00001240" Format="rgba16" Width="16" Height="16" Offset="0x1240"/>
         <Texture Name="object_bw_Tex_001440" OutName="tex_00001440" Format="rgba16" Width="16" Height="16" Offset="0x1440"/>
         <Texture Name="object_bw_TLUT_001640" OutName="tlut_00001640" Format="rgba16" Width="16" Height="16" Offset="0x1640"/>

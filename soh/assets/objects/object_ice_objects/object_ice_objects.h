@@ -8,11 +8,11 @@ static const ALIGN_ASSET(2) char object_ice_objects_DL_000190[] = dobject_ice_ob
 #define dobject_ice_objects_Col_0003F0 "__OTR__objects/object_ice_objects/object_ice_objects_Col_0003F0"
 static const ALIGN_ASSET(2) char object_ice_objects_Col_0003F0[] = dobject_ice_objects_Col_0003F0;
 
-#define dobject_ice_objects_DL_0006F0 "__OTR__objects/object_ice_objects/object_ice_objects_DL_0006F0"
-static const ALIGN_ASSET(2) char object_ice_objects_DL_0006F0[] = dobject_ice_objects_DL_0006F0;
+#define dgRedIceBlockDL "__OTR__objects/object_ice_objects/gRedIceBlockDL"
+static const ALIGN_ASSET(2) char gRedIceBlockDL[] = dgRedIceBlockDL;
 
-#define dobject_ice_objects_DL_0012A0 "__OTR__objects/object_ice_objects/object_ice_objects_DL_0012A0"
-static const ALIGN_ASSET(2) char object_ice_objects_DL_0012A0[] = dobject_ice_objects_DL_0012A0;
+#define dgRedIcePlatformDL "__OTR__objects/object_ice_objects/gRedIcePlatformDL"
+static const ALIGN_ASSET(2) char gRedIcePlatformDL[] = dgRedIcePlatformDL;
 
 #define dobject_ice_objects_Col_001C1C "__OTR__objects/object_ice_objects/object_ice_objects_Col_001C1C"
 static const ALIGN_ASSET(2) char object_ice_objects_Col_001C1C[] = dobject_ice_objects_Col_001C1C;
@@ -29,8 +29,8 @@ static const ALIGN_ASSET(2) char object_ice_objects_DL_0023D0[] = dobject_ice_ob
 #define dobject_ice_objects_Col_002594 "__OTR__objects/object_ice_objects/object_ice_objects_Col_002594"
 static const ALIGN_ASSET(2) char object_ice_objects_Col_002594[] = dobject_ice_objects_Col_002594;
 
-#define dobject_ice_objects_DL_002640 "__OTR__objects/object_ice_objects/object_ice_objects_DL_002640"
-static const ALIGN_ASSET(2) char object_ice_objects_DL_002640[] = dobject_ice_objects_DL_002640;
+#define dgRedIceWallDL "__OTR__objects/object_ice_objects/gRedIceWallDL"
+static const ALIGN_ASSET(2) char gRedIceWallDL[] = dgRedIceWallDL;
 
 #define dobject_ice_objects_DL_002740 "__OTR__objects/object_ice_objects/object_ice_objects_DL_002740"
 static const ALIGN_ASSET(2) char object_ice_objects_DL_002740[] = dobject_ice_objects_DL_002740;

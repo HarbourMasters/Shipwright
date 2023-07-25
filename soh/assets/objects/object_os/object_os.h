@@ -5,29 +5,29 @@
 #define dobject_os_Anim_0002E4 "__OTR__objects/object_os/object_os_Anim_0002E4"
 static const ALIGN_ASSET(2) char object_os_Anim_0002E4[] = dobject_os_Anim_0002E4;
 
-#define dobject_os_DL_001D80 "__OTR__objects/object_os/object_os_DL_001D80"
-static const ALIGN_ASSET(2) char object_os_DL_001D80[] = dobject_os_DL_001D80;
+#define dgHappyMaskSalesmanTorsoDL "__OTR__objects/object_os/gHappyMaskSalesmanTorsoDL"
+static const ALIGN_ASSET(2) char gHappyMaskSalesmanTorsoDL[] = dgHappyMaskSalesmanTorsoDL;
 
-#define dobject_os_DL_0020A8 "__OTR__objects/object_os/object_os_DL_0020A8"
-static const ALIGN_ASSET(2) char object_os_DL_0020A8[] = dobject_os_DL_0020A8;
+#define dgHappyMaskSalesmanHeadDL "__OTR__objects/object_os/gHappyMaskSalesmanHeadDL"
+static const ALIGN_ASSET(2) char gHappyMaskSalesmanHeadDL[] = dgHappyMaskSalesmanHeadDL;
 
-#define dobject_os_DL_0025E8 "__OTR__objects/object_os/object_os_DL_0025E8"
-static const ALIGN_ASSET(2) char object_os_DL_0025E8[] = dobject_os_DL_0025E8;
+#define dgHappyMaskSalesmanRightUpperArmDL "__OTR__objects/object_os/gHappyMaskSalesmanRightUpperArmDL"
+static const ALIGN_ASSET(2) char gHappyMaskSalesmanRightUpperArmDL[] = dgHappyMaskSalesmanRightUpperArmDL;
 
-#define dobject_os_DL_002718 "__OTR__objects/object_os/object_os_DL_002718"
-static const ALIGN_ASSET(2) char object_os_DL_002718[] = dobject_os_DL_002718;
+#define dgHappyMaskSalesmanRightForearmDL "__OTR__objects/object_os/gHappyMaskSalesmanRightForearmDL"
+static const ALIGN_ASSET(2) char gHappyMaskSalesmanRightForearmDL[] = dgHappyMaskSalesmanRightForearmDL;
 
-#define dobject_os_DL_002848 "__OTR__objects/object_os/object_os_DL_002848"
-static const ALIGN_ASSET(2) char object_os_DL_002848[] = dobject_os_DL_002848;
+#define dgHappyMaskSalesmanRightHandDL "__OTR__objects/object_os/gHappyMaskSalesmanRightHandDL"
+static const ALIGN_ASSET(2) char gHappyMaskSalesmanRightHandDL[] = dgHappyMaskSalesmanRightHandDL;
 
-#define dobject_os_DL_002A00 "__OTR__objects/object_os/object_os_DL_002A00"
-static const ALIGN_ASSET(2) char object_os_DL_002A00[] = dobject_os_DL_002A00;
+#define dgHappyMaskSalesmanLeftUpperArmDL "__OTR__objects/object_os/gHappyMaskSalesmanLeftUpperArmDL"
+static const ALIGN_ASSET(2) char gHappyMaskSalesmanLeftUpperArmDL[] = dgHappyMaskSalesmanLeftUpperArmDL;
 
-#define dobject_os_DL_002B30 "__OTR__objects/object_os/object_os_DL_002B30"
-static const ALIGN_ASSET(2) char object_os_DL_002B30[] = dobject_os_DL_002B30;
+#define dgHappyMaskSalesmanLeftForearmDL "__OTR__objects/object_os/gHappyMaskSalesmanLeftForearmDL"
+static const ALIGN_ASSET(2) char gHappyMaskSalesmanLeftForearmDL[] = dgHappyMaskSalesmanLeftForearmDL;
 
-#define dobject_os_DL_002C60 "__OTR__objects/object_os/object_os_DL_002C60"
-static const ALIGN_ASSET(2) char object_os_DL_002C60[] = dobject_os_DL_002C60;
+#define dgHappyMaskSalesmanLeftHandDL "__OTR__objects/object_os/gHappyMaskSalesmanLeftHandDL"
+static const ALIGN_ASSET(2) char gHappyMaskSalesmanLeftHandDL[] = dgHappyMaskSalesmanLeftHandDL;
 
 #define dobject_os_TLUT_002E18 "__OTR__objects/object_os/object_os_TLUT_002E18"
 static const ALIGN_ASSET(2) char object_os_TLUT_002E18[] = dobject_os_TLUT_002E18;

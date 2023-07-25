@@ -69,117 +69,117 @@
         <Texture Name="object_tw_Tex_00C238" OutName="tex_00C238" Format="rgba16" Width="32" Height="32" Offset="0xC238"/>
         <Texture Name="object_tw_Tex_00CA38" OutName="tex_00CA38" Format="rgba16" Width="8" Height="8" Offset="0xCA38"/>
         <Texture Name="object_tw_Tex_00CAB8" OutName="tex_00CAB8" Format="rgba16" Width="16" Height="16" Offset="0xCAB8"/>
-        <DList Name="object_tw_DL_0110A8" Offset="0x110A8"/>
-        <DList Name="object_tw_DL_0116A0" Offset="0x116A0"/>
-        <DList Name="object_tw_DL_011C98" Offset="0x11C98"/>
-        <DList Name="object_tw_DL_011E28" Offset="0x11E28"/>
-        <DList Name="object_tw_DL_011FB8" Offset="0x11FB8"/>
-        <DList Name="object_tw_DL_012018" Offset="0x12018"/>
-        <DList Name="object_tw_DL_0120C8" Offset="0x120C8"/>
-        <DList Name="object_tw_DL_012178" Offset="0x12178"/>
-        <DList Name="object_tw_DL_012210" Offset="0x12210"/>
-        <DList Name="object_tw_DL_0122A8" Offset="0x122A8"/>
-        <DList Name="object_tw_DL_012410" Offset="0x12410"/>
-        <DList Name="object_tw_DL_012578" Offset="0x12578"/>
-        <DList Name="object_tw_DL_0126E0" Offset="0x126E0"/>
-        <DList Name="object_tw_DL_012848" Offset="0x12848"/>
-        <DList Name="object_tw_DL_0128E0" Offset="0x128E0"/>
-        <DList Name="object_tw_DL_012978" Offset="0x12978"/>
-        <DList Name="object_tw_DL_012A28" Offset="0x12A28"/>
-        <DList Name="object_tw_DL_012AD8" Offset="0x12AD8"/>
-        <DList Name="object_tw_DL_012B38" Offset="0x12B38"/>
-        <DList Name="object_tw_DL_012CE0" Offset="0x12CE0"/>
-        <DList Name="object_tw_DL_013310" Offset="0x13310"/>
-        <DList Name="object_tw_DL_0134B8" Offset="0x134B8"/>
-        <DList Name="object_tw_DL_013AE8" Offset="0x13AE8"/>
-        <DList Name="object_tw_DL_013D68" Offset="0x13D68"/>
-        <DList Name="object_tw_DL_013E98" Offset="0x13E98"/>
-        <DList Name="object_tw_DL_013F98" Offset="0x13F98"/>
-        <DList Name="object_tw_DL_014070" Offset="0x14070"/>
-        <DList Name="object_tw_DL_014158" Offset="0x14158"/>
+        <DList Name="gTwinrovaKotakeHeadInvisibleHairDL" Offset="0x110A8"/>
+        <DList Name="gTwinrovaKoumeHeadInvisibleHairDL" Offset="0x116A0"/>
+        <DList Name="gTwinrovaKotakeBroomInvisibleHeadDL" Offset="0x11C98"/>
+        <DList Name="gTwinrovaKoumeBroomInvisibleHeadDL" Offset="0x11E28"/>
+        <DList Name="gTwinrovaKotakeTeethDL" Offset="0x11FB8"/>
+        <DList Name="gTwinrovaKotakeRightShinDL" Offset="0x12018"/>
+        <DList Name="gTwinrovaKotakeLeftShinDL" Offset="0x120C8"/>
+        <DList Name="gTwinrovaKotakeRightFootDL" Offset="0x12178"/>
+        <DList Name="gTwinrovaKotakeLeftFootDL" Offset="0x12210"/>
+        <DList Name="gTwinrovaKotakeRightHandDL" Offset="0x122A8"/>
+        <DList Name="gTwinrovaKotakeLeftHandDL" Offset="0x12410"/>
+        <DList Name="gTwinrovaKoumeRightHandDL" Offset="0x12578"/>
+        <DList Name="gTwinrovaKoumeLeftHandDL" Offset="0x126E0"/>
+        <DList Name="gTwinrovaKoumeLeftFootDL" Offset="0x12848"/>
+        <DList Name="gTwinrovaKoumeRightFootDL" Offset="0x128E0"/>
+        <DList Name="gTwinrovaKoumeLeftShinDL" Offset="0x12978"/>
+        <DList Name="gTwinrovaKoumeRightShinDL" Offset="0x12A28"/>
+        <DList Name="gTwinrovaKoumeTeethDL" Offset="0x12AD8"/>
+        <DList Name="gTwinrovaKotakeBroomDL" Offset="0x12B38"/>
+        <DList Name="gTwinrovaKotakeHeadDL" Offset="0x12CE0"/>
+        <DList Name="gTwinrovaKoumeBroomDL" Offset="0x13310"/>
+        <DList Name="gTwinrovaKoumeHeadDL" Offset="0x134B8"/>
+        <DList Name="gTwinrovaKotakeIceHairDL" Offset="0x13AE8"/>
+        <DList Name="gTwinrovaKoumeFireHairDL" Offset="0x13D68"/>
+        <DList Name="gTwinrovaKotakeIceBroomHeadDL" Offset="0x13E98"/>
+        <DList Name="gTwinrovaKotakeIceBroomHeadOuterDL" Offset="0x13F98"/>
+        <DList Name="gTwinrovaKotakeFireBroomHeadDL" Offset="0x14070"/>
+        <DList Name="gTwinrovaKotakeFireBroomHeadOuterDL" Offset="0x14158"/>
         <!--Blob Name="object_tw_Blob_015200" Size="0x60" Offset="0x15200" /-->
-        <DList Name="object_tw_DL_015440" Offset="0x15440"/>
-        <DList Name="object_tw_DL_015538" Offset="0x15538"/>
-        <DList Name="object_tw_DL_015648" Offset="0x15648"/>
-        <DList Name="object_tw_DL_015740" Offset="0x15740"/>
-        <DList Name="object_tw_DL_015850" Offset="0x15850"/>
-        <DList Name="object_tw_DL_015990" Offset="0x15990"/>
-        <DList Name="object_tw_DL_015B10" Offset="0x15B10"/>
-        <DList Name="object_tw_DL_015C30" Offset="0x15C30"/>
-        <DList Name="object_tw_DL_015D58" Offset="0x15D58"/>
-        <DList Name="object_tw_DL_015E78" Offset="0x15E78"/>
-        <DList Name="object_tw_DL_015FF8" Offset="0x15FF8"/>
-        <DList Name="object_tw_DL_016118" Offset="0x16118"/>
-        <DList Name="object_tw_DL_016240" Offset="0x16240"/>
-        <DList Name="object_tw_DL_016360" Offset="0x16360"/>
-        <DList Name="object_tw_DL_0164C0" Offset="0x164C0"/>
-        <DList Name="object_tw_DL_0164C8" Offset="0x164C8"/>
-        <DList Name="object_tw_DL_0164D0" Offset="0x164D0"/>
+        <DList Name="gTwinrovaKotakeLeftBraidEndDL" Offset="0x15440"/>
+        <DList Name="gTwinrovaKotakeLeftBraidStartDL" Offset="0x15538"/>
+        <DList Name="gTwinrovaKotakeRightBraidEndDL" Offset="0x15648"/>
+        <DList Name="gTwinrovaKotakeRightBraidStartDL" Offset="0x15740"/>
+        <DList Name="gTwinrovaKotakeNeckDL" Offset="0x15850"/>
+        <DList Name="gTwinrovaKotakeRightSleeveFrontDL" Offset="0x15990"/>
+        <DList Name="gTwinrovaKotakeRightSleeveEndDL" Offset="0x15B10"/>
+        <DList Name="gTwinrovaKotakeRightSleeveMidDL" Offset="0x15C30"/>
+        <DList Name="gTwinrovaKotakeRightSleeveStartDL" Offset="0x15D58"/>
+        <DList Name="gTwinrovaKotakeLeftSleeveFrontDL" Offset="0x15E78"/>
+        <DList Name="gTwinrovaKotakeLeftSleeveEndDL" Offset="0x15FF8"/>
+        <DList Name="gTwinrovaKotakeLeftSleeveMidDL" Offset="0x16118"/>
+        <DList Name="gTwinrovaKotakeLeftSleeveStartDL" Offset="0x16240"/>
+        <DList Name="gTwinrovaKotakeTorsoDL" Offset="0x16360"/>
+        <DList Name="gTwinrovaKotakeRightThighDL" Offset="0x164C0"/>
+        <DList Name="gTwinrovaKotakeLeftThighDL" Offset="0x164C8"/>
+        <DList Name="gTwinrovaKotakePelvisDL" Offset="0x164D0"/>
         <Texture Name="object_tw_Tex_016650" OutName="tex_016650" Format="rgba16" Width="8" Height="8" Offset="0x16650"/>
         <Texture Name="object_tw_Tex_0166D0" OutName="tex_0166D0" Format="rgba16" Width="4" Height="8" Offset="0x166D0"/>
         <!--Blob Name="object_tw_Blob_0176D0" Size="0x60" Offset="0x176D0" /-->
-        <DList Name="object_tw_DL_017910" Offset="0x17910"/>
-        <DList Name="object_tw_DL_017A08" Offset="0x17A08"/>
-        <DList Name="object_tw_DL_017B18" Offset="0x17B18"/>
-        <DList Name="object_tw_DL_017C10" Offset="0x17C10"/>
-        <DList Name="object_tw_DL_017D20" Offset="0x17D20"/>
-        <DList Name="object_tw_DL_017E60" Offset="0x17E60"/>
-        <DList Name="object_tw_DL_017FE0" Offset="0x17FE0"/>
-        <DList Name="object_tw_DL_018100" Offset="0x18100"/>
-        <DList Name="object_tw_DL_018228" Offset="0x18228"/>
-        <DList Name="object_tw_DL_018348" Offset="0x18348"/>
-        <DList Name="object_tw_DL_0184C8" Offset="0x184C8"/>
-        <DList Name="object_tw_DL_0185E8" Offset="0x185E8"/>
-        <DList Name="object_tw_DL_018710" Offset="0x18710"/>
-        <DList Name="object_tw_DL_018830" Offset="0x18830"/>
-        <DList Name="object_tw_DL_018990" Offset="0x18990"/>
-        <DList Name="object_tw_DL_018998" Offset="0x18998"/>
-        <DList Name="object_tw_DL_0189A0" Offset="0x189A0"/>
+        <DList Name="gTwinrovaKoumeLeftBraidEndDL" Offset="0x17910"/>
+        <DList Name="gTwinrovaKoumeLeftBraidStartDL" Offset="0x17A08"/>
+        <DList Name="gTwinrovaKoumeRightBraidEndDL" Offset="0x17B18"/>
+        <DList Name="gTwinrovaKoumeRightBraidStartDL" Offset="0x17C10"/>
+        <DList Name="gTwinrovaKoumeNeckDL" Offset="0x17D20"/>
+        <DList Name="gTwinrovaKoumeRightSleeveFrontDL" Offset="0x17E60"/>
+        <DList Name="gTwinrovaKoumeRightSleeveEndDL" Offset="0x17FE0"/>
+        <DList Name="gTwinrovaKoumeRightSleeveMidDL" Offset="0x18100"/>
+        <DList Name="gTwinrovaKoumeRightSleeveStartDL" Offset="0x18228"/>
+        <DList Name="gTwinrovaKoumeLeftSleeveFrontDL" Offset="0x18348"/>
+        <DList Name="gTwinrovaKoumeLeftSleeveEndDL" Offset="0x184C8"/>
+        <DList Name="gTwinrovaKoumeLeftSleeveMidDL" Offset="0x185E8"/>
+        <DList Name="gTwinrovaKoumeLeftSleeveStartDL" Offset="0x18710"/>
+        <DList Name="gTwinrovaKoumeTorsoDL" Offset="0x18830"/>
+        <DList Name="gTwinrovaKoumeRightThighDL" Offset="0x18990"/>
+        <DList Name="gTwinrovaKoumeLeftThighDL" Offset="0x18998"/>
+        <DList Name="gTwinrovaKoumePelvisDL" Offset="0x189A0"/>
         <Texture Name="object_tw_Tex_018B20" OutName="tex_018B20" Format="rgba16" Width="4" Height="8" Offset="0x18B20"/>
         <Texture Name="object_tw_Tex_018B60" OutName="tex_018B60" Format="i4" Width="32" Height="64" Offset="0x18B60"/>
-        <DList Name="object_tw_DL_018FC0" Offset="0x18FC0"/> <!-- Koume Ground Smoke -->
+        <DList Name="gTwinrovaFireSmokeDL" Offset="0x18FC0"/> <!-- Koume Ground Smoke -->
         <Texture Name="object_tw_Tex_019078" OutName="tex_019078" Format="i8" Width="32" Height="32" Offset="0x19078"/>
         <Texture Name="object_tw_Tex_019478" OutName="tex_019478" Format="i4" Width="32" Height="64" Offset="0x19478"/>
-        <DList Name="object_tw_DL_019938" Offset="0x19938"/> <!-- koume Ground Flame -->
+        <DList Name="gTwinrovaBigFlameDL" Offset="0x19938"/> <!-- koume Ground Flame -->
         <Texture Name="object_tw_Tex_019A20" OutName="tex_019A20" Format="i4" Width="32" Height="32" Offset="0x19A20"/>
-        <DList Name="object_tw_DL_019D40" Offset="0x19D40"/> <!-- Koume Ground Crater -->
+        <DList Name="gTwinrovaFirePoolDL" Offset="0x19D40"/> <!-- Koume Ground Crater -->
         <Texture Name="object_tw_Tex_019E00" OutName="tex_019E00" Format="i4" Width="32" Height="64" Offset="0x19E00"/>
         <Texture Name="object_tw_Tex_01A200" OutName="tex_01A200" Format="i4" Width="32" Height="32" Offset="0x1A200"/>
-        <DList Name="object_tw_DL_01A430" Offset="0x1A430"/>
-        <DList Name="object_tw_DL_01A528" Offset="0x1A528"/>
-        <DList Name="object_tw_DL_01A5A8" Offset="0x1A5A8"/>
+        <DList Name="gTwinrovaFireDL" Offset="0x1A430"/>
+        <DList Name="gTwinrovaMagicParticleMaterialDL" Offset="0x1A528"/>
+        <DList Name="gTwinrovaMagicParticleModelDL" Offset="0x1A5A8"/>
         <Texture Name="object_tw_Tex_01A5C0" OutName="tex_01A5C0" Format="i8" Width="16" Height="16" Offset="0x1A5C0"/>
-        <DList Name="object_tw_DL_01A790" Offset="0x1A790"/>
-        <DList Name="object_tw_DL_01A8A0" Offset="0x1A8A0"/>
-        <DList Name="object_tw_DL_01A998" Offset="0x1A998"/>
-        <DList Name="object_tw_DL_01AA50" Offset="0x1AA50"/>
-        <DList Name="object_tw_DL_01AB00" Offset="0x1AB00"/>
+        <DList Name="gTwinrovaEffectHaloDL" Offset="0x1A790"/>
+        <DList Name="gTwinrovaUnusedIceSteamCloudDL" Offset="0x1A8A0"/>
+        <DList Name="gTwinrovaIceMaterialDL" Offset="0x1A998"/>
+        <DList Name="gTwinrovaIceSurroundingPlayerMaterialDL" Offset="0x1AA50"/>
+        <DList Name="gTwinrovaIceModelDL" Offset="0x1AB00"/>
         <Texture Name="object_tw_Tex_01AB20" OutName="tex_01AB20" Format="i8" Width="64" Height="64" Offset="0x1AB20"/>
         <!--Blob Name="object_tw_Blob_01BB20" Size="0x40" Offset="0x1BB20" /-->
-        <DList Name="object_tw_DL_01BC00" Offset="0x1BC00"/>
+        <DList Name="gTwinrovaIcePoolDL" Offset="0x1BC00"/>
         <Texture Name="object_tw_Tex_01BCA0" OutName="tex_01BCA0" Format="i4" Width="32" Height="64" Offset="0x1BCA0"/>
         <Texture Name="object_tw_Tex_01C0A0" OutName="tex_01C0A0" Format="i4" Width="16" Height="16" Offset="0x1C0A0"/>
-        <DList Name="object_tw_DL_01C1C0" Offset="0x1C1C0"/>
+        <DList Name="gTwinrovaIcePoolShineDL" Offset="0x1C1C0"/>
         <Texture Name="object_tw_Tex_01C2A0" OutName="tex_01C2A0" Format="i4" Width="32" Height="64" Offset="0x1C2A0"/>
         <Texture Name="object_tw_Tex_01C6A0" OutName="tex_01C6A0" Format="i4" Width="64" Height="64" Offset="0x1C6A0"/>
-        <DList Name="object_tw_DL_01CEE0" Offset="0x1CEE0"/>
+        <DList Name="gTwinrovaKotakeMagicSigilDL" Offset="0x1CEE0"/>
         <Texture Name="object_tw_Tex_01CFA8" OutName="tex_01CFA8" Format="i4" Width="32" Height="64" Offset="0x1CFA8"/>
         <Texture Name="object_tw_Tex_01D3A8" OutName="tex_01D3A8" Format="i4" Width="64" Height="64" Offset="0x1D3A8"/>
-        <DList Name="object_tw_DL_01DBE8" Offset="0x1DBE8"/>
-        <DList Name="object_tw_DL_01DDF0" Offset="0x1DDF0"/>
-        <DList Name="object_tw_DL_01E020" Offset="0x1E020"/>
-        <DList Name="object_tw_DL_01E0E0" Offset="0x1E0E0"/>
-        <DList Name="object_tw_DL_01E2C0" Offset="0x1E2C0"/>
-        <DList Name="object_tw_DL_01E3A0" Offset="0x1E3A0"/>
+        <DList Name="gTwinrovaKoumeMagicSigilDL" Offset="0x1DBE8"/>
+        <DList Name="gTwinrovaBeamDL" Offset="0x1DDF0"/>
+        <DList Name="gTwinrovaMirrorShieldFireChargeCenterDL" Offset="0x1E020"/>
+        <DList Name="gTwinrovaMirrorShieldFireChargeSidesDL" Offset="0x1E0E0"/>
+        <DList Name="gTwinrovaMirrorShieldIceChargeCenterDL" Offset="0x1E2C0"/>
+        <DList Name="gTwinrovaMirrorShieldIceChargeSidesDL" Offset="0x1E3A0"/>
         <Texture Name="object_tw_Tex_01E430" OutName="tex_01E430" Format="i4" Width="32" Height="32" Offset="0x1E430"/>
-        <DList Name="object_tw_DL_01E9F0" Offset="0x1E9F0"/>
+        <DList Name="gTwinrovaShieldAbsorbAndReflectEffectDL" Offset="0x1E9F0"/>
         <Texture Name="object_tw_Tex_01EB28" OutName="tex_01EB28" Format="i8" Width="16" Height="16" Offset="0x1EB28"/>
-        <DList Name="object_tw_DL_01EC68" Offset="0x1EC68"/>
+        <DList Name="gTwinrovaSpawnPortalShadowDL" Offset="0x1EC68"/>
         <Texture Name="object_tw_Tex_01ECF0" OutName="tex_01ECF0" Format="i4" Width="16" Height="16" Offset="0x1ECF0"/>
-        <DList Name="object_tw_DL_01EEB0" Offset="0x1EEB0"/>
-        <DList Name="object_tw_DL_01F238" Offset="0x1F238"/>
-        <DList Name="object_tw_DL_01F390" Offset="0x1F390"/>
-        <DList Name="object_tw_DL_01F608" Offset="0x1F608"/>
+        <DList Name="gTwinrovaLightPillarDL" Offset="0x1EEB0"/>
+        <DList Name="gTwinrovaLightRaysDL" Offset="0x1F238"/>
+        <DList Name="gTwinrovaLightCircleDL" Offset="0x1F390"/>
+        <DList Name="gTwinrovaHaloDL" Offset="0x1F608"/>
         <Limb Name="object_tw_Limb_01F6E8" LimbType="Standard" Offset="0x1F6E8"/>
         <Limb Name="object_tw_Limb_01F6F4" LimbType="Standard" Offset="0x1F6F4"/>
         <Limb Name="object_tw_Limb_01F700" LimbType="Standard" Offset="0x1F700"/>
@@ -218,34 +218,34 @@
         <Texture Name="object_tw_Tex_024710" OutName="tex_024710" Format="rgba16" Width="16" Height="16" Offset="0x24710"/>
         <Texture Name="object_tw_Tex_024910" OutName="tex_024910" Format="rgba16" Width="16" Height="16" Offset="0x24910"/>
         <Texture Name="object_tw_Tex_024B10" OutName="tex_024B10" Format="rgba16" Width="16" Height="16" Offset="0x24B10"/>
-        <DList Name="object_tw_DL_027720" Offset="0x27720"/>
-        <DList Name="object_tw_DL_027820" Offset="0x27820"/>
-        <DList Name="object_tw_DL_027970" Offset="0x27970"/>
-        <DList Name="object_tw_DL_027A60" Offset="0x27A60"/>
-        <DList Name="object_tw_DL_027B78" Offset="0x27B78"/>
-        <DList Name="object_tw_DL_027C98" Offset="0x27C98"/>
-        <DList Name="object_tw_DL_027DE8" Offset="0x27DE8"/>
-        <DList Name="object_tw_DL_027EE0" Offset="0x27EE0"/>
-        <DList Name="object_tw_DL_027FE8" Offset="0x27FE8"/>
-        <DList Name="object_tw_DL_028100" Offset="0x28100"/>
-        <DList Name="object_tw_DL_028220" Offset="0x28220"/>
-        <DList Name="object_tw_DL_028370" Offset="0x28370"/>
-        <DList Name="object_tw_DL_028468" Offset="0x28468"/>
-        <DList Name="object_tw_DL_028570" Offset="0x28570"/>
-        <DList Name="object_tw_DL_028668" Offset="0x28668"/>
-        <DList Name="object_tw_DL_028778" Offset="0x28778"/>
-        <DList Name="object_tw_DL_028870" Offset="0x28870"/>
-        <DList Name="object_tw_DL_028980" Offset="0x28980"/>
-        <DList Name="object_tw_DL_028B78" Offset="0x28B78"/>
-        <DList Name="object_tw_DL_028D70" Offset="0x28D70"/>
-        <DList Name="object_tw_DL_029268" Offset="0x29268"/>
-        <DList Name="object_tw_DL_0293E0" Offset="0x293E0"/>
-        <DList Name="object_tw_DL_029530" Offset="0x29530"/>
-        <DList Name="object_tw_DL_029620" Offset="0x29620"/>
-        <DList Name="object_tw_DL_029738" Offset="0x29738"/>
-        <DList Name="object_tw_DL_029900" Offset="0x29900"/>
-        <DList Name="object_tw_DL_0299F8" Offset="0x299F8"/>
-        <DList Name="object_tw_DL_029B10" Offset="0x29B10"/>
+        <DList Name="gTwinrovaRightFootDL" Offset="0x27720"/>
+        <DList Name="gTwinrovaRightShinDL" Offset="0x27820"/>
+        <DList Name="gTwinrovaRightThighDL" Offset="0x27970"/>
+        <DList Name="gTwinrovaRightSleeveEndDL" Offset="0x27A60"/>
+        <DList Name="gTwinrovaRightSleeveStartDL" Offset="0x27B78"/>
+        <DList Name="gTwinrovaRightForearmDL" Offset="0x27C98"/>
+        <DList Name="gTwinrovaRightUpperArmDL" Offset="0x27DE8"/>
+        <DList Name="gTwinrovaRightShoulderDL" Offset="0x27EE0"/>
+        <DList Name="gTwinrovaLeftSleeveEndDL" Offset="0x27FE8"/>
+        <DList Name="gTwinrovaLeftSleeveStartDL" Offset="0x28100"/>
+        <DList Name="gTwinrovaLeftForearmDL" Offset="0x28220"/>
+        <DList Name="gTwinrovaLeftUpperArmDL" Offset="0x28370"/>
+        <DList Name="gTwinrovaLeftShoulderDL" Offset="0x28468"/>
+        <DList Name="gTwinrovaLeftBraidEndDL" Offset="0x28570"/>
+        <DList Name="gTwinrovaLeftBraidStartDL" Offset="0x28668"/>
+        <DList Name="gTwinrovaRightBraidEndDL" Offset="0x28778"/>
+        <DList Name="gTwinrovaRightBraidStartDL" Offset="0x28870"/>
+        <DList Name="gTwinrovaRightBreastDL" Offset="0x28980"/>
+        <DList Name="gTwinrovaLeftBreastDL" Offset="0x28B78"/>
+        <DList Name="gTwinrovaTorsoDL" Offset="0x28D70"/>
+        <DList Name="gTwinrovaLeftFootDL" Offset="0x29268"/>
+        <DList Name="gTwinrovaLeftShinDL" Offset="0x293E0"/>
+        <DList Name="gTwinrovaLeftThighDL" Offset="0x29530"/>
+        <DList Name="gTwinrovaSash4DL" Offset="0x29620"/>
+        <DList Name="gTwinrovaSash3DL" Offset="0x29738"/>
+        <DList Name="gTwinrovaSash2DL" Offset="0x29900"/>
+        <DList Name="gTwinrovaSash1DL" Offset="0x299F8"/>
+        <DList Name="gTwinrovaPelvisDL" Offset="0x29B10"/>
         <Texture Name="object_tw_TLUT_029E50" OutName="tlut_029E50" Format="rgba16" Width="29" Height="8" Offset="0x29E50"/>
         <Texture Name="object_tw_TLUT_02A020" OutName="tlut_02A020" Format="rgba16" Width="8" Height="5" Offset="0x2A020"/>
         <Texture Name="object_tw_Tex_02A470" OutName="tex_02A470" Format="ci8" Width="32" Height="32" Offset="0x2A470" TlutOffset="0x29E50"/>
@@ -256,23 +256,23 @@
         <Texture Name="object_tw_Tex_02ADF0" OutName="tex_02ADF0" Format="ci8" Width="8" Height="8" Offset="0x2ADF0"  TlutOffset="0x2A020"/>
         <Texture Name="object_tw_Tex_02AE30" OutName="tex_02AE30" Format="ci8" Width="16" Height="16" Offset="0x2AE30"  TlutOffset="0x29e50"/>
         <Texture Name="object_tw_Tex_02AF30" OutName="tex_02AF30" Format="ci8" Width="8" Height="16" Offset="0x2AF30"  TlutOffset="0x2A020"/>
-        <DList Name="object_tw_DL_02CAF0" Offset="0x2CAF0"/>
-        <DList Name="object_tw_DL_02CB50" Offset="0x2CB50"/>
-        <DList Name="object_tw_DL_02CBB0" Offset="0x2CBB0"/>
-        <DList Name="object_tw_DL_02D320" Offset="0x2D320"/>
-        <DList Name="object_tw_DL_02D4A0" Offset="0x2D4A0"/>
-        <DList Name="object_tw_DL_02D5D8" Offset="0x2D5D8"/>
-        <DList Name="object_tw_DL_02D710" Offset="0x2D710"/>
-        <DList Name="object_tw_DL_02D890" Offset="0x2D890"/>
-        <DList Name="object_tw_DL_02D940" Offset="0x2D940"/>
-        <DList Name="object_tw_DL_02D9F0" Offset="0x2D9F0"/>
-        <DList Name="object_tw_DL_02DAE0" Offset="0x2DAE0"/>
-        <DList Name="object_tw_DL_02DBC8" Offset="0x2DBC8"/>
-        <DList Name="object_tw_DL_02DCB8" Offset="0x2DCB8"/>
-        <DList Name="object_tw_DL_02DDD8" Offset="0x2DDD8"/>
-        <DList Name="object_tw_DL_02DEB0" Offset="0x2DEB0"/>
-        <DList Name="object_tw_DL_02DFB0" Offset="0x2DFB0"/>
-        <DList Name="object_tw_DL_02E098" Offset="0x2E098"/>
+        <DList Name="gTwinrovaInvisibleLeftHairBunDL" Offset="0x2CAF0"/>
+        <DList Name="gTwinrovaInvisibleRightHairBunDL" Offset="0x2CB50"/>
+        <DList Name="gTwinrovaHeadDL" Offset="0x2CBB0"/>
+        <DList Name="gTwinrovaLeftHandDL" Offset="0x2D320"/>
+        <DList Name="gTwinrovaRightBroomDL" Offset="0x2D4A0"/>
+        <DList Name="gTwinrovaLeftBroomDL" Offset="0x2D5D8"/>
+        <DList Name="gTwinrovaRightHandDL" Offset="0x2D710"/>
+        <DList Name="gTwinrovaRightHairBunDL" Offset="0x2D890"/>
+        <DList Name="gTwinrovaLeftHairBunDL" Offset="0x2D940"/>
+        <DList Name="gTwinrovaHairIceJetDL" Offset="0x2D9F0"/>
+        <DList Name="gTwinrovaHairIceTrailDL" Offset="0x2DAE0"/>
+        <DList Name="gTwinrovaHairFireJetDL" Offset="0x2DBC8"/>
+        <DList Name="gTwinrovaHairFireTrailDL" Offset="0x2DCB8"/>
+        <DList Name="gTwinrovaBroomIceJetDL" Offset="0x2DDD8"/>
+        <DList Name="gTwinrovaBroomIceTrailDL" Offset="0x2DEB0"/>
+        <DList Name="gTwinrovaBroomFireJetDL" Offset="0x2DFB0"/>
+        <DList Name="gTwinrovaBroomFireTrailDL" Offset="0x2E098"/>
         <Texture Name="gTwinrovaTitleCardTex" OutName="title_card" Format="i8" Width="128" Height="120" Offset="0x2E170"/>
         <Limb Name="object_tw_Limb_031D70" LimbType="Standard" Offset="0x31D70"/>
         <Limb Name="object_tw_Limb_031D7C" LimbType="Standard" Offset="0x31D7C"/>
@@ -326,7 +326,7 @@
         <Animation Name="object_tw_Anim_036FBC" Offset="0x36FBC"/>
         <Animation Name="object_tw_Anim_038E2C" Offset="0x38E2C"/>
         <Animation Name="object_tw_Anim_03A2D0" Offset="0x3A2D0"/>
-        <DList Name="object_tw_DL_03A680" Offset="0x3A680"/>
+        <DList Name="gTwinrovaUnusedBoulderDL" Offset="0x3A680"/>
         <Texture Name="object_tw_Tex_03A7B0" OutName="tex_03A7B0" Format="rgba16" Width="32" Height="32" Offset="0x3A7B0"/>
     </File>
 </Root>
