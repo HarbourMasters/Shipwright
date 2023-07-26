@@ -477,7 +477,7 @@ void BossTw_Init(Actor* thisx, PlayState* play2) {
     if (this->actor.params == TW_KOTAKE) {
         Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInitKoumeKotake);
         this->actor.naviEnemyId = 0x33;
-        SkelAnime_InitFlex(play, &this->skelAnime, &object_tw_Skel_0070E0, &object_tw_Anim_006F28, NULL, NULL, 0);
+        SkelAnime_InitFlex(play, &this->skelAnime, &gTwinrovaKotakeSkel, &object_tw_Anim_006F28, NULL, NULL, 0);
 
         if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_TWINROVA_BATTLE)) {
             // began twinrova battle
@@ -495,7 +495,7 @@ void BossTw_Init(Actor* thisx, PlayState* play2) {
     } else if (this->actor.params == TW_KOUME) {
         Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInitKoumeKotake);
         this->actor.naviEnemyId = 0x32;
-        SkelAnime_InitFlex(play, &this->skelAnime, &object_tw_Skel_01F888, &object_tw_Anim_006F28, NULL, NULL, 0);
+        SkelAnime_InitFlex(play, &this->skelAnime, &gTwinrovaKoumeSkel, &object_tw_Anim_006F28, NULL, NULL, 0);
 
         if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_TWINROVA_BATTLE)) {
             // began twinrova battle
@@ -516,7 +516,7 @@ void BossTw_Init(Actor* thisx, PlayState* play2) {
         this->actor.colChkInfo.health = 24;
         this->actor.update = BossTw_TwinrovaUpdate;
         this->actor.draw = BossTw_TwinrovaDraw;
-        SkelAnime_InitFlex(play, &this->skelAnime, &object_tw_Skel_032020, &object_tw_Anim_0244B4, NULL, NULL, 0);
+        SkelAnime_InitFlex(play, &this->skelAnime, &gTwinrovaSkel, &object_tw_Anim_0244B4, NULL, NULL, 0);
         Animation_MorphToLoop(&this->skelAnime, &object_tw_Anim_0244B4, -3.0f);
 
         if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_TWINROVA_BATTLE)) {

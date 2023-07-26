@@ -23,11 +23,11 @@ static const ALIGN_ASSET(2) char object_ik_Skel_01EB40[] = dobject_ik_Skel_01EB4
 #define dobject_ik_Skel_01EE60 "__OTR__objects/object_ik/object_ik_Skel_01EE60"
 static const ALIGN_ASSET(2) char object_ik_Skel_01EE60[] = dobject_ik_Skel_01EE60;
 
-#define dobject_ik_Skel_01E178 "__OTR__objects/object_ik/object_ik_Skel_01E178"
-static const ALIGN_ASSET(2) char object_ik_Skel_01E178[] = dobject_ik_Skel_01E178;
+#define dgIronKnuckleSkel "__OTR__objects/object_ik/gIronKnuckleSkel"
+static const ALIGN_ASSET(2) char gIronKnuckleSkel[] = dgIronKnuckleSkel;
 
-#define dobject_ik_Skel_0205C0 "__OTR__objects/object_ik/object_ik_Skel_0205C0"
-static const ALIGN_ASSET(2) char object_ik_Skel_0205C0[] = dobject_ik_Skel_0205C0;
+#define dgIronKnuckleDefeatSkel "__OTR__objects/object_ik/gIronKnuckleDefeatSkel"
+static const ALIGN_ASSET(2) char gIronKnuckleDefeatSkel[] = dgIronKnuckleDefeatSkel;
 
 #define dobject_ik_Anim_00035C "__OTR__objects/object_ik/object_ik_Anim_00035C"
 static const ALIGN_ASSET(2) char object_ik_Anim_00035C[] = dobject_ik_Anim_00035C;

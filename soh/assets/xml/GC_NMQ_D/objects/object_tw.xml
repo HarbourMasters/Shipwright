@@ -38,7 +38,7 @@
         <Limb Name="object_tw_Limb_007054" LimbType="Standard" Offset="0x7054"/>
         <Limb Name="object_tw_Limb_007060" LimbType="Standard" Offset="0x7060"/>
         <Limb Name="object_tw_Limb_00706C" LimbType="Standard" Offset="0x706C"/>
-        <Skeleton Name="object_tw_Skel_0070E0" Type="Flex" LimbType="Standard" Offset="0x70E0"/>
+        <Skeleton Name="gTwinrovaKotakeSkel" Type="Flex" LimbType="Standard" Offset="0x70E0"/>
         <Animation Name="object_tw_Anim_007688" Offset="0x7688"/>
         <Animation Name="object_tw_Anim_007CA8" Offset="0x7CA8"/>
         <Animation Name="object_tw_Anim_0088C8" Offset="0x88C8"/>
@@ -206,7 +206,7 @@
         <Limb Name="object_tw_Limb_01F7FC" LimbType="Standard" Offset="0x1F7FC"/>
         <Limb Name="object_tw_Limb_01F808" LimbType="Standard" Offset="0x1F808"/>
         <Limb Name="object_tw_Limb_01F814" LimbType="Standard" Offset="0x1F814"/>
-        <Skeleton Name="object_tw_Skel_01F888" Type="Flex" LimbType="Standard" Offset="0x1F888"/>
+        <Skeleton Name="gTwinrovaKoumeSkel" Type="Flex" LimbType="Standard" Offset="0x1F888"/>
         <Texture Name="object_tw_Tex_02A070" OutName="tex_02A070" Format="ci8" Width="32" Height="32" Offset="0x2A070" TlutOffset="0x29E50"/>
         <Animation Name="object_tw_Anim_0216DC" Offset="0x216DC"/>
         <Animation Name="object_tw_Anim_022700" Offset="0x22700"/>
@@ -317,7 +317,7 @@
         <Limb Name="object_tw_Limb_031F50" LimbType="Standard" Offset="0x31F50"/>
         <Limb Name="object_tw_Limb_031F5C" LimbType="Standard" Offset="0x31F5C"/>
         <Limb Name="object_tw_Limb_031F68" LimbType="Standard" Offset="0x31F68"/>
-        <Skeleton Name="object_tw_Skel_032020" Type="Flex" LimbType="Standard" Offset="0x32020"/>
+        <Skeleton Name="gTwinrovaSkel" Type="Flex" LimbType="Standard" Offset="0x32020"/>
         <Animation Name="object_tw_Anim_032BF8" Offset="0x32BF8"/>
         <Animation Name="object_tw_Anim_0338F0" Offset="0x338F0"/>
         <Animation Name="object_tw_Anim_0343B4" Offset="0x343B4"/>

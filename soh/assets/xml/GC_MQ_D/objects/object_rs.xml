@@ -27,6 +27,6 @@
         <Limb Name="object_rs_Limb_004824" LimbType="Standard" Offset="0x4824"/>
         <Limb Name="object_rs_Limb_004830" LimbType="Standard" Offset="0x4830"/>
         <Limb Name="object_rs_Limb_00483C" LimbType="Standard" Offset="0x483C"/>
-        <Skeleton Name="object_rs_Skel_004868" Type="Flex" LimbType="Standard" Offset="0x4868"/>
+        <Skeleton Name="gBombchuShopkeeperSkel" Type="Flex" LimbType="Standard" Offset="0x4868"/>
     </File>
 </Root>

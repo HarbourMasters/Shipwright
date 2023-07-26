@@ -71,5 +71,5 @@ static const ALIGN_ASSET(2) char object_os_Tex_0044D8[] = dobject_os_Tex_0044D8;
 #define dobject_os_Tex_004558 "__OTR__objects/object_os/object_os_Tex_004558"
 static const ALIGN_ASSET(2) char object_os_Tex_004558[] = dobject_os_Tex_004558;
 
-#define dobject_os_Skel_004658 "__OTR__objects/object_os/object_os_Skel_004658"
-static const ALIGN_ASSET(2) char object_os_Skel_004658[] = dobject_os_Skel_004658;
+#define dgHappyMaskSalesmanSkel "__OTR__objects/object_os/gHappyMaskSalesmanSkel"
+static const ALIGN_ASSET(2) char gHappyMaskSalesmanSkel[] = dgHappyMaskSalesmanSkel;

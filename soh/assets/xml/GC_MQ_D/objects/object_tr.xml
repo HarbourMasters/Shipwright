@@ -84,7 +84,7 @@
         <Limb Name="object_tr_Limb_00C4A4" LimbType="Standard" Offset="0xC4A4"/>
         <Limb Name="object_tr_Limb_00C4B0" LimbType="Standard" Offset="0xC4B0"/>
         <Limb Name="object_tr_Limb_00C4BC" LimbType="Standard" Offset="0xC4BC"/>
-        <Skeleton Name="object_tr_Skel_00C530" Type="Flex" LimbType="Standard" Offset="0xC530"/>
+        <Skeleton Name="gKotakeSkel" Type="Flex" LimbType="Standard" Offset="0xC530"/>
         <Animation Name="object_tr_Anim_00C60C" Offset="0xC60C"/>
         <Blob Name="object_tr_Blob_00D5E0" Size="0x60" Offset="0xD5E0"/>
         <DList Name="gKoumePelvisDL" Offset="0xD820"/>
@@ -143,7 +143,7 @@
         <Limb Name="object_tr_Limb_0115FC" LimbType="Standard" Offset="0x115FC"/>
         <Limb Name="object_tr_Limb_011608" LimbType="Standard" Offset="0x11608"/>
         <Limb Name="object_tr_Limb_011614" LimbType="Standard" Offset="0x11614"/>
-        <Skeleton Name="object_tr_Skel_011688" Type="Flex" LimbType="Standard" Offset="0x11688"/>
+        <Skeleton Name="gKoumeSkel" Type="Flex" LimbType="Standard" Offset="0x11688"/>
         <Animation Name="object_tr_Anim_012E1C" Offset="0x12E1C"/> <!-- Casting magic -->
     </File>
 </Root>

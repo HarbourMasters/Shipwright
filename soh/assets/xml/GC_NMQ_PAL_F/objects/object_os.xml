@@ -31,6 +31,6 @@
         <Limb Name="object_os_Limb_004614" LimbType="Standard" Offset="0x4614"/>
         <Limb Name="object_os_Limb_004620" LimbType="Standard" Offset="0x4620"/>
         <Limb Name="object_os_Limb_00462C" LimbType="Standard" Offset="0x462C"/>
-        <Skeleton Name="object_os_Skel_004658" Type="Flex" LimbType="Standard" Offset="0x4658"/>
+        <Skeleton Name="gHappyMaskSalesmanSkel" Type="Flex" LimbType="Standard" Offset="0x4658"/>
     </File>
 </Root>

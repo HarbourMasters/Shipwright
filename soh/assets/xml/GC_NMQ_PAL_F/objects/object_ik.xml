@@ -10,8 +10,8 @@
         <Skeleton Name="object_ik_Skel_000F30" Type="Flex" LimbType="Standard" Offset="0xF30"/>
         <Skeleton Name="object_ik_Skel_01EB40" Type="Flex" LimbType="Standard" Offset="0x1EB40"/>
         <Skeleton Name="object_ik_Skel_01EE60" Type="Flex" LimbType="Standard" Offset="0x1EE60"/>
-        <Skeleton Name="object_ik_Skel_01E178" Type="Flex" LimbType="Standard" Offset="0x1E178"/>
-        <Skeleton Name="object_ik_Skel_0205C0" Type="Flex" LimbType="Standard" Offset="0x205C0"/>
+        <Skeleton Name="gIronKnuckleSkel" Type="Flex" LimbType="Standard" Offset="0x1E178"/>
+        <Skeleton Name="gIronKnuckleDefeatSkel" Type="Flex" LimbType="Standard" Offset="0x205C0"/>
 
         <Animation Name="object_ik_Anim_00035C" Offset="0x35C"/>
         <Animation Name="object_ik_Anim_000634" Offset="0x634"/>

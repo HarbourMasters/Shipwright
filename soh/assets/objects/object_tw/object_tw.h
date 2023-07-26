@@ -38,8 +38,8 @@ static const ALIGN_ASSET(2) char object_tw_Anim_006530[] = dobject_tw_Anim_00653
 #define dobject_tw_Anim_006F28 "__OTR__objects/object_tw/object_tw_Anim_006F28"
 static const ALIGN_ASSET(2) char object_tw_Anim_006F28[] = dobject_tw_Anim_006F28;
 
-#define dobject_tw_Skel_0070E0 "__OTR__objects/object_tw/object_tw_Skel_0070E0"
-static const ALIGN_ASSET(2) char object_tw_Skel_0070E0[] = dobject_tw_Skel_0070E0;
+#define dgTwinrovaKotakeSkel "__OTR__objects/object_tw/gTwinrovaKotakeSkel"
+static const ALIGN_ASSET(2) char gTwinrovaKotakeSkel[] = dgTwinrovaKotakeSkel;
 
 #define dobject_tw_Anim_007688 "__OTR__objects/object_tw/object_tw_Anim_007688"
 static const ALIGN_ASSET(2) char object_tw_Anim_007688[] = dobject_tw_Anim_007688;
@@ -452,8 +452,8 @@ static const ALIGN_ASSET(2) char gTwinrovaLightCircleDL[] = dgTwinrovaLightCircl
 #define dgTwinrovaHaloDL "__OTR__objects/object_tw/gTwinrovaHaloDL"
 static const ALIGN_ASSET(2) char gTwinrovaHaloDL[] = dgTwinrovaHaloDL;
 
-#define dobject_tw_Skel_01F888 "__OTR__objects/object_tw/object_tw_Skel_01F888"
-static const ALIGN_ASSET(2) char object_tw_Skel_01F888[] = dobject_tw_Skel_01F888;
+#define dgTwinrovaKoumeSkel "__OTR__objects/object_tw/gTwinrovaKoumeSkel"
+static const ALIGN_ASSET(2) char gTwinrovaKoumeSkel[] = dgTwinrovaKoumeSkel;
 
 #define dobject_tw_Tex_02A070 "__OTR__objects/object_tw/object_tw_Tex_02A070"
 static const ALIGN_ASSET(2) char object_tw_Tex_02A070[] = dobject_tw_Tex_02A070;
@@ -656,8 +656,8 @@ static const ALIGN_ASSET(2) char gTwinrovaBroomFireTrailDL[] = dgTwinrovaBroomFi
 #define dgTwinrovaTitleCardTex "__OTR__objects/object_tw/gTwinrovaTitleCardTex"
 static const ALIGN_ASSET(2) char gTwinrovaTitleCardTex[] = dgTwinrovaTitleCardTex;
 
-#define dobject_tw_Skel_032020 "__OTR__objects/object_tw/object_tw_Skel_032020"
-static const ALIGN_ASSET(2) char object_tw_Skel_032020[] = dobject_tw_Skel_032020;
+#define dgTwinrovaSkel "__OTR__objects/object_tw/gTwinrovaSkel"
+static const ALIGN_ASSET(2) char gTwinrovaSkel[] = dgTwinrovaSkel;
 
 #define dobject_tw_Anim_032BF8 "__OTR__objects/object_tw/object_tw_Anim_032BF8"
 static const ALIGN_ASSET(2) char object_tw_Anim_032BF8[] = dobject_tw_Anim_032BF8;

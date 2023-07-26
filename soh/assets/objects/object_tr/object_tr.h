@@ -176,8 +176,8 @@ static const ALIGN_ASSET(2) char object_tr_Tex_00C2D0[] = dobject_tr_Tex_00C2D0;
 #define dobject_tr_Blob_00C310 "__OTR__objects/object_tr/object_tr_Blob_00C310"
 static const ALIGN_ASSET(2) char object_tr_Blob_00C310[] = dobject_tr_Blob_00C310;
 
-#define dobject_tr_Skel_00C530 "__OTR__objects/object_tr/object_tr_Skel_00C530"
-static const ALIGN_ASSET(2) char object_tr_Skel_00C530[] = dobject_tr_Skel_00C530;
+#define dgKotakeSkel "__OTR__objects/object_tr/gKotakeSkel"
+static const ALIGN_ASSET(2) char gKotakeSkel[] = dgKotakeSkel;
 
 #define dobject_tr_Anim_00C60C "__OTR__objects/object_tr/object_tr_Anim_00C60C"
 static const ALIGN_ASSET(2) char object_tr_Anim_00C60C[] = dobject_tr_Anim_00C60C;
@@ -275,8 +275,8 @@ static const ALIGN_ASSET(2) char gKoumeLeftHandDL[] = dgKoumeLeftHandDL;
 #define dobject_tr_Tex_0114A8 "__OTR__objects/object_tr/object_tr_Tex_0114A8"
 static const ALIGN_ASSET(2) char object_tr_Tex_0114A8[] = dobject_tr_Tex_0114A8;
 
-#define dobject_tr_Skel_011688 "__OTR__objects/object_tr/object_tr_Skel_011688"
-static const ALIGN_ASSET(2) char object_tr_Skel_011688[] = dobject_tr_Skel_011688;
+#define dgKoumeSkel "__OTR__objects/object_tr/gKoumeSkel"
+static const ALIGN_ASSET(2) char gKoumeSkel[] = dgKoumeSkel;
 
 #define dobject_tr_Anim_012E1C "__OTR__objects/object_tr/object_tr_Anim_012E1C"
 static const ALIGN_ASSET(2) char object_tr_Anim_012E1C[] = dobject_tr_Anim_012E1C;

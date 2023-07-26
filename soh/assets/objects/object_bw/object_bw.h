@@ -35,8 +35,8 @@ static const ALIGN_ASSET(2) char object_bw_Tex_001840[] = dobject_bw_Tex_001840;
 #define dobject_bw_Tex_001C40 "__OTR__objects/object_bw/object_bw_Tex_001C40"
 static const ALIGN_ASSET(2) char object_bw_Tex_001C40[] = dobject_bw_Tex_001C40;
 
-#define dobject_bw_Skel_0020F0 "__OTR__objects/object_bw/object_bw_Skel_0020F0"
-static const ALIGN_ASSET(2) char object_bw_Skel_0020F0[] = dobject_bw_Skel_0020F0;
+#define dgTorchSlugSkel "__OTR__objects/object_bw/gTorchSlugSkel"
+static const ALIGN_ASSET(2) char gTorchSlugSkel[] = dgTorchSlugSkel;
 
 #define dobject_bw_Anim_0021A0 "__OTR__objects/object_bw/object_bw_Anim_0021A0"
 static const ALIGN_ASSET(2) char object_bw_Anim_0021A0[] = dobject_bw_Anim_0021A0;

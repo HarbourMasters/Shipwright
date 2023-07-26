@@ -97,7 +97,7 @@ void EnTr_Init(Actor* thisx, PlayState* play) {
 
     switch (this->actor.params) {
         case TR_KOUME:
-            SkelAnime_InitFlex(play, &this->skelAnime, &object_tr_Skel_011688, &object_tr_Anim_003FC8,
+            SkelAnime_InitFlex(play, &this->skelAnime, &gKoumeSkel, &object_tr_Anim_003FC8,
                                this->jointTable, this->morphTable, 27);
             Animation_PlayOnce(&this->skelAnime, &object_tr_Anim_003FC8);
             this->animation = NULL;
@@ -106,7 +106,7 @@ void EnTr_Init(Actor* thisx, PlayState* play) {
             break;
 
         case TR_KOTAKE:
-            SkelAnime_InitFlex(play, &this->skelAnime, &object_tr_Skel_00C530, &object_tr_Anim_001CDC,
+            SkelAnime_InitFlex(play, &this->skelAnime, &gKotakeSkel, &object_tr_Anim_001CDC,
                                this->jointTable, this->morphTable, 27);
             Animation_PlayOnce(&this->skelAnime, &object_tr_Anim_001CDC);
             this->animation = NULL;

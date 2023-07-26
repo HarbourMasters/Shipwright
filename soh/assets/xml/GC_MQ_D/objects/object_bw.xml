@@ -22,7 +22,7 @@
         <Limb Name="object_bw_Limb_0020A0" LimbType="Standard" Offset="0x20A0"/>
         <Limb Name="object_bw_Limb_0020AC" LimbType="Standard" Offset="0x20AC"/>
         <Limb Name="object_bw_Limb_0020B8" LimbType="Standard" Offset="0x20B8"/>
-        <Skeleton Name="object_bw_Skel_0020F0" Type="Normal" LimbType="Standard" Offset="0x20F0"/>
+        <Skeleton Name="gTorchSlugSkel" Type="Normal" LimbType="Standard" Offset="0x20F0"/>
         <Animation Name="object_bw_Anim_0021A0" Offset="0x21A0"/>
         <Animation Name="object_bw_Anim_002250" Offset="0x2250"/>
     </File>
