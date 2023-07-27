@@ -1164,6 +1164,7 @@ void DrawCheatsMenu() {
         UIWidgets::Tooltip("Makes every surface in the game climbable");
         UIWidgets::PaddedEnhancementCheckbox("Hookshot Everything", "gHookshotEverything", true, false);
         UIWidgets::Tooltip("Makes every surface in the game hookshot-able");
+        UIWidgets::Spacer(2.0f);
         UIWidgets::EnhancementSliderFloat("Hookshot Reach Multiplier: %.1fx", "##gCheatHookshotReachMultiplier", "gCheatHookshotReachMultiplier", 1.0f, 5.0f, "", 1.0f, false);
         UIWidgets::PaddedEnhancementCheckbox("Moon Jump on L", "gMoonJumpOnL", true, false);
         UIWidgets::Tooltip("Holding L makes you float into the air");
@@ -1192,6 +1193,25 @@ void DrawCheatsMenu() {
         UIWidgets::Tooltip("This syncs the ingame time with the real world time");
         UIWidgets::PaddedEnhancementCheckbox("No ReDead/Gibdo Freeze", "gNoRedeadFreeze", true, false);
         UIWidgets::Tooltip("Prevents ReDeads and Gibdos from being able to freeze you with their scream");
+        UIWidgets::Spacer(2.0f);
+        if (ImGui::BeginMenu("Save States")) {
+            ImGui::Text("           " ICON_FA_EXCLAMATION_TRIANGLE " WARNING!!!! " ICON_FA_EXCLAMATION_TRIANGLE);
+            UIWidgets::PaddedText("These are NOT like emulator states.", true, false);
+            UIWidgets::PaddedText("They do not save your game progress,", true, false);
+            UIWidgets::PaddedText("and they WILL break across transitions", true, false);
+            UIWidgets::PaddedText("and load zones (like doors).", true, false);
+            if (UIWidgets::PaddedEnhancementCheckbox("I promise I have read the warning", "gSaveStatePromise", true, false)) {
+                CVarSetInteger("gSaveStatesEnabled", 0);
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+            }
+            if (CVarGetInteger("gSaveStatePromise", 0) == 1) {
+                UIWidgets::PaddedEnhancementCheckbox("I understand, enable save states", "gSaveStatesEnabled", true, false);
+                UIWidgets::Tooltip("F5 to save, F6 to change slots, F7 to load");
+            }
+
+            ImGui::EndMenu();
+        }
+        UIWidgets::Spacer(2.0f);
 
         {
             static int32_t betaQuestEnabled = CVarGetInteger("gEnableBetaQuest", 0);
@@ -1256,6 +1276,7 @@ void DrawCheatsMenu() {
             }
         }
 
+        UIWidgets::Spacer(2.0f);
         if (ImGui::Button("Change Age")) {
             CVarSetInteger("gSwitchAge", 1);
         }
