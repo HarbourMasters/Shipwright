@@ -1201,9 +1201,10 @@ void DrawCheatsMenu() {
             ImGui::SameLine();
             ImGui::TextColored({ 0.85f, 0.85f, 0.0f, 1.0f }, ICON_FA_EXCLAMATION_TRIANGLE);
             UIWidgets::PaddedText("These are NOT like emulator states.", true, false);
-            UIWidgets::PaddedText("They do not save your game progress,", true, false);
-            UIWidgets::PaddedText("and they WILL break across transitions", true, false);
-            UIWidgets::PaddedText("and load zones (like doors).", true, false);
+            UIWidgets::PaddedText("They do not save your game progress, and", true, false);
+            UIWidgets::PaddedText("they WILL break across transitions and", true, false);
+            UIWidgets::PaddedText("load zones (like doors). Support for", true, false);
+            UIWidgets::PaddedText("related issues will not be provided.", true, false);
             if (UIWidgets::PaddedEnhancementCheckbox("I promise I have read the warning", "gSaveStatePromise", true, false)) {
                 CVarSetInteger("gSaveStatesEnabled", 0);
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
