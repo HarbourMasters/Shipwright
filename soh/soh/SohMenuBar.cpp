@@ -1195,7 +1195,11 @@ void DrawCheatsMenu() {
         UIWidgets::Tooltip("Prevents ReDeads and Gibdos from being able to freeze you with their scream");
         UIWidgets::Spacer(2.0f);
         if (ImGui::BeginMenu("Save States")) {
-            ImGui::Text("           " ICON_FA_EXCLAMATION_TRIANGLE " WARNING!!!! " ICON_FA_EXCLAMATION_TRIANGLE);
+            ImGui::TextColored({ 0.85f, 0.85f, 0.0f, 1.0f }, "          " ICON_FA_EXCLAMATION_TRIANGLE);
+            ImGui::SameLine();
+            ImGui::TextColored({ 0.85f, 0.35f, 0.0f, 1.0f }, " WARNING!!!! ");
+            ImGui::SameLine();
+            ImGui::TextColored({ 0.85f, 0.85f, 0.0f, 1.0f }, ICON_FA_EXCLAMATION_TRIANGLE);
             UIWidgets::PaddedText("These are NOT like emulator states.", true, false);
             UIWidgets::PaddedText("They do not save your game progress,", true, false);
             UIWidgets::PaddedText("and they WILL break across transitions", true, false);
