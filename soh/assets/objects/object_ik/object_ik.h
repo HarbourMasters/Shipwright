@@ -44,47 +44,47 @@ static const ALIGN_ASSET(2) char object_ik_Anim_000C6C[] = dobject_ik_Anim_000C6
 #define dobject_ik_Anim_000F0C "__OTR__objects/object_ik/object_ik_Anim_000F0C"
 static const ALIGN_ASSET(2) char object_ik_Anim_000F0C[] = dobject_ik_Anim_000F0C;
 
-#define dobject_ik_Anim_001C28 "__OTR__objects/object_ik/object_ik_Anim_001C28"
-static const ALIGN_ASSET(2) char object_ik_Anim_001C28[] = dobject_ik_Anim_001C28;
+#define dgIronKnuckleVerticalAttackAnim "__OTR__objects/object_ik/gIronKnuckleVerticalAttackAnim"
+static const ALIGN_ASSET(2) char gIronKnuckleVerticalAttackAnim[] = dgIronKnuckleVerticalAttackAnim;
 
-#define dobject_ik_Anim_002538 "__OTR__objects/object_ik/object_ik_Anim_002538"
-static const ALIGN_ASSET(2) char object_ik_Anim_002538[] = dobject_ik_Anim_002538;
+#define dgIronKnuckleRecoverFromVerticalAttackAnim "__OTR__objects/object_ik/gIronKnuckleRecoverFromVerticalAttackAnim"
+static const ALIGN_ASSET(2) char gIronKnuckleRecoverFromVerticalAttackAnim[] = dgIronKnuckleRecoverFromVerticalAttackAnim;
 
-#define dobject_ik_Anim_0029FC "__OTR__objects/object_ik/object_ik_Anim_0029FC"
-static const ALIGN_ASSET(2) char object_ik_Anim_0029FC[] = dobject_ik_Anim_0029FC;
+#define dgIronKnuckleAxeStuckAnim "__OTR__objects/object_ik/gIronKnuckleAxeStuckAnim"
+static const ALIGN_ASSET(2) char gIronKnuckleAxeStuckAnim[] = dgIronKnuckleAxeStuckAnim;
 
-#define dobject_ik_Anim_0033C4 "__OTR__objects/object_ik/object_ik_Anim_0033C4"
-static const ALIGN_ASSET(2) char object_ik_Anim_0033C4[] = dobject_ik_Anim_0033C4;
+#define dgIronKnuckleHorizontalAttackAnim "__OTR__objects/object_ik/gIronKnuckleHorizontalAttackAnim"
+static const ALIGN_ASSET(2) char gIronKnuckleHorizontalAttackAnim[] = dgIronKnuckleHorizontalAttackAnim;
 
-#define dobject_ik_Anim_003DBC "__OTR__objects/object_ik/object_ik_Anim_003DBC"
-static const ALIGN_ASSET(2) char object_ik_Anim_003DBC[] = dobject_ik_Anim_003DBC;
+#define dgIronKnuckleRecoverFromHorizontalAttackAnim "__OTR__objects/object_ik/gIronKnuckleRecoverFromHorizontalAttackAnim"
+static const ALIGN_ASSET(2) char gIronKnuckleRecoverFromHorizontalAttackAnim[] = dgIronKnuckleRecoverFromHorizontalAttackAnim;
 
-#define dobject_ik_Anim_0045BC "__OTR__objects/object_ik/object_ik_Anim_0045BC"
-static const ALIGN_ASSET(2) char object_ik_Anim_0045BC[] = dobject_ik_Anim_0045BC;
+#define dgIronKnuckleBackHitAnim "__OTR__objects/object_ik/gIronKnuckleBackHitAnim"
+static const ALIGN_ASSET(2) char gIronKnuckleBackHitAnim[] = dgIronKnuckleBackHitAnim;
 
-#define dobject_ik_Anim_00485C "__OTR__objects/object_ik/object_ik_Anim_00485C"
-static const ALIGN_ASSET(2) char object_ik_Anim_00485C[] = dobject_ik_Anim_00485C;
+#define dgIronKnuckleBlockAnim "__OTR__objects/object_ik/gIronKnuckleBlockAnim"
+static const ALIGN_ASSET(2) char gIronKnuckleBlockAnim[] = dgIronKnuckleBlockAnim;
 
-#define dobject_ik_Anim_005944 "__OTR__objects/object_ik/object_ik_Anim_005944"
-static const ALIGN_ASSET(2) char object_ik_Anim_005944[] = dobject_ik_Anim_005944;
+#define dgIronKnuckleDeathAnim "__OTR__objects/object_ik/gIronKnuckleDeathAnim"
+static const ALIGN_ASSET(2) char gIronKnuckleDeathAnim[] = dgIronKnuckleDeathAnim;
 
-#define dobject_ik_Anim_006194 "__OTR__objects/object_ik/object_ik_Anim_006194"
-static const ALIGN_ASSET(2) char object_ik_Anim_006194[] = dobject_ik_Anim_006194;
+#define dgIronKnuckleFrontHitAnim "__OTR__objects/object_ik/gIronKnuckleFrontHitAnim"
+static const ALIGN_ASSET(2) char gIronKnuckleFrontHitAnim[] = dgIronKnuckleFrontHitAnim;
 
-#define dobject_ik_Anim_006734 "__OTR__objects/object_ik/object_ik_Anim_006734"
-static const ALIGN_ASSET(2) char object_ik_Anim_006734[] = dobject_ik_Anim_006734;
+#define dgIronKnuckleRunAnim "__OTR__objects/object_ik/gIronKnuckleRunAnim"
+static const ALIGN_ASSET(2) char gIronKnuckleRunAnim[] = dgIronKnuckleRunAnim;
 
-#define dobject_ik_Anim_00C114 "__OTR__objects/object_ik/object_ik_Anim_00C114"
-static const ALIGN_ASSET(2) char object_ik_Anim_00C114[] = dobject_ik_Anim_00C114;
+#define dgIronKnuckleNabooruSummonAxeAnim "__OTR__objects/object_ik/gIronKnuckleNabooruSummonAxeAnim"
+static const ALIGN_ASSET(2) char gIronKnuckleNabooruSummonAxeAnim[] = dgIronKnuckleNabooruSummonAxeAnim;
 
-#define dobject_ik_Anim_00CD70 "__OTR__objects/object_ik/object_ik_Anim_00CD70"
-static const ALIGN_ASSET(2) char object_ik_Anim_00CD70[] = dobject_ik_Anim_00CD70;
+#define dgIronKnuckleStandUpAnim "__OTR__objects/object_ik/gIronKnuckleStandUpAnim"
+static const ALIGN_ASSET(2) char gIronKnuckleStandUpAnim[] = dgIronKnuckleStandUpAnim;
 
 #define dobject_ik_Anim_00DD50 "__OTR__objects/object_ik/object_ik_Anim_00DD50"
 static const ALIGN_ASSET(2) char object_ik_Anim_00DD50[] = dobject_ik_Anim_00DD50;
 
-#define dobject_ik_Anim_00ED24 "__OTR__objects/object_ik/object_ik_Anim_00ED24"
-static const ALIGN_ASSET(2) char object_ik_Anim_00ED24[] = dobject_ik_Anim_00ED24;
+#define dgIronKnuckleWalkAnim "__OTR__objects/object_ik/gIronKnuckleWalkAnim"
+static const ALIGN_ASSET(2) char gIronKnuckleWalkAnim[] = dgIronKnuckleWalkAnim;
 
 #define dobject_ik_Anim_01EB14 "__OTR__objects/object_ik/object_ik_Anim_01EB14"
 static const ALIGN_ASSET(2) char object_ik_Anim_01EB14[] = dobject_ik_Anim_01EB14;
@@ -92,8 +92,8 @@ static const ALIGN_ASSET(2) char object_ik_Anim_01EB14[] = dobject_ik_Anim_01EB1
 #define dobject_ik_Anim_01EE34 "__OTR__objects/object_ik/object_ik_Anim_01EE34"
 static const ALIGN_ASSET(2) char object_ik_Anim_01EE34[] = dobject_ik_Anim_01EE34;
 
-#define dobject_ik_Anim_0203D8 "__OTR__objects/object_ik/object_ik_Anim_0203D8"
-static const ALIGN_ASSET(2) char object_ik_Anim_0203D8[] = dobject_ik_Anim_0203D8;
+#define dgIronKnuckleNabooruDeathAnim "__OTR__objects/object_ik/gIronKnuckleNabooruDeathAnim"
+static const ALIGN_ASSET(2) char gIronKnuckleNabooruDeathAnim[] = dgIronKnuckleNabooruDeathAnim;
 
 #define dobject_ik_Tlut_00F630 "__OTR__objects/object_ik/object_ik_Tlut_00F630"
 static const ALIGN_ASSET(2) char object_ik_Tlut_00F630[] = dobject_ik_Tlut_00F630;

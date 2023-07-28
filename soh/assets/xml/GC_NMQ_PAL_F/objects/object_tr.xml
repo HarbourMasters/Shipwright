@@ -1,13 +1,13 @@
 <Root>
     <File Name="object_tr" Segment="6">
-        <Animation Name="object_tr_Anim_000BFC" Offset="0xBFC"/> <!-- Turn to look over left (?) shoulder -->
-        <Animation Name="object_tr_Anim_0013CC" Offset="0x13CC"/> <!-- Looking over right shoulder -->
-        <Animation Name="object_tr_Anim_001CDC" Offset="0x1CDC"/> <!-- Standing, broom in left hand -->
-        <Animation Name="object_tr_Anim_002BC4" Offset="0x2BC4"/> <!-- Turn to look over right (?) shoulder -->
-        <Animation Name="object_tr_Anim_0035CC" Offset="0x35CC"/> <!-- Looking over left shoulder -->
-        <Animation Name="object_tr_Anim_003FC8" Offset="0x3FC8"/> <!-- Standing, broom over right shoulder -->
-        <Animation Name="object_tr_Anim_0049C8" Offset="0x49C8"/> <!-- Floating on broom -->
-        <Animation Name="object_tr_Anim_005308" Offset="0x5308"/>
+        <Animation Name="gKotakeKoumeLookOverRightShoulderAnim" Offset="0xBFC"/> <!-- Turn to look over left (?) shoulder -->
+        <Animation Name="gKotakeKoumeLookingOverRightShoulderAnim" Offset="0x13CC"/> <!-- Looking over right shoulder -->
+        <Animation Name="gKotakeKoumeStandingBroomOverLeftShoulderAnim" Offset="0x1CDC"/> <!-- Standing, broom in left hand -->
+        <Animation Name="gKotakeKoumeLookOverLeftShoulderAnim" Offset="0x2BC4"/> <!-- Turn to look over right (?) shoulder -->
+        <Animation Name="gKotakeKoumeLookingOverLeftShoulderAnim" Offset="0x35CC"/> <!-- Looking over left shoulder -->
+        <Animation Name="gKotakeKoumeStandingBroomOverRightShoulderAnim" Offset="0x3FC8"/> <!-- Standing, broom over right shoulder -->
+        <Animation Name="gKotakeKoumeFlyAnim" Offset="0x49C8"/> <!-- Floating on broom -->
+        <Animation Name="gKotakeKoumeStandingBroomOverRightShoulderUnusedAnim" Offset="0x5308"/>
         <Blob Name="object_tr_Blob_0062E0" Size="0x60" Offset="0x62E0"/>
         <DList Name="gKotakePelvisDL" Offset="0x6520"/>
         <DList Name="gKotakeTorsoDL" Offset="0x66A0"/>
@@ -85,7 +85,7 @@
         <Limb Name="object_tr_Limb_00C4B0" LimbType="Standard" Offset="0xC4B0"/>
         <Limb Name="object_tr_Limb_00C4BC" LimbType="Standard" Offset="0xC4BC"/>
         <Skeleton Name="gKotakeSkel" Type="Flex" LimbType="Standard" Offset="0xC530"/>
-        <Animation Name="object_tr_Anim_00C60C" Offset="0xC60C"/>
+        <Animation Name="gKotakeKoumeTPoseAnim" Offset="0xC60C"/>
         <Blob Name="object_tr_Blob_00D5E0" Size="0x60" Offset="0xD5E0"/>
         <DList Name="gKoumePelvisDL" Offset="0xD820"/>
         <DList Name="gKoumeTorsoDL" Offset="0xD9A0"/>
@@ -144,6 +144,6 @@
         <Limb Name="object_tr_Limb_011608" LimbType="Standard" Offset="0x11608"/>
         <Limb Name="object_tr_Limb_011614" LimbType="Standard" Offset="0x11614"/>
         <Skeleton Name="gKoumeSkel" Type="Flex" LimbType="Standard" Offset="0x11688"/>
-        <Animation Name="object_tr_Anim_012E1C" Offset="0x12E1C"/> <!-- Casting magic -->
+        <Animation Name="gKotakeKoumeCastMagicAnim" Offset="0x12E1C"/> <!-- Casting magic -->
     </File>
 </Root>

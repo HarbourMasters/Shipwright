@@ -2,29 +2,29 @@
 
 #include "align_asset_macro.h"
 
-#define dobject_tr_Anim_000BFC "__OTR__objects/object_tr/object_tr_Anim_000BFC"
-static const ALIGN_ASSET(2) char object_tr_Anim_000BFC[] = dobject_tr_Anim_000BFC;
+#define dgKotakeKoumeLookOverRightShoulderAnim "__OTR__objects/object_tr/gKotakeKoumeLookOverRightShoulderAnim"
+static const ALIGN_ASSET(2) char gKotakeKoumeLookOverRightShoulderAnim[] = dgKotakeKoumeLookOverRightShoulderAnim;
 
-#define dobject_tr_Anim_0013CC "__OTR__objects/object_tr/object_tr_Anim_0013CC"
-static const ALIGN_ASSET(2) char object_tr_Anim_0013CC[] = dobject_tr_Anim_0013CC;
+#define dgKotakeKoumeLookingOverRightShoulderAnim "__OTR__objects/object_tr/gKotakeKoumeLookingOverRightShoulderAnim"
+static const ALIGN_ASSET(2) char gKotakeKoumeLookingOverRightShoulderAnim[] = dgKotakeKoumeLookingOverRightShoulderAnim;
 
-#define dobject_tr_Anim_001CDC "__OTR__objects/object_tr/object_tr_Anim_001CDC"
-static const ALIGN_ASSET(2) char object_tr_Anim_001CDC[] = dobject_tr_Anim_001CDC;
+#define dgKotakeKoumeStandingBroomOverLeftShoulderAnim "__OTR__objects/object_tr/gKotakeKoumeStandingBroomOverLeftShoulderAnim"
+static const ALIGN_ASSET(2) char gKotakeKoumeStandingBroomOverLeftShoulderAnim[] = dgKotakeKoumeStandingBroomOverLeftShoulderAnim;
 
-#define dobject_tr_Anim_002BC4 "__OTR__objects/object_tr/object_tr_Anim_002BC4"
-static const ALIGN_ASSET(2) char object_tr_Anim_002BC4[] = dobject_tr_Anim_002BC4;
+#define dgKotakeKoumeLookOverLeftShoulderAnim "__OTR__objects/object_tr/gKotakeKoumeLookOverLeftShoulderAnim"
+static const ALIGN_ASSET(2) char gKotakeKoumeLookOverLeftShoulderAnim[] = dgKotakeKoumeLookOverLeftShoulderAnim;
 
-#define dobject_tr_Anim_0035CC "__OTR__objects/object_tr/object_tr_Anim_0035CC"
-static const ALIGN_ASSET(2) char object_tr_Anim_0035CC[] = dobject_tr_Anim_0035CC;
+#define dgKotakeKoumeLookingOverLeftShoulderAnim "__OTR__objects/object_tr/gKotakeKoumeLookingOverLeftShoulderAnim"
+static const ALIGN_ASSET(2) char gKotakeKoumeLookingOverLeftShoulderAnim[] = dgKotakeKoumeLookingOverLeftShoulderAnim;
 
-#define dobject_tr_Anim_003FC8 "__OTR__objects/object_tr/object_tr_Anim_003FC8"
-static const ALIGN_ASSET(2) char object_tr_Anim_003FC8[] = dobject_tr_Anim_003FC8;
+#define dgKotakeKoumeStandingBroomOverRightShoulderAnim "__OTR__objects/object_tr/gKotakeKoumeStandingBroomOverRightShoulderAnim"
+static const ALIGN_ASSET(2) char gKotakeKoumeStandingBroomOverRightShoulderAnim[] = dgKotakeKoumeStandingBroomOverRightShoulderAnim;
 
-#define dobject_tr_Anim_0049C8 "__OTR__objects/object_tr/object_tr_Anim_0049C8"
-static const ALIGN_ASSET(2) char object_tr_Anim_0049C8[] = dobject_tr_Anim_0049C8;
+#define dgKotakeKoumeFlyAnim "__OTR__objects/object_tr/gKotakeKoumeFlyAnim"
+static const ALIGN_ASSET(2) char gKotakeKoumeFlyAnim[] = dgKotakeKoumeFlyAnim;
 
-#define dobject_tr_Anim_005308 "__OTR__objects/object_tr/object_tr_Anim_005308"
-static const ALIGN_ASSET(2) char object_tr_Anim_005308[] = dobject_tr_Anim_005308;
+#define dgKotakeKoumeStandingBroomOverRightShoulderUnusedAnim "__OTR__objects/object_tr/gKotakeKoumeStandingBroomOverRightShoulderUnusedAnim"
+static const ALIGN_ASSET(2) char gKotakeKoumeStandingBroomOverRightShoulderUnusedAnim[] = dgKotakeKoumeStandingBroomOverRightShoulderUnusedAnim;
 
 #define dobject_tr_Blob_0062E0 "__OTR__objects/object_tr/object_tr_Blob_0062E0"
 static const ALIGN_ASSET(2) char object_tr_Blob_0062E0[] = dobject_tr_Blob_0062E0;
@@ -179,8 +179,8 @@ static const ALIGN_ASSET(2) char object_tr_Blob_00C310[] = dobject_tr_Blob_00C31
 #define dgKotakeSkel "__OTR__objects/object_tr/gKotakeSkel"
 static const ALIGN_ASSET(2) char gKotakeSkel[] = dgKotakeSkel;
 
-#define dobject_tr_Anim_00C60C "__OTR__objects/object_tr/object_tr_Anim_00C60C"
-static const ALIGN_ASSET(2) char object_tr_Anim_00C60C[] = dobject_tr_Anim_00C60C;
+#define dgKotakeKoumeTPoseAnim "__OTR__objects/object_tr/gKotakeKoumeTPoseAnim"
+static const ALIGN_ASSET(2) char gKotakeKoumeTPoseAnim[] = dgKotakeKoumeTPoseAnim;
 
 #define dobject_tr_Blob_00D5E0 "__OTR__objects/object_tr/object_tr_Blob_00D5E0"
 static const ALIGN_ASSET(2) char object_tr_Blob_00D5E0[] = dobject_tr_Blob_00D5E0;
@@ -278,5 +278,5 @@ static const ALIGN_ASSET(2) char object_tr_Tex_0114A8[] = dobject_tr_Tex_0114A8;
 #define dgKoumeSkel "__OTR__objects/object_tr/gKoumeSkel"
 static const ALIGN_ASSET(2) char gKoumeSkel[] = dgKoumeSkel;
 
-#define dobject_tr_Anim_012E1C "__OTR__objects/object_tr/object_tr_Anim_012E1C"
-static const ALIGN_ASSET(2) char object_tr_Anim_012E1C[] = dobject_tr_Anim_012E1C;
+#define dgKotakeKoumeCastMagicAnim "__OTR__objects/object_tr/gKotakeKoumeCastMagicAnim"
+static const ALIGN_ASSET(2) char gKotakeKoumeCastMagicAnim[] = dgKotakeKoumeCastMagicAnim;

@@ -2,8 +2,8 @@
 
 #include "align_asset_macro.h"
 
-#define dobject_bw_Anim_000228 "__OTR__objects/object_bw/object_bw_Anim_000228"
-static const ALIGN_ASSET(2) char object_bw_Anim_000228[] = dobject_bw_Anim_000228;
+#define dgTorchSlugEyestalkWaveAnim "__OTR__objects/object_bw/gTorchSlugEyestalkWaveAnim"
+static const ALIGN_ASSET(2) char gTorchSlugEyestalkWaveAnim[] = dgTorchSlugEyestalkWaveAnim;
 
 #define dgTorchSlugLeftLowerEyestalkDL "__OTR__objects/object_bw/gTorchSlugLeftLowerEyestalkDL"
 static const ALIGN_ASSET(2) char gTorchSlugLeftLowerEyestalkDL[] = dgTorchSlugLeftLowerEyestalkDL;
@@ -38,8 +38,8 @@ static const ALIGN_ASSET(2) char object_bw_Tex_001C40[] = dobject_bw_Tex_001C40;
 #define dgTorchSlugSkel "__OTR__objects/object_bw/gTorchSlugSkel"
 static const ALIGN_ASSET(2) char gTorchSlugSkel[] = dgTorchSlugSkel;
 
-#define dobject_bw_Anim_0021A0 "__OTR__objects/object_bw/object_bw_Anim_0021A0"
-static const ALIGN_ASSET(2) char object_bw_Anim_0021A0[] = dobject_bw_Anim_0021A0;
+#define dgTorchSlugEyestalkRaiseAnim "__OTR__objects/object_bw/gTorchSlugEyestalkRaiseAnim"
+static const ALIGN_ASSET(2) char gTorchSlugEyestalkRaiseAnim[] = dgTorchSlugEyestalkRaiseAnim;
 
-#define dobject_bw_Anim_002250 "__OTR__objects/object_bw/object_bw_Anim_002250"
-static const ALIGN_ASSET(2) char object_bw_Anim_002250[] = dobject_bw_Anim_002250;
+#define dgTorchSlugEyestalkFlailAnim "__OTR__objects/object_bw/gTorchSlugEyestalkFlailAnim"
+static const ALIGN_ASSET(2) char gTorchSlugEyestalkFlailAnim[] = dgTorchSlugEyestalkFlailAnim;

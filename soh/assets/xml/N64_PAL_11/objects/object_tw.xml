@@ -1,17 +1,17 @@
 ﻿<Root>
     <File Name="object_tw" Segment="6">
-        <Animation Name="object_tw_Anim_0004A4" Offset="0x4A4"/>
-        <Animation Name="object_tw_Anim_000AAC" Offset="0xAAC"/>
-        <Animation Name="object_tw_Anim_0012A4" Offset="0x12A4"/>
-        <Animation Name="object_tw_Anim_0017E0" Offset="0x17E0"/>
-        <Animation Name="object_tw_Anim_001D10" Offset="0x1D10"/>
-        <Animation Name="object_tw_Anim_00230C" Offset="0x230C"/>
-        <Animation Name="object_tw_Anim_003614" Offset="0x3614"/>
-        <Animation Name="object_tw_Anim_003E34" Offset="0x3E34"/>
-        <Animation Name="object_tw_Anim_004548" Offset="0x4548"/>
-        <Animation Name="object_tw_Anim_00578C" Offset="0x578C"/>
-        <Animation Name="object_tw_Anim_006530" Offset="0x6530"/>
-        <Animation Name="object_tw_Anim_006F28" Offset="0x6F28"/>
+        <Animation Name="gTwinrovaKotakeKoumeIdleLoopAnim" Offset="0x4A4"/>
+        <Animation Name="gTwinrovaKotakeKoumeIdleEndAnim" Offset="0xAAC"/>
+        <Animation Name="gTwinrovaKotakeKoumeBickerAnim" Offset="0x12A4"/>
+        <Animation Name="gTwinrovaKotakeKoumeFloatLookUpAnim" Offset="0x17E0"/>
+        <Animation Name="gTwinrovaKotakeKoumeFloatLookForwardAnim" Offset="0x1D10"/>
+        <Animation Name="gTwinrovaKotakeKoumeShakeHandAnim" Offset="0x230C"/>
+        <Animation Name="gTwinrovaKotakeKoumeAttackStartAnim" Offset="0x3614"/>
+        <Animation Name="gTwinrovaKotakeKoumeAttackLoopAnim" Offset="0x3E34"/>
+        <Animation Name="gTwinrovaKotakeKoumeAttackEndAnim" Offset="0x4548"/>
+        <Animation Name="gTwinrovaKotakeKoumeDamageStartAnim" Offset="0x578C"/>
+        <Animation Name="gTwinrovaKotakeKoumeDamageEndAnim" Offset="0x6530"/>
+        <Animation Name="gTwinrovaKotakeKoumeFlyAnim" Offset="0x6F28"/>
         <Limb Name="object_tw_Limb_006F40" LimbType="Standard" Offset="0x6F40"/>
         <Limb Name="object_tw_Limb_006F4C" LimbType="Standard" Offset="0x6F4C"/>
         <Limb Name="object_tw_Limb_006F58" LimbType="Standard" Offset="0x6F58"/>
@@ -39,11 +39,11 @@
         <Limb Name="object_tw_Limb_007060" LimbType="Standard" Offset="0x7060"/>
         <Limb Name="object_tw_Limb_00706C" LimbType="Standard" Offset="0x706C"/>
         <Skeleton Name="gTwinrovaKotakeSkel" Type="Flex" LimbType="Standard" Offset="0x70E0"/>
-        <Animation Name="object_tw_Anim_007688" Offset="0x7688"/>
-        <Animation Name="object_tw_Anim_007CA8" Offset="0x7CA8"/>
-        <Animation Name="object_tw_Anim_0088C8" Offset="0x88C8"/>
-        <Animation Name="object_tw_Anim_009398" Offset="0x9398"/>
-        <Animation Name="object_tw_Anim_00947C" Offset="0x947C"/>
+        <Animation Name="gTwinrovaKotakeKoumeChargeUpAttackStartAnim" Offset="0x7688"/>
+        <Animation Name="gTwinrovaKotakeKoumeSpinAnim" Offset="0x7CA8"/>
+        <Animation Name="gTwinrovaKotakeKoumeLaughAnim" Offset="0x88C8"/>
+        <Animation Name="gTwinrovaKotakeKoumeChargeUpAttackLoopAnim" Offset="0x9398"/>
+        <Animation Name="gTwinrovaKotakeKoumeTPoseAnim" Offset="0x947C"/>
         <!--Blob Name="object_tw_Blob_00948C" Size="0x4" Offset="0x948C" /-->
         <Texture Name="object_tw_TLUT_009490" OutName="tlut_009490" Format="rgba16" Width="53" Height="4" Offset="0x9490"/>
         <Texture Name="object_tw_Tex_009638" OutName="tex_009638" Format="rgba16" Width="32" Height="32" Offset="0x9638"/>
@@ -208,11 +208,11 @@
         <Limb Name="object_tw_Limb_01F814" LimbType="Standard" Offset="0x1F814"/>
         <Skeleton Name="gTwinrovaKoumeSkel" Type="Flex" LimbType="Standard" Offset="0x1F888"/>
         <Texture Name="object_tw_Tex_02A070" OutName="tex_02A070" Format="ci8" Width="32" Height="32" Offset="0x2A070" TlutOffset="0x29E50"/>
-        <Animation Name="object_tw_Anim_0216DC" Offset="0x216DC"/>
-        <Animation Name="object_tw_Anim_022700" Offset="0x22700"/>
-        <Animation Name="object_tw_Anim_023750" Offset="0x23750"/>
-        <Animation Name="object_tw_Anim_024374" Offset="0x24374"/>
-        <Animation Name="object_tw_Anim_0244B4" Offset="0x244B4"/>
+        <Animation Name="gTwinrovaDeathAnim" Offset="0x216DC"/>
+        <Animation Name="gTwinrovaIceAttackAnim" Offset="0x22700"/>
+        <Animation Name="gTwinrovaFireAttackAnim" Offset="0x23750"/>
+        <Animation Name="gTwinrovaDamageAnim" Offset="0x24374"/>
+        <Animation Name="gTwinrovaTPoseAnim" Offset="0x244B4"/>
         <Texture Name="object_tw_Tex_0244D0" OutName="tex_0244D0" Format="rgba16" Width="4" Height="8" Offset="0x244D0"/>
         <Texture Name="object_tw_Tex_024510" OutName="tex_024510" Format="rgba16" Width="16" Height="16" Offset="0x24510"/>
         <Texture Name="object_tw_Tex_024710" OutName="tex_024710" Format="rgba16" Width="16" Height="16" Offset="0x24710"/>
@@ -318,14 +318,14 @@
         <Limb Name="object_tw_Limb_031F5C" LimbType="Standard" Offset="0x31F5C"/>
         <Limb Name="object_tw_Limb_031F68" LimbType="Standard" Offset="0x31F68"/>
         <Skeleton Name="gTwinrovaSkel" Type="Flex" LimbType="Standard" Offset="0x32020"/>
-        <Animation Name="object_tw_Anim_032BF8" Offset="0x32BF8"/>
-        <Animation Name="object_tw_Anim_0338F0" Offset="0x338F0"/>
-        <Animation Name="object_tw_Anim_0343B4" Offset="0x343B4"/>
-        <Animation Name="object_tw_Anim_035030" Offset="0x35030"/>
-        <Animation Name="object_tw_Anim_035988" Offset="0x35988"/>
-        <Animation Name="object_tw_Anim_036FBC" Offset="0x36FBC"/>
-        <Animation Name="object_tw_Anim_038E2C" Offset="0x38E2C"/>
-        <Animation Name="object_tw_Anim_03A2D0" Offset="0x3A2D0"/>
+        <Animation Name="gTwinrovaHoverAnim" Offset="0x32BF8"/>
+        <Animation Name="gTwinrovaChargedAttackHitAnim" Offset="0x338F0"/>
+        <Animation Name="gTwinrovaStunStartAnim" Offset="0x343B4"/>
+        <Animation Name="gTwinrovaStunLoopAnim" Offset="0x35030"/>
+        <Animation Name="gTwinrovaStunEndAnim" Offset="0x35988"/>
+        <Animation Name="gTwinrovaWindUpAnim" Offset="0x36FBC"/>
+        <Animation Name="gTwinrovaIntroAnim" Offset="0x38E2C"/>
+        <Animation Name="gTwinrovaLaughAnim" Offset="0x3A2D0"/>
         <DList Name="gTwinrovaUnusedBoulderDL" Offset="0x3A680"/>
         <Texture Name="object_tw_Tex_03A7B0" OutName="tex_03A7B0" Format="rgba16" Width="32" Height="32" Offset="0x3A7B0"/>
     </File>

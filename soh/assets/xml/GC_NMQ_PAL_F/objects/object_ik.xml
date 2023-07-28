@@ -18,23 +18,23 @@
         <Animation Name="object_ik_Anim_0008DC" Offset="0x8DC"/>
         <Animation Name="object_ik_Anim_000C6C" Offset="0xC6C"/>
         <Animation Name="object_ik_Anim_000F0C" Offset="0xF0C"/>
-        <Animation Name="object_ik_Anim_001C28" Offset="0x1C28"/>
-        <Animation Name="object_ik_Anim_002538" Offset="0x2538"/>
-        <Animation Name="object_ik_Anim_0029FC" Offset="0x29FC"/>
-        <Animation Name="object_ik_Anim_0033C4" Offset="0x33C4"/>
-        <Animation Name="object_ik_Anim_003DBC" Offset="0x3DBC"/>
-        <Animation Name="object_ik_Anim_0045BC" Offset="0x45BC"/>
-        <Animation Name="object_ik_Anim_00485C" Offset="0x485C"/>
-        <Animation Name="object_ik_Anim_005944" Offset="0x5944"/>
-        <Animation Name="object_ik_Anim_006194" Offset="0x6194"/>
-        <Animation Name="object_ik_Anim_006734" Offset="0x6734"/>
-        <Animation Name="object_ik_Anim_00C114" Offset="0xC114"/>
-        <Animation Name="object_ik_Anim_00CD70" Offset="0xCD70"/>
+        <Animation Name="gIronKnuckleVerticalAttackAnim" Offset="0x1C28"/>
+        <Animation Name="gIronKnuckleRecoverFromVerticalAttackAnim" Offset="0x2538"/>
+        <Animation Name="gIronKnuckleAxeStuckAnim" Offset="0x29FC"/>
+        <Animation Name="gIronKnuckleHorizontalAttackAnim" Offset="0x33C4"/>
+        <Animation Name="gIronKnuckleRecoverFromHorizontalAttackAnim" Offset="0x3DBC"/>
+        <Animation Name="gIronKnuckleBackHitAnim" Offset="0x45BC"/>
+        <Animation Name="gIronKnuckleBlockAnim" Offset="0x485C"/>
+        <Animation Name="gIronKnuckleDeathAnim" Offset="0x5944"/>
+        <Animation Name="gIronKnuckleFrontHitAnim" Offset="0x6194"/>
+        <Animation Name="gIronKnuckleRunAnim" Offset="0x6734"/>
+        <Animation Name="gIronKnuckleNabooruSummonAxeAnim" Offset="0xC114"/>
+        <Animation Name="gIronKnuckleStandUpAnim" Offset="0xCD70"/>
         <Animation Name="object_ik_Anim_00DD50" Offset="0xDD50"/>
-        <Animation Name="object_ik_Anim_00ED24" Offset="0xED24"/>
+        <Animation Name="gIronKnuckleWalkAnim" Offset="0xED24"/>
         <Animation Name="object_ik_Anim_01EB14" Offset="0x1EB14"/>
         <Animation Name="object_ik_Anim_01EE34" Offset="0x1EE34"/>
-        <Animation Name="object_ik_Anim_0203D8" Offset="0x203D8"/>
+        <Animation Name="gIronKnuckleNabooruDeathAnim" Offset="0x203D8"/>
 
         <Texture Name="object_ik_Tlut_00F630" OutName="tlut_00F630" Format="rgba16" Width="23" Height="8" Offset="0xf630"/>
         <Texture Name="object_ik_Tex_00F7A0" OutName="tex_00F7A0" Format="i4" Width="32" Height="64" Offset="0xF7A0"/>

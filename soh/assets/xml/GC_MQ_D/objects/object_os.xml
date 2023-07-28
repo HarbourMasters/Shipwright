@@ -1,6 +1,6 @@
 <Root>
     <File Name="object_os" Segment="6">
-        <Animation Name="object_os_Anim_0002E4" Offset="0x2E4"/>
+        <Animation Name="gHappyMaskSalesmanIdleAnim" Offset="0x2E4"/>
         <DList Name="gHappyMaskSalesmanTorsoDL" Offset="0x1D80"/>
         <DList Name="gHappyMaskSalesmanHeadDL" Offset="0x20A8"/>
         <DList Name="gHappyMaskSalesmanRightUpperArmDL" Offset="0x25E8"/>

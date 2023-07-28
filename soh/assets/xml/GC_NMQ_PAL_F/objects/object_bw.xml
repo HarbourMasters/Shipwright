@@ -1,6 +1,6 @@
 <Root>
     <File Name="object_bw" Segment="6">
-        <Animation Name="object_bw_Anim_000228" Offset="0x228"/>
+        <Animation Name="gTorchSlugEyestalkWaveAnim" Offset="0x228"/>
         <DList Name="gTorchSlugLeftLowerEyestalkDL" Offset="0x2C0"/>
         <DList Name="gTorchSlugLeftUpperEyestalkDL" Offset="0x3E8"/>
         <DList Name="gTorchSlugRightLowerEyestalkDL" Offset="0x558"/>
@@ -23,7 +23,7 @@
         <Limb Name="object_bw_Limb_0020AC" LimbType="Standard" Offset="0x20AC"/>
         <Limb Name="object_bw_Limb_0020B8" LimbType="Standard" Offset="0x20B8"/>
         <Skeleton Name="gTorchSlugSkel" Type="Normal" LimbType="Standard" Offset="0x20F0"/>
-        <Animation Name="object_bw_Anim_0021A0" Offset="0x21A0"/>
-        <Animation Name="object_bw_Anim_002250" Offset="0x2250"/>
+        <Animation Name="gTorchSlugEyestalkRaiseAnim" Offset="0x21A0"/>
+        <Animation Name="gTorchSlugEyestalkFlailAnim" Offset="0x2250"/>
     </File>
 </Root>

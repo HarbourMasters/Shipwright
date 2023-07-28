@@ -2,59 +2,59 @@
 
 #include "align_asset_macro.h"
 
-#define dobject_tw_Anim_0004A4 "__OTR__objects/object_tw/object_tw_Anim_0004A4"
-static const ALIGN_ASSET(2) char object_tw_Anim_0004A4[] = dobject_tw_Anim_0004A4;
+#define dgTwinrovaKotakeKoumeIdleLoopAnim "__OTR__objects/object_tw/gTwinrovaKotakeKoumeIdleLoopAnim"
+static const ALIGN_ASSET(2) char gTwinrovaKotakeKoumeIdleLoopAnim[] = dgTwinrovaKotakeKoumeIdleLoopAnim;
 
-#define dobject_tw_Anim_000AAC "__OTR__objects/object_tw/object_tw_Anim_000AAC"
-static const ALIGN_ASSET(2) char object_tw_Anim_000AAC[] = dobject_tw_Anim_000AAC;
+#define dgTwinrovaKotakeKoumeIdleEndAnim "__OTR__objects/object_tw/gTwinrovaKotakeKoumeIdleEndAnim"
+static const ALIGN_ASSET(2) char gTwinrovaKotakeKoumeIdleEndAnim[] = dgTwinrovaKotakeKoumeIdleEndAnim;
 
-#define dobject_tw_Anim_0012A4 "__OTR__objects/object_tw/object_tw_Anim_0012A4"
-static const ALIGN_ASSET(2) char object_tw_Anim_0012A4[] = dobject_tw_Anim_0012A4;
+#define dgTwinrovaKotakeKoumeBickerAnim "__OTR__objects/object_tw/gTwinrovaKotakeKoumeBickerAnim"
+static const ALIGN_ASSET(2) char gTwinrovaKotakeKoumeBickerAnim[] = dgTwinrovaKotakeKoumeBickerAnim;
 
-#define dobject_tw_Anim_0017E0 "__OTR__objects/object_tw/object_tw_Anim_0017E0"
-static const ALIGN_ASSET(2) char object_tw_Anim_0017E0[] = dobject_tw_Anim_0017E0;
+#define dgTwinrovaKotakeKoumeFloatLookUpAnim "__OTR__objects/object_tw/gTwinrovaKotakeKoumeFloatLookUpAnim"
+static const ALIGN_ASSET(2) char gTwinrovaKotakeKoumeFloatLookUpAnim[] = dgTwinrovaKotakeKoumeFloatLookUpAnim;
 
-#define dobject_tw_Anim_001D10 "__OTR__objects/object_tw/object_tw_Anim_001D10"
-static const ALIGN_ASSET(2) char object_tw_Anim_001D10[] = dobject_tw_Anim_001D10;
+#define dgTwinrovaKotakeKoumeFloatLookForwardAnim "__OTR__objects/object_tw/gTwinrovaKotakeKoumeFloatLookForwardAnim"
+static const ALIGN_ASSET(2) char gTwinrovaKotakeKoumeFloatLookForwardAnim[] = dgTwinrovaKotakeKoumeFloatLookForwardAnim;
 
-#define dobject_tw_Anim_00230C "__OTR__objects/object_tw/object_tw_Anim_00230C"
-static const ALIGN_ASSET(2) char object_tw_Anim_00230C[] = dobject_tw_Anim_00230C;
+#define dgTwinrovaKotakeKoumeShakeHandAnim "__OTR__objects/object_tw/gTwinrovaKotakeKoumeShakeHandAnim"
+static const ALIGN_ASSET(2) char gTwinrovaKotakeKoumeShakeHandAnim[] = dgTwinrovaKotakeKoumeShakeHandAnim;
 
-#define dobject_tw_Anim_003614 "__OTR__objects/object_tw/object_tw_Anim_003614"
-static const ALIGN_ASSET(2) char object_tw_Anim_003614[] = dobject_tw_Anim_003614;
+#define dgTwinrovaKotakeKoumeAttackStartAnim "__OTR__objects/object_tw/gTwinrovaKotakeKoumeAttackStartAnim"
+static const ALIGN_ASSET(2) char gTwinrovaKotakeKoumeAttackStartAnim[] = dgTwinrovaKotakeKoumeAttackStartAnim;
 
-#define dobject_tw_Anim_003E34 "__OTR__objects/object_tw/object_tw_Anim_003E34"
-static const ALIGN_ASSET(2) char object_tw_Anim_003E34[] = dobject_tw_Anim_003E34;
+#define dgTwinrovaKotakeKoumeAttackLoopAnim "__OTR__objects/object_tw/gTwinrovaKotakeKoumeAttackLoopAnim"
+static const ALIGN_ASSET(2) char gTwinrovaKotakeKoumeAttackLoopAnim[] = dgTwinrovaKotakeKoumeAttackLoopAnim;
 
-#define dobject_tw_Anim_004548 "__OTR__objects/object_tw/object_tw_Anim_004548"
-static const ALIGN_ASSET(2) char object_tw_Anim_004548[] = dobject_tw_Anim_004548;
+#define dgTwinrovaKotakeKoumeAttackEndAnim "__OTR__objects/object_tw/gTwinrovaKotakeKoumeAttackEndAnim"
+static const ALIGN_ASSET(2) char gTwinrovaKotakeKoumeAttackEndAnim[] = dgTwinrovaKotakeKoumeAttackEndAnim;
 
-#define dobject_tw_Anim_00578C "__OTR__objects/object_tw/object_tw_Anim_00578C"
-static const ALIGN_ASSET(2) char object_tw_Anim_00578C[] = dobject_tw_Anim_00578C;
+#define dgTwinrovaKotakeKoumeDamageStartAnim "__OTR__objects/object_tw/gTwinrovaKotakeKoumeDamageStartAnim"
+static const ALIGN_ASSET(2) char gTwinrovaKotakeKoumeDamageStartAnim[] = dgTwinrovaKotakeKoumeDamageStartAnim;
 
-#define dobject_tw_Anim_006530 "__OTR__objects/object_tw/object_tw_Anim_006530"
-static const ALIGN_ASSET(2) char object_tw_Anim_006530[] = dobject_tw_Anim_006530;
+#define dgTwinrovaKotakeKoumeDamageEndAnim "__OTR__objects/object_tw/gTwinrovaKotakeKoumeDamageEndAnim"
+static const ALIGN_ASSET(2) char gTwinrovaKotakeKoumeDamageEndAnim[] = dgTwinrovaKotakeKoumeDamageEndAnim;
 
-#define dobject_tw_Anim_006F28 "__OTR__objects/object_tw/object_tw_Anim_006F28"
-static const ALIGN_ASSET(2) char object_tw_Anim_006F28[] = dobject_tw_Anim_006F28;
+#define dgTwinrovaKotakeKoumeFlyAnim "__OTR__objects/object_tw/gTwinrovaKotakeKoumeFlyAnim"
+static const ALIGN_ASSET(2) char gTwinrovaKotakeKoumeFlyAnim[] = dgTwinrovaKotakeKoumeFlyAnim;
 
 #define dgTwinrovaKotakeSkel "__OTR__objects/object_tw/gTwinrovaKotakeSkel"
 static const ALIGN_ASSET(2) char gTwinrovaKotakeSkel[] = dgTwinrovaKotakeSkel;
 
-#define dobject_tw_Anim_007688 "__OTR__objects/object_tw/object_tw_Anim_007688"
-static const ALIGN_ASSET(2) char object_tw_Anim_007688[] = dobject_tw_Anim_007688;
+#define dgTwinrovaKotakeKoumeChargeUpAttackStartAnim "__OTR__objects/object_tw/gTwinrovaKotakeKoumeChargeUpAttackStartAnim"
+static const ALIGN_ASSET(2) char gTwinrovaKotakeKoumeChargeUpAttackStartAnim[] = dgTwinrovaKotakeKoumeChargeUpAttackStartAnim;
 
-#define dobject_tw_Anim_007CA8 "__OTR__objects/object_tw/object_tw_Anim_007CA8"
-static const ALIGN_ASSET(2) char object_tw_Anim_007CA8[] = dobject_tw_Anim_007CA8;
+#define dgTwinrovaKotakeKoumeSpinAnim "__OTR__objects/object_tw/gTwinrovaKotakeKoumeSpinAnim"
+static const ALIGN_ASSET(2) char gTwinrovaKotakeKoumeSpinAnim[] = dgTwinrovaKotakeKoumeSpinAnim;
 
-#define dobject_tw_Anim_0088C8 "__OTR__objects/object_tw/object_tw_Anim_0088C8"
-static const ALIGN_ASSET(2) char object_tw_Anim_0088C8[] = dobject_tw_Anim_0088C8;
+#define dgTwinrovaKotakeKoumeLaughAnim "__OTR__objects/object_tw/gTwinrovaKotakeKoumeLaughAnim"
+static const ALIGN_ASSET(2) char gTwinrovaKotakeKoumeLaughAnim[] = dgTwinrovaKotakeKoumeLaughAnim;
 
-#define dobject_tw_Anim_009398 "__OTR__objects/object_tw/object_tw_Anim_009398"
-static const ALIGN_ASSET(2) char object_tw_Anim_009398[] = dobject_tw_Anim_009398;
+#define dgTwinrovaKotakeKoumeChargeUpAttackLoopAnim "__OTR__objects/object_tw/gTwinrovaKotakeKoumeChargeUpAttackLoopAnim"
+static const ALIGN_ASSET(2) char gTwinrovaKotakeKoumeChargeUpAttackLoopAnim[] = dgTwinrovaKotakeKoumeChargeUpAttackLoopAnim;
 
-#define dobject_tw_Anim_00947C "__OTR__objects/object_tw/object_tw_Anim_00947C"
-static const ALIGN_ASSET(2) char object_tw_Anim_00947C[] = dobject_tw_Anim_00947C;
+#define dgTwinrovaKotakeKoumeTPoseAnim "__OTR__objects/object_tw/gTwinrovaKotakeKoumeTPoseAnim"
+static const ALIGN_ASSET(2) char gTwinrovaKotakeKoumeTPoseAnim[] = dgTwinrovaKotakeKoumeTPoseAnim;
 
 #define dobject_tw_TLUT_009490 "__OTR__objects/object_tw/object_tw_TLUT_009490"
 static const ALIGN_ASSET(2) char object_tw_TLUT_009490[] = dobject_tw_TLUT_009490;
@@ -458,20 +458,20 @@ static const ALIGN_ASSET(2) char gTwinrovaKoumeSkel[] = dgTwinrovaKoumeSkel;
 #define dobject_tw_Tex_02A070 "__OTR__objects/object_tw/object_tw_Tex_02A070"
 static const ALIGN_ASSET(2) char object_tw_Tex_02A070[] = dobject_tw_Tex_02A070;
 
-#define dobject_tw_Anim_0216DC "__OTR__objects/object_tw/object_tw_Anim_0216DC"
-static const ALIGN_ASSET(2) char object_tw_Anim_0216DC[] = dobject_tw_Anim_0216DC;
+#define dgTwinrovaDeathAnim "__OTR__objects/object_tw/gTwinrovaDeathAnim"
+static const ALIGN_ASSET(2) char gTwinrovaDeathAnim[] = dgTwinrovaDeathAnim;
 
-#define dobject_tw_Anim_022700 "__OTR__objects/object_tw/object_tw_Anim_022700"
-static const ALIGN_ASSET(2) char object_tw_Anim_022700[] = dobject_tw_Anim_022700;
+#define dgTwinrovaIceAttackAnim "__OTR__objects/object_tw/gTwinrovaIceAttackAnim"
+static const ALIGN_ASSET(2) char gTwinrovaIceAttackAnim[] = dgTwinrovaIceAttackAnim;
 
-#define dobject_tw_Anim_023750 "__OTR__objects/object_tw/object_tw_Anim_023750"
-static const ALIGN_ASSET(2) char object_tw_Anim_023750[] = dobject_tw_Anim_023750;
+#define dgTwinrovaFireAttackAnim "__OTR__objects/object_tw/gTwinrovaFireAttackAnim"
+static const ALIGN_ASSET(2) char gTwinrovaFireAttackAnim[] = dgTwinrovaFireAttackAnim;
 
-#define dobject_tw_Anim_024374 "__OTR__objects/object_tw/object_tw_Anim_024374"
-static const ALIGN_ASSET(2) char object_tw_Anim_024374[] = dobject_tw_Anim_024374;
+#define dgTwinrovaDamageAnim "__OTR__objects/object_tw/gTwinrovaDamageAnim"
+static const ALIGN_ASSET(2) char gTwinrovaDamageAnim[] = dgTwinrovaDamageAnim;
 
-#define dobject_tw_Anim_0244B4 "__OTR__objects/object_tw/object_tw_Anim_0244B4"
-static const ALIGN_ASSET(2) char object_tw_Anim_0244B4[] = dobject_tw_Anim_0244B4;
+#define dgTwinrovaTPoseAnim "__OTR__objects/object_tw/gTwinrovaTPoseAnim"
+static const ALIGN_ASSET(2) char gTwinrovaTPoseAnim[] = dgTwinrovaTPoseAnim;
 
 #define dobject_tw_Tex_0244D0 "__OTR__objects/object_tw/object_tw_Tex_0244D0"
 static const ALIGN_ASSET(2) char object_tw_Tex_0244D0[] = dobject_tw_Tex_0244D0;
@@ -659,29 +659,29 @@ static const ALIGN_ASSET(2) char gTwinrovaTitleCardTex[] = dgTwinrovaTitleCardTe
 #define dgTwinrovaSkel "__OTR__objects/object_tw/gTwinrovaSkel"
 static const ALIGN_ASSET(2) char gTwinrovaSkel[] = dgTwinrovaSkel;
 
-#define dobject_tw_Anim_032BF8 "__OTR__objects/object_tw/object_tw_Anim_032BF8"
-static const ALIGN_ASSET(2) char object_tw_Anim_032BF8[] = dobject_tw_Anim_032BF8;
+#define dgTwinrovaHoverAnim "__OTR__objects/object_tw/gTwinrovaHoverAnim"
+static const ALIGN_ASSET(2) char gTwinrovaHoverAnim[] = dgTwinrovaHoverAnim;
 
-#define dobject_tw_Anim_0338F0 "__OTR__objects/object_tw/object_tw_Anim_0338F0"
-static const ALIGN_ASSET(2) char object_tw_Anim_0338F0[] = dobject_tw_Anim_0338F0;
+#define dgTwinrovaChargedAttackHitAnim "__OTR__objects/object_tw/gTwinrovaChargedAttackHitAnim"
+static const ALIGN_ASSET(2) char gTwinrovaChargedAttackHitAnim[] = dgTwinrovaChargedAttackHitAnim;
 
-#define dobject_tw_Anim_0343B4 "__OTR__objects/object_tw/object_tw_Anim_0343B4"
-static const ALIGN_ASSET(2) char object_tw_Anim_0343B4[] = dobject_tw_Anim_0343B4;
+#define dgTwinrovaStunStartAnim "__OTR__objects/object_tw/gTwinrovaStunStartAnim"
+static const ALIGN_ASSET(2) char gTwinrovaStunStartAnim[] = dgTwinrovaStunStartAnim;
 
-#define dobject_tw_Anim_035030 "__OTR__objects/object_tw/object_tw_Anim_035030"
-static const ALIGN_ASSET(2) char object_tw_Anim_035030[] = dobject_tw_Anim_035030;
+#define dgTwinrovaStunLoopAnim "__OTR__objects/object_tw/gTwinrovaStunLoopAnim"
+static const ALIGN_ASSET(2) char gTwinrovaStunLoopAnim[] = dgTwinrovaStunLoopAnim;
 
-#define dobject_tw_Anim_035988 "__OTR__objects/object_tw/object_tw_Anim_035988"
-static const ALIGN_ASSET(2) char object_tw_Anim_035988[] = dobject_tw_Anim_035988;
+#define dgTwinrovaStunEndAnim "__OTR__objects/object_tw/gTwinrovaStunEndAnim"
+static const ALIGN_ASSET(2) char gTwinrovaStunEndAnim[] = dgTwinrovaStunEndAnim;
 
-#define dobject_tw_Anim_036FBC "__OTR__objects/object_tw/object_tw_Anim_036FBC"
-static const ALIGN_ASSET(2) char object_tw_Anim_036FBC[] = dobject_tw_Anim_036FBC;
+#define dgTwinrovaWindUpAnim "__OTR__objects/object_tw/gTwinrovaWindUpAnim"
+static const ALIGN_ASSET(2) char gTwinrovaWindUpAnim[] = dgTwinrovaWindUpAnim;
 
-#define dobject_tw_Anim_038E2C "__OTR__objects/object_tw/object_tw_Anim_038E2C"
-static const ALIGN_ASSET(2) char object_tw_Anim_038E2C[] = dobject_tw_Anim_038E2C;
+#define dgTwinrovaIntroAnim "__OTR__objects/object_tw/gTwinrovaIntroAnim"
+static const ALIGN_ASSET(2) char gTwinrovaIntroAnim[] = dgTwinrovaIntroAnim;
 
-#define dobject_tw_Anim_03A2D0 "__OTR__objects/object_tw/object_tw_Anim_03A2D0"
-static const ALIGN_ASSET(2) char object_tw_Anim_03A2D0[] = dobject_tw_Anim_03A2D0;
+#define dgTwinrovaLaughAnim "__OTR__objects/object_tw/gTwinrovaLaughAnim"
+static const ALIGN_ASSET(2) char gTwinrovaLaughAnim[] = dgTwinrovaLaughAnim;
 
 #define dgTwinrovaUnusedBoulderDL "__OTR__objects/object_tw/gTwinrovaUnusedBoulderDL"
 static const ALIGN_ASSET(2) char gTwinrovaUnusedBoulderDL[] = dgTwinrovaUnusedBoulderDL;

@@ -2,8 +2,8 @@
 
 #include "align_asset_macro.h"
 
-#define dobject_rs_Anim_00065C "__OTR__objects/object_rs/object_rs_Anim_00065C"
-static const ALIGN_ASSET(2) char object_rs_Anim_00065C[] = dobject_rs_Anim_00065C;
+#define dgBombchuShopkeeperIdleAnim "__OTR__objects/object_rs/gBombchuShopkeeperIdleAnim"
+static const ALIGN_ASSET(2) char gBombchuShopkeeperIdleAnim[] = dgBombchuShopkeeperIdleAnim;
 
 #define dgBombchuShopkeeperTorsoDL "__OTR__objects/object_rs/gBombchuShopkeeperTorsoDL"
 static const ALIGN_ASSET(2) char gBombchuShopkeeperTorsoDL[] = dgBombchuShopkeeperTorsoDL;
