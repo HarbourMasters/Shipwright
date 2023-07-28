@@ -14,5 +14,7 @@
     "input_button_c_left": "C Gauche",
     "input_button_c_right": "C Droit",
     "input_analog_stick": "le Stick Analogique",
-    "input_d_pad": "D-Pad"
+    "input_d_pad": "D-Pad",
+    "yes": "Oui",
+    "no": "Non"
 }

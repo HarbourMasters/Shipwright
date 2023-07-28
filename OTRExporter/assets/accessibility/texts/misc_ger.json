@@ -14,5 +14,7 @@
     "input_button_c_left": "C Links",
     "input_button_c_right": "C Rechts",
     "input_analog_stick": "den Analog-Stick",
-    "input_d_pad": "das Steuerkreuz"
+    "input_d_pad": "das Steuerkreuz",
+    "yes": "Ja",
+    "no": "Nein"
 }

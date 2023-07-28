@@ -12,6 +12,7 @@
 #include "soh/Enhancements/boss-rush/BossRush.h"
 
 extern "C" {
+extern MapData* gMapData;
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 }
@@ -190,28 +191,104 @@ void RegisterOnInterfaceUpdateHook() {
 void RegisterOnKaleidoscopeUpdateHook() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnKaleidoscopeUpdate>([](int16_t inDungeonScene) {
         if (!CVarGetInteger("gA11yTTS", 0)) return;
-        
-        static uint16_t prevCursorIndex = 0;
+
+        static int16_t prevCursorIndex = 0;
         static uint16_t prevCursorSpecialPos = 0;
         static uint16_t prevCursorPoint[5] = { 0 };
-        
+        static int16_t prevPromptChoice = -1;
+        static int16_t prevSubState = -1;
+
         PauseContext* pauseCtx = &gPlayState->pauseCtx;
         Input* input = &gPlayState->state.input[0];
-        
-        if (pauseCtx->state != 6) {
-            //reset cursor index to so it is announced when pause is reopened
-            prevCursorIndex = -1;
+
+        // Save game prompt
+        if (pauseCtx->state == 7) {
+            if (pauseCtx->unk_1EC == 1) {
+                // prompt
+                if (prevPromptChoice != pauseCtx->promptChoice) {
+                    auto prompt = GetParameritizedText(pauseCtx->promptChoice == 0 ? "yes" : "no", TEXT_BANK_MISC, nullptr);
+                    if (prevPromptChoice == -1) {
+                        auto translation = GetParameritizedText("save_prompt", TEXT_BANK_KALEIDO, nullptr);
+                        SpeechSynthesizer::Instance->Speak((translation + " - " + prompt).c_str(), GetLanguageCode());
+                    } else {
+                        SpeechSynthesizer::Instance->Speak(prompt.c_str(), GetLanguageCode());
+                    }
+
+                    prevPromptChoice = pauseCtx->promptChoice;
+                }
+            } else if (pauseCtx->unk_1EC == 4 && prevSubState != 4) {
+                // Saved
+                auto translation = GetParameritizedText("game_saved", TEXT_BANK_KALEIDO, nullptr);
+                SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+            }
+            prevSubState = pauseCtx->unk_1EC;
             return;
         }
-        
+
+        if (pauseCtx->state != 6) {
+            // Reset cursor index and values so it is announced when pause is reopened
+            prevCursorIndex = -1;
+            prevPromptChoice = -1;
+            prevSubState = -1;
+            return;
+        }
+
+        // Kaleido pages are rotating
+        if (pauseCtx->unk_1E4 == 1) {
+            // Page halfway rotated - Start announcing the next page
+            if (pauseCtx->unk_1EA == 32) {
+                uint16_t modeNextPageMap[] = {
+                    PAUSE_MAP, PAUSE_EQUIP, PAUSE_QUEST, PAUSE_ITEM, PAUSE_EQUIP, PAUSE_MAP, PAUSE_ITEM, PAUSE_QUEST,
+                };
+                uint16_t nextPage = modeNextPageMap[pauseCtx->mode];
+                switch (nextPage) {
+                    case PAUSE_ITEM: {
+                        auto translation = GetParameritizedText("item_menu", TEXT_BANK_KALEIDO, nullptr);
+                        SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                        break;
+                    }
+                    case PAUSE_MAP: {
+                        std::string map;
+                        if (inDungeonScene) {
+                            std::string key = std::to_string(gSaveContext.mapIndex);
+                            map = GetParameritizedText(key, TEXT_BANK_SCENES, nullptr);
+                        } else {
+                            map = GetParameritizedText("overworld", TEXT_BANK_KALEIDO, nullptr);
+                        }
+                        auto translation = GetParameritizedText("map_menu", TEXT_BANK_KALEIDO, map.c_str());
+                        SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                        break;
+                    }
+                    case PAUSE_QUEST: {
+                        auto translation = GetParameritizedText("quest_menu", TEXT_BANK_KALEIDO, nullptr);
+                        SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                        break;
+                    }
+                    case PAUSE_EQUIP: {
+                        auto translation = GetParameritizedText("equip_menu", TEXT_BANK_KALEIDO, nullptr);
+                        SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                        break;
+                    }
+                }
+            }
+            return;
+        }
+
         if ((pauseCtx->debugState != 1) && (pauseCtx->debugState != 2)) {
             char arg[8];
             if (CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
-                snprintf(arg, sizeof(arg), "%d", gSaveContext.health);
+                // Normalize hearts to fractional count similar to z_lifemeter
+                int curHeartFraction = gSaveContext.health % 16;
+                int fullHearts = gSaveContext.health / 16;
+                float fraction = ceilf((float)curHeartFraction / 5) * 0.25;
+                float health = (float)fullHearts + fraction;
+                snprintf(arg, sizeof(arg), "%g", health);
                 auto translation = GetParameritizedText("health", TEXT_BANK_KALEIDO, arg);
                 SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
             } else if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
-                snprintf(arg, sizeof(arg), "%d", gSaveContext.magic);
+                // Normalize magic to percentage
+                float magicLevel = ((float)gSaveContext.magic / gSaveContext.magicCapacity) * 100;
+                snprintf(arg, sizeof(arg), "%.0f%%", magicLevel);
                 auto translation = GetParameritizedText("magic", TEXT_BANK_KALEIDO, arg);
                 SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
             } else if (CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
@@ -247,19 +324,18 @@ void RegisterOnKaleidoscopeUpdateHook() {
                     case ITEM_BOMBCHU:
                     case ITEM_SLINGSHOT:
                     case ITEM_BOW:
-                        snprintf(arg, sizeof(arg), "%d", AMMO(pauseCtx->cursorItem[PAUSE_ITEM]));
-                        break;
                     case ITEM_BEAN:
-                        snprintf(arg, sizeof(arg), "%d", 0);
+                        snprintf(arg, sizeof(arg), "%d", AMMO(pauseCtx->cursorItem[PAUSE_ITEM]));
                         break;
                     default:
                         arg[0] = '\0';
                 }
-                
+
                 if (pauseCtx->cursorItem[PAUSE_ITEM] == 999) {
+                    prevCursorIndex = -1;
                     return;
                 }
-                
+
                 std::string key = std::to_string(pauseCtx->cursorItem[PAUSE_ITEM]);
                 auto translation = GetParameritizedText(key, TEXT_BANK_KALEIDO, arg);
                 SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
@@ -267,16 +343,36 @@ void RegisterOnKaleidoscopeUpdateHook() {
             }
             case PAUSE_MAP:
                 if (inDungeonScene) {
+                    // Dungeon map items
                     if (pauseCtx->cursorItem[PAUSE_MAP] != PAUSE_ITEM_NONE) {
                         std::string key = std::to_string(pauseCtx->cursorItem[PAUSE_MAP]);
                         auto translation = GetParameritizedText(key, TEXT_BANK_KALEIDO, nullptr);
                         SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                    } else {
+                        // Dungeon map floor numbers
+                        char arg[8];
+                        int cursorPoint = pauseCtx->cursorPoint[PAUSE_MAP];
+
+                        // Cursor is on a dungeon floor position
+                        if (cursorPoint >= 3 && cursorPoint < 11) {
+                            int floorID = gMapData->floorID[gPlayState->interfaceCtx.unk_25A][pauseCtx->dungeonMapSlot - 3];
+                            // Normalize so F1 == 0, and negative numbers are basement levels
+                            int normalizedFloor = (floorID * -1) + 8;
+                            if (normalizedFloor >= 0) {
+                                snprintf(arg, sizeof(arg), "%d", normalizedFloor + 1);
+                                auto translation = GetParameritizedText("floor", TEXT_BANK_KALEIDO, arg);
+                                SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                            } else {
+                                snprintf(arg, sizeof(arg), "%d", normalizedFloor * -1);
+                                auto translation = GetParameritizedText("basement", TEXT_BANK_KALEIDO, arg);
+                                SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                            }
+                        }
                     }
                 } else {
                     std::string key = std::to_string(0x0100 + pauseCtx->cursorPoint[PAUSE_WORLD_MAP]);
                     auto translation = GetParameritizedText(key, TEXT_BANK_KALEIDO, nullptr);
                     SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
-                    SPDLOG_INFO("Item: {}", key);
                 }
                 break;
             case PAUSE_QUEST:
@@ -287,16 +383,17 @@ void RegisterOnKaleidoscopeUpdateHook() {
                         snprintf(arg, sizeof(arg), "%d", gSaveContext.inventory.gsTokens);
                         break;
                     case ITEM_HEART_CONTAINER:
-                        snprintf(arg, sizeof(arg), "%d", ((gSaveContext.inventory.questItems & 0xF) & 0xF) >> 0x1C);
+                        snprintf(arg, sizeof(arg), "%d", (gSaveContext.inventory.questItems & 0xF0000000) >> 0x1C);
                         break;
                     default:
                         arg[0] = '\0';
                 }
-                
+
                 if (pauseCtx->cursorItem[PAUSE_QUEST] == 999) {
+                    prevCursorIndex = -1;
                     return;
                 }
-                
+
                 std::string key = std::to_string(pauseCtx->cursorItem[PAUSE_QUEST]);
                 auto translation = GetParameritizedText(key, TEXT_BANK_KALEIDO, arg);
                 SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
@@ -304,15 +401,40 @@ void RegisterOnKaleidoscopeUpdateHook() {
             }
             case PAUSE_EQUIP:
             {
+                if (pauseCtx->namedItem == PAUSE_ITEM_NONE) {
+                    prevCursorIndex = -1;
+                    return;
+                }
+
                 std::string key = std::to_string(pauseCtx->cursorItem[PAUSE_EQUIP]);
-                auto translation = GetParameritizedText(key, TEXT_BANK_KALEIDO, nullptr);
-                SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                auto equipItemTranslation = GetParameritizedText(key, TEXT_BANK_KALEIDO, nullptr);
+                uint8_t checkEquipItem = pauseCtx->namedItem;
+
+                // BGS from kaleido reports as ITEM_HEART_PIECE_2 (122)
+                // remap BGS and broken knife to be the BGS item for the current equip check
+                if (checkEquipItem == ITEM_HEART_PIECE_2 || checkEquipItem == ITEM_SWORD_KNIFE) {
+                    checkEquipItem = ITEM_SWORD_BGS;
+                }
+
+                // Check if equipment item is currently equipped
+                if (checkEquipItem >= ITEM_SWORD_KOKIRI && checkEquipItem <= ITEM_BOOTS_HOVER) {
+                    uint8_t checkEquipType = (checkEquipItem - ITEM_SWORD_KOKIRI) / 3;
+                    uint8_t checkEquipValue = ((checkEquipItem - ITEM_SWORD_KOKIRI) % 3) + 1;
+
+                    if (CUR_EQUIP_VALUE(checkEquipType) == checkEquipValue) {
+                        auto translation = GetParameritizedText("equipped", TEXT_BANK_KALEIDO, equipItemTranslation.c_str());
+                        SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                        break;
+                    }
+                }
+
+                SpeechSynthesizer::Instance->Speak(equipItemTranslation.c_str(), GetLanguageCode());
                 break;
             }
             default:
                 break;
         }
-        
+
         prevCursorIndex = cursorIndex;
         memcpy(prevCursorPoint, pauseCtx->cursorPoint, sizeof(prevCursorPoint));
     });
