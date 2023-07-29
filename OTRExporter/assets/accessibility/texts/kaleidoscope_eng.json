@@ -12,6 +12,7 @@
     "equipped": "$0 - Equipped",
     "save_prompt": "Would you like to save?",
     "game_saved": "Game saved",
+    "assigned_to": "Assigned to $0",
     "0": "Deku Stick - $0",
     "1": "Deku Nut - $0",
     "2": "Bomb - $0",

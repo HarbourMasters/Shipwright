@@ -12,6 +12,7 @@
     "equipped": "$0 - Équipé",
     "save_prompt": "Voulez-vous sauvegarder?",
     "game_saved": "Jeu sauvegardé",
+    "assigned_to": "Assigné au $0",
     "0": "Bâton Mojo - $0",
     "1": "Noix Mojo - $0",
     "2": "Bombes - $0",
