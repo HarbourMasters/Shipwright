@@ -2561,22 +2561,27 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
 
     if (item == RG_OCARINA_A_BUTTON) {
         Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_A);
+        return Return_Item_Entry(giEntry, RG_NONE);
     }
 
     if (item == RG_OCARINA_C_LEFT_BUTTON) {
         Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT);
+        return Return_Item_Entry(giEntry, RG_NONE);
     }
 
     if (item == RG_OCARINA_C_RIGHT_BUTTON) {
         Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT);
+        return Return_Item_Entry(giEntry, RG_NONE);
     }
 
     if (item == RG_OCARINA_C_UP_BUTTON) {
         Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_C_UP);
+        return Return_Item_Entry(giEntry, RG_NONE);
     }
 
     if (item == RG_OCARINA_C_DOWN_BUTTON) {
         Flags_SetRandomizerInf(RAND_INF_HAS_OCARINA_C_DOWN);
+        return Return_Item_Entry(giEntry, RG_NONE);
     }
 
     if (item == RG_GREG_RUPEE) {
