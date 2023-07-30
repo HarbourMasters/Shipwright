@@ -968,7 +968,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
                            ENKANBAN_FISHING);
         Actor_Spawn(&play->actorCtx, play, ACTOR_FISHING, 0.0f, 0.0f, 0.0f, 0, 0, 0, 200, true);
 
-        if ((KREG(1) == 1) || ((D_80B7E07D & 3) == 3 || CVarGetInteger("gAlwaysHyruleLoaches", 0))) {
+        if ((KREG(1) == 1) || ((D_80B7E07D & 3) == 3 || (CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gAlwaysHyruleLoaches", 0)))) {
             if (sLinkAge != 1) {
                 fishCount = 16;
             } else {
