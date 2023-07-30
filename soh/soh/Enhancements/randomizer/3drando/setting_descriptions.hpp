@@ -317,6 +317,7 @@ extern string_view gkDurabilityRandomSafe;
 
 extern string_view blueFireArrowsDesc;
 extern string_view sunlightArrowsDesc;
+extern string_view infiniteUpgradesDesc;
 
 extern string_view mp_EnabledDesc;
 extern string_view mp_SharedProgressDesc;

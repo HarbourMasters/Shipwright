@@ -336,6 +336,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Misc Settings:Hint Distribution", RSK_HINT_DISTRIBUTION },
     { "Misc Settings:Blue Fire Arrows", RSK_BLUE_FIRE_ARROWS },
     { "Misc Settings:Sunlight Arrows", RSK_SUNLIGHT_ARROWS },
+    { "Misc Settings:Infinite Upgrades", RSK_INFINITE_UPGRADES },
     { "Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
     { "Start with Consumables", RSK_STARTING_CONSUMABLES },
     { "Start with Max Rupees", RSK_FULL_WALLETS },
@@ -844,6 +845,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SKULLS_SUNS_SONG:
                     case RSK_BLUE_FIRE_ARROWS:
                     case RSK_SUNLIGHT_ARROWS:
+                    case RSK_INFINITE_UPGRADES:
                     case RSK_BOMBCHUS_IN_LOGIC:
                     case RSK_TOT_ALTAR_HINT:
                     case RSK_GANONDORF_LIGHT_ARROWS_HINT:
@@ -1592,6 +1594,8 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
     // This is needed since Plentiful item pool also adds a third progressive wallet
     // but we should *not* get Tycoon's Wallet in that mode.
     u8 numWallets = GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS ? 3 : 2;
+
+    bool infiniteUpgrades = GetRandoSettingValue(RSK_INFINITE_UPGRADES);
     switch (randoGet) {
         case RG_NONE:
         case RG_TRIFORCE:
@@ -1626,11 +1630,17 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
 
         // Inventory Items
         case RG_PROGRESSIVE_STICK_UPGRADE:
-            return CUR_UPG_VALUE(UPG_STICKS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return infiniteUpgrades ?
+                (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_STICK_UPGRADE) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
+                (CUR_UPG_VALUE(UPG_STICKS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_PROGRESSIVE_NUT_UPGRADE:
-            return CUR_UPG_VALUE(UPG_NUTS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return infiniteUpgrades ?
+                (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_NUT_UPGRADE) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
+                (CUR_UPG_VALUE(UPG_NUTS) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_PROGRESSIVE_BOMB_BAG:
-            return CUR_UPG_VALUE(UPG_BOMB_BAG) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return infiniteUpgrades ?
+                (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMB_BAG) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
+                (CUR_UPG_VALUE(UPG_BOMB_BAG) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_BOMBS_5:
         case RG_BOMBS_10:
         case RG_BOMBS_20:
@@ -1641,7 +1651,9 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_BUY_BOMBS_30:
             return CUR_UPG_VALUE(UPG_BOMB_BAG) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_BOW:
-            return CUR_UPG_VALUE(UPG_QUIVER) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return infiniteUpgrades ?
+                (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
+                (CUR_UPG_VALUE(UPG_QUIVER) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_ARROWS_5:
         case RG_ARROWS_10:
         case RG_ARROWS_30:
@@ -1650,7 +1662,9 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_BUY_ARROWS_50:
             return CUR_UPG_VALUE(UPG_QUIVER) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
         case RG_PROGRESSIVE_SLINGSHOT:
-            return CUR_UPG_VALUE(UPG_BULLET_BAG) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return infiniteUpgrades ?
+                (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BULLET_BAG) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
+                (CUR_UPG_VALUE(UPG_BULLET_BAG) < 3 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
         case RG_DEKU_SEEDS_30:
         case RG_BUY_DEKU_SEEDS_30:
             return CUR_UPG_VALUE(UPG_BULLET_BAG) ? CAN_OBTAIN : CANT_OBTAIN_NEED_UPGRADE;
@@ -1777,7 +1791,9 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_PROGRESSIVE_MAGIC_METER:
         case RG_MAGIC_SINGLE:
         case RG_MAGIC_DOUBLE:
-            return gSaveContext.magicLevel < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return infiniteUpgrades ?
+                (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER) ? CANT_OBTAIN_ALREADY_HAVE : CAN_OBTAIN) :
+                (gSaveContext.magicLevel < 2 ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE);
 
         // Songs
         case RG_ZELDAS_LULLABY:
@@ -1972,8 +1988,10 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_STICK_UPGRADE_20;
                 case 2:
-                case 3:
                     return GI_STICK_UPGRADE_30;
+                case 3:
+                case 4:
+                    return (GetItemID)RG_STICK_UPGRADE_INF;
             }
         case RG_PROGRESSIVE_NUT_UPGRADE:
             switch (CUR_UPG_VALUE(UPG_NUTS)) {
@@ -1981,8 +1999,10 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_NUT_UPGRADE_30;
                 case 2:
-                case 3:
                     return GI_NUT_UPGRADE_40;
+                case 3:
+                case 4:
+                    return (GetItemID)RG_NUT_UPGRADE_INF;
             }
         case RG_PROGRESSIVE_BOMB_BAG:
             switch (CUR_UPG_VALUE(UPG_BOMB_BAG)) {
@@ -1991,8 +2011,10 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_BOMB_BAG_30;
                 case 2:
-                case 3:
                     return GI_BOMB_BAG_40;
+                case 3:
+                case 4:
+                    return (GetItemID)RG_BOMB_BAG_INF;
             }
         case RG_BOMBS_5:
         case RG_BUY_BOMBS_525:
@@ -2013,8 +2035,10 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_QUIVER_40;
                 case 2:
-                case 3:
                     return GI_QUIVER_50;
+                case 3:
+                case 4:
+                    return (GetItemID)RG_QUIVER_INF;
             }
         case RG_ARROWS_5:
         case RG_BUY_ARROWS_10:
@@ -2032,8 +2056,10 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 1:
                     return GI_BULLET_BAG_40;
                 case 2:
-                case 3:
                     return GI_BULLET_BAG_50;
+                case 3:
+                case 4:
+                    return (GetItemID)RG_BULLET_BAG_INF;
             }
         case RG_DEKU_SEEDS_30:
         case RG_BUY_DEKU_SEEDS_30:
@@ -2183,8 +2209,10 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                 case 0:
                     return (GetItemID)RG_MAGIC_SINGLE;
                 case 1:
-                case 2:
                     return (GetItemID)RG_MAGIC_DOUBLE;
+                case 2:
+                case 3:
+                    return (GetItemID)RG_MAGIC_INF;
             }
 
         case RG_DEKU_TREE_MAP:
@@ -2352,12 +2380,39 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_GOLD_SKULLTULA_TOKEN:
         case RG_PROGRESSIVE_HOOKSHOT:
         case RG_PROGRESSIVE_STRENGTH:
+            return true;
         case RG_PROGRESSIVE_BOMB_BAG:
+            if (CUR_UPG_VALUE(UPG_BOMB_BAG) < 3) {
+                return true;
+            } else {
+                return false;
+            }
         case RG_PROGRESSIVE_BOW:
+            if (CUR_UPG_VALUE(UPG_QUIVER) < 3) {
+                return true;
+            } else {
+                return false;
+            }
         case RG_PROGRESSIVE_SLINGSHOT:
+            if (CUR_UPG_VALUE(UPG_BULLET_BAG) < 3) {
+                return true;
+            } else {
+                return false;
+            }
         case RG_PROGRESSIVE_SCALE:
+            return true;
         case RG_PROGRESSIVE_NUT_UPGRADE:
+            if (CUR_UPG_VALUE(UPG_NUTS) < 3) {
+                return true;
+            } else {
+                return false;
+            }
         case RG_PROGRESSIVE_STICK_UPGRADE:
+            if (CUR_UPG_VALUE(UPG_STICKS) < 3) {
+                return true;
+            } else {
+                return false;
+            }
         case RG_PROGRESSIVE_OCARINA:
         case RG_PROGRESSIVE_GORONSWORD:
         case RG_EMPTY_BOTTLE:
@@ -3007,6 +3062,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_HINT_DISTRIBUTION] = CVarGetInteger("gRandomizeHintDistribution", RO_HINT_DIST_BALANCED);
     cvarSettings[RSK_BLUE_FIRE_ARROWS] = CVarGetInteger("gRandomizeBlueFireArrows", 0);
     cvarSettings[RSK_SUNLIGHT_ARROWS] = CVarGetInteger("gRandomizeSunlightArrows", 0);
+    cvarSettings[RSK_INFINITE_UPGRADES] = CVarGetInteger("gRandomizeInfiniteUpgrades", 0);
     cvarSettings[RSK_KEYSANITY] = CVarGetInteger("gRandomizeKeysanity", RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
     cvarSettings[RSK_GERUDO_KEYS] = CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA);
     cvarSettings[RSK_KEYRINGS] = CVarGetInteger("gRandomizeShuffleKeyRings", RO_KEYRINGS_OFF);
@@ -4591,6 +4647,13 @@ void RandomizerSettingsWindow::DrawElement() {
 
                 UIWidgets::PaddedSeparator();
 
+                UIWidgets::EnhancementCheckbox("Infinite Upgrades", "gRandomizeInfiniteUpgrades");
+                UIWidgets::InsertHelpHoverText(
+                    "Adds upgrades that hold infinite quanities of items (bombs, arrows, etc.)"
+                );
+
+                UIWidgets::PaddedSeparator();
+
                 ImGui::PopItemWidth();
                 ImGui::EndChild();
                 ImGui::EndTable();
@@ -5759,7 +5822,7 @@ CustomMessage Randomizer::GetGoronMessage(u16 index) {
 void Randomizer::CreateCustomMessages() {
     // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
     // with GIMESSAGE(getItemID, itemID, english, german, french).
-    const std::array<GetItemMessage, 56> getItemMessages = {{
+    const std::array<GetItemMessage, 63> getItemMessages = {{
         GIMESSAGE(RG_GREG_RUPEE, ITEM_MASK_GORON, 
 			"You found %gGreg%w!",
 			"%gGreg%w! Du hast ihn wirklich gefunden!",
@@ -5989,7 +6052,14 @@ void Randomizer::CreateCustomMessages() {
         GIMESSAGE(RG_TYCOON_WALLET, ITEM_WALLET_GIANT,
 			"You got a %rTycoon's Wallet%w!&It's gigantic! Now you can carry&up to %y999 rupees%w!",
 			"Du erhältst die %rGoldene&Geldbörse%w! Die größte aller&Geldbörsen! Jetzt kannst Du bis&zu %y999 Rubine%w mit dir führen!",
-			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y999 rubis%w!&C'est gigantesque!")
+			"Vous obtenez la %rBourse de Magnat%w!&Elle peut contenir jusqu'à %y999 rubis%w!&C'est gigantesque!"),
+        GIMESSAGE_UNTRANSLATED(RG_BOMB_BAG_INF, ITEM_BOMB_BAG_40, "You got an %rInfinite Bomb Bag%w!&Now you have&%yinfinite bombs%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_QUIVER_INF, ITEM_QUIVER_50, "You got an %rInfinite Quiver%w!&Now you have&%yinfinite arrows%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_BULLET_BAG_INF, ITEM_BULLET_BAG_50, "You got an %rInfinite Bullet Bag%w!&Now you have&%yinfinite slingshot seeds%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_STICK_UPGRADE_INF, ITEM_STICK, "You now have&%yinfinite%w %rDeku Sticks%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_NUT_UPGRADE_INF, ITEM_NUT, "You now have&%yinfinite%w %rDeku Nuts%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_MAGIC_INF, ITEM_MAGIC_LARGE, "You now have&%yinfinite%w %rMagic%w!"),
+        GIMESSAGE_UNTRANSLATED(RG_BOMBCHU_INF, ITEM_BOMBCHU, "You now have&%yinfinite%w %rBombchus%w!")
     }};
     CreateGetItemMessages(&getItemMessages);
     CreateRupeeMessages();
@@ -6103,6 +6173,13 @@ void InitRandoItemTable() {
         GET_ITEM(RG_MAGIC_BEAN_PACK,                   OBJECT_GI_BEAN,     GID_BEAN,             TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_MAGIC_BEAN_PACK),
         GET_ITEM(RG_TYCOON_WALLET,                     OBJECT_GI_PURSE,    GID_WALLET_GIANT,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_TYCOON_WALLET),
         GET_ITEM(RG_PROGRESSIVE_BOMBCHUS,              OBJECT_GI_BOMB_2,   GID_BOMBCHU,          0x33,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_PROGRESSIVE_BOMBCHUS),
+        GET_ITEM(RG_QUIVER_INF,                        OBJECT_GI_ARROWCASE,GID_QUIVER_50,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_QUIVER_INF),
+        GET_ITEM(RG_BOMB_BAG_INF,                      OBJECT_GI_BOMBPOUCH,GID_BOMB_BAG_40,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_BOMB_BAG_INF),
+        GET_ITEM(RG_BULLET_BAG_INF,                    OBJECT_GI_DEKUPOUCH,GID_BULLET_BAG_50,    TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_BULLET_BAG_INF),
+        GET_ITEM(RG_STICK_UPGRADE_INF,                 OBJECT_GI_STICK,    GID_STICK,            TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_STICK_UPGRADE_INF),
+        GET_ITEM(RG_NUT_UPGRADE_INF,                   OBJECT_GI_NUTS,     GID_NUTS,             TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_NUT_UPGRADE_INF),
+        GET_ITEM(RG_MAGIC_INF,                         OBJECT_GI_MAGICPOT, GID_MAGIC_LARGE,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_MAGIC_INF),
+        GET_ITEM(RG_BOMBCHU_INF,                       OBJECT_GI_BOMB_2,   GID_BOMBCHU,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_BOMBCHU_INF),
     };
     ItemTableManager::Instance->AddItemTable(MOD_RANDOMIZER);
     for (int i = 0; i < ARRAY_COUNT(extendedVanillaGetItemTable); i++) {

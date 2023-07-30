@@ -599,6 +599,42 @@ void RegisterMirrorModeHandler() {
     });
 }
 
+void RegisterInfiniteUpgrades() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
+        if (!gSaveContext.n64ddFlag) {
+            return;
+        }
+
+        if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER)) {
+            AMMO(ITEM_BOW) = CUR_CAPACITY(UPG_QUIVER);
+        }
+
+        if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMB_BAG)) {
+            AMMO(ITEM_BOMB) = CUR_CAPACITY(UPG_BOMB_BAG);
+        }
+
+        if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BULLET_BAG)) {
+            AMMO(ITEM_SLINGSHOT) = CUR_CAPACITY(UPG_BULLET_BAG);
+        }
+
+        if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_STICK_UPGRADE)) {
+            AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
+        }
+        
+        if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_NUT_UPGRADE)) {
+            AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
+        }
+        
+        if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER)) {
+            gSaveContext.magic = gSaveContext.magicCapacity;
+        }
+        
+        if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS)) {
+            AMMO(ITEM_BOMBCHU) = 50;
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -621,4 +657,5 @@ void InitMods() {
     RegisterBonkDamage();
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
+    RegisterInfiniteUpgrades();
 }

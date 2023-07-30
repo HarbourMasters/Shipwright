@@ -2570,12 +2570,50 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
             INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
             AMMO(ITEM_BOMBCHU) = 20;
+        } else if (gSaveContext.randoSettings[RSK_INFINITE_UPGRADES].value) {
+            Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS);
+            return Return_Item_Entry(ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_BOMBCHU_INF), RG_NONE);
         } else {
             AMMO(ITEM_BOMBCHU) += AMMO(ITEM_BOMBCHU) < 5 ? 10 : 5;
             if (AMMO(ITEM_BOMBCHU) > 50) {
                 AMMO(ITEM_BOMBCHU) = 50;
             }
         }
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_QUIVER_INF) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_BOMB_BAG_INF) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BOMB_BAG);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_BULLET_BAG_INF) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BULLET_BAG);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_STICK_UPGRADE_INF) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_STICK_UPGRADE);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_NUT_UPGRADE_INF) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_NUT_UPGRADE);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_MAGIC_INF) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER);
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_BOMBCHU_INF) {
+        Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS);
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
@@ -3276,6 +3314,24 @@ void Interface_UpdateMagicBar(PlayState* play) {
         sMagicBorderColors[3][2] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_3).b/3;
     }
 
+    if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER)) {
+        sMagicBorderColors[0][0] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_0).r;
+        sMagicBorderColors[0][1] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_0).g;
+        sMagicBorderColors[0][2] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_0).b;
+
+        sMagicBorderColors[1][0] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_0).r;
+        sMagicBorderColors[1][1] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_0).g;
+        sMagicBorderColors[1][2] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_0).b;
+
+        sMagicBorderColors[2][0] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_0).r;
+        sMagicBorderColors[2][1] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_0).g;
+        sMagicBorderColors[2][2] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_0).b;
+
+        sMagicBorderColors[3][0] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_0).r;
+        sMagicBorderColors[3][1] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_0).g;
+        sMagicBorderColors[3][2] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_0).b;
+    }
+
     static s16 sMagicBorderIndexes[] = { 0, 1, 1, 0 };
     static s16 sMagicBorderRatio = 2;
     static s16 sMagicBorderStep = 1;
@@ -3329,21 +3385,23 @@ void Interface_UpdateMagicBar(PlayState* play) {
             break;
 
         case 2:
-            gSaveContext.magic -= 2;
-            if (gSaveContext.magic <= 0) {
-                gSaveContext.magic = 0;
-                gSaveContext.magicState = 3;
-                if (CVarGetInteger("gCosmetics.Consumable_MagicBorder.Changed", 0)) {
-                    sMagicBorder = CVarGetColor24("gCosmetics.Consumable_MagicBorder.Value", sMagicBorder_ori);
-                } else {
-                    sMagicBorder = sMagicBorder_ori;
-                }
-            } else if (gSaveContext.magic == gSaveContext.magicTarget) {
-                gSaveContext.magicState = 3;
-                if (CVarGetInteger("gCosmetics.Consumable_MagicBorder.Changed", 0)) {
-                    sMagicBorder = CVarGetColor24("gCosmetics.Consumable_MagicBorder.Value", sMagicBorder_ori);
-                } else {
-                    sMagicBorder = sMagicBorder_ori;
+            if (!Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER)) {
+                gSaveContext.magic -= 2;
+                if (gSaveContext.magic <= 0) {
+                    gSaveContext.magic = 0;
+                    gSaveContext.magicState = 3;
+                    if (CVarGetInteger("gCosmetics.Consumable_MagicBorder.Changed", 0)) {
+                        sMagicBorder = CVarGetColor24("gCosmetics.Consumable_MagicBorder.Value", sMagicBorder_ori);
+                    } else {
+                        sMagicBorder = sMagicBorder_ori;
+                    }
+                } else if (gSaveContext.magic == gSaveContext.magicTarget) {
+                    gSaveContext.magicState = 3;
+                    if (CVarGetInteger("gCosmetics.Consumable_MagicBorder.Changed", 0)) {
+                        sMagicBorder = CVarGetColor24("gCosmetics.Consumable_MagicBorder.Value", sMagicBorder_ori);
+                    } else {
+                        sMagicBorder = sMagicBorder_ori;
+                    }
                 }
             }
         case 3:
@@ -3507,12 +3565,16 @@ void Interface_DrawMagicBar(PlayState* play) {
     s16 magicBarY;
     Color_RGB8 magicbar_yellow = {250,250,0}; //Magic bar being used
     Color_RGB8 magicbar_green = {R_MAGIC_FILL_COLOR(0),R_MAGIC_FILL_COLOR(1),R_MAGIC_FILL_COLOR(2)}; //Magic bar fill
+    Color_RGB8 magicbar_blue = {0,0,200};//Infinite magic bar
 
     if (CVarGetInteger("gCosmetics.Consumable_MagicActive.Changed", 0)) {
         magicbar_yellow = CVarGetColor24("gCosmetics.Consumable_MagicActive.Value", magicbar_yellow);
     }
     if (CVarGetInteger("gCosmetics.Consumable_Magic.Changed", 0)) {
         magicbar_green = CVarGetColor24("gCosmetics.Consumable_Magic.Value", magicbar_green);
+    }
+    if (CVarGetInteger("gCosmetics.Consumable_MagicInfinite.Changed", 0)) {
+        magicbar_blue = CVarGetColor24("gCosmetics.Consumable_MagicInfinite.Value", magicbar_blue);
     }
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -3621,14 +3683,26 @@ void Interface_DrawMagicBar(PlayState* play) {
 
             // Fill the rest of the bar with the normal magic color
             gDPPipeSync(OVERLAY_DISP++);
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_green.r, magicbar_green.g, magicbar_green.b, interfaceCtx->magicAlpha);
+            if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER)) {
+                // Blue magic
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_blue.r, magicbar_blue.g, magicbar_blue.b, interfaceCtx->magicAlpha);
+            } else {
+                // Green magic (default)
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_green.r, magicbar_green.g, magicbar_green.b, interfaceCtx->magicAlpha);
+            }
 
             gSPWideTextureRectangle(OVERLAY_DISP++, rMagicFillX << 2, (magicBarY + 3) << 2,
                                 (rMagicFillX + gSaveContext.magicTarget) << 2, (magicBarY + 10) << 2, G_TX_RENDERTILE,
                                 0, 0, 1 << 10, 1 << 10);
         } else {
             // Fill the whole bar with the normal magic color
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_green.r, magicbar_green.g, magicbar_green.b, interfaceCtx->magicAlpha);
+            if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER)) {
+                // Blue magic
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_blue.r, magicbar_blue.g, magicbar_blue.b, interfaceCtx->magicAlpha);
+            } else {
+                // Green magic (default)
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, magicbar_green.r, magicbar_green.g, magicbar_green.b, interfaceCtx->magicAlpha);
+            }
 
             gDPLoadMultiBlock_4b(OVERLAY_DISP++, gMagicMeterFillTex, 0, G_TX_RENDERTILE, G_IM_FMT_I, 16, 16, 0,
                                  G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
@@ -4769,9 +4843,16 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
 
     i = gSaveContext.equips.buttonItems[button];
 
-    if ((i == ITEM_STICK) || (i == ITEM_NUT) || (i == ITEM_BOMB) || (i == ITEM_BOW) ||
-        ((i >= ITEM_BOW_ARROW_FIRE) && (i <= ITEM_BOW_ARROW_LIGHT)) || (i == ITEM_SLINGSHOT) || (i == ITEM_BOMBCHU) ||
-        (i == ITEM_BEAN)) {
+    if (
+        (i == ITEM_STICK && !Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_STICK_UPGRADE)) ||
+        (i == ITEM_NUT && !Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_NUT_UPGRADE)) ||
+        (i == ITEM_BOMB && !Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMB_BAG)) ||
+        (i == ITEM_BOW && !Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER)) ||
+        ((i >= ITEM_BOW_ARROW_FIRE) && (i <= ITEM_BOW_ARROW_LIGHT) && !Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER)) ||
+        (i == ITEM_SLINGSHOT && !Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BULLET_BAG)) ||
+        (i == ITEM_BOMBCHU && !Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS)) ||
+        (i == ITEM_BEAN)
+    ) {
 
         if ((i >= ITEM_BOW_ARROW_FIRE) && (i <= ITEM_BOW_ARROW_LIGHT)) {
             i = ITEM_BOW;

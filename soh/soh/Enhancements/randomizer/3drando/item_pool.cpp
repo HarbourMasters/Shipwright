@@ -570,7 +570,7 @@ static void PlaceVanillaCowMilk() {
 }
 
 static void SetScarceItemPool() {
-  ReplaceMaxItem(PROGRESSIVE_BOMBCHUS, 3);
+  ReplaceMaxItem(PROGRESSIVE_BOMBCHUS, InfiniteUpgrades ? 2 : 3);//reduced with infinite upgrades because the second one gives infinite
   ReplaceMaxItem(BOMBCHU_5, 1);
   ReplaceMaxItem(BOMBCHU_10, 2);
   ReplaceMaxItem(BOMBCHU_20, 0);
@@ -740,6 +740,15 @@ void GenerateItemPool() {
     PlaceItemInLocation(ZR_FROGS_SONG_OF_TIME, PURPLE_RUPEE, false, true);
   }
 
+  if (InfiniteUpgrades) {
+    AddItemToMainPool(PROGRESSIVE_BOMB_BAG);
+    AddItemToMainPool(PROGRESSIVE_BOW);
+    AddItemToMainPool(PROGRESSIVE_NUT_UPGRADE);
+    AddItemToMainPool(PROGRESSIVE_SLINGSHOT);
+    AddItemToMainPool(PROGRESSIVE_STICK_UPGRADE);
+    AddItemToMainPool(PROGRESSIVE_MAGIC_METER);
+  }
+
   if (ShuffleAdultTradeQuest) {
     AddItemToMainPool(POCKET_EGG);
     AddItemToMainPool(COJIRO);
@@ -809,7 +818,7 @@ void GenerateItemPool() {
   }
 
   if (BombchusInLogic) {
-    AddItemToMainPool(PROGRESSIVE_BOMBCHUS, 5);
+    AddItemToMainPool(PROGRESSIVE_BOMBCHUS, InfiniteUpgrades ? 2 : 5);//reduced with infinite upgrades because the second one gives infinite
   } else {
     AddItemToMainPool(BOMBCHU_5);
     AddItemToMainPool(BOMBCHU_10, 3);

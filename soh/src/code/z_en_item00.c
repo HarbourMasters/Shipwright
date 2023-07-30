@@ -1537,7 +1537,7 @@ void EnItem00_DrawHeartPiece(EnItem00* this, PlayState* play) {
  * Returns the new drop type ID.
  */
 s16 EnItem00_ConvertBombDropToBombchu(s16 dropId) {
-    if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
+    if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE || Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS)) {
         return dropId;
     }
 
@@ -1726,9 +1726,37 @@ void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnP
             dropId = ITEM00_RUPEE_PURPLE;
         } else {
             dropId = sItemDropIds[params + dropTableIndex];
+
+            // replace drops of items of which you have the infinite upgrade with blue rupees
+            if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMB_BAG) && (dropId == ITEM00_BOMBS_A || dropId == ITEM00_BOMBS_B || dropId == ITEM00_BOMBS_SPECIAL)) {
+                dropId = ITEM00_RUPEE_BLUE;
+            }
+            if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER) && (dropId == ITEM00_ARROWS_SINGLE || dropId == ITEM00_ARROWS_SMALL || dropId == ITEM00_ARROWS_MEDIUM || dropId == ITEM00_ARROWS_LARGE)) {
+                dropId = ITEM00_RUPEE_BLUE;
+            }
+            if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BULLET_BAG) && (dropId == ITEM00_SEEDS)) {
+                dropId = ITEM00_RUPEE_BLUE;
+            }
+            if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER) && (dropId == ITEM00_MAGIC_SMALL || dropId == ITEM00_MAGIC_LARGE)) {
+                dropId = ITEM00_RUPEE_BLUE;
+            }
         }
     } else {
         dropId = sItemDropIds[params + dropTableIndex];
+
+        // replace drops of items of which you have the infinite upgrade with blue rupees
+        if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMB_BAG) && (dropId == ITEM00_BOMBS_A || dropId == ITEM00_BOMBS_B || dropId == ITEM00_BOMBS_SPECIAL)) {
+            dropId = ITEM00_RUPEE_BLUE;
+        }
+        if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER) && (dropId == ITEM00_ARROWS_SINGLE || dropId == ITEM00_ARROWS_SMALL || dropId == ITEM00_ARROWS_MEDIUM || dropId == ITEM00_ARROWS_LARGE)) {
+            dropId = ITEM00_RUPEE_BLUE;
+        }
+        if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BULLET_BAG) && (dropId == ITEM00_SEEDS)) {
+            dropId = ITEM00_RUPEE_BLUE;
+        }
+        if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MAGIC_METER) && (dropId == ITEM00_MAGIC_SMALL || dropId == ITEM00_MAGIC_LARGE)) {
+            dropId = ITEM00_RUPEE_BLUE;
+        }
     }
 
     if (dropId == ITEM00_FLEXIBLE) {

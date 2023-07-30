@@ -154,6 +154,14 @@ typedef enum {
 
     RAND_INF_GREG_FOUND,
 
+    RAND_INF_HAS_INFINITE_QUIVER,
+    RAND_INF_HAS_INFINITE_BOMB_BAG,
+    RAND_INF_HAS_INFINITE_BULLET_BAG,
+    RAND_INF_HAS_INFINITE_STICK_UPGRADE,
+    RAND_INF_HAS_INFINITE_NUT_UPGRADE,
+    RAND_INF_HAS_INFINITE_MAGIC_METER,
+    RAND_INF_HAS_INFINITE_BOMBCHUS,
+
     // If you add anything to this list, you need to update the size of randomizerInf in z64save.h to be ceil(RAND_INF_MAX / 16)
 
     RAND_INF_MAX,

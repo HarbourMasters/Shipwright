@@ -1000,6 +1000,11 @@ string_view blueFireArrowsDesc        = "Ice Arrows gain the ability to melt red
 string_view sunlightArrowsDesc        = "Light Arrows gain the ability to activate sun\n"  //
                                         "switches.";                                       //
 /*------------------------------                                                           //
+|      INFINITE UPGRADES       |                                                           //
+------------------------------*/                                                           //
+string_view infiniteUpgradesDesc        = "Adds upgrades that hold infinite quanities of\n"//
+                                        "items (bombs, arrows, etc.).";                    //
+/*------------------------------                                                           //
 |         MULTIPLAYER          |                                                           //
 ------------------------------*/                                                           //
 string_view mp_EnabledDesc            = "Enables multiplayer.\n"                           //
