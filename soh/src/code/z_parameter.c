@@ -2566,6 +2566,12 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
+    if (item == RG_PROGRESSIVE_BOMBCHUS) {
+        INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
+        AMMO(ITEM_BOMBCHU) = 20;
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
     if (item == RG_QUIVER_INF) {
         Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER);
         return Return_Item_Entry(giEntry, RG_NONE);
