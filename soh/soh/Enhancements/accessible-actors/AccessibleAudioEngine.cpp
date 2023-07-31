@@ -8,6 +8,8 @@
 #define AAE_PREP_CHUNK_SIZE 64
 #define AAE_MIX_CHUNK_SIZE 64
 #define AAE_GC_INTERVAL 20 * 60//How often, in frames, do we clean up sound handles that are no longer active.
+#define AAE_MAX_DB_REDUCTION -20
+
 #define NOMINMAX//because Windows is a joke.
 #include "AccessibleAudioEngine.h"
 
@@ -24,15 +26,59 @@ enum AAE_COMMANDS {
     AAE_PITCH,
     AAE_VOLUME,
     AAE_PAN,
-
+AAE_SEEK,
     AAE_LISTENER, //Set the listener's position and direction.
 AAE_POS,//Set the sound source's position and direction.
-AAE_DIST,//Set max distance.
-
 AAE_PREPARE,
 AAE_TERMINATE,
 };
-void AccessibleAudioEngine::destroy() {
+//Processing for our custom audio positioning.
+static float lerp(float x, float y, float z) {
+    return (1.0 - z) * x + z * y;
+}
+
+    static float computeGain(SoundExtras * extras) {
+    if (extras->maxDistance == 0)
+        return 0;
+    float leftover = ma_volume_db_to_linear(AAE_MAX_DB_REDUCTION);
+    float normDist = fabs(extras->distToPlayer) / extras->maxDistance;
+    float db = lerp(0, AAE_MAX_DB_REDUCTION, normDist);
+    float gain = ma_volume_db_to_linear(db);
+    gain -= lerp(0, leftover, normDist);
+    return gain;
+}
+
+    static void positioner_process_pcm_frames(ma_node * pNode, const float** ppFramesIn, ma_uint32* pFrameCountIn,
+    float** ppFramesOut,
+    ma_uint32* pFrameCountOut)
+{
+
+    const float* framesIn = ppFramesIn[0];
+    float* framesOut = ppFramesOut[0];
+    ma_copy_pcm_frames(framesOut, framesIn, *pFrameCountIn, ma_format_f32, 2);
+    *pFrameCountOut = *pFrameCountIn;
+    SoundExtras* extras = (SoundExtras*)pNode;
+//Pan the sound based on its projected position.
+    float pan = extras->x / 270;
+    if (pan < -1.0)
+        pan = -1.0;
+    if (pan > 1.0)
+        pan = 1.0;
+    ma_panner_set_pan(&extras->panner, pan);
+    ma_panner_process_pcm_frames(&extras->panner, framesOut, framesOut, *pFrameCountIn);
+    //Next we'll apply the gain based on the object's distance relationship to the player. The strategy here is to use a combination of decibel-based and linear attenuation, so that the gain reaches 0 at the exact point when the object is at exactly the maximum distance from the player.
+
+    float gain = computeGain(extras);
+    ma_gainer_set_gain(&extras->gainer, gain);
+    ma_gainer_process_pcm_frames(&extras->gainer, framesOut, framesOut, *pFrameCountIn);
+
+    }
+
+static ma_node_vtable positioner_vtable = {
+positioner_process_pcm_frames, NULL, 1, 1, 0};
+static ma_uint32 positioner_channels[1] = { 2 };
+
+    void AccessibleAudioEngine::destroy() {
     switch (initialized){
     case 3:
             ma_engine_uninit(&engine);
@@ -161,10 +207,10 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
                         break;
                     case AAE_PAN:
                         doSetPan(action);
-
-                    case AAE_DIST:
-                        doSetMaxDistance(action);
-
+                        break;
+                    case AAE_SEEK:
+                        doSeekSound(action);
+                        break;
                     case AAE_LISTENER:
                         doSetListenerPos(action);
                         break;
@@ -199,8 +245,8 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
     if (sounds.contains(action.handle)) {
             sound = &sounds[action.handle][action.slot];
             if (sound->active) {
-                ma_sound_uninit(&sound->sound);
-                sound->active = false;
+                ma_sound_stop(&sound->sound);
+                destroySound(sound);
             }
     }
 
@@ -212,20 +258,23 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
             sounds[action.handle] = temp;
         sound = &sounds[action.handle][action.slot];
     }
-    if (ma_sound_init_from_file(&engine, action.path.c_str(), MA_SOUND_FLAG_NO_SPATIALIZATION, NULL, NULL,
+    if (ma_sound_init_from_file(&engine, action.path.c_str(), MA_SOUND_FLAG_NO_SPATIALIZATION|MA_SOUND_FLAG_NO_DEFAULT_ATTACHMENT, NULL, NULL,
                                 &sound->sound) != MA_SUCCESS)
             return;
+    initSoundExtras(sound);
         ma_sound_set_looping(&sound->sound, action.looping);
+    //We actually attach the extras to the engine, not the sound itself.
+        ma_node_attach_output_bus(&sound->extras, 0, ma_node_graph_get_endpoint(&engine.nodeGraph), 0);
+
         ma_sound_start(&sound->sound);
+
         sound->active = true;
     }
     void AccessibleAudioEngine::doStopSound(SoundAction& action) {
         SoundSlot* slot = findSound(action);
         if (slot == NULL)
             return;
-        ma_sound_uninit(&slot->sound);
-        slot->active = false;
-
+        destroySound(slot);
     }
     void AccessibleAudioEngine::doStopAllSounds(SoundAction& action)
     {
@@ -236,8 +285,7 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
         for (int i = 0; i < AAE_SLOTS_PER_HANDLE; i++)
         {
             if (slots[i].active)
-            ma_sound_uninit(&slots[i].sound);
-
+                    destroySound(&slots[i]);
         }
         sounds.erase(it);
 
@@ -265,20 +313,27 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
             return;
         ma_sound_set_pan(&slot->sound, action.pan);
     }
+    void AccessibleAudioEngine::doSeekSound(SoundAction& action)
+    {
+        SoundSlot* slot = findSound(action);
+        if (slot == NULL)
+            return;
+        ma_sound_seek_to_pcm_frame(&slot->sound, action.offset);
+    }
     void AccessibleAudioEngine::doSetListenerPos(SoundAction& action)
     {
 
     }
     void AccessibleAudioEngine::doSetSoundPos(SoundAction& action)
     {
-    }
-    void AccessibleAudioEngine::doSetMaxDistance(SoundAction& action)
-    {
         SoundSlot* slot = findSound(action);
         if (slot == NULL)
             return;
-        ma_sound_set_max_distance(&slot->sound, action.distance);
-
+        slot->extras.x = action.posX;
+        slot->extras.y = action.posY;
+        slot->extras.z = action.posZ;
+        slot->extras.distToPlayer = action.distToPlayer;
+        slot->extras.maxDistance = action.maxDistance;
     }
     void AccessibleAudioEngine::garbageCollect()
         {
@@ -288,7 +343,7 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
                     if (!i->second[x].active)
                     deadSlots++;
                     else if (!ma_sound_is_playing(&i->second[x].sound)) {
-                    ma_sound_uninit(&i->second[x].sound);
+                    destroySound(&i->second[x]);
                     i->second[x].active = false;
                     deadSlots++;
 
@@ -308,6 +363,35 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
             ma_job_process(&job);
 
     }
+    bool AccessibleAudioEngine::initSoundExtras(SoundSlot* slot) {
+        ma_node_config config = ma_node_config_init();
+        config.inputBusCount = 1;
+        config.outputBusCount = 1;
+        config.pInputChannels = positioner_channels;
+        config.pOutputChannels = positioner_channels;
+        config.vtable = &positioner_vtable;
+        memset(&slot->extras, 0, sizeof(SoundExtras));
+        if (ma_node_init(&engine.nodeGraph, &config, NULL, &slot->extras) != MA_SUCCESS)
+            return false;
+        ma_panner_config pc = ma_panner_config_init(ma_format_f32, AAE_CHANNELS);
+        pc.mode = ma_pan_mode_pan;
+        ma_panner_init(&pc, &slot->extras.panner);
+        ma_gainer_config gc = ma_gainer_config_init(AAE_CHANNELS, AAE_SAMPLE_RATE / 20);//Allow one in-game frame for the gain to work its way towards the target value.
+        if (ma_gainer_init(&gc, NULL, &slot->extras.gainer) != MA_SUCCESS)
+            return false;
+        ma_node_attach_output_bus(&slot->sound, 0, &slot->extras, 0);
+        return true;
+
+    }
+    void AccessibleAudioEngine::destroySound(SoundSlot* slot) {
+        ma_node_detach_all_output_buses(&slot->extras);
+        ma_sound_uninit(&slot->sound);
+        ma_gainer_uninit(&slot->extras.gainer, NULL);
+
+        slot->active = false;
+
+    }
+
     AccessibleAudioEngine::AccessibleAudioEngine() {
         initialized = 0;
         ma_resource_manager_config rmc = ma_resource_manager_config_init();
@@ -426,16 +510,17 @@ void AccessibleAudioEngine::setPan(uintptr_t handle, int slot, float pan) {
         action.slot = slot;
         action.pan = pan;
     }
-
-        
-    void AccessibleAudioEngine::setListenerPosition(float posX, float posY, float posZ) {
+void AccessibleAudioEngine::seekSound(uintptr_t handle, int slot, size_t offset) {
+        if (slot < 0 || slot >= AAE_SLOTS_PER_HANDLE)
+            return;
         SoundAction& action = getNextOutgoingSoundAction();
-        action.command = AAE_LISTENER;
-        action.posX = posX;
-        action.posY = posY;
-        action.posZ = posZ;
-    }
-void AccessibleAudioEngine::setSoundPosition(uintptr_t handle, int slot, float posX, float posY, float posZ) {
+        action.handle = handle;
+        action.slot = slot;
+        action.command = AAE_SEEK;
+action.offset = offset;
+
+}
+void AccessibleAudioEngine::setSoundPosition(uintptr_t handle, int slot, float posX, float posY, float posZ, float distToPlayer, float maxDistance) {
         if (slot < 0 || slot >= AAE_SLOTS_PER_HANDLE)
             return;
         SoundAction& action = getNextOutgoingSoundAction();
@@ -445,16 +530,8 @@ void AccessibleAudioEngine::setSoundPosition(uintptr_t handle, int slot, float p
         action.posX = posX;
         action.posY = posY;
         action.posZ = posZ;
-}
-void AccessibleAudioEngine::setMaxDistance(uintptr_t handle, int slot, float distance)
-{
-        if (slot < 0 || slot >= AAE_SLOTS_PER_HANDLE)
-            return;
-        SoundAction& action = getNextOutgoingSoundAction();
-        action.command = AAE_DIST;
-        action.handle = handle;
-        action.slot = slot;
-        action.distance = distance;
+        action.distToPlayer = distToPlayer;
+        action.maxDistance = maxDistance;
 
 }
     void AccessibleAudioEngine::prepare() {

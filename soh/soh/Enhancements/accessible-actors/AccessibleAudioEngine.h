@@ -22,12 +22,11 @@ struct SoundAction {
     int command; // One of the items belonging to AAE_COMMANDS.
         std::string path; // If command is AAE_START, this is the path to the desired resource.
     bool looping;//If command is AAE_START, specifies whether or not the sound should loop.
-    //A single float argument with several aliases depending on the command.
         union {
             float pitch;
             float volume;
             float pan;
-
+            size_t offset;//for seeking.
             float distance;
         };
 
@@ -35,17 +34,29 @@ struct SoundAction {
         float posX;
         float posY;
         float posZ;
-        float rotX;
-        float rotY;
-        float rotZ;
-        float velX;
-        float velY;
-        float velZ;
+        float distToPlayer;
+        float maxDistance;
         uint32_t frames; // If command is AAE_PREPARE, this tells the engine how many PCM frames to get ready.
 };
+
+typedef struct
+{
+        ma_node_base base;
+        ma_panner panner;
+        ma_gainer gainer;
+
+        float x;
+        float y;
+        float z;
+        float distToPlayer;
+        float maxDistance;
+}SoundExtras;//Used for attenuation and other effects.
+
 typedef struct
 {
         ma_sound sound;
+        SoundExtras extras;
+
         bool active;
 }SoundSlot;
 typedef std::array<SoundSlot, AAE_SLOTS_PER_HANDLE> SoundSlots;
@@ -88,14 +99,10 @@ SoundSlot* findSound(SoundAction& action);
     void doSetPitch(SoundAction& action);
     void doSetVolume(SoundAction& action);
     void doSetPan(SoundAction& action);
+    void doSeekSound(SoundAction& action);
 
     void doSetListenerPos(SoundAction& action);
     void doSetSoundPos(SoundAction& action);
-    void doSetMaxDistance(SoundAction& actoun);
-
-
-
-
     // Generate some output, and store it in the output buffer for later retrieval. May generate less output than
     // requested if buffer space is insufficient.
     void doPrepare(SoundAction& action);
@@ -103,6 +110,9 @@ SoundSlot* findSound(SoundAction& action);
     void garbageCollect();
     //Run MiniAudio's jobs.
     void processAudioJobs();
+//Set up the panner and other effect processing on a sound slot.
+    bool initSoundExtras(SoundSlot* slot);
+    void destroySound(SoundSlot* slot);
 
   public:
     AccessibleAudioEngine();
@@ -118,13 +128,9 @@ SoundSlot* findSound(SoundAction& action);
     void setPitch(uintptr_t handle, int slot, float pitch);
     void setVolume(uintptr_t handle, int slot, float volume);
     void setPan(uintptr_t handle, int slot, float pan);
-
-    void setListenerPosition(float posX, float posY, float posZ);
-    void setSoundPosition(uintptr_t handle, int slot, float posX, float posY, float posZ);
-    void setMaxDistance(uintptr_t handle, int slot, float distance);
-
-
-
+//Seek the sound to a particular PCM frame.
+    void seekSound(uintptr_t handle, int slot, size_t offset);
+    void setSoundPosition(uintptr_t handle, int slot, float posX, float posY, float posZ, float distToPlayer, float maxDistance);
     //Schedule the preparation of output for delivery.
     void prepare();
     void cacheDecodedSample(std::string& path, void* data, size_t size);

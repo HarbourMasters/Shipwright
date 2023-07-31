@@ -8,9 +8,11 @@ void func_8083E298(CollisionPoly* arg0, Vec3f* arg1, s16* arg2);
 #include "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 #include "soh/Enhancements/tts/tts.h"
 }
-static const f32 detectionDistance = 500.0;
-static const f32 minInclineDistance = 5.0;
-static const f32 minDeclineDistance = 5.0;
+# define DETECTION_DISTANCE 500.0
+#define MIN_INCLINE_DISTANCE 5.0
+#define MIN_DECLINE_DISTANCE 5.0
+#define DEFAULT_PROBE_SPEED 5.5
+
 static Player fakePlayer;//Used for wall height detection.
 static Vec3f D_80854798 = { 0.0f, 18.0f, 0.0f }; // From z_player.c.
 
@@ -30,7 +32,6 @@ class TerrainCueSound {
     Vec3f terrainPos;
     Vec3f terrainProjectedPos;
     f32 currentPitch;
-    f32 currentVolume;
     f32 xzDistToPlayer;
     s16 currentSFX;
     int restFrames;//Used to control how often sounds get played.
@@ -39,9 +40,9 @@ class TerrainCueSound {
     // Call to start playback.
     void play() {
         ActorAccessibility_PlaySound(this, 0, currentSFX, shouldLoop);
-        ActorAccessibility_SetSoundPan(this, 0, &terrainProjectedPos);
-        ActorAccessibility_SetSoundVolume(this, 0, currentVolume);
+        ActorAccessibility_SetSoundPos(this, 0, &terrainProjectedPos, xzDistToPlayer, actor->policy.distance);
         ActorAccessibility_SetSoundPitch(this, 0, currentPitch);
+
     }
 
     // Call when terrain is no longer present to stop playback.
@@ -62,9 +63,7 @@ class TerrainCueSound {
 
         // Set xzDistToPlayer.
         xzDistToPlayer = Math_Vec3f_DistXZ(&terrainPos, &player->actor.world.pos);
-        currentVolume = ActorAccessibility_ComputeCurrentVolume(actor->policy.distance, xzDistToPlayer);
-        ActorAccessibility_SetSoundPan(this, 0, &terrainProjectedPos);
-        ActorAccessibility_SetSoundVolume(this, 0, currentVolume);
+        ActorAccessibility_SetSoundPos(this, 0, &terrainProjectedPos, xzDistToPlayer, actor->policy.distance);
         ActorAccessibility_SetSoundPitch(this, 0, currentPitch);
 
     }
@@ -73,7 +72,6 @@ class TerrainCueSound {
     TerrainCueSound(AccessibleActor* actor, Vec3f pos) {
         this->actor = actor;
         currentPitch = 1.0;
-        currentVolume = 1.0;
         shouldLoop = false;
         restFrames = 0;
         xzDistToPlayer = 0;
@@ -199,7 +197,6 @@ class Wall: protected TerrainCueSound {
         if (frames == 20) {
             frames = 0;
             play();
-
         }
     }
 };
@@ -227,8 +224,6 @@ class Spike : protected TerrainCueSound {
     AccessibleActor* actor;
     Vec3f pos;
     Vec3f prevPos;
-
-
     Vec3s relRot;//Relative angle.
     Vec3s rot;//Actual angle.
     f32 wallCheckHeight;
@@ -454,7 +449,7 @@ else {
     bool proveClimbableStep()
     {
         setVelocity();
-        if (!move(pos, velocity))
+        if (!move())
                 return false;
         if (isPushedAway())
                 return false;
@@ -472,7 +467,7 @@ else {
         bool foundFloor = false;
         for (int i = 0; i < 100; i++) {
                 setVelocity();
-                if (!move(pos, velocity))
+                if (!move())
                 return false;
                 if (pos.y >= ogPos.y + wallHeight-10) {
                 foundFloor = true;
@@ -481,7 +476,7 @@ else {
                 pos.y = ogPos.y + wallHeight;
 
         }
-        probeSpeed = 5.5;
+        probeSpeed = DEFAULT_PROBE_SPEED;
 
         if (!foundFloor)
                 return false;
@@ -502,7 +497,7 @@ else {
     }
 
   public:
-    // Initialize a TerrainCueDirection based on a relative angle.
+    // Initialize a TerrainCueDirection based on a relative angle and position offset.
     void init(AccessibleActor* actor, Vec3s rot) {
         this->actor = actor;
         this->relRot = rot;
@@ -513,11 +508,9 @@ else {
         disabled = false;
         trackingMode = false;
         trackingModeStarted = false;
-
-
     }
     //Move a probe to its next point along a line, ensuring that it remains on the floor. Returns false if the move would put the probe out of bounds. Does not take walls into account.
-    bool move(Vec3f& pos, Vec3f& velocity) {
+    bool move() {
         pos.x += velocity.x;
         pos.y += velocity.y;
         pos.z += velocity.z;
@@ -535,7 +528,7 @@ else {
         return true;
 
         Vec3f pos = wallPos;
-        if (!move(pos, velocity))
+        if (!move())
             return true;//Arbitrary, but hopefully this can't happen under normal gameplay circumstances.
         Vec3f newWallPos;
         if (!checkWall(pos, wallPos, newWallPos))
@@ -569,14 +562,14 @@ else {
         rot = ActorAccessibility_ComputeRelativeAngle(&player->actor.world.rot, &relRot);
         pushedSpeed = 0.0;
         pushedYaw = 0;
-        probeSpeed = 5.5;//Experiment with this.
+        probeSpeed = DEFAULT_PROBE_SPEED;//Experiment with this.
         // Draw a line from Link's position to the max detection distance based on the configured relative angle.
         if (!trackingModeStarted)
         pos = player->actor.world.pos;
         if (trackingMode)
             trackingModeStarted = true;
 
-        f32 distToTravel = detectionDistance;
+        f32 distToTravel = DETECTION_DISTANCE;
         if (trackingMode)
             distToTravel = 1.0;
         Vec3f collisionResult;
@@ -598,7 +591,7 @@ else {
             setVelocity();
             f32 step = fabs(velocity.x + velocity.z);
 
-            if (!move(pos, velocity)) {
+            if (!move()) {
                 destroyCurrentSound();
                 break;//Probe is out of bounds.
             }

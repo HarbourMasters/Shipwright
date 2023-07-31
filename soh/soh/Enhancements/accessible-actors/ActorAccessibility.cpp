@@ -182,18 +182,8 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         aa->audioEngine->setPitch((uintptr_t)handle, slot, pitch);
 
     }
-    void ActorAccessibility_SetListenerPos(Vec3f* pos)
-    {
-        aa->audioEngine->setListenerPosition(pos->x, pos->y, pos->z);
-
-    }
-    void ActorAccessibility_SetSoundPos(void* handle, int slot, Vec3f* pos) {
-        aa->audioEngine->setSoundPosition((uintptr_t) handle, slot, pos->x, pos->y, pos->z);
-    }
-    void ActorAccessibility_SetMaxDistance(void* handle, int slot, float distance)
-    {
-        aa->audioEngine->setMaxDistance((uintptr_t)handle, slot, distance);
-
+    void ActorAccessibility_SetSoundPos(void* handle, int slot, Vec3f* pos, f32 distToPlayer, f32 maxDistance) {
+        aa->audioEngine->setSoundPosition((uintptr_t) handle, slot, pos->x, pos->y, pos->z, distToPlayer, maxDistance);
     }
     void ActorAccessibility_SetSoundVolume(void* handle, int slot, float volume)
     {
@@ -210,14 +200,21 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         aa->audioEngine->setPan((uintptr_t)handle, slot, pan);
 
     }
+    void ActorAccessibility_SeekSound(void* handle, int slot, size_t offset)
+    {
+        aa->audioEngine->seekSound((uintptr_t)handle, slot, offset);
+
+    }
     void ActorAccessibility_PlaySoundForActor(AccessibleActor* actor, int slot, s16 sfxId, bool looping)
     {
         if (slot < 0 || slot > NUM_MANAGED_SOUND_SLOTS)
             return;
         ActorAccessibility_PlaySound(actor, slot, sfxId, looping);
         ActorAccessibility_SetSoundPitch(actor, slot, actor->policy.pitch);
-        ActorAccessibility_SetSoundVolume(actor, slot, actor->currentVolume);
-        ActorAccessibility_SetSoundPan(actor, slot, &actor->projectedPos);
+        //ActorAccessibility_SetSoundVolume(actor, slot, actor->currentVolume);
+        //ActorAccessibility_SetSoundPan(actor, slot, &actor->projectedPos);
+        ActorAccessibility_SetSoundPos(actor, slot, &actor->projectedPos, actor->xzDistToPlayer,
+                                       actor->policy.distance);
         actor->managedSoundSlots[slot] = true;
 
     }
@@ -272,8 +269,9 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
             {
                 if (actor->managedSoundSlots[i])
                 {
-            ActorAccessibility_SetSoundVolume(actor, i, actor->currentVolume);
-            ActorAccessibility_SetSoundPan(actor, i, &actor->projectedPos);
+            //ActorAccessibility_SetSoundVolume(actor, i, actor->currentVolume);
+            //ActorAccessibility_SetSoundPan(actor, i, &actor->projectedPos);
+            //ActorAccessibility_SetSoundPos(actor, i, &actor->world.pos); 
            //Judgement call: pitch changes are rare enough that it doesn't make sense to pay the cost of updating it every frame. If you want a pitch change, call the function as needed.
 
             }

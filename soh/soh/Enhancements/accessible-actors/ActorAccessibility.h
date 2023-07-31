@@ -97,13 +97,14 @@ void ActorAccessibility_StopSound(void* handle, int slot);
 void ActorAccessibility_StopAllSounds(void* handle);
 
 void ActorAccessibility_SetSoundPitch(void* handle, int slot, float pitch);
-void ActorAccessibility_SetListenerPos(Vec3f* pos);
-void ActorAccessibility_SetSoundPos(void* handle, int slot, Vec3f* pos);
-void ActorAccessibility_SetMaxDistance(void* handle, int slot, float distance);
+void ActorAccessibility_SetListenerPos(Vec3f* pos, Vec3f* rot);
+void ActorAccessibility_SetSoundPos(void* handle, int slot, Vec3f* pos, f32 distToPlayer, f32 maxDistance);
 
 void ActorAccessibility_SetSoundVolume(void* handle, int slot, float volume);
 void ActorAccessibility_SetSoundPan(void* handle, int slot, Vec3f* projectedPos);
-/*
+void ActorAccessibility_SeekSound(void* handle, int slot, size_t offset);
+
+    /*
 * Play a sound on behalf of an AccessibleActor.
 * This version includes automatic sound management: pitch, panning and attenuation parameters will be updated automatically based on the actor's position.
 * 
