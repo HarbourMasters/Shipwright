@@ -1594,7 +1594,10 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
     // This is needed since Plentiful item pool also adds a third progressive wallet
     // but we should *not* get Tycoon's Wallet in that mode.
     u8 numWallets = GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS ? 3 : 2;
-
+    
+    // Same thing with the infinite upgrades, if we're not shuffling them
+    //and we're using the Plentiful item pool, we should prevent the infinite
+    //upgrades from being gotten
     bool infiniteUpgrades = GetRandoSettingValue(RSK_INFINITE_UPGRADES);
     switch (randoGet) {
         case RG_NONE:
@@ -1944,6 +1947,11 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
     // This is needed since Plentiful item pool also adds a third progressive wallet
     // but we should *not* get Tycoon's Wallet in that mode.
     u8 numWallets = GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS ? 3 : 2;
+
+    // Same thing with the infinite upgrades, if we're not shuffling them
+    //and we're using the Plentiful item pool, we should prevent the infinite
+    //upgrades from being gotten
+    bool infiniteUpgrades = GetRandoSettingValue(RSK_INFINITE_UPGRADES);
     switch (randoGet) {
         case RG_NONE:
             return ogItemId;
@@ -1991,7 +1999,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return GI_STICK_UPGRADE_30;
                 case 3:
                 case 4:
-                    return (GetItemID)RG_STICK_UPGRADE_INF;
+                    return infiniteUpgrades ? (GetItemID)RG_STICK_UPGRADE_INF : GI_STICK_UPGRADE_30;
             }
         case RG_PROGRESSIVE_NUT_UPGRADE:
             switch (CUR_UPG_VALUE(UPG_NUTS)) {
@@ -2002,7 +2010,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return GI_NUT_UPGRADE_40;
                 case 3:
                 case 4:
-                    return (GetItemID)RG_NUT_UPGRADE_INF;
+                    return infiniteUpgrades ? (GetItemID)RG_NUT_UPGRADE_INF : GI_NUT_UPGRADE_40;
             }
         case RG_PROGRESSIVE_BOMB_BAG:
             switch (CUR_UPG_VALUE(UPG_BOMB_BAG)) {
@@ -2014,7 +2022,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return GI_BOMB_BAG_40;
                 case 3:
                 case 4:
-                    return (GetItemID)RG_BOMB_BAG_INF;
+                    return infiniteUpgrades ? (GetItemID)RG_BOMB_BAG_INF : GI_BOMB_BAG_40;
             }
         case RG_BOMBS_5:
         case RG_BUY_BOMBS_525:
@@ -2038,7 +2046,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return GI_QUIVER_50;
                 case 3:
                 case 4:
-                    return (GetItemID)RG_QUIVER_INF;
+                    return infiniteUpgrades ? (GetItemID)RG_QUIVER_INF : GI_QUIVER_50;
             }
         case RG_ARROWS_5:
         case RG_BUY_ARROWS_10:
@@ -2059,7 +2067,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return GI_BULLET_BAG_50;
                 case 3:
                 case 4:
-                    return (GetItemID)RG_BULLET_BAG_INF;
+                    return infiniteUpgrades ? (GetItemID)RG_BULLET_BAG_INF : GI_BULLET_BAG_50;
             }
         case RG_DEKU_SEEDS_30:
         case RG_BUY_DEKU_SEEDS_30:
@@ -2212,7 +2220,7 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return (GetItemID)RG_MAGIC_DOUBLE;
                 case 2:
                 case 3:
-                    return (GetItemID)RG_MAGIC_INF;
+                    return infiniteUpgrades ? (GetItemID)RG_MAGIC_INF : (GetItemID)RG_MAGIC_DOUBLE;
             }
 
         case RG_DEKU_TREE_MAP:
