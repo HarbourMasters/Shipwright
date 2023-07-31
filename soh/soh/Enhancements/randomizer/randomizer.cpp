@@ -4001,7 +4001,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 // Shuffle Hyrule Loach Reward
                 UIWidgets::EnhancementCheckbox(Settings::ShuffleHyruleLoachReward.GetName().c_str(), "gRandomizeShuffleHyruleLoachReward");
                 UIWidgets::InsertHelpHoverText(
-                    "Shuffles a Purple Rupee into to the item pool, and allows\n"
+                    "Shuffles a Purple Rupee into to the item pool, and allows"
                     "you to earn an item by catching the hyrule loach at the fishing pond."
                 );
 
