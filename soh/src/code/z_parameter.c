@@ -2566,22 +2566,6 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         return Return_Item_Entry(giEntry, RG_NONE);
     }
 
-    if (item == RG_PROGRESSIVE_BOMBCHUS) {
-        if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
-            INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
-            AMMO(ITEM_BOMBCHU) = 20;
-        } else if (gSaveContext.randoSettings[RSK_INFINITE_UPGRADES].value) {
-            Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS);
-            return Return_Item_Entry(ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_BOMBCHU_INF), RG_NONE);
-        } else {
-            AMMO(ITEM_BOMBCHU) += AMMO(ITEM_BOMBCHU) < 5 ? 10 : 5;
-            if (AMMO(ITEM_BOMBCHU) > 50) {
-                AMMO(ITEM_BOMBCHU) = 50;
-            }
-        }
-        return Return_Item_Entry(giEntry, RG_NONE);
-    }
-
     if (item == RG_QUIVER_INF) {
         Flags_SetRandomizerInf(RAND_INF_HAS_INFINITE_QUIVER);
         return Return_Item_Entry(giEntry, RG_NONE);

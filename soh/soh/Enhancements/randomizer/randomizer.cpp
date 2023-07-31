@@ -2089,6 +2089,16 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
         case RG_BOMBCHU_20:
         case RG_BUY_BOMBCHU_20:
             return GI_BOMBCHUS_20;
+        case RG_PROGRESSIVE_BOMBCHUS:
+            if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
+                return GI_BOMBCHUS_20;
+            } else if (infiniteUpgrades) {
+                return (GetItemID)RG_BOMBCHU_INF;
+            } else if (AMMO(ITEM_BOMBCHU) < 5) {
+                return GI_BOMBCHUS_10;
+            } else {
+                return GI_BOMBCHUS_5;
+            }
         case RG_PROGRESSIVE_HOOKSHOT:
             switch (INV_CONTENT(ITEM_HOOKSHOT)) {
                 case ITEM_NONE:
@@ -2441,6 +2451,9 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
         case RG_BOMBCHU_10:
         case RG_BOMBCHU_20:
         case RG_BOMBCHU_DROP:
+            return true;
+        case RG_PROGRESSIVE_BOMBCHUS:
+            return INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE || !GetRandoSettingValue(RSK_INFINITE_UPGRADES);
         case RG_ARROWS_5:
         case RG_ARROWS_10:
         case RG_ARROWS_30:
@@ -6180,7 +6193,6 @@ void InitRandoItemTable() {
         GET_ITEM(RG_ICE_CAVERN_COMPASS,                OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_ICE_CAVERN_COMPASS),
         GET_ITEM(RG_MAGIC_BEAN_PACK,                   OBJECT_GI_BEAN,     GID_BEAN,             TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_MAGIC_BEAN_PACK),
         GET_ITEM(RG_TYCOON_WALLET,                     OBJECT_GI_PURSE,    GID_WALLET_GIANT,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_TYCOON_WALLET),
-        GET_ITEM(RG_PROGRESSIVE_BOMBCHUS,              OBJECT_GI_BOMB_2,   GID_BOMBCHU,          0x33,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_PROGRESSIVE_BOMBCHUS),
         GET_ITEM(RG_QUIVER_INF,                        OBJECT_GI_ARROWCASE,GID_QUIVER_50,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_QUIVER_INF),
         GET_ITEM(RG_BOMB_BAG_INF,                      OBJECT_GI_BOMBPOUCH,GID_BOMB_BAG_40,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_BOMB_BAG_INF),
         GET_ITEM(RG_BULLET_BAG_INF,                    OBJECT_GI_DEKUPOUCH,GID_BULLET_BAG_50,    TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_BULLET_BAG_INF),
