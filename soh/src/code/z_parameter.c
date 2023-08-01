@@ -6219,11 +6219,10 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
                         G_AC_NONE | G_ZS_PRIM | G_RM_XLU_SURF | G_RM_XLU_SURF2);
 
         char* totalTimeText = GameplayStats_GetCurrentTime();
-        char* textPointer = &totalTimeText[0];
-        uint8_t textLength = strlen(textPointer);
+        size_t textLength = strlen(totalTimeText);
         uint16_t textureIndex = 0;
 
-        for (uint16_t i = 0; i < textLength; i++) {
+        for (size_t i = 0; i < textLength; i++) {
             if (totalTimeText[i] == ':' || totalTimeText[i] == '.') {
                 textureIndex = 10;
             } else {
@@ -6268,6 +6267,7 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
             gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2,
                                     (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
         }
+        free(totalTimeText);
 
         CLOSE_DISPS(play->state.gfxCtx);
     }

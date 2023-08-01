@@ -279,8 +279,8 @@ std::string formatHexOnlyGameplayStat(uint32_t value) {
 
 extern "C" char* GameplayStats_GetCurrentTime() {
     std::string timeString = formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME).c_str();
-    const int stringLength = timeString.length();
-    char* timeChar = new char[stringLength + 1];
+    const size_t stringLength = timeString.length();
+    char* timeChar = (char*)malloc(stringLength + 1); // We need to use malloc so we can free this from a C file.
     strcpy(timeChar, timeString.c_str());
     return timeChar;
 }
@@ -383,11 +383,11 @@ void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
     });
 }
 
-void GameplayStatsRow(const char* label, std::string value, ImVec4 color = COLOR_WHITE) {
+void GameplayStatsRow(const char* label, const std::string& value, ImVec4 color = COLOR_WHITE) {
     ImGui::PushStyleColor(ImGuiCol_Text, color);
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
-    ImGui::Text(label);
+    ImGui::Text("%s", label);
     ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(value.c_str()).x - 8.0f));
     ImGui::Text("%s", value.c_str());
     ImGui::PopStyleColor();
