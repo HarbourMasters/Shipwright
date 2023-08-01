@@ -1565,6 +1565,21 @@ void Player_DrawAdultItem(PlayState* play, Gfx* dlist) {
     }
 }
 
+//draws the bow and hookshot, which need an alternate method to make sure bowstrings and hookshot tips scale properly
+void Player_DrawRightHandItem(PlayState* play, Gfx* dlist) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    // rescale adult items for child, otherwise clipping occurs
+    if (LINK_IS_CHILD) {
+        Matrix_Scale(1.0f / 1.35f, 1.0f / 1.35f, 1.0f / 1.35f, MTXMODE_APPLY);
+    }
+
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPDisplayList(POLY_OPA_DISP++, dlist);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
 void Player_DrawOcarinaItem(PlayState* play, Gfx* dlist) {
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -1749,26 +1764,26 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                     break;
                 case 11:
                     if (this->itemAction == PLAYER_IA_SLINGSHOT) {
-                        Player_DrawChildItem(play, gLinkSlingshotDL);
+                        OPEN_DISPS(play->state.gfxCtx);
+
+                        // rescale child items for adult, otherwise clipping occurs
+                        if (LINK_IS_ADULT) {
+                            Matrix_Scale(1.35f, 1.35f, 1.35f, MTXMODE_APPLY);
+                        }
+
+                        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                        gSPDisplayList(POLY_OPA_DISP++, gLinkSlingshotDL);
+
+                        CLOSE_DISPS(play->state.gfxCtx);
                     } else {
                         // todo: For some reason, this isn't at the right angle for
                         // child link compared to MM Bow. Probably needs animation edits
-                        Player_DrawAdultItem(play, gLinkBowDL);
+                        Player_DrawRightHandItem(play, gLinkBowDL);
                     }
                     break;
                 case 15:
-                    OPEN_DISPS(play->state.gfxCtx);
-
-                    // rescale adult items for child, otherwise clipping occurs
-                    if (LINK_IS_CHILD) {
-                        Matrix_Scale(1.0f / 1.35f, 1.0f / 1.35f, 1.0f / 1.35f, MTXMODE_APPLY);
-                    }
-
-                    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                    gSPDisplayList(POLY_OPA_DISP++, gLinkHookshotDL);
-
-                    CLOSE_DISPS(play->state.gfxCtx);
+                    Player_DrawRightHandItem(play, gLinkHookshotDL);
                     break;
             }
             //Ocarinas check to see if the item is being used instead of rightHandType.
