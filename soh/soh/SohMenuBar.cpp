@@ -868,6 +868,9 @@ void DrawEnhancementsMenu() {
             UIWidgets::PaddedEnhancementCheckbox("Enemy Health Bars", "gEnemyHealthBar", true, false);
             UIWidgets::Tooltip("Renders a health bar for enemies when Z-Targeted");
 
+            UIWidgets::PaddedEnhancementCheckbox("Targetable Hookshot Reticle", "gHookshotableReticle", true, false);
+            UIWidgets::Tooltip("Use a different color when aiming at hookshotable collision");
+
             ImGui::EndMenu();
         }
 
