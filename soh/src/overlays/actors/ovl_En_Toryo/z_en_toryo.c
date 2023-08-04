@@ -292,7 +292,8 @@ void func_80B20768(EnToryo* this, PlayState* play) {
     s16 sp30;
 
     // Animation Count should be no more than 1 to guarantee putaway is complete after giving the saw
-    if (this->unk_1E4 == 3 && play->animationCtx.animationCount <= 1) {
+    bool checkAnim = (CVarGetInteger("gFixSawSoftlock", 0) != 0 || CVarGetInteger("gSkipText", 0) != 0) ? play->animationCtx.animationCount <= 1 : true;
+    if (this->unk_1E4 == 3 && checkAnim) {
         Actor_ProcessTalkRequest(&this->actor, play);
         Message_ContinueTextbox(play, this->actor.textId);
         this->unk_1E4 = 1;

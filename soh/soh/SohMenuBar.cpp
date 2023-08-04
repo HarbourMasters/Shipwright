@@ -1007,6 +1007,9 @@ void DrawEnhancementsMenu() {
                 ApplyAuthenticGfxPatches();
             }
             UIWidgets::Tooltip("Fixes authentic out of bounds texture reads, instead loading textures with the correct size");
+            UIWidgets::PaddedEnhancementCheckbox("Fix Poacher's Saw Softlock", "gFixSawSoftlock", true, false, CVarGetInteger("gSkipText", 0),
+                "This is disabled because it is forced on when Skip Text is enabled.", UIWidgets::CheckboxGraphics::Checkmark);
+            UIWidgets::Tooltip("Prevents the Poacher's Saw softlock from mashing through the text, or with Skip Text enabled.");
 
             ImGui::EndMenu();
         }
