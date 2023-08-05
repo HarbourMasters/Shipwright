@@ -1325,12 +1325,6 @@ void func_80090A28(Player* this, Vec3f* vecs) {
     Matrix_MultVec3f(&D_80126098, &vecs[2]);
 }
 
-static const Vtx object_link_boyVtx_02CB18_B[] = {
-    VTX(-50, -30, 0, -683, 2048, 255, 0, 0, 255),
-    VTX(50, -30, 0, 2731, 2048, 255, 0, 0, 255),
-    VTX(0, 70, 0, 1024, -1365, 255, 0, 0, 255),
-};
-
 void Player_DrawHookshotReticle(PlayState* play, Player* this, f32 hookshotRange) {
     static Vec3f D_801260C8 = { -500.0f, -100.0f, 0.0f };
     CollisionPoly* colPoly;
@@ -1373,7 +1367,7 @@ void Player_DrawHookshotReticle(PlayState* play, Player* this, f32 hookshotRange
             const Color_RGBA8 color = CVarGetColor("gCosmetics.HookshotReticle_NonTarget.Value", defaultColor);
             gDPSetPrimColor(WORLD_OVERLAY_DISP++, 0, 0, color.r, color.g, color.b, color.a);
         }
-        gSPVertex(WORLD_OVERLAY_DISP++, &object_link_boyVtx_02CB18_B[0], 3, 0);
+        gSPVertex(WORLD_OVERLAY_DISP++, (uintptr_t)gLinkAdultHookshotReticleTex, 3, 0);
         gSP1Triangle(WORLD_OVERLAY_DISP++, 0, 1, 2, 0);
 
         CLOSE_DISPS(play->state.gfxCtx);
