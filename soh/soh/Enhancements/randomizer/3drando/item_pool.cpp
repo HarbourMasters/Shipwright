@@ -570,7 +570,7 @@ static void PlaceVanillaCowMilk() {
 }
 
 static void SetScarceItemPool() {
-  ReplaceMaxItem(PROGRESSIVE_BOMBCHUS, InfiniteUpgrades ? 2 : 3);//reduced with infinite upgrades because the second one gives infinite
+  ReplaceMaxItem(PROGRESSIVE_BOMBCHUS, 3);
   ReplaceMaxItem(BOMBCHU_5, 1);
   ReplaceMaxItem(BOMBCHU_10, 2);
   ReplaceMaxItem(BOMBCHU_20, 0);
@@ -818,7 +818,7 @@ void GenerateItemPool() {
   }
 
   if (BombchusInLogic) {
-    AddItemToMainPool(PROGRESSIVE_BOMBCHUS, InfiniteUpgrades ? 2 : 5);//reduced with infinite upgrades because the second one gives infinite
+    AddItemToMainPool(PROGRESSIVE_BOMBCHUS, 5);
   } else {
     AddItemToMainPool(BOMBCHU_5);
     AddItemToMainPool(BOMBCHU_10, 3);
