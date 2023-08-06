@@ -483,7 +483,7 @@ void HintTable_Init_Exclude_Overworld() {
 
     hintTable[GV_WATERFALL_FREESTANDING_POH] = HintText::Exclude({
                        //obscure text
-                       Text{"behind a #desert waterfall# is", /*french*/"#derrière la cascade du désert# se cache", /*spanish*/"tras una #desierta cascada# yace"},
+                       Text{"behind a #valley waterfall# is", /*french*/"#derrière la cascade du désert# se cache", /*spanish*/"tras una #desierta cascada# yace"},
   });
 
     hintTable[GV_CRATE_FREESTANDING_POH] = HintText::Exclude({
