@@ -577,7 +577,7 @@ void EnBox_SpawnIceSmoke(EnBox* this, PlayState* play) {
     if (Rand_ZeroOne() < 0.3f) {
         f0 = 2.0f * Rand_ZeroOne() - 1.0f;
         pos = this->dyna.actor.world.pos;
-        if (this->type == ENBOX_TYPE_SMALL || this->type == ENBOX_TYPE_6 || this->type == ENBOX_TYPE_ROOM_CLEAR_SMALL || 
+        if (this->type == ENBOX_TYPE_SMALL || this->type == ENBOX_TYPE_6 || this->type == ENBOX_TYPE_ROOM_CLEAR_SMALL ||
             this->type == ENBOX_TYPE_SWITCH_FLAG_FALL_SMALL) {
             pos.x += f0 * 10.0f * Math_SinS(this->dyna.actor.world.rot.y + 0x4000);
             pos.z += f0 * 10.0f * Math_CosS(this->dyna.actor.world.rot.y + 0x4000);

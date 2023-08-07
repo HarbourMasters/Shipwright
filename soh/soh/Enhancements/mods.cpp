@@ -634,6 +634,9 @@ std::vector<AltTrapType> getEnabledAddTraps () {
             enabledAddTraps.push_back(static_cast<AltTrapType>(i));
         }
     }
+    if (enabledAddTraps.size() == 0) {
+        enabledAddTraps.push_back(ADD_ICE_TRAP);
+    }
     return enabledAddTraps;
 };
 
@@ -642,8 +645,8 @@ void RegisterAltTrapTypes() {
     static int statusTimer = -1;
     static int eventTimer = -1;
 
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnTrapProcessed>([]() {
-        if (!CVarGetInteger("gAddTraps.enabled", 0)) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) {
+        if (!CVarGetInteger("gAddTraps.enabled", 0) || itemEntry.modIndex != MOD_RANDOMIZER || itemEntry.getItemId != RG_ICE_TRAP) {
             return;
         }
         roll = RandomElement(getEnabledAddTraps());

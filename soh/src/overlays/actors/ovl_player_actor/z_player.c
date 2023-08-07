@@ -6319,7 +6319,7 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
 
     if(gSaveContext.pendingIceTrapCount) {
         gSaveContext.pendingIceTrapCount--;
-        GameInteractor_ExecuteOnTrapProcessedHooks();
+        GameInteractor_ExecuteOnItemReceiveHooks(ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_ICE_TRAP));
         if (CVarGetInteger("gAddTraps.enabled", 0)) return;
         this->stateFlags1 &= ~(PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_ITEM_OVER_HEAD);
         this->actor.colChkInfo.damage = 0;
@@ -6356,7 +6356,6 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
                     Player_SetPendingFlag(this, play);
                     Message_StartTextbox(play, 0xF8, NULL);
                     Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
-                    GameInteractor_ExecuteOnItemReceiveHooks(this->getItemEntry);
                     gSaveContext.pendingIceTrapCount++;
                     return 1;
                 }
@@ -12785,7 +12784,6 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
                 this->unk_862 = 0;
                 gSaveContext.pendingIceTrapCount++;
                 Player_SetPendingFlag(this, play);
-                GameInteractor_ExecuteOnItemReceiveHooks(giEntry);
             }
 
             this->getItemId = GI_NONE;
@@ -12953,12 +12951,10 @@ void func_8084E6D4(Player* this, PlayState* play) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_CLEAR_TAG, this->actor.world.pos.x,
                                 this->actor.world.pos.y + 100.0f, this->actor.world.pos.z, 0, 0, 0, 0, true);
                     func_8083C0E8(this, play);
-                    GameInteractor_ExecuteOnItemReceiveHooks(this->getItemEntry);
                 } else if (gSaveContext.n64ddFlag) {
                     gSaveContext.pendingIceTrapCount++;
                     Player_SetPendingFlag(this, play);
                     func_8083C0E8(this, play);
-                    GameInteractor_ExecuteOnItemReceiveHooks(this->getItemEntry);
                 } else {
                     this->actor.colChkInfo.damage = 0;
                     func_80837C0C(play, this, 3, 0.0f, 0.0f, 0, 20);
@@ -12967,9 +12963,9 @@ void func_8084E6D4(Player* this, PlayState* play) {
             }
 
             if (this->skelAnime.animation == &gPlayerAnim_link_normal_box_kick) {
-                    func_808322D0(play, this, &gPlayerAnim_link_demo_get_itemB);
+                func_808322D0(play, this, &gPlayerAnim_link_demo_get_itemB);
             } else {
-                    func_808322D0(play, this, &gPlayerAnim_link_demo_get_itemA);
+                func_808322D0(play, this, &gPlayerAnim_link_demo_get_itemA);
             }
 
             this->unk_850 = 2;
