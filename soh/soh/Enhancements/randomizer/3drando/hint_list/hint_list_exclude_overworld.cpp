@@ -423,6 +423,11 @@ void HintTable_Init_Exclude_Overworld() {
                        Text{"#Medigoron# sells", /*french*/"#Medigoron# vend", /*spanish*/"#Medigoron# vende"},
   });
 
+  hintTable[KAK_GRANNYS_SHOP] = HintText::Exclude({
+                       // obscure text
+                       Text{"the #potion shop lady# sells", /*french*/"la #dame du magasin de potion# vend", /*spanish*/"la #señora de la tienda de pociones# vende" },
+  });
+
     hintTable[KAK_IMPAS_HOUSE_FREESTANDING_POH] = HintText::Exclude({
                        //obscure text
                        Text{"#imprisoned in a house# lies", /*french*/"#encagé dans une maison# gît", /*spanish*/"#en una casa entre rejas# yace"},
