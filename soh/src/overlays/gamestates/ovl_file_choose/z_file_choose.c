@@ -346,7 +346,11 @@ void FileChoose_UpdateRandomizer() {
             func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_HORSE, 0, 7, 1);
             return;
     } else if (CVarGetInteger("gRandoGenerating", 0) == 0 && generating) {
-            Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
+            if (SpoilerFileExists(CVarGetString("gSpoilerLog", ""))) {
+                Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
+            } else {
+                func_80078884(NA_SE_SY_OCARINA_ERROR);
+            }
             func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
             generating = 0;
             return;
