@@ -763,6 +763,7 @@ static void WriteHints(int language) {
     if (ganonHintText != ""){
       jsonData["ganonHintText"] = ganonHintText;
       jsonData["lightArrowHintLoc"] = GetLightArrowHintLoc();
+
     }
     if (dampesText != ""){
       jsonData["dampeText"] = dampesText;
@@ -772,6 +773,7 @@ static void WriteHints(int language) {
       jsonData["gregText"] = gregText;
       jsonData["gregLoc"] = Rando::StaticData::GetLocation(GetItemLocation(RG_GREG_RUPEE)->GetRandomizerCheck())->GetName();
     }
+
     jsonData["sheikText"] = sheikText;
     jsonData["sariaText"] = sariaText;
     jsonData["sariaHintLoc"] = GetSariaHintLoc();
