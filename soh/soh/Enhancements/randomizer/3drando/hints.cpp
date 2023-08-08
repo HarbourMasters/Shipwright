@@ -515,10 +515,6 @@ static void CreateRandomLocationHint(const bool goodItem = false) {
   }
 }
 
-static void CreateGoodItemHint() {
-  CreateRandomLocationHint(true);
-}
-
 static void CreateJunkHint() {
   //duplicate junk hints are possible for now
   const HintText junkHint = RandomElement(GetHintCategory(HintCategory::Junk));
@@ -1057,7 +1053,7 @@ void CreateAllHints() {
       auto alwaysHintLocations = FilterFromPool(ctx->allLocations, [ctx](const RandomizerCheck loc) {
           return ((Rando::StaticData::GetLocation(loc)->GetHint()->GetType() == HintCategory::Always) ||
                   // If we have Rainbow Bridge set to Greg, add a hint for where Greg is
-                  (Bridge.Is(RAINBOWBRIDGE_GREG) && !GregHintText &&
+                  (Bridge.Is(RAINBOWBRIDGE_GREG) &&
                    ctx->GetItemLocation(loc)->GetPlacedRandomizerGet() == RG_GREG_RUPEE)) &&
                  ctx->GetItemLocation(loc)->IsHintable() && !(ctx->GetItemLocation(loc)->IsHintedAt());
       });
@@ -1173,7 +1169,7 @@ void CreateAllHints() {
           CreateRandomLocationHint();
 
       } else if (type == HINT_TYPE_ITEM) {
-          CreateGoodItemHint();
+        CreateRandomLocationHint(true);
 
       } else if (type == HINT_TYPE_SONG) {
           std::vector<RandomizerCheck> songHintLocations =
