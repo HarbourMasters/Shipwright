@@ -742,12 +742,18 @@ static void WriteHints(int language) {
     std::string sariaText = AutoFormatHintTextString(unformattedSariaText);
 
     jsonData["ganonText"] = ganonText;
-    jsonData["ganonHintText"] = ganonHintText;
-    jsonData["lightArrowHintLoc"] = GetLightArrowHintLoc();
-    jsonData["dampeText"] = dampesText;
-    jsonData["dampeHintLoc"] = GetDampeHintLoc();
-    jsonData["gregText"] = gregText;
-    jsonData["gregLoc"] = GetItemLocation(GREG_RUPEE)->GetName();
+    if (ganonHintText != ""){
+      jsonData["ganonHintText"] = ganonHintText;
+      jsonData["lightArrowHintLoc"] = GetLightArrowHintLoc();
+    }
+    if (dampesText != ""){
+      jsonData["dampeText"] = dampesText;
+      jsonData["dampeHintLoc"] = GetDampeHintLoc();
+    }
+    if (gregText != ""){
+      jsonData["gregText"] = gregText;
+      jsonData["gregLoc"] = GetItemLocation(GREG_RUPEE)->GetName();
+    }
     jsonData["sheikText"] = sheikText;
     jsonData["sariaText"] = sariaText;
     jsonData["sariaHintLoc"] = GetSariaHintLoc();
