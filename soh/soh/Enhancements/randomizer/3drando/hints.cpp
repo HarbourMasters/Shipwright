@@ -489,10 +489,6 @@ static void CreateRandomLocationHint(const bool goodItem = false) {
   }
 }
 
-static void CreateGoodItemHint() {
-  CreateRandomLocationHint(true);
-}
-
 static void CreateJunkHint() {
   //duplicate junk hints are possible for now
   const HintText junkHint = RandomElement(GetHintCategory(HintCategory::Junk));
@@ -997,13 +993,12 @@ void CreateAllHints() {
     auto alwaysHintLocations = FilterFromPool(allLocations, [](const uint32_t loc){
         return ((Location(loc)->GetHint().GetType() == HintCategory::Always) ||
                 // If we have Rainbow Bridge set to Greg, add a hint for where Greg is
-                (Bridge.Is(RAINBOWBRIDGE_GREG) && !GregHintText && Location(loc)->GetPlacedItemKey() == GREG_RUPEE)) &&
-               Location(loc)->IsHintable()        && !(Location(loc)->IsHintedAt());
+                (Bridge.Is(RAINBOWBRIDGE_GREG) && Location(loc)->GetPlacedItemKey() == GREG_RUPEE)) && Location(loc)->IsHintable();
     });
 
     for (auto& hint : conditionalAlwaysHints) {
         uint32_t loc = hint.first;
-        if (hint.second() && Location(loc)->IsHintable()) { // && !Location(loc)->IsHintedAt()) { This looks useless now, buggy with my changes
+        if (hint.second() && Location(loc)->IsHintable()) {
             alwaysHintLocations.push_back(loc);
         }
     }
@@ -1106,7 +1101,7 @@ void CreateAllHints() {
       CreateRandomLocationHint();
 
     } else if (type == HINT_TYPE_ITEM) {
-      CreateGoodItemHint();
+      CreateRandomLocationHint(true);
 
     } else if (type == HINT_TYPE_SONG){
       std::vector<uint32_t> songHintLocations = FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->IsCategory(Category::cSong) && Location(loc)->IsHintable() && !(Location(loc)->IsHintedAt());});
