@@ -236,7 +236,6 @@ void EnDekunuts_SetupDie(EnDekunuts* this) {
     this->actor.speedXZ = 0.0f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_NUTS_DEAD);
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-    //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MAD_SCRUB]++;
 }
 
 void EnDekunuts_Wait(EnDekunuts* this, PlayState* play) {

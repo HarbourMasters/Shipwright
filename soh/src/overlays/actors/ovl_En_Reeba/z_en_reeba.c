@@ -442,7 +442,6 @@ void func_80AE5A9C(EnReeba* this, PlayState* play) {
         Enemy_StartFinishingBlow(play, &this->actor);
         this->actionfunc = func_80AE5C38;
         GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-        //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER]++;
     }
 }
 
@@ -498,13 +497,6 @@ void func_80AE5C38(EnReeba* this, PlayState* play) {
 
                 Actor_Kill(&this->actor);
                 GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-                /*
-                if (this->isBig) {
-                    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER_BIG]++;
-                } else {
-                    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER]++;
-                }
-                */
             }
         }
     }

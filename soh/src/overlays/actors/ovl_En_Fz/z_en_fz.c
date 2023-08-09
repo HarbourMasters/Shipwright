@@ -364,7 +364,6 @@ void EnFz_ApplyDamage(EnFz* this, PlayState* play) {
                         EnFz_Damaged(this, play, &vec, 30, 10.0f);
                         EnFz_SetupDespawn(this, play);
                         GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-                        //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FREEZARD]++;
                     }
                 }
             } else {

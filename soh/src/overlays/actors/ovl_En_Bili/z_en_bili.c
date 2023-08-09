@@ -234,7 +234,6 @@ void EnBili_SetupDie(EnBili* this) {
     this->actionFunc = EnBili_Die;
     this->actor.speedXZ = 0.0f;
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-    //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BIRI]++;
 }
 
 /**

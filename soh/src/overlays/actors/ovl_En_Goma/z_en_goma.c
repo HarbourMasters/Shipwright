@@ -399,7 +399,6 @@ void EnGoma_SetupDead(EnGoma* this) {
     this->actionFunc = EnGoma_Dead;
     this->actionTimer = 3;
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-    //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GOHMA_LARVA]++;
 }
 
 void EnGoma_Dead(EnGoma* this, PlayState* play) {
@@ -671,7 +670,6 @@ void EnGoma_UpdateHit(EnGoma* this, PlayState* play) {
                 EnGoma_SpawnHatchDebris(this, play);
                 Actor_Kill(&this->actor);
                 GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-                //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GOHMA_LARVA]++;
             }
         }
     }

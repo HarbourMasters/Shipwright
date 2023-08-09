@@ -580,13 +580,6 @@ void EnPoField_Death(EnPoField* this, PlayState* play) {
         if (this->actionTimer == 1) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_EXTINCT);
             GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-            /*
-            if (this->actor.params == EN_PO_FIELD_BIG) {
-                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_BIG]++;
-            } else {
-                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE]++;
-            }
-            */
         }
     } else if (this->actionTimer == 28) {
         EnPoField_SetupSoulIdle(this, play);

@@ -373,7 +373,6 @@ void EnBubble_Pop(EnBubble* this, PlayState* play) {
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 60, NA_SE_EN_AWA_BREAK);
         Actor_Kill(&this->actor);
         GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-        //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SHABOM]++;
     }
 }
 

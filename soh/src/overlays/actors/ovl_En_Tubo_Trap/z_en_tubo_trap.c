@@ -177,7 +177,6 @@ void EnTuboTrap_HandleImpact(EnTuboTrap* this, PlayState* play) {
         EnTuboTrap_DropCollectible(this, play);
         Actor_Kill(&this->actor);
         GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-        //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLYING_POT]++;
         return;
     }
 
@@ -189,7 +188,6 @@ void EnTuboTrap_HandleImpact(EnTuboTrap* this, PlayState* play) {
         EnTuboTrap_DropCollectible(this, play);
         Actor_Kill(&this->actor);
         GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-        //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLYING_POT]++;
         return;
     }
 
@@ -201,7 +199,6 @@ void EnTuboTrap_HandleImpact(EnTuboTrap* this, PlayState* play) {
         EnTuboTrap_DropCollectible(this, play);
         Actor_Kill(&this->actor);
         GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-        //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLYING_POT]++;
         return;
     }
 
@@ -214,7 +211,6 @@ void EnTuboTrap_HandleImpact(EnTuboTrap* this, PlayState* play) {
             EnTuboTrap_DropCollectible(this, play);
             Actor_Kill(&this->actor);
             GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-            //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLYING_POT]++;
             return;
         }
     }
@@ -225,7 +221,6 @@ void EnTuboTrap_HandleImpact(EnTuboTrap* this, PlayState* play) {
         EnTuboTrap_DropCollectible(this, play);
         Actor_Kill(&this->actor);
         GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-        //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLYING_POT]++;
         return;
     }
 }

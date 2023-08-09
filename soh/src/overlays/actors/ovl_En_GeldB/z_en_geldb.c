@@ -1322,7 +1322,6 @@ void EnGeldB_SetupDefeated(EnGeldB* this) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_GERUDOFT_DEAD);
     EnGeldB_SetupAction(this, EnGeldB_Defeated);
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-    //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GERUDO_THIEF]++;
 }
 
 void EnGeldB_Defeated(EnGeldB* this, PlayState* play) {

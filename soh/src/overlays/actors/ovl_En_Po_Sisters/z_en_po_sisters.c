@@ -1182,7 +1182,6 @@ void func_80ADC10C(EnPoSisters* this, PlayState* play) {
                 Enemy_StartFinishingBlow(play, &this->actor);
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_PO_SISTER_DEAD);
                 GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-                //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_SISTERS]++;
             }
             func_80AD95D8(this);
         }

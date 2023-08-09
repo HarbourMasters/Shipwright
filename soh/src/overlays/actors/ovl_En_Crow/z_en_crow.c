@@ -192,7 +192,6 @@ void EnCrow_SetupDie(EnCrow* this) {
     this->actor.colorFilterTimer = 0;
     this->actionFunc = EnCrow_Die;
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-    //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GUAY]++;
 }
 
 void EnCrow_SetupTurnAway(EnCrow* this) {

@@ -410,13 +410,6 @@ void EnDekubaba_SetupPrunedSomersault(EnDekubaba* this) {
     this->actionFunc = EnDekubaba_PrunedSomersault;
 
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-    /*
-    if (this->actor.params == DEKUBABA_BIG) {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG]++;
-    } else {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA]++;
-    }
-    */
 }
 
 void EnDekubaba_SetupShrinkDie(EnDekubaba* this) {
@@ -426,13 +419,6 @@ void EnDekubaba_SetupShrinkDie(EnDekubaba* this) {
     this->actionFunc = EnDekubaba_ShrinkDie;
 
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-    /*
-    if (this->actor.params == DEKUBABA_BIG) {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG]++;
-    } else {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA]++;
-    }
-    */
 }
 
 void EnDekubaba_SetupStunnedVertical(EnDekubaba* this) {

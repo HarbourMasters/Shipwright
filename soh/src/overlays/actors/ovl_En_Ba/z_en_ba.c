@@ -456,7 +456,6 @@ void EnBa_Update(Actor* thisx, PlayState* play) {
         if (this->actor.colChkInfo.health == 0) {
             func_809B75A0(this, play);
             GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-            //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PARASITIC_TENTACLE]++;
         } else {
             func_809B7174(this);
         }

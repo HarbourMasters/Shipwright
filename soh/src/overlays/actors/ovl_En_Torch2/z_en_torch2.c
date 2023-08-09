@@ -557,7 +557,6 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
             if (sAlpha - 13 <= 0) {
                 sAlpha = 0;
                 GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-                //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DARK_LINK]++;
                 Actor_Kill(&this->actor);
                 return;
             }

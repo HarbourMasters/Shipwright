@@ -258,7 +258,6 @@ void EnOkuta_SetupDie(EnOkuta* this) {
     this->timer = 0;
     this->actionFunc = EnOkuta_Die;
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-    //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_OCTOROK]++;
 }
 
 void EnOkuta_SetupFreeze(EnOkuta* this) {

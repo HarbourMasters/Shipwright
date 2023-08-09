@@ -1925,13 +1925,6 @@ void EnZf_SetupDie(EnZf* this) {
     EnZf_SetupAction(this, EnZf_Die);
     
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-    /*
-    if (this->actor.params == ENZF_TYPE_DINOLFOS) {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DINOLFOS]++;
-    } else {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LIZALFOS]++;
-    }
-    */
 }
 
 void EnZf_Die(EnZf* this, PlayState* play) {

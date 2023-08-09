@@ -614,7 +614,6 @@ void EnEiyer_UpdateDamage(EnEiyer* this, PlayState* play) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_EIER_DEAD);
                 this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                 GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-                //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_STINGER]++;
             }
 
             // If underground, one hit kill

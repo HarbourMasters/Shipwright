@@ -578,7 +578,6 @@ void func_809D00F4(EnBw* this) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_BUBLEWALK_DEAD);
     EnBw_SetupAction(this, func_809D014C);
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-    //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TORCH_SLUG]++;
 }
 
 void func_809D014C(EnBw* this, PlayState* play) {

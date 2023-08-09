@@ -886,7 +886,6 @@ void EnAm_Update(Actor* thisx, PlayState* play) {
                 }
                 
                 GameInteractor_ExecuteOnEnemyDefeat(thisx);
-                //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ARMOS]++;
 
                 Actor_Kill(&this->dyna.actor);
                 return;

@@ -112,7 +112,6 @@ void EnYukabyun_Break(EnYukabyun* this, PlayState* play) {
                              gFloorTileEnemyFragmentDL);
     Actor_Kill(&this->actor);
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-    //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLOOR_TILE]++;
 }
 
 void EnYukabyun_Update(Actor* thisx, PlayState* play) {

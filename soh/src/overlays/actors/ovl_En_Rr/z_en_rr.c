@@ -383,7 +383,6 @@ void EnRr_SetupDeath(EnRr* this) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_LIKE_DEAD);
     this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-    //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LIKE_LIKE]++;
 }
 
 void EnRr_SetupStunned(EnRr* this) {

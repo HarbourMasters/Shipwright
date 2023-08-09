@@ -649,7 +649,6 @@ void func_809BE26C(EnBigokuta* this, PlayState* play) {
             Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xB0);
             Actor_Kill(&this->actor);
             GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
-            //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BIG_OCTO]++;
         }
     }
 }
