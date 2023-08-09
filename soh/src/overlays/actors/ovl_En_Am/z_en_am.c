@@ -884,8 +884,9 @@ void EnAm_Update(Actor* thisx, PlayState* play) {
                     func_8002836C(play, &dustPos, &zeroVec, &zeroVec, &dustPrimColor, &dustEnvColor, 200, 45, 12);
                     dustPosScale += 60.0f;
                 }
-
-                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ARMOS]++;
+                
+                GameInteractor_ExecuteOnEnemyDefeat(thisx);
+                //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ARMOS]++;
 
                 Actor_Kill(&this->dyna.actor);
                 return;

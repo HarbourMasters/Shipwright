@@ -289,9 +289,12 @@ void EnTp_SetupDie(EnTp* this) {
     }
     this->actionIndex = TAILPASARAN_ACTION_DIE;
     EnTp_SetupAction(this, EnTp_Die);
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    /*
     if (this->actor.params == TAILPASARAN_HEAD) {  // Only count the head, otherwise each body segment will increment
         gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TAILPASARAN]++;
     }
+    */
 }
 
 /**

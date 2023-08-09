@@ -176,7 +176,8 @@ void EnTuboTrap_HandleImpact(EnTuboTrap* this, PlayState* play) {
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 40, NA_SE_EV_BOMB_DROP_WATER);
         EnTuboTrap_DropCollectible(this, play);
         Actor_Kill(&this->actor);
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLYING_POT]++;
+        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+        //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLYING_POT]++;
         return;
     }
 
@@ -187,7 +188,8 @@ void EnTuboTrap_HandleImpact(EnTuboTrap* this, PlayState* play) {
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 40, NA_SE_EV_POT_BROKEN);
         EnTuboTrap_DropCollectible(this, play);
         Actor_Kill(&this->actor);
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLYING_POT]++;
+        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+        //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLYING_POT]++;
         return;
     }
 
@@ -198,7 +200,8 @@ void EnTuboTrap_HandleImpact(EnTuboTrap* this, PlayState* play) {
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 40, NA_SE_EV_POT_BROKEN);
         EnTuboTrap_DropCollectible(this, play);
         Actor_Kill(&this->actor);
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLYING_POT]++;
+        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+        //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLYING_POT]++;
         return;
     }
 
@@ -210,7 +213,8 @@ void EnTuboTrap_HandleImpact(EnTuboTrap* this, PlayState* play) {
             SoundSource_PlaySfxAtFixedWorldPos(play, &player2->actor.world.pos, 40, NA_SE_PL_BODY_HIT);
             EnTuboTrap_DropCollectible(this, play);
             Actor_Kill(&this->actor);
-            gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLYING_POT]++;
+            GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+            //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLYING_POT]++;
             return;
         }
     }
@@ -220,7 +224,8 @@ void EnTuboTrap_HandleImpact(EnTuboTrap* this, PlayState* play) {
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 40, NA_SE_EV_POT_BROKEN);
         EnTuboTrap_DropCollectible(this, play);
         Actor_Kill(&this->actor);
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLYING_POT]++;
+        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+        //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLYING_POT]++;
         return;
     }
 }

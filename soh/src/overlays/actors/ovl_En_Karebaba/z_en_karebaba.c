@@ -182,7 +182,8 @@ void EnKarebaba_SetupDying(EnKarebaba* this) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_DEKU_JR_DEAD);
     this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED;
     this->actionFunc = EnKarebaba_Dying;
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WITHERED_DEKU_BABA]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WITHERED_DEKU_BABA]++;
 }
 
 void EnKarebaba_SetupDeadItemDrop(EnKarebaba* this, PlayState* play) {

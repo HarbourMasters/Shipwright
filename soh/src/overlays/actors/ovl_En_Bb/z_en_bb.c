@@ -465,6 +465,8 @@ void EnBb_SetupDeath(EnBb* this, PlayState* play) {
     this->action = BB_KILL;
     EnBb_SetupAction(this, EnBb_Death);
 
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    /*
     if (this->actor.params == ENBB_GREEN || this->actor.params == ENBB_GREEN_BIG) {
         gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_GREEN]++;
     }
@@ -477,6 +479,7 @@ void EnBb_SetupDeath(EnBb* this, PlayState* play) {
     if (this->actor.params == ENBB_RED) {
         gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_RED]++;
     }
+    */
 }
 
 void EnBb_Death(EnBb* this, PlayState* play) {

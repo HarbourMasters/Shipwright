@@ -442,7 +442,8 @@ void EnDh_SetupDeath(EnDh* this) {
     this->actor.params = ENDH_DEATH;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_DEADHAND_DEAD);
     EnDh_SetupAction(this, EnDh_Death);
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEAD_HAND]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEAD_HAND]++;
 }
 
 void EnDh_Death(EnDh* this, PlayState* play) {

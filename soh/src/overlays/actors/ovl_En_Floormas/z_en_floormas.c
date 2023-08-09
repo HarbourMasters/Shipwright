@@ -441,7 +441,8 @@ void EnFloormas_Die(EnFloormas* this, PlayState* play) {
         // Die
         Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x90);
         EnFloormas_SetupSmShrink(this, play);
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLOORMASTER]++;
+        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+        //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLOORMASTER]++;
     }
 }
 

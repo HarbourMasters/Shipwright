@@ -576,7 +576,8 @@ void func_80B3368C(EnWeiyer* this, PlayState* play) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_EIER_DEAD);
                 this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                 func_80B32724(this);
-                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_STINGER]++;
+                GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+                //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_STINGER]++;
             } else {
                 func_80B325A0(this);
             }

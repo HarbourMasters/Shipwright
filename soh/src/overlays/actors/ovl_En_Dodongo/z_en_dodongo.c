@@ -668,7 +668,8 @@ void EnDodongo_SetupDeath(EnDodongo* this, PlayState* play) {
     this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actor.speedXZ = 0.0f;
     EnDodongo_SetupAction(this, EnDodongo_Death);
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DODONGO]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DODONGO]++;
 }
 
 void EnDodongo_Death(EnDodongo* this, PlayState* play) {

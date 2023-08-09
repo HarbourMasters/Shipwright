@@ -368,7 +368,8 @@ void EnVm_SetupDie(EnVm* this) {
     this->actor.speedXZ = Rand_ZeroOne() + 1.0f;
     this->actor.world.rot.y = Rand_CenteredFloat(65535.0f);
     EnVm_SetupAction(this, EnVm_Die);
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BEAMOS]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+    //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BEAMOS]++;
 }
 
 void EnVm_Die(EnVm* this, PlayState* play) {

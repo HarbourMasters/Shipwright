@@ -447,7 +447,8 @@ void EnNy_SetupDie(EnNy* this, PlayState* play) {
         }
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_NYU_DEAD);
         this->actionFunc = EnNy_Die;
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SPIKE]++;
+        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
+        //gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SPIKE]++;
     }
 }
 
