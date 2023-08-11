@@ -6,6 +6,7 @@
 
 #include "z_en_yukabyun.h"
 #include "objects/object_yukabyun/object_yukabyun.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 

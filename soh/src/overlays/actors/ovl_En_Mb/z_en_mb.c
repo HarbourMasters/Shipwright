@@ -6,6 +6,7 @@
 
 #include "z_en_mb.h"
 #include "objects/object_mb/object_mb.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 /*
  * This actor can have three behaviors:

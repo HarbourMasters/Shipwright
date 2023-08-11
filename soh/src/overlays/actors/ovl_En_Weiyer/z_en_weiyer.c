@@ -6,6 +6,7 @@
 
 #include "z_en_weiyer.h"
 #include "objects/object_ei/object_ei.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 

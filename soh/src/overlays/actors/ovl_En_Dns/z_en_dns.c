@@ -7,6 +7,7 @@
 #include "z_en_dns.h"
 #include "objects/object_shopnuts/object_shopnuts.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 

@@ -1,6 +1,7 @@
 #include "z_en_ny.h"
 #include "objects/object_ny/object_ny.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 

@@ -7,6 +7,7 @@
 #include "z_en_poh.h"
 #include "objects/object_poh/object_poh.h"
 #include "objects/object_po_composer/object_po_composer.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_IGNORE_QUAKE)
 

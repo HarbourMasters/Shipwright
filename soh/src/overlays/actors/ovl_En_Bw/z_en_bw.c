@@ -7,6 +7,7 @@
 #include "z_en_bw.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_bw/object_bw.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 

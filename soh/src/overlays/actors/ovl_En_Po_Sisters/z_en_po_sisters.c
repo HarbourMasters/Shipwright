@@ -8,6 +8,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_po_sisters/object_po_sisters.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_HOOKSHOT_DRAGS | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_ARROW_DRAGGABLE)
 

@@ -1,5 +1,6 @@
 #include "z_en_rd.h"
 #include "objects/object_rd/object_rd.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
 

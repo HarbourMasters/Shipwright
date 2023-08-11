@@ -8,6 +8,7 @@
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 

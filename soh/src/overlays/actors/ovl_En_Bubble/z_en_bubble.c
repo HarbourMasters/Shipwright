@@ -1,5 +1,6 @@
 #include "z_en_bubble.h"
 #include "objects/object_bubble/object_bubble.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_TARGETABLE
 
