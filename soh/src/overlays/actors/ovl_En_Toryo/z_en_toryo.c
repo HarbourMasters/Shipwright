@@ -175,7 +175,7 @@ s32 func_80B203D8(EnToryo* this, PlayState* play) {
                 case 0x5028:
                     ret = 1;
                     if (Message_ShouldAdvance(play)) {
-                        gSaveContext.infTable[23] |= 4;
+                        Flags_SetInfTable(INFTABLE_172);
                         ret = 0;
                     }
                     break;
@@ -188,14 +188,14 @@ s32 func_80B203D8(EnToryo* this, PlayState* play) {
                 case 0x606F:
                     ret = 1;
                     if (Message_ShouldAdvance(play)) {
-                        gSaveContext.infTable[23] |= 2;
+                        Flags_SetInfTable(INFTABLE_171);
                         ret = 0;
                     }
                     break;
                 case 0x606A:
                     ret = 1;
                     if (Message_ShouldAdvance(play)) {
-                        gSaveContext.infTable[23] |= 1;
+                        Flags_SetInfTable(INFTABLE_170);
                         ret = 0;
                     }
                     break;
@@ -244,7 +244,7 @@ u32 func_80B20634(EnToryo* this, PlayState* play) {
     if (this->unk_1E0 != 0) {
         if (this->unk_1E0 == 10) {
             func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
-            if (gSaveContext.infTable[23] & 2) {
+            if (Flags_GetInfTable(INFTABLE_171)) {
                 ret = 0x606E;
             } else {
                 ret = 0x606D;
@@ -263,15 +263,15 @@ s32 func_80B206A0(EnToryo* this, PlayState* play) {
 
     if (textId == 0) {
         if ((this->stateFlags & 1)) {
-            if ((gSaveContext.eventChkInf[9] & 0xF) == 0xF) {
+            if (GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {
                 ret = 0x606C;
-            } else if ((gSaveContext.infTable[23] & 1)) {
+            } else if ((Flags_GetInfTable(INFTABLE_170))) {
                 ret = 0x606B;
             } else {
                 ret = 0x606A;
             }
         } else if ((this->stateFlags & 2)) {
-            if ((gSaveContext.infTable[23] & 4)) {
+            if ((Flags_GetInfTable(INFTABLE_172))) {
                 ret = 0x5029;
             } else {
                 ret = 0x5028;

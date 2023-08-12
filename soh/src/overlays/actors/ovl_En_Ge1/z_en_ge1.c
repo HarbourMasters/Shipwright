@@ -263,7 +263,7 @@ void EnGe1_KickPlayer(EnGe1* this, PlayState* play) {
 
         if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
             play->nextEntranceIndex = 0x1A5;
-        } else if (gSaveContext.eventChkInf[12] & 0x80) { // Caught previously
+        } else if (Flags_GetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO)) { // Caught previously
             play->nextEntranceIndex = 0x5F8;
         } else {
             play->nextEntranceIndex = 0x3B4;
@@ -532,9 +532,9 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
     s32 getItemId;
 
     if (Actor_HasParent(&this->actor, play)) {
-        if (gSaveContext.n64ddFlag && gSaveContext.minigameScore >= 1500 && !(gSaveContext.infTable[25] & 1)) {
-            gSaveContext.itemGetInf[0] |= 0x8000;
-            gSaveContext.infTable[25] |= 1;
+        if (gSaveContext.n64ddFlag && gSaveContext.minigameScore >= 1500 && !Flags_GetInfTable(INFTABLE_190)) {
+            Flags_SetItemGetInf(ITEMGETINF_0F);
+            Flags_SetInfTable(INFTABLE_190);
             this->stateFlags |= GE1_STATE_GIVE_QUIVER;
             this->actor.parent = NULL;
             return;
@@ -543,9 +543,9 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, PlayState* play) {
         }
 
         if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
-            gSaveContext.itemGetInf[0] |= 0x8000;
+            Flags_SetItemGetInf(ITEMGETINF_0F);
         } else {
-            gSaveContext.infTable[25] |= 1;
+            Flags_SetInfTable(INFTABLE_190);
         }
     } else {
         if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
@@ -659,7 +659,7 @@ void EnGe1_BeginGame_Archery(EnGe1* this, PlayState* play) {
                     play->fadeTransition = 0x26;
                     play->sceneLoadFlag = 0x14;
                     gSaveContext.eventInf[0] |= 0x100;
-                    gSaveContext.eventChkInf[6] |= 0x100;
+                    Flags_SetEventChkInf(EVENTCHKINF_PLAYED_HORSEBACK_ARCHERY);
 
                     if (!(player->stateFlags1 & 0x800000)) {
                         func_8002DF54(play, &this->actor, 1);
@@ -712,14 +712,14 @@ void EnGe1_TalkAfterGame_Archery(EnGe1* this, PlayState* play) {
     if (gSaveContext.minigameScore < 1000) {
         this->actor.textId = 0x6045;
         this->actionFunc = EnGe1_TalkNoPrize_Archery;
-    } else if (!(gSaveContext.infTable[25] & 1)) {
+    } else if (!Flags_GetInfTable(INFTABLE_190)) {
         this->actor.textId = 0x6046;
         this->actionFunc = EnGe1_TalkWinPrize_Archery;
         this->stateFlags &= ~GE1_STATE_GIVE_QUIVER;
     } else if (gSaveContext.minigameScore < 1500) {
         this->actor.textId = 0x6047;
         this->actionFunc = EnGe1_TalkNoPrize_Archery;
-    } else if (gSaveContext.itemGetInf[0] & 0x8000) {
+    } else if (Flags_GetItemGetInf(ITEMGETINF_0F)) {
         this->actor.textId = 0x6047;
         this->actionFunc = EnGe1_TalkNoPrize_Archery;
     } else {
@@ -744,8 +744,8 @@ void EnGe1_Wait_Archery(EnGe1* this, PlayState* play) {
     if (!(player->stateFlags1 & 0x800000)) {
         EnGe1_SetTalkAction(this, play, 0x603F, 100.0f, EnGe1_TalkNoHorse_Archery);
     } else {
-        if (gSaveContext.eventChkInf[6] & 0x100) {
-            if (gSaveContext.infTable[25] & 1) {
+        if (Flags_GetEventChkInf(EVENTCHKINF_PLAYED_HORSEBACK_ARCHERY)) {
+            if (Flags_GetInfTable(INFTABLE_190)) {
                 textId = 0x6042;
             } else {
                 textId = 0x6043;

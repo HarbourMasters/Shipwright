@@ -85,7 +85,7 @@ void EnDs_DisplayOddPotionText(EnDs* this, PlayState* play) {
         this->actor.textId = 0x504F;
         this->actionFunc = EnDs_TalkAfterGiveOddPotion;
         this->actor.flags &= ~ACTOR_FLAG_PLAYER_TALKED_TO;
-        gSaveContext.itemGetInf[3] |= 1;
+        Flags_SetItemGetInf(ITEMGETINF_30);
     }
 }
 
@@ -261,10 +261,8 @@ void EnDs_Wait(EnDs* this, PlayState* play) {
             Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             player->actor.textId = 0x504A;
             this->actionFunc = EnDs_OfferOddPotion;
-        } else if (
-            // Always offer blue potion when adult trade is off
-            (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) == RO_GENERIC_OFF) ||
-            gSaveContext.itemGetInf[3] & 1) { // Traded odd mushroom
+        } else if ((gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) == RO_GENERIC_OFF) ||
+            Flags_GetItemGetInf(ITEMGETINF_30)) {
             player->actor.textId = 0x500C;
             this->actionFunc = EnDs_OfferBluePotion;
         } else {

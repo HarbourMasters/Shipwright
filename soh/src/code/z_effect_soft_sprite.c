@@ -2,6 +2,7 @@
 #include "vt.h"
 
 #include "soh/frame_interpolation.h"
+#include <assert.h>
 
 EffectSsInfo sEffectSsInfo = { 0 }; // "EffectSS2Info"
 
@@ -18,7 +19,7 @@ void EffectSs_InitInfo(PlayState* play, s32 tableSize) {
 
     sEffectSsInfo.table =
         GAMESTATE_ALLOC_MC(&play->state, tableSize * sizeof(EffectSs));
-    ASSERT(sEffectSsInfo.table != NULL);
+    assert(sEffectSsInfo.table != NULL);
 
     sEffectSsInfo.searchStartIndex = 0;
     sEffectSsInfo.tableSize = tableSize;
@@ -175,7 +176,7 @@ void EffectSs_Spawn(PlayState* play, s32 type, s32 priority, void* initParams) {
 
     overlayEntry = &gEffectSsOverlayTable[type];
 
-    ASSERT(type < EFFECT_SS_TYPE_MAX);
+    assert(type < EFFECT_SS_TYPE_MAX);
 
     if (EffectSs_FindSlot(priority, &index) != 0) {
         // Abort because we couldn't find a suitable slot to add this effect in

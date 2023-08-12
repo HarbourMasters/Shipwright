@@ -112,14 +112,14 @@ static Gfx* sAdultEraDLs[] = {
 };
 
 u16 func_80A78FB0(PlayState* play) {
-    if (gSaveContext.eventChkInf[1] & 0x10) {
-        if (gSaveContext.infTable[9] & 0x80) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
+        if (Flags_GetInfTable(INFTABLE_97)) {
             return 0x2046;
         } else {
             return 0x2045;
         }
     }
-    if (gSaveContext.infTable[9] & 0x10) {
+    if (Flags_GetInfTable(INFTABLE_94)) {
         return 0x2040;
     } else {
         return 0x203F;
@@ -133,7 +133,7 @@ u16 func_80A79010(PlayState* play) {
     if (temp_v0 != 0) {
         return temp_v0;
     }
-    if (gSaveContext.eventChkInf[1] & 0x100) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED)) {
         if (IS_DAY) {
             return 0x205F;
         } else {
@@ -147,8 +147,8 @@ u16 func_80A79010(PlayState* play) {
         case 1:
             if (!(player->stateFlags1 & 0x800000)) {
                 return 0x2036;
-            } else if (gSaveContext.eventChkInf[1] & 0x800) {
-                if (gSaveContext.infTable[10] & 4) {
+            } else if (Flags_GetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO)) {
+                if (Flags_GetInfTable(INFTABLE_A2)) {
                     return 0x2036;
                 } else {
                     return 0x2038;
@@ -171,7 +171,7 @@ u16 func_80A79010(PlayState* play) {
             return 0x205B;
         case 2:
         default:
-            if (gSaveContext.infTable[0x9] & 0x400) {
+            if (Flags_GetInfTable(INFTABLE_SPOKE_TO_INGO_ONCE_AS_ADULT)) {
                 return 0x2031;
             } else {
                 return 0x2030;
@@ -197,14 +197,14 @@ s16 func_80A791CC(PlayState* play, Actor* thisx) {
 
     switch (thisx->textId) {
         case 0x2045:
-            gSaveContext.infTable[9] |= 0x80;
+            Flags_SetInfTable(INFTABLE_97);
             break;
         case 0x203E:
             ret = NPC_TALK_STATE_ACTION;
             break;
         case 0x203F:
-            gSaveContext.eventChkInf[1] |= 2;
-            gSaveContext.infTable[9] |= 0x10;
+            Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_INGO_AT_RANCH_BEFORE_TALON_RETURNS);
+            Flags_SetInfTable(INFTABLE_94);
             break;
     }
     return ret;
@@ -225,7 +225,7 @@ s16 func_80A7924C(PlayState* play, Actor* thisx) {
                 this->actor.textId = 0x2034;
             }
             Message_ContinueTextbox(play, this->actor.textId);
-            gSaveContext.infTable[9] |= 0x400;
+            Flags_SetInfTable(INFTABLE_SPOKE_TO_INGO_ONCE_AS_ADULT);
             break;
         case 0x2034:
             if (play->msgCtx.choiceIndex == 1) {
@@ -251,7 +251,7 @@ s16 func_80A7924C(PlayState* play, Actor* thisx) {
             } else {
                 this->actor.textId = 0x2039;
                 Message_ContinueTextbox(play, this->actor.textId);
-                gSaveContext.infTable[10] |= 4;
+                Flags_SetInfTable(INFTABLE_A2);
             }
             break;
         case 0x205B:
@@ -366,34 +366,34 @@ s32 func_80A7975C(EnIn* this, PlayState* play) {
 
 s32 func_80A79830(EnIn* this, PlayState* play) {
     if (play->sceneNum == SCENE_SPOT20 && LINK_IS_CHILD && IS_DAY && this->actor.shape.rot.z == 1 &&
-        !(gSaveContext.eventChkInf[1] & 0x10)) {
+        !Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
         return 1;
     }
     if (play->sceneNum == SCENE_MALON_STABLE && LINK_IS_CHILD && IS_DAY && this->actor.shape.rot.z == 3 &&
-        (gSaveContext.eventChkInf[1] & 0x10)) {
+        (Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE))) {
         return 1;
     }
     if (play->sceneNum == SCENE_MALON_STABLE && LINK_IS_CHILD && IS_NIGHT) {
-        if ((this->actor.shape.rot.z == 2) && !(gSaveContext.eventChkInf[1] & 0x10)) {
+        if ((this->actor.shape.rot.z == 2) && !Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
             return 1;
         }
-        if ((this->actor.shape.rot.z == 4) && (gSaveContext.eventChkInf[1] & 0x10)) {
+        if ((this->actor.shape.rot.z == 4) && (Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE))) {
             return 1;
         }
     }
     if (play->sceneNum == SCENE_SPOT20 && LINK_IS_ADULT && IS_DAY) {
-        if ((this->actor.shape.rot.z == 5) && !(gSaveContext.eventChkInf[1] & 0x100)) {
+        if ((this->actor.shape.rot.z == 5) && !Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED)) {
             return 2;
         }
-        if ((this->actor.shape.rot.z == 7) && (gSaveContext.eventChkInf[1] & 0x100)) {
+        if ((this->actor.shape.rot.z == 7) && (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED))) {
             return 4;
         }
     }
     if (play->sceneNum == SCENE_SOUKO && LINK_IS_ADULT && IS_NIGHT) {
-        if (this->actor.shape.rot.z == 6 && !(gSaveContext.eventChkInf[1] & 0x100)) {
+        if (this->actor.shape.rot.z == 6 && !Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED)) {
             return 3;
         }
-        if (this->actor.shape.rot.z == 8 && (gSaveContext.eventChkInf[1] & 0x100)) {
+        if (this->actor.shape.rot.z == 8 && (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED))) {
             return 3;
         }
     }
@@ -534,7 +534,7 @@ void func_80A79FB0(EnIn* this, PlayState* play) {
             case 3:
                 EnIn_ChangeAnim(this, ENIN_ANIM_7);
                 this->actionFunc = func_80A7A4BC;
-                if (!(gSaveContext.eventChkInf[1] & 0x100)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED)) {
                     this->actor.params = 5;
                 }
                 break;
@@ -644,7 +644,7 @@ void func_80A7A4C8(EnIn* this, PlayState* play) {
         func_80A79BAC(this, play, 1, 0x20);
         gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x000F) | 0x0001;
         gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x8000) | 0x8000;
-        gSaveContext.infTable[10] &= ~4;
+        Flags_UnsetInfTable(INFTABLE_A2);
         Environment_ForcePlaySequence(NA_BGM_HORSE);
         play->msgCtx.stateTimer = 0;
         play->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
@@ -657,8 +657,8 @@ void func_80A7A568(EnIn* this, PlayState* play) {
     s32 phi_a2;
     s32 phi_a3;
 
-    if (!(gSaveContext.eventChkInf[1] & 0x800) && (player->stateFlags1 & 0x800000)) {
-        gSaveContext.infTable[10] |= 0x800;
+    if (!Flags_GetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO) && (player->stateFlags1 & 0x800000)) {
+        Flags_SetInfTable(INFTABLE_AB);
     }
     if (gSaveContext.timer1State == 10) {
         Audio_PlaySoundGeneral(NA_SE_SY_FOUND, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
@@ -680,10 +680,10 @@ void func_80A7A568(EnIn* this, PlayState* play) {
             phi_a3 = 2;
         } else {
             Audio_PlaySoundGeneral(NA_SE_SY_FOUND, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-            if (!(gSaveContext.eventChkInf[1] & 0x800)) {
-                if (gSaveContext.infTable[10] & 0x800) {
-                    gSaveContext.eventChkInf[1] |= 0x800;
-                    gSaveContext.infTable[10] |= 0x800;
+            if (!Flags_GetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO)) {
+                if (Flags_GetInfTable(INFTABLE_AB)) {
+                    Flags_SetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO);
+                    Flags_SetInfTable(INFTABLE_AB);
                 }
             }
             gSaveContext.eventInf[0] &= ~0xF;
@@ -892,9 +892,9 @@ void func_80A7B024(EnIn* this, PlayState* play) {
     }
     player->actor.freezeTimer = 10;
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
-        if (!(gSaveContext.eventChkInf[1] & 0x800) && (gSaveContext.infTable[10] & 0x800)) {
-            gSaveContext.eventChkInf[1] |= 0x800;
-            gSaveContext.infTable[10] |= 0x800;
+        if (!Flags_GetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO) && (Flags_GetInfTable(INFTABLE_AB))) {
+            Flags_SetEventChkInf(EVENTCHKINF_RENTED_HORSE_FROM_INGO);
+            Flags_SetInfTable(INFTABLE_AB);
         }
         func_80A79BAC(this, play, 0, 0x26);
         gSaveContext.eventInf[0] = gSaveContext.eventInf[0] & ~0xF;

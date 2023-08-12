@@ -332,7 +332,7 @@ void func_809EFA28(EnDns* this) {
 }
 
 void func_809EFA58(EnDns* this) {
-    gSaveContext.itemGetInf[0] |= 0x800;
+    Flags_SetItemGetInf(ITEMGETINF_0B);
     Rupees_ChangeBy(-this->dnsItemEntry->itemPrice);
 }
 
@@ -345,12 +345,12 @@ void func_809EFACC(EnDns* this) {
 }
 
 void func_809EFAFC(EnDns* this) {
-    gSaveContext.infTable[25] |= 0x4;
+    Flags_SetInfTable(INFTABLE_192);
     Rupees_ChangeBy(-this->dnsItemEntry->itemPrice);
 }
 
 void func_809EFB40(EnDns* this) {
-    gSaveContext.infTable[25] |= 0x8;
+    Flags_SetInfTable(INFTABLE_193);
     Rupees_ChangeBy(-this->dnsItemEntry->itemPrice);
 }
 

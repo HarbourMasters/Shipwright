@@ -1,6 +1,6 @@
 #include "global.h"
 #include "vt.h"
-#include "alloca.h"
+#include <stdio.h>
 
 // data
 const char* sExceptionNames[] = {
@@ -1124,6 +1124,6 @@ void Fault_AddHungupAndCrashImpl(const char* arg0, const char* arg1) {
 void Fault_AddHungupAndCrash(const char* filename, u32 line) {
     char msg[256];
 
-    sprintf(msg, "HungUp %s:%d", filename, line);
+    snprintf(msg, sizeof(msg), "HungUp %s:%d", filename, line);
     Fault_AddHungupAndCrashImpl(msg, NULL);
 }
