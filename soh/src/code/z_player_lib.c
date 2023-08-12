@@ -1462,10 +1462,6 @@ f32 sSwordTypes[] = {
 };
 
 Gfx* sBottleDLists[] = { gLinkAdultBottleDL, gLinkChildBottleDL };
-// The below uses 2 unused bottle Display lists for MM bottle contents.
-// Adult is, I'm guessing, an older DList before Environment colors complicated things.
-// Child's is just a duplicate of default bottle for some reason
-Gfx* sBottleContentDLists[] = { gLinkAdultHandHoldingBottleDL, gLinkChildBottle2DL };
 
 Color_RGB8 sBottleColors[] = {
     { 255, 255, 255 }, // Empty
@@ -1489,10 +1485,6 @@ Vec3f sChildLeftHandArrowVec3 = { 420.0f, 1210.0f, 380.0f }; //ripped from MM
 BowStringData sBowStringData[] = {
     { gLinkAdultBowStringDL, { 0.0f, -360.4f, 0.0f } },       // bow
     { gLinkChildSlinghotStringDL, { 606.0f, 236.0f, 0.0f } }, // slingshot
-};
-
-f32 sBowScaleByAge[] = {
-    1.2, 0.75,
 };
 
 // Coordinates of the shield quad collider vertices, in the right hand limb's own model space.
@@ -1608,7 +1600,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 
         Math_Vec3f_Copy(&this->leftHandPos, D_80160000);
 
-        if (CVarGetInteger("gAltLinkEquip", 0)) {
+        if (CVarGetInteger("gAltLinkEquip", 0) && this->actor.id != 51) {
             switch (this->leftHandType) {
                 case 2: // Unused, but a safe measure
                 case 3: 
@@ -1750,7 +1742,7 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
     else if (limbIndex == PLAYER_LIMB_R_HAND) {
         Actor* heldActor = this->heldActor;
 
-        if (CVarGetInteger("gAltLinkEquip", 0)) {
+        if (CVarGetInteger("gAltLinkEquip", 0) && this->actor.id != 51) {
             switch (this->rightHandType) {
                 case 10:
                     if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU) {
@@ -1905,8 +1897,9 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
     else if (this->actor.scale.y >= 0.0f) {
         if (limbIndex == PLAYER_LIMB_SHEATH) {
                 if (CVarGetInteger("gAltLinkEquip", 0) &&
-                    !(this->stateFlags2 & PLAYER_STATE2_CRAWLING && this->actor.projectedPos.z < 0.0f))
-                // don't render these if the player's crawling.
+                !(this->stateFlags2 & PLAYER_STATE2_CRAWLING && this->actor.projectedPos.z < 0.0f) &&
+                this->actor.id != 51)
+                // don't render these if the player's crawling. Or if it's actually dark link.
                 {
                     switch (CUR_EQUIP_VALUE(EQUIP_SWORD)){
                         case PLAYER_SWORD_KOKIRI:
