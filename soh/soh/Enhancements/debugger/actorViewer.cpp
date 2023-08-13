@@ -740,6 +740,26 @@ void CreateActorSpecificData() {
     };
 }
 
+std::vector<u16> GetActorsWithDescriptionContainingString(std::string s) {
+    std::locale loc;
+    for (size_t i = 0; i < s.length(); i += 1) {
+        s[i] = std::tolower(s[i], loc);
+    }
+
+    std::vector<u16> actors;
+    for (int i = 0; i < ActorDB::Instance->GetEntryCount(); i += 1) {
+        ActorDB::Entry actorEntry = ActorDB::Instance->RetrieveEntry(i);
+        std::string desc = actorEntry.desc;
+        for (size_t j = 0; j < desc.length(); j += 1) {
+            desc[j] = std::tolower(desc[j], loc);
+        }
+        if (desc.find(s) != std::string::npos) {
+            actors.push_back((u16)i);
+        }
+    }
+    return actors;
+}
+
 void ActorViewerWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Actor Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
@@ -759,6 +779,9 @@ void ActorViewerWindow::DrawElement() {
     static std::string filler = "Please select";
     static std::vector<Actor*> list;
     static u16 lastSceneId = 0;
+    static char searchString[64] = "";
+    static s16 currentSelectedInDropdown;
+    static std::vector<u16> actors;
 
     if (gPlayState != nullptr) {
         needs_reset = lastSceneId != gPlayState->sceneNum;
@@ -769,6 +792,11 @@ void ActorViewerWindow::DrawElement() {
             filler = "Please Select";
             list.clear();
             needs_reset = false;
+            for (size_t i = 0; i < ARRAY_COUNT(searchString); i += 1) {
+                searchString[i] = 0;
+            }
+            currentSelectedInDropdown = -1;
+            actors.clear();
         }
         lastSceneId = gPlayState->sceneNum;
         if (ImGui::BeginCombo("Actor Type", acMapping[category])) {
@@ -912,6 +940,27 @@ void ActorViewerWindow::DrawElement() {
         if (ImGui::TreeNode("New...")) {
             ImGui::PushItemWidth(ImGui::GetFontSize() * 10);
 
+            if (ImGui::InputText("Search Actor", searchString, ARRAY_COUNT(searchString))) {
+                actors = GetActorsWithDescriptionContainingString(std::string(searchString));
+                currentSelectedInDropdown = -1;
+            }
+
+            if (searchString[0] != 0 && !actors.empty()) {
+                std::string preview = currentSelectedInDropdown == -1 ? "Please Select" : ActorDB::Instance->RetrieveEntry(actors[currentSelectedInDropdown]).desc;
+                if (ImGui::BeginCombo("Results", preview.c_str())) {
+                    for (u8 i = 0; i < actors.size(); i++) {
+                        if (ImGui::Selectable(
+                            ActorDB::Instance->RetrieveEntry(actors[i]).desc.c_str(),
+                            i == currentSelectedInDropdown
+                        )) {
+                            currentSelectedInDropdown = i;
+                            newActor.id = actors[i];
+                        }
+                    }
+                    ImGui::EndCombo();
+                }
+            }
+
             ImGui::Text(GetActorDescription(newActor.id).c_str());
             if (ImGui::InputScalar("ID", ImGuiDataType_S16, &newActor.id, &one)) {
                 newActor.params = 0;
@@ -975,7 +1024,7 @@ void ActorViewerWindow::DrawElement() {
                                            newActor.pos.y, newActor.pos.z, newActor.rot.x, newActor.rot.y,
                                            newActor.rot.z, newActor.params);
                     } else {
-                        func_80078884(NA_SE_SY_ERROR);                    
+                        func_80078884(NA_SE_SY_ERROR);
                     }
                 }
             }
@@ -994,6 +1043,11 @@ void ActorViewerWindow::DrawElement() {
             filler = "Please Select";
             list.clear();
             needs_reset = false;
+            for (size_t i = 0; i < ARRAY_COUNT(searchString); i += 1) {
+                searchString[i] = 0;
+            }
+            currentSelectedInDropdown = -1;
+            actors.clear();
         }
     }
     

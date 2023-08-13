@@ -548,6 +548,10 @@ int ActorDB::RetrieveId(const std::string& name) {
     return entry->second;
 }
 
+int ActorDB::GetEntryCount() {
+    return db.size();
+}
+
 ActorDB::Entry::Entry() {
     entry.name = nullptr;
     entry.desc = nullptr;
