@@ -19,6 +19,7 @@
 #include <vector>
 
 const std::string customMessageTableID = "BaseGameOverrides";
+const std::string appShortName = "soh";
 
 class OTRGlobals
 {
