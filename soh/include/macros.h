@@ -316,6 +316,11 @@ extern GraphicsContext* __gfxCtx;
 #define GERUDO_FORTRESS_SMALL_KEY_MAX 4
 #define GANONS_CASTLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_GANONTIKA) ? 3 : 2)
 #define TREASURE_GAME_SMALL_KEY_MAX 6
+
+#define DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(randomizerSettingsKey) \
+    (Randomizer_GetSettingValue(randomizerSettingsKey) != RO_DUNGEON_ITEM_LOC_STARTWITH && \
+     Randomizer_GetSettingValue(randomizerSettingsKey) != RO_DUNGEON_ITEM_LOC_VANILLA && \
+     Randomizer_GetSettingValue(randomizerSettingsKey) != RO_DUNGEON_ITEM_LOC_OWN_DUNGEON)
 // #endregion
 
 #endif

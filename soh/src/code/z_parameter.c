@@ -1870,53 +1870,16 @@ u8 Item_Give(PlayState* play, u8 item) {
         gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_BOOTS_KOKIRI] << gEquipShifts[EQUIP_BOOTS]);
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item == ITEM_KEY_BOSS) || (item == ITEM_COMPASS) || (item == ITEM_DUNGEON_MAP)) {
-        // Boss Key, Compass, and Dungeon Map exceptions for rando.
-        // Rando should never be able to get here for Link's Pocket unless something goes wrong,
-        // but we check for a play here so the game won't crash if we do somehow get here.
-        if (gSaveContext.n64ddFlag && play != NULL) {
-            if (play->sceneNum == 13) { // ganon's castle -> ganon's tower
-                gSaveContext.inventory.dungeonItems[10] |= 1;
-            } else if (play->sceneNum == 92) { // Desert Colossus -> Spirit Temple.
-                gSaveContext.inventory.dungeonItems[6] |= gBitFlags[item - ITEM_KEY_BOSS];
-            } else {
-                gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
-            }
-        } else {
-            gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
-        }
+        gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_KEY_SMALL) {
-        // Small key exceptions for rando with keysanity off.
-        // Rando should never be able to get here for Link's Pocket unless something goes wrong,
-        // but we check for a play here so the game won't crash if we do somehow get here.
-        if (gSaveContext.n64ddFlag && play != NULL) {
-            if (play->sceneNum == 10) { // ganon's tower -> ganon's castle
-                gSaveContext.sohStats.dungeonKeys[13]++;
-                if (gSaveContext.inventory.dungeonKeys[13] < 0) {
-                    gSaveContext.inventory.dungeonKeys[13] = 1;
-                } else {
-                    gSaveContext.inventory.dungeonKeys[13]++;
-                }
-                return Return_Item(item, MOD_NONE, ITEM_NONE);
-            }
-
-            if (play->sceneNum == 92) { // Desert Colossus -> Spirit Temple.
-                gSaveContext.sohStats.dungeonKeys[6]++;
-                if (gSaveContext.inventory.dungeonKeys[6] < 0) {
-                    gSaveContext.inventory.dungeonKeys[6] = 1;
-                } else {
-                    gSaveContext.inventory.dungeonKeys[6]++;
-                }
-                return Return_Item(item, MOD_NONE, ITEM_NONE);
-            }
-        }
-        gSaveContext.sohStats.dungeonKeys[gSaveContext.mapIndex]++;
         if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] < 0) {
             gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] = 1;
+            return Return_Item(item, MOD_NONE, ITEM_NONE);
         } else {
             gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]++;
+            return Return_Item(item, MOD_NONE, ITEM_NONE);
         }
-        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item == ITEM_QUIVER_30) || (item == ITEM_BOW)) {
         if (CUR_UPG_VALUE(UPG_QUIVER) == 0) {
             Inventory_ChangeUpgrade(UPG_QUIVER, 1);
@@ -3643,7 +3606,8 @@ void Interface_DrawMagicBar(PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-static Vtx sEnemyHealthVtx[12];
+static Vtx sEnemyHealthVtx[16];
+static Mtx sEnemyHealthMtx[2];
 
 // Build vertex coordinates for a quad command
 // In order of top left, top right, bottom left, then bottom right
@@ -3704,7 +3668,7 @@ void Interface_DrawEnemyHealthBar(TargetContext* targetCtx, PlayState* play) {
         s16 endTexWidth = 8;
         f32 scaleY = -0.75f;
         f32 scaledHeight = -texHeight * scaleY;
-        f32 halfBarWidth = endTexWidth + (healthbar_fillWidth / 2);
+        f32 halfBarWidth = endTexWidth + ((f32)healthbar_fillWidth / 2);
         s16 healthBarFill = ((f32)actor->colChkInfo.health / actor->maximumHealth) * healthbar_fillWidth;
 
         if (anchorType == ENEMYHEALTH_ANCHOR_ACTOR) {
@@ -3729,15 +3693,15 @@ void Interface_DrawEnemyHealthBar(TargetContext* targetCtx, PlayState* play) {
         }
 
         // Health bar border end left
-        Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[0], -halfBarWidth, -texHeight / 2, endTexWidth, texHeight, 0);
+        Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[0], -floorf(halfBarWidth), -texHeight / 2, endTexWidth, texHeight, 0);
         // Health bar border middle
-        Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[4], -halfBarWidth + endTexWidth, -texHeight / 2,
+        Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[4], -floorf(halfBarWidth) + endTexWidth, -texHeight / 2,
                                         healthbar_fillWidth, texHeight, 0);
         // Health bar border end right
-        Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[8], halfBarWidth - endTexWidth, -texHeight / 2, endTexWidth,
+        Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[8], ceilf(halfBarWidth) - endTexWidth, -texHeight / 2, endTexWidth,
                                         texHeight, 1);
         // Health bar fill
-        Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[12], -halfBarWidth + endTexWidth, (-texHeight / 2) + 3,
+        Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[12], -floorf(halfBarWidth) + endTexWidth, (-texHeight / 2) + 3,
                                         healthBarFill, 7, 0);
 
         if (((!(player->stateFlags1 & 0x40)) || (actor != player->unk_664)) && targetCtx->unk_44 < 500.0f) {
@@ -3757,7 +3721,8 @@ void Interface_DrawEnemyHealthBar(TargetContext* targetCtx, PlayState* play) {
 
             Matrix_Translate(projTargetCenter.x, projTargetCenter.y - slideInOffsetY, 0, MTXMODE_NEW);
             Matrix_Scale(1.0f, scaleY, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+            Matrix_ToMtx(&sEnemyHealthMtx[0], __FILE__, __LINE__);
+            gSPMatrix(OVERLAY_DISP++, &sEnemyHealthMtx[0], G_MTX_MODELVIEW | G_MTX_LOAD);
 
             // Health bar border
             gDPPipeSync(OVERLAY_DISP++);
@@ -3788,7 +3753,8 @@ void Interface_DrawEnemyHealthBar(TargetContext* targetCtx, PlayState* play) {
             // Health bar fill
             Matrix_Push();
             Matrix_Translate(-0.375f, -0.5f, 0, MTXMODE_APPLY);
-            gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+            Matrix_ToMtx(&sEnemyHealthMtx[1], __FILE__, __LINE__);
+            gSPMatrix(OVERLAY_DISP++, &sEnemyHealthMtx[1], G_MTX_MODELVIEW | G_MTX_LOAD);
 
             gDPPipeSync(OVERLAY_DISP++);
             gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, 0, 0, 0, PRIMITIVE,
