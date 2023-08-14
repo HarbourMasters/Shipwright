@@ -1,5 +1,6 @@
 #include "z_kaleido_scope.h"
 #include <stdlib.h>
+#include <string.h>
 
 #include "textures/item_name_static/item_name_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
@@ -16,7 +17,10 @@
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+
 
 static void* sEquipmentFRATexs[] = {
     gPauseEquipment00FRATex, gPauseEquipment01Tex, gPauseEquipment02Tex, gPauseEquipment03Tex, gPauseEquipment04Tex,
@@ -3404,7 +3408,7 @@ void KaleidoScope_Update(PlayState* play)
                 pauseCtx->worldMapPoints[1] = 1;
             }
 
-            if (gSaveContext.eventChkInf[11] & 4) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_ENTERED_GERUDO_VALLEY)) {
                 pauseCtx->worldMapPoints[2] = 1;
             }
 
@@ -3428,7 +3432,7 @@ void KaleidoScope_Update(PlayState* play)
                 pauseCtx->worldMapPoints[3] = 1;
             }
 
-            if (gSaveContext.eventChkInf[0] & 0x200) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
                 pauseCtx->worldMapPoints[4] = 1;
             }
 
@@ -3440,19 +3444,19 @@ void KaleidoScope_Update(PlayState* play)
                 pauseCtx->worldMapPoints[4] = 1;
             }
 
-            if (gSaveContext.eventChkInf[6] & 0x400) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_KAKARIKO)) {
                 pauseCtx->worldMapPoints[4] = 2;
             }
 
-            if (gSaveContext.eventChkInf[1] & 0x100) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED)) {
                 pauseCtx->worldMapPoints[4] = 1;
             }
 
-            if (gSaveContext.eventChkInf[0] & 0x200) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
                 pauseCtx->worldMapPoints[5] = 2;
             }
 
-            if (gSaveContext.eventChkInf[4] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 pauseCtx->worldMapPoints[5] = 1;
             }
 
@@ -3460,7 +3464,7 @@ void KaleidoScope_Update(PlayState* play)
                 pauseCtx->worldMapPoints[5] = 2;
             }
 
-            if (gSaveContext.eventChkInf[4] & 0x20) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL)) {
                 pauseCtx->worldMapPoints[5] = 1;
             }
 
@@ -3468,15 +3472,15 @@ void KaleidoScope_Update(PlayState* play)
                 pauseCtx->worldMapPoints[5] = 2;
             }
 
-            if (gSaveContext.eventChkInf[0] & 0x200) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
                 pauseCtx->worldMapPoints[6] = 1;
             }
 
-            if (gSaveContext.eventChkInf[4] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 pauseCtx->worldMapPoints[7] = 2;
             }
 
-            if (gSaveContext.eventChkInf[2] & 0x20) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) {
                 pauseCtx->worldMapPoints[7] = 1;
             }
 
@@ -3484,7 +3488,7 @@ void KaleidoScope_Update(PlayState* play)
                 pauseCtx->worldMapPoints[7] = 2;
             }
 
-            if (gSaveContext.eventChkInf[4] & 0x200) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) {
                 pauseCtx->worldMapPoints[7] = 1;
             }
 
@@ -3500,7 +3504,7 @@ void KaleidoScope_Update(PlayState* play)
                 pauseCtx->worldMapPoints[8] = 1;
             }
 
-            if (gSaveContext.eventChkInf[4] & 0x20) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL)) {
                 pauseCtx->worldMapPoints[8] = 2;
             }
 
@@ -3512,11 +3516,11 @@ void KaleidoScope_Update(PlayState* play)
                 pauseCtx->worldMapPoints[8] = 2;
             }
 
-            if (gSaveContext.eventChkInf[6] & 0x80) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_DRAINED_WELL_IN_KAKARIKO)) {
                 pauseCtx->worldMapPoints[8] = 1;
             }
 
-            if (gSaveContext.eventChkInf[10] & 0x400) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL)) {
                 pauseCtx->worldMapPoints[8] = 2;
             }
 
@@ -3528,7 +3532,7 @@ void KaleidoScope_Update(PlayState* play)
                 pauseCtx->worldMapPoints[9] = 1;
             }
 
-            if (gSaveContext.eventChkInf[0] & 0x8000) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_ABOUT_SARIA)) {
                 pauseCtx->worldMapPoints[9] = 2;
             }
 
@@ -3540,21 +3544,21 @@ void KaleidoScope_Update(PlayState* play)
                 pauseCtx->worldMapPoints[9] = 2;
             }
 
-            if (gSaveContext.eventChkInf[4] & 0x100) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) {
                 pauseCtx->worldMapPoints[9] = 1;
             }
 
             pauseCtx->worldMapPoints[10] = 2;
 
-            if (gSaveContext.eventChkInf[0] & 0x200) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP)) {
                 pauseCtx->worldMapPoints[10] = 1;
             }
 
-            if (gSaveContext.eventChkInf[6] & 0x4000) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_6E)) {
                 pauseCtx->worldMapPoints[10] = 2;
             }
 
-            if (gSaveContext.eventChkInf[0] & 0x8000) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_ABOUT_SARIA)) {
                 pauseCtx->worldMapPoints[10] = 1;
             }
 
@@ -3562,11 +3566,11 @@ void KaleidoScope_Update(PlayState* play)
                 pauseCtx->worldMapPoints[11] = 1;
             }
 
-            if (gSaveContext.eventChkInf[2] & 0x20) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) {
                 pauseCtx->worldMapPoints[11] = 2;
             }
 
-            if (gSaveContext.eventChkInf[3] & 0x80) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
                 pauseCtx->worldMapPoints[11] = 1;
             }
 

@@ -1,6 +1,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 
+#include <cassert>
 #include <File.h>
 #include <libultraship/classes.h>
 #include <nlohmann/json.hpp>
@@ -44,7 +45,7 @@ std::string GetParameritizedText(std::string key, TextBank bank, const char* arg
             size_t index = value.find(searchString);
             
             if (index != std::string::npos) {
-                ASSERT(arg != nullptr);
+                assert(arg != nullptr);
                 value.replace(index, searchString.size(), std::string(arg));
                 return value;
             } else {
@@ -60,7 +61,7 @@ std::string GetParameritizedText(std::string key, TextBank bank, const char* arg
             size_t index = value.find(searchString);
             
             if (index != std::string::npos) {
-                ASSERT(arg != nullptr);
+                assert(arg != nullptr);
                 value.replace(index, searchString.size(), std::string(arg));
                 return value;
             } else {
@@ -76,7 +77,7 @@ std::string GetParameritizedText(std::string key, TextBank bank, const char* arg
             size_t index = value.find(searchString);
 
             if (index != std::string::npos) {
-                ASSERT(arg != nullptr);
+                assert(arg != nullptr);
                 value.replace(index, searchString.size(), std::string(arg));
                 return value;
             } else {
@@ -159,7 +160,7 @@ void RegisterOnInterfaceUpdateHook() {
                     auto translation = GetParameritizedText((seconds > 1) ? "seconds_plural" : "seconds_singular", TEXT_BANK_MISC, arg);
                     announceBuf += snprintf(announceBuf, sizeof(ttsAnnounceBuf), "%s", translation.c_str());
                 }
-                ASSERT(announceBuf < ttsAnnounceBuf + sizeof(ttsAnnounceBuf));
+                assert(announceBuf < ttsAnnounceBuf + sizeof(ttsAnnounceBuf));
                 SpeechSynthesizer::Instance->Speak(ttsAnnounceBuf, GetLanguageCode());
                 prevTimer = timer;
             }

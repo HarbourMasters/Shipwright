@@ -895,7 +895,7 @@ void func_80986BE4(DemoIm* this, s32 arg1) {
 }
 
 void func_80986BF8(DemoIm* this, PlayState* play) {
-    if (gSaveContext.eventChkInf[4] & 1) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
         this->action = 24;
         this->drawConfig = 1;
         this->unk_280 = 1;
@@ -912,7 +912,7 @@ void GivePlayerRandoRewardImpa(Actor* impa, PlayState* play, RandomizerCheck che
     } else if (!Flags_GetTreasure(play, 0x1F) && !Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA)) {
         GiveItemEntryFromActor(impa, play, getItemEntry, 75.0f, 50.0f);
     } else if (!Player_InBlockingCsMode(play, GET_PLAYER(play))) {
-        gSaveContext.eventChkInf[5] |= 0x200;
+        Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
         play->sceneLoadFlag = 0x14;
         play->fadeTransition = 3;
         gSaveContext.nextTransitionType = 3;
@@ -933,7 +933,7 @@ void func_80986C30(DemoIm* this, PlayState* play) {
         } else {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gZeldasCourtyardLullabyCs);
             gSaveContext.cutsceneTrigger = 1;
-            gSaveContext.eventChkInf[5] |= 0x200;
+            Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
             Item_Give(play, ITEM_SONG_LULLABY);
             func_80985F54(this);
         }
@@ -941,7 +941,7 @@ void func_80986C30(DemoIm* this, PlayState* play) {
 }
 
 void func_80986CC8(DemoIm* this) {
-    if (gSaveContext.eventChkInf[4] & 1) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
         this->action = 26;
         this->drawConfig = 1;
         this->unk_280 = 1;
@@ -951,7 +951,7 @@ void func_80986CC8(DemoIm* this) {
 
 void func_80986CFC(DemoIm* this, PlayState* play) {
     if (func_80986A5C(this, play)) {
-        gSaveContext.eventChkInf[4] |= 0x1000;
+        Flags_SetEventChkInf(EVENTCHKINF_4C);
         this->action = 19;
     }
 }
@@ -960,9 +960,9 @@ void func_80986D40(DemoIm* this, PlayState* play) {
     if (gSaveContext.sceneSetupIndex == 6) {
         this->action = 19;
         this->drawConfig = 1;
-    } else if ((gSaveContext.eventChkInf[8] & 1) && !gSaveContext.n64ddFlag) {
+    } else if ((Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) && !gSaveContext.n64ddFlag) {
         Actor_Kill(&this->actor);
-    } else if (!(gSaveContext.eventChkInf[5] & 0x200)) {
+    } else if (!Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY)) {
         this->action = 23;
     } else {
         this->action = 20;

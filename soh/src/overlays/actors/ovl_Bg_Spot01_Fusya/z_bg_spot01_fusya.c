@@ -66,7 +66,7 @@ void func_808AAA50(BgSpot01Fusya* this, PlayState* play) {
         this->unk_158 = 100.0f;
     }
 
-    if (gSaveContext.eventChkInf[6] & 0x20) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_PLAYED_SONG_OF_STORMS_IN_WINDMILL)) {
         this->unk_158 = 1800.0f;
     }
     thisx->shape.rot.z += this->unk_154;

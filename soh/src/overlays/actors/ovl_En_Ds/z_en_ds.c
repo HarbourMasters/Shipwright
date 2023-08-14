@@ -85,7 +85,7 @@ void EnDs_DisplayOddPotionText(EnDs* this, PlayState* play) {
         this->actor.textId = 0x504F;
         this->actionFunc = EnDs_TalkAfterGiveOddPotion;
         this->actor.flags &= ~ACTOR_FLAG_PLAYER_TALKED_TO;
-        gSaveContext.itemGetInf[3] |= 1;
+        Flags_SetItemGetInf(ITEMGETINF_30);
     }
 }
 
@@ -178,7 +178,7 @@ u8 EnDs_RandoCanGetGrannyItem() {
     return gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
            !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP) &&
            // Traded odd mushroom when adult trade is on
-           ((Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) && (gSaveContext.itemGetInf[3] & 1)) ||
+           ((Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) && Flags_GetItemGetInf(ITEMGETINF_30)) ||
             // Found claim check when adult trade is off
             (!Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
              INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK));
@@ -264,7 +264,7 @@ void EnDs_Wait(EnDs* this, PlayState* play) {
         } else if (
             // Always offer blue potion when adult trade is off
             (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) == RO_GENERIC_OFF) ||
-            gSaveContext.itemGetInf[3] & 1) { // Traded odd mushroom
+            Flags_GetItemGetInf(ITEMGETINF_30)) { // Traded odd mushroom
             player->actor.textId = 0x500C;
             this->actionFunc = EnDs_OfferBluePotion;
         } else {

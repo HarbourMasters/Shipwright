@@ -1,15 +1,12 @@
 #include "global.h"
 #include "vt.h"
+#include <string.h>
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
-//#include <string.h>
-
-#ifdef _MSC_VER
-extern void* __cdecl memset(_Out_writes_bytes_all_(_Size) void* _Dst, _In_ int _Val, _In_ size_t _Size);
-#endif
-
 s32 D_8012D280 = 1;
+
+void OTRControllerCallback(uint8_t rumble);
 
 OSMesgQueue* PadMgr_LockSerialMesgQueue(PadMgr* padMgr) {
     OSMesgQueue* ctrlrQ = NULL;

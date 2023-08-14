@@ -4,6 +4,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "textures/map_i_static/map_i_static.h"
 #include "textures/map_grand_static/map_grand_static.h"
+#include <assert.h>
 
 MapData* gMapData;
 
@@ -398,11 +399,11 @@ void Map_InitData(PlayState* play, s16 room) {
                     extendedMapIndex = 0x15;
                 }
             } else if (play->sceneNum == SCENE_SPOT09) {
-                if ((LINK_AGE_IN_YEARS == YEARS_ADULT) && !((gSaveContext.eventChkInf[9] & 0xF) == 0xF)) {
+                if ((LINK_AGE_IN_YEARS == YEARS_ADULT) && !GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {
                     extendedMapIndex = 0x16;
                 }
             } else if (play->sceneNum == SCENE_SPOT12) {
-                if ((!gSaveContext.n64ddFlag && ((gSaveContext.eventChkInf[9] & 0xF) == 0xF)) ||
+                if ((!gSaveContext.n64ddFlag && GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) ||
                     (gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_GERUDO_CARD))) {
                     extendedMapIndex = 0x17;
                 }
@@ -527,7 +528,7 @@ void Map_Init(PlayState* play) {
     // "ＭＡＰ texture initialization scene_data_ID=%d mapSegment=%x"
     osSyncPrintf("\n\n\nＭＡＰ テクスチャ初期化   scene_data_ID=%d\nmapSegment=%x\n\n", play->sceneNum,
                  interfaceCtx->mapSegment, play);
-    ASSERT(interfaceCtx->mapSegment != NULL);
+    assert(interfaceCtx->mapSegment != NULL);
 
     switch (play->sceneNum) {
         case SCENE_SPOT00:
