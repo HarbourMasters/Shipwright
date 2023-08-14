@@ -874,9 +874,6 @@ void DrawEnhancementsMenu() {
         if (ImGui::BeginMenu("Graphics"))
         {
             if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", "gAltAssets", true, false)) {
-                if (CVarGetInteger("gAltAssets", 0) == 0) {
-                    CVarSetInteger("gAltLinkEquip", 0);
-                }
                 ShouldClearTextureCacheAtEndOfFrame = true;
             }
             UIWidgets::PaddedEnhancementCheckbox("Modded Equipment Loading", "gAltLinkEquip", true, false);
