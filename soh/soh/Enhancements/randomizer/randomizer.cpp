@@ -348,6 +348,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Timesaver Settings:Complete Mask Quest", RSK_COMPLETE_MASK_QUEST },
     { "Timesaver Settings:Skip Scarecrow's Song", RSK_SKIP_SCARECROWS_SONG },
     { "Timesaver Settings:Enable Glitch-Useful Cutscenes", RSK_ENABLE_GLITCH_CUTSCENES },
+    { "World Settings:MQ Dungeons", RSK_RANDOM_MQ_DUNGEONS },
     { "World Settings:MQ Dungeon Count", RSK_MQ_DUNGEON_COUNT }
 };
 
@@ -1030,6 +1031,15 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_TOKENS;
                         } else if(it.value() == "100 GS Reward") {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_KAK_TOKENS;
+                        }
+                        break;
+                    case RSK_RANDOM_MQ_DUNGEONS:
+                        if (it.value() == "None") {
+                            gSaveContext.randoSettings[index].value = RO_MQ_DUNGEONS_NONE;
+                        } else if (it.value() == "Random Number") {
+                            gSaveContext.randoSettings[index].value = RO_MQ_DUNGEONS_RANDOM_NUMBER;
+                        } else if (it.value() == "Set Number") {
+                            gSaveContext.randoSettings[index].value = RO_MQ_DUNGEONS_SET_NUMBER;
                         }
                         break;
                     case RSK_SKIP_CHILD_ZELDA:
@@ -3814,7 +3824,10 @@ void RandomizerSettingsWindow::DrawElement() {
                     "A Giant's Knife and a pack of Bombchus will be added to the item pool, and "
                     "one of the bottles will contain a Blue Potion.\n\n"
                     "On (no hints) - Salesmen will be included but won't tell you what you'll get.\n"
-                    "On (with hints) - Salesmen will be included and you'll know what you're buying."
+                    "On (with hints) - Salesmen will be included and you'll know what you're buying.\n"
+                    "\n"
+                    "Granny's item will only be offered after you have traded in the Odd Mushroom when Shuffle Adult Trade is on. "
+                    "Otherwise when off, you will need to have found the Claim Check to buy her item (simulating the trade quest is complete)."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleMerchants", randoShuffleMerchants, RO_SHUFFLE_MERCHANTS_OFF);
 
@@ -5260,7 +5273,10 @@ CustomMessage Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEntry) {
             break;
     }
 
-    if (this->masterQuestDungeons.empty() || this->masterQuestDungeons.size() >= 12) {
+    if (this->randoSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_NONE ||
+        (this->randoSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_SET_NUMBER &&
+         this->randoSettings[RSK_MQ_DUNGEON_COUNT] == 12)
+       ) {
         messageEntry.Replace("{{typeHint}}", "");
     } else if (ResourceMgr_IsSceneMasterQuest(sceneNum)) {
         messageEntry.Replace("{{typeHint}}", mapGetItemHints[0][1], mapGetItemHints[1][1], mapGetItemHints[2][1]);
