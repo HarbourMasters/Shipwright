@@ -1109,7 +1109,7 @@ s32 Player_InBlockingCsMode(PlayState* play, Player* player);
 s32 Player_InCsMode(PlayState* play);
 s32 func_8008E9C4(Player* player);
 s32 Player_IsChildWithHylianShield(Player* player);
-s32 Player_ActionToModelGroup(Player* player, s32 actionParam);
+uint8_t Player_CanUseNewLoadingMethodLeftHand(Player* this);
 void Player_SetModelsForHoldingShield(Player* player);
 void Player_SetModels(Player* player, s32 modelGroup);
 void Player_SetModelGroup(Player* player, s32 modelGroup);
