@@ -232,30 +232,23 @@ OTRGlobals::OTRGlobals() {
         json modData = json::parse(sohJsonData);
         if (modData.contains("Mod-Load-Order")) {
             useLoadOrder = true;
-            spdlog::info("\nLoading mods using load order from shipofharknian.json...\n");
             int modCountInt = modData["Mod-Load-Order"]["List-size"];
-            spdlog::info("\nThe mod count is: {} ", modCountInt, "\n");
             int iter_count = 1;
             while (iter_count <= modCountInt) {
                 std::string foundModEntry = modData["Mod-Load-Order"][std::to_string(iter_count)];
                 std::string gotModPath = patchesPath + "/" + foundModEntry;
                 if (std::filesystem::exists(gotModPath)) {
-                    spdlog::info("\nMod file {} found!{}", gotModPath, "\n");
                     OTRFiles.push_back(gotModPath);
-                } else {
-                    spdlog::warn("\nMod file {} missing...{}", gotModPath, "\n");
                 }
                 iter_count += 1;
             }
         }
     } 
     if (useLoadOrder == false) {
-        spdlog::info("\nLoad order listing not found in shipofharknian.json, loading attempts to load mods from mods folder...\n");
         if (patchesPath.length() > 0 && std::filesystem::exists(patchesPath)) {
             if (std::filesystem::is_directory(patchesPath)) {
                 for (const auto& p : std::filesystem::recursive_directory_iterator(patchesPath)) {
                     if (StringHelper::IEquals(p.path().extension().string(), ".otr")) {
-                        spdlog::info("\nMod Found in: {}{}", p.path().generic_string(), "\n");
                         OTRFiles.push_back(p.path().generic_string());
                     }
                 }
