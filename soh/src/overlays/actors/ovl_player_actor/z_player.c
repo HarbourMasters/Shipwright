@@ -2838,7 +2838,7 @@ s32 func_80835B60(Player* this, PlayState* play) {
     if (!(this->stateFlags1 & PLAYER_STATE1_THREW_BOOMERANG)) {
         func_80833638(this, func_80835C08);
         LinkAnimation_PlayOnce(play, &this->skelAnime2, &gPlayerAnim_link_boom_catch);
-        if (CVarGetInteger("gAltLinkEquip", 0))
+        if (Player_CanUseNewLoadingMethodLeftHand(this))
             func_808357E8(this, gPlayerLeftHandClosedDLs);
         else
             func_808357E8(this, gPlayerLeftHandBoomerangDLs);
@@ -14616,14 +14616,14 @@ void func_80851A50(PlayState* play, Player* this, CsCmdActorAction* arg2) {
         sp2C = &D_808551A4[gSaveContext.linkAge];
         this->interactRangeActor->parent = &this->actor;
 
-        if (!LINK_IS_ADULT && !CVarGetInteger("gAltLinkEquip", 0)) {
+        if (!LINK_IS_ADULT && !Player_CanUseNewLoadingMethodLeftHand(this)) {
             dLists = gPlayerLeftHandBgsDLs;
         } else {
             dLists = gPlayerLeftHandClosedDLs;
         }
         this->leftHandDLists = &dLists[gSaveContext.linkAge];
 
-        if (!LINK_IS_ADULT && CVarGetInteger("gAltLinkEquip", 0))
+        if (!LINK_IS_ADULT && Player_CanUseNewLoadingMethodLeftHand(this))
             this->leftHandType = 20; //I'll be amazed if this actually works
 
         func_8002F7DC(&this->actor, sp2C->unk_00);

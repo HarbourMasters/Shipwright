@@ -1,5 +1,5 @@
 <DisplayList Version="0">
-	<CallDisplayList Path="objects/object_link_eq/mat_gLinkBottleContentsDL_bottle_fluid"/>
+	<CallDisplayList Path="objects/object_link_eq/mat_gLinkBottleContentsDL_mat"/>
 	<CallDisplayList Path="objects/object_link_eq/gLinkBottleContentsDL_tri_0"/>
 	<PipeSync/>
 	<SetGeometryMode G_LIGHTING="1" />

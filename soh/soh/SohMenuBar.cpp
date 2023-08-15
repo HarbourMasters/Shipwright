@@ -878,8 +878,6 @@ void DrawEnhancementsMenu() {
             if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", "gAltAssets", true, false)) {
                 ShouldClearTextureCacheAtEndOfFrame = true;
             }
-            UIWidgets::PaddedEnhancementCheckbox("Modded Equipment Loading", "gAltLinkEquip", true, false);
-            UIWidgets::Tooltip("MEANT FOR MODS ONLY. Display Link's equipment separately from his body, allowing Timeless equipment to display properly on child Link and equipment to display properly on custom Link models.");    
             UIWidgets::PaddedEnhancementCheckbox("Disable LOD", "gDisableLOD", true, false);
             UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
             if (UIWidgets::PaddedEnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance", true, false)) {
