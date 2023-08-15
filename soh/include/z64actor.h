@@ -178,6 +178,9 @@ typedef struct Actor {
     /* 0x134 */ ActorFunc draw; // Draw Routine. Called by `Actor_Draw`
     /* 0x138 */ ActorResetFunc reset;
     /* 0x13C */ char dbgPad[0x10]; // Padding that only exists in the debug rom
+    // #region SOH [General]
+    /*       */ u8 maximumHealth; // Max health value for use with health bars, set on actor init
+    // #endregion
 } Actor; // size = 0x14C
 
 typedef enum {

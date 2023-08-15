@@ -14,9 +14,16 @@
 #include "soh/Enhancements/boss-rush/BossRush.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include <assert.h>
+
 
 #define MIN_QUEST (ResourceMgr_GameHasOriginal() ? FS_QUEST_NORMAL : FS_QUEST_MASTER)
 #define MAX_QUEST FS_QUEST_BOSSRUSH
+
+void Sram_InitDebugSave(void);
+void Sram_InitBossRushSave();
+
 u8 hasRandomizerQuest() {
     if (strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0) {
         return 1;
@@ -346,7 +353,11 @@ void FileChoose_UpdateRandomizer() {
             func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_HORSE, 0, 7, 1);
             return;
     } else if (CVarGetInteger("gRandoGenerating", 0) == 0 && generating) {
-            Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
+            if (SpoilerFileExists(CVarGetString("gSpoilerLog", ""))) {
+                Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
+            } else {
+                func_80078884(NA_SE_SY_OCARINA_ERROR);
+            }
             func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
             generating = 0;
             return;
@@ -2870,12 +2881,12 @@ void FileChoose_Init(GameState* thisx) {
     osSyncPrintf("SIZE=%x\n", size);
 
     this->staticSegment = GAMESTATE_ALLOC_MC(&this->state, size);
-    ASSERT(this->staticSegment != NULL);
+    assert(this->staticSegment != NULL);
     DmaMgr_SendRequest1(this->staticSegment, (u32)_title_staticSegmentRomStart, size, __FILE__, __LINE__);
 
     size = (u32)_parameter_staticSegmentRomEnd - (u32)_parameter_staticSegmentRomStart;
     this->parameterSegment = GAMESTATE_ALLOC_MC(&this->state, size);
-    ASSERT(this->parameterSegment != NULL);
+    assert(this->parameterSegment != NULL);
     DmaMgr_SendRequest1(this->parameterSegment, (u32)_parameter_staticSegmentRomStart, size, __FILE__,
                         __LINE__);
 

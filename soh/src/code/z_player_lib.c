@@ -9,6 +9,8 @@
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
+#include <stdlib.h>
+
 typedef struct {
     /* 0x00 */ u8 flag;
     /* 0x02 */ u16 textId;
@@ -2123,6 +2125,7 @@ s32 Player_OverrideLimbDrawPause(PlayState* play, s32 limbIndex, Gfx** dList, Ve
 }
 
 #include <overlays/actors/ovl_Demo_Effect/z_demo_effect.h>
+void DemoEffect_DrawTriforceSpot(Actor* thisx, PlayState* play);
 
 void Pause_DrawTriforceSpot(PlayState* play, s32 showLightColumn) {
     static DemoEffect triforce;

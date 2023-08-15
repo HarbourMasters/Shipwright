@@ -6,6 +6,7 @@
 
 #include "z_en_tr.h"
 #include "objects/object_tr/object_tr.h"
+#include <assert.h>
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -114,7 +115,7 @@ void EnTr_Init(Actor* thisx, PlayState* play) {
             break;
 
         default:
-            ASSERT(0);
+            assert(0);
             break;
     }
 }
