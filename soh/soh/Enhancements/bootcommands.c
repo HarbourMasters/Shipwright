@@ -26,6 +26,8 @@ void BootCommands_Init()
     CVarClear("gOnFileSelectNameEntry"); // Clear when soh is killed on the file name entry page
     CVarClear("gBetterDebugWarpScreenMQMode");
     CVarClear("gBetterDebugWarpScreenMQModeScene");
+    CVarClear("gCheatEasyPauseBufferLastInputs");
+    CVarClear("gCheatEasyPauseBufferTimer");
 #if defined(__SWITCH__) || defined(__WIIU__)
     CVarRegisterInteger("gControlNav", 1); // always enable controller nav on switch/wii u
 #endif
