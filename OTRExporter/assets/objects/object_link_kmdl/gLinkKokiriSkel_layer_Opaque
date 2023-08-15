@@ -1,6 +1,0 @@
-<DisplayList Version="0">
-	<CallDisplayList Path="objects/object_link_kmdl/mat_gLinkKokiriSkel_f3dlite_material_layerOpaque"/>
-	<CallDisplayList Path="objects/object_link_kmdl/gLinkKokiriSkel_layer_Opaque_tri_0"/>
-	<EndDisplayList/>
-</DisplayList>
-
