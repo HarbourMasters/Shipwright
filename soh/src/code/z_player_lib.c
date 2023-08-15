@@ -1968,6 +1968,9 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
     } 
     else if (limbIndex == PLAYER_LIMB_R_HAND) {
         Actor* heldActor = this->heldActor;
+        Vec3f projectedHeadPos;
+
+        SkinMatrix_Vec3fMtxFMultXYZ(&play->viewProjectionMtxF, &this->actor.focus.pos, &projectedHeadPos);
 
         if (Player_CanUseNewLoadingMethodRightHand(this) && this->actor.id != 51) {
             switch (this->rightHandType) {
@@ -1983,26 +1986,53 @@ void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Ve
                     break;
                 case 11:
                     if (this->itemAction == PLAYER_IA_SLINGSHOT) {
-                        OPEN_DISPS(play->state.gfxCtx);
+                        if (projectedHeadPos.z < -4.0f && this->unk_6AD != 0) {
+                            if (Player_CanUseNewLoadingMethodFirstPerson(this)) {
+                                OPEN_DISPS(play->state.gfxCtx);
 
-                        // rescale child items for adult, otherwise clipping occurs
-                        if (LINK_IS_ADULT) {
-                            Matrix_Scale(1.35f, 1.35f, 1.35f, MTXMODE_APPLY);
+                                // rescale child items for adult, otherwise clipping occurs
+                                if (LINK_IS_ADULT) {
+                                    Matrix_Scale(1.35f, 1.35f, 1.35f, MTXMODE_APPLY);
+                                }
+
+                                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                          G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                                gSPDisplayList(POLY_OPA_DISP++, gLinkSlingshotDL);
+
+                                CLOSE_DISPS(play->state.gfxCtx);
+                            }
+                        } else {
+                            OPEN_DISPS(play->state.gfxCtx);
+
+                            // rescale child items for adult, otherwise clipping occurs
+                            if (LINK_IS_ADULT) {
+                                Matrix_Scale(1.35f, 1.35f, 1.35f, MTXMODE_APPLY);
+                            }
+
+                            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+                            gSPDisplayList(POLY_OPA_DISP++, gLinkSlingshotDL);
+
+                            CLOSE_DISPS(play->state.gfxCtx);
                         }
-
-                        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-                        gSPDisplayList(POLY_OPA_DISP++, gLinkSlingshotDL);
-
-                        CLOSE_DISPS(play->state.gfxCtx);
                     } else {
-                        // todo: For some reason, this isn't at the right angle for
-                        // child link compared to MM Bow. Probably needs animation edits
-                        Player_DrawRightHandItem(play, gLinkBowDL);
+                        if (projectedHeadPos.z < 0.0f && this->unk_6AD != 0) {
+                            if (Player_CanUseNewLoadingMethodFirstPerson(this)) {
+                                Player_DrawRightHandItem(play, gLinkBowDL);
+                            }
+                        } else {
+                            Player_DrawRightHandItem(play, gLinkBowDL);
+                        }
                     }
                     break;
                 case 15:
-                    Player_DrawRightHandItem(play, gLinkHookshotDL);
+                    if (projectedHeadPos.z < 0.0f && this->unk_6AD != 0) {
+                        if (Player_CanUseNewLoadingMethodFirstPerson(this)) {
+                            Player_DrawRightHandItem(play, gLinkHookshotDL);
+                        }
+                    } else {
+                        Player_DrawRightHandItem(play, gLinkHookshotDL);
+                    }
                     break;
             }
             //Ocarinas check to see if the item is being used instead of rightHandType.
