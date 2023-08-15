@@ -1,0 +1,6 @@
+<DisplayList Version="0">
+	<CallDisplayList Path="objects/object_link_gmdl/mat_gLinkGoronSkel_f3dlite_material_layerOpaque"/>
+	<CallDisplayList Path="objects/object_link_gmdl/gLinkGoronSkel_layer_Opaque_tri_0"/>
+	<EndDisplayList/>
+</DisplayList>
+

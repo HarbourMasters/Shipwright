@@ -1,0 +1,23 @@
+<Skeleton Version="0" Type="Normal" LimbCount="21">
+	<SkeletonLimb Path="objects/object_link_gmdl/gLinkGoronSkelLimb_000"/>
+	<SkeletonLimb Path="objects/object_link_gmdl/gLinkGoronSkelLimb_001"/>
+	<SkeletonLimb Path="objects/object_link_gmdl/gLinkGoronSkelLimb_002"/>
+	<SkeletonLimb Path="objects/object_link_gmdl/gLinkGoronSkelLimb_003"/>
+	<SkeletonLimb Path="objects/object_link_gmdl/gLinkGoronSkelLimb_004"/>
+	<SkeletonLimb Path="objects/object_link_gmdl/gLinkGoronSkelLimb_005"/>
+	<SkeletonLimb Path="objects/object_link_gmdl/gLinkGoronSkelLimb_006"/>
+	<SkeletonLimb Path="objects/object_link_gmdl/gLinkGoronSkelLimb_007"/>
+	<SkeletonLimb Path="objects/object_link_gmdl/gLinkGoronSkelLimb_008"/>
+	<SkeletonLimb Path="objects/object_link_gmdl/gLinkGoronSkelLimb_009"/>
+	<SkeletonLimb Path="objects/object_link_gmdl/gLinkGoronSkelLimb_010"/>
+	<SkeletonLimb Path="objects/object_link_gmdl/gLinkGoronSkelLimb_011"/>
+	<SkeletonLimb Path="objects/object_link_gmdl/gLinkGoronSkelLimb_012"/>
+	<SkeletonLimb Path="objects/object_link_gmdl/gLinkGoronSkelLimb_013"/>
+	<SkeletonLimb Path="objects/object_link_gmdl/gLinkGoronSkelLimb_014"/>
+	<SkeletonLimb Path="objects/object_link_gmdl/gLinkGoronSkelLimb_015"/>
+	<SkeletonLimb Path="objects/object_link_gmdl/gLinkGoronSkelLimb_016"/>
+	<SkeletonLimb Path="objects/object_link_gmdl/gLinkGoronSkelLimb_017"/>
+	<SkeletonLimb Path="objects/object_link_gmdl/gLinkGoronSkelLimb_018"/>
+	<SkeletonLimb Path="objects/object_link_gmdl/gLinkGoronSkelLimb_019"/>
+	<SkeletonLimb Path="objects/object_link_gmdl/gLinkGoronSkelLimb_020"/>
+</Skeleton>

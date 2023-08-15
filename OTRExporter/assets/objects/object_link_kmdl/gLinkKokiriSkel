@@ -1,0 +1,23 @@
+<Skeleton Version="0" Type="Normal" LimbCount="21">
+	<SkeletonLimb Path="objects/object_link_kmdl/gLinkKokiriSkelLimb_000"/>
+	<SkeletonLimb Path="objects/object_link_kmdl/gLinkKokiriSkelLimb_001"/>
+	<SkeletonLimb Path="objects/object_link_kmdl/gLinkKokiriSkelLimb_002"/>
+	<SkeletonLimb Path="objects/object_link_kmdl/gLinkKokiriSkelLimb_003"/>
+	<SkeletonLimb Path="objects/object_link_kmdl/gLinkKokiriSkelLimb_004"/>
+	<SkeletonLimb Path="objects/object_link_kmdl/gLinkKokiriSkelLimb_005"/>
+	<SkeletonLimb Path="objects/object_link_kmdl/gLinkKokiriSkelLimb_006"/>
+	<SkeletonLimb Path="objects/object_link_kmdl/gLinkKokiriSkelLimb_007"/>
+	<SkeletonLimb Path="objects/object_link_kmdl/gLinkKokiriSkelLimb_008"/>
+	<SkeletonLimb Path="objects/object_link_kmdl/gLinkKokiriSkelLimb_009"/>
+	<SkeletonLimb Path="objects/object_link_kmdl/gLinkKokiriSkelLimb_010"/>
+	<SkeletonLimb Path="objects/object_link_kmdl/gLinkKokiriSkelLimb_011"/>
+	<SkeletonLimb Path="objects/object_link_kmdl/gLinkKokiriSkelLimb_012"/>
+	<SkeletonLimb Path="objects/object_link_kmdl/gLinkKokiriSkelLimb_013"/>
+	<SkeletonLimb Path="objects/object_link_kmdl/gLinkKokiriSkelLimb_014"/>
+	<SkeletonLimb Path="objects/object_link_kmdl/gLinkKokiriSkelLimb_015"/>
+	<SkeletonLimb Path="objects/object_link_kmdl/gLinkKokiriSkelLimb_016"/>
+	<SkeletonLimb Path="objects/object_link_kmdl/gLinkKokiriSkelLimb_017"/>
+	<SkeletonLimb Path="objects/object_link_kmdl/gLinkKokiriSkelLimb_018"/>
+	<SkeletonLimb Path="objects/object_link_kmdl/gLinkKokiriSkelLimb_019"/>
+	<SkeletonLimb Path="objects/object_link_kmdl/gLinkKokiriSkelLimb_020"/>
+</Skeleton>

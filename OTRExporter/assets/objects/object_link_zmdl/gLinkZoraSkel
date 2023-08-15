@@ -1,0 +1,23 @@
+<Skeleton Version="0" Type="Normal" LimbCount="21">
+	<SkeletonLimb Path="objects/object_link_zmdl/gLinkZoraSkelLimb_000"/>
+	<SkeletonLimb Path="objects/object_link_zmdl/gLinkZoraSkelLimb_001"/>
+	<SkeletonLimb Path="objects/object_link_zmdl/gLinkZoraSkelLimb_002"/>
+	<SkeletonLimb Path="objects/object_link_zmdl/gLinkZoraSkelLimb_003"/>
+	<SkeletonLimb Path="objects/object_link_zmdl/gLinkZoraSkelLimb_004"/>
+	<SkeletonLimb Path="objects/object_link_zmdl/gLinkZoraSkelLimb_005"/>
+	<SkeletonLimb Path="objects/object_link_zmdl/gLinkZoraSkelLimb_006"/>
+	<SkeletonLimb Path="objects/object_link_zmdl/gLinkZoraSkelLimb_007"/>
+	<SkeletonLimb Path="objects/object_link_zmdl/gLinkZoraSkelLimb_008"/>
+	<SkeletonLimb Path="objects/object_link_zmdl/gLinkZoraSkelLimb_009"/>
+	<SkeletonLimb Path="objects/object_link_zmdl/gLinkZoraSkelLimb_010"/>
+	<SkeletonLimb Path="objects/object_link_zmdl/gLinkZoraSkelLimb_011"/>
+	<SkeletonLimb Path="objects/object_link_zmdl/gLinkZoraSkelLimb_012"/>
+	<SkeletonLimb Path="objects/object_link_zmdl/gLinkZoraSkelLimb_013"/>
+	<SkeletonLimb Path="objects/object_link_zmdl/gLinkZoraSkelLimb_014"/>
+	<SkeletonLimb Path="objects/object_link_zmdl/gLinkZoraSkelLimb_015"/>
+	<SkeletonLimb Path="objects/object_link_zmdl/gLinkZoraSkelLimb_016"/>
+	<SkeletonLimb Path="objects/object_link_zmdl/gLinkZoraSkelLimb_017"/>
+	<SkeletonLimb Path="objects/object_link_zmdl/gLinkZoraSkelLimb_018"/>
+	<SkeletonLimb Path="objects/object_link_zmdl/gLinkZoraSkelLimb_019"/>
+	<SkeletonLimb Path="objects/object_link_zmdl/gLinkZoraSkelLimb_020"/>
+</Skeleton>
