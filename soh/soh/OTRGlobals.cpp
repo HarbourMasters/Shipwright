@@ -121,6 +121,10 @@ GameInteractor* GameInteractor::Instance;
 AudioCollection* AudioCollection::Instance;
 SpeechSynthesizer* SpeechSynthesizer::Instance;
 
+extern "C" {
+#include "soh_assets.h" 
+}
+
 extern "C" char** cameraStrings;
 std::vector<std::shared_ptr<std::string>> cameraStdStrings;
 
@@ -1011,7 +1015,13 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     if (ShouldClearTextureCacheAtEndOfFrame) {
         gfx_texture_cache_clear();
         LUS::SkeletonPatcher::UpdateSkeletons();
+        BufferTunicsNextFrame = true;
         ShouldClearTextureCacheAtEndOfFrame = false;
+    }
+
+    if (BufferTunicsNextFrame) {
+        LUS::SkeletonPatcher::UpdateTunicSkeletons();
+        BufferTunicsNextFrame = false;
     }
 
     // OTRTODO: FIGURE OUT END FRAME POINT
@@ -1494,7 +1504,7 @@ extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
     return (AnimationHeaderCommon*) ResourceGetDataByName(path);
 }
 
-extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime) {
+extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime, Actor* actor) {
     std::string pathStr = std::string(path);
     static const std::string sOtr = "__OTR__";
 
@@ -1519,7 +1529,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, Skel
     // Therefore we can take this oppurtunity to take note of the Skeleton that is created...
     if (skelAnime != nullptr) {
         auto stringPath = std::string(path);
-        LUS::SkeletonPatcher::RegisterSkeleton(stringPath, skelAnime);
+        LUS::SkeletonPatcher::RegisterSkeleton(stringPath, skelAnime, actor);
     }
 
     return skelHeader;

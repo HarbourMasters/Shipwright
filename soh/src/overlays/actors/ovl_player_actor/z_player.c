@@ -29,6 +29,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/frame_interpolation.h"
+#include "soh_assets.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -2993,6 +2994,7 @@ void func_80835F44(PlayState* play, Player* this, s32 item) {
                     Inventory_ChangeEquipment(EQUIP_TUNIC, tunicValue);
                 }
                 Player_SetEquipmentData(play, this);
+                BufferTunicsNextFrame = true;
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
                 return;
             }
@@ -9618,10 +9620,10 @@ void Player_InitCommon(Player* this, PlayState* play, FlexSkeletonHeader* skelHe
     func_80834644(play, this);
 
     SkelAnime_InitLink(play, &this->skelAnime, skelHeader, D_80853914[PLAYER_ANIMGROUP_0][this->modelAnimType], 9,
-                       this->jointTable, this->morphTable, PLAYER_LIMB_MAX);
+                       this->jointTable, this->morphTable, PLAYER_LIMB_MAX, &this->actor);
     this->skelAnime.baseTransl = D_80854730;
     SkelAnime_InitLink(play, &this->skelAnime2, skelHeader, func_80833338(this), 9, this->jointTable2,
-                       this->morphTable2, PLAYER_LIMB_MAX);
+                       this->morphTable2, PLAYER_LIMB_MAX, &this->actor);
     this->skelAnime2.baseTransl = D_80854730;
 
     Effect_Add(play, &this->meleeWeaponEffectIndex, EFFECT_BLURE2, 0, 0, &blureSword);
@@ -9695,6 +9697,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
             }
         }
     }
+    BufferTunicsNextFrame = true;
     Player_InitCommon(this, play, gPlayerSkelHeaders[((void)0, gSaveContext.linkAge)]);
     this->giObjectSegment = (void*)(((uintptr_t)ZELDA_ARENA_MALLOC_DEBUG(0x3008) + 8) & ~0xF);
 
@@ -12763,6 +12766,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
                 Inventory_ChangeEquipment(EQUIP_TUNIC, equipItem - ITEM_TUNIC_KOKIRI + 1);
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
                 Player_SetEquipmentData(play, this);
+                BufferTunicsNextFrame = true;
             }
         }
         equipNow = false;

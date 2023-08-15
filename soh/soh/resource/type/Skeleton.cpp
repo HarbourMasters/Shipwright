@@ -2,6 +2,9 @@
 #include "Skeleton.h"
 #include "soh/OTRGlobals.h"
 #include "libultraship/libultraship.h"
+#include <variables.h>
+#include <macros.h>
+#include <soh_assets.h>
 
 namespace LUS {
 SkeletonData* Skeleton::GetPointer() {
@@ -24,10 +27,11 @@ size_t Skeleton::GetPointerSize() {
 std::vector<SkeletonPatchInfo> SkeletonPatcher::skeletons;
 
 
-void SkeletonPatcher::RegisterSkeleton(std::string& path, SkelAnime* skelAnime) {
+void SkeletonPatcher::RegisterSkeleton(std::string& path, SkelAnime* skelAnime, Actor* actor) {
     SkeletonPatchInfo info;
 
     info.skelAnime = skelAnime;
+    info.actor = actor;
 
     static const std::string sOtr = "__OTR__";
 
@@ -75,6 +79,47 @@ void SkeletonPatcher::UpdateSkeletons() {
 
         if (newSkel != nullptr)
             skel.skelAnime->skeleton = newSkel->skeletonData.skeletonHeader.segment;
+    }
+}
+
+void SkeletonPatcher::UpdateTunicSkeletons() {
+    bool isHD = CVarGetInteger("gAltAssets", 0);
+    for (auto skel : skeletons) {
+        if (skel.actor != nullptr) // is there actually an actor to check?
+        {
+            if (skel.actor->id == 0) // is this Link?
+            {
+                Skeleton* newSkel;
+                if (LINK_IS_ADULT && CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1 == PLAYER_TUNIC_KOKIRI &&
+                    ResourceGetIsCustomByName(gLinkKokiriSkel)) {
+                    newSkel = (Skeleton*)LUS::Context::GetInstance()
+                                  ->GetResourceManager()
+                                  ->LoadResource("__OTR__objects/object_link_kmdl/gLinkKokiriSkel", true)
+                                  .get();
+                } else if (LINK_IS_ADULT && CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1 == PLAYER_TUNIC_GORON &&
+                           ResourceGetIsCustomByName(gLinkGoronSkel)) {
+                    newSkel = (Skeleton*)LUS::Context::GetInstance()
+                                  ->GetResourceManager()
+                                  ->LoadResource("__OTR__objects/object_link_gmdl/gLinkGoronSkel", true)
+                                  .get();
+                } else if (LINK_IS_ADULT && CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1 == PLAYER_TUNIC_ZORA &&
+                           ResourceGetIsCustomByName(gLinkZoraSkel)) {
+                    newSkel = (Skeleton*)LUS::Context::GetInstance()
+                                  ->GetResourceManager()
+                                  ->LoadResource("__OTR__objects/object_link_zmdl/gLinkZoraSkel", true)
+                                  .get();
+                } else { // child link, no model available
+                    newSkel = (Skeleton*)LUS::Context::GetInstance()
+                                  ->GetResourceManager()
+                                  ->LoadResource(
+                                      (isHD ? LUS::IResource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true)
+                                  .get();
+                }
+
+                if (newSkel != nullptr)
+                    skel.skelAnime->skeleton = newSkel->skeletonData.skeletonHeader.segment;
+            }
+        }
     }
 }
 } // namespace LUS

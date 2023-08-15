@@ -6,6 +6,8 @@
 #include "objects/object_triforce_spot/object_triforce_spot.h"
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
 
+#include "soh_assets.h"
+
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #include <stdlib.h>
@@ -1639,6 +1641,7 @@ u32 func_80091738(PlayState* play, u8* segment, SkelAnime* skelAnime) {
     s16 linkObjectId = gLinkObjectIds[gSaveContext.linkAge];
     size_t size;
     void* ptr;
+    Player* this = GET_PLAYER(play);
 
     size = gObjectTable[OBJECT_GAMEPLAY_KEEP].vromEnd - gObjectTable[OBJECT_GAMEPLAY_KEEP].vromStart;
     ptr = segment + 0x3800;
@@ -1653,8 +1656,9 @@ u32 func_80091738(PlayState* play, u8* segment, SkelAnime* skelAnime) {
     gSegments[4] = VIRTUAL_TO_PHYSICAL(segment + 0x3800);
     gSegments[6] = VIRTUAL_TO_PHYSICAL(segment + 0x8800);
 
+    BufferTunicsNextFrame = true; //forces link to buffer again. This makes the right tunic model show up on the equipment screen when it loads
     SkelAnime_InitLink(play, skelAnime, gPlayerSkelHeaders[gSaveContext.linkAge], &gPlayerAnim_link_normal_wait, 9,
-                       ptr, ptr, PLAYER_LIMB_MAX);
+                       ptr, ptr, PLAYER_LIMB_MAX, &this->actor);
 
     return size + 0x8800 + 0x90;
 }

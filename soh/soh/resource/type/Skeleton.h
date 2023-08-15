@@ -4,6 +4,7 @@
 #include "Resource.h"
 #include "SkeletonLimb.h"
 #include <z64animation.h>
+#include <z64actor.h>
 
 namespace LUS {
 
@@ -77,14 +78,16 @@ struct SkeletonPatchInfo
 {
     SkelAnime* skelAnime;
     std::string vanillaSkeletonPath;
+    Actor* actor;
 };
 
 class SkeletonPatcher {
   public:
-    static void RegisterSkeleton(std::string& path, SkelAnime* skelAnime);
+    static void RegisterSkeleton(std::string& path, SkelAnime* skelAnime, Actor* actor);
     static void UnregisterSkeleton(SkelAnime* skelAnime);
     static void ClearSkeletons();
     static void UpdateSkeletons();
+    static void UpdateTunicSkeletons();
 
     static std::vector<SkeletonPatchInfo> skeletons;
 };
