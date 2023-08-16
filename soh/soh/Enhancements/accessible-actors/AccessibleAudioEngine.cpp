@@ -34,6 +34,9 @@ AAE_POS,//Set the sound source's position and direction.
 AAE_PREPARE,
 AAE_TERMINATE,
 };
+typedef float f32;
+typedef int8_t s8;
+typedef uint8_t u8;
 //Processing for our custom audio positioning.
 static float lerp(float x, float y, float z) {
     return (1.0 - z) * x + z * y;
@@ -51,6 +54,32 @@ static float lerp(float x, float y, float z) {
 }
     //Borrow the pan calculation from the game itself. Todo: this is technical debt, so copy/ revise it or something at some point. 
     extern "C" int8_t Audio_ComputeSoundPanSigned(float x, float z, uint8_t token);
+#define SQ(x) ((x) * (x))
+//A copy of the pan computation from the game, and modified a bit for use within a standard audio engine.
+static f32 computeSoundPan(f32 x, f32 z) {
+    f32 absX = std::min(fabs(x), 8000.0f);
+    f32 absZ = std::min(fabs(z), 8000.0f);
+    f32 pan;
+
+    if ((x == 0.0f) && (z == 0.0f)) {
+        pan = 0.5f;
+    } else if (absZ <= absX) {
+        pan = (16000.0f - absX) / (3.3f * (16000.0f - absZ));
+        if (x >= 0.0f) {
+            pan = 1.0f - pan;
+        }
+    } else {
+        pan = (x / (5.0769234f * absZ)) + 0.5f; // about 66 / 13
+    }
+
+    if (absZ < 50.0f) {
+        if (absX < 50.0f) {
+            pan = ((pan - 0.5f) * SQ(absX / 50.0f)) + 0.5f;
+        }
+    }
+    return (pan - 0.5);
+
+}
 
     static void positioner_process_pcm_frames(ma_node * pNode, const float** ppFramesIn, ma_uint32* pFrameCountIn,
     float** ppFramesOut,
@@ -68,7 +97,7 @@ static float lerp(float x, float y, float z) {
         pan = -1.0;
     if (pan > 1.0)
         pan = 1.0;
-    pan = (float) ((Audio_ComputeSoundPanSigned(extras->x, extras->z, 4) / 127.0) - 0.5) * 2;
+pan = computeSoundPan(extras->x, extras->z);
     if (pan < -1.0)
         pan = -1.0;
     if (pan > 1.0)
@@ -397,7 +426,7 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
         if (ma_node_init(&engine.nodeGraph, &config, NULL, &slot->extras) != MA_SUCCESS)
             return false;
         ma_panner_config pc = ma_panner_config_init(ma_format_f32, AAE_CHANNELS);
-        pc.mode = ma_pan_mode_pan;
+        pc.mode = ma_pan_mode_balance;
         ma_panner_init(&pc, &slot->extras.panner);
         ma_gainer_config gc = ma_gainer_config_init(AAE_CHANNELS, AAE_SAMPLE_RATE / 20);//Allow one in-game frame for the gain to work its way towards the target value.
         if (ma_gainer_init(&gc, NULL, &slot->extras.gainer) != MA_SUCCESS)
