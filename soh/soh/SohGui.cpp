@@ -38,6 +38,8 @@
 #include "Enhancements/game-interactor/GameInteractor.h"
 #include "Enhancements/cosmetics/authenticGfxPatches.h"
 
+#include "advancedResolutionEditor.h"
+
 bool ShouldClearTextureCacheAtEndOfFrame = false;
 bool isBetaQuestEnabled = false;
 
@@ -126,6 +128,8 @@ namespace SohGui {
     std::shared_ptr<ItemTrackerWindow> mItemTrackerWindow;
     std::shared_ptr<RandomizerSettingsWindow> mRandomizerSettingsWindow;
 
+    std::shared_ptr<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow> mAdvancedResolutionSettingsWindow;
+
     void SetupGuiElements() {
         auto gui = LUS::Context::GetInstance()->GetWindow()->GetGui();
 
@@ -183,9 +187,14 @@ namespace SohGui {
         gui->AddGuiWindow(mItemTrackerSettingsWindow);
         mRandomizerSettingsWindow = std::make_shared<RandomizerSettingsWindow>("gRandomizerSettingsEnabled", "Randomizer Settings");
         gui->AddGuiWindow(mRandomizerSettingsWindow);
+
+        mAdvancedResolutionSettingsWindow =
+            std::make_shared<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow>("gAdvancedResolutionEditorEnabled", "Advanced Resolution Settings");
+        gui->AddGuiWindow(mAdvancedResolutionSettingsWindow);
     }
 
     void Destroy() {
+        mAdvancedResolutionSettingsWindow = nullptr;
         mRandomizerSettingsWindow = nullptr;
         mItemTrackerWindow = nullptr;
         mItemTrackerSettingsWindow = nullptr;

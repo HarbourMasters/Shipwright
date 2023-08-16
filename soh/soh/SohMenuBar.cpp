@@ -27,6 +27,7 @@
 #include "Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "Enhancements/randomizer/randomizer_item_tracker.h"
 #include "Enhancements/randomizer/randomizer_settings_window.h"
+#include "advancedResolutionEditor.h"
 
 extern bool ShouldClearTextureCacheAtEndOfFrame;
 extern bool isBetaQuestEnabled;
@@ -164,6 +165,7 @@ void DrawShipMenu() {
 
 extern std::shared_ptr<LUS::GuiWindow> mInputEditorWindow;
 extern std::shared_ptr<GameControlEditor::GameControlEditorWindow> mGameControlEditorWindow;
+extern std::shared_ptr<AdvancedResolutionSettings::AdvancedResolutionSettingsWindow> mAdvancedResolutionSettingsWindow;
 
 void DrawSettingsMenu() {
     if (ImGui::BeginMenu("Settings"))
@@ -253,6 +255,21 @@ void DrawSettingsMenu() {
                 LUS::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(CVarGetFloat("gInternalResolution", 1));
             };
             UIWidgets::Tooltip("Multiplies your output resolution by the value inputted, as a more intensive but effective form of anti-aliasing");
+           
+            // Tina's resolution thingy
+            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(12.0f, 6.0f));
+            ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.0f, 0.0f));
+            ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+            ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
+            UIWidgets::Spacer(0);
+            if (mAdvancedResolutionSettingsWindow) {
+                if (ImGui::Button(GetWindowButtonText("Advanced Resolution Settings", CVarGetInteger("gAdvancedResolutionEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                    // add a toggle visibility for the window, once you've defined it
+                    mAdvancedResolutionSettingsWindow->ToggleVisibility();
+                }
+            }
+            ImGui::PopStyleColor(1);
+            ImGui::PopStyleVar(3);
         #endif
         #ifndef __WIIU__
             if (UIWidgets::PaddedEnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "", 1, true, true, false)) {
