@@ -6,8 +6,6 @@
 #include "objects/object_triforce_spot/object_triforce_spot.h"
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
 
-#include "soh_assets.h"
-
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 #include <stdlib.h>
@@ -54,6 +52,8 @@ u8 gPlayerModelTypes[][5] = {
     { 0, 6, 8, 18, 20 },  { 4, 0, 15, 18, 20 }, { 3, 1, 9, 18, 20 },  { 3, 5, 9, 18, 20 },
     { 0, 0, 13, 18, 20 }, { 0, 0, 14, 18, 20 }, { 0, 7, 8, 18, 20 },  { 0, 2, 8, 19, 20 },
 };
+
+extern u8 BufferTunicsNextFrame;
 
 Gfx* D_80125CE8[] = {
     gLinkAdultRightHandClosedNearDL,

@@ -29,7 +29,8 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
 #include "soh/frame_interpolation.h"
-#include "soh_assets.h"
+
+#include "soh/OTRGlobals.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -2944,6 +2945,9 @@ void func_80835EFC(Player* this) {
         }
     }
 }
+
+// used for tunic buffers
+u8 BufferTunicsNextFrame = false;
 
 void func_80835F44(PlayState* play, Player* this, s32 item) {
     s8 actionParam;

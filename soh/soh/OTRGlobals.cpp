@@ -121,10 +121,6 @@ GameInteractor* GameInteractor::Instance;
 AudioCollection* AudioCollection::Instance;
 SpeechSynthesizer* SpeechSynthesizer::Instance;
 
-extern "C" {
-#include "soh_assets.h" 
-}
-
 extern "C" char** cameraStrings;
 std::vector<std::shared_ptr<std::string>> cameraStdStrings;
 
@@ -873,6 +869,7 @@ extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
 }
 
 extern bool ShouldClearTextureCacheAtEndOfFrame;
+extern "C" u8 BufferTunicsNextFrame;
 
 extern "C" void Graph_StartFrame() {
 #ifndef __WIIU__
@@ -956,8 +953,7 @@ void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>
         gfx_end_frame();
     }
 }
-
-// C->C++ Bridge
+    // C->C++ Bridge
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);
@@ -1019,7 +1015,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         ShouldClearTextureCacheAtEndOfFrame = false;
     }
 
-    if (BufferTunicsNextFrame) {
+     if (BufferTunicsNextFrame) {
         LUS::SkeletonPatcher::UpdateTunicSkeletons();
         BufferTunicsNextFrame = false;
     }

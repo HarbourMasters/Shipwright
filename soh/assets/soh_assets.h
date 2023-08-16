@@ -90,5 +90,3 @@ static const ALIGN_ASSET(2) char gLinkGoronSkel[] = dgLinkGoronSkel;
 
 #define dgLinkZoraSkel "__OTR__objects/object_link_zmdl/gLinkZoraSkel"
 static const ALIGN_ASSET(2) char gLinkZoraSkel[] = dgLinkZoraSkel;
-
-u8 BufferTunicsNextFrame;
