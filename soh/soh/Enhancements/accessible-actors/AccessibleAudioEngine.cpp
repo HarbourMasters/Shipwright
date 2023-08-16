@@ -49,6 +49,8 @@ static float lerp(float x, float y, float z) {
     gain -= lerp(0, leftover, normDist);
     return gain;
 }
+    //Borrow the pan calculation from the game itself. Todo: this is technical debt, so copy/ revise it or something at some point. 
+    extern "C" int8_t Audio_ComputeSoundPanSigned(float x, float z, uint8_t token);
 
     static void positioner_process_pcm_frames(ma_node * pNode, const float** ppFramesIn, ma_uint32* pFrameCountIn,
     float** ppFramesOut,
@@ -66,6 +68,12 @@ static float lerp(float x, float y, float z) {
         pan = -1.0;
     if (pan > 1.0)
         pan = 1.0;
+    pan = (float) ((Audio_ComputeSoundPanSigned(extras->x, extras->z, 4) / 127.0) - 0.5) * 2;
+    if (pan < -1.0)
+        pan = -1.0;
+    if (pan > 1.0)
+        pan = 1.0;
+
     ma_panner_set_pan(&extras->panner, pan);
     ma_panner_process_pcm_frames(&extras->panner, framesOut, framesOut, *pFrameCountIn);
     //Next we'll apply the gain based on the object's distance relationship to the player. The strategy here is to use a combination of decibel-based and linear attenuation, so that the gain reaches 0 at the exact point when the object is at exactly the maximum distance from the player.
