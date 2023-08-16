@@ -607,6 +607,33 @@ else {
             {
                     //This is a fall.
                     discoverLedge(pos);
+                    f32 ledgeCheckDistance = 200.0;
+                    while (ledgeCheckDistance >= 0) {
+                        prevPos = pos;
+                        setVelocity();
+                        pos.y = player->actor.prevPos.y + 100.0;
+                        f32 step = fabs(velocity.x + velocity.z);
+
+                        if (!move()) {
+                            destroyCurrentSound();
+                            break; // Probe is out of bounds.
+                        }
+                        ledgeCheckDistance -= (step + fabs(pos.y - pos.y));
+
+                        // Vec3f wallPos;
+                        // CollisionPoly* wallPoly = checkWall(pos, prevPos, wallPos);
+                        // if (wallPoly == NULL)
+                        // continue;
+                        // wallHeight = findWallHeight(pos, wallPoly);
+                        if ((fabs(pos.y - player->actor.prevPos.y) <= 70.00) && fabs(pos.y - prevPos.y) >= 20.0) {
+                            // Ledge at top of wall can be reached.
+
+                            discoverLedge(pos, true);
+                            ledgeCheckDistance = -1;
+
+                            break;
+                        }
+                    }
                     break;
 
                 }
