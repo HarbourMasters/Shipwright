@@ -958,6 +958,8 @@ void DrawEnhancementsMenu() {
                                 "This might affect other decal effects\n");
             UIWidgets::PaddedEnhancementSliderInt("Text Spacing: %d", "##TEXTSPACING", "gTextSpacing", 4, 6, "", 6, true, true, true);
             UIWidgets::Tooltip("Space between text characters (useful for HD font textures)");
+            UIWidgets::PaddedEnhancementCheckbox("More info in file select", "gFileSelectMoreInfo", true, false);
+            UIWidgets::Tooltip("Shows what items you have collected in the file select screen, like in N64 randomizer");
             ImGui::EndMenu();
         }
 
