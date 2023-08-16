@@ -55,7 +55,7 @@ class TerrainCueSound {
     // Update sound position and volume once per frame.
     virtual void updatePositions(Vec3f& pos) {
         terrainPos = pos;
-        Player* player = GET_PLAYER(actor->play);
+            Player* player = GET_PLAYER(actor->play);
 
         f32 w = 0.0f;
         // Set projectedPos.
@@ -76,7 +76,6 @@ class TerrainCueSound {
         restFrames = 0;
         xzDistToPlayer = 0;
         currentSFX = 0;
-        updatePositions(pos);
 
     }
     virtual ~TerrainCueSound() {
@@ -179,7 +178,7 @@ class Ledge :protected TerrainCueSound {
     };
 class Platform: protected TerrainCueSound {
   public:
-    Platform(Vec3f pos) : TerrainCueSound(NULL, pos) {
+    Platform(AccessibleActor* actor, Vec3f pos) : TerrainCueSound(actor, pos) {
         currentPitch = 2.0;
         currentSFX = NA_SE_EV_WOOD_BOUND;
         shouldLoop = false;
@@ -535,7 +534,7 @@ else {
         this->rot = { 0, 0, 0 };
         terrainDiscovered = DISCOVERED_NOTHING;
         currentSound = NULL;
-        platform.setActor(actor);
+        new (&platform) Platform(actor, { 0.0, 0.0, 0.0 });
 
         disabled = false;
         trackingMode = false;
@@ -568,6 +567,7 @@ else {
         f32 dist = Math_Vec3f_DistXYZ(&wallPos, &newWallPos);
         return fabs(dist) < 0.25;
     }
+
         //Perform all terrain detection and sound book keeping. Call once per frame.
     void scan() {
         Player* player = GET_PLAYER(actor->play);
@@ -640,26 +640,8 @@ else {
             {
                     //This is a fall.
                     discoverLedge(pos);
-                    f32 ledgeCheckDistance = 200.0;
-                    while (ledgeCheckDistance >= 0) {
-                        prevPos = pos;
-                        setVelocity();
-                        pos.y = player->actor.prevPos.y + 100.0;
-                        f32 step = fabs(velocity.x + velocity.z);
+                testForPlatform();
 
-                        if (!move()) {
-                            destroyCurrentSound();
-                            break; // Probe is out of bounds.
-                        }
-                        ledgeCheckDistance -= (step + fabs(pos.y - pos.y));
-                        
-                        if ((fabs(pos.y - player->actor.prevPos.y) <= 70.00) && fabs(pos.y - prevPos.y) >= 20.0) {
-                            platform.setPosition(pos);
-                            platform.run();
-
-                            break;
-                        }
-                    }
                     break;
 
                 }
@@ -705,7 +687,32 @@ trackingModeStarted = false;
 
 
     }
+    void testForPlatform()
+    {
+Player* player = GET_PLAYER(actor->play);
 
+f32 ledgeCheckDistance = 200.0;
+Vec3f startingPos = pos;
+while (ledgeCheckDistance >= 0) {
+prevPos = pos;
+setVelocity();
+pos.y = player->actor.prevPos.y + 100.0;
+f32 step = fabs(velocity.x + velocity.z);
+
+if (!move()) {
+                break; // Probe is out of bounds.
+}
+ledgeCheckDistance -= (step + fabs(pos.y - pos.y));
+
+if ((fabs(pos.y - player->actor.prevPos.y) <= 70.00) && fabs(pos.y - prevPos.y) >= 20.0) {
+                platform.setPosition(pos);
+                platform.run();
+
+                break;
+}
+}
+pos = startingPos;
+    }
     };
 
 typedef struct {
