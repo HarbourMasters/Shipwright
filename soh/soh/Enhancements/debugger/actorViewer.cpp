@@ -460,7 +460,7 @@ void CreateActorSpecificData() {
             switchFlag = 0x3F;
         }
         
-        return switchFlag;
+        return switchFlag << 8;
     };
 
     actorSpecificData[ACTOR_EN_GIRLA] = [](s16 params) -> s16 {
@@ -722,6 +722,122 @@ void CreateActorSpecificData() {
         }
 
         return (type << 12) + (itemId << 5) + treasureFlag;
+    };
+
+    actorSpecificData[ACTOR_EN_DOOR] = [](s16 params) -> s16 {
+        /**
+         * Actor Parameters
+         *
+         * |                  |       |             |
+         * | Transition Index | Type  | Double Door | Switch Flag OR Text Id - 0x0200
+         * |------------------|-------|-------------|---------------------------------
+         * | 0 0 0 0 0 0      | 0 0 0 | 0           | 0 0 0 0 0 0
+         * | 6                | 3     | 1           | 6
+         * |
+         *
+         * Transition Index     1111110000000000    Set by the actor engine when the door is spawned
+         * Type                 0000001110000000
+         * Double Door          0000000001000000
+         * Switch Flag          0000000000111111    For use with the `DOOR_LOCKED` type
+         * Text id - 0x0200     0000000000111111    For use with the `DOOR_CHECKABLE` type
+         *
+         */
+        u8 transitionIndex = params >> 10;
+        ImGui::InputScalar("Transition Index", ImGuiDataType_U8, &transitionIndex);
+        if (transitionIndex > 0x3F) {
+            transitionIndex = 0x3F;
+        }
+        
+        static const char* items[] = {
+            "Room Load",     // loads rooms
+            "Locked",        // small key locked door
+            "Room Load (2)", // loads rooms
+            "Scene Exit",    // doesn't load rooms, used for doors paired with scene transition polygons
+            "Ajar",          // open slightly but slams shut if Link gets too close
+            "Checkable",     // doors that display a textbox when interacting
+            "Evening",       // unlocked between 18:00 and 21:00, Dampé's hut
+            "Room Load (7)"  // loads rooms
+        };
+
+        int type = (params >> 7) & 7;
+        ImGui::Combo("Type", &type, items, IM_ARRAYSIZE(items));
+        if (type > 7) {
+            type = 7;
+        }
+
+        bool doubleDoor = ((params >> 6) & 1) != 0;
+        ImGui::Checkbox("Double Door", &doubleDoor);
+
+        u8 lowerBits = params & 0x3F;
+        if (type == 1) {
+            ImGui::InputScalar("Switch Flag", ImGuiDataType_U8, &lowerBits);
+            if (lowerBits > 0x3F) {
+                lowerBits = 0x3F;
+            }
+        } else if (type == 5) {
+            ImGui::InputScalar("Text ID - 0x200", ImGuiDataType_U8, &lowerBits);
+            if (lowerBits > 0x3F) {
+                lowerBits = 0x3F;
+            }
+        } else {
+            lowerBits = 0;
+        }
+
+        return (transitionIndex << 10) + (type << 7) + (doubleDoor << 6) + lowerBits;
+    };
+
+    actorSpecificData[ACTOR_EN_PO_DESERT] = [](s16 params) -> s16 {
+        u8 switchFlag = params >> 8;
+        
+        ImGui::InputScalar("Path", ImGuiDataType_U8, &switchFlag);
+        
+        return switchFlag << 8;
+    };
+
+    actorSpecificData[ACTOR_EN_KANBAN] = [](s16 params) -> s16 {
+        bool piece = params == (s16)0xFFDD;
+        bool fishingSign = params == 0x300;
+        if (ImGui::Checkbox("Piece", &piece)) {
+            fishingSign = false;
+        }
+        if (ImGui::Checkbox("Fishing Sign", &fishingSign)) {
+            piece = false;
+        }
+        
+        u8 textId = params;
+        if (!piece && !fishingSign) {
+            if (ImGui::InputScalar("Text ID", ImGuiDataType_U8, &textId)) {
+                textId |= 0x300;
+            }
+        }
+        
+        return piece ? (s16)0xFFDD : (fishingSign ? 0x300 : textId);
+    };
+
+    actorSpecificData[ACTOR_EN_KUSA] = [](s16 params) -> s16 {
+        static const char* items[] = {
+            "0",
+            "1",
+            "2"
+        };
+
+        int type = params & 3;
+        ImGui::Combo("Type", &type, items, IM_ARRAYSIZE(items));
+
+        bool bugs = ((params >> 4) & 1) != 0;
+        ImGui::Checkbox("Bugs", &bugs);
+        
+        u8 drop = (params >> 8) & 0xF;
+        if (type == 2) {
+            ImGui::InputScalar("Random Drop Params", ImGuiDataType_U8, &drop);
+            if (drop > 0xD) {
+                drop = 0xD;
+            }
+        } else {
+            drop = 0;
+        }
+
+        return (drop << 8) + (bugs << 4) + type;
     };
 
     actorSpecificData[ActorDB::Instance->RetrieveId("En_Partner")] = [](s16 params) -> s16 {
