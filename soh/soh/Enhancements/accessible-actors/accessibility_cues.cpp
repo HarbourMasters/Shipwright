@@ -177,6 +177,30 @@ class Ledge :protected TerrainCueSound {
 
     }
     };
+class Platform: protected TerrainCueSound {
+  public:
+    Platform(AccessibleActor* actor, Vec3f pos) : TerrainCueSound(actor, pos) {
+        currentPitch = 2.0;
+        currentSFX = NA_SE_EV_WOOD_BOUND;
+        shouldLoop = false;
+
+    }
+    virtual ~Platform() {
+    }
+    void setPosition(Vec3f& pos)
+    {
+        updatePositions(pos);
+    }
+    void run() {
+        if (restFrames == 0) {
+                play();
+                restFrames = 10;
+                return;
+        }
+        restFrames--;
+    }
+};
+
 class Wall: protected TerrainCueSound {
         int frames;
 
@@ -252,6 +276,8 @@ class Spike : protected TerrainCueSound {
         Wall wall;
         Spike spike;
     };
+    Platform platform;
+
     TerrainCueSound* currentSound;
 //Apply an offset b to a Vec3f a.
     Vec3f applyVec3fOffset(Vec3f& a, Vec3f& b) {
@@ -622,8 +648,8 @@ else {
                         ledgeCheckDistance -= (step + fabs(pos.y - pos.y));
                         
                         if ((fabs(pos.y - player->actor.prevPos.y) <= 70.00) && fabs(pos.y - prevPos.y) >= 20.0) {
-                            discoverLedge(pos, true);
-                            ledgeCheckDistance = -1;
+                            platform.setPosition(pos);
+                            platform.run();
 
                             break;
                         }

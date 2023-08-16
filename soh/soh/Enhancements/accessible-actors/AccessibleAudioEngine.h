@@ -20,12 +20,13 @@ struct SoundAction {
                      // address of an object with which the sound is associated is recommended.
     int slot;//Allows multiple sounds per handle. The exact number is controlled by AAE_SOUNDS_PER_HANDLE.
     int command; // One of the items belonging to AAE_COMMANDS.
-        std::string path; // If command is AAE_START, this is the path to the desired resource.
-    bool looping;//If command is AAE_START, specifies whether or not the sound should loop.
+    std::string path; // If command is AAE_START, this is the path to the desired resource.
+    bool looping;     // If command is AAE_START, specifies whether or not the sound should loop.
         union {
             float pitch;
             float volume;
             float pan;
+            float cutoff;
             size_t offset;//for seeking.
             float distance;
         };
@@ -44,6 +45,7 @@ typedef struct
         ma_node_base base;
         ma_panner panner;
         ma_gainer gainer;
+        ma_lpf_node filter;
 
         float x;
         float y;
@@ -99,6 +101,7 @@ SoundSlot* findSound(SoundAction& action);
     void doSetPitch(SoundAction& action);
     void doSetVolume(SoundAction& action);
     void doSetPan(SoundAction& action);
+    void doSetFilter(SoundAction& action);
     void doSeekSound(SoundAction& action);
 
     void doSetListenerPos(SoundAction& action);
@@ -128,6 +131,8 @@ SoundSlot* findSound(SoundAction& action);
     void setPitch(uintptr_t handle, int slot, float pitch);
     void setVolume(uintptr_t handle, int slot, float volume);
     void setPan(uintptr_t handle, int slot, float pan);
+//Set the lowpass filter cutoff. Set to 1.0 for no filtering.
+     void setFilter(uintptr_t handle, int slot, float cutoff);
 //Seek the sound to a particular PCM frame.
     void seekSound(uintptr_t handle, int slot, size_t offset);
     void setSoundPosition(uintptr_t handle, int slot, float posX, float posY, float posZ, float distToPlayer, float maxDistance);

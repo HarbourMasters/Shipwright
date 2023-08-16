@@ -102,6 +102,7 @@ void ActorAccessibility_SetSoundPos(void* handle, int slot, Vec3f* pos, f32 dist
 
 void ActorAccessibility_SetSoundVolume(void* handle, int slot, float volume);
 void ActorAccessibility_SetSoundPan(void* handle, int slot, Vec3f* projectedPos);
+void ActorAccessibility_SetSoundFilter(void* handle, int slot, float cutoff);
 void ActorAccessibility_SeekSound(void* handle, int slot, size_t offset);
 
     /*

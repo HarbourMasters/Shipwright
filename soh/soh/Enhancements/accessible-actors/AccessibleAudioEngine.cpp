@@ -9,6 +9,7 @@
 #define AAE_MIX_CHUNK_SIZE 64
 #define AAE_GC_INTERVAL 20 * 60//How often, in frames, do we clean up sound handles that are no longer active.
 #define AAE_MAX_DB_REDUCTION -20
+#define AAE_LPF_ORDER 4
 
 #define NOMINMAX//because Windows is a joke.
 #include "AccessibleAudioEngine.h"
@@ -26,6 +27,7 @@ enum AAE_COMMANDS {
     AAE_PITCH,
     AAE_VOLUME,
     AAE_PAN,
+    AAE_FILTER,
 AAE_SEEK,
     AAE_LISTENER, //Set the listener's position and direction.
 AAE_POS,//Set the sound source's position and direction.
@@ -208,6 +210,9 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
                     case AAE_PAN:
                         doSetPan(action);
                         break;
+                    case AAE_FILTER:
+                        doSetFilter(action);
+                        break;
                     case AAE_SEEK:
                         doSeekSound(action);
                         break;
@@ -313,6 +318,16 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
             return;
         ma_sound_set_pan(&slot->sound, action.pan);
     }
+    void AccessibleAudioEngine::doSetFilter(SoundAction& action)
+    {
+        SoundSlot* slot = findSound(action);
+        if (slot == NULL)
+            return;
+        ma_lpf_config config =
+            ma_lpf_config_init(ma_format_f32, AAE_CHANNELS, AAE_SAMPLE_RATE, lerp(0.0, AAE_SAMPLE_RATE / 2, action.cutoff), AAE_LPF_ORDER);
+        ma_lpf_node_reinit(&config, &slot->extras.filter);
+
+    }
     void AccessibleAudioEngine::doSeekSound(SoundAction& action)
     {
         SoundSlot* slot = findSound(action);
@@ -379,7 +394,11 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
         ma_gainer_config gc = ma_gainer_config_init(AAE_CHANNELS, AAE_SAMPLE_RATE / 20);//Allow one in-game frame for the gain to work its way towards the target value.
         if (ma_gainer_init(&gc, NULL, &slot->extras.gainer) != MA_SUCCESS)
             return false;
-        ma_node_attach_output_bus(&slot->sound, 0, &slot->extras, 0);
+        ma_lpf_node_config fc = ma_lpf_node_config_init(AAE_CHANNELS, AAE_SAMPLE_RATE, AAE_SAMPLE_RATE / 2, AAE_LPF_ORDER);
+        ma_lpf_node_init(&engine.nodeGraph, &fc, NULL, &slot->extras.filter);
+
+        ma_node_attach_output_bus(&slot->sound, 0, &slot->extras.filter, 0);
+        ma_node_attach_output_bus(&slot->extras.filter, 0, &slot->extras, 0);
         return true;
 
     }
@@ -501,7 +520,6 @@ void AccessibleAudioEngine::setVolume(uintptr_t handle, int slot, float volume)
         action.volume = volume;
     }
 void AccessibleAudioEngine::setPan(uintptr_t handle, int slot, float pan) {
-
         if (slot < 0 || slot >= AAE_SLOTS_PER_HANDLE)
             return;
         SoundAction& action = getNextOutgoingSoundAction();
@@ -510,7 +528,19 @@ void AccessibleAudioEngine::setPan(uintptr_t handle, int slot, float pan) {
         action.slot = slot;
         action.pan = pan;
     }
-void AccessibleAudioEngine::seekSound(uintptr_t handle, int slot, size_t offset) {
+void AccessibleAudioEngine::setFilter(uintptr_t handle, int slot, float cutoff) {
+        if (slot < 0 || slot >= AAE_SLOTS_PER_HANDLE)
+            return;
+        if (cutoff < 0.0 || cutoff > 1.0)
+            return;
+        SoundAction& action = getNextOutgoingSoundAction();
+        action.handle = handle;
+        action.slot = slot;
+        action.command = AAE_FILTER;
+        action.cutoff = cutoff;
+    }
+
+    void AccessibleAudioEngine::seekSound(uintptr_t handle, int slot, size_t offset) {
         if (slot < 0 || slot >= AAE_SLOTS_PER_HANDLE)
             return;
         SoundAction& action = getNextOutgoingSoundAction();
