@@ -179,13 +179,18 @@ class Ledge :protected TerrainCueSound {
     };
 class Platform: protected TerrainCueSound {
   public:
-    Platform(AccessibleActor* actor, Vec3f pos) : TerrainCueSound(actor, pos) {
+    Platform(Vec3f pos) : TerrainCueSound(NULL, pos) {
         currentPitch = 2.0;
         currentSFX = NA_SE_EV_WOOD_BOUND;
         shouldLoop = false;
 
     }
     virtual ~Platform() {
+    }
+    void setActor(AccessibleActor* actor)
+    {
+        this->actor = actor;
+
     }
     void setPosition(Vec3f& pos)
     {
@@ -530,6 +535,7 @@ else {
         this->rot = { 0, 0, 0 };
         terrainDiscovered = DISCOVERED_NOTHING;
         currentSound = NULL;
+        platform.setActor(actor);
 
         disabled = false;
         trackingMode = false;
