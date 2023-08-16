@@ -596,14 +596,15 @@ else {
                 break;//Probe is out of bounds.
             }
             distToTravel -= (step + fabs(pos.y - pos.y));
-            if (isPushedAway())
+            if (isPushedAway() && player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER)
             {
                 //Call this a wall for now.
                 discoverWall(pos);
                 break;
 
             }
-            if (pos.y < prevPos.y && fabs(pos.y - prevPos.y) >= 10)
+            if (pos.y < prevPos.y && fabs(pos.y - prevPos.y) >= 10 &&
+                player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER)
             {
                     //This is a fall.
                     discoverLedge(pos);
@@ -619,11 +620,8 @@ else {
                             break; // Probe is out of bounds.
                         }
                         ledgeCheckDistance -= (step + fabs(pos.y - pos.y));
-
                         
                         if ((fabs(pos.y - player->actor.prevPos.y) <= 70.00) && fabs(pos.y - prevPos.y) >= 20.0) {
-                            // Ledge at top of wall can be reached.
-
                             discoverLedge(pos, true);
                             ledgeCheckDistance = -1;
 
@@ -644,7 +642,7 @@ else {
                     break;
             }
             wallHeight = findWallHeight(pos, wallPoly);
-            if(wallHeight <= player->ageProperties->unk_0C) {
+            if (wallHeight <= player->ageProperties->unk_0C && player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
                     // Ledge at top of wall can be reached.
                 if (proveClimbable()) {
                     discoverLedge(pos, true);
@@ -655,7 +653,7 @@ else {
 
                     break;
                         }
-            if (isHeadOnCollision(pos, velocity))
+            if (isHeadOnCollision(pos, velocity) && player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER)
             {
                 discoverWall(pos);
                 break;
