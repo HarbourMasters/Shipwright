@@ -594,11 +594,12 @@ class Climable : protected TerrainCueSound {
         pos.x += velocity.x;
         pos.y += velocity.y;
         pos.z += velocity.z;
-        f32 floorHeight = 0;
-        floorHeight = BgCheck_EntityRaycastFloor3(&actor->play->colCtx, &floorPoly, &floorBgId, &pos);
-        if (floorHeight == BGCHECK_Y_MIN)
-            return false; // I'm guessing this means out of bounds?
+        
         if (gravity) {
+            f32 floorHeight = 0;
+            floorHeight = BgCheck_EntityRaycastFloor3(&actor->play->colCtx, &floorPoly, &floorBgId, &pos);
+            if (floorHeight == BGCHECK_Y_MIN)
+                return false; // I'm guessing this means out of bounds?
             pos.y = floorHeight;
         }
         if (!BgCheck_PosInStaticBoundingBox(&actor->play->colCtx, &pos))
@@ -623,9 +624,9 @@ class Climable : protected TerrainCueSound {
 
     float rdist(Vec3f pos) {
         Player* player = GET_PLAYER(actor->play);
-        float xdist = fabs(pos.x) - player->actor.world.pos.x;
-        float zdist = fabs(pos.z) - player->actor.world.pos.z;
-        float r = sqrt(zdist * zdist + xdist * xdist);
+        float xdist = fabs(pos.x - player->actor.world.pos.x);
+        float zdist = fabs(pos.z - player->actor.world.pos.z);
+        float r = sqrt((zdist * zdist) + (xdist * xdist));
         return r;
     }
     void scan() {
@@ -685,37 +686,35 @@ class Climable : protected TerrainCueSound {
             
 
             if (player->stateFlags1 & PLAYER_STATE1_IN_WATER) {
+                pos.y = player->actor.prevPos.y;
                 if (!move(false)) {
                     destroyCurrentSound();
                     break; // Probe is out of bounds.
                 }
-                pos.y = player->actor.prevPos.y + player->actor.yDistToWater+100.0;
-                //Vec3f wallPos;
-                //CollisionPoly* wallPoly = checkWall(pos, prevPos, wallPos);
-                //if (wallPoly == NULL)
-                //    continue;
-                //wallHeight = findWallHeight(pos, wallPoly);
-                //if (wallHeight <= player->ageProperties->unk_0C &&
-                //    player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
-                //    // Ledge at top of wall can be reached.
-                //    if (proveClimbable()) {
-                //        discoverLedge(pos, true);
-                //    } else {
-                //        discoverWall(pos);
-                //    }
-                //    break;
-                //}
-                //float tttt = rdist(pos);
-                //if (isHeadOnCollision(pos, velocity) && player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER && rdist(pos)<=200.00) {
-                //    discoverWall(pos);
-                //    break;
-                //}
-                if (isPushedAway() && player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
-                    // Call this a wall for now.
-                    discoverWall(pos);
+
+                Vec3f wallPos;
+                CollisionPoly* wallPoly = checkWall(pos, prevPos, wallPos);
+                if (wallPoly == NULL) {
+
+                    continue;
+                }
+                // float tttt = rdist(pos);
+
+                if (rdist(pos) > 500.00) {
+                    destroyCurrentSound();
                     break;
                 }
+                pos.y += 70.0;
+                prevPos.y += 70.0;
+                wallPoly = checkWall(pos, prevPos, wallPos);
+                if (wallPoly == NULL) {
+                    discoverLedge(pos, true);
+                    break;
+                }
+                discoverWall(pos);
+                break;
             }
+            
 
             else {
                 if (!move()) {
