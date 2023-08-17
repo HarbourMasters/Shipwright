@@ -34,6 +34,9 @@ AAE_POS,//Set the sound source's position and direction.
 AAE_PREPARE,
 AAE_TERMINATE,
 };
+typedef float f32;
+typedef int8_t s8;
+typedef uint8_t u8;
 //Processing for our custom audio positioning.
 static float lerp(float x, float y, float z) {
     return (1.0 - z) * x + z * y;
@@ -51,7 +54,6 @@ static float lerp(float x, float y, float z) {
 }
     //Borrow the pan calculation from the game itself. Todo: this is technical debt, so copy/ revise it or something at some point. 
     extern "C" int8_t Audio_ComputeSoundPanSigned(float x, float z, uint8_t token);
-
     static void positioner_process_pcm_frames(ma_node * pNode, const float** ppFramesIn, ma_uint32* pFrameCountIn,
     float** ppFramesOut,
     ma_uint32* pFrameCountOut)
@@ -63,16 +65,18 @@ static float lerp(float x, float y, float z) {
     *pFrameCountOut = *pFrameCountIn;
     SoundExtras* extras = (SoundExtras*)pNode;
 //Pan the sound based on its projected position.
-    float pan = extras->x / 270;
-    if (pan < -1.0)
-        pan = -1.0;
-    if (pan > 1.0)
-        pan = 1.0;
-    pan = (float) ((Audio_ComputeSoundPanSigned(extras->x, extras->z, 4) / 127.0) - 0.5) * 2;
-    if (pan < -1.0)
-        pan = -1.0;
-    if (pan > 1.0)
-        pan = 1.0;
+    float pan;
+//Use the game's panning mechanism, which returns a signed 8-bit integer between 0 (far-left) and 127 (far-right).
+//It would appear that the correct thing to do is interpret this value as a gain factor in decibels. In practice, values below 38 or above 90 are never seen, so a sound that's panned far to one side or the other amounts to about -25DB worth of attenuation. 
+    s8 panSigned = Audio_ComputeSoundPanSigned(extras->x, extras->z, 4);
+    int db;
+    if (panSigned < 64)
+        db = 64 - panSigned;
+    else
+        db = panSigned - 64;
+    pan = 1.0 - fabs(ma_volume_db_to_linear(-db / 2));
+    if (panSigned < 64)
+        pan = -pan;
 
     ma_panner_set_pan(&extras->panner, pan);
     ma_panner_process_pcm_frames(&extras->panner, framesOut, framesOut, *pFrameCountIn);
@@ -397,7 +401,7 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
         if (ma_node_init(&engine.nodeGraph, &config, NULL, &slot->extras) != MA_SUCCESS)
             return false;
         ma_panner_config pc = ma_panner_config_init(ma_format_f32, AAE_CHANNELS);
-        pc.mode = ma_pan_mode_pan;
+        pc.mode = ma_pan_mode_balance;
         ma_panner_init(&pc, &slot->extras.panner);
         ma_gainer_config gc = ma_gainer_config_init(AAE_CHANNELS, AAE_SAMPLE_RATE / 20);//Allow one in-game frame for the gain to work its way towards the target value.
         if (ma_gainer_init(&gc, NULL, &slot->extras.gainer) != MA_SUCCESS)
