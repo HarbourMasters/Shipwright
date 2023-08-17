@@ -111,6 +111,10 @@ void WriteIngameSpoilerLog() {
         if (loc->IsExcluded()) {
             continue;
         }
+        // Beehives
+        else if (!Settings::ShuffleBeehives && loc->IsCategory(Category::cBeehive)) {
+            continue;
+        }
         // Cows
         else if (!Settings::ShuffleCows && loc->IsCategory(Category::cCow)) {
             continue;

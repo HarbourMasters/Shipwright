@@ -400,6 +400,11 @@ string_view scrubsExpensive           = "All Scrub prices will be their vanilla 
 string_view scrubsRandomPrices        = "All Scrub prices will be between 0-95 rupees. This"
                                         "will on average be very, very expensive overall.";//
 /*------------------------------                                                           //
+|       SHUFFLE BEEHIVES       |                                                           //
+------------------------------*/                                                           //
+string_view shuffleBeehivesDesc       = "Beehives give a randomized item from the pool"    //
+                                        "when broken.";                                    //
+/*------------------------------                                                           //
 |         SHUFFLE COWS         |                                                           //
 ------------------------------*/                                                           //
 string_view shuffleCowsDesc           = "Enabling this will let cows give you items upon\n"//

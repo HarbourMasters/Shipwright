@@ -255,6 +255,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Settings:Shopsanity Prices", RSK_SHOPSANITY_PRICES },
     { "Shuffle Settings:Affordable Prices", RSK_SHOPSANITY_PRICES_AFFORDABLE },
     { "Shuffle Settings:Scrub Shuffle", RSK_SHUFFLE_SCRUBS },
+    { "Shuffle Settings:Shuffle Beehives", RSK_SHUFFLE_BEEHIVES },
     { "Shuffle Settings:Shuffle Cows", RSK_SHUFFLE_COWS },
     { "Shuffle Settings:Tokensanity", RSK_SHUFFLE_TOKENS },
     { "Shuffle Settings:Shuffle Ocarinas", RSK_SHUFFLE_OCARINA },
@@ -817,6 +818,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         }
                         break;
                     case RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD:
+                    case RSK_SHUFFLE_BEEHIVES:
                     case RSK_SHUFFLE_COWS:
                     case RSK_SHUFFLE_ADULT_TRADE:
                     case RSK_SHUFFLE_MAGIC_BEANS:
@@ -2515,8 +2517,61 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_DMT_TRADE_BROKEN_SWORD,                                      RAND_INF_ADULT_TRADES_DMT_TRADE_BROKEN_SWORD },
     { RC_LH_TRADE_FROG,                                               RAND_INF_ADULT_TRADES_LH_TRADE_FROG },
     { RC_DMT_TRADE_EYEDROPS,                                          RAND_INF_ADULT_TRADES_DMT_TRADE_EYEDROPS },
-
+    { RC_KF_STORMS_GROTTO_BEEHIVE_1,                                  RAND_INF_BEEHIVE_KF_STORMS_GROTTO_1 },
+    { RC_KF_STORMS_GROTTO_BEEHIVE_2,                                  RAND_INF_BEEHIVE_KF_STORMS_GROTTO_2 },
+    { RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_1,                          RAND_INF_BEEHIVE_LW_NEAR_SHORTCUTS_GROTTO_1 },
+    { RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_2,                          RAND_INF_BEEHIVE_LW_NEAR_SHORTCUTS_GROTTO_2 },
+    { RC_LW_DEKU_SCRUB_GROTTO_BEEHIVE,                                RAND_INF_BEEHIVE_LW_DEKU_SCRUB_GROTTO },
+    { RC_SFM_STORMS_GROTTO_BEEHIVE,                                   RAND_INF_BEEHIVE_SFM_STORMS_GROTTO },
+    { RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_1,                             RAND_INF_BEEHIVE_HF_NEAR_MARKET_GROTTO_1 },
+    { RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_2,                             RAND_INF_BEEHIVE_HF_NEAR_MARKET_GROTTO_2 },
+    { RC_HF_OPEN_GROTTO_BEEHIVE_1,                                    RAND_INF_BEEHIVE_HF_OPEN_GROTTO_1 },
+    { RC_HF_OPEN_GROTTO_BEEHIVE_2,                                    RAND_INF_BEEHIVE_HF_OPEN_GROTTO_2 },
+    { RC_HF_SOUTHEAST_GROTTO_BEEHIVE_1,                               RAND_INF_BEEHIVE_HF_SOUTHEAST_GROTTO_1 },
+    { RC_HF_SOUTHEAST_GROTTO_BEEHIVE_2,                               RAND_INF_BEEHIVE_HF_SOUTHEAST_GROTTO_2 },
+    { RC_HF_INSIDE_FENCE_GROTTO_BEEHIVE,                              RAND_INF_BEEHIVE_HF_INSIDE_FENCE_GROTTO },
+    { RC_LLR_GROTTO_BEEHIVE,                                          RAND_INF_BEEHIVE_LLR_GROTTO },
+    { RC_KAK_OPEN_GROTTO_BEEHIVE_1,                                   RAND_INF_BEEHIVE_KAK_OPEN_GROTTO_1 },
+    { RC_KAK_OPEN_GROTTO_BEEHIVE_2,                                   RAND_INF_BEEHIVE_KAK_OPEN_GROTTO_2 },
+    { RC_DMT_COW_GROTTO_BEEHIVE,                                      RAND_INF_BEEHIVE_DMT_COW_GROTTO },
+    { RC_DMT_STORMS_GROTTO_BEEHIVE_1,                                 RAND_INF_BEEHIVE_DMT_STORMS_GROTTO_1 },
+    { RC_DMT_STORMS_GROTTO_BEEHIVE_2,                                 RAND_INF_BEEHIVE_DMT_STORMS_GROTTO_2 },
+    { RC_GC_GROTTO_BEEHIVE,                                           RAND_INF_BEEHIVE_GC_GROTTO },
+    { RC_DMC_UPPER_GROTTO_BEEHIVE_1,                                  RAND_INF_BEEHIVE_DMC_UPPER_GROTTO_1 },
+    { RC_DMC_UPPER_GROTTO_BEEHIVE_2,                                  RAND_INF_BEEHIVE_DMC_UPPER_GROTTO_2 },
+    { RC_DMC_HAMMER_GROTTO_BEEHIVE,                                   RAND_INF_BEEHIVE_DMC_HAMMER_GROTTO },
+    { RC_ZR_OPEN_GROTTO_BEEHIVE_1,                                    RAND_INF_BEEHIVE_ZR_OPEN_GROTTO_1 },
+    { RC_ZR_OPEN_GROTTO_BEEHIVE_2,                                    RAND_INF_BEEHIVE_ZR_OPEN_GROTTO_2 },
+    { RC_ZR_STORMS_GROTTO_BEEHIVE,                                    RAND_INF_BEEHIVE_ZR_STORMS_GROTTO },
+    { RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_1,                          RAND_INF_BEEHIVE_ZD_IN_FRONT_OF_KING_ZORA_1 },
+    { RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_2,                          RAND_INF_BEEHIVE_ZD_IN_FRONT_OF_KING_ZORA_2 },
+    { RC_ZD_BEHIND_KING_ZORA_BEEHIVE,                                 RAND_INF_BEEHIVE_ZD_BEHIND_KING_ZORA },
+    { RC_LH_GROTTO_BEEHIVE,                                           RAND_INF_BEEHIVE_LH_GROTTO },
+    { RC_GV_STORMS_GROTTO_BEEHIVE,                                    RAND_INF_BEEHIVE_GV_STORMS_GROTTO },
+    { RC_COLOSSUS_GROTTO_BEEHIVE,                                     RAND_INF_BEEHIVE_COLOSSUS_GROTTO },
 };
+
+BeehiveIdentity Randomizer::IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData) {
+    struct BeehiveIdentity beehiveIdentity;
+
+    beehiveIdentity.randomizerInf = RAND_INF_MAX;
+    beehiveIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
+
+    if (sceneNum == SCENE_KAKUSIANA) {//grottos
+        respawnData = TWO_ACTOR_PARAMS(xPosition, respawnData);
+    } else {
+        respawnData = TWO_ACTOR_PARAMS(xPosition, 0);
+    }
+
+    RandomizerCheckObject rcObject = GetCheckObjectFromActor(ACTOR_OBJ_COMB, sceneNum, respawnData);
+
+    if (rcObject.rc != RC_UNKNOWN_CHECK) {
+        beehiveIdentity.randomizerInf = rcToRandomizerInf[rcObject.rc];
+        beehiveIdentity.randomizerCheck = rcObject.rc;
+    }
+
+    return beehiveIdentity;
+}
 
 RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams = 0x00) {
     RandomizerCheck specialRc = RC_UNKNOWN_CHECK;
@@ -2835,6 +2890,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_SHOPSANITY_PRICES] = CVarGetInteger("gRandomizeShopsanityPrices", RO_SHOPSANITY_PRICE_BALANCED);
     cvarSettings[RSK_SHOPSANITY_PRICES_AFFORDABLE] = CVarGetInteger("gRandomizeShopsanityPricesAffordable", RO_SHOPSANITY_OFF);
     cvarSettings[RSK_SHUFFLE_SCRUBS] = CVarGetInteger("gRandomizeShuffleScrubs", RO_SCRUBS_OFF);
+    cvarSettings[RSK_SHUFFLE_BEEHIVES] = CVarGetInteger("gRandomizeShuffleBeehives", 0);
     cvarSettings[RSK_SHUFFLE_COWS] = CVarGetInteger("gRandomizeShuffleCows", 0);
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = CVarGetInteger("gRandomizeShuffleAdultTrade", 0);
     cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = CVarGetInteger("gRandomizeShuffleBeans", 0);
@@ -3799,6 +3855,12 @@ void RandomizerSettingsWindow::DrawElement() {
                     "\n"
                     "Random - Scrubs will be shuffled and their item will cost will be between 0-95 rupees.\n");
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleScrubs", randoShuffleScrubs, RO_SCRUBS_OFF);
+
+                UIWidgets::PaddedSeparator();
+
+                // Shuffle Beehives
+                UIWidgets::EnhancementCheckbox(Settings::ShuffleBeehives.GetName().c_str(), "gRandomizeShuffleBeehives");
+                UIWidgets::InsertHelpHoverText("Beehives give a randomized item from the pool when broken.");
 
                 UIWidgets::PaddedSeparator();
 

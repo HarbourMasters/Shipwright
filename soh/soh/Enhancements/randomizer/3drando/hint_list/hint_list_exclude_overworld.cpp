@@ -1352,4 +1352,164 @@ void HintTable_Init_Exclude_Overworld() {
                        //obscure text
                        Text{"a #cow in a luxurious hole# offers", /*french*/"la #vache dans une grotte luxueuse# donne", /*spanish*/"una #vaca de un lujoso hoyo# brinda"},
   });
+
+    hintTable[KF_STORMS_GROTTO_BEEHIVE_1] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[KF_STORMS_GROTTO_BEEHIVE_2] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_1] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_2] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[LW_SCRUBS_GROTTO_BEEHIVE] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[SFM_STORMS_GROTTO_BEEHIVE] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[HF_NEAR_MARKET_GROTTO_BEEHIVE_1] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[HF_NEAR_MARKET_GROTTO_BEEHIVE_2] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[HF_OPEN_GROTTO_BEEHIVE_1] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[HF_OPEN_GROTTO_BEEHIVE_2] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[HF_SOUTHEAST_GROTTO_BEEHIVE_1] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[HF_SOUTHEAST_GROTTO_BEEHIVE_2] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[HF_INSIDE_FENCE_GROTTO_BEEHIVE] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[LLR_GROTTO_BEEHIVE] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[KAK_OPEN_GROTTO_BEEHIVE_1] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[KAK_OPEN_GROTTO_BEEHIVE_2] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[DMT_COW_GROTTO_BEEHIVE] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[DMT_STORMS_GROTTO_BEEHIVE_1] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[DMT_STORMS_GROTTO_BEEHIVE_2] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[GC_GROTTO_BEEHIVE] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[DMC_UPPER_GROTTO_BEEHIVE_1] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[DMC_UPPER_GROTTO_BEEHIVE_2] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[DMC_HAMMER_GROTTO_BEEHIVE] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[ZR_OPEN_GROTTO_BEEHIVE_1] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[ZR_OPEN_GROTTO_BEEHIVE_2] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[ZR_STORMS_GROTTO_BEEHIVE] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_1] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_2] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[ZD_BEHIND_KING_ZORA_BEEHIVE] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[LH_GROTTO_BEEHIVE] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[GV_STORMS_GROTTO_BEEHIVE] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
+
+    hintTable[COLOSSUS_GROTTO_BEEHIVE] = HintText::Exclude({
+                       //obscure text
+                       Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
+  });
 }

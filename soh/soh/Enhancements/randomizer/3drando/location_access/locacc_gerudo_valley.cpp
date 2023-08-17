@@ -80,7 +80,10 @@ void AreaTable_Init_GerudoValley() {
                   Entrance(GV_FORTRESS_SIDE, {[]{return true;}}),
   });
 
-  areaTable[GV_OCTOROK_GROTTO] = Area("GV Octorok Grotto", "GV Octorok Grotto", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {
+  areaTable[GV_OCTOROK_GROTTO] = Area("GV Octorok Grotto", "GV Octorok Grotto", NONE, NO_DAY_NIGHT_CYCLE, {}, {
+                  //Locations
+                  LocationAccess(GV_STORMS_GROTTO_BEEHIVE, {[]{return CanBreakBeehives;}}),
+                }, {
                   //Exits
                   Entrance(GV_GROTTO_LEDGE, {[]{return true;}}),
   });
@@ -202,6 +205,7 @@ void AreaTable_Init_GerudoValley() {
                   //Locations
                   LocationAccess(COLOSSUS_DEKU_SCRUB_GROTTO_REAR,  {[]{return CanStunDeku;}}),
                   LocationAccess(COLOSSUS_DEKU_SCRUB_GROTTO_FRONT, {[]{return CanStunDeku;}}),
+                  LocationAccess(COLOSSUS_GROTTO_BEEHIVE,          {[]{return CanBreakBeehives;}}),
                 }, {
                   //Exits
                   Entrance(DESERT_COLOSSUS, {[]{return true;}}),

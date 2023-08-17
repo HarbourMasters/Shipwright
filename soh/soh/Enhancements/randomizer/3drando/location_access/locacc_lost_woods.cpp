@@ -100,6 +100,8 @@ void AreaTable_Init_LostWoods() {
                   //Locations
                   LocationAccess(KF_STORMS_GROTTO_CHEST,        {[]{return true;}}),
                   LocationAccess(KF_STORMS_GROTTO_GOSSIP_STONE, {[]{return true;}}),
+                  LocationAccess(KF_STORMS_GROTTO_BEEHIVE_1,    {[]{return CanBreakBeehives;}}),
+                  LocationAccess(KF_STORMS_GROTTO_BEEHIVE_2,    {[]{return CanBreakBeehives;}}),
                 }, {
                   //Exits
                   Entrance(KOKIRI_FOREST, {[]{return true;}})
@@ -159,6 +161,9 @@ void AreaTable_Init_LostWoods() {
                   //Locations
                   LocationAccess(LW_NEAR_SHORTCUTS_GROTTO_CHEST,        {[]{return true;}}),
                   LocationAccess(LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE, {[]{return true;}}),
+                  LocationAccess(LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_1,    {[]{return CanBreakBeehives;}}),
+                  LocationAccess(LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_2,    {[]{return CanBreakBeehives;}}),
+                  LocationAccess(LW_SCRUBS_GROTTO_BEEHIVE,              {[]{return CanBreakBeehives;}}),
                 }, {
                   //Exits
                   Entrance(THE_LOST_WOODS, {[]{return true;}}),
@@ -228,6 +233,7 @@ void AreaTable_Init_LostWoods() {
                   //Locations
                   LocationAccess(SFM_DEKU_SCRUB_GROTTO_REAR,  {[]{return CanStunDeku;}}),
                   LocationAccess(SFM_DEKU_SCRUB_GROTTO_FRONT, {[]{return CanStunDeku;}}),
+                  LocationAccess(SFM_STORMS_GROTTO_BEEHIVE,   {[]{return CanBreakBeehives;}}),
                 }, {
                   //Exits
                   Entrance(SACRED_FOREST_MEADOW, {[]{return true;}}),

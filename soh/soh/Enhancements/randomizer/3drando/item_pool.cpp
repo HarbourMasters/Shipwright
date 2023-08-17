@@ -553,6 +553,42 @@ static void PlaceVanillaBossKeys() {
   }
 }
 
+static void PlaceVanillaBeehiveRupees() {
+  PlaceItemInLocation(RC_KF_STORMS_GROTTO_BEEHIVE_1, BLUE_RUPEE, false, true);
+  PlaceItemInLocation(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_1, BLUE_RUPEE, false, true);
+  PlaceItemInLocation(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_1, BLUE_RUPEE, false, true);
+  PlaceItemInLocation(RC_HF_OPEN_GROTTO_BEEHIVE_1, BLUE_RUPEE, false, true);
+  PlaceItemInLocation(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_1, BLUE_RUPEE, false, true);
+  PlaceItemInLocation(RC_KAK_OPEN_GROTTO_BEEHIVE_1, BLUE_RUPEE, false, true);
+  PlaceItemInLocation(RC_DMT_STORMS_GROTTO_BEEHIVE_1, BLUE_RUPEE, false, true);
+  PlaceItemInLocation(RC_DMC_UPPER_GROTTO_BEEHIVE_1, BLUE_RUPEE, false, true);
+  PlaceItemInLocation(RC_ZR_OPEN_GROTTO_BEEHIVE_1, BLUE_RUPEE, false, true);
+
+  PlaceItemInLocation(RC_KF_STORMS_GROTTO_BEEHIVE_2, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_2, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_LW_DEKU_SCRUB_GROTTO_BEEHIVE, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_SFM_STORMS_GROTTO_BEEHIVE, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_2, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_HF_OPEN_GROTTO_BEEHIVE_2, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_2, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_HF_INSIDE_FENCE_GROTTO_BEEHIVE, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_LLR_GROTTO_BEEHIVE, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_KAK_OPEN_GROTTO_BEEHIVE_2, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_DMT_COW_GROTTO_BEEHIVE, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_DMT_STORMS_GROTTO_BEEHIVE_2, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_GC_GROTTO_BEEHIVE, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_DMC_UPPER_GROTTO_BEEHIVE_2, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_DMC_HAMMER_GROTTO_BEEHIVE, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_ZR_OPEN_GROTTO_BEEHIVE_2, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_ZR_STORMS_GROTTO_BEEHIVE, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_1, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_2, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_ZD_BEHIND_KING_ZORA_BEEHIVE, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_LH_GROTTO_BEEHIVE, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_GV_STORMS_GROTTO_BEEHIVE, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_COLOSSUS_GROTTO_BEEHIVE, RED_RUPEE, false, true);
+}
+
 static void PlaceVanillaCowMilk() {
   PlaceItemInLocation(KF_LINKS_HOUSE_COW,    MILK, false, true);
   PlaceItemInLocation(HF_COW_GROTTO_COW,     MILK, false, true);
@@ -690,6 +726,18 @@ void GenerateItemPool() {
   } else {
     PlaceItemInLocation(LW_GIFT_FROM_SARIA, PROGRESSIVE_OCARINA, false, true);
     PlaceItemInLocation(HF_OCARINA_OF_TIME_ITEM, PROGRESSIVE_OCARINA, false, true);
+  }
+
+  if (ShuffleBeehives) {
+    //32 total beehive locations
+    for (uint8_t i = 0; i < 23; i++) {
+      AddItemToMainPool(RED_RUPEE);
+    }
+    for (uint8_t i = 0; i < 9; i++) {
+      AddItemToMainPool(BLUE_RUPEE);
+    }
+  } else {
+    PlaceVanillaBeehiveRupees();
   }
 
   if (ShuffleCows) {

@@ -131,6 +131,32 @@ void ObjComb_Break(ObjComb* this, PlayState* play) {
 void ObjComb_ChooseItemDrop(ObjComb* this, PlayState* play) {
     s16 params = this->actor.params & 0x1F;
 
+    if (
+        gSaveContext.n64ddFlag &&
+        Randomizer_GetSettingValue(RSK_SHUFFLE_BEEHIVES) &&
+        !Flags_GetRandomizerInf(this->beehiveIdentity.randomizerInf)
+    ) {
+        //currently gives the item automatically
+        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(this->beehiveIdentity.randomizerCheck, GI_NONE);
+        if (getItemEntry.modIndex == MOD_NONE) {
+            // RANDOTODO: Move this into Item_Give() or some other more central location
+            if (getItemEntry.getItemId == GI_SWORD_BGS) {
+                gSaveContext.bgsFlag = true;
+            }
+            Item_Give(play, getItemEntry.itemId);
+        } else if (getItemEntry.modIndex == MOD_RANDOMIZER && getItemEntry.getItemId != RG_ICE_TRAP) {
+            Randomizer_Item_Give(play, getItemEntry);
+        }
+
+        if (getItemEntry.itemId == GI_ICE_TRAP || getItemEntry.itemId == RG_ICE_TRAP) {
+            GameInteractor_ExecuteOnItemReceiveHooks(getItemEntry);
+        }
+        
+        //this should be moved to the dropped item itself because if not there'll be the same problem as dampe in vanilla
+        Flags_SetRandomizerInf(this->beehiveIdentity.randomizerInf);
+        return;
+    }
+
     if ((params > 0) || (params < 0x1A)) {
         if (params == 6) {
             if (Flags_GetCollectible(play, (this->actor.params >> 8) & 0x3F)) {
@@ -154,6 +180,10 @@ void ObjComb_Init(Actor* thisx, PlayState* play) {
     Collider_InitJntSph(play, &this->collider);
     Collider_SetJntSph(play, &this->collider, &this->actor, &sJntSphInit, this->colliderItems);
     ObjComb_SetupWait(this);
+    if (gSaveContext.n64ddFlag) {
+        s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
+        this->beehiveIdentity = Randomizer_IdentifyBeehive(play->sceneNum, (s16)this->actor.world.pos.x, respawnData);
+    }
 }
 
 void ObjComb_Destroy(Actor* thisx, PlayState* play2) {
@@ -171,7 +201,15 @@ void ObjComb_Wait(ObjComb* this, PlayState* play) {
     s32 dmgFlags;
 
     this->unk_1B0 -= 50;
-    if (this->unk_1B0 < 0) {
+    if (
+        gSaveContext.n64ddFlag &&
+        Randomizer_GetSettingValue(RSK_SHUFFLE_BEEHIVES) &&
+        !Flags_GetRandomizerInf(this->beehiveIdentity.randomizerInf)
+    ) {
+        if (this->unk_1B0 <= -5000) {
+            this->unk_1B0 = 1500;
+        }
+    } else if (this->unk_1B0 < 0) {
         this->unk_1B0 = 0;
     }
 
@@ -199,7 +237,11 @@ void ObjComb_Update(Actor* thisx, PlayState* play) {
 
     this->unk_1B2 += 0x2EE0;
     this->actionFunc(this, play);
-    this->actor.shape.rot.x = Math_SinS(this->unk_1B2) * this->unk_1B0 + this->actor.home.rot.x;
+    s16 wiggleOffset = this->unk_1B0;
+    if (gSaveContext.n64ddFlag && this->unk_1B0 < 0) {
+        wiggleOffset = 0;
+    }
+    this->actor.shape.rot.x = Math_SinS(this->unk_1B2) * wiggleOffset + this->actor.home.rot.x;
 }
 
 void ObjComb_Draw(Actor* thisx, PlayState* play) {

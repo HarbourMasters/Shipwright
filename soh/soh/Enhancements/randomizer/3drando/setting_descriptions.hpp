@@ -137,6 +137,8 @@ extern string_view scrubsAffordable;
 extern string_view scrubsExpensive;
 extern string_view scrubsRandomPrices;
 
+extern string_view shuffleBeehivesDesc;
+
 extern string_view shuffleCowsDesc;
 
 extern string_view kokiriSwordDesc;

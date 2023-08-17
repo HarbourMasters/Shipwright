@@ -185,6 +185,7 @@ namespace Settings {
   Option ShopsanityPricesAffordable   = Option::Bool("Affordable Prices",                {"Off", "On"},                                                                                     {shopPriceAffordable} );
   Option Tokensanity            = Option::U8  ("Tokensanity",            {"Off", "Dungeons", "Overworld", "All Tokens"},                          {tokensOff, tokensDungeon, tokensOverworld, tokensAllTokens});
   Option Scrubsanity            = Option::U8  ("Scrub Shuffle",          {"Off", "Affordable", "Expensive", "Random Prices"},        {scrubsOff, scrubsAffordable, scrubsExpensive, scrubsRandomPrices});
+  Option ShuffleBeehives        = Option::Bool("Shuffle Beehives",       {"Off", "On"},                                                     {shuffleBeehivesDesc});
   Option ShuffleCows            = Option::Bool("Shuffle Cows",           {"Off", "On"},                                                     {shuffleCowsDesc});
   Option ShuffleKokiriSword     = Option::Bool("Shuffle Kokiri Sword",   {"Off", "On"},                                                     {kokiriSwordDesc});
   Option ShuffleOcarinas        = Option::Bool("Shuffle Ocarinas",       {"Off", "On"},                                                     {ocarinasDesc});
@@ -206,6 +207,7 @@ namespace Settings {
     &ShopsanityPricesAffordable,
     &Tokensanity,
     &Scrubsanity,
+    &ShuffleBeehives,
     &ShuffleCows,
     &ShuffleKokiriSword,
     &ShuffleOcarinas,
@@ -1592,6 +1594,7 @@ namespace Settings {
     ctx.shuffleSongs         = ShuffleSongs.Value<uint8_t>();
     ctx.tokensanity          = Tokensanity.Value<uint8_t>();
     ctx.scrubsanity          = Scrubsanity.Value<uint8_t>();
+    ctx.shuffleBeehives      = (ShuffleBeehives) ? 1 : 0;
     ctx.shuffleCows          = (ShuffleCows) ? 1 : 0;
     ctx.shuffleKokiriSword   = (ShuffleKokiriSword) ? 1 : 0;
     ctx.shuffleOcarinas      = (ShuffleOcarinas) ? 1 : 0;
@@ -2011,6 +2014,14 @@ namespace Settings {
       IncludeAndHide(scrubLocations);
     } else {
       Unhide(scrubLocations);
+    }
+
+    //Force include Beehives if Shuffle Beehives is Off
+    std::vector<uint32_t> beehiveLocations = GetLocations(everyPossibleLocation, Category::cBeehive);
+    if (ShuffleBeehives) {
+      Unhide(beehiveLocations);
+    } else {
+      IncludeAndHide(beehiveLocations);
     }
 
     //Force include Cows if Shuffle Cows is Off
@@ -2604,6 +2615,7 @@ namespace Settings {
     &ShopsanityPrices,
     &ShopsanityPricesAffordable,
     &Scrubsanity,
+    &ShuffleBeehives,
     &ShuffleCows,
     &ShuffleMagicBeans,
     &ShuffleMerchants,
@@ -2891,6 +2903,7 @@ namespace Settings {
     ShopsanityPrices.SetSelectedIndex(cvarSettings[RSK_SHOPSANITY_PRICES]);
     ShopsanityPricesAffordable.SetSelectedIndex(cvarSettings[RSK_SHOPSANITY_PRICES_AFFORDABLE]);
     Scrubsanity.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_SCRUBS]);
+    ShuffleBeehives.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_BEEHIVES]);
     ShuffleCows.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_COWS]);
     ShuffleKokiriSword.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD]);
     ShuffleOcarinas.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_OCARINA]);

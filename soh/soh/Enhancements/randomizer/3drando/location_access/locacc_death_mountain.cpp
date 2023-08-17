@@ -53,7 +53,8 @@ void AreaTable_Init_DeathMountain() {
 
   areaTable[DMT_COW_GROTTO] = Area("DMT Cow Grotto", "DMT Cow Grotto", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(DMT_COW_GROTTO_COW, {[]{return CanPlay(EponasSong);}}),
+                  LocationAccess(DMT_COW_GROTTO_COW,     {[]{return CanPlay(EponasSong);}}),
+                  LocationAccess(DMT_COW_GROTTO_BEEHIVE, {[]{return CanBreakBeehives;}}),
                 }, {
                   //Exits
                   Entrance(DEATH_MOUNTAIN_SUMMIT, {[]{return true;}}),
@@ -64,6 +65,8 @@ void AreaTable_Init_DeathMountain() {
                   //Locations
                   LocationAccess(DMT_STORMS_GROTTO_CHEST,        {[]{return true;}}),
                   LocationAccess(DMT_STORMS_GROTTO_GOSSIP_STONE, {[]{return true;}}),
+                  LocationAccess(DMT_STORMS_GROTTO_BEEHIVE_1,    {[]{return CanBreakBeehives;}}),
+                  LocationAccess(DMT_STORMS_GROTTO_BEEHIVE_2,    {[]{return CanBreakBeehives;}}),
                 }, {
                   //Exits
                   Entrance(DEATH_MOUNTAIN_TRAIL, {[]{return true;}}),
@@ -155,6 +158,7 @@ void AreaTable_Init_DeathMountain() {
                   LocationAccess(GC_DEKU_SCRUB_GROTTO_LEFT,   {[]{return CanStunDeku;}}),
                   LocationAccess(GC_DEKU_SCRUB_GROTTO_RIGHT,  {[]{return CanStunDeku;}}),
                   LocationAccess(GC_DEKU_SCRUB_GROTTO_CENTER, {[]{return CanStunDeku;}}),
+                  LocationAccess(GC_GROTTO_BEEHIVE,           {[]{return CanBreakBeehives;}}),
                 }, {
                   //Exits
                   Entrance(GC_GROTTO_PLATFORM, {[]{return true;}}),
@@ -243,6 +247,8 @@ void AreaTable_Init_DeathMountain() {
                   //Locations
                   LocationAccess(DMC_UPPER_GROTTO_CHEST,        {[]{return true;}}),
                   LocationAccess(DMC_UPPER_GROTTO_GOSSIP_STONE, {[]{return true;}}),
+                  LocationAccess(DMC_UPPER_GROTTO_BEEHIVE_1,    {[]{return CanBreakBeehives;}}),
+                  LocationAccess(DMC_UPPER_GROTTO_BEEHIVE_2,    {[]{return CanBreakBeehives;}}),
                 }, {
                   //Exits
                   Entrance(DMC_UPPER_LOCAL, {[]{return true;}}),
@@ -253,6 +259,7 @@ void AreaTable_Init_DeathMountain() {
                   LocationAccess(DMC_DEKU_SCRUB_GROTTO_LEFT,   {[]{return CanStunDeku;}}),
                   LocationAccess(DMC_DEKU_SCRUB_GROTTO_RIGHT,  {[]{return CanStunDeku;}}),
                   LocationAccess(DMC_DEKU_SCRUB_GROTTO_CENTER, {[]{return CanStunDeku;}}),
+                  LocationAccess(DMC_HAMMER_GROTTO_BEEHIVE,    {[]{return CanBreakBeehives;}}),
                 }, {
                   //Exits
                   Entrance(DMC_LOWER_LOCAL, {[]{return true;}}),
