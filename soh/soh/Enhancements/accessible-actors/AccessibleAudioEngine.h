@@ -45,8 +45,8 @@ typedef struct
         ma_node_base base;
         ma_panner panner;
         ma_gainer gainer;
-        ma_lpf_node filter;
-
+        ma_lpf filter;
+        float cutoff;
         float x;
         float y;
         float z;
