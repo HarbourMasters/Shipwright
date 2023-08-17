@@ -24,6 +24,8 @@ DISCOVERED_DECLINE,
 DISCOVERED_LEDGE,
 DISCOVERED_WALL,
 DISCOVERED_SPIKE,
+DISCOVERED_WATER,
+DISCOVERED_CLIMABLE,
 };
 //Abstract class for terrain cue sound handling. Implementations should not allocate memory. These are always in-place constructed in static memory owned by the TerrainCueDirection object.
 class TerrainCueSound {
@@ -246,18 +248,54 @@ class Spike : protected TerrainCueSound {
         restFrames--;
     }
 };
+class Water : protected TerrainCueSound {
+  public:
+    Water(AccessibleActor* actor, Vec3f pos) : TerrainCueSound(actor, pos) {
+        currentPitch = 0.5;
+        currentSFX = NA_SE_PL_LAND_WATER0; // NA_SE_EN_DAIOCTA_LAND_WATER; // change?
+        play();
+    }
+    virtual ~Water() {
+    }
+    void run() {
+        if (restFrames == 0) {
+            play();
+            restFrames = 10;
+            return;
+        }
+        restFrames--;
+    }
+};
 
-    class TerrainCueDirection
-{
+class Climable : protected TerrainCueSound {
+  public:
+    Climable(AccessibleActor* actor, Vec3f pos) : TerrainCueSound(actor, pos) {
+        currentPitch = 0.5;
+        currentSFX = NA_SE_PL_LAND_LADDER;
+        play();
+    }
+    virtual ~Climable() {
+    }
+    void run() {
+        if (restFrames == 0) {
+            play();
+            restFrames = 10;
+            return;
+        }
+        restFrames--;
+    }
+};
+
+    class TerrainCueDirection {
     AccessibleActor* actor;
     Vec3f pos;
     Vec3f prevPos;
-    Vec3s relRot;//Relative angle.
-    Vec3s rot;//Actual angle.
+    Vec3s relRot; // Relative angle.
+    Vec3s rot;    // Actual angle.
     f32 wallCheckHeight;
     f32 wallCheckRadius;
     f32 ceilingCheckHeight;
-    f32 probeSpeed;//Approximate for now.
+    f32 probeSpeed; // Approximate for now.
     Vec3f velocity;
     Vec3f expectedVelocity;
     int terrainDiscovered;
@@ -266,11 +304,12 @@ class Spike : protected TerrainCueSound {
     s32 wallBgId;
     f32 wallHeight;
     s32 floorBgId;
+    f32 yDistToWater;
     f32 pushedSpeed;
-    bool disabled;//Only used for debugging.
-    bool trackingMode;//A debugging feature which forces Link to move along the probe's path. Used to catch collision violations and other disagreements between how Link moves and how the probe travels.
+    bool disabled;     // Only used for debugging.
+    bool trackingMode; // A debugging feature which forces Link to move along the probe's path. Used to catch collision
+                       // violations and other disagreements between how Link moves and how the probe travels.
     bool trackingModeStarted;
-
 
     s16 pushedYaw;
     union {
@@ -279,20 +318,21 @@ class Spike : protected TerrainCueSound {
         Ledge ledge;
         Wall wall;
         Spike spike;
+        Water water;
+        Climable climable;
     };
     Platform platform;
 
     TerrainCueSound* currentSound;
-//Apply an offset b to a Vec3f a.
+    // Apply an offset b to a Vec3f a.
     Vec3f applyVec3fOffset(Vec3f& a, Vec3f& b) {
         Vec3f c;
         c.x = a.x + b.x;
         c.y = a.y + b.y;
         c.z = a.z + b.z;
         return c;
-
     }
-    //If a sound is currently playing, disable it.
+    // If a sound is currently playing, disable it.
     void destroyCurrentSound() {
         if (currentSound == NULL)
             return;
@@ -300,7 +340,7 @@ class Spike : protected TerrainCueSound {
         currentSound = NULL;
         terrainDiscovered = DISCOVERED_NOTHING;
     }
-//Play a sound from the position of a previously discovered incline.
+    // Play a sound from the position of a previously discovered incline.
 
     void discoverIncline(Vec3f pos) {
         if (terrainDiscovered == DISCOVERED_INCLINE)
@@ -312,7 +352,7 @@ class Spike : protected TerrainCueSound {
         currentSound = (TerrainCueSound*)&incline;
         terrainDiscovered = DISCOVERED_INCLINE;
     }
-    //Play a sound from the position of a previously discovered decline.
+    // Play a sound from the position of a previously discovered decline.
 
     void discoverDecline(Vec3f pos) {
         if (terrainDiscovered == DISCOVERED_DECLINE)
@@ -324,7 +364,7 @@ class Spike : protected TerrainCueSound {
         currentSound = (TerrainCueSound*)&decline;
         terrainDiscovered = DISCOVERED_DECLINE;
     }
-    //Play a sound from the position of a previously discovered ledge.
+    // Play a sound from the position of a previously discovered ledge.
 
     void discoverLedge(Vec3f pos, bool upper = false) {
         if (terrainDiscovered == DISCOVERED_LEDGE && ledge.isClimbable() == upper)
@@ -336,7 +376,7 @@ class Spike : protected TerrainCueSound {
         currentSound = (TerrainCueSound*)&ledge;
         terrainDiscovered = DISCOVERED_LEDGE;
     }
-    //Play a sound from the position of a previously discovered wall.
+    // Play a sound from the position of a previously discovered wall.
 
     void discoverWall(Vec3f pos) {
         if (terrainDiscovered == DISCOVERED_WALL)
@@ -348,8 +388,7 @@ class Spike : protected TerrainCueSound {
         currentSound = (TerrainCueSound*)&wall;
         terrainDiscovered = DISCOVERED_WALL;
     }
-    void discoverSpike(Vec3f pos)
-    {
+    void discoverSpike(Vec3f pos) {
         if (terrainDiscovered == DISCOVERED_SPIKE)
             return;
         destroyCurrentSound();
@@ -357,15 +396,31 @@ class Spike : protected TerrainCueSound {
         currentSound = (TerrainCueSound*)&spike;
         terrainDiscovered = DISCOVERED_SPIKE;
     }
-        //Find out how high a wall goes.
+
+    void discoverWater(Vec3f pos) {
+        if (terrainDiscovered == DISCOVERED_WATER)
+            return;
+        destroyCurrentSound();
+        new (&water) Water(actor, pos);
+        currentSound = (TerrainCueSound*)&water;
+        terrainDiscovered = DISCOVERED_WATER;
+    }
+
+    void discoverClimable(Vec3f pos) {
+        if (terrainDiscovered == DISCOVERED_CLIMABLE)
+            return;
+        destroyCurrentSound();
+        new (&climable) Climable(actor, pos);
+        currentSound = (TerrainCueSound*)&climable;
+        terrainDiscovered = DISCOVERED_CLIMABLE;
+    }
+    // Find out how high a wall goes.
     f32 findWallHeight(Vec3f& pos, CollisionPoly* poly) {
         Player* player = GET_PLAYER(actor->play);
         f32 wallHeight;
-        if (ABS(wallPoly->normal.y) >= 600)
-        {
+        if (ABS(wallPoly->normal.y) >= 600) {
             wallHeight = 399.96002f;
             return wallHeight;
-
         }
         D_80854798.y = 18.0f;
         D_80854798.z = player->ageProperties->unk_38 + 10.0f;
@@ -388,38 +443,37 @@ class Spike : protected TerrainCueSound {
         f32 outY;
         s32 bgId;
         if ((wallHeight < 18.0f) ||
-            BgCheck_EntityCheckCeiling(&actor->play->colCtx, &outY, &pos,
-                                       wallHeight + 20.0f, &testPoly, &bgId, NULL)) {
+            BgCheck_EntityCheckCeiling(&actor->play->colCtx, &outY, &pos, wallHeight + 20.0f, &testPoly, &bgId, NULL)) {
             wallHeight = 399.96002f;
-        } 
-else {
+        } else {
             D_80854798.y = (wallHeight + 5.0f);
             fakePlayer.actor.shape.rot = player->actor.shape.rot;
             fakePlayer.actor.world.pos = pos;
             Vec3f collisionResult;
 
-            //The following replicates some pretty confusing logic in z_player.c (another series of conditions which determines whether wallHeight should be set to the magic number 399.96002f).
-            //Rather than copying the relevant functions to eliminate dependency on the player object, or risking weird side effects from passing in the real player with a temporarily modified pos vector, I'm using this fake player instance instead. These functions only need the player's position and shape rotation vectors set.
+            // The following replicates some pretty confusing logic in z_player.c (another series of conditions which
+            // determines whether wallHeight should be set to the magic number 399.96002f). Rather than copying the
+            // relevant functions to eliminate dependency on the player object, or risking weird side effects from
+            // passing in the real player with a temporarily modified pos vector, I'm using this fake player instance
+            // instead. These functions only need the player's position and shape rotation vectors set.
             if (func_80839768(actor->play, &fakePlayer, &D_80854798, &testPoly, &bgId, &collisionResult) &&
                 abs(wallYaw - Math_Atan2S(testPoly->normal.z, testPoly->normal.x)) < 0x4000 &&
                 !func_80041E18(&actor->play->colCtx, testPoly, bgId)) {
                 wallHeight = 399.96002f;
             }
-
         }
         return wallHeight;
-
     }
 
-     //Check if traveling from point A to point B is obstructed by a wall.
+    // Check if traveling from point A to point B is obstructed by a wall.
     CollisionPoly* checkWall(Vec3f& pos, Vec3f& prevPos, Vec3f& collisionPos) {
         Player* player = GET_PLAYER(actor->play);
-        BgCheck_EntitySphVsWall3(&actor->play->colCtx, &collisionPos, &pos, &prevPos, wallCheckRadius, &wallPoly, &wallBgId,
-                                 NULL, wallCheckHeight);
+        BgCheck_EntitySphVsWall3(&actor->play->colCtx, &collisionPos, &pos, &prevPos, wallCheckRadius, &wallPoly,
+                                 &wallBgId, NULL, wallCheckHeight);
         return wallPoly;
-
     }
-//Another copy/modify job from z_player.c. This function sets windspeed and wind direction, which are used for pushing the player up and down slopes. "Inspired" by func_8083E318.
+    // Another copy/modify job from z_player.c. This function sets windspeed and wind direction, which are used for
+    // pushing the player up and down slopes. "Inspired" by func_8083E318.
 
     s32 computePushedSpeedEtc() {
         s32 pad;
@@ -449,11 +503,10 @@ else {
         } else
             pushedSpeed = 0.0;
 
-                //Math_StepToF(&this->pushedSpeed, 0.0f, 1.0f); // Todo: only step by 0.5F when in water.
+        // Math_StepToF(&this->pushedSpeed, 0.0f, 1.0f); // Todo: only step by 0.5F when in water.
         return 0;
     }
-    void setVelocity()
-    {
+    void setVelocity() {
 
         velocity.x = Math_SinS(rot.y) * probeSpeed;
         velocity.y = 10.0;
@@ -462,54 +515,49 @@ else {
 
         computePushedSpeedEtc();
         if (pushedSpeed == 0.0)
-                return;
-        velocity.x +=pushedSpeed * Math_SinS(pushedYaw);
+            return;
+        velocity.x += pushedSpeed * Math_SinS(pushedYaw);
         velocity.z += pushedSpeed * Math_CosS(pushedYaw);
-
     }
-//Check if we're being pushed away from our intended destination.
-    bool isPushedAway()
-    {
+    // Check if we're being pushed away from our intended destination.
+    bool isPushedAway() {
         f32 dist = Math_Vec3f_DistXZ(&velocity, &expectedVelocity);
         if (dist >= probeSpeed)
-                return true;
+            return true;
         return false;
-
     }
-    bool proveClimbableStep()
-    {
+    bool proveClimbableStep() {
         setVelocity();
         if (!move())
-                return false;
+            return false;
         if (isPushedAway())
-                return false;
+            return false;
         Vec3f wallPos;
         if (checkWall(prevPos, pos, wallPos))
-                return false;
+            return false;
         return true;
     }
     bool proveClimbable() {
         Vec3s ogRot = rot;
         Vec3f ogPos = pos;
         pos.y += wallHeight;
-//Find the floor up here.
+        // Find the floor up here.
         probeSpeed = 1.0;
         bool foundFloor = false;
         for (int i = 0; i < 100; i++) {
-                setVelocity();
-                if (!move())
+            setVelocity();
+            if (!move())
                 return false;
-                if (pos.y >= ogPos.y + wallHeight-10) {
+            if (pos.y >= ogPos.y + wallHeight - 10) {
                 foundFloor = true;
                 break;
-                } else
+            } else
                 pos.y = ogPos.y + wallHeight;
-
         }
         probeSpeed = DEFAULT_PROBE_SPEED;
 
         if (!foundFloor)
-                return false;
+            return false;
         prevPos = pos;
         rot.y = ogRot.y + 16384;
         bool clockwiseTest = proveClimbableStep();
@@ -522,8 +570,8 @@ else {
         rot.y = ogRot.y;
         pos = ogPos;
 
-        return clockwiseTest && counterclockwiseTest && (fabs(clockwiseY - counterclockwiseY) < 10.0 || fabs(clockwiseY - counterclockwiseY)>wallHeight-5.0);
-
+        return clockwiseTest && counterclockwiseTest &&
+               (fabs(clockwiseY - counterclockwiseY) < 10.0 || fabs(clockwiseY - counterclockwiseY) > wallHeight - 5.0);
     }
 
   public:
@@ -540,18 +588,21 @@ else {
         trackingMode = false;
         trackingModeStarted = false;
     }
-    //Move a probe to its next point along a line, ensuring that it remains on the floor. Returns false if the move would put the probe out of bounds. Does not take walls into account.
-    bool move() {
+    // Move a probe to its next point along a line, ensuring that it remains on the floor. Returns false if the move
+    // would put the probe out of bounds. Does not take walls into account.
+    bool move(s8 gravity = true) {
         pos.x += velocity.x;
         pos.y += velocity.y;
         pos.z += velocity.z;
         f32 floorHeight = 0;
         floorHeight = BgCheck_EntityRaycastFloor3(&actor->play->colCtx, &floorPoly, &floorBgId, &pos);
         if (floorHeight == BGCHECK_Y_MIN)
-            return false;// I'm guessing this means out of bounds?
-        pos.y = floorHeight;
+            return false; // I'm guessing this means out of bounds?
+        if (gravity) {
+            pos.y = floorHeight;
+        }
         if (!BgCheck_PosInStaticBoundingBox(&actor->play->colCtx, &pos))
-            return false;//Out of bounds.
+            return false; // Out of bounds.
 
         return true;
     }
@@ -560,7 +611,7 @@ else {
 
         Vec3f pos = wallPos;
         if (!move())
-            return true;//Arbitrary, but hopefully this can't happen under normal gameplay circumstances.
+            return true; // Arbitrary, but hopefully this can't happen under normal gameplay circumstances.
         Vec3f newWallPos;
         if (!checkWall(pos, wallPos, newWallPos))
             return false;
@@ -568,10 +619,18 @@ else {
         return fabs(dist) < 0.25;
     }
 
-        //Perform all terrain detection and sound book keeping. Call once per frame.
+    // Perform all terrain detection and sound book keeping. Call once per frame.
+
+    float rdist(Vec3f pos) {
+        Player* player = GET_PLAYER(actor->play);
+        float xdist = fabs(pos.x) - player->actor.world.pos.x;
+        float zdist = fabs(pos.z) - player->actor.world.pos.z;
+        float r = sqrt(zdist * zdist + xdist * xdist);
+        return r;
+    }
     void scan() {
         Player* player = GET_PLAYER(actor->play);
-
+        
         if (player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE) {
             destroyCurrentSound();
             return;
@@ -623,56 +682,100 @@ else {
             setVelocity();
             f32 step = fabs(velocity.x + velocity.z);
 
-            if (!move()) {
-                destroyCurrentSound();
-                break;//Probe is out of bounds.
-            }
-            distToTravel -= (step + fabs(pos.y - pos.y));
-            if (isPushedAway() && player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER)
-            {
-                //Call this a wall for now.
-                discoverWall(pos);
-                break;
+            
 
-            }
-            if (pos.y < prevPos.y && fabs(pos.y - prevPos.y) >= 10 &&
-                player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER)
-            {
-                    //This is a fall.
-                    discoverLedge(pos);
-                testForPlatform();
-
-                    break;
-
+            if (player->stateFlags1 & PLAYER_STATE1_IN_WATER) {
+                if (!move(false)) {
+                    destroyCurrentSound();
+                    break; // Probe is out of bounds.
                 }
-            Vec3f wallPos;
-                        CollisionPoly* wallPoly = checkWall(pos, prevPos, wallPos);
-            if (wallPoly == NULL)
-                    continue;
-//Is this a spiked wall?
-            if (SurfaceType_IsWallDamage(&actor->play->colCtx, wallPoly, BGCHECK_SCENE))
-            {
-                discoverSpike(pos);
-                    break;
-            }
-            wallHeight = findWallHeight(pos, wallPoly);
-            if (wallHeight <= player->ageProperties->unk_0C && player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
-                    // Ledge at top of wall can be reached.
-                if (proveClimbable()) {
-                    discoverLedge(pos, true);
-                } else {
+                pos.y = player->actor.prevPos.y + player->actor.yDistToWater+100.0;
+                //Vec3f wallPos;
+                //CollisionPoly* wallPoly = checkWall(pos, prevPos, wallPos);
+                //if (wallPoly == NULL)
+                //    continue;
+                //wallHeight = findWallHeight(pos, wallPoly);
+                //if (wallHeight <= player->ageProperties->unk_0C &&
+                //    player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
+                //    // Ledge at top of wall can be reached.
+                //    if (proveClimbable()) {
+                //        discoverLedge(pos, true);
+                //    } else {
+                //        discoverWall(pos);
+                //    }
+                //    break;
+                //}
+                //float tttt = rdist(pos);
+                //if (isHeadOnCollision(pos, velocity) && player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER && rdist(pos)<=200.00) {
+                //    discoverWall(pos);
+                //    break;
+                //}
+                if (isPushedAway() && player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
+                    // Call this a wall for now.
                     discoverWall(pos);
+                    break;
                 }
-                    
+            }
+
+            else {
+                if (!move()) {
+                    destroyCurrentSound();
+                    break; // Probe is out of bounds.
+                }
+
+                distToTravel -= (step + fabs(pos.y - pos.y));
+                if (isPushedAway() && player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
+                    // Call this a wall for now.
+                    discoverWall(pos);
+                    break;
+                }
+
+                if (pos.y < prevPos.y && fabs(pos.y - prevPos.y) >= 10 &&
+                    player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
+                    // This is a fall.
+
+                    discoverLedge(pos);
+                    testForPlatform();
 
                     break;
-                        }
-            if (isHeadOnCollision(pos, velocity) && player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER)
-            {
-                discoverWall(pos);
-                break;
-}
+                }
 
+                if (((pos.y - player->actor.prevPos.y) < player->actor.yDistToWater) &&
+                    (player->actor.yDistToWater < 0)) {
+                    discoverWater(pos);
+                    break;
+                }
+                s32 test = func_80041E4C(&actor->play->colCtx, wallPoly, wallBgId);
+                if (func_80041E4C(&actor->play->colCtx, wallPoly, wallBgId)) {
+                    discoverClimable(pos);
+                    break;
+                }
+                Vec3f wallPos;
+                CollisionPoly* wallPoly = checkWall(pos, prevPos, wallPos);
+                if (wallPoly == NULL)
+                    continue;
+                // Is this a spiked wall?
+                if (SurfaceType_IsWallDamage(&actor->play->colCtx, wallPoly, BGCHECK_SCENE)) {
+                    discoverSpike(pos);
+                    break;
+                }
+                wallHeight = findWallHeight(pos, wallPoly);
+                if (wallHeight <= player->ageProperties->unk_0C &&
+                    player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
+                    // Ledge at top of wall can be reached.
+                    if (proveClimbable()) {
+                        discoverLedge(pos, true);
+                    } else {
+                        discoverWall(pos);
+                    }
+
+                    break;
+                }
+                if (isHeadOnCollision(pos, velocity) && player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
+                    discoverWall(pos);
+                    break;
+                }
+            }
         }
         if (trackingMode)
 player->actor.world.pos = pos;
@@ -689,29 +792,28 @@ trackingModeStarted = false;
     }
     void testForPlatform()
     {
-Player* player = GET_PLAYER(actor->play);
+        Player* player = GET_PLAYER(actor->play);
 
-f32 ledgeCheckDistance = 200.0;
-Vec3f startingPos = pos;
-while (ledgeCheckDistance >= 0) {
-prevPos = pos;
-setVelocity();
-pos.y = player->actor.prevPos.y + 100.0;
-f32 step = fabs(velocity.x + velocity.z);
+        f32 ledgeCheckDistance = 200.0;
+        Vec3f startingPos = pos;
+        while (ledgeCheckDistance >= 0) {
+            prevPos = pos;
+            setVelocity();
+            pos.y = player->actor.prevPos.y + 100.0;
+            f32 step = fabs(velocity.x + velocity.z);
 
-if (!move()) {
-                break; // Probe is out of bounds.
-}
-ledgeCheckDistance -= (step + fabs(pos.y - pos.y));
+            if (!move()) {
+               break; // Probe is out of bounds.
+            }
+            ledgeCheckDistance -= (step + fabs(pos.y - pos.y));
 
-if ((fabs(pos.y - player->actor.prevPos.y) <= 70.00) && fabs(pos.y - prevPos.y) >= 20.0) {
-                platform.setPosition(pos);
-                platform.run();
-
-                break;
-}
-}
-pos = startingPos;
+            if ((fabs(pos.y - player->actor.prevPos.y) <= 70.00) && fabs(pos.y - prevPos.y) >= 20.0) {
+               platform.setPosition(pos);
+               platform.run();
+               break;
+            }
+        }
+        pos = startingPos;
     }
     };
 
