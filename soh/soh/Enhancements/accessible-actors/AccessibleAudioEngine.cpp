@@ -85,7 +85,9 @@ static float lerp(float x, float y, float z) {
     float gain = computeGain(extras);
     ma_gainer_set_gain(&extras->gainer, gain);
     ma_gainer_process_pcm_frames(&extras->gainer, framesOut, framesOut, *pFrameCountIn);
-
+//Run LPF only when necessary because we can't afford to run a 4th-order lowpass on every single sound. This probably causes minor glitches when the filter switches on and off. Todo: cross that bridge.
+    if (extras->cutoff != 1.0)
+    ma_lpf_process_pcm_frames(&extras->filter, framesOut, framesOut, *pFrameCountIn);
     }
 
 static ma_node_vtable positioner_vtable = {
@@ -278,6 +280,7 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
     if (ma_sound_init_from_file(&engine, action.path.c_str(), MA_SOUND_FLAG_NO_SPATIALIZATION|MA_SOUND_FLAG_NO_DEFAULT_ATTACHMENT, NULL, NULL,
                                 &sound->sound) != MA_SUCCESS)
             return;
+
     initSoundExtras(sound);
         ma_sound_set_looping(&sound->sound, action.looping);
     //We actually attach the extras to the engine, not the sound itself.
@@ -309,10 +312,12 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
     }
     void AccessibleAudioEngine::doSetPitch(SoundAction& action)
     {
+//This does not actually set pitch on the sound object. It rather hacks inside of it and manipulates its sample rate converter directly. This is safe because it's being done in the same thread that processes audio frames.
+//The reason this is done is so that we maintain control of the lowpass filter (we also use it to add extra filtering as an optimization instead of running additional filters).
         SoundSlot* slot = findSound(action);
         if (slot == NULL)
             return;
-        ma_sound_set_pitch(&slot->sound, action.pitch);
+         ma_sound_set_pitch(&slot->sound, action.pitch);
 
     }
     void AccessibleAudioEngine::doSetVolume(SoundAction& action)
@@ -335,9 +340,10 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
         SoundSlot* slot = findSound(action);
         if (slot == NULL)
             return;
+        slot->extras.cutoff = action.cutoff;
         ma_lpf_config config =
             ma_lpf_config_init(ma_format_f32, AAE_CHANNELS, AAE_SAMPLE_RATE, lerp(0.0, AAE_SAMPLE_RATE / 2, action.cutoff), AAE_LPF_ORDER);
-        ma_lpf_node_reinit(&config, &slot->extras.filter);
+        ma_lpf_reinit(&config, &slot->extras.filter);
 
     }
     void AccessibleAudioEngine::doSeekSound(SoundAction& action)
@@ -406,11 +412,12 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
         ma_gainer_config gc = ma_gainer_config_init(AAE_CHANNELS, AAE_SAMPLE_RATE / 20);//Allow one in-game frame for the gain to work its way towards the target value.
         if (ma_gainer_init(&gc, NULL, &slot->extras.gainer) != MA_SUCCESS)
             return false;
-        ma_lpf_node_config fc = ma_lpf_node_config_init(AAE_CHANNELS, AAE_SAMPLE_RATE, AAE_SAMPLE_RATE / 2, AAE_LPF_ORDER);
-        ma_lpf_node_init(&engine.nodeGraph, &fc, NULL, &slot->extras.filter);
+        ma_lpf_config fc = ma_lpf_config_init(ma_format_f32, AAE_CHANNELS, AAE_SAMPLE_RATE, AAE_SAMPLE_RATE / 2, AAE_LPF_ORDER);
+        ma_lpf_init(&fc, NULL, &slot->extras.filter);
+        slot->extras.cutoff = 1.0f;
 
-        ma_node_attach_output_bus(&slot->sound, 0, &slot->extras.filter, 0);
-        ma_node_attach_output_bus(&slot->extras.filter, 0, &slot->extras, 0);
+        //ma_node_attach_output_bus(&slot->sound, 0, &slot->extras.filter, 0);
+        ma_node_attach_output_bus(&slot->sound, 0, &slot->extras, 0);
         return true;
 
     }
@@ -513,6 +520,7 @@ void AccessibleAudioEngine::stopAllSounds(uintptr_t handle) {
     void AccessibleAudioEngine::setPitch(uintptr_t handle, int slot, float pitch) {
         if (slot < 0 || slot >= AAE_SLOTS_PER_HANDLE)
             return;
+
         SoundAction& action = getNextOutgoingSoundAction();
         action.command = AAE_PITCH;
         action.handle = handle;
