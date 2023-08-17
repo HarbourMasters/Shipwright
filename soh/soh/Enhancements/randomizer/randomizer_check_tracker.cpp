@@ -13,7 +13,6 @@
 #include <libultraship/libultraship.h>
 #include "3drando/item_location.hpp"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
-#include "randomizerTypes.h"
 #include "z64item.h"
 
 extern "C" {
@@ -511,12 +510,14 @@ void CheckTrackerDialogClosed() {
 }
 
 void CheckTrackerShopSlotChange(uint8_t cursorSlot, int16_t basePrice) {
-    auto slot = startingShopItem.find(gPlayState->sceneNum)->second + cursorSlot;
-    auto status = gSaveContext.checkTrackerData[slot].status;
-    if (status == RCSHOW_SEEN) {
-        gSaveContext.checkTrackerData[slot].status = RCSHOW_IDENTIFIED;
-        gSaveContext.checkTrackerData[slot].price = basePrice;
-        SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
+    if (gPlayState->sceneNum != SCENE_FACE_SHOP) { // Happy Mask Shop is not used in rando, so is not tracked
+        auto slot = startingShopItem.find(gPlayState->sceneNum)->second + cursorSlot;
+        auto status = gSaveContext.checkTrackerData[slot].status;
+        if (status == RCSHOW_SEEN) {
+            gSaveContext.checkTrackerData[slot].status = RCSHOW_IDENTIFIED;
+            gSaveContext.checkTrackerData[slot].price = basePrice;
+            SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
+        }
     }
 }
 
