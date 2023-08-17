@@ -23,6 +23,7 @@ void accessible_va_wall_cue(AccessibleActor* actor);
 
 void accessible_en_ishi(AccessibleActor* actor) {
     ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_OCTAROCK_ROCK, false);
+    //ActorAccessibility_PlaySpecialSound(actor, NA_SE_EN_OCTAROCK_ROCK);
 }
 
 void accessible_en_NPC_Gen(AccessibleActor* actor) {
@@ -173,7 +174,8 @@ void accessible_goma(AccessibleActor* actor) {
 }
 
 void accessible_door_of_time(AccessibleActor* actor) {
-    ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_DIAMOND_SWITCH, false);
+    //ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_DIAMOND_SWITCH, false);
+    ActorAccessibility_PlaySpecialSound(actor, NA_SE_EV_DIAMOND_SWITCH);
 }
 
 void ActorAccessibility_InitActors() {
