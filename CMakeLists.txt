@@ -5,8 +5,8 @@ set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
 
-project(Ship VERSION 7.1.0 LANGUAGES C CXX)
-set(PROJECT_BUILD_NAME "Sulu Alfa" CACHE STRING "")
+project(Ship VERSION 7.1.1 LANGUAGES C CXX)
+set(PROJECT_BUILD_NAME "Sulu Bravo" CACHE STRING "")
 set(PROJECT_TEAM "github.com/harbourmasters" CACHE STRING "")
 
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT soh)
@@ -98,14 +98,14 @@ set_property(TARGET soh PROPERTY APPIMAGE_ICON_FILE "${CMAKE_BINARY_DIR}/sohIcon
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 install(PROGRAMS "${CMAKE_SOURCE_DIR}/scripts/linux/appimage/soh.sh" DESTINATION . COMPONENT appimage)
-install(FILES "${CMAKE_SOURCE_DIR}/soh.otr" DESTINATION . COMPONENT appimage)
-install(TARGETS ZAPD DESTINATION ./assets/extractor COMPONENT appimage)
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/extractor/" DESTINATION ./assets/extractor COMPONENT appimage)
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/xml/" DESTINATION ./assets/extractor/xmls COMPONENT appimage)
-install(DIRECTORY "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/filelists/" DESTINATION ./assets/extractor/filelists COMPONENT appimage)
-install(FILES "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ActorList_OoTMqDbg.txt" DESTINATION ./assets/extractor/symbols COMPONENT appimage)
-install(FILES "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ObjectList_OoTMqDbg.txt" DESTINATION ./assets/extractor/symbols COMPONENT appimage)
-install(FILES "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/SymbolMap_OoTMqDbg.txt" DESTINATION ./assets/extractor/symbols COMPONENT appimage)
+install(FILES "${CMAKE_SOURCE_DIR}/soh.otr" DESTINATION . COMPONENT ship)
+install(TARGETS ZAPD DESTINATION ./assets/extractor COMPONENT extractor)
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/extractor/" DESTINATION ./assets/extractor COMPONENT extractor)
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/xml/" DESTINATION ./assets/extractor/xmls COMPONENT extractor)
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/filelists/" DESTINATION ./assets/extractor/filelists COMPONENT extractor)
+install(FILES "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ActorList_OoTMqDbg.txt" DESTINATION ./assets/extractor/symbols COMPONENT extractor)
+install(FILES "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ObjectList_OoTMqDbg.txt" DESTINATION ./assets/extractor/symbols COMPONENT extractor)
+install(FILES "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/SymbolMap_OoTMqDbg.txt" DESTINATION ./assets/extractor/symbols COMPONENT extractor)
 endif()
 
 find_package(Python3 COMPONENTS Interpreter)
@@ -129,6 +129,18 @@ add_custom_target(
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets.py -z "$<TARGET_FILE:ZAPD>" --non-interactive --gen-headers
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter
     COMMENT "Generating asset headers..."
+    DEPENDS ZAPD
+)
+
+# Target to generate only soh.otr
+add_custom_target(
+    GenerateSohOtr
+    # CMake versions prior to 3.17 do not have the rm command, use remove instead for older versions
+    COMMAND ${CMAKE_COMMAND} -E $<IF:$<VERSION_LESS:${CMAKE_VERSION},3.17>,remove,rm> -f soh.otr
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets.py -z "$<TARGET_FILE:ZAPD>" --norom
+    COMMAND ${CMAKE_COMMAND} -DSYSTEM_NAME=${CMAKE_SYSTEM_NAME} -DTARGET_DIR="$<TARGET_FILE_DIR:ZAPD>" -DSOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DBINARY_DIR=${CMAKE_BINARY_DIR} -DONLYSOHOTR=On -P ${CMAKE_CURRENT_SOURCE_DIR}/copy-existing-otrs.cmake
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter
+    COMMENT "Generating soh.otr..."
     DEPENDS ZAPD
 )
 

@@ -401,8 +401,8 @@ void func_80ABA9B8(EnNiwLady* this, PlayState* play) {
                 if (!gSaveContext.n64ddFlag) {
                     func_8002F434(&this->actor, play, GI_POCKET_EGG, 200.0f, 100.0f);
                 } else {
-                    // TODO: get-item-rework Adult trade sequence
                     this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
+                    GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 200.0f, 100.0f);
                     Flags_SetItemGetInf(ITEMGETINF_2C);
                 }
 
@@ -436,9 +436,9 @@ void func_80ABAB08(EnNiwLady* this, PlayState* play) {
                 if (!gSaveContext.n64ddFlag) {
                     func_8002F434(&this->actor, play, GI_COJIRO, 200.0f, 100.0f);
                 } else {
-                    // TODO: get-item-rework Adult trade sequence
                     this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_TRADE_POCKET_CUCCO, GI_COJIRO);
                     Randomizer_ConsumeAdultTradeItem(play, ITEM_POCKET_CUCCO);
+                    GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 200.0f, 100.0f);
                     Flags_SetItemGetInf(ITEMGETINF_2E);
                 }
                 this->actionFunc = func_80ABAC00;
@@ -462,21 +462,17 @@ void func_80ABAC00(EnNiwLady* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         this->actionFunc = func_80ABAC84;
     } else {
+         if (gSaveContext.n64ddFlag) {
+            getItemId = this->getItemEntry.getItemId;
+            GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 200.0f, 100.0f);
+            return;
+        }
+
         getItemId = this->getItemId;
         if (LINK_IS_ADULT) {
-            if (!gSaveContext.n64ddFlag) {
-                getItemId = !Flags_GetItemGetInf(ITEMGETINF_2C) ? GI_POCKET_EGG : GI_COJIRO;
-            } else {
-                // TODO: get-item-rework Adult trade sequence
-                getItemId = this->getItemEntry.getItemId;
-                GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 200.0f, 100.0f);
-                // Skip setting item flags because that was done earlier
-                this->actionFunc = func_80ABA778;
-            }
+            getItemId = !Flags_GetItemGetInf(ITEMGETINF_2C) ? GI_POCKET_EGG : GI_COJIRO;
         }
-        if (this->getItemEntry.getItemId == GI_NONE) {
-            func_8002F434(&this->actor, play, getItemId, 200.0f, 100.0f);
-        }
+        func_8002F434(&this->actor, play, getItemId, 200.0f, 100.0f);
     }
 }
 
@@ -486,10 +482,13 @@ void func_80ABAC84(EnNiwLady* this, PlayState* play) {
     }
     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
     if (LINK_IS_ADULT) {
-        if (!Flags_GetItemGetInf(ITEMGETINF_2C)) {
-            Flags_SetItemGetInf(ITEMGETINF_2C);
-        } else {
-            Flags_SetItemGetInf(ITEMGETINF_2E);
+        // Flags for randomizer gives are set in the original message prompt choice handling
+        if (!gSaveContext.n64ddFlag) {
+            if (!Flags_GetItemGetInf(ITEMGETINF_2C)) {
+                Flags_SetItemGetInf(ITEMGETINF_2C);
+            } else {
+                Flags_SetItemGetInf(ITEMGETINF_2E);
+            }
         }
         this->actionFunc = func_80ABA778;
     } else {

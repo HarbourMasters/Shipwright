@@ -249,16 +249,16 @@ void DrawSettingsMenu() {
 
         if (ImGui::BeginMenu("Graphics")) {
         #ifndef __APPLE__
-            UIWidgets::EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f, 2.0f, "", 1.0f, true);
+            if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f, 2.0f, "", 1.0f, true)) {
+                LUS::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(CVarGetFloat("gInternalResolution", 1));
+            };
             UIWidgets::Tooltip("Multiplies your output resolution by the value inputted, as a more intensive but effective form of anti-aliasing");
-            // OTRTODO: fix this
-            // LUS::SetResolutionMultiplier(CVarGetFloat("gInternalResolution", 1));
         #endif
         #ifndef __WIIU__
-            UIWidgets::PaddedEnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "", 1, true, true, false);
+            if (UIWidgets::PaddedEnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "", 1, true, true, false)) {
+                LUS::Context::GetInstance()->GetWindow()->SetMsaaLevel(CVarGetInteger("gMSAAValue", 1));
+            };
             UIWidgets::Tooltip("Activates multi-sample anti-aliasing when above 1x up to 8x for 8 samples for every pixel");
-            // OTRTODO: fix this
-            // LUS::SetMSAALevel(CVarGetInteger("gMSAAValue", 1));
         #endif
 
             { // FPS Slider
@@ -958,6 +958,8 @@ void DrawEnhancementsMenu() {
                                 "This might affect other decal effects\n");
             UIWidgets::PaddedEnhancementSliderInt("Text Spacing: %d", "##TEXTSPACING", "gTextSpacing", 4, 6, "", 6, true, true, true);
             UIWidgets::Tooltip("Space between text characters (useful for HD font textures)");
+            UIWidgets::PaddedEnhancementCheckbox("More info in file select", "gFileSelectMoreInfo", true, false);
+            UIWidgets::Tooltip("Shows what items you have collected in the file select screen, like in N64 randomizer");
             ImGui::EndMenu();
         }
 
@@ -1009,6 +1011,9 @@ void DrawEnhancementsMenu() {
                 ApplyAuthenticGfxPatches();
             }
             UIWidgets::Tooltip("Fixes authentic out of bounds texture reads, instead loading textures with the correct size");
+            UIWidgets::PaddedEnhancementCheckbox("Fix Poacher's Saw Softlock", "gFixSawSoftlock", true, false, CVarGetInteger("gSkipText", 0),
+                "This is disabled because it is forced on when Skip Text is enabled.", UIWidgets::CheckboxGraphics::Checkmark);
+            UIWidgets::Tooltip("Prevents the Poacher's Saw softlock from mashing through the text, or with Skip Text enabled.");
 
             ImGui::EndMenu();
         }
