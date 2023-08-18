@@ -295,8 +295,8 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
     }
     void ActorAccessibility_RunAccessibilityForAllActors(PlayState* play) {
             //Entirely exclude the title screen.
-        if (play->sceneNum == 81)
-            return;
+        /*if (play->sceneNum == 81)
+            return;*/
 
         //Real actors.
         for (AccessibleActorList_t::iterator i = aa->accessibleActorList.begin(); i != aa->accessibleActorList.end(); i++)

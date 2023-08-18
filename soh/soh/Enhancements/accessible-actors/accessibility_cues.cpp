@@ -509,7 +509,7 @@ class Climable : protected TerrainCueSound {
     void setVelocity() {
 
         velocity.x = Math_SinS(rot.y) * probeSpeed;
-        velocity.y = 10.0;
+        velocity.y = 12.0;
         velocity.z = Math_CosS(rot.y) * probeSpeed;
         expectedVelocity = velocity;
 
@@ -629,6 +629,7 @@ class Climable : protected TerrainCueSound {
         float r = sqrt((zdist * zdist) + (xdist * xdist));
         return r;
     }
+    
     void scan() {
         Player* player = GET_PLAYER(actor->play);
         
@@ -683,39 +684,102 @@ class Climable : protected TerrainCueSound {
             setVelocity();
             f32 step = fabs(velocity.x + velocity.z);
 
-            
-
+            //checks if link is in the water, needs different logic
             if (player->stateFlags1 & PLAYER_STATE1_IN_WATER) {
                 pos.y = player->actor.prevPos.y;
-                if (!move(false)) {
+                if (!move()) {
                     destroyCurrentSound();
                     break; // Probe is out of bounds.
+                }
+                if (rdist(pos) > 500.00) {
+                    destroyCurrentSound();
+                    break; // too far too hear
+                }
+                // is there an incline ahead that leads out of the water
+                if (pos.y > player->actor.world.pos.y) {
+                    discoverIncline(pos);
+                    break; 
+                }
+                //keeps probe at links feet
+                if (pos.y < player->actor.world.pos.y) {
+                    pos.y = player->actor.world.pos.y;
                 }
 
                 Vec3f wallPos;
                 CollisionPoly* wallPoly = checkWall(pos, prevPos, wallPos);
                 if (wallPoly == NULL) {
-
                     continue;
                 }
-                // float tttt = rdist(pos);
 
-                if (rdist(pos) > 500.00) {
-                    destroyCurrentSound();
+                //sets probe to be at surface of water
+                pos.y += player->actor.yDistToWater;
+                prevPos.y += player->actor.yDistToWater;
+
+                //checks for new wall poly
+                wallPoly = checkWall(pos, prevPos, wallPos);
+
+                //checks if climable
+                if (func_80041DB8(&actor->play->colCtx, wallPoly, wallBgId) == 8 ||
+                    func_80041DB8(&actor->play->colCtx, wallPoly, wallBgId) == 3) {
+                    discoverClimable(pos);
                     break;
                 }
-                pos.y += 70.0;
-                prevPos.y += 70.0;
-                wallPoly = checkWall(pos, prevPos, wallPos);
-                if (wallPoly == NULL) {
+                //if not climable and exists then treats it as a wall
+                if (wallPoly != NULL) {
+                    discoverWall(pos);
+                    break;
+                }
+                
+                //checks for ledges
+                pos.y = player->actor.world.pos.y - 10.0;
+                f32 ogStep = step;
+                step = 1.0;
+                while (pos.y < player->actor.world.pos.y + player->actor.yDistToWater) {
+                    pos.y = player->actor.world.pos.y - 10.0;
+                    pos.y += 50.0;
+                    if (!move()) {
+                        break; // Probe is out of bounds.
+                    }
+                }
+                step = ogStep;
+                if (player->ageProperties->unk_92 == 0) {
+                    wallHeight = fabs(pos.y - (player->actor.world.pos.y + player->actor.yDistToWater -
+                                               45.5)); // change that number just a guess
+                } else {
+                    wallHeight = fabs(pos.y - (player->actor.world.pos.y + player->actor.yDistToWater - 30.0));
+                }
+
+                prevPos = pos;
+                Vec3s ogRot = rot;
+                Vec3f ogPos = pos;
+                pos.y += 20.0;
+                if (!move()) {
+                    break; // Probe is out of bounds.
+                }
+                bool forwardTest = fabs(pos.y - ogPos.y) < 1.0;
+                rot.y = ogRot.y + 16384;
+                bool clockwiseTest = proveClimbableStep();
+                f32 clockwiseY = pos.y;
+                rot.y = ogRot.y - 16384;
+                pos = prevPos;
+
+                bool counterclockwiseTest = proveClimbableStep();
+                f32 counterclockwiseY = pos.y;
+                rot.y = ogRot.y;
+                pos = ogPos;
+
+                if (clockwiseTest && counterclockwiseTest && (forwardTest || wallHeight < 44.0) &&
+                    (fabs(clockwiseY - counterclockwiseY) < 2.0 ||
+                     fabs(clockwiseY - counterclockwiseY) > wallHeight - 5.0)) {
                     discoverLedge(pos, true);
                     break;
+                } else {
+                    discoverWall(pos);
+                    break;
                 }
-                discoverWall(pos);
-                break;
-            }
-            
 
+            }
+            //link isn't in the water
             else {
                 if (!move()) {
                     destroyCurrentSound();
@@ -729,7 +793,7 @@ class Climable : protected TerrainCueSound {
                     break;
                 }
 
-                if (pos.y < prevPos.y && fabs(pos.y - prevPos.y) >= 10 &&
+                if (pos.y < prevPos.y && fabs(pos.y - prevPos.y) >= 20 &&
                     player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
                     // This is a fall.
 
@@ -739,16 +803,13 @@ class Climable : protected TerrainCueSound {
                     break;
                 }
 
+                //checks for water
                 if (((pos.y - player->actor.prevPos.y) < player->actor.yDistToWater) &&
                     (player->actor.yDistToWater < 0)) {
                     discoverWater(pos);
                     break;
                 }
-                s32 test = func_80041E4C(&actor->play->colCtx, wallPoly, wallBgId);
-                if (func_80041E4C(&actor->play->colCtx, wallPoly, wallBgId)) {
-                    discoverClimable(pos);
-                    break;
-                }
+
                 Vec3f wallPos;
                 CollisionPoly* wallPoly = checkWall(pos, prevPos, wallPos);
                 if (wallPoly == NULL)
@@ -756,6 +817,12 @@ class Climable : protected TerrainCueSound {
                 // Is this a spiked wall?
                 if (SurfaceType_IsWallDamage(&actor->play->colCtx, wallPoly, BGCHECK_SCENE)) {
                     discoverSpike(pos);
+                    break;
+                }
+                // is this a ladder or vine wall?
+                if (func_80041DB8(&actor->play->colCtx, wallPoly, wallBgId) == 8 ||
+                    func_80041DB8(&actor->play->colCtx, wallPoly, wallBgId) == 3) {
+                    discoverClimable(pos);
                     break;
                 }
                 wallHeight = findWallHeight(pos, wallPoly);
