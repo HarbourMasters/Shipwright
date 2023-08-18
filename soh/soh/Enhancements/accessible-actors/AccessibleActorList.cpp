@@ -297,11 +297,11 @@ void ActorAccessibility_InitActors() {
     policy.volume = 1.5;
     policy.distance = 2000;
     ActorAccessibility_AddSupportedActor(VA_CRAWLSPACE, policy);
-    ActorAccessibility_InitPolicy(&policy, "Ladder/climable", NULL, NA_SE_PL_LAND_LADDER);
-    policy.volume = 1.5;
-    policy.pitch = 1.3;
-    policy.distance = 2000;
-    ActorAccessibility_AddSupportedActor(VA_CLIMB, policy);
+    //ActorAccessibility_InitPolicy(&policy, "Ladder/climable", NULL, NA_SE_PL_LAND_LADDER);
+    //policy.volume = 1.5;
+    //policy.pitch = 1.3;
+    //policy.distance = 2000;
+    //ActorAccessibility_AddSupportedActor(VA_CLIMB, policy);
     ActorAccessibility_InitPolicy(&policy, "Door", NULL, NA_SE_OC_DOOR_OPEN);
     policy.n = 30;
     policy.pitch = 1.1;
