@@ -719,8 +719,8 @@ class Climable : protected TerrainCueSound {
                 wallPoly = checkWall(pos, prevPos, wallPos);
 
                 //checks if climable
-                if (func_80041DB8(&actor->play->colCtx, wallPoly, wallBgId) == 8 ||
-                    func_80041DB8(&actor->play->colCtx, wallPoly, wallBgId) == 3) {
+                if ((func_80041DB8(&actor->play->colCtx, wallPoly, wallBgId) == 8 ||
+                    func_80041DB8(&actor->play->colCtx, wallPoly, wallBgId) == 3) && player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
                     discoverClimable(pos);
                     break;
                 }
@@ -820,8 +820,9 @@ class Climable : protected TerrainCueSound {
                     break;
                 }
                 // is this a ladder or vine wall?
-                if (func_80041DB8(&actor->play->colCtx, wallPoly, wallBgId) == 8 ||
-                    func_80041DB8(&actor->play->colCtx, wallPoly, wallBgId) == 3) {
+                if ((func_80041DB8(&actor->play->colCtx, wallPoly, wallBgId) == 8 ||
+                    func_80041DB8(&actor->play->colCtx, wallPoly, wallBgId) == 3) &&
+                        player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
                     discoverClimable(pos);
                     break;
                 }

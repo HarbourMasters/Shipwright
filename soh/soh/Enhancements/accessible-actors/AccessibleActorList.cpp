@@ -310,10 +310,10 @@ void ActorAccessibility_InitActors() {
     ActorAccessibility_InitPolicy(&policy, "Area Change", accessible_area_change, 0);
     policy.distance = 5000;
     ActorAccessibility_AddSupportedActor(VA_AREA_CHANGE, policy);
-    ActorAccessibility_InitPolicy(&policy, "marker", NULL,
-                                  NA_SE_EV_DIAMOND_SWITCH); 
-    policy.pitch = 1.7;
-    ActorAccessibility_AddSupportedActor(VA_MARKER, policy);
+    //ActorAccessibility_InitPolicy(&policy, "marker", NULL,
+    //                              NA_SE_EV_DIAMOND_SWITCH); 
+    //policy.pitch = 1.7;
+    //ActorAccessibility_AddSupportedActor(VA_MARKER, policy);
     // Now query a list of virtual actors for a given
                                                                 // location (scene
                                                        // and room
