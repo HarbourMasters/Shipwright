@@ -136,24 +136,19 @@ void ObjComb_ChooseItemDrop(ObjComb* this, PlayState* play) {
         Randomizer_GetSettingValue(RSK_SHUFFLE_BEEHIVES) &&
         !Flags_GetRandomizerInf(this->beehiveIdentity.randomizerInf)
     ) {
-        //currently gives the item automatically
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(this->beehiveIdentity.randomizerCheck, GI_NONE);
-        if (getItemEntry.modIndex == MOD_NONE) {
-            // RANDOTODO: Move this into Item_Give() or some other more central location
-            if (getItemEntry.getItemId == GI_SWORD_BGS) {
-                gSaveContext.bgsFlag = true;
-            }
-            Item_Give(play, getItemEntry.itemId);
-        } else if (getItemEntry.modIndex == MOD_RANDOMIZER && getItemEntry.getItemId != RG_ICE_TRAP) {
-            Randomizer_Item_Give(play, getItemEntry);
-        }
+        
+        EnItem00* actor = (EnItem00*)Item_DropCollectible(play, &this->actor.world.pos, 6);
+        actor->randoCheck = this->beehiveIdentity.randomizerCheck;
+        actor->randoGiEntry = getItemEntry;
+        actor->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
 
-        if (getItemEntry.itemId == GI_ICE_TRAP || getItemEntry.itemId == RG_ICE_TRAP) {
-            GameInteractor_ExecuteOnItemReceiveHooks(getItemEntry);
-        }
+        //should prevent clipping thru the wall/ceiling
+
+        GiveItemEntryFromActorWithFixedRange(actor, play, actor->randoGiEntry);
         
         //this should be moved to the dropped item itself because if not there'll be the same problem as dampe in vanilla
-        Flags_SetRandomizerInf(this->beehiveIdentity.randomizerInf);
+        //Flags_SetRandomizerInf(this->beehiveIdentity.randomizerInf);
         return;
     }
 
