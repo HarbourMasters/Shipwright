@@ -29,8 +29,7 @@ The latest release is available in the most recent post in the `#downloads` chan
 #### Linux
 * Place your supported copy of the game in the same folder as the appimage.
 * Execute `soh.appimage`.  You may have to `chmod +x` the appimage via terminal.
-* If you wish to use [MangoHud](https://github.com/flightlessmango/MangoHud), you must use the <code>--dlsym</code> flag:
-<code>mangohud --dlsym ./soh.appimage</code>
+* If you wish to use [MangoHud](https://github.com/flightlessmango/MangoHud), you must use the `--dlsym` flag: `mangohud --dlsym ./soh.appimage`.
 
 #### macOS
 * Run `soh.app`. When prompted, select your supported copy of the game.
