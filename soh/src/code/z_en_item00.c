@@ -441,6 +441,7 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
     this->actor.focus.pos = this->actor.world.pos;
     this->getItemId = GI_NONE;
     this->randoCheck = Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->ogParams);
+    this->randoInf = RAND_INF_MAX;
 
     if (gSaveContext.n64ddFlag && this->randoCheck != RC_UNKNOWN_CHECK) {
         this->randoGiEntry = Randomizer_GetItemFromKnownCheck(this->randoCheck, getItemId);
@@ -534,7 +535,9 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
             if (!gSaveContext.n64ddFlag || this->randoGiEntry.getItemId == GI_NONE) {
                 func_8002F554(&this->actor, play, getItemId);
             } else {
-                GiveItemEntryFromActorWithFixedRange(&this->actor, play, this->randoGiEntry);
+                if (GiveItemEntryFromActorWithFixedRange(&this->actor, play, this->randoGiEntry) && this->randoInf != RAND_INF_MAX) {
+                    Flags_SetRandomizerInf(this->randoInf);
+                }
             }
         }
     }
@@ -699,7 +702,9 @@ void func_8001E5C8(EnItem00* this, PlayState* play) {
             if (!gSaveContext.n64ddFlag) {
                 func_8002F434(&this->actor, play, this->getItemId, 50.0f, 80.0f);
             } else {
-                GiveItemEntryFromActor(&this->actor, play, this->randoGiEntry, 50.0f, 80.0f);
+                if (GiveItemEntryFromActor(&this->actor, play, this->randoGiEntry, 50.0f, 80.0f) && this->randoInf != RAND_INF_MAX) {
+                    Flags_SetRandomizerInf(this->randoInf);
+                }
             }
             this->unk_15A++;
         } else {
@@ -923,7 +928,9 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
             func_8002F554(&this->actor, play, getItemId);
         } else {
             getItemId = this->randoGiEntry.getItemId;
-            GiveItemEntryFromActorWithFixedRange(&this->actor, play, this->randoGiEntry);
+            if (GiveItemEntryFromActorWithFixedRange(&this->actor, play, this->randoGiEntry) && this->randoInf != RAND_INF_MAX) {
+                Flags_SetRandomizerInf(this->randoInf);
+            }
         }
     }
 

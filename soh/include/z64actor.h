@@ -286,6 +286,7 @@ typedef struct EnItem00 {
     s16 ogParams;
     GetItemEntry randoGiEntry;
     RandomizerCheck randoCheck;
+    RandomizerInf randoInf;
 } EnItem00; // size = 0x1AC
 
 // Only A_OBJ_SIGNPOST_OBLONG and A_OBJ_SIGNPOST_ARROW are used in room files.

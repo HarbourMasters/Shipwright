@@ -142,13 +142,9 @@ void ObjComb_ChooseItemDrop(ObjComb* this, PlayState* play) {
         actor->randoCheck = this->beehiveIdentity.randomizerCheck;
         actor->randoGiEntry = getItemEntry;
         actor->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
+        actor->randoInf = this->beehiveIdentity.randomizerInf;
 
         //should prevent clipping thru the wall/ceiling
-
-        GiveItemEntryFromActorWithFixedRange(actor, play, actor->randoGiEntry);
-        
-        //this should be moved to the dropped item itself because if not there'll be the same problem as dampe in vanilla
-        //Flags_SetRandomizerInf(this->beehiveIdentity.randomizerInf);
         return;
     }
 
