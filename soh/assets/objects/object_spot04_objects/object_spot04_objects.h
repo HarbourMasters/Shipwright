@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_SPOT04_OBJECTS_H
+#define OBJECTS_OBJECT_SPOT04_OBJECTS_H 1
 
 #include "align_asset_macro.h"
 
@@ -19,3 +20,5 @@ static const ALIGN_ASSET(2) char gDekuTreeMouthDL[] = dgDekuTreeMouthDL;
 
 #define dgDekuTreeMouthCol "__OTR__objects/object_spot04_objects/gDekuTreeMouthCol"
 static const ALIGN_ASSET(2) char gDekuTreeMouthCol[] = dgDekuTreeMouthCol;
+
+#endif // OBJECTS_OBJECT_SPOT04_OBJECTS_H

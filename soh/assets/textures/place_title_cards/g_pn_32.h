@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_G_PN_32_H
+#define TEXTURES_G_PN_32_H 1
 
 #include "align_asset_macro.h"
 
@@ -10,3 +11,5 @@ static const ALIGN_ASSET(2) char gLakeHyliaTitleCardGERTex[] = dgLakeHyliaTitleC
 
 #define dgLakeHyliaTitleCardFRATex "__OTR__textures/g_pn_32/gLakeHyliaTitleCardFRATex"
 static const ALIGN_ASSET(2) char gLakeHyliaTitleCardFRATex[] = dgLakeHyliaTitleCardFRATex;
+
+#endif // TEXTURES_G_PN_32_H

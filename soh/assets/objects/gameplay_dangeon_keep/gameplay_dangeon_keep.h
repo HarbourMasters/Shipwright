@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_GAMEPLAY_DANGEON_KEEP_H
+#define OBJECTS_GAMEPLAY_DANGEON_KEEP_H 1
 
 #include "align_asset_macro.h"
 
@@ -214,3 +215,5 @@ static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_0118A0[] = dgameplay_d
 
 #define dgameplay_dangeon_keepTex_011AA0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_011AA0"
 static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_011AA0[] = dgameplay_dangeon_keepTex_011AA0;
+
+#endif // OBJECTS_GAMEPLAY_DANGEON_KEEP_H

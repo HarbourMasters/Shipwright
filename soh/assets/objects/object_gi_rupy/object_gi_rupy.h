@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GI_RUPY_H
+#define OBJECTS_OBJECT_GI_RUPY_H 1
 
 #include "align_asset_macro.h"
 
@@ -37,3 +38,5 @@ static const ALIGN_ASSET(2) char gGiRupeeInnerDL[] = dgGiRupeeInnerDL;
 
 #define dgGiRupeeOuterDL "__OTR__objects/object_gi_rupy/gGiRupeeOuterDL"
 static const ALIGN_ASSET(2) char gGiRupeeOuterDL[] = dgGiRupeeOuterDL;
+
+#endif // OBJECTS_OBJECT_GI_RUPY_H

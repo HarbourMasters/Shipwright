@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_BDAN_OBJECTS_H
+#define OBJECTS_OBJECT_BDAN_OBJECTS_H 1
 
 #include "align_asset_macro.h"
 
@@ -151,3 +152,5 @@ static const ALIGN_ASSET(2) char gJabuFloorSwitchCol[] = dgJabuFloorSwitchCol;
 
 #define dgJabuBigOctoPlatformCol "__OTR__objects/object_bdan_objects/gJabuBigOctoPlatformCol"
 static const ALIGN_ASSET(2) char gJabuBigOctoPlatformCol[] = dgJabuBigOctoPlatformCol;
+
+#endif // OBJECTS_OBJECT_BDAN_OBJECTS_H

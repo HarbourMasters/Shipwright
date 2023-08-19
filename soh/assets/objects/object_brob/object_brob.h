@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_BROB_H
+#define OBJECTS_OBJECT_BROB_H 1
 
 #include "align_asset_macro.h"
 
@@ -37,3 +38,6 @@ static const ALIGN_ASSET(2) char object_brob_Anim_001958[] = dobject_brob_Anim_0
 
 #define dobject_brob_Col_001A70 "__OTR__objects/object_brob/object_brob_Col_001A70"
 static const ALIGN_ASSET(2) char object_brob_Col_001A70[] = dobject_brob_Col_001A70;
+
+
+#endif // OBJECTS_OBJECT_BROB_H

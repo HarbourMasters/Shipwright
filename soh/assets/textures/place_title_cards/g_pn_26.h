@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_G_PN_26_H
+#define TEXTURES_G_PN_26_H 1
 
 #include "align_asset_macro.h"
 
@@ -10,3 +11,5 @@ static const ALIGN_ASSET(2) char gLakesideLaboratoryTitleCardGERTex[] = dgLakesi
 
 #define dgLakesideLaboratoryTitleCardFRATex "__OTR__textures/g_pn_26/gLakesideLaboratoryTitleCardFRATex"
 static const ALIGN_ASSET(2) char gLakesideLaboratoryTitleCardFRATex[] = dgLakesideLaboratoryTitleCardFRATex;
+
+#endif // TEXTURES_G_PN_26_H

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_ZF_H
+#define OBJECTS_OBJECT_ZF_H 1
 
 #include "align_asset_macro.h"
 
@@ -238,3 +239,6 @@ static const ALIGN_ASSET(2) char gZfKnockedBackAnim[] = dgZfKnockedBackAnim;
 
 #define dgZfSidesteppingAnim "__OTR__objects/object_zf/gZfSidesteppingAnim"
 static const ALIGN_ASSET(2) char gZfSidesteppingAnim[] = dgZfSidesteppingAnim;
+
+
+#endif // OBJECTS_OBJECT_ZF_H

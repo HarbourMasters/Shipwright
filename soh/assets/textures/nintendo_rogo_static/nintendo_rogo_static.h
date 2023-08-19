@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_NINTENDO_ROGO_STATIC_H
+#define TEXTURES_NINTENDO_ROGO_STATIC_H 1
 
 #include "align_asset_macro.h"
 
@@ -13,3 +14,5 @@ static const ALIGN_ASSET(2) char gNintendo64LogoDL[] = dgNintendo64LogoDL;
 
 #define dnintendo_rogo_staticTex_0029C0 "__OTR__textures/nintendo_rogo_static/nintendo_rogo_staticTex_0029C0"
 static const ALIGN_ASSET(2) char nintendo_rogo_staticTex_0029C0[] = dnintendo_rogo_staticTex_0029C0;
+
+#endif // TEXTURES_NINTENDO_ROGO_STATIC_H

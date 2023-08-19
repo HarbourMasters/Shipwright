@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DUNGEONS_BDAN_SCENE_H
+#define DUNGEONS_BDAN_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -27,3 +28,6 @@ static const ALIGN_ASSET(2) char bdan_sceneTex_014600[] = dbdan_sceneTex_014600;
 static const ALIGN_ASSET(2) char bdan_sceneTex_013E00[] = dbdan_sceneTex_013E00;
 
 #define dbdan_sceneCollisionHeader_013074 "__OTR__scenes/nonmq/bdan_scene/bdan_sceneCollisionHeader_013074"
+
+
+#endif // DUNGEONS_BDAN_SCENE_H

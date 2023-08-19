@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_FIRE_H
+#define OBJECTS_OBJECT_FIRE_H 1
 
 #include "align_asset_macro.h"
 
@@ -28,3 +29,5 @@ static const ALIGN_ASSET(2) char gFire6Tex[] = dgFire6Tex;
 
 #define dgFire7Tex "__OTR__objects/object_fire/gFire7Tex"
 static const ALIGN_ASSET(2) char gFire7Tex[] = dgFire7Tex;
+
+#endif // OBJECTS_OBJECT_FIRE_H

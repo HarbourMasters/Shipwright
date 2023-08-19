@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_G_PN_38_H
+#define TEXTURES_G_PN_38_H 1
 
 #include "align_asset_macro.h"
 
@@ -10,3 +11,5 @@ static const ALIGN_ASSET(2) char gHyruleCastleTitleCardGERTex[] = dgHyruleCastle
 
 #define dgHyruleCastleTitleCardFRATex "__OTR__textures/g_pn_38/gHyruleCastleTitleCardFRATex"
 static const ALIGN_ASSET(2) char gHyruleCastleTitleCardFRATex[] = dgHyruleCastleTitleCardFRATex;
+
+#endif // TEXTURES_G_PN_38_H
