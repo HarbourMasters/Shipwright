@@ -288,6 +288,7 @@ class Climable : protected TerrainCueSound {
 
     class TerrainCueDirection {
     AccessibleActor* actor;
+    int startingBodyPart;//Decides where the probe starts from. Probes going out to the left or right of the player start from the shoulders.
     Vec3f pos;
     Vec3f prevPos;
     Vec3s relRot; // Relative angle.
@@ -576,10 +577,12 @@ class Climable : protected TerrainCueSound {
 
   public:
     // Initialize a TerrainCueDirection based on a relative angle and position offset.
-    void init(AccessibleActor* actor, Vec3s rot) {
+    void init(AccessibleActor* actor, Vec3s rot, int startingBodyPart = PLAYER_BODYPART_MAX) {
         this->actor = actor;
         this->relRot = rot;
         this->rot = { 0, 0, 0 };
+        this->startingBodyPart = startingBodyPart;
+
         terrainDiscovered = DISCOVERED_NOTHING;
         currentSound = NULL;
         new (&platform) Platform(actor, { 0.0, 0.0, 0.0 });
@@ -631,6 +634,7 @@ class Climable : protected TerrainCueSound {
     }
     
     void scan() {
+
         Player* player = GET_PLAYER(actor->play);
         
         if (player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE) {
@@ -657,8 +661,16 @@ class Climable : protected TerrainCueSound {
         pushedYaw = 0;
         probeSpeed = DEFAULT_PROBE_SPEED;//Experiment with this.
         // Draw a line from Link's position to the max detection distance based on the configured relative angle.
-        if (!trackingModeStarted)
-        pos = player->actor.world.pos;
+        if (!trackingModeStarted) {
+            pos = player->actor.world.pos;
+//If a starting body part has been specified, then set the probe's initial X and Z position only.
+            if (startingBodyPart != PLAYER_BODYPART_MAX)
+            {
+                pos.x = player->bodyPartsPos[startingBodyPart].x;
+                pos.z = player->bodyPartsPos[startingBodyPart].y;
+            }
+        }
+
         if (trackingMode)
             trackingModeStarted = true;
 
@@ -895,8 +907,8 @@ bool ActorAccessibility_InitTerrainCueState(AccessibleActor* actor) {
     if (state == NULL)
         return false;
     state->directions[0].init(actor, { 0, 0, 0 });
-    state->directions[1].init(actor, { 0, 16384, 0 });
-    state->directions[2].init(actor, { 0, -16384, 0 });
+    state->directions[1].init(actor, { 0, 16384, 0 }, PLAYER_BODYPART_L_SHOULDER);
+    state->directions[2].init(actor, { 0, -16384, 0 }, PLAYER_BODYPART_R_SHOULDER);
     state->previousAction = DO_ACTION_NONE;
 
     actor->userData = state;
