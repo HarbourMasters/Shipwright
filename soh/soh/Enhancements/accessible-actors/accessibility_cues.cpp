@@ -822,6 +822,10 @@ class Climable : protected TerrainCueSound {
                     break;
                 }
 
+                if ((player->actor.yDistToWater > 0) &&
+                    (fabs(pos.y - (player->actor.world.pos.y + player->actor.yDistToWater)) > 30.0)) {
+                    discoverLedge(pos);
+                }
                 Vec3f wallPos;
                 CollisionPoly* wallPoly = checkWall(pos, prevPos, wallPos);
                 if (wallPoly == NULL)

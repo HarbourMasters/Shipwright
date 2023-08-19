@@ -70,6 +70,8 @@ void accessible_torches(AccessibleActor* actor) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_IT_BOMB_IGNIT, false);
     }
     if ((actor->actor->params) == 9216 || (actor->actor->params) == 962) {
+        actor->policy.volume = 0.5;
+        actor->policy.distance = 200.0;
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_ANUBIS_FIRE, false);
     }
 }
