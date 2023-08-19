@@ -21,6 +21,8 @@ const char* pixelCountPresetLabels[] = { "Custom",     "Native N64 (240p)", "2x 
 const int pixelCountPresets[] = { 480, 240, 480, 720, 960, 1200, 1440, 1080, 2160, 480 };
 const int default_pixelCount = 0;
 
+const unsigned short default_maxIntegerScaleFactor = 6;
+
 void AdvancedResolutionSettingsWindow::InitElement() {
 }
 
@@ -28,9 +30,12 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(360, 512), ImGuiCond_FirstUseEver);
     if (ImGui::Begin("Advanced Resolution Settings", &mIsVisible)) {
         bool update[sizeof(setting)];
-        for (short i; i < sizeof(setting); i++)
+        for (unsigned short i = 0; i < sizeof(setting); i++)
             update[i] = false;
-        static int max_integerScaleFactor = 6;
+        short max_integerScaleFactor = default_maxIntegerScaleFactor; // default value, which may or may get overridden depending on viewport res
+        unsigned short integerScale_maximumBounds =
+            gfx_current_game_window_viewport.height / gfx_current_dimensions.height; // can change when window is resized
+        if (integerScale_maximumBounds < 1) integerScale_maximumBounds = 1; // it should never be less than 1x.
         // Stored Values
         static float aspectRatio_X      = CVarGetFloat("gAdvancedResolution_aspectRatio_X",        16.0f);
         static float aspectRatio_Y      = CVarGetFloat("gAdvancedResolution_aspectRatio_Y",        9.0f);
@@ -53,12 +58,12 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         };
         UIWidgets::Tooltip("Multiplies your output resolution by the value inputted, as a more intensive but effective "
                            "form of anti-aliasing");
-        // if (ImGui::Button("Reset Resolution scale slider.")) InitResolutionCvars();
         // N64 Mode toggle (for convenience)
         bool enableN64Mode = CVarGetInteger("gLowResMode", 0);
         if (ImGui::Checkbox("(Enhancements>Graphics) N64 Mode", &enableN64Mode)) {
             CVarSetInteger("gLowResMode", enableN64Mode);
         }
+
         UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
         // Activator
         bool activateAdvancedMode = CVarGetInteger("gAdvancedResolutionMode", 0);
@@ -104,20 +109,34 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
 
         UIWidgets::Spacer(0);
         // Pixel-perfect Mode
-        if (UIWidgets::PaddedEnhancementCheckbox("Pixel-perfect Mode.", "gAdvancedResolution_PixelPerfectMode", true, true,
-                                                 !CVarGetInteger("gAdvancedResolution_verticalResolutionToggle", 0), "",
-                                                 UIWidgets::CheckboxGraphics::Cross, true));
+        UIWidgets::PaddedEnhancementCheckbox("Pixel-perfect Mode.", "gAdvancedResolution_PixelPerfectMode", true, true,
+                                             !CVarGetInteger("gAdvancedResolution_verticalResolutionToggle", 0), "",
+                                             UIWidgets::CheckboxGraphics::Cross, true);
         UIWidgets::Tooltip("Don't scale image to fill window.");
 
         if (!CVarGetInteger("gAdvancedResolution_verticalResolutionToggle", 0)) {
             CVarSetInteger("gAdvancedResolution_PixelPerfectMode", (int)false);
         }
+        
+        if (default_maxIntegerScaleFactor < integerScale_maximumBounds) {
+            max_integerScaleFactor = integerScale_maximumBounds + 1; // allows people do things like cropped 5x scaling at 1080p
+        } 
+        // else max_integerScaleFactor = default_maxIntegerScaleFactor; // this statement is not needed if not using a static variable
+        
         // Integer Scaling
         UIWidgets::EnhancementSliderInt("Integer scale factor: %d", "##ARSIntScale",
                                         "gAdvancedResolution_IntegerScaleFactor", 1, max_integerScaleFactor, "%d", 1,
                                         true, !CVarGetInteger("gAdvancedResolution_PixelPerfectMode",0));
         UIWidgets::Tooltip("Integer scales the image. Only available in pixel-perfect mode.");
-        // I will also add a "Automaticlly scale to window size" toggle before finalising this
+
+        UIWidgets::PaddedEnhancementCheckbox("Automatically scale image to fit viewport.",
+                                             "gAdvancedResolution_IntegerScale_FitAutomatically", true, true,
+                                             !CVarGetInteger("gAdvancedResolution_PixelPerfectMode", 0), "",
+                                             UIWidgets::CheckboxGraphics::Cross, true);
+        UIWidgets::Tooltip("Automatically sets scale factor to fit window. Only available in pixel-perfect mode.");
+        if (CVarGetInteger("gAdvancedResolution_IntegerScale_FitAutomatically", 0)) {
+            CVarSetInteger("gAdvancedResolution_IntegerScaleFactor", integerScale_maximumBounds);
+        }
 
         // Update CVars
         if (update[UPDATE_aspectRatio_X])       { CVarSetFloat("gAdvancedResolution_aspectRatio_X",         aspectRatio_X); }
