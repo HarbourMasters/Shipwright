@@ -27,6 +27,7 @@ void AdvancedResolutionSettingsWindow::InitElement() {
 }
 
 void AdvancedResolutionSettingsWindow::DrawElement() {
+#ifndef __APPLE__
     ImGui::SetNextWindowSize(ImVec2(360, 512), ImGuiCond_FirstUseEver);
     if (ImGui::Begin("Advanced Resolution Settings", &mIsVisible)) {
         bool update[sizeof(setting)];
@@ -119,14 +120,16 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         }
         
         if (default_maxIntegerScaleFactor < integerScale_maximumBounds) {
-            max_integerScaleFactor = integerScale_maximumBounds + 1; // allows people do things like cropped 5x scaling at 1080p
+            max_integerScaleFactor = integerScale_maximumBounds + 1; // the +1 allows people do things like cropped 5x scaling at 1080p
         } 
         // else max_integerScaleFactor = default_maxIntegerScaleFactor; // this statement is not needed if not using a static variable
         
         // Integer Scaling
         UIWidgets::EnhancementSliderInt("Integer scale factor: %d", "##ARSIntScale",
                                         "gAdvancedResolution_IntegerScaleFactor", 1, max_integerScaleFactor, "%d", 1,
-                                        true, !CVarGetInteger("gAdvancedResolution_PixelPerfectMode",0));
+                                        true,
+                                        !CVarGetInteger("gAdvancedResolution_PixelPerfectMode", 0) ||
+                                            CVarGetInteger("gAdvancedResolution_IntegerScale_FitAutomatically", 0));
         UIWidgets::Tooltip("Integer scales the image. Only available in pixel-perfect mode.");
 
         UIWidgets::PaddedEnhancementCheckbox("Automatically scale image to fit viewport.",
@@ -144,6 +147,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         if (update[UPDATE_verticalPixelCount])  { CVarSetInteger("gAdvancedResolution_verticalPixelCount",  (int32_t)verticalPixelCount); }
     }
     ImGui::End();
+#endif
 }
 
 void AdvancedResolutionSettingsWindow::UpdateElement() {

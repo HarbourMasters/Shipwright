@@ -4,12 +4,6 @@
 
 namespace AdvancedResolutionSettings {
 class AdvancedResolutionSettingsWindow : public LUS::GuiWindow {
-  private:
-    // Stored Values
-     float aspectRatio_X;
-     float aspectRatio_Y;
-     int verticalPixelCount;
-     bool verticalResolutionToggle;
   public:
     using LUS::GuiWindow::GuiWindow;
 
