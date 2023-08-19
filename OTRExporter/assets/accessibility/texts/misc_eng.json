@@ -14,5 +14,11 @@
     "input_button_c_left": "C Left",
     "input_button_c_right": "C Right",
     "input_analog_stick": "the Analog Stick",
-    "input_d_pad": "the D-Pad"
+    "input_d_pad": "the D-Pad",
+    "input_d_pad_up": "D-Pad Up",
+    "input_d_pad_down": "D-Pad Down",
+    "input_d_pad_left": "D-Pad Left",
+    "input_d_pad_right": "D-Pad Right",
+    "yes": "Yes",
+    "no": "No"
 }

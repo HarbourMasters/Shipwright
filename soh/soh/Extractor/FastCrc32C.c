@@ -1,14 +1,28 @@
 #include <stdint.h>
 #include <stddef.h>
 
+// Force the compiler to assume we have support for the CRC32 intrinsic. We will check for our selves later.
+// Clang will define both __llvm__ and __GNUC__ but GCC will only define __GNUC__. So we need to check for __llvm__ first.
+#if ((defined(__llvm__) && (defined(__x86_64__) || defined(__i386__))))
+#pragma clang attribute push(__attribute__((target("crc32"))), apply_to = function)
+#elif ((defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))))
+// GCC Only lets you enable all of sse4.2 so we will for just this file and reset it at the end.
+#pragma GCC push_options
+#pragma GCC target("sse4.2")
+#endif
+
+// Include headers for the CRC32 intrinsic and cpuid instruction on windows. No need to do any other checks because it assumes the target will support CRC32
 #ifdef _WIN32
 #include <immintrin.h>
-#elif ((defined(__GNUC__) && defined(__x86_64__) || defined(__i386__)) && defined(__SSE4_2__))
+#include <intrin.h>
+// Same as above but these platforms use slightly different headers
+#elif ((defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))))
 #include <nmmintrin.h>
+#include <cpuid.h>
 #elif defined(__aarch64__) && defined(__ARM_FEATURE_CRC32)
 // Nothing cause its a compiler builtin
 #else
-#define USE_CRC_TABLE
+#define NO_CRC_INTRIN
 #endif
 
 #if defined(__aarch64__) && defined(__ARM_FEATURE_CRC32)
@@ -16,14 +30,13 @@
 #define INTRIN_CRC32_32(crc, value) __asm__("crc32cw %w[c], %w[c], %w[v]" : [c] "+r"(crc) : [v] "r"(value))
 #define INTRIN_CRC32_16(crc, value) __asm__("crc32ch %w[c], %w[c], %w[v]" : [c] "+r"(crc) : [v] "r"(value))
 #define INTRIN_CRC32_8(crc, value) __asm__("crc32cb %w[c], %w[c], %w[v]" : [c] "+r"(crc) : [v] "r"(value))
-#elif defined(__SSE4_2__) || defined(_MSC_VER)
+#elif defined(__GNUC__) || defined(_MSC_VER)
 #define INTRIN_CRC32_64(crc, data) crc = _mm_crc32_u64(crc, data)
 #define INTRIN_CRC32_32(crc, data) crc = _mm_crc32_u32(crc, data)
 #define INTRIN_CRC32_16(crc, data) crc = _mm_crc32_u16(crc, data)
 #define INTRIN_CRC32_8(crc, data) crc = _mm_crc32_u8(crc, data)
 #endif
 
-#ifdef USE_CRC_TABLE
 static const uint32_t crc32Table[256] = {
     0x00000000L, 0xF26B8303L, 0xE13B70F7L, 0x1350F3F4L, 0xC79A971FL, 0x35F1141CL, 0x26A1E7E8L, 0xD4CA64EBL, 0x8AD958CFL,
     0x78B2DBCCL, 0x6BE22838L, 0x9989AB3BL, 0x4D43CFD0L, 0xBF284CD3L, 0xAC78BF27L, 0x5E133C24L, 0x105EC76FL, 0xE235446CL,
@@ -55,17 +68,13 @@ static const uint32_t crc32Table[256] = {
     0xE03E9C81L, 0x34F4F86AL, 0xC69F7B69L, 0xD5CF889DL, 0x27A40B9EL, 0x79B737BAL, 0x8BDCB4B9L, 0x988C474DL, 0x6AE7C44EL,
     0xBE2DA0A5L, 0x4C4623A6L, 0x5F16D052L, 0xAD7D5351L
 };
-#endif
+// On platforms that we know will never support a crc32 instruction (such as the WiiU) we will skip compiling this function in.
+#ifndef NO_CRC_INTRIN
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#ifndef USE_CRC_TABLE
-uint32_t CRC32C(unsigned char* data, size_t dataSize) {
+static uint32_t CRC32IntrinImpl(unsigned char* data, size_t dataSize) {
     uint32_t ret = 0xFFFFFFFF;
     int64_t sizeSigned = dataSize;
-
+// Only 64bit platforms support doing a CRC32 operation on a 64bit value
 #if defined(_M_X64) || defined(__x86_64__) || defined(__aarch64__)
     while ((sizeSigned -= sizeof(uint64_t)) >= 0) {
         INTRIN_CRC32_64(ret, *(uint64_t*)data);
@@ -77,6 +86,7 @@ uint32_t CRC32C(unsigned char* data, size_t dataSize) {
 
         data += sizeof(uint32_t);
     }
+// On 32 bit we can only do 32bit operations
 #elif defined(_M_IX86) || defined(__i386__)
     while ((sizeSigned -= sizeof(uint32_t)) >= 0) {
         INTRIN_CRC32_32(ret, *(uint32_t*)data);
@@ -94,17 +104,41 @@ uint32_t CRC32C(unsigned char* data, size_t dataSize) {
 
     return ~ret;
 }
-#else
-uint32_t CRC32C(const void* buf, size_t size) {
-    const uint8_t* p = buf;
+#endif
+
+static uint32_t CRC32TableImpl(unsigned char* data, size_t dataSize) {
+    const uint8_t* p = data;
     uint32_t crc = 0xFFFFFFFF;
 
-    while (size--)
+    while (dataSize--)
         crc = crc32Table[(crc ^ *p++) & 0xff] ^ (crc >> 8);
 
     return ~crc;
 }
+
+uint32_t CRC32C(unsigned char* data, size_t dataSize) {
+#ifndef NO_CRC_INTRIN
+    // Test to make sure the CPU supports the CRC32 intrinsic
+    unsigned int cpuidData[4];
+#ifdef _WIN32
+    __cpuid(cpuidData, 1);
+#elif __APPLE__ || (defined(__aarch64__) && defined(__ARM_FEATURE_CRC32))
+// Every Mac that supports SoH should support this instruction. Also check for ARM64 at the same time
+    return CRC32IntrinImpl(data, dataSize);
+#else
+    __get_cpuid(1, &cpuidData[0], &cpuidData[1], &cpuidData[2], &cpuidData[3]);
 #endif
-#ifdef __cplusplus
+
+    if (cpuidData[2] & (1 << 20)) { // bit_SSE4_2
+        return CRC32IntrinImpl(data, dataSize);
+    }
+#endif // NO_CRC_INTRIN
+    return CRC32TableImpl(data, dataSize);
 }
+
+#if ((defined(__llvm__) && (defined(__x86_64__) || defined(__i386__))))
+#pragma clang attribute pop
+#elif ((defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))))
+#pragma GCC pop_options
+#else
 #endif

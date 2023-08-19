@@ -207,6 +207,10 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
                     LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                     UpdateCurrentBGM(defaultValue, type);
                 }
+
+                if (currentValue == value) {
+                    ImGui::SetItemDefaultFocus();
+                }
             }
 
             ImGui::EndCombo();
