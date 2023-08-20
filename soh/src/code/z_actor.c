@@ -10,6 +10,7 @@
 #include "soh/Enhancements/enemyrandomizer.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/nametag.h"
 
 #include "soh/ActorDB.h"
 
@@ -1213,6 +1214,8 @@ void Actor_Init(Actor* actor, PlayState* play) {
         actor->init(actor, play);
         actor->init = NULL;
 
+        GameInteractor_ExecuteOnActorInit(actor);
+
         // For enemy health bar we need to know the max health during init
         if (actor->category == ACTORCAT_ENEMY) {
             actor->maximumHealth = actor->colChkInfo.health;
@@ -1228,6 +1231,8 @@ void Actor_Destroy(Actor* actor, PlayState* play) {
         // "No Actor class destruct [%s]"
         osSyncPrintf("Ａｃｔｏｒクラス デストラクトがありません [%s]\n" VT_RST, ActorDB_Retrieve(actor->id)->name);
     }
+
+    NameTag_RemoveAllForActor(actor);
 }
 
 void func_8002D7EC(Actor* actor) {
