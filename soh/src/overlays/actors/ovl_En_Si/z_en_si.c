@@ -100,7 +100,6 @@ void func_80AFB768(EnSi* this, PlayState* play) {
 
             if (this->collider.base.ocFlags2 & OC2_HIT_PLAYER) {
                 this->collider.base.ocFlags2 &= ~OC2_HIT_PLAYER;
-                gPlayState->lastCheck = &this->actor;
 
                 if (gSaveContext.n64ddFlag) {
                     Randomizer_UpdateSkullReward(this, play);
@@ -157,14 +156,12 @@ void func_80AFB89C(EnSi* this, PlayState* play) {
         Message_StartTextbox(play, textId, NULL);
 
         if (gSaveContext.n64ddFlag) {
-            Randomizer_GiveSkullReward(this, play);
-            if (getItemId == RG_ICE_TRAP) {
-                Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
-            } else {
+            if (getItemId != RG_ICE_TRAP) {
+                Randomizer_GiveSkullReward(this, play);
                 Audio_PlayFanfare_Rando(getItem);
+            } else {
+                gSaveContext.pendingIceTrapCount++;
             }
-        } else {
-            Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
         }
 
         player->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
@@ -235,10 +232,8 @@ void Randomizer_GiveSkullReward(EnSi* this, PlayState* play) {
         if (getItem.getItemId == GI_SWORD_BGS) {
             gSaveContext.bgsFlag = true;
         }
-        gPlayState->lastCheck = &this->actor;
         Item_Give(play, giveItemId);
     } else if (getItem.modIndex == MOD_RANDOMIZER) {
-        gPlayState->lastCheck = &this->actor;
         Randomizer_Item_Give(play, getItem);
     }
 }

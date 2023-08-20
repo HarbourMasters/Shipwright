@@ -266,8 +266,6 @@ void SaveManager::LoadRandomizerVersion2() {
         SaveManager::Instance->LoadData("", scene);
         randomizer->masterQuestDungeons.emplace(scene);
     });
-
-    SaveManager::Instance->LoadData("lastScene", gSaveContext.lastScene, (uint32_t)0);
 }
 
 void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool fullSave) {
@@ -348,8 +346,6 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
     SaveManager::Instance->SaveArray("masterQuestDungeons", masterQuestDungeons.size(), [&](size_t i) {
         SaveManager::Instance->SaveData("", masterQuestDungeons[i]);
     });
-
-    SaveManager::Instance->SaveData("lastScene", gSaveContext.lastScene);
 }
 
 void SaveManager::Init() {

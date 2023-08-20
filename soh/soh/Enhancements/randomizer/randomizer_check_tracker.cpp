@@ -112,13 +112,6 @@ RandomizerCheckArea currentArea = RCAREA_INVALID;
 std::vector<RandomizerCheckArea> checkAreas;
 std::vector<GetItemEntry> itemsReceived;
 OSContPad* trackerButtonsPressed;
-SceneID checkScene = SCENE_ID_MAX;
-SceneID lastScene = SCENE_ID_MAX;
-SceneID currentScene = SCENE_ID_MAX;
-bool newFileCheck = false;
-bool tickCheck = false;
-bool autoSaved = false;
-int tickCounter = 0;
 
 void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flags = 0);
 bool CompareChecks(RandomizerCheckObject, RandomizerCheckObject);
@@ -265,8 +258,7 @@ void TrySetAreas() {
 }
 
 void SetCheckCollected(RandomizerCheck rc) {
-    gSaveContext.checkTrackerData[rc].status = autoSaved ? RCSHOW_SAVED : RCSHOW_COLLECTED;
-    autoSaved = false;
+    gSaveContext.checkTrackerData[rc].status = RCSHOW_COLLECTED;
     RandomizerCheckObject rcObj;
     if (rc == RC_GIFT_FROM_SAGES && !gSaveContext.n64ddFlag) {
         rcObj = RCO_RAORU;
@@ -659,7 +651,6 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
             return;
         }
     }
-    checkScene = scene;
     auto checkArea = GetCheckArea();
     if (gSaveContext.pendingSale != ITEM_NONE) {
         pendingSaleCheck = true;
@@ -674,36 +665,10 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
         transitionCheck = true;
         return;
     }
-    RandomizerCheck rc = RC_UNKNOWN_CHECK;
-    if (gPlayState->lastCheck != nullptr) {
-        rc = OTRGlobals::Instance->gRandomizer->GetCheckFromActor(gPlayState->lastCheck->id, scene, gPlayState->lastCheck->params);
-    }
-    if (rc == RC_UNKNOWN_CHECK) {
-        if (scene == SCENE_YOUSEI_IZUMI_YOKO) {
-            if (checkArea == RCAREA_HYRULE_CASTLE) {
-                rc = RC_HC_GREAT_FAIRY_REWARD;
-            } else if (checkArea == RCAREA_DESERT_COLOSSUS) {
-                rc = RC_COLOSSUS_GREAT_FAIRY_REWARD;
-            } else if (checkArea == RCAREA_ZORAS_FOUNTAIN) {
-                rc = RC_ZF_GREAT_FAIRY_REWARD;
-            }
-        } else if (scene == SCENE_DAIYOUSEI_IZUMI) {
-            if (checkArea == RCAREA_HYRULE_CASTLE) {
-                rc = RC_OGC_GREAT_FAIRY_REWARD;
-            } else if (checkArea == RCAREA_DEATH_MOUNTAIN_TRAIL) {
-                rc = RC_DMT_GREAT_FAIRY_REWARD;
-            } else if (checkArea == RCAREA_DEATH_MOUNTAIN_CRATER) {
-                rc = RC_DMC_GREAT_FAIRY_REWARD;
-            }
-        }
-    }
-    if (gPlayState->msgCtx.msgMode != MSGMODE_NONE && rc != RC_UNKNOWN_CHECK) {
-        RandomizerCheckObject rco = RandomizerCheckObjects::GetAllRCObjects().find(rc)->second;
-        if (!(rco.rcType == RCTYPE_SKULL_TOKEN && giEntry.itemId == ITEM_SKULL_TOKEN)) {
-            checkAreas.push_back(checkArea);
-            messageCloseCheck = true;
-            return;
-        }
+    if (gPlayState->msgCtx.msgMode != MSGMODE_NONE) {
+        checkAreas.push_back(checkArea);
+        messageCloseCheck = true;
+        return;
     }
     if (gSaveContext.n64ddFlag || (!gSaveContext.n64ddFlag && giEntry.getItemCategory != ITEM_CATEGORY_JUNK)) {
         checkAreas.push_back(checkArea);
@@ -717,13 +682,6 @@ void InitTrackerData(bool isDebug) {
         if (rc != RC_UNKNOWN_CHECK && rc != RC_MAX) {
             DefaultCheckData(rc);
         }
-    }
-    if (gSaveContext.n64ddFlag) {
-        LinksPocket();
-        SongFromImpa();
-        // TODO: add debug checks?
-    } else {
-        GiftFromSages();
     }
     UpdateAllOrdering();
     UpdateInventoryChecks();
@@ -814,6 +772,8 @@ void LoadFile() {
                 (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_SET_NUMBER &&
                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) < 12));
     LinksPocket();
+    SongFromImpa();
+    GiftFromSages();
     doInitialize = false;
     initialized = true;
     UpdateAllOrdering();
@@ -1565,15 +1525,15 @@ void CheckTrackerSettingsWindow::DrawElement() {
 
     ImGui::TableNextColumn();
 
-    ImGuiDrawTwoColorPickerSection("Area Incomplete",  "gCheckTrackerAreaMainIncompleteColor",   "gCheckTrackerAreaExtraIncompleteColor",  Color_Area_Incomplete_Main,   Color_Area_Incomplete_Extra,  Color_Main_Default, Color_Area_Incomplete_Extra_Default, "gCheckTrackerAreaIncompleteHide", "");
-    ImGuiDrawTwoColorPickerSection("Area Complete",    "gCheckTrackerAreaMainCompleteColor",     "gCheckTrackerAreaExtraCompleteColor",    Color_Area_Complete_Main,     Color_Area_Complete_Extra,    Color_Main_Default, Color_Area_Complete_Extra_Default,   "gCheckTrackerAreaCompleteHide",   "");
-    ImGuiDrawTwoColorPickerSection("Unchecked",        "gCheckTrackerUncheckedMainColor",        "gCheckTrackerUncheckedExtraColor",       Color_Unchecked_Main,         Color_Unchecked_Extra,        Color_Main_Default, Color_Unchecked_Extra_Default,       "gCheckTrackerUncheckedHide",      "Checks you have not interacted with at all.");
-    ImGuiDrawTwoColorPickerSection("Skipped",          "gCheckTrackerSkippedMainColor",          "gCheckTrackerSkippedExtraColor",         Color_Skipped_Main,           Color_Skipped_Extra,          Color_Main_Default, Color_Skipped_Extra_Default,         "gCheckTrackerSkippedHide",        "");
-    ImGuiDrawTwoColorPickerSection("Seen",             "gCheckTrackerSeenMainColor",             "gCheckTrackerSeenExtraColor",            Color_Seen_Main,              Color_Seen_Extra,             Color_Main_Default, Color_Seen_Extra_Default,            "gCheckTrackerSeenHide",           "Used for shops. Shows item names for shop slots when walking in, and prices when highlighting them in buy mode.");
-    ImGuiDrawTwoColorPickerSection("Scummed",          "gCheckTrackerScummedMainColor",          "gCheckTrackerScummedExtraColor",         Color_Scummed_Main,           Color_Scummed_Extra,          Color_Main_Default, Color_Scummed_Extra_Default,         "gCheckTrackerScummedHide",        "Checks you collect, but then reload before saving so you no longer have them.");
-    //ImGuiDrawTwoColorPickerSection("Hinted (WIP)",     "gCheckTrackerHintedMainColor",           "gCheckTrackerHintedExtraColor",          Color_Hinted_Main,            Color_Hinted_Extra,           Color_Main_Default, Color_Hinted_Extra_Default,          "gCheckTrackerHintedHide",         "");
-    ImGuiDrawTwoColorPickerSection("Collected",        "gCheckTrackerCollectedMainColor",        "gCheckTrackerCollectedExtraColor",       Color_Collected_Main,         Color_Collected_Extra,        Color_Main_Default, Color_Collected_Extra_Default,       "gCheckTrackerCollectedHide",      "Checks you have collected without saving or reloading yet.");
-    ImGuiDrawTwoColorPickerSection("Saved",            "gCheckTrackerSavedMainColor",            "gCheckTrackerSavedExtraColor",           Color_Saved_Main,             Color_Saved_Extra,            Color_Main_Default, Color_Saved_Extra_Default,           "gCheckTrackerSavedHide",          "Checks that you saved the game while having collected.");
+    CheckTracker::ImGuiDrawTwoColorPickerSection("Area Incomplete",  "gCheckTrackerAreaMainIncompleteColor",   "gCheckTrackerAreaExtraIncompleteColor",  Color_Area_Incomplete_Main,   Color_Area_Incomplete_Extra,  Color_Main_Default, Color_Area_Incomplete_Extra_Default, "gCheckTrackerAreaIncompleteHide", "");
+    CheckTracker::ImGuiDrawTwoColorPickerSection("Area Complete",    "gCheckTrackerAreaMainCompleteColor",     "gCheckTrackerAreaExtraCompleteColor",    Color_Area_Complete_Main,     Color_Area_Complete_Extra,    Color_Main_Default, Color_Area_Complete_Extra_Default,   "gCheckTrackerAreaCompleteHide",   "");
+    CheckTracker::ImGuiDrawTwoColorPickerSection("Unchecked",        "gCheckTrackerUncheckedMainColor",        "gCheckTrackerUncheckedExtraColor",       Color_Unchecked_Main,         Color_Unchecked_Extra,        Color_Main_Default, Color_Unchecked_Extra_Default,       "gCheckTrackerUncheckedHide",      "Checks you have not interacted with at all.");
+    CheckTracker::ImGuiDrawTwoColorPickerSection("Skipped",          "gCheckTrackerSkippedMainColor",          "gCheckTrackerSkippedExtraColor",         Color_Skipped_Main,           Color_Skipped_Extra,          Color_Main_Default, Color_Skipped_Extra_Default,         "gCheckTrackerSkippedHide",        "");
+    CheckTracker::ImGuiDrawTwoColorPickerSection("Seen",             "gCheckTrackerSeenMainColor",             "gCheckTrackerSeenExtraColor",            Color_Seen_Main,              Color_Seen_Extra,             Color_Main_Default, Color_Seen_Extra_Default,            "gCheckTrackerSeenHide",           "Used for shops. Shows item names for shop slots when walking in, and prices when highlighting them in buy mode.");
+    CheckTracker::ImGuiDrawTwoColorPickerSection("Scummed",          "gCheckTrackerScummedMainColor",          "gCheckTrackerScummedExtraColor",         Color_Scummed_Main,           Color_Scummed_Extra,          Color_Main_Default, Color_Scummed_Extra_Default,         "gCheckTrackerScummedHide",        "Checks you collect, but then reload before saving so you no longer have them.");
+    //CheckTracker::ImGuiDrawTwoColorPickerSection("Hinted (WIP)",     "gCheckTrackerHintedMainColor",           "gCheckTrackerHintedExtraColor",          Color_Hinted_Main,            Color_Hinted_Extra,           Color_Main_Default, Color_Hinted_Extra_Default,          "gCheckTrackerHintedHide",         "");
+    CheckTracker::ImGuiDrawTwoColorPickerSection("Collected",        "gCheckTrackerCollectedMainColor",        "gCheckTrackerCollectedExtraColor",       Color_Collected_Main,         Color_Collected_Extra,        Color_Main_Default, Color_Collected_Extra_Default,       "gCheckTrackerCollectedHide",      "Checks you have collected without saving or reloading yet.");
+    CheckTracker::ImGuiDrawTwoColorPickerSection("Saved",            "gCheckTrackerSavedMainColor",            "gCheckTrackerSavedExtraColor",           Color_Saved_Main,             Color_Saved_Extra,            Color_Main_Default, Color_Saved_Extra_Default,           "gCheckTrackerSavedHide",          "Checks that you saved the game while having collected.");
 
     ImGui::PopStyleVar(1);
     ImGui::EndTable();
