@@ -259,6 +259,8 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Hud_MinimapEntrance",           "Minimap Entrance",     GROUP_HUD,          ImVec4(200,   0,   0, 255), false, true, true),
     COSMETIC_OPTION("Hud_EnemyHealthBar",            "Enemy Health Bar",     GROUP_HUD,          ImVec4(255,   0,   0, 255), true, true, false),
     COSMETIC_OPTION("Hud_EnemyHealthBorder",         "Enemy Health Border",  GROUP_HUD,          ImVec4(255, 255, 255, 255), true, false, true),
+    COSMETIC_OPTION("Hud_NameTagActorText",          "Nametag Text",         GROUP_HUD,          ImVec4(255, 255, 255, 255), true, true, false),
+    COSMETIC_OPTION("Hud_NameTagActorBackground",    "Nametag Background",   GROUP_HUD,          ImVec4(0,     0,   0,  80), true, false, true),
 
     COSMETIC_OPTION("Title_FileChoose",              "File Choose",          GROUP_TITLE,        ImVec4(100, 150, 255, 255), false, true, false),
     COSMETIC_OPTION("Title_NintendoLogo",            "Nintendo Logo",        GROUP_TITLE,        ImVec4(  0,   0, 255, 255), false, true, true),
