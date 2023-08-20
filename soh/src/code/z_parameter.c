@@ -43,7 +43,7 @@ typedef struct {
 } RestrictionFlags;
 
 static RestrictionFlags sRestrictionFlags[] = {
-{ SCENE_HYRULE_FIELD, 0x00, 0x00, 0x10 },
+    { SCENE_HYRULE_FIELD, 0x00, 0x00, 0x10 },
     { SCENE_KAKARIKO_VILLAGE, 0x00, 0x00, 0x10 },
     { SCENE_GRAVEYARD, 0x00, 0x00, 0x10 },
     { SCENE_ZORAS_RIVER, 0x00, 0x00, 0x10 },
@@ -143,6 +143,7 @@ static RestrictionFlags sRestrictionFlags[] = {
     { SCENE_INSIDE_GANONS_CASTLE_COLLAPSE, 0x00, 0x05, 0x50 },
     { SCENE_THIEVES_HIDEOUT, 0x00, 0x00, 0x10 },
     { SCENE_GROTTOS, 0x00, 0x00, 0xD0 },
+    { 0xFF, 0x00, 0x00, 0x00 },
 };
 
 static s16 sHBAScoreTier = 0;
