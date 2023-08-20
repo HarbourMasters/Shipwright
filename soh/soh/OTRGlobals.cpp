@@ -953,7 +953,7 @@ void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>
         gfx_end_frame();
     }
 }
-    // C->C++ Bridge
+// C->C++ Bridge
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);
