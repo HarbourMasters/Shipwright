@@ -1,7 +1,7 @@
 <Root>
     <File Name="object_fd" Segment="6">
         <!-- Boss title card -->
-        <Texture Name="gVolvagiaBossTitleCardTex" OutName="volvagia_boss_title_card" Format="i8" Width="128" Height="120" Offset="0xD700"/>
+        <Texture Name="gVolvagiaTitleCardTex" OutName="volvagia_boss_title_card" Format="i8" Width="128" Height="120" Offset="0xD700"/>
 
         <!-- Skeletons -->
         <Skeleton Name="gVolvagiaLeftArmSkel" Type="Normal" LimbType="Standard" Offset="0x114E0"/>

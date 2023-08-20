@@ -3,44 +3,44 @@
 
 #include "align_asset_macro.h"
 
-#define dobject_rs_Anim_00065C "__OTR__objects/object_rs/object_rs_Anim_00065C"
-static const ALIGN_ASSET(2) char object_rs_Anim_00065C[] = dobject_rs_Anim_00065C;
+#define dgBombchuShopkeeperIdleAnim "__OTR__objects/object_rs/gBombchuShopkeeperIdleAnim"
+static const ALIGN_ASSET(2) char gBombchuShopkeeperIdleAnim[] = dgBombchuShopkeeperIdleAnim;
 
-#define dobject_rs_DL_001FA0 "__OTR__objects/object_rs/object_rs_DL_001FA0"
-static const ALIGN_ASSET(2) char object_rs_DL_001FA0[] = dobject_rs_DL_001FA0;
+#define dgBombchuShopkeeperTorsoDL "__OTR__objects/object_rs/gBombchuShopkeeperTorsoDL"
+static const ALIGN_ASSET(2) char gBombchuShopkeeperTorsoDL[] = dgBombchuShopkeeperTorsoDL;
 
-#define dobject_rs_DL_0021F8 "__OTR__objects/object_rs/object_rs_DL_0021F8"
-static const ALIGN_ASSET(2) char object_rs_DL_0021F8[] = dobject_rs_DL_0021F8;
+#define dgBombchuShopkeeperHeadDL "__OTR__objects/object_rs/gBombchuShopkeeperHeadDL"
+static const ALIGN_ASSET(2) char gBombchuShopkeeperHeadDL[] = dgBombchuShopkeeperHeadDL;
 
-#define dobject_rs_DL_0025F8 "__OTR__objects/object_rs/object_rs_DL_0025F8"
-static const ALIGN_ASSET(2) char object_rs_DL_0025F8[] = dobject_rs_DL_0025F8;
+#define dgBombchuShopkeeperRightUpperArmDL "__OTR__objects/object_rs/gBombchuShopkeeperRightUpperArmDL"
+static const ALIGN_ASSET(2) char gBombchuShopkeeperRightUpperArmDL[] = dgBombchuShopkeeperRightUpperArmDL;
 
-#define dobject_rs_DL_002730 "__OTR__objects/object_rs/object_rs_DL_002730"
-static const ALIGN_ASSET(2) char object_rs_DL_002730[] = dobject_rs_DL_002730;
+#define dgBombchuShopkeeperRightForearmDL "__OTR__objects/object_rs/gBombchuShopkeeperRightForearmDL"
+static const ALIGN_ASSET(2) char gBombchuShopkeeperRightForearmDL[] = dgBombchuShopkeeperRightForearmDL;
 
-#define dobject_rs_DL_002860 "__OTR__objects/object_rs/object_rs_DL_002860"
-static const ALIGN_ASSET(2) char object_rs_DL_002860[] = dobject_rs_DL_002860;
+#define dgBombchuShopkeeperRightHandDL "__OTR__objects/object_rs/gBombchuShopkeeperRightHandDL"
+static const ALIGN_ASSET(2) char gBombchuShopkeeperRightHandDL[] = dgBombchuShopkeeperRightHandDL;
 
-#define dobject_rs_DL_002A70 "__OTR__objects/object_rs/object_rs_DL_002A70"
-static const ALIGN_ASSET(2) char object_rs_DL_002A70[] = dobject_rs_DL_002A70;
+#define dgBombchuShopkeeperLeftUpperArmDL "__OTR__objects/object_rs/gBombchuShopkeeperLeftUpperArmDL"
+static const ALIGN_ASSET(2) char gBombchuShopkeeperLeftUpperArmDL[] = dgBombchuShopkeeperLeftUpperArmDL;
 
-#define dobject_rs_DL_002BA8 "__OTR__objects/object_rs/object_rs_DL_002BA8"
-static const ALIGN_ASSET(2) char object_rs_DL_002BA8[] = dobject_rs_DL_002BA8;
+#define dgBombchuShopkeeperLeftForearmDL "__OTR__objects/object_rs/gBombchuShopkeeperLeftForearmDL"
+static const ALIGN_ASSET(2) char gBombchuShopkeeperLeftForearmDL[] = dgBombchuShopkeeperLeftForearmDL;
 
-#define dobject_rs_DL_002CD8 "__OTR__objects/object_rs/object_rs_DL_002CD8"
-static const ALIGN_ASSET(2) char object_rs_DL_002CD8[] = dobject_rs_DL_002CD8;
+#define dgBombchuShopkeeperLeftHandDL "__OTR__objects/object_rs/gBombchuShopkeeperLeftHandDL"
+static const ALIGN_ASSET(2) char gBombchuShopkeeperLeftHandDL[] = dgBombchuShopkeeperLeftHandDL;
 
-#define dobject_rs_TLUT_002EE8 "__OTR__objects/object_rs/object_rs_TLUT_002EE8"
-static const ALIGN_ASSET(2) char object_rs_TLUT_002EE8[] = dobject_rs_TLUT_002EE8;
+#define dgBombchuShopkeeperTLUT "__OTR__objects/object_rs/gBombchuShopkeeperTLUT"
+static const ALIGN_ASSET(2) char gBombchuShopkeeperTLUT[] = dgBombchuShopkeeperTLUT;
 
-#define dobject_rs_Tex_0030E8 "__OTR__objects/object_rs/object_rs_Tex_0030E8"
-static const ALIGN_ASSET(2) char object_rs_Tex_0030E8[] = dobject_rs_Tex_0030E8;
+#define dgBombchuShopkeeperSkinTex "__OTR__objects/object_rs/gBombchuShopkeeperSkinTex"
+static const ALIGN_ASSET(2) char gBombchuShopkeeperSkinTex[] = dgBombchuShopkeeperSkinTex;
 
-#define dobject_rs_Tex_003128 "__OTR__objects/object_rs/object_rs_Tex_003128"
-static const ALIGN_ASSET(2) char object_rs_Tex_003128[] = dobject_rs_Tex_003128;
+#define dgBombchuShopkeeperEarTex "__OTR__objects/object_rs/gBombchuShopkeeperEarTex"
+static const ALIGN_ASSET(2) char gBombchuShopkeeperEarTex[] = dgBombchuShopkeeperEarTex;
 
-#define dobject_rs_Tex_003168 "__OTR__objects/object_rs/object_rs_Tex_003168"
-static const ALIGN_ASSET(2) char object_rs_Tex_003168[] = dobject_rs_Tex_003168;
+#define dgBombchuShopkeeperTattooTex "__OTR__objects/object_rs/gBombchuShopkeeperTattooTex"
+static const ALIGN_ASSET(2) char gBombchuShopkeeperTattooTex[] = dgBombchuShopkeeperTattooTex;
 
 #define dgBombchuShopkeeperEyeOpenTex "__OTR__objects/object_rs/gBombchuShopkeeperEyeOpenTex"
 static const ALIGN_ASSET(2) char gBombchuShopkeeperEyeOpenTex[] = dgBombchuShopkeeperEyeOpenTex;
@@ -51,17 +51,17 @@ static const ALIGN_ASSET(2) char gBombchuShopkeeperEyeHalfTex[] = dgBombchuShopk
 #define dgBombchuShopkeeperEyeClosedTex "__OTR__objects/object_rs/gBombchuShopkeeperEyeClosedTex"
 static const ALIGN_ASSET(2) char gBombchuShopkeeperEyeClosedTex[] = dgBombchuShopkeeperEyeClosedTex;
 
-#define dobject_rs_Tex_004568 "__OTR__objects/object_rs/object_rs_Tex_004568"
-static const ALIGN_ASSET(2) char object_rs_Tex_004568[] = dobject_rs_Tex_004568;
+#define dgBombchuShopkeeperFingersTex "__OTR__objects/object_rs/gBombchuShopkeeperFingersTex"
+static const ALIGN_ASSET(2) char gBombchuShopkeeperFingersTex[] = dgBombchuShopkeeperFingersTex;
 
-#define dobject_rs_Tex_004668 "__OTR__objects/object_rs/object_rs_Tex_004668"
-static const ALIGN_ASSET(2) char object_rs_Tex_004668[] = dobject_rs_Tex_004668;
+#define dgBombchuShopkeeperVestTex "__OTR__objects/object_rs/gBombchuShopkeeperVestTex"
+static const ALIGN_ASSET(2) char gBombchuShopkeeperVestTex[] = dgBombchuShopkeeperVestTex;
 
-#define dobject_rs_Tex_0046E8 "__OTR__objects/object_rs/object_rs_Tex_0046E8"
-static const ALIGN_ASSET(2) char object_rs_Tex_0046E8[] = dobject_rs_Tex_0046E8;
+#define dgBombchuShopkeeperTorsoTex "__OTR__objects/object_rs/gBombchuShopkeeperTorsoTex"
+static const ALIGN_ASSET(2) char gBombchuShopkeeperTorsoTex[] = dgBombchuShopkeeperTorsoTex;
 
-#define dobject_rs_Skel_004868 "__OTR__objects/object_rs/object_rs_Skel_004868"
-static const ALIGN_ASSET(2) char object_rs_Skel_004868[] = dobject_rs_Skel_004868;
+#define dgBombchuShopkeeperSkel "__OTR__objects/object_rs/gBombchuShopkeeperSkel"
+static const ALIGN_ASSET(2) char gBombchuShopkeeperSkel[] = dgBombchuShopkeeperSkel;
 
 
 #endif // OBJECTS_OBJECT_RS_H

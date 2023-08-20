@@ -4,7 +4,7 @@
         <DList Name="gBrownFragmentDL" Offset="0x530"/>
         <Texture Name="gUnusedStoneTex" OutName="unused_stone" Format="rgba16" Width="32" Height="32" Offset="0x7C0"/>
         <DList Name="gDoorLockDL" Offset="0x1100"/>
-        <DList Name="gDoorChainsDL" Offset="0x11F0"/>
+        <DList Name="gDoorChainDL" Offset="0x11F0"/>
         <Texture Name="gUnusedGoldLockTex" OutName="unused_gold_lock" Format="rgba16" Width="32" Height="32" Offset="0x1A80"/>
         <Texture Name="gDoorChainTex" OutName="door_chain" Format="rgba16" Width="16" Height="128" Offset="0x2280"/>
         <DList Name="gUnusedBombBagDL" Offset="0x32C0"/>
