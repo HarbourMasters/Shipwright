@@ -903,7 +903,17 @@ void KaleidoScope_UpdateItemEquip(PlayState* play) {
                         gSaveContext.equips.buttonItems[otherButtonIndex] = ITEM_NONE;
                         gSaveContext.equips.cButtonSlots[otherSlotIndex] = SLOT_NONE;
                     }
-                    break; // Assume there is only one possible pre-existing equip
+                    //break; // 'Assume there is only one possible pre-existing equip'
+                }
+
+                //Fix for Equip Dupe
+                if (pauseCtx->equipTargetItem == ITEM_BOW) {
+                    if ((gSaveContext.equips.buttonItems[otherButtonIndex] >= ITEM_BOW_ARROW_FIRE) &&
+                        (gSaveContext.equips.buttonItems[otherButtonIndex] <= ITEM_BOW_ARROW_LIGHT)) {
+                            gSaveContext.equips.buttonItems[otherButtonIndex] = gSaveContext.equips.buttonItems[targetButtonIndex];
+                            gSaveContext.equips.cButtonSlots[otherSlotIndex] = gSaveContext.equips.cButtonSlots[pauseCtx->equipTargetCBtn];
+                            Interface_LoadItemIcon2(play, otherButtonIndex);
+                        }
                 }
             }
 
