@@ -2514,11 +2514,6 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         }
     }
 
-    if (item == RG_ICE_TRAP) {
-        gSaveContext.pendingIceTrapCount++;
-        return Return_Item_Entry(giEntry, RG_NONE);
-    }
-
     if (item == RG_TYCOON_WALLET) {
         Inventory_ChangeUpgrade(UPG_WALLET, 3);
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
