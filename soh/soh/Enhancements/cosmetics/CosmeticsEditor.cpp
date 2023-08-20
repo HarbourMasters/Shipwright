@@ -195,7 +195,7 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Link_Hair",                     "Hair",                 GROUP_LINK,         ImVec4(255, 173,  27, 255), false, true, true),
     COSMETIC_OPTION("Link_Linen",                    "Linen",                GROUP_LINK,         ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Link_Boots",                    "Boots",                GROUP_LINK,         ImVec4( 93,  44,  18, 255), false, true, true),
-
+    
     COSMETIC_OPTION("MirrorShield_Body",             "Body",                 GROUP_MIRRORSHIELD, ImVec4(215,   0,   0, 255), false, true, false),
     COSMETIC_OPTION("MirrorShield_Mirror",           "Mirror",               GROUP_MIRRORSHIELD, ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("MirrorShield_Emblem",           "Emblem",               GROUP_MIRRORSHIELD, ImVec4(205, 225, 255, 255), false, true, true),
@@ -219,8 +219,9 @@ static std::map<std::string, CosmeticOption> cosmeticOptions = {
     COSMETIC_OPTION("Equipment_HammerHead",          "Hammer Head",          GROUP_EQUIPMENT,    ImVec4(155, 192, 201, 255), false, true, false),
     COSMETIC_OPTION("Equipment_HammerHandle",        "Hammer Handle",        GROUP_EQUIPMENT,    ImVec4(110,  60,   0, 255), false, true, true),
     // COSMETIC_OPTION("Equipment_HookshotChain",       "Hookshot Chain",       GROUP_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Implement
-    // COSMETIC_OPTION("Equipment_HookshotReticle",     "Hookshot Reticle",     GROUP_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true), // Todo (Cosmetics): Implement
     // COSMETIC_OPTION("Equipment_HookshotTip",         "Hookshot Tip",         GROUP_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, false), // Todo (Cosmetics): Implement
+    COSMETIC_OPTION("HookshotReticle_Target",        "Hookshotable Reticle", GROUP_EQUIPMENT,         ImVec4(  0, 255,   0, 255), false, false, false),
+    COSMETIC_OPTION("HookshotReticle_NonTarget",     "Non-Hookshotable Reticle", GROUP_EQUIPMENT,     ImVec4(255,   0,   0, 255), false, false, false),
     COSMETIC_OPTION("Equipment_BowTips",             "Bow Tips",             GROUP_EQUIPMENT,    ImVec4(200,   0,   0, 255), false, true, true),
     COSMETIC_OPTION("Equipment_BowString",           "Bow String",           GROUP_EQUIPMENT,    ImVec4(255, 255, 255, 255), false, true, true),
     COSMETIC_OPTION("Equipment_BowBody",             "Bow Body",             GROUP_EQUIPMENT,    ImVec4(140,  90,  10, 255), false, true, false),
