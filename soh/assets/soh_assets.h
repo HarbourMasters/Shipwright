@@ -82,11 +82,11 @@ static const ALIGN_ASSET(2) char gFileSelRANDButtonTex[] = dgFileSelRANDButtonTe
 static const ALIGN_ASSET(2) char gEmptyTexture[] = dgEmptyTexture;
 
 // Tunic Models
-#define dgLinkKokiriSkel "__OTR__objects/object_link_kmdl/gLinkKokiriSkel"
-static const ALIGN_ASSET(2) char gLinkKokiriSkel[] = dgLinkKokiriSkel;
+#define dgLinkKokiriTunicSkel "__OTR__objects/object_link_boy_kokiri/gLinkKokiriTunicSkel"
+static const ALIGN_ASSET(2) char gLinkKokiriTunicSkel[] = dgLinkKokiriTunicSkel;
 
-#define dgLinkGoronSkel "__OTR__objects/object_link_gmdl/gLinkGoronSkel"
-static const ALIGN_ASSET(2) char gLinkGoronSkel[] = dgLinkGoronSkel;
+#define dgLinkGoronTunicSkel "__OTR__objects/object_link_boy_goron/gLinkGoronTunicSkel"
+static const ALIGN_ASSET(2) char gLinkGoronTunicSkel[] = dgLinkGoronTunicSkel;
 
-#define dgLinkZoraSkel "__OTR__objects/object_link_zmdl/gLinkZoraSkel"
-static const ALIGN_ASSET(2) char gLinkZoraSkel[] = dgLinkZoraSkel;
+#define dgLinkZoraTunicSkel "__OTR__objects/object_link_boy_zora/gLinkZoraTunicSkel"
+static const ALIGN_ASSET(2) char gLinkZoraTunicSkel[] = dgLinkZoraTunicSkel;

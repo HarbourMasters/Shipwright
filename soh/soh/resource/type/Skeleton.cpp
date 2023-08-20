@@ -70,12 +70,12 @@ void SkeletonPatcher::ClearSkeletons()
 }
 
 void SkeletonPatcher::UpdateSkeletons() {
-    bool isHD = CVarGetInteger("gAltAssets", 0);
+    bool isAlt = CVarGetInteger("gAltAssets", 0);
     for (auto skel : skeletons) 
     {
         Skeleton* newSkel =
             (Skeleton*)LUS::Context::GetInstance()->GetResourceManager()
-                ->LoadResource((isHD ? LUS::IResource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true)
+                ->LoadResource((isAlt ? LUS::IResource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true)
                 .get();
 
         if (newSkel != nullptr)
@@ -84,7 +84,8 @@ void SkeletonPatcher::UpdateSkeletons() {
 }
 
 void SkeletonPatcher::UpdateTunicSkeletons() {
-    bool isHD = CVarGetInteger("gAltAssets", 0);
+    bool isAlt = CVarGetInteger("gAltAssets", 0);
+    const char* altPrefix = isAlt ? LUS::IResource::gAltAssetPrefix.c_str() : "";
     for (auto skel : skeletons) {
         if (skel.actor != nullptr) // is there actually an actor to check?
         {
@@ -92,28 +93,28 @@ void SkeletonPatcher::UpdateTunicSkeletons() {
             {
                 Skeleton* newSkel;
                 if (LINK_IS_ADULT && CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1 == PLAYER_TUNIC_KOKIRI &&
-                    ResourceGetIsCustomByName(gLinkKokiriSkel)) {
+                    ResourceGetIsCustomByName(gLinkKokiriTunicSkel)) {
                     newSkel = (Skeleton*)LUS::Context::GetInstance()
                                   ->GetResourceManager()
-                                  ->LoadResource((isHD ? LUS::IResource::gAltAssetPrefix : "") + gLinkKokiriSkel, true)
+                                  ->LoadResource((isAlt ? LUS::IResource::gAltAssetPrefix : "") + gLinkKokiriTunicSkel, true)
                                   .get();
                 } else if (LINK_IS_ADULT && CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1 == PLAYER_TUNIC_GORON &&
-                           ResourceGetIsCustomByName(gLinkGoronSkel)) {
+                           ResourceGetIsCustomByName(gLinkGoronTunicSkel)) {
                     newSkel = (Skeleton*)LUS::Context::GetInstance()
                                   ->GetResourceManager()
-                                  ->LoadResource((isHD ? LUS::IResource::gAltAssetPrefix : "") + gLinkGoronSkel, true)
+                                  ->LoadResource((isAlt ? LUS::IResource::gAltAssetPrefix : "") + gLinkGoronTunicSkel, true)
                                   .get();
                 } else if (LINK_IS_ADULT && CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1 == PLAYER_TUNIC_ZORA &&
-                           ResourceGetIsCustomByName(gLinkZoraSkel)) {
+                           ResourceGetIsCustomByName(gLinkZoraTunicSkel)) {
                     newSkel = (Skeleton*)LUS::Context::GetInstance()
                                   ->GetResourceManager()
-                                  ->LoadResource((isHD ? LUS::IResource::gAltAssetPrefix : "") + gLinkZoraSkel, true)
+                                  ->LoadResource((isAlt ? LUS::IResource::gAltAssetPrefix : "") + gLinkZoraTunicSkel, true)
                                   .get();
                 } else { // child link, no model available
                     newSkel = (Skeleton*)LUS::Context::GetInstance()
                                   ->GetResourceManager()
                                   ->LoadResource(
-                                      (isHD ? LUS::IResource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true)
+                                      (isAlt ? LUS::IResource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true)
                                   .get();
                 }
 
