@@ -394,6 +394,9 @@ void func_80A7CAD0(EnInsect* this, PlayState* play) {
 }
 
 void func_80A7CBC8(EnInsect* this) {
+    if (CVarGetInteger("gNoBugsDespawn", 0) != 0) {
+        return;
+    }
     this->unk_31A = 60;
     func_80A7BF58(this);
     this->skelAnime.playSpeed = 1.9f;
