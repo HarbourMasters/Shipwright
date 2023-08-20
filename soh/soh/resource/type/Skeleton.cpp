@@ -91,19 +91,19 @@ void SkeletonPatcher::UpdateTunicSkeletons() {
             if (skel.actor->id == 0) // is this Link?
             {
                 Skeleton* newSkel;
-                if (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1 == PLAYER_TUNIC_KOKIRI &&
+                if (LINK_IS_ADULT && CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1 == PLAYER_TUNIC_KOKIRI &&
                     ResourceGetIsCustomByName(gLinkKokiriSkel)) {
                     newSkel = (Skeleton*)LUS::Context::GetInstance()
                                   ->GetResourceManager()
                                   ->LoadResource((isHD ? LUS::IResource::gAltAssetPrefix : "") + gLinkKokiriSkel, true)
                                   .get();
-                } else if (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1 == PLAYER_TUNIC_GORON &&
+                } else if (LINK_IS_ADULT && CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1 == PLAYER_TUNIC_GORON &&
                            ResourceGetIsCustomByName(gLinkGoronSkel)) {
                     newSkel = (Skeleton*)LUS::Context::GetInstance()
                                   ->GetResourceManager()
                                   ->LoadResource((isHD ? LUS::IResource::gAltAssetPrefix : "") + gLinkGoronSkel, true)
                                   .get();
-                } else if (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1 == PLAYER_TUNIC_ZORA &&
+                } else if (LINK_IS_ADULT && CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1 == PLAYER_TUNIC_ZORA &&
                            ResourceGetIsCustomByName(gLinkZoraSkel)) {
                     newSkel = (Skeleton*)LUS::Context::GetInstance()
                                   ->GetResourceManager()
