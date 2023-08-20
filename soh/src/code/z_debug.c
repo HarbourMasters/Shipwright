@@ -1,4 +1,5 @@
 #include "global.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 typedef struct {
     u8 x;
@@ -219,8 +220,9 @@ void func_80063D7C(GraphicsContext* gfxCtx) {
     GfxPrint printer;
     Gfx* tempRet;
 
-    if (!CVarGetInteger("gDebugEnabled", 0))
+    if (!CVarGetInteger("gDebugEnabled", 0) || GameInteractor_NoUIActive()) {
         return;
+    }
 
     OPEN_DISPS(gfxCtx);
 
