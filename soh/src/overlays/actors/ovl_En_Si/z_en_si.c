@@ -161,7 +161,10 @@ void func_80AFB89C(EnSi* this, PlayState* play) {
                 Audio_PlayFanfare_Rando(getItem);
             } else {
                 gSaveContext.pendingIceTrapCount++;
+                Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
             }
+        } else {
+            Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
         }
 
         player->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
