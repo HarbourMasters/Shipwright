@@ -5,6 +5,7 @@
 #include <variables.h>
 #include <macros.h>
 #include <soh_assets.h>
+#include <objects/object_link_boy/object_link_boy.h>
 
 namespace LUS {
 SkeletonData* Skeleton::GetPointer() {
@@ -90,23 +91,23 @@ void SkeletonPatcher::UpdateTunicSkeletons() {
             if (skel.actor->id == 0) // is this Link?
             {
                 Skeleton* newSkel;
-                if (LINK_IS_ADULT && CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1 == PLAYER_TUNIC_KOKIRI &&
+                if (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1 == PLAYER_TUNIC_KOKIRI &&
                     ResourceGetIsCustomByName(gLinkKokiriSkel)) {
                     newSkel = (Skeleton*)LUS::Context::GetInstance()
                                   ->GetResourceManager()
-                                  ->LoadResource("__OTR__objects/object_link_kmdl/gLinkKokiriSkel", true)
+                                  ->LoadResource((isHD ? LUS::IResource::gAltAssetPrefix : "") + gLinkKokiriSkel, true)
                                   .get();
-                } else if (LINK_IS_ADULT && CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1 == PLAYER_TUNIC_GORON &&
+                } else if (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1 == PLAYER_TUNIC_GORON &&
                            ResourceGetIsCustomByName(gLinkGoronSkel)) {
                     newSkel = (Skeleton*)LUS::Context::GetInstance()
                                   ->GetResourceManager()
-                                  ->LoadResource("__OTR__objects/object_link_gmdl/gLinkGoronSkel", true)
+                                  ->LoadResource((isHD ? LUS::IResource::gAltAssetPrefix : "") + gLinkGoronSkel, true)
                                   .get();
-                } else if (LINK_IS_ADULT && CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1 == PLAYER_TUNIC_ZORA &&
+                } else if (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1 == PLAYER_TUNIC_ZORA &&
                            ResourceGetIsCustomByName(gLinkZoraSkel)) {
                     newSkel = (Skeleton*)LUS::Context::GetInstance()
                                   ->GetResourceManager()
-                                  ->LoadResource("__OTR__objects/object_link_zmdl/gLinkZoraSkel", true)
+                                  ->LoadResource((isHD ? LUS::IResource::gAltAssetPrefix : "") + gLinkZoraSkel, true)
                                   .get();
                 } else { // child link, no model available
                     newSkel = (Skeleton*)LUS::Context::GetInstance()
