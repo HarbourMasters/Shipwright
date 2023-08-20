@@ -1761,12 +1761,11 @@ time_t Play_GetRealTime() {
 void Play_Main(GameState* thisx) {
     PlayState* play = (PlayState*)thisx;
 
-    if (CVarGetInteger("gCheatEasyPauseBufferFrameAdvance", 0)) {
-        CVarSetInteger("gCheatEasyPauseBufferFrameAdvance", CVarGetInteger("gCheatEasyPauseBufferFrameAdvance", 0) - 1);
+    // Decrease the easy pause buffer timer every frame
+    if (CVarGetInteger("gCheatEasyPauseBufferTimer", 0) > 0) {
+        CVarSetInteger("gCheatEasyPauseBufferTimer", CVarGetInteger("gCheatEasyPauseBufferTimer", 0) - 1);
     }
-    if (CVarGetInteger("gPauseBufferBlockInputFrame", 0)) {
-        CVarSetInteger("gPauseBufferBlockInputFrame", CVarGetInteger("gPauseBufferBlockInputFrame", 0) - 1);
-    }
+
     if (play->envCtx.unk_EE[2] == 0 && CVarGetInteger("gLetItSnow", 0)) {
         play->envCtx.unk_EE[3] = 64;
         Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_OBJECT_KANKYO, 0, 0, 0, 0, 0, 0, 3, 0);

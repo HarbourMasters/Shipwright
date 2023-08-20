@@ -69,6 +69,14 @@ while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
                         continue
                     fi
                     ;;
+                cfecfdc58d650e71a200c81f033de4e6d617a9f6)
+                    if [[ ! -e "$SHIP_HOME"/oot-mq.otr ]]; then
+                        ROM=GC_MQ_D
+                        OTRNAME="oot-mq.otr"
+                    else
+                        continue
+                    fi
+                    ;;
                 517bd9714c73cb96c21e7c2ef640d7b55186102f)
                     if [[ ! -e "$SHIP_HOME"/oot-mq.otr ]]; then
                         ROM=GC_MQ_D
