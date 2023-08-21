@@ -123,8 +123,8 @@ void ResetGroup(const std::map<u16, SequenceInfo>& map, SeqType type) {
 void DrawPreviewButton(uint16_t sequenceId, std::string sfxKey, SeqType sequenceType) {
     const std::string cvarKey = "gAudioEditor.ReplacedSequences." + sfxKey;
     const std::string hiddenKey = "##" + cvarKey;
-    const std::string stopButton = " Stop  " + hiddenKey;
-    const std::string previewButton = "Preview" + hiddenKey;
+    const std::string stopButton = ICON_FA_STOP + hiddenKey;
+    const std::string previewButton = ICON_FA_PLAY + hiddenKey;
 
     if (CVarGetInteger("gAudioEditor.Playing", 0) == sequenceId) {
         if (ImGui::Button(stopButton.c_str())) {
@@ -188,9 +188,12 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
         }
 
         const std::string cvarKey = "gAudioEditor.ReplacedSequences." + seqData.sfxKey;
+        const std::string cvarLockKey = cvarKey + ".lock";
         const std::string hiddenKey = "##" + cvarKey;
-        const std::string resetButton = "Reset" + hiddenKey;
-        const std::string randomizeButton = "Randomize" + hiddenKey;
+        const std::string resetButton = ICON_FA_UNDO + hiddenKey;
+        const std::string randomizeButton = ICON_FA_RANDOM + hiddenKey;
+        const std::string lockedButton = ICON_FA_LOCK + hiddenKey;
+        const std::string unlockedButton = ICON_FA_UNLOCK + hiddenKey;
         const int currentValue = CVarGetInteger(cvarKey.c_str(), defaultValue);
 
         ImGui::TableNextRow();
@@ -245,6 +248,13 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                 UpdateCurrentBGM(seqData->sequenceId, type);
             } 
+        }
+        ImGui::SameLine();
+        ImGui::PushItemWidth(-FLT_MIN);
+        auto locked = CVarGetInteger(cvarLockKey.c_str(), 0) == 1;
+        if (ImGui::Button(locked ? lockedButton.c_str() : unlockedButton.c_str())) {
+            CVarSetInteger(cvarLockKey.c_str(), !locked);
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
         }
     }
     ImGui::EndTable();
