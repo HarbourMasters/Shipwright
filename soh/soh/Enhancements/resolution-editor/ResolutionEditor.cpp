@@ -1,12 +1,10 @@
-// Date created: 2023 08 16
-// Description: Advanced Resolution Editor - SoH GUI Functions
-#include "advancedResolutionEditor.h"
+#include "ResolutionEditor.h"
 #include <ImGui/imgui.h>
 #include <libultraship/libultraship.h>
 
-#include "UIWidgets.hpp" // This dependency is why the UI needs to be on SoH's side.
+#include <soh/UIWidgets.hpp> // This dependency is why the UI needs to be on SoH's side.
 #include <graphic/Fast3D/gfx_pc.h>
-#include <advancedResolution.h>
+#include <AdvancedResolution.h>
 
 namespace AdvancedResolutionSettings {
 enum setting { UPDATE_aspectRatio_X, UPDATE_aspectRatio_Y, UPDATE_verticalPixelCount, UPDATE_integerScaleFactor };
@@ -28,15 +26,16 @@ void AdvancedResolutionSettingsWindow::InitElement() {
 
 void AdvancedResolutionSettingsWindow::DrawElement() {
 #ifndef __APPLE__
-    ImGui::SetNextWindowSize(ImVec2(360, 512), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(444, 464), ImGuiCond_FirstUseEver);
     if (ImGui::Begin("Advanced Resolution Settings", &mIsVisible)) {
         bool update[sizeof(setting)];
         for (unsigned short i = 0; i < sizeof(setting); i++)
             update[i] = false;
-        short max_integerScaleFactor = default_maxIntegerScaleFactor; // default value, which may or may get overridden depending on viewport res
+        short max_integerScaleFactor = default_maxIntegerScaleFactor; // default value, which may or may not get overridden depending on viewport res
         unsigned short integerScale_maximumBounds =
             gfx_current_game_window_viewport.height / gfx_current_dimensions.height; // can change when window is resized
-        if (integerScale_maximumBounds < 1) integerScale_maximumBounds = 1; // it should never be less than 1x.
+        if (integerScale_maximumBounds < 1)
+            integerScale_maximumBounds = 1; // it should never be less than 1x.
         // Stored Values
         static float aspectRatio_X      = CVarGetFloat("gAdvancedResolution_aspectRatio_X",        16.0f);
         static float aspectRatio_Y      = CVarGetFloat("gAdvancedResolution_aspectRatio_Y",        9.0f);

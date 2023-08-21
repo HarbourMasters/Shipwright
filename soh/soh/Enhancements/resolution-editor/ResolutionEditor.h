@@ -1,5 +1,4 @@
 #pragma once
-// Date created: 2023 08 16
 #include <libultraship/libultraship.h>
 
 namespace AdvancedResolutionSettings {
@@ -11,4 +10,4 @@ class AdvancedResolutionSettingsWindow : public LUS::GuiWindow {
     void DrawElement() override;
     void UpdateElement() override;
 };
-} // namespace AdvancedResolutionSettings
+}
