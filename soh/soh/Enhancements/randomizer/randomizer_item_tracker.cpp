@@ -81,7 +81,7 @@ std::vector<ItemTrackerItem> gregItems = {
 };
 
 std::vector<ItemTrackerItem> triforcePieces = {
-    ITEM_TRACKER_ITEM(ITEM_TRIFORCE_PIECE, 0, DrawItem),
+    ITEM_TRACKER_ITEM(RG_TRIFORCE_PIECE, 0, DrawItem),
 };
 
 std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsHorizontal = {
@@ -469,7 +469,7 @@ void DrawItemCount(ItemTrackerItem item) {
         ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
         ImGui::Text(maxString.c_str());
         ImGui::PopStyleColor();
-    } else if (item.id == ITEM_TRIFORCE_PIECE && gSaveContext.n64ddFlag &&
+    } else if (item.id == RG_TRIFORCE_PIECE && gSaveContext.n64ddFlag &&
                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT) && IsValidSaveFile()) {
         std::string currentString = "";
         std::string requiredString = "";
@@ -536,6 +536,7 @@ void DrawItem(ItemTrackerItem item) {
     uint32_t actualItemId = INV_CONTENT(item.id);
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     bool hasItem = actualItemId != ITEM_NONE;
+    std::string itemName = "";
 
     if (item.id == ITEM_NONE) {
         return;
@@ -575,9 +576,10 @@ void DrawItem(ItemTrackerItem item) {
             actualItemId = item.id;
             hasItem = Flags_GetRandomizerInf(RAND_INF_GREG_FOUND);
             break;
-        case ITEM_TRIFORCE_PIECE:
+        case RG_TRIFORCE_PIECE:
             actualItemId = item.id;
             hasItem = gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT);
+            itemName = "Triforce Piece";
             break;
     }
 
@@ -593,7 +595,11 @@ void DrawItem(ItemTrackerItem item) {
     DrawItemCount(item);
     ImGui::EndGroup();
 
-    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(item.id));
+    if (itemName == "") {
+        itemName = SohUtils::GetItemName(item.id);
+    }
+
+    UIWidgets::SetLastItemHoverText(itemName);
 }
 
 void DrawBottle(ItemTrackerItem item) {

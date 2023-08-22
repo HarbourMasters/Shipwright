@@ -663,7 +663,7 @@ void GenerateItemPool() {
   }
 
   if (TriforceHunt.Is(TRIFORCE_HUNT_ON)) {
-    IceTrapModels.push_back(GI_TRIFORCE_PIECE);
+    IceTrapModels.push_back(0xDF);
     AddItemToMainPool(TRIFORCE_PIECE, Settings::TriforceHuntTotal.Value<uint8_t>());
     PlaceItemInLocation(TRIFORCE_COMPLETED, TRIFORCE); // Win condition
     PlaceItemInLocation(GANON, GetJunkItem(), false, true);

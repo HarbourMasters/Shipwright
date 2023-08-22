@@ -146,7 +146,7 @@ std::map<uint32_t, ItemMapEntry> gregMapping = {
 };
 
 std::map<uint32_t, ItemMapEntry> triforcePieceMapping = {
-    {ITEM_TRIFORCE_PIECE, {ITEM_TRIFORCE_PIECE, "ITEM_TRIFORCE_PIECE", "ITEM_TRIFORCE_PIECE_Faded", gTriforcePieceTex}}
+    {RG_TRIFORCE_PIECE, {RG_TRIFORCE_PIECE, "RG_TRIFORCE_PIECE", "RG_TRIFORCE_PIECE_Faded", gTriforcePieceTex}}
 };
 
 // Maps entries in the GS flag array to the area name it represents
