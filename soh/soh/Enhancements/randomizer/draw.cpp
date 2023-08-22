@@ -226,5 +226,7 @@ extern "C" void Randomizer_DrawOcarinaButton(PlayState* play, GetItemEntry* getI
 
     gSPDisplayList(POLY_XLU_DISP++, dLists[slot]);
 
+    gSPGrayscale(POLY_XLU_DISP++, false);
+
     CLOSE_DISPS(play->state.gfxCtx);
 }
