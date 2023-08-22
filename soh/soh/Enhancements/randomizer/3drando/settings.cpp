@@ -111,7 +111,8 @@ namespace Settings {
   Option TriforceHunt              = Option::U8  ("Triforce Hunt",          {"Off", "On"},                                                     {triforceHunt});
   Option TriforceHuntTotal         = Option::U8  ("Triforce Hunt Total Pieces", {NumOpts(0, 100)},                                             {triforceHunt});
   Option TriforceHuntRequired      = Option::U8  ("Triforce Hunt Required Pieces", {NumOpts(0, 100)},                                          {triforceHunt});
-  Option MQDungeonCount            = Option::U8  ("MQ Dungeon Count",       {MultiVecOpts({NumOpts(0, 12), {"Random"}})},                      {mqDungeonCountDesc});
+  Option MQDungeonCount = Option::U8(
+      "MQ Dungeon Count", { MultiVecOpts({ NumOpts(0, 12), { "Random" }, { "Selection" } }) }, { mqDungeonCountDesc });
   uint8_t MQSet;
   bool DungeonModesKnown[12];
   Option SetDungeonTypes           = Option::Bool("Set Dungeon Types",      {"Off", "On"},                                                     {setDungeonTypesDesc});
@@ -2890,12 +2891,27 @@ namespace Settings {
     } else {
         GanonsTrialsCount.SetSelectedIndex(cvarSettings[RSK_TRIAL_COUNT]);
     }
+    SetDungeonTypes.SetSelectedIndex(false);
     if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_RANDOM_NUMBER) {
         MQDungeonCount.SetSelectedIndex(13);
     } else if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_NONE) {
         MQDungeonCount.SetSelectedIndex(0);
-    } else {
+    } else if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_SET_NUMBER) {
         MQDungeonCount.SetSelectedIndex(cvarSettings[RSK_MQ_DUNGEON_COUNT]);
+    } else if (cvarSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_SELECTION) {
+        SetDungeonTypes.SetSelectedIndex(true);
+        MQDeku.SetSelectedIndex(cvarSettings[RSK_MQ_DEKU_TREE]);
+        MQDodongo.SetSelectedIndex(cvarSettings[RSK_MQ_DODONGOS_CAVERN]);
+        MQJabu.SetSelectedIndex(cvarSettings[RSK_MQ_JABU_JABU]);
+        MQForest.SetSelectedIndex(cvarSettings[RSK_MQ_FOREST_TEMPLE]);
+        MQFire.SetSelectedIndex(cvarSettings[RSK_MQ_FIRE_TEMPLE]);
+        MQWater.SetSelectedIndex(cvarSettings[RSK_MQ_WATER_TEMPLE]);
+        MQSpirit.SetSelectedIndex(cvarSettings[RSK_MQ_SPIRIT_TEMPLE]);
+        MQShadow.SetSelectedIndex(cvarSettings[RSK_MQ_SHADOW_TEMPLE]);
+        MQIceCavern.SetSelectedIndex(cvarSettings[RSK_MQ_ICE_CAVERN]);
+        MQBotW.SetSelectedIndex(cvarSettings[RSK_MQ_BOTTOM_OF_THE_WELL]);
+        MQGTG.SetSelectedIndex(cvarSettings[RSK_MQ_GTG]);
+        MQCastle.SetSelectedIndex(cvarSettings[RSK_MQ_GANONS_CASTLE]);
     }
     ShuffleRewards.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS]);
     ShuffleSongs.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_SONGS]);

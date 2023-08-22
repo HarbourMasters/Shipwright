@@ -8,6 +8,7 @@
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
+#include "soh/Enhancements/nametag.h"
 
 extern "C" {
 #include <z64.h>
@@ -658,4 +659,5 @@ void InitMods() {
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
     RegisterTriforceHunt();
+    NameTag_RegisterHooks();
 }

@@ -1,5 +1,6 @@
 #include "global.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 
 typedef struct {
     /* 0x00 */ s16 drawType;  // indicates which draw function to use when displaying the object
@@ -33,6 +34,10 @@ DebugDispObject* DebugDisplay_AddObject(f32 posX, f32 posY, f32 posZ, s16 rotX, 
                                         f32 scaleY, f32 scaleZ, u8 red, u8 green, u8 blue, u8 alpha, s16 type,
                                         GraphicsContext* gfxCtx) {
     DebugDispObject* prevHead = sDebugObjectListHead;
+
+    if (GameInteractor_NoUIActive()) {
+        return sDebugObjectListHead;
+    }
 
     sDebugObjectListHead = Graph_Alloc(gfxCtx, sizeof(DebugDispObject));
 
