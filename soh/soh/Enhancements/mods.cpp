@@ -30,6 +30,12 @@ void ReloadSceneTogglingLinkAge() {
     gPlayState->linkAgeOnLoad ^= 1; // toggle linkAgeOnLoad
 }
 
+bool ShouldBufferTunicsNextFrame = false;
+
+void SetRefreshTunicFlag() {
+    ShouldBufferTunicsNextFrame = true;
+}
+
 void RegisterInfiniteMoney() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
         if (CVarGetInteger("gInfiniteMoney", 0) != 0) {
