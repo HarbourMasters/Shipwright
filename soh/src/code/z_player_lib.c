@@ -1367,7 +1367,7 @@ void Player_DrawHookshotReticle(PlayState* play, Player* this, f32 hookshotRange
             const Color_RGBA8 color = CVarGetColor("gCosmetics.HookshotReticle_NonTarget.Value", defaultColor);
             gDPSetPrimColor(WORLD_OVERLAY_DISP++, 0, 0, color.r, color.g, color.b, color.a);
         }
-        gSPVertex(WORLD_OVERLAY_DISP++, (uintptr_t)gLinkAdultHookshotReticleTex, 3, 0);
+        gSPVertex(WORLD_OVERLAY_DISP++, (uintptr_t)gLinkAdultHookshotRedicleVtx, 3, 0);
         gSP1Triangle(WORLD_OVERLAY_DISP++, 0, 1, 2, 0);
 
         CLOSE_DISPS(play->state.gfxCtx);
