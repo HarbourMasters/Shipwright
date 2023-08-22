@@ -12,10 +12,14 @@
 
 #include <sstream>
 #include "File.h"
+#include <unordered_set>
 #define MAX_DB_REDUCTION 35// This is the amount in DB that a sound will be reduced by when it is at the maximum distance
                         // from the player.
+extern "C" {
+                        void CollisionPoly_GetVertices(CollisionPoly* poly, Vec3s* vtxList, Vec3f* dest);//Used to tell where polygons are located.
+                        }
 
-typedef struct {
+                        typedef struct {
     union {
         struct {
             s16 sceneIndex; // Corresponds directly to the game's scene indices.
@@ -30,6 +34,8 @@ typedef std::map<Actor*, uint64_t> TrackedActors_t;//Maps real actors to interna
 typedef std::map<uint64_t, AccessibleActor> AccessibleActorList_t;//Maps internal IDs to wrapped actor objects. These actors can be real or virtual.
 typedef std::vector<AccessibleActor> VAList_t;//Denotes a list of virtual actors specific to a single room.
 typedef std::map<s32, VAList_t> VAZones_t;//Maps room/ scene indices to their corresponding virtual actor collections.
+typedef std::unordered_set<s16> SceneList_t;//A list of scenes which have already been visited (since the game was launched). Used to prevent re-creation of terrain VAs every time the player reloads a scene.
+
 typedef struct {
     std::string hexName;
     std::shared_ptr<LUS::File> resource;
@@ -43,6 +49,8 @@ class ActorAccessibility {
     TrackedActors_t trackedActors;
     AccessibleActorList_t accessibleActorList;
     VAZones_t vaZones;
+    s16 currentScene;
+    SceneList_t sceneList;
     AccessibleAudioEngine* audioEngine;
     SfxExtractor sfxExtractor;
     std::unordered_map<s16, SfxRecord> sfxMap;//Maps internal sfx to external (prerendered) resources.
@@ -59,6 +67,7 @@ void ActorAccessibility_Init() {
     aa = new ActorAccessibility();
     ActorAccessibility_InitAudio();
     ActorAccessibility_InitActors();
+    aa->currentScene = -1;
 
 }
 void ActorAccessibility_Shutdown() {
@@ -297,6 +306,9 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
             //Entirely exclude the title screen.
         /*if (play->sceneNum == 81)
             return;*/
+//Have we been through a scene transition? If so, we might have polygon-to-VA translation work to do.
+        if (aa->currentScene != play->sceneNum)
+            ActorAccessibility_InterpretCurrentScene(play);
 
         //Real actors.
         for (AccessibleActorList_t::iterator i = aa->accessibleActorList.begin(); i != aa->accessibleActorList.end(); i++)
@@ -310,7 +322,12 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         list = (VAList_t*)ActorAccessibility_GetVirtualActorList(play->sceneNum, play->roomCtx.curRoom.num);
         for (VAList_t::iterator i = list->begin(); i != list->end(); i++)
             ActorAccessibility_RunAccessibilityForActor(play, &(*i));
-//Processes external audio engine.
+        //Scene-global virtual actors. Most of these are automatically generated VAs from polygons, because there's no way to sort these into rooms.
+        list = (VAList_t*)ActorAccessibility_GetVirtualActorList(play->sceneNum, -1);
+        for (VAList_t::iterator i = list->begin(); i != list->end(); i++)
+            ActorAccessibility_RunAccessibilityForActor(play, &(*i));
+
+        //Processes external audio engine.
         ActorAccessibility_PrepareNextAudioFrame();
     }
 //Virtual actor config.
@@ -361,7 +378,44 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         return savedActor;
 
     }
-//External audio engine stuff.
+    void ActorAccessibility_InterpretCurrentScene(PlayState* play)
+    {
+        if (aa->sceneList.contains(play->sceneNum))
+            return;//Scene interpretation already complete for this scene.
+        aa->sceneList.insert(play->sceneNum);
+        aa->currentScene = play->sceneNum;
+        VirtualActorList* list = ActorAccessibility_GetVirtualActorList(play->sceneNum, -1);//Scene-global VAs.
+        if (list == NULL)
+            return;
+        for (int i = 0; i < play->colCtx.colHeader->numPolygons; i++)
+        {
+            CollisionPoly* poly = &play->colCtx.colHeader->polyList[i];
+            // checks if climable
+            if ((func_80041DB8(&play->colCtx, poly, BGCHECK_SCENE) == 8 || func_80041DB8(&play->colCtx, poly, BGCHECK_SCENE) == 3)) {
+            ActorAccessibility_PolyToVirtualActor(play, poly, VA_CLIMB, list);
+            }
+
+       }
+
+    }
+//Convert poly to VA.
+    void ActorAccessibility_PolyToVirtualActor(PlayState* play, CollisionPoly* poly, VIRTUAL_ACTOR_TABLE va, VirtualActorList* destination)
+    {
+       Vec3f polyVerts[3];
+       CollisionPoly_GetVertices(poly, play->colCtx.colHeader->vtxList, polyVerts);
+       PosRot where;
+       where.pos.y = std::min(polyVerts[0].y, std::min(polyVerts[1].y, polyVerts[2].y));
+       f32 minX = std::min(polyVerts[0].x, std::min(polyVerts[1].x, polyVerts[2].x));
+              f32 maxX = std::max(polyVerts[0].x, std::max(polyVerts[1].x, polyVerts[2].x));
+       f32 minZ = std::min(polyVerts[0].z, std::min(polyVerts[1].z, polyVerts[2].z));
+              f32 maxZ = std::max(polyVerts[0].z, std::max(polyVerts[1].z, polyVerts[2].z));
+       where.pos.x = maxX - ((maxX - minX) / 2);
+              where.pos.z = maxZ - ((maxZ - minZ) / 2);
+       where.rot = { 0, 0, 0 };
+       ActorAccessibility_AddVirtualActor(destination, va, where);
+
+    }
+        //External audio engine stuff.
     bool ActorAccessibility_InitAudio() {
         try {
             aa->audioEngine = new AccessibleAudioEngine();

@@ -129,6 +129,7 @@ typedef enum {
     VA_DOOR,
     VA_AREA_CHANGE,
     VA_MARKER,
+VA_FINAL,
 
 } VIRTUAL_ACTOR_TABLE;
 
@@ -153,7 +154,12 @@ typedef enum {
 // Get the list of virtual actors for a given scene and room index.
 VirtualActorList* ActorAccessibility_GetVirtualActorList(s16 sceneNum, s8 roomNum);
 AccessibleActor* ActorAccessibility_AddVirtualActor(VirtualActorList* list, VIRTUAL_ACTOR_TABLE type, PosRot where);
-// External audio engine stuff.
+//Parses the loaded seen and converts select polygons (like ladders, spikes and scene exits) into virtual actors.
+void ActorAccessibility_InterpretCurrentScene(PlayState* play);
+//Convert a collision polygon into a virtual actor.
+void ActorAccessibility_PolyToVirtualActor(PlayState* play, CollisionPoly* poly, VIRTUAL_ACTOR_TABLE va, VirtualActorList* destination);
+
+    // External audio engine stuff.
 //  Initialize the accessible audio engine.
 bool ActorAccessibility_InitAudio();
 void ActorAccessibility_ShutdownAudio();
