@@ -15,7 +15,12 @@ extern "C" {
 
 void EnBox_WaitOpen(EnBox*, PlayState*);
 }
+//Declarations specific to Babas.
+#include "overlays/actors/ovl_En_Karebaba/z_en_karebaba.h"
+extern "C" {
 
+void EnKarebaba_DeadItemDrop(EnKarebaba*, PlayState*);
+}
 void accessible_va_ledge_cue(AccessibleActor* actor);
 void accessible_va_wall_cue(AccessibleActor* actor);
 
@@ -70,6 +75,8 @@ void accessible_torches(AccessibleActor* actor) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_IT_BOMB_IGNIT, false);
     }
     if ((actor->actor->params) == 9216 || (actor->actor->params) == 962) {
+        actor->policy.volume = 0.5;
+        actor->policy.distance = 200.0;
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_ANUBIS_FIRE, false);
     }
 }
@@ -177,19 +184,36 @@ void accessible_door_of_time(AccessibleActor* actor) {
     ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_DIAMOND_SWITCH, false);
 }
 
+void accessible_sticks(AccessibleActor* actor) {
+    EnKarebaba* baba = (EnKarebaba*)actor->actor;
+    
+    if (baba->actionFunc != EnKarebaba_DeadItemDrop)
+        return;
+    if (actor->actor->flags == 80) {
+
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_NUTS_DAMAGE, false);
+    }
+
+}
+
 void ActorAccessibility_InitActors() {
     const int Npc_Frames = 35;
     ActorAccessibilityPolicy policy; 
     ActorAccessibility_InitPolicy(&policy, "Rock", accessible_en_ishi, 0);
     ActorAccessibility_AddSupportedActor(ACTOR_EN_ISHI, policy);
 
+    ActorAccessibility_InitPolicy(&policy, "Mido", NULL, NA_SE_VO_NA_HELLO_0);
+    policy.n = Npc_Frames;
+    policy.distance = 1000;
+    policy.pitch = 1.1; 
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_MD, policy);
+
     ActorAccessibility_InitPolicy(&policy, "Kokiri Child", accessible_en_NPC_Gen, 0);
     policy.n = Npc_Frames;
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_KO, policy);
 //Mido and Saria can use the same configuration.
-    policy.englishName = "Mido";
-    ActorAccessibility_AddSupportedActor(ACTOR_EN_MD, policy);
+
     policy.englishName = "Saria";
     ActorAccessibility_AddSupportedActor(ACTOR_EN_SA, policy);
     policy.englishName = "Skull Kid";
@@ -208,8 +232,13 @@ void ActorAccessibility_InitActors() {
     policy.pitch = 1.6;
     policy.distance = 800;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_KANBAN, policy);
+
     //ACTOR_EN_A_OBJ has exactly the same configuration.
     ActorAccessibility_AddSupportedActor(ACTOR_EN_A_OBJ, policy);
+    ActorAccessibility_InitPolicy(&policy, "deku stick drops", accessible_sticks, 0);
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_DEKUBABA, policy);
+    ActorAccessibility_AddSupportedActor(ACTOR_EN_KAREBABA, policy);
+
     // will probably just get replaced with ghost actors anyways
     // ActorAccessibility_AddSupporte dActor(ACTOR_EN_HOLL, "Room Changing Plane", NULL, 30, 500, 1.0, 1.0,
     //                                      NA_SE_EV_STONEDOOR_STOP /*NOT SURE YET*/);
