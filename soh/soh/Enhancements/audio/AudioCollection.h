@@ -62,6 +62,8 @@ class AudioCollection {
         const char* GetSequenceName(uint16_t seqId);
         bool HasSequenceNum(uint16_t seqId);
         size_t SequenceMapSize();
+        std::string GetCvarKey(std::string sfxKey);
+        std::string GetCvarLockKey(std::string sfxKey);
 };
 #else
 void AudioCollection_AddToCollection(char *otrPath, uint16_t seqNum);
