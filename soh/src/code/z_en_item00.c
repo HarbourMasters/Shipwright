@@ -1369,6 +1369,11 @@ static const Vtx customDropVtx[] = {
  */
 void EnItem00_DrawCollectible(EnItem00* this, PlayState* play) {
     if (gSaveContext.n64ddFlag && (this->getItemId != GI_NONE || this->actor.params == ITEM00_SMALL_KEY)) {
+        if (this->randoCheck != RC_UNKNOWN_CHECK) {
+            this->randoGiEntry = Randomizer_GetItemFromKnownCheck(this->randoCheck, GI_NONE);
+            this->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
+        }
+
         f32 mtxScale = 10.67f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
         EnItem00_CustomItemsParticles(&this->actor, play, this->randoGiEntry);
@@ -1454,6 +1459,11 @@ void EnItem00_DrawHeartContainer(EnItem00* this, PlayState* play) {
  */
 void EnItem00_DrawHeartPiece(EnItem00* this, PlayState* play) {
     if (gSaveContext.n64ddFlag) {
+        if (this->randoCheck != RC_UNKNOWN_CHECK) {
+            this->randoGiEntry = Randomizer_GetItemFromKnownCheck(this->randoCheck, GI_NONE);
+            this->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
+        }
+
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
         EnItem00_CustomItemsParticles(&this->actor, play, this->randoGiEntry);
