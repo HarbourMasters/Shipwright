@@ -62,12 +62,6 @@ struct AccessibleActor {
     f32 baseVolume;
     f32 currentVolume;
     f32 basePitch;
-<<<<<<< HEAD
-    
-    
-    s16 variety;
-=======
->>>>>>> 73e38a105ba0ad1f63f51493772e9db18dad02cf
 
     f32 currentPitch;
     s8 currentReverb;
