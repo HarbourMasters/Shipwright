@@ -173,6 +173,16 @@ void accessible_hana(AccessibleActor* actor) {
 
 }
 
+void accessible_climable(AccessibleActor* actor) {
+    Player* player = GET_PLAYER(actor->play);
+    f32 waterLoc = player->actor.yDistToWater + player->actor.world.pos.y;
+    if (actor->world.pos.y < waterLoc) {
+        actor->world.pos.y = waterLoc;
+    }
+    if (actor != NULL && actor->yDistToPlayer < 80)
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_PL_LAND_LADDER, false);
+}
+
 void accessible_goma(AccessibleActor* actor) {
     BossGoma* goma = (BossGoma*)actor->actor;
     if (goma->visualState == 0) {
@@ -324,7 +334,7 @@ void ActorAccessibility_InitActors() {
     policy.volume = 1.5;
     policy.distance = 2000;
     ActorAccessibility_AddSupportedActor(VA_CRAWLSPACE, policy);
-    ActorAccessibility_InitPolicy(&policy, "Ladder/climable", NULL, NA_SE_PL_LAND_LADDER);
+    ActorAccessibility_InitPolicy(&policy, "Ladder/climable", accessible_climable, 0);
     //policy.volume = 1.5;
     policy.pitch = 1.3;
     //policy.distance = 2000;

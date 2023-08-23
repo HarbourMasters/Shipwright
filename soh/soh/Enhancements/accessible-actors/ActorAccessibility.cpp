@@ -280,6 +280,7 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
             
             actor->xzDistToPlayer = Math_Vec3f_DistXZ(&actor->world.pos, &player->actor.world.pos);
             actor->xyzDistToPlayer = Math_Vec3f_DistXYZ(&actor->world.pos, &player->actor.world.pos);
+            actor->yDistToPlayer = fabs((actor->world.pos.y) - (player->actor.world.pos.y));
         }
         
         if (actor->actor != NULL && fabs(actor->actor->yDistToPlayer) > actor->policy.ydist) {

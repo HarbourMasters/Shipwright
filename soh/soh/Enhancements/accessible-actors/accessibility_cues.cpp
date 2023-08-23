@@ -734,12 +734,7 @@ class Climable : protected TerrainCueSound {
                 //checks for new wall poly
                 wallPoly = checkWall(pos, prevPos, wallPos);
 
-                //checks if climable
-                if ((func_80041DB8(&actor->play->colCtx, wallPoly, wallBgId) == 8 ||
-                    func_80041DB8(&actor->play->colCtx, wallPoly, wallBgId) == 3) && player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
-                    discoverClimable(pos);
-                    break;
-                }
+               
                 //if not climable and exists then treats it as a wall
                 if (wallPoly != NULL) {
                     discoverWall(pos);
@@ -809,33 +804,27 @@ class Climable : protected TerrainCueSound {
                     break;
                 }
 
-                if (pos.y < prevPos.y && fabs(pos.y - prevPos.y) < 20 && fabs(pos.y - prevPos.y) > 1 &&
+                if (pos.y < prevPos.y && fabs(pos.y - prevPos.y) >= 20 &&
                     player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
-                    // This is a decline.
-                    //discorver top
-                    Vec3f_ top = pos;
-                    
+                    // This is a fall.
 
-                    while ((pos.y < prevPos.y && fabs(pos.y - prevPos.y) < 20 && fabs(pos.y - prevPos.y) > 1 &&
-                        player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER)) {
-                        prevPos = pos;
-                        if (!move()) {
-                            destroyCurrentSound();
-                            break; // Probe is out of bounds.
-                        }
-                    }
-                    f32 distToGo = Math_Vec3f_DistXYZ(&top, &pos);
-                    if (distToGo > 500.0) {
-                        distToGo = 500.0;
-                    }
-                    f32 pitchModifier = distToGo/500.0;
+                    discoverLedge(pos);
+                    testForPlatform();
 
-                    pos = top;
-                    actor->policy.pitchModifier = pitchModifier;
-                    discoverDecline(pos);
                     break;
                 }
 
+                //checks for water
+                if (((pos.y - player->actor.prevPos.y) < player->actor.yDistToWater) &&
+                    (player->actor.yDistToWater < 0)) {
+                    discoverWater(pos);
+                    break;
+                }
+
+                if ((player->actor.yDistToWater > 0) &&
+                    (fabs(pos.y - (player->actor.world.pos.y + player->actor.yDistToWater)) > 30.0)) {
+                    discoverLedge(pos);
+                }
                 if (pos.y > prevPos.y && fabs(pos.y - prevPos.y) < 20 && fabs(pos.y - prevPos.y) > 1 &&
                     player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
                     // This is an incline.
@@ -860,27 +849,30 @@ class Climable : protected TerrainCueSound {
                     discoverIncline(bottom);
                     break;
                 }
-
-                if (pos.y < prevPos.y && fabs(pos.y - prevPos.y) >= 20 &&
+                if (pos.y < prevPos.y && fabs(pos.y - prevPos.y) < 20 && fabs(pos.y - prevPos.y) > 1 &&
                     player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
-                    // This is a fall.
+                    // This is a decline.
+                    // discorver top
+                    Vec3f_ top = pos;
 
-                    discoverLedge(pos);
-                    testForPlatform();
+                    while ((pos.y < prevPos.y && fabs(pos.y - prevPos.y) < 20 && fabs(pos.y - prevPos.y) > 1 &&
+                            player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER)) {
+                        prevPos = pos;
+                        if (!move()) {
+                            destroyCurrentSound();
+                            break; // Probe is out of bounds.
+                        }
+                    }
+                    f32 distToGo = Math_Vec3f_DistXYZ(&top, &pos);
+                    if (distToGo > 500.0) {
+                        distToGo = 500.0;
+                    }
+                    f32 pitchModifier = distToGo / 500.0;
 
+                    pos = top;
+                    actor->policy.pitchModifier = pitchModifier;
+                    discoverDecline(pos);
                     break;
-                }
-
-                //checks for water
-                if (((pos.y - player->actor.prevPos.y) < player->actor.yDistToWater) &&
-                    (player->actor.yDistToWater < 0)) {
-                    discoverWater(pos);
-                    break;
-                }
-
-                if ((player->actor.yDistToWater > 0) &&
-                    (fabs(pos.y - (player->actor.world.pos.y + player->actor.yDistToWater)) > 30.0)) {
-                    discoverLedge(pos);
                 }
                 Vec3f wallPos;
                 CollisionPoly* wallPoly = checkWall(pos, prevPos, wallPos);
@@ -895,12 +887,7 @@ class Climable : protected TerrainCueSound {
                     break;
                 }
                 // is this a ladder or vine wall?
-                if ((func_80041DB8(&actor->play->colCtx, wallPoly, wallBgId) == 8 ||
-                    func_80041DB8(&actor->play->colCtx, wallPoly, wallBgId) == 3) &&
-                        player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
-                    discoverClimable(pos);
-                    break;
-                }
+                
                 wallHeight = findWallHeight(pos, wallPoly);
                 if (wallHeight <= player->ageProperties->unk_0C &&
                     player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
@@ -913,6 +900,8 @@ class Climable : protected TerrainCueSound {
 
                     break;
                 }
+                
+                
                 if (isHeadOnCollision(pos, velocity) && player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
                     discoverWall(pos);
                     break;
