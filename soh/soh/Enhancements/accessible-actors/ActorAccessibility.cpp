@@ -69,6 +69,7 @@ void ActorAccessibility_Shutdown() {
                                        ActorAccessibilityCallback callback, s16 sfx) {
     policy->callback = callback;
     policy->distance = 500;
+    policy->ydist = 80;
     policy->englishName = englishName;
     policy->n = 20;
     policy->pitch = 1.5;
@@ -77,6 +78,7 @@ void ActorAccessibility_Shutdown() {
     policy->volume = 1.0;
     policy->initUserData = NULL;
     policy->cleanupUserData = NULL;
+    policy->pitchModifier = 0.0;
 
 }
 
@@ -242,20 +244,22 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
 
     }
     void ActorAccessibility_CopyParamsFromRealActor(AccessibleActor* actor) {
+        Player* player = GET_PLAYER(actor->play);
         if (actor->actor == NULL)
             return;
         actor->projectedPos = actor->actor->projectedPos;
         actor->xzDistToPlayer = actor->actor->xzDistToPlayer;
         actor->isDrawn = actor->actor->isDrawn;
-
+        actor->xyzDistToPlayer = Math_Vec3f_DistXYZ(&actor->actor->world.pos, &player->actor.world.pos);
     }
     void ActorAccessibility_PrepareNextAudioFrame();
 
     void ActorAccessibility_RunAccessibilityForActor(PlayState* play, AccessibleActor* actor) {
+        Player* player = GET_PLAYER(play);
         actor->play = play;
         if(ActorAccessibility_IsRealActor(actor))
             ActorAccessibility_CopyParamsFromRealActor(actor);
-
+            
         else {
 //Perform calculations that the game would normally take care of for real actors.
             f32 w = 0.0f;
@@ -263,16 +267,20 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
             SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, &actor->world.pos, &actor->projectedPos,
                                          &w);
 //Set actor->xzDistToPlayer.
-            Player* player = GET_PLAYER(play);
+            
             actor->xzDistToPlayer = Math_Vec3f_DistXZ(&actor->world.pos, &player->actor.world.pos);
-
+            actor->xyzDistToPlayer = Math_Vec3f_DistXYZ(&actor->world.pos, &player->actor.world.pos);
         }
-//Send sound parameters to the new audio engine. Eventually remove the old stuff once all actors are carried over.
+        
+        if (actor->actor != NULL && fabs(actor->actor->yDistToPlayer) > actor->policy.ydist) {
+            return;
+        }
+        //Send sound parameters to the new audio engine. Eventually remove the old stuff once all actors are carried over.
             for (int i = 0; i < NUM_MANAGED_SOUND_SLOTS; i++)
             {
                 if (actor->managedSoundSlots[i])
                 {
-            ActorAccessibility_SetSoundPos(actor, i, &actor->projectedPos, actor->xzDistToPlayer, actor->policy.distance); 
+            ActorAccessibility_SetSoundPos(actor, i, &actor->projectedPos, actor->xyzDistToPlayer, actor->policy.distance); 
            //Judgement call: pitch changes are rare enough that it doesn't make sense to pay the cost of updating it every frame. If you want a pitch change, call the function as needed.
 
             }
@@ -281,7 +289,7 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         if (actor->frameCount > 0)
             return;
         actor->frameCount = actor->policy.n;
-        if (!actor->policy.runsAlways && actor->xzDistToPlayer > actor->policy.distance) {
+        if (!actor->policy.runsAlways && actor->xyzDistToPlayer > actor->policy.distance) {
             return;
         }
         if (actor->isDrawn == 0)
@@ -297,6 +305,7 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
             //Entirely exclude the title screen.
         /*if (play->sceneNum == 81)
             return;*/
+        
         Player* player = GET_PLAYER(play);
         if (player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE) {
             return;
@@ -346,6 +355,7 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         actor.id = (s16)type;
         actor.instanceID = ActorAccessibility_GetNextID();
         actor.isDrawn = 1;
+      //  actor.variety = variety;
         actor.play = NULL;
         actor.world = where;
         for (int i = 0; i < NUM_MANAGED_SOUND_SLOTS; i++)

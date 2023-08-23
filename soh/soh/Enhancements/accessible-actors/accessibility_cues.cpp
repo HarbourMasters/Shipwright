@@ -5,6 +5,7 @@
 extern "C" {
 s32 func_80839768(PlayState* play, Player* p, Vec3f* arg2, CollisionPoly** arg3, s32* arg4, Vec3f* arg5);
 void func_8083E298(CollisionPoly* arg0, Vec3f* arg1, s16* arg2);
+void CollisionPoly_GetVertices(CollisionPoly* poly, Vec3s* vtxList, Vec3f* dest);
 #include "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 #include "soh/Enhancements/tts/tts.h"
 }
@@ -95,7 +96,7 @@ class Incline : protected TerrainCueSound {
   public:
     Incline(AccessibleActor* actor, Vec3f pos) : TerrainCueSound(actor, pos) {
         currentPitch = 0.5;
-        currentSFX = NA_SE_EV_WIND_TRAP;
+        currentSFX = NA_SE_PL_MAGIC_SOUL_FLASH;
 
         play();
     }
@@ -109,12 +110,13 @@ class Incline : protected TerrainCueSound {
 
             return;
         }
-        currentPitch += 0.1;
+        ActorAccessibility_SetSoundPitch(this, 0, 0.5 + (1-actor->policy.pitchModifier));
+        /*currentPitch += 0.1;
         if (currentPitch >= 2.0) {
             stop();
             currentPitch = 0.5;
             restFrames = 5;
-        }
+        }*/
     }
 };
 
@@ -124,7 +126,7 @@ class Decline : protected TerrainCueSound {
         Decline(AccessibleActor* actor, Vec3f pos) : TerrainCueSound(actor, pos) {
             restFrames = 0;
             currentPitch = 2.0;
-            currentSFX = NA_SE_EV_WIND_TRAP;
+            currentSFX = NA_SE_PL_MAGIC_SOUL_FLASH;
 
             play();
         }
@@ -138,12 +140,13 @@ class Decline : protected TerrainCueSound {
 
                 return;
             }
-            currentPitch -= 0.1;
+            ActorAccessibility_SetSoundPitch(this, 0, 1.0 + actor->policy.pitchModifier);
+            /*currentPitch -= 0.1;
             if (currentPitch < 0.5) {
                 stop();
                 currentPitch = 2.0;
                 restFrames = 5;
-            }
+            }*/
         }
     };
 class Ledge :protected TerrainCueSound {
@@ -362,6 +365,7 @@ class Climable : protected TerrainCueSound {
         destroyCurrentSound();
 
         new (&decline) Decline(actor, pos);
+        
         currentSound = (TerrainCueSound*)&decline;
         terrainDiscovered = DISCOVERED_DECLINE;
     }
@@ -805,6 +809,58 @@ class Climable : protected TerrainCueSound {
                     break;
                 }
 
+                if (pos.y < prevPos.y && fabs(pos.y - prevPos.y) < 20 && fabs(pos.y - prevPos.y) > 1 &&
+                    player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
+                    // This is a decline.
+                    //discorver top
+                    Vec3f_ top = pos;
+                    
+
+                    while ((pos.y < prevPos.y && fabs(pos.y - prevPos.y) < 20 && fabs(pos.y - prevPos.y) > 1 &&
+                        player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER)) {
+                        prevPos = pos;
+                        if (!move()) {
+                            destroyCurrentSound();
+                            break; // Probe is out of bounds.
+                        }
+                    }
+                    f32 distToGo = Math_Vec3f_DistXYZ(&top, &pos);
+                    if (distToGo > 500.0) {
+                        distToGo = 500.0;
+                    }
+                    f32 pitchModifier = distToGo/500.0;
+
+                    pos = top;
+                    actor->policy.pitchModifier = pitchModifier;
+                    discoverDecline(pos);
+                    break;
+                }
+
+                if (pos.y > prevPos.y && fabs(pos.y - prevPos.y) < 20 && fabs(pos.y - prevPos.y) > 1 &&
+                    player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
+                    // This is an incline.
+                    Vec3f_ bottom = pos;
+
+                    while ((pos.y > prevPos.y && fabs(pos.y - prevPos.y) < 20 && fabs(pos.y - prevPos.y) > 1 &&
+                            player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER)) {
+                        prevPos = pos;
+                        if (!move()) {
+                            destroyCurrentSound();
+                            break; // Probe is out of bounds.
+                        }
+                    }
+                    f32 distToGo = Math_Vec3f_DistXYZ(&bottom, &pos);
+                    if (distToGo > 500.0) {
+                        distToGo = 500.0;
+                    }
+                    f32 pitchModifier = distToGo / 500.0;
+
+                    pos = bottom;
+                    actor->policy.pitchModifier = pitchModifier;
+                    discoverIncline(bottom);
+                    break;
+                }
+
                 if (pos.y < prevPos.y && fabs(pos.y - prevPos.y) >= 20 &&
                     player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
                     // This is a fall.
@@ -831,6 +887,9 @@ class Climable : protected TerrainCueSound {
                 if (wallPoly == NULL)
                     continue;
                 // Is this a spiked wall?
+                Vec3f polyVerts[3];
+                CollisionContext* colCtx = &actor->play->colCtx;
+                CollisionPoly_GetVertices(wallPoly, colCtx->colHeader->vtxList, polyVerts);
                 if (SurfaceType_IsWallDamage(&actor->play->colCtx, wallPoly, BGCHECK_SCENE)) {
                     discoverSpike(pos);
                     break;

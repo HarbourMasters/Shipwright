@@ -27,9 +27,11 @@ typedef struct {
     s16 sound;                           // The ID of a sound to play. Ignored if the callback is set.
 
     int n;        // How often to run the callback in frames.
-    f32 distance; // Maximum distance from player before the actor should be considered out of range.
+    f32 distance; // Maximum xz distance from player before the actor should be considered out of range.
+    f32 ydist; // Maximum y distance from player before the actor should be considered out of range.
     f32 pitch;
     f32 volume;
+    f32 pitchModifier;
     bool runsAlways; // If set, then the distance policy is ignored.
     ActorAccessibilityUserDataInit initUserData;
     ActorAccessibilityUserDataCleanup cleanupUserData;
@@ -49,6 +51,7 @@ struct AccessibleActor {
     s16 id; // For real actors, we copy the ID of the actor. For virtual actors we have our own table of values which
             // are out of range for real actors.
     f32 xzDistToPlayer;
+    f32 xyzDistToPlayer;
     PosRot world;
     Vec3f projectedPos;
     PlayState* play;
@@ -59,6 +62,8 @@ struct AccessibleActor {
     f32 baseVolume;
     f32 currentVolume;
     f32 basePitch;
+    
+    
     s16 variety;
 
     f32 currentPitch;
