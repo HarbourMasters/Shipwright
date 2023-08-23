@@ -125,6 +125,7 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         accessibleActor.baseVolume = accessibleActor.policy.volume;
         accessibleActor.currentVolume = accessibleActor.policy.volume;
         accessibleActor.currentReverb = 0;
+        accessibleActor.sceneIndex = 0;
         for (int i = 0; i < NUM_MANAGED_SOUND_SLOTS; i++)
             accessibleActor.managedSoundSlots[i] = false;
         aa->trackedActors[actor] = accessibleActor.instanceID;
@@ -365,6 +366,7 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         actor.isDrawn = 1;
         actor.play = NULL;
         actor.world = where;
+        actor.sceneIndex = 0;
         for (int i = 0; i < NUM_MANAGED_SOUND_SLOTS; i++)
             actor.managedSoundSlots[i] = 0;
 
@@ -397,6 +399,11 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
             if ((func_80041DB8(&play->colCtx, poly, BGCHECK_SCENE) == 8 || func_80041DB8(&play->colCtx, poly, BGCHECK_SCENE) == 3)) {
             ActorAccessibility_PolyToVirtualActor(play, poly, VA_CLIMB, list);
             }
+            if (SurfaceType_IsWallDamage(&play->colCtx, poly, BGCHECK_SCENE)) {
+            ActorAccessibility_PolyToVirtualActor(play, poly, VA_SPIKE, list);
+            }
+            if (SurfaceType_GetSceneExitIndex(&play->colCtx, poly, BGCHECK_SCENE) != 0)
+            ActorAccessibility_PolyToVirtualActor(play, poly, VA_AREA_CHANGE, list);
 
        }
 
@@ -415,7 +422,11 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
        where.pos.x = maxX - ((maxX - minX) / 2);
               where.pos.z = maxZ - ((maxZ - minZ) / 2);
        where.rot = { 0, 0, 0 };
-       ActorAccessibility_AddVirtualActor(destination, va, where);
+       AccessibleActor* actor = ActorAccessibility_AddVirtualActor(destination, va, where);
+       if (actor == NULL)
+            return;
+       if (va == VA_AREA_CHANGE)
+            actor->sceneIndex = SurfaceType_GetSceneExitIndex(&play->colCtx, poly, BGCHECK_SCENE);
 
     }
         //External audio engine stuff.

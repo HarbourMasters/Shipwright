@@ -59,10 +59,13 @@ struct AccessibleActor {
     f32 baseVolume;
     f32 currentVolume;
     f32 basePitch;
-    s16 variety;
 
     f32 currentPitch;
     s8 currentReverb;
+    s16 sceneIndex;//If this actor represents a scene transition, then this will contain the destination scene index. Zero otherwise.
+
+    s16 variety;
+
     bool managedSoundSlots[NUM_MANAGED_SOUND_SLOTS];//These have their attenuation and panning parameters updated every frame automatically.
 
     // Add more state as needed.
@@ -129,6 +132,8 @@ typedef enum {
     VA_DOOR,
     VA_AREA_CHANGE,
     VA_MARKER,
+    VA_SPIKE,
+
 VA_FINAL,
 
 } VIRTUAL_ACTOR_TABLE;

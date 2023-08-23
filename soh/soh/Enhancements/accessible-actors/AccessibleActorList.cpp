@@ -341,6 +341,11 @@ void ActorAccessibility_InitActors() {
     //                              NA_SE_EV_DIAMOND_SWITCH); 
     //policy.pitch = 1.7;
     //ActorAccessibility_AddSupportedActor(VA_MARKER, policy);
+    ActorAccessibility_InitPolicy(&policy, "Spike", NULL, NA_SE_IT_SWORD_PICKOUT);
+    policy.distance = 200;
+    policy.pitch = 0.5;
+    ActorAccessibility_AddSupportedActor(VA_SPIKE, policy);
+ 
     // Now query a list of virtual actors for a given
                                                                 // location (scene
                                                        // and room
