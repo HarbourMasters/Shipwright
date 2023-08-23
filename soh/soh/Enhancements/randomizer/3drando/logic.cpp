@@ -583,7 +583,7 @@ namespace Logic {
     CanOpenStormGrotto  = CanPlay(SongOfStorms) && (ShardOfAgony || LogicGrottosWithoutAgony);
     HookshotOrBoomerang = CanUse(HOOKSHOT) || CanUse(BOOMERANG);
     CanGetNightTimeGS   = (CanPlay(SunsSong) || !NightGSExpectSuns);
-    CanBreakBeehives    = CanBreakBeehives || HookshotOrBoomerang || CanUse(BOW);
+    CanBreakBeehives    = HookshotOrBoomerang || CanUse(BOW);
 
     GuaranteeTradePath     = ShuffleInteriorEntrances || ShuffleOverworldEntrances || LogicBiggoronBolero || CanBlastOrSmash || StopGCRollingGoronAsAdult;
   //GuaranteeHint          = (hints == "Mask" && MaskofTruth) || (hints == "Agony") || (hints != "Mask" && hints != "Agony");
