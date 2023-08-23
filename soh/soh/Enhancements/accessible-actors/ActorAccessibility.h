@@ -64,7 +64,6 @@ struct AccessibleActor {
     f32 currentVolume;
     f32 basePitch;
 
-
     f32 currentPitch;
     s8 currentReverb;
     s16 sceneIndex;//If this actor represents a scene transition, then this will contain the destination scene index. Zero otherwise.
