@@ -554,35 +554,35 @@ static void PlaceVanillaBossKeys() {
 }
 
 static void PlaceVanillaBeehiveRupees() {
-  PlaceItemInLocation(RC_KF_STORMS_GROTTO_BEEHIVE_1, BLUE_RUPEE, false, true);
-  PlaceItemInLocation(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_1, BLUE_RUPEE, false, true);
-  PlaceItemInLocation(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_1, BLUE_RUPEE, false, true);
-  PlaceItemInLocation(RC_HF_OPEN_GROTTO_BEEHIVE_1, BLUE_RUPEE, false, true);
-  PlaceItemInLocation(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_1, BLUE_RUPEE, false, true);
-  PlaceItemInLocation(RC_KAK_OPEN_GROTTO_BEEHIVE_1, BLUE_RUPEE, false, true);
-  PlaceItemInLocation(RC_DMT_STORMS_GROTTO_BEEHIVE_1, BLUE_RUPEE, false, true);
-  PlaceItemInLocation(RC_DMC_UPPER_GROTTO_BEEHIVE_1, BLUE_RUPEE, false, true);
-  PlaceItemInLocation(RC_ZR_OPEN_GROTTO_BEEHIVE_1, BLUE_RUPEE, false, true);
+  PlaceItemInLocation(RC_KF_STORMS_GROTTO_BEEHIVE_LEFT, BLUE_RUPEE, false, true);
+  PlaceItemInLocation(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT, BLUE_RUPEE, false, true);
+  PlaceItemInLocation(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_LEFT, BLUE_RUPEE, false, true);
+  PlaceItemInLocation(RC_HF_OPEN_GROTTO_BEEHIVE_LEFT, BLUE_RUPEE, false, true);
+  PlaceItemInLocation(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_LEFT, BLUE_RUPEE, false, true);
+  PlaceItemInLocation(RC_KAK_OPEN_GROTTO_BEEHIVE_LEFT, BLUE_RUPEE, false, true);
+  PlaceItemInLocation(RC_DMT_STORMS_GROTTO_BEEHIVE_LEFT, BLUE_RUPEE, false, true);
+  PlaceItemInLocation(RC_DMC_UPPER_GROTTO_BEEHIVE_LEFT, BLUE_RUPEE, false, true);
+  PlaceItemInLocation(RC_ZR_OPEN_GROTTO_BEEHIVE_LEFT, BLUE_RUPEE, false, true);
 
-  PlaceItemInLocation(RC_KF_STORMS_GROTTO_BEEHIVE_2, RED_RUPEE, false, true);
-  PlaceItemInLocation(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_2, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_KF_STORMS_GROTTO_BEEHIVE_RIGHT, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_RIGHT, RED_RUPEE, false, true);
   PlaceItemInLocation(RC_LW_DEKU_SCRUB_GROTTO_BEEHIVE, RED_RUPEE, false, true);
   PlaceItemInLocation(RC_SFM_STORMS_GROTTO_BEEHIVE, RED_RUPEE, false, true);
-  PlaceItemInLocation(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_2, RED_RUPEE, false, true);
-  PlaceItemInLocation(RC_HF_OPEN_GROTTO_BEEHIVE_2, RED_RUPEE, false, true);
-  PlaceItemInLocation(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_2, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_HF_NEAR_MARKET_GROTTO_BEEHIVE_RIGHT, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_HF_OPEN_GROTTO_BEEHIVE_RIGHT, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_HF_SOUTHEAST_GROTTO_BEEHIVE_RIGHT, RED_RUPEE, false, true);
   PlaceItemInLocation(RC_HF_INSIDE_FENCE_GROTTO_BEEHIVE, RED_RUPEE, false, true);
   PlaceItemInLocation(RC_LLR_GROTTO_BEEHIVE, RED_RUPEE, false, true);
-  PlaceItemInLocation(RC_KAK_OPEN_GROTTO_BEEHIVE_2, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_KAK_OPEN_GROTTO_BEEHIVE_RIGHT, RED_RUPEE, false, true);
   PlaceItemInLocation(RC_DMT_COW_GROTTO_BEEHIVE, RED_RUPEE, false, true);
-  PlaceItemInLocation(RC_DMT_STORMS_GROTTO_BEEHIVE_2, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_DMT_STORMS_GROTTO_BEEHIVE_RIGHT, RED_RUPEE, false, true);
   PlaceItemInLocation(RC_GC_GROTTO_BEEHIVE, RED_RUPEE, false, true);
-  PlaceItemInLocation(RC_DMC_UPPER_GROTTO_BEEHIVE_2, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_DMC_UPPER_GROTTO_BEEHIVE_RIGHT, RED_RUPEE, false, true);
   PlaceItemInLocation(RC_DMC_HAMMER_GROTTO_BEEHIVE, RED_RUPEE, false, true);
-  PlaceItemInLocation(RC_ZR_OPEN_GROTTO_BEEHIVE_2, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_ZR_OPEN_GROTTO_BEEHIVE_RIGHT, RED_RUPEE, false, true);
   PlaceItemInLocation(RC_ZR_STORMS_GROTTO_BEEHIVE, RED_RUPEE, false, true);
-  PlaceItemInLocation(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_1, RED_RUPEE, false, true);
-  PlaceItemInLocation(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_2, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_LEFT, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_RIGHT, RED_RUPEE, false, true);
   PlaceItemInLocation(RC_ZD_BEHIND_KING_ZORA_BEEHIVE, RED_RUPEE, false, true);
   PlaceItemInLocation(RC_LH_GROTTO_BEEHIVE, RED_RUPEE, false, true);
   PlaceItemInLocation(RC_GV_STORMS_GROTTO_BEEHIVE, RED_RUPEE, false, true);

@@ -56,10 +56,10 @@ void AreaTable_Init_ZorasDomain() {
 
   areaTable[ZR_OPEN_GROTTO] = Area("ZR Open Grotto", "ZR Open Grotto", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
-                  LocationAccess(ZR_OPEN_GROTTO_CHEST,        {[]{return true;}}),
-                  LocationAccess(ZR_OPEN_GROTTO_GOSSIP_STONE, {[]{return true;}}),
-                  LocationAccess(ZR_OPEN_GROTTO_BEEHIVE_1,    {[]{return CanBreakBeehives;}}),
-                  LocationAccess(ZR_OPEN_GROTTO_BEEHIVE_2,    {[]{return CanBreakBeehives;}}),
+                  LocationAccess(ZR_OPEN_GROTTO_CHEST,         {[]{return true;}}),
+                  LocationAccess(ZR_OPEN_GROTTO_GOSSIP_STONE,  {[]{return true;}}),
+                  LocationAccess(ZR_OPEN_GROTTO_BEEHIVE_LEFT,  {[]{return CanBreakBeehives;}}),
+                  LocationAccess(ZR_OPEN_GROTTO_BEEHIVE_RIGHT, {[]{return CanBreakBeehives;}}),
                 }, {
                   //Exits
                   Entrance(ZORAS_RIVER, {[]{return true;}}),
@@ -94,14 +94,14 @@ void AreaTable_Init_ZorasDomain() {
                   EventAccess(&DeliverLetter,     {[]{return DeliverLetter     || (RutosLetter && IsChild && ZorasFountain.IsNot(ZORASFOUNTAIN_OPEN));}}),
                 }, {
                   //Locations
-                  LocationAccess(ZD_DIVING_MINIGAME,                 {[]{return IsChild;}}),
-                  LocationAccess(ZD_CHEST,                           {[]{return IsChild && CanUse(STICKS);}}),
-                  LocationAccess(ZD_KING_ZORA_THAWED,                {[]{return KingZoraThawed;}}),
-                  LocationAccess(ZD_TRADE_PRESCRIPTION,              {[]{return KingZoraThawed && Prescription;}}),
-                  LocationAccess(ZD_GS_FROZEN_WATERFALL,             {[]{return IsAdult && AtNight && (HookshotOrBoomerang || CanUse(SLINGSHOT) || Bow || MagicMeter || LogicDomainGS) && CanGetNightTimeGS;}}),
-                  LocationAccess(ZD_GOSSIP_STONE,                    {[]{return true;}}),
-                  LocationAccess(ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_1, {[]{return CanBreakBeehives;}}),
-                  LocationAccess(ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_2, {[]{return CanBreakBeehives;}}),
+                  LocationAccess(ZD_DIVING_MINIGAME,                     {[]{return IsChild;}}),
+                  LocationAccess(ZD_CHEST,                               {[]{return IsChild && CanUse(STICKS);}}),
+                  LocationAccess(ZD_KING_ZORA_THAWED,                    {[]{return KingZoraThawed;}}),
+                  LocationAccess(ZD_TRADE_PRESCRIPTION,                  {[]{return KingZoraThawed && Prescription;}}),
+                  LocationAccess(ZD_GS_FROZEN_WATERFALL,                 {[]{return IsAdult && AtNight && (HookshotOrBoomerang || CanUse(SLINGSHOT) || Bow || MagicMeter || LogicDomainGS) && CanGetNightTimeGS;}}),
+                  LocationAccess(ZD_GOSSIP_STONE,                        {[]{return true;}}),
+                  LocationAccess(ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_LEFT,  {[]{return CanBreakBeehives;}}),
+                  LocationAccess(ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_RIGHT, {[]{return CanBreakBeehives;}}),
                 }, {
                   //Exits
                   Entrance(ZR_BEHIND_WATERFALL, {[]{return true;}}),

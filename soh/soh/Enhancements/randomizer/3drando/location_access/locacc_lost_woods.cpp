@@ -98,10 +98,10 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[KF_STORMS_GROTTO] = Area("KF Storms Grotto", "KF Storms Grotto", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
-                  LocationAccess(KF_STORMS_GROTTO_CHEST,        {[]{return true;}}),
-                  LocationAccess(KF_STORMS_GROTTO_GOSSIP_STONE, {[]{return true;}}),
-                  LocationAccess(KF_STORMS_GROTTO_BEEHIVE_1,    {[]{return CanBreakBeehives;}}),
-                  LocationAccess(KF_STORMS_GROTTO_BEEHIVE_2,    {[]{return CanBreakBeehives;}}),
+                  LocationAccess(KF_STORMS_GROTTO_CHEST,         {[]{return true;}}),
+                  LocationAccess(KF_STORMS_GROTTO_GOSSIP_STONE,  {[]{return true;}}),
+                  LocationAccess(KF_STORMS_GROTTO_BEEHIVE_LEFT,  {[]{return CanBreakBeehives;}}),
+                  LocationAccess(KF_STORMS_GROTTO_BEEHIVE_RIGHT, {[]{return CanBreakBeehives;}}),
                 }, {
                   //Exits
                   Entrance(KOKIRI_FOREST, {[]{return true;}})
@@ -159,11 +159,11 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[LW_NEAR_SHORTCUTS_GROTTO] = Area("LW Near Shortcuts Grotto", "LW Near Shortcuts Grotto", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
-                  LocationAccess(LW_NEAR_SHORTCUTS_GROTTO_CHEST,        {[]{return true;}}),
-                  LocationAccess(LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE, {[]{return true;}}),
-                  LocationAccess(LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_1,    {[]{return CanBreakBeehives;}}),
-                  LocationAccess(LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_2,    {[]{return CanBreakBeehives;}}),
-                  LocationAccess(LW_SCRUBS_GROTTO_BEEHIVE,              {[]{return CanBreakBeehives;}}),
+                  LocationAccess(LW_NEAR_SHORTCUTS_GROTTO_CHEST,         {[]{return true;}}),
+                  LocationAccess(LW_NEAR_SHORTCUTS_GROTTO_GOSSIP_STONE,  {[]{return true;}}),
+                  LocationAccess(LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_LEFT,  {[]{return CanBreakBeehives;}}),
+                  LocationAccess(LW_NEAR_SHORTCUTS_GROTTO_BEEHIVE_RIGHT, {[]{return CanBreakBeehives;}}),
+                  LocationAccess(LW_SCRUBS_GROTTO_BEEHIVE,               {[]{return CanBreakBeehives;}}),
                 }, {
                   //Exits
                   Entrance(THE_LOST_WOODS, {[]{return true;}}),

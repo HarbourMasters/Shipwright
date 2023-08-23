@@ -63,10 +63,10 @@ void AreaTable_Init_DeathMountain() {
 
   areaTable[DMT_STORMS_GROTTO] = Area("DMT Storms Grotto", "DMT Storms Grotto", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
-                  LocationAccess(DMT_STORMS_GROTTO_CHEST,        {[]{return true;}}),
-                  LocationAccess(DMT_STORMS_GROTTO_GOSSIP_STONE, {[]{return true;}}),
-                  LocationAccess(DMT_STORMS_GROTTO_BEEHIVE_1,    {[]{return CanBreakBeehives;}}),
-                  LocationAccess(DMT_STORMS_GROTTO_BEEHIVE_2,    {[]{return CanBreakBeehives;}}),
+                  LocationAccess(DMT_STORMS_GROTTO_CHEST,         {[]{return true;}}),
+                  LocationAccess(DMT_STORMS_GROTTO_GOSSIP_STONE,  {[]{return true;}}),
+                  LocationAccess(DMT_STORMS_GROTTO_BEEHIVE_LEFT,  {[]{return CanBreakBeehives;}}),
+                  LocationAccess(DMT_STORMS_GROTTO_BEEHIVE_RIGHT, {[]{return CanBreakBeehives;}}),
                 }, {
                   //Exits
                   Entrance(DEATH_MOUNTAIN_TRAIL, {[]{return true;}}),
@@ -245,10 +245,10 @@ void AreaTable_Init_DeathMountain() {
 
   areaTable[DMC_UPPER_GROTTO] = Area("DMC Upper Grotto", "DMC Upper Grotto", NONE, NO_DAY_NIGHT_CYCLE, grottoEvents, {
                   //Locations
-                  LocationAccess(DMC_UPPER_GROTTO_CHEST,        {[]{return true;}}),
-                  LocationAccess(DMC_UPPER_GROTTO_GOSSIP_STONE, {[]{return true;}}),
-                  LocationAccess(DMC_UPPER_GROTTO_BEEHIVE_1,    {[]{return CanBreakBeehives;}}),
-                  LocationAccess(DMC_UPPER_GROTTO_BEEHIVE_2,    {[]{return CanBreakBeehives;}}),
+                  LocationAccess(DMC_UPPER_GROTTO_CHEST,         {[]{return true;}}),
+                  LocationAccess(DMC_UPPER_GROTTO_GOSSIP_STONE,  {[]{return true;}}),
+                  LocationAccess(DMC_UPPER_GROTTO_BEEHIVE_LEFT,  {[]{return CanBreakBeehives;}}),
+                  LocationAccess(DMC_UPPER_GROTTO_BEEHIVE_RIGHT, {[]{return CanBreakBeehives;}}),
                 }, {
                   //Exits
                   Entrance(DMC_UPPER_LOCAL, {[]{return true;}}),

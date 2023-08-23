@@ -144,8 +144,6 @@ void ObjComb_ChooseItemDrop(ObjComb* this, PlayState* play) {
         actor->randoGiEntry = getItemEntry;
         actor->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
         actor->randoInf = this->beehiveIdentity.randomizerInf;
-
-        //should prevent clipping thru the wall/ceiling
         return;
     }
 
