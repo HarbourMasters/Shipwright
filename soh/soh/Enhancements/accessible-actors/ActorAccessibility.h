@@ -62,12 +62,19 @@ struct AccessibleActor {
     f32 baseVolume;
     f32 currentVolume;
     f32 basePitch;
+<<<<<<< HEAD
     
     
     s16 variety;
+=======
+>>>>>>> 73e38a105ba0ad1f63f51493772e9db18dad02cf
 
     f32 currentPitch;
     s8 currentReverb;
+    s16 sceneIndex;//If this actor represents a scene transition, then this will contain the destination scene index. Zero otherwise.
+
+    s16 variety;
+
     bool managedSoundSlots[NUM_MANAGED_SOUND_SLOTS];//These have their attenuation and panning parameters updated every frame automatically.
 
     // Add more state as needed.
@@ -134,6 +141,9 @@ typedef enum {
     VA_DOOR,
     VA_AREA_CHANGE,
     VA_MARKER,
+    VA_SPIKE,
+
+VA_FINAL,
 
 } VIRTUAL_ACTOR_TABLE;
 
@@ -158,7 +168,12 @@ typedef enum {
 // Get the list of virtual actors for a given scene and room index.
 VirtualActorList* ActorAccessibility_GetVirtualActorList(s16 sceneNum, s8 roomNum);
 AccessibleActor* ActorAccessibility_AddVirtualActor(VirtualActorList* list, VIRTUAL_ACTOR_TABLE type, PosRot where);
-// External audio engine stuff.
+//Parses the loaded seen and converts select polygons (like ladders, spikes and scene exits) into virtual actors.
+void ActorAccessibility_InterpretCurrentScene(PlayState* play);
+//Convert a collision polygon into a virtual actor.
+void ActorAccessibility_PolyToVirtualActor(PlayState* play, CollisionPoly* poly, VIRTUAL_ACTOR_TABLE va, VirtualActorList* destination);
+
+    // External audio engine stuff.
 //  Initialize the accessible audio engine.
 bool ActorAccessibility_InitAudio();
 void ActorAccessibility_ShutdownAudio();

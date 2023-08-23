@@ -1325,38 +1325,50 @@ void func_80090A28(Player* this, Vec3f* vecs) {
     Matrix_MultVec3f(&D_80126098, &vecs[2]);
 }
 
-void Player_DrawHookshotReticle(PlayState* play, Player* this, f32 arg2) {
+void Player_DrawHookshotReticle(PlayState* play, Player* this, f32 hookshotRange) {
     static Vec3f D_801260C8 = { -500.0f, -100.0f, 0.0f };
-    CollisionPoly* sp9C;
+    CollisionPoly* colPoly;
     s32 bgId;
-    Vec3f sp8C;
-    Vec3f sp80;
-    Vec3f sp74;
+    Vec3f hookshotStart;
+    Vec3f hookshotEnd;
+    Vec3f firstHit;
     Vec3f sp68;
     f32 sp64;
-    f32 sp60;
 
     D_801260C8.z = 0.0f;
-    Matrix_MultVec3f(&D_801260C8, &sp8C);
-    D_801260C8.z = arg2;
-    Matrix_MultVec3f(&D_801260C8, &sp80);
+    Matrix_MultVec3f(&D_801260C8, &hookshotStart);
+    D_801260C8.z = hookshotRange;
+    Matrix_MultVec3f(&D_801260C8, &hookshotEnd);
 
-    if (BgCheck_AnyLineTest3(&play->colCtx, &sp8C, &sp80, &sp74, &sp9C, 1, 1, 1, 1, &bgId)) {
+    if (BgCheck_AnyLineTest3(&play->colCtx, &hookshotStart, &hookshotEnd, &firstHit, &colPoly, 1, 1, 1, 1, &bgId)) {
         OPEN_DISPS(play->state.gfxCtx);
 
         WORLD_OVERLAY_DISP = Gfx_SetupDL(WORLD_OVERLAY_DISP, 0x07);
 
-        SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, &sp74, &sp68, &sp64);
+        SkinMatrix_Vec3fMtxFMultXYZW(&play->viewProjectionMtxF, &firstHit, &sp68, &sp64);
 
-        sp60 = (sp64 < 200.0f) ? 0.08f : (sp64 / 200.0f) * 0.08f;
+        const f32 sp60 = (sp64 < 200.0f) ? 0.08f : (sp64 / 200.0f) * 0.08f;
 
-        Matrix_Translate(sp74.x, sp74.y, sp74.z, MTXMODE_NEW);
+        Matrix_Translate(firstHit.x, firstHit.y, firstHit.z, MTXMODE_NEW);
         Matrix_Scale(sp60, sp60, sp60, MTXMODE_APPLY);
 
-        gSPMatrix(WORLD_OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPSegment(WORLD_OVERLAY_DISP++, 0x06, play->objectCtx.status[this->actor.objBankIndex].segment);
-        gSPDisplayList(WORLD_OVERLAY_DISP++, gLinkAdultHookshotReticleDL);
+        gSPMatrix(WORLD_OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        char* tex = ResourceMgr_LoadTexOrDListByName(gLinkAdultHookshotReticleTex);
+        gSPMatrix(WORLD_OVERLAY_DISP++, SEG_ADDR(1, 0), G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
+        gSPTexture(WORLD_OVERLAY_DISP++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
+        gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, tex, G_IM_FMT_I, G_IM_SIZ_8b, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                            G_TX_NOMIRROR | G_TX_CLAMP, 6, 6, G_TX_NOLOD, G_TX_NOLOD);
+        if (SurfaceType_IsHookshotSurface(&play->colCtx, colPoly, bgId) && CVarGetInteger("gHookshotableReticle", false)) {
+            const Color_RGBA8 defaultColor = { .r = 0, .g = 255, .b = 0, .a = 255 };
+            const Color_RGBA8 color = CVarGetColor("gCosmetics.HookshotReticle_Target.Value", defaultColor);
+            gDPSetPrimColor(WORLD_OVERLAY_DISP++, 0, 0, color.r, color.g, color.b, color.a);
+        } else {
+            const Color_RGBA8 defaultColor = { .r = 255, .g = 0, .b = 0, .a = 255 };
+            const Color_RGBA8 color = CVarGetColor("gCosmetics.HookshotReticle_NonTarget.Value", defaultColor);
+            gDPSetPrimColor(WORLD_OVERLAY_DISP++, 0, 0, color.r, color.g, color.b, color.a);
+        }
+        gSPVertex(WORLD_OVERLAY_DISP++, (uintptr_t)gLinkAdultHookshotRedicleVtx, 3, 0);
+        gSP1Triangle(WORLD_OVERLAY_DISP++, 0, 1, 2, 0);
 
         CLOSE_DISPS(play->state.gfxCtx);
     }
