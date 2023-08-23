@@ -7,6 +7,7 @@
 #include "z_obj_comb.h"
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
+#include "include/z64actor.h"
 
 #define FLAGS 0
 
@@ -138,7 +139,7 @@ void ObjComb_ChooseItemDrop(ObjComb* this, PlayState* play) {
     ) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(this->beehiveIdentity.randomizerCheck, GI_NONE);
         
-        EnItem00* actor = (EnItem00*)Item_DropCollectible(play, &this->actor.world.pos, 6);
+        EnItem00* actor = (EnItem00*)Item_DropCollectible2(play, &this->actor.world.pos, ITEM00_SMALL_KEY);
         actor->randoCheck = this->beehiveIdentity.randomizerCheck;
         actor->randoGiEntry = getItemEntry;
         actor->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
