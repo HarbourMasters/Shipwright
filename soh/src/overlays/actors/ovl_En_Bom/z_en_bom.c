@@ -397,7 +397,9 @@ void EnBom_Draw(Actor* thisx, PlayState* play) {
 
     if (thisx->params == BOMB_BODY) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        Matrix_ReplaceRotation(&play->billboardMtxF);
+        if (!CVarGetInteger("gDisableBombBillboarding", 0)) {
+            Matrix_ReplaceRotation(&play->billboardMtxF);
+        }
         func_8002EBCC(thisx, play, 0);
 
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
