@@ -6,6 +6,7 @@
 #include <random>
 #include <vector>
 #include <functions.h>
+#include <variables.h>
 #include <macros.h>
 #include "ResourceType.h"
 #include "SfxExtractor.h"
@@ -436,9 +437,11 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
        AccessibleActor* actor = ActorAccessibility_AddVirtualActor(destination, va, where);
        if (actor == NULL)
             return;
-       if (va == VA_AREA_CHANGE)
+       if (va == VA_AREA_CHANGE) {
             actor->sceneIndex = SurfaceType_GetSceneExitIndex(&play->colCtx, poly, BGCHECK_SCENE);
-
+            s16 nextEntranceIndex = play->setupExitList[actor->sceneIndex - 1];
+            actor->sceneIndex = gEntranceTable[nextEntranceIndex].scene;
+       }
     }
         //External audio engine stuff.
     bool ActorAccessibility_InitAudio() {
@@ -503,3 +506,7 @@ return NULL;//Resource doesn't exist, user's gotta run the extractor.
         aa->sfxExtractor.captureCallback();
 
     }
+
+
+  
+    

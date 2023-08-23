@@ -145,10 +145,65 @@ void accessible_maruta(AccessibleActor* actor) {
 }
 
 void accessible_area_change(AccessibleActor* actor) {
-    if (actor->variety == AREA_KOKIRI) {
+    /*switch (actor->sceneIndex) { 
+        case 85 || 91:
+            ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_SARIA_MELODY, false);
+        case 81:
+            ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_IT_INGO_HORSE_NEIGH, false);
+        case 0:
+            ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_FANTOM_WARP_L, false);
+    }*/
+
+    if (actor->sceneIndex == 85 || actor->sceneIndex == 91) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_SARIA_MELODY, false);
-    } else if (actor->variety == AREA_HYRULE_FIELD) {
+    } else if (actor->sceneIndex == 81) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_HORSE_RUN_LEVEL, false);
+    } else if (actor->sceneIndex <= 11) {
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_FANTOM_WARP_L, false);
+    } else if (actor->sceneIndex >= 26 && actor->sceneIndex <=33){
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_SMALL_DOG_BARK, false);
+        //market sound
+    } else if ((actor->sceneIndex >= 34 && actor->sceneIndex <= 36) || actor->sceneIndex == 67) {
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_STONE_BOUND, false);
+        //ToT sound
+    } else if (actor->sceneIndex == 82) {
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_CHICKEN_CRY_N, false);
+        //kakariko sound
+    } else if (actor->sceneIndex == 83) {
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_PO_APPEAR, false);
+        //graveyard sound
+    } else if (actor->sceneIndex == 84 || actor->sceneIndex == 88 || actor->sceneIndex == 89) { //last one is zora fountain maybe seperate?
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_RIVER_STREAM_F_IDO, false);
+        //zora sound
+    } else if (actor->sceneIndex == 86) {//might not need to exist
+        //forest medow sound
+    } else if (actor->sceneIndex == 87) {
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_WHIRLPOOL, false);
+        //Lake Hylia sound
+    } else if (actor->sceneIndex == 90 || actor->sceneIndex == 93) { //gerudo valley and fortress
+        //gerudo valley sound
+    } else if (actor->sceneIndex == 92 || actor->sceneIndex == 94) {//haunted wasteland and desert colosus
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_SAND_STORM, false);
+        
+    } else if (actor->sceneIndex == 95 || actor->sceneIndex == 100) {
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_BRIDGE_OPEN, false);
+        //Hyrule Castle sound
+    } else if (actor->sceneIndex == 96) {
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_DODO_K_ROLL, false);
+        //DMT sound
+    } else if (actor->sceneIndex == 97) {
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_DODO_K_LAVA, false);
+        //DMC sound
+    } else if (actor->sceneIndex == 98) {
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_DARUNIA_HIT_BREAST, false);
+        //Goron City
+    } else if (actor->sceneIndex == 99) {
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_COW_CRY, false);
+        //Lon Lon
+    }
+    else {
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_OC_DOOR_OPEN, false);
+
     }
 }
 
@@ -345,7 +400,8 @@ void ActorAccessibility_InitActors() {
     policy.distance = 1000;
     ActorAccessibility_AddSupportedActor(VA_DOOR, policy);
     ActorAccessibility_InitPolicy(&policy, "Area Change", accessible_area_change, 0);
-    policy.distance = 5000;
+    policy.n = 60;
+    policy.distance = 2000;
     ActorAccessibility_AddSupportedActor(VA_AREA_CHANGE, policy);
     //ActorAccessibility_InitPolicy(&policy, "marker", NULL,
     //                              NA_SE_EV_DIAMOND_SWITCH); 
