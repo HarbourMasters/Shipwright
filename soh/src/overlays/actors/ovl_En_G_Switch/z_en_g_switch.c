@@ -119,22 +119,11 @@ void EnGSwitch_Init(Actor* thisx, PlayState* play) {
             Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
             this->actor.draw = EnGSwitch_DrawRupee;
             this->actor.shape.yOffset = 700.0f;
-
-            if (CVarGetInteger("gNewDrops", 0) !=0) {
-                this->actor.shape.yOffset = 35.0f;
-            } else {
-                this->actor.shape.yOffset = 700.0f;
-            }
-
             if (Flags_GetSwitch(play, this->switchFlag)) {
                 osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Ｙｏｕ ａｒｅ Ｓｈｏｃｋ！  ☆☆☆☆☆ %d\n" VT_RST, this->switchFlag);
                 Actor_Kill(&this->actor);
             } else {
-                if (CVarGetInteger("gNewDrops", 0) !=0) {
-                    Actor_SetScale(&this->actor, 0.6f);
-                } else {
-                    Actor_SetScale(&this->actor, 0.03f);
-                }
+                Actor_SetScale(&this->actor, 0.03f);
                 this->actionFunc = EnGSwitch_SilverRupeeIdle;
             }
             break;
@@ -165,14 +154,8 @@ void EnGSwitch_Init(Actor* thisx, PlayState* play) {
             this->actionFunc = EnGSwitch_WaitForObject;
             break;
         case ENGSWITCH_TARGET_RUPEE:
-            if (CVarGetInteger("gNewDrops", 0) !=0) {
-                this->actor.shape.yOffset = 35.0f;
-                Actor_SetScale(&this->actor, 0.9f);
-            } else {
-                this->actor.shape.yOffset = 700.0f;
-                Actor_SetScale(&this->actor, 0.05f);
-            }
-            
+            this->actor.shape.yOffset = 700.0f;
+            Actor_SetScale(&this->actor, 0.05f);
             Collider_InitCylinder(play, &this->collider);
             Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
             this->actor.draw = EnGSwitch_DrawRupee;
@@ -486,8 +469,9 @@ void EnGSwitch_DrawPot(Actor* thisx, PlayState* play) {
 static void* sRupeeTextures[] = {
     gRupeeGreenTex, gRupeeBlueTex, gRupeeRedTex, gRupeePinkTex, gRupeeOrangeTex, gRupeeSilverTex,
 };
+// The pink/orange rupee textures are authentically reversed, so the GID models should be gold/purple respectively
 static void* sRupeeTexturesNew[] = {
-    GID_RUPEE_GREEN, GID_RUPEE_BLUE, GID_RUPEE_RED, GID_RUPEE_PURPLE, GID_RUPEE_GOLD,
+    GID_RUPEE_GREEN, GID_RUPEE_BLUE, GID_RUPEE_RED, GID_RUPEE_GOLD, GID_RUPEE_PURPLE,
 };
 void EnGSwitch_DrawRupee(Actor* thisx, PlayState* play) {
     s32 pad;
@@ -495,11 +479,12 @@ void EnGSwitch_DrawRupee(Actor* thisx, PlayState* play) {
 
     if (!this->broken) {
         OPEN_DISPS(play->state.gfxCtx);
-        Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        func_8002EBCC(&this->actor, play, 0);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        if (CVarGetInteger("gNewDrops", 0) !=0) {
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+
+        if (CVarGetInteger("gNewDrops", 0)) {
+            // purple/gold/silver rupees need less scaling
+            f32 mtxScale = this->colorIdx >= 3 ? 17.5f : 25.0f;
+            Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
+
             if (this->type == ENGSWITCH_TARGET_RUPEE) {
                 GetItem_Draw(play, sRupeeTexturesNew[this->colorIdx]);
             } else {
@@ -533,11 +518,11 @@ void EnGSwitch_DrawRupee(Actor* thisx, PlayState* play) {
                     rupeeColor = CVarGetColor24("gCosmetics.Consumable_RedRupee.Value", (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_RedRupee.Changed", 0);
                     break;
-                case 3:
+                case 4: // orange rupee texture corresponds to the purple rupee (authentic bug)
                     rupeeColor = CVarGetColor24("gCosmetics.Consumable_PurpleRupee.Value", (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_PurpleRupee.Changed", 0);
                     break;
-                case 4:
+                case 3: // pink rupee texture corresponds to the gold rupee (authentic bug)
                     rupeeColor = CVarGetColor24("gCosmetics.Consumable_GoldRupee.Value", (Color_RGB8){ 255, 255, 255 });
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_GoldRupee.Changed", 0);
                     break;
@@ -546,6 +531,10 @@ void EnGSwitch_DrawRupee(Actor* thisx, PlayState* play) {
                     shouldColor = CVarGetInteger("gCosmetics.Consumable_SilverRupee.Changed", 0);
                     break;
             }
+
+            Gfx_SetupDL_25Opa(play->state.gfxCtx);
+            func_8002EBCC(&this->actor, play, 0);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             if (shouldColor) {
                 gDPSetGrayscaleColor(POLY_OPA_DISP++, rupeeColor.r, rupeeColor.g, rupeeColor.b, 255);
