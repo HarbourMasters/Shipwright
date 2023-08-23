@@ -21,6 +21,13 @@ extern "C" {
 
 void EnKarebaba_DeadItemDrop(EnKarebaba*, PlayState*);
 }
+//User data for the general helper VA.
+typedef struct
+{
+    s16 currentScene;
+    s8 currentRoom;
+
+}GeneralHelperData;
 void accessible_va_ledge_cue(AccessibleActor* actor);
 void accessible_va_wall_cue(AccessibleActor* actor);
 
@@ -205,8 +212,38 @@ void accessible_sticks(AccessibleActor* actor) {
     }
 
 }
+bool accessible_general_helper_init(AccessibleActor* actor) {
+    GeneralHelperData* data = (GeneralHelperData*)malloc(sizeof(GeneralHelperData));
+    if (data == NULL)
+        return false;
+    data->currentRoom = -1;
+    data->currentScene = -1;
 
-void ActorAccessibility_InitActors() {
+    actor->userData = data;
+
+}
+void accessible_general_helper_cleanup(AccessibleActor* actor)
+{
+    free(actor->userData);
+    actor->userData = NULL;
+}
+void accessible_va_general_helper(AccessibleActor* actor)
+{
+    GeneralHelperData* data = (GeneralHelperData*)actor->userData;
+    if (data->currentScene == actor->play->sceneNum && data->currentRoom != actor->play->roomCtx.curRoom.num)
+    {
+        ActorAccessibility_AnnounceRoomNumber(actor->play);
+        data->currentRoom = actor->play->roomCtx.curRoom.num;
+
+    }
+    if (data->currentScene != actor->play->sceneNum)
+    {
+        data->currentScene = actor->play->sceneNum;
+        data->currentRoom = actor->play->roomCtx.curRoom.num;
+
+    }
+}
+    void ActorAccessibility_InitActors() {
     const int Npc_Frames = 35;
     ActorAccessibilityPolicy policy; 
     ActorAccessibility_InitPolicy(&policy, "Rock", accessible_en_ishi, 0);
@@ -355,14 +392,22 @@ void ActorAccessibility_InitActors() {
     policy.distance = 200;
     policy.pitch = 0.5;
     ActorAccessibility_AddSupportedActor(VA_SPIKE, policy);
- 
+    ActorAccessibility_InitPolicy(&policy, "System general helper", accessible_va_general_helper, 0);
+    policy.n = 1;
+    policy.cleanupUserData = accessible_general_helper_cleanup;
+    policy.initUserData = accessible_general_helper_init;
+    policy.runsAlways = true;
+    ActorAccessibility_AddSupportedActor(VA_GENERAL_HELPER, policy);
+
     // Now query a list of virtual actors for a given
                                                                 // location (scene
                                                        // and room
                                            // number).
-                                                VirtualActorList* list = ActorAccessibility_GetVirtualActorList(85, 0); // Kokiri Forest
+    VirtualActorList* list = (VirtualActorList*)ActorAccessibility_GetVirtualActorList(EVERYWHERE, 0);//Global/ omnipresent.
 
-//Now place the actor.
+    // Now place the actor.
+    ActorAccessibility_AddVirtualActor(list, VA_GENERAL_HELPER, { { 0.0, 0.0, 0.0 }, { 0, 0, 0 } });
+                                                list = ActorAccessibility_GetVirtualActorList(85, 0); // Kokiri Forest
     ActorAccessibility_AddVirtualActor(list, VA_CRAWLSPACE, { { -784.0, 120.0, 1046.00 }, { 0, 14702, 0 } });
     //ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -547.0, 60.0, -1036.00 }, { 0, 14702, 0 } });
     //ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -29.0, -80.0, 983.00 }, { 0, 14702, 0 } });

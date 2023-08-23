@@ -13,6 +13,11 @@
 #include <sstream>
 #include "File.h"
 #include <unordered_set>
+#include "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.h"
+#include "soh/Enhancements/tts/tts.h"
+
+const char* GetLanguageCode();
+
 #define MAX_DB_REDUCTION 35// This is the amount in DB that a sound will be reduced by when it is at the maximum distance
                         // from the player.
 extern "C" {
@@ -438,6 +443,13 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
             return;
        if (va == VA_AREA_CHANGE)
             actor->sceneIndex = SurfaceType_GetSceneExitIndex(&play->colCtx, poly, BGCHECK_SCENE);
+
+    }
+    void ActorAccessibility_AnnounceRoomNumber(PlayState* play)
+    {
+       std::stringstream ss;
+       ss << "Room" << (int) play->roomCtx.curRoom.num << "." << std::endl;
+       SpeechSynthesizer::Instance->Speak(ss.str().c_str(), GetLanguageCode());
 
     }
         //External audio engine stuff.
