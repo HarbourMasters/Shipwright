@@ -185,7 +185,8 @@ class Platform: protected TerrainCueSound {
   public:
     Platform(AccessibleActor* actor, Vec3f pos) : TerrainCueSound(actor, pos) {
         currentPitch = 2.0;
-        currentSFX = NA_SE_EV_WOOD_BOUND;
+//actor->policy.volume = 1.5;
+        currentSFX = NA_SE_IT_SHIELD_REFLECT_SW;
         shouldLoop = false;
 
     }
@@ -514,7 +515,7 @@ class Climable : protected TerrainCueSound {
     void setVelocity() {
 
         velocity.x = Math_SinS(rot.y) * probeSpeed;
-        velocity.y = 12.0;
+        velocity.y = 25.0;
         velocity.z = Math_CosS(rot.y) * probeSpeed;
         expectedVelocity = velocity;
 
@@ -779,7 +780,7 @@ class Climable : protected TerrainCueSound {
                 rot.y = ogRot.y;
                 pos = ogPos;
 
-                if (clockwiseTest && counterclockwiseTest && (forwardTest || wallHeight < 44.0) &&
+                if (clockwiseTest && counterclockwiseTest && (forwardTest || wallHeight < 44.0) && wallHeight < 48 && //probably have to change for adult
                     (fabs(clockwiseY - counterclockwiseY) < 2.0 ||
                      fabs(clockwiseY - counterclockwiseY) > wallHeight - 5.0)) {
                     discoverLedge(pos, true);

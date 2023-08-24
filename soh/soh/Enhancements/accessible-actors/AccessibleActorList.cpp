@@ -21,6 +21,8 @@ extern "C" {
 
 void EnKarebaba_DeadItemDrop(EnKarebaba*, PlayState*);
 }
+//Declarations specific to Torches
+#include "overlays\actors\ovl_Obj_Syokudai\z_obj_syokudai.h"
 //User data for the general helper VA.
 typedef struct
 {
@@ -78,7 +80,12 @@ void accessible_grotto(AccessibleActor* actor) {
 }
 
 void accessible_torches(AccessibleActor* actor) {
+    ObjSyokudai* torche = (ObjSyokudai*)actor->actor;
     if ((actor->actor->params) == 4230 || (actor->actor->params) == 4220 || (actor->actor->params) == 4227) {
+        if (torche->litTimer != 0) {
+            actor->policy.volume = 0.1;
+            ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_IT_BOMB_IGNIT, false);
+        }
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_IT_BOMB_IGNIT, false);
     }
     if ((actor->actor->params) == 9216 || (actor->actor->params) == 962) {
@@ -167,10 +174,15 @@ void accessible_area_change(AccessibleActor* actor) {
 
     if (actor->sceneIndex == 85 || actor->sceneIndex == 91) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_SARIA_MELODY, false);
+        //kokiri forest and lost woods
+    } else if (actor->play->sceneNum >= 17 && actor->play->sceneNum <= 25) {
+        return; // dont check for entrances while in boss rooms
     } else if (actor->sceneIndex == 81) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_HORSE_RUN_LEVEL, false);
+        //hyrule field
     } else if (actor->sceneIndex <= 11) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_FANTOM_WARP_L, false);
+        //dungeons
     } else if (actor->sceneIndex >= 26 && actor->sceneIndex <=33){
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_SMALL_DOG_BARK, false);
         //market sound
@@ -212,6 +224,8 @@ void accessible_area_change(AccessibleActor* actor) {
     } else if (actor->sceneIndex == 99) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_COW_CRY, false);
         //Lon Lon
+    } else if (actor->sceneIndex >= 17 && actor->sceneIndex <= 25) {
+        return;//boss rooms
     }
     else {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_OC_DOOR_OPEN, false);
@@ -220,15 +234,20 @@ void accessible_area_change(AccessibleActor* actor) {
 }
 
 void accessible_231_dekus(AccessibleActor* actor) {
-    ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_NUTS_FAINT, false);
+    
     if (actor->actor->params == 1) {
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_NUTS_FAINT, false);
         ActorAccessibility_SetSoundPitch(actor, 0, 1.0);
     }
     if (actor->actor->params == 2) {
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_NUTS_FAINT, false);
         ActorAccessibility_SetSoundPitch(actor, 0, 0.5);
     }
     if (actor->actor->params == 3) {
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_NUTS_FAINT, false);
         ActorAccessibility_SetSoundPitch(actor, 0, 1.5);
+    } else {
+        return;
     }
 
 }
@@ -402,9 +421,9 @@ void accessible_va_general_helper(AccessibleActor* actor)
     ActorAccessibility_AddSupportedActor(ACTOR_BG_YDAN_HASI, policy);
     ActorAccessibility_InitPolicy(&policy, "Pot", NULL, NA_SE_EV_POT_BROKEN);
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_TSUBO, policy);
-    ActorAccessibility_InitPolicy(&policy, "Deku Tree Entrance", NULL, NA_SE_EV_FANTOM_WARP_L);
-    policy.distance = 5000;
-    ActorAccessibility_AddSupportedActor(ACTOR_BG_TREEMOUTH, policy);
+    //ActorAccessibility_InitPolicy(&policy, "Deku Tree Entrance", NULL, NA_SE_EV_FANTOM_WARP_L);
+    //policy.distance = 5000;
+    //ActorAccessibility_AddSupportedActor(ACTOR_BG_TREEMOUTH, policy);
     ActorAccessibility_InitPolicy(&policy, "Platform collapsable", NULL, NA_SE_EV_BLOCK_SHAKE);
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_LIFT, policy);
     ActorAccessibility_InitPolicy(&policy, "Ladder in Slingshot Room", accessible_maruta, 0);
@@ -421,11 +440,13 @@ void accessible_va_general_helper(AccessibleActor* actor)
     ActorAccessibility_AddSupportedActor(ACTOR_EN_SI, policy);
     ActorAccessibility_InitPolicy(&policy, "goma larva egg", accessible_larva, 0);
     policy.distance = 1000;
+    policy.ydist = 1000;
     ActorAccessibility_AddSupportedActor(ACTOR_EN_GOMA, policy);
     ActorAccessibility_InitPolicy(&policy, "heart canister", accessible_en_pickups, 0);
     ActorAccessibility_AddSupportedActor(ACTOR_ITEM_B_HEART, policy);
     ActorAccessibility_InitPolicy(&policy, "Goma", accessible_goma, 0);
     policy.distance = 5000;
+    policy.ydist = 2000;
     ActorAccessibility_AddSupportedActor(ACTOR_BOSS_GOMA, policy);
 
     ActorAccessibility_InitPolicy(&policy, "door of time", accessible_door_of_time, 0);
@@ -476,13 +497,13 @@ void accessible_va_general_helper(AccessibleActor* actor)
     ActorAccessibility_AddVirtualActor(list, VA_CRAWLSPACE, { { -784.0, 120.0, 1046.00 }, { 0, 14702, 0 } });
     //ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -547.0, 60.0, -1036.00 }, { 0, 14702, 0 } });
     //ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -29.0, -80.0, 983.00 }, { 0, 14702, 0 } });
-    ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { -448.0, 0.0, -528.00 }, { 0, 14702, 0 } });
+    /*ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { -448.0, 0.0, -528.00 }, { 0, 14702, 0 } });
     ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { -1082.0, 120.0, 383.00 }, { 0, 14702, 0 } });
     ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { -27.0, 100.0, 1117.00 }, { 0, 14702, 0 } });
     ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 515.0, 0.0, 647.00 }, { 0, 14702, 0 } });
     ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 1046.0, 0.0, 549.00 }, { 0, 14702, 0 } });
     ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 848.0, 0.0, -323.00 }, { 0, 14702, 0 } });
-    
+    */
     //ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE,{ { -317.0, 373.2, -1542.00 }, {0, 14702, 0 }}, AREA_KORIRI);
  
     //ActorAccessibility_AddVirtualActor(list, VA_AREA_CHANGE, { { -1380.0, -67.0, -288.00 }, { 0, 14702, 0 } }, AREA_HYRULE_FIELD);
@@ -490,23 +511,23 @@ void accessible_va_general_helper(AccessibleActor* actor)
     list = ActorAccessibility_GetVirtualActorList(85, 2); // Kokiri Forest Room with boulder and kokiri sword
     ActorAccessibility_AddVirtualActor(list, VA_CRAWLSPACE, { { -788.0, 120.0, 1392.00 }, { 0, 14702, 0 } });
 
-    list = ActorAccessibility_GetVirtualActorList(38, 0); //know-it-all house
-    ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 12.0, 0.0, -131.00 }, { 0, 14702, 0 } });
+    //list = ActorAccessibility_GetVirtualActorList(38, 0); //know-it-all house
+    //ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 12.0, 0.0, -131.00 }, { 0, 14702, 0 } });
 
-    list = ActorAccessibility_GetVirtualActorList(40, 0); // mido house
-    ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { -6.6, 0.0, -179.00 }, { 0, 14702, 0 } });
+    //list = ActorAccessibility_GetVirtualActorList(40, 0); // mido house
+    //ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { -6.6, 0.0, -179.00 }, { 0, 14702, 0 } });
 
-    list = ActorAccessibility_GetVirtualActorList(52, 0); // link's house
-    ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 2.3, 0.0, -134.00 }, { 0, 14702, 0 } });
+    //list = ActorAccessibility_GetVirtualActorList(52, 0); // link's house
+    //ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 2.3, 0.0, -134.00 }, { 0, 14702, 0 } });
 
-    list = ActorAccessibility_GetVirtualActorList(41, 0); // saria's house
-    ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 1.7, 0.0, -188.00 }, { 0, 14702, 0 } });
+    //list = ActorAccessibility_GetVirtualActorList(41, 0); // saria's house
+    //ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 1.7, 0.0, -188.00 }, { 0, 14702, 0 } });
 
-    list = ActorAccessibility_GetVirtualActorList(39, 0); // twins house
-    ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 3.0, 0.0, -179.00 }, { 0, 14702, 0 } });
+    //list = ActorAccessibility_GetVirtualActorList(39, 0); // twins house
+    //ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 3.0, 0.0, -179.00 }, { 0, 14702, 0 } });
 
-    list = ActorAccessibility_GetVirtualActorList(45, 0); // Kokiri Shop
-    ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 0.0, 0.0, 150.00 }, { 0, 14702, 0 } });
+    //list = ActorAccessibility_GetVirtualActorList(45, 0); // Kokiri Shop
+    //ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { 0.0, 0.0, 150.00 }, { 0, 14702, 0 } });
 
     list = ActorAccessibility_GetVirtualActorList(0, 0);//deku tree main room
     //ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -226.7, 0, 197.0 } });
