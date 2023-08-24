@@ -167,13 +167,13 @@ void accessible_area_change(AccessibleActor* actor) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_STONE_BOUND, false);
         //ToT sound
     } else if (actor->sceneIndex == 82) {
-        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_CHICKEN_CRY_N, false);
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_CHICKEN_CRY_M, false);
         //kakariko sound
     } else if (actor->sceneIndex == 83) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_PO_APPEAR, false);
         //graveyard sound
     } else if (actor->sceneIndex == 84 || actor->sceneIndex == 88 || actor->sceneIndex == 89) { //last one is zora fountain maybe seperate?
-        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_RIVER_STREAM_F_IDO, false);
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_RIVER_STREAM_S, false);
         //zora sound
     } else if (actor->sceneIndex == 86) {//might not need to exist
         //forest medow sound
@@ -181,6 +181,7 @@ void accessible_area_change(AccessibleActor* actor) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_WHIRLPOOL, false);
         //Lake Hylia sound
     } else if (actor->sceneIndex == 90 || actor->sceneIndex == 93) { //gerudo valley and fortress
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_GERUDOFT_BREATH, false);
         //gerudo valley sound
     } else if (actor->sceneIndex == 92 || actor->sceneIndex == 94) {//haunted wasteland and desert colosus
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_SAND_STORM, false);

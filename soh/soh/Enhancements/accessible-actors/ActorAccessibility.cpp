@@ -319,6 +319,8 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
             return;*/
         
         Player* player = GET_PLAYER(play);
+        
+        
         if (player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE) {
             return;
         }
