@@ -37,8 +37,8 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         if (integerScale_maximumBounds < 1)
             integerScale_maximumBounds = 1; // it should never be less than 1x.
         // Stored Values
-        static float aspectRatio_X      = CVarGetFloat("gAdvancedResolution_aspectRatio_X",        16.0f);
-        static float aspectRatio_Y      = CVarGetFloat("gAdvancedResolution_aspectRatio_Y",        9.0f);
+        static float aspectRatio_X      = CVarGetFloat("gAdvancedResolution_aspectRatioX",        16.0f);
+        static float aspectRatio_Y      = CVarGetFloat("gAdvancedResolution_aspectRatioY",        9.0f);
         static int   verticalPixelCount = CVarGetInteger("gAdvancedResolution_verticalPixelCount", 480);
         static int   integerScaleFactor = CVarGetInteger("gAdvancedResolution_IntegerScaleFactor", 1);
         // Combo List defaults
@@ -141,8 +141,8 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         }
 
         // Update CVars
-        if (update[UPDATE_aspectRatio_X])       { CVarSetFloat("gAdvancedResolution_aspectRatio_X",         aspectRatio_X); }
-        if (update[UPDATE_aspectRatio_Y])       { CVarSetFloat("gAdvancedResolution_aspectRatio_Y",         aspectRatio_Y); }
+        if (update[UPDATE_aspectRatio_X])       { CVarSetFloat("gAdvancedResolution_aspectRatioX",         aspectRatio_X); }
+        if (update[UPDATE_aspectRatio_Y])       { CVarSetFloat("gAdvancedResolution_aspectRatioY",         aspectRatio_Y); }
         if (update[UPDATE_verticalPixelCount])  { CVarSetInteger("gAdvancedResolution_verticalPixelCount",  (int32_t)verticalPixelCount); }
     }
     ImGui::End();
