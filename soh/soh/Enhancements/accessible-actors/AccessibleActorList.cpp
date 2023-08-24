@@ -94,6 +94,7 @@ void accessible_hasi(AccessibleActor* actor) {
     }
 
     else if ((actor->actor->params) == 1) {
+        actor->policy.ydist = 1000;
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_PL_DAMAGE, false);
     }
 }
@@ -152,6 +153,9 @@ void accessible_maruta(AccessibleActor* actor) {
 }
 
 void accessible_area_change(AccessibleActor* actor) {
+    if (actor->yDistToPlayer > 300.0) {
+        return;
+    }
     /*switch (actor->sceneIndex) { 
         case 85 || 91:
             ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_SARIA_MELODY, false);
