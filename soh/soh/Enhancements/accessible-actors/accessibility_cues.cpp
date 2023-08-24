@@ -810,7 +810,7 @@ class Climable : protected TerrainCueSound {
 
                     discoverLedge(pos);
                     if (((pos.y - player->actor.prevPos.y) < player->actor.yDistToWater-30) &&
-                        (player->actor.yDistToWater < 0 && player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER)) {
+                        (player->actor.yDistToWater < 0)) {
                         discoverWater(pos);
                         break;
                     }
@@ -821,7 +821,7 @@ class Climable : protected TerrainCueSound {
 
                 //checks for water
                 if (((pos.y - player->actor.prevPos.y) < player->actor.yDistToWater) &&
-                    (player->actor.yDistToWater < 0)) {
+                    (player->actor.yDistToWater < 0 && player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER)) {
                     discoverWater(pos);
                     break;
                 }
