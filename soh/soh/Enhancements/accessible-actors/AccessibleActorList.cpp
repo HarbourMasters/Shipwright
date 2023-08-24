@@ -98,7 +98,7 @@ void accessible_hasi(AccessibleActor* actor) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_PL_DAMAGE, false);
     }
 }
-    void accessible_switch(AccessibleActor* actor) {
+void accessible_switch(AccessibleActor* actor) {
     Player* player = GET_PLAYER(actor->play);
     ObjSwitch* sw = (ObjSwitch*)actor->actor;
     Vec3f& scale = actor->actor->scale;
@@ -372,6 +372,7 @@ void accessible_va_general_helper(AccessibleActor* actor)
     ActorAccessibility_AddSupportedActor(ACTOR_DOOR_ANA, policy);
     ActorAccessibility_InitPolicy(&policy, "Web", NULL, NA_SE_EV_WEB_BROKEN);
     policy.n = 40;
+    policy.ydist = 2000;
     policy.distance = 2000;
     policy.pitch = 1.2;
     ActorAccessibility_AddSupportedActor(ACTOR_BG_YDAN_SP, policy);
@@ -380,8 +381,9 @@ void accessible_va_general_helper(AccessibleActor* actor)
     policy.n = 30;
         policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_DOOR_SHUTTER, policy);
-        ActorAccessibility_InitPolicy(&policy, "Switch", accessible_switch, 0);
+    ActorAccessibility_InitPolicy(&policy, "Switch", accessible_switch, 0);
     policy.n = 30;
+    policy.ydist = 200;
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SWITCH, policy);
     ActorAccessibility_InitPolicy(&policy, "Pushable Block", accessible_test, 0);
