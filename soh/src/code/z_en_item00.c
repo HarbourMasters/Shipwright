@@ -1753,7 +1753,11 @@ void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnP
                     }
                 }
             } else {
-                Item_DropCollectible(play, spawnPos, params | 0x8000);
+                if (CVarGetInteger("gBushDropFix", 0)) {
+                    Item_DropCollectible(play, spawnPos, dropId | 0x8000);
+                } else {
+                    Item_DropCollectible(play, spawnPos, params | 0x8000);
+                }
             }
             dropQuantity--;
         }
