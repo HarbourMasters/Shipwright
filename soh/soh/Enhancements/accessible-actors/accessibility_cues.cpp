@@ -813,7 +813,6 @@ class Climable : protected TerrainCueSound {
                     if (((pos.y - player->actor.prevPos.y) < player->actor.yDistToWater-30) &&
                         (player->actor.yDistToWater < 0)) {
                         discoverWater(pos);
-
                     }
                     testForPlatform();
 

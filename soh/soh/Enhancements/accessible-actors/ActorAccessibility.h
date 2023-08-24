@@ -35,7 +35,7 @@ typedef struct {
     bool runsAlways; // If set, then the distance policy is ignored.
     ActorAccessibilityUserDataInit initUserData;
     ActorAccessibilityUserDataCleanup cleanupUserData;
-    u8 param;
+    //u8 param;
 
 } ActorAccessibilityPolicy;
 
