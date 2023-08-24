@@ -68,7 +68,7 @@ void accessible_en_pickups(AccessibleActor* actor) {
 }
 
 void accessible_test(AccessibleActor* actor) {
-    ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_FOOT_SWITCH, false);
+    ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_BLOCKSINK, false);
 }
 
 void accessible_grotto(AccessibleActor* actor) {
@@ -379,7 +379,8 @@ void accessible_va_general_helper(AccessibleActor* actor)
                                          
     ActorAccessibility_InitPolicy(&policy, "Shutter Door", accessible_door, 0);
     policy.n = 30;
-        policy.pitch = 1.1;
+    policy.distance = 1000;
+    policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_DOOR_SHUTTER, policy);
     ActorAccessibility_InitPolicy(&policy, "Switch", accessible_switch, 0);
     policy.n = 30;
@@ -388,6 +389,7 @@ void accessible_va_general_helper(AccessibleActor* actor)
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SWITCH, policy);
     ActorAccessibility_InitPolicy(&policy, "Pushable Block", accessible_test, 0);
     policy.n = 30;
+    policy.distance = 800;
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_OSHIHIKI, policy);
     ActorAccessibility_InitPolicy(&policy, "Torch", accessible_torches, 0);
