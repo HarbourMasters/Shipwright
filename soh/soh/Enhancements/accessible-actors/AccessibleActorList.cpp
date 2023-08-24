@@ -105,7 +105,7 @@ void accessible_switch(AccessibleActor* actor) {
     if ((actor->actor->params & 7) == 0) {
         if (scale.y >= 33.0f / 200.0f) {
             if (actor->play->sceneNum == 0 && actor->play->roomCtx.curRoom.num == 5 && actor->xzDistToPlayer < 20) {
-                ActorAccessibility_PlaySound(actor, 0, NA_SE_EV_DIAMOND_SWITCH, false);//Should result in same behaviour.
+                ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_DIAMOND_SWITCH, false);//Should result in same behaviour.
             }
             ActorAccessibility_PlaySoundForActor(actor, 1, NA_SE_EV_FOOT_SWITCH, false);
 }
@@ -395,8 +395,8 @@ void accessible_va_general_helper(AccessibleActor* actor)
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SYOKUDAI, policy);
     ActorAccessibility_InitPolicy(&policy, "Deku Tree Moving Platform", accessible_hasi, 0);
-    policy.volume = 1.3;
-    policy.distance = 2000;
+    //policy.volume = 1.3;
+    policy.distance = 1000;
     ActorAccessibility_AddSupportedActor(ACTOR_BG_YDAN_HASI, policy);
     ActorAccessibility_InitPolicy(&policy, "Pot", NULL, NA_SE_EV_POT_BROKEN);
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_TSUBO, policy);
