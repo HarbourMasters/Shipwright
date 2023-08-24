@@ -964,8 +964,8 @@ bool ActorAccessibility_InitTerrainCueState(AccessibleActor* actor) {
     if (state == NULL)
         return false;
     state->directions[0].init(actor, { 0, 0, 0 });
-    state->directions[1].init(actor, { 0, 16384, 0 }, PLAYER_BODYPART_L_SHOULDER);
-    state->directions[2].init(actor, { 0, -16384, 0 }, PLAYER_BODYPART_R_SHOULDER);
+    state->directions[1].init(actor, { 0, 16384, 0 });//, PLAYER_BODYPART_L_SHOULDER);
+    state->directions[2].init(actor, { 0, -16384, 0 });//, PLAYER_BODYPART_R_SHOULDER);
     state->previousAction = DO_ACTION_NONE;
 
     actor->userData = state;
