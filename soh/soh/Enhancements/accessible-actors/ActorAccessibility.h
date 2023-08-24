@@ -137,6 +137,7 @@ typedef enum {
     VA_AREA_CHANGE,
     VA_MARKER,
     VA_SPIKE,
+VA_GENERAL_HELPER,//Room announcements, action icon and other misc help.
 
 VA_FINAL,
 
@@ -167,7 +168,9 @@ AccessibleActor* ActorAccessibility_AddVirtualActor(VirtualActorList* list, VIRT
 void ActorAccessibility_InterpretCurrentScene(PlayState* play);
 //Convert a collision polygon into a virtual actor.
 void ActorAccessibility_PolyToVirtualActor(PlayState* play, CollisionPoly* poly, VIRTUAL_ACTOR_TABLE va, VirtualActorList* destination);
-
+//Report which room of a dungeon the player is in.
+ void ActorAccessibility_AnnounceRoomNumber(PlayState* play);
+// 
     // External audio engine stuff.
 //  Initialize the accessible audio engine.
 bool ActorAccessibility_InitAudio();
