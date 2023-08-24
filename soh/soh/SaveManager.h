@@ -19,6 +19,16 @@ typedef struct {
     s16 buildVersionMajor;
     s16 buildVersionMinor;
     s16 buildVersionPatch;
+
+    u8 inventoryItems[24];
+    u16 equipment;
+    u32 upgrades;
+    u8 isMagicAcquired;
+    u8 isDoubleMagicAcquired;
+    s16 rupees;
+    s16 gsTokens;
+    u8 isDoubleDefenseAcquired;
+    u8 gregFound;
 } SaveFileMetaInfo;
 
 #ifdef __cplusplus
