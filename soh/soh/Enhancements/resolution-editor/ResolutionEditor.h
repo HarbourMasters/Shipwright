@@ -3,6 +3,9 @@
 
 namespace AdvancedResolutionSettings {
 class AdvancedResolutionSettingsWindow : public LUS::GuiWindow {
+  private:
+    bool IsDroppingFrames();
+
   public:
     using LUS::GuiWindow::GuiWindow;
 
@@ -10,4 +13,4 @@ class AdvancedResolutionSettingsWindow : public LUS::GuiWindow {
     void DrawElement() override;
     void UpdateElement() override;
 };
-}
+} // namespace AdvancedResolutionSettings
