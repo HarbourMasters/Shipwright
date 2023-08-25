@@ -358,6 +358,7 @@ void accessible_audio_compass(AccessibleActor* actor) {
     bool shouldChime = false;
     if (actor->world.rot.y != player->actor.world.rot.y) {
         actor->world.rot.y = player->actor.world.rot.y;
+        if (player->linearVelocity == 0)
         shouldChime = true;
     }
     AudioCompassData* data = (AudioCompassData*)actor->userData;
@@ -538,7 +539,7 @@ void accessible_audio_compass(AccessibleActor* actor) {
     policy.cleanupUserData = accessible_general_helper_cleanup;
     policy.initUserData = accessible_general_helper_init;
     policy.runsAlways = true;
-    ActorAccessibility_AddSupportedActor(VA_AUDIO_COMPASS, policy);
+    ActorAccessibility_AddSupportedActor(VA_GENERAL_HELPER, policy);
     ActorAccessibility_InitPolicy(&policy, "Audio Compass", accessible_audio_compass, 0);
     policy.n = 1;
     policy.cleanupUserData = accessible_audio_compass_cleanup;

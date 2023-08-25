@@ -92,11 +92,13 @@ class TerrainCueSound {
     }
 };
 class Incline : protected TerrainCueSound {
+    float pitchModifier;
 
   public:
-    Incline(AccessibleActor* actor, Vec3f pos) : TerrainCueSound(actor, pos) {
+    Incline(AccessibleActor* actor, Vec3f pos, float pitchModifier = 0) : TerrainCueSound(actor, pos) {
         currentPitch = 0.5;
         currentSFX = NA_SE_PL_MAGIC_SOUL_FLASH;
+        this->pitchModifier = pitchModifier;
 
         play();
     }
@@ -110,7 +112,7 @@ class Incline : protected TerrainCueSound {
 
             return;
         }
-        ActorAccessibility_SetSoundPitch(this, 0, 0.5 + (1-actor->policy.pitchModifier));
+        ActorAccessibility_SetSoundPitch(this, 0, 0.5 + (1-pitchModifier));
         /*currentPitch += 0.1;
         if (currentPitch >= 2.0) {
             stop();
@@ -118,15 +120,22 @@ class Incline : protected TerrainCueSound {
             restFrames = 5;
         }*/
     }
+    void setPitchModifier(float modifier)
+    {
+        pitchModifier = modifier;
+
+    }
 };
 
 class Decline : protected TerrainCueSound {
+    float pitchModifier;
 
       public:
-        Decline(AccessibleActor* actor, Vec3f pos) : TerrainCueSound(actor, pos) {
+        Decline(AccessibleActor* actor, Vec3f pos, float pitchModifier) : TerrainCueSound(actor, pos) {
             restFrames = 0;
             currentPitch = 2.0;
             currentSFX = NA_SE_PL_MAGIC_SOUL_FLASH;
+            this->pitchModifier = 0.0;
 
             play();
         }
@@ -140,13 +149,18 @@ class Decline : protected TerrainCueSound {
 
                 return;
             }
-            ActorAccessibility_SetSoundPitch(this, 0, 1.0 + actor->policy.pitchModifier);
+            ActorAccessibility_SetSoundPitch(this, 0, 1.0 + pitchModifier);
             /*currentPitch -= 0.1;
             if (currentPitch < 0.5) {
                 stop();
                 currentPitch = 2.0;
                 restFrames = 5;
             }*/
+        }
+        void setPitchModifier(float mod)
+        {
+            pitchModifier = mod;
+
         }
     };
 class Ledge :protected TerrainCueSound {
@@ -347,25 +361,30 @@ class Climable : protected TerrainCueSound {
     }
     // Play a sound from the position of a previously discovered incline.
 
-    void discoverIncline(Vec3f pos) {
-        if (terrainDiscovered == DISCOVERED_INCLINE)
+    void discoverIncline(Vec3f pos, float pitchModifier = 0) {
+        if (terrainDiscovered == DISCOVERED_INCLINE) {
+            incline.setPitchModifier(pitchModifier);
+
             return;
+        }
 
         destroyCurrentSound();
 
-        new (&incline) Incline(actor, pos);
+        new (&incline) Incline(actor, pos, pitchModifier);
         currentSound = (TerrainCueSound*)&incline;
         terrainDiscovered = DISCOVERED_INCLINE;
     }
     // Play a sound from the position of a previously discovered decline.
 
-    void discoverDecline(Vec3f pos) {
-        if (terrainDiscovered == DISCOVERED_DECLINE)
+    void discoverDecline(Vec3f pos, float pitchModifier = 0) {
+        if (terrainDiscovered == DISCOVERED_DECLINE) {
+            incline.setPitchModifier(pitchModifier);
             return;
+        }
 
         destroyCurrentSound();
 
-        new (&decline) Decline(actor, pos);
+        new (&decline) Decline(actor, pos, pitchModifier);
         
         currentSound = (TerrainCueSound*)&decline;
         terrainDiscovered = DISCOVERED_DECLINE;
@@ -850,8 +869,7 @@ class Climable : protected TerrainCueSound {
                     f32 pitchModifier = distToGo / 500.0;
 
                     pos = bottom;
-                    actor->policy.pitchModifier = pitchModifier;
-                    discoverIncline(bottom);
+                    discoverIncline(bottom, pitchModifier);
                     break;
                 }
                 if (pos.y < prevPos.y && fabs(pos.y - prevPos.y) < 20 && fabs(pos.y - prevPos.y) > 2 &&
@@ -875,8 +893,7 @@ class Climable : protected TerrainCueSound {
                     f32 pitchModifier = distToGo / 500.0;
 
                     pos = top;
-                    actor->policy.pitchModifier = pitchModifier;
-                    discoverDecline(pos);
+                    discoverDecline(pos, pitchModifier);
                     break;
                 }
                 Vec3f wallPos;
