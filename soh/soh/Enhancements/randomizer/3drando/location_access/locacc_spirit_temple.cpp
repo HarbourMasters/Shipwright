@@ -57,7 +57,7 @@ void AreaTable_Init_SpiritTemple() {
   areaTable[SPIRIT_TEMPLE_EARLY_ADULT] = Area("Early Adult Spirit Temple", "Spirit Temple", SPIRIT_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(SPIRIT_TEMPLE_COMPASS_CHEST,            {[]{return CanUse(HOOKSHOT) && CanPlay(ZeldasLullaby);}}),
-                  LocationAccess(SPIRIT_TEMPLE_EARLY_ADULT_RIGHT_CHEST,  {[]{return (Bow || Hookshot || HasBombchus || (Bombs && LogicSpiritLowerAdultSwitch)) && (HoverBoots || CanJumpslash);}}),
+                  LocationAccess(SPIRIT_TEMPLE_EARLY_ADULT_RIGHT_CHEST,  {[]{return (CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(SLINGSHOT) || CanUse(BOOMERANG) || HasBombchus || (Bombs && IsAdult && LogicSpiritLowerAdultSwitch)) && (CanUse(HOVER_BOOTS) || CanJumpslash);}}),
                   LocationAccess(SPIRIT_TEMPLE_FIRST_MIRROR_LEFT_CHEST,  {[]{return SmallKeys(SPIRIT_TEMPLE, 3);}}),
                   LocationAccess(SPIRIT_TEMPLE_FIRST_MIRROR_RIGHT_CHEST, {[]{return SmallKeys(SPIRIT_TEMPLE, 3);}}),
                   LocationAccess(SPIRIT_TEMPLE_GS_BOULDER_ROOM,          {[]{return CanPlay(SongOfTime) && (Bow || Hookshot || HasBombchus || (Bombs && LogicSpiritLowerAdultSwitch));}}),

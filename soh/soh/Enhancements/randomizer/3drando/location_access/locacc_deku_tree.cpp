@@ -76,7 +76,7 @@ void AreaTable_Init_DekuTree() {
                 }, {
                   //Locations
                   LocationAccess(DEKU_TREE_BASEMENT_CHEST,    {[]{return true;}}),
-                  LocationAccess(DEKU_TREE_GS_BASEMENT_GATE,  {[]{return CanAdultAttack || CanChildAttack;}}),
+                  LocationAccess(DEKU_TREE_GS_BASEMENT_GATE,  {[]{return CanJumpslash || CanUse(SLINGSHOT) || CanUse(BOOMERANG) || HasExplosives || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(DINS_FIRE);}}),
                   LocationAccess(DEKU_TREE_GS_BASEMENT_VINES, {[]{return CanUseProjectile || CanUse(DINS_FIRE) || (LogicDekuBasementGS && CanJumpslash);}}),
                 }, {
                   //Exits

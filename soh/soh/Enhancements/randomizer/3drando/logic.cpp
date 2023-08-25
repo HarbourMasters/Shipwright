@@ -562,8 +562,8 @@ namespace Logic {
     CanBlastOrSmash = HasExplosives || CanUse(MEGATON_HAMMER);
     CanChildAttack  = IsChild && (Slingshot || Boomerang || Sticks || KokiriSword || HasExplosives || CanUse(DINS_FIRE) || CanUse(MASTER_SWORD) || CanUse(MEGATON_HAMMER) || CanUse(BIGGORON_SWORD));
     CanChildDamage  = IsChild && (Slingshot ||              Sticks || KokiriSword || HasExplosives || CanUse(DINS_FIRE) || CanUse(MASTER_SWORD) || CanUse(MEGATON_HAMMER) || CanUse(BIGGORON_SWORD));
-    CanAdultAttack  = IsAdult && (CanUse(SLINGSHOT) || CanUse(BOOMERANG) || CanUse(STICKS) || CanUse(KOKIRI_SWORD) || HasExplosives || CanUse(DINS_FIRE) || MasterSword || Hammer || BiggoronSword || Hookshot);
-    CanAdultDamage  = IsAdult && (CanUse(SLINGSHOT) ||                      CanUse(STICKS) || CanUse(KOKIRI_SWORD) || HasExplosives || CanUse(DINS_FIRE) || MasterSword || Hammer || BiggoronSword);
+    CanAdultAttack  = IsAdult && (CanUse(BOW) || CanUse(BOOMERANG)       || CanUse(STICKS) || CanUse(KOKIRI_SWORD) || HasExplosives || CanUse(DINS_FIRE) || MasterSword || Hammer || BiggoronSword || Hookshot);
+    CanAdultDamage  = IsAdult && (CanUse(BOW) || CanUse(STICKS)          || CanUse(KOKIRI_SWORD) || HasExplosives || CanUse(DINS_FIRE) || MasterSword || Hammer || BiggoronSword);
     CanStunDeku     = CanAdultAttack || CanChildAttack || Nuts || HasShield;
     CanCutShrubs    = CanUse(KOKIRI_SWORD) || CanUse(BOOMERANG) || HasExplosives || CanUse(MASTER_SWORD) || CanUse(MEGATON_HAMMER) || CanUse(BIGGORON_SWORD);
     CanDive         = ProgressiveScale >= 1;

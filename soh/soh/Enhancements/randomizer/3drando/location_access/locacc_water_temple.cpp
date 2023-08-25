@@ -122,7 +122,7 @@ void AreaTable_Init_WaterTemple() {
 
   areaTable[WATER_TEMPLE_SOUTH_LOWER] = Area("Water Temple South Lower", "Water Temple", WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(WATER_TEMPLE_GS_BEHIND_GATE, {[]{return CanUse(HOOKSHOT) || (IsAdult && (CanJumpslash || CanUseProjectile) && CanUse(HOVER_BOOTS));}}),
+                  LocationAccess(WATER_TEMPLE_GS_BEHIND_GATE, {[]{return (CanJumpslash || CanUse(MEGATON_HAMMER)) && (CanUse(HOOKSHOT) || (IsAdult && CanUse(HOVER_BOOTS)));}}),
                 }, {
                   //Exits
                   Entrance(WATER_TEMPLE_LOBBY, {[]{return CanUse(IRON_BOOTS);}}),

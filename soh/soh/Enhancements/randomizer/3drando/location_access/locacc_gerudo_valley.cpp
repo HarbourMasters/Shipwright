@@ -110,7 +110,7 @@ void AreaTable_Init_GerudoValley() {
                   LocationAccess(GF_SOUTH_F2_CARPENTER, {[]{return  CanUse(KOKIRI_SWORD) || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD);}}),
                   LocationAccess(GF_GERUDO_MEMBERSHIP_CARD,       {[]{return CanFinishGerudoFortress;}}),
                   LocationAccess(GF_GS_ARCHERY_RANGE,   {[]{return IsAdult && HookshotOrBoomerang && GerudoToken && AtNight && CanGetNightTimeGS;}}),
-                  LocationAccess(GF_GS_TOP_FLOOR,       {[]{return IsAdult && AtNight && CanAdultAttack && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen || LogicGFJump) && CanGetNightTimeGS;}}),
+                  LocationAccess(GF_GS_TOP_FLOOR,       {[]{return IsAdult && AtNight && (CanJumpslash || CanUse(SLINGSHOT) || CanUse(BOOMERANG) || HasExplosives || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(DINS_FIRE)) && (GerudoToken || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(HOVER_BOOTS) || LogicGerudoKitchen || LogicGFJump) && CanGetNightTimeGS;}}),
                 }, {
                   //Exits
                   Entrance(GV_FORTRESS_SIDE,                 {[]{return true;}}),
@@ -149,7 +149,7 @@ void AreaTable_Init_GerudoValley() {
                 }, {
                   //Locations
                   LocationAccess(WASTELAND_CHEST,            {[]{return HasFireSource;}}),
-                  LocationAccess(WASTELAND_BOMBCHU_SALESMAN, {[]{return AdultsWallet && CanJumpslash;}}),
+                  LocationAccess(WASTELAND_BOMBCHU_SALESMAN, {[]{return AdultsWallet && (CanJumpslash || CanUse(HOVER_BOOTS)) ;}}),
                   LocationAccess(WASTELAND_GS,               {[]{return HookshotOrBoomerang;}}),
                 }, {
                   //Exits

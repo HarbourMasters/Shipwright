@@ -34,8 +34,8 @@ void AreaTable_Init_LostWoods() {
 
   areaTable[KF_OUTSIDE_DEKU_TREE] = Area("KF Outside Deku Tree", "Kokiri Forest", KOKIRI_FOREST, NO_DAY_NIGHT_CYCLE, {
                   //Events
-                  EventAccess(&DekuBabaSticks,           {[]{return DekuBabaSticks || ((IsAdult && (MasterSword || BiggoronSword) && ShuffleDungeonEntrances.Is(SHUFFLEDUNGEONS_OFF)) || KokiriSword || Boomerang);}}),
-                  EventAccess(&DekuBabaNuts,             {[]{return DekuBabaNuts   || ((IsAdult && (MasterSword || BiggoronSword) && ShuffleDungeonEntrances.Is(SHUFFLEDUNGEONS_OFF)) || KokiriSword || Slingshot || Sticks || HasExplosives || CanUse(DINS_FIRE));}}),
+                  EventAccess(&DekuBabaSticks,           {[]{return DekuBabaSticks || ((IsAdult && (CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD) || CanUse(KOKIRI_SWORD)) && !ShuffleEntrances) || (IsChild && (CanUse(KOKIRI_SWORD) || CanUse(BIGGORON_SWORD) || CanUse(MASTER_SWORD) || CanUse(BOOMERANG))));}}),
+                  EventAccess(&DekuBabaNuts,             {[]{return DekuBabaNuts   || ((IsAdult && (CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD) || CanUse(KOKIRI_SWORD)) && !ShuffleEntrances) || (IsChild && (CanJumpslash || CanUse(SLINGSHOT) || HasExplosives || CanUse(DINS_FIRE))));}}),
                   EventAccess(&ShowedMidoSwordAndShield, {[]{return ShowedMidoSwordAndShield || (IsChild && KokiriSword && DekuShield);}}),
                 }, {
                   //Locations

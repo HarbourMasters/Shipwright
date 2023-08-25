@@ -204,7 +204,7 @@ void AreaTable_Init_FireTemple() {
 
   areaTable[FIRE_TEMPLE_SCARECROW_ROOM] = Area("Fire Temple Scarecrow Room", "Fire Temple", FIRE_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(FIRE_TEMPLE_GS_SCARECROW_CLIMB, {[]{return CanAdultAttack || CanChildAttack;}}),
+                  LocationAccess(FIRE_TEMPLE_GS_SCARECROW_CLIMB, {[]{return CanJumpslash || CanUse(SLINGSHOT) || CanUse(BOOMERANG) || HasExplosives || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(DINS_FIRE);}}),
                 }, {
                   //Exits
                   Entrance(FIRE_TEMPLE_BOULDER_MAZE_UPPER, {[]{return true;}}),
