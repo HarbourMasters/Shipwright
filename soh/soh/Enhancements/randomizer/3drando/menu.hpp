@@ -38,14 +38,7 @@ void UpdateOptionSubMenu(uint32_t kDown);
 void UpdatePresetsMenu(uint32_t kdown);
 void UpdateResetToDefaultsMenu(uint32_t kdown);
 void UpdateGenerateMenu(uint32_t kDown);
-void PrintMainMenu();
-void PrintOptionSubMenu();
-void PrintSubMenu();
-void PrintPresetsMenu();
-void PrintResetToDefaultsMenu();
-void PrintGenerateMenu();
 void ClearDescription();
-void PrintOptionDescription();
 std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSetting, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks, std::string seedInput);
 std::string GetInput(const char* hintText);
 

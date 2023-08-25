@@ -339,7 +339,6 @@ namespace Settings {
   Option ChestSize           = Option::Bool("Chest Size and Color",   {"Vanilla", "Match Contents"});
   Option GenerateSpoilerLog  = Option::Bool("Generate Spoiler Log",   {"No", "Yes"}, OptionCategory::Setting, 1); // On
   Option IngameSpoilers      = Option::Bool("Ingame Spoilers",        {"Hide", "Show"});
-  Option MenuOpeningButton   = Option::U8  ("Open Info Menu with",    {"Select","Start","D-Pad Up","D-Pad Down","D-Pad Right","D-Pad Left",});
   Option RandomTrapDmg       = Option::U8  ("Random Trap Damage",     {"Off", "Basic", "Advanced"}, OptionCategory::Setting, 1); // Basic
   Option BlueFireArrows      = Option::Bool("Blue Fire Arrows",       {"Off", "On"});
   Option SunlightArrows      = Option::Bool("Sunlight Arrows",        {"Off", "On"});
@@ -368,7 +367,6 @@ namespace Settings {
     &ChestSize,
     &GenerateSpoilerLog,
     &IngameSpoilers,
-    &MenuOpeningButton,
     &RandomTrapDmg,
     &BlueFireArrows,
     &SunlightArrows
@@ -1369,7 +1367,6 @@ namespace Settings {
     ctx.chestSize            = (ChestSize) ? 1 : 0;
     ctx.generateSpoilerLog   = (GenerateSpoilerLog) ? 1 : 0;
     ctx.ingameSpoilers       = (IngameSpoilers) ? 1 : 0;
-    ctx.menuOpeningButton    = MenuOpeningButton.Value<uint8_t>();
     ctx.randomTrapDmg        = RandomTrapDmg.Value<uint8_t>();
     ctx.blueFireArrows       = (BlueFireArrows) ? 1 : 0;
     ctx.sunLightArrows       = (SunlightArrows) ? 1 : 0;
