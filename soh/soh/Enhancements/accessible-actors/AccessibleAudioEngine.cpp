@@ -25,6 +25,7 @@ enum AAE_COMMANDS {
     AAE_STOP,
     AAE_STOP_ALL,
     AAE_PITCH,
+    AAE_PITCH_BEHIND,//Specify how much to change the pitch when the sound is behind the listener.
     AAE_VOLUME,
     AAE_PAN,
     AAE_FILTER,
@@ -218,6 +219,9 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
                     case AAE_PITCH:
                         doSetPitch(action);
                         break;
+                    case AAE_PITCH_BEHIND:
+                        doSetPitchBehindModifier(action);
+                        break;
                     case AAE_VOLUME:
                         doSetVolume(action);
                         break;
@@ -312,13 +316,23 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
     }
     void AccessibleAudioEngine::doSetPitch(SoundAction& action)
     {
-//This does not actually set pitch on the sound object. It rather hacks inside of it and manipulates its sample rate converter directly. This is safe because it's being done in the same thread that processes audio frames.
-//The reason this is done is so that we maintain control of the lowpass filter (we also use it to add extra filtering as an optimization instead of running additional filters).
         SoundSlot* slot = findSound(action);
         if (slot == NULL)
             return;
-         ma_sound_set_pitch(&slot->sound, action.pitch);
+        slot->extras.pitch = action.pitch;
+        float pitch = action.pitch;
+        if (slot->extras.z < 0)
+            pitch *= (1.0 - slot->extras.pitchBehindModifier);
+        ma_sound_set_pitch(&slot->sound, pitch);
 
+    }
+
+    void AccessibleAudioEngine::doSetPitchBehindModifier(SoundAction& action)
+    {
+         SoundSlot* slot = findSound(action);
+         if (slot == NULL)
+            return;
+         slot->extras.pitchBehindModifier = action.pitch;
     }
     void AccessibleAudioEngine::doSetVolume(SoundAction& action)
     {
@@ -367,6 +381,10 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
         slot->extras.z = action.posZ;
         slot->extras.distToPlayer = action.distToPlayer;
         slot->extras.maxDistance = action.maxDistance;
+        float pitch = slot->extras.pitch;
+        if (action.posZ < 0)
+            pitch *= (1.0 - slot->extras.pitchBehindModifier);
+        ma_sound_set_pitch(&slot->sound, pitch);
     }
     void AccessibleAudioEngine::garbageCollect()
         {
@@ -415,7 +433,8 @@ void AccessibleAudioEngine::postHighPrioritySoundAction(SoundAction& action) {
         ma_lpf_config fc = ma_lpf_config_init(ma_format_f32, AAE_CHANNELS, AAE_SAMPLE_RATE, AAE_SAMPLE_RATE / 2, AAE_LPF_ORDER);
         ma_lpf_init(&fc, NULL, &slot->extras.filter);
         slot->extras.cutoff = 1.0f;
-
+        slot->extras.pitch = 1.0f;
+        slot->extras.pitchBehindModifier = 0.0f;
         //ma_node_attach_output_bus(&slot->sound, 0, &slot->extras.filter, 0);
         ma_node_attach_output_bus(&slot->sound, 0, &slot->extras, 0);
         return true;
@@ -528,8 +547,20 @@ void AccessibleAudioEngine::stopAllSounds(uintptr_t handle) {
         action.pitch = pitch;
 
     }
-void AccessibleAudioEngine::setVolume(uintptr_t handle, int slot, float volume)
-{
+    void AccessibleAudioEngine::setPitchBehindModifier(uintptr_t handle, int slot, float mod) {
+        if (slot < 0 || slot >= AAE_SLOTS_PER_HANDLE)
+            return;
+
+        SoundAction& action = getNextOutgoingSoundAction();
+        action.command = AAE_PITCH_BEHIND;
+        action.handle = handle;
+        action.slot = slot;
+        action.pitch = mod;
+
+
+    }
+
+        void AccessibleAudioEngine::setVolume(uintptr_t handle, int slot, float volume) {
 
         if (slot < 0 || slot >= AAE_SLOTS_PER_HANDLE)
             return;

@@ -104,6 +104,9 @@ void ActorAccessibility_StopSound(void* handle, int slot);
 void ActorAccessibility_StopAllSounds(void* handle);
 
 void ActorAccessibility_SetSoundPitch(void* handle, int slot, float pitch);
+//When we don't have access to something super fancy (such as HRTF), blind-accessible games generally use a change in pitch to tell the player that an object is behind the player.
+void ActorAccessibility_SetPitchBehindModifier(void* handle, int slot, float mod);
+
 void ActorAccessibility_SetListenerPos(Vec3f* pos, Vec3f* rot);
 void ActorAccessibility_SetSoundPos(void* handle, int slot, Vec3f* pos, f32 distToPlayer, f32 maxDistance);
 
@@ -137,9 +140,10 @@ typedef enum {
     VA_AREA_CHANGE,
     VA_MARKER,
     VA_SPIKE,
-VA_GENERAL_HELPER,//Room announcements, action icon and other misc help.
+    VA_GENERAL_HELPER, // Room announcements, action icon and other misc help.
+    VA_AUDIO_COMPASS,//Points north.
 
-VA_FINAL,
+    VA_FINAL,
 
 } VIRTUAL_ACTOR_TABLE;
 

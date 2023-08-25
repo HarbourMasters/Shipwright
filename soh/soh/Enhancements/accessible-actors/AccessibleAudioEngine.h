@@ -52,6 +52,8 @@ typedef struct
         float z;
         float distToPlayer;
         float maxDistance;
+        float pitch;
+        float pitchBehindModifier;
 }SoundExtras;//Used for attenuation and other effects.
 
 typedef struct
@@ -99,6 +101,7 @@ SoundSlot* findSound(SoundAction& action);
     void doStopAllSounds(SoundAction& action);
 
     void doSetPitch(SoundAction& action);
+    void doSetPitchBehindModifier(SoundAction& action);
     void doSetVolume(SoundAction& action);
     void doSetPan(SoundAction& action);
     void doSetFilter(SoundAction& action);
@@ -129,6 +132,7 @@ SoundSlot* findSound(SoundAction& action);
     void stopAllSounds(uintptr_t handle);
 
     void setPitch(uintptr_t handle, int slot, float pitch);
+    void setPitchBehindModifier(uintptr_t handle, int slot, float mod);
     void setVolume(uintptr_t handle, int slot, float volume);
     void setPan(uintptr_t handle, int slot, float pan);
 //Set the lowpass filter cutoff. Set to 1.0 for no filtering.

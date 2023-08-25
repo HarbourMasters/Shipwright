@@ -28,11 +28,15 @@ typedef struct
 {
     s16 currentScene;
     s8 currentRoom;
+    bool currentRoomClear;
 
 }GeneralHelperData;
-void accessible_va_ledge_cue(AccessibleActor* actor);
-void accessible_va_wall_cue(AccessibleActor* actor);
+typedef struct
+{
+    f32 linearVelocity;
+    int framesUntilChime;
 
+}AudioCompassData;
     // Begin actor-specific policy callbacks.
 
 void accessible_en_ishi(AccessibleActor* actor) {
@@ -296,6 +300,7 @@ bool accessible_general_helper_init(AccessibleActor* actor) {
     if (data == NULL)
         return false;
     data->currentRoom = -1;
+    data->currentRoomClear = false;
     data->currentScene = -1;
 
     actor->userData = data;
@@ -313,15 +318,65 @@ void accessible_va_general_helper(AccessibleActor* actor)
     {
         ActorAccessibility_AnnounceRoomNumber(actor->play);
         data->currentRoom = actor->play->roomCtx.curRoom.num;
-
+        data->currentRoomClear = Flags_GetClear(actor->play, data->currentRoom);
     }
     if (data->currentScene != actor->play->sceneNum)
     {
+        ActorAccessibility_InterpretCurrentScene(actor->play);
         data->currentScene = actor->play->sceneNum;
         data->currentRoom = actor->play->roomCtx.curRoom.num;
+        data->currentRoomClear = Flags_GetClear(actor->play, data->currentRoom);
+
+    }
+//Report when a room is completed.
+    if (!data->currentRoomClear && Flags_GetClear(actor->play, data->currentRoom))
+    {
+        data->currentRoomClear = Flags_GetClear(actor->play, data->currentRoom);
+        ActorAccessibility_AnnounceRoomNumber(actor->play);
 
     }
 }
+bool accessible_audio_compass_init(AccessibleActor* actor)
+{
+    AudioCompassData* data = (AudioCompassData*)malloc(sizeof(AudioCompassData));
+    if (data == NULL)
+        return false;
+    data->linearVelocity = 0;
+    data->framesUntilChime = 0;
+
+    actor->userData = data;
+
+}
+void accessible_audio_compass_cleanup(AccessibleActor* actor)
+{
+    free(actor->userData);
+}
+void accessible_audio_compass(AccessibleActor* actor) {
+    Player* player = GET_PLAYER(actor->play);
+    actor->world.pos = player->actor.world.pos;
+    actor->world.pos.z -= 50;
+    bool shouldChime = false;
+    if (actor->world.rot.y != player->actor.world.rot.y) {
+        actor->world.rot.y = player->actor.world.rot.y;
+        shouldChime = true;
+    }
+    AudioCompassData* data = (AudioCompassData*)actor->userData;
+    if (data->linearVelocity == 0.0 && player->linearVelocity > 0.0) {
+        shouldChime = true;
+
+    }
+    data->linearVelocity = player->linearVelocity;
+    if (data->framesUntilChime > 0)
+        data->framesUntilChime--;
+    if (shouldChime && data->framesUntilChime <= 0) {
+
+        ActorAccessibility_PlaySoundForActor(actor, 0, actor->policy.sound, false);
+        data->framesUntilChime = 10;
+
+    }
+
+}
+
     void ActorAccessibility_InitActors() {
     const int Npc_Frames = 35;
     ActorAccessibilityPolicy policy; 
@@ -417,7 +472,7 @@ void accessible_va_general_helper(AccessibleActor* actor)
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SYOKUDAI, policy);
     ActorAccessibility_InitPolicy(&policy, "Deku Tree Moving Platform", accessible_hasi, 0);
     //policy.volume = 1.3;
-    policy.distance = 1000;
+    policy.distance = 500;
     ActorAccessibility_AddSupportedActor(ACTOR_BG_YDAN_HASI, policy);
     ActorAccessibility_InitPolicy(&policy, "Pot", NULL, NA_SE_EV_POT_BROKEN);
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_TSUBO, policy);
@@ -468,7 +523,7 @@ void accessible_va_general_helper(AccessibleActor* actor)
     ActorAccessibility_AddSupportedActor(VA_DOOR, policy);
     ActorAccessibility_InitPolicy(&policy, "Area Change", accessible_area_change, 0);
     policy.n = 60;
-    policy.distance = 2000;
+    //policy.distance = 2000;
     ActorAccessibility_AddSupportedActor(VA_AREA_CHANGE, policy);
     //ActorAccessibility_InitPolicy(&policy, "marker", NULL,
     //                              NA_SE_EV_DIAMOND_SWITCH); 
@@ -483,7 +538,17 @@ void accessible_va_general_helper(AccessibleActor* actor)
     policy.cleanupUserData = accessible_general_helper_cleanup;
     policy.initUserData = accessible_general_helper_init;
     policy.runsAlways = true;
-    ActorAccessibility_AddSupportedActor(VA_GENERAL_HELPER, policy);
+    ActorAccessibility_AddSupportedActor(VA_AUDIO_COMPASS, policy);
+    ActorAccessibility_InitPolicy(&policy, "Audio Compass", accessible_audio_compass, 0);
+    policy.n = 1;
+    policy.cleanupUserData = accessible_audio_compass_cleanup;
+    policy.initUserData = accessible_audio_compass_init;
+    policy.runsAlways = true;
+    policy.sound = NA_SE_EV_SHIP_BELL;//Setting this here so it's easy to change if we ever decide to change it.
+    policy.pitch = 0.5;
+
+
+    ActorAccessibility_AddSupportedActor(VA_AUDIO_COMPASS, policy);
 
     // Now query a list of virtual actors for a given
                                                                 // location (scene
@@ -493,6 +558,8 @@ void accessible_va_general_helper(AccessibleActor* actor)
 
     // Now place the actor.
     ActorAccessibility_AddVirtualActor(list, VA_GENERAL_HELPER, { { 0.0, 0.0, 0.0 }, { 0, 0, 0 } });
+    ActorAccessibility_AddVirtualActor(list, VA_AUDIO_COMPASS, { { 0.0, 0.0, 0.0}, { 0, 0, 0 } });
+
                                                 list = ActorAccessibility_GetVirtualActorList(85, 0); // Kokiri Forest
     ActorAccessibility_AddVirtualActor(list, VA_CRAWLSPACE, { { -784.0, 120.0, 1046.00 }, { 0, 14702, 0 } });
     //ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -547.0, 60.0, -1036.00 }, { 0, 14702, 0 } });

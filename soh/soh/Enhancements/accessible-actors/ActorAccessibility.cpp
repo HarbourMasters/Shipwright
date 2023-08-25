@@ -55,7 +55,6 @@ class ActorAccessibility {
     TrackedActors_t trackedActors;
     AccessibleActorList_t accessibleActorList;
     VAZones_t vaZones;
-    s16 currentScene;
     SceneList_t sceneList;
     AccessibleAudioEngine* audioEngine;
     SfxExtractor sfxExtractor;
@@ -73,7 +72,6 @@ void ActorAccessibility_Init() {
     aa = new ActorAccessibility();
     ActorAccessibility_InitAudio();
     ActorAccessibility_InitActors();
-    aa->currentScene = -1;
 
 }
 void ActorAccessibility_Shutdown() {
@@ -93,7 +91,7 @@ void ActorAccessibility_Shutdown() {
     policy->volume = 1.0;
     policy->initUserData = NULL;
     policy->cleanupUserData = NULL;
-    policy->pitchModifier = 0.0;
+    policy->pitchModifier = 0.1;
 
 }
 
@@ -200,6 +198,11 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         aa->audioEngine->setPitch((uintptr_t)handle, slot, pitch);
 
     }
+    void ActorAccessibility_SetPitchBehindModifier(void* handle, int slot, float mod)
+    {
+        aa->audioEngine->setPitchBehindModifier((uintptr_t) handle, slot, mod);
+
+    }
     void ActorAccessibility_SetSoundPos(void* handle, int slot, Vec3f* pos, f32 distToPlayer, f32 maxDistance) {
         aa->audioEngine->setSoundPosition((uintptr_t) handle, slot, pos->x, pos->y, pos->z, distToPlayer, maxDistance);
     }
@@ -234,6 +237,7 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
             return;
         ActorAccessibility_PlaySound(actor, slot, sfxId, looping);
         ActorAccessibility_SetSoundPitch(actor, slot, actor->policy.pitch);
+        ActorAccessibility_SetPitchBehindModifier(actor, slot, actor->policy.pitchModifier);
         ActorAccessibility_SetSoundPos(actor, slot, &actor->projectedPos, actor->xzDistToPlayer,
                                        actor->policy.distance);
         ActorAccessibility_SetSoundVolume(actor, slot, actor->policy.volume);
@@ -302,10 +306,9 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
 
             }
             }
-        actor->frameCount--;
-        if (actor->frameCount > 0)
+        actor->frameCount++;
+        if (actor->frameCount != 1 && (actor->frameCount - 1) % actor->policy.n != 0)
             return;
-        actor->frameCount = actor->policy.n;
         if (!actor->policy.runsAlways && actor->xyzDistToPlayer > actor->policy.distance) {
             return;
         }
@@ -329,9 +332,6 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         if (player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE) {
             return;
         }
-        //Have we been through a scene transition? If so, we might have polygon-to-VA translation work to do.
-        if (aa->currentScene != play->sceneNum)
-            ActorAccessibility_InterpretCurrentScene(play);
         //Real actors.
         for (AccessibleActorList_t::iterator i = aa->accessibleActorList.begin(); i != aa->accessibleActorList.end(); i++)
             ActorAccessibility_RunAccessibilityForActor(play, &i->second);
@@ -407,7 +407,6 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         if (aa->sceneList.contains(play->sceneNum))
             return;//Scene interpretation already complete for this scene.
         aa->sceneList.insert(play->sceneNum);
-        aa->currentScene = play->sceneNum;
         VirtualActorList* list = ActorAccessibility_GetVirtualActorList(play->sceneNum, -1);//Scene-global VAs.
         if (list == NULL)
             return;
@@ -453,7 +452,11 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
     void ActorAccessibility_AnnounceRoomNumber(PlayState* play)
     {
        std::stringstream ss;
-       ss << "Room" << (int) play->roomCtx.curRoom.num << "." << std::endl;
+       ss << "Room" << (int)play->roomCtx.curRoom.num;
+       if (Flags_GetClear(play, play->roomCtx.curRoom.num))
+            ss << ", completed." << std::endl;
+       else
+       ss << "." << std::endl;
        SpeechSynthesizer::Instance->Speak(ss.str().c_str(), GetLanguageCode());
 
     }
