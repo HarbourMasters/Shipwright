@@ -74,9 +74,9 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             CVarSetInteger("gAdvancedResolutionMode", activateAdvancedMode);
         }
         // Resolution visualiser
-        ImGui::Text("Viewport: %d by %d", gfx_current_game_window_viewport.width,
+        ImGui::Text("Viewport dimensions: %d by %d", gfx_current_game_window_viewport.width,
                     gfx_current_game_window_viewport.height);
-        ImGui::Text("Internal res: %d by %d", gfx_current_dimensions.width, gfx_current_dimensions.height);
+        ImGui::Text("Internal resolution: %d by %d", gfx_current_dimensions.width, gfx_current_dimensions.height);
         if (IsDroppingFrames()) {
             ImGui::TextColored({ 0.85f, 0.85f, 0.0f, 1.0f },
                                ICON_FA_EXCLAMATION_TRIANGLE " Significant frame rate (FPS) drop detected.");
@@ -185,7 +185,7 @@ void AdvancedResolutionSettingsWindow::UpdateElement() {
 bool AdvancedResolutionSettingsWindow::IsDroppingFrames() {
     // a rather imprecise way of checking for frame drops.
     // but it's mostly there to inform the player of large drops.
-    const float threshold = 1.1f;
+    const float threshold = 2.1f;
     return ImGui::GetIO().Framerate < (CVarGetInteger("gInterpolationFPS", 20) - threshold);
 }
 } // namespace AdvancedResolutionSettings
