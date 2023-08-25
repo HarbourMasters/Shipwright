@@ -13,7 +13,6 @@
 #include "hint_list.hpp"
 #include "entrance.hpp"
 #include "shops.hpp"
-#include "debug.hpp"
 
 #include <vector>
 #include <list>

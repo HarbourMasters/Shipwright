@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "category.hpp"
-#include "debug.hpp"
 #include "menu.hpp"
 #include "pool_functions.hpp"
 

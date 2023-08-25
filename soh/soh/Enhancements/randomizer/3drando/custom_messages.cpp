@@ -1,5 +1,4 @@
 #include "custom_messages.hpp"
-#include "debug.hpp"
 #include "shops.hpp"
 #include "z64item.h"
 
@@ -465,7 +464,7 @@ constexpr std::array DungeonColors = {
               textStr->replace(firstHashtag, 1, COLOR(color));
               size_t secondHashtag = textStr->find('#');
               if (secondHashtag == std::string::npos) {
-                CitraPrint("ERROR: Couldn't find second '#' in " + (*textStr));
+                //CitraPrint("ERROR: Couldn't find second '#' in " + (*textStr));
               } else {
                 textStr->replace(secondHashtag, 1, COLOR(QM_WHITE));
               }

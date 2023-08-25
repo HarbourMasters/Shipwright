@@ -4,7 +4,6 @@
 #include "settings.hpp"
 #include "spoiler_log.hpp"
 #include "shops.hpp"
-#include "debug.hpp"
 #include "keys.hpp"
 #include <spdlog/spdlog.h>
 #include "../randomizerTypes.h"
