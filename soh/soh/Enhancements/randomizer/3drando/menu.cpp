@@ -6,7 +6,7 @@
 #include <ctime>
 
 #include "menu.hpp"
-#include "patch.hpp"
+#include "playthrough.hpp"
 #include "preset.hpp"
 #include "randomizer.hpp"
 #include "settings.hpp"
