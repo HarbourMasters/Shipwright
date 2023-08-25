@@ -119,16 +119,16 @@ class SpoilerCollectionCheck {
         return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_CHEST, scene, flag);
     }
 
-    static auto Cow(uint8_t scene, uint8_t flag) {
-        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_COW, scene, flag);
+    static auto Cow() {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_COW, 0x00, 0x00);
     }
 
     static auto Fishing(uint8_t bit) {
         return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MINIGAME, 0x00, bit);
     }
 
-    static auto Scrub(uint8_t scene, uint8_t bit) {
-        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_SCRUB, scene, bit);
+    static auto Scrub() {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_SCRUB, 0x00, 0x00);
     }
 
     static auto Biggoron(uint8_t mask) {
@@ -147,20 +147,20 @@ class SpoilerCollectionCheck {
         return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_GRAVEDIGGER, scene, flag);
     }
 
-    static auto ShopItem(uint8_t scene, uint8_t itemSlot) {
-        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM, scene, itemSlot);
+    static auto ShopItem() {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM, 0x00, 0x00);
     }
 
-    static auto MagicBeans(uint8_t scene, uint8_t flag) {
-        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MAGIC_BEANS, scene, flag);
+    static auto MagicBeans() {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MAGIC_BEANS, 0x00, 0x00);
     }
 
-    static auto Merchant(int8_t scene, uint8_t flag) {
-        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MERCHANT, scene, flag);
+    static auto Merchant() {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MERCHANT, 0x00, 0x00);
     }
 
-    static auto RandomizerInf(int8_t scene, uint8_t flag) {
-        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF, scene, flag);
+    static auto RandomizerInf() {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF, 0x00, 0x00);
     }
 };
 
