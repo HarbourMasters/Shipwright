@@ -1,0 +1,11 @@
+<Root>
+    <File Name="object_torch2" Segment="6">
+        <!-- Dark Link's skeleton -->
+        <Skeleton Name="gDarkLinkSkel" Type="Flex" LimbType="LOD" Offset="0x4764"/>
+
+        <!-- Unused Content -->
+
+        <!-- Dark Link DLists -->
+        <DList Name="sDarkLinkSheathDL" Offset="0x3748"/>
+    </File>
+</Root>
