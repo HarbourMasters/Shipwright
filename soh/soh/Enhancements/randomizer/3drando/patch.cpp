@@ -1,6 +1,5 @@
 #include "patch.hpp"
 
-#include "cosmetics.hpp"
 #include "custom_messages.hpp"
 #include "music.hpp"
 #include "sound_effects.hpp"

@@ -13,5 +13,3 @@ bool DeletePreset(std::string_view presetName, OptionCategory category);
 bool SaveSpecifiedPreset(std::string_view presetName, OptionCategory category);
 void SaveCachedSettings();
 void LoadCachedSettings();
-bool SaveCachedCosmetics();
-void LoadCachedCosmetics();

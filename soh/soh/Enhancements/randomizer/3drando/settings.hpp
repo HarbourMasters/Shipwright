@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "category.hpp"
-#include "cosmetics.hpp"
 #include "debug.hpp"
 #include "menu.hpp"
 #include "pool_functions.hpp"
@@ -525,44 +524,6 @@ typedef struct {
     uint8_t iceTrapValue;
     uint8_t progressiveGoronSword;
 
-    uint8_t mp_Enabled;
-    uint8_t mp_SharedProgress;
-    uint8_t mp_SyncId;
-    uint8_t mp_SharedHealth;
-    uint8_t mp_SharedRupees;
-    uint8_t mp_SharedAmmo;
-
-    uint8_t zTargeting;
-    uint8_t cameraControl;
-    uint8_t motionControl;
-    uint8_t playMusic;
-    uint8_t playSFX;
-    uint8_t silenceNavi;
-    uint8_t ignoreMaskReaction;
-
-    uint8_t customTunicColors;
-    uint8_t customNaviColors;
-    uint8_t rainbowIdleNaviInnerColor;
-    uint8_t rainbowNPCNaviInnerColor;
-    uint8_t rainbowEnemyNaviInnerColor;
-    uint8_t rainbowPropNaviInnerColor;
-    uint8_t rainbowIdleNaviOuterColor;
-    uint8_t rainbowNPCNaviOuterColor;
-    uint8_t rainbowEnemyNaviOuterColor;
-    uint8_t rainbowPropNaviOuterColor;
-    uint8_t customTrailEffects;
-    uint8_t rainbowSwordTrailInnerColor;
-    uint8_t rainbowSwordTrailOuterColor;
-    uint8_t boomerangTrailColorMode;
-    uint8_t boomerangTrailDuration;
-    uint8_t rainbowChuTrailInnerColor;
-    uint8_t rainbowChuTrailOuterColor;
-    uint8_t bombchuTrailDuration;
-
-    uint8_t coloredKeys;
-    uint8_t coloredBossKeys;
-    uint8_t mirrorWorld;
-
     uint8_t shuffleSFX;
     uint8_t shuffleSFXCategorically;
 
@@ -753,17 +714,6 @@ public:
     }
 
     void SetSelectedIndexByString(std::string newSetting) {
-      using namespace Cosmetics;
-
-      //Special case for custom cosmetic settings
-      if (options.size() > CUSTOM_COLOR) {
-        if (newSetting.compare(0, 8, CUSTOM_COLOR_PREFIX) == 0 && options[CUSTOM_COLOR].compare(0, 8, CUSTOM_COLOR_PREFIX) == 0) {
-          SetSelectedIndex(CUSTOM_COLOR);
-          SetSelectedOptionText(newSetting);
-          return;
-        }
-      }
-
       for (size_t i = 0; i < options.size(); i++) {
         std::string settingName = options[i];
         if (settingName == newSetting) {
@@ -1302,83 +1252,6 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option GlitchEquipSwapDins;
   extern Option GlitchEquipSwap;
   
-
-  //Multiplayer Settings
-  extern Option MP_Enabled;
-  extern Option MP_SharedProgress;
-  extern Option MP_SyncId;
-  extern Option MP_SharedHealth;
-  extern Option MP_SharedRupees;
-  extern Option MP_SharedAmmo;
-
-  //Ingame Default Settings
-  extern Option ZTargeting;
-  extern Option CameraControl;
-  extern Option MotionControl;
-  extern Option TogglePlayMusic;
-  extern Option TogglePlaySFX;
-  extern Option SilenceNavi;
-  extern Option IgnoreMaskReaction;
-
-  //Cosmetic Settings
-  extern Option CustomTunicColors;
-  extern Option ChildTunicColor;
-  extern Option KokiriTunicColor;
-  extern Option GoronTunicColor;
-  extern Option ZoraTunicColor;
-  extern Option SilverGauntletsColor;
-  extern Option GoldGauntletsColor;
-  extern Option CustomNaviColors;
-  extern Option IdleNaviInnerColor;
-  extern Option NPCNaviInnerColor;
-  extern Option EnemyNaviInnerColor;
-  extern Option PropNaviInnerColor;
-  extern Option IdleNaviOuterColor;
-  extern Option NPCNaviOuterColor;
-  extern Option EnemyNaviOuterColor;
-  extern Option PropNaviOuterColor;
-  extern Option CustomTrailEffects;
-  extern Option SwordTrailInnerColor;
-  extern Option SwordTrailOuterColor;
-  extern Option SwordTrailDuration;
-  extern Option BoomerangTrailColor;
-  extern Option BoomerangTrailDuration;
-  extern Option ChosenSimpleMode;
-  extern Option BombchuTrailInnerColor;
-  extern Option BombchuTrailOuterColor;
-  extern Option BombchuTrailDuration;
-  extern std::string finalChildTunicColor;
-  extern std::string finalKokiriTunicColor;
-  extern std::string finalGoronTunicColor;
-  extern std::string finalZoraTunicColor;
-  extern std::string finalSilverGauntletsColor;
-  extern std::string finalGoldGauntletsColor;
-  extern std::string finalIdleNaviInnerColor;
-  extern std::string finalNPCNaviInnerColor;
-  extern std::string finalEnemyNaviInnerColor;
-  extern std::string finalPropNaviInnerColor;
-  extern std::string finalIdleNaviOuterColor;
-  extern std::string finalNPCNaviOuterColor;
-  extern std::string finalEnemyNaviOuterColor;
-  extern std::string finalPropNaviOuterColor;
-  extern std::string finalSwordTrailInnerColor;
-  extern std::string finalSwordTrailOuterColor;
-  extern Cosmetics::Color_RGBA8 finalBoomerangColor;
-  extern uint8_t boomerangTrailColorMode;
-  extern std::string finalChuTrailInnerColor;
-  extern std::string finalChuTrailOuterColor;
-
-  extern Option ColoredKeys;
-  extern Option ColoredBossKeys;
-  extern Option MirrorWorld;
-
-  extern Option ShuffleMusic;
-  extern Option ShuffleBGM;
-  extern Option ShuffleFanfares;
-  extern Option ShuffleOcaMusic;
-  extern Option ShuffleSFX;
-  extern Option ShuffleSFXCategorically;
-
   extern uint32_t LinksPocketRewardBitMask;
   extern std::array<uint32_t, 9> rDungeonRewardOverrides;
 

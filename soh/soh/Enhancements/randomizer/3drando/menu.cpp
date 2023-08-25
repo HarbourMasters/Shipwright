@@ -5,7 +5,6 @@
 #include <sstream>
 #include <ctime>
 
-#include "cosmetics.hpp"
 #include "menu.hpp"
 #include "patch.hpp"
 #include "preset.hpp"
@@ -55,7 +54,6 @@ void MenuInit() {
 
     // If cached presets exist, load them
     LoadCachedSettings();
-    LoadCachedCosmetics();
     // If Randomize all settings in a category is selected
     // Re-randomize them
     Settings::RandomizeAllSettings();
@@ -261,17 +259,6 @@ void ModeChangeInit() {
     }
 }
 
-void UpdateCustomCosmeticColors(uint32_t kDown) {
-    if (kDown & KEY_A) {
-        if (currentSetting->GetSelectedOptionText().compare(0, 8, Cosmetics::CUSTOM_COLOR_PREFIX) == 0) {
-            std::string newColor = GetInput("Enter a 6 digit hex color").substr(0, 6);
-            if (Cosmetics::ValidHexString(newColor)) {
-                currentSetting->SetSelectedOptionText(Cosmetics::CustomColorOptionText(newColor));
-            }
-        }
-    }
-}
-
 void UpdateOptionSubMenu(uint32_t kDown) {
     if ((kDown & KEY_DRIGHT) != 0) {
         currentSetting->NextOptionIndex();
@@ -285,7 +272,6 @@ void UpdateOptionSubMenu(uint32_t kDown) {
 
     currentSetting->SetVariable();
     Settings::ForceChange(kDown, currentSetting);
-    UpdateCustomCosmeticColors(kDown);
 }
 
 void UpdatePresetsMenu(uint32_t kDown) {

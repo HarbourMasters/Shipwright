@@ -66,6 +66,5 @@ enum class Category {
 
 enum class OptionCategory {
   Setting,
-  Cosmetic,
   Toggle,
 };

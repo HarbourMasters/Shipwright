@@ -15,17 +15,14 @@
 namespace fs = std::filesystem;
 
 static const std::string CACHED_SETTINGS_FILENAME = "CACHED_SETTINGS";
-static const std::string CACHED_COSMETICS_FILENAME = "CACHED_COSMETICS";
 
 static std::string_view GetBasePath(OptionCategory category) {
-  static constexpr std::array<std::string_view, 2> paths{
+  static constexpr std::array<std::string_view, 1> paths{
     "/3ds/presets/oot3dr/settings/",
-    "/3ds/presets/oot3dr/cosmetics/",
   };
 
   switch(category) {
     case OptionCategory::Setting :
-    case OptionCategory::Cosmetic :
       return paths[static_cast<size_t>(category)];
     case OptionCategory::Toggle :
       break;
@@ -41,8 +38,6 @@ bool CreatePresetDirectories() {
   std::filesystem::create_directory("./3ds/presets");
   //Create the oot3d directory if it doesn't exist
   std::filesystem::create_directory("./3ds/presets/oot3dr");
-  //Create the cosmetics directory if it doesn't exist
-  std::filesystem::create_directory("./3ds/presets/oot3dr/cosmetics");
   //Create the settings directory if it doesn't exist
   std::filesystem::create_directory("./3ds/presets/oot3dr/settings");
 
@@ -183,20 +178,6 @@ void LoadCachedSettings() {
     if(entry.path().stem().string() == CACHED_SETTINGS_FILENAME) {
       //File exists, open
       LoadPreset(CACHED_SETTINGS_FILENAME, OptionCategory::Setting);
-    }
-  }
-}
-
-bool SaveCachedCosmetics() {
-  return SavePreset(CACHED_COSMETICS_FILENAME, OptionCategory::Cosmetic);
-}
-
-void LoadCachedCosmetics() {
-  //If cache file exists, load it
-  for (const auto& entry : fs::directory_iterator(GetBasePath(OptionCategory::Cosmetic))) {
-    if(entry.path().stem().string() == CACHED_COSMETICS_FILENAME) {
-      //File exists, open
-      LoadPreset(CACHED_COSMETICS_FILENAME, OptionCategory::Cosmetic);
     }
   }
 }
