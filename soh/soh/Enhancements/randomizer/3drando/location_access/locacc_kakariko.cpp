@@ -143,7 +143,7 @@ void AreaTable_Init_Kakariko() {
 
   areaTable[KAK_SHOOTING_GALLERY] = Area("Kak Shooting Gallery", "Kak Shooting Gallery", NONE, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(KAK_SHOOTING_GALLERY_REWARD, {[]{return IsAdult && Bow;}}),
+                  LocationAccess(KAK_SHOOTING_GALLERY_REWARD, {[]{return IsAdult;}}),
                 }, {
                   //Exits
                   Entrance(KAKARIKO_VILLAGE, {[]{return true;}}),
