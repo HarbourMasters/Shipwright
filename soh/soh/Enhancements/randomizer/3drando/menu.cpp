@@ -507,9 +507,6 @@ void ClearDescription() {
 
 void PrintOptionDescription() {
   ClearDescription();
-  std::string_view description = currentSetting->GetSelectedOptionDescription();
-
-  printf("\x1b[22;0H%s", description.data());
 }
 
 std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,

@@ -637,12 +637,12 @@ typedef struct {
 
 class Option {
 public:
-    static Option Bool(std::string name_, std::vector<std::string> options_, std::vector<std::string_view> optionDescriptions_, OptionCategory category_ = OptionCategory::Setting, uint8_t defaultOption_ = 0, bool defaultHidden_ = false) {
-        return Option{false, std::move(name_), std::move(options_), std::move(optionDescriptions_), category_, defaultOption_, defaultHidden_};
+    static Option Bool(std::string name_, std::vector<std::string> options_, OptionCategory category_ = OptionCategory::Setting, uint8_t defaultOption_ = 0, bool defaultHidden_ = false) {
+        return Option{false, std::move(name_), std::move(options_), category_, defaultOption_, defaultHidden_};
     }
 
-    static Option U8(std::string name_, std::vector<std::string> options_, std::vector<std::string_view> optionDescriptions_, OptionCategory category_  = OptionCategory::Setting, uint8_t defaultOption_ = 0, bool defaultHidden_ = false) {
-        return Option{uint8_t{0}, std::move(name_), std::move(options_), std::move(optionDescriptions_), category_, defaultOption_, defaultHidden_};
+    static Option U8(std::string name_, std::vector<std::string> options_, OptionCategory category_  = OptionCategory::Setting, uint8_t defaultOption_ = 0, bool defaultHidden_ = false) {
+        return Option{uint8_t{0}, std::move(name_), std::move(options_), category_, defaultOption_, defaultHidden_};
     }
 
     template <typename T>
@@ -703,14 +703,6 @@ public:
     void SetToDefault() {
       SetSelectedIndex(defaultOption);
       hidden = defaultHidden;
-    }
-
-    std::string_view GetSelectedOptionDescription() const {
-      //bounds checking
-      if (selectedOption >= optionDescriptions.size()) {
-        return optionDescriptions[optionDescriptions.size()-1];
-      }
-      return optionDescriptions[selectedOption];
     }
 
     uint8_t GetSelectedOptionIndex() const {
@@ -810,15 +802,15 @@ public:
     }
 
 private:
-    Option(uint8_t var_, std::string name_, std::vector<std::string> options_, std::vector<std::string_view> optionDescriptions_, OptionCategory category_, uint8_t defaultOption_, bool defaultHidden_)
-          : var(var_), name(std::move(name_)), options(std::move(options_)), optionDescriptions(std::move(optionDescriptions_)), category(category_), defaultOption(defaultOption_), defaultHidden(defaultHidden_) {
+    Option(uint8_t var_, std::string name_, std::vector<std::string> options_, OptionCategory category_, uint8_t defaultOption_, bool defaultHidden_)
+          : var(var_), name(std::move(name_)), options(std::move(options_)), category(category_), defaultOption(defaultOption_), defaultHidden(defaultHidden_) {
         selectedOption = defaultOption;
         hidden = defaultHidden;
         SetVariable();
     }
 
-    Option(bool var_, std::string name_, std::vector<std::string> options_, std::vector<std::string_view> optionDescriptions_, OptionCategory category_, uint8_t defaultOption_, bool defaultHidden_)
-          : var(var_), name(std::move(name_)),  options(std::move(options_)), optionDescriptions(std::move(optionDescriptions_)), category(category_), defaultOption(defaultOption_), defaultHidden(defaultHidden_) {
+    Option(bool var_, std::string name_, std::vector<std::string> options_, OptionCategory category_, uint8_t defaultOption_, bool defaultHidden_)
+          : var(var_), name(std::move(name_)),  options(std::move(options_)), category(category_), defaultOption(defaultOption_), defaultHidden(defaultHidden_) {
         selectedOption = defaultOption;
         hidden = defaultHidden;
         SetVariable();
@@ -827,7 +819,6 @@ private:
   std::variant<bool, uint8_t> var;
   std::string name;
   std::vector<std::string> options;
-  std::vector<std::string_view> optionDescriptions;
   uint8_t selectedOption = 0;
   uint8_t delayedOption = 0;
   bool locked = false;

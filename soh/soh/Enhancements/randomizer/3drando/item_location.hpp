@@ -384,26 +384,16 @@ public:
     }
 
     void AddExcludeOption() {
-      //setting description  /*--------------------------------------------------*/
-      std::string_view desc = "Decide which locations you want to exclude from\n"
-                              "the location pool. Locations that require an item\n"
-                              "to be placed at them based on your current\n"
-                              "settings cannot be excluded and won't be shown\n"
-                              "unless you change your settings.\n"
-                              "\n"
-                              "If you exclude too many locations, it might not\n"
-                              "be possible to fill the world.";
-
       //add option to forbid any location from progress items
       if (name.length() < 23) {
-        excludedOption = Option::Bool(name, {"Include", "Exclude"}, {desc});
+        excludedOption = Option::Bool(name, {"Include", "Exclude"});
       } else {
         //insert a newline character if the text is too long for one row
         size_t lastSpace = name.rfind(' ', 23);
         std::string settingText = name;
         settingText.replace(lastSpace, 1, "\n ");
 
-        excludedOption = Option::Bool(settingText, {"Include", "Exclude"}, {desc});
+        excludedOption = Option::Bool(settingText, {"Include", "Exclude"});
       }
       
       // RANDOTODO: this without string compares and loops
@@ -493,7 +483,7 @@ private:
     HintType hintType;
     std::string hintedRegion;
     uint32_t delayedItem = NONE;
-    Option excludedOption = Option::Bool(name, {"Include", "Exclude"}, {"", ""});
+    Option excludedOption = Option::Bool(name, {"Include", "Exclude"});
     uint16_t price = 0;
     SpoilerCollectionCheck collectionCheck;
     SpoilerCollectionCheckGroup collectionCheckGroup;
