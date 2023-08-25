@@ -3,8 +3,6 @@
 #include "dungeon.hpp"
 #include "fill.hpp"
 #include "item_location.hpp"
-#include "music.hpp"
-#include "sound_effects.hpp"
 #include "random.hpp"
 #include "randomizer.hpp"
 #include "trial.hpp"
@@ -12,8 +10,6 @@
 
 using namespace Dungeon;
 using namespace Trial;
-using namespace Music;
-using namespace SFX;
 
 namespace Settings {
   uint32_t seed;
@@ -2677,9 +2673,6 @@ namespace Settings {
       Keysanity.SetDelayedOption();
       Keysanity.SetSelectedIndex(3); //Set small keys to any dungeon so FiT basement door will be locked
     }
-
-    InitMusicRandomizer();
-    InitSFXRandomizer();
   }
 
   //If this is an option menu, return the options

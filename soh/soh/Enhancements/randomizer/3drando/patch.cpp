@@ -1,8 +1,6 @@
 #include "patch.hpp"
 
 #include "custom_messages.hpp"
-#include "music.hpp"
-#include "sound_effects.hpp"
 #include "shops.hpp"
 #include "spoiler_log.hpp"
 #include "entrance.hpp"
