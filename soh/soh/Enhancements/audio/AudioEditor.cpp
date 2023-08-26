@@ -164,17 +164,23 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
     const std::string resetAllButton = "Reset All" + hiddenTabId;
     const std::string randomizeAllButton = "Randomize All" + hiddenTabId;
     if (ImGui::Button(resetAllButton.c_str())) {
+        auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+        auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         ResetGroup(map, type);
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        if (type == SEQ_BGM_WORLD) {
+        auto curReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
+        if (type == SEQ_BGM_WORLD && prevReplacement != curReplacement) {
             ReplayCurrentBGM();
         }
     }
     ImGui::SameLine();
     if (ImGui::Button(randomizeAllButton.c_str())) {
+        auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+        auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         RandomizeGroup(type);
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        if (type == SEQ_BGM_WORLD) {
+        auto curReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
+        if (type == SEQ_BGM_WORLD && prevReplacement != curReplacement) {
             ReplayCurrentBGM();
         }
     }
