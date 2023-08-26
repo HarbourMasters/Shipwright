@@ -257,7 +257,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
                     CVarClear(cvarLockKey.c_str());
                 }
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-                UpdateCurrentBGM(seqData->sequenceId, type);
+                UpdateCurrentBGM(defaultValue, type);
             } 
         }
         UIWidgets::Tooltip("Randomize this sound");
