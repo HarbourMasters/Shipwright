@@ -27,7 +27,7 @@ s8 reverbAdd = 0;
 #define SEQ_COUNT_BGM_EVENT 17
 #define SEQ_COUNT_INSTRUMENT 6
 #define SEQ_COUNT_SFX 57
-#define SEQ_COUNT_VOICE 78
+#define SEQ_COUNT_VOICE 107
 
 size_t AuthenticCountBySequenceType(SeqType type) {
     switch (type) {
@@ -220,7 +220,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
         }
         ImGui::TableNextColumn();
         ImGui::PushItemWidth(-FLT_MIN);
-        DrawPreviewButton((type == SEQ_SFX || type == SEQ_INSTRUMENT) ? defaultValue : currentValue, seqData.sfxKey, type);
+        DrawPreviewButton((type == SEQ_SFX || type == SEQ_VOICE || type == SEQ_INSTRUMENT) ? defaultValue : currentValue, seqData.sfxKey, type);
         ImGui::SameLine();
         ImGui::PushItemWidth(-FLT_MIN);
         if (ImGui::Button(resetButton.c_str())) {
@@ -273,7 +273,7 @@ std::string GetSequenceTypeName(SeqType type) {
         case SEQ_SFX:
             return "SFX";
         case SEQ_VOICE:
-            return "VOICE";
+            return "Voice";
         case SEQ_INSTRUMENT:
             return "Instrument";
         case SEQ_BGM_CUSTOM:
