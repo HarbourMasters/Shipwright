@@ -122,7 +122,7 @@ void AreaTable_Init_LostWoods() {
                   LocationAccess(LW_SKULL_KID,                 {[]{return IsChild && CanPlay(SariasSong, Song::SONG_SARIA);}}),
                   LocationAccess(LW_TRADE_COJIRO,              {[]{return IsAdult && Cojiro;}}),
                   LocationAccess(LW_TRADE_ODD_POTION,        {[]{return IsAdult && OddPoultice && Cojiro;}}),
-                  LocationAccess(LW_OCARINA_MEMORY_GAME,       {[]{return IsChild && Ocarina;}}),
+                  LocationAccess(LW_OCARINA_MEMORY_GAME,       {[]{return IsChild && Ocarina && OcarinaAButton && OcarinaCDownButton && OcarinaCLeftButton && OcarinaCRightButton && OcarinaCUpButton;}}),
                   LocationAccess(LW_TARGET_IN_WOODS,           {[]{return IsChild && CanUse(SLINGSHOT);}}),
                   LocationAccess(LW_DEKU_SCRUB_NEAR_BRIDGE,    {[]{return IsChild && CanStunDeku;}}),
                   LocationAccess(LW_GS_BEAN_PATCH_NEAR_BRIDGE, {[]{return CanPlantBugs && CanChildAttack;}}),
