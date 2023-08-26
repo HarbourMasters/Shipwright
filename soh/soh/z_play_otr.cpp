@@ -29,13 +29,15 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
 
     //osSyncPrintf("\nSCENE SIZE %fK\n", (scene->sceneFile.vromEnd - scene->sceneFile.vromStart) / 1024.0f);
 
-    std::string sceneVersion;
-    if (IsGameMasterQuest()) {
-        sceneVersion = "mq";
-    } else {
-        sceneVersion = "nonmq";
+    int16_t inDungeon = (sceneNum >= SCENE_YDAN && sceneNum <= SCENE_GANONTIKA_SONOGO && sceneNum != SCENE_GERUDOWAY) ||
+                        (sceneNum >= SCENE_YDAN_BOSS && sceneNum <= SCENE_GANON_FINAL) ||
+                        (sceneNum == SCENE_GANON_DEMO);
+
+    std::string sceneVersion = "";
+    if (inDungeon) {
+        sceneVersion = IsGameMasterQuest() ? "mq/" : "nonmq/";
     }
-    std::string scenePath = StringHelper::Sprintf("scenes/%s/%s/%s", sceneVersion.c_str(), scene->sceneFile.fileName, scene->sceneFile.fileName);
+    std::string scenePath = StringHelper::Sprintf("scenes/%s%s/%s", sceneVersion.c_str(), scene->sceneFile.fileName, scene->sceneFile.fileName);
 
     play->sceneSegment = OTRPlay_LoadFile(play, scenePath.c_str());
 

@@ -332,8 +332,12 @@ std::string ZResource::GetSourceOutputHeader([[maybe_unused]] const std::string&
 
 		std::string xmlPath = StringHelper::Replace(parent->GetXmlFilePath().string(), "\\", "/");
 
-		if (StringHelper::Contains(outName, "_room_") || StringHelper::Contains(outName, "_scene"))
-			prefix = "scenes/nonmq";
+		if (StringHelper::Contains(outName, "_room_") || StringHelper::Contains(outName, "_scene")) {
+			prefix = "scenes";
+			if (StringHelper::Contains(xmlPath, "dungeons/")) {
+				prefix += "/nonmq";
+			}
+		}
 		else if (StringHelper::Contains(xmlPath, "objects/"))
 			prefix = "objects";
 		else if (StringHelper::Contains(xmlPath, "textures/"))
