@@ -849,16 +849,22 @@ class Climable : protected TerrainCueSound {
                     (fabs(pos.y - (player->actor.world.pos.y + player->actor.yDistToWater)) > 30.0)) {
                     discoverLedge(pos);
                 }
-                if (pos.y > prevPos.y && fabs(pos.y - prevPos.y) < 20 && fabs(pos.y - prevPos.y) > 2 &&
+                if (pos.y > prevPos.y && fabs(pos.y - prevPos.y) < 20 && fabs(pos.y - prevPos.y) > 1.2 &&
                     player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
                     // This is an incline.
                     Vec3f_ bottom = pos;
-
-                    while ((pos.y > prevPos.y && fabs(pos.y - prevPos.y) < 20 && fabs(pos.y - prevPos.y) > 2 &&
+                    f32 ogStep = step;
+                    step = 1.0;
+                    move();
+                    if (fabs(pos.y - bottom.y) > 3.5) {
+                        discoverWall(pos);
+                        break;
+                    }
+                    while ((pos.y > prevPos.y && fabs(pos.y - prevPos.y) < 20 && fabs(pos.y - prevPos.y) > 1.2 &&
                             player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER)) {
                         prevPos = pos;
                         if (!move()) {
-                            destroyCurrentSound();
+                            //destroyCurrentSound();
                             break; // Probe is out of bounds.
                         }
                     }
@@ -872,17 +878,17 @@ class Climable : protected TerrainCueSound {
                     discoverIncline(bottom, pitchModifier);
                     break;
                 }
-                if (pos.y < prevPos.y && fabs(pos.y - prevPos.y) < 20 && fabs(pos.y - prevPos.y) > 2 &&
+                if (pos.y < prevPos.y && fabs(pos.y - prevPos.y) < 20 && fabs(pos.y - prevPos.y) > 1.2 &&
                     player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
                     // This is a decline.
                     // discorver top
                     Vec3f_ top = pos;
 
-                    while ((pos.y < prevPos.y && fabs(pos.y - prevPos.y) < 20 && fabs(pos.y - prevPos.y) > 2 &&
+                    while ((pos.y < prevPos.y && fabs(pos.y - prevPos.y) < 20 && fabs(pos.y - prevPos.y) > 1.2 &&
                             player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER)) {
                         prevPos = pos;
                         if (!move()) {
-                            destroyCurrentSound();
+                            //destroyCurrentSound();
                             break; // Probe is out of bounds.
                         }
                     }

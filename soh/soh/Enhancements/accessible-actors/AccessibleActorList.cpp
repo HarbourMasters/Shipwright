@@ -164,6 +164,7 @@ void accessible_maruta(AccessibleActor* actor) {
 }
 
 void accessible_area_change(AccessibleActor* actor) {
+    Player* player = GET_PLAYER(actor->play);
     if (actor->yDistToPlayer > 300.0) {
         return;
     }
@@ -175,9 +176,22 @@ void accessible_area_change(AccessibleActor* actor) {
         case 0:
             ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_FANTOM_WARP_L, false);
     }*/
-
+    if (actor->play->sceneNum == 81) {
+        actor->policy.distance = 4000;
+    }
+    if (actor->play->sceneNum <= 11) {
+        actor->policy.distance = 500;
+    }
+    
     if (actor->sceneIndex == 85 || actor->sceneIndex == 91) {
-        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_SARIA_MELODY, false);
+        if (actor->play->sceneNum == 91 && gSaveContext.entranceIndex != 1504 && gSaveContext.entranceIndex != 1246) {
+            return;
+        }
+        if (actor->play->sceneNum == 85 && actor->world.pos.y < 0) {
+            ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_HORSE_RUN_LEVEL, false);
+        } else {
+            ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_SARIA_MELODY, false);
+        }
         //kokiri forest and lost woods
     } else if (actor->play->sceneNum >= 17 && actor->play->sceneNum <= 25) {
         return; // dont check for entrances while in boss rooms
@@ -232,6 +246,7 @@ void accessible_area_change(AccessibleActor* actor) {
         return;//boss rooms
     }
     else {
+        actor->policy.distance = 500;
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_OC_DOOR_OPEN, false);
 
     }
@@ -524,7 +539,7 @@ void accessible_audio_compass(AccessibleActor* actor) {
     ActorAccessibility_AddSupportedActor(VA_DOOR, policy);
     ActorAccessibility_InitPolicy(&policy, "Area Change", accessible_area_change, 0);
     policy.n = 60;
-    //policy.distance = 2000;
+    policy.distance = 2000;
     ActorAccessibility_AddSupportedActor(VA_AREA_CHANGE, policy);
     //ActorAccessibility_InitPolicy(&policy, "marker", NULL,
     //                              NA_SE_EV_DIAMOND_SWITCH); 
