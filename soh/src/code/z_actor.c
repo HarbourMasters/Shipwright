@@ -1224,6 +1224,7 @@ void Actor_Init(Actor* actor, PlayState* play) {
 }
 
 void Actor_Destroy(Actor* actor, PlayState* play) {
+    GameInteractor_ExecuteOnActorDestroy(actor);
     if (actor->destroy != NULL) {
         actor->destroy(actor, play);
         actor->destroy = NULL;
@@ -2476,6 +2477,7 @@ u32 D_80116068[ACTORCAT_MAX] = {
 };
 
 void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
+
     Actor* refActor;
     Actor* actor;
     Player* player;

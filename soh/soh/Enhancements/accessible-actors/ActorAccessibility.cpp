@@ -16,6 +16,11 @@
 #include <unordered_set>
 #include "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 #include "soh/Enhancements/tts/tts.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+extern "C" {
+extern PlayState* gPlayState;
+extern bool freezeGame;
+}
 
 const char* GetLanguageCode();
 
@@ -50,7 +55,7 @@ typedef struct {
 class ActorAccessibility {
   public:
       bool isOn = false;
-    uint64_t nextActorID;
+    uint64_t nextActorID = 0;
     SupportedActors_t supportedActors;
     TrackedActors_t trackedActors;
     AccessibleActorList_t accessibleActorList;
@@ -59,7 +64,7 @@ class ActorAccessibility {
     AccessibleAudioEngine* audioEngine;
     SfxExtractor sfxExtractor;
     std::unordered_map<s16, SfxRecord> sfxMap;//Maps internal sfx to external (prerendered) resources.
-
+    int extractSfx = 0;
 };
 static ActorAccessibility* aa;
 
@@ -68,12 +73,45 @@ uint64_t ActorAccessibility_GetNextID() {
     aa->nextActorID++;
     return result;
 }
-void ActorAccessibility_Init() {
-    aa = new ActorAccessibility();
-    ActorAccessibility_InitAudio();
-    ActorAccessibility_InitActors();
+
+// Hooks for game-interactor.
+void ActorAccessibility_OnActorInit(void* actor) {
+    ActorAccessibility_TrackNewActor((Actor*)actor);
+}
+void ActorAccessibility_OnGameFrameUpdate() {
+    if (gPlayState == NULL)
+        return;
+
+    ActorAccessibility_RunAccessibilityForAllActors(gPlayState);
+}
+void ActorAccessibility_OnActorDestroy(void* actor)
+{
+    ActorAccessibility_RemoveTrackedActor((Actor*) actor);
 
 }
+void ActorAccessibility_OnGameStillFrozen()
+{
+    if (gPlayState == NULL)
+        return;
+    if (aa->extractSfx)
+        ActorAccessibility_HandleSoundExtractionMode(gPlayState);
+
+}
+    void ActorAccessibility_Init() {
+
+    aa = new ActorAccessibility();
+    aa->extractSfx = CVarGetInteger("gExtractSfx", 0);
+    if (aa->extractSfx)
+        freezeGame = true;
+    ActorAccessibility_InitAudio();
+    ActorAccessibility_InitActors();
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(ActorAccessibility_OnActorInit);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorDestroy>(ActorAccessibility_OnActorDestroy);
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(ActorAccessibility_OnGameFrameUpdate);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameStillFrozen>(ActorAccessibility_OnGameStillFrozen);
+
+    }
 void ActorAccessibility_Shutdown() {
     ActorAccessibility_ShutdownAudio();
     delete aa;
@@ -114,7 +152,7 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
 
  }
 
-void ActorAccessibility_TrackNewActor(Actor* actor) {
+    void ActorAccessibility_TrackNewActor(Actor * actor) {
         // Don't track actors for which no accessibility policy has been configured.
         ActorAccessibilityPolicy* policy = ActorAccessibility_GetPolicyForActor(actor->id);
         if (policy == NULL)
@@ -525,5 +563,3 @@ return NULL;//Resource doesn't exist, user's gotta run the extractor.
     }
 
 
-  
-    

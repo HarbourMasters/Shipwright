@@ -15,7 +15,10 @@ void GameInteractor_ExecuteOnSceneSpawnActors();
 void GameInteractor_ExecuteOnPlayerUpdate();
 void GameInteractor_ExecuteOnOcarinaSongAction();
 void GameInteractor_ExecuteOnActorInit(void* actor);
+void GameInteractor_ExecuteOnActorInit(void* actor);
 void GameInteractor_ExecuteOnActorUpdate(void* actor);
+void GameInteractor_ExecuteOnActorDestroy(void* actor);
+
 void GameInteractor_ExecuteOnPlayerBonk();
 void GameInteractor_ExecuteOnOcarinaSongAction();
 void GameInteractor_ExecuteOnPlayDestroy();
@@ -48,6 +51,7 @@ void GameInteractor_ExecuteOnUpdateFileNameSelection(int16_t charCode);
 
 // MARK: - Game
 void GameInteractor_ExecuteOnSetGameLanguage();
+void GameInteractor_ExecuteOnGameStillFrozen();
 #ifdef __cplusplus
 }
 #endif

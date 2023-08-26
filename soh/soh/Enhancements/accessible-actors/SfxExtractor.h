@@ -10,6 +10,7 @@ class SfxExtractor {
     s16 currentSfx;
     std::vector<int16_t> tempStorage; // Stores raw audio data for the sfx currently being ripped.
     int16_t* tempBuffer;              // Raw pointer to the above vector.
+    f32 ogMusicVolume;
     int progressMilestones[9]; // Implements progress reports after every 10 percent.
     // Check if a buffer contains meaningful audio output.
     bool isAllZero(int16_t* buffer, size_t count);
@@ -23,6 +24,7 @@ class SfxExtractor {
     void maybeGiveProgressReport();
   public:
     SfxExtractor();
+
     void frameCallback();
     void prime();
     // The below is called by the (hijacked) audio thread.

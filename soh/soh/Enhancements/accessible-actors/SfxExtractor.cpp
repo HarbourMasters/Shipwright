@@ -14,9 +14,10 @@ extern f32 D_801333E0;
 extern s8 D_801333E8;
 extern u8 D_801333F0;
 void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
+extern bool freezeGame;
 }
 enum {
-    STEP_SETUP,
+    STEP_SETUP = 0,
     STEP_MAIN,
     STEP_FINISHED,
     STEP_ERROR,
@@ -92,6 +93,9 @@ void SfxExtractor::renderOutput() {
 }
 void SfxExtractor::setup() {
     try {
+        ogMusicVolume = CVarGetFloat("gMainMusicVolume", 1.0);
+        CVarSetFloat("gMainMusicVolume", 0.0);
+
         SpeechSynthesizer::Instance->Speak("Sfx extraction speedrun initiated. Please wait. This will take a few minutes.", GetLanguageCode());
         // Kill the audio thread so we can take control.
         captureThreadState = CT_WAITING;
@@ -167,6 +171,8 @@ void SfxExtractor::finished() {
         SpeechSynthesizer::Instance->Speak(ss.str().c_str(), GetLanguageCode());
     } else
         Audio_PlayFanfare(NA_BGM_ITEM_GET);
+    freezeGame = false;
+
 }
 void SfxExtractor::maybeGiveProgressReport() {
     size_t ripsRemaining = sfxToRip.size() + 1;
@@ -182,7 +188,8 @@ void SfxExtractor::maybeGiveProgressReport() {
 SfxExtractor::SfxExtractor() {
     currentStep = STEP_SETUP;
 }
-void SfxExtractor::frameCallback() {
+
+    void SfxExtractor::frameCallback() {
     switch (currentStep) {
         case STEP_SETUP:
             setup();
