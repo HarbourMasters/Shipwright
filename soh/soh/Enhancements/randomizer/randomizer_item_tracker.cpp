@@ -262,6 +262,22 @@ struct ItemTrackerNumbers {
   int currentAmmo;
 };
 
+static ImVector<char> itemTrackerNotes;
+uint32_t notesIdleFrames = 0;
+bool notesNeedSave = false;
+const uint32_t notesMaxIdleFrames = 40; // two seconds of game time, since OnGameFrameUpdate is used to tick
+
+void ItemTrackerOnFrame() {
+    if (notesNeedSave && notesIdleFrames <= notesMaxIdleFrames) {
+        notesIdleFrames++;
+    }
+}
+
+void SaveNotes(uint32_t fileNum) {
+    CVarSetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), std::string(std::begin(itemTrackerNotes), std::end(itemTrackerNotes)).c_str());
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+}
+
 bool IsValidSaveFile() {
     bool validSave = gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
     return validSave;
@@ -623,8 +639,6 @@ void DrawSong(ItemTrackerItem item) {
     UIWidgets::SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
 }
 
-static ImVector<char> itemTrackerNotes;
-
 void DrawNotes(bool resizeable = false) {
     ImGui::BeginGroup();
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
@@ -651,10 +665,13 @@ void DrawNotes(bool resizeable = false) {
         }
     };
     ImVec2 size = resizeable ? ImVec2(-FLT_MIN, ImGui::GetContentRegionAvail().y) : ImVec2(((iconSize + iconSpacing) * 6) - 8, 200);
-    ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size, ImGuiInputTextFlags_AllowTabInput);
-    if (ImGui::IsItemDeactivatedAfterEdit() && IsValidSaveFile()) {
-        CVarSetString(("gItemTrackerNotes" + std::to_string(gSaveContext.fileNum)).c_str(), std::string(std::begin(itemTrackerNotes), std::end(itemTrackerNotes)).c_str());
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    if (ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size, ImGuiInputTextFlags_AllowTabInput)) {
+        notesNeedSave = true;
+        notesIdleFrames = 0;
+    }
+    if ((ImGui::IsItemDeactivatedAfterEdit() || (notesNeedSave && notesIdleFrames > notesMaxIdleFrames)) && IsValidSaveFile()) {
+        notesNeedSave = false;
+        SaveNotes(gSaveContext.fileNum);
     }
     ImGui::EndGroup();
 }
@@ -1116,4 +1133,5 @@ void ItemTrackerWindow::InitElement() {
         CVarSetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(ItemTrackerOnFrame);
 }
