@@ -327,8 +327,8 @@ void EnWallmas_WaitToDrop(EnWallmas* this, PlayState* play) {
     }
 
     if (this->timer == 0) {
-        if (this->actor.params == WMT_SHADOWTAG && player->stateFlags1) {
-        this->timer = 0x82; // Prevents Shadow Tag Hand from dropping when in an event.
+        if (this->actor.params == WMT_SHADOWTAG && (player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE)) {
+        this->timer = 0x82; // Prevents Shadow Tag Hand from dropping when talking to an NPC or Signpost.
         } else {
             EnWallmas_SetupDrop(this, play);
         }
