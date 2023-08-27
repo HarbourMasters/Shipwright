@@ -7,7 +7,6 @@
 
 #include "menu.hpp"
 #include "playthrough.hpp"
-#include "preset.hpp"
 #include "randomizer.hpp"
 #include "settings.hpp"
 #include "spoiler_log.hpp"
