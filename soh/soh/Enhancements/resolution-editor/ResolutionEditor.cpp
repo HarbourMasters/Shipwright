@@ -27,7 +27,6 @@ void AdvancedResolutionSettingsWindow::InitElement() {
 }
 
 void AdvancedResolutionSettingsWindow::DrawElement() {
-#ifndef __APPLE__
     ImGui::SetNextWindowSize(ImVec2(444, 484), ImGuiCond_FirstUseEver);
     if (ImGui::Begin("Advanced Resolution Settings", &mIsVisible)) {
         bool update[sizeof(setting)];
@@ -53,6 +52,11 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         int* p_verticalPixelCount = &verticalPixelCount;
         int* p_integerScaleFactor = &integerScaleFactor;
 
+#ifdef __APPLE__
+        ImGui::Text("Note: these settings may behave incorrectly on Apple Retina Displays.");
+        UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
+#endif
+
         // The original resolution slider (also for convenience)
         if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f, 2.0f,
                                               "", 1.0f, true, true,
@@ -62,10 +66,11 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         UIWidgets::Tooltip("Multiplies your output resolution by the value inputted, as a more intensive but effective "
                            "form of anti-aliasing");
         // N64 Mode toggle (for convenience)
+        /*
         bool enableN64Mode = CVarGetInteger("gLowResMode", 0);
         if (ImGui::Checkbox("(Enhancements>Graphics) N64 Mode", &enableN64Mode)) {
             CVarSetInteger("gLowResMode", enableN64Mode);
-        }
+        } */
 
         UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
         // Activator
@@ -176,7 +181,6 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         }
     }
     ImGui::End();
-#endif
 }
 
 void AdvancedResolutionSettingsWindow::UpdateElement() {
