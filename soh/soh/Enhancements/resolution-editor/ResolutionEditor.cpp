@@ -4,7 +4,6 @@
 
 #include <soh/UIWidgets.hpp> // This dependency is why the UI needs to be on SoH's side.
 #include <graphic/Fast3D/gfx_pc.h>
-#include <AdvancedResolution.h>
 
 namespace AdvancedResolutionSettings {
 enum setting { UPDATE_aspectRatioX, UPDATE_aspectRatioY, UPDATE_verticalPixelCount, UPDATE_integerScaleFactor };
@@ -78,16 +77,17 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         if (ImGui::Checkbox("Enable \"Advanced Resolution Settings\" settings.", &activateAdvancedMode)) {
             CVarSetInteger("gAdvancedResolutionMode", activateAdvancedMode);
         }
-        // Resolution visualiser
-        ImGui::Text("Viewport dimensions: %d by %d", gfx_current_game_window_viewport.width,
-                    gfx_current_game_window_viewport.height);
-        ImGui::Text("Internal resolution: %d by %d", gfx_current_dimensions.width, gfx_current_dimensions.height);
+        // Error/Warning display
         if (IsDroppingFrames()) {
             ImGui::TextColored({ 0.85f, 0.85f, 0.0f, 1.0f },
                                ICON_FA_EXCLAMATION_TRIANGLE " Significant frame rate (FPS) drop detected.");
         } else {
             ImGui::Text(" ");
         }
+        // Resolution visualiser
+        ImGui::Text("Viewport dimensions: %d by %d", gfx_current_game_window_viewport.width,
+                    gfx_current_game_window_viewport.height);
+        ImGui::Text("Internal resolution: %d by %d", gfx_current_dimensions.width, gfx_current_dimensions.height);
 
         UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
 
