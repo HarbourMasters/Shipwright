@@ -26,8 +26,8 @@ s8 reverbAdd = 0;
 #define SEQ_COUNT_NOSHUFFLE 6
 #define SEQ_COUNT_BGM_EVENT 17
 #define SEQ_COUNT_INSTRUMENT 6
-#define SEQ_COUNT_SFX 57
-#define SEQ_COUNT_VOICE 78
+#define SEQ_COUNT_SFX 58
+#define SEQ_COUNT_VOICE 79
 
 size_t AuthenticCountBySequenceType(SeqType type) {
     switch (type) {
@@ -97,7 +97,7 @@ void RandomizeGroup(SeqType type) {
         const std::string cvarKey = "gAudioEditor.ReplacedSequences." + seqData.sfxKey;
         if (seqData.category & type) {
             // Only save authentic sequence CVars
-            if (((seqData.category & SEQ_BGM_CUSTOM) || seqData.category == SEQ_FANFARE) && seqData.sequenceId >= MAX_AUTHENTIC_SEQID) {
+            if ((((seqData.category & SEQ_BGM_CUSTOM) || seqData.category == SEQ_FANFARE) && seqData.sequenceId >= MAX_AUTHENTIC_SEQID) || seqData.canBeReplaced == false) {
                 continue;
             }
             const int randomValue = values.back();
@@ -183,10 +183,11 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
             continue;
         }
         // Do not display custom sequences in the list
-        if (((seqData.category & SEQ_BGM_CUSTOM) || seqData.category == SEQ_FANFARE) && defaultValue >= MAX_AUTHENTIC_SEQID) {
+        if ((((seqData.category & SEQ_BGM_CUSTOM) || seqData.category == SEQ_FANFARE) && defaultValue >= MAX_AUTHENTIC_SEQID) || seqData.canBeReplaced == false) {
             continue;
         }
 
+        const std::string initialSfxKey = seqData.sfxKey;
         const std::string cvarKey = "gAudioEditor.ReplacedSequences." + seqData.sfxKey;
         const std::string hiddenKey = "##" + cvarKey;
         const std::string resetButton = "Reset" + hiddenKey;
@@ -201,7 +202,8 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
         const int initialValue = map.contains(currentValue) ? currentValue : defaultValue;
         if (ImGui::BeginCombo(hiddenKey.c_str(), map.at(initialValue).label.c_str())) {
             for (const auto& [value, seqData] : map) {
-                if (~(seqData.category) & type) {
+                // If excluded as a replacement sequence, don't show in other dropdowns except the effect's own dropdown.
+                if (~(seqData.category) & type || (seqData.excludeAsReplacement && initialSfxKey != seqData.sfxKey)) {
                     continue;
                 }
 

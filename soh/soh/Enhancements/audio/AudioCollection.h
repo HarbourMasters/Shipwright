@@ -25,6 +25,8 @@ struct SequenceInfo {
     std::string label;
     std::string sfxKey;
     SeqType category;
+    bool canBeReplaced;
+    bool excludeAsReplacement;
 };
 
 class AudioCollection {
