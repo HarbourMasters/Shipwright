@@ -209,6 +209,7 @@ extern bool Longshot;
 extern bool GoronBracelet;
 extern bool SilverGauntlets;
 extern bool GoldenGauntlets;
+extern bool Swim;
 extern bool SilverScale;
 extern bool GoldScale;
 extern bool AdultsWallet;

@@ -62,8 +62,8 @@ void AreaTable_Init_JabuJabusBelly() {
                   LocationAccess(JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM, {[]{return true;}}),
                 }, {
                   //Exits
-                  Entrance(JABU_JABUS_BELLY_MAIN_LOWER, {[]{return true;}}),
-                  Entrance(JABU_JABUS_BELLY_LIFT_LOWER, {[]{return CanUseProjectile;}}),
+                  Entrance(JABU_JABUS_BELLY_MAIN_LOWER, {[]{return Swim;}}),
+                  Entrance(JABU_JABUS_BELLY_LIFT_LOWER, {[]{return Swim && CanUseProjectile;}}),
   });
 
   areaTable[JABU_JABUS_BELLY_LOWER_SIDE_ROOM] = Area("Jabu Jabus Belly Lower Side Room", "Jabu Jabus Belly", JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {
@@ -76,7 +76,7 @@ void AreaTable_Init_JabuJabusBelly() {
 
   areaTable[JABU_JABUS_BELLY_LIFT_LOWER] = Area("Jabu Jabus Belly Lift Lower", "Jabu Jabus Belly", JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(JABU_JABUS_BELLY_DEKU_SCRUB, {[]{return (IsChild || CanDive || LogicJabuAlcoveJumpDive || CanUse(IRON_BOOTS)) && CanStunDeku;}}),
+                  LocationAccess(JABU_JABUS_BELLY_DEKU_SCRUB, {[]{return Swim && (IsChild || CanDive || LogicJabuAlcoveJumpDive || CanUse(IRON_BOOTS)) && CanStunDeku;}}),
                 }, {
                   //Exits
                   Entrance(JABU_JABUS_BELLY_SHABOMB_CORRIDOR, {[]{return true;}}),
@@ -195,7 +195,7 @@ void AreaTable_Init_JabuJabusBelly() {
   areaTable[JABU_JABUS_BELLY_MQ_DEPTHS] = Area("Jabu Jabus Belly MQ Depths", "Jabu Jabus Belly", JABU_JABUS_BELLY, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
                   LocationAccess(JABU_JABUS_BELLY_MQ_FALLING_LIKE_LIKE_ROOM_CHEST, {[]{return true;}}),
-                  LocationAccess(JABU_JABUS_BELLY_MQ_GS_TAILPASARAN_ROOM,          {[]{return Sticks || CanUse(DINS_FIRE);}}),
+                  LocationAccess(JABU_JABUS_BELLY_MQ_GS_TAILPASARAN_ROOM,          {[]{return Swim && (Sticks || CanUse(DINS_FIRE));}}),
                   LocationAccess(JABU_JABUS_BELLY_MQ_GS_INVISIBLE_ENEMIES_ROOM,    {[]{return (LogicLensJabuMQ || CanUse(LENS_OF_TRUTH)) || Here(JABU_JABUS_BELLY_MQ_MAIN, []{return IsAdult && CanUse(HOVER_BOOTS) && CanUse(HOOKSHOT);});}}),
   }, {
                   //Exits

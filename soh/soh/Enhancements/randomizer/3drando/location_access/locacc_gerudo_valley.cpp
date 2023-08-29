@@ -27,7 +27,7 @@ void AreaTable_Init_GerudoValley() {
                   EventAccess(&BeanPlantFairy,   {[]{return BeanPlantFairy   || (CanPlantBean(GV_UPPER_STREAM) && CanPlay(SongOfStorms));}}),
                 }, {
                   //Locations
-                  LocationAccess(GV_WATERFALL_FREESTANDING_POH, {[]{return true;}}),
+                  LocationAccess(GV_WATERFALL_FREESTANDING_POH, {[]{return IsChild || Swim;}}),//can use cucco as child
                   LocationAccess(GV_GS_BEAN_PATCH,              {[]{return CanPlantBugs && CanChildAttack;}}),
                   LocationAccess(GV_COW,                        {[]{return IsChild && CanPlay(EponasSong);}}),
                   LocationAccess(GV_GOSSIP_STONE,               {[]{return true;}}),
@@ -38,7 +38,7 @@ void AreaTable_Init_GerudoValley() {
 
   areaTable[GV_LOWER_STREAM] = Area("GV Lower Stream", "Gerudo Valley", GERUDO_VALLEY, DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(LAKE_HYLIA, {[]{return true;}}),
+                  Entrance(LAKE_HYLIA, {[]{return IsChild || Swim;}}),//can use cucco as child
   });
 
   areaTable[GV_GROTTO_LEDGE] = Area("GV Grotto Ledge", "Gerudo Valley", GERUDO_VALLEY, DAY_NIGHT_CYCLE, {}, {}, {

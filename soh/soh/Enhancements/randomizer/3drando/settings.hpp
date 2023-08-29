@@ -446,6 +446,7 @@ typedef struct {
     uint8_t shuffleAdultTradeQuest;
     uint8_t shuffleChestMinigame;
     uint8_t shuffle100GsReward;
+    uint8_t shuffleSwim;
 
     uint8_t mapsAndCompasses;
     uint8_t keysanity;
@@ -968,6 +969,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option ShuffleAdultTradeQuest;
   extern Option ShuffleChestMinigame;
   extern Option Shuffle100GSReward;
+  extern Option ShuffleSwim;
 
   extern Option MapsAndCompasses;
   extern Option Keysanity;
@@ -1192,6 +1194,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option LogicColossusGS;
   extern Option LogicDekuBasementGS;
   extern Option LogicDekuB1Skip;
+  extern Option LogicDekuB1BackflipOverSpikedLog;
   extern Option LogicDekuB1WebsWithBow;
   extern Option LogicDekuMQCompassGS;
   extern Option LogicDekuMQLog;

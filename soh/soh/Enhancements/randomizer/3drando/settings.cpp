@@ -197,6 +197,7 @@ namespace Settings {
   Option ShuffleAdultTradeQuest = Option::Bool("Shuffle Adult Trade",    {"Off", "On"},                                                     {adultTradeDesc});
   Option ShuffleChestMinigame   = Option::U8  ("Shuffle Chest Minigame", {"Off", "On (Separate)", "On (Pack)"},                             {chestMinigameDesc});
   Option Shuffle100GSReward     = Option::Bool("Shuffle 100 GS Reward",  {"Off", "On"},                                                     {shuffle100GsDesc});
+  Option ShuffleSwim            = Option::Bool("Shuffle Swim",  {"Off", "On"},                                                              {shuffle100GsDesc});
   std::vector<Option *> shuffleOptions = {
     &RandomizeShuffle,
     &ShuffleRewards,
@@ -218,6 +219,7 @@ namespace Settings {
     &ShuffleAdultTradeQuest,
     &ShuffleChestMinigame,
     &Shuffle100GSReward,
+    &ShuffleSwim,
   };
 
   //Shuffle Dungeon Items
@@ -718,6 +720,7 @@ namespace Settings {
   Option LogicColossusGS                          = LogicTrick(std::to_string(RT_COLOSSUS_GS), LogicTempDesc);
   Option LogicDekuBasementGS                      = LogicTrick(std::to_string(RT_DEKU_BASEMENT_GS), LogicTempDesc);
   Option LogicDekuB1Skip                          = LogicTrick(std::to_string(RT_DEKU_B1_SKIP), LogicTempDesc);
+  Option LogicDekuB1BackflipOverSpikedLog         = LogicTrick(std::to_string(RT_DEKU_B1_BACKFLIP_OVER_SPIKED_LOG), LogicTempDesc);
   Option LogicDekuB1WebsWithBow                   = LogicTrick(std::to_string(RT_DEKU_B1_BOW_WEBS), LogicTempDesc);
   Option LogicDekuMQCompassGS                     = LogicTrick(std::to_string(RT_DEKU_MQ_COMPASS_GS), LogicTempDesc);
   Option LogicDekuMQLog                           = LogicTrick(std::to_string(RT_DEKU_MQ_LOG), LogicTempDesc);
@@ -891,6 +894,7 @@ namespace Settings {
     &LogicColossusGS,
     &LogicDekuBasementGS,
     &LogicDekuB1Skip,
+    &LogicDekuB1BackflipOverSpikedLog,
     &LogicDekuB1WebsWithBow,
     &LogicDekuMQCompassGS,
     &LogicDekuMQLog,
@@ -1063,6 +1067,7 @@ namespace Settings {
     {RT_HW_REVERSE,&LogicReverseWasteland},
     {RT_COLOSSUS_GS,&LogicColossusGS},
     {RT_DEKU_BASEMENT_GS,&LogicDekuBasementGS},
+    {RT_DEKU_B1_BACKFLIP_OVER_SPIKED_LOG,&LogicDekuB1BackflipOverSpikedLog},
     {RT_DEKU_B1_SKIP,&LogicDekuB1Skip},
     {RT_DEKU_B1_BOW_WEBS,&LogicDekuB1WebsWithBow},
     {RT_DEKU_MQ_COMPASS_GS,&LogicDekuMQCompassGS},
@@ -1604,6 +1609,7 @@ namespace Settings {
     ctx.shuffleAdultTradeQuest = (ShuffleAdultTradeQuest) ? 1 : 0;
     ctx.shuffleChestMinigame = ShuffleChestMinigame.Value<uint8_t>();
     ctx.shuffle100GsReward   = (Shuffle100GSReward) ? 1 : 0;
+    ctx.shuffleSwim          = (ShuffleSwim) ? 1 : 0;
 
     ctx.mapsAndCompasses     = MapsAndCompasses.Value<uint8_t>();
     ctx.keysanity            = Keysanity.Value<uint8_t>();
@@ -2952,6 +2958,8 @@ namespace Settings {
     } else {
       Shuffle100GSReward.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_100_GS_REWARD]);
     }
+
+    ShuffleSwim.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_SWIM]);
 
     // the  checkbox works because 0 is "Off" and 1 is "Fairy Ocarina"
     StartingOcarina.SetSelectedIndex(cvarSettings[RSK_STARTING_OCARINA]);

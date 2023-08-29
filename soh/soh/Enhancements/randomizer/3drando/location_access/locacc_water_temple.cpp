@@ -12,8 +12,8 @@ void AreaTable_Init_WaterTemple() {
   ---------------------------*/
   areaTable[WATER_TEMPLE_ENTRYWAY] = Area("Water Temple Entryway", "Water Temple", WATER_TEMPLE, NO_DAY_NIGHT_CYCLE, {}, {}, {
                   //Exits
-                  Entrance(WATER_TEMPLE_LOBBY,    {[]{return Dungeon::WaterTemple.IsVanilla();}}),
-                  Entrance(WATER_TEMPLE_MQ_LOBBY, {[]{return Dungeon::WaterTemple.IsMQ();}}),
+                  Entrance(WATER_TEMPLE_LOBBY,    {[]{return Swim && Dungeon::WaterTemple.IsVanilla();}}),
+                  Entrance(WATER_TEMPLE_MQ_LOBBY, {[]{return Swim && Dungeon::WaterTemple.IsMQ();}}),
                   Entrance(LAKE_HYLIA,            {[]{return true;}}),
   });
 

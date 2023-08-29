@@ -205,6 +205,8 @@ typedef enum {
   EPONA,
   HINT,
 
+  SWIM,
+
   //SHOP ITEMS
   BUY_DEKU_NUT_5,
   BUY_ARROWS_30,

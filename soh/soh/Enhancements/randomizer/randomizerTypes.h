@@ -915,6 +915,7 @@ typedef enum {
     RT_DEKU_BASEMENT_GS,
     RT_DEKU_B1_SKIP,
     RT_DEKU_B1_BOW_WEBS,
+    RT_DEKU_B1_BACKFLIP_OVER_SPIKED_LOG,
     RT_DEKU_MQ_COMPASS_GS,
     RT_DEKU_MQ_LOG,
     RT_DC_SCARECROW_GS,
@@ -1304,6 +1305,7 @@ typedef enum {
     RG_TRIFORCE,
     RG_HINT,
     RG_TYCOON_WALLET,
+    RG_SWIM,
     RG_MAX
 } RandomizerGet;
 
@@ -1451,6 +1453,7 @@ typedef enum {
     RSK_ALL_LOCATIONS_REACHABLE,
     RSK_SHUFFLE_BOSS_ENTRANCES,
     RSK_SHUFFLE_100_GS_REWARD,
+    RSK_SHUFFLE_SWIM,
     RSK_MAX
 } RandomizerSettingKey;
 

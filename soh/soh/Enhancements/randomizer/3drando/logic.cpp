@@ -221,6 +221,7 @@ namespace Logic {
   bool GoronBracelet    = false;
   bool SilverGauntlets  = false;
   bool GoldenGauntlets  = false;
+  bool Swim             = false;
   bool SilverScale      = false;
   bool GoldScale        = false;
   bool AdultsWallet     = false;
@@ -509,8 +510,9 @@ namespace Logic {
     GoronBracelet   = ProgressiveStrength   >= 1;
     SilverGauntlets = ProgressiveStrength   >= 2;
     GoldenGauntlets = ProgressiveStrength   >= 3;
-    SilverScale     = ProgressiveScale      >= 1;
-    GoldScale       = ProgressiveScale      >= 2;
+    Swim            = ProgressiveScale      >= 1;
+    SilverScale     = ProgressiveScale      >= 2;
+    GoldScale       = ProgressiveScale      >= 3;
     AdultsWallet    = ProgressiveWallet     >= 1;
     MasterSword     = MasterSword   || IsAdult;
     BiggoronSword   = BiggoronSword || ProgressiveGiantKnife >= 2;
@@ -563,7 +565,7 @@ namespace Logic {
     CanChildDamage  = IsChild && (Slingshot ||              Sticks || KokiriSword || HasExplosives || CanUse(DINS_FIRE) || CanUse(MASTER_SWORD) || CanUse(MEGATON_HAMMER) || CanUse(BIGGORON_SWORD));
     CanStunDeku     = IsAdult || CanChildAttack || Nuts || HasShield;
     CanCutShrubs    = IsAdult /*|| Sticks*/ || KokiriSword || Boomerang || HasExplosives || CanUse(MASTER_SWORD) || CanUse(MEGATON_HAMMER) || CanUse(BIGGORON_SWORD);
-    CanDive         = ProgressiveScale >= 1;
+    CanDive         = ProgressiveScale >= 2;
     CanLeaveForest  = OpenForest.IsNot(OPENFOREST_CLOSED) || IsAdult || DekuTreeClear || ShuffleInteriorEntrances || ShuffleOverworldEntrances;
     CanPlantBugs    = IsChild && Bugs;
     CanRideEpona    = IsAdult && Epona && CanPlay(EponasSong);
@@ -842,7 +844,8 @@ namespace Logic {
      ProgressiveBulletBag  = 0;
      ProgressiveBombBag    = 0;
      ProgressiveMagic      = 0;
-     ProgressiveScale      = 0;
+     //If we're not shuffling swim, we start with it (scale 1)
+     ProgressiveScale      = ShuffleSwim.Is(true) ? 0 : 1;
      ProgressiveHookshot   = 0;
      ProgressiveBow        = 0;
      ProgressiveWallet     = 0;
@@ -934,6 +937,7 @@ namespace Logic {
      GoronBracelet    = false;
      SilverGauntlets  = false;
      GoldenGauntlets  = false;
+     Swim = false;
      SilverScale      = false;
      GoldScale        = false;
      AdultsWallet     = false;
