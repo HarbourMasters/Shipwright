@@ -93,8 +93,6 @@ void SfxExtractor::renderOutput() {
 }
 void SfxExtractor::setup() {
     try {
-        ogMusicVolume = CVarGetFloat("gMainMusicVolume", 1.0);
-        CVarSetFloat("gMainMusicVolume", 0.0);
 
         SpeechSynthesizer::Instance->Speak("Sfx extraction speedrun initiated. Please wait. This will take a few minutes.", GetLanguageCode());
         // Kill the audio thread so we can take control.
@@ -158,6 +156,8 @@ void SfxExtractor::finished() {
     CVarClear("gExtractSfx");
     CVarSave();
     archive = nullptr;
+    freezeGame = false;
+
     Audio_QueueSeqCmd(NA_BGM_TITLE);
 
     if (currentStep == STEP_ERROR || currentStep == STEP_ERROR_OTR) {
@@ -171,7 +171,6 @@ void SfxExtractor::finished() {
         SpeechSynthesizer::Instance->Speak(ss.str().c_str(), GetLanguageCode());
     } else
         Audio_PlayFanfare(NA_BGM_ITEM_GET);
-    freezeGame = false;
 
 }
 void SfxExtractor::maybeGiveProgressReport() {

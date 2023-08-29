@@ -99,6 +99,9 @@ void ActorAccessibility_PlaySpecialSound(AccessibleActor* actor, s16 sfxId);
  *looping: whether to play the sound just once or on a continuous loop.
 */
 void ActorAccessibility_PlaySound(void* actor, int slot, s16 sfxId, bool looping);
+//Play one of the game's internal samples.
+ void ActorAccessibility_PlayRawSample(void* handle, int slot, const char* name, bool looping);
+// 
 //Stop a sound. Todo: consider making this a short fade instead of just cutting it off.
 void ActorAccessibility_StopSound(void* handle, int slot);
 void ActorAccessibility_StopAllSounds(void* handle);
@@ -121,6 +124,8 @@ void ActorAccessibility_SeekSound(void* handle, int slot, size_t offset);
 * 
 */
 void ActorAccessibility_PlaySoundForActor(AccessibleActor* actor, int slot, s16 sfxId, bool looping);
+void ActorAccessibility_PlaySampleForActor(AccessibleActor* actor, int slot, const char* name, bool looping);
+
 void ActorAccessibility_StopSoundForActor(AccessibleActor* actor, int slot);
 void ActorAccessibility_StopAllSoundsForActor(AccessibleActor* actor);
 f32 ActorAccessibility_ComputeCurrentVolume(f32 maxDistance, f32 xzDistToPlayer);

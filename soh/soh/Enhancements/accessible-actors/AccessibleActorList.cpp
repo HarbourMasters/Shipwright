@@ -296,7 +296,10 @@ void accessible_goma(AccessibleActor* actor) {
 }
 
 void accessible_door_of_time(AccessibleActor* actor) {
-    ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_DIAMOND_SWITCH, false);
+    ActorAccessibility_PlaySampleForActor(actor, 0, "Chanting", false);
+    ActorAccessibility_SetSoundPitch(actor, 0, 1.0);
+
+    //ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_DIAMOND_SWITCH, false);
 }
 
 void accessible_sticks(AccessibleActor* actor) {
