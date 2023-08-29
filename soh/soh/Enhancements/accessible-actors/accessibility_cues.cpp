@@ -26,7 +26,7 @@ DISCOVERED_LEDGE,
 DISCOVERED_WALL,
 DISCOVERED_SPIKE,
 DISCOVERED_WATER,
-DISCOVERED_CLIMABLE,
+DISCOVERED_GROUND,
 };
 //Abstract class for terrain cue sound handling. Implementations should not allocate memory. These are always in-place constructed in static memory owned by the TerrainCueDirection object.
 class TerrainCueSound {
@@ -162,6 +162,7 @@ class Decline : protected TerrainCueSound {
             pitchModifier = mod;
 
         }
+        
     };
 class Ledge :protected TerrainCueSound {
         bool climbable;//Distinguishes between a ledge link can fall from and one he can climb up.
@@ -285,14 +286,16 @@ class Water : protected TerrainCueSound {
     }
 };
 
-class Climable : protected TerrainCueSound {
+class Ground : protected TerrainCueSound {
+    float pitchModifier;
   public:
-    Climable(AccessibleActor* actor, Vec3f pos) : TerrainCueSound(actor, pos) {
-        currentPitch = 0.5;
-        currentSFX = NA_SE_PL_LAND_LADDER;
+    Ground(AccessibleActor* actor, Vec3f pos, float pitchModifier) : TerrainCueSound(actor, pos) {
+        currentPitch = 1.0;
+        currentSFX = NA_SE_EV_WOOD_BOUND;
+        this->pitchModifier = 0.0;
         play();
     }
-    virtual ~Climable() {
+    virtual ~Ground() {
     }
     void run() {
         if (restFrames == 0) {
@@ -300,7 +303,11 @@ class Climable : protected TerrainCueSound {
             restFrames = 10;
             return;
         }
+        ActorAccessibility_SetSoundPitch(this, 0, 1.0 + (2*pitchModifier));
         restFrames--;
+    }
+    void setPitchModifier(float modifier) {
+        pitchModifier = modifier;
     }
 };
 
@@ -338,7 +345,7 @@ class Climable : protected TerrainCueSound {
         Wall wall;
         Spike spike;
         Water water;
-        Climable climable;
+        Ground ground;
     };
     Platform platform;
 
@@ -431,13 +438,18 @@ class Climable : protected TerrainCueSound {
         terrainDiscovered = DISCOVERED_WATER;
     }
 
-    void discoverClimable(Vec3f pos) {
-        if (terrainDiscovered == DISCOVERED_CLIMABLE)
+    void discoverGround(Vec3f pos, float pitchModifier = 0) {
+        if (terrainDiscovered == DISCOVERED_GROUND) {
+            ground.setPitchModifier(pitchModifier);
+
             return;
+        }
+
         destroyCurrentSound();
-        new (&climable) Climable(actor, pos);
-        currentSound = (TerrainCueSound*)&climable;
-        terrainDiscovered = DISCOVERED_CLIMABLE;
+
+        new (&ground) Ground(actor, pos, pitchModifier);
+        currentSound = (TerrainCueSound*)&ground;
+        terrainDiscovered = DISCOVERED_GROUND;
     }
     // Find out how high a wall goes.
     f32 findWallHeight(Vec3f& pos, CollisionPoly* poly) {
@@ -618,11 +630,18 @@ class Climable : protected TerrainCueSound {
     // Move a probe to its next point along a line, ensuring that it remains on the floor. Returns false if the move
     // would put the probe out of bounds. Does not take walls into account.
     bool move(s8 gravity = true) {
+        if (gravity == 2) {
+            pos.y += probeSpeed;
+            if (!BgCheck_PosInStaticBoundingBox(&actor->play->colCtx, &pos))
+                return false; // Out of bounds.
+            return true;
+        }
         pos.x += velocity.x;
-        pos.y += velocity.y;
+        
         pos.z += velocity.z;
         
-        if (gravity) {
+        if (gravity == 1) {
+            pos.y += velocity.y;
             f32 floorHeight = 0;
             floorHeight = BgCheck_EntityRaycastFloor3(&actor->play->colCtx, &floorPoly, &floorBgId, &pos);
             if (floorHeight == BGCHECK_Y_MIN)
@@ -808,7 +827,170 @@ class Climable : protected TerrainCueSound {
                     discoverWall(pos);
                     break;
                 }
+                //link is climbing
+            } else if (player->stateFlags1 == PLAYER_STATE1_CLIMBING_LADDER) {
+                f32 playerHeight = BgCheck_EntityRaycastFloor3(&actor->play->colCtx, &floorPoly, &floorBgId, &player->actor.world.pos);
+                f32 floorHeight;
+                s8 moveMethod = false;
+                Vec3s_ ogRot = rot;
+                
+                if (ogRot.y == player->actor.world.rot.y) {
+                    
+                    moveMethod = 2;
+                    
+                }
+                player->actor.world.rot.y = player->actor.shape.rot.y;
+                
+                if (!move(moveMethod)) {
+                    destroyCurrentSound();
 
+                    break; // Probe is out of bounds.
+                }
+                Vec3f wallPos;
+                CollisionPoly* wallPoly = checkWall(pos, prevPos, wallPos);
+                if (wallPoly != NULL) {
+                    if ((func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 8 &&
+                            func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 3)) {
+                        discoverLedge(pos, false);
+
+                        break;
+                    } else {
+                        
+                        rot = ogRot;
+                        floorHeight = BgCheck_EntityRaycastFloor3(&actor->play->colCtx, &floorPoly, &floorBgId,
+                                                                       &pos);
+                        if ((floorHeight - playerHeight) > 100.0) {
+                            destroyCurrentSound();
+                            pos.y - floorHeight;
+                            platform.setPosition(pos);
+                            platform.run();
+                            break;
+                        }
+                        continue;
+                    }
+                }
+                prevPos = pos;
+                rot.y = player->actor.shape.rot.y;
+                int i = 0;
+                while (wallPoly == NULL && i < 4) {
+                    if (!move(moveMethod)) {
+                        destroyCurrentSound();
+                        
+                        break; // Probe is out of bounds.
+                    }
+                    wallPoly = checkWall(pos, prevPos, wallPos);
+                    i += 1;
+                    
+                }
+                if (wallPoly != NULL) {
+                    if ((func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 8 &&
+                         func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 3)) {
+                        discoverLedge(pos, false);
+
+                        break;
+                    } else {
+                        
+                        rot = ogRot;
+                        floorHeight = BgCheck_EntityRaycastFloor3(&actor->play->colCtx, &floorPoly, &floorBgId, &pos);
+                        if ((floorHeight - playerHeight) > 100.0) {
+                            destroyCurrentSound();
+                            pos.y - floorHeight;
+                            platform.setPosition(pos);
+                            platform.run();
+                            break;
+                        }
+                        continue;
+                    }
+                }
+                Vec3f_ forwardPos = pos;
+                pos = prevPos;
+                rot.y = player->actor.shape.rot.y;
+                
+                rot.y += 16384;
+                rot.y += 16384;
+                i = 0;
+                while (wallPoly == NULL && i < 4) {
+
+                    if (!move(moveMethod)) {
+                        destroyCurrentSound();
+
+                        break; // Probe is out of bounds.
+                    }
+                    i += 1;
+                    wallPoly = checkWall(pos, prevPos, wallPos);
+                }
+                if (wallPoly != NULL) {
+                    if ((func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 8 &&
+                         func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 3)) {
+                        discoverLedge(pos, false);
+
+                        break;
+                    } else {
+                        rot = ogRot;
+                        floorHeight = BgCheck_EntityRaycastFloor3(&actor->play->colCtx, &floorPoly, &floorBgId, &pos);
+                        if ((floorHeight - playerHeight) > 100.0) {
+                            pos.y - floorHeight;
+                            platform.setPosition(pos);
+                            platform.run();
+                            break;
+                        }
+                        continue;
+                    }
+                }
+                Vec3f_ backPos = pos;
+                pos = prevPos;
+                rot = ogRot;
+                wallPoly = checkWall(backPos, forwardPos, wallPos);
+                if (wallPoly != NULL) {
+                    if ((func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 8 &&
+                         func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 3)) {
+                        discoverLedge(pos, false);
+
+                        break;
+                    } else {
+                        rot = ogRot;
+                        floorHeight = BgCheck_EntityRaycastFloor3(&actor->play->colCtx, &floorPoly, &floorBgId, &pos);
+                        if ((floorHeight - playerHeight) > 100.0) {
+                            pos.y - floorHeight;
+                            platform.setPosition(pos);
+                            platform.run();
+                            break;
+                        }
+
+                        continue;
+                    }
+                }
+                
+                if (moveMethod == 2) {
+                    rot.y = player->actor.shape.rot.y;
+                    rot.y += 16384;
+                    rot.y += 16384;
+                    if (!move(moveMethod)) {
+                        destroyCurrentSound();
+
+                        break; // Probe is out of bounds.
+                    }
+                    prevPos = pos;
+                    //pos.y += 200;
+                    f32 checkHeight = fabs(player->actor.world.pos.y - pos.y);
+                    f32 ceilingPos;
+                    if (BgCheck_AnyCheckCeiling(&actor->play->colCtx, &ceilingPos, &player->actor.world.pos, checkHeight+30)){
+                        pos.y = ceilingPos;
+                        if (checkHeight < 100) {
+
+                            discoverWall(pos);
+                            break;
+                        }
+                    } /*else {
+                        if (checkHeight < 200) {
+                            discoverLedge(pos, true);
+                            break;
+                        }
+                    }*///not needed?
+
+                }
+               // discoverLedge(pos, false);
+                break;
             }
             //link isn't in the water
             else {
