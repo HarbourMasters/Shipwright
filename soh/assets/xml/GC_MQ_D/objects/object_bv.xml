@@ -1,5 +1,42 @@
 <Root>
     <File Name="object_bv" Segment="6">
+        <Texture Name="object_bvTex_000040" OutName="object_bvTex_000040" Format="ia16" Width="16" Height="64" Offset="0x40" AddedByScript="true"/>
+        <Texture Name="object_bvTex_000840" OutName="object_bvTex_000840" Format="ia16" Width="16" Height="16" Offset="0x840" AddedByScript="true"/>
+        <Texture Name="object_bvTex_000A40" OutName="object_bvTex_000A40" Format="i8" Width="16" Height="32" Offset="0xA40" AddedByScript="true"/>
+        <Texture Name="object_bvTex_0051A0" OutName="object_bvTex_0051A0" Format="rgba16" Width="8" Height="16" Offset="0x51A0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_0052A0" OutName="object_bvTex_0052A0" Format="rgba16" Width="8" Height="16" Offset="0x52A0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_0053A0" OutName="object_bvTex_0053A0" Format="rgba16" Width="16" Height="16" Offset="0x53A0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_0055A0" OutName="object_bvTex_0055A0" Format="ia16" Width="16" Height="32" Offset="0x55A0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_0059A0" OutName="object_bvTex_0059A0" Format="ia16" Width="16" Height="32" Offset="0x59A0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_005DA0" OutName="object_bvTex_005DA0" Format="ia16" Width="16" Height="64" Offset="0x5DA0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_0065A0" OutName="object_bvTex_0065A0" Format="i8" Width="16" Height="32" Offset="0x65A0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_008F88" OutName="object_bvTex_008F88" Format="i8" Width="32" Height="32" Offset="0x8F88" AddedByScript="true"/>
+        <Texture Name="object_bvTex_0117B8" OutName="object_bvTex_0117B8" Format="rgba16" Width="16" Height="16" Offset="0x117B8" AddedByScript="true"/>
+        <Texture Name="object_bvTex_0119B8" OutName="object_bvTex_0119B8" Format="rgba16" Width="16" Height="16" Offset="0x119B8" AddedByScript="true"/>
+        <Texture Name="object_bvTex_011BB8" OutName="object_bvTex_011BB8" Format="rgba16" Width="16" Height="16" Offset="0x11BB8" AddedByScript="true"/>
+        <Texture Name="object_bvTex_012CE0" OutName="object_bvTex_012CE0" Format="i8" Width="64" Height="32" Offset="0x12CE0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_013660" OutName="object_bvTex_013660" Format="ia16" Width="64" Height="64" Offset="0x13660" AddedByScript="true"/>
+        <Texture Name="object_bvTex_0170D8" OutName="object_bvTex_0170D8" Format="rgba16" Width="16" Height="8" Offset="0x170D8" AddedByScript="true"/>
+        <Texture Name="object_bvTex_0171D8" OutName="object_bvTex_0171D8" Format="rgba16" Width="16" Height="16" Offset="0x171D8" AddedByScript="true"/>
+        <Texture Name="object_bvTex_018770" OutName="object_bvTex_018770" Format="rgba16" Width="8" Height="8" Offset="0x18770" AddedByScript="true"/>
+        <Texture Name="object_bvTex_018D30" OutName="object_bvTex_018D30" Format="rgba16" Width="16" Height="8" Offset="0x18D30" AddedByScript="true"/>
+        <Texture Name="object_bvTex_018E30" OutName="object_bvTex_018E30" Format="rgba16" Width="16" Height="16" Offset="0x18E30" AddedByScript="true"/>
+        <Texture Name="object_bvTex_019BB8" OutName="object_bvTex_019BB8" Format="ci8" Width="32" Height="64" Offset="0x19BB8" TlutOffset="0x199B0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_01A6B8" OutName="object_bvTex_01A6B8" Format="ci8" Width="32" Height="64" Offset="0x1A6B8" TlutOffset="0x1A4B0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_01B1B8" OutName="object_bvTex_01B1B8" Format="ci8" Width="32" Height="64" Offset="0x1B1B8" TlutOffset="0x1AFB0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_01BCB8" OutName="object_bvTex_01BCB8" Format="ci8" Width="32" Height="64" Offset="0x1BCB8" TlutOffset="0x1BAB0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_01C7B8" OutName="object_bvTex_01C7B8" Format="ci8" Width="32" Height="64" Offset="0x1C7B8" TlutOffset="0x1C5B0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_01D2B8" OutName="object_bvTex_01D2B8" Format="ci8" Width="32" Height="64" Offset="0x1D2B8" TlutOffset="0x1D0B0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_01DDB8" OutName="object_bvTex_01DDB8" Format="ci8" Width="32" Height="64" Offset="0x1DDB8" TlutOffset="0x1DBB0" AddedByScript="true"/>
+        <Texture Name="object_bvTex_01E8B8" OutName="object_bvTex_01E8B8" Format="ci8" Width="32" Height="64" Offset="0x1E8B8" TlutOffset="0x1E6B0" AddedByScript="true"/>
+        <Texture Name="object_bvTLUT_0199B0" OutName="object_bvTLUT_0199B0" Format="rgba16" Width="16" Height="16" Offset="0x199B0" AddedByScript="true"/>
+        <Texture Name="object_bvTLUT_01A4B0" OutName="object_bvTLUT_01A4B0" Format="rgba16" Width="16" Height="16" Offset="0x1A4B0" AddedByScript="true"/>
+        <Texture Name="object_bvTLUT_01AFB0" OutName="object_bvTLUT_01AFB0" Format="rgba16" Width="16" Height="16" Offset="0x1AFB0" AddedByScript="true"/>
+        <Texture Name="object_bvTLUT_01BAB0" OutName="object_bvTLUT_01BAB0" Format="rgba16" Width="16" Height="16" Offset="0x1BAB0" AddedByScript="true"/>
+        <Texture Name="object_bvTLUT_01C5B0" OutName="object_bvTLUT_01C5B0" Format="rgba16" Width="16" Height="16" Offset="0x1C5B0" AddedByScript="true"/>
+        <Texture Name="object_bvTLUT_01D0B0" OutName="object_bvTLUT_01D0B0" Format="rgba16" Width="16" Height="16" Offset="0x1D0B0" AddedByScript="true"/>
+        <Texture Name="object_bvTLUT_01DBB0" OutName="object_bvTLUT_01DBB0" Format="rgba16" Width="16" Height="16" Offset="0x1DBB0" AddedByScript="true"/>
+        <Texture Name="object_bvTLUT_01E6B0" OutName="object_bvTLUT_01E6B0" Format="rgba16" Width="16" Height="16" Offset="0x1E6B0" AddedByScript="true"/>
         <!-- Boss title card -->
         <Texture Name="gBarinadeTitleCardTex" OutName="barinade_title_card" Format="i8" Width="128" Height="120" Offset="0x1230"/>
 

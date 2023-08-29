@@ -1,5 +1,6 @@
 <Root>
     <File Name="object_zl1" Segment="6">
+        <Texture Name="object_zl1Tex_00EE58" OutName="object_zl1Tex_00EE58" Format="rgba16" Width="32" Height="16" Offset="0xEE58" AddedByScript="true"/>
         <!-- Child Zelda 1 Skeleton -->
         <Skeleton Name="gChildZelda1Skel" Type="Flex" LimbType="Standard" Offset="0xF5D8"/>
 

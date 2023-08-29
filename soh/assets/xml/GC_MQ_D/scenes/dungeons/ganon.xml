@@ -1,35 +1,121 @@
 <Root>
     <File Name="ganon_scene" Segment="2">
+        <Texture Name="ganon_sceneTex_00EFA8" OutName="ganon_sceneTex_00EFA8" Format="ci8" Width="32" Height="32" Offset="0xEFA8" TlutOffset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_sceneTex_00F3A8" OutName="ganon_sceneTex_00F3A8" Format="ci8" Width="32" Height="32" Offset="0xF3A8" TlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_sceneTex_00F7A8" OutName="ganon_sceneTex_00F7A8" Format="ci8" Width="32" Height="32" Offset="0xF7A8" TlutOffset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_sceneTex_00FBA8" OutName="ganon_sceneTex_00FBA8" Format="ci8" Width="32" Height="32" Offset="0xFBA8" TlutOffset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_sceneTex_00FFA8" OutName="ganon_sceneTex_00FFA8" Format="rgba16" Width="32" Height="32" Offset="0xFFA8" AddedByScript="true"/>
+        <Texture Name="ganon_sceneTLUT_00E7D0" OutName="ganon_sceneTLUT_00E7D0" Format="rgba16" Width="16" Height="16" Offset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_sceneTLUT_00E9D8" OutName="ganon_sceneTLUT_00E9D8" Format="rgba16" Width="16" Height="16" Offset="0xE9D8" AddedByScript="true"/>
+        <Texture Name="ganon_sceneTLUT_00EBE0" OutName="ganon_sceneTLUT_00EBE0" Format="rgba16" Width="16" Height="16" Offset="0xEBE0" AddedByScript="true"/>
+        <Texture Name="ganon_sceneTLUT_00EDA0" OutName="ganon_sceneTLUT_00EDA0" Format="rgba16" Width="16" Height="16" Offset="0xEDA0" AddedByScript="true"/>
         <Scene Name="ganon_scene" Offset="0x0"/>
     </File>
     <File Name="ganon_room_0" Segment="3">
+        <Texture Name="ganon_room_0Tex_004C68" OutName="ganon_room_0Tex_004C68" Format="ci8" Width="32" Height="64" Offset="0x4C68" ExternalTlut="ganon_scene" ExternalTlutOffset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_room_0Tex_005468" OutName="ganon_room_0Tex_005468" Format="ci8" Width="32" Height="64" Offset="0x5468" ExternalTlut="ganon_scene" ExternalTlutOffset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_room_0Tex_005C68" OutName="ganon_room_0Tex_005C68" Format="ci8" Width="32" Height="32" Offset="0x5C68" ExternalTlut="ganon_scene" ExternalTlutOffset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_room_0Tex_006068" OutName="ganon_room_0Tex_006068" Format="ci8" Width="64" Height="32" Offset="0x6068" ExternalTlut="ganon_scene" ExternalTlutOffset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_room_0Tex_006868" OutName="ganon_room_0Tex_006868" Format="ci8" Width="64" Height="32" Offset="0x6868" ExternalTlut="ganon_scene" ExternalTlutOffset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_room_0Tex_007068" OutName="ganon_room_0Tex_007068" Format="ci8" Width="32" Height="32" Offset="0x7068" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_0Tex_0076D0" OutName="ganon_room_0Tex_0076D0" Format="ia16" Width="32" Height="32" Offset="0x76D0" AddedByScript="true"/>
         <Room Name="ganon_room_0" Offset="0x0"/>
     </File>
     <File Name="ganon_room_1" Segment="3">
+        <Texture Name="ganon_room_1Tex_005370" OutName="ganon_room_1Tex_005370" Format="ci8" Width="64" Height="32" Offset="0x5370" ExternalTlut="ganon_scene" ExternalTlutOffset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_room_1Tex_005B70" OutName="ganon_room_1Tex_005B70" Format="ci8" Width="32" Height="32" Offset="0x5B70" ExternalTlut="ganon_scene" ExternalTlutOffset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_room_1Tex_005F70" OutName="ganon_room_1Tex_005F70" Format="ci8" Width="32" Height="32" Offset="0x5F70" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_1Tex_006370" OutName="ganon_room_1Tex_006370" Format="ci8" Width="32" Height="32" Offset="0x6370" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_1Tex_006770" OutName="ganon_room_1Tex_006770" Format="rgba16" Width="32" Height="64" Offset="0x6770" AddedByScript="true"/>
         <Room Name="ganon_room_1" Offset="0x0"/>
     </File>
     <File Name="ganon_room_2" Segment="3">
+        <Texture Name="ganon_room_2Tex_003DF0" OutName="ganon_room_2Tex_003DF0" Format="ci8" Width="32" Height="32" Offset="0x3DF0" ExternalTlut="ganon_scene" ExternalTlutOffset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_room_2Tex_0041F0" OutName="ganon_room_2Tex_0041F0" Format="ci8" Width="32" Height="64" Offset="0x41F0" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_2Tex_0049F0" OutName="ganon_room_2Tex_0049F0" Format="ci8" Width="32" Height="32" Offset="0x49F0" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_2Tex_004DF0" OutName="ganon_room_2Tex_004DF0" Format="ci8" Width="32" Height="32" Offset="0x4DF0" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_2Tex_0051F0" OutName="ganon_room_2Tex_0051F0" Format="ci8" Width="32" Height="64" Offset="0x51F0" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_2Tex_0059F0" OutName="ganon_room_2Tex_0059F0" Format="ci8" Width="32" Height="32" Offset="0x59F0" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_2Tex_005DF0" OutName="ganon_room_2Tex_005DF0" Format="rgba16" Width="32" Height="64" Offset="0x5DF0" AddedByScript="true"/>
+        <Texture Name="ganon_room_2Tex_007050" OutName="ganon_room_2Tex_007050" Format="ia16" Width="32" Height="32" Offset="0x7050" AddedByScript="true"/>
         <Room Name="ganon_room_2" Offset="0x0"/>
     </File>
     <File Name="ganon_room_3" Segment="3">
+        <Texture Name="ganon_room_3Tex_004F30" OutName="ganon_room_3Tex_004F30" Format="ci8" Width="32" Height="32" Offset="0x4F30" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_3Tex_005330" OutName="ganon_room_3Tex_005330" Format="ci8" Width="32" Height="32" Offset="0x5330" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_3Tex_005730" OutName="ganon_room_3Tex_005730" Format="ci8" Width="32" Height="64" Offset="0x5730" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_3Tex_005F30" OutName="ganon_room_3Tex_005F30" Format="ci8" Width="32" Height="64" Offset="0x5F30" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_3Tex_006730" OutName="ganon_room_3Tex_006730" Format="rgba16" Width="32" Height="64" Offset="0x6730" AddedByScript="true"/>
         <Room Name="ganon_room_3" Offset="0x0"/>
     </File>
     <File Name="ganon_room_4" Segment="3">
+        <Texture Name="ganon_room_4Tex_004668" OutName="ganon_room_4Tex_004668" Format="ci8" Width="32" Height="64" Offset="0x4668" ExternalTlut="ganon_scene" ExternalTlutOffset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_room_4Tex_004E68" OutName="ganon_room_4Tex_004E68" Format="ci8" Width="32" Height="64" Offset="0x4E68" ExternalTlut="ganon_scene" ExternalTlutOffset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_room_4Tex_005668" OutName="ganon_room_4Tex_005668" Format="ci8" Width="32" Height="32" Offset="0x5668" ExternalTlut="ganon_scene" ExternalTlutOffset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_room_4Tex_005A68" OutName="ganon_room_4Tex_005A68" Format="ci8" Width="32" Height="64" Offset="0x5A68" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_4Tex_006268" OutName="ganon_room_4Tex_006268" Format="ci8" Width="32" Height="32" Offset="0x6268" ExternalTlut="ganon_scene" ExternalTlutOffset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_room_4Tex_006668" OutName="ganon_room_4Tex_006668" Format="ci8" Width="32" Height="32" Offset="0x6668" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_4Tex_006A68" OutName="ganon_room_4Tex_006A68" Format="ci8" Width="32" Height="32" Offset="0x6A68" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_4Tex_006E68" OutName="ganon_room_4Tex_006E68" Format="ci8" Width="32" Height="64" Offset="0x6E68" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_4Tex_007668" OutName="ganon_room_4Tex_007668" Format="ci8" Width="32" Height="64" Offset="0x7668" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_4Tex_007E68" OutName="ganon_room_4Tex_007E68" Format="ci8" Width="32" Height="64" Offset="0x7E68" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_4Tex_0088D0" OutName="ganon_room_4Tex_0088D0" Format="ia16" Width="32" Height="32" Offset="0x88D0" AddedByScript="true"/>
         <Room Name="ganon_room_4" Offset="0x0"/>
     </File>
     <File Name="ganon_room_5" Segment="3">
+        <Texture Name="ganon_room_5Tex_005B08" OutName="ganon_room_5Tex_005B08" Format="ci8" Width="32" Height="64" Offset="0x5B08" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_5Tex_006308" OutName="ganon_room_5Tex_006308" Format="ci8" Width="32" Height="64" Offset="0x6308" ExternalTlut="ganon_scene" ExternalTlutOffset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_room_5Tex_006B08" OutName="ganon_room_5Tex_006B08" Format="rgba16" Width="32" Height="64" Offset="0x6B08" AddedByScript="true"/>
+        <Texture Name="ganon_room_5Tex_007B08" OutName="ganon_room_5Tex_007B08" Format="ci8" Width="32" Height="32" Offset="0x7B08" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_5Tex_007F08" OutName="ganon_room_5Tex_007F08" Format="ci8" Width="32" Height="32" Offset="0x7F08" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_5Tex_008308" OutName="ganon_room_5Tex_008308" Format="ci8" Width="32" Height="64" Offset="0x8308" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
         <Room Name="ganon_room_5" Offset="0x0"/>
     </File>
     <File Name="ganon_room_6" Segment="3">
+        <Texture Name="ganon_room_6Tex_006E00" OutName="ganon_room_6Tex_006E00" Format="ci8" Width="32" Height="32" Offset="0x6E00" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_6Tex_007200" OutName="ganon_room_6Tex_007200" Format="ci8" Width="32" Height="32" Offset="0x7200" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_6Tex_007600" OutName="ganon_room_6Tex_007600" Format="ci8" Width="32" Height="32" Offset="0x7600" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_6Tex_007A00" OutName="ganon_room_6Tex_007A00" Format="ci8" Width="32" Height="64" Offset="0x7A00" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_6Tex_008200" OutName="ganon_room_6Tex_008200" Format="ci8" Width="16" Height="16" Offset="0x8200" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEBE0" AddedByScript="true"/>
+        <Texture Name="ganon_room_6Tex_008300" OutName="ganon_room_6Tex_008300" Format="ci8" Width="32" Height="64" Offset="0x8300" ExternalTlut="ganon_scene" ExternalTlutOffset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_room_6Tex_008B00" OutName="ganon_room_6Tex_008B00" Format="ci8" Width="32" Height="32" Offset="0x8B00" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEBE0" AddedByScript="true"/>
+        <Texture Name="ganon_room_6Tex_009398" OutName="ganon_room_6Tex_009398" Format="rgba16" Width="32" Height="32" Offset="0x9398" AddedByScript="true"/>
         <Room Name="ganon_room_6" Offset="0x0"/>
     </File>
     <File Name="ganon_room_7" Segment="3">
+        <Texture Name="ganon_room_7Tex_0071E0" OutName="ganon_room_7Tex_0071E0" Format="ci8" Width="32" Height="32" Offset="0x71E0" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_7Tex_0075E0" OutName="ganon_room_7Tex_0075E0" Format="ci8" Width="64" Height="32" Offset="0x75E0" ExternalTlut="ganon_scene" ExternalTlutOffset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_room_7Tex_007DE0" OutName="ganon_room_7Tex_007DE0" Format="ci8" Width="64" Height="32" Offset="0x7DE0" ExternalTlut="ganon_scene" ExternalTlutOffset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_room_7Tex_0085E0" OutName="ganon_room_7Tex_0085E0" Format="ci8" Width="32" Height="32" Offset="0x85E0" ExternalTlut="ganon_scene" ExternalTlutOffset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_room_7Tex_0089E0" OutName="ganon_room_7Tex_0089E0" Format="ci8" Width="32" Height="64" Offset="0x89E0" ExternalTlut="ganon_scene" ExternalTlutOffset="0xE7D0" AddedByScript="true"/>
+        <Texture Name="ganon_room_7Tex_0091E0" OutName="ganon_room_7Tex_0091E0" Format="ci8" Width="32" Height="64" Offset="0x91E0" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_7Tex_009F98" OutName="ganon_room_7Tex_009F98" Format="rgba16" Width="32" Height="32" Offset="0x9F98" AddedByScript="true"/>
         <Room Name="ganon_room_7" Offset="0x0"/>
     </File>
     <File Name="ganon_room_8" Segment="3">
+        <Texture Name="ganon_room_8Tex_004A20" OutName="ganon_room_8Tex_004A20" Format="ci8" Width="32" Height="64" Offset="0x4A20" TlutOffset="0x4950" AddedByScript="true"/>
+        <Texture Name="ganon_room_8Tex_005220" OutName="ganon_room_8Tex_005220" Format="ci8" Width="16" Height="16" Offset="0x5220" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEBE0" AddedByScript="true"/>
+        <Texture Name="ganon_room_8Tex_005320" OutName="ganon_room_8Tex_005320" Format="ci8" Width="8" Height="8" Offset="0x5320" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEBE0" AddedByScript="true"/>
+        <Texture Name="ganon_room_8Tex_005360" OutName="ganon_room_8Tex_005360" Format="ci8" Width="16" Height="8" Offset="0x5360" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEBE0" AddedByScript="true"/>
+        <Texture Name="ganon_room_8Tex_0053E0" OutName="ganon_room_8Tex_0053E0" Format="ci8" Width="32" Height="64" Offset="0x53E0" ExternalTlut="ganon_scene" ExternalTlutOffset="0xE9D8" AddedByScript="true"/>
+        <Texture Name="ganon_room_8Tex_005BE0" OutName="ganon_room_8Tex_005BE0" Format="ci8" Width="32" Height="32" Offset="0x5BE0" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEBE0" AddedByScript="true"/>
+        <Texture Name="ganon_room_8Tex_005FE0" OutName="ganon_room_8Tex_005FE0" Format="ci8" Width="32" Height="32" Offset="0x5FE0" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_8Tex_0063E0" OutName="ganon_room_8Tex_0063E0" Format="ci8" Width="32" Height="64" Offset="0x63E0" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_8TLUT_004950" OutName="ganon_room_8TLUT_004950" Format="rgba16" Width="16" Height="16" Offset="0x4950" AddedByScript="true"/>
         <Room Name="ganon_room_8" Offset="0x0"/>
     </File>
     <File Name="ganon_room_9" Segment="3">
+        <Texture Name="ganon_room_9Tex_002120" OutName="ganon_room_9Tex_002120" Format="ci8" Width="32" Height="64" Offset="0x2120" ExternalTlut="ganon_scene" ExternalTlutOffset="0xE9D8" AddedByScript="true"/>
+        <Texture Name="ganon_room_9Tex_002920" OutName="ganon_room_9Tex_002920" Format="ci8" Width="32" Height="32" Offset="0x2920" TlutOffset="0x1F18" AddedByScript="true"/>
+        <Texture Name="ganon_room_9Tex_002D20" OutName="ganon_room_9Tex_002D20" Format="ci8" Width="32" Height="32" Offset="0x2D20" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEBE0" AddedByScript="true"/>
+        <Texture Name="ganon_room_9Tex_003120" OutName="ganon_room_9Tex_003120" Format="ci8" Width="32" Height="32" Offset="0x3120" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEBE0" AddedByScript="true"/>
+        <Texture Name="ganon_room_9Tex_003520" OutName="ganon_room_9Tex_003520" Format="ci8" Width="32" Height="32" Offset="0x3520" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEBE0" AddedByScript="true"/>
+        <Texture Name="ganon_room_9Tex_003920" OutName="ganon_room_9Tex_003920" Format="ci8" Width="32" Height="32" Offset="0x3920" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_9Tex_003D20" OutName="ganon_room_9Tex_003D20" Format="ci8" Width="32" Height="64" Offset="0x3D20" ExternalTlut="ganon_scene" ExternalTlutOffset="0xE9D8" AddedByScript="true"/>
+        <Texture Name="ganon_room_9Tex_004520" OutName="ganon_room_9Tex_004520" Format="ci8" Width="32" Height="64" Offset="0x4520" TlutOffset="0x1F18" AddedByScript="true"/>
+        <Texture Name="ganon_room_9Tex_004D20" OutName="ganon_room_9Tex_004D20" Format="ci8" Width="16" Height="64" Offset="0x4D20" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEBE0" AddedByScript="true"/>
+        <Texture Name="ganon_room_9Tex_005120" OutName="ganon_room_9Tex_005120" Format="ci8" Width="32" Height="64" Offset="0x5120" ExternalTlut="ganon_scene" ExternalTlutOffset="0xEDA0" AddedByScript="true"/>
+        <Texture Name="ganon_room_9TLUT_001F18" OutName="ganon_room_9TLUT_001F18" Format="rgba16" Width="16" Height="16" Offset="0x1F18" AddedByScript="true"/>
         <Room Name="ganon_room_9" Offset="0x0"/>
     </File>
 </Root>
