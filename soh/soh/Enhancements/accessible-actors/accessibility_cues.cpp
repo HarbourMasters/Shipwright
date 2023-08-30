@@ -694,7 +694,11 @@ class Ground : protected TerrainCueSound {
     // Move a probe to its next point along a line, ensuring that it remains on the floor. Returns false if the move
     // would put the probe out of bounds. Does not take walls into account.
     bool move(s8 gravity = true) {
+        Player* player = GET_PLAYER(actor->play);
         if (gravity == 2) {
+            if (fabs(player->actor.world.pos.y - pos.y) > 500.0) {
+                return false;
+            }
             pos.y += probeSpeed;
             if (!BgCheck_PosInStaticBoundingBox(&actor->play->colCtx, &pos))
                 return false; // Out of bounds.
@@ -803,7 +807,7 @@ class Ground : protected TerrainCueSound {
             prevPos = pos;
             setVelocity();
             f32 step = fabs(velocity.x + velocity.z);
-
+            distToTravel -= (step + fabs(pos.y - pos.y));
             //checks if link is in the water, needs different logic
             if (player->stateFlags1 & PLAYER_STATE1_IN_WATER) {
                 pos.y = player->actor.prevPos.y;
@@ -916,10 +920,12 @@ class Ground : protected TerrainCueSound {
                 //or if it is the forward probe, checks if the vine ends otherwise it continues
                 Vec3f wallPos;
                 CollisionPoly* wallPoly = checkWall(pos, prevPos, wallPos);
+                
                 if (wallPoly != NULL) {
-                    if ((func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 8 &&
+                    
+                        if ((moveMethod == 2) && (func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 8 &&
                             func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 3)) {
-                        if (moveMethod == 2) {
+                        
                             if (fabs(pos.y - player->actor.world.pos.y) < 100) {
                                 discoverLedge(pos, false);
                                 
@@ -928,9 +934,9 @@ class Ground : protected TerrainCueSound {
                                 destroyCurrentSound();
                                 break;
                             }
-                        } 
+                         
                     } else {                        
-                            if (checkVinePlatform(pos, ogRot, playerHeight)){
+                            if (moveMethod != 2 && checkVinePlatform(pos, ogRot, playerHeight)){
                             break;
                         }
                         continue;
@@ -939,75 +945,76 @@ class Ground : protected TerrainCueSound {
                 //this means that either the wall poly found above is not a vine or is NULL
                 //the next three secections check infront and behind the probe for wall polys
                 //
-                prevPos = pos;
-                rot.y = player->actor.shape.rot.y;
-                setVelocity();
-                int i = 0;
-                while (wallPoly == NULL && i < 4) {
-                    move(false);
-                    wallPoly = checkWall(pos, prevPos, wallPos);
-                    i += 1;
-                    
-                }
-                if (wallPoly != NULL) {
-                    if ((func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 8 &&
-                         func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 3)) {
-                        if (checkPerpendicularWall(pos, ogRot)) {
-                            discoverWall(pos);
-                            break;
-                        }
-                        discoverLedge(pos, false);
-                        break;
-                        
-                    } else {         
-                        if (checkVinePlatform(pos, ogRot, playerHeight)) {
-                            break;
-                        }
-                        continue;
+                if (moveMethod != 2) {
+                    prevPos = pos;
+                    rot.y = player->actor.shape.rot.y;
+                    setVelocity();
+                    int i = 0;
+                    while (wallPoly == NULL && i < 4) {
+                        move(false);
+                        wallPoly = checkWall(pos, prevPos, wallPos);
+                        i += 1;
                     }
-                }
-                Vec3f_ forwardPos = pos;
-                pos = prevPos;
-                rot.y = player->actor.shape.rot.y;
-                
-                rot.y += 16384;
-                rot.y += 16384;
-                setVelocity();
-                i = 0;
-                while (wallPoly == NULL && i < 4) {
-
-                    move(false);
-                    i += 1;
-                    wallPoly = checkWall(pos, prevPos, wallPos);
-                }
-                if (wallPoly != NULL) {
-                    if ((func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 8 &&
-                         func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 3)) {
-                        discoverLedge(pos, false);
-
-                        break;
-                    } else {
-                        if (checkVinePlatform(pos, ogRot, playerHeight)) {
+                    if (wallPoly != NULL) {
+                        if ((func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 8 &&
+                             func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 3)) {
+                            if (checkPerpendicularWall(pos, ogRot)) {
+                                discoverWall(pos);
+                                break;
+                            }
+                            discoverLedge(pos, false);
                             break;
+
+                        } else {
+                            if (checkVinePlatform(pos, ogRot, playerHeight)) {
+                                break;
+                            }
+                            continue;
                         }
-                        continue;
                     }
-                }
-                Vec3f_ backPos = pos;
-                pos = prevPos;
-                rot = ogRot;
-                wallPoly = checkWall(backPos, forwardPos, wallPos);
-                if (wallPoly != NULL) {
-                    if ((func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 8 &&
-                         func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 3)) {
-                        discoverLedge(pos, false);
+                    Vec3f_ forwardPos = pos;
+                    pos = prevPos;
+                    rot.y = player->actor.shape.rot.y;
 
-                        break;
-                    } else {
-                        if (checkVinePlatform(pos, ogRot, playerHeight)) {
+                    rot.y += 16384;
+                    rot.y += 16384;
+                    setVelocity();
+                    i = 0;
+                    while (wallPoly == NULL && i < 4) {
+
+                        move(false);
+                        i += 1;
+                        wallPoly = checkWall(pos, prevPos, wallPos);
+                    }
+                    if (wallPoly != NULL) {
+                        if ((func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 8 &&
+                             func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 3)) {
+                            discoverLedge(pos, false);
+
                             break;
+                        } else {
+                            if (checkVinePlatform(pos, ogRot, playerHeight)) {
+                                break;
+                            }
+                            continue;
                         }
-                        continue;
+                    }
+                    Vec3f_ backPos = pos;
+                    pos = prevPos;
+                    rot = ogRot;
+                    wallPoly = checkWall(backPos, forwardPos, wallPos);
+                    if (wallPoly != NULL) {
+                        if ((func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 8 &&
+                             func_80041DB8(&actor->play->colCtx, wallPoly, BGCHECK_SCENE) != 3)) {
+                            discoverLedge(pos, false);
+
+                            break;
+                        } else {
+                            if (checkVinePlatform(pos, ogRot, playerHeight)) {
+                                break;
+                            }
+                            continue;
+                        }
                     }
                 }
                 //this means no wall polys were found, first we check for ceilng poly
@@ -1015,6 +1022,7 @@ class Ground : protected TerrainCueSound {
                     rot.y = player->actor.shape.rot.y;
                     rot.y += 16384;
                     rot.y += 16384;
+                    setVelocity();
                     if (!move(moveMethod)) {
                         destroyCurrentSound();
 
@@ -1043,7 +1051,7 @@ class Ground : protected TerrainCueSound {
                     }*///not needed?
 
                 }
-                if (checkPerpendicularWall(pos, ogRot)) {
+                if (moveMethod != 2 && checkPerpendicularWall(pos, ogRot)) {
                     discoverWall(pos);
                     break;
                 }
@@ -1058,7 +1066,7 @@ class Ground : protected TerrainCueSound {
                     break; // Probe is out of bounds.
                 }
 
-                distToTravel -= (step + fabs(pos.y - pos.y));
+                
                 if (isPushedAway() && player->stateFlags1 != PLAYER_STATE1_CLIMBING_LADDER) {
                     // Call this a wall for now.
                     discoverWall(pos);
