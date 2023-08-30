@@ -1094,7 +1094,7 @@ void DrawFlagsTab() {
         if (ImGui::TreeNode(flagTable.name)) {
             for (int j = 0; j < flagTable.size + 1; j++) {
                 DrawGroupWithBorder([&]() {
-                    ImGui::Text(fmt::format("{:<2x}", j).c_str());
+                    ImGui::Text("%s", fmt::format("{:<2x}", j).c_str());
                     switch (flagTable.flagTableType) {
                         case EVENT_CHECK_INF:
                             DrawFlagTableArray16(flagTable, j, gSaveContext.eventChkInf[j]);

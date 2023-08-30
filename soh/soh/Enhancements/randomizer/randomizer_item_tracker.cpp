@@ -427,11 +427,11 @@ void DrawItemCount(ItemTrackerItem item) {
 
         ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize((currentString + maxString).c_str()).x / 2), p.y - 14));
         ImGui::PushStyleColor(ImGuiCol_Text, currentColor);
-        ImGui::Text(currentString.c_str());
+        ImGui::Text("%s", currentString.c_str());
         ImGui::PopStyleColor();
         ImGui::SameLine(0, 0.0f);
         ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
-        ImGui::Text(maxString.c_str());
+        ImGui::Text("%s", maxString.c_str());
         ImGui::PopStyleColor();
     } else if (currentAndMax.currentCapacity > 0 && trackerNumberDisplayMode != ITEM_TRACKER_NUMBER_NONE && IsValidSaveFile()) {
         std::string currentString = "";
@@ -484,11 +484,11 @@ void DrawItemCount(ItemTrackerItem item) {
 
         ImGui::SetCursorScreenPos(ImVec2(x, p.y - 14));
         ImGui::PushStyleColor(ImGuiCol_Text, currentColor);
-        ImGui::Text(currentString.c_str());
+        ImGui::Text("%s", currentString.c_str());
         ImGui::PopStyleColor();
         ImGui::SameLine(0, 0.0f);
         ImGui::PushStyleColor(ImGuiCol_Text, maxColor);
-        ImGui::Text(maxString.c_str());
+        ImGui::Text("%s", maxString.c_str());
         ImGui::PopStyleColor();
     } else {
         ImGui::SetCursorScreenPos(ImVec2(p.x, p.y - 14));
@@ -623,7 +623,7 @@ void DrawDungeonItem(ItemTrackerItem item) {
         std::string dungeonName = itemTrackerDungeonShortNames[item.data];
         ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - (iconSize + 16)));
         ImGui::PushStyleColor(ImGuiCol_Text, dungeonColor);
-        ImGui::Text(dungeonName.c_str());
+        ImGui::Text("%s", dungeonName.c_str());
         ImGui::PopStyleColor();
     }
 
@@ -634,7 +634,7 @@ void DrawDungeonItem(ItemTrackerItem item) {
         std::string dungeonName = itemTrackerDungeonShortNames[item.data];
         ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - (ImGui::CalcTextSize(dungeonName.c_str()).x / 2), p.y - (iconSize + 13)));
         ImGui::PushStyleColor(ImGuiCol_Text, dungeonColor);
-        ImGui::Text(dungeonName.c_str());
+        ImGui::Text("%s", dungeonName.c_str());
         ImGui::PopStyleColor();
     }
     ImGui::EndGroup();
