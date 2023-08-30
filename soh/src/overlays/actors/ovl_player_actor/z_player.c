@@ -8185,8 +8185,8 @@ void func_80843188(Player* this, PlayState* play) {
     func_8083721C(this);
 
     if (this->unk_850 != 0) {
-        sp54 = sControlInput->rel.stick_y * 100;
-        sp50 = sControlInput->rel.stick_x * (CVarGetInteger("gMirroredWorld", 0) ? 120 : -120);
+        sp54 = sControlInput->rel.stick_y * 100 * (CVarGetInteger("gInvertShieldAimingYAxis", 1) ? 1 : -1);
+        sp50 = sControlInput->rel.stick_x * (CVarGetInteger("gMirroredWorld", 0) ? 120 : -120) * (CVarGetInteger("gInvertShieldAimingXAxis", 0) ? -1 : 1);
         sp4E = this->actor.shape.rot.y - Camera_GetInputDirYaw(GET_ACTIVE_CAM(play));
 
         sp40 = Math_CosS(sp4E);
@@ -10490,7 +10490,7 @@ void func_80848EF8(Player* this, PlayState* play) {
         if (CVarGetInteger("gCosmetics.Hud_StoneOfAgony.Changed", 0)) {
             stoneOfAgonyColor = CVarGetColor24("gCosmetics.Hud_StoneOfAgony.Value", stoneOfAgonyColor);
         }
-        if (CVarGetInteger("gVisualAgony", 0) != 0 && !this->stateFlags1) {
+        if (CVarGetInteger("gVisualAgony", 0) && !this->stateFlags1 && !GameInteractor_NoUIActive()) {
             s16 Top_Margins = (CVarGetInteger("gHUDMargin_T", 0) * -1);
             s16 Left_Margins = CVarGetInteger("gHUDMargin_L", 0);
             s16 Right_Margins = CVarGetInteger("gHUDMargin_R", 0);
@@ -10574,7 +10574,7 @@ void func_80848EF8(Player* this, PlayState* play) {
 
         if (this->unk_6A0 > 4000000.0f) {
             this->unk_6A0 = 0.0f;
-            if (CVarGetInteger("gVisualAgony", 0) != 0 && !this->stateFlags1) {
+            if (CVarGetInteger("gVisualAgony", 0) && !this->stateFlags1 && !GameInteractor_NoUIActive()) {
                 // This audio is placed here and not in previous CVar check to prevent ears ra.. :)
                 Audio_PlaySoundGeneral(NA_SE_SY_MESSAGE_WOMAN, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E0);
             }

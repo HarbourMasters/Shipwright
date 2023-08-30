@@ -6442,25 +6442,23 @@ void Interface_Update(PlayState* play) {
                 gSaveContext.rupees--;
                 Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             }
-            if (gSaveContext.rupeeAccumulator == 0) {
-                if (gSaveContext.pendingSale != ITEM_NONE) {
-                    u16 tempSaleItem = gSaveContext.pendingSale;
-                    u16 tempSaleMod = gSaveContext.pendingSaleMod;
-                    gSaveContext.pendingSale = ITEM_NONE;
-                    gSaveContext.pendingSaleMod = MOD_NONE;
-                    if (tempSaleMod == MOD_NONE) {
-                        s16 giid = GetGIID(tempSaleItem);
-                        if (giid == -1) {
-                            tempSaleMod = MOD_RANDOMIZER;
-                        } else {
-                            tempSaleItem = giid;
-                        }
-                    }
-                    GameInteractor_ExecuteOnSaleEndHooks(ItemTable_RetrieveEntry(tempSaleMod, tempSaleItem));
-                }
-            }
         } else {
             gSaveContext.rupeeAccumulator = 0;
+        }
+        if (gSaveContext.rupeeAccumulator == 0 && gSaveContext.pendingSale != ITEM_NONE) {
+            u16 tempSaleItem = gSaveContext.pendingSale;
+            u16 tempSaleMod = gSaveContext.pendingSaleMod;
+            gSaveContext.pendingSale = ITEM_NONE;
+            gSaveContext.pendingSaleMod = MOD_NONE;
+            if (tempSaleMod == MOD_NONE) {
+                s16 giid = GetGIID(tempSaleItem);
+                if (giid == -1) {
+                    tempSaleMod = MOD_RANDOMIZER;
+                } else {
+                    tempSaleItem = giid;
+                }
+            }
+            GameInteractor_ExecuteOnSaleEndHooks(ItemTable_RetrieveEntry(tempSaleMod, tempSaleItem));
         }
     }
 

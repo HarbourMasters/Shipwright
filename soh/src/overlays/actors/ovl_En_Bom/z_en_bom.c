@@ -98,6 +98,7 @@ void EnBom_Init(Actor* thisx, PlayState* play) {
     thisx->colChkInfo.mass = 200;
     thisx->colChkInfo.cylRadius = 5;
     thisx->colChkInfo.cylHeight = 10;
+
     if (!GameInteractor_GetRandomBombFuseTimerActive()) {
         this->timer = 70;
     } else {
@@ -108,6 +109,16 @@ void EnBom_Init(Actor* thisx, PlayState* play) {
         Audio_PlayActorSound2(thisx, NA_SE_PL_TAKE_OUT_SHIELD);
         Actor_SetScale(thisx, 0.01f);
     }
+
+    if (CVarGetFloat("gBombTimerMultiplier", 1.0f) != 1.0f) {
+        this->timer = (s32)(70 * CVarGetFloat("gBombTimerMultiplier", 1.0f));
+        // Do the sound and scale immediately if GameInteractor hasn't already.
+        if (!GameInteractor_GetRandomBombFuseTimerActive()) {
+            Audio_PlayActorSound2(thisx, NA_SE_PL_TAKE_OUT_SHIELD);
+            Actor_SetScale(thisx, 0.01f);
+        }
+    }
+
     this->flashSpeedScale = 7;
     Collider_InitCylinder(play, &this->bombCollider);
     Collider_InitJntSph(play, &this->explosionCollider);
@@ -255,8 +266,8 @@ void EnBom_Update(Actor* thisx, PlayState* play2) {
         this->timer--;
     }
 
-    // With random bomb fuse timer, sound effect and scaling is already done on init.
-    if (this->timer == 67 && !GameInteractor_GetRandomBombFuseTimerActive()) {
+    // With random bomb fuse timer or gBombTimerMultiplier, sound effect and scaling is already done on init.
+    if (this->timer == 67 && !GameInteractor_GetRandomBombFuseTimerActive() && CVarGetFloat("gBombTimerMultiplier", 1.0f) != 1.0f) {
         Audio_PlayActorSound2(thisx, NA_SE_PL_TAKE_OUT_SHIELD);
         Actor_SetScale(thisx, 0.01f);
     }
@@ -270,7 +281,8 @@ void EnBom_Update(Actor* thisx, PlayState* play2) {
     Actor_UpdateBgCheckInfo(play, thisx, 5.0f, 10.0f, 15.0f, 0x1F);
 
     if (thisx->params == BOMB_BODY) {
-        if (this->timer < 63) {
+        float timerMultiplier = CVarGetFloat("gBombTimerMultiplier", 1.0f);
+        if (this->timer < (timerMultiplier == 1.0f ? 63 : (s32)(70 * timerMultiplier - 7))) {
             dustAccel.y = 0.2f;
 
             // spawn spark effect on even frames
