@@ -8,6 +8,7 @@
 #include <textures/icon_item_24_static/icon_item_24_static.h>
 #include <textures/icon_item_dungeon_static/icon_item_dungeon_static.h>
 #include <textures/parameter_static/parameter_static.h>
+#include "textures/message_static/message_static.h"
 #include "soh/frame_interpolation.h"
 #include <GameVersions.h>
 #include "objects/object_mag/object_mag.h"
@@ -2067,41 +2068,6 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
                 }
             }
         }
-
-        // Draw rando seed warning when build version doesn't match for Major or Minor number
-        if (Save_GetSaveMetaInfo(fileIndex)->randoSave == 1 &&
-            this->menuMode == FS_MENU_MODE_SELECT &&
-            (gBuildVersionMajor != Save_GetSaveMetaInfo(fileIndex)->buildVersionMajor ||
-            gBuildVersionMinor != Save_GetSaveMetaInfo(fileIndex)->buildVersionMinor)) {
-
-            // Stub out a dummy play state to be able to use the dialog system (MessageCtx)
-            PlayState dummyPlay;
-            PlayState* dummyPlayPtr = &dummyPlay;
-
-            // Set the MessageCtx and GameState onto the dummy play state
-            dummyPlayPtr->msgCtx = this->msgCtx;
-            dummyPlayPtr->state = this->state;
-
-            // Load the custom text ID without doing a textbox
-            Message_OpenText(dummyPlayPtr, TEXT_RANDO_SAVE_VERSION_WARNING);
-            // Force the context into message print mode
-            dummyPlayPtr->msgCtx.msgMode = MSGMODE_TEXT_NEXT_MSG;
-            Message_Decode(dummyPlayPtr);
-
-            // Set the draw pos to end of text to render it all at once
-            dummyPlayPtr->msgCtx.textDrawPos = dummyPlayPtr->msgCtx.decodedTextLen;
-            dummyPlayPtr->msgCtx.textColorAlpha = textAlpha;
-
-            // Set position and spacing values
-            R_TEXT_LINE_SPACING = 10;
-            R_TEXT_INIT_XPOS = 128;
-            R_TEXT_INIT_YPOS = 154;
-
-            Gfx* gfx = Graph_GfxPlusOne(POLY_OPA_DISP);
-            Message_DrawText(dummyPlayPtr, &gfx);
-
-            POLY_OPA_DISP = gfx;
-        }
     }
 
     CLOSE_DISPS(this->state.gfxCtx);
@@ -3145,6 +3111,60 @@ static void (*gFileSelectUpdateFuncs[])(GameState*) = {
     FileChoose_SelectModeUpdate,
 };
 
+static const char* randoWarningText[] = {
+    // English
+    "This save was created on a different version of SoH.\nThings may be broken. Play at your own risk.",
+    // German
+    "Dieser Spielstand wurde auf einer anderen Version\nvon SoH erstellt.\nEs könnten Fehler auftreten.",
+    // French
+    "Cette sauvegarde a été créée sur une version\ndifférente de SoH.\nCertaines fonctionnalités peuventêtre corrompues."
+};
+
+void FileChoose_DrawRandoSaveWarning(GameState* thisx) {
+    FileChooseContext* this = (FileChooseContext*)thisx;
+
+    OPEN_DISPS(this->state.gfxCtx);
+
+    // Draw rando seed warning when build version doesn't match for Major or Minor number
+    for (int fileIndex = 0; fileIndex < 3; fileIndex++) {
+        if (Save_GetSaveMetaInfo(fileIndex)->randoSave == 1 &&
+            this->menuMode == FS_MENU_MODE_SELECT &&
+            (gBuildVersionMajor != Save_GetSaveMetaInfo(fileIndex)->buildVersionMajor ||
+            gBuildVersionMinor != Save_GetSaveMetaInfo(fileIndex)->buildVersionMinor)) {
+
+            // Use file info alpha to match fading
+            u8 textAlpha = this->fileInfoAlpha[fileIndex];
+            if (textAlpha >= 200) {
+                textAlpha = 225;
+            }
+
+            // Compute the height for a "squished" textbox texture
+            s16 height = gSaveContext.language == LANGUAGE_ENG ? 32 : 40; // English is only 2 lines
+            // float math to get a S5.10 number that will squish the texture
+            f32 texCoordinateHeightF = 512 / ((f32)height / 64);
+            s16 texCoordinateHeightScale = texCoordinateHeightF + 0.5f;
+            s16 bottomOffset = 4;
+
+            Gfx_SetupDL_39Opa(this->state.gfxCtx);
+            gDPSetAlphaDither(POLY_OPA_DISP++, G_AD_DISABLE);
+            gSPClearGeometryMode(POLY_OPA_DISP++, G_SHADE);
+            gDPSetCombineLERP(POLY_OPA_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0,
+                              0, PRIMITIVE, 0);
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, textAlpha);
+            gDPLoadTextureBlock_4b(POLY_OPA_DISP++, gDefaultMessageBackgroundTex, G_IM_FMT_I, 128, 64, 0, G_TX_MIRROR,
+                                   G_TX_MIRROR, 7, 0, G_TX_NOLOD, G_TX_NOLOD);
+            gSPTextureRectangle(POLY_OPA_DISP++, 32 << 2, (SCREEN_HEIGHT - height - bottomOffset) << 2,
+                                (SCREEN_WIDTH - 32) << 2, (SCREEN_HEIGHT - bottomOffset) << 2, G_TX_RENDERTILE, 0, 0,
+                                1 << 10, texCoordinateHeightScale << 1);
+
+            Interface_DrawTextLine(this->state.gfxCtx, randoWarningText[gSaveContext.language], 36,
+                                   SCREEN_HEIGHT - height, 255, 255, 255, textAlpha, 0.8f, 1);
+        }
+    }
+
+    CLOSE_DISPS(this->state.gfxCtx);
+}
+
 void FileChoose_Main(GameState* thisx) {
     static void* controlsTextures[] = {
         gFileSelControlsENGTex,
@@ -3333,6 +3353,9 @@ void FileChoose_Main(GameState* thisx) {
                             G_TX_NOLOD, G_TX_NOLOD);
         gSPTextureRectangle(POLY_OPA_DISP++, 0x0168, 0x0330, 0x03A8, 0x0370, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
     }
+
+    // Draw rando save warning over the controls text, but before the screen fill fade out
+    FileChoose_DrawRandoSaveWarning(&this->state);
 
     gDPPipeSync(POLY_OPA_DISP++);
     gSPDisplayList(POLY_OPA_DISP++, sScreenFillSetupDL);
