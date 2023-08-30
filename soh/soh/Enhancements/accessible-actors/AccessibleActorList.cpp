@@ -74,7 +74,7 @@ void accessible_en_pickups(AccessibleActor* actor) {
 }
 
 void accessible_test(AccessibleActor* actor) {
-    ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_BLOCKSINK, false);
+    ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_TRAP_BOUND, false);
 }
 
 void accessible_grotto(AccessibleActor* actor) {
