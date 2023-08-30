@@ -544,10 +544,11 @@ void accessible_audio_compass(AccessibleActor* actor) {
     policy.n = 60;
     policy.distance = 2000;
     ActorAccessibility_AddSupportedActor(VA_AREA_CHANGE, policy);
-    //ActorAccessibility_InitPolicy(&policy, "marker", NULL,
-    //                              NA_SE_EV_DIAMOND_SWITCH); 
-    //policy.pitch = 1.7;
-    //ActorAccessibility_AddSupportedActor(VA_MARKER, policy);
+    ActorAccessibility_InitPolicy(&policy, "marker", NULL,
+                                  NA_SE_EV_DIAMOND_SWITCH); 
+    policy.distance = 1000;
+    policy.pitch = 1.7;
+    ActorAccessibility_AddSupportedActor(VA_MARKER, policy);
     ActorAccessibility_InitPolicy(&policy, "Spike", NULL, NA_SE_IT_SWORD_PICKOUT);
     policy.distance = 200;
     policy.pitch = 0.5;
@@ -634,15 +635,16 @@ void accessible_audio_compass(AccessibleActor* actor) {
 
     list = ActorAccessibility_GetVirtualActorList(0, 10); // deku tree compass room
     //ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -762, 733.0, 151.0 } });
-    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { -935, 780.0, -113 } });
+    /*ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { -935, 780.0, -113 } });
     ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { -1031.0, 800.0, 109.7 } });
-    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { -1184, 820.0, -103.4 } });
+    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { -1184, 820.0, -103.4 } });*/
 
     list = ActorAccessibility_GetVirtualActorList(0, 7); // deku tree bombable wall room
     ActorAccessibility_AddVirtualActor(list, VA_CRAWLSPACE, { { -1209, -820.0, 3.5 } });
 
     list = ActorAccessibility_GetVirtualActorList(0, 3); // deku tree basement 1 lobby
     ActorAccessibility_AddVirtualActor(list, VA_CRAWLSPACE, { { -901, -820.0, 0.5 } });
+    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { -181.761, -905.0, -28.3 } });
     //ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { 108, -919.5, 5.0 } });
 
     list = ActorAccessibility_GetVirtualActorList(0, 9); // deku tree b2 lobby
