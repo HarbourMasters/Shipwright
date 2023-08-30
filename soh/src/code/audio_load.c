@@ -486,8 +486,10 @@ void AudioLoad_AsyncLoadFont(s32 fontId, s32 arg1, s32 retData, OSMesgQueue* ret
 u8* AudioLoad_GetFontsForSequence(s32 seqId, u32* outNumFonts) {
     s32 index;
 
-     if (seqId == NA_BGM_DISABLED)
-         return NULL;
+    // Check for NA_BGM_DISABLED and account for seqId that are stripped with `& 0xFF` by the caller
+    if (seqId == NA_BGM_DISABLED || seqId == 0xFF) {
+        return NULL;
+    }
 
     u16 newSeqId = AudioEditor_GetReplacementSeq(seqId);
     if (newSeqId > sequenceMapSize || !sequenceMap[newSeqId]) {
