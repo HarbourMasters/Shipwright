@@ -23,6 +23,7 @@ class SfxExtractor {
     void maybeGiveProgressReport();
   public:
     SfxExtractor();
+
     void frameCallback();
     void prime();
     // The below is called by the (hijacked) audio thread.

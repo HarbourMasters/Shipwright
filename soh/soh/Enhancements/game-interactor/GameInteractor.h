@@ -153,6 +153,8 @@ public:
     DEFINE_HOOK(OnOcarinaSongAction, void());
     DEFINE_HOOK(OnActorInit, void(void* actor));
     DEFINE_HOOK(OnActorUpdate, void(void* actor));
+    DEFINE_HOOK(OnActorDestroy, void(void* actor));
+
     DEFINE_HOOK(OnPlayerBonk, void());
     DEFINE_HOOK(OnPlayDestroy, void());
     DEFINE_HOOK(OnPlayDrawEnd, void());
@@ -180,6 +182,7 @@ public:
     DEFINE_HOOK(OnUpdateFileNameSelection, void(int16_t charCode));
     
     DEFINE_HOOK(OnSetGameLanguage, void());
+    DEFINE_HOOK(OnGameStillFrozen, void());
 
     // Helpers
     static bool IsSaveLoaded();

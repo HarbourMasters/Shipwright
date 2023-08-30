@@ -113,6 +113,7 @@ CrowdControl* CrowdControl::Instance;
 
 #include "soh/config/ConfigUpdaters.h"
 #include "soh/Enhancements/accessible-actors/ActorAccessibility.h"
+#include "Enhancements//accessible-actors/ActorAccessibility.h"
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
 CustomMessageManager* CustomMessageManager::Instance;
@@ -783,6 +784,7 @@ extern "C" void InitOTR() {
     
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
+    ActorAccessibility_Init();
     OTRAudio_Init();
     OTRExtScanner();
     VanillaItemTable_Init();
@@ -826,7 +828,7 @@ extern "C" void DeinitOTR() {
     CrowdControl::Instance->Disable();
     CrowdControl::Instance->Shutdown();
 #endif
-
+    ActorAccessibility_Shutdown();
     // Destroying gui here because we have shared ptrs to LUS objects which output to SPDLOG which is destroyed before these shared ptrs.
     SohGui::Destroy();
 

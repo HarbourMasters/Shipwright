@@ -77,7 +77,7 @@
 #include "textures/place_title_cards/g_pn_56.h"
 #include "textures/place_title_cards/g_pn_57.h"
 #endif
-#include <soh/Enhancements/accessible-actors/ActorAccessibility.h>
+
 static CollisionPoly* sCurCeilingPoly;
 static s32 sCurCeilingBgId;
 
@@ -1224,6 +1224,7 @@ void Actor_Init(Actor* actor, PlayState* play) {
 }
 
 void Actor_Destroy(Actor* actor, PlayState* play) {
+    GameInteractor_ExecuteOnActorDestroy(actor);
     if (actor->destroy != NULL) {
         actor->destroy(actor, play);
         actor->destroy = NULL;
@@ -2476,6 +2477,7 @@ u32 D_80116068[ACTORCAT_MAX] = {
 };
 
 void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
+
     Actor* refActor;
     Actor* actor;
     Player* player;
@@ -2613,8 +2615,6 @@ void Actor_UpdateAll(PlayState* play, ActorContext* actorCtx) {
     func_8002C7BC(&actorCtx->targetCtx, player, actor, play);
     TitleCard_Update(play, &actorCtx->titleCtx);
     DynaPoly_UpdateBgActorTransforms(play, &play->colCtx.dyna);
-    ActorAccessibility_RunAccessibilityForAllActors(play);
-
 }
 
 void Actor_FaultPrint(Actor* actor, char* command) {
@@ -3215,7 +3215,6 @@ Actor* Actor_Spawn(ActorContext* actorCtx, PlayState* play, s16 actorId, f32 pos
     temp = gSegments[6];
     Actor_Init(actor, play);
     gSegments[6] = temp;
-    ActorAccessibility_TrackNewActor(actor);
 
     return actor;
 }
@@ -3324,9 +3323,7 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, PlayState* play) {
     dbEntry->numLoaded--;
     Actor_FreeOverlay(dbEntry);
 
-ActorAccessibility_RemoveTrackedActor(actor);
-
-        return newHead;
+    return newHead;
 }
 
 s32 func_80032880(PlayState* play, Actor* actor) {

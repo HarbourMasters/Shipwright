@@ -16,6 +16,12 @@
 #include <unordered_set>
 #include "soh/Enhancements/speechsynthesizer/SpeechSynthesizer.h"
 #include "soh/Enhancements/tts/tts.h"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/audio/AudioDecoder.h"
+extern "C" {
+extern PlayState* gPlayState;
+extern bool freezeGame;
+}
 
 const char* GetLanguageCode();
 
@@ -43,14 +49,16 @@ typedef std::map<s32, VAList_t> VAZones_t;//Maps room/ scene indices to their co
 typedef std::unordered_set<s16> SceneList_t;//A list of scenes which have already been visited (since the game was launched). Used to prevent re-creation of terrain VAs every time the player reloads a scene.
 
 typedef struct {
-    std::string hexName;
+    std::string path;
     std::shared_ptr<LUS::File> resource;
+    std::shared_ptr<s16*> decodedSample;//Set if the record is for a raw sample as opposed to a SFX.
+
 }SfxRecord;
 
 class ActorAccessibility {
   public:
-      bool isOn = false;
-    uint64_t nextActorID;
+      int isOn = 0;
+    uint64_t nextActorID = 0;
     SupportedActors_t supportedActors;
     TrackedActors_t trackedActors;
     AccessibleActorList_t accessibleActorList;
@@ -59,7 +67,8 @@ class ActorAccessibility {
     AccessibleAudioEngine* audioEngine;
     SfxExtractor sfxExtractor;
     std::unordered_map<s16, SfxRecord> sfxMap;//Maps internal sfx to external (prerendered) resources.
-
+    std::unordered_map<std::string, SfxRecord> sampleMap;//Similar to above, but this one maps raw audio samples as opposed to SFX.
+    int extractSfx = 0;
 };
 static ActorAccessibility* aa;
 
@@ -68,12 +77,48 @@ uint64_t ActorAccessibility_GetNextID() {
     aa->nextActorID++;
     return result;
 }
-void ActorAccessibility_Init() {
-    aa = new ActorAccessibility();
-    ActorAccessibility_InitAudio();
-    ActorAccessibility_InitActors();
+
+// Hooks for game-interactor.
+void ActorAccessibility_OnActorInit(void* actor) {
+    ActorAccessibility_TrackNewActor((Actor*)actor);
+}
+void ActorAccessibility_OnGameFrameUpdate() {
+    if (gPlayState == NULL)
+        return;
+
+    ActorAccessibility_RunAccessibilityForAllActors(gPlayState);
+}
+void ActorAccessibility_OnActorDestroy(void* actor)
+{
+    ActorAccessibility_RemoveTrackedActor((Actor*) actor);
 
 }
+void ActorAccessibility_OnGameStillFrozen()
+{
+    if (gPlayState == NULL)
+        return;
+    if (aa->extractSfx)
+        ActorAccessibility_HandleSoundExtractionMode(gPlayState);
+
+}
+    void ActorAccessibility_Init() {
+
+    aa = new ActorAccessibility();
+    aa->isOn = CVarGetInteger("gA11yAudioInteraction", 0);
+    if (!aa->isOn)
+        return;
+    aa->extractSfx = CVarGetInteger("gExtractSfx", 0);
+    if (aa->extractSfx)
+        freezeGame = true;
+    ActorAccessibility_InitAudio();
+    ActorAccessibility_InitActors();
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(ActorAccessibility_OnActorInit);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorDestroy>(ActorAccessibility_OnActorDestroy);
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(ActorAccessibility_OnGameFrameUpdate);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameStillFrozen>(ActorAccessibility_OnGameStillFrozen);
+
+    }
 void ActorAccessibility_Shutdown() {
     ActorAccessibility_ShutdownAudio();
     delete aa;
@@ -88,7 +133,7 @@ void ActorAccessibility_Shutdown() {
     policy->pitch = 1.5;
     policy->runsAlways = false;
     policy->sound = sfx;
-    policy->volume = 1.0;
+    policy->volume = 0.5;
     policy->initUserData = NULL;
     policy->cleanupUserData = NULL;
     policy->pitchModifier = 0.1;
@@ -114,7 +159,7 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
 
  }
 
-void ActorAccessibility_TrackNewActor(Actor* actor) {
+    void ActorAccessibility_TrackNewActor(Actor * actor) {
         // Don't track actors for which no accessibility policy has been configured.
         ActorAccessibilityPolicy* policy = ActorAccessibility_GetPolicyForActor(actor->id);
         if (policy == NULL)
@@ -178,11 +223,22 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &actor->currentPitch, &actor->currentVolume, &actor->currentReverb);
     }
     const char* ActorAccessibility_MapSfxToExternalAudio(s16 sfxId);
-
     void ActorAccessibility_PlaySound(void* handle, int slot, s16 sfxId, bool looping)
     {
         const char* path = ActorAccessibility_MapSfxToExternalAudio(sfxId);
+        if (path == NULL)
+            return;
         aa->audioEngine->playSound((uintptr_t)handle, slot, path, looping);
+    }
+    const char* ActorAccessibility_MapRawSampleToExternalAudio(const char* name);
+
+    void ActorAccessibility_PlayRawSample(void* handle, int slot, const char* name, bool looping)
+    {
+        const char* path = ActorAccessibility_MapRawSampleToExternalAudio(name);
+        if (path == NULL)
+            return;
+        aa->audioEngine->playSound((uintptr_t)handle, slot, path, looping);
+
     }
     void ActorAccessibility_StopSound(void* handle, int slot)
     {
@@ -231,17 +287,29 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         aa->audioEngine->seekSound((uintptr_t)handle, slot, offset);
 
     }
+    void ActorAccessibility_ConfigureSoundForActor(AccessibleActor* actor, int slot)
+    {
+        ActorAccessibility_SetSoundPitch(actor, slot, actor->policy.pitch);
+        ActorAccessibility_SetPitchBehindModifier(actor, slot, actor->policy.pitchModifier);
+        ActorAccessibility_SetSoundPos(actor, slot, &actor->projectedPos, actor->xyzDistToPlayer,
+                                       actor->policy.distance);
+        ActorAccessibility_SetSoundVolume(actor, slot, actor->policy.volume);
+        actor->managedSoundSlots[slot] = true;
+    }
     void ActorAccessibility_PlaySoundForActor(AccessibleActor* actor, int slot, s16 sfxId, bool looping)
     {
         if (slot < 0 || slot > NUM_MANAGED_SOUND_SLOTS)
             return;
         ActorAccessibility_PlaySound(actor, slot, sfxId, looping);
-        ActorAccessibility_SetSoundPitch(actor, slot, actor->policy.pitch);
-        ActorAccessibility_SetPitchBehindModifier(actor, slot, actor->policy.pitchModifier);
-        ActorAccessibility_SetSoundPos(actor, slot, &actor->projectedPos, actor->xzDistToPlayer,
-                                       actor->policy.distance);
-        ActorAccessibility_SetSoundVolume(actor, slot, actor->policy.volume);
-        actor->managedSoundSlots[slot] = true;
+        ActorAccessibility_ConfigureSoundForActor(actor, slot);
+
+    }
+    void ActorAccessibility_PlaySampleForActor(AccessibleActor* actor, int slot, const char* name, bool looping)
+    {
+        if (slot < 0 || slot > NUM_MANAGED_SOUND_SLOTS)
+            return;
+        ActorAccessibility_PlayRawSample(actor, slot, name, looping);
+        ActorAccessibility_ConfigureSoundForActor(actor, slot);
 
     }
     void ActorAccessibility_StopSoundForActor(AccessibleActor* actor, int slot)
@@ -471,9 +539,14 @@ void ActorAccessibility_TrackNewActor(Actor* actor) {
         return true;
     }
     void ActorAccessibility_ShutdownAudio() {
+        if (aa->isOn == 0)
+            return;
         delete aa->audioEngine;
     }
     void ActorAccessibility_MixAccessibleAudioWithGameAudio(int16_t* ogBuffer, uint32_t nFrames) {
+        if (aa->isOn == 0)
+            return;
+
         aa->audioEngine->mix(ogBuffer, nFrames);
 
     }
@@ -494,17 +567,47 @@ return NULL;//Resource doesn't exist, user's gotta run the extractor.
             tempRecord.resource = res;
             std::stringstream ss;
             ss << std::setw(4) << std::setfill('0') << std::hex << sfxId;
-            tempRecord.hexName = ss.str();
+            tempRecord.path = ss.str();
             aa->sfxMap[sfxId] = tempRecord;
             record = &aa->sfxMap[sfxId];
-            aa->audioEngine->cacheDecodedSample(record->hexName, record->resource->Buffer.data(),
+            aa->audioEngine->cacheDecodedSample(record->path, record->resource->Buffer.data(),
                                                 record->resource->Buffer.size());
         } else
             record = &it->second;
 
-        return record->hexName.c_str();
+        return record->path.c_str();
 
 
+    }
+//Map the path to a raw sample to the external audio engine.
+    const char* ActorAccessibility_MapRawSampleToExternalAudio(const char* name)
+    {
+        SfxRecord* record;
+        std::string key(name);
+        auto it = aa->sampleMap.find(key);
+        if (it == aa->sampleMap.end()) {
+            SfxRecord tempRecord;
+            std::stringstream ss;
+            ss << "audio/samples/" << key;
+            std::string fullPath = ss.str();
+            auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResource(fullPath);
+            if (res == nullptr)
+return NULL; // Resource doesn't exist, user's gotta run the extractor.
+            AudioDecoder decoder;
+            decoder.setSample((LUS::AudioSample*)res.get());
+            s16* wav;
+            size_t wavSize = decoder.decodeToWav(&wav);
+
+            tempRecord.path = key;
+            tempRecord.decodedSample = std::make_shared<s16*>(wav);
+            aa->sampleMap[key] = tempRecord;
+            record = &aa->sampleMap[key];
+            aa->audioEngine->cacheDecodedSample(record->path, wav,
+                                                wavSize);
+        } else
+            record = &it->second;
+
+        return record->path.c_str();
     }
     // Call once per frame to tell the audio engine to start working on the latest batch of queued instructions.
 
@@ -525,5 +628,3 @@ return NULL;//Resource doesn't exist, user's gotta run the extractor.
     }
 
 
-  
-    
