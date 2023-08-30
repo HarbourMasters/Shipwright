@@ -254,7 +254,8 @@ void DrawSettingsMenu() {
             // Disabled on Apple due to a DPI scaling bug.
             if (UIWidgets::EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f,
                                                   2.0f, "", 1.0f, true, true,
-                                                  CVarGetInteger("gAdvancedResolution_verticalResolutionToggle", 0))) {
+                                                  CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0) &&
+                                                      CVarGetInteger("gAdvancedResolution.Enabled", 0) )) {
                 LUS::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(CVarGetFloat("gInternalResolution", 1));
             }
             UIWidgets::Tooltip("Multiplies your output resolution by the value inputted, as a more intensive but effective form of anti-aliasing");
@@ -266,6 +267,7 @@ void DrawSettingsMenu() {
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
             UIWidgets::Spacer(0);
             if (mAdvancedResolutionSettingsWindow) {
+                // Tina TODO Change name of gAdvancedResolutionEditorEnabled CVar too.
                 if (ImGui::Button(GetWindowButtonText("Advanced Resolution", CVarGetInteger("gAdvancedResolutionEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                     mAdvancedResolutionSettingsWindow->ToggleVisibility();
                 }
