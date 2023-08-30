@@ -10,10 +10,12 @@
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
 #include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #include <libultraship/libultraship.h>
 
 #include <time.h>
+#include <assert.h>
 
 void* D_8012D1F0 = NULL;
 //UNK_TYPE D_8012D1F4 = 0; // unused
@@ -33,12 +35,17 @@ PlayState* gPlayState;
 
 s16 gEnPartnerId;
 
+void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn);
+
+void enableBetaQuest();
+void disableBetaQuest();
+
 void func_800BC450(PlayState* play) {
     Camera_ChangeDataIdx(GET_ACTIVE_CAM(play), play->unk_1242B - 1);
 }
 
 void func_800BC490(PlayState* play, s16 point) {
-    ASSERT(point == 1 || point == 2);
+    assert(point == 1 || point == 2);
 
     play->unk_1242B = point;
 
@@ -164,6 +171,7 @@ void Play_Destroy(GameState* thisx) {
     PlayState* play = (PlayState*)thisx;
     Player* player = GET_PLAYER(play);
 
+    GameInteractor_ExecuteOnPlayDestroy();
 
     // Only initialize the frame counter when exiting the title screen
     if (gSaveContext.fileNum == 0xFF) {
@@ -1706,6 +1714,8 @@ void Play_Draw(PlayState* play) {
             }
         }
 
+        GameInteractor_ExecuteOnPlayDrawEnd();
+
         // Reset the inverted culling
         if (CVarGetInteger("gMirroredWorld", 0)) {
             gSPClearExtraGeometryMode(POLY_OPA_DISP++, G_EX_INVERT_CULLING);
@@ -1754,12 +1764,11 @@ time_t Play_GetRealTime() {
 void Play_Main(GameState* thisx) {
     PlayState* play = (PlayState*)thisx;
 
-    if (CVarGetInteger("gCheatEasyPauseBufferFrameAdvance", 0)) {
-        CVarSetInteger("gCheatEasyPauseBufferFrameAdvance", CVarGetInteger("gCheatEasyPauseBufferFrameAdvance", 0) - 1);
+    // Decrease the easy pause buffer timer every frame
+    if (CVarGetInteger("gCheatEasyPauseBufferTimer", 0) > 0) {
+        CVarSetInteger("gCheatEasyPauseBufferTimer", CVarGetInteger("gCheatEasyPauseBufferTimer", 0) - 1);
     }
-    if (CVarGetInteger("gPauseBufferBlockInputFrame", 0)) {
-        CVarSetInteger("gPauseBufferBlockInputFrame", CVarGetInteger("gPauseBufferBlockInputFrame", 0) - 1);
-    }
+
     if (play->envCtx.unk_EE[2] == 0 && CVarGetInteger("gLetItSnow", 0)) {
         play->envCtx.unk_EE[3] = 64;
         Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_OBJECT_KANKYO, 0, 0, 0, 0, 0, 0, 3, 0);

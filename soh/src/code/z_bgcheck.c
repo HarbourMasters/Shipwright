@@ -2,6 +2,7 @@
 #include "vt.h"
 
 #include <soh/OTRGlobals.h>
+#include <assert.h>
 
 #define SS_NULL 0xFFFF
 
@@ -87,7 +88,7 @@ void SSNodeList_SetSSListHead(SSNodeList* nodeList, SSList* ssList, s16* polyId)
 void DynaSSNodeList_SetSSListHead(DynaSSNodeList* nodeList, SSList* ssList, s16* polyId) {
     u16 newNodeId = DynaSSNodeList_GetNextNodeIdx(nodeList);
 
-    ASSERT(newNodeId != SS_NULL);
+    assert(newNodeId != SS_NULL);
     SSNode_SetValue(&nodeList->tbl[newNodeId], polyId, ssList->head);
     ssList->head = newNodeId;
 }
@@ -106,7 +107,7 @@ void DynaSSNodeList_Initialize(PlayState* play, DynaSSNodeList* nodeList) {
 void DynaSSNodeList_Alloc(PlayState* play, DynaSSNodeList* nodeList, s32 max) {
     nodeList->tbl = THA_AllocEndAlign(&play->state.tha, max * sizeof(SSNode), -2);
 
-    ASSERT(nodeList->tbl != NULL);
+    assert(nodeList->tbl != NULL);
 
     nodeList->max = max;
     nodeList->count = 0;
@@ -709,7 +710,7 @@ s32 BgCheck_SphVsStaticWall(StaticLookup* lookup, CollisionContext* colCtx, u16 
             }
         }
 
-        ASSERT(!IS_ZERO(normalXZ));
+        assert(!IS_ZERO(normalXZ));
 
         invNormalXZ = 1.0f / normalXZ;
         temp_f16 = fabsf(nz) * invNormalXZ;
@@ -790,7 +791,7 @@ s32 BgCheck_SphVsStaticWall(StaticLookup* lookup, CollisionContext* colCtx, u16 
             }
         }
 
-        ASSERT(!IS_ZERO(normalXZ));
+        assert(!IS_ZERO(normalXZ));
 
         invNormalXZ = 1.0f / normalXZ;
         temp_f16 = fabsf(nx) * invNormalXZ;
@@ -2446,11 +2447,11 @@ void SSNodeList_Alloc(PlayState* play, SSNodeList* this, s32 tblMax, s32 numPoly
     this->count = 0;
     this->tbl = THA_AllocEndAlign(&play->state.tha, tblMax * sizeof(SSNode), -2);
 
-    ASSERT(this->tbl != NULL);
+    assert(this->tbl != NULL);
 
     this->polyCheckTbl = GAMESTATE_ALLOC_MC(&play->state, numPolys);
 
-    ASSERT(this->polyCheckTbl != NULL);
+    assert(this->polyCheckTbl != NULL);
 }
 
 /**
@@ -2460,7 +2461,7 @@ SSNode* SSNodeList_GetNextNode(SSNodeList* this) {
     SSNode* result = &this->tbl[this->count];
 
     this->count++;
-    ASSERT(this->count < this->max);
+    assert(this->count < this->max);
     if (!(this->count < this->max)) {
         return NULL;
     }
@@ -2473,7 +2474,7 @@ SSNode* SSNodeList_GetNextNode(SSNodeList* this) {
 u16 SSNodeList_GetNextNodeIdx(SSNodeList* this) {
     u16 new_index = this->count++;
 
-    ASSERT(new_index < this->max);
+    assert(new_index < this->max);
     return new_index;
 }
 
@@ -2579,7 +2580,7 @@ void DynaPoly_NullPolyList(CollisionPoly** polyList) {
  */
 void DynaPoly_AllocPolyList(PlayState* play, CollisionPoly** polyList, s32 numPolys) {
     *polyList = THA_AllocEndAlign(&play->state.tha, numPolys * sizeof(CollisionPoly), -2);
-    ASSERT(*polyList != NULL);
+    assert(*polyList != NULL);
 }
 
 /**
@@ -2594,7 +2595,7 @@ void DynaPoly_NullVtxList(Vec3s** vtxList) {
  */
 void DynaPoly_AllocVtxList(PlayState* play, Vec3s** vtxList, s32 numVtx) {
     *vtxList = THA_AllocEndAlign(&play->state.tha, numVtx * sizeof(Vec3s), -2);
-    ASSERT(*vtxList != NULL);
+    assert(*vtxList != NULL);
 }
 
 /**
@@ -2811,8 +2812,8 @@ void DynaPoly_ExpandSRT(PlayState* play, DynaCollisionContext* dyna, s32 bgId, s
                      *vtxStartIndex + pbgdata->numVertices, dyna->vtxListMax);
     }
 
-    ASSERT(dyna->polyListMax >= *polyStartIndex + pbgdata->numPolygons);
-    ASSERT(dyna->vtxListMax >= *vtxStartIndex + pbgdata->numVertices);
+    assert(dyna->polyListMax >= *polyStartIndex + pbgdata->numPolygons);
+    assert(dyna->vtxListMax >= *vtxStartIndex + pbgdata->numVertices);
 
     if (!(dyna->bitFlag & DYNAPOLY_INVALIDATE_LOOKUP) &&
         (BgActor_IsTransformUnchanged(&dyna->bgActors[bgId]) == true)) {
@@ -3245,7 +3246,7 @@ s32 BgCheck_SphVsDynaWallInBgActor(CollisionContext* colCtx, u16 xpFlags, DynaCo
         poly = &dyna->polyList[polyId];
         CollisionPoly_GetNormalF(poly, &nx, &ny, &nz);
         normalXZ = sqrtf(SQ(nx) + SQ(nz));
-        ASSERT(!IS_ZERO(normalXZ));
+        assert(!IS_ZERO(normalXZ));
 
         planeDist = Math3D_DistPlaneToPos(nx, ny, nz, poly->dist, &resultPos);
         if (radius < fabsf(planeDist) || COLPOLY_VIA_FLAG_TEST(poly->flags_vIA, xpFlags)) {
@@ -3318,7 +3319,7 @@ s32 BgCheck_SphVsDynaWallInBgActor(CollisionContext* colCtx, u16 xpFlags, DynaCo
         poly = &dyna->polyList[polyId];
         CollisionPoly_GetNormalF(poly, &nx, &ny, &nz);
         normalXZ = sqrtf(SQ(nx) + SQ(nz));
-        ASSERT(!IS_ZERO(normalXZ));
+        assert(!IS_ZERO(normalXZ));
 
         planeDist = Math3D_DistPlaneToPos(nx, ny, nz, poly->dist, &resultPos);
         if (radius < fabsf(planeDist) || COLPOLY_VIA_FLAG_TEST(poly->flags_vIA, xpFlags)) {

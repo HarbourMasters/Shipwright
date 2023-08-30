@@ -202,6 +202,10 @@
         <Texture Name="gLinkAdultGauntletPlate1Tex" OutName="gauntlet_plate_1" Format="rgba16" Width="16" Height="32" Offset="0x9980"/>
         <Texture Name="gLinkAdultGauntletPlate2Tex" OutName="gauntlet_plate_2" Format="rgba16" Width="32" Height="32" Offset="0x9D80"/>
 
+        <Array Name="gLinkAdultHookshotRedicleVtx" Count="3" Offset="0x2CB18">
+            <Vtx/>
+        </Array>
+
         <DList Name="gLinkAdultHookshotReticleDL" Offset="0x2CB48"/>
 
         <!-- Boots -->

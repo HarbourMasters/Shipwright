@@ -7,6 +7,7 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
+#include "soh/Enhancements/nametag.h"
 
 extern "C" {
 #include <z64.h>
@@ -771,4 +772,5 @@ void InitMods() {
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
     RegisterAltTrapTypes();
+    NameTag_RegisterHooks();
 }

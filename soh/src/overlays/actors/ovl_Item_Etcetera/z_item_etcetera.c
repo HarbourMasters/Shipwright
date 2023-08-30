@@ -5,6 +5,7 @@
  */
 
 #include "z_item_etcetera.h"
+#include <assert.h>
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -21,7 +22,6 @@ void ItemEtcetera_SpawnSparkles(ItemEtcetera* this, PlayState* play);
 void ItemEtcetera_MoveFireArrowDown(ItemEtcetera* this, PlayState* play);
 void func_80B85B28(ItemEtcetera* this, PlayState* play);
 void ItemEtcetera_UpdateFireArrow(ItemEtcetera* this, PlayState* play);
-GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, PlayState* play);
 
 const ActorInit Item_Etcetera_InitVars = {
     ACTOR_ITEM_ETCETERA,
@@ -69,7 +69,7 @@ void ItemEtcetera_Init(Actor* thisx, PlayState* play) {
     objBankIndex = Object_GetIndex(&play->objectCtx, sObjectIds[type]);
     osSyncPrintf("bank_ID = %d\n", objBankIndex);
     if (objBankIndex < 0) {
-        ASSERT(objBankIndex < 0);
+        assert(objBankIndex < 0);
     } else {
         this->objBankIndex = objBankIndex;
     }

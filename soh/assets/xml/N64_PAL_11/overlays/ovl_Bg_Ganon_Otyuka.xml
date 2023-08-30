@@ -1,8 +1,8 @@
 <Root>
-    <File Name="ovl_Bg_Ganon_Otyuka" BaseAddress="0x80A54D80" RangeStart="0x1100" RangeEnd="0x259C">
-        <Texture Name="sPlatformTex" OutName="platform_tex" Format="rgba16" Width="32" Height="32" Offset="0x1100"/>
+    <File Name="ovl_Bg_Ganon_Otyuka" BaseAddress="0x80A54D80" RangeStart="0x1110" RangeEnd="0x24EC">
+        <Texture Name="sPlatformTex" OutName="platform_tex" Format="rgba16" Width="32" Height="32" Offset="0x1110"/>
         
-        <Array Name="sPlatformTopVtx" Count="4" Offset="0x1908">
+        <Array Name="sPlatformTopVtx" Count="4" Offset="0x1918">
             <Vtx/>
         </Array>
         <DList Name="sPlatformMaterialDL" Offset="0x1958"/>
