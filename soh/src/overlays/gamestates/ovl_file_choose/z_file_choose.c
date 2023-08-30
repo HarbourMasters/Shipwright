@@ -3117,7 +3117,7 @@ static const char* randoWarningText[] = {
     // German
     "Dieser Spielstand wurde auf einer anderen Version\nvon SoH erstellt.\nEs könnten Fehler auftreten.",
     // French
-    "Cette sauvegarde a été créée sur une version\ndifférente de SoH.\nCertaines fonctionnalités peuventêtre corrompues."
+    "Cette sauvegarde a été créée sur une version\ndifférente de SoH.\nCertaines fonctionnalités peuvent être corrompues."
 };
 
 void FileChoose_DrawRandoSaveWarning(GameState* thisx) {
