@@ -49,15 +49,63 @@ void accessible_en_NPC_Gen(AccessibleActor* actor) {
 
 }
 void accessible_en_chest(AccessibleActor* actor) {
+   
+    
+    Player* player = GET_PLAYER(actor->play);
     EnBox* chest = (EnBox*)actor->actor;
-    //Only chests that are "waiting to be opened" should play a sound. Chests which have not yet appeared (because some enemy has not been killed, switch has not been hit, etc) will not be in this action mode.
     if (chest->actionFunc != EnBox_WaitOpen)
         return;
-
     s32 treasureFlag = actor->actor->params & 0x1F;
 
     if (!(treasureFlag >= 20 && treasureFlag < 32)) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_TBOX_UNLOCK, false);
+    }
+    //Only chests that are "waiting to be opened" should play a sound. Chests which have not yet appeared (because some enemy has not been killed, switch has not been hit, etc) will not be in this action mode.
+    f32 rightAngle = actor->actor->world.rot.y + 16384;
+    f32 leftAngle = actor->actor->world.rot.y - 16384;
+    Vec3f_ rightPos = actor->actor->world.pos;
+    f32 velocityXRight = Math_SinS(rightAngle)*10.0;
+    f32 velocityZRight = Math_CosS(rightAngle) * 10.0;
+    rightPos.x += velocityXRight;
+    rightPos.z += velocityZRight;
+    f32 z = rightPos.z + Math_CosS(leftAngle) * (fabs(player->actor.world.pos.x-rightPos.x));
+    
+    f32 frontAngle = actor->actor->world.rot.y;
+    f32 backAngle = actor->actor->world.rot.y + (16384*2);
+    Vec3f_ frontPos = actor->actor->world.pos;
+    f32 velocityXFront = Math_SinS(frontAngle) * 10.0;
+    f32 velocityZFront = Math_CosS(frontAngle) * 10.0;
+    frontPos.x += velocityXFront;
+    frontPos.z += velocityZFront;
+    f32 x = frontPos.x + Math_SinS(backAngle) * (player->actor.world.pos.z - frontPos.z);
+
+    if (Math_CosS(actor->actor->world.rot.y + 16384) > 0) {
+        if (player->actor.world.pos.x < x-30) {
+            ActorAccessibility_SetSoundPitch(actor, 0, 1.5);
+            
+        } else if (player->actor.world.pos.x > x + 30) {
+            ActorAccessibility_SetSoundPitch(actor, 0, 0.5);
+        } else if (Math_CosS(actor->actor->world.rot.y) > 0 && player->actor.world.pos.z > z &&
+                   (!(treasureFlag >= 20 && treasureFlag < 32))) {
+            ActorAccessibility_PlaySoundForActor(actor, 1, NA_SE_EV_DIAMOND_SWITCH, false);
+        } else if ((Math_CosS(actor->actor->world.rot.y) < 0) && player->actor.world.pos.z < z &&
+                   (!(treasureFlag >= 20 && treasureFlag < 32))) {
+            ActorAccessibility_PlaySoundForActor(actor, 1, NA_SE_EV_DIAMOND_SWITCH, false);    
+        }
+            
+    } else {
+        if (player->actor.world.pos.x > x + 30) {
+            ActorAccessibility_SetSoundPitch(actor, 0, 1.5);
+            
+        } else if (player->actor.world.pos.x < x - 30) {
+            ActorAccessibility_SetSoundPitch(actor, 0, 0.5);
+        } else if (Math_CosS(actor->actor->world.rot.y) > 0 && player->actor.world.pos.z > z &&
+                   (!(treasureFlag >= 20 && treasureFlag < 32))) {
+            ActorAccessibility_PlaySoundForActor(actor, 1, NA_SE_EV_DIAMOND_SWITCH, false);
+        } else if ((Math_CosS(actor->actor->world.rot.y) < 0) && player->actor.world.pos.z < z &&
+                   (!(treasureFlag >= 20 && treasureFlag < 32))) {
+            ActorAccessibility_PlaySoundForActor(actor, 1, NA_SE_EV_DIAMOND_SWITCH, false);
+        }
     }
 }
 
@@ -101,7 +149,9 @@ void accessible_torches(AccessibleActor* actor) {
 
 void accessible_hasi(AccessibleActor* actor) {
     if ((actor->actor->params) == 0) {
-        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_BLOCK_SHAKE, false);
+        actor->policy.ydist = 1000;
+        actor->policy.distance = 1000;
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_OCTAROCK_ROCK, false);
     }
 
     else if ((actor->actor->params) == 1) {
@@ -491,7 +541,7 @@ void accessible_audio_compass(AccessibleActor* actor) {
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SYOKUDAI, policy);
     ActorAccessibility_InitPolicy(&policy, "Deku Tree Moving Platform", accessible_hasi, 0);
     //policy.volume = 1.3;
-    policy.distance = 500;
+    policy.distance = 1000;
     ActorAccessibility_AddSupportedActor(ACTOR_BG_YDAN_HASI, policy);
     ActorAccessibility_InitPolicy(&policy, "Pot", NULL, NA_SE_EV_POT_BROKEN);
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_TSUBO, policy);
