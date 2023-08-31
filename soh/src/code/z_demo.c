@@ -154,15 +154,15 @@ void func_80064558(PlayState* play, CutsceneContext* csCtx) {
 void func_800645A0(PlayState* play, CutsceneContext* csCtx) {
     Input* input = &play->state.input[0];
 
-    if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT) && (csCtx->state == CS_STATE_IDLE) &&
-        (gSaveContext.sceneSetupIndex >= 4)) {
+    if (CVarGetInteger("gDebugEnabled", 0) && CHECK_BTN_ALL(input->press.button, BTN_DLEFT) &&
+        (csCtx->state == CS_STATE_IDLE) && (gSaveContext.sceneSetupIndex >= 4)) {
         D_8015FCC8 = 0;
         gSaveContext.cutsceneIndex = 0xFFFD;
         gSaveContext.cutsceneTrigger = 1;
     }
 
-    if (CHECK_BTN_ALL(input->press.button, BTN_DUP) && (csCtx->state == CS_STATE_IDLE) &&
-        (gSaveContext.sceneSetupIndex >= 4) && !gDbgCamEnabled) {
+    if (CVarGetInteger("gDebugEnabled", 0) && CHECK_BTN_ALL(input->press.button, BTN_DUP) &&
+        (csCtx->state == CS_STATE_IDLE) && (gSaveContext.sceneSetupIndex >= 4) && !gDbgCamEnabled) {
         D_8015FCC8 = 1;
         gSaveContext.cutsceneIndex = 0xFFFD;
         gSaveContext.cutsceneTrigger = 1;

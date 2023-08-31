@@ -1678,12 +1678,13 @@ s32 Camera_Normal1(Camera* camera) {
         Camera_ClampDist(camera, eyeAdjustment.r, norm1->distMin, norm1->distMax, anim->unk_28);
 
     if (anim->startSwingTimer <= 0) {
+        // idle camera re-center
         if (CVarGetInteger("gA11yDisableIdleCam", 0)) return;
         eyeAdjustment.pitch = atEyeNextGeo.pitch;
         eyeAdjustment.yaw =
             Camera_LERPCeilS(anim->swingYawTarget, atEyeNextGeo.yaw, 1.0f / camera->yawUpdateRateInv, 0xA);
     } else if (anim->swing.unk_18 != 0) {
-        if (CVarGetInteger("gA11yDisableIdleCam", 0)) return;
+        // camera adjustments when obstructed/pushed by scene geometry
         eyeAdjustment.yaw =
             Camera_LERPCeilS(anim->swing.unk_16, atEyeNextGeo.yaw, 1.0f / camera->yawUpdateRateInv, 0xA);
         eyeAdjustment.pitch =
@@ -1708,19 +1709,19 @@ s32 Camera_Normal1(Camera* camera) {
     if ((camera->status == CAM_STAT_ACTIVE) && (!(norm1->interfaceFlags & 0x10))) {
         anim->swingYawTarget = BINANG_ROT180(camera->playerPosRot.rot.y);
         if (!CVarGetInteger("gFixCameraSwing", 0)) {
-        if (anim->startSwingTimer > 0) {
-            func_80046E20(camera, &eyeAdjustment, norm1->distMin, norm1->unk_0C, &sp98, &anim->swing);
-        } else {
-            sp88 = *eyeNext;
-            anim->swing.swingUpdateRate = camera->yawUpdateRateInv = norm1->unk_0C * 2.0f;
-            if (Camera_BGCheck(camera, at, &sp88)) {
-                anim->swingYawTarget = atEyeNextGeo.yaw;
-                anim->startSwingTimer = -1;
+            if (anim->startSwingTimer > 0) {
+                func_80046E20(camera, &eyeAdjustment, norm1->distMin, norm1->unk_0C, &sp98, &anim->swing);
             } else {
-                *eye = *eyeNext;
+                sp88 = *eyeNext;
+                anim->swing.swingUpdateRate = camera->yawUpdateRateInv = norm1->unk_0C * 2.0f;
+                if (Camera_BGCheck(camera, at, &sp88)) {
+                    anim->swingYawTarget = atEyeNextGeo.yaw;
+                    anim->startSwingTimer = -1;
+                } else {
+                    *eye = *eyeNext;
+                }
+                anim->swing.unk_18 = 0;
             }
-            anim->swing.unk_18 = 0;
-        }
         } else {
             if (anim->startSwingTimer <= 0) {
                 anim->swing.swingUpdateRate = camera->yawUpdateRateInv = norm1->unk_0C * 2.0f;
@@ -7700,7 +7701,8 @@ Vec3s Camera_Update(Camera* camera) {
                      BINANG_TO_DEGF(camera->camDir.x), camera->camDir.y, BINANG_TO_DEGF(camera->camDir.y));
     }
 
-    if (camera->timer != -1 && CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_DRIGHT) && CVarGetInteger("gDebugCamera", 0)) {
+    if (camera->timer != -1 && CHECK_BTN_ALL(D_8015BD7C->state.input[0].press.button, BTN_DRIGHT) &&
+        CVarGetInteger("gDebugEnabled", 0)) {
         camera->timer = 0;
     }
 

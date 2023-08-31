@@ -679,7 +679,7 @@ void EnFish_UpdateCutscene(EnFish* this, PlayState* play) {
 // Update functions and Draw
 
 void EnFish_OrdinaryUpdate(EnFish* this, PlayState* play) {
-    if (this->timer > 0) {
+    if (this->timer > 0 && CVarGetInteger("gNoFishDespawn", 0) == 0) {
         this->timer--;
     }
 

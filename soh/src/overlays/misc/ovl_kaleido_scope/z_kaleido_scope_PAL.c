@@ -3653,10 +3653,8 @@ void KaleidoScope_Update(PlayState* play)
                     if (CHECK_BTN_ALL(input->press.button, BTN_START) ||
                         (CHECK_BTN_ALL(input->press.button, BTN_B) && gSaveContext.isBossRush)) {
                         if (CVarGetInteger("gCheatEasyPauseBufferEnabled", 0) || CVarGetInteger("gCheatEasyInputBufferingEnabled", 0)) {
-                            CVarSetInteger("gPauseBufferBlockInputFrame", 9);
-                        }
-                        if (CVarGetInteger("gCheatEasyPauseBufferEnabled", 0)) {
-                            CVarSetInteger("gCheatEasyPauseBufferFrameAdvance", 13);
+                            // Easy pause buffer is 13 frames, 12 for kaledio to end, and one more to advance a single frame
+                            CVarSetInteger("gCheatEasyPauseBufferTimer", 13);
                         }
                         Interface_SetDoAction(play, DO_ACTION_NONE);
                         pauseCtx->state = 0x12;

@@ -284,6 +284,13 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
                 Fault_AddHungupAndCrash(__FILE__, __LINE__);
         }
 
+        // When 3 frames are left on easy pause buffer, re-apply the last held inputs to the prev inputs
+        // to compute the pressed difference. This makes it so previously held inputs are continued as "held",
+        // but new inputs when unpausing are "pressed" out of the pause menu.
+        if (CVarGetInteger("gCheatEasyPauseBufferTimer", 0) == 3) {
+            input->prev.button = CVarGetInteger("gCheatEasyPauseBufferLastInputs", 0);
+        }
+
         buttonDiff = input->prev.button ^ input->cur.button;
         input->press.button |= (u16)(buttonDiff & input->cur.button);
         input->rel.button |= (u16)(buttonDiff & input->prev.button);
@@ -294,12 +301,6 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
 
     uint8_t rumble = (padMgr->rumbleEnable[0] > 0);
     OTRControllerCallback(rumble);
-
-    if (CVarGetInteger("gPauseBufferBlockInputFrame", 0)) {
-        ControllerBlockGameInput(PAUSE_BUFFER_INPUT_BLOCK_ID);
-    } else {
-        ControllerUnblockGameInput(PAUSE_BUFFER_INPUT_BLOCK_ID);
-    }
 
     PadMgr_UnlockPadData(padMgr);
 }
