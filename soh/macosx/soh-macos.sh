@@ -46,6 +46,8 @@ if [ ! -e "$SHIP_HOME"/oot.otr ] || [ ! -e "$SHIP_HOME"/oot-mq.otr ]; then
 					ROM_TYPE=0;;
 				cfbb98d392e4a9d39da8285d10cbef3974c2f012)
 					ROM_TYPE=0;;
+				f46239439f59a2a594ef83cf68ef65043b1bffe2)
+					ROM_TYPE=1;;
 				50bebedad9e0f10746a52b07239e47fa6c284d03)
 					ROM_TYPE=1;;
 				079b855b943d6ad8bd1eb026c0ed169ecbdac7da)
@@ -128,6 +130,9 @@ if [ ! -e "$SHIP_HOME"/oot.otr ] || [ ! -e "$SHIP_HOME"/oot-mq.otr ]; then
 			cfbb98d392e4a9d39da8285d10cbef3974c2f012)
 				ROM=N64_PAL_11
 				OTRNAME="oot.otr";;
+			f46239439f59a2a594ef83cf68ef65043b1bffe2)
+				ROM=GC_MQ_PAL_F
+				OTRNAME="oot-mq.otr";;
 			50bebedad9e0f10746a52b07239e47fa6c284d03)
 				ROM=GC_MQ_D
 				OTRNAME="oot-mq.otr";;
