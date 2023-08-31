@@ -57,7 +57,8 @@ class Extractor {
     bool IsMasterQuest() const;
 
     bool Run(RomSearchMode searchMode = RomSearchMode::Both);
-    bool CallZapd();
+    bool CallZapd(std::string installPath, std::string exportdir);
     const char* GetZapdStr();
+    std::string Mkdtemp();
 };
 #endif
