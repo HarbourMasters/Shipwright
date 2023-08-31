@@ -56,7 +56,12 @@ void accessible_en_chest(AccessibleActor* actor) {
     if (chest->actionFunc != EnBox_WaitOpen)
         return;
     s32 treasureFlag = actor->actor->params & 0x1F;
-
+    s8 size;
+    if (chest->type <= 8 && chest->type >= 5) {
+        size = 15; // small
+    } else {
+        size = 30;//large
+    }
     if (!(treasureFlag >= 20 && treasureFlag < 32)) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_TBOX_UNLOCK, false);
     }
@@ -80,10 +85,10 @@ void accessible_en_chest(AccessibleActor* actor) {
     f32 x = frontPos.x + Math_SinS(backAngle) * (player->actor.world.pos.z - frontPos.z);
 
     if (Math_CosS(actor->actor->world.rot.y + 16384) > 0) {
-        if (player->actor.world.pos.x < x-30) {
+        if (player->actor.world.pos.x < x-size) {
             ActorAccessibility_SetSoundPitch(actor, 0, 1.5);
             
-        } else if (player->actor.world.pos.x > x + 30) {
+        } else if (player->actor.world.pos.x > x + size) {
             ActorAccessibility_SetSoundPitch(actor, 0, 0.5);
         } else if (Math_CosS(actor->actor->world.rot.y) > 0 && player->actor.world.pos.z > z &&
                    (!(treasureFlag >= 20 && treasureFlag < 32))) {
@@ -94,10 +99,10 @@ void accessible_en_chest(AccessibleActor* actor) {
         }
             
     } else {
-        if (player->actor.world.pos.x > x + 30) {
+        if (player->actor.world.pos.x > x + size) {
             ActorAccessibility_SetSoundPitch(actor, 0, 1.5);
             
-        } else if (player->actor.world.pos.x < x - 30) {
+        } else if (player->actor.world.pos.x < x - size) {
             ActorAccessibility_SetSoundPitch(actor, 0, 0.5);
         } else if (Math_CosS(actor->actor->world.rot.y) > 0 && player->actor.world.pos.z > z &&
                    (!(treasureFlag >= 20 && treasureFlag < 32))) {
@@ -132,15 +137,26 @@ void accessible_grotto(AccessibleActor* actor) {
 }
 
 void accessible_torches(AccessibleActor* actor) {
+    
     ObjSyokudai* torche = (ObjSyokudai*)actor->actor;
     if ((actor->actor->params) == 4230 || (actor->actor->params) == 4220 || (actor->actor->params) == 4227) {
         if (torche->litTimer != 0) {
             actor->policy.volume = 0.1;
+            if (actor->frameCount % 30 != 0) {
+                return;
+            }
             ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_IT_BOMB_IGNIT, false);
+        }
+        if (actor->frameCount % 30 != 0) {
+            return;
         }
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_IT_BOMB_IGNIT, false);
     }
+    if (actor->frameCount % 30 != 0) {
+        return;
+    }
     if ((actor->actor->params) == 9216 || (actor->actor->params) == 962) {
+
         actor->policy.volume = 0.5;
         actor->policy.distance = 200.0;
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_ANUBIS_FIRE, false);
@@ -160,6 +176,7 @@ void accessible_hasi(AccessibleActor* actor) {
     }
 }
 void accessible_switch(AccessibleActor* actor) {
+    
     Player* player = GET_PLAYER(actor->play);
     ObjSwitch* sw = (ObjSwitch*)actor->actor;
     Vec3f& scale = actor->actor->scale;
@@ -168,8 +185,14 @@ void accessible_switch(AccessibleActor* actor) {
             if (actor->play->sceneNum == 0 && actor->play->roomCtx.curRoom.num == 5 && actor->xzDistToPlayer < 20) {
                 ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_DIAMOND_SWITCH, false);//Should result in same behaviour.
             }
+            if (actor->frameCount % 30 != 0) {
+                return;
+            }
             ActorAccessibility_PlaySoundForActor(actor, 1, NA_SE_EV_FOOT_SWITCH, false);
 }
+    }
+    else if (actor->frameCount % 30 != 0) {
+        return;
     }
     else if ((actor->actor->params & 7) == 1) {
         if (scale.y >= 33.0f / 200.0f) { //(!(Flags_GetSwitch(actor->play, (actor->params >> 8 & 0x3F)))) {
@@ -526,7 +549,7 @@ void accessible_audio_compass(AccessibleActor* actor) {
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_DOOR_SHUTTER, policy);
     ActorAccessibility_InitPolicy(&policy, "Switch", accessible_switch, 0);
-    policy.n = 30;
+    policy.n = 1;
     policy.ydist = 200;
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SWITCH, policy);
@@ -536,7 +559,7 @@ void accessible_audio_compass(AccessibleActor* actor) {
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_OSHIHIKI, policy);
     ActorAccessibility_InitPolicy(&policy, "Torch", accessible_torches, 0);
-    policy.n = 50;
+    policy.n = 1;
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SYOKUDAI, policy);
     ActorAccessibility_InitPolicy(&policy, "Deku Tree Moving Platform", accessible_hasi, 0);
