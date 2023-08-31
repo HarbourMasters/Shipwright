@@ -13,7 +13,7 @@ void CollisionPoly_GetVertices(CollisionPoly* poly, Vec3s* vtxList, Vec3f* dest)
 #define MIN_INCLINE_DISTANCE 5.0
 #define MIN_DECLINE_DISTANCE 5.0
 #define DEFAULT_PROBE_SPEED 5.5
-
+#define NOMINMAX
 static Player fakePlayer;//Used for wall height detection.
 static Vec3f D_80854798 = { 0.0f, 18.0f, 0.0f }; // From z_player.c.
 
@@ -228,10 +228,17 @@ class Platform: protected TerrainCueSound {
 
 class Wall: protected TerrainCueSound {
         int frames;
-
+    Vec3s probeRot;
+        f32 targetPitch;
   public:
-    Wall(AccessibleActor* actor, Vec3f pos) : TerrainCueSound(actor, pos) {
+    Wall(AccessibleActor* actor, Vec3f pos, Vec3s rot) : TerrainCueSound(actor, pos) {
+        probeRot = rot;
         currentPitch = 0.5;
+
+        targetPitch = (f32) probeRot.y / (16384.0f * 2.0f);
+        if (probeRot.y != 0 && targetPitch < -0.4)
+                targetPitch = -0.4;
+
         currentSFX = NA_SE_IT_SWORD_CHARGE;
 
         frames = 0;
@@ -243,10 +250,20 @@ class Wall: protected TerrainCueSound {
     void run() {
 
         frames++;
+
         if (frames == 20) {
-            frames = 0;
-            play();
-        }
+                frames = 0;
+                play();
+                    ActorAccessibility_SeekSound(this, 0, 44100 * 2);
+       }
+            f32 pitchModifier;
+
+            if (targetPitch < 0)
+                    pitchModifier = LERP(2.5, 0.5 + targetPitch, (f32)frames / 20.0f);
+            else if (targetPitch > 0)
+                    pitchModifier = LERP(0.1, (0.5 + targetPitch), (f32)frames / 20.0f);
+
+            ActorAccessibility_SetSoundPitch(this, 0, pitchModifier);
     }
 };
 class Spike : protected TerrainCueSound {
@@ -416,7 +433,7 @@ class Ground : protected TerrainCueSound {
 
         destroyCurrentSound();
 
-        new (&wall) Wall(actor, pos);
+        new (&wall) Wall(actor, pos, relRot);
         currentSound = (TerrainCueSound*)&wall;
         terrainDiscovered = DISCOVERED_WALL;
     }

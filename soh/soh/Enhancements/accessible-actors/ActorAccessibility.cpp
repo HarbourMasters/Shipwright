@@ -133,7 +133,7 @@ void ActorAccessibility_Shutdown() {
     policy->pitch = 1.5;
     policy->runsAlways = false;
     policy->sound = sfx;
-    policy->volume = 0.5;
+    policy->volume = 1.0;
     policy->initUserData = NULL;
     policy->cleanupUserData = NULL;
     policy->pitchModifier = 0.1;

@@ -371,6 +371,9 @@ void accessible_audio_compass_cleanup(AccessibleActor* actor)
 }
 void accessible_audio_compass(AccessibleActor* actor) {
     Player* player = GET_PLAYER(actor->play);
+    if (player->stateFlags1 & PLAYER_STATE1_TARGETING)
+        return;
+
     actor->world.pos = player->actor.world.pos;
     actor->world.pos.z -= 50;
     bool shouldChime = false;

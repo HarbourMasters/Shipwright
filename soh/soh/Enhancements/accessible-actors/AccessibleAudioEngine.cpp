@@ -68,7 +68,8 @@ static float lerp(float x, float y, float z) {
 //Pan the sound based on its projected position.
     float pan;
 //Use the game's panning mechanism, which returns a signed 8-bit integer between 0 (far-left) and 127 (far-right).
-//It would appear that the correct thing to do is interpret this value as a gain factor in decibels. In practice, values below 38 or above 90 are never seen, so a sound that's panned far to one side or the other amounts to about -25DB worth of attenuation. 
+//It would appear that the correct thing to do is interpret this value as a gain factor in decibels. In practice, values below 38 or above 90 are never seen, so a sound that's panned far to one side or the other amounts to about -25DB worth of attenuation.
+    //Also: lie about the value of Z and give it a constant value to prevent weird behaviour when Z is far away.
     s8 panSigned = Audio_ComputeSoundPanSigned(extras->x, extras->z, 4);
     int db;
     if (panSigned < 64)
