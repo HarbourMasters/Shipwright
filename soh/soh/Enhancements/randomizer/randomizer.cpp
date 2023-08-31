@@ -3038,6 +3038,98 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_MIX_GROTTO_ENTRANCES] = CVarGetInteger("gRandomizeMixGrottos", RO_GENERIC_OFF);
     cvarSettings[RSK_DECOUPLED_ENTRANCES] = CVarGetInteger("gRandomizeDecoupleEntrances", RO_GENERIC_OFF);
 
+    //Aurora Edit: Randomizing main rule settings
+    srand(time(NULL));
+
+    cvarSettings[RSK_FOREST] = rand() % 2 + 1; //Currently excluding closed forest. TODO add saner checks.
+    cvarSettings[RSK_KAK_GATE] = rand() % 2;
+    cvarSettings[RSK_DOOR_OF_TIME] = rand() % 3;
+    cvarSettings[RSK_ZORAS_FOUNTAIN] = rand() % 3;
+    cvarSettings[RSK_STARTING_AGE] = cvarSettings[RSK_DOOR_OF_TIME] == RO_DOOROFTIME_CLOSED ? RO_AGE_CHILD : rand() % 2;
+    cvarSettings[RSK_GERUDO_FORTRESS] = rand() % 3;
+    cvarSettings[RSK_RAINBOW_BRIDGE] = rand() % 8;
+    cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT] = 2;
+    cvarSettings[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT] = 4;
+    cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT] = 7;
+    cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT] = 6;
+    cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT] = 30;
+    cvarSettings[RSK_BRIDGE_OPTIONS] = rand() % 3;
+    cvarSettings[RSK_GANONS_TRIALS] = RO_GANONS_TRIALS_SKIP; // TODO Maybe?
+    cvarSettings[RSK_TRIAL_COUNT] = 0;
+    cvarSettings[RSK_STARTING_OCARINA] = rand() % 2;
+    cvarSettings[RSK_SHUFFLE_OCARINA] = rand() % 2 == 1 ? 1 : cvarSettings[RSK_STARTING_OCARINA];
+    cvarSettings[RSK_STARTING_KOKIRI_SWORD] = rand() % 2;
+    cvarSettings[RSK_STARTING_DEKU_SHIELD] = rand() % 2;
+    
+    //Skipping song starters
+
+    cvarSettings[RSK_STARTING_MAPS_COMPASSES] = rand() % 5;
+    cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = rand() % 4;
+    cvarSettings[RSK_SHUFFLE_SONGS] = rand() % 3;
+    cvarSettings[RSK_SHUFFLE_TOKENS] = rand() % 3;
+    cvarSettings[RSK_SHOPSANITY] = rand() % 7;
+    cvarSettings[RSK_SHOPSANITY_PRICES] = rand() % 5;
+    cvarSettings[RSK_SHOPSANITY_PRICES_AFFORDABLE] = rand() % 2;
+    cvarSettings[RSK_SHUFFLE_SCRUBS] = rand() % 4;
+    cvarSettings[RSK_SHUFFLE_COWS] = rand() % 2;
+    cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = rand() % 2;
+    cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = rand() % 2;
+    cvarSettings[RSK_SHUFFLE_MERCHANTS] = rand() % 3;
+    cvarSettings[RSK_BOMBCHUS_IN_LOGIC] = rand() % 2;
+    cvarSettings[RSK_ENABLE_BOMBCHU_DROPS] = cvarSettings[RSK_BOMBCHUS_IN_LOGIC];
+    cvarSettings[RSK_SKIP_CHILD_ZELDA] = rand() % 2;
+    cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = cvarSettings[RSK_SKIP_CHILD_ZELDA] == 1 ? 0 : rand() % 2;
+    cvarSettings[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] = rand() % 2;
+    cvarSettings[RSK_SHUFFLE_FROG_SONG_RUPEES] = rand() % 2;
+    cvarSettings[RSK_KEYSANITY] = rand() % 6;
+    cvarSettings[RSK_GERUDO_KEYS] = rand() % 4;
+    cvarSettings[RSK_KEYRINGS] = rand() % 3; //Exclude RO_KEYRINGS_SELECTION
+    cvarSettings[RSK_KEYRINGS_RANDOM_COUNT] =
+        cvarSettings[RSK_GERUDO_FORTRESS] == RO_GF_NORMAL && cvarSettings[RSK_GERUDO_KEYS] != RO_GERUDO_KEYS_VANILLA
+            ? 9
+            : 8;
+    cvarSettings[RSK_BOSS_KEYSANITY] = rand() % 6;
+    cvarSettings[RSK_GANONS_BOSS_KEY] = rand() % 13;
+    cvarSettings[RSK_LACS_STONE_COUNT] = 2;
+    cvarSettings[RSK_LACS_MEDALLION_COUNT] = 4;
+    cvarSettings[RSK_LACS_REWARD_COUNT] = 7;
+    cvarSettings[RSK_LACS_DUNGEON_COUNT] = 6;
+    cvarSettings[RSK_LACS_TOKEN_COUNT] = 30;
+    cvarSettings[RSK_LACS_OPTIONS] = rand() % 3;
+    cvarSettings[RSK_STARTING_CONSUMABLES] = rand() % 2;
+    cvarSettings[RSK_FULL_WALLETS] = rand() % 2;
+    cvarSettings[RSK_SKIP_CHILD_STEALTH] =
+        cvarSettings[RSK_SKIP_CHILD_ZELDA] == 1 ? 1 : cvarSettings[RSK_SKIP_CHILD_STEALTH];
+    cvarSettings[RSK_LINKS_POCKET] = cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] != RO_DUNGEON_REWARDS_END_OF_DUNGEON
+                                         ? rand() % 4
+                                         : RO_LINKS_POCKET_DUNGEON_REWARD;
+
+    cvarSettings[RSK_SHUFFLE_DUNGEON_ENTRANCES] = rand() % 3;
+    cvarSettings[RSK_SHUFFLE_BOSS_ENTRANCES] = rand() % 3;
+    cvarSettings[RSK_SHUFFLE_OVERWORLD_ENTRANCES] = rand() % 2;
+    cvarSettings[RSK_SHUFFLE_INTERIOR_ENTRANCES] = rand() % 3;
+    cvarSettings[RSK_SHUFFLE_GROTTO_ENTRANCES] = rand() % 2;
+    cvarSettings[RSK_SHUFFLE_OWL_DROPS] = rand() % 2;
+    cvarSettings[RSK_SHUFFLE_WARP_SONGS] = rand() % 2;
+    cvarSettings[RSK_SHUFFLE_OVERWORLD_SPAWNS] = rand() % 2;
+    cvarSettings[RSK_MIXED_ENTRANCE_POOLS] = 1;
+    cvarSettings[RSK_MIX_DUNGEON_ENTRANCES] = rand() % 2;
+    cvarSettings[RSK_MIX_OVERWORLD_ENTRANCES] = rand() % 2;
+    cvarSettings[RSK_MIX_INTERIOR_ENTRANCES] = rand() % 2;
+    cvarSettings[RSK_MIX_GROTTO_ENTRANCES] = rand() % 2;
+    cvarSettings[RSK_DECOUPLED_ENTRANCES] = cvarSettings[RSK_DECOUPLED_ENTRANCES] == RO_GENERIC_ON 
+                                        ? rand() % 2 
+                                        : RO_GENERIC_OFF;
+
+    cvarSettings[RSK_SHUFFLE_ENTRANCES] = cvarSettings[RSK_SHUFFLE_DUNGEON_ENTRANCES] != RO_GENERIC_OFF ||
+                                          cvarSettings[RSK_SHUFFLE_BOSS_ENTRANCES] != RO_GENERIC_OFF ||
+                                          cvarSettings[RSK_SHUFFLE_OVERWORLD_ENTRANCES] != RO_GENERIC_OFF ||
+                                          cvarSettings[RSK_SHUFFLE_INTERIOR_ENTRANCES] != RO_GENERIC_OFF ||
+                                          cvarSettings[RSK_SHUFFLE_GROTTO_ENTRANCES] != RO_GENERIC_OFF ||
+                                          cvarSettings[RSK_SHUFFLE_OWL_DROPS] != RO_GENERIC_OFF ||
+                                          cvarSettings[RSK_SHUFFLE_WARP_SONGS] != RO_GENERIC_OFF ||
+                                          cvarSettings[RSK_SHUFFLE_OVERWORLD_SPAWNS] != RO_GENERIC_OFF;
+
     // todo: this efficently when we build out cvar array support
     std::set<RandomizerCheck> excludedLocations;
     std::stringstream excludedLocationStringStream(CVarGetString("gRandomizeExcludedLocations", ""));
