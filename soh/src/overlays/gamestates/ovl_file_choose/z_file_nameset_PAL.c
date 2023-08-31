@@ -911,7 +911,13 @@ void FileChoose_DrawOptionsImpl(GameState* thisx) {
         }
     }
 
-    if (gSaveContext.language == LANGUAGE_GER) {
+    uint8_t versionIndex = ResourceMgr_GameHasMasterQuest() && ResourceMgr_GameHasOriginal();
+    uint8_t isPalN64 = ResourceMgr_GetGameRegion(versionIndex) == GAME_REGION_PAL &&
+                       ResourceMgr_GetGamePlatform(versionIndex) == GAME_PLATFORM_N64;
+    uint8_t isPalGC = ResourceMgr_GetGameRegion(versionIndex) == GAME_REGION_PAL &&
+                      ResourceMgr_GetGamePlatform(versionIndex) == GAME_PLATFORM_GC;
+
+    if (gSaveContext.language == LANGUAGE_GER && isPalGC) {
         gSPVertex(POLY_OPA_DISP++, D_80811E30, 32, 0);
     } else {
         gSPVertex(POLY_OPA_DISP++, D_80811D30, 32, 0);
@@ -928,13 +934,24 @@ void FileChoose_DrawOptionsImpl(GameState* thisx) {
                             G_IM_SIZ_8b, gOptionsMenuHeaders[i].width[gSaveContext.language],
                             gOptionsMenuHeaders[i].height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        gSP1Quadrangle(POLY_OPA_DISP++, vtx, vtx + 2, vtx + 3, vtx + 1, 0);
+
+        if (i == 2 && gSaveContext.language == LANGUAGE_GER && isPalN64) {
+            // Pal N64 German vertex for Z target header are offset by 12 vertices
+            gSP1Quadrangle(POLY_OPA_DISP++, vtx + 12, vtx + 2 + 12, vtx + 3 + 12, vtx + 1 + 12, 0);
+        } else {
+            gSP1Quadrangle(POLY_OPA_DISP++, vtx, vtx + 2, vtx + 3, vtx + 1, 0);
+        }
     }
 
-    if (gSaveContext.language == LANGUAGE_GER) {
+    if (gSaveContext.language == LANGUAGE_GER && isPalGC) {
         gSPVertex(POLY_OPA_DISP++, D_80812130, 32, 0);
     } else {
-        gSPVertex(POLY_OPA_DISP++, D_80811F30, 32, 0);
+        // PAL N64 has extra german vertices combined in the regular array instead of a dedicated array
+        if (isPalN64) {
+            gSPVertex(POLY_OPA_DISP++, D_80811F30, 40, 0);
+        } else {
+            gSPVertex(POLY_OPA_DISP++, D_80811F30, 32, 0);
+        }
     }
 
     for (i = 0, vtx = 0; i < 4; i++, vtx += 4) {
@@ -981,7 +998,17 @@ void FileChoose_DrawOptionsImpl(GameState* thisx) {
                             G_IM_SIZ_8b, gOptionsMenuSettings[i].width[gSaveContext.language],
                             gOptionsMenuSettings[i].height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        gSP1Quadrangle(POLY_OPA_DISP++, vtx, vtx + 2, vtx + 3, vtx + 1, 0);
+        // Pal N64 German vertices for z target options are offset an by 8
+        if (gSaveContext.language == LANGUAGE_GER && isPalN64) {
+            gSP1Quadrangle(POLY_OPA_DISP++, vtx + 8, vtx + 2 + 8, vtx + 3 + 8, vtx + 1 + 8, 0);
+        } else {
+            gSP1Quadrangle(POLY_OPA_DISP++, vtx, vtx + 2, vtx + 3, vtx + 1, 0);
+        }
+    }
+
+    // Pal N64 needs to skip over the extra german vertices to get to brightness vertices
+    if (isPalN64) {
+        vtx += 8;
     }
 
     gDPPipeSync(POLY_OPA_DISP++);

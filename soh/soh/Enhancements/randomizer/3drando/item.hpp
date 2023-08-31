@@ -127,7 +127,7 @@ public:
         return IsAdvancement();
     }
 
-    const uint32_t GetHintKey() const {
+    uint32_t GetHintKey() const {
         return hintKey;
     }
 

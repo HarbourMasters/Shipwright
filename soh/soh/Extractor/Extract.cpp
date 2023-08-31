@@ -44,6 +44,8 @@
 #include <fstream>
 #include <filesystem>
 #include <unordered_map>
+#include <random>
+#include <string>
 
 extern "C" uint32_t CRC32C(unsigned char* data, size_t dataSize);
 extern "C" void RomToBigEndian(void* rom, size_t romSize);
@@ -496,14 +498,50 @@ const char* Extractor::GetZapdVerStr() const {
     }
 }
 
+std::string Extractor::Mkdtemp() {
+    std::string temp_dir = std::filesystem::temp_directory_path().string();
+    
+    // create 6 random alphanumeric characters
+    static const char charset[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(0, sizeof(charset) - 1);
+
+    char randchr[7];
+    for (int i = 0; i < 6; i++) {
+        randchr[i] = charset[dist(gen)];
+    }
+    randchr[6] = '\0';
+
+    std::string tmppath = temp_dir + "/extractor-" + randchr;
+    std::filesystem::create_directory(tmppath);
+    return tmppath;
+}
+
 extern "C" int zapd_main(int argc, char** argv);
 
-bool Extractor::CallZapd() {
+bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
     constexpr int argc = 16;
     char xmlPath[1024];
     char confPath[1024];
     std::array<const char*, argc> argv;
     const char* version = GetZapdVerStr();
+    const char* otrFile = IsMasterQuest() ? "oot-mq.otr" : "oot.otr";
+
+    std::string romPath = std::filesystem::absolute(mCurrentRomPath).string();
+    installPath = std::filesystem::absolute(installPath).string();
+    exportdir = std::filesystem::absolute(exportdir).string();
+    // Work this out in the temporary folder
+    std::string tempdir = Mkdtemp();
+    std::string curdir = std::filesystem::current_path().string();
+#ifdef _WIN32
+    std::filesystem::copy(installPath + "/assets", tempdir + "/assets",
+        std::filesystem::copy_options::recursive | std::filesystem::copy_options::update_existing);
+#else
+    std::filesystem::create_symlink(installPath + "/assets", tempdir + "/assets");
+#endif
+
+    std::filesystem::current_path(tempdir);
 
     snprintf(xmlPath, 1024, "assets/extractor/xmls/%s", version);
     snprintf(confPath, 1024, "assets/extractor/Config_%s.xml", version);
@@ -513,7 +551,7 @@ bool Extractor::CallZapd() {
     argv[2] = "-i";
     argv[3] = xmlPath;
     argv[4] = "-b";
-    argv[5] = mCurrentRomPath.c_str();
+    argv[5] = romPath.c_str();
     argv[6] = "-fl";
     argv[7] = "assets/extractor/filelists";
     argv[8] = "-gsf";
@@ -523,7 +561,7 @@ bool Extractor::CallZapd() {
     argv[12] = "-se";
     argv[13] = "OTR";
     argv[14] = "--otrfile";
-    argv[15] = IsMasterQuest() ? "oot-mq.otr" : "oot.otr";
+    argv[15] = otrFile;
 
 #ifdef _WIN32
     // Grab a handle to the command window.
@@ -540,6 +578,12 @@ bool Extractor::CallZapd() {
     // Hide the command window again.
     ShowWindow(cmdWindow, SW_HIDE);
 #endif
+
+    std::filesystem::copy(otrFile, exportdir + "/" + otrFile, std::filesystem::copy_options::overwrite_existing);
+
+    // Go back to where this game was executed from
+    std::filesystem::current_path(curdir);
+    std::filesystem::remove_all(tempdir);
 
     return 0;
 }
