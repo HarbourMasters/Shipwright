@@ -1,8 +1,7 @@
 <Root>
     <File Name="men_scene" Segment="2">
-        <Path Name="gGTGPath_002F0" Offset="0x2F0" NumPaths="2"/>
-        <Texture Name="gGTGDayEntranceTex" OutName="day_entrance" Format="ia16" Width="8" Height="128" Offset="0xF930"/>
-        <Texture Name="gGTGNightEntranceTex" OutName="night_entrance" Format="ia16" Width="8" Height="128" Offset="0x10130"/>
+        <Texture Name="gGTGDayEntranceTex" OutName="day_entrance" Format="ia16" Width="8" Height="128" Offset="0xF8C0"/>
+        <Texture Name="gGTGNightEntranceTex" OutName="night_entrance" Format="ia16" Width="8" Height="128" Offset="0x100C0"/>
         <Scene Name="men_scene" Offset="0x0"/>
     </File>
     <File Name="men_room_0" Segment="3">

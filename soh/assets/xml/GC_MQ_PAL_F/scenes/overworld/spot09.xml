@@ -3,7 +3,7 @@
         <Cutscene Name="gGerudoValleyBridgeJumpFieldFortressCs" Offset="0x2AC0"/>
         <Cutscene Name="gGerudoValleyBridgeJumpFortressToFieldCs" Offset="0x230"/>
         <Cutscene Name="gGerudoValleyIntroCs" Offset="0x31E0"/>
-        <Path Name="gSpot09Path_002F58" Offset="0x2F58" NumPaths="3"/>
+        <Path Name="spot09_scenePathList_002F58" Offset="0x2F58" NumPaths="3"/>
 
         <Scene Name="spot09_scene" Offset="0x0"/>
     </File>

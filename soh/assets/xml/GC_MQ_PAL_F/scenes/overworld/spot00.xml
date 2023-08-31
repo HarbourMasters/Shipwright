@@ -7,7 +7,7 @@
         <Cutscene Name="gHyruleFieldSouthEponaJumpCs" Offset="0xF9E0"/>
         <Cutscene Name="gHyruleFieldWestEponaJumpCs" Offset="0x10550"/>
         <Cutscene Name="gHyruleFieldGateEponaJumpCs" Offset="0x10B30"/>
-        <Path Name="spot00_scenePathway_011AB4" Offset="0x11AB4" NumPaths="2"/>
+        <Path Name="spot00_scenePathList_011AB4" Offset="0x11AB4" NumPaths="2"/>
         <Scene Name="spot00_scene" Offset="0x0"/>
         <Texture Name="spot00_scene_Tex_02A198" Format="ia8" Width="8" Height="16" Offset="0x2A198"/>
     </File>

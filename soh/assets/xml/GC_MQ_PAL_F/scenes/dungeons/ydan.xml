@@ -1,8 +1,8 @@
 <Root>
     <File Name="ydan_scene" Segment="2">
-        <Cutscene Name="gDekuTreeIntroCs" Offset="0xB640"/>
-        <Texture Name="gYdanTex_00BA18" Format="rgba16" Width="32" Height="64" Offset="0xBA08"/>
-        <Texture Name="gYdanTex_00CA18" Format="rgba16" Width="32" Height="64" Offset="0xCA08"/>
+        <Cutscene Name="gDekuTreeIntroCs" Offset="0xB650"/>
+        <Texture Name="gYdanTex_00BA18" Format="rgba16" Width="32" Height="64" Offset="0xBA18"/>
+        <Texture Name="gYdanTex_00CA18" Format="rgba16" Width="32" Height="64" Offset="0xCA18"/>
 
         <Scene Name="ydan_scene" Offset="0x0"/>
     </File>

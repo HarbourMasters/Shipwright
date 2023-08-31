@@ -1,6 +1,6 @@
 <Root>
     <File Name="HIDAN_scene" Segment="2">
-        <Path Name="gHidanPath_560" Offset="0x558" NumPaths="19"/>
+        <Path Name="HIDAN_scenePathList_000440" Offset="0x0440" NumPaths="4"/>
         <Scene Name="HIDAN_scene" Offset="0x0"/>
     </File>
     <File Name="HIDAN_room_0" Segment="3">

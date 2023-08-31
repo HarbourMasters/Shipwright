@@ -1,5 +1,5 @@
 <Root>
-    <File Name="ovl_En_Ganon_Organ" BaseAddress="0x80A0FEF0" RangeStart="0x368" RangeEnd="0x6F70">
+    <File Name="ovl_En_Ganon_Organ" BaseAddress="0x80A0FE70" RangeStart="0x368" RangeEnd="0x6F70">
         <Texture Name="sRoomCarpetTex" OutName="room_carpet" Format="rgba16" Width="64" Height="16" Offset="0x368"/>
         <Texture Name="sRoomOrganPipeTex" OutName="room_organ_pipe" Format="i4" Width="16" Height="64" Offset="0xB68"/>
         <Texture Name="sRoomOrganCorbelsTex" OutName="room_organ_corbels" Format="i4" Width="16" Height="16" Offset="0xD68"/>

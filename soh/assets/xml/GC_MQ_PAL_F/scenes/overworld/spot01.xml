@@ -1,6 +1,6 @@
 <Root>
     <File Name="spot01_scene" Segment="2">
-        <Path Name="gKakarikoVillagePath_003D0" Offset="0x3D0" NumPaths="3"/>
+        <Path Name="spot01_scenePathList_0003D0" Offset="0x03D0" NumPaths="3"/>
         <Cutscene Name="gKakarikoVillageIntroCs" Offset="0xA540"/>
         <Texture Name="gKakarikoVillageDayWindowTex" OutName="day_window" Format="rgba16" Width="32" Height="64" Offset="0x15B50"/>
         <Texture Name="gKakarikoVillageNightWindowTex" OutName="night_window" Format="rgba16" Width="32" Height="64" Offset="0x16B50"/>

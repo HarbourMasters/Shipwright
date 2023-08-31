@@ -1,22 +1,22 @@
 <Root>
     <File Name="ganontika_scene" Segment="2">
-        <Path Name="gGanontikaPath_00674" Offset="0x674" NumPaths="3"/>
-        <Cutscene Name="gForestTrialSageCs" Offset="0x19ED0"/>
-        <Cutscene Name="gWaterTrialSageCs" Offset="0x1A8D0"/>
-        <Cutscene Name="gShadowTrialSageCs" Offset="0x1B2A0"/>
-        <Cutscene Name="gFireTrialSageCs" Offset="0x1BC70"/>
-        <Cutscene Name="gLightTrialSageCs" Offset="0x1C6A0"/>
-        <Cutscene Name="gSpiritTrialSageCs" Offset="0x1D070"/>
+        <Cutscene Name="gForestTrialSageCs" Offset="0x19EE0"/>
+        <Cutscene Name="gWaterTrialSageCs" Offset="0x1A8E0"/>
+        <Cutscene Name="gShadowTrialSageCs" Offset="0x1B2B0"/>
+        <Cutscene Name="gFireTrialSageCs" Offset="0x1BC80"/>
+        <Cutscene Name="gLightTrialSageCs" Offset="0x1C6B0"/>
+        <Cutscene Name="gSpiritTrialSageCs" Offset="0x1D080"/>
 
-        <Cutscene Name="gTowerBarrierCs" Offset="0x1DA40"/>
+        <Cutscene Name="gTowerBarrierCs" Offset="0x1DA50"/>
 
-        <Cutscene Name="gLightBarrierCs" Offset="0x1DF80"/>
-        <Cutscene Name="gFireBarrierCs" Offset="0x1E3D0"/>
-        <Cutscene Name="gForestBarrierCs" Offset="0x1E780"/>
-        <Cutscene Name="gSpiritBarrierCs" Offset="0x1EB30"/>
-        <Cutscene Name="gWaterBarrierCs" Offset="0x1EF60"/>
-        <Cutscene Name="gShadowBarrierCs" Offset="0x21370"/>
+        <Cutscene Name="gLightBarrierCs" Offset="0x1DF90"/>
+        <Cutscene Name="gFireBarrierCs" Offset="0x1E3E0"/>
+        <Cutscene Name="gForestBarrierCs" Offset="0x1E790"/>
+        <Cutscene Name="gSpiritBarrierCs" Offset="0x1EB40"/>
+        <Cutscene Name="gWaterBarrierCs" Offset="0x1EF70"/>
+        <Cutscene Name="gShadowBarrierCs" Offset="0x21380"/>
 
+        <Path Name="ganontika_scenePathList_000668" Offset="0x0668" NumPaths="6"/>
         <Scene Name="ganontika_scene" Offset="0x0"/>
     </File>
     <File Name="ganontika_room_0" Segment="3">

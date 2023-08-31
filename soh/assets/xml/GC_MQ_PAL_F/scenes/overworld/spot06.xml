@@ -2,7 +2,7 @@
     <File Name="spot06_scene" Segment="2">
         <Cutscene Name="gLakeHyliaFireArrowsCS" Offset="0x7020"/>
         <Cutscene Name="gLakeHyliaOwlCs" Offset="0x1B0C0"/>
-        <Path Name="gSpot06Path_007764" Offset="0x7764" NumPaths="2"/>
+        <Path Name="spot06_scenePathList_007764" Offset="0x7764" NumPaths="2"/>
         <Cutscene Name="gLakeHyliaIntroCs" Offset="0x7A30"/>
         <Scene Name="spot06_scene" Offset="0x0"/>
     </File>

@@ -4,7 +4,7 @@
 
         <Cutscene Name="spot05_scene_Cs_005730" Offset="0x5730"/>
 
-        <Path Name="gSpot05Path_0069D8" Offset="0x69D8" NumPaths="5"/>
+        <Path Name="spot05_scenePathList_0069D8" Offset="0x69D8" NumPaths="5"/>
 
         <Scene Name="spot05_scene" Offset="0x0"/>
     </File>

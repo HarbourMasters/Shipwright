@@ -1,5 +1,6 @@
 <Root>
     <File Name="HAKAdanCH_scene" Segment="2">
+        <Path Name="HAKAdanCH_scenePathList_000248" Offset="0x0248" NumPaths="2"/>
         <Scene Name="HAKAdanCH_scene" Offset="0x0"/>
     </File>
     <File Name="HAKAdanCH_room_0" Segment="3">

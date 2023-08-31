@@ -1,5 +1,5 @@
 <Root>
-    <File Name="ovl_En_Clear_Tag" BaseAddress="0x809BF430" RangeStart="0x2600" RangeEnd="0x89F0">
+    <File Name="ovl_En_Clear_Tag" BaseAddress="0x809BF3B0" RangeStart="0x2600" RangeEnd="0x89F0">
         <DList Name="gArwingDL" Offset="0x2600"/>
         <DList Name="gArwingLaserDL" Offset="0x6298"/>
         <DList Name="gArwingBackfireDL" Offset="0x6598"/>
