@@ -1666,7 +1666,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     ImGui::SameLine();
-    ImGui::Text(cosmeticOption.label.c_str());
+    ImGui::Text("%s", cosmeticOption.label.c_str());
     ImGui::SameLine((ImGui::CalcTextSize("Mirror Shield Mirror").x * 1.0f) + 60.0f);
     if (ImGui::Button(("Random##" + cosmeticOption.label).c_str())) {
         RandomizeColor(cosmeticOption);
@@ -1701,7 +1701,7 @@ void DrawCosmeticRow(CosmeticOption& cosmeticOption) {
 
 void DrawCosmeticGroup(CosmeticGroup cosmeticGroup) {
     std::string label = groupLabels.at(cosmeticGroup);
-    ImGui::Text(label.c_str());
+    ImGui::Text("%s", label.c_str());
     ImGui::SameLine((ImGui::CalcTextSize("Mirror Shield Mirror").x * 1.0f) + 60.0f);
     if (ImGui::Button(("Random##" + label).c_str())) {
         for (auto& [id, cosmeticOption] : cosmeticOptions) {
