@@ -37,6 +37,12 @@ typedef struct
     int framesUntilChime;
 
 }AudioCompassData;
+typedef struct
+{
+    int framesUntilAboveChime;
+
+}SwitchData;
+
     // Begin actor-specific policy callbacks.
 
 void accessible_en_ishi(AccessibleActor* actor) {
@@ -175,8 +181,25 @@ void accessible_hasi(AccessibleActor* actor) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_PL_DAMAGE, false);
     }
 }
-void accessible_switch(AccessibleActor* actor) {
-    
+bool accessible_switch_init(AccessibleActor* actor) {
+    SwitchData* data = (SwitchData*)malloc(sizeof(SwitchData));
+    data->framesUntilAboveChime = 0;
+    if (data == NULL)
+        return false;//failure to allocate memory.
+    actor->userData = (void*) data;
+    return true;
+
+}
+void accessible_switch_cleanup(AccessibleActor* actor)
+{
+    free(actor->userData);
+
+}
+
+    void accessible_switch(AccessibleActor * actor) {
+
+        SwitchData* data = (SwitchData*)actor->userData;
+
     Player* player = GET_PLAYER(actor->play);
     ObjSwitch* sw = (ObjSwitch*)actor->actor;
     Vec3f& scale = actor->actor->scale;
@@ -552,6 +575,8 @@ void accessible_audio_compass(AccessibleActor* actor) {
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_DOOR_SHUTTER, policy);
     ActorAccessibility_InitPolicy(&policy, "Switch", accessible_switch, 0);
+    policy.cleanupUserData = accessible_switch_cleanup;
+    policy.initUserData = accessible_switch_init;
     policy.n = 1;
     policy.ydist = 200;
     policy.pitch = 1.1;
