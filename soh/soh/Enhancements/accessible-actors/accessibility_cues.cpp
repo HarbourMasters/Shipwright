@@ -166,12 +166,25 @@ class Decline : protected TerrainCueSound {
     };
 class Ledge :protected TerrainCueSound {
         bool climbable;//Distinguishes between a ledge link can fall from and one he can climb up.
+        Vec3s probeRot;
+
       public:
-    Ledge(AccessibleActor* actor, Vec3f pos, bool above = false) : TerrainCueSound(actor, pos) {
-            currentPitch = above? 2.0 : 0.4;
+    Ledge(AccessibleActor* actor, Vec3f pos, Vec3s probeRot, bool above = false) : TerrainCueSound(actor, pos) {
+            if (above)
+                currentPitch = 2.0;
             climbable = above;
             currentSFX = climbable ? NA_SE_EV_WOOD_BOUND : NA_SE_EV_WIND_TRAP;
         shouldLoop = !climbable;
+            this->probeRot = probeRot;
+        if (!above) {
+                if (probeRot.y == 0)
+                    currentPitch = 0.4;
+                else if (probeRot.y < 0)
+                    currentPitch = 0.2;
+                else
+                    currentPitch = 0.8;
+        }
+
             play();
 
     }
@@ -421,13 +434,20 @@ class Ground : protected TerrainCueSound {
 
         destroyCurrentSound();
 
-        new (&ledge) Ledge(actor, pos, upper);
+        new (&ledge) Ledge(actor, pos, relRot, upper);
         currentSound = (TerrainCueSound*)&ledge;
         terrainDiscovered = DISCOVERED_LEDGE;
     }
     // Play a sound from the position of a previously discovered wall.
 
     void discoverWall(Vec3f pos) {
+        Player* player = GET_PLAYER(actor->play);
+        if (player->stateFlags1 & PLAYER_STATE1_FIRST_PERSON)
+        {
+            if (terrainDiscovered == DISCOVERED_WALL)
+                    destroyCurrentSound();
+            return;
+        }
         if (terrainDiscovered == DISCOVERED_WALL)
             return;
 

@@ -418,6 +418,7 @@ bool accessible_general_helper_init(AccessibleActor* actor) {
     data->currentScene = -1;
 
     actor->userData = data;
+    return true;
 
 }
 void accessible_general_helper_cleanup(AccessibleActor* actor)
@@ -459,6 +460,7 @@ bool accessible_audio_compass_init(AccessibleActor* actor)
     data->framesUntilChime = 0;
 
     actor->userData = data;
+    return true;
 
 }
 void accessible_audio_compass_cleanup(AccessibleActor* actor)
@@ -467,7 +469,7 @@ void accessible_audio_compass_cleanup(AccessibleActor* actor)
 }
 void accessible_audio_compass(AccessibleActor* actor) {
     Player* player = GET_PLAYER(actor->play);
-    if (player->stateFlags1 & PLAYER_STATE1_TARGETING)
+    if (player->stateFlags1 & PLAYER_STATE1_TARGETING || player->stateFlags1 & PLAYER_STATE1_CLIMBING_LADDER)
         return;
 
     actor->world.pos = player->actor.world.pos;

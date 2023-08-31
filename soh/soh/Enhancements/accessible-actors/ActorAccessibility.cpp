@@ -69,6 +69,11 @@ class ActorAccessibility {
     std::unordered_map<s16, SfxRecord> sfxMap;//Maps internal sfx to external (prerendered) resources.
     std::unordered_map<std::string, SfxRecord> sampleMap;//Similar to above, but this one maps raw audio samples as opposed to SFX.
     int extractSfx = 0;
+    s16 currentScene = -1;
+    s8 currentRoom = -1;
+    VirtualActorList* currentEverywhere = NULL;
+    VirtualActorList* currentSceneGlobal = NULL;
+    VirtualActorList* currentRoomLocal = NULL;
 };
 static ActorAccessibility* aa;
 
@@ -85,6 +90,8 @@ void ActorAccessibility_OnActorInit(void* actor) {
 void ActorAccessibility_OnGameFrameUpdate() {
     if (gPlayState == NULL)
         return;
+    if (!GameInteractor::IsSaveLoaded())
+        return;//Title screen, skip.
 
     ActorAccessibility_RunAccessibilityForAllActors(gPlayState);
 }
@@ -115,9 +122,8 @@ void ActorAccessibility_OnGameStillFrozen()
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorInit>(ActorAccessibility_OnActorInit);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnActorDestroy>(ActorAccessibility_OnActorDestroy);
 
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(ActorAccessibility_OnGameFrameUpdate);
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>(ActorAccessibility_OnGameFrameUpdate);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameStillFrozen>(ActorAccessibility_OnGameStillFrozen);
-
     }
 void ActorAccessibility_Shutdown() {
     ActorAccessibility_ShutdownAudio();
@@ -341,7 +347,16 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
         actor->xyzDistToPlayer = Math_Vec3f_DistXYZ(&actor->actor->world.pos, &player->actor.world.pos);
     }
     void ActorAccessibility_PrepareNextAudioFrame();
+        void ActorAccessibility_StopAllVirtualActors(VirtualActorList* list)
+    {
+        if (list == NULL)
+            return;
 
+        VAList_t* val = (VAList_t*)list;
+        for (auto i = val->begin(); i != val->end(); i++)
+            ActorAccessibility_StopAllSounds((void*) &(*i));
+
+    }
     void ActorAccessibility_RunAccessibilityForActor(PlayState* play, AccessibleActor* actor) {
         Player* player = GET_PLAYER(play);
         actor->play = play;
@@ -390,13 +405,27 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
 
     }
     void ActorAccessibility_RunAccessibilityForAllActors(PlayState* play) {
-            //Entirely exclude the title screen.
-        /*if (play->sceneNum == 81)
-            return;*/
         
         Player* player = GET_PLAYER(play);
-        
-        
+        if (play->sceneNum != aa->currentScene)
+        {
+            ActorAccessibility_StopAllVirtualActors(aa->currentEverywhere);
+            ActorAccessibility_StopAllVirtualActors(aa->currentSceneGlobal);
+            ActorAccessibility_StopAllVirtualActors(aa->currentRoomLocal);
+            aa->currentEverywhere = ActorAccessibility_GetVirtualActorList(EVERYWHERE, 0);
+            aa->currentSceneGlobal = ActorAccessibility_GetVirtualActorList(play->sceneNum, -1);
+            aa->currentScene = play->sceneNum;
+            aa->currentRoomLocal = NULL;
+            aa->currentRoom = -1;
+
+        }
+        if (aa->currentRoom != play->roomCtx.curRoom.num)
+        {
+            ActorAccessibility_StopAllVirtualActors(aa->currentRoomLocal);
+            aa->currentRoomLocal = ActorAccessibility_GetVirtualActorList(play->sceneNum, play->roomCtx.curRoom.num);
+            aa->currentRoom = play->roomCtx.curRoom.num;
+
+        }
         if (player->stateFlags1 & PLAYER_STATE1_IN_CUTSCENE) {
             return;
         }
@@ -404,16 +433,16 @@ int ActorAccessibility_GetRandomStartingFrameCount(int min, int max) {
         for (AccessibleActorList_t::iterator i = aa->accessibleActorList.begin(); i != aa->accessibleActorList.end(); i++)
             ActorAccessibility_RunAccessibilityForActor(play, &i->second);
 //Virtual actors in the "everywhere" group.
-        VAList_t* list = (VAList_t*)ActorAccessibility_GetVirtualActorList(EVERYWHERE, 0);
+        VAList_t* list = (VAList_t*)aa->currentEverywhere;
 
         for (VAList_t::iterator i = list->begin(); i != list->end(); i++)
             ActorAccessibility_RunAccessibilityForActor(play, &(*i));
 //Virtual actors for the current room and scene.
-        list = (VAList_t*)ActorAccessibility_GetVirtualActorList(play->sceneNum, play->roomCtx.curRoom.num);
+        list = (VAList_t*)aa->currentRoomLocal;
         for (VAList_t::iterator i = list->begin(); i != list->end(); i++)
             ActorAccessibility_RunAccessibilityForActor(play, &(*i));
         //Scene-global virtual actors. Most of these are automatically generated VAs from polygons, because there's no way to sort these into rooms.
-        list = (VAList_t*)ActorAccessibility_GetVirtualActorList(play->sceneNum, -1);
+        list = (VAList_t*)aa->currentSceneGlobal;
         for (VAList_t::iterator i = list->begin(); i != list->end(); i++)
             ActorAccessibility_RunAccessibilityForActor(play, &(*i));
 
