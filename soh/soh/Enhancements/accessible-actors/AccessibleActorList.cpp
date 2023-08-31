@@ -49,15 +49,68 @@ void accessible_en_NPC_Gen(AccessibleActor* actor) {
 
 }
 void accessible_en_chest(AccessibleActor* actor) {
+   
+    
+    Player* player = GET_PLAYER(actor->play);
     EnBox* chest = (EnBox*)actor->actor;
-    //Only chests that are "waiting to be opened" should play a sound. Chests which have not yet appeared (because some enemy has not been killed, switch has not been hit, etc) will not be in this action mode.
     if (chest->actionFunc != EnBox_WaitOpen)
         return;
-
     s32 treasureFlag = actor->actor->params & 0x1F;
-
+    s8 size;
+    if (chest->type <= 8 && chest->type >= 5) {
+        size = 15; // small
+    } else {
+        size = 30;//large
+    }
     if (!(treasureFlag >= 20 && treasureFlag < 32)) {
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_TBOX_UNLOCK, false);
+    }
+    //Only chests that are "waiting to be opened" should play a sound. Chests which have not yet appeared (because some enemy has not been killed, switch has not been hit, etc) will not be in this action mode.
+    f32 rightAngle = actor->actor->world.rot.y + 16384;
+    f32 leftAngle = actor->actor->world.rot.y - 16384;
+    Vec3f_ rightPos = actor->actor->world.pos;
+    f32 velocityXRight = Math_SinS(rightAngle)*10.0;
+    f32 velocityZRight = Math_CosS(rightAngle) * 10.0;
+    rightPos.x += velocityXRight;
+    rightPos.z += velocityZRight;
+    f32 z = rightPos.z + Math_CosS(leftAngle) * (fabs(player->actor.world.pos.x-rightPos.x));
+    
+    f32 frontAngle = actor->actor->world.rot.y;
+    f32 backAngle = actor->actor->world.rot.y + (16384*2);
+    Vec3f_ frontPos = actor->actor->world.pos;
+    f32 velocityXFront = Math_SinS(frontAngle) * 10.0;
+    f32 velocityZFront = Math_CosS(frontAngle) * 10.0;
+    frontPos.x += velocityXFront;
+    frontPos.z += velocityZFront;
+    f32 x = frontPos.x + Math_SinS(backAngle) * (player->actor.world.pos.z - frontPos.z);
+
+    if (Math_CosS(actor->actor->world.rot.y + 16384) > 0) {
+        if (player->actor.world.pos.x < x-size) {
+            ActorAccessibility_SetSoundPitch(actor, 0, 1.5);
+            
+        } else if (player->actor.world.pos.x > x + size) {
+            ActorAccessibility_SetSoundPitch(actor, 0, 0.5);
+        } else if (Math_CosS(actor->actor->world.rot.y) > 0 && player->actor.world.pos.z > z &&
+                   (!(treasureFlag >= 20 && treasureFlag < 32))) {
+            ActorAccessibility_PlaySoundForActor(actor, 1, NA_SE_EV_DIAMOND_SWITCH, false);
+        } else if ((Math_CosS(actor->actor->world.rot.y) < 0) && player->actor.world.pos.z < z &&
+                   (!(treasureFlag >= 20 && treasureFlag < 32))) {
+            ActorAccessibility_PlaySoundForActor(actor, 1, NA_SE_EV_DIAMOND_SWITCH, false);    
+        }
+            
+    } else {
+        if (player->actor.world.pos.x > x + size) {
+            ActorAccessibility_SetSoundPitch(actor, 0, 1.5);
+            
+        } else if (player->actor.world.pos.x < x - size) {
+            ActorAccessibility_SetSoundPitch(actor, 0, 0.5);
+        } else if (Math_CosS(actor->actor->world.rot.y) > 0 && player->actor.world.pos.z > z &&
+                   (!(treasureFlag >= 20 && treasureFlag < 32))) {
+            ActorAccessibility_PlaySoundForActor(actor, 1, NA_SE_EV_DIAMOND_SWITCH, false);
+        } else if ((Math_CosS(actor->actor->world.rot.y) < 0) && player->actor.world.pos.z < z &&
+                   (!(treasureFlag >= 20 && treasureFlag < 32))) {
+            ActorAccessibility_PlaySoundForActor(actor, 1, NA_SE_EV_DIAMOND_SWITCH, false);
+        }
     }
 }
 
@@ -84,15 +137,26 @@ void accessible_grotto(AccessibleActor* actor) {
 }
 
 void accessible_torches(AccessibleActor* actor) {
+    
     ObjSyokudai* torche = (ObjSyokudai*)actor->actor;
     if ((actor->actor->params) == 4230 || (actor->actor->params) == 4220 || (actor->actor->params) == 4227) {
         if (torche->litTimer != 0) {
             actor->policy.volume = 0.1;
+            if (actor->frameCount % 30 != 0) {
+                return;
+            }
             ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_IT_BOMB_IGNIT, false);
+        }
+        if (actor->frameCount % 30 != 0) {
+            return;
         }
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_IT_BOMB_IGNIT, false);
     }
+    if (actor->frameCount % 30 != 0) {
+        return;
+    }
     if ((actor->actor->params) == 9216 || (actor->actor->params) == 962) {
+
         actor->policy.volume = 0.5;
         actor->policy.distance = 200.0;
         ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_ANUBIS_FIRE, false);
@@ -101,7 +165,9 @@ void accessible_torches(AccessibleActor* actor) {
 
 void accessible_hasi(AccessibleActor* actor) {
     if ((actor->actor->params) == 0) {
-        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_BLOCK_SHAKE, false);
+        actor->policy.ydist = 1000;
+        actor->policy.distance = 1000;
+        ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EN_OCTAROCK_ROCK, false);
     }
 
     else if ((actor->actor->params) == 1) {
@@ -110,6 +176,7 @@ void accessible_hasi(AccessibleActor* actor) {
     }
 }
 void accessible_switch(AccessibleActor* actor) {
+    
     Player* player = GET_PLAYER(actor->play);
     ObjSwitch* sw = (ObjSwitch*)actor->actor;
     Vec3f& scale = actor->actor->scale;
@@ -118,8 +185,14 @@ void accessible_switch(AccessibleActor* actor) {
             if (actor->play->sceneNum == 0 && actor->play->roomCtx.curRoom.num == 5 && actor->xzDistToPlayer < 20) {
                 ActorAccessibility_PlaySoundForActor(actor, 0, NA_SE_EV_DIAMOND_SWITCH, false);//Should result in same behaviour.
             }
+            if (actor->frameCount % 30 != 0) {
+                return;
+            }
             ActorAccessibility_PlaySoundForActor(actor, 1, NA_SE_EV_FOOT_SWITCH, false);
 }
+    }
+    else if (actor->frameCount % 30 != 0) {
+        return;
     }
     else if ((actor->actor->params & 7) == 1) {
         if (scale.y >= 33.0f / 200.0f) { //(!(Flags_GetSwitch(actor->play, (actor->params >> 8 & 0x3F)))) {
@@ -479,7 +552,7 @@ void accessible_audio_compass(AccessibleActor* actor) {
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_DOOR_SHUTTER, policy);
     ActorAccessibility_InitPolicy(&policy, "Switch", accessible_switch, 0);
-    policy.n = 30;
+    policy.n = 1;
     policy.ydist = 200;
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SWITCH, policy);
@@ -489,12 +562,12 @@ void accessible_audio_compass(AccessibleActor* actor) {
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_OSHIHIKI, policy);
     ActorAccessibility_InitPolicy(&policy, "Torch", accessible_torches, 0);
-    policy.n = 50;
+    policy.n = 1;
     policy.pitch = 1.1;
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_SYOKUDAI, policy);
     ActorAccessibility_InitPolicy(&policy, "Deku Tree Moving Platform", accessible_hasi, 0);
     //policy.volume = 1.3;
-    policy.distance = 500;
+    policy.distance = 1000;
     ActorAccessibility_AddSupportedActor(ACTOR_BG_YDAN_HASI, policy);
     ActorAccessibility_InitPolicy(&policy, "Pot", NULL, NA_SE_EV_POT_BROKEN);
     ActorAccessibility_AddSupportedActor(ACTOR_OBJ_TSUBO, policy);
@@ -583,8 +656,9 @@ void accessible_audio_compass(AccessibleActor* actor) {
     ActorAccessibility_AddVirtualActor(list, VA_GENERAL_HELPER, { { 0.0, 0.0, 0.0 }, { 0, 0, 0 } });
     ActorAccessibility_AddVirtualActor(list, VA_AUDIO_COMPASS, { { 0.0, 0.0, 0.0}, { 0, 0, 0 } });
 
-                                                list = ActorAccessibility_GetVirtualActorList(85, 0); // Kokiri Forest
+    list = ActorAccessibility_GetVirtualActorList(85, 0); // Kokiri Forest
     ActorAccessibility_AddVirtualActor(list, VA_CRAWLSPACE, { { -784.0, 120.0, 1046.00 }, { 0, 14702, 0 } });
+    ActorAccessibility_AddVirtualActor(list, VA_MARKER, { { 2146.5, 1.0, -142.8 } });
     //ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -547.0, 60.0, -1036.00 }, { 0, 14702, 0 } });
     //ActorAccessibility_AddVirtualActor(list, VA_CLIMB, { { -29.0, -80.0, 983.00 }, { 0, 14702, 0 } });
     /*ActorAccessibility_AddVirtualActor(list, VA_DOOR, { { -448.0, 0.0, -528.00 }, { 0, 14702, 0 } });
