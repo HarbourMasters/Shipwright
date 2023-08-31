@@ -90,7 +90,7 @@ void ActorAccessibility_OnActorInit(void* actor) {
 void ActorAccessibility_OnGameFrameUpdate() {
     if (gPlayState == NULL)
         return;
-    if (!GameInteractor::IsSaveLoaded())
+    if (!GameInteractor::IsSaveLoaded() && !aa->extractSfx)
         return;//Title screen, skip.
 
     ActorAccessibility_RunAccessibilityForAllActors(gPlayState);
