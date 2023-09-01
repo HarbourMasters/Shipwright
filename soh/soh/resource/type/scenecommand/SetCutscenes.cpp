@@ -1,7 +1,7 @@
 #include "SetCutscenes.h"
 
-namespace Ship {
-void* SetCutscenes::GetPointer() {
+namespace LUS {
+uint32_t* SetCutscenes::GetPointer() {
     if (cutscene == nullptr) {
         return nullptr;
     }
@@ -14,4 +14,4 @@ size_t SetCutscenes::GetPointerSize() {
     }
 	return cutscene->GetPointerSize();
 }
-} // namespace Ship
+} // namespace LUS

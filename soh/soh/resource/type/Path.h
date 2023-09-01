@@ -6,22 +6,24 @@
 #include <libultraship/libultra/types.h>
 #include "z64math.h"
 
-namespace Ship {
+namespace LUS {
 
 typedef struct {
     /* 0x00 */ u8 count; // number of points in the path
     /* 0x04 */ Vec3s* points; // Segment Address to the array of points
 } PathData; // size = 0x8
 
-class Path : public Resource {
+class Path : public Resource<PathData> {
 public:
   using Resource::Resource;
 
-  void* GetPointer();
-  size_t GetPointerSize();
+    Path() : Resource(std::shared_ptr<ResourceInitData>()) {}
 
-  uint32_t numPaths;
-  std::vector<PathData> pathData;
-  std::vector<std::vector<Vec3s>> paths;
+    PathData* GetPointer();
+    size_t GetPointerSize();
+
+    uint32_t numPaths;
+    std::vector<PathData> pathData;
+    std::vector<std::vector<Vec3s>> paths;
 };
-}; // namespace Ship
+}; // namespace LUS

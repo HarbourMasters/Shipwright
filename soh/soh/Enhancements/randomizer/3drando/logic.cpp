@@ -122,6 +122,7 @@ namespace Logic {
 
   //Greg
   bool Greg = false;
+  bool GregInLogic = false;
 
   //Progressive Items
   uint8_t ProgressiveBulletBag  = 0;
@@ -285,19 +286,24 @@ namespace Logic {
 
   bool CanFinishGerudoFortress = false;
 
-  bool HasShield        = false;
-  bool CanShield        = false;
-  bool CanJumpslash     = false;
-  bool CanUseProjectile = false;
-  bool CanUseMagicArrow = false;
+  bool HasShield          = false;
+  bool CanShield          = false;
+  bool ChildShield        = false;
+  bool AdultReflectShield = false;
+  bool AdultShield        = false;
+  bool CanShieldFlick     = false;
+  bool CanJumpslash       = false;
+  bool CanUseProjectile   = false;
+  bool CanUseMagicArrow   = false;
 
   //Bridge and LACS Requirements
-  uint8_t MedallionCount          = 0;
   uint8_t StoneCount              = 0;
+  uint8_t MedallionCount          = 0;
   uint8_t DungeonCount            = 0;
   bool HasAllStones          = false;
   bool HasAllMedallions      = false;
   bool CanBuildRainbowBridge = false;
+  bool BuiltRainbowBridge    = false;
   bool CanTriggerLACS        = false;
 
   //Other
@@ -464,202 +470,24 @@ namespace Logic {
     return 0;
   }
 
-  bool CanDoGlitch(GlitchType glitch, GlitchDifficulty difficulty) {
-    uint8_t setDifficulty;
-    switch (glitch) {
-    //Restricted Items
-    case GlitchType::RestrictedItems:
-      setDifficulty = GetDifficultyValueFromString(GlitchRestrictedItems);
-      if (setDifficulty < static_cast<uint8_t>(difficulty)) {
-        return false;
-      }
+//todo rewrite glitch section
+
+  bool CanEquipSwap(uint32_t itemName) {
+    if (!HasItem(itemName))
+      return false;
+    
+    if (CanDoGlitch(GlitchType::EquipSwapDins) || CanDoGlitch(GlitchType::EquipSwap))
       return true;
 
-    //Super Stab
-    case GlitchType::SuperStab:
-      setDifficulty = GetDifficultyValueFromString(GlitchSuperStab);
-      if (setDifficulty < static_cast<uint8_t>(difficulty)) {
-        return false;
-      }
-      return CanShield && CanUse(STICKS);
+    return false;
+  }
 
-    //Infinite Sword Glitch
-    case GlitchType::ISG:
-      setDifficulty = GetDifficultyValueFromString(GlitchISG);
-      if (setDifficulty < static_cast<uint8_t>(difficulty)) {
-        return false;
-      }
-      return CanShield && (IsAdult || KokiriSword || Sticks);
-
-    //Bomb Hover
-    case GlitchType::BombHover:
-      setDifficulty = GetDifficultyValueFromString(GlitchHover);
-      if (setDifficulty < static_cast<uint8_t>(difficulty)) {
-        return false;
-      }
-      return CanDoGlitch(GlitchType::ISG, GlitchDifficulty::NOVICE) && (HasBombchus || (Bombs && setDifficulty >= static_cast<uint8_t>(GlitchDifficulty::ADVANCED)));
-
-    //Bomb Ocarina Items
-    case GlitchType::BombOI:
-      setDifficulty = GetDifficultyValueFromString(GlitchBombOI);
-      if (setDifficulty < static_cast<uint8_t>(difficulty)) {
-        return false;
-      }
-      return Bombs && CanSurviveDamage;
-    case GlitchType::OutdoorBombOI:
-      return ((CanUse(FARORES_WIND) && (DinsFire || NayrusLove || LensOfTruth || HasBottle || HasBombchus || Nuts || StartingConsumables ||
-              (IsChild && (Sticks || ProgressiveBulletBag || (MagicBean || MagicBeanPack) || Boomerang || WeirdEgg || (Hammer && HammerAsChild))) ||
-              (IsAdult && (ProgressiveBow || Hookshot || HasBoots || Hammer || (Sticks && StickAsAdult) || (Boomerang && BoomerangAsAdult)))) &&
-              CanDoGlitch(GlitchType::BombOI, (static_cast<uint8_t>(difficulty) >= 3) ? difficulty : GlitchDifficulty::ADVANCED) && CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE)) ||
-             (((IsAdult && ClaimCheck) || Bugs || Fish || Fairy || (!NeedNayrusLove && (CanUse(NAYRUS_LOVE) || CanUse(DINS_FIRE))) ||
-              (CanUse(FARORES_WIND) && FaroresWindAnywhere)) && CanDoGlitch(GlitchType::BombOI, difficulty)));
-    case GlitchType::WindmillBombOI:
-      return (((CanUse(FARORES_WIND) || (!NeedNayrusLove && (NayrusLove || DinsFire))) && (LensOfTruth || HasBottle || HasBombchus || Nuts || StartingConsumables ||
-              (IsChild && (Sticks || ProgressiveBulletBag || (MagicBean || MagicBeanPack) || Boomerang || WeirdEgg || (Hammer && HammerAsChild))) ||
-              (IsAdult && (ProgressiveBow || Hookshot || HasBoots || Hammer || (Sticks && StickAsAdult) || (Boomerang && BoomerangAsAdult)))) &&
-              CanDoGlitch(GlitchType::BombOI, (static_cast<uint8_t>(difficulty) >= 3) ? difficulty : GlitchDifficulty::ADVANCED) && CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE)) ||
-             (((IsAdult && ClaimCheck) || Bugs || Fish || Fairy || (CanUse(FARORES_WIND) && FaroresWindAnywhere)) && CanDoGlitch(GlitchType::BombOI, difficulty)));
-    case GlitchType::IndoorBombOI:
-      return (((IsAdult && ClaimCheck) && (HasBottle || HasBoots || (CanUse(FARORES_WIND) && FaroresWindAnywhere))) ||
-              ((Bugs || Fish || Fairy) && (NumBottles >= 2 || (IsAdult && (ClaimCheck || HasBoots)) || (IsChild && WeirdEgg) || (CanUse(FARORES_WIND) && FaroresWindAnywhere))) ||
-              ((CanUse(FARORES_WIND) && FaroresWindAnywhere) && (HasBottle || (IsAdult && (ClaimCheck || HasBoots)) || (IsChild && WeirdEgg))) ||
-              (((!NeedNayrusLove && (CanUse(NAYRUS_LOVE) || CanUse(DINS_FIRE))) || CanUse(FARORES_WIND)) &&
-               (NumBottles + ((IsChild) ? ((WeirdEgg) ? 1 : 0) : (((IronBoots) ? 1 : 0) + ((HoverBoots) ? 1 : 0) + ((ClaimCheck) ? 1 : 0))) >= 2))) &&
-             CanDoGlitch(GlitchType::BombOI, difficulty) && CanDoGlitch(GlitchType::RestrictedItems, GlitchDifficulty::NOVICE);
-    case GlitchType::DungeonBombOI:
-      return ((IsAdult && ClaimCheck) || Bugs || Fish || Fairy || (!NeedNayrusLove && (CanUse(NAYRUS_LOVE) || CanUse(DINS_FIRE))) || (CanUse(FARORES_WIND))) && CanDoGlitch(GlitchType::BombOI, difficulty);
-
-    //Hover Boost
-    case GlitchType::HoverBoost:
-      setDifficulty = GetDifficultyValueFromString(GlitchHoverBoost);
-      if (setDifficulty < static_cast<uint8_t>(difficulty)) {
-        return false;
-      }
-      return Bombs && CanUse(HOVER_BOOTS) && CanSurviveDamage;
-
-    //Super Slide
-    case GlitchType::SuperSlide:
-      setDifficulty = GetDifficultyValueFromString(GlitchSuperSlide);
-      if (setDifficulty < static_cast<uint8_t>(difficulty)) {
-        return false;
-      }
-      return true;
-
-    //Megaflip
-    case GlitchType::Megaflip:
-      setDifficulty = GetDifficultyValueFromString(GlitchMegaflip);
-      if (setDifficulty < static_cast<uint8_t>(difficulty)) {
-        return false;
-      }
-      //                             Bombchu megaflips should be considered 2 difficulty levels higher
-      return CanShield && (Bombs || (HasBombchus && setDifficulty >= static_cast<uint8_t>(difficulty) + 2));
-
-    //A-Slide
-    case GlitchType::ASlide:
-      setDifficulty = GetDifficultyValueFromString(GlitchASlide);
-      if (setDifficulty < static_cast<uint8_t>(difficulty)) {
-        return false;
-      }
-      //                                        Same deal as bombchu megaflips
-      return IsChild && CanShield && (Bombs || (HasBombchus && setDifficulty >= static_cast<uint8_t>(difficulty) + 2));
-
-    //Hammer Slide
-    case GlitchType::HammerSlide:
-      setDifficulty = GetDifficultyValueFromString(GlitchHammerSlide);
-      if (setDifficulty < static_cast<uint8_t>(difficulty)) {
-        return false;
-      }
-      return CanUse(MEGATON_HAMMER) && CanUse(HOVER_BOOTS) && CanShield;
-
-    //Ledge Cancel
-    case GlitchType::LedgeCancel:
-      setDifficulty = GetDifficultyValueFromString(GlitchLedgeCancel);
-      if (setDifficulty < static_cast<uint8_t>(difficulty)) {
-        return false;
-      }
-      //                             Similar to bombchu megaflips / A-slides but doesn't scale beyond advanced
-      return CanShield && (Bombs || (HasBombchus && setDifficulty >= static_cast<uint8_t>(GlitchDifficulty::ADVANCED)));
-
-    //Action Swap
-    case GlitchType::ActionSwap:
-      setDifficulty = GetDifficultyValueFromString(GlitchActionSwap);
-      if (setDifficulty < static_cast<uint8_t>(difficulty)) {
-        return false;
-      }
-      return true;
-
-    //Quick Put Away
-    case GlitchType::QPA:
-      setDifficulty = GetDifficultyValueFromString(GlitchQPA);
-      if (setDifficulty < static_cast<uint8_t>(difficulty)) {
-        return false;
-      }
-      //                                           Boot Put Away Delay Method                  Frame Perfect Method                                                 Ledge Grab Method
-      return (CanTakeDamage && Bombs && ((CanUse(HOVER_BOOTS) || CanUse(IRON_BOOTS)) || setDifficulty >= static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE))) || setDifficulty >= static_cast<uint8_t>(GlitchDifficulty::ADVANCED);
-
-    //Hookshot Clip
-    case GlitchType::HookshotClip:
-      setDifficulty = GetDifficultyValueFromString(GlitchHookshotClip);
-      if (setDifficulty < static_cast<uint8_t>(difficulty)) {
-        return false;
-      }
-      return CanUse(HOOKSHOT);
-
-    //Hookshot Jump: Bonk
-    case GlitchType::HookshotJump_Bonk:
-      setDifficulty = GetDifficultyValueFromString(GlitchHookshotJump_Bonk);
-      if (setDifficulty < static_cast<uint8_t>(difficulty)) {
-        return false;
-      }
-      return IsAdult && Hookshot; // Child hookshot jumps are tiny so these stay as adult only until I check
-
-    //Hookshot Jump: Boots
-    case GlitchType::HookshotJump_Boots:
-      setDifficulty = GetDifficultyValueFromString(GlitchHookshotJump_Boots);
-      if (setDifficulty < static_cast<uint8_t>(difficulty)) {
-        return false;
-      }
-      return IsAdult && Hookshot && HasBoots; // Child hookshot jumps are tiny so these stay as adult only until I check
-
-    //Cutscene Dives
-    case GlitchType::CutsceneDive:
-      setDifficulty = GetDifficultyValueFromString(GlitchCutsceneDive);
-      if (setDifficulty < static_cast<uint8_t>(difficulty)) {
-        return false;
-      }
-      return true;
-
-    //Navi Dives without TSC
-    case GlitchType::NaviDive_Stick:
-      setDifficulty = GetDifficultyValueFromString(GlitchNaviDive_Stick);
-      if (setDifficulty < static_cast<uint8_t>(difficulty)) {
-        return false;
-      }
-      return IsChild && Sticks;
-
-    //Triple Slash Clip
-    case GlitchType::TripleSlashClip:
-      setDifficulty = GetDifficultyValueFromString(GlitchTripleSlashClip);
-      if (setDifficulty < static_cast<uint8_t>(difficulty)) {
-        return false;
-      }
-      return IsAdult || KokiriSword;
-
-    //Ledge Clip
-    case GlitchType::LedgeClip:
-      setDifficulty = GetDifficultyValueFromString(GlitchLedgeClip);
-      if (setDifficulty < static_cast<uint8_t>(difficulty)) {
-        return false;
-      }
-      return IsAdult;
-
-    //Seam Walks
-    case GlitchType::SeamWalk:
-      setDifficulty = GetDifficultyValueFromString(GlitchSeamWalk);
-      if (setDifficulty < static_cast<uint8_t>(difficulty)) {
-        return false;
-      }
-      return true;
+  bool CanDoGlitch(GlitchType glitch) {
+    switch(glitch) {
+      case GlitchType::EquipSwapDins:
+        return ((IsAdult && HasItem(DINS_FIRE)) || (IsChild && (HasItem(STICKS) || HasItem(DINS_FIRE)))) && GlitchEquipSwapDins;
+      case GlitchType::EquipSwap: // todo: add bunny hood to adult item equippable list and child trade item to child item equippable list
+        return ((IsAdult && (HasItem(DINS_FIRE) || HasItem(FARORES_WIND) || HasItem(NAYRUS_LOVE))) || (IsChild && (HasItem(STICKS) || HasItem(SLINGSHOT) || HasItem(BOOMERANG) || HasBottle || Nuts || Ocarina || HasItem(LENS_OF_TRUTH) || HasExplosives || (MagicBean || MagicBeanPack) || HasItem(DINS_FIRE) || HasItem(FARORES_WIND) || HasItem(NAYRUS_LOVE)))) && GlitchEquipSwap;
     }
 
     //Shouldn't be reached
@@ -765,11 +593,15 @@ namespace Logic {
                               (GerudoFortress.Is(GERUDOFORTRESS_FAST)      && GerudoFortressKeys >= 1 && (IsAdult || KokiriSword || CanUse(MASTER_SWORD) || CanUse(BIGGORON_SWORD))) ||
                               (GerudoFortress.IsNot(GERUDOFORTRESS_NORMAL) && GerudoFortress.IsNot(GERUDOFORTRESS_FAST));
 
-    HasShield        = CanUse(HYLIAN_SHIELD) || CanUse(DEKU_SHIELD); //Mirror shield can't reflect attacks
-    CanShield        = CanUse(MIRROR_SHIELD) || HasShield;
-    CanJumpslash     = IsAdult || Sticks || KokiriSword;
-    CanUseProjectile = HasExplosives || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(SLINGSHOT) || CanUse(BOOMERANG);
-    CanUseMagicArrow = CanUse(FIRE_ARROWS) || CanUse(ICE_ARROWS) || CanUse(LIGHT_ARROWS);
+    HasShield          = CanUse(HYLIAN_SHIELD) || CanUse(DEKU_SHIELD); //Mirror shield can't reflect attacks
+    CanShield          = CanUse(MIRROR_SHIELD) || HasShield;
+    ChildShield        = IsChild && CanUse(DEKU_SHIELD); //hylian shield is not helpful for child
+    AdultReflectShield = IsAdult && CanUse(HYLIAN_SHIELD); //Mirror shield can't reflect attacks
+    AdultShield        = IsAdult && (CanUse(HYLIAN_SHIELD) || CanUse(MIRROR_SHIELD));
+    CanShieldFlick     = ChildShield || AdultShield;
+    CanJumpslash       = IsAdult || Sticks || KokiriSword;
+    CanUseProjectile   = HasExplosives || CanUse(BOW) || CanUse(HOOKSHOT) || CanUse(SLINGSHOT) || CanUse(BOOMERANG);
+    CanUseMagicArrow   = CanUse(FIRE_ARROWS) || CanUse(ICE_ARROWS) || CanUse(LIGHT_ARROWS);
 
     //Bridge and LACS Requirements
     MedallionCount        = (ForestMedallion ? 1:0) + (FireMedallion ? 1:0) + (WaterMedallion ? 1:0) + (SpiritMedallion ? 1:0) + (ShadowMedallion ? 1:0) + (LightMedallion ? 1:0);
@@ -777,21 +609,22 @@ namespace Logic {
     DungeonCount          = (DekuTreeClear ? 1:0) + (DodongosCavernClear ? 1:0) + (JabuJabusBellyClear ? 1:0) + (ForestTempleClear ? 1:0) + (FireTempleClear ? 1:0) + (WaterTempleClear ? 1:0) + (SpiritTempleClear ? 1:0) + (ShadowTempleClear ? 1:0);
     HasAllStones          = StoneCount == 3;
     HasAllMedallions      = MedallionCount == 6;
+    GregInLogic           = BridgeRewardOptions.Is(BRIDGE_OPTION_GREG) || LACSRewardOptions.Is(LACS_OPTION_GREG);
 
     CanBuildRainbowBridge = Bridge.Is(RAINBOWBRIDGE_OPEN)                                                                         ||
                            (Bridge.Is(RAINBOWBRIDGE_VANILLA)    && ShadowMedallion && SpiritMedallion && LightArrows)             ||
-                           (Bridge.Is(RAINBOWBRIDGE_STONES)     && StoneCount >= BridgeStoneCount.Value<uint8_t>())                    ||
-                           (Bridge.Is(RAINBOWBRIDGE_MEDALLIONS) && MedallionCount >= BridgeMedallionCount.Value<uint8_t>())            ||
-                           (Bridge.Is(RAINBOWBRIDGE_REWARDS)    && StoneCount + MedallionCount >= BridgeRewardCount.Value<uint8_t>())  ||
-                           (Bridge.Is(RAINBOWBRIDGE_DUNGEONS)   && DungeonCount >= BridgeDungeonCount.Value<uint8_t>())                ||
+                           (Bridge.Is(RAINBOWBRIDGE_STONES)     && StoneCount + (Greg && GregInLogic ? 1 : 0) >= BridgeStoneCount.Value<uint8_t>())                    ||
+                           (Bridge.Is(RAINBOWBRIDGE_MEDALLIONS) && MedallionCount + (Greg && GregInLogic ? 1 : 0) >= BridgeMedallionCount.Value<uint8_t>())            ||
+                           (Bridge.Is(RAINBOWBRIDGE_REWARDS)    && StoneCount + MedallionCount + (Greg && GregInLogic ? 1 : 0) >= BridgeRewardCount.Value<uint8_t>())  ||
+                           (Bridge.Is(RAINBOWBRIDGE_DUNGEONS)   && DungeonCount + (Greg && GregInLogic ? 1 : 0) >= BridgeDungeonCount.Value<uint8_t>())                ||
                            (Bridge.Is(RAINBOWBRIDGE_TOKENS)     && GoldSkulltulaTokens >= BridgeTokenCount.Value<uint8_t>()) ||
                            (Bridge.Is(RAINBOWBRIDGE_GREG)       && Greg);
 
     CanTriggerLACS = (LACSCondition == LACSCONDITION_VANILLA    && ShadowMedallion && SpiritMedallion)                          ||
-                     (LACSCondition == LACSCONDITION_STONES     && StoneCount >= LACSStoneCount.Value<uint8_t>())                    ||
-                     (LACSCondition == LACSCONDITION_MEDALLIONS && MedallionCount >= LACSMedallionCount.Value<uint8_t>())            ||
-                     (LACSCondition == LACSCONDITION_REWARDS    && StoneCount + MedallionCount >= LACSRewardCount.Value<uint8_t>())  ||
-                     (LACSCondition == LACSCONDITION_DUNGEONS   && DungeonCount >= LACSDungeonCount.Value<uint8_t>())                ||
+                     (LACSCondition == LACSCONDITION_STONES     && StoneCount + (Greg && GregInLogic ? 1 : 0) >= LACSStoneCount.Value<uint8_t>())                    ||
+                     (LACSCondition == LACSCONDITION_MEDALLIONS && MedallionCount + (Greg && GregInLogic ? 1 : 0) >= LACSMedallionCount.Value<uint8_t>())            ||
+                     (LACSCondition == LACSCONDITION_REWARDS    && StoneCount + MedallionCount + (Greg && GregInLogic ? 1 : 0) >= LACSRewardCount.Value<uint8_t>())  ||
+                     (LACSCondition == LACSCONDITION_DUNGEONS   && DungeonCount + (Greg && GregInLogic ? 1 : 0) >= LACSDungeonCount.Value<uint8_t>())                ||
                      (LACSCondition == LACSCONDITION_TOKENS     && GoldSkulltulaTokens >= LACSTokenCount.Value<uint8_t>());
 
   }
@@ -803,58 +636,58 @@ namespace Logic {
   bool SmallKeys(Key dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched) {
     switch (dungeon) {
       case FOREST_TEMPLE:
-        if (IsGlitched && (GetDifficultyValueFromString(GlitchHookshotJump_Boots) >= static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE) || GetDifficultyValueFromString(GlitchHoverBoost) >= static_cast<uint8_t>(GlitchDifficulty::NOVICE) ||
+        /*if (IsGlitched && (GetDifficultyValueFromString(GlitchHookshotJump_Boots) >= static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE) || GetDifficultyValueFromString(GlitchHoverBoost) >= static_cast<uint8_t>(GlitchDifficulty::NOVICE) ||
                           (GetDifficultyValueFromString(GlitchHover) >= static_cast<uint8_t>(GlitchDifficulty::NOVICE) && GetDifficultyValueFromString(GlitchISG) >= static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE)))) {
           return ForestTempleKeys >= requiredAmountGlitched;
-        }
+        }*/
         return ForestTempleKeys >= requiredAmountGlitchless;
 
       case FIRE_TEMPLE:
-        if (IsGlitched && (GetDifficultyValueFromString(GlitchLedgeClip) >= static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE) || GetDifficultyValueFromString(GlitchHover) >= static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE))) {
+        /*if (IsGlitched && (GetDifficultyValueFromString(GlitchLedgeClip) >= static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE) || GetDifficultyValueFromString(GlitchHover) >= static_cast<uint8_t>(GlitchDifficulty::INTERMEDIATE))) {
           return FireTempleKeys >= requiredAmountGlitched;
-        }
+        }*/
         return FireTempleKeys >= requiredAmountGlitchless;
 
       case WATER_TEMPLE:
-        if (IsGlitched && (false)) {
+        /*if (IsGlitched && (false)) {
           return WaterTempleKeys >= requiredAmountGlitched;
-        }
+        }*/
         return WaterTempleKeys >= requiredAmountGlitchless;
 
       case SPIRIT_TEMPLE:
-        if (IsGlitched && (false)) {
+        /*if (IsGlitched && (false)) {
           return SpiritTempleKeys >= requiredAmountGlitched;
-        }
+        }*/
         return SpiritTempleKeys >= requiredAmountGlitchless;
 
       case SHADOW_TEMPLE:
-        if (IsGlitched && (GetDifficultyValueFromString(GlitchHookshotClip) >= static_cast<uint8_t>(GlitchDifficulty::NOVICE))) {
+        /*if (IsGlitched && (GetDifficultyValueFromString(GlitchHookshotClip) >= static_cast<uint8_t>(GlitchDifficulty::NOVICE))) {
           return ShadowTempleKeys >= requiredAmountGlitched;
-        }
+        }*/
         return ShadowTempleKeys >= requiredAmountGlitchless;
 
       case BOTTOM_OF_THE_WELL:
-        if (IsGlitched && (false)) {
+        /*if (IsGlitched && (false)) {
           return BottomOfTheWellKeys >= requiredAmountGlitched;
-        }
+        }*/
         return BottomOfTheWellKeys >= requiredAmountGlitchless;
 
       case GERUDO_TRAINING_GROUNDS:
-        if (IsGlitched && (false)) {
+        /*if (IsGlitched && (false)) {
           return GerudoTrainingGroundsKeys >= requiredAmountGlitched;
-        }
+        }*/
         return GerudoTrainingGroundsKeys >= requiredAmountGlitchless;
 
       case GANONS_CASTLE:
-        if (IsGlitched && (false)) {
+        /*if (IsGlitched && (false)) {
           return GanonsCastleKeys >= requiredAmountGlitched;
-        }
+        }*/
         return GanonsCastleKeys >= requiredAmountGlitchless;
 
       case MARKET_TREASURE_CHEST_GAME:
-        if (IsGlitched && (false)) {
+        /*if (IsGlitched && (false)) {
           return TreasureGameKeys >= requiredAmountGlitched;
-        }
+        }*/
         return TreasureGameKeys >= requiredAmountGlitchless;
 
       default:
@@ -1161,16 +994,21 @@ namespace Logic {
 
      CanFinishGerudoFortress = false;
 
-     HasShield        = false;
-     CanShield        = false;
-     CanJumpslash     = false;
-     CanUseProjectile = false;
-     CanUseMagicArrow = false;
+     HasShield          = false;
+     CanShield          = false;
+     ChildShield        = false;
+     AdultReflectShield = false;
+     AdultShield        = false;
+     CanShieldFlick     = false;
+     CanJumpslash       = false;
+     CanUseProjectile   = false;
+     CanUseMagicArrow   = false;
 
      //Bridge Requirements
      HasAllStones          = false;
      HasAllMedallions      = false;
      CanBuildRainbowBridge = false;
+     BuiltRainbowBridge    = false;
      CanTriggerLACS        = false;
 
      //Other

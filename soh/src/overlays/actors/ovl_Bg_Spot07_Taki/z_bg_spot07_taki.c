@@ -7,7 +7,7 @@
 #include "z_bg_spot07_taki.h"
 #include "objects/object_spot07_object/object_spot07_object.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void BgSpot07Taki_Init(Actor* thisx, PlayState* play);
 void BgSpot07Taki_Destroy(Actor* thisx, PlayState* play);

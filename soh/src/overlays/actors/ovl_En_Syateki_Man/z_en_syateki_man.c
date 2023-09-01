@@ -4,7 +4,7 @@
 #include "objects/object_ossan/object_ossan.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_27)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_LOCKON)
 
 typedef enum {
     /* 0 */ SYATEKI_RESULT_NONE,
@@ -183,6 +183,9 @@ void EnSyatekiMan_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnSyatekiMan_Destroy(Actor* thisx, PlayState* play) {
+    EnSyatekiMan* this = (EnSyatekiMan*)thisx;
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnSyatekiMan_Start(EnSyatekiMan* this, PlayState* play) {
@@ -355,7 +358,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                             this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_SHOOTING_GALLERY_REWARD, GI_BULLET_BAG_50);
                             this->getItemId = this->getItemEntry.getItemId;
                             Flags_SetTreasure(play, 0x1E);
-                        } else if (!gSaveContext.n64ddFlag && !(gSaveContext.itemGetInf[0] & 0x2000)) {
+                        } else if (!gSaveContext.n64ddFlag && !Flags_GetItemGetInf(ITEMGETINF_0D)) {
                             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Equip_Pachinko ☆☆☆☆☆ %d\n" VT_RST,
                                          CUR_UPG_VALUE(UPG_BULLET_BAG));
                             if (CUR_UPG_VALUE(UPG_BULLET_BAG) == 1) {
@@ -372,7 +375,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                             this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_SHOOTING_GALLERY_REWARD, GI_QUIVER_50);
                             this->getItemId = this->getItemEntry.getItemId;
                             Flags_SetTreasure(play, 0x1F);
-                        } else if (!gSaveContext.n64ddFlag && !(gSaveContext.itemGetInf[0] & 0x4000)) {
+                        } else if (!gSaveContext.n64ddFlag && !Flags_GetItemGetInf(ITEMGETINF_0E)) {
                             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Equip_Bow ☆☆☆☆☆ %d\n" VT_RST,
                                          CUR_UPG_VALUE(UPG_QUIVER));
                             switch (CUR_UPG_VALUE(UPG_QUIVER)) {
@@ -442,13 +445,13 @@ void EnSyatekiMan_FinishPrize(EnSyatekiMan* this, PlayState* play) {
         // "Successful completion"
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
         if (!LINK_IS_ADULT) {
-            gSaveContext.itemGetInf[0] |= 0x2000;
+            Flags_SetItemGetInf(ITEMGETINF_0D);
         } else if ((this->getItemId == GI_QUIVER_40) || (this->getItemId == GI_QUIVER_50)) {
-            gSaveContext.itemGetInf[0] |= 0x4000;
+            Flags_SetItemGetInf(ITEMGETINF_0E);
         }
         this->gameResult = SYATEKI_RESULT_NONE;
         this->actor.parent = this->tempGallery;
-        this->actor.flags |= ACTOR_FLAG_0;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
         this->actionFunc = EnSyatekiMan_SetupIdle;
     }
 }

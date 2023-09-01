@@ -7,10 +7,11 @@
 #include "objects/object_ganon_anime3/object_ganon_anime3.h"
 #include "objects/object_geff/object_geff.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/boss-rush/BossRush.h"
 
 #include <string.h>
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void BossGanon2_Init(Actor* thisx, PlayState* play);
 void BossGanon2_Destroy(Actor* thisx, PlayState* play);
@@ -199,7 +200,7 @@ void func_808FD4D4(BossGanon2* this, PlayState* play, s16 arg2, s16 arg3) {
 
 void func_808FD5C4(BossGanon2* this, PlayState* play) {
     this->actionFunc = func_808FD5F4;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actor.world.pos.y = -3000.0f;
 }
 
@@ -233,7 +234,7 @@ void func_808FD5F4(BossGanon2* this, PlayState* play) {
                 sBossGanon2Zelda->actor.shape.rot.y = -0x7000;
 
                 // In rando, skip past the cutscene to the part where the player takes control again.
-                if (!gSaveContext.n64ddFlag) {
+                if (!gSaveContext.n64ddFlag && !gSaveContext.isBossRush) {
                     this->csState = 1;
                     this->csTimer = 0;
                 } else {
@@ -916,7 +917,7 @@ void func_808FD5F4(BossGanon2* this, PlayState* play) {
                 this->unk_337 = 1;
                 func_808FFDB0(this, play);
                 this->unk_1A2[1] = 50;
-                this->actor.flags |= ACTOR_FLAG_0;
+                this->actor.flags |= ACTOR_FLAG_TARGETABLE;
                 sBossGanon2Zelda->unk_3C8 = 7;
             }
             break;
@@ -1087,7 +1088,7 @@ void func_808FFDB0(BossGanon2* this, PlayState* play) {
         }
 
         this->unk_336 = 1;
-        this->actor.flags |= ACTOR_FLAG_0;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
         this->unk_228 = 1.0f;
         this->unk_224 = 1.0f;
     } else {
@@ -1680,8 +1681,9 @@ void func_8090120C(BossGanon2* this, PlayState* play) {
             if ((ABS(temp_a0_2) < 0x2000) && (sqrtf(SQ(temp_f14) + SQ(temp_f12)) < 70.0f) &&
                 (player->swordState != 0) && (player->heldItemAction == PLAYER_IA_SWORD_MASTER)) {
                 func_80064520(play, &play->csCtx);
-                gSaveContext.sohStats.gameComplete = true;
                 gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
+                BossRush_HandleCompleteBoss(play);
+                gSaveContext.sohStats.gameComplete = true;
                 this->unk_39E = Play_CreateSubCamera(play);
                 Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, this->unk_39E, CAM_STAT_ACTIVE);

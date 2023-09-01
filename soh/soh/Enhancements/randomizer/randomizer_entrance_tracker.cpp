@@ -1,13 +1,11 @@
 #include "randomizer_entrance_tracker.h"
 #include "soh/OTRGlobals.h"
-#include <ImGuiImpl.h>
 #include "soh/UIWidgets.hpp"
 
 #include <map>
 #include <string>
 #include <vector>
-#include <libultraship/bridge.h>
-#include <Hooks.h>
+#include <libultraship/libultraship.h>
 
 extern "C" {
 #include <z64.h>
@@ -621,15 +619,10 @@ void InitEntranceTrackingData() {
     SortEntranceListByType(destListSortedByType, 1);
 }
 
-void DrawEntranceTracker(bool& open) {
-    if (!open) {
-        CVarSetInteger("gEntranceTrackerEnabled", 0);
-        return;
-    }
-
+void EntranceTrackerWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
 
-    if (!ImGui::Begin("Entrance Tracker", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Entrance Tracker", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -918,10 +911,7 @@ void DrawEntranceTracker(bool& open) {
     ImGui::End();
 }
 
-void InitEntranceTracker() {
-    Ship::AddWindow("Randomizer", "Entrance Tracker", DrawEntranceTracker,
-                    CVarGetInteger("gEntranceTrackerEnabled", 0) == 1);
-
+void EntranceTrackerWindow::InitElement() {
     // Setup hooks for loading and clearing the entrance tracker data
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
         InitEntranceTrackingData();

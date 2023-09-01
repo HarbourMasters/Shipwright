@@ -208,7 +208,7 @@ void EnHorseNormal_Init(Actor* thisx, PlayState* play) {
             return;
         }
         if (!LINK_IS_ADULT) {
-            if (Flags_GetEventChkInf(0x14)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
                 if (this->actor.world.rot.z != 3) {
                     Actor_Kill(&this->actor);
                     return;
@@ -217,7 +217,7 @@ void EnHorseNormal_Init(Actor* thisx, PlayState* play) {
                 Actor_Kill(&this->actor);
                 return;
             }
-        } else if (Flags_GetEventChkInf(0x18) || (DREG(1) != 0)) {
+        } else if (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) || (DREG(1) != 0)) {
             if (this->actor.world.rot.z != 7) {
                 Actor_Kill(&this->actor);
                 return;
@@ -277,7 +277,7 @@ void EnHorseNormal_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_80A6B91C(EnHorseNormal* this, PlayState* play) {
-    this->actor.flags |= ACTOR_FLAG_4;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
     this->action = HORSE_FOLLOW_PATH;
     this->animationIdx = 6;
     this->waypoint = 0;
@@ -511,7 +511,7 @@ void func_80A6C6B0(EnHorseNormal* this) {
     this->animationIdx = 0;
     this->unk_21C = 0;
     this->unk_21E = 0;
-    this->actor.flags |= ACTOR_FLAG_4 | ACTOR_FLAG_5;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED;
     this->actor.speedXZ = 0.0f;
     this->unk_218 = 0.0f;
     Animation_Change(&this->skin.skelAnime, sAnimations[this->animationIdx], func_80A6B30C(this), 0.0f,

@@ -192,7 +192,7 @@ void func_80B9A668(ObjMure2* this, PlayState* play) {
     if (Math3D_Dist1DSq(this->actor.projectedPos.x, this->actor.projectedPos.z) <
             (sDistSquared1[this->actor.params & 3] * this->unk_184) ||
         CVarGetInteger("gDisableDrawDistance", 0) != 0) {
-        this->actor.flags |= ACTOR_FLAG_4;
+        this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
         ObjMure2_SpawnActors(this, play);
         func_80B9A6E8(this);
     }
@@ -211,7 +211,7 @@ void func_80B9A6F8(ObjMure2* this, PlayState* play) {
 
     if ((sDistSquared2[this->actor.params & 3] * this->unk_184) <=
             Math3D_Dist1DSq(this->actor.projectedPos.x, this->actor.projectedPos.z)) {
-        this->actor.flags &= ~ACTOR_FLAG_4;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
         ObjMure2_CleanupAndDie(this, play);
         func_80B9A658(this);
     }

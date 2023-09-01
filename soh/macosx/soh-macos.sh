@@ -1,19 +1,24 @@
 #!/bin/bash
 
 SNAME="$(dirname $0)"
-export DATA_SHARE="$HOME/Library/Application Support/com.shipofharkinian.soh"
+export SHIP_HOME="$HOME/Library/Application Support/com.shipofharkinian.soh"
 export SNAME
 export RESPATH="${SNAME%/MacOS*}/Resources"
 export LIBPATH="${SNAME%/MacOS*}/Frameworks"
 export DYLD_FALLBACK_LIBRARY_PATH="$LIBPATH"
 
-if [ ! -e "$DATA_SHARE" ]; then	mkdir "$DATA_SHARE"; fi
+if [ ! -e "$SHIP_HOME" ]; then	mkdir "$SHIP_HOME"; fi
+
+if [ ! -e "$SHIP_HOME"/mods ]; then
+	mkdir -p "$SHIP_HOME"/mods
+	touch "$SHIP_HOME"/mods/custom_otr_files_go_here.txt
+fi
 
 # If either OTR doesn't exist kick off the OTR gen process
-if [ ! -e "$DATA_SHARE"/oot.otr ] || [ ! -e "$DATA_SHARE"/oot-mq.otr ]; then
+if [ ! -e "$SHIP_HOME"/oot.otr ] || [ ! -e "$SHIP_HOME"/oot-mq.otr ]; then
 
 	# If no ROMs exist kick off the file selection prompts
-	while [ ! -e "$DATA_SHARE"/*.*64 ] && [ ! -e "$DATA_SHARE"/oot*.otr ]; do
+	while [ ! -e "$SHIP_HOME"/*.*64 ] && [ ! -e "$SHIP_HOME"/oot*.otr ]; do
 
 		SHOULD_PROMPT_FOR_ROM=1
 		while [ $SHOULD_PROMPT_FOR_ROM -eq 1 ]; do
@@ -39,9 +44,13 @@ if [ ! -e "$DATA_SHARE"/oot.otr ] || [ ! -e "$DATA_SHARE"/oot-mq.otr ]; then
 					ROM_TYPE=0;;
 				0227d7c0074f2d0ac935631990da8ec5914597b4)
 					ROM_TYPE=0;;
+				cfbb98d392e4a9d39da8285d10cbef3974c2f012)
+					ROM_TYPE=0;;
 				50bebedad9e0f10746a52b07239e47fa6c284d03)
 					ROM_TYPE=1;;
 				079b855b943d6ad8bd1eb026c0ed169ecbdac7da)
+					ROM_TYPE=1;;
+				cfecfdc58d650e71a200c81f033de4e6d617a9f6)
 					ROM_TYPE=1;;
 				517bd9714c73cb96c21e7c2ef640d7b55186102f)
 					ROM_TYPE=1;;
@@ -63,7 +72,7 @@ if [ ! -e "$DATA_SHARE"/oot.otr ] || [ ! -e "$DATA_SHARE"/oot-mq.otr ]; then
 					fi
 			esac
 
-			cp "$DROPROM" "$DATA_SHARE"
+			cp "$DROPROM" "$SHIP_HOME"
 
 			# Ask user if they would also like to select the other variant (MQ/Vanilla)
 			if [ $ROM_TYPE -eq 0 ] && [[ -z "$UPLOAD_ANOTHER_RESULT" ]]; then
@@ -93,10 +102,10 @@ if [ ! -e "$DATA_SHARE"/oot.otr ] || [ ! -e "$DATA_SHARE"/oot-mq.otr ]; then
 		done
 	done
 
-	# At this point we should now have 1 or more valid roms in $DATA_SHARE directory
+	# At this point we should now have 1 or more valid roms in $SHIP_HOME directory
 
 	# Prepare tmp dir
-	for ROMPATH in "$DATA_SHARE"/*.*64
+	for ROMPATH in "$SHIP_HOME"/*.*64
 	do
 		ASSETDIR="$(mktemp -d /tmp/assets-XXXXX)"
 		export ASSETDIR
@@ -116,10 +125,16 @@ if [ ! -e "$DATA_SHARE"/oot.otr ] || [ ! -e "$DATA_SHARE"/oot-mq.otr ]; then
 			0227d7c0074f2d0ac935631990da8ec5914597b4)
 				ROM=GC_NMQ_PAL_F
 				OTRNAME="oot.otr";;
+			cfbb98d392e4a9d39da8285d10cbef3974c2f012)
+				ROM=N64_PAL_11
+				OTRNAME="oot.otr";;
 			50bebedad9e0f10746a52b07239e47fa6c284d03)
 				ROM=GC_MQ_D
 				OTRNAME="oot-mq.otr";;
 			079b855b943d6ad8bd1eb026c0ed169ecbdac7da)
+				ROM=GC_MQ_D
+				OTRNAME="oot-mq.otr";;
+			cfecfdc58d650e71a200c81f033de4e6d617a9f6)
 				ROM=GC_MQ_D
 				OTRNAME="oot-mq.otr";;
 			517bd9714c73cb96c21e7c2ef640d7b55186102f)
@@ -132,7 +147,7 @@ if [ ! -e "$DATA_SHARE"/oot.otr ] || [ ! -e "$DATA_SHARE"/oot-mq.otr ]; then
 		esac
 
 		# Only generate OTR if we don't have on of this type yet
-		if [ -e "$DATA_SHARE"/"$OTRNAME" ]; then
+		if [ -e "$SHIP_HOME"/"$OTRNAME" ]; then
 			rm -r "$ASSETDIR"
 			continue;
 		fi
@@ -141,12 +156,12 @@ if [ ! -e "$DATA_SHARE"/oot.otr ] || [ ! -e "$DATA_SHARE"/oot-mq.otr ]; then
 		assets/extractor/ZAPD.out ed -i assets/extractor/xmls/"${ROM}" -b tmp/rom.z64 -fl assets/extractor/filelists -o placeholder -osf placeholder -gsf 1 -rconf assets/extractor/Config_"${ROM}".xml -se OTR
 		if [ -e "$ASSETDIR"/oot.otr ]; then
 			osascript -e 'display notification "OTR successfully generated" with title "Ship Of Harkinian"'
-			cp "$ASSETDIR"/oot.otr "$DATA_SHARE"/"$OTRNAME"
+			cp "$ASSETDIR"/oot.otr "$SHIP_HOME"/"$OTRNAME"
 			rm -r "$ASSETDIR"
 		fi
 	done
 
-	if [ ! -e "$DATA_SHARE"/oot*.otr ]; then
+	if [ ! -e "$SHIP_HOME"/oot*.otr ]; then
 		osascript -e 'display notification "OTR failed to generate" with title "Ship Of Harkinian"'
 		exit 1;
 	fi

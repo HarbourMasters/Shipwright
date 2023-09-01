@@ -13,12 +13,17 @@ if [ -z ${SHIP_BIN_DIR+x} ]; then
 export SHIP_BIN_DIR="$HERE/usr/bin"
 fi
 
+if [[ ! -e "$SHIP_HOME"/mods ]]; then
+    mkdir -p "$SHIP_HOME"/mods
+    touch "$SHIP_HOME"/mods/custom_otr_files_go_here.txt
+fi
+
 while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
         for romfile in "$SHIP_HOME"/*.*64
         do
             if [[ -e $romfile ]]; then
                 export ASSETDIR="$(mktemp -d /tmp/assets-XXXXX)"
-                ln -s "$HERE"/usr/bin/{assets,soh.elf,OTRGui} "$ASSETDIR"
+                ln -s "$HERE"/usr/bin/{assets,soh.elf,ZAPD} "$ASSETDIR"
                 export OLDPWD="$PWD"
                 mkdir -p "$ASSETDIR"/tmp
 	            mkdir -p "$ASSETDIR"/Extract
@@ -40,6 +45,14 @@ while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
                         continue
                     fi
                     ;;
+                cfbb98d392e4a9d39da8285d10cbef3974c2f012)
+                    if [[ ! -e "$SHIP_HOME"/oot.otr ]]; then
+                        ROM=N64_PAL_11
+                        OTRNAME="oot.otr"
+                    else
+                        continue
+                    fi
+                    ;;
                 50bebedad9e0f10746a52b07239e47fa6c284d03)
                     if [[ ! -e "$SHIP_HOME"/oot-mq.otr ]]; then
                         ROM=GC_MQ_D
@@ -49,6 +62,14 @@ while [[ (! -e "$SHIP_HOME"/oot.otr) || (! -e "$SHIP_HOME"/oot-mq.otr) ]]; do
                     fi
                     ;;
                 079b855b943d6ad8bd1eb026c0ed169ecbdac7da)
+                    if [[ ! -e "$SHIP_HOME"/oot-mq.otr ]]; then
+                        ROM=GC_MQ_D
+                        OTRNAME="oot-mq.otr"
+                    else
+                        continue
+                    fi
+                    ;;
+                cfecfdc58d650e71a200c81f033de4e6d617a9f6)
                     if [[ ! -e "$SHIP_HOME"/oot-mq.otr ]]; then
                         ROM=GC_MQ_D
                         OTRNAME="oot-mq.otr"

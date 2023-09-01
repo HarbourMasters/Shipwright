@@ -5,6 +5,7 @@
 #include <variant>
 #include <cstdint>
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include "soh/Enhancements/enhancementTypes.h"
 
 enum PresetEntryType {
     PRESET_ENTRY_TYPE_S32,
@@ -26,6 +27,7 @@ enum EnhancementPreset {
 
 enum RandomizerPreset {
     RANDOMIZER_PRESET_DEFAULT,
+    RANDOMIZER_PRESET_SPOCK_RACE,
     RANDOMIZER_PRESET_S6,
     RANDOMIZER_PRESET_HELL_MODE,
 };
@@ -44,6 +46,8 @@ typedef struct PresetEntry {
     { cvar, PRESET_ENTRY_TYPE_STRING, value }
 
 void DrawPresetSelector(PresetType presetType);
+void clearCvars(std::vector<const char*> cvarsToClear);
+void applyPreset(std::vector<PresetEntry> entries);
 
 // TODO: Ideally everything below this point will come from one/many JSON files
 
@@ -201,6 +205,66 @@ const std::vector<const char*> enhancementsCvars = {
     "gLowResMode",
     "gDrawLineupTick",
     "gQuickBongoKill",
+    "gFPSGauntlets",
+    "gSceneSpecificDirtPathFix",
+    "gZFightingMode",
+    "gAuthenticLogo",
+    "gPauseLiveLinkRotationSpeed",
+    "gBowReticle",
+    "gFixTexturesOOB",
+    "gIvanCoopModeEnabled",
+};
+
+const std::vector<const char*> cheatCvars = {
+    "gConsoleEnabled",
+    "gActorViewerEnabled",
+    "gCollisionViewerEnabled",
+    "gDLViewerEnabled",
+    "gSaveEditorEnabled",
+    "gEnableWalkModify",
+    "gWalkSpeedToggle",
+    "gWalkModifierOne",
+    "gWalkModifierTwo",
+    "gGoronPot",
+    "gDampeWin",
+    "gCustomizeShootingGallery",
+    "gCustomizeBombchuBowling",
+    "gCustomizeFishing",
+    "gInfiniteAmmo",
+    "gInfiniteEpona",
+    "gInfiniteHealth",
+    "gInfiniteMagic",
+    "gInfiniteMoney",
+    "gInfiniteNayru",
+    "gNoClip",
+    "gClimbEverything",
+    "gHookshotEverything",
+    "gCheatHookshotReachMultiplier",
+    "gMoonJumpOnL",
+    "gSuperTunic",
+    "gEzISG",
+    "gTimelessEquipment",
+    "gCheatEasyPauseBufferEnabled",
+    "gCheatEasyInputBufferingEnabled",
+    "gNoRestrictItems",
+    "gFreezeTime",
+    "gPrevTime",
+    "gDropsDontDie",
+    "gFireproofDekuShield",
+    "gShieldTwoHanded",
+    "gTimeSync",
+    "gDebugEnabled",
+    "gSkulltulaDebugEnabled",
+    "gSkipLogoTitle",
+    "gSaveFileID",
+    "gEnableBetaQuest",
+    "gBetterDebugWarpScreen",
+    "gSwitchAge",
+    "gSwitchTimeline",
+    "gNoRedeadFreeze",
+    "gBombTimerMultiplier",
+    "gNoFishDespawn",
+    "gNoBugsDespawn"
 };
 
 const std::vector<const char*> randomizerCvars = {
@@ -215,6 +279,7 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeBlueFireArrows",
     "gRandomizeBombchusInLogic",
     "gRandomizeBossKeysanity",
+    "gRandomizeBridgeRewardOptions",
     "gRandomizeCompleteMaskQuest",
     "gRandomizeCuccosToReturn",
     "gRandomizeDampeHint",
@@ -223,6 +288,8 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeDungeonCount",
     "gRandomizeEnableBombchuDrops",
     "gRandomizeEnableGlitchCutscenes",
+    "gRandomizeEnabledGlitches",
+    "gRandomizeEnabledTricks",
     "gRandomizeExcludedLocations",
     "gRandomizeForest",
     "gRandomizeFullWallets",
@@ -241,6 +308,7 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeLacsDungeonCount",
     "gRandomizeLacsMedallionCount",
     "gRandomizeLacsRewardCount",
+    "gRandomizeLacsRewardOptions",
     "gRandomizeLacsStoneCount",
     "gRandomizeLacsTokenCount",
     "gRandomizeLAHint",
@@ -276,6 +344,7 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeShuffleKeyRingsFireTemple",
     "gRandomizeShuffleKeyRingsForestTemple",
     "gRandomizeShuffleKeyRingsGanonsCastle",
+    "gRandomizeShuffleKeyRingsGerudoFortress",
     "gRandomizeShuffleKeyRingsGTG",
     "gRandomizeShuffleKeyRingsRandomCount",
     "gRandomizeShuffleKeyRingsShadowTemple",
@@ -321,6 +390,10 @@ const std::vector<const char*> randomizerCvars = {
     "gRandomizeTokenCount",
     "gRandomizeWarpSongText",
     "gRandomizeZorasFountain",
+    "gRandomizeShuffle100GSReward",
+    "gRandomizeGregHint",
+    "gRandoManualSeedEntry",
+    "gRandomizerSettingsEnabled",
 };
 
 const std::vector<PresetEntry> vanillaPlusPresetEntries = {
@@ -470,7 +543,7 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     // No Skulltula Freeze
     PRESET_ENTRY_S32("gSkulltulaFreeze", 1),
     // MM Bunny Hood
-    PRESET_ENTRY_S32("gMMBunnyHood", 1),
+    PRESET_ENTRY_S32("gMMBunnyHood", BUNNY_HOOD_FAST_AND_JUMP),
     // Fast Chests
     PRESET_ENTRY_S32("gFastChests", 1),
     // Fast Drops
@@ -512,7 +585,7 @@ const std::vector<PresetEntry> enhancedPresetEntries = {
     PRESET_ENTRY_S32("gAnubisFix", 1),
 
     // Autosave
-    PRESET_ENTRY_S32("gAutosave", 1),
+    PRESET_ENTRY_S32("gAutosave", AUTOSAVE_LOCATION_AND_MAJOR_ITEMS),
 };
 
 const std::vector<PresetEntry> randomizerPresetEntries = {
@@ -590,7 +663,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // No Skulltula Freeze
     PRESET_ENTRY_S32("gSkulltulaFreeze", 1),
     // MM Bunny Hood
-    PRESET_ENTRY_S32("gMMBunnyHood", 1),
+    PRESET_ENTRY_S32("gMMBunnyHood", BUNNY_HOOD_FAST_AND_JUMP),
     // Fast Chests
     PRESET_ENTRY_S32("gFastChests", 1),
     // Fast Drops
@@ -634,7 +707,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gAnubisFix", 1),
 
     // Autosave
-    PRESET_ENTRY_S32("gAutosave", 1),
+    PRESET_ENTRY_S32("gAutosave", AUTOSAVE_LOCATION_AND_MAJOR_ITEMS),
 
     // Customize Fishing Behaviour
     PRESET_ENTRY_S32("gCustomizeFishing", 1),
@@ -654,7 +727,7 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     // Pull out Ocarina to Summon Scarecrow
     PRESET_ENTRY_S32("gSkipScarecrow", 1),
     // Chest size & texture matches contents
-    PRESET_ENTRY_S32("gChestSizeAndTextureMatchesContents", 1),
+    PRESET_ENTRY_S32("gChestSizeAndTextureMatchesContents", CSMC_BOTH),
 
     // Pause link animation (0 to 16)
     PRESET_ENTRY_S32("gPauseLiveLink", 16),
@@ -666,10 +739,103 @@ const std::vector<PresetEntry> randomizerPresetEntries = {
     PRESET_ENTRY_S32("gFastFarores", 1),
 };
 
-const std::vector<PresetEntry> s6PresetEntries = {
-    PRESET_ENTRY_S32("gChestSizeAndTextureMatchesContents", 1),
+const std::vector<PresetEntry> spockRacePresetEntries = {
+    PRESET_ENTRY_S32("gGameplayStats.RTATiming", 1),
+    PRESET_ENTRY_S32("gTextSpeed", 5),
+    PRESET_ENTRY_S32("gMweepSpeed", 5),
+    PRESET_ENTRY_S32("gClimbSpeed", 4),
+    PRESET_ENTRY_S32("gFasterBlockPush", 5),
+    PRESET_ENTRY_S32("gFasterHeavyBlockLift", 1),
+    PRESET_ENTRY_S32("gNoForcedNavi", 1),
+    PRESET_ENTRY_S32("gDisableLOD", 1),
+    PRESET_ENTRY_S32("gDisableNaviCallAudio", 1),
     PRESET_ENTRY_S32("gFastChests", 1),
+    PRESET_ENTRY_S32("gFastDrops", 1),
+    PRESET_ENTRY_S32("gDpadText", 1),
+    PRESET_ENTRY_S32("gDpadOcarina", 1),
+    PRESET_ENTRY_S32("gRStickOcarina", 1),
+    PRESET_ENTRY_S32("gDpadEquips", 1),
+    PRESET_ENTRY_S32("gFastOcarinaPlayback", 1),
+    PRESET_ENTRY_S32("gSkipScarecrow", 1),
+    PRESET_ENTRY_S32("gMarketSneak", 1),
+    PRESET_ENTRY_S32("gInstantPutaway", 1),
+    PRESET_ENTRY_S32("gFastBoomerang", 1),
+    PRESET_ENTRY_S32("gDpadNoDropOcarinaInput", 1),
     PRESET_ENTRY_S32("gMMBunnyHood", 2),
+    PRESET_ENTRY_S32("gSeparateArrows", 1),
+    PRESET_ENTRY_S32("gAssignableTunicsAndBoots", 1),
+    PRESET_ENTRY_S32("gEquipmentCanBeRemoved", 1),
+    PRESET_ENTRY_S32("gDayGravePull", 1),
+    PRESET_ENTRY_S32("gDrawLineupTick", 1),
+    PRESET_ENTRY_S32("gNewDrops", 1),
+    PRESET_ENTRY_S32("gCreditsFix", 1),
+    PRESET_ENTRY_S32("gSkipText", 1),
+    PRESET_ENTRY_S32("gSkulltulaFreeze", 1),
+    PRESET_ENTRY_S32("gPauseAnyCursor", 1),
+    PRESET_ENTRY_S32("gHideBuildInfo", 1),
+    PRESET_ENTRY_S32("gSkipLogoTitle", 1),
+    PRESET_ENTRY_S32("gSaveFileID", 4),
+    PRESET_ENTRY_S32("gFastFarores", 1),
+    PRESET_ENTRY_S32("gNoInputForCredits", 1),
+    PRESET_ENTRY_S32("gMaskSelect", 1),
+    PRESET_ENTRY_S32("gInjectItemCounts", 1),
+    PRESET_ENTRY_S32("gCustomizeFishing", 1),
+    PRESET_ENTRY_S32("gFishNeverEscape", 1),
+    PRESET_ENTRY_S32("gInstantFishing", 1),
+    PRESET_ENTRY_S32("gGuaranteeFishingBite", 1),
+    PRESET_ENTRY_S32("gAdultMinimumWeightFish", 6),
+    PRESET_ENTRY_S32("gChildMinimumWeightFish", 3),
+    PRESET_ENTRY_S32("gGoronPot", 1),
+    PRESET_ENTRY_S32("gForgeTime", 0),
+    PRESET_ENTRY_S32("gDisableFirstPersonChus", 1),
+    PRESET_ENTRY_S32("gCheatEasyPauseBufferEnabled", 1),
+    PRESET_ENTRY_S32("gDampeAllNight", 1),
+    PRESET_ENTRY_S32("gRandomize10GSHint", 1),
+    PRESET_ENTRY_S32("gRandomize20GSHint", 1),
+    PRESET_ENTRY_S32("gRandomize30GSHint", 1),
+    PRESET_ENTRY_S32("gRandomize40GSHint", 1),
+    PRESET_ENTRY_S32("gRandomize50GSHint", 1),
+    PRESET_ENTRY_S32("gRandomizeAllLocationsReachable", 0),
+    PRESET_ENTRY_S32("gRandomizeBlueFireArrows", 1),
+    PRESET_ENTRY_S32("gRandomizeBombchusInLogic", 1),
+    PRESET_ENTRY_S32("gRandomizeCompleteMaskQuest", 1),
+    PRESET_ENTRY_S32("gRandomizeCuccosToReturn", 1),
+    PRESET_ENTRY_S32("gRandomizeDampeHint", 1),
+    PRESET_ENTRY_S32("gRandomizeDoorOfTime", 2),
+    PRESET_ENTRY_S32("gRandomizeEnableBombchuDrops", 1),
+    PRESET_ENTRY_STRING("gRandomizeExcludedLocations", "78,142,143,228,"),
+    PRESET_ENTRY_S32("gRandomizeForest", 2),
+    PRESET_ENTRY_S32("gRandomizeFullWallets", 1),
+    PRESET_ENTRY_S32("gRandomizeGanonTrial", 0),
+    PRESET_ENTRY_S32("gRandomizeGerudoFortress", 1),
+    PRESET_ENTRY_S32("gRandomizeGregHint", 1),
+    PRESET_ENTRY_S32("gRandomizeGsExpectSunsSong", 1),
+    PRESET_ENTRY_S32("gRandomizeKakarikoGate", 1),
+    PRESET_ENTRY_S32("gRandomizeLacsRewardCount", 5),
+    PRESET_ENTRY_S32("gRandomizeRainbowBridge", 7),
+    PRESET_ENTRY_S32("gRandomizeScrubText", 1),
+    PRESET_ENTRY_S32("gRandomizeShopsanity", 6),
+    PRESET_ENTRY_S32("gRandomizeShuffleGanonBossKey", 9),
+    PRESET_ENTRY_S32("gRandomizeShuffleKeyRings", 2),
+    PRESET_ENTRY_S32("gRandomizeShuffleKokiriSword", 1),
+    PRESET_ENTRY_S32("gRandomizeShuffleOcarinas", 1),
+    PRESET_ENTRY_S32("gRandomizeShuffleScrubs", 1),
+    PRESET_ENTRY_S32("gRandomizeSkipChildStealth", 1),
+    PRESET_ENTRY_S32("gRandomizeSkipChildZelda", 1),
+    PRESET_ENTRY_S32("gRandomizeSkipEponaRace", 1),
+    PRESET_ENTRY_S32("gRandomizeSkipScarecrowsSong", 1),
+    PRESET_ENTRY_S32("gRandomizeSkipTowerEscape", 1),
+    PRESET_ENTRY_S32("gRandomizeStartingConsumables", 1),
+    PRESET_ENTRY_S32("gRandomizeStartingMapsCompasses", 0),
+    PRESET_ENTRY_S32("gRandomizeStartingOcarina", 1),
+    PRESET_ENTRY_S32("gRandomizeSunlightArrows", 1),
+    PRESET_ENTRY_S32("gRandomizerSettingsEnabled", 1),
+};
+
+const std::vector<PresetEntry> s6PresetEntries = {
+    PRESET_ENTRY_S32("gChestSizeAndTextureMatchesContents", CSMC_BOTH),
+    PRESET_ENTRY_S32("gFastChests", 1),
+    PRESET_ENTRY_S32("gMMBunnyHood", BUNNY_HOOD_FAST),
     PRESET_ENTRY_S32("gRandomizeBigPoeTargetCount", 1),
     PRESET_ENTRY_S32("gRandomizeCuccosToReturn", 4),
     PRESET_ENTRY_S32("gRandomizeDoorOfTime", RO_DOOROFTIME_OPEN),
@@ -700,9 +866,9 @@ const std::vector<PresetEntry> s6PresetEntries = {
 };
 
 const std::vector<PresetEntry> hellModePresetEntries = {
-    PRESET_ENTRY_S32("gChestSizeAndTextureMatchesContents", 1),
+    PRESET_ENTRY_S32("gChestSizeAndTextureMatchesContents", CSMC_BOTH),
     PRESET_ENTRY_S32("gFastChests", 1),
-    PRESET_ENTRY_S32("gMMBunnyHood", 2),
+    PRESET_ENTRY_S32("gMMBunnyHood", BUNNY_HOOD_FAST),
     PRESET_ENTRY_S32("gRandomizeBigPoeTargetCount", 1),
     PRESET_ENTRY_S32("gRandomizeBlueFireArrows", 1),
     PRESET_ENTRY_S32("gRandomizeBossKeysanity", RO_DUNGEON_ITEM_LOC_ANYWHERE),
@@ -789,10 +955,19 @@ const std::map<PresetType, PresetTypeDefinition> presetTypes = {
             "Reset all options to their default values.",
             {},
         } },
+        { RANDOMIZER_PRESET_SPOCK_RACE, {
+            "Spock Race",
+            "Race preset used for the official Ship of Harkinian race on June 3rd 2023. The following settings are notable:\n" \
+            "- Rainbow Bridge is set to Greg\n" \
+            "- Ganons Boss Key is 5 dungeon rewards\n" \
+            "- Shopsanity and Scrubsanity enabled\n" \
+            "- All locations reachable is off\n", \
+            spockRacePresetEntries,
+        } },
         { RANDOMIZER_PRESET_S6, {
             "S6 Tournament (Adapted)",
             "Matches OOTR S6 tournament settings as close as we can get with the options available in SoH. The following differences are notable:\n" \
-            "- Both child and adult overworld spawns are randomized" \
+            "- Both child and adult overworld spawns are randomized\n" \
             "- Dungeon rewards are shuffled at the end of dungeons, rather than at the end of their own dungeon\n" \
             "- Full adult trade sequence is shuffled instead of the selected 4\n" \
             "- Hint distribution no \"tournament\" mode, falling back to balanced",

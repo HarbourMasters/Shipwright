@@ -7,7 +7,7 @@
 #include "z_en_st.h"
 #include "objects/object_st/object_st.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnSt_Init(Actor* thisx, PlayState* play);
 void EnSt_Destroy(Actor* thisx, PlayState* play);
@@ -460,7 +460,7 @@ s32 EnSt_CheckHitBackside(EnSt* this, PlayState* play) {
         return false;
     }
     Enemy_StartFinishingBlow(play, &this->actor);
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->groundBounces = 3;
     this->deathTimer = 20;
     this->actor.gravity = -1.0f;
@@ -790,7 +790,7 @@ void EnSt_Init(Actor* thisx, PlayState* play) {
     this->blureIdx = EnSt_CreateBlureEffect(play);
     EnSt_InitColliders(this, play);
     if (thisx->params == 2) {
-        this->actor.flags |= ACTOR_FLAG_7;
+        this->actor.flags |= ACTOR_FLAG_LENS;
     }
     if (this->actor.params == 1) {
         this->actor.naviEnemyId = 0x05;
@@ -798,8 +798,8 @@ void EnSt_Init(Actor* thisx, PlayState* play) {
         this->actor.naviEnemyId = 0x04;
     }
     EnSt_CheckCeilingPos(this, play);
-    this->actor.flags |= ACTOR_FLAG_14;
-    this->actor.flags |= ACTOR_FLAG_24;
+    this->actor.flags |= ACTOR_FLAG_ARROW_DRAGGABLE;
+    this->actor.flags |= ACTOR_FLAG_PLAY_HIT_SFX;
     EnSt_SetColliderScale(this);
     this->actor.gravity = 0.0f;
     this->initalYaw = this->actor.world.rot.y;
@@ -815,6 +815,8 @@ void EnSt_Destroy(Actor* thisx, PlayState* play) {
         Collider_DestroyCylinder(play, &this->colCylinder[i]);
     }
     Collider_DestroyJntSph(play, &this->colSph);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnSt_WaitOnCeiling(EnSt* this, PlayState* play) {
@@ -1013,7 +1015,7 @@ void EnSt_Update(Actor* thisx, PlayState* play) {
     s32 pad;
     Color_RGBA8 color = { 0, 0, 0, 0 };
 
-    if (this->actor.flags & ACTOR_FLAG_15) {
+    if (this->actor.flags & ACTOR_FLAG_DRAGGED_BY_ARROW) {
         SkelAnime_Update(&this->skelAnime);
     } else if (!EnSt_CheckColliders(this, play)) {
         // no collision has been detected.

@@ -13,7 +13,7 @@
 #include "objects/object_mori_hineri2a/object_mori_hineri2a.h"
 #include "objects/object_mori_tex/object_mori_tex.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void BgMoriHineri_Init(Actor* thisx, PlayState* play);
 void BgMoriHineri_Destroy(Actor* thisx, PlayState* play);
@@ -27,6 +27,8 @@ void func_808A3C8C(BgMoriHineri* this, PlayState* play);
 void BgMoriHineri_SpawnBossKeyChest(BgMoriHineri* this, PlayState* play);
 void BgMoriHineri_DoNothing(BgMoriHineri* this, PlayState* play);
 void func_808A3D58(BgMoriHineri* this, PlayState* play);
+
+s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
 
 s16 sBgMoriHineriNextCamIdx = SUBCAM_NONE;
 

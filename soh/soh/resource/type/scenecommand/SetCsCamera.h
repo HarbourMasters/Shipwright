@@ -7,18 +7,18 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
-namespace Ship {
+namespace LUS {
 typedef struct {
 
 } CsCamera;
 
-class SetCsCamera : public SceneCommand {
+class SetCsCamera : public SceneCommand<CsCamera> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    CsCamera* GetPointer();
     size_t GetPointerSize();
 
     CsCamera csCamera;
 };
-}; // namespace Ship
+}; // namespace LUS

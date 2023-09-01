@@ -1,0 +1,31 @@
+<Root>
+    <File Name="ovl_file_choose" BaseAddress="0x80803880" RangeStart="0xF120" RangeEnd="0xFA20">
+        <Array Name="D_80811BB0" Count="24" Offset="0xF120" Static="Off">
+            <Vtx/>
+        </Array>
+        <!-- German vertices are combined into one array -->
+        <Array Name="D_80811D30" Count="24" Offset="0xF2A0" Static="Off">
+            <Vtx/>
+        </Array>
+        <!-- <Array Name="D_80811E30" Count="16" Offset="0xF3A0" Static="Off">
+            <Vtx/>
+        </Array> -->
+        <!-- German vertices are combined into one array -->
+        <Array Name="D_80811F30" Count="40" Offset="0xF420" Static="Off">
+            <Vtx/>
+        </Array>
+        <!-- <Array Name="D_80812130" Count="32" Offset="0xF6A0" Static="Off">
+            <Vtx/>
+        </Array> -->
+        <Array Name="gOptionsDividerTopVtx" Count="4" Offset="0xF8A0" Static="Off">
+            <Vtx/>
+        </Array>
+        <Array Name="gOptionsDividerMiddleVtx" Count="4" Offset="0xF8E0" Static="Off">
+            <Vtx/>
+        </Array>
+        <Array Name="gOptionsDividerBottomVtx" Count="4" Offset="0xF920" Static="Off">
+            <Vtx/>
+        </Array>
+        <!-- OTRTODO: Vertices for Choose Language header, options, and divider -->
+    </File>
+</Root>

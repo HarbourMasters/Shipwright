@@ -1,11 +1,11 @@
 #include "SetCsCamera.h"
 
-namespace Ship {
-void* SetCsCamera::GetPointer() {
+namespace LUS {
+CsCamera* SetCsCamera::GetPointer() {
     return &csCamera;
 }
 
 size_t SetCsCamera::GetPointerSize() {
 	return sizeof(CsCamera);
 }
-} // namespace Ship
+} // namespace LUS

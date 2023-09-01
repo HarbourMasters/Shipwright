@@ -22,7 +22,6 @@ void StartingItemGive(GetItemEntry getItemEntry) {
     } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
         if (getItemEntry.getItemId == RG_ICE_TRAP) {
             gSaveContext.pendingIceTrapCount++;
-            GameInteractor::Instance->ExecuteHooks<GameInteractor::OnItemReceive>(getItemEntry);
         } else {
             Randomizer_Item_Give(NULL, getItemEntry);
         }

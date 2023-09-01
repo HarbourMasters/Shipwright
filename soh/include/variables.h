@@ -68,8 +68,6 @@ extern "C"
 	extern u64 gJpegUCode[];
 	extern EffectSsOverlay gEffectSsOverlayTable[EFFECT_SS_TYPE_MAX];
 	extern Gfx D_80116280[];
-	extern ActorOverlay gActorOverlayTable[ACTOR_ID_MAX]; // original name: "actor_dlftbls" 801162A0
-	extern s32 gMaxActorId; // original name: "MaxProfile"
 	extern s32 gDbgCamEnabled;
 	extern GameStateOverlay gGameStateOverlayTable[6];
 	extern u8 gWeatherMode;
@@ -103,6 +101,7 @@ extern "C"
 	extern u32 gGsFlagsShifts[4];
 	extern void* gItemIcons[0x82];
 	extern u8 gItemAgeReqs[];
+	extern u8 gSlotAgeReqs[];
 	extern u8 gItemSlots[56];
 	extern void (*gSceneCmdHandlers[SCENE_CMD_ID_MAX])(PlayState*, SceneCmd*);
 	extern s16 gLinkObjectIds[2];

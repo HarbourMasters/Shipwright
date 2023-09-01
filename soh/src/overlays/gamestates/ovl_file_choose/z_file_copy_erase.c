@@ -1,4 +1,5 @@
 #include "file_choose.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 // when choosing a file to copy or erase, the 6 main menu buttons are placed at these offsets
 static s16 sChooseFileYOffsets[] = { -48, -48, -48, -24, -24, 0 };
@@ -54,7 +55,7 @@ void FileChoose_SetupCopySource(GameState* thisx) {
     }
 }
 
-uint16_t lastCopyEraseButtonIndex;
+static s16 sLastCopyEraseButtonIndex;
 
 /**
  * Allow the player to select a file to copy or exit back to the main menu.
@@ -112,10 +113,10 @@ void FileChoose_SelectCopySource(GameState* thisx) {
             }
         }
     }
-    
-    if (lastCopyEraseButtonIndex != this->buttonIndex) {
+
+    if (sLastCopyEraseButtonIndex != this->buttonIndex) {
         GameInteractor_ExecuteOnUpdateFileCopySelection(this->buttonIndex);
-        lastCopyEraseButtonIndex = this->buttonIndex;
+        sLastCopyEraseButtonIndex = this->buttonIndex;
     }
 }
 
@@ -239,6 +240,11 @@ void FileChoose_SelectCopyDest(GameState* thisx) {
             } else {
                 this->warningLabel = FS_WARNING_NONE;
             }
+        }
+
+        if (sLastCopyEraseButtonIndex != this->buttonIndex) {
+            GameInteractor_ExecuteOnUpdateFileCopySelection(this->buttonIndex);
+            sLastCopyEraseButtonIndex = this->buttonIndex;
         }
     }
 }
@@ -386,10 +392,10 @@ void FileChoose_CopyConfirm(GameState* thisx) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         this->buttonIndex ^= 1;
     }
-    
-    if (lastCopyEraseButtonIndex != this->buttonIndex) {
+
+    if (sLastCopyEraseButtonIndex != this->buttonIndex) {
         GameInteractor_ExecuteOnUpdateFileCopyConfirmationSelection(this->buttonIndex);
-        lastCopyEraseButtonIndex = this->buttonIndex;
+        sLastCopyEraseButtonIndex = this->buttonIndex;
     }
 }
 
@@ -630,6 +636,8 @@ void FileChoose_ExitCopyToMain(GameState* thisx) {
 
     this->optionButtonAlpha = this->actionButtonAlpha[FS_BTN_ACTION_ERASE] =
         this->actionButtonAlpha[FS_BTN_ACTION_COPY];
+
+    sLastCopyEraseButtonIndex = -1;
 }
 
 /**
@@ -736,10 +744,10 @@ void FileChoose_EraseSelect(GameState* thisx) {
             this->warningLabel = FS_WARNING_NONE;
         }
     }
-    
-    if (lastCopyEraseButtonIndex != this->buttonIndex) {
+
+    if (sLastCopyEraseButtonIndex != this->buttonIndex) {
         GameInteractor_ExecuteOnUpdateFileEraseSelection(this->buttonIndex);
-        lastCopyEraseButtonIndex = this->buttonIndex;
+        sLastCopyEraseButtonIndex = this->buttonIndex;
     }
 }
 
@@ -850,10 +858,10 @@ void FileChoose_EraseConfirm(GameState* thisx) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         this->buttonIndex ^= 1;
     }
-    
-    if (lastCopyEraseButtonIndex != this->buttonIndex) {
+
+    if (sLastCopyEraseButtonIndex != this->buttonIndex) {
         GameInteractor_ExecuteOnUpdateFileEraseConfirmationSelection(this->buttonIndex);
-        lastCopyEraseButtonIndex = this->buttonIndex;
+        sLastCopyEraseButtonIndex = this->buttonIndex;
     }
 }
 
@@ -1084,4 +1092,6 @@ void FileChoose_ExitEraseToMain(GameState* thisx) {
 
     this->optionButtonAlpha = this->actionButtonAlpha[FS_BTN_ACTION_ERASE] =
         this->actionButtonAlpha[FS_BTN_ACTION_COPY];
+
+    sLastCopyEraseButtonIndex = -1;
 }

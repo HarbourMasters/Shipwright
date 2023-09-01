@@ -9,7 +9,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "overlays/actors/ovl_Boss_Fd/z_boss_fd.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnVbBall_Init(Actor* thisx, PlayState* play);
 void EnVbBall_Destroy(Actor* thisx, PlayState* play);
@@ -17,7 +17,7 @@ void EnVbBall_Update(Actor* thisx, PlayState* play);
 void EnVbBall_Draw(Actor* thisx, PlayState* play);
 
 const ActorInit En_Vb_Ball_InitVars = {
-    0,
+    ACTOR_EN_VB_BALL,
     ACTORCAT_BOSS,
     FLAGS,
     OBJECT_FD,

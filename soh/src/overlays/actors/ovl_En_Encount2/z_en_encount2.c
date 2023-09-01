@@ -4,7 +4,7 @@
 #include "objects/object_efc_star_field/object_efc_star_field.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 typedef enum {
     /* 0x0 */ ENCOUNT2_INACTIVE,
@@ -48,7 +48,7 @@ void EnEncount2_Init(Actor* thisx, PlayState* play) {
         // "☆☆☆☆☆ Death Mountain Encount2 set ☆☆☆☆☆"
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ デスマウンテンエンカウント２セットされました ☆☆☆☆☆ %d\n" VT_RST,
                      this->actor.params);
-        if (LINK_IS_ADULT && (gSaveContext.eventChkInf[4] & 0x200)) { // flag for having used fire temple blue warp
+        if (LINK_IS_ADULT && (Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP))) { // flag for having used fire temple blue warp
             Actor_Kill(thisx);
         }
     } else {

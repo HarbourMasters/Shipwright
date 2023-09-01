@@ -12,7 +12,7 @@
 #include "scenes/indoors/daiyousei_izumi/daiyousei_izumi_scene.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5 | ACTOR_FLAG_25)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 typedef enum {
     /* 0 */ FAIRY_UPGRADE_MAGIC,
@@ -109,7 +109,9 @@ void BgDyYoseizo_Init(Actor* thisx, PlayState* play2) {
     this->actionFunc = BgDyYoseizo_CheckMagicAcquired;
 }
 
-void BgDyYoseizo_Destroy(Actor* this, PlayState* play) {
+void BgDyYoseizo_Destroy(Actor* thisx, PlayState* play) {
+    BgDyYoseizo* this = (BgDyYoseizo*)thisx;
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 static Color_RGB8 sParticlePrimColors[] = {
@@ -235,17 +237,17 @@ void BgDyYoseizo_ChooseType(BgDyYoseizo* this, PlayState* play) {
     if (play->sceneNum != SCENE_DAIYOUSEI_IZUMI) {
         switch (this->fountainType) {
             case FAIRY_SPELL_FARORES_WIND:
-                if (!(gSaveContext.itemGetInf[1] & 0x100)) {
+                if (!Flags_GetItemGetInf(ITEMGETINF_18)) {
                     givingReward = true;
                 }
                 break;
             case FAIRY_SPELL_DINS_FIRE:
-                if (!(gSaveContext.itemGetInf[1] & 0x200)) {
+                if (!Flags_GetItemGetInf(ITEMGETINF_19)) {
                     givingReward = true;
                 }
                 break;
             case FAIRY_SPELL_NAYRUS_LOVE:
-                if (!(gSaveContext.itemGetInf[1] & 0x400)) {
+                if (!Flags_GetItemGetInf(ITEMGETINF_1A)) {
                     givingReward = true;
                 }
                 break;

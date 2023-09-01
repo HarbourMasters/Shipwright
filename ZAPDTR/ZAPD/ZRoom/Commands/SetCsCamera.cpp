@@ -18,6 +18,7 @@ void SetCsCamera::ParseRawData()
 	uint32_t currentPtr = segmentOffset;
 	int32_t numPoints = 0;
 
+	cameras.reserve(numCameras);
 	for (int32_t i = 0; i < numCameras; i++)
 	{
 		CsCameraEntry entry(parent->GetRawData(), currentPtr);
@@ -31,6 +32,7 @@ void SetCsCamera::ParseRawData()
 	{
 		uint32_t currentPtr = cameras.at(0).GetSegmentOffset();
 
+		points.reserve(numPoints);
 		for (int32_t i = 0; i < numPoints; i++)
 		{
 			ZVector vec(parent);

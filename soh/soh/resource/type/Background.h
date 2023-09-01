@@ -2,14 +2,16 @@
 
 #include "resource/Resource.h"
 
-namespace Ship {
-class Background : public Resource {
+namespace LUS {
+class Background : public Resource<uint8_t> {
   public:
     using Resource::Resource;
 
-    void* GetPointer();
+    Background() : Resource(std::shared_ptr<ResourceInitData>()) {}
+
+    uint8_t* GetPointer();
     size_t GetPointerSize();
 
     std::vector<uint8_t> Data;
 };
-}; // namespace Ship
+}; // namespace LUS

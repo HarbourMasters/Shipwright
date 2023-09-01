@@ -125,6 +125,10 @@ string_view bridgeDungeonCountDesc    = "Set the number of completed dungeons re
                                         "spawn the Rainbow Bridge.";                       //
 string_view bridgeTokenCountDesc      = "Set the number of Gold Skulltula Tokens required\n"
                                         "to spawn the Rainbow Bridge.";                    //
+string_view bridgeRewardOptionsDesc         = "Set whether the rewards are standard, if Greg\n"
+                                        "counts as a reward and considered for logic\n"
+                                        "or if Greg becomes a wildcard, counting as a reward but\n"
+                                        "not considered in logic.";                        //
 /*------------------------------                                                           //
 |     RANDOM GANONS TRIALS     |                                                           //
 ------------------------------*/                                                           //
@@ -601,10 +605,10 @@ string_view ganonKey100GS             = "Ganon's Castle Boss Key is given to you
 /*------------------------------                                                           //
 |        LACS CONDITIONS       |                                                           //
 ------------------------------*/                                                           //
-string_view lacsMedallionCountDesc    = "Set the number of Medallions required to trigger\n"
-                                        "the Light Arrow Cutscene.";                       //
 string_view lacsStoneCountDesc        = "Set the number of Spiritual Stones required to\n" //
                                         "trigger the Light Arrow Cutscene.";               //
+string_view lacsMedallionCountDesc    = "Set the number of Medallions required to trigger\n"
+                                        "the Light Arrow Cutscene.";                       //
 string_view lacsRewardCountDesc       = "Set the number of Dungeon Rewards (Spiritual\n"   //
                                         "Stones and Medallions) required to trigger the\n" //
                                         "Light Arrow Cutscene.";                           //
@@ -615,6 +619,10 @@ string_view lacsDungeonCountDesc      = "Set the number of completed dungeons re
                                         "into the blue warp at the end of them.";          //
 string_view lacsTokenCountDesc        = "Set the number of Gold Skulltula Tokens required\n"
                                         "to trigger the Light Arrow Cutscene.";            //
+string_view lacsRewardOptionsDesc     = "Set whether the rewards are standard, if Greg\n"
+                                        "counts as a reward and considered for logic\n"
+                                        "or if Greg becomes a wildcard, counting as a reward but\n"
+                                        "not considered in logic.";                        //
 /*------------------------------                                                           //
 |      SKIP CHILD STEALTH      |                                                           //
 ------------------------------*/                                                           //
@@ -1104,6 +1112,7 @@ string_view ToggleLogicNoneDesc                       = "Disables all the Detail
 string_view ToggleLogicNoviceDesc                     = "Enables only the easier Detailed Logic tricks";   //
 string_view ToggleLogicIntermediateDesc               = "Enables all but the harder Detailed Logic tricks.";
 string_view ToggleLogicExpertDesc                     = "Enables all the Detailed Logic tricks.";          //
+string_view LogicTempDesc                             = "";                                                //
                                                                                                            //
 string_view LogicGrottosWithoutAgonyDesc              = "Difficulty: Novice\n"                             //
                                                         "Grottos can be accessed without Stone of Agony,\n"//

@@ -2,7 +2,7 @@
 #include "objects/object_sd/object_sd.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnHeishi4_Init(Actor* thisx, PlayState* play);
 void EnHeishi4_Destroy(Actor* thisx, PlayState* play);
@@ -107,6 +107,8 @@ void EnHeishi4_Destroy(Actor* thisx, PlayState* play) {
     EnHeishi4* this = (EnHeishi4*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80A56328(EnHeishi4* this, PlayState* play) {
@@ -132,12 +134,12 @@ void func_80A563BC(EnHeishi4* this, PlayState* play) {
         this->unk_2B4 = 1;
         this->actionFunc = func_80A56B40;
     } else {
-        if (gSaveContext.eventChkInf[8] & 1) {
+        if (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) {
             this->actor.textId = 0x5065;
             this->actionFunc = func_80A56B40;
             return;
         }
-        if (gSaveContext.eventChkInf[4] & 0x20) {
+        if (Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL)) {
             this->actor.textId = 0x5068;
             this->actionFunc = func_80A56B40;
             return;
@@ -213,14 +215,14 @@ void func_80A56614(EnHeishi4* this, PlayState* play) {
 }
 
 void func_80A5673C(EnHeishi4* this, PlayState* play) {
-    if (gSaveContext.eventChkInf[4] & 0x20) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL)) {
         osSyncPrintf(VT_FGCOL(YELLOW) " ☆☆☆☆☆ マスターソード祝入手！ ☆☆☆☆☆ \n" VT_RST);
         Actor_Kill(&this->actor);
         return;
     }
     this->unk_284 = 0;
-    if (gSaveContext.eventChkInf[8] & 1) {
-        if (!(gSaveContext.infTable[6] & 0x1000)) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) {
+        if (!Flags_GetInfTable(INFTABLE_6C)) {
             f32 frames = Animation_GetLastFrame(&gEnHeishiDyingGuardAnim_00C444);
             Animation_Change(&this->skelAnime, &gEnHeishiDyingGuardAnim_00C444, 1.0f, 0.0f, (s16)frames, ANIMMODE_LOOP,
                              -10.0f);
@@ -267,7 +269,7 @@ void func_80A56994(EnHeishi4* this, PlayState* play) {
     func_80038290(play, &this->actor, &this->unk_260, &this->unk_266, this->actor.focus.pos);
     if ((this->unk_282 == Message_GetState(&play->msgCtx)) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
-        gSaveContext.infTable[6] |= 0x1000;
+        Flags_SetInfTable(INFTABLE_6C);
         func_8002DF54(play, NULL, 8);
         this->actionFunc = func_80A56A50;
     }
@@ -332,7 +334,12 @@ void func_80A56B40(EnHeishi4* this, PlayState* play) {
             return;
         }
         if (this->type == HEISHI4_AT_MARKET_NIGHT) {
-            if (CVarGetInteger("gMarketSneak", 0)) {
+            Player* player = GET_PLAYER(play);
+            // Only allow sneaking when not wearing a mask as that triggers different dialogue. MM Bunny hood disables
+            // these interactions, so bunny hood is fine in that case.
+            if (CVarGetInteger("gMarketSneak", 0) &&
+                (player->currentMask == PLAYER_MASK_NONE ||
+                 (player->currentMask == PLAYER_MASK_BUNNY && CVarGetInteger("gMMBunnyHood", 0)))) {
                 this->actionFunc = EnHeishi4_MarketSneak;
             } else {
                 this->actionFunc = func_80A56614;

@@ -9,7 +9,7 @@
 #include "Globals.h"
 #include "OutputFormatter.h"
 #include "Utils/BitConverter.h"
-#include "Utils/File.h"
+#include <Utils/DiskFile.h>
 #include "Utils/Path.h"
 #include "Utils/StringHelper.h"
 #include "WarningHandler.h"
@@ -213,6 +213,7 @@ void ZDisplayList::ParseRawData()
 	instructions.reserve(numInstructions);
 	uint32_t ptr = rawDataIndex;
 
+	instructions.reserve(numInstructions);
 	for (size_t i = 0; i < numInstructions; i++)
 	{
 		instructions.push_back(BitConverter::ToUInt64BE(rawData, ptr));
@@ -1981,7 +1982,7 @@ void ZDisplayList::DeclareReferences(const std::string& prefix)
 
 		// Generate Vertex Declarations
 		std::vector<int32_t> vtxKeys;
-
+		vtxKeys.reserve(vertices.size());
 		for (auto& item : vertices)
 			vtxKeys.push_back(item.first);
 

@@ -518,7 +518,7 @@ void Entrance_HandleEponaState(void) {
     Player* player = GET_PLAYER(gPlayState);
     //If Link is riding Epona but he's about to go through an entrance where she can't spawn,
     //unset the Epona flag to avoid Master glitch, and restore temp B.
-    if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) && (player->stateFlags1 & PLAYER_STATE1_23)) {
+    if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) && (player->stateFlags1 & PLAYER_STATE1_ON_HORSE)) {
         // Allow Master glitch to be performed on the Thieves Hideout entrance
         if (entrance == Entrance_GetOverride(0x0496)) { // Gerudo Fortress -> Theives Hideout
             return;
@@ -563,7 +563,7 @@ void Entrance_HandleEponaState(void) {
 
         // Update Link's status to no longer be riding epona so that the next time link
         // enters an epona supported area, he isn't automatically placed on epona
-        player->stateFlags1 &= ~PLAYER_STATE1_23;
+        player->stateFlags1 &= ~PLAYER_STATE1_ON_HORSE;
         player->actor.parent = NULL;
         AREG(6) = 0;
         gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0]; //"temp B"
@@ -587,7 +587,7 @@ void Entrance_OverrideWeatherState() {
         return;
     }
     // Lon Lon Ranch (No Epona)
-    if (!Flags_GetEventChkInf(0x18)){ // if you don't have Epona
+    if (!Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED)){ // if you don't have Epona
         switch (gSaveContext.entranceIndex) {
             case 0x0157: // Lon Lon Ranch from HF
             case 0x01F9: // Hyrule Field from LLR
@@ -596,7 +596,7 @@ void Entrance_OverrideWeatherState() {
         }
     }
     // Water Temple
-    if (!(gSaveContext.eventChkInf[4] & 0x0400)) { // have not beaten Water Temple
+    if (!Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) { // have not beaten Water Temple
         switch (gSaveContext.entranceIndex) {
             case 0x019D: // Zora River from behind waterfall
             case 0x01DD: // Zora River from LW water shortcut
@@ -630,7 +630,7 @@ void Entrance_OverrideWeatherState() {
         }
     }
     // Death Mountain Cloudy
-    if (!(gSaveContext.eventChkInf[4] & 0x0200)) { // have not beaten Fire Temple
+    if (!Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) { // have not beaten Fire Temple
         if (gPlayState->nextEntranceIndex == 0x04D6) { // Lost Woods Goron City Shortcut
             gWeatherMode = 2;
             return;
@@ -769,6 +769,8 @@ void Entrance_SetSceneDiscovered(u8 sceneNum) {
         u32 sceneBit = 1 << (sceneNum - (idx * bitsPerIndex));
         gSaveContext.sohStats.scenesDiscovered[idx] |= sceneBit;
     }
+    // Save scenesDiscovered
+    Save_SaveSection(SECTION_ID_SCENES);
 }
 
 u8 Entrance_GetIsEntranceDiscovered(u16 entranceIndex) {
@@ -801,4 +803,6 @@ void Entrance_SetEntranceDiscovered(u16 entranceIndex) {
             }
         }
     }
+    // Save entrancesDiscovered
+    Save_SaveSection(SECTION_ID_ENTRANCES);
 }

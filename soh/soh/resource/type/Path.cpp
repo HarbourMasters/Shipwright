@@ -1,11 +1,11 @@
 #include "Path.h"
 
-namespace Ship {
-void* Path::GetPointer() {
+namespace LUS {
+PathData* Path::GetPointer() {
     return pathData.data();
 }
 
 size_t Path::GetPointerSize() {
-	return pathData.size() * sizeof(PathData);
+    return pathData.size() * sizeof(PathData);
 }
-} // namespace Ship
+} // namespace LUS

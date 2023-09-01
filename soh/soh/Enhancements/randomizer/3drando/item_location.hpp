@@ -208,7 +208,7 @@ public:
       addedToPool = true;
     }
 
-    const uint32_t GetHintKey() const {
+    uint32_t GetHintKey() const {
         return hintKey;
     }
 
@@ -319,7 +319,7 @@ public:
       return &excludedOption;
     }
 
-    const uint32_t Getuint32_t() const {
+    uint32_t Getuint32_t() const {
       return hintKey;
     }
 
@@ -345,6 +345,30 @@ public:
 
     bool IsHintable() const {
       return isHintable;
+    }
+
+    void SetHintedLocation(uint32_t location) {
+      hintedLocation = location;
+    }
+
+    uint32_t GetHintedLocation() {
+      return hintedLocation;
+    }
+
+    void SetHintType(HintType type) {
+      hintType = type;
+    }
+
+    HintType GetHintType() {
+      return hintType;
+    }
+
+    void SetHintedRegion (std::string region) {
+      hintedRegion = region;
+    }
+
+    std::string GetHintedRegion() {
+      return hintedRegion;
     }
 
     void SetAsHintable() {
@@ -465,6 +489,9 @@ private:
     std::vector<Category> categories;
     bool addedToPool = false;
     uint32_t placedItem = NONE;
+    uint32_t hintedLocation = NONE;
+    HintType hintType;
+    std::string hintedRegion;
     uint32_t delayedItem = NONE;
     Option excludedOption = Option::Bool(name, {"Include", "Exclude"}, {"", ""});
     uint16_t price = 0;

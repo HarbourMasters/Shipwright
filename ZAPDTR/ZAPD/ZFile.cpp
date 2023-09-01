@@ -10,7 +10,7 @@
 #include "Utils/BinaryWriter.h"
 #include "Utils/BitConverter.h"
 #include "Utils/Directory.h"
-#include "Utils/File.h"
+#include <Utils/DiskFile.h>
 #include "Utils/MemoryStream.h"
 #include "Utils/Path.h"
 #include "Utils/StringHelper.h"
@@ -190,7 +190,7 @@ void ZFile::ParseXML(tinyxml2::XMLElement* reader, const std::string& filename)
 	{
 		if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
 		{
-			if (!File::Exists((basePath / name).string()))
+			if (!DiskFile::Exists((basePath / name).string()))
 			{
 				std::string errorHeader = StringHelper::Sprintf("binary file '%s' does not exist.",
 				                                                (basePath / name).c_str());
@@ -224,7 +224,12 @@ void ZFile::ParseXML(tinyxml2::XMLElement* reader, const std::string& filename)
 		// Check for repeated attributes.
 		if (offsetXml != nullptr)
 		{
-			rawDataIndex = strtol(StringHelper::Split(std::string(offsetXml), "0x")[1].c_str(), NULL, 16);
+			if (!StringHelper::IsValidOffset(std::string_view(offsetXml)))
+			{
+				HANDLE_ERROR(WarningType::InvalidXML,
+				             StringHelper::Sprintf("Invalid offset %s entered", offsetXml), "");
+			}
+			rawDataIndex = strtol(offsetXml, NULL, 16);
 
 			if (offsetSet.find(offsetXml) != offsetSet.end())
 			{
@@ -416,7 +421,7 @@ void ZFile::ExtractResources()
 
 	if (memStreamFile->GetLength() > 0)
 	{
-		File::WriteAllBytes(StringHelper::Sprintf("%s%s.bin",
+		DiskFile::WriteAllBytes(StringHelper::Sprintf("%s%s.bin",
 		                                          Globals::Instance->outputPath.string().c_str(),
 		                                          GetName().c_str()),
 		                    memStreamFile->ToVector());
@@ -433,7 +438,7 @@ void ZFile::AddResource(ZResource* res)
 	resources.push_back(res);
 }
 
-ZResource* ZFile::FindResource(uint32_t rawDataIndex)
+ZResource* ZFile::FindResource(offset_t rawDataIndex)
 {
 	for (ZResource* res : resources)
 	{
@@ -447,6 +452,7 @@ ZResource* ZFile::FindResource(uint32_t rawDataIndex)
 std::vector<ZResource*> ZFile::GetResourcesOfType(ZResourceType resType)
 {
 	std::vector<ZResource*> resList;
+	resList.reserve(resources.size());
 
 	for (ZResource* res : resources)
 	{
@@ -722,7 +728,7 @@ bool ZFile::GetDeclarationArrayIndexedName(segptr_t segAddress, size_t elementSi
 	return true;
 }
 
-Declaration* ZFile::GetDeclaration(uint32_t address) const
+Declaration* ZFile::GetDeclaration(offset_t address) const
 {
 	if (declarations.find(address) != declarations.end())
 		return declarations.at(address);
@@ -730,7 +736,7 @@ Declaration* ZFile::GetDeclaration(uint32_t address) const
 	return nullptr;
 }
 
-Declaration* ZFile::GetDeclarationRanged(uint32_t address) const
+Declaration* ZFile::GetDeclarationRanged(offset_t address) const
 {
 	for (const auto decl : declarations)
 	{
@@ -741,7 +747,7 @@ Declaration* ZFile::GetDeclarationRanged(uint32_t address) const
 	return nullptr;
 }
 
-bool ZFile::HasDeclaration(uint32_t address)
+bool ZFile::HasDeclaration(offset_t address)
 {
 	assert(GETSEGNUM(address) == 0);
 	return declarations.find(address) != declarations.end();
@@ -796,7 +802,7 @@ void ZFile::GenerateSourceFiles()
 		OutputFormatter formatter;
 		formatter.Write(sourceOutput);
 
-		File::WriteAllText(outPath, formatter.GetOutput());
+		DiskFile::WriteAllText(outPath, formatter.GetOutput());
 	}
 
 	GenerateSourceHeaderFiles();
@@ -805,9 +811,14 @@ void ZFile::GenerateSourceFiles()
 void ZFile::GenerateSourceHeaderFiles()
 {
 	OutputFormatter formatter;
+	std::string guard = outName.stem().string();
 
+	std::transform(guard.begin(), guard.end(), guard.begin(), ::toupper);
 	formatter.Write("#pragma once\n\n");
+	formatter.Write(
+		StringHelper::Sprintf("#ifndef %s_H\n#define %s_H 1\n\n", guard.c_str(), guard.c_str()));
 	formatter.Write("#include \"align_asset_macro.h\"\n");
+
 	std::set<std::string> nameSet;
 	for (ZResource* res : resources)
 	{
@@ -827,6 +838,8 @@ void ZFile::GenerateSourceHeaderFiles()
 
 	formatter.Write(ProcessExterns());
 
+	formatter.Write("#endif\n");
+
 	fs::path headerFilename = GetSourceOutputFolderPath() / outName.stem().concat(".h");
 
 	if (Globals::Instance->verbosity >= VerbosityLevel::VERBOSITY_INFO)
@@ -837,7 +850,7 @@ void ZFile::GenerateSourceHeaderFiles()
 		output.pop_back();
 
 	if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
-		File::WriteAllText(headerFilename, output);
+		DiskFile::WriteAllText(headerFilename, output);
 	else if (Globals::Instance->sourceOutputPath != "")
 	{
 		std::string xmlPath = xmlFilePath.string();
@@ -862,7 +875,7 @@ void ZFile::GenerateSourceHeaderFiles()
 				outPath += "/";
 		}
 
-		File::WriteAllText(outPath, output);
+		DiskFile::WriteAllText(outPath, output);
 	}
 }
 
@@ -1108,7 +1121,7 @@ std::string ZFile::ProcessDeclarations()
 						extType = "vtx";
 
 					auto filepath = outputPath / item.second->varName;
-					File::WriteAllText(
+					DiskFile::WriteAllText(
 						StringHelper::Sprintf("%s.%s.inc", filepath.string().c_str(), extType.c_str()),
 						item.second->text);
 				}
@@ -1244,6 +1257,10 @@ void ZFile::HandleUnaccountedData()
 	uint32_t lastSize = 0;
 	std::vector<offset_t> declsAddresses;
 
+	if (Globals::Instance->otrMode)
+		return;
+
+	declsAddresses.reserve(declarations.size());
 	if (Globals::Instance->otrMode)
 		return;
 

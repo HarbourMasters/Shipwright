@@ -1,7 +1,7 @@
 #include "z_en_rd.h"
 #include "objects/object_rd/object_rd.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_10)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
 
 void EnRd_Init(Actor* thisx, PlayState* play);
 void EnRd_Destroy(Actor* thisx, PlayState* play);
@@ -164,7 +164,7 @@ void EnRd_Init(Actor* thisx, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
 
     if (thisx->params == 3) {
-        thisx->flags |= ACTOR_FLAG_7;
+        thisx->flags |= ACTOR_FLAG_LENS;
     }
 }
 
@@ -175,6 +175,8 @@ void EnRd_Destroy(Actor* thisx, PlayState* play) {
         gSaveContext.sunsSongState = SUNSSONG_INACTIVE;
     }
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80AE2630(PlayState* play, Actor* thisx, s32 arg2) {
@@ -354,7 +356,7 @@ void func_80AE2C1C(EnRd* this, PlayState* play) {
         Actor_IsFacingPlayer(&this->actor, 0x38E3)) {
         player->actor.freezeTimer = 0;
         if (play->grabPlayer(play, player)) {
-            this->actor.flags &= ~ACTOR_FLAG_0;
+            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
             func_80AE33F0(this);
         }
     } else if (this->actor.params > 0) {
@@ -538,7 +540,7 @@ void func_80AE3454(EnRd* this, PlayState* play) {
                 Math_SmoothStepToF(&this->actor.shape.yOffset, 0, 1.0f, 400.0f, 0.0f);
             }
             this->actor.targetMode = 0;
-            this->actor.flags |= ACTOR_FLAG_0;
+            this->actor.flags |= ACTOR_FLAG_TARGETABLE;
             this->unk_306 = 0xA;
             this->unk_307 = 0xF;
             func_80AE2B90(this, play);
@@ -607,7 +609,7 @@ void func_80AE3A8C(EnRd* this) {
         this->actor.speedXZ = -2.0f;
     }
 
-    this->actor.flags |= ACTOR_FLAG_0;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_REDEAD_DAMAGE);
     this->unk_31B = 9;
     EnRd_SetupAction(this, func_80AE3B18);
@@ -642,7 +644,7 @@ void func_80AE3C20(EnRd* this) {
     Animation_MorphToPlayOnce(&this->skelAnime, &gGibdoRedeadDeathAnim, -1.0f);
     this->unk_31B = 10;
     this->unk_30C = 300;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actor.speedXZ = 0.0f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_REDEAD_DEAD);
     EnRd_SetupAction(this, func_80AE3C98);
