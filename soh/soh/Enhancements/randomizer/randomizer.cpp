@@ -2573,7 +2573,7 @@ BeehiveIdentity Randomizer::IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 res
     beehiveIdentity.randomizerInf = RAND_INF_MAX;
     beehiveIdentity.randomizerCheck = RC_UNKNOWN_CHECK;
 
-    if (sceneNum == SCENE_KAKUSIANA) {//grottos
+    if (sceneNum == SCENE_GROTTOS) {
         respawnData = TWO_ACTOR_PARAMS(xPosition, respawnData);
     } else {
         respawnData = TWO_ACTOR_PARAMS(xPosition, 0);
