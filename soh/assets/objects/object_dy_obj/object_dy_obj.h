@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_DY_OBJ_H
+#define OBJECTS_OBJECT_DY_OBJ_H 1
 
 #include "align_asset_macro.h"
 
@@ -202,3 +203,6 @@ static const ALIGN_ASSET(2) char gGreatFairySittingAnim[] = dgGreatFairySittingA
 
 #define dgGreatFairySpiralBeamVtx "__OTR__objects/object_dy_obj/gGreatFairySpiralBeamVtx"
 static const ALIGN_ASSET(2) char gGreatFairySpiralBeamVtx[] = dgGreatFairySpiralBeamVtx;
+
+
+#endif // OBJECTS_OBJECT_DY_OBJ_H

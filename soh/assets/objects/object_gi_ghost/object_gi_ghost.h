@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GI_GHOST_H
+#define OBJECTS_OBJECT_GI_GHOST_H 1
 
 #include "align_asset_macro.h"
 
@@ -22,3 +23,5 @@ static const ALIGN_ASSET(2) char object_gi_ghostTex_000000[] = dobject_gi_ghostT
 
 #define dobject_gi_ghostTex_000200 "__OTR__objects/object_gi_ghost/object_gi_ghostTex_000200"
 static const ALIGN_ASSET(2) char object_gi_ghostTex_000200[] = dobject_gi_ghostTex_000200;
+
+#endif // OBJECTS_OBJECT_GI_GHOST_H

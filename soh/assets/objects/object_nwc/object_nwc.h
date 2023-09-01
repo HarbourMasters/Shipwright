@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_NWC_H
+#define OBJECTS_OBJECT_NWC_H 1
 
 #include "align_asset_macro.h"
 
@@ -34,3 +35,5 @@ static const ALIGN_ASSET(2) char gCuccoChickSetupShadowDL[] = dgCuccoChickSetupS
 
 #define dgCuccoChickShadowDL "__OTR__objects/object_nwc/gCuccoChickShadowDL"
 static const ALIGN_ASSET(2) char gCuccoChickShadowDL[] = dgCuccoChickShadowDL;
+
+#endif // OBJECTS_OBJECT_NWC_H

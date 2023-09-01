@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_DODONGO_H
+#define OBJECTS_OBJECT_DODONGO_H 1
 
 #include "align_asset_macro.h"
 
@@ -112,3 +113,6 @@ static const ALIGN_ASSET(2) char gDodongoSkelLimbsLimb_008288DL_007298[] = dgDod
 
 #define dgDodongoSkelLimbsLimb_008294DL_007198 "__OTR__objects/object_dodongo/gDodongoSkelLimbsLimb_008294DL_007198"
 static const ALIGN_ASSET(2) char gDodongoSkelLimbsLimb_008294DL_007198[] = dgDodongoSkelLimbsLimb_008294DL_007198;
+
+
+#endif // OBJECTS_OBJECT_DODONGO_H

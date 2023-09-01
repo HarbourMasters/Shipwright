@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_SPOT00_OBJECTS_H
+#define OBJECTS_OBJECT_SPOT00_OBJECTS_H 1
 
 #include "align_asset_macro.h"
 
@@ -22,3 +23,5 @@ static const ALIGN_ASSET(2) char gHyruleFieldCastleDrawbridgeChainsTex[] = dgHyr
 
 #define dgHyruleFieldCastleDrawbridgeChainsCol "__OTR__objects/object_spot00_objects/gHyruleFieldCastleDrawbridgeChainsCol"
 static const ALIGN_ASSET(2) char gHyruleFieldCastleDrawbridgeChainsCol[] = dgHyruleFieldCastleDrawbridgeChainsCol;
+
+#endif // OBJECTS_OBJECT_SPOT00_OBJECTS_H

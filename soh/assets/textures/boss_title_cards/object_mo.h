@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_OBJECT_MO_H
+#define TEXTURES_OBJECT_MO_H 1
 
 #include "align_asset_macro.h"
 
@@ -10,3 +11,5 @@ static const ALIGN_ASSET(2) char gMorphaTitleCardGERTex[] = dgMorphaTitleCardGER
 
 #define dgMorphaTitleCardFRATex "__OTR__textures/object_mo/gMorphaTitleCardFRATex"
 static const ALIGN_ASSET(2) char gMorphaTitleCardFRATex[] = dgMorphaTitleCardFRATex;
+
+#endif // TEXTURES_OBJECT_MO_H

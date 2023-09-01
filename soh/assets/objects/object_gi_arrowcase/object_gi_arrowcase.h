@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GI_ARROWCASE_H
+#define OBJECTS_OBJECT_GI_ARROWCASE_H 1
 
 #include "align_asset_macro.h"
 
@@ -25,3 +26,5 @@ static const ALIGN_ASSET(2) char gGiQuiverInnerDL[] = dgGiQuiverInnerDL;
 
 #define dgGiQuiverOuterDL "__OTR__objects/object_gi_arrowcase/gGiQuiverOuterDL"
 static const ALIGN_ASSET(2) char gGiQuiverOuterDL[] = dgGiQuiverOuterDL;
+
+#endif // OBJECTS_OBJECT_GI_ARROWCASE_H

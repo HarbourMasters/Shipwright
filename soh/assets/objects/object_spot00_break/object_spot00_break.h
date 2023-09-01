@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_SPOT00_BREAK_H
+#define OBJECTS_OBJECT_SPOT00_BREAK_H 1
 
 #include "align_asset_macro.h"
 
@@ -25,3 +26,5 @@ static const ALIGN_ASSET(2) char gBarbedWireFenceTex[] = dgBarbedWireFenceTex;
 
 #define dgBarbedWireFenceCol "__OTR__objects/object_spot00_break/gBarbedWireFenceCol"
 static const ALIGN_ASSET(2) char gBarbedWireFenceCol[] = dgBarbedWireFenceCol;
+
+#endif // OBJECTS_OBJECT_SPOT00_BREAK_H

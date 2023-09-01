@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_VM_H
+#define OBJECTS_OBJECT_VM_H 1
 
 #include "align_asset_macro.h"
 
@@ -49,3 +50,6 @@ static const ALIGN_ASSET(2) char gBeamosAnim[] = dgBeamosAnim;
 
 #define dgBeamosLaserDL "__OTR__objects/object_vm/gBeamosLaserDL"
 static const ALIGN_ASSET(2) char gBeamosLaserDL[] = dgBeamosLaserDL;
+
+
+#endif // OBJECTS_OBJECT_VM_H

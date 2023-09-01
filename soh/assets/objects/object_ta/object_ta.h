@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_TA_H
+#define OBJECTS_OBJECT_TA_H 1
 
 #include "align_asset_macro.h"
 
@@ -154,3 +155,6 @@ static const ALIGN_ASSET(2) char gTalonNecklaceLowerStringsTex[] = dgTalonNeckla
 
 #define dobject_ta_Blob_00B4B8 "__OTR__objects/object_ta/object_ta_Blob_00B4B8"
 static const ALIGN_ASSET(2) char object_ta_Blob_00B4B8[] = dobject_ta_Blob_00B4B8;
+
+
+#endif // OBJECTS_OBJECT_TA_H

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INDOORS_KENJYANOMA_ROOM_0_H
+#define INDOORS_KENJYANOMA_ROOM_0_H 1
 
 #include "align_asset_macro.h"
 
@@ -82,3 +83,6 @@ static const ALIGN_ASSET(2) char kenjyanoma_room_0Set_000230DL_001608[] = dkenjy
 
 #define dkenjyanoma_room_0Set_000230DL_010CD8 "__OTR__scenes/nonmq/kenjyanoma_scene/kenjyanoma_room_0Set_000230DL_010CD8"
 static const ALIGN_ASSET(2) char kenjyanoma_room_0Set_000230DL_010CD8[] = dkenjyanoma_room_0Set_000230DL_010CD8;
+
+
+#endif // INDOORS_KENJYANOMA_ROOM_0_H

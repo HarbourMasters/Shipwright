@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DUNGEONS_ICE_DOUKUTU_ROOM_0_H
+#define DUNGEONS_ICE_DOUKUTU_ROOM_0_H 1
 
 #include "align_asset_macro.h"
 
@@ -31,3 +32,6 @@ static const ALIGN_ASSET(2) char ice_doukutu_room_0Set_000100DL_002F20[] = dice_
 
 #define dice_doukutu_room_0Set_000100DL_007660 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_room_0Set_000100DL_007660"
 static const ALIGN_ASSET(2) char ice_doukutu_room_0Set_000100DL_007660[] = dice_doukutu_room_0Set_000100DL_007660;
+
+
+#endif // DUNGEONS_ICE_DOUKUTU_ROOM_0_H
