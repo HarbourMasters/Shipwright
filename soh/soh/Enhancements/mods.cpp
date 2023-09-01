@@ -235,7 +235,7 @@ void AutoSave(GetItemEntry itemEntry) {
     // Don't autosave during the Ganon fight when picking up the Master Sword
     // Don't autosave in grottos since resuming from grottos breaks the game.
     if ((CVarGetInteger("gAutosave", AUTOSAVE_OFF) != AUTOSAVE_OFF) && (gPlayState != NULL) && (gSaveContext.pendingSale == ITEM_NONE) &&
-        (gPlayState->gameplayFrames > 60 && gSaveContext.cutsceneIndex < 0xFFF0) && (gPlayState->sceneNum != SCENE_GANON_DEMO)) {
+        (gPlayState->gameplayFrames > 60 && gSaveContext.cutsceneIndex < 0xFFF0) && (gPlayState->sceneNum != SCENE_GANON_BOSS)) {
         if (((CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS) || (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_ALL_ITEMS)) && (item != ITEM_NONE)) {
             // Autosave for all items
             performSave = true;
@@ -296,8 +296,8 @@ void AutoSave(GetItemEntry itemEntry) {
                    CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION) {
             performSave = true;
         }
-        if ((gPlayState->sceneNum == SCENE_YOUSEI_IZUMI_TATE) || (gPlayState->sceneNum == SCENE_KAKUSIANA) ||
-                (gPlayState->sceneNum == SCENE_KENJYANOMA)) {
+        if ((gPlayState->sceneNum == SCENE_FAIRYS_FOUNTAIN) || (gPlayState->sceneNum == SCENE_GROTTOS) ||
+                (gPlayState->sceneNum == SCENE_CHAMBER_OF_THE_SAGES)) {
             if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_MAJOR_ITEMS ||
                 CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION_AND_ALL_ITEMS ||
                 CVarGetInteger("gAutosave", AUTOSAVE_OFF) == AUTOSAVE_LOCATION) {
@@ -392,15 +392,15 @@ void RegisterDaytimeGoldSkultullas() {
         // Actor values copied from the night time scene actor list
         static const DayTimeGoldSkulltulasList dayTimeGoldSkulltulas = {
             // Graveyard
-            { SCENE_SPOT02, 1, true, { { ACTOR_EN_SW, { 156, 315, 795 }, { 16384, -32768, 0 }, -20096 } } },
+            { SCENE_GRAVEYARD, 1, true, { { ACTOR_EN_SW, { 156, 315, 795 }, { 16384, -32768, 0 }, -20096 } } },
             // ZF
-            { SCENE_SPOT08, 0, true, { { ACTOR_EN_SW, { -1891, 187, 1911 }, { 16384, 18022, 0 }, -19964 } } },
+            { SCENE_ZORAS_FOUNTAIN, 0, true, { { ACTOR_EN_SW, { -1891, 187, 1911 }, { 16384, 18022, 0 }, -19964 } } },
             // GF
-            { SCENE_SPOT12, 0, false, { { ACTOR_EN_SW, { 1598, 999, -2008 }, { 16384, -16384, 0 }, -19198 } } },
-            { SCENE_SPOT12, 1, false, { { ACTOR_EN_SW, { 3377, 1734, -4935 }, { 16384, 0, 0 }, -19199 } } },
+            { SCENE_GERUDOS_FORTRESS, 0, false, { { ACTOR_EN_SW, { 1598, 999, -2008 }, { 16384, -16384, 0 }, -19198 } } },
+            { SCENE_GERUDOS_FORTRESS, 1, false, { { ACTOR_EN_SW, { 3377, 1734, -4935 }, { 16384, 0, 0 }, -19199 } } },
             // Kak
-            { SCENE_SPOT01, 0, false, { { ACTOR_EN_SW, { -18, 540, 1800 }, { 0, -32768, 0 }, -20160 } } },
-            { SCENE_SPOT01,
+            { SCENE_KAKARIKO_VILLAGE, 0, false, { { ACTOR_EN_SW, { -18, 540, 1800 }, { 0, -32768, 0 }, -20160 } } },
+            { SCENE_KAKARIKO_VILLAGE,
               0,
               true,
               { { ACTOR_EN_SW, { -465, 377, -888 }, { 0, 28217, 0 }, -20222 },
@@ -408,7 +408,7 @@ void RegisterDaytimeGoldSkultullas() {
                 { ACTOR_EN_SW, { 324, 270, 905 }, { 16384, 0, 0 }, -20216 },
                 { ACTOR_EN_SW, { -602, 120, 1120 }, { 16384, 0, 0 }, -20208 } } },
             // LLR
-            { SCENE_SPOT20,
+            { SCENE_LON_LON_RANCH,
               0,
               true,
               { { ACTOR_EN_SW, { -2344, 180, 672 }, { 16384, 22938, 0 }, -29695 },
@@ -540,9 +540,9 @@ void RegisterBonkDamage() {
 
 void UpdateDirtPathFixState(int32_t sceneNum) {
     switch (sceneNum) {
-        case SCENE_SPOT00:
-        case SCENE_SPOT04:
-        case SCENE_SPOT15:
+        case SCENE_HYRULE_FIELD:
+        case SCENE_KOKIRI_FOREST:
+        case SCENE_HYRULE_CASTLE:
             CVarSetInteger("gZFightingMode", CVarGetInteger("gSceneSpecificDirtPathFix", ZFIGHT_FIX_DISABLED));
             return;
         default:
@@ -561,9 +561,9 @@ void UpdateMirrorModeState(int32_t sceneNum) {
     bool nextMirroredWorld = false;
 
     int16_t mirroredMode = CVarGetInteger("gMirroredWorldMode", MIRRORED_WORLD_OFF);
-    int16_t inDungeon = (sceneNum >= SCENE_YDAN && sceneNum <= SCENE_GANONTIKA_SONOGO && sceneNum != SCENE_GERUDOWAY) ||
-                        (sceneNum >= SCENE_YDAN_BOSS && sceneNum <= SCENE_GANON_FINAL) ||
-                        (sceneNum == SCENE_GANON_DEMO);
+    int16_t inDungeon = (sceneNum >= SCENE_DEKU_TREE && sceneNum <= SCENE_INSIDE_GANONS_CASTLE_COLLAPSE && sceneNum != SCENE_THIEVES_HIDEOUT) ||
+                        (sceneNum >= SCENE_DEKU_TREE_BOSS && sceneNum <= SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
+                        (sceneNum == SCENE_GANON_BOSS);
 
     if (mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) {
         uint32_t seed = sceneNum + (gSaveContext.n64ddFlag ? (gSaveContext.seedIcons[0] + gSaveContext.seedIcons[1] +

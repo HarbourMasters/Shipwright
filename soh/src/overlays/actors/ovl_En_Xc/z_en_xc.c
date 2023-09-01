@@ -447,7 +447,7 @@ void EnXc_SetLandingSFX(EnXc* this, PlayState* play) {
     u32 sfxId;
     s16 sceneNum = play->sceneNum;
 
-    if ((gSaveContext.sceneSetupIndex != 4) || (sceneNum != SCENE_SPOT11)) {
+    if ((gSaveContext.sceneSetupIndex != 4) || (sceneNum != SCENE_DESERT_COLOSSUS)) {
         if (Animation_OnFrame(&this->skelAnime, 11.0f)) {
             sfxId = SFX_FLAG;
             sfxId += SurfaceType_GetSfx(&play->colCtx, this->actor.floorPoly, this->actor.floorBgId);
@@ -462,7 +462,7 @@ void EnXc_SetColossusAppearSFX(EnXc* this, PlayState* play) {
 
     if (gSaveContext.sceneSetupIndex == 4) {
         sceneNum = play->sceneNum;
-        if (sceneNum == SCENE_SPOT11) {
+        if (sceneNum == SCENE_DESERT_COLOSSUS) {
             CutsceneContext* csCtx = &play->csCtx;
             u16 frameCount = csCtx->frames;
             f32 wDest[2];
@@ -486,7 +486,7 @@ void EnXc_SetColossusAppearSFX(EnXc* this, PlayState* play) {
 void func_80B3D118(PlayState* play) {
     s16 sceneNum;
 
-    if ((gSaveContext.sceneSetupIndex != 4) || (sceneNum = play->sceneNum, sceneNum != SCENE_SPOT11)) {
+    if ((gSaveContext.sceneSetupIndex != 4) || (sceneNum = play->sceneNum, sceneNum != SCENE_DESERT_COLOSSUS)) {
         func_800788CC(NA_SE_PL_SKIP);
     }
 }
@@ -502,7 +502,7 @@ void EnXc_SetColossusWindSFX(PlayState* play) {
         s32 pad;
         s16 sceneNum = play->sceneNum;
 
-        if (sceneNum == SCENE_SPOT11) {
+        if (sceneNum == SCENE_DESERT_COLOSSUS) {
             CutsceneContext* csCtx = &play->csCtx;
             u16 frameCount = csCtx->frames;
 
@@ -570,7 +570,7 @@ void EnXc_InitFlame(EnXc* this, PlayState* play) {
     s32 pad;
     s16 sceneNum = play->sceneNum;
 
-    if (sceneNum == SCENE_SPOT17) {
+    if (sceneNum == SCENE_DEATH_MOUNTAIN_CRATER) {
         CsCmdActorAction* npcAction = EnXc_GetCsCmd(play, 0);
         if (npcAction != NULL) {
             s32 action = npcAction->action;
@@ -912,7 +912,7 @@ void EnXc_SetupDisappear(EnXc* this, PlayState* play) {
             s16 sceneNum = play->sceneNum;
 
             // Sheik fades away if end of Bolero CS, kill actor otherwise
-            if (sceneNum == SCENE_SPOT17) {
+            if (sceneNum == SCENE_DEATH_MOUNTAIN_CRATER) {
                 this->action = SHEIK_ACTION_FADE;
                 this->drawMode = SHEIK_DRAW_NOTHING;
                 this->actor.shape.shadowAlpha = 0;

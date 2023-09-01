@@ -3930,13 +3930,13 @@ s32 func_808382DC(Player* this, PlayState* play) {
             } else {
                 // Special case for getting crushed in Forest Temple's Checkboard Ceiling Hall or Shadow Temple's
                 // Falling Spike Trap Room, to respawn the player in a specific place
-                if (((play->sceneNum == SCENE_BMORI1) && (play->roomCtx.curRoom.num == 15)) ||
-                    ((play->sceneNum == SCENE_HAKADAN) && (play->roomCtx.curRoom.num == 10))) {
+                if (((play->sceneNum == SCENE_FOREST_TEMPLE) && (play->roomCtx.curRoom.num == 15)) ||
+                    ((play->sceneNum == SCENE_SHADOW_TEMPLE) && (play->roomCtx.curRoom.num == 10))) {
                     static SpecialRespawnInfo checkboardCeilingRespawn = { { 1992.0f, 403.0f, -3432.0f }, 0 };
                     static SpecialRespawnInfo fallingSpikeTrapRespawn = { { 1200.0f, -1343.0f, 3850.0f }, 0 };
                     SpecialRespawnInfo* respawnInfo;
 
-                    if (play->sceneNum == SCENE_BMORI1) {
+                    if (play->sceneNum == SCENE_FOREST_TEMPLE) {
                         respawnInfo = &checkboardCeilingRespawn;
                     } else {
                         respawnInfo = &fallingSpikeTrapRespawn;
@@ -4354,8 +4354,8 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
                 if ((this->actor.world.pos.y < -4000.0f) ||
                     (((this->unk_A7A == 5) || (this->unk_A7A == 12)) &&
                      ((D_80853600 < 100.0f) || (this->fallDistance > 400.0f) ||
-                      ((play->sceneNum != SCENE_HAKADAN) && (this->fallDistance > 200.0f)))) ||
-                    ((play->sceneNum == SCENE_GANON_FINAL) && (this->fallDistance > 320.0f))) {
+                      ((play->sceneNum != SCENE_SHADOW_TEMPLE) && (this->fallDistance > 200.0f)))) ||
+                    ((play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) && (this->fallDistance > 320.0f))) {
 
                     if (this->actor.bgCheckFlags & 1) {
                         if (this->unk_A7A == 5) {
@@ -6370,7 +6370,7 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
                 // Show the cutscene for picking up an item. In vanilla, this happens in bombchu bowling alley (because getting bombchus need to show the cutscene)
                 // and whenever the player doesn't have the item yet. In rando, we're overruling this because we need to keep showing the cutscene
                 // because those items can be randomized and thus it's important to keep showing the cutscene.
-                uint8_t showItemCutscene = play->sceneNum == SCENE_BOWLING || Item_CheckObtainability(giEntry.itemId) == ITEM_NONE || gSaveContext.n64ddFlag;
+                uint8_t showItemCutscene = play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY || Item_CheckObtainability(giEntry.itemId) == ITEM_NONE || gSaveContext.n64ddFlag;
 
                 // Only skip cutscenes for drops when they're items/consumables from bushes/rocks/enemies.
                 uint8_t isDropToSkip = (interactedActor->id == ACTOR_EN_ITEM00 && interactedActor->params != 6 && interactedActor->params != 17) || 
@@ -9518,7 +9518,7 @@ void func_80846648(PlayState* play, Player* this) {
 
 void func_80846660(PlayState* play, Player* this) {
     func_80835C58(play, this, func_8084F710, 0);
-    if ((play->sceneNum == SCENE_SPOT06) && (gSaveContext.sceneSetupIndex >= 4)) {
+    if ((play->sceneNum == SCENE_LAKE_HYLIA) && (gSaveContext.sceneSetupIndex >= 4)) {
         this->unk_84F = 1;
     }
     this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
@@ -9732,8 +9732,8 @@ void Player_Init(Actor* thisx, PlayState* play2) {
             if ((gSaveContext.sceneSetupIndex < 4) &&
                 (gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].field &
                  0x4000) &&
-                ((play->sceneNum != SCENE_DDAN) || (Flags_GetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN))) &&
-                ((play->sceneNum != SCENE_NIGHT_SHOP) || (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)))) {
+                ((play->sceneNum != SCENE_DODONGOS_CAVERN) || (Flags_GetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN))) &&
+                ((play->sceneNum != SCENE_BOMBCHU_SHOP) || (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)))) {
                 TitleCard_InitPlaceName(play, &play->actorCtx.titleCtx, this->giObjectSegment, 160, 120, 144,
                                         24, 20);
             }
@@ -9747,7 +9747,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
 
     gSaveContext.respawn[RESPAWN_MODE_DOWN].data = 1;
 
-    if (play->sceneNum <= SCENE_GANONTIKA_SONOGO) {
+    if (play->sceneNum <= SCENE_INSIDE_GANONS_CASTLE_COLLAPSE) {
         gSaveContext.infTable[26] |= gBitFlags[play->sceneNum];
     }
 
@@ -10345,7 +10345,7 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
             Audio_SetBgmEnemyVolume(sqrtf(play->actorCtx.targetCtx.bgmEnemy->xyzDistToPlayerSq));
         }
 
-        if (play->sceneNum != SCENE_TURIBORI) {
+        if (play->sceneNum != SCENE_FISHING_POND) {
             Audio_SetSequenceMode(seqMode);
         }
     }
@@ -10461,7 +10461,7 @@ void func_80848C74(PlayState* play, Player* this) {
     if (spawnedFlame) {
         func_8002F7DC(&this->actor, NA_SE_EV_TORCH - SFX_FLAG);
 
-        if (play->sceneNum == SCENE_JYASINBOSS) {
+        if (play->sceneNum == SCENE_SPIRIT_TEMPLE_BOSS) {
             dmgCooldown = 0;
         } else {
             dmgCooldown = 7;
@@ -13466,7 +13466,7 @@ void func_8084F710(Player* this, PlayState* play) {
                     this->unk_850 = 1;
                 }
             } else {
-                if ((play->sceneNum == SCENE_SPOT04) && func_8083ADD4(play, this)) {
+                if ((play->sceneNum == SCENE_KOKIRI_FOREST) && func_8083ADD4(play, this)) {
                     return;
                 }
                 func_80853080(this, play);
@@ -13475,7 +13475,7 @@ void func_8084F710(Player* this, PlayState* play) {
         Math_SmoothStepToF(&this->actor.velocity.y, 2.0f, 0.3f, 8.0f, 0.5f);
     }
 
-    if ((play->sceneNum == SCENE_KENJYANOMA) && func_8083ADD4(play, this)) {
+    if ((play->sceneNum == SCENE_CHAMBER_OF_THE_SAGES) && func_8083ADD4(play, this)) {
         return;
     }
 
@@ -13492,7 +13492,7 @@ void func_8084F88C(Player* this, PlayState* play) {
     if ((this->unk_850++ > 8) && (play->sceneLoadFlag == 0)) {
 
         if (this->unk_84F != 0) {
-            if (play->sceneNum == 9) {
+            if (play->sceneNum == SCENE_ICE_CAVERN) {
                 Play_TriggerRespawn(play);
                 play->nextEntranceIndex = 0x0088;
             } else if (this->unk_84F < 0) {
@@ -14528,7 +14528,7 @@ void func_80851828(PlayState* play, Player* this, CsCmdActorAction* arg2) {
 
     func_80845BA0(play, this, &sp1C, 10);
 
-    if (play->sceneNum == SCENE_BDAN_BOSS) {
+    if (play->sceneNum == SCENE_JABU_JABU_BOSS) {
         if (this->unk_850 == 0) {
             if (Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) {
                 return;
@@ -15006,7 +15006,7 @@ void func_80852944(PlayState* play, Player* this, CsCmdActorAction* arg2) {
 void func_808529D0(PlayState* play, Player* this, CsCmdActorAction* arg2) {
     this->actor.world.pos.x = arg2->startPos.x;
     this->actor.world.pos.y = arg2->startPos.y;
-    if ((play->sceneNum == SCENE_SPOT04) && !LINK_IS_ADULT) {
+    if ((play->sceneNum == SCENE_KOKIRI_FOREST) && !LINK_IS_ADULT) {
         this->actor.world.pos.y -= 1.0f;
     }
     this->actor.world.pos.z = arg2->startPos.z;

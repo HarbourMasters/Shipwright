@@ -127,7 +127,7 @@ s32 EnGoroiwa_Vec3fNormalize(Vec3f* ret, Vec3f* a) {
 }
 
 void EnGoroiwa_SetSpeed(EnGoroiwa* this, PlayState* play) {
-    if (play->sceneNum == SCENE_SPOT04) {
+    if (play->sceneNum == SCENE_KOKIRI_FOREST) {
         this->isInKokiri = true;
         R_EN_GOROIWA_SPEED = 920;
     } else {
