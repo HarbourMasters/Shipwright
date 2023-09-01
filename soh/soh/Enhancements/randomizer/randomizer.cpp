@@ -492,7 +492,6 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
             CustomMessage("{{message}}", "{{message}}", "{{message}}", TEXTBOX_TYPE_BLUE)
         );
 
-
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT,
         CustomMessage("Warp to&{{location}}?\x1B&%gOK&No%w\x02",
         "Zu {{location}}?\x1B&%gOK&No%w\x02",
@@ -1294,34 +1293,15 @@ std::string FormatJsonHintText(std::string jsonHint) {
     return formattedHintMessage;
 }
 
-void ParseSpoilerHintText(json Json, std::string field, char* saveLoc, bool format){
+void ParseSpoilerHintText(json Json, std::string field, char* saveLoc, bool format, int size){
     auto jsonIter = Json.find(field);
     if (jsonIter != Json.end()){
         std::string jsonText = jsonIter.value().get<std::string>();
         if (format){
             jsonText = FormatJsonHintText(jsonText);
         }
-        strncpy(saveLoc, jsonText.c_str(), sizeof(saveLoc) - 1);
-        saveLoc[sizeof(saveLoc) - 1] = 0;
-    }
-}
-
-void CheckNameToEnum(json Json, std::string field, RandomizerCheck* saveLoc){
-    auto jsonIter = Json.find(field);
-    if (jsonIter != Json.end()){
-        *saveLoc = SpoilerfileCheckNameToEnum[jsonIter.value().get<std::string>()];
-    };
-}
-
-void ParseSpoilerHintText(json Json, std::string field, char* saveLoc, bool format){
-    auto jsonIter = Json.find(field);
-    if (jsonIter != Json.end()){
-        std::string jsonText = jsonIter.value().get<std::string>();
-        if (format){
-            jsonText = FormatJsonHintText(jsonText);
-        }
-        strncpy(saveLoc, jsonText.c_str(), sizeof(saveLoc) - 1);
-        saveLoc[sizeof(saveLoc) - 1] = 0;
+        strncpy(saveLoc, jsonText.c_str(), size-1);
+        saveLoc[size - 1] = 0;
     }
 }
 
@@ -1362,28 +1342,28 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         gSaveContext.rewardCheck[7] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["spiritMedallionLoc"]];
         gSaveContext.rewardCheck[8] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["lightMedallionLoc"]];
 
-        ParseSpoilerHintText(spoilerFileJson, "ganonHintText", gSaveContext.ganonHintText, true);
+        ParseSpoilerHintText(spoilerFileJson, "ganonHintText", gSaveContext.ganonHintText, true, sizeof(gSaveContext.ganonHintText));
         CheckNameToEnum(spoilerFileJson, "lightArrowHintLoc", &gSaveContext.lightArrowHintCheck);
-        ParseSpoilerHintText(spoilerFileJson, "ganonText", gSaveContext.ganonText, true);
+        ParseSpoilerHintText(spoilerFileJson, "ganonText", gSaveContext.ganonText, true, sizeof(gSaveContext.ganonText));
 
-        ParseSpoilerHintText(spoilerFileJson, "dampeText", gSaveContext.dampeText, true);
+        ParseSpoilerHintText(spoilerFileJson, "dampeText", gSaveContext.dampeText, true, sizeof(gSaveContext.dampeText));
         CheckNameToEnum(spoilerFileJson, "dampeHintLoc", &gSaveContext.dampeCheck);
 
-        ParseSpoilerHintText(spoilerFileJson, "gregHintText", gSaveContext.gregHintText, true);
+        ParseSpoilerHintText(spoilerFileJson, "gregText", gSaveContext.gregHintText, true, sizeof(gSaveContext.gregHintText));
         CheckNameToEnum(spoilerFileJson, "gregLoc", &gSaveContext.gregCheck);
 
-        ParseSpoilerHintText(spoilerFileJson, "sheikText", gSaveContext.sheikText, true);
+        ParseSpoilerHintText(spoilerFileJson, "sheikText", gSaveContext.sheikText, true, sizeof(gSaveContext.sheikText));
         CheckNameToEnum(spoilerFileJson, "lightArrowHintLoc", &gSaveContext.lightArrowHintCheck); //redundency?
 
-        ParseSpoilerHintText(spoilerFileJson, "sariaText", gSaveContext.sariaText, true);
+        ParseSpoilerHintText(spoilerFileJson, "sariaText", gSaveContext.sariaText, true, sizeof(gSaveContext.sariaText));
         CheckNameToEnum(spoilerFileJson, "sariaHintLoc", &gSaveContext.sariaCheck);
 
-        ParseSpoilerHintText(spoilerFileJson, "warpMinuetText", gSaveContext.warpMinuetText, false);
-        ParseSpoilerHintText(spoilerFileJson, "warpBoleroText", gSaveContext.warpBoleroText, false);
-        ParseSpoilerHintText(spoilerFileJson, "warpSerenadeText", gSaveContext.warpSerenadeText, false);
-        ParseSpoilerHintText(spoilerFileJson, "warpRequiemText", gSaveContext.warpRequiemText, false);
-        ParseSpoilerHintText(spoilerFileJson, "warpNocturneText", gSaveContext.warpNocturneText, false);
-        ParseSpoilerHintText(spoilerFileJson, "warpPreludeText", gSaveContext.warpPreludeText, false);
+        ParseSpoilerHintText(spoilerFileJson, "warpMinuetText", gSaveContext.warpMinuetText, false, sizeof(gSaveContext.warpMinuetText));
+        ParseSpoilerHintText(spoilerFileJson, "warpBoleroText", gSaveContext.warpBoleroText, false, sizeof(gSaveContext.warpBoleroText));
+        ParseSpoilerHintText(spoilerFileJson, "warpSerenadeText", gSaveContext.warpSerenadeText, false, sizeof(gSaveContext.warpSerenadeText));
+        ParseSpoilerHintText(spoilerFileJson, "warpRequiemText", gSaveContext.warpRequiemText, false, sizeof(gSaveContext.warpRequiemText));
+        ParseSpoilerHintText(spoilerFileJson, "warpNocturneText", gSaveContext.warpNocturneText, false, sizeof(gSaveContext.warpNocturneText));
+        ParseSpoilerHintText(spoilerFileJson, "warpPreludeText", gSaveContext.warpPreludeText, false, sizeof(gSaveContext.warpPreludeText));
 
 
         json hintsJson = spoilerFileJson["hints"];
