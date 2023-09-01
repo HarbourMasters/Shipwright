@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_VR_HOLY0_STATIC_H
+#define TEXTURES_VR_HOLY0_STATIC_H 1
 
 #include "align_asset_macro.h"
 
@@ -19,3 +20,5 @@ static const ALIGN_ASSET(2) char gHoly0Skybox5Tex[] = dgHoly0Skybox5Tex;
 
 #define dgHoly0Skybox6Tex "__OTR__textures/vr_holy0_static/gHoly0Skybox6Tex"
 static const ALIGN_ASSET(2) char gHoly0Skybox6Tex[] = dgHoly0Skybox6Tex;
+
+#endif // TEXTURES_VR_HOLY0_STATIC_H

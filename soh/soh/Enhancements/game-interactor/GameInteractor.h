@@ -151,9 +151,11 @@ public:
     DEFINE_HOOK(OnSceneSpawnActors, void());
     DEFINE_HOOK(OnPlayerUpdate, void());
     DEFINE_HOOK(OnOcarinaSongAction, void());
-
+    DEFINE_HOOK(OnActorInit, void(void* actor));
     DEFINE_HOOK(OnActorUpdate, void(void* actor));
     DEFINE_HOOK(OnPlayerBonk, void());
+    DEFINE_HOOK(OnPlayDestroy, void());
+    DEFINE_HOOK(OnPlayDrawEnd, void());
 
     DEFINE_HOOK(OnSaveFile, void(int32_t fileNum));
     DEFINE_HOOK(OnLoadFile, void(int32_t fileNum));

@@ -172,18 +172,18 @@ std::unordered_map<std::string, RandomizerInf> spoilerFileTrialToEnum = {
 };
 
 std::unordered_map<std::string, SceneID> spoilerFileDungeonToScene = {
-    { "Deku Tree", SCENE_YDAN },
-    { "Dodongo's Cavern", SCENE_DDAN },
-    { "Jabu Jabu's Belly", SCENE_BDAN },
-    { "Forest Temple", SCENE_BMORI1 },
-    { "Fire Temple", SCENE_HIDAN },
-    { "Water Temple", SCENE_MIZUSIN },
-    { "Spirit Temple", SCENE_JYASINZOU },
-    { "Shadow Temple", SCENE_HAKADAN },
-    { "Bottom of the Well", SCENE_HAKADANCH },
-    { "Ice Cavern", SCENE_ICE_DOUKUTO },
-    { "Gerudo Training Grounds", SCENE_MEN },
-    { "Ganon's Castle", SCENE_GANONTIKA }
+    { "Deku Tree", SCENE_DEKU_TREE },
+    { "Dodongo's Cavern", SCENE_DODONGOS_CAVERN },
+    { "Jabu Jabu's Belly", SCENE_JABU_JABU },
+    { "Forest Temple", SCENE_FOREST_TEMPLE },
+    { "Fire Temple", SCENE_FIRE_TEMPLE },
+    { "Water Temple", SCENE_WATER_TEMPLE },
+    { "Spirit Temple", SCENE_SPIRIT_TEMPLE },
+    { "Shadow Temple", SCENE_SHADOW_TEMPLE },
+    { "Bottom of the Well", SCENE_BOTTOM_OF_THE_WELL },
+    { "Ice Cavern", SCENE_ICE_CAVERN },
+    { "Gerudo Training Grounds", SCENE_GERUDO_TRAINING_GROUND },
+    { "Ganon's Castle", SCENE_INSIDE_GANONS_CASTLE }
 };
 
 std::unordered_map<s16, s16> getItemIdToItemId = { 
@@ -350,7 +350,17 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Timesaver Settings:Complete Mask Quest", RSK_COMPLETE_MASK_QUEST },
     { "Timesaver Settings:Skip Scarecrow's Song", RSK_SKIP_SCARECROWS_SONG },
     { "Timesaver Settings:Enable Glitch-Useful Cutscenes", RSK_ENABLE_GLITCH_CUTSCENES },
-    { "World Settings:MQ Dungeon Count", RSK_MQ_DUNGEON_COUNT }
+    { "World Settings:MQ Dungeons", RSK_RANDOM_MQ_DUNGEONS },
+    { "World Settings:MQ Dungeon Count", RSK_MQ_DUNGEON_COUNT },
+    { "Shuffle Dungeon Quest:Forest Temple", RSK_MQ_FOREST_TEMPLE },
+    { "Shuffle Dungeon Quest:Fire Temple", RSK_MQ_FIRE_TEMPLE },
+    { "Shuffle Dungeon Quest:Water Temple", RSK_MQ_WATER_TEMPLE },
+    { "Shuffle Dungeon Quest:Spirit Temple", RSK_MQ_SPIRIT_TEMPLE },
+    { "Shuffle Dungeon Quest:Shadow Temple", RSK_MQ_SHADOW_TEMPLE },
+    { "Shuffle Dungeon Quest:Bottom of the Well", RSK_MQ_BOTTOM_OF_THE_WELL },
+    { "Shuffle Dungeon Quest:Ice Cavern", RSK_MQ_ICE_CAVERN },
+    { "Shuffle Dungeon Quest:GTG", RSK_MQ_GTG },
+    { "Shuffle Dungeon Quest:Ganon's Castle", RSK_MQ_GANONS_CASTLE },
 };
 
 std::string sanitize(std::string stringValue) {
@@ -1042,6 +1052,15 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_KAK_TOKENS;
                         }
                         break;
+                    case RSK_RANDOM_MQ_DUNGEONS:
+                        if (it.value() == "None") {
+                            gSaveContext.randoSettings[index].value = RO_MQ_DUNGEONS_NONE;
+                        } else if (it.value() == "Random Number") {
+                            gSaveContext.randoSettings[index].value = RO_MQ_DUNGEONS_RANDOM_NUMBER;
+                        } else if (it.value() == "Set Number") {
+                            gSaveContext.randoSettings[index].value = RO_MQ_DUNGEONS_SET_NUMBER;
+                        }
+                        break;
                     case RSK_SKIP_CHILD_ZELDA:
                         gSaveContext.randoSettings[index].value = it.value();
                         break;
@@ -1105,12 +1124,19 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         }
                         break;
                     case RSK_MQ_DUNGEON_COUNT:
-                        if (it.value() == "Random") {
-                            gSaveContext.randoSettings[index].value = 13;
-                            break;
+                        if (it.value() == "Count") {
+                            numericValueString = it.value();
+                            gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
                         }
-                        numericValueString = it.value();
-                        gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
+
+                        else if (it.value() == "Random") {
+                            gSaveContext.randoSettings[index].value = 13;
+                        }
+
+                        else if (it.value() == "Selection") {
+                            gSaveContext.randoSettings[index].value = RO_MQ_DUNGEONS_SELECTION;
+                        }
+
                         break;
                     case RSK_SHUFFLE_DUNGEON_ENTRANCES:
                         if (it.value() == "Off") {
@@ -1822,77 +1848,77 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
 
         // Dungeon Items
         case RG_DEKU_TREE_MAP:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_YDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_DEKU_TREE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_DODONGOS_CAVERN_MAP:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_DDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_DODONGOS_CAVERN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_JABU_JABUS_BELLY_MAP:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_BDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_JABU_JABU) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FOREST_TEMPLE_MAP:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_BMORI1) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_FOREST_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FIRE_TEMPLE_MAP:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_HIDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_FIRE_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_WATER_TEMPLE_MAP:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_MIZUSIN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_WATER_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SPIRIT_TEMPLE_MAP:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_JYASINZOU) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_SPIRIT_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SHADOW_TEMPLE_MAP:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_HAKADAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_SHADOW_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_BOTTOM_OF_THE_WELL_MAP:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_HAKADANCH) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_BOTTOM_OF_THE_WELL) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_ICE_CAVERN_MAP:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_ICE_DOUKUTO) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_ICE_CAVERN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_DEKU_TREE_COMPASS:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_YDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_DEKU_TREE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_DODONGOS_CAVERN_COMPASS:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_DDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_DODONGOS_CAVERN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_JABU_JABUS_BELLY_COMPASS:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_BDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_JABU_JABU) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FOREST_TEMPLE_COMPASS:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_BMORI1) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_FOREST_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FIRE_TEMPLE_COMPASS:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_HIDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_FIRE_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_WATER_TEMPLE_COMPASS:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_MIZUSIN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_WATER_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SPIRIT_TEMPLE_COMPASS:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_JYASINZOU) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_SPIRIT_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SHADOW_TEMPLE_COMPASS:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_HAKADAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_SHADOW_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_BOTTOM_OF_THE_WELL_COMPASS:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_HAKADANCH) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_BOTTOM_OF_THE_WELL) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_ICE_CAVERN_COMPASS:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_ICE_DOUKUTO) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_ICE_CAVERN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FOREST_TEMPLE_BOSS_KEY:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_BMORI1) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_FOREST_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FIRE_TEMPLE_BOSS_KEY:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_HIDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_FIRE_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_WATER_TEMPLE_BOSS_KEY:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_MIZUSIN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_WATER_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SPIRIT_TEMPLE_BOSS_KEY:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_JYASINZOU) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_SPIRIT_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SHADOW_TEMPLE_BOSS_KEY:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_HAKADAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_SHADOW_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GANONS_CASTLE_BOSS_KEY:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANON) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANONS_TOWER) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FOREST_TEMPLE_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_BMORI1] < FOREST_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_FOREST_TEMPLE] < FOREST_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FIRE_TEMPLE_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_HIDAN] < FIRE_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_FIRE_TEMPLE] < FIRE_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_WATER_TEMPLE_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_MIZUSIN] < WATER_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_WATER_TEMPLE] < WATER_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SPIRIT_TEMPLE_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_JYASINZOU] < SPIRIT_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_SPIRIT_TEMPLE] < SPIRIT_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SHADOW_TEMPLE_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_HAKADAN] < SHADOW_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_SHADOW_TEMPLE] < SHADOW_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_HAKADANCH] < BOTTOM_OF_THE_WELL_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_BOTTOM_OF_THE_WELL] < BOTTOM_OF_THE_WELL_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_MEN] < GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] < GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GERUDO_FORTRESS_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_GERUDOWAY] < GERUDO_FORTRESS_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_THIEVES_HIDEOUT] < GERUDO_FORTRESS_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GANONS_CASTLE_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_GANONTIKA] < GANONS_CASTLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_INSIDE_GANONS_CASTLE] < GANONS_CASTLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_TREASURE_GAME_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_TAKARAYA] < TREASURE_GAME_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_TREASURE_BOX_SHOP] < TREASURE_GAME_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
         // Dungeon Rewards
         case RG_KOKIRI_EMERALD:
@@ -2202,89 +2228,6 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return (GetItemID)RG_MAGIC_DOUBLE;
             }
 
-        case RG_DEKU_TREE_MAP:
-        case RG_DODONGOS_CAVERN_MAP:
-        case RG_JABU_JABUS_BELLY_MAP:
-        case RG_FOREST_TEMPLE_MAP:
-        case RG_FIRE_TEMPLE_MAP:
-        case RG_WATER_TEMPLE_MAP:
-        case RG_SPIRIT_TEMPLE_MAP:
-        case RG_SHADOW_TEMPLE_MAP:
-        case RG_BOTTOM_OF_THE_WELL_MAP:
-        case RG_ICE_CAVERN_MAP:
-            if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
-                GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_VANILLA ||
-                (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON &&
-                 GetRandoSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
-                return GI_MAP;
-            } else {
-                return (GetItemID)randoGet;
-            }
-
-        case RG_DEKU_TREE_COMPASS:
-        case RG_DODONGOS_CAVERN_COMPASS:
-        case RG_JABU_JABUS_BELLY_COMPASS:
-        case RG_FOREST_TEMPLE_COMPASS:
-        case RG_FIRE_TEMPLE_COMPASS:
-        case RG_WATER_TEMPLE_COMPASS:
-        case RG_SPIRIT_TEMPLE_COMPASS:
-        case RG_SHADOW_TEMPLE_COMPASS:
-        case RG_BOTTOM_OF_THE_WELL_COMPASS:
-        case RG_ICE_CAVERN_COMPASS:
-            if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
-                GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_VANILLA ||
-                (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON &&
-                 GetRandoSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
-                return GI_COMPASS;
-            } else {
-                return (GetItemID)randoGet;
-            }
-
-        case RG_FOREST_TEMPLE_BOSS_KEY:
-        case RG_FIRE_TEMPLE_BOSS_KEY:
-        case RG_WATER_TEMPLE_BOSS_KEY:
-        case RG_SPIRIT_TEMPLE_BOSS_KEY:
-        case RG_SHADOW_TEMPLE_BOSS_KEY:
-            if (GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
-                GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_VANILLA ||
-                (GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON &&
-                 GetRandoSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
-                return GI_KEY_BOSS;
-            } else {
-                return (GetItemID)randoGet;
-            }
-        case RG_GANONS_CASTLE_BOSS_KEY:
-            if (GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_STARTWITH ||
-                GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_VANILLA ||
-                GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_OWN_DUNGEON) {
-                return GI_KEY_BOSS;
-            } else {
-                return (GetItemID)randoGet;
-            }
-
-        case RG_FOREST_TEMPLE_SMALL_KEY:
-        case RG_FIRE_TEMPLE_SMALL_KEY:
-        case RG_WATER_TEMPLE_SMALL_KEY:
-        case RG_SPIRIT_TEMPLE_SMALL_KEY:
-        case RG_SHADOW_TEMPLE_SMALL_KEY:
-        case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
-        case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
-        case RG_GANONS_CASTLE_SMALL_KEY:
-            if (GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
-                GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_VANILLA ||
-                (GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON &&
-                 GetRandoSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
-                return GI_KEY_SMALL;
-            } else {
-                return (GetItemID)randoGet;
-            }
-        case RG_GERUDO_FORTRESS_SMALL_KEY:
-            if (GetRandoSettingValue(RSK_GERUDO_KEYS) == RO_GERUDO_KEYS_VANILLA) {
-                return GI_KEY_SMALL;
-            } else {
-                return (GetItemID)randoGet;
-            }
-
         case RG_RECOVERY_HEART:
         case RG_BUY_HEART:
             return GI_HEART;
@@ -2442,72 +2385,6 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
             } else {
                 return false;
             }
-        case RG_FOREST_TEMPLE_SMALL_KEY:
-        case RG_FIRE_TEMPLE_SMALL_KEY:
-        case RG_WATER_TEMPLE_SMALL_KEY:
-        case RG_SPIRIT_TEMPLE_SMALL_KEY:
-        case RG_SHADOW_TEMPLE_SMALL_KEY:
-        case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
-        case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
-        case RG_GANONS_CASTLE_SMALL_KEY:
-            if (GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
-                GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_VANILLA ||
-                (GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON &&
-                 GetRandoSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
-                return true;
-            }
-            return false;
-        case RG_GERUDO_FORTRESS_SMALL_KEY:
-            if (GetRandoSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA) {
-                return false;
-            }
-            return true;
-        case RG_FOREST_TEMPLE_BOSS_KEY:
-        case RG_FIRE_TEMPLE_BOSS_KEY:
-        case RG_WATER_TEMPLE_BOSS_KEY:
-        case RG_SPIRIT_TEMPLE_BOSS_KEY:
-        case RG_SHADOW_TEMPLE_BOSS_KEY:
-            if (GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
-                GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_VANILLA ||
-                (GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON &&
-                 GetRandoSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
-                return true;
-            }
-            return false;
-        case RG_GANONS_CASTLE_BOSS_KEY:
-            if (GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_STARTWITH ||
-                GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_VANILLA ||
-                GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_OWN_DUNGEON) {
-                return true;
-            }
-            return false;
-        case RG_DEKU_TREE_COMPASS:
-        case RG_DODONGOS_CAVERN_COMPASS:
-        case RG_JABU_JABUS_BELLY_COMPASS:
-        case RG_FOREST_TEMPLE_COMPASS:
-        case RG_FIRE_TEMPLE_COMPASS:
-        case RG_WATER_TEMPLE_COMPASS:
-        case RG_SPIRIT_TEMPLE_COMPASS:
-        case RG_SHADOW_TEMPLE_COMPASS:
-        case RG_BOTTOM_OF_THE_WELL_COMPASS:
-        case RG_ICE_CAVERN_COMPASS:
-        case RG_DEKU_TREE_MAP:
-        case RG_DODONGOS_CAVERN_MAP:
-        case RG_JABU_JABUS_BELLY_MAP:
-        case RG_FOREST_TEMPLE_MAP:
-        case RG_FIRE_TEMPLE_MAP:
-        case RG_WATER_TEMPLE_MAP:
-        case RG_SPIRIT_TEMPLE_MAP:
-        case RG_SHADOW_TEMPLE_MAP:
-        case RG_BOTTOM_OF_THE_WELL_MAP:
-        case RG_ICE_CAVERN_MAP:
-            if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
-                GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_VANILLA ||
-                (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON &&
-                 GetRandoSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
-                return true;
-            }
-            return false;
         default:
             return false;
     }
@@ -2676,7 +2553,7 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
     RandomizerCheck specialRc = RC_UNKNOWN_CHECK;
     // TODO: Migrate these special cases into table, or at least document why they are special
     switch(sceneNum) {
-        case SCENE_TAKARAYA:
+        case SCENE_TREASURE_BOX_SHOP:
             if(actorParams == 20170) specialRc = RC_MARKET_TREASURE_CHEST_GAME_REWARD;
 
             // RANDOTODO update logic to match 3ds rando when we implement keysanity
@@ -2691,9 +2568,9 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                 if((actorParams & 0xF) < 10) specialRc = RC_MARKET_TREASURE_CHEST_GAME_ITEM_5;
             }
             break;
-        case SCENE_SHRINE:
-        case SCENE_SHRINE_N:
-        case SCENE_SHRINE_R:
+        case SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY:
+        case SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT:
+        case SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS:
             switch (actorParams) {
                 case 14342:
                     specialRc = RC_TOT_LEFT_GOSSIP_STONE;
@@ -2709,7 +2586,7 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                     break;
             }
             break;
-        case SCENE_KINSUTA:
+        case SCENE_HOUSE_OF_SKULLTULA:
             if (actorId == ACTOR_EN_SSH) {
                 switch (actorParams) { // actor params are used to differentiate between textboxes
                     case 1: specialRc = RC_KAK_10_GOLD_SKULLTULA_REWARD; break;
@@ -2720,7 +2597,7 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                 }
             }
             break;
-        case SCENE_SPOT01:
+        case SCENE_KAKARIKO_VILLAGE:
             switch (actorId) {
                 case ACTOR_EN_NIW_LADY:
                     if (LINK_IS_ADULT) {
@@ -2730,7 +2607,7 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                     }
             }
             break;
-        case SCENE_SPOT06:
+        case SCENE_LAKE_HYLIA:
             switch (actorId) {
                 case ACTOR_ITEM_ETCETERA:
                     if (LINK_IS_ADULT) {
@@ -2740,7 +2617,7 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                     }
             }
             break;
-        case SCENE_SPOT08:
+        case SCENE_ZORAS_FOUNTAIN:
             switch (actorParams) {
                 case 15362:
                 case 14594:
@@ -2752,14 +2629,14 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                     break;
             }
             break;
-        case SCENE_SPOT12:
+        case SCENE_GERUDOS_FORTRESS:
             // GF chest as child has different params and gives odd mushroom
             // set it to the GF chest check for both ages
             if (actorId == ACTOR_EN_BOX) {
                 specialRc = RC_GF_CHEST;
             }
             break;
-        case SCENE_DDAN:
+        case SCENE_DODONGOS_CAVERN:
             // special case for MQ DC Gossip Stone
             if (actorId == ACTOR_EN_GS && actorParams == 15892 && ResourceMgr_IsGameMasterQuest()) {
                 specialRc = RC_DODONGOS_CAVERN_GOSSIP_STONE;
@@ -2798,7 +2675,7 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
     // Scrubs that are 0x06 are loaded as 0x03 when child, switching from selling arrows to seeds
     if (actorParams == 0x06) actorParams = 0x03;
 
-    if (sceneNum == SCENE_KAKUSIANA) {
+    if (sceneNum == SCENE_GROTTOS) {
         actorParams = TWO_ACTOR_PARAMS(actorParams, respawnData);
     }
 
@@ -2833,7 +2710,7 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
 
     RandomizerCheckObject rcObject = GetCheckObjectFromActor(ACTOR_EN_GIRLA, 
         // Bazaar (SHOP1) scene is reused, so if entering from Kak use debug scene to identify
-        (sceneNum == SCENE_SHOP1 && gSaveContext.entranceIndex == 0xB7) ? SCENE_TEST01 : sceneNum, slotIndex);
+        (sceneNum == SCENE_BAZAAR && gSaveContext.entranceIndex == 0xB7) ? SCENE_TEST01 : sceneNum, slotIndex);
 
     if (rcObject.rc != RC_UNKNOWN_CHECK) {
         shopItemIdentity.randomizerInf = rcToRandomizerInf[rcObject.rc];
@@ -2861,7 +2738,7 @@ CowIdentity Randomizer::IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
 
     s32 actorParams = 0x00;
     // Only need to pass params if in a scene with two cows
-    if (sceneNum == SCENE_KAKUSIANA || sceneNum == SCENE_MALON_STABLE || sceneNum == SCENE_SOUKO) {
+    if (sceneNum == SCENE_GROTTOS || sceneNum == SCENE_STABLE || sceneNum == SCENE_LON_LON_BUILDINGS) {
         actorParams = TWO_ACTOR_PARAMS(posX, posZ);
     }
 
@@ -3095,6 +2972,19 @@ void GenerateRandomizerImgui(std::string seed = "") {
         cvarSettings[RSK_MQ_DUNGEON_COUNT] = 0;
     }
 
+    cvarSettings[RSK_MQ_DEKU_TREE] = CVarGetInteger("gRandomizeMqDungeonsDekuTree", 0);
+    cvarSettings[RSK_MQ_DODONGOS_CAVERN] = CVarGetInteger("gRandomizeMqDungeonsDodongosCavern", 0);
+    cvarSettings[RSK_MQ_JABU_JABU] = CVarGetInteger("gRandomizeMqDungeonsJabuJabu", 0);
+    cvarSettings[RSK_MQ_FOREST_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsForestTemple", 0);
+    cvarSettings[RSK_MQ_FIRE_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsFireTemple", 0);
+    cvarSettings[RSK_MQ_WATER_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsWaterTemple", 0);
+    cvarSettings[RSK_MQ_SPIRIT_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsSpiritTemple", 0);
+    cvarSettings[RSK_MQ_SHADOW_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsShadowTemple", 0);
+    cvarSettings[RSK_MQ_BOTTOM_OF_THE_WELL] = CVarGetInteger("gRandomizeMqDungeonsBottomOfTheWell", 0);
+    cvarSettings[RSK_MQ_ICE_CAVERN] = CVarGetInteger("gRandomizeMqDungeonsIceCavern", 0);
+    cvarSettings[RSK_MQ_GTG] = CVarGetInteger("gRandomizeMqDungeonsGTG", 0);
+    cvarSettings[RSK_MQ_GANONS_CASTLE] = CVarGetInteger("gRandomizeMqDungeonsGanonsCastle", 0);
+
     // Enable if any of the entrance rando options are enabled.
     cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVarGetInteger("gRandomizeShuffleDungeonsEntrances", RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ||
                                           CVarGetInteger("gRandomizeShuffleBossEntrances", RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) ||
@@ -3186,7 +3076,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                           "Dungeon rewards", "Dungeons", "Tokens", "Greg" };
     static const char* randoBridgeRewardOptions[3] = { "Standard Rewards", "Greg as Reward", "Greg as Wildcard" };
     static const char* randoGanonsTrial[3] = { "Skip", "Set Number", "Random Number" };
-    static const char* randoMqDungeons[3] = { "None", "Set Number", "Random Number" };
+    static const char* randoMqDungeons[4] = { "None", "Set Number", "Random Number", "Selection" };
 
     // World Settings
     static const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
@@ -3307,7 +3197,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Forest
-                ImGui::Text(Settings::OpenForest.GetName().c_str());
+                ImGui::Text("%s", Settings::OpenForest.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Closed - Kokiri sword & shield are required to access "
                     "the Deku Tree, and completing the Deku Tree is required to "
@@ -3325,7 +3215,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Kakariko Gate
-                ImGui::Text(Settings::OpenKakariko.GetName().c_str());
+                ImGui::Text("%s", Settings::OpenKakariko.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Closed - The gate will remain closed until Zelda's letter "
                     "is shown to the guard.\n"
@@ -3338,7 +3228,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Door of Time
-                ImGui::Text(Settings::OpenDoorOfTime.GetName().c_str());
+                ImGui::Text("%s", Settings::OpenDoorOfTime.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Closed - The Ocarina of Time, the Song of Time and all "
                     "three spiritual stones are required to open the Door of Time.\n"
@@ -3353,7 +3243,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Zora's Fountain
-                ImGui::Text(Settings::ZorasFountain.GetName().c_str());
+                ImGui::Text("%s", Settings::ZorasFountain.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Closed - King Zora obstructs the way to Zora's Fountain. "
                     "Ruto's letter must be shown as child Link in order to move "
@@ -3384,7 +3274,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     (CVarGetInteger("gRandomizeShuffleOcarinas", RO_GENERIC_OFF) == RO_GENERIC_OFF)); // closed door of time with ocarina shuffle off
 
                 static const char* disableRandoStartingAgeText = "This option is disabled due to other options making the game unbeatable.";
-                ImGui::Text(Settings::StartingAge.GetName().c_str());
+                ImGui::Text("%s", Settings::StartingAge.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Choose which age Link will start as.\n\n"
                     "Starting as adult means you start with the Master Sword in your inventory.\n"
@@ -3605,13 +3495,41 @@ void RandomizerSettingsWindow::DrawElement() {
                         "Set Number - Select a number of dungeons that will be their Master Quest versions "
                         "using the slider below. Which dungeons are set to be the Master Quest variety will be random.\n"
                         "\n"
-                        "Random Number - A Random number and set of dungeons will be their Master Quest varieties."
+                        "Random Number - A Random number and set of dungeons will be their Master Quest varieties.\n"
+                        "\n"
+                        "Selection - Leave unchecked for Vanilla and checked for Master Quest."
                     );
                     UIWidgets::EnhancementCombobox("gRandomizeMqDungeons", randoMqDungeons, RO_MQ_DUNGEONS_NONE);
                     ImGui::PopItemWidth();
                     if (CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SET_NUMBER) {
-                        UIWidgets::PaddedEnhancementSliderInt("Master Quest Dungeon Count: %d", "##RandoMqDungeonCount",
-                            "gRandomizeMqDungeonCount", 1, 12, "", CVarGetInteger("gRandomizeMqDungeonCount", 12), true, true, false);
+                        UIWidgets::PaddedEnhancementSliderInt(
+                            "Master Quest Dungeon Count: %d", "##RandoMqDungeonCount", "gRandomizeMqDungeonCount", 1,
+                            12, "", CVarGetInteger("gRandomizeMqDungeonCount", 12), true, true, false);
+                    }
+                    else if (CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SELECTION) {
+                        UIWidgets::EnhancementCheckbox("Deku Tree##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsDekuTree");
+                        UIWidgets::EnhancementCheckbox("Dodongo's Cavern##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsDodongosCavern");
+                        UIWidgets::EnhancementCheckbox("Jabu Jabu's Belly##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsJabuJabu");
+                        UIWidgets::EnhancementCheckbox("Forest Temple##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsForestTemple");
+                        UIWidgets::EnhancementCheckbox("Fire Temple##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsFireTemple");
+                        UIWidgets::EnhancementCheckbox("Water Temple##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsWaterTemple");
+                        UIWidgets::EnhancementCheckbox("Spirit Temple##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsSpiritTemple");
+                        UIWidgets::EnhancementCheckbox("Shadow Temple##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsShadowTemple");
+                        UIWidgets::EnhancementCheckbox("Bottom of the Well##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsBottomOfTheWell");
+                        UIWidgets::EnhancementCheckbox("Ice Cavern##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsIceCavern");
+                        UIWidgets::EnhancementCheckbox("Gerudo Training Grounds##RandomizeMqDungeons", "gRandomizeMqDungeonsGTG");
+                        UIWidgets::EnhancementCheckbox("Ganon's Castle##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsGanonsCastle");
                     }
                 }
 
@@ -3796,7 +3714,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Shuffle Songs
-                ImGui::Text(Settings::ShuffleSongs.GetName().c_str());
+                ImGui::Text("%s", Settings::ShuffleSongs.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Song locations - Songs will only appear at locations that normally teach songs.\n"
                     "\n"
@@ -3814,7 +3732,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Tokens
-                ImGui::Text(Settings::Tokensanity.GetName().c_str());
+                ImGui::Text("%s", Settings::Tokensanity.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Shuffles Golden Skulltula Tokens into the item pool. This means "
                     "Golden Skulltulas can contain other items as well.\n"
@@ -3907,7 +3825,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Shopsanity
-                ImGui::Text(Settings::Shopsanity.GetName().c_str());
+                ImGui::Text("%s", Settings::Shopsanity.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Off - All shop items will be the same as vanilla.\n"
                     "\n"
@@ -3925,7 +3843,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     case RO_SHOPSANITY_ZERO_ITEMS: // no need to show it if there aren't shop slots in the pool
                         break;
                     default:
-                        ImGui::Text(Settings::ShopsanityPrices.GetName().c_str());
+                        ImGui::Text("%s", Settings::ShopsanityPrices.GetName().c_str());
                         UIWidgets::InsertHelpHoverText(
                             "Balanced - The default randomization. Shop prices for shopsanity items will range between 0 to 300 rupees, "
                             "with a bias towards values slightly below the middle of the range, in multiples of 5.\n "
@@ -3944,7 +3862,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Scrubs
-                ImGui::Text(Settings::Scrubsanity.GetName().c_str());
+                ImGui::Text("%s", Settings::Scrubsanity.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Off - Scrubs will not be shuffled. The 3 Scrubs that give one-time items in the vanilla game "
                     "(PoH, Deku Nut capacity, and Deku Stick capacity) will have random items.\n"
@@ -3973,14 +3891,17 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Merchants
-                ImGui::Text(Settings::ShuffleMerchants.GetName().c_str());
+                ImGui::Text("%s", Settings::ShuffleMerchants.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Enabling this changes Medigoron, Granny and the Carpet Salesman to sell a random item "
                     "once at a high price (100 for Granny, 200 for the others).\n"
                     "A Giant's Knife and a pack of Bombchus will be added to the item pool, and "
                     "one of the bottles will contain a Blue Potion.\n\n"
                     "On (no hints) - Salesmen will be included but won't tell you what you'll get.\n"
-                    "On (with hints) - Salesmen will be included and you'll know what you're buying."
+                    "On (with hints) - Salesmen will be included and you'll know what you're buying.\n"
+                    "\n"
+                    "Granny's item will only be offered after you have traded in the Odd Mushroom when Shuffle Adult Trade is on. "
+                    "Otherwise when off, you will need to have found the Claim Check to buy her item (simulating the trade quest is complete)."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleMerchants", randoShuffleMerchants, RO_SHUFFLE_MERCHANTS_OFF);
 
@@ -4049,7 +3970,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Shuffle Dungeon Rewards
-                ImGui::Text(Settings::ShuffleRewards.GetName().c_str());
+                ImGui::Text("%s", Settings::ShuffleRewards.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Shuffles the location of spiritual stones and medallions.\n"
                     "\n"
@@ -4067,7 +3988,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Maps & Compasses
-                ImGui::Text(Settings::MapsAndCompasses.GetName().c_str());
+                ImGui::Text("%s", Settings::MapsAndCompasses.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Start with - You will start with Maps & Compasses from all dungeons.\n"
                     "\n"
@@ -4086,7 +4007,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Keysanity
-                ImGui::Text(Settings::Keysanity.GetName().c_str());
+                ImGui::Text("%s", Settings::Keysanity.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Start with - You will start with all Small Keys from all dungeons.\n"
                     "\n"
@@ -4107,7 +4028,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                  // Key Rings
-                ImGui::Text(Settings::KeyRings.GetName().c_str());
+                ImGui::Text("%s", Settings::KeyRings.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Keyrings will replace all small keys from a particular dungeon with a single keyring that awards all keys for it's associated dungeon\n"
                     "\n"
@@ -4151,7 +4072,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         UIWidgets::EnhancementCheckbox("Spirit Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsSpiritTemple");
                         UIWidgets::EnhancementCheckbox("Shadow Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsShadowTemple");
                         UIWidgets::EnhancementCheckbox("Bottom of the Well##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsBottomOfTheWell");
-                        UIWidgets::EnhancementCheckbox("GTG##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGTG");
+                        UIWidgets::EnhancementCheckbox("Gerudo Training Grounds##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGTG");
                         UIWidgets::EnhancementCheckbox("Ganon's Castle##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGanonsCastle");
                         break;
                     default:
@@ -4162,7 +4083,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Gerudo Keys
-                ImGui::Text(Settings::GerudoKeys.GetName().c_str());
+                ImGui::Text("%s", Settings::GerudoKeys.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Vanilla - Thieve's Hideout Keys will appear in their vanilla locations.\n"
                     "\n"
@@ -4177,7 +4098,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Boss Keysanity
-                ImGui::Text(Settings::BossKeysanity.GetName().c_str());
+                ImGui::Text("%s", Settings::BossKeysanity.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Start with - You will start with Boss keys from all dungeons.\n"
                     "\n"
@@ -4196,7 +4117,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Ganon's Boss Key
-                ImGui::Text(Settings::GanonsBossKey.GetName().c_str());
+                ImGui::Text("%s", Settings::GanonsBossKey.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Vanilla - Ganon's Boss Key will appear in the vanilla location.\n"
                     "\n"
@@ -4443,7 +4364,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Item Pool Settings
-                ImGui::Text(Settings::ItemPoolValue.GetName().c_str());
+                ImGui::Text("%s", Settings::ItemPoolValue.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Sets how many major items appear in the item pool.\n"
                     "\n"
@@ -4459,7 +4380,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Ice Traps
-                ImGui::Text(Settings::IceTrapValue.GetName().c_str());
+                ImGui::Text("%s", Settings::IceTrapValue.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Sets how many items are replaced by ice traps.\n"
                     "\n"
@@ -4479,7 +4400,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Gossip Stone Hints
-                ImGui::Text(Settings::GossipStoneHints.GetName().c_str());
+                ImGui::Text("%s", Settings::GossipStoneHints.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Allows Gossip Stones to provide hints on item locations. Hints mentioning "
                     "\"Way of the Hero\" indicate a location that holds an item required to beat "
@@ -4497,7 +4418,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     // Hint Clarity
                     UIWidgets::Spacer(0);
                     ImGui::Indent();
-                    ImGui::Text(Settings::ClearerHints.GetName().c_str());
+                    ImGui::Text("%s", Settings::ClearerHints.GetName().c_str());
                     UIWidgets::InsertHelpHoverText(
                         "Sets the difficulty of hints.\n"
                         "\n"
@@ -4514,7 +4435,7 @@ void RandomizerSettingsWindow::DrawElement() {
 
                     // Hint Distribution
                     UIWidgets::Spacer(0);
-                    ImGui::Text(Settings::HintDistribution.GetName().c_str());
+                    ImGui::Text("%s", Settings::HintDistribution.GetName().c_str());
                     UIWidgets::InsertHelpHoverText(
                         "Sets how many hints will be useful.\n"
                         "\n"
@@ -4689,7 +4610,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     ImGui::SameLine();
-                                    ImGui::Text(rcObject->rcShortName.c_str());
+                                    ImGui::Text("%s", rcObject->rcShortName.c_str());
                                 }
                             }
                             ImGui::TreePop();
@@ -4730,7 +4651,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     ImGui::SameLine();
-                                    ImGui::Text(rcObject->rcShortName.c_str());
+                                    ImGui::Text("%s", rcObject->rcShortName.c_str());
                                 }
                             }
                             ImGui::TreePop();
@@ -5039,7 +4960,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                         }
                                         DrawTagChips(*rtObject.rtTags);
                                         ImGui::SameLine();
-                                        ImGui::Text(rtObject.rtShortName.c_str());
+                                        ImGui::Text("%s", rtObject.rtShortName.c_str());
                                         UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
                                     }
                                 }
@@ -5151,7 +5072,7 @@ void RandomizerSettingsWindow::DrawElement() {
                                         }
                                         DrawTagChips(*rtObject.rtTags);
                                         ImGui::SameLine();
-                                        ImGui::Text(rtObject.rtShortName.c_str());
+                                        ImGui::Text("%s", rtObject.rtShortName.c_str());
                                         UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
                                     }
                                 }
@@ -5204,7 +5125,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 // Don't display this option if Dungeon Rewards are Shuffled to End of Dungeon.
                 // TODO: Show this but disabled when we have options for disabled Comboboxes.
                 if (CVarGetInteger("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON) != RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
-                    ImGui::Text(Settings::LinksPocketItem.GetName().c_str());
+                    ImGui::Text("%s", Settings::LinksPocketItem.GetName().c_str());
                     UIWidgets::EnhancementCombobox("gRandomizeLinksPocket", randoLinksPocket, RO_LINKS_POCKET_DUNGEON_REWARD);
                     UIWidgets::PaddedSeparator();
                 }
@@ -5377,7 +5298,7 @@ CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 te
 
 CustomMessage Randomizer::GetCursedSkullMessage(s16 params) {
     CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_CURSED_SKULLTULA_PEOPLE);
-    RandomizerCheck rc = GetCheckFromActor(ACTOR_EN_SSH, SCENE_KINSUTA, params);
+    RandomizerCheck rc = GetCheckFromActor(ACTOR_EN_SSH, SCENE_HOUSE_OF_SKULLTULA, params);
     RandomizerGet itemGet = this->itemLocations[rc].rgID;
     std::array<std::string, LANGUAGE_MAX> itemName;
     if (itemGet == RG_ICE_TRAP) {
@@ -5407,38 +5328,41 @@ CustomMessage Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEntry) {
     int sceneNum;
     switch (itemEntry.getItemId) {
         case RG_DEKU_TREE_MAP:
-            sceneNum = SCENE_YDAN;
+            sceneNum = SCENE_DEKU_TREE;
             break;
         case RG_DODONGOS_CAVERN_MAP:
-            sceneNum = SCENE_DDAN;
+            sceneNum = SCENE_DODONGOS_CAVERN;
             break;
         case RG_JABU_JABUS_BELLY_MAP:
-            sceneNum = SCENE_BDAN;
+            sceneNum = SCENE_JABU_JABU;
             break;
         case RG_FOREST_TEMPLE_MAP:
-            sceneNum = SCENE_BMORI1;
+            sceneNum = SCENE_FOREST_TEMPLE;
             break;
         case RG_FIRE_TEMPLE_MAP:
-            sceneNum = SCENE_HIDAN;
+            sceneNum = SCENE_FIRE_TEMPLE;
             break;
         case RG_WATER_TEMPLE_MAP:
-            sceneNum = SCENE_MIZUSIN;
+            sceneNum = SCENE_WATER_TEMPLE;
             break;
         case RG_SPIRIT_TEMPLE_MAP:
-            sceneNum = SCENE_JYASINZOU;
+            sceneNum = SCENE_SPIRIT_TEMPLE;
             break;
         case RG_SHADOW_TEMPLE_MAP:
-            sceneNum = SCENE_HAKADAN;
+            sceneNum = SCENE_SHADOW_TEMPLE;
             break;
         case RG_BOTTOM_OF_THE_WELL_MAP:
-            sceneNum = SCENE_HAKADANCH;
+            sceneNum = SCENE_BOTTOM_OF_THE_WELL;
             break;
         case RG_ICE_CAVERN_MAP:
-            sceneNum = SCENE_ICE_DOUKUTO;
+            sceneNum = SCENE_ICE_CAVERN;
             break;
     }
 
-    if (this->masterQuestDungeons.empty() || this->masterQuestDungeons.size() >= 12) {
+    if (this->randoSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_NONE ||
+        (this->randoSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_SET_NUMBER &&
+         this->randoSettings[RSK_MQ_DUNGEON_COUNT] == 12)
+       ) {
         messageEntry.Replace("{{typeHint}}", "");
     } else if (ResourceMgr_IsSceneMasterQuest(sceneNum)) {
         messageEntry.Replace("{{typeHint}}", mapGetItemHints[0][1], mapGetItemHints[1][1], mapGetItemHints[2][1]);
@@ -5667,9 +5591,9 @@ void CreateIceTrapRandoMessages() {
           "Nachts ist es %bkälter%w als draußen.",
           "L'imbécile réfléchit uniquement quand il&s'observe dans la %bglace%w." },
 
-        { "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bhurt you%w.",
-          "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bhurt you%w.",
-          "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bhurt you%w." },
+        { "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bdesert you%w.",
+          "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bdesert you%w.",
+          "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bdesert you%w." },
 
         { "Thank you %b@%w!&But your item is in another castle!",
           "Danke %b@%w!&Aber der Gegenstand ist in&einem anderem Schloss!",
@@ -6085,15 +6009,15 @@ void InitRandoItemTable() {
         GET_ITEM(RG_BOTTLE_WITH_BUGS,                  OBJECT_GI_INSECT,   GID_BUG,              TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_BUGS),
         GET_ITEM(RG_BOTTLE_WITH_POE,                   OBJECT_GI_GHOST,    GID_POE,              TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_POE),
         GET_ITEM(RG_BOTTLE_WITH_BIG_POE,               OBJECT_GI_GHOST,    GID_BIG_POE,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_BIG_POE),
-        GET_ITEM(RG_GERUDO_FORTRESS_SMALL_KEY,         OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_FORTRESS_SMALL_KEY),
-        GET_ITEM(RG_FOREST_TEMPLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FOREST_TEMPLE_SMALL_KEY),
-        GET_ITEM(RG_FIRE_TEMPLE_SMALL_KEY,             OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FIRE_TEMPLE_SMALL_KEY),
-        GET_ITEM(RG_WATER_TEMPLE_SMALL_KEY,            OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_WATER_TEMPLE_SMALL_KEY),
-        GET_ITEM(RG_SPIRIT_TEMPLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_SMALL_KEY),
-        GET_ITEM(RG_SHADOW_TEMPLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_SHADOW_TEMPLE_SMALL_KEY),
-        GET_ITEM(RG_BOTTOM_OF_THE_WELL_SMALL_KEY,      OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_SMALL_KEY),
-        GET_ITEM(RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY),
-        GET_ITEM(RG_GANONS_CASTLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GANONS_CASTLE_SMALL_KEY),
+        GET_ITEM(RG_GERUDO_FORTRESS_SMALL_KEY,         OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_FORTRESS_SMALL_KEY),
+        GET_ITEM(RG_FOREST_TEMPLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FOREST_TEMPLE_SMALL_KEY),
+        GET_ITEM(RG_FIRE_TEMPLE_SMALL_KEY,             OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FIRE_TEMPLE_SMALL_KEY),
+        GET_ITEM(RG_WATER_TEMPLE_SMALL_KEY,            OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_WATER_TEMPLE_SMALL_KEY),
+        GET_ITEM(RG_SPIRIT_TEMPLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_SMALL_KEY),
+        GET_ITEM(RG_SHADOW_TEMPLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_SHADOW_TEMPLE_SMALL_KEY),
+        GET_ITEM(RG_BOTTOM_OF_THE_WELL_SMALL_KEY,      OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_SMALL_KEY),
+        GET_ITEM(RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY),
+        GET_ITEM(RG_GANONS_CASTLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GANONS_CASTLE_SMALL_KEY),
         GET_ITEM(RG_GERUDO_FORTRESS_KEY_RING,          OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_FORTRESS_KEY_RING),
         GET_ITEM(RG_FOREST_TEMPLE_KEY_RING,            OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FOREST_TEMPLE_KEY_RING),
         GET_ITEM(RG_FIRE_TEMPLE_KEY_RING,              OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FIRE_TEMPLE_KEY_RING),
@@ -6103,32 +6027,32 @@ void InitRandoItemTable() {
         GET_ITEM(RG_BOTTOM_OF_THE_WELL_KEY_RING,       OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_KEY_RING),
         GET_ITEM(RG_GERUDO_TRAINING_GROUNDS_KEY_RING,  OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_TRAINING_GROUNDS_KEY_RING),
         GET_ITEM(RG_GANONS_CASTLE_KEY_RING,            OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GANONS_CASTLE_KEY_RING),
-        GET_ITEM(RG_FOREST_TEMPLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_FOREST_TEMPLE_BOSS_KEY),
-        GET_ITEM(RG_FIRE_TEMPLE_BOSS_KEY,              OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_FIRE_TEMPLE_BOSS_KEY),
-        GET_ITEM(RG_WATER_TEMPLE_BOSS_KEY,             OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_WATER_TEMPLE_BOSS_KEY),
-        GET_ITEM(RG_SPIRIT_TEMPLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_BOSS_KEY),
-        GET_ITEM(RG_SHADOW_TEMPLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_SHADOW_TEMPLE_BOSS_KEY),
-        GET_ITEM(RG_GANONS_CASTLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY),
-        GET_ITEM(RG_DEKU_TREE_MAP,                     OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_DEKU_TREE_MAP),
-        GET_ITEM(RG_DODONGOS_CAVERN_MAP,               OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_DODONGOS_CAVERN_MAP),
-        GET_ITEM(RG_JABU_JABUS_BELLY_MAP,              OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_JABU_JABUS_BELLY_MAP),
-        GET_ITEM(RG_FOREST_TEMPLE_MAP,                 OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_FOREST_TEMPLE_MAP),
-        GET_ITEM(RG_FIRE_TEMPLE_MAP,                   OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_FIRE_TEMPLE_MAP),
-        GET_ITEM(RG_WATER_TEMPLE_MAP,                  OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_WATER_TEMPLE_MAP),
-        GET_ITEM(RG_SPIRIT_TEMPLE_MAP,                 OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_MAP),
-        GET_ITEM(RG_SHADOW_TEMPLE_MAP,                 OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_SHADOW_TEMPLE_MAP),
-        GET_ITEM(RG_BOTTOM_OF_THE_WELL_MAP,            OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_MAP),
-        GET_ITEM(RG_ICE_CAVERN_MAP,                    OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_ICE_CAVERN_MAP),
-        GET_ITEM(RG_DEKU_TREE_COMPASS,                 OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_DEKU_TREE_COMPASS),
-        GET_ITEM(RG_DODONGOS_CAVERN_COMPASS,           OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_DODONGOS_CAVERN_COMPASS),
-        GET_ITEM(RG_JABU_JABUS_BELLY_COMPASS,          OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_JABU_JABUS_BELLY_COMPASS),
-        GET_ITEM(RG_FOREST_TEMPLE_COMPASS,             OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_FOREST_TEMPLE_COMPASS),
-        GET_ITEM(RG_FIRE_TEMPLE_COMPASS,               OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_FIRE_TEMPLE_COMPASS),
-        GET_ITEM(RG_WATER_TEMPLE_COMPASS,              OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_WATER_TEMPLE_COMPASS),
-        GET_ITEM(RG_SPIRIT_TEMPLE_COMPASS,             OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_COMPASS),
-        GET_ITEM(RG_SHADOW_TEMPLE_COMPASS,             OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_SHADOW_TEMPLE_COMPASS),
-        GET_ITEM(RG_BOTTOM_OF_THE_WELL_COMPASS,        OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_COMPASS),
-        GET_ITEM(RG_ICE_CAVERN_COMPASS,                OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_ICE_CAVERN_COMPASS),
+        GET_ITEM(RG_FOREST_TEMPLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_FOREST_TEMPLE_BOSS_KEY),
+        GET_ITEM(RG_FIRE_TEMPLE_BOSS_KEY,              OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_FIRE_TEMPLE_BOSS_KEY),
+        GET_ITEM(RG_WATER_TEMPLE_BOSS_KEY,             OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_WATER_TEMPLE_BOSS_KEY),
+        GET_ITEM(RG_SPIRIT_TEMPLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_BOSS_KEY),
+        GET_ITEM(RG_SHADOW_TEMPLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_SHADOW_TEMPLE_BOSS_KEY),
+        GET_ITEM(RG_GANONS_CASTLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY),
+        GET_ITEM(RG_DEKU_TREE_MAP,                     OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_DEKU_TREE_MAP),
+        GET_ITEM(RG_DODONGOS_CAVERN_MAP,               OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_DODONGOS_CAVERN_MAP),
+        GET_ITEM(RG_JABU_JABUS_BELLY_MAP,              OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_JABU_JABUS_BELLY_MAP),
+        GET_ITEM(RG_FOREST_TEMPLE_MAP,                 OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_FOREST_TEMPLE_MAP),
+        GET_ITEM(RG_FIRE_TEMPLE_MAP,                   OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_FIRE_TEMPLE_MAP),
+        GET_ITEM(RG_WATER_TEMPLE_MAP,                  OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_WATER_TEMPLE_MAP),
+        GET_ITEM(RG_SPIRIT_TEMPLE_MAP,                 OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_MAP),
+        GET_ITEM(RG_SHADOW_TEMPLE_MAP,                 OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_SHADOW_TEMPLE_MAP),
+        GET_ITEM(RG_BOTTOM_OF_THE_WELL_MAP,            OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_MAP),
+        GET_ITEM(RG_ICE_CAVERN_MAP,                    OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_ICE_CAVERN_MAP),
+        GET_ITEM(RG_DEKU_TREE_COMPASS,                 OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_DEKU_TREE_COMPASS),
+        GET_ITEM(RG_DODONGOS_CAVERN_COMPASS,           OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_DODONGOS_CAVERN_COMPASS),
+        GET_ITEM(RG_JABU_JABUS_BELLY_COMPASS,          OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_JABU_JABUS_BELLY_COMPASS),
+        GET_ITEM(RG_FOREST_TEMPLE_COMPASS,             OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_FOREST_TEMPLE_COMPASS),
+        GET_ITEM(RG_FIRE_TEMPLE_COMPASS,               OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_FIRE_TEMPLE_COMPASS),
+        GET_ITEM(RG_WATER_TEMPLE_COMPASS,              OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_WATER_TEMPLE_COMPASS),
+        GET_ITEM(RG_SPIRIT_TEMPLE_COMPASS,             OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_COMPASS),
+        GET_ITEM(RG_SHADOW_TEMPLE_COMPASS,             OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_SHADOW_TEMPLE_COMPASS),
+        GET_ITEM(RG_BOTTOM_OF_THE_WELL_COMPASS,        OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_COMPASS),
+        GET_ITEM(RG_ICE_CAVERN_COMPASS,                OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_ICE_CAVERN_COMPASS),
         GET_ITEM(RG_MAGIC_BEAN_PACK,                   OBJECT_GI_BEAN,     GID_BEAN,             TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_MAGIC_BEAN_PACK),
         GET_ITEM(RG_TYCOON_WALLET,                     OBJECT_GI_PURSE,    GID_WALLET_GIANT,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_TYCOON_WALLET),
         GET_ITEM(RG_PROGRESSIVE_BOMBCHUS,              OBJECT_GI_BOMB_2,   GID_BOMBCHU,          0x33,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_PROGRESSIVE_BOMBCHUS),

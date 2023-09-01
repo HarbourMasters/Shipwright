@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_MAP_GRAND_STATIC_H
+#define TEXTURES_MAP_GRAND_STATIC_H 1
 
 #include "align_asset_macro.h"
 
@@ -73,3 +74,5 @@ static const ALIGN_ASSET(2) char gGerudoValleyWithBrokenBridgeMinimapTex[] = dgG
 
 #define dgGerudosFortressMinimapTex "__OTR__textures/map_grand_static/gGerudosFortressMinimapTex"
 static const ALIGN_ASSET(2) char gGerudosFortressMinimapTex[] = dgGerudosFortressMinimapTex;
+
+#endif // TEXTURES_MAP_GRAND_STATIC_H

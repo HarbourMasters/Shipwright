@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INDOORS_DAIYOUSEI_IZUMI_SCENE_H
+#define INDOORS_DAIYOUSEI_IZUMI_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -61,3 +62,6 @@ static const ALIGN_ASSET(2) char daiyousei_izumi_sceneTex_006000[] = ddaiyousei_
 #define ddaiyousei_izumi_sceneCollisionHeader_0043A4 "__OTR__scenes/nonmq/daiyousei_izumi_scene/daiyousei_izumi_sceneCollisionHeader_0043A4"
 
 #define ddaiyousei_izumi_sceneCollisionHeader_0043A4 "__OTR__scenes/nonmq/daiyousei_izumi_scene/daiyousei_izumi_sceneCollisionHeader_0043A4"
+
+
+#endif // INDOORS_DAIYOUSEI_IZUMI_SCENE_H

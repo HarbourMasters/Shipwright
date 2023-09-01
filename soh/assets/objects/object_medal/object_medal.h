@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_MEDAL_H
+#define OBJECTS_OBJECT_MEDAL_H 1
 
 #include "align_asset_macro.h"
 
@@ -40,3 +41,5 @@ static const ALIGN_ASSET(2) char object_medal_Tex_004140[] = dobject_medal_Tex_0
 
 #define dobject_medal_Tex_004940 "__OTR__objects/object_medal/object_medal_Tex_004940"
 static const ALIGN_ASSET(2) char object_medal_Tex_004940[] = dobject_medal_Tex_004940;
+
+#endif // OBJECTS_OBJECT_MEDAL_H

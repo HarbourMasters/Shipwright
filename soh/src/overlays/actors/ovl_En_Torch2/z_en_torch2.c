@@ -591,6 +591,10 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
     input->prev.button = input->cur.button & (u16) ~(BTN_A | BTN_B);
     PadUtils_UpdateRelXY(input);
 
+    if (CVarGetInteger("gMirroredWorld", 0)) {
+        input->rel.stick_x *= -1;
+    }
+
     input->press.stick_x += (s8)(input->cur.stick_x - input->prev.stick_x);
     input->press.stick_y += (s8)(input->cur.stick_y - input->prev.stick_y);
 

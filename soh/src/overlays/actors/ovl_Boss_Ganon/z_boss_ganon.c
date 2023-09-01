@@ -365,8 +365,8 @@ void BossGanon_Init(Actor* thisx, PlayState* play2) {
             this->organAlpha = 255;
         } else {
             cond = Flags_GetSwitch(play, 0x37) &&
-                   ((play->sceneNum == SCENE_GANON_DEMO) || (play->sceneNum == SCENE_GANON_FINAL) ||
-                    (play->sceneNum == SCENE_GANON_SONOGO) || (play->sceneNum == SCENE_GANONTIKA_SONOGO));
+                   ((play->sceneNum == SCENE_GANON_BOSS) || (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
+                    (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) || (play->sceneNum == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE));
 
             if (!cond) {
                 BossGanon_SetupTowerCutscene(this, play);

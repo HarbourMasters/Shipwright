@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_OBJECT_GOMA_H
+#define TEXTURES_OBJECT_GOMA_H 1
 
 #include "align_asset_macro.h"
 
@@ -10,3 +11,5 @@ static const ALIGN_ASSET(2) char gGohmaTitleCardGERTex[] = dgGohmaTitleCardGERTe
 
 #define dgGohmaTitleCardFRATex "__OTR__textures/object_goma/gGohmaTitleCardFRATex"
 static const ALIGN_ASSET(2) char gGohmaTitleCardFRATex[] = dgGohmaTitleCardFRATex;
+
+#endif // TEXTURES_OBJECT_GOMA_H

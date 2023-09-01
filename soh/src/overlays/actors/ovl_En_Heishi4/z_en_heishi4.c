@@ -195,7 +195,7 @@ void func_80A56614(EnHeishi4* this, PlayState* play) {
         this->actionFunc = func_80A56B40;
         return;
     }
-    if (play->sceneNum == SCENE_MIHARIGOYA) {
+    if (play->sceneNum == SCENE_MARKET_GUARD_HOUSE) {
         if (IS_DAY) {
             this->actor.textId = 0x7004;
         } else {
@@ -334,7 +334,12 @@ void func_80A56B40(EnHeishi4* this, PlayState* play) {
             return;
         }
         if (this->type == HEISHI4_AT_MARKET_NIGHT) {
-            if (CVarGetInteger("gMarketSneak", 0)) {
+            Player* player = GET_PLAYER(play);
+            // Only allow sneaking when not wearing a mask as that triggers different dialogue. MM Bunny hood disables
+            // these interactions, so bunny hood is fine in that case.
+            if (CVarGetInteger("gMarketSneak", 0) &&
+                (player->currentMask == PLAYER_MASK_NONE ||
+                 (player->currentMask == PLAYER_MASK_BUNNY && CVarGetInteger("gMMBunnyHood", 0)))) {
                 this->actionFunc = EnHeishi4_MarketSneak;
             } else {
                 this->actionFunc = func_80A56614;

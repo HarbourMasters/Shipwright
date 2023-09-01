@@ -33,6 +33,22 @@ def BuildOTR(xmlPath, rom, zapd_exe=None, genHeaders=None):
         print("Aborting...", file=os.sys.stderr)
         print("\n")
 
+def BuildSohOtr(zapd_exe=None):
+    shutil.copytree("assets", "Extract/assets")
+
+    if not zapd_exe:
+        zapd_exe = "x64\\Release\\ZAPD.exe" if sys.platform == "win32" else "../ZAPDTR/ZAPD.out"
+
+    exec_cmd = [zapd_exe, "botr", "-se", "OTR", "--norom"]
+
+    print(exec_cmd)
+    exitValue = subprocess.call(exec_cmd)
+    if exitValue != 0:
+        print("\n")
+        print("Error when building soh.otr file...", file=os.sys.stderr)
+        print("Aborting...", file=os.sys.stderr)
+        print("\n")
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-z", "--zapd", help="Path to ZAPD executable", dest="zapd_exe", type=str)
@@ -40,8 +56,16 @@ def main():
     parser.add_argument("--non-interactive", help="Runs the script non-interactively for use in build scripts.", dest="non_interactive", action="store_true")
     parser.add_argument("-v", "--verbose", help="Display rom's header checksums and their corresponding xml folder", dest="verbose", action="store_true")
     parser.add_argument("--gen-headers", help="Generate source headers to be checked in", dest="gen_headers", action="store_true")
+    parser.add_argument("--norom", help="Generate only soh.otr to be bundled to the game", dest="norom", action="store_true")
 
     args = parser.parse_args()
+
+    if args.norom:
+        if (os.path.exists("Extract")):
+            shutil.rmtree("Extract")
+            
+        BuildSohOtr(args.zapd_exe)
+        return
 
     roms = [ Z64Rom(args.rom) ] if args.rom else rom_chooser.chooseROM(args.verbose, args.non_interactive)
     for rom in roms:

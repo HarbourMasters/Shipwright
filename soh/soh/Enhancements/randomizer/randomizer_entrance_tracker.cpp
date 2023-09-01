@@ -377,7 +377,7 @@ s8 LinkIsInArea(const EntranceData* entrance) {
     }
 
     // Handle detecting the current grotto
-    if ((gPlayState->sceneNum == SCENE_YOUSEI_IZUMI_TATE || gPlayState->sceneNum == SCENE_KAKUSIANA) &&
+    if ((gPlayState->sceneNum == SCENE_FAIRYS_FOUNTAIN || gPlayState->sceneNum == SCENE_GROTTOS) &&
         entrance->type == ENTRANCE_TYPE_GROTTO) {
         if (entrance->index == (ENTRANCE_RANDO_GROTTO_EXIT_START + currentGrottoId)) {
             // Return the grotto entrance for tracking

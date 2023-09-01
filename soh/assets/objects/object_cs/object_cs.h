@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_CS_H
+#define OBJECTS_OBJECT_CS_H 1
 
 #include "align_asset_macro.h"
 
@@ -109,3 +110,6 @@ static const ALIGN_ASSET(2) char gGraveyardKidFingersTex[] = dgGraveyardKidFinge
 
 #define dgGraveyardKidStickTex "__OTR__objects/object_cs/gGraveyardKidStickTex"
 static const ALIGN_ASSET(2) char gGraveyardKidStickTex[] = dgGraveyardKidStickTex;
+
+
+#endif // OBJECTS_OBJECT_CS_H

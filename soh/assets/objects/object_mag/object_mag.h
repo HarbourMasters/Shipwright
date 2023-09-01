@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_MAG_H
+#define OBJECTS_OBJECT_MAG_H 1
 
 #include "align_asset_macro.h"
 
@@ -61,3 +62,5 @@ static const ALIGN_ASSET(2) char gTitleDiskTex[] = dgTitleDiskTex;
 
 #define dgTitleTitleJPNTex "__OTR__objects/object_mag/gTitleTitleJPNTex"
 static const ALIGN_ASSET(2) char gTitleTitleJPNTex[] = dgTitleTitleJPNTex;
+
+#endif // OBJECTS_OBJECT_MAG_H
