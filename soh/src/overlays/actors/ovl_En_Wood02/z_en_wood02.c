@@ -177,7 +177,7 @@ void EnWood02_Init(Actor* thisx, PlayState* play2) {
     // as the night scene, For the always spawn GS enhancement we apply the needed
     // params to have the GS drop when bonking
     if ((this->actor.params & 0xFF) == WOOD_TREE_CONICAL_MEDIUM && IS_DAY &&
-        play->sceneNum == SCENE_SPOT01 && CVarGetInteger("gNightGSAlwaysSpawn", 0)) {
+        play->sceneNum == SCENE_KAKARIKO_VILLAGE && CVarGetInteger("gNightGSAlwaysSpawn", 0)) {
         this->actor.params = 0x2001;
         this->actor.home.rot.z = 0x71;
     }

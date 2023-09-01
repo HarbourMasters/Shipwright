@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_SKJ_H
+#define OBJECTS_OBJECT_SKJ_H 1
 
 #include "align_asset_macro.h"
 
@@ -145,3 +146,5 @@ static const ALIGN_ASSET(2) char object_skjTex_005D80[] = dobject_skjTex_005D80;
 
 #define dobject_skjTex_005DA0 "__OTR__objects/object_skj/object_skjTex_005DA0"
 static const ALIGN_ASSET(2) char object_skjTex_005DA0[] = dobject_skjTex_005DA0;
+
+#endif // OBJECTS_OBJECT_SKJ_H

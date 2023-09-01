@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_SPOT11_OBJ_H
+#define OBJECTS_OBJECT_SPOT11_OBJ_H 1
 
 #include "align_asset_macro.h"
 
@@ -16,3 +17,5 @@ static const ALIGN_ASSET(2) char gDesertColossusBombableWallDL[] = dgDesertColos
 
 #define dgDesertColossusBombableWallCol "__OTR__objects/object_spot11_obj/gDesertColossusBombableWallCol"
 static const ALIGN_ASSET(2) char gDesertColossusBombableWallCol[] = dgDesertColossusBombableWallCol;
+
+#endif // OBJECTS_OBJECT_SPOT11_OBJ_H

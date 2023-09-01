@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_TR_H
+#define OBJECTS_OBJECT_TR_H 1
 
 #include "align_asset_macro.h"
 
@@ -280,3 +281,6 @@ static const ALIGN_ASSET(2) char object_tr_Skel_011688[] = dobject_tr_Skel_01168
 
 #define dobject_tr_Anim_012E1C "__OTR__objects/object_tr/object_tr_Anim_012E1C"
 static const ALIGN_ASSET(2) char object_tr_Anim_012E1C[] = dobject_tr_Anim_012E1C;
+
+
+#endif // OBJECTS_OBJECT_TR_H

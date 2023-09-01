@@ -73,18 +73,18 @@ Color_RGBA8 Color_Saved_Extra        = {   0, 185,   0, 255 }; //Green
 
 SceneID DungeonSceneLookupByArea(RandomizerCheckArea area) {
     switch (area) {
-        case RCAREA_DEKU_TREE:              return SCENE_YDAN;
-        case RCAREA_DODONGOS_CAVERN:        return SCENE_DDAN;
-        case RCAREA_JABU_JABUS_BELLY:       return SCENE_BDAN;
-        case RCAREA_FOREST_TEMPLE:          return SCENE_BMORI1;
-        case RCAREA_FIRE_TEMPLE:            return SCENE_HIDAN;
-        case RCAREA_WATER_TEMPLE:           return SCENE_MIZUSIN;
-        case RCAREA_SPIRIT_TEMPLE:          return SCENE_JYASINZOU;
-        case RCAREA_SHADOW_TEMPLE:          return SCENE_HAKADAN;
-        case RCAREA_BOTTOM_OF_THE_WELL:     return SCENE_HAKADANCH;
-        case RCAREA_ICE_CAVERN:             return SCENE_ICE_DOUKUTO;
-        case RCAREA_GERUDO_TRAINING_GROUND: return SCENE_MEN;
-        case RCAREA_GANONS_CASTLE:          return SCENE_GANONTIKA;
+        case RCAREA_DEKU_TREE:              return SCENE_DEKU_TREE;
+        case RCAREA_DODONGOS_CAVERN:        return SCENE_DODONGOS_CAVERN;
+        case RCAREA_JABU_JABUS_BELLY:       return SCENE_JABU_JABU;
+        case RCAREA_FOREST_TEMPLE:          return SCENE_FOREST_TEMPLE;
+        case RCAREA_FIRE_TEMPLE:            return SCENE_FIRE_TEMPLE;
+        case RCAREA_WATER_TEMPLE:           return SCENE_WATER_TEMPLE;
+        case RCAREA_SPIRIT_TEMPLE:          return SCENE_SPIRIT_TEMPLE;
+        case RCAREA_SHADOW_TEMPLE:          return SCENE_SHADOW_TEMPLE;
+        case RCAREA_BOTTOM_OF_THE_WELL:     return SCENE_BOTTOM_OF_THE_WELL;
+        case RCAREA_ICE_CAVERN:             return SCENE_ICE_CAVERN;
+        case RCAREA_GERUDO_TRAINING_GROUND: return SCENE_GERUDO_TRAINING_GROUND;
+        case RCAREA_GANONS_CASTLE:          return SCENE_INSIDE_GANONS_CASTLE;
         default:                            return SCENE_ID_MAX;
     }
 }
@@ -153,9 +153,9 @@ void CheckTrackerWindow::DrawElement() {
 
     bool doAreaScroll =
      (currentArea != RCAREA_INVALID && currentArea != previousArea &&
-         sceneId != SCENE_KAKUSIANA && // Don't move for grottos
-         sceneId != SCENE_YOUSEI_IZUMI_TATE && sceneId != SCENE_YOUSEI_IZUMI_YOKO && sceneId != SCENE_DAIYOUSEI_IZUMI  && // Don't move for fairy fountains
-         sceneId != SCENE_SHOP1 && sceneId != SCENE_SYATEKIJYOU // Don't move for Bazaar/Gallery, as it moves between Kak and Market
+         sceneId != SCENE_GROTTOS && // Don't move for grottos
+         sceneId != SCENE_FAIRYS_FOUNTAIN && sceneId != SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS && sceneId != SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC  && // Don't move for fairy fountains
+         sceneId != SCENE_BAZAAR && sceneId != SCENE_SHOOTING_GALLERY // Don't move for Bazaar/Gallery, as it moves between Kak and Market
          );
     previousArea = currentArea;
     areasSpoiled |= (1 << currentArea);

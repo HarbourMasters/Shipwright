@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_AOB_H
+#define OBJECTS_OBJECT_AOB_H 1
 
 #include "align_asset_macro.h"
 
@@ -85,3 +86,6 @@ static const ALIGN_ASSET(2) char gDogLadyEyeHalfTex[] = dgDogLadyEyeHalfTex;
 
 #define dgDogLadyEyeClosedTex "__OTR__objects/object_aob/gDogLadyEyeClosedTex"
 static const ALIGN_ASSET(2) char gDogLadyEyeClosedTex[] = dgDogLadyEyeClosedTex;
+
+
+#endif // OBJECTS_OBJECT_AOB_H

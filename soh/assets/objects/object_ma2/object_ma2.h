@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_MA2_H
+#define OBJECTS_OBJECT_MA2_H 1
 
 #include "align_asset_macro.h"
 
@@ -142,3 +143,6 @@ static const ALIGN_ASSET(2) char gMalonAdultStandStillAnim[] = dgMalonAdultStand
 
 #define dgMalonAdultSingAnim "__OTR__objects/object_ma2/gMalonAdultSingAnim"
 static const ALIGN_ASSET(2) char gMalonAdultSingAnim[] = dgMalonAdultSingAnim;
+
+
+#endif // OBJECTS_OBJECT_MA2_H

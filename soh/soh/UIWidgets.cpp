@@ -266,7 +266,7 @@ namespace UIWidgets {
     }
 
     bool LabeledRightAlignedEnhancementCombobox(const char* label, const char* cvarName, std::span<const char*, std::dynamic_extent> comboArray, uint8_t defaultIndex, bool disabled, const char* disabledTooltipText, uint8_t disabledValue) {
-        ImGui::Text(label);
+        ImGui::Text("%s", label);
         s32 currentValue = CVarGetInteger(cvarName, defaultIndex);
 
 #ifdef __WIIU__

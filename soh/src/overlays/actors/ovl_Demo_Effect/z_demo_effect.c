@@ -142,7 +142,7 @@ f32 DemoEffect_InterpolateCsFrames(PlayState* play, s32 csActionId) {
  */
 void DemoEffect_InitJewel(PlayState* play, DemoEffect* this) {
     this->initDrawFunc = DemoEffect_DrawJewel;
-    if (gSaveContext.n64ddFlag && play->sceneNum == SCENE_BDAN) {
+    if (gSaveContext.n64ddFlag && play->sceneNum == SCENE_JABU_JABU) {
         this->initDrawFunc = DemoEffect_DrawGetItem;
     }
     if (!LINK_IS_ADULT) {
@@ -150,13 +150,13 @@ void DemoEffect_InitJewel(PlayState* play, DemoEffect* this) {
     } else {
         this->initUpdateFunc = DemoEffect_UpdateJewelAdult;
     }
-    if (play->sceneNum == SCENE_TOKINOMA) {
+    if (play->sceneNum == SCENE_TEMPLE_OF_TIME) {
         Actor_SetScale(&this->actor, 0.35f);
     } else {
         Actor_SetScale(&this->actor, 0.10f);
     }
     this->csActionId = 1;
-    this->actor.shape.rot.x = (gSaveContext.n64ddFlag && play->sceneNum == SCENE_BDAN) ? 0 : 16384;
+    this->actor.shape.rot.x = (gSaveContext.n64ddFlag && play->sceneNum == SCENE_JABU_JABU) ? 0 : 16384;
     DemoEffect_InitJewelColor(this);
     this->jewel.alpha = 0;
     this->jewelCsRotation.x = this->jewelCsRotation.y = this->jewelCsRotation.z = 0;
@@ -496,7 +496,7 @@ void DemoEffect_Init(Actor* thisx, PlayState* play2) {
             this->jewel.isPositionInit = 0;
             DemoEffect_InitJewel(play, this);
             Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTOR_EN_DOOR);
-            if ((play->sceneNum == SCENE_BDAN) && (Flags_GetInfTable(INFTABLE_145))) {
+            if ((play->sceneNum == SCENE_JABU_JABU) && (Flags_GetInfTable(INFTABLE_145))) {
                 Actor_Kill(&this->actor);
                 return;
             }
@@ -1075,12 +1075,12 @@ void DemoEffect_UpdateLightEffect(DemoEffect* this, PlayState* play) {
                 break;
         }
 
-        if (play->sceneNum == SCENE_SPOT04 && gSaveContext.sceneSetupIndex == 6 &&
+        if (play->sceneNum == SCENE_KOKIRI_FOREST && gSaveContext.sceneSetupIndex == 6 &&
             play->csCtx.frames == 197) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EV_WHITE_OUT);
         }
 
-        if (play->sceneNum == SCENE_SPOT16 && gSaveContext.sceneSetupIndex == 5) {
+        if (play->sceneNum == SCENE_DEATH_MOUNTAIN_TRAIL && gSaveContext.sceneSetupIndex == 5) {
             if (!DemoEffect_CheckCsAction(this, play, 1)) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
             }
@@ -1089,7 +1089,7 @@ void DemoEffect_UpdateLightEffect(DemoEffect* this, PlayState* play) {
             }
         }
 
-        if (play->sceneNum == SCENE_SPOT08 && gSaveContext.sceneSetupIndex == 4) {
+        if (play->sceneNum == SCENE_ZORAS_FOUNTAIN && gSaveContext.sceneSetupIndex == 4) {
             if (!DemoEffect_CheckCsAction(this, play, 1)) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
             }
@@ -1098,14 +1098,14 @@ void DemoEffect_UpdateLightEffect(DemoEffect* this, PlayState* play) {
             }
         }
 
-        if (play->sceneNum == SCENE_TOKINOMA && gSaveContext.sceneSetupIndex == 14) {
+        if (play->sceneNum == SCENE_TEMPLE_OF_TIME && gSaveContext.sceneSetupIndex == 14) {
 
             if (play->csCtx.npcActions[this->csActionId]->action == 2) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
             }
         }
 
-        if (play->sceneNum == SCENE_DAIYOUSEI_IZUMI || play->sceneNum == SCENE_YOUSEI_IZUMI_YOKO) {
+        if (play->sceneNum == SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC || play->sceneNum == SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS) {
             if (play->csCtx.npcActions[this->csActionId]->action == 2) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
             }
@@ -2087,7 +2087,7 @@ void DemoEffect_DrawGetItem(Actor* thisx, PlayState* play) {
             this->getItem.isLoaded = 1;
             return;
         }
-        if (gSaveContext.n64ddFlag && play->sceneNum == SCENE_BDAN) {
+        if (gSaveContext.n64ddFlag && play->sceneNum == SCENE_JABU_JABU) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_BARINADE, RG_ZORA_SAPPHIRE);
             this->getItem.drawId = getItemEntry.gid;
             func_8002EBCC(thisx, play, 0);

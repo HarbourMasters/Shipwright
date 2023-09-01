@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_DS_H
+#define OBJECTS_OBJECT_DS_H 1
 
 #include "align_asset_macro.h"
 
@@ -55,3 +56,6 @@ static const ALIGN_ASSET(2) char gPotionShopLadyCatPattern2Tex[] = dgPotionShopL
 
 #define dgPotionShopLadyAnim "__OTR__objects/object_ds/gPotionShopLadyAnim"
 static const ALIGN_ASSET(2) char gPotionShopLadyAnim[] = dgPotionShopLadyAnim;
+
+
+#endif // OBJECTS_OBJECT_DS_H

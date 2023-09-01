@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OVERLAYS_OVL_OCEFF_STORM_H
+#define OVERLAYS_OVL_OCEFF_STORM_H 1
 
 #include "align_asset_macro.h"
 
@@ -16,3 +17,5 @@ static const ALIGN_ASSET(2) char sCylinderMaterialDL[] = dsCylinderMaterialDL;
 
 #define dsCylinderModelDL "__OTR__overlays/ovl_Oceff_Storm/sCylinderModelDL"
 static const ALIGN_ASSET(2) char sCylinderModelDL[] = dsCylinderModelDL;
+
+#endif // OVERLAYS_OVL_OCEFF_STORM_H

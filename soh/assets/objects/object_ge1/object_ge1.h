@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GE1_H
+#define OBJECTS_OBJECT_GE1_H 1
 
 #include "align_asset_macro.h"
 
@@ -124,3 +125,6 @@ static const ALIGN_ASSET(2) char gGerudoWhiteClapAnim[] = dgGerudoWhiteClapAnim;
 
 #define dgGerudoWhiteDismissiveAnim "__OTR__objects/object_ge1/gGerudoWhiteDismissiveAnim"
 static const ALIGN_ASSET(2) char gGerudoWhiteDismissiveAnim[] = dgGerudoWhiteDismissiveAnim;
+
+
+#endif // OBJECTS_OBJECT_GE1_H

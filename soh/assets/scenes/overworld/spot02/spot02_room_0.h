@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OVERWORLD_SPOT02_ROOM_0_H
+#define OVERWORLD_SPOT02_ROOM_0_H 1
 
 #include "align_asset_macro.h"
 
@@ -166,3 +167,6 @@ static const ALIGN_ASSET(2) char spot02_room_0Set_000900DL_000AB0[] = dspot02_ro
 
 #define dspot02_room_0Set_000900DL_001170 "__OTR__scenes/nonmq/spot02_scene/spot02_room_0Set_000900DL_001170"
 static const ALIGN_ASSET(2) char spot02_room_0Set_000900DL_001170[] = dspot02_room_0Set_000900DL_001170;
+
+
+#endif // OVERWORLD_SPOT02_ROOM_0_H

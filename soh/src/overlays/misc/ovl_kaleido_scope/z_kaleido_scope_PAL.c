@@ -3206,14 +3206,14 @@ void KaleidoScope_UpdateDungeonMap(PlayState* play) {
     KaleidoScope_LoadDungeonMap(play);
     Map_SetFloorPalettesData(play, pauseCtx->dungeonMapSlot - 3);
 
-    if ((play->sceneNum >= SCENE_YDAN) && (play->sceneNum <= SCENE_TAKARAYA)) {
+    if ((play->sceneNum >= SCENE_DEKU_TREE) && (play->sceneNum <= SCENE_TREASURE_BOX_SHOP)) {
         if ((VREG(30) + 3) == pauseCtx->cursorPoint[PAUSE_MAP]) {
             // HDTODO: Handle Runtime Modified Textures (HD)
             KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[0], 2040, interfaceCtx->mapPaletteIndex, 14);
         }
     }
 
-    if ((play->sceneNum >= SCENE_YDAN) && (play->sceneNum <= SCENE_TAKARAYA)) {
+    if ((play->sceneNum >= SCENE_DEKU_TREE) && (play->sceneNum <= SCENE_TREASURE_BOX_SHOP)) {
         if ((VREG(30) + 3) == pauseCtx->cursorPoint[PAUSE_MAP]) {
             // HDTODO: Handle Runtime Modified Textures (HD)
             KaleidoScope_OverridePalIndexCI4(interfaceCtx->mapSegment[1], 2040, interfaceCtx->mapPaletteIndex, 14);
@@ -3300,24 +3300,24 @@ void KaleidoScope_Update(PlayState* play)
 #endif
 
             switch (play->sceneNum) {
-                case SCENE_YDAN:
-                case SCENE_DDAN:
-                case SCENE_BDAN:
-                case SCENE_BMORI1:
-                case SCENE_HIDAN:
-                case SCENE_MIZUSIN:
-                case SCENE_JYASINZOU:
-                case SCENE_HAKADAN:
-                case SCENE_HAKADANCH:
-                case SCENE_ICE_DOUKUTO:
-                case SCENE_YDAN_BOSS:
-                case SCENE_DDAN_BOSS:
-                case SCENE_BDAN_BOSS:
-                case SCENE_MORIBOSSROOM:
-                case SCENE_FIRE_BS:
-                case SCENE_MIZUSIN_BS:
-                case SCENE_JYASINBOSS:
-                case SCENE_HAKADAN_BS:
+                case SCENE_DEKU_TREE:
+                case SCENE_DODONGOS_CAVERN:
+                case SCENE_JABU_JABU:
+                case SCENE_FOREST_TEMPLE:
+                case SCENE_FIRE_TEMPLE:
+                case SCENE_WATER_TEMPLE:
+                case SCENE_SPIRIT_TEMPLE:
+                case SCENE_SHADOW_TEMPLE:
+                case SCENE_BOTTOM_OF_THE_WELL:
+                case SCENE_ICE_CAVERN:
+                case SCENE_DEKU_TREE_BOSS:
+                case SCENE_DODONGOS_CAVERN_BOSS:
+                case SCENE_JABU_JABU_BOSS:
+                case SCENE_FOREST_TEMPLE_BOSS:
+                case SCENE_FIRE_TEMPLE_BOSS:
+                case SCENE_WATER_TEMPLE_BOSS:
+                case SCENE_SPIRIT_TEMPLE_BOSS:
+                case SCENE_SHADOW_TEMPLE_BOSS:
 #if 1
                     sInDungeonScene = true;
                     //size2 = (uintptr_t)_icon_item_dungeon_staticSegmentRomEnd - (uintptr_t)_icon_item_dungeon_staticSegmentRomStart;
@@ -4223,24 +4223,24 @@ void KaleidoScope_Update(PlayState* play)
             func_800418D0(&play->colCtx, play);
 
             switch (play->sceneNum) {
-                case SCENE_YDAN:
-                case SCENE_DDAN:
-                case SCENE_BDAN:
-                case SCENE_BMORI1:
-                case SCENE_HIDAN:
-                case SCENE_MIZUSIN:
-                case SCENE_JYASINZOU:
-                case SCENE_HAKADAN:
-                case SCENE_HAKADANCH:
-                case SCENE_ICE_DOUKUTO:
-                case SCENE_YDAN_BOSS:
-                case SCENE_DDAN_BOSS:
-                case SCENE_BDAN_BOSS:
-                case SCENE_MORIBOSSROOM:
-                case SCENE_FIRE_BS:
-                case SCENE_MIZUSIN_BS:
-                case SCENE_JYASINBOSS:
-                case SCENE_HAKADAN_BS:
+                case SCENE_DEKU_TREE:
+                case SCENE_DODONGOS_CAVERN:
+                case SCENE_JABU_JABU:
+                case SCENE_FOREST_TEMPLE:
+                case SCENE_FIRE_TEMPLE:
+                case SCENE_WATER_TEMPLE:
+                case SCENE_SPIRIT_TEMPLE:
+                case SCENE_SHADOW_TEMPLE:
+                case SCENE_BOTTOM_OF_THE_WELL:
+                case SCENE_ICE_CAVERN:
+                case SCENE_DEKU_TREE_BOSS:
+                case SCENE_DODONGOS_CAVERN_BOSS:
+                case SCENE_JABU_JABU_BOSS:
+                case SCENE_FOREST_TEMPLE_BOSS:
+                case SCENE_FIRE_TEMPLE_BOSS:
+                case SCENE_WATER_TEMPLE_BOSS:
+                case SCENE_SPIRIT_TEMPLE_BOSS:
+                case SCENE_SHADOW_TEMPLE_BOSS:
                     Map_InitData(play, play->interfaceCtx.mapRoomNum);
                     break;
             }

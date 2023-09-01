@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_SPOT01_MATOYA_H
+#define OBJECTS_OBJECT_SPOT01_MATOYA_H 1
 
 #include "align_asset_macro.h"
 
@@ -52,3 +53,5 @@ static const ALIGN_ASSET(2) char gKakarikoShootingGalleryTLUT[] = dgKakarikoShoo
 
 #define dgKakarikoBazaarSignTLUT "__OTR__objects/object_spot01_matoya/gKakarikoBazaarSignTLUT"
 static const ALIGN_ASSET(2) char gKakarikoBazaarSignTLUT[] = dgKakarikoBazaarSignTLUT;
+
+#endif // OBJECTS_OBJECT_SPOT01_MATOYA_H

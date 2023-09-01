@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_TORCH2_H
+#define OBJECTS_OBJECT_TORCH2_H 1
 
 #include "align_asset_macro.h"
 
@@ -7,6 +8,9 @@ static const ALIGN_ASSET(2) char gDarkLinkSkel[] = dgDarkLinkSkel;
 
 #define dsDarkLinkSheathDL "__OTR__objects/object_torch2/sDarkLinkSheathDL"
 static const ALIGN_ASSET(2) char sDarkLinkSheathDL[] = dsDarkLinkSheathDL;
+
+#define dobject_torch2Tex_0041C0 "__OTR__objects/object_torch2/object_torch2Tex_0041C0"
+static const ALIGN_ASSET(2) char object_torch2Tex_0041C0[] = dobject_torch2Tex_0041C0;
 
 #define dgDarkLinkSkelLimbsLimb_0045D0FarDL_002BD0 "__OTR__objects/object_torch2/gDarkLinkSkelLimbsLimb_0045D0FarDL_002BD0"
 static const ALIGN_ASSET(2) char gDarkLinkSkelLimbsLimb_0045D0FarDL_002BD0[] = dgDarkLinkSkelLimbsLimb_0045D0FarDL_002BD0;
@@ -59,8 +63,7 @@ static const ALIGN_ASSET(2) char gDarkLinkSkelLimbsLimb_0046E0FarDL_003C10[] = d
 #define dgDarkLinkSkelLimbsLimb_004700FarDL_0038D0 "__OTR__objects/object_torch2/gDarkLinkSkelLimbsLimb_004700FarDL_0038D0"
 static const ALIGN_ASSET(2) char gDarkLinkSkelLimbsLimb_004700FarDL_0038D0[] = dgDarkLinkSkelLimbsLimb_004700FarDL_0038D0;
 
-#define dobject_torch2Tex_0041C0 "__OTR__objects/object_torch2/object_torch2Tex_0041C0"
-static const ALIGN_ASSET(2) char object_torch2Tex_0041C0[] = dobject_torch2Tex_0041C0;
-
 #define dobject_torch2Tex_0043C0 "__OTR__objects/object_torch2/object_torch2Tex_0043C0"
 static const ALIGN_ASSET(2) char object_torch2Tex_0043C0[] = dobject_torch2Tex_0043C0;
+
+#endif // OBJECTS_OBJECT_TORCH2_H

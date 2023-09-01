@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_DDAN_OBJECTS_H
+#define OBJECTS_OBJECT_DDAN_OBJECTS_H 1
 
 #include "align_asset_macro.h"
 
@@ -64,3 +65,5 @@ static const ALIGN_ASSET(2) char gDodongoRisingPlatformCol[] = dgDodongoRisingPl
 
 #define dgDodongoFallingStairsCol "__OTR__objects/object_ddan_objects/gDodongoFallingStairsCol"
 static const ALIGN_ASSET(2) char gDodongoFallingStairsCol[] = dgDodongoFallingStairsCol;
+
+#endif // OBJECTS_OBJECT_DDAN_OBJECTS_H

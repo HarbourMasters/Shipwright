@@ -195,7 +195,7 @@ void func_80A56614(EnHeishi4* this, PlayState* play) {
         this->actionFunc = func_80A56B40;
         return;
     }
-    if (play->sceneNum == SCENE_MIHARIGOYA) {
+    if (play->sceneNum == SCENE_MARKET_GUARD_HOUSE) {
         if (IS_DAY) {
             this->actor.textId = 0x7004;
         } else {

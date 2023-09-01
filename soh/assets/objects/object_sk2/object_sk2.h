@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_SK2_H
+#define OBJECTS_OBJECT_SK2_H 1
 
 #include "align_asset_macro.h"
 
@@ -175,3 +176,6 @@ static const ALIGN_ASSET(2) char gStalfosSidestepAnim[] = dgStalfosSidestepAnim;
 
 #define dgStalfosReleaseAttentionAnim "__OTR__objects/object_sk2/gStalfosReleaseAttentionAnim"
 static const ALIGN_ASSET(2) char gStalfosReleaseAttentionAnim[] = dgStalfosReleaseAttentionAnim;
+
+
+#endif // OBJECTS_OBJECT_SK2_H

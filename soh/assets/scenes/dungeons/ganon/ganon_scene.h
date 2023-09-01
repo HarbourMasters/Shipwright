@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DUNGEONS_GANON_SCENE_H
+#define DUNGEONS_GANON_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -31,3 +32,5 @@ static const ALIGN_ASSET(2) char ganon_sceneTLUT_00EBE0[] = dganon_sceneTLUT_00E
 
 #define dganon_sceneTLUT_00E9D8 "__OTR__scenes/nonmq/ganon_scene/ganon_sceneTLUT_00E9D8"
 static const ALIGN_ASSET(2) char ganon_sceneTLUT_00E9D8[] = dganon_sceneTLUT_00E9D8;
+
+#endif // DUNGEONS_GANON_SCENE_H
