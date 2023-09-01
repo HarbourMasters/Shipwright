@@ -559,11 +559,13 @@ void DrawEnhancementsMenu() {
                     "- Obtained the Master Sword\n"
                     "- Not within range of Time Block\n"
                     "- Not within range of Ocarina playing spots");
+                UIWidgets::PaddedEnhancementCheckbox("Pause Warp", "gPauseWarpEnabled", false);
+                UIWidgets::Tooltip("Warp by selecing warp song in pause menu.");
                 ImGui::EndMenu();
             }
 
             UIWidgets::Spacer(0);
-
+            
             if (ImGui::BeginMenu("Items"))
             {
                 UIWidgets::PaddedEnhancementCheckbox("Instant Putaway", "gInstantPutaway", true, false);

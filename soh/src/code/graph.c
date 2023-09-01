@@ -486,6 +486,7 @@ static void RunFrame()
             PadMgr_ThreadEntry(&gPadMgr);
 
             Graph_Update(&runFrameContext.gfxCtx, runFrameContext.gameState);
+            PauseWarp_Main();
             ticksB = GetPerfCounter();
 
             Graph_ProcessGfxCommands(runFrameContext.gfxCtx.workBuffer);
