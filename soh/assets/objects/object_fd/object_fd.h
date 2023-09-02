@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_FD_H
+#define OBJECTS_OBJECT_FD_H 1
 
 #include "align_asset_macro.h"
 
@@ -149,57 +150,6 @@ static const ALIGN_ASSET(2) char gVolvagiaPlatformDL[] = dgVolvagiaPlatformDL;
 #define dgVolvagiaRockDL "__OTR__objects/object_fd/gVolvagiaRockDL"
 static const ALIGN_ASSET(2) char gVolvagiaRockDL[] = dgVolvagiaRockDL;
 
-#define dgVolvagiaLeftArmSkelLimbsLimb_011480DL_0024E8 "__OTR__objects/object_fd/gVolvagiaLeftArmSkelLimbsLimb_011480DL_0024E8"
-static const ALIGN_ASSET(2) char gVolvagiaLeftArmSkelLimbsLimb_011480DL_0024E8[] = dgVolvagiaLeftArmSkelLimbsLimb_011480DL_0024E8;
-
-#define dgVolvagiaLeftArmSkelLimbsLimb_01148CDL_002678 "__OTR__objects/object_fd/gVolvagiaLeftArmSkelLimbsLimb_01148CDL_002678"
-static const ALIGN_ASSET(2) char gVolvagiaLeftArmSkelLimbsLimb_01148CDL_002678[] = dgVolvagiaLeftArmSkelLimbsLimb_01148CDL_002678;
-
-#define dgVolvagiaLeftArmSkelLimbsLimb_011498DL_002770 "__OTR__objects/object_fd/gVolvagiaLeftArmSkelLimbsLimb_011498DL_002770"
-static const ALIGN_ASSET(2) char gVolvagiaLeftArmSkelLimbsLimb_011498DL_002770[] = dgVolvagiaLeftArmSkelLimbsLimb_011498DL_002770;
-
-#define dgVolvagiaLeftArmSkelLimbsLimb_0114A4DL_002850 "__OTR__objects/object_fd/gVolvagiaLeftArmSkelLimbsLimb_0114A4DL_002850"
-static const ALIGN_ASSET(2) char gVolvagiaLeftArmSkelLimbsLimb_0114A4DL_002850[] = dgVolvagiaLeftArmSkelLimbsLimb_0114A4DL_002850;
-
-#define dgVolvagiaLeftArmSkelLimbsLimb_0114B0DL_002AD0 "__OTR__objects/object_fd/gVolvagiaLeftArmSkelLimbsLimb_0114B0DL_002AD0"
-static const ALIGN_ASSET(2) char gVolvagiaLeftArmSkelLimbsLimb_0114B0DL_002AD0[] = dgVolvagiaLeftArmSkelLimbsLimb_0114B0DL_002AD0;
-
-#define dgVolvagiaLeftArmSkelLimbsLimb_0114BCDL_002990 "__OTR__objects/object_fd/gVolvagiaLeftArmSkelLimbsLimb_0114BCDL_002990"
-static const ALIGN_ASSET(2) char gVolvagiaLeftArmSkelLimbsLimb_0114BCDL_002990[] = dgVolvagiaLeftArmSkelLimbsLimb_0114BCDL_002990;
-
-#define dgVolvagiaRightArmSkelLimbsLimb_011540DL_002C10 "__OTR__objects/object_fd/gVolvagiaRightArmSkelLimbsLimb_011540DL_002C10"
-static const ALIGN_ASSET(2) char gVolvagiaRightArmSkelLimbsLimb_011540DL_002C10[] = dgVolvagiaRightArmSkelLimbsLimb_011540DL_002C10;
-
-#define dgVolvagiaRightArmSkelLimbsLimb_01154CDL_002D10 "__OTR__objects/object_fd/gVolvagiaRightArmSkelLimbsLimb_01154CDL_002D10"
-static const ALIGN_ASSET(2) char gVolvagiaRightArmSkelLimbsLimb_01154CDL_002D10[] = dgVolvagiaRightArmSkelLimbsLimb_01154CDL_002D10;
-
-#define dgVolvagiaRightArmSkelLimbsLimb_011558DL_002E08 "__OTR__objects/object_fd/gVolvagiaRightArmSkelLimbsLimb_011558DL_002E08"
-static const ALIGN_ASSET(2) char gVolvagiaRightArmSkelLimbsLimb_011558DL_002E08[] = dgVolvagiaRightArmSkelLimbsLimb_011558DL_002E08;
-
-#define dgVolvagiaRightArmSkelLimbsLimb_011564DL_003028 "__OTR__objects/object_fd/gVolvagiaRightArmSkelLimbsLimb_011564DL_003028"
-static const ALIGN_ASSET(2) char gVolvagiaRightArmSkelLimbsLimb_011564DL_003028[] = dgVolvagiaRightArmSkelLimbsLimb_011564DL_003028;
-
-#define dgVolvagiaRightArmSkelLimbsLimb_011570DL_002EE8 "__OTR__objects/object_fd/gVolvagiaRightArmSkelLimbsLimb_011570DL_002EE8"
-static const ALIGN_ASSET(2) char gVolvagiaRightArmSkelLimbsLimb_011570DL_002EE8[] = dgVolvagiaRightArmSkelLimbsLimb_011570DL_002EE8;
-
-#define dgVolvagiaRightArmSkelLimbsLimb_01157CDL_003168 "__OTR__objects/object_fd/gVolvagiaRightArmSkelLimbsLimb_01157CDL_003168"
-static const ALIGN_ASSET(2) char gVolvagiaRightArmSkelLimbsLimb_01157CDL_003168[] = dgVolvagiaRightArmSkelLimbsLimb_01157CDL_003168;
-
-#define dgVolvagiaHeadSkelLimbsLimb_01160CDL_002180 "__OTR__objects/object_fd/gVolvagiaHeadSkelLimbsLimb_01160CDL_002180"
-static const ALIGN_ASSET(2) char gVolvagiaHeadSkelLimbsLimb_01160CDL_002180[] = dgVolvagiaHeadSkelLimbsLimb_01160CDL_002180;
-
-#define dgVolvagiaHeadSkelLimbsLimb_011618DL_002358 "__OTR__objects/object_fd/gVolvagiaHeadSkelLimbsLimb_011618DL_002358"
-static const ALIGN_ASSET(2) char gVolvagiaHeadSkelLimbsLimb_011618DL_002358[] = dgVolvagiaHeadSkelLimbsLimb_011618DL_002358;
-
-#define dgVolvagiaHeadSkelLimbsLimb_011624DL_002420 "__OTR__objects/object_fd/gVolvagiaHeadSkelLimbsLimb_011624DL_002420"
-static const ALIGN_ASSET(2) char gVolvagiaHeadSkelLimbsLimb_011624DL_002420[] = dgVolvagiaHeadSkelLimbsLimb_011624DL_002420;
-
-#define dgVolvagiaHeadSkelLimbsLimb_011630DL_0020A8 "__OTR__objects/object_fd/gVolvagiaHeadSkelLimbsLimb_011630DL_0020A8"
-static const ALIGN_ASSET(2) char gVolvagiaHeadSkelLimbsLimb_011630DL_0020A8[] = dgVolvagiaHeadSkelLimbsLimb_011630DL_0020A8;
-
-#define dgVolvagiaHeadSkelLimbsLimb_01163CDL_001DB0 "__OTR__objects/object_fd/gVolvagiaHeadSkelLimbsLimb_01163CDL_001DB0"
-static const ALIGN_ASSET(2) char gVolvagiaHeadSkelLimbsLimb_01163CDL_001DB0[] = dgVolvagiaHeadSkelLimbsLimb_01163CDL_001DB0;
-
 #define dobject_fdTex_005B60 "__OTR__objects/object_fd/object_fdTex_005B60"
 static const ALIGN_ASSET(2) char object_fdTex_005B60[] = dobject_fdTex_005B60;
 
@@ -266,6 +216,57 @@ static const ALIGN_ASSET(2) char object_fdTex_000458[] = dobject_fdTex_000458;
 #define dobject_fdTex_00A050 "__OTR__objects/object_fd/object_fdTex_00A050"
 static const ALIGN_ASSET(2) char object_fdTex_00A050[] = dobject_fdTex_00A050;
 
+#define dgVolvagiaLeftArmSkelLimbsLimb_011480DL_0024E8 "__OTR__objects/object_fd/gVolvagiaLeftArmSkelLimbsLimb_011480DL_0024E8"
+static const ALIGN_ASSET(2) char gVolvagiaLeftArmSkelLimbsLimb_011480DL_0024E8[] = dgVolvagiaLeftArmSkelLimbsLimb_011480DL_0024E8;
+
+#define dgVolvagiaLeftArmSkelLimbsLimb_01148CDL_002678 "__OTR__objects/object_fd/gVolvagiaLeftArmSkelLimbsLimb_01148CDL_002678"
+static const ALIGN_ASSET(2) char gVolvagiaLeftArmSkelLimbsLimb_01148CDL_002678[] = dgVolvagiaLeftArmSkelLimbsLimb_01148CDL_002678;
+
+#define dgVolvagiaLeftArmSkelLimbsLimb_011498DL_002770 "__OTR__objects/object_fd/gVolvagiaLeftArmSkelLimbsLimb_011498DL_002770"
+static const ALIGN_ASSET(2) char gVolvagiaLeftArmSkelLimbsLimb_011498DL_002770[] = dgVolvagiaLeftArmSkelLimbsLimb_011498DL_002770;
+
+#define dgVolvagiaLeftArmSkelLimbsLimb_0114A4DL_002850 "__OTR__objects/object_fd/gVolvagiaLeftArmSkelLimbsLimb_0114A4DL_002850"
+static const ALIGN_ASSET(2) char gVolvagiaLeftArmSkelLimbsLimb_0114A4DL_002850[] = dgVolvagiaLeftArmSkelLimbsLimb_0114A4DL_002850;
+
+#define dgVolvagiaLeftArmSkelLimbsLimb_0114B0DL_002AD0 "__OTR__objects/object_fd/gVolvagiaLeftArmSkelLimbsLimb_0114B0DL_002AD0"
+static const ALIGN_ASSET(2) char gVolvagiaLeftArmSkelLimbsLimb_0114B0DL_002AD0[] = dgVolvagiaLeftArmSkelLimbsLimb_0114B0DL_002AD0;
+
+#define dgVolvagiaLeftArmSkelLimbsLimb_0114BCDL_002990 "__OTR__objects/object_fd/gVolvagiaLeftArmSkelLimbsLimb_0114BCDL_002990"
+static const ALIGN_ASSET(2) char gVolvagiaLeftArmSkelLimbsLimb_0114BCDL_002990[] = dgVolvagiaLeftArmSkelLimbsLimb_0114BCDL_002990;
+
+#define dgVolvagiaRightArmSkelLimbsLimb_011540DL_002C10 "__OTR__objects/object_fd/gVolvagiaRightArmSkelLimbsLimb_011540DL_002C10"
+static const ALIGN_ASSET(2) char gVolvagiaRightArmSkelLimbsLimb_011540DL_002C10[] = dgVolvagiaRightArmSkelLimbsLimb_011540DL_002C10;
+
+#define dgVolvagiaRightArmSkelLimbsLimb_01154CDL_002D10 "__OTR__objects/object_fd/gVolvagiaRightArmSkelLimbsLimb_01154CDL_002D10"
+static const ALIGN_ASSET(2) char gVolvagiaRightArmSkelLimbsLimb_01154CDL_002D10[] = dgVolvagiaRightArmSkelLimbsLimb_01154CDL_002D10;
+
+#define dgVolvagiaRightArmSkelLimbsLimb_011558DL_002E08 "__OTR__objects/object_fd/gVolvagiaRightArmSkelLimbsLimb_011558DL_002E08"
+static const ALIGN_ASSET(2) char gVolvagiaRightArmSkelLimbsLimb_011558DL_002E08[] = dgVolvagiaRightArmSkelLimbsLimb_011558DL_002E08;
+
+#define dgVolvagiaRightArmSkelLimbsLimb_011564DL_003028 "__OTR__objects/object_fd/gVolvagiaRightArmSkelLimbsLimb_011564DL_003028"
+static const ALIGN_ASSET(2) char gVolvagiaRightArmSkelLimbsLimb_011564DL_003028[] = dgVolvagiaRightArmSkelLimbsLimb_011564DL_003028;
+
+#define dgVolvagiaRightArmSkelLimbsLimb_011570DL_002EE8 "__OTR__objects/object_fd/gVolvagiaRightArmSkelLimbsLimb_011570DL_002EE8"
+static const ALIGN_ASSET(2) char gVolvagiaRightArmSkelLimbsLimb_011570DL_002EE8[] = dgVolvagiaRightArmSkelLimbsLimb_011570DL_002EE8;
+
+#define dgVolvagiaRightArmSkelLimbsLimb_01157CDL_003168 "__OTR__objects/object_fd/gVolvagiaRightArmSkelLimbsLimb_01157CDL_003168"
+static const ALIGN_ASSET(2) char gVolvagiaRightArmSkelLimbsLimb_01157CDL_003168[] = dgVolvagiaRightArmSkelLimbsLimb_01157CDL_003168;
+
+#define dgVolvagiaHeadSkelLimbsLimb_01160CDL_002180 "__OTR__objects/object_fd/gVolvagiaHeadSkelLimbsLimb_01160CDL_002180"
+static const ALIGN_ASSET(2) char gVolvagiaHeadSkelLimbsLimb_01160CDL_002180[] = dgVolvagiaHeadSkelLimbsLimb_01160CDL_002180;
+
+#define dgVolvagiaHeadSkelLimbsLimb_011618DL_002358 "__OTR__objects/object_fd/gVolvagiaHeadSkelLimbsLimb_011618DL_002358"
+static const ALIGN_ASSET(2) char gVolvagiaHeadSkelLimbsLimb_011618DL_002358[] = dgVolvagiaHeadSkelLimbsLimb_011618DL_002358;
+
+#define dgVolvagiaHeadSkelLimbsLimb_011624DL_002420 "__OTR__objects/object_fd/gVolvagiaHeadSkelLimbsLimb_011624DL_002420"
+static const ALIGN_ASSET(2) char gVolvagiaHeadSkelLimbsLimb_011624DL_002420[] = dgVolvagiaHeadSkelLimbsLimb_011624DL_002420;
+
+#define dgVolvagiaHeadSkelLimbsLimb_011630DL_0020A8 "__OTR__objects/object_fd/gVolvagiaHeadSkelLimbsLimb_011630DL_0020A8"
+static const ALIGN_ASSET(2) char gVolvagiaHeadSkelLimbsLimb_011630DL_0020A8[] = dgVolvagiaHeadSkelLimbsLimb_011630DL_0020A8;
+
+#define dgVolvagiaHeadSkelLimbsLimb_01163CDL_001DB0 "__OTR__objects/object_fd/gVolvagiaHeadSkelLimbsLimb_01163CDL_001DB0"
+static const ALIGN_ASSET(2) char gVolvagiaHeadSkelLimbsLimb_01163CDL_001DB0[] = dgVolvagiaHeadSkelLimbsLimb_01163CDL_001DB0;
+
 #define dobject_fdTex_0050A8 "__OTR__objects/object_fd/object_fdTex_0050A8"
 static const ALIGN_ASSET(2) char object_fdTex_0050A8[] = dobject_fdTex_0050A8;
 
@@ -280,3 +281,5 @@ static const ALIGN_ASSET(2) char object_fdTex_0056A8[] = dobject_fdTex_0056A8;
 
 #define dobject_fdTLUT_0032A8 "__OTR__objects/object_fd/object_fdTLUT_0032A8"
 static const ALIGN_ASSET(2) char object_fdTLUT_0032A8[] = dobject_fdTLUT_0032A8;
+
+#endif // OBJECTS_OBJECT_FD_H

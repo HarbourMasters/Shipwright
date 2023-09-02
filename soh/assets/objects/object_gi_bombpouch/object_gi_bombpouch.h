@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GI_BOMBPOUCH_H
+#define OBJECTS_OBJECT_GI_BOMBPOUCH_H 1
 
 #include "align_asset_macro.h"
 
@@ -25,3 +26,5 @@ static const ALIGN_ASSET(2) char gGiBombBagDL[] = dgGiBombBagDL;
 
 #define dgGiBombBagRingDL "__OTR__objects/object_gi_bombpouch/gGiBombBagRingDL"
 static const ALIGN_ASSET(2) char gGiBombBagRingDL[] = dgGiBombBagRingDL;
+
+#endif // OBJECTS_OBJECT_GI_BOMBPOUCH_H

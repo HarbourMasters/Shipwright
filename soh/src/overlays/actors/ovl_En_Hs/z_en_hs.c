@@ -9,7 +9,7 @@
 #include "objects/object_hs/object_hs.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnHs_Init(Actor* thisx, PlayState* play);
 void EnHs_Destroy(Actor* thisx, PlayState* play);
@@ -80,7 +80,7 @@ void EnHs_Init(Actor* thisx, PlayState* play) {
         osSyncPrintf(VT_FGCOL(CYAN) " ヒヨコの店(大人の時) \n" VT_RST);
         func_80A6E3A0(this, func_80A6E9AC);
         bool shouldSpawn;
-        bool tradedMushroom = gSaveContext.itemGetInf[3] & 1;
+        bool tradedMushroom = Flags_GetItemGetInf(ITEMGETINF_30);
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
             // To explain the logic because Fado and Grog are linked:
             // - If you have Cojiro, then spawn Grog and not Fado.

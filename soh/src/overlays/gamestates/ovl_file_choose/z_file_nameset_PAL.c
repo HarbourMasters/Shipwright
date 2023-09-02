@@ -1,6 +1,8 @@
 #include "file_choose.h"
 #include "textures/title_static/title_static.h"
 #include "assets/overlays/ovl_File_Choose/ovl_file_choose.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+
 
 static s16 D_808124C0[] = {
     0x0002, 0x0003, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0001, 0x0002, 0x0000, 0x0001,
@@ -101,6 +103,9 @@ static s16 D_808125EC[] = {
 static s16 D_80812604[] = {
     0x0048, 0x0045, 0x0045, 0x0045, 0x0045, 0x0045, 0x0045, 0x0045, 0x0045, 0x0045, 0x0045,
 };
+
+static s16 sLastCharIndex = -1;
+static s16 sLastKbdX = -1;
 
 /**
  * Set vertices used by all elements of the name entry screen that are NOT the keyboard.
@@ -373,6 +378,7 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
                         this->configMode = CM_NAME_ENTRY_TO_MAIN;
                     }
                     this->prevConfigMode = CM_NAME_ENTRY;
+                    sLastCharIndex = -1;
                     CVarSetInteger("gOnFileSelectNameEntry", 0);
                 } else {
                     for (i = this->newFileNameCharCount; i < 7; i++) {
@@ -628,6 +634,16 @@ void FileChoose_UpdateKeyboardCursor(GameState* thisx) {
 
     if (this->kbdY == 5) {
         this->kbdButton = this->kbdX;
+
+        if (sLastKbdX != this->kbdX) {
+            GameInteractor_ExecuteOnUpdateFileNameSelection(0xF0 + this->kbdX);
+            sLastKbdX = this->kbdX;
+            sLastCharIndex = -1;
+        }
+    } else if (sLastCharIndex != this->charIndex && this->charIndex < 65) {
+        GameInteractor_ExecuteOnUpdateFileNameSelection(D_808123F0[this->charIndex]);
+        sLastCharIndex = this->charIndex;
+        sLastKbdX = -1;
     }
 }
 
@@ -656,7 +672,7 @@ void FileChoose_StartOptions(GameState* thisx) {
 }
 
 static u8 sSelectedSetting;
-int8_t lastOptionButtonIndex = -1;
+static s8 sLastOptionButtonIndex = -1;
 
 /**
  * Update the cursor and appropriate settings for the options menu.
@@ -673,6 +689,7 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         this->prevConfigMode = this->configMode;
         this->configMode = CM_OPTIONS_TO_MAIN;
+        sLastOptionButtonIndex = -1;
         osSyncPrintf("ＳＡＶＥ");
         Save_SaveGlobal();
         osSyncPrintf(VT_FGCOL(YELLOW));
@@ -721,15 +738,15 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
     }
     
     if (sSelectedSetting == FS_SETTING_AUDIO) {
-        if (lastOptionButtonIndex != gSaveContext.audioSetting) {
+        if (sLastOptionButtonIndex != gSaveContext.audioSetting) {
             GameInteractor_ExecuteOnUpdateFileAudioSelection(gSaveContext.audioSetting);
-            lastOptionButtonIndex = gSaveContext.audioSetting;
+            sLastOptionButtonIndex = gSaveContext.audioSetting;
         }
     } else {
         // offset to detect switching between modes
-        if (lastOptionButtonIndex != FS_BTN_SELECT_QUIT + gSaveContext.zTargetSetting + 1) {
+        if (sLastOptionButtonIndex != FS_BTN_SELECT_QUIT + gSaveContext.zTargetSetting + 1) {
             GameInteractor_ExecuteOnUpdateFileTargetSelection(gSaveContext.zTargetSetting);
-            lastOptionButtonIndex = FS_BTN_SELECT_QUIT + gSaveContext.zTargetSetting + 1;
+            sLastOptionButtonIndex = FS_BTN_SELECT_QUIT + gSaveContext.zTargetSetting + 1;
         }
     }
 }
@@ -894,7 +911,13 @@ void FileChoose_DrawOptionsImpl(GameState* thisx) {
         }
     }
 
-    if (gSaveContext.language == LANGUAGE_GER) {
+    uint8_t versionIndex = ResourceMgr_GameHasMasterQuest() && ResourceMgr_GameHasOriginal();
+    uint8_t isPalN64 = ResourceMgr_GetGameRegion(versionIndex) == GAME_REGION_PAL &&
+                       ResourceMgr_GetGamePlatform(versionIndex) == GAME_PLATFORM_N64;
+    uint8_t isPalGC = ResourceMgr_GetGameRegion(versionIndex) == GAME_REGION_PAL &&
+                      ResourceMgr_GetGamePlatform(versionIndex) == GAME_PLATFORM_GC;
+
+    if (gSaveContext.language == LANGUAGE_GER && isPalGC) {
         gSPVertex(POLY_OPA_DISP++, D_80811E30, 32, 0);
     } else {
         gSPVertex(POLY_OPA_DISP++, D_80811D30, 32, 0);
@@ -911,13 +934,24 @@ void FileChoose_DrawOptionsImpl(GameState* thisx) {
                             G_IM_SIZ_8b, gOptionsMenuHeaders[i].width[gSaveContext.language],
                             gOptionsMenuHeaders[i].height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        gSP1Quadrangle(POLY_OPA_DISP++, vtx, vtx + 2, vtx + 3, vtx + 1, 0);
+
+        if (i == 2 && gSaveContext.language == LANGUAGE_GER && isPalN64) {
+            // Pal N64 German vertex for Z target header are offset by 12 vertices
+            gSP1Quadrangle(POLY_OPA_DISP++, vtx + 12, vtx + 2 + 12, vtx + 3 + 12, vtx + 1 + 12, 0);
+        } else {
+            gSP1Quadrangle(POLY_OPA_DISP++, vtx, vtx + 2, vtx + 3, vtx + 1, 0);
+        }
     }
 
-    if (gSaveContext.language == LANGUAGE_GER) {
+    if (gSaveContext.language == LANGUAGE_GER && isPalGC) {
         gSPVertex(POLY_OPA_DISP++, D_80812130, 32, 0);
     } else {
-        gSPVertex(POLY_OPA_DISP++, D_80811F30, 32, 0);
+        // PAL N64 has extra german vertices combined in the regular array instead of a dedicated array
+        if (isPalN64) {
+            gSPVertex(POLY_OPA_DISP++, D_80811F30, 40, 0);
+        } else {
+            gSPVertex(POLY_OPA_DISP++, D_80811F30, 32, 0);
+        }
     }
 
     for (i = 0, vtx = 0; i < 4; i++, vtx += 4) {
@@ -964,7 +998,17 @@ void FileChoose_DrawOptionsImpl(GameState* thisx) {
                             G_IM_SIZ_8b, gOptionsMenuSettings[i].width[gSaveContext.language],
                             gOptionsMenuSettings[i].height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        gSP1Quadrangle(POLY_OPA_DISP++, vtx, vtx + 2, vtx + 3, vtx + 1, 0);
+        // Pal N64 German vertices for z target options are offset an by 8
+        if (gSaveContext.language == LANGUAGE_GER && isPalN64) {
+            gSP1Quadrangle(POLY_OPA_DISP++, vtx + 8, vtx + 2 + 8, vtx + 3 + 8, vtx + 1 + 8, 0);
+        } else {
+            gSP1Quadrangle(POLY_OPA_DISP++, vtx, vtx + 2, vtx + 3, vtx + 1, 0);
+        }
+    }
+
+    // Pal N64 needs to skip over the extra german vertices to get to brightness vertices
+    if (isPalN64) {
+        vtx += 8;
     }
 
     gDPPipeSync(POLY_OPA_DISP++);

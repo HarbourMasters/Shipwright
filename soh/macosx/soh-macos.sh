@@ -9,6 +9,11 @@ export DYLD_FALLBACK_LIBRARY_PATH="$LIBPATH"
 
 if [ ! -e "$SHIP_HOME" ]; then	mkdir "$SHIP_HOME"; fi
 
+if [ ! -e "$SHIP_HOME"/mods ]; then
+	mkdir -p "$SHIP_HOME"/mods
+	touch "$SHIP_HOME"/mods/custom_otr_files_go_here.txt
+fi
+
 # If either OTR doesn't exist kick off the OTR gen process
 if [ ! -e "$SHIP_HOME"/oot.otr ] || [ ! -e "$SHIP_HOME"/oot-mq.otr ]; then
 
@@ -39,9 +44,13 @@ if [ ! -e "$SHIP_HOME"/oot.otr ] || [ ! -e "$SHIP_HOME"/oot-mq.otr ]; then
 					ROM_TYPE=0;;
 				0227d7c0074f2d0ac935631990da8ec5914597b4)
 					ROM_TYPE=0;;
+				cfbb98d392e4a9d39da8285d10cbef3974c2f012)
+					ROM_TYPE=0;;
 				50bebedad9e0f10746a52b07239e47fa6c284d03)
 					ROM_TYPE=1;;
 				079b855b943d6ad8bd1eb026c0ed169ecbdac7da)
+					ROM_TYPE=1;;
+				cfecfdc58d650e71a200c81f033de4e6d617a9f6)
 					ROM_TYPE=1;;
 				517bd9714c73cb96c21e7c2ef640d7b55186102f)
 					ROM_TYPE=1;;
@@ -116,10 +125,16 @@ if [ ! -e "$SHIP_HOME"/oot.otr ] || [ ! -e "$SHIP_HOME"/oot-mq.otr ]; then
 			0227d7c0074f2d0ac935631990da8ec5914597b4)
 				ROM=GC_NMQ_PAL_F
 				OTRNAME="oot.otr";;
+			cfbb98d392e4a9d39da8285d10cbef3974c2f012)
+				ROM=N64_PAL_11
+				OTRNAME="oot.otr";;
 			50bebedad9e0f10746a52b07239e47fa6c284d03)
 				ROM=GC_MQ_D
 				OTRNAME="oot-mq.otr";;
 			079b855b943d6ad8bd1eb026c0ed169ecbdac7da)
+				ROM=GC_MQ_D
+				OTRNAME="oot-mq.otr";;
+			cfecfdc58d650e71a200c81f033de4e6d617a9f6)
 				ROM=GC_MQ_D
 				OTRNAME="oot-mq.otr";;
 			517bd9714c73cb96c21e7c2ef640d7b55186102f)

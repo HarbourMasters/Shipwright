@@ -14,8 +14,10 @@
 #include "objects/object_masterzoora/object_masterzoora.h"
 #include "objects/object_masterkokirihead/object_masterkokirihead.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include <assert.h>
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnOssan_Init(Actor* thisx, PlayState* play);
 void EnOssan_Destroy(Actor* thisx, PlayState* play);
@@ -372,7 +374,7 @@ s16 ShopItemDisp_Default(s16 v) {
 
 s16 ShopItemDisp_SpookyMask(s16 v) {
     // Sold Skull Mask
-    if (gSaveContext.itemGetInf[3] & 0x200) {
+    if (Flags_GetItemGetInf(ITEMGETINF_39)) {
         return v;
     }
     return -1;
@@ -380,7 +382,7 @@ s16 ShopItemDisp_SpookyMask(s16 v) {
 
 s16 ShopItemDisp_SkullMask(s16 v) {
     // Sold Keaton Mask
-    if (gSaveContext.itemGetInf[3] & 0x100) {
+    if (Flags_GetItemGetInf(ITEMGETINF_38)) {
         return v;
     }
     return -1;
@@ -388,7 +390,7 @@ s16 ShopItemDisp_SkullMask(s16 v) {
 
 s16 ShopItemDisp_BunnyHood(s16 v) {
     // Sold Spooky Mask
-    if (gSaveContext.itemGetInf[3] & 0x400) {
+    if (Flags_GetItemGetInf(ITEMGETINF_3A)) {
         return v;
     }
     return -1;
@@ -396,7 +398,7 @@ s16 ShopItemDisp_BunnyHood(s16 v) {
 
 s16 ShopItemDisp_ZoraMask(s16 v) {
     // Obtained Mask of Truth
-    if (gSaveContext.itemGetInf[3] & 0x8000) {
+    if (Flags_GetItemGetInf(ITEMGETINF_3F)) {
         return v;
     }
     return -1;
@@ -404,7 +406,7 @@ s16 ShopItemDisp_ZoraMask(s16 v) {
 
 s16 ShopItemDisp_GoronMask(s16 v) {
     // Obtained Mask of Truth
-    if (gSaveContext.itemGetInf[3] & 0x8000) {
+    if (Flags_GetItemGetInf(ITEMGETINF_3F)) {
         return v;
     }
     return -1;
@@ -412,7 +414,7 @@ s16 ShopItemDisp_GoronMask(s16 v) {
 
 s16 ShopItemDisp_GerudoMask(s16 v) {
     // Obtained Mask of Truth
-    if (gSaveContext.itemGetInf[3] & 0x8000) {
+    if (Flags_GetItemGetInf(ITEMGETINF_3F)) {
         return v;
     }
     return -1;
@@ -524,7 +526,7 @@ void EnOssan_TalkZoraShopkeeper(PlayState* play) {
 // Goron City, Goron
 void EnOssan_TalkGoronShopkeeper(PlayState* play) {
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
-        if (gSaveContext.eventChkInf[2] & 0x20) {
+        if (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) {
             Message_ContinueTextbox(play, 0x3028);
         } else if (CUR_UPG_VALUE(UPG_STRENGTH) != 0) {
             Message_ContinueTextbox(play, 0x302D);
@@ -541,10 +543,10 @@ void EnOssan_TalkGoronShopkeeper(PlayState* play) {
 
 // Happy Mask Shop
 void EnOssan_TalkHappyMaskShopkeeper(PlayState* play) {
-    if ((gSaveContext.itemGetInf[3] & 0x100)       // Sold Keaton Mask
-        && (gSaveContext.itemGetInf[3] & 0x200)    // Sold Skull Mask
-        && (gSaveContext.itemGetInf[3] & 0x400)    // Sold Spooky Mask
-        && (gSaveContext.itemGetInf[3] & 0x800)) { // Sold Bunny Hood
+    if ((Flags_GetItemGetInf(ITEMGETINF_38))       // Sold Keaton Mask
+        && (Flags_GetItemGetInf(ITEMGETINF_39))    // Sold Skull Mask
+        && (Flags_GetItemGetInf(ITEMGETINF_3A))    // Sold Spooky Mask
+        && (Flags_GetItemGetInf(ITEMGETINF_3B))) { // Sold Bunny Hood
         Message_ContinueTextbox(play, 0x70AE);
     } else {
         switch (play->msgCtx.choiceIndex) {
@@ -598,14 +600,14 @@ void EnOssan_Init(Actor* thisx, PlayState* play) {
         osSyncPrintf(VT_COL(RED, WHITE));
         osSyncPrintf("引数がおかしいよ(arg_data=%d)！！\n", this->actor.params);
         osSyncPrintf(VT_RST);
-        ASSERT(this->actor.params > OSSAN_TYPE_MASK && this->actor.params < OSSAN_TYPE_KOKIRI);
+        assert(this->actor.params > OSSAN_TYPE_MASK && this->actor.params < OSSAN_TYPE_KOKIRI);
         return;
     }
 
     // If you haven't given Zelda's Letter to the Kakariko Guard
     // or are rando'd and haven't gotten gotten the letter from zelda yet 
-    if (this->actor.params == OSSAN_TYPE_MASK && (!(gSaveContext.infTable[7] & 0x40) || 
-        (gSaveContext.n64ddFlag && !(gSaveContext.eventChkInf[4] & 1)))) {
+    if (this->actor.params == OSSAN_TYPE_MASK && (!Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD) || 
+        (gSaveContext.n64ddFlag && !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)))) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -616,8 +618,8 @@ void EnOssan_Init(Actor* thisx, PlayState* play) {
     }
 
     // Don't kill bombchu shop actor in rando, making it so the shop is immediately open
-    // gSaveContext.eventChkInf[2] & 0x20 - Completed Dodongo's Cavern
-    if (this->actor.params == OSSAN_TYPE_BOMBCHUS && !(gSaveContext.eventChkInf[2] & 0x20) && !gSaveContext.n64ddFlag) {
+    // Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) - Completed Dodongo's Cavern
+    if (this->actor.params == OSSAN_TYPE_BOMBCHUS && !Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && !gSaveContext.n64ddFlag) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -630,7 +632,7 @@ void EnOssan_Init(Actor* thisx, PlayState* play) {
         osSyncPrintf(VT_COL(RED, WHITE));
         osSyncPrintf("バンクが無いよ！！(%s)\n", sShopkeeperPrintName[this->actor.params]);
         osSyncPrintf(VT_RST);
-        ASSERT(this->objBankIndex1 < 0);
+        assert(this->objBankIndex1 < 0);
         return;
     }
 
@@ -639,7 +641,7 @@ void EnOssan_Init(Actor* thisx, PlayState* play) {
         osSyncPrintf(VT_COL(RED, WHITE));
         osSyncPrintf("予備バンクが無いよ！！(%s)\n", sShopkeeperPrintName[this->actor.params]);
         osSyncPrintf(VT_RST);
-        ASSERT(EnOssan_TryGetObjBankIndexes(this, play, objectIds) == 0);
+        assert(EnOssan_TryGetObjBankIndexes(this, play, objectIds) == 0);
         return;
     }
 
@@ -660,6 +662,10 @@ void EnOssan_UpdateCursorPos(PlayState* play, EnOssan* this) {
     Actor_GetScreenPos(play, &this->shelfSlots[this->cursorIndex]->actor, &x, &y);
     this->cursorX = x;
     this->cursorY = y;
+
+    if (CVarGetInteger("gMirroredWorld", 0)) {
+        this->cursorX = SCREEN_WIDTH - x;
+    }
 }
 
 void EnOssan_EndInteraction(PlayState* play, EnOssan* this) {
@@ -719,8 +725,8 @@ void EnOssan_StartShopping(PlayState* play, EnOssan* this) {
 
     if (this->actor.params == OSSAN_TYPE_MASK) {
         // if all masks have been sold, give the option to ask about the mask of truth
-        if ((gSaveContext.itemGetInf[3] & 0x100) && (gSaveContext.itemGetInf[3] & 0x200) &&
-            (gSaveContext.itemGetInf[3] & 0x400) && (gSaveContext.itemGetInf[3] & 0x800)) {
+        if ((Flags_GetItemGetInf(ITEMGETINF_38)) && (Flags_GetItemGetInf(ITEMGETINF_39)) &&
+            (Flags_GetItemGetInf(ITEMGETINF_3A)) && (Flags_GetItemGetInf(ITEMGETINF_3B))) {
             Message_ContinueTextbox(play, 0x70AD);
         } else {
             Message_ContinueTextbox(play, 0x70A2);
@@ -767,6 +773,10 @@ void EnOssan_UpdateJoystickInputState(PlayState* play, EnOssan* this) {
     Input* input = &play->state.input[0];
     s8 stickX = input->rel.stick_x;
     s8 stickY = input->rel.stick_y;
+
+    if (CVarGetInteger("gMirroredWorld", 0)) {
+        stickX = -input->rel.stick_x;
+    }
 
     this->moveHorizontal = this->moveVertical = false;
 
@@ -882,18 +892,18 @@ void EnOssan_TryPaybackMask(EnOssan* this, PlayState* play) {
         Rupees_ChangeBy(-price);
 
         if (this->happyMaskShopState == OSSAN_HAPPY_STATE_REQUEST_PAYMENT_BUNNY_HOOD) {
-            gSaveContext.eventChkInf[8] |= 0x8000;
+            Flags_SetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE);
             Message_ContinueTextbox(play, 0x70A9);
             this->happyMaskShopState = OSSAN_HAPPY_STATE_ALL_MASKS_SOLD;
             return;
         }
 
         if (this->happyMaskShopState == OSSAN_HAPPY_STATE_REQUEST_PAYMENT_KEATON_MASK) {
-            gSaveContext.eventChkInf[8] |= 0x1000;
+            Flags_SetEventChkInf(EVENTCHKINF_PAID_BACK_KEATON_MASK_FEE);
         } else if (this->happyMaskShopState == OSSAN_HAPPY_STATE_REQUEST_PAYMENT_SPOOKY_MASK) {
-            gSaveContext.eventChkInf[8] |= 0x4000;
+            Flags_SetEventChkInf(EVENTCHKINF_PAID_BACK_SPOOKY_MASK_FEE);
         } else if (this->happyMaskShopState == OSSAN_HAPPY_STATE_REQUEST_PAYMENT_SKULL_MASK) {
-            gSaveContext.eventChkInf[8] |= 0x2000;
+            Flags_SetEventChkInf(EVENTCHKINF_PAID_BACK_SKULL_MASK_FEE);
         }
 
         Message_ContinueTextbox(play, 0x70A7);
@@ -978,8 +988,16 @@ void EnOssan_State_FacingShopkeeper(EnOssan* this, PlayState* play, Player* play
             func_80078884(NA_SE_SY_DECIDE);
             return;
         }
+
+        u16 dLeft = BTN_DLEFT;
+        u16 dRight = BTN_DRIGHT;
+        if (CVarGetInteger("gMirroredWorld", 0)) {
+            dLeft = BTN_DRIGHT;
+            dRight = BTN_DLEFT;
+        }
+
         // Stick Left
-        if ((this->stickAccumX < 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
+        if ((this->stickAccumX < 0) || (dpad && CHECK_BTN_ALL(input->press.button, dLeft))) {
             nextIndex = EnOssan_SetCursorIndexFromNeutral(this, 4);
             if (nextIndex != CURSOR_INVALID) {
                 this->cursorIndex = nextIndex;
@@ -988,7 +1006,7 @@ void EnOssan_State_FacingShopkeeper(EnOssan* this, PlayState* play, Player* play
                 this->stickLeftPrompt.isEnabled = false;
                 func_80078884(NA_SE_SY_CURSOR);
             }
-        } else if ((this->stickAccumX > 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
+        } else if ((this->stickAccumX > 0) || (dpad && CHECK_BTN_ALL(input->press.button, dRight))) {
             nextIndex = EnOssan_SetCursorIndexFromNeutral(this, 0);
             if (nextIndex != CURSOR_INVALID) {
                 this->cursorIndex = nextIndex;
@@ -1218,8 +1236,16 @@ void EnOssan_State_BrowseLeftShelf(EnOssan* this, PlayState* play, Player* playe
     EnOssan_UpdateCursorPos(play, this);
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) &&
         !EnOssan_HasPlayerSelectedItem(play, this, &play->state.input[0])) {
+
+        u16 dLeft = BTN_DLEFT;
+        u16 dRight = BTN_DRIGHT;
+        if (CVarGetInteger("gMirroredWorld", 0)) {
+            dLeft = BTN_DRIGHT;
+            dRight = BTN_DLEFT;
+        }
+
         if (this->moveHorizontal) {
-            if ((this->stickAccumX > 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
+            if ((this->stickAccumX > 0) || (dpad && CHECK_BTN_ALL(input->press.button, dRight))) {
                 a = EnOssan_CursorRight(this, this->cursorIndex, 4);
                 if (a != CURSOR_INVALID) {
                     this->cursorIndex = a;
@@ -1227,14 +1253,14 @@ void EnOssan_State_BrowseLeftShelf(EnOssan* this, PlayState* play, Player* playe
                     EnOssan_SetLookToShopkeeperFromShelf(play, this);
                     return;
                 }
-            } else if ((this->stickAccumX < 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
+            } else if ((this->stickAccumX < 0) || (dpad && CHECK_BTN_ALL(input->press.button, dLeft))) {
                 b = EnOssan_CursorLeft(this, this->cursorIndex, 8);
                 if (b != CURSOR_INVALID) {
                     this->cursorIndex = b;
                 }
             }
         } else {
-            if ((this->stickAccumX > 0 && this->stickAccumX > 500) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
+            if ((this->stickAccumX > 0 && this->stickAccumX > 500) || (dpad && CHECK_BTN_ALL(input->press.button, dRight))) {
                 c = EnOssan_CursorRight(this, this->cursorIndex, 4);
                 if (c != CURSOR_INVALID) {
                     this->cursorIndex = c;
@@ -1242,7 +1268,7 @@ void EnOssan_State_BrowseLeftShelf(EnOssan* this, PlayState* play, Player* playe
                     EnOssan_SetLookToShopkeeperFromShelf(play, this);
                     return;
                 }
-            } else if ((this->stickAccumX < 0 && this->stickAccumX < -500) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
+            } else if ((this->stickAccumX < 0 && this->stickAccumX < -500) || (dpad && CHECK_BTN_ALL(input->press.button, dLeft))) {
                 d = EnOssan_CursorLeft(this, this->cursorIndex, 8);
                 if (d != CURSOR_INVALID) {
                     this->cursorIndex = d;
@@ -1279,8 +1305,16 @@ void EnOssan_State_BrowseRightShelf(EnOssan* this, PlayState* play, Player* play
     EnOssan_UpdateCursorPos(play, this);
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) &&
         !EnOssan_HasPlayerSelectedItem(play, this, &play->state.input[0])) {
+
+        u16 dLeft = BTN_DLEFT;
+        u16 dRight = BTN_DRIGHT;
+        if (CVarGetInteger("gMirroredWorld", 0)) {
+            dLeft = BTN_DRIGHT;
+            dRight = BTN_DLEFT;
+        }
+
         if (this->moveHorizontal) {
-            if ((this->stickAccumX < 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
+            if ((this->stickAccumX < 0) || (dpad && CHECK_BTN_ALL(input->press.button, dLeft))) {
                 nextIndex = EnOssan_CursorRight(this, this->cursorIndex, 0);
                 if (nextIndex != CURSOR_INVALID) {
                     this->cursorIndex = nextIndex;
@@ -1288,14 +1322,14 @@ void EnOssan_State_BrowseRightShelf(EnOssan* this, PlayState* play, Player* play
                     EnOssan_SetLookToShopkeeperFromShelf(play, this);
                     return;
                 }
-            } else if ((this->stickAccumX > 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
+            } else if ((this->stickAccumX > 0) || (dpad && CHECK_BTN_ALL(input->press.button, dRight))) {
                 nextIndex = EnOssan_CursorLeft(this, this->cursorIndex, 4);
                 if (nextIndex != CURSOR_INVALID) {
                     this->cursorIndex = nextIndex;
                 }
             }
         } else {
-            if ((this->stickAccumX < 0 && this->stickAccumX < -500) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
+            if ((this->stickAccumX < 0 && this->stickAccumX < -500) || (dpad && CHECK_BTN_ALL(input->press.button, dLeft))) {
                 nextIndex = EnOssan_CursorRight(this, this->cursorIndex, 0);
                 if (nextIndex != CURSOR_INVALID) {
                     this->cursorIndex = nextIndex;
@@ -1303,7 +1337,7 @@ void EnOssan_State_BrowseRightShelf(EnOssan* this, PlayState* play, Player* play
                     EnOssan_SetLookToShopkeeperFromShelf(play, this);
                     return;
                 }
-            } else if ((this->stickAccumX > 0 && this->stickAccumX > 500) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
+            } else if ((this->stickAccumX > 0 && this->stickAccumX > 500) || (dpad && CHECK_BTN_ALL(input->press.button, dRight))) {
                 nextIndex = EnOssan_CursorLeft(this, this->cursorIndex, 4);
                 if (nextIndex != CURSOR_INVALID) {
                     this->cursorIndex = nextIndex;
@@ -1388,7 +1422,7 @@ void EnOssan_HandleCanBuyItem(PlayState* play, EnOssan* this) {
 
     switch (selectedItem->canBuyFunc(play, selectedItem)) {
         case CANBUY_RESULT_SUCCESS_FANFARE:
-            if (selectedItem->actor.params == SI_HYLIAN_SHIELD && gSaveContext.infTable[7] & 0x40) {
+            if (selectedItem->actor.params == SI_HYLIAN_SHIELD && Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)) {
                 EnOssan_SetStateGiveDiscountDialog(play, this);
             } else {
                 EnOssan_GiveItemWithFanfare(play, this);
@@ -1503,9 +1537,9 @@ void EnOssan_BuyGoronCityBombs(PlayState* play, EnOssan* this) {
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
         // Let players buy the right side of the goron shop in rando regardless of DC completion
         // Players will still need a bomb bag to buy bombs (handled by vanilla behaviour)
-        // gSaveContext.eventChkInf[2] & 0x20 - Completed Dodongo's Cavern
-        if (!gSaveContext.n64ddFlag && !(gSaveContext.eventChkInf[2] & 0x20)) {
-            if (gSaveContext.infTable[15] & 0x1000) {
+        // Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) - Completed Dodongo's Cavern
+        if (!gSaveContext.n64ddFlag && !Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) {
+            if (Flags_GetInfTable(INFTABLE_FC)) {
                 EnOssan_SetStateCantGetItem(play, this, 0x302E);
             } else {
                 this->stickLeftPrompt.isEnabled = false;
@@ -1600,7 +1634,7 @@ void EnOssan_State_SelectBombs(EnOssan* this, PlayState* play, Player* player) {
         osSyncPrintf("%s[%d]:" VT_FGCOL(GREEN) "ズーム中！！" VT_RST "\n", __FILE__, __LINE__);
         return;
     }
-    osSyncPrintf("店主の依頼 ( %d )\n", gSaveContext.infTable[15] & 0x1000);
+    osSyncPrintf("店主の依頼 ( %d )\n", Flags_GetInfTable(INFTABLE_FC));
     if (this->actor.params != OSSAN_TYPE_GORON) {
         EnOssan_State_ItemSelected(this, play, player);
         return;
@@ -1639,16 +1673,16 @@ void EnOssan_State_SelectMaskItem(EnOssan* this, PlayState* play, Player* player
             case 0:
                 switch (item->actor.params) {
                     case SI_KEATON_MASK:
-                        gSaveContext.itemGetInf[2] |= 0x08;
+                        Flags_SetItemGetInf(ITEMGETINF_23);
                         break;
                     case SI_SPOOKY_MASK:
-                        gSaveContext.itemGetInf[2] |= 0x20;
+                        Flags_SetItemGetInf(ITEMGETINF_25);
                         break;
                     case SI_SKULL_MASK:
-                        gSaveContext.itemGetInf[2] |= 0x10;
+                        Flags_SetItemGetInf(ITEMGETINF_24);
                         break;
                     case SI_BUNNY_HOOD:
-                        gSaveContext.itemGetInf[2] |= 0x40;
+                        Flags_SetItemGetInf(ITEMGETINF_26);
                         break;
                     case SI_MASK_OF_TRUTH:
                     case SI_ZORA_MASK:
@@ -1733,8 +1767,8 @@ void EnOssan_State_ItemPurchased(EnOssan* this, PlayState* play, Player* player)
             EnOssan_ResetItemPosition(this);
             item = this->shelfSlots[this->cursorIndex];
             item->updateStockedItemFunc(play, item);
-            if (itemTemp->actor.params == SI_MASK_OF_TRUTH && !(gSaveContext.itemGetInf[3] & 0x8000)) {
-                gSaveContext.itemGetInf[3] |= 0x8000;
+            if (itemTemp->actor.params == SI_MASK_OF_TRUTH && !Flags_GetItemGetInf(ITEMGETINF_3F)) {
+                Flags_SetItemGetInf(ITEMGETINF_3F);
                 Message_ContinueTextbox(play, 0x70AB);
                 this->happyMaskShopState = OSSAN_HAPPY_STATE_BORROWED_FIRST_MASK;
                 EnOssan_UpdateShopOfferings(this, play);
@@ -1801,7 +1835,7 @@ void EnOssan_State_ContinueShoppingPrompt(EnOssan* this, PlayState* play, Player
 
 void EnOssan_State_WaitForDisplayOnlyBombDialog(EnOssan* this, PlayState* play, Player* player) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT && Message_ShouldAdvance(play)) {
-        gSaveContext.infTable[15] |= 0x1000;
+        Flags_SetInfTable(INFTABLE_FC);
         EnOssan_StartShopping(play, this);
     }
 }
@@ -1811,7 +1845,7 @@ void EnOssan_State_21(EnOssan* this, PlayState* play, Player* player) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE_HAS_NEXT && Message_ShouldAdvance(play)) {
         this->stateFlag = OSSAN_STATE_22;
         Message_ContinueTextbox(play, 0x3012);
-        gSaveContext.infTable[15] |= 0x1000;
+        Flags_SetInfTable(INFTABLE_FC);
     }
 }
 
@@ -1831,7 +1865,7 @@ void EnOssan_State_GiveLonLonMilk(EnOssan* this, PlayState* play, Player* player
 // For giving Mask of Truth when you first sell all masks
 void EnOssan_State_LendMaskOfTruth(EnOssan* this, PlayState* play, Player* player) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT && Message_ShouldAdvance(play)) {
-        gSaveContext.itemGetInf[2] |= 0x400;
+        Flags_SetItemGetInf(ITEMGETINF_2A);
         this->cursorIndex = 2;
         EnOssan_GiveItemWithFanfare(play, this);
     }
@@ -1939,7 +1973,7 @@ void EnOssan_UpdateCursorAnim(EnOssan* this) {
     Color_RGB8 aButtonColor = { 0, 80, 255 };
     if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
         aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         aButtonColor = (Color_RGB8){ 0, 255, 80 };
     }
     f32 t;
@@ -2122,8 +2156,8 @@ u16 EnOssan_SetupHelloDialog(EnOssan* this) {
     // mask shop messages
     if (this->actor.params == OSSAN_TYPE_MASK) {
         if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_SOLD_OUT) {
-            if (gSaveContext.itemGetInf[3] & 0x800) {
-                if (!(gSaveContext.eventChkInf[8] & 0x8000)) {
+            if (Flags_GetItemGetInf(ITEMGETINF_3B)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_PAID_BACK_BUNNY_HOOD_FEE)) {
                     // Pay back Bunny Hood
                     this->happyMaskShopState = OSSAN_HAPPY_STATE_REQUEST_PAYMENT_BUNNY_HOOD;
                     return 0x70C6;
@@ -2131,8 +2165,8 @@ u16 EnOssan_SetupHelloDialog(EnOssan* this) {
                     return 0x70AC;
                 }
             }
-            if (gSaveContext.itemGetInf[3] & 0x400) {
-                if (!(gSaveContext.eventChkInf[8] & 0x4000)) {
+            if (Flags_GetItemGetInf(ITEMGETINF_3A)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_PAID_BACK_SPOOKY_MASK_FEE)) {
                     // Pay back Spooky Mask
                     this->happyMaskShopState = OSSAN_HAPPY_STATE_REQUEST_PAYMENT_SPOOKY_MASK;
                     return 0x70C5;
@@ -2140,8 +2174,8 @@ u16 EnOssan_SetupHelloDialog(EnOssan* this) {
                     return 0x70AC;
                 }
             }
-            if (gSaveContext.itemGetInf[3] & 0x200) {
-                if (!(gSaveContext.eventChkInf[8] & 0x2000)) {
+            if (Flags_GetItemGetInf(ITEMGETINF_39)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_PAID_BACK_SKULL_MASK_FEE)) {
                     // Pay back Skull Mask
                     this->happyMaskShopState = OSSAN_HAPPY_STATE_REQUEST_PAYMENT_SKULL_MASK;
                     return 0x70C4;
@@ -2149,8 +2183,8 @@ u16 EnOssan_SetupHelloDialog(EnOssan* this) {
                     return 0x70AC;
                 }
             }
-            if (gSaveContext.itemGetInf[3] & 0x100) {
-                if (!(gSaveContext.eventChkInf[8] & 0x1000)) {
+            if (Flags_GetItemGetInf(ITEMGETINF_38)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_PAID_BACK_KEATON_MASK_FEE)) {
                     // Pay back Keaton Mask
                     this->happyMaskShopState = OSSAN_HAPPY_STATE_REQUEST_PAYMENT_KEATON_MASK;
                     return 0x70A5;
@@ -2159,12 +2193,12 @@ u16 EnOssan_SetupHelloDialog(EnOssan* this) {
                 }
             }
         } else {
-            if (gSaveContext.itemGetInf[3] & 0x800) {
+            if (Flags_GetItemGetInf(ITEMGETINF_3B)) {
                 return 0x70AC;
-            } else if (!(gSaveContext.itemGetInf[3] & 0x400) && !(gSaveContext.itemGetInf[2] & 0x10) &&
-                       !(gSaveContext.itemGetInf[3] & 0x100)) {
+            } else if (!Flags_GetItemGetInf(ITEMGETINF_3A) && !Flags_GetItemGetInf(ITEMGETINF_24) &&
+                       !Flags_GetItemGetInf(ITEMGETINF_38)) {
                 // Haven't borrowed the Keaton Mask
-                if (!(gSaveContext.itemGetInf[2] & 0x8)) {
+                if (!Flags_GetItemGetInf(ITEMGETINF_23)) {
                     return 0x70A1;
                 } else {
                     // Haven't sold the Keaton Mask
@@ -2184,7 +2218,7 @@ void EnOssan_InitActionFunc(EnOssan* this, PlayState* play) {
     ShopItem* items;
 
     if (EnOssan_AreShopkeeperObjectsLoaded(this, play)) {
-        this->actor.flags &= ~ACTOR_FLAG_4;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
         this->actor.objBankIndex = this->objBankIndex1;
         Actor_SetObjectDependency(play, &this->actor);
 
@@ -2269,7 +2303,7 @@ void EnOssan_InitActionFunc(EnOssan* this, PlayState* play) {
         this->blinkTimer = 20;
         this->eyeTextureIdx = 0;
         this->blinkFunc = EnOssan_WaitForBlink;
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
         EnOssan_SetupAction(this, EnOssan_MainActionFunc);
     }
 }
@@ -2373,6 +2407,12 @@ void EnOssan_DrawTextRec(PlayState* play, s32 r, s32 g, s32 b, s32 a, f32 x, f32
 void EnOssan_DrawStickDirectionPrompts(PlayState* play, EnOssan* this) {
     s32 drawStickLeftPrompt = this->stickLeftPrompt.isEnabled;
     s32 drawStickRightPrompt = this->stickRightPrompt.isEnabled;
+
+    // Invert which stick prompt is active when only one is active
+    if (CVarGetInteger("gMirroredWorld", 0) && (drawStickLeftPrompt != drawStickRightPrompt)) {
+        drawStickLeftPrompt = !drawStickLeftPrompt;
+        drawStickRightPrompt = !drawStickRightPrompt;
+    }
 
     OPEN_DISPS(play->state.gfxCtx);
     if (drawStickLeftPrompt || drawStickRightPrompt) {

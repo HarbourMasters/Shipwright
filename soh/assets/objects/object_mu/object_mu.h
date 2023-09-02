@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_MU_H
+#define OBJECTS_OBJECT_MU_H 1
 
 #include "align_asset_macro.h"
 
@@ -172,3 +173,6 @@ static const ALIGN_ASSET(2) char object_mu_DL_00ABB8[] = dobject_mu_DL_00ABB8;
 
 #define dgDancingCoupleSkel "__OTR__objects/object_mu/gDancingCoupleSkel"
 static const ALIGN_ASSET(2) char gDancingCoupleSkel[] = dgDancingCoupleSkel;
+
+
+#endif // OBJECTS_OBJECT_MU_H

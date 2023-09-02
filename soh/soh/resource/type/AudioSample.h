@@ -39,11 +39,13 @@ namespace LUS {
         s32 sampleRate;           // For wav samples only...
     } Sample; // size = 0x10
 
-    class AudioSample : public Resource {
+    class AudioSample : public Resource<Sample> {
         public:
             using Resource::Resource;
 
-            void* GetPointer();
+        AudioSample() : Resource(std::shared_ptr<ResourceInitData>()) {}
+
+            Sample* GetPointer();
             size_t GetPointerSize();
 
             Sample sample;

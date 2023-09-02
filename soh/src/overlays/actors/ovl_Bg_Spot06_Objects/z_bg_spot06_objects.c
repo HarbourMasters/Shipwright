@@ -8,7 +8,7 @@
 #include "objects/object_spot06_objects/object_spot06_objects.h"
 #include "soh/Enhancements/custom-message/CustomMessageTypes.h"
 
-#define FLAGS ACTOR_FLAG_9
+#define FLAGS ACTOR_FLAG_HOOKSHOT_DRAGS
 
 typedef enum {
     /* 0x0 */ LHO_WATER_TEMPLE_ENTRACE_GATE,
@@ -47,6 +47,8 @@ void BgSpot06Objects_LockFloat(BgSpot06Objects* this, PlayState* play);
 void BgSpot06Objects_WaterPlaneCutsceneWait(BgSpot06Objects* this, PlayState* play);
 void BgSpot06Objects_WaterPlaneCutsceneRise(BgSpot06Objects* this, PlayState* play);
 void BgSpot06Objects_WaterPlaneCutsceneLower(BgSpot06Objects* this, PlayState* play);
+
+s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
 
 const ActorInit Bg_Spot06_Objects_InitVars = {
     ACTOR_BG_SPOT06_OBJECTS,
@@ -128,7 +130,7 @@ void BgSpot06Objects_Init(Actor* thisx, PlayState* play) {
             Collider_SetJntSph(play, &this->collider, thisx, &sJntSphInit, this->colliderItem);
 
             if (LINK_IS_ADULT && Flags_GetSwitch(play, this->switchFlag)) {
-                if (!(gSaveContext.eventChkInf[6] & 0x200)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER)) {
                     thisx->home.pos.y = thisx->world.pos.y = WATER_LEVEL_LOWERED;
                 } else {
                     thisx->home.pos.y = thisx->world.pos.y = WATER_LEVEL_RAISED;
@@ -152,9 +154,9 @@ void BgSpot06Objects_Init(Actor* thisx, PlayState* play) {
             break;
         case LHO_WATER_PLANE:
             Actor_ProcessInitChain(thisx, sInitChainWaterPlane);
-            thisx->flags = ACTOR_FLAG_4 | ACTOR_FLAG_5;
+            thisx->flags = ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED;
 
-            if (LINK_IS_ADULT && !(Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER))) {
+            if (LINK_IS_ADULT && !Flags_GetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER)) {
                 if (gSaveContext.sceneSetupIndex < 4) {
                     this->lakeHyliaWaterLevel = -681.0f;
                     play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].ySurface =
@@ -320,7 +322,7 @@ void BgSpot06Objects_LockWait(BgSpot06Objects* this, PlayState* play) {
 
     if (this->collider.base.acFlags & 2) {
         this->timer = 130;
-        this->dyna.actor.flags |= ACTOR_FLAG_4;
+        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
         sin = Math_SinS(this->dyna.actor.world.rot.y);
         cos = Math_CosS(this->dyna.actor.world.rot.y);
         this->dyna.actor.world.pos.x += (3.0f * sin);
@@ -363,7 +365,7 @@ void BgSpot06Objects_LockPullOutward(BgSpot06Objects* this, PlayState* play) {
 
     if (this->timer == 0) {
         this->dyna.actor.velocity.y = 0.5f;
-        this->dyna.actor.flags &= ~ACTOR_FLAG_13;
+        this->dyna.actor.flags &= ~ACTOR_FLAG_HOOKSHOT_ATTACHED;
 
         this->actionFunc = BgSpot06Objects_LockSwimToSurface;
     }
@@ -393,7 +395,7 @@ void BgSpot06Objects_LockSwimToSurface(BgSpot06Objects* this, PlayState* play) {
                 this->dyna.actor.world.pos.z - (Math_CosS(this->dyna.actor.shape.rot.y) * 16.0f);
             this->dyna.actor.world.pos.y = -1993.0f;
             this->timer = 32;
-            this->dyna.actor.flags &= ~ACTOR_FLAG_4;
+            this->dyna.actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
             this->collider.elements[0].dim.worldSphere.radius = this->collider.elements[0].dim.modelSphere.radius * 2;
             this->actionFunc = BgSpot06Objects_LockFloat;
         }
@@ -623,7 +625,7 @@ void BgSpot06Objects_WaterPlaneCutsceneLower(BgSpot06Objects* this, PlayState* p
         this->dyna.actor.world.pos.y = (this->lakeHyliaWaterLevel + 680.0f) + WATER_LEVEL_RAISED;
     }
 
-    gSaveContext.eventChkInf[6] &= ~0x200; // Unset the "raised lake hylia water" flag
+    Flags_UnsetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER); // Unset the "raised lake hylia water" flag
     play->roomCtx.unk_74[0] = 87; // Remove the moving under water texture from lake hylia ground
 
     if (this->lakeHyliaWaterLevel <= -681.0f) {

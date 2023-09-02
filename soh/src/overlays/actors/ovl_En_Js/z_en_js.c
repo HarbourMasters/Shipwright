@@ -7,7 +7,7 @@
 #include "z_en_js.h"
 #include "objects/object_js/object_js.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnJs_Init(Actor* thisx, PlayState* play);
 void EnJs_Destroy(Actor* thisx, PlayState* play);
@@ -106,7 +106,7 @@ void func_80A89008(EnJs* this) {
 void func_80A89078(EnJs* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         func_80A89008(this);
-        this->actor.flags &= ~ACTOR_FLAG_16;
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
     }
 }
 
@@ -122,7 +122,7 @@ void func_80A8910C(EnJs* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         this->actor.textId = 0x6078;
         En_Js_SetupAction(this, func_80A890C0);
-        this->actor.flags |= ACTOR_FLAG_16;
+        this->actor.flags |= ACTOR_FLAG_WILL_TALK;
     }
 }
 
@@ -136,7 +136,7 @@ void func_80A89160(EnJs* this, PlayState* play) {
             GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_WASTELAND_BOMBCHU_SALESMAN, GI_BOMBCHUS_10);
             gSaveContext.pendingSale = itemEntry.itemId;
             gSaveContext.pendingSaleMod = itemEntry.modIndex;
-            GiveItemEntryFromActor(&this->actor, play, itemEntry, 90.0f, 10.0f);
+            GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
             Flags_SetRandomizerInf(RAND_INF_MERCHANTS_CARPET_SALESMAN);
         } else {
             GetItemEntry itemEntry = ItemTable_Retrieve(GI_BOMBCHUS_10);

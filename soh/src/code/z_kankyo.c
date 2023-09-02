@@ -214,6 +214,11 @@ LightInfo sSGameOverLightInfo;
 u8 sGameOverLightsIntensity;
 u16 D_8015FDB0;
 
+void LoadSkyboxPalette(SkyboxContext* skyboxCtx, int paletteIndex, char* palTex, int width,
+                       int height);
+void LoadSkyboxTex(SkyboxContext* skyboxCtx, int segmentIndex, int imageIndex, char* tex, int width, int height, int offsetW, int offsetH);
+void Skybox_Update(SkyboxContext* skyboxCtx);
+
 s32 func_8006F0A0(s32 a0) {
     s32 ret = ((a0 >> 4 & 0x7FF) << D_8011FAF0[a0 >> 15 & 7].unk_00) + D_8011FAF0[a0 >> 15 & 7].unk_04;
 
@@ -2332,7 +2337,7 @@ void Environment_DrawSandstorm(PlayState* play, u8 sandstormState) {
 
     switch (sandstormState) {
         case 3:
-            if ((play->sceneNum == SCENE_SPOT13) && (play->roomCtx.curRoom.num == 0)) {
+            if ((play->sceneNum == SCENE_HAUNTED_WASTELAND) && (play->roomCtx.curRoom.num == 0)) {
                 envA1 = 0;
                 primA1 = (play->envCtx.sandstormEnvA > 128) ? 255 : play->envCtx.sandstormEnvA >> 1;
             } else {
@@ -2542,19 +2547,19 @@ void Environment_WarpSongLeave(PlayState* play) {
 
     switch (play->nextEntranceIndex) {
         case 0x147:
-            Flags_SetEventChkInf(0xB9);
+            Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DEATH_MOUNTAIN_CRATER);
             break;
         case 0x0102:
-            Flags_SetEventChkInf(0xB1);
+            Flags_SetEventChkInf(EVENTCHKINF_ENTERED_LAKE_HYLIA);
             break;
         case 0x0123:
-            Flags_SetEventChkInf(0xB8);
+            Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DESERT_COLOSSUS);
             break;
         case 0x00E4:
-            Flags_SetEventChkInf(0xB6);
+            Flags_SetEventChkInf(EVENTCHKINF_ENTERED_GRAVEYARD);
             break;
         case 0x0053:
-            Flags_SetEventChkInf(0xA7);
+            Flags_SetEventChkInf(EVENTCHKINF_ENTERED_TEMPLE_OF_TIME);
             break;
         case 0x00FC:
             break;

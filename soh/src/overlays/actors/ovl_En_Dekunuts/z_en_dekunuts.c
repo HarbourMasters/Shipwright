@@ -8,7 +8,7 @@
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
 #include "objects/object_dekunuts/object_dekunuts.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 
 #define DEKUNUTS_FLOWER 10
 
@@ -112,7 +112,7 @@ void EnDekunuts_Init(Actor* thisx, PlayState* play) {
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     if (thisx->params == DEKUNUTS_FLOWER) {
-        thisx->flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_2);
+        thisx->flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE);
     } else {
         ActorShape_Init(&thisx->shape, 0.0f, ActorShadow_DrawCircle, 35.0f);
         SkelAnime_Init(play, &this->skelAnime, &gDekuNutsSkel, &gDekuNutsStandAnim, this->jointTable,

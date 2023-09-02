@@ -8,8 +8,9 @@
 #include "objects/object_oF1d_map/object_oF1d_map.h"
 #include "objects/object_gm/object_gm.h"
 #include "vt.h"
+#include <assert.h>
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnGm_Init(Actor* thisx, PlayState* play);
 void EnGm_Destroy(Actor* thisx, PlayState* play);
@@ -78,7 +79,7 @@ void EnGm_Init(Actor* thisx, PlayState* play) {
         // "There is no model bank! !! (Medi Goron)"
         osSyncPrintf("モデル バンクが無いよ！！（中ゴロン）\n");
         osSyncPrintf(VT_RST);
-        ASSERT(this->objGmBankIndex < 0);
+        assert(this->objGmBankIndex < 0);
     }
 
     this->updateFunc = func_80A3D838;
@@ -109,7 +110,7 @@ s32 func_80A3D7C8(void) {
 
 void func_80A3D838(EnGm* this, PlayState* play) {
     if (Object_IsLoaded(&play->objectCtx, this->objGmBankIndex)) {
-        this->actor.flags &= ~ACTOR_FLAG_4;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
         SkelAnime_InitFlex(play, &this->skelAnime, &gGoronSkel, NULL, this->jointTable, this->morphTable, 18);
         gSegments[6] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[this->objGmBankIndex].segment);
         Animation_Change(&this->skelAnime, &object_gm_Anim_0002B8, 1.0f, 0.0f,
@@ -147,14 +148,14 @@ void EnGm_UpdateEye(EnGm* this) {
 void EnGm_SetTextID(EnGm* this) {
     switch (func_80A3D7C8()) {
         case 0:
-            if (gSaveContext.infTable[11] & 1) {
+            if (Flags_GetInfTable(INFTABLE_B0)) {
                 this->actor.textId = 0x304B;
             } else {
                 this->actor.textId = 0x304A;
             }
             break;
         case 1:
-            if (gSaveContext.infTable[11] & 2) {
+            if (Flags_GetInfTable(INFTABLE_B1)) {
                 this->actor.textId = 0x304F;
             } else {
                 this->actor.textId = 0x304C;
@@ -208,16 +209,16 @@ void func_80A3DC44(EnGm* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         switch (func_80A3D7C8()) {
             case 0:
-                gSaveContext.infTable[11] |= 1;
+                Flags_SetInfTable(INFTABLE_B0);
             case 3:
                 this->actionFunc = func_80A3DD7C;
                 return;
             case 1:
-                gSaveContext.infTable[11] |= 2;
+                Flags_SetInfTable(INFTABLE_B1);
                 if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
                     !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
                         //Resets "Talked to Medigoron" flag in infTable to restore initial conversation state
-                        gSaveContext.infTable[11] &= ~2;
+                        Flags_UnsetInfTable(INFTABLE_B1);
                     }
             case 2:
                 this->actionFunc = EnGm_ProcessChoiceIndex;
@@ -259,7 +260,7 @@ void EnGm_ProcessChoiceIndex(EnGm* this, PlayState* play) {
                         !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
                         itemEntry = Randomizer_GetItemFromKnownCheck(RC_GC_MEDIGORON, GI_SWORD_KNIFE);
                         GiveItemEntryFromActor(&this->actor, play, itemEntry, 415.0f, 10.0f);
-                        gSaveContext.infTable[11] |= 2;
+                        Flags_SetInfTable(INFTABLE_B1);
                     } else {
                         itemEntry = ItemTable_Retrieve(GI_SWORD_KNIFE);
                         func_8002F434(&this->actor, play, GI_SWORD_KNIFE, 415.0f, 10.0f);
@@ -292,7 +293,7 @@ void func_80A3DF00(EnGm* this, PlayState* play) {
             !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_MEDIGORON)) {
             GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_GC_MEDIGORON, GI_SWORD_KNIFE);
             GiveItemEntryFromActor(&this->actor, play, itemEntry, 415.0f, 10.0f);
-            gSaveContext.infTable[11] |= 2;
+            Flags_SetInfTable(INFTABLE_B1);
         }
         else {
             func_8002F434(&this->actor, play, GI_SWORD_KNIFE, 415.0f, 10.0f);

@@ -1,7 +1,7 @@
 #include "SetSoundSettings.h"
 
 namespace LUS {
-void* SetSoundSettings::GetPointer() {
+SoundSettings* SetSoundSettings::GetPointer() {
     return &settings;
 }
 

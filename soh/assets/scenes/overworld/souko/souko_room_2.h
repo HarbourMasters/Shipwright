@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OVERWORLD_SOUKO_ROOM_2_H
+#define OVERWORLD_SOUKO_ROOM_2_H 1
 
 #include "align_asset_macro.h"
 
@@ -46,3 +47,6 @@ static const ALIGN_ASSET(2) char souko_room_2DL_0015E0[] = dsouko_room_2DL_0015E
 
 #define dsouko_room_2DL_000EF8 "__OTR__scenes/nonmq/souko_scene/souko_room_2DL_000EF8"
 static const ALIGN_ASSET(2) char souko_room_2DL_000EF8[] = dsouko_room_2DL_000EF8;
+
+
+#endif // OVERWORLD_SOUKO_ROOM_2_H

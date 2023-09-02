@@ -3,6 +3,7 @@
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include <math.h>
+#include "soh/Enhancements/debugger/colViewer.h"
 
 extern "C" {
 #include "variables.h"
@@ -102,7 +103,9 @@ void GameInteractor::RawAction::ForceEquipBoots(int8_t boots) {
 }
 
 void GameInteractor::RawAction::FreezePlayer() {
-    gSaveContext.pendingIceTrapCount++;
+    Player* player = GET_PLAYER(gPlayState);
+    player->actor.colChkInfo.damage = 0;
+    func_80837C0C(gPlayState, player, 3, 0, 0, 0, 0);
 }
 
 void GameInteractor::RawAction::BurnPlayer() {
@@ -233,15 +236,15 @@ void GameInteractor::RawAction::SetCollisionViewer(bool active) {
     CVarSetInteger("gColViewerDecal", active);
     
     if (active) {
-        CVarSetInteger("gColViewerScene", 2);
-        CVarSetInteger("gColViewerBgActors", 2);
-        CVarSetInteger("gColViewerColCheck", 2);
-        CVarSetInteger("gColViewerWaterbox", 2);
+        CVarSetInteger("gColViewerScene", COLVIEW_TRANSPARENT);
+        CVarSetInteger("gColViewerBgActors", COLVIEW_TRANSPARENT);
+        CVarSetInteger("gColViewerColCheck", COLVIEW_TRANSPARENT);
+        CVarSetInteger("gColViewerWaterbox", COLVIEW_TRANSPARENT);
     } else {
-        CVarSetInteger("gColViewerScene", 0);
-        CVarSetInteger("gColViewerBgActors", 0);
-        CVarSetInteger("gColViewerColCheck", 0);
-        CVarSetInteger("gColViewerWaterbox", 0);
+        CVarSetInteger("gColViewerScene", COLVIEW_DISABLED);
+        CVarSetInteger("gColViewerBgActors", COLVIEW_DISABLED);
+        CVarSetInteger("gColViewerColCheck", COLVIEW_DISABLED);
+        CVarSetInteger("gColViewerWaterbox", COLVIEW_DISABLED);
     }
 }
 
@@ -335,7 +338,7 @@ void GameInteractor::RawAction::SetCosmeticsColor(uint8_t cosmeticCategory, uint
             break;
     }
 
-    LUS::RequestCvarSaveOnNextTick();
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     ApplyOrResetCustomGfxPatches();
 }
 
@@ -430,7 +433,7 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
 
     // Disallow enemy spawns in the painting Poe rooms in Forest Temple.
     // Killing a spawned enemy before the Poe can softlock the rooms entirely.
-    if (sceneNum == SCENE_BMORI1 && (roomNum == 12 || roomNum == 13 || roomNum == 16)) {
+    if (sceneNum == SCENE_FOREST_TEMPLE && (roomNum == 12 || roomNum == 13 || roomNum == 16)) {
         return GameInteractionEffectQueryResult::NotPossible;
     }
 
@@ -446,8 +449,8 @@ GameInteractionEffectQueryResult GameInteractor::RawAction::SpawnEnemyWithOffset
         // Don't allow Arwings in certain areas because they cause issues.
         // Locations: King dodongo room, Morpha room, Twinrova room, Ganondorf room, Fishing pond, Ganon's room
         // TODO: Swap this to disabling the option in CC options menu instead.
-        if (sceneNum == SCENE_DDAN_BOSS || sceneNum == SCENE_MIZUSIN_BS || sceneNum == SCENE_JYASINBOSS ||
-            sceneNum == SCENE_GANON_BOSS || sceneNum == SCENE_TURIBORI || sceneNum == SCENE_GANON_DEMO) {
+        if (sceneNum == SCENE_DODONGOS_CAVERN_BOSS || sceneNum == SCENE_WATER_TEMPLE_BOSS || sceneNum == SCENE_SPIRIT_TEMPLE_BOSS ||
+            sceneNum == SCENE_GANONDORF_BOSS || sceneNum == SCENE_FISHING_POND || sceneNum == SCENE_GANON_BOSS) {
             return GameInteractionEffectQueryResult::NotPossible;
         }
     }

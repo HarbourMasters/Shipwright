@@ -1,7 +1,7 @@
 #include "SetActorList.h"
 
 namespace LUS {
-void* SetActorList::GetPointer() {
+ActorEntry* SetActorList::GetPointer() {
     return actorList.data();
 }
 

@@ -1,7 +1,7 @@
 #include "z_en_ssh.h"
 #include "objects/object_ssh/object_ssh.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 #define SSH_STATE_STUNNED (1 << 0)
 #define SSH_STATE_GROUND_START (1 << 2)
@@ -667,13 +667,13 @@ void EnSsh_Idle(EnSsh* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actionFunc = EnSsh_Talk;
         if (this->actor.params == ENSSH_FATHER) {
-            gSaveContext.eventChkInf[9] |= 0x40;
+            Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_CURSED_MAN_IN_SKULL_HOUSE);
         }
         if ((this->actor.textId == 0x26) || (this->actor.textId == 0x27)) {
-            gSaveContext.infTable[25] |= 0x40;
+            Flags_SetInfTable(INFTABLE_196);
         }
         if ((this->actor.textId == 0x24) || (this->actor.textId == 0x25)) {
-            gSaveContext.infTable[25] |= 0x80;
+            Flags_SetInfTable(INFTABLE_197);
         }
     } else {
         if ((this->unkTimer != 0) && (DECR(this->unkTimer) == 0)) {
@@ -698,13 +698,13 @@ void EnSsh_Idle(EnSsh* this, PlayState* play) {
                         if (gSaveContext.inventory.gsTokens >= 50) {
                             this->actor.textId = 0x29;
                         } else if (gSaveContext.inventory.gsTokens >= 10) {
-                            if (gSaveContext.infTable[25] & 0x80) {
+                            if (Flags_GetInfTable(INFTABLE_197)) {
                                 this->actor.textId = 0x24;
                             } else {
                                 this->actor.textId = 0x25;
                             }
                         } else {
-                            if (gSaveContext.infTable[25] & 0x40) {
+                            if (Flags_GetInfTable(INFTABLE_196)) {
                                 this->actor.textId = 0x27;
                             } else {
                                 this->actor.textId = 0x26;

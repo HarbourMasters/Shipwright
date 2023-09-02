@@ -1,7 +1,7 @@
 #include "SetCollisionHeader.h"
 
 namespace LUS {
-void* SetCollisionHeader::GetPointer() {
+CollisionHeaderData* SetCollisionHeader::GetPointer() {
     if (collisionHeader == nullptr) {
         return nullptr;
     }

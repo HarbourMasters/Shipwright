@@ -1,7 +1,7 @@
 #include "SetEchoSettings.h"
 
 namespace LUS {
-void* SetEchoSettings::GetPointer() {
+EchoSettings* SetEchoSettings::GetPointer() {
     return &settings;
 }
 

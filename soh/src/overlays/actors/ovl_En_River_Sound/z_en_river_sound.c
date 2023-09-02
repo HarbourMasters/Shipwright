@@ -6,7 +6,7 @@
 
 #include "z_en_river_sound.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnRiverSound_Init(Actor* thisx, PlayState* play);
 void EnRiverSound_Destroy(Actor* thisx, PlayState* play);
@@ -199,7 +199,7 @@ void EnRiverSound_Update(Actor* thisx, PlayState* play) {
         }
     } else if ((thisx->params == RS_UNK_13) || (thisx->params == RS_UNK_19)) {
         func_8002DBD0(&player->actor, &thisx->home.pos, &thisx->world.pos);
-    } else if (play->sceneNum == SCENE_DDAN_BOSS && Flags_GetClear(play, thisx->room)) {
+    } else if (play->sceneNum == SCENE_DODONGOS_CAVERN_BOSS && Flags_GetClear(play, thisx->room)) {
         Actor_Kill(thisx);
     }
 }

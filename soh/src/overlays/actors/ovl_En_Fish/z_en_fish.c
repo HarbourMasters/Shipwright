@@ -117,7 +117,7 @@ void EnFish_SetCutsceneData(EnFish* this) {
         thisx->shape.yOffset = 600.0f;
         D_80A17014 = 10.0f;
         D_80A17018 = 0.0f;
-        thisx->flags |= ACTOR_FLAG_4;
+        thisx->flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
         EnFish_SetOutOfWaterAnimation(this);
     }
 }
@@ -142,7 +142,7 @@ void EnFish_Init(Actor* thisx, PlayState* play) {
     this->fastPhase = Rand_ZeroOne() * (0xFFFF + 0.5f);
 
     if (params == FISH_DROPPED) {
-        this->actor.flags |= ACTOR_FLAG_4;
+        this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
         ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 8.0f);
         EnFish_Dropped_SetupFall(this);
     } else if (params == FISH_SWIMMING_UNIQUE) {
@@ -476,7 +476,7 @@ void EnFish_Dropped_FlopOnGround(EnFish* this, PlayState* play) {
 
 void EnFish_Dropped_SetupSwimAway(EnFish* this) {
     this->actor.home.pos = this->actor.world.pos;
-    this->actor.flags |= ACTOR_FLAG_4;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
     this->timer = 200;
     this->actor.gravity = 0.0f;
     this->actor.minVelocityY = 0.0f;
@@ -679,7 +679,7 @@ void EnFish_UpdateCutscene(EnFish* this, PlayState* play) {
 // Update functions and Draw
 
 void EnFish_OrdinaryUpdate(EnFish* this, PlayState* play) {
-    if (this->timer > 0) {
+    if (this->timer > 0 && CVarGetInteger("gNoFishDespawn", 0) == 0) {
         this->timer--;
     }
 

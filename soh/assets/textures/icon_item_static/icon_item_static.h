@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_ICON_ITEM_STATIC_H
+#define TEXTURES_ICON_ITEM_STATIC_H 1
 
 #include "align_asset_macro.h"
 
@@ -559,3 +560,5 @@ static const ALIGN_ASSET(2) char gPromptCursorLeftDL[] = dgPromptCursorLeftDL;
 
 #define dgPromptCursorRightDL "__OTR__textures/icon_item_static/gPromptCursorRightDL"
 static const ALIGN_ASSET(2) char gPromptCursorRightDL[] = dgPromptCursorRightDL;
+
+#endif // TEXTURES_ICON_ITEM_STATIC_H

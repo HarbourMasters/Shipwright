@@ -10,7 +10,7 @@
 #include "objects/object_goroiwa/object_goroiwa.h"
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 typedef s32 (*EnGoroiwaUnkFunc1)(EnGoroiwa* this, PlayState* play);
 typedef void (*EnGoroiwaUnkFunc2)(EnGoroiwa* this);
@@ -127,7 +127,7 @@ s32 EnGoroiwa_Vec3fNormalize(Vec3f* ret, Vec3f* a) {
 }
 
 void EnGoroiwa_SetSpeed(EnGoroiwa* this, PlayState* play) {
-    if (play->sceneNum == SCENE_SPOT04) {
+    if (play->sceneNum == SCENE_KOKIRI_FOREST) {
         this->isInKokiri = true;
         R_EN_GOROIWA_SPEED = 920;
     } else {

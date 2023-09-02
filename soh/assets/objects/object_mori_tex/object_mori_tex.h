@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_MORI_TEX_H
+#define OBJECTS_OBJECT_MORI_TEX_H 1
 
 #include "align_asset_macro.h"
 
@@ -55,3 +56,5 @@ static const ALIGN_ASSET(2) char gForestTwistedHallBrickTex[] = dgForestTwistedH
 
 #define dgMoriHashiraGateTex "__OTR__objects/object_mori_tex/gMoriHashiraGateTex"
 static const ALIGN_ASSET(2) char gMoriHashiraGateTex[] = dgMoriHashiraGateTex;
+
+#endif // OBJECTS_OBJECT_MORI_TEX_H

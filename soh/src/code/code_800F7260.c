@@ -2,6 +2,8 @@
 #include "global.h"
 #include "vt.h"
 
+#include "soh/Enhancements/audio/AudioEditor.h"
+
 typedef struct {
     /* 0x00 */ u16 sfxId;
     /* 0x04 */ Vec3f* pos;

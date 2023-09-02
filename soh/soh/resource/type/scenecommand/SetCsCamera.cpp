@@ -1,7 +1,7 @@
 #include "SetCsCamera.h"
 
 namespace LUS {
-void* SetCsCamera::GetPointer() {
+CsCamera* SetCsCamera::GetPointer() {
     return &csCamera;
 }
 

@@ -50,7 +50,7 @@ void DoorToki_Destroy(Actor* thisx, PlayState* play) {
 void DoorToki_Update(Actor* thisx, PlayState* play) {
     DoorToki* this = (DoorToki*)thisx;
 
-    if (gSaveContext.eventChkInf[4] & 0x800) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME)) {
         func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
     } else {
         func_8003EC50(play, &play->colCtx.dyna, this->dyna.bgId);

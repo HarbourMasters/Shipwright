@@ -1,6 +1,6 @@
 #include "z_en_holl.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 // Horizontal Plane parameters
 
@@ -120,7 +120,7 @@ void EnHoll_SwapRooms(PlayState* play) {
 // Horizontal Planes
 void func_80A58DD4(EnHoll* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s32 phi_t0 = ((play->sceneNum == SCENE_JYASINZOU) ? 1 : 0) & 0xFFFFFFFF;
+    s32 phi_t0 = ((play->sceneNum == SCENE_SPIRIT_TEMPLE) ? 1 : 0) & 0xFFFFFFFF;
     Vec3f vec;
     f32 absZ;
     s32 transitionActorIdx;

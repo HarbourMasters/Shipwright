@@ -11,6 +11,7 @@
 #include "soh/resource/type/Text.h"
 #include <Blob.h>
 #include <memory>
+#include <cassert>
 #include "soh/resource/type/scenecommand/SetCameraSettings.h"
 #include "soh/resource/type/scenecommand/SetCutscenes.h"
 #include "soh/resource/type/scenecommand/SetStartPositionList.h"
@@ -33,7 +34,7 @@
 #include "soh/resource/type/scenecommand/SetEchoSettings.h"
 #include "soh/resource/type/scenecommand/SetAlternateHeaders.h"
 
-extern LUS::Resource* OTRPlay_LoadFile(PlayState* play, const char* fileName);
+extern LUS::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName);
 extern "C" s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId);
 extern "C" RomFile sNaviMsgFiles[];
 s32 OTRScene_ExecuteCommands(PlayState* play, LUS::Scene* scene);
@@ -50,12 +51,12 @@ std::shared_ptr<LUS::File> ResourceMgr_LoadFile(const char* path) {
 }
 
 // Forward Declaration of function declared in OTRGlobals.cpp
-std::shared_ptr<LUS::Resource> GetResourceByNameHandlingMQ(const char* path);
+std::shared_ptr<LUS::IResource> GetResourceByNameHandlingMQ(const char* path);
 
-bool Scene_CommandSpawnList(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandSpawnList(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetStartPositionList* cmdStartPos = std::static_pointer_cast<LUS::SetStartPositionList>(cmd);
     LUS::SetStartPositionList* cmdStartPos = (LUS::SetStartPositionList*)cmd;
-    ActorEntry* entries = (ActorEntry*)cmdStartPos->GetPointer();
+    ActorEntry* entries = (ActorEntry*)cmdStartPos->GetRawPointer();
 
     play->linkActorEntry = &entries[play->setupEntranceList[play->curSpawn].spawn];
     play->linkAgeOnLoad = ((void)0, gSaveContext.linkAge);
@@ -66,50 +67,50 @@ bool Scene_CommandSpawnList(PlayState* play, LUS::SceneCommand* cmd) {
     return false;
 }
 
-bool Scene_CommandActorList(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandActorList(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetActorList* cmdActor = std::static_pointer_cast<LUS::SetActorList>(cmd);
     LUS::SetActorList* cmdActor = (LUS::SetActorList*)cmd;
 
     play->numSetupActors = cmdActor->numActors;
-    play->setupActorList = (ActorEntry*)cmdActor->GetPointer();
+    play->setupActorList = (ActorEntry*)cmdActor->GetRawPointer();
 
     return false;
 }
 
-bool Scene_CommandUnused2(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandUnused2(PlayState* play, LUS::ISceneCommand* cmd) {
     // OTRTODO: Do we need to implement this?
     // play->unk_11DFC = SEGMENTED_TO_VIRTUAL(cmd->unused02.segment);
 
     return false;
 }
 
-bool Scene_CommandCollisionHeader(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandCollisionHeader(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetCollisionHeader* cmdCol = std::static_pointer_cast<LUS::SetCollisionHeader>(cmd);
     LUS::SetCollisionHeader* cmdCol = (LUS::SetCollisionHeader*)cmd;
-    BgCheck_Allocate(&play->colCtx, play, (CollisionHeader*)cmdCol->GetPointer());
+    BgCheck_Allocate(&play->colCtx, play, (CollisionHeader*)cmdCol->GetRawPointer());
 
     return false;
 }
 
-bool Scene_CommandRoomList(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandRoomList(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetRoomList* cmdRoomList = std::static_pointer_cast<LUS::SetRoomList>(cmd);
     LUS::SetRoomList* cmdRoomList = (LUS::SetRoomList*)cmd;
 
     play->numRooms = cmdRoomList->numRooms;
-    play->roomList = (RomFile*)cmdRoomList->GetPointer();
+    play->roomList = (RomFile*)cmdRoomList->GetRawPointer();
 
     return false;
 }
 
-bool Scene_CommandEntranceList(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandEntranceList(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetEntranceList* otrEntrance = std::static_pointer_cast<LUS::SetEntranceList>(cmd);
     LUS::SetEntranceList* otrEntrance = (LUS::SetEntranceList*)cmd;
-    play->setupEntranceList = (EntranceEntry*)otrEntrance->GetPointer();
+    play->setupEntranceList = (EntranceEntry*)otrEntrance->GetRawPointer();
 
     return false;
 }
 
-bool Scene_CommandSpecialFiles(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandSpecialFiles(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetSpecialObjects* specialCmd = std::static_pointer_cast<LUS::SetSpecialObjects>(cmd);
     LUS::SetSpecialObjects* specialCmd = (LUS::SetSpecialObjects*)cmd;
 
@@ -126,7 +127,7 @@ bool Scene_CommandSpecialFiles(PlayState* play, LUS::SceneCommand* cmd) {
     return false;
 }
 
-bool Scene_CommandRoomBehavior(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandRoomBehavior(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetRoomBehavior* cmdRoom = std::static_pointer_cast<LUS::SetRoomBehavior>(cmd);
     LUS::SetRoomBehavior* cmdRoom = (LUS::SetRoomBehavior*)cmd;
 
@@ -138,17 +139,17 @@ bool Scene_CommandRoomBehavior(PlayState* play, LUS::SceneCommand* cmd) {
     return false;
 }
 
-bool Scene_CommandMeshHeader(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandMeshHeader(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetMesh* otrMesh = static_pointer_cast<LUS::SetMesh>(cmd);
     LUS::SetMesh* otrMesh = (LUS::SetMesh*)cmd;
-    play->roomCtx.curRoom.meshHeader = (MeshHeader*)otrMesh->GetPointer();
+    play->roomCtx.curRoom.meshHeader = (MeshHeader*)otrMesh->GetRawPointer();
 
     return false;
 }
 
 extern "C" void* func_800982FC(ObjectContext* objectCtx, s32 bankIndex, s16 objectId);
 
-bool Scene_CommandObjectList(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandObjectList(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetObjectList* cmdObj = static_pointer_cast<LUS::SetObjectList>(cmd);
     LUS::SetObjectList* cmdObj = (LUS::SetObjectList*)cmd;
 
@@ -159,7 +160,7 @@ bool Scene_CommandObjectList(PlayState* play, LUS::SceneCommand* cmd) {
     ObjectStatus* status2;
     ObjectStatus* firstStatus;
     // s16* objectEntry = SEGMENTED_TO_VIRTUAL(cmd->objectList.segment);
-    s16* objectEntry = (s16*)cmdObj->GetPointer();
+    s16* objectEntry = (s16*)cmdObj->GetRawPointer();
     void* nextPtr;
 
     k = 0;
@@ -210,7 +211,7 @@ bool Scene_CommandObjectList(PlayState* play, LUS::SceneCommand* cmd) {
     return false;
 }
 
-bool Scene_CommandLightList(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandLightList(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetLightList* cmdLight = static_pointer_cast<LUS::SetLightList>(cmd);
     LUS::SetLightList* cmdLight = (LUS::SetLightList*)cmd;
 
@@ -221,20 +222,20 @@ bool Scene_CommandLightList(PlayState* play, LUS::SceneCommand* cmd) {
     return false;
 }
 
-bool Scene_CommandPathList(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandPathList(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetPathways* cmdPath = static_pointer_cast<LUS::SetPathways>(cmd);
     LUS::SetPathways* cmdPath = (LUS::SetPathways*)cmd;
-    play->setupPathList = (Path*)cmdPath->paths[0]->GetPointer();
+    play->setupPathList = (Path*)(cmdPath->GetPointer()[0]);
 
     return false;
 }
 
-bool Scene_CommandTransitionActorList(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandTransitionActorList(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetTransitionActorList* cmdActor = static_pointer_cast<LUS::SetTransitionActorList>(cmd);
     LUS::SetTransitionActorList* cmdActor = (LUS::SetTransitionActorList*)cmd;
 
     play->transiActorCtx.numActors = cmdActor->numTransitionActors;
-    play->transiActorCtx.list = (TransitionActorEntry*)cmdActor->GetPointer();
+    play->transiActorCtx.list = (TransitionActorEntry*)cmdActor->GetRawPointer();
 
     return false;
 }
@@ -243,14 +244,14 @@ bool Scene_CommandTransitionActorList(PlayState* play, LUS::SceneCommand* cmd) {
 //    transiActorCtx->numActors = 0;
 //}
 
-bool Scene_CommandLightSettingsList(PlayState* play, LUS::SceneCommand* cmd) {
-    play->envCtx.lightSettingsList = (EnvLightSettings*)cmd->GetPointer();
+bool Scene_CommandLightSettingsList(PlayState* play, LUS::ISceneCommand* cmd) {
+    play->envCtx.lightSettingsList = (EnvLightSettings*)cmd->GetRawPointer();
 
     return false;
 }
 
 // Scene Command 0x11: Skybox Settings
-bool Scene_CommandSkyboxSettings(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandSkyboxSettings(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetSkyboxSettings* cmdSky = static_pointer_cast<LUS::SetSkyboxSettings>(cmd);
     LUS::SetSkyboxSettings* cmdSky = (LUS::SetSkyboxSettings*)cmd;
 
@@ -261,7 +262,7 @@ bool Scene_CommandSkyboxSettings(PlayState* play, LUS::SceneCommand* cmd) {
     return false;
 }
 
-bool Scene_CommandSkyboxDisables(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandSkyboxDisables(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetSkyboxModifier* cmdSky = static_pointer_cast<LUS::SetSkyboxModifier>(cmd);
     LUS::SetSkyboxModifier* cmdSky = (LUS::SetSkyboxModifier*)cmd;
 
@@ -271,7 +272,7 @@ bool Scene_CommandSkyboxDisables(PlayState* play, LUS::SceneCommand* cmd) {
     return false;
 }
 
-bool Scene_CommandTimeSettings(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandTimeSettings(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetTimeSettings* cmdTime = static_pointer_cast<LUS::SetTimeSettings>(cmd);
     LUS::SetTimeSettings* cmdTime = (LUS::SetTimeSettings*)cmd;
 
@@ -311,7 +312,7 @@ bool Scene_CommandTimeSettings(PlayState* play, LUS::SceneCommand* cmd) {
     return false;
 }
 
-bool Scene_CommandWindSettings(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandWindSettings(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetWind* cmdWind = std::static_pointer_cast<LUS::SetWind>(cmd);
     LUS::SetWindSettings* cmdWind = (LUS::SetWindSettings*)cmd;
 
@@ -324,17 +325,17 @@ bool Scene_CommandWindSettings(PlayState* play, LUS::SceneCommand* cmd) {
     return false;
 }
 
-bool Scene_CommandExitList(PlayState* play, LUS::SceneCommand* cmd) {
-    play->setupExitList = (s16*)cmd->GetPointer();
+bool Scene_CommandExitList(PlayState* play, LUS::ISceneCommand* cmd) {
+    play->setupExitList = (s16*)cmd->GetRawPointer();
 
     return false;
 }
 
-bool Scene_CommandUndefined9(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandUndefined9(PlayState* play, LUS::ISceneCommand* cmd) {
     return false;
 }
 
-bool Scene_CommandSoundSettings(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandSoundSettings(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetSoundSettings* cmdSnd = static_pointer_cast<LUS::SetSoundSettings>(cmd);
     LUS::SetSoundSettings* cmdSnd = (LUS::SetSoundSettings*)cmd;
 
@@ -348,7 +349,7 @@ bool Scene_CommandSoundSettings(PlayState* play, LUS::SceneCommand* cmd) {
     return false;
 }
 
-bool Scene_CommandEchoSettings(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandEchoSettings(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetEchoSettings* cmdEcho = static_pointer_cast<LUS::SetEchoSettings>(cmd);
     LUS::SetEchoSettings* cmdEcho = (LUS::SetEchoSettings*)cmd;
 
@@ -357,7 +358,7 @@ bool Scene_CommandEchoSettings(PlayState* play, LUS::SceneCommand* cmd) {
     return false;
 }
 
-bool Scene_CommandAlternateHeaderList(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandAlternateHeaderList(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetAlternateHeaders* cmdHeaders = static_pointer_cast<LUS::SetAlternateHeaders>(cmd);
     LUS::SetAlternateHeaders* cmdHeaders = (LUS::SetAlternateHeaders*)cmd;
 
@@ -396,7 +397,7 @@ bool Scene_CommandAlternateHeaderList(PlayState* play, LUS::SceneCommand* cmd) {
     return false;
 }
 
-bool Scene_CommandCutsceneData(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandCutsceneData(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetCutscenes* cmdCS = std::static_pointer_cast<LUS::SetCutscenes>(cmd);
     LUS::SetCutscenes* cmdCS = (LUS::SetCutscenes*)cmd;
 
@@ -407,21 +408,21 @@ bool Scene_CommandCutsceneData(PlayState* play, LUS::SceneCommand* cmd) {
 }
 
 // Camera & World Map Area
-bool Scene_CommandMiscSettings(PlayState* play, LUS::SceneCommand* cmd) {
+bool Scene_CommandMiscSettings(PlayState* play, LUS::ISceneCommand* cmd) {
     // LUS::SetCameraSettings* cmdCam = std::static_pointer_cast<LUS::SetCameraSettings>(cmd);
     LUS::SetCameraSettings* cmdCam = (LUS::SetCameraSettings*)cmd;
 
     YREG(15) = cmdCam->settings.cameraMovement;
     gSaveContext.worldMapArea = cmdCam->settings.worldMapArea;
 
-    if ((play->sceneNum == SCENE_SHOP1) || (play->sceneNum == SCENE_SYATEKIJYOU)) {
+    if ((play->sceneNum == SCENE_BAZAAR) || (play->sceneNum == SCENE_SHOOTING_GALLERY)) {
         if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
             gSaveContext.worldMapArea = 1;
         }
     }
 
-    if (((play->sceneNum >= SCENE_SPOT00) && (play->sceneNum <= SCENE_GANON_TOU)) ||
-        ((play->sceneNum >= SCENE_ENTRA) && (play->sceneNum <= SCENE_SHRINE_R))) {
+    if (((play->sceneNum >= SCENE_HYRULE_FIELD) && (play->sceneNum <= SCENE_OUTSIDE_GANONS_CASTLE)) ||
+        ((play->sceneNum >= SCENE_MARKET_ENTRANCE_DAY) && (play->sceneNum <= SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS))) {
         if (gSaveContext.cutsceneIndex < 0xFFF0) {
             gSaveContext.worldMapAreaData |= gBitFlags[gSaveContext.worldMapArea];
             osSyncPrintf("０００  ａｒｅａ＿ａｒｒｉｖａｌ＝%x (%d)\n", gSaveContext.worldMapAreaData,
@@ -431,7 +432,7 @@ bool Scene_CommandMiscSettings(PlayState* play, LUS::SceneCommand* cmd) {
     return false;
 }
 
-bool (*sceneCommands[])(PlayState*, LUS::SceneCommand*) = {
+bool (*sceneCommands[])(PlayState*, LUS::ISceneCommand*) = {
     Scene_CommandSpawnList,           // SCENE_CMD_ID_SPAWN_LIST
     Scene_CommandActorList,           // SCENE_CMD_ID_ACTOR_LIST
     Scene_CommandUnused2,             // SCENE_CMD_ID_UNUSED_2
@@ -520,7 +521,7 @@ extern "C" s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomN
         roomCtx->curRoom.segment = NULL;
         roomCtx->status = 1;
 
-        ASSERT(roomNum < play->numRooms);
+        assert(roomNum < play->numRooms);
 
         if (roomNum >= play->numRooms)
             return 0; // UH OH

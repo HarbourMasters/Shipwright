@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_FZ_H
+#define OBJECTS_OBJECT_FZ_H 1
 
 #include "align_asset_macro.h"
 
@@ -25,3 +26,5 @@ static const ALIGN_ASSET(2) char gFreezardIceRockDL[] = dgFreezardIceRockDL;
 
 #define dgFreezardSteamTex "__OTR__objects/object_fz/gFreezardSteamTex"
 static const ALIGN_ASSET(2) char gFreezardSteamTex[] = dgFreezardSteamTex;
+
+#endif // OBJECTS_OBJECT_FZ_H

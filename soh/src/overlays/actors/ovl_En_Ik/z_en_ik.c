@@ -9,7 +9,7 @@
 #include "objects/object_ik/object_ik.h"
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 typedef void (*EnIkDrawFunc)(struct EnIk*, PlayState*);
 
@@ -190,7 +190,7 @@ void func_80A74398(Actor* thisx, PlayState* play) {
 
     thisx->update = func_80A75FA0;
     thisx->draw = func_80A76798;
-    thisx->flags |= ACTOR_FLAG_10;
+    thisx->flags |= ACTOR_FLAG_DRAGGED_BY_HOOKSHOT;
 
     Collider_InitCylinder(play, &this->bodyCollider);
     Collider_SetCylinder(play, &this->bodyCollider, thisx, &sCylinderInit);
@@ -310,7 +310,7 @@ void func_80A747C0(EnIk* this, PlayState* play) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_IRONNACK_WAKEUP);
     }
     if (SkelAnime_Update(&this->skelAnime)) {
-        this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_2;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE;
         func_80A74AAC(this);
     }
 }
@@ -318,7 +318,7 @@ void func_80A747C0(EnIk* this, PlayState* play) {
 void func_80A7489C(EnIk* this) {
     f32 frames = Animation_GetLastFrame(&object_ik_Anim_00DD50);
 
-    this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_2;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE;
     this->unk_2F8 = 4;
     this->actor.speedXZ = 0.0f;
     Animation_Change(&this->skelAnime, &object_ik_Anim_00DD50, 0.0f, 0.0f, frames, ANIMMODE_LOOP, 4.0f);
@@ -1414,7 +1414,7 @@ void EnIk_Draw(Actor* thisx, PlayState* play) {
 
 void func_80A780D0(EnIk* this, PlayState* play) {
     if (this->actor.params == 0) {
-        if (!(gSaveContext.eventChkInf[3] & 0x800)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_BEGAN_NABOORU_BATTLE)) {
             this->actor.update = EnIk_Update;
             this->actor.draw = EnIk_Draw;
             Actor_SetScale(&this->actor, 0.01f);
@@ -1429,8 +1429,8 @@ void func_80A780D0(EnIk* this, PlayState* play) {
 void func_80A78160(EnIk* this, PlayState* play) {
     this->actor.update = func_80A75FA0;
     this->actor.draw = func_80A76798;
-    this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_2;
-    gSaveContext.eventChkInf[3] |= 0x800;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE;
+    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_NABOORU_BATTLE);
     Actor_SetScale(&this->actor, 0.012f);
     func_80A7489C(this);
 }
@@ -1464,7 +1464,7 @@ void func_80A781CC(Actor* thisx, PlayState* play) {
                 Actor_Kill(&this->actor);
             }
         }
-        gSaveContext.eventChkInf[3] |= 0x1000;
+        Flags_SetEventChkInf(EVENTCHKINF_FINISHED_NABOORU_BATTLE);
         func_80A7735C(this, play);
         gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE_NABOORU]++;
     }
@@ -1474,7 +1474,7 @@ void EnIk_Init(Actor* thisx, PlayState* play) {
     EnIk* this = (EnIk*)thisx;
     s32 flag = this->actor.params & 0xFF00;
 
-    if (((this->actor.params & 0xFF) == 0 && (gSaveContext.eventChkInf[3] & 0x1000)) ||
+    if (((this->actor.params & 0xFF) == 0 && (Flags_GetEventChkInf(EVENTCHKINF_FINISHED_NABOORU_BATTLE))) ||
         (flag != 0 && Flags_GetSwitch(play, flag >> 8))) {
         Actor_Kill(&this->actor);
     } else {

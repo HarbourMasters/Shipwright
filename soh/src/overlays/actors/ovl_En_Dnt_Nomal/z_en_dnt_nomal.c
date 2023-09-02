@@ -13,7 +13,7 @@
 #include "objects/object_hintnuts/object_hintnuts.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnDntNomal_Init(Actor* thisx, PlayState* play);
 void EnDntNomal_Destroy(Actor* thisx, PlayState* play);
@@ -123,7 +123,7 @@ void EnDntNomal_Init(Actor* thisx, PlayState* play) {
     if (this->type < ENDNTNOMAL_TARGET) {
         this->type = ENDNTNOMAL_TARGET;
     }
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actor.colChkInfo.mass = 0xFF;
     this->objId = -1;
     if (this->type == ENDNTNOMAL_TARGET) {
@@ -249,7 +249,7 @@ void EnDntNomal_TargetWait(EnDntNomal* this, PlayState* play) {
             func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
             // "Big hit"
             osSyncPrintf(VT_FGCOL(CYAN) "☆☆☆☆☆ 大当り ☆☆☆☆☆ %d\n" VT_RST, this->hitCounter);
-            if (!LINK_IS_ADULT && !(gSaveContext.itemGetInf[1] & 0x2000)) {
+            if (!LINK_IS_ADULT && !Flags_GetItemGetInf(ITEMGETINF_1D)) {
                 this->hitCounter++;
                 if (this->hitCounter >= 3) {
                     if(gSaveContext.n64ddFlag) {

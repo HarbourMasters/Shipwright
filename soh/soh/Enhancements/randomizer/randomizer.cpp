@@ -9,7 +9,6 @@
 #include <libultraship/bridge.h>
 #include <textures/icon_item_static/icon_item_static.h>
 #include <textures/icon_item_24_static/icon_item_24_static.h>
-#include <ImGuiImpl.h>
 #include <thread>
 #include "3drando/rando_main.hpp"
 #include "3drando/random.hpp"
@@ -21,23 +20,33 @@
 #include "../../../src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
 #include <stdexcept>
 #include "randomizer_check_objects.h"
+#include "randomizer_tricks.h"
 #include <sstream>
 #include <tuple>
 #include <functional>
 #include "draw.h"
 #include "rando_hash.h"
 #include <boost_custom/container_hash/hash_32.hpp>
+#include <libultraship/libultraship.h>
+#include "randomizer_settings_window.h"
 
 extern "C" uint32_t ResourceMgr_IsGameMasterQuest();
 extern "C" uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
+
+extern std::map<RandomizerCheckArea, std::string> rcAreaNames;
+extern std::unordered_map<HintType, std::string> hintTypeNames;
 
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
 
 std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum;
 std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum;
+std::unordered_map<std::string, RandomizerCheckArea> SpoilerfileAreaNameToEnum;
+std::unordered_map<std::string, HintType> SpoilerfileHintTypeNameToEnum;
 std::multimap<std::tuple<s16, s16, s32>, RandomizerCheckObject> checkFromActorMultimap;
 std::set<RandomizerCheck> excludedLocations;
+std::set<RandomizerTrick> enabledTricks;
+std::set<RandomizerTrick> enabledGlitches;
 
 u8 generated;
 char* seedString;
@@ -123,6 +132,18 @@ Randomizer::Randomizer() {
             item.GetName().french,
         };
     }
+    for (auto area : rcAreaNames) {
+        SpoilerfileAreaNameToEnum[area.second] = area.first;
+    }
+    SpoilerfileAreaNameToEnum["Inside Ganon's Castle"] = RCAREA_GANONS_CASTLE;
+    SpoilerfileAreaNameToEnum["the Lost Woods"] = RCAREA_LOST_WOODS;
+    SpoilerfileAreaNameToEnum["the Market"] = RCAREA_MARKET;
+    SpoilerfileAreaNameToEnum["the Graveyard"] = RCAREA_GRAVEYARD;
+    SpoilerfileAreaNameToEnum["Haunted Wasteland"] = RCAREA_WASTELAND;
+    SpoilerfileAreaNameToEnum["outside Ganon's Castle"] = RCAREA_HYRULE_CASTLE;
+    for (auto [type, name] : hintTypeNames) {
+        SpoilerfileHintTypeNameToEnum[name] = type;
+    }
 }
 
 Sprite* Randomizer::GetSeedTexture(uint8_t index) {
@@ -151,18 +172,18 @@ std::unordered_map<std::string, RandomizerInf> spoilerFileTrialToEnum = {
 };
 
 std::unordered_map<std::string, SceneID> spoilerFileDungeonToScene = {
-    { "Deku Tree", SCENE_YDAN },
-    { "Dodongo's Cavern", SCENE_DDAN },
-    { "Jabu Jabu's Belly", SCENE_BDAN },
-    { "Forest Temple", SCENE_BMORI1 },
-    { "Fire Temple", SCENE_HIDAN },
-    { "Water Temple", SCENE_MIZUSIN },
-    { "Spirit Temple", SCENE_JYASINZOU },
-    { "Shadow Temple", SCENE_HAKADAN },
-    { "Bottom of the Well", SCENE_HAKADANCH },
-    { "Ice Cavern", SCENE_ICE_DOUKUTO },
-    { "Gerudo Training Grounds", SCENE_MEN },
-    { "Ganon's Castle", SCENE_GANONTIKA }
+    { "Deku Tree", SCENE_DEKU_TREE },
+    { "Dodongo's Cavern", SCENE_DODONGOS_CAVERN },
+    { "Jabu Jabu's Belly", SCENE_JABU_JABU },
+    { "Forest Temple", SCENE_FOREST_TEMPLE },
+    { "Fire Temple", SCENE_FIRE_TEMPLE },
+    { "Water Temple", SCENE_WATER_TEMPLE },
+    { "Spirit Temple", SCENE_SPIRIT_TEMPLE },
+    { "Shadow Temple", SCENE_SHADOW_TEMPLE },
+    { "Bottom of the Well", SCENE_BOTTOM_OF_THE_WELL },
+    { "Ice Cavern", SCENE_ICE_CAVERN },
+    { "Gerudo Training Grounds", SCENE_GERUDO_TRAINING_GROUND },
+    { "Ganon's Castle", SCENE_INSIDE_GANONS_CASTLE }
 };
 
 std::unordered_map<s16, s16> getItemIdToItemId = { 
@@ -225,6 +246,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Open Settings:Reward Count", RSK_RAINBOW_BRIDGE_REWARD_COUNT },
     { "Open Settings:Dungeon Count", RSK_RAINBOW_BRIDGE_DUNGEON_COUNT },
     { "Open Settings:Token Count", RSK_RAINBOW_BRIDGE_TOKEN_COUNT },
+    { "Open Settings:Bridge Reward Options", RSK_BRIDGE_OPTIONS },
     { "Shuffle Settings:Shuffle Dungeon Rewards", RSK_SHUFFLE_DUNGEON_REWARDS },
     { "Shuffle Settings:Link's Pocket", RSK_LINKS_POCKET},
     { "Shuffle Settings:Shuffle Songs", RSK_SHUFFLE_SONGS },
@@ -263,11 +285,12 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Shuffle Dungeon Items:Gerudo Fortress Keys", RSK_GERUDO_KEYS },
     { "Shuffle Dungeon Items:Boss Keys", RSK_BOSS_KEYSANITY },
     { "Shuffle Dungeon Items:Ganon's Boss Key", RSK_GANONS_BOSS_KEY },
-    { "Shuffle Dungeon Items:Medallion Count", RSK_LACS_MEDALLION_COUNT },
     { "Shuffle Dungeon Items:Stone Count", RSK_LACS_STONE_COUNT },
+    { "Shuffle Dungeon Items:Medallion Count", RSK_LACS_MEDALLION_COUNT },
     { "Shuffle Dungeon Items:Reward Count", RSK_LACS_REWARD_COUNT },
     { "Shuffle Dungeon Items:Dungeon Count", RSK_LACS_DUNGEON_COUNT },
     { "Shuffle Dungeon Items:Token Count", RSK_LACS_TOKEN_COUNT },
+    { "Shuffle Dungeon Items:LACS Reward Options", RSK_LACS_OPTIONS },
     { "Shuffle Dungeon Items:Key Rings", RSK_KEYRINGS },
     { "Shuffle Dungeon Items:Keyring Dungeon Count", RSK_KEYRINGS_RANDOM_COUNT },
     { "Shuffle Dungeon Items:Gerudo Fortress", RSK_KEYRINGS_GERUDO_FORTRESS },
@@ -325,7 +348,17 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Timesaver Settings:Complete Mask Quest", RSK_COMPLETE_MASK_QUEST },
     { "Timesaver Settings:Skip Scarecrow's Song", RSK_SKIP_SCARECROWS_SONG },
     { "Timesaver Settings:Enable Glitch-Useful Cutscenes", RSK_ENABLE_GLITCH_CUTSCENES },
-    { "World Settings:MQ Dungeon Count", RSK_MQ_DUNGEON_COUNT }
+    { "World Settings:MQ Dungeons", RSK_RANDOM_MQ_DUNGEONS },
+    { "World Settings:MQ Dungeon Count", RSK_MQ_DUNGEON_COUNT },
+    { "Shuffle Dungeon Quest:Forest Temple", RSK_MQ_FOREST_TEMPLE },
+    { "Shuffle Dungeon Quest:Fire Temple", RSK_MQ_FIRE_TEMPLE },
+    { "Shuffle Dungeon Quest:Water Temple", RSK_MQ_WATER_TEMPLE },
+    { "Shuffle Dungeon Quest:Spirit Temple", RSK_MQ_SPIRIT_TEMPLE },
+    { "Shuffle Dungeon Quest:Shadow Temple", RSK_MQ_SHADOW_TEMPLE },
+    { "Shuffle Dungeon Quest:Bottom of the Well", RSK_MQ_BOTTOM_OF_THE_WELL },
+    { "Shuffle Dungeon Quest:Ice Cavern", RSK_MQ_ICE_CAVERN },
+    { "Shuffle Dungeon Quest:GTG", RSK_MQ_GTG },
+    { "Shuffle Dungeon Quest:Ganon's Castle", RSK_MQ_GANONS_CASTLE },
 };
 
 std::string sanitize(std::string stringValue) {
@@ -364,6 +397,17 @@ bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
 }
 #pragma GCC pop_options
 #pragma optimize("", on)
+
+void DrawTagChips(const std::vector<RandomizerTrickTag> &rtTags) {
+    for (auto rtTag : rtTags) {
+        ImGui::SameLine();
+        ImGui::BeginDisabled();
+        ImGui::PushStyleColor(ImGuiCol_Button, RandomizerTricks::GetRTTagColor(rtTag));
+        ImGui::SmallButton(RandomizerTricks::GetRTTagName(rtTag).c_str());
+        ImGui::PopStyleColor();
+        ImGui::EndDisabled();
+    }
+}
 
 void Randomizer::LoadRandomizerSettings(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
@@ -705,6 +749,24 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_BRIDGE_GREG;
                         }
                         break;
+                    case RSK_BRIDGE_OPTIONS:
+                        if (it.value() == "Standard Rewards") {
+                            gSaveContext.randoSettings[index].value = RO_BRIDGE_STANDARD_REWARD;
+                        } else if (it.value() == "Greg as Reward") {
+                            gSaveContext.randoSettings[index].value = RO_BRIDGE_GREG_REWARD;
+                        } else if (it.value() == "Greg as Wildcard") {
+                            gSaveContext.randoSettings[index].value = RO_BRIDGE_WILDCARD_REWARD;
+                        }
+                        break;
+                    case RSK_LACS_OPTIONS:
+                        if (it.value() == "Standard Reward") {
+                            gSaveContext.randoSettings[index].value = RO_LACS_STANDARD_REWARD;
+                        } else if (it.value() == "Greg as Reward") {
+                            gSaveContext.randoSettings[index].value = RO_LACS_GREG_REWARD;
+                        } else if (it.value() == "Greg as Wildcard") {
+                            gSaveContext.randoSettings[index].value = RO_LACS_WILDCARD_REWARD;
+                        }
+                        break;
                     case RSK_RAINBOW_BRIDGE_STONE_COUNT:
                     case RSK_RAINBOW_BRIDGE_MEDALLION_COUNT:
                     case RSK_RAINBOW_BRIDGE_REWARD_COUNT:
@@ -966,10 +1028,10 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_ANYWHERE;
                         } else if(it.value() == "LACS-Vanilla") {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_VANILLA;
-                        } else if(it.value() == "LACS-Medallions") {
-                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_MEDALLIONS;
                         } else if(it.value() == "LACS-Stones") {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_STONES;
+                        } else if(it.value() == "LACS-Medallions") {
+                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_MEDALLIONS;
                         } else if(it.value() == "LACS-Rewards") {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_REWARDS;
                         } else if(it.value() == "LACS-Dungeons") {
@@ -978,6 +1040,15 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_TOKENS;
                         } else if(it.value() == "100 GS Reward") {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_KAK_TOKENS;
+                        }
+                        break;
+                    case RSK_RANDOM_MQ_DUNGEONS:
+                        if (it.value() == "None") {
+                            gSaveContext.randoSettings[index].value = RO_MQ_DUNGEONS_NONE;
+                        } else if (it.value() == "Random Number") {
+                            gSaveContext.randoSettings[index].value = RO_MQ_DUNGEONS_RANDOM_NUMBER;
+                        } else if (it.value() == "Set Number") {
+                            gSaveContext.randoSettings[index].value = RO_MQ_DUNGEONS_SET_NUMBER;
                         }
                         break;
                     case RSK_SKIP_CHILD_ZELDA:
@@ -1043,12 +1114,19 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         }
                         break;
                     case RSK_MQ_DUNGEON_COUNT:
-                        if (it.value() == "Random") {
-                            gSaveContext.randoSettings[index].value = 13;
-                            break;
+                        if (it.value() == "Count") {
+                            numericValueString = it.value();
+                            gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
                         }
-                        numericValueString = it.value();
-                        gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
+
+                        else if (it.value() == "Random") {
+                            gSaveContext.randoSettings[index].value = 13;
+                        }
+
+                        else if (it.value() == "Selection") {
+                            gSaveContext.randoSettings[index].value = RO_MQ_DUNGEONS_SELECTION;
+                        }
+
                         break;
                     case RSK_SHUFFLE_DUNGEON_ENTRANCES:
                         if (it.value() == "Off") {
@@ -1206,20 +1284,30 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         json spoilerFileJson;
         spoilerFileStream >> spoilerFileJson;
 
-        std::string childAltarJsonText = spoilerFileJson["childAltarText"].get<std::string>();
+        std::string childAltarJsonText = spoilerFileJson["childAltar"]["hintText"].get<std::string>();
         std::string formattedChildAltarText = FormatJsonHintText(childAltarJsonText);
         strncpy(gSaveContext.childAltarText, formattedChildAltarText.c_str(), sizeof(gSaveContext.childAltarText) - 1);
         gSaveContext.childAltarText[sizeof(gSaveContext.childAltarText) - 1] = 0;
+        gSaveContext.rewardCheck[0] = SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["emeraldLoc"]];
+        gSaveContext.rewardCheck[1] = SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["rubyLoc"]];
+        gSaveContext.rewardCheck[2] = SpoilerfileCheckNameToEnum[spoilerFileJson["childAltar"]["rewards"]["sapphireLoc"]];
 
-        std::string adultAltarJsonText = spoilerFileJson["adultAltarText"].get<std::string>();
+        std::string adultAltarJsonText = spoilerFileJson["adultAltar"]["hintText"].get<std::string>();
         std::string formattedAdultAltarText = FormatJsonHintText(adultAltarJsonText);
         strncpy(gSaveContext.adultAltarText, formattedAdultAltarText.c_str(), sizeof(gSaveContext.adultAltarText) - 1);
         gSaveContext.adultAltarText[sizeof(gSaveContext.adultAltarText) - 1] = 0;
+        gSaveContext.rewardCheck[3] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["forestMedallionLoc"]];
+        gSaveContext.rewardCheck[4] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["fireMedallionLoc"]];
+        gSaveContext.rewardCheck[5] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["waterMedallionLoc"]];
+        gSaveContext.rewardCheck[6] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["shadowMedallionLoc"]];
+        gSaveContext.rewardCheck[7] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["spiritMedallionLoc"]];
+        gSaveContext.rewardCheck[8] = SpoilerfileCheckNameToEnum[spoilerFileJson["adultAltar"]["rewards"]["lightMedallionLoc"]];
 
         std::string ganonHintJsonText = spoilerFileJson["ganonHintText"].get<std::string>();
         std::string formattedGanonHintJsonText = FormatJsonHintText(ganonHintJsonText);
         strncpy(gSaveContext.ganonHintText, formattedGanonHintJsonText.c_str(), sizeof(gSaveContext.ganonHintText) - 1);
         gSaveContext.ganonHintText[sizeof(gSaveContext.ganonHintText) - 1] = 0;
+        gSaveContext.ganonHintCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["ganonHintLoc"]];
 
         std::string ganonJsonText = spoilerFileJson["ganonText"].get<std::string>();
         std::string formattedGanonJsonText = FormatJsonHintText(ganonJsonText);
@@ -1230,11 +1318,13 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         std::string formattedDampeJsonText = FormatJsonHintText(dampeJsonText);
         strncpy(gSaveContext.dampeText, formattedDampeJsonText.c_str(), sizeof(gSaveContext.dampeText) - 1);
         gSaveContext.dampeText[sizeof(gSaveContext.dampeText) - 1] = 0;
+        gSaveContext.dampeCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["dampeHintLoc"]];
 
         std::string gregJsonText = spoilerFileJson["gregText"].get<std::string>();
         std::string formattedGregJsonText = FormatJsonHintText(gregJsonText);
         strncpy(gSaveContext.gregHintText, formattedGregJsonText.c_str(), sizeof(gSaveContext.gregHintText) - 1);
         gSaveContext.gregHintText[sizeof(gSaveContext.gregHintText) - 1] = 0;
+        gSaveContext.gregCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["gregLoc"]];
 
         std::string warpMinuetJsonText = spoilerFileJson["warpMinuetText"].get<std::string>();
         strncpy(gSaveContext.warpMinuetText, warpMinuetJsonText.c_str(), sizeof(gSaveContext.warpMinuetText) - 1);
@@ -1264,8 +1354,28 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         int index = 0;
         for (auto it = hintsJson.begin(); it != hintsJson.end(); ++it) {
             gSaveContext.hintLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
+            auto hintInfo = it.value();
+            if (hintInfo["location"].is_null()) {
+                gSaveContext.hintLocations[index].hintedCheck = RC_UNKNOWN_CHECK;
+            } else {
+                gSaveContext.hintLocations[index].hintedCheck = SpoilerfileCheckNameToEnum[hintInfo["location"]];
+            }
+            if (hintInfo["item"].is_null()) {
+                gSaveContext.hintLocations[index].rGet = RG_NONE;
+            } else {
+                gSaveContext.hintLocations[index].rGet = SpoilerfileGetNameToEnum[hintInfo["item"]];
+            }
+            gSaveContext.hintLocations[index].type = SpoilerfileHintTypeNameToEnum[hintInfo["type"]];
 
-            std::string hintMessage = FormatJsonHintText(it.value());
+            if (gSaveContext.hintLocations[index].type == HINT_TYPE_TRIAL) {
+                gSaveContext.hintLocations[index].area = RCAREA_GANONS_CASTLE;
+            } else if (gSaveContext.hintLocations[index].type == HINT_TYPE_JUNK) {
+                gSaveContext.hintLocations[index].area = RCAREA_INVALID;
+            } else {
+                gSaveContext.hintLocations[index].area = SpoilerfileAreaNameToEnum[hintInfo["area"]];
+            }
+
+            std::string hintMessage = FormatJsonHintText(hintInfo["hint"]);
             size_t maxHintTextSize = sizeof(gSaveContext.hintLocations[index].hintText);
             strncpy(gSaveContext.hintLocations[index].hintText, hintMessage.c_str(), maxHintTextSize - 1);
             gSaveContext.hintLocations[index].hintText[maxHintTextSize - 1] = 0;
@@ -1723,77 +1833,77 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
 
         // Dungeon Items
         case RG_DEKU_TREE_MAP:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_YDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_DEKU_TREE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_DODONGOS_CAVERN_MAP:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_DDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_DODONGOS_CAVERN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_JABU_JABUS_BELLY_MAP:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_BDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_JABU_JABU) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FOREST_TEMPLE_MAP:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_BMORI1) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_FOREST_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FIRE_TEMPLE_MAP:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_HIDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_FIRE_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_WATER_TEMPLE_MAP:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_MIZUSIN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_WATER_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SPIRIT_TEMPLE_MAP:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_JYASINZOU) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_SPIRIT_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SHADOW_TEMPLE_MAP:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_HAKADAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_SHADOW_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_BOTTOM_OF_THE_WELL_MAP:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_HAKADANCH) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_BOTTOM_OF_THE_WELL) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_ICE_CAVERN_MAP:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_ICE_DOUKUTO) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_MAP, SCENE_ICE_CAVERN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_DEKU_TREE_COMPASS:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_YDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_DEKU_TREE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_DODONGOS_CAVERN_COMPASS:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_DDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_DODONGOS_CAVERN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_JABU_JABUS_BELLY_COMPASS:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_BDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_JABU_JABU) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FOREST_TEMPLE_COMPASS:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_BMORI1) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_FOREST_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FIRE_TEMPLE_COMPASS:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_HIDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_FIRE_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_WATER_TEMPLE_COMPASS:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_MIZUSIN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_WATER_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SPIRIT_TEMPLE_COMPASS:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_JYASINZOU) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_SPIRIT_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SHADOW_TEMPLE_COMPASS:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_HAKADAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_SHADOW_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_BOTTOM_OF_THE_WELL_COMPASS:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_HAKADANCH) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_BOTTOM_OF_THE_WELL) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_ICE_CAVERN_COMPASS:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_ICE_DOUKUTO) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, SCENE_ICE_CAVERN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FOREST_TEMPLE_BOSS_KEY:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_BMORI1) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_FOREST_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FIRE_TEMPLE_BOSS_KEY:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_HIDAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_FIRE_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_WATER_TEMPLE_BOSS_KEY:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_MIZUSIN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_WATER_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SPIRIT_TEMPLE_BOSS_KEY:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_JYASINZOU) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_SPIRIT_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SHADOW_TEMPLE_BOSS_KEY:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_HAKADAN) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_SHADOW_TEMPLE) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GANONS_CASTLE_BOSS_KEY:
-            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANON) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return !CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANONS_TOWER) ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FOREST_TEMPLE_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_BMORI1] < FOREST_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_FOREST_TEMPLE] < FOREST_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_FIRE_TEMPLE_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_HIDAN] < FIRE_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_FIRE_TEMPLE] < FIRE_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_WATER_TEMPLE_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_MIZUSIN] < WATER_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_WATER_TEMPLE] < WATER_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SPIRIT_TEMPLE_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_JYASINZOU] < SPIRIT_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_SPIRIT_TEMPLE] < SPIRIT_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_SHADOW_TEMPLE_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_HAKADAN] < SHADOW_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_SHADOW_TEMPLE] < SHADOW_TEMPLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_HAKADANCH] < BOTTOM_OF_THE_WELL_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_BOTTOM_OF_THE_WELL] < BOTTOM_OF_THE_WELL_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_MEN] < GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] < GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GERUDO_FORTRESS_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_GERUDOWAY] < GERUDO_FORTRESS_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_THIEVES_HIDEOUT] < GERUDO_FORTRESS_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_GANONS_CASTLE_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_GANONTIKA] < GANONS_CASTLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_INSIDE_GANONS_CASTLE] < GANONS_CASTLE_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
         case RG_TREASURE_GAME_SMALL_KEY:
-            return gSaveContext.inventory.dungeonKeys[SCENE_TAKARAYA] < TREASURE_GAME_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
+            return gSaveContext.inventory.dungeonKeys[SCENE_TREASURE_BOX_SHOP] < TREASURE_GAME_SMALL_KEY_MAX ? CAN_OBTAIN : CANT_OBTAIN_ALREADY_HAVE;
 
         // Dungeon Rewards
         case RG_KOKIRI_EMERALD:
@@ -2103,89 +2213,6 @@ GetItemID Randomizer::GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItem
                     return (GetItemID)RG_MAGIC_DOUBLE;
             }
 
-        case RG_DEKU_TREE_MAP:
-        case RG_DODONGOS_CAVERN_MAP:
-        case RG_JABU_JABUS_BELLY_MAP:
-        case RG_FOREST_TEMPLE_MAP:
-        case RG_FIRE_TEMPLE_MAP:
-        case RG_WATER_TEMPLE_MAP:
-        case RG_SPIRIT_TEMPLE_MAP:
-        case RG_SHADOW_TEMPLE_MAP:
-        case RG_BOTTOM_OF_THE_WELL_MAP:
-        case RG_ICE_CAVERN_MAP:
-            if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
-                GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_VANILLA ||
-                (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON &&
-                 GetRandoSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
-                return GI_MAP;
-            } else {
-                return (GetItemID)randoGet;
-            }
-
-        case RG_DEKU_TREE_COMPASS:
-        case RG_DODONGOS_CAVERN_COMPASS:
-        case RG_JABU_JABUS_BELLY_COMPASS:
-        case RG_FOREST_TEMPLE_COMPASS:
-        case RG_FIRE_TEMPLE_COMPASS:
-        case RG_WATER_TEMPLE_COMPASS:
-        case RG_SPIRIT_TEMPLE_COMPASS:
-        case RG_SHADOW_TEMPLE_COMPASS:
-        case RG_BOTTOM_OF_THE_WELL_COMPASS:
-        case RG_ICE_CAVERN_COMPASS:
-            if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
-                GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_VANILLA ||
-                (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON &&
-                 GetRandoSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
-                return GI_COMPASS;
-            } else {
-                return (GetItemID)randoGet;
-            }
-
-        case RG_FOREST_TEMPLE_BOSS_KEY:
-        case RG_FIRE_TEMPLE_BOSS_KEY:
-        case RG_WATER_TEMPLE_BOSS_KEY:
-        case RG_SPIRIT_TEMPLE_BOSS_KEY:
-        case RG_SHADOW_TEMPLE_BOSS_KEY:
-            if (GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
-                GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_VANILLA ||
-                (GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON &&
-                 GetRandoSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
-                return GI_KEY_BOSS;
-            } else {
-                return (GetItemID)randoGet;
-            }
-        case RG_GANONS_CASTLE_BOSS_KEY:
-            if (GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_STARTWITH ||
-                GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_VANILLA ||
-                GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_OWN_DUNGEON) {
-                return GI_KEY_BOSS;
-            } else {
-                return (GetItemID)randoGet;
-            }
-
-        case RG_FOREST_TEMPLE_SMALL_KEY:
-        case RG_FIRE_TEMPLE_SMALL_KEY:
-        case RG_WATER_TEMPLE_SMALL_KEY:
-        case RG_SPIRIT_TEMPLE_SMALL_KEY:
-        case RG_SHADOW_TEMPLE_SMALL_KEY:
-        case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
-        case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
-        case RG_GANONS_CASTLE_SMALL_KEY:
-            if (GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
-                GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_VANILLA ||
-                (GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON &&
-                 GetRandoSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
-                return GI_KEY_SMALL;
-            } else {
-                return (GetItemID)randoGet;
-            }
-        case RG_GERUDO_FORTRESS_SMALL_KEY:
-            if (GetRandoSettingValue(RSK_GERUDO_KEYS) == RO_GERUDO_KEYS_VANILLA) {
-                return GI_KEY_SMALL;
-            } else {
-                return (GetItemID)randoGet;
-            }
-
         case RG_RECOVERY_HEART:
         case RG_BUY_HEART:
             return GI_HEART;
@@ -2343,72 +2370,6 @@ bool Randomizer::IsItemVanilla(RandomizerGet randoGet) {
             } else {
                 return false;
             }
-        case RG_FOREST_TEMPLE_SMALL_KEY:
-        case RG_FIRE_TEMPLE_SMALL_KEY:
-        case RG_WATER_TEMPLE_SMALL_KEY:
-        case RG_SPIRIT_TEMPLE_SMALL_KEY:
-        case RG_SHADOW_TEMPLE_SMALL_KEY:
-        case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
-        case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
-        case RG_GANONS_CASTLE_SMALL_KEY:
-            if (GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
-                GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_VANILLA ||
-                (GetRandoSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON &&
-                 GetRandoSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
-                return true;
-            }
-            return false;
-        case RG_GERUDO_FORTRESS_SMALL_KEY:
-            if (GetRandoSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA) {
-                return false;
-            }
-            return true;
-        case RG_FOREST_TEMPLE_BOSS_KEY:
-        case RG_FIRE_TEMPLE_BOSS_KEY:
-        case RG_WATER_TEMPLE_BOSS_KEY:
-        case RG_SPIRIT_TEMPLE_BOSS_KEY:
-        case RG_SHADOW_TEMPLE_BOSS_KEY:
-            if (GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
-                GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_VANILLA ||
-                (GetRandoSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON &&
-                 GetRandoSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
-                return true;
-            }
-            return false;
-        case RG_GANONS_CASTLE_BOSS_KEY:
-            if (GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_STARTWITH ||
-                GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_VANILLA ||
-                GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_OWN_DUNGEON) {
-                return true;
-            }
-            return false;
-        case RG_DEKU_TREE_COMPASS:
-        case RG_DODONGOS_CAVERN_COMPASS:
-        case RG_JABU_JABUS_BELLY_COMPASS:
-        case RG_FOREST_TEMPLE_COMPASS:
-        case RG_FIRE_TEMPLE_COMPASS:
-        case RG_WATER_TEMPLE_COMPASS:
-        case RG_SPIRIT_TEMPLE_COMPASS:
-        case RG_SHADOW_TEMPLE_COMPASS:
-        case RG_BOTTOM_OF_THE_WELL_COMPASS:
-        case RG_ICE_CAVERN_COMPASS:
-        case RG_DEKU_TREE_MAP:
-        case RG_DODONGOS_CAVERN_MAP:
-        case RG_JABU_JABUS_BELLY_MAP:
-        case RG_FOREST_TEMPLE_MAP:
-        case RG_FIRE_TEMPLE_MAP:
-        case RG_WATER_TEMPLE_MAP:
-        case RG_SPIRIT_TEMPLE_MAP:
-        case RG_SHADOW_TEMPLE_MAP:
-        case RG_BOTTOM_OF_THE_WELL_MAP:
-        case RG_ICE_CAVERN_MAP:
-            if (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_STARTWITH ||
-                GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_VANILLA ||
-                (GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) == RO_DUNGEON_ITEM_LOC_OWN_DUNGEON &&
-                 GetRandoSettingValue(RSK_SHUFFLE_BOSS_ENTRANCES) == RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF)) {
-                return true;
-            }
-            return false;
         default:
             return false;
     }
@@ -2577,7 +2538,7 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
     RandomizerCheck specialRc = RC_UNKNOWN_CHECK;
     // TODO: Migrate these special cases into table, or at least document why they are special
     switch(sceneNum) {
-        case SCENE_TAKARAYA:
+        case SCENE_TREASURE_BOX_SHOP:
             if(actorParams == 20170) specialRc = RC_MARKET_TREASURE_CHEST_GAME_REWARD;
 
             // RANDOTODO update logic to match 3ds rando when we implement keysanity
@@ -2592,9 +2553,9 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                 if((actorParams & 0xF) < 10) specialRc = RC_MARKET_TREASURE_CHEST_GAME_ITEM_5;
             }
             break;
-        case SCENE_SHRINE:
-        case SCENE_SHRINE_N:
-        case SCENE_SHRINE_R:
+        case SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY:
+        case SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT:
+        case SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS:
             switch (actorParams) {
                 case 14342:
                     specialRc = RC_TOT_LEFT_GOSSIP_STONE;
@@ -2610,7 +2571,7 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                     break;
             }
             break;
-        case SCENE_KINSUTA:
+        case SCENE_HOUSE_OF_SKULLTULA:
             if (actorId == ACTOR_EN_SSH) {
                 switch (actorParams) { // actor params are used to differentiate between textboxes
                     case 1: specialRc = RC_KAK_10_GOLD_SKULLTULA_REWARD; break;
@@ -2621,7 +2582,7 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                 }
             }
             break;
-        case SCENE_SPOT01:
+        case SCENE_KAKARIKO_VILLAGE:
             switch (actorId) {
                 case ACTOR_EN_NIW_LADY:
                     if (LINK_IS_ADULT) {
@@ -2631,7 +2592,7 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                     }
             }
             break;
-        case SCENE_SPOT06:
+        case SCENE_LAKE_HYLIA:
             switch (actorId) {
                 case ACTOR_ITEM_ETCETERA:
                     if (LINK_IS_ADULT) {
@@ -2641,7 +2602,7 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                     }
             }
             break;
-        case SCENE_SPOT08:
+        case SCENE_ZORAS_FOUNTAIN:
             switch (actorParams) {
                 case 15362:
                 case 14594:
@@ -2653,14 +2614,14 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
                     break;
             }
             break;
-        case SCENE_SPOT12:
+        case SCENE_GERUDOS_FORTRESS:
             // GF chest as child has different params and gives odd mushroom
             // set it to the GF chest check for both ages
             if (actorId == ACTOR_EN_BOX) {
                 specialRc = RC_GF_CHEST;
             }
             break;
-        case SCENE_DDAN:
+        case SCENE_DODONGOS_CAVERN:
             // special case for MQ DC Gossip Stone
             if (actorId == ACTOR_EN_GS && actorParams == 15892 && ResourceMgr_IsGameMasterQuest()) {
                 specialRc = RC_DODONGOS_CAVERN_GOSSIP_STONE;
@@ -2699,7 +2660,7 @@ ScrubIdentity Randomizer::IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respa
     // Scrubs that are 0x06 are loaded as 0x03 when child, switching from selling arrows to seeds
     if (actorParams == 0x06) actorParams = 0x03;
 
-    if (sceneNum == SCENE_KAKUSIANA) {
+    if (sceneNum == SCENE_GROTTOS) {
         actorParams = TWO_ACTOR_PARAMS(actorParams, respawnData);
     }
 
@@ -2734,7 +2695,7 @@ ShopItemIdentity Randomizer::IdentifyShopItem(s32 sceneNum, u8 slotIndex) {
 
     RandomizerCheckObject rcObject = GetCheckObjectFromActor(ACTOR_EN_GIRLA, 
         // Bazaar (SHOP1) scene is reused, so if entering from Kak use debug scene to identify
-        (sceneNum == SCENE_SHOP1 && gSaveContext.entranceIndex == 0xB7) ? SCENE_TEST01 : sceneNum, slotIndex);
+        (sceneNum == SCENE_BAZAAR && gSaveContext.entranceIndex == 0xB7) ? SCENE_TEST01 : sceneNum, slotIndex);
 
     if (rcObject.rc != RC_UNKNOWN_CHECK) {
         shopItemIdentity.randomizerInf = rcToRandomizerInf[rcObject.rc];
@@ -2762,7 +2723,7 @@ CowIdentity Randomizer::IdentifyCow(s32 sceneNum, s32 posX, s32 posZ) {
 
     s32 actorParams = 0x00;
     // Only need to pass params if in a scene with two cows
-    if (sceneNum == SCENE_KAKUSIANA || sceneNum == SCENE_MALON_STABLE || sceneNum == SCENE_SOUKO) {
+    if (sceneNum == SCENE_GROTTOS || sceneNum == SCENE_STABLE || sceneNum == SCENE_LON_LON_BUILDINGS) {
         actorParams = TWO_ACTOR_PARAMS(posX, posZ);
     }
 
@@ -2859,6 +2820,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT] = CVarGetInteger("gRandomizeRewardCount", 9);
     cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT] = CVarGetInteger("gRandomizeDungeonCount", 8);
     cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT] = CVarGetInteger("gRandomizeTokenCount", 100);
+    cvarSettings[RSK_BRIDGE_OPTIONS] = CVarGetInteger("gRandomizeBridgeRewardOptions", 0);
     cvarSettings[RSK_GANONS_TRIALS] = CVarGetInteger("gRandomizeGanonTrial", RO_GANONS_TRIALS_SET_NUMBER);
     cvarSettings[RSK_TRIAL_COUNT] = CVarGetInteger("gRandomizeGanonTrialCount", 6);
     cvarSettings[RSK_STARTING_OCARINA] = CVarGetInteger("gRandomizeStartingOcarina", 0);
@@ -2951,6 +2913,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_LACS_REWARD_COUNT] = CVarGetInteger("gRandomizeLacsRewardCount", 9);
     cvarSettings[RSK_LACS_DUNGEON_COUNT] = CVarGetInteger("gRandomizeLacsDungeonCount", 8);
     cvarSettings[RSK_LACS_TOKEN_COUNT] = CVarGetInteger("gRandomizeLacsTokenCount", 100);
+    cvarSettings[RSK_LACS_OPTIONS] = CVarGetInteger("gRandomizeLacsRewardOptions", 0);
     cvarSettings[RSK_STARTING_CONSUMABLES] = CVarGetInteger("gRandomizeStartingConsumables", 0);
     cvarSettings[RSK_FULL_WALLETS] = CVarGetInteger("gRandomizeFullWallets", 0);
     
@@ -2992,6 +2955,19 @@ void GenerateRandomizerImgui(std::string seed = "") {
         cvarSettings[RSK_MQ_DUNGEON_COUNT] = 0;
     }
 
+    cvarSettings[RSK_MQ_DEKU_TREE] = CVarGetInteger("gRandomizeMqDungeonsDekuTree", 0);
+    cvarSettings[RSK_MQ_DODONGOS_CAVERN] = CVarGetInteger("gRandomizeMqDungeonsDodongosCavern", 0);
+    cvarSettings[RSK_MQ_JABU_JABU] = CVarGetInteger("gRandomizeMqDungeonsJabuJabu", 0);
+    cvarSettings[RSK_MQ_FOREST_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsForestTemple", 0);
+    cvarSettings[RSK_MQ_FIRE_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsFireTemple", 0);
+    cvarSettings[RSK_MQ_WATER_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsWaterTemple", 0);
+    cvarSettings[RSK_MQ_SPIRIT_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsSpiritTemple", 0);
+    cvarSettings[RSK_MQ_SHADOW_TEMPLE] = CVarGetInteger("gRandomizeMqDungeonsShadowTemple", 0);
+    cvarSettings[RSK_MQ_BOTTOM_OF_THE_WELL] = CVarGetInteger("gRandomizeMqDungeonsBottomOfTheWell", 0);
+    cvarSettings[RSK_MQ_ICE_CAVERN] = CVarGetInteger("gRandomizeMqDungeonsIceCavern", 0);
+    cvarSettings[RSK_MQ_GTG] = CVarGetInteger("gRandomizeMqDungeonsGTG", 0);
+    cvarSettings[RSK_MQ_GANONS_CASTLE] = CVarGetInteger("gRandomizeMqDungeonsGanonsCastle", 0);
+
     // Enable if any of the entrance rando options are enabled.
     cvarSettings[RSK_SHUFFLE_ENTRANCES] = CVarGetInteger("gRandomizeShuffleDungeonsEntrances", RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ||
                                           CVarGetInteger("gRandomizeShuffleBossEntrances", RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) ||
@@ -3025,6 +3001,16 @@ void GenerateRandomizerImgui(std::string seed = "") {
         excludedLocations.insert((RandomizerCheck)std::stoi(excludedLocationString));
     }
 
+    // todo: better way to sort out linking tricks rather than name
+    
+    std::set<RandomizerTrick> enabledTricks;
+    std::stringstream enabledTrickStringStream(CVarGetString("gRandomizeEnabledTricks", ""));
+    std::string enabledTrickString;
+    while (getline(enabledTrickStringStream, enabledTrickString, ',')) {
+        enabledTricks.insert((RandomizerTrick)std::stoi(enabledTrickString));
+    }
+    
+
     // Update the visibilitiy before removing conflicting excludes (in case the locations tab wasn't viewed)
     RandomizerCheckObjects::UpdateImGuiVisibility();
 
@@ -3036,7 +3022,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
         }
     }
 
-    RandoMain::GenerateRando(cvarSettings, excludedLocations, seed);
+    RandoMain::GenerateRando(cvarSettings, excludedLocations, enabledTricks, seed);
 
     CVarSetInteger("gRandoGenerating", 0);
     CVarSave();
@@ -3053,18 +3039,10 @@ bool GenerateRandomizer(std::string seed /*= ""*/) {
     return false;
 }
 
-void DrawRandoEditor(bool& open) {
+void RandomizerSettingsWindow::DrawElement() {
     if (generated) {
         generated = 0;
         randoThread.join();
-    }
-
-    if (!open) {
-        if (CVarGetInteger("gRandomizerSettingsEnabled", 0)) {
-            CVarClear("gRandomizerSettingsEnabled");
-            LUS::RequestCvarSaveOnNextTick();
-        }
-        return;
     }
 
     // Randomizer settings
@@ -3079,8 +3057,9 @@ void DrawRandoEditor(bool& open) {
     static const char* randoGerudoFortress[3] = { "Normal", "Fast", "Open" };
     static const char* randoRainbowBridge[8] = { "Vanilla", "Always open", "Stones", "Medallions",
                                           "Dungeon rewards", "Dungeons", "Tokens", "Greg" };
+    static const char* randoBridgeRewardOptions[3] = { "Standard Rewards", "Greg as Reward", "Greg as Wildcard" };
     static const char* randoGanonsTrial[3] = { "Skip", "Set Number", "Random Number" };
-    static const char* randoMqDungeons[3] = { "None", "Set Number", "Random Number" };
+    static const char* randoMqDungeons[4] = { "None", "Set Number", "Random Number", "Selection" };
 
     // World Settings
     static const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
@@ -3111,9 +3090,10 @@ void DrawRandoEditor(bool& open) {
                                             "Any Dungeon", "Overworld", "Anywhere" };
     static const char* randoShuffleGanonsBossKey[13] = {"Vanilla", "Own dungeon", "Start with", 
                                                 "Any Dungeon", "Overworld", "Anywhere", 
-                                                "LACS-Vanilla", "LACS-Medallions", "LACS-Stones", 
+                                                "LACS-Vanilla", "LACS-Stones", "LACS-Medallions", 
                                                 "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens",
                                                 "100 GS Reward"};
+    static const char* randoLACSRewardOptions[3] = { "Standard Reward", "Greg as Reward", "Greg as Wildcard" };
     static const char* randoShuffleKeyRings[4] = { "Off", "Random", "Count", "Selection" };
 
     // Misc Settings
@@ -3131,7 +3111,7 @@ void DrawRandoEditor(bool& open) {
     static bool disableGFKeyring = false;
 
     ImGui::SetNextWindowSize(ImVec2(920, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Randomizer Editor", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -3200,7 +3180,7 @@ void DrawRandoEditor(bool& open) {
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Forest
-                ImGui::Text(Settings::OpenForest.GetName().c_str());
+                ImGui::Text("%s", Settings::OpenForest.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Closed - Kokiri sword & shield are required to access "
                     "the Deku Tree, and completing the Deku Tree is required to "
@@ -3218,7 +3198,7 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedSeparator();
 
                 // Kakariko Gate
-                ImGui::Text(Settings::OpenKakariko.GetName().c_str());
+                ImGui::Text("%s", Settings::OpenKakariko.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Closed - The gate will remain closed until Zelda's letter "
                     "is shown to the guard.\n"
@@ -3231,7 +3211,7 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedSeparator();
 
                 // Door of Time
-                ImGui::Text(Settings::OpenDoorOfTime.GetName().c_str());
+                ImGui::Text("%s", Settings::OpenDoorOfTime.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Closed - The Ocarina of Time, the Song of Time and all "
                     "three spiritual stones are required to open the Door of Time.\n"
@@ -3246,7 +3226,7 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedSeparator();
 
                 // Zora's Fountain
-                ImGui::Text(Settings::ZorasFountain.GetName().c_str());
+                ImGui::Text("%s", Settings::ZorasFountain.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Closed - King Zora obstructs the way to Zora's Fountain. "
                     "Ruto's letter must be shown as child Link in order to move "
@@ -3277,7 +3257,7 @@ void DrawRandoEditor(bool& open) {
                     (CVarGetInteger("gRandomizeShuffleOcarinas", RO_GENERIC_OFF) == RO_GENERIC_OFF)); // closed door of time with ocarina shuffle off
 
                 static const char* disableRandoStartingAgeText = "This option is disabled due to other options making the game unbeatable.";
-                ImGui::Text(Settings::StartingAge.GetName().c_str());
+                ImGui::Text("%s", Settings::StartingAge.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Choose which age Link will start as.\n\n"
                     "Starting as adult means you start with the Master Sword in your inventory.\n"
@@ -3338,20 +3318,121 @@ void DrawRandoEditor(bool& open) {
                     case RO_BRIDGE_VANILLA:
                         break;
                     case RO_BRIDGE_STONES:
-                        UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
-                                                        "gRandomizeStoneCount", 1, 3, "", 3, true, true, false);
+                         ImGui::Text("Reward Options");
+                        UIWidgets::InsertHelpHoverText(
+                            "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, max "
+                            "number of rewards on slider does not change.\n"
+                            "\n"
+                            "Greg as Reward - Greg does change logic (can be part of expected path for opening "
+                            "bridge), Greg helps open bridge, max number of rewards on slider increases by 1 to "
+                            "account for Greg. \n"
+                            "\n"
+                            "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
+                            "rewards on slider does not change.");
+
+                        UIWidgets::EnhancementCombobox("gRandomizeBridgeRewardOptions", randoBridgeRewardOptions, RO_BRIDGE_STANDARD_REWARD);
+                        switch (CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD)) {
+                            case RO_BRIDGE_STANDARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
+                                                                "gRandomizeStoneCount", 1, 3, "", 3, true, true, false);
+                                break;
+                            case RO_BRIDGE_GREG_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
+                                                                "gRandomizeStoneCount", 1, 4, "", 4, true, true, false);
+                                break;
+                            case RO_BRIDGE_WILDCARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
+                                                                "gRandomizeStoneCount", 1, 3, "", 3, true, true, false);
+                                break;
+                        }
                         break;
                     case RO_BRIDGE_MEDALLIONS:
-                        UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
-                                                        "gRandomizeMedallionCount", 1, 6, "", 6, true, true, false);
+                        ImGui::Text("Reward Options");
+                        UIWidgets::InsertHelpHoverText(
+                            "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, max "
+                            "number of rewards on slider does not change.\n"
+                            "\n"
+                            "Greg as Reward - Greg does change logic (can be part of expected path for opening "
+                            "bridge), Greg helps open bridge, max number of rewards on slider increases by 1 to "
+                            "account for Greg. \n"
+                            "\n"
+                            "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
+                            "rewards on slider does not change.");
+
+                        UIWidgets::EnhancementCombobox("gRandomizeBridgeRewardOptions", randoBridgeRewardOptions, RO_BRIDGE_STANDARD_REWARD);
+                        switch (CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD)) {
+                            case RO_BRIDGE_STANDARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
+                                                                "gRandomizeMedallionCount", 1, 6, "", 6, true, true, false);
+                                break;
+                            case RO_BRIDGE_GREG_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
+                                                                "gRandomizeMedallionCount", 1, 7, "", 7, true, true, false);
+                                break;
+                            case RO_BRIDGE_WILDCARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
+                                                                "gRandomizeMedallionCount", 1, 6, "", 6, true, true, false);
+                                break;
+                        }
                         break;
                     case RO_BRIDGE_DUNGEON_REWARDS:
-                        UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                                                        "gRandomizeRewardCount", 1, 9, "", 9, true, true, false);
+                        ImGui::Text("Reward Options");
+                        UIWidgets::InsertHelpHoverText(
+                            "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, max "
+                            "number of rewards on slider does not change.\n"
+                            "\n"
+                            "Greg as Reward - Greg does change logic (can be part of expected path for opening "
+                            "bridge), Greg helps open bridge, max number of rewards on slider increases by 1 to "
+                            "account for Greg. \n"
+                            "\n"
+                            "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
+                            "rewards on slider does not change.");
+
+                        UIWidgets::EnhancementCombobox("gRandomizeBridgeRewardOptions", randoBridgeRewardOptions, RO_BRIDGE_STANDARD_REWARD);
+                        switch (CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD)) {
+                            case RO_BRIDGE_STANDARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
+                                                                "gRandomizeRewardCount", 1, 9, "", 9, true, true, false);
+                                break;
+                            case RO_BRIDGE_GREG_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
+                                                                "gRandomizeRewardCount", 1, 10, "", 10, true, true, false);
+                                break;
+                            case RO_BRIDGE_WILDCARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
+                                                                "gRandomizeRewardCount", 1, 9, "", 9, true, true, false);
+
+                                break;
+                        }
                         break;
                     case RO_BRIDGE_DUNGEONS:
-                        UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
-                                                        "gRandomizeDungeonCount", 1, 8, "", 8, true, true, false);
+                        ImGui::Text("Reward Options");
+                        UIWidgets::InsertHelpHoverText(
+                            "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, max "
+                            "number of rewards on slider does not change.\n"
+                            "\n"
+                            "Greg as Reward - Greg does change logic (can be part of expected path for opening "
+                            "bridge), Greg helps open bridge, max number of rewards on slider increases by 1 to "
+                            "account for Greg. \n"
+                            "\n"
+                            "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
+                            "rewards on slider does not change.");
+
+                        UIWidgets::EnhancementCombobox("gRandomizeBridgeRewardOptions", randoBridgeRewardOptions, RO_BRIDGE_STANDARD_REWARD);
+                        switch (CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD)) {
+                            case RO_BRIDGE_STANDARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
+                                                                "gRandomizeDungeonCount", 1, 8, "", 8, true, true, false);
+                                break;
+                            case RO_BRIDGE_GREG_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
+                                                                "gRandomizeDungeonCount", 1, 9, "", 9, true, true, false);
+                                break;
+                            case RO_BRIDGE_WILDCARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
+                                                                "gRandomizeDungeonCount", 1, 8, "", 8, true, true, false);
+                                break;
+                        }
                         break;
                     case RO_BRIDGE_TOKENS:
                         UIWidgets::PaddedEnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
@@ -3397,13 +3478,41 @@ void DrawRandoEditor(bool& open) {
                         "Set Number - Select a number of dungeons that will be their Master Quest versions "
                         "using the slider below. Which dungeons are set to be the Master Quest variety will be random.\n"
                         "\n"
-                        "Random Number - A Random number and set of dungeons will be their Master Quest varieties."
+                        "Random Number - A Random number and set of dungeons will be their Master Quest varieties.\n"
+                        "\n"
+                        "Selection - Leave unchecked for Vanilla and checked for Master Quest."
                     );
                     UIWidgets::EnhancementCombobox("gRandomizeMqDungeons", randoMqDungeons, RO_MQ_DUNGEONS_NONE);
                     ImGui::PopItemWidth();
                     if (CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SET_NUMBER) {
-                        UIWidgets::PaddedEnhancementSliderInt("Master Quest Dungeon Count: %d", "##RandoMqDungeonCount",
-                            "gRandomizeMqDungeonCount", 1, 12, "", CVarGetInteger("gRandomizeMqDungeonCount", 12), true, true, false);
+                        UIWidgets::PaddedEnhancementSliderInt(
+                            "Master Quest Dungeon Count: %d", "##RandoMqDungeonCount", "gRandomizeMqDungeonCount", 1,
+                            12, "", CVarGetInteger("gRandomizeMqDungeonCount", 12), true, true, false);
+                    }
+                    else if (CVarGetInteger("gRandomizeMqDungeons", RO_MQ_DUNGEONS_NONE) == RO_MQ_DUNGEONS_SELECTION) {
+                        UIWidgets::EnhancementCheckbox("Deku Tree##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsDekuTree");
+                        UIWidgets::EnhancementCheckbox("Dodongo's Cavern##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsDodongosCavern");
+                        UIWidgets::EnhancementCheckbox("Jabu Jabu's Belly##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsJabuJabu");
+                        UIWidgets::EnhancementCheckbox("Forest Temple##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsForestTemple");
+                        UIWidgets::EnhancementCheckbox("Fire Temple##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsFireTemple");
+                        UIWidgets::EnhancementCheckbox("Water Temple##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsWaterTemple");
+                        UIWidgets::EnhancementCheckbox("Spirit Temple##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsSpiritTemple");
+                        UIWidgets::EnhancementCheckbox("Shadow Temple##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsShadowTemple");
+                        UIWidgets::EnhancementCheckbox("Bottom of the Well##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsBottomOfTheWell");
+                        UIWidgets::EnhancementCheckbox("Ice Cavern##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsIceCavern");
+                        UIWidgets::EnhancementCheckbox("Gerudo Training Grounds##RandomizeMqDungeons", "gRandomizeMqDungeonsGTG");
+                        UIWidgets::EnhancementCheckbox("Ganon's Castle##RandomizeMqDungeons",
+                                                       "gRandomizeMqDungeonsGanonsCastle");
                     }
                 }
 
@@ -3588,7 +3697,7 @@ void DrawRandoEditor(bool& open) {
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Shuffle Songs
-                ImGui::Text(Settings::ShuffleSongs.GetName().c_str());
+                ImGui::Text("%s", Settings::ShuffleSongs.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Song locations - Songs will only appear at locations that normally teach songs.\n"
                     "\n"
@@ -3606,7 +3715,7 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Tokens
-                ImGui::Text(Settings::Tokensanity.GetName().c_str());
+                ImGui::Text("%s", Settings::Tokensanity.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Shuffles Golden Skulltula Tokens into the item pool. This means "
                     "Golden Skulltulas can contain other items as well.\n"
@@ -3699,7 +3808,7 @@ void DrawRandoEditor(bool& open) {
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Shopsanity
-                ImGui::Text(Settings::Shopsanity.GetName().c_str());
+                ImGui::Text("%s", Settings::Shopsanity.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Off - All shop items will be the same as vanilla.\n"
                     "\n"
@@ -3717,7 +3826,7 @@ void DrawRandoEditor(bool& open) {
                     case RO_SHOPSANITY_ZERO_ITEMS: // no need to show it if there aren't shop slots in the pool
                         break;
                     default:
-                        ImGui::Text(Settings::ShopsanityPrices.GetName().c_str());
+                        ImGui::Text("%s", Settings::ShopsanityPrices.GetName().c_str());
                         UIWidgets::InsertHelpHoverText(
                             "Balanced - The default randomization. Shop prices for shopsanity items will range between 0 to 300 rupees, "
                             "with a bias towards values slightly below the middle of the range, in multiples of 5.\n "
@@ -3736,7 +3845,7 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Scrubs
-                ImGui::Text(Settings::Scrubsanity.GetName().c_str());
+                ImGui::Text("%s", Settings::Scrubsanity.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Off - Scrubs will not be shuffled. The 3 Scrubs that give one-time items in the vanilla game "
                     "(PoH, Deku Nut capacity, and Deku Stick capacity) will have random items.\n"
@@ -3765,14 +3874,17 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Merchants
-                ImGui::Text(Settings::ShuffleMerchants.GetName().c_str());
+                ImGui::Text("%s", Settings::ShuffleMerchants.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Enabling this changes Medigoron, Granny and the Carpet Salesman to sell a random item "
                     "once at a high price (100 for Granny, 200 for the others).\n"
                     "A Giant's Knife and a pack of Bombchus will be added to the item pool, and "
                     "one of the bottles will contain a Blue Potion.\n\n"
                     "On (no hints) - Salesmen will be included but won't tell you what you'll get.\n"
-                    "On (with hints) - Salesmen will be included and you'll know what you're buying."
+                    "On (with hints) - Salesmen will be included and you'll know what you're buying.\n"
+                    "\n"
+                    "Granny's item will only be offered after you have traded in the Odd Mushroom when Shuffle Adult Trade is on. "
+                    "Otherwise when off, you will need to have found the Claim Check to buy her item (simulating the trade quest is complete)."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleMerchants", randoShuffleMerchants, RO_SHUFFLE_MERCHANTS_OFF);
 
@@ -3832,7 +3944,7 @@ void DrawRandoEditor(bool& open) {
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Shuffle Dungeon Rewards
-                ImGui::Text(Settings::ShuffleRewards.GetName().c_str());
+                ImGui::Text("%s", Settings::ShuffleRewards.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Shuffles the location of spiritual stones and medallions.\n"
                     "\n"
@@ -3850,7 +3962,7 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedSeparator();
 
                 // Maps & Compasses
-                ImGui::Text(Settings::MapsAndCompasses.GetName().c_str());
+                ImGui::Text("%s", Settings::MapsAndCompasses.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Start with - You will start with Maps & Compasses from all dungeons.\n"
                     "\n"
@@ -3869,7 +3981,7 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedSeparator();
 
                 // Keysanity
-                ImGui::Text(Settings::Keysanity.GetName().c_str());
+                ImGui::Text("%s", Settings::Keysanity.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Start with - You will start with all Small Keys from all dungeons.\n"
                     "\n"
@@ -3890,7 +4002,7 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedSeparator();
 
                  // Key Rings
-                ImGui::Text(Settings::KeyRings.GetName().c_str());
+                ImGui::Text("%s", Settings::KeyRings.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Keyrings will replace all small keys from a particular dungeon with a single keyring that awards all keys for it's associated dungeon\n"
                     "\n"
@@ -3934,7 +4046,7 @@ void DrawRandoEditor(bool& open) {
                         UIWidgets::EnhancementCheckbox("Spirit Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsSpiritTemple");
                         UIWidgets::EnhancementCheckbox("Shadow Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsShadowTemple");
                         UIWidgets::EnhancementCheckbox("Bottom of the Well##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsBottomOfTheWell");
-                        UIWidgets::EnhancementCheckbox("GTG##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGTG");
+                        UIWidgets::EnhancementCheckbox("Gerudo Training Grounds##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGTG");
                         UIWidgets::EnhancementCheckbox("Ganon's Castle##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGanonsCastle");
                         break;
                     default:
@@ -3945,7 +4057,7 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedSeparator();
 
                 // Gerudo Keys
-                ImGui::Text(Settings::GerudoKeys.GetName().c_str());
+                ImGui::Text("%s", Settings::GerudoKeys.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Vanilla - Thieve's Hideout Keys will appear in their vanilla locations.\n"
                     "\n"
@@ -3960,7 +4072,7 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedSeparator();
 
                 // Boss Keysanity
-                ImGui::Text(Settings::BossKeysanity.GetName().c_str());
+                ImGui::Text("%s", Settings::BossKeysanity.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Start with - You will start with Boss keys from all dungeons.\n"
                     "\n"
@@ -3979,7 +4091,7 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedSeparator();
 
                 // Ganon's Boss Key
-                ImGui::Text(Settings::GanonsBossKey.GetName().c_str());
+                ImGui::Text("%s", Settings::GanonsBossKey.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Vanilla - Ganon's Boss Key will appear in the vanilla location.\n"
                     "\n"
@@ -3995,8 +4107,8 @@ void DrawRandoEditor(bool& open) {
                     "\n"
                     "LACS - These settings put the boss key on the Light Arrow Cutscene location, from Zelda in Temple of Time as adult, with differing requirements:\n"
                     "- Vanilla: Obtain the Shadow Medallion and Spirit Medallion\n"
-                    "- Medallions: Obtain the specified amount of medallions.\n"
                     "- Stones: Obtain the specified amount of spiritual stones.\n"
+                    "- Medallions: Obtain the specified amount of medallions.\n"
                     "- Dungeon rewards: Obtain the specified total sum of spiritual stones or medallions.\n"
                     "- Dungeons: Complete the specified amount of dungeons. Dungeons are considered complete after stepping in to the blue warp after the boss.\n"
                     "- Tokens: Obtain the specified amount of Skulltula tokens.\n"
@@ -4006,21 +4118,121 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, RO_GANON_BOSS_KEY_VANILLA);
                 ImGui::PopItemWidth();
                 switch (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA)) {
-                    case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
-                        UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount",
-                                                        "gRandomizeLacsMedallionCount", 1, 6, "", 6, true, true, false);
-                        break;
                     case RO_GANON_BOSS_KEY_LACS_STONES:
-                        UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount",
-                                                        "gRandomizeLacsStoneCount", 1, 3, "", 3, true, true, false);
+                        ImGui::Text("Reward Options");
+                        UIWidgets::InsertHelpHoverText(
+                            "Standard Rewards - Greg does not change logic, Greg does not help obtain GBK, max "
+                            "number of rewards on slider does not change.\n"
+                            "\n"
+                            "Greg as Reward - Greg does change logic (can be part of expected path for obtaining "
+                            "GBK), Greg helps obtain GBK, max number of rewards on slider increases by 1 to "
+                            "account for Greg. \n"
+                            "\n"
+                            "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
+                            "rewards on slider does not change.");
+
+                        UIWidgets::EnhancementCombobox("gRandomizeLacsRewardOptions", randoLACSRewardOptions, RO_LACS_STANDARD_REWARD);
+                        switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
+                            case RO_LACS_STANDARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount", 
+                                                            "gRandomizeLacsStoneCount", 1, 3, "", 3, true, true, false);
+                                break;
+                            case RO_LACS_GREG_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount", 
+                                                            "gRandomizeLacsStoneCount", 1, 4, "", 4, true, true, false);
+                                break;
+                            case RO_LACS_WILDCARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoLacsStoneCount", 
+                                                            "gRandomizeLacsStoneCount", 1, 3, "", 3, true, true, false);
+                                break;
+                        }
+                        break;
+                    case RO_GANON_BOSS_KEY_LACS_MEDALLIONS:
+                        ImGui::Text("Reward Options");
+                        UIWidgets::InsertHelpHoverText(
+                            "Standard Rewards - Greg does not change logic, Greg does not help obtain GBK, max "
+                            "number of rewards on slider does not change.\n"
+                            "\n"
+                            "Greg as Reward - Greg does change logic (can be part of expected path for obtaining "
+                            "GBK), Greg helps obtain GBK, max number of rewards on slider increases by 1 to "
+                            "account for Greg. \n"
+                            "\n"
+                            "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
+                            "rewards on slider does not change.");
+
+                        UIWidgets::EnhancementCombobox("gRandomizeLacsRewardOptions", randoLACSRewardOptions, RO_LACS_STANDARD_REWARD);
+                        switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
+                            case RO_LACS_STANDARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
+                                                            "gRandomizeLacsMedallionCount", 1, 6, "", 6, true, true, false);
+                                break;
+                            case RO_LACS_GREG_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
+                                                            "gRandomizeLacsMedallionCount", 1, 7, "", 7, true, true, false);
+                                break;
+                            case RO_LACS_WILDCARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoLacsMedallionCount", 
+                                                            "gRandomizeLacsMedallionCount", 1, 6, "", 6, true, true, false);
+                                break;
+                        }
                         break;
                     case RO_GANON_BOSS_KEY_LACS_REWARDS:
-                        UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount",
-                                                        "gRandomizeLacsRewardCount", 1, 9, "", 9, true, true, false);
+                        ImGui::Text("Reward Options");
+                        UIWidgets::InsertHelpHoverText(
+                            "Standard Rewards - Greg does not change logic, Greg does not help obtain GBK, max "
+                            "number of rewards on slider does not change.\n"
+                            "\n"
+                            "Greg as Reward - Greg does change logic (can be part of expected path for obtaining "
+                            "GBK), Greg helps obtain GBK, max number of rewards on slider increases by 1 to "
+                            "account for Greg. \n"
+                            "\n"
+                            "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
+                            "rewards on slider does not change.");
+
+                        UIWidgets::EnhancementCombobox("gRandomizeLacsRewardOptions", randoLACSRewardOptions, RO_LACS_STANDARD_REWARD);
+                        switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
+                            case RO_LACS_STANDARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
+                                                            "gRandomizeLacsRewardCount", 1, 9, "", 9, true, true, false);
+                                break;
+                            case RO_LACS_GREG_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
+                                                            "gRandomizeLacsRewardCount", 1, 10, "", 10, true, true, false);
+                                break;
+                            case RO_LACS_WILDCARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoLacsRewardCount", 
+                                                            "gRandomizeLacsRewardCount", 1, 9, "", 9, true, true, false);
+                                break;
+                        }
                         break;
                     case RO_GANON_BOSS_KEY_LACS_DUNGEONS:
-                        UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount",
-                                                        "gRandomizeLacsDungeonCount", 1, 8, "", 8, true, true, false);
+                        ImGui::Text("Reward Options");
+                        UIWidgets::InsertHelpHoverText(
+                            "Standard Rewards - Greg does not change logic, Greg does not help obtain GBK, max "
+                            "number of rewards on slider does not change.\n"
+                            "\n"
+                            "Greg as Reward - Greg does change logic (can be part of expected path for obtaining "
+                            "GBK), Greg helps obtain GBK, max number of rewards on slider increases by 1 to "
+                            "account for Greg. \n"
+                            "\n"
+                            "Greg as Wildcard - Greg does not change logic, Greg helps obtain GBK, max number of "
+                            "rewards on slider does not change.");
+
+                        UIWidgets::EnhancementCombobox("gRandomizeLacsRewardOptions", randoLACSRewardOptions, RO_LACS_STANDARD_REWARD);
+                        switch (CVarGetInteger("gRandomizeLacsRewardOptions", RO_LACS_STANDARD_REWARD)) {
+                            case RO_LACS_STANDARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
+                                                            "gRandomizeLacsDungeonCount", 1, 8, "", 8, true, true, false);
+                                break;
+                            case RO_LACS_GREG_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
+                                                            "gRandomizeLacsDungeonCount", 1, 9, "", 9, true, true, false);
+                                break;
+                            case RO_LACS_WILDCARD_REWARD:
+                                UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoLacsDungeonCount", 
+                                                            "gRandomizeLacsDungeonCount", 1, 8, "", 8, true, true, false);
+                                break;
+                        }
                         break;
                     case RO_GANON_BOSS_KEY_LACS_TOKENS:
                         UIWidgets::PaddedEnhancementSliderInt("Token Count: %d", "##RandoLacsTokenCount",
@@ -4126,7 +4338,7 @@ void DrawRandoEditor(bool& open) {
                 ImGui::PushItemWidth(-FLT_MIN);
 
                 // Item Pool Settings
-                ImGui::Text(Settings::ItemPoolValue.GetName().c_str());
+                ImGui::Text("%s", Settings::ItemPoolValue.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Sets how many major items appear in the item pool.\n"
                     "\n"
@@ -4142,7 +4354,7 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedSeparator();
 
                 // Ice Traps
-                ImGui::Text(Settings::IceTrapValue.GetName().c_str());
+                ImGui::Text("%s", Settings::IceTrapValue.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Sets how many items are replaced by ice traps.\n"
                     "\n"
@@ -4162,7 +4374,7 @@ void DrawRandoEditor(bool& open) {
                 UIWidgets::PaddedSeparator();
 
                 // Gossip Stone Hints
-                ImGui::Text(Settings::GossipStoneHints.GetName().c_str());
+                ImGui::Text("%s", Settings::GossipStoneHints.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Allows Gossip Stones to provide hints on item locations. Hints mentioning "
                     "\"Way of the Hero\" indicate a location that holds an item required to beat "
@@ -4180,7 +4392,7 @@ void DrawRandoEditor(bool& open) {
                     // Hint Clarity
                     UIWidgets::Spacer(0);
                     ImGui::Indent();
-                    ImGui::Text(Settings::ClearerHints.GetName().c_str());
+                    ImGui::Text("%s", Settings::ClearerHints.GetName().c_str());
                     UIWidgets::InsertHelpHoverText(
                         "Sets the difficulty of hints.\n"
                         "\n"
@@ -4197,7 +4409,7 @@ void DrawRandoEditor(bool& open) {
 
                     // Hint Distribution
                     UIWidgets::Spacer(0);
-                    ImGui::Text(Settings::HintDistribution.GetName().c_str());
+                    ImGui::Text("%s", Settings::HintDistribution.GetName().c_str());
                     UIWidgets::InsertHelpHoverText(
                         "Sets how many hints will be useful.\n"
                         "\n"
@@ -4366,10 +4578,10 @@ void DrawRandoEditor(bool& open) {
                                             excludedLocationString += ",";
                                         }
                                         CVarSetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
-                                        LUS::RequestCvarSaveOnNextTick();
+                                        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     ImGui::SameLine();
-                                    ImGui::Text(rcObject->rcShortName.c_str());
+                                    ImGui::Text("%s", rcObject->rcShortName.c_str());
                                 }
                             }
                             ImGui::TreePop();
@@ -4407,10 +4619,10 @@ void DrawRandoEditor(bool& open) {
                                             excludedLocationString += ",";
                                         }
                                         CVarSetString("gRandomizeExcludedLocations", excludedLocationString.c_str());
-                                        LUS::RequestCvarSaveOnNextTick();
+                                        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
                                     }
                                     ImGui::SameLine();
-                                    ImGui::Text(rcObject->rcShortName.c_str());
+                                    ImGui::Text("%s", rcObject->rcShortName.c_str());
                                 }
                             }
                             ImGui::TreePop();
@@ -4427,7 +4639,26 @@ void DrawRandoEditor(bool& open) {
             locationsTabOpen = false;
         }
 
+        static bool tricksTabOpen = false;
         if (ImGui::BeginTabItem("Tricks/Glitches")) {
+            if (!tricksTabOpen) {
+                tricksTabOpen = true;
+                //RandomizerTricks::UpdateImGuiVisibility();
+                // todo: this efficently when we build out cvar array support
+                std::stringstream enabledTrickStringStream(CVarGetString("gRandomizeEnabledTricks", ""));
+                std::string enabledTrickString;
+                enabledTricks.clear();
+                while (getline(enabledTrickStringStream, enabledTrickString, ',')) {
+                    enabledTricks.insert((RandomizerTrick)std::stoi(enabledTrickString));
+                }
+                std::stringstream enabledGlitchStringStream(CVarGetString("gRandomizeEnabledGlitches", ""));
+                std::string enabledGlitchString;
+                enabledGlitches.clear();
+                while (getline(enabledGlitchStringStream, enabledGlitchString, ',')) {
+                    enabledGlitches.insert((RandomizerTrick)std::stoi(enabledGlitchString));
+                }
+            }
+            
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             if (ImGui::BeginTable("tableRandoLogic", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -4436,12 +4667,14 @@ void DrawRandoEditor(bool& open) {
                 ImGui::PushItemWidth(170.0);
                 ImGui::Text("Logic Rules");
                 UIWidgets::InsertHelpHoverText(
-                    "Glitchless - No glitches are required, but may require some minor tricks.\n"
+                    "Glitchless - No glitches are required, but may require some minor tricks. Additional tricks may be enabled and disabled below.\n"
                     "\n"
+                    //"Glitched - Glitches may be required to beat the game. You can disable and enable glitches below.\n"
+                    //"\n"
                     "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, RO_LOGIC_GLITCHLESS);
-                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) == RO_LOGIC_GLITCHLESS) {
+                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
                     ImGui::SameLine();
                     UIWidgets::EnhancementCheckbox(Settings::LocationsReachable.GetName().c_str(), "gRandomizeAllLocationsReachable", false, "", UIWidgets::CheckboxGraphics::Cross, RO_GENERIC_ON);
                     UIWidgets::InsertHelpHoverText(
@@ -4465,35 +4698,383 @@ void DrawRandoEditor(bool& open) {
                 ImGui::PopItemWidth();
                 ImGui::EndTable();
             }
-            if (ImGui::BeginTable("tableRandoTricksGlitches", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                ImGui::TableSetupColumn("Disabled", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                ImGui::TableSetupColumn("Enabled", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+
+            // Tricks
+            static std::unordered_map<RandomizerTrickArea, bool> areaTreeDisabled {
+                {RTAREA_GENERAL, true},
+                {RTAREA_KOKIRI_FOREST, true},
+                {RTAREA_LOST_WOODS, true},
+                {RTAREA_SACRED_FOREST_MEADOW, true},
+                {RTAREA_HYRULE_FIELD, true},
+                {RTAREA_LAKE_HYLIA, true},
+                {RTAREA_GERUDO_VALLEY, true},
+                {RTAREA_GERUDO_FORTRESS, true},
+                {RTAREA_WASTELAND, true},
+                {RTAREA_DESERT_COLOSSUS, true},
+                {RTAREA_MARKET, true},
+                {RTAREA_HYRULE_CASTLE, true},
+                {RTAREA_KAKARIKO_VILLAGE, true},
+                {RTAREA_GRAVEYARD, true},
+                {RTAREA_DEATH_MOUNTAIN_TRAIL, true},
+                {RTAREA_GORON_CITY, true},
+                {RTAREA_DEATH_MOUNTAIN_CRATER, true},
+                {RTAREA_ZORAS_RIVER, true},
+                {RTAREA_ZORAS_DOMAIN, true},
+                {RTAREA_ZORAS_FOUNTAIN, true},
+                {RTAREA_LON_LON_RANCH, true},
+                {RTAREA_DEKU_TREE, true},
+                {RTAREA_DODONGOS_CAVERN, true},
+                {RTAREA_JABU_JABUS_BELLY, true},
+                {RTAREA_FOREST_TEMPLE, true},
+                {RTAREA_FIRE_TEMPLE, true},
+                {RTAREA_WATER_TEMPLE, true},
+                {RTAREA_SPIRIT_TEMPLE, true},
+                {RTAREA_SHADOW_TEMPLE, true},
+                {RTAREA_BOTTOM_OF_THE_WELL, true},
+                {RTAREA_ICE_CAVERN, true},
+                {RTAREA_GERUDO_TRAINING_GROUND, true},
+                {RTAREA_GANONS_CASTLE, true}
+            };
+            static std::unordered_map<RandomizerTrickArea, bool> areaTreeEnabled {
+                {RTAREA_GENERAL, true},
+                {RTAREA_KOKIRI_FOREST, true},
+                {RTAREA_LOST_WOODS, true},
+                {RTAREA_SACRED_FOREST_MEADOW, true},
+                {RTAREA_HYRULE_FIELD, true},
+                {RTAREA_LAKE_HYLIA, true},
+                {RTAREA_GERUDO_VALLEY, true},
+                {RTAREA_GERUDO_FORTRESS, true},
+                {RTAREA_WASTELAND, true},
+                {RTAREA_DESERT_COLOSSUS, true},
+                {RTAREA_MARKET, true},
+                {RTAREA_HYRULE_CASTLE, true},
+                {RTAREA_KAKARIKO_VILLAGE, true},
+                {RTAREA_GRAVEYARD, true},
+                {RTAREA_DEATH_MOUNTAIN_TRAIL, true},
+                {RTAREA_GORON_CITY, true},
+                {RTAREA_DEATH_MOUNTAIN_CRATER, true},
+                {RTAREA_ZORAS_RIVER, true},
+                {RTAREA_ZORAS_DOMAIN, true},
+                {RTAREA_ZORAS_FOUNTAIN, true},
+                {RTAREA_LON_LON_RANCH, true},
+                {RTAREA_DEKU_TREE, true},
+                {RTAREA_DODONGOS_CAVERN, true},
+                {RTAREA_JABU_JABUS_BELLY, true},
+                {RTAREA_FOREST_TEMPLE, true},
+                {RTAREA_FIRE_TEMPLE, true},
+                {RTAREA_WATER_TEMPLE, true},
+                {RTAREA_SPIRIT_TEMPLE, true},
+                {RTAREA_SHADOW_TEMPLE, true},
+                {RTAREA_BOTTOM_OF_THE_WELL, true},
+                {RTAREA_ICE_CAVERN, true},
+                {RTAREA_GERUDO_TRAINING_GROUND, true},
+                {RTAREA_GANONS_CASTLE, true}
+            };
+
+            static std::unordered_map<RandomizerTrickTag, bool> showTag {
+                {RTTAG_NOVICE,true},
+                {RTTAG_INTERMEDIATE,true},
+                {RTTAG_ADVANCED,true},
+                {RTTAG_EXPERT,true},
+                {RTTAG_EXTREME,true}
+            };
+            static ImGuiTextFilter trickSearch;
+            trickSearch.Draw("Filter (inc,-exc)", 490.0f);
+            if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
+                ImGui::SameLine();
+                if (ImGui::Button("Disable All")) {
+                    for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                        for (auto [randomizerTrick, rtObject] : rtObjects) {
+                            auto etfound = enabledTricks.find(randomizerTrick);
+                            if (!rtObject.rtGlitch && etfound != enabledTricks.end()) {
+                                enabledTricks.erase(etfound);
+                            }
+                        }
+                    }
+                    std::string enabledTrickString = "";
+                    for (auto enabledTrickIt : enabledTricks) {
+                        enabledTrickString += std::to_string(enabledTrickIt);
+                        enabledTrickString += ",";
+                    }
+                    CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Enable All")) {
+                    for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                        for (auto [randomizerTrick, rtObject] : rtObjects) {
+                            if (!rtObject.rtGlitch && !enabledTricks.count(rtObject.rt)) {
+                                enabledTricks.insert(randomizerTrick);
+                            }
+                        }
+                    }
+                    std::string enabledTrickString = "";
+                    for (auto enabledTrickIt : enabledTricks) {
+                        enabledTrickString += std::to_string(enabledTrickIt);
+                        enabledTrickString += ",";
+                    }
+                    CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                }
+            }
+            if (ImGui::BeginTable("trickTags", showTag.size(), ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders)) {  
+                for (auto [rtTag, isShown] : showTag) {
+                    ImGui::TableNextColumn();
+                    ImGui::PushStyleColor(ImGuiCol_Header, RandomizerTricks::GetRTTagColor(rtTag));
+                    ImGui::Selectable(RandomizerTricks::GetRTTagName(rtTag).c_str(), &showTag[rtTag]);
+                    ImGui::PopStyleColor(1);
+                }
+                ImGui::EndTable();
+            }
+
+            if (ImGui::BeginTable("tableRandoTricks", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                ImGui::TableSetupColumn("Disabled Tricks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                ImGui::TableSetupColumn("Enabled Tricks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                 ImGui::TableHeadersRow();
                 ImGui::PopItemFlag();
                 ImGui::TableNextRow();
+                
+                if (CVarGetInteger("gRandomizeLogicRules", RO_LOGIC_GLITCHLESS) != RO_LOGIC_NO_LOGIC) {
 
-                // COLUMN 1 - DISABLED TRICKS AND GLITCHES
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildTricksGlitchesDisabled", ImVec2(0, -8));
+                    // COLUMN 1 - DISABLED TRICKS
+                    ImGui::TableNextColumn();
+                    window->DC.CurrLineTextBaseOffset = 0.0f;
+                    
+                    if (ImGui::Button("Collapse All##disabled")) {
+                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                            bool hasTricks = false;
+                            for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                if (rtObject.visibleInImgui &&
+                                    !enabledTricks.count(rtObject.rt) &&
+                                    !rtObject.rtGlitch) {
 
-                ImGui::Text("Coming soon");
+                                    hasTricks = true;
+                                    break;
+                                }
+                            }
+                            if (hasTricks) {
+                                areaTreeDisabled[rtArea] = false;
+                            }
+                        }
+                    }
+                    ImGui::SameLine();
+                    if (ImGui::Button("Open All##disabled")) {
+                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                            bool hasTricks = false;
+                            for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                if (rtObject.visibleInImgui &&
+                                    !enabledTricks.count(rtObject.rt) &&
+                                    !rtObject.rtGlitch) {
 
-                ImGui::EndChild();
+                                    hasTricks = true;
+                                    break;
+                                }
+                            }
+                            if (hasTricks) {
+                                areaTreeDisabled[rtArea] = true;
+                            }
+                        }
+                    }
+                    ImGui::SameLine();
+                    if (ImGui::Button("Enable Visible")) {
+                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                            for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                if (!rtObject.rtGlitch && !enabledTricks.count(rtObject.rt) && trickSearch.PassFilter(rtObject.rtShortName.c_str()) && areaTreeDisabled[rtArea] && RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags)) {
+                                    enabledTricks.insert(randomizerTrick);
+                                }
+                            }
+                        }
+                        std::string enabledTrickString = "";
+                        for (auto enabledTrickIt : enabledTricks) {
+                            enabledTrickString += std::to_string(enabledTrickIt);
+                            enabledTrickString += ",";
+                        }
+                        CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                    }
+                    
+                    ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
 
-                // COLUMN 2 - ENABLED TRICKS AND GLITCHES
-                ImGui::TableNextColumn();
-                window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildTricksGlitchesEnabled", ImVec2(0, -8));
+                    for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                        bool hasTricks = false;
+                        for (auto [randomizerTrick, rtObject] : rtObjects) {
+                            if (rtObject.visibleInImgui &&
+                                trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
+                                !enabledTricks.count(rtObject.rt) &&
+                                RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags) &&
+                                !rtObject.rtGlitch) {
 
-                ImGui::Text("Coming soon");
+                                hasTricks = true;
+                                break;
+                            }
+                        }
+                        if (hasTricks) {
+                            ImGui::TreeNodeSetOpen(ImGui::GetID(RandomizerTricks::GetRTAreaName(rtArea).c_str()), areaTreeDisabled[rtArea]);
+                            ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                            if (ImGui::TreeNode(RandomizerTricks::GetRTAreaName(rtArea).c_str())) {
+                                for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                    if (rtObject.visibleInImgui &&
+                                        trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
+                                        !enabledTricks.count(rtObject.rt) &&
+                                        RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags) &&
+                                        !rtObject.rtGlitch) {
+                                        if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Right)) {
+                                            enabledTricks.insert(rtObject.rt);
+                                            std::string enabledTrickString = "";
+                                            for (auto enabledTrickIt : enabledTricks) {
+                                                enabledTrickString += std::to_string(enabledTrickIt);
+                                                enabledTrickString += ",";
+                                            }
+                                            CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                                            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                                        }
+                                        DrawTagChips(*rtObject.rtTags);
+                                        ImGui::SameLine();
+                                        ImGui::Text("%s", rtObject.rtShortName.c_str());
+                                        UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                                    }
+                                }
+                                areaTreeDisabled[rtArea] = true;
+                                ImGui::TreePop();
+                            } else {
+                                areaTreeDisabled[rtArea] = false;
+                            }
+                        }
+                    }
+                    ImGui::EndChild();
 
-                ImGui::EndChild();
+                    
+
+                    // COLUMN 2 - ENABLED TRICKS
+                    ImGui::TableNextColumn();
+                    window->DC.CurrLineTextBaseOffset = 0.0f;
+
+                    if (ImGui::Button("Collapse All##enabled")) {
+                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                            bool hasTricks = false;
+                            for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                if (rtObject.visibleInImgui && 
+                                    enabledTricks.count(rtObject.rt) && 
+                                    !rtObject.rtGlitch) {
+
+                                    hasTricks = true;
+                                    break;
+                                }
+                            }
+                            if (hasTricks) {
+                                areaTreeEnabled[rtArea] = false;
+                            }
+                        }
+                    }
+                    ImGui::SameLine();
+                    if (ImGui::Button("Open All##enabled")) {
+                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                            bool hasTricks = false;
+                            for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                if (rtObject.visibleInImgui && 
+                                    enabledTricks.count(rtObject.rt) && 
+                                    !rtObject.rtGlitch) {
+
+                                    hasTricks = true;
+                                    break;
+                                }
+                            }
+                            if (hasTricks) {
+                                areaTreeEnabled[rtArea] = true;
+                            }
+                        }
+                    }
+                    ImGui::SameLine();
+                    if (ImGui::Button("Disable Visible")) {
+                        for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                            for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                auto etfound = enabledTricks.find(randomizerTrick);
+                                if (!rtObject.rtGlitch && etfound != enabledTricks.end() && trickSearch.PassFilter(rtObject.rtShortName.c_str()) && areaTreeEnabled[rtArea] && RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags)) {
+                                    enabledTricks.erase(etfound);
+                                }
+                            }
+                        }
+                        std::string enabledTrickString = "";
+                        for (auto enabledTrickIt : enabledTricks) {
+                            enabledTrickString += std::to_string(enabledTrickIt);
+                            enabledTrickString += ",";
+                        }
+                        CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                    }
+                    
+                    ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, -8), false, ImGuiWindowFlags_HorizontalScrollbar);
+
+                    for (auto [rtArea, rtObjects] : RandomizerTricks::GetAllRTObjectsByArea()) {
+                        bool hasTricks = false;
+                        for (auto [randomizerTrick, rtObject] : rtObjects) {
+                            if (rtObject.visibleInImgui &&
+                                trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
+                                enabledTricks.count(rtObject.rt) &&
+                                RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags) &&
+                                !rtObject.rtGlitch) {
+
+                                hasTricks = true;
+                                break;
+                            }
+                        }
+                        if (hasTricks) {
+                            ImGui::TreeNodeSetOpen(ImGui::GetID(RandomizerTricks::GetRTAreaName(rtArea).c_str()), areaTreeEnabled[rtArea]);
+                            ImGui::SetNextItemOpen(true, ImGuiCond_Once);
+                            if (ImGui::TreeNode(RandomizerTricks::GetRTAreaName(rtArea).c_str())) {
+                                for (auto [randomizerTrick, rtObject] : rtObjects) {
+                                    auto etfound = enabledTricks.find(rtObject.rt);
+                                    if (rtObject.visibleInImgui &&
+                                        trickSearch.PassFilter(rtObject.rtShortName.c_str()) &&
+                                        etfound != enabledTricks.end() &&
+                                        RandomizerTricks::CheckRTTags(showTag, *rtObject.rtTags) &&
+                                        !rtObject.rtGlitch) {
+                                        
+                                        if (ImGui::ArrowButton(std::to_string(rtObject.rt).c_str(), ImGuiDir_Left)) {
+                                            enabledTricks.erase(etfound);
+                                            std::string enabledTrickString = "";
+                                            for (auto enabledTrickIt : enabledTricks) {
+                                                enabledTrickString += std::to_string(enabledTrickIt);
+                                                enabledTrickString += ",";
+                                            }
+                                            CVarSetString("gRandomizeEnabledTricks", enabledTrickString.c_str());
+                                            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+                                        }
+                                        DrawTagChips(*rtObject.rtTags);
+                                        ImGui::SameLine();
+                                        ImGui::Text("%s", rtObject.rtShortName.c_str());
+                                        UIWidgets::InsertHelpHoverText(rtObject.rtDesc.c_str());
+                                    }
+                                }
+                                areaTreeEnabled[rtArea] = true;
+                                ImGui::TreePop();
+                            } else {
+                                areaTreeEnabled[rtArea] = false;
+                            }
+                        }
+                    }
+                    ImGui::EndChild();
+                } else {
+                    ImGui::TableNextColumn();
+                    ImGui::BeginChild("ChildTrickAreas", ImVec2(0, -8));
+                    ImGui::Text("Requires Logic Turned On.");
+                    ImGui::EndChild();
+                    ImGui::TableNextColumn();
+                    ImGui::BeginChild("ChildTricksDisabled", ImVec2(0, -8));
+                    ImGui::Text("Requires Logic Turned On.");
+                    ImGui::EndChild();
+                    ImGui::TableNextColumn();
+                    ImGui::BeginChild("ChildTricksEnabled", ImVec2(0, -8));
+                    ImGui::Text("Requires Logic Turned On.");
+                    ImGui::EndChild();
+                }
                 ImGui::EndTable();
             }
             ImGui::PopStyleVar(1);
             ImGui::EndTabItem();
+        } else {
+            tricksTabOpen = false;
         }
 
         if (ImGui::BeginTabItem("Starting Inventory")) {
@@ -4515,7 +5096,7 @@ void DrawRandoEditor(bool& open) {
                 // Don't display this option if Dungeon Rewards are Shuffled to End of Dungeon.
                 // TODO: Show this but disabled when we have options for disabled Comboboxes.
                 if (CVarGetInteger("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON) != RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
-                    ImGui::Text(Settings::LinksPocketItem.GetName().c_str());
+                    ImGui::Text("%s", Settings::LinksPocketItem.GetName().c_str());
                     UIWidgets::EnhancementCombobox("gRandomizeLinksPocket", randoLinksPocket, RO_LINKS_POCKET_DUNGEON_REWARD);
                     UIWidgets::PaddedSeparator();
                 }
@@ -4688,7 +5269,7 @@ CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 te
 
 CustomMessage Randomizer::GetCursedSkullMessage(s16 params) {
     CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_CURSED_SKULLTULA_PEOPLE);
-    RandomizerCheck rc = GetCheckFromActor(ACTOR_EN_SSH, SCENE_KINSUTA, params);
+    RandomizerCheck rc = GetCheckFromActor(ACTOR_EN_SSH, SCENE_HOUSE_OF_SKULLTULA, params);
     RandomizerGet itemGet = this->itemLocations[rc].rgID;
     std::array<std::string, LANGUAGE_MAX> itemName;
     if (itemGet == RG_ICE_TRAP) {
@@ -4718,38 +5299,41 @@ CustomMessage Randomizer::GetMapGetItemMessageWithHint(GetItemEntry itemEntry) {
     int sceneNum;
     switch (itemEntry.getItemId) {
         case RG_DEKU_TREE_MAP:
-            sceneNum = SCENE_YDAN;
+            sceneNum = SCENE_DEKU_TREE;
             break;
         case RG_DODONGOS_CAVERN_MAP:
-            sceneNum = SCENE_DDAN;
+            sceneNum = SCENE_DODONGOS_CAVERN;
             break;
         case RG_JABU_JABUS_BELLY_MAP:
-            sceneNum = SCENE_BDAN;
+            sceneNum = SCENE_JABU_JABU;
             break;
         case RG_FOREST_TEMPLE_MAP:
-            sceneNum = SCENE_BMORI1;
+            sceneNum = SCENE_FOREST_TEMPLE;
             break;
         case RG_FIRE_TEMPLE_MAP:
-            sceneNum = SCENE_HIDAN;
+            sceneNum = SCENE_FIRE_TEMPLE;
             break;
         case RG_WATER_TEMPLE_MAP:
-            sceneNum = SCENE_MIZUSIN;
+            sceneNum = SCENE_WATER_TEMPLE;
             break;
         case RG_SPIRIT_TEMPLE_MAP:
-            sceneNum = SCENE_JYASINZOU;
+            sceneNum = SCENE_SPIRIT_TEMPLE;
             break;
         case RG_SHADOW_TEMPLE_MAP:
-            sceneNum = SCENE_HAKADAN;
+            sceneNum = SCENE_SHADOW_TEMPLE;
             break;
         case RG_BOTTOM_OF_THE_WELL_MAP:
-            sceneNum = SCENE_HAKADANCH;
+            sceneNum = SCENE_BOTTOM_OF_THE_WELL;
             break;
         case RG_ICE_CAVERN_MAP:
-            sceneNum = SCENE_ICE_DOUKUTO;
+            sceneNum = SCENE_ICE_CAVERN;
             break;
     }
 
-    if (this->masterQuestDungeons.empty() || this->masterQuestDungeons.size() >= 12) {
+    if (this->randoSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_NONE ||
+        (this->randoSettings[RSK_RANDOM_MQ_DUNGEONS] == RO_MQ_DUNGEONS_SET_NUMBER &&
+         this->randoSettings[RSK_MQ_DUNGEON_COUNT] == 12)
+       ) {
         messageEntry.Replace("{{typeHint}}", "");
     } else if (ResourceMgr_IsSceneMasterQuest(sceneNum)) {
         messageEntry.Replace("{{typeHint}}", mapGetItemHints[0][1], mapGetItemHints[1][1], mapGetItemHints[2][1]);
@@ -4978,9 +5562,9 @@ void CreateIceTrapRandoMessages() {
           "Nachts ist es %bkälter%w als draußen.",
           "L'imbécile réfléchit uniquement quand il&s'observe dans la %bglace%w." },
 
-        { "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bhurt you%w.",
-          "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bhurt you%w.",
-          "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bhurt you%w." },
+        { "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bdesert you%w.",
+          "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bdesert you%w.",
+          "Never gonna %bgive you up%w. Never&gonna %blet you down%w. Never gonna&run around and %bdesert you%w." },
 
         { "Thank you %b@%w!&But your item is in another castle!",
           "Danke %b@%w!&Aber der Gegenstand ist in&einem anderem Schloss!",
@@ -5396,15 +5980,15 @@ void InitRandoItemTable() {
         GET_ITEM(RG_BOTTLE_WITH_BUGS,                  OBJECT_GI_INSECT,   GID_BUG,              TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_BUGS),
         GET_ITEM(RG_BOTTLE_WITH_POE,                   OBJECT_GI_GHOST,    GID_POE,              TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_POE),
         GET_ITEM(RG_BOTTLE_WITH_BIG_POE,               OBJECT_GI_GHOST,    GID_BIG_POE,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_BOTTLE_WITH_BIG_POE),
-        GET_ITEM(RG_GERUDO_FORTRESS_SMALL_KEY,         OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_FORTRESS_SMALL_KEY),
-        GET_ITEM(RG_FOREST_TEMPLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FOREST_TEMPLE_SMALL_KEY),
-        GET_ITEM(RG_FIRE_TEMPLE_SMALL_KEY,             OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FIRE_TEMPLE_SMALL_KEY),
-        GET_ITEM(RG_WATER_TEMPLE_SMALL_KEY,            OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_WATER_TEMPLE_SMALL_KEY),
-        GET_ITEM(RG_SPIRIT_TEMPLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_SMALL_KEY),
-        GET_ITEM(RG_SHADOW_TEMPLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_SHADOW_TEMPLE_SMALL_KEY),
-        GET_ITEM(RG_BOTTOM_OF_THE_WELL_SMALL_KEY,      OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_SMALL_KEY),
-        GET_ITEM(RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY),
-        GET_ITEM(RG_GANONS_CASTLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GANONS_CASTLE_SMALL_KEY),
+        GET_ITEM(RG_GERUDO_FORTRESS_SMALL_KEY,         OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_FORTRESS_SMALL_KEY),
+        GET_ITEM(RG_FOREST_TEMPLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FOREST_TEMPLE_SMALL_KEY),
+        GET_ITEM(RG_FIRE_TEMPLE_SMALL_KEY,             OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FIRE_TEMPLE_SMALL_KEY),
+        GET_ITEM(RG_WATER_TEMPLE_SMALL_KEY,            OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_WATER_TEMPLE_SMALL_KEY),
+        GET_ITEM(RG_SPIRIT_TEMPLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_SMALL_KEY),
+        GET_ITEM(RG_SHADOW_TEMPLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_SHADOW_TEMPLE_SMALL_KEY),
+        GET_ITEM(RG_BOTTOM_OF_THE_WELL_SMALL_KEY,      OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_SMALL_KEY),
+        GET_ITEM(RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY, OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY),
+        GET_ITEM(RG_GANONS_CASTLE_SMALL_KEY,           OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_ITEM_KEY_SMALL,         0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GANONS_CASTLE_SMALL_KEY),
         GET_ITEM(RG_GERUDO_FORTRESS_KEY_RING,          OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_FORTRESS_KEY_RING),
         GET_ITEM(RG_FOREST_TEMPLE_KEY_RING,            OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FOREST_TEMPLE_KEY_RING),
         GET_ITEM(RG_FIRE_TEMPLE_KEY_RING,              OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_FIRE_TEMPLE_KEY_RING),
@@ -5414,32 +5998,32 @@ void InitRandoItemTable() {
         GET_ITEM(RG_BOTTOM_OF_THE_WELL_KEY_RING,       OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_KEY_RING),
         GET_ITEM(RG_GERUDO_TRAINING_GROUNDS_KEY_RING,  OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GERUDO_TRAINING_GROUNDS_KEY_RING),
         GET_ITEM(RG_GANONS_CASTLE_KEY_RING,            OBJECT_GI_KEY,      GID_KEY_SMALL,        TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_SHORT, ITEM_CATEGORY_SMALL_KEY, MOD_RANDOMIZER, RG_GANONS_CASTLE_KEY_RING),
-        GET_ITEM(RG_FOREST_TEMPLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_FOREST_TEMPLE_BOSS_KEY),
-        GET_ITEM(RG_FIRE_TEMPLE_BOSS_KEY,              OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_FIRE_TEMPLE_BOSS_KEY),
-        GET_ITEM(RG_WATER_TEMPLE_BOSS_KEY,             OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_WATER_TEMPLE_BOSS_KEY),
-        GET_ITEM(RG_SPIRIT_TEMPLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_BOSS_KEY),
-        GET_ITEM(RG_SHADOW_TEMPLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_SHADOW_TEMPLE_BOSS_KEY),
-        GET_ITEM(RG_GANONS_CASTLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY),
-        GET_ITEM(RG_DEKU_TREE_MAP,                     OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_DEKU_TREE_MAP),
-        GET_ITEM(RG_DODONGOS_CAVERN_MAP,               OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_DODONGOS_CAVERN_MAP),
-        GET_ITEM(RG_JABU_JABUS_BELLY_MAP,              OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_JABU_JABUS_BELLY_MAP),
-        GET_ITEM(RG_FOREST_TEMPLE_MAP,                 OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_FOREST_TEMPLE_MAP),
-        GET_ITEM(RG_FIRE_TEMPLE_MAP,                   OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_FIRE_TEMPLE_MAP),
-        GET_ITEM(RG_WATER_TEMPLE_MAP,                  OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_WATER_TEMPLE_MAP),
-        GET_ITEM(RG_SPIRIT_TEMPLE_MAP,                 OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_MAP),
-        GET_ITEM(RG_SHADOW_TEMPLE_MAP,                 OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_SHADOW_TEMPLE_MAP),
-        GET_ITEM(RG_BOTTOM_OF_THE_WELL_MAP,            OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_MAP),
-        GET_ITEM(RG_ICE_CAVERN_MAP,                    OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_ICE_CAVERN_MAP),
-        GET_ITEM(RG_DEKU_TREE_COMPASS,                 OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_DEKU_TREE_COMPASS),
-        GET_ITEM(RG_DODONGOS_CAVERN_COMPASS,           OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_DODONGOS_CAVERN_COMPASS),
-        GET_ITEM(RG_JABU_JABUS_BELLY_COMPASS,          OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_JABU_JABUS_BELLY_COMPASS),
-        GET_ITEM(RG_FOREST_TEMPLE_COMPASS,             OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_FOREST_TEMPLE_COMPASS),
-        GET_ITEM(RG_FIRE_TEMPLE_COMPASS,               OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_FIRE_TEMPLE_COMPASS),
-        GET_ITEM(RG_WATER_TEMPLE_COMPASS,              OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_WATER_TEMPLE_COMPASS),
-        GET_ITEM(RG_SPIRIT_TEMPLE_COMPASS,             OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_COMPASS),
-        GET_ITEM(RG_SHADOW_TEMPLE_COMPASS,             OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_SHADOW_TEMPLE_COMPASS),
-        GET_ITEM(RG_BOTTOM_OF_THE_WELL_COMPASS,        OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_COMPASS),
-        GET_ITEM(RG_ICE_CAVERN_COMPASS,                OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_ICE_CAVERN_COMPASS),
+        GET_ITEM(RG_FOREST_TEMPLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_FOREST_TEMPLE_BOSS_KEY),
+        GET_ITEM(RG_FIRE_TEMPLE_BOSS_KEY,              OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_FIRE_TEMPLE_BOSS_KEY),
+        GET_ITEM(RG_WATER_TEMPLE_BOSS_KEY,             OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_WATER_TEMPLE_BOSS_KEY),
+        GET_ITEM(RG_SPIRIT_TEMPLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_BOSS_KEY),
+        GET_ITEM(RG_SHADOW_TEMPLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_SHADOW_TEMPLE_BOSS_KEY),
+        GET_ITEM(RG_GANONS_CASTLE_BOSS_KEY,            OBJECT_GI_BOSSKEY,  GID_KEY_BOSS,         TEXT_ITEM_KEY_BOSS,          0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_BOSS_KEY,  MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY),
+        GET_ITEM(RG_DEKU_TREE_MAP,                     OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_DEKU_TREE_MAP),
+        GET_ITEM(RG_DODONGOS_CAVERN_MAP,               OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_DODONGOS_CAVERN_MAP),
+        GET_ITEM(RG_JABU_JABUS_BELLY_MAP,              OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_JABU_JABUS_BELLY_MAP),
+        GET_ITEM(RG_FOREST_TEMPLE_MAP,                 OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_FOREST_TEMPLE_MAP),
+        GET_ITEM(RG_FIRE_TEMPLE_MAP,                   OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_FIRE_TEMPLE_MAP),
+        GET_ITEM(RG_WATER_TEMPLE_MAP,                  OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_WATER_TEMPLE_MAP),
+        GET_ITEM(RG_SPIRIT_TEMPLE_MAP,                 OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_MAP),
+        GET_ITEM(RG_SHADOW_TEMPLE_MAP,                 OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_SHADOW_TEMPLE_MAP),
+        GET_ITEM(RG_BOTTOM_OF_THE_WELL_MAP,            OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_MAP),
+        GET_ITEM(RG_ICE_CAVERN_MAP,                    OBJECT_GI_MAP,      GID_DUNGEON_MAP,      TEXT_ITEM_DUNGEON_MAP,       0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_ICE_CAVERN_MAP),
+        GET_ITEM(RG_DEKU_TREE_COMPASS,                 OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_DEKU_TREE_COMPASS),
+        GET_ITEM(RG_DODONGOS_CAVERN_COMPASS,           OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_DODONGOS_CAVERN_COMPASS),
+        GET_ITEM(RG_JABU_JABUS_BELLY_COMPASS,          OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_JABU_JABUS_BELLY_COMPASS),
+        GET_ITEM(RG_FOREST_TEMPLE_COMPASS,             OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_FOREST_TEMPLE_COMPASS),
+        GET_ITEM(RG_FIRE_TEMPLE_COMPASS,               OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_FIRE_TEMPLE_COMPASS),
+        GET_ITEM(RG_WATER_TEMPLE_COMPASS,              OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_WATER_TEMPLE_COMPASS),
+        GET_ITEM(RG_SPIRIT_TEMPLE_COMPASS,             OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_SPIRIT_TEMPLE_COMPASS),
+        GET_ITEM(RG_SHADOW_TEMPLE_COMPASS,             OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_SHADOW_TEMPLE_COMPASS),
+        GET_ITEM(RG_BOTTOM_OF_THE_WELL_COMPASS,        OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_BOTTOM_OF_THE_WELL_COMPASS),
+        GET_ITEM(RG_ICE_CAVERN_COMPASS,                OBJECT_GI_COMPASS,  GID_COMPASS,          TEXT_ITEM_COMPASS,           0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_ICE_CAVERN_COMPASS),
         GET_ITEM(RG_MAGIC_BEAN_PACK,                   OBJECT_GI_BEAN,     GID_BEAN,             TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_MAGIC_BEAN_PACK),
         GET_ITEM(RG_TYCOON_WALLET,                     OBJECT_GI_PURSE,    GID_WALLET_GIANT,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_TYCOON_WALLET),
         GET_ITEM(RG_PROGRESSIVE_BOMBCHUS,              OBJECT_GI_BOMB_2,   GID_BOMBCHU,          0x33,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_PROGRESSIVE_BOMBCHUS),
@@ -5464,17 +6048,8 @@ void InitRandoItemTable() {
 }
 
 
-void InitRando() {
-    LUS::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor, CVarGetInteger("gRandomizerSettingsEnabled", 0));
+void RandomizerSettingsWindow::InitElement() {
     Randomizer::CreateCustomMessages();
     seedString = (char*)calloc(MAX_SEED_STRING_SIZE, sizeof(char));
     InitRandoItemTable();
-}
-
-extern "C" {
-
-void Rando_Init(void) {
-    InitRando();
-}
-
 }

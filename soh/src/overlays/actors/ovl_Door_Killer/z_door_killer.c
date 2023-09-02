@@ -11,7 +11,7 @@
 #include "objects/object_haka_door/object_haka_door.h"
 #include "objects/object_door_killer/object_door_killer.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 typedef enum {
     /* 0 */ DOOR_KILLER_DOOR,
@@ -114,14 +114,14 @@ void DoorKiller_Init(Actor* thisx, PlayState* play2) {
 
     // For SoH where all objects are loaded, hardcode the index to match the current map.
     switch (play->sceneNum) {
-        case SCENE_HIDAN:
+        case SCENE_FIRE_TEMPLE:
             this->textureEntryIndex = 0;
             break;
-        case SCENE_MIZUSIN:
+        case SCENE_WATER_TEMPLE:
             this->textureEntryIndex = 1;
             break;
-        case SCENE_HAKADAN:
-        case SCENE_HAKADANCH:
+        case SCENE_SHADOW_TEMPLE:
+        case SCENE_BOTTOM_OF_THE_WELL:
             this->textureEntryIndex = 2;
             break;
         default:

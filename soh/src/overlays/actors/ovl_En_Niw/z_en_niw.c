@@ -10,7 +10,7 @@
 #include "vt.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_23)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_ALWAYS_THROWN)
 
 void EnNiw_Init(Actor* thisx, PlayState* play);
 void EnNiw_Destroy(Actor* thisx, PlayState* play);
@@ -153,11 +153,11 @@ void EnNiw_Init(Actor* thisx, PlayState* play) {
     }
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
-    this->actor.flags |= ACTOR_FLAG_0;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 25.0f);
     SkelAnime_InitFlex(play, &this->skelAnime, &gCuccoSkel, &gCuccoAnim, this->jointTable, this->morphTable, 16);
 
-    if (play->sceneNum == SCENE_SPOT01) {
+    if (play->sceneNum == SCENE_KAKARIKO_VILLAGE) {
         for (i = 0; i < ARRAY_COUNT(sKakarikoPosList); i++) {
             if (fabsf(this->actor.world.pos.x - sKakarikoPosList[i].x) < 40.0f &&
                 fabsf(this->actor.world.pos.z - sKakarikoPosList[i].z) < 40.0f) {
@@ -190,22 +190,22 @@ void EnNiw_Init(Actor* thisx, PlayState* play) {
             }
             break;
         case 1:
-            if (gSaveContext.eventChkInf[1] & 0x10) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
                 Actor_Kill(&this->actor);
             }
             break;
         case 3:
-            if (!(gSaveContext.eventChkInf[1] & 0x10)) {
+            if (!Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
                 Actor_Kill(&this->actor);
             }
             break;
         case 5:
-            if (gSaveContext.eventChkInf[1] & 0x100) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED)) {
                 Actor_Kill(&this->actor);
             }
             break;
         case 7:
-            if (!(gSaveContext.eventChkInf[1] & 0x100)) {
+            if (!Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED)) {
                 Actor_Kill(&this->actor);
             }
             break;
@@ -213,7 +213,7 @@ void EnNiw_Init(Actor* thisx, PlayState* play) {
             this->actor.gravity = 0.0f;
         case 0xE:
             this->actor.colChkInfo.mass = 0;
-            this->actor.flags &= ~ACTOR_FLAG_0;
+            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
             break;
         case 4:
             this->actor.gravity = 0.0f;
@@ -228,7 +228,7 @@ void EnNiw_Init(Actor* thisx, PlayState* play) {
         case 0xD:
         case 0xE:
             Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit2);
-            if (play->sceneNum == SCENE_LINK_HOME && !(gSaveContext.eventChkInf[1] & 0x4000)) {
+            if (play->sceneNum == SCENE_LINKS_HOUSE && !Flags_GetEventChkInf(EVENTCHKINF_WON_COW_IN_MALONS_RACE)) {
                 Actor_Kill(&this->actor);
             }
             break;
@@ -462,7 +462,7 @@ void func_80AB6450(EnNiw* this, PlayState* play) {
         this->sfxTimer1 = 30;
         this->path = 0;
         this->timer4 = 30;
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
         this->actor.speedXZ = 0.0f;
         this->actionFunc = func_80AB6BF8;
     } else {
@@ -484,7 +484,7 @@ void func_80AB6570(EnNiw* this, PlayState* play) {
             this->sfxTimer1 = 30;
             this->path = 0;
             this->timer4 = 30;
-            this->actor.flags &= ~ACTOR_FLAG_0;
+            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
             this->actor.speedXZ = 0.0f;
             this->actionFunc = func_80AB6BF8;
             return;
@@ -641,7 +641,7 @@ void func_80AB6BF8(EnNiw* this, PlayState* play) {
         this->actor.shape.rot.z = 0;
         this->actor.shape.rot.y = this->actor.shape.rot.z;
         this->actor.shape.rot.x = this->actor.shape.rot.z;
-        this->actor.flags |= ACTOR_FLAG_0;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
         this->actionFunc = func_80AB6D08;
     }
     func_80AB5BF8(this, play, 2);
@@ -689,7 +689,7 @@ void func_80AB6D08(EnNiw* this, PlayState* play) {
         this->sfxTimer1 = 30;
         this->path = 0;
         this->timer4 = 30;
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
         this->actor.speedXZ = 0.0f;
         this->actionFunc = func_80AB6BF8;
     } else {
@@ -802,7 +802,7 @@ void func_80AB714C(EnNiw* this, PlayState* play) {
     if (this->timer5 == 0) {
         this->timer7 = 10;
         this->unk_2E4 = this->actor.yawTowardsPlayer;
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
         this->actionFunc = func_80AB7204;
     }
 
@@ -975,10 +975,10 @@ void EnNiw_Update(Actor* thisx, PlayState* play) {
     Actor_SetFocus(&this->actor, this->unk_304);
     Actor_MoveForward(&this->actor);
 
-    if (this->actionFunc != func_80AB6EB4 && this->actionFunc != func_80AB6450 && play->sceneNum != SCENE_SPOT03) {
+    if (this->actionFunc != func_80AB6EB4 && this->actionFunc != func_80AB6450 && play->sceneNum != SCENE_ZORAS_RIVER) {
         Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 60.0f, 31);
     }
-    if (play->sceneNum == SCENE_SPOT03) {
+    if (play->sceneNum == SCENE_ZORAS_RIVER) {
         Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 20.0f, 60.0f, 29);
     }
     if (thisx->floorHeight <= BGCHECK_Y_MIN || thisx->floorHeight >= 32000.0f) {

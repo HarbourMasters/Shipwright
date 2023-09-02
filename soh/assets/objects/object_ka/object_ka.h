@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_KA_H
+#define OBJECTS_OBJECT_KA_H 1
 
 #include "align_asset_macro.h"
 
@@ -100,3 +101,6 @@ static const ALIGN_ASSET(2) char object_ka_Skel_0065B0[] = dobject_ka_Skel_0065B
 
 #define dobject_ka_Anim_0067AC "__OTR__objects/object_ka/object_ka_Anim_0067AC"
 static const ALIGN_ASSET(2) char object_ka_Anim_0067AC[] = dobject_ka_Anim_0067AC;
+
+
+#endif // OBJECTS_OBJECT_KA_H

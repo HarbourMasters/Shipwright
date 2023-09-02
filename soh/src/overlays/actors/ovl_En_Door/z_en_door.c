@@ -11,7 +11,7 @@
 #include "objects/object_mizu_objects/object_mizu_objects.h"
 #include "objects/object_haka_door/object_haka_door.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 #define DOOR_AJAR_SLAM_RANGE 120.0f
 #define DOOR_AJAR_OPEN_RANGE (2 * DOOR_AJAR_SLAM_RANGE)
@@ -49,11 +49,11 @@ const ActorInit En_Door_InitVars = {
  * Controls which object and display lists to use in a given scene
  */
 static EnDoorInfo sDoorInfo[] = {
-    { SCENE_HIDAN, 1, OBJECT_HIDAN_OBJECTS },
-    { SCENE_MIZUSIN, 2, OBJECT_MIZU_OBJECTS },
-    { SCENE_HAKADAN, 3, OBJECT_HAKA_DOOR },
-    { SCENE_HAKADANCH, 3, OBJECT_HAKA_DOOR },
-    { SCENE_BMORI1, 0, OBJECT_GAMEPLAY_KEEP }, // Hacky fix, but behavior same as console.
+    { SCENE_FIRE_TEMPLE, 1, OBJECT_HIDAN_OBJECTS },
+    { SCENE_WATER_TEMPLE, 2, OBJECT_MIZU_OBJECTS },
+    { SCENE_SHADOW_TEMPLE, 3, OBJECT_HAKA_DOOR },
+    { SCENE_BOTTOM_OF_THE_WELL, 3, OBJECT_HAKA_DOOR },
+    { SCENE_FOREST_TEMPLE, 0, OBJECT_GAMEPLAY_KEEP }, // Hacky fix, but behavior same as console.
     // KEEP objects should remain last and in this order
     { -1, 0, OBJECT_GAMEPLAY_KEEP },
     { -1, 4, OBJECT_GAMEPLAY_FIELD_KEEP },
@@ -152,7 +152,7 @@ void EnDoor_SetupType(EnDoor* this, PlayState* play) {
 
     if (Object_IsLoaded(&play->objectCtx, this->requiredObjBankIndex)) {
         doorType = this->actor.params >> 7 & 7;
-        this->actor.flags &= ~ACTOR_FLAG_4;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
         this->actor.objBankIndex = this->requiredObjBankIndex;
         this->actionFunc = EnDoor_Idle;
         if (doorType == DOOR_EVENING) {
@@ -171,7 +171,7 @@ void EnDoor_SetupType(EnDoor* this, PlayState* play) {
             }
         } else if (doorType == DOOR_CHECKABLE) {
             this->actor.textId = (this->actor.params & 0x3F) + 0x0200;
-            if (this->actor.textId == 0x0229 && !(gSaveContext.eventChkInf[1] & 0x10)) {
+            if (this->actor.textId == 0x0229 && !Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
                 // Talon's house door. If Talon has not been woken up at Hyrule Castle
                 // this door should be openable at any time of day. Note that there is no
                 // check for time of day as the scene setup for Lon Lon merely initializes
@@ -179,7 +179,7 @@ void EnDoor_SetupType(EnDoor* this, PlayState* play) {
                 doorType = DOOR_SCENEEXIT;
             } else {
                 this->actionFunc = EnDoor_WaitForCheck;
-                this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_27;
+                this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_NO_LOCKON;
             }
         }
         // Replace the door type it was loaded with by the new type
@@ -276,8 +276,8 @@ void EnDoor_Open(EnDoor* this, PlayState* play) {
             this->playerIsOpening = 0;
         } else if (Animation_OnFrame(&this->skelAnime, sDoorAnimOpenFrames[this->animStyle])) {
             Audio_PlayActorSound2(&this->actor,
-                                  (play->sceneNum == SCENE_HAKADAN || play->sceneNum == SCENE_HAKADANCH ||
-                                   play->sceneNum == SCENE_HIDAN)
+                                  (play->sceneNum == SCENE_SHADOW_TEMPLE || play->sceneNum == SCENE_BOTTOM_OF_THE_WELL ||
+                                   play->sceneNum == SCENE_FIRE_TEMPLE)
                                       ? NA_SE_EV_IRON_DOOR_OPEN
                                       : NA_SE_OC_DOOR_OPEN);
             if (this->skelAnime.playSpeed < 1.5f) {
@@ -288,8 +288,8 @@ void EnDoor_Open(EnDoor* this, PlayState* play) {
             }
         } else if (Animation_OnFrame(&this->skelAnime, sDoorAnimCloseFrames[this->animStyle])) {
             Audio_PlayActorSound2(&this->actor,
-                                  (play->sceneNum == SCENE_HAKADAN || play->sceneNum == SCENE_HAKADANCH ||
-                                   play->sceneNum == SCENE_HIDAN)
+                                  (play->sceneNum == SCENE_SHADOW_TEMPLE || play->sceneNum == SCENE_BOTTOM_OF_THE_WELL ||
+                                   play->sceneNum == SCENE_FIRE_TEMPLE)
                                       ? NA_SE_EV_IRON_DOOR_CLOSE
                                       : NA_SE_EV_DOOR_CLOSE);
         }
