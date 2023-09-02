@@ -1851,11 +1851,17 @@ u8 Item_Give(PlayState* play, u8 item) {
             }
             
         } else if (item == ITEM_SWORD_MASTER) {
-            //this forces the sword to the Master Sword when drawing the master sword and when fighting gannon.
-            //Breaks DList Rework for drawing the sword, needed for Gannon Fight.
-            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
-            gSaveContext.equips.equipment &= 0xFFF0;
-            gSaveContext.equips.equipment |= 0x0002;
+            /*Forces the sword to the Master Sword when:
+            - Drawing the Master Sword from its pedestal
+            - Fighting Ganon, after the first phase
+            Breaks DList Rework for drawing the sword, needed for Gannon Fight.
+            To fix this, only run this code as when Link is an adult, meaning Link MUST be fighting Ganon*/
+            if (LINK_IS_ADULT)
+            {
+                gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+                gSaveContext.equips.equipment &= 0xFFF0;
+                gSaveContext.equips.equipment |= 0x0002;
+            }
             if (play != NULL) {
                 Interface_LoadItemIcon1(play, 0);
             }
