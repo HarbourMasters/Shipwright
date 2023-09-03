@@ -5046,9 +5046,13 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                     }
 
                     if (sLinkAge == 1) {
-                        if (!(HIGH_SCORE(HS_FISHING) & 0x400)) {
+                        if (
+                            (!gSaveContext.n64ddFlag && !(HIGH_SCORE(HS_FISHING) & 0x400)) ||
+                            (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_CHILD_FISHING))
+                        ) {
                             if (D_80B7E078 >= Fishing_GetMinimumRequiredScore()) {
                                 HIGH_SCORE(HS_FISHING) |= 0x400;
+                                Flags_SetRandomizerInf(RAND_INF_CHILD_FISHING);
                                 sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
                                 if (!gSaveContext.n64ddFlag) {
                                     getItemId = GI_HEART_PIECE;
@@ -5059,9 +5063,13 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                             }
                         }
                     } else {
-                        if (!(HIGH_SCORE(HS_FISHING) & 0x800)) {
+                        if (
+                            (!gSaveContext.n64ddFlag && !(HIGH_SCORE(HS_FISHING) & 0x800)) ||
+                            (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING))
+                        ) {
                             if (D_80B7E078 >= Fishing_GetMinimumRequiredScore()) {
                                 HIGH_SCORE(HS_FISHING) |= 0x800;
+                                Flags_SetRandomizerInf(RAND_INF_ADULT_FISHING);
                                 sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
                                 if (!gSaveContext.n64ddFlag) {
                                     getItemId = GI_SCALE_GOLD;
