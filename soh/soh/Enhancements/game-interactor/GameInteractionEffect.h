@@ -262,6 +262,11 @@ namespace GameInteractionEffect {
         void _Apply() override;
         void _Remove() override;
     };
+
+    class GiveItem: public GameInteractionEffectBase, public ParameterizedGameInteractionEffect {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+    };
 }
 
 #endif /* __cplusplus */

@@ -9,6 +9,9 @@
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 #include "soh/Enhancements/nametag.h"
+#ifdef ENABLE_REMOTE_CONTROL
+#include "soh/Enhancements/game-interactor/GameInteractor_Anchor.h"
+#endif
 
 extern "C" {
 #include <z64.h>
@@ -773,4 +776,7 @@ void InitMods() {
     RegisterMirrorModeHandler();
     RegisterAltTrapTypes();
     NameTag_RegisterHooks();
+    #ifdef ENABLE_REMOTE_CONTROL
+    Anchor_RegisterHooks();
+    #endif
 }

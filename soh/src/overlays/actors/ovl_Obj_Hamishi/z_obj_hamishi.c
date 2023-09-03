@@ -171,10 +171,12 @@ void ObjHamishi_Update(Actor* thisx, PlayState* play) {
 
     ObjHamishi_Shake(this);
 
-    if ((this->collider.base.acFlags & AC_HIT) && (this->collider.info.acHitInfo->toucher.dmgFlags & 0x40000040)) {
+    // #region SOH [Co-op]
+    if (((this->collider.base.acFlags & AC_HIT) && (this->collider.info.acHitInfo->toucher.dmgFlags & 0x40000040)) || Flags_GetSwitch(play, this->actor.params & 0x3F)) {
         this->collider.base.acFlags &= ~AC_HIT;
         this->hitCount++;
-        if (this->hitCount < 2) {
+        if (this->hitCount < 2 && !Flags_GetSwitch(play, this->actor.params & 0x3F)) {
+    // #endregion
             this->shakeFrames = 15;
             this->shakePosSize = 2.0f;
             this->shakeRotSize = 400.0f;

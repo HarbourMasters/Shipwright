@@ -23,6 +23,9 @@
 #include "objects/object_menkuri_objects/object_menkuri_objects.h"
 #include "objects/object_demo_kekkai/object_demo_kekkai.h"
 #include "objects/object_ouke_haka/object_ouke_haka.h"
+#ifdef ENABLE_REMOTE_CONTROL
+#include "soh/Enhancements/game-interactor/GameInteractor_Anchor.h"
+#endif
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -375,6 +378,9 @@ void func_80996B0C(DoorShutter* this, PlayState* play) {
             Flags_SetSwitch(play, this->dyna.actor.params & 0x3F);
             if (this->doorType != SHUTTER_BOSS) {
                 gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]--;
+#ifdef ENABLE_REMOTE_CONTROL
+                Anchor_UpdateKeyCount(gSaveContext.mapIndex, gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]);
+#endif
                 Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_CHAIN_KEY_UNLOCK);
             } else {
                 Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_CHAIN_KEY_UNLOCK_B);
@@ -640,6 +646,12 @@ void DoorShutter_Update(Actor* thisx, PlayState* play) {
     if (!(player->stateFlags1 & 0x100004C0) || (this->actionFunc == DoorShutter_SetupType)) {
         this->actionFunc(this, play);
     }
+
+    // #region SOH [Co-op]
+    if (Flags_GetSwitch(play, this->dyna.actor.params & 0x3F)) {
+        DECR(this->unk_16E);
+    }
+    // #endregion
 }
 
 Gfx* func_80997838(PlayState* play, DoorShutter* this, Gfx* p) {
