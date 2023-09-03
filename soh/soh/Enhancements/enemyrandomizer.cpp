@@ -3,6 +3,7 @@
 #include "macros.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/Enhancements/enhancementTypes.h"
+#include "boost_custom/container_hash/hash_32.hpp"
 #include "variables.h"
 
 extern "C" {
@@ -234,7 +235,7 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
 
 EnemyEntry GetRandomizedEnemyEntry(uint32_t seed) {
     if (CVarGetInteger("gRandomizedEnemies", ENEMY_RANDOMIZER_OFF) == ENEMY_RANDOMIZER_RANDOM_SEEDED) {
-        uint32_t finalSeed = seed + (gSaveContext.n64ddFlag ? (gSaveContext.seedIcons[0] + gSaveContext.seedIcons[1] + gSaveContext.seedIcons[2] + gSaveContext.seedIcons[3] + gSaveContext.seedIcons[4]) : gSaveContext.sohStats.fileCreatedAt);
+        uint32_t finalSeed = seed + (gSaveContext.n64ddFlag ? boost::hash_32<std::string>{}(gSaveContext.seed) : gSaveContext.sohStats.fileCreatedAt);
         Random_Init(finalSeed);
     }
 
