@@ -316,6 +316,7 @@ typedef struct {
     /*        */ RandomizerCheck ganonHintCheck;
     /*        */ RandomizerCheck gregCheck;
     /*        */ RandomizerCheck dampeCheck;
+    /*        */ char seed[255];
     /*        */ u8 seedIcons[5];
     /*        */ u16 randomizerInf[10];
     /*        */ u16 adultTradeItems;
