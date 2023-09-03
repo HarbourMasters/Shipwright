@@ -34,6 +34,26 @@ public:
 };
 
 namespace GameInteractionEffect {
+    class SetSceneFlag: public GameInteractionEffectBase, public ParameterizedGameInteractionEffect {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+    };
+
+    class UnsetSceneFlag: public GameInteractionEffectBase, public ParameterizedGameInteractionEffect {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+    };
+
+    class SetFlag: public GameInteractionEffectBase, public ParameterizedGameInteractionEffect {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+    };
+
+    class UnsetFlag: public GameInteractionEffectBase, public ParameterizedGameInteractionEffect {
+        GameInteractionEffectQueryResult CanBeApplied() override;
+        void _Apply() override;
+    };
+
     class ModifyHeartContainers: public GameInteractionEffectBase, public ParameterizedGameInteractionEffect {
         GameInteractionEffectQueryResult CanBeApplied() override;
         void _Apply() override;
