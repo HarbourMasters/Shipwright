@@ -25,7 +25,7 @@ void BgHidanFirewall_Erupt(BgHidanFirewall* this, PlayState* play);
 void BgHidanFirewall_Collide(BgHidanFirewall* this, PlayState* play);
 void BgHidanFirewall_ColliderFollowPlayer(BgHidanFirewall* this, PlayState* play);
 
-extern s16 gEnPartnerId;
+extern s16 gEnLinkPuppetId;
 
 const ActorInit Bg_Hidan_Firewall_InitVars = {
     ACTOR_BG_HIDAN_FIREWALL,
@@ -97,7 +97,7 @@ s32 BgHidanFirewall_CheckProximity(BgHidanFirewall* this, PlayState* play) {
 #ifdef ENABLE_REMOTE_CONTROL
     Actor* actor = gPlayState->actorCtx.actorLists[ACTORCAT_ITEMACTION].head;
     while (actor != NULL) {
-        if (gEnPartnerId == actor->id && Anchor_GetClientRoomIndex(actor->params - 3) == gPlayState->roomCtx.curRoom.num && Anchor_GetClientScene(actor->params - 3) == gPlayState->sceneNum) {
+        if (gEnLinkPuppetId == actor->id && Anchor_GetClientRoomIndex(actor->params - 3) == gPlayState->roomCtx.curRoom.num && Anchor_GetClientScene(actor->params - 3) == gPlayState->sceneNum) {
             Vec3f actorDistance;
             func_8002DBD0(&this->actor, &actorDistance, &actor->world.pos);
             if (fabsf(actorDistance.x) < 100.0f && fabsf(actorDistance.z) < 120.0f) {

@@ -15,7 +15,7 @@ extern "C" {
 #include "z64scene.h"
 #include "z64actor.h"
 #include "functions.h"
-extern "C" s16 gEnPartnerId;
+extern "C" s16 gEnLinkPuppetId;
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
 }
@@ -34,6 +34,39 @@ void to_json(json& j, const Color_RGB8& color) {
         {"g", color.g},
         {"b", color.b}
     };
+}
+
+void from_json(const json& j, PlayerData& playerData) {
+    j.at("playerAge").get_to(playerData.playerAge);
+    j.at("playerSound").get_to(playerData.playerSound);
+    j.at("sheathType").get_to(playerData.sheathType);
+    j.at("leftHandType").get_to(playerData.leftHandType);
+    j.at("biggoron_broken").get_to(playerData.biggoron_broken);
+    j.at("rightHandType").get_to(playerData.rightHandType);
+    j.at("tunicType").get_to(playerData.tunicType);
+    j.at("bootsType").get_to(playerData.bootsType);
+    j.at("faceType").get_to(playerData.faceType);
+    j.at("shieldType").get_to(playerData.shieldType);
+    j.at("damageEffect").get_to(playerData.damageEffect);
+    j.at("damageValue").get_to(playerData.damageValue);
+}
+
+void to_json(json& j, const PlayerData& playerData) {
+    j = json{
+        { "playerAge", playerData.playerAge },
+        { "playerSound", playerData.playerSound },
+        { "sheathType", playerData.sheathType },
+        { "leftHandType", playerData.leftHandType },
+        { "biggoron_broken", playerData.biggoron_broken },
+        { "rightHandType", playerData.rightHandType },
+        { "tunicType", playerData.tunicType },
+        { "bootsType", playerData.bootsType },
+        { "faceType", playerData.faceType },
+        { "shieldType", playerData.shieldType },
+        { "damageEffect", playerData.damageEffect },
+        { "damageValue", playerData.damageValue },
+    };
+
 }
 
 void to_json(json& j, const Vec3f& vec) {
@@ -87,6 +120,7 @@ void from_json(const json& j, AnchorClient& client) {
     j.contains("roomIndex") ? j.at("roomIndex").get_to(client.roomIndex) : client.roomIndex = 0;
     j.contains("entranceIndex") ? j.at("entranceIndex").get_to(client.entranceIndex) : client.entranceIndex = 0;
     j.contains("posRot") ? j.at("posRot").get_to(client.posRot) : client.posRot = { -9999, -9999, -9999, 0, 0, 0 };
+    j.contains("playerData") ? j.at("playerData").get_to(client.playerData) : client.playerData = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 }
 
 void to_json(json& j, const SavedSceneFlags& flags) {
@@ -187,7 +221,7 @@ void from_json(const json& j, SaveContext& saveContext) {
 
 std::map<uint32_t, AnchorClient> GameInteractorAnchor::AnchorClients = {};
 std::vector<uint32_t> GameInteractorAnchor::FairyIndexToClientId = {};
-std::string GameInteractorAnchor::clientVersion = "Anchor Build 11";
+std::string GameInteractorAnchor::clientVersion = "Anchor + Player Models 1";
 std::string GameInteractorAnchor::seed = "00000";
 std::vector<std::pair<uint16_t, int16_t>> receivedItems = {};
 std::vector<AnchorMessage> anchorMessages = {};
@@ -339,6 +373,11 @@ void GameInteractorAnchor::HandleRemoteJson(nlohmann::json payload) {
             GameInteractorAnchor::AnchorClients[clientId].roomIndex = payload.contains("roomIndex") ? payload.at("roomIndex").get<int16_t>() : 0;
             GameInteractorAnchor::AnchorClients[clientId].entranceIndex = payload.contains("entranceIndex") ? payload.at("entranceIndex").get<int16_t>() : 0;
             GameInteractorAnchor::AnchorClients[clientId].posRot = payload["posRot"].get<PosRot>();
+            GameInteractorAnchor::AnchorClients[clientId].playerData = payload["playerData"].get<PlayerData>();
+            std::vector<Vec3s> jointTable = payload["jointTable"].get<std::vector<Vec3s>>();
+            for (int i = 0; i < 23; i++) {
+                GameInteractorAnchor::AnchorClients[clientId].jointTable[i] = jointTable[i];
+            }
         }
     }
     if (payload["type"] == "PUSH_SAVE_STATE" && GameInteractor::IsSaveLoaded()) {
@@ -363,7 +402,9 @@ void GameInteractorAnchor::HandleRemoteJson(nlohmann::json payload) {
                     SCENE_ID_MAX,
                     0,
                     0,
-                    { -9999, -9999, -9999, 0, 0, 0 }
+                    { -9999, -9999, -9999, 0, 0, 0 },
+                    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                    {},
                 };
                 Anchor_DisplayMessage({
                     .prefix = client.name,
@@ -555,6 +596,24 @@ PosRot Anchor_GetClientPosition(uint32_t fairyIndex) {
     return GameInteractorAnchor::AnchorClients[clientId].posRot;
 }
 
+PlayerData Anchor_GetClientPlayerData(uint32_t puppetIndex) {
+    uint32_t clientId = GameInteractorAnchor::FairyIndexToClientId[puppetIndex];
+    if (GameInteractorAnchor::AnchorClients.find(clientId) == GameInteractorAnchor::AnchorClients.end()) {
+        return { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    }
+
+    return GameInteractorAnchor::AnchorClients[clientId].playerData;
+}
+
+Vec3s* Anchor_GetClientJointTable(uint32_t puppetIndex) {
+    uint32_t clientId = GameInteractorAnchor::FairyIndexToClientId[puppetIndex];
+    if (GameInteractorAnchor::AnchorClients.find(clientId) == GameInteractorAnchor::AnchorClients.end()) {
+        return {};
+    }
+
+    return GameInteractorAnchor::AnchorClients[clientId].jointTable;
+}
+
 uint8_t Anchor_GetClientRoomIndex(uint32_t fairyIndex) {
     uint32_t clientId = GameInteractorAnchor::FairyIndexToClientId[fairyIndex];
     if (GameInteractorAnchor::AnchorClients.find(clientId) == GameInteractorAnchor::AnchorClients.end()) {
@@ -577,7 +636,7 @@ void Anchor_SpawnClientFairies() {
     if (gPlayState == NULL) return;
     Actor* actor = gPlayState->actorCtx.actorLists[ACTORCAT_ITEMACTION].head;
     while (actor != NULL) {
-        if (gEnPartnerId == actor->id) {
+        if (gEnLinkPuppetId == actor->id) {
             Actor_Kill(actor);
         }
         actor = actor->next;
@@ -588,8 +647,13 @@ void Anchor_SpawnClientFairies() {
     uint32_t i = 0;
     for (auto [clientId, client] : GameInteractorAnchor::AnchorClients) {
         GameInteractorAnchor::FairyIndexToClientId.push_back(clientId);
-        auto fairy = Actor_Spawn(&gPlayState->actorCtx, gPlayState, gEnPartnerId, -9999.0, -9999.0, -9999.0, 0, 0, 0, 3 + i, false);
-        NameTag_RegisterForActor(fairy, client.name.c_str());
+        auto fairy = Actor_Spawn(&gPlayState->actorCtx, gPlayState, gEnLinkPuppetId, -9999.0, -9999.0, -9999.0, 0, 0, 0, 3 + i, false);
+
+        PlayerData playerData = Anchor_GetClientPlayerData(i);
+
+        NameTagOptions options = NameTagOptions();
+        options.yOffset = playerData.playerAge == LINK_AGE_ADULT ? 50.0f : 26.0f;
+        NameTag_RegisterForActorWithOptions(fairy, client.name.c_str(), options);
         i++;
     }
 }
@@ -676,30 +740,51 @@ void Anchor_RegisterHooks() {
         GameInteractorAnchor::Instance->TransmitJsonToRemote(payload);
     });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        static uint32_t lastPlayerCount = 0;
-        uint32_t currentPlayerCount =  GameInteractorAnchor::AnchorClients.size();
+        uint32_t currentPlayerCount = GameInteractorAnchor::AnchorClients.size();
+
         if (!GameInteractor::Instance->isRemoteInteractorConnected || gPlayState == NULL || !GameInteractor::Instance->IsSaveLoaded()) {
-            lastPlayerCount = currentPlayerCount;
             return;
         }
+
         Player* player = GET_PLAYER(gPlayState);
         nlohmann::json payload;
         float currentPosition = player->actor.world.pos.x + player->actor.world.pos.y + player->actor.world.pos.z + player->actor.world.rot.y;
-        static float lastPosition = 0.0f;
 
-        if (currentPosition == lastPosition && currentPlayerCount == lastPlayerCount) return;
+        gSaveContext.playerData.bootsType = player->currentBoots;
+        gSaveContext.playerData.shieldType = player->currentShield;
+        gSaveContext.playerData.sheathType = player->sheathType;
+        gSaveContext.playerData.leftHandType = player->leftHandType;
+        gSaveContext.playerData.rightHandType = player->rightHandType;
+        gSaveContext.playerData.tunicType = player->currentTunic;
+        gSaveContext.playerData.faceType = player->actor.shape.face;
+        gSaveContext.playerData.biggoron_broken = gSaveContext.swordHealth <= 0 ? 1 : 0;
+        gSaveContext.playerData.playerAge = gSaveContext.linkAge;
 
         payload["type"] = "CLIENT_UPDATE";
         payload["sceneNum"] = gPlayState->sceneNum;
         payload["roomIndex"] = gPlayState->roomCtx.curRoom.num;
         payload["entranceIndex"] = gSaveContext.entranceIndex;
-        payload["posRot"] = player->actor.world;
+
+        PosRot playerPosRot;
+        playerPosRot.pos = player->actor.world.pos;
+        playerPosRot.rot = player->actor.shape.rot;
+        payload["posRot"] = playerPosRot;
+
+        payload["playerData"] = gSaveContext.playerData;
+
+        std::vector<Vec3s> jointTable = {};
+        for (int i = 0; i < 23; i++) {
+            jointTable.push_back(player->skelAnime.jointTable[i]);
+        }
+
+        payload["jointTable"] = jointTable;
         payload["quiet"] = true;
 
-        lastPosition = currentPosition;
-        lastPlayerCount = currentPlayerCount;
-
         GameInteractorAnchor::Instance->TransmitJsonToRemote(payload);
+
+        gSaveContext.playerData.damageEffect = 0;
+        gSaveContext.playerData.damageValue = 0;
+        gSaveContext.playerData.playerSound = 0;
     });
 }
 

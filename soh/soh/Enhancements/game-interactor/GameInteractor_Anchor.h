@@ -5,6 +5,7 @@
 
 #include "z64item.h"
 #include "z64actor.h"
+#include "z64save.h"
 #include "./GameInteractor.h"
 
 typedef struct {
@@ -18,6 +19,8 @@ typedef struct {
     uint8_t roomIndex;
     uint32_t entranceIndex;
     PosRot posRot;
+    PlayerData playerData;
+    Vec3s jointTable[23];
 } AnchorClient;
 
 class GameInteractorAnchor {
@@ -81,6 +84,8 @@ void Anchor_RequestSaveStateFromRemote();
 uint8_t Anchor_GetClientScene(uint32_t fairyIndex);
 PosRot Anchor_GetClientPosition(uint32_t fairyIndex);
 uint8_t Anchor_GetClientRoomIndex(uint32_t fairyIndex);
+Vec3s* Anchor_GetClientJointTable(uint32_t puppetIndex);
+PlayerData Anchor_GetClientPlayerData(uint32_t puppetIndex);
 Color_RGB8 Anchor_GetClientColor(uint32_t fairyIndex);
 void Anchor_SpawnClientFairies();
 void Anchor_SkipLocation(uint32_t locationIndex, bool skipped);

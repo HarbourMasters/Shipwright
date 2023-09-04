@@ -1124,6 +1124,7 @@ s32 func_8008EF44(PlayState* play, s32 ammo);
 s32 Player_IsBurningStickInRange(PlayState* play, Vec3f* pos, f32 radius, f32 arg3);
 s32 Player_GetStrength(void);
 u8 Player_GetMask(PlayState* play);
+s32 Player_InflictDamage(PlayState* play, s32 damage);
 Player* Player_UnsetMask(PlayState* play);
 s32 Player_HasMirrorShieldEquipped(PlayState* play);
 s32 Player_HasMirrorShieldSetToDraw(PlayState* play);

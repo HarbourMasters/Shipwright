@@ -606,7 +606,7 @@ void Map_Init(PlayState* play) {
     }
 }
 
-extern s16 gEnPartnerId;
+extern s16 gEnLinkPuppetId;
 
 void Minimap_DrawCompassIcons(PlayState* play) {
     s32 pad;
@@ -735,7 +735,7 @@ void Minimap_DrawCompassIcons(PlayState* play) {
         // Other Anchor Players Arrow
         Actor* actor = gPlayState->actorCtx.actorLists[ACTORCAT_ITEMACTION].head;
         while (actor != NULL) {
-            if (gEnPartnerId == actor->id && Anchor_GetClientRoomIndex(actor->params - 3) == gPlayState->roomCtx.curRoom.num) {
+            if (gEnLinkPuppetId == actor->id && Anchor_GetClientRoomIndex(actor->params - 3) == gPlayState->roomCtx.curRoom.num) {
                 if (actor->world.pos.x != -9999.0 && Anchor_GetClientScene(actor->params - 3) == gPlayState->sceneNum) {
                     Color_RGB8 playerColor = Anchor_GetClientColor(actor->params - 3);
 
