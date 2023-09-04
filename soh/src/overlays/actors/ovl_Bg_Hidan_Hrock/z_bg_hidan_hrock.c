@@ -201,7 +201,9 @@ void func_8088960C(BgHidanHrock* this, PlayState* play) {
 }
 
 void func_808896B8(BgHidanHrock* this, PlayState* play) {
-    if (this->collider.base.acFlags & 2) {
+    // #region SOH [Co-op]
+    if ((this->collider.base.acFlags & 2) || Flags_GetSwitch(play, this->unk_16A)) {
+    // #endregion
         this->collider.base.acFlags &= ~2;
         this->actionFunc = func_808894B0;
         this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;

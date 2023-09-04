@@ -6,6 +6,10 @@
 
 #include "z_bg_hidan_firewall.h"
 #include "objects/object_hidan_objects/object_hidan_objects.h"
+#ifdef ENABLE_REMOTE_CONTROL
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Anchor.h"
+#endif
 
 #define FLAGS 0
 
@@ -20,6 +24,8 @@ void BgHidanFirewall_Countdown(BgHidanFirewall* this, PlayState* play);
 void BgHidanFirewall_Erupt(BgHidanFirewall* this, PlayState* play);
 void BgHidanFirewall_Collide(BgHidanFirewall* this, PlayState* play);
 void BgHidanFirewall_ColliderFollowPlayer(BgHidanFirewall* this, PlayState* play);
+
+extern s16 gEnPartnerId;
 
 const ActorInit Bg_Hidan_Firewall_InitVars = {
     ACTOR_BG_HIDAN_FIREWALL,
@@ -87,6 +93,20 @@ s32 BgHidanFirewall_CheckProximity(BgHidanFirewall* this, PlayState* play) {
 
     player = GET_PLAYER(play);
     func_8002DBD0(&this->actor, &distance, &player->actor.world.pos);
+
+#ifdef ENABLE_REMOTE_CONTROL
+    Actor* actor = gPlayState->actorCtx.actorLists[ACTORCAT_ITEMACTION].head;
+    while (actor != NULL) {
+        if (gEnPartnerId == actor->id && Anchor_GetClientRoomIndex(actor->params - 3) == gPlayState->roomCtx.curRoom.num && Anchor_GetClientScene(actor->params - 3) == gPlayState->sceneNum) {
+            Vec3f actorDistance;
+            func_8002DBD0(&this->actor, &actorDistance, &actor->world.pos);
+            if (fabsf(actorDistance.x) < 100.0f && fabsf(actorDistance.z) < 120.0f) {
+                return 1;
+            }
+        }
+        actor = actor->next;
+    }
+#endif
 
     if (fabsf(distance.x) < 100.0f && fabsf(distance.z) < 120.0f) {
         return 1;
