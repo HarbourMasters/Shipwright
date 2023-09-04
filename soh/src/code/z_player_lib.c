@@ -5,6 +5,8 @@
 #include "objects/object_link_child/object_link_child.h"
 #include "objects/object_triforce_spot/object_triforce_spot.h"
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
+#include "overlays/actors/ovl_Link_Puppet/z_link_puppet.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Anchor.h"
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
@@ -848,9 +850,16 @@ void func_8008F470(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dLis
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
-void DrawAnchorPuppet(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dListCount, s32 lod, s32 tunic, s32 boots, s32 face,
-    OverrideLimbDrawOpa overrideLimbDraw, PostLimbDrawOpa postLimbDraw, void* data, PlayerData playerData) {
+static Gfx* sMaskDlists[PLAYER_MASK_MAX - 1] = {
+    gLinkChildKeatonMaskDL, gLinkChildSkullMaskDL, gLinkChildSpookyMaskDL, gLinkChildBunnyHoodDL,
+    gLinkChildGoronMaskDL,  gLinkChildZoraMaskDL,  gLinkChildGerudoMaskDL, gLinkChildMaskOfTruthDL,
+};
+
+void DrawAnchorPuppet(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dListCount, s32 lod, s32 tunic, s32 boots, s32 face, OverrideLimbDrawOpa overrideLimbDraw, PostLimbDrawOpa postLimbDraw,
+                      void* data, PlayerData playerData) {
+    LinkPuppet* puppet = (LinkPuppet*)data;
     Color_RGB8* color;
+
     s32 eyeIndex = (jointTable[22].x & 0xF) - 1;
     s32 mouthIndex = (jointTable[22].x >> 4) - 1;
 
@@ -940,6 +949,35 @@ void DrawAnchorPuppet(PlayState* play, void** skeleton, Vec3s* jointTable, s32 d
                 gSPDisplayList(POLY_OPA_DISP++, gLinkChildGoronBraceletDL);
             }
         }
+    }
+
+    if (playerData.currentMask != PLAYER_MASK_NONE) {
+        if (playerData.currentMask == PLAYER_MASK_BUNNY) {
+            PlayerData playerData = Anchor_GetClientPlayerData(puppet->actor.params - 3);
+
+            Mtx* sp70 = Graph_Alloc(play->state.gfxCtx, 2 * sizeof(Mtx));
+
+            Vec3s sp68;
+
+            FrameInterpolation_RecordActorPosRotMatrix();
+            gSPSegment(POLY_OPA_DISP++, 0x0B, sp70);
+
+            sp68.x = playerData.unk_02 + 0x3E2;
+            sp68.y = playerData.unk_04 + 0xDBE;
+            sp68.z = playerData.unk_00 - 0x348A;
+            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f - CVarGetFloat("gCosmetics.BunnyHood_EarLength", 0.0f),
+                                         -240.0f - CVarGetFloat("gCosmetics.BunnyHood_EarSpread", 0.0f), &sp68);
+            MATRIX_TOMTX(sp70++);
+
+            sp68.x = playerData.unk_02 - 0x3E2;
+            sp68.y = -0xDBE - playerData.unk_04;
+            sp68.z = playerData.unk_00 - 0x348A;
+            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f - CVarGetFloat("gCosmetics.BunnyHood_EarLength", 0.0f),
+                                         240.0f + CVarGetFloat("gCosmetics.BunnyHood_EarSpread", 0.0f), &sp68);
+            MATRIX_TOMTX(sp70);
+        }
+
+        gSPDisplayList(POLY_OPA_DISP++, sMaskDlists[playerData.currentMask - 1]);
     }
 
     CLOSE_DISPS(play->state.gfxCtx);
@@ -1127,6 +1165,77 @@ s32 func_8008FCC8(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
             return false;
         } else {
             return false;
+        }
+    }
+
+    return false;
+}
+
+s32 PuppetOverrideDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+    LinkPuppet* this = (LinkPuppet*)thisx;
+
+    PlayerData playerData = Anchor_GetClientPlayerData(this->actor.params - 3);
+
+    if (limbIndex == PLAYER_LIMB_ROOT) {
+        if (playerData.playerAge != LINK_AGE_ADULT) {
+            if (!(playerData.moveFlags & 4) || (playerData.moveFlags & 1)) {
+                pos->x *= 0.64f;
+                pos->z *= 0.64f;
+            }
+
+            if (!(playerData.moveFlags & 4) || (playerData.moveFlags & 2)) {
+                pos->y *= 0.64f;
+            }
+        }
+
+        pos->y -= playerData.unk_6C4;
+    }
+    else if (limbIndex == PLAYER_LIMB_L_HAND) {
+        Gfx** dLists = &sPlayerDListGroups[playerData.leftHandType][(void)0, playerData.playerAge];
+
+        if ((D_80160014 == 4) && (playerData.biggoron_broken == 1)) {
+            dLists += 4;
+        } else if ((D_80160014 == 6) && (playerData.playerStateFlags1 & 0x2000000)) {
+            dLists = &D_80125E08[playerData.playerAge];
+            D_80160014 = 0;
+        } else if ((playerData.leftHandType == 0) && (this->actor.speedXZ > 2.0f) &&
+                   !(playerData.playerStateFlags1 & 0x8000000)) {
+            dLists = &D_80125E18[playerData.playerAge];
+            D_80160014 = 1;
+        }
+
+        *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
+    } else if (limbIndex == PLAYER_LIMB_R_HAND) {
+        Gfx** dLists = &sPlayerDListGroups[playerData.rightHandType][(void)0, playerData.playerAge];
+
+        if (D_80160018 == 10) {
+            dLists += playerData.shieldType * 4;
+        } else if ((playerData.rightHandType == 8) && (this->actor.speedXZ > 2.0f) &&
+                   !(playerData.playerStateFlags1 & 0x8000000)) {
+            dLists = &D_80125E58[playerData.playerAge];
+            D_80160018 = 9;
+        }
+
+        *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
+    } else if (limbIndex == PLAYER_LIMB_SHEATH) {
+        Gfx** dLists = &sPlayerDListGroups[playerData.sheathType][(void)0, playerData.playerAge];
+
+        if ((playerData.sheathType == 18) || (playerData.sheathType == 19)) {
+            dLists += playerData.shieldType * 4;
+            if (playerData.playerAge != LINK_AGE_ADULT && (playerData.shieldType < PLAYER_SHIELD_HYLIAN) &&
+                (playerData.swordEquipped != ITEM_SWORD_KOKIRI)) {
+                dLists += 16;
+            }
+        } else if (playerData.playerAge != LINK_AGE_ADULT &&
+                   ((playerData.sheathType == 16) || (playerData.sheathType == 17)) &&
+                   (playerData.swordEquipped != ITEM_SWORD_KOKIRI)) {
+            dLists = &D_80125D28[16];
+        }
+
+        if (dLists[sDListsLodOffset] != NULL) {
+            *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
+        } else {
+            *dList = NULL;
         }
     }
 

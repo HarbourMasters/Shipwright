@@ -182,6 +182,18 @@ typedef struct {
     u8 damageValue;
     s32 strengthValue;
     f32 yOffset;
+    u8 currentMask;
+    u8 swordEquipped;
+    s16 playerHealth;
+    s16 playerHealthMax;
+    u32 playerStateFlags1;
+    u8 moveFlags;
+    f32 unk_6C4;
+    s16 unk_00;
+    s16 unk_02;
+    s16 unk_04;
+    s16 unk_06;
+    s16 unk_08;
 } PlayerData;
 
 typedef struct {

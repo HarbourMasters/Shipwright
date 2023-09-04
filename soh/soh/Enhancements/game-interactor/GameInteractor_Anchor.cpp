@@ -15,6 +15,7 @@ extern "C" {
 #include "z64scene.h"
 #include "z64actor.h"
 #include "functions.h"
+
 extern "C" s16 gEnLinkPuppetId;
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
@@ -51,6 +52,18 @@ void from_json(const json& j, PlayerData& playerData) {
     j.at("damageValue").get_to(playerData.damageValue);
     j.at("strengthValue").get_to(playerData.strengthValue);
     j.at("yOffset").get_to(playerData.yOffset);
+    j.at("currentMask").get_to(playerData.currentMask);
+    j.at("swordEquipped").get_to(playerData.swordEquipped);
+    j.at("playerHealth").get_to(playerData.playerHealth);
+    j.at("playerHealthMax").get_to(playerData.playerHealthMax);
+    j.at("playerStateFlags1").get_to(playerData.playerStateFlags1);
+    j.at("moveFlags").get_to(playerData.moveFlags);
+    j.at("unk_6C4").get_to(playerData.unk_6C4);
+    j.at("unk_00").get_to(playerData.unk_00);
+    j.at("unk_02").get_to(playerData.unk_02);
+    j.at("unk_04").get_to(playerData.unk_04);
+    j.at("unk_06").get_to(playerData.unk_06);
+    j.at("unk_08").get_to(playerData.unk_08);
 }
 
 void to_json(json& j, const PlayerData& playerData) {
@@ -69,6 +82,18 @@ void to_json(json& j, const PlayerData& playerData) {
         { "damageValue", playerData.damageValue },
         { "strengthValue", playerData.strengthValue },
         { "yOffset", playerData.yOffset },
+        { "currentMask", playerData.currentMask },
+        { "swordEquipped", playerData.swordEquipped },
+        { "playerHealth", playerData.playerHealth },
+        { "playerHealthMax", playerData.playerHealthMax },
+        { "playerStateFlags1", playerData.playerStateFlags1 },
+        { "moveFlags", playerData.moveFlags },
+        { "unk_6C4", playerData.unk_6C4 },
+        { "unk_00", playerData.unk_00 },
+        { "unk_02", playerData.unk_02 },
+        { "unk_04", playerData.unk_04 },
+        { "unk_06", playerData.unk_06 },
+        { "unk_08", playerData.unk_08 },
     };
 }
 
@@ -224,7 +249,7 @@ void from_json(const json& j, SaveContext& saveContext) {
 
 std::map<uint32_t, AnchorClient> GameInteractorAnchor::AnchorClients = {};
 std::vector<uint32_t> GameInteractorAnchor::FairyIndexToClientId = {};
-std::string GameInteractorAnchor::clientVersion = "Anchor + Player Models 1";
+std::string GameInteractorAnchor::clientVersion = "Anchor + Player Models 2";
 std::string GameInteractorAnchor::seed = "00000";
 std::vector<std::pair<uint16_t, int16_t>> receivedItems = {};
 std::vector<AnchorMessage> anchorMessages = {};
@@ -655,7 +680,7 @@ void Anchor_SpawnClientFairies() {
         PlayerData playerData = Anchor_GetClientPlayerData(i);
 
         NameTagOptions options = NameTagOptions();
-        options.yOffset = playerData.playerAge == LINK_AGE_ADULT ? 50.0f : 26.0f;
+        options.yOffset = playerData.playerAge == LINK_AGE_ADULT ? 56.0f : 32.0f;
         NameTag_RegisterForActorWithOptions(fairy, client.name.c_str(), options);
         i++;
     }
@@ -764,6 +789,18 @@ void Anchor_RegisterHooks() {
         gSaveContext.playerData.playerAge = gSaveContext.linkAge;
         gSaveContext.playerData.strengthValue = CUR_UPG_VALUE(UPG_STRENGTH);
         gSaveContext.playerData.yOffset = player->actor.shape.yOffset;
+        gSaveContext.playerData.currentMask = player->currentMask;
+        gSaveContext.playerData.swordEquipped = gSaveContext.equips.buttonItems[0];
+        gSaveContext.playerData.playerHealth = gSaveContext.health;
+        gSaveContext.playerData.playerHealthMax = gSaveContext.healthCapacity;
+        gSaveContext.playerData.playerStateFlags1 = player->stateFlags1;
+        gSaveContext.playerData.moveFlags = player->skelAnime.moveFlags;
+        gSaveContext.playerData.unk_6C4 = player->unk_6C4;
+        gSaveContext.playerData.unk_00 = player->unk_00;
+        gSaveContext.playerData.unk_02 = player->unk_02;
+        gSaveContext.playerData.unk_04 = player->unk_04;
+        gSaveContext.playerData.unk_06 = player->unk_06;
+        gSaveContext.playerData.unk_08 = player->unk_08;
 
         payload["playerData"] = gSaveContext.playerData;
 

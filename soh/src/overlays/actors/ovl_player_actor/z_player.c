@@ -13720,6 +13720,14 @@ void func_8085002C(Player* this) {
     } else {
         D_80858AC8.unk_04 = 0;
     }
+
+    #ifdef ENABLE_REMOTE_CONTROL
+    this->unk_00 = D_80858AC8.unk_00;
+    this->unk_02 = D_80858AC8.unk_02;
+    this->unk_04 = D_80858AC8.unk_04;
+    this->unk_06 = D_80858AC8.unk_06;
+    this->unk_08 = D_80858AC8.unk_08;
+    #endif
 }
 
 s32 func_80850224(Player* this, PlayState* play) {

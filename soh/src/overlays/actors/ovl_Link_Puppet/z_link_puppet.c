@@ -33,10 +33,6 @@ static ColliderCylinderInit sCylinderInit = {
     { 15, 50, 0, { 0, 0, 0 } },
 };
 
-static Vec3s D_80854730 = { -57, 3377, 0 };
-
-extern func_80833338(Player* this);
-
 typedef enum {
     PUPPET_DMGEFF_NONE,
     PUPPET_DMGEFF_NORMAL,
@@ -208,58 +204,6 @@ Vec3f FEET_POS[] = {
     { 200.0f, 200.0f, 0.0f },
 };
 
-extern Gfx** sPlayerDListGroups[];
-extern Gfx* D_80125D28[];
-
-s32 Puppet_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
-    LinkPuppet* this = (LinkPuppet*)thisx;
-    static Vec3f headPosLocal = { 2000.0f, 0.0f, 0.0f };
-
-    PlayerData playerData = Anchor_GetClientPlayerData(this->actor.params - 3);
-
-    if (limbIndex == PLAYER_LIMB_HEAD) {
-        Matrix_MultVec3f(&headPosLocal, &this->actor.focus.pos);
-    }
-
-    if (limbIndex == PLAYER_LIMB_ROOT) {
-        if (playerData.playerAge == 1) {
-            if (!(this->linkSkeleton.moveFlags & 4) || (this->linkSkeleton.moveFlags & 1)) {
-                pos->x *= 0.64f;
-                pos->z *= 0.64f;
-            }
-
-            if (!(this->linkSkeleton.moveFlags & 4) || (this->linkSkeleton.moveFlags & 2)) {
-                pos->y *= 0.64f;
-            }
-        }
-    } else if (limbIndex == PLAYER_LIMB_SHEATH) {
-
-        Gfx** dLists = &sPlayerDListGroups[playerData.sheathType][(void)0, playerData.playerAge];
-        if ((playerData.sheathType == 18) || (playerData.sheathType == 19)) {
-            dLists += playerData.shieldType * 4;
-        }
-        *dList = ResourceMgr_LoadGfxByName(dLists[0]);
-
-    } else if (limbIndex == PLAYER_LIMB_L_HAND) {
-
-        Gfx** dLists = &sPlayerDListGroups[playerData.leftHandType][(void)0, playerData.playerAge];
-        if ((playerData.leftHandType == 4) && playerData.biggoron_broken) {
-            dLists += 4;
-        }
-        *dList = ResourceMgr_LoadGfxByName(dLists[0]);
-
-    } else if (limbIndex == PLAYER_LIMB_R_HAND) {
-
-        Gfx** dLists = &sPlayerDListGroups[playerData.rightHandType][(void)0, playerData.playerAge];
-        if (playerData.rightHandType == 10) {
-            dLists += playerData.shieldType * 4;
-        }
-        *dList = ResourceMgr_LoadGfxByName(dLists[0]);
-    }
-
-    return false;
-}
-
 void Puppet_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     LinkPuppet* this = (LinkPuppet*)thisx;
 
@@ -275,6 +219,6 @@ void LinkPuppet_Draw(Actor* thisx, PlayState* play) {
     PlayerData playerData = Anchor_GetClientPlayerData(this->actor.params - 3);
 
     DrawAnchorPuppet(play, this->linkSkeleton.skeleton, this->linkSkeleton.jointTable, this->linkSkeleton.dListCount, 0,
-        playerData.tunicType, playerData.bootsType, playerData.faceType, Puppet_OverrideLimbDraw, Puppet_PostLimbDraw, this, playerData);
+                     playerData.tunicType, playerData.bootsType, playerData.faceType, PuppetOverrideDraw,
+                     Puppet_PostLimbDraw, this, playerData);
 }
-#endif
