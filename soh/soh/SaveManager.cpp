@@ -603,11 +603,14 @@ void SaveManager::InitFileNormal() {
 void SaveManager::InitFileDebug() {
     InitFileNormal();
 
-    if (CVarGetInteger("gDebugSaveFileMode", 1) == 2) {
-        InitFileMaxed();
-        return;
-    } else if (CVarGetInteger("gDebugSaveFileMode", 1) == 0) {
-        return;
+    //don't apply gDebugSaveFileMode on the title screen
+    if (gSaveContext.fileNum != 0xFF) {
+        if (CVarGetInteger("gDebugSaveFileMode", 1) == 2) {
+            InitFileMaxed();
+            return;
+        } else if (CVarGetInteger("gDebugSaveFileMode", 1) == 0) {
+            return;
+        }
     }
 
     gSaveContext.totalDays = 0;
