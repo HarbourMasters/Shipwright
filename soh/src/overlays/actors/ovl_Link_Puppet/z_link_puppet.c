@@ -222,3 +222,4 @@ void LinkPuppet_Draw(Actor* thisx, PlayState* play) {
                      playerData.tunicType, playerData.bootsType, playerData.faceType, PuppetOverrideDraw,
                      Puppet_PostLimbDraw, this, playerData);
 }
+#endif
