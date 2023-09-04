@@ -322,6 +322,7 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
     Vec3f dropsSpawnPt;
     s32 i;
     s32 leavesParams;
+    s32 numDrops;
 
     // Despawn extra trees in a group if out of range
     if ((this->spawnType == WOOD_SPAWN_SPAWNED) && (this->actor.parent != NULL)) {
@@ -352,7 +353,9 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
             dropsSpawnPt.y += 200.0f;
 
             if ((this->unk_14C >= 0) && (this->unk_14C < 0x64) && (CVarGetInteger("gTreeStickDrops", 0)) && !(INV_CONTENT(ITEM_STICK) == ITEM_NONE)) {
-                for (i = 1; i < 4; ++i) {
+                srand(time(NULL));
+                (numDrops = (rand() % 4));
+                for (i = 0; i < numDrops; ++i) {
                     Item_DropCollectible(play, &dropsSpawnPt, ITEM00_STICK);
                 }
             } else {
