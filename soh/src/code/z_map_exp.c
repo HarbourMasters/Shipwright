@@ -735,7 +735,9 @@ void Minimap_DrawCompassIcons(PlayState* play) {
         // Other Anchor Players Arrow
         Actor* actor = gPlayState->actorCtx.actorLists[ACTORCAT_ITEMACTION].head;
         while (actor != NULL) {
-            if (gEnLinkPuppetId == actor->id && Anchor_GetClientRoomIndex(actor->params - 3) == gPlayState->roomCtx.curRoom.num) {
+            if (gEnLinkPuppetId == actor->id &&
+                (Anchor_GetClientRoomIndex(actor->params - 3) == gPlayState->roomCtx.curRoom.num ||
+                 (play->sceneNum >= SCENE_HYRULE_FIELD && play->sceneNum <= SCENE_OUTSIDE_GANONS_CASTLE))) {
                 if (actor->world.pos.x != -9999.0 && Anchor_GetClientScene(actor->params - 3) == gPlayState->sceneNum) {
                     Color_RGB8 playerColor = Anchor_GetClientColor(actor->params - 3);
 

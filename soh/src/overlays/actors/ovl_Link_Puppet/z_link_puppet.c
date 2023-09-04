@@ -6,7 +6,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Anchor.h"
 #include <string.h>
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void LinkPuppet_Init(Actor* thisx, PlayState* play);
 void LinkPuppet_Destroy(Actor* thisx, PlayState* play);
@@ -113,8 +113,6 @@ void LinkPuppet_Destroy(Actor* thisx, PlayState* play) {
 void LinkPuppet_Update(Actor* thisx, PlayState* play) {
     LinkPuppet* this = (LinkPuppet*)thisx;
 
-    Actor_SetFocus(this, 60.0f);
-
     Actor_UpdateBgCheckInfo(play, &this->actor, 15.0f, 30.0f, 60.0f, 0x1D);
 
     PlayerData playerData = Anchor_GetClientPlayerData(this->actor.params - 3);
@@ -123,6 +121,8 @@ void LinkPuppet_Update(Actor* thisx, PlayState* play) {
         LinkPuppet_Init(this, play);
         return;
     }
+
+    this->actor.shape.yOffset = playerData.yOffset;
 
     if (this->damageTimer > 0) {
         this->damageTimer--;
@@ -213,8 +213,13 @@ extern Gfx* D_80125D28[];
 
 s32 Puppet_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     LinkPuppet* this = (LinkPuppet*)thisx;
+    static Vec3f headPosLocal = { 2000.0f, 0.0f, 0.0f };
 
     PlayerData playerData = Anchor_GetClientPlayerData(this->actor.params - 3);
+
+    if (limbIndex == PLAYER_LIMB_HEAD) {
+        Matrix_MultVec3f(&headPosLocal, &this->actor.focus.pos);
+    }
 
     if (limbIndex == PLAYER_LIMB_ROOT) {
         if (playerData.playerAge == 1) {
@@ -269,8 +274,7 @@ void LinkPuppet_Draw(Actor* thisx, PlayState* play) {
 
     PlayerData playerData = Anchor_GetClientPlayerData(this->actor.params - 3);
 
-    func_8008F470(play, this->linkSkeleton.skeleton, this->linkSkeleton.jointTable, this->linkSkeleton.dListCount, 0,
-                  playerData.tunicType, playerData.bootsType, playerData.faceType, Puppet_OverrideLimbDraw,
-                  Puppet_PostLimbDraw, this);
+    DrawAnchorPuppet(play, this->linkSkeleton.skeleton, this->linkSkeleton.jointTable, this->linkSkeleton.dListCount, 0,
+        playerData.tunicType, playerData.bootsType, playerData.faceType, Puppet_OverrideLimbDraw, Puppet_PostLimbDraw, this, playerData);
 }
 #endif

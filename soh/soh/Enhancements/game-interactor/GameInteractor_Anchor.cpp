@@ -49,6 +49,8 @@ void from_json(const json& j, PlayerData& playerData) {
     j.at("shieldType").get_to(playerData.shieldType);
     j.at("damageEffect").get_to(playerData.damageEffect);
     j.at("damageValue").get_to(playerData.damageValue);
+    j.at("strengthValue").get_to(playerData.strengthValue);
+    j.at("yOffset").get_to(playerData.yOffset);
 }
 
 void to_json(json& j, const PlayerData& playerData) {
@@ -65,8 +67,9 @@ void to_json(json& j, const PlayerData& playerData) {
         { "shieldType", playerData.shieldType },
         { "damageEffect", playerData.damageEffect },
         { "damageValue", playerData.damageValue },
+        { "strengthValue", playerData.strengthValue },
+        { "yOffset", playerData.yOffset },
     };
-
 }
 
 void to_json(json& j, const Vec3f& vec) {
@@ -759,6 +762,10 @@ void Anchor_RegisterHooks() {
         gSaveContext.playerData.faceType = player->actor.shape.face;
         gSaveContext.playerData.biggoron_broken = gSaveContext.swordHealth <= 0 ? 1 : 0;
         gSaveContext.playerData.playerAge = gSaveContext.linkAge;
+        gSaveContext.playerData.strengthValue = CUR_UPG_VALUE(UPG_STRENGTH);
+        gSaveContext.playerData.yOffset = player->actor.shape.yOffset;
+
+        payload["playerData"] = gSaveContext.playerData;
 
         payload["type"] = "CLIENT_UPDATE";
         payload["sceneNum"] = gPlayState->sceneNum;
@@ -769,8 +776,6 @@ void Anchor_RegisterHooks() {
         playerPosRot.pos = player->actor.world.pos;
         playerPosRot.rot = player->actor.shape.rot;
         payload["posRot"] = playerPosRot;
-
-        payload["playerData"] = gSaveContext.playerData;
 
         std::vector<Vec3s> jointTable = {};
         for (int i = 0; i < 23; i++) {

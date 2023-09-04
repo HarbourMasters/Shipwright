@@ -848,6 +848,103 @@ void func_8008F470(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dLis
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+void DrawAnchorPuppet(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dListCount, s32 lod, s32 tunic, s32 boots, s32 face,
+    OverrideLimbDrawOpa overrideLimbDraw, PostLimbDrawOpa postLimbDraw, void* data, PlayerData playerData) {
+    Color_RGB8* color;
+    s32 eyeIndex = (jointTable[22].x & 0xF) - 1;
+    s32 mouthIndex = (jointTable[22].x >> 4) - 1;
+
+    OPEN_DISPS(play->state.gfxCtx);
+
+    if (eyeIndex < 0) {
+        eyeIndex = sEyeMouthIndexes[face][0];
+    }
+
+    if (eyeIndex > 7)
+        eyeIndex = 7;
+
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
+    gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[playerData.playerAge][eyeIndex]));
+#else
+    gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[eyeIndex]));
+#endif
+    if (mouthIndex < 0) {
+        mouthIndex = sEyeMouthIndexes[face][1];
+    }
+
+    if (mouthIndex > 3)
+        mouthIndex = 3;
+
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
+    gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[playerData.playerAge][mouthIndex]));
+#else
+    gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[eyeIndex]));
+#endif
+
+    Color_RGB8 sTemp;
+    color = &sTunicColors[tunic];
+    if (tunic == PLAYER_TUNIC_KOKIRI && CVarGetInteger("gCosmetics.Link_KokiriTunic.Changed", 0)) {
+        sTemp = CVarGetColor24("gCosmetics.Link_KokiriTunic.Value", sTunicColors[PLAYER_TUNIC_KOKIRI]);
+        color = &sTemp;
+    } else if (tunic == PLAYER_TUNIC_GORON && CVarGetInteger("gCosmetics.Link_GoronTunic.Changed", 0)) {
+        sTemp = CVarGetColor24("gCosmetics.Link_GoronTunic.Value", sTunicColors[PLAYER_TUNIC_GORON]);
+        color = &sTemp;
+    } else if (tunic == PLAYER_TUNIC_ZORA && CVarGetInteger("gCosmetics.Link_ZoraTunic.Changed", 0)) {
+        sTemp = CVarGetColor24("gCosmetics.Link_ZoraTunic.Value", sTunicColors[PLAYER_TUNIC_ZORA]);
+        color = &sTemp;
+    }
+
+    gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
+
+    sDListsLodOffset = lod * 2;
+
+    SkelAnime_DrawFlexLod(play, skeleton, jointTable, dListCount, overrideLimbDraw, postLimbDraw, data, lod);
+
+    if (overrideLimbDraw != func_800902F0 && overrideLimbDraw != func_80090440 && gSaveContext.gameMode != 3) {
+        if (playerData.playerAge == LINK_AGE_ADULT) {
+            s32 strengthUpgrade = playerData.strengthValue;
+
+            if (strengthUpgrade >= 2) { // silver or gold gauntlets
+                gDPPipeSync(POLY_OPA_DISP++);
+
+                color = &sGauntletColors[strengthUpgrade - 2];
+                if (strengthUpgrade == PLAYER_STR_SILVER_G &&
+                    CVarGetInteger("gCosmetics.Gloves_SilverGauntlets.Changed", 0)) {
+                    sTemp = CVarGetColor24("gCosmetics.Gloves_SilverGauntlets.Value",
+                                           sGauntletColors[PLAYER_STR_SILVER_G - 2]);
+                    color = &sTemp;
+                } else if (strengthUpgrade == PLAYER_STR_GOLD_G &&
+                           CVarGetInteger("gCosmetics.Gloves_GoldenGauntlets.Changed", 0)) {
+                    sTemp = CVarGetColor24("gCosmetics.Gloves_GoldenGauntlets.Value",
+                                           sGauntletColors[PLAYER_STR_GOLD_G - 2]);
+                    color = &sTemp;
+                }
+                gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
+
+                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftGauntletPlate1DL);
+                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightGauntletPlate1DL);
+                gSPDisplayList(POLY_OPA_DISP++,
+                               (D_80160014 == 0) ? gLinkAdultLeftGauntletPlate2DL : gLinkAdultLeftGauntletPlate3DL);
+                gSPDisplayList(POLY_OPA_DISP++,
+                               (D_80160018 == 8) ? gLinkAdultRightGauntletPlate2DL : gLinkAdultRightGauntletPlate3DL);
+            }
+
+            if (boots != 0) {
+                Gfx** bootDLists = sBootDListGroups[boots - 1];
+
+                gSPDisplayList(POLY_OPA_DISP++, bootDLists[0]);
+                gSPDisplayList(POLY_OPA_DISP++, bootDLists[1]);
+            }
+        } else {
+            if (playerData.strengthValue > PLAYER_STR_NONE) {
+                gSPDisplayList(POLY_OPA_DISP++, gLinkChildGoronBraceletDL);
+            }
+        }
+    }
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
 Vec3f D_8012602C = { 0.0f, 0.0f, 0.0f };
 
 Vec3f D_80126038[] = {
