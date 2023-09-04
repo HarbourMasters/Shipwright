@@ -359,12 +359,12 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
                 if ((this->unk_14C >= 0) && (this->unk_14C < 0x64)) {
                 Item_DropCollectibleRandom(play, &this->actor, &dropsSpawnPt, this->unk_14C << 4);
             } else {
-                    if (this->actor.home.rot.z != 0) {
-                        this->actor.home.rot.z &= 0x1FFF;
-                        this->actor.home.rot.z |= 0xE000;
-                        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SW, dropsSpawnPt.x, dropsSpawnPt.y, dropsSpawnPt.z,
-                                    0, this->actor.world.rot.y, 0, this->actor.home.rot.z, true);
-                        this->actor.home.rot.z = 0;
+                if (this->actor.home.rot.z != 0) {
+                    this->actor.home.rot.z &= 0x1FFF;
+                    this->actor.home.rot.z |= 0xE000;
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SW, dropsSpawnPt.x, dropsSpawnPt.y,
+                                dropsSpawnPt.z, 0, this->actor.world.rot.y, 0, this->actor.home.rot.z, true);
+                    this->actor.home.rot.z = 0;
                     }
                 }
             }
