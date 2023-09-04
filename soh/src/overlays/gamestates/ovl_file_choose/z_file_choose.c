@@ -3059,7 +3059,7 @@ void FileChoose_LoadGame(GameState* thisx) {
         // When remeber save location is on, set save warp if the save was in an a grotto, or
         // the entrance index is -1 from shuffle overwarld spawn
         if (Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) && ((!CVarGetInteger("gRememberSaveLocation", 0) ||
-            gSaveContext.savedSceneNum == SCENE_YOUSEI_IZUMI_TATE || gSaveContext.savedSceneNum == SCENE_KAKUSIANA) ||
+            gSaveContext.savedSceneNum == SCENE_FAIRYS_FOUNTAIN || gSaveContext.savedSceneNum == SCENE_GROTTOS) ||
             (CVarGetInteger("gRememberSaveLocation", 0) && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_SPAWNS) && gSaveContext.entranceIndex == -1))) {
             Entrance_SetSavewarpEntrance();
         }

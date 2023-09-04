@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_SYOKUDAI_H
+#define OBJECTS_OBJECT_SYOKUDAI_H 1
 
 #include "align_asset_macro.h"
 
@@ -25,3 +26,5 @@ static const ALIGN_ASSET(2) char gTimedTorchTex[] = dgTimedTorchTex;
 
 #define dgWoodenTorchTex "__OTR__objects/object_syokudai/gWoodenTorchTex"
 static const ALIGN_ASSET(2) char gWoodenTorchTex[] = dgWoodenTorchTex;
+
+#endif // OBJECTS_OBJECT_SYOKUDAI_H

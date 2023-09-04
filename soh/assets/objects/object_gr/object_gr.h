@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GR_H
+#define OBJECTS_OBJECT_GR_H 1
 
 #include "align_asset_macro.h"
 
@@ -115,3 +116,5 @@ static const ALIGN_ASSET(2) char object_grTex_0097F8[] = dobject_grTex_0097F8;
 
 #define dobject_grTex_009808 "__OTR__objects/object_gr/object_grTex_009808"
 static const ALIGN_ASSET(2) char object_grTex_009808[] = dobject_grTex_009808;
+
+#endif // OBJECTS_OBJECT_GR_H

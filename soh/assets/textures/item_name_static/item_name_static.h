@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_ITEM_NAME_STATIC_H
+#define TEXTURES_ITEM_NAME_STATIC_H 1
 
 #include "align_asset_macro.h"
 
@@ -1108,3 +1109,5 @@ static const ALIGN_ASSET(2) char gUnusedBossKeyItemName21JPNTex[] = dgUnusedBoss
 
 #define dgBiggoronsSwordItemNameFRATex "__OTR__textures/item_name_static/gBiggoronsSwordItemNameFRATex"
 static const ALIGN_ASSET(2) char gBiggoronsSwordItemNameFRATex[] = dgBiggoronsSwordItemNameFRATex;
+
+#endif // TEXTURES_ITEM_NAME_STATIC_H

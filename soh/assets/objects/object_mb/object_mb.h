@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_MB_H
+#define OBJECTS_OBJECT_MB_H 1
 
 #include "align_asset_macro.h"
 
@@ -167,9 +168,6 @@ static const ALIGN_ASSET(2) char gEnMbDL_013A30[] = dgEnMbDL_013A30;
 #define dgEnMbDL_013DF0 "__OTR__objects/object_mb/gEnMbDL_013DF0"
 static const ALIGN_ASSET(2) char gEnMbDL_013DF0[] = dgEnMbDL_013DF0;
 
-#define dgEnMbSpearSkelLimbsLimb_008DE8DL_007908 "__OTR__objects/object_mb/gEnMbSpearSkelLimbsLimb_008DE8DL_007908"
-static const ALIGN_ASSET(2) char gEnMbSpearSkelLimbsLimb_008DE8DL_007908[] = dgEnMbSpearSkelLimbsLimb_008DE8DL_007908;
-
 #define dobject_mbTex_008328 "__OTR__objects/object_mb/object_mbTex_008328"
 static const ALIGN_ASSET(2) char object_mbTex_008328[] = dobject_mbTex_008328;
 
@@ -211,3 +209,9 @@ static const ALIGN_ASSET(2) char object_mbTex_00F000[] = dobject_mbTex_00F000;
 
 #define dobject_mbTex_00F200 "__OTR__objects/object_mb/object_mbTex_00F200"
 static const ALIGN_ASSET(2) char object_mbTex_00F200[] = dobject_mbTex_00F200;
+
+#define dgEnMbSpearSkelLimbsLimb_008DE8DL_007908 "__OTR__objects/object_mb/gEnMbSpearSkelLimbsLimb_008DE8DL_007908"
+static const ALIGN_ASSET(2) char gEnMbSpearSkelLimbsLimb_008DE8DL_007908[] = dgEnMbSpearSkelLimbsLimb_008DE8DL_007908;
+
+
+#endif // OBJECTS_OBJECT_MB_H

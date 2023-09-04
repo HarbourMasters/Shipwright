@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_EFC_TW_H
+#define OBJECTS_OBJECT_EFC_TW_H 1
 
 #include "align_asset_macro.h"
 
@@ -16,3 +17,6 @@ static const ALIGN_ASSET(2) char gTimeWarpDL[] = dgTimeWarpDL;
 
 #define dgTimeWarpTex "__OTR__objects/object_efc_tw/gTimeWarpTex"
 static const ALIGN_ASSET(2) char gTimeWarpTex[] = dgTimeWarpTex;
+
+
+#endif // OBJECTS_OBJECT_EFC_TW_H

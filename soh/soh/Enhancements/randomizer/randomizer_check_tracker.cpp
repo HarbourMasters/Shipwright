@@ -91,12 +91,12 @@ bool pendingSaleCheck = false;
 bool transitionCheck = false;
 
 std::map<uint32_t, RandomizerCheck> startingShopItem = { { SCENE_KOKIRI_SHOP, RC_KF_SHOP_ITEM_1 },
-                                                         { SCENE_SHOP1, RC_MARKET_BAZAAR_ITEM_1 },
-                                                         { SCENE_ALLEY_SHOP, RC_MARKET_POTION_SHOP_ITEM_1 },
-                                                         { SCENE_NIGHT_SHOP, RC_MARKET_BOMBCHU_SHOP_ITEM_1 },
-                                                         { SCENE_DRAG, RC_KAK_POTION_SHOP_ITEM_1 },
-                                                         { SCENE_ZOORA, RC_ZD_SHOP_ITEM_1 },
-                                                         { SCENE_GOLON, RC_GC_SHOP_ITEM_1 } };
+                                                         { SCENE_BAZAAR, RC_MARKET_BAZAAR_ITEM_1 },
+                                                         { SCENE_POTION_SHOP_MARKET, RC_MARKET_POTION_SHOP_ITEM_1 },
+                                                         { SCENE_BOMBCHU_SHOP, RC_MARKET_BOMBCHU_SHOP_ITEM_1 },
+                                                         { SCENE_POTION_SHOP_KAKARIKO, RC_KAK_POTION_SHOP_ITEM_1 },
+                                                         { SCENE_ZORA_SHOP, RC_ZD_SHOP_ITEM_1 },
+                                                         { SCENE_GORON_SHOP, RC_GC_SHOP_ITEM_1 } };
 
 std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checksByArea;
 bool areasFullyChecked[RCAREA_INVALID];
@@ -128,18 +128,18 @@ int sectionId;
 
 SceneID DungeonSceneLookupByArea(RandomizerCheckArea area) {
     switch (area) {
-        case RCAREA_DEKU_TREE:              return SCENE_YDAN;
-        case RCAREA_DODONGOS_CAVERN:        return SCENE_DDAN;
-        case RCAREA_JABU_JABUS_BELLY:       return SCENE_BDAN;
-        case RCAREA_FOREST_TEMPLE:          return SCENE_BMORI1;
-        case RCAREA_FIRE_TEMPLE:            return SCENE_HIDAN;
-        case RCAREA_WATER_TEMPLE:           return SCENE_MIZUSIN;
-        case RCAREA_SPIRIT_TEMPLE:          return SCENE_JYASINZOU;
-        case RCAREA_SHADOW_TEMPLE:          return SCENE_HAKADAN;
-        case RCAREA_BOTTOM_OF_THE_WELL:     return SCENE_HAKADANCH;
-        case RCAREA_ICE_CAVERN:             return SCENE_ICE_DOUKUTO;
-        case RCAREA_GERUDO_TRAINING_GROUND: return SCENE_MEN;
-        case RCAREA_GANONS_CASTLE:          return SCENE_GANONTIKA;
+        case RCAREA_DEKU_TREE:              return SCENE_DEKU_TREE;
+        case RCAREA_DODONGOS_CAVERN:        return SCENE_DODONGOS_CAVERN;
+        case RCAREA_JABU_JABUS_BELLY:       return SCENE_JABU_JABU;
+        case RCAREA_FOREST_TEMPLE:          return SCENE_FOREST_TEMPLE;
+        case RCAREA_FIRE_TEMPLE:            return SCENE_FIRE_TEMPLE;
+        case RCAREA_WATER_TEMPLE:           return SCENE_WATER_TEMPLE;
+        case RCAREA_SPIRIT_TEMPLE:          return SCENE_SPIRIT_TEMPLE;
+        case RCAREA_SHADOW_TEMPLE:          return SCENE_SHADOW_TEMPLE;
+        case RCAREA_BOTTOM_OF_THE_WELL:     return SCENE_BOTTOM_OF_THE_WELL;
+        case RCAREA_ICE_CAVERN:             return SCENE_ICE_CAVERN;
+        case RCAREA_GERUDO_TRAINING_GROUND: return SCENE_GERUDO_TRAINING_GROUND;
+        case RCAREA_GANONS_CASTLE:          return SCENE_INSIDE_GANONS_CASTLE;
         default:                            return SCENE_ID_MAX;
     }
 }
@@ -282,40 +282,40 @@ void SetCheckCollected(RandomizerCheck rc) {
 
 bool IsAreaScene(SceneID sceneNum) {
     switch (sceneNum) {
-        case SCENE_SPOT00:
-        case SCENE_SPOT01:
-        case SCENE_SPOT02:
-        case SCENE_SPOT03:
-        case SCENE_SPOT04:
-        case SCENE_SPOT05:
-        case SCENE_SPOT06:
-        case SCENE_SPOT07:
-        case SCENE_SPOT08:
-        case SCENE_SPOT09:
-        case SCENE_SPOT10:
-        case SCENE_SPOT11:
-        case SCENE_SPOT12:
-        case SCENE_SPOT13:
-        case SCENE_SPOT15:
-        case SCENE_SPOT16:
-        case SCENE_SPOT17:
-        case SCENE_SPOT18:
-        case SCENE_SPOT20:
-        case SCENE_YDAN:
-        case SCENE_DDAN:
-        case SCENE_BDAN:
-        case SCENE_BMORI1:
-        case SCENE_HIDAN:
-        case SCENE_MIZUSIN:
-        case SCENE_JYASINZOU:
-        case SCENE_HAKADAN:
-        case SCENE_HAKADANCH:
-        case SCENE_ICE_DOUKUTO:
-        case SCENE_MEN:
-        case SCENE_GANON:
-        case SCENE_GANONTIKA:
-        case SCENE_MARKET_ALLEY:
-        case SCENE_MARKET_ALLEY_N:
+        case SCENE_HYRULE_FIELD:
+        case SCENE_KAKARIKO_VILLAGE:
+        case SCENE_GRAVEYARD:
+        case SCENE_ZORAS_RIVER:
+        case SCENE_KOKIRI_FOREST:
+        case SCENE_SACRED_FOREST_MEADOW:
+        case SCENE_LAKE_HYLIA:
+        case SCENE_ZORAS_DOMAIN:
+        case SCENE_ZORAS_FOUNTAIN:
+        case SCENE_GERUDO_VALLEY:
+        case SCENE_LOST_WOODS:
+        case SCENE_DESERT_COLOSSUS:
+        case SCENE_GERUDOS_FORTRESS:
+        case SCENE_HAUNTED_WASTELAND:
+        case SCENE_HYRULE_CASTLE:
+        case SCENE_DEATH_MOUNTAIN_TRAIL:
+        case SCENE_DEATH_MOUNTAIN_CRATER:
+        case SCENE_GORON_CITY:
+        case SCENE_LON_LON_RANCH:
+        case SCENE_DEKU_TREE:
+        case SCENE_DODONGOS_CAVERN:
+        case SCENE_JABU_JABU:
+        case SCENE_FOREST_TEMPLE:
+        case SCENE_FIRE_TEMPLE:
+        case SCENE_WATER_TEMPLE:
+        case SCENE_SPIRIT_TEMPLE:
+        case SCENE_SHADOW_TEMPLE:
+        case SCENE_BOTTOM_OF_THE_WELL:
+        case SCENE_ICE_CAVERN:
+        case SCENE_GERUDO_TRAINING_GROUND:
+        case SCENE_GANONS_TOWER:
+        case SCENE_INSIDE_GANONS_CASTLE:
+        case SCENE_BACK_ALLEY_DAY:
+        case SCENE_BACK_ALLEY_NIGHT:
         case SCENE_MARKET_DAY:
         case SCENE_MARKET_NIGHT:
         case SCENE_MARKET_RUINS:
@@ -349,7 +349,7 @@ RandomizerCheckArea AreaFromEntranceGroup[] = {
 
 RandomizerCheckArea GetCheckArea() {
     auto scene = static_cast<SceneID>(gPlayState->sceneNum);
-    bool grottoScene = (scene == SCENE_KAKUSIANA || scene == SCENE_YOUSEI_IZUMI_TATE);
+    bool grottoScene = (scene == SCENE_GROTTOS || scene == SCENE_FAIRYS_FOUNTAIN);
     const EntranceData* ent = GetEntranceData(grottoScene ? ENTRANCE_RANDO_GROTTO_EXIT_START + GetCurrentGrottoId() : gSaveContext.entranceIndex);
     RandomizerCheckArea area = RCAREA_INVALID;
     if (ent != nullptr && !IsAreaScene(scene) && ent->type != ENTRANCE_TYPE_DUNGEON) {
@@ -375,8 +375,7 @@ bool vector_contains_scene(std::vector<SceneID> vec, const int16_t scene) {
     return std::any_of(vec.begin(), vec.end(), [&](const auto& x) { return x == scene; });
 }
 
-std::vector<SceneID> skipScenes = {SCENE_GANON_BOSS, SCENE_GANON_FINAL, SCENE_GANON_DEMO, SCENE_GANONTIKA_SONOGO, SCENE_GANON_SONOGO};
-std::vector<SceneID> scenesToCheck = {SCENE_YOUSEI_IZUMI_YOKO, SCENE_YOUSEI_IZUMI_TATE, SCENE_KAKUSIANA, SCENE_TOKINOMA, SCENE_SHOP1};
+std::vector<SceneID> skipScenes = {SCENE_GANON_BOSS, SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR, SCENE_GANON_BOSS, SCENE_INSIDE_GANONS_CASTLE_COLLAPSE, SCENE_GANONS_TOWER_COLLAPSE_INTERIOR};
 
 bool EvaluateCheck(RandomizerCheckObject rco) {
     if (HasItemBeenCollected(rco.rc) && gSaveContext.checkTrackerData[rco.rc].status != RCSHOW_COLLECTED &&
@@ -428,7 +427,7 @@ bool CheckByArea(RandomizerCheckArea area = RCAREA_INVALID) {
 
 void SetShopSeen(uint32_t sceneNum, bool prices) {
     RandomizerCheck start = startingShopItem.find(sceneNum)->second;
-    if (GetCheckArea() == RCAREA_KAKARIKO_VILLAGE && sceneNum == SCENE_SHOP1) {
+    if (GetCheckArea() == RCAREA_KAKARIKO_VILLAGE && sceneNum == SCENE_BAZAAR) {
         start = RC_KAK_BAZAAR_ITEM_1;
     }
     bool statusChanged = false;
@@ -502,7 +501,7 @@ void CheckTrackerDialogClosed() {
 }
 
 void CheckTrackerShopSlotChange(uint8_t cursorSlot, int16_t basePrice) {
-    if (gPlayState->sceneNum != SCENE_FACE_SHOP) { // Happy Mask Shop is not used in rando, so is not tracked
+    if (gPlayState->sceneNum != SCENE_HAPPY_MASK_SHOP) { // Happy Mask Shop is not used in rando, so is not tracked
         auto slot = startingShopItem.find(gPlayState->sceneNum)->second + cursorSlot;
         auto status = gSaveContext.checkTrackerData[slot].status;
         if (status == RCSHOW_SEEN) {
@@ -526,12 +525,12 @@ void CheckTrackerTransition(uint32_t sceneNum) {
     currentArea = GetCheckArea();
     switch (sceneNum) {
         case SCENE_KOKIRI_SHOP:
-        case SCENE_SHOP1:
-        case SCENE_ALLEY_SHOP:
-        case SCENE_NIGHT_SHOP:
-        case SCENE_DRAG:
-        case SCENE_GOLON:
-        case SCENE_ZOORA:
+        case SCENE_BAZAAR:
+        case SCENE_POTION_SHOP_MARKET:
+        case SCENE_BOMBCHU_SHOP:
+        case SCENE_POTION_SHOP_KAKARIKO:
+        case SCENE_GORON_SHOP:
+        case SCENE_ZORA_SHOP:
             SetShopSeen(sceneNum, false);
             break;
     }
@@ -657,7 +656,7 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
         checkAreas.push_back(checkArea);
         return;
     }
-    if (scene == SCENE_SPOT11 && (gSaveContext.entranceIndex == 485 || gSaveContext.entranceIndex == 489)) {
+    if (scene == SCENE_DESERT_COLOSSUS && (gSaveContext.entranceIndex == 485 || gSaveContext.entranceIndex == 489)) {
         checkAreas.push_back(RCAREA_SPIRIT_TEMPLE);
         return;
     }

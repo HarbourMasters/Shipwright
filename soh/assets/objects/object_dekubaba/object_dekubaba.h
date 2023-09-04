@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_DEKUBABA_H
+#define OBJECTS_OBJECT_DEKUBABA_H 1
 
 #include "align_asset_macro.h"
 
@@ -49,3 +50,6 @@ static const ALIGN_ASSET(2) char gDekuBabaStickDropDL[] = dgDekuBabaStickDropDL;
 
 #define dgDekuBabaStickDropTex "__OTR__objects/object_dekubaba/gDekuBabaStickDropTex"
 static const ALIGN_ASSET(2) char gDekuBabaStickDropTex[] = dgDekuBabaStickDropTex;
+
+
+#endif // OBJECTS_OBJECT_DEKUBABA_H

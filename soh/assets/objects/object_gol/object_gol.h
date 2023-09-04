@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GOL_H
+#define OBJECTS_OBJECT_GOL_H 1
 
 #include "align_asset_macro.h"
 
@@ -82,3 +83,6 @@ static const ALIGN_ASSET(2) char gObjectGolEyeIrisTex[] = dgObjectGolEyeIrisTex;
 
 #define dgObjectGolEggTex "__OTR__objects/object_gol/gObjectGolEggTex"
 static const ALIGN_ASSET(2) char gObjectGolEggTex[] = dgObjectGolEggTex;
+
+
+#endif // OBJECTS_OBJECT_GOL_H

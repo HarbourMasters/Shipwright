@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_NY_H
+#define OBJECTS_OBJECT_NY_H 1
 
 #include "align_asset_macro.h"
 
@@ -19,3 +20,5 @@ static const ALIGN_ASSET(2) char gEnNyMetalBodyDL[] = dgEnNyMetalBodyDL;
 
 #define dgEnNySpikeDL "__OTR__objects/object_ny/gEnNySpikeDL"
 static const ALIGN_ASSET(2) char gEnNySpikeDL[] = dgEnNySpikeDL;
+
+#endif // OBJECTS_OBJECT_NY_H

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DUNGEONS_GERUDOWAY_ROOM_2_H
+#define DUNGEONS_GERUDOWAY_ROOM_2_H 1
 
 #include "align_asset_macro.h"
 
@@ -31,3 +32,6 @@ static const ALIGN_ASSET(2) char gerudoway_room_2Tex_002A98[] = dgerudoway_room_
 
 #define dgerudoway_room_2DL_000E80 "__OTR__scenes/nonmq/gerudoway_scene/gerudoway_room_2DL_000E80"
 static const ALIGN_ASSET(2) char gerudoway_room_2DL_000E80[] = dgerudoway_room_2DL_000E80;
+
+
+#endif // DUNGEONS_GERUDOWAY_ROOM_2_H

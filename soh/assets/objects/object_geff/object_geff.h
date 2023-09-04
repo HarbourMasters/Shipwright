@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GEFF_H
+#define OBJECTS_OBJECT_GEFF_H 1
 
 #include "align_asset_macro.h"
 
@@ -10,3 +11,5 @@ static const ALIGN_ASSET(2) char gGanonRubbleOutsideTex[] = dgGanonRubbleOutside
 
 #define dgGanonRubbleDL "__OTR__objects/object_geff/gGanonRubbleDL"
 static const ALIGN_ASSET(2) char gGanonRubbleDL[] = dgGanonRubbleDL;
+
+#endif // OBJECTS_OBJECT_GEFF_H

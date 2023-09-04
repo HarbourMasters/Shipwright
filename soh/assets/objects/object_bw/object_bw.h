@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_BW_H
+#define OBJECTS_OBJECT_BW_H 1
 
 #include "align_asset_macro.h"
 
@@ -43,3 +44,6 @@ static const ALIGN_ASSET(2) char object_bw_Anim_0021A0[] = dobject_bw_Anim_0021A
 
 #define dobject_bw_Anim_002250 "__OTR__objects/object_bw/object_bw_Anim_002250"
 static const ALIGN_ASSET(2) char object_bw_Anim_002250[] = dobject_bw_Anim_002250;
+
+
+#endif // OBJECTS_OBJECT_BW_H
