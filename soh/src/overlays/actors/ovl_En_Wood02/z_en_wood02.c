@@ -353,7 +353,7 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
 
             if ((this->unk_14C >= 0) && (this->unk_14C < 0x64) && (CVarGetInteger("gTreeStickDrops", 0)) && !(INV_CONTENT(ITEM_STICK) == ITEM_NONE)) {
                 for (i = 1; i < 4; ++i) {
-                    Item_DropCollectible(play, &dropsSpawnPt, ITEM00_STICK, i);
+                    Item_DropCollectible(play, &dropsSpawnPt, ITEM00_STICK);
                 }
             } else {
                 if ((this->unk_14C >= 0) && (this->unk_14C < 0x64)) {
