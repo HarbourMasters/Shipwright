@@ -180,6 +180,8 @@ typedef struct {
     u8 shieldType;
     u8 damageEffect;
     u8 damageValue;
+    s16 playerHealth;
+    s16 playerHealthCapacity;
 } PlayerData;
 
 typedef struct {

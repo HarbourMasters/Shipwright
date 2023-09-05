@@ -49,6 +49,8 @@ void from_json(const json& j, PlayerData& playerData) {
     j.at("shieldType").get_to(playerData.shieldType);
     j.at("damageEffect").get_to(playerData.damageEffect);
     j.at("damageValue").get_to(playerData.damageValue);
+    j.at("playerHealth").get_to(playerData.playerHealth);
+    j.at("playerHealthMax").get_to(playerData.playerHealthCapacity);
 }
 
 void to_json(json& j, const PlayerData& playerData) {
@@ -65,6 +67,8 @@ void to_json(json& j, const PlayerData& playerData) {
         { "shieldType", playerData.shieldType },
         { "damageEffect", playerData.damageEffect },
         { "damageValue", playerData.damageValue },
+        { "playerHealth", playerData.playerHealth },
+        { "playerHealthMax", playerData.playerHealthCapacity },
     };
 
 }
@@ -759,6 +763,8 @@ void Anchor_RegisterHooks() {
         gSaveContext.playerData.faceType = player->actor.shape.face;
         gSaveContext.playerData.biggoron_broken = gSaveContext.swordHealth <= 0 ? 1 : 0;
         gSaveContext.playerData.playerAge = gSaveContext.linkAge;
+        gSaveContext.playerData.playerHealth = gSaveContext.health;
+        gSaveContext.playerData.playerHealthCapacity = gSaveContext.healthCapacity;
 
         payload["type"] = "CLIENT_UPDATE";
         payload["sceneNum"] = gPlayState->sceneNum;
@@ -860,6 +866,92 @@ const ImVec4 GRAY = ImVec4(0.5f, 0.5f, 0.5f, 1.0f);
 const ImVec4 WHITE = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 const ImVec4 GREEN = ImVec4(0.5f, 1.0f, 0.5f, 1.0f);
 
+bool heartTexturesLoaded = false;
+
+const char* heartTextureNames[16] = {
+    "Heart_Full",          "Heart_One_Fourth",    "Heart_One_Fourth",    "Heart_One_Fourth",
+    "Heart_One_Fourth",    "Heart_One_Fourth",    "Heart_Half",          "Heart_Half",
+    "Heart_Half",          "Heart_Half",          "Heart_Half",          "Heart_Three_Fourths",
+    "Heart_Three_Fourths", "Heart_Three_Fourths", "Heart_Three_Fourths", "Heart_Three_Fourths",
+};
+
+void DisplayLifeMeter(AnchorClient& client) {
+    int currentHealth = client.playerData.playerHealth;
+    int maxHealth = client.playerData.playerHealthCapacity;
+
+    int fullHearts = currentHealth / 16;
+    int partialHealth = currentHealth % 16;
+
+    const ImVec4 normalHeartsColor = ImVec4(1, 0.275f, 0.118f, 1);
+
+    // const ImVec4 doubleDefenseHeartsColor = ImVec4(1, 1, 1, 1);
+    // ImVec4 heartsColor = gSaveContext.isDoubleDefenseAcquired ? doubleDefenseHeartsColor : normalHeartsColor;
+
+    int numMaxHearts = maxHealth / 16;
+
+    int numLines = (numMaxHearts / 10) + 1;
+
+    if (!heartTexturesLoaded) {
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(
+            "Heart_Full", "textures/parameter_static/gHeartFullTex", normalHeartsColor);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(
+            "Heart_Three_Fourths", "textures/parameter_static/gHeartThreeQuarterTex", normalHeartsColor);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(
+            "Heart_Half", "textures/parameter_static/gHeartHalfTex", normalHeartsColor);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(
+            "Heart_One_Fourth", "textures/parameter_static/gHeartQuarterTex", normalHeartsColor);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(
+            "Heart_Empty", "textures/parameter_static/gHeartEmptyTex", normalHeartsColor);
+        heartTexturesLoaded = true;
+    }
+    if (CVarGetInteger("gAnchorPlayerHealth", 0) == 1 || CVarGetInteger("gAnchorPlayerHealth", 0) == 3) {
+        std::string healthInfo = "Life: " + std::to_string(currentHealth) + " / " + std::to_string(maxHealth);
+        ImGui::Text(healthInfo.c_str());
+    }
+
+    if (CVarGetInteger("gAnchorPlayerHealth", 0) == 2 || CVarGetInteger("gAnchorPlayerHealth", 0) == 3) {
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(1, 0));
+
+        ImVec2 imageSize(16, 16);
+
+        for (int line = 0; line < numLines; line++) {
+            for (int i = 0; i < 10; i++) {
+                int heartIndex = line * 10 + i;
+
+                if (heartIndex >= numMaxHearts) {
+                    break;
+                }
+
+                if (i > 0) {
+                    ImGui::SameLine();
+                }
+
+                if (heartIndex < fullHearts) {
+                    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Heart_Full"),
+                                 imageSize);
+                } else if (heartIndex == fullHearts) {
+                    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
+                                     heartTextureNames[partialHealth]),
+                                 imageSize);
+                } else {
+                    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Heart_Empty"),
+                                 imageSize);
+                }
+            }
+
+            if (line < numLines - 1) {
+                ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 2));
+            }
+
+            if (line < numLines - 1) {
+                ImGui::PopStyleVar();
+            }
+        }
+
+        ImGui::PopStyleVar();
+    }
+}
+
 void AnchorPlayerLocationWindow::DrawElement() {
     ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
     ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 0.5f));
@@ -895,6 +987,9 @@ void AnchorPlayerLocationWindow::DrawElement() {
                     Play_TriggerVoidOut(gPlayState);
                 }
                 ImGui::PopStyleVar();
+            }
+            if (gPlayState != NULL && client.scene != SCENE_GROTTOS && client.scene != SCENE_ID_MAX && CVarGetInteger("gAnchorPlayerHealth", 0) != 0) {
+                DisplayLifeMeter(client);
             }
         }
         ImGui::PopID();
