@@ -1174,6 +1174,8 @@ s32 func_8008FCC8(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
 s32 PuppetOverrideDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     LinkPuppet* this = (LinkPuppet*)thisx;
 
+    static Vec3f headPosLocal = { 2000.0f, 0.0f, 0.0f };
+
     PlayerData playerData = Anchor_GetClientPlayerData(this->actor.params - 3);
 
     if (limbIndex == PLAYER_LIMB_ROOT) {
@@ -1189,31 +1191,32 @@ s32 PuppetOverrideDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, 
         }
 
         pos->y -= playerData.unk_6C4;
-    }
-    else if (limbIndex == PLAYER_LIMB_L_HAND) {
+    } else if (limbIndex == PLAYER_LIMB_HEAD) {
+        Matrix_MultVec3f(&headPosLocal, &this->actor.focus.pos);
+    } else if (limbIndex == PLAYER_LIMB_L_HAND) {
         Gfx** dLists = &sPlayerDListGroups[playerData.leftHandType][(void)0, playerData.playerAge];
 
-        if ((D_80160014 == 4) && (playerData.biggoron_broken == 1)) {
+        if ((playerData.leftHandType == 4) && (playerData.biggoron_broken == 1)) {
             dLists += 4;
-        } else if ((D_80160014 == 6) && (playerData.playerStateFlags1 & 0x2000000)) {
+        } else if ((playerData.leftHandType == 6) && (playerData.playerStateFlags1 & 0x2000000)) {
             dLists = &D_80125E08[playerData.playerAge];
-            D_80160014 = 0;
-        } else if ((playerData.leftHandType == 0) && (this->actor.speedXZ > 2.0f) &&
+            playerData.leftHandType = 0;
+        } else if ((playerData.leftHandType == 0) && (playerData.speedXZ > 2.0f) &&
                    !(playerData.playerStateFlags1 & 0x8000000)) {
             dLists = &D_80125E18[playerData.playerAge];
-            D_80160014 = 1;
+            playerData.leftHandType = 1;
         }
 
         *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
     } else if (limbIndex == PLAYER_LIMB_R_HAND) {
         Gfx** dLists = &sPlayerDListGroups[playerData.rightHandType][(void)0, playerData.playerAge];
 
-        if (D_80160018 == 10) {
+        if (playerData.rightHandType == 10) {
             dLists += playerData.shieldType * 4;
-        } else if ((playerData.rightHandType == 8) && (this->actor.speedXZ > 2.0f) &&
+        } else if ((playerData.rightHandType == 8) && (playerData.speedXZ > 2.0f) &&
                    !(playerData.playerStateFlags1 & 0x8000000)) {
             dLists = &D_80125E58[playerData.playerAge];
-            D_80160018 = 9;
+            playerData.rightHandType = 9;
         }
 
         *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);

@@ -194,6 +194,7 @@ typedef struct {
     s16 unk_04;
     s16 unk_06;
     s16 unk_08;
+    f32 speedXZ;
 } PlayerData;
 
 typedef struct {

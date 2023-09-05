@@ -89,8 +89,8 @@ void LinkPuppet_Init(Actor* thisx, PlayState* play) {
     this->puppetAge = playerAge;
 
     SkelAnime_InitLink(play, &this->linkSkeleton, gPlayerSkelHeaders[((void)0, playerAge)],
-           gPlayerAnim_link_normal_wait, 9, this->linkSkeleton.jointTable, this->linkSkeleton.morphTable,
-           PLAYER_LIMB_MAX);
+                       gPlayerAnim_link_normal_wait, 9, this->linkSkeleton.jointTable, this->linkSkeleton.morphTable,
+                       PLAYER_LIMB_MAX);
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawFeet, 90.0f);
 
@@ -106,7 +106,7 @@ void LinkPuppet_Init(Actor* thisx, PlayState* play) {
     Color_RGB8 clientColor = Anchor_GetClientColor(this->actor.params - 3);
     Color_RGBA8 nameTagColor = { clientColor.r, clientColor.g, clientColor.b, 255 };
     const char* playerName = Anchor_GetClientName(this->actor.params - 3);
-    this->nameTagOptions.yOffset = playerData.playerAge == LINK_AGE_ADULT ? 56.0f : 32.0f;
+    this->nameTagOptions.yOffset = 0;
     this->nameTagOptions.textColor = nameTagColor;
     NameTag_RegisterForActorWithOptions(&this->actor, playerName, this->nameTagOptions);
 }
@@ -119,8 +119,6 @@ void LinkPuppet_Destroy(Actor* thisx, PlayState* play) {
 
 void LinkPuppet_Update(Actor* thisx, PlayState* play) {
     LinkPuppet* this = (LinkPuppet*)thisx;
-
-    Actor_UpdateBgCheckInfo(play, &this->actor, 15.0f, 30.0f, 60.0f, 0x1D);
 
     PlayerData playerData = Anchor_GetClientPlayerData(this->actor.params - 3);
 
