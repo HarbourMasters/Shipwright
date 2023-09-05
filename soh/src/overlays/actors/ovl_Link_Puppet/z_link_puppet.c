@@ -98,6 +98,17 @@ void LinkPuppet_Init(Actor* thisx, PlayState* play) {
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
 
     this->actor.colChkInfo.damageTable = sDamageTable;
+
+    PlayerData playerData = Anchor_GetClientPlayerData(this->actor.params - 3);
+
+    NameTag_RemoveAllForActor(thisx);
+
+    Color_RGB8 clientColor = Anchor_GetClientColor(this->actor.params - 3);
+    Color_RGBA8 nameTagColor = { clientColor.r, clientColor.g, clientColor.b, 255 };
+    const char* playerName = Anchor_GetClientName(this->actor.params - 3);
+    this->nameTagOptions.yOffset = playerData.playerAge == LINK_AGE_ADULT ? 56.0f : 32.0f;
+    this->nameTagOptions.textColor = nameTagColor;
+    NameTag_RegisterForActorWithOptions(&this->actor, playerName, this->nameTagOptions);
 }
 
 void LinkPuppet_Destroy(Actor* thisx, PlayState* play) {
@@ -218,8 +229,10 @@ void LinkPuppet_Draw(Actor* thisx, PlayState* play) {
 
     PlayerData playerData = Anchor_GetClientPlayerData(this->actor.params - 3);
 
-    DrawAnchorPuppet(play, this->linkSkeleton.skeleton, this->linkSkeleton.jointTable, this->linkSkeleton.dListCount, 0,
-                     playerData.tunicType, playerData.bootsType, playerData.faceType, PuppetOverrideDraw,
-                     Puppet_PostLimbDraw, this, playerData);
+    if (this->puppetAge == playerData.playerAge) {
+        DrawAnchorPuppet(play, this->linkSkeleton.skeleton, this->linkSkeleton.jointTable,
+                         this->linkSkeleton.dListCount, 0, playerData.tunicType, playerData.bootsType,
+                         playerData.faceType, PuppetOverrideDraw, Puppet_PostLimbDraw, this, playerData);
+    }
 }
 #endif

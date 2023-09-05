@@ -3,6 +3,7 @@
 #define Z_LINK_PUPPET_H
 
 #include <libultraship/libultra.h>
+#include "soh/Enhancements/nametag.h"
 #include "global.h"
 
 struct LinkPuppet;
@@ -15,6 +16,7 @@ typedef struct LinkPuppet {
     ColliderQuad shieldQuad;
     uint8_t damageTimer;
     uint8_t puppetAge;
+    NameTagOptions nameTagOptions;
 } LinkPuppet;
 
 #ifdef __cplusplus

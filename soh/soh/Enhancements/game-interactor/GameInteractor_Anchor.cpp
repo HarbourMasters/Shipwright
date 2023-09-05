@@ -5,6 +5,7 @@
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include <soh/Enhancements/randomizer/adult_trade_shuffle.h>
+#include <overlays/actors/ovl_Link_Puppet/z_link_puppet.h>
 #include <soh/Enhancements/nametag.h>
 #include <soh/util.h>
 #include <nlohmann/json.hpp>
@@ -642,6 +643,15 @@ Vec3s* Anchor_GetClientJointTable(uint32_t puppetIndex) {
     return GameInteractorAnchor::AnchorClients[clientId].jointTable;
 }
 
+const char* Anchor_GetClientName(uint32_t fairyIndex) {
+    uint32_t clientId = GameInteractorAnchor::FairyIndexToClientId[fairyIndex];
+    if (GameInteractorAnchor::AnchorClients.find(clientId) == GameInteractorAnchor::AnchorClients.end()) {
+        return "";
+    }
+
+    return GameInteractorAnchor::AnchorClients[clientId].name.c_str();
+}
+
 uint8_t Anchor_GetClientRoomIndex(uint32_t fairyIndex) {
     uint32_t clientId = GameInteractorAnchor::FairyIndexToClientId[fairyIndex];
     if (GameInteractorAnchor::AnchorClients.find(clientId) == GameInteractorAnchor::AnchorClients.end()) {
@@ -675,13 +685,10 @@ void Anchor_SpawnClientFairies() {
     uint32_t i = 0;
     for (auto [clientId, client] : GameInteractorAnchor::AnchorClients) {
         GameInteractorAnchor::FairyIndexToClientId.push_back(clientId);
-        auto fairy = Actor_Spawn(&gPlayState->actorCtx, gPlayState, gEnLinkPuppetId, -9999.0, -9999.0, -9999.0, 0, 0, 0, 3 + i, false);
 
-        PlayerData playerData = Anchor_GetClientPlayerData(i);
+        Actor_Spawn(&gPlayState->actorCtx, gPlayState, gEnLinkPuppetId, -9999.0, -9999.0, -9999.0, 0, 0, 0, 3 + i,
+                    false);
 
-        NameTagOptions options = NameTagOptions();
-        options.yOffset = playerData.playerAge == LINK_AGE_ADULT ? 56.0f : 32.0f;
-        NameTag_RegisterForActorWithOptions(fairy, client.name.c_str(), options);
         i++;
     }
 }
