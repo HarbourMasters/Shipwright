@@ -176,9 +176,9 @@ void func_808ACA08(BgSpot02Objects* this, PlayState* play) {
     // enter the cutscene context.
     if (play->csCtx.frames == 402 && !(gSaveContext.n64ddFlag)) {
         if (!LINK_IS_ADULT) {
-            func_8002F7DC(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE_KID);
+            Player_PlaySfx(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE_KID);
         } else {
-            func_8002F7DC(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE);
+            Player_PlaySfx(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE);
         }
     }
 }
