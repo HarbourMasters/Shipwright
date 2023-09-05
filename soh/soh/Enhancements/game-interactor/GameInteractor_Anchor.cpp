@@ -50,7 +50,7 @@ void from_json(const json& j, PlayerData& playerData) {
     j.at("damageEffect").get_to(playerData.damageEffect);
     j.at("damageValue").get_to(playerData.damageValue);
     j.at("playerHealth").get_to(playerData.playerHealth);
-    j.at("playerHealthMax").get_to(playerData.playerHealthCapacity);
+    j.at("playerHealthCapacity").get_to(playerData.playerHealthCapacity);
 }
 
 void to_json(json& j, const PlayerData& playerData) {
@@ -68,7 +68,7 @@ void to_json(json& j, const PlayerData& playerData) {
         { "damageEffect", playerData.damageEffect },
         { "damageValue", playerData.damageValue },
         { "playerHealth", playerData.playerHealth },
-        { "playerHealthMax", playerData.playerHealthCapacity },
+        { "playerHealthCapacity", playerData.playerHealthCapacity },
     };
 
 }
