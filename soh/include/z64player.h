@@ -684,6 +684,14 @@ typedef struct Player {
     // #endregion
     u8 ivanFloating;
     u8 ivanDamageMultiplier;
+    // #region SOH [Network]
+    // Upstream TODO: Rename this to make it more obvious it is apart of an enhancement
+    /*        */ s16 unk_00;
+    /*        */ s16 unk_02;
+    /*        */ s16 unk_04;
+    /*        */ s16 unk_06;
+    /*        */ s16 unk_08;
+    // #endregion
 } Player; // size = 0xA94
 
 #endif

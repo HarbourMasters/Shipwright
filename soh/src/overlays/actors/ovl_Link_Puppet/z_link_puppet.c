@@ -6,7 +6,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor_Anchor.h"
 #include <string.h>
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void LinkPuppet_Init(Actor* thisx, PlayState* play);
 void LinkPuppet_Destroy(Actor* thisx, PlayState* play);
@@ -32,10 +32,6 @@ static ColliderCylinderInit sCylinderInit = {
     },
     { 15, 50, 0, { 0, 0, 0 } },
 };
-
-static Vec3s D_80854730 = { -57, 3377, 0 };
-
-extern func_80833338(Player* this);
 
 typedef enum {
     PUPPET_DMGEFF_NONE,
@@ -93,8 +89,8 @@ void LinkPuppet_Init(Actor* thisx, PlayState* play) {
     this->puppetAge = playerAge;
 
     SkelAnime_InitLink(play, &this->linkSkeleton, gPlayerSkelHeaders[((void)0, playerAge)],
-           gPlayerAnim_link_normal_wait, 9, this->linkSkeleton.jointTable, this->linkSkeleton.morphTable,
-           PLAYER_LIMB_MAX);
+                       gPlayerAnim_link_normal_wait, 9, this->linkSkeleton.jointTable, this->linkSkeleton.morphTable,
+                       PLAYER_LIMB_MAX);
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawFeet, 90.0f);
 
@@ -102,6 +98,17 @@ void LinkPuppet_Init(Actor* thisx, PlayState* play) {
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
 
     this->actor.colChkInfo.damageTable = sDamageTable;
+
+    PlayerData playerData = Anchor_GetClientPlayerData(this->actor.params - 3);
+
+    NameTag_RemoveAllForActor(thisx);
+
+    Color_RGB8 clientColor = Anchor_GetClientColor(this->actor.params - 3);
+    Color_RGBA8 nameTagColor = { clientColor.r, clientColor.g, clientColor.b, 255 };
+    const char* playerName = Anchor_GetClientName(this->actor.params - 3);
+    this->nameTagOptions.yOffset = 0;
+    this->nameTagOptions.textColor = nameTagColor;
+    NameTag_RegisterForActorWithOptions(&this->actor, playerName, this->nameTagOptions);
 }
 
 void LinkPuppet_Destroy(Actor* thisx, PlayState* play) {
@@ -113,16 +120,14 @@ void LinkPuppet_Destroy(Actor* thisx, PlayState* play) {
 void LinkPuppet_Update(Actor* thisx, PlayState* play) {
     LinkPuppet* this = (LinkPuppet*)thisx;
 
-    Actor_SetFocus(this, 60.0f);
-
-    Actor_UpdateBgCheckInfo(play, &this->actor, 15.0f, 30.0f, 60.0f, 0x1D);
-
     PlayerData playerData = Anchor_GetClientPlayerData(this->actor.params - 3);
 
     if (this->puppetAge != playerData.playerAge) {
         LinkPuppet_Init(this, play);
         return;
     }
+
+    this->actor.shape.yOffset = playerData.yOffset;
 
     if (this->damageTimer > 0) {
         this->damageTimer--;
@@ -208,53 +213,6 @@ Vec3f FEET_POS[] = {
     { 200.0f, 200.0f, 0.0f },
 };
 
-extern Gfx** sPlayerDListGroups[];
-extern Gfx* D_80125D28[];
-
-s32 Puppet_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
-    LinkPuppet* this = (LinkPuppet*)thisx;
-
-    PlayerData playerData = Anchor_GetClientPlayerData(this->actor.params - 3);
-
-    if (limbIndex == PLAYER_LIMB_ROOT) {
-        if (playerData.playerAge == 1) {
-            if (!(this->linkSkeleton.moveFlags & 4) || (this->linkSkeleton.moveFlags & 1)) {
-                pos->x *= 0.64f;
-                pos->z *= 0.64f;
-            }
-
-            if (!(this->linkSkeleton.moveFlags & 4) || (this->linkSkeleton.moveFlags & 2)) {
-                pos->y *= 0.64f;
-            }
-        }
-    } else if (limbIndex == PLAYER_LIMB_SHEATH) {
-
-        Gfx** dLists = &sPlayerDListGroups[playerData.sheathType][(void)0, playerData.playerAge];
-        if ((playerData.sheathType == 18) || (playerData.sheathType == 19)) {
-            dLists += playerData.shieldType * 4;
-        }
-        *dList = ResourceMgr_LoadGfxByName(dLists[0]);
-
-    } else if (limbIndex == PLAYER_LIMB_L_HAND) {
-
-        Gfx** dLists = &sPlayerDListGroups[playerData.leftHandType][(void)0, playerData.playerAge];
-        if ((playerData.leftHandType == 4) && playerData.biggoron_broken) {
-            dLists += 4;
-        }
-        *dList = ResourceMgr_LoadGfxByName(dLists[0]);
-
-    } else if (limbIndex == PLAYER_LIMB_R_HAND) {
-
-        Gfx** dLists = &sPlayerDListGroups[playerData.rightHandType][(void)0, playerData.playerAge];
-        if (playerData.rightHandType == 10) {
-            dLists += playerData.shieldType * 4;
-        }
-        *dList = ResourceMgr_LoadGfxByName(dLists[0]);
-    }
-
-    return false;
-}
-
 void Puppet_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     LinkPuppet* this = (LinkPuppet*)thisx;
 
@@ -269,8 +227,10 @@ void LinkPuppet_Draw(Actor* thisx, PlayState* play) {
 
     PlayerData playerData = Anchor_GetClientPlayerData(this->actor.params - 3);
 
-    func_8008F470(play, this->linkSkeleton.skeleton, this->linkSkeleton.jointTable, this->linkSkeleton.dListCount, 0,
-                  playerData.tunicType, playerData.bootsType, playerData.faceType, Puppet_OverrideLimbDraw,
-                  Puppet_PostLimbDraw, this);
+    if (this->puppetAge == playerData.playerAge) {
+        DrawAnchorPuppet(play, this->linkSkeleton.skeleton, this->linkSkeleton.jointTable,
+                         this->linkSkeleton.dListCount, 0, playerData.tunicType, playerData.bootsType,
+                         playerData.faceType, PuppetOverrideDraw, Puppet_PostLimbDraw, this, playerData);
+    }
 }
 #endif

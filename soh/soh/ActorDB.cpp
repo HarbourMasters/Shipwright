@@ -610,7 +610,7 @@ static ActorDBInit EnLinkPuppetInit = {
     "En_Link_Puppet",
     "Puppet",
     ACTORCAT_ITEMACTION,
-    (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED),
+    (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED),
     OBJECT_LINK_BOY,
     sizeof(LinkPuppet),
     (ActorFunc)LinkPuppet_Init,
