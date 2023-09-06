@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_PARAMETER_STATIC_H
+#define TEXTURES_PARAMETER_STATIC_H 1
 
 #include "align_asset_macro.h"
 
@@ -169,3 +170,5 @@ static const ALIGN_ASSET(2) char gMagicMeterMidTex[] = dgMagicMeterMidTex;
 
 #define dgMagicMeterFillTex "__OTR__textures/parameter_static/gMagicMeterFillTex"
 static const ALIGN_ASSET(2) char gMagicMeterFillTex[] = dgMagicMeterFillTex;
+
+#endif // TEXTURES_PARAMETER_STATIC_H

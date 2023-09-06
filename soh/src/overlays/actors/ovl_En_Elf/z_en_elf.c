@@ -877,7 +877,7 @@ void func_80A03CF8(EnElf* this, PlayState* play) {
             func_80A02C98(this, &nextPos, 0.2f);
         }
 
-        if ((play->sceneNum == SCENE_LINK_HOME) && (gSaveContext.sceneSetupIndex == 4)) {
+        if ((play->sceneNum == SCENE_LINKS_HOUSE) && (gSaveContext.sceneSetupIndex == 4)) {
             // play dash sound as Navi enters Links house in the intro
             if (play->csCtx.frames == 55) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_FAIRY_DASH);

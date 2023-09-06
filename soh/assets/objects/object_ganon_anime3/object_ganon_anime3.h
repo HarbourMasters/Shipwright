@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GANON_ANIME3_H
+#define OBJECTS_OBJECT_GANON_ANIME3_H 1
 
 #include "align_asset_macro.h"
 
@@ -28,3 +29,5 @@ static const ALIGN_ASSET(2) char gGanonUncurlAndFlailAnim[] = dgGanonUncurlAndFl
 
 #define dgGanonRoarAnim "__OTR__objects/object_ganon_anime3/gGanonRoarAnim"
 static const ALIGN_ASSET(2) char gGanonRoarAnim[] = dgGanonRoarAnim;
+
+#endif // OBJECTS_OBJECT_GANON_ANIME3_H

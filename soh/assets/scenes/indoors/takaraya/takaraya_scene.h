@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INDOORS_TAKARAYA_SCENE_H
+#define INDOORS_TAKARAYA_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -16,3 +17,5 @@ static const ALIGN_ASSET(2) char takaraya_sceneTex_0069B0[] = dtakaraya_sceneTex
 
 #define dtakaraya_sceneTex_0061B0 "__OTR__scenes/nonmq/takaraya_scene/takaraya_sceneTex_0061B0"
 static const ALIGN_ASSET(2) char takaraya_sceneTex_0061B0[] = dtakaraya_sceneTex_0061B0;
+
+#endif // INDOORS_TAKARAYA_SCENE_H

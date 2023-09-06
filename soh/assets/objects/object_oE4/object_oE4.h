@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_OE4_H
+#define OBJECTS_OBJECT_OE4_H 1
 
 #include "align_asset_macro.h"
 
@@ -82,3 +83,6 @@ static const ALIGN_ASSET(2) char object_oE4_Tex_004D48[] = dobject_oE4_Tex_004D4
 
 #define dobject_oE4_Tex_004DC8 "__OTR__objects/object_oE4/object_oE4_Tex_004DC8"
 static const ALIGN_ASSET(2) char object_oE4_Tex_004DC8[] = dobject_oE4_Tex_004DC8;
+
+
+#endif // OBJECTS_OBJECT_OE4_H

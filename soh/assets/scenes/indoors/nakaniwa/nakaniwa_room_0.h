@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INDOORS_NAKANIWA_ROOM_0_H
+#define INDOORS_NAKANIWA_ROOM_0_H 1
 
 #include "align_asset_macro.h"
 
@@ -118,3 +119,6 @@ static const ALIGN_ASSET(2) char nakaniwa_room_0Set_000240DL_007178[] = dnakaniw
 
 #define dnakaniwa_room_0Set_000240DL_014E98 "__OTR__scenes/nonmq/nakaniwa_scene/nakaniwa_room_0Set_000240DL_014E98"
 static const ALIGN_ASSET(2) char nakaniwa_room_0Set_000240DL_014E98[] = dnakaniwa_room_0Set_000240DL_014E98;
+
+
+#endif // INDOORS_NAKANIWA_ROOM_0_H

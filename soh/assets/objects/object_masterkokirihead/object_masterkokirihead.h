@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_MASTERKOKIRIHEAD_H
+#define OBJECTS_OBJECT_MASTERKOKIRIHEAD_H 1
 
 #include "align_asset_macro.h"
 
@@ -37,3 +38,5 @@ static const ALIGN_ASSET(2) char object_masterkokiriheadTex_0009F0[] = dobject_m
 
 #define dobject_masterkokiriheadTex_000A30 "__OTR__objects/object_masterkokirihead/object_masterkokiriheadTex_000A30"
 static const ALIGN_ASSET(2) char object_masterkokiriheadTex_000A30[] = dobject_masterkokiriheadTex_000A30;
+
+#endif // OBJECTS_OBJECT_MASTERKOKIRIHEAD_H

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DUNGEONS_GANON_TOU_SCENE_H
+#define DUNGEONS_GANON_TOU_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -15,3 +16,6 @@ static const ALIGN_ASSET(2) char ganon_tou_sceneCollisionHeader_002610[] = dgano
 static const ALIGN_ASSET(2) char ganon_tou_sceneTex_003280[] = dganon_tou_sceneTex_003280;
 
 #define dganon_tou_sceneCollisionHeader_002610 "__OTR__scenes/nonmq/ganon_tou_scene/ganon_tou_sceneCollisionHeader_002610"
+
+
+#endif // DUNGEONS_GANON_TOU_SCENE_H

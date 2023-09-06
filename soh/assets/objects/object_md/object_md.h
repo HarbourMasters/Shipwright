@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_MD_H
+#define OBJECTS_OBJECT_MD_H 1
 
 #include "align_asset_macro.h"
 
@@ -163,3 +164,6 @@ static const ALIGN_ASSET(2) char gMidoHaltAnim[] = dgMidoHaltAnim;
 
 #define dgMidoWalkingAnim "__OTR__objects/object_md/gMidoWalkingAnim"
 static const ALIGN_ASSET(2) char gMidoWalkingAnim[] = dgMidoWalkingAnim;
+
+
+#endif // OBJECTS_OBJECT_MD_H

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INDOORS_SYATEKIJYOU_SCENE_H
+#define INDOORS_SYATEKIJYOU_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -76,3 +77,6 @@ static const ALIGN_ASSET(2) char syatekijyou_sceneTex_003740[] = dsyatekijyou_sc
 #define dsyatekijyou_sceneCollisionHeader_001420 "__OTR__scenes/nonmq/syatekijyou_scene/syatekijyou_sceneCollisionHeader_001420"
 
 #define dsyatekijyou_sceneCollisionHeader_001420 "__OTR__scenes/nonmq/syatekijyou_scene/syatekijyou_sceneCollisionHeader_001420"
+
+
+#endif // INDOORS_SYATEKIJYOU_SCENE_H

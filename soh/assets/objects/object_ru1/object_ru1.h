@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_RU1_H
+#define OBJECTS_OBJECT_RU1_H 1
 
 #include "align_asset_macro.h"
 
@@ -166,3 +167,6 @@ static const ALIGN_ASSET(2) char gRutoChildCircleGradientTex[] = dgRutoChildCirc
 
 #define dgRutoChildSkel "__OTR__objects/object_ru1/gRutoChildSkel"
 static const ALIGN_ASSET(2) char gRutoChildSkel[] = dgRutoChildSkel;
+
+
+#endif // OBJECTS_OBJECT_RU1_H
