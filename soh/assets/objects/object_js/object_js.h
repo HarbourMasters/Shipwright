@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_JS_H
+#define OBJECTS_OBJECT_JS_H 1
 
 #include "align_asset_macro.h"
 
@@ -79,3 +80,6 @@ static const ALIGN_ASSET(2) char gCarpetMerchantIdleAnim[] = dgCarpetMerchantIdl
 
 #define dgCarpetMerchantCol "__OTR__objects/object_js/gCarpetMerchantCol"
 static const ALIGN_ASSET(2) char gCarpetMerchantCol[] = dgCarpetMerchantCol;
+
+
+#endif // OBJECTS_OBJECT_JS_H

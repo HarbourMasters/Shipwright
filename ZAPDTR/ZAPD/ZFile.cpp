@@ -811,10 +811,10 @@ void ZFile::GenerateSourceFiles()
 void ZFile::GenerateSourceHeaderFiles()
 {
 	OutputFormatter formatter;
-	std::string guard = outName.stem().string();
+	// Use parent folder and output name as guard as some headers have the same output name
+	std::string guard = xmlFilePath.parent_path().stem().string() + "_" + outName.stem().string();
 
 	std::transform(guard.begin(), guard.end(), guard.begin(), ::toupper);
-	formatter.Write("#pragma once\n\n");
 	formatter.Write(
 		StringHelper::Sprintf("#ifndef %s_H\n#define %s_H 1\n\n", guard.c_str(), guard.c_str()));
 	formatter.Write("#include \"align_asset_macro.h\"\n");
@@ -838,7 +838,7 @@ void ZFile::GenerateSourceHeaderFiles()
 
 	formatter.Write(ProcessExterns());
 
-	formatter.Write("#endif\n");
+	formatter.Write(StringHelper::Sprintf("\n#endif // %s_H\n", guard.c_str()));
 
 	fs::path headerFilename = GetSourceOutputFolderPath() / outName.stem().concat(".h");
 
@@ -846,8 +846,6 @@ void ZFile::GenerateSourceHeaderFiles()
 		printf("Writing H file: %s\n", headerFilename.c_str());
 
 	std::string output = formatter.GetOutput();
-	while (output.back() == '\n')
-		output.pop_back();
 
 	if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
 		DiskFile::WriteAllText(headerFilename, output);

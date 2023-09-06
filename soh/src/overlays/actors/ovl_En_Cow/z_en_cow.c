@@ -122,7 +122,7 @@ void EnCow_Init(Actor* thisx, PlayState* play) {
             Collider_SetCylinder(play, &this->colliders[1], &this->actor, &sCylinderInit);
             func_809DEE9C(this);
             this->actionFunc = func_809DF96C;
-            if (play->sceneNum == SCENE_LINK_HOME) {
+            if (play->sceneNum == SCENE_LINKS_HOUSE) {
                 if (!LINK_IS_ADULT && !CVarGetInteger("gCowOfTime", 0)) {
                     Actor_Kill(&this->actor);
                     return;
@@ -223,12 +223,12 @@ void EnCow_MoveForRandomizer(EnCow* this, PlayState* play) {
     }
 
     // Move left cow in lon lon tower
-    if (play->sceneNum == SCENE_SOUKO && this->actor.world.pos.x == -108 && this->actor.world.pos.z == -65) {
+    if (play->sceneNum == SCENE_LON_LON_BUILDINGS && this->actor.world.pos.x == -108 && this->actor.world.pos.z == -65) {
         this->actor.world.pos.x = -229.0f;
         this->actor.world.pos.z = 157.0f;
         this->actor.shape.rot.y = 15783.0f;
     // Move right cow in lon lon stable
-    } else if (play->sceneNum == SCENE_MALON_STABLE && this->actor.world.pos.x == -3 && this->actor.world.pos.z == -254) {
+    } else if (play->sceneNum == SCENE_STABLE && this->actor.world.pos.x == -3 && this->actor.world.pos.z == -254) {
         this->actor.world.pos.x += 119.0f;
     }
 }

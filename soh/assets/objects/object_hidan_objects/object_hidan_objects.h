@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_HIDAN_OBJECTS_H
+#define OBJECTS_OBJECT_HIDAN_OBJECTS_H 1
 
 #include "align_asset_macro.h"
 
@@ -262,3 +263,5 @@ static const ALIGN_ASSET(2) char object_hidan_objectsTex_00FB20[] = dobject_hida
 
 #define dobject_hidan_objectsTex_010D90 "__OTR__objects/object_hidan_objects/object_hidan_objectsTex_010D90"
 static const ALIGN_ASSET(2) char object_hidan_objectsTex_010D90[] = dobject_hidan_objectsTex_010D90;
+
+#endif // OBJECTS_OBJECT_HIDAN_OBJECTS_H

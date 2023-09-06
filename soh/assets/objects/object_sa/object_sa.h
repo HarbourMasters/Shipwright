@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_SA_H
+#define OBJECTS_OBJECT_SA_H 1
 
 #include "align_asset_macro.h"
 
@@ -226,3 +227,5 @@ static const ALIGN_ASSET(2) char gSariaEyeSadTex[] = dgSariaEyeSadTex;
 
 #define dobject_saTex_002530 "__OTR__objects/object_sa/object_saTex_002530"
 static const ALIGN_ASSET(2) char object_saTex_002530[] = dobject_saTex_002530;
+
+#endif // OBJECTS_OBJECT_SA_H

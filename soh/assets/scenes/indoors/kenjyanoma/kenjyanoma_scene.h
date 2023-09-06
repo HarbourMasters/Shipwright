@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INDOORS_KENJYANOMA_SCENE_H
+#define INDOORS_KENJYANOMA_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -10,3 +11,6 @@ static const ALIGN_ASSET(2) char kenjyanoma_sceneCollisionHeader_00359C[] = dken
 #define dkenjyanoma_sceneCollisionHeader_00359C "__OTR__scenes/nonmq/kenjyanoma_scene/kenjyanoma_sceneCollisionHeader_00359C"
 
 #define dkenjyanoma_sceneCollisionHeader_00359C "__OTR__scenes/nonmq/kenjyanoma_scene/kenjyanoma_sceneCollisionHeader_00359C"
+
+
+#endif // INDOORS_KENJYANOMA_SCENE_H

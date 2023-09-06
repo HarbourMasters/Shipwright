@@ -97,7 +97,7 @@ bool Randomizer_ObtainedMalonHCReward() {
 u16 EnMa1_GetText(PlayState* play, Actor* thisx) {
     // Special case for Malon Hyrule Castle Text. Placing it here at the beginning
     // has the added benefit of circumventing mask text if wearing bunny hood.
-    if (gSaveContext.n64ddFlag && play->sceneNum == SCENE_SPOT15) {
+    if (gSaveContext.n64ddFlag && play->sceneNum == SCENE_HYRULE_CASTLE) {
         return Randomizer_ObtainedMalonHCReward() ? 0x2044 : 0x2043;
     }
     u16 faceReaction = Text_GetFaceReaction(play, 0x17);
@@ -205,7 +205,7 @@ s32 func_80AA08C4(EnMa1* this, PlayState* play) {
         !Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE) && !Flags_GetInfTable(INFTABLE_ENTERED_HYRULE_CASTLE)) {
         return 1;
     }
-    if ((play->sceneNum == SCENE_SPOT15) &&  // if we're at hyrule castle
+    if ((play->sceneNum == SCENE_HYRULE_CASTLE) &&  // if we're at hyrule castle
         (!Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE) || // and talon hasn't left
          (gSaveContext.n64ddFlag &&
           !Randomizer_ObtainedMalonHCReward()))) { // or we're rando'd and haven't gotten malon's HC check
@@ -217,11 +217,11 @@ s32 func_80AA08C4(EnMa1* this, PlayState* play) {
         }
     }
     // Malon asleep in her bed if Talon has left Hyrule Castle and it is nighttime.
-    if ((play->sceneNum == SCENE_SOUKO) && IS_NIGHT && (Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE))) {
+    if ((play->sceneNum == SCENE_LON_LON_BUILDINGS) && IS_NIGHT && (Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE))) {
         return 1;
     }
     // Don't spawn Malon if none of the above are true and we are not in Lon Lon Ranch.
-    if (play->sceneNum != SCENE_SPOT20) {
+    if (play->sceneNum != SCENE_LON_LON_RANCH) {
         return 0;
     }
     // If we've gotten this far, we're in Lon Lon Ranch. Spawn Malon if it is daytime, Talon has left Hyrule Castle, and
@@ -349,7 +349,7 @@ void func_80AA0D88(EnMa1* this, PlayState* play) {
     // We want to Kill Malon's Actor outside of randomizer when Talon is freed. In Randomizer we don't kill Malon's
     // Actor here, otherwise if we wake up Talon first and then get her check she will spontaneously
     // disappear.
-    if ((play->sceneNum == SCENE_SPOT15) && (!gSaveContext.n64ddFlag && Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE))) {
+    if ((play->sceneNum == SCENE_HYRULE_CASTLE) && (!gSaveContext.n64ddFlag && Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE))) {
         Actor_Kill(&this->actor);
     // We want Malon to give the Weird Egg Check (see function below) in the following situations:
     // 1. Talon as not left Hyrule Castle (Vanilla) OR

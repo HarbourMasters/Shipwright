@@ -135,12 +135,12 @@ typedef struct {
 } ShutterSceneInfo;
 
 static ShutterSceneInfo sSceneInfo[] = {
-    { SCENE_YDAN, 0x02 },       { SCENE_DDAN, 0x03 },         { SCENE_DDAN_BOSS, 0x03 },
-    { SCENE_BDAN, 0x04 },       { SCENE_BMORI1, 0x05 },       { SCENE_HIDAN, 0x08 },
-    { SCENE_GANON, 0x09 },      { SCENE_GANON_BOSS, 0x09 },   { SCENE_JYASINZOU, 0x0A },
-    { SCENE_JYASINBOSS, 0x0A }, { SCENE_MIZUSIN, 0x0B },      { SCENE_HAKADAN, 0x0C },
-    { SCENE_HAKADANCH, 0x0C },  { SCENE_ICE_DOUKUTO, 0x0D },  { SCENE_MEN, 0x0E },
-    { SCENE_GANONTIKA, 0x0F },  { SCENE_HAKAANA_OUKE, 0x10 }, { -1, 0x07 },
+    { SCENE_DEKU_TREE, 0x02 },            { SCENE_DODONGOS_CAVERN, 0x03 },    { SCENE_DODONGOS_CAVERN_BOSS, 0x03 },
+    { SCENE_JABU_JABU, 0x04 },            { SCENE_FOREST_TEMPLE, 0x05 },      { SCENE_FIRE_TEMPLE, 0x08 },
+    { SCENE_GANONS_TOWER, 0x09 },         { SCENE_GANONDORF_BOSS, 0x09 },     { SCENE_SPIRIT_TEMPLE, 0x0A },
+    { SCENE_SPIRIT_TEMPLE_BOSS, 0x0A },   { SCENE_WATER_TEMPLE, 0x0B },       { SCENE_SHADOW_TEMPLE, 0x0C },
+    { SCENE_BOTTOM_OF_THE_WELL, 0x0C },   { SCENE_ICE_CAVERN, 0x0D },         { SCENE_GERUDO_TRAINING_GROUND, 0x0E },
+    { SCENE_INSIDE_GANONS_CASTLE, 0x0F }, { SCENE_ROYAL_FAMILYS_TOMB, 0x10 }, { -1, 0x07 },
 };
 
 typedef struct {
@@ -150,12 +150,12 @@ typedef struct {
 } BossDoorInfo;
 
 static BossDoorInfo D_80998288[] = {
-    { SCENE_HIDAN, SCENE_FIRE_BS, 0x01 },
-    { SCENE_MIZUSIN, SCENE_MIZUSIN_BS, 0x02 },
-    { SCENE_HAKADAN, SCENE_HAKADAN_BS, 0x03 },
-    { SCENE_GANON, SCENE_GANON_BOSS, 0x04 },
-    { SCENE_BMORI1, SCENE_MORIBOSSROOM, 0x05 },
-    { SCENE_JYASINZOU, SCENE_JYASINBOSS, 0x06 },
+    { SCENE_FIRE_TEMPLE, SCENE_FIRE_TEMPLE_BOSS, 0x01 },
+    { SCENE_WATER_TEMPLE, SCENE_WATER_TEMPLE_BOSS, 0x02 },
+    { SCENE_SHADOW_TEMPLE, SCENE_SHADOW_TEMPLE_BOSS, 0x03 },
+    { SCENE_GANONS_TOWER, SCENE_GANONDORF_BOSS, 0x04 },
+    { SCENE_FOREST_TEMPLE, SCENE_FOREST_TEMPLE_BOSS, 0x05 },
+    { SCENE_SPIRIT_TEMPLE, SCENE_SPIRIT_TEMPLE_BOSS, 0x06 },
     { -1, -1, 0x00 },
 };
 
@@ -475,7 +475,7 @@ void func_80996EE8(DoorShutter* this, PlayState* play) {
         } else if (func_809968D4(this, play)) {
             Player* player = GET_PLAYER(play);
             // Jabu navi text for switch doors is different
-            player->naviTextId = (play->sceneNum == SCENE_BDAN) ? -0x20B : -0x202;
+            player->naviTextId = (play->sceneNum == SCENE_JABU_JABU) ? -0x20B : -0x202;
         }
     }
 }

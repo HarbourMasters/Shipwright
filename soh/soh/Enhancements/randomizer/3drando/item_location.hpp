@@ -212,7 +212,7 @@ public:
       addedToPool = true;
     }
 
-    const uint32_t GetHintKey() const {
+    uint32_t GetHintKey() const {
         return hintKey;
     }
 
@@ -323,7 +323,7 @@ public:
       return &excludedOption;
     }
 
-    const uint32_t Getuint32_t() const {
+    uint32_t Getuint32_t() const {
       return hintKey;
     }
 

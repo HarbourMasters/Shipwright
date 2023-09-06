@@ -1094,7 +1094,7 @@ void DrawFlagsTab() {
         if (ImGui::TreeNode(flagTable.name)) {
             for (int j = 0; j < flagTable.size + 1; j++) {
                 DrawGroupWithBorder([&]() {
-                    ImGui::Text(fmt::format("{:<2x}", j).c_str());
+                    ImGui::Text("%s", fmt::format("{:<2x}", j).c_str());
                     switch (flagTable.flagTableType) {
                         case EVENT_CHECK_INF:
                             DrawFlagTableArray16(flagTable, j, gSaveContext.eventChkInf[j]);
@@ -1418,10 +1418,10 @@ void DrawQuestStatusTab() {
     DrawGroupWithBorder([&]() {
         ImGui::Text("Dungeon Items");
 
-        static int32_t dungeonItemsScene = SCENE_YDAN;
+        static int32_t dungeonItemsScene = SCENE_DEKU_TREE;
         ImGui::PushItemWidth(-ImGui::GetWindowWidth() * 0.35f);
         if (ImGui::BeginCombo("##DungeonSelect", SohUtils::GetSceneName(dungeonItemsScene).c_str())) {
-            for (int32_t dungeonIndex = SCENE_YDAN; dungeonIndex < SCENE_BDAN_BOSS + 1; dungeonIndex++) {
+            for (int32_t dungeonIndex = SCENE_DEKU_TREE; dungeonIndex < SCENE_JABU_JABU_BOSS + 1; dungeonIndex++) {
                 if (ImGui::Selectable(SohUtils::GetSceneName(dungeonIndex).c_str(),
                                       dungeonIndex == dungeonItemsScene)) {
                     dungeonItemsScene = dungeonIndex;
@@ -1438,7 +1438,7 @@ void DrawQuestStatusTab() {
         ImGui::SameLine();
         DrawDungeonItemButton(ITEM_DUNGEON_MAP, dungeonItemsScene);
 
-        if (dungeonItemsScene != SCENE_BDAN_BOSS) {
+        if (dungeonItemsScene != SCENE_JABU_JABU_BOSS) {
             float lineHeight = ImGui::GetTextLineHeightWithSpacing();
             ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemMapping[ITEM_KEY_SMALL].name), ImVec2(lineHeight, lineHeight));
             ImGui::SameLine();

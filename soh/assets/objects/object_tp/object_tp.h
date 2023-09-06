@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_TP_H
+#define OBJECTS_OBJECT_TP_H 1
 
 #include "align_asset_macro.h"
 
@@ -28,3 +29,5 @@ static const ALIGN_ASSET(2) char gTailpasaranTailSegmentTex[] = dgTailpasaranTai
 
 #define dgTailpasaranHeadMouthpartsTex "__OTR__objects/object_tp/gTailpasaranHeadMouthpartsTex"
 static const ALIGN_ASSET(2) char gTailpasaranHeadMouthpartsTex[] = dgTailpasaranHeadMouthpartsTex;
+
+#endif // OBJECTS_OBJECT_TP_H

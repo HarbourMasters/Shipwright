@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_DOOR_KILLER_H
+#define OBJECTS_OBJECT_DOOR_KILLER_H 1
 
 #include "align_asset_macro.h"
 
@@ -40,3 +41,6 @@ static const ALIGN_ASSET(2) char object_door_killer_DL_001A58[] = dobject_door_k
 
 #define dobject_door_killer_Skel_001BC8 "__OTR__objects/object_door_killer/object_door_killer_Skel_001BC8"
 static const ALIGN_ASSET(2) char object_door_killer_Skel_001BC8[] = dobject_door_killer_Skel_001BC8;
+
+
+#endif // OBJECTS_OBJECT_DOOR_KILLER_H

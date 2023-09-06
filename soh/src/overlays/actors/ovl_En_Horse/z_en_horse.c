@@ -157,183 +157,183 @@ typedef struct {
 
 static EnHorseSpawnpoint sHorseSpawns[] = {
     // Hyrule Field
-    { SCENE_SPOT00, 16, 0, 1341, 0 },
-    { SCENE_SPOT00, -1297, 0, 1459, 0 },
-    { SCENE_SPOT00, -5416, -300, 1296, 0 },
-    { SCENE_SPOT00, -4667, -300, 3620, 0 },
-    { SCENE_SPOT00, -3837, 81, 5537, 0 },
-    { SCENE_SPOT00, -5093, -226, 6661, 0 },
-    { SCENE_SPOT00, -6588, -79, 5053, 0 },
-    { SCENE_SPOT00, -7072, -500, 7538, 0 },
-    { SCENE_SPOT00, -6139, -500, 8910, 0 },
-    { SCENE_SPOT00, -8497, -300, 7802, 0 },
-    { SCENE_SPOT00, -5481, -499, 12127, 0 },
-    { SCENE_SPOT00, -4808, -700, 13583, 0 },
-    { SCENE_SPOT00, -3416, -490, 12092, 0 },
-    { SCENE_SPOT00, -2915, 100, 8339, 0 },
-    { SCENE_SPOT00, -2277, -500, 13247, 0 },
-    { SCENE_SPOT00, -1026, -500, 12101, 0 },
-    { SCENE_SPOT00, 1427, -500, 13341, 0 },
-    { SCENE_SPOT00, -200, -486, 10205, 0 },
-    { SCENE_SPOT00, -1469, 100, 7496, 0 },
-    { SCENE_SPOT00, -995, 168, 5652, 0 },
-    { SCENE_SPOT00, 1938, 89, 6232, 0 },
-    { SCENE_SPOT00, 1387, -105, 9206, 0 },
-    { SCENE_SPOT00, 1571, -223, 7701, 0 },
-    { SCENE_SPOT00, 3893, -121, 7068, 0 },
-    { SCENE_SPOT00, 3179, 373, 5221, 0 },
-    { SCENE_SPOT00, 4678, -20, 3869, 0 },
-    { SCENE_SPOT00, 3460, 246, 4207, 0 },
-    { SCENE_SPOT00, 3686, 128, 2366, 0 },
-    { SCENE_SPOT00, 1791, 18, 152, 0 },
-    { SCENE_SPOT00, 3667, -16, 1399, 0 },
-    { SCENE_SPOT00, 1827, -15, 983, 0 },
-    { SCENE_SPOT00, 1574, 399, 4318, 0 },
-    { SCENE_SPOT00, 716, 95, 3391, 0 },
-    { SCENE_SPOT00, -1189, -41, 4739, 0 },
-    { SCENE_SPOT00, -1976, -171, 4172, 0 },
-    { SCENE_SPOT00, 1314, 391, 5665, 0 },
-    { SCENE_SPOT00, 112, 0, 1959, 0 },
-    { SCENE_SPOT00, -3011, -111, 9397, 0 },
-    { SCENE_SPOT00, -5674, -270, 8585, 0 },
-    { SCENE_SPOT00, -8861, -300, 7836, 0 },
-    { SCENE_SPOT00, -6056, -500, 7810, 0 },
-    { SCENE_SPOT00, -7306, -500, 5994, 0 },
-    { SCENE_SPOT00, -7305, -500, 7605, 0 },
-    { SCENE_SPOT00, -7439, -300, 7600, 0 },
-    { SCENE_SPOT00, -7464, -300, 6268, 0 },
-    { SCENE_SPOT00, -8080, -300, 7553, 0 },
-    { SCENE_SPOT00, -8091, -300, 7349, 0 },
-    { SCENE_SPOT00, -8785, -300, 7383, 0 },
-    { SCENE_SPOT00, -8745, -300, 7508, 0 },
-    { SCENE_SPOT00, -8777, -300, 7788, 0 },
-    { SCENE_SPOT00, -8048, -299, 7738, 0 },
-    { SCENE_SPOT00, -7341, -184, 7730, 0 },
-    { SCENE_SPOT00, -6410, -288, 7824, 0 },
-    { SCENE_SPOT00, -6326, -290, 8205, 0 },
-    { SCENE_SPOT00, -6546, -292, 8400, 0 },
-    { SCENE_SPOT00, -7533, -180, 8459, 0 },
-    { SCENE_SPOT00, -8024, -295, 7903, 0 },
-    { SCENE_SPOT00, -8078, -308, 7994, 0 },
-    { SCENE_SPOT00, -9425, -287, 7696, 0 },
-    { SCENE_SPOT00, -9322, -292, 7577, 0 },
-    { SCENE_SPOT00, -9602, -199, 7160, 0 },
-    { SCENE_SPOT00, -9307, -300, 7758, 0 },
-    { SCENE_SPOT00, -9230, -300, 7642, 0 },
-    { SCENE_SPOT00, -7556, -499, 8695, 0 },
-    { SCENE_SPOT00, -6438, -500, 8606, 0 },
-    { SCENE_SPOT00, -6078, -500, 8258, 0 },
-    { SCENE_SPOT00, -6233, -500, 7613, 0 },
-    { SCENE_SPOT00, -5035, -205, 7814, 0 },
-    { SCENE_SPOT00, -5971, -500, 8501, 0 },
-    { SCENE_SPOT00, -5724, -498, 10123, 0 },
-    { SCENE_SPOT00, -5094, -392, 11106, 0 },
-    { SCENE_SPOT00, -5105, -393, 11312, 0 },
-    { SCENE_SPOT00, -4477, -314, 11132, 0 },
-    { SCENE_SPOT00, -3867, -380, 11419, 0 },
-    { SCENE_SPOT00, -2952, -500, 11944, 0 },
-    { SCENE_SPOT00, -2871, -488, 11743, 0 },
-    { SCENE_SPOT00, -3829, -372, 11327, 0 },
-    { SCENE_SPOT00, -4439, -293, 10989, 0 },
-    { SCENE_SPOT00, -5014, -381, 11086, 0 },
-    { SCENE_SPOT00, -5113, -188, 10968, 0 },
-    { SCENE_SPOT00, -5269, -188, 11156, 0 },
-    { SCENE_SPOT00, -5596, -178, 9972, 0 },
-    { SCENE_SPOT00, -5801, -288, 8518, 0 },
-    { SCENE_SPOT00, -4910, -178, 7931, 0 },
-    { SCENE_SPOT00, -3586, 73, 8140, 0 },
-    { SCENE_SPOT00, -4487, -106, 9362, 0 },
-    { SCENE_SPOT00, -4339, -112, 6412, 0 },
-    { SCENE_SPOT00, -3417, 105, 8194, 0 },
-    { SCENE_SPOT00, -4505, -20, 6608, 0 },
-    { SCENE_SPOT00, -5038, -199, 6603, 0 },
-    { SCENE_SPOT00, -4481, 1, 6448, 0 },
-    { SCENE_SPOT00, -5032, -168, 6418, 0 },
-    { SCENE_SPOT00, -5256, -700, 14329, 0 },
-    { SCENE_SPOT00, -5749, -820, 15380, 0 },
-    { SCENE_SPOT00, -3122, -700, 13608, 0 },
-    { SCENE_SPOT00, -3758, -525, 13228, 0 },
-    { SCENE_SPOT00, -3670, -500, 13123, 0 },
-    { SCENE_SPOT00, -2924, -500, 13526, 0 },
-    { SCENE_SPOT00, 1389, -115, 9370, 0 },
-    { SCENE_SPOT00, 548, -116, 8889, 0 },
-    { SCENE_SPOT00, -106, -107, 8530, 0 },
-    { SCENE_SPOT00, -1608, 85, 7646, 0 },
-    { SCENE_SPOT00, -5300, -700, 13772, 0 },
-    { SCENE_SPOT00, -5114, -700, 13400, 0 },
-    { SCENE_SPOT00, -4561, -700, 13700, 0 },
-    { SCENE_SPOT00, -4762, -700, 14084, 0 },
-    { SCENE_SPOT00, -2954, 100, 8216, 0 },
-    { SCENE_SPOT00, 1460, -104, 9246, 0 },
-    { SCENE_SPOT00, 629, -105, 8791, 0 },
-    { SCENE_SPOT00, -10, -90, 8419, 0 },
-    { SCENE_SPOT00, -1462, 100, 7504, 0 },
-    { SCENE_SPOT00, -3018, -500, 12493, 0 },
-    { SCENE_SPOT00, -2994, -311, 10331, 0 },
-    { SCENE_SPOT00, -4006, -700, 14152, 0 },
-    { SCENE_SPOT00, -4341, -500, 12743, 0 },
-    { SCENE_SPOT00, -5879, -497, 6799, 0 },
-    { SCENE_SPOT00, 22, -473, 10103, 0 },
-    { SCENE_SPOT00, -1389, -192, 8874, 0 },
-    { SCENE_SPOT00, -4, 92, 6866, 0 },
-    { SCENE_SPOT00, 483, 104, 6637, 0 },
-    { SCENE_SPOT00, 1580, 183, 5987, 0 },
-    { SCENE_SPOT00, 1548, 308, 5077, 0 },
-    { SCENE_SPOT00, 1511, 399, 4267, 0 },
-    { SCENE_SPOT00, 1358, 385, 4271, 0 },
-    { SCENE_SPOT00, 1379, 395, 5063, 0 },
-    { SCENE_SPOT00, 1360, 394, 5870, 0 },
-    { SCENE_SPOT00, 813, 283, 6194, 0 },
-    { SCENE_SPOT00, -57, 101, 6743, 0 },
-    { SCENE_SPOT00, 91, 325, 5143, 0 },
-    { SCENE_SPOT00, 1425, -214, 7659, 0 },
-    { SCENE_SPOT00, 3487, -19, 880, 0 },
-    { SCENE_SPOT00, 2933, 152, 2094, 0 },
-    { SCENE_SPOT00, 2888, -145, 6862, 0 },
-    { SCENE_SPOT00, 1511, 67, 6471, 0 },
-    { SCENE_SPOT00, 4051, -47, 1722, 0 },
-    { SCENE_SPOT00, -7335, -500, 8627, 0 },
-    { SCENE_SPOT00, -7728, -462, 8498, 0 },
-    { SCENE_SPOT00, -7791, -446, 8832, 0 },
-    { SCENE_SPOT00, -2915, -435, 11334, 0 },
-    { SCENE_SPOT00, 165, -278, 3352, 0 },
+    { SCENE_HYRULE_FIELD, 16, 0, 1341, 0 },
+    { SCENE_HYRULE_FIELD, -1297, 0, 1459, 0 },
+    { SCENE_HYRULE_FIELD, -5416, -300, 1296, 0 },
+    { SCENE_HYRULE_FIELD, -4667, -300, 3620, 0 },
+    { SCENE_HYRULE_FIELD, -3837, 81, 5537, 0 },
+    { SCENE_HYRULE_FIELD, -5093, -226, 6661, 0 },
+    { SCENE_HYRULE_FIELD, -6588, -79, 5053, 0 },
+    { SCENE_HYRULE_FIELD, -7072, -500, 7538, 0 },
+    { SCENE_HYRULE_FIELD, -6139, -500, 8910, 0 },
+    { SCENE_HYRULE_FIELD, -8497, -300, 7802, 0 },
+    { SCENE_HYRULE_FIELD, -5481, -499, 12127, 0 },
+    { SCENE_HYRULE_FIELD, -4808, -700, 13583, 0 },
+    { SCENE_HYRULE_FIELD, -3416, -490, 12092, 0 },
+    { SCENE_HYRULE_FIELD, -2915, 100, 8339, 0 },
+    { SCENE_HYRULE_FIELD, -2277, -500, 13247, 0 },
+    { SCENE_HYRULE_FIELD, -1026, -500, 12101, 0 },
+    { SCENE_HYRULE_FIELD, 1427, -500, 13341, 0 },
+    { SCENE_HYRULE_FIELD, -200, -486, 10205, 0 },
+    { SCENE_HYRULE_FIELD, -1469, 100, 7496, 0 },
+    { SCENE_HYRULE_FIELD, -995, 168, 5652, 0 },
+    { SCENE_HYRULE_FIELD, 1938, 89, 6232, 0 },
+    { SCENE_HYRULE_FIELD, 1387, -105, 9206, 0 },
+    { SCENE_HYRULE_FIELD, 1571, -223, 7701, 0 },
+    { SCENE_HYRULE_FIELD, 3893, -121, 7068, 0 },
+    { SCENE_HYRULE_FIELD, 3179, 373, 5221, 0 },
+    { SCENE_HYRULE_FIELD, 4678, -20, 3869, 0 },
+    { SCENE_HYRULE_FIELD, 3460, 246, 4207, 0 },
+    { SCENE_HYRULE_FIELD, 3686, 128, 2366, 0 },
+    { SCENE_HYRULE_FIELD, 1791, 18, 152, 0 },
+    { SCENE_HYRULE_FIELD, 3667, -16, 1399, 0 },
+    { SCENE_HYRULE_FIELD, 1827, -15, 983, 0 },
+    { SCENE_HYRULE_FIELD, 1574, 399, 4318, 0 },
+    { SCENE_HYRULE_FIELD, 716, 95, 3391, 0 },
+    { SCENE_HYRULE_FIELD, -1189, -41, 4739, 0 },
+    { SCENE_HYRULE_FIELD, -1976, -171, 4172, 0 },
+    { SCENE_HYRULE_FIELD, 1314, 391, 5665, 0 },
+    { SCENE_HYRULE_FIELD, 112, 0, 1959, 0 },
+    { SCENE_HYRULE_FIELD, -3011, -111, 9397, 0 },
+    { SCENE_HYRULE_FIELD, -5674, -270, 8585, 0 },
+    { SCENE_HYRULE_FIELD, -8861, -300, 7836, 0 },
+    { SCENE_HYRULE_FIELD, -6056, -500, 7810, 0 },
+    { SCENE_HYRULE_FIELD, -7306, -500, 5994, 0 },
+    { SCENE_HYRULE_FIELD, -7305, -500, 7605, 0 },
+    { SCENE_HYRULE_FIELD, -7439, -300, 7600, 0 },
+    { SCENE_HYRULE_FIELD, -7464, -300, 6268, 0 },
+    { SCENE_HYRULE_FIELD, -8080, -300, 7553, 0 },
+    { SCENE_HYRULE_FIELD, -8091, -300, 7349, 0 },
+    { SCENE_HYRULE_FIELD, -8785, -300, 7383, 0 },
+    { SCENE_HYRULE_FIELD, -8745, -300, 7508, 0 },
+    { SCENE_HYRULE_FIELD, -8777, -300, 7788, 0 },
+    { SCENE_HYRULE_FIELD, -8048, -299, 7738, 0 },
+    { SCENE_HYRULE_FIELD, -7341, -184, 7730, 0 },
+    { SCENE_HYRULE_FIELD, -6410, -288, 7824, 0 },
+    { SCENE_HYRULE_FIELD, -6326, -290, 8205, 0 },
+    { SCENE_HYRULE_FIELD, -6546, -292, 8400, 0 },
+    { SCENE_HYRULE_FIELD, -7533, -180, 8459, 0 },
+    { SCENE_HYRULE_FIELD, -8024, -295, 7903, 0 },
+    { SCENE_HYRULE_FIELD, -8078, -308, 7994, 0 },
+    { SCENE_HYRULE_FIELD, -9425, -287, 7696, 0 },
+    { SCENE_HYRULE_FIELD, -9322, -292, 7577, 0 },
+    { SCENE_HYRULE_FIELD, -9602, -199, 7160, 0 },
+    { SCENE_HYRULE_FIELD, -9307, -300, 7758, 0 },
+    { SCENE_HYRULE_FIELD, -9230, -300, 7642, 0 },
+    { SCENE_HYRULE_FIELD, -7556, -499, 8695, 0 },
+    { SCENE_HYRULE_FIELD, -6438, -500, 8606, 0 },
+    { SCENE_HYRULE_FIELD, -6078, -500, 8258, 0 },
+    { SCENE_HYRULE_FIELD, -6233, -500, 7613, 0 },
+    { SCENE_HYRULE_FIELD, -5035, -205, 7814, 0 },
+    { SCENE_HYRULE_FIELD, -5971, -500, 8501, 0 },
+    { SCENE_HYRULE_FIELD, -5724, -498, 10123, 0 },
+    { SCENE_HYRULE_FIELD, -5094, -392, 11106, 0 },
+    { SCENE_HYRULE_FIELD, -5105, -393, 11312, 0 },
+    { SCENE_HYRULE_FIELD, -4477, -314, 11132, 0 },
+    { SCENE_HYRULE_FIELD, -3867, -380, 11419, 0 },
+    { SCENE_HYRULE_FIELD, -2952, -500, 11944, 0 },
+    { SCENE_HYRULE_FIELD, -2871, -488, 11743, 0 },
+    { SCENE_HYRULE_FIELD, -3829, -372, 11327, 0 },
+    { SCENE_HYRULE_FIELD, -4439, -293, 10989, 0 },
+    { SCENE_HYRULE_FIELD, -5014, -381, 11086, 0 },
+    { SCENE_HYRULE_FIELD, -5113, -188, 10968, 0 },
+    { SCENE_HYRULE_FIELD, -5269, -188, 11156, 0 },
+    { SCENE_HYRULE_FIELD, -5596, -178, 9972, 0 },
+    { SCENE_HYRULE_FIELD, -5801, -288, 8518, 0 },
+    { SCENE_HYRULE_FIELD, -4910, -178, 7931, 0 },
+    { SCENE_HYRULE_FIELD, -3586, 73, 8140, 0 },
+    { SCENE_HYRULE_FIELD, -4487, -106, 9362, 0 },
+    { SCENE_HYRULE_FIELD, -4339, -112, 6412, 0 },
+    { SCENE_HYRULE_FIELD, -3417, 105, 8194, 0 },
+    { SCENE_HYRULE_FIELD, -4505, -20, 6608, 0 },
+    { SCENE_HYRULE_FIELD, -5038, -199, 6603, 0 },
+    { SCENE_HYRULE_FIELD, -4481, 1, 6448, 0 },
+    { SCENE_HYRULE_FIELD, -5032, -168, 6418, 0 },
+    { SCENE_HYRULE_FIELD, -5256, -700, 14329, 0 },
+    { SCENE_HYRULE_FIELD, -5749, -820, 15380, 0 },
+    { SCENE_HYRULE_FIELD, -3122, -700, 13608, 0 },
+    { SCENE_HYRULE_FIELD, -3758, -525, 13228, 0 },
+    { SCENE_HYRULE_FIELD, -3670, -500, 13123, 0 },
+    { SCENE_HYRULE_FIELD, -2924, -500, 13526, 0 },
+    { SCENE_HYRULE_FIELD, 1389, -115, 9370, 0 },
+    { SCENE_HYRULE_FIELD, 548, -116, 8889, 0 },
+    { SCENE_HYRULE_FIELD, -106, -107, 8530, 0 },
+    { SCENE_HYRULE_FIELD, -1608, 85, 7646, 0 },
+    { SCENE_HYRULE_FIELD, -5300, -700, 13772, 0 },
+    { SCENE_HYRULE_FIELD, -5114, -700, 13400, 0 },
+    { SCENE_HYRULE_FIELD, -4561, -700, 13700, 0 },
+    { SCENE_HYRULE_FIELD, -4762, -700, 14084, 0 },
+    { SCENE_HYRULE_FIELD, -2954, 100, 8216, 0 },
+    { SCENE_HYRULE_FIELD, 1460, -104, 9246, 0 },
+    { SCENE_HYRULE_FIELD, 629, -105, 8791, 0 },
+    { SCENE_HYRULE_FIELD, -10, -90, 8419, 0 },
+    { SCENE_HYRULE_FIELD, -1462, 100, 7504, 0 },
+    { SCENE_HYRULE_FIELD, -3018, -500, 12493, 0 },
+    { SCENE_HYRULE_FIELD, -2994, -311, 10331, 0 },
+    { SCENE_HYRULE_FIELD, -4006, -700, 14152, 0 },
+    { SCENE_HYRULE_FIELD, -4341, -500, 12743, 0 },
+    { SCENE_HYRULE_FIELD, -5879, -497, 6799, 0 },
+    { SCENE_HYRULE_FIELD, 22, -473, 10103, 0 },
+    { SCENE_HYRULE_FIELD, -1389, -192, 8874, 0 },
+    { SCENE_HYRULE_FIELD, -4, 92, 6866, 0 },
+    { SCENE_HYRULE_FIELD, 483, 104, 6637, 0 },
+    { SCENE_HYRULE_FIELD, 1580, 183, 5987, 0 },
+    { SCENE_HYRULE_FIELD, 1548, 308, 5077, 0 },
+    { SCENE_HYRULE_FIELD, 1511, 399, 4267, 0 },
+    { SCENE_HYRULE_FIELD, 1358, 385, 4271, 0 },
+    { SCENE_HYRULE_FIELD, 1379, 395, 5063, 0 },
+    { SCENE_HYRULE_FIELD, 1360, 394, 5870, 0 },
+    { SCENE_HYRULE_FIELD, 813, 283, 6194, 0 },
+    { SCENE_HYRULE_FIELD, -57, 101, 6743, 0 },
+    { SCENE_HYRULE_FIELD, 91, 325, 5143, 0 },
+    { SCENE_HYRULE_FIELD, 1425, -214, 7659, 0 },
+    { SCENE_HYRULE_FIELD, 3487, -19, 880, 0 },
+    { SCENE_HYRULE_FIELD, 2933, 152, 2094, 0 },
+    { SCENE_HYRULE_FIELD, 2888, -145, 6862, 0 },
+    { SCENE_HYRULE_FIELD, 1511, 67, 6471, 0 },
+    { SCENE_HYRULE_FIELD, 4051, -47, 1722, 0 },
+    { SCENE_HYRULE_FIELD, -7335, -500, 8627, 0 },
+    { SCENE_HYRULE_FIELD, -7728, -462, 8498, 0 },
+    { SCENE_HYRULE_FIELD, -7791, -446, 8832, 0 },
+    { SCENE_HYRULE_FIELD, -2915, -435, 11334, 0 },
+    { SCENE_HYRULE_FIELD, 165, -278, 3352, 0 },
 
     // Lake Hylia
-    { SCENE_SPOT06, -2109, -882, 1724, 0 },
-    { SCENE_SPOT06, -328, -1238, 2705, 0 },
-    { SCENE_SPOT06, -3092, -1033, 3527, 0 },
+    { SCENE_LAKE_HYLIA, -2109, -882, 1724, 0 },
+    { SCENE_LAKE_HYLIA, -328, -1238, 2705, 0 },
+    { SCENE_LAKE_HYLIA, -3092, -1033, 3527, 0 },
 
     // Gerudo Valley
-    { SCENE_SPOT09, 2687, -269, 753, 0 },
-    { SCENE_SPOT09, 2066, -132, 317, 0 },
-    { SCENE_SPOT09, 523, -8, 635, 0 },
-    { SCENE_SPOT09, 558, 36, -323, 0 },
-    { SCENE_SPOT09, 615, 51, -839, 0 },
-    { SCENE_SPOT09, -614, 32, 29, 0 },
-    { SCENE_SPOT09, -639, -3, 553, 0 },
-    { SCENE_SPOT09, -540, 10, -889, 0 },
-    { SCENE_SPOT09, -1666, 58, 378, 0 },
-    { SCENE_SPOT09, -3044, 210, -648, 0 },
+    { SCENE_GERUDO_VALLEY, 2687, -269, 753, 0 },
+    { SCENE_GERUDO_VALLEY, 2066, -132, 317, 0 },
+    { SCENE_GERUDO_VALLEY, 523, -8, 635, 0 },
+    { SCENE_GERUDO_VALLEY, 558, 36, -323, 0 },
+    { SCENE_GERUDO_VALLEY, 615, 51, -839, 0 },
+    { SCENE_GERUDO_VALLEY, -614, 32, 29, 0 },
+    { SCENE_GERUDO_VALLEY, -639, -3, 553, 0 },
+    { SCENE_GERUDO_VALLEY, -540, 10, -889, 0 },
+    { SCENE_GERUDO_VALLEY, -1666, 58, 378, 0 },
+    { SCENE_GERUDO_VALLEY, -3044, 210, -648, 0 },
 
     // Gerudo's Fortress
-    { SCENE_SPOT12, -678, 21, -623, 0 },
-    { SCENE_SPOT12, 149, 333, -2499, 0 },
-    { SCENE_SPOT12, 499, 581, -547, 0 },
-    { SCENE_SPOT12, 3187, 1413, -3775, 0 },
-    { SCENE_SPOT12, 3198, 1413, 307, 0 },
-    { SCENE_SPOT12, 3380, 1413, -1200, 0 },
-    { SCENE_SPOT12, -966, 1, -56, 0 },
-    { SCENE_SPOT12, -966, 24, -761, 0 },
-    { SCENE_SPOT12, -694, 174, -2820, 0 },
+    { SCENE_GERUDOS_FORTRESS, -678, 21, -623, 0 },
+    { SCENE_GERUDOS_FORTRESS, 149, 333, -2499, 0 },
+    { SCENE_GERUDOS_FORTRESS, 499, 581, -547, 0 },
+    { SCENE_GERUDOS_FORTRESS, 3187, 1413, -3775, 0 },
+    { SCENE_GERUDOS_FORTRESS, 3198, 1413, 307, 0 },
+    { SCENE_GERUDOS_FORTRESS, 3380, 1413, -1200, 0 },
+    { SCENE_GERUDOS_FORTRESS, -966, 1, -56, 0 },
+    { SCENE_GERUDOS_FORTRESS, -966, 24, -761, 0 },
+    { SCENE_GERUDOS_FORTRESS, -694, 174, -2820, 0 },
 
     // Lon Lon Ranch
-    { SCENE_SPOT20, 1039, 0, 2051, 0 },
-    { SCENE_SPOT20, -1443, 0, 1429, 0 },
-    { SCENE_SPOT20, 856, 0, -918, 0 }, // Hardcoded to always load in lon lon
-    { SCENE_SPOT20, 882, 0, -2256, 0 },
-    { SCENE_SPOT20, -1003, 0, -755, 0 }, // Hardcoded to always load in lon lon
-    { SCENE_SPOT20, -2254, 0, -629, 0 },
-    { SCENE_SPOT20, 907, 0, -2336, 0 },
+    { SCENE_LON_LON_RANCH, 1039, 0, 2051, 0 },
+    { SCENE_LON_LON_RANCH, -1443, 0, 1429, 0 },
+    { SCENE_LON_LON_RANCH, 856, 0, -918, 0 }, // Hardcoded to always load in lon lon
+    { SCENE_LON_LON_RANCH, 882, 0, -2256, 0 },
+    { SCENE_LON_LON_RANCH, -1003, 0, -755, 0 }, // Hardcoded to always load in lon lon
+    { SCENE_LON_LON_RANCH, -2254, 0, -629, 0 },
+    { SCENE_LON_LON_RANCH, 907, 0, -2336, 0 },
 };
 
 typedef struct {
@@ -457,7 +457,7 @@ s32 EnHorse_BgCheckBridgeJumpPoint(EnHorse* this, PlayState* play) {
     f32 xMax;
     s32 i;
 
-    if (play->sceneNum != SCENE_SPOT09) {
+    if (play->sceneNum != SCENE_GERUDO_VALLEY) {
         return false;
     }
     if (this->actor.speedXZ < 12.8f) {
@@ -680,7 +680,7 @@ s32 EnHorse_Spawn(EnHorse* this, PlayState* play) {
     for (i = 0; i < 169; i++) {
         if (sHorseSpawns[i].scene == play->sceneNum) {
             player = GET_PLAYER(play);
-            if (play->sceneNum != SCENE_SPOT20 ||
+            if (play->sceneNum != SCENE_LON_LON_RANCH ||
                 //! Same flag checked twice
                 (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) && ((gSaveContext.eventInf[0] & 0xF) != 6 || Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED))) ||
                 // always load two spawns inside lon lon
@@ -784,9 +784,9 @@ void EnHorse_Init(Actor* thisx, PlayState* play2) {
         this->actor.params = 1;
     }
 
-    if (play->sceneNum == SCENE_SOUKO) {
+    if (play->sceneNum == SCENE_LON_LON_BUILDINGS) {
         this->stateFlags = ENHORSE_UNRIDEABLE;
-    } else if (play->sceneNum == SCENE_SPOT12 && this->type == HORSE_HNI) {
+    } else if (play->sceneNum == SCENE_GERUDOS_FORTRESS && this->type == HORSE_HNI) {
         this->stateFlags = ENHORSE_FLAG_18 | ENHORSE_UNRIDEABLE;
     } else {
         if (this->actor.params == 3) {
@@ -806,7 +806,7 @@ void EnHorse_Init(Actor* thisx, PlayState* play2) {
         }
     }
 
-    if (play->sceneNum == SCENE_SPOT20 && (gSaveContext.eventInf[0] & 0xF) == 6 &&
+    if (play->sceneNum == SCENE_LON_LON_RANCH && (gSaveContext.eventInf[0] & 0xF) == 6 &&
         Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) == 0 && !DREG(1)) {
         this->stateFlags |= ENHORSE_FLAG_25;
     }
@@ -827,7 +827,7 @@ void EnHorse_Init(Actor* thisx, PlayState* play2) {
     this->actor.focus.pos.y += 70.0f;
     this->playerControlled = false;
 
-    if ((play->sceneNum == SCENE_SPOT20) && (gSaveContext.sceneSetupIndex < 4)) {
+    if ((play->sceneNum == SCENE_LON_LON_RANCH) && (gSaveContext.sceneSetupIndex < 4)) {
         if (this->type == HORSE_HNI) {
             if (this->actor.world.rot.z == 0 || !IS_DAY) {
                 Actor_Kill(&this->actor);
@@ -845,7 +845,7 @@ void EnHorse_Init(Actor* thisx, PlayState* play2) {
             Actor_Kill(&this->actor);
             return;
         }
-    } else if (play->sceneNum == SCENE_MALON_STABLE) {
+    } else if (play->sceneNum == SCENE_STABLE) {
         if (IS_DAY || Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) || DREG(1) != 0 || !LINK_IS_ADULT) {
             Actor_Kill(&this->actor);
             return;
@@ -882,12 +882,12 @@ void EnHorse_Init(Actor* thisx, PlayState* play2) {
     } else if (this->actor.params == 8) {
         EnHorse_InitHorsebackArchery(this);
         Interface_InitHorsebackArchery(play);
-    } else if (play->sceneNum == SCENE_SPOT20 && !Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) && !DREG(1)) {
+    } else if (play->sceneNum == SCENE_LON_LON_RANCH && !Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) && !DREG(1)) {
         EnHorse_InitFleePlayer(this);
     } else {
-        if (play->sceneNum == SCENE_SOUKO) {
+        if (play->sceneNum == SCENE_LON_LON_BUILDINGS) {
             EnHorse_ResetIdleAnimation(this);
-        } else if (play->sceneNum == SCENE_SPOT12 && this->type == HORSE_HNI) {
+        } else if (play->sceneNum == SCENE_GERUDOS_FORTRESS && this->type == HORSE_HNI) {
             EnHorse_ResetIdleAnimation(this);
         } else {
             EnHorse_StartIdleRidable(this);
@@ -3075,7 +3075,7 @@ void EnHorse_BgCheckSlowMoving(EnHorse* this, PlayState* play) {
     CollisionPoly* colPoly;
     s32 bgId;
 
-    if (play->sceneNum == SCENE_SPOT20) {
+    if (play->sceneNum == SCENE_LON_LON_RANCH) {
         yOffset = 19.0f;
     } else {
         yOffset = 40.0f;
@@ -3116,7 +3116,7 @@ void EnHorse_UpdateBgCheckInfo(EnHorse* this, PlayState* play) {
     Vec3f intersect;
     Vec3f obstacleTop;
 
-    Actor_UpdateBgCheckInfo(play, &this->actor, play->sceneNum == SCENE_SPOT20 ? 19.0f : 40.0f, 35.0f, 100.0f,
+    Actor_UpdateBgCheckInfo(play, &this->actor, play->sceneNum == SCENE_LON_LON_RANCH ? 19.0f : 40.0f, 35.0f, 100.0f,
                             29);
 
     if (EnHorse_BgCheckBridgeJumpPoint(this, play)) {
@@ -3534,8 +3534,8 @@ void EnHorse_Update(Actor* thisx, PlayState* play2) {
         CollisionCheck_SetOC(play, &play->colChkCtx, &this->cyl1.base);
         CollisionCheck_SetOC(play, &play->colChkCtx, &this->cyl2.base);
         if ((player->stateFlags1 & 1) && player->rideActor != NULL) {
-            if (play->sceneNum != SCENE_SPOT20 ||
-                (play->sceneNum == SCENE_SPOT20 && (thisx->world.pos.z < -2400.0f))) {
+            if (play->sceneNum != SCENE_LON_LON_RANCH ||
+                (play->sceneNum == SCENE_LON_LON_RANCH && (thisx->world.pos.z < -2400.0f))) {
                 EnHorse_UpdateConveyors(this, play);
             }
         }
@@ -3554,7 +3554,7 @@ void EnHorse_Update(Actor* thisx, PlayState* play2) {
             this->stateFlags &= ~ENHORSE_FLAG_24;
         }
 
-        if (play->sceneNum == SCENE_SPOT09 && !GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {
+        if (play->sceneNum == SCENE_GERUDO_VALLEY && !GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {
             EnHorse_CheckBridgeJumps(this, play);
         }
 

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_WARP1_H
+#define OBJECTS_OBJECT_WARP1_H 1
 
 #include "align_asset_macro.h"
 
@@ -37,3 +38,6 @@ static const ALIGN_ASSET(2) char gWarpCrystalTex[] = dgWarpCrystalTex;
 
 #define dgWarpCrystalSkel "__OTR__objects/object_warp1/gWarpCrystalSkel"
 static const ALIGN_ASSET(2) char gWarpCrystalSkel[] = dgWarpCrystalSkel;
+
+
+#endif // OBJECTS_OBJECT_WARP1_H

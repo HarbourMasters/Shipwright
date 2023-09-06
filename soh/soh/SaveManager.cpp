@@ -582,7 +582,7 @@ void SaveManager::InitFileNormal() {
         gSaveContext.scarecrowSpawnSong[i].semitone = 0;
     }
 
-    gSaveContext.horseData.scene = SCENE_SPOT00;
+    gSaveContext.horseData.scene = SCENE_HYRULE_FIELD;
     gSaveContext.horseData.pos.x = -1840;
     gSaveContext.horseData.pos.y = 72;
     gSaveContext.horseData.pos.z = 5497;
@@ -679,7 +679,7 @@ void SaveManager::InitFileDebug() {
     gSaveContext.inventory.defenseHearts = 0;
     gSaveContext.inventory.gsTokens = 0;
 
-    gSaveContext.horseData.scene = SCENE_SPOT00;
+    gSaveContext.horseData.scene = SCENE_HYRULE_FIELD;
     gSaveContext.horseData.pos.x = -1840;
     gSaveContext.horseData.pos.y = 72;
     gSaveContext.horseData.pos.z = 5497;
