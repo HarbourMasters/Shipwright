@@ -7,6 +7,7 @@
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
 #include "overlays/actors/ovl_Link_Puppet/z_link_puppet.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Anchor.h"
+#include "soh/frame_interpolation.h"
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
