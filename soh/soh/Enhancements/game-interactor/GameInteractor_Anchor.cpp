@@ -914,6 +914,11 @@ const ImVec4 GREEN = ImVec4(0.5f, 1.0f, 0.5f, 1.0f);
 
 bool heartTexturesLoaded = false;
 
+bool IsValidSave() {
+    bool validSave = gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
+    return validSave;
+}
+
 const char* heartTextureNames[16] = {
     "Heart_Full",          "Heart_One_Fourth",    "Heart_One_Fourth",    "Heart_One_Fourth",
     "Heart_One_Fourth",    "Heart_One_Fourth",    "Heart_Half",          "Heart_Half",
@@ -1034,7 +1039,7 @@ void AnchorPlayerLocationWindow::DrawElement() {
                 }
                 ImGui::PopStyleVar();
             }
-            if (gPlayState != NULL && client.scene != SCENE_GROTTOS && client.scene != SCENE_ID_MAX && CVarGetInteger("gAnchorPlayerHealth", 0) != 0) {
+            if (IsValidSave() && CVarGetInteger("gAnchorPlayerHealth", 0) != 0) {
                 DisplayLifeMeter(client);
             }
         }
