@@ -1421,6 +1421,8 @@ bool isStringEmpty(std::string str) {
 }
 
 #ifdef ENABLE_REMOTE_CONTROL
+static const char* anchorPlayerHealth[4] = { "Disabled", "Numeric", "Hearts", "Numeric + Hearts" };
+
 void DrawRemoteControlMenu() {
     if (ImGui::BeginMenu("Network")) {
         static std::string ip = CVarGetString("gRemote.IP", "127.0.0.1");
@@ -1497,6 +1499,9 @@ void DrawRemoteControlMenu() {
         }
         ImGui::EndDisabled();
 
+        ImGui::Spacing();
+        ImGui::Text("Display Player Health");
+        UIWidgets::EnhancementCombobox("gAnchorPlayerHealth", anchorPlayerHealth, 0);
         ImGui::Spacing();
 
         ImGui::BeginDisabled(!isFormValid);

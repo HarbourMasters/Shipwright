@@ -180,12 +180,12 @@ typedef struct {
     u8 shieldType;
     u8 damageEffect;
     u8 damageValue;
+    s16 playerHealth;
+    s16 playerHealthCapacity;
     s32 strengthValue;
     f32 yOffset;
     u8 currentMask;
     u8 swordEquipped;
-    s16 playerHealth;
-    s16 playerHealthMax;
     u32 playerStateFlags1;
     u8 moveFlags;
     f32 unk_6C4;
