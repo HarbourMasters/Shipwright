@@ -5,11 +5,13 @@
 #include "objects/object_link_child/object_link_child.h"
 #include "objects/object_triforce_spot/object_triforce_spot.h"
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
-#include "overlays/actors/ovl_Link_Puppet/z_link_puppet.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Anchor.h"
 #include "soh/frame_interpolation.h"
 
+#ifdef ENABLE_REMOTE_CONTROL
+#include "overlays/actors/ovl_Link_Puppet/z_link_puppet.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Anchor.h"
+#endif
 
 #include <stdlib.h>
 
@@ -856,6 +858,7 @@ static Gfx* sMaskDlists[PLAYER_MASK_MAX - 1] = {
     gLinkChildGoronMaskDL,  gLinkChildZoraMaskDL,  gLinkChildGerudoMaskDL, gLinkChildMaskOfTruthDL,
 };
 
+#ifdef ENABLE_REMOTE_CONTROL
 void DrawAnchorPuppet(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dListCount, s32 lod, s32 tunic, s32 boots, s32 face, OverrideLimbDrawOpa overrideLimbDraw, PostLimbDrawOpa postLimbDraw,
                       void* data, PlayerData playerData) {
     LinkPuppet* puppet = (LinkPuppet*)data;
@@ -983,6 +986,7 @@ void DrawAnchorPuppet(PlayState* play, void** skeleton, Vec3s* jointTable, s32 d
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
+#endif
 
 Vec3f D_8012602C = { 0.0f, 0.0f, 0.0f };
 
@@ -1172,6 +1176,7 @@ s32 func_8008FCC8(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
     return false;
 }
 
+#ifdef ENABLE_REMOTE_CONTROL
 s32 PuppetOverrideDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     LinkPuppet* this = (LinkPuppet*)thisx;
 
@@ -1245,6 +1250,7 @@ s32 PuppetOverrideDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, 
 
     return false;
 }
+#endif
 
 s32 func_80090014(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
