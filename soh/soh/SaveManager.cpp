@@ -186,6 +186,12 @@ void SaveManager::LoadRandomizerVersion2() {
         SaveManager::Instance->LoadData("", gSaveContext.seedIcons[i]);
     });
 
+    std::string inputSeed;
+    SaveManager::Instance->LoadData("inputSeed", inputSeed);
+    memcpy(gSaveContext.inputSeed, inputSeed.c_str(), inputSeed.length() + 1);
+
+    SaveManager::Instance->LoadData("finalSeed", gSaveContext.finalSeed);
+
     SaveManager::Instance->LoadArray("randoSettings", RSK_MAX, [&](size_t i) {
         gSaveContext.randoSettings[i].key = RandomizerSettingKey(i);
         SaveManager::Instance->LoadData("", gSaveContext.randoSettings[i].value);
@@ -293,6 +299,10 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
     SaveManager::Instance->SaveArray("seed", ARRAY_COUNT(saveContext->seedIcons), [&](size_t i) {
         SaveManager::Instance->SaveData("", saveContext->seedIcons[i]);
     });
+
+    SaveManager::Instance->SaveData("inputSeed", saveContext->inputSeed);
+
+    SaveManager::Instance->SaveData("finalSeed", saveContext->finalSeed);
 
     SaveManager::Instance->SaveArray("randoSettings", RSK_MAX, [&](size_t i) {
         SaveManager::Instance->SaveData("", saveContext->randoSettings[i].value);
