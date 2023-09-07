@@ -859,7 +859,8 @@ static Gfx* sMaskDlists[PLAYER_MASK_MAX - 1] = {
 };
 
 #ifdef ENABLE_REMOTE_CONTROL
-void DrawAnchorPuppet(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dListCount, s32 lod, s32 tunic, s32 boots, s32 face, OverrideLimbDrawOpa overrideLimbDraw, PostLimbDrawOpa postLimbDraw,
+void DrawAnchorPuppet(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dListCount, s32 lod, s32 tunic,
+                      s32 boots, s32 face, OverrideLimbDrawOpa overrideLimbDraw, PostLimbDrawOpa postLimbDraw,
                       void* data, PlayerData playerData) {
     LinkPuppet* puppet = (LinkPuppet*)data;
     Color_RGB8* color;
@@ -909,49 +910,49 @@ void DrawAnchorPuppet(PlayState* play, void** skeleton, Vec3s* jointTable, s32 d
 
     gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
 
-    sDListsLodOffset = lod * 2;
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+
+    gSPSegment(POLY_OPA_DISP++, 0x0C, gCullBackDList);
 
     SkelAnime_DrawFlexLod(play, skeleton, jointTable, dListCount, overrideLimbDraw, postLimbDraw, data, lod);
 
-    if (overrideLimbDraw != func_800902F0 && overrideLimbDraw != func_80090440 && gSaveContext.gameMode != 3) {
-        if (playerData.playerAge == LINK_AGE_ADULT) {
-            s32 strengthUpgrade = playerData.strengthValue;
+    if (playerData.playerAge == LINK_AGE_ADULT) {
+        s32 strengthUpgrade = playerData.strengthValue;
 
-            if (strengthUpgrade >= 2) { // silver or gold gauntlets
-                gDPPipeSync(POLY_OPA_DISP++);
+        if (strengthUpgrade >= 2) { // silver or gold gauntlets
+            gDPPipeSync(POLY_OPA_DISP++);
 
-                color = &sGauntletColors[strengthUpgrade - 2];
-                if (strengthUpgrade == PLAYER_STR_SILVER_G &&
-                    CVarGetInteger("gCosmetics.Gloves_SilverGauntlets.Changed", 0)) {
-                    sTemp = CVarGetColor24("gCosmetics.Gloves_SilverGauntlets.Value",
-                                           sGauntletColors[PLAYER_STR_SILVER_G - 2]);
-                    color = &sTemp;
-                } else if (strengthUpgrade == PLAYER_STR_GOLD_G &&
-                           CVarGetInteger("gCosmetics.Gloves_GoldenGauntlets.Changed", 0)) {
-                    sTemp = CVarGetColor24("gCosmetics.Gloves_GoldenGauntlets.Value",
-                                           sGauntletColors[PLAYER_STR_GOLD_G - 2]);
-                    color = &sTemp;
-                }
-                gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
-
-                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftGauntletPlate1DL);
-                gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightGauntletPlate1DL);
-                gSPDisplayList(POLY_OPA_DISP++,
-                               (D_80160014 == 0) ? gLinkAdultLeftGauntletPlate2DL : gLinkAdultLeftGauntletPlate3DL);
-                gSPDisplayList(POLY_OPA_DISP++,
-                               (D_80160018 == 8) ? gLinkAdultRightGauntletPlate2DL : gLinkAdultRightGauntletPlate3DL);
+            color = &sGauntletColors[strengthUpgrade - 2];
+            if (strengthUpgrade == PLAYER_STR_SILVER_G &&
+                CVarGetInteger("gCosmetics.Gloves_SilverGauntlets.Changed", 0)) {
+                sTemp =
+                    CVarGetColor24("gCosmetics.Gloves_SilverGauntlets.Value", sGauntletColors[PLAYER_STR_SILVER_G - 2]);
+                color = &sTemp;
+            } else if (strengthUpgrade == PLAYER_STR_GOLD_G &&
+                       CVarGetInteger("gCosmetics.Gloves_GoldenGauntlets.Changed", 0)) {
+                sTemp =
+                    CVarGetColor24("gCosmetics.Gloves_GoldenGauntlets.Value", sGauntletColors[PLAYER_STR_GOLD_G - 2]);
+                color = &sTemp;
             }
+            gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
 
-            if (boots != 0) {
-                Gfx** bootDLists = sBootDListGroups[boots - 1];
+            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftGauntletPlate1DL);
+            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightGauntletPlate1DL);
+            gSPDisplayList(POLY_OPA_DISP++,
+                           (playerData.leftHandType == 0) ? gLinkAdultLeftGauntletPlate2DL : gLinkAdultLeftGauntletPlate3DL);
+            gSPDisplayList(POLY_OPA_DISP++,
+                           (playerData.rightHandType == 8) ? gLinkAdultRightGauntletPlate2DL : gLinkAdultRightGauntletPlate3DL);
+        }
 
-                gSPDisplayList(POLY_OPA_DISP++, bootDLists[0]);
-                gSPDisplayList(POLY_OPA_DISP++, bootDLists[1]);
-            }
-        } else {
-            if (playerData.strengthValue > PLAYER_STR_NONE) {
-                gSPDisplayList(POLY_OPA_DISP++, gLinkChildGoronBraceletDL);
-            }
+        if (boots != 0) {
+            Gfx** bootDLists = sBootDListGroups[boots - 1];
+
+            gSPDisplayList(POLY_OPA_DISP++, bootDLists[0]);
+            gSPDisplayList(POLY_OPA_DISP++, bootDLists[1]);
+        }
+    } else {
+        if (playerData.strengthValue > PLAYER_STR_NONE) {
+            gSPDisplayList(POLY_OPA_DISP++, gLinkChildGoronBraceletDL);
         }
     }
 
