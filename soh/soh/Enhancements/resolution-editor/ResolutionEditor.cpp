@@ -5,6 +5,22 @@
 #include <soh/UIWidgets.hpp> // This dependency is why the UI needs to be on SoH's side.
 #include <graphic/Fast3D/gfx_pc.h>
 
+/*  Console Variables are grouped as gAdvancedResolution.
+
+    The following CVars are used in Libultraship and can be edited here:
+        - Enabled                                       - Turns Advanced Resolution Mode on.
+        - AspectRatioX, AspectRatioY                    - Aspect ratio controls. To toggle off, set either to zero.
+        - VerticalPixelCount, VerticalResolutionToggle  - Resolution controls.
+        - PixelPerfectMode, IntegerScaleFactor          - Pixel Perfect Mode a.k.a. integer scaling controls.
+
+    This GUI additionally uses the following CVars:
+        - IntegerScaleFitAutomatically                  - Automatic resizing for Pixel Perfect Mode.
+
+    There's an additional "gAdvancedResolution.IgnoreAspectCorrection" CVar in LUS that I intend to leave unused here,
+    as it's something of a power-user setting for niche setups that most people won't need or care about,
+    but may be useful if playing the Switch/Wii U ports on a 4:3 television.
+*/
+
 namespace AdvancedResolutionSettings {
 enum setting { UPDATE_aspectRatioX, UPDATE_aspectRatioY, UPDATE_verticalPixelCount, UPDATE_integerScaleFactor };
 
@@ -136,7 +152,6 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 // Clamp horizontal resolution if below minimum.
                 if (horizontalPixelCount < (minVerticalPixelCount / 3.0f) * 4.0f) {
                     horizontalPixelCount = (minVerticalPixelCount / 3.0f) * 4.0f;
-                    //aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
                 }
             }
         }
@@ -173,8 +188,8 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                     update[UPDATE_aspectRatioX] = true;
                 }
             } else { // Display a notice instead.
-                ImGui::TextColored({ 0.0f, 0.85f, 0.85f, 1.0f },
-                                   ICON_FA_QUESTION_CIRCLE " \"Force aspect ratio\" required to edit horizontal pixel count.");
+                ImGui::TextColored({ 0.0f, 0.85f, 0.85f, 1.0f }, ICON_FA_QUESTION_CIRCLE
+                                   " \"Force aspect ratio\" required to edit horizontal pixel count.");
                 ImGui::Text(" ");
                 ImGui::SameLine();
                 if (ImGui::Button("Click to resolve")) {
@@ -235,7 +250,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         UIWidgets::Tooltip("Automatically sets scale factor to fit window. Only available in pixel-perfect mode.");
         if (CVarGetInteger("gAdvancedResolution.IntegerScaleFitAutomatically", 0)) {
             CVarSetInteger("gAdvancedResolution.IntegerScaleFactor", integerScale_maximumBounds);
-        }
+        } // Tina TODO: This doesn't work if the window is closed. Do this somewhere else.
 
         UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
         // Collapsible panel for additional settings
@@ -255,6 +270,18 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 }
                 update[UPDATE_aspectRatioX] = true;
             }
+
+#if defined(__SWITCH__) || defined(__WIIU__)
+            // Disable aspect correction, stretching the framebuffer to fill the viewport.
+            // This option is only really needed on systems limited to 16:9 TV resolutions, such as consoles.
+            // The associated CVar is still functional on PC platforms if you want to use it though.
+            UIWidgets::PaddedEnhancementCheckbox("Disable aspect correction and stretch the output image.\n"
+                                                 "(Might be useful for 4:3 televisions!)\n"
+                                                 "Not available in Pixel Perfect Mode.",
+                                                 "gAdvancedResolution.IgnoreAspectCorrection", true, true,
+                                                 CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0), "",
+                                                 UIWidgets::CheckboxGraphics::Cross, false);
+#endif
         }
 
         // Clamp and update CVars
