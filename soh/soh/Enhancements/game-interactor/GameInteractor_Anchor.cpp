@@ -805,11 +805,6 @@ void Anchor_RegisterHooks() {
         gSaveContext.playerData.playerStateFlags1 = player->stateFlags1;
         gSaveContext.playerData.moveFlags = player->skelAnime.moveFlags;
         gSaveContext.playerData.unk_6C4 = player->unk_6C4;
-        gSaveContext.playerData.unk_00 = player->unk_00;
-        gSaveContext.playerData.unk_02 = player->unk_02;
-        gSaveContext.playerData.unk_04 = player->unk_04;
-        gSaveContext.playerData.unk_06 = player->unk_06;
-        gSaveContext.playerData.unk_08 = player->unk_08;
         gSaveContext.playerData.speedXZ = player->actor.speedXZ;
 
         payload["playerData"] = gSaveContext.playerData;
