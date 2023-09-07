@@ -66,6 +66,8 @@ void from_json(const json& j, PlayerData& playerData) {
     j.at("unk_06").get_to(playerData.unk_06);
     j.at("unk_08").get_to(playerData.unk_08);
     j.at("speedXZ").get_to(playerData.speedXZ);
+    j.at("itemAction").get_to(playerData.itemAction);
+    j.at("unk_85C").get_to(playerData.unk_85C);
 }
 
 void to_json(json& j, const PlayerData& playerData) {
@@ -97,6 +99,8 @@ void to_json(json& j, const PlayerData& playerData) {
         { "unk_06", playerData.unk_06 },
         { "unk_08", playerData.unk_08 },
         { "speedXZ", playerData.speedXZ },
+        { "itemAction", playerData.itemAction },
+        { "unk_85C", playerData.unk_85C },
     };
 }
 
@@ -806,6 +810,8 @@ void Anchor_RegisterHooks() {
         gSaveContext.playerData.moveFlags = player->skelAnime.moveFlags;
         gSaveContext.playerData.unk_6C4 = player->unk_6C4;
         gSaveContext.playerData.speedXZ = player->actor.speedXZ;
+        gSaveContext.playerData.itemAction = player->itemAction;
+        gSaveContext.playerData.unk_85C = player->unk_85C;
 
         payload["playerData"] = gSaveContext.playerData;
 
