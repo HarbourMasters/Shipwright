@@ -937,7 +937,7 @@ namespace Logic {
      GoronBracelet    = false;
      SilverGauntlets  = false;
      GoldenGauntlets  = false;
-     Swim = false;
+     Swim             = false;
      SilverScale      = false;
      GoldScale        = false;
      AdultsWallet     = false;
