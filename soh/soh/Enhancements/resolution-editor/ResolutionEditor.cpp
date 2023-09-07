@@ -57,7 +57,6 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         static int horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
         bool* p_showHorizontalResField = &showHorizontalResField;
         int* p_horizontalPixelCount = &horizontalPixelCount;
-        bool* p_update_verticalPixelCount = &update[UPDATE_aspectRatioX];
 
 #ifdef __APPLE__
         ImGui::Text("Note: these settings may behave incorrectly on Apple Retina Displays.");
@@ -118,12 +117,20 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             aspectRatioY = aspectRatioPresetsY[item_aspectRatio];
             update[UPDATE_aspectRatioX] = true;
             update[UPDATE_aspectRatioY] = true;
+
+            if (showHorizontalResField) {
+                horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+            }
         }
         if (ImGui::InputFloat("X", p_aspectRatioX, 0.1f, 1.0f, "%.3f") ||
             ImGui::InputFloat("Y", p_aspectRatioY, 0.1f, 1.0f, "%.3f")) {
             item_aspectRatio = default_aspectRatio;
             update[UPDATE_aspectRatioX] = true;
             update[UPDATE_aspectRatioY] = true;
+
+            if (showHorizontalResField) {
+                horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+            }
         }
 
         UIWidgets::Spacer(0);
@@ -137,6 +144,10 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                          IM_ARRAYSIZE(pixelCountPresetLabels))) {
             verticalPixelCount = pixelCountPresets[item_pixelCount];
             update[UPDATE_verticalPixelCount] = true;
+
+            if (showHorizontalResField) {
+                horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+            }
         }
         if (showHorizontalResField) {
             // So basically we're "faking" this one.
@@ -192,9 +203,10 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         // Collapsible panel for additional settings
         if (ImGui::CollapsingHeader("Additional Settings")) {
             UIWidgets::Spacer(0);
+            // Clicking this checkbox on or off will trigger several tasks.
             if (ImGui::Checkbox("Show a horizontal resolution field.", p_showHorizontalResField)) {
-                // Force an early update on vertical pixel count
-                if (!showHorizontalResField) {
+                if (!showHorizontalResField) { // turning this setting off
+                    // Force an early update on vertical pixel count
                     if (verticalPixelCount < minVerticalPixelCount) {
                         verticalPixelCount = minVerticalPixelCount;
                     }
@@ -202,11 +214,15 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                         verticalPixelCount = maxVerticalPixelCount;
                     }
                     CVarSetInteger("gAdvancedResolution.VerticalPixelCount", (int32_t)verticalPixelCount);
+                    // Refresh relevant values
+                    aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
+                    horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+                } else { // turning this setting on
+                    // Refresh relevant values in the opposite order
+                    horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+                    aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
                 }
-                // Refresh relevant values
-                aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
-                horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
-                update[UPDATE_aspectRatioX] = showHorizontalResField;
+                update[UPDATE_aspectRatioX] = true;
             }
         }
 
@@ -224,9 +240,9 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             CVarSetFloat("gAdvancedResolution.AspectRatioY", aspectRatioY);
         }
         if (update[UPDATE_verticalPixelCount]) {
-            // There's a clamp on the Libultraship side too.
-            // So clamping it here is purely visual.
-            // It does however interfere with the "Show a horizontal resolution field" setting.
+            // There's a upper and lower clamp on the Libultraship side too,
+            // so clamping it here is purely visual, so the vertical resolution field reflects it.
+            // Doing that does however interfere with the "Show a horizontal resolution field" setting.
             if (verticalPixelCount < minVerticalPixelCount && !showHorizontalResField) {
                 verticalPixelCount = minVerticalPixelCount;
             }
