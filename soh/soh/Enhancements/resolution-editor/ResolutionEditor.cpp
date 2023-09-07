@@ -30,9 +30,11 @@ void AdvancedResolutionSettingsWindow::InitElement() {
 void AdvancedResolutionSettingsWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(497, 513), ImGuiCond_FirstUseEver);
     if (ImGui::Begin("Advanced Resolution Settings", &mIsVisible)) {
+        // Initialise update flags.
         bool update[sizeof(setting)];
         for (unsigned short i = 0; i < sizeof(setting); i++)
             update[i] = false;
+        // Initialise integer scale bounds.
         short max_integerScaleFactor = default_maxIntegerScaleFactor; // default value, which may or may not get
                                                                       // overridden depending on viewport res
         unsigned short integerScale_maximumBounds = gfx_current_game_window_viewport.height /
@@ -94,7 +96,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 ImGui::Text(" ");
             }
             UIWidgets::Spacer(2);
-        } else { // N64 Mode Warning
+        } else { // N64 Mode warning
             ImGui::TextColored({ 0.0f, 0.85f, 0.85f, 1.0f },
                                ICON_FA_QUESTION_CIRCLE " \"N64 Mode\" is overriding these settings.");
             ImGui::SameLine();
@@ -112,7 +114,8 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         // Aspect Ratio
         ImGui::Text("Force aspect ratio:");
         if (ImGui::Combo("Aspect Ratio Presets", &item_aspectRatio, aspectRatioPresetLabels,
-                         IM_ARRAYSIZE(aspectRatioPresetLabels))) {
+                         IM_ARRAYSIZE(aspectRatioPresetLabels)) &&
+            item_aspectRatio != default_aspectRatio) { // don't change anything if "Custom" is selected.
             aspectRatioX = aspectRatioPresetsX[item_aspectRatio];
             aspectRatioY = aspectRatioPresetsY[item_aspectRatio];
             update[UPDATE_aspectRatioX] = true;
@@ -130,6 +133,11 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
 
             if (showHorizontalResField) {
                 horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+                // Clamp horizontal resolution if below minimum.
+                if (horizontalPixelCount < (minVerticalPixelCount / 3.0f) * 4.0f) {
+                    horizontalPixelCount = (minVerticalPixelCount / 3.0f) * 4.0f;
+                    //aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
+                }
             }
         }
 
@@ -141,30 +149,49 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         UIWidgets::Tooltip(
             "Override the resolution scale slider and use the settings below, irrespective of window size.");
         if (ImGui::Combo("Pixel Count Presets", &item_pixelCount, pixelCountPresetLabels,
-                         IM_ARRAYSIZE(pixelCountPresetLabels))) {
+                         IM_ARRAYSIZE(pixelCountPresetLabels)) &&
+            item_pixelCount != default_pixelCount) { // don't change anything if "Custom" is selected.
             verticalPixelCount = pixelCountPresets[item_pixelCount];
             update[UPDATE_verticalPixelCount] = true;
 
             if (showHorizontalResField) {
                 horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
-                if (horizontalPixelCount < (minVerticalPixelCount / aspectRatioY) * aspectRatioX) {
-                    horizontalPixelCount = (minVerticalPixelCount / aspectRatioY) * aspectRatioX;
-                }
             }
         }
+        // Horizontal Resolution, if visibility is enabled for it.
         if (showHorizontalResField) {
-            // So basically we're "faking" this one by setting aspectRatioX instead.
-            if (ImGui::InputInt("Horiz. Pixel Count", p_horizontalPixelCount, 8, 320)) {
-                // We'll handle clamping here.
-                // (I really should have added a clamp check into LUS. Next update.)
-                if (horizontalPixelCount < (minVerticalPixelCount / 3.0f) * 4.0f) {
-                    horizontalPixelCount = (minVerticalPixelCount / 3.0f) * 4.0f;
+            // Only show the field if Aspect Ratio is being enforced.
+            if ((aspectRatioX > 0.0f) && (aspectRatioY > 0.0f)) {
+                // So basically we're "faking" this one by setting aspectRatioX instead.
+                if (ImGui::InputInt("Horiz. Pixel Count", p_horizontalPixelCount, 8, 320)) {
+                    // We'll handle minimum clamping here.
+                    if (horizontalPixelCount < (minVerticalPixelCount / 3.0f) * 4.0f) {
+                        horizontalPixelCount = (minVerticalPixelCount / 3.0f) * 4.0f;
+                    }
+                    // Set and trigger update, as normal.
+                    aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
+                    update[UPDATE_aspectRatioX] = true;
                 }
-                // Set and trigger update, as normal.
-                aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
-                update[UPDATE_aspectRatioX] = true;
+            } else { // Display a notice instead.
+                ImGui::TextColored({ 0.0f, 0.85f, 0.85f, 1.0f },
+                                   ICON_FA_QUESTION_CIRCLE " \"Force aspect ratio\" required to edit horizontal pixel count.");
+                ImGui::Text(" ");
+                ImGui::SameLine();
+                if (ImGui::Button("Click to resolve")) {
+                    item_aspectRatio = 2; // Set it to 4:3
+                    aspectRatioX = aspectRatioPresetsX[item_aspectRatio];
+                    aspectRatioY = aspectRatioPresetsY[item_aspectRatio];
+                    update[UPDATE_aspectRatioX] = true;
+                    update[UPDATE_aspectRatioY] = true;
+                    horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Hide this field instead")) {
+                    showHorizontalResField = false;
+                }
             }
         }
+        // Vertical Resolution part 2
         if (ImGui::InputInt("Vertical Pixel Count", p_verticalPixelCount, 8, 240)) {
             item_pixelCount = default_pixelCount;
             update[UPDATE_verticalPixelCount] = true;
@@ -215,20 +242,13 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         if (ImGui::CollapsingHeader("Additional Settings")) {
             UIWidgets::Spacer(0);
             // Clicking this checkbox on or off will trigger several tasks.
-            if (ImGui::Checkbox("Show a horizontal resolution field.", p_showHorizontalResField)) {
-                if (!showHorizontalResField) { // turning this setting off
-                    // Force an early update on vertical pixel count
-                    if (verticalPixelCount < minVerticalPixelCount) {
-                        verticalPixelCount = minVerticalPixelCount;
-                    }
-                    if (verticalPixelCount > maxVerticalPixelCount) {
-                        verticalPixelCount = maxVerticalPixelCount;
-                    }
-                    CVarSetInteger("gAdvancedResolution.VerticalPixelCount", (int32_t)verticalPixelCount);
+            if (ImGui::Checkbox("Show a horizontal resolution field.", p_showHorizontalResField) &&
+                (aspectRatioX > 0.0f)) {
+                if (!showHorizontalResField) { // when turning this setting off
                     // Refresh relevant values
                     aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
                     horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
-                } else { // turning this setting on
+                } else { // when turning this setting on
                     // Refresh relevant values in the opposite order
                     horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
                     aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
