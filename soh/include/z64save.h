@@ -197,6 +197,8 @@ typedef struct {
     f32 speedXZ;
     s8 itemAction;
     f32 unk_85C;
+    Vec3f stickWeaponTip;
+    s16 unk_860;
 } PlayerData;
 
 typedef struct {

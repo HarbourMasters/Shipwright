@@ -68,6 +68,10 @@ void from_json(const json& j, PlayerData& playerData) {
     j.at("speedXZ").get_to(playerData.speedXZ);
     j.at("itemAction").get_to(playerData.itemAction);
     j.at("unk_85C").get_to(playerData.unk_85C);
+    j.at("stickWeaponTipX").get_to(playerData.stickWeaponTip.x);
+    j.at("stickWeaponTipY").get_to(playerData.stickWeaponTip.y);
+    j.at("stickWeaponTipZ").get_to(playerData.stickWeaponTip.z);
+    j.at("unk_860").get_to(playerData.unk_860);
 }
 
 void to_json(json& j, const PlayerData& playerData) {
@@ -101,6 +105,10 @@ void to_json(json& j, const PlayerData& playerData) {
         { "speedXZ", playerData.speedXZ },
         { "itemAction", playerData.itemAction },
         { "unk_85C", playerData.unk_85C },
+        { "stickWeaponTipX", playerData.stickWeaponTip.x },
+        { "stickWeaponTipY", playerData.stickWeaponTip.y },
+        { "stickWeaponTipZ", playerData.stickWeaponTip.z },
+        { "unk_860", playerData.unk_860 },
     };
 }
 
@@ -812,6 +820,8 @@ void Anchor_RegisterHooks() {
         gSaveContext.playerData.speedXZ = player->actor.speedXZ;
         gSaveContext.playerData.itemAction = player->itemAction;
         gSaveContext.playerData.unk_85C = player->unk_85C;
+        gSaveContext.playerData.stickWeaponTip = player->meleeWeaponInfo[0].tip;
+        gSaveContext.playerData.unk_860 = player->unk_860;
 
         payload["playerData"] = gSaveContext.playerData;
 

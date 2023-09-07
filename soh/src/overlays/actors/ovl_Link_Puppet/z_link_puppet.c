@@ -214,6 +214,12 @@ Vec3f FEET_POS[] = {
     { 200.0f, 200.0f, 0.0f },
 };
 
+Vec3f D_808547A4 = { 0.0f, 0.5f, 0.0f };
+Vec3f D_808547B0 = { 0.0f, 0.5f, 0.0f };
+
+Color_RGBA8 D_808547BC = { 255, 255, 100, 255 };
+Color_RGBA8 D_808547C0 = { 255, 50, 0, 0 };
+
 void Puppet_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     LinkPuppet* this = (LinkPuppet*)thisx;
 
@@ -233,6 +239,19 @@ void Puppet_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot
         gSPDisplayList(POLY_OPA_DISP++, gLinkChildLinkDekuStickDL);
 
         CLOSE_DISPS(play->state.gfxCtx);
+
+        if (playerData.unk_860 != 0) {
+            f32 temp = 1.0f;
+
+            if (playerData.unk_860 > 200) {
+                temp = (210 - playerData.unk_860) / 10.0f;
+            } else if (playerData.unk_860 < 20) {
+                temp = playerData.unk_860 / 20.0f;
+            }
+
+            func_8002836C(play, &playerData.stickWeaponTip, &D_808547A4, &D_808547B0, &D_808547BC, &D_808547C0,
+                          temp * 200.0f, 0, 8);
+        }
     }
 }
 
