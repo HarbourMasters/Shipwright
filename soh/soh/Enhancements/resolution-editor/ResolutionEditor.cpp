@@ -68,7 +68,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                                               "", 1.0f, true, true,
                                               (CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0) &&
                                                CVarGetInteger("gAdvancedResolution.Enabled", 0)) ||
-                                                  CVarGetInteger("gLowResMode", 0) )) {
+                                                  CVarGetInteger("gLowResMode", 0))) {
             LUS::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(CVarGetFloat("gInternalResolution", 1));
         }
         UIWidgets::Tooltip("Multiplies your output resolution by the value entered, as a more intensive but effective "
@@ -87,14 +87,14 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         }
         // Error/Warning display
         if (!CVarGetInteger("gLowResMode", 0)) {
-            if (IsDroppingFrames()) {
+            if (IsDroppingFrames()) { // Significant frame drop warning
                 ImGui::TextColored({ 0.85f, 0.85f, 0.0f, 1.0f },
-                                   ICON_FA_EXCLAMATION_TRIANGLE " Significant frame rate (FPS) drop may be occuring.");
-            } else {
-                ImGui::Text(" "); // No warnings
+                                   ICON_FA_EXCLAMATION_TRIANGLE " Significant frame rate (FPS) drops may be occuring.");
+            } else { // No warnings
+                ImGui::Text(" ");
             }
             UIWidgets::Spacer(2);
-        } else {
+        } else { // N64 Mode Warning
             ImGui::TextColored({ 0.0f, 0.85f, 0.85f, 1.0f },
                                ICON_FA_QUESTION_CIRCLE " \"N64 Mode\" is overriding these settings.");
             ImGui::SameLine();
@@ -147,11 +147,20 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
 
             if (showHorizontalResField) {
                 horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+                if (horizontalPixelCount < (minVerticalPixelCount / aspectRatioY) * aspectRatioX) {
+                    horizontalPixelCount = (minVerticalPixelCount / aspectRatioY) * aspectRatioX;
+                }
             }
         }
         if (showHorizontalResField) {
-            // So basically we're "faking" this one.
+            // So basically we're "faking" this one by setting aspectRatioX instead.
             if (ImGui::InputInt("Horiz. Pixel Count", p_horizontalPixelCount, 8, 320)) {
+                // We'll handle clamping here.
+                // (I really should have added a clamp check into LUS. Next update.)
+                if (horizontalPixelCount < (minVerticalPixelCount / 3.0f) * 4.0f) {
+                    horizontalPixelCount = (minVerticalPixelCount / 3.0f) * 4.0f;
+                }
+                // Set and trigger update, as normal.
                 aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
                 update[UPDATE_aspectRatioX] = true;
             }
@@ -160,7 +169,10 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             item_pixelCount = default_pixelCount;
             update[UPDATE_verticalPixelCount] = true;
 
-            if (showHorizontalResField) { // Account for the natural instinct to enter horizontal first.
+            // Account for the natural instinct to enter horizontal first.
+            // Ignore vertical resolutions that are below the lower clamp constant.
+            if (showHorizontalResField && !(verticalPixelCount < minVerticalPixelCount)) {
+                // Set and trigger update, as normal.
                 aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
                 update[UPDATE_aspectRatioX] = true;
             }
@@ -190,10 +202,9 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                                             CVarGetInteger("gAdvancedResolution.IntegerScaleFitAutomatically", 0));
         UIWidgets::Tooltip("Integer scales the image. Only available in pixel-perfect mode.");
 
-        UIWidgets::PaddedEnhancementCheckbox("Automatically scale image to fit viewport",
-                                             "gAdvancedResolution.IntegerScaleFitAutomatically", true, true,
-                                             !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0), "",
-                                             UIWidgets::CheckboxGraphics::Cross, false);
+        UIWidgets::PaddedEnhancementCheckbox(
+            "Automatically scale image to fit viewport", "gAdvancedResolution.IntegerScaleFitAutomatically", true, true,
+            !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0), "", UIWidgets::CheckboxGraphics::Cross, false);
         UIWidgets::Tooltip("Automatically sets scale factor to fit window. Only available in pixel-perfect mode.");
         if (CVarGetInteger("gAdvancedResolution.IntegerScaleFitAutomatically", 0)) {
             CVarSetInteger("gAdvancedResolution.IntegerScaleFactor", integerScale_maximumBounds);
@@ -242,11 +253,10 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         if (update[UPDATE_verticalPixelCount]) {
             // There's a upper and lower clamp on the Libultraship side too,
             // so clamping it here is purely visual, so the vertical resolution field reflects it.
-            // Doing that does however interfere with the "Show a horizontal resolution field" setting.
-            if (verticalPixelCount < minVerticalPixelCount && !showHorizontalResField) {
+            if (verticalPixelCount < minVerticalPixelCount) {
                 verticalPixelCount = minVerticalPixelCount;
             }
-            if (verticalPixelCount > maxVerticalPixelCount && !showHorizontalResField) {
+            if (verticalPixelCount > maxVerticalPixelCount) {
                 verticalPixelCount = maxVerticalPixelCount;
             }
             CVarSetInteger("gAdvancedResolution.VerticalPixelCount", (int32_t)verticalPixelCount);
