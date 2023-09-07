@@ -3813,8 +3813,10 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::EnhancementCheckbox(Settings::ShuffleSwim.GetName().c_str(), "gRandomizeShuffleSwim");
                 UIWidgets::InsertHelpHoverText(
                     "Shuffles the ability to Swim into the item pool.\n"
+                    "The ability to swim has to be found as an item (you can still be underwater if you use iron boots).\n"
                     "\n"
-                    "The ability to swim has to be found as an item (you can still be underwater if you use iron boots)"
+                    "If you enter a water entrance without swim you will be respawned on land to prevent infinite death loops.\n"
+                    "If you void out in Water Temple you will immediately be kicked out to prevent a softlock."
                 );
 
                 UIWidgets::PaddedSeparator();

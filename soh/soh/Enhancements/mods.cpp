@@ -655,6 +655,12 @@ void RegisterNoSwim() {
             !Flags_GetRandomizerInf(RAND_INF_CAN_SWIM) &&
             CUR_EQUIP_VALUE(EQUIP_BOOTS) != 2 //iron boots
         ) {
+            //if you void out in water temple without swim you get instantly kicked out to prevent softlocks
+            if (gPlayState->sceneNum == SCENE_WATER_TEMPLE) {
+                GameInteractor::RawAction::TeleportPlayer(Entrance_OverrideNextIndex(0x21D));//water temple to lh
+                return;
+            }
+
             if (swimSpecialRespawnInfo.find(gSaveContext.entranceIndex) != swimSpecialRespawnInfo.end()) {
                 SpecialRespawnInfo* respawnInfo = &swimSpecialRespawnInfo.at(gSaveContext.entranceIndex);
                 
