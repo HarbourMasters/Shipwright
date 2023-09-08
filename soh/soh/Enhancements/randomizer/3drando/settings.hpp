@@ -350,33 +350,10 @@ typedef enum {
 } StartingBiggoronSwordSetting;
 
 typedef enum {
-    SHUFFLESFX_OFF,
-    SHUFFLESFX_ALL,
-    SHUFFLESFX_SCENESPECIFIC,
-    SHUFFLESFX_CHAOS,
-} ShuffleSFXSetting;
-
-typedef enum {
     DUNGEON_NEITHER,
     DUNGEON_BARREN,
     DUNGEON_WOTH,
 } DungeonInfo;
-
-typedef enum {
-    TRAILCOLOR_VANILLAMODE,
-    TRAILCOLOR_FORCEDSIMPLEMODE,
-    TRAILCOLOR_RAINBOW,
-    TRAILCOLOR_RAINBOW_SIMPLEMODE,
-} TrailColorMode;
-
-typedef enum {
-    TRAILDURATION_DISABLED,
-    TRAILDURATION_VERYSHORT,
-    TRAILDURATION_VANILLA,
-    TRAILDURATION_LONG,
-    TRAILDURATION_VERYLONG,
-    TRAILDURATION_LIGHTSABER,
-} TrailDuration;
 
 typedef struct {
     uint8_t hashIndexes[5];
@@ -515,9 +492,6 @@ typedef struct {
     uint8_t itemPoolValue;
     uint8_t iceTrapValue;
     uint8_t progressiveGoronSword;
-
-    uint8_t shuffleSFX;
-    uint8_t shuffleSFXCategorically;
 
     union {
         uint8_t dungeonModes[12];
