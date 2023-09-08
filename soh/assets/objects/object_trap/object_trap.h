@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_TRAP_H
+#define OBJECTS_OBJECT_TRAP_H 1
 
 #include "align_asset_macro.h"
 
@@ -22,3 +23,5 @@ static const ALIGN_ASSET(2) char gLandmineBillboardDL[] = dgLandmineBillboardDL;
 
 #define dgUnusedSpikeDL "__OTR__objects/object_trap/gUnusedSpikeDL"
 static const ALIGN_ASSET(2) char gUnusedSpikeDL[] = dgUnusedSpikeDL;
+
+#endif // OBJECTS_OBJECT_TRAP_H

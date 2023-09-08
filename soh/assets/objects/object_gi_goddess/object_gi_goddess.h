@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GI_GODDESS_H
+#define OBJECTS_OBJECT_GI_GODDESS_H 1
 
 #include "align_asset_macro.h"
 
@@ -16,3 +17,5 @@ static const ALIGN_ASSET(2) char gGiNayrusLoveColorDL[] = dgGiNayrusLoveColorDL;
 
 #define dgGiMagicSpellOrbDL "__OTR__objects/object_gi_goddess/gGiMagicSpellOrbDL"
 static const ALIGN_ASSET(2) char gGiMagicSpellOrbDL[] = dgGiMagicSpellOrbDL;
+
+#endif // OBJECTS_OBJECT_GI_GODDESS_H

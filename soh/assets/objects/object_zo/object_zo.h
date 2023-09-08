@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_ZO_H
+#define OBJECTS_OBJECT_ZO_H 1
 
 #include "align_asset_macro.h"
 
@@ -130,3 +131,6 @@ static const ALIGN_ASSET(2) char gZoraRipplesMaterialDL[] = dgZoraRipplesMateria
 
 #define dgZoraRipplesModelDL "__OTR__objects/object_zo/gZoraRipplesModelDL"
 static const ALIGN_ASSET(2) char gZoraRipplesModelDL[] = dgZoraRipplesModelDL;
+
+
+#endif // OBJECTS_OBJECT_ZO_H

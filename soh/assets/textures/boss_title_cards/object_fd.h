@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_OBJECT_FD_H
+#define TEXTURES_OBJECT_FD_H 1
 
 #include "align_asset_macro.h"
 
@@ -10,3 +11,5 @@ static const ALIGN_ASSET(2) char gVolvagiaBossTitleCardGERTex[] = dgVolvagiaBoss
 
 #define dgVolvagiaBossTitleCardFRATex "__OTR__textures/object_fd/gVolvagiaBossTitleCardFRATex"
 static const ALIGN_ASSET(2) char gVolvagiaBossTitleCardFRATex[] = dgVolvagiaBossTitleCardFRATex;
+
+#endif // TEXTURES_OBJECT_FD_H

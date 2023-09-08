@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GI_NIWATORI_H
+#define OBJECTS_OBJECT_GI_NIWATORI_H 1
 
 #include "align_asset_macro.h"
 
@@ -19,3 +20,5 @@ static const ALIGN_ASSET(2) char object_gi_niwatoriTex_000000[] = dobject_gi_niw
 
 #define dobject_gi_niwatoriTex_000800 "__OTR__objects/object_gi_niwatori/object_gi_niwatoriTex_000800"
 static const ALIGN_ASSET(2) char object_gi_niwatoriTex_000800[] = dobject_gi_niwatoriTex_000800;
+
+#endif // OBJECTS_OBJECT_GI_NIWATORI_H

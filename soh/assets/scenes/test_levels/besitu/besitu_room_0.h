@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEST_LEVELS_BESITU_ROOM_0_H
+#define TEST_LEVELS_BESITU_ROOM_0_H 1
 
 #include "align_asset_macro.h"
 
@@ -25,3 +26,6 @@ static const ALIGN_ASSET(2) char besitu_room_0Tex_0044D8[] = dbesitu_room_0Tex_0
 
 #define dbesitu_room_0Tex_002CD8 "__OTR__scenes/nonmq/besitu_scene/besitu_room_0Tex_002CD8"
 static const ALIGN_ASSET(2) char besitu_room_0Tex_002CD8[] = dbesitu_room_0Tex_002CD8;
+
+
+#endif // TEST_LEVELS_BESITU_ROOM_0_H

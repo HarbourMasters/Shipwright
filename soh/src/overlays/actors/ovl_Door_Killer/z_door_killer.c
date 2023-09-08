@@ -114,14 +114,14 @@ void DoorKiller_Init(Actor* thisx, PlayState* play2) {
 
     // For SoH where all objects are loaded, hardcode the index to match the current map.
     switch (play->sceneNum) {
-        case SCENE_HIDAN:
+        case SCENE_FIRE_TEMPLE:
             this->textureEntryIndex = 0;
             break;
-        case SCENE_MIZUSIN:
+        case SCENE_WATER_TEMPLE:
             this->textureEntryIndex = 1;
             break;
-        case SCENE_HAKADAN:
-        case SCENE_HAKADANCH:
+        case SCENE_SHADOW_TEMPLE:
+        case SCENE_BOTTOM_OF_THE_WELL:
             this->textureEntryIndex = 2;
             break;
         default:

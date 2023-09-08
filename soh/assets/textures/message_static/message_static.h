@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_MESSAGE_STATIC_H
+#define TEXTURES_MESSAGE_STATIC_H 1
 
 #include "align_asset_macro.h"
 
@@ -22,3 +23,5 @@ static const ALIGN_ASSET(2) char gMessageEndSquareTex[] = dgMessageEndSquareTex;
 
 #define dgMessageArrowTex "__OTR__textures/message_static/gMessageArrowTex"
 static const ALIGN_ASSET(2) char gMessageArrowTex[] = dgMessageArrowTex;
+
+#endif // TEXTURES_MESSAGE_STATIC_H

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_SHOPNUTS_H
+#define OBJECTS_OBJECT_SHOPNUTS_H 1
 
 #include "align_asset_macro.h"
 
@@ -106,3 +107,6 @@ static const ALIGN_ASSET(2) char gBusinessScrubAnim_4404[] = dgBusinessScrubAnim
 
 #define dgBusinessScrubAnim_4574 "__OTR__objects/object_shopnuts/gBusinessScrubAnim_4574"
 static const ALIGN_ASSET(2) char gBusinessScrubAnim_4574[] = dgBusinessScrubAnim_4574;
+
+
+#endif // OBJECTS_OBJECT_SHOPNUTS_H

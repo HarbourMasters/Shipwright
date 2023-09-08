@@ -1674,9 +1674,9 @@ u16 func_80B572F0(PlayState* play) {
     s16 sceneNum = play->sceneNum;
     u16 ret;
 
-    if (sceneNum == SCENE_GANON_SONOGO) {
+    if (sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) {
         ret = 0x71A8;
-    } else if (sceneNum == SCENE_GANON_FINAL) {
+    } else if (sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) {
         ret = 0x71A9;
     } else {
         ret = 0x71AB;
@@ -1768,7 +1768,7 @@ s32 func_80B575D0(EnZl3* this, PlayState* play) {
 s32 func_80B575F0(EnZl3* this, PlayState* play) {
     s16 sceneNum = play->sceneNum;
 
-    if ((sceneNum == SCENE_GANON_SONOGO) && (func_80B54DB4(this) == 0x26)) {
+    if ((sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) && (func_80B54DB4(this) == 0x26)) {
         s32 unk_314 = this->unk_314;
 
         if (unk_314 == 1) {
@@ -1781,7 +1781,7 @@ s32 func_80B575F0(EnZl3* this, PlayState* play) {
 void func_80B5764C(EnZl3* this, PlayState* play) {
     s16 sceneNum = play->sceneNum;
 
-    if ((sceneNum == SCENE_GANON_SONOGO) && (func_80B54DB4(this) == 0x26)) {
+    if ((sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) && (func_80B54DB4(this) == 0x26)) {
         s32 unk_314 = this->unk_314 + 1;
 
         if ((unk_314 == 1) && !Play_InCsMode(play)) {
@@ -1842,7 +1842,7 @@ s32 func_80B57890(EnZl3* this, PlayState* play) {
 
     if (play) {} // Needed to match, this if can be almost anywhere and it still matches
 
-    if (sceneNum == SCENE_GANON_SONOGO) {
+    if (sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) {
         if ((result == 0x24) && (curSpawn == 0)) {
             return 1;
         }
@@ -1858,10 +1858,10 @@ s32 func_80B57890(EnZl3* this, PlayState* play) {
         if ((result == 0x28) && (curSpawn == 6)) {
             return 1;
         }
-    } else if (sceneNum == SCENE_GANON_FINAL) {
+    } else if (sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) {
         if ((result == 0x20) && (curSpawn == 0) && Flags_GetSwitch(play, 0x37)) {
-            if ((play->sceneNum == SCENE_GANON_DEMO) || (play->sceneNum == SCENE_GANON_FINAL) ||
-                (play->sceneNum == SCENE_GANON_SONOGO) || (play->sceneNum == SCENE_GANONTIKA_SONOGO)) {
+            if ((play->sceneNum == SCENE_GANON_BOSS) || (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
+                (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) || (play->sceneNum == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE)) {
                 return 1;
             }
         }
@@ -1874,7 +1874,7 @@ s32 func_80B57890(EnZl3* this, PlayState* play) {
         if ((result == 0x23) && (curSpawn == 6)) {
             return 1;
         }
-    } else if (sceneNum == SCENE_GANONTIKA_SONOGO) {
+    } else if (sceneNum == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE) {
         if ((result == 0x29) && (curSpawn == 0)) {
             return 1;
         }
@@ -2484,8 +2484,8 @@ s32 func_80B5944C(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
 
 s32 func_80B59698(EnZl3* this, PlayState* play) {
     s32 cond = Flags_GetSwitch(play, 0x37) &&
-               ((play->sceneNum == SCENE_GANON_DEMO) || (play->sceneNum == SCENE_GANON_FINAL) ||
-                (play->sceneNum == SCENE_GANON_SONOGO) || (play->sceneNum == SCENE_GANONTIKA_SONOGO));
+               ((play->sceneNum == SCENE_GANON_BOSS) || (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
+                (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) || (play->sceneNum == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE));
 
     if (cond) {
         u8 curSpawn = play->curSpawn;
@@ -2500,8 +2500,8 @@ s32 func_80B59698(EnZl3* this, PlayState* play) {
 
 s32 func_80B59768(EnZl3* this, PlayState* play) {
     s32 cond = Flags_GetSwitch(play, 0x37) &&
-               ((play->sceneNum == SCENE_GANON_DEMO) || (play->sceneNum == SCENE_GANON_FINAL) ||
-                (play->sceneNum == SCENE_GANON_SONOGO) || (play->sceneNum == SCENE_GANONTIKA_SONOGO));
+               ((play->sceneNum == SCENE_GANON_BOSS) || (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
+                (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) || (play->sceneNum == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE));
 
     if (cond) {
         u8 curSpawn = play->curSpawn;
@@ -2558,8 +2558,8 @@ void func_80B59828(EnZl3* this, PlayState* play) {
 
         func_80B54EA4(this, play);
         cond = Flags_GetSwitch(play, 0x37) &&
-               ((play->sceneNum == SCENE_GANON_DEMO) || (play->sceneNum == SCENE_GANON_FINAL) ||
-                (play->sceneNum == SCENE_GANON_SONOGO) || (play->sceneNum == SCENE_GANONTIKA_SONOGO));
+               ((play->sceneNum == SCENE_GANON_BOSS) || (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
+                (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) || (play->sceneNum == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE));
         if (cond) {
             func_80B53614(this, play);
         }

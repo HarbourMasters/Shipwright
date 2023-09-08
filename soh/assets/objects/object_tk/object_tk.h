@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_TK_H
+#define OBJECTS_OBJECT_TK_H 1
 
 #include "align_asset_macro.h"
 
@@ -145,3 +146,5 @@ static const ALIGN_ASSET(2) char object_tkTex_0039C0[] = dobject_tkTex_0039C0;
 
 #define dobject_tkTex_003A00 "__OTR__objects/object_tk/object_tkTex_003A00"
 static const ALIGN_ASSET(2) char object_tkTex_003A00[] = dobject_tkTex_003A00;
+
+#endif // OBJECTS_OBJECT_TK_H

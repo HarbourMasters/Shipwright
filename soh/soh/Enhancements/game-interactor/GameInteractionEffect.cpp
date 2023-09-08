@@ -173,7 +173,7 @@ namespace GameInteractionEffect {
     // MARK: - FreezePlayer
     GameInteractionEffectQueryResult FreezePlayer::CanBeApplied() {
         Player* player = GET_PLAYER(gPlayState);
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused() || !PlayerGrounded(player)) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;

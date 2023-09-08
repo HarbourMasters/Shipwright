@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_OBJECT_TW_H
+#define TEXTURES_OBJECT_TW_H 1
 
 #include "align_asset_macro.h"
 
@@ -10,3 +11,5 @@ static const ALIGN_ASSET(2) char gTwinrovaTitleCardGERTex[] = dgTwinrovaTitleCar
 
 #define dgTwinrovaTitleCardFRATex "__OTR__textures/object_tw/gTwinrovaTitleCardFRATex"
 static const ALIGN_ASSET(2) char gTwinrovaTitleCardFRATex[] = dgTwinrovaTitleCardFRATex;
+
+#endif // TEXTURES_OBJECT_TW_H

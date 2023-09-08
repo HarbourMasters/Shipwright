@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DUNGEONS_GANONTIKA_ROOM_10_H
+#define DUNGEONS_GANONTIKA_ROOM_10_H 1
 
 #include "align_asset_macro.h"
 
@@ -37,3 +38,6 @@ static const ALIGN_ASSET(2) char ganontika_room_10DL_0032E8[] = dganontika_room_
 
 #define dganontika_room_10DL_0037E8 "__OTR__scenes/nonmq/ganontika_scene/ganontika_room_10DL_0037E8"
 static const ALIGN_ASSET(2) char ganontika_room_10DL_0037E8[] = dganontika_room_10DL_0037E8;
+
+
+#endif // DUNGEONS_GANONTIKA_ROOM_10_H

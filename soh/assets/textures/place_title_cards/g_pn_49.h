@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_G_PN_49_H
+#define TEXTURES_G_PN_49_H 1
 
 #include "align_asset_macro.h"
 
@@ -10,3 +11,5 @@ static const ALIGN_ASSET(2) char gThievesHideoutTitleCardGERTex[] = dgThievesHid
 
 #define dgThievesHideoutTitleCardFRATex "__OTR__textures/g_pn_49/gThievesHideoutTitleCardFRATex"
 static const ALIGN_ASSET(2) char gThievesHideoutTitleCardFRATex[] = dgThievesHideoutTitleCardFRATex;
+
+#endif // TEXTURES_G_PN_49_H
