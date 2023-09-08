@@ -378,14 +378,8 @@ typedef enum {
     TRAILDURATION_LIGHTSABER,
 } TrailDuration;
 
-typedef enum {
-    PLAY_ON_CONSOLE,
-    PLAY_ON_CITRA,
-} PlayOption;
-
 typedef struct {
     uint8_t hashIndexes[5];
-    uint8_t playOption;
 
     uint8_t logic;
     uint8_t openForest;
@@ -634,11 +628,6 @@ public:
         }
     }
 
-    void SetOptions(std::vector<std::string> o) {
-        options = std::move(o);
-        SetToDefault();
-    }
-
     size_t GetOptionCount() const {
         return options.size();
     }
@@ -651,37 +640,8 @@ public:
         return options[selectedOption];
     }
 
-    void SetSelectedOptionText(std::string newText) {
-        options[selectedOption] = std::move(newText);
-    }
-
-    bool IsDefaultSelected() {
-      return selectedOption == defaultOption;
-    }
-
-    void SetToDefault() {
-      SetSelectedIndex(defaultOption);
-      hidden = defaultHidden;
-    }
-
     uint8_t GetSelectedOptionIndex() const {
       return selectedOption;
-    }
-
-    void NextOptionIndex() {
-        ++selectedOption;
-    }
-
-    void PrevOptionIndex() {
-        --selectedOption;
-    }
-
-    void SanitizeSelectedOptionIndex() {
-        if (selectedOption == options.size()) {
-            selectedOption = 0;
-        } else if (selectedOption == 0xFF) {
-            selectedOption = static_cast<uint8_t>(options.size() - 1);
-        }
     }
 
     void SetVariable() {
@@ -709,28 +669,6 @@ public:
       }
 
       SetVariable();
-    }
-
-    void SetSelectedIndexByString(std::string newSetting) {
-      for (size_t i = 0; i < options.size(); i++) {
-        std::string settingName = options[i];
-        if (settingName == newSetting) {
-          SetSelectedIndex(i);
-          return;
-        }
-      }
-    }
-
-    void Lock() {
-      locked = true;
-    }
-
-    void Unlock() {
-      locked = false;
-    }
-
-    bool IsLocked() const {
-      return locked;
     }
 
     void Hide() {
@@ -769,7 +707,6 @@ private:
   std::vector<std::string> options;
   uint8_t selectedOption = 0;
   uint8_t delayedOption = 0;
-  bool locked = false;
   bool hidden = false;
   OptionCategory category;
   uint8_t defaultOption = 0;
@@ -806,20 +743,6 @@ class Menu {
     Menu(std::string name_, MenuType type_, uint8_t mode_)
         : name(std::move(name_)), type(type_), mode(mode_) {}
 
-    void ResetMenuIndex() {
-      if (mode == OPTION_SUB_MENU) {
-        for (size_t i = 0; i < settingsList->size(); i++) {
-          if (!settingsList->at(i)->IsLocked() && !settingsList->at(i)->IsHidden()) {
-            menuIdx = i;
-            settingBound = i;
-            return;
-          }
-        }
-      }
-      menuIdx = 0;
-      settingBound = 0;
-    }
-
     std::string name;
     MenuType type;
     std::vector<Option *>* settingsList;
@@ -834,8 +757,6 @@ class Menu {
 namespace Settings {
 void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks);
   SettingsContext FillContext();
-  void InitSettings();
-  void SetDefaultSettings();
   void ResolveExcludedLocationConflicts();
   void RandomizeAllSettings(const bool selectOptions = false);
   void ForceChange(uint32_t kDown, Option* currentSetting);
@@ -1251,8 +1172,6 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   
   extern uint32_t LinksPocketRewardBitMask;
   extern std::array<uint32_t, 9> rDungeonRewardOverrides;
-
-  extern uint8_t PlayOption;
 
   extern std::vector<std::vector<Option *>> excludeLocationsOptionsVector;
   extern std::vector<Menu *> excludeLocationsMenus;

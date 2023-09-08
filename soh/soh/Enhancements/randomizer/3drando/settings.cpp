@@ -1243,9 +1243,6 @@ namespace Settings {
   uint32_t LinksPocketRewardBitMask = 0;
   std::array<uint32_t, 9> rDungeonRewardOverrides{};
 
-  //declared here, set in menu.cpp
-  uint8_t PlayOption;
-
   //Fills and returns a SettingsContext struct.
   //This struct is written to the code.ips patch and allows the game
   //to read what settings the player selected to make in game decisions.
@@ -1256,7 +1253,6 @@ namespace Settings {
     ctx.hashIndexes[2] = hashIconIndexes[2];
     ctx.hashIndexes[3] = hashIconIndexes[3];
     ctx.hashIndexes[4] = hashIconIndexes[4];
-    ctx.playOption = PlayOption;
 
     ctx.logic                = Logic.Value<uint8_t>();
     ctx.openForest           = OpenForest.Value<uint8_t>();
@@ -1498,88 +1494,6 @@ namespace Settings {
     ctx.startingUpgrades |= StartingWallet.Value<uint8_t>() << 12;
 
     return ctx;
-  }
-
-  //One-time initialization
-  void InitSettings() {
-    //Create Location Exclude settings
-    AddExcludedOptions();
-
-    SetDefaultSettings();
-  }
-
-  //Set default settings for all settings
-  void SetDefaultSettings() {
-    for (auto op : openOptions) {
-      op->SetToDefault();
-    }
-    for (auto op : worldOptions) {
-      op->SetToDefault();
-    }
-    for (auto op : shuffleOptions) {
-      op->SetToDefault();
-    }
-    for (auto op : shuffleDungeonItemOptions) {
-      op->SetToDefault();
-    }
-    for (auto op : timesaverOptions) {
-      op->SetToDefault();
-    }
-    for (auto op : miscOptions) {
-      op->SetToDefault();
-    }
-    for (auto op : itemUsabilityOptions) {
-      op->SetToDefault();
-    }
-    for (auto op : itemPoolOptions) {
-      op->SetToDefault();
-    }
-    for (auto menu : excludeLocationsMenus) {
-      for (auto op : *menu->settingsList) {
-        op->SetToDefault();
-      }
-    }
-    for (auto op : startingItemsOptions) {
-      op->SetToDefault();
-    }
-    for (auto op : startingSongsOptions) {
-      op->SetToDefault();
-    }
-    for (auto op : startingEquipmentOptions) {
-      op->SetToDefault();
-    }
-    for (auto op : startingStonesMedallionsOptions) {
-      op->SetToDefault();
-    }
-    for (auto op : startingOthersOptions) {
-      op->SetToDefault();
-    }
-    for (auto op : logicOptions) {
-      op->SetToDefault();
-    }
-    for (auto op : trickOptions) {
-      op->SetToDefault();
-    }
-    for (auto op : glitchCategories) {
-      op->SetToDefault();
-    }
-    for (auto op : miscGlitches) {
-      op->SetToDefault();
-    }
-
-    for (auto loc : allLocations) {
-      Location(loc)->GetExcludedOption()->SetToDefault();
-    }
-    //Don't let users exclude these locations
-    //TODO: Make sure the defaults are set appropriately for these?
-    Location(HC_ZELDAS_LETTER)->GetExcludedOption()->Hide();
-    Location(MARKET_BOMBCHU_BOWLING_BOMBCHUS)->GetExcludedOption()->Hide();
-    Location(GANON)->GetExcludedOption()->Hide();
-
-    ResolveExcludedLocationConflicts();
-    for (Menu* menu : Settings::GetAllOptionMenus()) {
-      menu->ResetMenuIndex();
-    }
   }
 
   //Include and Lock the desired locations
@@ -1850,9 +1764,6 @@ namespace Settings {
       //Adult is not compatible with Closed Forest
       if (OpenForest.Is(OPENFOREST_CLOSED)) {
         StartingAge.SetSelectedIndex(AGE_CHILD);
-        StartingAge.Lock();
-      } else {
-        StartingAge.Unlock();
       }
 
       //Adult is also not compatible with the following combination:
@@ -1860,9 +1771,6 @@ namespace Settings {
       if (OpenDoorOfTime.Is(OPENDOOROFTIME_CLOSED) && !ShuffleOcarinas &&
         Logic.Is(LOGIC_GLITCHLESS)) {
           StartingAge.SetSelectedIndex(AGE_CHILD);
-          StartingAge.Lock();
-        } else {
-          StartingAge.Unlock();
         }
 
       //Only show stone count option if Stones is selected
@@ -2017,23 +1925,17 @@ namespace Settings {
       // Ganon's Boss Key on 100 GS reward must also have the reward shuffled
       if (GanonsBossKey.Is(GANONSBOSSKEY_FINAL_GS_REWARD)) {
         Shuffle100GSReward.SetSelectedIndex(ON);
-        Shuffle100GSReward.Lock();
-      } else {
-        Shuffle100GSReward.Unlock();
       }
     }
 
     //Force Link's Pocket Item to be a dungeon reward if Shuffle Rewards is end of dungeons
     if (ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON)) {
-      LinksPocketItem.Lock();
       LinksPocketItem.SetSelectedIndex(LINKSPOCKETITEM_DUNGEON_REWARD);
       if (RandomizeShuffle) {
         //Even if it is supposed to be locked, still hide it to keep the surprise
-        LinksPocketItem.Unlock();
+
         LinksPocketItem.Hide();
       }
-    } else {
-      LinksPocketItem.Unlock();
     }
 
     if (!RandomizeDungeon) {
@@ -2112,9 +2014,6 @@ namespace Settings {
 
     if (RemoveDoubleDefense) {
       StartingDoubleDefense.SetSelectedIndex(0);
-      StartingDoubleDefense.Lock();
-    } else {
-      StartingDoubleDefense.Unlock();
     }
 
     ResolveExcludedLocationConflicts();
@@ -2231,8 +2130,6 @@ namespace Settings {
 
     // Shuffle Settings
     if (RandomizeShuffle) {
-      // Still displays if previously locked
-      LinksPocketItem.Unlock();
       // Skip RandomizeShuffle Option
       for (size_t i=1; i < shuffleOptions.size(); i++) {
         shuffleOptions[i]->Hide();
