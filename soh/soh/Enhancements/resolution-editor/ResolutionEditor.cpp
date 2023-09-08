@@ -44,7 +44,7 @@ void AdvancedResolutionSettingsWindow::InitElement() {
 }
 
 void AdvancedResolutionSettingsWindow::DrawElement() {
-    ImGui::SetNextWindowSize(ImVec2(497, 513), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(497, 532), ImGuiCond_FirstUseEver);
     if (ImGui::Begin("Advanced Resolution Settings", &mIsVisible)) {
         // Initialise update flags.
         bool update[sizeof(setting)];
@@ -108,10 +108,10 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             if (IsDroppingFrames()) { // Significant frame drop warning
                 ImGui::TextColored({ 0.85f, 0.85f, 0.0f, 1.0f },
                                    ICON_FA_EXCLAMATION_TRIANGLE " Significant frame rate (FPS) drops may be occuring.");
+                UIWidgets::Spacer(2);
             } else { // No warnings
-                ImGui::Text(" ");
+                UIWidgets::Spacer(19);
             }
-            UIWidgets::Spacer(2);
         } else { // N64 Mode warning
             ImGui::TextColored({ 0.0f, 0.85f, 0.85f, 1.0f },
                                ICON_FA_QUESTION_CIRCLE " \"N64 Mode\" is overriding these settings.");
@@ -215,6 +215,9 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 update[UPDATE_aspectRatioX] = true;
             }
         }
+        if (!showHorizontalResField) {
+            UIWidgets::Spacer(19); // just so other UI elements don't jump around too much.
+        }
 
         UIWidgets::Spacer(0);
         // Pixel-perfect Mode
@@ -222,7 +225,6 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                                              !CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0), "",
                                              UIWidgets::CheckboxGraphics::Cross, false);
         UIWidgets::Tooltip("Don't scale image to fill window.");
-
         if (!CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0)) {
             CVarSetInteger("gAdvancedResolution.PixelPerfectMode", (int)false);
         }
