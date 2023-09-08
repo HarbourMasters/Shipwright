@@ -1049,6 +1049,26 @@ void CreateAllHints() {
   uint8_t remainingDungeonWothHints = hintSetting.dungeonsWothLimit;
   uint8_t remainingDungeonBarrenHints = hintSetting.dungeonsBarrenLimit;
 
+  // Apply Special hint exclusions with no requirements
+  if (Settings::Kak10GSHintText){
+      Location(KAK_10_GOLD_SKULLTULA_REWARD)->SetAsHinted();
+  }
+  if (Settings::Kak20GSHintText){
+      Location(KAK_20_GOLD_SKULLTULA_REWARD)->SetAsHinted();
+  }
+  if (Settings::Kak30GSHintText){
+      Location(KAK_30_GOLD_SKULLTULA_REWARD)->SetAsHinted();
+  }
+  if (Settings::Kak40GSHintText){
+      Location(KAK_40_GOLD_SKULLTULA_REWARD)->SetAsHinted();
+  }
+  if (Settings::Kak50GSHintText){
+      Location(KAK_50_GOLD_SKULLTULA_REWARD)->SetAsHinted();
+  }
+  if (Settings::skipChildZelda){
+      Location(SONG_FROM_IMPA)->SetAsHinted();
+  }
+
   // Add 'always' location hints
   if (hintSetting.distTable[static_cast<int>(HINT_TYPE_ALWAYS)].copies > 0) {
       // Only filter locations that had a random item placed at them (e.g. don't get cow locations if shuffle cows is
