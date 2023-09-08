@@ -149,7 +149,6 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
 
             if (showHorizontalResField) {
                 horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
-                // Clamp horizontal resolution if below minimum.
                 if (horizontalPixelCount < (minVerticalPixelCount / 3.0f) * 4.0f) {
                     horizontalPixelCount = (minVerticalPixelCount / 3.0f) * 4.0f;
                 }
@@ -179,11 +178,9 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             if ((aspectRatioX > 0.0f) && (aspectRatioY > 0.0f)) {
                 // So basically we're "faking" this one by setting aspectRatioX instead.
                 if (ImGui::InputInt("Horiz. Pixel Count", p_horizontalPixelCount, 8, 320)) {
-                    // We'll handle minimum clamping here.
                     if (horizontalPixelCount < (minVerticalPixelCount / 3.0f) * 4.0f) {
                         horizontalPixelCount = (minVerticalPixelCount / 3.0f) * 4.0f;
                     }
-                    // Set and trigger update, as normal.
                     aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
                     update[UPDATE_aspectRatioX] = true;
                 }
@@ -214,7 +211,6 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             // Account for the natural instinct to enter horizontal first.
             // Ignore vertical resolutions that are below the lower clamp constant.
             if (showHorizontalResField && !(verticalPixelCount < minVerticalPixelCount)) {
-                // Set and trigger update, as normal.
                 aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
                 update[UPDATE_aspectRatioX] = true;
             }
@@ -253,9 +249,21 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         } // Tina TODO: This doesn't work if the window is closed. Do this somewhere else.
 
         UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
+
         // Collapsible panel for additional settings
         if (ImGui::CollapsingHeader("Additional Settings")) {
             UIWidgets::Spacer(0);
+#if defined(__SWITCH__) || defined(__WIIU__)
+            // Disable aspect correction, stretching the framebuffer to fill the viewport.
+            // This option is only really needed on systems limited to 16:9 TV resolutions, such as consoles.
+            // The associated CVar is still functional on PC platforms if you want to use it though.
+            UIWidgets::PaddedEnhancementCheckbox("Disable aspect correction and stretch the output image.\n"
+                                                 "(Might be useful for 4:3 televisions!)\n"
+                                                 "Not available in Pixel Perfect Mode.",
+                                                 "gAdvancedResolution.IgnoreAspectCorrection", true, true,
+                                                 CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0), "",
+                                                 UIWidgets::CheckboxGraphics::Cross, false);
+#endif
             // Clicking this checkbox on or off will trigger several tasks.
             if (ImGui::Checkbox("Show a horizontal resolution field.", p_showHorizontalResField) &&
                 (aspectRatioX > 0.0f)) {
@@ -270,19 +278,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 }
                 update[UPDATE_aspectRatioX] = true;
             }
-
-#if defined(__SWITCH__) || defined(__WIIU__)
-            // Disable aspect correction, stretching the framebuffer to fill the viewport.
-            // This option is only really needed on systems limited to 16:9 TV resolutions, such as consoles.
-            // The associated CVar is still functional on PC platforms if you want to use it though.
-            UIWidgets::PaddedEnhancementCheckbox("Disable aspect correction and stretch the output image.\n"
-                                                 "(Might be useful for 4:3 televisions!)\n"
-                                                 "Not available in Pixel Perfect Mode.",
-                                                 "gAdvancedResolution.IgnoreAspectCorrection", true, true,
-                                                 CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0), "",
-                                                 UIWidgets::CheckboxGraphics::Cross, false);
-#endif
-        }
+        } // end of Additional Settings
 
         // Clamp and update CVars
         if (update[UPDATE_aspectRatioX]) {
@@ -318,7 +314,7 @@ void AdvancedResolutionSettingsWindow::UpdateElement() {
 bool AdvancedResolutionSettingsWindow::IsDroppingFrames() {
     // a rather imprecise way of checking for frame drops.
     // but it's mostly there to inform the player of large drops.
-    const float threshold = 5.1f;
-    return ImGui::GetIO().Framerate < (CVarGetInteger("gInterpolationFPS", 20) - threshold);
+    const float threshold = CVarGetInteger("gInterpolationFPS", 20) / 20.0f - 4.1f;
+    return ImGui::GetIO().Framerate < threshold;
 }
 } // namespace AdvancedResolutionSettings
