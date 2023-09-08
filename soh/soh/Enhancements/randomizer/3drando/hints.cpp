@@ -1045,6 +1045,9 @@ void CreateAllHints() {
   if (Settings::Kak50GSHintText){
       Location(KAK_50_GOLD_SKULLTULA_REWARD)->SetAsHinted();
   }
+  if (Settings::skipChildZelda){
+      Location(SONG_FROM_IMPA)->SetAsHinted();
+  }
 
   // Add 'always' location hints
   if (hintSetting.distTable[static_cast<int>(HINT_TYPE_ALWAYS)].copies > 0) {
