@@ -1653,7 +1653,7 @@ void BossVa_BodyDeath(BossVa* this, PlayState* play) {
                 func_8002DF54(play, &this->actor, 7);
                 sCsState++;
 
-                if (!gSaveContext.isBossRush) {
+                if (!IS_BOSS_RUSH(gSaveContext)) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x,
                                 this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
                 }
@@ -1665,7 +1665,7 @@ void BossVa_BodyDeath(BossVa* this, PlayState* play) {
                     }
                 }
 
-                if (!gSaveContext.isBossRush) {
+                if (!IS_BOSS_RUSH(gSaveContext)) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_RU1, sWarpPos[sp7C].x, sWarpPos[sp7C].y,
                                 sWarpPos[sp7C].z, 0, 0, 0, 0, true);
                 } else {

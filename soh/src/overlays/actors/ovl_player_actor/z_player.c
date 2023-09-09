@@ -4446,7 +4446,7 @@ s32 func_80839800(Player* this, PlayState* play) {
         (!(this->stateFlags1 & PLAYER_STATE1_ITEM_OVER_HEAD) ||
          ((this->heldActor != NULL) && (this->heldActor->id == ACTOR_EN_RU1)))) {
         // Disable doors in Boss Rush so the player can't leave the boss rooms backwards.
-        if ((CHECK_BTN_ALL(sControlInput->press.button, BTN_A) || (func_8084F9A0 == this->func_674)) && !gSaveContext.isBossRush) {
+        if ((CHECK_BTN_ALL(sControlInput->press.button, BTN_A) || (func_8084F9A0 == this->func_674)) && !IS_BOSS_RUSH(gSaveContext)) {
             doorActor = this->doorActor;
 
             if (this->doorType <= PLAYER_DOORTYPE_AJAR) {

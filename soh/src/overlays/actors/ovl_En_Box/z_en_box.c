@@ -206,7 +206,7 @@ void EnBox_Init(Actor* thisx, PlayState* play2) {
     }
 
     // Delete chests in Boss Rush. Mainly for the chest in King Dodongo's boss room.
-    if (gSaveContext.isBossRush) {
+    if (IS_BOSS_RUSH(gSaveContext)) {
         EnBox_SetupAction(this, EnBox_Destroy);
     }
 }

@@ -1116,7 +1116,7 @@ void BossMo_Tentacle(BossMo* this, PlayState* play) {
                         BossMo_SpawnDroplet(MO_FX_DROPLET, (BossMoEffect*)play->specialEffects, &spD4, &spE0,
                                             ((300 - indS1) * .0015f) + 0.13f);
                     }
-                    if (!gSaveContext.isBossRush) {
+                    if (!IS_BOSS_RUSH(gSaveContext)) {
                         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1,
                                            this->actor.world.pos.x, -280.0f, this->actor.world.pos.z, 0, 0, 0,
                                            WARP_DUNGEON_ADULT);

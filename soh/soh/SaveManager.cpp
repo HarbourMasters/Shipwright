@@ -593,7 +593,7 @@ void SaveManager::InitFileNormal() {
     gSaveContext.pendingSale = ITEM_NONE;
     gSaveContext.pendingSaleMod = MOD_NONE;
 
-    if (gSaveContext.isBossRush) {
+    if (IS_BOSS_RUSH(gSaveContext)) {
         BossRush_InitSave();
     }
 

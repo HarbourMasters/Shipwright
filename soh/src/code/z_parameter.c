@@ -886,7 +886,7 @@ void func_80083108(PlayState* play) {
                 }
             }
         // Don't hide the HUD in the Chamber of Sages when in Boss Rush.
-        } else if (play->sceneNum == SCENE_CHAMBER_OF_THE_SAGES && !gSaveContext.isBossRush) {
+        } else if (play->sceneNum == SCENE_CHAMBER_OF_THE_SAGES && !IS_BOSS_RUSH(gSaveContext)) {
             Interface_ChangeAlpha(1);
         } else if (play->sceneNum == SCENE_FISHING_POND) {
             gSaveContext.unk_13E7 = 2;
@@ -5082,7 +5082,7 @@ void Interface_Draw(PlayState* play) {
             }
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rColor.r, rColor.g, rColor.b, interfaceCtx->magicAlpha);
             // Draw Rupee icon. Hide in Boss Rush.
-            if (!gSaveContext.isBossRush) {
+            if (!IS_BOSS_RUSH(gSaveContext)) {
                 OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, PosX_RC, PosY_RC, 16, 16, 1 << 10, 1 << 10);
             }
 
@@ -5200,7 +5200,7 @@ void Interface_Draw(PlayState* play) {
             svar5 = rupeeDigitsCount[CUR_UPG_VALUE(UPG_WALLET)];
 
             // Draw Rupee Counter. Hide in Boss Rush.
-            if (!gSaveContext.isBossRush) {
+            if (!IS_BOSS_RUSH(gSaveContext)) {
                 for (svar1 = 0, svar3 = 16; svar1 < svar5; svar1++, svar2++, svar3 += 8) {
                     OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[svar2]]),
                                                  8, 16, PosX_RC + svar3, PosY_RC, 8, 16, 1 << 10, 1 << 10);
@@ -6138,7 +6138,7 @@ void Interface_Draw(PlayState* play) {
 void Interface_DrawTotalGameplayTimer(PlayState* play) {
     // Draw timer based on the Gameplay Stats total time.
 
-    if ((gSaveContext.isBossRush && gSaveContext.bossRushOptions[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES) ||
+    if ((IS_BOSS_RUSH(gSaveContext) && gSaveContext.bossRushOptions[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES) ||
         (CVarGetInteger("gGameplayStats.ShowIngameTimer", 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2)) {
 
         s32 X_Margins_Timer = 0;

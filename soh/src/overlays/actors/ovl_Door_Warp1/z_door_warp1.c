@@ -252,7 +252,7 @@ void DoorWarp1_SetupBlueCrystal(DoorWarp1* this, PlayState* play) {
             -255;
     }
 
-    if (!gSaveContext.isBossRush) {
+    if (!IS_BOSS_RUSH(gSaveContext)) {
         play->envCtx.adjFogNear = -500;
         this->warpTimer = 30;
     } else {
@@ -299,7 +299,7 @@ void DoorWarp1_SetPlayerPos(DoorWarp1* this, PlayState* play) {
 
     player->actor.velocity.y = 0.0f;
     player->actor.world.pos.x = this->actor.world.pos.x;
-    if (!gSaveContext.isBossRush) {
+    if (!IS_BOSS_RUSH(gSaveContext)) {
         player->actor.world.pos.y = this->actor.world.pos.y + 55.0f;
     } else {
         player->actor.world.pos.y = this->actor.world.pos.y;
@@ -323,7 +323,7 @@ void func_80999214(DoorWarp1* this, PlayState* play) {
 
     Math_SmoothStepToF(&this->crystalAlpha, 255.0f, 0.2f, 5.0f, 0.1f);
 
-    if (!gSaveContext.isBossRush) {
+    if (!IS_BOSS_RUSH(gSaveContext)) {
         darkness = (f32)(40 - this->warpTimer) / 40.0f;
         darkness = CLAMP_MIN(darkness, 0);
     } else {
@@ -366,7 +366,7 @@ void func_80999348(DoorWarp1* this, PlayState* play) {
 void DoorWarp1_FloatPlayer(DoorWarp1* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (!gSaveContext.isBossRush) {
+    if (!IS_BOSS_RUSH(gSaveContext)) {
         player->actor.gravity = -0.1f;
     }
 }
@@ -761,7 +761,7 @@ void DoorWarp1_AdultWarpIdle(DoorWarp1* this, PlayState* play) {
 
     if (DoorWarp1_PlayerInRange(this, play)) {
         // Heal player in Boss Rush
-        if (gSaveContext.isBossRush) {
+        if (IS_BOSS_RUSH(gSaveContext)) {
             BossRush_HandleBlueWarpHeal(play);
         }
 
@@ -826,7 +826,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
     this->warpTimer++;
 
     if (this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF) {
-        if (gSaveContext.isBossRush) {
+        if (IS_BOSS_RUSH(gSaveContext)) {
             BossRush_HandleBlueWarp(play, this->actor.world.pos.x, this->actor.world.pos.z);
         } else if (play->sceneNum == SCENE_FOREST_TEMPLE_BOSS) {
             if (!Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) {

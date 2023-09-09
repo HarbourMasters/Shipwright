@@ -324,6 +324,7 @@ typedef struct {
 
 #define IS_MASTER_QUEST(saveContext) (saveContext).isMasterQuest
 #define IS_RANDO(saveContext) (saveContext).n64ddFlag
+#define IS_BOSS_RUSH(saveContext) (saveContext).isBossRush
 
 typedef enum {
     /* 0x00 */ BTN_ENABLED,

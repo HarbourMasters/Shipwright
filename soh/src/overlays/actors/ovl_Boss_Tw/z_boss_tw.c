@@ -2365,7 +2365,7 @@ void BossTw_DeathCSMsgSfx(BossTw* this, PlayState* play) {
     sp35 = 0;
 
     // Skip ahead to last part of the cutscene in rando
-    if (this->work[CS_TIMER_2] == 10 && (IS_RANDO(gSaveContext) || gSaveContext.isBossRush)) {
+    if (this->work[CS_TIMER_2] == 10 && (IS_RANDO(gSaveContext) || IS_BOSS_RUSH(gSaveContext))) {
         this->work[CS_TIMER_2] = 860;
     }
 
@@ -2550,7 +2550,7 @@ void BossTw_DeathCSMsgSfx(BossTw* this, PlayState* play) {
 
     // Add separate timings for the "beam" that opens and closes around the sisters
     // Needed because we skip ahead in cutscene timer value so it never gets called otherwise
-    if (IS_RANDO(gSaveContext) || gSaveContext.isBossRush) {
+    if (IS_RANDO(gSaveContext) || IS_BOSS_RUSH(gSaveContext)) {
         if (this->work[CS_TIMER_2] < 900) {
             Math_ApproachF(&this->workf[UNK_F18], 255.0f, 0.1f, 5.0f);
         } else if (this->work[CS_TIMER_2] > 910) {
@@ -2795,7 +2795,7 @@ void BossTw_TwinrovaDeathCS(BossTw* this, PlayState* play) {
                 func_80064534(play, &play->csCtx);
                 func_8002DF54(play, &this->actor, 7);
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS_CLEAR);
-                if (!gSaveContext.isBossRush) {
+                if (!IS_BOSS_RUSH(gSaveContext)) {
                     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 600.0f, 230.0f, 0.0f, 0,
                                        0, 0, WARP_DUNGEON_ADULT);
                     Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -600.0f, 230.f, 0.0f, 0, 0, 0, 0, true);
