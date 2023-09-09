@@ -53,6 +53,10 @@ void from_json(const json& j, PlayerData& playerData) {
     j.at("damageValue").get_to(playerData.damageValue);
     j.at("playerHealth").get_to(playerData.playerHealth);
     j.at("playerHealthCapacity").get_to(playerData.playerHealthCapacity);
+    j.at("playerMagic").get_to(playerData.playerMagic);
+    j.at("playerMagicCapacity").get_to(playerData.playerMagicCapacity);
+    j.at("isPlayerMagicAcquired").get_to(playerData.isPlayerMagicAcquired);
+    j.at("isDoubleMagicAcquired").get_to(playerData.isDoubleMagicAcquired);
     j.at("strengthValue").get_to(playerData.strengthValue);
     j.at("yOffset").get_to(playerData.yOffset);
     j.at("currentMask").get_to(playerData.currentMask);
@@ -90,6 +94,10 @@ void to_json(json& j, const PlayerData& playerData) {
         { "damageValue", playerData.damageValue },
         { "playerHealth", playerData.playerHealth },
         { "playerHealthCapacity", playerData.playerHealthCapacity },
+        { "playerMagic", playerData.playerMagic },
+        { "playerMagicCapacity", playerData.playerMagicCapacity },
+        { "isPlayerMagicAcquired", playerData.isPlayerMagicAcquired },
+        { "isDoubleMagicAcquired", playerData.isDoubleMagicAcquired },
         { "strengthValue", playerData.strengthValue },
         { "yOffset", playerData.yOffset },
         { "currentMask", playerData.currentMask },
@@ -810,6 +818,10 @@ void Anchor_RegisterHooks() {
         gSaveContext.playerData.playerAge = gSaveContext.linkAge;
         gSaveContext.playerData.playerHealth = gSaveContext.health;
         gSaveContext.playerData.playerHealthCapacity = gSaveContext.healthCapacity;
+        gSaveContext.playerData.playerMagic = gSaveContext.magic;
+        gSaveContext.playerData.playerMagicCapacity = gSaveContext.magicCapacity;
+        gSaveContext.playerData.isPlayerMagicAcquired = gSaveContext.isMagicAcquired;
+        gSaveContext.playerData.isDoubleMagicAcquired = gSaveContext.isDoubleMagicAcquired;
         gSaveContext.playerData.strengthValue = CUR_UPG_VALUE(UPG_STRENGTH);
         gSaveContext.playerData.yOffset = player->actor.shape.yOffset;
         gSaveContext.playerData.currentMask = player->currentMask;
@@ -940,14 +952,13 @@ const char* heartTextureNames[16] = {
 void DisplayLifeMeter(AnchorClient& client) {
     int currentHealth = client.playerData.playerHealth;
     int maxHealth = client.playerData.playerHealthCapacity;
+    int currentMagic = client.playerData.playerMagic;
+    int maxMagic = client.playerData.playerMagicCapacity;
 
     int fullHearts = currentHealth / 16;
     int partialHealth = currentHealth % 16;
 
     const ImVec4 normalHeartsColor = ImVec4(1, 0.275f, 0.118f, 1);
-
-    // const ImVec4 doubleDefenseHeartsColor = ImVec4(1, 1, 1, 1);
-    // ImVec4 heartsColor = gSaveContext.isDoubleDefenseAcquired ? doubleDefenseHeartsColor : normalHeartsColor;
 
     int numMaxHearts = maxHealth / 16;
 
@@ -966,9 +977,18 @@ void DisplayLifeMeter(AnchorClient& client) {
             "Heart_Empty", "textures/parameter_static/gHeartEmptyTex", normalHeartsColor);
         heartTexturesLoaded = true;
     }
+
     if (CVarGetInteger("gAnchorPlayerHealth", 0) == 1 || CVarGetInteger("gAnchorPlayerHealth", 0) == 3) {
         std::string healthInfo = "Life: " + std::to_string(currentHealth) + " / " + std::to_string(maxHealth);
         ImGui::Text(healthInfo.c_str());
+        if (client.playerData.isPlayerMagicAcquired || client.playerData.isDoubleMagicAcquired) {
+            std::string magichInfo = " | Magic: " + std::to_string(currentMagic) + " / " + std::to_string(maxMagic);
+            ImGui::SameLine();
+            ImGui::Text(magichInfo.c_str());  
+        }
+        if (CVarGetInteger("gAnchorPlayerHealth", 0) == 1) {
+            ImGui::Separator();
+        }
     }
 
     if (CVarGetInteger("gAnchorPlayerHealth", 0) == 2 || CVarGetInteger("gAnchorPlayerHealth", 0) == 3) {
@@ -989,28 +1009,46 @@ void DisplayLifeMeter(AnchorClient& client) {
                 }
 
                 if (heartIndex < fullHearts) {
-                    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Heart_Full"),
-                                 imageSize);
+                    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Heart_Full"), imageSize);
                 } else if (heartIndex == fullHearts) {
-                    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(
-                                     heartTextureNames[partialHealth]),
-                                 imageSize);
+                    if (currentHealth == 0) {
+                        ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Heart_Empty"), imageSize);
+                    } else {
+                        ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(heartTextureNames[partialHealth]), imageSize);
+                    }
                 } else {
-                    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Heart_Empty"),
-                                 imageSize);
+                    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Heart_Empty"), imageSize);
                 }
             }
 
             if (line < numLines - 1) {
                 ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 2));
             }
+        }
 
-            if (line < numLines - 1) {
-                ImGui::PopStyleVar();
+        if (client.playerData.isPlayerMagicAcquired) {
+            ImGui::Spacing();
+            ImVec4 magicBarColor = ImVec4(0, 1, 0, 1);
+            float magicBarItemWidth = 168.0f;
+            float magicBarItemHeight = 6.0f;
+            const char* label = "";
+
+            if (!client.playerData.isDoubleMagicAcquired) {
+                magicBarItemWidth /= 2;
             }
+
+            float currentMagicRatio = static_cast<float>(currentMagic) / maxMagic;
+
+            ImGui::BeginGroup();
+
+            ImGui::PushStyleColor(ImGuiCol_PlotHistogram, magicBarColor);
+            ImGui::ProgressBar(currentMagicRatio, ImVec2(magicBarItemWidth, magicBarItemHeight), label);
+            ImGui::PopStyleColor();
+            ImGui::EndGroup();
         }
 
         ImGui::PopStyleVar();
+        ImGui::Separator();
     }
 }
 

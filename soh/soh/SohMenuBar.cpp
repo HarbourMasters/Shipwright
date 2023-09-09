@@ -1421,7 +1421,7 @@ bool isStringEmpty(std::string str) {
 }
 
 #ifdef ENABLE_REMOTE_CONTROL
-static const char* anchorPlayerHealth[4] = { "Disabled", "Numeric", "Hearts", "Numeric + Hearts" };
+static const char* anchorPlayerHealth[4] = { "Disabled", "Numeric", "Hearts and Magic", "Numeric + Hearts and Magic" };
 
 void DrawRemoteControlMenu() {
     if (ImGui::BeginMenu("Network")) {

@@ -182,6 +182,10 @@ typedef struct {
     u8 damageValue;
     s16 playerHealth;
     s16 playerHealthCapacity;
+    s16 playerMagic;
+    s16 playerMagicCapacity;
+    s16 isPlayerMagicAcquired;
+    s16 isDoubleMagicAcquired;
     s32 strengthValue;
     f32 yOffset;
     u8 currentMask;
