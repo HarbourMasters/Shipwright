@@ -122,8 +122,8 @@ class SpoilerCollectionCheck {
         return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_COW, 0x00, 0x00);
     }
 
-    static auto Fishing(uint8_t bit) {
-        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MINIGAME, 0x00, bit);
+    static auto Fishing() {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MINIGAME, 0x00, 0x00);
     }
 
     static auto Scrub() {
