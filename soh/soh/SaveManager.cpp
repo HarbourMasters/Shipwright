@@ -434,10 +434,10 @@ void SaveManager::InitMeta(int fileNum) {
 
     fileMetaInfo[fileNum].randoSave = IS_RANDO(gSaveContext);
     // If the file is marked as a Master Quest file or if we're randomized and have at least one master quest dungeon, we need the mq otr.
-    fileMetaInfo[fileNum].requiresMasterQuest = gSaveContext.isMasterQuest > 0 || (IS_RANDO(gSaveContext) && gSaveContext.mqDungeonCount > 0);
+    fileMetaInfo[fileNum].requiresMasterQuest = IS_MASTER_QUEST(gSaveContext) || (IS_RANDO(gSaveContext) && gSaveContext.mqDungeonCount > 0);
     // If the file is not marked as Master Quest, it could still theoretically be a rando save with all 12 MQ dungeons, in which case
     // we don't actually require a vanilla OTR.
-    fileMetaInfo[fileNum].requiresOriginal = !gSaveContext.isMasterQuest && (!IS_RANDO(gSaveContext) || gSaveContext.mqDungeonCount < 12);
+    fileMetaInfo[fileNum].requiresOriginal = !IS_MASTER_QUEST(gSaveContext) && (!IS_RANDO(gSaveContext) || gSaveContext.mqDungeonCount < 12);
 
     fileMetaInfo[fileNum].buildVersionMajor = gSaveContext.sohStats.buildVersionMajor;
     fileMetaInfo[fileNum].buildVersionMinor = gSaveContext.sohStats.buildVersionMinor;
@@ -1248,7 +1248,7 @@ void SaveManager::LoadBaseVersion2() {
     SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
-    SaveManager::Instance->LoadData("isMasterQuest", gSaveContext.isMasterQuest);
+    SaveManager::Instance->LoadData("isMasterQuest", IS_MASTER_QUEST(gSaveContext));
 
     // Workaround for breaking save compatibility from 5.0.2 -> 5.1.0 in commit d7c35221421bf712b5ead56a360f81f624aca4bc
     if (!gSaveContext.isMagicAcquired) {
@@ -1478,7 +1478,7 @@ void SaveManager::LoadBaseVersion3() {
     SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
-    SaveManager::Instance->LoadData("isMasterQuest", gSaveContext.isMasterQuest);
+    SaveManager::Instance->LoadData("isMasterQuest", IS_MASTER_QUEST(gSaveContext));
     SaveManager::Instance->LoadStruct("backupFW", []() {
         SaveManager::Instance->LoadStruct("pos", []() {
             SaveManager::Instance->LoadData("x", gSaveContext.backupFW.pos.x);
@@ -1651,7 +1651,7 @@ void SaveManager::LoadBaseVersion4() {
     SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
-    SaveManager::Instance->LoadData("isMasterQuest", gSaveContext.isMasterQuest);
+    SaveManager::Instance->LoadData("isMasterQuest", IS_MASTER_QUEST(gSaveContext));
     SaveManager::Instance->LoadStruct("backupFW", []() {
         SaveManager::Instance->LoadStruct("pos", []() {
             SaveManager::Instance->LoadData("x", gSaveContext.backupFW.pos.x);
@@ -1820,7 +1820,7 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
     SaveManager::Instance->SaveArray("randomizerInf", ARRAY_COUNT(saveContext->randomizerInf), [&](size_t i) {
         SaveManager::Instance->SaveData("", saveContext->randomizerInf[i]);
     });
-    SaveManager::Instance->SaveData("isMasterQuest", saveContext->isMasterQuest);
+    SaveManager::Instance->SaveData("isMasterQuest", IS_MASTER_QUEST(*saveContext));
     SaveManager::Instance->SaveStruct("backupFW", [&]() {
         SaveManager::Instance->SaveStruct("pos", [&]() {
             SaveManager::Instance->SaveData("x", saveContext->backupFW.pos.x);

@@ -1304,7 +1304,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
             return;
         } else {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-            osSyncPrintf("Selected Dungeon Quest: %d\n", gSaveContext.isMasterQuest);
+            osSyncPrintf("Selected Dungeon Quest: %d\n", IS_MASTER_QUEST(gSaveContext));
             this->prevConfigMode = this->configMode;
             this->configMode = CM_ROTATE_TO_NAME_ENTRY;
             this->logoAlpha = 0;

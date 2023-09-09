@@ -322,6 +322,7 @@ typedef struct {
     // #endregion
 } SaveContext; // size = 0x1428
 
+#define IS_MASTER_QUEST(saveContext) (saveContext).isMasterQuest
 #define IS_RANDO(saveContext) (saveContext).n64ddFlag
 
 typedef enum {

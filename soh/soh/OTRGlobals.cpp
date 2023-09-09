@@ -1110,7 +1110,7 @@ uint32_t IsSceneMasterQuest(s16 sceneNum) {
         if (OTRGlobals::Instance->HasMasterQuest()) {
             if (!OTRGlobals::Instance->HasOriginal()) {
                 value = 1;
-            } else if (gSaveContext.isMasterQuest) {
+            } else if (IS_MASTER_QUEST(gSaveContext)) {
                 value = 1;
             } else {
                 value = 0;
