@@ -4923,7 +4923,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                             if (D_80B7A670 == 0.0f) {
                                 this->actor.textId = 0x408C;
                                 this->unk_15C = 20;
-                            } else if (D_80B7E07C == 0 && !gSaveContext.n64ddFlag) {
+                            } else if (D_80B7E07C == 0 && !IS_RANDO(gSaveContext)) {
                                 D_80B7A678 = D_80B7A670;
                                 if ((s16)D_80B7E078 < (s16)D_80B7A670) {
                                     if (D_80B7E07E == 2) {
@@ -4936,7 +4936,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                                     this->actor.textId = 0x408B;
                                     this->unk_15C = 20;
                                 }
-                            } else if (!gSaveContext.n64ddFlag) {
+                            } else if (!IS_RANDO(gSaveContext)) {
                                 this->actor.textId = 0x409B;
                                 this->unk_15C = 11;
                             }
@@ -5050,7 +5050,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                             if (D_80B7E078 >= Fishing_GetMinimumRequiredScore()) {
                                 HIGH_SCORE(HS_FISHING) |= 0x400;
                                 sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
-                                if (!gSaveContext.n64ddFlag) {
+                                if (!IS_RANDO(gSaveContext)) {
                                     getItemId = GI_HEART_PIECE;
                                 } else {
                                     getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_CHILD_FISHING, GI_HEART_PIECE);
@@ -5063,7 +5063,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                             if (D_80B7E078 >= Fishing_GetMinimumRequiredScore()) {
                                 HIGH_SCORE(HS_FISHING) |= 0x800;
                                 sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
-                                if (!gSaveContext.n64ddFlag) {
+                                if (!IS_RANDO(gSaveContext)) {
                                     getItemId = GI_SCALE_GOLD;
                                 } else {
                                     getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD);
@@ -5078,7 +5078,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                 }
 
                 this->actor.parent = NULL;
-                if (!gSaveContext.n64ddFlag || getItemEntry.getItemId == GI_NONE) {
+                if (!IS_RANDO(gSaveContext) || getItemEntry.getItemId == GI_NONE) {
                     func_8002F434(&this->actor, play, getItemId, 2000.0f, 1000.0f);
                 } else {
                     GiveItemEntryFromActor(&this->actor, play, getItemEntry, 2000.0f, 1000.0f);
@@ -5143,7 +5143,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
             if (Actor_HasParent(&this->actor, play)) {
                 this->unk_15C = 24;
             } else {
-                if (!gSaveContext.n64ddFlag) {
+                if (!IS_RANDO(gSaveContext)) {
                     func_8002F434(&this->actor, play, GI_SCALE_GOLD, 2000.0f, 1000.0f);
                 } else {
                     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD);
@@ -5155,7 +5155,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
         case 24:
             D_80B7A674 = false;
             if (((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) ||
-                (gSaveContext.n64ddFlag && GET_PLAYER(play)->getItemId == GI_ICE_TRAP)) {
+                (IS_RANDO(gSaveContext) && GET_PLAYER(play)->getItemId == GI_ICE_TRAP)) {
                 if (D_80B7E07C == 0) {
                     this->unk_15C = 0;
                 } else {

@@ -2091,7 +2091,7 @@ void func_8009EE44(PlayState* play) {
     gDPSetEnvColor(POLY_OPA_DISP++, 128, 128, 128, 128);
 
 	bool playerHasCojiro = INV_CONTENT(ITEM_COJIRO) == ITEM_COJIRO;
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
+    if (IS_RANDO(gSaveContext) && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
         playerHasCojiro = PLAYER_HAS_SHUFFLED_ADULT_TRADE_ITEM(ITEM_COJIRO);
     }
     if ((play->roomCtx.unk_74[0] == 0) && playerHasCojiro) {

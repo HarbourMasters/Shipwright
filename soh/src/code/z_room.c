@@ -578,7 +578,7 @@ s32 func_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomNum) {
     size_t size;
 
     // In ER, override roomNum to load based on scene and spawn
-    if (gSaveContext.n64ddFlag && gSaveContext.respawnFlag <= 0 &&
+    if (IS_RANDO(gSaveContext) && gSaveContext.respawnFlag <= 0 &&
         Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         roomNum = Entrance_OverrideSpawnSceneRoom(play->sceneNum, play->curSpawn, roomNum);
     }

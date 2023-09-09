@@ -1574,7 +1574,7 @@ void EnGeldB_Draw(Actor* thisx, PlayState* play) {
                     play->nextEntranceIndex = 0x3B4;
                 }
 
-                if (gSaveContext.n64ddFlag) {
+                if (IS_RANDO(gSaveContext)) {
                     Entrance_OverrideGeurdoGuardCapture();
                 }
 

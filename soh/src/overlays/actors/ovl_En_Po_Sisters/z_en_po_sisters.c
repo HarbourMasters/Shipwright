@@ -183,7 +183,7 @@ void EnPoSisters_Init(Actor* thisx, PlayState* play) {
     this->epoch++;
 
     // Skip Poe Intro Cutscene
-    if (gSaveContext.n64ddFlag && thisx->params == 4124 && !Randomizer_GetSettingValue(RSK_ENABLE_GLITCH_CUTSCENES)) {
+    if (IS_RANDO(gSaveContext) && thisx->params == 4124 && !Randomizer_GetSettingValue(RSK_ENABLE_GLITCH_CUTSCENES)) {
         Flags_SetSwitch(play, 0x1B);
         Actor_Kill(thisx);
     }
@@ -863,7 +863,7 @@ void func_80ADB338(EnPoSisters* this, PlayState* play) {
                 this->unk_19C--;
 
                 // Force Meg to respawn instantly after getting hit
-                if (gSaveContext.n64ddFlag) {
+                if (IS_RANDO(gSaveContext)) {
                     this->unk_19C = 0;
                 }
             }

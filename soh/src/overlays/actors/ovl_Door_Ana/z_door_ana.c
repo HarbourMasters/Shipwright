@@ -146,7 +146,7 @@ void DoorAna_WaitOpen(DoorAna* this, PlayState* play) {
             play->nextEntranceIndex = entrances[destinationIdx];
 
             // In ER, load the correct entrance based on the grotto link is falling into
-            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+            if (IS_RANDO(gSaveContext) && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                 Grotto_OverrideActorEntrance(&this->actor);
             }
 

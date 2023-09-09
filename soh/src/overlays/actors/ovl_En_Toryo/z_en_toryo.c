@@ -319,7 +319,7 @@ void func_80B20768(EnToryo* this, PlayState* play) {
             this->actor.parent = NULL;
             this->unk_1E4 = 5;
         } else {
-            if (gSaveContext.n64ddFlag) {
+            if (IS_RANDO(gSaveContext)) {
                 GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_GV_TRADE_SAW, GI_SWORD_BROKEN);
                 Randomizer_ConsumeAdultTradeItem(play, ITEM_SAW);
                 GiveItemEntryFromActor(&this->actor, play, itemEntry, 100.0f, 10.0f);

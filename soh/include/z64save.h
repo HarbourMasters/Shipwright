@@ -322,6 +322,8 @@ typedef struct {
     // #endregion
 } SaveContext; // size = 0x1428
 
+#define IS_RANDO(saveContext) (saveContext).n64ddFlag
+
 typedef enum {
     /* 0x00 */ BTN_ENABLED,
     /* 0xFF */ BTN_DISABLED = 0xFF

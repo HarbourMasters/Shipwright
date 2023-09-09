@@ -4275,7 +4275,7 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
                 play->nextEntranceIndex = play->setupExitList[sp3C - 1];
 
                 // Main override for entrance rando and entrance skips
-                if (gSaveContext.n64ddFlag) {
+                if (IS_RANDO(gSaveContext)) {
                     play->nextEntranceIndex = Entrance_OverrideNextIndex(play->nextEntranceIndex);
                 }
 
@@ -4286,7 +4286,7 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
                     gSaveContext.nextTransitionType = 3;
                 } else if (play->nextEntranceIndex >= 0x7FF9) {
                     // handle dynamic exits
-                    if (gSaveContext.n64ddFlag) {
+                    if (IS_RANDO(gSaveContext)) {
                         play->nextEntranceIndex = Entrance_OverrideDynamicExit(D_80854514[play->nextEntranceIndex - 0x7FF9] + play->curSpawn);
                     } else {
                         play->nextEntranceIndex =
@@ -6358,7 +6358,7 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
 
                 iREG(67) = false;
 
-                if (gSaveContext.n64ddFlag && giEntry.getItemId == RG_ICE_TRAP && giEntry.getItemFrom == ITEM_FROM_FREESTANDING) {
+                if (IS_RANDO(gSaveContext) && giEntry.getItemId == RG_ICE_TRAP && giEntry.getItemFrom == ITEM_FROM_FREESTANDING) {
                     this->actor.freezeTimer = 30;
                     Player_SetPendingFlag(this, play);
                     Message_StartTextbox(play, 0xF8, NULL);
@@ -6370,7 +6370,7 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
                 // Show the cutscene for picking up an item. In vanilla, this happens in bombchu bowling alley (because getting bombchus need to show the cutscene)
                 // and whenever the player doesn't have the item yet. In rando, we're overruling this because we need to keep showing the cutscene
                 // because those items can be randomized and thus it's important to keep showing the cutscene.
-                uint8_t showItemCutscene = play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY || Item_CheckObtainability(giEntry.itemId) == ITEM_NONE || gSaveContext.n64ddFlag;
+                uint8_t showItemCutscene = play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY || Item_CheckObtainability(giEntry.itemId) == ITEM_NONE || IS_RANDO(gSaveContext);
 
                 // Only skip cutscenes for drops when they're items/consumables from bushes/rocks/enemies.
                 uint8_t isDropToSkip = (interactedActor->id == ACTOR_EN_ITEM00 && interactedActor->params != 6 && interactedActor->params != 17) || 
@@ -6384,7 +6384,7 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
                 // Same as above but for rando. Rando is different because we want to enable cutscenes for items that the player already has because
                 // those items could be a randomized item coming from scrubs, freestanding PoH's and keys. So we need to once again overrule
                 // this specifically for items coming from bushes/rocks/enemies when the player has already picked that item up.
-                uint8_t skipItemCutsceneRando = gSaveContext.n64ddFlag && Item_CheckObtainability(giEntry.itemId) != ITEM_NONE && isDropToSkip;
+                uint8_t skipItemCutsceneRando = IS_RANDO(gSaveContext) && Item_CheckObtainability(giEntry.itemId) != ITEM_NONE && isDropToSkip;
 
                 // Show cutscene when picking up a item.
                 if (showItemCutscene && !skipItemCutscene && !skipItemCutsceneRando) {
@@ -9658,7 +9658,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     s32 sp4C;
 
     // In ER, once Link has spawned we know the scene has loaded, so we can sanitize the last known entrance type
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+    if (IS_RANDO(gSaveContext) && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         Grotto_SanitizeEntranceType();
     }
 
@@ -12714,7 +12714,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
 
         // Use this if we do have a getItemEntry
         if (giEntry.modIndex == MOD_NONE) {
-            if (gSaveContext.n64ddFlag) {
+            if (IS_RANDO(gSaveContext)) {
                 Audio_PlayFanfare_Rando(giEntry);
             } else if (((giEntry.itemId >= ITEM_RUPEE_GREEN) && (giEntry.itemId <= ITEM_RUPEE_RED)) ||
                         ((giEntry.itemId >= ITEM_RUPEE_PURPLE) && (giEntry.itemId <= ITEM_RUPEE_GOLD)) ||
@@ -12732,7 +12732,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
                 Audio_PlayFanfare(temp1);
             }
         } else if (giEntry.modIndex == MOD_RANDOMIZER) {
-            if (gSaveContext.n64ddFlag) {
+            if (IS_RANDO(gSaveContext)) {
                 Audio_PlayFanfare_Rando(giEntry);
             } else if (giEntry.itemId == RG_DOUBLE_DEFENSE || giEntry.itemId == RG_MAGIC_SINGLE ||
                         giEntry.itemId == RG_MAGIC_DOUBLE) {
@@ -12771,7 +12771,7 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
         play->msgCtx.msgMode = MSGMODE_TEXT_DONE;
     } else {
         if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
-            if (this->getItemId == GI_GAUNTLETS_SILVER && !gSaveContext.n64ddFlag) {
+            if (this->getItemId == GI_GAUNTLETS_SILVER && !IS_RANDO(gSaveContext)) {
                 play->nextEntranceIndex = 0x0123;
                 play->sceneLoadFlag = 0x14;
                 gSaveContext.nextCutsceneIndex = 0xFFF1;
@@ -12949,16 +12949,16 @@ void func_8084E6D4(Player* this, PlayState* play) {
             }
         } else {
             func_80832DBC(this);
-            if ((this->getItemId == GI_ICE_TRAP && !gSaveContext.n64ddFlag) ||
-                (gSaveContext.n64ddFlag && (this->getItemId == RG_ICE_TRAP || this->getItemEntry.getItemId == RG_ICE_TRAP))) {
+            if ((this->getItemId == GI_ICE_TRAP && !IS_RANDO(gSaveContext)) ||
+                (IS_RANDO(gSaveContext) && (this->getItemId == RG_ICE_TRAP || this->getItemEntry.getItemId == RG_ICE_TRAP))) {
                 this->stateFlags1 &= ~(PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_ITEM_OVER_HEAD);
 
-                if ((this->getItemId != GI_ICE_TRAP && !gSaveContext.n64ddFlag) ||
-                    (gSaveContext.n64ddFlag && (this->getItemId != RG_ICE_TRAP || this->getItemEntry.getItemId != RG_ICE_TRAP))) {
+                if ((this->getItemId != GI_ICE_TRAP && !IS_RANDO(gSaveContext)) ||
+                    (IS_RANDO(gSaveContext) && (this->getItemId != RG_ICE_TRAP || this->getItemEntry.getItemId != RG_ICE_TRAP))) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_CLEAR_TAG, this->actor.world.pos.x,
                                 this->actor.world.pos.y + 100.0f, this->actor.world.pos.z, 0, 0, 0, 0, true);
                     func_8083C0E8(this, play);
-                } else if (gSaveContext.n64ddFlag) {
+                } else if (IS_RANDO(gSaveContext)) {
                     gSaveContext.pendingIceTrapCount++;
                     Player_SetPendingFlag(this, play);
                     func_8083C0E8(this, play);
@@ -13498,7 +13498,7 @@ void func_8084F88C(Player* this, PlayState* play) {
             } else if (this->unk_84F < 0) {
                 Play_TriggerRespawn(play);
                 // In ER, handle DMT and other special void outs to respawn from last entrance from grotto 
-                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+                if (IS_RANDO(gSaveContext) && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                     Grotto_ForceRegularVoidOut();
                 }
             } else {

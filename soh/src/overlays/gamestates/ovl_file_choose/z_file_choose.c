@@ -3051,7 +3051,7 @@ void FileChoose_LoadGame(GameState* thisx) {
         }
     }
 
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO(gSaveContext)) {
         // Setup the modified entrance table and entrance shuffle table for rando
         Entrance_Init();
 

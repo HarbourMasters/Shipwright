@@ -959,12 +959,12 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
         case DEATH_THROES:
             switch (this->work[GND_ACTION_STATE]) {
                 case DEATH_SPASM:
-                    if (Animation_OnFrame(&this->skelAnime, this->fwork[GND_END_FRAME]) && !gSaveContext.n64ddFlag && !gSaveContext.isBossRush) {
+                    if (Animation_OnFrame(&this->skelAnime, this->fwork[GND_END_FRAME]) && !IS_RANDO(gSaveContext) && !gSaveContext.isBossRush) {
                         this->fwork[GND_END_FRAME] = Animation_GetLastFrame(&gPhantomGanonAirDamageAnim);
                         Animation_Change(&this->skelAnime, &gPhantomGanonAirDamageAnim, 0.5f, 0.0f,
                                             this->fwork[GND_END_FRAME], ANIMMODE_ONCE_INTERP, 0.0f);
                         this->work[GND_ACTION_STATE] = DEATH_LIMP;
-                    } else if (gSaveContext.n64ddFlag || gSaveContext.isBossRush) {
+                    } else if (IS_RANDO(gSaveContext) || gSaveContext.isBossRush) {
                         // Skip to death scream animation and move ganondrof to middle
                         this->deathState = DEATH_SCREAM;
                         this->timers[0] = 50;
@@ -991,7 +991,7 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
                     bodyDecayLevel = 1;
                     break;
             }
-            if (gSaveContext.n64ddFlag || gSaveContext.isBossRush) {
+            if (IS_RANDO(gSaveContext) || gSaveContext.isBossRush) {
                 break;
             }
             Math_ApproachS(&this->actor.shape.rot.y, this->work[GND_VARIANCE_TIMER] * -100, 5, 0xBB8);

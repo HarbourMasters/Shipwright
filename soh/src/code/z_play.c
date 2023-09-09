@@ -179,7 +179,7 @@ void Play_Destroy(GameState* thisx) {
     }
 
     // In ER, remove link from epona when entering somewhere that doesn't support epona
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
+    if (IS_RANDO(gSaveContext) && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
         Entrance_HandleEponaState();
     }
 
@@ -469,7 +469,7 @@ void Play_Init(GameState* thisx) {
     // eventChkInf[5] & 0x200 = Got Impa's reward
     // entranceIndex 0x7A, Castle Courtyard - Day from crawlspace
     // entranceIndex 0x400, Zelda's Courtyard
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_CHILD_STEALTH) &&
+    if (IS_RANDO(gSaveContext) && Randomizer_GetSettingValue(RSK_SKIP_CHILD_STEALTH) &&
         !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY)) {
         if (gSaveContext.entranceIndex == 0x7A) {
             gSaveContext.entranceIndex = 0x400;
@@ -1419,7 +1419,7 @@ skip:
     Environment_Update(play, &play->envCtx, &play->lightCtx, &play->pauseCtx, &play->msgCtx,
                        &play->gameOverCtx, play->state.gfxCtx);
 
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO(gSaveContext)) {
         GivePlayerRandoRewardSariaGift(play, RC_LW_GIFT_FROM_SARIA);
         GivePlayerRandoRewardSongOfTime(play, RC_SONG_FROM_OCARINA_OF_TIME);
         GivePlayerRandoRewardZeldaLightArrowsGift(play, RC_TOT_LIGHT_ARROWS_CUTSCENE);
@@ -1918,7 +1918,7 @@ void* Play_LoadFile(PlayState* play, RomFile* file) {
 
 void Play_InitEnvironment(PlayState* play, s16 skyboxId) {
     // For entrance rando, ensure the correct weather state and sky mode is applied
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+    if (IS_RANDO(gSaveContext) && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         Entrance_OverrideWeatherState();
     }
     Skybox_Init(&play->state, &play->skyboxCtx, skyboxId);
@@ -1955,7 +1955,7 @@ void Play_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
 
     OTRPlay_SpawnScene(play, sceneNum, spawn);
 
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+    if (IS_RANDO(gSaveContext) && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         Entrance_OverrideSpawnScene(sceneNum, spawn);
     }
 }

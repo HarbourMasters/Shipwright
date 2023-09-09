@@ -1038,7 +1038,7 @@ void EnSkj_SariaSongTalk(EnSkj* this, PlayState* play) {
             EnSkj_SetupWaitInRange(this);
         } else {
             func_80AFFE24(this);
-            if (!gSaveContext.n64ddFlag) {
+            if (!IS_RANDO(gSaveContext)) {
                 func_8002F434(&this->actor, play, GI_HEART_PIECE, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
             } else {
                 GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_SKULL_KID, GI_HEART_PIECE);
@@ -1057,7 +1057,7 @@ void func_80AFFE44(EnSkj* this, PlayState* play) {
         this->actor.parent = NULL;
         EnSkj_SetupPostSariasSong(this);
     } else {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO(gSaveContext)) {
             func_8002F434(&this->actor, play, GI_HEART_PIECE, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_SKULL_KID, GI_HEART_PIECE);
@@ -1539,7 +1539,7 @@ void EnSkj_WonOcarinaMiniGame(EnSkj* this, PlayState* play) {
 
 void EnSkj_WaitToGiveReward(EnSkj* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
-        if (gSaveContext.n64ddFlag && gSaveContext.ocarinaGameRoundNum != 3) {
+        if (IS_RANDO(gSaveContext) && gSaveContext.ocarinaGameRoundNum != 3) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_OCARINA_MEMORY_GAME, GI_HEART_PIECE);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 26.0f, 26.0f);
         } else {
@@ -1555,7 +1555,7 @@ void EnSkj_GiveOcarinaGameReward(EnSkj* this, PlayState* play) {
         this->actor.parent = NULL;
         this->actionFunc = EnSkj_FinishOcarinaGameRound;
     } else {
-        if (gSaveContext.n64ddFlag && gSaveContext.ocarinaGameRoundNum != 3) {
+        if (IS_RANDO(gSaveContext) && gSaveContext.ocarinaGameRoundNum != 3) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_OCARINA_MEMORY_GAME, GI_HEART_PIECE);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 26.0f, 26.0f);
         } else {
@@ -1572,11 +1572,11 @@ void EnSkj_FinishOcarinaGameRound(EnSkj* this, PlayState* play) {
             gSaveContext.ocarinaGameRoundNum++;
         }
 
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO(gSaveContext)) {
             gSaveContext.ocarinaGameRoundNum = 3;
         }
 
-        if (ocarinaGameRoundNum == 2 || gSaveContext.n64ddFlag) {
+        if (ocarinaGameRoundNum == 2 || IS_RANDO(gSaveContext)) {
             Flags_SetItemGetInf(ITEMGETINF_17);
             this->actionFunc = EnSkj_CleanupOcarinaGame;
         } else {

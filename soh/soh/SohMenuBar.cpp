@@ -526,7 +526,7 @@ void DrawEnhancementsMenu() {
                 UIWidgets::PaddedEnhancementCheckbox("Better Owl", "gBetterOwl", true, false);
                 UIWidgets::Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                 UIWidgets::PaddedEnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback", true, false);
-                bool forceSkipScarecrow = gSaveContext.n64ddFlag &&
+                bool forceSkipScarecrow = IS_RANDO(gSaveContext) &&
                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_SCARECROWS_SONG);
                 static const char* forceSkipScarecrowText =
                     "This setting is forcefully enabled because a savefile\nwith \"Skip Scarecrow Song\" is loaded";
@@ -644,7 +644,7 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Respawn with full health instead of 3 Hearts");
                 UIWidgets::PaddedEnhancementCheckbox("No Random Drops", "gNoRandomDrops", true, false);
                 UIWidgets::Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
-                bool forceEnableBombchuDrops = gSaveContext.n64ddFlag &&
+                bool forceEnableBombchuDrops = IS_RANDO(gSaveContext) &&
                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_ENABLE_BOMBCHU_DROPS) == 1;
                 static const char* forceEnableBombchuDropsText =
                     "This setting is forcefully enabled because a savefile\nwith \"Enable Bombchu Drops\" is loaded.";
@@ -846,7 +846,7 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Removes the input requirement on textboxes after defeating Ganon, allowing Credits sequence to continue to progress");
 
             // Blue Fire Arrows
-            bool forceEnableBlueFireArrows = gSaveContext.n64ddFlag &&
+            bool forceEnableBlueFireArrows = IS_RANDO(gSaveContext) &&
                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BLUE_FIRE_ARROWS);
             static const char* forceEnableBlueFireArrowsText =
                 "This setting is forcefully enabled because a savefile\nwith \"Blue Fire Arrows\" is loaded.";
@@ -855,7 +855,7 @@ void DrawEnhancementsMenu() {
             UIWidgets::Tooltip("Allows Ice Arrows to melt red ice.\nMay require a room reload if toggled during gameplay.");
 
             // Sunlight Arrows
-            bool forceEnableSunLightArrows = gSaveContext.n64ddFlag &&
+            bool forceEnableSunLightArrows = IS_RANDO(gSaveContext) &&
                 OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SUNLIGHT_ARROWS);
             static const char* forceEnableSunLightArrowsText =
                 "This setting is forcefully enabled because a savefile\nwith \"Sunlight Arrows\" is loaded.";
@@ -1495,7 +1495,7 @@ void DrawRandomizerMenu() {
                 (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_VANILLA &&
                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_OWN_DUNGEON &&
                     OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_STARTWITH) || 
-                !gSaveContext.n64ddFlag) {
+                !IS_RANDO(gSaveContext)) {
                 disableKeyColors = false;
             }
 

@@ -955,7 +955,7 @@ void EnFr_SetReward(EnFr* this, PlayState* play) {
     if ((songIndex >= FROG_ZL) && (songIndex <= FROG_SOT)) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
-            if (!gSaveContext.n64ddFlag) {
+            if (!IS_RANDO(gSaveContext)) {
                 this->reward = GI_RUPEE_PURPLE;
             } else {
                 this->getItemEntry = Randomizer_GetItemFromKnownCheck(EnFr_RandomizerCheckFromSongIndex(songIndex), GI_RUPEE_PURPLE);
@@ -967,7 +967,7 @@ void EnFr_SetReward(EnFr* this, PlayState* play) {
     } else if (songIndex == FROG_STORMS) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
-            if (!gSaveContext.n64ddFlag) {
+            if (!IS_RANDO(gSaveContext)) {
                 this->reward = GI_HEART_PIECE;
             } else {
                 this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZR_FROGS_IN_THE_RAIN, GI_HEART_PIECE);
@@ -979,7 +979,7 @@ void EnFr_SetReward(EnFr* this, PlayState* play) {
     } else if (songIndex == FROG_CHOIR_SONG) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
-            if (!gSaveContext.n64ddFlag) {
+            if (!IS_RANDO(gSaveContext)) {
                 this->reward = GI_HEART_PIECE;
             } else {
                 this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZR_FROGS_OCARINA_GAME, GI_HEART_PIECE);
@@ -1034,7 +1034,7 @@ void EnFr_Deactivate(EnFr* this, PlayState* play) {
         this->actionFunc = EnFr_Idle;
     } else {
         this->actionFunc = EnFr_GiveReward;
-        if (!gSaveContext.n64ddFlag || this->getItemEntry.getItemId == GI_NONE) {
+        if (!IS_RANDO(gSaveContext) || this->getItemEntry.getItemId == GI_NONE) {
             func_8002F434(&this->actor, play, this->reward, 30.0f, 100.0f);
         } else {
             GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 30.0f, 100.0f);
@@ -1047,7 +1047,7 @@ void EnFr_GiveReward(EnFr* this, PlayState* play) {
         this->actor.parent = NULL;
         this->actionFunc = EnFr_SetIdle;
     } else {
-        if (!gSaveContext.n64ddFlag || this->getItemEntry.getItemId == GI_NONE) {
+        if (!IS_RANDO(gSaveContext) || this->getItemEntry.getItemId == GI_NONE) {
             func_8002F434(&this->actor, play, this->reward, 30.0f, 100.0f);
         } else {
             GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 30.0f, 100.0f);
@@ -1056,7 +1056,7 @@ void EnFr_GiveReward(EnFr* this, PlayState* play) {
 }
 
 void EnFr_SetIdle(EnFr* this, PlayState* play) {
-    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play) || (gSaveContext.n64ddFlag && this->reward == RG_ICE_TRAP)) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play) || (IS_RANDO(gSaveContext) && this->reward == RG_ICE_TRAP)) {
         this->actionFunc = EnFr_Idle;
     }
 }

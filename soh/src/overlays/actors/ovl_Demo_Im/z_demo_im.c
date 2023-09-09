@@ -868,7 +868,7 @@ void func_80986B2C(PlayState* play) {
         Player* player = GET_PLAYER(play);
 
         // In entrance rando have impa bring link back to the front of castle grounds
-        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
+        if (IS_RANDO(gSaveContext) && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
             play->nextEntranceIndex = 0x0138;
         } else {
             play->nextEntranceIndex = 0xCD;
@@ -928,7 +928,7 @@ void GivePlayerRandoRewardImpa(Actor* impa, PlayState* play, RandomizerCheck che
 
 void func_80986C30(DemoIm* this, PlayState* play) {
     if (func_80986A5C(this, play)) {
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO(gSaveContext)) {
             GivePlayerRandoRewardImpa(this, play, RC_SONG_FROM_IMPA);
         } else {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gZeldasCourtyardLullabyCs);
@@ -960,7 +960,7 @@ void func_80986D40(DemoIm* this, PlayState* play) {
     if (gSaveContext.sceneSetupIndex == 6) {
         this->action = 19;
         this->drawConfig = 1;
-    } else if ((Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) && !gSaveContext.n64ddFlag) {
+    } else if ((Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) && !IS_RANDO(gSaveContext)) {
         Actor_Kill(&this->actor);
     } else if (!Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY)) {
         this->action = 23;

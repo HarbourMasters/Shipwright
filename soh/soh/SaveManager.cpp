@@ -270,7 +270,7 @@ void SaveManager::LoadRandomizerVersion2() {
 
 void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool fullSave) {
 
-    if(!saveContext->n64ddFlag) return;
+    if(!IS_RANDO(*saveContext)) return;
 
     SaveManager::Instance->SaveArray("itemLocations", RC_MAX, [&](size_t i) {
         SaveManager::Instance->SaveStruct("", [&]() {
@@ -432,12 +432,12 @@ void SaveManager::InitMeta(int fileNum) {
         fileMetaInfo[fileNum].seedHash[i] = gSaveContext.seedIcons[i];
     }
 
-    fileMetaInfo[fileNum].randoSave = gSaveContext.n64ddFlag;
+    fileMetaInfo[fileNum].randoSave = IS_RANDO(gSaveContext);
     // If the file is marked as a Master Quest file or if we're randomized and have at least one master quest dungeon, we need the mq otr.
-    fileMetaInfo[fileNum].requiresMasterQuest = gSaveContext.isMasterQuest > 0 || (gSaveContext.n64ddFlag && gSaveContext.mqDungeonCount > 0);
+    fileMetaInfo[fileNum].requiresMasterQuest = gSaveContext.isMasterQuest > 0 || (IS_RANDO(gSaveContext) && gSaveContext.mqDungeonCount > 0);
     // If the file is not marked as Master Quest, it could still theoretically be a rando save with all 12 MQ dungeons, in which case
     // we don't actually require a vanilla OTR.
-    fileMetaInfo[fileNum].requiresOriginal = !gSaveContext.isMasterQuest && (!gSaveContext.n64ddFlag || gSaveContext.mqDungeonCount < 12);
+    fileMetaInfo[fileNum].requiresOriginal = !gSaveContext.isMasterQuest && (!IS_RANDO(gSaveContext) || gSaveContext.mqDungeonCount < 12);
 
     fileMetaInfo[fileNum].buildVersionMajor = gSaveContext.sohStats.buildVersionMajor;
     fileMetaInfo[fileNum].buildVersionMinor = gSaveContext.sohStats.buildVersionMinor;
@@ -720,8 +720,8 @@ void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int se
             nlohmann::json& sectionBlock = saveBlock["sections"][saveFuncInfo.name];
             sectionBlock["version"] = sectionHandlerPair.second.version;
             // If any save file is loaded for medatata, or a spoiler log is loaded (not sure which at this point), there is still data in the "randomizer" section
-            // This clears the randomizer data block if and only if the section being called is "randomizer" and n64ddFlag is false.
-            if (sectionHandlerPair.second.name == "randomizer" && !gSaveContext.n64ddFlag) {
+            // This clears the randomizer data block if and only if the section being called is "randomizer" and the current save file is not a randomizer save file.
+            if (sectionHandlerPair.second.name == "randomizer" && !IS_RANDO(gSaveContext)) {
                 sectionBlock["data"] = nlohmann::json::object();
                 continue;
             }
@@ -941,7 +941,7 @@ void SaveManager::LoadBaseVersion1() {
     SaveManager::Instance->LoadArray("playerName", ARRAY_COUNT(gSaveContext.playerName), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.playerName[i]);
     });
-    SaveManager::Instance->LoadData("n64ddFlag", gSaveContext.n64ddFlag);
+    SaveManager::Instance->LoadData("n64ddFlag", IS_RANDO(gSaveContext));
     SaveManager::Instance->LoadData("healthCapacity", gSaveContext.healthCapacity);
     SaveManager::Instance->LoadData("health", gSaveContext.health);
     SaveManager::Instance->LoadData("magicLevel", gSaveContext.magicLevel);
@@ -1082,7 +1082,7 @@ void SaveManager::LoadBaseVersion2() {
     SaveManager::Instance->LoadArray("playerName", ARRAY_COUNT(gSaveContext.playerName), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.playerName[i]);
     });
-    SaveManager::Instance->LoadData("n64ddFlag", gSaveContext.n64ddFlag);
+    SaveManager::Instance->LoadData("n64ddFlag", IS_RANDO(gSaveContext));
     SaveManager::Instance->LoadData("healthCapacity", gSaveContext.healthCapacity);
     SaveManager::Instance->LoadData("health", gSaveContext.health);
     SaveManager::Instance->LoadData("magicLevel", gSaveContext.magicLevel);
@@ -1290,7 +1290,7 @@ void SaveManager::LoadBaseVersion3() {
     SaveManager::Instance->LoadArray("playerName", ARRAY_COUNT(gSaveContext.playerName), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.playerName[i]);
     });
-    SaveManager::Instance->LoadData("n64ddFlag", gSaveContext.n64ddFlag);
+    SaveManager::Instance->LoadData("n64ddFlag", IS_RANDO(gSaveContext));
     SaveManager::Instance->LoadData("healthCapacity", gSaveContext.healthCapacity);
     SaveManager::Instance->LoadData("health", gSaveContext.health);
     SaveManager::Instance->LoadData("magicLevel", gSaveContext.magicLevel);
@@ -1508,7 +1508,7 @@ void SaveManager::LoadBaseVersion4() {
     SaveManager::Instance->LoadArray("playerName", ARRAY_COUNT(gSaveContext.playerName), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.playerName[i]);
     });
-    SaveManager::Instance->LoadData("n64ddFlag", gSaveContext.n64ddFlag);
+    SaveManager::Instance->LoadData("n64ddFlag", IS_RANDO(gSaveContext));
     SaveManager::Instance->LoadData("healthCapacity", gSaveContext.healthCapacity);
     SaveManager::Instance->LoadData("health", gSaveContext.health);
     SaveManager::Instance->LoadData("magicLevel", gSaveContext.magicLevel);
@@ -1681,7 +1681,7 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
     SaveManager::Instance->SaveArray("playerName", ARRAY_COUNT(saveContext->playerName), [&](size_t i) {
         SaveManager::Instance->SaveData("", saveContext->playerName[i]);
     });
-    SaveManager::Instance->SaveData("n64ddFlag", saveContext->n64ddFlag);
+    SaveManager::Instance->SaveData("n64ddFlag", IS_RANDO(*saveContext));
     SaveManager::Instance->SaveData("healthCapacity", saveContext->healthCapacity);
     SaveManager::Instance->SaveData("health", saveContext->health);
     SaveManager::Instance->SaveData("magicLevel", saveContext->magicLevel);
@@ -1977,7 +1977,7 @@ void SaveManager::DeleteZeldaFile(int fileNum) {
 }
 
 bool SaveManager::IsRandoFile() {
-    return gSaveContext.n64ddFlag != 0 ? true : false;
+    return IS_RANDO(gSaveContext) != 0 ? true : false;
 }
 
 // Functionality required to convert old saves into versioned saves

@@ -144,7 +144,7 @@ void EnGe3_WaitTillCardGiven(EnGe3* this, PlayState* play) {
         this->actor.parent = NULL;
         this->actionFunc = EnGe3_Wait;
     } else {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO(gSaveContext)) {
             func_8002F434(&this->actor, play, GI_GERUDO_CARD, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD);
@@ -158,7 +158,7 @@ void EnGe3_GiveCard(EnGe3* this, PlayState* play) {
         Message_CloseTextbox(play);
         this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
         this->actionFunc = EnGe3_WaitTillCardGiven;
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO(gSaveContext)) {
             func_8002F434(&this->actor, play, GI_GERUDO_CARD, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD);

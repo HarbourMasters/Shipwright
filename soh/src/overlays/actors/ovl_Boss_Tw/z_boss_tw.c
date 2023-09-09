@@ -2365,7 +2365,7 @@ void BossTw_DeathCSMsgSfx(BossTw* this, PlayState* play) {
     sp35 = 0;
 
     // Skip ahead to last part of the cutscene in rando
-    if (this->work[CS_TIMER_2] == 10 && (gSaveContext.n64ddFlag || gSaveContext.isBossRush)) {
+    if (this->work[CS_TIMER_2] == 10 && (IS_RANDO(gSaveContext) || gSaveContext.isBossRush)) {
         this->work[CS_TIMER_2] = 860;
     }
 
@@ -2550,7 +2550,7 @@ void BossTw_DeathCSMsgSfx(BossTw* this, PlayState* play) {
 
     // Add separate timings for the "beam" that opens and closes around the sisters
     // Needed because we skip ahead in cutscene timer value so it never gets called otherwise
-    if (gSaveContext.n64ddFlag || gSaveContext.isBossRush) {
+    if (IS_RANDO(gSaveContext) || gSaveContext.isBossRush) {
         if (this->work[CS_TIMER_2] < 900) {
             Math_ApproachF(&this->workf[UNK_F18], 255.0f, 0.1f, 5.0f);
         } else if (this->work[CS_TIMER_2] > 910) {
