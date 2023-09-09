@@ -322,7 +322,7 @@ typedef struct {
 } SaveContext; // size = 0x1428
 
 #define IS_MASTER_QUEST(saveContext) ((saveContext).questId == 1)
-#define IS_RANDO(saveContext) (saveContext).n64ddFlag
+#define IS_RANDO(saveContext) ((saveContext).questId == 2)
 #define IS_BOSS_RUSH(saveContext) ((saveContext).questId == 3)
 
 typedef enum {

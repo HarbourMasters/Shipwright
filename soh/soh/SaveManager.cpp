@@ -941,7 +941,11 @@ void SaveManager::LoadBaseVersion1() {
     SaveManager::Instance->LoadArray("playerName", ARRAY_COUNT(gSaveContext.playerName), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.playerName[i]);
     });
-    SaveManager::Instance->LoadData("n64ddFlag", IS_RANDO(gSaveContext));
+    int isRando = 0;
+    SaveManager::Instance->LoadData("n64ddFlag", isRando);
+    if (isRando) {
+        gSaveContext.questId = 2;
+    }
     SaveManager::Instance->LoadData("healthCapacity", gSaveContext.healthCapacity);
     SaveManager::Instance->LoadData("health", gSaveContext.health);
     SaveManager::Instance->LoadData("magicLevel", gSaveContext.magicLevel);
@@ -1082,7 +1086,11 @@ void SaveManager::LoadBaseVersion2() {
     SaveManager::Instance->LoadArray("playerName", ARRAY_COUNT(gSaveContext.playerName), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.playerName[i]);
     });
-    SaveManager::Instance->LoadData("n64ddFlag", IS_RANDO(gSaveContext));
+    int isRando = 0;
+    SaveManager::Instance->LoadData("n64ddFlag", isRando);
+    if (isRando) {
+        gSaveContext.questId = 2;
+    }
     SaveManager::Instance->LoadData("healthCapacity", gSaveContext.healthCapacity);
     SaveManager::Instance->LoadData("health", gSaveContext.health);
     SaveManager::Instance->LoadData("magicLevel", gSaveContext.magicLevel);
@@ -1294,7 +1302,11 @@ void SaveManager::LoadBaseVersion3() {
     SaveManager::Instance->LoadArray("playerName", ARRAY_COUNT(gSaveContext.playerName), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.playerName[i]);
     });
-    SaveManager::Instance->LoadData("n64ddFlag", IS_RANDO(gSaveContext));
+    int isRando = 0;
+    SaveManager::Instance->LoadData("n64ddFlag", isRando);
+    if (isRando) {
+        gSaveContext.questId = 2;
+    }
     SaveManager::Instance->LoadData("healthCapacity", gSaveContext.healthCapacity);
     SaveManager::Instance->LoadData("health", gSaveContext.health);
     SaveManager::Instance->LoadData("magicLevel", gSaveContext.magicLevel);
@@ -1516,7 +1528,11 @@ void SaveManager::LoadBaseVersion4() {
     SaveManager::Instance->LoadArray("playerName", ARRAY_COUNT(gSaveContext.playerName), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.playerName[i]);
     });
-    SaveManager::Instance->LoadData("n64ddFlag", IS_RANDO(gSaveContext));
+    int isRando = 0;
+    SaveManager::Instance->LoadData("n64ddFlag", isRando);
+    if (isRando) {
+        gSaveContext.questId = 2;
+    }
     SaveManager::Instance->LoadData("healthCapacity", gSaveContext.healthCapacity);
     SaveManager::Instance->LoadData("health", gSaveContext.health);
     SaveManager::Instance->LoadData("magicLevel", gSaveContext.magicLevel);
@@ -1693,7 +1709,7 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
     SaveManager::Instance->SaveArray("playerName", ARRAY_COUNT(saveContext->playerName), [&](size_t i) {
         SaveManager::Instance->SaveData("", saveContext->playerName[i]);
     });
-    SaveManager::Instance->SaveData("n64ddFlag", IS_RANDO(*saveContext));
+    SaveManager::Instance->SaveData("n64ddFlag", saveContext->questId == 2);
     SaveManager::Instance->SaveData("healthCapacity", saveContext->healthCapacity);
     SaveManager::Instance->SaveData("health", saveContext->health);
     SaveManager::Instance->SaveData("magicLevel", saveContext->magicLevel);
@@ -1989,7 +2005,7 @@ void SaveManager::DeleteZeldaFile(int fileNum) {
 }
 
 bool SaveManager::IsRandoFile() {
-    return IS_RANDO(gSaveContext) != 0 ? true : false;
+    return IS_RANDO(gSaveContext);
 }
 
 // Functionality required to convert old saves into versioned saves

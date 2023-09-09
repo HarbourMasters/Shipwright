@@ -218,11 +218,10 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.playerName[offset] = Save_GetSaveMetaInfo(fileChooseCtx->buttonIndex)->playerName[offset];
     }
 
+    gSaveContext.n64ddFlag = fileChooseCtx->n64ddFlag;
+
     if (fileChooseCtx->questType[fileChooseCtx->buttonIndex] == 2 && strnlen(CVarGetString("gSpoilerLog", ""), 1) != 0) {
-        // Set N64DD Flags for save file
-        fileChooseCtx->n64ddFlags[fileChooseCtx->buttonIndex] = 1;
-        fileChooseCtx->n64ddFlag = 1;
-        gSaveContext.n64ddFlag = 1;
+        gSaveContext.questId = 2;
 
         Randomizer_InitSaveFile();
     }
