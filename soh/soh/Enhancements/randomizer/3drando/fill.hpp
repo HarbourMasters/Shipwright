@@ -21,6 +21,8 @@ void ClearProgress();
 void VanillaFill();
 int Fill();
 
+std::vector<uint32_t> GetEmptyLocations(std::vector<uint32_t> allowedLocations);
+
 std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<RandomizerCheck>& allowedLocations,
                                              SearchMode mode = SearchMode::ReachabilitySearch, std::string ignore = "",
                                              bool checkPoeCollectorAccess = false,
