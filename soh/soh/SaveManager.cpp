@@ -1248,7 +1248,11 @@ void SaveManager::LoadBaseVersion2() {
     SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
-    SaveManager::Instance->LoadData("isMasterQuest", IS_MASTER_QUEST(gSaveContext));
+    int isMQ = 0;
+    SaveManager::Instance->LoadData("isMasterQuest", isMQ);
+    if (isMQ) {
+        gSaveContext.questId = 1;
+    }
 
     // Workaround for breaking save compatibility from 5.0.2 -> 5.1.0 in commit d7c35221421bf712b5ead56a360f81f624aca4bc
     if (!gSaveContext.isMagicAcquired) {
@@ -1478,7 +1482,11 @@ void SaveManager::LoadBaseVersion3() {
     SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
-    SaveManager::Instance->LoadData("isMasterQuest", IS_MASTER_QUEST(gSaveContext));
+    int isMQ = 0;
+    SaveManager::Instance->LoadData("isMasterQuest", isMQ);
+    if (isMQ) {
+        gSaveContext.questId = 1;
+    }
     SaveManager::Instance->LoadStruct("backupFW", []() {
         SaveManager::Instance->LoadStruct("pos", []() {
             SaveManager::Instance->LoadData("x", gSaveContext.backupFW.pos.x);
@@ -1651,7 +1659,11 @@ void SaveManager::LoadBaseVersion4() {
     SaveManager::Instance->LoadArray("randomizerInf", ARRAY_COUNT(gSaveContext.randomizerInf), [](size_t i) {
         SaveManager::Instance->LoadData("", gSaveContext.randomizerInf[i]);
     });
-    SaveManager::Instance->LoadData("isMasterQuest", IS_MASTER_QUEST(gSaveContext));
+    int isMQ = 0;
+    SaveManager::Instance->LoadData("isMasterQuest", isMQ);
+    if (isMQ) {
+        gSaveContext.questId = 1;
+    }
     SaveManager::Instance->LoadStruct("backupFW", []() {
         SaveManager::Instance->LoadStruct("pos", []() {
             SaveManager::Instance->LoadData("x", gSaveContext.backupFW.pos.x);
@@ -1820,7 +1832,7 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
     SaveManager::Instance->SaveArray("randomizerInf", ARRAY_COUNT(saveContext->randomizerInf), [&](size_t i) {
         SaveManager::Instance->SaveData("", saveContext->randomizerInf[i]);
     });
-    SaveManager::Instance->SaveData("isMasterQuest", IS_MASTER_QUEST(*saveContext));
+    SaveManager::Instance->SaveData("isMasterQuest", saveContext->questId == 1);
     SaveManager::Instance->SaveStruct("backupFW", [&]() {
         SaveManager::Instance->SaveStruct("pos", [&]() {
             SaveManager::Instance->SaveData("x", saveContext->backupFW.pos.x);

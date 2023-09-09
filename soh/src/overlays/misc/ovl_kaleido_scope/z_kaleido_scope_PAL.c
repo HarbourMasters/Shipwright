@@ -4180,7 +4180,9 @@ void KaleidoScope_Update(PlayState* play)
                         osSyncPrintf(VT_RST);
                     } else {
                         play->state.running = 0;
-                        gSaveContext.isBossRush = false;
+                        if (IS_BOSS_RUSH(gSaveContext)) {
+                            gSaveContext.questId = 0;
+                        }
                         SET_NEXT_GAMESTATE(&play->state, Opening_Init, OpeningContext);
                         GameInteractor_ExecuteOnExitGame(gSaveContext.fileNum);
                     }

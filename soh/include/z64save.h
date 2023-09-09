@@ -284,8 +284,7 @@ typedef struct {
     /* 0x1428 */ u16 pendingSaleMod;
     // #region SOH [General]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to SoH
-    /*        */ uint32_t isMasterQuest;
-    /*        */ uint32_t isBossRush;
+    /*        */ uint8_t questId;
     /*        */ uint32_t isBossRushPaused;
     /*        */ uint8_t bossRushOptions[BOSSRUSH_OPTIONS_AMOUNT];
     /*        */ u8 mqDungeonCount;
@@ -322,9 +321,9 @@ typedef struct {
     // #endregion
 } SaveContext; // size = 0x1428
 
-#define IS_MASTER_QUEST(saveContext) (saveContext).isMasterQuest
+#define IS_MASTER_QUEST(saveContext) ((saveContext).questId == 1)
 #define IS_RANDO(saveContext) (saveContext).n64ddFlag
-#define IS_BOSS_RUSH(saveContext) (saveContext).isBossRush
+#define IS_BOSS_RUSH(saveContext) ((saveContext).questId == 3)
 
 typedef enum {
     /* 0x00 */ BTN_ENABLED,
