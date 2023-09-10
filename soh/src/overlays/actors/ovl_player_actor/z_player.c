@@ -9687,14 +9687,6 @@ void Player_Init(Actor* thisx, PlayState* play2) {
             sMaskMemory = PLAYER_MASK_NONE;
         }
         this->currentMask = sMaskMemory;
-        for (uint16_t cSlotIndex = 0; cSlotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); cSlotIndex++) {
-            if (gSaveContext.equips.cButtonSlots[cSlotIndex] == SLOT_TRADE_CHILD &&
-                (gItemAgeReqs[gSaveContext.equips.buttonItems[cSlotIndex + 1]] != 9 && LINK_IS_ADULT &&
-                 !CVarGetInteger("gTimelessEquipment", 0))) {
-                gSaveContext.equips.cButtonSlots[cSlotIndex] = SLOT_NONE;
-                gSaveContext.equips.buttonItems[cSlotIndex + 1] = ITEM_NONE;
-            }
-        }
     }
     Player_InitCommon(this, play, gPlayerSkelHeaders[((void)0, gSaveContext.linkAge)]);
     this->giObjectSegment = (void*)(((uintptr_t)ZELDA_ARENA_MALLOC_DEBUG(0x3008) + 8) & ~0xF);
