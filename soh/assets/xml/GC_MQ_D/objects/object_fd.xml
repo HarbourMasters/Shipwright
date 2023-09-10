@@ -1,7 +1,34 @@
 <Root>
     <File Name="object_fd" Segment="6">
+        <Texture Name="object_fdTex_000458" OutName="object_fdTex_000458" Format="ci4" Width="32" Height="32" Offset="0x458" TlutOffset="0x438" AddedByScript="true"/>
+        <Texture Name="object_fdTex_000658" OutName="object_fdTex_000658" Format="ci4" Width="32" Height="64" Offset="0x658" TlutOffset="0x438" AddedByScript="true"/>
+        <Texture Name="object_fdTex_000A78" OutName="object_fdTex_000A78" Format="ci4" Width="32" Height="32" Offset="0xA78" TlutOffset="0xA58" AddedByScript="true"/>
+        <Texture Name="object_fdTex_0040A8" OutName="object_fdTex_0040A8" Format="rgba16" Width="32" Height="32" Offset="0x40A8" AddedByScript="true"/>
+        <Texture Name="object_fdTex_0048A8" OutName="object_fdTex_0048A8" Format="rgba16" Width="32" Height="32" Offset="0x48A8" AddedByScript="true"/>
+        <Texture Name="object_fdTex_0050A8" OutName="object_fdTex_0050A8" Format="rgba16" Width="16" Height="16" Offset="0x50A8" AddedByScript="true"/>
+        <Texture Name="object_fdTex_0052A8" OutName="object_fdTex_0052A8" Format="rgba16" Width="16" Height="16" Offset="0x52A8" AddedByScript="true"/>
+        <Texture Name="object_fdTex_0054A8" OutName="object_fdTex_0054A8" Format="rgba16" Width="16" Height="16" Offset="0x54A8" AddedByScript="true"/>
+        <Texture Name="object_fdTex_0056A8" OutName="object_fdTex_0056A8" Format="rgba16" Width="16" Height="16" Offset="0x56A8" AddedByScript="true"/>
+        <Texture Name="object_fdTex_005B60" OutName="object_fdTex_005B60" Format="rgba16" Width="16" Height="16" Offset="0x5B60" AddedByScript="true"/>
+        <Texture Name="object_fdTex_005D60" OutName="object_fdTex_005D60" Format="rgba16" Width="16" Height="16" Offset="0x5D60" AddedByScript="true"/>
+        <Texture Name="object_fdTex_005F60" OutName="object_fdTex_005F60" Format="rgba16" Width="16" Height="16" Offset="0x5F60" AddedByScript="true"/>
+        <Texture Name="object_fdTex_009208" OutName="object_fdTex_009208" Format="i8" Width="16" Height="16" Offset="0x9208" AddedByScript="true"/>
+        <Texture Name="object_fdTex_009780" OutName="object_fdTex_009780" Format="rgba16" Width="16" Height="16" Offset="0x9780" AddedByScript="true"/>
+        <Texture Name="object_fdTex_009980" OutName="object_fdTex_009980" Format="rgba16" Width="16" Height="16" Offset="0x9980" AddedByScript="true"/>
+        <Texture Name="object_fdTex_00A050" OutName="object_fdTex_00A050" Format="rgba16" Width="32" Height="32" Offset="0xA050" AddedByScript="true"/>
+        <Texture Name="object_fdTex_00A918" OutName="object_fdTex_00A918" Format="i8" Width="16" Height="16" Offset="0xA918" AddedByScript="true"/>
+        <Texture Name="object_fdTex_00AA18" OutName="object_fdTex_00AA18" Format="rgba16" Width="32" Height="32" Offset="0xAA18" AddedByScript="true"/>
+        <Texture Name="object_fdTex_00B458" OutName="object_fdTex_00B458" Format="rgba16" Width="32" Height="32" Offset="0xB458" AddedByScript="true"/>
+        <Texture Name="object_fdTex_00BC58" OutName="object_fdTex_00BC58" Format="rgba16" Width="16" Height="16" Offset="0xBC58" AddedByScript="true"/>
+        <Texture Name="object_fdTex_00BE58" OutName="object_fdTex_00BE58" Format="rgba16" Width="16" Height="16" Offset="0xBE58" AddedByScript="true"/>
+        <Texture Name="object_fdTex_00C058" OutName="object_fdTex_00C058" Format="rgba16" Width="16" Height="16" Offset="0xC058" AddedByScript="true"/>
+        <Texture Name="object_fdTex_00D170" OutName="object_fdTex_00D170" Format="rgba16" Width="16" Height="16" Offset="0xD170" AddedByScript="true"/>
+        <Texture Name="object_fdTex_00D438" OutName="object_fdTex_00D438" Format="rgba16" Width="16" Height="16" Offset="0xD438" AddedByScript="true"/>
+        <Texture Name="object_fdTLUT_000438" OutName="object_fdTLUT_000438" Format="rgba16" Width="4" Height="4" Offset="0x438" AddedByScript="true"/>
+        <Texture Name="object_fdTLUT_000A58" OutName="object_fdTLUT_000A58" Format="rgba16" Width="4" Height="4" Offset="0xA58" AddedByScript="true"/>
+        <Texture Name="object_fdTLUT_0032A8" OutName="object_fdTLUT_0032A8" Format="rgba16" Width="16" Height="16" Offset="0x32A8" AddedByScript="true"/>
         <!-- Boss title card -->
-        <Texture Name="gVolvagiaBossTitleCardTex" OutName="volvagia_boss_title_card" Format="i8" Width="128" Height="120" Offset="0xD700"/>
+        <Texture Name="gVolvagiaTitleCardTex" OutName="volvagia_boss_title_card" Format="i8" Width="128" Height="120" Offset="0xD700"/>
 
         <!-- Skeletons -->
         <Skeleton Name="gVolvagiaLeftArmSkel" Type="Normal" LimbType="Standard" Offset="0x114E0"/>

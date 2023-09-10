@@ -1,5 +1,7 @@
 <Root>
     <File Name="object_gi_shield_3" Segment="6">
+        <Texture Name="object_gi_shield_3Tex_000000" OutName="object_gi_shield_3Tex_000000" Format="i4" Width="64" Height="32" Offset="0x0" AddedByScript="true"/>
+        <Texture Name="object_gi_shield_3Tex_000400" OutName="object_gi_shield_3Tex_000400" Format="i4" Width="64" Height="64" Offset="0x400" AddedByScript="true"/>
         <DList Name="gGiMirrorShieldDL" Offset="0x0FB0"/>
         <DList Name="gGiMirrorShieldSymbolDL" Offset="0x11C8"/>
     </File>

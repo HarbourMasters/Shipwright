@@ -9,6 +9,19 @@
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
 #include "soh/Enhancements/nametag.h"
 
+#include "src/overlays/actors/ovl_En_Bb/z_en_bb.h"
+#include "src/overlays/actors/ovl_En_Dekubaba/z_en_dekubaba.h"
+#include "src/overlays/actors/ovl_En_Mb/z_en_mb.h"
+#include "src/overlays/actors/ovl_En_Tite/z_en_tite.h"
+#include "src/overlays/actors/ovl_En_Zf/z_en_zf.h"
+#include "src/overlays/actors/ovl_En_Wf/z_en_wf.h"
+#include "src/overlays/actors/ovl_En_Reeba/z_en_reeba.h"
+#include "src/overlays/actors/ovl_En_Peehat/z_en_peehat.h"
+#include "src/overlays/actors/ovl_En_Po_Field/z_en_po_field.h"
+#include "src/overlays/actors/ovl_En_Poh/z_en_poh.h"
+#include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
+#include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
+
 extern "C" {
 #include <z64.h>
 #include "macros.h"
@@ -601,6 +614,197 @@ void RegisterMirrorModeHandler() {
     });
 }
 
+//this map is used for enemies that can be uniquely identified by their id
+//and that are always counted
+//enemies that can't be uniquely identified by their id
+//or only sometimes count (like ACTOR_EN_TP)
+//have to be manually handled in RegisterEnemyDefeatCounts
+static std::unordered_map<u16, u16> uniqueEnemyIdToStatCount = {
+    { ACTOR_EN_ANUBICE,    COUNT_ENEMIES_DEFEATED_ANUBIS },
+    { ACTOR_EN_AM,         COUNT_ENEMIES_DEFEATED_ARMOS },
+    { ACTOR_EN_CLEAR_TAG,  COUNT_ENEMIES_DEFEATED_ARWING },
+    { ACTOR_EN_VALI,       COUNT_ENEMIES_DEFEATED_BARI },
+    { ACTOR_EN_VM,         COUNT_ENEMIES_DEFEATED_BEAMOS },
+    { ACTOR_EN_BIGOKUTA,   COUNT_ENEMIES_DEFEATED_BIG_OCTO },
+    { ACTOR_EN_BILI,       COUNT_ENEMIES_DEFEATED_BIRI },
+    { ACTOR_EN_DNS,        COUNT_ENEMIES_DEFEATED_BUSINESS_SCRUB },
+    { ACTOR_EN_TORCH,      COUNT_ENEMIES_DEFEATED_DARK_LINK },
+    { ACTOR_EN_DH,         COUNT_ENEMIES_DEFEATED_DEAD_HAND },
+    { ACTOR_EN_HINTNUTS,   COUNT_ENEMIES_DEFEATED_DEKU_SCRUB },
+    { ACTOR_EN_DODONGO,    COUNT_ENEMIES_DEFEATED_DODONGO },
+    { ACTOR_EN_DODOJR,     COUNT_ENEMIES_DEFEATED_DODONGO_BABY },
+    { ACTOR_DOOR_KILLER,   COUNT_ENEMIES_DEFEATED_DOOR_TRAP },
+    { ACTOR_EN_FD,         COUNT_ENEMIES_DEFEATED_FLARE_DANCER },
+    { ACTOR_EN_FLOORMAS,   COUNT_ENEMIES_DEFEATED_FLOORMASTER },
+    { ACTOR_EN_TUBO_TRAP,  COUNT_ENEMIES_DEFEATED_FLYING_POT },
+    { ACTOR_EN_YUKABYUN,   COUNT_ENEMIES_DEFEATED_FLOOR_TILE },
+    { ACTOR_EN_FZ,         COUNT_ENEMIES_DEFEATED_FREEZARD },
+    { ACTOR_EN_GELDB,      COUNT_ENEMIES_DEFEATED_GERUDO_THIEF },
+    { ACTOR_EN_GOMA,       COUNT_ENEMIES_DEFEATED_GOHMA_LARVA },
+    { ACTOR_EN_CROW,       COUNT_ENEMIES_DEFEATED_GUAY },
+    { ACTOR_EN_RR,         COUNT_ENEMIES_DEFEATED_LIKE_LIKE },
+    { ACTOR_EN_DEKUNUTS,   COUNT_ENEMIES_DEFEATED_MAD_SCRUB },
+    { ACTOR_EN_OKUTA,      COUNT_ENEMIES_DEFEATED_OCTOROK },
+    { ACTOR_EN_BA,         COUNT_ENEMIES_DEFEATED_PARASITIC_TENTACLE },
+    { ACTOR_EN_PO_SISTERS, COUNT_ENEMIES_DEFEATED_POE_SISTERS },
+    { ACTOR_EN_BUBBLE,     COUNT_ENEMIES_DEFEATED_SHABOM },
+    { ACTOR_EN_SB,         COUNT_ENEMIES_DEFEATED_SHELLBLADE },
+    { ACTOR_EN_SKJ,        COUNT_ENEMIES_DEFEATED_SKULL_KID },
+    { ACTOR_EN_NY,         COUNT_ENEMIES_DEFEATED_SPIKE },
+    { ACTOR_EN_SKB,        COUNT_ENEMIES_DEFEATED_STALCHILD },
+    { ACTOR_EN_TEST,       COUNT_ENEMIES_DEFEATED_STALFOS },
+    { ACTOR_EN_WEIYER,     COUNT_ENEMIES_DEFEATED_STINGER },
+    { ACTOR_EN_BW,         COUNT_ENEMIES_DEFEATED_TORCH_SLUG },
+    { ACTOR_EN_WALLMAS,    COUNT_ENEMIES_DEFEATED_WALLMASTER },
+    { ACTOR_EN_KAREBABA,   COUNT_ENEMIES_DEFEATED_WITHERED_DEKU_BABA },
+};
+
+void RegisterEnemyDefeatCounts() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnEnemyDefeat>([](void* refActor) {
+        Actor* actor = (Actor*)refActor;
+        if (uniqueEnemyIdToStatCount.contains(actor->id)) {
+            gSaveContext.sohStats.count[uniqueEnemyIdToStatCount[actor->id]]++;
+        } else {
+            switch (actor->id) {
+                case ACTOR_EN_BB:
+                    if (actor->params == ENBB_GREEN || actor->params == ENBB_GREEN_BIG) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_GREEN]++;
+                    } else if (actor->params == ENBB_BLUE) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_BLUE]++;
+                    } else if (actor->params == ENBB_WHITE) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_WHITE]++;
+                    } else if (actor->params == ENBB_RED) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_RED]++;
+                    }
+                    break;
+
+                case ACTOR_EN_DEKUBABA:
+                    if (actor->params == DEKUBABA_BIG) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA]++;
+                    }
+                    break;
+
+                case ACTOR_EN_ZF:
+                    if (actor->params == ENZF_TYPE_DINOLFOS) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DINOLFOS]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LIZALFOS]++;
+                    }
+                    break;
+
+                case ACTOR_EN_RD:
+                    if (actor->params >= -1) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_REDEAD]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GIBDO]++;
+                    }
+                    break;
+
+                case ACTOR_EN_IK:
+                    if (actor->params == 0) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE_NABOORU]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE]++;
+                    }
+                    break;
+
+                case ACTOR_EN_FIREFLY:
+                    if (actor->params == KEESE_NORMAL_FLY || actor->params == KEESE_NORMAL_PERCH) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE]++;
+                    } else if (actor->params == KEESE_FIRE_FLY || actor->params == KEESE_FIRE_PERCH) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE_FIRE]++;
+                    } else if (actor->params == KEESE_ICE_FLY) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE_ICE]++;
+                    }
+                    break;
+
+                case ACTOR_EN_REEBA:
+                    {
+                        EnReeba* reeba = (EnReeba*)actor;
+                        if (reeba->isBig) {
+                            gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER_BIG]++;
+                        } else {
+                            gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER]++;
+                        }
+                    }
+                    break;
+
+                case ACTOR_EN_MB:
+                    if (actor->params == 0) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MOBLIN_CLUB]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MOBLIN]++;
+                    }
+                    break;
+
+                case ACTOR_EN_PEEHAT:
+                    if (actor->params == PEAHAT_TYPE_LARVA) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PEAHAT_LARVA]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PEAHAT]++;
+                    }
+                    break;
+                
+                case ACTOR_EN_POH:
+                    if (actor->params == EN_POH_FLAT || actor->params == EN_POH_SHARP) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_COMPOSER]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE]++;
+                    }
+                    break;
+
+                case ACTOR_EN_PO_FIELD:
+                    if (actor->params == EN_PO_FIELD_BIG) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_BIG]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE]++;
+                    }
+                    break;
+
+                case ACTOR_EN_ST:
+                    if (actor->params == 1) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_BIG]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA]++;
+                    }
+                    break;
+
+                case ACTOR_EN_SW:
+                    if (((actor->params & 0xE000) >> 0xD) != 0) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_GOLD]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLWALLTULA]++;
+                    }
+                    break;
+
+                case ACTOR_EN_TP:
+                    if (actor->params == TAILPASARAN_HEAD) {  // Only count the head, otherwise each body segment will increment
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TAILPASARAN]++;
+                    }
+                    break;
+
+                case ACTOR_EN_TITE:
+                    if (actor->params == TEKTITE_BLUE) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_BLUE]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_RED]++;
+                    }
+                    break;
+
+                case ACTOR_EN_WF:
+                    if (actor->params == WOLFOS_WHITE) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WOLFOS]++;
+                    }
+                    break;
+            }
+        }
+    });
+}
+
 typedef enum {
     ADD_ICE_TRAP,
     ADD_BURN_TRAP,
@@ -771,6 +975,7 @@ void InitMods() {
     RegisterBonkDamage();
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
+    RegisterEnemyDefeatCounts();
     RegisterAltTrapTypes();
     NameTag_RegisterHooks();
 }

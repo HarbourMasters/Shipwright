@@ -6,6 +6,7 @@
 
 #include "z_en_st.h"
 #include "objects/object_st/object_st.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -465,11 +466,7 @@ s32 EnSt_CheckHitBackside(EnSt* this, PlayState* play) {
     this->deathTimer = 20;
     this->actor.gravity = -1.0f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_STALWALL_DEAD);
-    if (this->actor.params == 1) {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_BIG]++;
-    } else {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA]++;
-    }
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 
     if (flags & 0x1F820) {
         // arrow, fire arrow, ice arrow, light arrow,

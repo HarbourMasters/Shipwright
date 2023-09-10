@@ -1,5 +1,32 @@
 <Root>
     <File Name="spot05_scene" Segment="2">
+        <Texture Name="spot05_sceneTex_006D60" OutName="spot05_sceneTex_006D60" Format="rgba16" Width="32" Height="64" Offset="0x6D60" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_007D60" OutName="spot05_sceneTex_007D60" Format="rgba16" Width="32" Height="64" Offset="0x7D60" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_008D60" OutName="spot05_sceneTex_008D60" Format="ci8" Width="32" Height="32" Offset="0x8D60" TlutOffset="0x6BC0" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_009160" OutName="spot05_sceneTex_009160" Format="ci8" Width="32" Height="32" Offset="0x9160" TlutOffset="0x6BC0" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_009560" OutName="spot05_sceneTex_009560" Format="rgba16" Width="16" Height="32" Offset="0x9560" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_009960" OutName="spot05_sceneTex_009960" Format="ci8" Width="64" Height="32" Offset="0x9960" TlutOffset="0x6BC0" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_00A160" OutName="spot05_sceneTex_00A160" Format="rgba16" Width="64" Height="32" Offset="0xA160" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_00B160" OutName="spot05_sceneTex_00B160" Format="rgba16" Width="32" Height="32" Offset="0xB160" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_00B960" OutName="spot05_sceneTex_00B960" Format="rgba16" Width="16" Height="16" Offset="0xB960" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_00BB60" OutName="spot05_sceneTex_00BB60" Format="rgba16" Width="16" Height="128" Offset="0xBB60" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_00CB60" OutName="spot05_sceneTex_00CB60" Format="rgba16" Width="32" Height="32" Offset="0xCB60" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_00D360" OutName="spot05_sceneTex_00D360" Format="i4" Width="64" Height="64" Offset="0xD360" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_00DB60" OutName="spot05_sceneTex_00DB60" Format="rgba16" Width="32" Height="32" Offset="0xDB60" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_00E360" OutName="spot05_sceneTex_00E360" Format="i4" Width="64" Height="64" Offset="0xE360" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_00EB60" OutName="spot05_sceneTex_00EB60" Format="rgba16" Width="64" Height="16" Offset="0xEB60" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_00F360" OutName="spot05_sceneTex_00F360" Format="rgba16" Width="32" Height="32" Offset="0xF360" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_00FB60" OutName="spot05_sceneTex_00FB60" Format="i4" Width="64" Height="64" Offset="0xFB60" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_010360" OutName="spot05_sceneTex_010360" Format="rgba16" Width="32" Height="32" Offset="0x10360" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_010B60" OutName="spot05_sceneTex_010B60" Format="rgba16" Width="32" Height="32" Offset="0x10B60" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_011360" OutName="spot05_sceneTex_011360" Format="rgba16" Width="32" Height="64" Offset="0x11360" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_012360" OutName="spot05_sceneTex_012360" Format="rgba16" Width="32" Height="32" Offset="0x12360" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_012B60" OutName="spot05_sceneTex_012B60" Format="rgba16" Width="32" Height="32" Offset="0x12B60" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_013360" OutName="spot05_sceneTex_013360" Format="rgba16" Width="32" Height="32" Offset="0x13360" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_013B60" OutName="spot05_sceneTex_013B60" Format="rgba16" Width="64" Height="16" Offset="0x13B60" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_014360" OutName="spot05_sceneTex_014360" Format="rgba16" Width="32" Height="32" Offset="0x14360" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTex_014B60" OutName="spot05_sceneTex_014B60" Format="ia8" Width="16" Height="32" Offset="0x14B60" AddedByScript="true"/>
+        <Texture Name="spot05_sceneTLUT_006BC0" OutName="spot05_sceneTLUT_006BC0" Format="rgba16" Width="16" Height="16" Offset="0x6BC0" AddedByScript="true"/>
         <Cutscene Name="gMinuetCs" Offset="0x3F80"/>
 
         <Cutscene Name="spot05_scene_Cs_005730" Offset="0x5730"/>

@@ -1,10 +1,34 @@
 <Root>
     <File Name="ganon_tou_scene" Segment="2">
+        <Texture Name="ganon_tou_sceneTex_003280" OutName="ganon_tou_sceneTex_003280" Format="i8" Width="64" Height="64" Offset="0x3280" AddedByScript="true"/>
         <Cutscene Name="gRainbowBridgeCs" Offset="0x2640"/>
         <Cutscene Name="gGanonsCastleIntroCs" Offset="0x4280"/>
         <Scene Name="ganon_tou_scene" Offset="0x0"/>
     </File>
     <File Name="ganon_tou_room_0" Segment="3">
+        <Texture Name="ganon_tou_room_0Tex_008550" OutName="ganon_tou_room_0Tex_008550" Format="rgba16" Width="32" Height="32" Offset="0x8550" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_008D50" OutName="ganon_tou_room_0Tex_008D50" Format="rgba16" Width="16" Height="16" Offset="0x8D50" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_008F50" OutName="ganon_tou_room_0Tex_008F50" Format="rgba16" Width="32" Height="8" Offset="0x8F50" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_009150" OutName="ganon_tou_room_0Tex_009150" Format="rgba16" Width="64" Height="32" Offset="0x9150" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_00A150" OutName="ganon_tou_room_0Tex_00A150" Format="rgba16" Width="128" Height="16" Offset="0xA150" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_00B150" OutName="ganon_tou_room_0Tex_00B150" Format="rgba16" Width="32" Height="16" Offset="0xB150" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_00B550" OutName="ganon_tou_room_0Tex_00B550" Format="i8" Width="32" Height="32" Offset="0xB550" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_00B950" OutName="ganon_tou_room_0Tex_00B950" Format="i8" Width="32" Height="32" Offset="0xB950" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_00BD50" OutName="ganon_tou_room_0Tex_00BD50" Format="rgba16" Width="16" Height="16" Offset="0xBD50" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_00BF50" OutName="ganon_tou_room_0Tex_00BF50" Format="i8" Width="64" Height="64" Offset="0xBF50" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_00CF50" OutName="ganon_tou_room_0Tex_00CF50" Format="rgba16" Width="32" Height="32" Offset="0xCF50" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_00D750" OutName="ganon_tou_room_0Tex_00D750" Format="rgba16" Width="32" Height="64" Offset="0xD750" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_00E750" OutName="ganon_tou_room_0Tex_00E750" Format="rgba16" Width="32" Height="64" Offset="0xE750" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_00F750" OutName="ganon_tou_room_0Tex_00F750" Format="i8" Width="32" Height="32" Offset="0xF750" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_00FB50" OutName="ganon_tou_room_0Tex_00FB50" Format="i8" Width="64" Height="16" Offset="0xFB50" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_00FF50" OutName="ganon_tou_room_0Tex_00FF50" Format="rgba16" Width="16" Height="16" Offset="0xFF50" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_010150" OutName="ganon_tou_room_0Tex_010150" Format="rgba16" Width="32" Height="16" Offset="0x10150" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_010550" OutName="ganon_tou_room_0Tex_010550" Format="rgba16" Width="32" Height="32" Offset="0x10550" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_0124F0" OutName="ganon_tou_room_0Tex_0124F0" Format="ia8" Width="32" Height="8" Offset="0x124F0" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_0125F0" OutName="ganon_tou_room_0Tex_0125F0" Format="ia4" Width="128" Height="32" Offset="0x125F0" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_012DF0" OutName="ganon_tou_room_0Tex_012DF0" Format="i4" Width="64" Height="64" Offset="0x12DF0" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_0135F0" OutName="ganon_tou_room_0Tex_0135F0" Format="ia8" Width="32" Height="32" Offset="0x135F0" AddedByScript="true"/>
+        <Texture Name="ganon_tou_room_0Tex_0139F0" OutName="ganon_tou_room_0Tex_0139F0" Format="ia8" Width="16" Height="16" Offset="0x139F0" AddedByScript="true"/>
         <Room Name="ganon_tou_room_0" Offset="0x0"/>
     </File>
 </Root>

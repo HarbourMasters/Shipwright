@@ -46,7 +46,6 @@ typedef enum {
     TEXT_WARP_RANDOM_REPLACED_TEXT = 0x9200,
     TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN = 0x346, // 0x3yy for cuttable sign range
     TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI = 0x1B3, // 0x1yy for Navi msg range
-    TEXT_RANDO_SAVE_VERSION_WARNING = 0x9300,
 } TextIDs;
 
 #ifdef __cplusplus

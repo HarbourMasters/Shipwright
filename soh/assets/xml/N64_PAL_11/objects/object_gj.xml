@@ -1,5 +1,15 @@
 <Root>
     <File Name="object_gj" Segment="6">
+        <Texture Name="object_gjTex_003B20" OutName="object_gjTex_003B20" Format="ia8" Width="16" Height="16" Offset="0x3B20" AddedByScript="true"/>
+        <Texture Name="object_gjTex_003C20" OutName="object_gjTex_003C20" Format="i4" Width="16" Height="32" Offset="0x3C20" AddedByScript="true"/>
+        <Texture Name="object_gjTex_003D20" OutName="object_gjTex_003D20" Format="rgba16" Width="16" Height="16" Offset="0x3D20" AddedByScript="true"/>
+        <Texture Name="object_gjTex_003F20" OutName="object_gjTex_003F20" Format="i8" Width="64" Height="64" Offset="0x3F20" AddedByScript="true"/>
+        <Texture Name="object_gjTex_004F20" OutName="object_gjTex_004F20" Format="i8" Width="64" Height="64" Offset="0x4F20" AddedByScript="true"/>
+        <Texture Name="object_gjTex_005F20" OutName="object_gjTex_005F20" Format="i8" Width="64" Height="64" Offset="0x5F20" AddedByScript="true"/>
+        <Texture Name="object_gjTex_006F20" OutName="object_gjTex_006F20" Format="i4" Width="32" Height="64" Offset="0x6F20" AddedByScript="true"/>
+        <Texture Name="object_gjTex_007320" OutName="object_gjTex_007320" Format="i8" Width="64" Height="16" Offset="0x7320" AddedByScript="true"/>
+        <Texture Name="object_gjTex_007720" OutName="object_gjTex_007720" Format="ia8" Width="32" Height="32" Offset="0x7720" AddedByScript="true"/>
+        <Texture Name="object_gjTex_007B20" OutName="object_gjTex_007B20" Format="i8" Width="128" Height="32" Offset="0x7B20" AddedByScript="true"/>
         <!-- This is the decorative rubble around the fight arena -->
         <DList Name="gGanonsCastleRubbleAroundArenaDL" Offset="0xDC0"/>
         <Collision Name="gGanonsCastleRubbleAroundArenaCol" Offset="0x1B70"/>
