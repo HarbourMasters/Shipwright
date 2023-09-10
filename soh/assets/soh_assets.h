@@ -44,6 +44,10 @@ static const ALIGN_ASSET(2) char gTitleRandomizerSubtitleTex[] = dgTitleRandomiz
 #define dgTitleBossRushSubtitleTex "__OTR__objects/object_mag/gTitleBossRushSubtitleTex"
 static const ALIGN_ASSET(2) char gTitleBossRushSubtitleTex[] = dgTitleBossRushSubtitleTex;
 
+// overlays
+#define dgOptionsDividerChangeLangVtx "__OTR__overlays/ovl_file_choose/gOptionsDividerChangeLangVtx"
+static const ALIGN_ASSET(2) char gOptionsDividerChangeLangVtx[] = dgOptionsDividerChangeLangVtx;
+
 // textures
 #define dgDPad "__OTR__textures/parameter_static/gDPad"
 static const ALIGN_ASSET(2) char gDPadTex[] = dgDPad;
@@ -77,6 +81,24 @@ static const ALIGN_ASSET(2) char gFileSelBossRushSettingsGERText[] = dgFileSelBo
 
 #define dgFileSelRANDButtonTex "__OTR__textures/title_static/gFileSelRANDButtonTex"
 static const ALIGN_ASSET(2) char gFileSelRANDButtonTex[] = dgFileSelRANDButtonTex;
+
+#define dgFileSelLangEnglishENGTex "__OTR__textures/title_static/gFileSelLangEnglishENGTex"
+static const ALIGN_ASSET(2) char gFileSelLangEnglishENGTex[] = dgFileSelLangEnglishENGTex;
+
+#define dgFileSelLangDeutschGERTex "__OTR__textures/title_static/gFileSelLangDeutschGERTex"
+static const ALIGN_ASSET(2) char gFileSelLangDeutschGERTex[] = dgFileSelLangDeutschGERTex;
+
+#define dgFileSelLangFrancaisFRATex "__OTR__textures/title_static/gFileSelLangFrancaisFRATex"
+static const ALIGN_ASSET(2) char gFileSelLangFrancaisFRATex[] = dgFileSelLangFrancaisFRATex;
+
+#define dgFileSelLanguageENGTex "__OTR__textures/title_static/gFileSelLanguageENGTex"
+static const ALIGN_ASSET(2) char gFileSelLanguageENGTex[] = dgFileSelLanguageENGTex;
+
+#define dgFileSelLanguageFRATex "__OTR__textures/title_static/gFileSelLanguageFRATex"
+static const ALIGN_ASSET(2) char gFileSelLanguageFRATex[] = dgFileSelLanguageFRATex;
+
+#define dgFileSelLanguageGERTex "__OTR__textures/title_static/gFileSelLanguageGERTex"
+static const ALIGN_ASSET(2) char gFileSelLanguageGERTex[] = dgFileSelLanguageGERTex;
 
 #define dgEmptyTexture "__OTR__textures/virtual/gEmptyTexture"
 static const ALIGN_ASSET(2) char gEmptyTexture[] = dgEmptyTexture;

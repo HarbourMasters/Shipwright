@@ -162,8 +162,8 @@ Entrance* Area::GetExit(uint32_t exitToReturn) {
       return &exit;
     }
   }
-  auto message = "ERROR: EXIT " + AreaTable(exitToReturn)->regionName + " DOES NOT EXIST IN " + this->regionName;
-  CitraPrint(message);
+  //auto message = "ERROR: EXIT " + AreaTable(exitToReturn)->regionName + " DOES NOT EXIST IN " + this->regionName;
+  //CitraPrint(message);
   return nullptr;
 }
 

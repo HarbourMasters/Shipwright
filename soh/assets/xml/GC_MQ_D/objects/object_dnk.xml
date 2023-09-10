@@ -1,5 +1,10 @@
 <Root>
     <File Name="object_dnk" Segment="6">
+        <Texture Name="object_dnkTex_001BD0" OutName="object_dnkTex_001BD0" Format="rgba16" Width="32" Height="32" Offset="0x1BD0" AddedByScript="true"/>
+        <Texture Name="object_dnkTex_0023D0" OutName="object_dnkTex_0023D0" Format="rgba16" Width="16" Height="16" Offset="0x23D0" AddedByScript="true"/>
+        <Texture Name="object_dnkTex_002650" OutName="object_dnkTex_002650" Format="rgba16" Width="8" Height="8" Offset="0x2650" AddedByScript="true"/>
+        <Texture Name="object_dnkTex_0026D0" OutName="object_dnkTex_0026D0" Format="rgba16" Width="8" Height="8" Offset="0x26D0" AddedByScript="true"/>
+        <Texture Name="object_dnkTex_002850" OutName="object_dnkTex_002850" Format="rgba16" Width="16" Height="16" Offset="0x2850" AddedByScript="true"/>
         <!-- Forest Stage scrub skeleton -->
         <Skeleton Name="gDntStageSkel" Type="Normal" LimbType="Standard" Offset="0x2AF0"/>
 

@@ -1,5 +1,7 @@
 <Root>
     <File Name="object_gi_dekupouch" Segment="6">
+        <Texture Name="object_gi_dekupouchTex_000000" OutName="object_gi_dekupouchTex_000000" Format="i4" Width="32" Height="16" Offset="0x0" AddedByScript="true"/>
+        <Texture Name="object_gi_dekupouchTex_000100" OutName="object_gi_dekupouchTex_000100" Format="i4" Width="32" Height="32" Offset="0x100" AddedByScript="true"/>
         <DList Name="gGiBulletBagColorDL" Offset="0x0AF0"/>
         <DList Name="gGiBulletBag50ColorDL" Offset="0x0B10"/>
         <DList Name="gGiBulletBagStringColorDL" Offset="0x0B30"/>

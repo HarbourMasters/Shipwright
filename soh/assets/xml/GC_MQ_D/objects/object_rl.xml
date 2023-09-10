@@ -1,5 +1,7 @@
 <Root>
     <File Name="object_rl" Segment="6">
+        <Texture Name="object_rlTex_0033E0" OutName="object_rlTex_0033E0" Format="ci8" Width="8" Height="8" Offset="0x33E0" TlutOffset="0x32A0" AddedByScript="true"/>
+        <Texture Name="object_rlTex_003420" OutName="object_rlTex_003420" Format="ci8" Width="16" Height="16" Offset="0x3420" TlutOffset="0x32A0" AddedByScript="true"/>
         <Animation Name="object_rl_Anim_00040C" Offset="0x40C"/>
         <Animation Name="object_rl_Anim_000830" Offset="0x830"/>
         <Animation Name="object_rl_Anim_000A3C" Offset="0xA3C"/>

@@ -1,5 +1,13 @@
 <Root>
     <File Name="object_horse_normal" Segment="6">
+        <Texture Name="object_horse_normalTex_0058D8" OutName="object_horse_normalTex_0058D8" Format="i8" Width="8" Height="8" Offset="0x58D8" AddedByScript="true"/>
+        <Texture Name="object_horse_normalTex_005918" OutName="object_horse_normalTex_005918" Format="rgba16" Width="16" Height="16" Offset="0x5918" AddedByScript="true"/>
+        <Texture Name="object_horse_normalTex_005B18" OutName="object_horse_normalTex_005B18" Format="rgba16" Width="8" Height="8" Offset="0x5B18" AddedByScript="true"/>
+        <Texture Name="object_horse_normalTex_005B98" OutName="object_horse_normalTex_005B98" Format="i8" Width="16" Height="16" Offset="0x5B98" AddedByScript="true"/>
+        <Texture Name="object_horse_normalTex_005C98" OutName="object_horse_normalTex_005C98" Format="i8" Width="16" Height="8" Offset="0x5C98" AddedByScript="true"/>
+        <Texture Name="object_horse_normalTex_006F28" OutName="object_horse_normalTex_006F28" Format="i8" Width="16" Height="16" Offset="0x6F28" AddedByScript="true"/>
+        <Texture Name="object_horse_normalTex_007028" OutName="object_horse_normalTex_007028" Format="i8" Width="16" Height="16" Offset="0x7028" AddedByScript="true"/>
+        <Texture Name="object_horse_normalTex_007128" OutName="object_horse_normalTex_007128" Format="i8" Width="32" Height="32" Offset="0x7128" AddedByScript="true"/>
         <Skeleton Name="gHorseNormalSkel" Type="Normal" LimbType="Skin" Offset="0x9FAC"/>
 
         <!-- Running. -->

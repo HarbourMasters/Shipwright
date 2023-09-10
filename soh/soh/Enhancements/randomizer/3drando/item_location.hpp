@@ -50,7 +50,6 @@ typedef union ItemOverride_Key {
         char pad_;
         uint8_t scene;
         uint8_t type;
-        uint8_t flag;
     };
 } ItemOverride_Key;
 
@@ -119,20 +118,16 @@ class SpoilerCollectionCheck {
         return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_CHEST, scene, flag);
     }
 
-    static auto Cow(uint8_t scene, uint8_t flag) {
-        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_COW, scene, flag);
+    static auto Cow() {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_COW, 0x00, 0x00);
     }
 
-    static auto Fishing(uint8_t bit) {
-        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MINIGAME, 0x00, bit);
+    static auto Fishing() {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MINIGAME, 0x00, 0x00);
     }
 
-    static auto Scrub(uint8_t scene, uint8_t bit) {
-        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_SCRUB, scene, bit);
-    }
-
-    static auto Biggoron(uint8_t mask) {
-        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_BIGGORON, 0x00, mask);
+    static auto Scrub() {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_SCRUB, 0x00, 0x00);
     }
 
     static auto GerudoToken() {
@@ -147,28 +142,28 @@ class SpoilerCollectionCheck {
         return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_GRAVEDIGGER, scene, flag);
     }
 
-    static auto ShopItem(uint8_t scene, uint8_t itemSlot) {
-        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM, scene, itemSlot);
+    static auto ShopItem() {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_SHOP_ITEM, 0x00, 0x00);
     }
 
-    static auto MagicBeans(uint8_t scene, uint8_t flag) {
-        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MAGIC_BEANS, scene, flag);
+    static auto MagicBeans() {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MAGIC_BEANS, 0x00, 0x00);
     }
 
-    static auto Merchant(int8_t scene, uint8_t flag) {
-        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MERCHANT, scene, flag);
+    static auto Merchant() {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_MERCHANT, 0x00, 0x00);
     }
 
-    static auto RandomizerInf(int8_t scene, uint8_t flag) {
-        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF, scene, flag);
+    static auto RandomizerInf() {
+        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_RANDOMIZER_INF, 0x00, 0x00);
     }
 };
 
 class ItemLocation {
 public:
     ItemLocation() = default;
-    ItemLocation(RandomizerCheck rc_, uint8_t scene_, ItemLocationType type_, uint8_t flag_, std::string name_, uint32_t hintKey_, uint32_t vanillaItem_, std::vector<Category> categories_, uint16_t price_ = 0, SpoilerCollectionCheck collectionCheck_ = SpoilerCollectionCheck(), SpoilerCollectionCheckGroup collectionCheckGroup_ = SpoilerCollectionCheckGroup::GROUP_NO_GROUP)
-        : rc(rc_), scene(scene_), type(type_), flag(flag_), name(std::move(name_)), hintKey(hintKey_), vanillaItem(vanillaItem_), categories(std::move(categories_)), price(price_), collectionCheck(collectionCheck_), collectionCheckGroup(collectionCheckGroup_) {}
+    ItemLocation(RandomizerCheck rc_, uint8_t scene_, ItemLocationType type_, std::string name_, uint32_t hintKey_, uint32_t vanillaItem_, std::vector<Category> categories_, uint16_t price_ = 0, SpoilerCollectionCheck collectionCheck_ = SpoilerCollectionCheck(), SpoilerCollectionCheckGroup collectionCheckGroup_ = SpoilerCollectionCheckGroup::GROUP_NO_GROUP)
+        : rc(rc_), scene(scene_), type(type_), name(std::move(name_)), hintKey(hintKey_), vanillaItem(vanillaItem_), categories(std::move(categories_)), price(price_), collectionCheck(collectionCheck_), collectionCheckGroup(collectionCheckGroup_) {}
 
     ItemOverride_Key Key() const {
         ItemOverride_Key key;
@@ -176,7 +171,6 @@ public:
 
         key.scene = scene;
         key.type = static_cast<uint8_t>(type); //TODO make sure these match up
-        key.flag = flag;
         return key;
     }
 
@@ -194,10 +188,6 @@ public:
 
     uint8_t GetScene() const {
       return scene;
-    }
-
-    uint8_t GetFlag() const {
-      return flag;
     }
 
     bool IsAddedToPool() const {
@@ -384,26 +374,16 @@ public:
     }
 
     void AddExcludeOption() {
-      //setting description  /*--------------------------------------------------*/
-      std::string_view desc = "Decide which locations you want to exclude from\n"
-                              "the location pool. Locations that require an item\n"
-                              "to be placed at them based on your current\n"
-                              "settings cannot be excluded and won't be shown\n"
-                              "unless you change your settings.\n"
-                              "\n"
-                              "If you exclude too many locations, it might not\n"
-                              "be possible to fill the world.";
-
       //add option to forbid any location from progress items
       if (name.length() < 23) {
-        excludedOption = Option::Bool(name, {"Include", "Exclude"}, {desc});
+        excludedOption = Option::Bool(name, {"Include", "Exclude"});
       } else {
         //insert a newline character if the text is too long for one row
         size_t lastSpace = name.rfind(' ', 23);
         std::string settingText = name;
         settingText.replace(lastSpace, 1, "\n ");
 
-        excludedOption = Option::Bool(settingText, {"Include", "Exclude"}, {desc});
+        excludedOption = Option::Bool(settingText, {"Include", "Exclude"});
       }
       
       // RANDOTODO: this without string compares and loops
@@ -418,48 +398,48 @@ public:
       }
     }
 
-    static auto Base(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(), SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
-        return ItemLocation{rc, scene, ItemLocationType::Base, flag, std::move(name), hintKey, vanillaItem, std::move(categories), 0, collectionCheck, collectionCheckGroup};
+    static auto Base(RandomizerCheck rc, uint8_t scene, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(), SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+        return ItemLocation{rc, scene, ItemLocationType::Base, std::move(name), hintKey, vanillaItem, std::move(categories), 0, collectionCheck, collectionCheckGroup};
     }
 
     static auto Chest(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
-        return ItemLocation{rc, scene, ItemLocationType::Chest, flag, std::move(name), hintKey, vanillaItem, std::move(categories), 0, SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_CHEST, scene, flag), collectionCheckGroup};
+        return ItemLocation{rc, scene, ItemLocationType::Chest, std::move(name), hintKey, vanillaItem, std::move(categories), 0, SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_CHEST, scene, flag), collectionCheckGroup};
     }
 
-    static auto Chest(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck, SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
-        return ItemLocation{rc, scene, ItemLocationType::Chest, flag, std::move(name), hintKey, vanillaItem, std::move(categories), 0, collectionCheck, collectionCheckGroup};
+    static auto Chest(RandomizerCheck rc, uint8_t scene, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck, SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+        return ItemLocation{rc, scene, ItemLocationType::Chest, std::move(name), hintKey, vanillaItem, std::move(categories), 0, collectionCheck, collectionCheckGroup};
     }
 
     static auto Collectable(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
-        return ItemLocation{rc, scene, ItemLocationType::Collectable, flag, std::move(name), hintKey, vanillaItem, std::move(categories), 0, SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_COLLECTABLE, scene, flag), collectionCheckGroup};
+        return ItemLocation{rc, scene, ItemLocationType::Collectable, std::move(name), hintKey, vanillaItem, std::move(categories), 0, SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_COLLECTABLE, scene, flag), collectionCheckGroup};
     }
 
-    static auto Collectable(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck, SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
-        return ItemLocation{rc, scene, ItemLocationType::Collectable, flag, std::move(name), hintKey, vanillaItem, std::move(categories), 0, collectionCheck, collectionCheckGroup};
+    static auto Collectable(RandomizerCheck rc, uint8_t scene, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck, SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+        return ItemLocation{rc, scene, ItemLocationType::Collectable, std::move(name), hintKey, vanillaItem, std::move(categories), 0, collectionCheck, collectionCheckGroup};
     }
 
     static auto GSToken(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey, std::vector<Category>&& categories, SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
-        return ItemLocation{rc, scene, ItemLocationType::GSToken, flag, std::move(name), hintKey, GOLD_SKULLTULA_TOKEN, std::move(categories), 0, SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_GOLD_SKULLTULA, scene, flag), collectionCheckGroup};
+        return ItemLocation{rc, scene, ItemLocationType::GSToken, std::move(name), hintKey, GOLD_SKULLTULA_TOKEN, std::move(categories), 0, SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_GOLD_SKULLTULA, scene, flag), collectionCheckGroup};
     }
 
-    static auto GrottoScrub(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(), SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
-        return ItemLocation{rc, scene, ItemLocationType::GrottoScrub, flag, std::move(name), hintKey, vanillaItem, std::move(categories), 0, collectionCheck, collectionCheckGroup};
+    static auto GrottoScrub(RandomizerCheck rc, uint8_t scene, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(), SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+        return ItemLocation{rc, scene, ItemLocationType::GrottoScrub, std::move(name), hintKey, vanillaItem, std::move(categories), 0, collectionCheck, collectionCheckGroup};
     }
 
-    static auto Delayed(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(), SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
-        return ItemLocation{rc, scene, ItemLocationType::Delayed, flag, std::move(name), hintKey, vanillaItem, std::move(categories), 0, collectionCheck, collectionCheckGroup};
+    static auto Delayed(RandomizerCheck rc, uint8_t scene, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(), SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+        return ItemLocation{rc, scene, ItemLocationType::Delayed, std::move(name), hintKey, vanillaItem, std::move(categories), 0, collectionCheck, collectionCheckGroup};
     }
 
-    static auto Reward(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(), SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
-        return ItemLocation{rc, scene, ItemLocationType::TempleReward, flag, std::move(name), hintKey, vanillaItem, std::move(categories), 0, collectionCheck, collectionCheckGroup};
+    static auto Reward(RandomizerCheck rc, uint8_t scene, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(), SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
+        return ItemLocation{rc, scene, ItemLocationType::TempleReward, std::move(name), hintKey, vanillaItem, std::move(categories), 0, collectionCheck, collectionCheckGroup};
     }
 
-    static auto OtherHint(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, std::vector<Category>&& categories) {
-        return ItemLocation{rc, scene, ItemLocationType::OtherHint, flag, std::move(name), NONE, NONE, std::move(categories)};
+    static auto OtherHint(RandomizerCheck rc, std::string&& name) {
+        return ItemLocation{rc, 0, ItemLocationType::OtherHint, std::move(name), NONE, NONE, {}};
     }
 
-    static auto HintStone(RandomizerCheck rc, uint8_t scene, uint8_t flag, std::string&& name, std::vector<Category>&& categories) {
-        return ItemLocation{rc, scene, ItemLocationType::HintStone, flag, std::move(name), NONE, NONE, std::move(categories)};
+    static auto HintStone(RandomizerCheck rc, std::string&& name) {
+        return ItemLocation{rc, 0, ItemLocationType::HintStone, std::move(name), NONE, NONE, {}};
     }
 
     void ResetVariables() {
@@ -479,7 +459,6 @@ private:
     RandomizerCheck rc;
     uint8_t scene;
     ItemLocationType type;
-    uint8_t flag;
     bool checked = false;
 
     std::string name;
@@ -493,7 +472,7 @@ private:
     HintType hintType;
     std::string hintedRegion;
     uint32_t delayedItem = NONE;
-    Option excludedOption = Option::Bool(name, {"Include", "Exclude"}, {"", ""});
+    Option excludedOption = Option::Bool(name, {"Include", "Exclude"});
     uint16_t price = 0;
     SpoilerCollectionCheck collectionCheck;
     SpoilerCollectionCheckGroup collectionCheckGroup;

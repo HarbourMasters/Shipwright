@@ -1,5 +1,10 @@
 <Root>
     <File Name="object_gi_gerudomask" Segment="6">
+        <Texture Name="object_gi_gerudomaskTex_000208" OutName="object_gi_gerudomaskTex_000208" Format="ci8" Width="8" Height="8" Offset="0x208" TlutOffset="0x0" AddedByScript="true"/>
+        <Texture Name="object_gi_gerudomaskTex_000248" OutName="object_gi_gerudomaskTex_000248" Format="ci8" Width="16" Height="16" Offset="0x248" TlutOffset="0x0" AddedByScript="true"/>
+        <Texture Name="object_gi_gerudomaskTex_000348" OutName="object_gi_gerudomaskTex_000348" Format="ci8" Width="16" Height="16" Offset="0x348" TlutOffset="0x0" AddedByScript="true"/>
+        <Texture Name="object_gi_gerudomaskTex_000448" OutName="object_gi_gerudomaskTex_000448" Format="ci8" Width="32" Height="32" Offset="0x448" TlutOffset="0x0" AddedByScript="true"/>
+        <Texture Name="object_gi_gerudomaskTLUT_000000" OutName="object_gi_gerudomaskTLUT_000000" Format="rgba16" Width="16" Height="16" Offset="0x0" AddedByScript="true"/>
         <DList Name="gGiGerudoMaskDL" Offset="0x10E8"/>
     </File>
 </Root>
