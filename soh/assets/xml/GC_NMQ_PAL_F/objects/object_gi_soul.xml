@@ -1,5 +1,6 @@
 <Root>
     <File Name="object_gi_soul" Segment="6">
+        <Texture Name="object_gi_soulTex_000000" OutName="object_gi_soulTex_000000" Format="i8" Width="32" Height="32" Offset="0x0" AddedByScript="true"/>
         <DList Name="gGiFairyContainerBaseCapDL" Offset="0x0BD0"/>
         <DList Name="gGiFairyContainerGlassDL" Offset="0x0DB8"/>
         <DList Name="gGiFairyContainerContentsDL" Offset="0x0EF0"/>
