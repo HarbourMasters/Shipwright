@@ -131,18 +131,18 @@ void EnDaikuKakariko_Init(Actor* thisx, PlayState* play) {
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
         switch (play->sceneNum) {
-            case SCENE_SPOT01:
+            case SCENE_KAKARIKO_VILLAGE:
                 if (IS_DAY) {
                     this->flags |= 1;
                     this->flags |= initFlags[this->actor.params & 3];
                 }
                 break;
-            case SCENE_KAKARIKO:
+            case SCENE_KAKARIKO_CENTER_GUEST_HOUSE:
                 if (IS_NIGHT) {
                     this->flags |= 2;
                 }
                 break;
-            case SCENE_DRAG:
+            case SCENE_POTION_SHOP_KAKARIKO:
                 this->flags |= 4;
                 break;
         }

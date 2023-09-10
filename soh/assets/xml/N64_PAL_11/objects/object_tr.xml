@@ -1,149 +1,149 @@
 <Root>
     <File Name="object_tr" Segment="6">
-        <Animation Name="object_tr_Anim_000BFC" Offset="0xBFC"/> <!-- Turn to look over left (?) shoulder -->
-        <Animation Name="object_tr_Anim_0013CC" Offset="0x13CC"/> <!-- Looking over right shoulder -->
-        <Animation Name="object_tr_Anim_001CDC" Offset="0x1CDC"/> <!-- Standing, broom in left hand -->
-        <Animation Name="object_tr_Anim_002BC4" Offset="0x2BC4"/> <!-- Turn to look over right (?) shoulder -->
-        <Animation Name="object_tr_Anim_0035CC" Offset="0x35CC"/> <!-- Looking over left shoulder -->
-        <Animation Name="object_tr_Anim_003FC8" Offset="0x3FC8"/> <!-- Standing, broom over right shoulder -->
-        <Animation Name="object_tr_Anim_0049C8" Offset="0x49C8"/> <!-- Floating on broom -->
-        <Animation Name="object_tr_Anim_005308" Offset="0x5308"/>
+        <Animation Name="gKotakeKoumeLookOverRightShoulderAnim" Offset="0xBFC"/> <!-- Turn to look over left (?) shoulder -->
+        <Animation Name="gKotakeKoumeLookingOverRightShoulderAnim" Offset="0x13CC"/> <!-- Looking over right shoulder -->
+        <Animation Name="gKotakeKoumeStandingBroomOverLeftShoulderAnim" Offset="0x1CDC"/> <!-- Standing, broom in left hand -->
+        <Animation Name="gKotakeKoumeLookOverLeftShoulderAnim" Offset="0x2BC4"/> <!-- Turn to look over right (?) shoulder -->
+        <Animation Name="gKotakeKoumeLookingOverLeftShoulderAnim" Offset="0x35CC"/> <!-- Looking over left shoulder -->
+        <Animation Name="gKotakeKoumeStandingBroomOverRightShoulderAnim" Offset="0x3FC8"/> <!-- Standing, broom over right shoulder -->
+        <Animation Name="gKotakeKoumeFlyAnim" Offset="0x49C8"/> <!-- Floating on broom -->
+        <Animation Name="gKotakeKoumeStandingBroomOverRightShoulderUnusedAnim" Offset="0x5308"/>
         <Blob Name="object_tr_Blob_0062E0" Size="0x60" Offset="0x62E0"/>
-        <DList Name="object_tr_DL_006520" Offset="0x6520"/>
-        <DList Name="object_tr_DL_0066A0" Offset="0x66A0"/>
-        <DList Name="object_tr_DL_006800" Offset="0x6800"/>
-        <DList Name="object_tr_DL_006940" Offset="0x6940"/>
-        <DList Name="object_tr_DL_006A50" Offset="0x6A50"/>
-        <DList Name="object_tr_DL_006B48" Offset="0x6B48"/>
-        <DList Name="object_tr_DL_006C58" Offset="0x6C58"/>
-        <DList Name="object_tr_DL_006D50" Offset="0x6D50"/>
-        <DList Name="object_tr_DL_006E70" Offset="0x6E70"/>
-        <DList Name="object_tr_DL_006FF0" Offset="0x6FF0"/>
-        <DList Name="object_tr_DL_007118" Offset="0x7118"/>
-        <DList Name="object_tr_DL_007238" Offset="0x7238"/>
-        <DList Name="object_tr_DL_007358" Offset="0x7358"/>
-        <DList Name="object_tr_DL_0074D8" Offset="0x74D8"/>
-        <DList Name="object_tr_DL_007600" Offset="0x7600"/>
-        <DList Name="object_tr_DL_007720" Offset="0x7720"/>
-        <DList Name="object_tr_DL_007728" Offset="0x7728"/>
-        <Texture Name="object_tr_TLUT_007730" OutName="tlut_00007730" Format="rgba16" Width="53" Height="4" Offset="0x7730"/>
-        <Texture Name="object_tr_Tex_0078D8" OutName="tex_000078D8" Format="rgba16" Width="32" Height="32" Offset="0x78D8"/>
-        <Texture Name="object_tr_Tex_0080D8" OutName="tex_000080D8" Format="rgba16" Width="16" Height="16" Offset="0x80D8"/>
-        <Texture Name="object_tr_Tex_0082D8" OutName="tex_000082D8" Format="rgba16" Width="16" Height="16" Offset="0x82D8"/>
-        <Texture Name="object_tr_Tex_0084D8" OutName="tex_000084D8" Format="rgba16" Width="16" Height="16" Offset="0x84D8"/>
-        <Texture Name="object_tr_Tex_0086D8" OutName="tex_000086D8" Format="ci8" Width="32" Height="32" Offset="0x86D8" TlutOffset="0x7730"/> <!-- eye open -->
-        <Texture Name="object_tr_Tex_008AD8" OutName="tex_00008AD8" Format="ci8" Width="16" Height="8" Offset="0x8AD8" TlutOffset="0x7730"/>
-        <Texture Name="object_tr_Tex_008B58" OutName="tex_00008B58" Format="ci8" Width="8" Height="8" Offset="0x8B58" TlutOffset="0x7730"/>
-        <Texture Name="object_tr_Tex_008B98" OutName="tex_00008B98" Format="rgba16" Width="8" Height="32" Offset="0x8B98"/>
-        <Texture Name="object_tr_Tex_008D98" OutName="tex_00008D98" Format="ci8" Width="8" Height="8" Offset="0x8D98" TlutOffset="0x7730"/>
-        <Texture Name="object_tr_Tex_008DD8" OutName="tex_00008DD8" Format="ci8" Width="8" Height="16" Offset="0x8DD8" TlutOffset="0x7730"/>
-        <Texture Name="object_tr_Tex_008E58" OutName="tex_00008E58" Format="rgba16" Width="8" Height="8" Offset="0x8E58"/>
-        <Texture Name="object_tr_Tex_008ED8" OutName="tex_00008ED8" Format="rgba16" Width="16" Height="32" Offset="0x8ED8"/>
-        <Texture Name="object_tr_Tex_0092D8" OutName="tex_000092D8" Format="rgba16" Width="16" Height="8" Offset="0x92D8"/>
-        <Texture Name="object_tr_Tex_0093D8" OutName="tex_000093D8" Format="rgba16" Width="8" Height="8" Offset="0x93D8"/>
-        <Texture Name="object_tr_Tex_009458" OutName="tex_00009458" Format="ci8" Width="8" Height="8" Offset="0x9458" TlutOffset="0x7730"/>
-        <Texture Name="object_tr_Tex_009498" OutName="tex_00009498" Format="ci8" Width="8" Height="8" Offset="0x9498" TlutOffset="0x7730"/>
-        <Texture Name="object_tr_Tex_0094D8" OutName="tex_000094D8" Format="ci8" Width="32" Height="32" Offset="0x94D8" TlutOffset="0x7730"/> <!-- eye half -->
-        <Texture Name="object_tr_Tex_0098D8" OutName="tex_000098D8" Format="ci8" Width="32" Height="32" Offset="0x98D8" TlutOffset="0x7730"/> <!-- eye closed -->
-        <DList Name="object_tr_DL_00AF38" Offset="0xAF38"/>
-        <DList Name="object_tr_DL_00B568" Offset="0xB568"/>
-        <DList Name="object_tr_DL_00B5C8" Offset="0xB5C8"/>
-        <DList Name="object_tr_DL_00B678" Offset="0xB678"/>
-        <DList Name="object_tr_DL_00B728" Offset="0xB728"/>
-        <DList Name="object_tr_DL_00B8D0" Offset="0xB8D0"/>
-        <DList Name="object_tr_DL_00B968" Offset="0xB968"/>
-        <DList Name="object_tr_DL_00BA00" Offset="0xBA00"/>
-        <DList Name="object_tr_DL_00BB68" Offset="0xBB68"/>
-        <Texture Name="object_tr_Tex_00BCD0" OutName="tex_0000BCD0" Format="rgba16" Width="8" Height="8" Offset="0xBCD0"/>
+        <DList Name="gKotakePelvisDL" Offset="0x6520"/>
+        <DList Name="gKotakeTorsoDL" Offset="0x66A0"/>
+        <DList Name="gKotakeNeckDL" Offset="0x6800"/>
+        <DList Name="gKotakeLeftBraidStartDL" Offset="0x6940"/>
+        <DList Name="gKotakeLeftBraidEndDL" Offset="0x6A50"/>
+        <DList Name="gKotakeRightBraidStartDL" Offset="0x6B48"/>
+        <DList Name="gKotakeRightBraidEndDL" Offset="0x6C58"/>
+        <DList Name="gKotakeRightSleeveStartDL" Offset="0x6D50"/>
+        <DList Name="gKotakeRightSleeveFrontDL" Offset="0x6E70"/>
+        <DList Name="gKotakeRightSleeveMidDL" Offset="0x6FF0"/>
+        <DList Name="gKotakeRightSleeveEndDL" Offset="0x7118"/>
+        <DList Name="gKotakeLeftSleeveStartDL" Offset="0x7238"/>
+        <DList Name="gKotakeLeftSleeveFrontDL" Offset="0x7358"/>
+        <DList Name="gKotakeLeftSleeveMidDL" Offset="0x74D8"/>
+        <DList Name="gKotakeLeftSleeveEndDL" Offset="0x7600"/>
+        <DList Name="gKotakeRightThighDL" Offset="0x7720"/>
+        <DList Name="gKotakeLeftThighDL" Offset="0x7728"/>
+        <Texture Name="gKotakeKoumeTLUT" OutName="tlut_00007730" Format="rgba16" Width="53" Height="4" Offset="0x7730"/>
+        <Texture Name="gKotakeGerudoFabricTex" OutName="tex_000078D8" Format="rgba16" Width="32" Height="32" Offset="0x78D8"/>
+        <Texture Name="gKotakeRobeTex" OutName="tex_000080D8" Format="rgba16" Width="16" Height="16" Offset="0x80D8"/>
+        <Texture Name="gKotakeKoumeRobePatternTex" OutName="tex_000082D8" Format="rgba16" Width="16" Height="16" Offset="0x82D8"/>
+        <Texture Name="gKotakeKoumeRobeTrimTex" OutName="tex_000084D8" Format="rgba16" Width="16" Height="16" Offset="0x84D8"/>
+        <Texture Name="gKotakeKoumeEyeOpenTex" OutName="tex_000086D8" Format="ci8" Width="32" Height="32" Offset="0x86D8" TlutOffset="0x7730"/> <!-- eye open -->
+        <Texture Name="gKotakeKoumeSkinTex" OutName="tex_00008AD8" Format="ci8" Width="16" Height="8" Offset="0x8AD8" TlutOffset="0x7730"/>
+        <Texture Name="gKotakeKoumeMouthTex" OutName="tex_00008B58" Format="ci8" Width="8" Height="8" Offset="0x8B58" TlutOffset="0x7730"/>
+        <Texture Name="gKotakeKoumeHairTex" OutName="tex_00008B98" Format="rgba16" Width="8" Height="32" Offset="0x8B98"/>
+        <Texture Name="gKotakeKoumeEarTex" OutName="tex_00008D98" Format="ci8" Width="8" Height="8" Offset="0x8D98" TlutOffset="0x7730"/>
+        <Texture Name="gKotakeKoumeFingerTex" OutName="tex_00008DD8" Format="ci8" Width="8" Height="16" Offset="0x8DD8" TlutOffset="0x7730"/>
+        <Texture Name="gKotakeKoumeBroomHandleTex" OutName="tex_00008E58" Format="rgba16" Width="8" Height="8" Offset="0x8E58"/>
+        <Texture Name="gKotakeKoumeBroomHeadTex" OutName="tex_00008ED8" Format="rgba16" Width="16" Height="32" Offset="0x8ED8"/>
+        <Texture Name="gKotakeKoumeJewelHolderTex" OutName="tex_000092D8" Format="rgba16" Width="16" Height="8" Offset="0x92D8"/>
+        <Texture Name="gKotakeJewelTex" OutName="tex_000093D8" Format="rgba16" Width="8" Height="8" Offset="0x93D8"/>
+        <Texture Name="gKotakeKoumeNeckTex" OutName="tex_00009458" Format="ci8" Width="8" Height="8" Offset="0x9458" TlutOffset="0x7730"/>
+        <Texture Name="gKotakeKoumeNostrilsTex" OutName="tex_00009498" Format="ci8" Width="8" Height="8" Offset="0x9498" TlutOffset="0x7730"/>
+        <Texture Name="gKotakeKoumeEyeHalfTex" OutName="tex_000094D8" Format="ci8" Width="32" Height="32" Offset="0x94D8" TlutOffset="0x7730"/> <!-- eye half -->
+        <Texture Name="gKotakeKoumeEyeClosedTex" OutName="tex_000098D8" Format="ci8" Width="32" Height="32" Offset="0x98D8" TlutOffset="0x7730"/> <!-- eye closed -->
+        <DList Name="gKotakeHeadDL" Offset="0xAF38"/>
+        <DList Name="gKotakeTeethDL" Offset="0xB568"/>
+        <DList Name="gKotakeRightShinDL" Offset="0xB5C8"/>
+        <DList Name="gKotakeLeftShinDL" Offset="0xB678"/>
+        <DList Name="gKotakeBroomDL" Offset="0xB728"/>
+        <DList Name="gKotakeRightFootDL" Offset="0xB8D0"/>
+        <DList Name="gKotakeLeftFootDL" Offset="0xB968"/>
+        <DList Name="gKotakeRightHandDL" Offset="0xBA00"/>
+        <DList Name="gKotakeLeftHandDL" Offset="0xBB68"/>
+        <Texture Name="gKotakeKoumeBraidEndTex" OutName="tex_0000BCD0" Format="rgba16" Width="8" Height="8" Offset="0xBCD0"/>
         <Blob Name="object_tr_Blob_00BD50" Size="0x580" Offset="0xBD50"/>
-        <Texture Name="object_tr_Tex_00C2D0" OutName="tex_0000C2D0" Format="rgba16" Width="4" Height="8" Offset="0xC2D0"/>
+        <Texture Name="gKotakeCollarNeckTex" OutName="tex_0000C2D0" Format="rgba16" Width="4" Height="8" Offset="0xC2D0"/>
         <Blob Name="object_tr_Blob_00C310" Size="0x80" Offset="0xC310"/>
-        <Limb Name="object_tr_Limb_00C390" LimbType="Standard" Offset="0xC390"/>
-        <Limb Name="object_tr_Limb_00C39C" LimbType="Standard" Offset="0xC39C"/>
-        <Limb Name="object_tr_Limb_00C3A8" LimbType="Standard" Offset="0xC3A8"/>
-        <Limb Name="object_tr_Limb_00C3B4" LimbType="Standard" Offset="0xC3B4"/>
-        <Limb Name="object_tr_Limb_00C3C0" LimbType="Standard" Offset="0xC3C0"/>
-        <Limb Name="object_tr_Limb_00C3CC" LimbType="Standard" Offset="0xC3CC"/>
-        <Limb Name="object_tr_Limb_00C3D8" LimbType="Standard" Offset="0xC3D8"/>
-        <Limb Name="object_tr_Limb_00C3E4" LimbType="Standard" Offset="0xC3E4"/>
-        <Limb Name="object_tr_Limb_00C3F0" LimbType="Standard" Offset="0xC3F0"/>
-        <Limb Name="object_tr_Limb_00C3FC" LimbType="Standard" Offset="0xC3FC"/>
-        <Limb Name="object_tr_Limb_00C408" LimbType="Standard" Offset="0xC408"/>
-        <Limb Name="object_tr_Limb_00C414" LimbType="Standard" Offset="0xC414"/>
-        <Limb Name="object_tr_Limb_00C420" LimbType="Standard" Offset="0xC420"/>
-        <Limb Name="object_tr_Limb_00C42C" LimbType="Standard" Offset="0xC42C"/>
-        <Limb Name="object_tr_Limb_00C438" LimbType="Standard" Offset="0xC438"/>
-        <Limb Name="object_tr_Limb_00C444" LimbType="Standard" Offset="0xC444"/>
-        <Limb Name="object_tr_Limb_00C450" LimbType="Standard" Offset="0xC450"/>
-        <Limb Name="object_tr_Limb_00C45C" LimbType="Standard" Offset="0xC45C"/>
-        <Limb Name="object_tr_Limb_00C468" LimbType="Standard" Offset="0xC468"/>
-        <Limb Name="object_tr_Limb_00C474" LimbType="Standard" Offset="0xC474"/>
-        <Limb Name="object_tr_Limb_00C480" LimbType="Standard" Offset="0xC480"/>
-        <Limb Name="object_tr_Limb_00C48C" LimbType="Standard" Offset="0xC48C"/>
-        <Limb Name="object_tr_Limb_00C498" LimbType="Standard" Offset="0xC498"/>
-        <Limb Name="object_tr_Limb_00C4A4" LimbType="Standard" Offset="0xC4A4"/>
-        <Limb Name="object_tr_Limb_00C4B0" LimbType="Standard" Offset="0xC4B0"/>
-        <Limb Name="object_tr_Limb_00C4BC" LimbType="Standard" Offset="0xC4BC"/>
-        <Skeleton Name="object_tr_Skel_00C530" Type="Flex" LimbType="Standard" Offset="0xC530"/>
-        <Animation Name="object_tr_Anim_00C60C" Offset="0xC60C"/>
+        <Limb Name="gKotakePelvisLimb" LimbType="Standard" Offset="0xC390"/>
+        <Limb Name="gKotakeLeftThighLimb" LimbType="Standard" Offset="0xC39C"/>
+        <Limb Name="gKotakeLeftShinLimb" LimbType="Standard" Offset="0xC3A8"/>
+        <Limb Name="gKotakeLeftFootLimb" LimbType="Standard" Offset="0xC3B4"/>
+        <Limb Name="gKotakeRightThighLimb" LimbType="Standard" Offset="0xC3C0"/>
+        <Limb Name="gKotakeRightShinLimb" LimbType="Standard" Offset="0xC3CC"/>
+        <Limb Name="gKotakeRightFootLimb" LimbType="Standard" Offset="0xC3D8"/>
+        <Limb Name="gKotakeTorsoLimb" LimbType="Standard" Offset="0xC3E4"/>
+        <Limb Name="gKotakeLeftSleeveStartLimb" LimbType="Standard" Offset="0xC3F0"/>
+        <Limb Name="gKotakeLeftSleeveMidLimb" LimbType="Standard" Offset="0xC3FC"/>
+        <Limb Name="gKotakeLeftSleeveEndLimb" LimbType="Standard" Offset="0xC408"/>
+        <Limb Name="gKotakeLeftSleeveFrontLimb" LimbType="Standard" Offset="0xC414"/>
+        <Limb Name="gKotakeLeftHandLimb" LimbType="Standard" Offset="0xC420"/>
+        <Limb Name="gKotakeBroomLimb" LimbType="Standard" Offset="0xC42C"/>
+        <Limb Name="gKotakeRightSleeveStartLimb" LimbType="Standard" Offset="0xC438"/>
+        <Limb Name="gKotakeRightSleeveMidLimb" LimbType="Standard" Offset="0xC444"/>
+        <Limb Name="gKotakeRightSleeveEndLimb" LimbType="Standard" Offset="0xC450"/>
+        <Limb Name="gKotakeRightSleeveFrontLimb" LimbType="Standard" Offset="0xC45C"/>
+        <Limb Name="gKotakeRightHandLimb" LimbType="Standard" Offset="0xC468"/>
+        <Limb Name="gKotakeNeckLimb" LimbType="Standard" Offset="0xC474"/>
+        <Limb Name="gKotakeHeadLimb" LimbType="Standard" Offset="0xC480"/>
+        <Limb Name="gKotakeRightBraidStartLimb" LimbType="Standard" Offset="0xC48C"/>
+        <Limb Name="gKotakeRightBraidEndLimb" LimbType="Standard" Offset="0xC498"/>
+        <Limb Name="gKotakeTeethLimb" LimbType="Standard" Offset="0xC4A4"/>
+        <Limb Name="gKotakeLeftBraidStartLimb" LimbType="Standard" Offset="0xC4B0"/>
+        <Limb Name="gKotakeLeftBraidEndLimb" LimbType="Standard" Offset="0xC4BC"/>
+        <Skeleton Name="gKotakeSkel" Type="Flex" LimbType="Standard" Offset="0xC530"/>
+        <Animation Name="gKotakeKoumeTPoseAnim" Offset="0xC60C"/>
         <Blob Name="object_tr_Blob_00D5E0" Size="0x60" Offset="0xD5E0"/>
-        <DList Name="object_tr_DL_00D820" Offset="0xD820"/>
-        <DList Name="object_tr_DL_00D9A0" Offset="0xD9A0"/>
-        <DList Name="object_tr_DL_00DB00" Offset="0xDB00"/>
-        <DList Name="object_tr_DL_00DC40" Offset="0xDC40"/>
-        <DList Name="object_tr_DL_00DD50" Offset="0xDD50"/>
-        <DList Name="object_tr_DL_00DE48" Offset="0xDE48"/>
-        <DList Name="object_tr_DL_00DF58" Offset="0xDF58"/>
-        <DList Name="object_tr_DL_00E050" Offset="0xE050"/>
-        <DList Name="object_tr_DL_00E170" Offset="0xE170"/>
-        <DList Name="object_tr_DL_00E2F0" Offset="0xE2F0"/>
-        <DList Name="object_tr_DL_00E418" Offset="0xE418"/>
-        <DList Name="object_tr_DL_00E538" Offset="0xE538"/>
-        <DList Name="object_tr_DL_00E658" Offset="0xE658"/>
-        <DList Name="object_tr_DL_00E7D8" Offset="0xE7D8"/>
-        <DList Name="object_tr_DL_00E900" Offset="0xE900"/>
-        <DList Name="object_tr_DL_00EA20" Offset="0xEA20"/>
-        <DList Name="object_tr_DL_00EA28" Offset="0xEA28"/>
-        <Texture Name="object_tr_Tex_00EA30" OutName="tex_0000EA30" Format="rgba16" Width="32" Height="32" Offset="0xEA30"/>
-        <Texture Name="object_tr_Tex_00F230" OutName="tex_0000F230" Format="rgba16" Width="16" Height="16" Offset="0xF230"/>
-        <Texture Name="object_tr_Tex_00F430" OutName="tex_0000F430" Format="rgba16" Width="8" Height="8" Offset="0xF430"/>
-        <DList Name="object_tr_DL_010710" Offset="0x10710"/>
-        <DList Name="object_tr_DL_010D40" Offset="0x10D40"/>
-        <DList Name="object_tr_DL_010DA0" Offset="0x10DA0"/>
-        <DList Name="object_tr_DL_010E50" Offset="0x10E50"/>
-        <DList Name="object_tr_DL_010F00" Offset="0x10F00"/>
-        <DList Name="object_tr_DL_0110A8" Offset="0x110A8"/>
-        <DList Name="object_tr_DL_011140" Offset="0x11140"/>
-        <DList Name="object_tr_DL_0111D8" Offset="0x111D8"/>
-        <DList Name="object_tr_DL_011340" Offset="0x11340"/>
-        <Texture Name="object_tr_Tex_0114A8" OutName="tex_000114A8" Format="rgba16" Width="4" Height="8" Offset="0x114A8"/>
-        <Limb Name="object_tr_Limb_0114E8" LimbType="Standard" Offset="0x114E8"/>
-        <Limb Name="object_tr_Limb_0114F4" LimbType="Standard" Offset="0x114F4"/>
-        <Limb Name="object_tr_Limb_011500" LimbType="Standard" Offset="0x11500"/>
-        <Limb Name="object_tr_Limb_01150C" LimbType="Standard" Offset="0x1150C"/>
-        <Limb Name="object_tr_Limb_011518" LimbType="Standard" Offset="0x11518"/>
-        <Limb Name="object_tr_Limb_011524" LimbType="Standard" Offset="0x11524"/>
-        <Limb Name="object_tr_Limb_011530" LimbType="Standard" Offset="0x11530"/>
-        <Limb Name="object_tr_Limb_01153C" LimbType="Standard" Offset="0x1153C"/>
-        <Limb Name="object_tr_Limb_011548" LimbType="Standard" Offset="0x11548"/>
-        <Limb Name="object_tr_Limb_011554" LimbType="Standard" Offset="0x11554"/>
-        <Limb Name="object_tr_Limb_011560" LimbType="Standard" Offset="0x11560"/>
-        <Limb Name="object_tr_Limb_01156C" LimbType="Standard" Offset="0x1156C"/>
-        <Limb Name="object_tr_Limb_011578" LimbType="Standard" Offset="0x11578"/>
-        <Limb Name="object_tr_Limb_011584" LimbType="Standard" Offset="0x11584"/>
-        <Limb Name="object_tr_Limb_011590" LimbType="Standard" Offset="0x11590"/>
-        <Limb Name="object_tr_Limb_01159C" LimbType="Standard" Offset="0x1159C"/>
-        <Limb Name="object_tr_Limb_0115A8" LimbType="Standard" Offset="0x115A8"/>
-        <Limb Name="object_tr_Limb_0115B4" LimbType="Standard" Offset="0x115B4"/>
-        <Limb Name="object_tr_Limb_0115C0" LimbType="Standard" Offset="0x115C0"/>
-        <Limb Name="object_tr_Limb_0115CC" LimbType="Standard" Offset="0x115CC"/>
-        <Limb Name="object_tr_Limb_0115D8" LimbType="Standard" Offset="0x115D8"/>
-        <Limb Name="object_tr_Limb_0115E4" LimbType="Standard" Offset="0x115E4"/>
-        <Limb Name="object_tr_Limb_0115F0" LimbType="Standard" Offset="0x115F0"/>
-        <Limb Name="object_tr_Limb_0115FC" LimbType="Standard" Offset="0x115FC"/>
-        <Limb Name="object_tr_Limb_011608" LimbType="Standard" Offset="0x11608"/>
-        <Limb Name="object_tr_Limb_011614" LimbType="Standard" Offset="0x11614"/>
-        <Skeleton Name="object_tr_Skel_011688" Type="Flex" LimbType="Standard" Offset="0x11688"/>
-        <Animation Name="object_tr_Anim_012E1C" Offset="0x12E1C"/> <!-- Casting magic -->
+        <DList Name="gKoumePelvisDL" Offset="0xD820"/>
+        <DList Name="gKoumeTorsoDL" Offset="0xD9A0"/>
+        <DList Name="gKoumeNeckDL" Offset="0xDB00"/>
+        <DList Name="gKoumeLeftBraidStartDL" Offset="0xDC40"/>
+        <DList Name="gKoumeLeftBraidEndDL" Offset="0xDD50"/>
+        <DList Name="gKoumeRightBraidStartDL" Offset="0xDE48"/>
+        <DList Name="gKoumeRightBraidEndDL" Offset="0xDF58"/>
+        <DList Name="gKoumeRightSleeveStartDL" Offset="0xE050"/>
+        <DList Name="gKoumeRightSleeveFrontDL" Offset="0xE170"/>
+        <DList Name="gKoumeRightSleeveMidDL" Offset="0xE2F0"/>
+        <DList Name="gKoumeRightSleeveEndDL" Offset="0xE418"/>
+        <DList Name="gKoumeLeftSleeveStartDL" Offset="0xE538"/>
+        <DList Name="gKoumeLeftSleeveFrontDL" Offset="0xE658"/>
+        <DList Name="gKoumeLeftSleeveMidDL" Offset="0xE7D8"/>
+        <DList Name="gKoumeLeftSleeveEndDL" Offset="0xE900"/>
+        <DList Name="gKoumeRightThighDL" Offset="0xEA20"/>
+        <DList Name="gKoumeLeftThighDL" Offset="0xEA28"/>
+        <Texture Name="gKoumeGerudoFabricTex" OutName="tex_0000EA30" Format="rgba16" Width="32" Height="32" Offset="0xEA30"/>
+        <Texture Name="gKoumeRobeTex" OutName="tex_0000F230" Format="rgba16" Width="16" Height="16" Offset="0xF230"/>
+        <Texture Name="gKoumeJewelTex" OutName="tex_0000F430" Format="rgba16" Width="8" Height="8" Offset="0xF430"/>
+        <DList Name="gKoumeHeadDL" Offset="0x10710"/>
+        <DList Name="gKoumeTeethDL" Offset="0x10D40"/>
+        <DList Name="gKoumeRightShinDL" Offset="0x10DA0"/>
+        <DList Name="gKoumeLeftShinDL" Offset="0x10E50"/>
+        <DList Name="gKoumeBroomDL" Offset="0x10F00"/>
+        <DList Name="gKoumeRightFootDL" Offset="0x110A8"/>
+        <DList Name="gKoumeLeftFootDL" Offset="0x11140"/>
+        <DList Name="gKoumeRightHandDL" Offset="0x111D8"/>
+        <DList Name="gKoumeLeftHandDL" Offset="0x11340"/>
+        <Texture Name="gKoumeCollarNeckTex" OutName="tex_000114A8" Format="rgba16" Width="4" Height="8" Offset="0x114A8"/>
+        <Limb Name="gKoumePelvisLimb" LimbType="Standard" Offset="0x114E8"/>
+        <Limb Name="gKoumeLeftThighLimb" LimbType="Standard" Offset="0x114F4"/>
+        <Limb Name="gKoumeLeftShinLimb" LimbType="Standard" Offset="0x11500"/>
+        <Limb Name="gKoumeLeftFootLimb" LimbType="Standard" Offset="0x1150C"/>
+        <Limb Name="gKoumeRightThighLimb" LimbType="Standard" Offset="0x11518"/>
+        <Limb Name="gKoumeRightShinLimb" LimbType="Standard" Offset="0x11524"/>
+        <Limb Name="gKoumeRightFootLimb" LimbType="Standard" Offset="0x11530"/>
+        <Limb Name="gKoumeTorsoLimb" LimbType="Standard" Offset="0x1153C"/>
+        <Limb Name="gKoumeLeftSleeveStartLimb" LimbType="Standard" Offset="0x11548"/>
+        <Limb Name="gKoumeLeftSleeveMidLimb" LimbType="Standard" Offset="0x11554"/>
+        <Limb Name="gKoumeLeftSleeveEndLimb" LimbType="Standard" Offset="0x11560"/>
+        <Limb Name="gKoumeLeftSleeveFrontLimb" LimbType="Standard" Offset="0x1156C"/>
+        <Limb Name="gKoumeLeftHandLimb" LimbType="Standard" Offset="0x11578"/>
+        <Limb Name="gKoumeBroomLimb" LimbType="Standard" Offset="0x11584"/>
+        <Limb Name="gKoumeRightSleeveStartLimb" LimbType="Standard" Offset="0x11590"/>
+        <Limb Name="gKoumeRightSleeveMidLimb" LimbType="Standard" Offset="0x1159C"/>
+        <Limb Name="gKoumeRightSleeveEndLimb" LimbType="Standard" Offset="0x115A8"/>
+        <Limb Name="gKoumeRightSleeveFrontLimb" LimbType="Standard" Offset="0x115B4"/>
+        <Limb Name="gKoumeRightHandLimb" LimbType="Standard" Offset="0x115C0"/>
+        <Limb Name="gKoumeNeckLimb" LimbType="Standard" Offset="0x115CC"/>
+        <Limb Name="gKoumeHeadLimb" LimbType="Standard" Offset="0x115D8"/>
+        <Limb Name="gKoumeRightBraidStartLimb" LimbType="Standard" Offset="0x115E4"/>
+        <Limb Name="gKoumeRightBraidEndLimb" LimbType="Standard" Offset="0x115F0"/>
+        <Limb Name="gKoumeTeethLimb" LimbType="Standard" Offset="0x115FC"/>
+        <Limb Name="gKoumeLeftBraidStartLimb" LimbType="Standard" Offset="0x11608"/>
+        <Limb Name="gKoumeLeftBraidEndLimb" LimbType="Standard" Offset="0x11614"/>
+        <Skeleton Name="gKoumeSkel" Type="Flex" LimbType="Standard" Offset="0x11688"/>
+        <Animation Name="gKotakeKoumeCastMagicAnim" Offset="0x12E1C"/> <!-- Casting magic -->
     </File>
 </Root>

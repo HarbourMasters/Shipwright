@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_COW_H
+#define OBJECTS_OBJECT_COW_H 1
 
 #include "align_asset_macro.h"
 
@@ -73,3 +74,6 @@ static const ALIGN_ASSET(2) char gCowEyelidTex[] = dgCowEyelidTex;
 
 #define dgCowTailTex "__OTR__objects/object_cow/gCowTailTex"
 static const ALIGN_ASSET(2) char gCowTailTex[] = dgCowTailTex;
+
+
+#endif // OBJECTS_OBJECT_COW_H

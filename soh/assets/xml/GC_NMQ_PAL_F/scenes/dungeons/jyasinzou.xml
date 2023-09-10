@@ -1,95 +1,358 @@
 <Root>
     <File Name="jyasinzou_scene" Segment="2">
+        <Texture Name="jyasinzou_sceneTex_018820" OutName="jyasinzou_sceneTex_018820" Format="ci8" Width="16" Height="16" Offset="0x18840" TlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_sceneTex_019120" OutName="jyasinzou_sceneTex_019120" Format="rgba16" Width="16" Height="16" Offset="0x19140" AddedByScript="true"/>
+        <Texture Name="jyasinzou_sceneTex_019320" OutName="jyasinzou_sceneTex_019320" Format="ci4" Width="64" Height="64" Offset="0x19340" TlutOffset="0x18020" AddedByScript="true"/>
+        <Texture Name="jyasinzou_sceneTLUT_017BE0" OutName="jyasinzou_sceneTLUT_017BE0" Format="rgba16" Width="16" Height="16" Offset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_sceneTLUT_017DE0" OutName="jyasinzou_sceneTLUT_017DE0" Format="rgba16" Width="16" Height="16" Offset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_sceneTLUT_017FE0" OutName="jyasinzou_sceneTLUT_017FE0" Format="rgba16" Width="4" Height="4" Offset="0x18000" AddedByScript="true"/>
+        <Texture Name="jyasinzou_sceneTLUT_018000" OutName="jyasinzou_sceneTLUT_018000" Format="rgba16" Width="4" Height="4" Offset="0x18020" AddedByScript="true"/>
         <Path Name="gSpiritTemplePath_004C0" Offset="0x4C0" NumPaths="6"/>
         <Texture Name="gSpiritTempleDayEntranceTex" OutName="day_entrance" Format="ia16" Width="8" Height="128" Offset="0x18940"/>
         <Texture Name="gSpiritTempleNightEntranceTex" OutName="night_entrance" Format="ia16" Width="8" Height="128" Offset="0x18040"/>
         <Scene Name="jyasinzou_scene" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_0" Segment="3">
+        <Texture Name="jyasinzou_room_0Tex_00A9D8" OutName="jyasinzou_room_0Tex_00A9D8" Format="ci8" Width="64" Height="32" Offset="0xA928" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_0Tex_00B1D8" OutName="jyasinzou_room_0Tex_00B1D8" Format="ci8" Width="64" Height="32" Offset="0xB128" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_0Tex_00B9D8" OutName="jyasinzou_room_0Tex_00B9D8" Format="ci8" Width="32" Height="64" Offset="0xB928" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_0Tex_00C1D8" OutName="jyasinzou_room_0Tex_00C1D8" Format="ci8" Width="32" Height="64" Offset="0xC128" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_0Tex_00C9D8" OutName="jyasinzou_room_0Tex_00C9D8" Format="ci8" Width="32" Height="64" Offset="0xC928" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_0Tex_00D1D8" OutName="jyasinzou_room_0Tex_00D1D8" Format="ci8" Width="32" Height="32" Offset="0xD128" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_0Tex_00D5D8" OutName="jyasinzou_room_0Tex_00D5D8" Format="ci8" Width="16" Height="128" Offset="0xD528" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_0Tex_00DDD8" OutName="jyasinzou_room_0Tex_00DDD8" Format="ci8" Width="32" Height="32" Offset="0xDD28" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_0Tex_00E1D8" OutName="jyasinzou_room_0Tex_00E1D8" Format="ci8" Width="64" Height="32" Offset="0xE128" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_0Tex_00E9D8" OutName="jyasinzou_room_0Tex_00E9D8" Format="ci8" Width="64" Height="32" Offset="0xE928" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_0Tex_00F1D8" OutName="jyasinzou_room_0Tex_00F1D8" Format="ci4" Width="64" Height="64" Offset="0xF128" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18000" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_0Tex_00F9D8" OutName="jyasinzou_room_0Tex_00F9D8" Format="ci4" Width="64" Height="64" Offset="0xF928" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18020" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_0Tex_0107E8" OutName="jyasinzou_room_0Tex_0107E8" Format="ia8" Width="64" Height="32" Offset="0x10738" AddedByScript="true"/>
         <Room Name="jyasinzou_room_0" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_1" Segment="3">
+        <Texture Name="jyasinzou_room_1Tex_004F48" OutName="jyasinzou_room_1Tex_004F48" Format="ci8" Width="64" Height="32" Offset="0x4EF8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_1Tex_005748" OutName="jyasinzou_room_1Tex_005748" Format="ci8" Width="32" Height="64" Offset="0x56F8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_1Tex_005F48" OutName="jyasinzou_room_1Tex_005F48" Format="ci8" Width="32" Height="64" Offset="0x5EF8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_1Tex_006748" OutName="jyasinzou_room_1Tex_006748" Format="ci8" Width="32" Height="32" Offset="0x66F8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_1Tex_006B48" OutName="jyasinzou_room_1Tex_006B48" Format="ci8" Width="32" Height="64" Offset="0x6AF8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_1Tex_007348" OutName="jyasinzou_room_1Tex_007348" Format="ci8" Width="64" Height="32" Offset="0x72F8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_1Tex_007B48" OutName="jyasinzou_room_1Tex_007B48" Format="ci8" Width="64" Height="32" Offset="0x7AF8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_1Tex_008348" OutName="jyasinzou_room_1Tex_008348" Format="ci4" Width="64" Height="64" Offset="0x82F8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18000" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_1Tex_008B48" OutName="jyasinzou_room_1Tex_008B48" Format="ci4" Width="64" Height="64" Offset="0x8AF8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18020" AddedByScript="true"/>
         <Room Name="jyasinzou_room_1" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_2" Segment="3">
+        <Texture Name="jyasinzou_room_2Tex_0023B0" OutName="jyasinzou_room_2Tex_0023B0" Format="rgba16" Width="32" Height="64" Offset="0x2410" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_2Tex_0033B0" OutName="jyasinzou_room_2Tex_0033B0" Format="ci8" Width="64" Height="32" Offset="0x3410" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_2Tex_003BB0" OutName="jyasinzou_room_2Tex_003BB0" Format="rgba16" Width="16" Height="32" Offset="0x3C10" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_2Tex_003FB0" OutName="jyasinzou_room_2Tex_003FB0" Format="rgba16" Width="32" Height="32" Offset="0x4010" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_2Tex_0047B0" OutName="jyasinzou_room_2Tex_0047B0" Format="ci8" Width="32" Height="32" Offset="0x4810" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_2Tex_004BB0" OutName="jyasinzou_room_2Tex_004BB0" Format="ci8" Width="64" Height="32" Offset="0x4C10" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_2Tex_0053B0" OutName="jyasinzou_room_2Tex_0053B0" Format="ci4" Width="64" Height="64" Offset="0x5410" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18020" AddedByScript="true"/>
         <Room Name="jyasinzou_room_2" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_3" Segment="3">
+        <Texture Name="jyasinzou_room_3Tex_001FC8" OutName="jyasinzou_room_3Tex_001FC8" Format="ci8" Width="32" Height="32" Offset="0x1F48" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_3Tex_0023C8" OutName="jyasinzou_room_3Tex_0023C8" Format="ci8" Width="64" Height="32" Offset="0x2348" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_3Tex_002BC8" OutName="jyasinzou_room_3Tex_002BC8" Format="ci4" Width="64" Height="64" Offset="0x2B48" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18000" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_3Tex_0033C8" OutName="jyasinzou_room_3Tex_0033C8" Format="ci4" Width="64" Height="64" Offset="0x3348" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18020" AddedByScript="true"/>
         <Room Name="jyasinzou_room_3" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_4" Segment="3">
+        <Texture Name="jyasinzou_room_4Tex_003698" OutName="jyasinzou_room_4Tex_003698" Format="ci8" Width="32" Height="64" Offset="0x3688" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_4Tex_003E98" OutName="jyasinzou_room_4Tex_003E98" Format="ci8" Width="32" Height="64" Offset="0x3E88" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_4Tex_004698" OutName="jyasinzou_room_4Tex_004698" Format="ci8" Width="32" Height="64" Offset="0x4688" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_4Tex_004E98" OutName="jyasinzou_room_4Tex_004E98" Format="ci8" Width="64" Height="32" Offset="0x4E88" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_4Tex_005698" OutName="jyasinzou_room_4Tex_005698" Format="ci8" Width="16" Height="16" Offset="0x5688" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_4Tex_005798" OutName="jyasinzou_room_4Tex_005798" Format="ci8" Width="32" Height="32" Offset="0x5788" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_4Tex_005B98" OutName="jyasinzou_room_4Tex_005B98" Format="ci8" Width="64" Height="32" Offset="0x5B88" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_4Tex_006398" OutName="jyasinzou_room_4Tex_006398" Format="ci8" Width="32" Height="32" Offset="0x6388" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_4Tex_006798" OutName="jyasinzou_room_4Tex_006798" Format="ci4" Width="64" Height="64" Offset="0x6788" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18020" AddedByScript="true"/>
         <Room Name="jyasinzou_room_4" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_5" Segment="3">
+        <Texture Name="jyasinzou_room_5Tex_00CBC8" OutName="jyasinzou_room_5Tex_00CBC8" Format="ci8" Width="32" Height="32" Offset="0xCAF8" TlutOffset="0xC8E0" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_00CFC8" OutName="jyasinzou_room_5Tex_00CFC8" Format="ci8" Width="64" Height="32" Offset="0xCEF8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_00D7C8" OutName="jyasinzou_room_5Tex_00D7C8" Format="ci8" Width="16" Height="64" Offset="0xD6F8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_00DBC8" OutName="jyasinzou_room_5Tex_00DBC8" Format="ci8" Width="32" Height="32" Offset="0xDAF8" TlutOffset="0xC8E0" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_00DFC8" OutName="jyasinzou_room_5Tex_00DFC8" Format="ci8" Width="64" Height="32" Offset="0xDEF8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_00E7C8" OutName="jyasinzou_room_5Tex_00E7C8" Format="rgba16" Width="32" Height="32" Offset="0xE6F8" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_00EFC8" OutName="jyasinzou_room_5Tex_00EFC8" Format="rgba16" Width="32" Height="16" Offset="0xEEF8" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_00F3C8" OutName="jyasinzou_room_5Tex_00F3C8" Format="ci8" Width="32" Height="32" Offset="0xF2F8" TlutOffset="0xC8E0" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_00F7C8" OutName="jyasinzou_room_5Tex_00F7C8" Format="ci8" Width="32" Height="64" Offset="0xF6F8" TlutOffset="0xC8E0" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_00FFC8" OutName="jyasinzou_room_5Tex_00FFC8" Format="ci8" Width="16" Height="16" Offset="0xFEF8" TlutOffset="0xC8E0" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_0100C8" OutName="jyasinzou_room_5Tex_0100C8" Format="ci8" Width="64" Height="32" Offset="0xFFF8" TlutOffset="0xC8E0" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_0108C8" OutName="jyasinzou_room_5Tex_0108C8" Format="ci8" Width="32" Height="32" Offset="0x107F8" TlutOffset="0xC8E0" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_010CC8" OutName="jyasinzou_room_5Tex_010CC8" Format="ci8" Width="32" Height="32" Offset="0x10BF8" TlutOffset="0xC8E0" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_0110C8" OutName="jyasinzou_room_5Tex_0110C8" Format="ci8" Width="32" Height="32" Offset="0x10FF8" TlutOffset="0xC8E0" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_0114C8" OutName="jyasinzou_room_5Tex_0114C8" Format="ci8" Width="32" Height="32" Offset="0x113F8" TlutOffset="0xC8E0" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_0118C8" OutName="jyasinzou_room_5Tex_0118C8" Format="ci8" Width="32" Height="32" Offset="0x117F8" TlutOffset="0xC8E0" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_011CC8" OutName="jyasinzou_room_5Tex_011CC8" Format="ci4" Width="32" Height="128" Offset="0x11BF8" TlutOffset="0xCAD8" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_0124C8" OutName="jyasinzou_room_5Tex_0124C8" Format="ci8" Width="32" Height="64" Offset="0x123F8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_012CC8" OutName="jyasinzou_room_5Tex_012CC8" Format="ci8" Width="64" Height="32" Offset="0x12BF8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_0134C8" OutName="jyasinzou_room_5Tex_0134C8" Format="ci8" Width="32" Height="32" Offset="0x133F8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_0138C8" OutName="jyasinzou_room_5Tex_0138C8" Format="ci8" Width="32" Height="64" Offset="0x137F8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_0140C8" OutName="jyasinzou_room_5Tex_0140C8" Format="ci8" Width="64" Height="32" Offset="0x13FF8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_0148C8" OutName="jyasinzou_room_5Tex_0148C8" Format="ci8" Width="64" Height="32" Offset="0x147F8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_0150C8" OutName="jyasinzou_room_5Tex_0150C8" Format="ci4" Width="64" Height="64" Offset="0x14FF8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18000" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_0158C8" OutName="jyasinzou_room_5Tex_0158C8" Format="ci8" Width="32" Height="32" Offset="0x157F8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_015CC8" OutName="jyasinzou_room_5Tex_015CC8" Format="ci4" Width="64" Height="64" Offset="0x15BF8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18020" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_016808" OutName="jyasinzou_room_5Tex_016808" Format="ia8" Width="64" Height="32" Offset="0x16738" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5Tex_017008" OutName="jyasinzou_room_5Tex_017008" Format="rgba16" Width="32" Height="64" Offset="0x16F38" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5TLUT_00C9B0" OutName="jyasinzou_room_5TLUT_00C9B0" Format="rgba16" Width="16" Height="16" Offset="0xC8E0" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_5TLUT_00CBA8" OutName="jyasinzou_room_5TLUT_00CBA8" Format="rgba16" Width="4" Height="4" Offset="0xCAD8" AddedByScript="true"/>
         <Room Name="jyasinzou_room_5" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_6" Segment="3">
+        <Texture Name="jyasinzou_room_6Tex_002BE8" OutName="jyasinzou_room_6Tex_002BE8" Format="ci8" Width="64" Height="32" Offset="0x2BF8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_6Tex_0033E8" OutName="jyasinzou_room_6Tex_0033E8" Format="ci8" Width="32" Height="32" Offset="0x33F8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_6Tex_0037E8" OutName="jyasinzou_room_6Tex_0037E8" Format="ci8" Width="64" Height="32" Offset="0x37F8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_6Tex_003FE8" OutName="jyasinzou_room_6Tex_003FE8" Format="ci8" Width="64" Height="32" Offset="0x3FF8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
         <Room Name="jyasinzou_room_6" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_7" Segment="3">
+        <Texture Name="jyasinzou_room_7Tex_002908" OutName="jyasinzou_room_7Tex_002908" Format="rgba16" Width="32" Height="64" Offset="0x2908" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_7Tex_003908" OutName="jyasinzou_room_7Tex_003908" Format="ci8" Width="64" Height="32" Offset="0x3908" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_7Tex_004108" OutName="jyasinzou_room_7Tex_004108" Format="ci8" Width="64" Height="32" Offset="0x4108" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_7Tex_004908" OutName="jyasinzou_room_7Tex_004908" Format="rgba16" Width="16" Height="32" Offset="0x4908" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_7Tex_004D08" OutName="jyasinzou_room_7Tex_004D08" Format="ci4" Width="64" Height="64" Offset="0x4D08" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18020" AddedByScript="true"/>
         <Room Name="jyasinzou_room_7" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_8" Segment="3">
+        <Texture Name="jyasinzou_room_8Tex_003A50" OutName="jyasinzou_room_8Tex_003A50" Format="ci8" Width="64" Height="32" Offset="0x3A10" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_8Tex_004250" OutName="jyasinzou_room_8Tex_004250" Format="ci8" Width="64" Height="32" Offset="0x4210" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_8Tex_004A50" OutName="jyasinzou_room_8Tex_004A50" Format="ci8" Width="32" Height="32" Offset="0x4A10" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_8Tex_004E50" OutName="jyasinzou_room_8Tex_004E50" Format="rgba16" Width="32" Height="32" Offset="0x4E10" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_8Tex_005650" OutName="jyasinzou_room_8Tex_005650" Format="ci8" Width="32" Height="64" Offset="0x5610" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_8Tex_005E50" OutName="jyasinzou_room_8Tex_005E50" Format="ci8" Width="32" Height="32" Offset="0x5E10" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_8Tex_006250" OutName="jyasinzou_room_8Tex_006250" Format="ci8" Width="32" Height="64" Offset="0x6210" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_8Tex_006A50" OutName="jyasinzou_room_8Tex_006A50" Format="ci8" Width="64" Height="32" Offset="0x6A10" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_8Tex_007250" OutName="jyasinzou_room_8Tex_007250" Format="ci4" Width="64" Height="64" Offset="0x7210" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18020" AddedByScript="true"/>
         <Room Name="jyasinzou_room_8" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_9" Segment="3">
+        <Texture Name="jyasinzou_room_9Tex_002DC8" OutName="jyasinzou_room_9Tex_002DC8" Format="rgba16" Width="32" Height="64" Offset="0x2DE8" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_9Tex_003DC8" OutName="jyasinzou_room_9Tex_003DC8" Format="ci8" Width="64" Height="32" Offset="0x3DE8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_9Tex_0045C8" OutName="jyasinzou_room_9Tex_0045C8" Format="ci8" Width="64" Height="32" Offset="0x45E8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_9Tex_004DC8" OutName="jyasinzou_room_9Tex_004DC8" Format="rgba16" Width="16" Height="32" Offset="0x4DE8" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_9Tex_0051C8" OutName="jyasinzou_room_9Tex_0051C8" Format="ci8" Width="64" Height="16" Offset="0x51E8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_9Tex_0055C8" OutName="jyasinzou_room_9Tex_0055C8" Format="ci8" Width="64" Height="32" Offset="0x55E8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
         <Room Name="jyasinzou_room_9" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_10" Segment="3">
+        <Texture Name="jyasinzou_room_10Tex_0031A0" OutName="jyasinzou_room_10Tex_0031A0" Format="rgba16" Width="32" Height="64" Offset="0x31A0" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_10Tex_0041A0" OutName="jyasinzou_room_10Tex_0041A0" Format="ci8" Width="64" Height="32" Offset="0x41A0" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_10Tex_0049A0" OutName="jyasinzou_room_10Tex_0049A0" Format="ci8" Width="64" Height="32" Offset="0x49A0" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_10Tex_0051A0" OutName="jyasinzou_room_10Tex_0051A0" Format="ci8" Width="64" Height="32" Offset="0x51A0" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_10Tex_0059A0" OutName="jyasinzou_room_10Tex_0059A0" Format="rgba16" Width="16" Height="32" Offset="0x59A0" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_10Tex_005DA0" OutName="jyasinzou_room_10Tex_005DA0" Format="ci8" Width="64" Height="32" Offset="0x5DA0" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_10Tex_0065A0" OutName="jyasinzou_room_10Tex_0065A0" Format="ci8" Width="32" Height="32" Offset="0x65A0" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_10Tex_0069A0" OutName="jyasinzou_room_10Tex_0069A0" Format="rgba16" Width="64" Height="32" Offset="0x69A0" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_10Tex_0079A0" OutName="jyasinzou_room_10Tex_0079A0" Format="ci8" Width="64" Height="16" Offset="0x79A0" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_10Tex_007DA0" OutName="jyasinzou_room_10Tex_007DA0" Format="ci8" Width="32" Height="32" Offset="0x7DA0" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
         <Room Name="jyasinzou_room_10" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_11" Segment="3">
+        <Texture Name="jyasinzou_room_11Tex_000780" OutName="jyasinzou_room_11Tex_000780" Format="ci8" Width="32" Height="32" Offset="0x780" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
         <Room Name="jyasinzou_room_11" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_12" Segment="3">
+        <Texture Name="jyasinzou_room_12Tex_0010D8" OutName="jyasinzou_room_12Tex_0010D8" Format="ci8" Width="64" Height="32" Offset="0x1058" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_12Tex_0018D8" OutName="jyasinzou_room_12Tex_0018D8" Format="ci8" Width="32" Height="64" Offset="0x1858" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
         <Room Name="jyasinzou_room_12" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_13" Segment="3">
+        <Texture Name="jyasinzou_room_13Tex_0028A8" OutName="jyasinzou_room_13Tex_0028A8" Format="ci8" Width="32" Height="64" Offset="0x2848" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_13Tex_0030A8" OutName="jyasinzou_room_13Tex_0030A8" Format="ci8" Width="64" Height="32" Offset="0x3048" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_13Tex_0038A8" OutName="jyasinzou_room_13Tex_0038A8" Format="ci8" Width="32" Height="32" Offset="0x3848" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_13Tex_003CA8" OutName="jyasinzou_room_13Tex_003CA8" Format="ci8" Width="64" Height="32" Offset="0x3C48" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_13Tex_0044A8" OutName="jyasinzou_room_13Tex_0044A8" Format="ci8" Width="64" Height="32" Offset="0x4448" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_13Tex_004CA8" OutName="jyasinzou_room_13Tex_004CA8" Format="ci8" Width="32" Height="32" Offset="0x4C48" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_13Tex_0050A8" OutName="jyasinzou_room_13Tex_0050A8" Format="ci4" Width="64" Height="64" Offset="0x5048" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18020" AddedByScript="true"/>
         <Room Name="jyasinzou_room_13" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_14" Segment="3">
+        <Texture Name="jyasinzou_room_14Tex_001CA0" OutName="jyasinzou_room_14Tex_001CA0" Format="ci8" Width="64" Height="32" Offset="0x1C90" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_14Tex_0024A0" OutName="jyasinzou_room_14Tex_0024A0" Format="ci8" Width="32" Height="32" Offset="0x2490" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_14Tex_0028A0" OutName="jyasinzou_room_14Tex_0028A0" Format="ci8" Width="64" Height="32" Offset="0x2890" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_14Tex_0030A0" OutName="jyasinzou_room_14Tex_0030A0" Format="ci8" Width="32" Height="32" Offset="0x3090" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_14Tex_0034A0" OutName="jyasinzou_room_14Tex_0034A0" Format="rgba16" Width="32" Height="64" Offset="0x3490" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_14Tex_0044A0" OutName="jyasinzou_room_14Tex_0044A0" Format="ci4" Width="64" Height="64" Offset="0x4490" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18020" AddedByScript="true"/>
         <Room Name="jyasinzou_room_14" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_15" Segment="3">
+        <Texture Name="jyasinzou_room_15Tex_002FE8" OutName="jyasinzou_room_15Tex_002FE8" Format="rgba16" Width="32" Height="64" Offset="0x2FB8" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_15Tex_003FE8" OutName="jyasinzou_room_15Tex_003FE8" Format="rgba16" Width="16" Height="32" Offset="0x3FB8" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_15Tex_0043E8" OutName="jyasinzou_room_15Tex_0043E8" Format="ci8" Width="32" Height="64" Offset="0x43B8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_15Tex_004BE8" OutName="jyasinzou_room_15Tex_004BE8" Format="ci8" Width="32" Height="64" Offset="0x4BB8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_15Tex_0053E8" OutName="jyasinzou_room_15Tex_0053E8" Format="ci8" Width="64" Height="32" Offset="0x53B8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_15Tex_005BE8" OutName="jyasinzou_room_15Tex_005BE8" Format="ci8" Width="16" Height="16" Offset="0x5BB8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_15Tex_005CE8" OutName="jyasinzou_room_15Tex_005CE8" Format="ci8" Width="32" Height="32" Offset="0x5CB8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_15Tex_0060E8" OutName="jyasinzou_room_15Tex_0060E8" Format="ci8" Width="64" Height="32" Offset="0x60B8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_15Tex_0068E8" OutName="jyasinzou_room_15Tex_0068E8" Format="ci8" Width="32" Height="32" Offset="0x68B8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_15Tex_006CE8" OutName="jyasinzou_room_15Tex_006CE8" Format="ci4" Width="64" Height="64" Offset="0x6CB8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18020" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_15Tex_007C98" OutName="jyasinzou_room_15Tex_007C98" Format="rgba16" Width="32" Height="32" Offset="0x7C68" AddedByScript="true"/>
         <Room Name="jyasinzou_room_15" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_16" Segment="3">
+        <Texture Name="jyasinzou_room_16Tex_0029B8" OutName="jyasinzou_room_16Tex_0029B8" Format="rgba16" Width="32" Height="64" Offset="0x2988" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_16Tex_0039B8" OutName="jyasinzou_room_16Tex_0039B8" Format="ci8" Width="64" Height="32" Offset="0x3988" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_16Tex_0041B8" OutName="jyasinzou_room_16Tex_0041B8" Format="ci8" Width="16" Height="64" Offset="0x4188" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_16Tex_0045B8" OutName="jyasinzou_room_16Tex_0045B8" Format="ci8" Width="64" Height="32" Offset="0x4588" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_16Tex_004DB8" OutName="jyasinzou_room_16Tex_004DB8" Format="rgba16" Width="16" Height="32" Offset="0x4D88" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_16Tex_0051B8" OutName="jyasinzou_room_16Tex_0051B8" Format="ci8" Width="32" Height="64" Offset="0x5188" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_16Tex_0059B8" OutName="jyasinzou_room_16Tex_0059B8" Format="ci4" Width="64" Height="64" Offset="0x5988" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18020" AddedByScript="true"/>
         <Room Name="jyasinzou_room_16" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_17" Segment="3">
+        <Texture Name="jyasinzou_room_17Tex_005E50" OutName="jyasinzou_room_17Tex_005E50" Format="ci8" Width="64" Height="32" Offset="0x5E10" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_17Tex_006650" OutName="jyasinzou_room_17Tex_006650" Format="ci8" Width="64" Height="32" Offset="0x6610" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_17Tex_006E50" OutName="jyasinzou_room_17Tex_006E50" Format="ci8" Width="32" Height="32" Offset="0x6E10" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_17Tex_007250" OutName="jyasinzou_room_17Tex_007250" Format="ci8" Width="64" Height="32" Offset="0x7210" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_17Tex_007A50" OutName="jyasinzou_room_17Tex_007A50" Format="ci8" Width="64" Height="32" Offset="0x7A10" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_17Tex_008250" OutName="jyasinzou_room_17Tex_008250" Format="ci4" Width="64" Height="64" Offset="0x8210" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18000" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_17Tex_008A50" OutName="jyasinzou_room_17Tex_008A50" Format="ci8" Width="32" Height="32" Offset="0x8A10" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_17Tex_008E50" OutName="jyasinzou_room_17Tex_008E50" Format="ci4" Width="64" Height="64" Offset="0x8E10" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18020" AddedByScript="true"/>
         <Room Name="jyasinzou_room_17" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_18" Segment="3">
+        <Texture Name="jyasinzou_room_18Tex_0020F0" OutName="jyasinzou_room_18Tex_0020F0" Format="ci8" Width="64" Height="32" Offset="0x20C0" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_18Tex_0028F0" OutName="jyasinzou_room_18Tex_0028F0" Format="ci8" Width="64" Height="32" Offset="0x28C0" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_18Tex_0030F0" OutName="jyasinzou_room_18Tex_0030F0" Format="ci8" Width="32" Height="32" Offset="0x30C0" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_18Tex_0034F0" OutName="jyasinzou_room_18Tex_0034F0" Format="rgba16" Width="32" Height="32" Offset="0x34C0" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_18Tex_003CF0" OutName="jyasinzou_room_18Tex_003CF0" Format="ci8" Width="16" Height="128" Offset="0x3CC0" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_18Tex_0044F0" OutName="jyasinzou_room_18Tex_0044F0" Format="ci8" Width="32" Height="32" Offset="0x44C0" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_18Tex_0048F0" OutName="jyasinzou_room_18Tex_0048F0" Format="ci8" Width="32" Height="32" Offset="0x48C0" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_18Tex_0054E0" OutName="jyasinzou_room_18Tex_0054E0" Format="rgba16" Width="32" Height="32" Offset="0x54B0" AddedByScript="true"/>
         <Room Name="jyasinzou_room_18" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_19" Segment="3">
+        <Texture Name="jyasinzou_room_19Tex_002DC8" OutName="jyasinzou_room_19Tex_002DC8" Format="rgba16" Width="32" Height="64" Offset="0x2DD8" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_19Tex_003DC8" OutName="jyasinzou_room_19Tex_003DC8" Format="ci8" Width="64" Height="32" Offset="0x3DD8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_19Tex_0045C8" OutName="jyasinzou_room_19Tex_0045C8" Format="ci8" Width="64" Height="32" Offset="0x45D8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_19Tex_004DC8" OutName="jyasinzou_room_19Tex_004DC8" Format="rgba16" Width="16" Height="32" Offset="0x4DD8" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_19Tex_0051C8" OutName="jyasinzou_room_19Tex_0051C8" Format="ci8" Width="64" Height="16" Offset="0x51D8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_19Tex_0055C8" OutName="jyasinzou_room_19Tex_0055C8" Format="ci8" Width="64" Height="32" Offset="0x55D8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
         <Room Name="jyasinzou_room_19" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_20" Segment="3">
+        <Texture Name="jyasinzou_room_20Tex_0031B8" OutName="jyasinzou_room_20Tex_0031B8" Format="rgba16" Width="32" Height="64" Offset="0x31B8" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_20Tex_0041B8" OutName="jyasinzou_room_20Tex_0041B8" Format="ci8" Width="64" Height="32" Offset="0x41B8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_20Tex_0049B8" OutName="jyasinzou_room_20Tex_0049B8" Format="ci8" Width="64" Height="32" Offset="0x49B8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_20Tex_0051B8" OutName="jyasinzou_room_20Tex_0051B8" Format="ci8" Width="64" Height="32" Offset="0x51B8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_20Tex_0059B8" OutName="jyasinzou_room_20Tex_0059B8" Format="rgba16" Width="16" Height="32" Offset="0x59B8" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_20Tex_005DB8" OutName="jyasinzou_room_20Tex_005DB8" Format="ci8" Width="64" Height="32" Offset="0x5DB8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_20Tex_0065B8" OutName="jyasinzou_room_20Tex_0065B8" Format="ci8" Width="32" Height="32" Offset="0x65B8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_20Tex_0069B8" OutName="jyasinzou_room_20Tex_0069B8" Format="rgba16" Width="64" Height="32" Offset="0x69B8" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_20Tex_0079B8" OutName="jyasinzou_room_20Tex_0079B8" Format="ci8" Width="64" Height="16" Offset="0x79B8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_20Tex_007DB8" OutName="jyasinzou_room_20Tex_007DB8" Format="ci8" Width="32" Height="32" Offset="0x7DB8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
         <Room Name="jyasinzou_room_20" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_21" Segment="3">
+        <Texture Name="jyasinzou_room_21Tex_001660" OutName="jyasinzou_room_21Tex_001660" Format="rgba16" Width="32" Height="64" Offset="0x1650" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_21Tex_002660" OutName="jyasinzou_room_21Tex_002660" Format="ci8" Width="64" Height="32" Offset="0x2650" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_21Tex_002E60" OutName="jyasinzou_room_21Tex_002E60" Format="rgba16" Width="16" Height="32" Offset="0x2E50" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_21Tex_003260" OutName="jyasinzou_room_21Tex_003260" Format="ci8" Width="32" Height="32" Offset="0x3250" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_21Tex_003660" OutName="jyasinzou_room_21Tex_003660" Format="ci8" Width="64" Height="32" Offset="0x3650" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_21Tex_003E60" OutName="jyasinzou_room_21Tex_003E60" Format="ci4" Width="64" Height="64" Offset="0x3E50" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18020" AddedByScript="true"/>
         <Room Name="jyasinzou_room_21" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_22" Segment="3">
+        <Texture Name="jyasinzou_room_22Tex_001468" OutName="jyasinzou_room_22Tex_001468" Format="ci8" Width="64" Height="32" Offset="0x14C8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_22Tex_001C68" OutName="jyasinzou_room_22Tex_001C68" Format="ci8" Width="32" Height="64" Offset="0x1CC8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_22Tex_002468" OutName="jyasinzou_room_22Tex_002468" Format="ci8" Width="32" Height="32" Offset="0x24C8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_22Tex_002868" OutName="jyasinzou_room_22Tex_002868" Format="ci4" Width="64" Height="64" Offset="0x28C8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18020" AddedByScript="true"/>
         <Room Name="jyasinzou_room_22" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_23" Segment="3">
+        <Texture Name="jyasinzou_room_23Tex_004438" OutName="jyasinzou_room_23Tex_004438" Format="ci8" Width="32" Height="64" Offset="0x43B8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_23Tex_004C38" OutName="jyasinzou_room_23Tex_004C38" Format="ci8" Width="64" Height="32" Offset="0x4BB8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_23Tex_005438" OutName="jyasinzou_room_23Tex_005438" Format="ci8" Width="16" Height="64" Offset="0x53B8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_23Tex_005838" OutName="jyasinzou_room_23Tex_005838" Format="ci8" Width="64" Height="32" Offset="0x57B8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_23Tex_006038" OutName="jyasinzou_room_23Tex_006038" Format="ci8" Width="32" Height="32" Offset="0x5FB8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_23Tex_006438" OutName="jyasinzou_room_23Tex_006438" Format="ci8" Width="16" Height="128" Offset="0x63B8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_23Tex_006C38" OutName="jyasinzou_room_23Tex_006C38" Format="rgba16" Width="32" Height="32" Offset="0x6BB8" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_23Tex_007438" OutName="jyasinzou_room_23Tex_007438" Format="ci8" Width="64" Height="32" Offset="0x73B8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_23Tex_007C38" OutName="jyasinzou_room_23Tex_007C38" Format="ci8" Width="32" Height="32" Offset="0x7BB8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_23Tex_008038" OutName="jyasinzou_room_23Tex_008038" Format="ci8" Width="64" Height="32" Offset="0x7FB8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_23Tex_008838" OutName="jyasinzou_room_23Tex_008838" Format="ci4" Width="64" Height="64" Offset="0x87B8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18020" AddedByScript="true"/>
         <Room Name="jyasinzou_room_23" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_24" Segment="3">
+        <Texture Name="jyasinzou_room_24Tex_001B38" OutName="jyasinzou_room_24Tex_001B38" Format="rgba16" Width="32" Height="64" Offset="0x1B18" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_24Tex_002B38" OutName="jyasinzou_room_24Tex_002B38" Format="ci8" Width="64" Height="32" Offset="0x2B18" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_24Tex_003338" OutName="jyasinzou_room_24Tex_003338" Format="ci8" Width="64" Height="32" Offset="0x3318" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_24Tex_003B38" OutName="jyasinzou_room_24Tex_003B38" Format="rgba16" Width="16" Height="32" Offset="0x3B18" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_24Tex_003F38" OutName="jyasinzou_room_24Tex_003F38" Format="ci8" Width="32" Height="32" Offset="0x3F18" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_24Tex_004338" OutName="jyasinzou_room_24Tex_004338" Format="ci8" Width="64" Height="32" Offset="0x4318" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_24Tex_004B38" OutName="jyasinzou_room_24Tex_004B38" Format="ci4" Width="64" Height="64" Offset="0x4B18" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18020" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_24Tex_0054D0" OutName="jyasinzou_room_24Tex_0054D0" Format="rgba16" Width="32" Height="64" Offset="0x54B0" AddedByScript="true"/>
         <Room Name="jyasinzou_room_24" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_25" Segment="3">
+        <Texture Name="jyasinzou_room_25Tex_00BA98" OutName="jyasinzou_room_25Tex_00BA98" Format="rgba16" Width="16" Height="32" Offset="0xBA68" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_00BE98" OutName="jyasinzou_room_25Tex_00BE98" Format="rgba16" Width="32" Height="64" Offset="0xBE68" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_00CE98" OutName="jyasinzou_room_25Tex_00CE98" Format="ci8" Width="32" Height="64" Offset="0xCE68" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_00D698" OutName="jyasinzou_room_25Tex_00D698" Format="ci8" Width="16" Height="64" Offset="0xD668" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_00DA98" OutName="jyasinzou_room_25Tex_00DA98" Format="ci8" Width="32" Height="32" Offset="0xDA68" TlutOffset="0xB870" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_00DE98" OutName="jyasinzou_room_25Tex_00DE98" Format="ci8" Width="32" Height="64" Offset="0xDE68" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_00E698" OutName="jyasinzou_room_25Tex_00E698" Format="ci8" Width="64" Height="32" Offset="0xE668" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_00EE98" OutName="jyasinzou_room_25Tex_00EE98" Format="rgba16" Width="32" Height="16" Offset="0xEE68" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_00F298" OutName="jyasinzou_room_25Tex_00F298" Format="ci8" Width="32" Height="32" Offset="0xF268" TlutOffset="0xB870" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_00F698" OutName="jyasinzou_room_25Tex_00F698" Format="ci8" Width="32" Height="64" Offset="0xF668" TlutOffset="0xB870" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_00FE98" OutName="jyasinzou_room_25Tex_00FE98" Format="ci8" Width="16" Height="16" Offset="0xFE68" TlutOffset="0xB870" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_00FF98" OutName="jyasinzou_room_25Tex_00FF98" Format="ci8" Width="32" Height="32" Offset="0xFF68" TlutOffset="0xB870" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_010398" OutName="jyasinzou_room_25Tex_010398" Format="ci8" Width="32" Height="32" Offset="0x10368" TlutOffset="0xB870" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_010798" OutName="jyasinzou_room_25Tex_010798" Format="ci8" Width="32" Height="32" Offset="0x10768" TlutOffset="0xB870" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_010B98" OutName="jyasinzou_room_25Tex_010B98" Format="ci8" Width="32" Height="32" Offset="0x10B68" TlutOffset="0xB870" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_010F98" OutName="jyasinzou_room_25Tex_010F98" Format="ci8" Width="32" Height="32" Offset="0x10F68" TlutOffset="0xB870" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_011398" OutName="jyasinzou_room_25Tex_011398" Format="ci8" Width="32" Height="32" Offset="0x11368" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_011798" OutName="jyasinzou_room_25Tex_011798" Format="ci8" Width="16" Height="128" Offset="0x11768" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_011F98" OutName="jyasinzou_room_25Tex_011F98" Format="ci8" Width="64" Height="32" Offset="0x11F68" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_012798" OutName="jyasinzou_room_25Tex_012798" Format="ci8" Width="32" Height="32" Offset="0x12768" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_012B98" OutName="jyasinzou_room_25Tex_012B98" Format="ci8" Width="32" Height="64" Offset="0x12B68" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_013398" OutName="jyasinzou_room_25Tex_013398" Format="ci8" Width="64" Height="32" Offset="0x13368" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_013B98" OutName="jyasinzou_room_25Tex_013B98" Format="ci8" Width="64" Height="32" Offset="0x13B68" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_014398" OutName="jyasinzou_room_25Tex_014398" Format="ci8" Width="32" Height="32" Offset="0x14368" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_014798" OutName="jyasinzou_room_25Tex_014798" Format="ci4" Width="64" Height="64" Offset="0x14768" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18000" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_014F98" OutName="jyasinzou_room_25Tex_014F98" Format="ci8" Width="32" Height="32" Offset="0x14F68" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25Tex_015398" OutName="jyasinzou_room_25Tex_015398" Format="ci4" Width="64" Height="64" Offset="0x15368" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18020" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_25TLUT_00B8A0" OutName="jyasinzou_room_25TLUT_00B8A0" Format="rgba16" Width="16" Height="16" Offset="0xB870" AddedByScript="true"/>
         <Room Name="jyasinzou_room_25" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_26" Segment="3">
+        <Texture Name="jyasinzou_room_26Tex_006CC8" OutName="jyasinzou_room_26Tex_006CC8" Format="rgba16" Width="16" Height="32" Offset="0x6CE8" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_26Tex_0070C8" OutName="jyasinzou_room_26Tex_0070C8" Format="rgba16" Width="32" Height="64" Offset="0x70E8" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_26Tex_0080C8" OutName="jyasinzou_room_26Tex_0080C8" Format="rgba16" Width="16" Height="16" Offset="0x80E8" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_26Tex_0082C8" OutName="jyasinzou_room_26Tex_0082C8" Format="ci8" Width="32" Height="64" Offset="0x82E8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_26Tex_008AC8" OutName="jyasinzou_room_26Tex_008AC8" Format="ci8" Width="16" Height="32" Offset="0x8AE8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_26Tex_008CC8" OutName="jyasinzou_room_26Tex_008CC8" Format="ci8" Width="32" Height="64" Offset="0x8CE8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_26Tex_0094C8" OutName="jyasinzou_room_26Tex_0094C8" Format="ci8" Width="64" Height="32" Offset="0x94E8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_26Tex_009CC8" OutName="jyasinzou_room_26Tex_009CC8" Format="rgba16" Width="16" Height="32" Offset="0x9CE8" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_26Tex_00A0C8" OutName="jyasinzou_room_26Tex_00A0C8" Format="ci8" Width="16" Height="128" Offset="0xA0E8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_26Tex_00A8C8" OutName="jyasinzou_room_26Tex_00A8C8" Format="ci8" Width="32" Height="32" Offset="0xA8E8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_26Tex_00ACC8" OutName="jyasinzou_room_26Tex_00ACC8" Format="ci4" Width="64" Height="64" Offset="0xACE8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18000" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_26Tex_00B4C8" OutName="jyasinzou_room_26Tex_00B4C8" Format="ci4" Width="64" Height="64" Offset="0xB4E8" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18020" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_26Tex_00C2F8" OutName="jyasinzou_room_26Tex_00C2F8" Format="ia16" Width="32" Height="32" Offset="0xC318" AddedByScript="true"/>
         <Room Name="jyasinzou_room_26" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_27" Segment="3">
+        <Texture Name="jyasinzou_room_27Tex_004310" OutName="jyasinzou_room_27Tex_004310" Format="ci8" Width="32" Height="64" Offset="0x42C0" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_27Tex_004B10" OutName="jyasinzou_room_27Tex_004B10" Format="ci8" Width="32" Height="32" Offset="0x4AC0" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_27Tex_004F10" OutName="jyasinzou_room_27Tex_004F10" Format="ci8" Width="64" Height="32" Offset="0x4EC0" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17C00" AddedByScript="true"/>
         <Room Name="jyasinzou_room_27" Offset="0x0"/>
     </File>
     <File Name="jyasinzou_room_28" Segment="3">
+        <Texture Name="jyasinzou_room_28Tex_004130" OutName="jyasinzou_room_28Tex_004130" Format="ci8" Width="64" Height="32" Offset="0x4120" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_28Tex_004930" OutName="jyasinzou_room_28Tex_004930" Format="ci8" Width="64" Height="32" Offset="0x4920" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_28Tex_005130" OutName="jyasinzou_room_28Tex_005130" Format="ci8" Width="64" Height="32" Offset="0x5120" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_28Tex_005930" OutName="jyasinzou_room_28Tex_005930" Format="ci8" Width="64" Height="32" Offset="0x5920" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_28Tex_006130" OutName="jyasinzou_room_28Tex_006130" Format="ci8" Width="32" Height="32" Offset="0x6120" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_28Tex_006530" OutName="jyasinzou_room_28Tex_006530" Format="rgba16" Width="64" Height="32" Offset="0x6520" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_28Tex_007530" OutName="jyasinzou_room_28Tex_007530" Format="ci8" Width="64" Height="16" Offset="0x7520" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_28Tex_007930" OutName="jyasinzou_room_28Tex_007930" Format="ci8" Width="16" Height="16" Offset="0x7920" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_28Tex_007A30" OutName="jyasinzou_room_28Tex_007A30" Format="ci8" Width="16" Height="64" Offset="0x7A20" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_28Tex_007E30" OutName="jyasinzou_room_28Tex_007E30" Format="ci4" Width="64" Height="64" Offset="0x7E20" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x18000" AddedByScript="true"/>
+        <Texture Name="jyasinzou_room_28Tex_008630" OutName="jyasinzou_room_28Tex_008630" Format="ci8" Width="32" Height="32" Offset="0x8620" ExternalTlut="jyasinzou_scene" ExternalTlutOffset="0x17E00" AddedByScript="true"/>
         <Room Name="jyasinzou_room_28" Offset="0x0"/>
     </File>
 </Root>

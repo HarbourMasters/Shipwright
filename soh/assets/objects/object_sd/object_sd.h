@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_SD_H
+#define OBJECTS_OBJECT_SD_H 1
 
 #include "align_asset_macro.h"
 
@@ -133,3 +134,6 @@ static const ALIGN_ASSET(2) char gEnHeishiTex_0067C0[] = dgEnHeishiTex_0067C0;
 
 #define dgEnHeishiHandTex "__OTR__objects/object_sd/gEnHeishiHandTex"
 static const ALIGN_ASSET(2) char gEnHeishiHandTex[] = dgEnHeishiHandTex;
+
+
+#endif // OBJECTS_OBJECT_SD_H

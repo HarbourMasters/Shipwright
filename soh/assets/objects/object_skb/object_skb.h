@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_SKB_H
+#define OBJECTS_OBJECT_SKB_H 1
 
 #include "align_asset_macro.h"
 
@@ -97,3 +98,6 @@ static const ALIGN_ASSET(2) char gStalchildWalkingAnim[] = dgStalchildWalkingAni
 
 #define dgStalchildAttackingAnim "__OTR__objects/object_skb/gStalchildAttackingAnim"
 static const ALIGN_ASSET(2) char gStalchildAttackingAnim[] = dgStalchildAttackingAnim;
+
+
+#endif // OBJECTS_OBJECT_SKB_H

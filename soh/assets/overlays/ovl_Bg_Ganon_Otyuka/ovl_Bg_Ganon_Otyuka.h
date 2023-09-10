@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OVERLAYS_OVL_BG_GANON_OTYUKA_H
+#define OVERLAYS_OVL_BG_GANON_OTYUKA_H 1
 
 #include "align_asset_macro.h"
 
@@ -37,3 +38,5 @@ static const ALIGN_ASSET(2) char sFlashDL[] = dsFlashDL;
 
 #define dsCol "__OTR__overlays/ovl_Bg_Ganon_Otyuka/sCol"
 static const ALIGN_ASSET(2) char sCol[] = dsCol;
+
+#endif // OVERLAYS_OVL_BG_GANON_OTYUKA_H

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INDOORS_TOKINOMA_ROOM_0_H
+#define INDOORS_TOKINOMA_ROOM_0_H 1
 
 #include "align_asset_macro.h"
 
@@ -91,3 +92,6 @@ static const ALIGN_ASSET(2) char tokinoma_room_0Set_000690DL_008128[] = dtokinom
 
 #define dtokinoma_room_0Set_000270DL_008128 "__OTR__scenes/nonmq/tokinoma_scene/tokinoma_room_0Set_000270DL_008128"
 static const ALIGN_ASSET(2) char tokinoma_room_0Set_000270DL_008128[] = dtokinoma_room_0Set_000270DL_008128;
+
+
+#endif // INDOORS_TOKINOMA_ROOM_0_H

@@ -3,6 +3,16 @@
         <Scene Name="hakaana_scene" Offset="0x0"/>
     </File>
     <File Name="hakaana_room_0" Segment="3">
+        <Texture Name="hakaana_room_0Tex_002658" OutName="hakaana_room_0Tex_002658" Format="rgba16" Width="32" Height="32" Offset="0x2658" AddedByScript="true"/>
+        <Texture Name="hakaana_room_0Tex_002E58" OutName="hakaana_room_0Tex_002E58" Format="rgba16" Width="32" Height="16" Offset="0x2E58" AddedByScript="true"/>
+        <Texture Name="hakaana_room_0Tex_003258" OutName="hakaana_room_0Tex_003258" Format="rgba16" Width="32" Height="16" Offset="0x3258" AddedByScript="true"/>
+        <Texture Name="hakaana_room_0Tex_003658" OutName="hakaana_room_0Tex_003658" Format="rgba16" Width="32" Height="32" Offset="0x3658" AddedByScript="true"/>
+        <Texture Name="hakaana_room_0Tex_003E58" OutName="hakaana_room_0Tex_003E58" Format="i4" Width="128" Height="32" Offset="0x3E58" AddedByScript="true"/>
+        <Texture Name="hakaana_room_0Tex_004658" OutName="hakaana_room_0Tex_004658" Format="rgba16" Width="32" Height="32" Offset="0x4658" AddedByScript="true"/>
+        <Texture Name="hakaana_room_0Tex_004E58" OutName="hakaana_room_0Tex_004E58" Format="i4" Width="64" Height="64" Offset="0x4E58" AddedByScript="true"/>
+        <Texture Name="hakaana_room_0Tex_005658" OutName="hakaana_room_0Tex_005658" Format="i4" Width="64" Height="64" Offset="0x5658" AddedByScript="true"/>
+        <Texture Name="hakaana_room_0Tex_005E58" OutName="hakaana_room_0Tex_005E58" Format="i4" Width="64" Height="64" Offset="0x5E58" AddedByScript="true"/>
+        <Texture Name="hakaana_room_0Tex_0068C8" OutName="hakaana_room_0Tex_0068C8" Format="ia16" Width="128" Height="16" Offset="0x68C8" AddedByScript="true"/>
         <Room Name="hakaana_room_0" Offset="0x0"/>
     </File>
 </Root>

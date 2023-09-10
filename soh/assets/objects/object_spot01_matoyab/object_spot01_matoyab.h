@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_SPOT01_MATOYAB_H
+#define OBJECTS_OBJECT_SPOT01_MATOYAB_H 1
 
 #include "align_asset_macro.h"
 
@@ -31,3 +32,5 @@ static const ALIGN_ASSET(2) char gKakarikoConstructionSitRailingTex[] = dgKakari
 
 #define dgKakarikoConstructionSiteWoodTex "__OTR__objects/object_spot01_matoyab/gKakarikoConstructionSiteWoodTex"
 static const ALIGN_ASSET(2) char gKakarikoConstructionSiteWoodTex[] = dgKakarikoConstructionSiteWoodTex;
+
+#endif // OBJECTS_OBJECT_SPOT01_MATOYAB_H
