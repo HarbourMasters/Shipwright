@@ -50,6 +50,8 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         bool update[sizeof(setting)];
         for (unsigned short i = 0; i < sizeof(setting); i++)
             update[i] = false;
+        static short updateCountdown = 0;
+        short countdownStartingValue = CVarGetInteger("gInterpolationFPS", 20) / 2; // half of a second, in frames.
         // Initialise integer scale bounds.
         short max_integerScaleFactor = default_maxIntegerScaleFactor; // default value, which may or may not get
                                                                       // overridden depending on viewport res
@@ -90,19 +92,17 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             LUS::Context::GetInstance()->GetWindow()->SetResolutionMultiplier(CVarGetFloat("gInternalResolution", 1));
         }
         UIWidgets::Tooltip("Multiplies your output resolution by the value entered, as a more intensive but effective "
-                           "form of anti-aliasing");
+                           "form of anti-aliasing"); // Description pulled from SohMenuBar.cpp
+
         // N64 Mode toggle (again for convenience)
-        /* bool enableN64Mode = CVarGetInteger("gLowResMode", 0);
-        if (ImGui::Checkbox("(Enhancements>Graphics) N64 Mode", &enableN64Mode)) {
-            CVarSetInteger("gLowResMode", enableN64Mode);
-        }*/
+        // UIWidgets::PaddedEnhancementCheckbox("(Enhancements>Graphics) N64 Mode", "gLowResMode", false, false, false, "",
+        //                                     UIWidgets::CheckboxGraphics::Cross, false);
 
         UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
         // Activator
-        bool activateAdvancedMode = CVarGetInteger("gAdvancedResolution.Enabled", 0);
-        if (ImGui::Checkbox("Enable \"Advanced Resolution Settings\" settings.", &activateAdvancedMode)) {
-            CVarSetInteger("gAdvancedResolution.Enabled", activateAdvancedMode);
-        }
+        UIWidgets::PaddedEnhancementCheckbox("Enable \"Advanced Resolution Settings\" settings.",
+                                             "gAdvancedResolution.Enabled", false, false, false, "",
+                                             UIWidgets::CheckboxGraphics::Cross, false);
         // Error/Warning display
         if (!CVarGetInteger("gLowResMode", 0)) {
             if (IsDroppingFrames()) { // Significant frame drop warning
@@ -118,6 +118,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             ImGui::SameLine();
             if (ImGui::Button("Click to disable")) {
                 CVarSetInteger("gLowResMode", (int)false);
+                CVarSave();
             }
         }
         // Resolution visualiser
@@ -227,6 +228,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         UIWidgets::Tooltip("Don't scale image to fill window.");
         if (!CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0)) {
             CVarSetInteger("gAdvancedResolution.PixelPerfectMode", (int)false);
+            CVarSave();
         }
 
         if (default_maxIntegerScaleFactor < integerScale_maximumBounds) {
@@ -248,6 +250,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         UIWidgets::Tooltip("Automatically sets scale factor to fit window. Only available in pixel-perfect mode.");
         if (CVarGetInteger("gAdvancedResolution.IntegerScaleFitAutomatically", 0)) {
             CVarSetInteger("gAdvancedResolution.IntegerScaleFactor", integerScale_maximumBounds);
+            CVarSave();
         } // Tina TODO: This doesn't work if the window is closed. Do this somewhere else.
 
         UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
@@ -262,7 +265,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             UIWidgets::PaddedEnhancementCheckbox("Disable aspect correction and stretch the output image.\n"
                                                  "(Might be useful for 4:3 televisions!)\n"
                                                  "Not available in Pixel Perfect Mode.",
-                                                 "gAdvancedResolution.IgnoreAspectCorrection", true, true,
+                                                 "gAdvancedResolution.IgnoreAspectCorrection", false, true,
                                                  CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0), "",
                                                  UIWidgets::CheckboxGraphics::Cross, false);
 #endif
@@ -282,29 +285,38 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             }
         } // end of Additional Settings
 
-        // Clamp and update CVars
-        if (update[UPDATE_aspectRatioX]) {
-            if (aspectRatioX < 0.0f) {
-                aspectRatioX = 0.0f;
+        if (IsBoolArrayTrue(update)) {
+            // Clamp and update the CVars that don't use UIWidgets
+            if (update[UPDATE_aspectRatioX]) {
+                if (aspectRatioX < 0.0f) {
+                    aspectRatioX = 0.0f;
+                }
+                CVarSetFloat("gAdvancedResolution.AspectRatioX", aspectRatioX);
             }
-            CVarSetFloat("gAdvancedResolution.AspectRatioX", aspectRatioX);
+            if (update[UPDATE_aspectRatioY]) {
+                if (aspectRatioY < 0.0f) {
+                    aspectRatioY = 0.0f;
+                }
+                CVarSetFloat("gAdvancedResolution.AspectRatioY", aspectRatioY);
+            }
+            if (update[UPDATE_verticalPixelCount]) {
+                // There's a upper and lower clamp on the Libultraship side too,
+                // so clamping it here is purely visual, so the vertical resolution field reflects it.
+                if (verticalPixelCount < minVerticalPixelCount) {
+                    verticalPixelCount = minVerticalPixelCount;
+                }
+                if (verticalPixelCount > maxVerticalPixelCount) {
+                    verticalPixelCount = maxVerticalPixelCount;
+                }
+                CVarSetInteger("gAdvancedResolution.VerticalPixelCount", verticalPixelCount);
+            }
+            // Delay saving this set of CVars by a predetermined length of time, in frames.
+            updateCountdown = countdownStartingValue;
         }
-        if (update[UPDATE_aspectRatioY]) {
-            if (aspectRatioY < 0.0f) {
-                aspectRatioY = 0.0f;
-            }
-            CVarSetFloat("gAdvancedResolution.AspectRatioY", aspectRatioY);
-        }
-        if (update[UPDATE_verticalPixelCount]) {
-            // There's a upper and lower clamp on the Libultraship side too,
-            // so clamping it here is purely visual, so the vertical resolution field reflects it.
-            if (verticalPixelCount < minVerticalPixelCount) {
-                verticalPixelCount = minVerticalPixelCount;
-            }
-            if (verticalPixelCount > maxVerticalPixelCount) {
-                verticalPixelCount = maxVerticalPixelCount;
-            }
-            CVarSetInteger("gAdvancedResolution.VerticalPixelCount", (int32_t)verticalPixelCount);
+        if (updateCountdown > 0) {
+            updateCountdown--;
+        } else {
+            CVarSave();
         }
     }
     ImGui::End();
@@ -318,5 +330,12 @@ bool AdvancedResolutionSettingsWindow::IsDroppingFrames() {
     // but it's mostly there to inform the player of large drops.
     const float threshold = CVarGetInteger("gInterpolationFPS", 20) / 20.0f - 4.1f;
     return ImGui::GetIO().Framerate < threshold;
+}
+
+bool AdvancedResolutionSettingsWindow::IsBoolArrayTrue(bool* foo) {
+    for (unsigned short i = 0; i < sizeof(&foo); i++)
+        if (&foo[i])
+            return true;
+    return false;
 }
 } // namespace AdvancedResolutionSettings
