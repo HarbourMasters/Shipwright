@@ -95,8 +95,8 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                            "form of anti-aliasing"); // Description pulled from SohMenuBar.cpp
 
         // N64 Mode toggle (again for convenience)
-        // UIWidgets::PaddedEnhancementCheckbox("(Enhancements>Graphics) N64 Mode", "gLowResMode", false, false, false, "",
-        //                                     UIWidgets::CheckboxGraphics::Cross, false);
+        // UIWidgets::PaddedEnhancementCheckbox("(Enhancements>Graphics) N64 Mode", "gLowResMode", false, false, false,
+        //                                      "", UIWidgets::CheckboxGraphics::Cross, false);
 
         UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
         // Activator
@@ -268,6 +268,19 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                                                  "gAdvancedResolution.IgnoreAspectCorrection", false, true,
                                                  CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0), "",
                                                  UIWidgets::CheckboxGraphics::Cross, false);
+#else
+            if (CVarGetInteger("gAdvancedResolution.IgnoreAspectCorrection", 0)) {
+                // This setting is intentionally not exposed on PC platforms,
+                // but may be accidentally activated for varying reasons.
+                // Having this button should hopefully prevent support headaches.
+                ImGui::TextColored({ 0.0f, 0.85f, 0.85f, 1.0f }, ICON_FA_QUESTION_CIRCLE
+                                   " If the image is stretched and you don't know why, click this.");
+                if (ImGui::Button("Click to reenable aspect correction.")) {
+                    CVarSetInteger("gAdvancedResolution.IgnoreAspectCorrection", (int)false);
+                    CVarSave();
+                }
+                UIWidgets::Spacer(2);
+            }
 #endif
             // Clicking this checkbox on or off will trigger several tasks.
             if (ImGui::Checkbox("Show a horizontal resolution field.", p_showHorizontalResField) &&
