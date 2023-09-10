@@ -7,6 +7,7 @@
 #include "z_en_bw.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_bw/object_bw.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -134,7 +135,7 @@ void EnBw_Init(Actor* thisx, PlayState* play) {
     Actor_SetScale(&this->actor, 0.012999999f);
     this->actor.naviEnemyId = 0x23;
     this->actor.gravity = -2.0f;
-    SkelAnime_Init(play, &this->skelAnime, &object_bw_Skel_0020F0, &object_bw_Anim_000228, this->jointTable,
+    SkelAnime_Init(play, &this->skelAnime, &gTorchSlugSkel, &gTorchSlugEyestalkWaveAnim, this->jointTable,
                    this->morphTable, 12);
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 40.0f);
     this->actor.colChkInfo.damageTable = &sDamageTable;
@@ -178,7 +179,7 @@ void func_809CE884(EnBw* this, PlayState* play) {
 }
 
 void func_809CE9A8(EnBw* this) {
-    Animation_MorphToLoop(&this->skelAnime, &object_bw_Anim_000228, -2.0f);
+    Animation_MorphToLoop(&this->skelAnime, &gTorchSlugEyestalkWaveAnim, -2.0f);
     this->unk_220 = 2;
     this->unk_222 = Rand_ZeroOne() * 200.0f + 200.0f;
     this->unk_232 = 0;
@@ -393,7 +394,7 @@ void func_809CEA24(EnBw* this, PlayState* play) {
 }
 
 void func_809CF72C(EnBw* this) {
-    Animation_MorphToPlayOnce(&this->skelAnime, &object_bw_Anim_0021A0, -2.0f);
+    Animation_MorphToPlayOnce(&this->skelAnime, &gTorchSlugEyestalkRaiseAnim, -2.0f);
     this->unk_220 = 3;
     this->unk_221 = 0;
     this->unk_250 = 0.6f;
@@ -425,7 +426,7 @@ void func_809CF7AC(EnBw* this, PlayState* play) {
 }
 
 void func_809CF8F0(EnBw* this) {
-    Animation_MorphToPlayOnce(&this->skelAnime, &object_bw_Anim_002250, -1.0f);
+    Animation_MorphToPlayOnce(&this->skelAnime, &gTorchSlugEyestalkFlailAnim, -1.0f);
     this->actor.speedXZ = 7.0f;
     this->actor.world.rot.y = this->actor.shape.rot.y = this->actor.yawTowardsPlayer;
     this->unk_220 = 4;
@@ -470,7 +471,7 @@ void func_809CF984(EnBw* this, PlayState* play) {
 }
 
 void func_809CFBA8(EnBw* this) {
-    Animation_MorphToLoop(&this->skelAnime, &object_bw_Anim_002250, -1.0f);
+    Animation_MorphToLoop(&this->skelAnime, &gTorchSlugEyestalkFlailAnim, -1.0f);
     this->unk_220 = 5;
     this->unk_222 = 1000;
     this->unk_260 = 0.0f;
@@ -528,7 +529,7 @@ void func_809CFC4C(EnBw* this, PlayState* play) {
 }
 
 void func_809CFF10(EnBw* this) {
-    Animation_MorphToLoop(&this->skelAnime, &object_bw_Anim_002250, -1.0f);
+    Animation_MorphToLoop(&this->skelAnime, &gTorchSlugEyestalkFlailAnim, -1.0f);
     this->unk_220 = 6;
     this->unk_222 = 1000;
     this->unk_221 = 3;
@@ -577,7 +578,7 @@ void func_809D00F4(EnBw* this) {
     this->actor.speedXZ = 0.0f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_BUBLEWALK_DEAD);
     EnBw_SetupAction(this, func_809D014C);
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TORCH_SLUG]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void func_809D014C(EnBw* this, PlayState* play) {

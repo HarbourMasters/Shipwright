@@ -6,6 +6,7 @@
 
 #include "z_en_tp.h"
 #include "objects/object_tp/object_tp.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -289,9 +290,7 @@ void EnTp_SetupDie(EnTp* this) {
     }
     this->actionIndex = TAILPASARAN_ACTION_DIE;
     EnTp_SetupAction(this, EnTp_Die);
-    if (this->actor.params == TAILPASARAN_HEAD) {  // Only count the head, otherwise each body segment will increment
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TAILPASARAN]++;
-    }
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 /**

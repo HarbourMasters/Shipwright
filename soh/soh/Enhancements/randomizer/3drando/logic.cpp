@@ -8,7 +8,6 @@
 
 #include "settings.hpp"
 #include "dungeon.hpp"
-#include "setting_descriptions.hpp"
 
 using namespace Settings;
 
@@ -463,11 +462,6 @@ namespace Logic {
   }
 
   uint8_t GetDifficultyValueFromString(Option& glitchOption) {
-    for (size_t i = 0; i < GlitchDifficulties.size(); i++) {
-      if (glitchOption.GetSelectedOptionText() == GlitchDifficulties[i]) {
-        return i + 1;
-      }
-    }
     return 0;
   }
 

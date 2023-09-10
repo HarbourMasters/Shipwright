@@ -1,5 +1,8 @@
 <Root>
     <File Name="object_gi_liquid" Segment="6">
+        <Texture Name="object_gi_liquidTex_000000" OutName="object_gi_liquidTex_000000" Format="ia8" Width="16" Height="32" Offset="0x0" AddedByScript="true"/>
+        <Texture Name="object_gi_liquidTex_000200" OutName="object_gi_liquidTex_000200" Format="ia8" Width="16" Height="32" Offset="0x200" AddedByScript="true"/>
+        <Texture Name="object_gi_liquidTex_000400" OutName="object_gi_liquidTex_000400" Format="ia8" Width="16" Height="32" Offset="0x400" AddedByScript="true"/>
         <DList Name="gGiGreenPotColorDL" Offset="0x1270"/>
         <DList Name="gGiRedPotColorDL" Offset="0x1290"/>
         <DList Name="gGiBluePotColorDL" Offset="0x12B0"/>

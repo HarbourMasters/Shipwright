@@ -1,74 +1,191 @@
 <Root>
     <File Name="HAKAdan_scene" Segment="2">
+        <Texture Name="HAKAdan_sceneTex_0163C0" OutName="HAKAdan_sceneTex_0163C0" Format="rgba16" Width="32" Height="32" Offset="0x163C0" AddedByScript="true"/>
+        <Texture Name="HAKAdan_sceneTex_016BC0" OutName="HAKAdan_sceneTex_016BC0" Format="rgba16" Width="32" Height="32" Offset="0x16BC0" AddedByScript="true"/>
+        <Texture Name="HAKAdan_sceneTex_0173C0" OutName="HAKAdan_sceneTex_0173C0" Format="rgba16" Width="32" Height="32" Offset="0x173C0" AddedByScript="true"/>
+        <Texture Name="HAKAdan_sceneTex_017BC0" OutName="HAKAdan_sceneTex_017BC0" Format="rgba16" Width="32" Height="32" Offset="0x17BC0" AddedByScript="true"/>
         <Scene Name="HAKAdan_scene" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_0" Segment="3">
+        <Texture Name="HAKAdan_room_0Tex_008230" OutName="HAKAdan_room_0Tex_008230" Format="rgba16" Width="32" Height="64" Offset="0x81A0" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_0Tex_009230" OutName="HAKAdan_room_0Tex_009230" Format="rgba16" Width="32" Height="64" Offset="0x91A0" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_0Tex_00A230" OutName="HAKAdan_room_0Tex_00A230" Format="rgba16" Width="32" Height="32" Offset="0xA1A0" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_0Tex_00AD48" OutName="HAKAdan_room_0Tex_00AD48" Format="ia8" Width="32" Height="32" Offset="0xACB8" AddedByScript="true"/>
         <Room Name="HAKAdan_room_0" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_1" Segment="3">
+        <Texture Name="HAKAdan_room_1Tex_0012E8" OutName="HAKAdan_room_1Tex_0012E8" Format="rgba16" Width="32" Height="32" Offset="0x12B8" AddedByScript="true"/>
         <Room Name="HAKAdan_room_1" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_2" Segment="3">
+        <Texture Name="HAKAdan_room_2Tex_006BD8" OutName="HAKAdan_room_2Tex_006BD8" Format="i4" Width="64" Height="64" Offset="0x6B08" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_2Tex_0073D8" OutName="HAKAdan_room_2Tex_0073D8" Format="rgba16" Width="32" Height="16" Offset="0x7308" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_2Tex_0077D8" OutName="HAKAdan_room_2Tex_0077D8" Format="rgba16" Width="32" Height="32" Offset="0x7708" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_2Tex_007FD8" OutName="HAKAdan_room_2Tex_007FD8" Format="rgba16" Width="32" Height="8" Offset="0x7F08" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_2Tex_0081D8" OutName="HAKAdan_room_2Tex_0081D8" Format="rgba16" Width="32" Height="64" Offset="0x8108" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_2Tex_0091D8" OutName="HAKAdan_room_2Tex_0091D8" Format="rgba16" Width="32" Height="32" Offset="0x9108" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_2Tex_0099D8" OutName="HAKAdan_room_2Tex_0099D8" Format="i4" Width="32" Height="32" Offset="0x9908" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_2Tex_009BD8" OutName="HAKAdan_room_2Tex_009BD8" Format="rgba16" Width="32" Height="32" Offset="0x9B08" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_2Tex_00A3D8" OutName="HAKAdan_room_2Tex_00A3D8" Format="i4" Width="32" Height="32" Offset="0xA308" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_2Tex_00A5D8" OutName="HAKAdan_room_2Tex_00A5D8" Format="i4" Width="32" Height="32" Offset="0xA508" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_2Tex_00A7D8" OutName="HAKAdan_room_2Tex_00A7D8" Format="i4" Width="32" Height="32" Offset="0xA708" AddedByScript="true"/>
         <Room Name="HAKAdan_room_2" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_3" Segment="3">
+        <Texture Name="HAKAdan_room_3Tex_001578" OutName="HAKAdan_room_3Tex_001578" Format="rgba16" Width="32" Height="32" Offset="0x1538" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_3Tex_001D78" OutName="HAKAdan_room_3Tex_001D78" Format="rgba16" Width="32" Height="32" Offset="0x1D38" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_3Tex_002578" OutName="HAKAdan_room_3Tex_002578" Format="i4" Width="32" Height="32" Offset="0x2538" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_3Tex_002778" OutName="HAKAdan_room_3Tex_002778" Format="i4" Width="32" Height="32" Offset="0x2738" AddedByScript="true"/>
         <Room Name="HAKAdan_room_3" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_4" Segment="3">
+        <Texture Name="HAKAdan_room_4Tex_001458" OutName="HAKAdan_room_4Tex_001458" Format="rgba16" Width="32" Height="32" Offset="0x1438" AddedByScript="true"/>
         <Room Name="HAKAdan_room_4" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_5" Segment="3">
+        <Texture Name="HAKAdan_room_5Tex_003CC0" OutName="HAKAdan_room_5Tex_003CC0" Format="rgba16" Width="32" Height="16" Offset="0x3C60" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_5Tex_0040C0" OutName="HAKAdan_room_5Tex_0040C0" Format="rgba16" Width="32" Height="32" Offset="0x4060" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_5Tex_0048C0" OutName="HAKAdan_room_5Tex_0048C0" Format="rgba16" Width="32" Height="8" Offset="0x4860" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_5Tex_004AC0" OutName="HAKAdan_room_5Tex_004AC0" Format="rgba16" Width="32" Height="32" Offset="0x4A60" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_5Tex_0052C0" OutName="HAKAdan_room_5Tex_0052C0" Format="rgba16" Width="32" Height="32" Offset="0x5260" AddedByScript="true"/>
         <Room Name="HAKAdan_room_5" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_6" Segment="3">
+        <Texture Name="HAKAdan_room_6Tex_004BF0" OutName="HAKAdan_room_6Tex_004BF0" Format="i4" Width="64" Height="64" Offset="0x4B70" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_6Tex_0053F0" OutName="HAKAdan_room_6Tex_0053F0" Format="rgba16" Width="32" Height="8" Offset="0x5370" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_6Tex_0055F0" OutName="HAKAdan_room_6Tex_0055F0" Format="rgba16" Width="32" Height="64" Offset="0x5570" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_6Tex_0065F0" OutName="HAKAdan_room_6Tex_0065F0" Format="rgba16" Width="32" Height="32" Offset="0x6570" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_6Tex_006DF0" OutName="HAKAdan_room_6Tex_006DF0" Format="rgba16" Width="16" Height="32" Offset="0x6D70" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_6Tex_0071F0" OutName="HAKAdan_room_6Tex_0071F0" Format="rgba16" Width="16" Height="32" Offset="0x7170" AddedByScript="true"/>
         <Room Name="HAKAdan_room_6" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_7" Segment="3">
+        <Texture Name="HAKAdan_room_7Tex_0012D8" OutName="HAKAdan_room_7Tex_0012D8" Format="rgba16" Width="32" Height="32" Offset="0x12A8" AddedByScript="true"/>
         <Room Name="HAKAdan_room_7" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_8" Segment="3">
+        <Texture Name="HAKAdan_room_8Tex_003098" OutName="HAKAdan_room_8Tex_003098" Format="rgba16" Width="32" Height="8" Offset="0x3058" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_8Tex_003298" OutName="HAKAdan_room_8Tex_003298" Format="ia4" Width="128" Height="64" Offset="0x3258" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_8Tex_004298" OutName="HAKAdan_room_8Tex_004298" Format="rgba16" Width="32" Height="32" Offset="0x4258" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_8Tex_004A98" OutName="HAKAdan_room_8Tex_004A98" Format="i4" Width="32" Height="32" Offset="0x4A58" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_8Tex_004C98" OutName="HAKAdan_room_8Tex_004C98" Format="rgba16" Width="16" Height="32" Offset="0x4C58" AddedByScript="true"/>
         <Room Name="HAKAdan_room_8" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_9" Segment="3">
+        <Texture Name="HAKAdan_room_9Tex_009090" OutName="HAKAdan_room_9Tex_009090" Format="i4" Width="64" Height="64" Offset="0x8F60" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_9Tex_009890" OutName="HAKAdan_room_9Tex_009890" Format="rgba16" Width="32" Height="32" Offset="0x9760" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_9Tex_00A090" OutName="HAKAdan_room_9Tex_00A090" Format="rgba16" Width="32" Height="8" Offset="0x9F60" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_9Tex_00A290" OutName="HAKAdan_room_9Tex_00A290" Format="ia4" Width="128" Height="64" Offset="0xA160" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_9Tex_00B290" OutName="HAKAdan_room_9Tex_00B290" Format="rgba16" Width="32" Height="32" Offset="0xB160" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_9Tex_00BA90" OutName="HAKAdan_room_9Tex_00BA90" Format="rgba16" Width="16" Height="32" Offset="0xB960" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_9Tex_00BE90" OutName="HAKAdan_room_9Tex_00BE90" Format="rgba16" Width="32" Height="32" Offset="0xBD60" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_9Tex_00C690" OutName="HAKAdan_room_9Tex_00C690" Format="i4" Width="32" Height="32" Offset="0xC560" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_9Tex_00C890" OutName="HAKAdan_room_9Tex_00C890" Format="rgba16" Width="16" Height="32" Offset="0xC760" AddedByScript="true"/>
         <Room Name="HAKAdan_room_9" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_10" Segment="3">
+        <Texture Name="HAKAdan_room_10Tex_0039F0" OutName="HAKAdan_room_10Tex_0039F0" Format="rgba16" Width="32" Height="16" Offset="0x39A0" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_10Tex_003DF0" OutName="HAKAdan_room_10Tex_003DF0" Format="rgba16" Width="32" Height="8" Offset="0x3DA0" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_10Tex_003FF0" OutName="HAKAdan_room_10Tex_003FF0" Format="rgba16" Width="32" Height="64" Offset="0x3FA0" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_10Tex_004FF0" OutName="HAKAdan_room_10Tex_004FF0" Format="ia4" Width="128" Height="64" Offset="0x4FA0" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_10Tex_005FF0" OutName="HAKAdan_room_10Tex_005FF0" Format="rgba16" Width="32" Height="32" Offset="0x5FA0" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_10Tex_0067F0" OutName="HAKAdan_room_10Tex_0067F0" Format="rgba16" Width="16" Height="32" Offset="0x67A0" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_10Tex_006BF0" OutName="HAKAdan_room_10Tex_006BF0" Format="rgba16" Width="16" Height="64" Offset="0x6BA0" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_10Tex_0073F0" OutName="HAKAdan_room_10Tex_0073F0" Format="rgba16" Width="16" Height="32" Offset="0x73A0" AddedByScript="true"/>
         <Room Name="HAKAdan_room_10" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_11" Segment="3">
+        <Texture Name="HAKAdan_room_11Tex_001E60" OutName="HAKAdan_room_11Tex_001E60" Format="i4" Width="64" Height="64" Offset="0x1D40" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_11Tex_002660" OutName="HAKAdan_room_11Tex_002660" Format="rgba16" Width="32" Height="16" Offset="0x2540" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_11Tex_002A60" OutName="HAKAdan_room_11Tex_002A60" Format="rgba16" Width="32" Height="8" Offset="0x2940" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_11Tex_002C60" OutName="HAKAdan_room_11Tex_002C60" Format="rgba16" Width="32" Height="32" Offset="0x2B40" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_11Tex_003460" OutName="HAKAdan_room_11Tex_003460" Format="rgba16" Width="32" Height="32" Offset="0x3340" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_11Tex_003C60" OutName="HAKAdan_room_11Tex_003C60" Format="i4" Width="32" Height="32" Offset="0x3B40" AddedByScript="true"/>
         <Room Name="HAKAdan_room_11" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_12" Segment="3">
+        <Texture Name="HAKAdan_room_12Tex_003348" OutName="HAKAdan_room_12Tex_003348" Format="i4" Width="32" Height="32" Offset="0x3318" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_12Tex_003548" OutName="HAKAdan_room_12Tex_003548" Format="i4" Width="32" Height="32" Offset="0x3518" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_12Tex_003748" OutName="HAKAdan_room_12Tex_003748" Format="rgba16" Width="32" Height="16" Offset="0x3718" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_12Tex_003B48" OutName="HAKAdan_room_12Tex_003B48" Format="rgba16" Width="32" Height="8" Offset="0x3B18" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_12Tex_003D48" OutName="HAKAdan_room_12Tex_003D48" Format="rgba16" Width="32" Height="64" Offset="0x3D18" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_12Tex_004D48" OutName="HAKAdan_room_12Tex_004D48" Format="rgba16" Width="32" Height="32" Offset="0x4D18" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_12Tex_005548" OutName="HAKAdan_room_12Tex_005548" Format="i4" Width="32" Height="32" Offset="0x5518" AddedByScript="true"/>
         <Room Name="HAKAdan_room_12" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_13" Segment="3">
+        <Texture Name="HAKAdan_room_13Tex_000818" OutName="HAKAdan_room_13Tex_000818" Format="rgba16" Width="32" Height="32" Offset="0x7A8" AddedByScript="true"/>
         <Room Name="HAKAdan_room_13" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_14" Segment="3">
+        <Texture Name="HAKAdan_room_14Tex_003500" OutName="HAKAdan_room_14Tex_003500" Format="i4" Width="32" Height="32" Offset="0x3540" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_14Tex_003700" OutName="HAKAdan_room_14Tex_003700" Format="i4" Width="32" Height="32" Offset="0x3740" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_14Tex_003900" OutName="HAKAdan_room_14Tex_003900" Format="rgba16" Width="32" Height="16" Offset="0x3940" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_14Tex_003D00" OutName="HAKAdan_room_14Tex_003D00" Format="rgba16" Width="32" Height="8" Offset="0x3D40" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_14Tex_003F00" OutName="HAKAdan_room_14Tex_003F00" Format="rgba16" Width="32" Height="64" Offset="0x3F40" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_14Tex_004F00" OutName="HAKAdan_room_14Tex_004F00" Format="rgba16" Width="32" Height="32" Offset="0x4F40" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_14Tex_005700" OutName="HAKAdan_room_14Tex_005700" Format="i4" Width="32" Height="32" Offset="0x5740" AddedByScript="true"/>
         <Room Name="HAKAdan_room_14" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_15" Segment="3">
+        <Texture Name="HAKAdan_room_15Tex_0056C0" OutName="HAKAdan_room_15Tex_0056C0" Format="i4" Width="32" Height="32" Offset="0x5670" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_15Tex_0058C0" OutName="HAKAdan_room_15Tex_0058C0" Format="i4" Width="32" Height="32" Offset="0x5870" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_15Tex_005AC0" OutName="HAKAdan_room_15Tex_005AC0" Format="rgba16" Width="32" Height="16" Offset="0x5A70" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_15Tex_005EC0" OutName="HAKAdan_room_15Tex_005EC0" Format="rgba16" Width="32" Height="8" Offset="0x5E70" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_15Tex_0060C0" OutName="HAKAdan_room_15Tex_0060C0" Format="rgba16" Width="32" Height="32" Offset="0x6070" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_15Tex_0068C0" OutName="HAKAdan_room_15Tex_0068C0" Format="rgba16" Width="32" Height="32" Offset="0x6870" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_15Tex_0070C0" OutName="HAKAdan_room_15Tex_0070C0" Format="i4" Width="32" Height="32" Offset="0x7070" AddedByScript="true"/>
         <Room Name="HAKAdan_room_15" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_16" Segment="3">
+        <Texture Name="HAKAdan_room_16Tex_001930" OutName="HAKAdan_room_16Tex_001930" Format="rgba16" Width="32" Height="64" Offset="0x1880" AddedByScript="true"/>
         <Room Name="HAKAdan_room_16" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_17" Segment="3">
+        <Texture Name="HAKAdan_room_17Tex_001248" OutName="HAKAdan_room_17Tex_001248" Format="rgba16" Width="32" Height="8" Offset="0x1138" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_17Tex_001448" OutName="HAKAdan_room_17Tex_001448" Format="rgba16" Width="32" Height="32" Offset="0x1338" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_17Tex_001C48" OutName="HAKAdan_room_17Tex_001C48" Format="rgba16" Width="16" Height="32" Offset="0x1B38" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_17Tex_002048" OutName="HAKAdan_room_17Tex_002048" Format="rgba16" Width="16" Height="32" Offset="0x1F38" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_17Tex_0025D8" OutName="HAKAdan_room_17Tex_0025D8" Format="ia16" Width="32" Height="32" Offset="0x24C8" AddedByScript="true"/>
         <Room Name="HAKAdan_room_17" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_18" Segment="3">
+        <Texture Name="HAKAdan_room_18Tex_00B908" OutName="HAKAdan_room_18Tex_00B908" Format="i4" Width="32" Height="32" Offset="0xB878" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_18Tex_00BB08" OutName="HAKAdan_room_18Tex_00BB08" Format="rgba16" Width="32" Height="16" Offset="0xBA78" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_18Tex_00BF08" OutName="HAKAdan_room_18Tex_00BF08" Format="rgba16" Width="32" Height="32" Offset="0xBE78" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_18Tex_00C708" OutName="HAKAdan_room_18Tex_00C708" Format="rgba16" Width="32" Height="8" Offset="0xC678" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_18Tex_00C908" OutName="HAKAdan_room_18Tex_00C908" Format="i4" Width="32" Height="32" Offset="0xC878" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_18Tex_00CB08" OutName="HAKAdan_room_18Tex_00CB08" Format="i4" Width="32" Height="32" Offset="0xCA78" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_18Tex_00CD08" OutName="HAKAdan_room_18Tex_00CD08" Format="i4" Width="32" Height="32" Offset="0xCC78" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_18Tex_00CF08" OutName="HAKAdan_room_18Tex_00CF08" Format="rgba16" Width="16" Height="32" Offset="0xCE78" AddedByScript="true"/>
         <Room Name="HAKAdan_room_18" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_19" Segment="3">
+        <Texture Name="HAKAdan_room_19Tex_001578" OutName="HAKAdan_room_19Tex_001578" Format="rgba16" Width="32" Height="64" Offset="0x1518" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_19Tex_002578" OutName="HAKAdan_room_19Tex_002578" Format="rgba16" Width="32" Height="32" Offset="0x2518" AddedByScript="true"/>
         <Room Name="HAKAdan_room_19" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_20" Segment="3">
+        <Texture Name="HAKAdan_room_20Tex_001640" OutName="HAKAdan_room_20Tex_001640" Format="rgba16" Width="32" Height="32" Offset="0x1620" AddedByScript="true"/>
         <Room Name="HAKAdan_room_20" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_21" Segment="3">
+        <Texture Name="HAKAdan_room_21Tex_006E00" OutName="HAKAdan_room_21Tex_006E00" Format="rgba16" Width="32" Height="32" Offset="0x6D00" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_21Tex_007600" OutName="HAKAdan_room_21Tex_007600" Format="rgba16" Width="32" Height="8" Offset="0x7500" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_21Tex_007800" OutName="HAKAdan_room_21Tex_007800" Format="rgba16" Width="32" Height="64" Offset="0x7700" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_21Tex_008800" OutName="HAKAdan_room_21Tex_008800" Format="rgba16" Width="32" Height="32" Offset="0x8700" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_21Tex_009000" OutName="HAKAdan_room_21Tex_009000" Format="rgba16" Width="32" Height="32" Offset="0x8F00" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_21Tex_009800" OutName="HAKAdan_room_21Tex_009800" Format="rgba16" Width="16" Height="64" Offset="0x9700" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_21Tex_00A000" OutName="HAKAdan_room_21Tex_00A000" Format="rgba16" Width="32" Height="32" Offset="0x9F00" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_21Tex_00A800" OutName="HAKAdan_room_21Tex_00A800" Format="i4" Width="32" Height="32" Offset="0xA700" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_21Tex_00AA00" OutName="HAKAdan_room_21Tex_00AA00" Format="i4" Width="32" Height="32" Offset="0xA900" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_21Tex_00ADA8" OutName="HAKAdan_room_21Tex_00ADA8" Format="rgba16" Width="32" Height="32" Offset="0xACA8" AddedByScript="true"/>
         <Room Name="HAKAdan_room_21" Offset="0x0"/>
     </File>
     <File Name="HAKAdan_room_22" Segment="3">
+        <Texture Name="HAKAdan_room_22Tex_000FA8" OutName="HAKAdan_room_22Tex_000FA8" Format="rgba16" Width="32" Height="8" Offset="0xF98" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_22Tex_0011A8" OutName="HAKAdan_room_22Tex_0011A8" Format="rgba16" Width="32" Height="64" Offset="0x1198" AddedByScript="true"/>
+        <Texture Name="HAKAdan_room_22Tex_0021A8" OutName="HAKAdan_room_22Tex_0021A8" Format="rgba16" Width="32" Height="32" Offset="0x2198" AddedByScript="true"/>
         <Room Name="HAKAdan_room_22" Offset="0x0"/>
     </File>
 </Root>

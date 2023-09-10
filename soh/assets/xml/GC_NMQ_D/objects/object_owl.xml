@@ -1,5 +1,13 @@
 <Root>
     <File Name="object_owl" Segment="6">
+        <Texture Name="object_owlTex_0071A8" OutName="object_owlTex_0071A8" Format="rgba16" Width="32" Height="32" Offset="0x71A8" AddedByScript="true"/>
+        <Texture Name="object_owlTex_0079A8" OutName="object_owlTex_0079A8" Format="rgba16" Width="32" Height="32" Offset="0x79A8" AddedByScript="true"/>
+        <Texture Name="object_owlTex_0081A8" OutName="object_owlTex_0081A8" Format="rgba16" Width="32" Height="32" Offset="0x81A8" AddedByScript="true"/>
+        <Texture Name="object_owlTex_0095A8" OutName="object_owlTex_0095A8" Format="rgba16" Width="32" Height="32" Offset="0x95A8" AddedByScript="true"/>
+        <Texture Name="object_owlTex_009DA8" OutName="object_owlTex_009DA8" Format="rgba16" Width="16" Height="16" Offset="0x9DA8" AddedByScript="true"/>
+        <Texture Name="object_owlTex_009FA8" OutName="object_owlTex_009FA8" Format="rgba16" Width="64" Height="32" Offset="0x9FA8" AddedByScript="true"/>
+        <Texture Name="object_owlTex_00AFA8" OutName="object_owlTex_00AFA8" Format="rgba16" Width="32" Height="32" Offset="0xAFA8" AddedByScript="true"/>
+        <Texture Name="object_owlTex_00B7A8" OutName="object_owlTex_00B7A8" Format="rgba16" Width="32" Height="32" Offset="0xB7A8" AddedByScript="true"/>
         <!-- Flying Owl Skeleton -->
         <Skeleton Name="gOwlFlyingSkel" Type="Flex" LimbType="Standard" Offset="0xC0E8"/>
 
@@ -53,11 +61,17 @@
         <Animation Name="gOwlGlideAnim" Offset="0xC1C4"/>
         <Animation Name="gOwlUnfoldWingsAnim" Offset="0xC684"/>
         <Animation Name="gOwlPerchAnim" Offset="0xC8A0"/>
-        
-        <!-- Owl Perching Skeleton -->
-        <Skeleton Name="gOwlPerchingSkel" Type="Flex" LimbType="Standard" Offset="0x100B0"/>  
 
-        <!-- Eye Textures -->      
+        <!-- Owl Perching Skeleton -->
+        <Skeleton Name="gOwlPerchingSkel" Type="Flex" LimbType="Standard" Offset="0x100B0"/>
+
+                <!-- The two following TLUTs are identical and both are used as TLUTs for the eye textures -->
+        <!-- TLUT used in gOwlPerchingSkel -->
+        <Texture Name="object_owl_TLUT_006DA8" OutName="tlut_00006DA8" Format="rgba16" Width="16" Height="16" Offset="0x6DA8"/>
+        <!-- TLUT used in gOwlFlyingSkel -->
+        <Texture Name="object_owl_TLUT_006FA8" OutName="tlut_00006FA8" Format="rgba16" Width="16" Height="16" Offset="0x6FA8"/>
+
+        <!-- Eye Textures -->
         <Texture Name="gObjOwlEyeOpenTex" OutName="owl_eye_open" Format="ci8" Width="32" Height="32" Offset="0x89A8"/>
         <Texture Name="gObjOwlEyeHalfTex" OutName="owl_eye_half" Format="ci8" Width="32" Height="32" Offset="0x8DA8"/>
         <Texture Name="gObjOwlEyeClosedTex" OutName="owl_eye_closed" Format="ci8" Width="32" Height="32" Offset="0x91A8"/>

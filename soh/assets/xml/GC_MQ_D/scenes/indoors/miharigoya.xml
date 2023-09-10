@@ -1,5 +1,19 @@
 <Root>
     <File Name="miharigoya_scene" Segment="2">
+        <Texture Name="miharigoya_sceneTex_000C50" OutName="miharigoya_sceneTex_000C50" Format="ia8" Width="64" Height="16" Offset="0xC50" AddedByScript="true"/>
+        <Texture Name="miharigoya_sceneTex_001050" OutName="miharigoya_sceneTex_001050" Format="rgba16" Width="32" Height="4" Offset="0x1050" AddedByScript="true"/>
+        <Texture Name="miharigoya_sceneTex_001150" OutName="miharigoya_sceneTex_001150" Format="ia8" Width="32" Height="16" Offset="0x1150" AddedByScript="true"/>
+        <Texture Name="miharigoya_sceneTex_003350" OutName="miharigoya_sceneTex_003350" Format="rgba16" Width="32" Height="8" Offset="0x3350" AddedByScript="true"/>
+        <Texture Name="miharigoya_sceneTex_004550" OutName="miharigoya_sceneTex_004550" Format="i8" Width="32" Height="32" Offset="0x4550" AddedByScript="true"/>
+        <Texture Name="miharigoya_sceneTex_004950" OutName="miharigoya_sceneTex_004950" Format="rgba16" Width="64" Height="32" Offset="0x4950" AddedByScript="true"/>
+        <Texture Name="miharigoya_sceneTex_005950" OutName="miharigoya_sceneTex_005950" Format="i8" Width="32" Height="32" Offset="0x5950" AddedByScript="true"/>
+        <Texture Name="miharigoya_sceneTex_005D50" OutName="miharigoya_sceneTex_005D50" Format="rgba16" Width="64" Height="16" Offset="0x5D50" AddedByScript="true"/>
+        <Texture Name="miharigoya_sceneTex_007550" OutName="miharigoya_sceneTex_007550" Format="rgba16" Width="32" Height="64" Offset="0x7550" AddedByScript="true"/>
+        <Texture Name="miharigoya_sceneTex_008550" OutName="miharigoya_sceneTex_008550" Format="i4" Width="64" Height="64" Offset="0x8550" AddedByScript="true"/>
+        <Texture Name="miharigoya_sceneTex_008D50" OutName="miharigoya_sceneTex_008D50" Format="i8" Width="64" Height="64" Offset="0x8D50" AddedByScript="true"/>
+        <Texture Name="miharigoya_sceneTex_009D50" OutName="miharigoya_sceneTex_009D50" Format="rgba16" Width="32" Height="64" Offset="0x9D50" AddedByScript="true"/>
+        <Texture Name="miharigoya_sceneTex_00AD50" OutName="miharigoya_sceneTex_00AD50" Format="i8" Width="64" Height="64" Offset="0xAD50" AddedByScript="true"/>
+        <Texture Name="miharigoya_sceneTex_00BD50" OutName="miharigoya_sceneTex_00BD50" Format="rgba16" Width="32" Height="32" Offset="0xBD50" AddedByScript="true"/>
         <Texture Name="gGuardHouseOutSideView2NightTex" OutName="view_2_night" Format="rgba16" Width="64" Height="32" Offset="0x1350"/>
         <Texture Name="gGuardHouseOutSideView2DayTex" OutName="view_2_day" Format="rgba16" Width="64" Height="32" Offset="0x2350"/>
         <Texture Name="gGuardHouseOutSideView1NightTex" OutName="view_1_night" Format="rgba16" Width="64" Height="32" Offset="0x3550"/>
