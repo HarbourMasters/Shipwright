@@ -15,7 +15,7 @@ static const ALIGN_ASSET(2) char sTransCircleRippleTex[] = dsTransCircleRippleTe
 #define dsTransCircleStarburstTex "__OTR__code/z_fbdemo_circle/sTransCircleStarburstTex"
 static const ALIGN_ASSET(2) char sTransCircleStarburstTex[] = dsTransCircleStarburstTex;
 
-#define dsCircleWipeVtx "__OTR__code/z_fbdemo_circle/sCircleWipeVtx"
-static const ALIGN_ASSET(2) char sCircleWipeVtx[] = dsCircleWipeVtx;
+#define dsTransCircleVtx "__OTR__code/z_fbdemo_circle/sTransCircleVtx"
+static const ALIGN_ASSET(2) char sTransCircleVtx[] = dsTransCircleVtx;
 
 #endif // CODE_Z_FBDEMO_CIRCLE_H

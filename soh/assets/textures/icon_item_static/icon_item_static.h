@@ -3,275 +3,275 @@
 
 #include "align_asset_macro.h"
 
-#define dgDekuStickIconTex "__OTR__textures/icon_item_static/gDekuStickIconTex"
-static const ALIGN_ASSET(2) char gDekuStickIconTex[] = dgDekuStickIconTex;
+#define dgItemIconDekuStickTex "__OTR__textures/icon_item_static/gItemIconDekuStickTex"
+static const ALIGN_ASSET(2) char gItemIconDekuStickTex[] = dgItemIconDekuStickTex;
 
-#define dgDekuNutIconTex "__OTR__textures/icon_item_static/gDekuNutIconTex"
-static const ALIGN_ASSET(2) char gDekuNutIconTex[] = dgDekuNutIconTex;
+#define dgItemIconDekuNutTex "__OTR__textures/icon_item_static/gItemIconDekuNutTex"
+static const ALIGN_ASSET(2) char gItemIconDekuNutTex[] = dgItemIconDekuNutTex;
 
-#define dgBombIconTex "__OTR__textures/icon_item_static/gBombIconTex"
-static const ALIGN_ASSET(2) char gBombIconTex[] = dgBombIconTex;
+#define dgItemIconBombTex "__OTR__textures/icon_item_static/gItemIconBombTex"
+static const ALIGN_ASSET(2) char gItemIconBombTex[] = dgItemIconBombTex;
 
-#define dgFairyBowIconTex "__OTR__textures/icon_item_static/gFairyBowIconTex"
-static const ALIGN_ASSET(2) char gFairyBowIconTex[] = dgFairyBowIconTex;
+#define dgItemIconBowTex "__OTR__textures/icon_item_static/gItemIconBowTex"
+static const ALIGN_ASSET(2) char gItemIconBowTex[] = dgItemIconBowTex;
 
-#define dgFireArrowIconTex "__OTR__textures/icon_item_static/gFireArrowIconTex"
-static const ALIGN_ASSET(2) char gFireArrowIconTex[] = dgFireArrowIconTex;
+#define dgItemIconArrowFireTex "__OTR__textures/icon_item_static/gItemIconArrowFireTex"
+static const ALIGN_ASSET(2) char gItemIconArrowFireTex[] = dgItemIconArrowFireTex;
 
-#define dgDinsFireIconTex "__OTR__textures/icon_item_static/gDinsFireIconTex"
-static const ALIGN_ASSET(2) char gDinsFireIconTex[] = dgDinsFireIconTex;
+#define dgItemIconDinsFireTex "__OTR__textures/icon_item_static/gItemIconDinsFireTex"
+static const ALIGN_ASSET(2) char gItemIconDinsFireTex[] = dgItemIconDinsFireTex;
 
-#define dgFairySlingshotIconTex "__OTR__textures/icon_item_static/gFairySlingshotIconTex"
-static const ALIGN_ASSET(2) char gFairySlingshotIconTex[] = dgFairySlingshotIconTex;
+#define dgItemIconSlingshotTex "__OTR__textures/icon_item_static/gItemIconSlingshotTex"
+static const ALIGN_ASSET(2) char gItemIconSlingshotTex[] = dgItemIconSlingshotTex;
 
-#define dgFairyOcarinaIconTex "__OTR__textures/icon_item_static/gFairyOcarinaIconTex"
-static const ALIGN_ASSET(2) char gFairyOcarinaIconTex[] = dgFairyOcarinaIconTex;
+#define dgItemIconOcarinaFairyTex "__OTR__textures/icon_item_static/gItemIconOcarinaFairyTex"
+static const ALIGN_ASSET(2) char gItemIconOcarinaFairyTex[] = dgItemIconOcarinaFairyTex;
 
-#define dgOcarinaofTimeIconTex "__OTR__textures/icon_item_static/gOcarinaofTimeIconTex"
-static const ALIGN_ASSET(2) char gOcarinaofTimeIconTex[] = dgOcarinaofTimeIconTex;
+#define dgItemIconOcarinaOfTimeTex "__OTR__textures/icon_item_static/gItemIconOcarinaOfTimeTex"
+static const ALIGN_ASSET(2) char gItemIconOcarinaOfTimeTex[] = dgItemIconOcarinaOfTimeTex;
 
-#define dgBombchuIconTex "__OTR__textures/icon_item_static/gBombchuIconTex"
-static const ALIGN_ASSET(2) char gBombchuIconTex[] = dgBombchuIconTex;
+#define dgItemIconBombchuTex "__OTR__textures/icon_item_static/gItemIconBombchuTex"
+static const ALIGN_ASSET(2) char gItemIconBombchuTex[] = dgItemIconBombchuTex;
 
-#define dgHookshotIconTex "__OTR__textures/icon_item_static/gHookshotIconTex"
-static const ALIGN_ASSET(2) char gHookshotIconTex[] = dgHookshotIconTex;
+#define dgItemIconHookshotTex "__OTR__textures/icon_item_static/gItemIconHookshotTex"
+static const ALIGN_ASSET(2) char gItemIconHookshotTex[] = dgItemIconHookshotTex;
 
-#define dgLongshotIconTex "__OTR__textures/icon_item_static/gLongshotIconTex"
-static const ALIGN_ASSET(2) char gLongshotIconTex[] = dgLongshotIconTex;
+#define dgItemIconLongshotTex "__OTR__textures/icon_item_static/gItemIconLongshotTex"
+static const ALIGN_ASSET(2) char gItemIconLongshotTex[] = dgItemIconLongshotTex;
 
-#define dgIceArrowIconTex "__OTR__textures/icon_item_static/gIceArrowIconTex"
-static const ALIGN_ASSET(2) char gIceArrowIconTex[] = dgIceArrowIconTex;
+#define dgItemIconArrowIceTex "__OTR__textures/icon_item_static/gItemIconArrowIceTex"
+static const ALIGN_ASSET(2) char gItemIconArrowIceTex[] = dgItemIconArrowIceTex;
 
-#define dgFaroresWindIconTex "__OTR__textures/icon_item_static/gFaroresWindIconTex"
-static const ALIGN_ASSET(2) char gFaroresWindIconTex[] = dgFaroresWindIconTex;
+#define dgItemIconFaroresWindTex "__OTR__textures/icon_item_static/gItemIconFaroresWindTex"
+static const ALIGN_ASSET(2) char gItemIconFaroresWindTex[] = dgItemIconFaroresWindTex;
 
-#define dgBoomerangIconTex "__OTR__textures/icon_item_static/gBoomerangIconTex"
-static const ALIGN_ASSET(2) char gBoomerangIconTex[] = dgBoomerangIconTex;
+#define dgItemIconBoomerangTex "__OTR__textures/icon_item_static/gItemIconBoomerangTex"
+static const ALIGN_ASSET(2) char gItemIconBoomerangTex[] = dgItemIconBoomerangTex;
 
-#define dgLensofTruthIconTex "__OTR__textures/icon_item_static/gLensofTruthIconTex"
-static const ALIGN_ASSET(2) char gLensofTruthIconTex[] = dgLensofTruthIconTex;
+#define dgItemIconLensOfTruthTex "__OTR__textures/icon_item_static/gItemIconLensOfTruthTex"
+static const ALIGN_ASSET(2) char gItemIconLensOfTruthTex[] = dgItemIconLensOfTruthTex;
 
-#define dgMagicBeansIconTex "__OTR__textures/icon_item_static/gMagicBeansIconTex"
-static const ALIGN_ASSET(2) char gMagicBeansIconTex[] = dgMagicBeansIconTex;
+#define dgItemIconMagicBeanTex "__OTR__textures/icon_item_static/gItemIconMagicBeanTex"
+static const ALIGN_ASSET(2) char gItemIconMagicBeanTex[] = dgItemIconMagicBeanTex;
 
-#define dgMegatonHammerIconTex "__OTR__textures/icon_item_static/gMegatonHammerIconTex"
-static const ALIGN_ASSET(2) char gMegatonHammerIconTex[] = dgMegatonHammerIconTex;
+#define dgItemIconHammerTex "__OTR__textures/icon_item_static/gItemIconHammerTex"
+static const ALIGN_ASSET(2) char gItemIconHammerTex[] = dgItemIconHammerTex;
 
-#define dgLightArrowIconTex "__OTR__textures/icon_item_static/gLightArrowIconTex"
-static const ALIGN_ASSET(2) char gLightArrowIconTex[] = dgLightArrowIconTex;
+#define dgItemIconArrowLightTex "__OTR__textures/icon_item_static/gItemIconArrowLightTex"
+static const ALIGN_ASSET(2) char gItemIconArrowLightTex[] = dgItemIconArrowLightTex;
 
-#define dgNayrusLoveIconTex "__OTR__textures/icon_item_static/gNayrusLoveIconTex"
-static const ALIGN_ASSET(2) char gNayrusLoveIconTex[] = dgNayrusLoveIconTex;
+#define dgItemIconNayrusLoveTex "__OTR__textures/icon_item_static/gItemIconNayrusLoveTex"
+static const ALIGN_ASSET(2) char gItemIconNayrusLoveTex[] = dgItemIconNayrusLoveTex;
 
-#define dgEmptyBottleIconTex "__OTR__textures/icon_item_static/gEmptyBottleIconTex"
-static const ALIGN_ASSET(2) char gEmptyBottleIconTex[] = dgEmptyBottleIconTex;
+#define dgItemIconBottleEmptyTex "__OTR__textures/icon_item_static/gItemIconBottleEmptyTex"
+static const ALIGN_ASSET(2) char gItemIconBottleEmptyTex[] = dgItemIconBottleEmptyTex;
 
-#define dgRedPotionIconTex "__OTR__textures/icon_item_static/gRedPotionIconTex"
-static const ALIGN_ASSET(2) char gRedPotionIconTex[] = dgRedPotionIconTex;
+#define dgItemIconBottlePotionRedTex "__OTR__textures/icon_item_static/gItemIconBottlePotionRedTex"
+static const ALIGN_ASSET(2) char gItemIconBottlePotionRedTex[] = dgItemIconBottlePotionRedTex;
 
-#define dgGreenPotionIconTex "__OTR__textures/icon_item_static/gGreenPotionIconTex"
-static const ALIGN_ASSET(2) char gGreenPotionIconTex[] = dgGreenPotionIconTex;
+#define dgItemIconBottlePotionGreenTex "__OTR__textures/icon_item_static/gItemIconBottlePotionGreenTex"
+static const ALIGN_ASSET(2) char gItemIconBottlePotionGreenTex[] = dgItemIconBottlePotionGreenTex;
 
-#define dgBluePotionIconTex "__OTR__textures/icon_item_static/gBluePotionIconTex"
-static const ALIGN_ASSET(2) char gBluePotionIconTex[] = dgBluePotionIconTex;
+#define dgItemIconBottlePotionBlueTex "__OTR__textures/icon_item_static/gItemIconBottlePotionBlueTex"
+static const ALIGN_ASSET(2) char gItemIconBottlePotionBlueTex[] = dgItemIconBottlePotionBlueTex;
 
-#define dgBottledFairyIconTex "__OTR__textures/icon_item_static/gBottledFairyIconTex"
-static const ALIGN_ASSET(2) char gBottledFairyIconTex[] = dgBottledFairyIconTex;
+#define dgItemIconBottleFairyTex "__OTR__textures/icon_item_static/gItemIconBottleFairyTex"
+static const ALIGN_ASSET(2) char gItemIconBottleFairyTex[] = dgItemIconBottleFairyTex;
 
-#define dgFishIconTex "__OTR__textures/icon_item_static/gFishIconTex"
-static const ALIGN_ASSET(2) char gFishIconTex[] = dgFishIconTex;
+#define dgItemIconBottleFishTex "__OTR__textures/icon_item_static/gItemIconBottleFishTex"
+static const ALIGN_ASSET(2) char gItemIconBottleFishTex[] = dgItemIconBottleFishTex;
 
-#define dgMilkFullIconTex "__OTR__textures/icon_item_static/gMilkFullIconTex"
-static const ALIGN_ASSET(2) char gMilkFullIconTex[] = dgMilkFullIconTex;
+#define dgItemIconBottleMilkFullTex "__OTR__textures/icon_item_static/gItemIconBottleMilkFullTex"
+static const ALIGN_ASSET(2) char gItemIconBottleMilkFullTex[] = dgItemIconBottleMilkFullTex;
 
-#define dgRutosLetterIconTex "__OTR__textures/icon_item_static/gRutosLetterIconTex"
-static const ALIGN_ASSET(2) char gRutosLetterIconTex[] = dgRutosLetterIconTex;
+#define dgItemIconBottleRutosLetterTex "__OTR__textures/icon_item_static/gItemIconBottleRutosLetterTex"
+static const ALIGN_ASSET(2) char gItemIconBottleRutosLetterTex[] = dgItemIconBottleRutosLetterTex;
 
-#define dgBlueFireIconTex "__OTR__textures/icon_item_static/gBlueFireIconTex"
-static const ALIGN_ASSET(2) char gBlueFireIconTex[] = dgBlueFireIconTex;
+#define dgItemIconBottleBlueFireTex "__OTR__textures/icon_item_static/gItemIconBottleBlueFireTex"
+static const ALIGN_ASSET(2) char gItemIconBottleBlueFireTex[] = dgItemIconBottleBlueFireTex;
 
-#define dgBugIconTex "__OTR__textures/icon_item_static/gBugIconTex"
-static const ALIGN_ASSET(2) char gBugIconTex[] = dgBugIconTex;
+#define dgItemIconBottleBugTex "__OTR__textures/icon_item_static/gItemIconBottleBugTex"
+static const ALIGN_ASSET(2) char gItemIconBottleBugTex[] = dgItemIconBottleBugTex;
 
-#define dgBigPoeIconTex "__OTR__textures/icon_item_static/gBigPoeIconTex"
-static const ALIGN_ASSET(2) char gBigPoeIconTex[] = dgBigPoeIconTex;
+#define dgItemIconBottleBigPoeTex "__OTR__textures/icon_item_static/gItemIconBottleBigPoeTex"
+static const ALIGN_ASSET(2) char gItemIconBottleBigPoeTex[] = dgItemIconBottleBigPoeTex;
 
-#define dgMilkhalfIconTex "__OTR__textures/icon_item_static/gMilkhalfIconTex"
-static const ALIGN_ASSET(2) char gMilkhalfIconTex[] = dgMilkhalfIconTex;
+#define dgItemIconBottleMilkHalfTex "__OTR__textures/icon_item_static/gItemIconBottleMilkHalfTex"
+static const ALIGN_ASSET(2) char gItemIconBottleMilkHalfTex[] = dgItemIconBottleMilkHalfTex;
 
-#define dgPoeIconTex "__OTR__textures/icon_item_static/gPoeIconTex"
-static const ALIGN_ASSET(2) char gPoeIconTex[] = dgPoeIconTex;
+#define dgItemIconBottlePoeTex "__OTR__textures/icon_item_static/gItemIconBottlePoeTex"
+static const ALIGN_ASSET(2) char gItemIconBottlePoeTex[] = dgItemIconBottlePoeTex;
 
-#define dgWeirdEggIconTex "__OTR__textures/icon_item_static/gWeirdEggIconTex"
-static const ALIGN_ASSET(2) char gWeirdEggIconTex[] = dgWeirdEggIconTex;
+#define dgItemIconWeirdEggTex "__OTR__textures/icon_item_static/gItemIconWeirdEggTex"
+static const ALIGN_ASSET(2) char gItemIconWeirdEggTex[] = dgItemIconWeirdEggTex;
 
-#define dgCuccoIconTex "__OTR__textures/icon_item_static/gCuccoIconTex"
-static const ALIGN_ASSET(2) char gCuccoIconTex[] = dgCuccoIconTex;
+#define dgItemIconChickenTex "__OTR__textures/icon_item_static/gItemIconChickenTex"
+static const ALIGN_ASSET(2) char gItemIconChickenTex[] = dgItemIconChickenTex;
 
-#define dgZeldasLetterIconTex "__OTR__textures/icon_item_static/gZeldasLetterIconTex"
-static const ALIGN_ASSET(2) char gZeldasLetterIconTex[] = dgZeldasLetterIconTex;
+#define dgItemIconZeldasLetterTex "__OTR__textures/icon_item_static/gItemIconZeldasLetterTex"
+static const ALIGN_ASSET(2) char gItemIconZeldasLetterTex[] = dgItemIconZeldasLetterTex;
 
-#define dgKeatonMaskIconTex "__OTR__textures/icon_item_static/gKeatonMaskIconTex"
-static const ALIGN_ASSET(2) char gKeatonMaskIconTex[] = dgKeatonMaskIconTex;
+#define dgItemIconMaskKeatonTex "__OTR__textures/icon_item_static/gItemIconMaskKeatonTex"
+static const ALIGN_ASSET(2) char gItemIconMaskKeatonTex[] = dgItemIconMaskKeatonTex;
 
-#define dgSkullMaskIconTex "__OTR__textures/icon_item_static/gSkullMaskIconTex"
-static const ALIGN_ASSET(2) char gSkullMaskIconTex[] = dgSkullMaskIconTex;
+#define dgItemIconMaskSkullTex "__OTR__textures/icon_item_static/gItemIconMaskSkullTex"
+static const ALIGN_ASSET(2) char gItemIconMaskSkullTex[] = dgItemIconMaskSkullTex;
 
-#define dgSpookyMaskIconTex "__OTR__textures/icon_item_static/gSpookyMaskIconTex"
-static const ALIGN_ASSET(2) char gSpookyMaskIconTex[] = dgSpookyMaskIconTex;
+#define dgItemIconMaskSpookyTex "__OTR__textures/icon_item_static/gItemIconMaskSpookyTex"
+static const ALIGN_ASSET(2) char gItemIconMaskSpookyTex[] = dgItemIconMaskSpookyTex;
 
-#define dgBunnyHoodIconTex "__OTR__textures/icon_item_static/gBunnyHoodIconTex"
-static const ALIGN_ASSET(2) char gBunnyHoodIconTex[] = dgBunnyHoodIconTex;
+#define dgItemIconMaskBunnyHoodTex "__OTR__textures/icon_item_static/gItemIconMaskBunnyHoodTex"
+static const ALIGN_ASSET(2) char gItemIconMaskBunnyHoodTex[] = dgItemIconMaskBunnyHoodTex;
 
-#define dgGoronMaskIconTex "__OTR__textures/icon_item_static/gGoronMaskIconTex"
-static const ALIGN_ASSET(2) char gGoronMaskIconTex[] = dgGoronMaskIconTex;
+#define dgItemIconMaskGoronTex "__OTR__textures/icon_item_static/gItemIconMaskGoronTex"
+static const ALIGN_ASSET(2) char gItemIconMaskGoronTex[] = dgItemIconMaskGoronTex;
 
-#define dgZoraMaskIconTex "__OTR__textures/icon_item_static/gZoraMaskIconTex"
-static const ALIGN_ASSET(2) char gZoraMaskIconTex[] = dgZoraMaskIconTex;
+#define dgItemIconMaskZoraTex "__OTR__textures/icon_item_static/gItemIconMaskZoraTex"
+static const ALIGN_ASSET(2) char gItemIconMaskZoraTex[] = dgItemIconMaskZoraTex;
 
-#define dgGerudoMaskIconTex "__OTR__textures/icon_item_static/gGerudoMaskIconTex"
-static const ALIGN_ASSET(2) char gGerudoMaskIconTex[] = dgGerudoMaskIconTex;
+#define dgItemIconMaskGerudoTex "__OTR__textures/icon_item_static/gItemIconMaskGerudoTex"
+static const ALIGN_ASSET(2) char gItemIconMaskGerudoTex[] = dgItemIconMaskGerudoTex;
 
-#define dgMaskofTruthIconTex "__OTR__textures/icon_item_static/gMaskofTruthIconTex"
-static const ALIGN_ASSET(2) char gMaskofTruthIconTex[] = dgMaskofTruthIconTex;
+#define dgItemIconMaskTruthTex "__OTR__textures/icon_item_static/gItemIconMaskTruthTex"
+static const ALIGN_ASSET(2) char gItemIconMaskTruthTex[] = dgItemIconMaskTruthTex;
 
-#define dgSoldOutIconTex "__OTR__textures/icon_item_static/gSoldOutIconTex"
-static const ALIGN_ASSET(2) char gSoldOutIconTex[] = dgSoldOutIconTex;
+#define dgItemIconSoldOutTex "__OTR__textures/icon_item_static/gItemIconSoldOutTex"
+static const ALIGN_ASSET(2) char gItemIconSoldOutTex[] = dgItemIconSoldOutTex;
 
-#define dgPocketEggIconTex "__OTR__textures/icon_item_static/gPocketEggIconTex"
-static const ALIGN_ASSET(2) char gPocketEggIconTex[] = dgPocketEggIconTex;
+#define dgItemIconPocketEggTex "__OTR__textures/icon_item_static/gItemIconPocketEggTex"
+static const ALIGN_ASSET(2) char gItemIconPocketEggTex[] = dgItemIconPocketEggTex;
 
-#define dgPocketCuccoIconTex "__OTR__textures/icon_item_static/gPocketCuccoIconTex"
-static const ALIGN_ASSET(2) char gPocketCuccoIconTex[] = dgPocketCuccoIconTex;
+#define dgItemIconPocketCuccoTex "__OTR__textures/icon_item_static/gItemIconPocketCuccoTex"
+static const ALIGN_ASSET(2) char gItemIconPocketCuccoTex[] = dgItemIconPocketCuccoTex;
 
-#define dgCojiroIconTex "__OTR__textures/icon_item_static/gCojiroIconTex"
-static const ALIGN_ASSET(2) char gCojiroIconTex[] = dgCojiroIconTex;
+#define dgItemIconCojiroTex "__OTR__textures/icon_item_static/gItemIconCojiroTex"
+static const ALIGN_ASSET(2) char gItemIconCojiroTex[] = dgItemIconCojiroTex;
 
-#define dgOddMushroomIconTex "__OTR__textures/icon_item_static/gOddMushroomIconTex"
-static const ALIGN_ASSET(2) char gOddMushroomIconTex[] = dgOddMushroomIconTex;
+#define dgItemIconOddMushroomTex "__OTR__textures/icon_item_static/gItemIconOddMushroomTex"
+static const ALIGN_ASSET(2) char gItemIconOddMushroomTex[] = dgItemIconOddMushroomTex;
 
-#define dgOddPotionIconTex "__OTR__textures/icon_item_static/gOddPotionIconTex"
-static const ALIGN_ASSET(2) char gOddPotionIconTex[] = dgOddPotionIconTex;
+#define dgItemIconOddPotionTex "__OTR__textures/icon_item_static/gItemIconOddPotionTex"
+static const ALIGN_ASSET(2) char gItemIconOddPotionTex[] = dgItemIconOddPotionTex;
 
-#define dgPoachersSawIconTex "__OTR__textures/icon_item_static/gPoachersSawIconTex"
-static const ALIGN_ASSET(2) char gPoachersSawIconTex[] = dgPoachersSawIconTex;
+#define dgItemIconPoachersSawTex "__OTR__textures/icon_item_static/gItemIconPoachersSawTex"
+static const ALIGN_ASSET(2) char gItemIconPoachersSawTex[] = dgItemIconPoachersSawTex;
 
-#define dgBrokenBiggoronSwordIconTex "__OTR__textures/icon_item_static/gBrokenBiggoronSwordIconTex"
-static const ALIGN_ASSET(2) char gBrokenBiggoronSwordIconTex[] = dgBrokenBiggoronSwordIconTex;
+#define dgItemIconBrokenGoronsSwordTex "__OTR__textures/icon_item_static/gItemIconBrokenGoronsSwordTex"
+static const ALIGN_ASSET(2) char gItemIconBrokenGoronsSwordTex[] = dgItemIconBrokenGoronsSwordTex;
 
-#define dgPrescriptionIconTex "__OTR__textures/icon_item_static/gPrescriptionIconTex"
-static const ALIGN_ASSET(2) char gPrescriptionIconTex[] = dgPrescriptionIconTex;
+#define dgItemIconPrescriptionTex "__OTR__textures/icon_item_static/gItemIconPrescriptionTex"
+static const ALIGN_ASSET(2) char gItemIconPrescriptionTex[] = dgItemIconPrescriptionTex;
 
-#define dgEyeBallFrogIconTex "__OTR__textures/icon_item_static/gEyeBallFrogIconTex"
-static const ALIGN_ASSET(2) char gEyeBallFrogIconTex[] = dgEyeBallFrogIconTex;
+#define dgItemIconEyeballFrogTex "__OTR__textures/icon_item_static/gItemIconEyeballFrogTex"
+static const ALIGN_ASSET(2) char gItemIconEyeballFrogTex[] = dgItemIconEyeballFrogTex;
 
-#define dgEyeDropsIconTex "__OTR__textures/icon_item_static/gEyeDropsIconTex"
-static const ALIGN_ASSET(2) char gEyeDropsIconTex[] = dgEyeDropsIconTex;
+#define dgItemIconEyeDropsTex "__OTR__textures/icon_item_static/gItemIconEyeDropsTex"
+static const ALIGN_ASSET(2) char gItemIconEyeDropsTex[] = dgItemIconEyeDropsTex;
 
-#define dgClaimCheckIconTex "__OTR__textures/icon_item_static/gClaimCheckIconTex"
-static const ALIGN_ASSET(2) char gClaimCheckIconTex[] = dgClaimCheckIconTex;
+#define dgItemIconClaimCheckTex "__OTR__textures/icon_item_static/gItemIconClaimCheckTex"
+static const ALIGN_ASSET(2) char gItemIconClaimCheckTex[] = dgItemIconClaimCheckTex;
 
-#define dgFairyBowFireIconTex "__OTR__textures/icon_item_static/gFairyBowFireIconTex"
-static const ALIGN_ASSET(2) char gFairyBowFireIconTex[] = dgFairyBowFireIconTex;
+#define dgItemIconBowFireTex "__OTR__textures/icon_item_static/gItemIconBowFireTex"
+static const ALIGN_ASSET(2) char gItemIconBowFireTex[] = dgItemIconBowFireTex;
 
-#define dgFairyBowIceIconTex "__OTR__textures/icon_item_static/gFairyBowIceIconTex"
-static const ALIGN_ASSET(2) char gFairyBowIceIconTex[] = dgFairyBowIceIconTex;
+#define dgItemIconBowIceTex "__OTR__textures/icon_item_static/gItemIconBowIceTex"
+static const ALIGN_ASSET(2) char gItemIconBowIceTex[] = dgItemIconBowIceTex;
 
-#define dgFairyBowLightIconTex "__OTR__textures/icon_item_static/gFairyBowLightIconTex"
-static const ALIGN_ASSET(2) char gFairyBowLightIconTex[] = dgFairyBowLightIconTex;
+#define dgItemIconBowLightTex "__OTR__textures/icon_item_static/gItemIconBowLightTex"
+static const ALIGN_ASSET(2) char gItemIconBowLightTex[] = dgItemIconBowLightTex;
 
-#define dgKokiriSwordIconTex "__OTR__textures/icon_item_static/gKokiriSwordIconTex"
-static const ALIGN_ASSET(2) char gKokiriSwordIconTex[] = dgKokiriSwordIconTex;
+#define dgItemIconSwordKokiriTex "__OTR__textures/icon_item_static/gItemIconSwordKokiriTex"
+static const ALIGN_ASSET(2) char gItemIconSwordKokiriTex[] = dgItemIconSwordKokiriTex;
 
-#define dgMasterSwordIconTex "__OTR__textures/icon_item_static/gMasterSwordIconTex"
-static const ALIGN_ASSET(2) char gMasterSwordIconTex[] = dgMasterSwordIconTex;
+#define dgItemIconSwordMasterTex "__OTR__textures/icon_item_static/gItemIconSwordMasterTex"
+static const ALIGN_ASSET(2) char gItemIconSwordMasterTex[] = dgItemIconSwordMasterTex;
 
-#define dgBiggoronSwordIconTex "__OTR__textures/icon_item_static/gBiggoronSwordIconTex"
-static const ALIGN_ASSET(2) char gBiggoronSwordIconTex[] = dgBiggoronSwordIconTex;
+#define dgItemIconSwordBiggoronTex "__OTR__textures/icon_item_static/gItemIconSwordBiggoronTex"
+static const ALIGN_ASSET(2) char gItemIconSwordBiggoronTex[] = dgItemIconSwordBiggoronTex;
 
-#define dgDekuShieldIconTex "__OTR__textures/icon_item_static/gDekuShieldIconTex"
-static const ALIGN_ASSET(2) char gDekuShieldIconTex[] = dgDekuShieldIconTex;
+#define dgItemIconShieldDekuTex "__OTR__textures/icon_item_static/gItemIconShieldDekuTex"
+static const ALIGN_ASSET(2) char gItemIconShieldDekuTex[] = dgItemIconShieldDekuTex;
 
-#define dgHylianShieldIconTex "__OTR__textures/icon_item_static/gHylianShieldIconTex"
-static const ALIGN_ASSET(2) char gHylianShieldIconTex[] = dgHylianShieldIconTex;
+#define dgItemIconShieldHylianTex "__OTR__textures/icon_item_static/gItemIconShieldHylianTex"
+static const ALIGN_ASSET(2) char gItemIconShieldHylianTex[] = dgItemIconShieldHylianTex;
 
-#define dgMirrorShieldIconTex "__OTR__textures/icon_item_static/gMirrorShieldIconTex"
-static const ALIGN_ASSET(2) char gMirrorShieldIconTex[] = dgMirrorShieldIconTex;
+#define dgItemIconShieldMirrorTex "__OTR__textures/icon_item_static/gItemIconShieldMirrorTex"
+static const ALIGN_ASSET(2) char gItemIconShieldMirrorTex[] = dgItemIconShieldMirrorTex;
 
-#define dgKokiriTunicIconTex "__OTR__textures/icon_item_static/gKokiriTunicIconTex"
-static const ALIGN_ASSET(2) char gKokiriTunicIconTex[] = dgKokiriTunicIconTex;
+#define dgItemIconTunicKokiriTex "__OTR__textures/icon_item_static/gItemIconTunicKokiriTex"
+static const ALIGN_ASSET(2) char gItemIconTunicKokiriTex[] = dgItemIconTunicKokiriTex;
 
-#define dgGoronTunicIconTex "__OTR__textures/icon_item_static/gGoronTunicIconTex"
-static const ALIGN_ASSET(2) char gGoronTunicIconTex[] = dgGoronTunicIconTex;
+#define dgItemIconTunicGoronTex "__OTR__textures/icon_item_static/gItemIconTunicGoronTex"
+static const ALIGN_ASSET(2) char gItemIconTunicGoronTex[] = dgItemIconTunicGoronTex;
 
-#define dgZoraTunicIconTex "__OTR__textures/icon_item_static/gZoraTunicIconTex"
-static const ALIGN_ASSET(2) char gZoraTunicIconTex[] = dgZoraTunicIconTex;
+#define dgItemIconTunicZoraTex "__OTR__textures/icon_item_static/gItemIconTunicZoraTex"
+static const ALIGN_ASSET(2) char gItemIconTunicZoraTex[] = dgItemIconTunicZoraTex;
 
-#define dgKokiriBootsIconTex "__OTR__textures/icon_item_static/gKokiriBootsIconTex"
-static const ALIGN_ASSET(2) char gKokiriBootsIconTex[] = dgKokiriBootsIconTex;
+#define dgItemIconBootsKokiriTex "__OTR__textures/icon_item_static/gItemIconBootsKokiriTex"
+static const ALIGN_ASSET(2) char gItemIconBootsKokiriTex[] = dgItemIconBootsKokiriTex;
 
-#define dgIronBootsIconTex "__OTR__textures/icon_item_static/gIronBootsIconTex"
-static const ALIGN_ASSET(2) char gIronBootsIconTex[] = dgIronBootsIconTex;
+#define dgItemIconBootsIronTex "__OTR__textures/icon_item_static/gItemIconBootsIronTex"
+static const ALIGN_ASSET(2) char gItemIconBootsIronTex[] = dgItemIconBootsIronTex;
 
-#define dgHoverBootsIconTex "__OTR__textures/icon_item_static/gHoverBootsIconTex"
-static const ALIGN_ASSET(2) char gHoverBootsIconTex[] = dgHoverBootsIconTex;
+#define dgItemIconBootsHoverTex "__OTR__textures/icon_item_static/gItemIconBootsHoverTex"
+static const ALIGN_ASSET(2) char gItemIconBootsHoverTex[] = dgItemIconBootsHoverTex;
 
-#define dgBulletBag30IconTex "__OTR__textures/icon_item_static/gBulletBag30IconTex"
-static const ALIGN_ASSET(2) char gBulletBag30IconTex[] = dgBulletBag30IconTex;
+#define dgItemIconBulletBag30Tex "__OTR__textures/icon_item_static/gItemIconBulletBag30Tex"
+static const ALIGN_ASSET(2) char gItemIconBulletBag30Tex[] = dgItemIconBulletBag30Tex;
 
-#define dgBulletBag40IconTex "__OTR__textures/icon_item_static/gBulletBag40IconTex"
-static const ALIGN_ASSET(2) char gBulletBag40IconTex[] = dgBulletBag40IconTex;
+#define dgItemIconBulletBag40Tex "__OTR__textures/icon_item_static/gItemIconBulletBag40Tex"
+static const ALIGN_ASSET(2) char gItemIconBulletBag40Tex[] = dgItemIconBulletBag40Tex;
 
-#define dgBulletBag50IconTex "__OTR__textures/icon_item_static/gBulletBag50IconTex"
-static const ALIGN_ASSET(2) char gBulletBag50IconTex[] = dgBulletBag50IconTex;
+#define dgItemIconBulletBag50Tex "__OTR__textures/icon_item_static/gItemIconBulletBag50Tex"
+static const ALIGN_ASSET(2) char gItemIconBulletBag50Tex[] = dgItemIconBulletBag50Tex;
 
-#define dgQuiver30IconTex "__OTR__textures/icon_item_static/gQuiver30IconTex"
-static const ALIGN_ASSET(2) char gQuiver30IconTex[] = dgQuiver30IconTex;
+#define dgItemIconQuiver30Tex "__OTR__textures/icon_item_static/gItemIconQuiver30Tex"
+static const ALIGN_ASSET(2) char gItemIconQuiver30Tex[] = dgItemIconQuiver30Tex;
 
-#define dgQuiver40IconTex "__OTR__textures/icon_item_static/gQuiver40IconTex"
-static const ALIGN_ASSET(2) char gQuiver40IconTex[] = dgQuiver40IconTex;
+#define dgItemIconQuiver40Tex "__OTR__textures/icon_item_static/gItemIconQuiver40Tex"
+static const ALIGN_ASSET(2) char gItemIconQuiver40Tex[] = dgItemIconQuiver40Tex;
 
-#define dgQuiver50IconTex "__OTR__textures/icon_item_static/gQuiver50IconTex"
-static const ALIGN_ASSET(2) char gQuiver50IconTex[] = dgQuiver50IconTex;
+#define dgItemIconQuiver50Tex "__OTR__textures/icon_item_static/gItemIconQuiver50Tex"
+static const ALIGN_ASSET(2) char gItemIconQuiver50Tex[] = dgItemIconQuiver50Tex;
 
-#define dgBombBag20IconTex "__OTR__textures/icon_item_static/gBombBag20IconTex"
-static const ALIGN_ASSET(2) char gBombBag20IconTex[] = dgBombBag20IconTex;
+#define dgItemIconBombBag20Tex "__OTR__textures/icon_item_static/gItemIconBombBag20Tex"
+static const ALIGN_ASSET(2) char gItemIconBombBag20Tex[] = dgItemIconBombBag20Tex;
 
-#define dgBombBag30IconTex "__OTR__textures/icon_item_static/gBombBag30IconTex"
-static const ALIGN_ASSET(2) char gBombBag30IconTex[] = dgBombBag30IconTex;
+#define dgItemIconBombBag30Tex "__OTR__textures/icon_item_static/gItemIconBombBag30Tex"
+static const ALIGN_ASSET(2) char gItemIconBombBag30Tex[] = dgItemIconBombBag30Tex;
 
-#define dgBombBag40IconTex "__OTR__textures/icon_item_static/gBombBag40IconTex"
-static const ALIGN_ASSET(2) char gBombBag40IconTex[] = dgBombBag40IconTex;
+#define dgItemIconBombBag40Tex "__OTR__textures/icon_item_static/gItemIconBombBag40Tex"
+static const ALIGN_ASSET(2) char gItemIconBombBag40Tex[] = dgItemIconBombBag40Tex;
 
-#define dgGoronsBraceletIconTex "__OTR__textures/icon_item_static/gGoronsBraceletIconTex"
-static const ALIGN_ASSET(2) char gGoronsBraceletIconTex[] = dgGoronsBraceletIconTex;
+#define dgItemIconGoronsBraceletTex "__OTR__textures/icon_item_static/gItemIconGoronsBraceletTex"
+static const ALIGN_ASSET(2) char gItemIconGoronsBraceletTex[] = dgItemIconGoronsBraceletTex;
 
-#define dgSilverGauntletsIconTex "__OTR__textures/icon_item_static/gSilverGauntletsIconTex"
-static const ALIGN_ASSET(2) char gSilverGauntletsIconTex[] = dgSilverGauntletsIconTex;
+#define dgItemIconSilverGauntletsTex "__OTR__textures/icon_item_static/gItemIconSilverGauntletsTex"
+static const ALIGN_ASSET(2) char gItemIconSilverGauntletsTex[] = dgItemIconSilverGauntletsTex;
 
-#define dgGoldenGauntletsIconTex "__OTR__textures/icon_item_static/gGoldenGauntletsIconTex"
-static const ALIGN_ASSET(2) char gGoldenGauntletsIconTex[] = dgGoldenGauntletsIconTex;
+#define dgItemIconGoldenGauntletsTex "__OTR__textures/icon_item_static/gItemIconGoldenGauntletsTex"
+static const ALIGN_ASSET(2) char gItemIconGoldenGauntletsTex[] = dgItemIconGoldenGauntletsTex;
 
-#define dgSilverScaleIconTex "__OTR__textures/icon_item_static/gSilverScaleIconTex"
-static const ALIGN_ASSET(2) char gSilverScaleIconTex[] = dgSilverScaleIconTex;
+#define dgItemIconScaleSilverTex "__OTR__textures/icon_item_static/gItemIconScaleSilverTex"
+static const ALIGN_ASSET(2) char gItemIconScaleSilverTex[] = dgItemIconScaleSilverTex;
 
-#define dgGoldenScaleIconTex "__OTR__textures/icon_item_static/gGoldenScaleIconTex"
-static const ALIGN_ASSET(2) char gGoldenScaleIconTex[] = dgGoldenScaleIconTex;
+#define dgItemIconScaleGoldenTex "__OTR__textures/icon_item_static/gItemIconScaleGoldenTex"
+static const ALIGN_ASSET(2) char gItemIconScaleGoldenTex[] = dgItemIconScaleGoldenTex;
 
-#define dgBrokenGiantsKnifeIconTex "__OTR__textures/icon_item_static/gBrokenGiantsKnifeIconTex"
-static const ALIGN_ASSET(2) char gBrokenGiantsKnifeIconTex[] = dgBrokenGiantsKnifeIconTex;
+#define dgItemIconBrokenGiantsKnifeTex "__OTR__textures/icon_item_static/gItemIconBrokenGiantsKnifeTex"
+static const ALIGN_ASSET(2) char gItemIconBrokenGiantsKnifeTex[] = dgItemIconBrokenGiantsKnifeTex;
 
-#define dgAdultsWalletIconTex "__OTR__textures/icon_item_static/gAdultsWalletIconTex"
-static const ALIGN_ASSET(2) char gAdultsWalletIconTex[] = dgAdultsWalletIconTex;
+#define dgItemIconAdultsWalletTex "__OTR__textures/icon_item_static/gItemIconAdultsWalletTex"
+static const ALIGN_ASSET(2) char gItemIconAdultsWalletTex[] = dgItemIconAdultsWalletTex;
 
-#define dgGiantsWalletIconTex "__OTR__textures/icon_item_static/gGiantsWalletIconTex"
-static const ALIGN_ASSET(2) char gGiantsWalletIconTex[] = dgGiantsWalletIconTex;
+#define dgItemIconGiantsWalletTex "__OTR__textures/icon_item_static/gItemIconGiantsWalletTex"
+static const ALIGN_ASSET(2) char gItemIconGiantsWalletTex[] = dgItemIconGiantsWalletTex;
 
-#define dgDekuSeedsIconTex "__OTR__textures/icon_item_static/gDekuSeedsIconTex"
-static const ALIGN_ASSET(2) char gDekuSeedsIconTex[] = dgDekuSeedsIconTex;
+#define dgItemIconDekuSeedsTex "__OTR__textures/icon_item_static/gItemIconDekuSeedsTex"
+static const ALIGN_ASSET(2) char gItemIconDekuSeedsTex[] = dgItemIconDekuSeedsTex;
 
-#define dgFishingPoleIconTex "__OTR__textures/icon_item_static/gFishingPoleIconTex"
-static const ALIGN_ASSET(2) char gFishingPoleIconTex[] = dgFishingPoleIconTex;
+#define dgItemIconFishingPoleTex "__OTR__textures/icon_item_static/gItemIconFishingPoleTex"
+static const ALIGN_ASSET(2) char gItemIconFishingPoleTex[] = dgItemIconFishingPoleTex;
 
 #define dgHeartPieceIcon1Tex "__OTR__textures/icon_item_static/gHeartPieceIcon1Tex"
 static const ALIGN_ASSET(2) char gHeartPieceIcon1Tex[] = dgHeartPieceIcon1Tex;

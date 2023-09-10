@@ -1397,7 +1397,7 @@ void EnItem00_DrawCollectible(EnItem00* this, PlayState* play) {
         gDPSetTextureFilter(POLY_OPA_DISP++, G_TF_BILERP);
         gDPSetTextureConvert(POLY_OPA_DISP++, G_TC_FILT);
         gDPSetTextureLUT(POLY_OPA_DISP++, G_TT_NONE);
-        gDPLoadTextureBlock(POLY_OPA_DISP++, gBombchuIconTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0,
+        gDPLoadTextureBlock(POLY_OPA_DISP++, gItemIconBombchuTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
         gSPVertex(POLY_OPA_DISP++, customDropVtx, 4, 0);
