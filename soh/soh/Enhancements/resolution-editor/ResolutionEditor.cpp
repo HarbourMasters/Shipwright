@@ -12,8 +12,7 @@
         - AspectRatioX, AspectRatioY                    - Aspect ratio controls. To toggle off, set either to zero.
         - VerticalPixelCount, VerticalResolutionToggle  - Resolution controls.
         - PixelPerfectMode, IntegerScaleFactor          - Pixel Perfect Mode a.k.a. integer scaling controls.
-
-    This GUI additionally uses the following CVars:
+    (Waiting on a second PR merge on LUS for this to fully function.):
         - IntegerScaleFitAutomatically                  - Automatic resizing for Pixel Perfect Mode.
 
     There's an additional "gAdvancedResolution.IgnoreAspectCorrection" CVar in LUS that I intend to leave unused here,
@@ -34,11 +33,15 @@ const int default_aspectRatio = 1; // Default combo list option
 const char* pixelCountPresetLabels[] = { "Custom",     "Native N64 (240p)", "2x (480p)",       "3x (720p)", "4x (960p)",
                                          "5x (1200p)", "6x (1440p)",        "Full HD (1080p)", "4K (2160p)" };
 const int pixelCountPresets[] = { 480, 240, 480, 720, 960, 1200, 1440, 1080, 2160, 480 };
-const int default_pixelCount = 0;           // Default combo list option
+const int default_pixelCount = 0; // Default combo list option
+
 const uint32_t minVerticalPixelCount = 240; // see: LUS::AdvancedResolution()
 const uint32_t maxVerticalPixelCount = 4320;
 
 const unsigned short default_maxIntegerScaleFactor = 6;
+
+const float enhancementSpacerHeight = 19.0f;
+// This will need to be determined more intelligently when Hi-DPI UI support is added.
 
 void AdvancedResolutionSettingsWindow::InitElement() {
 }
@@ -52,13 +55,28 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             update[i] = false;
         static short updateCountdown = 0;
         short countdownStartingValue = CVarGetInteger("gInterpolationFPS", 20) / 2; // half of a second, in frames.
+
         // Initialise integer scale bounds.
         short max_integerScaleFactor = default_maxIntegerScaleFactor; // default value, which may or may not get
                                                                       // overridden depending on viewport res
-        unsigned short integerScale_maximumBounds = gfx_current_game_window_viewport.height /
-                                                    gfx_current_dimensions.height; // can change when window is resized
+
+        short integerScale_maximumBounds = max_integerScaleFactor; // can change when window is resized
+        // This is mostly used for cosmetic purposes, as Fit Automatically functionality is now handled in LUS instead.
+        if (((float)gfx_current_game_window_viewport.width / gfx_current_game_window_viewport.height) >
+            ((float)gfx_current_dimensions.width / gfx_current_dimensions.height)) {
+            // Scale to window height
+            integerScale_maximumBounds = gfx_current_game_window_viewport.height / gfx_current_dimensions.height;
+        } else {
+            // Scale to window width
+            integerScale_maximumBounds = gfx_current_game_window_viewport.width / gfx_current_dimensions.width;
+        }
         if (integerScale_maximumBounds < 1)
             integerScale_maximumBounds = 1; // it should never be less than 1x.
+        if (default_maxIntegerScaleFactor < integerScale_maximumBounds) {
+            max_integerScaleFactor = integerScale_maximumBounds + 1;
+            // the +1 allows people do things like cropped 5x scaling at 1080p
+        } // Tina TODO: The "+1" should really be a toggleable CVar and have corresponding functionality in LUS.
+
         // Stored Values
         static float aspectRatioX = CVarGetFloat("gAdvancedResolution.AspectRatioX", 16.0f);
         static float aspectRatioY = CVarGetFloat("gAdvancedResolution.AspectRatioY", 9.0f);
@@ -110,7 +128,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                                    ICON_FA_EXCLAMATION_TRIANGLE " Significant frame rate (FPS) drops may be occuring.");
                 UIWidgets::Spacer(2);
             } else { // No warnings
-                UIWidgets::Spacer(19);
+                UIWidgets::Spacer(enhancementSpacerHeight);
             }
         } else { // N64 Mode warning
             ImGui::TextColored({ 0.0f, 0.85f, 0.85f, 1.0f },
@@ -217,7 +235,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             }
         }
         if (!showHorizontalResField) {
-            UIWidgets::Spacer(19); // just so other UI elements don't jump around too much.
+            UIWidgets::Spacer(enhancementSpacerHeight); // just so other UI elements don't jump around too much.
         }
 
         UIWidgets::Spacer(0);
@@ -229,11 +247,6 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         if (!CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0)) {
             CVarSetInteger("gAdvancedResolution.PixelPerfectMode", (int)false);
             CVarSave();
-        }
-
-        if (default_maxIntegerScaleFactor < integerScale_maximumBounds) {
-            max_integerScaleFactor = integerScale_maximumBounds + 1;
-            // the +1 allows people do things like cropped 5x scaling at 1080p
         }
 
         // Integer Scaling
@@ -249,9 +262,11 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0), "", UIWidgets::CheckboxGraphics::Cross, false);
         UIWidgets::Tooltip("Automatically sets scale factor to fit window. Only available in pixel-perfect mode.");
         if (CVarGetInteger("gAdvancedResolution.IntegerScaleFitAutomatically", 0)) {
+            // This is just here to update the value shown on the slider.
+            // The function in LUS to handle this setting will ignore IntegerScaleFactor while active.
             CVarSetInteger("gAdvancedResolution.IntegerScaleFactor", integerScale_maximumBounds);
             CVarSave();
-        } // Tina TODO: This doesn't work if the window is closed. Do this somewhere else.
+        }
 
         UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
 
@@ -298,8 +313,8 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             }
         } // end of Additional Settings
 
+        // Clamp and update the CVars that don't use UIWidgets
         if (IsBoolArrayTrue(update)) {
-            // Clamp and update the CVars that don't use UIWidgets
             if (update[UPDATE_aspectRatioX]) {
                 if (aspectRatioX < 0.0f) {
                     aspectRatioX = 0.0f;
