@@ -1,5 +1,19 @@
 <Root>
     <File Name="object_mb" Segment="6">
+        <Texture Name="object_mbTex_008128" OutName="object_mbTex_008128" Format="rgba16" Width="16" Height="16" Offset="0x8128" AddedByScript="true"/>
+        <Texture Name="object_mbTex_008328" OutName="object_mbTex_008328" Format="rgba16" Width="8" Height="32" Offset="0x8328" AddedByScript="true"/>
+        <Texture Name="object_mbTex_008928" OutName="object_mbTex_008928" Format="rgba16" Width="8" Height="16" Offset="0x8928" AddedByScript="true"/>
+        <Texture Name="object_mbTex_008A28" OutName="object_mbTex_008A28" Format="rgba16" Width="4" Height="4" Offset="0x8A28" AddedByScript="true"/>
+        <Texture Name="object_mbTex_008A48" OutName="object_mbTex_008A48" Format="rgba16" Width="8" Height="24" Offset="0x8A48" AddedByScript="true"/>
+        <Texture Name="object_mbTex_008BC8" OutName="object_mbTex_008BC8" Format="rgba16" Width="4" Height="16" Offset="0x8BC8" AddedByScript="true"/>
+        <Texture Name="object_mbTex_008C48" OutName="object_mbTex_008C48" Format="rgba16" Width="4" Height="8" Offset="0x8C48" AddedByScript="true"/>
+        <Texture Name="object_mbTex_008C88" OutName="object_mbTex_008C88" Format="rgba16" Width="8" Height="16" Offset="0x8C88" AddedByScript="true"/>
+        <Texture Name="object_mbTex_00EC00" OutName="object_mbTex_00EC00" Format="rgba16" Width="16" Height="16" Offset="0xEC00" AddedByScript="true"/>
+        <Texture Name="object_mbTex_00EE00" OutName="object_mbTex_00EE00" Format="rgba16" Width="8" Height="16" Offset="0xEE00" AddedByScript="true"/>
+        <Texture Name="object_mbTex_00EF00" OutName="object_mbTex_00EF00" Format="rgba16" Width="8" Height="16" Offset="0xEF00" AddedByScript="true"/>
+        <Texture Name="object_mbTex_00F000" OutName="object_mbTex_00F000" Format="rgba16" Width="16" Height="16" Offset="0xF000" AddedByScript="true"/>
+        <Texture Name="object_mbTex_00F200" OutName="object_mbTex_00F200" Format="rgba16" Width="4" Height="16" Offset="0xF200" AddedByScript="true"/>
+        <Texture Name="object_mbTex_00F280" OutName="object_mbTex_00F280" Format="rgba16" Width="4" Height="16" Offset="0xF280" AddedByScript="true"/>
         <Skeleton Name="gEnMbSpearSkel" Type="Flex" LimbType="Standard" Offset="0x8F38"/>
         <Skeleton Name="gEnMbClubSkel" Type="Flex" LimbType="Standard" Offset="0x14190"/>
         <Animation Name="gEnMbSpearFallFaceDownAnim" Offset="0x6A4"/><!--Unused-->

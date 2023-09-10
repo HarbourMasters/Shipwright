@@ -1,5 +1,7 @@
 <Root>
     <File Name="object_gi_hoverboots" Segment="6">
+        <Texture Name="object_gi_hoverbootsTex_000000" OutName="object_gi_hoverbootsTex_000000" Format="ia4" Width="48" Height="32" Offset="0x0" AddedByScript="true"/>
+        <Texture Name="object_gi_hoverbootsTex_000300" OutName="object_gi_hoverbootsTex_000300" Format="i4" Width="16" Height="32" Offset="0x300" AddedByScript="true"/>
         <DList Name="gGiHoverBootsDL" Offset="0x1850"/>
     </File>
 </Root>

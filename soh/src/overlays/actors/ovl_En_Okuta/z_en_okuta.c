@@ -1,6 +1,7 @@
 #include "z_en_okuta.h"
 #include "objects/object_okuta/object_okuta.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 
@@ -257,7 +258,7 @@ void EnOkuta_SetupDie(EnOkuta* this) {
     Animation_MorphToPlayOnce(&this->skelAnime, &gOctorokDieAnim, -3.0f);
     this->timer = 0;
     this->actionFunc = EnOkuta_Die;
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_OCTOROK]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnOkuta_SetupFreeze(EnOkuta* this) {

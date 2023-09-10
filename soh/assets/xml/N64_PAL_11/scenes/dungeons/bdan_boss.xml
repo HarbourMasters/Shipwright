@@ -3,9 +3,17 @@
         <Scene Name="bdan_boss_scene" Offset="0x0"/>
     </File>
     <File Name="bdan_boss_room_0" Segment="3">
+        <Texture Name="bdan_boss_room_0Tex_002040" OutName="bdan_boss_room_0Tex_002040" Format="ci8" Width="32" Height="64" Offset="0x2040" TlutOffset="0x1E38" AddedByScript="true"/>
+        <Texture Name="bdan_boss_room_0Tex_002C18" OutName="bdan_boss_room_0Tex_002C18" Format="ci8" Width="32" Height="32" Offset="0x2C18" TlutOffset="0x2A10" AddedByScript="true"/>
+        <Texture Name="bdan_boss_room_0TLUT_001E38" OutName="bdan_boss_room_0TLUT_001E38" Format="rgba16" Width="16" Height="16" Offset="0x1E38" AddedByScript="true"/>
+        <Texture Name="bdan_boss_room_0TLUT_002A10" OutName="bdan_boss_room_0TLUT_002A10" Format="rgba16" Width="16" Height="16" Offset="0x2A10" AddedByScript="true"/>
         <Room Name="bdan_boss_room_0" Offset="0x0"/>
     </File>
     <File Name="bdan_boss_room_1" Segment="3">
+        <Texture Name="bdan_boss_room_1Tex_003CB8" OutName="bdan_boss_room_1Tex_003CB8" Format="ci8" Width="32" Height="64" Offset="0x3CB8" TlutOffset="0x3AB0" AddedByScript="true"/>
+        <Texture Name="bdan_boss_room_1Tex_0044B8" OutName="bdan_boss_room_1Tex_0044B8" Format="ci8" Width="32" Height="32" Offset="0x44B8" TlutOffset="0x3AB0" AddedByScript="true"/>
+        <Texture Name="bdan_boss_room_1Tex_0048B8" OutName="bdan_boss_room_1Tex_0048B8" Format="ci8" Width="32" Height="64" Offset="0x48B8" TlutOffset="0x3AB0" AddedByScript="true"/>
+        <Texture Name="bdan_boss_room_1TLUT_003AB0" OutName="bdan_boss_room_1TLUT_003AB0" Format="rgba16" Width="16" Height="16" Offset="0x3AB0" AddedByScript="true"/>
         <Room Name="bdan_boss_room_1" Offset="0x0"/>
     </File>
 </Root>

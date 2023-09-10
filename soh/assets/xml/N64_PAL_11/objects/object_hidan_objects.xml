@@ -1,5 +1,25 @@
 <Root>
     <File Name="object_hidan_objects" Segment="6">
+        <Texture Name="object_hidan_objectsTex_000040" OutName="object_hidan_objectsTex_000040" Format="ci4" Width="32" Height="32" Offset="0x40" TlutOffset="0x0" AddedByScript="true"/>
+        <Texture Name="object_hidan_objectsTex_000240" OutName="object_hidan_objectsTex_000240" Format="rgba16" Width="32" Height="32" Offset="0x240" AddedByScript="true"/>
+        <Texture Name="object_hidan_objectsTex_000A40" OutName="object_hidan_objectsTex_000A40" Format="rgba16" Width="32" Height="64" Offset="0xA40" AddedByScript="true"/>
+        <Texture Name="object_hidan_objectsTex_001A40" OutName="object_hidan_objectsTex_001A40" Format="rgba16" Width="32" Height="64" Offset="0x1A40" AddedByScript="true"/>
+        <Texture Name="object_hidan_objectsTex_002A40" OutName="object_hidan_objectsTex_002A40" Format="rgba16" Width="32" Height="64" Offset="0x2A40" AddedByScript="true"/>
+        <Texture Name="object_hidan_objectsTex_003A40" OutName="object_hidan_objectsTex_003A40" Format="rgba16" Width="32" Height="32" Offset="0x3A40" AddedByScript="true"/>
+        <Texture Name="object_hidan_objectsTex_004240" OutName="object_hidan_objectsTex_004240" Format="rgba16" Width="16" Height="64" Offset="0x4240" AddedByScript="true"/>
+        <Texture Name="object_hidan_objectsTex_004A40" OutName="object_hidan_objectsTex_004A40" Format="rgba16" Width="32" Height="32" Offset="0x4A40" AddedByScript="true"/>
+        <Texture Name="object_hidan_objectsTex_005240" OutName="object_hidan_objectsTex_005240" Format="ci4" Width="32" Height="64" Offset="0x5240" TlutOffset="0x0" AddedByScript="true"/>
+        <Texture Name="object_hidan_objectsTex_005640" OutName="object_hidan_objectsTex_005640" Format="ci4" Width="32" Height="64" Offset="0x5640" TlutOffset="0x0" AddedByScript="true"/>
+        <Texture Name="object_hidan_objectsTex_005A40" OutName="object_hidan_objectsTex_005A40" Format="ci4" Width="64" Height="32" Offset="0x5A40" TlutOffset="0x20" AddedByScript="true"/>
+        <Texture Name="object_hidan_objectsTex_005E40" OutName="object_hidan_objectsTex_005E40" Format="rgba16" Width="32" Height="32" Offset="0x5E40" AddedByScript="true"/>
+        <Texture Name="object_hidan_objectsTex_006640" OutName="object_hidan_objectsTex_006640" Format="ci4" Width="32" Height="64" Offset="0x6640" TlutOffset="0x0" AddedByScript="true"/>
+        <Texture Name="object_hidan_objectsTex_006A40" OutName="object_hidan_objectsTex_006A40" Format="ci4" Width="32" Height="32" Offset="0x6A40" TlutOffset="0x0" AddedByScript="true"/>
+        <Texture Name="object_hidan_objectsTex_006C40" OutName="object_hidan_objectsTex_006C40" Format="ci4" Width="32" Height="32" Offset="0x6C40" TlutOffset="0x0" AddedByScript="true"/>
+        <Texture Name="object_hidan_objectsTex_006E40" OutName="object_hidan_objectsTex_006E40" Format="rgba16" Width="32" Height="32" Offset="0x6E40" AddedByScript="true"/>
+        <Texture Name="object_hidan_objectsTex_00FB20" OutName="object_hidan_objectsTex_00FB20" Format="rgba16" Width="32" Height="64" Offset="0xFB20" AddedByScript="true"/>
+        <Texture Name="object_hidan_objectsTex_010D90" OutName="object_hidan_objectsTex_010D90" Format="rgba16" Width="32" Height="64" Offset="0x10D90" AddedByScript="true"/>
+        <Texture Name="object_hidan_objectsTLUT_000000" OutName="object_hidan_objectsTLUT_000000" Format="rgba16" Width="4" Height="4" Offset="0x0" AddedByScript="true"/>
+        <Texture Name="object_hidan_objectsTLUT_000020" OutName="object_hidan_objectsTLUT_000020" Format="rgba16" Width="4" Height="4" Offset="0x20" AddedByScript="true"/>
         <DList Name="gFireTempleHammerableTotemBodyDL" Offset="0xBBF0"/>
         <DList Name="gFireTempleHammerableTotemHeadDL" Offset="0xBDF0"/>
         <Collision Name="gFireTempleHammerableTotemCol" Offset="0xDA10"/>

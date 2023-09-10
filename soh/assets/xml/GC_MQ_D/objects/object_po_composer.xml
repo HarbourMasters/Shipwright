@@ -1,6 +1,19 @@
 <Root>
     
     <File Name="object_po_composer" Segment="6">
+        <Texture Name="object_po_composerTex_001450" OutName="object_po_composerTex_001450" Format="i8" Width="32" Height="64" Offset="0x1450" AddedByScript="true"/>
+        <Texture Name="object_po_composerTex_0054E0" OutName="object_po_composerTex_0054E0" Format="rgba16" Width="16" Height="16" Offset="0x54E0" AddedByScript="true"/>
+        <Texture Name="object_po_composerTex_0056E0" OutName="object_po_composerTex_0056E0" Format="rgba16" Width="16" Height="16" Offset="0x56E0" AddedByScript="true"/>
+        <Texture Name="object_po_composerTex_0058E0" OutName="object_po_composerTex_0058E0" Format="rgba16" Width="16" Height="16" Offset="0x58E0" AddedByScript="true"/>
+        <Texture Name="object_po_composerTex_005AE0" OutName="object_po_composerTex_005AE0" Format="rgba16" Width="16" Height="16" Offset="0x5AE0" AddedByScript="true"/>
+        <Texture Name="object_po_composerTex_005CE0" OutName="object_po_composerTex_005CE0" Format="rgba16" Width="16" Height="32" Offset="0x5CE0" AddedByScript="true"/>
+        <Texture Name="object_po_composerTex_0060E0" OutName="object_po_composerTex_0060E0" Format="rgba16" Width="16" Height="16" Offset="0x60E0" AddedByScript="true"/>
+        <Texture Name="object_po_composerTex_0062E0" OutName="object_po_composerTex_0062E0" Format="rgba16" Width="16" Height="16" Offset="0x62E0" AddedByScript="true"/>
+        <Texture Name="object_po_composerTex_0064E0" OutName="object_po_composerTex_0064E0" Format="rgba16" Width="16" Height="16" Offset="0x64E0" AddedByScript="true"/>
+        <Texture Name="object_po_composerTex_0066E0" OutName="object_po_composerTex_0066E0" Format="rgba16" Width="16" Height="16" Offset="0x66E0" AddedByScript="true"/>
+        <Texture Name="object_po_composerTex_0068E0" OutName="object_po_composerTex_0068E0" Format="rgba16" Width="16" Height="16" Offset="0x68E0" AddedByScript="true"/>
+        <Texture Name="object_po_composerTex_006AE0" OutName="object_po_composerTex_006AE0" Format="rgba16" Width="16" Height="16" Offset="0x6AE0" AddedByScript="true"/>
+        <Texture Name="object_po_composerTex_006CE0" OutName="object_po_composerTex_006CE0" Format="rgba16" Width="16" Height="16" Offset="0x6CE0" AddedByScript="true"/>
         <Animation Name="gPoeComposerAttackAnim" Offset="0x020C"/>
         <Animation Name="gPoeComposerDamagedAnim" Offset="0x0570"/>
         <Animation Name="gPoeComposerFleeAnim" Offset="0x0708"/>

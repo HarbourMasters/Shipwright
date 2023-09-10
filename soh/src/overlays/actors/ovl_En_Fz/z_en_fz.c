@@ -1,6 +1,7 @@
 #include "z_en_fz.h"
 #include "objects/object_fz/object_fz.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
 
@@ -363,7 +364,7 @@ void EnFz_ApplyDamage(EnFz* this, PlayState* play) {
                         vec.z = this->actor.world.pos.z;
                         EnFz_Damaged(this, play, &vec, 30, 10.0f);
                         EnFz_SetupDespawn(this, play);
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FREEZARD]++;
+                        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
                     }
                 }
             } else {

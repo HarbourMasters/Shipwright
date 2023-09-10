@@ -6,6 +6,7 @@
 
 #include "z_en_mb.h"
 #include "objects/object_mb/object_mb.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 /*
  * This actor can have three behaviors:
@@ -1442,14 +1443,14 @@ void EnMb_CheckColliding(EnMb* this, PlayState* play) {
                 if (this->actor.params == ENMB_TYPE_CLUB) {
                     if (this->actor.colChkInfo.health == 0) {
                         EnMb_SetupClubDead(this);
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MOBLIN_CLUB]++;
+                        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
                     } else if (this->state != ENMB_STATE_CLUB_KNEELING) {
                         EnMb_SetupClubDamaged(this);
                     }
                 } else {
                     if (this->actor.colChkInfo.health == 0) {
                         EnMb_SetupSpearDead(this);
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MOBLIN]++;
+                        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
                     } else {
                         EnMb_SetupSpearDamaged(this);
                     }

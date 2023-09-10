@@ -47,23 +47,10 @@ typedef struct {
     MessageLanguageInfo info[10];
 } MessageEntry; // size = 0x60
 
-typedef struct {
-    char magic[4]; //"QM\0\0"
-    uint32_t unk_04;
-    uint32_t numEntries;
-    uint32_t unk_0C;
-} MessageFileHeader;
-
     void CreateMessage(uint32_t textId, uint32_t unk_04, uint32_t textBoxType, uint32_t textBoxPosition,
                        std::string englishText, std::string frenchText, std::string spanishText);
     void CreateMessageFromTextObject(uint32_t textId, uint32_t unk_04, uint32_t textBoxType, uint32_t textBoxPosition, const Text& text);
 
-    uint32_t NumMessages();
-
-    std::pair<const char*, uint32_t> RawMessageEntryData();
-    std::pair<const char*, uint32_t> RawMessageData();
-
-    void CreateAlwaysIncludedMessages();
     Text AddColorsAndFormat(Text text, const std::vector<uint8_t>& colors = {});
     void ClearMessages();
 
