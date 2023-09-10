@@ -42,6 +42,7 @@ void GameInteractor_ExecuteOnUpdateFileEraseSelection(uint16_t optionIndex);
 void GameInteractor_ExecuteOnUpdateFileEraseConfirmationSelection(uint16_t optionIndex);
 void GameInteractor_ExecuteOnUpdateFileAudioSelection(uint8_t optionIndex);
 void GameInteractor_ExecuteOnUpdateFileTargetSelection(uint8_t optionIndex);
+void GameInteractor_ExecuteOnUpdateFileLanguageSelection(uint8_t optionIndex);
 void GameInteractor_ExecuteOnUpdateFileQuestSelection(uint8_t questIndex);
 void GameInteractor_ExecuteOnUpdateFileBossRushOptionSelection(uint8_t optionIndex, uint8_t optionValue);
 void GameInteractor_ExecuteOnUpdateFileNameSelection(int16_t charCode);

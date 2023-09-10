@@ -132,6 +132,10 @@ void GameInteractor_ExecuteOnUpdateFileTargetSelection(uint8_t optionIndex) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileTargetSelection>(optionIndex);
 }
 
+void GameInteractor_ExecuteOnUpdateFileLanguageSelection(uint8_t optionIndex) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileLanguageSelection>(optionIndex);
+}
+
 void GameInteractor_ExecuteOnUpdateFileQuestSelection(uint8_t questIndex) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileQuestSelection>(questIndex);
 }
