@@ -153,6 +153,8 @@ public:
     DEFINE_HOOK(OnOcarinaSongAction, void());
     DEFINE_HOOK(OnActorInit, void(void* actor));
     DEFINE_HOOK(OnActorUpdate, void(void* actor));
+    DEFINE_HOOK(OnActorKill, void(void* actor));
+    DEFINE_HOOK(OnEnemyDefeat, void(void* actor));
     DEFINE_HOOK(OnPlayerBonk, void());
     DEFINE_HOOK(OnPlayDestroy, void());
     DEFINE_HOOK(OnPlayDrawEnd, void());

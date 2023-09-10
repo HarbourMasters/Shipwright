@@ -8,6 +8,7 @@
 #include "scenes/dungeons/jyasinboss/jyasinboss_scene.h"
 #include "objects/object_ik/object_ik.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -640,7 +641,7 @@ void func_80A7598C(EnIk* this) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_IRONNACK_DEAD);
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_NUTS_CUTBODY);
     EnIk_SetupAction(this, func_80A75A38);
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void func_80A75A38(EnIk* this, PlayState* play) {
@@ -1466,7 +1467,7 @@ void func_80A781CC(Actor* thisx, PlayState* play) {
         }
         Flags_SetEventChkInf(EVENTCHKINF_FINISHED_NABOORU_BATTLE);
         func_80A7735C(this, play);
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE_NABOORU]++;
+        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
     }
 }
 

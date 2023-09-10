@@ -7,6 +7,7 @@
 #include "z_en_bw.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_bw/object_bw.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -577,7 +578,7 @@ void func_809D00F4(EnBw* this) {
     this->actor.speedXZ = 0.0f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_BUBLEWALK_DEAD);
     EnBw_SetupAction(this, func_809D014C);
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TORCH_SLUG]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void func_809D014C(EnBw* this, PlayState* play) {

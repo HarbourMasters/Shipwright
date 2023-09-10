@@ -50,6 +50,14 @@ void GameInteractor_ExecuteOnActorUpdate(void* actor) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnActorUpdate>(actor);
 }
 
+void GameInteractor_ExecuteOnActorKill(void* actor) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnActorKill>(actor);
+}
+
+void GameInteractor_ExecuteOnEnemyDefeat(void* actor) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnEnemyDefeat>(actor);
+}
+
 void GameInteractor_ExecuteOnPlayerBonk() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerBonk>();
 }
