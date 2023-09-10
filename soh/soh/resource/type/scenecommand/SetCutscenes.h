@@ -9,15 +9,15 @@
 #include "soh/resource/type/Cutscene.h"
 // #include <libultraship/libultra.h>
 
-namespace Ship {
-class SetCutscenes : public SceneCommand {
+namespace LUS {
+class SetCutscenes : public SceneCommand<uint32_t> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    uint32_t* GetPointer();
     size_t GetPointerSize();
 
     std::string fileName;
     std::shared_ptr<Cutscene> cutscene;
 };
-}; // namespace Ship
+}; // namespace LUS

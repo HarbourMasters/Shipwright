@@ -7,7 +7,7 @@
 #include "z_bg_spot18_shutter.h"
 #include "objects/object_spot18_obj/object_spot18_obj.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void BgSpot18Shutter_Init(Actor* thisx, PlayState* play);
 void BgSpot18Shutter_Destroy(Actor* thisx, PlayState* play);
@@ -48,7 +48,7 @@ void BgSpot18Shutter_Init(Actor* thisx, PlayState* play) {
 
     if (param == 0) {
         if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
-            if (gSaveContext.infTable[16] & 0x200) {
+            if (Flags_GetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED)) {
                 this->actionFunc = func_808B95AC;
                 this->dyna.actor.world.pos.y += 180.0f;
             } else {
@@ -63,7 +63,7 @@ void BgSpot18Shutter_Init(Actor* thisx, PlayState* play) {
             }
         }
     } else {
-        if (gSaveContext.infTable[16] & 0x200) {
+        if (Flags_GetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED)) {
             this->dyna.actor.world.pos.x += 125.0f * Math_CosS(this->dyna.actor.world.rot.y);
             this->dyna.actor.world.pos.z -= 125.0f * Math_SinS(this->dyna.actor.world.rot.y);
             this->actionFunc = func_808B95AC;
@@ -94,7 +94,7 @@ void func_808B95B8(BgSpot18Shutter* this, PlayState* play) {
 }
 
 void func_808B9618(BgSpot18Shutter* this, PlayState* play) {
-    if (gSaveContext.infTable[16] & 0x200) {
+    if (Flags_GetInfTable(INFTABLE_GORON_CITY_DOORS_UNLOCKED)) {
         Actor_SetFocus(&this->dyna.actor, 70.0f);
         if (((this->dyna.actor.params >> 8) & 1) == 0) {
             this->actionFunc = func_808B9698;

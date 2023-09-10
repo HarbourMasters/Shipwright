@@ -7,20 +7,20 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
-namespace Ship {
+namespace LUS {
 typedef struct {
   uint8_t hour;
   uint8_t minute;
   uint8_t timeIncrement;
 } TimeSettings;
 
-class SetTimeSettings : public SceneCommand {
+class SetTimeSettings : public SceneCommand<TimeSettings> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    TimeSettings* GetPointer();
     size_t GetPointerSize();
 
     TimeSettings settings;
 };
-}; // namespace Ship
+}; // namespace LUS

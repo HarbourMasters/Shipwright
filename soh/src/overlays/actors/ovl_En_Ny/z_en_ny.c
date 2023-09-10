@@ -1,8 +1,9 @@
 #include "z_en_ny.h"
 #include "objects/object_ny/object_ny.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 
 void EnNy_Init(Actor* thisx, PlayState* play);
 void EnNy_Destroy(Actor* thisx, PlayState* play);
@@ -333,7 +334,7 @@ s32 EnNy_CollisionCheck(EnNy* this, PlayState* play) {
             this->stoneTimer = 0;
             if (this->actor.colChkInfo.health == 0) {
                 this->actor.shape.shadowAlpha = 0;
-                this->actor.flags &= ~ACTOR_FLAG_0;
+                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                 this->unk_1D0 = sp3F;
                 Enemy_StartFinishingBlow(play, &this->actor);
                 return 1;
@@ -447,7 +448,7 @@ void EnNy_SetupDie(EnNy* this, PlayState* play) {
         }
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_NYU_DEAD);
         this->actionFunc = EnNy_Die;
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SPIKE]++;
+        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
     }
 }
 

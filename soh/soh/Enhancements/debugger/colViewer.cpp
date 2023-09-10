@@ -1,5 +1,4 @@
 #include "colViewer.h"
-#include <ImGuiImpl.h>
 #include "../../frame_interpolation.h"
 #include "../../UIWidgets.hpp"
 
@@ -7,6 +6,7 @@
 #include <string>
 #include <cmath>
 #include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
 
 extern "C" {
 #include <z64.h>
@@ -51,23 +51,18 @@ static std::vector<Gfx> sphereGfx;
 static std::vector<Vtx> sphereVtx;
 
 // Draws the ImGui window for the collision viewer
-void DrawColViewerWindow(bool& open) {
-    if (!open) {
-        CVarSetInteger("gCollisionViewerEnabled", 0);
-        return;
-    }
-
+void ColViewerWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Collision Viewer", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Collision Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
     UIWidgets::EnhancementCheckbox("Enabled", "gColViewerEnabled");
 
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Scene", "gColViewerScene", ColRenderSettingNames, 0);
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Bg Actors", "gColViewerBgActors", ColRenderSettingNames, 0);
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Col Check", "gColViewerColCheck", ColRenderSettingNames, 0);
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Waterbox", "gColViewerWaterbox", ColRenderSettingNames, 0);
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Scene", "gColViewerScene", ColRenderSettingNames, COLVIEW_DISABLED);
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Bg Actors", "gColViewerBgActors", ColRenderSettingNames, COLVIEW_DISABLED);
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Col Check", "gColViewerColCheck", ColRenderSettingNames, COLVIEW_DISABLED);
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Waterbox", "gColViewerWaterbox", ColRenderSettingNames, COLVIEW_DISABLED);
 
     UIWidgets::EnhancementCheckbox("Apply as decal", "gColViewerDecal");
     UIWidgets::InsertHelpHoverText("Applies the collision as a decal display. This can be useful if there is z-fighting occuring "
@@ -287,9 +282,7 @@ void CreateSphereData() {
     sphereGfx.push_back(gsSPEndDisplayList());
 }
 
-void InitColViewer() {
-    SohImGui::AddWindow("Developer Tools", "Collision Viewer", DrawColViewerWindow);
-
+void ColViewerWindow::InitElement() {
     CreateCylinderData();
     CreateSphereData();
 }
@@ -435,9 +428,9 @@ void DrawDynapoly(std::vector<Gfx>& dl, CollisionHeader* col, int32_t bgId) {
 
 // Draws the scene
 void DrawSceneCollision() {
-    ColRenderSetting showSceneColSetting = (ColRenderSetting)CVarGetInteger("gColViewerScene", 0);
+    ColRenderSetting showSceneColSetting = (ColRenderSetting)CVarGetInteger("gColViewerScene", COLVIEW_DISABLED);
 
-    if (showSceneColSetting == ColRenderSetting::Disabled || CVarGetInteger("gColViewerEnabled", 0) == 0) {
+    if (showSceneColSetting == ColRenderSetting::Disabled || !CVarGetInteger("gColViewerEnabled", 0)) {
         return;
     }
 
@@ -450,8 +443,8 @@ void DrawSceneCollision() {
 
 // Draws all Bg Actors
 void DrawBgActorCollision() {
-    ColRenderSetting showBgActorSetting = (ColRenderSetting)CVarGetInteger("gColViewerBgActors", 0);
-    if (showBgActorSetting == ColRenderSetting::Disabled || CVarGetInteger("gColViewerEnabled", 0) == 0) {
+    ColRenderSetting showBgActorSetting = (ColRenderSetting)CVarGetInteger("gColViewerBgActors", COLVIEW_DISABLED);
+    if (showBgActorSetting == ColRenderSetting::Disabled || !CVarGetInteger("gColViewerEnabled", 0)) {
         return;
     }
 
@@ -575,8 +568,8 @@ void DrawColCheckList(std::vector<Gfx>& dl, Collider** objects, int32_t count) {
 
 // Draws all Col Check objects
 void DrawColCheckCollision() {
-    ColRenderSetting showColCheckSetting = (ColRenderSetting)CVarGetInteger("gColViewerColCheck", 0);
-    if (showColCheckSetting == ColRenderSetting::Disabled || CVarGetInteger("gColViewerEnabled", 0) == 0) {
+    ColRenderSetting showColCheckSetting = (ColRenderSetting)CVarGetInteger("gColViewerColCheck", COLVIEW_DISABLED);
+    if (showColCheckSetting == ColRenderSetting::Disabled || !CVarGetInteger("gColViewerEnabled", 0)) {
         return;
     }
 
@@ -628,8 +621,8 @@ extern "C" f32 zdWaterBoxMinY;
 
 // Draws all waterboxes
 void DrawWaterboxList() {
-    ColRenderSetting showWaterboxSetting = (ColRenderSetting)CVarGetInteger("gColViewerWaterbox", 0);
-    if (showWaterboxSetting == ColRenderSetting::Disabled || CVarGetInteger("gColViewerEnabled", 0) == 0) {
+    ColRenderSetting showWaterboxSetting = (ColRenderSetting)CVarGetInteger("gColViewerWaterbox", COLVIEW_DISABLED);
+    if (showWaterboxSetting == ColRenderSetting::Disabled || !CVarGetInteger("gColViewerEnabled", 0)) {
         return;
     }
 
@@ -648,7 +641,7 @@ void DrawWaterboxList() {
     }
 
     // Zora's Domain has a special, hard-coded waterbox with a bottom so you can go under the waterfall
-    if (gPlayState->sceneNum == SCENE_SPOT07) {
+    if (gPlayState->sceneNum == SCENE_ZORAS_DOMAIN) {
         DrawWaterbox(dl, &zdWaterBox, zdWaterBoxMinY);
     }
 }
@@ -662,7 +655,7 @@ template <typename T> size_t ResetVector(T& vec) {
     return vec.capacity();
 }
 
-void DrawColViewer() {
+extern "C" void DrawColViewer() {
     if (gPlayState == nullptr) {
         return;
     }
@@ -700,11 +693,23 @@ void DrawColViewer() {
 
     OPEN_DISPS(gPlayState->state.gfxCtx);
 
+    uint8_t mirroredWorld = CVarGetInteger("gMirroredWorld", 0);
+    // Col viewer needs inverted culling in mirror mode for both OPA and XLU buffers
+    if (mirroredWorld) {
+        gSPSetExtraGeometryMode(POLY_OPA_DISP++, G_EX_INVERT_CULLING);
+        gSPSetExtraGeometryMode(POLY_XLU_DISP++, G_EX_INVERT_CULLING);
+    }
+
     opaDl.push_back(gsSPEndDisplayList());
     gSPDisplayList(POLY_OPA_DISP++, opaDl.data());
 
     xluDl.push_back(gsSPEndDisplayList());
     gSPDisplayList(POLY_XLU_DISP++, xluDl.data());
+
+    if (mirroredWorld) {
+        gSPClearExtraGeometryMode(POLY_OPA_DISP++, G_EX_INVERT_CULLING);
+        gSPClearExtraGeometryMode(POLY_XLU_DISP++, G_EX_INVERT_CULLING);
+    }
 
     CLOSE_DISPS(gPlayState->state.gfxCtx);
 }

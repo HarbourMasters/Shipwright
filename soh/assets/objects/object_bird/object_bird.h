@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_BIRD_H
+#define OBJECTS_OBJECT_BIRD_H 1
 
 #include "align_asset_macro.h"
 
@@ -43,3 +44,6 @@ static const ALIGN_ASSET(2) char gBirdWingTex[] = dgBirdWingTex;
 
 #define dgBirdSkel "__OTR__objects/object_bird/gBirdSkel"
 static const ALIGN_ASSET(2) char gBirdSkel[] = dgBirdSkel;
+
+
+#endif // OBJECTS_OBJECT_BIRD_H

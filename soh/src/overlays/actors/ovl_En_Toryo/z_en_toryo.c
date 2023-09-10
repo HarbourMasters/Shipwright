@@ -8,7 +8,7 @@
 #include "objects/object_toryo/object_toryo.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnToryo_Init(Actor* thisx, PlayState* play);
 void EnToryo_Destroy(Actor* thisx, PlayState* play);
@@ -98,17 +98,17 @@ void EnToryo_Init(Actor* thisx, PlayState* play) {
     s32 pad;
 
     switch (play->sceneNum) {
-        case SCENE_SPOT09:
+        case SCENE_GERUDO_VALLEY:
             if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
                 this->stateFlags |= 1;
             }
             break;
-        case SCENE_SPOT01:
+        case SCENE_KAKARIKO_VILLAGE:
             if ((LINK_AGE_IN_YEARS == YEARS_CHILD) && IS_DAY) {
                 this->stateFlags |= 2;
             }
             break;
-        case SCENE_KAKARIKO:
+        case SCENE_KAKARIKO_CENTER_GUEST_HOUSE:
             if ((LINK_AGE_IN_YEARS == YEARS_CHILD) && IS_NIGHT) {
                 this->stateFlags |= 4;
             }
@@ -138,6 +138,8 @@ void EnToryo_Destroy(Actor* thisx, PlayState* play) {
     EnToryo* this = (EnToryo*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 func_80B203D8(EnToryo* this, PlayState* play) {
@@ -173,7 +175,7 @@ s32 func_80B203D8(EnToryo* this, PlayState* play) {
                 case 0x5028:
                     ret = 1;
                     if (Message_ShouldAdvance(play)) {
-                        gSaveContext.infTable[23] |= 4;
+                        Flags_SetInfTable(INFTABLE_172);
                         ret = 0;
                     }
                     break;
@@ -186,14 +188,14 @@ s32 func_80B203D8(EnToryo* this, PlayState* play) {
                 case 0x606F:
                     ret = 1;
                     if (Message_ShouldAdvance(play)) {
-                        gSaveContext.infTable[23] |= 2;
+                        Flags_SetInfTable(INFTABLE_171);
                         ret = 0;
                     }
                     break;
                 case 0x606A:
                     ret = 1;
                     if (Message_ShouldAdvance(play)) {
-                        gSaveContext.infTable[23] |= 1;
+                        Flags_SetInfTable(INFTABLE_170);
                         ret = 0;
                     }
                     break;
@@ -242,7 +244,7 @@ u32 func_80B20634(EnToryo* this, PlayState* play) {
     if (this->unk_1E0 != 0) {
         if (this->unk_1E0 == 10) {
             func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
-            if (gSaveContext.infTable[23] & 2) {
+            if (Flags_GetInfTable(INFTABLE_171)) {
                 ret = 0x606E;
             } else {
                 ret = 0x606D;
@@ -261,15 +263,15 @@ s32 func_80B206A0(EnToryo* this, PlayState* play) {
 
     if (textId == 0) {
         if ((this->stateFlags & 1)) {
-            if ((gSaveContext.eventChkInf[9] & 0xF) == 0xF) {
+            if (GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {
                 ret = 0x606C;
-            } else if ((gSaveContext.infTable[23] & 1)) {
+            } else if ((Flags_GetInfTable(INFTABLE_170))) {
                 ret = 0x606B;
             } else {
                 ret = 0x606A;
             }
         } else if ((this->stateFlags & 2)) {
-            if ((gSaveContext.infTable[23] & 4)) {
+            if ((Flags_GetInfTable(INFTABLE_172))) {
                 ret = 0x5029;
             } else {
                 ret = 0x5028;
@@ -289,7 +291,10 @@ void func_80B20768(EnToryo* this, PlayState* play) {
     s16 sp32;
     s16 sp30;
 
-    if (this->unk_1E4 == 3) {
+    // Animation Count should be no more than 1 to guarantee putaway is complete after giving the saw
+    // As this is vanilla behavior, it only applies with the Fix toggle or Skip Text enabled.
+    bool checkAnim = (CVarGetInteger("gFixSawSoftlock", 0) != 0 || CVarGetInteger("gSkipText", 0) != 0) ? play->animationCtx.animationCount <= 1 : true;
+    if (this->unk_1E4 == 3 && checkAnim) {
         Actor_ProcessTalkRequest(&this->actor, play);
         Message_ContinueTextbox(play, this->actor.textId);
         this->unk_1E4 = 1;

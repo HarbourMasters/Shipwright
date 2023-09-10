@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_HORSE_NORMAL_H
+#define OBJECTS_OBJECT_HORSE_NORMAL_H 1
 
 #include "align_asset_macro.h"
 
@@ -90,3 +91,5 @@ static const ALIGN_ASSET(2) char object_horse_normalTex_005C98[] = dobject_horse
 
 #define dobject_horse_normalTex_005B18 "__OTR__objects/object_horse_normal/object_horse_normalTex_005B18"
 static const ALIGN_ASSET(2) char object_horse_normalTex_005B18[] = dobject_horse_normalTex_005B18;
+
+#endif // OBJECTS_OBJECT_HORSE_NORMAL_H

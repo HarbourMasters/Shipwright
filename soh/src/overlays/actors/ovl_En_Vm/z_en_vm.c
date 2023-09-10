@@ -8,8 +8,9 @@
 #include "objects/object_vm/object_vm.h"
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnVm_Init(Actor* thisx, PlayState* play);
 void EnVm_Destroy(Actor* thisx, PlayState* play);
@@ -162,6 +163,8 @@ void EnVm_Destroy(Actor* thisx, PlayState* play) {
     EnVm* this = (EnVm*)thisx;
 
     Collider_DestroyCylinder(play, &this->colliderCylinder);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnVm_SetupWait(EnVm* this) {
@@ -366,7 +369,7 @@ void EnVm_SetupDie(EnVm* this) {
     this->actor.speedXZ = Rand_ZeroOne() + 1.0f;
     this->actor.world.rot.y = Rand_CenteredFloat(65535.0f);
     EnVm_SetupAction(this, EnVm_Die);
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BEAMOS]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnVm_Die(EnVm* this, PlayState* play) {

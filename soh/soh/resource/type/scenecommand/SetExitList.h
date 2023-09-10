@@ -7,16 +7,16 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
-namespace Ship {
-class SetExitList : public SceneCommand {
+namespace LUS {
+class SetExitList : public SceneCommand<uint16_t> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    uint16_t* GetPointer();
     size_t GetPointerSize();
 
     uint32_t numExits;
 
     std::vector<uint16_t> exits;
 };
-}; // namespace Ship
+}; // namespace LUS

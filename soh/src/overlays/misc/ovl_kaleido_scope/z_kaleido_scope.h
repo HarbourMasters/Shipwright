@@ -7,7 +7,6 @@
 extern u8 gAmmoItems[];
 extern s16 D_8082AAEC[];
 extern s16 D_8082AB2C[];
-extern u8 gSlotAgeReqs[];
 extern u8 gEquipAgeReqs[][4];
 extern u8 gAreaGsFlags[];
 extern bool gSelectingMask;
@@ -36,5 +35,7 @@ void KaleidoScope_UpdateDungeonMap(PlayState* play);
 void PauseMapMark_Draw(PlayState* play);
 
 void KaleidoScope_UpdateCursorSize(PauseContext* pauseCtx);
+
+void KaleidoScope_ResetTradeSelect();
 
 #endif

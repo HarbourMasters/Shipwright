@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_JYA_IRON_H
+#define OBJECTS_OBJECT_JYA_IRON_H 1
 
 #include "align_asset_macro.h"
 
@@ -28,3 +29,5 @@ static const ALIGN_ASSET(2) char gPillarSideTex[] = dgPillarSideTex;
 
 #define dgPillarTopTex "__OTR__objects/object_jya_iron/gPillarTopTex"
 static const ALIGN_ASSET(2) char gPillarTopTex[] = dgPillarTopTex;
+
+#endif // OBJECTS_OBJECT_JYA_IRON_H

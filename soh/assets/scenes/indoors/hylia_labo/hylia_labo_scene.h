@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INDOORS_HYLIA_LABO_SCENE_H
+#define INDOORS_HYLIA_LABO_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -97,3 +98,5 @@ static const ALIGN_ASSET(2) char hylia_labo_sceneTex_010090[] = dhylia_labo_scen
 
 #define dhylia_labo_sceneTex_00E090 "__OTR__scenes/nonmq/hylia_labo_scene/hylia_labo_sceneTex_00E090"
 static const ALIGN_ASSET(2) char hylia_labo_sceneTex_00E090[] = dhylia_labo_sceneTex_00E090;
+
+#endif // INDOORS_HYLIA_LABO_SCENE_H

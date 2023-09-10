@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INDOORS_BOWLING_SCENE_H
+#define INDOORS_BOWLING_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -88,3 +89,5 @@ static const ALIGN_ASSET(2) char bowling_sceneTex_007120[] = dbowling_sceneTex_0
 
 #define dbowling_sceneTex_00AD20 "__OTR__scenes/nonmq/bowling_scene/bowling_sceneTex_00AD20"
 static const ALIGN_ASSET(2) char bowling_sceneTex_00AD20[] = dbowling_sceneTex_00AD20;
+
+#endif // INDOORS_BOWLING_SCENE_H

@@ -2,7 +2,7 @@
 #include "overlays/actors/ovl_En_GeldB/z_en_geldb.h"
 #include "objects/object_daiku/object_daiku.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 typedef struct {
     Vec3f eyePosDeltaLocal;
@@ -153,19 +153,19 @@ void EnDaiku_Init(Actor* thisx, PlayState* play) {
     s32 noKill = true;
     s32 isFree = false;
 
-    if ((this->actor.params & 3) == 0 && (gSaveContext.eventChkInf[9] & 1)) {
+    if ((this->actor.params & 3) == 0 && GET_EVENTCHKINF(EVENTCHKINF_CARPENTERS_FREE(0))) {
         isFree = true;
-    } else if ((this->actor.params & 3) == 1 && (gSaveContext.eventChkInf[9] & 2)) {
+    } else if ((this->actor.params & 3) == 1 && GET_EVENTCHKINF(EVENTCHKINF_CARPENTERS_FREE(1))) {
         isFree = true;
-    } else if ((this->actor.params & 3) == 2 && (gSaveContext.eventChkInf[9] & 4)) {
+    } else if ((this->actor.params & 3) == 2 && GET_EVENTCHKINF(EVENTCHKINF_CARPENTERS_FREE(2))) {
         isFree = true;
-    } else if ((this->actor.params & 3) == 3 && (gSaveContext.eventChkInf[9] & 8)) {
+    } else if ((this->actor.params & 3) == 3 && GET_EVENTCHKINF(EVENTCHKINF_CARPENTERS_FREE(3))) {
         isFree = true;
     }
 
-    if (isFree == true && play->sceneNum == SCENE_GERUDOWAY) {
+    if (isFree == true && play->sceneNum == SCENE_THIEVES_HIDEOUT) {
         noKill = false;
-    } else if (isFree == false && play->sceneNum == SCENE_TENT) {
+    } else if (isFree == false && play->sceneNum == SCENE_CARPENTERS_TENT) {
         noKill = false;
     }
 
@@ -197,7 +197,7 @@ void EnDaiku_Init(Actor* thisx, PlayState* play) {
     this->initRot = this->actor.world.rot;
     this->initPos = this->actor.world.pos;
 
-    if (play->sceneNum == SCENE_GERUDOWAY) {
+    if (play->sceneNum == SCENE_THIEVES_HIDEOUT) {
         EnDaiku_ChangeAnim(this, ENDAIKU_ANIM_STAND, &this->currentAnimIndex);
         this->stateFlags |= ENDAIKU_STATEFLAG_1 | ENDAIKU_STATEFLAG_2;
         this->actionFunc = EnDaiku_Jailed;
@@ -219,13 +219,15 @@ void EnDaiku_Destroy(Actor* thisx, PlayState* play) {
     EnDaiku* this = (EnDaiku*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnDaiku_UpdateTalking(EnDaiku* this, PlayState* play) {
     s32 newTalkState = ENDAIKU_STATE_TALKING;
 
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) {
-        if (play->sceneNum == SCENE_GERUDOWAY) {
+        if (play->sceneNum == SCENE_THIEVES_HIDEOUT) {
             if (Message_ShouldAdvance(play)) {
                 if (this->actor.textId == 0x6007) {
                     Flags_SetSwitch(play, this->startFightSwitchFlag);
@@ -235,14 +237,14 @@ s32 EnDaiku_UpdateTalking(EnDaiku* this, PlayState* play) {
                     newTalkState = ENDAIKU_STATE_NO_TALK;
                 }
             }
-        } else if (play->sceneNum == SCENE_TENT) {
+        } else if (play->sceneNum == SCENE_CARPENTERS_TENT) {
             if (Message_ShouldAdvance(play)) {
                 switch (this->actor.textId) {
                     case 0x6061:
-                        gSaveContext.infTable[23] |= 0x40;
+                        Flags_SetInfTable(INFTABLE_176);
                         break;
                     case 0x6064:
-                        gSaveContext.infTable[23] |= 0x100;
+                        Flags_SetInfTable(INFTABLE_178);
                         break;
                 }
 
@@ -268,11 +270,11 @@ void EnDaiku_UpdateText(EnDaiku* this, PlayState* play) {
         Actor_GetScreenPos(play, &this->actor, &sp2E, &sp2C);
         if (sp2E >= 0 && sp2E <= 320 && sp2C >= 0 && sp2C <= 240 && this->talkState == ENDAIKU_STATE_CAN_TALK &&
             func_8002F2CC(&this->actor, play, 100.0f) == 1) {
-            if (play->sceneNum == SCENE_GERUDOWAY) {
+            if (play->sceneNum == SCENE_THIEVES_HIDEOUT) {
                 if (this->stateFlags & ENDAIKU_STATEFLAG_GERUDODEFEATED) {
                     freedCount = 0;
                     for (carpenterType = 0; carpenterType < 4; carpenterType++) {
-                        if (gSaveContext.eventChkInf[9] & (1 << carpenterType)) {
+                        if (gSaveContext.eventChkInf[EVENTCHKINF_CARPENTERS_FREE_INDEX] & EVENTCHKINF_CARPENTERS_FREE_MASK(carpenterType)) {
                             freedCount++;
                         }
                     }
@@ -295,7 +297,7 @@ void EnDaiku_UpdateText(EnDaiku* this, PlayState* play) {
                              (ENDAIKU_STATEFLAG_GERUDOFIGHTING | ENDAIKU_STATEFLAG_GERUDODEFEATED))) {
                     this->actor.textId = 0x6007;
                 }
-            } else if (play->sceneNum == SCENE_TENT) {
+            } else if (play->sceneNum == SCENE_CARPENTERS_TENT) {
                 switch (this->actor.params & 3) {
                     case 0:
                         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT)) {
@@ -308,7 +310,7 @@ void EnDaiku_UpdateText(EnDaiku* this, PlayState* play) {
                         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT)) {
                             this->actor.textId = 0x6063;
                         } else {
-                            if (!(gSaveContext.infTable[23] & 0x40)) {
+                            if (!Flags_GetInfTable(INFTABLE_176)) {
                                 this->actor.textId = 0x6061;
                             } else {
                                 this->actor.textId = 0x6062;
@@ -319,7 +321,7 @@ void EnDaiku_UpdateText(EnDaiku* this, PlayState* play) {
                         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT)) {
                             this->actor.textId = 0x6066;
                         } else {
-                            if (!(gSaveContext.infTable[23] & 0x100)) {
+                            if (!Flags_GetInfTable(INFTABLE_178)) {
                                 this->actor.textId = 0x6064;
                             } else {
                                 this->actor.textId = 0x6065;
@@ -368,7 +370,7 @@ void EnDaiku_Jailed(EnDaiku* this, PlayState* play) {
         this->actionFunc = EnDaiku_WaitFreedom;
     } else if (!(this->stateFlags & ENDAIKU_STATEFLAG_GERUDOFIGHTING) && !gerudo->invisible) {
         this->stateFlags |= ENDAIKU_STATEFLAG_GERUDOFIGHTING;
-        this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
+        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
     }
 }
 
@@ -380,7 +382,7 @@ void EnDaiku_WaitFreedom(EnDaiku* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
 
     if (Flags_GetSwitch(play, this->actor.params >> 8 & 0x3F)) {
-        this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
         EnDaiku_UpdateText(this, play);
     }
 }
@@ -400,7 +402,7 @@ void EnDaiku_InitEscape(EnDaiku* this, PlayState* play) {
     EnDaiku_ChangeAnim(this, ENDAIKU_ANIM_RUN, &this->currentAnimIndex);
     this->stateFlags &= ~(ENDAIKU_STATEFLAG_1 | ENDAIKU_STATEFLAG_2);
 
-    gSaveContext.eventChkInf[9] |= 1 << (this->actor.params & 3);
+    gSaveContext.eventChkInf[EVENTCHKINF_CARPENTERS_FREE_INDEX] |= EVENTCHKINF_CARPENTERS_FREE_MASK(this->actor.params & 3);
 
     this->actor.gravity = -1.0f;
     this->escapeSubCamTimer = sEscapeSubCamParams[this->actor.params & 3].maxFramesActive;
@@ -492,7 +494,7 @@ void EnDaiku_EscapeSuccess(EnDaiku* this, PlayState* play) {
     Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_ACTIVE);
     this->subCamActive = false;
 
-    if ((gSaveContext.eventChkInf[9] & 0xF) == 0xF) {
+    if (GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {
         Matrix_RotateY(this->initRot.y * (M_PI / 0x8000), MTXMODE_NEW);
         Matrix_MultVec3f(&D_809E4148, &vec);
         gerudoGuard =

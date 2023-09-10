@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_EI_H
+#define OBJECTS_OBJECT_EI_H 1
 
 #include "align_asset_macro.h"
 
@@ -76,3 +77,6 @@ static const ALIGN_ASSET(2) char gStingerHitAnim[] = dgStingerHitAnim;
 
 #define dgStingerIdleAnim "__OTR__objects/object_ei/gStingerIdleAnim"
 static const ALIGN_ASSET(2) char gStingerIdleAnim[] = dgStingerIdleAnim;
+
+
+#endif // OBJECTS_OBJECT_EI_H

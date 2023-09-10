@@ -1,6 +1,6 @@
 #include "Scene.h"
 
-namespace Ship {
+namespace LUS {
 void* Scene::GetPointer() {
     // Scene is a special type that requries C++ processing. As such, we return nothing.
     return nullptr;
@@ -9,4 +9,4 @@ void* Scene::GetPointer() {
 size_t Scene::GetPointerSize() {
 	return 0;
 }
-} // namespace Ship
+} // namespace LUS

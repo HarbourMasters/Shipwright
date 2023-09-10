@@ -5,7 +5,7 @@
 #include "Resource.h"
 #include <libultraship/libultra/types.h>
 
-namespace Ship {
+namespace LUS {
 
 typedef struct {
     char* seqData;
@@ -17,14 +17,16 @@ typedef struct {
     uint8_t fonts[16];
 } Sequence;
 
-class AudioSequence : public Resource {
+class AudioSequence : public Resource<Sequence> {
 public:
     using Resource::Resource;
 
-    void* GetPointer();
+    AudioSequence() : Resource(std::shared_ptr<ResourceInitData>()) {}
+
+    Sequence* GetPointer();
     size_t GetPointerSize();
 
     Sequence sequence;
     std::vector<char> sequenceData;
 };
-}; // namespace Ship
+}; // namespace LUS

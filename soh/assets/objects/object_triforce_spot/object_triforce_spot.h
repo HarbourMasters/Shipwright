@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_TRIFORCE_SPOT_H
+#define OBJECTS_OBJECT_TRIFORCE_SPOT_H 1
 
 #include "align_asset_macro.h"
 
@@ -19,3 +20,5 @@ static const ALIGN_ASSET(2) char gTriforceColumnSide1Tex[] = dgTriforceColumnSid
 
 #define dgTriforceColumnSide2Tex "__OTR__objects/object_triforce_spot/gTriforceColumnSide2Tex"
 static const ALIGN_ASSET(2) char gTriforceColumnSide2Tex[] = dgTriforceColumnSide2Tex;
+
+#endif // OBJECTS_OBJECT_TRIFORCE_SPOT_H

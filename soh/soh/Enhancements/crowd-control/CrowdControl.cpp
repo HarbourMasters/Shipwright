@@ -3,8 +3,7 @@
 #include "CrowdControl.h"
 #include "CrowdControlTypes.h"
 #include <libultraship/bridge.h>
-#include <Console.h>
-#include <ImGuiImpl.h>
+#include <libultraship/libultraship.h>
 #include <nlohmann/json.hpp>
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/fmt.h>
@@ -343,12 +342,12 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             effect->giEffect->parameters[0] = -2;
             break;
         case kEffectOneHitKo:
-            effect->category = kEffectCatOhko;
+            effect->category = kEffectCatDamageTaken;
             effect->timeRemaining = 30000;
             effect->giEffect = new GameInteractionEffect::OneHitKO();
             break;
         case kEffectInvincibility:
-            effect->category = kEffectCatInvincible;
+            effect->category = kEffectCatDamageTaken;
             effect->timeRemaining = 15000;
             effect->giEffect = new GameInteractionEffect::PlayerInvincibility();
             break;
@@ -417,6 +416,7 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             break;
         case kEffectFillHeart:
             effect->giEffect = new GameInteractionEffect::ModifyHealth();
+            effect->giEffect->parameters[0] = receivedParameter;
             break;
         case kEffectKnockbackLinkWeak:
             effect->giEffect = new GameInteractionEffect::KnockbackPlayer();
@@ -454,6 +454,7 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             break;
         case kEffectAddRupees:
             effect->giEffect = new GameInteractionEffect::ModifyRupees();
+            effect->giEffect->parameters[0] = receivedParameter;
             break;
         case kEffectGiveDekuShield:
             effect->giEffect = new GameInteractionEffect::GiveOrTakeShield();
@@ -465,26 +466,32 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
             break;
         case kEffectRefillSticks:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[0] = receivedParameter;
             effect->giEffect->parameters[1] = ITEM_STICK;
             break;
         case kEffectRefillNuts:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[0] = receivedParameter;
             effect->giEffect->parameters[1] = ITEM_NUT;
             break;
         case kEffectRefillBombs:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[0] = receivedParameter;
             effect->giEffect->parameters[1] = ITEM_BOMB;
             break;
         case kEffectRefillSeeds:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[0] = receivedParameter;
             effect->giEffect->parameters[1] = ITEM_SLINGSHOT;
             break;
         case kEffectRefillArrows:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[0] = receivedParameter;
             effect->giEffect->parameters[1] = ITEM_BOW;
             break;
         case kEffectRefillBombchus:
             effect->giEffect = new GameInteractionEffect::AddOrTakeAmmo();
+            effect->giEffect->parameters[0] = receivedParameter;
             effect->giEffect->parameters[1] = ITEM_BOMBCHU;
             break;
 
@@ -809,16 +816,6 @@ CrowdControl::Effect* CrowdControl::ParseMessage(char payload[512]) {
 
         default:
             break;
-    }
-
-    // If no value is specifically set, default to using whatever CC sends us.
-    // Values are used for various things depending on the effect, but they 
-    // usually represent the "amount" of an effect. Amount of hearts healed,
-    // strength of knockback, etc.
-    if (effect->giEffect != NULL) {
-        if (!effect->giEffect->parameters[0]) {
-            effect->giEffect->parameters[0] = receivedParameter;
-        }
     }
 
     return effect;

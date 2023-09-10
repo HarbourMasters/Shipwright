@@ -8,15 +8,15 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
-namespace Ship {
-class SetObjectList : public SceneCommand {
+namespace LUS {
+class SetObjectList : public SceneCommand<int16_t> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    int16_t* GetPointer();
     size_t GetPointerSize();
 
     uint32_t numObjects;
     std::vector<int16_t> objects;
 };
-}; // namespace Ship
+}; // namespace LUS

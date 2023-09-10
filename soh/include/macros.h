@@ -88,6 +88,7 @@
 
 #define GET_ITEMGETINF(flag) (gSaveContext.itemGetInf[(flag) >> 4] & (1 << ((flag) & 0xF)))
 #define SET_ITEMGETINF(flag) (gSaveContext.itemGetInf[(flag) >> 4] |= (1 << ((flag) & 0xF)))
+#define CLEAR_ITEMGETINF(flag) (gSaveContext.itemGetInf[(flag) >> 4] &= ~(1 << ((flag) & 0xF)))
 
 #define GET_INFTABLE(flag) (gSaveContext.infTable[(flag) >> 4] & (1 << ((flag) & 0xF)))
 #define SET_INFTABLE(flag) (gSaveContext.infTable[(flag) >> 4] |= (1 << ((flag) & 0xF)))
@@ -244,14 +245,6 @@ extern GraphicsContext* __gfxCtx;
 
 #define VTX_T(x,y,z,s,t,cr,cg,cb,a) { { x, y, z }, 0, { s, t }, { cr, cg, cb, a } }
 
-// #region SOH [WiiU]
-#ifdef __WIIU__
-#define ASSERT(expression) (void)((!!(expression)) || (_assert(#expression, __FILE__, (unsigned)(__LINE__)), 0))
-#else
-#define ASSERT(expression) (void)((!!(expression)) || (__assert(#expression, __FILE__, (unsigned)(__LINE__)), 0))
-#endif
-// #endregion
-
 #define gDPSetTileCustom(pkt, fmt, siz, width, height, pal, cms, cmt, masks, maskt, shifts, shiftt)                    \
     do {                                                                                                               \
         gDPPipeSync(pkt);                                                                                              \
@@ -313,16 +306,21 @@ extern GraphicsContext* __gfxCtx;
 #define NUM_TRIALS 6
 #define NUM_SHOP_ITEMS 64
 #define NUM_SCRUBS 46
-#define FOREST_TEMPLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_BMORI1) ? 6 : 5)
-#define FIRE_TEMPLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_HIDAN) ? 5 : 8)
-#define WATER_TEMPLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_MIZUSIN) ? 2 : 6)
-#define SPIRIT_TEMPLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_JYASINZOU) ? 7 : 5)
-#define SHADOW_TEMPLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_HAKADAN) ? 6 : 5)
-#define BOTTOM_OF_THE_WELL_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_HAKADANCH) ? 2 : 3)
-#define GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_MEN) ? 3 : 9)
+#define FOREST_TEMPLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_FOREST_TEMPLE) ? 6 : 5)
+#define FIRE_TEMPLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_FIRE_TEMPLE) ? 5 : 8)
+#define WATER_TEMPLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_WATER_TEMPLE) ? 2 : 6)
+#define SPIRIT_TEMPLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_SPIRIT_TEMPLE) ? 7 : 5)
+#define SHADOW_TEMPLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_SHADOW_TEMPLE) ? 6 : 5)
+#define BOTTOM_OF_THE_WELL_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_BOTTOM_OF_THE_WELL) ? 2 : 3)
+#define GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_GERUDO_TRAINING_GROUND) ? 3 : 9)
 #define GERUDO_FORTRESS_SMALL_KEY_MAX 4
-#define GANONS_CASTLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_GANONTIKA) ? 3 : 2)
+#define GANONS_CASTLE_SMALL_KEY_MAX (ResourceMgr_IsSceneMasterQuest(SCENE_INSIDE_GANONS_CASTLE) ? 3 : 2)
 #define TREASURE_GAME_SMALL_KEY_MAX 6
+
+#define DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(randomizerSettingsKey) \
+    (Randomizer_GetSettingValue(randomizerSettingsKey) != RO_DUNGEON_ITEM_LOC_STARTWITH && \
+     Randomizer_GetSettingValue(randomizerSettingsKey) != RO_DUNGEON_ITEM_LOC_VANILLA && \
+     Randomizer_GetSettingValue(randomizerSettingsKey) != RO_DUNGEON_ITEM_LOC_OWN_DUNGEON)
 // #endregion
 
 #endif

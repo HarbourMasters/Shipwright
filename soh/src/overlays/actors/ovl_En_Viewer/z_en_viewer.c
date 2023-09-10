@@ -15,8 +15,9 @@
 #include "objects/object_ganon/object_ganon.h"
 #include "objects/object_opening_demo1/object_opening_demo1.h"
 #include "soh/frame_interpolation.h"
+#include <assert.h>
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void EnViewer_Init(Actor* thisx, PlayState* play);
 void EnViewer_Destroy(Actor* thisx, PlayState* play);
@@ -170,14 +171,14 @@ void EnViewer_InitImpl(EnViewer* this, PlayState* play) {
     EnViewerInitData* initData = &sInitData[this->actor.params >> 8];
     s32 skelObjBankIndex = Object_GetIndex(&play->objectCtx, initData->skeletonObject);
 
-    ASSERT(skelObjBankIndex >= 0);
+    assert(skelObjBankIndex >= 0);
 
     this->animObjBankIndex = Object_GetIndex(&play->objectCtx, initData->animObject);
-    ASSERT(this->animObjBankIndex >= 0);
+    assert(this->animObjBankIndex >= 0);
 
     if (!Object_IsLoaded(&play->objectCtx, skelObjBankIndex) ||
         !Object_IsLoaded(&play->objectCtx, this->animObjBankIndex)) {
-        this->actor.flags &= ~ACTOR_FLAG_6;
+        this->actor.flags &= ~ACTOR_FLAG_ACTIVE;
         return;
     }
 
@@ -382,7 +383,7 @@ void EnViewer_UpdateImpl(EnViewer* this, PlayState* play) {
                 break;
         }
     } else if (type == ENVIEWER_TYPE_2_ZELDA) {
-        if (play->sceneNum == SCENE_SPOT00) { // Hyrule Field
+        if (play->sceneNum == SCENE_HYRULE_FIELD) { // Hyrule Field
             switch (this->state) {
                 case 0:
                     if (play->csCtx.state != CS_STATE_IDLE) {
@@ -583,7 +584,7 @@ void EnViewer_DrawHorse(EnViewer* this, PlayState* play) {
 
 s32 EnViewer_ZeldaOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
                                    void* thisx) {
-    if (play->sceneNum == SCENE_SPOT00) { // Hyrule Field
+    if (play->sceneNum == SCENE_HYRULE_FIELD) { // Hyrule Field
         if (limbIndex == 2) {
             *dList = gChildZeldaCutsceneDressDL;
         }
@@ -609,7 +610,7 @@ s32 EnViewer_ZeldaOverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, 
 void EnViewer_ZeldaPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     s32 pad;
 
-    if (play->sceneNum == SCENE_TOKINOMA) {
+    if (play->sceneNum == SCENE_TEMPLE_OF_TIME) {
         if (limbIndex == 16) {
             OPEN_DISPS(play->state.gfxCtx);
             gSPDisplayList(POLY_OPA_DISP++, gChildZeldaOcarinaOfTimeDL);
@@ -620,7 +621,7 @@ void EnViewer_ZeldaPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec
 
 void EnViewer_DrawZelda(EnViewer* this, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
-    if (play->sceneNum == SCENE_SPOT00) { // Hyrule Field
+    if (play->sceneNum == SCENE_HYRULE_FIELD) { // Hyrule Field
         if (play->csCtx.frames < 771) {
             gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gChildZeldaEyeInTex));
             gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gChildZeldaEyeOutTex));

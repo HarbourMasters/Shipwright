@@ -4,9 +4,9 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <cstdint>
 #include <soh/Enhancements/randomizer/randomizer_inf.h>
-
-void InitSaveEditor();
+#include <libultraship/libultraship.h>
 
 typedef enum {
     EVENT_CHECK_INF,
@@ -501,4 +501,94 @@ const std::vector<FlagTable> flagTables = {
         { RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD, "KAK_100_GOLD_SKULLTULA_REWARD" },
         { RAND_INF_GREG_FOUND, "RAND_INF_GREG_FOUND" },
     } },
+};
+
+const std::vector<std::string> state1 = {
+    "Loading",
+    "Swinging Bottle",
+    "Falling from Hookshot",
+    "Hookshot/Bow in Hand",
+    "Targeting Enemy",
+    "Input Disabled",
+    "Text on Screen",
+    "Death",
+    "Starting to put away",
+    "Ready to Fire",
+    "Get Item",
+    "Item over Head",
+    "Charging Spin Attack",
+    "Hanging off Ledge",
+    "Climbing Ledge",
+    "Targeting",
+    "Target Locked",
+    "Targeting Nothing",
+    "Jumping Forward",
+    "In Freefall",
+    "In First-Person View",
+    "Climbing Ladder",
+    "Shielding",
+    "On Horse",
+    "Boomerang in Hand",
+    "Boomerang Thrown",
+    "Damaged",
+    "In Water",
+    "In Item Cutscene",
+    "In Cutscene",
+    "30", //Unknown
+    "Floor collision disabled"
+};
+
+const std::vector<std::string> state2 = {
+    "Grab",
+    "Speak/Check",
+    "Climb",
+    "Footstep",
+    "Moving Dynapoly",
+    "Disabled Rotation on Z target",
+    "Disabled Rotation",
+    "Grabbed by Enemy",
+    "Grabbing Dynapoly",
+    "Spawning Dust",
+    "Underwater",
+    "Diving",
+    "Stationary on Ladder",
+    "Switch Targeting",
+    "Frozen",
+    "Pause Most Updating",
+    "Enter",
+    "Spin Attack w/o Magic",
+    "Crawling",
+    "Hopping",
+    "Navi Out",
+    "Navi Alert",
+    "Down",
+    "Near Ocarina Actor",
+    "Attempt playing for Oca. Actor",
+    "Playing for Oca. Actor",
+    "Reflection",
+    "Ocarina Playing",
+    "Idling",
+    "Disabled draw func",
+    "Sword Lunge",
+    "Void out"
+};
+
+const std::vector<std::string> state3 = {
+    "Ignore ceiling for Floor and Water",
+    "Midair",
+    "Pause Action Func",
+    "Finished Attacking",
+    "Check Floor Water Collision",
+    "Force Pull Ocarina",
+    "Restore Nayru's Love",
+    "Travelling to Hook Target"
+};
+
+class SaveEditorWindow : public LUS::GuiWindow {
+  public:
+    using GuiWindow::GuiWindow;
+
+    void InitElement() override;
+    void DrawElement() override;
+    void UpdateElement() override {};
 };

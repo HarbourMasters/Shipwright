@@ -15,6 +15,7 @@ void SetLightingSettings::ParseRawData()
 	ZRoomCommand::ParseRawData();
 	uint8_t numLights = cmdArg1;
 
+	settings.reserve(numLights);
 	for (int i = 0; i < numLights; i++)
 		settings.push_back(LightingSettings(parent->GetRawData(), segmentOffset + (i * 22)));
 }

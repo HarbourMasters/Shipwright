@@ -7,7 +7,7 @@
 #include "z_bg_toki_hikari.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
 
-#define FLAGS ACTOR_FLAG_5
+#define FLAGS ACTOR_FLAG_DRAW_WHILE_CULLED
 
 void BgTokiHikari_Init(Actor* thisx, PlayState* play);
 void BgTokiHikari_Destroy(Actor* thisx, PlayState* play);
@@ -47,7 +47,7 @@ void BgTokiHikari_Init(Actor* thisx, PlayState* play) {
             this->actionFunc = BgTokiHikari_DoNothing;
             break;
         case 1:
-            if (!(gSaveContext.eventChkInf[4] & 0x800)) {
+            if (!Flags_GetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME)) {
                 this->actionFunc = func_808BA204;
                 this->unk_14C = 0.0f;
             } else {

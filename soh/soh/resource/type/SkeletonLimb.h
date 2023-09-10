@@ -4,7 +4,7 @@
 #include "libultraship/libultra.h"
 #include "z64math.h"
 
-namespace Ship {
+namespace LUS {
 enum class LimbType {
     Invalid,
     Standard,
@@ -97,36 +97,38 @@ union SkeletonLimbData {
   SkinLimb skinLimb;
 };
 
-class SkeletonLimb : public Resource {
+class SkeletonLimb : public Resource<SkeletonLimbData> {
 public:
   using Resource::Resource;
 
-  void* GetPointer();
-  size_t GetPointerSize();
+    SkeletonLimb() : Resource(std::shared_ptr<ResourceInitData>()) {}
 
-  LimbType limbType;
-  SkeletonLimbData limbData;
+    SkeletonLimbData* GetPointer();
+    size_t GetPointerSize();
 
-  ZLimbSkinType skinSegmentType;
-  uint16_t skinVtxCnt;
-  SkinAnimatedLimbData skinAnimLimbData;
+    LimbType limbType;
+    SkeletonLimbData limbData;
 
-  std::string skinDataDList;
-  std::string skinDList;
-  std::string skinDList2;
+    ZLimbSkinType skinSegmentType;
+    uint16_t skinVtxCnt;
+    SkinAnimatedLimbData skinAnimLimbData;
 
-  float legTransX, legTransY, legTransZ; // Vec3f
-  uint16_t rotX, rotY, rotZ;             // Vec3s
+    std::string skinDataDList;
+    std::string skinDList;
+    std::string skinDList2;
 
-  std::string childPtr, siblingPtr, dListPtr, dList2Ptr;
+    float legTransX, legTransY, legTransZ; // Vec3f
+    uint16_t rotX, rotY, rotZ;             // Vec3s
 
-  int16_t transX, transY, transZ;
-  uint8_t childIndex, siblingIndex;
+    std::string childPtr, siblingPtr, dListPtr, dList2Ptr;
 
-  uint32_t skinLimbModifCount;
-  std::vector<SkinLimbModif> skinLimbModifArray;
+    int16_t transX, transY, transZ;
+    uint8_t childIndex, siblingIndex;
 
-  std::vector<std::vector<SkinVertex>> skinLimbModifVertexArrays;
-  std::vector<std::vector<SkinTransformation>> skinLimbModifTransformationArrays;
+    uint32_t skinLimbModifCount;
+    std::vector<SkinLimbModif> skinLimbModifArray;
+
+    std::vector<std::vector<SkinVertex>> skinLimbModifVertexArrays;
+    std::vector<std::vector<SkinTransformation>> skinLimbModifTransformationArrays;
 };
-} // namespace Ship
+} // namespace LUS

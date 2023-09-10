@@ -3,7 +3,7 @@
 #include "overlays/actors/ovl_En_Bom_Chu/z_en_bom_chu.h"
 #include "overlays/actors/ovl_En_Ex_Item/z_en_ex_item.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void EnBomBowlPit_Init(Actor* thisx, PlayState* play);
 void EnBomBowlPit_Destroy(Actor* thisx, PlayState* play);
@@ -158,10 +158,10 @@ void EnBomBowlPit_SetupGivePrize(EnBomBowlPit* this, PlayState* play) {
     if (this->exItemDone != 0) {
         switch (this->prizeIndex) {
             case EXITEM_BOMB_BAG_BOWLING:
-                gSaveContext.itemGetInf[1] |= 2;
+                Flags_SetItemGetInf(ITEMGETINF_11);
                 break;
             case EXITEM_HEART_PIECE_BOWLING:
-                gSaveContext.itemGetInf[1] |= 4;
+                Flags_SetItemGetInf(ITEMGETINF_12);
                 break;
         }
 

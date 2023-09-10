@@ -1,7 +1,7 @@
 #include "SetCollisionHeader.h"
 
-namespace Ship {
-void* SetCollisionHeader::GetPointer() {
+namespace LUS {
+CollisionHeaderData* SetCollisionHeader::GetPointer() {
     if (collisionHeader == nullptr) {
         return nullptr;
     }
@@ -14,4 +14,4 @@ size_t SetCollisionHeader::GetPointerSize() {
     }
 	return collisionHeader->GetPointerSize();
 }
-} // namespace Ship
+} // namespace LUS

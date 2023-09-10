@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_HEAVY_OBJECT_H
+#define OBJECTS_OBJECT_HEAVY_OBJECT_H 1
 
 #include "align_asset_macro.h"
 
@@ -16,3 +17,5 @@ static const ALIGN_ASSET(2) char gHeavyBlockSmallPieceDL[] = dgHeavyBlockSmallPi
 
 #define dgHeavyBlockCol "__OTR__objects/object_heavy_object/gHeavyBlockCol"
 static const ALIGN_ASSET(2) char gHeavyBlockCol[] = dgHeavyBlockCol;
+
+#endif // OBJECTS_OBJECT_HEAVY_OBJECT_H

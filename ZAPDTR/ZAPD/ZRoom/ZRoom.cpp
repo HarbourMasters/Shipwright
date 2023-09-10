@@ -39,7 +39,7 @@
 #include "Commands/Unused1D.h"
 #include "Commands/ZRoomCommandUnk.h"
 #include "Globals.h"
-#include "Utils/File.h"
+#include <Utils/DiskFile.h>
 #include "Utils/Path.h"
 #include "Utils/StringHelper.h"
 #include "WarningHandler.h"

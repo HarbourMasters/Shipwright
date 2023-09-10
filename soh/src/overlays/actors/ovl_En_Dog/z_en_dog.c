@@ -273,7 +273,7 @@ void EnDog_Init(Actor* thisx, PlayState* play) {
                 Actor_Kill(&this->actor);
             }
             break;
-        case SCENE_IMPA: // Richard's Home
+        case SCENE_DOG_LADY_HOUSE: // Richard's Home
             if (!(this->actor.params & 0x8000)) {
                 if (!gSaveContext.dogIsLost) {
                     this->nextBehavior = DOG_SIT;
@@ -300,6 +300,8 @@ void EnDog_Init(Actor* thisx, PlayState* play) {
 void EnDog_Destroy(Actor* thisx, PlayState* play) {
     EnDog* this = (EnDog*)thisx;
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDog_FollowPath(EnDog* this, PlayState* play) {

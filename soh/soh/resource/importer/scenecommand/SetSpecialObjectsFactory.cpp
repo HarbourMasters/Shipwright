@@ -2,21 +2,20 @@
 #include "soh/resource/type/scenecommand/SetSpecialObjects.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> SetSpecialObjectsFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
-                                                                 std::shared_ptr<ResourceInitData> initData,
+namespace LUS {
+std::shared_ptr<IResource> SetSpecialObjectsFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
                                                                  std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<SetSpecialObjects>(resourceMgr, initData);
+    auto resource = std::make_shared<SetSpecialObjects>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-    switch (resource->InitData->ResourceVersion) {
+    switch (resource->GetInitData()->ResourceVersion) {
     case 0:
 	    factory = std::make_shared<SetSpecialObjectsFactoryV0>();
 	    break;
     }
 
     if (factory == nullptr){
-        SPDLOG_ERROR("Failed to load SetSpecialObjects with version {}", resource->InitData->ResourceVersion);
+        SPDLOG_ERROR("Failed to load SetSpecialObjects with version {}", resource->GetInitData()->ResourceVersion);
 	return nullptr;
     }
 
@@ -25,8 +24,8 @@ std::shared_ptr<Resource> SetSpecialObjectsFactory::ReadResource(std::shared_ptr
     return resource;
 }
 
-void Ship::SetSpecialObjectsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<Resource> resource) {
+void LUS::SetSpecialObjectsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+                                        std::shared_ptr<IResource> resource) {
     std::shared_ptr<SetSpecialObjects> setSpecialObjects = std::static_pointer_cast<SetSpecialObjects>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setSpecialObjects);
 
@@ -36,4 +35,4 @@ void Ship::SetSpecialObjectsFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRea
     setSpecialObjects->specialObjects.globalObject = reader->ReadInt16();
 }
 
-} // namespace Ship
+} // namespace LUS

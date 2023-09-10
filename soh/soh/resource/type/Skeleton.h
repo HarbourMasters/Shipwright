@@ -5,7 +5,7 @@
 #include "SkeletonLimb.h"
 #include <z64animation.h>
 
-namespace Ship {
+namespace LUS {
 
 enum class SkeletonType {
     Normal,
@@ -49,11 +49,13 @@ union SkeletonData {
     SkelCurveLimbList skelCurveLimbList;
 };
 
-class Skeleton : public Resource {
+class Skeleton : public Resource<SkeletonData> {
   public:
     using Resource::Resource;
 
-    void* GetPointer();
+    Skeleton() : Resource(std::shared_ptr<ResourceInitData>()) {}
+
+    SkeletonData* GetPointer();
     size_t GetPointerSize();
 
     SkeletonType type;
@@ -88,4 +90,4 @@ class SkeletonPatcher {
 };
 
 
-} // namespace Ship
+} // namespace LUS

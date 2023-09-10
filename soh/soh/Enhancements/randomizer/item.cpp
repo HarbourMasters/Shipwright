@@ -74,10 +74,10 @@ ItemOverride_Value RandoItem::Value() const {
     if (getItemId == RG_ICE_TRAP) {
         val.looksLikeItemId = RandomElement(IceTrapModels);
     }
-    if (!Settings::ColoredBossKeys && (getItemId >= 0x95 && getItemId <= 0x9A)) { // Boss keys
+    if ((getItemId >= 0x95 && getItemId <= 0x9A)) { // Boss keys
         val.looksLikeItemId = GI_KEY_BOSS;
     }
-    if (!Settings::ColoredKeys && (getItemId >= 0xAF && getItemId <= 0xB7)) { // Small keys
+    if ((getItemId >= 0xAF && getItemId <= 0xB7)) { // Small keys
         val.looksLikeItemId = GI_KEY_SMALL;
     }
     if (type == ITEMTYPE_SHOP) {
@@ -191,7 +191,7 @@ bool RandoItem::IsMajorItem() const {
     return IsAdvancement();
 }
 
-const uint32_t RandoItem::GetHintKey() const {
+uint32_t RandoItem::GetHintKey() const {
     return hintKey;
 }
 

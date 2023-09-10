@@ -7,20 +7,20 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
-namespace Ship {
+namespace LUS {
 typedef struct {
   uint8_t seqId;
   uint8_t natureAmbienceId;
   uint8_t reverb;
 } SoundSettings;
 
-class SetSoundSettings : public SceneCommand {
+class SetSoundSettings : public SceneCommand<SoundSettings> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    SoundSettings* GetPointer();
     size_t GetPointerSize();
 
     SoundSettings settings;
 };
-}; // namespace Ship
+}; // namespace LUS

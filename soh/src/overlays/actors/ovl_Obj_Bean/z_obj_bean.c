@@ -9,7 +9,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_22
+#define FLAGS ACTOR_FLAG_IGNORE_POINTLIGHTS
 
 void ObjBean_Init(Actor* thisx, PlayState* play);
 void ObjBean_Destroy(Actor* thisx, PlayState* play);
@@ -639,7 +639,7 @@ void ObjBean_WaitForWater(ObjBean* this, PlayState* play) {
         ObjBean_SetupGrowWaterPhase1(this);
         D_80B90E30 = this;
         OnePointCutscene_Init(play, 2210, -99, &this->dyna.actor, MAIN_CAM);
-        this->dyna.actor.flags |= ACTOR_FLAG_4;
+        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
         return;
     }
 
@@ -742,7 +742,7 @@ void ObjBean_GrowWaterPhase5(ObjBean* this, PlayState* play) {
     this->transformFunc(this);
     if (this->timer <= 0) {
         func_80B8FF50(this);
-        this->dyna.actor.flags &= ~ACTOR_FLAG_4;
+        this->dyna.actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
     }
 }
 
@@ -754,7 +754,7 @@ void ObjBean_SetupWaitForPlayer(ObjBean* this) {
 void ObjBean_WaitForPlayer(ObjBean* this, PlayState* play) {
     if (func_8004356C(&this->dyna)) { // Player is standing on
         ObjBean_SetupFly(this);
-        if (play->sceneNum == SCENE_SPOT10) { // Lost woods
+        if (play->sceneNum == SCENE_LOST_WOODS) { // Lost woods
             Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_BEAN_LOST_WOODS);
         } else {
             Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_BEAN_GENERIC);
@@ -767,7 +767,7 @@ void ObjBean_SetupFly(ObjBean* this) {
     this->actionFunc = ObjBean_Fly;
     ObjBean_SetDrawMode(this, BEAN_STATE_DRAW_PLANT);
     this->dyna.actor.speedXZ = 0.0f;
-    this->dyna.actor.flags |= ACTOR_FLAG_4; // Never stop updating
+    this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED; // Never stop updating
 }
 
 void ObjBean_Fly(ObjBean* this, PlayState* play) {
@@ -779,7 +779,7 @@ void ObjBean_Fly(ObjBean* this, PlayState* play) {
         ObjBean_SetupPath(this, play);
         ObjBean_SetupWaitForStepOff(this);
 
-        this->dyna.actor.flags &= ~ACTOR_FLAG_4; // Never stop updating (disable)
+        this->dyna.actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED; // Never stop updating (disable)
         camera = play->cameraPtrs[MAIN_CAM];
 
         if ((camera->setting == CAM_SET_BEAN_LOST_WOODS) || (camera->setting == CAM_SET_BEAN_GENERIC)) {
@@ -790,7 +790,7 @@ void ObjBean_Fly(ObjBean* this, PlayState* play) {
 
         func_8002F974(&this->dyna.actor, NA_SE_PL_PLANT_MOVE - SFX_FLAG);
 
-        if (play->sceneNum == SCENE_SPOT10) {
+        if (play->sceneNum == SCENE_LOST_WOODS) {
             Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_BEAN_LOST_WOODS);
         } else {
             Camera_ChangeSetting(play->cameraPtrs[MAIN_CAM], CAM_SET_BEAN_GENERIC);

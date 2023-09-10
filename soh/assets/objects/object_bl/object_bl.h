@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_BL_H
+#define OBJECTS_OBJECT_BL_H 1
 
 #include "align_asset_macro.h"
 
@@ -52,3 +53,6 @@ static const ALIGN_ASSET(2) char gBiriInnerHoodTex[] = dgBiriInnerHoodTex;
 
 #define dgBiriSkel "__OTR__objects/object_bl/gBiriSkel"
 static const ALIGN_ASSET(2) char gBiriSkel[] = dgBiriSkel;
+
+
+#endif // OBJECTS_OBJECT_BL_H

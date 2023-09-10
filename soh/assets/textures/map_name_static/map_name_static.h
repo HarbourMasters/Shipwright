@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_MAP_NAME_STATIC_H
+#define TEXTURES_MAP_NAME_STATIC_H 1
 
 #include "align_asset_macro.h"
 
@@ -307,3 +308,5 @@ static const ALIGN_ASSET(2) char gQuestionMarkPositionNameFRATex[] = dgQuestionM
 
 #define dgGanonsCastlePositionNameFRATex "__OTR__textures/map_name_static/gGanonsCastlePositionNameFRATex"
 static const ALIGN_ASSET(2) char gGanonsCastlePositionNameFRATex[] = dgGanonsCastlePositionNameFRATex;
+
+#endif // TEXTURES_MAP_NAME_STATIC_H

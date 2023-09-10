@@ -3,6 +3,7 @@
 #include <array>
 #include <string>
 #include <string_view>
+#include <cstdint>
 
 using RandomizerHash = std::array<std::string, 5>;
 
@@ -19,7 +20,6 @@ typedef enum {
     SPOILER_CHK_COW,
     SPOILER_CHK_MINIGAME,
     SPOILER_CHK_SCRUB,
-    SPOILER_CHK_BIGGORON,
     SPOILER_CHK_GERUDO_MEMBERSHIP_CARD,
     SPOILER_CHK_POE_POINTS,
     SPOILER_CHK_SHOP_ITEM,

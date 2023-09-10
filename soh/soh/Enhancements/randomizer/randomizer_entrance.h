@@ -40,12 +40,16 @@ typedef struct {
     int16_t overrideDestination;
 } EntranceOverride;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void Entrance_Init(void);
 void Entrance_ResetEntranceTable(void);
 uint8_t Entrance_EntranceIsNull(EntranceOverride* entranceOverride);
-int16_t  Entrance_GetOverride(int16_t index);
-int16_t  Entrance_OverrideNextIndex(int16_t nextEntranceIndex);
-int16_t  Entrance_OverrideDynamicExit(int16_t dynamicExitIndex);
+int16_t Entrance_GetOverride(int16_t index);
+int16_t Entrance_OverrideNextIndex(int16_t nextEntranceIndex);
+int16_t Entrance_OverrideDynamicExit(int16_t dynamicExitIndex);
 uint32_t Entrance_SceneAndSpawnAre(uint8_t scene, uint8_t spawn);
 void Entrance_SetGameOverEntrance(void);
 void Entrance_SetSavewarpEntrance(void);
@@ -60,5 +64,8 @@ int32_t Entrance_OverrideSpawnSceneRoom(int32_t sceneNum, int32_t spawn, int32_t
 void Entrance_EnableFW(void);
 uint8_t Entrance_GetIsEntranceDiscovered(uint16_t entranceIndex);
 void Entrance_SetEntranceDiscovered(uint16_t entranceIndex);
+#ifdef __cplusplus
+}
+#endif
 
 #endif //_RANDO_ENTRANCE_H_

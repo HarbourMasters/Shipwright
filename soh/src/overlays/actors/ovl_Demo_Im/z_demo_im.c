@@ -11,7 +11,7 @@
 #include "objects/object_im/object_im.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void DemoIm_Init(Actor* thisx, PlayState* play);
 void DemoIm_Destroy(Actor* thisx, PlayState* play);
@@ -833,7 +833,7 @@ s32 func_809869F8(DemoIm* this, PlayState* play) {
     f32 playerPosX = player->actor.world.pos.x;
     f32 thisPosX = this->actor.world.pos.x;
 
-    if ((thisPosX - (kREG(16) + 30.0f) > playerPosX) && !(this->actor.flags & ACTOR_FLAG_6)) {
+    if ((thisPosX - (kREG(16) + 30.0f) > playerPosX) && !(this->actor.flags & ACTOR_FLAG_ACTIVE)) {
         return true;
     } else {
         return false;
@@ -853,7 +853,7 @@ s32 func_80986A5C(DemoIm* this, PlayState* play) {
 }
 
 s32 func_80986AD0(DemoIm* this, PlayState* play) {
-    this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
     if (!Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actor.textId = 0x708E;
         func_8002F2F4(&this->actor, play);
@@ -895,7 +895,7 @@ void func_80986BE4(DemoIm* this, s32 arg1) {
 }
 
 void func_80986BF8(DemoIm* this, PlayState* play) {
-    if (gSaveContext.eventChkInf[4] & 1) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
         this->action = 24;
         this->drawConfig = 1;
         this->unk_280 = 1;
@@ -912,7 +912,7 @@ void GivePlayerRandoRewardImpa(Actor* impa, PlayState* play, RandomizerCheck che
     } else if (!Flags_GetTreasure(play, 0x1F) && !Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA)) {
         GiveItemEntryFromActor(impa, play, getItemEntry, 75.0f, 50.0f);
     } else if (!Player_InBlockingCsMode(play, GET_PLAYER(play))) {
-        gSaveContext.eventChkInf[5] |= 0x200;
+        Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
         play->sceneLoadFlag = 0x14;
         play->fadeTransition = 3;
         gSaveContext.nextTransitionType = 3;
@@ -933,7 +933,7 @@ void func_80986C30(DemoIm* this, PlayState* play) {
         } else {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gZeldasCourtyardLullabyCs);
             gSaveContext.cutsceneTrigger = 1;
-            gSaveContext.eventChkInf[5] |= 0x200;
+            Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
             Item_Give(play, ITEM_SONG_LULLABY);
             func_80985F54(this);
         }
@@ -941,7 +941,7 @@ void func_80986C30(DemoIm* this, PlayState* play) {
 }
 
 void func_80986CC8(DemoIm* this) {
-    if (gSaveContext.eventChkInf[4] & 1) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
         this->action = 26;
         this->drawConfig = 1;
         this->unk_280 = 1;
@@ -951,7 +951,7 @@ void func_80986CC8(DemoIm* this) {
 
 void func_80986CFC(DemoIm* this, PlayState* play) {
     if (func_80986A5C(this, play)) {
-        gSaveContext.eventChkInf[4] |= 0x1000;
+        Flags_SetEventChkInf(EVENTCHKINF_4C);
         this->action = 19;
     }
 }
@@ -960,9 +960,9 @@ void func_80986D40(DemoIm* this, PlayState* play) {
     if (gSaveContext.sceneSetupIndex == 6) {
         this->action = 19;
         this->drawConfig = 1;
-    } else if ((gSaveContext.eventChkInf[8] & 1) && !gSaveContext.n64ddFlag) {
+    } else if ((Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) && !gSaveContext.n64ddFlag) {
         Actor_Kill(&this->actor);
-    } else if (!(gSaveContext.eventChkInf[5] & 0x200)) {
+    } else if (!Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY)) {
         this->action = 23;
     } else {
         this->action = 20;
@@ -974,7 +974,7 @@ void func_80986DC8(DemoIm* this, PlayState* play) {
     DemoIm_UpdateSkelAnime(this);
     func_80984BE0(this);
     func_80984E58(this, play);
-    this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
+    this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
 }
 
 void func_80986E20(DemoIm* this, PlayState* play) {
@@ -1021,7 +1021,7 @@ void func_80986FA8(DemoIm* this, PlayState* play) {
     DemoIm_UpdateSkelAnime(this);
     func_80984BE0(this);
     func_80984E58(this, play);
-    this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
+    this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
     DemoIm_UpdateCollider(this, play);
     func_80986CFC(this, play);
 }
@@ -1139,7 +1139,7 @@ void DemoIm_Init(Actor* thisx, PlayState* play) {
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f);
     DemoIm_InitCollider(thisx, play);
     SkelAnime_InitFlex(play, &this->skelAnime, &gImpaSkel, NULL, this->jointTable, this->morphTable, 17);
-    thisx->flags &= ~ACTOR_FLAG_0;
+    thisx->flags &= ~ACTOR_FLAG_TARGETABLE;
 
     switch (this->actor.params) {
         case 2:
@@ -1163,7 +1163,10 @@ void DemoIm_Init(Actor* thisx, PlayState* play) {
 }
 
 void DemoIm_Destroy(Actor* thisx, PlayState* play) {
+    DemoIm* this = (DemoIm*)thisx;
     DemoIm_DestroyCollider(thisx, play);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 DemoIm_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {

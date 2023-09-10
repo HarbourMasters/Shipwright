@@ -1,5 +1,8 @@
 #include "z_en_box.h"
 #include "objects/object_box/object_box.h"
+#include "soh_assets.h"
+#include "soh/Enhancements/enhancementTypes.h"
+#include <assert.h>
 
 #define FLAGS 0
 
@@ -150,7 +153,7 @@ void EnBox_Init(Actor* thisx, PlayState* play2) {
         EnBox_SetupAction(this, EnBox_FallOnSwitchFlag);
         this->alpha = 0;
         this->movementFlags |= ENBOX_MOVE_IMMOBILE;
-        this->dyna.actor.flags |= ACTOR_FLAG_4;
+        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
     } else if ((this->type == ENBOX_TYPE_ROOM_CLEAR_BIG || this->type == ENBOX_TYPE_ROOM_CLEAR_SMALL) &&
                !Flags_GetClear(play, this->dyna.actor.room)) {
         EnBox_SetupAction(this, EnBox_AppearOnRoomClear);
@@ -158,25 +161,25 @@ void EnBox_Init(Actor* thisx, PlayState* play2) {
         this->movementFlags |= ENBOX_MOVE_IMMOBILE;
         this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y - 50.0f;
         this->alpha = 0;
-        this->dyna.actor.flags |= ACTOR_FLAG_4;
+        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
     } else if (this->type == ENBOX_TYPE_9 || this->type == ENBOX_TYPE_10) {
         EnBox_SetupAction(this, func_809C9700);
-        this->dyna.actor.flags |= ACTOR_FLAG_25;
+        this->dyna.actor.flags |= ACTOR_FLAG_NO_FREEZE_OCARINA;
         func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
         this->movementFlags |= ENBOX_MOVE_IMMOBILE;
         this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y - 50.0f;
         this->alpha = 0;
-        this->dyna.actor.flags |= ACTOR_FLAG_4;
+        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
     } else if (this->type == ENBOX_TYPE_SWITCH_FLAG_BIG && !Flags_GetSwitch(play, this->switchFlag)) {
         EnBox_SetupAction(this, EnBox_AppearOnSwitchFlag);
         func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
         this->movementFlags |= ENBOX_MOVE_IMMOBILE;
         this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y - 50.0f;
         this->alpha = 0;
-        this->dyna.actor.flags |= ACTOR_FLAG_4;
+        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
     } else {
         if (this->type == ENBOX_TYPE_4 || this->type == ENBOX_TYPE_6) {
-            this->dyna.actor.flags |= ACTOR_FLAG_7;
+            this->dyna.actor.flags |= ACTOR_FLAG_LENS;
         }
         EnBox_SetupAction(this, EnBox_WaitOpen);
         this->movementFlags |= ENBOX_MOVE_IMMOBILE;
@@ -198,8 +201,13 @@ void EnBox_Init(Actor* thisx, PlayState* play2) {
     EnBox_UpdateSizeAndTexture(this, play);
     // For SOH we spawn a chest actor instead of rendering the object from scratch for forest boss
     // key chest, and it's up on the wall so disable gravity for it.
-    if (play->sceneNum == SCENE_BMORI1 && this->dyna.actor.params == 10222) {
+    if (play->sceneNum == SCENE_FOREST_TEMPLE && this->dyna.actor.params == 10222) {
         this->movementFlags = ENBOX_MOVE_IMMOBILE;
+    }
+
+    // Delete chests in Boss Rush. Mainly for the chest in King Dodongo's boss room.
+    if (gSaveContext.isBossRush) {
+        EnBox_SetupAction(this, EnBox_Destroy);
     }
 }
 
@@ -207,6 +215,8 @@ void EnBox_Destroy(Actor* thisx, PlayState* play) {
     EnBox* this = (EnBox*)thisx;
 
     DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelanime);
 }
 
 void EnBox_RandomDustKinematic(EnBox* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel) {
@@ -323,7 +333,7 @@ void func_809C9700(EnBox* this, PlayState* play) {
         } else if (this->unk_1FB == ENBOX_STATE_2 && play->msgCtx.ocarinaMode == OCARINA_MODE_04) {
             if ((play->msgCtx.lastPlayedSong == OCARINA_SONG_LULLABY && this->type == ENBOX_TYPE_9) ||
                 (play->msgCtx.lastPlayedSong == OCARINA_SONG_SUNS && this->type == ENBOX_TYPE_10)) {
-                this->dyna.actor.flags &= ~ACTOR_FLAG_25;
+                this->dyna.actor.flags &= ~ACTOR_FLAG_NO_FREEZE_OCARINA;
                 EnBox_SetupAction(this, EnBox_AppearInit);
                 OnePointCutscene_Attention(play, &this->dyna.actor);
                 this->unk_1A8 = 0;
@@ -516,7 +526,7 @@ void EnBox_WaitOpen(EnBox* this, PlayState* play) {
 void EnBox_Open(EnBox* this, PlayState* play) {
     u16 sfxId;
 
-    this->dyna.actor.flags &= ~ACTOR_FLAG_7;
+    this->dyna.actor.flags &= ~ACTOR_FLAG_LENS;
 
     if (SkelAnime_Update(&this->skelanime)) {
         if (this->unk_1F4 > 0) {
@@ -617,19 +627,22 @@ void EnBox_Update(Actor* thisx, PlayState* play) {
     }
 
     if (((!gSaveContext.n64ddFlag && ((this->dyna.actor.params >> 5 & 0x7F) == 0x7C)) ||
-         (gSaveContext.n64ddFlag && ABS(sItem.getItemId) == RG_ICE_TRAP)) && 
-        this->actionFunc == EnBox_Open && this->skelanime.curFrame > 45 &&
-        this->iceSmokeTimer < 100) EnBox_SpawnIceSmoke(this, play);
+        (gSaveContext.n64ddFlag && ABS(sItem.getItemId) == RG_ICE_TRAP)) &&
+        this->actionFunc == EnBox_Open && this->skelanime.curFrame > 45 && this->iceSmokeTimer < 100) {
+        if (!CVarGetInteger("gAddTraps.enabled", 0)) {
+            EnBox_SpawnIceSmoke(this, play);
+        }
+    }
 }
 
 void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     EnBox_CreateExtraChestTextures();
-    int cstmc = CVarGetInteger("gChestSizeAndTextureMatchesContents", 0);
+    int csmc = CVarGetInteger("gChestSizeAndTextureMatchesContents", CSMC_DISABLED);
     int requiresStoneAgony = CVarGetInteger("gChestSizeDependsStoneOfAgony", 0);
     GetItemCategory getItemCategory;
 
-    int isVanilla = cstmc == 0 || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)) ||
-        (play->sceneNum == SCENE_TAKARAYA && this->dyna.actor.room != 6); // Exclude treasure game chests except for the final room
+    int isVanilla = csmc == CSMC_DISABLED || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)) ||
+        (play->sceneNum == SCENE_TREASURE_BOX_SHOP && this->dyna.actor.room != 6); // Exclude treasure game chests except for the final room
 
     if (!isVanilla) {
         getItemCategory = this->getItemEntry.getItemCategory;
@@ -648,7 +661,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     }
 
     // Change size
-    if (!isVanilla && (cstmc == 1 || cstmc == 3)) {
+    if (!isVanilla && (csmc == CSMC_BOTH || csmc == CSMC_SIZE)) {
         switch (getItemCategory) {
             case ITEM_CATEGORY_JUNK:
             case ITEM_CATEGORY_SMALL_KEY:
@@ -677,7 +690,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     }
 
     // Change texture
-    if (!isVanilla && (cstmc == 1 || cstmc == 2)) {
+    if (!isVanilla && (csmc == CSMC_BOTH || csmc == CSMC_TEXTURE)) {
         switch (getItemCategory) {
             case ITEM_CATEGORY_MAJOR:
                 this->boxBodyDL = gGoldTreasureChestChestFrontDL;
@@ -731,24 +744,24 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     s16 isLarge = this->dyna.actor.scale.x == 0.01f;
 
     // Make Ganon's Castle Zelda's Lullaby chest reachable when large.
-    if ((params & 0xF000) == 0x8000 && sceneNum == SCENE_GANONTIKA && room == 9) {
+    if ((params & 0xF000) == 0x8000 && sceneNum == SCENE_INSIDE_GANONS_CASTLE && room == 9) {
         this->dyna.actor.world.pos.z = isLarge ? -962.0f : -952.0f;
     }
 
     // Make MQ Deku Tree Song of Time chest reachable when large.
-    if (params == 0x5AA0 && sceneNum == SCENE_YDAN && room == 5) {
+    if (params == 0x5AA0 && sceneNum == SCENE_DEKU_TREE && room == 5) {
         this->dyna.actor.world.pos.x = isLarge ? -1380.0f : -1376.0f;
     }
 
     // Make Ganon's Castle Gold Gauntlets chest reachable with hookshot from the
     // switch platform when small.
-    if (params == 0x36C5 && sceneNum == SCENE_GANONTIKA && room == 12) {
+    if (params == 0x36C5 && sceneNum == SCENE_INSIDE_GANONS_CASTLE && room == 12) {
         this->dyna.actor.world.pos.x = isLarge ? 1757.0f : 1777.0f;
         this->dyna.actor.world.pos.z = isLarge ? -3595.0f : -3626.0f;
     }
 
     // Make Spirit Temple Compass Chest reachable with hookshot when small.
-    if (params == 0x3804 && sceneNum == SCENE_JYASINZOU && room == 14) {
+    if (params == 0x3804 && sceneNum == SCENE_SPIRIT_TEMPLE && room == 14) {
         this->dyna.actor.world.pos.x = isLarge ? 358.0f : 400.0f;
     }
 }
@@ -756,16 +769,16 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
 void EnBox_CreateExtraChestTextures() {
     if (hasCreatedRandoChestTextures) return;
     Gfx gTreasureChestChestTextures[] = {
-        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, "__OTR__objects/object_box/gSkullTreasureChestFrontTex"),
-        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, "__OTR__objects/object_box/gSkullTreasureChestSideAndTopTex"),
-        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, "__OTR__objects/object_box/gGoldTreasureChestFrontTex"),
-        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, "__OTR__objects/object_box/gGoldTreasureChestSideAndTopTex"),
-        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, "__OTR__objects/object_box/gKeyTreasureChestFrontTex"),
-        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, "__OTR__objects/object_box/gKeyTreasureChestSideAndTopTex"),
-        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, "__OTR__objects/object_box/gChristmasRedTreasureChestFrontTex"),
-        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, "__OTR__objects/object_box/gChristmasRedTreasureChestSideAndTopTex"),
-        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, "__OTR__objects/object_box/gChristmasGreenTreasureChestFrontTex"),
-        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, "__OTR__objects/object_box/gChristmasGreenTreasureChestSideAndTopTex"),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gSkullTreasureChestFrontTex),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gSkullTreasureChestSideAndTopTex),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gGoldTreasureChestFrontTex),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gGoldTreasureChestSideAndTopTex),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gKeyTreasureChestFrontTex),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gKeyTreasureChestSideAndTopTex),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gChristmasRedTreasureChestFrontTex),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gChristmasRedTreasureChestSideAndTopTex),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gChristmasGreenTreasureChestFrontTex),
+        gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, gChristmasGreenTreasureChestSideAndTopTex),
     };
 
     Gfx* frontCmd = ResourceMgr_LoadGfxByName(gTreasureChestChestFrontDL);
@@ -863,7 +876,7 @@ Gfx* EnBox_EmptyDList(GraphicsContext* gfxCtx) {
     Gfx* dList;
 
     dList = Graph_Alloc(gfxCtx, sizeof(Gfx));
-    ASSERT(dList != NULL);
+    assert(dList != NULL);
 
     dListHead = dList;
     gSPEndDisplayList(dListHead++);
@@ -877,7 +890,7 @@ Gfx* func_809CA4A0(GraphicsContext* gfxCtx) {
     Gfx* dListHead;
 
     dListHead = Graph_Alloc(gfxCtx, 2 * sizeof(Gfx));
-    ASSERT(dListHead != NULL);
+    assert(dListHead != NULL);
 
     dList = dListHead;
     gDPSetRenderMode(dListHead++,
@@ -895,7 +908,7 @@ Gfx* func_809CA518(GraphicsContext* gfxCtx) {
     Gfx* dListHead;
 
     dListHead = Graph_Alloc(gfxCtx, 2 * sizeof(Gfx));
-    ASSERT(dListHead != NULL);
+    assert(dListHead != NULL);
 
     dList = dListHead;
     gDPSetRenderMode(dListHead++,
@@ -913,11 +926,11 @@ void EnBox_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     /*
-    this->dyna.actor.flags & ACTOR_FLAG_7 is set by Init (if type is 4 or 6)
+    this->dyna.actor.flags & ACTOR_FLAG_LENS is set by Init (if type is 4 or 6)
     and cleared by Open
     */
     if ((this->alpha == 255 && !(this->type == ENBOX_TYPE_4 || this->type == ENBOX_TYPE_6)) ||
-        (!CHECK_FLAG_ALL(this->dyna.actor.flags, ACTOR_FLAG_7) &&
+        (!CHECK_FLAG_ALL(this->dyna.actor.flags, ACTOR_FLAG_LENS) &&
          (this->type == ENBOX_TYPE_4 || this->type == ENBOX_TYPE_6))) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);

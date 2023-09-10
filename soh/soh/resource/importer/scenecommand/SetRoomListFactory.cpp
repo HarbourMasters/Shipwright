@@ -2,14 +2,13 @@
 #include "soh/resource/type/scenecommand/SetRoomList.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> SetRoomListFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
-                                                           std::shared_ptr<ResourceInitData> initData,
-                                                           std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<SetRoomList>(resourceMgr, initData);
+namespace LUS {
+std::shared_ptr<IResource>
+SetRoomListFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+    auto resource = std::make_shared<SetRoomList>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-    switch (resource->InitData->ResourceVersion) {
+    switch (resource->GetInitData()->ResourceVersion) {
     case 0:
 	factory = std::make_shared<SetRoomListFactoryV0>();
 	break;
@@ -17,7 +16,7 @@ std::shared_ptr<Resource> SetRoomListFactory::ReadResource(std::shared_ptr<Resou
 
     if (factory == nullptr)
     {
-	SPDLOG_ERROR("Failed to load SetRoomList with version {}", resource->InitData->ResourceVersion);
+	SPDLOG_ERROR("Failed to load SetRoomList with version {}", resource->GetInitData()->ResourceVersion);
 	return nullptr;
     }
 
@@ -26,8 +25,8 @@ std::shared_ptr<Resource> SetRoomListFactory::ReadResource(std::shared_ptr<Resou
     return resource;
 }
 
-void Ship::SetRoomListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<Resource> resource) {
+void LUS::SetRoomListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+                                        std::shared_ptr<IResource> resource) {
     std::shared_ptr<SetRoomList> setRoomList = std::static_pointer_cast<SetRoomList>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setRoomList);
 
@@ -48,4 +47,4 @@ void Ship::SetRoomListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
     }
 }
 
-} // namespace Ship
+} // namespace LUS

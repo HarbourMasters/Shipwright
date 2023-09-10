@@ -1,14 +1,15 @@
 #include "randomizer_check_tracker.h"
 #include "../../OTRGlobals.h"
-#include <ImGuiImpl.h>
 #include "../../UIWidgets.hpp"
 
 #include <string>
 #include <vector>
 #include <set>
-#include <libultraship/bridge.h>
-#include <Hooks.h>
+#include <libultraship/libultraship.h>
 #include "3drando/item_location.hpp"
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "randomizerTypes.h"
+
 
 extern "C" {
 #include "variables.h"
@@ -72,18 +73,18 @@ Color_RGBA8 Color_Saved_Extra        = {   0, 185,   0, 255 }; //Green
 
 SceneID DungeonSceneLookupByArea(RandomizerCheckArea area) {
     switch (area) {
-        case RCAREA_DEKU_TREE:              return SCENE_YDAN;
-        case RCAREA_DODONGOS_CAVERN:        return SCENE_DDAN;
-        case RCAREA_JABU_JABUS_BELLY:       return SCENE_BDAN;
-        case RCAREA_FOREST_TEMPLE:          return SCENE_BMORI1;
-        case RCAREA_FIRE_TEMPLE:            return SCENE_HIDAN;
-        case RCAREA_WATER_TEMPLE:           return SCENE_MIZUSIN;
-        case RCAREA_SPIRIT_TEMPLE:          return SCENE_JYASINZOU;
-        case RCAREA_SHADOW_TEMPLE:          return SCENE_HAKADAN;
-        case RCAREA_BOTTOM_OF_THE_WELL:     return SCENE_HAKADANCH;
-        case RCAREA_ICE_CAVERN:             return SCENE_ICE_DOUKUTO;
-        case RCAREA_GERUDO_TRAINING_GROUND: return SCENE_MEN;
-        case RCAREA_GANONS_CASTLE:          return SCENE_GANONTIKA;
+        case RCAREA_DEKU_TREE:              return SCENE_DEKU_TREE;
+        case RCAREA_DODONGOS_CAVERN:        return SCENE_DODONGOS_CAVERN;
+        case RCAREA_JABU_JABUS_BELLY:       return SCENE_JABU_JABU;
+        case RCAREA_FOREST_TEMPLE:          return SCENE_FOREST_TEMPLE;
+        case RCAREA_FIRE_TEMPLE:            return SCENE_FIRE_TEMPLE;
+        case RCAREA_WATER_TEMPLE:           return SCENE_WATER_TEMPLE;
+        case RCAREA_SPIRIT_TEMPLE:          return SCENE_SPIRIT_TEMPLE;
+        case RCAREA_SHADOW_TEMPLE:          return SCENE_SHADOW_TEMPLE;
+        case RCAREA_BOTTOM_OF_THE_WELL:     return SCENE_BOTTOM_OF_THE_WELL;
+        case RCAREA_ICE_CAVERN:             return SCENE_ICE_CAVERN;
+        case RCAREA_GERUDO_TRAINING_GROUND: return SCENE_GERUDO_TRAINING_GROUND;
+        case RCAREA_GANONS_CASTLE:          return SCENE_INSIDE_GANONS_CASTLE;
         default:                            return SCENE_ID_MAX;
     }
 }
@@ -103,17 +104,11 @@ bool optExpandAll;   // A bool that will expand all checks once
 RandomizerCheck lastLocationChecked = RC_UNKNOWN_CHECK;
 RandomizerCheckArea previousArea = RCAREA_INVALID;
 RandomizerCheckArea currentArea = RCAREA_INVALID;
-OSContPad* trackerButtonsPressed;
 
 std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
 
-void DrawCheckTracker(bool& open) {
-    if (!open) {
-        CVarSetInteger("gCheckTrackerEnabled", 0);
-        return;
-    }
-
+void CheckTrackerWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(400, 540), ImGuiCond_FirstUseEver);
 
     if (doInitialize) {
@@ -124,23 +119,25 @@ void DrawCheckTracker(bool& open) {
         return;
     }
 
-    if (CVarGetInteger("gCheckTrackerWindowType", 1) == 0) {
-        if (CVarGetInteger("gCheckTrackerShowOnlyPaused", 0) == 1)
-            if (gPlayState == nullptr || gPlayState->pauseCtx.state == 0)
-                return;
+    if (CVarGetInteger("gCheckTrackerWindowType", TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
+        if (CVarGetInteger("gCheckTrackerShowOnlyPaused", 0) && (gPlayState == nullptr || gPlayState->pauseCtx.state == 0)) {
+            return;
+        }
 
-        if (CVarGetInteger("gCheckTrackerDisplayType", 0) == 1) {
-            int comboButton1Mask = buttons[CVarGetInteger("gCheckTrackerComboButton1", 6)];
-            int comboButton2Mask = buttons[CVarGetInteger("gCheckTrackerComboButton2", 8)];
+        if (CVarGetInteger("gCheckTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_COMBO_BUTTON) {
+            int comboButton1Mask = buttons[CVarGetInteger("gCheckTrackerComboButton1", TRACKER_COMBO_BUTTON_L)];
+            int comboButton2Mask = buttons[CVarGetInteger("gCheckTrackerComboButton2", TRACKER_COMBO_BUTTON_R)];
+            OSContPad* trackerButtonsPressed = LUS::Context::GetInstance()->GetControlDeck()->GetPads();
             bool comboButtonsHeld = trackerButtonsPressed != nullptr &&
                                     trackerButtonsPressed[0].button & comboButton1Mask &&
                                     trackerButtonsPressed[0].button & comboButton2Mask;
-            if (!comboButtonsHeld)
+            if (!comboButtonsHeld) {
                 return;
+            }
         }
     }
 
-    BeginFloatWindows("Check Tracker", open, ImGuiWindowFlags_NoScrollbar);
+    BeginFloatWindows("Check Tracker", mIsVisible, ImGuiWindowFlags_NoScrollbar);
 
     if (!initialized) {
         ImGui::Text("Waiting for file load..."); //TODO Language
@@ -156,9 +153,9 @@ void DrawCheckTracker(bool& open) {
 
     bool doAreaScroll =
      (currentArea != RCAREA_INVALID && currentArea != previousArea &&
-         sceneId != SCENE_KAKUSIANA && // Don't move for grottos
-         sceneId != SCENE_YOUSEI_IZUMI_TATE && sceneId != SCENE_YOUSEI_IZUMI_YOKO && sceneId != SCENE_DAIYOUSEI_IZUMI  && // Don't move for fairy fountains
-         sceneId != SCENE_SHOP1 && sceneId != SCENE_SYATEKIJYOU // Don't move for Bazaar/Gallery, as it moves between Kak and Market
+         sceneId != SCENE_GROTTOS && // Don't move for grottos
+         sceneId != SCENE_FAIRYS_FOUNTAIN && sceneId != SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS && sceneId != SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC  && // Don't move for fairy fountains
+         sceneId != SCENE_BAZAAR && sceneId != SCENE_SHOOTING_GALLERY // Don't move for Bazaar/Gallery, as it moves between Kak and Market
          );
     previousArea = currentArea;
     areasSpoiled |= (1 << currentArea);
@@ -338,7 +335,7 @@ void BeginFloatWindows(std::string UniqueName, bool& open, ImGuiWindowFlags flag
             ImGuiWindowFlags_AlwaysVerticalScrollbar | ImGuiWindowFlags_NoFocusOnAppearing;
     }
 
-    if (!CVarGetInteger("gCheckTrackerWindowType", 1)) {
+    if (CVarGetInteger("gCheckTrackerWindowType", TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
         ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
         windowFlags |= ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoTitleBar |
                        ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoScrollbar;
@@ -570,10 +567,10 @@ void InitializeChecks() {
             areasSpoiled |= (1 << rcObj.rcArea);
     }
 
-    showVOrMQ = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) > 0);
-    //Bug: the above will spoil that everything is vanilla if the random count rolled 0.
-    // Should use the below instead, but the setting isn't currently saved to the savefile
-    //showVOrMQ = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) != RO_GENERIC_OFF);
+    showVOrMQ = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_RANDOM_NUMBER ||
+                 (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_RANDOM_MQ_DUNGEONS) == RO_MQ_DUNGEONS_SET_NUMBER &&
+                  OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_MQ_DUNGEON_COUNT) < 12)
+                );
 
     UpdateChecks();
     UpdateInventoryChecks();
@@ -723,8 +720,6 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
     switch (type) {
         case SpoilerCollectionCheckType::SPOILER_CHK_ALWAYS_COLLECTED:
             return true;
-        case SpoilerCollectionCheckType::SPOILER_CHK_BIGGORON:
-            return gSaveContext.bgsFlag & flag;
         case SpoilerCollectionCheckType::SPOILER_CHK_CHEST:
             return gSaveContext.sceneFlags[scene].chest & (1 << flag);
         case SpoilerCollectionCheckType::SPOILER_CHK_COLLECTABLE:
@@ -960,15 +955,10 @@ static const char* windowType[] = { "Floating", "Window" };
 static const char* displayType[] = { "Always", "Combo Button Hold" };
 static const char* buttonStrings[] = { "A Button", "B Button", "C-Up",  "C-Down", "C-Left", "C-Right", "L Button",
                                        "Z Button", "R Button", "Start", "D-Up",   "D-Down", "D-Left",  "D-Right" };
-void DrawCheckTrackerOptions(bool& open) {
-    if (!open) {
-        CVarSetInteger("gCheckTrackerSettingsEnabled", 0);
-        return;
-    }
-
+void CheckTrackerSettingsWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(600, 375), ImGuiCond_FirstUseEver);
 
-    if (!ImGui::Begin("Check Tracker Settings", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Check Tracker Settings", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -990,14 +980,14 @@ void DrawCheckTrackerOptions(bool& open) {
     }
     ImGui::PopItemWidth();
 
-    UIWidgets::LabeledRightAlignedEnhancementCombobox("Window Type", "gCheckTrackerWindowType", windowType, 1);
-    if (CVarGetInteger("gCheckTrackerWindowType", 1) == 0) {
+    UIWidgets::LabeledRightAlignedEnhancementCombobox("Window Type", "gCheckTrackerWindowType", windowType, TRACKER_WINDOW_WINDOW);
+    if (CVarGetInteger("gCheckTrackerWindowType", TRACKER_WINDOW_WINDOW) == TRACKER_WINDOW_FLOATING) {
         UIWidgets::EnhancementCheckbox("Enable Dragging", "gCheckTrackerHudEditMode");
         UIWidgets::EnhancementCheckbox("Only enable while paused", "gCheckTrackerShowOnlyPaused");
         UIWidgets::LabeledRightAlignedEnhancementCombobox("Display Mode", "gCheckTrackerDisplayType", displayType, 0);
-        if (CVarGetInteger("gCheckTrackerDisplayType", 0) > 0) {
-            UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 1", "gCheckTrackerComboButton1", buttonStrings, 6);
-            UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 2", "gCheckTrackerComboButton2", buttonStrings, 8);
+        if (CVarGetInteger("gCheckTrackerDisplayType", TRACKER_DISPLAY_ALWAYS) == TRACKER_DISPLAY_COMBO_BUTTON) {
+            UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 1", "gCheckTrackerComboButton1", buttonStrings, TRACKER_COMBO_BUTTON_L);
+            UIWidgets::LabeledRightAlignedEnhancementCombobox("Combo Button 2", "gCheckTrackerComboButton2", buttonStrings, TRACKER_COMBO_BUTTON_R);
         }
     }
     UIWidgets::EnhancementCheckbox("Performance mode", "gCheckTrackerOptionPerformanceMode");
@@ -1022,9 +1012,7 @@ void DrawCheckTrackerOptions(bool& open) {
     ImGui::End();
 }
 
-void InitCheckTracker() {
-    SohImGui::AddWindow("Randomizer", "Check Tracker", DrawCheckTracker, CVarGetInteger("gCheckTrackerEnabled", 0) == 1);
-    SohImGui::AddWindow("Randomizer", "Check Tracker Settings", DrawCheckTrackerOptions);
+void CheckTrackerWindow::InitElement() {
     Color_Background = CVarGetColor("gCheckTrackerBgColor", Color_Bg_Default);
     Color_Area_Incomplete_Main  = CVarGetColor("gCheckTrackerAreaMainIncompleteColor",    Color_Main_Default);
     Color_Area_Incomplete_Extra = CVarGetColor("gCheckTrackerAreaExtraIncompleteColor",   Color_Area_Incomplete_Extra_Default);
@@ -1045,13 +1033,10 @@ void InitCheckTracker() {
     Color_Saved_Main            = CVarGetColor("gCheckTrackerSavedMainColor",             Color_Main_Default);
     Color_Saved_Extra           = CVarGetColor("gCheckTrackerSavedExtraColor",            Color_Saved_Extra_Default);
 
-    Ship::RegisterHook<Ship::ControllerRead>([](OSContPad* cont_pad) {
-        trackerButtonsPressed = cont_pad;
-    });
-    Ship::RegisterHook<Ship::LoadFile>([](uint32_t fileNum) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadFile>([](uint32_t fileNum) {
         doInitialize = true;
     });
-    Ship::RegisterHook<Ship::DeleteFile>([](uint32_t fileNum) {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDeleteFile>([](uint32_t fileNum) {
         Teardown();
     });
     LocationTable_Init();

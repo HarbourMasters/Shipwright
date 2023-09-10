@@ -1,9 +1,12 @@
-#pragma once
+#ifndef CODE_Z_FBDEMO_TRIFORCE_H
+#define CODE_Z_FBDEMO_TRIFORCE_H 1
 
 #include "align_asset_macro.h"
 
-#define dsTriforceWipeDL "__OTR__code/z_fbdemo_triforce/sTriforceWipeDL"
-static const ALIGN_ASSET(2) char sTriforceWipeDL[] = dsTriforceWipeDL;
+#define dsTransTriforceDL "__OTR__code/z_fbdemo_triforce/sTransTriforceDL"
+static const ALIGN_ASSET(2) char sTransTriforceDL[] = dsTransTriforceDL;
 
-#define dsTriforceWipeVtx "__OTR__code/z_fbdemo_triforce/sTriforceWipeVtx"
-static const ALIGN_ASSET(2) char sTriforceWipeVtx[] = dsTriforceWipeVtx;
+#define dsTransTriforceVtx "__OTR__code/z_fbdemo_triforce/sTransTriforceVtx"
+static const ALIGN_ASSET(2) char sTransTriforceVtx[] = dsTransTriforceVtx;
+
+#endif // CODE_Z_FBDEMO_TRIFORCE_H

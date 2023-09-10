@@ -2,21 +2,20 @@
 #include "soh/resource/type/scenecommand/SetSkyboxModifier.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> SetSkyboxModifierFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
-                                                                 std::shared_ptr<ResourceInitData> initData,
+namespace LUS {
+std::shared_ptr<IResource> SetSkyboxModifierFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
                                                                  std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<SetSkyboxModifier>(resourceMgr, initData);
+    auto resource = std::make_shared<SetSkyboxModifier>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-    switch (resource->InitData->ResourceVersion) {
+    switch (resource->GetInitData()->ResourceVersion) {
     case 0:
 	factory = std::make_shared<SetSkyboxModifierFactoryV0>();
 	break;
     }
 
     if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load SetSkyboxModifier with version {}", resource->InitData->ResourceVersion);
+        SPDLOG_ERROR("Failed to load SetSkyboxModifier with version {}", resource->GetInitData()->ResourceVersion);
         return nullptr;
     }
 
@@ -25,8 +24,8 @@ std::shared_ptr<Resource> SetSkyboxModifierFactory::ReadResource(std::shared_ptr
     return resource;
 }
 
-void Ship::SetSkyboxModifierFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<Resource> resource) {
+void LUS::SetSkyboxModifierFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+                                        std::shared_ptr<IResource> resource) {
 	std::shared_ptr<SetSkyboxModifier> setSkyboxModifier = std::static_pointer_cast<SetSkyboxModifier>(resource);
 	ResourceVersionFactory::ParseFileBinary(reader, setSkyboxModifier);
 
@@ -36,4 +35,4 @@ void Ship::SetSkyboxModifierFactoryV0::ParseFileBinary(std::shared_ptr<BinaryRea
     setSkyboxModifier->modifier.sunMoonDisabled = reader->ReadInt8();
 }
 
-} // namespace Ship
+} // namespace LUS

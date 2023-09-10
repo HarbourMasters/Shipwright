@@ -172,7 +172,7 @@ void StaticData::InitItemTable() {
                   true);
     itemTable[RG_PROGRESSIVE_STRENGTH] = RandoItem(
         RG_PROGRESSIVE_STRENGTH,
-        Text{ "Progressive Strength Upgrade", "Amélioration de Force (prog.)", "Progressives Kraft-Upgrade" },
+        Text{ "Strength Upgrade", "Amélioration de Force (prog.)", "Progressives Kraft-Upgrade" },
         ITEMTYPE_ITEM, RG_PROGRESSIVE_STRENGTH, true, &Logic::ProgressiveStrength, RG_PROGRESSIVE_STRENGTH, true);
     itemTable[RG_PROGRESSIVE_BOMB_BAG] = RandoItem(
         RG_PROGRESSIVE_BOMB_BAG, Text{ "Progressive Bomb Bag", "Sac de Bombes (prog.)", "Progressive Bombentasche" },
@@ -780,13 +780,13 @@ void StaticData::InitItemTable() {
     // Treasure Game
     itemTable[RG_TREASURE_GAME_HEART] = RandoItem(
         RG_TREASURE_GAME_HEART,
-        Text{ "Piece of Heart (Treasure Chest Minigame)", "Quart de Coeur (Chasse-aux-Trésors)",
+        Text{ "Piece of Heart (WINNER)", "Quart de Coeur (Chasse-aux-Trésors)",
               "Herzstück (Schatztruhen-Minispiel)" },
         ITEMTYPE_ITEM, GI_HEART_PIECE_WIN, true, &Logic::PieceOfHeart, RG_TREASURE_GAME_HEART, ITEM_HEART_PIECE_2,
         OBJECT_GI_HEARTS, GID_HEART_PIECE, 0xFA, 0x80, CHEST_ANIM_LONG, ITEM_CATEGORY_LESSER, MOD_NONE);
     itemTable[RG_TREASURE_GAME_GREEN_RUPEE] = RandoItem(
         RG_TREASURE_GAME_GREEN_RUPEE,
-        Text{ "Green Rupee (Treasure Chest Minigame)", "Rubis Vert (Chasse-aux-Trésors)",
+        Text{ "Green Rupee (LOSER)", "Rubis Vert (Chasse-aux-Trésors)",
               "Grüne Rupie (Schatztruhe-Minispiel)" },
         ITEMTYPE_ITEM, GI_RUPEE_GREEN_LOSE, false, &Logic::noVariable, RG_TREASURE_GAME_GREEN_RUPEE, ITEM_RUPEE_GREEN,
         OBJECT_GI_RUPY, GID_RUPEE_GREEN, 0xF4, 0x00, CHEST_ANIM_SHORT, ITEM_CATEGORY_MAJOR, MOD_NONE);

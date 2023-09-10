@@ -2,14 +2,13 @@
 #include "soh/resource/type/scenecommand/SetStartPositionList.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> SetStartPositionListFactory::ReadResource(std::shared_ptr<ResourceMgr> resourceMgr,
-                                                                    std::shared_ptr<ResourceInitData> initData,
+namespace LUS {
+std::shared_ptr<IResource> SetStartPositionListFactory::ReadResource(std::shared_ptr<ResourceInitData> initData,
                                                                     std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<SetStartPositionList>(resourceMgr, initData);
+    auto resource = std::make_shared<SetStartPositionList>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-    switch (resource->InitData->ResourceVersion)
+    switch (resource->GetInitData()->ResourceVersion)
     {
     case 0:
 	    factory = std::make_shared<SetStartPositionListFactoryV0>();
@@ -18,7 +17,7 @@ std::shared_ptr<Resource> SetStartPositionListFactory::ReadResource(std::shared_
 
     if (factory == nullptr)
     {
-        SPDLOG_ERROR("Failed to load SetStartPositionList with version {}", resource->InitData->ResourceVersion);
+        SPDLOG_ERROR("Failed to load SetStartPositionList with version {}", resource->GetInitData()->ResourceVersion);
 	return nullptr;
     }
 
@@ -27,8 +26,8 @@ std::shared_ptr<Resource> SetStartPositionListFactory::ReadResource(std::shared_
     return resource;
 }
 
-void Ship::SetStartPositionListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<Resource> resource)
+void LUS::SetStartPositionListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+                                        std::shared_ptr<IResource> resource)
 {
     std::shared_ptr<SetStartPositionList> setStartPositionList = std::static_pointer_cast<SetStartPositionList>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, setStartPositionList);
@@ -53,4 +52,4 @@ void Ship::SetStartPositionListFactoryV0::ParseFileBinary(std::shared_ptr<Binary
     }
 }
 
-} // namespace Ship
+} // namespace LUS

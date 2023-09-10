@@ -2,7 +2,7 @@
 #include "objects/object_efc_erupc/object_efc_erupc.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EfcErupc_Init(Actor* thisx, PlayState* play);
 void EfcErupc_Destroy(Actor* thisx, PlayState* play);
@@ -81,7 +81,7 @@ void EfcErupc_UpdateAction(EfcErupc* this, PlayState* play) {
                 case 2:
                     if (this->unk_14E == 0) {
                         func_800F3F3C(6);
-                        gSaveContext.eventChkInf[2] |= 0x8000;
+                        Flags_SetEventChkInf(EVENTCHKINF_DEATH_MOUNTAIN_ERUPTED);
                     }
                     this->unk_14E++;
                     break;

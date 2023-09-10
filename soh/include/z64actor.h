@@ -5,6 +5,7 @@
 #include "z64animation.h"
 #include "z64math.h"
 #include "z64collision_check.h"
+#include "z64bgcheck.h"
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 #include "z64actor_enum.h"
 
@@ -47,18 +48,6 @@ typedef enum {
     /* 1 */ ALLOCTYPE_ABSOLUTE,
     /* 2 */ ALLOCTYPE_PERMANENT
 } AllocType;
-
-typedef struct {
-    /* 0x00 */ uintptr_t vromStart;
-    /* 0x04 */ uintptr_t vromEnd;
-    /* 0x08 */ void* vramStart;
-    /* 0x0C */ void* vramEnd;
-    /* 0x10 */ void* loadedRamAddr; // original name: "allocp"
-    /* 0x14 */ ActorInit* initInfo;
-    /* 0x18 */ char* name;
-    /* 0x1C */ u16 allocType;
-    /* 0x1E */ s8 numLoaded; // original name: "clients"
-} ActorOverlay; // size = 0x20
 
 typedef struct {
     u8 table[32];
@@ -104,34 +93,34 @@ typedef struct {
     /* 0x18 */ Vec3f feetPos[2]; // Update by using `Actor_SetFeetPos` in PostLimbDraw
 } ActorShape; // size = 0x30
 
-#define ACTOR_FLAG_0 (1 << 0)
-#define ACTOR_FLAG_2 (1 << 2)
-#define ACTOR_FLAG_3 (1 << 3)
-#define ACTOR_FLAG_4 (1 << 4)
-#define ACTOR_FLAG_5 (1 << 5)
-#define ACTOR_FLAG_6 (1 << 6)
-#define ACTOR_FLAG_7 (1 << 7)
-#define ACTOR_FLAG_8 (1 << 8)
-#define ACTOR_FLAG_9 (1 << 9)
-#define ACTOR_FLAG_10 (1 << 10)
+#define ACTOR_FLAG_TARGETABLE (1 << 0)
+#define ACTOR_FLAG_HOSTILE (1 << 2)
+#define ACTOR_FLAG_FRIENDLY (1 << 3)
+#define ACTOR_FLAG_UPDATE_WHILE_CULLED (1 << 4)
+#define ACTOR_FLAG_DRAW_WHILE_CULLED (1 << 5)
+#define ACTOR_FLAG_ACTIVE (1 << 6)
+#define ACTOR_FLAG_LENS (1 << 7)
+#define ACTOR_FLAG_PLAYER_TALKED_TO (1 << 8)
+#define ACTOR_FLAG_HOOKSHOT_DRAGS (1 << 9)
+#define ACTOR_FLAG_DRAGGED_BY_HOOKSHOT (1 << 10)
 #define ACTOR_FLAG_ENKUSA_CUT (1 << 11)
-#define ACTOR_FLAG_12 (1 << 12)
-#define ACTOR_FLAG_13 (1 << 13)
-#define ACTOR_FLAG_14 (1 << 14)
-#define ACTOR_FLAG_15 (1 << 15)
-#define ACTOR_FLAG_16 (1 << 16)
-#define ACTOR_FLAG_17 (1 << 17)
-#define ACTOR_FLAG_18 (1 << 18)
-#define ACTOR_FLAG_19 (1 << 19)
-#define ACTOR_FLAG_20 (1 << 20)
-#define ACTOR_FLAG_21 (1 << 21)
-#define ACTOR_FLAG_22 (1 << 22)
-#define ACTOR_FLAG_23 (1 << 23)
-#define ACTOR_FLAG_24 (1 << 24)
-#define ACTOR_FLAG_25 (1 << 25)
-#define ACTOR_FLAG_26 (1 << 26)
-#define ACTOR_FLAG_27 (1 << 27)
-#define ACTOR_FLAG_28 (1 << 28)
+#define ACTOR_FLAG_IGNORE_QUAKE (1 << 12)
+#define ACTOR_FLAG_HOOKSHOT_ATTACHED (1 << 13)
+#define ACTOR_FLAG_ARROW_DRAGGABLE (1 << 14)
+#define ACTOR_FLAG_DRAGGED_BY_ARROW (1 << 15)
+#define ACTOR_FLAG_WILL_TALK (1 << 16)
+#define ACTOR_FLAG_PILLAR_PICKUP (1 << 17)
+#define ACTOR_FLAG_NAVI_HAS_INFO (1 << 18)
+#define ACTOR_FLAG_SFX_AT_POS (1 << 19)
+#define ACTOR_FLAG_SFX_AT_CENTER (1 << 20)
+#define ACTOR_FLAG_SFX_AT_CENTER2 (1 << 21)
+#define ACTOR_FLAG_IGNORE_POINTLIGHTS (1 << 22)
+#define ACTOR_FLAG_ALWAYS_THROWN (1 << 23)
+#define ACTOR_FLAG_PLAY_HIT_SFX (1 << 24)
+#define ACTOR_FLAG_NO_FREEZE_OCARINA (1 << 25)
+#define ACTOR_FLAG_CAN_PRESS_SWITCH (1 << 26)
+#define ACTOR_FLAG_NO_LOCKON (1 << 27)
+#define ACTOR_FLAG_SFX_AS_TIMER (1 << 28)
 
 typedef struct Actor {
     /* 0x000 */ s16 id; // Actor ID
@@ -189,8 +178,10 @@ typedef struct Actor {
     /* 0x130 */ ActorFunc update; // Update Routine. Called by `Actor_UpdateAll`
     /* 0x134 */ ActorFunc draw; // Draw Routine. Called by `Actor_Draw`
     /* 0x138 */ ActorResetFunc reset;
-    /* 0x138 */ ActorOverlay* overlayEntry; // Pointer to the overlay table entry for this actor
     /* 0x13C */ char dbgPad[0x10]; // Padding that only exists in the debug rom
+    // #region SOH [General]
+    /*       */ u8 maximumHealth; // Max health value for use with health bars, set on actor init
+    // #endregion
 } Actor; // size = 0x14C
 
 typedef enum {

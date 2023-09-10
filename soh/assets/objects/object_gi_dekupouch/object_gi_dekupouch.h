@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GI_DEKUPOUCH_H
+#define OBJECTS_OBJECT_GI_DEKUPOUCH_H 1
 
 #include "align_asset_macro.h"
 
@@ -28,3 +29,5 @@ static const ALIGN_ASSET(2) char object_gi_dekupouchTex_000000[] = dobject_gi_de
 
 #define dobject_gi_dekupouchTex_000100 "__OTR__objects/object_gi_dekupouch/object_gi_dekupouchTex_000100"
 static const ALIGN_ASSET(2) char object_gi_dekupouchTex_000100[] = dobject_gi_dekupouchTex_000100;
+
+#endif // OBJECTS_OBJECT_GI_DEKUPOUCH_H

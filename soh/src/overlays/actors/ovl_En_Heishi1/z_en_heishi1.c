@@ -8,7 +8,7 @@
 #include "objects/object_sd/object_sd.h"
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void EnHeishi1_Init(Actor* thisx, PlayState* play);
 void EnHeishi1_Destroy(Actor* thisx, PlayState* play);
@@ -33,7 +33,7 @@ void EnHeishi1_WaitNight(EnHeishi1* this, PlayState* play);
 s32 sHeishi1PlayerIsCaught = false;
 
 const ActorInit En_Heishi1_InitVars = {
-    0,
+    ACTOR_EN_HEISHI1,
     ACTORCAT_NPC,
     FLAGS,
     OBJECT_SD,
@@ -120,11 +120,11 @@ void EnHeishi1_Init(Actor* thisx, PlayState* play) {
     // eventChkInf[4] & 1 = Got Zelda's Letter
     // eventChkInf[5] & 0x200 = Got item from impa
     // eventChkInf[8] & 1 = Ocarina thrown in moat
-    bool metZelda = (gSaveContext.eventChkInf[4] & 1) && (gSaveContext.eventChkInf[5] & 0x200);
+    bool metZelda = (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) && (Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY));
 
     if (this->type != 5) {
         if ((gSaveContext.dayTime < 0xB888 || IS_DAY) &&
-            ((!gSaveContext.n64ddFlag && !(gSaveContext.eventChkInf[8] & 1)) ||
+            ((!gSaveContext.n64ddFlag && !Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ||
              (gSaveContext.n64ddFlag && !metZelda))) {
             this->actionFunc = EnHeishi1_SetupWalk;
         } else {
@@ -132,7 +132,7 @@ void EnHeishi1_Init(Actor* thisx, PlayState* play) {
         }
     } else {
         if ((gSaveContext.dayTime >= 0xB889) || !IS_DAY ||
-            (!gSaveContext.n64ddFlag && gSaveContext.eventChkInf[8] & 1) || 
+            (!gSaveContext.n64ddFlag && Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) || 
             (gSaveContext.n64ddFlag && metZelda)) {
             this->actionFunc = EnHeishi1_SetupWaitNight;
         } else {
@@ -142,6 +142,9 @@ void EnHeishi1_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnHeishi1_Destroy(Actor* thisx, PlayState* play) {
+    EnHeishi1* this = (EnHeishi1*)thisx;
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnHeishi1_SetupWalk(EnHeishi1* this, PlayState* play) {
@@ -362,7 +365,7 @@ void EnHeishi1_Kick(EnHeishi1* this, PlayState* play) {
         if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
             Message_CloseTextbox(play);
             if (!this->loadStarted) {
-                gSaveContext.eventChkInf[4] |= 0x4000;
+                Flags_SetEventChkInf(EVENTCHKINF_CAUGHT_BY_CASTLE_GUARDS);
                 play->nextEntranceIndex = 0x4FA;
                 play->sceneLoadFlag = 0x14;
                 this->loadStarted = true;

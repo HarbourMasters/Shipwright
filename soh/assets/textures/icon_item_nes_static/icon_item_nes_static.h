@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_ICON_ITEM_NES_STATIC_H
+#define TEXTURES_ICON_ITEM_NES_STATIC_H 1
 
 #include "align_asset_macro.h"
 
@@ -94,3 +95,5 @@ static const ALIGN_ASSET(2) char gPauseQuestStatus20ENGTex[] = dgPauseQuestStatu
 
 #define dgPauseSave10ENGTex "__OTR__textures/icon_item_nes_static/gPauseSave10ENGTex"
 static const ALIGN_ASSET(2) char gPauseSave10ENGTex[] = dgPauseSave10ENGTex;
+
+#endif // TEXTURES_ICON_ITEM_NES_STATIC_H

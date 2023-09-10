@@ -2,6 +2,7 @@
 #include "alloca.h"
 
 #include <string.h>
+#include <stdlib.h>
 
 void PreRender_SetValuesSave(PreRender* this, u32 width, u32 height, void* fbuf, void* zbuf, void* cvg) {
     this->widthSave = width;
@@ -474,9 +475,9 @@ void func_800C2FE4(PreRender* this) {
     s32 x;
     s32 y;
     s32 phi_v0;
-    u8* buffR = alloca(this->width);
-    u8* buffG = alloca(this->width);
-    u8* buffB = alloca(this->width);
+    u8* buffR = malloc(this->width);
+    u8* buffG = malloc(this->width);
+    u8* buffB = malloc(this->width);
     s32 pad[3];
     s32 pxR;
     s32 pxG;
@@ -538,6 +539,9 @@ void func_800C2FE4(PreRender* this) {
             this->fbufSave[x + y * this->width] = pxOut.rgba;
         }
     }
+    free(buffR);
+    free(buffB);
+    free(buffG);
 }
 
 void PreRender_Calc(PreRender* this) {

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OVERLAYS_OVL_EN_GANON_ORGAN_H
+#define OVERLAYS_OVL_EN_GANON_ORGAN_H 1
 
 #include "align_asset_macro.h"
 
@@ -43,3 +44,5 @@ static const ALIGN_ASSET(2) char sRoomOrganAndFloorDL[] = dsRoomOrganAndFloorDL;
 
 #define dsRoomStatuesDL "__OTR__overlays/ovl_En_Ganon_Organ/sRoomStatuesDL"
 static const ALIGN_ASSET(2) char sRoomStatuesDL[] = dsRoomStatuesDL;
+
+#endif // OVERLAYS_OVL_EN_GANON_ORGAN_H
