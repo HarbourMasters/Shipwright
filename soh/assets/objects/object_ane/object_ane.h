@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_ANE_H
+#define OBJECTS_OBJECT_ANE_H 1
 
 #include "align_asset_macro.h"
 
@@ -88,3 +89,6 @@ static const ALIGN_ASSET(2) char gCuccoLadyEyeHalfTex[] = dgCuccoLadyEyeHalfTex;
 
 #define dgCuccoLadyEyeClosedTex "__OTR__objects/object_ane/gCuccoLadyEyeClosedTex"
 static const ALIGN_ASSET(2) char gCuccoLadyEyeClosedTex[] = dgCuccoLadyEyeClosedTex;
+
+
+#endif // OBJECTS_OBJECT_ANE_H

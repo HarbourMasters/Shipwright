@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_YDAN_OBJECTS_H
+#define OBJECTS_OBJECT_YDAN_OBJECTS_H 1
 
 #include "align_asset_macro.h"
 
@@ -88,3 +89,5 @@ static const ALIGN_ASSET(2) char gDTFallingLadderCol[] = dgDTFallingLadderCol;
 
 #define dgDTSlidingPlatformCol "__OTR__objects/object_ydan_objects/gDTSlidingPlatformCol"
 static const ALIGN_ASSET(2) char gDTSlidingPlatformCol[] = dgDTSlidingPlatformCol;
+
+#endif // OBJECTS_OBJECT_YDAN_OBJECTS_H

@@ -163,9 +163,9 @@ void EnDaiku_Init(Actor* thisx, PlayState* play) {
         isFree = true;
     }
 
-    if (isFree == true && play->sceneNum == SCENE_GERUDOWAY) {
+    if (isFree == true && play->sceneNum == SCENE_THIEVES_HIDEOUT) {
         noKill = false;
-    } else if (isFree == false && play->sceneNum == SCENE_TENT) {
+    } else if (isFree == false && play->sceneNum == SCENE_CARPENTERS_TENT) {
         noKill = false;
     }
 
@@ -197,7 +197,7 @@ void EnDaiku_Init(Actor* thisx, PlayState* play) {
     this->initRot = this->actor.world.rot;
     this->initPos = this->actor.world.pos;
 
-    if (play->sceneNum == SCENE_GERUDOWAY) {
+    if (play->sceneNum == SCENE_THIEVES_HIDEOUT) {
         EnDaiku_ChangeAnim(this, ENDAIKU_ANIM_STAND, &this->currentAnimIndex);
         this->stateFlags |= ENDAIKU_STATEFLAG_1 | ENDAIKU_STATEFLAG_2;
         this->actionFunc = EnDaiku_Jailed;
@@ -227,7 +227,7 @@ s32 EnDaiku_UpdateTalking(EnDaiku* this, PlayState* play) {
     s32 newTalkState = ENDAIKU_STATE_TALKING;
 
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) {
-        if (play->sceneNum == SCENE_GERUDOWAY) {
+        if (play->sceneNum == SCENE_THIEVES_HIDEOUT) {
             if (Message_ShouldAdvance(play)) {
                 if (this->actor.textId == 0x6007) {
                     Flags_SetSwitch(play, this->startFightSwitchFlag);
@@ -237,7 +237,7 @@ s32 EnDaiku_UpdateTalking(EnDaiku* this, PlayState* play) {
                     newTalkState = ENDAIKU_STATE_NO_TALK;
                 }
             }
-        } else if (play->sceneNum == SCENE_TENT) {
+        } else if (play->sceneNum == SCENE_CARPENTERS_TENT) {
             if (Message_ShouldAdvance(play)) {
                 switch (this->actor.textId) {
                     case 0x6061:
@@ -270,7 +270,7 @@ void EnDaiku_UpdateText(EnDaiku* this, PlayState* play) {
         Actor_GetScreenPos(play, &this->actor, &sp2E, &sp2C);
         if (sp2E >= 0 && sp2E <= 320 && sp2C >= 0 && sp2C <= 240 && this->talkState == ENDAIKU_STATE_CAN_TALK &&
             func_8002F2CC(&this->actor, play, 100.0f) == 1) {
-            if (play->sceneNum == SCENE_GERUDOWAY) {
+            if (play->sceneNum == SCENE_THIEVES_HIDEOUT) {
                 if (this->stateFlags & ENDAIKU_STATEFLAG_GERUDODEFEATED) {
                     freedCount = 0;
                     for (carpenterType = 0; carpenterType < 4; carpenterType++) {
@@ -297,7 +297,7 @@ void EnDaiku_UpdateText(EnDaiku* this, PlayState* play) {
                              (ENDAIKU_STATEFLAG_GERUDOFIGHTING | ENDAIKU_STATEFLAG_GERUDODEFEATED))) {
                     this->actor.textId = 0x6007;
                 }
-            } else if (play->sceneNum == SCENE_TENT) {
+            } else if (play->sceneNum == SCENE_CARPENTERS_TENT) {
                 switch (this->actor.params & 3) {
                     case 0:
                         if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT)) {

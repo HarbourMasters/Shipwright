@@ -81,73 +81,73 @@ std::vector<ItemTrackerItem> gregItems = {
 };
 
 std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsHorizontal = {
-    { SCENE_YDAN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_DDAN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_BDAN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_BMORI1, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_HIDAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_MIZUSIN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_JYASINZOU, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_HAKADAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_GANONTIKA, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_HAKADANCH, { ITEM_KEY_SMALL, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_ICE_DOUKUTO, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_MEN, { ITEM_KEY_SMALL } },
+    { SCENE_DEKU_TREE, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_DODONGOS_CAVERN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_JABU_JABU, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_FOREST_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_FIRE_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_WATER_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_SPIRIT_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_SHADOW_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_INSIDE_GANONS_CASTLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_BOTTOM_OF_THE_WELL, { ITEM_KEY_SMALL, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_ICE_CAVERN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_GERUDO_TRAINING_GROUND, { ITEM_KEY_SMALL } },
 };
 
 std::vector<ItemTrackerDungeon> itemTrackerDungeonsHorizontal = {
-    { SCENE_BMORI1, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_HIDAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_MIZUSIN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_JYASINZOU, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_HAKADAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_GANONTIKA, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_HAKADANCH, { ITEM_KEY_SMALL } },
-    { SCENE_MEN, { ITEM_KEY_SMALL } },
+    { SCENE_FOREST_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_FIRE_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_WATER_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_SPIRIT_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_SHADOW_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_INSIDE_GANONS_CASTLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_BOTTOM_OF_THE_WELL, { ITEM_KEY_SMALL } },
+    { SCENE_GERUDO_TRAINING_GROUND, { ITEM_KEY_SMALL } },
 };
 
 
 std::vector<ItemTrackerDungeon> itemTrackerDungeonsWithMapsCompact = {
-    { SCENE_BMORI1, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_HIDAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_MIZUSIN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_JYASINZOU, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_HAKADAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_HAKADANCH, { ITEM_KEY_SMALL, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_YDAN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_DDAN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_BDAN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_ICE_DOUKUTO, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
-    { SCENE_GANONTIKA, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_MEN, { ITEM_KEY_SMALL } },
+    { SCENE_FOREST_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_FIRE_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_WATER_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_SPIRIT_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_SHADOW_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_BOTTOM_OF_THE_WELL, { ITEM_KEY_SMALL, ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_DEKU_TREE, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_DODONGOS_CAVERN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_JABU_JABU, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_ICE_CAVERN, { ITEM_DUNGEON_MAP, ITEM_COMPASS } },
+    { SCENE_INSIDE_GANONS_CASTLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_GERUDO_TRAINING_GROUND, { ITEM_KEY_SMALL } },
 };
 
 std::vector<ItemTrackerDungeon> itemTrackerDungeonsCompact = {
-    { SCENE_BMORI1, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_HIDAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_MIZUSIN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_JYASINZOU, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_HAKADAN, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_GANONTIKA, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
-    { SCENE_HAKADANCH, { ITEM_KEY_SMALL } },
-    { SCENE_MEN, { ITEM_KEY_SMALL } },
-    { SCENE_GERUDOWAY, { ITEM_KEY_SMALL } },
+    { SCENE_FOREST_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_FIRE_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_WATER_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_SPIRIT_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_SHADOW_TEMPLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_INSIDE_GANONS_CASTLE, { ITEM_KEY_SMALL, ITEM_KEY_BOSS } },
+    { SCENE_BOTTOM_OF_THE_WELL, { ITEM_KEY_SMALL } },
+    { SCENE_GERUDO_TRAINING_GROUND, { ITEM_KEY_SMALL } },
+    { SCENE_THIEVES_HIDEOUT, { ITEM_KEY_SMALL } },
 };
 
 std::map<uint16_t, std::string> itemTrackerDungeonShortNames = {
-    { SCENE_BMORI1, "FRST" },
-    { SCENE_HIDAN, "FIRE" },
-    { SCENE_MIZUSIN, "WATR" },
-    { SCENE_JYASINZOU, "SPRT" },
-    { SCENE_HAKADAN, "SHDW" },
-    { SCENE_HAKADANCH, "BOTW" },
-    { SCENE_YDAN, "DEKU" },
-    { SCENE_DDAN, "DCVN" },
-    { SCENE_BDAN, "JABU" },
-    { SCENE_ICE_DOUKUTO, "ICE" },
-    { SCENE_GANONTIKA, "GANON" },
-    { SCENE_MEN, "GTG" },
-    { SCENE_GERUDOWAY, "HIDE" },
+    { SCENE_FOREST_TEMPLE, "FRST" },
+    { SCENE_FIRE_TEMPLE, "FIRE" },
+    { SCENE_WATER_TEMPLE, "WATR" },
+    { SCENE_SPIRIT_TEMPLE, "SPRT" },
+    { SCENE_SHADOW_TEMPLE, "SHDW" },
+    { SCENE_BOTTOM_OF_THE_WELL, "BOTW" },
+    { SCENE_DEKU_TREE, "DEKU" },
+    { SCENE_DODONGOS_CAVERN, "DCVN" },
+    { SCENE_JABU_JABU, "JABU" },
+    { SCENE_ICE_CAVERN, "ICE" },
+    { SCENE_INSIDE_GANONS_CASTLE, "GANON" },
+    { SCENE_GERUDO_TRAINING_GROUND, "GTG" },
+    { SCENE_THIEVES_HIDEOUT, "HIDE" },
 };
 
 std::vector<ItemTrackerItem> dungeonItems = {};
@@ -262,6 +262,22 @@ struct ItemTrackerNumbers {
   int currentAmmo;
 };
 
+static ImVector<char> itemTrackerNotes;
+uint32_t notesIdleFrames = 0;
+bool notesNeedSave = false;
+const uint32_t notesMaxIdleFrames = 40; // two seconds of game time, since OnGameFrameUpdate is used to tick
+
+void ItemTrackerOnFrame() {
+    if (notesNeedSave && notesIdleFrames <= notesMaxIdleFrames) {
+        notesIdleFrames++;
+    }
+}
+
+void SaveNotes(uint32_t fileNum) {
+    CVarSetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), std::string(std::begin(itemTrackerNotes), std::end(itemTrackerNotes)).c_str());
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+}
+
 bool IsValidSaveFile() {
     bool validSave = gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
     return validSave;
@@ -333,31 +349,31 @@ ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
             result.currentAmmo = MAX(gSaveContext.inventory.dungeonKeys[item.data], 0);
             result.currentCapacity = gSaveContext.sohStats.dungeonKeys[item.data];
             switch (item.data) {
-                case SCENE_BMORI1:
+                case SCENE_FOREST_TEMPLE:
                     result.maxCapacity = FOREST_TEMPLE_SMALL_KEY_MAX;
                     break;
-                case SCENE_HIDAN:
+                case SCENE_FIRE_TEMPLE:
                     result.maxCapacity = FIRE_TEMPLE_SMALL_KEY_MAX;
                     break;
-                case SCENE_MIZUSIN:
+                case SCENE_WATER_TEMPLE:
                     result.maxCapacity = WATER_TEMPLE_SMALL_KEY_MAX;
                     break;
-                case SCENE_JYASINZOU:
+                case SCENE_SPIRIT_TEMPLE:
                     result.maxCapacity = SPIRIT_TEMPLE_SMALL_KEY_MAX;
                     break;
-                case SCENE_HAKADAN:
+                case SCENE_SHADOW_TEMPLE:
                     result.maxCapacity = SHADOW_TEMPLE_SMALL_KEY_MAX;
                     break;
-                case SCENE_HAKADANCH:
+                case SCENE_BOTTOM_OF_THE_WELL:
                     result.maxCapacity = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
                     break;
-                case SCENE_MEN:
+                case SCENE_GERUDO_TRAINING_GROUND:
                     result.maxCapacity = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX;
                     break;
-                case SCENE_GERUDOWAY:
+                case SCENE_THIEVES_HIDEOUT:
                     result.maxCapacity = GERUDO_FORTRESS_SMALL_KEY_MAX;
                     break;
-                case SCENE_GANONTIKA:
+                case SCENE_INSIDE_GANONS_CASTLE:
                     result.maxCapacity = GANONS_CASTLE_SMALL_KEY_MAX;
                     break;
             }
@@ -582,7 +598,7 @@ void DrawDungeonItem(ItemTrackerItem item) {
                      ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     }
 
-    if (ResourceMgr_IsSceneMasterQuest(item.data) && (CHECK_DUNGEON_ITEM(DUNGEON_MAP, item.data) || item.data == SCENE_MEN || item.data == SCENE_GANONTIKA)) {
+    if (ResourceMgr_IsSceneMasterQuest(item.data) && (CHECK_DUNGEON_ITEM(DUNGEON_MAP, item.data) || item.data == SCENE_GERUDO_TRAINING_GROUND || item.data == SCENE_INSIDE_GANONS_CASTLE)) {
         dungeonColor = IM_COL_PURPLE;
     }
 
@@ -598,7 +614,7 @@ void DrawDungeonItem(ItemTrackerItem item) {
     }
 
     if (itemId == ITEM_DUNGEON_MAP && 
-        (item.data == SCENE_YDAN || item.data == SCENE_DDAN || item.data == SCENE_BDAN || item.data == SCENE_ICE_DOUKUTO)
+        (item.data == SCENE_DEKU_TREE || item.data == SCENE_DODONGOS_CAVERN || item.data == SCENE_JABU_JABU || item.data == SCENE_ICE_CAVERN)
     ) {
         ImVec2 p = ImGui::GetCursorScreenPos();
         std::string dungeonName = itemTrackerDungeonShortNames[item.data];
@@ -622,8 +638,6 @@ void DrawSong(ItemTrackerItem item) {
                  ImVec2(iconSize / 1.5, iconSize), ImVec2(0, 0), ImVec2(1, 1));
     UIWidgets::SetLastItemHoverText(SohUtils::GetQuestItemName(item.id));
 }
-
-static ImVector<char> itemTrackerNotes;
 
 void DrawNotes(bool resizeable = false) {
     ImGui::BeginGroup();
@@ -651,10 +665,13 @@ void DrawNotes(bool resizeable = false) {
         }
     };
     ImVec2 size = resizeable ? ImVec2(-FLT_MIN, ImGui::GetContentRegionAvail().y) : ImVec2(((iconSize + iconSpacing) * 6) - 8, 200);
-    ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size, ImGuiInputTextFlags_AllowTabInput);
-    if (ImGui::IsItemDeactivatedAfterEdit() && IsValidSaveFile()) {
-        CVarSetString(("gItemTrackerNotes" + std::to_string(gSaveContext.fileNum)).c_str(), std::string(std::begin(itemTrackerNotes), std::end(itemTrackerNotes)).c_str());
-        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+    if (ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, size, ImGuiInputTextFlags_AllowTabInput)) {
+        notesNeedSave = true;
+        notesIdleFrames = 0;
+    }
+    if ((ImGui::IsItemDeactivatedAfterEdit() || (notesNeedSave && notesIdleFrames > notesMaxIdleFrames)) && IsValidSaveFile()) {
+        notesNeedSave = false;
+        SaveNotes(gSaveContext.fileNum);
     }
     ImGui::EndGroup();
 }
@@ -749,8 +766,8 @@ std::vector<ItemTrackerItem> GetDungeonItemsVector(std::vector<ItemTrackerDungeo
                         break;
                     case ITEM_KEY_BOSS:
                         // Swap Ganon's Castle boss key to the right scene ID manually
-                        if (dungeons[j].id == SCENE_GANONTIKA) {
-                            dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, SCENE_GANON, DrawDungeonItem));
+                        if (dungeons[j].id == SCENE_INSIDE_GANONS_CASTLE) {
+                            dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, SCENE_GANONS_TOWER, DrawDungeonItem));
                         } else {
                             dungeonItems.push_back(ITEM_TRACKER_ITEM(ITEM_KEY_BOSS, dungeons[j].id, DrawDungeonItem));
                         }
@@ -791,17 +808,17 @@ void UpdateVectors() {
         if (CVarGetInteger("gItemTrackerDisplayDungeonItemsMaps", 1)) {
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsWithMapsHorizontal, 12);
             // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
-            dungeonItems[23] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_GERUDOWAY, DrawDungeonItem);
+            dungeonItems[23] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_THIEVES_HIDEOUT, DrawDungeonItem);
         } else {
             // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsHorizontal, 8);
-            dungeonItems[15] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_GERUDOWAY, DrawDungeonItem);
+            dungeonItems[15] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_THIEVES_HIDEOUT, DrawDungeonItem);
         }
     } else {
         if (CVarGetInteger("gItemTrackerDisplayDungeonItemsMaps", 1)) {
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsWithMapsCompact);
             // Manually adding Thieves Hideout to an open spot so we don't get an additional row for one item
-            dungeonItems[35] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_GERUDOWAY, DrawDungeonItem);
+            dungeonItems[35] = ITEM_TRACKER_ITEM(ITEM_KEY_SMALL, SCENE_THIEVES_HIDEOUT, DrawDungeonItem);
         } else {
             dungeonItems = GetDungeonItemsVector(itemTrackerDungeonsCompact);
         }
@@ -1116,4 +1133,5 @@ void ItemTrackerWindow::InitElement() {
         CVarSetString(("gItemTrackerNotes" + std::to_string(fileNum)).c_str(), "");
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(ItemTrackerOnFrame);
 }

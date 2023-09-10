@@ -1,5 +1,6 @@
 <Root>
     <File Name="object_sa" Segment="6">
+        <Texture Name="object_saTex_002530" OutName="object_saTex_002530" Format="ci8" Width="8" Height="8" Offset="0x2530" TlutOffset="0x21F0" AddedByScript="true"/>
         <Skeleton Name="gSariaSkel" Type="Flex" LimbType="Standard" Offset="0xB1A0"/>
         
         <Limb Name="gSariaRootLimb" LimbType="Standard" Offset="0xB0A0"/>

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_TORYO_H
+#define OBJECTS_OBJECT_TORYO_H 1
 
 #include "align_asset_macro.h"
 
@@ -100,3 +101,6 @@ static const ALIGN_ASSET(2) char object_toryo_DL_006EB0[] = dobject_toryo_DL_006
 
 #define dobject_toryo_Skel_007150 "__OTR__objects/object_toryo/object_toryo_Skel_007150"
 static const ALIGN_ASSET(2) char object_toryo_Skel_007150[] = dobject_toryo_Skel_007150;
+
+
+#endif // OBJECTS_OBJECT_TORYO_H

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_LINK_CHILD_H
+#define OBJECTS_OBJECT_LINK_CHILD_H 1
 
 #include "align_asset_macro.h"
 
@@ -457,3 +458,6 @@ static const ALIGN_ASSET(2) char gLinkChildVtx_01F2B8[] = dgLinkChildVtx_01F2B8;
 
 #define dgLinkChildVtx_01FA28 "__OTR__objects/object_link_child/gLinkChildVtx_01FA28"
 static const ALIGN_ASSET(2) char gLinkChildVtx_01FA28[] = dgLinkChildVtx_01FA28;
+
+
+#endif // OBJECTS_OBJECT_LINK_CHILD_H

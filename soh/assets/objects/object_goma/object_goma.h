@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GOMA_H
+#define OBJECTS_OBJECT_GOMA_H 1
 
 #include "align_asset_macro.h"
 
@@ -196,3 +197,6 @@ static const ALIGN_ASSET(2) char gGohmaDoorCol[] = dgGohmaDoorCol;
 
 #define dgGohmaDoorTex "__OTR__objects/object_goma/gGohmaDoorTex"
 static const ALIGN_ASSET(2) char gGohmaDoorTex[] = dgGohmaDoorTex;
+
+
+#endif // OBJECTS_OBJECT_GOMA_H

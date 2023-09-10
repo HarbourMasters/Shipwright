@@ -619,7 +619,7 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     // this is not noticeable if the sequence is authentic, since the "Boss Battle"
     // sequence begins with some silence
     if (gPlayState != NULL &&
-        gPlayState->sceneNum == SCENE_BDAN_BOSS &&
+        gPlayState->sceneNum == SCENE_JABU_JABU_BOSS &&
         playerIdx == SEQ_PLAYER_BGM_MAIN &&
         seqId != NA_BGM_BOSS) {
         

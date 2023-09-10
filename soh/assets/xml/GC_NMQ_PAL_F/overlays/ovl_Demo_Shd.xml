@@ -1,7 +1,9 @@
 <Root>
     <File Name="ovl_Demo_Shd" BaseAddress="0x80980DA0" RangeStart="0x410" RangeEnd="0x23D0">
 
-    <DList Name="D_809932D0" Offset="0x2060"/>
+    <Texture Name="ovl_Demo_ShdTex_000450" OutName="ovl_Demo_ShdTex_000450" Format="i8" Width="16" Height="128" Offset="0x410" AddedByScript="true"/>
+        <Texture Name="ovl_Demo_ShdTex_000C50" OutName="ovl_Demo_ShdTex_000C50" Format="i8" Width="32" Height="64" Offset="0xC10" AddedByScript="true"/>
+        <DList Name="D_809932D0" Offset="0x2060"/>
     <DList Name="D_80993390" Offset="0x2120"/>
     <DList Name="D_809934B8" Offset="0x2248"/>
     </File>

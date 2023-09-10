@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_ANI_H
+#define OBJECTS_OBJECT_ANI_H 1
 
 #include "align_asset_macro.h"
 
@@ -100,3 +101,5 @@ static const ALIGN_ASSET(2) char gRoofManIdleAnim[] = dgRoofManIdleAnim;
 
 #define dobject_aniTex_0011D8 "__OTR__objects/object_ani/object_aniTex_0011D8"
 static const ALIGN_ASSET(2) char object_aniTex_0011D8[] = dobject_aniTex_0011D8;
+
+#endif // OBJECTS_OBJECT_ANI_H

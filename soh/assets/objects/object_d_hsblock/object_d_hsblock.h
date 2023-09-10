@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_D_HSBLOCK_H
+#define OBJECTS_OBJECT_D_HSBLOCK_H 1
 
 #include "align_asset_macro.h"
 
@@ -19,3 +20,5 @@ static const ALIGN_ASSET(2) char gHookshotTargetTex[] = dgHookshotTargetTex;
 
 #define dgHookshotPostTex "__OTR__objects/object_d_hsblock/gHookshotPostTex"
 static const ALIGN_ASSET(2) char gHookshotPostTex[] = dgHookshotPostTex;
+
+#endif // OBJECTS_OBJECT_D_HSBLOCK_H

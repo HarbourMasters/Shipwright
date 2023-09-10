@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_EFC_STAR_FIELD_H
+#define OBJECTS_OBJECT_EFC_STAR_FIELD_H 1
 
 #include "align_asset_macro.h"
 
@@ -13,3 +14,5 @@ static const ALIGN_ASSET(2) char object_efc_star_field_DL_000DE0[] = dobject_efc
 
 #define dobject_efc_star_field_Tex_000FD0 "__OTR__objects/object_efc_star_field/object_efc_star_field_Tex_000FD0"
 static const ALIGN_ASSET(2) char object_efc_star_field_Tex_000FD0[] = dobject_efc_star_field_Tex_000FD0;
+
+#endif // OBJECTS_OBJECT_EFC_STAR_FIELD_H

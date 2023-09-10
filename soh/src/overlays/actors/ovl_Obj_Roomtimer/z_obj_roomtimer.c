@@ -34,7 +34,7 @@ void ObjRoomtimer_Init(Actor* thisx, PlayState* play) {
 
     // Shabom room in Jabu Jabu has a lengthened timer in Enemy Randomizer. Flag doesn't match what the game
     // expects. Instead set it back to the same flag as what it would be in vanilla.
-    if (CVarGetInteger("gRandomizedEnemies", 0) && play->sceneNum == SCENE_BDAN && play->roomCtx.curRoom.num == 12) {
+    if (CVarGetInteger("gRandomizedEnemies", 0) && play->sceneNum == SCENE_JABU_JABU && play->roomCtx.curRoom.num == 12) {
         this->switchFlag = 30;
     } else {
         this->switchFlag = (params >> 10) & 0x3F;

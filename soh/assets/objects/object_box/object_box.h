@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_BOX_H
+#define OBJECTS_OBJECT_BOX_H 1
 
 #include "align_asset_macro.h"
 
@@ -73,3 +74,5 @@ static const ALIGN_ASSET(2) char gTreasureChestCurveSkelLimbsLimb_005E74Curve2DL
 
 #define dobject_boxTex_004F80 "__OTR__objects/object_box/object_boxTex_004F80"
 static const ALIGN_ASSET(2) char object_boxTex_004F80[] = dobject_boxTex_004F80;
+
+#endif // OBJECTS_OBJECT_BOX_H

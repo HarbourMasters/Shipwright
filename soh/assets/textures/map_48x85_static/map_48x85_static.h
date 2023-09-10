@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_MAP_48X85_STATIC_H
+#define TEXTURES_MAP_48X85_STATIC_H 1
 
 #include "align_asset_macro.h"
 
@@ -205,3 +206,5 @@ static const ALIGN_ASSET(2) char gIceCavernPauseScreenMapFloor1LeftTex[] = dgIce
 
 #define dgIceCavernPauseScreenMapFloor1RightTex "__OTR__textures/map_48x85_static/gIceCavernPauseScreenMapFloor1RightTex"
 static const ALIGN_ASSET(2) char gIceCavernPauseScreenMapFloor1RightTex[] = dgIceCavernPauseScreenMapFloor1RightTex;
+
+#endif // TEXTURES_MAP_48X85_STATIC_H

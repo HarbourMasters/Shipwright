@@ -1,5 +1,7 @@
 <Root>
     <File Name="object_gi_ghost" Segment="6">
+        <Texture Name="object_gi_ghostTex_000000" OutName="object_gi_ghostTex_000000" Format="i8" Width="16" Height="32" Offset="0x0" AddedByScript="true"/>
+        <Texture Name="object_gi_ghostTex_000200" OutName="object_gi_ghostTex_000200" Format="i8" Width="16" Height="32" Offset="0x200" AddedByScript="true"/>
         <DList Name="gGiPoeColorDL" Offset="0x0950"/>
         <DList Name="gGiBigPoeColorDL" Offset="0x0970"/>
         <DList Name="gGiGhostContainerLidDL" Offset="0x0990"/>

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_MJIN_OKA_H
+#define OBJECTS_OBJECT_MJIN_OKA_H 1
 
 #include "align_asset_macro.h"
 
@@ -13,3 +14,5 @@ static const ALIGN_ASSET(2) char gOcarinaWarpPadSideTex[] = dgOcarinaWarpPadSide
 
 #define dgOcarinaWarpPadOcarinaTex "__OTR__objects/object_mjin_oka/gOcarinaWarpPadOcarinaTex"
 static const ALIGN_ASSET(2) char gOcarinaWarpPadOcarinaTex[] = dgOcarinaWarpPadOcarinaTex;
+
+#endif // OBJECTS_OBJECT_MJIN_OKA_H

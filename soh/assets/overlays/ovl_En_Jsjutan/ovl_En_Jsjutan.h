@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OVERLAYS_OVL_EN_JSJUTAN_H
+#define OVERLAYS_OVL_EN_JSJUTAN_H 1
 
 #include "align_asset_macro.h"
 
@@ -30,3 +31,6 @@ static const ALIGN_ASSET(2) char sCarpetEvenVtx[] = dsCarpetEvenVtx;
 static const ALIGN_ASSET(2) char sCol[] = dsCol;
 
 extern u8 sShadowTex[2048];
+
+
+#endif // OVERLAYS_OVL_EN_JSJUTAN_H

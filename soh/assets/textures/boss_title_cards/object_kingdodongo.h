@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_OBJECT_KINGDODONGO_H
+#define TEXTURES_OBJECT_KINGDODONGO_H 1
 
 #include "align_asset_macro.h"
 
@@ -10,3 +11,5 @@ static const ALIGN_ASSET(2) char gKingDodongoTitleCardGERTex[] = dgKingDodongoTi
 
 #define dgKingDodongoTitleCardFRATex "__OTR__textures/object_kingdodongo/gKingDodongoTitleCardFRATex"
 static const ALIGN_ASSET(2) char gKingDodongoTitleCardFRATex[] = dgKingDodongoTitleCardFRATex;
+
+#endif // TEXTURES_OBJECT_KINGDODONGO_H

@@ -1,5 +1,7 @@
 <Root>
     <File Name="object_gi_letter" Segment="6">
+        <Texture Name="object_gi_letterTex_000000" OutName="object_gi_letterTex_000000" Format="i8" Width="48" Height="32" Offset="0x0" AddedByScript="true"/>
+        <Texture Name="object_gi_letterTex_000600" OutName="object_gi_letterTex_000600" Format="ia8" Width="48" Height="32" Offset="0x600" AddedByScript="true"/>
         <DList Name="gGiLetterDL" Offset="0x0CC0"/>
         <DList Name="gGiLetterWritingDL" Offset="0x0D60"/>
     </File>

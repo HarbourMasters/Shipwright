@@ -139,7 +139,7 @@ void EnOwl_Init(Actor* thisx, PlayState* play) {
 
     if (((owlType != OWL_DEFAULT) && (switchFlag < 0x20) && Flags_GetSwitch(play, switchFlag)) ||
         // Owl shortcuts at SPOT06: Lake Hylia and SPOT16: Death Mountain Trail
-        (gSaveContext.n64ddFlag && !(play->sceneNum == SCENE_SPOT06 || play->sceneNum == SCENE_SPOT16))) {
+        (gSaveContext.n64ddFlag && !(play->sceneNum == SCENE_LAKE_HYLIA || play->sceneNum == SCENE_DEATH_MOUNTAIN_TRAIL))) {
         osSyncPrintf("savebitでフクロウ退避\n"); // "Save owl with savebit"
         Actor_Kill(&this->actor);
         return;
@@ -1105,7 +1105,7 @@ s32 func_80ACC5CC(EnOwl* this) {
 s32 func_80ACC624(EnOwl* this, PlayState* play) {
     s32 switchFlag = (this->actor.params & 0xFC0) >> 6;
 
-    if (play->sceneNum != SCENE_SPOT11) {
+    if (play->sceneNum != SCENE_DESERT_COLOSSUS) {
         return true;
     } else if (switchFlag == 0xA) {
         return true;

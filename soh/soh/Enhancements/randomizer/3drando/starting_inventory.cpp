@@ -1,6 +1,5 @@
 #include "starting_inventory.hpp"
 
-#include "debug.hpp"
 #include "dungeon.hpp"
 #include "item_list.hpp"
 #include "settings.hpp"
