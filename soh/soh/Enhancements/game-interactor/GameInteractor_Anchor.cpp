@@ -318,9 +318,6 @@ void GameInteractorAnchor::Disable() {
     GameInteractor::Instance->DisableRemoteInteractor();
 
     GameInteractorAnchor::AnchorClients.clear();
-    if (GameInteractor::IsSaveLoaded()) {
-        Anchor_SpawnClientFairies();
-    }
 }
 
 void GameInteractorAnchor::TransmitJsonToRemote(nlohmann::json payload) {
