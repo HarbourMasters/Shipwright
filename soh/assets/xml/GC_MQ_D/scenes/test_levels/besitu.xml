@@ -3,6 +3,13 @@
         <Scene Name="besitu_scene" Offset="0x0"/>
     </File>
     <File Name="besitu_room_0" Segment="3">
+        <Texture Name="besitu_room_0Tex_001CD8" OutName="besitu_room_0Tex_001CD8" Format="i4" Width="128" Height="64" Offset="0x1CD8" AddedByScript="true"/>
+        <Texture Name="besitu_room_0Tex_002CD8" OutName="besitu_room_0Tex_002CD8" Format="ia4" Width="64" Height="64" Offset="0x2CD8" AddedByScript="true"/>
+        <Texture Name="besitu_room_0Tex_0034D8" OutName="besitu_room_0Tex_0034D8" Format="ia8" Width="32" Height="64" Offset="0x34D8" AddedByScript="true"/>
+        <Texture Name="besitu_room_0Tex_003CD8" OutName="besitu_room_0Tex_003CD8" Format="ia8" Width="32" Height="64" Offset="0x3CD8" AddedByScript="true"/>
+        <Texture Name="besitu_room_0Tex_0044D8" OutName="besitu_room_0Tex_0044D8" Format="ia4" Width="64" Height="64" Offset="0x44D8" AddedByScript="true"/>
+        <Texture Name="besitu_room_0Tex_004CD8" OutName="besitu_room_0Tex_004CD8" Format="ci4" Width="64" Height="64" Offset="0x4CD8" TlutOffset="0x1CB8" AddedByScript="true"/>
+        <Texture Name="besitu_room_0TLUT_001CB8" OutName="besitu_room_0TLUT_001CB8" Format="rgba16" Width="4" Height="4" Offset="0x1CB8" AddedByScript="true"/>
         <Room Name="besitu_room_0" Offset="0x0"/>
     </File>
 </Root>

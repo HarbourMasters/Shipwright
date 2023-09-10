@@ -1,6 +1,7 @@
 #include "file_choose.h"
 #include "textures/title_static/title_static.h"
 #include "assets/overlays/ovl_File_Choose/ovl_file_choose.h"
+#include "assets/soh_assets.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 
@@ -702,6 +703,11 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
         return;
     }
 
+    uint8_t languageChanged = 0;
+    uint8_t versionIndex = ResourceMgr_GameHasMasterQuest() && ResourceMgr_GameHasOriginal();
+    uint8_t isPalN64 = ResourceMgr_GetGameRegion(versionIndex) == GAME_REGION_PAL &&
+                       ResourceMgr_GetGamePlatform(versionIndex) == GAME_PLATFORM_N64;
+
     if ((this->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
 
@@ -712,6 +718,14 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
             if (gSaveContext.audioSetting > 0xF0) {
                 gSaveContext.audioSetting = FS_AUDIO_SURROUND;
             }
+        } else if (sSelectedSetting == FS_SETTING_LANGUAGE) {
+            gSaveContext.language--;
+
+            if (gSaveContext.language > 0xF0) {
+                gSaveContext.language = LANGUAGE_FRA;
+            }
+
+            languageChanged = 1;
         } else {
             gSaveContext.zTargetSetting ^= 1;
         }
@@ -724,29 +738,75 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
             if (gSaveContext.audioSetting > FS_AUDIO_SURROUND) {
                 gSaveContext.audioSetting = FS_AUDIO_STEREO;
             }
+        } else if (sSelectedSetting == FS_SETTING_LANGUAGE) {
+            gSaveContext.language++;
+
+            if (gSaveContext.language > LANGUAGE_FRA) {
+                gSaveContext.language = LANGUAGE_ENG;
+            }
+
+            languageChanged = 1;
         } else {
             gSaveContext.zTargetSetting ^= 1;
         }
     }
 
-    if ((ABS(this->stickRelY) > 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
+    // Persist the new language so it is not overridden on the next frame
+    if (languageChanged) {
+        CVarSetInteger("gLanguages", gSaveContext.language);
+        GameInteractor_ExecuteOnSetGameLanguage();
+    }
+
+    // NTSC and GC only has two rows and can just flip the setting bit
+    // Otherwise for PAL 64, handle the additional change language setting
+    if (!isPalN64 && ((ABS(this->stickRelY) > 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP)))) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         sSelectedSetting ^= 1;
+    } else if (isPalN64 && ((this->stickRelY > 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DUP)))) {
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        sSelectedSetting--;
+
+        if (sSelectedSetting > 0xF0) {
+            sSelectedSetting = FS_SETTING_LANGUAGE;
+        }
+    } else if (isPalN64 && ((this->stickRelY < -30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN)))) {
+        Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        sSelectedSetting++;
+
+        if (sSelectedSetting > FS_SETTING_LANGUAGE) {
+            sSelectedSetting = FS_SETTING_AUDIO;
+        }
     } else if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-        sSelectedSetting ^= 1;
+        if (isPalN64) {
+            sSelectedSetting++;
+
+            if (sSelectedSetting > FS_SETTING_LANGUAGE) {
+                sSelectedSetting = FS_SETTING_AUDIO;
+            }
+        } else {
+            sSelectedSetting ^= 1;
+        }
     }
-    
+
     if (sSelectedSetting == FS_SETTING_AUDIO) {
         if (sLastOptionButtonIndex != gSaveContext.audioSetting) {
             GameInteractor_ExecuteOnUpdateFileAudioSelection(gSaveContext.audioSetting);
             sLastOptionButtonIndex = gSaveContext.audioSetting;
         }
+    } else if (sSelectedSetting == FS_SETTING_TARGET) {
+        // offset to detect switching between modes
+        u8 optionOffset = gSaveContext.zTargetSetting + FS_AUDIO_SURROUND + FS_SETTING_TARGET;
+        if (sLastOptionButtonIndex != optionOffset) {
+            GameInteractor_ExecuteOnUpdateFileTargetSelection(gSaveContext.zTargetSetting);
+            sLastOptionButtonIndex = optionOffset;
+        }
     } else {
         // offset to detect switching between modes
-        if (sLastOptionButtonIndex != FS_BTN_SELECT_QUIT + gSaveContext.zTargetSetting + 1) {
-            GameInteractor_ExecuteOnUpdateFileTargetSelection(gSaveContext.zTargetSetting);
-            sLastOptionButtonIndex = FS_BTN_SELECT_QUIT + gSaveContext.zTargetSetting + 1;
+        u8 optionOffset = gSaveContext.language + FS_AUDIO_SURROUND + FS_TARGET_HOLD + FS_SETTING_LANGUAGE;
+        if (sLastOptionButtonIndex != optionOffset) {
+            GameInteractor_ExecuteOnUpdateFileLanguageSelection(gSaveContext.language);
+            sLastOptionButtonIndex = optionOffset;
         }
     }
 }
@@ -776,6 +836,11 @@ static OptionsMenuTextureInfo gOptionsMenuHeaders[] = {
     {
         { gFileSelCheckBrightnessENGTex, gFileSelCheckBrightnessGERTex, gFileSelCheckBrightnessFRATex },
         { 128, 128, 128 },
+        16,
+    },
+    {
+        { gFileSelLanguageENGTex, gFileSelLanguageGERTex, gFileSelLanguageFRATex },
+        { 64, 64, 64 },
         16,
     },
 };
@@ -809,6 +874,21 @@ static OptionsMenuTextureInfo gOptionsMenuSettings[] = {
     {
         { gFileSelHoldENGTex, gFileSelHoldGERTex, gFileSelHoldFRATex },
         { 48, 80, 48 },
+        16,
+    },
+    {
+        { gFileSelLangEnglishENGTex, gFileSelLangEnglishENGTex, gFileSelLangEnglishENGTex },
+        { 48, 48, 48 },
+        16,
+    },
+    {
+        { gFileSelLangDeutschGERTex, gFileSelLangDeutschGERTex, gFileSelLangDeutschGERTex },
+        { 48, 48, 48 },
+        16,
+    },
+    {
+        { gFileSelLangFrancaisFRATex, gFileSelLangFrancaisFRATex, gFileSelLangFrancaisFRATex },
+        { 48, 48, 48 },
         16,
     },
 };
@@ -943,12 +1023,22 @@ void FileChoose_DrawOptionsImpl(GameState* thisx) {
         }
     }
 
+    // Draw the change language header
+    if (isPalN64) {
+        gDPLoadTextureBlock(POLY_OPA_DISP++, gOptionsMenuHeaders[i].texture[gSaveContext.language], G_IM_FMT_IA,
+                            G_IM_SIZ_8b, gOptionsMenuHeaders[i].width[gSaveContext.language],
+                            gOptionsMenuHeaders[i].height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                            G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+
+        gSP1Quadrangle(POLY_OPA_DISP++, vtx, vtx + 2, vtx + 3, vtx + 1, 0);
+    }
+
     if (gSaveContext.language == LANGUAGE_GER && isPalGC) {
         gSPVertex(POLY_OPA_DISP++, D_80812130, 32, 0);
     } else {
         // PAL N64 has extra german vertices combined in the regular array instead of a dedicated array
         if (isPalN64) {
-            gSPVertex(POLY_OPA_DISP++, D_80811F30, 40, 0);
+            gSPVertex(POLY_OPA_DISP++, D_80811F30, 52, 0);
         } else {
             gSPVertex(POLY_OPA_DISP++, D_80811F30, 32, 0);
         }
@@ -981,7 +1071,7 @@ void FileChoose_DrawOptionsImpl(GameState* thisx) {
         gDPPipeSync(POLY_OPA_DISP++);
 
         if (i == (gSaveContext.zTargetSetting + 4)) {
-            if (sSelectedSetting != FS_SETTING_AUDIO) {
+            if (sSelectedSetting == FS_SETTING_TARGET) {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cursorPrimRed, cursorPrimGreen, cursorPrimBlue,
                                 this->titleAlpha[0]);
                 gDPSetEnvColor(POLY_OPA_DISP++, cursorEnvRed, cursorEnvGreen, cursorEnvBlue, 0xFF);
@@ -998,7 +1088,7 @@ void FileChoose_DrawOptionsImpl(GameState* thisx) {
                             G_IM_SIZ_8b, gOptionsMenuSettings[i].width[gSaveContext.language],
                             gOptionsMenuSettings[i].height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-        // Pal N64 German vertices for z target options are offset an by 8
+        // Pal N64 German vertices for z target options are offset by 8
         if (gSaveContext.language == LANGUAGE_GER && isPalN64) {
             gSP1Quadrangle(POLY_OPA_DISP++, vtx + 8, vtx + 2 + 8, vtx + 3 + 8, vtx + 1 + 8, 0);
         } else {
@@ -1029,6 +1119,33 @@ void FileChoose_DrawOptionsImpl(GameState* thisx) {
     gSP1Quadrangle(POLY_OPA_DISP++, vtx, vtx + 2, vtx + 3, vtx + 1, 0);
 
     vtx += 4;
+
+    // Draw the language options
+    if (isPalN64) {
+        for (; i < 9; i++, vtx += 4) {
+            gDPPipeSync(POLY_OPA_DISP++);
+
+            if (i == (gSaveContext.language + 6)) {
+                if (sSelectedSetting == FS_SETTING_LANGUAGE) {
+                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, cursorPrimRed, cursorPrimGreen, cursorPrimBlue,
+                                    this->titleAlpha[0]);
+                    gDPSetEnvColor(POLY_OPA_DISP++, cursorEnvRed, cursorEnvGreen, cursorEnvBlue, 0xFF);
+                } else {
+                    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, this->titleAlpha[0]);
+                    gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
+                }
+            } else {
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 120, 120, 120, this->titleAlpha[0]);
+                gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
+            }
+
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gOptionsMenuSettings[i].texture[gSaveContext.language], G_IM_FMT_IA,
+                                G_IM_SIZ_8b, gOptionsMenuSettings[i].width[gSaveContext.language],
+                                gOptionsMenuSettings[i].height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gSP1Quadrangle(POLY_OPA_DISP++, vtx, vtx + 2, vtx + 3, vtx + 1, 0);
+        }
+    }
 
     // blue divider lines
     gDPPipeSync(POLY_OPA_DISP++);
@@ -1063,6 +1180,17 @@ void FileChoose_DrawOptionsImpl(GameState* thisx) {
     gSPVertex(POLY_OPA_DISP++, gOptionsDividerBottomVtx, 4, 0);
     gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
     Matrix_Pop();
+
+    // Draw the divider for change language header
+    if (isPalN64) {
+        Matrix_Push();
+        Matrix_Translate(0.0f, 0.3f, 0.0f, MTXMODE_APPLY);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx),
+                G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPVertex(POLY_OPA_DISP++, gOptionsDividerChangeLangVtx, 4, 0);
+        gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
+        Matrix_Pop();
+    }
 
     CLOSE_DISPS(this->state.gfxCtx);
 }

@@ -1,5 +1,6 @@
 <Root>
     <File Name="object_ani" Segment="6">
+        <Texture Name="object_aniTex_0011D8" OutName="object_aniTex_0011D8" Format="ci8" Width="16" Height="16" Offset="0x11D8" TlutOffset="0x1088" AddedByScript="true"/>
         <!-- Kakariko Roof Man Skeleton -->
         <Skeleton Name="gRoofManSkel" Type="Flex" LimbType="Standard" Offset="0xF0"/>
 

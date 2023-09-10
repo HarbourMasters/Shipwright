@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_G_PN_19_H
+#define TEXTURES_G_PN_19_H 1
 
 #include "align_asset_macro.h"
 
@@ -10,3 +11,5 @@ static const ALIGN_ASSET(2) char gKokiriShopTitleCardGERTex[] = dgKokiriShopTitl
 
 #define dgKokiriShopTitleCardFRATex "__OTR__textures/g_pn_19/gKokiriShopTitleCardFRATex"
 static const ALIGN_ASSET(2) char gKokiriShopTitleCardFRATex[] = dgKokiriShopTitleCardFRATex;
+
+#endif // TEXTURES_G_PN_19_H

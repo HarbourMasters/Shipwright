@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_TOKI_OBJECTS_H
+#define OBJECTS_OBJECT_TOKI_OBJECTS_H 1
 
 #include "align_asset_macro.h"
 
@@ -64,3 +65,5 @@ static const ALIGN_ASSET(2) char object_toki_objects_DL_008190[] = dobject_toki_
 
 #define dobject_toki_objects_DL_008390 "__OTR__objects/object_toki_objects/object_toki_objects_DL_008390"
 static const ALIGN_ASSET(2) char object_toki_objects_DL_008390[] = dobject_toki_objects_DL_008390;
+
+#endif // OBJECTS_OBJECT_TOKI_OBJECTS_H

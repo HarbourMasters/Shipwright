@@ -1,5 +1,6 @@
 #include "z_en_dh.h"
 #include "objects/object_dh/object_dh.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
 
@@ -442,7 +443,7 @@ void EnDh_SetupDeath(EnDh* this) {
     this->actor.params = ENDH_DEATH;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_DEADHAND_DEAD);
     EnDh_SetupAction(this, EnDh_Death);
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEAD_HAND]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnDh_Death(EnDh* this, PlayState* play) {

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INDOORS_HAKASITARELAY_ROOM_3_H
+#define INDOORS_HAKASITARELAY_ROOM_3_H 1
 
 #include "align_asset_macro.h"
 
@@ -28,3 +29,6 @@ static const ALIGN_ASSET(2) char hakasitarelay_room_3Tex_0078E0[] = dhakasitarel
 
 #define dhakasitarelay_room_3Tex_0070E0 "__OTR__scenes/nonmq/hakasitarelay_scene/hakasitarelay_room_3Tex_0070E0"
 static const ALIGN_ASSET(2) char hakasitarelay_room_3Tex_0070E0[] = dhakasitarelay_room_3Tex_0070E0;
+
+
+#endif // INDOORS_HAKASITARELAY_ROOM_3_H

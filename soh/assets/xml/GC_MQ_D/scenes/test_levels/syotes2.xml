@@ -3,6 +3,13 @@
         <Scene Name="syotes2_scene" Offset="0x0"/>
     </File>
     <File Name="syotes2_room_0" Segment="3">
+        <Texture Name="syotes2_room_0Tex_0046F8" OutName="syotes2_room_0Tex_0046F8" Format="rgba16" Width="32" Height="32" Offset="0x46F8" AddedByScript="true"/>
+        <Texture Name="syotes2_room_0Tex_004EF8" OutName="syotes2_room_0Tex_004EF8" Format="rgba16" Width="32" Height="32" Offset="0x4EF8" AddedByScript="true"/>
+        <Texture Name="syotes2_room_0Tex_0056F8" OutName="syotes2_room_0Tex_0056F8" Format="rgba16" Width="32" Height="64" Offset="0x56F8" AddedByScript="true"/>
+        <Texture Name="syotes2_room_0Tex_0066F8" OutName="syotes2_room_0Tex_0066F8" Format="rgba16" Width="32" Height="32" Offset="0x66F8" AddedByScript="true"/>
+        <Texture Name="syotes2_room_0Tex_006EF8" OutName="syotes2_room_0Tex_006EF8" Format="rgba16" Width="64" Height="32" Offset="0x6EF8" AddedByScript="true"/>
+        <Texture Name="syotes2_room_0Tex_007EF8" OutName="syotes2_room_0Tex_007EF8" Format="rgba16" Width="32" Height="64" Offset="0x7EF8" AddedByScript="true"/>
+        <Texture Name="syotes2_room_0Tex_008EF8" OutName="syotes2_room_0Tex_008EF8" Format="rgba16" Width="32" Height="64" Offset="0x8EF8" AddedByScript="true"/>
         <Room Name="syotes2_room_0" Offset="0x0"/>
     </File>
 </Root>

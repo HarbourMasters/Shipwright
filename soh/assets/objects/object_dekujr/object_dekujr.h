@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_DEKUJR_H
+#define OBJECTS_OBJECT_DEKUJR_H 1
 
 #include "align_asset_macro.h"
 
@@ -28,3 +29,5 @@ static const ALIGN_ASSET(2) char object_dekujr_DL_0030D0[] = dobject_dekujr_DL_0
 
 #define dobject_dekujr_DL_0032D8 "__OTR__objects/object_dekujr/object_dekujr_DL_0032D8"
 static const ALIGN_ASSET(2) char object_dekujr_DL_0032D8[] = dobject_dekujr_DL_0032D8;
+
+#endif // OBJECTS_OBJECT_DEKUJR_H

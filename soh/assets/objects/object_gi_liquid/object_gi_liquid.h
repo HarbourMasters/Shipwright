@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GI_LIQUID_H
+#define OBJECTS_OBJECT_GI_LIQUID_H 1
 
 #include "align_asset_macro.h"
 
@@ -46,3 +47,5 @@ static const ALIGN_ASSET(2) char object_gi_liquidTex_000200[] = dobject_gi_liqui
 
 #define dobject_gi_liquidTex_000400 "__OTR__objects/object_gi_liquid/object_gi_liquidTex_000400"
 static const ALIGN_ASSET(2) char object_gi_liquidTex_000400[] = dobject_gi_liquidTex_000400;
+
+#endif // OBJECTS_OBJECT_GI_LIQUID_H

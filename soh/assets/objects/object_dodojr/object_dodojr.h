@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_DODOJR_H
+#define OBJECTS_OBJECT_DODOJR_H 1
 
 #include "align_asset_macro.h"
 
@@ -46,3 +47,6 @@ static const ALIGN_ASSET(2) char object_dodojr_Tex_001C00[] = dobject_dodojr_Tex
 
 #define dobject_dodojr_Skel_0020E0 "__OTR__objects/object_dodojr/object_dodojr_Skel_0020E0"
 static const ALIGN_ASSET(2) char object_dodojr_Skel_0020E0[] = dobject_dodojr_Skel_0020E0;
+
+
+#endif // OBJECTS_OBJECT_DODOJR_H

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_OBJECT_FHG_H
+#define TEXTURES_OBJECT_FHG_H 1
 
 #include "align_asset_macro.h"
 
@@ -10,3 +11,5 @@ static const ALIGN_ASSET(2) char gPhantomGanonTitleCardGERTex[] = dgPhantomGanon
 
 #define dgPhantomGanonTitleCardFRATex "__OTR__textures/object_fhg/gPhantomGanonTitleCardFRATex"
 static const ALIGN_ASSET(2) char gPhantomGanonTitleCardFRATex[] = dgPhantomGanonTitleCardFRATex;
+
+#endif // TEXTURES_OBJECT_FHG_H

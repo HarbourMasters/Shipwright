@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_FIREFLY_H
+#define OBJECTS_OBJECT_FIREFLY_H 1
 
 #include "align_asset_macro.h"
 
@@ -70,3 +71,6 @@ static const ALIGN_ASSET(2) char gKeeseSkeletonLimbsLimb_00181CDL_0011C8[] = dgK
 
 #define dgKeeseSkeletonLimbsLimb_001840DL_000D30 "__OTR__objects/object_firefly/gKeeseSkeletonLimbsLimb_001840DL_000D30"
 static const ALIGN_ASSET(2) char gKeeseSkeletonLimbsLimb_001840DL_000D30[] = dgKeeseSkeletonLimbsLimb_001840DL_000D30;
+
+
+#endif // OBJECTS_OBJECT_FIREFLY_H

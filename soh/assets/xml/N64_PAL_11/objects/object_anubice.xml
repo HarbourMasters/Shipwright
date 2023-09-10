@@ -1,5 +1,14 @@
 <Root>
     <File Name="object_anubice" Segment="6">
+        <Texture Name="object_anubiceTex_000F90" OutName="object_anubiceTex_000F90" Format="rgba16" Width="8" Height="16" Offset="0xF90" AddedByScript="true"/>
+        <Texture Name="object_anubiceTex_001090" OutName="object_anubiceTex_001090" Format="rgba16" Width="4" Height="16" Offset="0x1090" AddedByScript="true"/>
+        <Texture Name="object_anubiceTex_001110" OutName="object_anubiceTex_001110" Format="rgba16" Width="16" Height="32" Offset="0x1110" AddedByScript="true"/>
+        <Texture Name="object_anubiceTex_001510" OutName="object_anubiceTex_001510" Format="rgba16" Width="8" Height="8" Offset="0x1510" AddedByScript="true"/>
+        <Texture Name="object_anubiceTex_001590" OutName="object_anubiceTex_001590" Format="rgba16" Width="8" Height="8" Offset="0x1590" AddedByScript="true"/>
+        <Texture Name="object_anubiceTex_001610" OutName="object_anubiceTex_001610" Format="rgba16" Width="4" Height="16" Offset="0x1610" AddedByScript="true"/>
+        <Texture Name="object_anubiceTex_001690" OutName="object_anubiceTex_001690" Format="ia16" Width="32" Height="16" Offset="0x1690" AddedByScript="true"/>
+        <Texture Name="object_anubiceTex_001A90" OutName="object_anubiceTex_001A90" Format="rgba16" Width="8" Height="8" Offset="0x1A90" AddedByScript="true"/>
+        <Texture Name="object_anubiceTex_0036A0" OutName="object_anubiceTex_0036A0" Format="i4" Width="32" Height="32" Offset="0x36A0" AddedByScript="true"/>
         <Skeleton Name="gAnubiceSkel" Type="Normal" LimbType="Standard" Offset="0x3990"/>
 
         <Animation Name="gAnubiceFallDownAnim" Offset="0x348"/>

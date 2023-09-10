@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_MORI_OBJECTS_H
+#define OBJECTS_OBJECT_MORI_OBJECTS_H 1
 
 #include "align_asset_macro.h"
 
@@ -61,3 +62,5 @@ static const ALIGN_ASSET(2) char gMoriRakkatenjoCol[] = dgMoriRakkatenjoCol;
 
 #define dgMoriRakkatenjoDL "__OTR__objects/object_mori_objects/gMoriRakkatenjoDL"
 static const ALIGN_ASSET(2) char gMoriRakkatenjoDL[] = dgMoriRakkatenjoDL;
+
+#endif // OBJECTS_OBJECT_MORI_OBJECTS_H

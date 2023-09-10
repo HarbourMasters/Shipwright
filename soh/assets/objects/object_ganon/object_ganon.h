@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GANON_H
+#define OBJECTS_OBJECT_GANON_H 1
 
 #include "align_asset_macro.h"
 
@@ -184,3 +185,6 @@ static const ALIGN_ASSET(2) char gGanondorfEndingFloatAnim[] = dgGanondorfEnding
 
 #define dgGanondorfSkel "__OTR__objects/object_ganon/gGanondorfSkel"
 static const ALIGN_ASSET(2) char gGanondorfSkel[] = dgGanondorfSkel;
+
+
+#endif // OBJECTS_OBJECT_GANON_H

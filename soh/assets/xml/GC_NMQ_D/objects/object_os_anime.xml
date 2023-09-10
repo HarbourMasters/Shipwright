@@ -35,34 +35,34 @@
         <Animation Name="gObjOsAnim_4CF4" Offset="0x4CF4"/>
         <Animation Name="gObjOsAnim_4E90" Offset="0x4E90"/>
         <Animation Name="gObjOsAnim_4F28" Offset="0x4F28"/>
-        <Animation Name="gObjOsAnim_5808" Offset="0x5808"/>
-        <Animation Name="gObjOsAnim_62DC" Offset="0x62DC"/>
+        <Animation Name="gKokiriLaughingAnim" Offset="0x5808"/>
+        <Animation Name="gKokiriIdleAnim" Offset="0x62DC"/>
         <Animation Name="gObjOsAnim_6458" Offset="0x6458"/>
         <Animation Name="gObjOsAnim_6518" Offset="0x6518"/>
-        <Animation Name="gObjOsAnim_65E0" Offset="0x65E0"/>
-        <Animation Name="gObjOsAnim_6A60" Offset="0x6A60"/>
-        <Animation Name="gObjOsAnim_6EE0" Offset="0x6EE0"/>
-        <Animation Name="gObjOsAnim_6F9C" Offset="0x6F9C"/>
-        <Animation Name="gObjOsAnim_7064" Offset="0x7064"/>
-        <Animation Name="gObjOsAnim_7120" Offset="0x7120"/>
-        <Animation Name="gObjOsAnim_7454" Offset="0x7454"/>
-        <Animation Name="gObjOsAnim_7830" Offset="0x7830"/>
-        <Animation Name="gObjOsAnim_7D94" Offset="0x7D94"/>
-        <Animation Name="gObjOsAnim_7E64" Offset="0x7E64"/>
-        <Animation Name="gObjOsAnim_7F38" Offset="0x7F38"/>
-        <Animation Name="gObjOsAnim_7FFC" Offset="0x7FFC"/>
-        <Animation Name="gObjOsAnim_80B4" Offset="0x80B4"/>
-        <Animation Name="gObjOsAnim_8178" Offset="0x8178"/>
-        <Animation Name="gObjOsAnim_879C" Offset="0x879C"/>
-        <Animation Name="gObjOsAnim_8F6C" Offset="0x8F6C"/>
-        <Animation Name="gObjOsAnim_9028" Offset="0x9028"/>
-        <Animation Name="gObjOsAnim_90EC" Offset="0x90EC"/>
-        <Animation Name="gObjOsAnim_91AC" Offset="0x91AC"/>
-        <Animation Name="gObjOsAnim_9274" Offset="0x9274"/>
-        <Animation Name="gObjOsAnim_982C" Offset="0x982C"/>
-        <Animation Name="gObjOsAnim_98EC" Offset="0x98EC"/>
-        <Animation Name="gObjOsAnim_99A4" Offset="0x99A4"/>
-        <Animation Name="gObjOsAnim_9B64" Offset="0x9B64"/>
+        <Animation Name="gKokiriRecliningSittingUpAnim" Offset="0x65E0"/>
+        <Animation Name="gKokiriWipingForeheadAnim" Offset="0x6A60"/>
+        <Animation Name="gKokiriBackflipAnim" Offset="0x6EE0"/>
+        <Animation Name="gKokiriSittingCrossedArmsLegsAnim" Offset="0x6F9C"/>
+        <Animation Name="gKokiriStandingApprehensiveAnim" Offset="0x7064"/>
+        <Animation Name="gKokiriLeaningOnArmsAnim" Offset="0x7120"/>
+        <Animation Name="gKokiriSittingDiggingAnim" Offset="0x7454"/>
+        <Animation Name="gKokiriLiftingRockAnim" Offset="0x7830"/>
+        <Animation Name="gKokiriCuttingGrassAnim" Offset="0x7D94"/>
+        <Animation Name="gKokiriSittingHeadOnHandAnim" Offset="0x7E64"/>
+        <Animation Name="gKokiriRecliningLeaningBackAnim" Offset="0x7F38"/>
+        <Animation Name="gKokiriStandingHandOnChestAnim" Offset="0x7FFC"/>
+        <Animation Name="gKokiriStandingHandsOnHipsAnim" Offset="0x80B4"/>
+        <Animation Name="gKokiriRecliningStandingAnim" Offset="0x8178"/>
+        <Animation Name="gKokiriPunchingAnim" Offset="0x879C"/>
+        <Animation Name="gKokiriBlockingAnim" Offset="0x8F6C"/>
+        <Animation Name="gKokiriSittingArmsUpAnim" Offset="0x9028"/>
+        <Animation Name="gKokiriStandingRightArmUpAnim" Offset="0x90EC"/>
+        <Animation Name="gKokiriSittingAnim" Offset="0x91AC"/>
+        <Animation Name="gKokiriStandingAnim" Offset="0x9274"/>
+        <Animation Name="gKokiriStandingArmsBehindBackAnim" Offset="0x982C"/>
+        <Animation Name="gKokiriLeaningForwardAnim" Offset="0x98EC"/>
+        <Animation Name="gKokiriSittingCrossedLegsAnim" Offset="0x99A4"/>
+        <Animation Name="gKokiriStandUpAnim" Offset="0x9B64"/>
         <Animation Name="gObjOsAnim_9F94" Offset="0x9F94"/>
         <Animation Name="gObjOsAnim_A630" Offset="0xA630"/>
     </File>

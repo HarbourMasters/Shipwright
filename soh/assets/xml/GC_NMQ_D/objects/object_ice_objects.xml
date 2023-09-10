@@ -2,23 +2,23 @@
     <File Name="object_ice_objects" Segment="6">
         <DList Name="object_ice_objects_DL_000190" Offset="0x190"/>
         <Collision Name="object_ice_objects_Col_0003F0" Offset="0x3F0"/>
-        <DList Name="object_ice_objects_DL_0006F0" Offset="0x6F0"/>
-        <DList Name="object_ice_objects_DL_0012A0" Offset="0x12A0"/>
-        <Collision Name="object_ice_objects_Col_001C1C" Offset="0x1C1C"/>
+        <DList Name="gRedIceBlockDL" Offset="0x6F0"/>
+        <DList Name="gRedIcePlatformDL" Offset="0x12A0"/>
+        <Collision Name="gRedIcePlatformCol" Offset="0x1C1C"/>
         <DList Name="object_ice_objects_DL_001D10" Offset="0x1D10"/>
         <DList Name="object_ice_objects_DL_0021F0" Offset="0x21F0"/>
         <DList Name="object_ice_objects_DL_0023D0" Offset="0x23D0"/>
         <Collision Name="object_ice_objects_Col_002594" Offset="0x2594"/>
-        <DList Name="object_ice_objects_DL_002640" Offset="0x2640"/>
+        <DList Name="gRedIceWallDL" Offset="0x2640"/>
         <DList Name="object_ice_objects_DL_002740" Offset="0x2740"/>
         <Collision Name="object_ice_objects_Col_002854" Offset="0x2854"/>
-        <Collision Name="object_ice_objects_Col_002920" Offset="0x2920"/>
+        <Collision Name="gRedIceWallCol" Offset="0x2920"/>
         <Texture Name="object_ice_objects_Tex_002950" OutName="tex_00002950" Format="rgba16" Width="32" Height="32" Offset="0x2950"/>
-        <Texture Name="object_ice_objects_Tex_003150" OutName="tex_00003150" Format="i8" Width="32" Height="128" Offset="0x3150"/>
+        <Texture Name="gRedIceWallTex" OutName="tex_00003150" Format="i8" Width="32" Height="128" Offset="0x3150"/>
         <Texture Name="object_ice_objects_Tex_004150" OutName="tex_00004150" Format="rgba16" Width="32" Height="32" Offset="0x4150"/>
         <Texture Name="object_ice_objects_Tex_004950" OutName="tex_00004950" Format="rgba16" Width="32" Height="32" Offset="0x4950"/>
-        <Texture Name="object_ice_objects_Tex_005150" OutName="tex_00005150" Format="i8" Width="32" Height="32" Offset="0x5150"/>
-        <Texture Name="object_ice_objects_Tex_005550" OutName="tex_00005550" Format="i4" Width="64" Height="64" Offset="0x5550"/>
+        <Texture Name="gRedIceBlockTex" OutName="tex_00005150" Format="i8" Width="32" Height="32" Offset="0x5150"/>
+        <Texture Name="gRedIcePlatformTex" OutName="tex_00005550" Format="i4" Width="64" Height="64" Offset="0x5550"/>
         <Texture Name="object_ice_objects_Tex_005D50" OutName="tex_00005D50" Format="i8" Width="64" Height="64" Offset="0x5D50"/>
         <Texture Name="object_ice_objects_Tex_006D50" OutName="tex_00006D50" Format="rgba16" Width="32" Height="64" Offset="0x6D50"/>
         <Texture Name="object_ice_objects_Tex_007D50" OutName="tex_00007D50" Format="ia8" Width="64" Height="64" Offset="0x7D50"/>

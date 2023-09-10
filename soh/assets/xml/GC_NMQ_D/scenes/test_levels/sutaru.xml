@@ -3,6 +3,13 @@
         <Scene Name="sutaru_scene" Offset="0x0"/>
     </File>
     <File Name="sutaru_room_0" Segment="3">
+        <Texture Name="sutaru_room_0Tex_0020F0" OutName="sutaru_room_0Tex_0020F0" Format="rgba16" Width="32" Height="32" Offset="0x20F0" AddedByScript="true"/>
+        <Texture Name="sutaru_room_0Tex_0028F0" OutName="sutaru_room_0Tex_0028F0" Format="rgba16" Width="16" Height="16" Offset="0x28F0" AddedByScript="true"/>
+        <Texture Name="sutaru_room_0Tex_002AF0" OutName="sutaru_room_0Tex_002AF0" Format="rgba16" Width="64" Height="32" Offset="0x2AF0" AddedByScript="true"/>
+        <Texture Name="sutaru_room_0Tex_003AF0" OutName="sutaru_room_0Tex_003AF0" Format="rgba16" Width="32" Height="32" Offset="0x3AF0" AddedByScript="true"/>
+        <Texture Name="sutaru_room_0Tex_0042F0" OutName="sutaru_room_0Tex_0042F0" Format="rgba16" Width="64" Height="32" Offset="0x42F0" AddedByScript="true"/>
+        <Texture Name="sutaru_room_0Tex_0052F0" OutName="sutaru_room_0Tex_0052F0" Format="rgba16" Width="32" Height="64" Offset="0x52F0" AddedByScript="true"/>
+        <Texture Name="sutaru_room_0Tex_0062F0" OutName="sutaru_room_0Tex_0062F0" Format="rgba16" Width="32" Height="64" Offset="0x62F0" AddedByScript="true"/>
         <Room Name="sutaru_room_0" Offset="0x0"/>
     </File>
 </Root>
