@@ -7,6 +7,7 @@
 #include "z_en_bb.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_Bb/object_Bb.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_PLAY_HIT_SFX)
 
@@ -465,18 +466,7 @@ void EnBb_SetupDeath(EnBb* this, PlayState* play) {
     this->action = BB_KILL;
     EnBb_SetupAction(this, EnBb_Death);
 
-    if (this->actor.params == ENBB_GREEN || this->actor.params == ENBB_GREEN_BIG) {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_GREEN]++;
-    }
-    if (this->actor.params == ENBB_BLUE) {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_BLUE]++;
-    }
-    if (this->actor.params == ENBB_WHITE) {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_WHITE]++;
-    }
-    if (this->actor.params == ENBB_RED) {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_RED]++;
-    }
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnBb_Death(EnBb* this, PlayState* play) {

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_ICON_ITEM_GAMEOVER_STATIC_H
+#define TEXTURES_ICON_ITEM_GAMEOVER_STATIC_H 1
 
 #include "align_asset_macro.h"
 
@@ -22,3 +23,5 @@ static const ALIGN_ASSET(2) char gContinuePlayingGERTex[] = dgContinuePlayingGER
 
 #define dgContinuePlayingFRATex "__OTR__textures/icon_item_gameover_static/gContinuePlayingFRATex"
 static const ALIGN_ASSET(2) char gContinuePlayingFRATex[] = dgContinuePlayingFRATex;
+
+#endif // TEXTURES_ICON_ITEM_GAMEOVER_STATIC_H

@@ -819,129 +819,30 @@ EntranceInfo gEntranceTable[] = {
 //            (u32)_##title##SegmentRomEnd, unk_10, config, unk_12, 0                                  \
 //    }
 
-#define TITLED_SCENE(name, title, unk_10, config, unk_12)                                            \
-    {                                                                                                \
-        {0, 0, #name}, {0, 0, #title}, unk_10, config, unk_12, 0                         \
-    }
+//#define TITLED_SCENE(name, title, unk_10, config, unk_12)                                            \
+//    {                                                                                                \
+//        {0, 0, #name}, {0, 0, #title}, unk_10, config, unk_12, 0                                     \
+//    }
 
 //#define UNTITLED_SCENE(name, unk_10, config, unk_12) \
     //{ (u32) _##name##SegmentRomStart, (u32)_##name##SegmentRomEnd, 0, 0, unk_10, config, unk_12, 0 }
 
-#define UNTITLED_SCENE(name, unk_10, config, unk_12) \
-    { { 0, 0, #name }, (u32)0, 0, 0, unk_10, config, unk_12, 0 }
+//#define UNTITLED_SCENE(name, unk_10, config, unk_12) \
+//    { { 0, 0, #name }, (u32)0, 0, 0, unk_10, config, unk_12, 0 }
+
+#define DEFINE_SCENE(name, title, _2, config, unk_10, unk_12) \
+    { { 0, 0, #name }, {0, 0, #title}, unk_10, config, unk_12, 0 },
+
+// Handle `none` as a special case for scenes without a title card
+#define none ""
 
 SceneTableEntry gSceneTable[] = {
-    TITLED_SCENE(ydan_scene, g_pn_06, 1, 19, 2),
-    TITLED_SCENE(ddan_scene, g_pn_08, 1, 20, 3),
-    TITLED_SCENE(bdan_scene, g_pn_07, 1, 21, 4),
-    TITLED_SCENE(Bmori1_scene, g_pn_01, 2, 22, 5),
-    TITLED_SCENE(HIDAN_scene, g_pn_03, 2, 18, 6),
-    TITLED_SCENE(MIZUsin_scene, g_pn_04, 1, 23, 7),
-    TITLED_SCENE(jyasinzou_scene, g_pn_05, 1, 25, 8),
-    TITLED_SCENE(HAKAdan_scene, g_pn_02, 2, 24, 9),
-    TITLED_SCENE(HAKAdanCH_scene, g_pn_54, 2, 24, 10),
-    TITLED_SCENE(ice_doukutu_scene, g_pn_10, 0, 37, 0),
-    UNTITLED_SCENE(ganon_scene, 2, 0, 0),
-    TITLED_SCENE(men_scene, g_pn_11, 0, 27, 0),
-    TITLED_SCENE(gerudoway_scene, g_pn_49, 0, 40, 0),
-    TITLED_SCENE(ganontika_scene, g_pn_09, 0, 26, 0),
-    UNTITLED_SCENE(ganon_sonogo_scene, 0, 51, 0),
-    UNTITLED_SCENE(ganontikasonogo_scene, 0, 52, 0),
-    TITLED_SCENE(takaraya_scene, g_pn_51, 0, 0, 0),
-    UNTITLED_SCENE(ydan_boss_scene, 0, 28, 0),
-    UNTITLED_SCENE(ddan_boss_scene, 0, 0, 0),
-    UNTITLED_SCENE(bdan_boss_scene, 0, 21, 0),
-    UNTITLED_SCENE(moribossroom_scene, 1, 0, 0),
-    UNTITLED_SCENE(FIRE_bs_scene, 0, 18, 0),
-    UNTITLED_SCENE(MIZUsin_bs_scene, 0, 29, 0),
-    UNTITLED_SCENE(jyasinboss_scene, 0, 0, 0),
-    UNTITLED_SCENE(HAKAdan_bs_scene, 0, 24, 0),
-    UNTITLED_SCENE(ganon_boss_scene, 0, 0, 0),
-    UNTITLED_SCENE(ganon_final_scene, 0, 38, 0),
-    UNTITLED_SCENE(entra_scene, 0, 0, 0),
-    UNTITLED_SCENE(entra_n_scene, 0, 0, 0),
-    UNTITLED_SCENE(enrui_scene, 0, 0, 0),
-    TITLED_SCENE(market_alley_scene, g_pn_18, 0, 0, 0),
-    TITLED_SCENE(market_alley_n_scene, g_pn_18, 0, 0, 0),
-    TITLED_SCENE(market_day_scene, g_pn_17, 0, 0, 0),
-    TITLED_SCENE(market_night_scene, g_pn_17, 0, 0, 0),
-    TITLED_SCENE(market_ruins_scene, g_pn_17, 0, 0, 0),
-    UNTITLED_SCENE(shrine_scene, 0, 0, 0),
-    UNTITLED_SCENE(shrine_n_scene, 0, 0, 0),
-    UNTITLED_SCENE(shrine_r_scene, 0, 0, 0),
-    UNTITLED_SCENE(kokiri_home_scene, 0, 0, 0),
-    UNTITLED_SCENE(kokiri_home3_scene, 0, 0, 0),
-    UNTITLED_SCENE(kokiri_home4_scene, 0, 0, 0),
-    UNTITLED_SCENE(kokiri_home5_scene, 0, 0, 0),
-    UNTITLED_SCENE(kakariko_scene, 0, 0, 0),
-    UNTITLED_SCENE(kakariko3_scene, 0, 0, 0),
-    TITLED_SCENE(shop1_scene, g_pn_23, 0, 0, 0),
-    TITLED_SCENE(kokiri_shop_scene, g_pn_19, 0, 0, 0),
-    TITLED_SCENE(golon_scene, g_pn_20, 0, 0, 0),
-    TITLED_SCENE(zoora_scene, g_pn_21, 0, 0, 0),
-    TITLED_SCENE(drag_scene, g_pn_24, 0, 0, 0),
-    TITLED_SCENE(alley_shop_scene, g_pn_24, 0, 0, 0),
-    TITLED_SCENE(night_shop_scene, g_pn_56, 0, 0, 0),
-    TITLED_SCENE(face_shop_scene, g_pn_50, 0, 0, 0),
-    UNTITLED_SCENE(link_home_scene, 0, 0, 0),
-    UNTITLED_SCENE(impa_scene, 0, 0, 0),
-    TITLED_SCENE(malon_stable_scene, g_pn_48, 0, 0, 0),
-    UNTITLED_SCENE(labo_scene, 0, 0, 0),
-    TITLED_SCENE(hylia_labo_scene, g_pn_26, 0, 43, 0),
-    UNTITLED_SCENE(tent_scene, 0, 0, 0),
-    TITLED_SCENE(hut_scene, g_pn_25, 0, 0, 0),
-    TITLED_SCENE(daiyousei_izumi_scene, g_pn_13, 0, 33, 0),
-    TITLED_SCENE(yousei_izumi_tate_scene, g_pn_45, 0, 39, 0),
-    TITLED_SCENE(yousei_izumi_yoko_scene, g_pn_13, 0, 33, 0),
-    UNTITLED_SCENE(kakusiana_scene, 0, 31, 0),
-    UNTITLED_SCENE(hakaana_scene, 0, 48, 0),
-    UNTITLED_SCENE(hakaana2_scene, 0, 39, 0),
-    TITLED_SCENE(hakaana_ouke_scene, g_pn_44, 0, 42, 0),
-    TITLED_SCENE(syatekijyou_scene, g_pn_15, 0, 34, 0),
-    TITLED_SCENE(tokinoma_scene, g_pn_16, 0, 30, 0),
-    TITLED_SCENE(kenjyanoma_scene, g_pn_14, 0, 32, 0),
-    TITLED_SCENE(hairal_niwa_scene, g_pn_12, 0, 35, 0),
-    TITLED_SCENE(hairal_niwa_n_scene, g_pn_12, 0, 35, 0),
-    UNTITLED_SCENE(hiral_demo_scene, 0, 0, 0),
-    TITLED_SCENE(hakasitarelay_scene, g_pn_57, 0, 48, 0),
-    TITLED_SCENE(turibori_scene, g_pn_46, 0, 50, 0),
-    TITLED_SCENE(nakaniwa_scene, g_pn_12, 0, 47, 0),
-    TITLED_SCENE(bowling_scene, g_pn_47, 0, 41, 0),
-    UNTITLED_SCENE(souko_scene, 0, 44, 0),
-    UNTITLED_SCENE(miharigoya_scene, 0, 45, 0),
-    TITLED_SCENE(mahouya_scene, g_pn_24, 0, 46, 0),
-    UNTITLED_SCENE(ganon_demo_scene, 0, 36, 0),
-    TITLED_SCENE(kinsuta_scene, g_pn_22, 0, 0, 0),
-    TITLED_SCENE(spot00_scene, g_pn_27, 0, 1, 0),
-    TITLED_SCENE(spot01_scene, g_pn_28, 0, 2, 0),
-    TITLED_SCENE(spot02_scene, g_pn_29, 0, 0, 0),
-    TITLED_SCENE(spot03_scene, g_pn_30, 0, 3, 0),
-    TITLED_SCENE(spot04_scene, g_pn_31, 0, 4, 0),
-    TITLED_SCENE(spot05_scene, g_pn_52, 0, 47, 0),
-    TITLED_SCENE(spot06_scene, g_pn_32, 0, 5, 0),
-    TITLED_SCENE(spot07_scene, g_pn_33, 0, 6, 0),
-    TITLED_SCENE(spot08_scene, g_pn_34, 0, 7, 0),
-    TITLED_SCENE(spot09_scene, g_pn_35, 0, 8, 0),
-    TITLED_SCENE(spot10_scene, g_pn_36, 0, 9, 0),
-    TITLED_SCENE(spot11_scene, g_pn_55, 0, 10, 0),
-    TITLED_SCENE(spot12_scene, g_pn_53, 0, 11, 0),
-    TITLED_SCENE(spot13_scene, g_pn_37, 0, 12, 0),
-    TITLED_SCENE(spot15_scene, g_pn_38, 0, 13, 0),
-    TITLED_SCENE(spot16_scene, g_pn_39, 0, 14, 0),
-    TITLED_SCENE(spot17_scene, g_pn_40, 0, 15, 0),
-    TITLED_SCENE(spot18_scene, g_pn_41, 0, 16, 0),
-    TITLED_SCENE(spot20_scene, g_pn_42, 0, 17, 0),
-    TITLED_SCENE(ganon_tou_scene, g_pn_43, 0, 36, 0),
-    UNTITLED_SCENE(test01_scene, 0, 47, 0),
-    UNTITLED_SCENE(besitu_scene, 0, 49, 0),
-    UNTITLED_SCENE(depth_test_scene, 0, 0, 0),
-    UNTITLED_SCENE(syotes_scene, 0, 0, 0),
-    UNTITLED_SCENE(syotes2_scene, 0, 0, 0),
-    UNTITLED_SCENE(sutaru_scene, 0, 0, 0),
-    TITLED_SCENE(hairal_niwa2_scene, g_pn_12, 0, 35, 0),
-    UNTITLED_SCENE(sasatest_scene, 0, 0, 0),
-    UNTITLED_SCENE(testroom_scene, 0, 0, 0),
+    #include "tables/scene_table.h"
 };
+
+#undef none
+
+#undef DEFINE_SCENE
 
 Gfx sDefaultDisplayList[] = {
     gsSPSegment(0x08, gEmptyDL),
@@ -1276,7 +1177,7 @@ void func_8009AE30(PlayState* play) {
 
     gameplayFrames = play->gameplayFrames;
 
-    if (play->sceneNum == SCENE_HAKADAN_BS) {
+    if (play->sceneNum == SCENE_SHADOW_TEMPLE_BOSS) {
         gSPSegment(POLY_OPA_DISP++, 0x08,
                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, (gameplayFrames * 2) % 128, 0, 32, 32, 1,
                                     (gameplayFrames * 2) % 128, 0, 32, 32));
@@ -1444,7 +1345,7 @@ void func_8009BAA4(PlayState* play) {
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, 127 - gameplayFrames % 128, (gameplayFrames * 3) % 128, 32,
                                 32, 1, gameplayFrames % 128, (gameplayFrames * 3) % 128, 32, 32));
 
-    if (play->sceneNum == SCENE_HAIRAL_NIWA) {
+    if (play->sceneNum == SCENE_CASTLE_COURTYARD_GUARDS_DAY) {
         gSPSegment(POLY_XLU_DISP++, 0x09,
                    Gfx_TexScroll(play->state.gfxCtx, 0, (gameplayFrames * 10) % 256, 32, 64));
     }
@@ -1469,7 +1370,7 @@ void func_8009BC44(PlayState* play) {
 
     gameplayFrames = play->gameplayFrames;
 
-    if (play->sceneNum == SCENE_GANON_TOU) {
+    if (play->sceneNum == SCENE_OUTSIDE_GANONS_CASTLE) {
         gSPSegment(POLY_XLU_DISP++, 0x09,
                    Gfx_TexScroll(play->state.gfxCtx, 0, (gameplayFrames * 1) % 256, 64, 64));
         gSPSegment(POLY_XLU_DISP++, 0x08,
@@ -1547,8 +1448,8 @@ void func_8009C0AC(PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 
     if (Flags_GetSwitch(play, 0x37)) {
-        if ((play->sceneNum == SCENE_GANON_DEMO) || (play->sceneNum == SCENE_GANON_FINAL) ||
-            (play->sceneNum == SCENE_GANON_SONOGO) || (play->sceneNum == SCENE_GANONTIKA_SONOGO)) {
+        if ((play->sceneNum == SCENE_GANON_BOSS) || (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
+            (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) || (play->sceneNum == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE)) {
             func_8009BEEC(play);
         }
     }
@@ -2444,7 +2345,7 @@ void func_8009FE58(PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     gameplayFrames = play->gameplayFrames;
-    if (play->sceneNum == SCENE_BDAN) {
+    if (play->sceneNum == SCENE_JABU_JABU) {
         gSPSegment(POLY_OPA_DISP++, 0x08,
                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, gameplayFrames % 128, (gameplayFrames * 2) % 128, 32,
                                     32, 1, 127 - gameplayFrames % 128, (gameplayFrames * 2) % 128, 32, 32));

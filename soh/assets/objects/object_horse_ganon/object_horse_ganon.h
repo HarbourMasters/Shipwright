@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_HORSE_GANON_H
+#define OBJECTS_OBJECT_HORSE_GANON_H 1
 
 #include "align_asset_macro.h"
 
@@ -117,3 +118,5 @@ static const ALIGN_ASSET(2) char object_horse_ganonTex_00B690[] = dobject_horse_
 
 #define dobject_horse_ganonTex_00B610 "__OTR__objects/object_horse_ganon/object_horse_ganonTex_00B610"
 static const ALIGN_ASSET(2) char object_horse_ganonTex_00B610[] = dobject_horse_ganonTex_00B610;
+
+#endif // OBJECTS_OBJECT_HORSE_GANON_H

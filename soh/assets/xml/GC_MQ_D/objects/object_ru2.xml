@@ -1,5 +1,7 @@
 <Root>
     <File Name="object_ru2" Segment="6">
+        <Texture Name="object_ru2Tex_0055C0" OutName="object_ru2Tex_0055C0" Format="ci8" Width="8" Height="32" Offset="0x55C0" TlutOffset="0x43C0" AddedByScript="true"/>
+        <Texture Name="object_ru2Tex_0056C0" OutName="object_ru2Tex_0056C0" Format="rgba16" Width="32" Height="32" Offset="0x56C0" AddedByScript="true"/>
         <!-- Adult Ruto Skeleton -->
         <Skeleton Name="gAdultRutoSkel" Type="Flex" LimbType="Standard" Offset="0xC700"/>
 

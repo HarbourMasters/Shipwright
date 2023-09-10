@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_EFC_DOUGHNUT_H
+#define OBJECTS_OBJECT_EFC_DOUGHNUT_H 1
 
 #include "align_asset_macro.h"
 
@@ -13,3 +14,5 @@ static const ALIGN_ASSET(2) char gDeathMountainCloudCircleFieryDL[] = dgDeathMou
 
 #define dgDeathMountainCloudCircleNormalDL "__OTR__objects/object_efc_doughnut/gDeathMountainCloudCircleNormalDL"
 static const ALIGN_ASSET(2) char gDeathMountainCloudCircleNormalDL[] = dgDeathMountainCloudCircleNormalDL;
+
+#endif // OBJECTS_OBJECT_EFC_DOUGHNUT_H

@@ -4,7 +4,7 @@
         <Texture Name="sTransCircleWaveTex" Format="i8" Width="16" Height="64" Offset="0xE94C8"/>
         <Texture Name="sTransCircleRippleTex" Format="i8" Width="16" Height="64" Offset="0xE98C8"/>
         <Texture Name="sTransCircleStarburstTex" Format="i8" Width="16" Height="64" Offset="0xE9CC8"/>
-        <Array Name="sCircleWipeVtx" Count="34" Offset="0xEA0C8">
+        <Array Name="sTransCircleVtx" Count="34" Offset="0xEA0C8">
             <Vtx/>
         </Array>
         <!-- ZAPD isn't finding symbols correctly, instead finding them much later in `code`-->

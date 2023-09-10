@@ -1,76 +1,231 @@
 <Root>
     <File Name="Bmori1_scene" Segment="2">
+        <Texture Name="Bmori1_sceneTex_014490" OutName="Bmori1_sceneTex_014490" Format="ci8" Width="32" Height="8" Offset="0x14490" TlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_sceneTex_015590" OutName="Bmori1_sceneTex_015590" Format="ci8" Width="16" Height="16" Offset="0x15590" TlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_sceneTex_015690" OutName="Bmori1_sceneTex_015690" Format="ci8" Width="32" Height="32" Offset="0x15690" TlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_sceneTex_015A90" OutName="Bmori1_sceneTex_015A90" Format="ci8" Width="16" Height="16" Offset="0x15A90" TlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_sceneTex_015B90" OutName="Bmori1_sceneTex_015B90" Format="ci8" Width="32" Height="32" Offset="0x15B90" TlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_sceneTLUT_014080" OutName="Bmori1_sceneTLUT_014080" Format="rgba16" Width="16" Height="16" Offset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_sceneTLUT_014288" OutName="Bmori1_sceneTLUT_014288" Format="rgba16" Width="16" Height="16" Offset="0x14288" AddedByScript="true"/>
         <Texture Name="gForestTempleDayEntranceTex" OutName="day_entrance" Format="ia16" Width="8" Height="128" Offset="0x14D90"/>
         <Texture Name="gForestTempleNightEntranceTex" OutName="night_entrance" Format="ia16" Width="8" Height="128" Offset="0x14590"/>
         <Scene Name="Bmori1_scene" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_0" Segment="3">
+        <Texture Name="Bmori1_room_0Tex_005CF8" OutName="Bmori1_room_0Tex_005CF8" Format="ci8" Width="64" Height="32" Offset="0x5CC8" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_0Tex_0064F8" OutName="Bmori1_room_0Tex_0064F8" Format="i8" Width="64" Height="64" Offset="0x64C8" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_0Tex_0074F8" OutName="Bmori1_room_0Tex_0074F8" Format="rgba16" Width="32" Height="32" Offset="0x74C8" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_0Tex_007CF8" OutName="Bmori1_room_0Tex_007CF8" Format="rgba16" Width="32" Height="32" Offset="0x7CC8" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_0Tex_0084F8" OutName="Bmori1_room_0Tex_0084F8" Format="ci8" Width="16" Height="64" Offset="0x84C8" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_0Tex_0088F8" OutName="Bmori1_room_0Tex_0088F8" Format="rgba16" Width="32" Height="64" Offset="0x88C8" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_0Tex_0098F8" OutName="Bmori1_room_0Tex_0098F8" Format="ci8" Width="32" Height="64" Offset="0x98C8" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_0Tex_00A0F8" OutName="Bmori1_room_0Tex_00A0F8" Format="rgba16" Width="32" Height="64" Offset="0xA0C8" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_0Tex_00B0F8" OutName="Bmori1_room_0Tex_00B0F8" Format="ci8" Width="32" Height="32" Offset="0xB0C8" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_0Tex_00B4F8" OutName="Bmori1_room_0Tex_00B4F8" Format="ci8" Width="32" Height="32" Offset="0xB4C8" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_0Tex_00B8F8" OutName="Bmori1_room_0Tex_00B8F8" Format="ci8" Width="64" Height="32" Offset="0xB8C8" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_0Tex_00C0F8" OutName="Bmori1_room_0Tex_00C0F8" Format="ci8" Width="16" Height="32" Offset="0xC0C8" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_0Tex_00C2F8" OutName="Bmori1_room_0Tex_00C2F8" Format="ci8" Width="32" Height="32" Offset="0xC2C8" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_0Tex_00CB88" OutName="Bmori1_room_0Tex_00CB88" Format="rgba16" Width="32" Height="64" Offset="0xCB58" AddedByScript="true"/>
         <Room Name="Bmori1_room_0" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_1" Segment="3">
+        <Texture Name="Bmori1_room_1Tex_003368" OutName="Bmori1_room_1Tex_003368" Format="rgba16" Width="32" Height="32" Offset="0x3348" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_1Tex_003B68" OutName="Bmori1_room_1Tex_003B68" Format="ci8" Width="64" Height="32" Offset="0x3B48" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_1Tex_004368" OutName="Bmori1_room_1Tex_004368" Format="rgba16" Width="32" Height="64" Offset="0x4348" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_1Tex_005368" OutName="Bmori1_room_1Tex_005368" Format="ci8" Width="32" Height="64" Offset="0x5348" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
         <Room Name="Bmori1_room_1" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_2" Segment="3">
+        <Texture Name="Bmori1_room_2Tex_00A380" OutName="Bmori1_room_2Tex_00A380" Format="ci8" Width="64" Height="32" Offset="0xA3A0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_2Tex_00AB80" OutName="Bmori1_room_2Tex_00AB80" Format="ci8" Width="16" Height="64" Offset="0xABA0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_2Tex_00AF80" OutName="Bmori1_room_2Tex_00AF80" Format="rgba16" Width="32" Height="64" Offset="0xAFA0" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_2Tex_00BF80" OutName="Bmori1_room_2Tex_00BF80" Format="rgba16" Width="32" Height="64" Offset="0xBFA0" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_2Tex_00CF80" OutName="Bmori1_room_2Tex_00CF80" Format="ci8" Width="32" Height="32" Offset="0xCFA0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_2Tex_00D380" OutName="Bmori1_room_2Tex_00D380" Format="ci8" Width="64" Height="32" Offset="0xD3A0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_2Tex_00DB80" OutName="Bmori1_room_2Tex_00DB80" Format="ci8" Width="16" Height="32" Offset="0xDBA0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_2Tex_00DD80" OutName="Bmori1_room_2Tex_00DD80" Format="ci8" Width="64" Height="32" Offset="0xDDA0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_2Tex_00E580" OutName="Bmori1_room_2Tex_00E580" Format="ci8" Width="32" Height="32" Offset="0xE5A0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_2Tex_00E980" OutName="Bmori1_room_2Tex_00E980" Format="ci8" Width="32" Height="64" Offset="0xE9A0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_2Tex_00F180" OutName="Bmori1_room_2Tex_00F180" Format="rgba16" Width="32" Height="32" Offset="0xF1A0" AddedByScript="true"/>
         <Room Name="Bmori1_room_2" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_3" Segment="3">
+        <Texture Name="Bmori1_room_3Tex_0023D8" OutName="Bmori1_room_3Tex_0023D8" Format="rgba16" Width="32" Height="32" Offset="0x23E8" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_3Tex_002BD8" OutName="Bmori1_room_3Tex_002BD8" Format="ci8" Width="16" Height="128" Offset="0x2BE8" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_3Tex_0033D8" OutName="Bmori1_room_3Tex_0033D8" Format="ci8" Width="32" Height="32" Offset="0x33E8" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_3Tex_0037D8" OutName="Bmori1_room_3Tex_0037D8" Format="rgba16" Width="8" Height="16" Offset="0x37E8" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_3Tex_0038D8" OutName="Bmori1_room_3Tex_0038D8" Format="rgba16" Width="16" Height="8" Offset="0x38E8" AddedByScript="true"/>
         <Room Name="Bmori1_room_3" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_4" Segment="3">
+        <Texture Name="Bmori1_room_4Tex_0022B8" OutName="Bmori1_room_4Tex_0022B8" Format="rgba16" Width="32" Height="32" Offset="0x22A8" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_4Tex_002AB8" OutName="Bmori1_room_4Tex_002AB8" Format="ci8" Width="64" Height="32" Offset="0x2AA8" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
         <Room Name="Bmori1_room_4" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_5" Segment="3">
+        <Texture Name="Bmori1_room_5Tex_0023D0" OutName="Bmori1_room_5Tex_0023D0" Format="ci8" Width="32" Height="32" Offset="0x23C0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_5Tex_0027D0" OutName="Bmori1_room_5Tex_0027D0" Format="ci8" Width="16" Height="128" Offset="0x27C0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_5Tex_002FD0" OutName="Bmori1_room_5Tex_002FD0" Format="ci8" Width="32" Height="32" Offset="0x2FC0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_5Tex_0033D0" OutName="Bmori1_room_5Tex_0033D0" Format="rgba16" Width="8" Height="16" Offset="0x33C0" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_5Tex_0034D0" OutName="Bmori1_room_5Tex_0034D0" Format="rgba16" Width="16" Height="8" Offset="0x34C0" AddedByScript="true"/>
         <Room Name="Bmori1_room_5" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_6" Segment="3">
+        <Texture Name="Bmori1_room_6Tex_006630" OutName="Bmori1_room_6Tex_006630" Format="rgba16" Width="32" Height="32" Offset="0x6620" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_6Tex_006E30" OutName="Bmori1_room_6Tex_006E30" Format="rgba16" Width="32" Height="32" Offset="0x6E20" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_6Tex_007630" OutName="Bmori1_room_6Tex_007630" Format="ci8" Width="32" Height="32" Offset="0x7620" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_6Tex_007A30" OutName="Bmori1_room_6Tex_007A30" Format="ci8" Width="64" Height="32" Offset="0x7A20" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_6Tex_008230" OutName="Bmori1_room_6Tex_008230" Format="ci8" Width="64" Height="32" Offset="0x8220" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_6Tex_008A30" OutName="Bmori1_room_6Tex_008A30" Format="ci8" Width="16" Height="32" Offset="0x8A20" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_6Tex_008C30" OutName="Bmori1_room_6Tex_008C30" Format="ci8" Width="32" Height="64" Offset="0x8C20" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
         <Room Name="Bmori1_room_6" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_7" Segment="3">
+        <Texture Name="Bmori1_room_7Tex_007DD0" OutName="Bmori1_room_7Tex_007DD0" Format="rgba16" Width="32" Height="32" Offset="0x7D60" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_7Tex_0085D0" OutName="Bmori1_room_7Tex_0085D0" Format="rgba16" Width="32" Height="32" Offset="0x8560" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_7Tex_008DD0" OutName="Bmori1_room_7Tex_008DD0" Format="ci8" Width="32" Height="32" Offset="0x8D60" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_7Tex_0091D0" OutName="Bmori1_room_7Tex_0091D0" Format="ci8" Width="32" Height="32" Offset="0x9160" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_7Tex_0095D0" OutName="Bmori1_room_7Tex_0095D0" Format="ci8" Width="32" Height="64" Offset="0x9560" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_7Tex_009DD0" OutName="Bmori1_room_7Tex_009DD0" Format="ci8" Width="32" Height="64" Offset="0x9D60" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_7Tex_00A5D0" OutName="Bmori1_room_7Tex_00A5D0" Format="ci8" Width="64" Height="32" Offset="0xA560" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_7Tex_00ADD0" OutName="Bmori1_room_7Tex_00ADD0" Format="rgba16" Width="32" Height="32" Offset="0xAD60" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_7Tex_00B5D0" OutName="Bmori1_room_7Tex_00B5D0" Format="ci8" Width="64" Height="32" Offset="0xB560" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_7Tex_00BDD0" OutName="Bmori1_room_7Tex_00BDD0" Format="rgba16" Width="32" Height="64" Offset="0xBD60" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_7Tex_00CDD0" OutName="Bmori1_room_7Tex_00CDD0" Format="rgba16" Width="32" Height="64" Offset="0xCD60" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_7Tex_00DDD0" OutName="Bmori1_room_7Tex_00DDD0" Format="rgba16" Width="32" Height="32" Offset="0xDD60" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_7Tex_00EFD8" OutName="Bmori1_room_7Tex_00EFD8" Format="i4" Width="64" Height="128" Offset="0xEF68" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_7Tex_00FFD8" OutName="Bmori1_room_7Tex_00FFD8" Format="rgba16" Width="32" Height="64" Offset="0xFF68" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_7Tex_010FD8" OutName="Bmori1_room_7Tex_010FD8" Format="rgba16" Width="32" Height="32" Offset="0x10F68" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_7Tex_0117D8" OutName="Bmori1_room_7Tex_0117D8" Format="ia16" Width="32" Height="32" Offset="0x11768" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_7Tex_011FD8" OutName="Bmori1_room_7Tex_011FD8" Format="rgba16" Width="32" Height="64" Offset="0x11F68" AddedByScript="true"/>
         <Room Name="Bmori1_room_7" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_8" Segment="3">
+        <Texture Name="Bmori1_room_8Tex_00AC10" OutName="Bmori1_room_8Tex_00AC10" Format="rgba16" Width="32" Height="32" Offset="0xABF0" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_8Tex_00B410" OutName="Bmori1_room_8Tex_00B410" Format="rgba16" Width="32" Height="64" Offset="0xB3F0" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_8Tex_00C410" OutName="Bmori1_room_8Tex_00C410" Format="rgba16" Width="32" Height="32" Offset="0xC3F0" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_8Tex_00CC10" OutName="Bmori1_room_8Tex_00CC10" Format="ci8" Width="32" Height="32" Offset="0xCBF0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_8Tex_00D010" OutName="Bmori1_room_8Tex_00D010" Format="ci8" Width="32" Height="32" Offset="0xCFF0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_8Tex_00D410" OutName="Bmori1_room_8Tex_00D410" Format="ci8" Width="32" Height="32" Offset="0xD3F0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_8Tex_00D810" OutName="Bmori1_room_8Tex_00D810" Format="ci8" Width="32" Height="64" Offset="0xD7F0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_8Tex_00E010" OutName="Bmori1_room_8Tex_00E010" Format="ci8" Width="32" Height="64" Offset="0xDFF0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_8Tex_00E810" OutName="Bmori1_room_8Tex_00E810" Format="ci8" Width="64" Height="32" Offset="0xE7F0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_8Tex_00F010" OutName="Bmori1_room_8Tex_00F010" Format="ci8" Width="64" Height="32" Offset="0xEFF0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_8Tex_00F810" OutName="Bmori1_room_8Tex_00F810" Format="rgba16" Width="32" Height="64" Offset="0xF7F0" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_8Tex_010810" OutName="Bmori1_room_8Tex_010810" Format="rgba16" Width="32" Height="64" Offset="0x107F0" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_8Tex_011810" OutName="Bmori1_room_8Tex_011810" Format="ci8" Width="32" Height="32" Offset="0x117F0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_8Tex_011C10" OutName="Bmori1_room_8Tex_011C10" Format="ci8" Width="64" Height="32" Offset="0x11BF0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_8Tex_012410" OutName="Bmori1_room_8Tex_012410" Format="rgba16" Width="32" Height="32" Offset="0x123F0" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_8Tex_013AB0" OutName="Bmori1_room_8Tex_013AB0" Format="i4" Width="64" Height="128" Offset="0x13A90" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_8Tex_014AB0" OutName="Bmori1_room_8Tex_014AB0" Format="rgba16" Width="32" Height="32" Offset="0x14A90" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_8Tex_0152B0" OutName="Bmori1_room_8Tex_0152B0" Format="ia16" Width="32" Height="32" Offset="0x15290" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_8Tex_015AB0" OutName="Bmori1_room_8Tex_015AB0" Format="rgba16" Width="32" Height="64" Offset="0x15A90" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_8Tex_016AB0" OutName="Bmori1_room_8Tex_016AB0" Format="rgba16" Width="32" Height="64" Offset="0x16A90" AddedByScript="true"/>
         <Room Name="Bmori1_room_8" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_9" Segment="3">
+        <Texture Name="Bmori1_room_9Tex_0048B8" OutName="Bmori1_room_9Tex_0048B8" Format="rgba16" Width="32" Height="32" Offset="0x4888" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_9Tex_0050B8" OutName="Bmori1_room_9Tex_0050B8" Format="ci8" Width="32" Height="32" Offset="0x5088" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_9Tex_0054B8" OutName="Bmori1_room_9Tex_0054B8" Format="ci8" Width="32" Height="64" Offset="0x5488" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_9Tex_005CB8" OutName="Bmori1_room_9Tex_005CB8" Format="ci8" Width="64" Height="32" Offset="0x5C88" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_9Tex_0064B8" OutName="Bmori1_room_9Tex_0064B8" Format="rgba16" Width="32" Height="32" Offset="0x6488" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_9Tex_006CB8" OutName="Bmori1_room_9Tex_006CB8" Format="ci8" Width="64" Height="32" Offset="0x6C88" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_9Tex_0074B8" OutName="Bmori1_room_9Tex_0074B8" Format="rgba16" Width="32" Height="64" Offset="0x7488" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_9Tex_008958" OutName="Bmori1_room_9Tex_008958" Format="ia16" Width="32" Height="32" Offset="0x8928" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_9Tex_009158" OutName="Bmori1_room_9Tex_009158" Format="rgba16" Width="32" Height="64" Offset="0x9128" AddedByScript="true"/>
         <Room Name="Bmori1_room_9" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_10" Segment="3">
+        <Texture Name="Bmori1_room_10Tex_001260" OutName="Bmori1_room_10Tex_001260" Format="rgba16" Width="32" Height="32" Offset="0x1250" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_10Tex_001A60" OutName="Bmori1_room_10Tex_001A60" Format="ci8" Width="16" Height="128" Offset="0x1A50" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_10Tex_002260" OutName="Bmori1_room_10Tex_002260" Format="ci8" Width="64" Height="32" Offset="0x2250" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_10Tex_002A60" OutName="Bmori1_room_10Tex_002A60" Format="rgba16" Width="32" Height="64" Offset="0x2A50" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_10Tex_003A60" OutName="Bmori1_room_10Tex_003A60" Format="rgba16" Width="32" Height="64" Offset="0x3A50" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_10Tex_004BD8" OutName="Bmori1_room_10Tex_004BD8" Format="ia16" Width="32" Height="32" Offset="0x4BC8" AddedByScript="true"/>
         <Room Name="Bmori1_room_10" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_11" Segment="3">
+        <Texture Name="Bmori1_room_11Tex_008198" OutName="Bmori1_room_11Tex_008198" Format="rgba16" Width="64" Height="32" Offset="0x8118" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_11Tex_009198" OutName="Bmori1_room_11Tex_009198" Format="ci8" Width="32" Height="32" Offset="0x9118" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_11Tex_009598" OutName="Bmori1_room_11Tex_009598" Format="rgba16" Width="32" Height="32" Offset="0x9518" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_11Tex_009D98" OutName="Bmori1_room_11Tex_009D98" Format="i4" Width="64" Height="64" Offset="0x9D18" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_11Tex_00A598" OutName="Bmori1_room_11Tex_00A598" Format="ci8" Width="32" Height="32" Offset="0xA518" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
         <Room Name="Bmori1_room_11" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_12" Segment="3">
+        <Texture Name="Bmori1_room_12Tex_004A00" OutName="Bmori1_room_12Tex_004A00" Format="ci8" Width="32" Height="32" Offset="0x49F0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_12Tex_004E00" OutName="Bmori1_room_12Tex_004E00" Format="ci8" Width="32" Height="64" Offset="0x4DF0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_12Tex_005600" OutName="Bmori1_room_12Tex_005600" Format="ci8" Width="64" Height="32" Offset="0x55F0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_12Tex_005E00" OutName="Bmori1_room_12Tex_005E00" Format="ci8" Width="64" Height="32" Offset="0x5DF0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_12Tex_006600" OutName="Bmori1_room_12Tex_006600" Format="ci8" Width="64" Height="32" Offset="0x65F0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_12Tex_006E00" OutName="Bmori1_room_12Tex_006E00" Format="ci8" Width="32" Height="32" Offset="0x6DF0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_12Tex_007200" OutName="Bmori1_room_12Tex_007200" Format="rgba16" Width="32" Height="32" Offset="0x71F0" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_12Tex_007BD8" OutName="Bmori1_room_12Tex_007BD8" Format="ia16" Width="32" Height="32" Offset="0x7BC8" AddedByScript="true"/>
         <Room Name="Bmori1_room_12" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_13" Segment="3">
+        <Texture Name="Bmori1_room_13Tex_004CD0" OutName="Bmori1_room_13Tex_004CD0" Format="rgba16" Width="32" Height="32" Offset="0x4CC0" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_13Tex_0054D0" OutName="Bmori1_room_13Tex_0054D0" Format="ci8" Width="32" Height="64" Offset="0x54C0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_13Tex_005CD0" OutName="Bmori1_room_13Tex_005CD0" Format="ci8" Width="64" Height="32" Offset="0x5CC0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_13Tex_0064D0" OutName="Bmori1_room_13Tex_0064D0" Format="ci8" Width="64" Height="32" Offset="0x64C0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_13Tex_006CD0" OutName="Bmori1_room_13Tex_006CD0" Format="ci8" Width="64" Height="32" Offset="0x6CC0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_13Tex_0074D0" OutName="Bmori1_room_13Tex_0074D0" Format="ci8" Width="32" Height="32" Offset="0x74C0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_13Tex_0078D0" OutName="Bmori1_room_13Tex_0078D0" Format="rgba16" Width="32" Height="32" Offset="0x78C0" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_13Tex_0082A8" OutName="Bmori1_room_13Tex_0082A8" Format="ia16" Width="32" Height="32" Offset="0x8298" AddedByScript="true"/>
         <Room Name="Bmori1_room_13" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_14" Segment="3">
+        <Texture Name="Bmori1_room_14Tex_003560" OutName="Bmori1_room_14Tex_003560" Format="ci8" Width="32" Height="32" Offset="0x3530" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_14Tex_003960" OutName="Bmori1_room_14Tex_003960" Format="rgba16" Width="32" Height="32" Offset="0x3930" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_14Tex_004160" OutName="Bmori1_room_14Tex_004160" Format="rgba16" Width="32" Height="32" Offset="0x4130" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_14Tex_004960" OutName="Bmori1_room_14Tex_004960" Format="ci8" Width="32" Height="32" Offset="0x4930" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_14Tex_004D60" OutName="Bmori1_room_14Tex_004D60" Format="ci8" Width="64" Height="32" Offset="0x4D30" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_14Tex_005770" OutName="Bmori1_room_14Tex_005770" Format="ia8" Width="32" Height="32" Offset="0x5740" AddedByScript="true"/>
         <Room Name="Bmori1_room_14" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_15" Segment="3">
+        <Texture Name="Bmori1_room_15Tex_0012E0" OutName="Bmori1_room_15Tex_0012E0" Format="ci8" Width="32" Height="64" Offset="0x1290" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_15Tex_001AE0" OutName="Bmori1_room_15Tex_001AE0" Format="ci8" Width="32" Height="32" Offset="0x1A90" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_15Tex_001EE0" OutName="Bmori1_room_15Tex_001EE0" Format="ci8" Width="64" Height="32" Offset="0x1E90" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
         <Room Name="Bmori1_room_15" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_16" Segment="3">
+        <Texture Name="Bmori1_room_16Tex_002F98" OutName="Bmori1_room_16Tex_002F98" Format="rgba16" Width="32" Height="32" Offset="0x2F98" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_16Tex_003798" OutName="Bmori1_room_16Tex_003798" Format="ci8" Width="64" Height="32" Offset="0x3798" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_16Tex_003F98" OutName="Bmori1_room_16Tex_003F98" Format="ci8" Width="32" Height="32" Offset="0x3F98" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_16Tex_004398" OutName="Bmori1_room_16Tex_004398" Format="ci8" Width="32" Height="32" Offset="0x4398" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_16Tex_004798" OutName="Bmori1_room_16Tex_004798" Format="ci8" Width="64" Height="32" Offset="0x4798" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
         <Room Name="Bmori1_room_16" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_17" Segment="3">
+        <Texture Name="Bmori1_room_17Tex_0064E8" OutName="Bmori1_room_17Tex_0064E8" Format="rgba16" Width="32" Height="32" Offset="0x64B8" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_17Tex_006CE8" OutName="Bmori1_room_17Tex_006CE8" Format="rgba16" Width="32" Height="32" Offset="0x6CB8" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_17Tex_0074E8" OutName="Bmori1_room_17Tex_0074E8" Format="ci8" Width="32" Height="32" Offset="0x74B8" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_17Tex_0078E8" OutName="Bmori1_room_17Tex_0078E8" Format="ci8" Width="32" Height="32" Offset="0x78B8" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_17Tex_007CE8" OutName="Bmori1_room_17Tex_007CE8" Format="ci8" Width="32" Height="32" Offset="0x7CB8" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_17Tex_0080E8" OutName="Bmori1_room_17Tex_0080E8" Format="ci8" Width="64" Height="32" Offset="0x80B8" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_17Tex_0088E8" OutName="Bmori1_room_17Tex_0088E8" Format="ci8" Width="32" Height="64" Offset="0x88B8" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
         <Room Name="Bmori1_room_17" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_18" Segment="3">
+        <Texture Name="Bmori1_room_18Tex_000B30" OutName="Bmori1_room_18Tex_000B30" Format="ci8" Width="64" Height="32" Offset="0xB40" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
         <Room Name="Bmori1_room_18" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_19" Segment="3">
         <Room Name="Bmori1_room_19" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_20" Segment="3">
+        <Texture Name="Bmori1_room_20Tex_0006F8" OutName="Bmori1_room_20Tex_0006F8" Format="ci8" Width="32" Height="64" Offset="0x6F8" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_20Tex_000EF8" OutName="Bmori1_room_20Tex_000EF8" Format="ci8" Width="32" Height="32" Offset="0xEF8" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14080" AddedByScript="true"/>
         <Room Name="Bmori1_room_20" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_21" Segment="3">
+        <Texture Name="Bmori1_room_21Tex_000F70" OutName="Bmori1_room_21Tex_000F70" Format="ci8" Width="64" Height="32" Offset="0xF80" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
         <Room Name="Bmori1_room_21" Offset="0x0"/>
     </File>
     <File Name="Bmori1_room_22" Segment="3">
+        <Texture Name="Bmori1_room_22Tex_0005E0" OutName="Bmori1_room_22Tex_0005E0" Format="rgba16" Width="64" Height="32" Offset="0x5E0" AddedByScript="true"/>
+        <Texture Name="Bmori1_room_22Tex_0015E0" OutName="Bmori1_room_22Tex_0015E0" Format="ci8" Width="64" Height="32" Offset="0x15E0" ExternalTlut="Bmori1_scene" ExternalTlutOffset="0x14288" AddedByScript="true"/>
         <Room Name="Bmori1_room_22" Offset="0x0"/>
     </File>
 </Root>

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_REEBA_H
+#define OBJECTS_OBJECT_REEBA_H 1
 
 #include "align_asset_macro.h"
 
@@ -70,3 +71,6 @@ static const ALIGN_ASSET(2) char object_reeba_Tex_0015D8[] = dobject_reeba_Tex_0
 
 #define dobject_reeba_Skel_001EE8 "__OTR__objects/object_reeba/object_reeba_Skel_001EE8"
 static const ALIGN_ASSET(2) char object_reeba_Skel_001EE8[] = dobject_reeba_Skel_001EE8;
+
+
+#endif // OBJECTS_OBJECT_REEBA_H

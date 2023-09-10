@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_FA_H
+#define OBJECTS_OBJECT_FA_H 1
 
 #include "align_asset_macro.h"
 
@@ -34,3 +35,5 @@ static const ALIGN_ASSET(2) char gFaEyeClosedTex[] = dgFaEyeClosedTex;
 
 #define dgFaDL "__OTR__objects/object_fa/gFaDL"
 static const ALIGN_ASSET(2) char gFaDL[] = dgFaDL;
+
+#endif // OBJECTS_OBJECT_FA_H

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OVERLAYS_OVL_ARROW_ICE_H
+#define OVERLAYS_OVL_ARROW_ICE_H 1
 
 #include "align_asset_macro.h"
 
@@ -16,3 +17,5 @@ static const ALIGN_ASSET(2) char sMaterialDL[] = dsMaterialDL;
 
 #define dsModelDL "__OTR__overlays/ovl_Arrow_Ice/sModelDL"
 static const ALIGN_ASSET(2) char sModelDL[] = dsModelDL;
+
+#endif // OVERLAYS_OVL_ARROW_ICE_H

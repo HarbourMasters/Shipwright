@@ -70,10 +70,10 @@ ItemOverride_Value Item::Value() const {
     if (getItemId == GI_ICE_TRAP) {
         val.looksLikeItemId = RandomElement(IceTrapModels);
     }
-    if (!Settings::ColoredBossKeys && (getItemId >= 0x95 && getItemId <= 0x9A)) { //Boss keys
+    if (getItemId >= 0x95 && getItemId <= 0x9A) { //Boss keys
         val.looksLikeItemId = GI_KEY_BOSS;
     }
-    if (!Settings::ColoredKeys && (getItemId >= 0xAF && getItemId <= 0xB7)) { //Small keys
+    if (getItemId >= 0xAF && getItemId <= 0xB7) { //Small keys
         val.looksLikeItemId = GI_KEY_SMALL;
     }
     if (type == ITEMTYPE_SHOP) {

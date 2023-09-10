@@ -9,6 +9,7 @@
 #include "overlays/actors/ovl_En_Anubice_Tag/z_en_anubice_tag.h"
 #include "overlays/actors/ovl_Bg_Hidan_Curtain/z_bg_hidan_curtain.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -314,7 +315,7 @@ void EnAnubice_SetupDie(EnAnubice* this, PlayState* play) {
     }
 
     this->actionFunc = EnAnubice_Die;
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ANUBIS]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnAnubice_Die(EnAnubice* this, PlayState* play) {

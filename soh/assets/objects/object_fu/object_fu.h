@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_FU_H
+#define OBJECTS_OBJECT_FU_H 1
 
 #include "align_asset_macro.h"
 
@@ -100,3 +101,6 @@ static const ALIGN_ASSET(2) char gWindmillManHairTex[] = dgWindmillManHairTex;
 
 #define dgWindmillManSkel "__OTR__objects/object_fu/gWindmillManSkel"
 static const ALIGN_ASSET(2) char gWindmillManSkel[] = dgWindmillManSkel;
+
+
+#endif // OBJECTS_OBJECT_FU_H

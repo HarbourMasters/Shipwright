@@ -1,11 +1,21 @@
 <Root>
     <File Name="ddan_boss_scene" Segment="2">
+        <Texture Name="ddan_boss_sceneTex_001058" OutName="ddan_boss_sceneTex_001058" Format="ci8" Width="32" Height="64" Offset="0x1058" TlutOffset="0xE50" AddedByScript="true"/>
+        <Texture Name="ddan_boss_sceneTex_001858" OutName="ddan_boss_sceneTex_001858" Format="ci8" Width="32" Height="64" Offset="0x1858" TlutOffset="0xE50" AddedByScript="true"/>
+        <Texture Name="ddan_boss_sceneTex_002058" OutName="ddan_boss_sceneTex_002058" Format="ci8" Width="32" Height="64" Offset="0x2058" TlutOffset="0xE50" AddedByScript="true"/>
+        <Texture Name="ddan_boss_sceneTLUT_000E50" OutName="ddan_boss_sceneTLUT_000E50" Format="rgba16" Width="16" Height="16" Offset="0xE50" AddedByScript="true"/>
         <Scene Name="ddan_boss_scene" Offset="0x0"/>
     </File>
     <File Name="ddan_boss_room_0" Segment="3">
+        <Texture Name="ddan_boss_room_0Tex_003628" OutName="ddan_boss_room_0Tex_003628" Format="ci8" Width="32" Height="32" Offset="0x3628" ExternalTlut="ddan_boss_scene" ExternalTlutOffset="0xE50" AddedByScript="true"/>
+        <Texture Name="ddan_boss_room_0Tex_003A28" OutName="ddan_boss_room_0Tex_003A28" Format="ci8" Width="32" Height="32" Offset="0x3A28" ExternalTlut="ddan_boss_scene" ExternalTlutOffset="0xE50" AddedByScript="true"/>
+        <Texture Name="ddan_boss_room_0Tex_003E28" OutName="ddan_boss_room_0Tex_003E28" Format="ci8" Width="32" Height="64" Offset="0x3E28" ExternalTlut="ddan_boss_scene" ExternalTlutOffset="0xE50" AddedByScript="true"/>
+        <Texture Name="ddan_boss_room_0Tex_004628" OutName="ddan_boss_room_0Tex_004628" Format="ci8" Width="32" Height="64" Offset="0x4628" ExternalTlut="ddan_boss_scene" ExternalTlutOffset="0xE50" AddedByScript="true"/>
         <Room Name="ddan_boss_room_0" Offset="0x0"/>
     </File>
     <File Name="ddan_boss_room_1" Segment="3">
+        <Texture Name="ddan_boss_room_1Tex_0031D8" OutName="ddan_boss_room_1Tex_0031D8" Format="ci8" Width="32" Height="64" Offset="0x31D8" ExternalTlut="ddan_boss_scene" ExternalTlutOffset="0xE50" AddedByScript="true"/>
+        <Texture Name="ddan_boss_room_1Tex_0039D8" OutName="ddan_boss_room_1Tex_0039D8" Format="ci8" Width="32" Height="32" Offset="0x39D8" ExternalTlut="ddan_boss_scene" ExternalTlutOffset="0xE50" AddedByScript="true"/>
         <Texture Name="gDodongosCavernBossLavaFloorTex" OutName="lava_floor" Format="rgba16" Width="64" Height="32" Offset="0x21D8"/>
         <Room Name="ddan_boss_room_1" Offset="0x0"/>
     </File>

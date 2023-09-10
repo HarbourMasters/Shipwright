@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_OBJECT_GANON_H
+#define TEXTURES_OBJECT_GANON_H 1
 
 #include "align_asset_macro.h"
 
@@ -10,3 +11,5 @@ static const ALIGN_ASSET(2) char gGanondorfTitleCardGERTex[] = dgGanondorfTitleC
 
 #define dgGanondorfTitleCardFRATex "__OTR__textures/object_ganon/gGanondorfTitleCardFRATex"
 static const ALIGN_ASSET(2) char gGanondorfTitleCardFRATex[] = dgGanondorfTitleCardFRATex;
+
+#endif // TEXTURES_OBJECT_GANON_H

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_POH_H
+#define OBJECTS_OBJECT_POH_H 1
 
 #include "align_asset_macro.h"
 
@@ -88,3 +89,5 @@ static const ALIGN_ASSET(2) char object_pohTex_003910[] = dobject_pohTex_003910;
 
 #define dobject_pohTex_004790 "__OTR__objects/object_poh/object_pohTex_004790"
 static const ALIGN_ASSET(2) char object_pohTex_004790[] = dobject_pohTex_004790;
+
+#endif // OBJECTS_OBJECT_POH_H
