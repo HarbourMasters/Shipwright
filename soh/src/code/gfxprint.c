@@ -1,4 +1,5 @@
 #include "global.h"
+#include "align_asset_macro.h"
 
 u16 sGfxPrintFontTLUT[64] = {
     0x0000, 0xFFFF, 0x0000, 0xFFFF, 0x0000, 0xFFFF, 0x0000, 0xFFFF, 0x0000, 0xFFFF, 0x0000, 0xFFFF, 0x0000,
@@ -128,8 +129,12 @@ u8 sGfxPrintFontData[(16 * 256) / 2] = {
 
 // Can be used to set GFXP_FLAG_ENLARGE by default
 static u8 sDefaultSpecialFlags;
-static const char rGfxPrintFontData[] = "__OTR__textures/font/sGfxPrintFontData";
-static const char rGfxPrintFontDataAlt[] = "__OTR__alt/textures/font/sGfxPrintFontData";
+
+#define drGfxPrintFontData "__OTR__textures/font/sGfxPrintFontData";
+static const ALIGN_ASSET(2) char rGfxPrintFontData[] = drGfxPrintFontData;
+
+#define drGfxPrintFontDataAlt "__OTR__alt/textures/font/sGfxPrintFontData";
+static const ALIGN_ASSET(2) char rGfxPrintFontDataAlt[] = drGfxPrintFontDataAlt;
 
 // OTRTODO: this isn't as clean as it could be if we implemented
 // the GfxPrint texture extraction to `.otr` as described in
