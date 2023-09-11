@@ -1,5 +1,16 @@
 <Root>
     <File Name="object_po_field" Segment="6">
+        <Texture Name="object_po_fieldTex_002470" OutName="object_po_fieldTex_002470" Format="rgba16" Width="16" Height="16" Offset="0x2470" AddedByScript="true"/>
+        <Texture Name="object_po_fieldTex_002670" OutName="object_po_fieldTex_002670" Format="rgba16" Width="16" Height="16" Offset="0x2670" AddedByScript="true"/>
+        <Texture Name="object_po_fieldTex_002870" OutName="object_po_fieldTex_002870" Format="rgba16" Width="32" Height="32" Offset="0x2870" AddedByScript="true"/>
+        <Texture Name="object_po_fieldTex_003070" OutName="object_po_fieldTex_003070" Format="rgba16" Width="16" Height="16" Offset="0x3070" AddedByScript="true"/>
+        <Texture Name="object_po_fieldTex_003270" OutName="object_po_fieldTex_003270" Format="rgba16" Width="8" Height="8" Offset="0x3270" AddedByScript="true"/>
+        <Texture Name="object_po_fieldTex_0032F0" OutName="object_po_fieldTex_0032F0" Format="rgba16" Width="16" Height="8" Offset="0x32F0" AddedByScript="true"/>
+        <Texture Name="object_po_fieldTex_0033F0" OutName="object_po_fieldTex_0033F0" Format="rgba16" Width="16" Height="16" Offset="0x33F0" AddedByScript="true"/>
+        <Texture Name="object_po_fieldTex_0035F0" OutName="object_po_fieldTex_0035F0" Format="rgba16" Width="16" Height="16" Offset="0x35F0" AddedByScript="true"/>
+        <Texture Name="object_po_fieldTex_0037F0" OutName="object_po_fieldTex_0037F0" Format="rgba16" Width="16" Height="16" Offset="0x37F0" AddedByScript="true"/>
+        <Texture Name="object_po_fieldTex_005AB0" OutName="object_po_fieldTex_005AB0" Format="rgba16" Width="16" Height="16" Offset="0x5AB0" AddedByScript="true"/>
+        <Texture Name="object_po_fieldTex_005CB0" OutName="object_po_fieldTex_005CB0" Format="rgba16" Width="8" Height="8" Offset="0x5CB0" AddedByScript="true"/>
         <Animation Name="gPoeFieldAttackAnim" Offset="0x0158"/>
         <Animation Name="gPoeFieldDamagedAnim" Offset="0x0454"/>
         <Animation Name="gPoeFieldFleeAnim" Offset="0x0608"/>
