@@ -186,10 +186,10 @@ void BgIceShelter_Init(Actor* thisx, PlayState* play) {
 
     switch (type) {
         case 2:
-            func_80890874(this, play, &object_ice_objects_Col_001C1C, 0);
+            func_80890874(this, play, &gRedIcePlatformCol, 0);
             break;
         case 3:
-            func_80890874(this, play, &object_ice_objects_Col_002920, 0);
+            func_80890874(this, play, &gRedIceWallCol, 0);
             break;
     }
 
@@ -477,7 +477,7 @@ void BgIceShelter_Draw(Actor* thisx, PlayState* play2) {
                                         -play->gameplayFrames & 0x7F, 0x20, 0x20, 1,
                                         -play->gameplayFrames & 0x7F, play->gameplayFrames & 0x7F, 0x20,
                                         0x20));
-            gSPDisplayList(POLY_XLU_DISP++, object_ice_objects_DL_0006F0);
+            gSPDisplayList(POLY_XLU_DISP++, gRedIceBlockDL);
             break;
 
         case 2:
@@ -489,11 +489,11 @@ void BgIceShelter_Draw(Actor* thisx, PlayState* play2) {
                                         play->gameplayFrames & 0xFF, 0x40, 0x40, 1,
                                         play->gameplayFrames & 0xFF, play->gameplayFrames & 0xFF, 0x40,
                                         0x40));
-            gSPDisplayList(POLY_XLU_DISP++, object_ice_objects_DL_0012A0);
+            gSPDisplayList(POLY_XLU_DISP++, gRedIcePlatformDL);
             break;
 
         case 3:
-            gSPDisplayList(POLY_XLU_DISP++, object_ice_objects_DL_002640);
+            gSPDisplayList(POLY_XLU_DISP++, gRedIceWallDL);
             break;
     }
 

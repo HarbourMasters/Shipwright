@@ -3,64 +3,64 @@
 
 #include "align_asset_macro.h"
 
-#define dgForestMedallionIconTex "__OTR__textures/icon_item_24_static/gForestMedallionIconTex"
-static const ALIGN_ASSET(2) char gForestMedallionIconTex[] = dgForestMedallionIconTex;
+#define dgQuestIconMedallionForestTex "__OTR__textures/icon_item_24_static/gQuestIconMedallionForestTex"
+static const ALIGN_ASSET(2) char gQuestIconMedallionForestTex[] = dgQuestIconMedallionForestTex;
 
-#define dgFireMedallionIconTex "__OTR__textures/icon_item_24_static/gFireMedallionIconTex"
-static const ALIGN_ASSET(2) char gFireMedallionIconTex[] = dgFireMedallionIconTex;
+#define dgQuestIconMedallionFireTex "__OTR__textures/icon_item_24_static/gQuestIconMedallionFireTex"
+static const ALIGN_ASSET(2) char gQuestIconMedallionFireTex[] = dgQuestIconMedallionFireTex;
 
-#define dgWaterMedallionIconTex "__OTR__textures/icon_item_24_static/gWaterMedallionIconTex"
-static const ALIGN_ASSET(2) char gWaterMedallionIconTex[] = dgWaterMedallionIconTex;
+#define dgQuestIconMedallionWaterTex "__OTR__textures/icon_item_24_static/gQuestIconMedallionWaterTex"
+static const ALIGN_ASSET(2) char gQuestIconMedallionWaterTex[] = dgQuestIconMedallionWaterTex;
 
-#define dgSpiritMedallionIconTex "__OTR__textures/icon_item_24_static/gSpiritMedallionIconTex"
-static const ALIGN_ASSET(2) char gSpiritMedallionIconTex[] = dgSpiritMedallionIconTex;
+#define dgQuestIconMedallionSpiritTex "__OTR__textures/icon_item_24_static/gQuestIconMedallionSpiritTex"
+static const ALIGN_ASSET(2) char gQuestIconMedallionSpiritTex[] = dgQuestIconMedallionSpiritTex;
 
-#define dgShadowMedallionIconTex "__OTR__textures/icon_item_24_static/gShadowMedallionIconTex"
-static const ALIGN_ASSET(2) char gShadowMedallionIconTex[] = dgShadowMedallionIconTex;
+#define dgQuestIconMedallionShadowTex "__OTR__textures/icon_item_24_static/gQuestIconMedallionShadowTex"
+static const ALIGN_ASSET(2) char gQuestIconMedallionShadowTex[] = dgQuestIconMedallionShadowTex;
 
-#define dgLightMedallionIconTex "__OTR__textures/icon_item_24_static/gLightMedallionIconTex"
-static const ALIGN_ASSET(2) char gLightMedallionIconTex[] = dgLightMedallionIconTex;
+#define dgQuestIconMedallionLightTex "__OTR__textures/icon_item_24_static/gQuestIconMedallionLightTex"
+static const ALIGN_ASSET(2) char gQuestIconMedallionLightTex[] = dgQuestIconMedallionLightTex;
 
-#define dgKokiriEmeraldIconTex "__OTR__textures/icon_item_24_static/gKokiriEmeraldIconTex"
-static const ALIGN_ASSET(2) char gKokiriEmeraldIconTex[] = dgKokiriEmeraldIconTex;
+#define dgQuestIconKokiriEmeraldTex "__OTR__textures/icon_item_24_static/gQuestIconKokiriEmeraldTex"
+static const ALIGN_ASSET(2) char gQuestIconKokiriEmeraldTex[] = dgQuestIconKokiriEmeraldTex;
 
-#define dgGoronRubyIconTex "__OTR__textures/icon_item_24_static/gGoronRubyIconTex"
-static const ALIGN_ASSET(2) char gGoronRubyIconTex[] = dgGoronRubyIconTex;
+#define dgQuestIconGoronRubyTex "__OTR__textures/icon_item_24_static/gQuestIconGoronRubyTex"
+static const ALIGN_ASSET(2) char gQuestIconGoronRubyTex[] = dgQuestIconGoronRubyTex;
 
-#define dgZoraSapphireIconTex "__OTR__textures/icon_item_24_static/gZoraSapphireIconTex"
-static const ALIGN_ASSET(2) char gZoraSapphireIconTex[] = dgZoraSapphireIconTex;
+#define dgQuestIconZoraSapphireTex "__OTR__textures/icon_item_24_static/gQuestIconZoraSapphireTex"
+static const ALIGN_ASSET(2) char gQuestIconZoraSapphireTex[] = dgQuestIconZoraSapphireTex;
 
-#define dgStoneOfAgonyIconTex "__OTR__textures/icon_item_24_static/gStoneOfAgonyIconTex"
-static const ALIGN_ASSET(2) char gStoneOfAgonyIconTex[] = dgStoneOfAgonyIconTex;
+#define dgQuestIconStoneOfAgonyTex "__OTR__textures/icon_item_24_static/gQuestIconStoneOfAgonyTex"
+static const ALIGN_ASSET(2) char gQuestIconStoneOfAgonyTex[] = dgQuestIconStoneOfAgonyTex;
 
-#define dgGerudosCardIconTex "__OTR__textures/icon_item_24_static/gGerudosCardIconTex"
-static const ALIGN_ASSET(2) char gGerudosCardIconTex[] = dgGerudosCardIconTex;
+#define dgQuestIconGerudosCardTex "__OTR__textures/icon_item_24_static/gQuestIconGerudosCardTex"
+static const ALIGN_ASSET(2) char gQuestIconGerudosCardTex[] = dgQuestIconGerudosCardTex;
 
-#define dgGoldSkulltulaIconTex "__OTR__textures/icon_item_24_static/gGoldSkulltulaIconTex"
-static const ALIGN_ASSET(2) char gGoldSkulltulaIconTex[] = dgGoldSkulltulaIconTex;
+#define dgQuestIconGoldSkulltulaTex "__OTR__textures/icon_item_24_static/gQuestIconGoldSkulltulaTex"
+static const ALIGN_ASSET(2) char gQuestIconGoldSkulltulaTex[] = dgQuestIconGoldSkulltulaTex;
 
-#define dgHeartContainerIconTex "__OTR__textures/icon_item_24_static/gHeartContainerIconTex"
-static const ALIGN_ASSET(2) char gHeartContainerIconTex[] = dgHeartContainerIconTex;
+#define dgQuestIconHeartContainerTex "__OTR__textures/icon_item_24_static/gQuestIconHeartContainerTex"
+static const ALIGN_ASSET(2) char gQuestIconHeartContainerTex[] = dgQuestIconHeartContainerTex;
 
-#define dgUnusedPieceOfHeartIconTex "__OTR__textures/icon_item_24_static/gUnusedPieceOfHeartIconTex"
-static const ALIGN_ASSET(2) char gUnusedPieceOfHeartIconTex[] = dgUnusedPieceOfHeartIconTex;
+#define dgQuestIconHeartPieceTex "__OTR__textures/icon_item_24_static/gQuestIconHeartPieceTex"
+static const ALIGN_ASSET(2) char gQuestIconHeartPieceTex[] = dgQuestIconHeartPieceTex;
 
-#define dgBossKeyIconTex "__OTR__textures/icon_item_24_static/gBossKeyIconTex"
-static const ALIGN_ASSET(2) char gBossKeyIconTex[] = dgBossKeyIconTex;
+#define dgQuestIconDungeonBossKeyTex "__OTR__textures/icon_item_24_static/gQuestIconDungeonBossKeyTex"
+static const ALIGN_ASSET(2) char gQuestIconDungeonBossKeyTex[] = dgQuestIconDungeonBossKeyTex;
 
-#define dgCompassIconTex "__OTR__textures/icon_item_24_static/gCompassIconTex"
-static const ALIGN_ASSET(2) char gCompassIconTex[] = dgCompassIconTex;
+#define dgQuestIconDungeonCompassTex "__OTR__textures/icon_item_24_static/gQuestIconDungeonCompassTex"
+static const ALIGN_ASSET(2) char gQuestIconDungeonCompassTex[] = dgQuestIconDungeonCompassTex;
 
-#define dgDungeonMapIconTex "__OTR__textures/icon_item_24_static/gDungeonMapIconTex"
-static const ALIGN_ASSET(2) char gDungeonMapIconTex[] = dgDungeonMapIconTex;
+#define dgQuestIconDungeonMapTex "__OTR__textures/icon_item_24_static/gQuestIconDungeonMapTex"
+static const ALIGN_ASSET(2) char gQuestIconDungeonMapTex[] = dgQuestIconDungeonMapTex;
 
-#define dgSmallKeyIconTex "__OTR__textures/icon_item_24_static/gSmallKeyIconTex"
-static const ALIGN_ASSET(2) char gSmallKeyIconTex[] = dgSmallKeyIconTex;
+#define dgQuestIconSmallKeyTex "__OTR__textures/icon_item_24_static/gQuestIconSmallKeyTex"
+static const ALIGN_ASSET(2) char gQuestIconSmallKeyTex[] = dgQuestIconSmallKeyTex;
 
-#define dgSmallMagicJarIconTex "__OTR__textures/icon_item_24_static/gSmallMagicJarIconTex"
-static const ALIGN_ASSET(2) char gSmallMagicJarIconTex[] = dgSmallMagicJarIconTex;
+#define dgQuestIconMagicJarSmallTex "__OTR__textures/icon_item_24_static/gQuestIconMagicJarSmallTex"
+static const ALIGN_ASSET(2) char gQuestIconMagicJarSmallTex[] = dgQuestIconMagicJarSmallTex;
 
-#define dgBigMagicJarIconTex "__OTR__textures/icon_item_24_static/gBigMagicJarIconTex"
-static const ALIGN_ASSET(2) char gBigMagicJarIconTex[] = dgBigMagicJarIconTex;
+#define dgQuestIconMagicJarBigTex "__OTR__textures/icon_item_24_static/gQuestIconMagicJarBigTex"
+static const ALIGN_ASSET(2) char gQuestIconMagicJarBigTex[] = dgQuestIconMagicJarBigTex;
 
 #endif // TEXTURES_ICON_ITEM_24_STATIC_H

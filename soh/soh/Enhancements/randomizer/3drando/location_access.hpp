@@ -214,7 +214,7 @@ public:
                      "Child Night: " + std::to_string(childNight) + "\t"
                      "Adult Day:   " + std::to_string(adultDay)   + "\t"
                      "Adult Night: " + std::to_string(adultNight);
-      CitraPrint(message);
+      //CitraPrint(message);
     }
 };
 

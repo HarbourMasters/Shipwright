@@ -674,7 +674,7 @@ void RegisterOnUpdateMainMenuSelection() {
                 break;
         }
     });
-    
+
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileTargetSelection>([](uint8_t optionIndex) {
         if (!CVarGetInteger("gA11yTTS", 0)) return;
         
@@ -686,6 +686,30 @@ void RegisterOnUpdateMainMenuSelection() {
             }
             case FS_TARGET_HOLD: {
                 auto translation = GetParameritizedText("target_hold", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                break;
+            }
+            default:
+                break;
+        }
+    });
+
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnUpdateFileLanguageSelection>([](uint8_t optionIndex) {
+        if (!CVarGetInteger("gA11yTTS", 0)) return;
+        
+        switch (optionIndex) {
+            case LANGUAGE_ENG: {
+                auto translation = GetParameritizedText("language_english", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                break;
+            }
+            case LANGUAGE_GER: {
+                auto translation = GetParameritizedText("language_german", TEXT_BANK_FILECHOOSE, nullptr);
+                SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
+                break;
+            }
+            case LANGUAGE_FRA: {
+                auto translation = GetParameritizedText("language_french", TEXT_BANK_FILECHOOSE, nullptr);
                 SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
                 break;
             }

@@ -720,8 +720,6 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
     switch (type) {
         case SpoilerCollectionCheckType::SPOILER_CHK_ALWAYS_COLLECTED:
             return true;
-        case SpoilerCollectionCheckType::SPOILER_CHK_BIGGORON:
-            return gSaveContext.bgsFlag & flag;
         case SpoilerCollectionCheckType::SPOILER_CHK_CHEST:
             return gSaveContext.sceneFlags[scene].chest & (1 << flag);
         case SpoilerCollectionCheckType::SPOILER_CHK_COLLECTABLE:

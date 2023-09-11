@@ -13,7 +13,6 @@
 #include "hint_list.hpp"
 #include "entrance.hpp"
 #include "shops.hpp"
-#include "debug.hpp"
 
 #include <vector>
 #include <list>
@@ -917,7 +916,6 @@ void VanillaFill() {
   //Finish up
   CreateItemOverrides();
   CreateEntranceOverrides();
-  CreateAlwaysIncludedMessages();
   CreateWarpSongTexts();
 }
 
@@ -1072,7 +1070,6 @@ int Fill() {
       printf("Done");
       CreateItemOverrides();
       CreateEntranceOverrides();
-      CreateAlwaysIncludedMessages();
       if (GossipStoneHints.IsNot(HINTS_NO_HINTS)) {
         printf("\x1b[10;10HCreating Hints...");
         CreateAllHints();
@@ -1081,7 +1078,7 @@ int Fill() {
       if (ShuffleMerchants.Is(SHUFFLEMERCHANTS_HINTS)) {
         CreateMerchantsHints();
       }
-      //Always execute ganon hint generation for the funny line  
+      //Always execute ganon hint generation for the funny line
       CreateGanonText();
       CreateAltarText();
       CreateDampesDiaryText();
