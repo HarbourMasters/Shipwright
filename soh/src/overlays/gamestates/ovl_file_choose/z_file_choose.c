@@ -3011,6 +3011,7 @@ void FileChoose_LoadGame(GameState* thisx) {
             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KNIFE)) {
 
             gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+            gSaveContext.equips.buttonModIds[0] = 0;
             swordEquipMask = BOMSWAP16(gEquipMasks[EQUIP_SWORD]) & gSaveContext.equips.equipment;
             gSaveContext.equips.equipment &= gEquipNegMasks[EQUIP_SWORD];
             gSaveContext.inventory.equipment ^= (gBitFlags[swordEquipMask - 1] << BOMSWAP16(gEquipShifts[EQUIP_SWORD]));

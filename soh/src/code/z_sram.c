@@ -164,6 +164,7 @@ void Sram_OpenSave() {
         for (j = 1; j < ARRAY_COUNT(gSaveContext.equips.buttonItems); j++) {
             if (gSaveContext.equips.buttonItems[j] == ITEM_LETTER_ZELDA) {
                 gSaveContext.equips.buttonItems[j] = ITEM_CHICKEN;
+                gSaveContext.equips.buttonModIds[0] = 0;
             }
         }
     }
@@ -172,6 +173,7 @@ void Sram_OpenSave() {
     if (LINK_AGE_IN_YEARS == YEARS_ADULT && !CHECK_OWNED_EQUIP(EQUIP_SWORD, 1)) {
         gSaveContext.inventory.equipment |= gBitFlags[1] << gEquipShifts[EQUIP_SWORD];
         gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+        gSaveContext.equips.buttonModIds[0] = 0;
         gSaveContext.equips.equipment &= ~0xF;
         gSaveContext.equips.equipment |= 2;
     }
@@ -182,7 +184,7 @@ void Sram_OpenSave() {
                 INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];
 
                 for (j = 1; j < ARRAY_COUNT(gSaveContext.equips.buttonItems); j++) {
-                    if (gSaveContext.equips.buttonItems[j] == gSpoilingItems[i]) {
+                    if (gSaveContext.equips.buttonModIds[j] == 0 && gSaveContext.equips.buttonItems[j] == gSpoilingItems[i]) {
                         gSaveContext.equips.buttonItems[j] = gSpoilingItemReverts[i];
                     }
                 }

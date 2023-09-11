@@ -526,6 +526,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                             && CUR_EQUIP_VALUE(EQUIP_SWORD) == 3 && CHECK_OWNED_EQUIP(0,1)){ // And we have the Master Sword
                             Inventory_ChangeEquipment(EQUIP_SWORD, 2); // "Unequip" it by equipping Master Sword
                             gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+                            gSaveContext.equips.buttonModIds[0] = 0;
                             gSaveContext.infTable[29] = 0;
                             goto RESUME_EQUIPMENT_SWORD;               // Skip to here so we don't re-equip it
                         }
@@ -559,17 +560,21 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                     if (pauseCtx->cursorY[PAUSE_EQUIP] == 0) {
                         gSaveContext.infTable[29] = 0;
                         gSaveContext.equips.buttonItems[0] = cursorItem;
+                        gSaveContext.equips.buttonModIds[0] = 0;
 
                         if ((pauseCtx->cursorX[PAUSE_EQUIP] == 3) && (gSaveContext.bgsFlag != 0)) {
                             gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BGS;
+                            gSaveContext.equips.buttonModIds[0] = 0;
                             gSaveContext.swordHealth = 8;
                         } else {
-                            if (gSaveContext.equips.buttonItems[0] == ITEM_HEART_PIECE_2) {
+                            if (gSaveContext.equips.buttonItems[0] == ITEM_HEART_PIECE_2 && gSaveContext.equips.buttonModIds[0] == 0) {
                                 gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BGS;
+                                gSaveContext.equips.buttonModIds[0] = 0;
                             }
-                            if ((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS) && (gSaveContext.bgsFlag == 0) &&
+                            if ((gSaveContext.equips.buttonItems[0] == ITEM_SWORD_BGS && gSaveContext.equips.buttonModIds[0] == 0) && (gSaveContext.bgsFlag == 0) &&
                                 (gBitFlags[3] & gSaveContext.inventory.equipment)) {
                                 gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KNIFE;
+                                gSaveContext.equips.buttonModIds[0] = 0;
                             }
                         }
                         RESUME_EQUIPMENT_SWORD:

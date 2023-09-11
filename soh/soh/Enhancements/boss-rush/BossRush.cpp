@@ -481,6 +481,11 @@ void BossRush_SetEquipment(uint8_t linkAge) {
         gSaveContext.equips.buttonItems[button] = brButtonItems[button];
     }
 
+    // Button Mod Ids
+    for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.buttonModIds); button++) {
+        gSaveContext.equips.buttonModIds[button] = 0;
+    }
+
     // C buttons
     for (int button = 0; button < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); button++) {
         gSaveContext.equips.cButtonSlots[button] = brCButtonSlots[button];

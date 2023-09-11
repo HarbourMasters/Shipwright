@@ -1072,11 +1072,11 @@ s32 func_80090014(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
             if ((this->sheathType == 18) || (this->sheathType == 19)) {
                 dLists += this->currentShield * 4;
                 if (!LINK_IS_ADULT && (this->currentShield < PLAYER_SHIELD_HYLIAN) &&
-                    (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI)) {
+                    (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI || gSaveContext.equips.buttonModIds[0] != 0)) {
                     dLists += 16;
                 }
             } else if (!LINK_IS_ADULT && ((this->sheathType == 16) || (this->sheathType == 17)) &&
-                       (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI)) {
+                       (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI || gSaveContext.equips.buttonModIds[0] != 0)) {
                 dLists = &D_80125D28[16];
             }
 

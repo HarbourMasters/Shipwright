@@ -215,10 +215,14 @@ void GameInteractor::RawAction::ClearAssignedButtons(uint8_t buttonSet) {
         case GI_BUTTONS_CBUTTONS:
             gSaveContext.equips.buttonItems[1] = gSaveContext.equips.buttonItems[2] =
                 gSaveContext.equips.buttonItems[3] = ITEM_NONE;
+            gSaveContext.equips.buttonModIds[1] = gSaveContext.equips.buttonModIds[2] =
+                gSaveContext.equips.buttonModIds[3] = 0;
             break;
         case GI_BUTTONS_DPAD:
             gSaveContext.equips.buttonItems[4] = gSaveContext.equips.buttonItems[5] =
                 gSaveContext.equips.buttonItems[6] = gSaveContext.equips.buttonItems[7] = ITEM_NONE;
+            gSaveContext.equips.buttonModIds[4] = gSaveContext.equips.buttonModIds[5] =
+                gSaveContext.equips.buttonModIds[6] = gSaveContext.equips.buttonModIds[7] =0;
             break;
     }
 }

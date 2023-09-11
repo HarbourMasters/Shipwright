@@ -359,7 +359,10 @@ void RegisterOnKaleidoscopeUpdateHook() {
 
                 // Check if item is assigned to a button
                 for (size_t i = 0; i < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); i++) {
-                    if (gSaveContext.equips.buttonItems[i + 1] == pauseCtx->cursorItem[PAUSE_ITEM]) {
+                    if (
+                        gSaveContext.equips.buttonModIds[i + 1] == pauseCtx->cursorItemModId[PAUSE_ITEM] &&
+                        gSaveContext.equips.buttonItems[i + 1] == pauseCtx->cursorItem[PAUSE_ITEM]
+                    ) {
                         assignedTo = i;
                         break;
                     }

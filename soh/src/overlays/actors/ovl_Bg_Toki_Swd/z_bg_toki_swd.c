@@ -79,6 +79,7 @@ void BgTokiSwd_Init(Actor* thisx, PlayState* play) {
                 for (size_t i = 0; i < 8; i++) {
                     if (gSaveContext.equips.buttonItems[i] == ITEM_BOMB) {
                         gSaveContext.equips.buttonItems[i] = ITEM_NONE;
+                        gSaveContext.equips.buttonModIds[i] = 0;
                     }
                 }
             }
@@ -91,6 +92,7 @@ void BgTokiSwd_Init(Actor* thisx, PlayState* play) {
             Player* player = GET_PLAYER(gPlayState);
             player->currentSwordItemId = ITEM_NONE;
             gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+            gSaveContext.equips.buttonModIds[0] = 0;
             Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
         }
     }

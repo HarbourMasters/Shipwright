@@ -1526,6 +1526,9 @@ void SaveManager::LoadBaseVersion4() {
                 SaveManager::Instance->LoadData("", gSaveContext.childEquips.buttonItems[i],
                                                 static_cast<uint8_t>(ITEM_NONE));
         });
+        SaveManager::Instance->LoadArray("buttonModIds", ARRAY_COUNT(gSaveContext.childEquips.buttonModIds), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.childEquips.buttonModIds[i], static_cast<uint8_t>(0));
+        });
         SaveManager::Instance->LoadArray("cButtonSlots", ARRAY_COUNT(gSaveContext.childEquips.cButtonSlots), [](size_t i) {
                 SaveManager::Instance->LoadData("", gSaveContext.childEquips.cButtonSlots[i],
                                                 static_cast<uint8_t>(SLOT_NONE));
@@ -1536,6 +1539,9 @@ void SaveManager::LoadBaseVersion4() {
         SaveManager::Instance->LoadArray("buttonItems", ARRAY_COUNT(gSaveContext.adultEquips.buttonItems), [](size_t i) {
                 SaveManager::Instance->LoadData("", gSaveContext.adultEquips.buttonItems[i],
                                                 static_cast<uint8_t>(ITEM_NONE));
+        });
+        SaveManager::Instance->LoadArray("buttonModIds", ARRAY_COUNT(gSaveContext.adultEquips.buttonModIds), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.adultEquips.buttonModIds[i], static_cast<uint8_t>(0));
         });
         SaveManager::Instance->LoadArray("cButtonSlots", ARRAY_COUNT(gSaveContext.adultEquips.cButtonSlots), [](size_t i) {
                 SaveManager::Instance->LoadData("", gSaveContext.adultEquips.cButtonSlots[i],
@@ -1548,6 +1554,9 @@ void SaveManager::LoadBaseVersion4() {
     SaveManager::Instance->LoadStruct("equips", []() {
         SaveManager::Instance->LoadArray("buttonItems", ARRAY_COUNT(gSaveContext.equips.buttonItems), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.equips.buttonItems[i], static_cast<uint8_t>(ITEM_NONE));
+        });
+        SaveManager::Instance->LoadArray("buttonModIds", ARRAY_COUNT(gSaveContext.equips.buttonModIds), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.equips.buttonModIds[i], static_cast<uint8_t>(0));
         });
         SaveManager::Instance->LoadArray("cButtonSlots", ARRAY_COUNT(gSaveContext.equips.cButtonSlots), [](size_t i) {
             SaveManager::Instance->LoadData("", gSaveContext.equips.cButtonSlots[i], static_cast<uint8_t>(SLOT_NONE));
@@ -1572,6 +1581,9 @@ void SaveManager::LoadBaseVersion4() {
         });
         SaveManager::Instance->LoadData("defenseHearts", gSaveContext.inventory.defenseHearts);
         SaveManager::Instance->LoadData("gsTokens", gSaveContext.inventory.gsTokens);
+        SaveManager::Instance->LoadArray("itemModIds", ARRAY_COUNT(gSaveContext.inventory.itemModIds), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.inventory.itemModIds[i]);
+        });
     });
     SaveManager::Instance->LoadArray("sceneFlags", ARRAY_COUNT(gSaveContext.sceneFlags), [](size_t i) {
         SaveManager::Instance->LoadStruct("", [&i]() {
@@ -1698,6 +1710,9 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
         SaveManager::Instance->SaveArray("buttonItems", ARRAY_COUNT(saveContext->childEquips.buttonItems), [&](size_t i) {
             SaveManager::Instance->SaveData("", saveContext->childEquips.buttonItems[i]);
         });
+        SaveManager::Instance->SaveArray("buttonModIds", ARRAY_COUNT(saveContext->childEquips.buttonModIds), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->childEquips.buttonModIds[i]);
+        });
         SaveManager::Instance->SaveArray("cButtonSlots", ARRAY_COUNT(saveContext->childEquips.cButtonSlots), [&](size_t i) {
             SaveManager::Instance->SaveData("", saveContext->childEquips.cButtonSlots[i]);
         });
@@ -1706,6 +1721,9 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
     SaveManager::Instance->SaveStruct("adultEquips", [&]() {
         SaveManager::Instance->SaveArray("buttonItems", ARRAY_COUNT(saveContext->adultEquips.buttonItems), [&](size_t i) {
             SaveManager::Instance->SaveData("", saveContext->adultEquips.buttonItems[i]);
+        });
+        SaveManager::Instance->SaveArray("buttonModIds", ARRAY_COUNT(saveContext->adultEquips.buttonModIds), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->adultEquips.buttonModIds[i]);
         });
         SaveManager::Instance->SaveArray("cButtonSlots", ARRAY_COUNT(saveContext->adultEquips.cButtonSlots), [&](size_t i) {
             SaveManager::Instance->SaveData("", saveContext->adultEquips.cButtonSlots[i]);
@@ -1717,6 +1735,9 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
     SaveManager::Instance->SaveStruct("equips", [&]() {
         SaveManager::Instance->SaveArray("buttonItems", ARRAY_COUNT(saveContext->equips.buttonItems), [&](size_t i) {
             SaveManager::Instance->SaveData("", saveContext->equips.buttonItems[i]);
+        });
+        SaveManager::Instance->SaveArray("buttonModIds", ARRAY_COUNT(saveContext->equips.buttonModIds), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->equips.buttonModIds[i]);
         });
         SaveManager::Instance->SaveArray("cButtonSlots", ARRAY_COUNT(saveContext->equips.cButtonSlots), [&](size_t i) {
             SaveManager::Instance->SaveData("", saveContext->equips.cButtonSlots[i]);
@@ -1741,6 +1762,9 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
         });
         SaveManager::Instance->SaveData("defenseHearts", saveContext->inventory.defenseHearts);
         SaveManager::Instance->SaveData("gsTokens", saveContext->inventory.gsTokens);
+        SaveManager::Instance->SaveArray("itemModIds", ARRAY_COUNT(gSaveContext.inventory.itemModIds), [](size_t i) {
+            SaveManager::Instance->LoadData("", gSaveContext.inventory.itemModIds[i]);
+        });
     });
     SaveManager::Instance->SaveArray("sceneFlags", ARRAY_COUNT(saveContext->sceneFlags), [&](size_t i) {
         SaveManager::Instance->SaveStruct("", [&]() {

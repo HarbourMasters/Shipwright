@@ -40,7 +40,7 @@ void GameOver_Update(PlayState* play) {
 
                         // search c buttons for the found spoiling item and revert if necessary
                         for (j = 1; j < ARRAY_COUNT(gSaveContext.equips.buttonItems); j++) {
-                            if (gSaveContext.equips.buttonItems[j] == gSpoilingItems[i]) {
+                            if (gSaveContext.equips.buttonModIds[j] == 0 && gSaveContext.equips.buttonItems[j] == gSpoilingItems[i]) {
                                 gSaveContext.equips.buttonItems[j] = gSpoilingItemReverts[i];
                                 Interface_LoadItemIcon1(play, j);
                             }
@@ -50,15 +50,17 @@ void GameOver_Update(PlayState* play) {
 			}
 
             // restore "temporary B" to the B Button if not a sword item
-            if (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI &&
+            if (gSaveContext.equips.buttonModIds[0] != 0 ||
+                (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI &&
                 gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER &&
                 gSaveContext.equips.buttonItems[0] != ITEM_SWORD_BGS &&
-                gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KNIFE) {
+                gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KNIFE)) {
 
                 if (gSaveContext.buttonStatus[0] != BTN_ENABLED) {
                     gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0];
                 } else {
                     gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+                    gSaveContext.equips.buttonModIds[0] = 0;
                 }
             }
 

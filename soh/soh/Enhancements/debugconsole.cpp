@@ -345,6 +345,7 @@ static bool BHandler(std::shared_ptr<LUS::Console> Console, const std::vector<st
     }
 
     gSaveContext.equips.buttonItems[0] = std::stoi(args[1]);
+    gSaveContext.equips.buttonModIds[0] = 0;
     return 0;
 }
 

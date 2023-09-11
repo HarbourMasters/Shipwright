@@ -1593,16 +1593,19 @@ void DrawPlayerTab() {
             if (ImGui::Selectable("None")) {
                 player->currentSwordItemId = ITEM_NONE;
                 gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+                gSaveContext.equips.buttonModIds[0] = 0;
                 Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
             }
             if (ImGui::Selectable("Kokiri Sword")) {
                 player->currentSwordItemId = ITEM_SWORD_KOKIRI;
                 gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
+                gSaveContext.equips.buttonModIds[0] = 0;
                 Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
             }
             if (ImGui::Selectable("Master Sword")) {
                 player->currentSwordItemId = ITEM_SWORD_MASTER;
                 gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+                gSaveContext.equips.buttonModIds[0] = 0;
                 Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_MASTER);
             }
             if (ImGui::Selectable("Biggoron's Sword")) {
@@ -1612,12 +1615,14 @@ void DrawPlayerTab() {
                     }
                     player->currentSwordItemId = ITEM_SWORD_BGS;
                     gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BGS;
+                    gSaveContext.equips.buttonModIds[0] = 0;
                 } else {
                     if (gSaveContext.swordHealth < 8) {
                         gSaveContext.swordHealth = 8;
                     }
                     player->currentSwordItemId = ITEM_SWORD_BGS;
                     gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KNIFE;
+                    gSaveContext.equips.buttonModIds[0] = 0;
                 }
                 
                 Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_BGS);
@@ -1625,6 +1630,7 @@ void DrawPlayerTab() {
             if (ImGui::Selectable("Fishing Pole")) {
                 player->currentSwordItemId = ITEM_FISHING_POLE;
                 gSaveContext.equips.buttonItems[0] = ITEM_FISHING_POLE;
+                gSaveContext.equips.buttonModIds[0] = 0;
                 Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_MASTER);
             }
             ImGui::EndCombo();
@@ -1702,6 +1708,26 @@ void DrawPlayerTab() {
                 ImGui::InputScalar("D-pad Left", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[6], &one, NULL);
                 ImGui::SameLine();
                 ImGui::InputScalar("D-pad Right", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[7], &one, NULL);
+            }
+        });
+        DrawGroupWithBorder([&]() {
+            ImGui::Text("Current C Mod Ids");
+            ImGui::InputScalar("C Left##modId", ImGuiDataType_U8, &gSaveContext.equips.buttonModIds[1], &one, NULL);
+            ImGui::SameLine();
+            ImGui::InputScalar("C Down##modId", ImGuiDataType_U8, &gSaveContext.equips.buttonModIds[2], &one, NULL);
+            ImGui::SameLine();
+            ImGui::InputScalar("C Right##modId", ImGuiDataType_U8, &gSaveContext.equips.buttonModIds[3], &one, NULL);
+
+            if (CVarGetInteger("gDpadEquips", 0)) {
+                ImGui::NewLine();
+                ImGui::Text("Current D-pad Mod Ids");
+                ImGui::InputScalar("D-pad Up  ##modId", ImGuiDataType_U8, &gSaveContext.equips.buttonModIds[4], &one, NULL); // Two spaces at the end for aligning, not elegant but it's working
+                ImGui::SameLine();
+                ImGui::InputScalar("D-pad Down##modId", ImGuiDataType_U8, &gSaveContext.equips.buttonModIds[5], &one, NULL);
+                // Intentionnal to not put everything on the same line, else it's taking too much for lower resolution.
+                ImGui::InputScalar("D-pad Left##modId", ImGuiDataType_U8, &gSaveContext.equips.buttonModIds[6], &one, NULL);
+                ImGui::SameLine();
+                ImGui::InputScalar("D-pad Right##modId", ImGuiDataType_U8, &gSaveContext.equips.buttonModIds[7], &one, NULL);
             }
         });
 

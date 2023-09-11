@@ -40,6 +40,7 @@ typedef struct {
     /* 0x00 */ u8 buttonItems[8]; // SOH [Enhancements] Changed from 4 to 8 to support Dpad equips
     /* 0x04 */ u8 cButtonSlots[7]; // SOH [Enhancements] Changed from 3 to 7 to support Dpad equips
     /* 0x08 */ u16 equipment; // a mask where each nibble corresponds to a type of equipment `EquipmentType`, and each nibble is a piece `EquipValue*`
+    /*      */ u8 buttonModIds[8];
 } ItemEquips; // size = 0x0A
 
 typedef struct {
@@ -52,6 +53,7 @@ typedef struct {
     /* 0x48 */ s8 dungeonKeys[19];
     /* 0x5B */ s8 defenseHearts;
     /* 0x5C */ s16 gsTokens;
+    /*      */ u8 itemModIds[24];
 } Inventory; // size = 0x5E
 
 typedef struct {

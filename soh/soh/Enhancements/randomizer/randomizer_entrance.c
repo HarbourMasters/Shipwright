@@ -506,7 +506,7 @@ void Entrance_EnableFW(void) {
     }
 
     for (int i = 1; i < 5; i++) {
-        if (gSaveContext.equips.buttonItems[i] == 13) {
+        if (gSaveContext.equips.buttonModIds[i] == 0 && gSaveContext.equips.buttonItems[i] == 13) {
             gSaveContext.buttonStatus[i] = BTN_ENABLED;
         }
     }
@@ -567,6 +567,7 @@ void Entrance_HandleEponaState(void) {
         player->actor.parent = NULL;
         AREG(6) = 0;
         gSaveContext.equips.buttonItems[0] = gSaveContext.buttonStatus[0]; //"temp B"
+        gSaveContext.equips.buttonModIds[0] = 0;
     }
 }
 

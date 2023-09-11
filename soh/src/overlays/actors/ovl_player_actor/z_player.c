@@ -2051,6 +2051,10 @@ s32 func_80833CDC(PlayState* play, s32 index) {
     }
 }
 
+void ExecuteItemAction(s32 modId, s32 itemId) {
+
+}
+
 void func_80833DF8(Player* this, PlayState* play) {
     s32 maskActionParam;
     s32 item;
@@ -2062,13 +2066,17 @@ void func_80833DF8(Player* this, PlayState* play) {
             bool hasOnDpad = false;
             if (CVarGetInteger("gDpadEquips", 0) != 0) {
                 for (int buttonIndex = 4; buttonIndex < 8; buttonIndex++) {
-                    hasOnDpad |= gSaveContext.equips.buttonItems[buttonIndex] == maskItem;
+                    hasOnDpad |= gSaveContext.equips.buttonItems[buttonIndex] == maskItem && gSaveContext.equips.buttonModIds[buttonIndex] == 0;
                 }
             }
 
-            if (gSaveContext.equips.buttonItems[0] != maskItem && gSaveContext.equips.buttonItems[1] != maskItem &&
-                gSaveContext.equips.buttonItems[2] != maskItem && gSaveContext.equips.buttonItems[3] != maskItem &&
-                !hasOnDpad) {
+            if (
+                (gSaveContext.equips.buttonItems[0] != maskItem || gSaveContext.equips.buttonModIds[0] != 0) &&
+                (gSaveContext.equips.buttonItems[1] != maskItem || gSaveContext.equips.buttonModIds[0] != 0) &&
+                (gSaveContext.equips.buttonItems[2] != maskItem || gSaveContext.equips.buttonModIds[0] != 0) &&
+                (gSaveContext.equips.buttonItems[3] != maskItem || gSaveContext.equips.buttonModIds[0] != 0) &&
+                !hasOnDpad
+            ) {
                 this->currentMask = sMaskMemory = PLAYER_MASK_NONE;
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
             }
@@ -2120,9 +2128,12 @@ void func_80833DF8(Player* this, PlayState* play) {
             if ((item < ITEM_NONE_FE) && (Player_ItemToActionParam(item) == this->heldItemAction)) {
                 D_80853618 = true;
             }
-        } else {
+        } else if (gSaveContext.buttonStatus[i] != BTN_DISABLED && gSaveContext.equips.buttonModIds[i] == 0) {
             this->heldItemButton = i;
             func_80835F44(play, this, item);
+        } else if (gSaveContext.equips.buttonModIds[i] != 0) {
+            this->heldItemButton = i;
+            ExecuteItemAction(gSaveContext.equips.buttonModIds[i], gSaveContext.equips.buttonItems[i]);
         }
     }
 }
@@ -14918,6 +14929,7 @@ void func_80852648(PlayState* play, Player* this, CsCmdActorAction* arg2) {
         this->leftHandDLists = D_80125E08;
         Inventory_ChangeEquipment(EQUIP_SWORD, 2);
         gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
+        gSaveContext.equips.buttonModIds[0] = 0;
         Inventory_DeleteEquipment(play, 0);
     }
 }
@@ -15112,6 +15124,7 @@ s32 Player_StartFishing(PlayState* play) {
         if (this->heldItemId == ITEM_NONE) {
             this->currentSwordItemId = ITEM_SWORD_KOKIRI;
             gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
+            gSaveContext.equips.buttonModIds[0] = 0;
             Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
         }
     }

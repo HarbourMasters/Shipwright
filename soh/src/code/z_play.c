@@ -2309,10 +2309,12 @@ void Play_PerformSave(PlayState* play) {
         gSaveContext.savedSceneNum = play->sceneNum;
         if (gSaveContext.temporaryWeapon) {
             gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+            gSaveContext.equips.buttonModIds[0] = 0;
             GET_PLAYER(play)->currentSwordItemId = ITEM_NONE;
             Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
             Save_SaveFile();
             gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
+            gSaveContext.equips.buttonModIds[0] = 0;
             GET_PLAYER(play)->currentSwordItemId = ITEM_SWORD_KOKIRI;
             Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
         } else {
