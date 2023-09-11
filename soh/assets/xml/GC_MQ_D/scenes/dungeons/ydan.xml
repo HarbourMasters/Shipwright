@@ -1,5 +1,6 @@
 <Root>
     <File Name="ydan_scene" Segment="2">
+        <Texture Name="ydan_sceneTLUT_00B810" OutName="ydan_sceneTLUT_00B810" Format="rgba16" Width="16" Height="16" Offset="0xB810" AddedByScript="true"/>
         <Cutscene Name="gDekuTreeIntroCs" Offset="0xB650"/>
         <Texture Name="gYdanTex_00BA18" Format="rgba16" Width="32" Height="64" Offset="0xBA18"/>
         <Texture Name="gYdanTex_00CA18" Format="rgba16" Width="32" Height="64" Offset="0xCA18"/>
@@ -7,39 +8,150 @@
         <Scene Name="ydan_scene" Offset="0x0"/>
     </File>
     <File Name="ydan_room_0" Segment="3">
+        <Texture Name="ydan_room_0Tex_0071C0" OutName="ydan_room_0Tex_0071C0" Format="rgba16" Width="32" Height="64" Offset="0x71C0" AddedByScript="true"/>
+        <Texture Name="ydan_room_0Tex_0081C0" OutName="ydan_room_0Tex_0081C0" Format="rgba16" Width="32" Height="64" Offset="0x81C0" AddedByScript="true"/>
+        <Texture Name="ydan_room_0Tex_0091C0" OutName="ydan_room_0Tex_0091C0" Format="ci8" Width="32" Height="64" Offset="0x91C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_0Tex_0099C0" OutName="ydan_room_0Tex_0099C0" Format="ci8" Width="32" Height="64" Offset="0x99C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_0Tex_00A1C0" OutName="ydan_room_0Tex_00A1C0" Format="ci8" Width="32" Height="32" Offset="0xA1C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_0Tex_00A5C0" OutName="ydan_room_0Tex_00A5C0" Format="ci8" Width="32" Height="64" Offset="0xA5C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_0Tex_00ADC0" OutName="ydan_room_0Tex_00ADC0" Format="ci8" Width="32" Height="64" Offset="0xADC0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_0Tex_00B5C0" OutName="ydan_room_0Tex_00B5C0" Format="ci8" Width="32" Height="64" Offset="0xB5C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_0Tex_00BDC0" OutName="ydan_room_0Tex_00BDC0" Format="rgba16" Width="32" Height="32" Offset="0xBDC0" AddedByScript="true"/>
+        <Texture Name="ydan_room_0Tex_00C5C0" OutName="ydan_room_0Tex_00C5C0" Format="ci8" Width="32" Height="64" Offset="0xC5C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_0Tex_00CDC0" OutName="ydan_room_0Tex_00CDC0" Format="ci8" Width="32" Height="64" Offset="0xCDC0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_0Tex_00D5C0" OutName="ydan_room_0Tex_00D5C0" Format="ci8" Width="32" Height="32" Offset="0xD5C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_0Tex_00D9C0" OutName="ydan_room_0Tex_00D9C0" Format="ci8" Width="32" Height="64" Offset="0xD9C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_0Tex_00E1C0" OutName="ydan_room_0Tex_00E1C0" Format="ci8" Width="32" Height="64" Offset="0xE1C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_0Tex_00E9C0" OutName="ydan_room_0Tex_00E9C0" Format="ci8" Width="32" Height="64" Offset="0xE9C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_0Tex_00F1C0" OutName="ydan_room_0Tex_00F1C0" Format="ci8" Width="32" Height="64" Offset="0xF1C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_0Tex_00F9C0" OutName="ydan_room_0Tex_00F9C0" Format="rgba16" Width="64" Height="32" Offset="0xF9C0" AddedByScript="true"/>
+        <Texture Name="ydan_room_0Tex_0109C0" OutName="ydan_room_0Tex_0109C0" Format="ci8" Width="32" Height="64" Offset="0x109C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_0Tex_012F48" OutName="ydan_room_0Tex_012F48" Format="rgba16" Width="32" Height="64" Offset="0x12F48" AddedByScript="true"/>
+        <Texture Name="ydan_room_0Tex_013F48" OutName="ydan_room_0Tex_013F48" Format="ci8" Width="32" Height="32" Offset="0x13F48" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_0Tex_014348" OutName="ydan_room_0Tex_014348" Format="ia16" Width="32" Height="64" Offset="0x14348" AddedByScript="true"/>
         <Room Name="ydan_room_0" Offset="0x0"/>
     </File>
     <File Name="ydan_room_1" Segment="3">
+        <Texture Name="ydan_room_1Tex_000F98" OutName="ydan_room_1Tex_000F98" Format="ci8" Width="32" Height="64" Offset="0xF98" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_1Tex_001798" OutName="ydan_room_1Tex_001798" Format="ci8" Width="32" Height="64" Offset="0x1798" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_1Tex_001F98" OutName="ydan_room_1Tex_001F98" Format="ci8" Width="32" Height="64" Offset="0x1F98" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_1Tex_002798" OutName="ydan_room_1Tex_002798" Format="ci8" Width="32" Height="64" Offset="0x2798" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_1Tex_003200" OutName="ydan_room_1Tex_003200" Format="ia16" Width="32" Height="64" Offset="0x3200" AddedByScript="true"/>
         <Room Name="ydan_room_1" Offset="0x0"/>
     </File>
     <File Name="ydan_room_2" Segment="3">
+        <Texture Name="ydan_room_2Tex_001D08" OutName="ydan_room_2Tex_001D08" Format="ci8" Width="32" Height="64" Offset="0x1D08" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_2Tex_002508" OutName="ydan_room_2Tex_002508" Format="ci8" Width="32" Height="64" Offset="0x2508" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_2Tex_002D08" OutName="ydan_room_2Tex_002D08" Format="ci8" Width="32" Height="64" Offset="0x2D08" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_2Tex_003508" OutName="ydan_room_2Tex_003508" Format="ci8" Width="32" Height="64" Offset="0x3508" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_2Tex_003D08" OutName="ydan_room_2Tex_003D08" Format="ci8" Width="32" Height="64" Offset="0x3D08" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_2Tex_004508" OutName="ydan_room_2Tex_004508" Format="ci8" Width="32" Height="64" Offset="0x4508" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_2Tex_004F28" OutName="ydan_room_2Tex_004F28" Format="rgba16" Width="32" Height="64" Offset="0x4F28" AddedByScript="true"/>
         <Room Name="ydan_room_2" Offset="0x0"/>
     </File>
     <File Name="ydan_room_3" Segment="3">
+        <Texture Name="ydan_room_3Tex_0074C0" OutName="ydan_room_3Tex_0074C0" Format="rgba16" Width="32" Height="64" Offset="0x74C0" AddedByScript="true"/>
+        <Texture Name="ydan_room_3Tex_0084C0" OutName="ydan_room_3Tex_0084C0" Format="ci8" Width="32" Height="64" Offset="0x84C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_3Tex_008CC0" OutName="ydan_room_3Tex_008CC0" Format="ci8" Width="32" Height="64" Offset="0x8CC0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_3Tex_0094C0" OutName="ydan_room_3Tex_0094C0" Format="ci8" Width="32" Height="64" Offset="0x94C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_3Tex_009CC0" OutName="ydan_room_3Tex_009CC0" Format="ci8" Width="32" Height="32" Offset="0x9CC0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_3Tex_00A0C0" OutName="ydan_room_3Tex_00A0C0" Format="ci8" Width="32" Height="64" Offset="0xA0C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_3Tex_00A8C0" OutName="ydan_room_3Tex_00A8C0" Format="ci8" Width="64" Height="32" Offset="0xA8C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_3Tex_00B0C0" OutName="ydan_room_3Tex_00B0C0" Format="ci8" Width="32" Height="32" Offset="0xB0C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_3Tex_00B4C0" OutName="ydan_room_3Tex_00B4C0" Format="ci8" Width="32" Height="32" Offset="0xB4C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_3Tex_00B8C0" OutName="ydan_room_3Tex_00B8C0" Format="ci8" Width="32" Height="64" Offset="0xB8C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_3Tex_00C0C0" OutName="ydan_room_3Tex_00C0C0" Format="ci8" Width="32" Height="64" Offset="0xC0C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_3Tex_00C8C0" OutName="ydan_room_3Tex_00C8C0" Format="ci8" Width="32" Height="64" Offset="0xC8C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_3Tex_00D0C0" OutName="ydan_room_3Tex_00D0C0" Format="ci8" Width="32" Height="32" Offset="0xD0C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_3Tex_00D4C0" OutName="ydan_room_3Tex_00D4C0" Format="ci8" Width="32" Height="32" Offset="0xD4C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_3Tex_00D8C0" OutName="ydan_room_3Tex_00D8C0" Format="ci8" Width="32" Height="64" Offset="0xD8C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_3Tex_00E0C0" OutName="ydan_room_3Tex_00E0C0" Format="ci8" Width="32" Height="64" Offset="0xE0C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_3Tex_00E8C0" OutName="ydan_room_3Tex_00E8C0" Format="rgba16" Width="64" Height="32" Offset="0xE8C0" AddedByScript="true"/>
+        <Texture Name="ydan_room_3Tex_00F8C0" OutName="ydan_room_3Tex_00F8C0" Format="ci8" Width="32" Height="64" Offset="0xF8C0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_3Tex_011DB0" OutName="ydan_room_3Tex_011DB0" Format="rgba16" Width="32" Height="64" Offset="0x11DB0" AddedByScript="true"/>
+        <Texture Name="ydan_room_3Tex_012DB0" OutName="ydan_room_3Tex_012DB0" Format="ci8" Width="32" Height="32" Offset="0x12DB0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_3Tex_0131B0" OutName="ydan_room_3Tex_0131B0" Format="ia16" Width="32" Height="64" Offset="0x131B0" AddedByScript="true"/>
         <Room Name="ydan_room_3" Offset="0x0"/>
     </File>
     <File Name="ydan_room_4" Segment="3">
+        <Texture Name="ydan_room_4Tex_001920" OutName="ydan_room_4Tex_001920" Format="ci8" Width="32" Height="64" Offset="0x1920" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_4Tex_002120" OutName="ydan_room_4Tex_002120" Format="ci8" Width="32" Height="64" Offset="0x2120" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_4Tex_002920" OutName="ydan_room_4Tex_002920" Format="ci8" Width="32" Height="64" Offset="0x2920" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_4Tex_003120" OutName="ydan_room_4Tex_003120" Format="ci8" Width="64" Height="32" Offset="0x3120" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_4Tex_003C28" OutName="ydan_room_4Tex_003C28" Format="ia16" Width="32" Height="64" Offset="0x3C28" AddedByScript="true"/>
         <Room Name="ydan_room_4" Offset="0x0"/>
     </File>
     <File Name="ydan_room_5" Segment="3">
+        <Texture Name="ydan_room_5Tex_003F88" OutName="ydan_room_5Tex_003F88" Format="ci8" Width="32" Height="64" Offset="0x3F88" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_5Tex_004788" OutName="ydan_room_5Tex_004788" Format="ci8" Width="32" Height="64" Offset="0x4788" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_5Tex_004F88" OutName="ydan_room_5Tex_004F88" Format="ci8" Width="32" Height="64" Offset="0x4F88" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_5Tex_005788" OutName="ydan_room_5Tex_005788" Format="ci8" Width="32" Height="32" Offset="0x5788" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_5Tex_005B88" OutName="ydan_room_5Tex_005B88" Format="ci8" Width="32" Height="64" Offset="0x5B88" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_5Tex_006388" OutName="ydan_room_5Tex_006388" Format="ci8" Width="64" Height="32" Offset="0x6388" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_5Tex_006B88" OutName="ydan_room_5Tex_006B88" Format="ci8" Width="32" Height="32" Offset="0x6B88" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_5Tex_006F88" OutName="ydan_room_5Tex_006F88" Format="ci8" Width="32" Height="32" Offset="0x6F88" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_5Tex_007388" OutName="ydan_room_5Tex_007388" Format="ci8" Width="32" Height="32" Offset="0x7388" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_5Tex_007788" OutName="ydan_room_5Tex_007788" Format="ci8" Width="32" Height="32" Offset="0x7788" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_5Tex_007B88" OutName="ydan_room_5Tex_007B88" Format="ci8" Width="32" Height="64" Offset="0x7B88" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
         <Room Name="ydan_room_5" Offset="0x0"/>
     </File>
     <File Name="ydan_room_6" Segment="3">
+        <Texture Name="ydan_room_6Tex_001F00" OutName="ydan_room_6Tex_001F00" Format="ci8" Width="32" Height="64" Offset="0x1F00" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_6Tex_002700" OutName="ydan_room_6Tex_002700" Format="ci8" Width="32" Height="64" Offset="0x2700" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_6Tex_002F00" OutName="ydan_room_6Tex_002F00" Format="ci8" Width="32" Height="64" Offset="0x2F00" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_6Tex_003700" OutName="ydan_room_6Tex_003700" Format="ci8" Width="32" Height="64" Offset="0x3700" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_6Tex_003F00" OutName="ydan_room_6Tex_003F00" Format="ci8" Width="32" Height="64" Offset="0x3F00" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_6Tex_004700" OutName="ydan_room_6Tex_004700" Format="ci8" Width="32" Height="64" Offset="0x4700" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
         <Room Name="ydan_room_6" Offset="0x0"/>
     </File>
     <File Name="ydan_room_7" Segment="3">
+        <Texture Name="ydan_room_7Tex_002C98" OutName="ydan_room_7Tex_002C98" Format="ci8" Width="32" Height="64" Offset="0x2C98" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_7Tex_003498" OutName="ydan_room_7Tex_003498" Format="ci8" Width="32" Height="64" Offset="0x3498" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_7Tex_003C98" OutName="ydan_room_7Tex_003C98" Format="ci8" Width="32" Height="64" Offset="0x3C98" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_7Tex_004498" OutName="ydan_room_7Tex_004498" Format="ci8" Width="32" Height="64" Offset="0x4498" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_7Tex_004C98" OutName="ydan_room_7Tex_004C98" Format="ci8" Width="64" Height="32" Offset="0x4C98" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_7Tex_005498" OutName="ydan_room_7Tex_005498" Format="ci8" Width="32" Height="32" Offset="0x5498" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_7Tex_005898" OutName="ydan_room_7Tex_005898" Format="ci8" Width="32" Height="64" Offset="0x5898" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_7Tex_006098" OutName="ydan_room_7Tex_006098" Format="ci8" Width="32" Height="64" Offset="0x6098" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_7Tex_006898" OutName="ydan_room_7Tex_006898" Format="ci8" Width="32" Height="32" Offset="0x6898" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_7Tex_006C98" OutName="ydan_room_7Tex_006C98" Format="ci8" Width="32" Height="32" Offset="0x6C98" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_7Tex_007098" OutName="ydan_room_7Tex_007098" Format="ci8" Width="32" Height="64" Offset="0x7098" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_7Tex_007A98" OutName="ydan_room_7Tex_007A98" Format="rgba16" Width="32" Height="64" Offset="0x7A98" AddedByScript="true"/>
         <Room Name="ydan_room_7" Offset="0x0"/>
     </File>
     <File Name="ydan_room_8" Segment="3">
+        <Texture Name="ydan_room_8Tex_000988" OutName="ydan_room_8Tex_000988" Format="ci8" Width="32" Height="32" Offset="0x988" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
         <Room Name="ydan_room_8" Offset="0x0"/>
     </File>
     <File Name="ydan_room_9" Segment="3">
+        <Texture Name="ydan_room_9Tex_002480" OutName="ydan_room_9Tex_002480" Format="ci8" Width="32" Height="64" Offset="0x2480" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_9Tex_002C80" OutName="ydan_room_9Tex_002C80" Format="ci8" Width="32" Height="64" Offset="0x2C80" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_9Tex_003480" OutName="ydan_room_9Tex_003480" Format="ci8" Width="32" Height="64" Offset="0x3480" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_9Tex_003C80" OutName="ydan_room_9Tex_003C80" Format="ci8" Width="32" Height="64" Offset="0x3C80" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_9Tex_004480" OutName="ydan_room_9Tex_004480" Format="ci8" Width="32" Height="64" Offset="0x4480" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_9Tex_004C80" OutName="ydan_room_9Tex_004C80" Format="ci8" Width="32" Height="64" Offset="0x4C80" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_9Tex_005480" OutName="ydan_room_9Tex_005480" Format="ci8" Width="32" Height="64" Offset="0x5480" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_9Tex_005C80" OutName="ydan_room_9Tex_005C80" Format="ci8" Width="32" Height="64" Offset="0x5C80" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_9Tex_006480" OutName="ydan_room_9Tex_006480" Format="ci8" Width="32" Height="64" Offset="0x6480" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_9Tex_007498" OutName="ydan_room_9Tex_007498" Format="rgba16" Width="32" Height="64" Offset="0x7498" AddedByScript="true"/>
+        <Texture Name="ydan_room_9Tex_008498" OutName="ydan_room_9Tex_008498" Format="ci8" Width="32" Height="32" Offset="0x8498" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_9Tex_008898" OutName="ydan_room_9Tex_008898" Format="ia16" Width="32" Height="64" Offset="0x8898" AddedByScript="true"/>
         <Room Name="ydan_room_9" Offset="0x0"/>
     </File>
     <File Name="ydan_room_10" Segment="3">
+        <Texture Name="ydan_room_10Tex_001BE0" OutName="ydan_room_10Tex_001BE0" Format="ci8" Width="32" Height="64" Offset="0x1BE0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_10Tex_0023E0" OutName="ydan_room_10Tex_0023E0" Format="ci8" Width="32" Height="64" Offset="0x23E0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_10Tex_002BE0" OutName="ydan_room_10Tex_002BE0" Format="ci8" Width="32" Height="64" Offset="0x2BE0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_10Tex_0033E0" OutName="ydan_room_10Tex_0033E0" Format="ci8" Width="32" Height="64" Offset="0x33E0" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_10Tex_003DF8" OutName="ydan_room_10Tex_003DF8" Format="rgba16" Width="32" Height="64" Offset="0x3DF8" AddedByScript="true"/>
         <Room Name="ydan_room_10" Offset="0x0"/>
     </File>
     <File Name="ydan_room_11" Segment="3">
+        <Texture Name="ydan_room_11Tex_003CD8" OutName="ydan_room_11Tex_003CD8" Format="ci8" Width="32" Height="64" Offset="0x3CD8" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_11Tex_0044D8" OutName="ydan_room_11Tex_0044D8" Format="rgba16" Width="32" Height="64" Offset="0x44D8" AddedByScript="true"/>
+        <Texture Name="ydan_room_11Tex_0054D8" OutName="ydan_room_11Tex_0054D8" Format="ci8" Width="32" Height="64" Offset="0x54D8" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_11Tex_005CD8" OutName="ydan_room_11Tex_005CD8" Format="ci8" Width="32" Height="32" Offset="0x5CD8" ExternalTlut="ydan_scene" ExternalTlutOffset="0xB810" AddedByScript="true"/>
+        <Texture Name="ydan_room_11Tex_006968" OutName="ydan_room_11Tex_006968" Format="ia8" Width="64" Height="32" Offset="0x6968" AddedByScript="true"/>
         <Room Name="ydan_room_11" Offset="0x0"/>
     </File>
 </Root>

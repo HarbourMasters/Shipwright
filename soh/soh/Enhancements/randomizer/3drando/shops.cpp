@@ -4,7 +4,6 @@
 #include "random.hpp"
 #include "item.hpp"
 #include "shops.hpp"
-#include "debug.hpp"
 
 #include <math.h>
 #include <map>

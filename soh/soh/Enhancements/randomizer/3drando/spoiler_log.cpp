@@ -359,9 +359,7 @@ static void WriteSettings(const bool printAll = false) {
   std::vector<Menu*> allMenus = Settings::GetAllOptionMenus();
 
   for (const Menu* menu : allMenus) {
-    if (menu->name == "Cosmetic Settings" ||
-        menu->name == "Ingame Defaults" ||
-        menu->name == "Item Usability Settings" ||
+    if (menu->name == "Item Usability Settings" ||
         menu->name == "Multiplayer Settings") continue;
 
     if (menu->name == "Timesaver Settings") {

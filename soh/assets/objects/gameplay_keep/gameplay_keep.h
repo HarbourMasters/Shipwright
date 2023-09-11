@@ -2721,17 +2721,17 @@ static const ALIGN_ASSET(2) char gDoorMetalBarsDL[] = dgDoorMetalBarsDL;
 #define dgGenericDungeonDoorTex "__OTR__objects/gameplay_keep/gGenericDungeonDoorTex"
 static const ALIGN_ASSET(2) char gGenericDungeonDoorTex[] = dgGenericDungeonDoorTex;
 
-#define dgSunTex "__OTR__objects/gameplay_keep/gSunTex"
-static const ALIGN_ASSET(2) char gSunTex[] = dgSunTex;
+#define dgSun1Tex "__OTR__objects/gameplay_keep/gSun1Tex"
+static const ALIGN_ASSET(2) char gSun1Tex[] = dgSun1Tex;
 
-#define dgSunEveningTex "__OTR__objects/gameplay_keep/gSunEveningTex"
-static const ALIGN_ASSET(2) char gSunEveningTex[] = dgSunEveningTex;
+#define dgSunEvening1Tex "__OTR__objects/gameplay_keep/gSunEvening1Tex"
+static const ALIGN_ASSET(2) char gSunEvening1Tex[] = dgSunEvening1Tex;
 
-#define dgKokiriDustMoteTextureLoadDL "__OTR__objects/gameplay_keep/gKokiriDustMoteTextureLoadDL"
-static const ALIGN_ASSET(2) char gKokiriDustMoteTextureLoadDL[] = dgKokiriDustMoteTextureLoadDL;
+#define dgKokiriDustMoteMaterialDL "__OTR__objects/gameplay_keep/gKokiriDustMoteMaterialDL"
+static const ALIGN_ASSET(2) char gKokiriDustMoteMaterialDL[] = dgKokiriDustMoteMaterialDL;
 
-#define dgKokiriDustMoteDL "__OTR__objects/gameplay_keep/gKokiriDustMoteDL"
-static const ALIGN_ASSET(2) char gKokiriDustMoteDL[] = dgKokiriDustMoteDL;
+#define dgKokiriDustMoteModelDL "__OTR__objects/gameplay_keep/gKokiriDustMoteModelDL"
+static const ALIGN_ASSET(2) char gKokiriDustMoteModelDL[] = dgKokiriDustMoteModelDL;
 
 #define dgSunDL "__OTR__objects/gameplay_keep/gSunDL"
 static const ALIGN_ASSET(2) char gSunDL[] = dgSunDL;

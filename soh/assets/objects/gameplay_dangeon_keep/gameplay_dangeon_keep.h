@@ -15,8 +15,8 @@ static const ALIGN_ASSET(2) char gUnusedStoneTex[] = dgUnusedStoneTex;
 #define dgDoorLockDL "__OTR__objects/gameplay_dangeon_keep/gDoorLockDL"
 static const ALIGN_ASSET(2) char gDoorLockDL[] = dgDoorLockDL;
 
-#define dgDoorChainsDL "__OTR__objects/gameplay_dangeon_keep/gDoorChainsDL"
-static const ALIGN_ASSET(2) char gDoorChainsDL[] = dgDoorChainsDL;
+#define dgDoorChainDL "__OTR__objects/gameplay_dangeon_keep/gDoorChainDL"
+static const ALIGN_ASSET(2) char gDoorChainDL[] = dgDoorChainDL;
 
 #define dgUnusedGoldLockTex "__OTR__objects/gameplay_dangeon_keep/gUnusedGoldLockTex"
 static const ALIGN_ASSET(2) char gUnusedGoldLockTex[] = dgUnusedGoldLockTex;

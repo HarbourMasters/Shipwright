@@ -3,8 +3,8 @@
 
 #include "align_asset_macro.h"
 
-#define dgVolvagiaBossTitleCardTex "__OTR__objects/object_fd/gVolvagiaBossTitleCardTex"
-static const ALIGN_ASSET(2) char gVolvagiaBossTitleCardTex[] = dgVolvagiaBossTitleCardTex;
+#define dgVolvagiaTitleCardTex "__OTR__objects/object_fd/gVolvagiaTitleCardTex"
+static const ALIGN_ASSET(2) char gVolvagiaTitleCardTex[] = dgVolvagiaTitleCardTex;
 
 #define dgVolvagiaLeftArmSkel "__OTR__objects/object_fd/gVolvagiaLeftArmSkel"
 static const ALIGN_ASSET(2) char gVolvagiaLeftArmSkel[] = dgVolvagiaLeftArmSkel;

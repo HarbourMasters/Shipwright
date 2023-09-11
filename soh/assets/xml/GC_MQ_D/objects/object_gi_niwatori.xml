@@ -1,5 +1,7 @@
 <Root>
     <File Name="object_gi_niwatori" Segment="6">
+        <Texture Name="object_gi_niwatoriTex_000000" OutName="object_gi_niwatoriTex_000000" Format="i8" Width="32" Height="64" Offset="0x0" AddedByScript="true"/>
+        <Texture Name="object_gi_niwatoriTex_000800" OutName="object_gi_niwatoriTex_000800" Format="ia8" Width="32" Height="32" Offset="0x800" AddedByScript="true"/>
         <DList Name="gGiChickenColorDL" Offset="0x15F0"/>
         <DList Name="gGiCojiroColorDL" Offset="0x1610"/>
         <DList Name="gGiChickenDL" Offset="0x1630"/>
