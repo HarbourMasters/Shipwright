@@ -1,0 +1,9 @@
+<Root>
+    <File Name="object_am" Segment="6">
+        <Skeleton Name="gArmosSkel" Type="Normal" LimbType="Standard" Offset="0x5948"/>
+        <Animation Name="gArmosRicochetAnim" Offset="0x33C"/>
+        <Animation Name="gArmosHopAnim" Offset="0x238"/>
+        <Animation Name="gArmosDamagedAnim" Offset="0x5B3C"/>
+        <Collision Name="gArmosCol" Offset="0x118"/>
+    </File>
+</Root>
