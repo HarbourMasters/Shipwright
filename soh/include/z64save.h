@@ -199,6 +199,7 @@ typedef struct {
     f32 unk_85C;
     Vec3f stickWeaponTip;
     s16 unk_860;
+    s8 unk_862;
 } PlayerData;
 
 typedef struct {

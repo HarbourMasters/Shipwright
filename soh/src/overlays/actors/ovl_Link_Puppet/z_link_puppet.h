@@ -17,6 +17,7 @@ typedef struct LinkPuppet {
     uint8_t damageTimer;
     uint8_t puppetAge;
     NameTagOptions nameTagOptions;
+    Vec3f leftHandPos;
 } LinkPuppet;
 
 #ifdef __cplusplus

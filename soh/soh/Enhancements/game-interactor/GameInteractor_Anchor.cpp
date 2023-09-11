@@ -72,6 +72,7 @@ void from_json(const json& j, PlayerData& playerData) {
     j.at("stickWeaponTipY").get_to(playerData.stickWeaponTip.y);
     j.at("stickWeaponTipZ").get_to(playerData.stickWeaponTip.z);
     j.at("unk_860").get_to(playerData.unk_860);
+    j.at("unk_862").get_to(playerData.unk_862);
 }
 
 void to_json(json& j, const PlayerData& playerData) {
@@ -109,6 +110,7 @@ void to_json(json& j, const PlayerData& playerData) {
         { "stickWeaponTipY", playerData.stickWeaponTip.y },
         { "stickWeaponTipZ", playerData.stickWeaponTip.z },
         { "unk_860", playerData.unk_860 },
+        { "unk_862", playerData.unk_862 },
     };
 }
 
@@ -819,6 +821,7 @@ void Anchor_RegisterHooks() {
         gSaveContext.playerData.unk_85C = player->unk_85C;
         gSaveContext.playerData.stickWeaponTip = player->meleeWeaponInfo[0].tip;
         gSaveContext.playerData.unk_860 = player->unk_860;
+        gSaveContext.playerData.unk_862 = player->unk_862;
 
         payload["playerData"] = gSaveContext.playerData;
 

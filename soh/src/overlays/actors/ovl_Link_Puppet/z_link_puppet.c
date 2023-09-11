@@ -264,6 +264,20 @@ void LinkPuppet_Draw(Actor* thisx, PlayState* play) {
         DrawAnchorPuppet(play, this->linkSkeleton.skeleton, this->linkSkeleton.jointTable,
                          this->linkSkeleton.dListCount, 0, playerData.tunicType, playerData.bootsType,
                          playerData.faceType, PuppetOverrideDraw, Puppet_PostLimbDraw, this, playerData);
+
+        if ((playerData.unk_862 - 1) > -1) {
+            OPEN_DISPS(play->state.gfxCtx);
+
+            Matrix_Translate(this->leftHandPos.x + (3.3f * Math_SinS(this->actor.shape.rot.y)), this->leftHandPos.y,
+                             this->leftHandPos.z + ((3.3f + (IREG(90) / 10.0f)) * Math_CosS(this->actor.shape.rot.y)),
+                             MTXMODE_NEW);
+            Matrix_RotateZYX(0, play->gameplayFrames * 1000, 0, MTXMODE_APPLY);
+            Matrix_Scale(0.2f, 0.2f, 0.2f, MTXMODE_APPLY);
+
+            GetItem_Draw(play, ABS(playerData.unk_862 - 1));
+
+            CLOSE_DISPS(play->state.gfxCtx);
+        }
     }
 }
 #endif

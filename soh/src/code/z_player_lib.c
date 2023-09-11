@@ -1181,7 +1181,7 @@ s32 func_8008FCC8(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
 s32 PuppetOverrideDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     LinkPuppet* this = (LinkPuppet*)thisx;
 
-    static Vec3f headPosLocal = { 2000.0f, 0.0f, 0.0f };
+    static Vec3f headPosLocal = { 2000.0f, 0.0f, -300.0f };
 
     PlayerData playerData = Anchor_GetClientPlayerData(this->actor.params - 3);
 
@@ -1201,6 +1201,8 @@ s32 PuppetOverrideDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, 
     } else if (limbIndex == PLAYER_LIMB_HEAD) {
         Matrix_MultVec3f(&headPosLocal, &this->actor.focus.pos);
     } else if (limbIndex == PLAYER_LIMB_L_HAND) {
+        Matrix_MultVec3f(&headPosLocal, &this->leftHandPos);
+
         Gfx** dLists = &sPlayerDListGroups[playerData.leftHandType][(void)0, playerData.playerAge];
 
         if ((playerData.leftHandType == 4) && (playerData.biggoron_broken == 1)) {
