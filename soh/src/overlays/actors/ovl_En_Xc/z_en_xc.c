@@ -414,7 +414,7 @@ void EnXc_DoNothing(EnXc* this, PlayState* play) {
 
 void EnXc_RandoStand(EnXc* this, PlayState* play) {
     //Replaces Ganondorf Light Arrow hint. also stands in ToT
-    if (play->sceneNum == SCENE_TOKINOMA) {
+    if (play->sceneNum == SCENE_TEMPLE_OF_TIME) {
         EnXc_ChangeAnimation(this, &gSheikArmsCrossedIdleAnim, ANIMMODE_LOOP, 0.0f, false);
     } else {
         EnXc_ChangeAnimation(this, &gSheikIdleAnim, ANIMMODE_LOOP, 0.0f, false);
