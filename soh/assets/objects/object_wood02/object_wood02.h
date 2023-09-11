@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_WOOD02_H
+#define OBJECTS_OBJECT_WOOD02_H 1
 
 #include "align_asset_macro.h"
 
@@ -91,3 +92,5 @@ static const ALIGN_ASSET(2) char object_wood02_DL_0083E0[] = dobject_wood02_DL_0
 
 #define dobject_wood02_DL_0085C0 "__OTR__objects/object_wood02/object_wood02_DL_0085C0"
 static const ALIGN_ASSET(2) char object_wood02_DL_0085C0[] = dobject_wood02_DL_0085C0;
+
+#endif // OBJECTS_OBJECT_WOOD02_H

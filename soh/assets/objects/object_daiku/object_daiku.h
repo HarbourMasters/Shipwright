@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_DAIKU_H
+#define OBJECTS_OBJECT_DAIKU_H 1
 
 #include "align_asset_macro.h"
 
@@ -121,3 +122,6 @@ static const ALIGN_ASSET(2) char object_daiku_Anim_008164[] = dobject_daiku_Anim
 
 #define dobject_daiku_Anim_00885C "__OTR__objects/object_daiku/object_daiku_Anim_00885C"
 static const ALIGN_ASSET(2) char object_daiku_Anim_00885C[] = dobject_daiku_Anim_00885C;
+
+
+#endif // OBJECTS_OBJECT_DAIKU_H

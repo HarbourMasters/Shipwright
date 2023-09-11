@@ -6,6 +6,7 @@
 
 #include "z_en_zf.h"
 #include "objects/object_zf/object_zf.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -1924,11 +1925,7 @@ void EnZf_SetupDie(EnZf* this) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIZA_DEAD);
     EnZf_SetupAction(this, EnZf_Die);
     
-    if (this->actor.params == ENZF_TYPE_DINOLFOS) {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DINOLFOS]++;
-    } else {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LIZALFOS]++;
-    }
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnZf_Die(EnZf* this, PlayState* play) {

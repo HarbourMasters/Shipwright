@@ -2,6 +2,7 @@
 #include "objects/object_dekubaba/object_dekubaba.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 
@@ -409,11 +410,7 @@ void EnDekubaba_SetupPrunedSomersault(EnDekubaba* this) {
     this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED;
     this->actionFunc = EnDekubaba_PrunedSomersault;
 
-    if (this->actor.params == DEKUBABA_BIG) {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG]++;
-    } else {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA]++;
-    }
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnDekubaba_SetupShrinkDie(EnDekubaba* this) {
@@ -422,11 +419,7 @@ void EnDekubaba_SetupShrinkDie(EnDekubaba* this) {
     this->collider.base.acFlags &= ~AC_ON;
     this->actionFunc = EnDekubaba_ShrinkDie;
 
-    if (this->actor.params == DEKUBABA_BIG) {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG]++;
-    } else {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA]++;
-    }
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnDekubaba_SetupStunnedVertical(EnDekubaba* this) {

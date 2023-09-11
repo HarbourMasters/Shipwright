@@ -22,7 +22,6 @@ void StartingItemGive(GetItemEntry getItemEntry) {
     } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
         if (getItemEntry.getItemId == RG_ICE_TRAP) {
             gSaveContext.pendingIceTrapCount++;
-            GameInteractor::Instance->ExecuteHooks<GameInteractor::OnItemReceive>(getItemEntry);
         } else {
             Randomizer_Item_Give(NULL, getItemEntry);
         }
@@ -155,50 +154,50 @@ void SetStartingItems() {
         uint32_t mapBitMask = 1 << 1;
         uint32_t compassBitMask = 1 << 2;
         uint32_t startingDungeonItemsBitMask = mapBitMask | compassBitMask;
-        for (int scene = SCENE_YDAN; scene <= SCENE_ICE_DOUKUTO; scene++) {
+        for (int scene = SCENE_DEKU_TREE; scene <= SCENE_ICE_CAVERN; scene++) {
             gSaveContext.inventory.dungeonItems[scene] |= startingDungeonItemsBitMask;
         }
     }
 
     if (Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
-        gSaveContext.inventory.dungeonKeys[SCENE_BMORI1] = FOREST_TEMPLE_SMALL_KEY_MAX;         // Forest
-        gSaveContext.sohStats.dungeonKeys[SCENE_BMORI1] = FOREST_TEMPLE_SMALL_KEY_MAX;          // Forest
-        gSaveContext.inventory.dungeonKeys[SCENE_HIDAN] = FIRE_TEMPLE_SMALL_KEY_MAX;            // Fire
-        gSaveContext.sohStats.dungeonKeys[SCENE_HIDAN] = FIRE_TEMPLE_SMALL_KEY_MAX;             // Fire
-        gSaveContext.inventory.dungeonKeys[SCENE_MIZUSIN] = WATER_TEMPLE_SMALL_KEY_MAX;         // Water
-        gSaveContext.sohStats.dungeonKeys[SCENE_MIZUSIN] = WATER_TEMPLE_SMALL_KEY_MAX;          // Water
-        gSaveContext.inventory.dungeonKeys[SCENE_JYASINZOU] = SPIRIT_TEMPLE_SMALL_KEY_MAX;      // Spirit
-        gSaveContext.sohStats.dungeonKeys[SCENE_JYASINZOU] = SPIRIT_TEMPLE_SMALL_KEY_MAX;       // Spirit
-        gSaveContext.inventory.dungeonKeys[SCENE_HAKADAN] = SHADOW_TEMPLE_SMALL_KEY_MAX;        // Shadow
-        gSaveContext.sohStats.dungeonKeys[SCENE_HAKADAN] = SHADOW_TEMPLE_SMALL_KEY_MAX;         // Shadow
-        gSaveContext.inventory.dungeonKeys[SCENE_HAKADANCH] = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX; // BotW
-        gSaveContext.sohStats.dungeonKeys[SCENE_HAKADANCH] = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;  // BotW
-        gSaveContext.inventory.dungeonKeys[SCENE_MEN] = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX;  // GTG
-        gSaveContext.sohStats.dungeonKeys[SCENE_MEN] = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX;   // GTG
-        gSaveContext.inventory.dungeonKeys[SCENE_GANONTIKA] = GANONS_CASTLE_SMALL_KEY_MAX;      // Ganon
-        gSaveContext.sohStats.dungeonKeys[SCENE_GANONTIKA] = GANONS_CASTLE_SMALL_KEY_MAX;       // Ganon
+        gSaveContext.inventory.dungeonKeys[SCENE_FOREST_TEMPLE] = FOREST_TEMPLE_SMALL_KEY_MAX;         // Forest
+        gSaveContext.sohStats.dungeonKeys[SCENE_FOREST_TEMPLE] = FOREST_TEMPLE_SMALL_KEY_MAX;          // Forest
+        gSaveContext.inventory.dungeonKeys[SCENE_FIRE_TEMPLE] = FIRE_TEMPLE_SMALL_KEY_MAX;            // Fire
+        gSaveContext.sohStats.dungeonKeys[SCENE_FIRE_TEMPLE] = FIRE_TEMPLE_SMALL_KEY_MAX;             // Fire
+        gSaveContext.inventory.dungeonKeys[SCENE_WATER_TEMPLE] = WATER_TEMPLE_SMALL_KEY_MAX;         // Water
+        gSaveContext.sohStats.dungeonKeys[SCENE_WATER_TEMPLE] = WATER_TEMPLE_SMALL_KEY_MAX;          // Water
+        gSaveContext.inventory.dungeonKeys[SCENE_SPIRIT_TEMPLE] = SPIRIT_TEMPLE_SMALL_KEY_MAX;      // Spirit
+        gSaveContext.sohStats.dungeonKeys[SCENE_SPIRIT_TEMPLE] = SPIRIT_TEMPLE_SMALL_KEY_MAX;       // Spirit
+        gSaveContext.inventory.dungeonKeys[SCENE_SHADOW_TEMPLE] = SHADOW_TEMPLE_SMALL_KEY_MAX;        // Shadow
+        gSaveContext.sohStats.dungeonKeys[SCENE_SHADOW_TEMPLE] = SHADOW_TEMPLE_SMALL_KEY_MAX;         // Shadow
+        gSaveContext.inventory.dungeonKeys[SCENE_BOTTOM_OF_THE_WELL] = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX; // BotW
+        gSaveContext.sohStats.dungeonKeys[SCENE_BOTTOM_OF_THE_WELL] = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;  // BotW
+        gSaveContext.inventory.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX;  // GTG
+        gSaveContext.sohStats.dungeonKeys[SCENE_GERUDO_TRAINING_GROUND] = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX;   // GTG
+        gSaveContext.inventory.dungeonKeys[SCENE_INSIDE_GANONS_CASTLE] = GANONS_CASTLE_SMALL_KEY_MAX;      // Ganon
+        gSaveContext.sohStats.dungeonKeys[SCENE_INSIDE_GANONS_CASTLE] = GANONS_CASTLE_SMALL_KEY_MAX;       // Ganon
     } else if (Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_VANILLA) {
         // Logic cannot handle vanilla key layout in some dungeons
         // this is because vanilla expects the dungeon major item to be
         // locked behind the keys, which is not always true in rando.
         // We can resolve this by starting with some extra keys
-        if (ResourceMgr_IsSceneMasterQuest(SCENE_JYASINZOU)) {
+        if (ResourceMgr_IsSceneMasterQuest(SCENE_SPIRIT_TEMPLE)) {
             // MQ Spirit needs 3 keys
-            gSaveContext.inventory.dungeonKeys[SCENE_JYASINZOU] = 3;
-            gSaveContext.sohStats.dungeonKeys[SCENE_JYASINZOU] = 3;
+            gSaveContext.inventory.dungeonKeys[SCENE_SPIRIT_TEMPLE] = 3;
+            gSaveContext.sohStats.dungeonKeys[SCENE_SPIRIT_TEMPLE] = 3;
         }
     }
 
     if (Randomizer_GetSettingValue(RSK_BOSS_KEYSANITY) == RO_DUNGEON_ITEM_LOC_STARTWITH) {
-        gSaveContext.inventory.dungeonItems[SCENE_BMORI1] |= 1;    // Forest
-        gSaveContext.inventory.dungeonItems[SCENE_HIDAN] |= 1;     // Fire
-        gSaveContext.inventory.dungeonItems[SCENE_MIZUSIN] |= 1;   // Water
-        gSaveContext.inventory.dungeonItems[SCENE_JYASINZOU] |= 1; // Spirit
-        gSaveContext.inventory.dungeonItems[SCENE_HAKADAN] |= 1;   // Shadow
+        gSaveContext.inventory.dungeonItems[SCENE_FOREST_TEMPLE] |= 1;    // Forest
+        gSaveContext.inventory.dungeonItems[SCENE_FIRE_TEMPLE] |= 1;     // Fire
+        gSaveContext.inventory.dungeonItems[SCENE_WATER_TEMPLE] |= 1;   // Water
+        gSaveContext.inventory.dungeonItems[SCENE_SPIRIT_TEMPLE] |= 1; // Spirit
+        gSaveContext.inventory.dungeonItems[SCENE_SHADOW_TEMPLE] |= 1;   // Shadow
     }
 
     if (Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY) == RO_GANON_BOSS_KEY_STARTWITH) {
-        gSaveContext.inventory.dungeonItems[SCENE_GANON] |= 1;
+        gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER] |= 1;
     }
 }
 
@@ -277,18 +276,18 @@ extern "C" void Randomizer_InitSaveFile() {
     Flags_SetInfTable(INFTABLE_ENTERED_HYRULE_CASTLE);
 
     // skip the z target talk instructions by the kokiri shop
-    gSaveContext.sceneFlags[SCENE_SPOT04].swch |= (1 << 0x1F);
+    gSaveContext.sceneFlags[SCENE_KOKIRI_FOREST].swch |= (1 << 0x1F);
 
     // Go away ruto (water temple first cutscene)
-    gSaveContext.sceneFlags[SCENE_MIZUSIN].swch |= (1 << 0x10);
+    gSaveContext.sceneFlags[SCENE_WATER_TEMPLE].swch |= (1 << 0x10);
 
     // no more kaepora
-    gSaveContext.sceneFlags[SCENE_SPOT00].swch |= (1 << 0xC);  // hyrule field kaepora outside kokiri forest
-    gSaveContext.sceneFlags[SCENE_SPOT00].swch |= (1 << 0xB);  // hyrule field kaepora outside lake hylia
-    gSaveContext.sceneFlags[SCENE_SPOT10].swch |= (1 << 0x7);  // lost woods kaepora pre-saria
-    gSaveContext.sceneFlags[SCENE_SPOT10].swch |= (1 << 0x8);  // lost woods kaepora post-saria
-    gSaveContext.sceneFlags[SCENE_SPOT11].swch |= (1 << 0x1F); // desert colossus kaepora
-    gSaveContext.sceneFlags[SCENE_SPOT15].swch |= (1 << 0x5);  // hyrule castle kaepora
+    gSaveContext.sceneFlags[SCENE_HYRULE_FIELD].swch |= (1 << 0xC);  // hyrule field kaepora outside kokiri forest
+    gSaveContext.sceneFlags[SCENE_HYRULE_FIELD].swch |= (1 << 0xB);  // hyrule field kaepora outside lake hylia
+    gSaveContext.sceneFlags[SCENE_LOST_WOODS].swch |= (1 << 0x7);  // lost woods kaepora pre-saria
+    gSaveContext.sceneFlags[SCENE_LOST_WOODS].swch |= (1 << 0x8);  // lost woods kaepora post-saria
+    gSaveContext.sceneFlags[SCENE_DESERT_COLOSSUS].swch |= (1 << 0x1F); // desert colossus kaepora
+    gSaveContext.sceneFlags[SCENE_HYRULE_CASTLE].swch |= (1 << 0x5);  // hyrule castle kaepora
 
     if (!Randomizer_GetSettingValue(RSK_ENABLE_GLITCH_CUTSCENES)) {
         Flags_SetInfTable(INFTABLE_SPOKE_TO_DARUNIA_IN_FIRE_TEMPLE); // Darunia in Fire Temple
@@ -307,7 +306,7 @@ extern "C" void Randomizer_InitSaveFile() {
         case RO_AGE_ADULT: // Adult
             gSaveContext.linkAge = LINK_AGE_ADULT;
             gSaveContext.entranceIndex = 0x5F4;
-            gSaveContext.savedSceneNum = SCENE_SPOT20; // Set scene num manually to ToT
+            gSaveContext.savedSceneNum = SCENE_LON_LON_RANCH; // Set scene num manually to ToT
             break;
         case RO_AGE_CHILD: // Child
             gSaveContext.linkAge = LINK_AGE_CHILD;
@@ -345,7 +344,7 @@ extern "C" void Randomizer_InitSaveFile() {
         // Got item from impa
         Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
 
-        gSaveContext.sceneFlags[SCENE_SPOT15].swch |= (1 << 0x4); // move milk crates in hyrule castle to moat
+        gSaveContext.sceneFlags[SCENE_HYRULE_CASTLE].swch |= (1 << 0x4); // move milk crates in hyrule castle to moat
 
         // set this at the end to ensure we always start with the letter
         // this is for the off chance we got the weird egg from impa (which should never happen)
@@ -363,15 +362,15 @@ extern "C" void Randomizer_InitSaveFile() {
     u8 keysanity = Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANYWHERE ||
                    Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_OVERWORLD ||
                    Randomizer_GetSettingValue(RSK_KEYSANITY) == RO_DUNGEON_ITEM_LOC_ANY_DUNGEON;
-    if (!ResourceMgr_IsSceneMasterQuest(SCENE_HIDAN) && !keysanity) {
-        gSaveContext.sceneFlags[SCENE_HIDAN].swch |= (1 << 0x17);
+    if (!ResourceMgr_IsSceneMasterQuest(SCENE_FIRE_TEMPLE) && !keysanity) {
+        gSaveContext.sceneFlags[SCENE_FIRE_TEMPLE].swch |= (1 << 0x17);
     }
 
     // Opens locked Water Temple door in vanilla to prevent softlocks
     // West door on the middle level that leads to the water raising thing
     // Happens in 3DS rando and N64 rando as well
-    if (!ResourceMgr_IsSceneMasterQuest(SCENE_MIZUSIN)) {
-        gSaveContext.sceneFlags[SCENE_MIZUSIN].swch |= (1 << 0x15);
+    if (!ResourceMgr_IsSceneMasterQuest(SCENE_WATER_TEMPLE)) {
+        gSaveContext.sceneFlags[SCENE_WATER_TEMPLE].swch |= (1 << 0x15);
     }
 
     int openForest = Randomizer_GetSettingValue(RSK_FOREST);
@@ -400,26 +399,26 @@ extern "C" void Randomizer_InitSaveFile() {
         Flags_SetEventChkInf(EVENTCHKINF_CARPENTERS_FREE(1));
         Flags_SetEventChkInf(EVENTCHKINF_CARPENTERS_FREE(2));
         Flags_SetEventChkInf(EVENTCHKINF_CARPENTERS_FREE(3));
-        gSaveContext.sceneFlags[SCENE_GERUDOWAY].swch |= (1 << 0x02); // heard yells and unlocked doors
-        gSaveContext.sceneFlags[SCENE_GERUDOWAY].swch |= (1 << 0x03);
-        gSaveContext.sceneFlags[SCENE_GERUDOWAY].swch |= (1 << 0x04);
-        gSaveContext.sceneFlags[SCENE_GERUDOWAY].swch |= (1 << 0x06);
-        gSaveContext.sceneFlags[SCENE_GERUDOWAY].swch |= (1 << 0x07);
-        gSaveContext.sceneFlags[SCENE_GERUDOWAY].swch |= (1 << 0x08);
-        gSaveContext.sceneFlags[SCENE_GERUDOWAY].swch |= (1 << 0x10);
-        gSaveContext.sceneFlags[SCENE_GERUDOWAY].swch |= (1 << 0x12);
-        gSaveContext.sceneFlags[SCENE_GERUDOWAY].swch |= (1 << 0x13);
-        gSaveContext.sceneFlags[SCENE_GERUDOWAY].collect |= (1 << 0x0A); // picked up keys
-        gSaveContext.sceneFlags[SCENE_GERUDOWAY].collect |= (1 << 0x0E);
-        gSaveContext.sceneFlags[SCENE_GERUDOWAY].collect |= (1 << 0x0F);
+        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x02); // heard yells and unlocked doors
+        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x03);
+        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x04);
+        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x06);
+        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x07);
+        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x08);
+        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x10);
+        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x12);
+        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x13);
+        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].collect |= (1 << 0x0A); // picked up keys
+        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].collect |= (1 << 0x0E);
+        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].collect |= (1 << 0x0F);
     }
 
     if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == RO_GF_OPEN) {
         Flags_SetEventChkInf(EVENTCHKINF_CARPENTERS_FREE(0));
-        gSaveContext.sceneFlags[SCENE_GERUDOWAY].swch |= (1 << 0x01); // heard yell and unlocked door
-        gSaveContext.sceneFlags[SCENE_GERUDOWAY].swch |= (1 << 0x05);
-        gSaveContext.sceneFlags[SCENE_GERUDOWAY].swch |= (1 << 0x11);
-        gSaveContext.sceneFlags[SCENE_GERUDOWAY].collect |= (1 << 0x0C); // picked up key
+        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x01); // heard yell and unlocked door
+        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x05);
+        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].swch |= (1 << 0x11);
+        gSaveContext.sceneFlags[SCENE_THIEVES_HIDEOUT].collect |= (1 << 0x0C); // picked up key
 
         if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
             Item_Give(NULL, ITEM_GERUDO_CARD);

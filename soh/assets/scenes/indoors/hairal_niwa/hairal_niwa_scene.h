@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INDOORS_HAIRAL_NIWA_SCENE_H
+#define INDOORS_HAIRAL_NIWA_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -70,3 +71,5 @@ static const ALIGN_ASSET(2) char hairal_niwa_sceneTex_005B90[] = dhairal_niwa_sc
 
 #define dhairal_niwa_sceneTex_003B90 "__OTR__scenes/nonmq/hairal_niwa_scene/hairal_niwa_sceneTex_003B90"
 static const ALIGN_ASSET(2) char hairal_niwa_sceneTex_003B90[] = dhairal_niwa_sceneTex_003B90;
+
+#endif // INDOORS_HAIRAL_NIWA_SCENE_H

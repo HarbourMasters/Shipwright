@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INDOORS_MIHARIGOYA_SCENE_H
+#define INDOORS_MIHARIGOYA_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -60,3 +61,6 @@ static const ALIGN_ASSET(2) char miharigoya_sceneTex_000C50[] = dmiharigoya_scen
 static const ALIGN_ASSET(2) char miharigoya_sceneTex_00BD50[] = dmiharigoya_sceneTex_00BD50;
 
 #define dmiharigoya_sceneCollisionHeader_000B28 "__OTR__scenes/nonmq/miharigoya_scene/miharigoya_sceneCollisionHeader_000B28"
+
+
+#endif // INDOORS_MIHARIGOYA_SCENE_H

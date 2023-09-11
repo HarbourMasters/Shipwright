@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_SSH_H
+#define OBJECTS_OBJECT_SSH_H 1
 
 #include "align_asset_macro.h"
 
@@ -85,3 +86,6 @@ static const ALIGN_ASSET(2) char object_ssh_Anim_0055F8[] = dobject_ssh_Anim_005
 
 #define dobject_ssh_Anim_005BE8 "__OTR__objects/object_ssh/object_ssh_Anim_005BE8"
 static const ALIGN_ASSET(2) char object_ssh_Anim_005BE8[] = dobject_ssh_Anim_005BE8;
+
+
+#endif // OBJECTS_OBJECT_SSH_H

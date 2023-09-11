@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MISC_HAKAANA2_SCENE_H
+#define MISC_HAKAANA2_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -58,3 +59,5 @@ static const ALIGN_ASSET(2) char hakaana2_sceneTex_006890[] = dhakaana2_sceneTex
 
 #define dhakaana2_sceneTex_008090 "__OTR__scenes/nonmq/hakaana2_scene/hakaana2_sceneTex_008090"
 static const ALIGN_ASSET(2) char hakaana2_sceneTex_008090[] = dhakaana2_sceneTex_008090;
+
+#endif // MISC_HAKAANA2_SCENE_H

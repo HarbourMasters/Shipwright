@@ -16,7 +16,7 @@ void KaleidoSetup_Update(PlayState* play) {
         play->sceneLoadFlag == 0 && play->transitionMode == 0 && gSaveContext.cutsceneIndex < 0xFFF0 &&
         gSaveContext.nextCutsceneIndex < 0xFFF0 && !Play_InCsMode(play) &&
         play->shootingGalleryStatus <= 1 && gSaveContext.magicState != 8 && gSaveContext.magicState != 9 &&
-        (play->sceneNum != SCENE_BOWLING || !Flags_GetSwitch(play, 0x38))) {
+        (play->sceneNum != SCENE_BOMBCHU_BOWLING_ALLEY || !Flags_GetSwitch(play, 0x38))) {
 
         u8 easyPauseBufferEnabled = CVarGetInteger("gCheatEasyPauseBufferEnabled", 0);
         u8 easyPauseBufferTimer = CVarGetInteger("gCheatEasyPauseBufferTimer", 0);

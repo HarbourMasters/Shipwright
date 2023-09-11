@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_GAMEPLAY_DANGEON_KEEP_H
+#define OBJECTS_GAMEPLAY_DANGEON_KEEP_H 1
 
 #include "align_asset_macro.h"
 
@@ -14,8 +15,8 @@ static const ALIGN_ASSET(2) char gUnusedStoneTex[] = dgUnusedStoneTex;
 #define dgDoorLockDL "__OTR__objects/gameplay_dangeon_keep/gDoorLockDL"
 static const ALIGN_ASSET(2) char gDoorLockDL[] = dgDoorLockDL;
 
-#define dgDoorChainsDL "__OTR__objects/gameplay_dangeon_keep/gDoorChainsDL"
-static const ALIGN_ASSET(2) char gDoorChainsDL[] = dgDoorChainsDL;
+#define dgDoorChainDL "__OTR__objects/gameplay_dangeon_keep/gDoorChainDL"
+static const ALIGN_ASSET(2) char gDoorChainDL[] = dgDoorChainDL;
 
 #define dgUnusedGoldLockTex "__OTR__objects/gameplay_dangeon_keep/gUnusedGoldLockTex"
 static const ALIGN_ASSET(2) char gUnusedGoldLockTex[] = dgUnusedGoldLockTex;
@@ -214,3 +215,5 @@ static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_0118A0[] = dgameplay_d
 
 #define dgameplay_dangeon_keepTex_011AA0 "__OTR__objects/gameplay_dangeon_keep/gameplay_dangeon_keepTex_011AA0"
 static const ALIGN_ASSET(2) char gameplay_dangeon_keepTex_011AA0[] = dgameplay_dangeon_keepTex_011AA0;
+
+#endif // OBJECTS_GAMEPLAY_DANGEON_KEEP_H

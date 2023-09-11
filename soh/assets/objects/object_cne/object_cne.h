@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_CNE_H
+#define OBJECTS_OBJECT_CNE_H 1
 
 #include "align_asset_macro.h"
 
@@ -82,3 +83,6 @@ static const ALIGN_ASSET(2) char gCneOrangeHairSkinTex[] = dgCneOrangeHairSkinTe
 
 #define dgCneHeadOrangeHairDL "__OTR__objects/object_cne/gCneHeadOrangeHairDL"
 static const ALIGN_ASSET(2) char gCneHeadOrangeHairDL[] = dgCneHeadOrangeHairDL;
+
+
+#endif // OBJECTS_OBJECT_CNE_H

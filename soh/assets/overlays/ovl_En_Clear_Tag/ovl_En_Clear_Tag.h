@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OVERLAYS_OVL_EN_CLEAR_TAG_H
+#define OVERLAYS_OVL_EN_CLEAR_TAG_H 1
 
 #include "align_asset_macro.h"
 
@@ -73,3 +74,5 @@ static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_008288[] = dovl_En_Clear_Ta
 
 #define dovl_En_Clear_TagTex_008540 "__OTR__overlays/ovl_En_Clear_Tag/ovl_En_Clear_TagTex_008540"
 static const ALIGN_ASSET(2) char ovl_En_Clear_TagTex_008540[] = dovl_En_Clear_TagTex_008540;
+
+#endif // OVERLAYS_OVL_EN_CLEAR_TAG_H

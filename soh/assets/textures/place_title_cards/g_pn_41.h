@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_G_PN_41_H
+#define TEXTURES_G_PN_41_H 1
 
 #include "align_asset_macro.h"
 
@@ -10,3 +11,5 @@ static const ALIGN_ASSET(2) char gGoronCityTitleCardGERTex[] = dgGoronCityTitleC
 
 #define dgGoronCityTitleCardFRATex "__OTR__textures/g_pn_41/gGoronCityTitleCardFRATex"
 static const ALIGN_ASSET(2) char gGoronCityTitleCardFRATex[] = dgGoronCityTitleCardFRATex;
+
+#endif // TEXTURES_G_PN_41_H

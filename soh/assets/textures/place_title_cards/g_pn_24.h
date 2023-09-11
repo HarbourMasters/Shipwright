@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_G_PN_24_H
+#define TEXTURES_G_PN_24_H 1
 
 #include "align_asset_macro.h"
 
@@ -10,3 +11,5 @@ static const ALIGN_ASSET(2) char gPotionShopTitleCardGERTex[] = dgPotionShopTitl
 
 #define dgPotionShopTitleCardFRATex "__OTR__textures/g_pn_24/gPotionShopTitleCardFRATex"
 static const ALIGN_ASSET(2) char gPotionShopTitleCardFRATex[] = dgPotionShopTitleCardFRATex;
+
+#endif // TEXTURES_G_PN_24_H

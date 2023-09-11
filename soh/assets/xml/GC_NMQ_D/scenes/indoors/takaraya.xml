@@ -1,26 +1,53 @@
 <Root>
     <File Name="takaraya_scene" Segment="2">
+        <Texture Name="takaraya_sceneTex_0051B0" OutName="takaraya_sceneTex_0051B0" Format="rgba16" Width="32" Height="32" Offset="0x51B0" AddedByScript="true"/>
+        <Texture Name="takaraya_sceneTex_0059B0" OutName="takaraya_sceneTex_0059B0" Format="rgba16" Width="32" Height="32" Offset="0x59B0" AddedByScript="true"/>
+        <Texture Name="takaraya_sceneTex_0061B0" OutName="takaraya_sceneTex_0061B0" Format="rgba16" Width="32" Height="32" Offset="0x61B0" AddedByScript="true"/>
+        <Texture Name="takaraya_sceneTex_0069B0" OutName="takaraya_sceneTex_0069B0" Format="rgba16" Width="32" Height="32" Offset="0x69B0" AddedByScript="true"/>
         <Scene Name="takaraya_scene" Offset="0x0"/>
     </File>
     <File Name="takaraya_room_0" Segment="3">
+        <Texture Name="takaraya_room_0Tex_003BE0" OutName="takaraya_room_0Tex_003BE0" Format="rgba16" Width="16" Height="64" Offset="0x3BE0" AddedByScript="true"/>
+        <Texture Name="takaraya_room_0Tex_0043E0" OutName="takaraya_room_0Tex_0043E0" Format="rgba16" Width="32" Height="32" Offset="0x43E0" AddedByScript="true"/>
+        <Texture Name="takaraya_room_0Tex_004BE0" OutName="takaraya_room_0Tex_004BE0" Format="rgba16" Width="64" Height="32" Offset="0x4BE0" AddedByScript="true"/>
+        <Texture Name="takaraya_room_0Tex_005BE0" OutName="takaraya_room_0Tex_005BE0" Format="rgba16" Width="32" Height="32" Offset="0x5BE0" AddedByScript="true"/>
+        <Texture Name="takaraya_room_0Tex_0063E0" OutName="takaraya_room_0Tex_0063E0" Format="rgba16" Width="32" Height="32" Offset="0x63E0" AddedByScript="true"/>
+        <Texture Name="takaraya_room_0Tex_006BE0" OutName="takaraya_room_0Tex_006BE0" Format="rgba16" Width="32" Height="32" Offset="0x6BE0" AddedByScript="true"/>
+        <Texture Name="takaraya_room_0Tex_0073E0" OutName="takaraya_room_0Tex_0073E0" Format="rgba16" Width="32" Height="32" Offset="0x73E0" AddedByScript="true"/>
+        <Texture Name="takaraya_room_0Tex_007BE0" OutName="takaraya_room_0Tex_007BE0" Format="rgba16" Width="32" Height="32" Offset="0x7BE0" AddedByScript="true"/>
+        <Texture Name="takaraya_room_0Tex_0083E0" OutName="takaraya_room_0Tex_0083E0" Format="rgba16" Width="32" Height="64" Offset="0x83E0" AddedByScript="true"/>
+        <Texture Name="takaraya_room_0Tex_0095C0" OutName="takaraya_room_0Tex_0095C0" Format="ia4" Width="64" Height="64" Offset="0x95C0" AddedByScript="true"/>
         <Room Name="takaraya_room_0" Offset="0x0"/>
     </File>
     <File Name="takaraya_room_1" Segment="3">
+        <Texture Name="takaraya_room_1Tex_0017F8" OutName="takaraya_room_1Tex_0017F8" Format="rgba16" Width="16" Height="64" Offset="0x17F8" AddedByScript="true"/>
         <Room Name="takaraya_room_1" Offset="0x0"/>
     </File>
     <File Name="takaraya_room_2" Segment="3">
+        <Texture Name="takaraya_room_2Tex_001828" OutName="takaraya_room_2Tex_001828" Format="rgba16" Width="16" Height="64" Offset="0x1828" AddedByScript="true"/>
         <Room Name="takaraya_room_2" Offset="0x0"/>
     </File>
     <File Name="takaraya_room_3" Segment="3">
+        <Texture Name="takaraya_room_3Tex_001818" OutName="takaraya_room_3Tex_001818" Format="rgba16" Width="16" Height="64" Offset="0x1818" AddedByScript="true"/>
+        <Texture Name="takaraya_room_3Tex_002018" OutName="takaraya_room_3Tex_002018" Format="rgba16" Width="32" Height="32" Offset="0x2018" AddedByScript="true"/>
         <Room Name="takaraya_room_3" Offset="0x0"/>
     </File>
     <File Name="takaraya_room_4" Segment="3">
+        <Texture Name="takaraya_room_4Tex_001820" OutName="takaraya_room_4Tex_001820" Format="rgba16" Width="16" Height="64" Offset="0x1820" AddedByScript="true"/>
+        <Texture Name="takaraya_room_4Tex_002020" OutName="takaraya_room_4Tex_002020" Format="rgba16" Width="32" Height="32" Offset="0x2020" AddedByScript="true"/>
+        <Texture Name="takaraya_room_4Tex_002820" OutName="takaraya_room_4Tex_002820" Format="rgba16" Width="32" Height="32" Offset="0x2820" AddedByScript="true"/>
         <Room Name="takaraya_room_4" Offset="0x0"/>
     </File>
     <File Name="takaraya_room_5" Segment="3">
+        <Texture Name="takaraya_room_5Tex_0017F8" OutName="takaraya_room_5Tex_0017F8" Format="rgba16" Width="32" Height="32" Offset="0x17F8" AddedByScript="true"/>
+        <Texture Name="takaraya_room_5Tex_001FF8" OutName="takaraya_room_5Tex_001FF8" Format="rgba16" Width="32" Height="32" Offset="0x1FF8" AddedByScript="true"/>
+        <Texture Name="takaraya_room_5Tex_0027F8" OutName="takaraya_room_5Tex_0027F8" Format="rgba16" Width="16" Height="64" Offset="0x27F8" AddedByScript="true"/>
         <Room Name="takaraya_room_5" Offset="0x0"/>
     </File>
     <File Name="takaraya_room_6" Segment="3">
+        <Texture Name="takaraya_room_6Tex_0012F8" OutName="takaraya_room_6Tex_0012F8" Format="rgba16" Width="32" Height="32" Offset="0x12F8" AddedByScript="true"/>
+        <Texture Name="takaraya_room_6Tex_001AF8" OutName="takaraya_room_6Tex_001AF8" Format="rgba16" Width="16" Height="64" Offset="0x1AF8" AddedByScript="true"/>
+        <Texture Name="takaraya_room_6Tex_0022F8" OutName="takaraya_room_6Tex_0022F8" Format="rgba16" Width="32" Height="32" Offset="0x22F8" AddedByScript="true"/>
         <Room Name="takaraya_room_6" Offset="0x0"/>
     </File>
 </Root>

@@ -62,7 +62,7 @@ u16 EnTg_GetTextId(PlayState* play, Actor* thisx) {
         return temp;
     }
     // Use a different set of dialogue in Kakariko Village (Adult)
-    if (play->sceneNum == SCENE_SPOT01) {
+    if (play->sceneNum == SCENE_KAKARIKO_VILLAGE) {
         if (this->nextDialogue % 2 != 0) {
             phi = 0x5089;
         } else {

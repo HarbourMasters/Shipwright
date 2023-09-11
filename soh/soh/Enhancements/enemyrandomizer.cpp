@@ -125,8 +125,8 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
     // This should probably be handled on OTR generation in the future when object dependency is fully removed.
     // Remove bats and skulltulas from graveyard.
     // Remove octorok in lost woods.
-    if (((*actorId == ACTOR_EN_FIREFLY || (*actorId == ACTOR_EN_SW && *params == 0)) && play->sceneNum == SCENE_SPOT02) ||
-        (*actorId == ACTOR_EN_OKUTA && play->sceneNum == SCENE_SPOT10)) {
+    if (((*actorId == ACTOR_EN_FIREFLY || (*actorId == ACTOR_EN_SW && *params == 0)) && play->sceneNum == SCENE_GRAVEYARD) ||
+        (*actorId == ACTOR_EN_OKUTA && play->sceneNum == SCENE_LOST_WOODS)) {
         return 0;
     }
 
@@ -138,7 +138,7 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
     }
 
     // Lengthen timer in non-MQ Jabu Jabu bubble room.
-    if (!isMQ && *actorId == ACTOR_OBJ_ROOMTIMER && *params == 30760 && play->sceneNum == SCENE_BDAN &&
+    if (!isMQ && *actorId == ACTOR_OBJ_ROOMTIMER && *params == 30760 && play->sceneNum == SCENE_JABU_JABU &&
         play->roomCtx.curRoom.num == 12) {
         *params = 92280;
     }
@@ -147,7 +147,7 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
 
         // When replacing Iron Knuckles in Spirit Temple, move them away from the throne because
         // some enemies can get stuck on the throne.
-        if (*actorId == ACTOR_EN_IK && play->sceneNum == SCENE_JYASINZOU) {
+        if (*actorId == ACTOR_EN_IK && play->sceneNum == SCENE_SPIRIT_TEMPLE) {
             if (*params == 6657) {
                 *posX = *posX + 150;
             } else if (*params == 6401) {
@@ -156,7 +156,7 @@ extern "C" uint8_t GetRandomizedEnemy(PlayState* play, int16_t *actorId, f32 *po
         }
 
         // Move like-likes in MQ Jabu Jabu down into the room as they otherwise get stuck on Song of Time blocks.
-        if (*actorId == ACTOR_EN_RR && play->sceneNum == SCENE_BDAN && play->roomCtx.curRoom.num == 11) {
+        if (*actorId == ACTOR_EN_RR && play->sceneNum == SCENE_JABU_JABU && play->roomCtx.curRoom.num == 11) {
             if (*posX == 1003) {
                 *posX = *posX - 75;
             } else {
@@ -260,7 +260,7 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
                 // Don't randomize the OoB wallmaster in the silver rupee room because it's only there to
                 // not trigger unlocking the door after killing the other wallmaster in authentic gameplay.
                 case ACTOR_EN_WALLMAS:
-                    return (!(!isMQ && sceneNum == SCENE_MEN && roomNum == 2 && posX == -2345));
+                    return (!(!isMQ && sceneNum == SCENE_GERUDO_TRAINING_GROUND && roomNum == 2 && posX == -2345));
                 // Only randomize initial floormaster actor (it can split and does some spawning on init).
                 case ACTOR_EN_FLOORMAS:
                     return (params == 0 || params == -32768);
@@ -274,7 +274,7 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
                 // Don't randomize Iron Knuckle in MQ Spirit Trial because it's needed to
                 // break the thrones in the room to access a button.
                 case ACTOR_EN_IK:
-                    return (params != 1280 && !(isMQ && sceneNum == SCENE_GANONTIKA && roomNum == 17));
+                    return (params != 1280 && !(isMQ && sceneNum == SCENE_INSIDE_GANONS_CASTLE && roomNum == 17));
                 // Only randomize the intitial spawn of the huge jellyfish. It spawns another copy when hit with a sword.
                 case ACTOR_EN_VALI:
                     return (params == -1);
@@ -288,16 +288,16 @@ bool IsEnemyFoundToRandomize(int16_t sceneNum, int8_t roomNum, int16_t actorId, 
                 // Don't randomize the Stalfos spawning on the boat in Shadow Temple, as randomizing them places the new enemies
                 // down in the river.
                 case ACTOR_EN_TEST:
-                    return (params != 1 && !(sceneNum == SCENE_HAKADAN && roomNum == 21));
+                    return (params != 1 && !(sceneNum == SCENE_SHADOW_TEMPLE && roomNum == 21));
                 // Only randomize the enemy variant of Armos Statue.
                 // Leave one Armos unrandomized in the Spirit Temple room where an armos is needed to push down a button
                 case ACTOR_EN_AM:
-                    return ((params == -1 || params == 255) && !(sceneNum == SCENE_JYASINZOU && posX == 2141));
+                    return ((params == -1 || params == 255) && !(sceneNum == SCENE_SPIRIT_TEMPLE && posX == 2141));
                 // Don't randomize Shell Blades and Spikes in the underwater portion in Water Temple as it's impossible to kill
                 // most other enemies underwater with just hookshot and they're required to be killed for a grate to open.
                 case ACTOR_EN_SB:
                 case ACTOR_EN_NY:
-                    return (!(!isMQ && sceneNum == SCENE_MIZUSIN && roomNum == 2));
+                    return (!(!isMQ && sceneNum == SCENE_WATER_TEMPLE && roomNum == 2));
                 default:
                     return 1;
             }
@@ -328,54 +328,54 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
 
     switch (sceneNum) {
         // Deku Tree
-        case SCENE_YDAN:
+        case SCENE_DEKU_TREE:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 9)) &&
                     !(isMQ && enemiesToExcludeClearRooms && (roomNum == 4 || roomNum == 6 || roomNum == 9 || roomNum == 10)));
         // Dodongo's Cavern
-        case SCENE_DDAN:
+        case SCENE_DODONGOS_CAVERN:
             return (!(!isMQ && enemiesToExcludeClearRooms && roomNum == 15) &&
                     !(isMQ && enemiesToExcludeClearRooms && (roomNum == 5 || roomNum == 13 || roomNum == 14)));
         // Jabu Jabu
-        case SCENE_BDAN:
+        case SCENE_JABU_JABU:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 8 || roomNum == 9)) &&
                     !(!isMQ && enemiesToExcludeTimedRooms && roomNum == 12) &&
                     !(isMQ && enemiesToExcludeClearRooms && (roomNum == 11 || roomNum == 14)));
         // Forest Temple
-        case SCENE_BMORI1:
+        case SCENE_FOREST_TEMPLE:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 6 || roomNum == 10 || roomNum == 18 || roomNum == 21)) &&
                     !(isMQ && enemiesToExcludeClearRooms && (roomNum == 5 || roomNum == 6 || roomNum == 18 || roomNum == 21)));
         // Fire Temple
-        case SCENE_HIDAN:
+        case SCENE_FIRE_TEMPLE:
             return (!(!isMQ && enemiesToExcludeClearRooms && roomNum == 15) &&
                     !(isMQ && enemiesToExcludeClearRooms && (roomNum == 15 || roomNum == 17 || roomNum == 18)));
         // Water Temple
-        case SCENE_MIZUSIN:
+        case SCENE_WATER_TEMPLE:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 13 || roomNum == 18 || roomNum == 19)) &&
                     !(isMQ && enemiesToExcludeClearRooms && (roomNum == 13 || roomNum == 18)));
         // Spirit Temple
-        case SCENE_JYASINZOU:
+        case SCENE_SPIRIT_TEMPLE:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 10 || roomNum == 17 || roomNum == 20)) &&
                     !(isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 2 || roomNum == 4 || roomNum == 10 || roomNum == 15 || roomNum == 19 || roomNum == 20)));
         // Shadow Temple
-        case SCENE_HAKADAN:
+        case SCENE_SHADOW_TEMPLE:
             return (!(!isMQ && enemiesToExcludeClearRooms && 
                         (roomNum == 1 || roomNum == 7 || roomNum == 11 || roomNum == 14 || roomNum == 16 || roomNum == 17 || roomNum == 19 || roomNum == 20)) &&
                     !(isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 6 || roomNum == 7 || roomNum == 11 || roomNum == 14 || roomNum == 20)));
         // Ganon's Castle Trials
-        case SCENE_GANONTIKA:
+        case SCENE_INSIDE_GANONS_CASTLE:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 2 || roomNum == 5 || roomNum == 9)) &&
                     !(isMQ && enemiesToExcludeClearRooms && (roomNum == 0 || roomNum == 2 || roomNum == 5 || roomNum == 9)));
         // Ice Caverns
-        case SCENE_ICE_DOUKUTO:
+        case SCENE_ICE_CAVERN:
             return (!(!isMQ && enemiesToExcludeClearRooms && (roomNum == 1 || roomNum == 7)) &&
                     !(isMQ && enemiesToExcludeClearRooms && (roomNum == 3 || roomNum == 7)));
         // Bottom of the Well
         // Exclude Dark Link from room with holes in the floor because it can pull you in a like-like making the player fall down.
-        case SCENE_HAKADANCH:
+        case SCENE_BOTTOM_OF_THE_WELL:
             return (!(!isMQ && enemy.id == ACTOR_EN_TORCH2 && roomNum == 3));
         // Don't allow Dark Link in areas with lava void out zones as it voids out the player as well.
         // Gerudo Training Ground.
-        case SCENE_MEN:
+        case SCENE_GERUDO_TRAINING_GROUND:
             return (!(enemy.id == ACTOR_EN_TORCH2 && roomNum == 6) &&
                     !(!isMQ && enemiesToExcludeTimedRooms && (roomNum == 1 || roomNum == 7)) &&
                     !(!isMQ && enemiesToExcludeClearRooms && (roomNum == 3 || roomNum == 5 || roomNum == 10)) &&
@@ -384,25 +384,25 @@ bool IsEnemyAllowedToSpawn(int16_t sceneNum, int8_t roomNum, EnemyEntry enemy) {
         // Don't allow certain enemies in Ganon's Tower because they would spawn up on the ceilling,
         // becoming impossible to kill.
         // Ganon's Tower.
-        case SCENE_GANON:
+        case SCENE_GANONS_TOWER:
             return (!(enemiesToExcludeClearRooms || enemy.id == ACTOR_EN_VALI || (enemy.id == ACTOR_EN_ZF && enemy.params == -1)));
         // Ganon's Tower Escape.
-        case SCENE_GANON_SONOGO:
+        case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
             return (!((enemiesToExcludeTimedRooms || (enemy.id == ACTOR_EN_ZF && enemy.params == -1)) && roomNum == 1));
         // Don't allow big stalchildren, big peahats and the large Bari (jellyfish) during the Gohma fight because they can clip into Gohma
         // and it crashes the game. Likely because Gohma on the ceilling can't handle collision with other enemies.
-        case SCENE_YDAN_BOSS:
+        case SCENE_DEKU_TREE_BOSS:
             return (!enemiesToExcludeTimedRooms && !(enemy.id == ACTOR_EN_SKB && enemy.params == 20) &&
                     !(enemy.id == ACTOR_EN_PEEHAT && enemy.params == -1));
         // Grottos.
-        case SCENE_KAKUSIANA:
+        case SCENE_GROTTOS:
             return (!(enemiesToExcludeClearRooms && (roomNum == 2 || roomNum == 7)));
         // Royal Grave.
-        case SCENE_HAKAANA_OUKE:
+        case SCENE_ROYAL_FAMILYS_TOMB:
             return (!(enemiesToExcludeClearRooms && roomNum == 0));
         // Don't allow Dark Link in areas with lava void out zones as it voids out the player as well.
         // Death Mountain Crater.
-        case SCENE_SPOT17:
+        case SCENE_DEATH_MOUNTAIN_CRATER:
             return (enemy.id != ACTOR_EN_TORCH2);
         default:
             return 1;

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GI_CLOTHES_H
+#define OBJECTS_OBJECT_GI_CLOTHES_H 1
 
 #include "align_asset_macro.h"
 
@@ -22,3 +23,5 @@ static const ALIGN_ASSET(2) char gGiTunicDL[] = dgGiTunicDL;
 
 #define dobject_gi_clothesTex_000000 "__OTR__objects/object_gi_clothes/object_gi_clothesTex_000000"
 static const ALIGN_ASSET(2) char object_gi_clothesTex_000000[] = dobject_gi_clothesTex_000000;
+
+#endif // OBJECTS_OBJECT_GI_CLOTHES_H

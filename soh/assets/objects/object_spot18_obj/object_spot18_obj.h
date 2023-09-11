@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_SPOT18_OBJ_H
+#define OBJECTS_OBJECT_SPOT18_OBJ_H 1
 
 #include "align_asset_macro.h"
 
@@ -76,3 +77,5 @@ static const ALIGN_ASSET(2) char gGoronCityStatueSpearCol[] = dgGoronCityStatueS
 
 #define dgGoronCityStatueCol "__OTR__objects/object_spot18_obj/gGoronCityStatueCol"
 static const ALIGN_ASSET(2) char gGoronCityStatueCol[] = dgGoronCityStatueCol;
+
+#endif // OBJECTS_OBJECT_SPOT18_OBJ_H
