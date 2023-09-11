@@ -747,9 +747,9 @@ void Play_Init(GameState* thisx) {
     }
     if (gSaveContext.n64ddFlag && LINK_IS_ADULT &&
         Randomizer_GetSettingValue(RSK_TRIAL_COUNT) != RO_GANONS_TRIALS_SKIP) {
-        if (play->sceneNum == SCENE_TOKINOMA) {
+        if (play->sceneNum == SCENE_TEMPLE_OF_TIME) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_XC, -104, -40, 2382, 0, 0x8000, 0, -1, false);
-        } else if (play->sceneNum == SCENE_GANONTIKA) { 
+        } else if (play->sceneNum == SCENE_INSIDE_GANONS_CASTLE) { 
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_XC, 101, 150, 137, 0, 0, 0, -1, false);
         }
     }

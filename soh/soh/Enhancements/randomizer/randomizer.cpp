@@ -5292,7 +5292,7 @@ CustomMessage Randomizer::GetMiscMessage(s16 scene, u16 originalTextId) {
     } else if (originalTextId == TEXT_SHEIK_1 || originalTextId == TEXT_SHEIK_2) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, originalTextId);
         switch (scene) {
-            case SCENE_TOKINOMA:
+            case SCENE_TEMPLE_OF_TIME:
                 if (originalTextId == TEXT_SHEIK_1) {
                     messageEntry.Replace("{{message}}", 
                     "@,&meet me at %gGanon's Castle%w&once you obtain the %rkey to his lair%w.",
@@ -5305,7 +5305,7 @@ CustomMessage Randomizer::GetMiscMessage(s16 scene, u16 originalTextId) {
                     "Le moment est venu @.&Tu ferais bien de te préparer.");
                 }
                 break;
-            case SCENE_GANONTIKA:
+            case SCENE_INSIDE_GANONS_CASTLE:
                 if (originalTextId == TEXT_SHEIK_1) {
                     if (INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) {
                         messageEntry.Replace("{{message}}", gSaveContext.sheikText, gSaveContext.sheikText, gSaveContext.sheikText);
