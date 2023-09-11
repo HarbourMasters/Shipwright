@@ -316,7 +316,7 @@ namespace Settings {
   Option ClearerHints        = Option::U8  ("Hint Clarity",           {"Obscure", "Ambiguous", "Clear"});
   Option HintDistribution    = Option::U8  ("Hint Distribution",      {"Useless", "Balanced", "Strong", "Very Strong"}, OptionCategory::Setting, 1); // Balanced
   Option AltarHintText       = Option::Bool("ToT Altar Hint",         {"Off", "On"}, OptionCategory::Setting, 1);
-  Option GanondorfHintText   = Option::Bool("Ganondorf LA Hint",      {"Off", "On"}, OptionCategory::Setting, 1);
+  Option LightArrowHintText  = Option::Bool("Light Arrow Hint",       {"Off", "On"}, OptionCategory::Setting, 1);
   Option DampeHintText       = Option::Bool("Dampe's Diary Hint",     {"Off", "On"}, OptionCategory::Setting, 0);
   Option GregHintText        = Option::Bool("Greg the Rupee Hint",    {"Off", "On"}, OptionCategory::Setting, 0);
   Option SariaHintText       = Option::Bool("Saria's Hint",           {"Off", "On"}, OptionCategory::Setting, 0);
