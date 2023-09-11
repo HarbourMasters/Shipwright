@@ -747,6 +747,7 @@ void GenerateItemPool() {
     AddItemToMainPool(PROGRESSIVE_SLINGSHOT);
     AddItemToMainPool(PROGRESSIVE_STICK_UPGRADE);
     AddItemToMainPool(PROGRESSIVE_MAGIC_METER);
+    AddItemToMainPool(PROGRESSIVE_WALLET);
   }
 
   if (ShuffleAdultTradeQuest) {

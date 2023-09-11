@@ -1311,6 +1311,7 @@ typedef enum {
     RG_NUT_UPGRADE_INF,
     RG_MAGIC_INF,
     RG_BOMBCHU_INF,
+    RG_WALLET_INF,
     RG_MAX
 } RandomizerGet;
 

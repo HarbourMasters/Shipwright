@@ -647,6 +647,10 @@ void RegisterInfiniteUpgrades() {
         if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_BOMBCHUS)) {
             AMMO(ITEM_BOMBCHU) = 50;
         }
+        
+        if (Flags_GetRandomizerInf(RAND_INF_HAS_INFINITE_MONEY)) {
+            gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
+        }
     });
 }
 
