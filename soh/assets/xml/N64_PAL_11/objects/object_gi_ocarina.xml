@@ -1,5 +1,6 @@
 <Root>
     <File Name="object_gi_ocarina" Segment="6">
+        <Texture Name="object_gi_ocarinaTex_000000" OutName="object_gi_ocarinaTex_000000" Format="i8" Width="16" Height="16" Offset="0x0" AddedByScript="true"/>
         <DList Name="gGiOcarinaTimeDL" Offset="0x08C0"/>
         <DList Name="gGiOcarinaTimeHolesDL" Offset="0x0AF8"/>
     </File>

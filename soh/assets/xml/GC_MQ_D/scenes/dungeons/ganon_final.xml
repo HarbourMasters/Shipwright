@@ -1,5 +1,30 @@
 <Root>
     <File Name="ganon_final_scene" Segment="2">
+        <Texture Name="ganon_final_sceneTex_002380" OutName="ganon_final_sceneTex_002380" Format="ia8" Width="32" Height="32" Offset="0x2380" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_002780" OutName="ganon_final_sceneTex_002780" Format="rgba16" Width="16" Height="16" Offset="0x2780" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_002980" OutName="ganon_final_sceneTex_002980" Format="i8" Width="64" Height="16" Offset="0x2980" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_002D80" OutName="ganon_final_sceneTex_002D80" Format="i4" Width="64" Height="128" Offset="0x2D80" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_003D80" OutName="ganon_final_sceneTex_003D80" Format="i8" Width="32" Height="64" Offset="0x3D80" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_004580" OutName="ganon_final_sceneTex_004580" Format="i8" Width="32" Height="64" Offset="0x4580" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_004D80" OutName="ganon_final_sceneTex_004D80" Format="i8" Width="64" Height="64" Offset="0x4D80" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_005D80" OutName="ganon_final_sceneTex_005D80" Format="i4" Width="64" Height="128" Offset="0x5D80" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_006D80" OutName="ganon_final_sceneTex_006D80" Format="ia8" Width="64" Height="32" Offset="0x6D80" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_007580" OutName="ganon_final_sceneTex_007580" Format="i4" Width="64" Height="128" Offset="0x7580" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_008580" OutName="ganon_final_sceneTex_008580" Format="rgba16" Width="32" Height="64" Offset="0x8580" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_009580" OutName="ganon_final_sceneTex_009580" Format="rgba16" Width="32" Height="64" Offset="0x9580" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_00A580" OutName="ganon_final_sceneTex_00A580" Format="ia4" Width="128" Height="32" Offset="0xA580" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_00AD80" OutName="ganon_final_sceneTex_00AD80" Format="rgba16" Width="32" Height="64" Offset="0xAD80" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_00BD80" OutName="ganon_final_sceneTex_00BD80" Format="rgba16" Width="32" Height="64" Offset="0xBD80" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_00CD80" OutName="ganon_final_sceneTex_00CD80" Format="i8" Width="16" Height="16" Offset="0xCD80" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_00CE80" OutName="ganon_final_sceneTex_00CE80" Format="ia8" Width="64" Height="64" Offset="0xCE80" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_00DE80" OutName="ganon_final_sceneTex_00DE80" Format="i4" Width="64" Height="16" Offset="0xDE80" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_00E080" OutName="ganon_final_sceneTex_00E080" Format="ia8" Width="16" Height="16" Offset="0xE080" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_00E180" OutName="ganon_final_sceneTex_00E180" Format="i4" Width="128" Height="64" Offset="0xE180" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_00F180" OutName="ganon_final_sceneTex_00F180" Format="i8" Width="32" Height="32" Offset="0xF180" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_00F580" OutName="ganon_final_sceneTex_00F580" Format="i8" Width="128" Height="32" Offset="0xF580" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_010580" OutName="ganon_final_sceneTex_010580" Format="i8" Width="32" Height="32" Offset="0x10580" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_010980" OutName="ganon_final_sceneTex_010980" Format="rgba16" Width="16" Height="64" Offset="0x10980" AddedByScript="true"/>
+        <Texture Name="ganon_final_sceneTex_011180" OutName="ganon_final_sceneTex_011180" Format="i8" Width="16" Height="256" Offset="0x11180" AddedByScript="true"/>
         <Path Name="ganon_final_scenePathList_0001F4" Offset="0x01F4" NumPaths="4"/>
         <Scene Name="ganon_final_scene" Offset="0x0"/>
     </File>

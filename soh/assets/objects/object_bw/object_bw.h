@@ -3,47 +3,47 @@
 
 #include "align_asset_macro.h"
 
-#define dobject_bw_Anim_000228 "__OTR__objects/object_bw/object_bw_Anim_000228"
-static const ALIGN_ASSET(2) char object_bw_Anim_000228[] = dobject_bw_Anim_000228;
+#define dgTorchSlugEyestalkWaveAnim "__OTR__objects/object_bw/gTorchSlugEyestalkWaveAnim"
+static const ALIGN_ASSET(2) char gTorchSlugEyestalkWaveAnim[] = dgTorchSlugEyestalkWaveAnim;
 
-#define dobject_bw_DL_0002C0 "__OTR__objects/object_bw/object_bw_DL_0002C0"
-static const ALIGN_ASSET(2) char object_bw_DL_0002C0[] = dobject_bw_DL_0002C0;
+#define dgTorchSlugLeftLowerEyestalkDL "__OTR__objects/object_bw/gTorchSlugLeftLowerEyestalkDL"
+static const ALIGN_ASSET(2) char gTorchSlugLeftLowerEyestalkDL[] = dgTorchSlugLeftLowerEyestalkDL;
 
-#define dobject_bw_DL_0003E8 "__OTR__objects/object_bw/object_bw_DL_0003E8"
-static const ALIGN_ASSET(2) char object_bw_DL_0003E8[] = dobject_bw_DL_0003E8;
+#define dgTorchSlugLeftUpperEyestalkDL "__OTR__objects/object_bw/gTorchSlugLeftUpperEyestalkDL"
+static const ALIGN_ASSET(2) char gTorchSlugLeftUpperEyestalkDL[] = dgTorchSlugLeftUpperEyestalkDL;
 
-#define dobject_bw_DL_000558 "__OTR__objects/object_bw/object_bw_DL_000558"
-static const ALIGN_ASSET(2) char object_bw_DL_000558[] = dobject_bw_DL_000558;
+#define dgTorchSlugRightLowerEyestalkDL "__OTR__objects/object_bw/gTorchSlugRightLowerEyestalkDL"
+static const ALIGN_ASSET(2) char gTorchSlugRightLowerEyestalkDL[] = dgTorchSlugRightLowerEyestalkDL;
 
-#define dobject_bw_DL_000680 "__OTR__objects/object_bw/object_bw_DL_000680"
-static const ALIGN_ASSET(2) char object_bw_DL_000680[] = dobject_bw_DL_000680;
+#define dgTorchSlugRightUpperEyestalkDL "__OTR__objects/object_bw/gTorchSlugRightUpperEyestalkDL"
+static const ALIGN_ASSET(2) char gTorchSlugRightUpperEyestalkDL[] = dgTorchSlugRightUpperEyestalkDL;
 
-#define dobject_bw_DL_001050 "__OTR__objects/object_bw/object_bw_DL_001050"
-static const ALIGN_ASSET(2) char object_bw_DL_001050[] = dobject_bw_DL_001050;
+#define dgTorchSlugBodyDL "__OTR__objects/object_bw/gTorchSlugBodyDL"
+static const ALIGN_ASSET(2) char gTorchSlugBodyDL[] = dgTorchSlugBodyDL;
 
-#define dobject_bw_Tex_001240 "__OTR__objects/object_bw/object_bw_Tex_001240"
-static const ALIGN_ASSET(2) char object_bw_Tex_001240[] = dobject_bw_Tex_001240;
+#define dgTorchSlugEyestalkTex "__OTR__objects/object_bw/gTorchSlugEyestalkTex"
+static const ALIGN_ASSET(2) char gTorchSlugEyestalkTex[] = dgTorchSlugEyestalkTex;
 
-#define dobject_bw_Tex_001440 "__OTR__objects/object_bw/object_bw_Tex_001440"
-static const ALIGN_ASSET(2) char object_bw_Tex_001440[] = dobject_bw_Tex_001440;
+#define dgTorchSlugEyeTex "__OTR__objects/object_bw/gTorchSlugEyeTex"
+static const ALIGN_ASSET(2) char gTorchSlugEyeTex[] = dgTorchSlugEyeTex;
 
-#define dobject_bw_TLUT_001640 "__OTR__objects/object_bw/object_bw_TLUT_001640"
-static const ALIGN_ASSET(2) char object_bw_TLUT_001640[] = dobject_bw_TLUT_001640;
+#define dgTorchSlugBodyTLUT "__OTR__objects/object_bw/gTorchSlugBodyTLUT"
+static const ALIGN_ASSET(2) char gTorchSlugBodyTLUT[] = dgTorchSlugBodyTLUT;
 
-#define dobject_bw_Tex_001840 "__OTR__objects/object_bw/object_bw_Tex_001840"
-static const ALIGN_ASSET(2) char object_bw_Tex_001840[] = dobject_bw_Tex_001840;
+#define dgTorchSlugBody1Tex "__OTR__objects/object_bw/gTorchSlugBody1Tex"
+static const ALIGN_ASSET(2) char gTorchSlugBody1Tex[] = dgTorchSlugBody1Tex;
 
-#define dobject_bw_Tex_001C40 "__OTR__objects/object_bw/object_bw_Tex_001C40"
-static const ALIGN_ASSET(2) char object_bw_Tex_001C40[] = dobject_bw_Tex_001C40;
+#define dgTorchSlugBody2Tex "__OTR__objects/object_bw/gTorchSlugBody2Tex"
+static const ALIGN_ASSET(2) char gTorchSlugBody2Tex[] = dgTorchSlugBody2Tex;
 
-#define dobject_bw_Skel_0020F0 "__OTR__objects/object_bw/object_bw_Skel_0020F0"
-static const ALIGN_ASSET(2) char object_bw_Skel_0020F0[] = dobject_bw_Skel_0020F0;
+#define dgTorchSlugSkel "__OTR__objects/object_bw/gTorchSlugSkel"
+static const ALIGN_ASSET(2) char gTorchSlugSkel[] = dgTorchSlugSkel;
 
-#define dobject_bw_Anim_0021A0 "__OTR__objects/object_bw/object_bw_Anim_0021A0"
-static const ALIGN_ASSET(2) char object_bw_Anim_0021A0[] = dobject_bw_Anim_0021A0;
+#define dgTorchSlugEyestalkRaiseAnim "__OTR__objects/object_bw/gTorchSlugEyestalkRaiseAnim"
+static const ALIGN_ASSET(2) char gTorchSlugEyestalkRaiseAnim[] = dgTorchSlugEyestalkRaiseAnim;
 
-#define dobject_bw_Anim_002250 "__OTR__objects/object_bw/object_bw_Anim_002250"
-static const ALIGN_ASSET(2) char object_bw_Anim_002250[] = dobject_bw_Anim_002250;
+#define dgTorchSlugEyestalkFlailAnim "__OTR__objects/object_bw/gTorchSlugEyestalkFlailAnim"
+static const ALIGN_ASSET(2) char gTorchSlugEyestalkFlailAnim[] = dgTorchSlugEyestalkFlailAnim;
 
 
 #endif // OBJECTS_OBJECT_BW_H

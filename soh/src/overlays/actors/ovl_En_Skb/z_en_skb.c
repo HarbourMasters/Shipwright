@@ -1,6 +1,7 @@
 #include "z_en_skb.h"
 #include "overlays/actors/ovl_En_Encount1/z_en_encount1.h"
 #include "objects/object_skb/object_skb.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -416,7 +417,7 @@ void func_80AFD7B4(EnSkb* this, PlayState* play) {
     this->unk_283 |= 4;
     EffectSsDeadSound_SpawnStationary(play, &this->actor.projectedPos, NA_SE_EN_STALKID_DEAD, 1, 1, 0x28);
     EnSkb_SetupAction(this, func_80AFD880);
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_STALCHILD]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void func_80AFD880(EnSkb* this, PlayState* play) {

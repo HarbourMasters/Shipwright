@@ -1,5 +1,6 @@
 <Root>
     <File Name="object_hakach_objects" Segment="6">
+        <Texture Name="object_hakach_objectsTex_0062F0" OutName="object_hakach_objectsTex_0062F0" Format="rgba16" Width="32" Height="32" Offset="0x62F0" AddedByScript="true"/>
         <DList Name="gBotwHoleTrap1DL" Offset="0x01B0"/>
         <DList Name="gBotwHoleTrap2DL" Offset="0x03F0"/>
         <DList Name="gBotwCoffinLidDL" Offset="0x06B0"/>

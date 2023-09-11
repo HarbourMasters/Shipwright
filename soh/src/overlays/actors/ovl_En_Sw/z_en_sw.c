@@ -1,5 +1,6 @@
 #include "z_en_sw.h"
 #include "objects/object_st/object_st.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -366,7 +367,6 @@ s32 func_80B0C9F0(EnSw* this, PlayState* play) {
                 this->unk_38A = 1;
                 this->unk_420 *= 4.0f;
                 this->actionFunc = func_80B0D878;
-                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_GOLD]++;
             } else {
                 this->actor.shape.shadowDraw = ActorShadow_DrawCircle;
                 this->actor.shape.shadowAlpha = 0xFF;
@@ -375,8 +375,9 @@ s32 func_80B0C9F0(EnSw* this, PlayState* play) {
                 this->actor.gravity = -1.0f;
                 this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                 this->actionFunc = func_80B0DB00;
-                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLWALLTULA]++;
             }
+            
+            GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_STALWALL_DEAD);
             return true;
