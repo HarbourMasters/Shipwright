@@ -321,9 +321,17 @@ typedef struct {
     // #endregion
 } SaveContext; // size = 0x1428
 
-#define IS_MASTER_QUEST(saveContext) ((saveContext).questId == 1)
-#define IS_RANDO(saveContext) ((saveContext).questId == 2)
-#define IS_BOSS_RUSH(saveContext) ((saveContext).questId == 3)
+typedef enum {
+    /* 00 */ QUEST_NORMAL,
+    /* 01 */ QUEST_MASTER,
+    /* 02 */ QUEST_RANDOMIZER,
+    /* 03 */ QUEST_BOSSRUSH,
+} Quest;
+
+#define IS_VANILLA(saveContext) ((saveContext).questId == QUEST_NORMAL)
+#define IS_MASTER_QUEST(saveContext) ((saveContext).questId == QUEST_MASTER)
+#define IS_RANDO(saveContext) ((saveContext).questId == QUEST_RANDOMIZER)
+#define IS_BOSS_RUSH(saveContext) ((saveContext).questId == QUEST_BOSSRUSH)
 
 typedef enum {
     /* 0x00 */ BTN_ENABLED,
