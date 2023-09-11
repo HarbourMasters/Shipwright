@@ -62,11 +62,12 @@ static const std::unordered_map<uint32_t, const char*> verMap = {
     { OOT_PAL_GC_DBG1, "PAL Debug 1" },
     { OOT_PAL_GC_DBG2, "PAL Debug 2" },
     { OOT_PAL_GC_MQ_DBG, "PAL MQ Debug" },
+    { OOT_PAL_10, "PAL N64 1.0" },
     { OOT_PAL_11, "PAL N64 1.1" },
 };
 
 // TODO only check the first 54MB of the rom.
-static constexpr std::array<const uint32_t, 8> goodCrcs = {
+static constexpr std::array<const uint32_t, 9> goodCrcs = {
     0xfa8c0555, // MQ DBG 64MB (Original overdump)
     0x8652ac4c, // MQ DBG 64MB
     0x5B8A1EB7, // MQ DBG 64MB (Empty overdump)
@@ -74,6 +75,7 @@ static constexpr std::array<const uint32_t, 8> goodCrcs = {
     0x044b3982, // NMQ DBG 54MB
     0xEB15D7B9, // NMQ DBG 64MB
     0xDA8E61BF, // GC PAL
+    0xFD9913B1, // N64 PAL 1.0
     0xE033FBBA, // N64 PAL 1.1
 };
 
@@ -489,6 +491,8 @@ const char* Extractor::GetZapdVerStr() const {
             return "GC_NMQ_D";
         case OOT_PAL_GC_MQ_DBG:
             return "GC_MQ_D";
+        case OOT_PAL_10:
+            return "N64_PAL_10";
         case OOT_PAL_11:
             return "N64_PAL_11";
         default:
