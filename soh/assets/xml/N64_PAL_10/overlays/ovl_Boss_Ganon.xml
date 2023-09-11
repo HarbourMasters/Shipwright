@@ -1,5 +1,5 @@
 <Root>
-    <File Name="ovl_Boss_Ganon" BaseAddress="0x809F2C80" RangeStart="0xE388" RangeEnd="0x211D8">
+    <File Name="ovl_Boss_Ganon" BaseAddress="0x809F2B50" RangeStart="0xE388" RangeEnd="0x211D8">
         <Texture Name="gGanondorfLightning1Tex" OutName="lightning_1" Format="i8" Width="32" Height="96" Offset="0x112D0" Static="Off"/>
         <Texture Name="gGanondorfLightning2Tex" OutName="lightning_2" Format="i8" Width="32" Height="96" Offset="0x11ED0" Static="Off"/>
         <Texture Name="gGanondorfLightning3Tex" OutName="lightning_3" Format="i8" Width="32" Height="96" Offset="0x12AD0" Static="Off"/>

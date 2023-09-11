@@ -1,5 +1,5 @@
 <Root>
-    <File Name="ovl_En_Sth" BaseAddress="0x80B28890" RangeStart="0xE60" RangeEnd="0x3EC4">
+    <File Name="ovl_En_Sth" BaseAddress="0x80B28700" RangeStart="0xE60" RangeEnd="0x3EC4">
         <Texture Name="sNoseTex" OutName="nose" Format="rgba16" Width="8" Height="8" Offset="0xE60"/>
         <Texture Name="sHair1Tex" OutName="hair_1" Format="rgba16" Width="8" Height="16" Offset="0xEE0"/>
         <Texture Name="sEar1Tex" OutName="ear_1" Format="rgba16" Width="8" Height="8" Offset="0xFE0"/>

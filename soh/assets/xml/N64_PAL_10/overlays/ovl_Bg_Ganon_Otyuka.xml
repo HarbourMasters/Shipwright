@@ -1,5 +1,5 @@
 <Root>
-    <File Name="ovl_Bg_Ganon_Otyuka" BaseAddress="0x80A54D80" RangeStart="0x1110" RangeEnd="0x24EC">
+    <File Name="ovl_Bg_Ganon_Otyuka" BaseAddress="0x80A54BF0" RangeStart="0x1110" RangeEnd="0x24EC">
         <Texture Name="sPlatformTex" OutName="platform_tex" Format="rgba16" Width="32" Height="32" Offset="0x1110"/>
         
         <Array Name="sPlatformTopVtx" Count="4" Offset="0x1918">

@@ -1,5 +1,5 @@
 <Root>
-    <File Name="ovl_En_Holl" BaseAddress="0x808963F0" RangeStart="0xE68" RangeEnd="0xEE0">
+    <File Name="ovl_En_Holl" BaseAddress="0x808962E0" RangeStart="0xE68" RangeEnd="0xEE0">
         <Array Name="sPlaneVtx" Count="4" Offset="0xE68">
             <Vtx/>
         </Array>

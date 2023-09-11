@@ -1,5 +1,5 @@
 <Root>
-    <File Name="ovl_Boss_Ganon2" BaseAddress="0x80B06170" RangeStart="0x9F38" RangeEnd="0x10778">
+    <File Name="ovl_Boss_Ganon2" BaseAddress="0x80B05FE0" RangeStart="0x9F38" RangeEnd="0x10778">
         <Texture Name="gGanonLightOrbTex" OutName="tex_0000A2C8" Format="i8" Width="64" Height="64" Offset="0x009F38"/>
         <Array Name="ovl_Boss_Ganon2_Vtx_00B2C8" Count="4" Offset="0x00AF38">
             <Vtx/>

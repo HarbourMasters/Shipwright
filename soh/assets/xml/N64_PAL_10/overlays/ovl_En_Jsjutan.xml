@@ -1,5 +1,5 @@
 <Root>
-    <File Name="ovl_En_Jsjutan" BaseAddress="0x80ADCDC0" RangeStart="0x12B8" RangeEnd="0x4C88">
+    <File Name="ovl_En_Jsjutan" BaseAddress="0x80ADCC30" RangeStart="0x12B8" RangeEnd="0x4C88">
         <!-- D_80A8AA98. Carpet texture. -->
         <Texture Name="sCarpetTex" OutName="carpet" Format="rgba16" Width="32" Height="64" Offset="0x12B8"/>
 

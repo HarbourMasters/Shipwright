@@ -1,5 +1,5 @@
 <Root>
-    <File Name="ovl_Arrow_Ice" BaseAddress="0x80A61700" RangeStart="0x980" RangeEnd="0x1E10">
+    <File Name="ovl_Arrow_Ice" BaseAddress="0x80A61570" RangeStart="0x980" RangeEnd="0x1E10">
         <Texture Name="s1Tex" OutName="ice_tex_1" Format="i8" Width="32" Height="64" Offset="0x980" Static="On"/>
         <Texture Name="s2Tex" OutName="ice_tex_2" Format="i8" Width="32" Height="64" Offset="0x1180" Static="On"/>
         <Array Name="sVtx" Count="43" Offset="0x1980" Static="On">

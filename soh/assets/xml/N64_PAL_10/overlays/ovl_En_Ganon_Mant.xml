@@ -1,5 +1,5 @@
 <Root>
-    <File Name="ovl_En_Ganon_Mant" BaseAddress="0x80AE98C0" RangeStart="0x11E8" RangeEnd="0x4118">
+    <File Name="ovl_En_Ganon_Mant" BaseAddress="0x80AE9730" RangeStart="0x11E8" RangeEnd="0x4118">
         <Texture Name="gMantTex" OutName="mant" Format="rgba16" Width="32" Height="64" Offset="0x11E8"/>
 
         <Texture Name="gMantUnusedTex" OutName="mant_unused" Format="rgba16" Width="32" Height="32" Offset="0x21E8"/>
