@@ -3,6 +3,7 @@
 #include "objects/object_gol/object_gol.h"
 #include "overlays/actors/ovl_Boss_Goma/z_boss_goma.h"
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -398,7 +399,7 @@ void EnGoma_SetupDead(EnGoma* this) {
                      Animation_GetLastFrame(&gObjectGolDeadTwitchingAnim), ANIMMODE_LOOP, -2.0f);
     this->actionFunc = EnGoma_Dead;
     this->actionTimer = 3;
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GOHMA_LARVA]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnGoma_Dead(EnGoma* this, PlayState* play) {
@@ -669,7 +670,7 @@ void EnGoma_UpdateHit(EnGoma* this, PlayState* play) {
 
                 EnGoma_SpawnHatchDebris(this, play);
                 Actor_Kill(&this->actor);
-                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GOHMA_LARVA]++;
+                GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
             }
         }
     }

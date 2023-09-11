@@ -1,5 +1,32 @@
 <Root>
     <File Name="object_xc" Segment="6">
+        <Texture Name="object_xcTex_004C40" OutName="object_xcTex_004C40" Format="ci8" Width="8" Height="8" Offset="0x4C40" TlutOffset="0x4840" AddedByScript="true"/>
+        <Texture Name="object_xcTex_004C80" OutName="object_xcTex_004C80" Format="ci8" Width="8" Height="8" Offset="0x4C80" TlutOffset="0x4840" AddedByScript="true"/>
+        <Texture Name="object_xcTex_005CC0" OutName="object_xcTex_005CC0" Format="ci8" Width="32" Height="32" Offset="0x5CC0" TlutOffset="0x4A40" AddedByScript="true"/>
+        <Texture Name="object_xcTex_0060C0" OutName="object_xcTex_0060C0" Format="ci8" Width="32" Height="32" Offset="0x60C0" TlutOffset="0x4840" AddedByScript="true"/>
+        <Texture Name="object_xcTex_0064C0" OutName="object_xcTex_0064C0" Format="rgba16" Width="32" Height="32" Offset="0x64C0" AddedByScript="true"/>
+        <Texture Name="object_xcTex_006CC0" OutName="object_xcTex_006CC0" Format="ci8" Width="8" Height="16" Offset="0x6CC0" TlutOffset="0x4840" AddedByScript="true"/>
+        <Texture Name="object_xcTex_006D40" OutName="object_xcTex_006D40" Format="ci8" Width="8" Height="8" Offset="0x6D40" TlutOffset="0x4840" AddedByScript="true"/>
+        <Texture Name="object_xcTex_006D80" OutName="object_xcTex_006D80" Format="ci8" Width="16" Height="16" Offset="0x6D80" TlutOffset="0x4840" AddedByScript="true"/>
+        <Texture Name="object_xcTex_006E80" OutName="object_xcTex_006E80" Format="ci8" Width="32" Height="32" Offset="0x6E80" TlutOffset="0x4A40" AddedByScript="true"/>
+        <Texture Name="object_xcTex_007280" OutName="object_xcTex_007280" Format="ci8" Width="16" Height="16" Offset="0x7280" TlutOffset="0x4840" AddedByScript="true"/>
+        <Texture Name="object_xcTex_007380" OutName="object_xcTex_007380" Format="rgba16" Width="32" Height="32" Offset="0x7380" AddedByScript="true"/>
+        <Texture Name="object_xcTex_007B80" OutName="object_xcTex_007B80" Format="ci8" Width="32" Height="64" Offset="0x7B80" TlutOffset="0x4840" AddedByScript="true"/>
+        <Texture Name="object_xcTex_008380" OutName="object_xcTex_008380" Format="ci8" Width="32" Height="64" Offset="0x8380" TlutOffset="0x4840" AddedByScript="true"/>
+        <Texture Name="object_xcTex_008B80" OutName="object_xcTex_008B80" Format="ci8" Width="16" Height="8" Offset="0x8B80" TlutOffset="0x4840" AddedByScript="true"/>
+        <Texture Name="object_xcTex_008C00" OutName="object_xcTex_008C00" Format="ci8" Width="32" Height="16" Offset="0x8C00" TlutOffset="0x4840" AddedByScript="true"/>
+        <Texture Name="object_xcTex_00F790" OutName="object_xcTex_00F790" Format="ci8" Width="8" Height="8" Offset="0xF790" TlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="object_xcTex_00F7D0" OutName="object_xcTex_00F7D0" Format="ci8" Width="32" Height="32" Offset="0xF7D0" TlutOffset="0xF720" AddedByScript="true"/>
+        <Texture Name="object_xcTex_00FBD0" OutName="object_xcTex_00FBD0" Format="ci8" Width="16" Height="16" Offset="0xFBD0" TlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="object_xcTex_00FCD0" OutName="object_xcTex_00FCD0" Format="ci8" Width="8" Height="8" Offset="0xFCD0" TlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="object_xcTex_00FD10" OutName="object_xcTex_00FD10" Format="rgba16" Width="8" Height="8" Offset="0xFD10" AddedByScript="true"/>
+        <Texture Name="object_xcTex_00FD90" OutName="object_xcTex_00FD90" Format="i8" Width="8" Height="8" Offset="0xFD90" AddedByScript="true"/>
+        <Texture Name="object_xcTex_00FDD0" OutName="object_xcTex_00FDD0" Format="rgba16" Width="16" Height="32" Offset="0xFDD0" AddedByScript="true"/>
+        <Texture Name="object_xcTex_0101D0" OutName="object_xcTex_0101D0" Format="rgba16" Width="8" Height="16" Offset="0x101D0" AddedByScript="true"/>
+        <Texture Name="object_xcTex_011930" OutName="object_xcTex_011930" Format="i8" Width="64" Height="64" Offset="0x11930" AddedByScript="true"/>
+        <Texture Name="object_xcTLUT_004840" OutName="object_xcTLUT_004840" Format="rgba16" Width="16" Height="16" Offset="0x4840" AddedByScript="true"/>
+        <Texture Name="object_xcTLUT_00F6C0" OutName="object_xcTLUT_00F6C0" Format="rgba16" Width="16" Height="16" Offset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="object_xcTLUT_00F720" OutName="object_xcTLUT_00F720" Format="rgba16" Width="16" Height="16" Offset="0xF720" AddedByScript="true"/>
         <Skeleton Name="gSheikSkel" Type="Flex" LimbType="Standard" Offset="0x12AF0"/>
         <Animation Name="gSheikPlayingHarpAnim" Offset="0xB6C"/>
         <Animation Name="gSheikShowingTriforceOnHandAnim" Offset="0x1A08"/>
@@ -8,6 +35,7 @@
         <Animation Name="gSheikPlayingHarp3Anim" Offset="0x35C8"/>
         <Animation Name="gSheikPlayingHarp4Anim" Offset="0x4570"/>
         <Animation Name="gSheikIdleAnim" Offset="0x4828"/>
+        <Texture Name="object_xcTLUT_004A40" OutName="object_xcTLUT_004A40" Format="rgba16" Width="16" Height="16" Offset="0x4A40"/>
         <Animation Name="gSheikWalkingAnim" Offset="0x12FD0"/>
         <Animation Name="gSheikArmsCrossedIdleAnim" Offset="0x13AA4"/>
         <Animation Name="gSheikFallingFromContortionsAnim" Offset="0x149E4"/>

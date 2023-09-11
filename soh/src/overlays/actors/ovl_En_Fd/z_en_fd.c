@@ -8,6 +8,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_fw/object_fw.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_HOOKSHOT_DRAGS)
 
@@ -648,7 +649,7 @@ void EnFd_WaitForCore(EnFd* this, PlayState* play) {
     } else if (this->actor.params & FLG_COREDEAD) {
         this->actor.params = 0;
         this->spinTimer = 30;
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FLARE_DANCER]++;
+        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
     }
 }
 

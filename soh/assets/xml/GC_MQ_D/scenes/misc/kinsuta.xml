@@ -3,6 +3,19 @@
         <Scene Name="kinsuta_scene" Offset="0x0"/>
     </File>
     <File Name="kinsuta_room_0" Segment="3">
+        <Texture Name="kinsuta_room_0Tex_003110" OutName="kinsuta_room_0Tex_003110" Format="ci4" Width="64" Height="64" Offset="0x3110" TlutOffset="0x30F0" AddedByScript="true"/>
+        <Texture Name="kinsuta_room_0Tex_003910" OutName="kinsuta_room_0Tex_003910" Format="i4" Width="64" Height="128" Offset="0x3910" AddedByScript="true"/>
+        <Texture Name="kinsuta_room_0Tex_004910" OutName="kinsuta_room_0Tex_004910" Format="i4" Width="64" Height="128" Offset="0x4910" AddedByScript="true"/>
+        <Texture Name="kinsuta_room_0Tex_005910" OutName="kinsuta_room_0Tex_005910" Format="i4" Width="64" Height="128" Offset="0x5910" AddedByScript="true"/>
+        <Texture Name="kinsuta_room_0Tex_006910" OutName="kinsuta_room_0Tex_006910" Format="rgba16" Width="32" Height="64" Offset="0x6910" AddedByScript="true"/>
+        <Texture Name="kinsuta_room_0Tex_007910" OutName="kinsuta_room_0Tex_007910" Format="rgba16" Width="32" Height="64" Offset="0x7910" AddedByScript="true"/>
+        <Texture Name="kinsuta_room_0Tex_008910" OutName="kinsuta_room_0Tex_008910" Format="i8" Width="32" Height="32" Offset="0x8910" AddedByScript="true"/>
+        <Texture Name="kinsuta_room_0Tex_008D10" OutName="kinsuta_room_0Tex_008D10" Format="rgba16" Width="64" Height="32" Offset="0x8D10" AddedByScript="true"/>
+        <Texture Name="kinsuta_room_0Tex_009D10" OutName="kinsuta_room_0Tex_009D10" Format="rgba16" Width="32" Height="16" Offset="0x9D10" AddedByScript="true"/>
+        <Texture Name="kinsuta_room_0Tex_00B098" OutName="kinsuta_room_0Tex_00B098" Format="ia16" Width="32" Height="64" Offset="0xB098" AddedByScript="true"/>
+        <Texture Name="kinsuta_room_0Tex_00C098" OutName="kinsuta_room_0Tex_00C098" Format="i8" Width="64" Height="64" Offset="0xC098" AddedByScript="true"/>
+        <Texture Name="kinsuta_room_0Tex_00D098" OutName="kinsuta_room_0Tex_00D098" Format="i8" Width="64" Height="64" Offset="0xD098" AddedByScript="true"/>
+        <Texture Name="kinsuta_room_0TLUT_0030F0" OutName="kinsuta_room_0TLUT_0030F0" Format="rgba16" Width="4" Height="4" Offset="0x30F0" AddedByScript="true"/>
         <DList Name="gKinsutaDL_0030B0" Offset="0x30B0"/>
         <DList Name="gKinsutaDL_00B088" Offset="0xB088"/>
         <Room Name="kinsuta_room_0" Offset="0x0"/>

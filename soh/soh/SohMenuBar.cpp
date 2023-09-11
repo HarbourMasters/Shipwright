@@ -1020,6 +1020,8 @@ void DrawEnhancementsMenu() {
             UIWidgets::PaddedEnhancementCheckbox("Fix enemies not spawning near water", "gEnemySpawnsOverWaterboxes", true, false);
             UIWidgets::Tooltip("Causes respawning enemies, like stalchildren, to appear on land near bodies of water. "
                                 "Fixes an incorrect calculation that acted like water underneath ground was above it.");
+            UIWidgets::PaddedEnhancementCheckbox("Fix Bush Item Drops", "gBushDropFix", true, false);
+            UIWidgets::Tooltip("Fixes the bushes to drop items correctly rather than spawning undefined items.");
 
             ImGui::EndMenu();
         }
