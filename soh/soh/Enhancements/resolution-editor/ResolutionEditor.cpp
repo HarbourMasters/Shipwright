@@ -5,19 +5,23 @@
 #include <soh/UIWidgets.hpp> // This dependency is why the UI needs to be on SoH's side.
 #include <graphic/Fast3D/gfx_pc.h>
 
-/*  Console Variables are grouped as gAdvancedResolution.
+/*  Console Variables are grouped under gAdvancedResolution. (e.g. "gAdvancedResolution.Enabled")
 
     The following CVars are used in Libultraship and can be edited here:
         - Enabled                                       - Turns Advanced Resolution Mode on.
         - AspectRatioX, AspectRatioY                    - Aspect ratio controls. To toggle off, set either to zero.
         - VerticalPixelCount, VerticalResolutionToggle  - Resolution controls.
-        - PixelPerfectMode, IntegerScaleFactor          - Pixel Perfect Mode a.k.a. integer scaling controls.
+        - PixelPerfectMode, IntegerScale.Factor         - Pixel Perfect Mode a.k.a. integer scaling controls.
     (Waiting on a second PR merge on LUS for this to fully function.):
-        - IntegerScaleFitAutomatically                  - Automatic resizing for Pixel Perfect Mode.
+        - IntegerScale.FitAutomatically                 - Automatic resizing for Pixel Perfect Mode.
+        - IntegerScale.NeverExceedBounds                - Prevents manual resizing from exceeding screen bounds.
 
-    There's an additional "gAdvancedResolution.IgnoreAspectCorrection" CVar in LUS that I intend to leave unused here,
-    as it's something of a power-user setting for niche setups that most people won't need or care about,
-    but may be useful if playing the Switch/Wii U ports on a 4:3 television.
+    The following CVars are also implemented in LUS for niche use cases:
+        - IgnoreAspectCorrection
+            - This is something of a power-user setting for niche setups that most people won't need or care about,
+              but may be useful if playing the Switch/Wii U ports on a 4:3 television.
+        - IntegerScale.ExceedBoundsBy                   - Offset the max screen bounds, usually by +1.
+                                                          This isn't that useful at the moment.
 */
 
 namespace AdvancedResolutionSettings {
@@ -38,7 +42,7 @@ const int default_pixelCount = 0; // Default combo list option
 const uint32_t minVerticalPixelCount = 240; // see: LUS::AdvancedResolution()
 const uint32_t maxVerticalPixelCount = 4320;
 
-const unsigned short default_maxIntegerScaleFactor = 6;
+const unsigned short default_maxIntegerScaleFactor = 6; // Default size of Integer scale factor slider.
 
 const float enhancementSpacerHeight = 19.0f;
 // This will need to be determined more intelligently when Hi-DPI UI support is added.
@@ -60,7 +64,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         short max_integerScaleFactor = default_maxIntegerScaleFactor; // default value, which may or may not get
                                                                       // overridden depending on viewport res
 
-        short integerScale_maximumBounds = max_integerScaleFactor; // can change when window is resized
+        short integerScale_maximumBounds = 1; // can change when window is resized
         // This is mostly used for cosmetic purposes, as Fit Automatically functionality is now handled in LUS instead.
         if (((float)gfx_current_game_window_viewport.width / gfx_current_game_window_viewport.height) >
             ((float)gfx_current_dimensions.width / gfx_current_dimensions.height)) {
@@ -70,12 +74,14 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             // Scale to window width
             integerScale_maximumBounds = gfx_current_game_window_viewport.width / gfx_current_dimensions.width;
         }
-        if (integerScale_maximumBounds < 1)
-            integerScale_maximumBounds = 1; // it should never be less than 1x.
+        // if (integerScale_maximumBounds < 1)
+        //     integerScale_maximumBounds = 1; // it should never be less than 1x.
+        // It can actually now be less than one, as there's a clamp on the LUS end.
         if (default_maxIntegerScaleFactor < integerScale_maximumBounds) {
-            max_integerScaleFactor = integerScale_maximumBounds + 1;
+            max_integerScaleFactor =
+                integerScale_maximumBounds + CVarGetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0);
             // the +1 allows people do things like cropped 5x scaling at 1080p
-        } // Tina TODO: The "+1" should really be a toggleable CVar and have corresponding functionality in LUS.
+        }
 
         // Stored Values
         static float aspectRatioX = CVarGetFloat("gAdvancedResolution.AspectRatioX", 16.0f);
@@ -251,21 +257,29 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
 
         // Integer Scaling
         UIWidgets::EnhancementSliderInt("Integer scale factor: %d", "##ARSIntScale",
-                                        "gAdvancedResolution.IntegerScaleFactor", 1, max_integerScaleFactor, "%d", 1,
+                                        "gAdvancedResolution.IntegerScale.Factor", 1, max_integerScaleFactor, "%d", 1,
                                         true,
                                         !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0) ||
-                                            CVarGetInteger("gAdvancedResolution.IntegerScaleFitAutomatically", 0));
+                                            CVarGetInteger("gAdvancedResolution.IntegerScale.FitAutomatically", 0));
         UIWidgets::Tooltip("Integer scales the image. Only available in pixel-perfect mode.");
+        // Display warning if size is being clamped or framebuffer is larger than viewport.
+        if (CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0) &&
+            (CVarGetInteger("gAdvancedResolution.IntegerScale.NeverExceedBounds", 1) &&
+             CVarGetInteger("gAdvancedResolution.IntegerScale.Factor", 1) > integerScale_maximumBounds)) {
+            ImGui::SameLine();
+            ImGui::TextColored({ 0.85f, 0.85f, 0.0f, 1.0f }, ICON_FA_EXCLAMATION_TRIANGLE " Window exceeded.");
+        }
 
-        UIWidgets::PaddedEnhancementCheckbox(
-            "Automatically scale image to fit viewport", "gAdvancedResolution.IntegerScaleFitAutomatically", true, true,
-            !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0), "", UIWidgets::CheckboxGraphics::Cross, false);
+        UIWidgets::PaddedEnhancementCheckbox("Automatically scale image to fit viewport",
+                                             "gAdvancedResolution.IntegerScale.FitAutomatically", true, true,
+                                             !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0), "",
+                                             UIWidgets::CheckboxGraphics::Cross, false);
         UIWidgets::Tooltip("Automatically sets scale factor to fit window. Only available in pixel-perfect mode.");
-        if (CVarGetInteger("gAdvancedResolution.IntegerScaleFitAutomatically", 0)) {
+        if (CVarGetInteger("gAdvancedResolution.IntegerScale.FitAutomatically", 0)) {
             // This is just here to update the value shown on the slider.
             // The function in LUS to handle this setting will ignore IntegerScaleFactor while active.
-            CVarSetInteger("gAdvancedResolution.IntegerScaleFactor", integerScale_maximumBounds);
-            CVarSave();
+            CVarSetInteger("gAdvancedResolution.IntegerScale.Factor", integerScale_maximumBounds);
+            // CVarSave();
         }
 
         UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
@@ -311,6 +325,44 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 }
                 update[UPDATE_aspectRatioX] = true;
             }
+
+            UIWidgets::PaddedEnhancementCheckbox(
+                "Don't allow integer scaling to exceed screen bounds.\n"
+                "(Makes screen bounds take priority over specified factor.)",
+                "gAdvancedResolution.IntegerScale.NeverExceedBounds", true, false,
+                !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0) ||
+                    CVarGetInteger("gAdvancedResolution.IntegerScale.FitAutomatically", 0),
+                "", UIWidgets::CheckboxGraphics::Cross, true);
+
+            if (!CVarGetInteger("gAdvancedResolution.IntegerScale.NeverExceedBounds", 1) ||
+                CVarGetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0)) {
+                ImGui::TextColored({ 0.0f, 0.85f, 0.85f, 1.0f },
+                                   " " ICON_FA_QUESTION_CIRCLE
+                                   " A scroll bar may become visible if screen bounds are exceeded.");
+                // Another helpful button for an unused CVar.
+                if (CVarGetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0)) {
+                    if (ImGui::Button("Click to reset an unused CVar that may be causing this.")) {
+                        CVarSetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0);
+                        CVarSave();
+                    }
+                }
+            } else {
+                UIWidgets::Spacer(enhancementSpacerHeight);
+            }
+
+            // I've ended up dummying this one out because it doesn't function in a satisfactory way.
+            // Consider this idea on the table, but I don't deem it an important enough feature to push for.
+            /*
+            UIWidgets::PaddedEnhancementCheckbox("Allow integer scale factor to go 1x above maximum screen bounds.",
+                                                 "gAdvancedResolution.IntegerScale.ExceedBoundsBy", false, false,
+                                                 !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0), "",
+                                                 UIWidgets::CheckboxGraphics::Cross, false);
+            if (CVarGetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0)) {
+                ImGui::TextColored({ 0.0f, 0.85f, 0.85f, 1.0f },
+                                   " " ICON_FA_QUESTION_CIRCLE
+                                   " A scroll bar may become visible if screen bounds are exceeded.");
+            }*/
+
         } // end of Additional Settings
 
         // Clamp and update the CVars that don't use UIWidgets
