@@ -284,8 +284,7 @@ bool IsValidSaveFile() {
 }
 
 bool HasSong(ItemTrackerItem item) {
-    uint32_t bitMask = 1 << item.id;
-    return (bitMask & gSaveContext.inventory.questItems) != 0;
+    return (1 << item.id) & gSaveContext.inventory.questItems;
 }
 
 bool HasQuestItem(ItemTrackerItem item) {
