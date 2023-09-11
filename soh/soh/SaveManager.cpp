@@ -1762,8 +1762,8 @@ void SaveManager::SaveBase(SaveContext* saveContext, int sectionID, bool fullSav
         });
         SaveManager::Instance->SaveData("defenseHearts", saveContext->inventory.defenseHearts);
         SaveManager::Instance->SaveData("gsTokens", saveContext->inventory.gsTokens);
-        SaveManager::Instance->SaveArray("itemModIds", ARRAY_COUNT(gSaveContext.inventory.itemModIds), [](size_t i) {
-            SaveManager::Instance->LoadData("", gSaveContext.inventory.itemModIds[i]);
+        SaveManager::Instance->SaveArray("itemModIds", ARRAY_COUNT(saveContext->inventory.itemModIds), [&](size_t i) {
+            SaveManager::Instance->SaveData("", saveContext->inventory.itemModIds[i]);
         });
     });
     SaveManager::Instance->SaveArray("sceneFlags", ARRAY_COUNT(saveContext->sceneFlags), [&](size_t i) {
