@@ -917,8 +917,8 @@ void LocationTable_Init() {
     locationTable[DMT_STORMS_GROTTO_GOSSIP_STONE]        = ItemLocation::HintStone(RC_DMT_STORMS_GROTTO_GOSSIP_STONE,  "DMT Storms Grotto Gossip Stone");
     locationTable[DMC_UPPER_GROTTO_GOSSIP_STONE]         = ItemLocation::HintStone(RC_DMC_UPPER_GROTTO_GOSSIP_STONE,   "DMC Upper Grotto Gossip Stone");
 
-    locationTable[TRIFORCE_COMPLETED]                    = ItemLocation::Reward(RC_TRIFORCE_COMPLETED,                 0xFF, 0xFF, "Completed Triforce", NONE, TRIFORCE_COMPLETED, {},                                                                                                                                                                       SpoilerCollectionCheck::AlwaysCollected(),               SpoilerCollectionCheckGroup::GROUP_KOKIRI_FOREST);
     locationTable[GANONDORF_HINT]                        = ItemLocation::OtherHint(RC_GANONDORF_HINT,                  "Ganondorf Hint");
+    locationTable[TRIFORCE_COMPLETED]                    = ItemLocation::Reward (RC_TRIFORCE_COMPLETED, 0xFF, "Completed Triforce", NONE, TRIFORCE_COMPLETED, {}, SpoilerCollectionCheck::None(), SpoilerCollectionCheckGroup::GROUP_NO_GROUP);
 
     for (int i = NONE; i != KEY_ENUM_MAX; i++)
         locationLookupTable.insert(std::make_pair(locationTable[i].GetRandomizerCheck(), static_cast<Key>(i)));
