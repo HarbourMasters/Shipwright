@@ -632,7 +632,11 @@ void RegisterTriforceHunt() {
                 GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
             }
 
-            // Reset Triforce Piece scale for GI animation
+            // Reset Triforce Piece scale for GI animation. Triforce Hunt allows for multiple triforce models,
+            // and cycles through them based on the amount of triforce pieces collected. It takes a little while
+            // for the count to increase during the GI animation, so the model is entirely hidden until that piece
+            // has been added. That scale has to be reset after the textbox is closed, and this is the best way
+            // to ensure it's done at that point in time specifically.
             if (GameInteractor::State::TriforceHuntPieceGiven) {
                 triforcePieceScale = 0.0f;
                 GameInteractor::State::TriforceHuntPieceGiven = 0;
