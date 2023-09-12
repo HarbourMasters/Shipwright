@@ -7,6 +7,7 @@
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
+#include "soh/Enhancements/modded-items/ModdedItems.h"
 #include "soh/Enhancements/nametag.h"
 
 #include "src/overlays/actors/ovl_En_Bb/z_en_bb.h"
@@ -22,6 +23,12 @@
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
 
+#include "textures/icon_item_static/icon_item_static.h"
+#include "textures/icon_item_24_static/icon_item_24_static.h"
+#include "textures/parameter_static/parameter_static.h"
+#include "textures/item_name_static/item_name_static.h"
+#include "objects/gameplay_keep/gameplay_keep.h"
+
 extern "C" {
 #include <z64.h>
 #include "macros.h"
@@ -32,6 +39,7 @@ extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 extern void Overlay_DisplayText(float duration, const char* text);
 uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
+void func_80838940(Player* player, LinkAnimationHeader* anim, f32 arg2, PlayState* play, u16 sfxId);
 }
 bool performDelayedSave = false;
 bool performSave = false;
@@ -978,4 +986,36 @@ void InitMods() {
     RegisterEnemyDefeatCounts();
     RegisterAltTrapTypes();
     NameTag_RegisterHooks();
+
+    //for testing purposes
+    ModdedItems_RegisterModdedItem(
+        2,
+        0,
+        [](PlayState* play, Player* player, ModdedItem moddedItem) {
+            player->linearVelocity = 5.0f;
+            player->actor.velocity.y = 8.0f;
+            player->actor.world.rot.y = player->currentYaw = player->actor.shape.rot.y;
+
+            func_80838940(player, (LinkAnimationHeader*)gPlayerAnim_link_fighter_backturn_jump, !(2 & 1) ? 5.8f : 3.5f, play, /* NA_SE_VO_LI_SWORD_N*/ 0);
+
+            Vec3f effectsPos = player->actor.home.pos;
+            effectsPos.y += 3;
+            f32 effectsScale = 1;
+            if (!gSaveContext.linkAge) {
+                effectsScale = 1.5f;
+            }
+            EffectSsGRipple_Spawn(play, &effectsPos, 200 * effectsScale, 300 * effectsScale, 1);
+            EffectSsGSplash_Spawn(play, &effectsPos, NULL, NULL, 0, 150 * effectsScale);
+
+            player->stateFlags2 &= ~(PLAYER_STATE2_HOPPING);
+
+            func_8002F7DC(&player->actor, NA_SE_PL_SKIP);
+        },
+        [](ModdedItem moddedItem) -> const char* {
+            return gItemIconGiantsWalletTex;
+        },
+        [](ModdedItem moddedItem) -> const char* {
+            return gBombItemNameENGTex;
+        }
+    );
 }
