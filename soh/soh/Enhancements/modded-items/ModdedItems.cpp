@@ -10,12 +10,12 @@
 struct ModdedItemFuncs {
     ModdedItemActionFunc itemAction;
     ModdedItemIconGetterFunc iconGetter;
-    ModdedItemItemNameGetterFunc itemNameGetter;
+    ModdedItemNameGetterFunc itemNameGetter;
 };
 
 static std::map<ModdedItem, ModdedItemFuncs> moddedItems;
 
-bool ModdedItems_RegisterModdedItem(s32 modId, s32 itemId, ModdedItemActionFunc itemAction, ModdedItemIconGetterFunc iconGetter, ModdedItemItemNameGetterFunc itemNameGetter) {
+bool ModdedItems_RegisterModdedItem(s32 modId, s32 itemId, ModdedItemActionFunc itemAction, ModdedItemIconGetterFunc iconGetter, ModdedItemNameGetterFunc itemNameGetter) {
     if (modId == 0) {
         //can't register a new vanilla item
         return false;
@@ -58,7 +58,7 @@ const char* ModdedItems_GetModdedItemNameTexture(s32 modId, s32 itemId, s32 lang
     ModdedItem moddedItem = { modId, itemId };
 
     if (moddedItems.contains(moddedItem)) {
-        return moddedItems[moddedItem].itemNameGetter(moddedItem);
+        return moddedItems[moddedItem].itemNameGetter(moddedItem, language);
     }
 
 	//in case the item is not found

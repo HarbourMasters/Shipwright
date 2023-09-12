@@ -25,9 +25,9 @@ struct ModdedItem {
 
 using ModdedItemActionFunc = std::function<void(PlayState*, Player*, ModdedItem)>;
 using ModdedItemIconGetterFunc = std::function<const char*(ModdedItem)>;
-using ModdedItemItemNameGetterFunc = std::function<const char*(ModdedItem)>;
+using ModdedItemNameGetterFunc = std::function<const char*(ModdedItem, s32)>;
 
-bool ModdedItems_RegisterModdedItem(s32 modId, s32 itemId, ModdedItemActionFunc itemAction, ModdedItemIconGetterFunc iconGetter);
+bool ModdedItems_RegisterModdedItem(s32 modId, s32 itemId, ModdedItemActionFunc itemAction, ModdedItemIconGetterFunc iconGetter, ModdedItemNameGetterFunc itemNameGetter);
 
 extern "C" {
 #endif

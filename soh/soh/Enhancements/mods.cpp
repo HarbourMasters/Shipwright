@@ -1014,7 +1014,7 @@ void InitMods() {
         [](ModdedItem moddedItem) -> const char* {
             return gItemIconGiantsWalletTex;
         },
-        [](ModdedItem moddedItem) -> const char* {
+        [](ModdedItem moddedItem, s32 language) -> const char* {
             return gBombItemNameENGTex;
         }
     );
