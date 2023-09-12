@@ -2,6 +2,7 @@
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include "textures/parameter_static/parameter_static.h"
+#include "textures/item_name_static/item_name_static.h"
 #include "functions.h"
 #include "z64save.h"
 #include "variables.h"
@@ -45,12 +46,12 @@ void* ModdedItems_GetModdedItemIcon(s32 modId, s32 itemId) {
 	return (void*)gItemIconDekuStickTex;
 }
 
-void* ModdedItems_GetModdedItemNameTexture(s32 modId, s32 itemId) {
+const char* ModdedItems_GetModdedItemNameTexture(s32 modId, s32 itemId, s32 language) {
     //for testing purposes
 	if (modId == 2 && itemId == 0) {
-		return (void*)gUnusedBigKeyItemNameENGTex;
+		return gBombItemNameENGTex;
 	}
 
 	//in case the item is not found
-	return (void*)gDekuStickItemNameENGTex;
+	return gDekuStickItemNameENGTex;
 }

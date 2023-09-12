@@ -171,6 +171,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
     u16 pad;
     s16 cursorMoveResult;
     u16 cursorItem;
+    u16 cursorItemModId = 0;
     u16 cursorSlot = 0;
     s16 cursorPoint;
     s16 cursorX;
@@ -472,6 +473,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         cursorSlot = pauseCtx->cursorPoint[PAUSE_EQUIP];
 
         pauseCtx->cursorItem[PAUSE_EQUIP] = cursorItem;
+        pauseCtx->cursorItemModId[PAUSE_EQUIP] = cursorItemModId;
         pauseCtx->cursorSlot[PAUSE_EQUIP] = cursorSlot;
 
         osSyncPrintf("kscope->select_name[Display_Equipment] = %d\n", pauseCtx->cursorItem[PAUSE_EQUIP]);
@@ -611,7 +613,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                                 default:
                                     break;
                             }
-                            KaleidoScope_SetupItemEquip(play, cursorItem, slot,
+                            KaleidoScope_SetupItemEquip(play, cursorItem, cursorItemModId, slot,
                                                         pauseCtx->equipVtx[cursorSlot * 4].v.ob[0] * 10,
                                                         pauseCtx->equipVtx[cursorSlot * 4].v.ob[1] * 10);
                         } else {

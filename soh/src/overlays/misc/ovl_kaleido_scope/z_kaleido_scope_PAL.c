@@ -898,10 +898,12 @@ void KaleidoScope_SetDefaultCursor(PlayState* play) {
                     }
                     if (i == s) {
                         pauseCtx->cursorItem[PAUSE_ITEM] = pauseCtx->namedItem = PAUSE_ITEM_NONE;
+                        pauseCtx->cursorItemModId[PAUSE_ITEM] = 0;
                         return;
                     }
                 }
                 pauseCtx->cursorItem[PAUSE_ITEM] = gSaveContext.inventory.items[i];
+                pauseCtx->cursorItemModId[PAUSE_ITEM] = gSaveContext.inventory.itemModIds[i];
                 pauseCtx->cursorSlot[PAUSE_ITEM] = i;
             }
             break;
@@ -2069,10 +2071,14 @@ void KaleidoScope_UpdateNamePanel(PlayState* play) {
     bool pauseAnyCursor = (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && gSaveContext.n64ddFlag) ||
                           (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
 
-    if ((pauseCtx->namedItem != pauseCtx->cursorItem[pauseCtx->pageIndex]) ||
-        ((pauseCtx->pageIndex == PAUSE_MAP) && (pauseCtx->cursorSpecialPos != 0))) {
+    if (
+        pauseCtx->namedItem != pauseCtx->cursorItem[pauseCtx->pageIndex] ||
+        pauseCtx->namedModId != pauseCtx->cursorItemModId[pauseCtx->pageIndex] ||
+        ((pauseCtx->pageIndex == PAUSE_MAP) && (pauseCtx->cursorSpecialPos != 0))
+    ) {
 
         pauseCtx->namedItem = pauseCtx->cursorItem[pauseCtx->pageIndex];
+        pauseCtx->namedModId = pauseCtx->cursorItemModId[pauseCtx->pageIndex];
         sp2A = pauseCtx->namedItem;
 
         osCreateMesgQueue(&pauseCtx->loadQueue, &pauseCtx->loadMsg, 1);
@@ -2081,6 +2087,7 @@ void KaleidoScope_UpdateNamePanel(PlayState* play) {
         ((pauseCtx->pageIndex == PAUSE_EQUIP && pauseCtx->cursorX[PAUSE_EQUIP] != 0 && !CHECK_OWNED_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP] - 1)) ||
         (pauseCtx->pageIndex == PAUSE_ITEM && gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] == ITEM_NONE))) {
             pauseCtx->namedItem = PAUSE_ITEM_NONE;
+            pauseCtx->namedModId = 0;
         }
 
         if (pauseCtx->namedItem != PAUSE_ITEM_NONE) {
@@ -2106,7 +2113,13 @@ void KaleidoScope_UpdateNamePanel(PlayState* play) {
 
                 osSyncPrintf("J_N=%d  point=%d\n", gSaveContext.language, sp2A);
 
-                const char* textureName = iconNameTextures[sp2A];
+                const char* textureName;
+                if (pauseCtx->namedModId == 0) {
+                    textureName = iconNameTextures[sp2A];
+                } else {
+                    //textureName = ModdedItems_GetModdedItemNameTexture(pauseCtx->namedModId, pauseCtx->namedItem, gSaveContext.language);
+                    textureName = iconNameTextures[sp2A];
+                }
                 memcpy(pauseCtx->nameSegment, textureName, strlen(textureName) + 1);
             }
 
@@ -2117,7 +2130,7 @@ void KaleidoScope_UpdateNamePanel(PlayState* play) {
              (pauseCtx->cursorSlot[PAUSE_QUEST] <= 0x11) && (pauseCtx->unk_1E4 == 8)) ||
             (pauseCtx->pageIndex == PAUSE_ITEM) ||
             ((pauseCtx->pageIndex == PAUSE_EQUIP) && (pauseCtx->cursorX[PAUSE_EQUIP] != 0))) {
-            if (pauseCtx->namedItem != ITEM_SOLD_OUT) {
+            if (pauseCtx->namedModId != 0 || pauseCtx->namedItem != ITEM_SOLD_OUT) {
                 pauseCtx->nameDisplayTimer++;
                 if (pauseCtx->nameDisplayTimer > WREG(88)) {
                     pauseCtx->nameDisplayTimer = 0;
@@ -3882,6 +3895,7 @@ void KaleidoScope_Update(PlayState* play)
                         pauseCtx->state = 0x13;
                         pauseCtx->unk_1F4 = pauseCtx->unk_1F8 = pauseCtx->unk_1FC = pauseCtx->unk_200 = 160.0f;
                         pauseCtx->namedItem = PAUSE_ITEM_NONE;
+                        pauseCtx->namedModId = 0;
                         pauseCtx->unk_1E4 = 0;
                         pauseCtx->unk_204 = -434.0f;
                     }
@@ -4208,6 +4222,7 @@ void KaleidoScope_Update(PlayState* play)
                 pauseCtx->unk_1F8 = 160.0f;
                 pauseCtx->unk_1F4 = 160.0f;
                 pauseCtx->namedItem = PAUSE_ITEM_NONE;
+                pauseCtx->namedModId = 0;
                 play->interfaceCtx.startAlpha = 0;
             }
             break;

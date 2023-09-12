@@ -197,8 +197,10 @@ void KaleidoScope_DrawDungeonMap(PlayState* play, GraphicsContext* gfxCtx) {
     if (pauseCtx->cursorSpecialPos == 0) {
         if (pauseCtx->cursorPoint[PAUSE_MAP] < 3) {
             pauseCtx->cursorItem[PAUSE_MAP] = ITEM_KEY_BOSS + pauseCtx->cursorPoint[PAUSE_MAP];
+            pauseCtx->cursorItemModId[PAUSE_MAP] = 0;
         } else {
             pauseCtx->cursorItem[PAUSE_MAP] = PAUSE_ITEM_NONE;
+            pauseCtx->cursorItemModId[PAUSE_MAP] = 0;
         }
 
         pauseCtx->cursorSlot[PAUSE_MAP] = pauseCtx->cursorPoint[PAUSE_MAP];
@@ -477,10 +479,12 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
             }
 
             pauseCtx->cursorItem[PAUSE_MAP] = pauseCtx->cursorPoint[PAUSE_WORLD_MAP];
+            pauseCtx->cursorItemModId[PAUSE_MAP] = 0;
             pauseCtx->cursorSlot[PAUSE_MAP] = pauseCtx->cursorPoint[PAUSE_WORLD_MAP] + 0x1F;
             KaleidoScope_SetCursorVtx(pauseCtx, pauseCtx->cursorSlot[PAUSE_MAP] * 4, pauseCtx->mapPageVtx);
         } else {
             pauseCtx->cursorItem[PAUSE_MAP] = gSaveContext.worldMapArea + 0x18;
+            pauseCtx->cursorItemModId[PAUSE_MAP] = 0;
             if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) {
                 if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
                     pauseCtx->cursorSpecialPos = 0;
@@ -498,6 +502,7 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
                     }
 
                     pauseCtx->cursorItem[PAUSE_MAP] = pauseCtx->cursorPoint[PAUSE_WORLD_MAP];
+                    pauseCtx->cursorItemModId[PAUSE_MAP] = 0;
                     pauseCtx->cursorSlot[PAUSE_MAP] = pauseCtx->cursorPoint[PAUSE_WORLD_MAP] + 0x1F;
                     KaleidoScope_SetCursorVtx(pauseCtx, pauseCtx->cursorSlot[PAUSE_MAP] * 4, pauseCtx->mapPageVtx);
                     Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
@@ -520,6 +525,7 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
                     }
 
                     pauseCtx->cursorItem[PAUSE_MAP] = pauseCtx->cursorPoint[PAUSE_WORLD_MAP];
+                    pauseCtx->cursorItemModId[PAUSE_MAP] = 0;
                     pauseCtx->cursorSlot[PAUSE_MAP] = pauseCtx->cursorPoint[PAUSE_WORLD_MAP] + 0x1F;
                     KaleidoScope_SetCursorVtx(pauseCtx, pauseCtx->cursorSlot[PAUSE_MAP] * 4, pauseCtx->mapPageVtx);
                     Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
@@ -530,6 +536,7 @@ void KaleidoScope_DrawWorldMap(PlayState* play, GraphicsContext* gfxCtx) {
 
         if (pauseCtx->worldMapPoints[pauseCtx->cursorPoint[PAUSE_WORLD_MAP]] == 0) {
             pauseCtx->cursorItem[PAUSE_MAP] = PAUSE_ITEM_NONE;
+            pauseCtx->cursorItemModId[PAUSE_MAP] = 0;
         }
 
         if (oldCursorPoint != pauseCtx->cursorPoint[PAUSE_WORLD_MAP]) {

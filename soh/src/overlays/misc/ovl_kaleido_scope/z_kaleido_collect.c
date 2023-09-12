@@ -197,6 +197,7 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
 
             sp216 = pauseCtx->cursorPoint[PAUSE_QUEST];
             pauseCtx->cursorItem[pauseCtx->pageIndex] = phi_s0_2;
+            pauseCtx->cursorItemModId[pauseCtx->pageIndex] = 0;
             pauseCtx->cursorSlot[pauseCtx->pageIndex] = sp216;
 
             KaleidoScope_SetCursorVtx(pauseCtx, sp216 * 4, pauseCtx->questVtx);
@@ -255,6 +256,7 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                 }
                 sp216 = pauseCtx->cursorPoint[PAUSE_QUEST];
                 pauseCtx->cursorItem[pauseCtx->pageIndex] = phi_s0_2;
+                pauseCtx->cursorItemModId[pauseCtx->pageIndex] = 0;
                 pauseCtx->cursorSlot[pauseCtx->pageIndex] = sp216;
             }
         } else {
@@ -278,6 +280,7 @@ void KaleidoScope_DrawQuestStatus(PlayState* play, GraphicsContext* gfxCtx) {
                 }
                 sp216 = pauseCtx->cursorPoint[PAUSE_QUEST];
                 pauseCtx->cursorItem[pauseCtx->pageIndex] = phi_s0_2;
+                pauseCtx->cursorItemModId[pauseCtx->pageIndex] = 0;
                 pauseCtx->cursorSlot[pauseCtx->pageIndex] = sp216;
             }
         }
