@@ -5,6 +5,7 @@
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include "soh/Enhancements/modded-items/ModdedItems.h"
 
 u8 gAmmoItems[] = {
     ITEM_STICK,   ITEM_NUT,  ITEM_BOMB, ITEM_BOW,  ITEM_NONE, ITEM_NONE, ITEM_SLINGSHOT, ITEM_NONE,
@@ -661,13 +662,19 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
 
             gSPVertex(POLY_KAL_DISP++, &pauseCtx->itemVtx[j + 0], 4, 0);
             int itemId = gSaveContext.inventory.items[i];
+            int modId = gSaveContext.inventory.itemModIds[i];
             bool not_acquired = !CHECK_ITEM_AGE(itemId);
             if (not_acquired) {
                 gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                 gSPGrayscale(POLY_KAL_DISP++, true);
             }
-            KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[itemId], 32,
-                                               32, 0);
+            if (modId == 0) {
+                KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[itemId], 32,
+                                                   32, 0);
+            } else {
+                KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, ModdedItems_GetModdedItemIcon(modId, itemId), 32,
+                                                   32, 0);
+            }
             gSPGrayscale(POLY_KAL_DISP++, false);
         }
     }

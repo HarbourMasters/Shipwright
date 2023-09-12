@@ -21,6 +21,7 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 #include "soh/Enhancements/randomizer/randomizer_grotto.h"
+#include "soh/Enhancements/modded-items/ModdedItems.h"
 
 #define DO_ACTION_TEX_WIDTH() 48
 #define DO_ACTION_TEX_HEIGHT() 16
@@ -5289,15 +5290,25 @@ void Interface_Draw(PlayState* play) {
             // B Button Icon & Ammo Count
             if (gSaveContext.equips.buttonModIds[0] != 0 || gSaveContext.equips.buttonItems[0] != ITEM_NONE)
             {
+                u8 itemId = gSaveContext.equips.buttonItems[0];
+                u8 modId = gSaveContext.equips.buttonModIds[0];
                 if (fullUi) {
-                    Interface_DrawItemIconTexture(play, gItemIcons[gSaveContext.equips.buttonItems[0]], 0);
+                    if (modId == 0) {
+                        Interface_DrawItemIconTexture(play, gItemIcons[gSaveContext.equips.buttonItems[0]], 0);
+                    } else {
+                        Interface_DrawItemIconTexture(play, ModdedItems_GetModdedItemIcon(modId, itemId), 0);
+                    }
                 }
 
                 if ((player->stateFlags1 & 0x00800000) || (play->shootingGalleryStatus > 1) ||
                     ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38))) {
 
                     if (!fullUi) {
-                        Interface_DrawItemIconTexture(play, gItemIcons[gSaveContext.equips.buttonItems[0]], 0);
+                        if (modId == 0) {
+                            Interface_DrawItemIconTexture(play, gItemIcons[gSaveContext.equips.buttonItems[0]], 0);
+                        } else {
+                            Interface_DrawItemIconTexture(play, ModdedItems_GetModdedItemIcon(modId, itemId), 0);
+                        }
                     }
 
                     gDPPipeSync(OVERLAY_DISP++);
@@ -5371,7 +5382,13 @@ void Interface_Draw(PlayState* play) {
         if (gSaveContext.equips.buttonItems[1] < 0xF0) {
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->cLeftAlpha);
             gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATERGBA_PRIM, G_CC_MODULATERGBA_PRIM);
-            Interface_DrawItemIconTexture(play, gItemIcons[gSaveContext.equips.buttonItems[1]], 1);
+            u8 itemId = gSaveContext.equips.buttonItems[1];
+            u8 modId = gSaveContext.equips.buttonModIds[1];
+            if (modId == 0) {
+                Interface_DrawItemIconTexture(play, gItemIcons[gSaveContext.equips.buttonItems[1]], 1);
+            } else {
+                Interface_DrawItemIconTexture(play, ModdedItems_GetModdedItemIcon(modId, itemId), 1);
+            }
             gDPPipeSync(OVERLAY_DISP++);
             gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                               PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
@@ -5384,7 +5401,13 @@ void Interface_Draw(PlayState* play) {
         if (gSaveContext.equips.buttonItems[2] < 0xF0) {
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->cDownAlpha);
             gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATERGBA_PRIM, G_CC_MODULATERGBA_PRIM);
-            Interface_DrawItemIconTexture(play, gItemIcons[gSaveContext.equips.buttonItems[2]], 2);
+            u8 itemId = gSaveContext.equips.buttonItems[2];
+            u8 modId = gSaveContext.equips.buttonModIds[2];
+            if (modId == 0) {
+                Interface_DrawItemIconTexture(play, gItemIcons[gSaveContext.equips.buttonItems[2]], 2);
+            } else {
+                Interface_DrawItemIconTexture(play, ModdedItems_GetModdedItemIcon(modId, itemId), 2);
+            }
             gDPPipeSync(OVERLAY_DISP++);
             gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                               PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
@@ -5397,7 +5420,13 @@ void Interface_Draw(PlayState* play) {
         if (gSaveContext.equips.buttonItems[3] < 0xF0) {
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->cRightAlpha);
             gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATERGBA_PRIM, G_CC_MODULATERGBA_PRIM);
-            Interface_DrawItemIconTexture(play, gItemIcons[gSaveContext.equips.buttonItems[3]], 3);
+            u8 itemId = gSaveContext.equips.buttonItems[3];
+            u8 modId = gSaveContext.equips.buttonModIds[3];
+            if (modId == 0) {
+                Interface_DrawItemIconTexture(play, gItemIcons[gSaveContext.equips.buttonItems[3]], 3);
+            } else {
+                Interface_DrawItemIconTexture(play, ModdedItems_GetModdedItemIcon(modId, itemId), 3);
+            }
             gDPPipeSync(OVERLAY_DISP++);
             gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                               PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
@@ -5456,7 +5485,13 @@ void Interface_Draw(PlayState* play) {
             if (gSaveContext.equips.buttonItems[4] < 0xF0) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->dpadUpAlpha);
                 gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATERGBA_PRIM, G_CC_MODULATERGBA_PRIM);
-                Interface_DrawItemIconTexture(play, gItemIcons[gSaveContext.equips.buttonItems[4]], 4);
+                u8 itemId = gSaveContext.equips.buttonItems[4];
+                u8 modId = gSaveContext.equips.buttonModIds[4];
+                if (modId == 0) {
+                    Interface_DrawItemIconTexture(play, gItemIcons[gSaveContext.equips.buttonItems[4]], 4);
+                } else {
+                    Interface_DrawItemIconTexture(play, ModdedItems_GetModdedItemIcon(modId, itemId), 4);
+                }
                 gDPPipeSync(OVERLAY_DISP++);
                 gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                                   PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
@@ -5467,7 +5502,13 @@ void Interface_Draw(PlayState* play) {
             if (gSaveContext.equips.buttonItems[5] < 0xF0) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->dpadDownAlpha);
                 gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATERGBA_PRIM, G_CC_MODULATERGBA_PRIM);
-                Interface_DrawItemIconTexture(play, gItemIcons[gSaveContext.equips.buttonItems[5]], 5);
+                u8 itemId = gSaveContext.equips.buttonItems[5];
+                u8 modId = gSaveContext.equips.buttonModIds[5];
+                if (modId == 0) {
+                    Interface_DrawItemIconTexture(play, gItemIcons[gSaveContext.equips.buttonItems[5]], 5);
+                } else {
+                    Interface_DrawItemIconTexture(play, ModdedItems_GetModdedItemIcon(modId, itemId), 5);
+                }
                 gDPPipeSync(OVERLAY_DISP++);
                 gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                                   PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
@@ -5478,7 +5519,13 @@ void Interface_Draw(PlayState* play) {
             if (gSaveContext.equips.buttonItems[6] < 0xF0) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->dpadLeftAlpha);
                 gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATERGBA_PRIM, G_CC_MODULATERGBA_PRIM);
-                Interface_DrawItemIconTexture(play, gItemIcons[gSaveContext.equips.buttonItems[6]], 6);
+                u8 itemId = gSaveContext.equips.buttonItems[6];
+                u8 modId = gSaveContext.equips.buttonModIds[6];
+                if (modId == 0) {
+                    Interface_DrawItemIconTexture(play, gItemIcons[gSaveContext.equips.buttonItems[6]], 6);
+                } else {
+                    Interface_DrawItemIconTexture(play, ModdedItems_GetModdedItemIcon(modId, itemId), 6);
+                }
                 gDPPipeSync(OVERLAY_DISP++);
                 gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                                   PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
@@ -5489,7 +5536,13 @@ void Interface_Draw(PlayState* play) {
             if (gSaveContext.equips.buttonItems[7] < 0xF0) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->dpadRightAlpha);
                 gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATERGBA_PRIM, G_CC_MODULATERGBA_PRIM);
-                Interface_DrawItemIconTexture(play, gItemIcons[gSaveContext.equips.buttonItems[7]], 7);
+                u8 itemId = gSaveContext.equips.buttonItems[7];
+                u8 modId = gSaveContext.equips.buttonModIds[7];
+                if (modId == 0) {
+                    Interface_DrawItemIconTexture(play, gItemIcons[gSaveContext.equips.buttonItems[7]], 7);
+                } else {
+                    Interface_DrawItemIconTexture(play, ModdedItems_GetModdedItemIcon(modId, itemId), 7);
+                }
                 gDPPipeSync(OVERLAY_DISP++);
                 gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                                   PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
@@ -5589,9 +5642,18 @@ void Interface_Draw(PlayState* play) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, pauseCtx->equipAnimAlpha);
                 gSPVertex(OVERLAY_DISP++, &pauseCtx->cursorVtx[16], 4, 0);
 
-                gDPLoadTextureBlock(OVERLAY_DISP++, gItemIcons[pauseCtx->equipTargetItem], G_IM_FMT_RGBA, G_IM_SIZ_32b,
-                                    32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-                                    G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                u8 itemId = pauseCtx->equipTargetItem;
+                u8 modId = pauseCtx->equipTargetModId;
+                if (modId == 0) {
+                    gDPLoadTextureBlock(OVERLAY_DISP++, gItemIcons[pauseCtx->equipTargetItem], G_IM_FMT_RGBA, G_IM_SIZ_32b,
+                                        32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                                        G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                } else {
+                    gDPLoadTextureBlock(OVERLAY_DISP++, ModdedItems_GetModdedItemIcon(modId, itemId), G_IM_FMT_RGBA, G_IM_SIZ_32b,
+                                        32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                                        G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                }
+
             } else {
                 // Magic Arrow Equip Effect
                 svar1 = pauseCtx->equipTargetItem - 0xBF;

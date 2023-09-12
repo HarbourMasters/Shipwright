@@ -915,7 +915,7 @@ typedef struct {
     /* 0x027A */ u8     tradeQuestLocation;
     /* 0x027C */ SkelAnime playerSkelAnime;
     /*        */ u16    cursorItemModId[4];
-    /*        */ u16    equipTargetModId;
+    /*        */ u8     equipTargetModId;
 } PauseContext; // size = 0x2C0
 
 typedef enum {
