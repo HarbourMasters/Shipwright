@@ -128,7 +128,7 @@ static Vtx sCycleAButtonVtx[] = {
 static sSlotCycleActiveAnimTimer[24] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 // Renders a left and/or right item for any item slot that can support cycling
-void KaleidoScope_DrawItemCycleExtras(PlayState* play, u8 slot, u8 isCycling, u8 canCycle, u8 leftItem, u8 rightItem) {
+void KaleidoScope_DrawItemCycleExtras(PlayState* play, u8 slot, u8 isCycling, u8 canCycle, u8 leftItem, u8 leftModId, u8 rightItem, u8 rightModId) {
     PauseContext* pauseCtx = &play->pauseCtx;
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -145,11 +145,12 @@ void KaleidoScope_DrawItemCycleExtras(PlayState* play, u8 slot, u8 isCycling, u8
     }
 
     u8 slotItem = gSaveContext.inventory.items[slot];
-    u8 showLeftItem = leftItem != ITEM_NONE && slotItem != leftItem;
-    u8 showRightItem = rightItem != ITEM_NONE && slotItem != rightItem && leftItem != rightItem;
+    u8 slotModId = gSaveContext.inventory.itemModIds[slot];
+    u8 showLeftItem = (leftModId != 0 || leftItem != ITEM_NONE) && !(slotModId == leftModId && slotItem == leftItem);
+    u8 showRightItem = (rightModId != 0 || rightItem != ITEM_NONE) && !(slotModId == rightModId && slotItem == rightItem) && !(leftModId == rightModId && leftItem == rightItem);
 
     // Render the extra cycle items if at least the left or right item are valid
-    if (canCycle && slotItem != ITEM_NONE && (showLeftItem || showRightItem)) {
+    if (canCycle && (slotModId != 0 || slotItem != ITEM_NONE) && (showLeftItem || showRightItem)) {
         Matrix_Push();
 
         Vtx* itemTopLeft = &pauseCtx->itemVtx[slot * 4];
@@ -209,10 +210,18 @@ void KaleidoScope_DrawItemCycleExtras(PlayState* play, u8 slot, u8 isCycling, u8
         gSPVertex(POLY_KAL_DISP++, sCycleExtraItemVtx, 8, 0);
 
         if (showLeftItem) {
-            KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[leftItem], 32, 32, 0);
+            if (leftModId == 0) {
+                KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[leftItem], 32, 32, 0);
+            } else {
+                KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, ModdedItems_GetModdedItemIcon(leftModId, leftItem), 32, 32, 0);
+            }
         }
         if (showRightItem) {
-            KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[rightItem], 32, 32, 4);
+            if (rightModId == 0) {
+                KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[rightItem], 32, 32, 0);
+            } else {
+                KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, ModdedItems_GetModdedItemIcon(rightModId, rightItem), 32, 32, 0);
+            }
         }
 
         Matrix_Pop();
@@ -696,12 +705,12 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
     // Adult trade item cycle
     KaleidoScope_DrawItemCycleExtras(play, SLOT_TRADE_ADULT, gSelectingAdultTrade,
                                      gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE),
-                                     Randomizer_GetPrevAdultTradeItem(), Randomizer_GetNextAdultTradeItem());
+                                     Randomizer_GetPrevAdultTradeItem(), 0, Randomizer_GetNextAdultTradeItem(), 0);
     // Child mask item cycle (mimics the left/right item behavior from the cycling logic above)
     u8 childTradeItem = INV_CONTENT(ITEM_TRADE_CHILD);
     KaleidoScope_DrawItemCycleExtras(play, SLOT_TRADE_CHILD, gSelectingMask, canMaskSelect,
-                                     childTradeItem <= ITEM_MASK_KEATON ? ITEM_MASK_TRUTH : childTradeItem - 1,
-                                     childTradeItem >= ITEM_MASK_TRUTH ? ITEM_MASK_KEATON : childTradeItem + 1);
+                                     childTradeItem <= ITEM_MASK_KEATON ? ITEM_MASK_TRUTH : childTradeItem - 1, 0,
+                                     childTradeItem >= ITEM_MASK_TRUTH ? ITEM_MASK_KEATON : childTradeItem + 1, 0);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
