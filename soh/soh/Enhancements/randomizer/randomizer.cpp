@@ -5487,17 +5487,17 @@ CustomMessage Randomizer::GetTriforcePieceMessage() {
     uint8_t messageIndex;
 
     if (percentageCollected <= 0.25) {
-        messageIndex = 0;
+        messageIndex = TH_MESSAGE_START;
     } else if (percentageCollected <= 0.5) {
-        messageIndex = 1;
+        messageIndex = TH_MESSAGE_PROGRESS;
     } else if (percentageCollected <= 0.75) {
-        messageIndex = 2;
+        messageIndex = TH_MESSAGE_HALFWAY;
     } else if (percentageCollected < 1) {
-        messageIndex = 3;
+        messageIndex = TH_MESSAGE_ALMOSTDONE;
     } else if (current == required) {
-        messageIndex = 4;
+        messageIndex = TH_MESSAGE_FINISHED;
     } else {
-        messageIndex = 5;
+        messageIndex = TH_MESSAGE_SURPLUS;
     }
 
     CustomMessage messageEntry =

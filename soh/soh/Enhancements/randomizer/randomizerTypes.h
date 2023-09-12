@@ -1810,3 +1810,12 @@ typedef enum {
     TRACKER_COMBO_BUTTON_D_LEFT,
     TRACKER_COMBO_BUTTON_D_RIGHT,
 } TrackerComboButton;
+
+typedef enum {
+    TH_MESSAGE_START,
+    TH_MESSAGE_PROGRESS,
+    TH_MESSAGE_HALFWAY,
+    TH_MESSAGE_ALMOSTDONE,
+    TH_MESSAGE_FINISHED,
+    TH_MESSAGE_SURPLUS,
+} TriforceHuntMessages;
