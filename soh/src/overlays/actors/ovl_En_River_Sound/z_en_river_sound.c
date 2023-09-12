@@ -199,7 +199,7 @@ void EnRiverSound_Update(Actor* thisx, PlayState* play) {
         }
     } else if ((thisx->params == RS_UNK_13) || (thisx->params == RS_UNK_19)) {
         func_8002DBD0(&player->actor, &thisx->home.pos, &thisx->world.pos);
-    } else if (play->sceneNum == SCENE_DDAN_BOSS && Flags_GetClear(play, thisx->room)) {
+    } else if (play->sceneNum == SCENE_DODONGOS_CAVERN_BOSS && Flags_GetClear(play, thisx->room)) {
         Actor_Kill(thisx);
     }
 }

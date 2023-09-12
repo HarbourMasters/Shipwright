@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MISC_KINSUTA_ROOM_0_H
+#define MISC_KINSUTA_ROOM_0_H 1
 
 #include "align_asset_macro.h"
 
@@ -70,3 +71,6 @@ static const ALIGN_ASSET(2) char kinsuta_room_0Tex_007910[] = dkinsuta_room_0Tex
 
 #define dkinsuta_room_0DL_001F78 "__OTR__scenes/nonmq/kinsuta_scene/kinsuta_room_0DL_001F78"
 static const ALIGN_ASSET(2) char kinsuta_room_0DL_001F78[] = dkinsuta_room_0DL_001F78;
+
+
+#endif // MISC_KINSUTA_ROOM_0_H

@@ -171,7 +171,7 @@ void BossRush_SpawnBlueWarps(PlayState* play) {
 void BossRush_HandleBlueWarp(PlayState* play, f32 warpPosX, f32 warpPosZ) {
 
     // If warping from Chamber of Sages, choose the correct boss room to teleport to.
-    if (play->sceneNum == SCENE_KENJYANOMA) {
+    if (play->sceneNum == SCENE_CHAMBER_OF_THE_SAGES) {
         // Gohma & Phantom Ganon
         if (warpPosX == -100 && warpPosZ == -170) {
             if (gSaveContext.linkAge == LINK_AGE_CHILD) {
@@ -241,28 +241,28 @@ void BossRush_HandleCompleteBoss(PlayState* play) {
 
     gSaveContext.isBossRushPaused = 1;
     switch (play->sceneNum) {
-        case SCENE_YDAN_BOSS:
+        case SCENE_DEKU_TREE_BOSS:
             Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE);
             break;
-        case SCENE_DDAN_BOSS:
+        case SCENE_DODONGOS_CAVERN_BOSS:
             Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN);
             break;
-        case SCENE_BDAN_BOSS:
+        case SCENE_JABU_JABU_BOSS:
             Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY);
             break;
-        case SCENE_MORIBOSSROOM:
+        case SCENE_FOREST_TEMPLE_BOSS:
             Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE);
             break;
-        case SCENE_FIRE_BS:
+        case SCENE_FIRE_TEMPLE_BOSS:
             Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE);
             break;
-        case SCENE_MIZUSIN_BS:
+        case SCENE_WATER_TEMPLE_BOSS:
             Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE);
             break;
-        case SCENE_JYASINBOSS:
+        case SCENE_SPIRIT_TEMPLE_BOSS:
             Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE);
             break;
-        case SCENE_HAKADAN_BS:
+        case SCENE_SHADOW_TEMPLE_BOSS:
             Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE);
             break;
         default:
@@ -271,12 +271,12 @@ void BossRush_HandleCompleteBoss(PlayState* play) {
 
     // Fully heal the player after Ganondorf
     if (gSaveContext.bossRushOptions[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_EVERYBOSS &&
-        play->sceneNum == SCENE_GANON_BOSS) {
+        play->sceneNum == SCENE_GANONDORF_BOSS) {
         Health_ChangeBy(play, 320);
     }
 
     if ((CheckDungeonCount() == 3 && gSaveContext.bossRushOptions[BR_OPTIONS_BOSSES] == BR_CHOICE_BOSSES_CHILD) ||
-        play->sceneNum == SCENE_GANON_DEMO) {
+        play->sceneNum == SCENE_GANON_BOSS) {
         gSaveContext.sohStats.playTimer += 2;
         gSaveContext.sohStats.gameComplete = 1;
         gSaveContext.sohStats.itemTimestamp[TIMESTAMP_BOSSRUSH_FINISH] = GAMEPLAYSTAT_TOTAL_TIME;

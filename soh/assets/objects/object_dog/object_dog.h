@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_DOG_H
+#define OBJECTS_OBJECT_DOG_H 1
 
 #include "align_asset_macro.h"
 
@@ -76,3 +77,6 @@ static const ALIGN_ASSET(2) char gDogTailDL[] = dgDogTailDL;
 
 #define dgDogSkel "__OTR__objects/object_dog/gDogSkel"
 static const ALIGN_ASSET(2) char gDogSkel[] = dgDogSkel;
+
+
+#endif // OBJECTS_OBJECT_DOG_H

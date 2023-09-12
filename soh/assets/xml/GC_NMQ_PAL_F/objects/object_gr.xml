@@ -1,12 +1,23 @@
 <Root>
     <File Name="object_gr" Segment="6">
+        <Texture Name="object_grTex_005D78" OutName="object_grTex_005D78" Format="ci8" Width="16" Height="16" Offset="0x5D78" TlutOffset="0x3F78" AddedByScript="true"/>
+        <Texture Name="object_grTex_005E78" OutName="object_grTex_005E78" Format="ci8" Width="8" Height="8" Offset="0x5E78" TlutOffset="0x3F78" AddedByScript="true"/>
+        <Texture Name="object_grTex_005EB8" OutName="object_grTex_005EB8" Format="ci8" Width="8" Height="8" Offset="0x5EB8" TlutOffset="0x3F78" AddedByScript="true"/>
+        <Texture Name="object_grTex_005EF8" OutName="object_grTex_005EF8" Format="ci8" Width="16" Height="16" Offset="0x5EF8" TlutOffset="0x3F78" AddedByScript="true"/>
+        <Texture Name="object_grTex_0077F8" OutName="object_grTex_0077F8" Format="ci8" Width="32" Height="32" Offset="0x77F8" TlutOffset="0x3F78" AddedByScript="true"/>
+        <Texture Name="object_grTex_007BF8" OutName="object_grTex_007BF8" Format="ci8" Width="32" Height="32" Offset="0x7BF8" TlutOffset="0x3F78" AddedByScript="true"/>
+        <Texture Name="object_grTex_007FF8" OutName="object_grTex_007FF8" Format="ci8" Width="32" Height="32" Offset="0x7FF8" TlutOffset="0x3F78" AddedByScript="true"/>
+        <Texture Name="object_grTex_0083F8" OutName="object_grTex_0083F8" Format="ci8" Width="32" Height="32" Offset="0x83F8" TlutOffset="0x3F78" AddedByScript="true"/>
+        <Texture Name="object_grTex_0097F8" OutName="object_grTex_0097F8" Format="ci8" Width="4" Height="4" Offset="0x97F8" TlutOffset="0x3F78" AddedByScript="true"/>
+        <Texture Name="object_grTex_009808" OutName="object_grTex_009808" Format="ci8" Width="8" Height="8" Offset="0x9808" TlutOffset="0x3F78" AddedByScript="true"/>
+        <Texture Name="object_grTLUT_003F78" OutName="object_grTLUT_003F78" Format="rgba16" Width="16" Height="16" Offset="0x3F78" AddedByScript="true"/>
         <Skeleton Name="gNiwGirlSkel" Type="Flex" LimbType="Standard" Offset="0x9948"/>
         <Animation Name="gNiwGirlRunAnim" Offset="0x0378"/>
         <Animation Name="gNiwGirlJumpAnim" Offset="0x9C78"/>
         <Texture Name="gNiwGirlEyeOpenTex" OutName="eye_open" Format="rgba16" Width="32" Height="32" Offset="0x4178"/>
         <Texture Name="gNiwGirlEyeHalfTex" OutName="eye_half" Format="rgba16" Width="32" Height="32" Offset="0x4978"/>
         <Texture Name="gNiwGirlEyeClosedTex" OutName="eye_closed" Format="rgba16" Width="32" Height="32" Offset="0x5178"/>
-        <Texture Name="gNiwGirlMouthTex"  OutName="mouth" Format="rgba16" Width="32" Height="16" Offset="0x5978"/>
+        <Texture Name="gNiwGirlMouthTex" OutName="mouth" Format="rgba16" Width="32" Height="16" Offset="0x5978"/>
         <Texture Name="gNiwGirlDress1Tex" OutName="dress_1" Format="rgba16" Width="32" Height="32" Offset="0x5FF8"/>
         <Texture Name="gNiwGirlDress2Tex" OutName="dress_2" Format="rgba16" Width="32" Height="32" Offset="0x6FF8"/>
         <Texture Name="gNiwGirlDress3Tex" OutName="dress_3" Format="rgba16" Width="32" Height="32" Offset="0x8FF8"/>

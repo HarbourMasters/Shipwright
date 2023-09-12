@@ -1,77 +1,262 @@
 <Root>
     <File Name="MIZUsin_scene" Segment="2">
+        <Texture Name="MIZUsin_sceneTex_013C30" OutName="MIZUsin_sceneTex_013C30" Format="rgba16" Width="32" Height="32" Offset="0x13C30" AddedByScript="true"/>
+        <Texture Name="MIZUsin_sceneTex_014430" OutName="MIZUsin_sceneTex_014430" Format="rgba16" Width="32" Height="32" Offset="0x14430" AddedByScript="true"/>
+        <Texture Name="MIZUsin_sceneTex_015030" OutName="MIZUsin_sceneTex_015030" Format="rgba16" Width="32" Height="32" Offset="0x15030" AddedByScript="true"/>
         <Path Name="MIZUsin_scenePathList_000384" Offset="0x0384" NumPaths="2"/>
         <Texture Name="gWaterTempleDayEntranceTex" OutName="day_entrance" Format="ia16" Width="8" Height="64" Offset="0x14C30"/>
         <Texture Name="gWaterTempleNightEntranceTex" OutName="night_entrance" Format="ia16" Width="8" Height="64" Offset="0x15830"/>
         <Scene Name="MIZUsin_scene" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_0" Segment="3">
+        <Texture Name="MIZUsin_room_0Tex_00CDF8" OutName="MIZUsin_room_0Tex_00CDF8" Format="i4" Width="64" Height="64" Offset="0xCDF8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_0Tex_00D5F8" OutName="MIZUsin_room_0Tex_00D5F8" Format="i4" Width="64" Height="64" Offset="0xD5F8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_0Tex_00DDF8" OutName="MIZUsin_room_0Tex_00DDF8" Format="rgba16" Width="32" Height="32" Offset="0xDDF8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_0Tex_00E5F8" OutName="MIZUsin_room_0Tex_00E5F8" Format="rgba16" Width="32" Height="32" Offset="0xE5F8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_0Tex_00EDF8" OutName="MIZUsin_room_0Tex_00EDF8" Format="rgba16" Width="32" Height="32" Offset="0xEDF8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_0Tex_00F5F8" OutName="MIZUsin_room_0Tex_00F5F8" Format="rgba16" Width="32" Height="32" Offset="0xF5F8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_0Tex_00FDF8" OutName="MIZUsin_room_0Tex_00FDF8" Format="rgba16" Width="32" Height="32" Offset="0xFDF8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_0Tex_0105F8" OutName="MIZUsin_room_0Tex_0105F8" Format="rgba16" Width="32" Height="32" Offset="0x105F8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_0Tex_010DF8" OutName="MIZUsin_room_0Tex_010DF8" Format="rgba16" Width="32" Height="32" Offset="0x10DF8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_0Tex_0115F8" OutName="MIZUsin_room_0Tex_0115F8" Format="rgba16" Width="32" Height="32" Offset="0x115F8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_0Tex_011DF8" OutName="MIZUsin_room_0Tex_011DF8" Format="rgba16" Width="32" Height="32" Offset="0x11DF8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_0Tex_0125F8" OutName="MIZUsin_room_0Tex_0125F8" Format="rgba16" Width="32" Height="32" Offset="0x125F8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_0Tex_012DF8" OutName="MIZUsin_room_0Tex_012DF8" Format="rgba16" Width="32" Height="32" Offset="0x12DF8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_0Tex_0135F8" OutName="MIZUsin_room_0Tex_0135F8" Format="rgba16" Width="32" Height="32" Offset="0x135F8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_0Tex_013DF8" OutName="MIZUsin_room_0Tex_013DF8" Format="rgba16" Width="32" Height="32" Offset="0x13DF8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_0Tex_0145F8" OutName="MIZUsin_room_0Tex_0145F8" Format="rgba16" Width="32" Height="32" Offset="0x145F8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_0Tex_015428" OutName="MIZUsin_room_0Tex_015428" Format="ia16" Width="32" Height="32" Offset="0x15428" AddedByScript="true"/>
         <Room Name="MIZUsin_room_0" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_1" Segment="3">
+        <Texture Name="MIZUsin_room_1Tex_0059D0" OutName="MIZUsin_room_1Tex_0059D0" Format="i4" Width="64" Height="64" Offset="0x59D0" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_1Tex_0061D0" OutName="MIZUsin_room_1Tex_0061D0" Format="i4" Width="64" Height="64" Offset="0x61D0" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_1Tex_0069D0" OutName="MIZUsin_room_1Tex_0069D0" Format="rgba16" Width="32" Height="32" Offset="0x69D0" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_1Tex_0071D0" OutName="MIZUsin_room_1Tex_0071D0" Format="rgba16" Width="32" Height="32" Offset="0x71D0" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_1Tex_0079D0" OutName="MIZUsin_room_1Tex_0079D0" Format="rgba16" Width="32" Height="32" Offset="0x79D0" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_1Tex_0081D0" OutName="MIZUsin_room_1Tex_0081D0" Format="rgba16" Width="32" Height="32" Offset="0x81D0" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_1Tex_0089D0" OutName="MIZUsin_room_1Tex_0089D0" Format="rgba16" Width="32" Height="32" Offset="0x89D0" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_1Tex_0091D0" OutName="MIZUsin_room_1Tex_0091D0" Format="rgba16" Width="32" Height="32" Offset="0x91D0" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_1Tex_0099D0" OutName="MIZUsin_room_1Tex_0099D0" Format="rgba16" Width="32" Height="32" Offset="0x99D0" AddedByScript="true"/>
         <Room Name="MIZUsin_room_1" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_2" Segment="3">
+        <Texture Name="MIZUsin_room_2Tex_002AB8" OutName="MIZUsin_room_2Tex_002AB8" Format="rgba16" Width="32" Height="32" Offset="0x2AB8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_2Tex_0032B8" OutName="MIZUsin_room_2Tex_0032B8" Format="rgba16" Width="32" Height="32" Offset="0x32B8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_2Tex_003AB8" OutName="MIZUsin_room_2Tex_003AB8" Format="rgba16" Width="32" Height="32" Offset="0x3AB8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_2Tex_0042B8" OutName="MIZUsin_room_2Tex_0042B8" Format="rgba16" Width="32" Height="32" Offset="0x42B8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_2Tex_004AB8" OutName="MIZUsin_room_2Tex_004AB8" Format="rgba16" Width="32" Height="32" Offset="0x4AB8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_2Tex_005488" OutName="MIZUsin_room_2Tex_005488" Format="ia16" Width="32" Height="32" Offset="0x5488" AddedByScript="true"/>
         <Room Name="MIZUsin_room_2" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_3" Segment="3">
+        <Texture Name="MIZUsin_room_3Tex_0037B8" OutName="MIZUsin_room_3Tex_0037B8" Format="rgba16" Width="32" Height="32" Offset="0x37B8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_3Tex_003FB8" OutName="MIZUsin_room_3Tex_003FB8" Format="rgba16" Width="32" Height="32" Offset="0x3FB8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_3Tex_0047B8" OutName="MIZUsin_room_3Tex_0047B8" Format="rgba16" Width="32" Height="32" Offset="0x47B8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_3Tex_004FB8" OutName="MIZUsin_room_3Tex_004FB8" Format="rgba16" Width="32" Height="32" Offset="0x4FB8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_3Tex_0057B8" OutName="MIZUsin_room_3Tex_0057B8" Format="rgba16" Width="32" Height="32" Offset="0x57B8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_3Tex_005FB8" OutName="MIZUsin_room_3Tex_005FB8" Format="rgba16" Width="32" Height="32" Offset="0x5FB8" AddedByScript="true"/>
         <Room Name="MIZUsin_room_3" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_4" Segment="3">
+        <Texture Name="MIZUsin_room_4Tex_002820" OutName="MIZUsin_room_4Tex_002820" Format="i4" Width="64" Height="64" Offset="0x2820" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_4Tex_003020" OutName="MIZUsin_room_4Tex_003020" Format="rgba16" Width="32" Height="32" Offset="0x3020" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_4Tex_003820" OutName="MIZUsin_room_4Tex_003820" Format="rgba16" Width="32" Height="32" Offset="0x3820" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_4Tex_004020" OutName="MIZUsin_room_4Tex_004020" Format="rgba16" Width="32" Height="32" Offset="0x4020" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_4Tex_004820" OutName="MIZUsin_room_4Tex_004820" Format="rgba16" Width="32" Height="32" Offset="0x4820" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_4Tex_005020" OutName="MIZUsin_room_4Tex_005020" Format="rgba16" Width="32" Height="32" Offset="0x5020" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_4Tex_005820" OutName="MIZUsin_room_4Tex_005820" Format="rgba16" Width="32" Height="32" Offset="0x5820" AddedByScript="true"/>
         <Room Name="MIZUsin_room_4" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_5" Segment="3">
+        <Texture Name="MIZUsin_room_5Tex_003A48" OutName="MIZUsin_room_5Tex_003A48" Format="rgba16" Width="32" Height="32" Offset="0x3A48" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_5Tex_004248" OutName="MIZUsin_room_5Tex_004248" Format="rgba16" Width="32" Height="32" Offset="0x4248" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_5Tex_004A48" OutName="MIZUsin_room_5Tex_004A48" Format="rgba16" Width="32" Height="32" Offset="0x4A48" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_5Tex_005248" OutName="MIZUsin_room_5Tex_005248" Format="rgba16" Width="32" Height="32" Offset="0x5248" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_5Tex_005A48" OutName="MIZUsin_room_5Tex_005A48" Format="rgba16" Width="32" Height="32" Offset="0x5A48" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_5Tex_006248" OutName="MIZUsin_room_5Tex_006248" Format="rgba16" Width="32" Height="32" Offset="0x6248" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_5Tex_006A48" OutName="MIZUsin_room_5Tex_006A48" Format="rgba16" Width="32" Height="32" Offset="0x6A48" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_5Tex_007248" OutName="MIZUsin_room_5Tex_007248" Format="rgba16" Width="32" Height="32" Offset="0x7248" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_5Tex_007A48" OutName="MIZUsin_room_5Tex_007A48" Format="rgba16" Width="32" Height="32" Offset="0x7A48" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_5Tex_008248" OutName="MIZUsin_room_5Tex_008248" Format="rgba16" Width="32" Height="32" Offset="0x8248" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_5Tex_008A48" OutName="MIZUsin_room_5Tex_008A48" Format="rgba16" Width="32" Height="32" Offset="0x8A48" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_5Tex_009248" OutName="MIZUsin_room_5Tex_009248" Format="rgba16" Width="32" Height="32" Offset="0x9248" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_5Tex_009E38" OutName="MIZUsin_room_5Tex_009E38" Format="ia16" Width="32" Height="32" Offset="0x9E38" AddedByScript="true"/>
         <Room Name="MIZUsin_room_5" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_6" Segment="3">
+        <Texture Name="MIZUsin_room_6Tex_005100" OutName="MIZUsin_room_6Tex_005100" Format="i4" Width="32" Height="32" Offset="0x5100" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_6Tex_005300" OutName="MIZUsin_room_6Tex_005300" Format="rgba16" Width="32" Height="32" Offset="0x5300" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_6Tex_005B00" OutName="MIZUsin_room_6Tex_005B00" Format="rgba16" Width="32" Height="32" Offset="0x5B00" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_6Tex_006300" OutName="MIZUsin_room_6Tex_006300" Format="i4" Width="32" Height="32" Offset="0x6300" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_6Tex_006500" OutName="MIZUsin_room_6Tex_006500" Format="i4" Width="32" Height="32" Offset="0x6500" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_6Tex_006700" OutName="MIZUsin_room_6Tex_006700" Format="i4" Width="32" Height="32" Offset="0x6700" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_6Tex_006900" OutName="MIZUsin_room_6Tex_006900" Format="i4" Width="32" Height="32" Offset="0x6900" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_6Tex_006B00" OutName="MIZUsin_room_6Tex_006B00" Format="i4" Width="64" Height="64" Offset="0x6B00" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_6Tex_007300" OutName="MIZUsin_room_6Tex_007300" Format="rgba16" Width="32" Height="32" Offset="0x7300" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_6Tex_007B00" OutName="MIZUsin_room_6Tex_007B00" Format="rgba16" Width="32" Height="32" Offset="0x7B00" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_6Tex_008300" OutName="MIZUsin_room_6Tex_008300" Format="rgba16" Width="32" Height="32" Offset="0x8300" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_6Tex_008B00" OutName="MIZUsin_room_6Tex_008B00" Format="rgba16" Width="32" Height="32" Offset="0x8B00" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_6Tex_009300" OutName="MIZUsin_room_6Tex_009300" Format="rgba16" Width="32" Height="32" Offset="0x9300" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_6Tex_009B00" OutName="MIZUsin_room_6Tex_009B00" Format="rgba16" Width="32" Height="32" Offset="0x9B00" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_6Tex_00A300" OutName="MIZUsin_room_6Tex_00A300" Format="rgba16" Width="32" Height="32" Offset="0xA300" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_6Tex_00AB00" OutName="MIZUsin_room_6Tex_00AB00" Format="rgba16" Width="32" Height="32" Offset="0xAB00" AddedByScript="true"/>
         <Room Name="MIZUsin_room_6" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_7" Segment="3">
+        <Texture Name="MIZUsin_room_7Tex_002560" OutName="MIZUsin_room_7Tex_002560" Format="rgba16" Width="32" Height="32" Offset="0x2560" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_7Tex_002D60" OutName="MIZUsin_room_7Tex_002D60" Format="rgba16" Width="32" Height="32" Offset="0x2D60" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_7Tex_003560" OutName="MIZUsin_room_7Tex_003560" Format="rgba16" Width="32" Height="32" Offset="0x3560" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_7Tex_003D60" OutName="MIZUsin_room_7Tex_003D60" Format="rgba16" Width="32" Height="32" Offset="0x3D60" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_7Tex_004560" OutName="MIZUsin_room_7Tex_004560" Format="rgba16" Width="32" Height="32" Offset="0x4560" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_7Tex_004D60" OutName="MIZUsin_room_7Tex_004D60" Format="rgba16" Width="32" Height="32" Offset="0x4D60" AddedByScript="true"/>
         <Room Name="MIZUsin_room_7" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_8" Segment="3">
+        <Texture Name="MIZUsin_room_8Tex_005D98" OutName="MIZUsin_room_8Tex_005D98" Format="i4" Width="32" Height="32" Offset="0x5D98" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_8Tex_005F98" OutName="MIZUsin_room_8Tex_005F98" Format="i4" Width="32" Height="32" Offset="0x5F98" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_8Tex_006198" OutName="MIZUsin_room_8Tex_006198" Format="rgba16" Width="32" Height="32" Offset="0x6198" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_8Tex_006998" OutName="MIZUsin_room_8Tex_006998" Format="rgba16" Width="32" Height="32" Offset="0x6998" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_8Tex_007198" OutName="MIZUsin_room_8Tex_007198" Format="i4" Width="32" Height="32" Offset="0x7198" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_8Tex_007398" OutName="MIZUsin_room_8Tex_007398" Format="i4" Width="32" Height="32" Offset="0x7398" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_8Tex_007598" OutName="MIZUsin_room_8Tex_007598" Format="rgba16" Width="32" Height="32" Offset="0x7598" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_8Tex_007D98" OutName="MIZUsin_room_8Tex_007D98" Format="i4" Width="64" Height="64" Offset="0x7D98" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_8Tex_008598" OutName="MIZUsin_room_8Tex_008598" Format="rgba16" Width="32" Height="32" Offset="0x8598" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_8Tex_008D98" OutName="MIZUsin_room_8Tex_008D98" Format="rgba16" Width="32" Height="32" Offset="0x8D98" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_8Tex_009598" OutName="MIZUsin_room_8Tex_009598" Format="rgba16" Width="32" Height="32" Offset="0x9598" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_8Tex_009D98" OutName="MIZUsin_room_8Tex_009D98" Format="rgba16" Width="32" Height="32" Offset="0x9D98" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_8Tex_00A598" OutName="MIZUsin_room_8Tex_00A598" Format="rgba16" Width="32" Height="32" Offset="0xA598" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_8Tex_00AD98" OutName="MIZUsin_room_8Tex_00AD98" Format="rgba16" Width="32" Height="32" Offset="0xAD98" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_8Tex_00B598" OutName="MIZUsin_room_8Tex_00B598" Format="rgba16" Width="32" Height="32" Offset="0xB598" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_8Tex_00BD98" OutName="MIZUsin_room_8Tex_00BD98" Format="rgba16" Width="32" Height="32" Offset="0xBD98" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_8Tex_00C598" OutName="MIZUsin_room_8Tex_00C598" Format="rgba16" Width="32" Height="32" Offset="0xC598" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_8Tex_00D578" OutName="MIZUsin_room_8Tex_00D578" Format="ia16" Width="32" Height="32" Offset="0xD578" AddedByScript="true"/>
         <Room Name="MIZUsin_room_8" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_9" Segment="3">
+        <Texture Name="MIZUsin_room_9Tex_0036D8" OutName="MIZUsin_room_9Tex_0036D8" Format="i4" Width="64" Height="64" Offset="0x36D8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_9Tex_003ED8" OutName="MIZUsin_room_9Tex_003ED8" Format="rgba16" Width="32" Height="32" Offset="0x3ED8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_9Tex_0046D8" OutName="MIZUsin_room_9Tex_0046D8" Format="rgba16" Width="32" Height="32" Offset="0x46D8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_9Tex_004ED8" OutName="MIZUsin_room_9Tex_004ED8" Format="rgba16" Width="32" Height="32" Offset="0x4ED8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_9Tex_0056D8" OutName="MIZUsin_room_9Tex_0056D8" Format="rgba16" Width="32" Height="32" Offset="0x56D8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_9Tex_005ED8" OutName="MIZUsin_room_9Tex_005ED8" Format="rgba16" Width="32" Height="32" Offset="0x5ED8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_9Tex_0066D8" OutName="MIZUsin_room_9Tex_0066D8" Format="rgba16" Width="32" Height="32" Offset="0x66D8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_9Tex_006ED8" OutName="MIZUsin_room_9Tex_006ED8" Format="rgba16" Width="32" Height="32" Offset="0x6ED8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_9Tex_0078A8" OutName="MIZUsin_room_9Tex_0078A8" Format="ia16" Width="32" Height="32" Offset="0x78A8" AddedByScript="true"/>
         <Room Name="MIZUsin_room_9" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_10" Segment="3">
+        <Texture Name="MIZUsin_room_10Tex_003870" OutName="MIZUsin_room_10Tex_003870" Format="rgba16" Width="32" Height="32" Offset="0x3870" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_10Tex_004070" OutName="MIZUsin_room_10Tex_004070" Format="rgba16" Width="32" Height="32" Offset="0x4070" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_10Tex_004870" OutName="MIZUsin_room_10Tex_004870" Format="rgba16" Width="32" Height="32" Offset="0x4870" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_10Tex_005070" OutName="MIZUsin_room_10Tex_005070" Format="rgba16" Width="32" Height="32" Offset="0x5070" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_10Tex_005870" OutName="MIZUsin_room_10Tex_005870" Format="rgba16" Width="32" Height="32" Offset="0x5870" AddedByScript="true"/>
         <Room Name="MIZUsin_room_10" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_11" Segment="3">
+        <Texture Name="MIZUsin_room_11Tex_002220" OutName="MIZUsin_room_11Tex_002220" Format="rgba16" Width="32" Height="32" Offset="0x2220" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_11Tex_002A20" OutName="MIZUsin_room_11Tex_002A20" Format="rgba16" Width="32" Height="32" Offset="0x2A20" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_11Tex_003220" OutName="MIZUsin_room_11Tex_003220" Format="rgba16" Width="32" Height="32" Offset="0x3220" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_11Tex_003A20" OutName="MIZUsin_room_11Tex_003A20" Format="rgba16" Width="32" Height="32" Offset="0x3A20" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_11Tex_004220" OutName="MIZUsin_room_11Tex_004220" Format="rgba16" Width="32" Height="32" Offset="0x4220" AddedByScript="true"/>
         <Room Name="MIZUsin_room_11" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_12" Segment="3">
+        <Texture Name="MIZUsin_room_12Tex_0039C8" OutName="MIZUsin_room_12Tex_0039C8" Format="rgba16" Width="32" Height="32" Offset="0x39C8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_12Tex_0041C8" OutName="MIZUsin_room_12Tex_0041C8" Format="rgba16" Width="32" Height="32" Offset="0x41C8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_12Tex_0049C8" OutName="MIZUsin_room_12Tex_0049C8" Format="rgba16" Width="32" Height="32" Offset="0x49C8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_12Tex_0051C8" OutName="MIZUsin_room_12Tex_0051C8" Format="rgba16" Width="32" Height="32" Offset="0x51C8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_12Tex_006628" OutName="MIZUsin_room_12Tex_006628" Format="ia16" Width="32" Height="32" Offset="0x6628" AddedByScript="true"/>
         <Room Name="MIZUsin_room_12" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_13" Segment="3">
+        <Texture Name="MIZUsin_room_13Tex_0001F8" OutName="MIZUsin_room_13Tex_0001F8" Format="rgba16" Width="32" Height="32" Offset="0x1F8" AddedByScript="true"/>
         <Room Name="MIZUsin_room_13" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_14" Segment="3">
+        <Texture Name="MIZUsin_room_14Tex_003680" OutName="MIZUsin_room_14Tex_003680" Format="i4" Width="64" Height="64" Offset="0x3680" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_14Tex_003E80" OutName="MIZUsin_room_14Tex_003E80" Format="rgba16" Width="32" Height="32" Offset="0x3E80" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_14Tex_004680" OutName="MIZUsin_room_14Tex_004680" Format="rgba16" Width="32" Height="32" Offset="0x4680" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_14Tex_004E80" OutName="MIZUsin_room_14Tex_004E80" Format="rgba16" Width="32" Height="32" Offset="0x4E80" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_14Tex_005680" OutName="MIZUsin_room_14Tex_005680" Format="rgba16" Width="32" Height="32" Offset="0x5680" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_14Tex_005E80" OutName="MIZUsin_room_14Tex_005E80" Format="rgba16" Width="32" Height="32" Offset="0x5E80" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_14Tex_006680" OutName="MIZUsin_room_14Tex_006680" Format="rgba16" Width="32" Height="32" Offset="0x6680" AddedByScript="true"/>
         <Room Name="MIZUsin_room_14" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_15" Segment="3">
+        <Texture Name="MIZUsin_room_15Tex_002C68" OutName="MIZUsin_room_15Tex_002C68" Format="i4" Width="64" Height="64" Offset="0x2C68" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_15Tex_003468" OutName="MIZUsin_room_15Tex_003468" Format="rgba16" Width="32" Height="32" Offset="0x3468" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_15Tex_003C68" OutName="MIZUsin_room_15Tex_003C68" Format="rgba16" Width="32" Height="32" Offset="0x3C68" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_15Tex_004468" OutName="MIZUsin_room_15Tex_004468" Format="rgba16" Width="32" Height="32" Offset="0x4468" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_15Tex_004C68" OutName="MIZUsin_room_15Tex_004C68" Format="rgba16" Width="32" Height="32" Offset="0x4C68" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_15Tex_005468" OutName="MIZUsin_room_15Tex_005468" Format="rgba16" Width="32" Height="32" Offset="0x5468" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_15Tex_005C68" OutName="MIZUsin_room_15Tex_005C68" Format="rgba16" Width="32" Height="32" Offset="0x5C68" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_15Tex_006468" OutName="MIZUsin_room_15Tex_006468" Format="rgba16" Width="32" Height="32" Offset="0x6468" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_15Tex_006C68" OutName="MIZUsin_room_15Tex_006C68" Format="rgba16" Width="32" Height="32" Offset="0x6C68" AddedByScript="true"/>
         <Room Name="MIZUsin_room_15" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_16" Segment="3">
+        <Texture Name="MIZUsin_room_16Tex_001330" OutName="MIZUsin_room_16Tex_001330" Format="rgba16" Width="32" Height="32" Offset="0x1330" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_16Tex_001B30" OutName="MIZUsin_room_16Tex_001B30" Format="rgba16" Width="32" Height="32" Offset="0x1B30" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_16Tex_002330" OutName="MIZUsin_room_16Tex_002330" Format="rgba16" Width="32" Height="32" Offset="0x2330" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_16Tex_002B30" OutName="MIZUsin_room_16Tex_002B30" Format="rgba16" Width="32" Height="32" Offset="0x2B30" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_16Tex_003330" OutName="MIZUsin_room_16Tex_003330" Format="rgba16" Width="32" Height="32" Offset="0x3330" AddedByScript="true"/>
         <Room Name="MIZUsin_room_16" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_17" Segment="3">
+        <Texture Name="MIZUsin_room_17Tex_005AA8" OutName="MIZUsin_room_17Tex_005AA8" Format="rgba16" Width="32" Height="32" Offset="0x5AA8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_17Tex_0062A8" OutName="MIZUsin_room_17Tex_0062A8" Format="i4" Width="64" Height="64" Offset="0x62A8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_17Tex_006AA8" OutName="MIZUsin_room_17Tex_006AA8" Format="rgba16" Width="32" Height="32" Offset="0x6AA8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_17Tex_0072A8" OutName="MIZUsin_room_17Tex_0072A8" Format="rgba16" Width="32" Height="32" Offset="0x72A8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_17Tex_007AA8" OutName="MIZUsin_room_17Tex_007AA8" Format="rgba16" Width="32" Height="32" Offset="0x7AA8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_17Tex_0082A8" OutName="MIZUsin_room_17Tex_0082A8" Format="rgba16" Width="32" Height="32" Offset="0x82A8" AddedByScript="true"/>
         <Room Name="MIZUsin_room_17" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_18" Segment="3">
+        <Texture Name="MIZUsin_room_18Tex_0018F8" OutName="MIZUsin_room_18Tex_0018F8" Format="rgba16" Width="32" Height="32" Offset="0x18F8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_18Tex_0020F8" OutName="MIZUsin_room_18Tex_0020F8" Format="rgba16" Width="32" Height="32" Offset="0x20F8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_18Tex_0028F8" OutName="MIZUsin_room_18Tex_0028F8" Format="rgba16" Width="32" Height="32" Offset="0x28F8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_18Tex_0030F8" OutName="MIZUsin_room_18Tex_0030F8" Format="rgba16" Width="32" Height="32" Offset="0x30F8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_18Tex_0038F8" OutName="MIZUsin_room_18Tex_0038F8" Format="rgba16" Width="32" Height="32" Offset="0x38F8" AddedByScript="true"/>
         <Room Name="MIZUsin_room_18" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_19" Segment="3">
+        <Texture Name="MIZUsin_room_19Tex_001130" OutName="MIZUsin_room_19Tex_001130" Format="rgba16" Width="32" Height="32" Offset="0x1130" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_19Tex_001930" OutName="MIZUsin_room_19Tex_001930" Format="rgba16" Width="32" Height="32" Offset="0x1930" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_19Tex_002130" OutName="MIZUsin_room_19Tex_002130" Format="rgba16" Width="32" Height="32" Offset="0x2130" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_19Tex_002930" OutName="MIZUsin_room_19Tex_002930" Format="rgba16" Width="32" Height="32" Offset="0x2930" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_19Tex_003130" OutName="MIZUsin_room_19Tex_003130" Format="rgba16" Width="32" Height="32" Offset="0x3130" AddedByScript="true"/>
         <Room Name="MIZUsin_room_19" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_20" Segment="3">
+        <Texture Name="MIZUsin_room_20Tex_003040" OutName="MIZUsin_room_20Tex_003040" Format="rgba16" Width="32" Height="32" Offset="0x3040" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_20Tex_003840" OutName="MIZUsin_room_20Tex_003840" Format="i4" Width="64" Height="64" Offset="0x3840" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_20Tex_004040" OutName="MIZUsin_room_20Tex_004040" Format="rgba16" Width="32" Height="32" Offset="0x4040" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_20Tex_004840" OutName="MIZUsin_room_20Tex_004840" Format="rgba16" Width="32" Height="32" Offset="0x4840" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_20Tex_005040" OutName="MIZUsin_room_20Tex_005040" Format="rgba16" Width="32" Height="32" Offset="0x5040" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_20Tex_005840" OutName="MIZUsin_room_20Tex_005840" Format="rgba16" Width="32" Height="32" Offset="0x5840" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_20Tex_006040" OutName="MIZUsin_room_20Tex_006040" Format="rgba16" Width="32" Height="32" Offset="0x6040" AddedByScript="true"/>
         <Room Name="MIZUsin_room_20" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_21" Segment="3">
+        <Texture Name="MIZUsin_room_21Tex_004360" OutName="MIZUsin_room_21Tex_004360" Format="rgba16" Width="32" Height="32" Offset="0x4360" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_21Tex_004B60" OutName="MIZUsin_room_21Tex_004B60" Format="rgba16" Width="32" Height="32" Offset="0x4B60" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_21Tex_005360" OutName="MIZUsin_room_21Tex_005360" Format="rgba16" Width="32" Height="32" Offset="0x5360" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_21Tex_005B60" OutName="MIZUsin_room_21Tex_005B60" Format="rgba16" Width="32" Height="32" Offset="0x5B60" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_21Tex_006CA0" OutName="MIZUsin_room_21Tex_006CA0" Format="ia16" Width="32" Height="32" Offset="0x6CA0" AddedByScript="true"/>
         <Room Name="MIZUsin_room_21" Offset="0x0"/>
     </File>
     <File Name="MIZUsin_room_22" Segment="3">
+        <Texture Name="MIZUsin_room_22Tex_0044E8" OutName="MIZUsin_room_22Tex_0044E8" Format="rgba16" Width="32" Height="16" Offset="0x44E8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_22Tex_0048E8" OutName="MIZUsin_room_22Tex_0048E8" Format="rgba16" Width="32" Height="32" Offset="0x48E8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_22Tex_0050E8" OutName="MIZUsin_room_22Tex_0050E8" Format="rgba16" Width="32" Height="32" Offset="0x50E8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_22Tex_0058E8" OutName="MIZUsin_room_22Tex_0058E8" Format="rgba16" Width="32" Height="32" Offset="0x58E8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_22Tex_0060E8" OutName="MIZUsin_room_22Tex_0060E8" Format="rgba16" Width="32" Height="32" Offset="0x60E8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_22Tex_0068E8" OutName="MIZUsin_room_22Tex_0068E8" Format="rgba16" Width="32" Height="32" Offset="0x68E8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_22Tex_0070E8" OutName="MIZUsin_room_22Tex_0070E8" Format="rgba16" Width="32" Height="32" Offset="0x70E8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_22Tex_0078E8" OutName="MIZUsin_room_22Tex_0078E8" Format="rgba16" Width="32" Height="32" Offset="0x78E8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_22Tex_0080E8" OutName="MIZUsin_room_22Tex_0080E8" Format="rgba16" Width="32" Height="32" Offset="0x80E8" AddedByScript="true"/>
+        <Texture Name="MIZUsin_room_22Tex_0088E8" OutName="MIZUsin_room_22Tex_0088E8" Format="rgba16" Width="32" Height="32" Offset="0x88E8" AddedByScript="true"/>
         <Room Name="MIZUsin_room_22" Offset="0x0"/>
     </File>
 </Root>

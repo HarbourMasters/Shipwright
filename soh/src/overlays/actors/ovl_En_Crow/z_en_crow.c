@@ -1,5 +1,6 @@
 #include "z_en_crow.h"
 #include "objects/object_crow/object_crow.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_ARROW_DRAGGABLE)
 
@@ -191,7 +192,7 @@ void EnCrow_SetupDamaged(EnCrow* this, PlayState* play) {
 void EnCrow_SetupDie(EnCrow* this) {
     this->actor.colorFilterTimer = 0;
     this->actionFunc = EnCrow_Die;
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GUAY]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnCrow_SetupTurnAway(EnCrow* this) {

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GELDB_H
+#define OBJECTS_OBJECT_GELDB_H 1
 
 #include "align_asset_macro.h"
 
@@ -157,3 +158,5 @@ static const ALIGN_ASSET(2) char object_geldbTex_0064E8[] = dobject_geldbTex_006
 
 #define dobject_geldbTex_006568 "__OTR__objects/object_geldb/object_geldbTex_006568"
 static const ALIGN_ASSET(2) char object_geldbTex_006568[] = dobject_geldbTex_006568;
+
+#endif // OBJECTS_OBJECT_GELDB_H

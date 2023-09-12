@@ -6,6 +6,7 @@
 
 #include "z_en_torch2.h"
 #include "objects/object_torch2/object_torch2.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
@@ -556,7 +557,7 @@ void EnTorch2_Update(Actor* thisx, PlayState* play2) {
         case ENTORCH2_DEATH:
             if (sAlpha - 13 <= 0) {
                 sAlpha = 0;
-                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DARK_LINK]++;
+                GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
                 Actor_Kill(&this->actor);
                 return;
             }

@@ -5,7 +5,6 @@
 #include "item_list.hpp"
 #include "item_pool.hpp"
 #include "item_location.hpp"
-#include "debug.hpp"
 #include "spoiler_log.hpp"
 #include "hints.hpp"
 #include "location_access.hpp"

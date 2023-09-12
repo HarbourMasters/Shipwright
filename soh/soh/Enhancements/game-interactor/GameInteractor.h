@@ -157,6 +157,8 @@ public:
     DEFINE_HOOK(OnOcarinaSongAction, void());
     DEFINE_HOOK(OnActorInit, void(void* actor));
     DEFINE_HOOK(OnActorUpdate, void(void* actor));
+    DEFINE_HOOK(OnActorKill, void(void* actor));
+    DEFINE_HOOK(OnEnemyDefeat, void(void* actor));
     DEFINE_HOOK(OnPlayerBonk, void());
     DEFINE_HOOK(OnPlayDestroy, void());
     DEFINE_HOOK(OnPlayDrawEnd, void());
@@ -179,6 +181,7 @@ public:
     DEFINE_HOOK(OnUpdateFileEraseConfirmationSelection, void(uint16_t optionIndex));
     DEFINE_HOOK(OnUpdateFileAudioSelection, void(uint8_t optionIndex));
     DEFINE_HOOK(OnUpdateFileTargetSelection, void(uint8_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileLanguageSelection, void(uint8_t optionIndex));
     DEFINE_HOOK(OnUpdateFileQuestSelection, void(uint8_t questIndex));
     DEFINE_HOOK(OnUpdateFileBossRushOptionSelection, void(uint8_t optionIndex, uint8_t optionValue));
     DEFINE_HOOK(OnUpdateFileNameSelection, void(int16_t charCode));

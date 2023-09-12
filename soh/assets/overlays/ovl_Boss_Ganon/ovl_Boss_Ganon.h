@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OVERLAYS_OVL_BOSS_GANON_H
+#define OVERLAYS_OVL_BOSS_GANON_H 1
 
 #include "align_asset_macro.h"
 
@@ -184,3 +185,5 @@ static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_020370[] = dovl_Boss_GanonTex
 
 #define dovl_Boss_GanonTex_020770 "__OTR__overlays/ovl_Boss_Ganon/ovl_Boss_GanonTex_020770"
 static const ALIGN_ASSET(2) char ovl_Boss_GanonTex_020770[] = dovl_Boss_GanonTex_020770;
+
+#endif // OVERLAYS_OVL_BOSS_GANON_H

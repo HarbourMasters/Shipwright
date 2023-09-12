@@ -2,7 +2,6 @@
 
 #include "keys.hpp"
 #include "location_access.hpp"
-#include "debug.hpp"
 
 #include <string>
 #include <list>
@@ -85,13 +84,13 @@ public:
     }
 
     void printAgeTimeAccess() {
-      CitraPrint("Name: ");
-      CitraPrint(name);
+      //CitraPrint("Name: ");
+      //CitraPrint(name);
       auto message = "Child Day:   " + std::to_string(CheckConditionAtAgeTime(Logic::IsChild, Logic::AtDay))   + "\t"
                      "Child Night: " + std::to_string(CheckConditionAtAgeTime(Logic::IsChild, Logic::AtNight)) + "\t"
                      "Adult Day:   " + std::to_string(CheckConditionAtAgeTime(Logic::IsAdult, Logic::AtDay))   + "\t"
                      "Adult Night: " + std::to_string(CheckConditionAtAgeTime(Logic::IsAdult, Logic::AtNight));
-      CitraPrint(message);
+      //CitraPrint(message);
     }
 
     bool ConditionsMet(bool allAgeTimes = false) const {

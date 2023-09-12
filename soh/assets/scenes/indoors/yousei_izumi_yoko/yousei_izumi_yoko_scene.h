@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INDOORS_YOUSEI_IZUMI_YOKO_SCENE_H
+#define INDOORS_YOUSEI_IZUMI_YOKO_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -58,3 +59,6 @@ static const ALIGN_ASSET(2) char yousei_izumi_yoko_sceneTex_0055A0[] = dyousei_i
 #define dyousei_izumi_yoko_sceneCollisionHeader_0039A8 "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneCollisionHeader_0039A8"
 
 #define dyousei_izumi_yoko_sceneCollisionHeader_0039A8 "__OTR__scenes/nonmq/yousei_izumi_yoko_scene/yousei_izumi_yoko_sceneCollisionHeader_0039A8"
+
+
+#endif // INDOORS_YOUSEI_IZUMI_YOKO_SCENE_H

@@ -4,7 +4,7 @@
         <Texture Name="gMoriElevatorTopTex" OutName="elevator_top" Format="rgba16" Height="32" Width="32" Offset="0x800"/>
         <Texture Name="gMoriElevatorSideTex" OutName="elevator_side" Format="rgba16" Height="16" Width="16" Offset="0x1000"/>
 
-        <Texture Name="gMorieStoneWallTex" OutName="stone_wall" Format="rgba16" Height="32" Width="32" Offset="0x1200"/>
+        <Texture Name="gMoriStoneWallTex" OutName="stone_wall" Format="rgba16" Height="32" Width="32" Offset="0x1200"/>
         <Texture Name="gMoriKaitenkabeMetalWallTex" OutName="metal_wall" Format="rgba16" Height="32" Width="32" Offset="0x1A00"/>
         <Texture Name="gMoriRakkatenjoCheckerboardTex" OutName="checkerboard" Format="rgba16" Height="32" Width="64" Offset="0x2200"/>
 

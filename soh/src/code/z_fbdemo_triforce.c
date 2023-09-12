@@ -83,14 +83,14 @@ void TransitionTriforce_Draw(void* thisx, Gfx** gfxP) {
     guRotate(&modelView[1], rotation, 0.0f, 0.0f, 1.0f);
     guTranslate(&modelView[2], 0.0f, 0.0f, 0.0f);
     gDPPipeSync(gfx++);
-    gSPDisplayList(gfx++, sTriforceWipeDL);
+    gSPDisplayList(gfx++, sTransTriforceDL);
     gDPSetColor(gfx++, G_SETPRIMCOLOR, this->color.rgba);
     gDPSetCombineMode(gfx++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
     gSPMatrix(gfx++, &this->projection, G_MTX_LOAD | G_MTX_PROJECTION);
     gSPMatrix(gfx++, &modelView[0], G_MTX_LOAD);
     gSPMatrix(gfx++, &modelView[1], G_MTX_NOPUSH | G_MTX_MODELVIEW | G_MTX_MUL);
     gSPMatrix(gfx++, &modelView[2], G_MTX_NOPUSH | G_MTX_MODELVIEW | G_MTX_MUL);
-    gSPVertex(gfx++, sTriforceWipeVtx, 10, 0);
+    gSPVertex(gfx++, sTransTriforceVtx, 10, 0);
     if (!TransitionTriforce_IsDone(this)) {
         switch (this->fadeDirection) {
             case 1:

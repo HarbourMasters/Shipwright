@@ -1,5 +1,21 @@
 <Root>
     <File Name="object_geldb" Segment="6">
+        <Texture Name="object_geldbTex_002700" OutName="object_geldbTex_002700" Format="ci8" Width="8" Height="8" Offset="0x2700" TlutOffset="0x2500" AddedByScript="true"/>
+        <Texture Name="object_geldbTex_002740" OutName="object_geldbTex_002740" Format="ci8" Width="8" Height="8" Offset="0x2740" TlutOffset="0x2500" AddedByScript="true"/>
+        <Texture Name="object_geldbTex_002780" OutName="object_geldbTex_002780" Format="ci8" Width="16" Height="16" Offset="0x2780" TlutOffset="0x2500" AddedByScript="true"/>
+        <Texture Name="object_geldbTex_002880" OutName="object_geldbTex_002880" Format="i8" Width="16" Height="16" Offset="0x2880" AddedByScript="true"/>
+        <Texture Name="object_geldbTex_002980" OutName="object_geldbTex_002980" Format="ci8" Width="16" Height="16" Offset="0x2980" TlutOffset="0x2500" AddedByScript="true"/>
+        <Texture Name="object_geldbTex_002A80" OutName="object_geldbTex_002A80" Format="i8" Width="16" Height="16" Offset="0x2A80" AddedByScript="true"/>
+        <Texture Name="object_geldbTex_002B80" OutName="object_geldbTex_002B80" Format="i8" Width="8" Height="16" Offset="0x2B80" AddedByScript="true"/>
+        <Texture Name="object_geldbTex_005F68" OutName="object_geldbTex_005F68" Format="ci8" Width="8" Height="16" Offset="0x5F68" TlutOffset="0x5D30" AddedByScript="true"/>
+        <Texture Name="object_geldbTex_0063E8" OutName="object_geldbTex_0063E8" Format="i8" Width="16" Height="16" Offset="0x63E8" AddedByScript="true"/>
+        <Texture Name="object_geldbTex_0064E8" OutName="object_geldbTex_0064E8" Format="ci8" Width="8" Height="16" Offset="0x64E8" TlutOffset="0x5D30" AddedByScript="true"/>
+        <Texture Name="object_geldbTex_006568" OutName="object_geldbTex_006568" Format="ci8" Width="8" Height="8" Offset="0x6568" TlutOffset="0x5D30" AddedByScript="true"/>
+        <Texture Name="object_geldbTex_0069A8" OutName="object_geldbTex_0069A8" Format="i8" Width="8" Height="16" Offset="0x69A8" AddedByScript="true"/>
+        <Texture Name="object_geldbTex_006A28" OutName="object_geldbTex_006A28" Format="ci8" Width="16" Height="16" Offset="0x6A28" TlutOffset="0x5D30" AddedByScript="true"/>
+        <Texture Name="object_geldbTex_006B28" OutName="object_geldbTex_006B28" Format="ci8" Width="16" Height="16" Offset="0x6B28" TlutOffset="0x5D30" AddedByScript="true"/>
+        <Texture Name="object_geldbTex_006C28" OutName="object_geldbTex_006C28" Format="ci8" Width="16" Height="16" Offset="0x6C28" TlutOffset="0x5D30" AddedByScript="true"/>
+        <Texture Name="object_geldbTLUT_002500" OutName="object_geldbTLUT_002500" Format="rgba16" Width="16" Height="16" Offset="0x2500" AddedByScript="true"/>
         <!-- Red-clothed Gerudo skeleton -->
         <Skeleton Name="gGerudoRedSkel" Type="Flex" LimbType="Standard" Offset="0xA458"/>
 

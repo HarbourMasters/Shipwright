@@ -1,5 +1,11 @@
 <Root>
     <File Name="object_hintnuts" Segment="6">
+        <Texture Name="object_hintnutsTex_0015A8" OutName="object_hintnutsTex_0015A8" Format="rgba16" Width="32" Height="32" Offset="0x15A8" AddedByScript="true"/>
+        <Texture Name="object_hintnutsTex_001DA8" OutName="object_hintnutsTex_001DA8" Format="rgba16" Width="16" Height="16" Offset="0x1DA8" AddedByScript="true"/>
+        <Texture Name="object_hintnutsTex_001FA8" OutName="object_hintnutsTex_001FA8" Format="rgba16" Width="8" Height="8" Offset="0x1FA8" AddedByScript="true"/>
+        <Texture Name="object_hintnutsTex_002028" OutName="object_hintnutsTex_002028" Format="rgba16" Width="8" Height="8" Offset="0x2028" AddedByScript="true"/>
+        <Texture Name="object_hintnutsTex_0020A8" OutName="object_hintnutsTex_0020A8" Format="rgba16" Width="8" Height="8" Offset="0x20A8" AddedByScript="true"/>
+        <Texture Name="object_hintnutsTex_002128" OutName="object_hintnutsTex_002128" Format="rgba16" Width="16" Height="16" Offset="0x2128" AddedByScript="true"/>
         <!-- Deku scrub skeleton -->
         <Skeleton Name="gHintNutsSkel" Type="Normal" LimbType="Standard" Offset="0x23B8"/>
         
