@@ -574,7 +574,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                     }
                     if (CHECK_BTN_ANY(input->press.button, buttonsToCheck)) {
                         if (CHECK_SLOT_AGE(cursorSlot) &&
-                            (cursorItemModId == 0 && (cursorItem != ITEM_SOLD_OUT) && (cursorItem != ITEM_NONE))) {
+                            (cursorItemModId != 0 || ((cursorItem != ITEM_SOLD_OUT) && (cursorItem != ITEM_NONE)))) {
                             KaleidoScope_SetupItemEquip(play, cursorItem, cursorItemModId, cursorSlot,
                                                         pauseCtx->itemVtx[index].v.ob[0] * 10,
                                                         pauseCtx->itemVtx[index].v.ob[1] * 10);

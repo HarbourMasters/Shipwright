@@ -351,6 +351,7 @@ void func_80853080(Player* this, PlayState* play);
 s32 Player_InflictDamage(PlayState* play, s32 damage);
 s32 Player_InflictDamageModified(PlayState* play, s32 damage, u8 modified);
 void func_80853148(PlayState* play, Actor* actor);
+void func_80838940(Player* this, LinkAnimationHeader* anim, f32 arg2, PlayState* play, u16 sfxId);
 
 // .bss part 1
 static s32 D_80858AA0;
@@ -2051,8 +2052,28 @@ s32 func_80833CDC(PlayState* play, s32 index) {
     }
 }
 
-void ExecuteItemAction(s32 modId, s32 itemId) {
+void ExecuteModdedItemAction(PlayState* play, Player* this, s32 modId, s32 itemId) {
+    //for testing purposes
+    if (modId == 2 && itemId == 0) {
+        this->linearVelocity = 5.0f;
+        this->actor.velocity.y = 8.0f;
+        this->actor.world.rot.y = this->currentYaw = this->actor.shape.rot.y;
 
+        func_80838940(this, D_80853D4C[2][0], !(2 & 1) ? 5.8f : 3.5f, play, /* NA_SE_VO_LI_SWORD_N*/ 0);
+
+        Vec3f effectsPos = this->actor.home.pos;
+        effectsPos.y += 3;
+        f32 effectsScale = 1;
+        if (!gSaveContext.linkAge) {
+            effectsScale = 1.5f;
+        }
+        EffectSsGRipple_Spawn(play, &effectsPos, 200 * effectsScale, 300 * effectsScale, 1);
+        EffectSsGSplash_Spawn(play, &effectsPos, NULL, NULL, 0, 150 * effectsScale);
+
+        this->stateFlags2 &= ~(PLAYER_STATE2_HOPPING);
+
+        func_8002F7DC(&this->actor, NA_SE_PL_SKIP);
+    }
 }
 
 void func_80833DF8(Player* this, PlayState* play) {
@@ -2133,7 +2154,7 @@ void func_80833DF8(Player* this, PlayState* play) {
             func_80835F44(play, this, item);
         } else if (gSaveContext.equips.buttonModIds[i] != 0) {
             this->heldItemButton = i;
-            ExecuteItemAction(gSaveContext.equips.buttonModIds[i], gSaveContext.equips.buttonItems[i]);
+            ExecuteModdedItemAction(play, this, gSaveContext.equips.buttonModIds[i], gSaveContext.equips.buttonItems[i]);
         }
     }
 }
