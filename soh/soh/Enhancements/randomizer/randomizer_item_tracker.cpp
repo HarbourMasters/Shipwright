@@ -292,7 +292,7 @@ bool HasQuestItem(ItemTrackerItem item) {
     return (item.data & gSaveContext.inventory.questItems) != 0;
 }
 
-bool HasEqItem(ItemTrackerItem item) {
+bool HasEquipment(ItemTrackerItem item) {
     return (item.data & gSaveContext.inventory.equipment) != 0;
 }
 
@@ -496,7 +496,7 @@ void DrawItemCount(ItemTrackerItem item) {
 }
 
 void DrawEquip(ItemTrackerItem item) {
-    bool hasEquip = HasEqItem(item);
+    bool hasEquip = HasEquipment(item);
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasEquip && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));

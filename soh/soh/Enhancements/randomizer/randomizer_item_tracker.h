@@ -17,7 +17,7 @@ typedef struct ItemTrackerItem {
 
 bool HasSong(ItemTrackerItem);
 bool HasQuestItem(ItemTrackerItem);
-bool HasEqItem(ItemTrackerItem);
+bool HasEquipment(ItemTrackerItem);
 
 #define ITEM_TRACKER_ITEM(id, data, drawFunc)     \
     {                                             \
