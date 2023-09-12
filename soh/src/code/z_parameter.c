@@ -1260,7 +1260,7 @@ void func_80083108(PlayState* play) {
 
                 if (interfaceCtx->restrictions.all != 0) {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
-                        if (gSaveContext.equips.buttonModIds[i] == 0 && ((gSaveContext.equips.buttonItems[i] != ITEM_OCARINA_FAIRY) &&
+                        if (gSaveContext.equips.buttonModIds[i] != 0 || ((gSaveContext.equips.buttonItems[i] != ITEM_OCARINA_FAIRY) &&
                             (gSaveContext.equips.buttonItems[i] != ITEM_OCARINA_TIME) &&
                             !((gSaveContext.equips.buttonItems[i] >= ITEM_BOTTLE) &&
                               (gSaveContext.equips.buttonItems[i] <= ITEM_POE)) &&
@@ -1286,7 +1286,7 @@ void func_80083108(PlayState* play) {
                     }
                 } else if (interfaceCtx->restrictions.all == 0) {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
-                        if (gSaveContext.equips.buttonModIds[i] == 0 && ((gSaveContext.equips.buttonItems[i] != ITEM_DINS_FIRE) &&
+                        if (gSaveContext.equips.buttonModIds[i] != 0 || ((gSaveContext.equips.buttonItems[i] != ITEM_DINS_FIRE) &&
                             (gSaveContext.equips.buttonItems[i] != ITEM_HOOKSHOT) &&
                             (gSaveContext.equips.buttonItems[i] != ITEM_LONGSHOT) &&
                             (gSaveContext.equips.buttonItems[i] != ITEM_FARORES_WIND) &&
