@@ -17,9 +17,9 @@
         - IntegerScale.NeverExceedBounds                - Prevents manual resizing from exceeding screen bounds.
 
     The following CVars are also implemented in LUS for niche use cases:
-        - IgnoreAspectCorrection
-            - This is something of a power-user setting for niche setups that most people won't need or care about,
-              but may be useful if playing the Switch/Wii U ports on a 4:3 television.
+        - IgnoreAspectCorrection                        - Stretch framebuffer to fill screen.
+            This is something of a power-user setting for niche setups that most people won't need or care about,
+            but may be useful if playing the Switch/Wii U ports on a 4:3 television.
         - IntegerScale.ExceedBoundsBy                   - Offset the max screen bounds, usually by +1.
                                                           This isn't that useful at the moment.
 */
@@ -65,7 +65,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                                                                       // overridden depending on viewport res
 
         short integerScale_maximumBounds = 1; // can change when window is resized
-        // This is mostly used for cosmetic purposes, as Fit Automatically functionality is now handled in LUS instead.
+        // This is mostly just for UX purposes, as Fit Automatically logic is part of LUS.
         if (((float)gfx_current_game_window_viewport.width / gfx_current_game_window_viewport.height) >
             ((float)gfx_current_dimensions.width / gfx_current_dimensions.height)) {
             // Scale to window height
@@ -74,13 +74,11 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             // Scale to window width
             integerScale_maximumBounds = gfx_current_game_window_viewport.width / gfx_current_dimensions.width;
         }
-        // if (integerScale_maximumBounds < 1)
-        //     integerScale_maximumBounds = 1; // it should never be less than 1x.
-        // It can actually now be less than one, as there's a clamp on the LUS end.
+        // Lower-clamping this value to 1 is no-longer necessary as that's accounted for in LUS.
+        // Letting it go below 1 here will even allow for checking if screen bounds are being exceeded.
         if (default_maxIntegerScaleFactor < integerScale_maximumBounds) {
             max_integerScaleFactor =
                 integerScale_maximumBounds + CVarGetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0);
-            // the +1 allows people do things like cropped 5x scaling at 1080p
         }
 
         // Stored Values
@@ -262,7 +260,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                                         !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0) ||
                                             CVarGetInteger("gAdvancedResolution.IntegerScale.FitAutomatically", 0));
         UIWidgets::Tooltip("Integer scales the image. Only available in pixel-perfect mode.");
-        // Display warning if size is being clamped or framebuffer is larger than viewport.
+        // Display warning if size is being clamped or if framebuffer is larger than viewport.
         if (CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0) &&
             (CVarGetInteger("gAdvancedResolution.IntegerScale.NeverExceedBounds", 1) &&
              CVarGetInteger("gAdvancedResolution.IntegerScale.Factor", 1) > integerScale_maximumBounds)) {
@@ -311,7 +309,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 UIWidgets::Spacer(2);
             }
 #endif
-            // Clicking this checkbox on or off will trigger several tasks.
+
             if (ImGui::Checkbox("Show a horizontal resolution field.", p_showHorizontalResField) &&
                 (aspectRatioX > 0.0f)) {
                 if (!showHorizontalResField) { // when turning this setting off

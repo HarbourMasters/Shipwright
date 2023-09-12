@@ -267,7 +267,6 @@ void DrawSettingsMenu() {
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0.22f, 0.38f, 0.56f, 1.0f));
             UIWidgets::Spacer(0);
             if (mAdvancedResolutionSettingsWindow) {
-                // Tina TODO Change name of gAdvancedResolutionEditorEnabled CVar too.
                 if (ImGui::Button(GetWindowButtonText("Advanced Resolution", CVarGetInteger("gAdvancedResolutionEditorEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                     mAdvancedResolutionSettingsWindow->ToggleVisibility();
                 }
