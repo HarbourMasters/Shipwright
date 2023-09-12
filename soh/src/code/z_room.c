@@ -405,7 +405,8 @@ BgImage* func_80096A74(PolygonType1* polygon1, PlayState* play) {
     camId = camera->camDataIdx;
     if (camId == -1 && (CVarGetInteger("gNoRestrictItems", 0) || CVarGetInteger("gCrowdControl", 0))) {
         // This prevents a crash when using items that change the
-        // camera (such as din's fire) on scenes with prerendered backgrounds
+        // camera (such as din's fire), voiding out or dying on 
+        // scenes with prerendered backgrounds.
         return NULL;
     }
 
