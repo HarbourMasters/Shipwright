@@ -25,7 +25,7 @@
 */
 
 namespace AdvancedResolutionSettings {
-enum setting { UPDATE_aspectRatioX, UPDATE_aspectRatioY, UPDATE_verticalPixelCount, UPDATE_integerScaleFactor };
+enum setting { UPDATE_aspectRatioX, UPDATE_aspectRatioY, UPDATE_verticalPixelCount };
 
 const char* aspectRatioPresetLabels[] = {
     "Off", "Custom", "Original (4:3)", "Widescreen (16:9)", "Nintendo 3DS (5:3)", "16:10 (8:5)", "Ultrawide (21:9)"
@@ -74,31 +74,23 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             // Scale to window width
             integerScale_maximumBounds = gfx_current_game_window_viewport.width / gfx_current_dimensions.width;
         }
-        // Lower-clamping this value to 1 is no-longer necessary as that's accounted for in LUS.
+        // Lower-clamping maximum bounds value to 1 is no-longer necessary as that's accounted for in LUS.
         // Letting it go below 1 here will even allow for checking if screen bounds are being exceeded.
         if (default_maxIntegerScaleFactor < integerScale_maximumBounds) {
             max_integerScaleFactor =
                 integerScale_maximumBounds + CVarGetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0);
         }
 
-        // Stored Values
+        // Stored Values for non-UIWidgets elements
         static float aspectRatioX = CVarGetFloat("gAdvancedResolution.AspectRatioX", 16.0f);
         static float aspectRatioY = CVarGetFloat("gAdvancedResolution.AspectRatioY", 9.0f);
         static int verticalPixelCount = CVarGetInteger("gAdvancedResolution.VerticalPixelCount", 480);
-        static int integerScaleFactor = CVarGetInteger("gAdvancedResolution.IntegerScaleFactor", 1);
         // Combo List defaults
         static int item_aspectRatio = default_aspectRatio;
         static int item_pixelCount = default_pixelCount;
-        // Pointers
-        float* p_aspectRatioX = &aspectRatioX;
-        float* p_aspectRatioY = &aspectRatioY;
-        int* p_verticalPixelCount = &verticalPixelCount;
-        int* p_integerScaleFactor = &integerScaleFactor;
         // Additional settings
         static bool showHorizontalResField = false;
         static int horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
-        bool* p_showHorizontalResField = &showHorizontalResField;
-        int* p_horizontalPixelCount = &horizontalPixelCount;
 
 #ifdef __APPLE__
         ImGui::Text("Note: these settings may behave incorrectly on Apple Retina Displays.");
@@ -164,8 +156,8 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
             }
         }
-        if (ImGui::InputFloat("X", p_aspectRatioX, 0.1f, 1.0f, "%.3f") ||
-            ImGui::InputFloat("Y", p_aspectRatioY, 0.1f, 1.0f, "%.3f")) {
+        if (ImGui::InputFloat("X", &aspectRatioX, 0.1f, 1.0f, "%.3f") ||
+            ImGui::InputFloat("Y", &aspectRatioY, 0.1f, 1.0f, "%.3f")) {
             item_aspectRatio = default_aspectRatio;
             update[UPDATE_aspectRatioX] = true;
             update[UPDATE_aspectRatioY] = true;
@@ -200,7 +192,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             // Only show the field if Aspect Ratio is being enforced.
             if ((aspectRatioX > 0.0f) && (aspectRatioY > 0.0f)) {
                 // So basically we're "faking" this one by setting aspectRatioX instead.
-                if (ImGui::InputInt("Horiz. Pixel Count", p_horizontalPixelCount, 8, 320)) {
+                if (ImGui::InputInt("Horiz. Pixel Count", &horizontalPixelCount, 8, 320)) {
                     if (horizontalPixelCount < (minVerticalPixelCount / 3.0f) * 4.0f) {
                         horizontalPixelCount = (minVerticalPixelCount / 3.0f) * 4.0f;
                     }
@@ -227,7 +219,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             }
         }
         // Vertical Resolution part 2
-        if (ImGui::InputInt("Vertical Pixel Count", p_verticalPixelCount, 8, 240)) {
+        if (ImGui::InputInt("Vertical Pixel Count", &verticalPixelCount, 8, 240)) {
             item_pixelCount = default_pixelCount;
             update[UPDATE_verticalPixelCount] = true;
 
@@ -310,7 +302,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             }
 #endif
 
-            if (ImGui::Checkbox("Show a horizontal resolution field.", p_showHorizontalResField) &&
+            if (ImGui::Checkbox("Show a horizontal resolution field.", &showHorizontalResField) &&
                 (aspectRatioX > 0.0f)) {
                 if (!showHorizontalResField) { // when turning this setting off
                     // Refresh relevant values
