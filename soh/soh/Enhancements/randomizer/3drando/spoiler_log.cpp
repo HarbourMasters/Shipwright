@@ -743,13 +743,14 @@ static void WriteHints(int language) {
 
     jsonData["ganonText"] = ganonText;
     jsonData["ganonHintText"] = ganonHintText;
-    jsonData["ganonHintLoc"] = GetGanonHintLoc();
+    jsonData["lightArrowHintLoc"] = GetlightArrowHintLoc();
     jsonData["dampeText"] = dampesText;
     jsonData["dampeHintLoc"] = GetDampeHintLoc();
     jsonData["gregText"] = gregText;
+    jsonData["gregLoc"] = GetItemLocation(GREG_RUPEE)->GetName();
     jsonData["sheikText"] = sheikText;
     jsonData["sariaText"] = sariaText;
-    jsonData["gregLoc"] = GetItemLocation(GREG_RUPEE)->GetName();
+    jsonData["sariaHintLoc"] = GetSariaHintLoc();
 
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;

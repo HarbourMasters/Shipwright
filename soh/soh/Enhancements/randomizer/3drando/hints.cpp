@@ -143,7 +143,8 @@ Text warpRequiemText;
 Text warpNocturneText;
 Text warpPreludeText;
 
-std::string ganonHintLoc;
+std::string lightArrowHintLoc;
+std::string sariaHintLoc;
 std::string dampeHintLoc;
 
 Text& GetChildAltarText() {
@@ -202,12 +203,16 @@ Text& GetWarpPreludeText() {
   return warpPreludeText;
 }
 
-std::string GetGanonHintLoc() {
-    return ganonHintLoc;
+std::string GetlightArrowHintLoc() {
+    return lightArrowHintLoc;
 }
 
 std::string GetDampeHintLoc() {
     return dampeHintLoc;
+}
+
+std::string GetSariaHintLoc() {
+  return sariaHintLoc;
 }
 
 Area* GetHintRegion(const uint32_t area) {
@@ -593,10 +598,10 @@ void CreateGanonText() {
   auto hint = Hint(LIGHT_ARROW_LOCATION_HINT);
   if (lightArrowLocation.empty()) {
     ganonHintText = hint.GetText()+Hint(YOUR_POCKET).GetText();
-    ganonHintLoc = "Link's Pocket";
+    lightArrowHintLoc = "Link's Pocket";
   } else {
     ganonHintText = hint.GetText()+GetHintRegion(Location(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
-    ganonHintLoc = Location(lightArrowLocation[0])->GetName();
+    lightArrowHintLoc = Location(lightArrowLocation[0])->GetName();
   }
   ganonHintText = ganonHintText + "!";
 
@@ -845,8 +850,9 @@ void CreateGregRupeeHint() {
 
 void CreateSheikText() {
   //Get the location of the light arrows
-  auto lightArrowLocation = FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == LIGHT_ARROWS;})[0];
-  Text area = GetHintRegion(Location(lightArrowLocation)->GetParentRegionKey())->GetHint().GetText();
+  auto lightArrowLocation = FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == LIGHT_ARROWS;});
+  lightArrowHintLoc = Location(lightArrowLocation[0])->GetName();
+  Text area = GetHintRegion(Location(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
   Text temp1 = Text{
     "I overheard Ganondorf say that he misplaced the %rLight Arrows%w in&%g",
     "J'ai entendu dire que Ganondorf aurait caché les %rFlèches de Lumière%w dans %g",
@@ -858,8 +864,9 @@ void CreateSheikText() {
 
 void CreateSariaText() {
   //Get the location of the light arrows
-  auto magicLocation = FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == PROGRESSIVE_MAGIC_METER;})[0];
-  Text area = GetHintRegion(Location(magicLocation)->GetParentRegionKey())->GetHint().GetText();
+  auto magicLocation = FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == PROGRESSIVE_MAGIC_METER;});
+  sariaHintLoc = Location(magicLocation[0])->GetName();
+  Text area = GetHintRegion(Location(magicLocation[0])->GetParentRegionKey())->GetHint().GetText();
   Text temp1 = Text{
     "Did you feel the %gsurge of magic%w recently? A mysterious bird told me it came from %g",
     "As-tu récemment ressenti une vague de %gpuissance magique%w? Un mystérieux hibou m'a dit  qu'elle provenait du %g",
@@ -867,8 +874,8 @@ void CreateSariaText() {
   };
   Text temp2 = Text{
     "%w.^You should check that place out, @!$C", 
-    "%w. Tu devrais aller y jeter un coup d'oeil, @!", 
-    "%w."
+    "%w. Tu devrais aller y jeter un coup d'oeil, @!$C", 
+    "%w.$C"
   };
   sariaText = temp1 + area + temp2;
 }

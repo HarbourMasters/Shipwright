@@ -228,4 +228,5 @@ Text& GetWarpNocturneText();
 Text& GetWarpPreludeText();
 
 std::string GetDampeHintLoc();
-std::string GetGanonHintLoc();
+std::string GetlightArrowHintLoc();
+std::string GetSariaHintLoc();

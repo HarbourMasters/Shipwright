@@ -315,7 +315,8 @@ typedef struct {
     /*        */ char warpRequiemText[100];
     /*        */ char warpNocturneText[100];
     /*        */ char warpPreludeText[100];
-    /*        */ RandomizerCheck ganonHintCheck;
+    /*        */ RandomizerCheck lightArrowHintCheck;
+    /*        */ RandomizerCheck sariaCheck;
     /*        */ RandomizerCheck gregCheck;
     /*        */ RandomizerCheck dampeCheck;
     /*        */ u8 seedIcons[5];
