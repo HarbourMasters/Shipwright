@@ -1212,7 +1212,11 @@ void func_8009AFE0(PlayState* play) {
 
     { s32 pad[2]; }
 
-    gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sThievesHideoutEntranceTextures[gSaveContext.nightFlag]));
+    if (ResourceMgr_IsGameMasterQuest()) {
+        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sThievesHideoutEntranceTextures_MQ[gSaveContext.nightFlag]));
+    } else {
+        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sThievesHideoutEntranceTextures[gSaveContext.nightFlag]));
+    }
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

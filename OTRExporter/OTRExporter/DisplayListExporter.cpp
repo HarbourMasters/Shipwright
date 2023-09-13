@@ -890,6 +890,8 @@ std::string OTRExporter_DisplayList::GetPrefix(ZResource* res)
 			} else {
 				prefix += "/nonmq";
 			}
+		} else {
+			prefix += "/shared";
 		}
 	}
 	else if (StringHelper::Contains(xmlPath, "objects/"))

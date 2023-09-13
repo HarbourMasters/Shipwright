@@ -336,6 +336,8 @@ std::string ZResource::GetSourceOutputHeader([[maybe_unused]] const std::string&
 			prefix = "scenes";
 			if (StringHelper::Contains(xmlPath, "dungeons/")) {
 				prefix += "/nonmq";
+			} else {
+				prefix += "/shared";
 			}
 		}
 		else if (StringHelper::Contains(xmlPath, "objects/"))
