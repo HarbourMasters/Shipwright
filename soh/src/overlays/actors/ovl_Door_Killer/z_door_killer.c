@@ -10,6 +10,7 @@
 #include "objects/object_mizu_objects/object_mizu_objects.h"
 #include "objects/object_haka_door/object_haka_door.h"
 #include "objects/object_door_killer/object_door_killer.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -270,7 +271,7 @@ void DoorKiller_Die(DoorKiller* this, PlayState* play) {
         Flags_SetSwitch(play, switchFlag);
     }
     Actor_Kill(&this->actor);
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DOOR_TRAP]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 /**

@@ -2,6 +2,7 @@
 #include "objects/object_peehat/object_peehat.h"
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_PLAY_HIT_SFX)
 
@@ -594,7 +595,7 @@ void EnPeehat_Larva_StateSeekPlayer(EnPeehat* this, PlayState* play) {
             }
             Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x20);
             Actor_Kill(&this->actor);
-            gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PEAHAT_LARVA]++;
+            GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
         }
     }
 }
@@ -764,7 +765,7 @@ void EnPeehat_StateAttackRecoil(EnPeehat* this, PlayState* play) {
                                      1);
             }
             Actor_Kill(&this->actor);
-            gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PEAHAT_LARVA]++;
+            GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
         } else {
             EnPeehat_Ground_SetStateSeekPlayer(this);
             // Is PEAHAT_TYPE_GROUNDED
@@ -881,7 +882,7 @@ void EnPeehat_StateExplode(EnPeehat* this, PlayState* play) {
         Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x40);
         Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x40);
         Actor_Kill(&this->actor);
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PEAHAT]++;
+        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
     }
 }
 

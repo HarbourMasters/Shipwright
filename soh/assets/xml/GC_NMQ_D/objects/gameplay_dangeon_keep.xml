@@ -1,10 +1,33 @@
 <Root>
     <File Name="gameplay_dangeon_keep" Segment="5">
+        <Texture Name="gameplay_dangeon_keepTex_000000" OutName="gameplay_dangeon_keepTex_000000" Format="i8" Width="16" Height="32" Offset="0x0" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_000200" OutName="gameplay_dangeon_keepTex_000200" Format="i8" Width="16" Height="32" Offset="0x200" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_0005C0" OutName="gameplay_dangeon_keepTex_0005C0" Format="rgba16" Width="16" Height="16" Offset="0x5C0" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_001280" OutName="gameplay_dangeon_keepTex_001280" Format="rgba16" Width="32" Height="32" Offset="0x1280" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_0078A0" OutName="gameplay_dangeon_keepTex_0078A0" Format="i8" Width="32" Height="32" Offset="0x78A0" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_007CA0" OutName="gameplay_dangeon_keepTex_007CA0" Format="i8" Width="32" Height="32" Offset="0x7CA0" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_0080A0" OutName="gameplay_dangeon_keepTex_0080A0" Format="rgba16" Width="32" Height="32" Offset="0x80A0" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_0088A0" OutName="gameplay_dangeon_keepTex_0088A0" Format="rgba16" Width="32" Height="32" Offset="0x88A0" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_00D8A0" OutName="gameplay_dangeon_keepTex_00D8A0" Format="rgba16" Width="32" Height="32" Offset="0xD8A0" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_00E0A0" OutName="gameplay_dangeon_keepTex_00E0A0" Format="rgba16" Width="32" Height="32" Offset="0xE0A0" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_00F8A0" OutName="gameplay_dangeon_keepTex_00F8A0" Format="rgba16" Width="64" Height="32" Offset="0xF8A0" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_0108A0" OutName="gameplay_dangeon_keepTex_0108A0" Format="rgba16" Width="32" Height="64" Offset="0x108A0" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_0118A0" OutName="gameplay_dangeon_keepTex_0118A0" Format="rgba16" Width="16" Height="16" Offset="0x118A0" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_011AA0" OutName="gameplay_dangeon_keepTex_011AA0" Format="rgba16" Width="16" Height="16" Offset="0x11AA0" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_011CA0" OutName="gameplay_dangeon_keepTex_011CA0" Format="rgba16" Width="32" Height="64" Offset="0x11CA0" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_012CA0" OutName="gameplay_dangeon_keepTex_012CA0" Format="rgba16" Width="64" Height="16" Offset="0x12CA0" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_0134A0" OutName="gameplay_dangeon_keepTex_0134A0" Format="rgba16" Width="32" Height="32" Offset="0x134A0" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_013CA0" OutName="gameplay_dangeon_keepTex_013CA0" Format="ia8" Width="4" Height="4" Offset="0x13CA0" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_013CB0" OutName="gameplay_dangeon_keepTex_013CB0" Format="i4" Width="64" Height="64" Offset="0x13CB0" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_0154B0" OutName="gameplay_dangeon_keepTex_0154B0" Format="rgba16" Width="32" Height="32" Offset="0x154B0" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_015CB0" OutName="gameplay_dangeon_keepTex_015CB0" Format="rgba16" Width="32" Height="32" Offset="0x15CB0" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_0164B0" OutName="gameplay_dangeon_keepTex_0164B0" Format="rgba16" Width="32" Height="32" Offset="0x164B0" AddedByScript="true"/>
+        <Texture Name="gameplay_dangeon_keepTex_016CB0" OutName="gameplay_dangeon_keepTex_016CB0" Format="rgba16" Width="32" Height="32" Offset="0x16CB0" AddedByScript="true"/>
         <DList Name="gUnusedCandleDL" Offset="0x440"/>
         <DList Name="gBrownFragmentDL" Offset="0x530"/>
         <Texture Name="gUnusedStoneTex" OutName="unused_stone" Format="rgba16" Width="32" Height="32" Offset="0x7C0"/>
         <DList Name="gDoorLockDL" Offset="0x1100"/>
-        <DList Name="gDoorChainsDL" Offset="0x11F0"/>
+        <DList Name="gDoorChainDL" Offset="0x11F0"/>
         <Texture Name="gUnusedGoldLockTex" OutName="unused_gold_lock" Format="rgba16" Width="32" Height="32" Offset="0x1A80"/>
         <Texture Name="gDoorChainTex" OutName="door_chain" Format="rgba16" Width="16" Height="128" Offset="0x2280"/>
         <DList Name="gUnusedBombBagDL" Offset="0x32C0"/>

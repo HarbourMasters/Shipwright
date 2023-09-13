@@ -27,6 +27,13 @@ ZTexture::ZTexture(ZFile* nParent) : ZResource(nParent)
 	RegisterOptionalAttribute("ExternalTlut");
 	RegisterOptionalAttribute("ExternalTlutOffset");
 	RegisterOptionalAttribute("SplitTlut");
+
+	// Dummy property added by https://github.com/HarbourMasters/Shipwright/pull/3161
+	// Used to indicate if a resource definition was added through a script
+	// and to enable easy removal/re-add of the definitions when introducing new rom support
+	// Can be removed once we feel it is no longer useful
+	// This is not used in ZAPD itself, the registration is to prevent missing attribute errors
+	RegisterOptionalAttribute("AddedByScript");
 }
 
 void ZTexture::ExtractFromBinary(uint32_t nRawDataIndex, int32_t nWidth, int32_t nHeight,

@@ -1,32 +1,32 @@
 <Root>
     <File Name="object_rs" Segment="6">
-        <Animation Name="object_rs_Anim_00065C" Offset="0x65C"/>
-        <DList Name="object_rs_DL_001FA0" Offset="0x1FA0"/>
-        <DList Name="object_rs_DL_0021F8" Offset="0x21F8"/>
-        <DList Name="object_rs_DL_0025F8" Offset="0x25F8"/>
-        <DList Name="object_rs_DL_002730" Offset="0x2730"/>
-        <DList Name="object_rs_DL_002860" Offset="0x2860"/>
-        <DList Name="object_rs_DL_002A70" Offset="0x2A70"/>
-        <DList Name="object_rs_DL_002BA8" Offset="0x2BA8"/>
-        <DList Name="object_rs_DL_002CD8" Offset="0x2CD8"/>
-        <Texture Name="object_rs_TLUT_002EE8" OutName="tlut_00002EE8" Format="rgba16" Width="16" Height="16" Offset="0x2EE8"/>
-        <Texture Name="object_rs_Tex_0030E8" OutName="tex_000030E8" Format="ci8" Width="8" Height="8" Offset="0x30E8" TlutOffset="0x2EE8"/>
-        <Texture Name="object_rs_Tex_003128" OutName="tex_00003128" Format="ci8" Width="8" Height="8" Offset="0x3128" TlutOffset="0x2EE8"/>
-        <Texture Name="object_rs_Tex_003168" OutName="tex_00003168" Format="ci8" Width="32" Height="64" Offset="0x3168" TlutOffset="0x2EE8"/>
+        <Animation Name="gBombchuShopkeeperIdleAnim" Offset="0x65C"/>
+        <DList Name="gBombchuShopkeeperTorsoDL" Offset="0x1FA0"/>
+        <DList Name="gBombchuShopkeeperHeadDL" Offset="0x21F8"/>
+        <DList Name="gBombchuShopkeeperRightUpperArmDL" Offset="0x25F8"/>
+        <DList Name="gBombchuShopkeeperRightForearmDL" Offset="0x2730"/>
+        <DList Name="gBombchuShopkeeperRightHandDL" Offset="0x2860"/>
+        <DList Name="gBombchuShopkeeperLeftUpperArmDL" Offset="0x2A70"/>
+        <DList Name="gBombchuShopkeeperLeftForearmDL" Offset="0x2BA8"/>
+        <DList Name="gBombchuShopkeeperLeftHandDL" Offset="0x2CD8"/>
+        <Texture Name="gBombchuShopkeeperTLUT" OutName="tlut_00002EE8" Format="rgba16" Width="16" Height="16" Offset="0x2EE8"/>
+        <Texture Name="gBombchuShopkeeperSkinTex" OutName="tex_000030E8" Format="ci8" Width="8" Height="8" Offset="0x30E8" TlutOffset="0x2EE8"/>
+        <Texture Name="gBombchuShopkeeperEarTex" OutName="tex_00003128" Format="ci8" Width="8" Height="8" Offset="0x3128" TlutOffset="0x2EE8"/>
+        <Texture Name="gBombchuShopkeeperTattooTex" OutName="tex_00003168" Format="ci8" Width="32" Height="64" Offset="0x3168" TlutOffset="0x2EE8"/>
         <Texture Name="gBombchuShopkeeperEyeOpenTex" OutName="eye_open" Format="ci8" Width="32" Height="32" Offset="0x3968" TlutOffset="0x2EE8"/>
         <Texture Name="gBombchuShopkeeperEyeHalfTex" OutName="eye_half" Format="ci8" Width="32" Height="32" Offset="0x3D68" TlutOffset="0x2EE8"/>
         <Texture Name="gBombchuShopkeeperEyeClosedTex" OutName="eye_closed" Format="ci8" Width="32" Height="32" Offset="0x4168" TlutOffset="0x2EE8"/>
-        <Texture Name="object_rs_Tex_004568" OutName="tex_00004568" Format="ci8" Width="16" Height="16" Offset="0x4568" TlutOffset="0x2EE8"/>
-        <Texture Name="object_rs_Tex_004668" OutName="tex_00004668" Format="i8" Width="8" Height="16" Offset="0x4668"/>
-        <Texture Name="object_rs_Tex_0046E8" OutName="tex_000046E8" Format="ci8" Width="8" Height="32" Offset="0x46E8" TlutOffset="0x2EE8"/>
-        <Limb Name="object_rs_Limb_0047E8" LimbType="Standard" Offset="0x47E8"/>
-        <Limb Name="object_rs_Limb_0047F4" LimbType="Standard" Offset="0x47F4"/>
-        <Limb Name="object_rs_Limb_004800" LimbType="Standard" Offset="0x4800"/>
-        <Limb Name="object_rs_Limb_00480C" LimbType="Standard" Offset="0x480C"/>
-        <Limb Name="object_rs_Limb_004818" LimbType="Standard" Offset="0x4818"/>
-        <Limb Name="object_rs_Limb_004824" LimbType="Standard" Offset="0x4824"/>
-        <Limb Name="object_rs_Limb_004830" LimbType="Standard" Offset="0x4830"/>
-        <Limb Name="object_rs_Limb_00483C" LimbType="Standard" Offset="0x483C"/>
-        <Skeleton Name="object_rs_Skel_004868" Type="Flex" LimbType="Standard" Offset="0x4868"/>
+        <Texture Name="gBombchuShopkeeperFingersTex" OutName="tex_00004568" Format="ci8" Width="16" Height="16" Offset="0x4568" TlutOffset="0x2EE8"/>
+        <Texture Name="gBombchuShopkeeperVestTex" OutName="tex_00004668" Format="i8" Width="8" Height="16" Offset="0x4668"/>
+        <Texture Name="gBombchuShopkeeperTorsoTex" OutName="tex_000046E8" Format="ci8" Width="8" Height="32" Offset="0x46E8" TlutOffset="0x2EE8"/>
+        <Limb Name="gBombchuShopkeeperTorsoLimb" LimbType="Standard" Offset="0x47E8"/>
+        <Limb Name="gBombchuShopkeeperLeftUpperArmLimb" LimbType="Standard" Offset="0x47F4"/>
+        <Limb Name="gBombchuShopkeeperLeftForearmLimb" LimbType="Standard" Offset="0x4800"/>
+        <Limb Name="gBombchuShopkeeperLeftHandLimb" LimbType="Standard" Offset="0x480C"/>
+        <Limb Name="gBombchuShopkeeperRightUpperArmLimb" LimbType="Standard" Offset="0x4818"/>
+        <Limb Name="gBombchuShopkeeperRightForearmLimb" LimbType="Standard" Offset="0x4824"/>
+        <Limb Name="gBombchuShopkeeperRightHandLimb" LimbType="Standard" Offset="0x4830"/>
+        <Limb Name="gBombchuShopkeeperHeadLimb" LimbType="Standard" Offset="0x483C"/>
+        <Skeleton Name="gBombchuShopkeeperSkel" Type="Flex" LimbType="Standard" Offset="0x4868"/>
     </File>
 </Root>

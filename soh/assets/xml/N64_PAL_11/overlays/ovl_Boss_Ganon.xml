@@ -1,5 +1,21 @@
 <Root>
     <File Name="ovl_Boss_Ganon" BaseAddress="0x809F2C80" RangeStart="0xE388" RangeEnd="0x211D8">
+        <Texture Name="ovl_Boss_GanonTex_00E748" OutName="ovl_Boss_GanonTex_00E748" Format="i8" Width="64" Height="64" Offset="0xE418" AddedByScript="true"/>
+        <Texture Name="ovl_Boss_GanonTex_00F848" OutName="ovl_Boss_GanonTex_00F848" Format="ci8" Width="32" Height="32" Offset="0xF518" TluOffset="0xF4D8" AddedByScript="true"/>
+        <Texture Name="ovl_Boss_GanonTex_010538" OutName="ovl_Boss_GanonTex_010538" Format="i8" Width="64" Height="64" Offset="0x10208" AddedByScript="true"/>
+        <Texture Name="ovl_Boss_GanonTex_01A7B0" OutName="ovl_Boss_GanonTex_01A7B0" Format="ia16" Width="32" Height="32" Offset="0x1A480" AddedByScript="true"/>
+        <Texture Name="ovl_Boss_GanonTex_01AFB0" OutName="ovl_Boss_GanonTex_01AFB0" Format="i4" Width="64" Height="64" Offset="0x1AC80" AddedByScript="true"/>
+        <Texture Name="ovl_Boss_GanonTex_01B7B0" OutName="ovl_Boss_GanonTex_01B7B0" Format="i4" Width="64" Height="64" Offset="0x1B480" AddedByScript="true"/>
+        <Texture Name="ovl_Boss_GanonTex_01C420" OutName="ovl_Boss_GanonTex_01C420" Format="i8" Width="64" Height="32" Offset="0x1C0F0" AddedByScript="true"/>
+        <Texture Name="ovl_Boss_GanonTex_01CEB8" OutName="ovl_Boss_GanonTex_01CEB8" Format="i8" Width="32" Height="64" Offset="0x1CB88" AddedByScript="true"/>
+        <Texture Name="ovl_Boss_GanonTex_01D6B8" OutName="ovl_Boss_GanonTex_01D6B8" Format="i8" Width="32" Height="32" Offset="0x1D388" AddedByScript="true"/>
+        <Texture Name="ovl_Boss_GanonTex_01DE88" OutName="ovl_Boss_GanonTex_01DE88" Format="i8" Width="32" Height="64" Offset="0x1DB58" AddedByScript="true"/>
+        <Texture Name="ovl_Boss_GanonTex_01E688" OutName="ovl_Boss_GanonTex_01E688" Format="i8" Width="32" Height="64" Offset="0x1E358" AddedByScript="true"/>
+        <Texture Name="ovl_Boss_GanonTex_01EF90" OutName="ovl_Boss_GanonTex_01EF90" Format="i8" Width="96" Height="16" Offset="0x1EC60" AddedByScript="true"/>
+        <Texture Name="ovl_Boss_GanonTex_01FFF8" OutName="ovl_Boss_GanonTex_01FFF8" Format="i4" Width="32" Height="32" Offset="0x1FCC8" AddedByScript="true"/>
+        <Texture Name="ovl_Boss_GanonTex_020370" OutName="ovl_Boss_GanonTex_020370" Format="i8" Width="32" Height="32" Offset="0x20040" AddedByScript="true"/>
+        <Texture Name="ovl_Boss_GanonTex_020770" OutName="ovl_Boss_GanonTex_020770" Format="i8" Width="32" Height="64" Offset="0x20440" AddedByScript="true"/>
+        <Texture Name="ovl_Boss_GanonTLUT_00F808" OutName="ovl_Boss_GanonTLUT_00F808" Format="rgba16" Width="16" Height="16" Offset="0xF4D8" AddedByScript="true"/>
         <Texture Name="gGanondorfLightning1Tex" OutName="lightning_1" Format="i8" Width="32" Height="96" Offset="0x112D0" Static="Off"/>
         <Texture Name="gGanondorfLightning2Tex" OutName="lightning_2" Format="i8" Width="32" Height="96" Offset="0x11ED0" Static="Off"/>
         <Texture Name="gGanondorfLightning3Tex" OutName="lightning_3" Format="i8" Width="32" Height="96" Offset="0x12AD0" Static="Off"/>

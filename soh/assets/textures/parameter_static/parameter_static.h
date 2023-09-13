@@ -72,20 +72,20 @@ static const ALIGN_ASSET(2) char gArcheryScoreIconTex[] = dgArcheryScoreIconTex;
 #define dgMapBossIconTex "__OTR__textures/parameter_static/gMapBossIconTex"
 static const ALIGN_ASSET(2) char gMapBossIconTex[] = dgMapBossIconTex;
 
-#define dgOcarinaATex "__OTR__textures/parameter_static/gOcarinaATex"
-static const ALIGN_ASSET(2) char gOcarinaATex[] = dgOcarinaATex;
+#define dgOcarinaBtnIconATex "__OTR__textures/parameter_static/gOcarinaBtnIconATex"
+static const ALIGN_ASSET(2) char gOcarinaBtnIconATex[] = dgOcarinaBtnIconATex;
 
-#define dgOcarinaCDownTex "__OTR__textures/parameter_static/gOcarinaCDownTex"
-static const ALIGN_ASSET(2) char gOcarinaCDownTex[] = dgOcarinaCDownTex;
+#define dgOcarinaBtnIconCDownTex "__OTR__textures/parameter_static/gOcarinaBtnIconCDownTex"
+static const ALIGN_ASSET(2) char gOcarinaBtnIconCDownTex[] = dgOcarinaBtnIconCDownTex;
 
-#define dgOcarinaCRightTex "__OTR__textures/parameter_static/gOcarinaCRightTex"
-static const ALIGN_ASSET(2) char gOcarinaCRightTex[] = dgOcarinaCRightTex;
+#define dgOcarinaBtnIconCRightTex "__OTR__textures/parameter_static/gOcarinaBtnIconCRightTex"
+static const ALIGN_ASSET(2) char gOcarinaBtnIconCRightTex[] = dgOcarinaBtnIconCRightTex;
 
-#define dgOcarinaCLeftTex "__OTR__textures/parameter_static/gOcarinaCLeftTex"
-static const ALIGN_ASSET(2) char gOcarinaCLeftTex[] = dgOcarinaCLeftTex;
+#define dgOcarinaBtnIconCLeftTex "__OTR__textures/parameter_static/gOcarinaBtnIconCLeftTex"
+static const ALIGN_ASSET(2) char gOcarinaBtnIconCLeftTex[] = dgOcarinaBtnIconCLeftTex;
 
-#define dgOcarinaCUpTex "__OTR__textures/parameter_static/gOcarinaCUpTex"
-static const ALIGN_ASSET(2) char gOcarinaCUpTex[] = dgOcarinaCUpTex;
+#define dgOcarinaBtnIconCUpTex "__OTR__textures/parameter_static/gOcarinaBtnIconCUpTex"
+static const ALIGN_ASSET(2) char gOcarinaBtnIconCUpTex[] = dgOcarinaBtnIconCUpTex;
 
 #define dgOcarinaTrebleClefTex "__OTR__textures/parameter_static/gOcarinaTrebleClefTex"
 static const ALIGN_ASSET(2) char gOcarinaTrebleClefTex[] = dgOcarinaTrebleClefTex;
