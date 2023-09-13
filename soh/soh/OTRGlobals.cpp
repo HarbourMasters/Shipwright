@@ -2113,8 +2113,11 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetGoronMessage(choice);
         } else if (Randomizer_GetSettingValue(RSK_FROGS_HINT) && textId == TEXT_FROGS_UNDERWATER) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscMessage(gPlayState->sceneNum, textId);
-        } else if (Randomizer_GetSettingValue(RSK_SARIA_HINT) && textId == TEXT_SARIAS_SONG_FOREST_SOUNDS) {
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscMessage(gPlayState->sceneNum, textId);
+        } else if (Randomizer_GetSettingValue(RSK_SARIA_HINT)) {
+            if ((gPlayState->sceneNum == SCENE_SACRED_FOREST_MEADOW && textId == TEXT_SARIA_SFM) || textId == TEXT_SARIAS_SONG_FOREST_SOUNDS ||
+                textId == TEXT_SARIAS_SONG_FOREST_TEMPLE) {
+                messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscMessage(gPlayState->sceneNum, textId);
+            }
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
