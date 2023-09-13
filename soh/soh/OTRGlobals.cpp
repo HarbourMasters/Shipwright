@@ -220,16 +220,6 @@ OTRGlobals::OTRGlobals() {
     if (std::filesystem::exists(sohOtrPath)) {
         OTRFiles.push_back(sohOtrPath);
     }
-    std::string patchesPath = LUS::Context::LocateFileAcrossAppDirs("mods", appShortName);
-    if (patchesPath.length() > 0 && std::filesystem::exists(patchesPath)) {
-        if (std::filesystem::is_directory(patchesPath)) {
-            for (const auto& p : std::filesystem::recursive_directory_iterator(patchesPath)) {
-                if (StringHelper::IEquals(p.path().extension().string(), ".otr")) {
-                    OTRFiles.push_back(p.path().generic_string());
-                }
-            }
-        }
-    }
     std::unordered_set<uint32_t> ValidHashes = { 
         OOT_PAL_MQ,
         OOT_NTSC_JP_MQ,
@@ -247,8 +237,38 @@ OTRGlobals::OTRGlobals() {
         OOT_PAL_GC_DBG1,
         OOT_PAL_GC_DBG2
     };
+    context = LUS::Context::CreateUninitializedInstance("Ship of Harkinian", appShortName, "shipofharkinian.json");
+    context->InitLogging();
+    context->InitConfiguration();
+    context->InitConsoleVariables();
+
+    std::string patchesPath = LUS::Context::LocateFileAcrossAppDirs("mods", appShortName);
+    if (patchesPath.length() > 0 &&
+        std::filesystem::exists(patchesPath) &&
+        std::filesystem::is_directory(patchesPath)) {
+        if (!strnlen(CVarGetString("gModLoadOrder", ""), 1)) {
+            // If we don't have a mod load order in the config just load them up
+            for (const auto& p : std::filesystem::recursive_directory_iterator(patchesPath)) {
+                if (StringHelper::IEquals(p.path().extension().string(), ".otr")) {
+                    OTRFiles.push_back(p.path().generic_string());
+                }
+            }
+        } else { 
+            // if we have a mod load order in the config try to use it
+            
+            // todo: this efficently when we build out cvar array support
+            std::stringstream otrListStringStream(CVarGetString("gModLoadOrder", ""));
+            std::string otrString;
+            while (getline(otrListStringStream, otrString, ',')) {
+                if (std::filesystem::exists(otrString)) {
+                    OTRFiles.push_back(otrString);
+                }
+            }
+        }
+    }
+
     // tell LUS to reserve 3 SoH specific threads (Game, Audio, Save)
-    context = LUS::Context::CreateInstance("Ship of Harkinian", appShortName, "shipofharkinian.json", OTRFiles, {}, 3);
+    context->Init(OTRFiles, {}, 3);
 
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_Animation, "Animation", std::make_shared<LUS::AnimationFactory>());
     context->GetResourceManager()->GetResourceLoader()->RegisterResourceFactory(LUS::ResourceType::SOH_PlayerAnimation, "PlayerAnimation", std::make_shared<LUS::PlayerAnimationFactory>());

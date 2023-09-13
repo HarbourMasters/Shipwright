@@ -119,6 +119,7 @@ namespace SohGui {
     std::shared_ptr<SaveEditorWindow> mSaveEditorWindow;
     std::shared_ptr<DLViewerWindow> mDLViewerWindow;
     std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
+    std::shared_ptr<ModLoadOrderWindow> mModLoadOrderWindow;
     std::shared_ptr<CheckTracker::CheckTrackerSettingsWindow> mCheckTrackerSettingsWindow;
     std::shared_ptr<CheckTracker::CheckTrackerWindow> mCheckTrackerWindow;
     std::shared_ptr<EntranceTrackerWindow> mEntranceTrackerWindow;
@@ -171,6 +172,8 @@ namespace SohGui {
         gui->AddGuiWindow(mDLViewerWindow);
         mGameplayStatsWindow = std::make_shared<GameplayStatsWindow>("gGameplayStatsEnabled", "Gameplay Stats");
         gui->AddGuiWindow(mGameplayStatsWindow);
+        mModLoadOrderWindow = std::make_shared<ModLoadOrderWindow>("gModLoadOrderWindowOpen", "Mod .otr Load Order");
+        gui->AddGuiWindow(mModLoadOrderWindow);
         mCheckTrackerWindow = std::make_shared<CheckTracker::CheckTrackerWindow>("gCheckTrackerEnabled", "Check Tracker");
         gui->AddGuiWindow(mCheckTrackerWindow);
         mCheckTrackerSettingsWindow = std::make_shared<CheckTracker::CheckTrackerSettingsWindow>("gCheckTrackerSettingsEnabled", "Check Tracker Settings");

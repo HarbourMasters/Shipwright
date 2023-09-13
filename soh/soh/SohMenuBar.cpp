@@ -23,6 +23,7 @@
 #include "Enhancements/debugger/debugSaveEditor.h"
 #include "Enhancements/debugger/dlViewer.h"
 #include "Enhancements/gameplaystatswindow.h"
+#include "Enhancements/otrloadorder.h"
 #include "Enhancements/randomizer/randomizer_check_tracker.h"
 #include "Enhancements/randomizer/randomizer_entrance_tracker.h"
 #include "Enhancements/randomizer/randomizer_item_tracker.h"
@@ -470,6 +471,7 @@ void DrawSettingsMenu() {
 extern std::shared_ptr<AudioEditor> mAudioEditorWindow;
 extern std::shared_ptr<CosmeticsEditorWindow> mCosmeticsEditorWindow;
 extern std::shared_ptr<GameplayStatsWindow> mGameplayStatsWindow;
+extern std::shared_ptr<ModLoadOrderWindow> mModLoadOrderWindow;
 
 void DrawEnhancementsMenu() {
     if (ImGui::BeginMenu("Enhancements"))
@@ -1169,6 +1171,12 @@ void DrawEnhancementsMenu() {
         if (mGameplayStatsWindow) {
             if (ImGui::Button(GetWindowButtonText("Gameplay Stats", CVarGetInteger("gGameplayStatsEnabled", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
                 mGameplayStatsWindow->ToggleVisibility();
+            }
+        }
+
+        if (mModLoadOrderWindow) {
+            if (ImGui::Button(GetWindowButtonText("Mod .otr Load Order", CVarGetInteger("gModLoadOrderWindowOpen", 0)).c_str(), ImVec2(-1.0f, 0.0f))) {
+                mModLoadOrderWindow->ToggleVisibility();
             }
         }
         ImGui::PopStyleVar(3);
