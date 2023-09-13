@@ -12,7 +12,6 @@
 
 struct HintDistributionSetting {
   HintType type;
-  uint8_t order;
   size_t weight;
   uint8_t fixed;
   uint8_t copies;
@@ -197,7 +196,6 @@ using ConditionalAlwaysHint = std::pair<RandomizerCheck, std::function<bool()>>;
 
 //10 dungeons as GTG and GC are excluded
 extern std::array<DungeonInfo, 10> dungeonInfoData;
-
 extern std::array<ConditionalAlwaysHint, 10> conditionalAlwaysHints;
 
 extern RandomizerHintTextKey GetHintRegionHintKey(const RandomizerRegion area);

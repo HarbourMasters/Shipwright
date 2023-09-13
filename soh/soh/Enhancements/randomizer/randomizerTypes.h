@@ -32,19 +32,17 @@ typedef enum {
 
 typedef enum {
     HINT_TYPE_TRIAL,
-    HINT_TYPE_ALWAYS,
     HINT_TYPE_WOTH, // Way of the Hero
     HINT_TYPE_BARREN,
     HINT_TYPE_ENTRANCE,
+    HINT_TYPE_ALWAYS,
     HINT_TYPE_SOMETIMES,
-    HINT_TYPE_RANDOM,
-    HINT_TYPE_ITEM,
     HINT_TYPE_SONG,
     HINT_TYPE_OVERWORLD,
     HINT_TYPE_DUNGEON,
-    HINT_TYPE_JUNK,
     HINT_TYPE_NAMED_ITEM,
-    HINT_TYPE_STATIC, // For special hints, like Light Arrows or Hookshot Hints
+    HINT_TYPE_RANDOM,
+    HINT_TYPE_JUNK,
     HINT_TYPE_MAX
 } HintType;
 
