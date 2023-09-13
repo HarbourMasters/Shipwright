@@ -229,9 +229,9 @@ void RegisterOcarinaTimeTravel() {
             gPlayState->msgCtx.lastPlayedSong == OCARINA_SONG_TIME && !nearbyTimeBlockEmpty && !nearbyTimeBlock &&
             !nearbyOcarinaSpot && !nearbyFrogs) {
 
-            if (IS_RANDO(gSaveContext)) {
+            if (IS_RANDO) {
                 CVarSetInteger("gSwitchTimeline", 1);
-            } else if (!IS_RANDO(gSaveContext) && !nearbyDoorOfTime) {
+            } else if (!IS_RANDO && !nearbyDoorOfTime) {
                 // This check is made for when Link is learning the Song Of Time in a vanilla save file that load a
                 // Temple of Time scene where the only object present is the Door of Time
                 CVarSetInteger("gSwitchTimeline", 1);
@@ -467,7 +467,7 @@ void RegisterHyperBosses() {
 
         uint8_t hyperBossesActive =
             CVarGetInteger("gHyperBosses", 0) ||
-            (IS_BOSS_RUSH(gSaveContext) &&
+            (IS_BOSS_RUSH &&
              gSaveContext.bossRushOptions[BR_OPTIONS_HYPERBOSSES] == BR_CHOICE_HYPERBOSSES_YES);
 
         // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
@@ -579,7 +579,7 @@ void UpdateMirrorModeState(int32_t sceneNum) {
                         (sceneNum == SCENE_GANON_BOSS);
 
     if (mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) {
-        uint32_t seed = sceneNum + (IS_RANDO(gSaveContext) ? (gSaveContext.seedIcons[0] + gSaveContext.seedIcons[1] +
+        uint32_t seed = sceneNum + (IS_RANDO ? (gSaveContext.seedIcons[0] + gSaveContext.seedIcons[1] +
                         gSaveContext.seedIcons[2] + gSaveContext.seedIcons[3] + gSaveContext.seedIcons[4]) : gSaveContext.sohStats.fileCreatedAt);
         Random_Init(seed);
     }

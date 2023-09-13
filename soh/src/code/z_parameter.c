@@ -884,7 +884,7 @@ void func_80083108(PlayState* play) {
                 }
             }
         // Don't hide the HUD in the Chamber of Sages when in Boss Rush.
-        } else if (play->sceneNum == SCENE_CHAMBER_OF_THE_SAGES && !IS_BOSS_RUSH(gSaveContext)) {
+        } else if (play->sceneNum == SCENE_CHAMBER_OF_THE_SAGES && !IS_BOSS_RUSH) {
             Interface_ChangeAlpha(1);
         } else if (play->sceneNum == SCENE_FISHING_POND) {
             gSaveContext.unk_13E7 = 2;
@@ -1413,7 +1413,7 @@ void Inventory_SwapAgeEquipment(void) {
 
         // When becoming adult, remove swordless flag since we'll get master sword
         // Only in rando to keep swordless link bugs in vanilla
-        if (IS_RANDO(gSaveContext)) {
+        if (IS_RANDO) {
             Flags_UnsetInfTable(INFTABLE_SWORDLESS);
         }
 
@@ -1467,7 +1467,7 @@ void Inventory_SwapAgeEquipment(void) {
     } else {
         // When becoming child, set swordless flag if player doesn't have kokiri sword
         // Only in rando to keep swordless link bugs in vanilla
-        if (IS_RANDO(gSaveContext) && (1 << 0 & gSaveContext.inventory.equipment) == 0) {
+        if (IS_RANDO && (1 << 0 & gSaveContext.inventory.equipment) == 0) {
             Flags_SetInfTable(INFTABLE_SWORDLESS);
         }
 
@@ -1533,7 +1533,7 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
             gSaveContext.equips.equipment &= 0xFFF0;
             gSaveContext.equips.equipment |= 0x0001;
-        } else if (IS_RANDO(gSaveContext) && Randomizer_GetSettingValue(RSK_STARTING_AGE) == RO_AGE_ADULT) {
+        } else if (IS_RANDO && Randomizer_GetSettingValue(RSK_STARTING_AGE) == RO_AGE_ADULT) {
             /*If in rando and starting age is adult, childEquips is not initialized and buttonItems[0]
             will be ITEM_NONE. When changing age from adult -> child, reset equips to "default"
             (only kokiri tunic/boots equipped, no sword, no C-button items, no D-Pad items).
@@ -1836,7 +1836,7 @@ u8 Item_Give(PlayState* play, u8 item) {
 
             // In rando, when buying Giant's Knife, also check
             // for 0xE in case we don't have Kokiri Sword
-            if (ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xF || (IS_RANDO(gSaveContext) && ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xE)) {
+            if (ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xF || (IS_RANDO && ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xE)) {
 
                 gSaveContext.inventory.equipment ^= 8 << gEquipShifts[EQUIP_SWORD]; 
 
@@ -1943,13 +1943,13 @@ u8 Item_Give(PlayState* play, u8 item) {
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_WALLET_ADULT) {
         Inventory_ChangeUpgrade(UPG_WALLET, 1);
-        if (IS_RANDO(gSaveContext) && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
+        if (IS_RANDO && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
             Rupees_ChangeBy(200);
         }
         return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_WALLET_GIANT) {
         Inventory_ChangeUpgrade(UPG_WALLET, 2);
-        if (IS_RANDO(gSaveContext) && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
+        if (IS_RANDO && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
             Rupees_ChangeBy(500);
         }
         return Return_Item(item, MOD_NONE, ITEM_NONE);
@@ -1993,7 +1993,7 @@ u8 Item_Give(PlayState* play, u8 item) {
             }
         }
         // update the adult/child equips when rando'd (accounting for equp swapped hookshot as child)
-        if (IS_RANDO(gSaveContext) && LINK_IS_CHILD) {
+        if (IS_RANDO && LINK_IS_CHILD) {
             for (i = 1; i < ARRAY_COUNT(gSaveContext.adultEquips.buttonItems); i++) {
                 if (gSaveContext.adultEquips.buttonItems[i] == ITEM_HOOKSHOT) {
                     gSaveContext.adultEquips.buttonItems[i] = ITEM_LONGSHOT;
@@ -2003,7 +2003,7 @@ u8 Item_Give(PlayState* play, u8 item) {
                 }
             }
         }
-        if (IS_RANDO(gSaveContext) && LINK_IS_ADULT) {
+        if (IS_RANDO && LINK_IS_ADULT) {
             for (i = 1; i < ARRAY_COUNT(gSaveContext.childEquips.buttonItems); i++) {
                 if (gSaveContext.childEquips.buttonItems[i] == ITEM_HOOKSHOT) {
                     gSaveContext.childEquips.buttonItems[i] = ITEM_LONGSHOT;
@@ -2148,7 +2148,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         }
 
         // update the adult/child equips when rando'd
-        if (IS_RANDO(gSaveContext) && LINK_IS_CHILD) {
+        if (IS_RANDO && LINK_IS_CHILD) {
             for (i = 1; i < ARRAY_COUNT(gSaveContext.adultEquips.buttonItems); i++) {
                 if (gSaveContext.adultEquips.buttonItems[i] == ITEM_OCARINA_FAIRY) {
                     gSaveContext.adultEquips.buttonItems[i] = ITEM_OCARINA_TIME;
@@ -2158,7 +2158,7 @@ u8 Item_Give(PlayState* play, u8 item) {
                 }
             }
         }
-        if (IS_RANDO(gSaveContext) && LINK_IS_ADULT) {
+        if (IS_RANDO && LINK_IS_ADULT) {
             for (i = 1; i < ARRAY_COUNT(gSaveContext.childEquips.buttonItems); i++) {
                 if (gSaveContext.childEquips.buttonItems[i] == ITEM_OCARINA_FAIRY) {
                     gSaveContext.childEquips.buttonItems[i] = ITEM_OCARINA_TIME;
@@ -2514,7 +2514,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
 
     if (item == RG_TYCOON_WALLET) {
         Inventory_ChangeUpgrade(UPG_WALLET, 3);
-        if (IS_RANDO(gSaveContext) && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
+        if (IS_RANDO && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
             Rupees_ChangeBy(999);
         }
         return Return_Item_Entry(giEntry, RG_NONE);
@@ -2560,7 +2560,7 @@ u8 Item_CheckObtainability(u8 item) {
     osSyncPrintf("item_get_non_setting=%d  pt=%d  z=%x\n", item, slot, gSaveContext.inventory.items[slot]);
     osSyncPrintf(VT_RST);
 
-    if (IS_RANDO(gSaveContext)) {
+    if (IS_RANDO) {
         if (item == ITEM_SINGLE_MAGIC || item == ITEM_DOUBLE_MAGIC || item == ITEM_DOUBLE_DEFENSE) {
             return ITEM_NONE;
         }
@@ -2577,25 +2577,25 @@ u8 Item_CheckObtainability(u8 item) {
             return ITEM_NONE;
         } else if ((gBitFlags[item - ITEM_SWORD_KOKIRI] << gEquipShifts[EQUIP_SWORD]) &
                    gSaveContext.inventory.equipment) {
-            return IS_RANDO(gSaveContext) ? ITEM_NONE : item;
+            return IS_RANDO ? ITEM_NONE : item;
         } else {
             return ITEM_NONE;
         }
     } else if ((item >= ITEM_SHIELD_DEKU) && (item <= ITEM_SHIELD_MIRROR)) {
         if ((gBitFlags[item - ITEM_SHIELD_DEKU] << gEquipShifts[EQUIP_SHIELD]) & gSaveContext.inventory.equipment) {
-            return IS_RANDO(gSaveContext) ? ITEM_NONE : item;
+            return IS_RANDO ? ITEM_NONE : item;
         } else {
             return ITEM_NONE;
         }
     } else if ((item >= ITEM_TUNIC_KOKIRI) && (item <= ITEM_TUNIC_ZORA)) {
         if ((gBitFlags[item - ITEM_TUNIC_KOKIRI] << gEquipShifts[EQUIP_TUNIC]) & gSaveContext.inventory.equipment) {
-            return IS_RANDO(gSaveContext) ? ITEM_NONE : item;
+            return IS_RANDO ? ITEM_NONE : item;
         } else {
             return ITEM_NONE;
         }
     } else if ((item >= ITEM_BOOTS_KOKIRI) && (item <= ITEM_BOOTS_HOVER)) {
         if ((gBitFlags[item - ITEM_BOOTS_KOKIRI] << gEquipShifts[EQUIP_BOOTS]) & gSaveContext.inventory.equipment) {
-            return IS_RANDO(gSaveContext) ? ITEM_NONE : item;
+            return IS_RANDO ? ITEM_NONE : item;
         } else {
             return ITEM_NONE;
         }
@@ -2812,7 +2812,7 @@ s32 Inventory_ConsumeFairy(PlayState* play) {
 }
 
 bool Inventory_HatchPocketCucco(PlayState* play) {
-    if (!IS_RANDO(gSaveContext)) {
+    if (!IS_RANDO) {
         return Inventory_ReplaceItem(play, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO);
     }
 
@@ -5080,7 +5080,7 @@ void Interface_Draw(PlayState* play) {
             }
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rColor.r, rColor.g, rColor.b, interfaceCtx->magicAlpha);
             // Draw Rupee icon. Hide in Boss Rush.
-            if (!IS_BOSS_RUSH(gSaveContext)) {
+            if (!IS_BOSS_RUSH) {
                 OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, PosX_RC, PosY_RC, 16, 16, 1 << 10, 1 << 10);
             }
 
@@ -5198,7 +5198,7 @@ void Interface_Draw(PlayState* play) {
             svar5 = rupeeDigitsCount[CUR_UPG_VALUE(UPG_WALLET)];
 
             // Draw Rupee Counter. Hide in Boss Rush.
-            if (!IS_BOSS_RUSH(gSaveContext)) {
+            if (!IS_BOSS_RUSH) {
                 for (svar1 = 0, svar3 = 16; svar1 < svar5; svar1++, svar2++, svar3 += 8) {
                     OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[svar2]]),
                                                  8, 16, PosX_RC + svar3, PosY_RC, 8, 16, 1 << 10, 1 << 10);
@@ -6136,7 +6136,7 @@ void Interface_Draw(PlayState* play) {
 void Interface_DrawTotalGameplayTimer(PlayState* play) {
     // Draw timer based on the Gameplay Stats total time.
 
-    if ((IS_BOSS_RUSH(gSaveContext) && gSaveContext.bossRushOptions[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES) ||
+    if ((IS_BOSS_RUSH && gSaveContext.bossRushOptions[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES) ||
         (CVarGetInteger("gGameplayStats.ShowIngameTimer", 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2)) {
 
         s32 X_Margins_Timer = 0;
@@ -6623,7 +6623,7 @@ void Interface_Update(PlayState* play) {
             play->nextEntranceIndex = gSaveContext.entranceIndex;
 
             // In ER, handle sun song respawn from last entrance from grottos
-            if (IS_RANDO(gSaveContext) && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+            if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                 Grotto_ForceGrottoReturn();
             }
 

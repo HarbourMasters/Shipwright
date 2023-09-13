@@ -959,12 +959,12 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
         case DEATH_THROES:
             switch (this->work[GND_ACTION_STATE]) {
                 case DEATH_SPASM:
-                    if (Animation_OnFrame(&this->skelAnime, this->fwork[GND_END_FRAME]) && !IS_RANDO(gSaveContext) && !IS_BOSS_RUSH(gSaveContext)) {
+                    if (Animation_OnFrame(&this->skelAnime, this->fwork[GND_END_FRAME]) && !IS_RANDO && !IS_BOSS_RUSH) {
                         this->fwork[GND_END_FRAME] = Animation_GetLastFrame(&gPhantomGanonAirDamageAnim);
                         Animation_Change(&this->skelAnime, &gPhantomGanonAirDamageAnim, 0.5f, 0.0f,
                                             this->fwork[GND_END_FRAME], ANIMMODE_ONCE_INTERP, 0.0f);
                         this->work[GND_ACTION_STATE] = DEATH_LIMP;
-                    } else if (IS_RANDO(gSaveContext) || IS_BOSS_RUSH(gSaveContext)) {
+                    } else if (IS_RANDO || IS_BOSS_RUSH) {
                         // Skip to death scream animation and move ganondrof to middle
                         this->deathState = DEATH_SCREAM;
                         this->timers[0] = 50;
@@ -991,7 +991,7 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
                     bodyDecayLevel = 1;
                     break;
             }
-            if (IS_RANDO(gSaveContext) || IS_BOSS_RUSH(gSaveContext)) {
+            if (IS_RANDO || IS_BOSS_RUSH) {
                 break;
             }
             Math_ApproachS(&this->actor.shape.rot.y, this->work[GND_VARIANCE_TIMER] * -100, 5, 0xBB8);
@@ -1105,7 +1105,7 @@ void BossGanondrof_Death(BossGanondrof* this, PlayState* play) {
                 this->deathCamera = 0;
                 func_80064534(play, &play->csCtx);
                 func_8002DF54(play, &this->actor, 7);
-                if (!IS_BOSS_RUSH(gSaveContext)) {
+                if (!IS_BOSS_RUSH) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, GND_BOSSROOM_CENTER_X, GND_BOSSROOM_CENTER_Y,
                                 GND_BOSSROOM_CENTER_Z + 200.0f, 0, 0, 0, 0, true);
                 }

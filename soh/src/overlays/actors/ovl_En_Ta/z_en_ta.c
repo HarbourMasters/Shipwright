@@ -466,7 +466,7 @@ void func_80B14B6C(EnTa* this, PlayState* play) {
         func_80B13AA0(this, func_80B14AF4, func_80B167C0);
         this->unk_2CC = 5;
         Flags_SetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE);
-        if (IS_RANDO(gSaveContext)) {
+        if (IS_RANDO) {
             OnePointCutscene_EndCutscene(play, csCamIdx);
         }
         Animation_PlayOnce(&this->skelAnime, &gTalonRunTransitionAnim);
@@ -878,7 +878,7 @@ void func_80B15E80(EnTa* this, PlayState* play) {
     } else if (this->unk_2E0 & 2) {
         func_8002F434(&this->actor, play, GI_MILK, 10000.0f, 50.0f);
     } else {
-        if (!IS_RANDO(gSaveContext)) {
+        if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_MILK_BOTTLE, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LLR_TALONS_CHICKENS, GI_MILK_BOTTLE);
@@ -893,7 +893,7 @@ void func_80B15F54(EnTa* this, PlayState* play) {
         Message_CloseTextbox(play);
         this->unk_2E0 &= ~0x2;
         func_80B13AA0(this, func_80B15E80, func_80B16938);
-        if (!IS_RANDO(gSaveContext)) {
+        if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_MILK_BOTTLE, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LLR_TALONS_CHICKENS, GI_MILK_BOTTLE);

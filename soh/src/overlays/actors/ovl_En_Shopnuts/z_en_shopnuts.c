@@ -69,7 +69,7 @@ void EnShopnuts_Init(Actor* thisx, PlayState* play) {
     CollisionCheck_SetInfo(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
     Collider_UpdateCylinder(&this->actor, &this->collider);
 
-    if (IS_RANDO(gSaveContext)) {
+    if (IS_RANDO) {
         s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
         ScrubIdentity scrubIdentity = Randomizer_IdentifyScrub(play->sceneNum, this->actor.params, respawnData);
 

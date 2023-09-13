@@ -789,7 +789,7 @@ void BossFd2_Death(BossFd2* this, PlayState* play) {
                 this->deathCamera = 0;
                 func_80064534(play, &play->csCtx);
                 func_8002DF54(play, &this->actor, 7);
-                if (!IS_BOSS_RUSH(gSaveContext)) {
+                if (!IS_BOSS_RUSH) {
                     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f, 0, 0,
                                        0, WARP_DUNGEON_ADULT);
                 } else {

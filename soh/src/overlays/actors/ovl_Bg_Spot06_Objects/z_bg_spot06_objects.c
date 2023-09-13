@@ -217,7 +217,7 @@ void BgSpot06Objects_Destroy(Actor* thisx, PlayState* play) {
     // Due to Ships resource caching, the water box collisions for the river have to be manually reset
     play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].zMin = WATER_LEVEL_RIVER_LOWER_Z;
 
-    if (IS_RANDO(gSaveContext) && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
+    if (IS_RANDO && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)) {
         // For randomizer when leaving lake hylia while the water level is lowered,
         // reset the "raise lake hylia water" flag back to on if the water temple is cleared
         Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER);
@@ -451,7 +451,7 @@ void BgSpot06Objects_Update(Actor* thisx, PlayState* play) {
     }
 
     // Bail early for water control system for child or non-rando
-    if (LINK_IS_CHILD || !IS_RANDO(gSaveContext)) {
+    if (LINK_IS_CHILD || !IS_RANDO) {
         return;
     }
 
@@ -596,7 +596,7 @@ void BgSpot06Objects_WaterPlaneCutsceneRise(BgSpot06Objects* this, PlayState* pl
         this->actionFunc = BgSpot06Objects_DoNothing;
 
         // On rando, this is used with the water control system switch to finalize raising the water
-        if (IS_RANDO(gSaveContext)) {
+        if (IS_RANDO) {
             this->lakeHyliaWaterLevel = 0;
             play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].ySurface = WATER_LEVEL_RIVER_RAISED;
             play->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].zMin = WATER_LEVEL_RIVER_LOWER_Z;

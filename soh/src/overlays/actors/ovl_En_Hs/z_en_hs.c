@@ -81,7 +81,7 @@ void EnHs_Init(Actor* thisx, PlayState* play) {
         func_80A6E3A0(this, func_80A6E9AC);
         bool shouldSpawn;
         bool tradedMushroom = Flags_GetItemGetInf(ITEMGETINF_30);
-        if (IS_RANDO(gSaveContext) && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
+        if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
             // To explain the logic because Fado and Grog are linked:
             // - If you have Cojiro, then spawn Grog and not Fado.
             // - If you don't have Cojiro but do have Odd Potion, spawn Fado and not Grog.
@@ -148,7 +148,7 @@ void func_80A6E5EC(EnHs* this, PlayState* play) {
 
 void func_80A6E630(EnHs* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
-        if (!IS_RANDO(gSaveContext)) {
+        if (!IS_RANDO) {
             func_80088AA0(180);
         }
         func_80A6E3A0(this, func_80A6E6B0);
@@ -179,7 +179,7 @@ void func_80A6E740(EnHs* this, PlayState* play) {
         this->actor.parent = NULL;
         func_80A6E3A0(this, func_80A6E630);
     } else {
-        if (IS_RANDO(gSaveContext)) {
+        if (IS_RANDO) {
             GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TRADE_COJIRO, GI_ODD_MUSHROOM);
             Randomizer_ConsumeAdultTradeItem(play, ITEM_COJIRO);
             GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
@@ -198,7 +198,7 @@ void func_80A6E7BC(EnHs* this, PlayState* play) {
         switch (play->msgCtx.choiceIndex) {
             case 0:
                 func_80A6E3A0(this, func_80A6E740);
-                if (IS_RANDO(gSaveContext)) {
+                if (IS_RANDO) {
                     GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TRADE_COJIRO, GI_ODD_MUSHROOM);
                     Randomizer_ConsumeAdultTradeItem(play, ITEM_COJIRO);
                     GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);

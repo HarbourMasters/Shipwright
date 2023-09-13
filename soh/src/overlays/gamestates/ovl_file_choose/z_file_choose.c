@@ -1305,7 +1305,7 @@ void FileChoose_UpdateQuestMenu(GameState* thisx) {
             return;
         } else {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-            osSyncPrintf("Selected Dungeon Quest: %d\n", IS_MASTER_QUEST(gSaveContext));
+            osSyncPrintf("Selected Dungeon Quest: %d\n", IS_MASTER_QUEST);
             this->prevConfigMode = this->configMode;
             this->configMode = CM_ROTATE_TO_NAME_ENTRY;
             this->logoAlpha = 0;
@@ -2817,7 +2817,7 @@ void FileChoose_ConfirmFile(GameState* thisx) {
             func_800AA000(300.0f, 180, 20, 100);
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             // Reset Boss Rush because it's only ever saved in memory.
-            if (IS_BOSS_RUSH(gSaveContext)) {
+            if (IS_BOSS_RUSH) {
                 gSaveContext.questId = 0;
             }
             this->selectMode = SM_FADE_OUT;
@@ -3029,7 +3029,7 @@ void FileChoose_LoadGame(GameState* thisx) {
         }
     }
 
-    if (IS_RANDO(gSaveContext)) {
+    if (IS_RANDO) {
         // Setup the modified entrance table and entrance shuffle table for rando
         Entrance_Init();
 

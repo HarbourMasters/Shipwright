@@ -328,10 +328,10 @@ typedef enum {
     /* 03 */ QUEST_BOSSRUSH,
 } Quest;
 
-#define IS_VANILLA(saveContext) ((saveContext).questId == QUEST_NORMAL)
-#define IS_MASTER_QUEST(saveContext) ((saveContext).questId == QUEST_MASTER)
-#define IS_RANDO(saveContext) ((saveContext).questId == QUEST_RANDOMIZER)
-#define IS_BOSS_RUSH(saveContext) ((saveContext).questId == QUEST_BOSSRUSH)
+#define IS_VANILLA (gSaveContext.questId == QUEST_NORMAL)
+#define IS_MASTER_QUEST (gSaveContext.questId == QUEST_MASTER)
+#define IS_RANDO (gSaveContext.questId == QUEST_RANDOMIZER)
+#define IS_BOSS_RUSH (gSaveContext.questId == QUEST_BOSSRUSH)
 
 typedef enum {
     /* 0x00 */ BTN_ENABLED,

@@ -234,7 +234,7 @@ void func_808FD5F4(BossGanon2* this, PlayState* play) {
                 sBossGanon2Zelda->actor.shape.rot.y = -0x7000;
 
                 // In rando, skip past the cutscene to the part where the player takes control again.
-                if (!IS_RANDO(gSaveContext) && !IS_BOSS_RUSH(gSaveContext)) {
+                if (!IS_RANDO && !IS_BOSS_RUSH) {
                     this->csState = 1;
                     this->csTimer = 0;
                 } else {

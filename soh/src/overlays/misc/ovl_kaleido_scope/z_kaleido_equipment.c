@@ -177,7 +177,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
     s16 cursorY;
     s16 oldCursorPoint;
     bool dpad = (CVarGetInteger("gDpadPause", 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
-    bool pauseAnyCursor = (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO(gSaveContext)) ||
+    bool pauseAnyCursor = (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && IS_RANDO) ||
                           (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -481,7 +481,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
         }
 
         if (pauseCtx->cursorItem[PAUSE_EQUIP] == ITEM_BRACELET) {
-            if (LINK_AGE_IN_YEARS == YEARS_CHILD || IS_RANDO(gSaveContext)) {
+            if (LINK_AGE_IN_YEARS == YEARS_CHILD || IS_RANDO) {
                 pauseCtx->nameColorSet = 0;
             } else {
                 pauseCtx->nameColorSet = 1;
@@ -690,7 +690,7 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
             } else if (CUR_UPG_VALUE(sAdultUpgrades[i]) != 0) {
                 if (drawGreyItems &&
                     ((sAdultUpgradeItemBases[i] + CUR_UPG_VALUE(sAdultUpgrades[i]) - 1) == ITEM_BRACELET &&
-                        !(IS_RANDO(gSaveContext)))) { // Grey Out the Goron Bracelet when Not Randomized
+                        !(IS_RANDO))) { // Grey Out the Goron Bracelet when Not Randomized
                     gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                     gSPGrayscale(POLY_KAL_DISP++, true);
                 }

@@ -570,7 +570,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
             Play_ChangeCameraStatus(play, this->csCamIndex, CAM_STAT_ACTIVE);
             this->csCamFov = 60.0f;
 
-            if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_GANONDORF_BATTLE) || IS_RANDO(gSaveContext) || IS_BOSS_RUSH(gSaveContext)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_GANONDORF_BATTLE) || IS_RANDO || IS_BOSS_RUSH) {
                 // watched cutscene already, skip most of it
                 this->csState = 17;
                 this->csTimer = 0;
@@ -581,7 +581,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
                 BossGanon_SetIntroCsCamera(this, 11);
                 this->unk_198 = 2;
                 this->timers[2] = 110;
-                if (!(IS_BOSS_RUSH(gSaveContext) && gSaveContext.bossRushOptions[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_NEVER)) {
+                if (!(IS_BOSS_RUSH && gSaveContext.bossRushOptions[BR_OPTIONS_HEAL] == BR_CHOICE_HEAL_NEVER)) {
                     gSaveContext.healthAccumulator = 0x140;
                 }
                 Audio_QueueSeqCmd(NA_BGM_STOP);
@@ -904,7 +904,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
                     this->csTimer = 0;
                     this->csCamFov = 60.0f;
                     BossGanon_SetIntroCsCamera(this, 12);
-                    if (!IS_RANDO(gSaveContext) && !IS_BOSS_RUSH(gSaveContext)) {
+                    if (!IS_RANDO && !IS_BOSS_RUSH) {
                         Message_StartTextbox(play, 0x70CB, NULL);
                     }
                 }
@@ -928,7 +928,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
 
             this->csState = 19;
             this->csTimer = 0;
-            if (!IS_BOSS_RUSH(gSaveContext)) {
+            if (!IS_BOSS_RUSH) {
                 Message_StartTextbox(play, 0x70CC, NULL);
             }
             Animation_MorphToPlayOnce(&this->skelAnime, &gGanondorfRaiseHandStartAnim, -5.0f);
@@ -972,7 +972,7 @@ void BossGanon_IntroCutscene(BossGanon* this, PlayState* play) {
 
             if ((this->csTimer > 80) && (Message_GetState(&play->msgCtx) == TEXT_STATE_NONE)) {
                 // In rando, skip past dark waves section straight to title card phase of the cutscene.
-                if (IS_RANDO(gSaveContext) || IS_BOSS_RUSH(gSaveContext)) {
+                if (IS_RANDO || IS_BOSS_RUSH) {
                     this->timers[2] = 30;
                     this->csCamAt.x = this->unk_1FC.x - 10.0f;
                     this->csCamAt.y = this->unk_1FC.y + 30.0f;
@@ -1282,7 +1282,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
             // Skip Ganondorf dying and go straight to next scene.
             // The cutscene skip met a mixed reaction, so until we figure out a better way of doing it,
             // it will stay not-skipped outside of Boss Rush (originally implemented for randomizer).
-            if (!IS_BOSS_RUSH(gSaveContext)) {
+            if (!IS_BOSS_RUSH) {
                 this->csState = 1;
                 this->csTimer = 0;
             } else {
@@ -1539,7 +1539,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
 
             if (this->csTimer == 180) {
                 play->sceneLoadFlag = 0x14;
-                if ((IS_RANDO(gSaveContext) && Randomizer_GetSettingValue(RSK_SKIP_TOWER_ESCAPE) || IS_BOSS_RUSH(gSaveContext))) {
+                if ((IS_RANDO && Randomizer_GetSettingValue(RSK_SKIP_TOWER_ESCAPE) || IS_BOSS_RUSH)) {
                     Flags_SetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
                     play->nextEntranceIndex = 0x517;
                 }
@@ -1562,7 +1562,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
             sBossGanonZelda = (EnZl3*)Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_EN_ZL3, 0.0f,
                                                 6000.0f, 0.0f, 0, 0, 0, 0x2000);
 
-            if (!IS_RANDO(gSaveContext) && !IS_BOSS_RUSH(gSaveContext)) {
+            if (!IS_RANDO && !IS_BOSS_RUSH) {
                 this->csState = 101;
             } else {
                 this->skelAnime.playSpeed = 1.0f;
@@ -1690,7 +1690,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
             // fallthrough
         case 104:
             // In rando, fade out the white here as the earlier part is skipped.
-            if (IS_RANDO(gSaveContext) || IS_BOSS_RUSH(gSaveContext)) {
+            if (IS_RANDO || IS_BOSS_RUSH) {
                 Math_ApproachZeroF(&this->whiteFillAlpha, 1.0f, 10.0f);
             }
 
@@ -1712,7 +1712,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, PlayState* play) {
 
             if (this->csTimer == 50) {
                 // In rando, skip the rest of the cutscene after the crystal around Zelda dissapears.
-                if (!IS_RANDO(gSaveContext) && !IS_BOSS_RUSH(gSaveContext)) {
+                if (!IS_RANDO && !IS_BOSS_RUSH) {
                     sBossGanonZelda->unk_3C8 = 4;
                 } else {
                     this->csState = 108;
