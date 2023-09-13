@@ -2047,7 +2047,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             } else {
                 messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF);
             }
-        } else if (textId == TEXT_SHEIK_1 || textId == TEXT_SHEIK_2) {
+        } else if (textId == TEXT_SHEIK_NEED_HOOK || textId == TEXT_SHEIK_HAVE_HOOK) {
             messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscMessage(gPlayState->sceneNum, textId);            
         // textId: TEXT_SCRUB_RANDOM + (randomizerInf - RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT)
         } else if (textId >= TEXT_SCRUB_RANDOM && textId <= TEXT_SCRUB_RANDOM + NUM_SCRUBS) {

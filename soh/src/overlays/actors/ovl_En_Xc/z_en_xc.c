@@ -2256,9 +2256,9 @@ void EnXc_SetupDialogueAction(EnXc* this, PlayState* play) {
         }
         else {
             if (INV_CONTENT(ITEM_HOOKSHOT) != ITEM_NONE) {
-                this->actor.textId = 0x7010; //"You need another skill"
+                this->actor.textId = 0x7010; //"You have what you need"
             } else {
-                this->actor.textId = 0x700F; //"You have what you need"
+                this->actor.textId = 0x700F; //"You need another skill"
             }
         }
         func_8002F2F4(&this->actor, play);

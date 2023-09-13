@@ -444,10 +444,10 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         Randomizer::hintMessageTableID, TEXT_GANONDORF_NOHINT,
         CustomMessage(gSaveContext.ganonText, gSaveContext.ganonText, gSaveContext.ganonText));
     CustomMessageManager::Instance->CreateMessage(
-        Randomizer::hintMessageTableID, TEXT_SHEIK_1,
+        Randomizer::hintMessageTableID, TEXT_SHEIK_NEED_HOOK,
         CustomMessage("{{message}}", "{{message}}", "{{message}}"));
     CustomMessageManager::Instance->CreateMessage(
-        Randomizer::hintMessageTableID, TEXT_SHEIK_2,
+        Randomizer::hintMessageTableID, TEXT_SHEIK_HAVE_HOOK,
         CustomMessage("{{message}}", "{{message}}", "{{message}}"));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_SARIAS_SONG_FACE_TO_FACE,
@@ -4486,7 +4486,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedEnhancementCheckbox("Saria (Magic)", "gRandomizeSariaHint", true, false);
                 UIWidgets::InsertHelpHoverText("Talking to Saria either in person or through Saria's Song will tell you the location of a progressive magic meter.");
                 UIWidgets::PaddedEnhancementCheckbox("Frog Ocarina Game", "gRandomizeFrogsHint", true, false);
-                UIWidgets::InsertHelpHoverText("Standing near the frogs in Zora's River will tell you the reward for the frogs' ocarina game.");
+                UIWidgets::InsertHelpHoverText("Standing near the pedestal for the frogs in Zora's River will tell you the reward for the frogs' ocarina game.");
                 UIWidgets::PaddedEnhancementCheckbox("Warp Song text", "gRandomizeWarpSongText", true, false, !CVarGetInteger("gRandomizeShuffleWarpSongs", RO_GENERIC_OFF),
                  "This option is disabled since warp songs are not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::InsertHelpHoverText("Playing a warp song will tell you where it leads. (If warp song destinations are vanilla, this is always enabled.)");
@@ -5289,11 +5289,11 @@ CustomMessage Randomizer::GetMiscMessage(s16 scene, u16 originalTextId) {
         }
         messageEntry.Replace("{{item}}", std::move(frogItemName[0]), std::move(frogItemName[1]), std::move(frogItemName[2]));
         return messageEntry;
-    } else if (originalTextId == TEXT_SHEIK_1 || originalTextId == TEXT_SHEIK_2) {
+    } else if (originalTextId == TEXT_SHEIK_NEED_HOOK || originalTextId == TEXT_SHEIK_HAVE_HOOK) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, originalTextId);
         switch (scene) {
             case SCENE_TEMPLE_OF_TIME:
-                if (originalTextId == TEXT_SHEIK_1) {
+                if (originalTextId == TEXT_SHEIK_NEED_HOOK) {
                     messageEntry.Replace("{{message}}", 
                     "@,&meet me at %gGanon's Castle%w&once you obtain the %rkey to his lair%w.",
                     "@, wir treffen uns bei %gGanons Schloß%w,&sobald Du den %rSchlüssel zu&seinem Verließ%w hast.",
@@ -5306,7 +5306,7 @@ CustomMessage Randomizer::GetMiscMessage(s16 scene, u16 originalTextId) {
                 }
                 break;
             case SCENE_INSIDE_GANONS_CASTLE:
-                if (originalTextId == TEXT_SHEIK_1) {
+                if (originalTextId == TEXT_SHEIK_NEED_HOOK) {
                     if (INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) {
                         messageEntry.Replace("{{message}}", gSaveContext.sheikText, gSaveContext.sheikText, gSaveContext.sheikText);
                     } else {
