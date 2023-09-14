@@ -22,16 +22,16 @@ using namespace Trial;
 
 std::array<std::string, HINT_TYPE_MAX> hintTypeNames = {
     "Trial",
-    "Always",
     "WotH",
     "Barren",
     "Entrance",
+    "Always",
     "Sometimes",
-    "Random",
-    "Named Item",
     "Song",
     "Overworld",
     "Dungeon",
+    "Named Item",
+    "Random",
     "Junk"
 };
 
@@ -66,7 +66,7 @@ constexpr std::array<HintSetting, 4> hintSettingTable{{
       {.type = HINT_TYPE_TRIAL,     .weight =  0, .fixed = 0, .copies = 1},
       {.type = HINT_TYPE_WOTH,      .weight =  7, .fixed = 0, .copies = 1},
       {.type = HINT_TYPE_BARREN,    .weight =  4, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_ENTRANCE,  .weight =  6, .fixed = 0, .copies = 1},
+      {.type = HINT_TYPE_ENTRANCE,  .weight =  0, .fixed = 0, .copies = 1}, //not yet implemented, should be 6 weight
       {.type = HINT_TYPE_ALWAYS,    .weight =  0, .fixed = 0, .copies = 1},
       {.type = HINT_TYPE_SOMETIMES, .weight =  0, .fixed = 0, .copies = 1},
       {.type = HINT_TYPE_SONG,      .weight =  2, .fixed = 0, .copies = 1},
@@ -87,7 +87,7 @@ constexpr std::array<HintSetting, 4> hintSettingTable{{
       {.type = HINT_TYPE_TRIAL,     .weight =  0, .fixed = 0, .copies = 1},
       {.type = HINT_TYPE_WOTH,      .weight = 12, .fixed = 0, .copies = 2},
       {.type = HINT_TYPE_BARREN,    .weight = 12, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_ENTRANCE,  .weight =  4, .fixed = 0, .copies = 1},
+      {.type = HINT_TYPE_ENTRANCE,  .weight =  0, .fixed = 0, .copies = 1}, //not yet implemented, should be 4 weight
       {.type = HINT_TYPE_ALWAYS,    .weight =  0, .fixed = 0, .copies = 2},
       {.type = HINT_TYPE_SOMETIMES, .weight =  0, .fixed = 0, .copies = 1},
       {.type = HINT_TYPE_SONG,      .weight =  4, .fixed = 0, .copies = 1},
@@ -108,7 +108,7 @@ constexpr std::array<HintSetting, 4> hintSettingTable{{
       {.type = HINT_TYPE_TRIAL,     .weight =  0, .fixed = 0, .copies = 1},
       {.type = HINT_TYPE_WOTH,      .weight = 15, .fixed = 0, .copies = 2},
       {.type = HINT_TYPE_BARREN,    .weight = 15, .fixed = 0, .copies = 1},
-      {.type = HINT_TYPE_ENTRANCE,  .weight = 10, .fixed = 0, .copies = 1},
+      {.type = HINT_TYPE_ENTRANCE,  .weight =  0, .fixed = 0, .copies = 1}, //not yet implemented, should be 10 weight
       {.type = HINT_TYPE_ALWAYS,    .weight =  0, .fixed = 0, .copies = 2},
       {.type = HINT_TYPE_SOMETIMES, .weight =  0, .fixed = 0, .copies = 1},
       {.type = HINT_TYPE_SONG,      .weight =  2, .fixed = 0, .copies = 1},
@@ -375,19 +375,19 @@ static RandomizerCheck CreateRandomHint(std::vector<RandomizerCheck> possibleHin
   Text finalHint;
   Text prefix = Hint(RHT_PREFIX).GetText();
   std::vector<uint8_t> colours = {QM_GREEN, QM_RED};
-  if (type = HINT_TYPE_WOTH){
+  if (type == HINT_TYPE_WOTH){
     Text regionText = GetHintRegion(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
     finalHint = prefix + "%r#" + regionText + "#%w" + Hint(RHT_WAY_OF_THE_HERO).GetText();
     colours = {QM_LBLUE};
   }
-  else if(type = HINT_TYPE_BARREN){
+  else if(type == HINT_TYPE_BARREN){
     Text regionText = GetHintRegion(ctx->GetItemLocation(hintedLocation)->GetParentRegionKey())->GetHint().GetText();
     finalHint = prefix + Hint(RHT_PLUNDERING).GetText() + "%r#" + regionText + "#%w" + Hint(RHT_FOOLISH).GetText();
     colours = {QM_PINK};
   }
   else {
     Text itemText = ctx->GetItemLocation(hintedLocation)->GetPlacedItem().GetHint().GetText();
-    if (type >= HINT_TYPE_SOMETIMES && type < HINT_TYPE_NAMED_ITEM){
+    if (type >= HINT_TYPE_ALWAYS && type < HINT_TYPE_NAMED_ITEM){
       Text locationText = Rando::StaticData::GetLocation(hintedLocation)->GetHint()->GetText();
       finalHint = prefix + locationText + " #"+itemText+"#.";
     }
@@ -424,7 +424,7 @@ static RandomizerCheck CreateRandomHint(std::vector<RandomizerCheck> possibleHin
 }
 
 static std::vector<uint32_t> FilterHintability(std::vector<uint32_t> locations, const bool goodItemsOnly = false, const bool dungeonsOK = true){
-  FilterFromPool(locations, [goodItemsOnly, dungeonsOK](const uint32_t loc) {
+  return FilterFromPool(locations, [goodItemsOnly, dungeonsOK](const uint32_t loc) {
     return Location(loc)->IsHintable() && !(Location(loc)->IsHintedAt()) && 
     (!goodItemsOnly || Location(loc)->GetPlacedItem().IsMajorItem()) && (dungeonsOK || Location(loc)->IsOverworld());
   });
@@ -907,7 +907,7 @@ void CreateWarpSongTexts() {
 
 static std::array<uint8_t, HINT_TYPE_MAX> DistrabuteHints(uint8_t stoneCount, std::array<HintDistributionSetting, (int)HINT_TYPE_MAX> distTable, bool addFixed = true){
   uint32_t totalWeight = 0;
-  std::array<uint8_t, HINT_TYPE_MAX> selected;
+  std::array<uint8_t, HINT_TYPE_MAX> selected = {};
 
   distTable[HINT_TYPE_JUNK].copies = 1; //Junk is hardcoded to 1 copy to avoid fill in issues
 
@@ -954,117 +954,9 @@ uint8_t PlaceHints(std::array<uint8_t, HINT_TYPE_MAX> selectedHints,
 
   std::array<std::vector<uint32_t>, HINT_TYPE_MAX> hintTypePools = {
       blankList, //trial, should not happen
-      blankList, //enternce, should not happen
-      wothLocations,
-      CalculateBarrenRegions(),
-      blankList, // always, should not happen
-      FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetHint().GetType() == HintCategory::Sometimes;}), //sometimes
-      allLocations, //random
-      allLocations, //Named item
-      FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->IsCategory(Category::cSong);}), //songs
-      FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->IsOverworld();}), //overworld
-      FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->IsDungeon();}), //dungeon
-      blankList //junk, irrelevent
-  };
-
-  for (uint8_t hintType = 0; hintType < HINT_TYPE_MAX; hintType++){
-    for (uint8_t numHint = 0; numHint < selectedHints[hintType]; numHint++){
-
-      SPDLOG_DEBUG("Attempting to make hint of type: ");
-      SPDLOG_DEBUG(hintTypeNames[hintType]);
-      SPDLOG_DEBUG("\n");
-
-      uint32_t hintedLocation = RC_UNKNOWN_CHECK;
-
-      //create the appropriate hint for the type
-      if (hintType == HINT_TYPE_JUNK){
-        CreateJunkHint();
-      }
-      else{
-        hintedLocation = CreateRandomHint(FilterHintability(hintTypePools[hintType], (hintType == HINT_TYPE_NAMED_ITEM)), distTable[hintType].copies, (HintType)hintType);
-        if (hintedLocation == RC_UNKNOWN_CHECK){ //if hint failed to place
-          selectedHints[hintType] = 0; //RANDOTODO is there a better way to filter out things hinted between hintTypePools creation and now
-          distTable[hintType].weight = 0;
-          return (selectedHints[hintType] - numHint) * distTable[hintType].copies;
-        }
-      }
-
-      switch(hintType){
-        case HINT_TYPE_WOTH:
-          if (Location(hintedLocation)->IsDungeon()){
-            *remainingDungeonWothHints -= 1;
-            if (*remainingDungeonWothHints <= 0){
-              hintTypePools[hintType] = FilterHintability(hintTypePools[hintType], false, false);
-            }
-          }
-          break;
-        case HINT_TYPE_BARREN:
-          if (Location(hintedLocation)->IsDungeon()){
-            *remainingDungeonBarrenHints -= 1;
-            if (*remainingDungeonBarrenHints <= 0){
-              hintTypePools[hintType] = FilterHintability(hintTypePools[hintType], false, false);
-            }
-          }
-          break;
-      }
-    }
-    selectedHints[hintType] = 0;
-  }
-  return 0;
-}
-
-static std::array<uint8_t, HINT_TYPE_MAX> DistrabuteHints(uint8_t stoneCount, std::array<HintDistributionSetting, (int)HINT_TYPE_MAX> distTable, bool addFixed = true){
-  uint32_t totalWeight = 0;
-  std::array<uint8_t, HINT_TYPE_MAX> selected;
-
-  distTable[HINT_TYPE_JUNK].copies = 1; //Junk is hardcoded to 1 copy to avoid fill in issues
-
-  for (HintDistributionSetting setting: distTable){
-    totalWeight += setting.weight;
-    if (addFixed){
-      selected[setting.type] += setting.fixed;
-      stoneCount -= setting.fixed * setting.copies;
-    }
-  }
-
-  uint32_t currentWeight = Random(1,totalWeight);
-  while(stoneCount > 0 && totalWeight > 0){
-    for (HintDistributionSetting setting: distTable){
-      currentWeight -= setting.weight;
-      if (currentWeight <= 0){
-        if (stoneCount >= setting.copies){
-          selected[setting.type] += 1;
-          stoneCount -= setting.copies;
-          break;
-        }
-        else {
-          totalWeight -= setting.weight;
-          setting.weight = 0;
-          break;
-        }
-      }
-    }
-    currentWeight = Random(1,totalWeight);
-  }
-  //if stones are left, assign junk
-  if (stoneCount > 0){
-    selected[HINT_TYPE_JUNK] += stoneCount;
-  }
-  return selected;
-}
-
-uint8_t PlaceHints(std::array<uint8_t, HINT_TYPE_MAX> selectedHints,
-                std::array<HintDistributionSetting, (int)HINT_TYPE_MAX> distTable, 
-                uint8_t* remainingDungeonWothHints,
-                uint8_t* remainingDungeonBarrenHints){
-
-  std::vector<uint32_t> blankList = {};
-
-  std::array<std::vector<uint32_t>, HINT_TYPE_MAX> hintTypePools = {
-      blankList, //trial, should not happen
-      blankList, //enternce, should not happen
-      wothLocations,
-      CalculateBarrenRegions(),
+      wothLocations, //woth
+      CalculateBarrenRegions(), //Barren
+      blankList, //enternce, not yet implemented
       blankList, // always, should not happen
       FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetHint().GetType() == HintCategory::Sometimes;}), //sometimes
       allLocations, //random
