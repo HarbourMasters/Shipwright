@@ -5329,7 +5329,7 @@ CustomMessage Randomizer::GetMiscMessage(s16 scene, u16 originalTextId) {
                 break;
         }
         return messageEntry;
-    } else {
+    } else if (originalTextId == TEXT_SARIA_SFM || originalTextId == TEXT_SARIAS_SONG_FOREST_SOUNDS || TEXT_SARIAS_SONG_FOREST_TEMPLE) {
         messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_SARIAS_SONG_FACE_TO_FACE);
         CustomMessage messageEntry2 = messageEntry;
         std::string code = originalTextId == TEXT_SARIA_SFM ? "" : "\x0B";
