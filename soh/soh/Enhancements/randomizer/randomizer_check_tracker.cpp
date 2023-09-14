@@ -570,7 +570,7 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
     auto scene = static_cast<SceneID>(gPlayState->sceneNum);
     // Vanilla special item checks
     if (!gSaveContext.n64ddFlag) {
-        if (scene == SCENE_KOKIRI_SHOP && giEntry.itemId == ITEM_SHIELD_DEKU) {
+        if (giEntry.itemId == ITEM_SHIELD_DEKU) {
             SetCheckCollected(RC_KF_SHOP_ITEM_3);
             return;
         }
@@ -645,6 +645,9 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
             return;
         } else if (giEntry.itemId == ITEM_WEIRD_EGG) {
             SetCheckCollected(RC_HC_MALON_EGG);
+            return;
+        } else if (giEntry.itemId == ITEM_BEAN) {
+            SetCheckCollected(RC_ZR_MAGIC_BEAN_SALESMAN);
             return;
         }
     }
@@ -1176,7 +1179,7 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
                 (fortressFast && showGerudoFortressKeys && rcObj.rc == RC_GF_NORTH_F1_CARPENTER)
                 );
     }
-    else if (rcObj.vanillaCheck) {
+    else if (rcObj.vanillaHundoCheck) {
         return (rcObj.vOrMQ == RCVORMQ_BOTH ||
             rcObj.vOrMQ == RCVORMQ_MQ && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId) ||
             rcObj.vOrMQ == RCVORMQ_VANILLA && !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId) ||
