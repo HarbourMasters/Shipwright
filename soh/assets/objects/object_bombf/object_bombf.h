@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_BOMBF_H
+#define OBJECTS_OBJECT_BOMBF_H 1
 
 #include "align_asset_macro.h"
 
@@ -22,3 +23,5 @@ static const ALIGN_ASSET(2) char gBombFlowerBombAndSparkDL[] = dgBombFlowerBombA
 
 #define dgBombFlowerBaseLeavesDL "__OTR__objects/object_bombf/gBombFlowerBaseLeavesDL"
 static const ALIGN_ASSET(2) char gBombFlowerBaseLeavesDL[] = dgBombFlowerBaseLeavesDL;
+
+#endif // OBJECTS_OBJECT_BOMBF_H

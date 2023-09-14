@@ -3,6 +3,28 @@
         <Scene Name="hairal_niwa2_scene" Offset="0x0"/>
     </File>
     <File Name="hairal_niwa2_room_0" Segment="3">
+        <Texture Name="hairal_niwa2_room_0Tex_008750" OutName="hairal_niwa2_room_0Tex_008750" Format="rgba16" Width="32" Height="32" Offset="0x8750" AddedByScript="true"/>
+        <Texture Name="hairal_niwa2_room_0Tex_008F50" OutName="hairal_niwa2_room_0Tex_008F50" Format="rgba16" Width="32" Height="32" Offset="0x8F50" AddedByScript="true"/>
+        <Texture Name="hairal_niwa2_room_0Tex_009750" OutName="hairal_niwa2_room_0Tex_009750" Format="rgba16" Width="32" Height="32" Offset="0x9750" AddedByScript="true"/>
+        <Texture Name="hairal_niwa2_room_0Tex_009F50" OutName="hairal_niwa2_room_0Tex_009F50" Format="rgba16" Width="32" Height="64" Offset="0x9F50" AddedByScript="true"/>
+        <Texture Name="hairal_niwa2_room_0Tex_00AF50" OutName="hairal_niwa2_room_0Tex_00AF50" Format="i4" Width="64" Height="64" Offset="0xAF50" AddedByScript="true"/>
+        <Texture Name="hairal_niwa2_room_0Tex_00B750" OutName="hairal_niwa2_room_0Tex_00B750" Format="rgba16" Width="32" Height="64" Offset="0xB750" AddedByScript="true"/>
+        <Texture Name="hairal_niwa2_room_0Tex_00C750" OutName="hairal_niwa2_room_0Tex_00C750" Format="rgba16" Width="32" Height="32" Offset="0xC750" AddedByScript="true"/>
+        <Texture Name="hairal_niwa2_room_0Tex_00CF50" OutName="hairal_niwa2_room_0Tex_00CF50" Format="rgba16" Width="32" Height="32" Offset="0xCF50" AddedByScript="true"/>
+        <Texture Name="hairal_niwa2_room_0Tex_00D750" OutName="hairal_niwa2_room_0Tex_00D750" Format="rgba16" Width="32" Height="64" Offset="0xD750" AddedByScript="true"/>
+        <Texture Name="hairal_niwa2_room_0Tex_00E750" OutName="hairal_niwa2_room_0Tex_00E750" Format="rgba16" Width="32" Height="32" Offset="0xE750" AddedByScript="true"/>
+        <Texture Name="hairal_niwa2_room_0Tex_00EF50" OutName="hairal_niwa2_room_0Tex_00EF50" Format="rgba16" Width="32" Height="32" Offset="0xEF50" AddedByScript="true"/>
+        <Texture Name="hairal_niwa2_room_0Tex_00F750" OutName="hairal_niwa2_room_0Tex_00F750" Format="rgba16" Width="32" Height="32" Offset="0xF750" AddedByScript="true"/>
+        <Texture Name="hairal_niwa2_room_0Tex_00FF50" OutName="hairal_niwa2_room_0Tex_00FF50" Format="rgba16" Width="32" Height="64" Offset="0xFF50" AddedByScript="true"/>
+        <Texture Name="hairal_niwa2_room_0Tex_010F50" OutName="hairal_niwa2_room_0Tex_010F50" Format="rgba16" Width="32" Height="32" Offset="0x10F50" AddedByScript="true"/>
+        <Texture Name="hairal_niwa2_room_0Tex_011750" OutName="hairal_niwa2_room_0Tex_011750" Format="rgba16" Width="32" Height="32" Offset="0x11750" AddedByScript="true"/>
+        <Texture Name="hairal_niwa2_room_0Tex_011F50" OutName="hairal_niwa2_room_0Tex_011F50" Format="rgba16" Width="32" Height="32" Offset="0x11F50" AddedByScript="true"/>
+        <Texture Name="hairal_niwa2_room_0Tex_012750" OutName="hairal_niwa2_room_0Tex_012750" Format="rgba16" Width="32" Height="64" Offset="0x12750" AddedByScript="true"/>
+        <Texture Name="hairal_niwa2_room_0Tex_014BF8" OutName="hairal_niwa2_room_0Tex_014BF8" Format="ia16" Width="32" Height="64" Offset="0x14BF8" AddedByScript="true"/>
+        <Texture Name="hairal_niwa2_room_0Tex_015BF8" OutName="hairal_niwa2_room_0Tex_015BF8" Format="rgba16" Width="32" Height="32" Offset="0x15BF8" AddedByScript="true"/>
+        <Texture Name="hairal_niwa2_room_0Tex_0163F8" OutName="hairal_niwa2_room_0Tex_0163F8" Format="ia4" Width="64" Height="64" Offset="0x163F8" AddedByScript="true"/>
+        <Texture Name="hairal_niwa2_room_0Tex_016BF8" OutName="hairal_niwa2_room_0Tex_016BF8" Format="i8" Width="32" Height="64" Offset="0x16BF8" AddedByScript="true"/>
+        <Texture Name="hairal_niwa2_room_0Tex_0173F8" OutName="hairal_niwa2_room_0Tex_0173F8" Format="ia4" Width="32" Height="128" Offset="0x173F8" AddedByScript="true"/>
         <Room Name="hairal_niwa2_room_0" Offset="0x0"/>
     </File>
 </Root>

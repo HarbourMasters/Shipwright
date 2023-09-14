@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_JYA_DOOR_H
+#define OBJECTS_OBJECT_JYA_DOOR_H 1
 
 #include "align_asset_macro.h"
 
@@ -13,3 +14,5 @@ static const ALIGN_ASSET(2) char gSpiritDoorTex[] = dgSpiritDoorTex;
 
 #define dgSpiritDoorMetalBarsTex "__OTR__objects/object_jya_door/gSpiritDoorMetalBarsTex"
 static const ALIGN_ASSET(2) char gSpiritDoorMetalBarsTex[] = dgSpiritDoorMetalBarsTex;
+
+#endif // OBJECTS_OBJECT_JYA_DOOR_H

@@ -7,7 +7,7 @@
 #include "z_en_tg.h"
 #include "objects/object_mu/object_mu.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnTg_Init(Actor* thisx, PlayState* play);
 void EnTg_Destroy(Actor* thisx, PlayState* play);
@@ -62,7 +62,7 @@ u16 EnTg_GetTextId(PlayState* play, Actor* thisx) {
         return temp;
     }
     // Use a different set of dialogue in Kakariko Village (Adult)
-    if (play->sceneNum == SCENE_SPOT01) {
+    if (play->sceneNum == SCENE_KAKARIKO_VILLAGE) {
         if (this->nextDialogue % 2 != 0) {
             phi = 0x5089;
         } else {

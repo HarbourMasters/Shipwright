@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 #ifndef MODS_H
 #define MODS_H
 
@@ -5,6 +7,8 @@
 extern "C" {
 #endif
 
+void UpdateDirtPathFixState(int32_t sceneNum);
+void UpdateMirrorModeState(int32_t sceneNum);
 void InitMods();
 
 #ifdef __cplusplus

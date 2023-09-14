@@ -1,15 +1,12 @@
 #include "global.h"
 #include "vt.h"
+#include <string.h>
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
-//#include <string.h>
-
-#ifdef _MSC_VER
-extern void* __cdecl memset(_Out_writes_bytes_all_(_Size) void* _Dst, _In_ int _Val, _In_ size_t _Size);
-#endif
-
 s32 D_8012D280 = 1;
+
+void OTRControllerCallback(uint8_t rumble);
 
 OSMesgQueue* PadMgr_LockSerialMesgQueue(PadMgr* padMgr) {
     OSMesgQueue* ctrlrQ = NULL;
@@ -209,6 +206,7 @@ void PadMgr_RumbleSet(PadMgr* padMgr, u8* ctrlrRumbles) {
     padMgr->rumbleOnFrames = 240;
 }
 
+#define PAUSE_BUFFER_INPUT_BLOCK_ID 0
 void PadMgr_ProcessInputs(PadMgr* padMgr) {
     s32 i;
     Input* input;
@@ -286,6 +284,13 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
                 Fault_AddHungupAndCrash(__FILE__, __LINE__);
         }
 
+        // When 3 frames are left on easy pause buffer, re-apply the last held inputs to the prev inputs
+        // to compute the pressed difference. This makes it so previously held inputs are continued as "held",
+        // but new inputs when unpausing are "pressed" out of the pause menu.
+        if (CVarGetInteger("gCheatEasyPauseBufferTimer", 0) == 3) {
+            input->prev.button = CVarGetInteger("gCheatEasyPauseBufferLastInputs", 0);
+        }
+
         buttonDiff = input->prev.button ^ input->cur.button;
         input->press.button |= (u16)(buttonDiff & input->cur.button);
         input->rel.button |= (u16)(buttonDiff & input->prev.button);
@@ -295,31 +300,7 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
     }
 
     uint8_t rumble = (padMgr->rumbleEnable[0] > 0);
-    uint8_t ledColor = 1;
-
-    if (HealthMeter_IsCritical()) {
-        ledColor = 0;
-    } else if (gPlayState) {
-        switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
-            case PLAYER_TUNIC_KOKIRI:
-                ledColor = 1;
-                break;
-            case PLAYER_TUNIC_GORON:
-                ledColor = 2;
-                break;
-            case PLAYER_TUNIC_ZORA:
-                ledColor = 3;
-                break;
-        }
-    }
-
-    OTRControllerCallback(rumble, ledColor);
-
-    if (CVarGetInteger("gPauseBufferBlockInputFrame", 0)) {
-        Controller_BlockGameInput();
-    } else {
-        Controller_UnblockGameInput();
-    }
+    OTRControllerCallback(rumble);
 
     PadMgr_UnlockPadData(padMgr);
 }

@@ -4,7 +4,7 @@
 #include "overlays/actors/ovl_En_Ex_Item/z_en_ex_item.h"
 #include "objects/object_bg/object_bg.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_5 | ACTOR_FLAG_27)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_LOCKON)
 
 typedef enum {
     /* 0 */ CHU_GIRL_EYES_ASLEEP,
@@ -89,6 +89,9 @@ void EnBomBowlMan_Init(Actor* thisx, PlayState* play2) {
 }
 
 void EnBomBowlMan_Destroy(Actor* thisx, PlayState* play) {
+    EnBomBowlMan* this = (EnBomBowlMan*)thisx;
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnBomBowMan_SetupWaitAsleep(EnBomBowlMan* this, PlayState* play) {
@@ -140,7 +143,7 @@ void EnBomBowMan_BlinkAwake(EnBomBowlMan* this, PlayState* play) {
 
         // Check for beaten Dodongo's Cavern if Rando is disabled
         if (!gSaveContext.n64ddFlag) {
-            if ((gSaveContext.eventChkInf[2] & 0x20) || BREG(2)) {
+            if ((Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) || BREG(2)) {
                 this->actor.textId = 0xBF;
             } else {
                 this->actor.textId = 0x7058;
@@ -191,7 +194,7 @@ void EnBomBowMan_CheckBeatenDC(EnBomBowlMan* this, PlayState* play) {
             bombchuBowlingClosed = (INV_CONTENT(explosive) == ITEM_NONE);
         } else {
             // if not rando'd, check if we have beaten Dodongo's Cavern
-            bombchuBowlingClosed = !((gSaveContext.eventChkInf[2] & 0x20) || BREG(2));
+            bombchuBowlingClosed = !((Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) || BREG(2));
         }
         if (bombchuBowlingClosed) {
             this->actionFunc = EnBomBowMan_WaitNotBeatenDC;
@@ -423,7 +426,7 @@ void EnBomBowMan_ChooseShowPrize(EnBomBowlMan* this, PlayState* play) {
         switch (this->prizeSelect) {
             case 0:
                 prizeTemp = EXITEM_BOMB_BAG_BOWLING;
-                if (gSaveContext.itemGetInf[1] & 2) {
+                if (Flags_GetItemGetInf(ITEMGETINF_11)) {
                     prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
                 }
                 break;
@@ -432,7 +435,7 @@ void EnBomBowMan_ChooseShowPrize(EnBomBowlMan* this, PlayState* play) {
                     prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
                 } else {
                     prizeTemp = EXITEM_HEART_PIECE_BOWLING;
-                    if (gSaveContext.itemGetInf[1] & 4) {
+                    if (Flags_GetItemGetInf(ITEMGETINF_12)) {
                         prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
                     }
                 }
@@ -443,7 +446,7 @@ void EnBomBowMan_ChooseShowPrize(EnBomBowlMan* this, PlayState* play) {
             case 3:
                 if (!gSaveContext.n64ddFlag) {
                     prizeTemp = EXITEM_HEART_PIECE_BOWLING;
-                    if (gSaveContext.itemGetInf[1] & 4) {
+                    if (Flags_GetItemGetInf(ITEMGETINF_12)) {
                         prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
                     }
                 } else {

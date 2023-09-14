@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GANON2_H
+#define OBJECTS_OBJECT_GANON2_H 1
 
 #include "align_asset_macro.h"
 
@@ -325,3 +326,6 @@ static const ALIGN_ASSET(2) char gGanonWalkAnim[] = dgGanonWalkAnim;
 
 #define dgGanonWalkToGuardAnim "__OTR__objects/object_ganon2/gGanonWalkToGuardAnim"
 static const ALIGN_ASSET(2) char gGanonWalkToGuardAnim[] = dgGanonWalkToGuardAnim;
+
+
+#endif // OBJECTS_OBJECT_GANON2_H

@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_masterzoora" Segment="6">
+        <Animation Name="gZoraShopkeeperAnim" Offset="0x78C"/>
+    </File>
+</Root>

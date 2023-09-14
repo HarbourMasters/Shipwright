@@ -1,11 +1,11 @@
 #include "SetActorList.h"
 
-namespace Ship {
-void* SetActorList::GetPointer() {
+namespace LUS {
+ActorEntry* SetActorList::GetPointer() {
     return actorList.data();
 }
 
 size_t SetActorList::GetPointerSize() {
 	return actorList.size() * sizeof(ActorEntry);
 }
-} // namespace Ship
+} // namespace LUS

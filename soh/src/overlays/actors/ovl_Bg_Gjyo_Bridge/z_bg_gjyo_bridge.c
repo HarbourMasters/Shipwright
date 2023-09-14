@@ -51,7 +51,7 @@ void BgGjyoBridge_Init(Actor* thisx, PlayState* play) {
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, colHeader);
 
     int bridge = Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE);
-    if (gSaveContext.eventChkInf[4] & 0x2000 || (gSaveContext.n64ddFlag && bridge == RO_BRIDGE_ALWAYS_OPEN)) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_RAINBOW_BRIDGE_BUILT) || (gSaveContext.n64ddFlag && bridge == RO_BRIDGE_ALWAYS_OPEN)) {
         this->actionFunc = func_808787A4;
     } else {
         this->dyna.actor.draw = NULL;
@@ -106,25 +106,25 @@ void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, PlayState* play) {
                 }
                 break;
             case RO_BRIDGE_STONES:
-                if (CheckStoneCount() >= bridgeStoneCount) {
+                if ((CheckStoneCount() + CheckBridgeRewardCount()) >= bridgeStoneCount) {
                     this->actionFunc = BgGjyoBridge_SpawnBridge;
                     func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
                 }
                 break;
             case RO_BRIDGE_MEDALLIONS:
-                if (CheckMedallionCount() >= bridgeMedallionCount) {
+                if ((CheckMedallionCount() + CheckBridgeRewardCount()) >= bridgeMedallionCount) {
                     this->actionFunc = BgGjyoBridge_SpawnBridge;
                     func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
                 }
                 break;
             case RO_BRIDGE_DUNGEON_REWARDS:
-                if ((CheckMedallionCount() + CheckStoneCount()) >= bridgeRewardCount) {
+                if ((CheckMedallionCount() + CheckStoneCount() + CheckBridgeRewardCount()) >= bridgeRewardCount) {
                     this->actionFunc = BgGjyoBridge_SpawnBridge;
                     func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
                 }
                 break;
             case RO_BRIDGE_DUNGEONS:
-                if (CheckDungeonCount() >= bridgeDungeonCount) {
+                if ((CheckDungeonCount() + CheckBridgeRewardCount()) >= bridgeDungeonCount) {
                     this->actionFunc = BgGjyoBridge_SpawnBridge;
                     func_800F595C(NA_BGM_BRIDGE_TO_GANONS);
                 }
@@ -150,7 +150,7 @@ void BgGjyoBridge_SpawnBridge(BgGjyoBridge* this, PlayState* play) {
         (play->csCtx.npcActions[2]->action == 2)) {
         this->dyna.actor.draw = BgGjyoBridge_Draw;
         func_8003EC50(play, &play->colCtx.dyna, this->dyna.bgId);
-        gSaveContext.eventChkInf[4] |= 0x2000;
+        Flags_SetEventChkInf(EVENTCHKINF_RAINBOW_BRIDGE_BUILT);
     }
 }
 

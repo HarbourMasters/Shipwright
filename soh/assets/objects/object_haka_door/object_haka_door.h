@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_HAKA_DOOR_H
+#define OBJECTS_OBJECT_HAKA_DOOR_H 1
 
 #include "align_asset_macro.h"
 
@@ -25,3 +26,5 @@ static const ALIGN_ASSET(2) char object_haka_door_Tex_002700[] = dobject_haka_do
 
 #define dobject_haka_door_DL_003890 "__OTR__objects/object_haka_door/object_haka_door_DL_003890"
 static const ALIGN_ASSET(2) char object_haka_door_DL_003890[] = dobject_haka_door_DL_003890;
+
+#endif // OBJECTS_OBJECT_HAKA_DOOR_H

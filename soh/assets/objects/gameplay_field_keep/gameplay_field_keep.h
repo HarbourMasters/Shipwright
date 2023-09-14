@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_GAMEPLAY_FIELD_KEEP_H
+#define OBJECTS_GAMEPLAY_FIELD_KEEP_H 1
 
 #include "align_asset_macro.h"
 
@@ -184,3 +185,6 @@ static const ALIGN_ASSET(2) char gFieldUnusedFishSkelLimbsLimb_0088CCDL_006458[]
 
 #define dgFieldUnusedFishSkelLimbsLimb_0088D8DL_0061F8 "__OTR__objects/gameplay_field_keep/gFieldUnusedFishSkelLimbsLimb_0088D8DL_0061F8"
 static const ALIGN_ASSET(2) char gFieldUnusedFishSkelLimbsLimb_0088D8DL_0061F8[] = dgFieldUnusedFishSkelLimbsLimb_0088D8DL_0061F8;
+
+
+#endif // OBJECTS_GAMEPLAY_FIELD_KEEP_H

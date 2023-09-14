@@ -9,8 +9,9 @@
 #include "overlays/effects/ovl_Effect_Ss_Dead_Sound/z_eff_ss_dead_sound.h"
 #include "vt.h"
 #include "objects/object_tite/object_tite.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 // EnTite_Idle
 #define vIdleTimer actionVar1
@@ -217,6 +218,8 @@ void EnTite_Destroy(Actor* thisx, PlayState* play) {
         osSyncPrintf("\n\n");
     }
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnTite_SetupIdle(EnTite* this) {
@@ -289,7 +292,7 @@ void EnTite_Attack(EnTite* this, PlayState* play) {
             case TEKTITE_MID_LUNGE:
                 // Continue trajectory until tektite has negative velocity and has landed on ground/water surface
                 // Snap to ground/water surface, or if falling fast dip into the water and slow fall speed
-                this->actor.flags |= ACTOR_FLAG_24;
+                this->actor.flags |= ACTOR_FLAG_PLAY_HIT_SFX;
                 if ((this->actor.bgCheckFlags & 3) ||
                     ((this->actor.params == TEKTITE_BLUE) && (this->actor.bgCheckFlags & 0x20))) {
                     if (this->actor.velocity.y <= 0.0f) {
@@ -364,7 +367,7 @@ void EnTite_Attack(EnTite* this, PlayState* play) {
                     func_800355B8(play, &this->backLeftFootPos);
                 }
             }
-            if (!(this->collider.base.atFlags & AT_HIT) && (this->actor.flags & ACTOR_FLAG_6)) {
+            if (!(this->collider.base.atFlags & AT_HIT) && (this->actor.flags & ACTOR_FLAG_ACTIVE)) {
                 CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
             } else {
                 Player* player = GET_PLAYER(play);
@@ -567,7 +570,7 @@ void EnTite_MoveTowardPlayer(EnTite* this, PlayState* play) {
             } else {
                 this->actor.velocity.y = 10.0f;
                 this->actor.speedXZ = 4.0f;
-                this->actor.flags |= ACTOR_FLAG_24;
+                this->actor.flags |= ACTOR_FLAG_PLAY_HIT_SFX;
                 this->actor.gravity = -1.0f;
                 if ((this->actor.params == TEKTITE_BLUE) && (this->actor.bgCheckFlags & 0x20)) {
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_TEKU_JUMP_WATER);
@@ -578,7 +581,7 @@ void EnTite_MoveTowardPlayer(EnTite* this, PlayState* play) {
         } else {
             this->actor.velocity.y = 10.0f;
             this->actor.speedXZ = 4.0f;
-            this->actor.flags |= ACTOR_FLAG_24;
+            this->actor.flags |= ACTOR_FLAG_PLAY_HIT_SFX;
             this->actor.gravity = -1.0f;
             if ((this->actor.params == TEKTITE_BLUE) && (this->actor.bgCheckFlags & 0x20)) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_TEKU_JUMP_WATER);
@@ -589,7 +592,7 @@ void EnTite_MoveTowardPlayer(EnTite* this, PlayState* play) {
         // If in midair:
     } else {
         // Turn slowly toward player
-        this->actor.flags |= ACTOR_FLAG_24;
+        this->actor.flags |= ACTOR_FLAG_PLAY_HIT_SFX;
         Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 1, 1000, 0);
         if (this->actor.velocity.y >= 6.0f) {
             if (this->actor.bgCheckFlags & 1) {
@@ -764,11 +767,10 @@ void EnTite_FallApart(EnTite* this, PlayState* play) {
     if (BodyBreak_SpawnParts(&this->actor, &this->bodyBreak, play, this->actor.params + 0xB)) {
         if (this->actor.params == TEKTITE_BLUE) {
             Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xE0);
-            gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_BLUE]++;
         } else {
             Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0x40);
-            gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_RED]++;
         }
+        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
         Actor_Kill(&this->actor);
     }
 }

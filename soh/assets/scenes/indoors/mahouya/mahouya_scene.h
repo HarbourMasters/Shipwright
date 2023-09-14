@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INDOORS_MAHOUYA_SCENE_H
+#define INDOORS_MAHOUYA_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -43,3 +44,5 @@ static const ALIGN_ASSET(2) char mahouya_sceneTex_002A20[] = dmahouya_sceneTex_0
 
 #define dmahouya_sceneTex_008A20 "__OTR__scenes/nonmq/mahouya_scene/mahouya_sceneTex_008A20"
 static const ALIGN_ASSET(2) char mahouya_sceneTex_008A20[] = dmahouya_sceneTex_008A20;
+
+#endif // INDOORS_MAHOUYA_SCENE_H

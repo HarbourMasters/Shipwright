@@ -1,21 +1,72 @@
 <Root>
     <File Name="ganon_sonogo_scene" Segment="2">
+        <Texture Name="ganon_sonogo_sceneTex_006710" OutName="ganon_sonogo_sceneTex_006710" Format="ci8" Width="32" Height="64" Offset="0x6710" TlutOffset="0x6300" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_sceneTex_006F10" OutName="ganon_sonogo_sceneTex_006F10" Format="ci8" Width="32" Height="32" Offset="0x6F10" TlutOffset="0x6508" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_sceneTex_007310" OutName="ganon_sonogo_sceneTex_007310" Format="ci8" Width="32" Height="32" Offset="0x7310" TlutOffset="0x6300" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_sceneTex_007710" OutName="ganon_sonogo_sceneTex_007710" Format="ia16" Width="32" Height="32" Offset="0x7710" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_sceneTLUT_006300" OutName="ganon_sonogo_sceneTLUT_006300" Format="rgba16" Width="16" Height="16" Offset="0x6300" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_sceneTLUT_006508" OutName="ganon_sonogo_sceneTLUT_006508" Format="rgba16" Width="16" Height="16" Offset="0x6508" AddedByScript="true"/>
         <Path Name="ganon_sonogo_scenePathList_000254" Offset="0x0254" NumPaths="5"/>
         <Scene Name="ganon_sonogo_scene" Offset="0x0"/>
     </File>
     <File Name="ganon_sonogo_room_0" Segment="3">
+        <Texture Name="ganon_sonogo_room_0Tex_005020" OutName="ganon_sonogo_room_0Tex_005020" Format="ci8" Width="32" Height="64" Offset="0x5020" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6300" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_0Tex_005820" OutName="ganon_sonogo_room_0Tex_005820" Format="ci8" Width="32" Height="32" Offset="0x5820" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6300" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_0Tex_005C20" OutName="ganon_sonogo_room_0Tex_005C20" Format="ci8" Width="32" Height="32" Offset="0x5C20" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6300" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_0Tex_006020" OutName="ganon_sonogo_room_0Tex_006020" Format="ci8" Width="64" Height="32" Offset="0x6020" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6300" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_0Tex_006820" OutName="ganon_sonogo_room_0Tex_006820" Format="ci8" Width="64" Height="32" Offset="0x6820" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6300" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_0Tex_007020" OutName="ganon_sonogo_room_0Tex_007020" Format="ci8" Width="32" Height="32" Offset="0x7020" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6300" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_0Tex_007420" OutName="ganon_sonogo_room_0Tex_007420" Format="ci8" Width="32" Height="32" Offset="0x7420" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6300" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_0Tex_007820" OutName="ganon_sonogo_room_0Tex_007820" Format="ci8" Width="32" Height="32" Offset="0x7820" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6508" AddedByScript="true"/>
         <Room Name="ganon_sonogo_room_0" Offset="0x0"/>
     </File>
     <File Name="ganon_sonogo_room_1" Segment="3">
+        <Texture Name="ganon_sonogo_room_1Tex_004148" OutName="ganon_sonogo_room_1Tex_004148" Format="ci8" Width="32" Height="32" Offset="0x4148" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6300" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_1Tex_004548" OutName="ganon_sonogo_room_1Tex_004548" Format="ci8" Width="32" Height="32" Offset="0x4548" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6300" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_1Tex_004948" OutName="ganon_sonogo_room_1Tex_004948" Format="ci8" Width="32" Height="32" Offset="0x4948" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6300" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_1Tex_004D48" OutName="ganon_sonogo_room_1Tex_004D48" Format="ci8" Width="32" Height="64" Offset="0x4D48" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6508" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_1Tex_005548" OutName="ganon_sonogo_room_1Tex_005548" Format="ci8" Width="32" Height="32" Offset="0x5548" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6508" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_1Tex_005948" OutName="ganon_sonogo_room_1Tex_005948" Format="ci8" Width="32" Height="32" Offset="0x5948" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6508" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_1Tex_005D48" OutName="ganon_sonogo_room_1Tex_005D48" Format="ci8" Width="32" Height="64" Offset="0x5D48" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6508" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_1Tex_006548" OutName="ganon_sonogo_room_1Tex_006548" Format="ci8" Width="32" Height="32" Offset="0x6548" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6508" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_1Tex_006948" OutName="ganon_sonogo_room_1Tex_006948" Format="rgba16" Width="32" Height="64" Offset="0x6948" AddedByScript="true"/>
         <Room Name="ganon_sonogo_room_1" Offset="0x0"/>
     </File>
     <File Name="ganon_sonogo_room_2" Segment="3">
+        <Texture Name="ganon_sonogo_room_2Tex_004A40" OutName="ganon_sonogo_room_2Tex_004A40" Format="ci8" Width="32" Height="64" Offset="0x4A40" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6300" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_2Tex_005240" OutName="ganon_sonogo_room_2Tex_005240" Format="ci8" Width="32" Height="32" Offset="0x5240" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6300" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_2Tex_005640" OutName="ganon_sonogo_room_2Tex_005640" Format="ci8" Width="32" Height="32" Offset="0x5640" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6300" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_2Tex_005A40" OutName="ganon_sonogo_room_2Tex_005A40" Format="ci8" Width="32" Height="64" Offset="0x5A40" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6508" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_2Tex_006240" OutName="ganon_sonogo_room_2Tex_006240" Format="ci8" Width="32" Height="32" Offset="0x6240" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6300" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_2Tex_006640" OutName="ganon_sonogo_room_2Tex_006640" Format="ci8" Width="32" Height="32" Offset="0x6640" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6300" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_2Tex_006A40" OutName="ganon_sonogo_room_2Tex_006A40" Format="ci8" Width="32" Height="32" Offset="0x6A40" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6508" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_2Tex_006E40" OutName="ganon_sonogo_room_2Tex_006E40" Format="ci8" Width="32" Height="32" Offset="0x6E40" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6508" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_2Tex_007240" OutName="ganon_sonogo_room_2Tex_007240" Format="ci8" Width="32" Height="64" Offset="0x7240" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6508" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_2Tex_007A40" OutName="ganon_sonogo_room_2Tex_007A40" Format="ci8" Width="32" Height="64" Offset="0x7A40" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6508" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_2Tex_008240" OutName="ganon_sonogo_room_2Tex_008240" Format="ci8" Width="32" Height="64" Offset="0x8240" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6508" AddedByScript="true"/>
         <Room Name="ganon_sonogo_room_2" Offset="0x0"/>
     </File>
     <File Name="ganon_sonogo_room_3" Segment="3">
+        <Texture Name="ganon_sonogo_room_3Tex_003A38" OutName="ganon_sonogo_room_3Tex_003A38" Format="ci8" Width="32" Height="32" Offset="0x3A38" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6300" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_3Tex_003E38" OutName="ganon_sonogo_room_3Tex_003E38" Format="ci8" Width="64" Height="32" Offset="0x3E38" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6300" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_3Tex_004638" OutName="ganon_sonogo_room_3Tex_004638" Format="ci8" Width="64" Height="32" Offset="0x4638" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6300" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_3Tex_004E38" OutName="ganon_sonogo_room_3Tex_004E38" Format="ci8" Width="32" Height="64" Offset="0x4E38" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6300" AddedByScript="true"/>
         <Room Name="ganon_sonogo_room_3" Offset="0x0"/>
     </File>
     <File Name="ganon_sonogo_room_4" Segment="3">
+        <Texture Name="ganon_sonogo_room_4Tex_004BA8" OutName="ganon_sonogo_room_4Tex_004BA8" Format="ci8" Width="32" Height="64" Offset="0x4BA8" TlutOffset="0x4840" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_4Tex_0053A8" OutName="ganon_sonogo_room_4Tex_0053A8" Format="ci8" Width="16" Height="16" Offset="0x53A8" TlutOffset="0x4B18" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_4Tex_0054A8" OutName="ganon_sonogo_room_4Tex_0054A8" Format="ci8" Width="8" Height="8" Offset="0x54A8" TlutOffset="0x4B18" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_4Tex_0054E8" OutName="ganon_sonogo_room_4Tex_0054E8" Format="rgba16" Width="32" Height="32" Offset="0x54E8" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_4Tex_005CE8" OutName="ganon_sonogo_room_4Tex_005CE8" Format="ci8" Width="32" Height="64" Offset="0x5CE8" TlutOffset="0x4910" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_4Tex_0064E8" OutName="ganon_sonogo_room_4Tex_0064E8" Format="ci8" Width="32" Height="32" Offset="0x64E8" TlutOffset="0x4B18" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_4Tex_0068E8" OutName="ganon_sonogo_room_4Tex_0068E8" Format="ci8" Width="32" Height="32" Offset="0x68E8" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6508" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_4Tex_006CE8" OutName="ganon_sonogo_room_4Tex_006CE8" Format="rgba16" Width="32" Height="32" Offset="0x6CE8" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_4Tex_0074E8" OutName="ganon_sonogo_room_4Tex_0074E8" Format="ci8" Width="32" Height="64" Offset="0x74E8" ExternalTlut="ganon_sonogo_scene" ExternalTlutOffset="0x6508" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_4Tex_007CE8" OutName="ganon_sonogo_room_4Tex_007CE8" Format="rgba16" Width="32" Height="64" Offset="0x7CE8" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_4TLUT_004840" OutName="ganon_sonogo_room_4TLUT_004840" Format="rgba16" Width="16" Height="16" Offset="0x4840" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_4TLUT_004910" OutName="ganon_sonogo_room_4TLUT_004910" Format="rgba16" Width="16" Height="16" Offset="0x4910" AddedByScript="true"/>
+        <Texture Name="ganon_sonogo_room_4TLUT_004B18" OutName="ganon_sonogo_room_4TLUT_004B18" Format="rgba16" Width="16" Height="16" Offset="0x4B18" AddedByScript="true"/>
         <Room Name="ganon_sonogo_room_4" Offset="0x0"/>
     </File>
 </Root>

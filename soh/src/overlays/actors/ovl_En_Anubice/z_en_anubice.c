@@ -9,8 +9,9 @@
 #include "overlays/actors/ovl_En_Anubice_Tag/z_en_anubice_tag.h"
 #include "overlays/actors/ovl_Bg_Hidan_Curtain/z_bg_hidan_curtain.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnAnubice_Init(Actor* thisx, PlayState* play);
 void EnAnubice_Destroy(Actor* thisx, PlayState* play);
@@ -147,7 +148,7 @@ void EnAnubice_Init(Actor* thisx, PlayState* play) {
     this->actor.colChkInfo.mass = MASS_IMMOVABLE;
     this->actor.shape.yOffset = -4230.0f;
     this->focusHeightOffset = 0.0f;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->home = this->actor.world.pos;
     this->actor.targetMode = 3;
     this->actionFunc = EnAnubice_FindFlameCircles;
@@ -167,6 +168,8 @@ void EnAnubice_Destroy(Actor* thisx, PlayState* play) {
             tag->anubis = NULL;
         }
     }
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnAnubice_FindFlameCircles(EnAnubice* this, PlayState* play) {
@@ -194,7 +197,7 @@ void EnAnubice_FindFlameCircles(EnAnubice* this, PlayState* play) {
             }
             this->hasSearchedForFlameCircles = true;
         }
-        this->actor.flags |= ACTOR_FLAG_0;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
         this->actionFunc = EnAnubice_SetupIdle;
     }
 }
@@ -312,7 +315,7 @@ void EnAnubice_SetupDie(EnAnubice* this, PlayState* play) {
     }
 
     this->actionFunc = EnAnubice_Die;
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ANUBIS]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnAnubice_Die(EnAnubice* this, PlayState* play) {
@@ -373,7 +376,7 @@ void EnAnubice_Update(Actor* thisx, PlayState* play) {
                 (fabsf(this->flameCircles[i]->actor.world.pos.z - this->actor.world.pos.z) < 60.0f) &&
                 (flameCircle->timer != 0)) {
                 Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_PROP);
-                this->actor.flags &= ~ACTOR_FLAG_0;
+                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                 Enemy_StartFinishingBlow(play, &this->actor);
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_ANUBIS_DEAD);
                 this->actionFunc = EnAnubice_SetupDie;
@@ -385,7 +388,7 @@ void EnAnubice_Update(Actor* thisx, PlayState* play) {
             this->collider.base.acFlags &= ~AC_HIT;
             if (this->actor.colChkInfo.damageEffect == ANUBICE_DMGEFF_FIRE) {
                 Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_PROP);
-                this->actor.flags &= ~ACTOR_FLAG_0;
+                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                 Enemy_StartFinishingBlow(play, &this->actor);
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_ANUBIS_DEAD);
                 this->actionFunc = EnAnubice_SetupDie;

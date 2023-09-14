@@ -9,6 +9,7 @@
 #include <memory>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
+#include "soh/Enhancements/randomizer/randomizer_tricks.h"
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
@@ -53,7 +54,7 @@ class Randomizer {
     std::unordered_map<RandomizerInf, bool> trialsRequired;
     std::unordered_set<uint16_t> masterQuestDungeons;
     std::unordered_map<RandomizerCheck, u16> merchantPrices;
-    std::unordered_map<RandomizerGet, std::vector<std::string>> EnumToSpoilerfileGetName;
+    std::unordered_map<RandomizerGet, std::array<std::string, 3>> EnumToSpoilerfileGetName;
 
     static Sprite* GetSeedTexture(uint8_t index);
     s16 GetItemModelFromId(s16 itemId);
@@ -87,13 +88,13 @@ class Randomizer {
     GetItemID GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId);
     ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);
-    CustomMessageEntry GetWarpSongMessage(u16 textId, bool mysterious = false);
-    CustomMessageEntry GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious = false);
-    CustomMessageEntry GetCursedSkullMessage(s16 params);
-    CustomMessageEntry GetGoronMessage(u16 index);
-    CustomMessageEntry GetMapGetItemMessageWithHint(GetItemEntry itemEntry);
+    CustomMessage GetWarpSongMessage(u16 textId, bool mysterious = false);
+    CustomMessage GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious = false);
+    CustomMessage GetCursedSkullMessage(s16 params);
+    CustomMessage GetGoronMessage(u16 index);
+    CustomMessage GetMapGetItemMessageWithHint(GetItemEntry itemEntry);
     static void CreateCustomMessages();
-    static CustomMessageEntry GetRupeeMessage(u16 rupeeTextId);
+    static CustomMessage GetRupeeMessage(u16 rupeeTextId);
     bool CheckContainsVanillaItem(RandomizerCheck randoCheck);
 };
 
@@ -101,7 +102,6 @@ class Randomizer {
 extern "C" {
 #endif
 
-void Rando_Init(void);
 bool GenerateRandomizer(std::string seed = "");
 
 #ifdef __cplusplus

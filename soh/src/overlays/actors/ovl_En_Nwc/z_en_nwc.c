@@ -8,7 +8,7 @@
 #include "objects/object_nwc/object_nwc.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnNwc_Init(Actor* thisx, PlayState* play);
 void EnNwc_Destroy(Actor* thisx, PlayState* play);

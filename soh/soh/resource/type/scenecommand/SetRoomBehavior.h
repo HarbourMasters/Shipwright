@@ -7,19 +7,19 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
-namespace Ship {
+namespace LUS {
 typedef struct {
   int8_t gameplayFlags;
   int32_t gameplayFlags2;
 } RoomBehavior;
 
-class SetRoomBehavior : public SceneCommand {
+class SetRoomBehavior : public SceneCommand<RoomBehavior> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    RoomBehavior* GetPointer();
     size_t GetPointerSize();
 
     RoomBehavior roomBehavior;
 };
-}; // namespace Ship
+}; // namespace LUS

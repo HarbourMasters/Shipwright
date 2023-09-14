@@ -6,7 +6,10 @@
 
 #include "z_en_si.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_9)
+extern void func_8083C148(Player*, PlayState*);
+extern void func_80078884(uint16_t);
+
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOOKSHOT_DRAGS)
 
 void EnSi_Init(Actor* thisx, PlayState* play);
 void EnSi_Destroy(Actor* thisx, PlayState* play);
@@ -88,7 +91,7 @@ s32 func_80AFB748(EnSi* this, PlayState* play) {
 void func_80AFB768(EnSi* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_13)) {
+    if (CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_HOOKSHOT_ATTACHED)) {
         this->actionFunc = func_80AFB89C;
     } else {
         Math_SmoothStepToF(&this->actor.scale.x, 0.25f, 0.4f, 1.0f, 0.0f);
@@ -146,7 +149,7 @@ void func_80AFB89C(EnSi* this, PlayState* play) {
     Actor_SetScale(&this->actor, this->actor.scale.x);
     this->actor.shape.rot.y += 0x400;
 
-    if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_13)) {
+    if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_HOOKSHOT_ATTACHED)) {
         if (gSaveContext.n64ddFlag) {
             Randomizer_UpdateSkullReward(this, play);
         } else {
@@ -181,6 +184,12 @@ void func_80AFB950(EnSi* this, PlayState* play) {
     } else {
         SET_GS_FLAGS((this->actor.params & 0x1F00) >> 8, this->actor.params & 0xFF);
         Actor_Kill(&this->actor);
+        if (gSaveContext.pendingIceTrapCount > 0 && player->heldItemId == 11) {
+            player->actor.freezeTimer = 0;
+            func_8083C148(GET_PLAYER(play), play);
+            func_80078884(NA_SE_SY_CAMERA_ZOOM_UP);
+            player->currentYaw = player->actor.shape.rot.y;
+        }
     }
 }
 

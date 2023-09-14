@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OVERLAYS_OVL_EN_STH_H
+#define OVERLAYS_OVL_EN_STH_H 1
 
 #include "align_asset_macro.h"
 
@@ -34,3 +35,5 @@ static const ALIGN_ASSET(2) char sChildDanceAnim[] = dsChildDanceAnim;
 
 #define dsParentDanceAnim "__OTR__overlays/ovl_En_Sth/sParentDanceAnim"
 static const ALIGN_ASSET(2) char sParentDanceAnim[] = dsParentDanceAnim;
+
+#endif // OVERLAYS_OVL_EN_STH_H

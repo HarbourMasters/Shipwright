@@ -1,5 +1,6 @@
 #include "global.h"
 #include "vt.h"
+#include <assert.h>
 
 #define MARKER_ESCAPE 0x00
 #define MARKER_SOI 0xD8
@@ -250,7 +251,7 @@ s32 Jpeg_Decode(void* data, void* zbuffer, void* work, u32 workSize) {
 
     time = osGetTime();
     // (?) I guess MB_SIZE=0x180, PROC_OF_MBS=5 which means data is not a part of JpegWork
-    ASSERT(workSize >= sizeof(JpegWork));
+    assert(workSize >= sizeof(JpegWork));
 
     osCreateMesgQueue(&ctx.mq, &ctx.msg, 1);
     MsgEvent_SendNullTask();

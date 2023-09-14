@@ -1,11 +1,11 @@
 #include "SetCameraSettings.h"
 
-namespace Ship {
-void* SetCameraSettings::GetPointer() {
+namespace LUS {
+CameraSettings* SetCameraSettings::GetPointer() {
     return &settings;
 }
 
 size_t SetCameraSettings::GetPointerSize() {
 	return sizeof(CameraSettings);
 }
-} // namespace Ship
+} // namespace LUS

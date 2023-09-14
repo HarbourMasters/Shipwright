@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_OF1D_MAP_H
+#define OBJECTS_OBJECT_OF1D_MAP_H 1
 
 #include "align_asset_macro.h"
 
@@ -166,3 +167,5 @@ static const ALIGN_ASSET(2) char object_oF1d_mapTex_00F7C0[] = dobject_oF1d_mapT
 
 #define dobject_oF1d_mapTex_00F6C0 "__OTR__objects/object_oF1d_map/object_oF1d_mapTex_00F6C0"
 static const ALIGN_ASSET(2) char object_oF1d_mapTex_00F6C0[] = dobject_oF1d_mapTex_00F6C0;
+
+#endif // OBJECTS_OBJECT_OF1D_MAP_H

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_MAMENOKI_H
+#define OBJECTS_OBJECT_MAMENOKI_H 1
 
 #include "align_asset_macro.h"
 
@@ -34,3 +35,5 @@ static const ALIGN_ASSET(2) char gMagicBeanStemTex[] = dgMagicBeanStemTex;
 
 #define dgMagicBeanPlatformCol "__OTR__objects/object_mamenoki/gMagicBeanPlatformCol"
 static const ALIGN_ASSET(2) char gMagicBeanPlatformCol[] = dgMagicBeanPlatformCol;
+
+#endif // OBJECTS_OBJECT_MAMENOKI_H

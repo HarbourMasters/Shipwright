@@ -5,7 +5,7 @@
 #include "Resource.h"
 #include <libultraship/libultra/types.h>
 
-namespace Ship {
+namespace LUS {
 // TODO: we've moved away from using classes for this stuff
 class MessageEntry
 {
@@ -16,13 +16,15 @@ public:
 	std::string msg;
 };
 
-class Text : public Resource {
+class Text : public Resource<MessageEntry> {
 public:
   using Resource::Resource;
 
-  void* GetPointer();
-  size_t GetPointerSize();
+    Text() : Resource(std::shared_ptr<ResourceInitData>()) {}
 
-  std::vector<MessageEntry> messages;
+    MessageEntry* GetPointer();
+    size_t GetPointerSize();
+
+    std::vector<MessageEntry> messages;
 };
-}; // namespace Ship
+}; // namespace LUS

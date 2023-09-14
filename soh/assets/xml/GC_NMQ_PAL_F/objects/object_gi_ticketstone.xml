@@ -1,5 +1,7 @@
 <Root>
     <File Name="object_gi_ticketstone" Segment="6">
+        <Texture Name="object_gi_ticketstoneTex_000000" OutName="object_gi_ticketstoneTex_000000" Format="i4" Width="48" Height="24" Offset="0x0" AddedByScript="true"/>
+        <Texture Name="object_gi_ticketstoneTex_000240" OutName="object_gi_ticketstoneTex_000240" Format="i8" Width="32" Height="24" Offset="0x240" AddedByScript="true"/>
         <DList Name="gGiClaimCheckDL" Offset="0x0F00"/>
         <DList Name="gGiClaimCheckWritingDL" Offset="0x1188"/>
     </File>

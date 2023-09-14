@@ -7,19 +7,19 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
-namespace Ship {
+namespace LUS {
 typedef struct {
   int8_t cameraMovement;
   int32_t worldMapArea;
 } CameraSettings;
 
-class SetCameraSettings : public SceneCommand {
+class SetCameraSettings : public SceneCommand<CameraSettings> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    CameraSettings* GetPointer();
     size_t GetPointerSize();
 
     CameraSettings settings;
 };
-}; // namespace Ship
+}; // namespace LUS

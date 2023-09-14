@@ -5,7 +5,7 @@ void OTRExporter_Blob::Save(ZResource* res, const fs::path& outPath, BinaryWrite
 {
 	ZBlob* blob = (ZBlob*)res;
 	
-	WriteHeader(blob, outPath, writer, Ship::ResourceType::Blob);
+	WriteHeader(blob, outPath, writer, LUS::ResourceType::Blob);
 
 	auto start = std::chrono::steady_clock::now();
 

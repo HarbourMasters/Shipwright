@@ -8,16 +8,16 @@
 // #include <libultraship/libultra/types.h>
 #include "soh/resource/type/Path.h"
 
-namespace Ship {
+namespace LUS {
 
-class SetPathways : public SceneCommand {
+class SetPathways : public SceneCommand<PathData*> {
   public:
     using SceneCommand::SceneCommand;
 
-    void* GetPointer();
+    PathData** GetPointer();
     size_t GetPointerSize();
 
     uint32_t numPaths;
-    std::vector<std::shared_ptr<Ship::Path>> paths;
+    std::vector<PathData*> paths;
 };
-}; // namespace Ship
+}; // namespace LUS

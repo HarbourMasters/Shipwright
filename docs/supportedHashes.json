@@ -1,0 +1,26 @@
+[
+    {
+        "name": "PAL 1.1",
+        "sha1": "cfbb98d392e4a9d39da8285d10cbef3974c2f012"
+    },
+    {
+        "name": "PAL GC",
+        "sha1": "0227d7c0074f2d0ac935631990da8ec5914597b4"
+    },
+    {
+        "name": "PAL GC (Debug)",
+        "sha1": "cee6bc3c2a634b41728f2af8da54d9bf8cc14099"
+    },
+    {
+        "name": "PAL MQ (Debug)",
+        "sha1": "079b855b943d6ad8bd1eb026c0ed169ecbdac7da"
+    },
+    {
+        "name": "PAL MQ (Debug)",
+        "sha1": "50bebedad9e0f10746a52b07239e47fa6c284d03"
+    },
+    {
+        "name": "PAL MQ (Debug)",
+        "sha1": "cfecfdc58d650e71a200c81f033de4e6d617a9f6"
+    }
+]

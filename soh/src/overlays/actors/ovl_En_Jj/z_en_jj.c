@@ -8,7 +8,7 @@
 #include "objects/object_jj/object_jj.h"
 #include "overlays/actors/ovl_Eff_Dust/z_eff_dust.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 typedef enum {
     /* 0 */ JABUJABU_EYE_OPEN,
@@ -97,7 +97,7 @@ void EnJj_Init(Actor* thisx, PlayState* play2) {
             this->extraBlinkCounter = 0;
             this->extraBlinkTotal = 0;
 
-            if (gSaveContext.eventChkInf[3] & 0x400) { // Fish given
+            if (Flags_GetEventChkInf(EVENTCHKINF_OFFERED_FISH_TO_JABU_JABU)) { // Fish given
                 EnJj_SetupAction(this, EnJj_WaitToOpenMouth);
             } else {
                 EnJj_SetupAction(this, EnJj_WaitForFish);
@@ -143,6 +143,8 @@ void EnJj_Destroy(Actor* thisx, PlayState* play) {
         case JABUJABU_MAIN:
             DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
             Collider_DestroyCylinder(play, &this->collider);
+
+            ResourceMgr_UnregisterSkeleton(&this->skelAnime);
             break;
 
         case JABUJABU_COLLISION:
@@ -220,7 +222,7 @@ void EnJj_BeginCutscene(EnJj* this, PlayState* play) {
         gSaveContext.cutsceneTrigger = 1;
         func_8003EBF8(play, &play->colCtx.dyna, bodyCollisionActor->bgId);
         func_8005B1A4(GET_ACTIVE_CAM(play));
-        gSaveContext.eventChkInf[3] |= 0x400;
+        Flags_SetEventChkInf(EVENTCHKINF_OFFERED_FISH_TO_JABU_JABU);
         func_80078884(NA_SE_SY_CORRECT_CHIME);
     }
 }

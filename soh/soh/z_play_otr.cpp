@@ -1,5 +1,5 @@
 #include "OTRGlobals.h"
-#include <ResourceManager.h>
+#include <libultraship/libultraship.h>
 #include "soh/resource/type/Scene.h"
 #include <Utils/StringHelper.h>
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
@@ -10,12 +10,12 @@
 extern "C" void Play_InitScene(PlayState * play, s32 spawn);
 extern "C" void Play_InitEnvironment(PlayState * play, s16 skyboxId);
 void OTRPlay_InitScene(PlayState* play, s32 spawn);
-s32 OTRScene_ExecuteCommands(PlayState* play, Ship::Scene* scene);
+s32 OTRScene_ExecuteCommands(PlayState* play, LUS::Scene* scene);
 
-//Ship::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
-Ship::Resource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
+//LUS::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
+LUS::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
 {
-    auto res = OTRGlobals::Instance->context->GetResourceManager()->LoadResource(fileName);
+    auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResource(fileName);
     return res.get();
 }
 
@@ -50,7 +50,6 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
 
     scene->unk_13 = 0;
 
-    //ASSERT(play->sceneSegment != NULL);
     //gSegments[2] = VIRTUAL_TO_PHYSICAL(play->sceneSegment);
 
     OTRPlay_InitScene(play, spawn);
@@ -74,11 +73,15 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     func_80096FD4(play, &play->roomCtx.curRoom);
     YREG(15) = 0;
     gSaveContext.worldMapArea = 0;
-    OTRScene_ExecuteCommands(play, (Ship::Scene*)play->sceneSegment);
+    OTRScene_ExecuteCommands(play, (LUS::Scene*)play->sceneSegment);
     Play_InitEnvironment(play, play->skyboxId);
-    /* auto data = static_cast<Ship::Vertex*>(Ship::Window::GetInstance()
+    // Unpause the timer for Boss Rush when the scene loaded isn't the Chamber of Sages.
+    if (gSaveContext.isBossRush && play->sceneNum != SCENE_CHAMBER_OF_THE_SAGES) {
+        gSaveContext.isBossRushPaused = 0;
+    }
+    /* auto data = static_cast<LUS::Vertex*>(LUS::Context::GetInstance()
                                                ->GetResourceManager()
-                                               ->LoadResource("object_link_child\\object_link_childVtx_01FE08")
+                                               ->ResourceLoad("object_link_child\\object_link_childVtx_01FE08")
                                                .get());
 
     auto data2 = ResourceMgr_LoadVtxByCRC(0x68d4ea06044e228f);*/

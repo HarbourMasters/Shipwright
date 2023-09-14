@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_RELAY_OBJECTS_H
+#define OBJECTS_OBJECT_RELAY_OBJECTS_H 1
 
 #include "align_asset_macro.h"
 
@@ -25,3 +26,5 @@ static const ALIGN_ASSET(2) char gDampeRaceDoorCol[] = dgDampeRaceDoorCol;
 
 #define dgWindmillRotatingPlatformCol "__OTR__objects/object_relay_objects/gWindmillRotatingPlatformCol"
 static const ALIGN_ASSET(2) char gWindmillRotatingPlatformCol[] = dgWindmillRotatingPlatformCol;
+
+#endif // OBJECTS_OBJECT_RELAY_OBJECTS_H

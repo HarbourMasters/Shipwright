@@ -1,11 +1,11 @@
 #include "EndMarker.h"
 
-namespace Ship {
-void* EndMarker::GetPointer() {
+namespace LUS {
+Marker* EndMarker::GetPointer() {
     return &endMarker;
 }
 
 size_t EndMarker::GetPointerSize() {
 	return sizeof(Marker);
 }
-} // namespace Ship
+} // namespace LUS
