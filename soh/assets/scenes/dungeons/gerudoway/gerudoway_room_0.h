@@ -3,6 +3,12 @@
 
 #include "align_asset_macro.h"
 
+#define dgerudoway_room_0Tex_002FB0 "__OTR__scenes/nonmq/gerudoway_scene/gerudoway_room_0Tex_002FB0"
+static const ALIGN_ASSET(2) char gerudoway_room_0Tex_002FB0[] = dgerudoway_room_0Tex_002FB0;
+
+#define dgerudoway_room_0Tex_003FB0 "__OTR__scenes/nonmq/gerudoway_scene/gerudoway_room_0Tex_003FB0"
+static const ALIGN_ASSET(2) char gerudoway_room_0Tex_003FB0[] = dgerudoway_room_0Tex_003FB0;
+
 #define dgerudoway_room_0DL_002B58 "__OTR__scenes/nonmq/gerudoway_scene/gerudoway_room_0DL_002B58"
 static const ALIGN_ASSET(2) char gerudoway_room_0DL_002B58[] = dgerudoway_room_0DL_002B58;
 
@@ -26,12 +32,6 @@ static const ALIGN_ASSET(2) char gerudoway_room_0DL_002208[] = dgerudoway_room_0
 
 #define dgerudoway_room_0DL_000E70 "__OTR__scenes/nonmq/gerudoway_scene/gerudoway_room_0DL_000E70"
 static const ALIGN_ASSET(2) char gerudoway_room_0DL_000E70[] = dgerudoway_room_0DL_000E70;
-
-#define dgerudoway_room_0Tex_002FB0 "__OTR__scenes/nonmq/gerudoway_scene/gerudoway_room_0Tex_002FB0"
-static const ALIGN_ASSET(2) char gerudoway_room_0Tex_002FB0[] = dgerudoway_room_0Tex_002FB0;
-
-#define dgerudoway_room_0Tex_003FB0 "__OTR__scenes/nonmq/gerudoway_scene/gerudoway_room_0Tex_003FB0"
-static const ALIGN_ASSET(2) char gerudoway_room_0Tex_003FB0[] = dgerudoway_room_0Tex_003FB0;
 
 
 #endif // DUNGEONS_GERUDOWAY_ROOM_0_H
