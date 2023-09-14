@@ -220,10 +220,10 @@ void SaveManager::LoadRandomizerVersion2() {
     memcpy(gSaveContext.gregHintText, gregHintText.c_str(), gregHintText.length());
     std::string sheikText;
     SaveManager::Instance->LoadData("sheikText", sheikText);
-    memcpy(gSaveContext.sheikText, sheikText.c_str(), sheikText.length());
+    memcpy(gSaveContext.sheikText, sheikText.c_str(), sheikText.length() + 1);
     std::string sariaText;
     SaveManager::Instance->LoadData("sariaText", sariaText);
-    memcpy(gSaveContext.sariaText, sariaText.c_str(), sariaText.length());
+    memcpy(gSaveContext.sariaText, sariaText.c_str(), sariaText.length() + 1);
     std::string warpMinuetText;
     SaveManager::Instance->LoadData("warpMinuetText", warpMinuetText);
     memcpy(gSaveContext.warpMinuetText, warpMinuetText.c_str(), warpMinuetText.length());
