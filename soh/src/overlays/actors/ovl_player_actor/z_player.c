@@ -7923,6 +7923,13 @@ s32 func_8084269C(PlayState* play, Player* this) {
     return 0;
 }
 
+// todo: put this somewhere better idk where yet
+typedef enum {
+    DEKU_STICK_STANDARD,
+    DEKU_STICK_UNBREAKABLE,
+    DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE,
+} DekuStickCheat;
+
 void func_8084279C(Player* this, PlayState* play) {
     func_80832CB0(play, this, D_80853914[PLAYER_ANIMGROUP_33][this->modelAnimType]);
 
@@ -7998,7 +8005,7 @@ void func_80842A28(PlayState* play, Player* this) {
 }
 
 void func_80842A88(PlayState* play, Player* this) {
-    if (!CVar_GetS32("gUltraDekuStick", 0)) {
+    if (CVarGetInteger("gDekuStickCheat", DEKU_STICK_STANDARD) == DEKU_STICK_STANDARD) {
         Inventory_ChangeAmmo(ITEM_STICK, -1);
         func_80835F44(play, this, ITEM_NONE);
     }
@@ -8006,7 +8013,7 @@ void func_80842A88(PlayState* play, Player* this) {
 
 s32 func_80842AC4(PlayState* play, Player* this) {
     if ((this->heldItemAction == PLAYER_IA_STICK) && (this->unk_85C > 0.5f)) {
-        if (AMMO(ITEM_STICK) != 0 && !CVar_GetS32("gUltraDekuStick", 0)) {
+        if (AMMO(ITEM_STICK) != 0 && CVarGetInteger("gDekuStickCheat", DEKU_STICK_STANDARD) == DEKU_STICK_STANDARD) {
             EffectSsStick_Spawn(play, &this->bodyPartsPos[PLAYER_BODYPART_R_HAND],
                                 this->actor.shape.rot.y + 0x8000);
             this->unk_85C = 0.5f;
@@ -10353,29 +10360,29 @@ static Color_RGBA8 D_808547C0 = { 255, 50, 0, 0 };
 
 void func_80848A04(PlayState* play, Player* this) {
     f32 temp;
-    f32 temp2;
 
-    if(CVar_GetS32("gUltraDekuStick", 0)){
-        temp2 = 1.0f;           // Secondary temporary variable to use with the alleged draw flame function
+    if (CVarGetInteger("gDekuStickCheat", DEKU_STICK_STANDARD) == DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE) {
+        f32 temp2 = 1.0f;       // Secondary temporary variable to use with the alleged draw flame function
         this->unk_860 = 200;    // Keeps the stick's flame lit
         this->unk_85C = 1.0f;   // Ensures the stick is the proper length
-        func_8002836C(play, &this->swordInfo[0].tip, &D_808547A4, &D_808547B0, &D_808547BC, &D_808547C0, temp2 * 200.0f,
-                    0, 8);      // I believe this draws the flame effect
+        func_8002836C(play, &this->meleeWeaponInfo[0].tip, &D_808547A4, &D_808547B0, &D_808547BC, &D_808547C0, temp2 * 200.0f,
+                      0, 8);      // I believe this draws the flame effect
     }
-    if (this->unk_85C == 0.0f && !CVar_GetS32("gUltraDekuStick", 0)) {
+
+    if (this->unk_85C == 0.0f && CVarGetInteger("gDekuStickCheat", DEKU_STICK_STANDARD) == DEKU_STICK_STANDARD) {
         func_80835F44(play, this, 0xFF);
         return;
     }
 
     temp = 1.0f;
-    if (DECR(this->unk_860) == 0 && !CVar_GetS32("gUltraDekuStick", 0)) {
+    if (DECR(this->unk_860) == 0 && CVarGetInteger("gDekuStickCheat", DEKU_STICK_STANDARD) == DEKU_STICK_STANDARD) {
         Inventory_ChangeAmmo(ITEM_STICK, -1);
         this->unk_860 = 1;
         temp = 0.0f;
         this->unk_85C = temp;
     } else if (this->unk_860 > 200) {
         temp = (210 - this->unk_860) / 10.0f;
-    } else if (this->unk_860 < 20 && !CVar_GetS32("gUltraDekuStick", 0)) {
+    } else if (this->unk_860 < 20 && CVarGetInteger("gDekuStickCheat", DEKU_STICK_STANDARD) == DEKU_STICK_STANDARD) {
         temp = this->unk_860 / 20.0f;
         this->unk_85C = temp;
     }
@@ -10637,7 +10644,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     func_808473D4(play, this);
     func_80836BEC(this, play);
 
-    if ((this->heldItemAction == PLAYER_IA_STICK) && ((this->unk_860 != 0) || CVar_GetS32("gUltraDekuStick", 0))) {
+    if ((this->heldItemAction == PLAYER_IA_STICK) && ((this->unk_860 != 0) || CVarGetInteger("gDekuStickCheat", DEKU_STICK_STANDARD) == DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE)) {
         func_80848A04(play, this);
     } else if ((this->heldItemAction == PLAYER_IA_FISHING_POLE) && (this->unk_860 < 0)) {
         this->unk_860++;
