@@ -994,6 +994,6 @@ void InitMods() {
     RegisterMirrorModeHandler();
     RegisterEnemyDefeatCounts();
     RegisterAltTrapTypes();
-    RegisterSheikSpawn();
+    RegisterRandomizerSheikSpawn();
     NameTag_RegisterHooks();
 }
