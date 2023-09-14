@@ -953,7 +953,7 @@ void RegisterAltTrapTypes() {
     });
 }
 
-void RegisterSheikSpawn() {
+void RegisterRandomizerSheikSpawn() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
         if (!gPlayState) return;
         bool canSheik = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIAL_COUNT) != RO_GANONS_TRIALS_SKIP;
