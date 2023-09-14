@@ -7923,13 +7923,6 @@ s32 func_8084269C(PlayState* play, Player* this) {
     return 0;
 }
 
-// todo: put this somewhere better idk where yet
-typedef enum {
-    DEKU_STICK_STANDARD,
-    DEKU_STICK_UNBREAKABLE,
-    DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE,
-} DekuStickCheat;
-
 void func_8084279C(Player* this, PlayState* play) {
     func_80832CB0(play, this, D_80853914[PLAYER_ANIMGROUP_33][this->modelAnimType]);
 

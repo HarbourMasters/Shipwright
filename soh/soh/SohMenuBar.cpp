@@ -1241,7 +1241,7 @@ void DrawCheatsMenu() {
         UIWidgets::PaddedEnhancementCheckbox("Time Sync", "gTimeSync", true, false);
         UIWidgets::Tooltip("This syncs the ingame time with the real world time");
         ImGui::Text("Deku Sticks:");
-        UIWidgets::EnhancementCombobox("gDekuStickCheat", DekuStickCheat, 0);
+        UIWidgets::EnhancementCombobox("gDekuStickCheat", DekuStickCheat, DEKU_STICK_STANDARD);
         UIWidgets::PaddedEnhancementCheckbox("No ReDead/Gibdo Freeze", "gNoRedeadFreeze", true, false);
         UIWidgets::Tooltip("Prevents ReDeads and Gibdos from being able to freeze you with their scream");
         UIWidgets::Spacer(2.0f);
