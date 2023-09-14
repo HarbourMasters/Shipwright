@@ -130,40 +130,40 @@ typedef enum {
 } EnKoAnimation;
 
 static AnimationInfo sAnimationInfo[] = {
-    { &gObjOsAnim_8F6C, 1.0f, 2.0f, 14.0f, ANIMMODE_LOOP_PARTIAL, 0.0f },
-    { &gObjOsAnim_8F6C, 0.0f, 1.0f, 1.0f, ANIMMODE_LOOP_PARTIAL, 0.0f },
-    { &gObjOsAnim_9B64, 0.0f, 0.0f, 0.0f, ANIMMODE_ONCE, 0.0f },
-    { &gObjOsAnim_9B64, 0.0f, 1.0f, 1.0f, ANIMMODE_ONCE, 0.0f },
-    { &gObjOsAnim_9B64, 0.0f, 2.0f, 2.0f, ANIMMODE_ONCE, 0.0f },
-    { &gObjOsAnim_62DC, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_62DC, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, -10.0f },
-    { &gObjOsAnim_5808, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, -10.0f },
-    { &gObjOsAnim_7830, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_8178, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_65E0, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_879C, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_7FFC, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_80B4, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_91AC, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_6F9C, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_7064, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_7120, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_7F38, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_7D94, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_6EE0, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_98EC, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_90EC, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_982C, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_9274, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_99A4, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_9028, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_7E64, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_7454, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
-    { &gObjOsAnim_8F6C, 0.0f, 1.0f, 1.0f, ANIMMODE_LOOP_PARTIAL, -8.0f },
-    { &gObjOsAnim_7D94, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, -8.0f },
-    { &gObjOsAnim_879C, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, -8.0f },
-    { &gObjOsAnim_6A60, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, -8.0f },
-    { &gObjOsAnim_7830, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, -8.0f },
+    { &gKokiriBlockingAnim, 1.0f, 2.0f, 14.0f, ANIMMODE_LOOP_PARTIAL, 0.0f },
+    { &gKokiriBlockingAnim, 0.0f, 1.0f, 1.0f, ANIMMODE_LOOP_PARTIAL, 0.0f },
+    { &gKokiriStandUpAnim, 0.0f, 0.0f, 0.0f, ANIMMODE_ONCE, 0.0f },
+    { &gKokiriStandUpAnim, 0.0f, 1.0f, 1.0f, ANIMMODE_ONCE, 0.0f },
+    { &gKokiriStandUpAnim, 0.0f, 2.0f, 2.0f, ANIMMODE_ONCE, 0.0f },
+    { &gKokiriIdleAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriIdleAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, -10.0f },
+    { &gKokiriLaughingAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, -10.0f },
+    { &gKokiriLiftingRockAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriRecliningStandingAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriRecliningSittingUpAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriPunchingAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriStandingHandOnChestAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriStandingHandsOnHipsAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriSittingAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriSittingCrossedArmsLegsAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriStandingApprehensiveAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriLeaningOnArmsAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriRecliningLeaningBackAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriCuttingGrassAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriBackflipAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriLeaningForwardAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriStandingRightArmUpAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriStandingArmsBehindBackAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriStandingAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriSittingCrossedLegsAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriSittingArmsUpAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriSittingHeadOnHandAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriSittingDiggingAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, 0.0f },
+    { &gKokiriBlockingAnim, 0.0f, 1.0f, 1.0f, ANIMMODE_LOOP_PARTIAL, -8.0f },
+    { &gKokiriCuttingGrassAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, -8.0f },
+    { &gKokiriPunchingAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, -8.0f },
+    { &gKokiriWipingForeheadAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, -8.0f },
+    { &gKokiriLiftingRockAnim, 1.0f, 0.0f, -1.0f, ANIMMODE_LOOP, -8.0f },
 };
 
 static u8 sOsAnimeLookup[13][5] = {
@@ -288,15 +288,15 @@ u16 func_80A96FD0(PlayState* play, Actor* thisx) {
     EnKo* this = (EnKo*)thisx;
     switch (ENKO_TYPE) {
         case ENKO_TYPE_CHILD_FADO:
-            if (gSaveContext.eventChkInf[4] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 return 0x10DA;
             }
             if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
                 return 0x10D9;
             }
-            return (gSaveContext.infTable[11] & 0x80) ? 0x10D8 : 0x10D7;
+            return (Flags_GetInfTable(INFTABLE_B7)) ? 0x10D8 : 0x10D7;
         case ENKO_TYPE_CHILD_0:
-            if (gSaveContext.eventChkInf[4] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 return 0x1025;
             }
             if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
@@ -304,62 +304,62 @@ u16 func_80A96FD0(PlayState* play, Actor* thisx) {
             }
             return 0x1004;
         case ENKO_TYPE_CHILD_1:
-            if (gSaveContext.eventChkInf[4] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 return 0x1023;
             }
             if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
                 return 0x1043;
             }
-            if (gSaveContext.infTable[1] & 0x4000) {
+            if (Flags_GetInfTable(INFTABLE_1E)) {
                 return 0x1006;
             }
             return 0x1005;
         case ENKO_TYPE_CHILD_2:
-            if (gSaveContext.eventChkInf[4] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 return 0x1022;
             }
             return 0x1007;
         case ENKO_TYPE_CHILD_3:
-            if (gSaveContext.eventChkInf[4] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 return 0x1021;
             }
             if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
                 return 0x1044;
             }
-            if (gSaveContext.infTable[2] & 4) {
+            if (Flags_GetInfTable(INFTABLE_22)) {
                 return 0x1009;
             }
             return 0x1008;
         case ENKO_TYPE_CHILD_4:
-            if (gSaveContext.eventChkInf[4] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 return 0x1097;
             }
             if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
                 return 0x1042;
             }
-            if (gSaveContext.infTable[2] & 0x10) {
+            if (Flags_GetInfTable(INFTABLE_24)) {
                 return 0x100B;
             }
             return 0x100A;
         case ENKO_TYPE_CHILD_5:
-            if (gSaveContext.eventChkInf[4] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 return 0x10B0;
             }
             if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
                 return 0x1043;
             }
-            if (gSaveContext.infTable[2] & 0x40) {
+            if (Flags_GetInfTable(INFTABLE_26)) {
                 return 0x100D;
             }
             return 0x100C;
         case ENKO_TYPE_CHILD_6:
-            if (gSaveContext.eventChkInf[4] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 return 0x10B5;
             }
             if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
                 return 0x1043;
             }
-            if (gSaveContext.infTable[2] & 0x100) {
+            if (Flags_GetInfTable(INFTABLE_28)) {
                 return 0x1019;
             }
             return 0x100E;
@@ -395,7 +395,7 @@ u16 func_80A97338(PlayState* play, Actor* thisx) {
             if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
                 return 0x1072;
             }
-            if (gSaveContext.infTable[4] & 2) {
+            if (Flags_GetInfTable(INFTABLE_41)) {
                 return 0x1056;
             }
             return 0x1055;
@@ -408,7 +408,7 @@ u16 func_80A97338(PlayState* play, Actor* thisx) {
             if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
                 return 0x1074;
             }
-            if (gSaveContext.infTable[4] & 0x80) {
+            if (Flags_GetInfTable(INFTABLE_47)) {
                 return 0x105E;
             }
             return 0x105D;
@@ -428,7 +428,7 @@ u16 func_80A97338(PlayState* play, Actor* thisx) {
             if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
                 return 0x1077;
             }
-            if (gSaveContext.infTable[5] & 2) {
+            if (Flags_GetInfTable(INFTABLE_51)) {
                 return 0x1059;
             }
             return 0x1058;
@@ -441,7 +441,7 @@ u16 func_80A97338(PlayState* play, Actor* thisx) {
             if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
                 return 0x107A;
             }
-            if (gSaveContext.infTable[5] & 0x200) {
+            if (Flags_GetInfTable(INFTABLE_59)) {
                 return 0x1050;
             }
             return 0x104F;
@@ -459,7 +459,7 @@ u16 func_80A97338(PlayState* play, Actor* thisx) {
             if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
                 return 0x107C;
             }
-            if (gSaveContext.infTable[6] & 2) {
+            if (Flags_GetInfTable(INFTABLE_61)) {
                 return 0x1054;
             }
             return 0x1053;
@@ -500,37 +500,37 @@ s16 func_80A97738(PlayState* play, Actor* thisx) {
         case TEXT_STATE_CLOSING:
             switch (this->actor.textId) {
                 case 0x1005:
-                    gSaveContext.infTable[1] |= 0x4000;
+                    Flags_SetInfTable(INFTABLE_1E);
                     break;
                 case 0x1008:
-                    gSaveContext.infTable[2] |= 0x4;
+                    Flags_SetInfTable(INFTABLE_22);
                     break;
                 case 0x100A:
-                    gSaveContext.infTable[2] |= 0x10;
+                    Flags_SetInfTable(INFTABLE_24);
                     break;
                 case 0x100C:
-                    gSaveContext.infTable[2] |= 0x40;
+                    Flags_SetInfTable(INFTABLE_26);
                     break;
                 case 0x100E:
-                    gSaveContext.infTable[2] |= 0x100;
+                    Flags_SetInfTable(INFTABLE_28);
                     break;
                 case 0x104F:
-                    gSaveContext.infTable[5] |= 0x200;
+                    Flags_SetInfTable(INFTABLE_59);
                     break;
                 case 0x1053:
-                    gSaveContext.infTable[6] |= 2;
+                    Flags_SetInfTable(INFTABLE_61);
                     break;
                 case 0x1055:
-                    gSaveContext.infTable[4] |= 2;
+                    Flags_SetInfTable(INFTABLE_41);
                     break;
                 case 0x1058:
-                    gSaveContext.infTable[5] |= 2;
+                    Flags_SetInfTable(INFTABLE_51);
                     break;
                 case 0x105D:
-                    gSaveContext.infTable[4] |= 0x80;
+                    Flags_SetInfTable(INFTABLE_47);
                     break;
                 case 0x10D7:
-                    gSaveContext.infTable[11] |= 0x80;
+                    Flags_SetInfTable(INFTABLE_B7);
                     break;
                 case 0x10BA:
                     return NPC_TALK_STATE_TALKING;
@@ -565,7 +565,7 @@ s16 func_80A97738(PlayState* play, Actor* thisx) {
                         Message_ContinueTextbox(play, this->actor.textId);
                         break;
                     case 0x10B7:
-                        gSaveContext.infTable[11] |= 0x1000;
+                        Flags_SetInfTable(INFTABLE_BC);
 
                     case 0x10B8:
                         this->actor.textId = (play->msgCtx.choiceIndex == 0) ? 0x10BA : 0x10B9;
@@ -587,7 +587,7 @@ s32 EnKo_GetForestQuestState(EnKo* this) {
 
     if (!LINK_IS_ADULT) {
         // Obtained Zelda's Letter
-        if (gSaveContext.eventChkInf[4] & 1) {
+        if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
             return ENKO_FQS_CHILD_SARIA;
         }
         if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
@@ -667,12 +667,12 @@ s32 func_80A97D68(EnKo* this, PlayState* play) {
     s16 trackingMode;
 
     if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
-        if ((this->skelAnime.animation == &gObjOsAnim_6A60) == false) {
+        if ((this->skelAnime.animation == &gKokiriWipingForeheadAnim) == false) {
             Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENKO_ANIM_32);
         }
         trackingMode = NPC_TRACKING_HEAD_AND_TORSO;
     } else {
-        if ((this->skelAnime.animation == &gObjOsAnim_7830) == false) {
+        if ((this->skelAnime.animation == &gKokiriLiftingRockAnim) == false) {
             Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENKO_ANIM_33);
         }
         trackingMode = NPC_TRACKING_NONE;
@@ -720,13 +720,13 @@ s32 func_80A97F70(EnKo* this, PlayState* play) {
     s16 trackingMode;
 
     if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
-        if ((this->skelAnime.animation == &gObjOsAnim_8F6C) == false) {
+        if ((this->skelAnime.animation == &gKokiriBlockingAnim) == false) {
             Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENKO_ANIM_29);
         }
         func_80034F54(play, this->unk_2E4, this->unk_304, 16);
         trackingMode = NPC_TRACKING_HEAD_AND_TORSO;
     } else {
-        if ((this->skelAnime.animation == &gObjOsAnim_7D94) == false) {
+        if ((this->skelAnime.animation == &gKokiriCuttingGrassAnim) == false) {
             Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENKO_ANIM_30);
         }
         trackingMode = NPC_TRACKING_NONE;
@@ -740,14 +740,14 @@ s32 func_80A98034(EnKo* this, PlayState* play) {
     s32 result;
 
     if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
-        if ((this->skelAnime.animation == &gObjOsAnim_8F6C) == false) {
+        if ((this->skelAnime.animation == &gKokiriBlockingAnim) == false) {
             Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENKO_ANIM_29);
         }
         func_80034F54(play, this->unk_2E4, this->unk_304, 16);
         result = EnKo_IsWithinTalkAngle(this);
         trackingMode = (result == true) ? NPC_TRACKING_HEAD_AND_TORSO : NPC_TRACKING_NONE;
     } else {
-        if ((this->skelAnime.animation == &gObjOsAnim_879C) == false) {
+        if ((this->skelAnime.animation == &gKokiriPunchingAnim) == false) {
             Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENKO_ANIM_31);
         }
         trackingMode = NPC_TRACKING_NONE;
@@ -951,11 +951,11 @@ void func_80A9877C(EnKo* this, PlayState* play) {
         }
     }
     if (Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->lookDist, func_80A97610, func_80A97738) &&
-        ENKO_TYPE == ENKO_TYPE_CHILD_FADO && play->sceneNum == SCENE_SPOT10) {
+        ENKO_TYPE == ENKO_TYPE_CHILD_FADO && play->sceneNum == SCENE_LOST_WOODS) {
         this->actor.textId = INV_CONTENT(ITEM_TRADE_ADULT) > ITEM_ODD_POTION ? 0x10B9 : 0x10DF;
 
         if (func_8002F368(play) == ENKO_TYPE_CHILD_9) {
-            this->actor.textId = (gSaveContext.infTable[11] & 0x1000) ? 0x10B8 : 0x10B7;
+            this->actor.textId = (Flags_GetInfTable(INFTABLE_BC)) ? 0x10B8 : 0x10B7;
             this->unk_210 = 0;
         }
         player->actor.textId = this->actor.textId;
@@ -965,7 +965,7 @@ void func_80A9877C(EnKo* this, PlayState* play) {
 // Checks if the Kokiri should spawn based on quest progress
 s32 EnKo_CanSpawn(EnKo* this, PlayState* play) {
     switch (play->sceneNum) {
-        case SCENE_SPOT04:
+        case SCENE_KOKIRI_FOREST:
             if (ENKO_TYPE >= ENKO_TYPE_CHILD_7 && ENKO_TYPE != ENKO_TYPE_CHILD_FADO) {
                 return false;
             }
@@ -973,13 +973,13 @@ s32 EnKo_CanSpawn(EnKo* this, PlayState* play) {
                 return false;
             }
             return true;
-        case SCENE_KOKIRI_HOME:
+        case SCENE_KNOW_IT_ALL_BROS_HOUSE:
             if (ENKO_TYPE != ENKO_TYPE_CHILD_7 && ENKO_TYPE != ENKO_TYPE_CHILD_8 && ENKO_TYPE != ENKO_TYPE_CHILD_11) {
                 return false;
             } else {
                 return true;
             }
-        case SCENE_KOKIRI_HOME3:
+        case SCENE_TWINS_HOUSE:
             if (LINK_IS_ADULT && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
                 if (ENKO_TYPE != ENKO_TYPE_CHILD_1 && ENKO_TYPE != ENKO_TYPE_CHILD_9) {
                     return false;
@@ -992,7 +992,7 @@ s32 EnKo_CanSpawn(EnKo* this, PlayState* play) {
             } else {
                 return true;
             }
-        case SCENE_KOKIRI_HOME4:
+        case SCENE_MIDOS_HOUSE:
             if (LINK_IS_ADULT && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
                 if (ENKO_TYPE != ENKO_TYPE_CHILD_0 && ENKO_TYPE != ENKO_TYPE_CHILD_4) {
                     return false;
@@ -1002,7 +1002,7 @@ s32 EnKo_CanSpawn(EnKo* this, PlayState* play) {
             } else {
                 return false;
             }
-        case SCENE_KOKIRI_HOME5:
+        case SCENE_SARIAS_HOUSE:
             if (LINK_IS_ADULT && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
                 if (ENKO_TYPE != ENKO_TYPE_CHILD_6) {
                     return false;
@@ -1026,7 +1026,7 @@ s32 EnKo_CanSpawn(EnKo* this, PlayState* play) {
                 return true;
             }
 
-        case SCENE_SPOT10:
+        case SCENE_LOST_WOODS:
             if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
                 // To explain the logic because Fado and Grog are linked:
                 // - If you have Cojiro, then spawn Grog and not Fado.
@@ -1077,7 +1077,7 @@ s32 EnKo_GetForestQuestState2(EnKo* this) {
         return CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) ? ENKO_FQS_ADULT_SAVED : ENKO_FQS_ADULT_ENEMY;
     }
     if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
-        return (gSaveContext.eventChkInf[4] & 1) ? ENKO_FQS_CHILD_SARIA : ENKO_FQS_CHILD_STONE;
+        return (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) ? ENKO_FQS_CHILD_SARIA : ENKO_FQS_CHILD_STONE;
     }
     return ENKO_FQS_CHILD_START;
 }
@@ -1085,7 +1085,7 @@ s32 EnKo_GetForestQuestState2(EnKo* this) {
 void func_80A98DB4(EnKo* this, PlayState* play) {
     f32 dist;
 
-    if (play->sceneNum != SCENE_SPOT10 && play->sceneNum != SCENE_SPOT04) {
+    if (play->sceneNum != SCENE_LOST_WOODS && play->sceneNum != SCENE_KOKIRI_FOREST) {
         this->modelAlpha = 255.0f;
         return;
     }
@@ -1112,7 +1112,7 @@ void func_80A98DB4(EnKo* this, PlayState* play) {
 }
 
 s32 func_80A98ECC(EnKo* this, PlayState* play) {
-    if (play->sceneNum == SCENE_SPOT10 && ENKO_TYPE == ENKO_TYPE_CHILD_FADO) {
+    if (play->sceneNum == SCENE_LOST_WOODS && ENKO_TYPE == ENKO_TYPE_CHILD_FADO) {
         return func_80A97E18(this, play);
     }
     switch (EnKo_GetForestQuestState(this)) {
@@ -1193,7 +1193,7 @@ void func_80A99048(EnKo* this, PlayState* play) {
                     return;
                 }
             } else {
-                if (!Flags_GetEventChkInf(7)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD)) {
                     this->collider.dim.height += 200;
                     this->actionFunc = func_80A995CC;
                     return;
@@ -1250,7 +1250,7 @@ void func_80A99560(EnKo* this, PlayState* play) {
         this->actor.textId = 0x10B9;
         Message_ContinueTextbox(play, this->actor.textId);
         this->interactInfo.talkState = NPC_TALK_STATE_TALKING;
-        gSaveContext.itemGetInf[3] |= 2;
+        Flags_SetItemGetInf(ITEMGETINF_31);
         this->actionFunc = func_80A99384;
     }
 }

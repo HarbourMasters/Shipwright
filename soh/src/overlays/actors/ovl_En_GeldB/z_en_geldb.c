@@ -7,6 +7,7 @@
 #include "z_en_geldb.h"
 #include "objects/object_geldb/object_geldb.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -1321,7 +1322,7 @@ void EnGeldB_SetupDefeated(EnGeldB* this) {
     this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_GERUDOFT_DEAD);
     EnGeldB_SetupAction(this, EnGeldB_Defeated);
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GERUDO_THIEF]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnGeldB_Defeated(EnGeldB* this, PlayState* play) {
@@ -1568,7 +1569,7 @@ void EnGeldB_Draw(Actor* thisx, PlayState* play) {
             if (this->timer == 0) {
                 if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
                     play->nextEntranceIndex = 0x1A5;
-                } else if (gSaveContext.eventChkInf[12] & 0x80) {
+                } else if (Flags_GetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO)) {
                     play->nextEntranceIndex = 0x5F8;
                 } else {
                     play->nextEntranceIndex = 0x3B4;

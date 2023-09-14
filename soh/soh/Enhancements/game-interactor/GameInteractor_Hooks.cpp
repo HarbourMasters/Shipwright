@@ -42,12 +42,32 @@ void GameInteractor_ExecuteOnOcarinaSongAction() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnOcarinaSongAction>();
 }
 
+void GameInteractor_ExecuteOnActorInit(void* actor) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnActorInit>(actor);
+}
+
 void GameInteractor_ExecuteOnActorUpdate(void* actor) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnActorUpdate>(actor);
 }
 
+void GameInteractor_ExecuteOnActorKill(void* actor) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnActorKill>(actor);
+}
+
+void GameInteractor_ExecuteOnEnemyDefeat(void* actor) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnEnemyDefeat>(actor);
+}
+
 void GameInteractor_ExecuteOnPlayerBonk() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayerBonk>();
+}
+
+void GameInteractor_ExecuteOnPlayDestroy() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayDestroy>();
+}
+
+void GameInteractor_ExecuteOnPlayDrawEnd() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPlayDrawEnd>();
 }
 
 // MARK: -  Save Files
@@ -92,6 +112,10 @@ void GameInteractor_ExecuteOnUpdateFileSelectSelection(uint16_t optionIndex) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileSelectSelection>(optionIndex);
 }
 
+void GameInteractor_ExecuteOnUpdateFileSelectConfirmationSelection(uint16_t optionIndex) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileSelectConfirmationSelection>(optionIndex);
+}
+
 void GameInteractor_ExecuteOnUpdateFileCopySelection(uint16_t optionIndex) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileCopySelection>(optionIndex);
 }
@@ -114,6 +138,22 @@ void GameInteractor_ExecuteOnUpdateFileAudioSelection(uint8_t optionIndex) {
 
 void GameInteractor_ExecuteOnUpdateFileTargetSelection(uint8_t optionIndex) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileTargetSelection>(optionIndex);
+}
+
+void GameInteractor_ExecuteOnUpdateFileLanguageSelection(uint8_t optionIndex) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileLanguageSelection>(optionIndex);
+}
+
+void GameInteractor_ExecuteOnUpdateFileQuestSelection(uint8_t questIndex) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileQuestSelection>(questIndex);
+}
+
+void GameInteractor_ExecuteOnUpdateFileBossRushOptionSelection(uint8_t optionIndex, uint8_t optionValue) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileBossRushOptionSelection>(optionIndex, optionValue);
+}
+
+void GameInteractor_ExecuteOnUpdateFileNameSelection(int16_t charCode) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileNameSelection>(charCode);
 }
 
 // MARK: - Game

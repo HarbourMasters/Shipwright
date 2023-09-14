@@ -1,6 +1,8 @@
 #include "z_en_box.h"
 #include "objects/object_box/object_box.h"
 #include "soh_assets.h"
+#include "soh/Enhancements/enhancementTypes.h"
+#include <assert.h>
 
 #define FLAGS 0
 
@@ -199,7 +201,7 @@ void EnBox_Init(Actor* thisx, PlayState* play2) {
     EnBox_UpdateSizeAndTexture(this, play);
     // For SOH we spawn a chest actor instead of rendering the object from scratch for forest boss
     // key chest, and it's up on the wall so disable gravity for it.
-    if (play->sceneNum == SCENE_BMORI1 && this->dyna.actor.params == 10222) {
+    if (play->sceneNum == SCENE_FOREST_TEMPLE && this->dyna.actor.params == 10222) {
         this->movementFlags = ENBOX_MOVE_IMMOBILE;
     }
 
@@ -625,19 +627,22 @@ void EnBox_Update(Actor* thisx, PlayState* play) {
     }
 
     if (((!gSaveContext.n64ddFlag && ((this->dyna.actor.params >> 5 & 0x7F) == 0x7C)) ||
-         (gSaveContext.n64ddFlag && ABS(sItem.getItemId) == RG_ICE_TRAP)) && 
-        this->actionFunc == EnBox_Open && this->skelanime.curFrame > 45 &&
-        this->iceSmokeTimer < 100) EnBox_SpawnIceSmoke(this, play);
+        (gSaveContext.n64ddFlag && ABS(sItem.getItemId) == RG_ICE_TRAP)) &&
+        this->actionFunc == EnBox_Open && this->skelanime.curFrame > 45 && this->iceSmokeTimer < 100) {
+        if (!CVarGetInteger("gAddTraps.enabled", 0)) {
+            EnBox_SpawnIceSmoke(this, play);
+        }
+    }
 }
 
 void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     EnBox_CreateExtraChestTextures();
-    int cstmc = CVarGetInteger("gChestSizeAndTextureMatchesContents", 0);
+    int csmc = CVarGetInteger("gChestSizeAndTextureMatchesContents", CSMC_DISABLED);
     int requiresStoneAgony = CVarGetInteger("gChestSizeDependsStoneOfAgony", 0);
     GetItemCategory getItemCategory;
 
-    int isVanilla = cstmc == 0 || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)) ||
-        (play->sceneNum == SCENE_TAKARAYA && this->dyna.actor.room != 6); // Exclude treasure game chests except for the final room
+    int isVanilla = csmc == CSMC_DISABLED || (requiresStoneAgony && !CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)) ||
+        (play->sceneNum == SCENE_TREASURE_BOX_SHOP && this->dyna.actor.room != 6); // Exclude treasure game chests except for the final room
 
     if (!isVanilla) {
         getItemCategory = this->getItemEntry.getItemCategory;
@@ -656,7 +661,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     }
 
     // Change size
-    if (!isVanilla && (cstmc == 1 || cstmc == 3)) {
+    if (!isVanilla && (csmc == CSMC_BOTH || csmc == CSMC_SIZE)) {
         switch (getItemCategory) {
             case ITEM_CATEGORY_JUNK:
             case ITEM_CATEGORY_SMALL_KEY:
@@ -685,7 +690,7 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     }
 
     // Change texture
-    if (!isVanilla && (cstmc == 1 || cstmc == 2)) {
+    if (!isVanilla && (csmc == CSMC_BOTH || csmc == CSMC_TEXTURE)) {
         switch (getItemCategory) {
             case ITEM_CATEGORY_MAJOR:
                 this->boxBodyDL = gGoldTreasureChestChestFrontDL;
@@ -739,24 +744,24 @@ void EnBox_UpdateSizeAndTexture(EnBox* this, PlayState* play) {
     s16 isLarge = this->dyna.actor.scale.x == 0.01f;
 
     // Make Ganon's Castle Zelda's Lullaby chest reachable when large.
-    if ((params & 0xF000) == 0x8000 && sceneNum == SCENE_GANONTIKA && room == 9) {
+    if ((params & 0xF000) == 0x8000 && sceneNum == SCENE_INSIDE_GANONS_CASTLE && room == 9) {
         this->dyna.actor.world.pos.z = isLarge ? -962.0f : -952.0f;
     }
 
     // Make MQ Deku Tree Song of Time chest reachable when large.
-    if (params == 0x5AA0 && sceneNum == SCENE_YDAN && room == 5) {
+    if (params == 0x5AA0 && sceneNum == SCENE_DEKU_TREE && room == 5) {
         this->dyna.actor.world.pos.x = isLarge ? -1380.0f : -1376.0f;
     }
 
     // Make Ganon's Castle Gold Gauntlets chest reachable with hookshot from the
     // switch platform when small.
-    if (params == 0x36C5 && sceneNum == SCENE_GANONTIKA && room == 12) {
+    if (params == 0x36C5 && sceneNum == SCENE_INSIDE_GANONS_CASTLE && room == 12) {
         this->dyna.actor.world.pos.x = isLarge ? 1757.0f : 1777.0f;
         this->dyna.actor.world.pos.z = isLarge ? -3595.0f : -3626.0f;
     }
 
     // Make Spirit Temple Compass Chest reachable with hookshot when small.
-    if (params == 0x3804 && sceneNum == SCENE_JYASINZOU && room == 14) {
+    if (params == 0x3804 && sceneNum == SCENE_SPIRIT_TEMPLE && room == 14) {
         this->dyna.actor.world.pos.x = isLarge ? 358.0f : 400.0f;
     }
 }
@@ -871,7 +876,7 @@ Gfx* EnBox_EmptyDList(GraphicsContext* gfxCtx) {
     Gfx* dList;
 
     dList = Graph_Alloc(gfxCtx, sizeof(Gfx));
-    ASSERT(dList != NULL);
+    assert(dList != NULL);
 
     dListHead = dList;
     gSPEndDisplayList(dListHead++);
@@ -885,7 +890,7 @@ Gfx* func_809CA4A0(GraphicsContext* gfxCtx) {
     Gfx* dListHead;
 
     dListHead = Graph_Alloc(gfxCtx, 2 * sizeof(Gfx));
-    ASSERT(dListHead != NULL);
+    assert(dListHead != NULL);
 
     dList = dListHead;
     gDPSetRenderMode(dListHead++,
@@ -903,7 +908,7 @@ Gfx* func_809CA518(GraphicsContext* gfxCtx) {
     Gfx* dListHead;
 
     dListHead = Graph_Alloc(gfxCtx, 2 * sizeof(Gfx));
-    ASSERT(dListHead != NULL);
+    assert(dListHead != NULL);
 
     dList = dListHead;
     gDPSetRenderMode(dListHead++,

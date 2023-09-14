@@ -25,6 +25,14 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include <overlays/actors/ovl_En_Partner/z_en_partner.h>
+#include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/randomizer/randomizer_grotto.h"
+#include "soh/frame_interpolation.h"
+
+#include <string.h>
+#include <stdlib.h>
+#include <assert.h>
 
 typedef enum {
     /* 0x00 */ KNOB_ANIM_ADULT_L,
@@ -1278,13 +1286,13 @@ static LinkAnimationHeader* D_808543D4[] = {
 };
 
 // return type can't be void due to regalloc in func_8084FCAC
-s32 func_80832210(Player* this) {
+void func_80832210(Player* this) {
     this->actor.speedXZ = 0.0f;
     this->linearVelocity = 0.0f;
 }
 
 // return type can't be void due to regalloc in func_8083F72C
-s32 func_80832224(Player* this) {
+void func_80832224(Player* this) {
     func_80832210(this);
     this->unk_6AD = 0;
 }
@@ -2049,7 +2057,7 @@ void func_80833DF8(Player* this, PlayState* play) {
     s32 i;
 
     if (this->currentMask != PLAYER_MASK_NONE) {
-        if (CVarGetInteger("gMMBunnyHood", 0) != 0) {
+        if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) {
             s32 maskItem = this->currentMask - PLAYER_MASK_KEATON + ITEM_MASK_KEATON;
             bool hasOnDpad = false;
             if (CVarGetInteger("gDpadEquips", 0) != 0) {
@@ -3922,13 +3930,13 @@ s32 func_808382DC(Player* this, PlayState* play) {
             } else {
                 // Special case for getting crushed in Forest Temple's Checkboard Ceiling Hall or Shadow Temple's
                 // Falling Spike Trap Room, to respawn the player in a specific place
-                if (((play->sceneNum == SCENE_BMORI1) && (play->roomCtx.curRoom.num == 15)) ||
-                    ((play->sceneNum == SCENE_HAKADAN) && (play->roomCtx.curRoom.num == 10))) {
+                if (((play->sceneNum == SCENE_FOREST_TEMPLE) && (play->roomCtx.curRoom.num == 15)) ||
+                    ((play->sceneNum == SCENE_SHADOW_TEMPLE) && (play->roomCtx.curRoom.num == 10))) {
                     static SpecialRespawnInfo checkboardCeilingRespawn = { { 1992.0f, 403.0f, -3432.0f }, 0 };
                     static SpecialRespawnInfo fallingSpikeTrapRespawn = { { 1200.0f, -1343.0f, 3850.0f }, 0 };
                     SpecialRespawnInfo* respawnInfo;
 
-                    if (play->sceneNum == SCENE_BMORI1) {
+                    if (play->sceneNum == SCENE_FOREST_TEMPLE) {
                         respawnInfo = &checkboardCeilingRespawn;
                     } else {
                         respawnInfo = &fallingSpikeTrapRespawn;
@@ -4346,8 +4354,8 @@ s32 func_80839034(PlayState* play, Player* this, CollisionPoly* poly, u32 bgId) 
                 if ((this->actor.world.pos.y < -4000.0f) ||
                     (((this->unk_A7A == 5) || (this->unk_A7A == 12)) &&
                      ((D_80853600 < 100.0f) || (this->fallDistance > 400.0f) ||
-                      ((play->sceneNum != SCENE_HAKADAN) && (this->fallDistance > 200.0f)))) ||
-                    ((play->sceneNum == SCENE_GANON_FINAL) && (this->fallDistance > 320.0f))) {
+                      ((play->sceneNum != SCENE_SHADOW_TEMPLE) && (this->fallDistance > 200.0f)))) ||
+                    ((play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) && (this->fallDistance > 320.0f))) {
 
                     if (this->actor.bgCheckFlags & 1) {
                         if (this->unk_A7A == 5) {
@@ -4985,7 +4993,7 @@ void func_8083AE40(Player* this, s16 objectId) {
         size = gObjectTable[objectId].vromEnd - gObjectTable[objectId].vromStart;
 
         LOG_HEX("size", size);
-        ASSERT(size <= 1024 * 8);
+        assert(size <= 1024 * 8);
 
         DmaMgr_SendRequest2(&this->giObjectDmaRequest, (uintptr_t)this->giObjectSegment,
                             gObjectTable[objectId].vromStart, size, 0, &this->giObjectLoadQueue, OS_MESG_PTR(NULL),
@@ -6119,11 +6127,11 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
             }
         }
 
-        if (CVarGetInteger("gMMBunnyHood", 0) == 1 && this->currentMask == PLAYER_MASK_BUNNY) {
+        if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) == BUNNY_HOOD_FAST_AND_JUMP && this->currentMask == PLAYER_MASK_BUNNY) {
             maxSpeed *= 1.5f;
         } 
         
-        if (CVarGetInteger("gEnableWalkModify", 0)) {
+        if (CVarGetInteger("gEnableWalkModify", 0) && !CVarGetInteger("gWalkModifierDoesntChangeJump", 0)) {
             if (CVarGetInteger("gWalkSpeedToggle", 0)) {
                 if (gWalkSpeedToggle1) {
                     maxSpeed *= CVarGetFloat("gWalkModifierOne", 1.0f);
@@ -6278,23 +6286,32 @@ void func_8083E4C4(PlayState* play, Player* this, GetItemEntry* giEntry) {
 // and which flag is specified in player->pendingFlag.flagID.
 void Player_SetPendingFlag(Player* this, PlayState* play) {
     switch (this->pendingFlag.flagType) {
-        case FLAG_SCENE_CLEAR:
-            Flags_SetClear(play, this->pendingFlag.flagID);
-            break;
-        case FLAG_SCENE_COLLECTIBLE:
-            Flags_SetCollectible(play, this->pendingFlag.flagID);
-            break;
         case FLAG_SCENE_SWITCH:
             Flags_SetSwitch(play, this->pendingFlag.flagID);
             break;
         case FLAG_SCENE_TREASURE:
             Flags_SetTreasure(play, this->pendingFlag.flagID);
             break;
-        case FLAG_RANDOMIZER_INF:
-            Flags_SetRandomizerInf(this->pendingFlag.flagID);
+        case FLAG_SCENE_CLEAR:
+            Flags_SetClear(play, this->pendingFlag.flagID);
+            break;
+        case FLAG_SCENE_COLLECTIBLE:
+            Flags_SetCollectible(play, this->pendingFlag.flagID);
             break;
         case FLAG_EVENT_CHECK_INF:
             Flags_SetEventChkInf(this->pendingFlag.flagID);
+            break;
+        case FLAG_ITEM_GET_INF:
+            Flags_SetItemGetInf(this->pendingFlag.flagID);
+            break;
+        case FLAG_INF_TABLE:
+            Flags_SetInfTable(this->pendingFlag.flagID);
+            break;
+        case FLAG_EVENT_INF:
+            Flags_SetEventInf(this->pendingFlag.flagID);
+            break;
+        case FLAG_RANDOMIZER_INF:
+            Flags_SetRandomizerInf(this->pendingFlag.flagID);
             break;
         case FLAG_NONE:
         default:
@@ -6309,6 +6326,8 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
 
     if(gSaveContext.pendingIceTrapCount) {
         gSaveContext.pendingIceTrapCount--;
+        GameInteractor_ExecuteOnItemReceiveHooks(ItemTable_RetrieveEntry(MOD_RANDOMIZER, RG_ICE_TRAP));
+        if (CVarGetInteger("gAddTraps.enabled", 0)) return;
         this->stateFlags1 &= ~(PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_ITEM_OVER_HEAD);
         this->actor.colChkInfo.damage = 0;
         func_80837C0C(play, this, 3, 0.0f, 0.0f, 0, 20);
@@ -6344,7 +6363,6 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
                     Player_SetPendingFlag(this, play);
                     Message_StartTextbox(play, 0xF8, NULL);
                     Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
-                    GameInteractor_ExecuteOnItemReceiveHooks(this->getItemEntry);
                     gSaveContext.pendingIceTrapCount++;
                     return 1;
                 }
@@ -6352,7 +6370,7 @@ s32 func_8083E5A8(Player* this, PlayState* play) {
                 // Show the cutscene for picking up an item. In vanilla, this happens in bombchu bowling alley (because getting bombchus need to show the cutscene)
                 // and whenever the player doesn't have the item yet. In rando, we're overruling this because we need to keep showing the cutscene
                 // because those items can be randomized and thus it's important to keep showing the cutscene.
-                uint8_t showItemCutscene = play->sceneNum == SCENE_BOWLING || Item_CheckObtainability(giEntry.itemId) == ITEM_NONE || gSaveContext.n64ddFlag;
+                uint8_t showItemCutscene = play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY || Item_CheckObtainability(giEntry.itemId) == ITEM_NONE || gSaveContext.n64ddFlag;
 
                 // Only skip cutscenes for drops when they're items/consumables from bushes/rocks/enemies.
                 uint8_t isDropToSkip = (interactedActor->id == ACTOR_EN_ITEM00 && interactedActor->params != 6 && interactedActor->params != 17) || 
@@ -7761,9 +7779,9 @@ void func_80842180(Player* this, PlayState* play) {
                 }
             }
 
-            if (CVarGetInteger("gMMBunnyHood", 0) && this->currentMask == PLAYER_MASK_BUNNY) {
+            if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && this->currentMask == PLAYER_MASK_BUNNY) {
                 sp2C *= 1.5f;
-            } 
+            }
             
             if (CVarGetInteger("gEnableWalkModify", 0)) {
                 if (CVarGetInteger("gWalkSpeedToggle", 0)) {
@@ -8168,8 +8186,8 @@ void func_80843188(Player* this, PlayState* play) {
     func_8083721C(this);
 
     if (this->unk_850 != 0) {
-        sp54 = sControlInput->rel.stick_y * 100;
-        sp50 = sControlInput->rel.stick_x * -120;
+        sp54 = sControlInput->rel.stick_y * 100 * (CVarGetInteger("gInvertShieldAimingYAxis", 1) ? 1 : -1);
+        sp50 = sControlInput->rel.stick_x * (CVarGetInteger("gMirroredWorld", 0) ? 120 : -120) * (CVarGetInteger("gInvertShieldAimingXAxis", 0) ? -1 : 1);
         sp4E = this->actor.shape.rot.y - Camera_GetInputDirYaw(GET_ACTIVE_CAM(play));
 
         sp40 = Math_CosS(sp4E);
@@ -9500,7 +9518,7 @@ void func_80846648(PlayState* play, Player* this) {
 
 void func_80846660(PlayState* play, Player* this) {
     func_80835C58(play, this, func_8084F710, 0);
-    if ((play->sceneNum == SCENE_SPOT06) && (gSaveContext.sceneSetupIndex >= 4)) {
+    if ((play->sceneNum == SCENE_LAKE_HYLIA) && (gSaveContext.sceneSetupIndex >= 4)) {
         this->unk_84F = 1;
     }
     this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
@@ -9664,19 +9682,11 @@ void Player_Init(Actor* thisx, PlayState* play2) {
     func_80835F44(play, this, ITEM_NONE);
     Player_SetEquipmentData(play, this);
     this->prevBoots = this->currentBoots;
-    if (CVarGetInteger("gMMBunnyHood", 0)) {
+    if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA) {
         if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_SOLD_OUT) {
             sMaskMemory = PLAYER_MASK_NONE;
         }
         this->currentMask = sMaskMemory;
-        for (uint16_t cSlotIndex = 0; cSlotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); cSlotIndex++) {
-            if (gSaveContext.equips.cButtonSlots[cSlotIndex] == SLOT_TRADE_CHILD &&
-                (gItemAgeReqs[gSaveContext.equips.buttonItems[cSlotIndex + 1]] != 9 && LINK_IS_ADULT &&
-                 !CVarGetInteger("gTimelessEquipment", 0))) {
-                gSaveContext.equips.cButtonSlots[cSlotIndex] = SLOT_NONE;
-                gSaveContext.equips.buttonItems[cSlotIndex + 1] = ITEM_NONE;
-            }
-        }
     }
     Player_InitCommon(this, play, gPlayerSkelHeaders[((void)0, gSaveContext.linkAge)]);
     this->giObjectSegment = (void*)(((uintptr_t)ZELDA_ARENA_MALLOC_DEBUG(0x3008) + 8) & ~0xF);
@@ -9714,8 +9724,8 @@ void Player_Init(Actor* thisx, PlayState* play2) {
             if ((gSaveContext.sceneSetupIndex < 4) &&
                 (gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].field &
                  0x4000) &&
-                ((play->sceneNum != SCENE_DDAN) || (gSaveContext.eventChkInf[11] & 1)) &&
-                ((play->sceneNum != SCENE_NIGHT_SHOP) || (gSaveContext.eventChkInf[2] & 0x20))) {
+                ((play->sceneNum != SCENE_DODONGOS_CAVERN) || (Flags_GetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN))) &&
+                ((play->sceneNum != SCENE_BOMBCHU_SHOP) || (Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)))) {
                 TitleCard_InitPlaceName(play, &play->actorCtx.titleCtx, this->giObjectSegment, 160, 120, 144,
                                         24, 20);
             }
@@ -9729,7 +9739,7 @@ void Player_Init(Actor* thisx, PlayState* play2) {
 
     gSaveContext.respawn[RESPAWN_MODE_DOWN].data = 1;
 
-    if (play->sceneNum <= SCENE_GANONTIKA_SONOGO) {
+    if (play->sceneNum <= SCENE_INSIDE_GANONS_CASTLE_COLLAPSE) {
         gSaveContext.infTable[26] |= gBitFlags[play->sceneNum];
     }
 
@@ -10327,7 +10337,7 @@ void Player_UpdateCamAndSeqModes(PlayState* play, Player* this) {
             Audio_SetBgmEnemyVolume(sqrtf(play->actorCtx.targetCtx.bgmEnemy->xyzDistToPlayerSq));
         }
 
-        if (play->sceneNum != SCENE_TURIBORI) {
+        if (play->sceneNum != SCENE_FISHING_POND) {
             Audio_SetSequenceMode(seqMode);
         }
     }
@@ -10443,7 +10453,7 @@ void func_80848C74(PlayState* play, Player* this) {
     if (spawnedFlame) {
         func_8002F7DC(&this->actor, NA_SE_EV_TORCH - SFX_FLAG);
 
-        if (play->sceneNum == SCENE_JYASINBOSS) {
+        if (play->sceneNum == SCENE_SPIRIT_TEMPLE_BOSS) {
             dmgCooldown = 0;
         } else {
             dmgCooldown = 7;
@@ -10473,7 +10483,7 @@ void func_80848EF8(Player* this, PlayState* play) {
         if (CVarGetInteger("gCosmetics.Hud_StoneOfAgony.Changed", 0)) {
             stoneOfAgonyColor = CVarGetColor24("gCosmetics.Hud_StoneOfAgony.Value", stoneOfAgonyColor);
         }
-        if (CVarGetInteger("gVisualAgony", 0) != 0 && !this->stateFlags1) {
+        if (CVarGetInteger("gVisualAgony", 0) && !this->stateFlags1 && !GameInteractor_NoUIActive()) {
             s16 Top_Margins = (CVarGetInteger("gHUDMargin_T", 0) * -1);
             s16 Left_Margins = CVarGetInteger("gHUDMargin_L", 0);
             s16 Right_Margins = CVarGetInteger("gHUDMargin_R", 0);
@@ -10543,7 +10553,7 @@ void func_80848EF8(Player* this, PlayState* play) {
                             G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_POINT | G_TT_IA16 | G_TL_TILE |
                                 G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE,
                             G_AC_NONE | G_ZS_PRIM | G_RM_XLU_SURF | G_RM_XLU_SURF2);
-            gDPLoadTextureBlock(OVERLAY_DISP++, gStoneOfAgonyIconTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 24, 0,
+            gDPLoadTextureBlock(OVERLAY_DISP++, gQuestIconStoneOfAgonyTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 24, 0,
                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                 G_TX_NOLOD, G_TX_NOLOD);
             gDPSetOtherMode(OVERLAY_DISP++,
@@ -10557,7 +10567,7 @@ void func_80848EF8(Player* this, PlayState* play) {
 
         if (this->unk_6A0 > 4000000.0f) {
             this->unk_6A0 = 0.0f;
-            if (CVarGetInteger("gVisualAgony", 0) != 0 && !this->stateFlags1) {
+            if (CVarGetInteger("gVisualAgony", 0) && !this->stateFlags1 && !GameInteractor_NoUIActive()) {
                 // This audio is placed here and not in previous CVar check to prevent ears ra.. :)
                 Audio_PlaySoundGeneral(NA_SE_SY_MESSAGE_WOMAN, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E0);
             }
@@ -11346,12 +11356,13 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
     s32 temp1;
     s16 temp2;
     s16 temp3;
+    bool gInvertAimingXAxis = (CVarGetInteger("gInvertAimingXAxis", 0) && !CVarGetInteger("gMirroredWorld", 0)) || (!CVarGetInteger("gInvertAimingXAxis", 0) && CVarGetInteger("gMirroredWorld", 0));
 
     if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0) && !CVarGetInteger("gDisableAutoCenterViewFirstPerson", 0)) {
         temp2 = sControlInput->rel.stick_y * 240.0f * (CVarGetInteger("gInvertAimingYAxis", 1) ? 1 : -1); // Sensitivity not applied here because higher than default sensitivies will allow the camera to escape the autocentering, and glitch out massively
         Math_SmoothStepToS(&this->actor.focus.rot.x, temp2, 14, 4000, 30);
 
-        temp2 = sControlInput->rel.stick_x * -16.0f * (CVarGetInteger("gInvertAimingXAxis", 0) ? -1 : 1) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
+        temp2 = sControlInput->rel.stick_x * -16.0f * (gInvertAimingXAxis ? -1 : 1) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
         temp2 = CLAMP(temp2, -3000, 3000);
         this->actor.focus.rot.y += temp2;
     } else {
@@ -11376,18 +11387,18 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
         temp2 = this->actor.focus.rot.y - this->actor.shape.rot.y;
         temp3 = ((sControlInput->rel.stick_x >= 0) ? 1 : -1) *
                 (s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f *
-                        (CVarGetInteger("gInvertAimingXAxis", 0) ? -1 : 1)) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
+                        (gInvertAimingXAxis ? -1 : 1)) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
         temp2 += temp3;
 
         this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
 
         if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
-            this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f;
+            this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
         }
 
         if (fabsf(sControlInput->cur.right_stick_x) > 15.0f && CVarGetInteger("gRightStickAiming", 0) != 0) {
             this->actor.focus.rot.y +=
-                (sControlInput->cur.right_stick_x) * 10.0f * (CVarGetInteger("gInvertAimingXAxis", 0) ? 1 : -1) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
+                (sControlInput->cur.right_stick_x) * 10.0f * (gInvertAimingXAxis ? 1 : -1) * (CVarGetFloat("gFirstPersonCameraSensitivityX", 1.0f));
         }
     }
 
@@ -11938,7 +11949,7 @@ void func_8084BF1C(Player* this, PlayState* play) {
                 if ((this->unk_84F != 0) && (sp80 != 0)) {
                     anim2 = this->ageProperties->unk_BC[this->unk_850];
 
-                    if (sp80 > 0) {
+                    if (CVarGetInteger("gMirroredWorld", 0) ? (sp80 < 0) : (sp80 > 0)) {
                         this->skelAnime.prevTransl = this->ageProperties->unk_7A[this->unk_850];
                         func_80832264(play, this, anim2);
                     } else {
@@ -12387,7 +12398,7 @@ void func_8084D3E4(Player* this, PlayState* play) {
         this->actor.parent = NULL;
         AREG(6) = 0;
 
-        if (Flags_GetEventChkInf(0x18) || (DREG(1) != 0)) {
+        if (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) || (DREG(1) != 0)) {
             gSaveContext.horseData.pos.x = rideActor->actor.world.pos.x;
             gSaveContext.horseData.pos.y = rideActor->actor.world.pos.y;
             gSaveContext.horseData.pos.z = rideActor->actor.world.pos.z;
@@ -12772,7 +12783,6 @@ s32 func_8084DFF4(PlayState* play, Player* this) {
                 this->unk_862 = 0;
                 gSaveContext.pendingIceTrapCount++;
                 Player_SetPendingFlag(this, play);
-                GameInteractor_ExecuteOnItemReceiveHooks(giEntry);
             }
 
             this->getItemId = GI_NONE;
@@ -12931,7 +12941,6 @@ void func_8084E6D4(Player* this, PlayState* play) {
             }
         } else {
             func_80832DBC(this);
-
             if ((this->getItemId == GI_ICE_TRAP && !gSaveContext.n64ddFlag) ||
                 (gSaveContext.n64ddFlag && (this->getItemId == RG_ICE_TRAP || this->getItemEntry.getItemId == RG_ICE_TRAP))) {
                 this->stateFlags1 &= ~(PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_ITEM_OVER_HEAD);
@@ -12941,15 +12950,13 @@ void func_8084E6D4(Player* this, PlayState* play) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_CLEAR_TAG, this->actor.world.pos.x,
                                 this->actor.world.pos.y + 100.0f, this->actor.world.pos.z, 0, 0, 0, 0, true);
                     func_8083C0E8(this, play);
-                    GameInteractor_ExecuteOnItemReceiveHooks(this->getItemEntry);
+                } else if (gSaveContext.n64ddFlag) {
+                    gSaveContext.pendingIceTrapCount++;
+                    Player_SetPendingFlag(this, play);
+                    func_8083C0E8(this, play);
                 } else {
                     this->actor.colChkInfo.damage = 0;
                     func_80837C0C(play, this, 3, 0.0f, 0.0f, 0, 20);
-                    GameInteractor_ExecuteOnItemReceiveHooks(this->getItemEntry);
-                    this->getItemId = GI_NONE;
-                    this->getItemEntry = (GetItemEntry)GET_ITEM_NONE;
-                    // Gameplay stats: Increment Ice Trap count
-                    gSaveContext.sohStats.count[COUNT_ICE_TRAPS]++;
                 }
                 return;
             }
@@ -13451,7 +13458,7 @@ void func_8084F710(Player* this, PlayState* play) {
                     this->unk_850 = 1;
                 }
             } else {
-                if ((play->sceneNum == SCENE_SPOT04) && func_8083ADD4(play, this)) {
+                if ((play->sceneNum == SCENE_KOKIRI_FOREST) && func_8083ADD4(play, this)) {
                     return;
                 }
                 func_80853080(this, play);
@@ -13460,7 +13467,7 @@ void func_8084F710(Player* this, PlayState* play) {
         Math_SmoothStepToF(&this->actor.velocity.y, 2.0f, 0.3f, 8.0f, 0.5f);
     }
 
-    if ((play->sceneNum == SCENE_KENJYANOMA) && func_8083ADD4(play, this)) {
+    if ((play->sceneNum == SCENE_CHAMBER_OF_THE_SAGES) && func_8083ADD4(play, this)) {
         return;
     }
 
@@ -13477,7 +13484,7 @@ void func_8084F88C(Player* this, PlayState* play) {
     if ((this->unk_850++ > 8) && (play->sceneLoadFlag == 0)) {
 
         if (this->unk_84F != 0) {
-            if (play->sceneNum == 9) {
+            if (play->sceneNum == SCENE_ICE_CAVERN) {
                 Play_TriggerRespawn(play);
                 play->nextEntranceIndex = 0x0088;
             } else if (this->unk_84F < 0) {
@@ -13618,9 +13625,9 @@ s32 func_8084FCAC(Player* this, PlayState* play) {
                 if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_DDOWN)) {
                     angle = temp + 0x8000;
                 } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_DLEFT)) {
-                    angle = temp + 0x4000;
+                    angle = temp + (0x4000 * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1));
                 } else if (CHECK_BTN_ALL(sControlInput->cur.button, BTN_DRIGHT)) {
-                    angle = temp - 0x4000;
+                    angle = temp - (0x4000 * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1));
                 }
 
                 this->actor.world.pos.x += speed * Math_SinS(angle);
@@ -14513,7 +14520,7 @@ void func_80851828(PlayState* play, Player* this, CsCmdActorAction* arg2) {
 
     func_80845BA0(play, this, &sp1C, 10);
 
-    if (play->sceneNum == SCENE_BDAN_BOSS) {
+    if (play->sceneNum == SCENE_JABU_JABU_BOSS) {
         if (this->unk_850 == 0) {
             if (Message_GetState(&play->msgCtx) == TEXT_STATE_NONE) {
                 return;
@@ -14991,7 +14998,7 @@ void func_80852944(PlayState* play, Player* this, CsCmdActorAction* arg2) {
 void func_808529D0(PlayState* play, Player* this, CsCmdActorAction* arg2) {
     this->actor.world.pos.x = arg2->startPos.x;
     this->actor.world.pos.y = arg2->startPos.y;
-    if ((play->sceneNum == SCENE_SPOT04) && !LINK_IS_ADULT) {
+    if ((play->sceneNum == SCENE_KOKIRI_FOREST) && !LINK_IS_ADULT) {
         this->actor.world.pos.y -= 1.0f;
     }
     this->actor.world.pos.z = arg2->startPos.z;

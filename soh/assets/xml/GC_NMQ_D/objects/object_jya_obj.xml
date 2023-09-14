@@ -1,5 +1,12 @@
 <Root>
     <File Name="object_jya_obj" Segment="6">
+        <Texture Name="object_jya_objTex_00B4B8" OutName="object_jya_objTex_00B4B8" Format="ci8" Width="32" Height="32" Offset="0xB4B8" TlutOffset="0xAC70" AddedByScript="true"/>
+        <Texture Name="object_jya_objTex_011A80" OutName="object_jya_objTex_011A80" Format="ci4" Width="64" Height="64" Offset="0x11A80" TlutOffset="0x11A60" AddedByScript="true"/>
+        <Texture Name="object_jya_objTex_016140" OutName="object_jya_objTex_016140" Format="rgba16" Width="64" Height="32" Offset="0x16140" AddedByScript="true"/>
+        <Texture Name="object_jya_objTex_017140" OutName="object_jya_objTex_017140" Format="rgba16" Width="32" Height="16" Offset="0x17140" AddedByScript="true"/>
+        <Texture Name="object_jya_objTex_01B340" OutName="object_jya_objTex_01B340" Format="ia8" Width="32" Height="32" Offset="0x1B340" AddedByScript="true"/>
+        <Texture Name="object_jya_objTex_01B740" OutName="object_jya_objTex_01B740" Format="rgba16" Width="16" Height="16" Offset="0x1B740" AddedByScript="true"/>
+        <Texture Name="object_jya_objTLUT_011A60" OutName="object_jya_objTLUT_011A60" Format="rgba16" Width="4" Height="4" Offset="0x11A60" AddedByScript="true"/>
         <DList Name="g1fliftDL" Offset="0x1F0"/>
         <Collision Name="g1fliftCol" Offset="0x4A8"/>
         <Texture Name="g1f1fiftTopTex" OutName="1flift_top" Format="rgba16" Width="32" Height="32" Offset="0x1B940"/>

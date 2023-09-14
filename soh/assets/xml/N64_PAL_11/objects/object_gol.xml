@@ -1,0 +1,59 @@
+<Root>
+    <File Name="object_gol" Segment="6">
+        <Skeleton Name="gObjectGolSkel" Type="Normal" LimbType="Standard" Offset="0x3B40"/>
+
+        <Animation Name="gObjectGolLandFromJumpAnim" Offset="0x17C"/>
+        <Animation Name="gObjectGolDeadTwitchingAnim" Offset="0x334"/>
+        <Animation Name="gObjectGolJumpHeadbuttAnim" Offset="0x544"/>
+        <Animation Name="gObjectGolDamagedAnim" Offset="0x838"/>
+        <Animation Name="gObjectGolDeathAnim" Offset="0xB78"/>
+        <Animation Name="gObjectGolPrepareJumpAnim" Offset="0xE4C"/>
+        <Animation Name="gObjectGolWalkAnim" Offset="0x11B4"/> <!-- unused -->
+        <Animation Name="gObjectGolStandAnim" Offset="0x1548"/>
+        <Animation Name="gObjectGolRunningAnim" Offset="0x3D78"/>
+        <Animation Name="gObjectGolStopRunningAnim" Offset="0x3FF0"/>
+        <Animation Name="gObjectGolStartRunningAnim" Offset="0x4204"/>
+
+        <DList Name="gObjectGolLeftFootDL" Offset="0x1600"/>
+        <DList Name="gObjectGolLeftThighDL" Offset="0x1860"/>
+        <DList Name="gObjectGolLeftShinDL" Offset="0x19F8"/>
+        <DList Name="gObjectGolRightFootDL" Offset="0x1B28"/>
+        <DList Name="gObjectGolRightThighDL" Offset="0x1D78"/>
+        <DList Name="gObjectGolRightShinDL" Offset="0x1F10"/>
+        <DList Name="gObjectGolBodyDL" Offset="0x24E0"/>
+        <DList Name="gObjectGolEggDL" Offset="0x2A70"/>
+        <DList Name="gObjectGolEyeIrisDL" Offset="0x2C10"/>
+        <DList Name="gObjectGolAntennaDL" Offset="0x2EB8"/>
+
+        <Texture Name="gObjectGolShellTex" OutName="object_gol_shell" Format="rgba16" Width="16" Height="16" Offset="0x2FD0"/>
+        <Texture Name="gObjectGolSkinTex" OutName="object_gol_skin" Format="rgba16" Width="16" Height="16" Offset="0x31D0"/>
+        <!-- the white of the eye texture is also used for the antenna -->
+        <Texture Name="gObjectGolEyeWhiteTex" OutName="object_gol_eye_white" Format="rgba16" Width="16" Height="16" Offset="0x33D0"/>
+        <Texture Name="gObjectGolEyeIrisTex" OutName="object_gol_eye_iris" Format="rgba16" Width="16" Height="16" Offset="0x35D0"/>
+        <Texture Name="gObjectGolEggTex" OutName="object_gol_egg" Format="rgba16" Width="16" Height="16" Offset="0x37D0"/>
+
+        <Limb Name="gObjectGolRoot1Limb" LimbType="Standard" Offset="0x39D0"/>
+        <Limb Name="gObjectGolRoot2Limb" LimbType="Standard" Offset="0x39DC"/>
+        <Limb Name="gObjectGolBodyLimb" LimbType="Standard" Offset="0x39E8"/>
+        <Limb Name="gObjectGolAntennaRoot1Limb" LimbType="Standard" Offset="0x39F4"/>
+        <Limb Name="gObjectGolAntennaRoot2Limb" LimbType="Standard" Offset="0x3A00"/>
+        <Limb Name="gObjectGolAntennaLimb" LimbType="Standard" Offset="0x3A0C"/>
+        <Limb Name="gObjectGolEyeIrisRoot1Limb" LimbType="Standard" Offset="0x3A18"/>
+        <Limb Name="gObjectGolEyeIrisRoot2Limb" LimbType="Standard" Offset="0x3A24"/>
+        <Limb Name="gObjectGolEyeIrisLimb" LimbType="Standard" Offset="0x3A30"/>
+        <Limb Name="gObjectGolLeftLegRoot1Limb" LimbType="Standard" Offset="0x3A3C"/>
+        <Limb Name="gObjectGolLeftLegRoot2Limb" LimbType="Standard" Offset="0x3A48"/>
+        <Limb Name="gObjectGolLeftShinRootLimb" LimbType="Standard" Offset="0x3A54"/>
+        <Limb Name="gObjectGolLeftFootRootLimb" LimbType="Standard" Offset="0x3A60"/>
+        <Limb Name="gObjectGolLeftFootLimb" LimbType="Standard" Offset="0x3A6C"/>
+        <Limb Name="gObjectGolLeftShinLimb" LimbType="Standard" Offset="0x3A78"/>
+        <Limb Name="gObjectGolLeftThighLimb" LimbType="Standard" Offset="0x3A84"/>
+        <Limb Name="gObjectGolRightLegRoot1Limb" LimbType="Standard" Offset="0x3A90"/>
+        <Limb Name="gObjectGolRightLegRoot2Limb" LimbType="Standard" Offset="0x3A9C"/>
+        <Limb Name="gObjectGolRightShinRootLimb" LimbType="Standard" Offset="0x3AA8"/>
+        <Limb Name="gObjectGolRightFootRootLimb" LimbType="Standard" Offset="0x3AB4"/>
+        <Limb Name="gObjectGolRightFootLimb" LimbType="Standard" Offset="0x3AC0"/>
+        <Limb Name="gObjectGolRightShinLimb" LimbType="Standard" Offset="0x3ACC"/>
+        <Limb Name="gObjectGolRightThighLimb" LimbType="Standard" Offset="0x3AD8"/>
+    </File>
+</Root>

@@ -1,6 +1,7 @@
 #include "global.h"
 #include "vt.h"
 #include "soh/ActorDB.h"
+#include <assert.h>
 
 RomFile sNaviMsgFiles[];
 
@@ -15,7 +16,7 @@ s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId) {
     osSyncPrintf("num=%d adrs=%x end=%x\n", objectCtx->num, (uintptr_t)objectCtx->status[objectCtx->num].segment + size,
                  objectCtx->spaceEnd);
 
-    ASSERT(((objectCtx->num < OBJECT_EXCHANGE_BANK_MAX) &&
+    assert(((objectCtx->num < OBJECT_EXCHANGE_BANK_MAX) &&
             (((uintptr_t)objectCtx->status[objectCtx->num].segment + size) < (uintptr_t)objectCtx->spaceEnd)));
 
     DmaMgr_SendRequest1(objectCtx->status[objectCtx->num].segment, gObjectTable[objectId].vromStart, size,
@@ -37,19 +38,19 @@ void Object_InitBank(PlayState* play, ObjectContext* objectCtx) {
     size_t spaceSize;
     s32 i;
 
-    if (play2->sceneNum == SCENE_SPOT00) {
+    if (play2->sceneNum == SCENE_HYRULE_FIELD) {
         spaceSize = 1024000;
-    } else if (play2->sceneNum == SCENE_GANON_DEMO) {
+    } else if (play2->sceneNum == SCENE_GANON_BOSS) {
         if (gSaveContext.sceneSetupIndex != 4) {
             spaceSize = 1177600;
         } else {
             spaceSize = 1024000;
         }
-    } else if (play2->sceneNum == SCENE_JYASINBOSS) {
+    } else if (play2->sceneNum == SCENE_SPIRIT_TEMPLE_BOSS) {
         spaceSize = 1075200;
-    } else if (play2->sceneNum == SCENE_KENJYANOMA) {
+    } else if (play2->sceneNum == SCENE_CHAMBER_OF_THE_SAGES) {
         spaceSize = 1075200;
-    } else if (play2->sceneNum == SCENE_GANON_BOSS) {
+    } else if (play2->sceneNum == SCENE_GANONDORF_BOSS) {
         spaceSize = 1075200;
     } else {
         spaceSize = 1024000;
@@ -153,7 +154,7 @@ void* func_800982FC(ObjectContext* objectCtx, s32 bankIndex, s16 objectId) {
 
     nextPtr = (void*)ALIGN16((uintptr_t)status->segment + size);
 
-    ASSERT(nextPtr < objectCtx->spaceEnd);
+    assert(nextPtr < objectCtx->spaceEnd);
 
     // "Object exchange free size=%08x"
     osSyncPrintf("オブジェクト入れ替え空きサイズ=%08x\n", (uintptr_t)objectCtx->spaceEnd - (uintptr_t)nextPtr);
@@ -284,7 +285,7 @@ void Scene_CommandObjectList(PlayState* play, SceneCmd* cmd) {
         status++;
     }
 
-    ASSERT(cmd->objectList.num <= OBJECT_EXCHANGE_BANK_MAX);
+    assert(cmd->objectList.num <= OBJECT_EXCHANGE_BANK_MAX);
 
     while (k < cmd->objectList.num) {
         nextPtr = func_800982FC(&play->objectCtx, i, *objectEntry);
@@ -449,14 +450,14 @@ void Scene_CommandMiscSettings(PlayState* play, SceneCmd* cmd) {
     YREG(15) = cmd->miscSettings.cameraMovement;
     gSaveContext.worldMapArea = cmd->miscSettings.area;
 
-    if ((play->sceneNum == SCENE_SHOP1) || (play->sceneNum == SCENE_SYATEKIJYOU)) {
+    if ((play->sceneNum == SCENE_BAZAAR) || (play->sceneNum == SCENE_SHOOTING_GALLERY)) {
         if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
             gSaveContext.worldMapArea = 1;
         }
     }
 
-    if (((play->sceneNum >= SCENE_SPOT00) && (play->sceneNum <= SCENE_GANON_TOU)) ||
-        ((play->sceneNum >= SCENE_ENTRA) && (play->sceneNum <= SCENE_SHRINE_R))) {
+    if (((play->sceneNum >= SCENE_HYRULE_FIELD) && (play->sceneNum <= SCENE_OUTSIDE_GANONS_CASTLE)) ||
+        ((play->sceneNum >= SCENE_MARKET_ENTRANCE_DAY) && (play->sceneNum <= SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS))) {
         if (gSaveContext.cutsceneIndex < 0xFFF0) {
             gSaveContext.worldMapAreaData |= gBitFlags[gSaveContext.worldMapArea];
             osSyncPrintf("０００  ａｒｅａ＿ａｒｒｉｖａｌ＝%x (%d)\n", gSaveContext.worldMapAreaData,

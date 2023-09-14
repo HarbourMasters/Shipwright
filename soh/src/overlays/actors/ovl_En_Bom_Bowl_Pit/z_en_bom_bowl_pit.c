@@ -158,10 +158,10 @@ void EnBomBowlPit_SetupGivePrize(EnBomBowlPit* this, PlayState* play) {
     if (this->exItemDone != 0) {
         switch (this->prizeIndex) {
             case EXITEM_BOMB_BAG_BOWLING:
-                gSaveContext.itemGetInf[1] |= 2;
+                Flags_SetItemGetInf(ITEMGETINF_11);
                 break;
             case EXITEM_HEART_PIECE_BOWLING:
-                gSaveContext.itemGetInf[1] |= 4;
+                Flags_SetItemGetInf(ITEMGETINF_12);
                 break;
         }
 

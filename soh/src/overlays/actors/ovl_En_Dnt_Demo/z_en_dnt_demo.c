@@ -180,14 +180,14 @@ void EnDntDemo_Judge(EnDntDemo* this, PlayState* play) {
             delay = 0;
             switch (Player_GetMask(play)) {
                 case PLAYER_MASK_SKULL:
-                    if (!(gSaveContext.itemGetInf[1] & 0x4000)) {
+                    if (!Flags_GetItemGetInf(ITEMGETINF_OBTAINED_STICK_UPGRADE_FROM_STAGE)) {
                         reaction = DNT_SIGNAL_CELEBRATE;
                         this->prize = DNT_PRIZE_STICK;
                         Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_SARIA_THEME);
                         break;
                     }
                 case PLAYER_MASK_TRUTH:
-                    if (!(gSaveContext.itemGetInf[1] & 0x8000) && (Player_GetMask(play) != PLAYER_MASK_SKULL)) {
+                    if (!Flags_GetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE) && (Player_GetMask(play) != PLAYER_MASK_SKULL)) {
                         Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                                &D_801333E8);
                         this->prize = DNT_PRIZE_NUTS;

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_CROW_H
+#define OBJECTS_OBJECT_CROW_H 1
 
 #include "align_asset_macro.h"
 
@@ -37,3 +38,6 @@ static const ALIGN_ASSET(2) char gGuaySkelLimbsLimb_001088DL_0009A0[] = dgGuaySk
 
 #define dgGuaySkelLimbsLimb_001094DL_000900 "__OTR__objects/object_crow/gGuaySkelLimbsLimb_001094DL_000900"
 static const ALIGN_ASSET(2) char gGuaySkelLimbsLimb_001094DL_000900[] = dgGuaySkelLimbsLimb_001094DL_000900;
+
+
+#endif // OBJECTS_OBJECT_CROW_H

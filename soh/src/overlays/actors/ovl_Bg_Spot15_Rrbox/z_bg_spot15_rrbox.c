@@ -96,7 +96,7 @@ s32 func_808B3AAC(BgSpot15Rrbox* this, PlayState* play) {
     s16 rotY;
     Actor* actor = &this->dyna.actor;
 
-    if (play->sceneNum == SCENE_SOUKO) {
+    if (play->sceneNum == SCENE_LON_LON_BUILDINGS) {
         return true;
     } else if (func_808B3A40(this, play)) {
         return false;
@@ -110,7 +110,7 @@ s32 func_808B3AAC(BgSpot15Rrbox* this, PlayState* play) {
         }
 
         if (rotY < 0x2000 && rotY > -0x6000) {
-            return gSaveContext.eventChkInf[1] & 0x10;
+            return Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE);
         }
         return true;
     }

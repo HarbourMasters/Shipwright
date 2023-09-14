@@ -1,4 +1,5 @@
 #include "global.h"
+#include <assert.h>
 
 void SkelCurve_Clear(SkelAnimeCurve* skelCurve) {
     skelCurve->limbCount = 0;
@@ -24,7 +25,7 @@ s32 SkelCurve_Init(PlayState* play, SkelAnimeCurve* skelCurve, SkelCurveLimbList
     skelCurve->limbList = SEGMENTED_TO_VIRTUAL(limbList->limbs);
 
     skelCurve->transforms = ZELDA_ARENA_MALLOC_DEBUG(sizeof(*skelCurve->transforms) * skelCurve->limbCount);
-    ASSERT(skelCurve->transforms != NULL);
+    assert(skelCurve->transforms != NULL);
     skelCurve->animCurFrame = 0.0f;
     return 1;
 }

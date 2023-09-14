@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_LINK_BOY_H
+#define OBJECTS_OBJECT_LINK_BOY_H 1
 
 #include "align_asset_macro.h"
 
@@ -308,6 +309,9 @@ static const ALIGN_ASSET(2) char gLinkAdultHookshotDesignTex[] = dgLinkAdultHook
 #define dgLinkAdultHookshotChainTex "__OTR__objects/object_link_boy/gLinkAdultHookshotChainTex"
 static const ALIGN_ASSET(2) char gLinkAdultHookshotChainTex[] = dgLinkAdultHookshotChainTex;
 
+#define dgLinkAdultHookshotRedicleVtx "__OTR__objects/object_link_boy/gLinkAdultHookshotRedicleVtx"
+static const ALIGN_ASSET(2) char gLinkAdultHookshotRedicleVtx[] = dgLinkAdultHookshotRedicleVtx;
+
 #define dgLinkAdultHookshotReticleTex "__OTR__objects/object_link_boy/gLinkAdultHookshotReticleTex"
 static const ALIGN_ASSET(2) char gLinkAdultHookshotReticleTex[] = dgLinkAdultHookshotReticleTex;
 
@@ -505,3 +509,5 @@ static const ALIGN_ASSET(2) char object_link_boyTLUT_00CB40[] = dobject_link_boy
 
 #define dobject_link_boyTLUT_00D078 "__OTR__objects/object_link_boy/object_link_boyTLUT_00D078"
 static const ALIGN_ASSET(2) char object_link_boyTLUT_00D078[] = dobject_link_boyTLUT_00D078;
+
+#endif // OBJECTS_OBJECT_LINK_BOY_H

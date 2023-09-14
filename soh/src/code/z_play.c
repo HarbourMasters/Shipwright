@@ -9,10 +9,13 @@
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
 #include <overlays/actors/ovl_En_Niw/z_en_niw.h>
+#include "soh/Enhancements/enhancementTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #include <libultraship/libultraship.h>
 
 #include <time.h>
+#include <assert.h>
 
 void* D_8012D1F0 = NULL;
 //UNK_TYPE D_8012D1F4 = 0; // unused
@@ -32,12 +35,17 @@ PlayState* gPlayState;
 
 s16 gEnPartnerId;
 
+void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn);
+
+void enableBetaQuest();
+void disableBetaQuest();
+
 void func_800BC450(PlayState* play) {
     Camera_ChangeDataIdx(GET_ACTIVE_CAM(play), play->unk_1242B - 1);
 }
 
 void func_800BC490(PlayState* play, s16 point) {
-    ASSERT(point == 1 || point == 2);
+    assert(point == 1 || point == 2);
 
     play->unk_1242B = point;
 
@@ -163,6 +171,7 @@ void Play_Destroy(GameState* thisx) {
     PlayState* play = (PlayState*)thisx;
     Player* player = GET_PLAYER(play);
 
+    GameInteractor_ExecuteOnPlayDestroy();
 
     // Only initialize the frame counter when exiting the title screen
     if (gSaveContext.fileNum == 0xFF) {
@@ -233,7 +242,7 @@ void GivePlayerRandoRewardNocturne(PlayState* play, RandomizerCheck check) {
          gSaveContext.entranceIndex == 0x0191 ||
          gSaveContext.entranceIndex == 0x0195) && LINK_IS_ADULT && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
         CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) && player != NULL &&
-        !Player_InBlockingCsMode(play, player) && !Flags_GetEventChkInf(0xAA)) {
+        !Player_InBlockingCsMode(play, player) && !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL)) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_NOCTURNE_OF_SHADOW);
         GiveItemEntryWithoutActor(play, getItemEntry);
         player->pendingFlag.flagID = 0xAA;
@@ -245,7 +254,7 @@ void GivePlayerRandoRewardRequiem(PlayState* play, RandomizerCheck check) {
     Player* player = GET_PLAYER(play);
 
     if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
-        if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(0xAC) && player != NULL &&
+        if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT) && player != NULL &&
             !Player_InBlockingCsMode(play, player)) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_SONG_OF_TIME);
             GiveItemEntryWithoutActor(play, getItemEntry);
@@ -416,7 +425,7 @@ void GivePlayerRandoRewardZeldaLightArrowsGift(PlayState* play, RandomizerCheck 
     }
 
     if (meetsRequirements && LINK_IS_ADULT &&
-        (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA) &&
+        (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TEMPLE_OF_TIME) &&
         !Flags_GetTreasure(play, 0x1E) && player != NULL && !Player_InBlockingCsMode(play, player) &&
         play->sceneLoadFlag == 0) {
         GetItemEntry getItem = Randomizer_GetItemFromKnownCheck(check, GI_ARROW_LIGHT);
@@ -432,7 +441,7 @@ void GivePlayerRandoRewardSariaGift(PlayState* play, RandomizerCheck check) {
     if (gSaveContext.entranceIndex == 0x05E0) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_ZELDAS_LULLABY);
 
-        if (!Flags_GetEventChkInf(0xC1) && player != NULL && !Player_InBlockingCsMode(play, player)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE) && player != NULL && !Player_InBlockingCsMode(play, player)) {
             GiveItemEntryWithoutActor(play, getItemEntry);
             player->pendingFlag.flagType = FLAG_EVENT_CHECK_INF;
             player->pendingFlag.flagID = 0xC1;
@@ -461,7 +470,7 @@ void Play_Init(GameState* thisx) {
     // entranceIndex 0x7A, Castle Courtyard - Day from crawlspace
     // entranceIndex 0x400, Zelda's Courtyard
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_CHILD_STEALTH) &&
-        !(gSaveContext.eventChkInf[4] & 1) && !(gSaveContext.eventChkInf[5] & 0x200)) {
+        !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY)) {
         if (gSaveContext.entranceIndex == 0x7A) {
             gSaveContext.entranceIndex = 0x400;
         }
@@ -549,7 +558,7 @@ void Play_Init(GameState* thisx) {
     }
 
     tempSetupIndex = gSaveContext.sceneSetupIndex;
-    if ((gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_SPOT00) && !LINK_IS_ADULT &&
+    if ((gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_HYRULE_FIELD) && !LINK_IS_ADULT &&
         gSaveContext.sceneSetupIndex < 4) {
         if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && CHECK_QUEST_ITEM(QUEST_GORON_RUBY) &&
             CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)) {
@@ -557,9 +566,9 @@ void Play_Init(GameState* thisx) {
         } else {
             gSaveContext.sceneSetupIndex = 0;
         }
-    } else if ((gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_SPOT04) && LINK_IS_ADULT &&
+    } else if ((gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_KOKIRI_FOREST) && LINK_IS_ADULT &&
                gSaveContext.sceneSetupIndex < 4) {
-        gSaveContext.sceneSetupIndex = (gSaveContext.eventChkInf[4] & 0x100) ? 3 : 2;
+        gSaveContext.sceneSetupIndex = (Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) ? 3 : 2;
     }
 
     Play_SpawnScene(
@@ -644,7 +653,7 @@ void Play_Init(GameState* thisx) {
 
     Fault_AddClient(&D_801614B8, ZeldaArena_Display, NULL, NULL);
     // In order to keep bunny hood equipped on first load, we need to pre-set the age reqs for the item and slot
-    if (CVarGetInteger("gMMBunnyHood", 0) || CVarGetInteger("gTimelessEquipment", 0)) {
+    if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA || CVarGetInteger("gTimelessEquipment", 0)) {
         gItemAgeReqs[ITEM_MASK_BUNNY] = 9;
         if(INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY)
             gSlotAgeReqs[SLOT_TRADE_CHILD] = 9;
@@ -1177,7 +1186,7 @@ void Play_Update(PlayState* play) {
                       gSaveContext.sohStats.sceneTimer++;
                       gSaveContext.sohStats.roomTimer++;
 
-                      if (CVarGetInteger("gMMBunnyHood", 0) && Player_GetMask(play) == PLAYER_MASK_BUNNY) {
+                      if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA && Player_GetMask(play) == PLAYER_MASK_BUNNY) {
                           gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD]++;
                       }
                 }
@@ -1472,6 +1481,17 @@ void Play_Draw(PlayState* play) {
         func_800AA460(&play->view, play->view.fovy, play->view.zNear, play->lightCtx.fogFar);
         func_800AAA50(&play->view, 15);
 
+        // Flip the projections and invert culling for the OPA and XLU display buffers
+        // These manage the world and effects
+        if (CVarGetInteger("gMirroredWorld", 0)) {
+            gSPSetExtraGeometryMode(POLY_OPA_DISP++, G_EX_INVERT_CULLING);
+            gSPSetExtraGeometryMode(POLY_XLU_DISP++, G_EX_INVERT_CULLING);
+            gSPMatrix(POLY_OPA_DISP++, play->view.projectionFlippedPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+            gSPMatrix(POLY_XLU_DISP++, play->view.projectionFlippedPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+            gSPMatrix(POLY_OPA_DISP++, play->view.viewingPtr, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+            gSPMatrix(POLY_XLU_DISP++, play->view.viewingPtr, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+        }
+
         // The billboard matrix temporarily stores the viewing matrix
         Matrix_MtxToMtxF(&play->view.viewing, &play->billboardMtxF);
         Matrix_MtxToMtxF(&play->view.projection, &play->viewProjectionMtxF);
@@ -1693,6 +1713,14 @@ void Play_Draw(PlayState* play) {
                 }
             }
         }
+
+        GameInteractor_ExecuteOnPlayDrawEnd();
+
+        // Reset the inverted culling
+        if (CVarGetInteger("gMirroredWorld", 0)) {
+            gSPClearExtraGeometryMode(POLY_OPA_DISP++, G_EX_INVERT_CULLING);
+            gSPClearExtraGeometryMode(POLY_XLU_DISP++, G_EX_INVERT_CULLING);
+        }
     }
 
     if (play->view.unk_124 != 0) {
@@ -1736,12 +1764,11 @@ time_t Play_GetRealTime() {
 void Play_Main(GameState* thisx) {
     PlayState* play = (PlayState*)thisx;
 
-    if (CVarGetInteger("gCheatEasyPauseBufferFrameAdvance", 0)) {
-        CVarSetInteger("gCheatEasyPauseBufferFrameAdvance", CVarGetInteger("gCheatEasyPauseBufferFrameAdvance", 0) - 1);
+    // Decrease the easy pause buffer timer every frame
+    if (CVarGetInteger("gCheatEasyPauseBufferTimer", 0) > 0) {
+        CVarSetInteger("gCheatEasyPauseBufferTimer", CVarGetInteger("gCheatEasyPauseBufferTimer", 0) - 1);
     }
-    if (CVarGetInteger("gPauseBufferBlockInputFrame", 0)) {
-        CVarSetInteger("gPauseBufferBlockInputFrame", CVarGetInteger("gPauseBufferBlockInputFrame", 0) - 1);
-    }
+
     if (play->envCtx.unk_EE[2] == 0 && CVarGetInteger("gLetItSnow", 0)) {
         play->envCtx.unk_EE[3] = 64;
         Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_OBJECT_KANKYO, 0, 0, 0, 0, 0, 0, 3, 0);
@@ -1919,14 +1946,18 @@ void Play_InitScene(PlayState* play, s32 spawn)
 }
 
 void Play_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
+    uint8_t mqMode = CVarGetInteger("gBetterDebugWarpScreenMQMode", WARP_MODE_OVERRIDE_OFF);
+    int16_t mqModeScene = CVarGetInteger("gBetterDebugWarpScreenMQModeScene", -1);
+    if (mqMode != WARP_MODE_OVERRIDE_OFF && sceneNum != mqModeScene) {
+        CVarClear("gBetterDebugWarpScreenMQMode");
+        CVarClear("gBetterDebugWarpScreenMQModeScene");
+    }
 
     OTRPlay_SpawnScene(play, sceneNum, spawn);
 
     if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         Entrance_OverrideSpawnScene(sceneNum, spawn);
     }
-
-    CVarClear("gBetterDebugWarpScreenMQMode");
 }
 
 void func_800C016C(PlayState* play, Vec3f* src, Vec3f* dest) {
@@ -2181,7 +2212,7 @@ void Play_SetupRespawnPoint(PlayState* play, s32 respawnMode, s32 playerParams) 
     s32 entranceIndex;
     s8 roomIndex;
 
-    if ((play->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (play->sceneNum != SCENE_KAKUSIANA)) {
+    if ((play->sceneNum != SCENE_FAIRYS_FOUNTAIN) && (play->sceneNum != SCENE_GROTTOS)) {
         roomIndex = play->roomCtx.curRoom.num;
         entranceIndex = gSaveContext.entranceIndex;
         Play_SetRespawnData(play, respawnMode, entranceIndex, roomIndex, playerParams,
@@ -2202,8 +2233,8 @@ void Play_LoadToLastEntrance(PlayState* play) {
     gSaveContext.respawnFlag = -1;
     play->sceneLoadFlag = 0x14;
 
-    if ((play->sceneNum == SCENE_GANON_SONOGO) || (play->sceneNum == SCENE_GANON_FINAL) ||
-        (play->sceneNum == SCENE_GANONTIKA_SONOGO) || (play->sceneNum == SCENE_GANON_DEMO)) {
+    if ((play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) || (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
+        (play->sceneNum == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE) || (play->sceneNum == SCENE_GANON_BOSS)) {
         play->nextEntranceIndex = 0x043F;
         Item_Give(play, ITEM_SWORD_MASTER);
     } else if ((gSaveContext.entranceIndex == 0x028A) || (gSaveContext.entranceIndex == 0x028E) ||
@@ -2223,7 +2254,7 @@ void Play_TriggerRespawn(PlayState* play) {
 
 s32 func_800C0CB8(PlayState* play) {
     return (play->roomCtx.curRoom.meshHeader->base.type != 1) && (YREG(15) != 0x20) && (YREG(15) != 0x30) &&
-           (YREG(15) != 0x40) && (play->sceneNum != SCENE_HAIRAL_NIWA);
+           (YREG(15) != 0x40) && (play->sceneNum != SCENE_CASTLE_COURTYARD_GUARDS_DAY);
 }
 
 s32 FrameAdvance_IsEnabled(PlayState* play) {
@@ -2287,7 +2318,7 @@ void Play_PerformSave(PlayState* play) {
         } else {
             Save_SaveFile();
         }
-        if (CVarGetInteger("gAutosave", 0)) {
+        if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) != AUTOSAVE_OFF) {
             Overlay_DisplayText(3.0f, "Game Saved");
         }
     }

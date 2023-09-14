@@ -266,12 +266,6 @@ static void AddHint(Text hint, const uint32_t gossipStone, const std::vector<uin
   Location(gossipStone)->SetHintedLocation(hintedLocation);
   Location(gossipStone)->SetHintType(hintType);
   Location(gossipStone)->SetHintedRegion(GetHintRegion(Location(hintedLocation)->GetParentRegionKey())->GetHint().GetText().GetEnglish());
-
-  //create the in game message
-  // uint32_t messageId = 0x400 + Location(gossipStone)->GetFlag();
-  // uint32_t sariaMessageId = 0xA00 + Location(gossipStone)->GetFlag();
-  // CreateMessageFromTextObject(messageId, 0, 2, 3, AddColorsAndFormat(hint, colors));
-  // CreateMessageFromTextObject(sariaMessageId, 0, 2, 3, AddColorsAndFormat(hint + EVENT_TRIGGER(), colors));
 }
 
 static void CreateLocationHint(const std::vector<uint32_t>& possibleHintLocations) {
@@ -607,7 +601,7 @@ static Text BuildDungeonRewardText(const uint32_t itemKey) {
   std::string rewardString = "$" + std::to_string(itemKey - KOKIRI_EMERALD);
 
   // RANDOTODO implement colors for locations
-  return Text()+rewardString+GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText()+"...^";
+  return Text()+rewardString+GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText().Capitalize()+"...^";
 }
 
 static Text BuildDoorOfTimeText() {

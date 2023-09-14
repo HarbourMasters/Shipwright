@@ -7,11 +7,13 @@
 #include <libultraship/libultra.h>
 #include "global.h"
 #include "vt.h"
-#include "alloca.h"
 
+#include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/randomizer/randomizer_grotto.h"
 
 void Select_SwitchBetterWarpMode(SelectContext* this, u8 isBetterWarpMode);
+void Sram_InitDebugSave(void);
 
 void Select_LoadTitle(SelectContext* this) {
     this->state.running = false;
@@ -52,11 +54,14 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
             BetterSceneSelectEntrancePair entrancePair = this->betterScenes[this->currentScene].entrancePairs[this->pageDownIndex];
             // Check to see if the scene/entrance we just picked can be MQ'd
             if (entrancePair.canBeMQ) {
-                u8 isEntranceDefaultMQ = ResourceMgr_IsSceneMasterQuest(gEntranceTable[entrancePair.entranceIndex].scene);
-                if (!isEntranceDefaultMQ && this->opt) {
-                    CVarSetInteger("gBetterDebugWarpScreenMQMode", 1); // Force vanilla for default MQ scene
-                } else if (isEntranceDefaultMQ && !this->opt) {
-                    CVarSetInteger("gBetterDebugWarpScreenMQMode", 2); // Force MQ for default vanilla scene
+                s16 scene = gEntranceTable[entrancePair.entranceIndex].scene;
+                u8 isEntranceDefaultMQ = ResourceMgr_IsSceneMasterQuest(scene);
+                if (!isEntranceDefaultMQ && this->opt) { // Force vanilla for default MQ scene
+                    CVarSetInteger("gBetterDebugWarpScreenMQMode", WARP_MODE_OVERRIDE_MQ_AS_VANILLA);
+                    CVarSetInteger("gBetterDebugWarpScreenMQModeScene", scene);
+                } else if (isEntranceDefaultMQ && !this->opt) { // Force MQ for default vanilla scene
+                    CVarSetInteger("gBetterDebugWarpScreenMQMode", WARP_MODE_OVERRIDE_VANILLA_AS_MQ);
+                    CVarSetInteger("gBetterDebugWarpScreenMQModeScene", scene);
                 }
             }
         }
@@ -1454,7 +1459,7 @@ void Better_Select_PrintMQSetting(SelectContext* this, GfxPrint* printer) {
 
 void Select_DrawMenu(SelectContext* this) {
     GraphicsContext* gfxCtx = this->state.gfxCtx;
-    GfxPrint* printer;
+    GfxPrint printer;
 
     OPEN_DISPS(gfxCtx);
 
@@ -1464,28 +1469,28 @@ void Select_DrawMenu(SelectContext* this) {
     func_800AAA50(&this->view, 0xF);
     Gfx_SetupDL_28Opa(gfxCtx);
 
-    printer = alloca(sizeof(GfxPrint));
-    GfxPrint_Init(printer);
-    GfxPrint_Open(printer, POLY_OPA_DISP);
+    //printer = alloca(sizeof(GfxPrint));
+    GfxPrint_Init(&printer);
+    GfxPrint_Open(&printer, POLY_OPA_DISP);
     if (this->isBetterWarp) {
-        Better_Select_PrintTimeSetting(this, printer);
-        Better_Select_PrintAgeSetting(this, printer, ((void)0, gSaveContext.linkAge));
-        Better_Select_PrintMQSetting(this, printer);
-        Better_Select_PrintMenu(this, printer);
+        Better_Select_PrintTimeSetting(this, &printer);
+        Better_Select_PrintAgeSetting(this, &printer, ((void)0, gSaveContext.linkAge));
+        Better_Select_PrintMQSetting(this, &printer);
+        Better_Select_PrintMenu(this, &printer);
     } else {
-        Select_PrintMenu(this, printer);
-        Select_PrintAgeSetting(this, printer, ((void)0, gSaveContext.linkAge));
-        Select_PrintCutsceneSetting(this, printer, ((void)0, gSaveContext.cutsceneIndex));
+        Select_PrintMenu(this, &printer);
+        Select_PrintAgeSetting(this, &printer, ((void)0, gSaveContext.linkAge));
+        Select_PrintCutsceneSetting(this, &printer, ((void)0, gSaveContext.cutsceneIndex));
     }
-    POLY_OPA_DISP = GfxPrint_Close(printer);
-    GfxPrint_Destroy(printer);
+    POLY_OPA_DISP = GfxPrint_Close(&printer);
+    GfxPrint_Destroy(&printer);
 
     CLOSE_DISPS(gfxCtx);
 }
 
 void Select_DrawLoadingScreen(SelectContext* this) {
     GraphicsContext* gfxCtx = this->state.gfxCtx;
-    GfxPrint* printer;
+    GfxPrint printer;
 
     OPEN_DISPS(gfxCtx);
 
@@ -1495,12 +1500,12 @@ void Select_DrawLoadingScreen(SelectContext* this) {
     func_800AAA50(&this->view, 0xF);
     Gfx_SetupDL_28Opa(gfxCtx);
 
-    printer = alloca(sizeof(GfxPrint));
-    GfxPrint_Init(printer);
-    GfxPrint_Open(printer, POLY_OPA_DISP);
-    Select_PrintLoadingMessage(this, printer);
-    POLY_OPA_DISP = GfxPrint_Close(printer);
-    GfxPrint_Destroy(printer);
+    //printer = alloca(sizeof(GfxPrint));
+    GfxPrint_Init(&printer);
+    GfxPrint_Open(&printer, POLY_OPA_DISP);
+    Select_PrintLoadingMessage(this, &printer);
+    POLY_OPA_DISP = GfxPrint_Close(&printer);
+    GfxPrint_Destroy(&printer);
 
     CLOSE_DISPS(gfxCtx);
 }
@@ -1585,7 +1590,6 @@ void Select_SwitchBetterWarpMode(SelectContext* this, u8 isBetterWarpMode) {
 void Select_Init(GameState* thisx) {
     SelectContext* this = (SelectContext*)thisx;
     size_t size;
-    s32 pad;
 
     this->state.main = Select_Main;
     this->state.destroy = Select_Destroy;
@@ -1633,5 +1637,6 @@ void Select_Init(GameState* thisx) {
     gSaveContext.dayTime = 0x8000;
 
     CVarClear("gBetterDebugWarpScreenMQMode");
+    CVarClear("gBetterDebugWarpScreenMQModeScene");
     Select_SwitchBetterWarpMode(this, CVarGetInteger("gBetterDebugWarpScreen", 0));
 }

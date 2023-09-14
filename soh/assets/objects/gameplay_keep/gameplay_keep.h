@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_GAMEPLAY_KEEP_H
+#define OBJECTS_GAMEPLAY_KEEP_H 1
 
 #include "align_asset_macro.h"
 
@@ -2720,17 +2721,17 @@ static const ALIGN_ASSET(2) char gDoorMetalBarsDL[] = dgDoorMetalBarsDL;
 #define dgGenericDungeonDoorTex "__OTR__objects/gameplay_keep/gGenericDungeonDoorTex"
 static const ALIGN_ASSET(2) char gGenericDungeonDoorTex[] = dgGenericDungeonDoorTex;
 
-#define dgSunTex "__OTR__objects/gameplay_keep/gSunTex"
-static const ALIGN_ASSET(2) char gSunTex[] = dgSunTex;
+#define dgSun1Tex "__OTR__objects/gameplay_keep/gSun1Tex"
+static const ALIGN_ASSET(2) char gSun1Tex[] = dgSun1Tex;
 
-#define dgSunEveningTex "__OTR__objects/gameplay_keep/gSunEveningTex"
-static const ALIGN_ASSET(2) char gSunEveningTex[] = dgSunEveningTex;
+#define dgSunEvening1Tex "__OTR__objects/gameplay_keep/gSunEvening1Tex"
+static const ALIGN_ASSET(2) char gSunEvening1Tex[] = dgSunEvening1Tex;
 
-#define dgKokiriDustMoteTextureLoadDL "__OTR__objects/gameplay_keep/gKokiriDustMoteTextureLoadDL"
-static const ALIGN_ASSET(2) char gKokiriDustMoteTextureLoadDL[] = dgKokiriDustMoteTextureLoadDL;
+#define dgKokiriDustMoteMaterialDL "__OTR__objects/gameplay_keep/gKokiriDustMoteMaterialDL"
+static const ALIGN_ASSET(2) char gKokiriDustMoteMaterialDL[] = dgKokiriDustMoteMaterialDL;
 
-#define dgKokiriDustMoteDL "__OTR__objects/gameplay_keep/gKokiriDustMoteDL"
-static const ALIGN_ASSET(2) char gKokiriDustMoteDL[] = dgKokiriDustMoteDL;
+#define dgKokiriDustMoteModelDL "__OTR__objects/gameplay_keep/gKokiriDustMoteModelDL"
+static const ALIGN_ASSET(2) char gKokiriDustMoteModelDL[] = dgKokiriDustMoteModelDL;
 
 #define dgSunDL "__OTR__objects/gameplay_keep/gSunDL"
 static const ALIGN_ASSET(2) char gSunDL[] = dgSunDL;
@@ -2825,15 +2826,6 @@ static const ALIGN_ASSET(2) char gEffSpark3Tex[] = dgEffSpark3Tex;
 #define dgEffSpark4Tex "__OTR__objects/gameplay_keep/gEffSpark4Tex"
 static const ALIGN_ASSET(2) char gEffSpark4Tex[] = dgEffSpark4Tex;
 
-#define dgFishSkelLimbsLimb_018F98DL_018A68 "__OTR__objects/gameplay_keep/gFishSkelLimbsLimb_018F98DL_018A68"
-static const ALIGN_ASSET(2) char gFishSkelLimbsLimb_018F98DL_018A68[] = dgFishSkelLimbsLimb_018F98DL_018A68;
-
-#define dgFishSkelLimbsLimb_018FB0DL_018950 "__OTR__objects/gameplay_keep/gFishSkelLimbsLimb_018FB0DL_018950"
-static const ALIGN_ASSET(2) char gFishSkelLimbsLimb_018FB0DL_018950[] = dgFishSkelLimbsLimb_018FB0DL_018950;
-
-#define dgFishSkelLimbsLimb_018FBCDL_0188B0 "__OTR__objects/gameplay_keep/gFishSkelLimbsLimb_018FBCDL_0188B0"
-static const ALIGN_ASSET(2) char gFishSkelLimbsLimb_018FBCDL_0188B0[] = dgFishSkelLimbsLimb_018FBCDL_0188B0;
-
 #define dgameplay_keepTex_04C540 "__OTR__objects/gameplay_keep/gameplay_keepTex_04C540"
 static const ALIGN_ASSET(2) char gameplay_keepTex_04C540[] = dgameplay_keepTex_04C540;
 
@@ -2845,3 +2837,15 @@ static const ALIGN_ASSET(2) char gameplay_keepTex_04C740[] = dgameplay_keepTex_0
 
 #define dgameplay_keepTex_04CF40 "__OTR__objects/gameplay_keep/gameplay_keepTex_04CF40"
 static const ALIGN_ASSET(2) char gameplay_keepTex_04CF40[] = dgameplay_keepTex_04CF40;
+
+#define dgFishSkelLimbsLimb_018F98DL_018A68 "__OTR__objects/gameplay_keep/gFishSkelLimbsLimb_018F98DL_018A68"
+static const ALIGN_ASSET(2) char gFishSkelLimbsLimb_018F98DL_018A68[] = dgFishSkelLimbsLimb_018F98DL_018A68;
+
+#define dgFishSkelLimbsLimb_018FB0DL_018950 "__OTR__objects/gameplay_keep/gFishSkelLimbsLimb_018FB0DL_018950"
+static const ALIGN_ASSET(2) char gFishSkelLimbsLimb_018FB0DL_018950[] = dgFishSkelLimbsLimb_018FB0DL_018950;
+
+#define dgFishSkelLimbsLimb_018FBCDL_0188B0 "__OTR__objects/gameplay_keep/gFishSkelLimbsLimb_018FBCDL_0188B0"
+static const ALIGN_ASSET(2) char gFishSkelLimbsLimb_018FBCDL_0188B0[] = dgFishSkelLimbsLimb_018FBCDL_0188B0;
+
+
+#endif // OBJECTS_GAMEPLAY_KEEP_H

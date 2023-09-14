@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_EC_H
+#define OBJECTS_OBJECT_EC_H 1
 
 #include "align_asset_macro.h"
 
@@ -67,3 +68,5 @@ static const ALIGN_ASSET(2) char gDemoEcTalonAnim[] = dgDemoEcTalonAnim;
 
 #define dgDemoEcDancingZoraAnim "__OTR__objects/object_ec/gDemoEcDancingZoraAnim"
 static const ALIGN_ASSET(2) char gDemoEcDancingZoraAnim[] = dgDemoEcDancingZoraAnim;
+
+#endif // OBJECTS_OBJECT_EC_H

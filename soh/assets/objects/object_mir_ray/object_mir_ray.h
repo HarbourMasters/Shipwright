@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_MIR_RAY_H
+#define OBJECTS_OBJECT_MIR_RAY_H 1
 
 #include "align_asset_macro.h"
 
@@ -16,3 +17,5 @@ static const ALIGN_ASSET(2) char gShieldBeamImageGerudoSymbolNewTex[] = dgShield
 
 #define dgShieldBeamGlowRayTex "__OTR__objects/object_mir_ray/gShieldBeamGlowRayTex"
 static const ALIGN_ASSET(2) char gShieldBeamGlowRayTex[] = dgShieldBeamGlowRayTex;
+
+#endif // OBJECTS_OBJECT_MIR_RAY_H

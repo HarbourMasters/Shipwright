@@ -20,6 +20,10 @@ void EnPartner_Update(Actor* thisx, PlayState* play);
 void EnPartner_Draw(Actor* thisx, PlayState* play);
 void EnPartner_SpawnSparkles(EnPartner* this, PlayState* play, s32 sparkleLife);
 
+void func_808328EC(Player* this, u16 sfxId);
+void func_808429B4(PlayState* play, s32 speed, s32 y, s32 countdown);
+s32 spawn_boomerang_ivan(EnPartner* this, PlayState* play);
+
 static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 8, ICHAIN_STOP),
 };
@@ -574,7 +578,7 @@ void EnPartner_Update(Actor* thisx, PlayState* play) {
 
     Input sControlInput = play->state.input[this->actor.params];
 
-    f32 relX = sControlInput.cur.stick_x / 10.0f;
+    f32 relX = sControlInput.cur.stick_x / 10.0f * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
     f32 relY = sControlInput.cur.stick_y / 10.0f;
 
     Vec3f camForward = { GET_ACTIVE_CAM(play)->at.x - GET_ACTIVE_CAM(play)->eye.x, 0.0f,

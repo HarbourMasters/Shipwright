@@ -50,7 +50,6 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
 
     scene->unk_13 = 0;
 
-    //ASSERT(play->sceneSegment != NULL);
     //gSegments[2] = VIRTUAL_TO_PHYSICAL(play->sceneSegment);
 
     OTRPlay_InitScene(play, spawn);
@@ -77,7 +76,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     OTRScene_ExecuteCommands(play, (LUS::Scene*)play->sceneSegment);
     Play_InitEnvironment(play, play->skyboxId);
     // Unpause the timer for Boss Rush when the scene loaded isn't the Chamber of Sages.
-    if (gSaveContext.isBossRush && play->sceneNum != SCENE_KENJYANOMA) {
+    if (gSaveContext.isBossRush && play->sceneNum != SCENE_CHAMBER_OF_THE_SAGES) {
         gSaveContext.isBossRushPaused = 0;
     }
     /* auto data = static_cast<LUS::Vertex*>(LUS::Context::GetInstance()

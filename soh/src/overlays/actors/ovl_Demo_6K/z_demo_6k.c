@@ -11,6 +11,7 @@
 #include "objects/object_gnd_magic/object_gnd_magic.h"
 #include "overlays/actors/ovl_Eff_Dust/z_eff_dust.h"
 #include "soh/frame_interpolation.h"
+#include <assert.h>
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -87,7 +88,7 @@ void Demo6K_Init(Actor* thisx, PlayState* play) {
     osSyncPrintf("bank_ID = %d\n", objBankIndex);
 
     if (objBankIndex < 0) {
-        ASSERT(objBankIndex < 0);
+        assert(objBankIndex < 0);
     } else {
         this->objBankIndex = objBankIndex;
     }
@@ -174,7 +175,7 @@ void Demo6K_Init(Actor* thisx, PlayState* play) {
             this->unk_293 = params - 14;
             break;
         default:
-            ASSERT(0);
+            assert(0);
             break;
     }
 
@@ -303,7 +304,7 @@ void func_8096712C(Demo6K* this, PlayState* play) {
 
     this->timer2++;
 
-    if ((play->sceneNum == SCENE_GANONTIKA) && (play->csCtx.frames < D_8096932C[this->actor.params - 3])) {
+    if ((play->sceneNum == SCENE_INSIDE_GANONS_CASTLE) && (play->csCtx.frames < D_8096932C[this->actor.params - 3])) {
         func_8002F974(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
     }
 }
@@ -335,7 +336,7 @@ void func_80967244(Demo6K* this, PlayState* play) {
     envColor.g = sEnvColors[this->unk_293].g;
     envColor.b = sEnvColors[this->unk_293].b;
 
-    if (play->sceneNum == SCENE_TOKINOMA) {
+    if (play->sceneNum == SCENE_TEMPLE_OF_TIME) {
         scale = 6000;
     } else if (play->csCtx.frames < 419) {
         scale = 6000;

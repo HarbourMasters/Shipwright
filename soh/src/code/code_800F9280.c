@@ -2,6 +2,8 @@
 #include "global.h"
 #include "soh/mixer.h"
 
+#include "soh/Enhancements/audio/AudioEditor.h"
+
 typedef struct {
     u8 unk_0;
     u8 unk_1; // importance?

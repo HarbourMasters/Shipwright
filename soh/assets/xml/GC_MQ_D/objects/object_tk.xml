@@ -1,5 +1,22 @@
 <Root>
     <File Name="object_tk" Segment="6">
+        <Texture Name="object_tkTex_003980" OutName="object_tkTex_003980" Format="ci8" Width="8" Height="8" Offset="0x3980" TlutOffset="0x3780" AddedByScript="true"/>
+        <Texture Name="object_tkTex_0039C0" OutName="object_tkTex_0039C0" Format="ci8" Width="8" Height="8" Offset="0x39C0" TlutOffset="0x3780" AddedByScript="true"/>
+        <Texture Name="object_tkTex_003A00" OutName="object_tkTex_003A00" Format="ci8" Width="8" Height="8" Offset="0x3A00" TlutOffset="0x3780" AddedByScript="true"/>
+        <Texture Name="object_tkTex_003A40" OutName="object_tkTex_003A40" Format="ci8" Width="16" Height="16" Offset="0x3A40" TlutOffset="0x3780" AddedByScript="true"/>
+        <Texture Name="object_tkTex_005340" OutName="object_tkTex_005340" Format="ci8" Width="16" Height="16" Offset="0x5340" TlutOffset="0x3780" AddedByScript="true"/>
+        <Texture Name="object_tkTex_005440" OutName="object_tkTex_005440" Format="ci8" Width="16" Height="16" Offset="0x5440" TlutOffset="0x3780" AddedByScript="true"/>
+        <Texture Name="object_tkTex_0056C0" OutName="object_tkTex_0056C0" Format="ci8" Width="16" Height="16" Offset="0x56C0" TlutOffset="0x3780" AddedByScript="true"/>
+        <Texture Name="object_tkTex_009B00" OutName="object_tkTex_009B00" Format="ci8" Width="16" Height="16" Offset="0x9B00" TlutOffset="0x9AB0" AddedByScript="true"/>
+        <Texture Name="object_tkTex_009C00" OutName="object_tkTex_009C00" Format="ci8" Width="8" Height="16" Offset="0x9C00" TlutOffset="0x9AB0" AddedByScript="true"/>
+        <Texture Name="object_tkTex_009C80" OutName="object_tkTex_009C80" Format="i8" Width="8" Height="8" Offset="0x9C80" AddedByScript="true"/>
+        <Texture Name="object_tkTex_009CC0" OutName="object_tkTex_009CC0" Format="rgba16" Width="8" Height="8" Offset="0x9CC0" AddedByScript="true"/>
+        <Texture Name="object_tkTex_009D40" OutName="object_tkTex_009D40" Format="i4" Width="16" Height="32" Offset="0x9D40" AddedByScript="true"/>
+        <Texture Name="object_tkTex_00B088" OutName="object_tkTex_00B088" Format="rgba16" Width="16" Height="16" Offset="0xB088" AddedByScript="true"/>
+        <Texture Name="object_tkTex_00B288" OutName="object_tkTex_00B288" Format="rgba16" Width="16" Height="16" Offset="0xB288" AddedByScript="true"/>
+        <Texture Name="object_tkTex_00B488" OutName="object_tkTex_00B488" Format="rgba16" Width="16" Height="16" Offset="0xB488" AddedByScript="true"/>
+        <Texture Name="object_tkTLUT_003780" OutName="object_tkTLUT_003780" Format="rgba16" Width="16" Height="16" Offset="0x3780" AddedByScript="true"/>
+        <Texture Name="object_tkTLUT_009AB0" OutName="object_tkTLUT_009AB0" Format="rgba16" Width="16" Height="16" Offset="0x9AB0" AddedByScript="true"/>
         <Animation Name="gDampeDigAnim" Offset="0x1144"/>
         <Animation Name="gDampeWalkAnim" Offset="0x1FA8"/>
         <Animation Name="gDampeRestAnim" Offset="0x2F84"/>

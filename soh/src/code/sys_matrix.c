@@ -1,6 +1,7 @@
 #include "global.h"
 
 #include "soh/frame_interpolation.h"
+#include <assert.h>
 
 // clang-format off
 Mtx gMtxClear = {
@@ -35,7 +36,7 @@ void Matrix_Push(void) {
 void Matrix_Pop(void) {
     FrameInterpolation_RecordMatrixPop();
     sCurrentMatrix--;
-    ASSERT(sCurrentMatrix >= sMatrixStack);
+    assert(sCurrentMatrix >= sMatrixStack);
 }
 
 void Matrix_Get(MtxF* dest) {

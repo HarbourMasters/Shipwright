@@ -87,7 +87,7 @@ void ObjHana_Init(Actor* thisx, PlayState* play) {
         CollisionCheck_SetInfo(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
     }
 
-    if (type == 2 && (gSaveContext.eventChkInf[4] & 1)) {
+    if (type == 2 && (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER))) {
         Actor_Kill(&this->actor);
     }
 }

@@ -62,6 +62,7 @@ void EffectSsExtra_Draw(PlayState* play, u32 index, EffectSs* this) {
     s32 pad;
     f32 scale = this->rScale / 100.0f;
     void* object = play->objectCtx.status[this->rObjBankIdx].segment;
+    u8 mirroredWorld = CVarGetInteger("gMirroredWorld", 0);
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -71,10 +72,22 @@ void EffectSsExtra_Draw(PlayState* play, u32 index, EffectSs* this) {
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     Matrix_ReplaceRotation(&play->billboardMtxF);
+
+    // Flip the score texture matrix and un-invert the culling to display it normally
+    if (mirroredWorld) {
+        gSPClearExtraGeometryMode(POLY_XLU_DISP++, G_EX_INVERT_CULLING);
+        Matrix_Scale(-1, 1, 1, MTXMODE_APPLY);
+    }
+
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sTextures[this->rScoreIdx]));
     gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_yabusame_point_DL_000DC0));
+
+    // Set back inverted culling
+    if (mirroredWorld) {
+        gSPSetExtraGeometryMode(POLY_XLU_DISP++, G_EX_INVERT_CULLING);
+    }
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

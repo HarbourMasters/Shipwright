@@ -7,6 +7,7 @@
 #include "z_en_firefly.h"
 #include "objects/object_firefly/object_firefly.h"
 #include "overlays/actors/ovl_Obj_Syokudai/z_obj_syokudai.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_ARROW_DRAGGABLE)
 
@@ -225,15 +226,8 @@ void EnFirefly_SetupDie(EnFirefly* this) {
     this->timer = 15;
     this->actor.speedXZ = 0.0f;
     this->actionFunc = EnFirefly_Die;
-    if (this->actor.params == KEESE_NORMAL_FLY || this->actor.params == KEESE_NORMAL_PERCH) {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE]++;
-    }
-    if (this->actor.params == KEESE_FIRE_FLY || this->actor.params == KEESE_FIRE_PERCH) {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE_FIRE]++;
-    }
-    if (this->actor.params == KEESE_ICE_FLY) {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE_ICE]++;
-    }
+
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnFirefly_SetupRebound(EnFirefly* this) {

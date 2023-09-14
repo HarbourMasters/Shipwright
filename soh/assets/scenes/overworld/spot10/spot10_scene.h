@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OVERWORLD_SPOT10_SCENE_H
+#define OVERWORLD_SPOT10_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -32,3 +33,6 @@ static const ALIGN_ASSET(2) char spot10_sceneTex_00D230[] = dspot10_sceneTex_00D
 #define dspot10_sceneCollisionHeader_00AC98 "__OTR__scenes/nonmq/spot10_scene/spot10_sceneCollisionHeader_00AC98"
 
 #define dspot10_sceneCollisionHeader_00AC98 "__OTR__scenes/nonmq/spot10_scene/spot10_sceneCollisionHeader_00AC98"
+
+
+#endif // OVERWORLD_SPOT10_SCENE_H

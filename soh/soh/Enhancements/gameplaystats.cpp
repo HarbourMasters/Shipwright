@@ -12,6 +12,7 @@ extern "C" {
 #include <string>
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
+#include "soh/Enhancements/enhancementTypes.h"
 
 extern "C" {
 #include <z64.h>
@@ -278,8 +279,8 @@ std::string formatHexOnlyGameplayStat(uint32_t value) {
 
 extern "C" char* GameplayStats_GetCurrentTime() {
     std::string timeString = formatTimestampGameplayStat(GAMEPLAYSTAT_TOTAL_TIME).c_str();
-    const int stringLength = timeString.length();
-    char* timeChar = new char[stringLength + 1];
+    const size_t stringLength = timeString.length();
+    char* timeChar = (char*)malloc(stringLength + 1); // We need to use malloc so we can free this from a C file.
     strcpy(timeChar, timeString.c_str());
     return timeChar;
 }
@@ -338,7 +339,7 @@ void LoadStatsVersion1() {
     });
 }
 
-void SaveStats(SaveContext* saveContext, int sectionID) {
+void SaveStats(SaveContext* saveContext, int sectionID, bool fullSave) {
     SaveManager::Instance->SaveData("buildVersion", saveContext->sohStats.buildVersion);
     SaveManager::Instance->SaveData("buildVersionMajor", saveContext->sohStats.buildVersionMajor);
     SaveManager::Instance->SaveData("buildVersionMinor", saveContext->sohStats.buildVersionMinor);
@@ -382,11 +383,11 @@ void SaveStats(SaveContext* saveContext, int sectionID) {
     });
 }
 
-void GameplayStatsRow(const char* label, std::string value, ImVec4 color = COLOR_WHITE) {
+void GameplayStatsRow(const char* label, const std::string& value, ImVec4 color = COLOR_WHITE) {
     ImGui::PushStyleColor(ImGuiCol_Text, color);
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
-    ImGui::Text(label);
+    ImGui::Text("%s", label);
     ImGui::SameLine(ImGui::GetContentRegionAvail().x - (ImGui::CalcTextSize(value.c_str()).x - 8.0f));
     ImGui::Text("%s", value.c_str());
     ImGui::PopStyleColor();
@@ -397,7 +398,7 @@ bool compareTimestampInfoByTime(const TimestampInfo& a, const TimestampInfo& b) 
 }
 
 const char* ResolveSceneID(int sceneID, int roomID){
-    if (sceneID == SCENE_KAKUSIANA) {
+    if (sceneID == SCENE_GROTTOS) {
         switch (roomID) {
             case 0:
                 return "Generic Grotto";
@@ -428,7 +429,7 @@ const char* ResolveSceneID(int sceneID, int roomID){
             case 13:
                 return "Big Skulltula Grotto";
         };
-    } else if (sceneID == SCENE_HAKASITARELAY) {
+    } else if (sceneID == SCENE_WINDMILL_AND_DAMPES_GRAVE) {
         //Only the last room of Dampe's Grave (rm 6) is considered the windmill
         return roomID == 6 ? "Windmill" : "Dampe's Grave";
     } else if (sceneID < SCENE_ID_MAX) {
@@ -544,7 +545,7 @@ void DrawGameplayStatsCountsTab() {
     GameplayStatsRow("Sword Swings:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_SWORD_SWINGS]));
     GameplayStatsRow("Steps Taken:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_STEPS]));
     // If using MM Bunny Hood enhancement, show how long it's been equipped (not counting pause time)
-    if (CVarGetInteger("gMMBunnyHood", 0) || gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
+    if (CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA || gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] > 0) {
         GameplayStatsRow("Bunny Hood Time:", formatTimestampGameplayStat(gSaveContext.sohStats.count[COUNT_TIME_BUNNY_HOOD] / 2));
     }
     GameplayStatsRow("Rolls:", formatIntGameplayStat(gSaveContext.sohStats.count[COUNT_ROLLS]));
@@ -572,7 +573,7 @@ void DrawGameplayStatsBreakdownTab() {
     for (int i = 0; i < gSaveContext.sohStats.tsIdx; i++) {
         std::string sceneName = ResolveSceneID(gSaveContext.sohStats.sceneTimestamps[i].scene, gSaveContext.sohStats.sceneTimestamps[i].room);
         std::string name;
-        if (CVarGetInteger("gGameplayStats.RoomBreakdown", 0) && gSaveContext.sohStats.sceneTimestamps[i].scene != SCENE_KAKUSIANA) {
+        if (CVarGetInteger("gGameplayStats.RoomBreakdown", 0) && gSaveContext.sohStats.sceneTimestamps[i].scene != SCENE_GROTTOS) {
             name = fmt::format("{:s} Room {:d}", sceneName, gSaveContext.sohStats.sceneTimestamps[i].room);    
         } else {
             name = sceneName;
@@ -595,7 +596,7 @@ void DrawGameplayStatsBreakdownTab() {
         }
     }
     std::string toPass;
-    if (CVarGetInteger("gGameplayStats.RoomBreakdown", 0) && gSaveContext.sohStats.sceneNum != SCENE_KAKUSIANA) {
+    if (CVarGetInteger("gGameplayStats.RoomBreakdown", 0) && gSaveContext.sohStats.sceneNum != SCENE_GROTTOS) {
         toPass = fmt::format("{:s} Room {:d}", ResolveSceneID(gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum), gSaveContext.sohStats.roomNum);
     } else {
         toPass = ResolveSceneID(gSaveContext.sohStats.sceneNum, gSaveContext.sohStats.roomNum);

@@ -680,7 +680,7 @@ void BossGoma_Encounter(BossGoma* this, PlayState* play) {
             // entrance of the boss room
             if (fabsf(player->actor.world.pos.x - 150.0f) < 60.0f &&
                 fabsf(player->actor.world.pos.z - 350.0f) < 60.0f) {
-                if (gSaveContext.eventChkInf[7] & 1) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_GOHMA_BATTLE)) {
                     BossGoma_SetupEncounterState4(this, play);
                     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_SHUTTER, 164.72f,
                                        -480.0f, 397.68002f, 0, -0x705C, 0, 0x180);
@@ -919,13 +919,13 @@ void BossGoma_Encounter(BossGoma* this, PlayState* play) {
             if (Animation_OnFrame(&this->skelanime, 40.0f)) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOMA_CRY1);
 
-                if (!(gSaveContext.eventChkInf[7] & 1)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_BEGAN_GOHMA_BATTLE)) {
                     TitleCard_InitBossName(play, &play->actorCtx.titleCtx,
                                            SEGMENTED_TO_VIRTUAL(gGohmaTitleCardENGTex), 160, 180, 128, 40, true);
                 }
 
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS);
-                gSaveContext.eventChkInf[7] |= 1;
+                Flags_SetEventChkInf(EVENTCHKINF_BEGAN_GOHMA_BATTLE);
             }
 
             if (Animation_OnFrame(&this->skelanime, this->currentAnimFrameCount)) {

@@ -345,7 +345,7 @@ u16 func_80B1C54C(PlayState* play, Actor* thisx) {
         return ret;
     }
 
-    if (gSaveContext.infTable[13] & 0x0200) {
+    if (Flags_GetInfTable(INFTABLE_D9)) {
         /* "Do you want me to dig here? ..." */
         return 0x5019;
     } else {
@@ -364,7 +364,7 @@ s16 func_80B1C5A0(PlayState* play, Actor* thisx) {
         case TEXT_STATE_CLOSING:
             /* "I am the boss of the carpenters ..." (wtf?) */
             if (thisx->textId == 0x5028) {
-                gSaveContext.infTable[13] |= 0x0100;
+                Flags_SetInfTable(INFTABLE_D8);
             }
             ret = NPC_TALK_STATE_IDLE;
             break;
@@ -381,11 +381,11 @@ s16 func_80B1C5A0(PlayState* play, Actor* thisx) {
                 } else {
                     play->msgCtx.msgMode = MSGMODE_PAUSED;
                     Rupees_ChangeBy(-10);
-                    gSaveContext.infTable[13] |= 0x0200;
+                    Flags_SetInfTable(INFTABLE_D9);
                     return NPC_TALK_STATE_ACTION;
                 }
                 Message_ContinueTextbox(play, thisx->textId);
-                gSaveContext.infTable[13] |= 0x0200;
+                Flags_SetInfTable(INFTABLE_D9);
             }
             break;
         case TEXT_STATE_EVENT:
@@ -503,11 +503,11 @@ void EnTk_Init(Actor* thisx, PlayState* play) {
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
 
     if (CVarGetInteger("gDampeAllNight", 0)) {
-        if (!!LINK_IS_ADULT || play->sceneNum != SCENE_SPOT02) {
+        if (!!LINK_IS_ADULT || play->sceneNum != SCENE_GRAVEYARD) {
             Actor_Kill(&this->actor);
             return;
         }
-    } else if (gSaveContext.dayTime <= 0xC000 || gSaveContext.dayTime >= 0xE000 || !!LINK_IS_ADULT || play->sceneNum != SCENE_SPOT02) {
+    } else if (gSaveContext.dayTime <= 0xC000 || gSaveContext.dayTime >= 0xE000 || !!LINK_IS_ADULT || play->sceneNum != SCENE_GRAVEYARD) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -632,8 +632,8 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
                     * Upgrade the purple rupee reward to the heart piece if this
                     * is the first grand prize dig.
                     */
-                    if (!(gSaveContext.itemGetInf[1] & 0x1000) && !(gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0))) {
-                        gSaveContext.itemGetInf[1] |= 0x1000;
+                    if (!Flags_GetItemGetInf(ITEMGETINF_1C) && !(gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0))) {
+                        Flags_SetItemGetInf(ITEMGETINF_1C);
                         this->currentReward = 4;
                     } else if ((gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0)) && !Flags_GetCollectible(gPlayState, 0x1F) && this->heartPieceSpawned == 0) {
                         this->currentReward = 4;

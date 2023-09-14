@@ -85,7 +85,7 @@ void EnWonderTalk2_Init(Actor* thisx, PlayState* play) {
         Actor_Kill(&this->actor);
         return;
     }
-    if ((this->talkMode == 1) && (play->sceneNum == SCENE_MEN) && (this->switchFlag != 0x08) &&
+    if ((this->talkMode == 1) && (play->sceneNum == SCENE_GERUDO_TRAINING_GROUND) && (this->switchFlag != 0x08) &&
         (this->switchFlag != 0x16) && (this->switchFlag != 0x2F)) {
 
         this->unk_15A = false;

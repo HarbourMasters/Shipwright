@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_HINTNUTS_H
+#define OBJECTS_OBJECT_HINTNUTS_H 1
 
 #include "align_asset_macro.h"
 
@@ -38,6 +39,12 @@ static const ALIGN_ASSET(2) char gHintNutsFlowerDL[] = dgHintNutsFlowerDL;
 #define dgHintNutsNutDL "__OTR__objects/object_hintnuts/gHintNutsNutDL"
 static const ALIGN_ASSET(2) char gHintNutsNutDL[] = dgHintNutsNutDL;
 
+#define dobject_hintnutsTex_0015A8 "__OTR__objects/object_hintnuts/object_hintnutsTex_0015A8"
+static const ALIGN_ASSET(2) char object_hintnutsTex_0015A8[] = dobject_hintnutsTex_0015A8;
+
+#define dobject_hintnutsTex_002128 "__OTR__objects/object_hintnuts/object_hintnutsTex_002128"
+static const ALIGN_ASSET(2) char object_hintnutsTex_002128[] = dobject_hintnutsTex_002128;
+
 #define dgHintNutsSkelLimbsLimb_002328DL_000C68 "__OTR__objects/object_hintnuts/gHintNutsSkelLimbsLimb_002328DL_000C68"
 static const ALIGN_ASSET(2) char gHintNutsSkelLimbsLimb_002328DL_000C68[] = dgHintNutsSkelLimbsLimb_002328DL_000C68;
 
@@ -65,12 +72,6 @@ static const ALIGN_ASSET(2) char gHintNutsSkelLimbsLimb_00237CDL_000E28[] = dgHi
 #define dgHintNutsSkelLimbsLimb_002388DL_000EC8 "__OTR__objects/object_hintnuts/gHintNutsSkelLimbsLimb_002388DL_000EC8"
 static const ALIGN_ASSET(2) char gHintNutsSkelLimbsLimb_002388DL_000EC8[] = dgHintNutsSkelLimbsLimb_002388DL_000EC8;
 
-#define dobject_hintnutsTex_0015A8 "__OTR__objects/object_hintnuts/object_hintnutsTex_0015A8"
-static const ALIGN_ASSET(2) char object_hintnutsTex_0015A8[] = dobject_hintnutsTex_0015A8;
-
-#define dobject_hintnutsTex_002128 "__OTR__objects/object_hintnuts/object_hintnutsTex_002128"
-static const ALIGN_ASSET(2) char object_hintnutsTex_002128[] = dobject_hintnutsTex_002128;
-
 #define dobject_hintnutsTex_001DA8 "__OTR__objects/object_hintnuts/object_hintnutsTex_001DA8"
 static const ALIGN_ASSET(2) char object_hintnutsTex_001DA8[] = dobject_hintnutsTex_001DA8;
 
@@ -82,3 +83,5 @@ static const ALIGN_ASSET(2) char object_hintnutsTex_002028[] = dobject_hintnutsT
 
 #define dobject_hintnutsTex_0020A8 "__OTR__objects/object_hintnuts/object_hintnutsTex_0020A8"
 static const ALIGN_ASSET(2) char object_hintnutsTex_0020A8[] = dobject_hintnutsTex_0020A8;
+
+#endif // OBJECTS_OBJECT_HINTNUTS_H

@@ -7,6 +7,8 @@
 #include "z_en_rr.h"
 #include "objects/object_rr/object_rr.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include <assert.h>
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
 
@@ -381,7 +383,7 @@ void EnRr_SetupDeath(EnRr* this) {
     this->actionFunc = EnRr_Death;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_LIKE_DEAD);
     this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LIKE_LIKE]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnRr_SetupStunned(EnRr* this) {
@@ -789,7 +791,7 @@ void EnRr_Update(Actor* thisx, PlayState* play) {
 
     this->actionFunc(this, play);
     if (this->hasPlayer == 0x3F80) { // checks if 1.0f has been stored to hasPlayer's address
-        ASSERT(this->hasPlayer == 0x3F80);
+        assert(this->hasPlayer == 0x3F80);
     }
 
     Math_StepToF(&this->actor.speedXZ, 0.0f, 0.1f);

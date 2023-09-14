@@ -1,5 +1,27 @@
 <Root>
     <File Name="syatekijyou_scene" Segment="2">
+        <Texture Name="syatekijyou_sceneTex_001C40" OutName="syatekijyou_sceneTex_001C40" Format="rgba16" Width="32" Height="4" Offset="0x1C40" AddedByScript="true"/>
+        <Texture Name="syatekijyou_sceneTex_001D40" OutName="syatekijyou_sceneTex_001D40" Format="rgba16" Width="32" Height="16" Offset="0x1D40" AddedByScript="true"/>
+        <Texture Name="syatekijyou_sceneTex_002140" OutName="syatekijyou_sceneTex_002140" Format="rgba16" Width="32" Height="16" Offset="0x2140" AddedByScript="true"/>
+        <Texture Name="syatekijyou_sceneTex_002540" OutName="syatekijyou_sceneTex_002540" Format="ia4" Width="32" Height="32" Offset="0x2540" AddedByScript="true"/>
+        <Texture Name="syatekijyou_sceneTex_002740" OutName="syatekijyou_sceneTex_002740" Format="rgba16" Width="64" Height="32" Offset="0x2740" AddedByScript="true"/>
+        <Texture Name="syatekijyou_sceneTex_003740" OutName="syatekijyou_sceneTex_003740" Format="ia8" Width="32" Height="16" Offset="0x3740" AddedByScript="true"/>
+        <Texture Name="syatekijyou_sceneTex_003940" OutName="syatekijyou_sceneTex_003940" Format="rgba16" Width="4" Height="16" Offset="0x3940" AddedByScript="true"/>
+        <Texture Name="syatekijyou_sceneTex_0039C0" OutName="syatekijyou_sceneTex_0039C0" Format="ia8" Width="16" Height="64" Offset="0x39C0" AddedByScript="true"/>
+        <Texture Name="syatekijyou_sceneTex_003DC0" OutName="syatekijyou_sceneTex_003DC0" Format="rgba16" Width="32" Height="16" Offset="0x3DC0" AddedByScript="true"/>
+        <Texture Name="syatekijyou_sceneTex_0041C0" OutName="syatekijyou_sceneTex_0041C0" Format="rgba16" Width="32" Height="64" Offset="0x41C0" AddedByScript="true"/>
+        <Texture Name="syatekijyou_sceneTex_0051C0" OutName="syatekijyou_sceneTex_0051C0" Format="ia8" Width="16" Height="16" Offset="0x51C0" AddedByScript="true"/>
+        <Texture Name="syatekijyou_sceneTex_0052C0" OutName="syatekijyou_sceneTex_0052C0" Format="ia8" Width="16" Height="32" Offset="0x52C0" AddedByScript="true"/>
+        <Texture Name="syatekijyou_sceneTex_0054C0" OutName="syatekijyou_sceneTex_0054C0" Format="rgba16" Width="32" Height="32" Offset="0x54C0" AddedByScript="true"/>
+        <Texture Name="syatekijyou_sceneTex_005CC0" OutName="syatekijyou_sceneTex_005CC0" Format="rgba16" Width="32" Height="64" Offset="0x5CC0" AddedByScript="true"/>
+        <Texture Name="syatekijyou_sceneTex_006CC0" OutName="syatekijyou_sceneTex_006CC0" Format="rgba16" Width="32" Height="64" Offset="0x6CC0" AddedByScript="true"/>
+        <Texture Name="syatekijyou_sceneTex_007CC0" OutName="syatekijyou_sceneTex_007CC0" Format="i8" Width="64" Height="64" Offset="0x7CC0" AddedByScript="true"/>
+        <Texture Name="syatekijyou_sceneTex_008CC0" OutName="syatekijyou_sceneTex_008CC0" Format="rgba16" Width="32" Height="64" Offset="0x8CC0" AddedByScript="true"/>
+        <Texture Name="syatekijyou_sceneTex_009CC0" OutName="syatekijyou_sceneTex_009CC0" Format="ia4" Width="64" Height="64" Offset="0x9CC0" AddedByScript="true"/>
+        <Texture Name="syatekijyou_sceneTex_00A4C0" OutName="syatekijyou_sceneTex_00A4C0" Format="rgba16" Width="32" Height="32" Offset="0xA4C0" AddedByScript="true"/>
+        <Texture Name="syatekijyou_sceneTex_00ACC0" OutName="syatekijyou_sceneTex_00ACC0" Format="ia8" Width="32" Height="32" Offset="0xACC0" AddedByScript="true"/>
+        <Texture Name="syatekijyou_sceneTex_00B0C0" OutName="syatekijyou_sceneTex_00B0C0" Format="i4" Width="32" Height="32" Offset="0xB0C0" AddedByScript="true"/>
+        <Texture Name="syatekijyou_sceneTex_00B2C0" OutName="syatekijyou_sceneTex_00B2C0" Format="rgba16" Width="64" Height="32" Offset="0xB2C0" AddedByScript="true"/>
         <Scene Name="syatekijyou_scene" Offset="0x0"/>
     </File>
     <File Name="syatekijyou_room_0" Segment="3">
