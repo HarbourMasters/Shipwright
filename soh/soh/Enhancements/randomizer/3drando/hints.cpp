@@ -1080,11 +1080,13 @@ void CreateAllHints() {
   }
 
   uint8_t totalStones = GetEmptyGossipStones().size();
-  
-  std::array<uint8_t, HINT_TYPE_MAX> selectedHints;
+  std::array<uint8_t, HINT_TYPE_MAX> selectedHints = DistrabuteHints(totalStones, distTable);
+
   while(totalStones != 0){
-    selectedHints = DistrabuteHints(totalStones, distTable);
     totalStones = PlaceHints(selectedHints, distTable, remainingDungeonWothHints, remainingDungeonBarrenHints);
+    if (totalStones != 0){
+      selectedHints = DistrabuteHints(totalStones, distTable, false);
+    }
   }
 
   //Getting gossip stone locations temporarily sets one location to not be reachable.
