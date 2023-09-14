@@ -37,7 +37,7 @@ using json = nlohmann::ordered_json;
 json jsonData;
 std::map<RandomizerHintTextKey, Rando::ItemLocation*> hintedLocations;
 
-extern std::unordered_map<HintType, std::string> hintTypeNames;
+extern std::array<std::string, HINT_TYPE_MAX> hintTypeNames;
 extern std::array<std::string, 17> hintCategoryNames;
 extern Area* GetHintRegion(uint32_t);
 
@@ -804,7 +804,7 @@ static void WriteHints(int language) {
 
         std::string textStr = AutoFormatHintTextString(unformattedHintTextString);
         jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["hint"] = textStr;
-        jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["type"] = hintTypeNames.find(hintType)->second;
+        jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["type"] = hintTypeNames[(int)hintType];
         if ((hintType >= HINT_TYPE_ALWAYS && hintType < HINT_TYPE_JUNK) || hintType == HINT_TYPE_WOTH) {
             jsonData["hints"][Rando::StaticData::GetLocation(key)->GetName()]["item"] = hintedLocation->GetPlacedItemName().GetEnglish();
             if (hintType != HINT_TYPE_NAMED_ITEM) {

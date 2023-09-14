@@ -46,6 +46,7 @@ typedef enum {
     HINT_TYPE_MAX
 } HintType;
 
+
 // Check types based on main settings
 typedef enum {
     RCTYPE_STANDARD,       // Base set of rando checks
