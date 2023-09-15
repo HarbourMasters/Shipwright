@@ -878,8 +878,17 @@ void DrawEnhancementsMenu() {
 
         if (ImGui::BeginMenu("Graphics"))
         {
-            if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", "gAltAssets", true, false)) {
-                ShouldClearTextureCacheAtEndOfFrame = true;
+            if (ImGui::BeginMenu("Mods")) {
+                if (UIWidgets::PaddedEnhancementCheckbox("Use Alternate Assets", "gAltAssets", false, false)) {
+                    ShouldClearTextureCacheAtEndOfFrame = true;
+                }
+                UIWidgets::Tooltip("Toggle between standard assets and alternate assets. Usually mods will indicate if this setting has to be used or not.");
+                UIWidgets::PaddedEnhancementCheckbox("Disable Bomb Billboarding", "gDisableBombBillboarding", true, false);
+                UIWidgets::Tooltip("Disables bombs always rotating to face the camera. To be used in conjunction with mods that want to replace bombs with 3D objects.");
+                UIWidgets::PaddedEnhancementCheckbox("Disable Grotto Fixed Rotation", "gDisableGrottoRotation", true, false);
+                UIWidgets::Tooltip("Disables grottos rotating with the camera. To be used in conjunction with mods that want to replace grottos with 3D objects.");
+
+                ImGui::EndMenu();
             }
             UIWidgets::PaddedEnhancementCheckbox("Disable LOD", "gDisableLOD", true, false);
             UIWidgets::Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
