@@ -2102,7 +2102,7 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, TEXT_CHEST_GAME_PROCEED);
         } else if (Randomizer_GetSettingValue(RSK_SHUFFLE_WARP_SONGS) &&
                    (textId >= TEXT_WARP_MINUET_OF_FOREST && textId <= TEXT_WARP_PRELUDE_OF_LIGHT)) {
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetWarpSongMessage(textId, Randomizer_GetSettingValue(RSK_WARP_SONG_HINTS) == RO_GENERIC_ON);
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetWarpSongMessage(textId, Randomizer_GetSettingValue(RSK_WARP_SONG_HINTS) == RO_GENERIC_OFF);
         } else if (textId == TEXT_LAKE_HYLIA_WATER_SWITCH_NAVI || textId == TEXT_LAKE_HYLIA_WATER_SWITCH_SIGN) {
             messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, textId);
         } else if (textId == 0x3052 || (textId >= 0x3069 && textId <= 0x3070)) { //Fire Temple gorons
