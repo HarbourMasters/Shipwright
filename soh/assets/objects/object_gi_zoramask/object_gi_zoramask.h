@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GI_ZORAMASK_H
+#define OBJECTS_OBJECT_GI_ZORAMASK_H 1
 
 #include "align_asset_macro.h"
 
@@ -19,3 +20,5 @@ static const ALIGN_ASSET(2) char object_gi_zoramaskTex_000648[] = dobject_gi_zor
 
 #define dobject_gi_zoramaskTex_000A48 "__OTR__objects/object_gi_zoramask/object_gi_zoramaskTex_000A48"
 static const ALIGN_ASSET(2) char object_gi_zoramaskTex_000A48[] = dobject_gi_zoramaskTex_000A48;
+
+#endif // OBJECTS_OBJECT_GI_ZORAMASK_H

@@ -316,7 +316,7 @@ void ActorViewerWindow::DrawElement() {
         if (ImGui::TreeNode("New...")) {
             ImGui::PushItemWidth(ImGui::GetFontSize() * 10);
 
-            ImGui::Text(GetActorDescription(newActor.id).c_str());
+            ImGui::Text("%s", GetActorDescription(newActor.id).c_str());
             ImGui::InputScalar("ID", ImGuiDataType_S16, &newActor.id, &one);
             ImGui::InputScalar("params", ImGuiDataType_S16, &newActor.params, &one);
 

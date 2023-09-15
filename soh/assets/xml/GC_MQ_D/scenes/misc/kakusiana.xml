@@ -1,47 +1,113 @@
 <Root>
     <File Name="kakusiana_scene" Segment="2">
+        <Texture Name="kakusiana_sceneTex_00B820" OutName="kakusiana_sceneTex_00B820" Format="ia4" Width="64" Height="64" Offset="0xB820" AddedByScript="true"/>
+        <Texture Name="kakusiana_sceneTex_00C020" OutName="kakusiana_sceneTex_00C020" Format="ia16" Width="128" Height="16" Offset="0xC020" AddedByScript="true"/>
+        <Texture Name="kakusiana_sceneTex_00D020" OutName="kakusiana_sceneTex_00D020" Format="rgba16" Width="32" Height="32" Offset="0xD020" AddedByScript="true"/>
         <Scene Name="kakusiana_scene" Offset="0x0"/>
     </File>
     <File Name="kakusiana_room_0" Segment="3">
+        <Texture Name="kakusiana_room_0Tex_0022A0" OutName="kakusiana_room_0Tex_0022A0" Format="rgba16" Width="64" Height="32" Offset="0x22A0" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_0Tex_0032A0" OutName="kakusiana_room_0Tex_0032A0" Format="rgba16" Width="64" Height="32" Offset="0x32A0" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_0Tex_0042A0" OutName="kakusiana_room_0Tex_0042A0" Format="rgba16" Width="32" Height="32" Offset="0x42A0" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_0Tex_004AA0" OutName="kakusiana_room_0Tex_004AA0" Format="i8" Width="64" Height="64" Offset="0x4AA0" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_0Tex_005AA0" OutName="kakusiana_room_0Tex_005AA0" Format="rgba16" Width="32" Height="32" Offset="0x5AA0" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_0Tex_006AA0" OutName="kakusiana_room_0Tex_006AA0" Format="rgba16" Width="32" Height="32" Offset="0x6AA0" AddedByScript="true"/>
         <Room Name="kakusiana_room_0" Offset="0x0"/>
     </File>
     <File Name="kakusiana_room_1" Segment="3">
+        <Texture Name="kakusiana_room_1Tex_001A18" OutName="kakusiana_room_1Tex_001A18" Format="i8" Width="64" Height="64" Offset="0x1A18" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_1Tex_002A18" OutName="kakusiana_room_1Tex_002A18" Format="rgba16" Width="32" Height="32" Offset="0x2A18" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_1Tex_003218" OutName="kakusiana_room_1Tex_003218" Format="i8" Width="64" Height="64" Offset="0x3218" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_1Tex_004990" OutName="kakusiana_room_1Tex_004990" Format="ia8" Width="8" Height="256" Offset="0x4990" AddedByScript="true"/>
         <Room Name="kakusiana_room_1" Offset="0x0"/>
     </File>
     <File Name="kakusiana_room_2" Segment="3">
+        <Texture Name="kakusiana_room_2Tex_001448" OutName="kakusiana_room_2Tex_001448" Format="rgba16" Width="32" Height="32" Offset="0x1448" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_2Tex_001C48" OutName="kakusiana_room_2Tex_001C48" Format="rgba16" Width="32" Height="32" Offset="0x1C48" AddedByScript="true"/>
         <Room Name="kakusiana_room_2" Offset="0x0"/>
     </File>
     <File Name="kakusiana_room_3" Segment="3">
+        <Texture Name="kakusiana_room_3Tex_001818" OutName="kakusiana_room_3Tex_001818" Format="i8" Width="64" Height="64" Offset="0x1818" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_3Tex_002818" OutName="kakusiana_room_3Tex_002818" Format="i8" Width="64" Height="64" Offset="0x2818" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_3Tex_004130" OutName="kakusiana_room_3Tex_004130" Format="ia8" Width="8" Height="256" Offset="0x4130" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_3Tex_004930" OutName="kakusiana_room_3Tex_004930" Format="rgba16" Width="32" Height="32" Offset="0x4930" AddedByScript="true"/>
         <Room Name="kakusiana_room_3" Offset="0x0"/>
     </File>
     <File Name="kakusiana_room_4" Segment="3">
+        <Texture Name="kakusiana_room_4Tex_002138" OutName="kakusiana_room_4Tex_002138" Format="rgba16" Width="32" Height="64" Offset="0x2138" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_4Tex_003138" OutName="kakusiana_room_4Tex_003138" Format="rgba16" Width="32" Height="64" Offset="0x3138" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_4Tex_004138" OutName="kakusiana_room_4Tex_004138" Format="rgba16" Width="32" Height="32" Offset="0x4138" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_4Tex_005958" OutName="kakusiana_room_4Tex_005958" Format="i8" Width="64" Height="64" Offset="0x5958" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_4Tex_006958" OutName="kakusiana_room_4Tex_006958" Format="i8" Width="64" Height="64" Offset="0x6958" AddedByScript="true"/>
         <Room Name="kakusiana_room_4" Offset="0x0"/>
     </File>
     <File Name="kakusiana_room_5" Segment="3">
+        <Texture Name="kakusiana_room_5Tex_001888" OutName="kakusiana_room_5Tex_001888" Format="i8" Width="64" Height="64" Offset="0x1888" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_5Tex_002888" OutName="kakusiana_room_5Tex_002888" Format="i8" Width="64" Height="64" Offset="0x2888" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_5Tex_003ED8" OutName="kakusiana_room_5Tex_003ED8" Format="rgba16" Width="32" Height="32" Offset="0x3ED8" AddedByScript="true"/>
         <Room Name="kakusiana_room_5" Offset="0x0"/>
     </File>
     <File Name="kakusiana_room_6" Segment="3">
+        <Texture Name="kakusiana_room_6Tex_0022E0" OutName="kakusiana_room_6Tex_0022E0" Format="rgba16" Width="32" Height="64" Offset="0x22E0" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_6Tex_0032E0" OutName="kakusiana_room_6Tex_0032E0" Format="rgba16" Width="32" Height="32" Offset="0x32E0" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_6Tex_003AE0" OutName="kakusiana_room_6Tex_003AE0" Format="rgba16" Width="64" Height="32" Offset="0x3AE0" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_6Tex_004AE0" OutName="kakusiana_room_6Tex_004AE0" Format="rgba16" Width="32" Height="32" Offset="0x4AE0" AddedByScript="true"/>
         <Room Name="kakusiana_room_6" Offset="0x0"/>
     </File>
     <File Name="kakusiana_room_7" Segment="3">
+        <Texture Name="kakusiana_room_7Tex_001D60" OutName="kakusiana_room_7Tex_001D60" Format="rgba16" Width="32" Height="16" Offset="0x1D60" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_7Tex_002160" OutName="kakusiana_room_7Tex_002160" Format="rgba16" Width="32" Height="32" Offset="0x2160" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_7Tex_002960" OutName="kakusiana_room_7Tex_002960" Format="rgba16" Width="16" Height="16" Offset="0x2960" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_7Tex_002B60" OutName="kakusiana_room_7Tex_002B60" Format="i8" Width="64" Height="64" Offset="0x2B60" AddedByScript="true"/>
         <Room Name="kakusiana_room_7" Offset="0x0"/>
     </File>
     <File Name="kakusiana_room_8" Segment="3">
+        <Texture Name="kakusiana_room_8Tex_0019C0" OutName="kakusiana_room_8Tex_0019C0" Format="rgba16" Width="32" Height="64" Offset="0x19C0" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_8Tex_0029C0" OutName="kakusiana_room_8Tex_0029C0" Format="rgba16" Width="32" Height="32" Offset="0x29C0" AddedByScript="true"/>
         <Room Name="kakusiana_room_8" Offset="0x0"/>
     </File>
     <File Name="kakusiana_room_9" Segment="3">
+        <Texture Name="kakusiana_room_9Tex_002340" OutName="kakusiana_room_9Tex_002340" Format="rgba16" Width="32" Height="64" Offset="0x2340" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_9Tex_003340" OutName="kakusiana_room_9Tex_003340" Format="rgba16" Width="32" Height="32" Offset="0x3340" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_9Tex_003B40" OutName="kakusiana_room_9Tex_003B40" Format="rgba16" Width="64" Height="32" Offset="0x3B40" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_9Tex_004B40" OutName="kakusiana_room_9Tex_004B40" Format="rgba16" Width="32" Height="32" Offset="0x4B40" AddedByScript="true"/>
         <Room Name="kakusiana_room_9" Offset="0x0"/>
     </File>
     <File Name="kakusiana_room_10" Segment="3">
+        <Texture Name="kakusiana_room_10Tex_0017E0" OutName="kakusiana_room_10Tex_0017E0" Format="i8" Width="32" Height="64" Offset="0x17E0" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_10Tex_001FE0" OutName="kakusiana_room_10Tex_001FE0" Format="i8" Width="32" Height="64" Offset="0x1FE0" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_10Tex_0027E0" OutName="kakusiana_room_10Tex_0027E0" Format="i8" Width="32" Height="32" Offset="0x27E0" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_10Tex_002BE0" OutName="kakusiana_room_10Tex_002BE0" Format="i8" Width="64" Height="64" Offset="0x2BE0" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_10Tex_003BE0" OutName="kakusiana_room_10Tex_003BE0" Format="i8" Width="64" Height="64" Offset="0x3BE0" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_10Tex_005228" OutName="kakusiana_room_10Tex_005228" Format="rgba16" Width="32" Height="32" Offset="0x5228" AddedByScript="true"/>
         <Room Name="kakusiana_room_10" Offset="0x0"/>
     </File>
     <File Name="kakusiana_room_11" Segment="3">
+        <Texture Name="kakusiana_room_11Tex_002848" OutName="kakusiana_room_11Tex_002848" Format="rgba16" Width="32" Height="32" Offset="0x2848" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_11Tex_003048" OutName="kakusiana_room_11Tex_003048" Format="rgba16" Width="32" Height="64" Offset="0x3048" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_11Tex_004048" OutName="kakusiana_room_11Tex_004048" Format="rgba16" Width="32" Height="64" Offset="0x4048" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_11Tex_005048" OutName="kakusiana_room_11Tex_005048" Format="rgba16" Width="32" Height="32" Offset="0x5048" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_11Tex_005848" OutName="kakusiana_room_11Tex_005848" Format="rgba16" Width="64" Height="32" Offset="0x5848" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_11Tex_006848" OutName="kakusiana_room_11Tex_006848" Format="rgba16" Width="64" Height="32" Offset="0x6848" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_11Tex_007848" OutName="kakusiana_room_11Tex_007848" Format="rgba16" Width="32" Height="32" Offset="0x7848" AddedByScript="true"/>
         <Room Name="kakusiana_room_11" Offset="0x0"/>
     </File>
     <File Name="kakusiana_room_12" Segment="3">
+        <Texture Name="kakusiana_room_12Tex_001FF0" OutName="kakusiana_room_12Tex_001FF0" Format="rgba16" Width="32" Height="32" Offset="0x1FF0" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_12Tex_0027F0" OutName="kakusiana_room_12Tex_0027F0" Format="rgba16" Width="32" Height="64" Offset="0x27F0" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_12Tex_0037F0" OutName="kakusiana_room_12Tex_0037F0" Format="rgba16" Width="32" Height="64" Offset="0x37F0" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_12Tex_0047F0" OutName="kakusiana_room_12Tex_0047F0" Format="rgba16" Width="32" Height="32" Offset="0x47F0" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_12Tex_004FF0" OutName="kakusiana_room_12Tex_004FF0" Format="rgba16" Width="64" Height="32" Offset="0x4FF0" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_12Tex_005FF0" OutName="kakusiana_room_12Tex_005FF0" Format="rgba16" Width="64" Height="32" Offset="0x5FF0" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_12Tex_006FF0" OutName="kakusiana_room_12Tex_006FF0" Format="rgba16" Width="32" Height="32" Offset="0x6FF0" AddedByScript="true"/>
         <Room Name="kakusiana_room_12" Offset="0x0"/>
     </File>
     <File Name="kakusiana_room_13" Segment="3">
+        <Texture Name="kakusiana_room_13Tex_001950" OutName="kakusiana_room_13Tex_001950" Format="rgba16" Width="32" Height="64" Offset="0x1950" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_13Tex_002950" OutName="kakusiana_room_13Tex_002950" Format="rgba16" Width="32" Height="64" Offset="0x2950" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_13Tex_003950" OutName="kakusiana_room_13Tex_003950" Format="rgba16" Width="32" Height="32" Offset="0x3950" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_13Tex_004EC8" OutName="kakusiana_room_13Tex_004EC8" Format="i8" Width="64" Height="64" Offset="0x4EC8" AddedByScript="true"/>
+        <Texture Name="kakusiana_room_13Tex_005EC8" OutName="kakusiana_room_13Tex_005EC8" Format="i8" Width="64" Height="64" Offset="0x5EC8" AddedByScript="true"/>
         <Room Name="kakusiana_room_13" Offset="0x0"/>
     </File>
 </Root>

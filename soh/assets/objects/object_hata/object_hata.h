@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_HATA_H
+#define OBJECTS_OBJECT_HATA_H 1
 
 #include "align_asset_macro.h"
 
@@ -46,3 +47,6 @@ static const ALIGN_ASSET(2) char gFlagpoleTopTex[] = dgFlagpoleTopTex;
 
 #define dgFlagpoleFlagTex "__OTR__objects/object_hata/gFlagpoleFlagTex"
 static const ALIGN_ASSET(2) char gFlagpoleFlagTex[] = dgFlagpoleFlagTex;
+
+
+#endif // OBJECTS_OBJECT_HATA_H

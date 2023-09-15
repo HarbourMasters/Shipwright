@@ -185,6 +185,28 @@
         <Texture Name="gFileSelOptionsButtonENGTex" OutName="options_button_eng" Format="ia16" Width="64" Height="16" Offset="0x2FA00"/>
         <Texture Name="gFileSelOptionsButtonGERTex" OutName="options_button_ger" Format="ia16" Width="64" Height="16" Offset="0x30200"/>
 
+        <!-- PAL N64 Language change options -->
+        <Texture Name="gFileSelLangEnglishENGTex" OutName="language_english_eng" Format="ia8" Width="48" Height="16" Offset="0x6380"/>
+        <Texture Name="gFileSelLangDeutschGERTex" OutName="language_deutsch_ger" Format="ia8" Width="48" Height="16" Offset="0x6680"/>
+        <Texture Name="gFileSelLangFrancaisFRATex" OutName="language_francais_fra" Format="ia8" Width="48" Height="16" Offset="0x6980"/>
+
+        <Texture Name="gFileSelLanguageENGTex" OutName="language_eng" Format="ia8" Width="64" Height="16" Offset="0x6C80"/>
+        <Texture Name="gFileSelLanguageGERTex" OutName="language_ger" Format="ia8" Width="64" Height="16" Offset="0x7080"/>
+        <Texture Name="gFileSelLanguageFRATex" OutName="language_fra" Format="ia8" Width="64" Height="16" Offset="0x7480"/>
+
+        <!-- Unused language textures? -->
+        <Texture Name="gFileSelLangEnglishLargeENGTex" OutName="language_english_large_eng" Format="ia8" Width="80" Height="32" Offset="0x48300"/>
+        <Texture Name="gFileSelLangDeutschLargeGERTex" OutName="language_deutsch_large_ger" Format="ia8" Width="80" Height="32" Offset="0x48D00"/>
+        <Texture Name="gFileSelLangFrancaisLargeFRATex" OutName="language_francias_large_fra" Format="ia8" Width="80" Height="32" Offset="0x49700"/>
+
+        <!-- Unused language textures? -->
+        <Texture Name="gFileSelSelectYourLanguageENGTex" OutName="select_your_language_eng" Format="ia8" Width="160" Height="20" Offset="0x4A1A0"/>
+        <Texture Name="gFileSelSelectYourLanguageGERTex" OutName="select_your_language_ger" Format="ia8" Width="160" Height="20" Offset="0x4AE20"/>
+        <Texture Name="gFileSelSelectYourLanguageFRATex" OutName="select_your_language_fra" Format="ia8" Width="160" Height="20" Offset="0x4BAA0"/>
+
+        <!-- An elongated oval is in this range, but probably unused -->
+        <Texture Name="gFileSelUnkOvalTex" OutName="unknown_oval" Format="ia8" Width="24" Height="68" Offset="0x4C720"/>
+
         <DList Name="gFileSelWindow1DL" Offset="0x4CD80"/>
         <DList Name="gFileSelWindow2DL" Offset="0x4CF98"/>
         <DList Name="gFileSelWindow3DL" Offset="0x4D1A8"/>

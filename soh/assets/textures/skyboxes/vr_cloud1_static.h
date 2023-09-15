@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_VR_CLOUD1_STATIC_H
+#define TEXTURES_VR_CLOUD1_STATIC_H 1
 
 #include "align_asset_macro.h"
 
@@ -16,3 +17,5 @@ static const ALIGN_ASSET(2) char gDayOvercastSkybox4Tex[] = dgDayOvercastSkybox4
 
 #define dgDayOvercastSkybox5Tex "__OTR__textures/vr_cloud1_static/gDayOvercastSkybox5Tex"
 static const ALIGN_ASSET(2) char gDayOvercastSkybox5Tex[] = dgDayOvercastSkybox5Tex;
+
+#endif // TEXTURES_VR_CLOUD1_STATIC_H

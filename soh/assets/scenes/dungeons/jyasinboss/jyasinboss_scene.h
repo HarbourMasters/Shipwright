@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DUNGEONS_JYASINBOSS_SCENE_H
+#define DUNGEONS_JYASINBOSS_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -22,3 +23,6 @@ static const ALIGN_ASSET(2) char jyasinboss_sceneTex_006CF0[] = djyasinboss_scen
 #define djyasinboss_sceneCollisionHeader_002B80 "__OTR__scenes/nonmq/jyasinboss_scene/jyasinboss_sceneCollisionHeader_002B80"
 
 #define djyasinboss_sceneCollisionHeader_002B80 "__OTR__scenes/nonmq/jyasinboss_scene/jyasinboss_sceneCollisionHeader_002B80"
+
+
+#endif // DUNGEONS_JYASINBOSS_SCENE_H

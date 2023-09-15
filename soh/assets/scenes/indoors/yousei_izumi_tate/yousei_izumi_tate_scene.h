@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INDOORS_YOUSEI_IZUMI_TATE_SCENE_H
+#define INDOORS_YOUSEI_IZUMI_TATE_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -34,3 +35,5 @@ static const ALIGN_ASSET(2) char yousei_izumi_tate_sceneTex_003810[] = dyousei_i
 
 #define dyousei_izumi_tate_sceneTex_002010 "__OTR__scenes/nonmq/yousei_izumi_tate_scene/yousei_izumi_tate_sceneTex_002010"
 static const ALIGN_ASSET(2) char yousei_izumi_tate_sceneTex_002010[] = dyousei_izumi_tate_sceneTex_002010;
+
+#endif // INDOORS_YOUSEI_IZUMI_TATE_SCENE_H

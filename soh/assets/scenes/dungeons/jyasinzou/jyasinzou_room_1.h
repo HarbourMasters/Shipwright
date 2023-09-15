@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DUNGEONS_JYASINZOU_ROOM_1_H
+#define DUNGEONS_JYASINZOU_ROOM_1_H 1
 
 #include "align_asset_macro.h"
 
@@ -40,3 +41,6 @@ static const ALIGN_ASSET(2) char jyasinzou_room_1DL_004D50[] = djyasinzou_room_1
 
 #define djyasinzou_room_1Tex_004F48 "__OTR__scenes/nonmq/jyasinzou_scene/jyasinzou_room_1Tex_004F48"
 static const ALIGN_ASSET(2) char jyasinzou_room_1Tex_004F48[] = djyasinzou_room_1Tex_004F48;
+
+
+#endif // DUNGEONS_JYASINZOU_ROOM_1_H

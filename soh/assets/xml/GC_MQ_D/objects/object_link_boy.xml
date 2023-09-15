@@ -1,5 +1,12 @@
 <Root>
     <File Name="object_link_boy" Segment="6">
+        <Texture Name="object_link_boyTLUT_005400" OutName="object_link_boyTLUT_005400" Format="rgba16" Width="16" Height="16" Offset="0x5400" AddedByScript="true"/>
+        <Texture Name="object_link_boyTLUT_005800" OutName="object_link_boyTLUT_005800" Format="rgba16" Width="16" Height="16" Offset="0x5800" AddedByScript="true"/>
+        <Texture Name="object_link_boyTLUT_005A00" OutName="object_link_boyTLUT_005A00" Format="rgba16" Width="16" Height="16" Offset="0x5A00" AddedByScript="true"/>
+        <Texture Name="object_link_boyTLUT_00CB40" OutName="object_link_boyTLUT_00CB40" Format="rgba16" Width="16" Height="16" Offset="0xCB40" AddedByScript="true"/>
+        <Texture Name="object_link_boyTLUT_00CD48" OutName="object_link_boyTLUT_00CD48" Format="rgba16" Width="16" Height="16" Offset="0xCD48" AddedByScript="true"/>
+        <Texture Name="object_link_boyTLUT_00CF50" OutName="object_link_boyTLUT_00CF50" Format="rgba16" Width="16" Height="16" Offset="0xCF50" AddedByScript="true"/>
+        <Texture Name="object_link_boyTLUT_00D078" OutName="object_link_boyTLUT_00D078" Format="rgba16" Width="16" Height="16" Offset="0xD078" AddedByScript="true"/>
         <Skeleton Name="gLinkAdultSkel" Type="Flex" LimbType="LOD" Offset="0x377F4"/>
 
         <!-- Far Limb DLists-->

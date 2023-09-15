@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INDOORS_MIHARIGOYA_ROOM_0_H
+#define INDOORS_MIHARIGOYA_ROOM_0_H 1
 
 #include "align_asset_macro.h"
 
@@ -85,3 +86,6 @@ static const ALIGN_ASSET(2) char miharigoya_room_0Set_000470DL_000660[] = dmihar
 
 #define dmiharigoya_room_0Set_000470DL_002C60 "__OTR__scenes/nonmq/miharigoya_scene/miharigoya_room_0Set_000470DL_002C60"
 static const ALIGN_ASSET(2) char miharigoya_room_0Set_000470DL_002C60[] = dmiharigoya_room_0Set_000470DL_002C60;
+
+
+#endif // INDOORS_MIHARIGOYA_ROOM_0_H

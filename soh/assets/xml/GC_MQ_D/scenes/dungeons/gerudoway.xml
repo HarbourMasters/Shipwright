@@ -1,26 +1,55 @@
 <Root>
     <File Name="gerudoway_scene" Segment="2">
+        <Texture Name="gerudoway_sceneTex_007520" OutName="gerudoway_sceneTex_007520" Format="rgba16" Width="32" Height="64" Offset="0x7520" AddedByScript="true"/>
+        <Texture Name="gerudoway_sceneTex_008520" OutName="gerudoway_sceneTex_008520" Format="ia4" Width="128" Height="32" Offset="0x8520" AddedByScript="true"/>
+        <Texture Name="gerudoway_sceneTex_008D20" OutName="gerudoway_sceneTex_008D20" Format="ia8" Width="64" Height="32" Offset="0x8D20" AddedByScript="true"/>
+        <Texture Name="gerudoway_sceneTex_009520" OutName="gerudoway_sceneTex_009520" Format="ia8" Width="32" Height="64" Offset="0x9520" AddedByScript="true"/>
+        <Texture Name="gerudoway_sceneTex_009D20" OutName="gerudoway_sceneTex_009D20" Format="rgba16" Width="32" Height="32" Offset="0x9D20" AddedByScript="true"/>
+        <Texture Name="gerudoway_sceneTex_00A520" OutName="gerudoway_sceneTex_00A520" Format="rgba16" Width="32" Height="16" Offset="0xA520" AddedByScript="true"/>
+        <Texture Name="gerudoway_sceneTex_00A920" OutName="gerudoway_sceneTex_00A920" Format="rgba16" Width="32" Height="64" Offset="0xA920" AddedByScript="true"/>
+        <Texture Name="gerudoway_sceneTex_00C120" OutName="gerudoway_sceneTex_00C120" Format="rgba16" Width="64" Height="32" Offset="0xC120" AddedByScript="true"/>
+        <Texture Name="gerudoway_sceneTex_00D120" OutName="gerudoway_sceneTex_00D120" Format="rgba16" Width="32" Height="32" Offset="0xD120" AddedByScript="true"/>
         <Texture Name="gThievesHideoutNightEntranceTex" OutName="night_entrance" Format="ia16" Width="128" Height="4" Offset="0xB920"/>
         <Texture Name="gThievesHideoutDayEntranceTex" OutName="day_entrance" Format="ia16" Width="128" Height="4" Offset="0xBD20"/>
         <Path Name="gerudoway_scenePathList_0002AC" Offset="0x02AC" NumPaths="4"/>
         <Scene Name="gerudoway_scene" Offset="0x0"/>
     </File>
     <File Name="gerudoway_room_0" Segment="3">
+        <Texture Name="gerudoway_room_0Tex_002FB0" OutName="gerudoway_room_0Tex_002FB0" Format="rgba16" Width="64" Height="32" Offset="0x2FB0" AddedByScript="true"/>
+        <Texture Name="gerudoway_room_0Tex_003FB0" OutName="gerudoway_room_0Tex_003FB0" Format="rgba16" Width="32" Height="16" Offset="0x3FB0" AddedByScript="true"/>
         <Room Name="gerudoway_room_0" Offset="0x0"/>
     </File>
      <File Name="gerudoway_room_1" Segment="3">
+        <Texture Name="gerudoway_room_1Tex_003710" OutName="gerudoway_room_1Tex_003710" Format="rgba16" Width="32" Height="32" Offset="0x3710" AddedByScript="true"/>
+        <Texture Name="gerudoway_room_1Tex_003F10" OutName="gerudoway_room_1Tex_003F10" Format="ia4" Width="32" Height="128" Offset="0x3F10" AddedByScript="true"/>
+        <Texture Name="gerudoway_room_1Tex_004710" OutName="gerudoway_room_1Tex_004710" Format="rgba16" Width="64" Height="32" Offset="0x4710" AddedByScript="true"/>
+        <Texture Name="gerudoway_room_1Tex_005710" OutName="gerudoway_room_1Tex_005710" Format="rgba16" Width="32" Height="16" Offset="0x5710" AddedByScript="true"/>
+        <Texture Name="gerudoway_room_1Tex_005B10" OutName="gerudoway_room_1Tex_005B10" Format="rgba16" Width="64" Height="16" Offset="0x5B10" AddedByScript="true"/>
+        <Texture Name="gerudoway_room_1Tex_006310" OutName="gerudoway_room_1Tex_006310" Format="rgba16" Width="16" Height="64" Offset="0x6310" AddedByScript="true"/>
         <Room Name="gerudoway_room_1" Offset="0x0"/>
     </File>
      <File Name="gerudoway_room_2" Segment="3">
+        <Texture Name="gerudoway_room_2Tex_002298" OutName="gerudoway_room_2Tex_002298" Format="rgba16" Width="64" Height="16" Offset="0x2298" AddedByScript="true"/>
+        <Texture Name="gerudoway_room_2Tex_002A98" OutName="gerudoway_room_2Tex_002A98" Format="rgba16" Width="16" Height="64" Offset="0x2A98" AddedByScript="true"/>
         <Room Name="gerudoway_room_2" Offset="0x0"/>
     </File>
      <File Name="gerudoway_room_3" Segment="3">
+        <Texture Name="gerudoway_room_3Tex_006EA0" OutName="gerudoway_room_3Tex_006EA0" Format="rgba16" Width="32" Height="32" Offset="0x6EA0" AddedByScript="true"/>
+        <Texture Name="gerudoway_room_3Tex_0076A0" OutName="gerudoway_room_3Tex_0076A0" Format="ia4" Width="32" Height="128" Offset="0x76A0" AddedByScript="true"/>
+        <Texture Name="gerudoway_room_3Tex_007EA0" OutName="gerudoway_room_3Tex_007EA0" Format="rgba16" Width="64" Height="32" Offset="0x7EA0" AddedByScript="true"/>
+        <Texture Name="gerudoway_room_3Tex_008EA0" OutName="gerudoway_room_3Tex_008EA0" Format="rgba16" Width="32" Height="16" Offset="0x8EA0" AddedByScript="true"/>
+        <Texture Name="gerudoway_room_3Tex_0092A0" OutName="gerudoway_room_3Tex_0092A0" Format="rgba16" Width="32" Height="32" Offset="0x92A0" AddedByScript="true"/>
+        <Texture Name="gerudoway_room_3Tex_009AA0" OutName="gerudoway_room_3Tex_009AA0" Format="rgba16" Width="16" Height="64" Offset="0x9AA0" AddedByScript="true"/>
         <Room Name="gerudoway_room_3" Offset="0x0"/>
     </File>
      <File Name="gerudoway_room_4" Segment="3">
+        <Texture Name="gerudoway_room_4Tex_002028" OutName="gerudoway_room_4Tex_002028" Format="rgba16" Width="64" Height="16" Offset="0x2028" AddedByScript="true"/>
+        <Texture Name="gerudoway_room_4Tex_002828" OutName="gerudoway_room_4Tex_002828" Format="rgba16" Width="16" Height="64" Offset="0x2828" AddedByScript="true"/>
         <Room Name="gerudoway_room_4" Offset="0x0"/>
     </File>
      <File Name="gerudoway_room_5" Segment="3">
+        <Texture Name="gerudoway_room_5Tex_002FF8" OutName="gerudoway_room_5Tex_002FF8" Format="rgba16" Width="64" Height="16" Offset="0x2FF8" AddedByScript="true"/>
+        <Texture Name="gerudoway_room_5Tex_0037F8" OutName="gerudoway_room_5Tex_0037F8" Format="rgba16" Width="16" Height="64" Offset="0x37F8" AddedByScript="true"/>
         <Room Name="gerudoway_room_5" Offset="0x0"/>
     </File>
 </Root>

@@ -1,5 +1,10 @@
 <Root>
     <File Name="object_mo" Segment="6">
+        <Texture Name="object_moTex_000000" OutName="object_moTex_000000" Format="ia8" Width="16" Height="16" Offset="0x0" AddedByScript="true"/>
+        <Texture Name="object_moTex_000680" OutName="object_moTex_000680" Format="rgba16" Width="32" Height="32" Offset="0x680" AddedByScript="true"/>
+        <Texture Name="object_moTex_004D20" OutName="object_moTex_004D20" Format="ia16" Width="32" Height="32" Offset="0x4D20" AddedByScript="true"/>
+        <Texture Name="object_moTex_005520" OutName="object_moTex_005520" Format="ia16" Width="32" Height="32" Offset="0x5520" AddedByScript="true"/>
+        <Texture Name="object_moTex_005D20" OutName="object_moTex_005D20" Format="ia16" Width="32" Height="32" Offset="0x5D20" AddedByScript="true"/>
         <!-- Morpha's Title Card -->
         <Texture Name="gMorphaTitleCardTex" Format="i8" Width="128" Height="120" Offset="0x1010"/>
 
