@@ -7,3 +7,5 @@ find soh -name "*.cpp" -or -name "*.hpp" -or -name "*.c" -or -name "*.h" | sed '
 ```
 
 todo: windows
+
+edit
