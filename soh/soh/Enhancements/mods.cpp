@@ -140,7 +140,7 @@ void RegisterInfiniteISG() {
 
         if (CVarGetInteger("gEzISG", 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
-            player->swordState = 1;
+            player->meleeWeaponState = 1;
         }
     });
 }
