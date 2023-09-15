@@ -81,6 +81,7 @@ std::string GetWindowButtonText(const char* text, bool menuOpen) {
     static const char* subSubPowers[7] = { allPowers[0], allPowers[1], allPowers[2], allPowers[3], allPowers[4], allPowers[5], allPowers[6] };
     static const char* zFightingOptions[3] = { "Disabled", "Consistent Vanish", "No Vanish" };
     static const char* autosaveLabels[6] = { "Off", "New Location + Major Item", "New Location + Any Item", "New Location", "Major Item", "Any Item" };
+    static const char* DebugSaveFileModes[3] = { "Off", "Vanilla", "Maxed" };
     static const char* FastFileSelect[5] = { "File N.1", "File N.2", "File N.3", "Zelda Map Select (require OoT Debug Mode)", "File select" };
     static const char* bonkDamageValues[8] = {
         "No Damage",
@@ -1356,16 +1357,25 @@ extern std::shared_ptr<ActorViewerWindow> mActorViewerWindow;
 extern std::shared_ptr<DLViewerWindow> mDLViewerWindow;
 
 void DrawDeveloperToolsMenu() {
-            if (ImGui::BeginMenu("Developer Tools"))
-    {
+    if (ImGui::BeginMenu("Developer Tools")) {
         UIWidgets::EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
         UIWidgets::Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right, and open the debug menu with L on the pause screen");
+        if (CVarGetInteger("gDebugEnabled", 0)) {
+            ImGui::Text("Debug Save File Mode:");
+            UIWidgets::EnhancementCombobox("gDebugSaveFileMode", DebugSaveFileModes, 1);
+            UIWidgets::Tooltip(
+                "Changes the behaviour of debug file select creation (creating a save file on slot 1 with debug mode on)\n"
+                "- Off: The debug save file will be a normal savefile\n"
+                "- Vanilla: The debug save file will be the debug save file from the original game\n"
+                "- Maxed: The debug save file will be a save file with all of the items & upgrades"
+            );
+        }
         UIWidgets::PaddedEnhancementCheckbox("OoT Skulltula Debug", "gSkulltulaDebugEnabled", true, false);
         UIWidgets::Tooltip("Enables Skulltula Debug, when moving the cursor in the menu above various map icons (boss key, compass, map screen locations, etc) will set the GS bits in that area.\nUSE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT.");
         UIWidgets::PaddedEnhancementCheckbox("Fast File Select", "gSkipLogoTitle", true, false);
         UIWidgets::Tooltip("Load the game to the selected menu or file\n\"Zelda Map Select\" require debug mode else you will fallback to File choose menu\nUsing a file number that don't have save will create a save file only if you toggle on \"Create a new save if none ?\" else it will bring you to the File choose menu");
         if (CVarGetInteger("gSkipLogoTitle", 0)) {
-            ImGui::Text("Loading :");
+            ImGui::Text("Loading:");
             UIWidgets::EnhancementCombobox("gSaveFileID", FastFileSelect, 0);
         };
         UIWidgets::PaddedEnhancementCheckbox("Better Debug Warp Screen", "gBetterDebugWarpScreen", true, false);
