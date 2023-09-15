@@ -1,3 +1,7 @@
+// I don't like what AlignConsecutiveDeclarations does to this file
+// but I think that's more of a "we should split this file up" problem
+// than a clang-format problem
+
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
