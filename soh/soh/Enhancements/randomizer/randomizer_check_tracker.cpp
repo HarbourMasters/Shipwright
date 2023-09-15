@@ -1179,7 +1179,7 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
                 (fortressFast && showGerudoFortressKeys && rcObj.rc == RC_GF_NORTH_F1_CARPENTER)
                 );
     }
-    else if (rcObj.vanillaHundoCheck) {
+    else if (rcObj.vanillaCompletion) {
         return (rcObj.vOrMQ == RCVORMQ_BOTH ||
             rcObj.vOrMQ == RCVORMQ_MQ && OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId) ||
             rcObj.vOrMQ == RCVORMQ_VANILLA && !OTRGlobals::Instance->gRandomizer->masterQuestDungeons.contains(rcObj.sceneId) ||
