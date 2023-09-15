@@ -151,6 +151,7 @@ class SaveManager {
     static void InitFileImpl(bool isDebug);
     static void InitFileNormal();
     static void InitFileDebug();
+    static void InitFileMaxed();
 
     static void LoadRandomizerVersion1();
     static void LoadRandomizerVersion2();
