@@ -342,6 +342,7 @@ s16 gQuarterPulseWaveSample[] = {
     0,      0,      32767,  0,      0,      0,      -32767, 0,
 };
 // clang-format on
+// clang-format off
 
 s16* gWaveSamples[] = {
     gSawtoothWaveSample, gTriangleWaveSample,    gSineWaveSample,         gSquareWaveSample,       gWhiteNoiseSample,
@@ -578,6 +579,7 @@ s16 D_8012FBA8[] = {
     0, 0, 0, 500, 0, 0, 0, 0,
 };
 // clang-format on
+// clang-format off
 
 f32 gHeadsetPanVolume[] = {
     1.0f,      0.995386f, 0.990772f, 0.986157f, 0.981543f, 0.976929f, 0.972315f, 0.967701f, 0.963087f, 0.958472f,

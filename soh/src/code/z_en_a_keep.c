@@ -146,6 +146,7 @@ void EnAObj_Init(Actor* thisx, PlayState* play) {
             // clang-format off
             thisx->flags |= ACTOR_FLAG_TARGETABLE; this->dyna.bgId = 5; this->focusYoffset = 10.0f;
             // clang-format on
+            // clang-format off
             thisx->gravity = -2.0f;
             EnAObj_SetupWaitTalk(this, thisx->params);
             break;
@@ -160,6 +161,7 @@ void EnAObj_Init(Actor* thisx, PlayState* play) {
             // clang-format off
             thisx->flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY; thisx->targetArrowOffset = 500.0f;
             // clang-format on
+            // clang-format off
             this->focusYoffset = 45.0f;
             EnAObj_SetupWaitTalk(this, thisx->params);
             Collider_InitCylinder(play, &this->collider);

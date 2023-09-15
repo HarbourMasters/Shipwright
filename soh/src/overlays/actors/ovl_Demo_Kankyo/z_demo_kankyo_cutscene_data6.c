@@ -31,3 +31,4 @@ CutsceneData gChildWarpOutCS[] = {
     CS_END(),
 };
 // clang-format on
+// clang-format off

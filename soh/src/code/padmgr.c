@@ -74,6 +74,7 @@ void PadMgr_RumbleControl(PadMgr* padMgr) {
                             // clang-format off
                             osSyncPrintf(VT_FGCOL(YELLOW));
                             // clang-format on
+                            // clang-format off
 
                             // "Vibration pack jumble jumble"?
                             osSyncPrintf("padmgr: %dコン: %s\n", i + 1, "振動パック ぶるぶるぶるぶる");
@@ -96,6 +97,7 @@ void PadMgr_RumbleControl(PadMgr* padMgr) {
                             // clang-format off
                             osSyncPrintf(VT_FGCOL(YELLOW));
                             // clang-format on
+                            // clang-format off
 
                             // "Stop vibration pack"
                             osSyncPrintf("padmgr: %dコン: %s\n", i + 1, "振動パック 停止");

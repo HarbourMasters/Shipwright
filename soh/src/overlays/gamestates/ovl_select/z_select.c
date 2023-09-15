@@ -1319,11 +1319,13 @@ void Select_PrintCutsceneSetting(SelectContext* this, GfxPrint* printer, u16 csI
             // clang-format off
             gSaveContext.dayTime = 0x8000; label = cutsceneLabels[0][lang];
             // clang-format on
+            // clang-format off
             break;
         case 0xFFF0:
             // clang-format off
             gSaveContext.dayTime = 0x8000; label = cutsceneLabels[2][lang];
             // clang-format on
+            // clang-format off
             break;
         case 0xFFF1:
             label = cutsceneLabels[3][lang];

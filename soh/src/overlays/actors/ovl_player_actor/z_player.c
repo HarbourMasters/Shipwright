@@ -3893,6 +3893,7 @@ void func_8083821C(Player* this) {
     // clang-format off
     for (i = 0; i < 18; i++) { this->flameTimers[i] = Rand_S16Offset(0, 200); }
     // clang-format on
+    // clang-format off
 
     this->isBurning = true;
 }
@@ -11776,6 +11777,7 @@ void func_8084BBE4(Player* this, PlayState* play) {
         // clang-format off
         anim = (this->unk_84F > 0) ? &gPlayerAnim_link_normal_fall_wait : D_80853914[PLAYER_ANIMGROUP_jump_climb_wait][this->modelAnimType]; func_80832284(play, this, anim);
         // clang-format on
+        // clang-format off
     } else if (this->unk_84F == 0) {
         if (this->skelAnime.animation == &gPlayerAnim_link_normal_fall) {
             temp = 11.0f;

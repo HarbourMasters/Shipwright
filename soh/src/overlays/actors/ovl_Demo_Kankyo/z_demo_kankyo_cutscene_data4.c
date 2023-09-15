@@ -25,3 +25,4 @@ CutsceneData gAdultWarpOutToTCS[] = {
     CS_END(),
 };
 // clang-format on
+// clang-format off

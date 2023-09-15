@@ -234,6 +234,7 @@ void BgHeavyBlock_SpawnDust(PlayState* play, f32 posX, f32 posY, f32 posZ, f32 v
         primColor.r = 170; primColor.g = 130; primColor.b = 90; primColor.a = 255;
         envColor.r = 100; envColor.g = 60; envColor.b = 20; envColor.a = 255;
         // clang-format on
+        // clang-format off
     }
 
     accel.z = 0.0f;

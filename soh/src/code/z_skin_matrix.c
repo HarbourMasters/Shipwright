@@ -13,6 +13,7 @@ MtxF sMtxFClear = {
     0.0f, 0.0f, 0.0f, 1.0f,
 };
 // clang-format on
+// clang-format off
 
 /**
  * Multiplies the matrix mf by a 4 components column vector [ src , 1 ] and writes the resulting 4 components to xyzDest

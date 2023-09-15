@@ -297,6 +297,7 @@ void DemoEffect_Init(Actor* thisx, PlayState* play2) {
                     // clang-format off
                     this->envXluColor[0] = 200; this->envXluColor[1] = 50; this->envXluColor[2] = 255; // Sameline prevents reordering
                     // clang-format on
+                    // clang-format off
                     break;
 
                 case DEMO_EFFECT_LIGHT_GREEN2:

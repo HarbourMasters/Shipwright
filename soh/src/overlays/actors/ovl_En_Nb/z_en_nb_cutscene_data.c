@@ -170,3 +170,4 @@ static CutsceneData D_80AB431C[] = {
     CS_END(),
 };
 // clang-format on
+// clang-format off

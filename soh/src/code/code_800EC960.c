@@ -1173,6 +1173,7 @@ OcarinaSongInfo gOcarinaSongNotes[OCARINA_SONG_MAX] = {
     { 0, { 0, 0, 0, 0, 0, 0, 0, 0 } },
 };
 // clang-format on
+// clang-format off
 
 /**
  * BSS
@@ -1469,6 +1470,7 @@ void func_800ECDF8(void) {
         // clang-format off
         if (sPrevOcarinaNoteVal == sCurOcarinaBtnVal || sCurOcarinaBtnVal == 0xFF) { inputChanged = 1; }
         // clang-format on
+        // clang-format off
 
         for (i = sOcarinaSongNoteStartIdx; i < sOcarinaSongCnt; i++) {
             sh = 1 << i;

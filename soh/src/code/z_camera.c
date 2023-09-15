@@ -7218,6 +7218,7 @@ void Camera_PrintSettings(Camera* camera) {
         }
         sp50[i] = i % 10 + '0'; i++;
         // clang-format on
+        // clang-format off
 
         sp50[i++] = ' ';
         sp50[i++] = ' ';

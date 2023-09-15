@@ -118,6 +118,7 @@ char* DbCamera_SetTextValue(s16 value, char* str, u8 endIdx) {
         // clang-format off
         *strIter-- = (value % 10) + '0'; value /= 10;
         // clang-format on
+        // clang-format off
 
     } while (value != 0);
 

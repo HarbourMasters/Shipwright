@@ -137,3 +137,4 @@ CutsceneData D_80ABFB40[] = {
     CS_END(),
 };
 // clang-format on
+// clang-format off

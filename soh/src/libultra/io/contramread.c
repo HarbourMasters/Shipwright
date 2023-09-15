@@ -22,6 +22,7 @@ s32 __osContRamRead(OSMesgQueue* ctrlrqueue, s32 channel, u16 addr, u8* data) {
             // clang-format off
             for (i = 0; i < channel; i++) { *bufptr++ = 0; }
             // clang-format on
+            // clang-format off
             gPifMempakBuf.status = 1;
             ((__OSContRamHeader*)bufptr)->unk_00 = 0xFF;
             ((__OSContRamHeader*)bufptr)->txsize = 3;

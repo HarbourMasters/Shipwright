@@ -1276,6 +1276,7 @@ Gfx* func_800947AC(Gfx* gfx) {
         case 4: gDPSetColorDither(gfx++, G_CD_NOISE); break;
     }
     // clang-format on
+    // clang-format off
 
     return gfx;
 }

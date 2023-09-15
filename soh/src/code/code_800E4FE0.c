@@ -550,6 +550,7 @@ void func_800E5F34(void) {
     // clang-format off
     s32 chk = -1; OSMesg sp28; do {} while (osRecvMesg(gAudioContext.audioResetQueueP, &sp28, OS_MESG_NOBLOCK) != chk);
     // clang-format on
+    // clang-format off
 }
 
 s32 func_800E5F88(s32 resetPreloadID) {

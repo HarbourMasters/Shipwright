@@ -20,6 +20,7 @@ MtxF gMtxFClear = {
     0.0f, 0.0f, 0.0f, 1.0f,
 };
 // clang-format on
+// clang-format off
 
 MtxF* sMatrixStack;   // "Matrix_stack"
 MtxF* sCurrentMatrix; // "Matrix_now"

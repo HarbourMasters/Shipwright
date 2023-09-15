@@ -229,6 +229,7 @@ void UCodeDisas_ParseRenderMode(UCodeDisas* this, u32 mode) {
     if (this->enableLog == 0) {} else { osSyncPrintf("\nGBL_c1(%s, %s, %s, %s)|",
         D_8012DDDC[0][a >> 12 & 3], D_8012DDDC[1][a >> 8 & 3], D_8012DDDC[2][a >> 4 & 3], D_8012DDDC[3][a >> 0 & 3]); }
     // clang-format on
+// clang-format off
 
     if (this->enableLog) {
         osSyncPrintf("\nGBL_c2(%s, %s, %s, %s)", D_8012DDDC[0][b >> 12 & 3], D_8012DDDC[1][b >> 8 & 3],
@@ -971,6 +972,7 @@ void UCodeDisas_Disassemble(UCodeDisas* this, GfxMod* ptr) {
                                         ((Mtx*)addr)->intPart[3][3], ((Mtx*)addr)->fracPart[3][3],
                                         mtx.mf[0][3], mtx.mf[1][3], mtx.mf[2][3], mtx.mf[3][3]);
                                     // clang-format on
+// clang-format off
                                 }
                             } break;
 

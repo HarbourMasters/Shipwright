@@ -37,6 +37,7 @@ UCodeInfo D_8012D248[3] = {
     //{ UCODE_S2DEX, D_80113070 },
 };
 // clang-format on
+// clang-format off
 
 void Graph_FaultClient() {
     void* nextFb = osViGetNextFramebuffer();

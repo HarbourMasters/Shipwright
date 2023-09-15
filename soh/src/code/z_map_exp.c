@@ -818,6 +818,7 @@ void Minimap_Draw(PlayState* play) {
                     else { Audio_PlaySoundGeneral(NA_SE_SY_CAMERA_ZOOM_DOWN, &D_801333D4, 4,
                                                   &D_801333E0, &D_801333E0, &D_801333E8); }
                     // clang-format on
+                    // clang-format off
                     R_MINIMAP_DISABLED ^= 1;
                 }
 
@@ -973,6 +974,7 @@ void Minimap_Draw(PlayState* play) {
                     else { Audio_PlaySoundGeneral(NA_SE_SY_CAMERA_ZOOM_DOWN, &D_801333D4, 4,
                                                   &D_801333E0, &D_801333E0, &D_801333E8); }
                     // clang-format on
+                    // clang-format off
                     R_MINIMAP_DISABLED ^= 1;
                 }
 

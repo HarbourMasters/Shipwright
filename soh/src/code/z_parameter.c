@@ -1324,6 +1324,7 @@ void Interface_SetSceneRestrictions(PlayState* play) {
     interfaceCtx->restrictions.sunsSong = interfaceCtx->restrictions.farores =
     interfaceCtx->restrictions.dinsNayrus = interfaceCtx->restrictions.all = 0;
     // clang-format on
+    // clang-format off
 
     i = 0;
 
@@ -2889,6 +2890,7 @@ void Interface_SetNaviCall(PlayState* play, u16 naviCallState) {
             if (naviCallState == 0x1E) { Audio_PlaySoundGeneral(NA_SE_VO_NAVY_CALL, &D_801333D4, 4,
                                                                 &D_801333E0, &D_801333E0, &D_801333E8); }
             // clang-format on
+            // clang-format off
 
             if (naviCallState == 0x1D) {
                 func_800F4524(&D_801333D4, NA_SE_VO_NA_HELLO_2, 32);
@@ -2962,6 +2964,7 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
         osSyncPrintf("ハート減少半分！！＝%d\n", healthChange); // "Heart decrease halved!!＝%d"
     }
     // clang-format on
+    // clang-format off
 
     int32_t giDefenseModifier = GameInteractor_DefenseModifier();
     if (giDefenseModifier != 0 && healthChange < 0) {
@@ -4889,6 +4892,7 @@ void Interface_InitVertices(PlayState* play) {
     interfaceCtx->beatingHeartVtx[0].v.cn[3] = interfaceCtx->beatingHeartVtx[1].v.cn[3] =
     interfaceCtx->beatingHeartVtx[2].v.cn[3] = interfaceCtx->beatingHeartVtx[3].v.cn[3] = 255;
     // clang-format on
+    // clang-format off
 }
 
 /*
@@ -6117,6 +6121,7 @@ void Interface_Draw(PlayState* play) {
                                       svar2, digitWidth[svar1], VREG(42), VREG(43) << 1,
                                       VREG(43) << 1);
                     // clang-format on
+                    // clang-format off
                 }
             }
         }

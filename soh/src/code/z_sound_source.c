@@ -9,6 +9,7 @@ void SoundSource_InitAll(PlayState* play) {
     // clang-format off
     for (i = 0; i < ARRAY_COUNT(play->soundSources); i++) { sources[i].countdown = 0; }
     // clang-format on
+    // clang-format off
 }
 
 void SoundSource_UpdateAll(PlayState* play) {

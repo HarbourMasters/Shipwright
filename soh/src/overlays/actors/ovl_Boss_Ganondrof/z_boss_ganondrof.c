@@ -183,6 +183,7 @@ static u8 sDecayMaskTotal[16 * 16] = {
     1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 };
 // clang-format on
+// clang-format off
 
 static u8 sDecayTex[16 * 16] = { { 0 } };
 
