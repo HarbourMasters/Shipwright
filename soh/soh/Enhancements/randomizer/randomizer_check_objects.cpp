@@ -4,7 +4,7 @@
 #include <libultraship/bridge.h>
 #include "z64.h"
 
-//            RandomizerCheck,                                                RCVORMQ,         RCTYPE,              RCAREA,                        ActorId,            SceneId,                              ActorParams,                 OG ItemID,           "Short name", "Spoiler name", vanillaHundoCheck
+//            RandomizerCheck,                                                RCVORMQ,         RCTYPE,              RCAREA,                        ActorId,            SceneId,                              ActorParams,                 OG ItemID,           "Short name", "Spoiler name", vanillaCompletion
 std::map<RandomizerCheck, RandomizerCheckObject> rcObjects = {
     RC_OBJECT(RC_KF_KOKIRI_SWORD_CHEST,                                       RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_KOKIRI_FOREST,          ACTOR_EN_BOX,       SCENE_KOKIRI_FOREST,                  1248,                        GI_SWORD_KOKIRI,     "Kokiri Sword Chest", "KF Kokiri Sword Chest", true),
     RC_OBJECT(RC_KF_MIDOS_TOP_LEFT_CHEST,                                     RCVORMQ_BOTH,    RCTYPE_STANDARD,     RCAREA_KOKIRI_FOREST,          ACTOR_EN_BOX,       SCENE_MIDOS_HOUSE,                    22944,                       GI_RUPEE_BLUE,       "Mido Top Left Chest", "KF Mido Top Left Chest", false),
