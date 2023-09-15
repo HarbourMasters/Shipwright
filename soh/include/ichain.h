@@ -1,3 +1,8 @@
+// AlignTrailingComments is still a bool in clang-format-14, it will allow more options
+// in 16 https://releases.llvm.org/16.0.0/tools/clang/docs/ClangFormatStyleOptions.html#aligntrailingcomments
+// until then, if we want to align trailing comments we need to add empty trailing comments
+// in between the ones we want to align
+
 #ifndef ICHAIN_H
 #define ICHAIN_H
 
@@ -10,11 +15,11 @@ typedef struct {
 
 typedef enum {
     /* 0x0 */ ICHAINTYPE_U8,            // sets byte
-    /* 0x1 */ ICHAINTYPE_S8,
+    /* 0x1 */ ICHAINTYPE_S8, //
     /* 0x2 */ ICHAINTYPE_U16,           // sets short
-    /* 0x3 */ ICHAINTYPE_S16,
+    /* 0x3 */ ICHAINTYPE_S16, //
     /* 0x4 */ ICHAINTYPE_U32,           // sets word
-    /* 0x5 */ ICHAINTYPE_S32,
+    /* 0x5 */ ICHAINTYPE_S32, //
     /* 0x6 */ ICHAINTYPE_F32,           // sets float
     /* 0x7 */ ICHAINTYPE_F32_DIV1000,   // sets float divided by 1000
     /* 0x8 */ ICHAINTYPE_VEC3F,         // sets Vec3f members
