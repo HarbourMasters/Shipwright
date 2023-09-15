@@ -98,11 +98,15 @@
 #define SET_EVENTINF(flag) (gSaveContext.eventInf[(flag) >> 4] |= (1 << ((flag) & 0xF)))
 #define CLEAR_EVENTINF(flag) (gSaveContext.eventInf[(flag) >> 4] &= ~(1 << ((flag) & 0xF)))
 
+// clang-format off
+// I tried to get this to stay nicely formatted with BreakBeforeBinaryOperators and 
+// AlignOperands but it just kept doing strange things
 #define B_BTN_ITEM ((gSaveContext.buttonStatus[0] == ITEM_NONE)                    \
                         ? ITEM_NONE                                                \
                         : (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KNIFE) \
                             ? ITEM_SWORD_BGS                                       \
                             : gSaveContext.equips.buttonItems[0])
+// clang-format on
 
 #define C_BTN_ITEM(button) ((gSaveContext.buttonStatus[(button) + 1] != BTN_DISABLED) \
                                 ? gSaveContext.equips.buttonItems[(button) + 1]       \

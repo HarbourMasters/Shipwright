@@ -1,8 +1,9 @@
 AlignAfterOpenBracket: Align
-AlignOperands: true
+AlignConsecutiveBitFields: AcrossComments
 AlignConsecutiveDeclarations: AcrossComments
 AlignConsecutiveMacros: AcrossComments
 AlignEscapedNewlines: Left
+AlignOperands: true
 AlignTrailingComments: true
 AllowShortBlocksOnASingleLine: true
 AllowShortIfStatementsOnASingleLine: false
