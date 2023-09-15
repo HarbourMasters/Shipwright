@@ -1523,7 +1523,7 @@ s16 func_8001F404(s16 dropId) {
     if (LINK_IS_ADULT) {
         if (dropId == ITEM00_SEEDS) {
             dropId = ITEM00_ARROWS_SMALL;
-        } else if (dropId == ITEM00_STICK) {
+        } else if ((dropId == ITEM00_STICK) && !(CVarGetInteger("gTreeStickDrops", 0))) {
             dropId = ITEM00_RUPEE_GREEN;
         }
     } else {
