@@ -1,5 +1,6 @@
 <Root>
     <File Name="object_gi_clothes" Segment="6">
+        <Texture Name="object_gi_clothesTex_000000" OutName="object_gi_clothesTex_000000" Format="i4" Width="64" Height="64" Offset="0x0" AddedByScript="true"/>
         <DList Name="gGiGoronCollarColorDL" Offset="0x14E0"/>
         <DList Name="gGiZoraCollarColorDL" Offset="0x1500"/>
         <DList Name="gGiGoronTunicColorDL" Offset="0x1520"/>

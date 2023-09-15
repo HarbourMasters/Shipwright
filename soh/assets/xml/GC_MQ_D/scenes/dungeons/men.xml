@@ -1,42 +1,126 @@
 <Root>
     <File Name="men_scene" Segment="2">
+        <Texture Name="men_sceneTex_0108C0" OutName="men_sceneTex_0108C0" Format="ci8" Width="32" Height="32" Offset="0x108C0" TlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_sceneTex_010CC0" OutName="men_sceneTex_010CC0" Format="ci8" Width="64" Height="32" Offset="0x10CC0" TlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_sceneTLUT_00F6C0" OutName="men_sceneTLUT_00F6C0" Format="rgba16" Width="16" Height="16" Offset="0xF6C0" AddedByScript="true"/>
         <Texture Name="gGTGDayEntranceTex" OutName="day_entrance" Format="ia16" Width="8" Height="128" Offset="0xF8C0"/>
         <Texture Name="gGTGNightEntranceTex" OutName="night_entrance" Format="ia16" Width="8" Height="128" Offset="0x100C0"/>
         <Scene Name="men_scene" Offset="0x0"/>
     </File>
     <File Name="men_room_0" Segment="3">
+        <Texture Name="men_room_0Tex_008138" OutName="men_room_0Tex_008138" Format="ci8" Width="64" Height="32" Offset="0x8138" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_0Tex_008938" OutName="men_room_0Tex_008938" Format="ci8" Width="32" Height="64" Offset="0x8938" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_0Tex_009138" OutName="men_room_0Tex_009138" Format="ci8" Width="32" Height="32" Offset="0x9138" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_0Tex_009538" OutName="men_room_0Tex_009538" Format="rgba16" Width="32" Height="32" Offset="0x9538" AddedByScript="true"/>
+        <Texture Name="men_room_0Tex_009D38" OutName="men_room_0Tex_009D38" Format="ci8" Width="32" Height="64" Offset="0x9D38" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_0Tex_00A538" OutName="men_room_0Tex_00A538" Format="ia8" Width="64" Height="64" Offset="0xA538" AddedByScript="true"/>
+        <Texture Name="men_room_0Tex_00B538" OutName="men_room_0Tex_00B538" Format="ci8" Width="32" Height="64" Offset="0xB538" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_0Tex_00BD38" OutName="men_room_0Tex_00BD38" Format="ci8" Width="64" Height="32" Offset="0xBD38" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_0Tex_00C538" OutName="men_room_0Tex_00C538" Format="i4" Width="64" Height="128" Offset="0xC538" AddedByScript="true"/>
+        <Texture Name="men_room_0Tex_00D538" OutName="men_room_0Tex_00D538" Format="ci8" Width="64" Height="32" Offset="0xD538" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_0Tex_00DD38" OutName="men_room_0Tex_00DD38" Format="rgba16" Width="16" Height="128" Offset="0xDD38" AddedByScript="true"/>
+        <Texture Name="men_room_0Tex_00ED38" OutName="men_room_0Tex_00ED38" Format="ci8" Width="64" Height="32" Offset="0xED38" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_0Tex_00F538" OutName="men_room_0Tex_00F538" Format="ci8" Width="64" Height="32" Offset="0xF538" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
         <DList Name="gMenDL_008118" Offset="0x8118"/>
         <DList Name="gMenDL_00FF78" Offset="0xFF78"/>
         <Room Name="men_room_0" Offset="0x0"/>
     </File>
     <File Name="men_room_1" Segment="3">
+        <Texture Name="men_room_1Tex_004270" OutName="men_room_1Tex_004270" Format="rgba16" Width="32" Height="32" Offset="0x4270" AddedByScript="true"/>
+        <Texture Name="men_room_1Tex_004A70" OutName="men_room_1Tex_004A70" Format="ci8" Width="64" Height="32" Offset="0x4A70" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_1Tex_005270" OutName="men_room_1Tex_005270" Format="ci8" Width="32" Height="64" Offset="0x5270" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_1Tex_005A70" OutName="men_room_1Tex_005A70" Format="ci8" Width="64" Height="32" Offset="0x5A70" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_1Tex_006270" OutName="men_room_1Tex_006270" Format="rgba16" Width="32" Height="32" Offset="0x6270" AddedByScript="true"/>
+        <Texture Name="men_room_1Tex_006A70" OutName="men_room_1Tex_006A70" Format="rgba16" Width="32" Height="32" Offset="0x6A70" AddedByScript="true"/>
+        <Texture Name="men_room_1Tex_007270" OutName="men_room_1Tex_007270" Format="ci8" Width="64" Height="32" Offset="0x7270" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_1Tex_007A70" OutName="men_room_1Tex_007A70" Format="rgba16" Width="16" Height="128" Offset="0x7A70" AddedByScript="true"/>
+        <Texture Name="men_room_1Tex_008A70" OutName="men_room_1Tex_008A70" Format="ci8" Width="64" Height="32" Offset="0x8A70" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
         <Room Name="men_room_1" Offset="0x0"/>
     </File>
     <File Name="men_room_2" Segment="3">
+        <Texture Name="men_room_2Tex_003C48" OutName="men_room_2Tex_003C48" Format="ci8" Width="64" Height="32" Offset="0x3C48" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_2Tex_004448" OutName="men_room_2Tex_004448" Format="ci8" Width="64" Height="32" Offset="0x4448" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_2Tex_004C48" OutName="men_room_2Tex_004C48" Format="ci8" Width="32" Height="32" Offset="0x4C48" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
         <Room Name="men_room_2" Offset="0x0"/>
     </File>
     <File Name="men_room_3" Segment="3">
+        <Texture Name="men_room_3Tex_003850" OutName="men_room_3Tex_003850" Format="ci8" Width="64" Height="32" Offset="0x3850" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_3Tex_004050" OutName="men_room_3Tex_004050" Format="ci8" Width="64" Height="32" Offset="0x4050" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_3Tex_004850" OutName="men_room_3Tex_004850" Format="ci8" Width="32" Height="64" Offset="0x4850" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_3Tex_005050" OutName="men_room_3Tex_005050" Format="ci8" Width="64" Height="32" Offset="0x5050" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_3Tex_005850" OutName="men_room_3Tex_005850" Format="ci8" Width="32" Height="32" Offset="0x5850" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_3Tex_005C50" OutName="men_room_3Tex_005C50" Format="ci8" Width="64" Height="32" Offset="0x5C50" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_3Tex_006450" OutName="men_room_3Tex_006450" Format="rgba16" Width="16" Height="128" Offset="0x6450" AddedByScript="true"/>
+        <Texture Name="men_room_3Tex_007450" OutName="men_room_3Tex_007450" Format="ci8" Width="64" Height="32" Offset="0x7450" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
         <Room Name="men_room_3" Offset="0x0"/>
     </File>
     <File Name="men_room_4" Segment="3">
+        <Texture Name="men_room_4Tex_0051E0" OutName="men_room_4Tex_0051E0" Format="rgba16" Width="32" Height="32" Offset="0x51E0" AddedByScript="true"/>
+        <Texture Name="men_room_4Tex_0059E0" OutName="men_room_4Tex_0059E0" Format="rgba16" Width="32" Height="32" Offset="0x59E0" AddedByScript="true"/>
+        <Texture Name="men_room_4Tex_0061E0" OutName="men_room_4Tex_0061E0" Format="i4" Width="128" Height="64" Offset="0x61E0" AddedByScript="true"/>
+        <Texture Name="men_room_4Tex_0071E0" OutName="men_room_4Tex_0071E0" Format="i4" Width="64" Height="128" Offset="0x71E0" AddedByScript="true"/>
+        <Texture Name="men_room_4Tex_0081E0" OutName="men_room_4Tex_0081E0" Format="ci8" Width="32" Height="64" Offset="0x81E0" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_4Tex_0089E0" OutName="men_room_4Tex_0089E0" Format="i4" Width="64" Height="128" Offset="0x89E0" AddedByScript="true"/>
+        <Texture Name="men_room_4Tex_0099E0" OutName="men_room_4Tex_0099E0" Format="ci8" Width="64" Height="32" Offset="0x99E0" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
         <Room Name="men_room_4" Offset="0x0"/>
     </File>
     <File Name="men_room_5" Segment="3">
+        <Texture Name="men_room_5Tex_002418" OutName="men_room_5Tex_002418" Format="ci8" Width="64" Height="32" Offset="0x2418" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_5Tex_002C18" OutName="men_room_5Tex_002C18" Format="ci8" Width="32" Height="32" Offset="0x2C18" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_5Tex_003018" OutName="men_room_5Tex_003018" Format="ci8" Width="32" Height="64" Offset="0x3018" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_5Tex_003818" OutName="men_room_5Tex_003818" Format="ci8" Width="64" Height="32" Offset="0x3818" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_5Tex_004018" OutName="men_room_5Tex_004018" Format="ci8" Width="64" Height="32" Offset="0x4018" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_5Tex_004818" OutName="men_room_5Tex_004818" Format="ci8" Width="64" Height="32" Offset="0x4818" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
         <Room Name="men_room_5" Offset="0x0"/>
     </File>
     <File Name="men_room_6" Segment="3">
+        <Texture Name="men_room_6Tex_003F78" OutName="men_room_6Tex_003F78" Format="rgba16" Width="32" Height="32" Offset="0x3F78" AddedByScript="true"/>
+        <Texture Name="men_room_6Tex_004778" OutName="men_room_6Tex_004778" Format="ci8" Width="32" Height="64" Offset="0x4778" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_6Tex_004F78" OutName="men_room_6Tex_004F78" Format="ci8" Width="32" Height="32" Offset="0x4F78" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_6Tex_005378" OutName="men_room_6Tex_005378" Format="rgba16" Width="32" Height="32" Offset="0x5378" AddedByScript="true"/>
+        <Texture Name="men_room_6Tex_005B78" OutName="men_room_6Tex_005B78" Format="ci8" Width="32" Height="64" Offset="0x5B78" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_6Tex_006378" OutName="men_room_6Tex_006378" Format="ci8" Width="32" Height="64" Offset="0x6378" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_6Tex_006B78" OutName="men_room_6Tex_006B78" Format="ci8" Width="64" Height="32" Offset="0x6B78" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_6Tex_007378" OutName="men_room_6Tex_007378" Format="ci8" Width="32" Height="32" Offset="0x7378" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_6Tex_007778" OutName="men_room_6Tex_007778" Format="ci8" Width="64" Height="32" Offset="0x7778" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
         <Room Name="men_room_6" Offset="0x0"/>
     </File>
     <File Name="men_room_7" Segment="3">
+        <Texture Name="men_room_7Tex_0036B8" OutName="men_room_7Tex_0036B8" Format="ci8" Width="32" Height="32" Offset="0x36B8" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_7Tex_003AB8" OutName="men_room_7Tex_003AB8" Format="ci8" Width="64" Height="32" Offset="0x3AB8" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_7Tex_0042B8" OutName="men_room_7Tex_0042B8" Format="ci8" Width="32" Height="64" Offset="0x42B8" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_7Tex_004AB8" OutName="men_room_7Tex_004AB8" Format="rgba16" Width="32" Height="32" Offset="0x4AB8" AddedByScript="true"/>
+        <Texture Name="men_room_7Tex_0052B8" OutName="men_room_7Tex_0052B8" Format="ci8" Width="64" Height="32" Offset="0x52B8" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_7Tex_005AB8" OutName="men_room_7Tex_005AB8" Format="ci8" Width="64" Height="32" Offset="0x5AB8" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_7Tex_0062B8" OutName="men_room_7Tex_0062B8" Format="rgba16" Width="16" Height="128" Offset="0x62B8" AddedByScript="true"/>
+        <Texture Name="men_room_7Tex_0072B8" OutName="men_room_7Tex_0072B8" Format="ci8" Width="64" Height="32" Offset="0x72B8" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_7Tex_007AB8" OutName="men_room_7Tex_007AB8" Format="ci8" Width="64" Height="32" Offset="0x7AB8" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
         <Room Name="men_room_7" Offset="0x0"/>
     </File>
     <File Name="men_room_8" Segment="3">
+        <Texture Name="men_room_8Tex_005D30" OutName="men_room_8Tex_005D30" Format="rgba16" Width="16" Height="64" Offset="0x5D30" AddedByScript="true"/>
+        <Texture Name="men_room_8Tex_006530" OutName="men_room_8Tex_006530" Format="rgba16" Width="32" Height="32" Offset="0x6530" AddedByScript="true"/>
+        <Texture Name="men_room_8Tex_006D30" OutName="men_room_8Tex_006D30" Format="ci8" Width="32" Height="64" Offset="0x6D30" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_8Tex_007530" OutName="men_room_8Tex_007530" Format="rgba16" Width="8" Height="16" Offset="0x7530" AddedByScript="true"/>
+        <Texture Name="men_room_8Tex_007630" OutName="men_room_8Tex_007630" Format="rgba16" Width="32" Height="32" Offset="0x7630" AddedByScript="true"/>
+        <Texture Name="men_room_8Tex_007E30" OutName="men_room_8Tex_007E30" Format="ci8" Width="32" Height="32" Offset="0x7E30" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
         <Room Name="men_room_8" Offset="0x0"/>
     </File>
     <File Name="men_room_9" Segment="3">
+        <Texture Name="men_room_9Tex_001AB0" OutName="men_room_9Tex_001AB0" Format="rgba16" Width="32" Height="32" Offset="0x1AB0" AddedByScript="true"/>
+        <Texture Name="men_room_9Tex_0022B0" OutName="men_room_9Tex_0022B0" Format="ci8" Width="32" Height="32" Offset="0x22B0" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_9Tex_0026B0" OutName="men_room_9Tex_0026B0" Format="ci8" Width="64" Height="32" Offset="0x26B0" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_9Tex_003070" OutName="men_room_9Tex_003070" Format="rgba16" Width="32" Height="32" Offset="0x3070" AddedByScript="true"/>
         <Room Name="men_room_9" Offset="0x0"/>
     </File>
     <File Name="men_room_10" Segment="3">
+        <Texture Name="men_room_10Tex_002448" OutName="men_room_10Tex_002448" Format="ci8" Width="64" Height="32" Offset="0x2448" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_10Tex_002C48" OutName="men_room_10Tex_002C48" Format="rgba16" Width="32" Height="32" Offset="0x2C48" AddedByScript="true"/>
+        <Texture Name="men_room_10Tex_003448" OutName="men_room_10Tex_003448" Format="ci8" Width="32" Height="64" Offset="0x3448" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_10Tex_003C48" OutName="men_room_10Tex_003C48" Format="ci8" Width="64" Height="32" Offset="0x3C48" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_10Tex_004448" OutName="men_room_10Tex_004448" Format="rgba16" Width="32" Height="32" Offset="0x4448" AddedByScript="true"/>
+        <Texture Name="men_room_10Tex_004C48" OutName="men_room_10Tex_004C48" Format="ci8" Width="32" Height="64" Offset="0x4C48" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
+        <Texture Name="men_room_10Tex_005448" OutName="men_room_10Tex_005448" Format="ci8" Width="64" Height="32" Offset="0x5448" ExternalTlut="men_scene" ExternalTlutOffset="0xF6C0" AddedByScript="true"/>
         <Room Name="men_room_10" Offset="0x0"/>
     </File>
 </Root>

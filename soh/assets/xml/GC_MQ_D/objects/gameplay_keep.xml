@@ -1,6 +1,10 @@
 <Root>
     <ExternalFile XmlPath="misc/link_animetion.xml" OutPath="misc/link_animetion/"/>
     <File Name="gameplay_keep" Segment="4">
+        <Texture Name="gameplay_keepTex_04C540" OutName="gameplay_keepTex_04C540" Format="i8" Width="64" Height="17" Offset="0x4C540" AddedByScript="true"/>
+        <Texture Name="gameplay_keepTex_04C740" OutName="gameplay_keepTex_04C740" Format="i8" Width="64" Height="17" Offset="0x4C740" AddedByScript="true"/>
+        <Texture Name="gameplay_keepTex_04CD40" OutName="gameplay_keepTex_04CD40" Format="i8" Width="64" Height="17" Offset="0x4CD40" AddedByScript="true"/>
+        <Texture Name="gameplay_keepTex_04CF40" OutName="gameplay_keepTex_04CF40" Format="i8" Width="64" Height="17" Offset="0x4CF40" AddedByScript="true"/>
         <Texture Name="gHilite1Tex" OutName="hilite_1" Format="rgba16" Width="16" Height="16" Offset="0x0"/>
         <Texture Name="gHilite2Tex" OutName="hilite_2" Format="rgba16" Width="16" Height="16" Offset="0x200"/>
         <Texture Name="gHylianShieldDesignTex" OutName="hylian_shield_design" Format="rgba16" Width="32" Height="64" Offset="0x400"/>
@@ -933,10 +937,10 @@
         <Texture Name="gDoorMetalBarsTex" OutName="door_metal_bars" Format="ia8" Width="32" Height="128" Offset="0x4A090"/>
         <DList Name="gDoorMetalBarsDL" Offset="0x4B0D0"/>
         <Texture Name="gGenericDungeonDoorTex" OutName="generic_dungeon_door" Format="rgba16" Width="32" Height="64" Offset="0x4B160"/>
-        <Texture Name="gSunTex" OutName="sun" Format="i4" Width="64" Height="64" Offset="0x4C160"/>
-        <Texture Name="gSunEveningTex" OutName="sun_evening" Format="i4" Width="64" Height="64" Offset="0x4C960"/>
-        <DList Name="gKokiriDustMoteTextureLoadDL" Offset="0x4D160"/>
-        <DList Name="gKokiriDustMoteDL" Offset="0x4D1A8"/>
+        <Texture Name="gSun1Tex" OutName="sun" Format="i4" Width="64" Height="64" Offset="0x4C160"/>
+        <Texture Name="gSunEvening1Tex" OutName="sun_evening" Format="i4" Width="64" Height="64" Offset="0x4C960"/>
+        <DList Name="gKokiriDustMoteMaterialDL" Offset="0x4D160"/>
+        <DList Name="gKokiriDustMoteModelDL" Offset="0x4D1A8"/>
         <DList Name="gSunDL" Offset="0x4D1C0"/>
         <DList Name="gZTargetLockOnTriangleDL" Offset="0x4D450"/>
         <DList Name="gEffFire1DL" Offset="0x4D4E0"/>

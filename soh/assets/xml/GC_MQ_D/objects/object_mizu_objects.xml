@@ -1,5 +1,19 @@
 <Root>
     <File Name="object_mizu_objects" Segment="6">
+        <Texture Name="object_mizu_objectsTex_004C00" OutName="object_mizu_objectsTex_004C00" Format="rgba16" Width="32" Height="64" Offset="0x4C00" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_005E70" OutName="object_mizu_objectsTex_005E70" Format="rgba16" Width="32" Height="64" Offset="0x5E70" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_007520" OutName="object_mizu_objectsTex_007520" Format="ia16" Width="32" Height="32" Offset="0x7520" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_007D20" OutName="object_mizu_objectsTex_007D20" Format="rgba16" Width="32" Height="32" Offset="0x7D20" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_008520" OutName="object_mizu_objectsTex_008520" Format="rgba16" Width="32" Height="32" Offset="0x8520" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_008D20" OutName="object_mizu_objectsTex_008D20" Format="rgba16" Width="32" Height="32" Offset="0x8D20" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_009520" OutName="object_mizu_objectsTex_009520" Format="i4" Width="32" Height="32" Offset="0x9520" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_009720" OutName="object_mizu_objectsTex_009720" Format="i4" Width="32" Height="32" Offset="0x9720" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_009920" OutName="object_mizu_objectsTex_009920" Format="i4" Width="32" Height="32" Offset="0x9920" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_009B20" OutName="object_mizu_objectsTex_009B20" Format="i4" Width="32" Height="32" Offset="0x9B20" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_009D20" OutName="object_mizu_objectsTex_009D20" Format="i4" Width="32" Height="32" Offset="0x9D20" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_009F20" OutName="object_mizu_objectsTex_009F20" Format="rgba16" Width="32" Height="32" Offset="0x9F20" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_00A720" OutName="object_mizu_objectsTex_00A720" Format="rgba16" Width="16" Height="32" Offset="0xA720" AddedByScript="true"/>
+        <Texture Name="object_mizu_objectsTex_00AB20" OutName="object_mizu_objectsTex_00AB20" Format="i4" Width="64" Height="64" Offset="0xAB20" AddedByScript="true"/>
         <DList Name="gObjectMizuObjectsMovebgDL_000190" Offset="0x0190"/>
         <Collision Name="gObjectMizuObjectsMovebgCol_0003F0" Offset="0x03F0"/>
         <DList Name="gObjectMizuObjectsMovebgDL_000680" Offset="0x0680"/>

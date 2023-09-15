@@ -150,7 +150,7 @@ void PatchIronKnuckleTextureOverflow() {
 
     // Gfx instructions to fix authentic vanilla bug where the Iron Knuckle texture is read as the wrong format
     Gfx gIronKnuckleMetalTexFix[] = {
-        gsDPLoadTextureBlock(object_ik_Tex_00F7A0, G_IM_FMT_I, G_IM_SIZ_4b, 32, 64, 0, G_TX_MIRROR | G_TX_WRAP,
+        gsDPLoadTextureBlock(gIronKnuckleMetalTex, G_IM_FMT_I, G_IM_SIZ_4b, 32, 64, 0, G_TX_MIRROR | G_TX_WRAP,
                             G_TX_MIRROR | G_TX_WRAP, 5, 6, G_TX_NOLOD, G_TX_NOLOD)
     };
 

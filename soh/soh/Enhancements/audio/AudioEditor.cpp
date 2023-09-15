@@ -54,8 +54,6 @@ size_t AuthenticCountBySequenceType(SeqType type) {
     }
 }
 
-
-
 // Grabs the current BGM sequence ID and replays it
 // which will lookup the proper override, or reset back to vanilla
 void ReplayCurrentBGM() {
@@ -94,8 +92,10 @@ void RandomizeGroup(SeqType type) {
     }
     Shuffle(values);
     for (const auto& [seqId, seqData] : AudioCollection::Instance->GetAllSequences()) {
-        const std::string cvarKey = "gAudioEditor.ReplacedSequences." + seqData.sfxKey;
-        if (seqData.category & type) {
+        const std::string cvarKey = AudioCollection::Instance->GetCvarKey(seqData.sfxKey);
+        const std::string cvarLockKey = AudioCollection::Instance->GetCvarLockKey(seqData.sfxKey);
+        // don't randomize locked entries
+        if ((seqData.category & type) && CVarGetInteger(cvarLockKey.c_str(), 0) == 0) {
             // Only save authentic sequence CVars
             if (((seqData.category & SEQ_BGM_CUSTOM) || seqData.category == SEQ_FANFARE) && seqData.sequenceId >= MAX_AUTHENTIC_SEQID) {
                 continue;
@@ -114,23 +114,27 @@ void ResetGroup(const std::map<u16, SequenceInfo>& map, SeqType type) {
             if (seqData.category == SEQ_FANFARE && defaultValue >= MAX_AUTHENTIC_SEQID) {
                 continue;
             }
-            const std::string cvarKey = "gAudioEditor.ReplacedSequences." + seqData.sfxKey;
-            CVarSetInteger(cvarKey.c_str(), defaultValue);
+            const std::string cvarKey = AudioCollection::Instance->GetCvarKey(seqData.sfxKey);
+            const std::string cvarLockKey = AudioCollection::Instance->GetCvarLockKey(seqData.sfxKey);
+            if (CVarGetInteger(cvarLockKey.c_str(), 0) == 0) {
+                CVarClear(cvarKey.c_str());
+            }
         }
     }
 }
 
 void DrawPreviewButton(uint16_t sequenceId, std::string sfxKey, SeqType sequenceType) {
-    const std::string cvarKey = "gAudioEditor.ReplacedSequences." + sfxKey;
+    const std::string cvarKey = AudioCollection::Instance->GetCvarKey(sfxKey);
     const std::string hiddenKey = "##" + cvarKey;
-    const std::string stopButton = " Stop  " + hiddenKey;
-    const std::string previewButton = "Preview" + hiddenKey;
+    const std::string stopButton = ICON_FA_STOP + hiddenKey;
+    const std::string previewButton = ICON_FA_PLAY + hiddenKey;
 
     if (CVarGetInteger("gAudioEditor.Playing", 0) == sequenceId) {
         if (ImGui::Button(stopButton.c_str())) {
             func_800F5C2C();
             CVarSetInteger("gAudioEditor.Playing", 0);
         }
+        UIWidgets::Tooltip("Stop Preview");
     } else {
         if (ImGui::Button(previewButton.c_str())) {
             if  (CVarGetInteger("gAudioEditor.Playing", 0) != 0) {
@@ -149,6 +153,7 @@ void DrawPreviewButton(uint16_t sequenceId, std::string sfxKey, SeqType sequence
                 }
             }
         }
+        UIWidgets::Tooltip("Play Preview");
     }
 }
 
@@ -159,17 +164,23 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
     const std::string resetAllButton = "Reset All" + hiddenTabId;
     const std::string randomizeAllButton = "Randomize All" + hiddenTabId;
     if (ImGui::Button(resetAllButton.c_str())) {
+        auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+        auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         ResetGroup(map, type);
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        if (type == SEQ_BGM_WORLD) {
+        auto curReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
+        if (type == SEQ_BGM_WORLD && prevReplacement != curReplacement) {
             ReplayCurrentBGM();
         }
     }
     ImGui::SameLine();
     if (ImGui::Button(randomizeAllButton.c_str())) {
+        auto currentBGM = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+        auto prevReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
         RandomizeGroup(type);
         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-        if (type == SEQ_BGM_WORLD) {
+        auto curReplacement = AudioCollection::Instance->GetReplacementSequence(currentBGM);
+        if (type == SEQ_BGM_WORLD && prevReplacement != curReplacement) {
             ReplayCurrentBGM();
         }
     }
@@ -177,7 +188,7 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
     ImGui::BeginTable(tabId.c_str(), 3, ImGuiTableFlags_SizingFixedFit);
     ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
     ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
-    ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 190.0f);
+    ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 100.0f);
     for (const auto& [defaultValue, seqData] : map) {
         if (~(seqData.category) & type) {
             continue;
@@ -187,10 +198,13 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
             continue;
         }
 
-        const std::string cvarKey = "gAudioEditor.ReplacedSequences." + seqData.sfxKey;
+        const std::string cvarKey = AudioCollection::Instance->GetCvarKey(seqData.sfxKey);
+        const std::string cvarLockKey = AudioCollection::Instance->GetCvarLockKey(seqData.sfxKey);
         const std::string hiddenKey = "##" + cvarKey;
-        const std::string resetButton = "Reset" + hiddenKey;
-        const std::string randomizeButton = "Randomize" + hiddenKey;
+        const std::string resetButton = ICON_FA_UNDO + hiddenKey;
+        const std::string randomizeButton = ICON_FA_RANDOM + hiddenKey;
+        const std::string lockedButton = ICON_FA_LOCK + hiddenKey;
+        const std::string unlockedButton = ICON_FA_UNLOCK + hiddenKey;
         const int currentValue = CVarGetInteger(cvarKey.c_str(), defaultValue);
 
         ImGui::TableNextRow();
@@ -221,13 +235,16 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
         ImGui::TableNextColumn();
         ImGui::PushItemWidth(-FLT_MIN);
         DrawPreviewButton((type == SEQ_SFX || type == SEQ_VOICE || type == SEQ_INSTRUMENT) ? defaultValue : currentValue, seqData.sfxKey, type);
+		auto locked = CVarGetInteger(cvarLockKey.c_str(), 0) == 1;
         ImGui::SameLine();
         ImGui::PushItemWidth(-FLT_MIN);
         if (ImGui::Button(resetButton.c_str())) {
-            CVarSetInteger(cvarKey.c_str(), defaultValue);
+            CVarClear(cvarKey.c_str());
+            CVarClear(cvarLockKey.c_str());
             LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
             UpdateCurrentBGM(defaultValue, seqData.category);
         }
+        UIWidgets::Tooltip("Reset to default");
         ImGui::SameLine();
         ImGui::PushItemWidth(-FLT_MIN);
         if (ImGui::Button(randomizeButton.c_str())) {
@@ -242,10 +259,25 @@ void Draw_SfxTab(const std::string& tabId, SeqType type) {
                 auto it = validSequences.begin();
                 const auto& seqData = *std::next(it, rand() % validSequences.size());
                 CVarSetInteger(cvarKey.c_str(), seqData->sequenceId);
+                if (locked) {
+                    CVarClear(cvarLockKey.c_str());
+                }
                 LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-                UpdateCurrentBGM(seqData->sequenceId, type);
+                UpdateCurrentBGM(defaultValue, type);
             } 
         }
+        UIWidgets::Tooltip("Randomize this sound");
+        ImGui::SameLine();
+        ImGui::PushItemWidth(-FLT_MIN);
+        if (ImGui::Button(locked ? lockedButton.c_str() : unlockedButton.c_str())) {
+            if (locked) {
+                CVarClear(cvarLockKey.c_str());
+            } else {
+                CVarSetInteger(cvarLockKey.c_str(), 1);
+            }
+            LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        }
+        UIWidgets::Tooltip(locked ? "Sound locked" : "Sound unlocked");
     }
     ImGui::EndTable();
 }

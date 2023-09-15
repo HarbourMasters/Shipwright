@@ -22,7 +22,7 @@ Gfx __sCircleDList[] = {
     gsDPLoadTextureBlock(SEG_ADDR(8, 0), G_IM_FMT_I, G_IM_SIZ_8b, 16, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,                 // 7
                          G_TX_NOMIRROR | G_TX_CLAMP, 4, 6, G_TX_NOLOD, G_TX_NOLOD),
     gsSPDisplayList(SEG_ADDR(9, 0)),                                                                                    // 8
-    gsSPVertex(sCircleWipeVtx, 32, 0),                                                                              // 9
+    gsSPVertex(sTransCircleVtx, 32, 0),                                                                              // 9
     gsSP2Triangles(0, 1, 2, 0, 1, 3, 4, 0),                                                                         // 10
     gsSP2Triangles(3, 5, 6, 0, 5, 7, 8, 0),                                                                         // 11
     gsSP2Triangles(7, 9, 10, 0, 9, 11, 12, 0),                                                                      // 12
@@ -31,7 +31,7 @@ Gfx __sCircleDList[] = {
     gsSP2Triangles(19, 21, 22, 0, 21, 23, 24, 0),                                                                   // 15
     gsSP2Triangles(23, 25, 26, 0, 25, 27, 28, 0),                                                                   // 16
     gsSP1Triangle(27, 29, 30, 0),                                                                                   // 17
-    gsSPVertex(&sCircleWipeVtx[31], 3, 0),                                                                          // 18
+    gsSPVertex(&sTransCircleVtx[31], 3, 0),                                                                          // 18
     gsSP1Triangle(0, 1, 2, 0),                                                                                      // 19
     gsSPEndDisplayList(),                                                                                           // 20
 };
@@ -174,7 +174,7 @@ void TransitionCircle_Draw(void* thisx, Gfx** gfxP) {
     }
 
     // OTRTODO: This is an ugly hack but it will do for now...
-    Vtx* vtx = ResourceMgr_LoadVtxByName(sCircleWipeVtx);
+    Vtx* vtx = ResourceMgr_LoadVtxByName(sTransCircleVtx);
     Gfx var1 = gsSPVertex(vtx, 32, 0);
     Gfx var2 = gsSPVertex(&vtx[31], 3, 0);
     __sCircleDList[0xe] = var1;

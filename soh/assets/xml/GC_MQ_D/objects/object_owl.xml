@@ -1,5 +1,13 @@
 <Root>
     <File Name="object_owl" Segment="6">
+        <Texture Name="object_owlTex_0071A8" OutName="object_owlTex_0071A8" Format="rgba16" Width="32" Height="32" Offset="0x71A8" AddedByScript="true"/>
+        <Texture Name="object_owlTex_0079A8" OutName="object_owlTex_0079A8" Format="rgba16" Width="32" Height="32" Offset="0x79A8" AddedByScript="true"/>
+        <Texture Name="object_owlTex_0081A8" OutName="object_owlTex_0081A8" Format="rgba16" Width="32" Height="32" Offset="0x81A8" AddedByScript="true"/>
+        <Texture Name="object_owlTex_0095A8" OutName="object_owlTex_0095A8" Format="rgba16" Width="32" Height="32" Offset="0x95A8" AddedByScript="true"/>
+        <Texture Name="object_owlTex_009DA8" OutName="object_owlTex_009DA8" Format="rgba16" Width="16" Height="16" Offset="0x9DA8" AddedByScript="true"/>
+        <Texture Name="object_owlTex_009FA8" OutName="object_owlTex_009FA8" Format="rgba16" Width="64" Height="32" Offset="0x9FA8" AddedByScript="true"/>
+        <Texture Name="object_owlTex_00AFA8" OutName="object_owlTex_00AFA8" Format="rgba16" Width="32" Height="32" Offset="0xAFA8" AddedByScript="true"/>
+        <Texture Name="object_owlTex_00B7A8" OutName="object_owlTex_00B7A8" Format="rgba16" Width="32" Height="32" Offset="0xB7A8" AddedByScript="true"/>
         <!-- Flying Owl Skeleton -->
         <Skeleton Name="gOwlFlyingSkel" Type="Flex" LimbType="Standard" Offset="0xC0E8"/>
 

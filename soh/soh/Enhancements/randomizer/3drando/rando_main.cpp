@@ -9,8 +9,6 @@
 #include <Context.h>
 #include <libultraship/libultra/types.h>
 
-#define TICKS_PER_SEC 268123480.0
-
 void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, u8> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
     std::string seedString) {
     HintTable_Init();

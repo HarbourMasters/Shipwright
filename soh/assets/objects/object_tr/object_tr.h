@@ -3,284 +3,284 @@
 
 #include "align_asset_macro.h"
 
-#define dobject_tr_Anim_000BFC "__OTR__objects/object_tr/object_tr_Anim_000BFC"
-static const ALIGN_ASSET(2) char object_tr_Anim_000BFC[] = dobject_tr_Anim_000BFC;
+#define dgKotakeKoumeLookOverRightShoulderAnim "__OTR__objects/object_tr/gKotakeKoumeLookOverRightShoulderAnim"
+static const ALIGN_ASSET(2) char gKotakeKoumeLookOverRightShoulderAnim[] = dgKotakeKoumeLookOverRightShoulderAnim;
 
-#define dobject_tr_Anim_0013CC "__OTR__objects/object_tr/object_tr_Anim_0013CC"
-static const ALIGN_ASSET(2) char object_tr_Anim_0013CC[] = dobject_tr_Anim_0013CC;
+#define dgKotakeKoumeLookingOverRightShoulderAnim "__OTR__objects/object_tr/gKotakeKoumeLookingOverRightShoulderAnim"
+static const ALIGN_ASSET(2) char gKotakeKoumeLookingOverRightShoulderAnim[] = dgKotakeKoumeLookingOverRightShoulderAnim;
 
-#define dobject_tr_Anim_001CDC "__OTR__objects/object_tr/object_tr_Anim_001CDC"
-static const ALIGN_ASSET(2) char object_tr_Anim_001CDC[] = dobject_tr_Anim_001CDC;
+#define dgKotakeKoumeStandingBroomOverLeftShoulderAnim "__OTR__objects/object_tr/gKotakeKoumeStandingBroomOverLeftShoulderAnim"
+static const ALIGN_ASSET(2) char gKotakeKoumeStandingBroomOverLeftShoulderAnim[] = dgKotakeKoumeStandingBroomOverLeftShoulderAnim;
 
-#define dobject_tr_Anim_002BC4 "__OTR__objects/object_tr/object_tr_Anim_002BC4"
-static const ALIGN_ASSET(2) char object_tr_Anim_002BC4[] = dobject_tr_Anim_002BC4;
+#define dgKotakeKoumeLookOverLeftShoulderAnim "__OTR__objects/object_tr/gKotakeKoumeLookOverLeftShoulderAnim"
+static const ALIGN_ASSET(2) char gKotakeKoumeLookOverLeftShoulderAnim[] = dgKotakeKoumeLookOverLeftShoulderAnim;
 
-#define dobject_tr_Anim_0035CC "__OTR__objects/object_tr/object_tr_Anim_0035CC"
-static const ALIGN_ASSET(2) char object_tr_Anim_0035CC[] = dobject_tr_Anim_0035CC;
+#define dgKotakeKoumeLookingOverLeftShoulderAnim "__OTR__objects/object_tr/gKotakeKoumeLookingOverLeftShoulderAnim"
+static const ALIGN_ASSET(2) char gKotakeKoumeLookingOverLeftShoulderAnim[] = dgKotakeKoumeLookingOverLeftShoulderAnim;
 
-#define dobject_tr_Anim_003FC8 "__OTR__objects/object_tr/object_tr_Anim_003FC8"
-static const ALIGN_ASSET(2) char object_tr_Anim_003FC8[] = dobject_tr_Anim_003FC8;
+#define dgKotakeKoumeStandingBroomOverRightShoulderAnim "__OTR__objects/object_tr/gKotakeKoumeStandingBroomOverRightShoulderAnim"
+static const ALIGN_ASSET(2) char gKotakeKoumeStandingBroomOverRightShoulderAnim[] = dgKotakeKoumeStandingBroomOverRightShoulderAnim;
 
-#define dobject_tr_Anim_0049C8 "__OTR__objects/object_tr/object_tr_Anim_0049C8"
-static const ALIGN_ASSET(2) char object_tr_Anim_0049C8[] = dobject_tr_Anim_0049C8;
+#define dgKotakeKoumeFlyAnim "__OTR__objects/object_tr/gKotakeKoumeFlyAnim"
+static const ALIGN_ASSET(2) char gKotakeKoumeFlyAnim[] = dgKotakeKoumeFlyAnim;
 
-#define dobject_tr_Anim_005308 "__OTR__objects/object_tr/object_tr_Anim_005308"
-static const ALIGN_ASSET(2) char object_tr_Anim_005308[] = dobject_tr_Anim_005308;
+#define dgKotakeKoumeStandingBroomOverRightShoulderUnusedAnim "__OTR__objects/object_tr/gKotakeKoumeStandingBroomOverRightShoulderUnusedAnim"
+static const ALIGN_ASSET(2) char gKotakeKoumeStandingBroomOverRightShoulderUnusedAnim[] = dgKotakeKoumeStandingBroomOverRightShoulderUnusedAnim;
 
 #define dobject_tr_Blob_0062E0 "__OTR__objects/object_tr/object_tr_Blob_0062E0"
 static const ALIGN_ASSET(2) char object_tr_Blob_0062E0[] = dobject_tr_Blob_0062E0;
 
-#define dobject_tr_DL_006520 "__OTR__objects/object_tr/object_tr_DL_006520"
-static const ALIGN_ASSET(2) char object_tr_DL_006520[] = dobject_tr_DL_006520;
+#define dgKotakePelvisDL "__OTR__objects/object_tr/gKotakePelvisDL"
+static const ALIGN_ASSET(2) char gKotakePelvisDL[] = dgKotakePelvisDL;
 
-#define dobject_tr_DL_0066A0 "__OTR__objects/object_tr/object_tr_DL_0066A0"
-static const ALIGN_ASSET(2) char object_tr_DL_0066A0[] = dobject_tr_DL_0066A0;
+#define dgKotakeTorsoDL "__OTR__objects/object_tr/gKotakeTorsoDL"
+static const ALIGN_ASSET(2) char gKotakeTorsoDL[] = dgKotakeTorsoDL;
 
-#define dobject_tr_DL_006800 "__OTR__objects/object_tr/object_tr_DL_006800"
-static const ALIGN_ASSET(2) char object_tr_DL_006800[] = dobject_tr_DL_006800;
+#define dgKotakeNeckDL "__OTR__objects/object_tr/gKotakeNeckDL"
+static const ALIGN_ASSET(2) char gKotakeNeckDL[] = dgKotakeNeckDL;
 
-#define dobject_tr_DL_006940 "__OTR__objects/object_tr/object_tr_DL_006940"
-static const ALIGN_ASSET(2) char object_tr_DL_006940[] = dobject_tr_DL_006940;
+#define dgKotakeLeftBraidStartDL "__OTR__objects/object_tr/gKotakeLeftBraidStartDL"
+static const ALIGN_ASSET(2) char gKotakeLeftBraidStartDL[] = dgKotakeLeftBraidStartDL;
 
-#define dobject_tr_DL_006A50 "__OTR__objects/object_tr/object_tr_DL_006A50"
-static const ALIGN_ASSET(2) char object_tr_DL_006A50[] = dobject_tr_DL_006A50;
+#define dgKotakeLeftBraidEndDL "__OTR__objects/object_tr/gKotakeLeftBraidEndDL"
+static const ALIGN_ASSET(2) char gKotakeLeftBraidEndDL[] = dgKotakeLeftBraidEndDL;
 
-#define dobject_tr_DL_006B48 "__OTR__objects/object_tr/object_tr_DL_006B48"
-static const ALIGN_ASSET(2) char object_tr_DL_006B48[] = dobject_tr_DL_006B48;
+#define dgKotakeRightBraidStartDL "__OTR__objects/object_tr/gKotakeRightBraidStartDL"
+static const ALIGN_ASSET(2) char gKotakeRightBraidStartDL[] = dgKotakeRightBraidStartDL;
 
-#define dobject_tr_DL_006C58 "__OTR__objects/object_tr/object_tr_DL_006C58"
-static const ALIGN_ASSET(2) char object_tr_DL_006C58[] = dobject_tr_DL_006C58;
+#define dgKotakeRightBraidEndDL "__OTR__objects/object_tr/gKotakeRightBraidEndDL"
+static const ALIGN_ASSET(2) char gKotakeRightBraidEndDL[] = dgKotakeRightBraidEndDL;
 
-#define dobject_tr_DL_006D50 "__OTR__objects/object_tr/object_tr_DL_006D50"
-static const ALIGN_ASSET(2) char object_tr_DL_006D50[] = dobject_tr_DL_006D50;
+#define dgKotakeRightSleeveStartDL "__OTR__objects/object_tr/gKotakeRightSleeveStartDL"
+static const ALIGN_ASSET(2) char gKotakeRightSleeveStartDL[] = dgKotakeRightSleeveStartDL;
 
-#define dobject_tr_DL_006E70 "__OTR__objects/object_tr/object_tr_DL_006E70"
-static const ALIGN_ASSET(2) char object_tr_DL_006E70[] = dobject_tr_DL_006E70;
+#define dgKotakeRightSleeveFrontDL "__OTR__objects/object_tr/gKotakeRightSleeveFrontDL"
+static const ALIGN_ASSET(2) char gKotakeRightSleeveFrontDL[] = dgKotakeRightSleeveFrontDL;
 
-#define dobject_tr_DL_006FF0 "__OTR__objects/object_tr/object_tr_DL_006FF0"
-static const ALIGN_ASSET(2) char object_tr_DL_006FF0[] = dobject_tr_DL_006FF0;
+#define dgKotakeRightSleeveMidDL "__OTR__objects/object_tr/gKotakeRightSleeveMidDL"
+static const ALIGN_ASSET(2) char gKotakeRightSleeveMidDL[] = dgKotakeRightSleeveMidDL;
 
-#define dobject_tr_DL_007118 "__OTR__objects/object_tr/object_tr_DL_007118"
-static const ALIGN_ASSET(2) char object_tr_DL_007118[] = dobject_tr_DL_007118;
+#define dgKotakeRightSleeveEndDL "__OTR__objects/object_tr/gKotakeRightSleeveEndDL"
+static const ALIGN_ASSET(2) char gKotakeRightSleeveEndDL[] = dgKotakeRightSleeveEndDL;
 
-#define dobject_tr_DL_007238 "__OTR__objects/object_tr/object_tr_DL_007238"
-static const ALIGN_ASSET(2) char object_tr_DL_007238[] = dobject_tr_DL_007238;
+#define dgKotakeLeftSleeveStartDL "__OTR__objects/object_tr/gKotakeLeftSleeveStartDL"
+static const ALIGN_ASSET(2) char gKotakeLeftSleeveStartDL[] = dgKotakeLeftSleeveStartDL;
 
-#define dobject_tr_DL_007358 "__OTR__objects/object_tr/object_tr_DL_007358"
-static const ALIGN_ASSET(2) char object_tr_DL_007358[] = dobject_tr_DL_007358;
+#define dgKotakeLeftSleeveFrontDL "__OTR__objects/object_tr/gKotakeLeftSleeveFrontDL"
+static const ALIGN_ASSET(2) char gKotakeLeftSleeveFrontDL[] = dgKotakeLeftSleeveFrontDL;
 
-#define dobject_tr_DL_0074D8 "__OTR__objects/object_tr/object_tr_DL_0074D8"
-static const ALIGN_ASSET(2) char object_tr_DL_0074D8[] = dobject_tr_DL_0074D8;
+#define dgKotakeLeftSleeveMidDL "__OTR__objects/object_tr/gKotakeLeftSleeveMidDL"
+static const ALIGN_ASSET(2) char gKotakeLeftSleeveMidDL[] = dgKotakeLeftSleeveMidDL;
 
-#define dobject_tr_DL_007600 "__OTR__objects/object_tr/object_tr_DL_007600"
-static const ALIGN_ASSET(2) char object_tr_DL_007600[] = dobject_tr_DL_007600;
+#define dgKotakeLeftSleeveEndDL "__OTR__objects/object_tr/gKotakeLeftSleeveEndDL"
+static const ALIGN_ASSET(2) char gKotakeLeftSleeveEndDL[] = dgKotakeLeftSleeveEndDL;
 
-#define dobject_tr_DL_007720 "__OTR__objects/object_tr/object_tr_DL_007720"
-static const ALIGN_ASSET(2) char object_tr_DL_007720[] = dobject_tr_DL_007720;
+#define dgKotakeRightThighDL "__OTR__objects/object_tr/gKotakeRightThighDL"
+static const ALIGN_ASSET(2) char gKotakeRightThighDL[] = dgKotakeRightThighDL;
 
-#define dobject_tr_DL_007728 "__OTR__objects/object_tr/object_tr_DL_007728"
-static const ALIGN_ASSET(2) char object_tr_DL_007728[] = dobject_tr_DL_007728;
+#define dgKotakeLeftThighDL "__OTR__objects/object_tr/gKotakeLeftThighDL"
+static const ALIGN_ASSET(2) char gKotakeLeftThighDL[] = dgKotakeLeftThighDL;
 
-#define dobject_tr_TLUT_007730 "__OTR__objects/object_tr/object_tr_TLUT_007730"
-static const ALIGN_ASSET(2) char object_tr_TLUT_007730[] = dobject_tr_TLUT_007730;
+#define dgKotakeKoumeTLUT "__OTR__objects/object_tr/gKotakeKoumeTLUT"
+static const ALIGN_ASSET(2) char gKotakeKoumeTLUT[] = dgKotakeKoumeTLUT;
 
-#define dobject_tr_Tex_0078D8 "__OTR__objects/object_tr/object_tr_Tex_0078D8"
-static const ALIGN_ASSET(2) char object_tr_Tex_0078D8[] = dobject_tr_Tex_0078D8;
+#define dgKotakeGerudoFabricTex "__OTR__objects/object_tr/gKotakeGerudoFabricTex"
+static const ALIGN_ASSET(2) char gKotakeGerudoFabricTex[] = dgKotakeGerudoFabricTex;
 
-#define dobject_tr_Tex_0080D8 "__OTR__objects/object_tr/object_tr_Tex_0080D8"
-static const ALIGN_ASSET(2) char object_tr_Tex_0080D8[] = dobject_tr_Tex_0080D8;
+#define dgKotakeRobeTex "__OTR__objects/object_tr/gKotakeRobeTex"
+static const ALIGN_ASSET(2) char gKotakeRobeTex[] = dgKotakeRobeTex;
 
-#define dobject_tr_Tex_0082D8 "__OTR__objects/object_tr/object_tr_Tex_0082D8"
-static const ALIGN_ASSET(2) char object_tr_Tex_0082D8[] = dobject_tr_Tex_0082D8;
+#define dgKotakeKoumeRobePatternTex "__OTR__objects/object_tr/gKotakeKoumeRobePatternTex"
+static const ALIGN_ASSET(2) char gKotakeKoumeRobePatternTex[] = dgKotakeKoumeRobePatternTex;
 
-#define dobject_tr_Tex_0084D8 "__OTR__objects/object_tr/object_tr_Tex_0084D8"
-static const ALIGN_ASSET(2) char object_tr_Tex_0084D8[] = dobject_tr_Tex_0084D8;
+#define dgKotakeKoumeRobeTrimTex "__OTR__objects/object_tr/gKotakeKoumeRobeTrimTex"
+static const ALIGN_ASSET(2) char gKotakeKoumeRobeTrimTex[] = dgKotakeKoumeRobeTrimTex;
 
-#define dobject_tr_Tex_0086D8 "__OTR__objects/object_tr/object_tr_Tex_0086D8"
-static const ALIGN_ASSET(2) char object_tr_Tex_0086D8[] = dobject_tr_Tex_0086D8;
+#define dgKotakeKoumeEyeOpenTex "__OTR__objects/object_tr/gKotakeKoumeEyeOpenTex"
+static const ALIGN_ASSET(2) char gKotakeKoumeEyeOpenTex[] = dgKotakeKoumeEyeOpenTex;
 
-#define dobject_tr_Tex_008AD8 "__OTR__objects/object_tr/object_tr_Tex_008AD8"
-static const ALIGN_ASSET(2) char object_tr_Tex_008AD8[] = dobject_tr_Tex_008AD8;
+#define dgKotakeKoumeSkinTex "__OTR__objects/object_tr/gKotakeKoumeSkinTex"
+static const ALIGN_ASSET(2) char gKotakeKoumeSkinTex[] = dgKotakeKoumeSkinTex;
 
-#define dobject_tr_Tex_008B58 "__OTR__objects/object_tr/object_tr_Tex_008B58"
-static const ALIGN_ASSET(2) char object_tr_Tex_008B58[] = dobject_tr_Tex_008B58;
+#define dgKotakeKoumeMouthTex "__OTR__objects/object_tr/gKotakeKoumeMouthTex"
+static const ALIGN_ASSET(2) char gKotakeKoumeMouthTex[] = dgKotakeKoumeMouthTex;
 
-#define dobject_tr_Tex_008B98 "__OTR__objects/object_tr/object_tr_Tex_008B98"
-static const ALIGN_ASSET(2) char object_tr_Tex_008B98[] = dobject_tr_Tex_008B98;
+#define dgKotakeKoumeHairTex "__OTR__objects/object_tr/gKotakeKoumeHairTex"
+static const ALIGN_ASSET(2) char gKotakeKoumeHairTex[] = dgKotakeKoumeHairTex;
 
-#define dobject_tr_Tex_008D98 "__OTR__objects/object_tr/object_tr_Tex_008D98"
-static const ALIGN_ASSET(2) char object_tr_Tex_008D98[] = dobject_tr_Tex_008D98;
+#define dgKotakeKoumeEarTex "__OTR__objects/object_tr/gKotakeKoumeEarTex"
+static const ALIGN_ASSET(2) char gKotakeKoumeEarTex[] = dgKotakeKoumeEarTex;
 
-#define dobject_tr_Tex_008DD8 "__OTR__objects/object_tr/object_tr_Tex_008DD8"
-static const ALIGN_ASSET(2) char object_tr_Tex_008DD8[] = dobject_tr_Tex_008DD8;
+#define dgKotakeKoumeFingerTex "__OTR__objects/object_tr/gKotakeKoumeFingerTex"
+static const ALIGN_ASSET(2) char gKotakeKoumeFingerTex[] = dgKotakeKoumeFingerTex;
 
-#define dobject_tr_Tex_008E58 "__OTR__objects/object_tr/object_tr_Tex_008E58"
-static const ALIGN_ASSET(2) char object_tr_Tex_008E58[] = dobject_tr_Tex_008E58;
+#define dgKotakeKoumeBroomHandleTex "__OTR__objects/object_tr/gKotakeKoumeBroomHandleTex"
+static const ALIGN_ASSET(2) char gKotakeKoumeBroomHandleTex[] = dgKotakeKoumeBroomHandleTex;
 
-#define dobject_tr_Tex_008ED8 "__OTR__objects/object_tr/object_tr_Tex_008ED8"
-static const ALIGN_ASSET(2) char object_tr_Tex_008ED8[] = dobject_tr_Tex_008ED8;
+#define dgKotakeKoumeBroomHeadTex "__OTR__objects/object_tr/gKotakeKoumeBroomHeadTex"
+static const ALIGN_ASSET(2) char gKotakeKoumeBroomHeadTex[] = dgKotakeKoumeBroomHeadTex;
 
-#define dobject_tr_Tex_0092D8 "__OTR__objects/object_tr/object_tr_Tex_0092D8"
-static const ALIGN_ASSET(2) char object_tr_Tex_0092D8[] = dobject_tr_Tex_0092D8;
+#define dgKotakeKoumeJewelHolderTex "__OTR__objects/object_tr/gKotakeKoumeJewelHolderTex"
+static const ALIGN_ASSET(2) char gKotakeKoumeJewelHolderTex[] = dgKotakeKoumeJewelHolderTex;
 
-#define dobject_tr_Tex_0093D8 "__OTR__objects/object_tr/object_tr_Tex_0093D8"
-static const ALIGN_ASSET(2) char object_tr_Tex_0093D8[] = dobject_tr_Tex_0093D8;
+#define dgKotakeJewelTex "__OTR__objects/object_tr/gKotakeJewelTex"
+static const ALIGN_ASSET(2) char gKotakeJewelTex[] = dgKotakeJewelTex;
 
-#define dobject_tr_Tex_009458 "__OTR__objects/object_tr/object_tr_Tex_009458"
-static const ALIGN_ASSET(2) char object_tr_Tex_009458[] = dobject_tr_Tex_009458;
+#define dgKotakeKoumeNeckTex "__OTR__objects/object_tr/gKotakeKoumeNeckTex"
+static const ALIGN_ASSET(2) char gKotakeKoumeNeckTex[] = dgKotakeKoumeNeckTex;
 
-#define dobject_tr_Tex_009498 "__OTR__objects/object_tr/object_tr_Tex_009498"
-static const ALIGN_ASSET(2) char object_tr_Tex_009498[] = dobject_tr_Tex_009498;
+#define dgKotakeKoumeNostrilsTex "__OTR__objects/object_tr/gKotakeKoumeNostrilsTex"
+static const ALIGN_ASSET(2) char gKotakeKoumeNostrilsTex[] = dgKotakeKoumeNostrilsTex;
 
-#define dobject_tr_Tex_0094D8 "__OTR__objects/object_tr/object_tr_Tex_0094D8"
-static const ALIGN_ASSET(2) char object_tr_Tex_0094D8[] = dobject_tr_Tex_0094D8;
+#define dgKotakeKoumeEyeHalfTex "__OTR__objects/object_tr/gKotakeKoumeEyeHalfTex"
+static const ALIGN_ASSET(2) char gKotakeKoumeEyeHalfTex[] = dgKotakeKoumeEyeHalfTex;
 
-#define dobject_tr_Tex_0098D8 "__OTR__objects/object_tr/object_tr_Tex_0098D8"
-static const ALIGN_ASSET(2) char object_tr_Tex_0098D8[] = dobject_tr_Tex_0098D8;
+#define dgKotakeKoumeEyeClosedTex "__OTR__objects/object_tr/gKotakeKoumeEyeClosedTex"
+static const ALIGN_ASSET(2) char gKotakeKoumeEyeClosedTex[] = dgKotakeKoumeEyeClosedTex;
 
-#define dobject_tr_DL_00AF38 "__OTR__objects/object_tr/object_tr_DL_00AF38"
-static const ALIGN_ASSET(2) char object_tr_DL_00AF38[] = dobject_tr_DL_00AF38;
+#define dgKotakeHeadDL "__OTR__objects/object_tr/gKotakeHeadDL"
+static const ALIGN_ASSET(2) char gKotakeHeadDL[] = dgKotakeHeadDL;
 
-#define dobject_tr_DL_00B568 "__OTR__objects/object_tr/object_tr_DL_00B568"
-static const ALIGN_ASSET(2) char object_tr_DL_00B568[] = dobject_tr_DL_00B568;
+#define dgKotakeTeethDL "__OTR__objects/object_tr/gKotakeTeethDL"
+static const ALIGN_ASSET(2) char gKotakeTeethDL[] = dgKotakeTeethDL;
 
-#define dobject_tr_DL_00B5C8 "__OTR__objects/object_tr/object_tr_DL_00B5C8"
-static const ALIGN_ASSET(2) char object_tr_DL_00B5C8[] = dobject_tr_DL_00B5C8;
+#define dgKotakeRightShinDL "__OTR__objects/object_tr/gKotakeRightShinDL"
+static const ALIGN_ASSET(2) char gKotakeRightShinDL[] = dgKotakeRightShinDL;
 
-#define dobject_tr_DL_00B678 "__OTR__objects/object_tr/object_tr_DL_00B678"
-static const ALIGN_ASSET(2) char object_tr_DL_00B678[] = dobject_tr_DL_00B678;
+#define dgKotakeLeftShinDL "__OTR__objects/object_tr/gKotakeLeftShinDL"
+static const ALIGN_ASSET(2) char gKotakeLeftShinDL[] = dgKotakeLeftShinDL;
 
-#define dobject_tr_DL_00B728 "__OTR__objects/object_tr/object_tr_DL_00B728"
-static const ALIGN_ASSET(2) char object_tr_DL_00B728[] = dobject_tr_DL_00B728;
+#define dgKotakeBroomDL "__OTR__objects/object_tr/gKotakeBroomDL"
+static const ALIGN_ASSET(2) char gKotakeBroomDL[] = dgKotakeBroomDL;
 
-#define dobject_tr_DL_00B8D0 "__OTR__objects/object_tr/object_tr_DL_00B8D0"
-static const ALIGN_ASSET(2) char object_tr_DL_00B8D0[] = dobject_tr_DL_00B8D0;
+#define dgKotakeRightFootDL "__OTR__objects/object_tr/gKotakeRightFootDL"
+static const ALIGN_ASSET(2) char gKotakeRightFootDL[] = dgKotakeRightFootDL;
 
-#define dobject_tr_DL_00B968 "__OTR__objects/object_tr/object_tr_DL_00B968"
-static const ALIGN_ASSET(2) char object_tr_DL_00B968[] = dobject_tr_DL_00B968;
+#define dgKotakeLeftFootDL "__OTR__objects/object_tr/gKotakeLeftFootDL"
+static const ALIGN_ASSET(2) char gKotakeLeftFootDL[] = dgKotakeLeftFootDL;
 
-#define dobject_tr_DL_00BA00 "__OTR__objects/object_tr/object_tr_DL_00BA00"
-static const ALIGN_ASSET(2) char object_tr_DL_00BA00[] = dobject_tr_DL_00BA00;
+#define dgKotakeRightHandDL "__OTR__objects/object_tr/gKotakeRightHandDL"
+static const ALIGN_ASSET(2) char gKotakeRightHandDL[] = dgKotakeRightHandDL;
 
-#define dobject_tr_DL_00BB68 "__OTR__objects/object_tr/object_tr_DL_00BB68"
-static const ALIGN_ASSET(2) char object_tr_DL_00BB68[] = dobject_tr_DL_00BB68;
+#define dgKotakeLeftHandDL "__OTR__objects/object_tr/gKotakeLeftHandDL"
+static const ALIGN_ASSET(2) char gKotakeLeftHandDL[] = dgKotakeLeftHandDL;
 
-#define dobject_tr_Tex_00BCD0 "__OTR__objects/object_tr/object_tr_Tex_00BCD0"
-static const ALIGN_ASSET(2) char object_tr_Tex_00BCD0[] = dobject_tr_Tex_00BCD0;
+#define dgKotakeKoumeBraidEndTex "__OTR__objects/object_tr/gKotakeKoumeBraidEndTex"
+static const ALIGN_ASSET(2) char gKotakeKoumeBraidEndTex[] = dgKotakeKoumeBraidEndTex;
 
 #define dobject_tr_Blob_00BD50 "__OTR__objects/object_tr/object_tr_Blob_00BD50"
 static const ALIGN_ASSET(2) char object_tr_Blob_00BD50[] = dobject_tr_Blob_00BD50;
 
-#define dobject_tr_Tex_00C2D0 "__OTR__objects/object_tr/object_tr_Tex_00C2D0"
-static const ALIGN_ASSET(2) char object_tr_Tex_00C2D0[] = dobject_tr_Tex_00C2D0;
+#define dgKotakeCollarNeckTex "__OTR__objects/object_tr/gKotakeCollarNeckTex"
+static const ALIGN_ASSET(2) char gKotakeCollarNeckTex[] = dgKotakeCollarNeckTex;
 
 #define dobject_tr_Blob_00C310 "__OTR__objects/object_tr/object_tr_Blob_00C310"
 static const ALIGN_ASSET(2) char object_tr_Blob_00C310[] = dobject_tr_Blob_00C310;
 
-#define dobject_tr_Skel_00C530 "__OTR__objects/object_tr/object_tr_Skel_00C530"
-static const ALIGN_ASSET(2) char object_tr_Skel_00C530[] = dobject_tr_Skel_00C530;
+#define dgKotakeSkel "__OTR__objects/object_tr/gKotakeSkel"
+static const ALIGN_ASSET(2) char gKotakeSkel[] = dgKotakeSkel;
 
-#define dobject_tr_Anim_00C60C "__OTR__objects/object_tr/object_tr_Anim_00C60C"
-static const ALIGN_ASSET(2) char object_tr_Anim_00C60C[] = dobject_tr_Anim_00C60C;
+#define dgKotakeKoumeTPoseAnim "__OTR__objects/object_tr/gKotakeKoumeTPoseAnim"
+static const ALIGN_ASSET(2) char gKotakeKoumeTPoseAnim[] = dgKotakeKoumeTPoseAnim;
 
 #define dobject_tr_Blob_00D5E0 "__OTR__objects/object_tr/object_tr_Blob_00D5E0"
 static const ALIGN_ASSET(2) char object_tr_Blob_00D5E0[] = dobject_tr_Blob_00D5E0;
 
-#define dobject_tr_DL_00D820 "__OTR__objects/object_tr/object_tr_DL_00D820"
-static const ALIGN_ASSET(2) char object_tr_DL_00D820[] = dobject_tr_DL_00D820;
+#define dgKoumePelvisDL "__OTR__objects/object_tr/gKoumePelvisDL"
+static const ALIGN_ASSET(2) char gKoumePelvisDL[] = dgKoumePelvisDL;
 
-#define dobject_tr_DL_00D9A0 "__OTR__objects/object_tr/object_tr_DL_00D9A0"
-static const ALIGN_ASSET(2) char object_tr_DL_00D9A0[] = dobject_tr_DL_00D9A0;
+#define dgKoumeTorsoDL "__OTR__objects/object_tr/gKoumeTorsoDL"
+static const ALIGN_ASSET(2) char gKoumeTorsoDL[] = dgKoumeTorsoDL;
 
-#define dobject_tr_DL_00DB00 "__OTR__objects/object_tr/object_tr_DL_00DB00"
-static const ALIGN_ASSET(2) char object_tr_DL_00DB00[] = dobject_tr_DL_00DB00;
+#define dgKoumeNeckDL "__OTR__objects/object_tr/gKoumeNeckDL"
+static const ALIGN_ASSET(2) char gKoumeNeckDL[] = dgKoumeNeckDL;
 
-#define dobject_tr_DL_00DC40 "__OTR__objects/object_tr/object_tr_DL_00DC40"
-static const ALIGN_ASSET(2) char object_tr_DL_00DC40[] = dobject_tr_DL_00DC40;
+#define dgKoumeLeftBraidStartDL "__OTR__objects/object_tr/gKoumeLeftBraidStartDL"
+static const ALIGN_ASSET(2) char gKoumeLeftBraidStartDL[] = dgKoumeLeftBraidStartDL;
 
-#define dobject_tr_DL_00DD50 "__OTR__objects/object_tr/object_tr_DL_00DD50"
-static const ALIGN_ASSET(2) char object_tr_DL_00DD50[] = dobject_tr_DL_00DD50;
+#define dgKoumeLeftBraidEndDL "__OTR__objects/object_tr/gKoumeLeftBraidEndDL"
+static const ALIGN_ASSET(2) char gKoumeLeftBraidEndDL[] = dgKoumeLeftBraidEndDL;
 
-#define dobject_tr_DL_00DE48 "__OTR__objects/object_tr/object_tr_DL_00DE48"
-static const ALIGN_ASSET(2) char object_tr_DL_00DE48[] = dobject_tr_DL_00DE48;
+#define dgKoumeRightBraidStartDL "__OTR__objects/object_tr/gKoumeRightBraidStartDL"
+static const ALIGN_ASSET(2) char gKoumeRightBraidStartDL[] = dgKoumeRightBraidStartDL;
 
-#define dobject_tr_DL_00DF58 "__OTR__objects/object_tr/object_tr_DL_00DF58"
-static const ALIGN_ASSET(2) char object_tr_DL_00DF58[] = dobject_tr_DL_00DF58;
+#define dgKoumeRightBraidEndDL "__OTR__objects/object_tr/gKoumeRightBraidEndDL"
+static const ALIGN_ASSET(2) char gKoumeRightBraidEndDL[] = dgKoumeRightBraidEndDL;
 
-#define dobject_tr_DL_00E050 "__OTR__objects/object_tr/object_tr_DL_00E050"
-static const ALIGN_ASSET(2) char object_tr_DL_00E050[] = dobject_tr_DL_00E050;
+#define dgKoumeRightSleeveStartDL "__OTR__objects/object_tr/gKoumeRightSleeveStartDL"
+static const ALIGN_ASSET(2) char gKoumeRightSleeveStartDL[] = dgKoumeRightSleeveStartDL;
 
-#define dobject_tr_DL_00E170 "__OTR__objects/object_tr/object_tr_DL_00E170"
-static const ALIGN_ASSET(2) char object_tr_DL_00E170[] = dobject_tr_DL_00E170;
+#define dgKoumeRightSleeveFrontDL "__OTR__objects/object_tr/gKoumeRightSleeveFrontDL"
+static const ALIGN_ASSET(2) char gKoumeRightSleeveFrontDL[] = dgKoumeRightSleeveFrontDL;
 
-#define dobject_tr_DL_00E2F0 "__OTR__objects/object_tr/object_tr_DL_00E2F0"
-static const ALIGN_ASSET(2) char object_tr_DL_00E2F0[] = dobject_tr_DL_00E2F0;
+#define dgKoumeRightSleeveMidDL "__OTR__objects/object_tr/gKoumeRightSleeveMidDL"
+static const ALIGN_ASSET(2) char gKoumeRightSleeveMidDL[] = dgKoumeRightSleeveMidDL;
 
-#define dobject_tr_DL_00E418 "__OTR__objects/object_tr/object_tr_DL_00E418"
-static const ALIGN_ASSET(2) char object_tr_DL_00E418[] = dobject_tr_DL_00E418;
+#define dgKoumeRightSleeveEndDL "__OTR__objects/object_tr/gKoumeRightSleeveEndDL"
+static const ALIGN_ASSET(2) char gKoumeRightSleeveEndDL[] = dgKoumeRightSleeveEndDL;
 
-#define dobject_tr_DL_00E538 "__OTR__objects/object_tr/object_tr_DL_00E538"
-static const ALIGN_ASSET(2) char object_tr_DL_00E538[] = dobject_tr_DL_00E538;
+#define dgKoumeLeftSleeveStartDL "__OTR__objects/object_tr/gKoumeLeftSleeveStartDL"
+static const ALIGN_ASSET(2) char gKoumeLeftSleeveStartDL[] = dgKoumeLeftSleeveStartDL;
 
-#define dobject_tr_DL_00E658 "__OTR__objects/object_tr/object_tr_DL_00E658"
-static const ALIGN_ASSET(2) char object_tr_DL_00E658[] = dobject_tr_DL_00E658;
+#define dgKoumeLeftSleeveFrontDL "__OTR__objects/object_tr/gKoumeLeftSleeveFrontDL"
+static const ALIGN_ASSET(2) char gKoumeLeftSleeveFrontDL[] = dgKoumeLeftSleeveFrontDL;
 
-#define dobject_tr_DL_00E7D8 "__OTR__objects/object_tr/object_tr_DL_00E7D8"
-static const ALIGN_ASSET(2) char object_tr_DL_00E7D8[] = dobject_tr_DL_00E7D8;
+#define dgKoumeLeftSleeveMidDL "__OTR__objects/object_tr/gKoumeLeftSleeveMidDL"
+static const ALIGN_ASSET(2) char gKoumeLeftSleeveMidDL[] = dgKoumeLeftSleeveMidDL;
 
-#define dobject_tr_DL_00E900 "__OTR__objects/object_tr/object_tr_DL_00E900"
-static const ALIGN_ASSET(2) char object_tr_DL_00E900[] = dobject_tr_DL_00E900;
+#define dgKoumeLeftSleeveEndDL "__OTR__objects/object_tr/gKoumeLeftSleeveEndDL"
+static const ALIGN_ASSET(2) char gKoumeLeftSleeveEndDL[] = dgKoumeLeftSleeveEndDL;
 
-#define dobject_tr_DL_00EA20 "__OTR__objects/object_tr/object_tr_DL_00EA20"
-static const ALIGN_ASSET(2) char object_tr_DL_00EA20[] = dobject_tr_DL_00EA20;
+#define dgKoumeRightThighDL "__OTR__objects/object_tr/gKoumeRightThighDL"
+static const ALIGN_ASSET(2) char gKoumeRightThighDL[] = dgKoumeRightThighDL;
 
-#define dobject_tr_DL_00EA28 "__OTR__objects/object_tr/object_tr_DL_00EA28"
-static const ALIGN_ASSET(2) char object_tr_DL_00EA28[] = dobject_tr_DL_00EA28;
+#define dgKoumeLeftThighDL "__OTR__objects/object_tr/gKoumeLeftThighDL"
+static const ALIGN_ASSET(2) char gKoumeLeftThighDL[] = dgKoumeLeftThighDL;
 
-#define dobject_tr_Tex_00EA30 "__OTR__objects/object_tr/object_tr_Tex_00EA30"
-static const ALIGN_ASSET(2) char object_tr_Tex_00EA30[] = dobject_tr_Tex_00EA30;
+#define dgKoumeGerudoFabricTex "__OTR__objects/object_tr/gKoumeGerudoFabricTex"
+static const ALIGN_ASSET(2) char gKoumeGerudoFabricTex[] = dgKoumeGerudoFabricTex;
 
-#define dobject_tr_Tex_00F230 "__OTR__objects/object_tr/object_tr_Tex_00F230"
-static const ALIGN_ASSET(2) char object_tr_Tex_00F230[] = dobject_tr_Tex_00F230;
+#define dgKoumeRobeTex "__OTR__objects/object_tr/gKoumeRobeTex"
+static const ALIGN_ASSET(2) char gKoumeRobeTex[] = dgKoumeRobeTex;
 
-#define dobject_tr_Tex_00F430 "__OTR__objects/object_tr/object_tr_Tex_00F430"
-static const ALIGN_ASSET(2) char object_tr_Tex_00F430[] = dobject_tr_Tex_00F430;
+#define dgKoumeJewelTex "__OTR__objects/object_tr/gKoumeJewelTex"
+static const ALIGN_ASSET(2) char gKoumeJewelTex[] = dgKoumeJewelTex;
 
-#define dobject_tr_DL_010710 "__OTR__objects/object_tr/object_tr_DL_010710"
-static const ALIGN_ASSET(2) char object_tr_DL_010710[] = dobject_tr_DL_010710;
+#define dgKoumeHeadDL "__OTR__objects/object_tr/gKoumeHeadDL"
+static const ALIGN_ASSET(2) char gKoumeHeadDL[] = dgKoumeHeadDL;
 
-#define dobject_tr_DL_010D40 "__OTR__objects/object_tr/object_tr_DL_010D40"
-static const ALIGN_ASSET(2) char object_tr_DL_010D40[] = dobject_tr_DL_010D40;
+#define dgKoumeTeethDL "__OTR__objects/object_tr/gKoumeTeethDL"
+static const ALIGN_ASSET(2) char gKoumeTeethDL[] = dgKoumeTeethDL;
 
-#define dobject_tr_DL_010DA0 "__OTR__objects/object_tr/object_tr_DL_010DA0"
-static const ALIGN_ASSET(2) char object_tr_DL_010DA0[] = dobject_tr_DL_010DA0;
+#define dgKoumeRightShinDL "__OTR__objects/object_tr/gKoumeRightShinDL"
+static const ALIGN_ASSET(2) char gKoumeRightShinDL[] = dgKoumeRightShinDL;
 
-#define dobject_tr_DL_010E50 "__OTR__objects/object_tr/object_tr_DL_010E50"
-static const ALIGN_ASSET(2) char object_tr_DL_010E50[] = dobject_tr_DL_010E50;
+#define dgKoumeLeftShinDL "__OTR__objects/object_tr/gKoumeLeftShinDL"
+static const ALIGN_ASSET(2) char gKoumeLeftShinDL[] = dgKoumeLeftShinDL;
 
-#define dobject_tr_DL_010F00 "__OTR__objects/object_tr/object_tr_DL_010F00"
-static const ALIGN_ASSET(2) char object_tr_DL_010F00[] = dobject_tr_DL_010F00;
+#define dgKoumeBroomDL "__OTR__objects/object_tr/gKoumeBroomDL"
+static const ALIGN_ASSET(2) char gKoumeBroomDL[] = dgKoumeBroomDL;
 
-#define dobject_tr_DL_0110A8 "__OTR__objects/object_tr/object_tr_DL_0110A8"
-static const ALIGN_ASSET(2) char object_tr_DL_0110A8[] = dobject_tr_DL_0110A8;
+#define dgKoumeRightFootDL "__OTR__objects/object_tr/gKoumeRightFootDL"
+static const ALIGN_ASSET(2) char gKoumeRightFootDL[] = dgKoumeRightFootDL;
 
-#define dobject_tr_DL_011140 "__OTR__objects/object_tr/object_tr_DL_011140"
-static const ALIGN_ASSET(2) char object_tr_DL_011140[] = dobject_tr_DL_011140;
+#define dgKoumeLeftFootDL "__OTR__objects/object_tr/gKoumeLeftFootDL"
+static const ALIGN_ASSET(2) char gKoumeLeftFootDL[] = dgKoumeLeftFootDL;
 
-#define dobject_tr_DL_0111D8 "__OTR__objects/object_tr/object_tr_DL_0111D8"
-static const ALIGN_ASSET(2) char object_tr_DL_0111D8[] = dobject_tr_DL_0111D8;
+#define dgKoumeRightHandDL "__OTR__objects/object_tr/gKoumeRightHandDL"
+static const ALIGN_ASSET(2) char gKoumeRightHandDL[] = dgKoumeRightHandDL;
 
-#define dobject_tr_DL_011340 "__OTR__objects/object_tr/object_tr_DL_011340"
-static const ALIGN_ASSET(2) char object_tr_DL_011340[] = dobject_tr_DL_011340;
+#define dgKoumeLeftHandDL "__OTR__objects/object_tr/gKoumeLeftHandDL"
+static const ALIGN_ASSET(2) char gKoumeLeftHandDL[] = dgKoumeLeftHandDL;
 
-#define dobject_tr_Tex_0114A8 "__OTR__objects/object_tr/object_tr_Tex_0114A8"
-static const ALIGN_ASSET(2) char object_tr_Tex_0114A8[] = dobject_tr_Tex_0114A8;
+#define dgKoumeCollarNeckTex "__OTR__objects/object_tr/gKoumeCollarNeckTex"
+static const ALIGN_ASSET(2) char gKoumeCollarNeckTex[] = dgKoumeCollarNeckTex;
 
-#define dobject_tr_Skel_011688 "__OTR__objects/object_tr/object_tr_Skel_011688"
-static const ALIGN_ASSET(2) char object_tr_Skel_011688[] = dobject_tr_Skel_011688;
+#define dgKoumeSkel "__OTR__objects/object_tr/gKoumeSkel"
+static const ALIGN_ASSET(2) char gKoumeSkel[] = dgKoumeSkel;
 
-#define dobject_tr_Anim_012E1C "__OTR__objects/object_tr/object_tr_Anim_012E1C"
-static const ALIGN_ASSET(2) char object_tr_Anim_012E1C[] = dobject_tr_Anim_012E1C;
+#define dgKotakeKoumeCastMagicAnim "__OTR__objects/object_tr/gKotakeKoumeCastMagicAnim"
+static const ALIGN_ASSET(2) char gKotakeKoumeCastMagicAnim[] = dgKotakeKoumeCastMagicAnim;
 
 
 #endif // OBJECTS_OBJECT_TR_H
