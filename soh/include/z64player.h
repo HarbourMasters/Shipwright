@@ -608,7 +608,7 @@ typedef struct Player {
     /* 0x083E */ s16        targetYaw;
     /* 0x0840 */ u16        unk_840;
     /* 0x0842 */ s8         meleeWeaponAnimation;
-    /* 0x0843 */ s8         meleeWeaponState; // Upstream TODO: meleeWeaponState
+    /* 0x0843 */ s8         meleeWeaponState;
     /* 0x0844 */ s8         unk_844;
     /* 0x0845 */ u8         unk_845;
     /* 0x0846 */ u8         unk_846;
