@@ -3,6 +3,11 @@
         <Scene Name="test01_scene" Offset="0x0"/>
     </File>
     <File Name="test01_room_0" Segment="3">
+        <Texture Name="test01_room_0Tex_006490" OutName="test01_room_0Tex_006490" Format="rgba16" Width="32" Height="32" Offset="0x6490" AddedByScript="true"/>
+        <Texture Name="test01_room_0Tex_006C90" OutName="test01_room_0Tex_006C90" Format="rgba16" Width="32" Height="32" Offset="0x6C90" AddedByScript="true"/>
+        <Texture Name="test01_room_0Tex_007490" OutName="test01_room_0Tex_007490" Format="rgba16" Width="64" Height="32" Offset="0x7490" AddedByScript="true"/>
+        <Texture Name="test01_room_0Tex_008490" OutName="test01_room_0Tex_008490" Format="rgba16" Width="32" Height="32" Offset="0x8490" AddedByScript="true"/>
+        <Texture Name="test01_room_0Tex_0090E8" OutName="test01_room_0Tex_0090E8" Format="rgba16" Width="32" Height="32" Offset="0x90E8" AddedByScript="true"/>
         <Room Name="test01_room_0" Offset="0x0"/>
     </File>
 </Root>

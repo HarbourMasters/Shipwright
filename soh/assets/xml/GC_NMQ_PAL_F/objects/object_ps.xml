@@ -1,5 +1,28 @@
 <Root>
     <File Name="object_ps" Segment="6">
+        <Texture Name="object_psTex_0005B8" OutName="object_psTex_0005B8" Format="rgba16" Width="32" Height="64" Offset="0x5B8" AddedByScript="true"/>
+        <Texture Name="object_psTex_0015B8" OutName="object_psTex_0015B8" Format="ci8" Width="8" Height="8" Offset="0x15B8" TlutOffset="0x4B0" AddedByScript="true"/>
+        <Texture Name="object_psTex_0015F8" OutName="object_psTex_0015F8" Format="rgba16" Width="16" Height="16" Offset="0x15F8" AddedByScript="true"/>
+        <Texture Name="object_psTex_0017F8" OutName="object_psTex_0017F8" Format="ci8" Width="8" Height="8" Offset="0x17F8" TlutOffset="0x4B0" AddedByScript="true"/>
+        <Texture Name="object_psTex_001838" OutName="object_psTex_001838" Format="ci8" Width="32" Height="32" Offset="0x1838" TlutOffset="0x4B0" AddedByScript="true"/>
+        <Texture Name="object_psTex_001C38" OutName="object_psTex_001C38" Format="ci8" Width="16" Height="16" Offset="0x1C38" TlutOffset="0x4B0" AddedByScript="true"/>
+        <Texture Name="object_psTex_001D38" OutName="object_psTex_001D38" Format="i8" Width="8" Height="8" Offset="0x1D38" AddedByScript="true"/>
+        <Texture Name="object_psTex_001D78" OutName="object_psTex_001D78" Format="ci8" Width="16" Height="16" Offset="0x1D78" TlutOffset="0x4B0" AddedByScript="true"/>
+        <Texture Name="object_psTex_001E78" OutName="object_psTex_001E78" Format="ci8" Width="16" Height="16" Offset="0x1E78" TlutOffset="0x4B0" AddedByScript="true"/>
+        <Texture Name="object_psTex_001F78" OutName="object_psTex_001F78" Format="rgba16" Width="16" Height="16" Offset="0x1F78" AddedByScript="true"/>
+        <Texture Name="object_psTex_002178" OutName="object_psTex_002178" Format="rgba16" Width="16" Height="16" Offset="0x2178" AddedByScript="true"/>
+        <Texture Name="object_psTex_002378" OutName="object_psTex_002378" Format="i4" Width="32" Height="32" Offset="0x2378" AddedByScript="true"/>
+        <Texture Name="object_psTex_002578" OutName="object_psTex_002578" Format="ci8" Width="32" Height="32" Offset="0x2578" TlutOffset="0x4B0" AddedByScript="true"/>
+        <Texture Name="object_psTex_002978" OutName="object_psTex_002978" Format="rgba16" Width="8" Height="16" Offset="0x2978" AddedByScript="true"/>
+        <Texture Name="object_psTex_007180" OutName="object_psTex_007180" Format="ci8" Width="8" Height="8" Offset="0x7180" TlutOffset="0x5880" AddedByScript="true"/>
+        <Texture Name="object_psTex_0071C0" OutName="object_psTex_0071C0" Format="ci8" Width="32" Height="32" Offset="0x71C0" TlutOffset="0x5880" AddedByScript="true"/>
+        <Texture Name="object_psTex_0075C0" OutName="object_psTex_0075C0" Format="ci8" Width="8" Height="8" Offset="0x75C0" TlutOffset="0x5880" AddedByScript="true"/>
+        <Texture Name="object_psTex_007600" OutName="object_psTex_007600" Format="ci8" Width="8" Height="8" Offset="0x7600" TlutOffset="0x5880" AddedByScript="true"/>
+        <Texture Name="object_psTex_007640" OutName="object_psTex_007640" Format="ci8" Width="32" Height="32" Offset="0x7640" TlutOffset="0x5880" AddedByScript="true"/>
+        <Texture Name="object_psTex_007A40" OutName="object_psTex_007A40" Format="rgba16" Width="16" Height="16" Offset="0x7A40" AddedByScript="true"/>
+        <Texture Name="object_psTex_007C40" OutName="object_psTex_007C40" Format="ci8" Width="32" Height="32" Offset="0x7C40" TlutOffset="0x5880" AddedByScript="true"/>
+        <Texture Name="object_psTLUT_0004B0" OutName="object_psTLUT_0004B0" Format="rgba16" Width="16" Height="16" Offset="0x4B0" AddedByScript="true"/>
+        <Texture Name="object_psTLUT_005880" OutName="object_psTLUT_005880" Format="rgba16" Width="16" Height="16" Offset="0x5880" AddedByScript="true"/>
         <Animation Name="gPoeSellerIdleAnim" Offset="0x049C"/>
         <Texture Name="gPoeSellerMetalFrameTex" OutName="poe_seller_metal_frame" Format="rgba16" Width="8" Height="8" Offset="0x5A80"/>
         <Texture Name="gPoeSellerMattressTex" OutName="poe_seller_mattress" Format="rgba16" Width="8" Height="8" Offset="0x5B00"/>

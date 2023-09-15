@@ -1,5 +1,6 @@
 <Root>
     <File Name="object_box" Segment="6">
+        <Texture Name="object_boxTex_004F80" OutName="object_boxTex_004F80" Format="i8" Width="64" Height="32" Offset="0x4F80" AddedByScript="true"/>
         <Skeleton Name="gTreasureChestCurveSkel" Type="Curve" LimbType="Curve" Offset="0x5EB8"/>
         <CurveAnimation Name="gTreasureChestCurveAnim_4B60" SkelOffset="0x5EB8" Offset="0x4B60"/>
         <CurveAnimation Name="gTreasureChestCurveAnim_4F70" SkelOffset="0x5EB8" Offset="0x4F70"/>

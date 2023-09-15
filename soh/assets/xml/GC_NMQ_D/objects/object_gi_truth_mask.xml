@@ -1,5 +1,7 @@
 <Root>
     <File Name="object_gi_truth_mask" Segment="6">
+        <Texture Name="object_gi_truth_maskTex_000000" OutName="object_gi_truth_maskTex_000000" Format="i8" Width="32" Height="32" Offset="0x0" AddedByScript="true"/>
+        <Texture Name="object_gi_truth_maskTex_000400" OutName="object_gi_truth_maskTex_000400" Format="i8" Width="32" Height="32" Offset="0x400" AddedByScript="true"/>
         <DList Name="gGiMaskOfTruthDL" Offset="0x13D0"/>
         <DList Name="gGiMaskOfTruthAccentsDL" Offset="0x16B0"/>
     </File>

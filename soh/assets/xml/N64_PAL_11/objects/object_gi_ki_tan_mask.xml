@@ -1,5 +1,6 @@
 <Root>
     <File Name="object_gi_ki_tan_mask" Segment="6">
+        <Texture Name="object_gi_ki_tan_maskTex_000000" OutName="object_gi_ki_tan_maskTex_000000" Format="ia8" Width="8" Height="32" Offset="0x0" AddedByScript="true"/>
         <DList Name="gGiKeatonMaskDL" Offset="0x0AC0"/>
         <DList Name="gGiKeatonMaskEyesDL" Offset="0x0D50"/>
     </File>

@@ -307,6 +307,14 @@ AudioCollection::AudioCollection() {
 
 }
 
+std::string AudioCollection::GetCvarKey(std::string sfxKey) {
+    return "gAudioEditor.ReplacedSequences." + sfxKey + ".value";
+}
+
+std::string AudioCollection::GetCvarLockKey(std::string sfxKey) {
+    return "gAudioEditor.ReplacedSequences." + sfxKey + ".locked";
+}
+
 void AudioCollection::AddToCollection(char* otrPath, uint16_t seqNum) {
     std::string fileName = std::filesystem::path(otrPath).filename().string();
     std::vector<std::string> splitFileName = StringHelper::Split(fileName, "_");
@@ -332,7 +340,7 @@ uint16_t AudioCollection::GetReplacementSequence(uint16_t seqId) {
     // for Hyrule Field instead. Otherwise, leave it alone, so that without any sfx editor modifications we will
     // play the normal track as usual.
     if (seqId == NA_BGM_FIELD_MORNING) {
-        if (CVarGetInteger("gAudioEditor.ReplacedSequences.NA_BGM_FIELD_LOGIC", NA_BGM_FIELD_LOGIC) != NA_BGM_FIELD_LOGIC) {
+        if (CVarGetInteger("gAudioEditor.ReplacedSequences.NA_BGM_FIELD_LOGIC.value", NA_BGM_FIELD_LOGIC) != NA_BGM_FIELD_LOGIC) {
             seqId = NA_BGM_FIELD_LOGIC;
         }
     }
@@ -342,7 +350,7 @@ uint16_t AudioCollection::GetReplacementSequence(uint16_t seqId) {
     }
 
     const auto& sequenceInfo = sequenceMap.at(seqId);
-    const std::string cvarKey = "gAudioEditor.ReplacedSequences." + sequenceInfo.sfxKey;
+    const std::string cvarKey = GetCvarKey(sequenceInfo.sfxKey);
     int replacementSeq = CVarGetInteger(cvarKey.c_str(), seqId);
     if (!sequenceMap.contains(replacementSeq)) {
         replacementSeq = seqId;

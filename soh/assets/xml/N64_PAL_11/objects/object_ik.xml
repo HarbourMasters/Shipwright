@@ -10,66 +10,66 @@
         <Skeleton Name="object_ik_Skel_000F30" Type="Flex" LimbType="Standard" Offset="0xF30"/>
         <Skeleton Name="object_ik_Skel_01EB40" Type="Flex" LimbType="Standard" Offset="0x1EB40"/>
         <Skeleton Name="object_ik_Skel_01EE60" Type="Flex" LimbType="Standard" Offset="0x1EE60"/>
-        <Skeleton Name="object_ik_Skel_01E178" Type="Flex" LimbType="Standard" Offset="0x1E178"/>
-        <Skeleton Name="object_ik_Skel_0205C0" Type="Flex" LimbType="Standard" Offset="0x205C0"/>
+        <Skeleton Name="gIronKnuckleSkel" Type="Flex" LimbType="Standard" Offset="0x1E178"/>
+        <Skeleton Name="gIronKnuckleDefeatSkel" Type="Flex" LimbType="Standard" Offset="0x205C0"/>
 
         <Animation Name="object_ik_Anim_00035C" Offset="0x35C"/>
         <Animation Name="object_ik_Anim_000634" Offset="0x634"/>
         <Animation Name="object_ik_Anim_0008DC" Offset="0x8DC"/>
         <Animation Name="object_ik_Anim_000C6C" Offset="0xC6C"/>
         <Animation Name="object_ik_Anim_000F0C" Offset="0xF0C"/>
-        <Animation Name="object_ik_Anim_001C28" Offset="0x1C28"/>
-        <Animation Name="object_ik_Anim_002538" Offset="0x2538"/>
-        <Animation Name="object_ik_Anim_0029FC" Offset="0x29FC"/>
-        <Animation Name="object_ik_Anim_0033C4" Offset="0x33C4"/>
-        <Animation Name="object_ik_Anim_003DBC" Offset="0x3DBC"/>
-        <Animation Name="object_ik_Anim_0045BC" Offset="0x45BC"/>
-        <Animation Name="object_ik_Anim_00485C" Offset="0x485C"/>
-        <Animation Name="object_ik_Anim_005944" Offset="0x5944"/>
-        <Animation Name="object_ik_Anim_006194" Offset="0x6194"/>
-        <Animation Name="object_ik_Anim_006734" Offset="0x6734"/>
-        <Animation Name="object_ik_Anim_00C114" Offset="0xC114"/>
-        <Animation Name="object_ik_Anim_00CD70" Offset="0xCD70"/>
+        <Animation Name="gIronKnuckleVerticalAttackAnim" Offset="0x1C28"/>
+        <Animation Name="gIronKnuckleRecoverFromVerticalAttackAnim" Offset="0x2538"/>
+        <Animation Name="gIronKnuckleAxeStuckAnim" Offset="0x29FC"/>
+        <Animation Name="gIronKnuckleHorizontalAttackAnim" Offset="0x33C4"/>
+        <Animation Name="gIronKnuckleRecoverFromHorizontalAttackAnim" Offset="0x3DBC"/>
+        <Animation Name="gIronKnuckleBackHitAnim" Offset="0x45BC"/>
+        <Animation Name="gIronKnuckleBlockAnim" Offset="0x485C"/>
+        <Animation Name="gIronKnuckleDeathAnim" Offset="0x5944"/>
+        <Animation Name="gIronKnuckleFrontHitAnim" Offset="0x6194"/>
+        <Animation Name="gIronKnuckleRunAnim" Offset="0x6734"/>
+        <Animation Name="gIronKnuckleNabooruSummonAxeAnim" Offset="0xC114"/>
+        <Animation Name="gIronKnuckleStandUpAnim" Offset="0xCD70"/>
         <Animation Name="object_ik_Anim_00DD50" Offset="0xDD50"/>
-        <Animation Name="object_ik_Anim_00ED24" Offset="0xED24"/>
+        <Animation Name="gIronKnuckleWalkAnim" Offset="0xED24"/>
         <Animation Name="object_ik_Anim_01EB14" Offset="0x1EB14"/>
         <Animation Name="object_ik_Anim_01EE34" Offset="0x1EE34"/>
-        <Animation Name="object_ik_Anim_0203D8" Offset="0x203D8"/>
+        <Animation Name="gIronKnuckleNabooruDeathAnim" Offset="0x203D8"/>
 
         <Texture Name="object_ik_Tlut_00F630" OutName="tlut_00F630" Format="rgba16" Width="23" Height="8" Offset="0xf630"/>
-        <Texture Name="object_ik_Tex_00F7A0" OutName="tex_00F7A0" Format="i4" Width="32" Height="64" Offset="0xF7A0"/>
+        <Texture Name="gIronKnuckleMetalTex" OutName="tex_00F7A0" Format="i4" Width="32" Height="64" Offset="0xF7A0"/>
         <!-- This is a duplicate texture to accound for authentic texture overflowing -->
         <!-- ZAPDTODO: It is set to an offset position -1 of the actual value as ZAPD does not permit
              duplicate offset values -->
         <Texture Name="gIronKnuckleMetalOverflowTex" OutName="iron_knuckle_metal_overflow_tex" Format="i8" Width="32" Height="64" Offset="0xF79F"/>
-        <Texture Name="object_ik_Tex_00FBA0" OutName="tex_00FBA0" Format="ia8" Width="32" Height="32" Offset="0xFBA0"/>
-        <Texture Name="object_ik_Tex_00FFA0" OutName="tex_00FFA0" Format="rgba16" Width="16" Height="16" Offset="0xFFA0"/>
-        <Texture Name="object_ik_Tex_0101A0" OutName="tex_0101A0" Format="rgba16" Width="16" Height="16" Offset="0x101A0"/>
+        <Texture Name="gIronKnuckleBigRivetTex" OutName="tex_00FBA0" Format="ia8" Width="32" Height="32" Offset="0xFBA0"/>
+        <Texture Name="gIronKnuckleBlockPatternTex" OutName="tex_00FFA0" Format="rgba16" Width="16" Height="16" Offset="0xFFA0"/>
+        <Texture Name="gIronKnuckleChainMailTex" OutName="tex_0101A0" Format="rgba16" Width="16" Height="16" Offset="0x101A0"/>
         <Texture Name="object_ik_Tex_0103A0" OutName="tex_0103A0" Format="ia16" Width="32" Height="32" Offset="0x103A0"/>
-        <Texture Name="object_ik_Tex_010BA0" OutName="tex_010BA0" Format="rgba16" Width="32" Height="32" Offset="0x10BA0"/>
-        <Texture Name="object_ik_Tex_0113A0" OutName="tex_0113A0" Format="rgba16" Width="8" Height="8" Offset="0x113A0"/>
-        <Texture Name="object_ik_Tex_011420" OutName="tex_011420" Format="ci8" Width="16" Height="16" Offset="0x11420" TlutOffset="0xf630"/>
-        <Texture Name="object_ik_Tex_011520" OutName="tex_011520" Format="ci8" Width="16" Height="16" Offset="0x11520" TlutOffset="0xf630"/>
+        <Texture Name="gIronKnuckleGerudoEyeTex" OutName="tex_010BA0" Format="rgba16" Width="32" Height="32" Offset="0x10BA0"/>
+        <Texture Name="gIronKnuckleNabooruLipTex" OutName="tex_0113A0" Format="rgba16" Width="8" Height="8" Offset="0x113A0"/>
+        <Texture Name="gIronKnuckleJewelTex" OutName="tex_011420" Format="ci8" Width="16" Height="16" Offset="0x11420" TlutOffset="0xf630"/>
+        <Texture Name="gIronKnuckleNabooruForeheadJewelTex" OutName="tex_011520" Format="ci8" Width="16" Height="16" Offset="0x11520" TlutOffset="0xf630"/>
         <Texture Name="object_ik_Tex_011620" OutName="tex_011620" Format="ci8" Width="8" Height="8" Offset="0x11620" TlutOffset="0xf630"/>
-        <Texture Name="object_ik_Tex_011660" OutName="tex_011660" Format="ci8" Width="16" Height="16" Offset="0x11660" TlutOffset="0xf630"/>
+        <Texture Name="gIronKnuckleNabooruHair1Tex" OutName="tex_011660" Format="ci8" Width="16" Height="16" Offset="0x11660" TlutOffset="0xf630"/>
         <Texture Name="object_ik_Tex_011760" OutName="tex_011760" Format="ci8" Width="8" Height="16" Offset="0x11760" TlutOffset="0xf630"/>
         <Texture Name="object_ik_Tex_0117E0" OutName="tex_0117E0" Format="ci8" Width="8" Height="16" Offset="0x117E0" TlutOffset="0xf630"/>
         <Texture Name="object_ik_Tex_011860" OutName="tex_011860" Format="ci8" Width="16" Height="16" Offset="0x11860" TlutOffset="0xf630"/>
         <Texture Name="object_ik_Tex_011960" OutName="tex_011960" Format="ia8" Width="16" Height="16" Offset="0x11960"/>
         <DList Name="object_ik_DL_0151F0" Offset="0x151F0"/>
         <DList Name="object_ik_DL_015380" Offset="0x15380"/>
-        <DList Name="object_ik_DL_0154E0" Offset="0x154E0"/>
-        <DList Name="object_ik_DL_015840" Offset="0x15840"/>
-        <DList Name="object_ik_DL_015B00" Offset="0x15B00"/>
+        <DList Name="gIronKnuckleNabooruHelmetDL" Offset="0x154E0"/>
+        <DList Name="gIronKnuckleAxeDL" Offset="0x15840"/>
+        <DList Name="gIronKnuckleShockedNabooruHeadDL" Offset="0x15B00"/>
         <DList Name="object_ik_DL_016118" Offset="0x16118"/>
         <DList Name="object_ik_DL_016278" Offset="0x16278"/>
         <DList Name="object_ik_DL_016340" Offset="0x16340"/>
         <DList Name="object_ik_DL_0164A0" Offset="0x164A0"/>
         <DList Name="object_ik_DL_016568" Offset="0x16568"/>
         <DList Name="object_ik_DL_016658" Offset="0x16658"/>
-        <DList Name="object_ik_DL_016748" Offset="0x16748"/>
-        <DList Name="object_ik_DL_0169E8" Offset="0x169E8"/>
-        <DList Name="object_ik_DL_016BE0" Offset="0x16BE0"/>
+        <DList Name="gIronKnuckleSplitHelmetLeftDL" Offset="0x16748"/>
+        <DList Name="gIronKnuckleSplitHelmetRightDL" Offset="0x169E8"/>
+        <DList Name="gIronKnuckleArmorRivetAndSymbolDL" Offset="0x16BE0"/>
         <DList Name="object_ik_DL_016CD8" Offset="0x16CD8"/>
         <DList Name="object_ik_DL_016D88" Offset="0x16D88"/>
         <DList Name="object_ik_DL_016EE8" Offset="0x16EE8"/>
@@ -79,14 +79,14 @@
         <Texture Name="object_ik_Tlut_017288" OutName="tlut_017288" Format="rgba16" Width="15" Height="8" Offset="0x17288"/>
         <Texture Name="object_ik_Tex_017378" OutName="tex_017378" Format="ci8" Width="16" Height="16" Offset="0x17378" TlutOffset="0x17288"/>
         <Texture Name="object_ik_Tex_017478" OutName="tex_017478" Format="ci8" Width="8" Height="8" Offset="0x17478" TlutOffset="0x17288"/>
-        <Texture Name="object_ik_Tex_0174B8" OutName="tex_0174B8" Format="ci8" Width="16" Height="16" Offset="0x174B8" TlutOffset="0x17288"/>
+        <Texture Name="gIronKnuckleHair2Tex" OutName="tex_0174B8" Format="ci8" Width="16" Height="16" Offset="0x174B8" TlutOffset="0x17288"/>
         <Texture Name="object_ik_Tex_0175B8" OutName="tex_0175B8" Format="ci8" Width="8" Height="16" Offset="0x175B8" TlutOffset="0x17288"/>
         <Texture Name="object_ik_Tex_017638" OutName="tex_017638" Format="ci8" Width="8" Height="16" Offset="0x17638" TlutOffset="0x17288"/>
         <Texture Name="object_ik_Tex_0176B8" OutName="tex_0176B8" Format="ci8" Width="16" Height="16" Offset="0x176B8" TlutOffset="0x17288"/>
-        <DList Name="object_ik_DL_018E78" Offset="0x18E78"/>
-        <DList Name="object_ik_DL_019100" Offset="0x19100"/>
-        <DList Name="object_ik_DL_019E08" Offset="0x19E08"/>
-        <DList Name="object_ik_DL_01BA78" Offset="0x1BA78"/>
+        <DList Name="gIronKnuckleHelmetDL" Offset="0x18E78"/>
+        <DList Name="gIronKnuckleGerudoHeadDL" Offset="0x19100"/>
+        <DList Name="gIronKnuckleHelmetMarkingDL" Offset="0x19E08"/>
+        <DList Name="gIronKnuckleTorsoDL" Offset="0x1BA78"/>
         <DList Name="object_ik_DL_01BE98" Offset="0x1BE98"/>
         <DList Name="object_ik_DL_01C130" Offset="0x1C130"/>
         <DList Name="object_ik_DL_01C2B8" Offset="0x1C2B8"/>
@@ -101,8 +101,8 @@
         <DList Name="object_ik_DL_01D638" Offset="0x1D638"/>
         <Texture Name="object_ik_Tlut_01D9A8" OutName="tlut_01D9A8" Format="rgba16" Width="16" Height="16" Offset="0x1D9A8"/>
         <Texture Name="object_ik_Tex_01DBA8" OutName="tex_01DBA8" Format="ia16" Width="16" Height="16" Offset="0x1DBA8"/>
-        <Texture Name="object_ik_Tex_01DDA8" OutName="tex_01DDA8" Format="ci8" Width="16" Height="16" Offset="0x1DDA8" TlutOffset="0x1D9A8"/>
-        <Texture Name="object_ik_Tex_01DEA8" OutName="tex_01DEA8" Format="ci8" Width="16" Height="16" Offset="0x1DEA8" TlutOffset="0x1D9A8"/>
+        <Texture Name="gIronKnuckleHair3Tex" OutName="tex_01DDA8" Format="ci8" Width="16" Height="16" Offset="0x1DDA8" TlutOffset="0x1D9A8"/>
+        <Texture Name="gIronKnuckleNabooruChestJewelTex" OutName="tex_01DEA8" Format="ci8" Width="16" Height="16" Offset="0x1DEA8" TlutOffset="0x1D9A8"/>
         <!--Blob Name="object_ik_zeroes_unk_0001DFA8" Size="0x2628" Offset="0x1DFA8" /-->
     </File>
 </Root>
