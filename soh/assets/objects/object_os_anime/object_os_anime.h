@@ -108,11 +108,11 @@ static const ALIGN_ASSET(2) char gObjOsAnim_4E90[] = dgObjOsAnim_4E90;
 #define dgObjOsAnim_4F28 "__OTR__objects/object_os_anime/gObjOsAnim_4F28"
 static const ALIGN_ASSET(2) char gObjOsAnim_4F28[] = dgObjOsAnim_4F28;
 
-#define dgObjOsAnim_5808 "__OTR__objects/object_os_anime/gObjOsAnim_5808"
-static const ALIGN_ASSET(2) char gObjOsAnim_5808[] = dgObjOsAnim_5808;
+#define dgKokiriLaughingAnim "__OTR__objects/object_os_anime/gKokiriLaughingAnim"
+static const ALIGN_ASSET(2) char gKokiriLaughingAnim[] = dgKokiriLaughingAnim;
 
-#define dgObjOsAnim_62DC "__OTR__objects/object_os_anime/gObjOsAnim_62DC"
-static const ALIGN_ASSET(2) char gObjOsAnim_62DC[] = dgObjOsAnim_62DC;
+#define dgKokiriIdleAnim "__OTR__objects/object_os_anime/gKokiriIdleAnim"
+static const ALIGN_ASSET(2) char gKokiriIdleAnim[] = dgKokiriIdleAnim;
 
 #define dgObjOsAnim_6458 "__OTR__objects/object_os_anime/gObjOsAnim_6458"
 static const ALIGN_ASSET(2) char gObjOsAnim_6458[] = dgObjOsAnim_6458;
@@ -120,77 +120,77 @@ static const ALIGN_ASSET(2) char gObjOsAnim_6458[] = dgObjOsAnim_6458;
 #define dgObjOsAnim_6518 "__OTR__objects/object_os_anime/gObjOsAnim_6518"
 static const ALIGN_ASSET(2) char gObjOsAnim_6518[] = dgObjOsAnim_6518;
 
-#define dgObjOsAnim_65E0 "__OTR__objects/object_os_anime/gObjOsAnim_65E0"
-static const ALIGN_ASSET(2) char gObjOsAnim_65E0[] = dgObjOsAnim_65E0;
+#define dgKokiriRecliningSittingUpAnim "__OTR__objects/object_os_anime/gKokiriRecliningSittingUpAnim"
+static const ALIGN_ASSET(2) char gKokiriRecliningSittingUpAnim[] = dgKokiriRecliningSittingUpAnim;
 
-#define dgObjOsAnim_6A60 "__OTR__objects/object_os_anime/gObjOsAnim_6A60"
-static const ALIGN_ASSET(2) char gObjOsAnim_6A60[] = dgObjOsAnim_6A60;
+#define dgKokiriWipingForeheadAnim "__OTR__objects/object_os_anime/gKokiriWipingForeheadAnim"
+static const ALIGN_ASSET(2) char gKokiriWipingForeheadAnim[] = dgKokiriWipingForeheadAnim;
 
-#define dgObjOsAnim_6EE0 "__OTR__objects/object_os_anime/gObjOsAnim_6EE0"
-static const ALIGN_ASSET(2) char gObjOsAnim_6EE0[] = dgObjOsAnim_6EE0;
+#define dgKokiriBackflipAnim "__OTR__objects/object_os_anime/gKokiriBackflipAnim"
+static const ALIGN_ASSET(2) char gKokiriBackflipAnim[] = dgKokiriBackflipAnim;
 
-#define dgObjOsAnim_6F9C "__OTR__objects/object_os_anime/gObjOsAnim_6F9C"
-static const ALIGN_ASSET(2) char gObjOsAnim_6F9C[] = dgObjOsAnim_6F9C;
+#define dgKokiriSittingCrossedArmsLegsAnim "__OTR__objects/object_os_anime/gKokiriSittingCrossedArmsLegsAnim"
+static const ALIGN_ASSET(2) char gKokiriSittingCrossedArmsLegsAnim[] = dgKokiriSittingCrossedArmsLegsAnim;
 
-#define dgObjOsAnim_7064 "__OTR__objects/object_os_anime/gObjOsAnim_7064"
-static const ALIGN_ASSET(2) char gObjOsAnim_7064[] = dgObjOsAnim_7064;
+#define dgKokiriStandingApprehensiveAnim "__OTR__objects/object_os_anime/gKokiriStandingApprehensiveAnim"
+static const ALIGN_ASSET(2) char gKokiriStandingApprehensiveAnim[] = dgKokiriStandingApprehensiveAnim;
 
-#define dgObjOsAnim_7120 "__OTR__objects/object_os_anime/gObjOsAnim_7120"
-static const ALIGN_ASSET(2) char gObjOsAnim_7120[] = dgObjOsAnim_7120;
+#define dgKokiriLeaningOnArmsAnim "__OTR__objects/object_os_anime/gKokiriLeaningOnArmsAnim"
+static const ALIGN_ASSET(2) char gKokiriLeaningOnArmsAnim[] = dgKokiriLeaningOnArmsAnim;
 
-#define dgObjOsAnim_7454 "__OTR__objects/object_os_anime/gObjOsAnim_7454"
-static const ALIGN_ASSET(2) char gObjOsAnim_7454[] = dgObjOsAnim_7454;
+#define dgKokiriSittingDiggingAnim "__OTR__objects/object_os_anime/gKokiriSittingDiggingAnim"
+static const ALIGN_ASSET(2) char gKokiriSittingDiggingAnim[] = dgKokiriSittingDiggingAnim;
 
-#define dgObjOsAnim_7830 "__OTR__objects/object_os_anime/gObjOsAnim_7830"
-static const ALIGN_ASSET(2) char gObjOsAnim_7830[] = dgObjOsAnim_7830;
+#define dgKokiriLiftingRockAnim "__OTR__objects/object_os_anime/gKokiriLiftingRockAnim"
+static const ALIGN_ASSET(2) char gKokiriLiftingRockAnim[] = dgKokiriLiftingRockAnim;
 
-#define dgObjOsAnim_7D94 "__OTR__objects/object_os_anime/gObjOsAnim_7D94"
-static const ALIGN_ASSET(2) char gObjOsAnim_7D94[] = dgObjOsAnim_7D94;
+#define dgKokiriCuttingGrassAnim "__OTR__objects/object_os_anime/gKokiriCuttingGrassAnim"
+static const ALIGN_ASSET(2) char gKokiriCuttingGrassAnim[] = dgKokiriCuttingGrassAnim;
 
-#define dgObjOsAnim_7E64 "__OTR__objects/object_os_anime/gObjOsAnim_7E64"
-static const ALIGN_ASSET(2) char gObjOsAnim_7E64[] = dgObjOsAnim_7E64;
+#define dgKokiriSittingHeadOnHandAnim "__OTR__objects/object_os_anime/gKokiriSittingHeadOnHandAnim"
+static const ALIGN_ASSET(2) char gKokiriSittingHeadOnHandAnim[] = dgKokiriSittingHeadOnHandAnim;
 
-#define dgObjOsAnim_7F38 "__OTR__objects/object_os_anime/gObjOsAnim_7F38"
-static const ALIGN_ASSET(2) char gObjOsAnim_7F38[] = dgObjOsAnim_7F38;
+#define dgKokiriRecliningLeaningBackAnim "__OTR__objects/object_os_anime/gKokiriRecliningLeaningBackAnim"
+static const ALIGN_ASSET(2) char gKokiriRecliningLeaningBackAnim[] = dgKokiriRecliningLeaningBackAnim;
 
-#define dgObjOsAnim_7FFC "__OTR__objects/object_os_anime/gObjOsAnim_7FFC"
-static const ALIGN_ASSET(2) char gObjOsAnim_7FFC[] = dgObjOsAnim_7FFC;
+#define dgKokiriStandingHandOnChestAnim "__OTR__objects/object_os_anime/gKokiriStandingHandOnChestAnim"
+static const ALIGN_ASSET(2) char gKokiriStandingHandOnChestAnim[] = dgKokiriStandingHandOnChestAnim;
 
-#define dgObjOsAnim_80B4 "__OTR__objects/object_os_anime/gObjOsAnim_80B4"
-static const ALIGN_ASSET(2) char gObjOsAnim_80B4[] = dgObjOsAnim_80B4;
+#define dgKokiriStandingHandsOnHipsAnim "__OTR__objects/object_os_anime/gKokiriStandingHandsOnHipsAnim"
+static const ALIGN_ASSET(2) char gKokiriStandingHandsOnHipsAnim[] = dgKokiriStandingHandsOnHipsAnim;
 
-#define dgObjOsAnim_8178 "__OTR__objects/object_os_anime/gObjOsAnim_8178"
-static const ALIGN_ASSET(2) char gObjOsAnim_8178[] = dgObjOsAnim_8178;
+#define dgKokiriRecliningStandingAnim "__OTR__objects/object_os_anime/gKokiriRecliningStandingAnim"
+static const ALIGN_ASSET(2) char gKokiriRecliningStandingAnim[] = dgKokiriRecliningStandingAnim;
 
-#define dgObjOsAnim_879C "__OTR__objects/object_os_anime/gObjOsAnim_879C"
-static const ALIGN_ASSET(2) char gObjOsAnim_879C[] = dgObjOsAnim_879C;
+#define dgKokiriPunchingAnim "__OTR__objects/object_os_anime/gKokiriPunchingAnim"
+static const ALIGN_ASSET(2) char gKokiriPunchingAnim[] = dgKokiriPunchingAnim;
 
-#define dgObjOsAnim_8F6C "__OTR__objects/object_os_anime/gObjOsAnim_8F6C"
-static const ALIGN_ASSET(2) char gObjOsAnim_8F6C[] = dgObjOsAnim_8F6C;
+#define dgKokiriBlockingAnim "__OTR__objects/object_os_anime/gKokiriBlockingAnim"
+static const ALIGN_ASSET(2) char gKokiriBlockingAnim[] = dgKokiriBlockingAnim;
 
-#define dgObjOsAnim_9028 "__OTR__objects/object_os_anime/gObjOsAnim_9028"
-static const ALIGN_ASSET(2) char gObjOsAnim_9028[] = dgObjOsAnim_9028;
+#define dgKokiriSittingArmsUpAnim "__OTR__objects/object_os_anime/gKokiriSittingArmsUpAnim"
+static const ALIGN_ASSET(2) char gKokiriSittingArmsUpAnim[] = dgKokiriSittingArmsUpAnim;
 
-#define dgObjOsAnim_90EC "__OTR__objects/object_os_anime/gObjOsAnim_90EC"
-static const ALIGN_ASSET(2) char gObjOsAnim_90EC[] = dgObjOsAnim_90EC;
+#define dgKokiriStandingRightArmUpAnim "__OTR__objects/object_os_anime/gKokiriStandingRightArmUpAnim"
+static const ALIGN_ASSET(2) char gKokiriStandingRightArmUpAnim[] = dgKokiriStandingRightArmUpAnim;
 
-#define dgObjOsAnim_91AC "__OTR__objects/object_os_anime/gObjOsAnim_91AC"
-static const ALIGN_ASSET(2) char gObjOsAnim_91AC[] = dgObjOsAnim_91AC;
+#define dgKokiriSittingAnim "__OTR__objects/object_os_anime/gKokiriSittingAnim"
+static const ALIGN_ASSET(2) char gKokiriSittingAnim[] = dgKokiriSittingAnim;
 
-#define dgObjOsAnim_9274 "__OTR__objects/object_os_anime/gObjOsAnim_9274"
-static const ALIGN_ASSET(2) char gObjOsAnim_9274[] = dgObjOsAnim_9274;
+#define dgKokiriStandingAnim "__OTR__objects/object_os_anime/gKokiriStandingAnim"
+static const ALIGN_ASSET(2) char gKokiriStandingAnim[] = dgKokiriStandingAnim;
 
-#define dgObjOsAnim_982C "__OTR__objects/object_os_anime/gObjOsAnim_982C"
-static const ALIGN_ASSET(2) char gObjOsAnim_982C[] = dgObjOsAnim_982C;
+#define dgKokiriStandingArmsBehindBackAnim "__OTR__objects/object_os_anime/gKokiriStandingArmsBehindBackAnim"
+static const ALIGN_ASSET(2) char gKokiriStandingArmsBehindBackAnim[] = dgKokiriStandingArmsBehindBackAnim;
 
-#define dgObjOsAnim_98EC "__OTR__objects/object_os_anime/gObjOsAnim_98EC"
-static const ALIGN_ASSET(2) char gObjOsAnim_98EC[] = dgObjOsAnim_98EC;
+#define dgKokiriLeaningForwardAnim "__OTR__objects/object_os_anime/gKokiriLeaningForwardAnim"
+static const ALIGN_ASSET(2) char gKokiriLeaningForwardAnim[] = dgKokiriLeaningForwardAnim;
 
-#define dgObjOsAnim_99A4 "__OTR__objects/object_os_anime/gObjOsAnim_99A4"
-static const ALIGN_ASSET(2) char gObjOsAnim_99A4[] = dgObjOsAnim_99A4;
+#define dgKokiriSittingCrossedLegsAnim "__OTR__objects/object_os_anime/gKokiriSittingCrossedLegsAnim"
+static const ALIGN_ASSET(2) char gKokiriSittingCrossedLegsAnim[] = dgKokiriSittingCrossedLegsAnim;
 
-#define dgObjOsAnim_9B64 "__OTR__objects/object_os_anime/gObjOsAnim_9B64"
-static const ALIGN_ASSET(2) char gObjOsAnim_9B64[] = dgObjOsAnim_9B64;
+#define dgKokiriStandUpAnim "__OTR__objects/object_os_anime/gKokiriStandUpAnim"
+static const ALIGN_ASSET(2) char gKokiriStandUpAnim[] = dgKokiriStandUpAnim;
 
 #define dgObjOsAnim_9F94 "__OTR__objects/object_os_anime/gObjOsAnim_9F94"
 static const ALIGN_ASSET(2) char gObjOsAnim_9F94[] = dgObjOsAnim_9F94;

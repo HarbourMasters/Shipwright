@@ -7,6 +7,7 @@
 #include "z_en_am.h"
 #include "objects/object_am/object_am.h"
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_CAN_PRESS_SWITCH)
 
@@ -884,8 +885,8 @@ void EnAm_Update(Actor* thisx, PlayState* play) {
                     func_8002836C(play, &dustPos, &zeroVec, &zeroVec, &dustPrimColor, &dustEnvColor, 200, 45, 12);
                     dustPosScale += 60.0f;
                 }
-
-                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ARMOS]++;
+                
+                GameInteractor_ExecuteOnEnemyDefeat(thisx);
 
                 Actor_Kill(&this->dyna.actor);
                 return;

@@ -9,8 +9,8 @@ static const ALIGN_ASSET(2) char gGreatFairyMagicCs[] = dgGreatFairyMagicCs;
 #define dgGreatFairyDoubleMagicCs "__OTR__scenes/nonmq/daiyousei_izumi_scene/gGreatFairyDoubleMagicCs"
 static const ALIGN_ASSET(2) char gGreatFairyDoubleMagicCs[] = dgGreatFairyDoubleMagicCs;
 
-#define dgGreatFairyDoubleDefenceCs "__OTR__scenes/nonmq/daiyousei_izumi_scene/gGreatFairyDoubleDefenceCs"
-static const ALIGN_ASSET(2) char gGreatFairyDoubleDefenceCs[] = dgGreatFairyDoubleDefenceCs;
+#define dgGreatFairyDoubleDefenseCs "__OTR__scenes/nonmq/daiyousei_izumi_scene/gGreatFairyDoubleDefenseCs"
+static const ALIGN_ASSET(2) char gGreatFairyDoubleDefenseCs[] = dgGreatFairyDoubleDefenseCs;
 
 #define ddaiyousei_izumi_sceneCollisionHeader_0043A4 "__OTR__scenes/nonmq/daiyousei_izumi_scene/daiyousei_izumi_sceneCollisionHeader_0043A4"
 static const ALIGN_ASSET(2) char daiyousei_izumi_sceneCollisionHeader_0043A4[] = ddaiyousei_izumi_sceneCollisionHeader_0043A4;
