@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z64EFFECT_H
 #define Z64EFFECT_H
 

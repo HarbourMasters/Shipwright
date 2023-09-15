@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_toki_swd.c
  * Overlay: ovl_Bg_Toki_Swd

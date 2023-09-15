@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_obj_oshihiki.c
  * Overlay: ovl_Obj_Oshihiki

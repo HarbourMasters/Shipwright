@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef RANDOSAVEFILE_H
 #define RANDOSAVEFILE_H
 

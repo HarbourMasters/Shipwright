@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef FP_H
 #define FP_H
 #include <libultraship/libultra.h>

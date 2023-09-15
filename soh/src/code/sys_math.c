@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 f32 sFactorialTbl[] = { 1.0f,    1.0f,     2.0f,      6.0f,       24.0f,       120.0f,      720.0f,

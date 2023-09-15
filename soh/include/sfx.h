@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef SFX_H
 #define SFX_H
 

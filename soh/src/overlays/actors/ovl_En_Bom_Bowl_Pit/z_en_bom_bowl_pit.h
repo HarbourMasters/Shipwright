@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_EN_BOM_BOWL_PIT_H
 #define Z_EN_BOM_BOWL_PIT_H
 

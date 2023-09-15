@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_demo_kankyo.h"
 #include "z64cutscene_commands.h"
 #include "objects/gameplay_keep/gameplay_keep.h"

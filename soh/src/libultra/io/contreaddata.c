@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 s32 osContStartReadData(OSMesgQueue* mq) {

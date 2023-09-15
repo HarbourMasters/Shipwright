@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 #define SAMPLES_TO_OVERPRODUCE 0x10

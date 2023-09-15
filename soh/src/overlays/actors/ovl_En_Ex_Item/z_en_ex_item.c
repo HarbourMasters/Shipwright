@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_ex_item.c
  * Overlay: ovl_En_Ex_Item

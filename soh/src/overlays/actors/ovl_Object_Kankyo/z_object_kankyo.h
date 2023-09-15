@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_OBJECT_KANKYO_H
 #define Z_OBJECT_KANKYO_H
 

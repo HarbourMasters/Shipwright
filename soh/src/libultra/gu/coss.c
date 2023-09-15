@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 s16 coss(u16 angle) {

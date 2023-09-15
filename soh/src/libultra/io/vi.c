@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 OSViContext vi[2] = { 0 };

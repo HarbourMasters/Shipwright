@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_ice_objects.c
  * Overlay: ovl_Bg_Ice_Objects

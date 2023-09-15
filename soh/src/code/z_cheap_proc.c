@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 void Gfx_DrawDListOpa(PlayState* play, Gfx* dlist) {

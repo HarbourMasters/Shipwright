@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_vb_ball.c
  * Overlay: ovl_En_Vb_Ball

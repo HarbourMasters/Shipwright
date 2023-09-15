@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_BGCHECK_H
 #define Z_BGCHECK_H
 

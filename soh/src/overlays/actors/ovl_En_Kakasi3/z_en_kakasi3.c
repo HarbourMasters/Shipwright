@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_kakasi3.c
  * Overlay: ovl_En_Kakasi3

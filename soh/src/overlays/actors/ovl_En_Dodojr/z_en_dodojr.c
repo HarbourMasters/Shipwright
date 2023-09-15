@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_dodojr.c
  * Overlay: ovl_En_Dodojr

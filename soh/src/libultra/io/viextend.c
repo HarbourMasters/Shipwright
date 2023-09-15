@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 void osViExtendVStart(u32 arg0) {

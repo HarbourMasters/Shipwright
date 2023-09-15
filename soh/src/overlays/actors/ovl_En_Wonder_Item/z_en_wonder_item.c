@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_wonder_item.c
  * Overlay: ovl_En_Wonder_Item

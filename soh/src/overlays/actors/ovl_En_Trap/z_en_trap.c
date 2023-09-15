@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_trap.c
  * Overlay: ovl_En_Trap

@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_EN_HORSE_LINK_CHILD_H
 #define Z_EN_HORSE_LINK_CHILD_H
 

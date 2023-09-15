@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z64TRANSITION_H
 #define Z64TRANSITION_H
 

@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_dy_yoseizo.c
  * Overlay: ovl_Bg_Dy_Yoseizo

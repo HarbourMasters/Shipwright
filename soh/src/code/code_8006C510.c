@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 f32 func_8006C510(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5) {

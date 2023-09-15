@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_SHOT_SUN_H
 #define Z_SHOT_SUN_H
 

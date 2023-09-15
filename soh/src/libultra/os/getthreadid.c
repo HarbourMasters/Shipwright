@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 OSId osGetThreadId(OSThread* thread) {

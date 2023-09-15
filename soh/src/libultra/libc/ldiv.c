@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 ldiv_t ldiv(s32 num, s32 denom) {

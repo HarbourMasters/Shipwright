@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_en_clear_tag.h"
 
 #include <string.h>

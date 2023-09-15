@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_mori_kaitenkabe.c
  * Overlay: ovl_Bg_Mori_Kaitenkabe

@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_en_ma2.h"
 #include "objects/object_ma2/object_ma2.h"
 

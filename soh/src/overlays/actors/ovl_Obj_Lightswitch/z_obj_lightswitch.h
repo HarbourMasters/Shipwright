@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_OBJ_LIGHTSWITCH_H
 #define Z_OBJ_LIGHTSWITCH_H
 

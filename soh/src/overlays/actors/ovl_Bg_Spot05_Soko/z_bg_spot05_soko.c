@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_spot05_soko.c
  * Overlay: ovl_Bg_Spot05_Soko

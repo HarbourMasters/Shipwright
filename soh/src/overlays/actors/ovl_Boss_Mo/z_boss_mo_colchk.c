@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 #include "z_boss_mo.h"
 

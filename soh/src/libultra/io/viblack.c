@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 // TODO: name magic constants

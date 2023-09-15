@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_eff_ss_bomb2.c
  * Overlay: ovl_Effect_Ss_Bomb2

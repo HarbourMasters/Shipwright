@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_eff_ss_dt_bubble.c
  * Overlay: ovl_Effect_Ss_Dt_Bubble

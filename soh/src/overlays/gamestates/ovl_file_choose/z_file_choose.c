@@ -1,4 +1,6 @@
 ﻿#include "file_choose.h"
+// clang-format off
+
 
 #include <string.h>
 

@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_EN_FLOORMAS_H
 #define Z_EN_FLOORMAS_H
 

@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_pu_box.c
  * Overlay: ovl_En_Pu_Box

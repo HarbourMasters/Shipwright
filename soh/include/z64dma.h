@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z64_DMA_H
 #define Z64_DMA_H
 

@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef _BOOTCOMMANDS_H_
 #define _BOOTCOMMANDS_H_
 #include <libultraship/libultra.h>

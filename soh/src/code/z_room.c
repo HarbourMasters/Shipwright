@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifdef WIN32
 #include <vcruntime_string.h>
 #endif

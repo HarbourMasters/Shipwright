@@ -1,3 +1,5 @@
+// clang-format off
+
 // 32 bit implementation based off of Boost hash
 
 #ifndef BOOST_FUNCTIONAL_HASH_FWD_32_HPP

@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_zl3.c
  * Overlay: ovl_En_Zl3

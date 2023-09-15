@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_mir_ray.c
  * Overlay: ovl_Mir_Ray

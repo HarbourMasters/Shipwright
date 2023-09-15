@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_fish.c
  * Overlay: ovl_En_Fish

@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_bg_mizu_shutter.h"
 #include "objects/object_mizu_objects/object_mizu_objects.h"
 

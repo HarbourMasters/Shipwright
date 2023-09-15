@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_ydan_maruta.c
  * Overlay: ovl_Bg_Ydan_Maruta

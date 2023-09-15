@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_demo_effect.h"
 #include "vt.h"
 #include "objects/gameplay_keep/gameplay_keep.h"

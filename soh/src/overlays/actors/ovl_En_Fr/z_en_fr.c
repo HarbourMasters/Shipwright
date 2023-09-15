@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_en_fr.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "vt.h"

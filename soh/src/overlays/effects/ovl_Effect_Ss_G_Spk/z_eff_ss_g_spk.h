@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_EFF_SS_G_SPK_H
 #define Z_EFF_SS_G_SPK_H
 

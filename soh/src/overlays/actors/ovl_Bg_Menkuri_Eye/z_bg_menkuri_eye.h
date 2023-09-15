@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_BG_MENKURI_EYE_H
 #define Z_BG_MENKURI_EYE_H
 

@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_MIR_RAY_H
 #define Z_MIR_RAY_H
 

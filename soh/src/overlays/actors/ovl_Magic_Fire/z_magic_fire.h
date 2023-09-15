@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_MAGIC_FIRE_H
 #define Z_MAGIC_FIRE_H
 

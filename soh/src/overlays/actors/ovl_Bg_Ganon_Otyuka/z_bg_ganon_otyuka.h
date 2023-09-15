@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_BG_GANON_OTYUKA_H
 #define Z_BG_GANON_OTYUKA_H
 

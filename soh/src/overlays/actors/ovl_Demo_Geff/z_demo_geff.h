@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_DEMO_GEFF_H
 #define Z_DEMO_GEFF_H
 

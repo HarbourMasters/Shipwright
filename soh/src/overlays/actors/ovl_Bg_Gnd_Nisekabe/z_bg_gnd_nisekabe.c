@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_gnd_nisekabe.c
  * Overlay: ovl_Bg_Gnd_Nisekabe

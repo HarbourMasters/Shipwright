@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_en_ex_ruppy.h"
 #include "vt.h"
 #include "../ovl_En_Diving_Game/z_en_diving_game.h"

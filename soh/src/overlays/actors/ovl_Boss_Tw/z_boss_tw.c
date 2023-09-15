@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_boss_tw.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "textures/boss_title_cards/object_tw.h"

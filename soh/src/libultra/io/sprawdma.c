@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 s32 __osSpRawStartDma(s32 direction, void* devAddr, void* dramAddr, size_t size) {

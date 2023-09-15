@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_bg_jya_cobra.h"
 
 #include <string.h>

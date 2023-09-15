@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_arrow_light.c
  * Overlay: ovl_Arrow_Light

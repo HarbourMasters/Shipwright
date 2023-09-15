@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 typedef void (*arg3_800FC868)(void*);

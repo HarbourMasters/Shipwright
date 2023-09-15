@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef _RANDO_GROTTO_H_
 #define _RANDO_GROTTO_H_
 

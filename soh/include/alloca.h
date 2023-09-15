@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef ALLOCA_H
 #define ALLOCA_H
 

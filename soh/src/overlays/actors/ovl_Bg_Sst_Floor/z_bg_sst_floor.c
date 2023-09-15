@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_sst_floor.c
  * Overlay: ovl_Bg_Sst_Floor

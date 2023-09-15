@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_demo_du.h"
 #include "objects/object_du/object_du.h"
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"

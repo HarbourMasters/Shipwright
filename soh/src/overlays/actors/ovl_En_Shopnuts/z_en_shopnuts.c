@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_en_shopnuts.h"
 #include "objects/object_shopnuts/object_shopnuts.h"
 

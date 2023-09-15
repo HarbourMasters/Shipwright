@@ -1,3 +1,5 @@
+// clang-format off
+
 #include <stdint.h>
 #include <stddef.h>
 

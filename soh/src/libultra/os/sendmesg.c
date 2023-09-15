@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 s32 osSendMesg(OSMesgQueue* mq, OSMesg mesg, s32 flag) {

@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z64.h"
 
 // 0x18000 bytes

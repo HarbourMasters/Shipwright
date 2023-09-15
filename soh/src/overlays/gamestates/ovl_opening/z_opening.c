@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_opening.c
  * Overlay: ovl_opening

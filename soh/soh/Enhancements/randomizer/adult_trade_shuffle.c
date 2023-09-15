@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "functions.h"
 #include "variables.h"

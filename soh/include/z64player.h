@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z64PLAYER_H
 #define Z64PLAYER_H
 

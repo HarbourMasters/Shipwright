@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_BOSS_GANONDROF_H
 #define Z_BOSS_GANONDROF_H
 

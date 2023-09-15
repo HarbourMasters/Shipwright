@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z64_AUDIO_H
 #define Z64_AUDIO_H
 

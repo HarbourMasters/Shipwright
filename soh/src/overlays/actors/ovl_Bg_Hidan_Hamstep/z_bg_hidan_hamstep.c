@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_hidan_hamstep.c
  * Overlay: ovl_Bg_Hidan_Hamstep

@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_arms_hook.h"
 #include "objects/object_link_boy/object_link_boy.h"
 

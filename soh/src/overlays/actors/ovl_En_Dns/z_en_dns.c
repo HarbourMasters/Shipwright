@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_dns.c
  * Overlay: En_Dns

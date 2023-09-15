@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_OBJ_ROOMTIMER_H
 #define Z_OBJ_ROOMTIMER_H
 

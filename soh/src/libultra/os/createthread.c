@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 OSThread* __osThreadTail[2] = { NULL, (OSThread*)-1 };

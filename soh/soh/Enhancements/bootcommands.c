@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "bootcommands.h"
 #include "gameconsole.h"
 #include <macros.h>

@@ -1,3 +1,5 @@
+// clang-format off
+
 /**
  * File: z_demo_kekkai.c
  * Overlay: ovl_Demo_Kekkai

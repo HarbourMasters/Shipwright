@@ -1,3 +1,5 @@
+// clang-format off
+
 #pragma once
 
 #include "soh/resource/importer/scenecommand/SceneCommandFactory.h"

@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef SEGMENT_SYMBOLS_H
 #define SEGMENT_SYMBOLS_H
 

@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_obj_timeblock.c
  * Overlay: ovl_Obj_Timeblock

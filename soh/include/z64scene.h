@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z64SCENE_H
 #define Z64SCENE_H
 

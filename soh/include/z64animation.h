@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z64_ANIMATION_H
 #define Z64_ANIMATION_H
 

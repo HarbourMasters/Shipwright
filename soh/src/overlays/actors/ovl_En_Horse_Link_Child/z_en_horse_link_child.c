@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_horse_link_child.c
  * Overlay: ovl_En_Horse_Link_Child

@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_scene_change.c
  * Overlay: ovl_En_Scene_Change

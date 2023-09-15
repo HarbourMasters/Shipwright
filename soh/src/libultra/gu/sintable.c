@@ -1,3 +1,5 @@
+// clang-format off
+
 #include <libultraship/libultra/types.h>
 
 static s16 sintable[0x400] = {

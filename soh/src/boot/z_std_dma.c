@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 #include "vt.h"
 #include <stdio.h>

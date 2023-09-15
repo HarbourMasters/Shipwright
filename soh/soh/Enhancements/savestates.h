@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef SAVE_STATES_H
 #define SAVE_STATES_H
 

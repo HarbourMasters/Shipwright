@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef VARIABLES_H
 #define VARIABLES_H
 

@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_en_ny.h"
 #include "objects/object_ny/object_ny.h"
 #include "soh/frame_interpolation.h"

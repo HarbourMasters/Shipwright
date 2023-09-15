@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_demo_go.c
  * Overlay: Demo_Go

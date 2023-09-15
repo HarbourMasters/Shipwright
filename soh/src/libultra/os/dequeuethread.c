@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 void __osDequeueThread(OSThread** queue, OSThread* thread) {

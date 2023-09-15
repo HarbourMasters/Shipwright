@@ -1,3 +1,5 @@
+// clang-format off
+
 //
 //  SAPISpeechSynthesizer.h
 //  libultraship

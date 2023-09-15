@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_bg_spot16_bombstone.h"
 #include "objects/object_spot16_obj/object_spot16_obj.h"
 #include "objects/object_bombiwa/object_bombiwa.h"

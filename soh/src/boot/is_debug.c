@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 OSPiHandle* sISVHandle; // official name : is_Handle

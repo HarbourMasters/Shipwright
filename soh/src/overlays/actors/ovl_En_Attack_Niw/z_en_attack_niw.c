@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_attack_niw.c
  * Overlay: ovl_En_Attack_Niw

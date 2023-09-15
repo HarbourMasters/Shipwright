@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_toki_hikari.c
  * Overlay: ovl_Toki_Hikari

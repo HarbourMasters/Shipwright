@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "gameconsole.h"
 #include "../OTRGlobals.h"
 #include <macros.h>

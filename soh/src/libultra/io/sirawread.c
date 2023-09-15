@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 s32 __osSiRawReadIo(void* devAddr, u32* dst) {

@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_door_shutter.c
  * Overlay: ovl_Door_Shutter

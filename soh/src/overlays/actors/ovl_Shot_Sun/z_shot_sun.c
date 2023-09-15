@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_shot_sun.c
  * Overlay: ovl_Shot_Sun

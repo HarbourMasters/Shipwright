@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_horse_normal.c
  * Overlay: ovl_En_Horse_Normal

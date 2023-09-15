@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z64MAP_MARK_H
 #define Z64MAP_MARK_H
 

@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 // Valid addr up to 0x7FF

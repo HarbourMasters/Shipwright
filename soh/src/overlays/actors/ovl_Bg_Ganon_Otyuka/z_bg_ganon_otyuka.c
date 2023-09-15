@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_ganon_otyka.c
  * Overlay: ovl_Bg_Ganon_Otyka

@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_en_dh.h"
 #include "objects/object_dh/object_dh.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"

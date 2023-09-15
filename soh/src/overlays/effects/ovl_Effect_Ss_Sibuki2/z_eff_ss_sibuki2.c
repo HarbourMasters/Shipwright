@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_eff_ss_sibuki2.c
  * Overlay: ovl_Effect_Ss_Sibuki2

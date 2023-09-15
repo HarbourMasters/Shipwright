@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 //uintptr_t D_8012DBA0 = (uintptr_t)&D_80155F50;

@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 #define BANK_ADDR 0x400

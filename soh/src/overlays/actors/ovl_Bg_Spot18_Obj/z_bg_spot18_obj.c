@@ -1,3 +1,5 @@
+// clang-format off
+
 
 /*
  * File: z_bg_spot18_obj.c

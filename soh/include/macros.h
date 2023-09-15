@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef MACROS_H
 #define MACROS_H
 

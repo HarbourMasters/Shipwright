@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_en_jj.h"
 #include "z64cutscene_commands.h"
 

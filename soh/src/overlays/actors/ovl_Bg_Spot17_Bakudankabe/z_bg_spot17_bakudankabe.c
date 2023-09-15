@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_spot17_bakudankabe.c
  * Overlay: ovl_Bg_Spot17_Bakudankabe

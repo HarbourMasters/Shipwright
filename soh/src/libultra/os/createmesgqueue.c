@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 void osCreateMesgQueue(OSMesgQueue* mq, OSMesg* msg, s32 count) {

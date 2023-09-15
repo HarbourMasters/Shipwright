@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef ICHAIN_H
 #define ICHAIN_H
 

@@ -1,3 +1,5 @@
+// clang-format off
+
 #include <stdlib.h>
 
 #include <libultraship/libultra.h>

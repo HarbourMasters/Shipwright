@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_demo_6k.c
  * Overlay: ovl_Demo_6K

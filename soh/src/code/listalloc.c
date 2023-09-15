@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 ListAlloc* ListAlloc_Init(ListAlloc* this) {

@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 s32 __osSiRawWriteIo(void* devAddr, u32 val) {

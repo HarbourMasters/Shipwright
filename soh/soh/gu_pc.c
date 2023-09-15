@@ -1,3 +1,5 @@
+// clang-format off
+
 #include <math.h>
 #include "z64.h"
 

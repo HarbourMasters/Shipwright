@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_select.c
  * Overlay: ovl_select

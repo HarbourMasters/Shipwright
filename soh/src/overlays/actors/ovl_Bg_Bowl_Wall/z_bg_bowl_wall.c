@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_bowl_wall.c
  * Overlay: Bg_Bowl_Wall

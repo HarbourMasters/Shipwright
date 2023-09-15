@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 void osSetThreadPri(OSThread* thread, OSPri pri) {

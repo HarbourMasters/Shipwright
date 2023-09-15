@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z64MATH_H
 #define Z64MATH_H
 

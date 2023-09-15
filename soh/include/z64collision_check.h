@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_COLLISION_CHECK_H
 #define Z_COLLISION_CHECK_H
 

@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 static s16 sFloorTexIndexOffset[10][8] = {

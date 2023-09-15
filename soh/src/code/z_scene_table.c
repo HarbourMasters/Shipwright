@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 #include "scenes/overworld/spot00/spot00_scene.h"

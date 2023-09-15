@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_ELF_MSG_H
 #define Z_ELF_MSG_H
 

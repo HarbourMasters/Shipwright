@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_eff_ss_en_fire.c
  * Overlay: ovl_Effect_Ss_En_Fire

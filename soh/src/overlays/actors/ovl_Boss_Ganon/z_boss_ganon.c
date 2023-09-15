@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_boss_ganon.h"
 #include "overlays/ovl_Boss_Ganon/ovl_Boss_Ganon.h"
 #include "overlays/actors/ovl_En_Ganon_Mant/z_en_ganon_mant.h"

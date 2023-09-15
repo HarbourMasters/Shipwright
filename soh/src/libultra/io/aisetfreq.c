@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 s32 osAiSetFrequency(u32 frequency) {

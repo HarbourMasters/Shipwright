@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_ddan_kd.c
  * Overlay: ovl_Bg_Ddan_Kd

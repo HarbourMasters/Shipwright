@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_obj_makeoshihiki.c
  * Overlay: ovl_Obj_Makeoshihiki

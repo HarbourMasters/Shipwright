@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_BG_YDAN_HASI_H
 #define Z_BG_YDAN_HASI_H
 

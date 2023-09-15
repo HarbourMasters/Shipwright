@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_hidan_curtain.c
  * Overlay: ovl_Bg_Hidan_Curtain

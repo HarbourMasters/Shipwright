@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z64LIGHT_H
 #define Z64LIGHT_H
 

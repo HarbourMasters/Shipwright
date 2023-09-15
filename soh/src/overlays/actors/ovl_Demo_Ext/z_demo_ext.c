@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_demo_ext.c
  * Overlay: Demo_Ext

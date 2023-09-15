@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_ITEM_OCARINA_H
 #define Z_ITEM_OCARINA_H
 

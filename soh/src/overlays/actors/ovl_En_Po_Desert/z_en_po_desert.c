@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_po_desert.c
  * Overlay: ovl_En_Po_Desert

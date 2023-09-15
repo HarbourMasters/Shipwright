@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_eff_ss_stone1.c
  * Overlay: ovl_Effect_Ss_Stone1

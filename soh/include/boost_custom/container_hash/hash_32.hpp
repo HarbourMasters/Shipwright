@@ -1,3 +1,5 @@
+// clang-format off
+
 // 32 bit implementation based off of Boost hash
 // Only implementing 32 bit versions integral and string based hashes
 

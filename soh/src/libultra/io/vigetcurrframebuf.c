@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 u32* osViGetCurrentFramebuffer(void) {

@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_dnt_demo.c
  * Overlay: ovl_En_Dnt_Demo

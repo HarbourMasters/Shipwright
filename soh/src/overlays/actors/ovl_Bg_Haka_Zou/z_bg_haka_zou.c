@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_haka_zou.c
  * Overlay: ovl_Bg_Haka_Zou

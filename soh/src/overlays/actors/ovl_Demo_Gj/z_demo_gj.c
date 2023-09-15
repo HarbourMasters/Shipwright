@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_demo_gj.c
  * Overlay: Demo_Gj

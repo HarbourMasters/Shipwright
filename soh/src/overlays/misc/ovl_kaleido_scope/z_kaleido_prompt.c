@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_kaleido_scope.h"
 
 static s16 D_8082A6E0[] = { 100, 255 };

@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_en_ru1.h"
 #include "z64cutscene_commands.h"
 

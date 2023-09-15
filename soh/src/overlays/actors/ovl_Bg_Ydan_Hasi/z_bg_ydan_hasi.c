@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_ydan_hasi.c
  * Overlay: ovl_Bg_Ydan_Hasi

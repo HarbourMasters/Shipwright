@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_DOOR_GERUDO_H
 #define Z_DOOR_GERUDO_H
 

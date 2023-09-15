@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_kaleido_scope.h"
 #include <stdlib.h>
 #include <string.h>

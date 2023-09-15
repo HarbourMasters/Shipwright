@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_object_kankyo.c
  * Overlay: ovl_Object_Kankyo

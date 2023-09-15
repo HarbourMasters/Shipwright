@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_ganon_organ.c
  * Overlay: ovl_En_Ganon_Organ

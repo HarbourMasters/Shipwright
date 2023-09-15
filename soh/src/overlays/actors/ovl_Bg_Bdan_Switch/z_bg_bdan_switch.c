@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_bdan_switch.c
  * Overlay: ovl_Bg_Bdan_Switch

@@ -1,3 +1,5 @@
+// clang-format off
+
 #pragma once
 #include "z64actor.h"
 

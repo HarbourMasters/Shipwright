@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_EFF_SS_ICE_PIECE_H
 #define Z_EFF_SS_ICE_PIECE_H
 

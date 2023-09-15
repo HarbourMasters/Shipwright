@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 #define BUFF_LEN 0x20

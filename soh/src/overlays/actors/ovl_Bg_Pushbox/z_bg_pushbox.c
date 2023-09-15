@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_pushbox.c
  * Overlay: ovl_Bg_Pushbox

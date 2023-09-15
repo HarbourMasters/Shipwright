@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_player.c
  * Overlay: ovl_player_actor

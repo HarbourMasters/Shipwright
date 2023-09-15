@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_boss_dodongo.h"
 
 static u8 D_808C7000[] = {

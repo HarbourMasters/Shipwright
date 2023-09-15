@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_spot01_idohashira.c
  * Overlay: Bg_Spot01_Idohashira

@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_ru1.c
  * Overlay: En_Ru1

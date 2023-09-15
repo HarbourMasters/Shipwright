@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_menkuri_kaiten.c
  * Overlay: Bg_Menkuri_Kaiten

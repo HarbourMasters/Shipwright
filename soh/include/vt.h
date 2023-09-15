@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef VT_H
 #define VT_H
 

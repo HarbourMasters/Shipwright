@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_bg_spot18_basket.h"
 #include "objects/object_spot18_obj/object_spot18_obj.h"
 #include "vt.h"

@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_weather_tag.c
  * Overlay: ovl_En_Weather_Tag

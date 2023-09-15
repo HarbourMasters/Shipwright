@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_spot12_gate.c
  * Overlay: ovl_Bg_Spot12_Gate

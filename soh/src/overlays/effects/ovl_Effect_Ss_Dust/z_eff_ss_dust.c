@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_eff_ss_dust.c
  * Overlay: ovl_Effect_Ss_Dust

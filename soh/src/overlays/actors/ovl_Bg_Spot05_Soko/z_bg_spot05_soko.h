@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_BG_SPOT05_SOKO_H
 #define Z_BG_SPOT05_SOKO_H
 

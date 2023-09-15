@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_door_killer.c
  * Overlay: ovl_Door_Killer

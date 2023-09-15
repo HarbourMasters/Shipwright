@@ -1,3 +1,5 @@
+// clang-format off
+
 typedef enum {
     COLORSCHEME_N64,
     COLORSCHEME_GAMECUBE

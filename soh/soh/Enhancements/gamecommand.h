@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef _GAMECOMMAND_H_
 #define _GAMECOMMAND_H_
 #include <ultra64.h>

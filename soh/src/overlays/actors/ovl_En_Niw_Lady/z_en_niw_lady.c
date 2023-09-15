@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_en_niw_lady.h"
 #include "objects/object_ane/object_ane.h"
 #include "objects/object_os_anime/object_os_anime.h"

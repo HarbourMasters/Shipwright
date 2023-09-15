@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_obj_blockstop.c
  * Overlay: ovl_Obj_Blockstop

@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_partner.c
  * Overlay: ovl_En_Partner

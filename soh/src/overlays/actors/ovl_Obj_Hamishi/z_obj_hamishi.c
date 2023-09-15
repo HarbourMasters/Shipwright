@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_obj_hamishi.c
  * Overlay: ovl_Obj_Hamishi

@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_en_fz.h"
 #include "objects/object_fz/object_fz.h"
 #include "soh/frame_interpolation.h"

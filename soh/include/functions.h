@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 

@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_en_peehat.h"
 #include "objects/object_peehat/object_peehat.h"
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"

@@ -1,3 +1,5 @@
+// clang-format off
+
 #include <libultraship/libultraship.h>
 
 class RandomizerSettingsWindow : public LUS::GuiWindow {

@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_obj_ice_poly.c
  * Overlay: ovl_Obj_Ice_Poly

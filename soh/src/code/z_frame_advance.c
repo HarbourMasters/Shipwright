@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 void FrameAdvance_Init(FrameAdvanceContext* frameAdvCtx) {

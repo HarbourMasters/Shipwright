@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 void ViMode_LogPrint(OSViMode* osViMode) {

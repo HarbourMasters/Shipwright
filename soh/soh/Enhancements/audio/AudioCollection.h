@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifdef __cplusplus
 #include <map>
 #include <string>

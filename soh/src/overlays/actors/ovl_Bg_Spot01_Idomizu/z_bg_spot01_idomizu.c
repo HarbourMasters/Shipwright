@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_spot01_idomizu.c
  * Overlay: ovl_Bg_Spot01_Idomizu

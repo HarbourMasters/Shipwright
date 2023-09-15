@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef _Z64ENVIRONMENT_H_
 #define _Z64ENVIRONMENT_H_
 

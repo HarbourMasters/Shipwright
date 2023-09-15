@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 #include "objects/object_gi_key/object_gi_key.h"
 #include "objects/object_gi_jewel/object_gi_jewel.h"

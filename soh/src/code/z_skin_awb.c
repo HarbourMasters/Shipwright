@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 #include "overlays/actors/ovl_En_fHG/z_en_fhg.h"
 #include <assert.h>

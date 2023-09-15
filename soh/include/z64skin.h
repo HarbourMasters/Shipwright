@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z64_SKIN_H
 #define Z64_SKIN_H
 

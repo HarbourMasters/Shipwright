@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  *  File: z_bg_jya_goroiwa.c
  *  Overlay: ovl_Bg_Jya_Goroiwa

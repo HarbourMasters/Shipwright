@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z64ITEM_H
 #define Z64ITEM_H
 

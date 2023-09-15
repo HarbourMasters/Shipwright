@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_kaleido_scope.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include "textures/icon_item_nes_static/icon_item_nes_static.h"

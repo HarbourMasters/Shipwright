@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_vb_sima.c
  * Overlay: ovl_Bg_Vb_Sima

@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef REGS_H
 #define REGS_H
 

@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_daiku_kakariko.c
  * Overlay: ovl_En_Daiku_Kakariko

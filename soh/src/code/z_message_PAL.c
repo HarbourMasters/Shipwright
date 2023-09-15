@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 #include "message_data_static.h"
 #include "vt.h"

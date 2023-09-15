@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_relay_objects.c
  * Overlay: ovl_Bg_Relay_Objects

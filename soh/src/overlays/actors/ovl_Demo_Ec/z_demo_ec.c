@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_demo_ec.c
  * Overlay: ovl_Demo_Ec

@@ -1,3 +1,5 @@
+// clang-format off
+
 /**
  * Effect Soft Sprite Table
  *

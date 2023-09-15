@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_bdan_objects.c
  * Overlay: ovl_Bg_Bdan_Objects

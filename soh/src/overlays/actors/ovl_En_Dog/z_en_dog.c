@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_dog.c
  * Overlay: ovl_En_Dog

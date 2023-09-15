@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z64.h"
 #include <assert.h>
 #ifndef __APPLE__

@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_oceff_wipe2.c
  * Overlay: ovl_Oceff_Wipe2

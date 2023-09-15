@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_hidan_kowarerukabe.c
  * Overlay: ovl_Bg_Hidan_Kowarerukabe

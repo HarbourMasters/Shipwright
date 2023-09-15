@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_jya_amishutter.c
  * Overlay: Bg_Jya_Amishutter

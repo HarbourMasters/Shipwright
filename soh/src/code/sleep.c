@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 void Sleep_Cycles(OSTime cycles) {

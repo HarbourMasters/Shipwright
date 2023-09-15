@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_arrow_fire.c
  * Overlay: ovl_Arrow_Fire

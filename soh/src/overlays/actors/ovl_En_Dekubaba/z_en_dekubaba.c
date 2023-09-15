@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_en_dekubaba.h"
 #include "objects/object_dekubaba/object_dekubaba.h"
 #include "objects/gameplay_keep/gameplay_keep.h"

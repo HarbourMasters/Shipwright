@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_floormas
  * Overlay: En_Floormas

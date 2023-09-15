@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef ALIGNMENT_H
 #define ALIGNMENT_H
 

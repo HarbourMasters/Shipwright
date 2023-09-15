@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_FISHING_H
 #define Z_FISHING_H
 

@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"

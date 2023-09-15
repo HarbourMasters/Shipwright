@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef MESSAGE_DATA_TEXTBOX_TYPES_H
 #define MESSAGE_DATA_TEXTBOX_TYPES_H
 

@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_item_inbox.c
  * Overlay: ovl_Item_Inbox

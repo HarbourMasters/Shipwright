@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef GFX_ENHANCEMENT_H
 #define GFX_EHHANCEMENT_H
 

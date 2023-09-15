@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef COMMAND_MACROS_BASE_H
 #define COMMAND_MACROS_BASE_H
 

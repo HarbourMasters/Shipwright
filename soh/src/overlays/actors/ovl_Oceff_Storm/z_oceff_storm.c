@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_oceff_storm.c
  * Overlay: ovl_Oceff_Storm

@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 void func_80026230(PlayState* play, Color_RGBA8* color, s16 arg2, s16 arg3) {

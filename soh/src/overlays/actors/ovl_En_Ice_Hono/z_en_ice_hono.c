@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_ice_hono.c
  * Overlay: ovl_En_Ice_Hono

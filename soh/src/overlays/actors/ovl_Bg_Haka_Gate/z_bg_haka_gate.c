@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_haka_gate.c
  * Overlay: ovl_Bg_Haka_Gate

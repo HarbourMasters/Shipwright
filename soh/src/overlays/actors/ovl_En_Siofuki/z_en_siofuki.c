@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_siofuki.c
  * Overlay: ovl_En_Siofuki

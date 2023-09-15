@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_obj_dekujr.c
  * Overlay: ovl_Obj_Dekujr

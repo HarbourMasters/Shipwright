@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_magic_wind.c
  * Overlay: ovl_Magic_Wind

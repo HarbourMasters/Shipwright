@@ -1,3 +1,5 @@
+// clang-format off
+
 #pragma once
 
 #ifdef __cplusplus

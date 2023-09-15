@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_ARMS_HOOK_H
 #define Z_ARMS_HOOK_H
 

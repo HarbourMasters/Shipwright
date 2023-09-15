@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 //#define GAMESTATE_OVERLAY(name, init, destroy, size)                                                         \

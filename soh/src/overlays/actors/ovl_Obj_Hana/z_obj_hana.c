@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_obj_hana.c
  * Overlay: Obj_Hana

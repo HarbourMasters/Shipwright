@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_mizu_bwall.c
  * Overlay: ovl_Bg_Mizu_Bwall

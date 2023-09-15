@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_g_switch.c
  * Overlay: ovl_En_G_Switch

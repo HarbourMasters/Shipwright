@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 void DynaPolyActor_Init(DynaPolyActor* dynaActor, s32 flags) {

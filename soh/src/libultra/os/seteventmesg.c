@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 #include "ultra64/internal.h"
 

@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_BG_SPOT09_OBJ_H
 #define Z_BG_SPOT09_OBJ_H
 

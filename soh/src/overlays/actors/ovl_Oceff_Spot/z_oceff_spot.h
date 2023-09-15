@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_OCEFF_SPOT_H
 #define Z_OCEFF_SPOT_H
 

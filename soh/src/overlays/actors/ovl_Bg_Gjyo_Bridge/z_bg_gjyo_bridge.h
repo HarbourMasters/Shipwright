@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_BG_GJYO_BRIDGE_H
 #define Z_BG_GJYO_BRIDGE_H
 

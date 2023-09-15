@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_MAGIC_WIND_H
 #define Z_MAGIC_WIND_H
 

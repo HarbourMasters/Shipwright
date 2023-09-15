@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * Much of the code here was borrowed from https://github.com/gamestabled/OoT3D_Randomizer/blob/main/code/src/grotto.c
  * It's been adapted for SoH to use our gPlayState vs their gGlobalContext and slightly different named properties.

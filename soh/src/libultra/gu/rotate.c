@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 void guRotateF(f32 m[4][4], f32 a, f32 x, f32 y, f32 z) {

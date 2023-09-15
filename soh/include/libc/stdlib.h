@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef STDLIB_H
 #define STDLIB_H
 

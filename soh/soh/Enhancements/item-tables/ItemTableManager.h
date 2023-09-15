@@ -1,3 +1,5 @@
+// clang-format off
+
 #pragma once
 #include "ItemTableTypes.h"
 #include "z64item.h"

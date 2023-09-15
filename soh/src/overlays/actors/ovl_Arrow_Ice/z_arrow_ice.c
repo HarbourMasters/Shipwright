@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_arrow_ice.c
  * Overlay: ovl_Arrow_Ice

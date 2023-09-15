@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 //! Note that this is not the same as the original libultra

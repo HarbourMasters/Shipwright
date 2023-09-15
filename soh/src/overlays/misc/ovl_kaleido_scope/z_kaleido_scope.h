@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_KALEIDO_SCOPE_H
 #define Z_KALEIDO_SCOPE_H
 

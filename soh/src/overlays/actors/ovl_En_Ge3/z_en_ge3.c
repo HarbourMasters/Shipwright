@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_ge3.c
  * Overlay: ovl_En_Ge3

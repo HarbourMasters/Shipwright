@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef _RANDO_ENTRANCE_H_
 #define _RANDO_ENTRANCE_H_
 

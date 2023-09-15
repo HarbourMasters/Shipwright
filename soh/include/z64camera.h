@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z64CAMERA_H
 #define Z64CAMERA_H
 

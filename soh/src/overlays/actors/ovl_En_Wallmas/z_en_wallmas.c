@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_wallmas
  * Overlay: En_Wallmas

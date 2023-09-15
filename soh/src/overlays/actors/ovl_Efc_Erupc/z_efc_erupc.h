@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_EFC_ERUPC_H
 #define Z_EFC_ERUPC_H
 

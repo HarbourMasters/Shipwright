@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_BG_HAKA_ZOU_H
 #define Z_BG_HAKA_ZOU_H
 

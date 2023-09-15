@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_breakwall.c
  * Overlay: Bg_Breakwall

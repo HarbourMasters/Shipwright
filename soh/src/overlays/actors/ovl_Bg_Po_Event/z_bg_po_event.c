@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_po_event.c
  * Overlay: ovl_Bg_Po_Event

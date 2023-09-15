@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_en_box.h"
 #include "objects/object_box/object_box.h"
 #include "soh_assets.h"

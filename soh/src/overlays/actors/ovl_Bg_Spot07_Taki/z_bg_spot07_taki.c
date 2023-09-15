@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_spot07_taki.c
  * Overlay: ovl_Bg_Spot07_Taki

@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_BG_TOKI_HIKARI_H
 #define Z_BG_TOKI_HIKARI_H
 

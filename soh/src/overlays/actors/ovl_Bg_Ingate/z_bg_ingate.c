@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_ingate.c
  * Overlay: ovl_Bg_Ingate

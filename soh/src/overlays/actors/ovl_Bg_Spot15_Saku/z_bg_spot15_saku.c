@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_spot15_saku.c
  * Overlay: ovl_Bg_Spot15_Saku

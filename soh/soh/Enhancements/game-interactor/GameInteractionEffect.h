@@ -1,3 +1,5 @@
+// clang-format off
+
 #pragma once
 
 #ifndef GameInteractionEffect_h

@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 // memmove used in __osMalloc.c

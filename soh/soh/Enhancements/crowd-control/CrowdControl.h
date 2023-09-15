@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifdef ENABLE_CROWD_CONTROL
 
 #ifndef _CROWDCONTROL_C

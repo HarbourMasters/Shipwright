@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_si.c
  * Overlay: En_Si

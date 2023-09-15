@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_heishi1.c
  * Overlay: ovl_En_Heishi1

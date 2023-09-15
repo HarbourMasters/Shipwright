@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_demo_im.c
  * Overlay: Demo_Im

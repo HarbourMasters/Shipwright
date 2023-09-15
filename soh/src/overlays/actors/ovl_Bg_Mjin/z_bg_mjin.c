@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_mjin.c
  * Overlay: ovl_Bg_Mjin

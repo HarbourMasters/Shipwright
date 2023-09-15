@@ -1,3 +1,5 @@
+// clang-format off
+
 /**
  * Matching dmadata layout for PAL MQ Debug
  */

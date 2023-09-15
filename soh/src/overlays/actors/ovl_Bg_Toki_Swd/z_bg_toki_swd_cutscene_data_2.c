@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_bg_toki_swd.h"
 #include "z64cutscene_commands.h"
 

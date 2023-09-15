@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_en_ssh.h"
 #include "objects/object_ssh/object_ssh.h"
 

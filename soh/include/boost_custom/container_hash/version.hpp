@@ -1,3 +1,5 @@
+// clang-format off
+
 
 #ifndef BOOST_CONTAINER_HASH_VERSION_HPP
 #define BOOST_CONTAINER_HASH_VERSION_HPP

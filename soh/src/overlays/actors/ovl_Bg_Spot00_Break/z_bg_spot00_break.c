@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_spot00_break.c
  * Overlay: ovl_Bg_Spot00_Break

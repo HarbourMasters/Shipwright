@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef RANDODRAW_H
 #define RANDODRAW_H
 #pragma once

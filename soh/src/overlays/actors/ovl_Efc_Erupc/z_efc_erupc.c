@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_efc_erupc.h"
 #include "objects/object_efc_erupc/object_efc_erupc.h"
 #include "soh/frame_interpolation.h"

@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_en_syateki_man.h"
 #include "vt.h"
 #include "overlays/actors/ovl_En_Syateki_Itm/z_en_syateki_itm.h"

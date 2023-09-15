@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_boss_dodongo.h"
 #include "textures/boss_title_cards/object_kingdodongo.h"
 #include "objects/object_kingdodongo/object_kingdodongo.h"

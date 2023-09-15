@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_boss_goma.h"
 #include "textures/boss_title_cards/object_goma.h"
 #include "objects/object_goma/object_goma.h"

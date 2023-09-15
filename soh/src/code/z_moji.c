@@ -1,3 +1,5 @@
+// clang-format off
+
 /**
  * Unused. A very simple utility for drawing text on screen.
  */

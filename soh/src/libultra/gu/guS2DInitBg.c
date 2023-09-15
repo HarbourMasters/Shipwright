@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 void guS2DInitBg(uObjBg* bg) {

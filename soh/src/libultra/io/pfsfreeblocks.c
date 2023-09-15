@@ -1,3 +1,5 @@
+// clang-format off
+
 #include <libultraship/libultra.h>
 #include "global.h"
 #include "ultra64/pfs.h"

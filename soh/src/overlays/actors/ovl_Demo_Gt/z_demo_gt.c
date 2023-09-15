@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_demo_gt.h"
 #include "objects/object_gt/object_gt.h"
 #include "objects/object_geff/object_geff.h"

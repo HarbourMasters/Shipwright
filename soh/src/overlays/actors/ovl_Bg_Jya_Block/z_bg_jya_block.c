@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_jya_block.c
  * Overlay: ovl_Bg_Jya_Block

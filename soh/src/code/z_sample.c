@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 void Sample_HandleStateChange(SampleContext* this) {

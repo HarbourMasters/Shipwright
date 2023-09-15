@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_END_TITLE_H
 #define Z_END_TITLE_H
 

@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_heavy_block.c
  * Overlay: ovl_Bg_Heavy_Block

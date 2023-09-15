@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_spot09_obj.c
  * Overlay: ovl_Bg_Spot09_Obj

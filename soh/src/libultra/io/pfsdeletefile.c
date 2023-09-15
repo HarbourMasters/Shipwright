@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "ultra64/pfs.h"
 #include "global.h"
 

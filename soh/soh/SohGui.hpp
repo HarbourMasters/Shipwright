@@ -1,3 +1,5 @@
+// clang-format off
+
 //
 //  SohGui.hpp
 //  soh

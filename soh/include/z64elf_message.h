@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z64ELF_MESSAGE_H
 #define Z64ELF_MESSAGE_H
 

@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_ma3.c
  * Overlay: En_Ma3

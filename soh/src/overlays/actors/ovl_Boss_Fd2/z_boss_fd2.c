@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_boss_fd2.c
  * Overlay: ovl_Boss_Fd2

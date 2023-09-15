@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_end_title.c
  * Overlay: ovl_End_Title

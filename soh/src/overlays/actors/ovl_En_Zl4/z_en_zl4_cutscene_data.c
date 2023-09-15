@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_en_zl4.h"
 
 static CutsceneCameraAngle sCsCameraAngle[] = {

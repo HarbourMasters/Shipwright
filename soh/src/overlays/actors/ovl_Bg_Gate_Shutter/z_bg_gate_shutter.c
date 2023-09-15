@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_gate_shutter.c
  * Overlay: Bg_Gate_Shutter

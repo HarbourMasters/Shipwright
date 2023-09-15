@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef _NAMETAG_H_
 #define _NAMETAG_H_
 #include <z64.h>

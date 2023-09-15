@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef UNK_H
 #define UNK_H
 

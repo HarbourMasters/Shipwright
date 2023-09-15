@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_en_kanban.h"
 
 static u16 sShadowTexFlags[] = {

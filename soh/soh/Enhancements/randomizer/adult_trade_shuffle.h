@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_ADULT_TRADE_SHUFFLE_H
 #define Z_ADULT_TRADE_SHUFFLE_H
 

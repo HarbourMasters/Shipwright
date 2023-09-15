@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_menkuri_eye.c
  * Overlay: ovl_Bg_Menkuri_Eye

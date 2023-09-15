@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_hidan_dalm.c
  * Overlay: ovl_Bg_Hidan_Dalm

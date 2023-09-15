@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"

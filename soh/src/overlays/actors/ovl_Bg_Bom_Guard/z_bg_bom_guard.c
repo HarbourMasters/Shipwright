@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_bom_guard.c
  * Overlay: Bg_Bom_Guard

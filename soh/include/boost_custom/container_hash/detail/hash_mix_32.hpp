@@ -1,3 +1,5 @@
+// clang-format off
+
 // 32 bit implementation based off of Boost hash
 
 #ifndef BOOST_HASH_DETAIL_HASH_MIX_32_HPP

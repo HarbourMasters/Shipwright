@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 u8 D_8016F0E0[0xA0]; // unused

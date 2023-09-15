@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_spot16_doughnut.c
  * Overlay: ovl_Bg_Spot16_Doughnut

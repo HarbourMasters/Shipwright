@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef _GAMECONSOLE_H_
 #define _GAMECONSOLE_H_
 

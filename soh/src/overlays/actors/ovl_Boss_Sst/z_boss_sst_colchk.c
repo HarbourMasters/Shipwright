@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_boss_sst.h"
 
 static ColliderJntSphElementInit sJntSphItemsInitHand[11] = {

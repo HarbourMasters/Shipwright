@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_haka_water.c
  * Overlay: ovl_Bg_Haka_Water

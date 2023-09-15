@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_spot11_oasis.c
  * Overlay: ovl_Bg_Spot11_Oasis

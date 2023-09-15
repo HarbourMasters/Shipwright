@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_BG_MORI_HASHIRA4_H
 #define Z_BG_MORI_HASHIRA4_H
 

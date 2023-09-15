@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_EN_JSJUTAN_H
 #define Z_EN_JSJUTAN_H
 

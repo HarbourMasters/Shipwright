@@ -1,3 +1,5 @@
+// clang-format off
+
 //#include "global.h"
 //
 //void* proutSprintf(void* dst, const char* fmt, u32 size) {

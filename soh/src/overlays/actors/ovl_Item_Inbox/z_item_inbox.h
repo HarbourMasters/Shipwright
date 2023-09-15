@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_ITEM_INBOX_H
 #define Z_ITEM_INBOX_H
 

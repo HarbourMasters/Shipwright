@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_ARROW_LIGHT_H
 #define Z_ARROW_LIGHT_H
 

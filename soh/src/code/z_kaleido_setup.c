@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 s16 sKaleidoSetupKscpPos0[] = { PAUSE_QUEST, PAUSE_EQUIP, PAUSE_ITEM, PAUSE_MAP };

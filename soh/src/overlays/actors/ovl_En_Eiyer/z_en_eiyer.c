@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_en_eiyer.h"
 #include "objects/object_ei/object_ei.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"

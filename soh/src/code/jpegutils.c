@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 void JpegUtils_ProcessQuantizationTable(u8* dqt, JpegQuantizationTable* qt, u8 count) {

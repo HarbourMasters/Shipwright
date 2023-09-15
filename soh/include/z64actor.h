@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z64ACTOR_H
 #define Z64ACTOR_H
 

@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_niw_girl.c
  * Overlay: ovl_En_Niw_Girl

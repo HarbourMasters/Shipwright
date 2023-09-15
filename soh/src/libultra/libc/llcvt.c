@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 s64 __d_to_ll(f64 d) {

@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 void Audio_InvalDCache(void* buf, size_t size) {

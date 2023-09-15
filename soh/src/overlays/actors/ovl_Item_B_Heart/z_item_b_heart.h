@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_ITEM_B_HEART_H
 #define Z_ITEM_B_HEART_H
 

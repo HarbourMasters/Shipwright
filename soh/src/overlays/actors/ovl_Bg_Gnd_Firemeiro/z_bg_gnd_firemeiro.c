@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_gnd_firemeiro.c
  * Overlay: ovl_Bg_Gnd_Firemeiro

@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 #include "vt.h"
 #include "overlays/actors/ovl_En_Sw/z_en_sw.h"

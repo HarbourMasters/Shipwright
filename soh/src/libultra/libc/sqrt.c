@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 #ifndef __GNUC__

@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_item_b_heart.c
  * Overlay: ovl_Item_B_Heart

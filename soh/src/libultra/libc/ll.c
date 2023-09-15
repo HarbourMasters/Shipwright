@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 s64 __ull_rshift(u64 l, s64 r) {

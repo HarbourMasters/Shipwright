@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_treemouth.c
  * Overlay: ovl_Bg_Treemouth

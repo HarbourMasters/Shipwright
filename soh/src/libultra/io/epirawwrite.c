@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 s32 __osEPiRawWriteIo(OSPiHandle* handle, u32 devAddr, u32 data) {

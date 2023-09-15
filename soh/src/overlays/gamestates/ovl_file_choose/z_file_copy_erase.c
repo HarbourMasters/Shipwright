@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "file_choose.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 

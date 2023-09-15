@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef ALIGN_ASSET_MACRO_H
 #define ALIGN_ASSET_MACRO_H
 

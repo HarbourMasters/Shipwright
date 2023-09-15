@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_BG_VB_SIMA_H
 #define Z_BG_VB_SIMA_H
 

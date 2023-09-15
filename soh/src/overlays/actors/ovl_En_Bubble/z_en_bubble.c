@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_en_bubble.h"
 #include "objects/object_bubble/object_bubble.h"
 #include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"

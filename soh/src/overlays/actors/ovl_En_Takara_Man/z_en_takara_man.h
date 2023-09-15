@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_EN_TAKARA_MAN_H
 #define Z_EN_TAKARA_MAN_H
 

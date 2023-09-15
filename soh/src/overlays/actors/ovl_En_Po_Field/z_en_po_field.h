@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z_EN_PO_FIELD_H
 #define Z_EN_PO_FIELD_H
 

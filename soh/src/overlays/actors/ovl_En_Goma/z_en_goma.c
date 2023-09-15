@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "z_en_goma.h"
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "objects/object_gol/object_gol.h"

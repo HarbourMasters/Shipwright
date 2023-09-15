@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef MQ_ASSET_HACKS_H
 #define MQ_ASSET_HACKS_H
 

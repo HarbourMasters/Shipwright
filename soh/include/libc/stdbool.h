@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef STDBOOL_H
 #define STDBOOL_H
 

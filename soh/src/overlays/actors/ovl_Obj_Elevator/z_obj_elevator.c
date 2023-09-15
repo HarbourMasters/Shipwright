@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_obj_elevator.c
  * Overlay: Obj_Elevator

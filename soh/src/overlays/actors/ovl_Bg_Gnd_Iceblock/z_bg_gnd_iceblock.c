@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_gnd_iceblock.c
  * Overlay: ovl_Bg_Gnd_Iceblock

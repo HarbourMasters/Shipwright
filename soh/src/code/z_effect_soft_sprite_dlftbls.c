@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 // Linker symbol declarations (used in the table below)

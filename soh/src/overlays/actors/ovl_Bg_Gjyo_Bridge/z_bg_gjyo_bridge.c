@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_bg_gjyo_bridge.c
  * Overlay: ovl_Bg_Gjyo_Bridge

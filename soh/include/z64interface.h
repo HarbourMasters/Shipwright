@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef Z64INTERFACE_H
 #define Z64INTERFACE_H
 

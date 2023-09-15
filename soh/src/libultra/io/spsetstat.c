@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 void __osSpSetStatus(u32 status) {

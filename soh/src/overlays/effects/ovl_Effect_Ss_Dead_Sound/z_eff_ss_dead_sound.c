@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_eff_ss_dead_sound.c
  * Overlay: ovl_Effect_Ss_Dead_Sound

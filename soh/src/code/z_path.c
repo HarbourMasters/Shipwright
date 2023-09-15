@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 Path* Path_GetByIndex(PlayState* play, s16 index, s16 max) {

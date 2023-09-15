@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_en_river_sound.c
  * Overlay: ovl_En_River_Sound

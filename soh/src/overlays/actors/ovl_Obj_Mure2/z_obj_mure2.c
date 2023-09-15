@@ -1,3 +1,5 @@
+// clang-format off
+
 /*
  * File: z_obj_mure2.c
  * Overlay: ovl_Obj_Mure2

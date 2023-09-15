@@ -1,3 +1,5 @@
+// clang-format off
+
 #ifndef OTR_GLOBALS_H
 #define OTR_GLOBALS_H
 

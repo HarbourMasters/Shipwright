@@ -1,3 +1,5 @@
+// clang-format off
+
 #include "global.h"
 
 u8 D_8012D200[] = {
