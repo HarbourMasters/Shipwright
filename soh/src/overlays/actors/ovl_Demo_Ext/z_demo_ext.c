@@ -8,7 +8,7 @@
 #include "vt.h"
 #include "objects/object_fhg/object_fhg.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 typedef enum {
     /* 0x00 */ EXT_WAIT,
@@ -199,7 +199,7 @@ void DemoExt_DrawVortex(Actor* thisx, PlayState* play) {
     Matrix_Translate(kREG(22), kREG(23), kREG(24), MTXMODE_APPLY);
     MATRIX_TOMTX(mtx);
     Matrix_Pop();
-    func_80093D84(gfxCtx);
+    Gfx_SetupDL_25Xlu(gfxCtx);
 
     gDPSetPrimColor(POLY_XLU_DISP++, 0, kREG(33) + 128, kREG(25) + 140, kREG(26) + 80, kREG(27) + 140, this->primAlpha);
     gDPSetEnvColor(POLY_XLU_DISP++, kREG(29) + 90, kREG(30) + 50, kREG(31) + 95, this->envAlpha);

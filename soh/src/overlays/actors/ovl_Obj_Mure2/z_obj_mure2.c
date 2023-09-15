@@ -121,7 +121,7 @@ void ObjMure2_SpawnActors(ObjMure2* this, PlayState* play) {
         if (((this->currentActorNum >> i) & 1) == 0) {
             this->actorSpawnPtrList[i] =
                 Actor_Spawn(&play->actorCtx, play, sActorSpawnIDs[actorNum], spawnPos[i].x, spawnPos[i].y,
-                            spawnPos[i].z, this->actor.world.rot.x, 0, this->actor.world.rot.z, params);
+                            spawnPos[i].z, this->actor.world.rot.x, 0, this->actor.world.rot.z, params, true);
             if (this->actorSpawnPtrList[i] != NULL) {
                 this->actorSpawnPtrList[i]->room = this->actor.room;
             }
@@ -191,8 +191,8 @@ void func_80B9A658(ObjMure2* this) {
 void func_80B9A668(ObjMure2* this, PlayState* play) {
     if (Math3D_Dist1DSq(this->actor.projectedPos.x, this->actor.projectedPos.z) <
             (sDistSquared1[this->actor.params & 3] * this->unk_184) ||
-        CVar_GetS32("gDisableDrawDistance", 0) != 0) {
-        this->actor.flags |= ACTOR_FLAG_4;
+        CVarGetInteger("gDisableDrawDistance", 0) != 0) {
+        this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
         ObjMure2_SpawnActors(this, play);
         func_80B9A6E8(this);
     }
@@ -205,13 +205,13 @@ void func_80B9A6E8(ObjMure2* this) {
 void func_80B9A6F8(ObjMure2* this, PlayState* play) {
     func_80B9A534(this);
 
-    if (CVar_GetS32("gDisableDrawDistance", 0) != 0) {
+    if (CVarGetInteger("gDisableDrawDistance", 0) != 0) {
         return;
     }
 
     if ((sDistSquared2[this->actor.params & 3] * this->unk_184) <=
             Math3D_Dist1DSq(this->actor.projectedPos.x, this->actor.projectedPos.z)) {
-        this->actor.flags &= ~ACTOR_FLAG_4;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
         ObjMure2_CleanupAndDie(this, play);
         func_80B9A658(this);
     }

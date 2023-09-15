@@ -1,6 +1,6 @@
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
-#include <libultraship/mixer.h>
+#include "soh/mixer.h"
 
 #define DEFAULT_LEN_1CH 0x1A0
 #define DEFAULT_LEN_2CH 0x340
@@ -653,7 +653,11 @@ Acmd* AudioSynth_DoOneAudioUpdate(s16* aiBuf, s32 aiBufLen, Acmd* cmd, s32 updat
     }
 
     updateIndex = aiBufLen * 2;
-    aInterleave(cmd++, DMEM_TEMP, DMEM_LEFT_CH, DMEM_RIGHT_CH, updateIndex);
+    if (CVarGetInteger("gMirroredWorld", 0)) {
+        aInterleave(cmd++, DMEM_TEMP, DMEM_RIGHT_CH, DMEM_LEFT_CH, updateIndex);
+    } else {
+        aInterleave(cmd++, DMEM_TEMP, DMEM_LEFT_CH, DMEM_RIGHT_CH, updateIndex);
+    }
     aSaveBuffer(cmd++, DMEM_TEMP, aiBuf, updateIndex * 2);
 
     return cmd;

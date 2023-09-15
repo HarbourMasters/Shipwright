@@ -1,7 +1,7 @@
 #ifndef Z_BG_SPOT17_BAKUDANKABE_H
 #define Z_BG_SPOT17_BAKUDANKABE_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgSpot17Bakudankabe;

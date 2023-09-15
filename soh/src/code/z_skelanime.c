@@ -1,5 +1,8 @@
 #include "global.h"
 #include "vt.h"
+#include <string.h>
+#include <stdio.h>
+#include <assert.h>
 
 #define ANIM_INTERP 1
 
@@ -845,7 +848,7 @@ AnimationEntry* AnimationContext_AddEntry(AnimationContext* animationCtx, Animat
  */
 void AnimationContext_SetLoadFrame(PlayState* play, LinkAnimationHeader* animation, s32 frame, s32 limbCount,
                                    Vec3s* frameTable) {
-    if (CVar_GetS32("gN64WeirdFrames", 0) && frame < 0) {
+    if (CVarGetInteger("gN64WeirdFrames", 0) && frame < 0) {
         Vec3s* src = (Vec3s*)getN64WeirdFrame((sizeof(Vec3s) * limbCount + 2) * frame);
         memcpy(frameTable, src, sizeof(Vec3s) * limbCount + 2);
         return;
@@ -865,7 +868,7 @@ void AnimationContext_SetLoadFrame(PlayState* play, LinkAnimationHeader* animati
 
         char animPath[2048];
 
-        sprintf(animPath, "misc/link_animetion/gPlayerAnimData_%06X", (((uintptr_t)linkAnimHeader->segment - 0x07000000)));
+        snprintf(animPath, sizeof(animPath), "misc/link_animetion/gPlayerAnimData_%06X", (((uintptr_t)linkAnimHeader->segment - 0x07000000)));
 
         //printf("Streaming %s, seg = %08X\n", animPath, linkAnimHeader->segment);
 
@@ -1077,7 +1080,7 @@ void SkelAnime_InitLink(PlayState* play, SkelAnime* skelAnime, FlexSkeletonHeade
                         LinkAnimationHeader* animation, s32 flags, Vec3s* jointTable, Vec3s* morphTable,
                         s32 limbBufCount) {
     if (ResourceMgr_OTRSigCheck(skeletonHeaderSeg) != 0)
-        skeletonHeaderSeg = ResourceMgr_LoadSkeletonByName(skeletonHeaderSeg);
+        skeletonHeaderSeg = ResourceMgr_LoadSkeletonByName(skeletonHeaderSeg, skelAnime);
 
     FlexSkeletonHeader* skeletonHeader = SEGMENTED_TO_VIRTUAL(skeletonHeaderSeg);
     s32 headerJointCount = skeletonHeader->sh.limbCount;
@@ -1108,7 +1111,7 @@ void SkelAnime_InitLink(PlayState* play, SkelAnime* skelAnime, FlexSkeletonHeade
         skelAnime->jointTable = ZELDA_ARENA_MALLOC_DEBUG(allocSize);
         skelAnime->morphTable = ZELDA_ARENA_MALLOC_DEBUG(allocSize);
     } else {
-        ASSERT(limbBufCount == limbCount);
+        assert(limbBufCount == limbCount);
 
         skelAnime->jointTable = (Vec3s*)ALIGN16((uintptr_t)jointTable);
         skelAnime->morphTable = (Vec3s*)ALIGN16((uintptr_t)morphTable);
@@ -1429,7 +1432,7 @@ s32 LinkAnimation_OnFrame(SkelAnime* skelAnime, f32 frame) {
 s32 SkelAnime_Init(PlayState* play, SkelAnime* skelAnime, SkeletonHeader* skeletonHeaderSeg,
                    AnimationHeader* animation, Vec3s* jointTable, Vec3s* morphTable, s32 limbCount) {
     if (ResourceMgr_OTRSigCheck(skeletonHeaderSeg))
-        skeletonHeaderSeg = ResourceMgr_LoadSkeletonByName(skeletonHeaderSeg);
+        skeletonHeaderSeg = ResourceMgr_LoadSkeletonByName(skeletonHeaderSeg, skelAnime);
 
     SkeletonHeader* skeletonHeader = SEGMENTED_TO_VIRTUAL(skeletonHeaderSeg);
 
@@ -1441,7 +1444,7 @@ s32 SkelAnime_Init(PlayState* play, SkelAnime* skelAnime, SkeletonHeader* skelet
         skelAnime->morphTable =
             ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->morphTable));
     } else {
-        ASSERT(limbCount == skelAnime->limbCount);
+        assert(limbCount == skelAnime->limbCount);
         skelAnime->jointTable = jointTable;
         skelAnime->morphTable = morphTable;
     }
@@ -1462,7 +1465,7 @@ s32 SkelAnime_Init(PlayState* play, SkelAnime* skelAnime, SkeletonHeader* skelet
 s32 SkelAnime_InitFlex(PlayState* play, SkelAnime* skelAnime, FlexSkeletonHeader* skeletonHeaderSeg,
                        AnimationHeader* animation, Vec3s* jointTable, Vec3s* morphTable, s32 limbCount) {
     if (ResourceMgr_OTRSigCheck(skeletonHeaderSeg) != 0)
-        skeletonHeaderSeg = ResourceMgr_LoadSkeletonByName(skeletonHeaderSeg);
+        skeletonHeaderSeg = ResourceMgr_LoadSkeletonByName(skeletonHeaderSeg, skelAnime);
 
     FlexSkeletonHeader* skeletonHeader = SEGMENTED_TO_VIRTUAL(skeletonHeaderSeg);
 
@@ -1477,7 +1480,7 @@ s32 SkelAnime_InitFlex(PlayState* play, SkelAnime* skelAnime, FlexSkeletonHeader
         skelAnime->morphTable =
             ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->morphTable));
     } else {
-        ASSERT(limbCount == skelAnime->limbCount);
+        assert(limbCount == skelAnime->limbCount);
         skelAnime->jointTable = jointTable;
         skelAnime->morphTable = morphTable;
     }
@@ -1921,6 +1924,8 @@ void SkelAnime_Free(SkelAnime* skelAnime, PlayState* play) {
     } else {
         osSyncPrintf("morf_joint あきまへん！！\n"); // "morf_joint is freed !!"
     }
+
+    ResourceMgr_UnregisterSkeleton(skelAnime);
 }
 
 /**

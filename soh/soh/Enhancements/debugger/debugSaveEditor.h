@@ -4,9 +4,9 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <cstdint>
 #include <soh/Enhancements/randomizer/randomizer_inf.h>
-
-void InitSaveEditor();
+#include <libultraship/libultraship.h>
 
 typedef enum {
     EVENT_CHECK_INF,
@@ -36,6 +36,7 @@ const std::vector<FlagTable> flagTables = {
         { 0x09, "Used Deku Tree Blue Warp" },
         { 0x0A, "Played Saria's Song for Mido as Adult" },
         { 0x0C, "Met Deku Tree" },
+        { 0x0F, "Spoke to Mido about Saria's whereabouts" },
         { 0x10, "Spoke to Child Malon at Castle or Market" },
         { 0x11, "Spoke to Ingo at Ranch before Talon returns" },
         { 0x12, "Obtained Pocket Egg" },
@@ -186,6 +187,7 @@ const std::vector<FlagTable> flagTables = {
         { 0x18, "Obtained Farore's Wind" },
         { 0x19, "Obtained Din's Fire" },
         { 0x1A, "Obtained Nayru's Love" },
+        { 0x1B, "Obtained Treasure Chest Game Reward" },
         { 0x1C, "Obtained Grave-Dig Heart Piece" },
         { 0x1D, "Obtained Bullet Bag Upgrade (Woods)" },
         { 0x1E, "Obtained Deku Stick Upgrade (Stage)" },
@@ -218,7 +220,7 @@ const std::vector<FlagTable> flagTables = {
         { 0x24, "Spoke to Kokiri Boy Cutting Grass" },
         { 0x26, "Spoke to Kokiri Girl on Shop Awning" },
         { 0x28, "Spoke to Kokiri Girl About Training Center" },
-        { 0x31, "Spoke to Kokiri Boy on Bed in Mido's House" },
+        { 0x41, "Spoke to Kokiri Boy on Bed in Mido's House" },
         { 0x51, "Spoke to Kokiri Girl in Saria's House" },
         { 0x59, "Spoke to Know-It-All Bro. About Temple" },
         { 0x61, "Spoke to Know-It-All Bro. About Saria" },
@@ -486,7 +488,107 @@ const std::vector<FlagTable> flagTables = {
         { RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_7, "SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_7" },
         { RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_8, "SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_8" },
         
-        { RAND_INF_MERCHANTS_MEDIGORON, "RAND_INF_MERCHANTS_MEDIGORON" },
         { RAND_INF_MERCHANTS_CARPET_SALESMAN, "RAND_INF_MERCHANTS_CARPET_SALESMAN" },
+        { RAND_INF_MERCHANTS_MEDIGORON, "RAND_INF_MERCHANTS_MEDIGORON" },
+        { RAND_INF_MERCHANTS_GRANNYS_SHOP, "RAND_INF_MERCHANTS_GRANNY_SHOP"},
+
+        { RAND_INF_ADULT_TRADES_LW_TRADE_COJIRO, "ADULT_TRADES_LW_TRADE_COJIRO" },
+        { RAND_INF_ADULT_TRADES_GV_TRADE_SAW, "ADULT_TRADES_GV_TRADE_SAW" },
+        { RAND_INF_ADULT_TRADES_DMT_TRADE_BROKEN_SWORD, "ADULT_TRADES_DMT_TRADE_BROKEN_SWORD" },
+        { RAND_INF_ADULT_TRADES_LH_TRADE_FROG, "ADULT_TRADES_LH_TRADE_FROG" },
+        { RAND_INF_ADULT_TRADES_DMT_TRADE_EYEDROPS, "ADULT_TRADES_DMT_TRADE_EYEDROPS" },
+
+        { RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD, "KAK_100_GOLD_SKULLTULA_REWARD" },
+        { RAND_INF_GREG_FOUND, "RAND_INF_GREG_FOUND" },
     } },
+};
+
+const std::vector<std::string> state1 = {
+    "Loading",
+    "Swinging Bottle",
+    "Falling from Hookshot",
+    "Hookshot/Bow in Hand",
+    "Targeting Enemy",
+    "Input Disabled",
+    "Text on Screen",
+    "Death",
+    "Starting to put away",
+    "Ready to Fire",
+    "Get Item",
+    "Item over Head",
+    "Charging Spin Attack",
+    "Hanging off Ledge",
+    "Climbing Ledge",
+    "Targeting",
+    "Target Locked",
+    "Targeting Nothing",
+    "Jumping Forward",
+    "In Freefall",
+    "In First-Person View",
+    "Climbing Ladder",
+    "Shielding",
+    "On Horse",
+    "Boomerang in Hand",
+    "Boomerang Thrown",
+    "Damaged",
+    "In Water",
+    "In Item Cutscene",
+    "In Cutscene",
+    "30", //Unknown
+    "Floor collision disabled"
+};
+
+const std::vector<std::string> state2 = {
+    "Grab",
+    "Speak/Check",
+    "Climb",
+    "Footstep",
+    "Moving Dynapoly",
+    "Disabled Rotation on Z target",
+    "Disabled Rotation",
+    "Grabbed by Enemy",
+    "Grabbing Dynapoly",
+    "Spawning Dust",
+    "Underwater",
+    "Diving",
+    "Stationary on Ladder",
+    "Switch Targeting",
+    "Frozen",
+    "Pause Most Updating",
+    "Enter",
+    "Spin Attack w/o Magic",
+    "Crawling",
+    "Hopping",
+    "Navi Out",
+    "Navi Alert",
+    "Down",
+    "Near Ocarina Actor",
+    "Attempt playing for Oca. Actor",
+    "Playing for Oca. Actor",
+    "Reflection",
+    "Ocarina Playing",
+    "Idling",
+    "Disabled draw func",
+    "Sword Lunge",
+    "Void out"
+};
+
+const std::vector<std::string> state3 = {
+    "Ignore ceiling for Floor and Water",
+    "Midair",
+    "Pause Action Func",
+    "Finished Attacking",
+    "Check Floor Water Collision",
+    "Force Pull Ocarina",
+    "Restore Nayru's Love",
+    "Travelling to Hook Target"
+};
+
+class SaveEditorWindow : public LUS::GuiWindow {
+  public:
+    using GuiWindow::GuiWindow;
+
+    void InitElement() override;
+    void DrawElement() override;
+    void UpdateElement() override {};
 };

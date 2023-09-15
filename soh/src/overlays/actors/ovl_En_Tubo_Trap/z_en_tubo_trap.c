@@ -8,8 +8,9 @@
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void EnTuboTrap_Init(Actor* thisx, PlayState* play);
 void EnTuboTrap_Destroy(Actor* thisx, PlayState* play);
@@ -176,6 +177,7 @@ void EnTuboTrap_HandleImpact(EnTuboTrap* this, PlayState* play) {
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 40, NA_SE_EV_BOMB_DROP_WATER);
         EnTuboTrap_DropCollectible(this, play);
         Actor_Kill(&this->actor);
+        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
         return;
     }
 
@@ -186,6 +188,7 @@ void EnTuboTrap_HandleImpact(EnTuboTrap* this, PlayState* play) {
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 40, NA_SE_EV_POT_BROKEN);
         EnTuboTrap_DropCollectible(this, play);
         Actor_Kill(&this->actor);
+        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
         return;
     }
 
@@ -196,6 +199,7 @@ void EnTuboTrap_HandleImpact(EnTuboTrap* this, PlayState* play) {
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 40, NA_SE_EV_POT_BROKEN);
         EnTuboTrap_DropCollectible(this, play);
         Actor_Kill(&this->actor);
+        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
         return;
     }
 
@@ -207,6 +211,7 @@ void EnTuboTrap_HandleImpact(EnTuboTrap* this, PlayState* play) {
             SoundSource_PlaySfxAtFixedWorldPos(play, &player2->actor.world.pos, 40, NA_SE_PL_BODY_HIT);
             EnTuboTrap_DropCollectible(this, play);
             Actor_Kill(&this->actor);
+            GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
             return;
         }
     }
@@ -216,6 +221,7 @@ void EnTuboTrap_HandleImpact(EnTuboTrap* this, PlayState* play) {
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 40, NA_SE_EV_POT_BROKEN);
         EnTuboTrap_DropCollectible(this, play);
         Actor_Kill(&this->actor);
+        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
         return;
     }
 }
@@ -232,7 +238,7 @@ void EnTuboTrap_WaitForProximity(EnTuboTrap* this, PlayState* play) {
 
     if (this->actor.xzDistToPlayer < 200.0f && this->actor.world.pos.y <= player->actor.world.pos.y) {
         Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_ENEMY);
-        this->actor.flags |= ACTOR_FLAG_0;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
         targetHeight = 40.0f + -10.0f * gSaveContext.linkAge;
 
         this->targetY = player->actor.world.pos.y + targetHeight;

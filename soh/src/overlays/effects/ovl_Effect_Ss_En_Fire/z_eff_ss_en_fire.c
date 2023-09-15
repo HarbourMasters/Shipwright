@@ -87,7 +87,7 @@ void EffectSsEnFire_Draw(PlayState* play, u32 index, EffectSs* this) {
         redGreen = 0;
     }
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gDPSetEnvColor(POLY_XLU_DISP++, redGreen * 12.7f, 0, 0, 0);
     gDPSetPrimColor(POLY_XLU_DISP++, 0x0, 0x80, redGreen * 12.7f, redGreen * 12.7f, 0, 255);
     gSPSegment(POLY_XLU_DISP++, 0x08,

@@ -1,8 +1,9 @@
 #ifndef Z_EN_MAG_H
 #define Z_EN_MAG_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
+#include "align_asset_macro.h"
 
 struct EnMag;
 
@@ -39,5 +40,8 @@ typedef enum {
     /* 0x03 */ MAG_STATE_FADE_OUT,
     /* 0x04 */ MAG_STATE_POST_DISPLAY
 } EnMagGlobalState;
+
+#define dgTitleCopyright1998Tex "__OTR__objects/object_mag/gTitleCopyright1998Tex"
+static const ALIGN_ASSET(2) char gTitleCopyright1998Tex[] = dgTitleCopyright1998Tex;
 
 #endif

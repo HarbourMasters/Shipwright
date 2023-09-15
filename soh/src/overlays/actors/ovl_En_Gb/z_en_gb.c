@@ -8,7 +8,7 @@
 #include "objects/object_ps/object_ps.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnGb_Init(Actor* thisx, PlayState* play);
 void EnGb_Destroy(Actor* thisx, PlayState* play);
@@ -143,7 +143,7 @@ static Vec3f sBottlesPositions[] = {
 };
 
 void func_80A2F180(EnGb* this) {
-    if (gSaveContext.infTable[0xB] & 0x40) {
+    if (Flags_GetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET)) {
         this->textId = 0x70F5;
     } else {
         this->textId = 0x70F4;
@@ -224,6 +224,8 @@ void EnGb_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyCylinder(play, &this->collider);
     LightContext_RemoveLight(play, &play->lightCtx, this->light);
     DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80A2F608(EnGb* this) {
@@ -306,8 +308,8 @@ void func_80A2F83C(EnGb* this, PlayState* play) {
 
 void func_80A2F94C(EnGb* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
-        if (!(gSaveContext.infTable[0xB] & 0x40)) {
-            gSaveContext.infTable[0xB] |= 0x40;
+        if (!Flags_GetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET)) {
+            Flags_SetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET);
         }
         func_80A2F180(this);
         this->actionFunc = func_80A2F83C;
@@ -316,11 +318,11 @@ void func_80A2F94C(EnGb* this, PlayState* play) {
 
 void func_80A2F9C0(EnGb* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
-        if (!(gSaveContext.infTable[0xB] & 0x40)) {
-            gSaveContext.infTable[0xB] |= 0x40;
+        if (!Flags_GetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET)) {
+            Flags_SetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET);
         }
         func_80A2F180(this);
-        Player_UpdateBottleHeld(play, GET_PLAYER(play), ITEM_BOTTLE, PLAYER_AP_BOTTLE);
+        Player_UpdateBottleHeld(play, GET_PLAYER(play), ITEM_BOTTLE, PLAYER_IA_BOTTLE);
         Rupees_ChangeBy(10);
         this->actionFunc = func_80A2F83C;
     }
@@ -328,11 +330,11 @@ void func_80A2F9C0(EnGb* this, PlayState* play) {
 
 void func_80A2FA50(EnGb* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
-        if (!(gSaveContext.infTable[0xB] & 0x40)) {
-            gSaveContext.infTable[0xB] |= 0x40;
+        if (!Flags_GetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET)) {
+            Flags_SetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET);
         }
         func_80A2F180(this);
-        Player_UpdateBottleHeld(play, GET_PLAYER(play), ITEM_BOTTLE, PLAYER_AP_BOTTLE);
+        Player_UpdateBottleHeld(play, GET_PLAYER(play), ITEM_BOTTLE, PLAYER_IA_BOTTLE);
         Rupees_ChangeBy(50);
         HIGH_SCORE(HS_POE_POINTS) += 100;
         if (HIGH_SCORE(HS_POE_POINTS) != 1000) {
@@ -437,7 +439,7 @@ void EnGb_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, this->lightColor.r, this->lightColor.g, this->lightColor.b, 255);
@@ -531,7 +533,7 @@ void EnGb_DrawCagedSouls(EnGb* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     for (i = 0; i < 4; i++) {
         s32 idx = this->cagedSouls[i].infoIdx;

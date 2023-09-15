@@ -58,12 +58,12 @@ void BgSpot16Doughnut_Init(Actor* thisx, PlayState* play) {
         // Scales this actor for scenes where it is featured in the background,
         // Death Mountain itself falls into the default case.
         switch (play->sceneNum) {
-            case SCENE_SPOT01:
+            case SCENE_KAKARIKO_VILLAGE:
                 Actor_SetScale(&this->actor, 0.04f);
                 break;
-            case SCENE_SHRINE:
-            case SCENE_SHRINE_N:
-            case SCENE_SHRINE_R:
+            case SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY:
+            case SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT:
+            case SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS:
                 Actor_SetScale(&this->actor, 0.018f);
                 break;
             default:
@@ -71,7 +71,7 @@ void BgSpot16Doughnut_Init(Actor* thisx, PlayState* play) {
                 break;
         }
         osSyncPrintf(VT_FGCOL(CYAN) "%f" VT_RST "\n", this->actor.scale.x);
-        if (!LINK_IS_ADULT || gSaveContext.eventChkInf[2] & 0x8000) {
+        if (!LINK_IS_ADULT || Flags_GetEventChkInf(EVENTCHKINF_DEATH_MOUNTAIN_ERUPTED)) {
             this->fireFlag &= ~1;
         } else {
             this->fireFlag |= 1;
@@ -124,7 +124,7 @@ void BgSpot16Doughnut_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -149,7 +149,7 @@ void BgSpot16Doughnut_DrawExpanding(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

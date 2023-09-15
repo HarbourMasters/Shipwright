@@ -1,8 +1,8 @@
 #ifndef Z64_H
 #define Z64_H
 
-#include "ultra64.h"
-#include "ultra64/gs2dex.h"
+#include <libultraship/libultra.h>
+#include "unk.h" // this used to get pulled in via ultra64.h
 #include "z64save.h"
 #include "z64light.h"
 #include "z64bgcheck.h"
@@ -24,6 +24,7 @@
 #include "z64skin.h"
 #include "z64transition.h"
 #include "z64interface.h"
+#include "alignment.h"
 #include "sequence.h"
 #include "sfx.h"
 #include <libultraship/color.h>
@@ -34,16 +35,17 @@
 #define _SOH64
 #endif
 
-#define AUDIO_HEAP_SIZE  0x3800000
+#define AUDIO_HEAP_SIZE  0x380000
 #define SYSTEM_HEAP_SIZE (1024 * 1024 * 4)
 
 #ifdef __cplusplus
-namespace Ship
+namespace LUS
 {
-    class Resource;
+    class IResource;
     class Scene;
     class DisplayList;
 };
+#include <memory>
 #endif
 
 #define SCREEN_WIDTH  320
@@ -201,6 +203,7 @@ typedef struct {
     /* 0x0060 */ Mtx    projection;
     /* 0x00A0 */ Mtx    viewing;
     /* 0x00E0 */ Mtx*   projectionPtr;
+    /* 0x00E0 */ Mtx*   projectionFlippedPtr;
     /* 0x00E4 */ Mtx*   viewingPtr;
     /* 0x00E8 */ Vec3f  distortionOrientation;
     /* 0x00F4 */ Vec3f  distortionScale;
@@ -211,6 +214,81 @@ typedef struct {
     /* 0x0120 */ s32    flags;
     /* 0x0124 */ s32    unk_124;
 } View; // size = 0x128
+
+typedef enum {
+    /*  0 */ SETUPDL_0,
+    /*  1 */ SETUPDL_1,
+    /*  2 */ SETUPDL_2,
+    /*  3 */ SETUPDL_3,
+    /*  4 */ SETUPDL_4,
+    /*  5 */ SETUPDL_5,
+    /*  6 */ SETUPDL_6,
+    /*  7 */ SETUPDL_7,
+    /*  8 */ SETUPDL_8,
+    /*  9 */ SETUPDL_9,
+    /* 10 */ SETUPDL_10,
+    /* 11 */ SETUPDL_11,
+    /* 12 */ SETUPDL_12,
+    /* 13 */ SETUPDL_13,
+    /* 14 */ SETUPDL_14,
+    /* 15 */ SETUPDL_15,
+    /* 16 */ SETUPDL_16,
+    /* 17 */ SETUPDL_17,
+    /* 18 */ SETUPDL_18,
+    /* 19 */ SETUPDL_19,
+    /* 20 */ SETUPDL_20,
+    /* 21 */ SETUPDL_21,
+    /* 22 */ SETUPDL_22,
+    /* 23 */ SETUPDL_23,
+    /* 24 */ SETUPDL_24,
+    /* 25 */ SETUPDL_25,
+    /* 26 */ SETUPDL_26,
+    /* 27 */ SETUPDL_27,
+    /* 28 */ SETUPDL_28,
+    /* 29 */ SETUPDL_29,
+    /* 30 */ SETUPDL_30,
+    /* 31 */ SETUPDL_31,
+    /* 32 */ SETUPDL_32,
+    /* 33 */ SETUPDL_33,
+    /* 34 */ SETUPDL_34,
+    /* 35 */ SETUPDL_35,
+    /* 36 */ SETUPDL_36,
+    /* 37 */ SETUPDL_37,
+    /* 38 */ SETUPDL_38,
+    /* 39 */ SETUPDL_39,
+    /* 40 */ SETUPDL_40,
+    /* 41 */ SETUPDL_41,
+    /* 42 */ SETUPDL_42,
+    /* 43 */ SETUPDL_43,
+    /* 44 */ SETUPDL_44,
+    /* 45 */ SETUPDL_45,
+    /* 46 */ SETUPDL_46,
+    /* 47 */ SETUPDL_47,
+    /* 48 */ SETUPDL_48,
+    /* 49 */ SETUPDL_49,
+    /* 50 */ SETUPDL_50,
+    /* 51 */ SETUPDL_51,
+    /* 52 */ SETUPDL_52,
+    /* 53 */ SETUPDL_53,
+    /* 54 */ SETUPDL_54,
+    /* 55 */ SETUPDL_55,
+    /* 56 */ SETUPDL_56,
+    /* 57 */ SETUPDL_57,
+    /* 58 */ SETUPDL_58,
+    /* 59 */ SETUPDL_59,
+    /* 60 */ SETUPDL_60,
+    /* 61 */ SETUPDL_61,
+    /* 62 */ SETUPDL_62,
+    /* 63 */ SETUPDL_63,
+    /* 64 */ SETUPDL_64,
+    /* 65 */ SETUPDL_65,
+    /* 66 */ SETUPDL_66,
+    /* 67 */ SETUPDL_67,
+    /* 68 */ SETUPDL_68,
+    /* 69 */ SETUPDL_69,
+    /* 70 */ SETUPDL_70,
+    /* 71 */ SETUPDL_MAX
+} SetupDL;
 
 typedef struct {
     /* 0x00 */ u8   seqId;
@@ -547,12 +625,15 @@ typedef enum {
     /* 10 */ TEXT_STATE_AWAITING_NEXT
 } TextState;
 
+// Increased char buffer because texture paths could be bigger than (16 * 16 / 2)
+#define FONT_CHAR_MULTIPLIER 256
+
 typedef struct {
     /* 0x0000 */ uintptr_t    msgOffset;
     /* 0x0004 */ u32          msgLength;
-    /* 0x0008 */ u8           charTexBuf[FONT_CHAR_TEX_SIZE * 120];
-    /* 0x3C08 */ u8           iconBuf[FONT_CHAR_TEX_SIZE];
-    /* 0x3C88 */ u8           fontBuf[FONT_CHAR_TEX_SIZE * 320];
+    /* 0x0008 */ u8           charTexBuf[FONT_CHAR_TEX_SIZE * FONT_CHAR_MULTIPLIER];
+    /* 0x3C08 */ u8           iconBuf[FONT_CHAR_TEX_SIZE * FONT_CHAR_MULTIPLIER];
+    /* 0x3C88 */ u8           fontBuf[FONT_CHAR_TEX_SIZE * FONT_CHAR_MULTIPLIER];
     union {
          /* 0xDC88 */ char   msgBuf[1280];
          /* 0xDC88 */ u16    msgBufWide[640];
@@ -660,9 +741,10 @@ typedef struct {
     /* 0x0128 */ Vtx*   actionVtx;
     /* 0x012C */ Vtx*   beatingHeartVtx;
     /* 0x0130 */ u8*    parameterSegment;
-    /* 0x0134 */ u8*    doActionSegment;
+    /* 0x0134 */ char** doActionSegment;
     /* 0x0138 */ u8*    iconItemSegment;
-    /* 0x013C */ u8*    mapSegment;
+    /* 0x013C */ char** mapSegment;
+    char** mapSegmentName;
     /* 0x0140 */ u8     mapPalette[32];
     /* 0x0160 */ DmaRequest dmaRequest_160;
     /* 0x0180 */ DmaRequest dmaRequest_180;
@@ -872,14 +954,6 @@ typedef struct {
 typedef struct {
     /* 0x00 */ Gfx* opa;
     /* 0x04 */ Gfx* xlu;
-
-#ifdef __cplusplus
-    Ship::DisplayList* opaDL;
-    Ship::DisplayList* xluDL;
-#else
-void* opaDL;
-void* xluDL;
-#endif
 } PolygonDlist; // size = 0x8
 
 
@@ -940,14 +1014,6 @@ typedef struct {
     /* 0x06 */ s16   unk_06;
     /* 0x08 */ Gfx*  opa;
     /* 0x0C */ Gfx*  xlu;
-
-#ifdef __cplusplus
-    Ship::DisplayList* opaDL;
-    Ship::DisplayList* xluDL;
-#else
-    void* opaDL;
-    void* xluDL;
-#endif
 } PolygonDlist2; // size = 0x8
 
 typedef struct {
@@ -1011,12 +1077,7 @@ typedef struct {
     /* 0x58 */ OSMesgQueue loadQueue;
     /* 0x70 */ OSMesg loadMsg;
     /* 0x74 */ s16 unk_74[2]; // context-specific data used by the current scene draw config
-
-#ifdef __cplusplus
-    Ship::Scene* roomToLoad;
-#else
     void* roomToLoad;
-#endif
 } RoomContext; // size = 0x78
 
 typedef struct {
@@ -1159,20 +1220,48 @@ typedef struct {
 struct SelectContext;
 
 typedef struct {
-    /* 0x00 */ char* name;
-    /* 0x04 */ void (*loadFunc)(struct SelectContext*, s32);
-    /* 0x08 */ s32 entranceIndex;
-} SceneSelectEntry; // size = 0xC
+    /* 0x00 */ char* japaneseName;
+    /* 0x04 */ char* englishName;
+    /* 0x08 */ char* germanName;
+    /* 0x0C */ char* frenchName;
+    /* 0x10 */ void (*loadFunc)(struct SelectContext*, s32);
+    /* 0x14 */ s32 entranceIndex;
+} SceneSelectEntry; // size = 0x18
 
 typedef struct {
-  /*      */ char* name;
+    /*      */ char* japaneseAge;
+    /*      */ char* englishAge;
+    /*      */ char* germanAge;
+    /*      */ char* frenchAge;
+} SceneSelectAgeLabels;
+
+typedef struct {
+    /*      */ char* japaneseMessage;
+    /*      */ char* englishMessage;
+    /*      */ char* germanMessage;
+    /*      */ char* frenchMessage;
+} SceneSelectLoadingMessages;
+
+typedef struct {
+    /*      */ char* englishAge;
+    /*      */ char* germanAge;
+    /*      */ char* frenchAge;
+} BetterSceneSelectAgeLabels;
+
+typedef struct {
+  /*      */ char* englishName;
+  /*      */ char* germanName;
+  /*      */ char* frenchName;
   /*      */ s32 entranceIndex;
+  /*      */ u8 canBeMQ;
 } BetterSceneSelectEntrancePair;
 
 typedef struct {
-    /*      */ char* name;
+    /*      */ char* englishName;
+    /*      */ char* germanName;
+    /*      */ char* frenchName;
     /*      */ void (*loadFunc)(struct SelectContext*, s32);
-    /*      */ s32 count;
+    /*      */ u8 entranceCount;
     /*      */ BetterSceneSelectEntrancePair entrancePairs[18];
 } BetterSceneSelectEntry;
 
@@ -1181,6 +1270,7 @@ typedef struct {
     /*      */ s32 returnEntranceIndex;
     /*      */ s8 roomIndex;
     /*      */ s8 data;
+    /*      */ s8 exitScene;
     /*      */ Vec3f pos;
 } BetterSceneSelectGrottoData;
 
@@ -1204,9 +1294,12 @@ typedef struct SelectContext {
     /* 0x0230 */ s32 lockDown;
     /* 0x0234 */ s32 unk_234; // unused
     /* 0x0238 */ u8* staticSegment;
+    // #region SOH [General]
     /*        */ s32 currentEntrance;
+    /*        */ u8 isBetterWarp;
     /*        */ BetterSceneSelectEntry* betterScenes;
     /*        */ BetterSceneSelectGrottoData* betterGrottos;
+    // #endregion
 } SelectContext; // size = 0x240
 
 typedef struct {
@@ -1233,13 +1326,7 @@ typedef struct PlayState {
     /* 0x000A4 */ s16 sceneNum;
     /* 0x000A6 */ u8 sceneConfig;
     /* 0x000A7 */ char unk_A7[0x9];
-
-#ifdef __cplusplus
-    Ship::Scene* sceneSegment;
-#else
     /* 0x000B0 */ void* sceneSegment;
-#endif
-
     /* 0x000B8 */ View view;
     /* 0x001E0 */ Camera mainCamera;
     /* 0x0034C */ Camera subCameras[NUM_CAMS - SUBCAM_FIRST];
@@ -1417,6 +1504,10 @@ typedef struct {
     f32 stickAnimTween;
     u8 arrowAnimState;
     u8 stickAnimState;
+    uint8_t bossRushIndex;
+    uint8_t bossRushOffset;
+    int16_t bossRushUIAlpha;
+    uint16_t bossRushArrowOffset;
 } FileChooseContext; // size = 0x1CAE0
 
 typedef enum {
@@ -1454,18 +1545,6 @@ typedef struct {
     /* 0x04 */ u8 mode;
     /* 0x08 */ f32 morphFrames;
 } AnimationMinimalInfo; // size = 0xC
-
-typedef struct {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
-    /* 0x06 */ s16 unk_06;
-    /* 0x08 */ Vec3s unk_08;
-    /* 0x0E */ Vec3s unk_0E;
-    /* 0x14 */ f32 unk_14;
-    /* 0x18 */ Vec3f unk_18;
-    /* 0x24 */ s16 unk_24;
-} struct_80034A14_arg1; // size = 0x28
 
 typedef struct {
     /* 0x00 */ s8  scene;
@@ -2155,6 +2234,19 @@ typedef struct {
     const char** textures;
     const char** palettes;
 } SkyboxTableEntry;
+
+typedef enum {
+    /* 0x00 */ PAUSE_ANY_CURSOR_RANDO_ONLY,
+    /* 0x01 */ PAUSE_ANY_CURSOR_ALWAYS_ON,
+    /* 0x02 */ PAUSE_ANY_CURSOR_ALWAYS_OFF,
+} PauseCursorAnySlotOptions;
+
+typedef enum {
+    LED_SOURCE_TUNIC_ORIGINAL,
+    LED_SOURCE_TUNIC_COSMETICS,
+    LED_SOURCE_HEALTH,
+    LED_SOURCE_CUSTOM
+} LEDColorSource;
 
 #define ROM_FILE(name) \
     { 0, 0, #name }

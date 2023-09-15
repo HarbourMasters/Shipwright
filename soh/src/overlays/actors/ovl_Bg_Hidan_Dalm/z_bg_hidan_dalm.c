@@ -127,7 +127,7 @@ void BgHidanDalm_Wait(BgHidanDalm* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if ((this->collider.base.acFlags & AC_HIT) && !Player_InCsMode(play) &&
-        (player->swordAnimation == 22 || player->swordAnimation == 23)) {
+        (player->meleeWeaponAnimation == 22 || player->meleeWeaponAnimation == 23)) {
         this->collider.base.acFlags &= ~AC_HIT;
         if ((this->collider.elements[0].info.bumperFlags & BUMP_HIT) ||
             (this->collider.elements[1].info.bumperFlags & BUMP_HIT)) {
@@ -139,7 +139,7 @@ void BgHidanDalm_Wait(BgHidanDalm* this, PlayState* play) {
         this->dyna.actor.world.pos.z += 32.5f * Math_CosS(this->dyna.actor.world.rot.y);
 
         func_8002DF54(play, &this->dyna.actor, 8);
-        this->dyna.actor.flags |= ACTOR_FLAG_4;
+        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
         this->actionFunc = BgHidanDalm_Shrink;
         this->dyna.actor.bgCheckFlags &= ~2;
         this->dyna.actor.bgCheckFlags &= ~8;

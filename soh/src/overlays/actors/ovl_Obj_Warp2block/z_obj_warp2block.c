@@ -8,7 +8,7 @@
 #include "objects/object_timeblock/object_timeblock.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_4 | ACTOR_FLAG_25 | ACTOR_FLAG_27)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA | ACTOR_FLAG_NO_LOCKON)
 
 void ObjWarp2block_Init(Actor* thisx, PlayState* play);
 void ObjWarp2block_Destroy(Actor* thisx, PlayState* play);
@@ -68,11 +68,11 @@ static Color_RGB8 sColors[] = {
 void ObjWarp2block_Spawn(ObjWarp2block* this, PlayState* play) {
     Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, this->dyna.actor.world.pos.x,
                 this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z, 0, 0, 0,
-                sSpawnData[(this->dyna.actor.params >> 8) & 1].params);
+                sSpawnData[(this->dyna.actor.params >> 8) & 1].params, true);
 
     Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, this->dyna.actor.child->world.pos.x,
                 this->dyna.actor.child->world.pos.y, this->dyna.actor.child->world.pos.z, 0, 0, 0,
-                sSpawnData[(this->dyna.actor.child->params >> 8) & 1].params);
+                sSpawnData[(this->dyna.actor.child->params >> 8) & 1].params, true);
 }
 
 s32 func_80BA1ECC(ObjWarp2block* this, PlayState* play) {
@@ -309,7 +309,7 @@ void ObjWarp2block_Draw(Actor* thisx, PlayState* play) {
     sp44 = &sColors[thisx->home.rot.z & 7];
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

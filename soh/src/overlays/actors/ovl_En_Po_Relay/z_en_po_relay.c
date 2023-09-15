@@ -8,7 +8,7 @@
 #include "overlays/actors/ovl_En_Honotrap/z_en_honotrap.h"
 #include "objects/object_tk/object_tk.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_12 | ACTOR_FLAG_16)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_WILL_TALK)
 
 void EnPoRelay_Init(Actor* thisx, PlayState* play);
 void EnPoRelay_Destroy(Actor* thisx, PlayState* play);
@@ -117,6 +117,8 @@ void EnPoRelay_Destroy(Actor* thisx, PlayState* play) {
     D_80AD8D24 = 0;
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNode);
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnPoRelay_SetupIdle(EnPoRelay* this) {
@@ -144,14 +146,14 @@ void EnPoRelay_SetupRace(EnPoRelay* this) {
     this->hookshotSlotFull = (INV_CONTENT(ITEM_HOOKSHOT) != ITEM_NONE && !gSaveContext.n64ddFlag) ||
                              (gSaveContext.n64ddFlag && Flags_GetTreasure(gPlayState, 0x1E));
     this->unk_19A = Actor_WorldYawTowardPoint(&this->actor, &vec);
-    this->actor.flags |= ACTOR_FLAG_27;
+    this->actor.flags |= ACTOR_FLAG_NO_LOCKON;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_PO_LAUGH);
     this->actionFunc = EnPoRelay_Race;
 }
 
 void EnPoRelay_SetupEndRace(EnPoRelay* this) {
     this->actor.world.rot.y = this->actor.home.rot.y + 0xC000;
-    this->actor.flags &= ~ACTOR_FLAG_27;
+    this->actor.flags &= ~ACTOR_FLAG_NO_LOCKON;
     this->actor.speedXZ = 0.0f;
     this->actionFunc = EnPoRelay_EndRace;
 }
@@ -164,10 +166,10 @@ void EnPoRelay_CorrectY(EnPoRelay* this) {
 void EnPoRelay_Idle(EnPoRelay* this, PlayState* play) {
     Math_ScaledStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 0x100);
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
-        this->actor.flags &= ~ACTOR_FLAG_16;
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
         this->actionFunc = EnPoRelay_Talk;
     } else if (this->actor.xzDistToPlayer < 250.0f) {
-        this->actor.flags |= ACTOR_FLAG_16;
+        this->actor.flags |= ACTOR_FLAG_WILL_TALK;
         this->actor.textId = this->textId;
         func_8002F2CC(&this->actor, play, 250.0f);
     }
@@ -209,7 +211,7 @@ void EnPoRelay_Race(EnPoRelay* this, PlayState* play) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_HONOTRAP,
                         Math_CosS(this->unk_19A) * speed + this->actor.world.pos.x, this->actor.world.pos.y,
                         Math_SinS(this->unk_19A) * speed + this->actor.world.pos.z, 0,
-                        (this->unk_19A + 0x8000) - (0x2000 * multiplier), 0, HONOTRAP_FLAME_DROP);
+                        (this->unk_19A + 0x8000) - (0x2000 * multiplier), 0, HONOTRAP_FLAME_DROP, true);
         }
     }
     Math_SmoothStepToS(&this->actor.world.rot.y, this->unk_19A, 2, 0x1000, 0x100);
@@ -340,7 +342,7 @@ void EnPoRelay_DisappearAndReward(EnPoRelay* this, PlayState* play) {
                 if (Flags_GetCollectible(play, this->actor.params) == 0 && gSaveContext.timer1Value <= 60) {
                     Item_DropCollectible2(play, &sp60, (this->actor.params << 8) + (0x4000 | ITEM00_HEART_PIECE));
                 } else {
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, sp60.x, sp60.y, sp60.z, 0, 0, 0, 2);
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, sp60.x, sp60.y, sp60.z, 0, 0, 0, 2, true);
                 }
             } else {
                 Flags_SetTempClear(play, 4);
@@ -363,7 +365,7 @@ void EnPoRelay_DisappearAndReward(EnPoRelay* this, PlayState* play) {
             if (Flags_GetCollectible(play, this->actor.params) == 0 && gSaveContext.timer1Value <= 60) {
                 Item_DropCollectible2(play, &sp60, (this->actor.params << 8) + (0x4000 | ITEM00_HEART_PIECE));
             } else if (Flags_GetCollectible(play, this->actor.params) != 0) {
-                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, sp60.x, sp60.y, sp60.z, 0, 0, 0, 2);
+                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, sp60.x, sp60.y, sp60.z, 0, 0, 0, 2, true);
             }
         }
         Actor_Kill(&this->actor);
@@ -429,7 +431,7 @@ void EnPoRelay_Draw(Actor* thisx, PlayState* play) {
     EnPoRelay* this = (EnPoRelay*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyesTextures[this->eyeTextureIdx]));
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           NULL, EnPoRelay_PostLimbDraw, &this->actor);

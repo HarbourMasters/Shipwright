@@ -11,7 +11,7 @@
 #include "objects/object_kusa/object_kusa.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_23)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_ALWAYS_THROWN)
 
 void EnKusa_Init(Actor* thisx, PlayState* play);
 void EnKusa_Destroy(Actor* thisx, PlayState* play);
@@ -137,9 +137,9 @@ void EnKusa_DropCollectible(EnKusa* this, PlayState* play) {
             Item_DropCollectibleRandom(play, NULL, &this->actor.world.pos, dropParams << 4);
             break;
         case ENKUSA_TYPE_1:
-            if (CVar_GetS32("gNoRandomDrops", 0)) {
+            if (CVarGetInteger("gNoRandomDrops", 0)) {
             }
-            else if (CVar_GetS32("gNoHeartDrops", 0)) {
+            else if (CVarGetInteger("gNoHeartDrops", 0)) {
                 Item_DropCollectible(play, &this->actor.world.pos, ITEM00_SEEDS);
             }
             else if (Rand_ZeroOne() < 0.5f) {
@@ -216,7 +216,7 @@ void EnKusa_SpawnBugs(EnKusa* this, PlayState* play) {
 
     for (i = 0; i < 3; i++) {
         Actor* bug = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_INSECT, this->actor.world.pos.x,
-                                 this->actor.world.pos.y, this->actor.world.pos.z, 0, Rand_ZeroOne() * 0xFFFF, 0, 1);
+                                 this->actor.world.pos.y, this->actor.world.pos.z, 0, Rand_ZeroOne() * 0xFFFF, 0, 1, true);
 
         if (bug == NULL) {
             break;
@@ -277,6 +277,11 @@ void EnKusa_Destroy(Actor* thisx, PlayState* play2) {
 }
 
 void EnKusa_SetupWaitObject(EnKusa* this) {
+    // Kill bushes in Boss Rush. Used in Gohma's arena.
+    if (gSaveContext.isBossRush) {
+        Actor_Kill(this);
+    }
+
     EnKusa_SetupAction(this, EnKusa_WaitObject);
 }
 
@@ -290,13 +295,13 @@ void EnKusa_WaitObject(EnKusa* this, PlayState* play) {
 
         this->actor.draw = EnKusa_Draw;
         this->actor.objBankIndex = this->objBankIndex;
-        this->actor.flags &= ~ACTOR_FLAG_4;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
     }
 }
 
 void EnKusa_SetupMain(EnKusa* this) {
     EnKusa_SetupAction(this, EnKusa_Main);
-    this->actor.flags &= ~ACTOR_FLAG_4;
+    this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
 }
 
 void EnKusa_Main(EnKusa* this, PlayState* play) {
@@ -310,6 +315,7 @@ void EnKusa_Main(EnKusa* this, PlayState* play) {
         EnKusa_SpawnFragments(this, play);
         EnKusa_DropCollectible(this, play);
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 20, NA_SE_EV_PLANT_BROKEN);
+        gSaveContext.sohStats.count[COUNT_BUSHES_CUT]++;
 
         if ((this->actor.params >> 4) & 1) {
             EnKusa_SpawnBugs(this, play);
@@ -344,7 +350,7 @@ void EnKusa_Main(EnKusa* this, PlayState* play) {
 void EnKusa_SetupLiftedUp(EnKusa* this) {
     EnKusa_SetupAction(this, EnKusa_LiftedUp);
     this->actor.room = -1;
-    this->actor.flags |= ACTOR_FLAG_4;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
 }
 
 void EnKusa_LiftedUp(EnKusa* this, PlayState* play) {
@@ -378,6 +384,7 @@ void EnKusa_Fall(EnKusa* this, PlayState* play) {
     if (this->actor.bgCheckFlags & 0xB) {
         if (!(this->actor.bgCheckFlags & 0x20)) {
             SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 20, NA_SE_EV_PLANT_BROKEN);
+            gSaveContext.sohStats.count[COUNT_BUSHES_CUT]++;
         }
         EnKusa_SpawnFragments(this, play);
         EnKusa_DropCollectible(this, play);

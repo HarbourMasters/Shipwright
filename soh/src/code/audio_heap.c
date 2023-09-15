@@ -1,4 +1,4 @@
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 void AudioHeap_InitSampleCaches(u32 persistentSize, u32 temporarySize);
@@ -53,7 +53,7 @@ void AudioHeap_ResetLoadStatus(void) {
         }
     }
 
-    for (i = 0; i < 0x80; i++) {
+    for (i = 0; i < sequenceMapSize; i++) {
         if (gAudioContext.seqLoadStatus[i] != 5) {
             gAudioContext.seqLoadStatus[i] = 0;
         }

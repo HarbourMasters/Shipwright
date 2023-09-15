@@ -1,7 +1,8 @@
 #include "z_en_bubble.h"
 #include "objects/object_bubble/object_bubble.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS ACTOR_FLAG_0
+#define FLAGS ACTOR_FLAG_TARGETABLE
 
 void EnBubble_Init(Actor* thisx, PlayState* play);
 void EnBubble_Destroy(Actor* thisx, PlayState* play);
@@ -79,7 +80,7 @@ void EnBubble_SetDimensions(EnBubble* this, f32 dim) {
     f32 c;
     f32 d;
 
-    this->actor.flags |= ACTOR_FLAG_0;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     Actor_SetScale(&this->actor, 1.0f);
     this->actor.shape.yOffset = 16.0f;
     this->graphicRotSpeed = 16.0f;
@@ -148,7 +149,7 @@ s32 EnBubble_Explosion(EnBubble* this, PlayState* play) {
                                           &sEffectEnvColor, Rand_S16Offset(100, 50), 0x19, 0);
     }
     Item_DropCollectibleRandom(play, NULL, &this->actor.world.pos, 0x50);
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     return Rand_S16Offset(90, 60);
 }
 
@@ -372,6 +373,7 @@ void EnBubble_Pop(EnBubble* this, PlayState* play) {
     if (EnBubble_Explosion(this, play) >= 0) {
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->actor.world.pos, 60, NA_SE_EN_AWA_BREAK);
         Actor_Kill(&this->actor);
+        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
     }
 }
 
@@ -412,7 +414,7 @@ void EnBubble_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     if (this->actionFunc != EnBubble_Disappear) {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         Math_SmoothStepToF(&this->graphicRotSpeed, 16.0f, 0.2f, 1000.0f, 0.0f);
         Math_SmoothStepToF(&this->graphicEccentricity, 0.08f, 0.2f, 1000.0f, 0.0f);
         Matrix_ReplaceRotation(&play->billboardMtxF);

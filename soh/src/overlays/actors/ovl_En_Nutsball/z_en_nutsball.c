@@ -13,7 +13,7 @@
 #include "objects/object_dns/object_dns.h"
 #include "objects/object_dnk/object_dnk.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void EnNutsball_Init(Actor* thisx, PlayState* play);
 void EnNutsball_Destroy(Actor* thisx, PlayState* play);
@@ -75,7 +75,11 @@ void EnNutsball_Init(Actor* thisx, PlayState* play) {
     ActorShape_Init(&this->actor.shape, 400.0f, ActorShadow_DrawCircle, 13.0f);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
-    this->objBankIndex = Object_GetIndex(&play->objectCtx, sObjectIDs[this->actor.params]);
+    if (CVarGetInteger("gRandomizedEnemies", 0)) {
+        this->objBankIndex = 0;
+    } else {
+        this->objBankIndex = Object_GetIndex(&play->objectCtx, sObjectIDs[this->actor.params]);
+    }
 
     if (this->objBankIndex < 0) {
         Actor_Kill(&this->actor);
@@ -159,7 +163,7 @@ void EnNutsball_Update(Actor* thisx, PlayState* play) {
         Actor_UpdateBgCheckInfo(play, &this->actor, 10, sCylinderInit.dim.radius, sCylinderInit.dim.height, 5);
         Collider_UpdateCylinder(&this->actor, &this->collider);
 
-        this->actor.flags |= ACTOR_FLAG_24;
+        this->actor.flags |= ACTOR_FLAG_PLAY_HIT_SFX;
 
         CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
         CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);
@@ -172,8 +176,8 @@ void EnNutsball_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    if (CVar_GetS32("gNewDrops", 0) != 0) {
-        func_80093D18(play->state.gfxCtx);
+    if (CVarGetInteger("gNewDrops", 0) != 0) {
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x08,
                 Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 6),
                                     1 * (play->state.frames * 6), 32, 32, 1, 1 * (play->state.frames * 6),
@@ -184,7 +188,7 @@ void EnNutsball_Draw(Actor* thisx, PlayState* play) {
                 G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPDisplayList(POLY_OPA_DISP++, sDListsNew[thisx->params]);
     } else {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         Matrix_Mult(&play->billboardMtxF, MTXMODE_APPLY);
         
         Matrix_RotateZ(thisx->home.rot.z * 9.58738e-05f, MTXMODE_APPLY);

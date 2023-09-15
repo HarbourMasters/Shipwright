@@ -4,7 +4,7 @@
 #include "overlays/actors/ovl_En_Ex_Ruppy/z_en_ex_ruppy.h"
 #include "overlays/actors/ovl_En_G_Switch/z_en_g_switch.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 typedef enum {
     SYATEKI_ROUND_GREEN_APPEAR,
@@ -110,7 +110,11 @@ void EnSyatekiItm_Idle(EnSyatekiItm* this, PlayState* play) {
         player->currentYaw = player->actor.world.rot.y = player->actor.shape.rot.y = 0x7F03;
         player->actor.world.rot.x = player->actor.shape.rot.x = player->actor.world.rot.z = player->actor.shape.rot.z =
             0;
-        func_8008EF44(play, 15);
+        s32 ammunition = 15;
+        if(CVarGetInteger("gCustomizeShootingGallery", 0)) {
+            ammunition = CVarGetInteger(LINK_IS_ADULT ? "gAdultShootingGalleryAmmunition" : "gChildShootingGalleryAmmunition", 15);
+        }
+        func_8008EF44(play, ammunition);
         this->roundNum = this->hitCount = 0;
         for (i = 0; i < 6; i++) {
             this->roundFlags[i] = false;
@@ -128,7 +132,7 @@ void EnSyatekiItm_StartRound(EnSyatekiItm* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (this->unkTimer == 0) {
-        if (LINK_IS_ADULT) {
+        if (LINK_IS_ADULT && !(CVarGetInteger("gCustomizeShootingGallery", 0) && CVarGetInteger("gConstantAdultGallery", 0))) {
             for (i = 0, j = 0; i < SYATEKI_ROUND_MAX; i++) {
                 if (this->roundFlags[i]) {
                     j++;

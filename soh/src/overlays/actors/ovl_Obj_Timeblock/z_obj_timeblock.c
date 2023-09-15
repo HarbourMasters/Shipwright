@@ -7,7 +7,7 @@
 #include "z_obj_timeblock.h"
 #include "objects/object_timeblock/object_timeblock.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_4 | ACTOR_FLAG_25 | ACTOR_FLAG_27)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA | ACTOR_FLAG_NO_LOCKON)
 
 void ObjTimeblock_Init(Actor* thisx, PlayState* play);
 void ObjTimeblock_Destroy(Actor* thisx, PlayState* play);
@@ -86,7 +86,7 @@ u32 ObjTimeblock_CalculateIsVisible(ObjTimeblock* this) {
 void ObjTimeblock_SpawnDemoEffect(ObjTimeblock* this, PlayState* play) {
     Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, this->dyna.actor.world.pos.x,
                 this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z, 0, 0, 0,
-                sSizeOptions[(this->dyna.actor.params >> 8) & 1].demoEffectParams);
+                sSizeOptions[(this->dyna.actor.params >> 8) & 1].demoEffectParams, true);
 }
 
 void ObjTimeblock_ToggleSwitchFlag(PlayState* play, s32 flag) {
@@ -337,10 +337,16 @@ void ObjTimeblock_Draw(Actor* thisx, PlayState* play) {
 
         OPEN_DISPS(play->state.gfxCtx);
 
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, primColor->r, primColor->g, primColor->b, 255);
+        if (CVarGetInteger("gCosmetics.World_BlockOfTime.Changed", 0)) {
+            Color_RGB8 color = CVarGetColor24("gCosmetics.World_BlockOfTime.Value", *primColor);
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, color.r, color.g, color.b, 255);
+        } else {
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, primColor->r, primColor->g, primColor->b, 255);
+        }
+
         gSPDisplayList(POLY_OPA_DISP++, gSongOfTimeBlockDL);
 
         CLOSE_DISPS(play->state.gfxCtx);

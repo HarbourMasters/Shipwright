@@ -1,7 +1,7 @@
 #ifndef Z_EN_ZL3_H
 #define Z_EN_ZL3_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 #include "overlays/actors/ovl_Boss_Ganon2/z_boss_ganon2.h"
@@ -65,7 +65,7 @@ typedef struct EnZl3 {
     /* 0x03EC */ f32 unk_3EC;
     /* 0x03F0 */ f32 unk_3F0;
     /* 0x03F4 */ f32 unk_3F4;
-    /* 0x03F8 */ struct_80034A14_arg1 unk_3F8;
+    /* 0x03F8 */ NpcInteractInfo interactInfo;
 } EnZl3; // size = 0x0420
 
 #endif

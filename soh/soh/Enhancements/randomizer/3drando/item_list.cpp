@@ -66,7 +66,7 @@ void ItemTable_Init() {                              // RandomizerGet           
 
     //Progression Items
     itemTable[PROGRESSIVE_HOOKSHOT]              = Item(RG_PROGRESSIVE_HOOKSHOT,              Text{"Progressive Hookshot",            "Grappin (prog.)",                  "Gancho progresivo"},                       ITEMTYPE_ITEM,     0x80, true,  &ProgressiveHookshot,   PROGRESSIVE_HOOKSHOT);
-    itemTable[PROGRESSIVE_STRENGTH]              = Item(RG_PROGRESSIVE_STRENGTH,              Text{"Progressive Strength Upgrade",    "Amélioration de Force (prog.)",    "Fuerza progresiva"},                       ITEMTYPE_ITEM,     0x81, true,  &ProgressiveStrength,   PROGRESSIVE_STRENGTH);
+    itemTable[PROGRESSIVE_STRENGTH]              = Item(RG_PROGRESSIVE_STRENGTH,              Text{"Strength Upgrade",                "Amélioration de Force (prog.)",    "Fuerza progresiva"},                       ITEMTYPE_ITEM,     0x81, true,  &ProgressiveStrength,   PROGRESSIVE_STRENGTH);
     itemTable[PROGRESSIVE_BOMB_BAG]              = Item(RG_PROGRESSIVE_BOMB_BAG,              Text{"Progressive Bomb Bag",            "Sac de Bombes (prog.)",            "Saco de bombas progresivo"},               ITEMTYPE_ITEM,     0x82, true,  &ProgressiveBombBag,    PROGRESSIVE_BOMB_BAG);
     itemTable[PROGRESSIVE_BOW]                   = Item(RG_PROGRESSIVE_BOW,                   Text{"Progressive Bow",                 "Arc (prog.)",                      "Arco progresivo"},                         ITEMTYPE_ITEM,     0x83, true,  &ProgressiveBow,        PROGRESSIVE_BOW);
     itemTable[PROGRESSIVE_SLINGSHOT]             = Item(RG_PROGRESSIVE_SLINGSHOT,             Text{"Progressive Slingshot",           "Lance-Pierre (prog.)",             "Resortera progresiva"},                    ITEMTYPE_ITEM,     0x84, true,  &ProgressiveBulletBag,  PROGRESSIVE_SLINGSHOT);
@@ -133,12 +133,12 @@ void ItemTable_Init() {                              // RandomizerGet           
     itemTable[ICE_CAVERN_COMPASS]                = Item(RG_ICE_CAVERN_COMPASS,                Text{"Ice Cavern Compass",              "Boussole de la Caverne Polaire",   "Brújula de la caverna de hielo"},          ITEMTYPE_COMPASS,  0xA4, false, &noVariable, ICE_CAVERN_COMPASS);
 
     //Boss Keys
-    itemTable[FOREST_TEMPLE_BOSS_KEY]            = Item(RG_FOREST_TEMPLE_BOSS_KEY,            Text{"Forest Temple Big Key",           "Clé d'Or du Temple de la Forêt",   "Gran llave del Templo del Bosque"},        ITEMTYPE_BOSSKEY,  0x95, true, &BossKeyForestTemple, FOREST_TEMPLE_BOSS_KEY);
-    itemTable[FIRE_TEMPLE_BOSS_KEY]              = Item(RG_FIRE_TEMPLE_BOSS_KEY,              Text{"Fire Temple Big Key",             "Clé d'Or du Temple du Feu",        "Gran llave del Templo del Fuego"},         ITEMTYPE_BOSSKEY,  0x96, true, &BossKeyFireTemple,   FIRE_TEMPLE_BOSS_KEY);
-    itemTable[WATER_TEMPLE_BOSS_KEY]             = Item(RG_WATER_TEMPLE_BOSS_KEY,             Text{"Water Temple Big Key",            "Clé d'Or du Temple de l'Eau",      "Gran llave del Templo del Agua"},          ITEMTYPE_BOSSKEY,  0x97, true, &BossKeyWaterTemple,  WATER_TEMPLE_BOSS_KEY);
-    itemTable[SPIRIT_TEMPLE_BOSS_KEY]            = Item(RG_SPIRIT_TEMPLE_BOSS_KEY,            Text{"Spirit Temple Big Key",           "Clé d'Or du Temple de l'Esprit",   "Gran llave del Templo del Espíritu"},      ITEMTYPE_BOSSKEY,  0x98, true, &BossKeySpiritTemple, SPIRIT_TEMPLE_BOSS_KEY);
-    itemTable[SHADOW_TEMPLE_BOSS_KEY]            = Item(RG_SHADOW_TEMPLE_BOSS_KEY,            Text{"Shadow Temple Big Key",           "Clé d'Or du Temple de l'Ombre",    "Gran llave del Templo de las Sombras"},    ITEMTYPE_BOSSKEY,  0x99, true, &BossKeyShadowTemple, SHADOW_TEMPLE_BOSS_KEY);
-    itemTable[GANONS_CASTLE_BOSS_KEY]            = Item(RG_GANONS_CASTLE_BOSS_KEY,            Text{"Ganon's Castle Big Key",          "Clé d'Or du Château de Ganon",     "Gran llave del Castillo de Ganon"},        ITEMTYPE_BOSSKEY,  0x9A, true, &BossKeyGanonsCastle, GANONS_CASTLE_BOSS_KEY);
+    itemTable[FOREST_TEMPLE_BOSS_KEY]            = Item(RG_FOREST_TEMPLE_BOSS_KEY,            Text{"Forest Temple Boss Key",          "Clé d'Or du Temple de la Forêt",   "Gran llave del Templo del Bosque"},        ITEMTYPE_BOSSKEY,  0x95, true, &BossKeyForestTemple, FOREST_TEMPLE_BOSS_KEY);
+    itemTable[FIRE_TEMPLE_BOSS_KEY]              = Item(RG_FIRE_TEMPLE_BOSS_KEY,              Text{"Fire Temple Boss Key",            "Clé d'Or du Temple du Feu",        "Gran llave del Templo del Fuego"},         ITEMTYPE_BOSSKEY,  0x96, true, &BossKeyFireTemple,   FIRE_TEMPLE_BOSS_KEY);
+    itemTable[WATER_TEMPLE_BOSS_KEY]             = Item(RG_WATER_TEMPLE_BOSS_KEY,             Text{"Water Temple Boss Key",           "Clé d'Or du Temple de l'Eau",      "Gran llave del Templo del Agua"},          ITEMTYPE_BOSSKEY,  0x97, true, &BossKeyWaterTemple,  WATER_TEMPLE_BOSS_KEY);
+    itemTable[SPIRIT_TEMPLE_BOSS_KEY]            = Item(RG_SPIRIT_TEMPLE_BOSS_KEY,            Text{"Spirit Temple Boss Key",          "Clé d'Or du Temple de l'Esprit",   "Gran llave del Templo del Espíritu"},      ITEMTYPE_BOSSKEY,  0x98, true, &BossKeySpiritTemple, SPIRIT_TEMPLE_BOSS_KEY);
+    itemTable[SHADOW_TEMPLE_BOSS_KEY]            = Item(RG_SHADOW_TEMPLE_BOSS_KEY,            Text{"Shadow Temple Boss Key",          "Clé d'Or du Temple de l'Ombre",    "Gran llave del Templo de las Sombras"},    ITEMTYPE_BOSSKEY,  0x99, true, &BossKeyShadowTemple, SHADOW_TEMPLE_BOSS_KEY);
+    itemTable[GANONS_CASTLE_BOSS_KEY]            = Item(RG_GANONS_CASTLE_BOSS_KEY,            Text{"Ganon's Castle Boss Key",         "Clé d'Or du Château de Ganon",     "Gran llave del Castillo de Ganon"},        ITEMTYPE_BOSSKEY,  0x9A, true, &BossKeyGanonsCastle, GANONS_CASTLE_BOSS_KEY);
 
     //Small Keys
     itemTable[FOREST_TEMPLE_SMALL_KEY]           = Item(RG_FOREST_TEMPLE_SMALL_KEY,           Text{"Forest Temple Small Key",         "Petite Clé du Temple de la Forêt", "Llave del Templo del Bosque"},             ITEMTYPE_SMALLKEY,          0xAF, true, &ForestTempleKeys,          FOREST_TEMPLE_SMALL_KEY);
@@ -177,6 +177,7 @@ void ItemTable_Init() {                              // RandomizerGet           
     //Generic Items
     itemTable[RECOVERY_HEART]                    = Item(RG_RECOVERY_HEART,                    Text{"Recovery Heart",                  "Coeur de Vie",                     "Corazón"},                                 ITEMTYPE_ITEM, GI_HEART,             false, &noVariable,     RECOVERY_HEART);
     itemTable[GREEN_RUPEE]                       = Item(RG_GREEN_RUPEE,                       Text{"Green Rupee",                     "Rubis Vert",                       "Rupia verde"},                             ITEMTYPE_ITEM, GI_RUPEE_GREEN,       false, &noVariable,     GREEN_RUPEE);
+    itemTable[GREG_RUPEE]                        = Item(RG_GREG_RUPEE,                        Text{"Greg the Green Rupee",            "Rubis Greg",                       "Rupia Greg"},                              ITEMTYPE_ITEM, GI_RUPEE_GREEN,       true,  &Greg,           GREG_RUPEE);
     itemTable[BLUE_RUPEE]                        = Item(RG_BLUE_RUPEE,                        Text{"Blue Rupee",                      "Rubis Bleu",                       "Rupia azul"},                              ITEMTYPE_ITEM, GI_RUPEE_BLUE,        false, &noVariable,     BLUE_RUPEE);
     itemTable[RED_RUPEE]                         = Item(RG_RED_RUPEE,                         Text{"Red Rupee",                       "Rubis Rouge",                      "Rupia roja"},                              ITEMTYPE_ITEM, GI_RUPEE_RED,         false, &noVariable,     RED_RUPEE);
     itemTable[PURPLE_RUPEE]                      = Item(RG_PURPLE_RUPEE,                      Text{"Purple Rupee",                    "Rubis Pourpre",                    "Rupia morada"},                            ITEMTYPE_ITEM, GI_RUPEE_PURPLE,      false, &noVariable,     PURPLE_RUPEE);
@@ -190,9 +191,9 @@ void ItemTable_Init() {                              // RandomizerGet           
     itemTable[BOMBS_5]                           = Item(RG_BOMBS_5,                           Text{"Bombs (5)",                       "Bombes (5)",                       "Bombas (5)"},                              ITEMTYPE_REFILL, GI_BOMBS_5,        false, &noVariable,  BOMBS_5);
     itemTable[BOMBS_10]                          = Item(RG_BOMBS_10,                          Text{"Bombs (10)",                      "Bombes (10)",                      "Bombas (10)"},                             ITEMTYPE_REFILL, GI_BOMBS_10,       false, &noVariable,  BOMBS_10);
     itemTable[BOMBS_20]                          = Item(RG_BOMBS_20,                          Text{"Bombs (20)",                      "Bombes (20)",                      "Bombas (20)"},                             ITEMTYPE_REFILL, GI_BOMBS_20,       false, &noVariable,  BOMBS_20);
-    itemTable[BOMBCHU_5]                         = Item(RG_BOMBCHU_5,                         Text{"Bombchu (5)",                     "Missiles (5)",                     "Bombchus (5)"},                            ITEMTYPE_REFILL, GI_BOMBCHUS_5,     true,  &Bombchus5,   BOMBCHU_5);
-    itemTable[BOMBCHU_10]                        = Item(RG_BOMBCHU_10,                        Text{"Bombchu (10)",                    "Missiles (10)",                    "Bombchus (10)"},                           ITEMTYPE_REFILL, GI_BOMBCHUS_10,    true,  &Bombchus10,  BOMBCHU_10);
-    itemTable[BOMBCHU_20]                        = Item(RG_BOMBCHU_20,                        Text{"Bombchu (20)",                    "Missiles (20)",                    "Bombchus (20)"},                           ITEMTYPE_REFILL, GI_BOMBCHUS_20,    true,  &Bombchus20,  BOMBCHU_20);
+    itemTable[BOMBCHU_5]                         = Item(RG_BOMBCHU_5,                         Text{"Bombchus (5)",                    "Missiles (5)",                     "Bombchus (5)"},                            ITEMTYPE_REFILL, GI_BOMBCHUS_5,     true,  &Bombchus5,   BOMBCHU_5);
+    itemTable[BOMBCHU_10]                        = Item(RG_BOMBCHU_10,                        Text{"Bombchus (10)",                   "Missiles (10)",                    "Bombchus (10)"},                           ITEMTYPE_REFILL, GI_BOMBCHUS_10,    true,  &Bombchus10,  BOMBCHU_10);
+    itemTable[BOMBCHU_20]                        = Item(RG_BOMBCHU_20,                        Text{"Bombchus (20)",                   "Missiles (20)",                    "Bombchus (20)"},                           ITEMTYPE_REFILL, GI_BOMBCHUS_20,    true,  &Bombchus20,  BOMBCHU_20);
     itemTable[BOMBCHU_DROP]                      = Item(RG_BOMBCHU_DROP,                      Text{"Bombchu Drop",                    "Drop Missiles",                    "Bombchus"},                                ITEMTYPE_DROP,   GI_BOMBCHUS_10,    true,  &BombchuDrop, NONE);
     itemTable[ARROWS_5]                          = Item(RG_ARROWS_5,                          Text{"Arrows (5)",                      "Flèches (5)",                      "Flechas (5)"},                             ITEMTYPE_REFILL, GI_ARROWS_SMALL,   false, &noVariable,  ARROWS_5);
     itemTable[ARROWS_10]                         = Item(RG_ARROWS_10,                         Text{"Arrows (10)",                     "Flèches (10)",                     "Flechas (10)"},                            ITEMTYPE_REFILL, GI_ARROWS_MEDIUM,  false, &noVariable,  ARROWS_10);
@@ -206,8 +207,8 @@ void ItemTable_Init() {                              // RandomizerGet           
     itemTable[BLUE_POTION_REFILL]                = Item(RG_BLUE_POTION_REFILL,                Text{"Blue Potion Refill",              "Recharge de Potion Bleue",         "Recarga de poción azul"},                  ITEMTYPE_REFILL, GI_POTION_BLUE,    false, &noVariable,  NONE);
 
     //Treasure Game
-    itemTable[TREASURE_GAME_HEART]               = Item(RG_TREASURE_GAME_HEART,               Text{"Piece of Heart (Treasure Chest Minigame)",    "Quart de Coeur (Chasse-aux-Trésors)",   "Pieza de corazón (Cofre del Tesoro)"}, ITEMTYPE_ITEM, GI_HEART_PIECE_WIN,  true,  &PieceOfHeart, TREASURE_GAME_HEART);
-    itemTable[TREASURE_GAME_GREEN_RUPEE]         = Item(RG_TREASURE_GAME_GREEN_RUPEE,         Text{"Green Rupee (Treasure Chest Minigame)",       "Rubis Vert (Chasse-aux-Trésors)",      "Rupia Verde (Cofre del Tesoro)"},       ITEMTYPE_ITEM, GI_RUPEE_GREEN_LOSE, false, &noVariable,   TREASURE_GAME_GREEN_RUPEE);
+    itemTable[TREASURE_GAME_HEART]               = Item(RG_TREASURE_GAME_HEART,               Text{"Piece of Heart (WINNER)",    "Quart de Coeur (Chasse-aux-Trésors)",   "Pieza de corazón (Cofre del Tesoro)"}, ITEMTYPE_ITEM, GI_HEART_PIECE_WIN,  true,  &PieceOfHeart, TREASURE_GAME_HEART);
+    itemTable[TREASURE_GAME_GREEN_RUPEE]         = Item(RG_TREASURE_GAME_GREEN_RUPEE,         Text{"Green Rupee (LOSER)",       "Rubis Vert (Chasse-aux-Trésors)",      "Rupia Verde (Cofre del Tesoro)"},       ITEMTYPE_ITEM, GI_RUPEE_GREEN_LOSE, false, &noVariable,   TREASURE_GAME_GREEN_RUPEE);
 
     //Shop Items                                                                                                                                                                                                                                                                            price
     itemTable[BUY_DEKU_NUT_5]                    = Item(RG_BUY_DEKU_NUT_5,                    Text{"Buy Deku Nut (5)",                "Acheter: Noix Mojo (5)",           "Comprar nueces deku (5)"},                 ITEMTYPE_SHOP, 0x00, true,  &Nuts,           DEKU_NUTS_5,               15);
@@ -286,6 +287,11 @@ Item& ItemFromGIID(const int giid) {
         }
         index++;
     }
+
+    // there are vanilla items that don't exist in the item table we're reading from here
+    // if we made it this far, it means we didn't find an item in the table
+    // if we don't return anything, the game will crash, so, as a workaround, return greg
+    return itemTable[GREEN_RUPEE];
 }
 
 //This function should only be used to place items containing hint text

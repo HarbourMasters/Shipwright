@@ -7,7 +7,7 @@
 #include "z_en_jsjutan.h"
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnJsjutan_Init(Actor* thisx, PlayState* play);
 void EnJsjutan_Destroy(Actor* thisx, PlayState* play);
@@ -41,7 +41,7 @@ void EnJsjutan_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     CollisionHeader* header = NULL;
 
-    this->dyna.actor.flags &= ~ACTOR_FLAG_0;
+    this->dyna.actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
     CollisionHeader_GetVirtual(&sCol, &header);
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, header);
@@ -397,7 +397,7 @@ void EnJsjutan_Draw(Actor* thisx, PlayState* play2) {
 
     if (this->unk_164) {
         this->unk_164 = false;
-        u8* carpTex = ResourceMgr_LoadTexByName(sCarpetTex);
+        u8* carpTex = ResourceGetDataByName(sCarpetTex);
         u8* shadTex = sShadowTex;
         for (i = 0; i < ARRAY_COUNT(sShadowTex); i++) {
             if (((u16*)carpTex)[i] != 0) { // Hack to bypass ZAPD exporting textures as u64.
@@ -407,7 +407,7 @@ void EnJsjutan_Draw(Actor* thisx, PlayState* play2) {
             }
         }
     }
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, (s16)this->shadowAlpha);
 
@@ -418,19 +418,19 @@ void EnJsjutan_Draw(Actor* thisx, PlayState* play2) {
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     // Draws the carpet's shadow texture.
-    gSPSegment(POLY_OPA_DISP++, 0x0C, sShadowTex);
+    gSPSegmentLoadRes(POLY_OPA_DISP++, 0x0C, sShadowTex);
     gSPDisplayList(POLY_OPA_DISP++, sShadowMaterialDL);
     gDPPipeSync(POLY_OPA_DISP++);
 
     // Draws the carpet's shadow vertices. Swaps them between frames to get a smoother result.
     if (play->gameplayFrames % 2 != 0) {
-        gSPSegment(POLY_OPA_DISP++, 0x0C, gShadowOddVtx);
+        gSPSegmentLoadRes(POLY_OPA_DISP++, 0x0C, gShadowOddVtx);
     } else {
-        gSPSegment(POLY_OPA_DISP++, 0x0C, sShadowEvenVtx);
+        gSPSegmentLoadRes(POLY_OPA_DISP++, 0x0C, sShadowEvenVtx);
     }
     gSPDisplayList(POLY_OPA_DISP++, sModelDL);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Matrix_Translate(thisx->world.pos.x, this->unk_168 + 3.0f, thisx->world.pos.z, MTXMODE_NEW);
     Matrix_Scale(thisx->scale.x, thisx->scale.y, thisx->scale.z, MTXMODE_APPLY);
 
@@ -443,9 +443,9 @@ void EnJsjutan_Draw(Actor* thisx, PlayState* play2) {
 
     // Draws the carpet vertices.
     if (play->gameplayFrames % 2 != 0) {
-        gSPSegment(POLY_OPA_DISP++, 0x0C, sCarpetOddVtx);
+        gSPSegmentLoadRes(POLY_OPA_DISP++, 0x0C, sCarpetOddVtx);
     } else {
-        gSPSegment(POLY_OPA_DISP++, 0x0C, sCarpetEvenVtx);
+        gSPSegmentLoadRes(POLY_OPA_DISP++, 0x0C, sCarpetEvenVtx);
     }
     gSPDisplayList(POLY_OPA_DISP++, sModelDL);
 

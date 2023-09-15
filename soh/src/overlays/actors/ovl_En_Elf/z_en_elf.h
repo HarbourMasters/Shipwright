@@ -1,7 +1,7 @@
 #ifndef Z_EN_ELF_H
 #define Z_EN_ELF_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include "overlays/actors/ovl_Elf_Msg/z_elf_msg.h"
 

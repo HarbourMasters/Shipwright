@@ -3,8 +3,12 @@
 UnkRumbleStruct D_80160FD0;
 
 void func_800A9F30(PadMgr* a, s32 b) {
-    func_800D2E30(&D_80160FD0);
-    PadMgr_RumbleSet(a, D_80160FD0.rumbleEnable);
+    // TODO: Workaround for rumble being too long. Implement os thread functions.
+    // Game logic runs at 20hz but input thread runs at 60 hertz, so we call this 3 times
+    for (int i = 0; i < 3; i++) {
+        func_800D2E30(&D_80160FD0);
+        PadMgr_RumbleSet(a, D_80160FD0.rumbleEnable);
+    }
 }
 
 void func_800A9F6C(f32 a, u8 b, u8 c, u8 d) {

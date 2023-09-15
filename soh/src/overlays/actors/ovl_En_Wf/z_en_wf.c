@@ -8,8 +8,9 @@
 #include "vt.h"
 #include "overlays/actors/ovl_En_Encount1/z_en_encount1.h"
 #include "objects/object_wf/object_wf.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnWf_Init(Actor* thisx, PlayState* play);
 void EnWf_Destroy(Actor* thisx, PlayState* play);
@@ -279,6 +280,8 @@ void EnWf_Destroy(Actor* thisx, PlayState* play) {
             osSyncPrintf("\n\n");
         }
     }
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnWf_ChangeAction(PlayState* play, EnWf* this, s16 mustChoose) {
@@ -294,7 +297,7 @@ s32 EnWf_ChangeAction(PlayState* play, EnWf* this, s16 mustChoose) {
     playerYawDiff = ABS(playerYawDiff);
 
     if (func_800354B4(play, &this->actor, 100.0f, 0x2710, 0x2EE0, this->actor.shape.rot.y)) {
-        if (player->swordAnimation == 0x11) {
+        if (player->meleeWeaponAnimation == 0x11) {
             EnWf_SetupBlocking(this);
             return true;
         }
@@ -311,7 +314,7 @@ s32 EnWf_ChangeAction(PlayState* play, EnWf* this, s16 mustChoose) {
         if ((this->actor.bgCheckFlags & 8) && (ABS(wallYawDiff) < 0x2EE0) && (this->actor.xzDistToPlayer < 120.0f)) {
             EnWf_SetupSomersaultAndAttack(this);
             return true;
-        } else if (player->swordAnimation == 0x11) {
+        } else if (player->meleeWeaponAnimation == 0x11) {
             EnWf_SetupBlocking(this);
             return true;
         } else if ((this->actor.xzDistToPlayer < 80.0f) && (play->gameplayFrames % 2) != 0) {
@@ -371,7 +374,7 @@ void EnWf_SetupWaitToAppear(EnWf* this) {
     this->actionTimer = 20;
     this->unk_300 = false;
     this->action = WOLFOS_ACTION_WAIT_TO_APPEAR;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actor.scale.y = 0.0f;
     this->actor.gravity = 0.0f;
     EnWf_SetupAction(this, EnWf_WaitToAppear);
@@ -383,9 +386,11 @@ void EnWf_WaitToAppear(EnWf* this, PlayState* play) {
 
         if (this->actor.xzDistToPlayer < 240.0f) {
             this->actionTimer = 5;
-            this->actor.flags |= ACTOR_FLAG_0;
+            this->actor.flags |= ACTOR_FLAG_TARGETABLE;
 
-            if ((this->actor.params != WOLFOS_NORMAL) && (this->switchFlag != 0xFF)) {
+            // Disable miniboss music with Enemy Randomizer because the music would keep
+            // playing if the enemy was never defeated, which is common with Enemy Randomizer.
+            if ((this->actor.params != WOLFOS_NORMAL) && (this->switchFlag != 0xFF) && !CVarGetInteger("gRandomizedEnemies", 0)) {
                 func_800F5ACC(NA_BGM_MINI_BOSS);
             }
         }
@@ -1021,7 +1026,7 @@ void EnWf_Blocking(EnWf* this, PlayState* play) {
         if ((ABS(yawDiff) <= 0x4000) && (this->actor.xzDistToPlayer < 60.0f) &&
             (ABS(this->actor.yDistToPlayer) < 50.0f)) {
             if (func_800354B4(play, &this->actor, 100.0f, 10000, 0x4000, this->actor.shape.rot.y)) {
-                if (player->swordAnimation == 0x11) {
+                if (player->meleeWeaponAnimation == 0x11) {
                     EnWf_SetupBlocking(this);
                 } else if ((play->gameplayFrames % 2) != 0) {
                     EnWf_SetupBlocking(this);
@@ -1044,7 +1049,7 @@ void EnWf_Blocking(EnWf* this, PlayState* play) {
         }
     } else if (this->actionTimer == 0) {
         if (func_800354B4(play, &this->actor, 100.0f, 10000, 0x4000, this->actor.shape.rot.y)) {
-            if (player->swordAnimation == 0x11) {
+            if (player->meleeWeaponAnimation == 0x11) {
                 EnWf_SetupBlocking(this);
             } else if ((play->gameplayFrames % 2) != 0) {
                 EnWf_SetupBlocking(this);
@@ -1189,10 +1194,11 @@ void EnWf_SetupDie(EnWf* this) {
     }
 
     this->action = WOLFOS_ACTION_DIE;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actionTimer = this->skelAnime.animLength;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_WOLFOS_DEAD);
     EnWf_SetupAction(this, EnWf_Die);
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnWf_Die(EnWf* this, PlayState* play) {
@@ -1435,7 +1441,7 @@ void EnWf_Draw(Actor* thisx, PlayState* play) {
     // This conditional will always evaluate to true, since unk_300 is false whenever action is
     // WOLFOS_ACTION_WAIT_TO_APPEAR.
     if ((this->action != WOLFOS_ACTION_WAIT_TO_APPEAR) || !this->unk_300) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
         if (this->actor.params == WOLFOS_NORMAL) {
             gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sWolfosNormalEyeTextures[this->eyeIndex]));

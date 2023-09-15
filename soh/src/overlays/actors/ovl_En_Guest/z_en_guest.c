@@ -8,8 +8,9 @@
 #include "objects/object_os_anime/object_os_anime.h"
 #include "objects/object_boj/object_boj.h"
 #include "vt.h"
+#include <assert.h>
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnGuest_Init(Actor* thisx, PlayState* play);
 void EnGuest_Destroy(Actor* thisx, PlayState* play);
@@ -53,7 +54,7 @@ static InitChainEntry sInitChain[] = {
 void EnGuest_Init(Actor* thisx, PlayState* play) {
     EnGuest* this = (EnGuest*)thisx;
 
-    if (gSaveContext.infTable[7] & 0x40) {
+    if (Flags_GetInfTable(INFTABLE_SHOWED_ZELDAS_LETTER_TO_GATE_GUARD)) {
         Actor_Kill(&this->actor);
     } else {
         this->osAnimeBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_OS_ANIME);
@@ -62,7 +63,7 @@ void EnGuest_Init(Actor* thisx, PlayState* play) {
             // "No such bank!!"
             osSyncPrintf("%s[%d] : バンクが無いよ！！\n", __FILE__, __LINE__);
             osSyncPrintf(VT_RST);
-            ASSERT(this->osAnimeBankIndex < 0);
+            assert(this->osAnimeBankIndex < 0);
         }
     }
 }
@@ -71,6 +72,8 @@ void EnGuest_Destroy(Actor* thisx, PlayState* play) {
     EnGuest* this = (EnGuest*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnGuest_Update(Actor* thisx, PlayState* play) {
@@ -78,7 +81,7 @@ void EnGuest_Update(Actor* thisx, PlayState* play) {
     s32 pad;
 
     if (Object_IsLoaded(&play->objectCtx, this->osAnimeBankIndex)) {
-        this->actor.flags &= ~ACTOR_FLAG_4;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
         Actor_ProcessInitChain(&this->actor, sInitChain);
 
         SkelAnime_InitFlex(play, &this->skelAnime, &object_boj_Skel_0000F0, NULL, this->jointTable, this->morphTable, 16);
@@ -150,13 +153,13 @@ void func_80A505CC(Actor* thisx, PlayState* play) {
     func_80A5046C(this);
     this->actionFunc(this, play);
 
-    this->unk_2A0.unk_18 = player->actor.world.pos;
+    this->interactInfo.trackPos = player->actor.world.pos;
     if (LINK_IS_ADULT) {
-        this->unk_2A0.unk_14 = 10.0f;
+        this->interactInfo.yOffset = 10.0f;
     } else {
-        this->unk_2A0.unk_14 = 20.0f;
+        this->interactInfo.yOffset = 20.0f;
     }
-    func_80034A14(&this->actor, &this->unk_2A0, 6, 2);
+    Npc_TrackPoint(&this->actor, &this->interactInfo, 6, NPC_TRACKING_HEAD_AND_TORSO);
 
     func_80034F54(play, this->unk_2CC, this->unk_2EC, 16);
 
@@ -189,14 +192,14 @@ s32 EnGuest_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f*
     if (limbIndex == 15) {
         *dList = object_boj_DL_0059B0;
         Matrix_Translate(1400.0f, 0.0f, 0.0f, MTXMODE_APPLY);
-        sp3C = this->unk_2A0.unk_08;
+        sp3C = this->interactInfo.headRot;
         Matrix_RotateX((sp3C.y / 32768.0f) * M_PI, MTXMODE_APPLY);
         Matrix_RotateZ((sp3C.x / 32768.0f) * M_PI, MTXMODE_APPLY);
         Matrix_Translate(-1400.0f, 0.0f, 0.0f, MTXMODE_APPLY);
     }
 
     if (limbIndex == 8) {
-        sp3C = this->unk_2A0.unk_0E;
+        sp3C = this->interactInfo.torsoRot;
         Matrix_RotateX((-sp3C.y / 32768.0f) * M_PI, MTXMODE_APPLY);
         Matrix_RotateZ((sp3C.x / 32768.0f) * M_PI, MTXMODE_APPLY);
     }
@@ -222,7 +225,7 @@ void EnGuest_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, func_80A50708(play->state.gfxCtx, 255, 255, 255, 255));
     gSPSegment(POLY_OPA_DISP++, 0x09, func_80A50708(play->state.gfxCtx, 160, 60, 220, 255));

@@ -8,7 +8,7 @@
 #include "objects/object_oF1d_map/object_oF1d_map.h"
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void DemoGo_Init(Actor* thisx, PlayState* play);
 void DemoGo_Destroy(Actor* thisx, PlayState* play);
@@ -333,7 +333,7 @@ void func_8097D29C(DemoGo* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(mouthTexture));
 

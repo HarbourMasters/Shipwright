@@ -1,7 +1,7 @@
 #ifndef Z_BG_GANON_OTYUKA_H
 #define Z_BG_GANON_OTYUKA_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 #define OTYUKA_SIDE_EAST (1 << 0)

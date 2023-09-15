@@ -7,7 +7,7 @@
 #include "z_en_ge3.h"
 #include "objects/object_geldb/object_geldb.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnGe3_Init(Actor* thisx, PlayState* play);
 void EnGe3_Destroy(Actor* thisx, PlayState* play);
@@ -90,6 +90,8 @@ void EnGe3_Destroy(Actor* thisx, PlayState* play) {
     EnGe3* this = (EnGe3*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnGe3_TurnToFacePlayer(EnGe3* this, PlayState* play) {
@@ -128,7 +130,7 @@ void EnGe3_Wait(EnGe3* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         this->actionFunc = EnGe3_WaitLookAtPlayer;
         this->actor.update = EnGe3_UpdateWhenNotTalking;
-        this->actor.flags &= ~ACTOR_FLAG_16;
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
     }
     EnGe3_TurnToFacePlayer(this, play);
 }
@@ -154,7 +156,7 @@ void EnGe3_WaitTillCardGiven(EnGe3* this, PlayState* play) {
 void EnGe3_GiveCard(EnGe3* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
-        this->actor.flags &= ~ACTOR_FLAG_16;
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
         this->actionFunc = EnGe3_WaitTillCardGiven;
         if (!gSaveContext.n64ddFlag) {
             func_8002F434(&this->actor, play, GI_GERUDO_CARD, 10000.0f, 50.0f);
@@ -174,7 +176,7 @@ void EnGe3_ForceTalk(EnGe3* this, PlayState* play) {
             this->unk_30C |= 4;
         }
         this->actor.textId = 0x6004;
-        this->actor.flags |= ACTOR_FLAG_16;
+        this->actor.flags |= ACTOR_FLAG_WILL_TALK;
         func_8002F1C4(&this->actor, play, 300.0f, 300.0f, 0);
     }
     EnGe3_LookAtPlayer(this, play);
@@ -250,7 +252,7 @@ s32 EnGe3_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
             rot->x += this->headRot.y;
 
         default:
-            if (CVar_GetS32("gGerudoWarriorClothingFix", 0)) {
+            if (CVarGetInteger("gGerudoWarriorClothingFix", 0)) {
                 // This is a hack to fix the color-changing clothes this Gerudo has on N64 versions
                 OPEN_DISPS(play->state.gfxCtx);
                 switch (limbIndex) {
@@ -298,7 +300,7 @@ void EnGe3_Draw(Actor* thisx, PlayState* play2) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_800943C8(play->state.gfxCtx);
+    Gfx_SetupDL_37Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
     func_8002EBCC(&this->actor, play, 0);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,

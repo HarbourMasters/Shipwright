@@ -2,7 +2,7 @@
 #include "objects/object_sd/object_sd.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnHeishi4_Init(Actor* thisx, PlayState* play);
 void EnHeishi4_Destroy(Actor* thisx, PlayState* play);
@@ -20,6 +20,7 @@ void func_80A56900(EnHeishi4* this, PlayState* play);
 void func_80A56994(EnHeishi4* this, PlayState* play);
 void func_80A56A50(EnHeishi4* this, PlayState* play);
 void func_80A56ACC(EnHeishi4* this, PlayState* play);
+void EnHeishi4_MarketSneak(EnHeishi4* this, PlayState* play);
 
 const ActorInit En_Heishi4_InitVars = {
     ACTOR_EN_HEISHI4,
@@ -106,6 +107,8 @@ void EnHeishi4_Destroy(Actor* thisx, PlayState* play) {
     EnHeishi4* this = (EnHeishi4*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80A56328(EnHeishi4* this, PlayState* play) {
@@ -131,12 +134,12 @@ void func_80A563BC(EnHeishi4* this, PlayState* play) {
         this->unk_2B4 = 1;
         this->actionFunc = func_80A56B40;
     } else {
-        if (gSaveContext.eventChkInf[8] & 1) {
+        if (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) {
             this->actor.textId = 0x5065;
             this->actionFunc = func_80A56B40;
             return;
         }
-        if (gSaveContext.eventChkInf[4] & 0x20) {
+        if (Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL)) {
             this->actor.textId = 0x5068;
             this->actionFunc = func_80A56B40;
             return;
@@ -192,7 +195,7 @@ void func_80A56614(EnHeishi4* this, PlayState* play) {
         this->actionFunc = func_80A56B40;
         return;
     }
-    if (play->sceneNum == SCENE_MIHARIGOYA) {
+    if (play->sceneNum == SCENE_MARKET_GUARD_HOUSE) {
         if (IS_DAY) {
             this->actor.textId = 0x7004;
         } else {
@@ -212,14 +215,14 @@ void func_80A56614(EnHeishi4* this, PlayState* play) {
 }
 
 void func_80A5673C(EnHeishi4* this, PlayState* play) {
-    if (gSaveContext.eventChkInf[4] & 0x20) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL)) {
         osSyncPrintf(VT_FGCOL(YELLOW) " ☆☆☆☆☆ マスターソード祝入手！ ☆☆☆☆☆ \n" VT_RST);
         Actor_Kill(&this->actor);
         return;
     }
     this->unk_284 = 0;
-    if (gSaveContext.eventChkInf[8] & 1) {
-        if (!(gSaveContext.infTable[6] & 0x1000)) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) {
+        if (!Flags_GetInfTable(INFTABLE_6C)) {
             f32 frames = Animation_GetLastFrame(&gEnHeishiDyingGuardAnim_00C444);
             Animation_Change(&this->skelAnime, &gEnHeishiDyingGuardAnim_00C444, 1.0f, 0.0f, (s16)frames, ANIMMODE_LOOP,
                              -10.0f);
@@ -266,7 +269,7 @@ void func_80A56994(EnHeishi4* this, PlayState* play) {
     func_80038290(play, &this->actor, &this->unk_260, &this->unk_266, this->actor.focus.pos);
     if ((this->unk_282 == Message_GetState(&play->msgCtx)) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
-        gSaveContext.infTable[6] |= 0x1000;
+        Flags_SetInfTable(INFTABLE_6C);
         func_8002DF54(play, NULL, 8);
         this->actionFunc = func_80A56A50;
     }
@@ -331,11 +334,44 @@ void func_80A56B40(EnHeishi4* this, PlayState* play) {
             return;
         }
         if (this->type == HEISHI4_AT_MARKET_NIGHT) {
-            this->actionFunc = func_80A56614;
-            return;
+            Player* player = GET_PLAYER(play);
+            // Only allow sneaking when not wearing a mask as that triggers different dialogue. MM Bunny hood disables
+            // these interactions, so bunny hood is fine in that case.
+            if (CVarGetInteger("gMarketSneak", 0) &&
+                (player->currentMask == PLAYER_MASK_NONE ||
+                 (player->currentMask == PLAYER_MASK_BUNNY && CVarGetInteger("gMMBunnyHood", 0)))) {
+                this->actionFunc = EnHeishi4_MarketSneak;
+            } else {
+                this->actionFunc = func_80A56614;
+                return;
+            }
         }
     }
     func_8002F2F4(&this->actor, play);
+}
+
+/*Function that allows child Link to exit from Market entrance to Hyrule Field
+at night.
+*/
+void EnHeishi4_MarketSneak(EnHeishi4* this, PlayState* play) {
+    if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
+        switch (play->msgCtx.choiceIndex) {
+            case 0: //yes
+                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES) != RO_GENERIC_OFF){
+                    play->nextEntranceIndex = Entrance_OverrideNextIndex(0x01FD); // Market Entrance -> HF
+                } else {
+                    play->nextEntranceIndex = 0x00CD; // HF Near bridge (OoT cutscene entrance) to not fall in the water
+                } 
+                play->sceneLoadFlag = 0x14;
+                play->fadeTransition = 0x2E;
+                gSaveContext.nextTransitionType = 0x2E;
+                this->actionFunc = func_80A56614;
+                break;
+            case 1: //no
+                this->actionFunc = func_80A56614;
+                break;
+        }
+    }
 }
 
 void EnHeishi4_Update(Actor* thisx, PlayState* play) {
@@ -348,13 +384,13 @@ void EnHeishi4_Update(Actor* thisx, PlayState* play) {
     thisx->world.pos.z = this->pos.z;
     Actor_SetFocus(thisx, this->height);
     if (this->type != HEISHI4_AT_MARKET_DYING) {
-        this->unk_28C.unk_18 = player->actor.world.pos;
+        this->interactInfo.trackPos = player->actor.world.pos;
         if (!LINK_IS_ADULT) {
-            this->unk_28C.unk_18.y = (player->actor.world.pos.y - 10.0f);
+            this->interactInfo.trackPos.y = player->actor.world.pos.y - 10.0f;
         }
-        func_80034A14(thisx, &this->unk_28C, 2, 4);
-        this->unk_260 = this->unk_28C.unk_08;
-        this->unk_266 = this->unk_28C.unk_0E;
+        Npc_TrackPoint(thisx, &this->interactInfo, 2, NPC_TRACKING_FULL_BODY);
+        this->unk_260 = this->interactInfo.headRot;
+        this->unk_266 = this->interactInfo.torsoRot;
     }
     this->unk_27E += 1;
     this->actionFunc(this, play);
@@ -381,7 +417,7 @@ s32 EnHeishi_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f
 void EnHeishi4_Draw(Actor* thisx, PlayState* play) {
     EnHeishi4* this = (EnHeishi4*)thisx;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnHeishi_OverrideLimbDraw, NULL,
                       this);
 }

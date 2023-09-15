@@ -5,8 +5,9 @@
  */
 
 #include "z_item_etcetera.h"
+#include <assert.h>
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void ItemEtcetera_Init(Actor* thisx, PlayState* play);
 void ItemEtcetera_Destroy(Actor* thisx, PlayState* play);
@@ -21,7 +22,6 @@ void ItemEtcetera_SpawnSparkles(ItemEtcetera* this, PlayState* play);
 void ItemEtcetera_MoveFireArrowDown(ItemEtcetera* this, PlayState* play);
 void func_80B85B28(ItemEtcetera* this, PlayState* play);
 void ItemEtcetera_UpdateFireArrow(ItemEtcetera* this, PlayState* play);
-GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, PlayState* play);
 
 const ActorInit Item_Etcetera_InitVars = {
     ACTOR_ITEM_ETCETERA,
@@ -69,7 +69,7 @@ void ItemEtcetera_Init(Actor* thisx, PlayState* play) {
     objBankIndex = Object_GetIndex(&play->objectCtx, sObjectIds[type]);
     osSyncPrintf("bank_ID = %d\n", objBankIndex);
     if (objBankIndex < 0) {
-        ASSERT(objBankIndex < 0);
+        assert(objBankIndex < 0);
     } else {
         this->objBankIndex = objBankIndex;
     }
@@ -83,7 +83,7 @@ void ItemEtcetera_Init(Actor* thisx, PlayState* play) {
         case ITEM_ETC_LETTER:
             Actor_SetScale(&this->actor, 0.5f);
             this->futureActionFunc = func_80B858B4;
-            if ((gSaveContext.eventChkInf[3] & 2 && !gSaveContext.n64ddFlag) ||
+            if ((Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER) && !gSaveContext.n64ddFlag) ||
                 (gSaveContext.n64ddFlag && Flags_GetTreasure(play, 0x1E))) {
                 Actor_Kill(&this->actor);
             }
@@ -128,7 +128,7 @@ void func_80B85824(ItemEtcetera* this, PlayState* play) {
         }
 
         if ((this->actor.params & 0xFF) == 1) {
-            gSaveContext.eventChkInf[3] |= 2;
+            Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER);
             Flags_SetSwitch(play, 0xB);
         }
         Actor_Kill(&this->actor);
@@ -145,7 +145,7 @@ void func_80B85824(ItemEtcetera* this, PlayState* play) {
 void func_80B858B4(ItemEtcetera* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         if ((this->actor.params & 0xFF) == 1) {
-            gSaveContext.eventChkInf[3] |= 2;
+            Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER);
             Flags_SetSwitch(play, 0xB);
 
             if (gSaveContext.n64ddFlag) {

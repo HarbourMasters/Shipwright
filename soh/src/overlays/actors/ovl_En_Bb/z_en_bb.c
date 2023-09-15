@@ -7,8 +7,9 @@
 #include "z_en_bb.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_Bb/object_Bb.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_24)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_PLAY_HIT_SFX)
 
 #define vBombHopPhase actionVar1
 #define vTrailIdx actionVar1
@@ -268,7 +269,7 @@ void EnBb_SpawnFlameTrail(PlayState* play, EnBb* this, s16 startAtZero) {
 
     for (i = 0; i < 5; i++) {
         next = (EnBb*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BB, this->actor.world.pos.x,
-                                  this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
+                                  this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
         if (next != NULL) {
             now->actor.child = &next->actor;
             next->actor.parent = &now->actor;
@@ -345,7 +346,7 @@ void EnBb_Init(Actor* thisx, PlayState* play) {
                 this->flamePrimBlue = this->flameEnvColor.b = 255;
                 thisx->world.pos.y += 50.0f;
                 EnBb_SetupBlue(this);
-                thisx->flags |= ACTOR_FLAG_14;
+                thisx->flags |= ACTOR_FLAG_ARROW_DRAGGABLE;
                 break;
             case ENBB_RED:
                 thisx->naviEnemyId = 0x24;
@@ -374,7 +375,7 @@ void EnBb_Init(Actor* thisx, PlayState* play) {
                 EnBb_SetupWhite(play, this);
                 EnBb_SetWaypoint(this, play);
                 EnBb_FaceWaypoint(this);
-                thisx->flags |= ACTOR_FLAG_14;
+                thisx->flags |= ACTOR_FLAG_ARROW_DRAGGABLE;
                 break;
             case ENBB_GREEN_BIG:
                 this->path = this->actionState >> 4;
@@ -403,12 +404,14 @@ void EnBb_Destroy(Actor* thisx, PlayState* play) {
     EnBb* this = (EnBb*)thisx;
 
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnBb_SetupFlameTrail(EnBb* this) {
     this->action = BB_FLAME_TRAIL;
     this->moveMode = BBMOVE_NOCLIP;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actor.velocity.y = 0.0f;
     this->actor.gravity = 0.0f;
     this->actor.speedXZ = 0.0f;
@@ -462,6 +465,8 @@ void EnBb_SetupDeath(EnBb* this, PlayState* play) {
     }
     this->action = BB_KILL;
     EnBb_SetupAction(this, EnBb_Death);
+
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnBb_Death(EnBb* this, PlayState* play) {
@@ -699,7 +704,7 @@ void EnBb_Down(EnBb* this, PlayState* play) {
                 this->moveMode = BBMOVE_HIDDEN;
                 this->timer = 10;
                 this->actionState++;
-                this->actor.flags &= ~ACTOR_FLAG_0;
+                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                 this->action = BB_RED;
                 EnBb_SetupAction(this, EnBb_Red);
                 return;
@@ -764,7 +769,7 @@ void EnBb_SetupRed(PlayState* play, EnBb* this) {
         this->actor.home.pos = this->actor.world.pos;
         this->actor.velocity.y = this->actor.gravity = this->actor.speedXZ = 0.0f;
         this->actor.bgCheckFlags &= ~1;
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     }
     this->action = BB_RED;
     EnBb_SetupAction(this, EnBb_Red);
@@ -798,7 +803,7 @@ void EnBb_Red(EnBb* this, PlayState* play) {
         case BBRED_ATTACK:
             if (this->timer == 0) {
                 this->moveMode = BBMOVE_NORMAL;
-                this->actor.flags |= ACTOR_FLAG_0;
+                this->actor.flags |= ACTOR_FLAG_TARGETABLE;
             }
             this->bobPhase += Rand_ZeroOne();
             Math_SmoothStepToF(&this->flameScaleY, 80.0f, 1.0f, 10.0f, 0.0f);
@@ -817,7 +822,7 @@ void EnBb_Red(EnBb* this, PlayState* play) {
                     this->moveMode = BBMOVE_HIDDEN;
                     this->timer = 10;
                     this->actionState++;
-                    this->actor.flags &= ~ACTOR_FLAG_0;
+                    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                 } else {
                     this->actor.velocity.y *= -1.06f;
                     if (this->actor.velocity.y > 13.0f) {
@@ -1126,7 +1131,7 @@ void EnBb_Stunned(EnBb* this, PlayState* play) {
                 EnBb_SetupDown(this);
             }
         } else {
-            this->actor.flags &= ~ACTOR_FLAG_0;
+            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
             EnBb_SetupDeath(this, play);
         }
     }
@@ -1191,7 +1196,7 @@ void EnBb_CollisionCheck(EnBb* this, PlayState* play) {
                     }
                 }
                 if (this->actor.colChkInfo.health == 0) {
-                    this->actor.flags &= ~ACTOR_FLAG_0;
+                    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                     if (this->actor.params == ENBB_RED) {
                         EnBb_KillFlameTrail(this);
                     }
@@ -1233,7 +1238,7 @@ void EnBb_Update(Actor* thisx, PlayState* play2) {
     if (this->actor.colChkInfo.damageEffect != 0xD) {
         this->actionFunc(this, play);
         if ((this->actor.params <= ENBB_BLUE) && (this->actor.speedXZ >= -6.0f) &&
-            ((this->actor.flags & ACTOR_FLAG_15) == 0)) {
+            ((this->actor.flags & ACTOR_FLAG_DRAGGED_BY_ARROW) == 0)) {
             Actor_MoveForward(&this->actor);
         }
         if (this->moveMode == BBMOVE_NORMAL) {
@@ -1286,7 +1291,7 @@ void EnBb_Draw(Actor* thisx, PlayState* play) {
     blureBase2.z = this->maxSpeed * 80.0f;
     if (this->moveMode != BBMOVE_HIDDEN) {
         if (this->actor.params <= ENBB_BLUE) {
-            func_80093D18(play->state.gfxCtx);
+            Gfx_SetupDL_25Opa(play->state.gfxCtx);
             SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, EnBb_PostLimbDraw,
                               this);
 
@@ -1320,7 +1325,7 @@ void EnBb_Draw(Actor* thisx, PlayState* play) {
             Matrix_Translate(0.0f, -40.0f, 0.0f, MTXMODE_APPLY);
         }
         if (this->actor.params != ENBB_WHITE) {
-            func_80093D84(play->state.gfxCtx);
+            Gfx_SetupDL_25Xlu(play->state.gfxCtx);
             gSPSegment(POLY_XLU_DISP++, 0x08,
                        Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
                                         ((play->gameplayFrames + (this->flameScrollMod * 10)) *

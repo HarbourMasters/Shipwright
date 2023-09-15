@@ -7,7 +7,7 @@
 #include "z_bg_jya_bigmirror.h"
 #include "objects/object_jya_obj/object_jya_obj.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void BgJyaBigmirror_Init(Actor* thisx, PlayState* play);
 void BgJyaBigmirror_Destroy(Actor* thisx, PlayState* play);
@@ -154,7 +154,7 @@ void BgJyaBigmirror_HandleMirRay(Actor* thisx, PlayState* play) {
             if (lightBeamToggles[i]) {
                 if ((this->lightBeams[i] == NULL) && Object_IsLoaded(&play->objectCtx, objBankIndex)) {
                     this->lightBeams[i] = Actor_Spawn(&play->actorCtx, play, ACTOR_MIR_RAY, sMirRayPoss[i].x,
-                                                      sMirRayPoss[i].y, sMirRayPoss[i].z, 0, 0, 0, sMirRayParamss[i]);
+                                                      sMirRayPoss[i].y, sMirRayPoss[i].z, 0, 0, 0, sMirRayParamss[i], true);
 
                     if (this->lightBeams[i] == NULL) {
                         // "Mir Ray generation failed"
@@ -213,7 +213,7 @@ void BgJyaBigmirror_DrawLightBeam(Actor* thisx, PlayState* play) {
     Actor* lift;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     lift = Actor_Find(&play->actorCtx, ACTOR_BG_JYA_LIFT, ACTORCAT_BG);
     if (lift != NULL) {
         this->liftHeight = lift->world.pos.y;

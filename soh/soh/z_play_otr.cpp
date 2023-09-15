@@ -1,20 +1,21 @@
 #include "OTRGlobals.h"
-#include <libultraship/ResourceMgr.h>
-#include <libultraship/Scene.h>
+#include <libultraship/libultraship.h>
+#include "soh/resource/type/Scene.h"
 #include <Utils/StringHelper.h>
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "global.h"
 #include "vt.h"
-#include <libultraship/Vertex.h>
+#include <Vertex.h>
 
 extern "C" void Play_InitScene(PlayState * play, s32 spawn);
 extern "C" void Play_InitEnvironment(PlayState * play, s16 skyboxId);
 void OTRPlay_InitScene(PlayState* play, s32 spawn);
-s32 OTRScene_ExecuteCommands(PlayState* play, Ship::Scene* sceneCmd);
+s32 OTRScene_ExecuteCommands(PlayState* play, LUS::Scene* scene);
 
-//Ship::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
-Ship::Resource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
+//LUS::OTRResource* OTRPlay_LoadFile(PlayState* play, RomFile* file) {
+LUS::IResource* OTRPlay_LoadFile(PlayState* play, const char* fileName)
 {
-    auto res = OTRGlobals::Instance->context->GetResourceManager()->LoadResource(fileName);
+    auto res = LUS::Context::GetInstance()->GetResourceManager()->LoadResource(fileName);
     return res.get();
 }
 
@@ -36,7 +37,7 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
     }
     std::string scenePath = StringHelper::Sprintf("scenes/%s/%s/%s", sceneVersion.c_str(), scene->sceneFile.fileName, scene->sceneFile.fileName);
 
-    play->sceneSegment = (Ship::Scene*)OTRPlay_LoadFile(play, scenePath.c_str());
+    play->sceneSegment = OTRPlay_LoadFile(play, scenePath.c_str());
 
     // Failed to load scene... default to doodongs cavern
     if (play->sceneSegment == nullptr) 
@@ -49,12 +50,12 @@ extern "C" void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn) {
 
     scene->unk_13 = 0;
 
-    //ASSERT(play->sceneSegment != NULL);
     //gSegments[2] = VIRTUAL_TO_PHYSICAL(play->sceneSegment);
 
     OTRPlay_InitScene(play, spawn);
+    auto roomSize = func_80096FE8(play, &play->roomCtx);
 
-    osSyncPrintf("ROOM SIZE=%fK\n", func_80096FE8(play, &play->roomCtx) / 1024.0f);
+    osSyncPrintf("ROOM SIZE=%fK\n", roomSize / 1024.0f);
 }
 
 void OTRPlay_InitScene(PlayState* play, s32 spawn) {
@@ -72,14 +73,21 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     func_80096FD4(play, &play->roomCtx.curRoom);
     YREG(15) = 0;
     gSaveContext.worldMapArea = 0;
-    OTRScene_ExecuteCommands(play, play->sceneSegment);
+    OTRScene_ExecuteCommands(play, (LUS::Scene*)play->sceneSegment);
     Play_InitEnvironment(play, play->skyboxId);
-    /* auto data = static_cast<Ship::Vertex*>(Ship::Window::GetInstance()
+    // Unpause the timer for Boss Rush when the scene loaded isn't the Chamber of Sages.
+    if (gSaveContext.isBossRush && play->sceneNum != SCENE_CHAMBER_OF_THE_SAGES) {
+        gSaveContext.isBossRushPaused = 0;
+    }
+    /* auto data = static_cast<LUS::Vertex*>(LUS::Context::GetInstance()
                                                ->GetResourceManager()
-                                               ->LoadResource("object_link_child\\object_link_childVtx_01FE08")
+                                               ->ResourceLoad("object_link_child\\object_link_childVtx_01FE08")
                                                .get());
 
     auto data2 = ResourceMgr_LoadVtxByCRC(0x68d4ea06044e228f);*/
+    
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneInit>(play->sceneNum);
+    SPDLOG_INFO("Scene Init - sceneNum: {0:#x}, entranceIndex: {1:#x}", play->sceneNum, gSaveContext.entranceIndex);
 
     volatile int a = 0;
 }

@@ -7,8 +7,9 @@
 #include "z_en_sb.h"
 #include "vt.h"
 #include "objects/object_sb/object_sb.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 
 void EnSb_Init(Actor* thisx, PlayState* play);
 void EnSb_Destroy(Actor* thisx, PlayState* play);
@@ -456,6 +457,7 @@ void EnSb_Update(Actor* thisx, PlayState* play) {
             } else {
                 Item_DropCollectible(play, &this->actor.world.pos, 8);
             }
+            GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
             Actor_Kill(&this->actor);
         }
     } else {

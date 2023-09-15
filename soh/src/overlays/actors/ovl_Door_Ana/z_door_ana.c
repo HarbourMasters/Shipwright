@@ -6,8 +6,10 @@
 
 #include "z_door_ana.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/randomizer/randomizer_grotto.h"
 
-#define FLAGS ACTOR_FLAG_25
+#define FLAGS ACTOR_FLAG_NO_FREEZE_OCARINA
 
 void DoorAna_Init(Actor* thisx, PlayState* play);
 void DoorAna_Destroy(Actor* thisx, PlayState* play);
@@ -17,6 +19,9 @@ void DoorAna_Draw(Actor* thisx, PlayState* play);
 void DoorAna_WaitClosed(DoorAna* this, PlayState* play);
 void DoorAna_WaitOpen(DoorAna* this, PlayState* play);
 void DoorAna_GrabPlayer(DoorAna* this, PlayState* play);
+
+s16 GetChestGameRandoGiDrawId(s8 room, s16 ogDrawId, PlayState* play);
+void Grotto_OverrideActorEntrance(Actor* thisx);
 
 const ActorInit Door_Ana_InitVars = {
     ACTOR_DOOR_ANA,
@@ -73,7 +78,7 @@ void DoorAna_Init(Actor* thisx, PlayState* play) {
             Collider_InitCylinder(play, &this->collider);
             Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
         } else {
-            this->actor.flags |= ACTOR_FLAG_4;
+            this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
         }
         Actor_SetScale(&this->actor, 0);
         DoorAna_SetupAction(this, DoorAna_WaitClosed);
@@ -100,7 +105,7 @@ void DoorAna_WaitClosed(DoorAna* this, PlayState* play) {
         // opening with song of storms
         if (this->actor.xyzDistToPlayerSq < 40000.0f && Flags_GetEnv(play, 5)) {
             openGrotto = true;
-            this->actor.flags &= ~ACTOR_FLAG_4;
+            this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
         }
     } else {
         // bombing/hammering open a grotto
@@ -139,6 +144,12 @@ void DoorAna_WaitOpen(DoorAna* this, PlayState* play) {
                 destinationIdx = this->actor.home.rot.z + 1;
             }
             play->nextEntranceIndex = entrances[destinationIdx];
+
+            // In ER, load the correct entrance based on the grotto link is falling into
+            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+                Grotto_OverrideActorEntrance(&this->actor);
+            }
+
             DoorAna_SetupAction(this, DoorAna_GrabPlayer);
         } else {
             if (!Player_InCsMode(play) && !(player->stateFlags1 & 0x8800000) &&
@@ -169,14 +180,16 @@ void DoorAna_Update(Actor* thisx, PlayState* play) {
     DoorAna* this = (DoorAna*)thisx;
 
     this->actionFunc(this, play);
-    // changes the grottos facing angle based on camera angle
-    this->actor.shape.rot.y = Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x8000;
+    // Changes the grottos facing angle based on camera angle
+    if (!CVarGetInteger("gDisableGrottoRotation", 0)) {
+        this->actor.shape.rot.y = Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x8000;
+    }
 }
 
 void DoorAna_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gGrottoDL);

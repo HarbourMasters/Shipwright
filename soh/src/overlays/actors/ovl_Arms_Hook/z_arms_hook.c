@@ -1,7 +1,7 @@
 #include "z_arms_hook.h"
 #include "objects/object_link_boy/object_link_boy.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void ArmsHook_Init(Actor* thisx, PlayState* play);
 void ArmsHook_Destroy(Actor* thisx, PlayState* play);
@@ -76,7 +76,7 @@ void ArmsHook_Destroy(Actor* thisx, PlayState* play) {
     ArmsHook* this = (ArmsHook*)thisx;
 
     if (this->grabbed != NULL) {
-        this->grabbed->flags &= ~ACTOR_FLAG_13;
+        this->grabbed->flags &= ~ACTOR_FLAG_HOOKSHOT_ATTACHED;
     }
     Collider_DestroyQuad(play, &this->collider);
 }
@@ -85,7 +85,7 @@ void ArmsHook_Wait(ArmsHook* this, PlayState* play) {
     if (this->actor.parent == NULL) {
         Player* player = GET_PLAYER(play);
         // get correct timer length for hookshot or longshot
-        s32 length = (player->heldItemActionParam == PLAYER_AP_HOOKSHOT) ? 13 : 26;
+        s32 length = ((player->heldItemAction == PLAYER_IA_HOOKSHOT) ? 13 : 26) * CVarGetFloat("gCheatHookshotReachMultiplier", 1.0f);
 
         ArmsHook_SetupAction(this, ArmsHook_Shoot);
         func_8002D9A4(&this->actor, 20.0f);
@@ -112,7 +112,7 @@ s32 ArmsHook_AttachToPlayer(ArmsHook* this, Player* player) {
 
 void ArmsHook_DetachHookFromActor(ArmsHook* this) {
     if (this->grabbed != NULL) {
-        this->grabbed->flags &= ~ACTOR_FLAG_13;
+        this->grabbed->flags &= ~ACTOR_FLAG_HOOKSHOT_ATTACHED;
         this->grabbed = NULL;
     }
 }
@@ -121,7 +121,7 @@ s32 ArmsHook_CheckForCancel(ArmsHook* this) {
     Player* player = (Player*)this->actor.parent;
 
     if (Player_HoldsHookshot(player)) {
-        if ((player->itemActionParam != player->heldItemActionParam) || (player->actor.flags & ACTOR_FLAG_8) ||
+        if ((player->itemAction != player->heldItemAction) || (player->actor.flags & ACTOR_FLAG_PLAYER_TALKED_TO) ||
             ((player->stateFlags1 & 0x4000080))) {
             this->timer = 0;
             ArmsHook_DetachHookFromActor(this);
@@ -133,7 +133,7 @@ s32 ArmsHook_CheckForCancel(ArmsHook* this) {
 }
 
 void ArmsHook_AttachHookToActor(ArmsHook* this, Actor* actor) {
-    actor->flags |= ACTOR_FLAG_13;
+    actor->flags |= ACTOR_FLAG_HOOKSHOT_ATTACHED;
     this->grabbed = actor;
     Math_Vec3f_Diff(&actor->world.pos, &this->actor.world.pos, &this->grabbedDistDiff);
 }
@@ -172,10 +172,10 @@ void ArmsHook_Shoot(ArmsHook* this, PlayState* play) {
     if ((this->timer != 0) && (this->collider.base.atFlags & AT_HIT) &&
         (this->collider.info.atHitInfo->elemType != ELEMTYPE_UNK4)) {
         touchedActor = this->collider.base.at;
-        if ((touchedActor->update != NULL) && (touchedActor->flags & (ACTOR_FLAG_9 | ACTOR_FLAG_10))) {
+        if ((touchedActor->update != NULL) && (touchedActor->flags & (ACTOR_FLAG_HOOKSHOT_DRAGS | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT))) {
             if (this->collider.info.atHitInfo->bumperFlags & BUMP_HOOKABLE) {
                 ArmsHook_AttachHookToActor(this, touchedActor);
-                if (CHECK_FLAG_ALL(touchedActor->flags, ACTOR_FLAG_10)) {
+                if (CHECK_FLAG_ALL(touchedActor->flags, ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)) {
                     func_80865044(this);
                 }
             }
@@ -186,7 +186,7 @@ void ArmsHook_Shoot(ArmsHook* this, PlayState* play) {
     } else if (DECR(this->timer) == 0) {
         grabbed = this->grabbed;
         if (grabbed != NULL) {
-            if ((grabbed->update == NULL) || !CHECK_FLAG_ALL(grabbed->flags, ACTOR_FLAG_13)) {
+            if ((grabbed->update == NULL) || !CHECK_FLAG_ALL(grabbed->flags, ACTOR_FLAG_HOOKSHOT_ATTACHED)) {
                 grabbed = NULL;
                 this->grabbed = NULL;
             } else if (this->actor.child != NULL) {
@@ -257,6 +257,10 @@ void ArmsHook_Shoot(ArmsHook* this, PlayState* play) {
         sp60.x = this->unk_1F4.x - (this->unk_1E8.x - this->unk_1F4.x);
         sp60.y = this->unk_1F4.y - (this->unk_1E8.y - this->unk_1F4.y);
         sp60.z = this->unk_1F4.z - (this->unk_1E8.z - this->unk_1F4.z);
+        u16 buttonsToCheck = BTN_A | BTN_B | BTN_R | BTN_CUP | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
+        if (CVarGetInteger("gDpadEquips", 0) != 0) {
+            buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
+        }
         if (BgCheck_EntityLineTest1(&play->colCtx, &sp60, &this->unk_1E8, &sp78, &poly, true, true, true, true,
                                     &bgId) &&
             !func_8002F9EC(play, &this->actor, poly, bgId, &sp78)) {
@@ -281,8 +285,7 @@ void ArmsHook_Shoot(ArmsHook* this, PlayState* play) {
                 Audio_PlaySoundGeneral(NA_SE_IT_HOOKSHOT_REFLECT, &this->actor.projectedPos, 4, &D_801333E0,
                                        &D_801333E0, &D_801333E8);
             }
-        } else if (CHECK_BTN_ANY(play->state.input[0].press.button,
-                                 (BTN_A | BTN_B | BTN_R | BTN_CUP | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN))) {
+        } else if (CHECK_BTN_ANY(play->state.input[0].press.button, (buttonsToCheck))) {
             this->timer = 0;
         }
     }
@@ -320,7 +323,7 @@ void ArmsHook_Draw(Actor* thisx, PlayState* play) {
         }
 
         func_80090480(play, &this->collider, &this->hookInfo, &sp6C, &sp60);
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHookshotTipDL);

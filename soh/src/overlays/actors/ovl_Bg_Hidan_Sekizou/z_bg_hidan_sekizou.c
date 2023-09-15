@@ -396,7 +396,7 @@ void BgHidanSekizou_Draw(Actor* thisx, PlayState* play2) {
     s32 sp6C[4];
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     if (this->dyna.actor.params == 0) {
@@ -404,7 +404,7 @@ void BgHidanSekizou_Draw(Actor* thisx, PlayState* play2) {
     } else {
         gSPDisplayList(POLY_OPA_DISP++, gFireTempleStationaryFlamethrowerTallDL);
     }
-    POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x14);
+    POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0x14);
     if (this->dyna.actor.params == 0) {
         if (this->unk_168[0] > 0) {
             if ((s16)(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) - this->dyna.actor.shape.rot.y) >= 0) {

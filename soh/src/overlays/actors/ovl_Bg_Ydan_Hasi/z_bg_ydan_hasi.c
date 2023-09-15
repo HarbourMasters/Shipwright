@@ -7,7 +7,7 @@
 #include "z_bg_ydan_hasi.h"
 #include "objects/object_ydan_objects/object_ydan_objects.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void BgYdanHasi_Init(Actor* thisx, PlayState* play);
 void BgYdanHasi_Destroy(Actor* thisx, PlayState* play);
@@ -179,7 +179,7 @@ void BgYdanHasi_Draw(Actor* thisx, PlayState* play) {
     } else {
         OPEN_DISPS(play->state.gfxCtx);
 
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, -play->gameplayFrames % 128,
                                     play->gameplayFrames % 128, 0x20, 0x20, 1, play->gameplayFrames % 128,

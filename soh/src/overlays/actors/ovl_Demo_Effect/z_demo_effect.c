@@ -9,8 +9,9 @@
 #include "objects/object_triforce_spot/object_triforce_spot.h"
 #include "objects/object_efc_tw/object_efc_tw.h"
 #include "objects/object_gi_jewel/object_gi_jewel.h"
+#include <assert.h>
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void DemoEffect_Init(Actor* thisx, PlayState* play);
 void DemoEffect_Destroy(Actor* thisx, PlayState* play);
@@ -141,7 +142,7 @@ f32 DemoEffect_InterpolateCsFrames(PlayState* play, s32 csActionId) {
  */
 void DemoEffect_InitJewel(PlayState* play, DemoEffect* this) {
     this->initDrawFunc = DemoEffect_DrawJewel;
-    if (gSaveContext.n64ddFlag && play->sceneNum == SCENE_BDAN) {
+    if (gSaveContext.n64ddFlag && play->sceneNum == SCENE_JABU_JABU) {
         this->initDrawFunc = DemoEffect_DrawGetItem;
     }
     if (!LINK_IS_ADULT) {
@@ -149,13 +150,13 @@ void DemoEffect_InitJewel(PlayState* play, DemoEffect* this) {
     } else {
         this->initUpdateFunc = DemoEffect_UpdateJewelAdult;
     }
-    if (play->sceneNum == SCENE_TOKINOMA) {
+    if (play->sceneNum == SCENE_TEMPLE_OF_TIME) {
         Actor_SetScale(&this->actor, 0.35f);
     } else {
         Actor_SetScale(&this->actor, 0.10f);
     }
     this->csActionId = 1;
-    this->actor.shape.rot.x = (gSaveContext.n64ddFlag && play->sceneNum == SCENE_BDAN) ? 0 : 16384;
+    this->actor.shape.rot.x = (gSaveContext.n64ddFlag && play->sceneNum == SCENE_JABU_JABU) ? 0 : 16384;
     DemoEffect_InitJewelColor(this);
     this->jewel.alpha = 0;
     this->jewelCsRotation.x = this->jewelCsRotation.y = this->jewelCsRotation.z = 0;
@@ -199,7 +200,7 @@ void DemoEffect_Init(Actor* thisx, PlayState* play2) {
     osSyncPrintf(VT_FGCOL(CYAN) " bank_ID = %d\n" VT_RST, objectIndex);
 
     if (objectIndex < 0) {
-        ASSERT(objectIndex < 0);
+        assert(objectIndex < 0);
     } else {
         this->initObjectBankIndex = objectIndex;
     }
@@ -461,7 +462,7 @@ void DemoEffect_Init(Actor* thisx, PlayState* play2) {
 
         case DEMO_EFFECT_TIMEWARP_TIMEBLOCK_LARGE:
         case DEMO_EFFECT_TIMEWARP_TIMEBLOCK_SMALL:
-            this->actor.flags |= ACTOR_FLAG_25;
+            this->actor.flags |= ACTOR_FLAG_NO_FREEZE_OCARINA;
         case DEMO_EFFECT_TIMEWARP_MASTERSWORD:
             this->initDrawFunc = DemoEffect_DrawTimeWarp;
             this->initUpdateFunc = DemoEffect_InitTimeWarp;
@@ -495,7 +496,7 @@ void DemoEffect_Init(Actor* thisx, PlayState* play2) {
             this->jewel.isPositionInit = 0;
             DemoEffect_InitJewel(play, this);
             Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTOR_EN_DOOR);
-            if ((play->sceneNum == SCENE_BDAN) && (gSaveContext.infTable[20] & 0x20)) {
+            if ((play->sceneNum == SCENE_JABU_JABU) && (Flags_GetInfTable(INFTABLE_145))) {
                 Actor_Kill(&this->actor);
                 return;
             }
@@ -509,7 +510,7 @@ void DemoEffect_Init(Actor* thisx, PlayState* play2) {
             break;
 
         default:
-            ASSERT(0);
+            assert(0);
             break;
     }
 
@@ -688,7 +689,7 @@ void DemoEffect_InitTimeWarp(DemoEffect* this, PlayState* play) {
     s32 effectType = (this->actor.params & 0x00FF);
 
     if (!SkelCurve_Init(play, &this->skelCurve, &gTimeWarpSkel, &gTimeWarpAnim)) {
-        ASSERT(!SkelCurve_Init(play, &this->skelCurve, &gTimeWarpSkel, &gTimeWarpAnim));
+        assert(!SkelCurve_Init(play, &this->skelCurve, &gTimeWarpSkel, &gTimeWarpAnim));
     }
 
     if (effectType == DEMO_EFFECT_TIMEWARP_TIMEBLOCK_LARGE || effectType == DEMO_EFFECT_TIMEWARP_TIMEBLOCK_SMALL) {
@@ -702,7 +703,7 @@ void DemoEffect_InitTimeWarp(DemoEffect* this, PlayState* play) {
             Actor_SetScale(&this->actor, 84 * 0.001f);
         }
     } else if (gSaveContext.sceneSetupIndex == 5 || gSaveContext.sceneSetupIndex == 4 ||
-               (gSaveContext.entranceIndex == 0x0324 && !((gSaveContext.eventChkInf[12] & 0x200)))) {
+               (gSaveContext.entranceIndex == 0x0324 && !((Flags_GetEventChkInf(EVENTCHKINF_TIME_TRAVELED_TO_ADULT))))) {
         SkelCurve_SetAnim(&this->skelCurve, &gTimeWarpAnim, 1.0f, 59.0f, 59.0f, 0.0f);
         SkelCurve_Update(play, &this->skelCurve);
         this->updateFunc = DemoEffect_UpdateTimeWarpReturnFromChamberOfSages;
@@ -766,7 +767,7 @@ void DemoEffect_UpdateTimeWarpReturnFromChamberOfSages(DemoEffect* this, PlaySta
 
     if (this->timeWarp.shrinkTimer > 250) {
         if (gSaveContext.entranceIndex == 0x0324) {
-            gSaveContext.eventChkInf[12] |= 0x200;
+            Flags_SetEventChkInf(EVENTCHKINF_TIME_TRAVELED_TO_ADULT);
         }
 
         Actor_Kill(&this->actor);
@@ -923,7 +924,7 @@ void DemoEffect_UpdateLightRingTriforce(DemoEffect* this, PlayState* play) {
             play->csCtx.npcActions[this->csActionId]->action == 2) {
             blueOrb = (DemoEffect*)Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT,
                                                this->actor.world.pos.x, this->actor.world.pos.y,
-                                               this->actor.world.pos.z, 0, 0, 0, DEMO_EFFECT_BLUE_ORB);
+                                               this->actor.world.pos.z, 0, 0, 0, DEMO_EFFECT_BLUE_ORB, true);
 
             if (blueOrb != NULL) {
                 Actor_SetScale(&blueOrb->actor, 0.0f);
@@ -953,21 +954,21 @@ void DemoEffect_UpdateCreationFireball(DemoEffect* this, PlayState* play) {
     }
 
     effect = (DemoEffect*)Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, this->actor.world.pos.x,
-                                      this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, DEMO_EFFECT_BLUE_ORB);
+                                      this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, DEMO_EFFECT_BLUE_ORB, true);
     if (effect != NULL) {
         Actor_SetScale(&effect->actor, 0.0f);
     }
 
     effect = (DemoEffect*)Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, this->actor.world.pos.x,
                                       this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0,
-                                      DEMO_EFFECT_LIGHTRING_EXPANDING);
+                                      DEMO_EFFECT_LIGHTRING_EXPANDING, true);
     if (effect != NULL) {
         Actor_SetScale(&effect->actor, 0.1f);
     }
 
     effect = (DemoEffect*)Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, this->actor.world.pos.x,
                                       this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0,
-                                      DEMO_EFFECT_LIGHTRING_SHRINKING);
+                                      DEMO_EFFECT_LIGHTRING_SHRINKING, true);
     if (effect != NULL) {
         Actor_SetScale(&effect->actor, 0.2f);
     }
@@ -1074,12 +1075,12 @@ void DemoEffect_UpdateLightEffect(DemoEffect* this, PlayState* play) {
                 break;
         }
 
-        if (play->sceneNum == SCENE_SPOT04 && gSaveContext.sceneSetupIndex == 6 &&
+        if (play->sceneNum == SCENE_KOKIRI_FOREST && gSaveContext.sceneSetupIndex == 6 &&
             play->csCtx.frames == 197) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EV_WHITE_OUT);
         }
 
-        if (play->sceneNum == SCENE_SPOT16 && gSaveContext.sceneSetupIndex == 5) {
+        if (play->sceneNum == SCENE_DEATH_MOUNTAIN_TRAIL && gSaveContext.sceneSetupIndex == 5) {
             if (!DemoEffect_CheckCsAction(this, play, 1)) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
             }
@@ -1088,7 +1089,7 @@ void DemoEffect_UpdateLightEffect(DemoEffect* this, PlayState* play) {
             }
         }
 
-        if (play->sceneNum == SCENE_SPOT08 && gSaveContext.sceneSetupIndex == 4) {
+        if (play->sceneNum == SCENE_ZORAS_FOUNTAIN && gSaveContext.sceneSetupIndex == 4) {
             if (!DemoEffect_CheckCsAction(this, play, 1)) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
             }
@@ -1097,14 +1098,14 @@ void DemoEffect_UpdateLightEffect(DemoEffect* this, PlayState* play) {
             }
         }
 
-        if (play->sceneNum == SCENE_TOKINOMA && gSaveContext.sceneSetupIndex == 14) {
+        if (play->sceneNum == SCENE_TEMPLE_OF_TIME && gSaveContext.sceneSetupIndex == 14) {
 
             if (play->csCtx.npcActions[this->csActionId]->action == 2) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
             }
         }
 
-        if (play->sceneNum == SCENE_DAIYOUSEI_IZUMI || play->sceneNum == SCENE_YOUSEI_IZUMI_YOKO) {
+        if (play->sceneNum == SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC || play->sceneNum == SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS) {
             if (play->csCtx.npcActions[this->csActionId]->action == 2) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
             }
@@ -1199,7 +1200,7 @@ void DemoEffect_UpdateGodLgtNayru(DemoEffect* this, PlayState* play) {
                 lightRing = (DemoEffect*)Actor_Spawn(
                     &play->actorCtx, play, ACTOR_DEMO_EFFECT, this->actor.world.pos.x,
                     this->actor.world.pos.y, this->actor.world.pos.z, this->actor.world.rot.x + 0x4000,
-                    this->actor.world.rot.y, this->actor.world.rot.z, DEMO_EFFECT_LIGHTRING_EXPANDING);
+                    this->actor.world.rot.y, this->actor.world.rot.z, DEMO_EFFECT_LIGHTRING_EXPANDING, true);
 
                 if (lightRing != NULL) {
                     Actor_SetScale(&lightRing->actor, 1.0f);
@@ -1587,8 +1588,8 @@ void DemoEffect_UpdateJewelChild(DemoEffect* this, PlayState* play) {
     if (play->csCtx.state && play->csCtx.npcActions[this->csActionId]) {
         switch (play->csCtx.npcActions[this->csActionId]->action) {
             case 3:
-                if (gSaveContext.eventChkInf[4] & 0x800) {
-                    gSaveContext.eventChkInf[4] |= 0x800;
+                if (Flags_GetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME)) {
+                    Flags_SetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME);
                 }
                 DemoEffect_MoveJewelActivateDoorOfTime(this, play);
                 if ((play->gameplayFrames & 1) == 0) {
@@ -1622,7 +1623,7 @@ void DemoEffect_UpdateJewelChild(DemoEffect* this, PlayState* play) {
     }
 
     if (gSaveContext.entranceIndex == 0x0053 || (gSaveContext.n64ddFlag && gSaveContext.entranceIndex == 0x05F4)) {
-        if (!(gSaveContext.eventChkInf[4] & 0x800)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME)) {
             hasCmdAction = play->csCtx.state && play->csCtx.npcActions[this->csActionId];
             if (!hasCmdAction) {
                 this->effectFlags |= 0x1;
@@ -1759,13 +1760,13 @@ void DemoEffect_DrawJewel(Actor* thisx, PlayState* play2) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            func_80093D84(play->state.gfxCtx);
+            Gfx_SetupDL_25Xlu(play->state.gfxCtx);
             func_8002ED80(&this->actor, play, 0);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 128, this->primXluColor[0], this->primXluColor[1],
                             this->primXluColor[2], 255);
             gDPSetEnvColor(POLY_XLU_DISP++, this->envXluColor[0], this->envXluColor[1], this->envXluColor[2], 255);
             gSPDisplayList(POLY_XLU_DISP++, this->jewelDisplayList);
-            func_80093D18(play->state.gfxCtx);
+            Gfx_SetupDL_25Opa(play->state.gfxCtx);
             func_8002EBCC(&this->actor, play, 0);
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 128, this->primOpaColor[0], this->primOpaColor[1],
                             this->primOpaColor[2], 255);
@@ -1793,7 +1794,7 @@ void DemoEffect_DrawCrystalLight(Actor* thisx, PlayState* play) {
         gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, 255, 255, 170, 255);
     }
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 8,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, (frames * 2) % 512, 512 - (frames % 512) - 1, 128, 128, 1,
@@ -1835,7 +1836,7 @@ void DemoEffect_DrawFireBall(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 64, 64, 255, 200, 0, 255);
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 255);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPMatrix(POLY_XLU_DISP++, play->billboardMtx, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
@@ -1879,12 +1880,12 @@ void DemoEffect_DrawGodLgt(Actor* thisx, PlayState* play) {
         gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, this->primXluColor[0], this->primXluColor[1], this->primXluColor[2],
                         255);
         gDPSetEnvColor(POLY_XLU_DISP++, this->envXluColor[0], this->envXluColor[1], this->envXluColor[2], 255);
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         Matrix_Push();
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gGoldenGoddessAuraDL);
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         func_8002EBCC(&this->actor, play, 0);
         Matrix_Pop();
 
@@ -1922,7 +1923,7 @@ void DemoEffect_DrawLightEffect(Actor* thisx, PlayState* play) {
         } else {
             disp = (uintptr_t)gEffFlash1DL;
             alpha = &this->light.alpha;
-            func_80093D84(play->state.gfxCtx);
+            Gfx_SetupDL_25Xlu(play->state.gfxCtx);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 128, this->primXluColor[0], this->primXluColor[1],
                             this->primXluColor[2], *alpha);
             gDPSetEnvColor(POLY_XLU_DISP++, this->envXluColor[0], this->envXluColor[1], this->envXluColor[2], 255);
@@ -1956,7 +1957,7 @@ void DemoEffect_DrawBlueOrb(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, 188, 255, 255, this->blueOrb.alpha);
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 100, 255, 255);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     Matrix_Mult(&play->billboardMtxF, MTXMODE_APPLY);
     Matrix_RotateZ(this->blueOrb.rotation * (M_PI / 0x8000), MTXMODE_APPLY);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
@@ -1977,7 +1978,7 @@ void DemoEffect_DrawLgtShower(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 64, 64, 255, 255, 160, this->lgtShower.alpha);
     gDPSetEnvColor(POLY_XLU_DISP++, 50, 200, 0, 255);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPSegment(POLY_XLU_DISP++, 8,
@@ -1997,7 +1998,7 @@ void DemoEffect_DrawLightRing(Actor* thisx, PlayState* play2) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, 170, 255, 255, this->lightRing.alpha);
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 100, 255, 255);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
@@ -2021,7 +2022,7 @@ void DemoEffect_DrawTriforceSpot(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     if (gSaveContext.entranceIndex != 0x0400 || play->csCtx.frames < 885) {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
         if (this->triforceSpot.lightColumnOpacity > 0) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EV_AURORA - SFX_FLAG);
@@ -2047,7 +2048,7 @@ void DemoEffect_DrawTriforceSpot(Actor* thisx, PlayState* play) {
 
             if (this->triforceSpot.triforceSpotOpacity < 250) {
                 func_8002ED80(&this->actor, play, 0);
-                func_80093D84(play->state.gfxCtx);
+                Gfx_SetupDL_25Xlu(play->state.gfxCtx);
                 gDPSetRenderMode(POLY_XLU_DISP++, G_RM_PASS, G_RM_AA_ZB_XLU_SURF2);
                 Matrix_RotateY(this->triforceSpot.rotation * (M_PI / 0x8000), MTXMODE_APPLY);
                 gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
@@ -2059,7 +2060,7 @@ void DemoEffect_DrawTriforceSpot(Actor* thisx, PlayState* play) {
                 gSPDisplayList(POLY_XLU_DISP++, gTriforceDL);
             } else {
                 func_8002EBCC(&this->actor, play, 0);
-                func_80093D18(play->state.gfxCtx);
+                Gfx_SetupDL_25Opa(play->state.gfxCtx);
                 gDPSetRenderMode(POLY_OPA_DISP++, G_RM_PASS, G_RM_AA_ZB_OPA_SURF2);
                 Matrix_RotateY(this->triforceSpot.rotation * (M_PI / 0x8000), MTXMODE_APPLY);
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
@@ -2086,7 +2087,7 @@ void DemoEffect_DrawGetItem(Actor* thisx, PlayState* play) {
             this->getItem.isLoaded = 1;
             return;
         }
-        if (gSaveContext.n64ddFlag && play->sceneNum == SCENE_BDAN) {
+        if (gSaveContext.n64ddFlag && play->sceneNum == SCENE_JABU_JABU) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_BARINADE, RG_ZORA_SAPPHIRE);
             this->getItem.drawId = getItemEntry.gid;
             func_8002EBCC(thisx, play, 0);
@@ -2109,7 +2110,7 @@ s32 DemoEffect_DrawTimewarpLimbs(PlayState* play, SkelAnimeCurve* skelCuve, s32 
     u32 frames = play->gameplayFrames;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 128, 170, 255, 255, 255);
     gDPSetEnvColor(POLY_XLU_DISP++, this->envXluColor[0], this->envXluColor[1], this->envXluColor[2], 255);
     gSPSegment(POLY_XLU_DISP++, 8,
@@ -2138,7 +2139,7 @@ void DemoEffect_DrawTimeWarp(Actor* thisx, PlayState* play) {
     if (effectType == DEMO_EFFECT_TIMEWARP_TIMEBLOCK_LARGE || effectType == DEMO_EFFECT_TIMEWARP_TIMEBLOCK_SMALL ||
         Flags_GetEnv(play, 1) || gSaveContext.sceneSetupIndex >= 4 || gSaveContext.entranceIndex == 0x0324) {
         OPEN_DISPS(gfxCtx);
-        POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 25);
+        POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 25);
         Matrix_Scale(2.0f, 2.0f, 2.0f, MTXMODE_APPLY);
         SkelCurve_Draw(thisx, play, &this->skelCurve, DemoEffect_DrawTimewarpLimbs, NULL, 1, this);
         CLOSE_DISPS(gfxCtx);

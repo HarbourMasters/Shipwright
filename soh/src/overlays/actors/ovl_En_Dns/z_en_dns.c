@@ -7,8 +7,9 @@
 #include "z_en_dns.h"
 #include "objects/object_shopnuts/object_shopnuts.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnDns_Init(Actor* thisx, PlayState* play);
 void EnDns_Destroy(Actor* thisx, PlayState* play);
@@ -172,8 +173,17 @@ void EnDns_Init(Actor* thisx, PlayState* play) {
         s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
         this->scrubIdentity = Randomizer_IdentifyScrub(play->sceneNum, this->actor.params, respawnData);
 
-        if ((Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == 1 || Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == 3) && this->scrubIdentity.itemPrice != -1) {
+        if ((Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_AFFORDABLE ||
+             Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_RANDOM) &&
+            this->scrubIdentity.itemPrice != -1) {
             this->dnsItemEntry->itemPrice = this->scrubIdentity.itemPrice;
+        }
+
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_SCRUBS) == RO_SCRUBS_EXPENSIVE) {
+            // temporary workaround: always use 40 rupees as price instead of 70
+            if (this->actor.params == 0x0006) {
+                this->dnsItemEntry->itemPrice = 40;
+            }
         }
 
         if (this->scrubIdentity.isShuffled) {
@@ -191,6 +201,8 @@ void EnDns_Destroy(Actor* thisx, PlayState* play) {
     EnDns* this = (EnDns*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDns_ChangeAnim(EnDns* this, u8 index) {
@@ -321,7 +333,7 @@ void func_809EFA28(EnDns* this) {
 }
 
 void func_809EFA58(EnDns* this) {
-    gSaveContext.itemGetInf[0] |= 0x800;
+    Flags_SetItemGetInf(ITEMGETINF_0B);
     Rupees_ChangeBy(-this->dnsItemEntry->itemPrice);
 }
 
@@ -334,12 +346,12 @@ void func_809EFACC(EnDns* this) {
 }
 
 void func_809EFAFC(EnDns* this) {
-    gSaveContext.infTable[25] |= 0x4;
+    Flags_SetInfTable(INFTABLE_192);
     Rupees_ChangeBy(-this->dnsItemEntry->itemPrice);
 }
 
 void func_809EFB40(EnDns* this) {
-    gSaveContext.infTable[25] |= 0x8;
+    Flags_SetInfTable(INFTABLE_193);
     Rupees_ChangeBy(-this->dnsItemEntry->itemPrice);
 }
 
@@ -357,9 +369,9 @@ void EnDns_Wait(EnDns* this, PlayState* play) {
         this->actionFunc = EnDns_Talk;
     } else {
         if ((this->collider.base.ocFlags1 & OC1_HIT) || this->actor.isTargeted) {
-            this->actor.flags |= ACTOR_FLAG_16;
+            this->actor.flags |= ACTOR_FLAG_WILL_TALK;
         } else {
-            this->actor.flags &= ~ACTOR_FLAG_16;
+            this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
         }
         if (this->actor.xzDistToPlayer < 130.0f) {
             func_8002F2F4(&this->actor, play);
@@ -399,24 +411,31 @@ void EnDns_Talk(EnDns* this, PlayState* play) {
 }
 
 void func_809EFDD0(EnDns* this, PlayState* play) {
+    u16 pendingGetItemId;
     if (!gSaveContext.n64ddFlag || !this->scrubIdentity.isShuffled) {
         if (this->actor.params == 0x9) {
             if (CUR_UPG_VALUE(UPG_STICKS) < 2) {
-                func_8002F434(&this->actor, play, GI_STICK_UPGRADE_20, 130.0f, 100.0f);
+                pendingGetItemId = GI_STICK_UPGRADE_20;
             } else {
-                func_8002F434(&this->actor, play, GI_STICK_UPGRADE_30, 130.0f, 100.0f);
+                pendingGetItemId = GI_STICK_UPGRADE_30;
             }
         } else if (this->actor.params == 0xA) {
             if (CUR_UPG_VALUE(UPG_NUTS) < 2) {
-                func_8002F434(&this->actor, play, GI_NUT_UPGRADE_30, 130.0f, 100.0f);
+                pendingGetItemId = GI_NUT_UPGRADE_30;
             } else {
-                func_8002F434(&this->actor, play, GI_NUT_UPGRADE_40, 130.0f, 100.0f);
+                pendingGetItemId = GI_NUT_UPGRADE_40;
             }
         } else {
-            func_8002F434(&this->actor, play, this->dnsItemEntry->getItemId, 130.0f, 100.0f);
+            pendingGetItemId = this->dnsItemEntry->getItemId;
         }
+        GetItemEntry itemEntry = ItemTable_Retrieve(pendingGetItemId);
+        gSaveContext.pendingSale = itemEntry.itemId;
+        gSaveContext.pendingSaleMod = itemEntry.modIndex;
+        func_8002F434(&this->actor, play, pendingGetItemId, 130.0f, 100.0f);
     } else {
         GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(this->scrubIdentity.randomizerCheck, this->scrubIdentity.getItemId);
+        gSaveContext.pendingSale = itemEntry.itemId;
+        gSaveContext.pendingSaleMod = itemEntry.modIndex;
         GiveItemEntryFromActor(&this->actor, play, itemEntry, 130.0f, 100.0f);
     }
 }
@@ -446,7 +465,7 @@ void func_809EFF98(EnDns* this, PlayState* play) {
             this->dnsItemEntry->setRupeesAndFlags(this);
             this->dropCollectible = 1;
             this->maintainCollider = 0;
-            this->actor.flags &= ~ACTOR_FLAG_0;
+            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
             EnDns_ChangeAnim(this, ENDNS_ANIM_1);
             this->actionFunc = EnDns_SetupBurrow;
         }
@@ -454,7 +473,7 @@ void func_809EFF98(EnDns* this, PlayState* play) {
         this->dnsItemEntry->setRupeesAndFlags(this);
         this->dropCollectible = 1;
         this->maintainCollider = 0;
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
         EnDns_ChangeAnim(this, ENDNS_ANIM_1);
         this->actionFunc = EnDns_SetupBurrow;
     }
@@ -463,7 +482,7 @@ void func_809EFF98(EnDns* this, PlayState* play) {
 void func_809F008C(EnDns* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
         this->maintainCollider = 0;
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
         EnDns_ChangeAnim(this, ENDNS_ANIM_1);
         this->actionFunc = EnDns_SetupBurrow;
     }
@@ -504,6 +523,7 @@ void EnDns_Burrow(EnDns* this, PlayState* play) {
             }
         }
         Actor_Kill(&this->actor);
+        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
     }
 }
 
@@ -533,7 +553,7 @@ void EnDns_Update(Actor* thisx, PlayState* play) {
 void EnDns_Draw(Actor* thisx, PlayState* play) {
     EnDns* this = (EnDns*)thisx;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           NULL, NULL, &this->actor);
 }

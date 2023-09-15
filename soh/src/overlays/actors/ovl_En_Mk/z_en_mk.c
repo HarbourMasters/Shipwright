@@ -8,7 +8,7 @@
 #include "objects/object_mk/object_mk.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnMk_Init(Actor* thisx, PlayState* play);
 void EnMk_Destroy(Actor* thisx, PlayState* play);
@@ -70,7 +70,7 @@ void EnMk_Init(Actor* thisx, PlayState* play) {
     this->swimFlag = 0;
     this->actor.targetMode = 6;
 
-    if (gSaveContext.itemGetInf[1] & 1) {
+    if (Flags_GetItemGetInf(ITEMGETINF_10)) {
         this->flags |= 4;
     }
 }
@@ -79,11 +79,13 @@ void EnMk_Destroy(Actor* thisx, PlayState* play) {
     EnMk* this = (EnMk*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80AACA40(EnMk* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
-        this->actor.flags &= ~ACTOR_FLAG_16;
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
         this->actionFunc = EnMk_Wait;
     }
 
@@ -103,6 +105,7 @@ void func_80AACA94(EnMk* this, PlayState* play) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_TRADE_FROG, GI_EYEDROPS);
             Randomizer_ConsumeAdultTradeItem(play, ITEM_FROG);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
+            Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LH_TRADE_FROG);
         } else {
             s32 getItemID = GI_EYEDROPS;
             func_8002F434(&this->actor, play, getItemID, 10000.0f, 50.0f);
@@ -117,6 +120,7 @@ void func_80AACB14(EnMk* this, PlayState* play) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_TRADE_FROG, GI_EYEDROPS);
             Randomizer_ConsumeAdultTradeItem(play, ITEM_FROG);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
+            Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LH_TRADE_FROG);
         } else {
             s32 getItemID = GI_EYEDROPS;
             func_8002F434(&this->actor, play, getItemID, 10000.0f, 50.0f);
@@ -212,7 +216,7 @@ void func_80AACFA0(EnMk* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         this->actor.parent = NULL;
         this->actionFunc = func_80AACA40;
-        gSaveContext.itemGetInf[1] |= 1;
+        Flags_SetItemGetInf(ITEMGETINF_10);
     } else {
         // not sure when/how/if this is getting called
         if (!gSaveContext.n64ddFlag) {
@@ -251,14 +255,16 @@ void EnMk_Wait(EnMk* this, PlayState* play) {
             player->actor.textId = this->actor.textId;
             this->actionFunc = func_80AACA40;
         } else {
-            if (INV_CONTENT(ITEM_ODD_MUSHROOM) == ITEM_EYEDROPS) {
+            // Skip eye drop text on rando if Link went in the water, so you can still receive the dive check
+            if (INV_CONTENT(ITEM_ODD_MUSHROOM) == ITEM_EYEDROPS &&
+                (!gSaveContext.n64ddFlag || this->swimFlag == 0)) {
                 player->actor.textId = 0x4032;
                 this->actionFunc = func_80AACA40;
             } else {
                 switch (playerExchangeItem) {
                     case EXCH_ITEM_NONE:
                         if (this->swimFlag >= 8) {
-                            if (gSaveContext.itemGetInf[1] & 1) {
+                            if (Flags_GetItemGetInf(ITEMGETINF_10)) {
                                 player->actor.textId = 0x4075;
                                 this->actionFunc = func_80AACA40;
                             } else {
@@ -394,7 +400,7 @@ void EnMk_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, 
 void EnMk_Draw(Actor* thisx, PlayState* play) {
     EnMk* this = (EnMk*)thisx;
 
-    func_800943C8(play->state.gfxCtx);
+    Gfx_SetupDL_37Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnMk_OverrideLimbDraw, EnMk_PostLimbDraw, &this->actor);
 }

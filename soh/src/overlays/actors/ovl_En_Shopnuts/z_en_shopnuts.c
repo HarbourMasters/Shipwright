@@ -1,7 +1,7 @@
 #include "z_en_shopnuts.h"
 #include "objects/object_shopnuts/object_shopnuts.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 
 void EnShopnuts_Init(Actor* thisx, PlayState* play);
 void EnShopnuts_Destroy(Actor* thisx, PlayState* play);
@@ -78,9 +78,9 @@ void EnShopnuts_Init(Actor* thisx, PlayState* play) {
         }
     }
 
-    if (((this->actor.params == 0x0002) && (gSaveContext.itemGetInf[0] & 0x800)) ||
-        ((this->actor.params == 0x0009) && (gSaveContext.infTable[25] & 4)) ||
-        ((this->actor.params == 0x000A) && (gSaveContext.infTable[25] & 8))) {
+    if (((this->actor.params == 0x0002) && (Flags_GetItemGetInf(ITEMGETINF_0B))) ||
+        ((this->actor.params == 0x0009) && (Flags_GetInfTable(INFTABLE_192))) ||
+        ((this->actor.params == 0x000A) && (Flags_GetInfTable(INFTABLE_193)))) {
         Actor_Kill(&this->actor);
     } else {
         EnShopnuts_SetupWait(this);
@@ -91,6 +91,8 @@ void EnShopnuts_Destroy(Actor* thisx, PlayState* play) {
     EnShopnuts* this = (EnShopnuts*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnShopnuts_SetupWait(EnShopnuts* this) {
@@ -207,7 +209,7 @@ void EnShopnuts_ThrowNut(EnShopnuts* this, PlayState* play) {
         spawnPos.y = this->actor.world.pos.y + 12.0f;
         spawnPos.z = this->actor.world.pos.z + (Math_CosS(this->actor.shape.rot.y) * 23.0f);
         if (Actor_Spawn(&play->actorCtx, play, ACTOR_EN_NUTSBALL, spawnPos.x, spawnPos.y, spawnPos.z,
-                        this->actor.shape.rot.x, this->actor.shape.rot.y, this->actor.shape.rot.z, 2) != NULL) {
+                        this->actor.shape.rot.x, this->actor.shape.rot.y, this->actor.shape.rot.z, 2, true) != NULL) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_NUTS_THROW);
         }
     }
@@ -228,7 +230,7 @@ void EnShopnuts_SpawnSalesman(EnShopnuts* this, PlayState* play) {
     if (SkelAnime_Update(&this->skelAnime)) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_DNS, this->actor.world.pos.x, this->actor.world.pos.y,
                     this->actor.world.pos.z, this->actor.shape.rot.x, this->actor.shape.rot.y, this->actor.shape.rot.z,
-                    this->actor.params);
+                    this->actor.params, true);
         Actor_Kill(&this->actor);
     } else {
         Math_ApproachS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 2, 0xE38);

@@ -1,3 +1,4 @@
+#include <libultraship/bridge.h>
 #include "draw.h"
 #include "z64.h"
 #include "macros.h"
@@ -7,10 +8,16 @@
 #include "objects/object_gi_key/object_gi_key.h"
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
+#include "objects/gameplay_field_keep/gameplay_field_keep.h"
+
+extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 
 extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEntry) {
     s32 pad;
-
+    s8 keysCanBeOutsideDungeon = getItemEntry->getItemId == RG_GERUDO_FORTRESS_SMALL_KEY ?
+        Randomizer_GetSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA :
+        DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_KEYSANITY);
+    s8 isColoredKeysEnabled = keysCanBeOutsideDungeon && CVarGetInteger("gRandoMatchKeyColors", 1);
     s16 color_slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_SMALL_KEY;
     s16 colors[9][3] = {
         { 4, 195, 46 },    // Forest Temple
@@ -20,29 +27,37 @@ extern "C" void Randomizer_DrawSmallKey(PlayState* play, GetItemEntry* getItemEn
         { 126, 16, 177 },  // Shadow Temple
         { 227, 110, 255 }, // Bottom of the Well
         { 221, 212, 60 },  // Gerudo Training Grounds
-        { 255, 255, 255 }, // Theive's Hideout (unused)
+        { 255, 255, 255 }, // Thieves' Hideout
         { 80, 80, 80 }     // Ganon's Castle
     };
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gsDPSetGrayscaleColor(POLY_OPA_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
-    gsSPGrayscale(POLY_OPA_DISP++, true);
+    if (isColoredKeysEnabled) {
+        gDPSetGrayscaleColor(POLY_OPA_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
+        gSPGrayscale(POLY_OPA_DISP++, true);
+    }
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSmallKeyDL);
 
-    gsSPGrayscale(POLY_OPA_DISP++, false);
+    if (isColoredKeysEnabled) {
+        gSPGrayscale(POLY_OPA_DISP++, false);
+    }
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
 extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEntry) {
     s32 pad;
+    s8 keysCanBeOutsideDungeon = getItemEntry->getItemId == RG_GANONS_CASTLE_BOSS_KEY ?
+        DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_GANONS_BOSS_KEY) :
+        DUNGEON_ITEMS_CAN_BE_OUTSIDE_DUNGEON(RSK_BOSS_KEYSANITY);
+    s8 isColoredKeysEnabled = keysCanBeOutsideDungeon && CVarGetInteger("gRandoMatchKeyColors", 1);
     s16 color_slot;
     color_slot = getItemEntry->getItemId - RG_FOREST_TEMPLE_BOSS_KEY;
     s16 colors[6][3] = {
@@ -56,34 +71,37 @@ extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEnt
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    if (color_slot == 5) { // Ganon's Boss Key
-        gsDPSetGrayscaleColor(POLY_OPA_DISP++, 80, 80, 80, 255);
-        gsSPGrayscale(POLY_OPA_DISP++, true);
+    if (color_slot == 5 && isColoredKeysEnabled) { // Ganon's Boss Key
+        gDPSetGrayscaleColor(POLY_OPA_DISP++, 80, 80, 80, 255);
+        gSPGrayscale(POLY_OPA_DISP++, true);
     }
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiBossKeyDL);
 
-    if (color_slot == 5) { // Ganon's Boss Key
-        gsSPGrayscale(POLY_OPA_DISP++, false);
+    if (color_slot == 5 && isColoredKeysEnabled) { // Ganon's Boss Key
+        gSPGrayscale(POLY_OPA_DISP++, false);
     }
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gsDPSetGrayscaleColor(POLY_XLU_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2],
-                            255);
-    gsSPGrayscale(POLY_XLU_DISP++, true);
+    if (isColoredKeysEnabled) {
+        gDPSetGrayscaleColor(POLY_XLU_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
+        gSPGrayscale(POLY_XLU_DISP++, true);
+    }
 
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBossKeyGemDL);
 
-    gsSPGrayscale(POLY_XLU_DISP++, false);
+    if (isColoredKeysEnabled) {
+        gSPGrayscale(POLY_XLU_DISP++, false);
+    }
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -100,16 +118,16 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
         { 126, 16, 177 },  // Shadow Temple
         { 227, 110, 255 }, // Bottom of the Well
         { 221, 212, 60 },  // Gerudo Training Grounds
-        { 255, 255, 255 }, // Theive's Hideout (unused)
+        { 255, 255, 255 }, // Thieves' Hideout
         { 80, 80, 80 }     // Ganon's Castle
     };
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
-    gsDPSetGrayscaleColor(POLY_OPA_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
-    gsSPGrayscale(POLY_OPA_DISP++, true);
+    gDPSetGrayscaleColor(POLY_OPA_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
+    gSPGrayscale(POLY_OPA_DISP++, true);
 
     Matrix_Scale(0.5f, 0.5f, 0.5f, MTXMODE_APPLY);
     Matrix_RotateZ(0.8f, MTXMODE_APPLY);
@@ -131,7 +149,7 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
         gSPDisplayList(POLY_OPA_DISP++, (Gfx*)gGiSmallKeyDL);
     }
 
-    gsSPGrayscale(POLY_OPA_DISP++, false);
+    gSPGrayscale(POLY_OPA_DISP++, false);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -140,16 +158,16 @@ extern "C" void Randomizer_DrawDoubleDefense(PlayState* play, GetItemEntry getIt
     s32 pad;
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
    
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    gsDPSetGrayscaleColor(POLY_XLU_DISP++, 255, 255, 255, 255);
-    gsSPGrayscale(POLY_XLU_DISP++, true);
+    gDPSetGrayscaleColor(POLY_XLU_DISP++, 255, 255, 255, 255);
+    gSPGrayscale(POLY_XLU_DISP++, true);
 
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiHeartBorderDL);
 
-    gsSPGrayscale(POLY_XLU_DISP++, false);
+    gSPGrayscale(POLY_XLU_DISP++, false);
 
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiHeartContainerDL);
 

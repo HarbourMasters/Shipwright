@@ -8,7 +8,7 @@
 #include "vt.h"
 #include "objects/object_rl/object_rl.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void EnRl_Init(Actor* thisx, PlayState* play);
 void EnRl_Destroy(Actor* thisx, PlayState* play);
@@ -118,14 +118,14 @@ void func_80AE7590(EnRl* this, PlayState* play) {
     Vec3f pos;
     s16 sceneNum = play->sceneNum;
 
-    if (gSaveContext.sceneSetupIndex == 4 && sceneNum == SCENE_KENJYANOMA && play->csCtx.state != CS_STATE_IDLE &&
+    if (gSaveContext.sceneSetupIndex == 4 && sceneNum == SCENE_CHAMBER_OF_THE_SAGES && play->csCtx.state != CS_STATE_IDLE &&
         play->csCtx.npcActions[6] != NULL && play->csCtx.npcActions[6]->action == 2 &&
         !this->lightMedallionGiven) {
         player = GET_PLAYER(play);
         pos.x = player->actor.world.pos.x;
         pos.y = player->actor.world.pos.y + 80.0f;
         pos.z = player->actor.world.pos.z;
-        Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, pos.x, pos.y, pos.z, 0, 0, 0, 0xE);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_EFFECT, pos.x, pos.y, pos.z, 0, 0, 0, 0xE, true);
         Item_Give(play, ITEM_MEDALLION_LIGHT);
         this->lightMedallionGiven = 1;
     }
@@ -303,7 +303,7 @@ void func_80AE7D94(EnRl* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(tex));
     gSPSegment(POLY_XLU_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(tex));
@@ -352,7 +352,7 @@ void func_80AE7FDC(EnRl* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(tex));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(tex));

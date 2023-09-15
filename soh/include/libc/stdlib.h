@@ -1,7 +1,7 @@
 #ifndef STDLIB_H
 #define STDLIB_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 
 #if 0
 

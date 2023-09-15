@@ -11,7 +11,7 @@
 #include "objects/object_im/object_im.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void DemoIm_Init(Actor* thisx, PlayState* play);
 void DemoIm_Destroy(Actor* thisx, PlayState* play);
@@ -166,44 +166,44 @@ void DemoIm_UpdateCollider(DemoIm* this, PlayState* play) {
 
 void func_80984DB8(DemoIm* this) {
     s32 pad[2];
-    Vec3s* vec1 = &this->unk_2D4.unk_08;
-    Vec3s* vec2 = &this->unk_2D4.unk_0E;
+    Vec3s* headRot = &this->interactInfo.headRot;
+    Vec3s* torsoRot = &this->interactInfo.torsoRot;
 
-    Math_SmoothStepToS(&vec1->x, 0, 20, 6200, 100);
-    Math_SmoothStepToS(&vec1->y, 0, 20, 6200, 100);
+    Math_SmoothStepToS(&headRot->x, 0, 20, 6200, 100);
+    Math_SmoothStepToS(&headRot->y, 0, 20, 6200, 100);
 
-    Math_SmoothStepToS(&vec2->x, 0, 20, 6200, 100);
-    Math_SmoothStepToS(&vec2->y, 0, 20, 6200, 100);
+    Math_SmoothStepToS(&torsoRot->x, 0, 20, 6200, 100);
+    Math_SmoothStepToS(&torsoRot->y, 0, 20, 6200, 100);
 }
 
 void func_80984E58(DemoIm* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     s16 yawDiff;
-    s16 phi_a3;
+    s16 npcTrackingMode;
 
-    this->unk_2D4.unk_18 = player->actor.world.pos;
-    this->unk_2D4.unk_14 = kREG(16) + 4.0f;
+    this->interactInfo.trackPos = player->actor.world.pos;
+    this->interactInfo.yOffset = kREG(16) + 4.0f;
 
     yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
-    phi_a3 = (ABS(yawDiff) < 0x18E3) ? 2 : 1;
-    func_80034A14(&this->actor, &this->unk_2D4, kREG(17) + 0xC, phi_a3);
+    npcTrackingMode = (ABS(yawDiff) < 0x18E3) ? NPC_TRACKING_HEAD_AND_TORSO : NPC_TRACKING_NONE;
+    Npc_TrackPoint(&this->actor, &this->interactInfo, kREG(17) + 0xC, npcTrackingMode);
 }
 
 void func_80984F10(DemoIm* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    this->unk_2D4.unk_18 = player->actor.world.pos;
-    this->unk_2D4.unk_14 = kREG(16) + 12.0f;
+    this->interactInfo.trackPos = player->actor.world.pos;
+    this->interactInfo.yOffset = kREG(16) + 12.0f;
 
-    func_80034A14(&this->actor, &this->unk_2D4, kREG(17) + 0xC, 2);
+    Npc_TrackPoint(&this->actor, &this->interactInfo, kREG(17) + 0xC, NPC_TRACKING_HEAD_AND_TORSO);
 }
 
 void func_80984F94(DemoIm* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    this->unk_2D4.unk_18 = player->actor.world.pos;
-    this->unk_2D4.unk_14 = kREG(16) + 4.0f;
-    func_80034A14(&this->actor, &this->unk_2D4, kREG(17) + 0xC, 4);
+    this->interactInfo.trackPos = player->actor.world.pos;
+    this->interactInfo.yOffset = kREG(16) + 4.0f;
+    Npc_TrackPoint(&this->actor, &this->interactInfo, kREG(17) + 0xC, NPC_TRACKING_FULL_BODY);
 }
 
 void DemoIm_UpdateBgCheckInfo(DemoIm* this, PlayState* play) {
@@ -526,7 +526,7 @@ void DemoIm_DrawTranslucent(DemoIm* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTex));
     gSPSegment(POLY_XLU_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTex));
@@ -742,7 +742,7 @@ void func_809865F8(DemoIm* this, PlayState* play, s32 arg2) {
                 f32 spawnPosZ = thisPos->z + (Math_CosS(shapeRotY) * 30.0f);
 
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ARROW, spawnPosX, spawnPosY, spawnPosZ, 0xFA0,
-                            this->actor.shape.rot.y, 0, ARROW_CS_NUT);
+                            this->actor.shape.rot.y, 0, ARROW_CS_NUT, true);
                 this->unk_27C = 1;
             }
         } else {
@@ -833,7 +833,7 @@ s32 func_809869F8(DemoIm* this, PlayState* play) {
     f32 playerPosX = player->actor.world.pos.x;
     f32 thisPosX = this->actor.world.pos.x;
 
-    if ((thisPosX - (kREG(16) + 30.0f) > playerPosX) && !(this->actor.flags & ACTOR_FLAG_6)) {
+    if ((thisPosX - (kREG(16) + 30.0f) > playerPosX) && !(this->actor.flags & ACTOR_FLAG_ACTIVE)) {
         return true;
     } else {
         return false;
@@ -853,7 +853,7 @@ s32 func_80986A5C(DemoIm* this, PlayState* play) {
 }
 
 s32 func_80986AD0(DemoIm* this, PlayState* play) {
-    this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
     if (!Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actor.textId = 0x708E;
         func_8002F2F4(&this->actor, play);
@@ -867,7 +867,12 @@ void func_80986B2C(PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
         Player* player = GET_PLAYER(play);
 
-        play->nextEntranceIndex = 0xCD;
+        // In entrance rando have impa bring link back to the front of castle grounds
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
+            play->nextEntranceIndex = 0x0138;
+        } else {
+            play->nextEntranceIndex = 0xCD;
+        }
         play->fadeTransition = 38;
         play->sceneLoadFlag = 0x14;
         func_8002DF54(play, &player->actor, 8);
@@ -890,7 +895,7 @@ void func_80986BE4(DemoIm* this, s32 arg1) {
 }
 
 void func_80986BF8(DemoIm* this, PlayState* play) {
-    if (gSaveContext.eventChkInf[4] & 1) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
         this->action = 24;
         this->drawConfig = 1;
         this->unk_280 = 1;
@@ -907,11 +912,16 @@ void GivePlayerRandoRewardImpa(Actor* impa, PlayState* play, RandomizerCheck che
     } else if (!Flags_GetTreasure(play, 0x1F) && !Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA)) {
         GiveItemEntryFromActor(impa, play, getItemEntry, 75.0f, 50.0f);
     } else if (!Player_InBlockingCsMode(play, GET_PLAYER(play))) {
-        gSaveContext.eventChkInf[5] |= 0x200;
+        Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
         play->sceneLoadFlag = 0x14;
         play->fadeTransition = 3;
-        gSaveContext.nextTransition = 3;
-        play->nextEntranceIndex = 0x0594;
+        gSaveContext.nextTransitionType = 3;
+        // In entrance rando have impa bring link back to the front of castle grounds
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_OVERWORLD_ENTRANCES)) {
+            play->nextEntranceIndex = 0x0138;
+        } else {
+            play->nextEntranceIndex = 0x0594;
+        }
         gSaveContext.nextCutsceneIndex = 0;
     }
 }
@@ -923,7 +933,7 @@ void func_80986C30(DemoIm* this, PlayState* play) {
         } else {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gZeldasCourtyardLullabyCs);
             gSaveContext.cutsceneTrigger = 1;
-            gSaveContext.eventChkInf[5] |= 0x200;
+            Flags_SetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY);
             Item_Give(play, ITEM_SONG_LULLABY);
             func_80985F54(this);
         }
@@ -931,7 +941,7 @@ void func_80986C30(DemoIm* this, PlayState* play) {
 }
 
 void func_80986CC8(DemoIm* this) {
-    if (gSaveContext.eventChkInf[4] & 1) {
+    if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
         this->action = 26;
         this->drawConfig = 1;
         this->unk_280 = 1;
@@ -941,7 +951,7 @@ void func_80986CC8(DemoIm* this) {
 
 void func_80986CFC(DemoIm* this, PlayState* play) {
     if (func_80986A5C(this, play)) {
-        gSaveContext.eventChkInf[4] |= 0x1000;
+        Flags_SetEventChkInf(EVENTCHKINF_4C);
         this->action = 19;
     }
 }
@@ -950,9 +960,9 @@ void func_80986D40(DemoIm* this, PlayState* play) {
     if (gSaveContext.sceneSetupIndex == 6) {
         this->action = 19;
         this->drawConfig = 1;
-    } else if ((gSaveContext.eventChkInf[8] & 1) && !gSaveContext.n64ddFlag) {
+    } else if ((Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) && !gSaveContext.n64ddFlag) {
         Actor_Kill(&this->actor);
-    } else if (!(gSaveContext.eventChkInf[5] & 0x200)) {
+    } else if (!Flags_GetEventChkInf(EVENTCHKINF_LEARNED_ZELDAS_LULLABY)) {
         this->action = 23;
     } else {
         this->action = 20;
@@ -964,7 +974,7 @@ void func_80986DC8(DemoIm* this, PlayState* play) {
     DemoIm_UpdateSkelAnime(this);
     func_80984BE0(this);
     func_80984E58(this, play);
-    this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
+    this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
 }
 
 void func_80986E20(DemoIm* this, PlayState* play) {
@@ -1011,7 +1021,7 @@ void func_80986FA8(DemoIm* this, PlayState* play) {
     DemoIm_UpdateSkelAnime(this);
     func_80984BE0(this);
     func_80984E58(this, play);
-    this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
+    this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
     DemoIm_UpdateCollider(this, play);
     func_80986CFC(this, play);
 }
@@ -1129,7 +1139,7 @@ void DemoIm_Init(Actor* thisx, PlayState* play) {
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 30.0f);
     DemoIm_InitCollider(thisx, play);
     SkelAnime_InitFlex(play, &this->skelAnime, &gImpaSkel, NULL, this->jointTable, this->morphTable, 17);
-    thisx->flags &= ~ACTOR_FLAG_0;
+    thisx->flags &= ~ACTOR_FLAG_TARGETABLE;
 
     switch (this->actor.params) {
         case 2:
@@ -1153,7 +1163,10 @@ void DemoIm_Init(Actor* thisx, PlayState* play) {
 }
 
 void DemoIm_Destroy(Actor* thisx, PlayState* play) {
+    DemoIm* this = (DemoIm*)thisx;
     DemoIm_DestroyCollider(thisx, play);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 DemoIm_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
@@ -1161,17 +1174,17 @@ s32 DemoIm_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* 
     s32* unk_2D0 = &this->unk_2D0;
 
     if (this->unk_280 != 0) {
-        Vec3s* unk_2D4_unk_0E = &this->unk_2D4.unk_0E;
-        Vec3s* unk_2D4_unk_08 = &this->unk_2D4.unk_08;
+        Vec3s* torsoRot = &this->interactInfo.torsoRot;
+        Vec3s* headRot = &this->interactInfo.headRot;
 
         switch (limbIndex) {
             case IMPA_LIMB_CHEST:
-                rot->x += unk_2D4_unk_0E->y;
-                rot->y -= unk_2D4_unk_0E->x;
+                rot->x += torsoRot->y;
+                rot->y -= torsoRot->x;
                 break;
             case IMPA_LIMB_HEAD:
-                rot->x += unk_2D4_unk_08->y;
-                rot->z += unk_2D4_unk_08->x;
+                rot->x += headRot->y;
+                rot->z += headRot->x;
                 break;
         }
     }
@@ -1211,7 +1224,7 @@ void DemoIm_DrawSolid(DemoIm* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTexture));

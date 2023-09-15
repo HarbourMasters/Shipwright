@@ -7,7 +7,7 @@
 #include "z_oceff_wipe.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_25)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void OceffWipe_Init(Actor* thisx, PlayState* play);
 void OceffWipe_Destroy(Actor* thisx, PlayState* play);
@@ -42,7 +42,7 @@ void OceffWipe_Destroy(Actor* thisx, PlayState* play) {
 
     func_800876C8(play);
     if (gSaveContext.nayrusLoveTimer != 0) {
-        player->stateFlags3 |= 0x40;
+        player->stateFlags3 |= PLAYER_STATE3_RESTORE_NAYRUS_LOVE;
     }
 }
 
@@ -80,10 +80,11 @@ void OceffWipe_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
+    int fastOcarinaPlayback = (CVarGetInteger("gFastOcarinaPlayback", 0) != 0);
     if (this->timer < 32) {
-        z = Math_SinS(this->timer << 9) * 1400;
+        z = Math_SinS(this->timer << 9) * (fastOcarinaPlayback ? 1200.0f : 1400.0f);
     } else {
-        z = 1400;
+        z = fastOcarinaPlayback ? 1200.0f : 1400.0f;
     }
 
     if (this->timer >= 80) {
@@ -102,7 +103,7 @@ void OceffWipe_Draw(Actor* thisx, PlayState* play) {
         vtxPtr[i * 2 + 1].v.cn[3] = alphaTable[sAlphaIndices[i] & 0xF];
     }
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     Matrix_Translate(eye.x + vec.x, eye.y + vec.y, eye.z + vec.z, MTXMODE_NEW);
     Matrix_Scale(0.1f, 0.1f, 0.1f, MTXMODE_APPLY);

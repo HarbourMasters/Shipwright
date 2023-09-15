@@ -8,7 +8,7 @@
 #include "objects/object_spot04_objects/object_spot04_objects.h"
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void BgTreemouth_Init(Actor* thisx, PlayState* play);
 void BgTreemouth_Destroy(Actor* thisx, PlayState* play);
@@ -73,7 +73,11 @@ void BgTreemouth_Init(Actor* thisx, PlayState* play) {
 
     if ((gSaveContext.sceneSetupIndex < 4) && !LINK_IS_ADULT) {
         BgTreemouth_SetupAction(this, func_808BC8B8);
-    } else if (LINK_IS_ADULT || (gSaveContext.sceneSetupIndex == 7)) {
+    // If dungeon entrance randomizer is on, keep the tree mouth open
+    // when Link is adult and sword & shield have been shown to Mido
+    } else if ((LINK_IS_ADULT && (!gSaveContext.n64ddFlag ||
+        Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) == RO_DUNGEON_ENTRANCE_SHUFFLE_OFF) ||
+        !Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) || (gSaveContext.sceneSetupIndex == 7)) {
         this->unk_168 = 0.0f;
         BgTreemouth_SetupAction(this, BgTreemouth_DoNothing);
     } else {
@@ -139,20 +143,20 @@ void func_808BC864(BgTreemouth* this, PlayState* play) {
 }
 
 void func_808BC8B8(BgTreemouth* this, PlayState* play) {
-    if ((!(Flags_GetEventChkInf(5))) || LINK_IS_ADULT) {
+    if ((!Flags_GetEventChkInf(EVENTCHKINF_DEKU_TREE_OPENED_MOUTH)) || LINK_IS_ADULT) {
         if (!LINK_IS_ADULT) {
-            if (Flags_GetEventChkInf(0xC)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_MET_DEKU_TREE)) {
                 if (Actor_IsFacingAndNearPlayer(&this->dyna.actor, 1658.0f, 0x7530)) {
-                    this->dyna.actor.flags |= ACTOR_FLAG_0;
+                    this->dyna.actor.flags |= ACTOR_FLAG_TARGETABLE;
                     if (this->dyna.actor.isTargeted) {
-                        this->dyna.actor.flags &= ~ACTOR_FLAG_0;
+                        this->dyna.actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                         play->csCtx.segment = D_808BD2A0;
                         gSaveContext.cutsceneTrigger = 1;
                         BgTreemouth_SetupAction(this, func_808BC9EC);
                     }
                 }
             } else if (Actor_IsFacingAndNearPlayer(&this->dyna.actor, 1658.0f, 0x4E20)) {
-                Flags_SetEventChkInf(0xC);
+                Flags_SetEventChkInf(EVENTCHKINF_MET_DEKU_TREE);
                 play->csCtx.segment = D_808BCE20;
                 gSaveContext.cutsceneTrigger = 1;
                 BgTreemouth_SetupAction(this, func_808BC9EC);
@@ -184,7 +188,7 @@ void func_808BC9EC(BgTreemouth* this, PlayState* play) {
 
         if (play->msgCtx.choiceIndex == 0) {
             play->csCtx.segment = D_808BD520;
-            Flags_SetEventChkInf(5);
+            Flags_SetEventChkInf(EVENTCHKINF_DEKU_TREE_OPENED_MOUTH);
             BgTreemouth_SetupAction(this, func_808BCAF0);
         } else {
             play->csCtx.segment = D_808BD790;
@@ -230,10 +234,10 @@ void BgTreemouth_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if ((gSaveContext.sceneSetupIndex < 4) || LINK_IS_ADULT) {
-        if (gSaveContext.eventChkInf[0] & 0x80) {
+        if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD)) {
             alpha = 2150;
         }
     } else { // neeeded to match

@@ -1,7 +1,7 @@
 #ifndef Z_BG_JYA_BOMBCHUIWA_H
 #define Z_BG_JYA_BOMBCHUIWA_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgJyaBombchuiwa;

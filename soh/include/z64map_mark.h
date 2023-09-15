@@ -1,7 +1,7 @@
 #ifndef Z64MAP_MARK_H
 #define Z64MAP_MARK_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 
 #define MAP_MARK_NONE -1
 #define MAP_MARK_CHEST 0

@@ -202,13 +202,13 @@ void EnHorseNormal_Init(Actor* thisx, PlayState* play) {
     Collider_InitCylinder(play, &this->cloneCollider);
     Collider_SetCylinder(play, &this->cloneCollider, &this->actor, &sCylinderInit2);
     CollisionCheck_SetInfo(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
-    if (play->sceneNum == SCENE_SPOT20) {
+    if (play->sceneNum == SCENE_LON_LON_RANCH) {
         if (this->actor.world.rot.z == 0 || !IS_DAY) {
             Actor_Kill(&this->actor);
             return;
         }
         if (!LINK_IS_ADULT) {
-            if (Flags_GetEventChkInf(0x14)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
                 if (this->actor.world.rot.z != 3) {
                     Actor_Kill(&this->actor);
                     return;
@@ -217,7 +217,7 @@ void EnHorseNormal_Init(Actor* thisx, PlayState* play) {
                 Actor_Kill(&this->actor);
                 return;
             }
-        } else if (Flags_GetEventChkInf(0x18) || (DREG(1) != 0)) {
+        } else if (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) || (DREG(1) != 0)) {
             if (this->actor.world.rot.z != 7) {
                 Actor_Kill(&this->actor);
                 return;
@@ -236,7 +236,7 @@ void EnHorseNormal_Init(Actor* thisx, PlayState* play) {
             func_80A6C6B0(this);
             return;
         }
-    } else if (play->sceneNum == SCENE_MALON_STABLE) {
+    } else if (play->sceneNum == SCENE_STABLE) {
         if (IS_DAY) {
             Actor_Kill(&this->actor);
             return;
@@ -246,7 +246,7 @@ void EnHorseNormal_Init(Actor* thisx, PlayState* play) {
             func_80A6C6B0(this);
             return;
         }
-    } else if (play->sceneNum == SCENE_SPOT12) {
+    } else if (play->sceneNum == SCENE_GERUDOS_FORTRESS) {
         if (this->actor.world.pos.x == 3707.0f && this->actor.world.pos.y == 1413.0f &&
             this->actor.world.pos.z == -665.0f) {
             Skin_Init(play, &this->skin, &gHorseNormalSkel, &gHorseNormalIdleAnim);
@@ -277,7 +277,7 @@ void EnHorseNormal_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_80A6B91C(EnHorseNormal* this, PlayState* play) {
-    this->actor.flags |= ACTOR_FLAG_4;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
     this->action = HORSE_FOLLOW_PATH;
     this->animationIdx = 6;
     this->waypoint = 0;
@@ -511,7 +511,7 @@ void func_80A6C6B0(EnHorseNormal* this) {
     this->animationIdx = 0;
     this->unk_21C = 0;
     this->unk_21E = 0;
-    this->actor.flags |= ACTOR_FLAG_4 | ACTOR_FLAG_5;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED;
     this->actor.speedXZ = 0.0f;
     this->unk_218 = 0.0f;
     Animation_Change(&this->skin.skelAnime, sAnimations[this->animationIdx], func_80A6B30C(this), 0.0f,
@@ -572,7 +572,7 @@ void EnHorseNormal_Update(Actor* thisx, PlayState* play) {
     sActionFuncs[this->action](this, play);
     Actor_MoveForward(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 35.0f, 100.0f, 0x1D);
-    if (play->sceneNum == SCENE_SPOT20 && this->actor.world.pos.z < -2400.0f) {
+    if (play->sceneNum == SCENE_LON_LON_RANCH && this->actor.world.pos.z < -2400.0f) {
         this->actor.world.pos.z = -2400.0f;
     }
     this->actor.focus.pos = this->actor.world.pos;
@@ -639,10 +639,10 @@ void EnHorseNormal_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    if (play->sceneNum != SCENE_SPOT20 || play->sceneNum != SCENE_MALON_STABLE) {
+    if (play->sceneNum != SCENE_LON_LON_RANCH || play->sceneNum != SCENE_STABLE) {
         func_80A6C8E0(this, play);
     }
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     func_800A6330(&this->actor, play, &this->skin, EnHorseNormal_PostDraw, true);
 
     if (this->action == HORSE_WAIT_CLONE) {
@@ -653,7 +653,7 @@ void EnHorseNormal_Draw(Actor* thisx, PlayState* play) {
         f32 distFromGround = this->actor.world.pos.y - this->actor.floorHeight;
         f32 temp_f0_4;
 
-        if (play->sceneNum == SCENE_MALON_STABLE) {
+        if (play->sceneNum == SCENE_STABLE) {
             if (this->actor.world.pos.x == 355.0f && this->actor.world.pos.y == 0.0f &&
                 this->actor.world.pos.z == -245.0f) {
                 clonePos.x = 235.0f;
@@ -667,7 +667,7 @@ void EnHorseNormal_Draw(Actor* thisx, PlayState* play) {
                 clonePos.z = 100.0f;
                 cloneRotY = 0x7FFF;
             }
-        } else if (play->sceneNum == SCENE_SPOT20) {
+        } else if (play->sceneNum == SCENE_LON_LON_RANCH) {
             if (this->actor.world.pos.x == -730.0f && this->actor.world.pos.y == 0.0f &&
                 this->actor.world.pos.z == -1100.0f) {
                 clonePos.x = 780.0f;
@@ -699,7 +699,7 @@ void EnHorseNormal_Draw(Actor* thisx, PlayState* play) {
         this->cloneCollider.dim.pos.y = clonePos.y;
         this->cloneCollider.dim.pos.z = clonePos.z;
         CollisionCheck_SetOC(play, &play->colChkCtx, &this->cloneCollider.base);
-        func_80094044(play->state.gfxCtx);
+        Gfx_SetupDL_44Xlu(play->state.gfxCtx);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, 255);
         Matrix_Translate(clonePos.x, clonePos.y, clonePos.z, MTXMODE_NEW);
         temp_f0_4 = (1.0f - (distFromGround * 0.01f)) * this->actor.shape.shadowScale;

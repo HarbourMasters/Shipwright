@@ -2,7 +2,7 @@
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 #define BOMBCHU_SCALE 0.01f
 
@@ -108,7 +108,7 @@ void EnBomChu_Explode(EnBomChu* this, PlayState* play) {
     s32 i;
 
     bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x,
-                               this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, BOMB_BODY);
+                               this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, BOMB_BODY, true);
     if (bomb != NULL) {
         bomb->timer = 0;
     }
@@ -139,7 +139,7 @@ void EnBomChu_UpdateFloorPoly(EnBomChu* this, CollisionPoly* floorPoly, PlayStat
     f32 normDotUp;
     MtxF mf;
 
-    if (CVar_GetS32("gBombchusOOB", 0) && floorPoly == NULL) {
+    if (CVarGetInteger("gBombchusOOB", 0) && floorPoly == NULL) {
         EnBomChu_Explode(this, play);
         return;
     }
@@ -240,7 +240,7 @@ void EnBomChu_WaitForRelease(EnBomChu* this, PlayState* play) {
         //! @bug there is no NULL check on the floor poly.  If the player is out of bounds the floor poly will be NULL
         //! and will cause a crash inside this function.
         EnBomChu_UpdateFloorPoly(this, this->actor.floorPoly, play);
-        this->actor.flags |= ACTOR_FLAG_0; // make chu targetable
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE; // make chu targetable
         func_8002F850(play, &this->actor);
         this->actionFunc = EnBomChu_Move;
     }
@@ -491,11 +491,11 @@ void EnBomChu_Draw(Actor* thisx, PlayState* play) {
     f32 colorIntensity;
     s32 blinkHalfPeriod;
     s32 blinkTime;
-    Color_RGB8 BombchuCol = CVar_GetRGB("gBombTrailCol", BombchuColorOriginal);
+    Color_RGB8 BombchuCol = CVarGetColor24("gBombTrailCol", BombchuColorOriginal);
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     func_8002EBCC(&this->actor, play, 0);
 
     if (this->timer >= 40) {
@@ -515,11 +515,15 @@ void EnBomChu_Draw(Actor* thisx, PlayState* play) {
 
     colorIntensity = blinkTime / (f32)blinkHalfPeriod;
 
-    if (CVar_GetS32("gUseTrailsCol", 0) != 0)
-        gDPSetEnvColor(POLY_OPA_DISP++, (colorIntensity * BombchuCol.r), (colorIntensity * BombchuCol.g),
-                       (colorIntensity * BombchuCol.b), 255);
-    else gDPSetEnvColor(POLY_OPA_DISP++, 9.0f + (colorIntensity * 209.0f), 9.0f + (colorIntensity * 34.0f),
-                        35.0f + (colorIntensity * -35.0f), 255);
+    if (CVarGetInteger("gCosmetics.Equipment_ChuBody.Changed", 0)) {
+        Color_RGB8 color = CVarGetColor24("gCosmetics.Equipment_ChuBody.Value", (Color_RGB8){ 209.0f, 34.0f, -35.0f });
+        gDPSetEnvColor(POLY_OPA_DISP++, (colorIntensity * color.r), (colorIntensity * color.g),
+                   (colorIntensity * color.b), 255);
+    } else {
+        gDPSetEnvColor(POLY_OPA_DISP++, 9.0f + (colorIntensity * 209.0f), 9.0f + (colorIntensity * 34.0f),
+                   35.0f + (colorIntensity * -35.0f), 255);
+    }
+
     Matrix_Translate(this->visualJitter * (1.0f / BOMBCHU_SCALE), 0.0f, 0.0f, MTXMODE_APPLY);
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

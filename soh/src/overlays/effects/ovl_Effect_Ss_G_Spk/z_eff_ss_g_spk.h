@@ -1,7 +1,7 @@
 #ifndef Z_EFF_SS_G_SPK_H
 #define Z_EFF_SS_G_SPK_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 typedef struct {

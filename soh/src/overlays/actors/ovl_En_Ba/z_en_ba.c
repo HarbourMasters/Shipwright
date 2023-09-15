@@ -7,8 +7,9 @@
 #include "z_en_ba.h"
 #include "objects/object_bxa/object_bxa.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnBa_Init(Actor* thisx, PlayState* play);
 void EnBa_Destroy(Actor* thisx, PlayState* play);
@@ -149,7 +150,7 @@ void EnBa_Idle(EnBa* this, PlayState* play) {
     if ((this->actor.colChkInfo.mass == MASS_IMMOVABLE) && (this->actor.xzDistToPlayer > 175.0f)) {
         Math_SmoothStepToF(&this->actor.world.pos.y, this->actor.home.pos.y + 330.0f, 1.0f, 7.0f, 0.0f);
     } else {
-        this->actor.flags |= ACTOR_FLAG_0;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
         Math_SmoothStepToF(&this->actor.world.pos.y, this->actor.home.pos.y + 100.0f, 1.0f, 10.0f, 0.0f);
     }
     this->unk_2FC = this->actor.world.pos;
@@ -390,7 +391,7 @@ void func_809B75A0(EnBa* this, PlayState* play2) {
 
     for (i = 7; i < 14; i++) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BA, this->unk_158[i].x, this->unk_158[i].y,
-                    this->unk_158[i].z, 0, 0, 0, EN_BA_DEAD_BLOB);
+                    this->unk_158[i].z, 0, 0, 0, EN_BA_DEAD_BLOB, true);
     }
     unk_temp = Math_Vec3f_Pitch(&this->actor.world.pos, &this->unk_158[0]) + 0x8000;
     Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 1, this->unk_31C, 0);
@@ -398,7 +399,7 @@ void func_809B75A0(EnBa* this, PlayState* play2) {
     Matrix_Translate(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, MTXMODE_NEW);
     Matrix_RotateZYX(this->actor.shape.rot.x - 0x8000, this->actor.shape.rot.y, 0, MTXMODE_APPLY);
     Matrix_MultVec3f(&D_809B8080, &this->unk_158[0]);
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     for (i = 5; i < 13; i++) {
         Math_SmoothStepToS(&this->unk_2A8[i].x, this->unk_2A8[5].x, 1, this->unk_31C, 0);
         Math_SmoothStepToS(&this->unk_2A8[i].y, this->unk_2A8[5].y, 1, this->unk_31C, 0);
@@ -455,6 +456,7 @@ void EnBa_Update(Actor* thisx, PlayState* play) {
         this->actor.colChkInfo.health--;
         if (this->actor.colChkInfo.health == 0) {
             func_809B75A0(this, play);
+            GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
         } else {
             func_809B7174(this);
         }
@@ -482,7 +484,7 @@ void EnBa_Draw(Actor* thisx, PlayState* play) {
     Vec3f unused = { 0.0f, 0.0f, 448.0f };
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     if (this->actor.params < EN_BA_DEAD_BLOB) {
         Matrix_Push();
         gSPSegment(POLY_OPA_DISP++, 0x0C, mtx);

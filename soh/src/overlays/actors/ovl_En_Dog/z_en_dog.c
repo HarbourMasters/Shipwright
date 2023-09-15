@@ -273,7 +273,7 @@ void EnDog_Init(Actor* thisx, PlayState* play) {
                 Actor_Kill(&this->actor);
             }
             break;
-        case SCENE_IMPA: // Richard's Home
+        case SCENE_DOG_LADY_HOUSE: // Richard's Home
             if (!(this->actor.params & 0x8000)) {
                 if (!gSaveContext.dogIsLost) {
                     this->nextBehavior = DOG_SIT;
@@ -300,6 +300,8 @@ void EnDog_Init(Actor* thisx, PlayState* play) {
 void EnDog_Destroy(Actor* thisx, PlayState* play) {
     EnDog* this = (EnDog*)thisx;
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDog_FollowPath(EnDog* this, PlayState* play) {
@@ -371,12 +373,37 @@ void EnDog_FollowPlayer(EnDog* this, PlayState* play) {
         return;
     }
 
-    if (this->actor.xzDistToPlayer > 400.0f) {
-        if (this->nextBehavior != DOG_SIT && this->nextBehavior != DOG_SIT_2) {
-            this->nextBehavior = DOG_BOW;
+    if (CVarGetInteger("gDogFollowsEverywhere", 0)) {
+        // If the dog is too far away it's usually because they are stuck in a hole or on a different floor, this gives them a push
+        if (this->actor.xyzDistToPlayerSq > 250000.0f) {
+            Player* player = GET_PLAYER(play);
+            if (PlayerGrounded(player)) this->actor.world.pos.y = player->actor.world.pos.y;
         }
-        gSaveContext.dogParams = 0;
-        speed = 0.0f;
+
+        // If doggo is in the water make sure it's floating
+        if (this->actor.bgCheckFlags & 0x20) {
+            this->actor.gravity = 0.0f;
+            if (this->actor.yDistToWater > 11.0f) {
+                this->actor.world.pos.y += 2.0f;
+            } else if (this->actor.yDistToWater < 8.0f) {
+                this->actor.world.pos.y -= 2.0f;
+            }
+        } else {
+            this->actor.gravity = -1.0f;
+        }
+    }
+
+    if (this->actor.xzDistToPlayer > 400.0f) {
+        if (CVarGetInteger("gDogFollowsEverywhere", 0)) {
+            // Instead of stopping following when the dog gets too far, just speed them up.
+            speed = this->actor.xzDistToPlayer / 25.0f;
+        } else {
+            if (this->nextBehavior != DOG_SIT && this->nextBehavior != DOG_SIT_2) {
+                this->nextBehavior = DOG_BOW;
+            }
+            gSaveContext.dogParams = 0;
+            speed = 0.0f;
+        }
     } else if (this->actor.xzDistToPlayer > 100.0f) {
         this->nextBehavior = DOG_RUN;
         speed = 4.0f;
@@ -392,7 +419,7 @@ void EnDog_FollowPlayer(EnDog* this, PlayState* play) {
 
     Math_ApproachF(&this->actor.speedXZ, speed, 0.6f, 1.0f);
 
-    if (!(this->actor.xzDistToPlayer > 400.0f)) {
+    if (!(this->actor.xzDistToPlayer > 400.0f) || CVarGetInteger("gDogFollowsEverywhere", 0)) {
         Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 10, 1000, 1);
         this->actor.shape.rot = this->actor.world.rot;
     }
@@ -471,34 +498,22 @@ void EnDog_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
 
 void EnDog_Draw(Actor* thisx, PlayState* play) {
     EnDog* this = (EnDog*)thisx;
-    Color_RGBA8 colors[] = { { 255, 255, 200, 0 }, { 150, 100, 50, 0 } };
-    Color_RGB8 Dog1_ori = {colors[0].r, colors[0].g, colors[0].b};
-    Color_RGB8 Dog2_ori = {colors[1].r, colors[1].g, colors[1].b};
-    Color_RGB8 Dog1 = CVar_GetRGB("gDog1Col", Dog1_ori);
-    Color_RGB8 Dog2 = CVar_GetRGB("gDog2Col", Dog2_ori);
+    Color_RGB8 colors[] = { { 255, 255, 200 }, { 150, 100, 50 } };
+
+    if (CVarGetInteger("gCosmetics.NPC_Dog1.Changed", 0)) {
+        colors[0] = CVarGetColor24("gCosmetics.NPC_Dog1.Value", colors[0]);
+    }
+    if (CVarGetInteger("gCosmetics.NPC_Dog2.Changed", 0)) {
+        colors[1] = CVarGetColor24("gCosmetics.NPC_Dog2.Value", colors[1]);
+    }
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gDPPipeSync(POLY_OPA_DISP++);
-    if (CVar_GetS32("gUseDogsCol",0)) {
-        colors[0].r = Dog1.r;
-        colors[0].g = Dog1.g;
-        colors[0].b = Dog1.b;
-        colors[1].r = Dog2.r;
-        colors[1].g = Dog2.g;
-        colors[1].b = Dog2.b;
-    } else {
-        colors[0].r = Dog1_ori.r;
-        colors[0].g = Dog1_ori.g;
-        colors[0].b = Dog1_ori.b;
-        colors[1].r = Dog2_ori.r;
-        colors[1].g = Dog2_ori.g;
-        colors[1].b = Dog2_ori.b;
-    }
     gDPSetEnvColor(POLY_OPA_DISP++, colors[this->actor.params & 0xF].r, colors[this->actor.params & 0xF].g,
-                   colors[this->actor.params & 0xF].b, colors[this->actor.params & 0xF].a);
+                   colors[this->actor.params & 0xF].b, 0);
 
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnDog_OverrideLimbDraw, EnDog_PostLimbDraw, this);

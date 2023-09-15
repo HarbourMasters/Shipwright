@@ -1,7 +1,7 @@
 #ifndef Z_END_TITLE_H
 #define Z_END_TITLE_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EndTitle;

@@ -7,7 +7,7 @@
 #include "z_bg_spot03_taki.h"
 #include "objects/object_spot03_object/object_spot03_object.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void BgSpot03Taki_Init(Actor* thisx, PlayState* play);
 void BgSpot03Taki_Destroy(Actor* thisx, PlayState* play);
@@ -128,7 +128,7 @@ void BgSpot03Taki_Draw(Actor* thisx, PlayState* play) {
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPSegment(
         POLY_XLU_DISP++, 0x08,

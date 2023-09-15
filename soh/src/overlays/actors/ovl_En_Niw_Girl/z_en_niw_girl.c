@@ -8,7 +8,7 @@
 #include "objects/object_gr/object_gr.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnNiwGirl_Init(Actor* thisx, PlayState* play);
 void EnNiwGirl_Destroy(Actor* thisx, PlayState* play);
@@ -93,12 +93,15 @@ void EnNiwGirl_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnNiwGirl_Destroy(Actor* thisx, PlayState* play) {
+    EnNiwGirl* this = (EnNiwGirl*)thisx;
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnNiwGirl_Jump(EnNiwGirl* this, PlayState* play) {
     f32 frameCount = Animation_GetLastFrame(&gNiwGirlRunAnim);
     Animation_Change(&this->skelAnime, &gNiwGirlRunAnim, 1.0f, 0.0f, frameCount, 0, -10.0f);
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actionFunc = func_80AB9210;
 }
 
@@ -139,9 +142,9 @@ void func_80AB9210(EnNiwGirl* this, PlayState* play) {
 void EnNiwGirl_Talk(EnNiwGirl* this, PlayState* play) {
     Animation_Change(&this->skelAnime, &gNiwGirlJumpAnim, 1.0f, 0.0f, Animation_GetLastFrame(&gNiwGirlJumpAnim), 0,
                      -10.0f);
-    this->actor.flags |= ACTOR_FLAG_0;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     this->actor.textId = 0x7000;
-    if ((gSaveContext.eventChkInf[8] & 1) && (this->unk_27A == 0)) {
+    if ((Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) && (this->unk_27A == 0)) {
         this->actor.textId = 0x70EA;
     }
     switch (Player_GetMask(play)) {
@@ -204,13 +207,13 @@ void EnNiwGirl_Update(Actor* thisx, PlayState* play) {
     this->unk_280 = 30.0f;
     Actor_SetFocus(&this->actor, 30.0f);
     if (tempActionFunc == this->actionFunc) {
-        this->unk_2D4.unk_18 = player->actor.world.pos;
+        this->interactInfo.trackPos = player->actor.world.pos;
         if (!LINK_IS_ADULT) {
-            this->unk_2D4.unk_18.y = player->actor.world.pos.y - 10.0f;
+            this->interactInfo.trackPos.y = player->actor.world.pos.y - 10.0f;
         }
-        func_80034A14(&this->actor, &this->unk_2D4, 2, 4);
-        this->unk_260 = this->unk_2D4.unk_08;
-        this->unk_266 = this->unk_2D4.unk_0E;
+        Npc_TrackPoint(&this->actor, &this->interactInfo, 2, NPC_TRACKING_FULL_BODY);
+        this->unk_260 = this->interactInfo.headRot;
+        this->unk_266 = this->interactInfo.torsoRot;
     } else {
         Math_SmoothStepToS(&this->unk_266.y, 0, 5, 3000, 0);
         Math_SmoothStepToS(&this->unk_260.y, 0, 5, 3000, 0);
@@ -253,7 +256,7 @@ void EnNiwGirl_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnNiwGirlOverrideLimbDraw, NULL, this);

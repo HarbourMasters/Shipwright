@@ -6,8 +6,10 @@
 
 #include "z_en_geldb.h"
 #include "objects/object_geldb/object_geldb.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 typedef enum {
     /*  0 */ GELDB_WAIT,
@@ -268,6 +270,8 @@ void EnGeldB_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyTris(play, &this->blockCollider);
     Collider_DestroyCylinder(play, &this->bodyCollider);
     Collider_DestroyQuad(play, &this->swordCollider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnGeldB_ReactToPlayer(PlayState* play, EnGeldB* this, s16 arg2) {
@@ -283,7 +287,7 @@ s32 EnGeldB_ReactToPlayer(PlayState* play, EnGeldB* this, s16 arg2) {
     angleToLink = ABS(angleToLink);
 
     if (func_800354B4(play, thisx, 100.0f, 0x2710, 0x3E80, thisx->shape.rot.y)) {
-        if (player->swordAnimation == 0x11) {
+        if (player->meleeWeaponAnimation == 0x11) {
             EnGeldB_SetupSpinDodge(this, play);
             return true;
         } else if (play->gameplayFrames & 1) {
@@ -296,7 +300,7 @@ s32 EnGeldB_ReactToPlayer(PlayState* play, EnGeldB* this, s16 arg2) {
         if ((thisx->bgCheckFlags & 8) && (ABS(angleToWall) < 0x2EE0) && (thisx->xzDistToPlayer < 90.0f)) {
             EnGeldB_SetupJump(this);
             return true;
-        } else if (player->swordAnimation == 0x11) {
+        } else if (player->meleeWeaponAnimation == 0x11) {
             EnGeldB_SetupSpinDodge(this, play);
             return true;
         } else if ((thisx->xzDistToPlayer < 90.0f) && (play->gameplayFrames & 1)) {
@@ -349,7 +353,7 @@ void EnGeldB_SetupWait(EnGeldB* this) {
     this->action = GELDB_WAIT;
     this->actor.bgCheckFlags &= ~3;
     this->actor.gravity = -2.0f;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     EnGeldB_SetupAction(this, EnGeldB_Wait);
 }
 
@@ -367,7 +371,7 @@ void EnGeldB_Wait(EnGeldB* this, PlayState* play) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIZA_DOWN);
         this->skelAnime.playSpeed = 1.0f;
         this->actor.world.pos.y = this->actor.floorHeight;
-        this->actor.flags |= ACTOR_FLAG_0;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
         this->actor.focus.pos = this->actor.world.pos;
         this->actor.bgCheckFlags &= ~2;
         this->actor.velocity.y = 0.0f;
@@ -1138,7 +1142,7 @@ void EnGeldB_Block(EnGeldB* this, PlayState* play) {
         if ((ABS(angleToLink) <= 0x4000) && (this->actor.xzDistToPlayer < 40.0f) &&
             (ABS(this->actor.yDistToPlayer) < 50.0f)) {
             if (func_800354B4(play, &this->actor, 100.0f, 0x2710, 0x4000, this->actor.shape.rot.y)) {
-                if (player->swordAnimation == 0x11) {
+                if (player->meleeWeaponAnimation == 0x11) {
                     EnGeldB_SetupSpinDodge(this, play);
                 } else if (play->gameplayFrames & 1) {
                     EnGeldB_SetupBlock(this);
@@ -1159,7 +1163,7 @@ void EnGeldB_Block(EnGeldB* this, PlayState* play) {
         }
     } else if ((this->timer == 0) &&
                func_800354B4(play, &this->actor, 100.0f, 0x2710, 0x4000, this->actor.shape.rot.y)) {
-        if (player->swordAnimation == 0x11) {
+        if (player->meleeWeaponAnimation == 0x11) {
             EnGeldB_SetupSpinDodge(this, play);
         } else if (!EnGeldB_DodgeRanged(play, this)) {
             if ((play->gameplayFrames & 1)) {
@@ -1315,9 +1319,10 @@ void EnGeldB_SetupDefeated(EnGeldB* this) {
         this->invisible = true;
     }
     this->action = GELDB_DEFEAT;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_GERUDOFT_DEAD);
     EnGeldB_SetupAction(this, EnGeldB_Defeated);
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnGeldB_Defeated(EnGeldB* this, PlayState* play) {
@@ -1564,11 +1569,16 @@ void EnGeldB_Draw(Actor* thisx, PlayState* play) {
             if (this->timer == 0) {
                 if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
                     play->nextEntranceIndex = 0x1A5;
-                } else if (gSaveContext.eventChkInf[12] & 0x80) {
+                } else if (Flags_GetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO)) {
                     play->nextEntranceIndex = 0x5F8;
                 } else {
                     play->nextEntranceIndex = 0x3B4;
                 }
+
+                if (gSaveContext.n64ddFlag) {
+                    Entrance_OverrideGeurdoGuardCapture();
+                }
+
                 play->fadeTransition = 0x26;
                 play->sceneLoadFlag = 0x14;
             }
@@ -1576,7 +1586,7 @@ void EnGeldB_Draw(Actor* thisx, PlayState* play) {
     }
 
     if ((this->action != GELDB_WAIT) || !this->invisible) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->blinkState]));
         SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
                               this->skelAnime.dListCount, EnGeldB_OverrideLimbDraw, EnGeldB_PostLimbDraw, this);

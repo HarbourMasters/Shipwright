@@ -9,7 +9,7 @@
 #include "objects/object_nb/object_nb.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 typedef enum {
     /* 0x00 */ NB_CHAMBER_INIT,
@@ -147,22 +147,24 @@ void EnNb_Destroy(Actor* thisx, PlayState* play) {
     
     D_80AB4318 = 0;
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80AB0FBC(EnNb* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    this->unk_300.unk_18 = player->actor.world.pos;
-    this->unk_300.unk_14 = kREG(16) + 9.0f;
-    func_80034A14(&this->actor, &this->unk_300, kREG(17) + 0xC, 2);
+    this->interactInfo.trackPos = player->actor.world.pos;
+    this->interactInfo.yOffset = kREG(16) + 9.0f;
+    Npc_TrackPoint(&this->actor, &this->interactInfo, kREG(17) + 0xC, NPC_TRACKING_HEAD_AND_TORSO);
 }
 
 void func_80AB1040(EnNb* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    this->unk_300.unk_18 = player->actor.world.pos;
-    this->unk_300.unk_14 = kREG(16) + 9.0f;
-    func_80034A14(&this->actor, &this->unk_300, kREG(17) + 0xC, 4);
+    this->interactInfo.trackPos = player->actor.world.pos;
+    this->interactInfo.yOffset = kREG(16) + 9.0f;
+    Npc_TrackPoint(&this->actor, &this->interactInfo, kREG(17) + 0xC, NPC_TRACKING_FULL_BODY);
 }
 
 void func_80AB10C4(EnNb* this) {
@@ -170,10 +172,10 @@ void func_80AB10C4(EnNb* this) {
     Vec3s* tempPtr;
     Vec3s* tempPtr2;
 
-    tempPtr = &this->unk_300.unk_08;
+    tempPtr = &this->interactInfo.headRot;
     Math_SmoothStepToS(&tempPtr->x, 0, 20, 6200, 100);
     Math_SmoothStepToS(&tempPtr->y, 0, 20, 6200, 100);
-    tempPtr2 = &this->unk_300.unk_0E;
+    tempPtr2 = &this->interactInfo.torsoRot;
     Math_SmoothStepToS(&tempPtr2->x, 0, 20, 6200, 100);
     Math_SmoothStepToS(&tempPtr2->y, 0, 20, 6200, 100);
 }
@@ -549,7 +551,7 @@ void EnNb_DrawTransparency(EnNb* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTex));
     gSPSegment(POLY_XLU_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTex));
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, this->alpha);
@@ -564,7 +566,7 @@ void EnNb_InitKidnap(EnNb* this, PlayState* play) {
     EnNb_SetCurrentAnim(this, &gNabooruTrappedInVortexPushingGroundAnim, 0, 0.0f, 0);
     this->action = NB_KIDNAPPED;
     this->actor.shape.shadowAlpha = 0;
-    gSaveContext.eventChkInf[9] |= 0x20;
+    Flags_SetEventChkInf(EVENTCHKINF_NABOORU_CAPTURED_BY_TWINROVA);
 }
 
 void EnNb_PlayCrySFX(EnNb* this, PlayState* play) {
@@ -733,7 +735,7 @@ void EnNb_PlayLookLeftSFX(EnNb* this) {
 
 void EnNb_InitDemo6KInConfrontation(EnNb* this, PlayState* play) {
     Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_6K, this->actor.world.pos.x,
-                kREG(21) + 22.0f + this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0xB);
+                kREG(21) + 22.0f + this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0xB, true);
 }
 
 void func_80AB2688(EnNb* this, PlayState* play) {
@@ -957,7 +959,7 @@ void func_80AB2E70(EnNb* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gNabooruEyeWideTex));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gNabooruEyeWideTex));
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
@@ -987,7 +989,7 @@ void func_80AB2FE4(EnNb* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
@@ -1100,18 +1102,18 @@ void EnNb_LookUp(EnNb* this, PlayState* play) {
 }
 
 void EnNb_CrawlspaceSpawnCheck(EnNb* this, PlayState* play) {
-    if (!gSaveContext.n64ddFlag && !(gSaveContext.eventChkInf[9] & 0x20) && LINK_IS_CHILD) {
+    if (!gSaveContext.n64ddFlag && !Flags_GetEventChkInf(EVENTCHKINF_NABOORU_CAPTURED_BY_TWINROVA) && LINK_IS_CHILD) {
         EnNb_UpdatePath(this, play);
 
         // looking into crawlspace
-        if (!(gSaveContext.eventChkInf[9] & 0x10)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_NABOORU_IN_SPIRIT_TEMPLE)) {
             EnNb_SetCurrentAnim(this, &gNabooruKneeingAtCrawlspaceAnim, 0, 0.0f, 0);
             this->action = NB_CROUCH_CRAWLSPACE;
             this->drawMode = NB_DRAW_DEFAULT;
         } else {
             EnNb_SetCurrentAnim(this, &gNabooruStandingHandsOnHipsAnim, 0, 0.0f, 0);
             this->headTurnFlag = 1;
-            this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
+            this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
             this->actor.world.pos = this->finalPos;
             this->action = NB_IDLE_AFTER_TALK;
             this->drawMode = NB_DRAW_DEFAULT;
@@ -1190,7 +1192,7 @@ void EnNb_SetupIdleCrawlspace(EnNb* this, s32 animFinished) {
     if (animFinished) {
         EnNb_SetCurrentAnim(this, &gNabooruStandingHandsOnHipsAnim, 0, -8.0f, 0);
         this->headTurnFlag = 1;
-        this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
         this->action = NB_IDLE_CRAWLSPACE;
     }
 }
@@ -1199,9 +1201,9 @@ void func_80AB3838(EnNb* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->action = NB_IN_DIALOG;
     } else {
-        this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
 
-        if (!(gSaveContext.infTable[22] & 0x1000)) {
+        if (!Flags_GetInfTable(INFTABLE_16C)) {
             this->actor.textId = 0x601D;
         } else {
             this->actor.textId = 0x6024;
@@ -1213,9 +1215,9 @@ void func_80AB3838(EnNb* this, PlayState* play) {
 
 void EnNb_SetupPathMovement(EnNb* this, PlayState* play) {
     EnNb_SetCurrentAnim(this, &gNabooruStandingToWalkingTransitionAnim, 2, -8.0f, 0);
-    gSaveContext.eventChkInf[9] |= 0x10;
+    Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_NABOORU_IN_SPIRIT_TEMPLE);
     this->action = NB_IN_PATH;
-    this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
+    this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
 }
 
 void EnNb_SetTextIdAsChild(EnNb* this, PlayState* play) {
@@ -1231,11 +1233,11 @@ void EnNb_SetTextIdAsChild(EnNb* this, PlayState* play) {
             EnNb_SetupPathMovement(this, play);
         } else {
             if (textId == 0x6027) {
-                gSaveContext.infTable[22] |= 0x1000;
+                Flags_SetInfTable(INFTABLE_16C);
             }
             this->action = NB_IDLE_CRAWLSPACE;
         }
-        this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
+        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
     } else if ((Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE) && Message_ShouldAdvance(play)) {
         choiceIndex = play->msgCtx.choiceIndex;
 
@@ -1291,7 +1293,7 @@ void func_80AB3B04(EnNb* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->action = NB_ACTION_30;
     } else {
-        this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
         this->actor.textId = Text_GetFaceReaction(play, 0x23);
 
         if ((this->actor.textId) == 0) {
@@ -1305,7 +1307,7 @@ void func_80AB3B04(EnNb* this, PlayState* play) {
 void func_80AB3B7C(EnNb* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
         this->action = NB_IDLE_AFTER_TALK;
-        this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
+        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
     }
 }
 
@@ -1455,17 +1457,17 @@ void EnNb_Init(Actor* thisx, PlayState* play) {
 
 s32 EnNb_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnNb* this = (EnNb*)thisx;
-    struct_80034A14_arg1* unk_300 = &this->unk_300;
+    NpcInteractInfo* interactInfo = &this->interactInfo;
     s32 ret = false;
 
     if (this->headTurnFlag != 0) {
         if (limbIndex == NB_LIMB_TORSO) {
-            rot->x += unk_300->unk_0E.y;
-            rot->y -= unk_300->unk_0E.x;
+            rot->x += interactInfo->torsoRot.y;
+            rot->y -= interactInfo->torsoRot.x;
             ret = false;
         } else if (limbIndex == NB_LIMB_HEAD) {
-            rot->x += unk_300->unk_08.y;
-            rot->z += unk_300->unk_08.x;
+            rot->x += interactInfo->headRot.y;
+            rot->z += interactInfo->headRot.x;
             ret = false;
         }
     }
@@ -1502,7 +1504,7 @@ void EnNb_DrawDefault(EnNb* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);

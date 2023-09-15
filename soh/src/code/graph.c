@@ -3,9 +3,12 @@
 #include "regs.h"
 
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
+#include "soh/Enhancements/debugger/colViewer.h"
 #include "soh/Enhancements/gameconsole.h"
-#include "soh/Enhancements/debugger/debugger.h"
+#include "soh/OTRGlobals.h"
 
 #define GFXPOOL_HEAD_MAGIC 0x1234
 #define GFXPOOL_TAIL_MAGIC 0x5678
@@ -15,6 +18,9 @@ OSTime sGraphSetTaskTime;
 FaultClient sGraphFaultClient;
 CfbInfo sGraphCfbInfos[3];
 FaultClient sGraphUcodeFaultClient;
+
+void Skybox_Setup(PlayState* play, SkyboxContext* skyboxCtx, s16 skyboxId);
+void PadMgr_ThreadEntry(PadMgr* padMgr);
 
 // clang-format off
 UCodeInfo D_8012D230[3] = {
@@ -279,7 +285,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
 
     GameState_ReqPadData(gameState);
     GameState_Update(gameState);
-    Debug_Draw();
+    DrawColViewer();
 
     OPEN_DISPS(gfxCtx);
 
@@ -337,14 +343,14 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
 
         if (pool->headMagic != GFXPOOL_HEAD_MAGIC) {
             //! @bug (?) : "problem = true;" may be missing
-            osSyncPrintf("%c", 7);
+            osSyncPrintf("%c", BEL);
             // "Dynamic area head is destroyed"
             osSyncPrintf(VT_COL(RED, WHITE) "ダイナミック領域先頭が破壊されています\n" VT_RST);
             Fault_AddHungupAndCrash(__FILE__, __LINE__);
         }
         if (pool->tailMagic != GFXPOOL_TAIL_MAGIC) {
             problem = true;
-            osSyncPrintf("%c", 7);
+            osSyncPrintf("%c", BEL);
             // "Dynamic region tail is destroyed"
             osSyncPrintf(VT_COL(RED, WHITE) "ダイナミック領域末尾が破壊されています\n" VT_RST);
             Fault_AddHungupAndCrash(__FILE__, __LINE__);
@@ -353,19 +359,19 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
 
     if (THGA_IsCrash(&gfxCtx->polyOpa)) {
         problem = true;
-        osSyncPrintf("%c", 7);
+        osSyncPrintf("%c", BEL);
         // "Zelda 0 is dead"
         osSyncPrintf(VT_COL(RED, WHITE) "ゼルダ0は死んでしまった(graph_alloc is empty)\n" VT_RST);
     }
     if (THGA_IsCrash(&gfxCtx->polyXlu)) {
         problem = true;
-        osSyncPrintf("%c", 7);
+        osSyncPrintf("%c", BEL);
         // "Zelda 1 is dead"
         osSyncPrintf(VT_COL(RED, WHITE) "ゼルダ1は死んでしまった(graph_alloc is empty)\n" VT_RST);
     }
     if (THGA_IsCrash(&gfxCtx->overlay)) {
         problem = true;
-        osSyncPrintf("%c", 7);
+        osSyncPrintf("%c", BEL);
         // "Zelda 4 is dead"
         osSyncPrintf(VT_COL(RED, WHITE) "ゼルダ4は死んでしまった(graph_alloc is empty)\n" VT_RST);
     }
@@ -395,7 +401,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
         sGraphUpdateTime = time;
     }
 
-    if (CVar_GetS32("gDebugEnabled", 0))
+    if (CVarGetInteger("gDebugEnabled", 0))
     {
         if (CHECK_BTN_ALL(gameState->input[0].press.button, BTN_Z) &&
             CHECK_BTN_ALL(gameState->input[0].cur.button, BTN_L | BTN_R)) {
@@ -461,7 +467,7 @@ static void RunFrame()
         {
             osSyncPrintf("確保失敗\n"); // "Failure to secure"
 
-            sprintf(faultMsg, "CLASS SIZE= %d bytes", size);
+            snprintf(faultMsg, sizeof(faultMsg), "CLASS SIZE= %d bytes", size);
             Fault_AddHungupAndCrashImpl("GAME CLASS MALLOC FAILED", faultMsg);
         }
         GameState_Init(runFrameContext.gameState, runFrameContext.ovl->init, &runFrameContext.gfxCtx);
@@ -478,15 +484,15 @@ static void RunFrame()
 
         while (GameState_IsRunning(runFrameContext.gameState))
         {
-            uint64_t ticksA, ticksB;
-            ticksA = GetPerfCounter();
+            //uint64_t ticksA, ticksB;
+            //ticksA = GetPerfCounter();
 
             Graph_StartFrame();
 
             PadMgr_ThreadEntry(&gPadMgr);
 
             Graph_Update(&runFrameContext.gfxCtx, runFrameContext.gameState);
-            ticksB = GetPerfCounter();
+            //ticksB = GetPerfCounter();
 
             Graph_ProcessGfxCommands(runFrameContext.gfxCtx.workBuffer);
 

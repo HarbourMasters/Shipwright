@@ -1,11 +1,15 @@
+#ifdef _WIN32
+#include <Windows.h>
+#endif
+
 #include "global.h"
 #include "vt.h"
+#include "stdio.h"
 #include <soh/Enhancements/bootcommands.h>
 #include "soh/OTRGlobals.h"
 
-#include <libultraship/CrashHandler.h>
+#include <libultraship/bridge.h>
 #include "soh/CrashHandlerExp.h"
-
 
 s32 gScreenWidth = SCREEN_WIDTH;
 s32 gScreenHeight = SCREEN_HEIGHT;
@@ -40,15 +44,25 @@ void Main_LogSystemHeap(void) {
 }
 
 #ifdef _WIN32
-int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow) 
-#else
-int main(int argc, char** argv)
-#endif
+int SDL_main(int argc, char** argv)
 {
-    CrashHandler_Init(CrashHandler_PrintSohData);
-    
+    AllocConsole();
+    (void)freopen("CONIN$", "r", stdin);
+    (void)freopen("CONOUT$", "w", stdout);
+    (void)freopen("CONOUT$", "w", stderr);
+#ifndef _DEBUG
+    ShowWindow(GetConsoleWindow(), SW_HIDE);
+#endif
+
+#else //_WIN32
+int main(int argc, char** argv)
+{
+#endif
+
     GameConsole_Init();
     InitOTR();
+    // TODO: Was moved to below InitOTR because it requires window to be setup. But will be late to catch crashes.
+    CrashHandlerRegisterCallback(CrashHandler_PrintSohData);
     BootCommands_Init();
 
     Main(0);

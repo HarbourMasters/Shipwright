@@ -8,7 +8,7 @@
 #include "objects/object_demo_kekkai/object_demo_kekkai.h"
 #include "scenes/dungeons/ganontika/ganontika_scene.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void DemoKekkai_Init(Actor* thisx, PlayState* play);
 void DemoKekkai_Destroy(Actor* thisx, PlayState* play);
@@ -231,7 +231,7 @@ void DemoKekkai_TowerBarrier(DemoKekkai* this, PlayState* play) {
         } else {
             this->timer++;
             if (this->timer > 100) {
-                Flags_SetEventChkInf(0xC3);
+                Flags_SetEventChkInf(EVENTCHKINF_DISPELLED_GANONS_TOWER_BARRIER);
                 Actor_Kill(&this->actor);
                 return;
             } else if (this->timer > 40) {
@@ -356,7 +356,7 @@ void DemoKekkai_DrawTrialBarrier(Actor* thisx, PlayState* play2) {
         }
         colorIndex = (this->actor.params - 1) * 6;
         OPEN_DISPS(play->state.gfxCtx);
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         Matrix_Push();
         Matrix_Translate(0.0f, 1200.0f, 0.0f, MTXMODE_APPLY);
         Matrix_Scale(this->orbScale, this->orbScale, this->orbScale, MTXMODE_APPLY);
@@ -395,7 +395,7 @@ void DemoKekkai_DrawTowerBarrier(Actor* thisx, PlayState* play) {
 
     scroll = (s32)this->barrierScroll & 0xFFFF;
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetPrimColor(POLY_XLU_DISP++, 0x00, 0x80, 255, 170, 255, 255);

@@ -8,7 +8,7 @@
 #include "objects/object_ru1/object_ru1.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_4 | ACTOR_FLAG_26)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_CAN_PRESS_SWITCH)
 
 void EnRu1_Init(Actor* thisx, PlayState* play);
 void EnRu1_Destroy(Actor* thisx, PlayState* play);
@@ -205,6 +205,8 @@ void EnRu1_Destroy(Actor* thisx, PlayState* play) {
 
     D_80AF1938 = 0;
     EnRu1_DestroyColliders(this, play);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnRu1_UpdateEyes(EnRu1* this) {
@@ -761,21 +763,21 @@ void func_80AEC2C0(EnRu1* this, PlayState* play) {
 }
 
 // Convenience function used so that Ruto always spawns in Jabu in rando, even after she's been kidnapped
-// Equivalent to !(gSaveContext.infTable[20] & 0x20) in vanilla
+// Equivalent to !Flags_GetInfTable(INFTABLE_145) in vanilla
 bool shouldSpawnRuto() {
-    // gSaveContext.infTable[20] & 0x40 check is to prevent Ruto from spawning during the short period of time when
+    // Flags_GetInfTable(INFTABLE_146) check is to prevent Ruto from spawning during the short period of time when
     // she's on the Zora's Sapphire pedestal but hasn't been kidnapped yet (would result in multiple Rutos otherwise)
-    return !(gSaveContext.infTable[20] & 0x20) || (gSaveContext.n64ddFlag && (gSaveContext.infTable[20] & 0x40));
+    return !Flags_GetInfTable(INFTABLE_145) || (gSaveContext.n64ddFlag && (Flags_GetInfTable(INFTABLE_146)));
 }
 
 void func_80AEC320(EnRu1* this, PlayState* play) {
     s8 actorRoom;
 
-    if (!(gSaveContext.infTable[20] & 2)) {
+    if (!Flags_GetInfTable(INFTABLE_RUTO_IN_JJ_MEET_RUTO)) {
         func_80AEB264(this, &gRutoChildWait2Anim, 0, 0, 0);
         this->action = 7;
         EnRu1_SetMouthIndex(this, 1);
-    } else if ((gSaveContext.infTable[20] & 0x80) && !(gSaveContext.infTable[20] & 1) && shouldSpawnRuto()) {
+    } else if ((Flags_GetInfTable(INFTABLE_147)) && !Flags_GetInfTable(INFTABLE_140) && shouldSpawnRuto()) {
         if (!func_80AEB020(this, play)) {
             func_80AEB264(this, &gRutoChildWait2Anim, 0, 0, 0);
             actorRoom = this->actor.room;
@@ -928,7 +930,7 @@ void func_80AECA18(EnRu1* this) {
 
 void func_80AECA44(EnRu1* this, PlayState* play) {
     if (func_80AEAFA0(play, 5, 3)) {
-        gSaveContext.infTable[20] |= 2;
+        Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_MEET_RUTO);
         this->action = 14;
     }
 }
@@ -1179,8 +1181,8 @@ void func_80AED414(EnRu1* this, PlayState* play) {
 void func_80AED44C(EnRu1* this, PlayState* play) {
     s8 actorRoom;
 
-    if ((gSaveContext.infTable[20] & 2) && shouldSpawnRuto() && !(gSaveContext.infTable[20] & 1) &&
-        !(gSaveContext.infTable[20] & 0x80)) {
+    if ((Flags_GetInfTable(INFTABLE_RUTO_IN_JJ_MEET_RUTO)) && shouldSpawnRuto() && !Flags_GetInfTable(INFTABLE_140) &&
+        !Flags_GetInfTable(INFTABLE_147)) {
         if (!func_80AEB020(this, play)) {
             func_80AEB264(this, &gRutoChildWait2Anim, 0, 0, 0);
             actorRoom = this->actor.room;
@@ -1253,10 +1255,10 @@ void func_80AED6DC(EnRu1* this, PlayState* play) {
 void func_80AED6F8(PlayState* play) {
     s8 curRoomNum;
 
-    if ((!(gSaveContext.infTable[20] & 0x80))) {
+    if ((!Flags_GetInfTable(INFTABLE_147))) {
         curRoomNum = play->roomCtx.curRoom.num;
         if (curRoomNum == 2) {
-            gSaveContext.infTable[20] |= 0x80;
+            Flags_SetInfTable(INFTABLE_147);
         }
     }
 }
@@ -1281,10 +1283,10 @@ void func_80AED83C(EnRu1* this) {
     Vec3s* tempPtr;
     Vec3s* tempPtr2;
 
-    tempPtr = &this->unk_374.unk_08;
+    tempPtr = &this->interactInfo.headRot;
     Math_SmoothStepToS(&tempPtr->x, 0, 0x14, 0x1838, 0x64);
     Math_SmoothStepToS(&tempPtr->y, 0, 0x14, 0x1838, 0x64);
-    tempPtr2 = &this->unk_374.unk_0E;
+    tempPtr2 = &this->interactInfo.torsoRot;
     Math_SmoothStepToS(&tempPtr2->x, 0, 0x14, 0x1838, 0x64);
     Math_SmoothStepToS(&tempPtr2->y, 0, 0x14, 0x1838, 0x64);
 }
@@ -1292,7 +1294,7 @@ void func_80AED83C(EnRu1* this) {
 void func_80AED8DC(EnRu1* this) {
     s32 temp_hi;
     s16* unk_2AC = &this->unk_2AC;
-    s16* someY = &this->unk_374.unk_08.y;
+    s16* someY = &this->interactInfo.headRot.y;
     s16* unk_29E = &this->unk_29E;
     s32 pad[2];
 
@@ -1503,11 +1505,11 @@ void func_80AEE050(EnRu1* this) {
 
 s32 func_80AEE264(EnRu1* this, PlayState* play) {
     if (!Actor_ProcessTalkRequest(&this->actor, play)) {
-        this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
-        if ((gSaveContext.infTable[20] & 8)) {
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
+        if ((Flags_GetInfTable(INFTABLE_143))) {
             this->actor.textId = 0x404E;
             func_8002F2F4(&this->actor, play);
-        } else if (gSaveContext.infTable[20] & 4) {
+        } else if (Flags_GetInfTable(INFTABLE_RUTO_IN_JJ_TALK_FIRST_TIME)) {
             this->actor.textId = 0x404D;
             func_8002F2F4(&this->actor, play);
         } else {
@@ -1528,12 +1530,12 @@ void func_80AEE2F8(EnRu1* this, PlayState* play) {
         dynaPolyActor = DynaPoly_GetActor(&play->colCtx, floorBgId);
         if ((dynaPolyActor != NULL) && (dynaPolyActor->actor.id == ACTOR_BG_BDAN_SWITCH)) {
             if (((dynaPolyActor->actor.params >> 8) & 0x3F) == 0x38) {
-                gSaveContext.infTable[20] |= 1;
+                Flags_SetInfTable(INFTABLE_140);
                 return;
             }
         }
     }
-    gSaveContext.infTable[20] &= ~0x1;
+    Flags_UnsetInfTable(INFTABLE_140);
 }
 
 s32 func_80AEE394(EnRu1* this, PlayState* play) {
@@ -1597,7 +1599,7 @@ void func_80AEE628(EnRu1* this, PlayState* play) {
     if (EnRu1_IsCsStateIdle(play)) {
         Animation_Change(&this->skelAnime, &gRutoChildSittingAnim, 1.0f, 0,
                          Animation_GetLastFrame(&gRutoChildSittingAnim), ANIMMODE_LOOP, -8.0f);
-        gSaveContext.infTable[20] |= 0x10;
+        Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_WANTS_TO_BE_TOSSED_TO_SAPPHIRE);
         this->action = 31;
     }
     this->roomNum3 = curRoomNum;
@@ -1607,7 +1609,7 @@ s32 func_80AEE6D0(EnRu1* this, PlayState* play) {
     s32 pad;
     s8 curRoomNum = play->roomCtx.curRoom.num;
 
-    if (!(gSaveContext.infTable[20] & 0x10) && (func_80AEB124(play) != 0)) {
+    if (!Flags_GetInfTable(INFTABLE_RUTO_IN_JJ_WANTS_TO_BE_TOSSED_TO_SAPPHIRE) && (func_80AEB124(play) != 0)) {
         if (!Player_InCsMode(play)) {
             Animation_Change(&this->skelAnime, &gRutoChildSeesSapphireAnim, 1.0f, 0,
                              Animation_GetLastFrame(&gRutoChildSquirmAnim), ANIMMODE_LOOP, -8.0f);
@@ -1793,20 +1795,20 @@ void func_80AEEF68(EnRu1* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     s16 something;
 
-    this->unk_374.unk_18 = player->actor.world.pos;
-    this->unk_374.unk_14 = kREG(16) - 3.0f;
+    this->interactInfo.trackPos = player->actor.world.pos;
+    this->interactInfo.yOffset = kREG(16) - 3.0f;
     something = kREG(17) + 0xC;
-    func_80034A14(&this->actor, &this->unk_374, something, 2);
+    Npc_TrackPoint(&this->actor, &this->interactInfo, something, NPC_TRACKING_HEAD_AND_TORSO);
 }
 
 void func_80AEEFEC(EnRu1* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     s16 something;
 
-    this->unk_374.unk_18 = player->actor.world.pos;
-    this->unk_374.unk_14 = kREG(16) - 3.0f;
+    this->interactInfo.trackPos = player->actor.world.pos;
+    this->interactInfo.yOffset = kREG(16) - 3.0f;
     something = kREG(17) + 0xC;
-    func_80034A14(&this->actor, &this->unk_374, something, 4);
+    Npc_TrackPoint(&this->actor, &this->interactInfo, something, NPC_TRACKING_FULL_BODY);
     this->actor.world.rot.y = this->actor.shape.rot.y;
 }
 
@@ -1819,12 +1821,12 @@ void func_80AEF080(EnRu1* this) {
 s32 func_80AEF0BC(EnRu1* this, PlayState* play) {
     s32 frameCount;
 
-    if (gSaveContext.infTable[20] & 4) {
+    if (Flags_GetInfTable(INFTABLE_RUTO_IN_JJ_TALK_FIRST_TIME)) {
         frameCount = Animation_GetLastFrame(&gRutoChildSitAnim);
         Animation_Change(&this->skelAnime, &gRutoChildSitAnim, 1.0f, 0, frameCount, ANIMMODE_ONCE, -8.0f);
         play->msgCtx.msgMode = MSGMODE_PAUSED;
         this->action = 26;
-        this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
+        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
         return true;
     }
     return false;
@@ -1839,7 +1841,7 @@ void func_80AEF170(EnRu1* this, PlayState* play, s32 cond) {
 void func_80AEF188(EnRu1* this, PlayState* play) {
     if (func_80AEB174(play) && !func_80AEF0BC(this, play)) {
         Message_CloseTextbox(play);
-        gSaveContext.infTable[20] |= 4;
+        Flags_SetInfTable(INFTABLE_RUTO_IN_JJ_TALK_FIRST_TIME);
         this->action = 24;
     }
 }
@@ -1849,7 +1851,7 @@ void func_80AEF1F0(EnRu1* this, PlayState* play, UNK_TYPE arg2) {
         Animation_Change(&this->skelAnime, &gRutoChildSittingAnim, 1.0f, 0.0f,
                          Animation_GetLastFrame(&gRutoChildSittingAnim), ANIMMODE_LOOP, 0.0f);
         Message_CloseTextbox(play);
-        gSaveContext.infTable[20] |= 8;
+        Flags_SetInfTable(INFTABLE_143);
         func_80AED6DC(this, play);
         func_8002F580(&this->actor, play);
         this->action = 27;
@@ -1864,7 +1866,7 @@ void func_80AEF29C(EnRu1* this, PlayState* play) {
 void func_80AEF2AC(EnRu1* this, PlayState* play) {
     this->action = 24;
     this->drawConfig = 1;
-    this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
 }
 
 void func_80AEF2D0(EnRu1* this, PlayState* play) {
@@ -2011,7 +2013,7 @@ void func_80AEF890(EnRu1* this, PlayState* play) {
 
     if ((gSaveContext.sceneSetupIndex < 4) && (EnRu1_IsCsStateIdle(play))) {
         curRoomNum = play->roomCtx.curRoom.num;
-        gSaveContext.infTable[20] |= 0x20;
+        Flags_SetInfTable(INFTABLE_145);
         Flags_SetSwitch(play, func_80AEADE0(this));
         func_80AEB0EC(this, 1);
         this->action = 42;
@@ -2021,7 +2023,7 @@ void func_80AEF890(EnRu1* this, PlayState* play) {
 
 void func_80AEF930(EnRu1* this, PlayState* play) {
     if (func_80AEB104(this) == 3) {
-        this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
         this->actor.textId = 0x4048;
         Message_ContinueTextbox(play, this->actor.textId);
         func_80AEF4A8(this, play);
@@ -2102,12 +2104,12 @@ void func_80AEFC24(EnRu1* this, PlayState* play) {
 }
 
 void func_80AEFC54(EnRu1* this, PlayState* play) {
-    if ((gSaveContext.infTable[20] & 0x20) && !(gSaveContext.infTable[20] & 0x40)) {
+    if ((Flags_GetInfTable(INFTABLE_145)) && !Flags_GetInfTable(INFTABLE_146)) {
         func_80AEB264(this, &gRutoChildWait2Anim, 0, 0, 0);
         this->action = 41;
         this->unk_28C = EnRu1_FindSwitch(play);
         func_80AEB0EC(this, 1);
-        this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
+        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
     } else {
         Actor_Kill(&this->actor);
     }
@@ -2123,9 +2125,9 @@ void func_80AEFCE8(EnRu1* this, PlayState* play) {
 }
 
 void func_80AEFD38(EnRu1* this, PlayState* play) {
-    if ((gSaveContext.eventChkInf[3] & 0x80) && LINK_IS_CHILD) {
+    if ((Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) && LINK_IS_CHILD) {
         func_80AEB264(this, &gRutoChildWait2Anim, 0, 0, 0);
-        this->actor.flags &= ~ACTOR_FLAG_4;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
         this->action = 44;
         this->drawConfig = 1;
     } else {
@@ -2135,7 +2137,7 @@ void func_80AEFD38(EnRu1* this, PlayState* play) {
 
 s32 func_80AEFDC0(EnRu1* this, PlayState* play) {
     if (!Actor_ProcessTalkRequest(&this->actor, play)) {
-        this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
         this->actor.textId = Text_GetFaceReaction(play, 0x1F);
         if (this->actor.textId == 0) {
             this->actor.textId = 0x402C;
@@ -2148,7 +2150,7 @@ s32 func_80AEFDC0(EnRu1* this, PlayState* play) {
 
 s32 func_80AEFE38(EnRu1* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
-        this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
+        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
         return true;
     }
     return false;
@@ -2186,7 +2188,7 @@ void func_80AEFF40(EnRu1* this, PlayState* play) {
 void func_80AEFF94(EnRu1* this, PlayState* play) {
     s8 actorRoom;
 
-    if ((gSaveContext.infTable[20] & 2) && (gSaveContext.infTable[20] & 1) && shouldSpawnRuto() &&
+    if ((Flags_GetInfTable(INFTABLE_RUTO_IN_JJ_MEET_RUTO)) && (Flags_GetInfTable(INFTABLE_140)) && shouldSpawnRuto() &&
         (!(func_80AEB020(this, play)))) {
         func_80AEB264(this, &gRutoChildWait2Anim, 0, 0, 0);
         actorRoom = this->actor.room;
@@ -2266,8 +2268,8 @@ void EnRu1_Init(Actor* thisx, PlayState* play) {
 }
 
 void func_80AF0278(EnRu1* this, PlayState* play, s32 limbIndex, Vec3s* rot) {
-    Vec3s* vec1 = &this->unk_374.unk_0E;
-    Vec3s* vec2 = &this->unk_374.unk_08;
+    Vec3s* vec1 = &this->interactInfo.torsoRot;
+    Vec3s* vec2 = &this->interactInfo.headRot;
 
     switch (limbIndex) {
         case RUTO_CHILD_LEFT_UPPER_ARM:
@@ -2325,7 +2327,7 @@ void EnRu1_DrawOpa(EnRu1* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTex));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTex));
@@ -2350,7 +2352,7 @@ void EnRu1_DrawXlu(EnRu1* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTex));
     gSPSegment(POLY_XLU_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTex));

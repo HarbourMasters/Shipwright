@@ -6,7 +6,7 @@
 
 #include "z_magic_fire.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_25)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void MagicFire_Init(Actor* thisx, PlayState* play);
 void MagicFire_Destroy(Actor* thisx, PlayState* play);
@@ -218,20 +218,20 @@ void MagicFire_Draw(Actor* thisx, PlayState* play) {
     u8 alpha;
     Color_RGB8 Spell_env_ori = {255, 0, 0};
     Color_RGB8 Spell_col_ori = {255, 200, 0};
-    Color_RGB8 Spell_env = CVar_GetRGB("gDF_Env", Spell_env_ori);
-    Color_RGB8 Spell_col = CVar_GetRGB("gDF_Col", Spell_col_ori);
+    Color_RGB8 Spell_env = CVarGetColor24("gDF_Env", Spell_env_ori);
+    Color_RGB8 Spell_col = CVarGetColor24("gDF_Col", Spell_col_ori);
 
     if (this->action > 0) {
         OPEN_DISPS(play->state.gfxCtx);
-        POLY_XLU_DISP = func_800937C0(POLY_XLU_DISP);
+        POLY_XLU_DISP = Gfx_SetupDL_57(POLY_XLU_DISP);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, (u8)(s32)(60 * this->screenTintIntensity),
                         (u8)(s32)(20 * this->screenTintIntensity), (u8)(s32)(0 * this->screenTintIntensity),
                         (u8)(s32)(120 * this->screenTintIntensity));
         gDPSetAlphaDither(POLY_XLU_DISP++, G_AD_DISABLE);
         gDPSetColorDither(POLY_XLU_DISP++, G_CD_DISABLE);
         gDPFillRectangle(POLY_XLU_DISP++, 0, 0, 319, 239);
-        func_80093D84(play->state.gfxCtx);
-        if (CVar_GetS32("gUseSpellsCol",0)) {
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+        if (CVarGetInteger("gUseSpellsCol",0)) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, Spell_col.r, Spell_col.g, Spell_col.b, (u8)(this->alphaMultiplier * 255));
             gDPSetEnvColor(POLY_XLU_DISP++, Spell_env.r, Spell_env.g, Spell_env.b, (u8)(this->alphaMultiplier * 255));
         } else {

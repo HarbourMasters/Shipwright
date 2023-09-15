@@ -5,6 +5,7 @@
  */
 
 #include "z_boss_fd.h"
+#include "textures/boss_title_cards/object_fd.h"
 #include "objects/object_fd/object_fd.h"
 #include "overlays/actors/ovl_En_Vb_Ball/z_en_vb_ball.h"
 #include "overlays/actors/ovl_Bg_Vb_Sima/z_bg_vb_sima.h"
@@ -14,7 +15,7 @@
 
 #include "soh/frame_interpolation.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 typedef enum {
     /* 0 */ INTRO_FLY_EMERGE,
@@ -226,7 +227,7 @@ void BossFd_Init(Actor* thisx, PlayState* play) {
         Actor_Kill(&this->actor);
         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f, 0, 0, 0,
                            WARP_DUNGEON_ADULT);
-        Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 0.0f, 100.0f, 200.0f, 0, 0, 0, 0);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 0.0f, 100.0f, 200.0f, 0, 0, 0, 0, true);
     } else {
         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_BOSS_FD2, this->actor.world.pos.x,
                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, this->introState);
@@ -349,7 +350,7 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
                     this->timers[0] = 0;
                     this->camData.speedMod = 0.0f;
                     this->camData.accel = 0.0f;
-                    if (gSaveContext.eventChkInf[7] & 8) {
+                    if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_VOLVAGIA_BATTLE)) {
                         this->introState = BFD_CS_EMERGE;
                         this->camData.nextEye.x = player2->actor.world.pos.x + 100.0f + 300.0f - 600.0f;
                         this->camData.nextEye.y = player2->actor.world.pos.y + 100.0f - 50.0f;
@@ -470,7 +471,7 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
                 osSyncPrintf("WAY_SPD X = %f\n", this->camData.atVel.x);
                 osSyncPrintf("WAY_SPD Y = %f\n", this->camData.atVel.y);
                 osSyncPrintf("WAY_SPD Z = %f\n", this->camData.atVel.z);
-                if ((this->timers[3] > 190) && !(gSaveContext.eventChkInf[7] & 8)) {
+                if ((this->timers[3] > 190) && !Flags_GetEventChkInf(EVENTCHKINF_BEGAN_VOLVAGIA_BATTLE)) {
                     Audio_PlaySoundGeneral(NA_SE_EN_DODO_K_ROLL - SFX_FLAG, &this->actor.projectedPos, 4, &D_801333E0,
                                            &D_801333E0, &D_801333E8);
                 }
@@ -497,9 +498,9 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
                 if (this->timers[3] == 160) {
                     Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_FIRE_BOSS);
                 }
-                if ((this->timers[3] == 130) && !(gSaveContext.eventChkInf[7] & 8)) {
+                if ((this->timers[3] == 130) && !Flags_GetEventChkInf(EVENTCHKINF_BEGAN_VOLVAGIA_BATTLE)) {
                     TitleCard_InitBossName(play, &play->actorCtx.titleCtx,
-                                           SEGMENTED_TO_VIRTUAL(gVolvagiaBossTitleCardTex), 160, 180, 128, 40, true);
+                                           SEGMENTED_TO_VIRTUAL(gVolvagiaBossTitleCardENGTex), 160, 180, 128, 40, true);
                 }
                 if (this->timers[3] <= 100) {
                     this->camData.eyeVel.x = this->camData.eyeVel.y = this->camData.eyeVel.z = 2.0f;
@@ -548,7 +549,7 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
                     func_8002DF54(play, &this->actor, 7);
                     this->actionFunc = BossFd_Wait;
                     this->handoffSignal = FD2_SIGNAL_GROUND;
-                    gSaveContext.eventChkInf[7] |= 8;
+                    Flags_SetEventChkInf(EVENTCHKINF_BEGAN_VOLVAGIA_BATTLE);
                 }
                 break;
         }
@@ -694,7 +695,7 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
             }
             break;
         case BOSSFD_FLY_CHASE:
-            this->actor.flags |= ACTOR_FLAG_24;
+            this->actor.flags |= ACTOR_FLAG_PLAY_HIT_SFX;
             temp_y = Math_SinS(this->work[BFD_MOVE_TIMER] * 2396.0f) * 30.0f + this->fwork[BFD_TARGET_Y_OFFSET];
             this->targetPosition.x = player->actor.world.pos.x;
             this->targetPosition.y = player->actor.world.pos.y + temp_y + 30.0f;
@@ -912,9 +913,9 @@ void BossFd_Fly(BossFd* this, PlayState* play) {
                 this->actionFunc = BossFd_Wait;
                 this->actor.world.pos.y -= 1000.0f;
             }
-            if (this->timers[0] == 7) {
+            if (this->timers[0] == 7 && !gSaveContext.isBossRush) {
                 Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x,
-                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
+                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
             }
             break;
         case BOSSFD_WAIT_INTRO:
@@ -1274,9 +1275,9 @@ void BossFd_Effects(BossFd* this, PlayState* play) {
     }
 
     if ((this->actor.world.pos.y < 90.0f) || (700.0f < this->actor.world.pos.y) || (this->actionFunc == BossFd_Wait)) {
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     } else {
-        this->actor.flags |= ACTOR_FLAG_0;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     }
 }
 
@@ -1527,7 +1528,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, PlayState* play) {
         if (effect->type == BFD_FX_EMBER) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!flag) {
-                func_80093D84(play->state.gfxCtx);
+                Gfx_SetupDL_25Xlu(play->state.gfxCtx);
                 gSPDisplayList(POLY_XLU_DISP++, gVolvagiaEmberMaterialDL);
                 flag++;
             }
@@ -1550,7 +1551,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, PlayState* play) {
         if (effect->type == BFD_FX_DEBRIS) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!flag) {
-                func_80093D18(play->state.gfxCtx);
+                Gfx_SetupDL_25Opa(play->state.gfxCtx);
                 gSPDisplayList(POLY_OPA_DISP++, gVolvagiaDebrisMaterialDL);
                 flag++;
             }
@@ -1573,7 +1574,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, PlayState* play) {
         if (effect->type == BFD_FX_DUST) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!flag) {
-                POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0);
+                POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0);
                 gSPDisplayList(POLY_XLU_DISP++, gVolvagiaDustMaterialDL);
                 gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 90, 30, 0, 255);
                 gDPSetEnvColor(POLY_XLU_DISP++, 90, 30, 0, 0);
@@ -1598,7 +1599,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, PlayState* play) {
         if (effect->type == BFD_FX_FIRE_BREATH) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!flag) {
-                POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0);
+                POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0);
                 gSPDisplayList(POLY_XLU_DISP++, gVolvagiaDustMaterialDL);
                 gDPSetEnvColor(POLY_XLU_DISP++, 255, 10, 0, 255);
                 flag++;
@@ -1623,7 +1624,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, PlayState* play) {
         if (effect->type == BFD_FX_SKULL_PIECE) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!flag) {
-                func_80093D84(play->state.gfxCtx);
+                Gfx_SetupDL_25Xlu(play->state.gfxCtx);
                 gSPDisplayList(POLY_XLU_DISP++, gVolvagiaSkullPieceMaterialDL);
                 flag++;
             }
@@ -1650,7 +1651,7 @@ void BossFd_Draw(Actor* thisx, PlayState* play) {
     osSyncPrintf("FD DRAW START\n");
     if (this->actionFunc != BossFd_Wait) {
         OPEN_DISPS(play->state.gfxCtx);
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         if (this->work[BFD_DAMAGE_FLASH_TIMER] & 2) {
             POLY_OPA_DISP = Gfx_SetFog(POLY_OPA_DISP, 255, 255, 255, 0, 900, 1099);
         }
@@ -1972,7 +1973,7 @@ void BossFd_DrawBody(PlayState* play, BossFd* this) {
         Vec3f spB0 = { 0.0f, 1700.0f, 7000.0f };
         Vec3f spA4 = { -1000.0f, 700.0f, 7000.0f };
 
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPDisplayList(POLY_XLU_DISP++, gVolvagiaManeMaterialDL);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, this->fwork[BFD_MANE_COLOR_CENTER], 0, 255);
         Matrix_Push();

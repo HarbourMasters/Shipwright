@@ -7,7 +7,7 @@
 #include "z_bg_jya_lift.h"
 #include "objects/object_jya_obj/object_jya_obj.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void BgJyaLift_Init(Actor* thisx, PlayState* play);
 void BgJyaLift_Destroy(Actor* thisx, PlayState* play);
@@ -99,7 +99,7 @@ void BgJyaLift_DelayMove(BgJyaLift* this, PlayState* play) {
             // The cutscene of the platform lowering will show the central room in an unloaded state if
             // Link is not standing on the platform as it lowers. Therefore check for the Sunlight arrows
             // enhancement and if it's enabled, check that Link is on the platform. Otherwise skip it.
-            if (!(CVar_GetS32("gSunlightArrows", 0) || Randomizer_GetSettingValue(RSK_SUNLIGHT_ARROWS)) || 
+            if (!(CVarGetInteger("gSunlightArrows", 0) || Randomizer_GetSettingValue(RSK_SUNLIGHT_ARROWS)) || 
                                                       (GET_PLAYER(play)->actor.world.pos.x >   -19.0f &&
                                                        GET_PLAYER(play)->actor.world.pos.x <   139.0f &&
                                                        GET_PLAYER(play)->actor.world.pos.z > -1172.0f &&

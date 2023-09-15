@@ -2,8 +2,9 @@
 #include "objects/object_dekubaba/object_dekubaba.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 
 void EnDekubaba_Init(Actor* thisx, PlayState* play);
 void EnDekubaba_Destroy(Actor* thisx, PlayState* play);
@@ -278,6 +279,8 @@ void EnDekubaba_Destroy(Actor* thisx, PlayState* play) {
     EnDekubaba* this = (EnDekubaba*)thisx;
 
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDekubaba_DisableHitboxes(EnDekubaba* this) {
@@ -404,8 +407,10 @@ void EnDekubaba_SetupPrunedSomersault(EnDekubaba* this) {
     this->actor.world.rot.y = this->actor.shape.rot.y + 0x8000;
     this->collider.base.acFlags &= ~AC_ON;
     this->actor.speedXZ = this->size * 3.0f;
-    this->actor.flags |= ACTOR_FLAG_4 | ACTOR_FLAG_5;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED;
     this->actionFunc = EnDekubaba_PrunedSomersault;
+
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnDekubaba_SetupShrinkDie(EnDekubaba* this) {
@@ -413,6 +418,8 @@ void EnDekubaba_SetupShrinkDie(EnDekubaba* this) {
                      0.0f, ANIMMODE_ONCE, -3.0f);
     this->collider.base.acFlags &= ~AC_ON;
     this->actionFunc = EnDekubaba_ShrinkDie;
+
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnDekubaba_SetupStunnedVertical(EnDekubaba* this) {
@@ -457,7 +464,7 @@ void EnDekubaba_SetupDeadStickDrop(EnDekubaba* this, PlayState* play) {
     this->actor.velocity.y = 0.0f;
     this->actor.shape.shadowScale = 3.0f;
     Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_MISC);
-    this->actor.flags &= ~ACTOR_FLAG_5;
+    this->actor.flags &= ~ACTOR_FLAG_DRAW_WHILE_CULLED;
     this->timer = 200;
     this->actionFunc = EnDekubaba_DeadStickDrop;
 }
@@ -956,7 +963,7 @@ void EnDekubaba_PrunedSomersault(EnDekubaba* this, PlayState* play) {
         if ((this->actor.scale.x > 0.005f) && ((this->actor.bgCheckFlags & 2) || (this->actor.bgCheckFlags & 8))) {
             this->actor.scale.x = this->actor.scale.y = this->actor.scale.z = 0.0f;
             this->actor.speedXZ = 0.0f;
-            this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_2);
+            this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE);
             EffectSsHahen_SpawnBurst(play, &this->actor.world.pos, this->size * 3.0f, 0, this->size * 12.0f,
                                      this->size * 5.0f, 15, HAHEN_OBJECT_DEFAULT, 10, NULL);
         }
@@ -1132,7 +1139,7 @@ void EnDekubaba_Update(Actor* thisx, PlayState* play) {
     }
     if (this->actionFunc == EnDekubaba_Lunge) {
         CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
-        this->actor.flags |= ACTOR_FLAG_24;
+        this->actor.flags |= ACTOR_FLAG_PLAY_HIT_SFX;
     }
 
     if (this->collider.base.acFlags & AC_ON) {
@@ -1251,7 +1258,7 @@ void EnDekubaba_DrawBaseShadow(EnDekubaba* this, PlayState* play) {
     f32 horizontalScale;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80094044(play->state.gfxCtx);
+    Gfx_SetupDL_44Xlu(play->state.gfxCtx);
 
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, 255);
 
@@ -1279,7 +1286,7 @@ void EnDekubaba_Draw(Actor* thisx, PlayState* play) {
     f32 scale;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if (this->actionFunc != EnDekubaba_DeadStickDrop) {
         SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL,

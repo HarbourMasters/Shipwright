@@ -10,8 +10,9 @@
 #include "objects/object_mizu_objects/object_mizu_objects.h"
 #include "objects/object_haka_door/object_haka_door.h"
 #include "objects/object_door_killer/object_door_killer.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 typedef enum {
     /* 0 */ DOOR_KILLER_DOOR,
@@ -114,14 +115,14 @@ void DoorKiller_Init(Actor* thisx, PlayState* play2) {
 
     // For SoH where all objects are loaded, hardcode the index to match the current map.
     switch (play->sceneNum) {
-        case SCENE_HIDAN:
+        case SCENE_FIRE_TEMPLE:
             this->textureEntryIndex = 0;
             break;
-        case SCENE_MIZUSIN:
+        case SCENE_WATER_TEMPLE:
             this->textureEntryIndex = 1;
             break;
-        case SCENE_HAKADAN:
-        case SCENE_HAKADANCH:
+        case SCENE_SHADOW_TEMPLE:
+        case SCENE_BOTTOM_OF_THE_WELL:
             this->textureEntryIndex = 2;
             break;
         default:
@@ -203,22 +204,24 @@ void DoorKiller_Destroy(Actor* thisx, PlayState* play) {
     if ((thisx->params & 0xFF) == DOOR_KILLER_DOOR) {
         Collider_DestroyCylinder(play, &this->colliderCylinder);
         Collider_DestroyJntSph(play, &this->colliderJntSph);
+
+        ResourceMgr_UnregisterSkeleton(&this->skelAnime);
     }
 }
 
 void DoorKiller_SpawnRubble(Actor* thisx, PlayState* play) {
     Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_KILLER, thisx->world.pos.x, thisx->world.pos.y + 9.0f,
                 thisx->world.pos.z, thisx->shape.rot.x, thisx->shape.rot.y, thisx->shape.rot.z,
-                DOOR_KILLER_RUBBLE_PIECE_1);
+                DOOR_KILLER_RUBBLE_PIECE_1, true);
     Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_KILLER, thisx->world.pos.x + 7.88f,
                 thisx->world.pos.y + 39.8f, thisx->world.pos.z, thisx->shape.rot.x, thisx->shape.rot.y,
-                thisx->shape.rot.z, DOOR_KILLER_RUBBLE_PIECE_2);
+                thisx->shape.rot.z, DOOR_KILLER_RUBBLE_PIECE_2, true);
     Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_KILLER, thisx->world.pos.x - 15.86f,
                 thisx->world.pos.y + 61.98f, thisx->world.pos.z, thisx->shape.rot.x, thisx->shape.rot.y,
-                thisx->shape.rot.z, DOOR_KILLER_RUBBLE_PIECE_3);
+                thisx->shape.rot.z, DOOR_KILLER_RUBBLE_PIECE_3, true);
     Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_KILLER, thisx->world.pos.x + 3.72f,
                 thisx->world.pos.y + 85.1f, thisx->world.pos.z, thisx->shape.rot.x, thisx->shape.rot.y,
-                thisx->shape.rot.z, DOOR_KILLER_RUBBLE_PIECE_4);
+                thisx->shape.rot.z, DOOR_KILLER_RUBBLE_PIECE_4, true);
 }
 
 /**
@@ -268,6 +271,7 @@ void DoorKiller_Die(DoorKiller* this, PlayState* play) {
         Flags_SetSwitch(play, switchFlag);
     }
     Actor_Kill(&this->actor);
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 /**
@@ -526,7 +530,7 @@ void DoorKiller_SetTexture(Actor* thisx, PlayState* play) {
 void DoorKiller_DrawDoor(Actor* thisx, PlayState* play) {
     DoorKiller* this = (DoorKiller*)thisx;
 
-    func_800943C8(play->state.gfxCtx);
+    Gfx_SetupDL_37Opa(play->state.gfxCtx);
     DoorKiller_SetTexture(&this->actor, play);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           NULL, NULL, NULL);

@@ -8,7 +8,7 @@
 #include "objects/object_bxa/object_bxa.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void EnBx_Init(Actor* thisx, PlayState* play);
 void EnBx_Destroy(Actor* thisx, PlayState* play);
@@ -210,7 +210,7 @@ void EnBx_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x0C, mtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_809D2560[this->actor.params & 0x7F]));

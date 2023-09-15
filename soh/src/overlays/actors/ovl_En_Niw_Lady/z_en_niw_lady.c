@@ -5,7 +5,7 @@
 #include "vt.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnNiwLady_Init(Actor* thisx, PlayState* play);
 void EnNiwLady_Destroy(Actor* thisx, PlayState* play);
@@ -78,7 +78,7 @@ void EnNiwLady_Init(Actor* thisx, PlayState* play) {
         return;
     }
     this->unk_278 = 0;
-    if (play->sceneNum == SCENE_LABO) {
+    if (play->sceneNum == SCENE_IMPAS_HOUSE) {
         this->unk_278 = 1;
     }
     if ((this->unk_278 != 0) && IS_DAY) {
@@ -96,6 +96,8 @@ void EnNiwLady_Destroy(Actor* thisx, PlayState* play) {
     EnNiwLady* this = (EnNiwLady*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnNiwLady_ChoseAnimation(EnNiwLady* this, PlayState* play, s32 arg2) {
@@ -170,7 +172,7 @@ void func_80AB9F24(EnNiwLady* this, PlayState* play) {
         this->actor.draw = EnNiwLady_Draw;
         switch (this->unk_278) {
             case 0:
-                if (!(gSaveContext.itemGetInf[0] & 0x1000) && !LINK_IS_ADULT) {
+                if (!Flags_GetItemGetInf(ITEMGETINF_0C) && !LINK_IS_ADULT) {
                     frames = Animation_GetLastFrame(&gObjOsAnim_A630);
                     Animation_Change(&this->skelAnime, &gObjOsAnim_A630, 1.0f, 0.0f, (s16)frames, ANIMMODE_LOOP, 0.0f);
                 } else {
@@ -303,7 +305,7 @@ void func_80ABA654(EnNiwLady* this, PlayState* play) {
         osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ 爆弾   ☆☆☆☆☆ %d\n" VT_RST, this->unk_272);
         osSyncPrintf("\n\n");
         this->unk_26E = 0xB;
-        if (!(gSaveContext.itemGetInf[0] & 0x1000)) {
+        if (!Flags_GetItemGetInf(ITEMGETINF_0C)) {
             this->actor.parent = NULL;
 
             if (!gSaveContext.n64ddFlag) {
@@ -334,7 +336,7 @@ void func_80ABA778(EnNiwLady* this, PlayState* play) {
     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ アダルトメッセージチェック ☆☆☆☆☆ \n" VT_RST);
     this->unk_262 = TEXT_STATE_DONE;
     this->unk_273 = 0;
-    if (!(gSaveContext.itemGetInf[2] & 0x1000)) {
+    if (!Flags_GetItemGetInf(ITEMGETINF_2C)) {
         if (this->unk_274 != 0) {
             this->unk_27A = 1;
         } else {
@@ -344,9 +346,9 @@ void func_80ABA778(EnNiwLady* this, PlayState* play) {
         this->unk_262 = TEXT_STATE_CHOICE;
     } else {
         this->unk_27A = 2;
-        if (!(gSaveContext.itemGetInf[2] & 0x4000)) {
+        if (!Flags_GetItemGetInf(ITEMGETINF_2E)) {
             this->unk_27A = 3;
-            if (gSaveContext.eventChkInf[6] & 0x400) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_KAKARIKO)) {
                 this->unk_27A = 9;
                 if (this->unk_277 != 0) {
                     this->unk_27A = 10;
@@ -370,7 +372,7 @@ void func_80ABA878(EnNiwLady* this, PlayState* play) {
     }
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         playerExchangeItemId = func_8002F368(play);
-        if ((playerExchangeItemId == 6) && (gSaveContext.eventChkInf[6] & 0x400)) {
+        if ((playerExchangeItemId == 6) && (Flags_GetEventChkInf(EVENTCHKINF_TALON_WOKEN_IN_KAKARIKO))) {
             func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
             player->actor.textId = sTradeItemTextIds[5];
             this->unk_26E = this->unk_27A + 21;
@@ -399,9 +401,9 @@ void func_80ABA9B8(EnNiwLady* this, PlayState* play) {
                 if (!gSaveContext.n64ddFlag) {
                     func_8002F434(&this->actor, play, GI_POCKET_EGG, 200.0f, 100.0f);
                 } else {
-                    // TODO: get-item-rework Adult trade sequence
                     this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
-                    gSaveContext.itemGetInf[2] |= 0x1000;
+                    GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 200.0f, 100.0f);
+                    Flags_SetItemGetInf(ITEMGETINF_2C);
                 }
 
                 this->actionFunc = func_80ABAC00;
@@ -434,10 +436,10 @@ void func_80ABAB08(EnNiwLady* this, PlayState* play) {
                 if (!gSaveContext.n64ddFlag) {
                     func_8002F434(&this->actor, play, GI_COJIRO, 200.0f, 100.0f);
                 } else {
-                    // TODO: get-item-rework Adult trade sequence
                     this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_TRADE_POCKET_CUCCO, GI_COJIRO);
                     Randomizer_ConsumeAdultTradeItem(play, ITEM_POCKET_CUCCO);
-                    gSaveContext.itemGetInf[2] |= 0x4000;
+                    GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 200.0f, 100.0f);
+                    Flags_SetItemGetInf(ITEMGETINF_2E);
                 }
                 this->actionFunc = func_80ABAC00;
                 break;
@@ -460,21 +462,17 @@ void func_80ABAC00(EnNiwLady* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         this->actionFunc = func_80ABAC84;
     } else {
+         if (gSaveContext.n64ddFlag) {
+            getItemId = this->getItemEntry.getItemId;
+            GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 200.0f, 100.0f);
+            return;
+        }
+
         getItemId = this->getItemId;
         if (LINK_IS_ADULT) {
-            if (!gSaveContext.n64ddFlag) {
-                getItemId = !(gSaveContext.itemGetInf[2] & 0x1000) ? GI_POCKET_EGG : GI_COJIRO;
-            } else {
-                // TODO: get-item-rework Adult trade sequence
-                getItemId = this->getItemEntry.getItemId;
-                GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 200.0f, 100.0f);
-                // Skip setting item flags because that was done earlier
-                this->actionFunc = func_80ABA778;
-            }
+            getItemId = !Flags_GetItemGetInf(ITEMGETINF_2C) ? GI_POCKET_EGG : GI_COJIRO;
         }
-        if (this->getItemEntry.getItemId == GI_NONE) {
-            func_8002F434(&this->actor, play, getItemId, 200.0f, 100.0f);
-        }
+        func_8002F434(&this->actor, play, getItemId, 200.0f, 100.0f);
     }
 }
 
@@ -484,14 +482,17 @@ void func_80ABAC84(EnNiwLady* this, PlayState* play) {
     }
     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
     if (LINK_IS_ADULT) {
-        if (!(gSaveContext.itemGetInf[2] & 0x1000)) {
-            gSaveContext.itemGetInf[2] |= 0x1000;
-        } else {
-            gSaveContext.itemGetInf[2] |= 0x4000;
+        // Flags for randomizer gives are set in the original message prompt choice handling
+        if (!gSaveContext.n64ddFlag) {
+            if (!Flags_GetItemGetInf(ITEMGETINF_2C)) {
+                Flags_SetItemGetInf(ITEMGETINF_2C);
+            } else {
+                Flags_SetItemGetInf(ITEMGETINF_2E);
+            }
         }
         this->actionFunc = func_80ABA778;
     } else {
-        gSaveContext.itemGetInf[0] |= 0x1000;
+        Flags_SetItemGetInf(ITEMGETINF_0C);
         this->unk_262 = TEXT_STATE_DONE;
         this->actionFunc = func_80ABA244;
     }
@@ -527,13 +528,13 @@ void EnNiwLady_Update(Actor* thisx, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     Actor_SetFocus(thisx, 60.0f);
-    this->unk_288.unk_18 = player->actor.world.pos;
+    this->interactInfo.trackPos = player->actor.world.pos;
     if (!LINK_IS_ADULT) {
-        this->unk_288.unk_18.y = player->actor.world.pos.y - 10.0f;
+        this->interactInfo.trackPos.y = player->actor.world.pos.y - 10.0f;
     }
-    func_80034A14(thisx, &this->unk_288, 2, 4);
-    this->unk_254 = this->unk_288.unk_08;
-    this->unk_25A = this->unk_288.unk_0E;
+    Npc_TrackPoint(thisx, &this->interactInfo, 2, NPC_TRACKING_FULL_BODY);
+    this->unk_254 = this->interactInfo.headRot;
+    this->unk_25A = this->interactInfo.torsoRot;
     if (this->unk_276 == 0) {
         Math_SmoothStepToS(&this->unk_254.y, 0, 5, 3000, 0);
     }
@@ -607,7 +608,7 @@ void EnNiwLady_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     if (this->unk_27E != 0) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->faceState]));
         gSPSegment(POLY_OPA_DISP++, 0x0C, func_80ABB0A0(play->state.gfxCtx));

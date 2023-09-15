@@ -1,5 +1,6 @@
 #include "global.h"
 #include "overlays/actors/ovl_En_fHG/z_en_fhg.h"
+#include <assert.h>
 
 /**
  * Initialises the Vtx buffers used for limb at index `limbIndex`
@@ -38,7 +39,7 @@ void Skin_InitAnimatedLimb(PlayState* play, Skin* skin, s32 limbIndex) {
  */
 void Skin_Init(PlayState* play, Skin* skin, SkeletonHeader* skeletonHeader, AnimationHeader* animationHeader) {
     if (ResourceMgr_OTRSigCheck(skeletonHeader))
-        skeletonHeader = ResourceMgr_LoadSkeletonByName(skeletonHeader);
+        skeletonHeader = ResourceMgr_LoadSkeletonByName(skeletonHeader, NULL);
 
     s32 limbCount;
     s32 i;
@@ -53,7 +54,7 @@ void Skin_Init(PlayState* play, Skin* skin, SkeletonHeader* skeletonHeader, Anim
 
     skin->vtxTable = ZELDA_ARENA_MALLOC_DEBUG(limbCount * sizeof(SkinLimbVtx));
 
-    ASSERT(skin->vtxTable != NULL);
+    assert(skin->vtxTable != NULL);
 
     for (i = 0; i < limbCount; i++) {
         SkinLimbVtx* vtxEntry = &skin->vtxTable[i];
@@ -71,11 +72,11 @@ void Skin_Init(PlayState* play, Skin* skin, SkeletonHeader* skeletonHeader, Anim
 
             vtxEntry->buf[0] =
                 ZELDA_ARENA_MALLOC_DEBUG(animatedLimbData->totalVtxCount * sizeof(Vtx));
-            ASSERT(vtxEntry->buf[0] != NULL);
+            assert(vtxEntry->buf[0] != NULL);
 
             vtxEntry->buf[1] =
                 ZELDA_ARENA_MALLOC_DEBUG(animatedLimbData->totalVtxCount * sizeof(Vtx));
-            ASSERT(vtxEntry->buf[1] != NULL);
+            assert(vtxEntry->buf[1] != NULL);
 
             Skin_InitAnimatedLimb(play, skin, i);
         }

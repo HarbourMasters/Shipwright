@@ -13,7 +13,7 @@
 #include "objects/object_hintnuts/object_hintnuts.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnDntNomal_Init(Actor* thisx, PlayState* play);
 void EnDntNomal_Destroy(Actor* thisx, PlayState* play);
@@ -123,7 +123,7 @@ void EnDntNomal_Init(Actor* thisx, PlayState* play) {
     if (this->type < ENDNTNOMAL_TARGET) {
         this->type = ENDNTNOMAL_TARGET;
     }
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actor.colChkInfo.mass = 0xFF;
     this->objId = -1;
     if (this->type == ENDNTNOMAL_TARGET) {
@@ -167,6 +167,8 @@ void EnDntNomal_Destroy(Actor* thisx, PlayState* play) {
     } else {
         Collider_DestroyCylinder(play, &this->bodyCyl);
     }
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDntNomal_WaitForObject(EnDntNomal* this, PlayState* play) {
@@ -247,7 +249,7 @@ void EnDntNomal_TargetWait(EnDntNomal* this, PlayState* play) {
             func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
             // "Big hit"
             osSyncPrintf(VT_FGCOL(CYAN) "☆☆☆☆☆ 大当り ☆☆☆☆☆ %d\n" VT_RST, this->hitCounter);
-            if (!LINK_IS_ADULT && !(gSaveContext.itemGetInf[1] & 0x2000)) {
+            if (!LINK_IS_ADULT && !Flags_GetItemGetInf(ITEMGETINF_1D)) {
                 this->hitCounter++;
                 if (this->hitCounter >= 3) {
                     if(gSaveContext.n64ddFlag) {
@@ -622,7 +624,7 @@ void EnDntNomal_StageHide(EnDntNomal* this, PlayState* play) {
             case DNT_ACTION_HIGH_RUPEES:
                 rupee =
                     (EnExRuppy*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EX_RUPPY, this->actor.world.pos.x,
-                                            this->actor.world.pos.y + 20.0f, this->actor.world.pos.z, 0, 0, 0, 3);
+                                            this->actor.world.pos.y + 20.0f, this->actor.world.pos.z, 0, 0, 0, 3, true);
                 if (rupee != NULL) {
                     rupeeColor = this->action - DNT_ACTION_LOW_RUPEES;
                     rupee->colorIdx = rupeeColor;
@@ -702,7 +704,7 @@ void EnDntNomal_StageAttack(EnDntNomal* this, PlayState* play) {
         spawnZ = this->mouthPos.z + spawnOffset.z;
 
         nut = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_NUTSBALL, spawnX, spawnY, spawnZ,
-                          this->actor.shape.rot.x, this->actor.shape.rot.y, this->actor.shape.rot.z, 4);
+                          this->actor.shape.rot.x, this->actor.shape.rot.y, this->actor.shape.rot.z, 4, true);
         if (nut != NULL) {
             nut->velocity.y = spawnOffset.y * 0.5f;
         }
@@ -858,7 +860,7 @@ void EnDntNomal_DrawStageScrub(Actor* thisx, PlayState* play) {
     s32 pad;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(blinkTex[this->eyeState]));
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnDntNomal_OverrideLimbDraw,
                       EnDntNomal_PostLimbDraw, this);
@@ -880,7 +882,7 @@ void EnDntNomal_DrawTargetScrub(Actor* thisx, PlayState* play) {
     EnDntNomal* this = (EnDntNomal*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, EnDntNomal_PostLimbDraw,
                       this);
     Matrix_Translate(this->flowerPos.x, this->flowerPos.y, this->flowerPos.z, MTXMODE_NEW);

@@ -7,8 +7,9 @@
 #include "z_en_firefly.h"
 #include "objects/object_firefly/object_firefly.h"
 #include "overlays/actors/ovl_Obj_Syokudai/z_obj_syokudai.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_12 | ACTOR_FLAG_14)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_ARROW_DRAGGABLE)
 
 void EnFirefly_Init(Actor* thisx, PlayState* play);
 void EnFirefly_Destroy(Actor* thisx, PlayState* play);
@@ -149,7 +150,7 @@ void EnFirefly_Init(Actor* thisx, PlayState* play) {
     CollisionCheck_SetInfo(&this->actor.colChkInfo, &sDamageTable, &sColChkInfoInit);
 
     if ((this->actor.params & 0x8000) != 0) {
-        this->actor.flags |= ACTOR_FLAG_7;
+        this->actor.flags |= ACTOR_FLAG_LENS;
         this->actor.draw = EnFirefly_DrawInvisible;
         this->actor.params &= 0x7FFF;
     }
@@ -198,6 +199,8 @@ void EnFirefly_Destroy(Actor* thisx, PlayState* play) {
     EnFirefly* this = (EnFirefly*)thisx;
 
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnFirefly_SetupFlyIdle(EnFirefly* this) {
@@ -214,7 +217,7 @@ void EnFirefly_SetupFall(EnFirefly* this) {
     this->actor.velocity.y = 0.0f;
     Animation_Change(&this->skelAnime, &gKeeseFlyAnim, 0.5f, 0.0f, 0.0f, ANIMMODE_LOOP_INTERP, -3.0f);
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_FFLY_DEAD);
-    this->actor.flags |= ACTOR_FLAG_4;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
     Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 40);
     this->actionFunc = EnFirefly_Fall;
 }
@@ -223,6 +226,8 @@ void EnFirefly_SetupDie(EnFirefly* this) {
     this->timer = 15;
     this->actor.speedXZ = 0.0f;
     this->actionFunc = EnFirefly_Die;
+
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnFirefly_SetupRebound(EnFirefly* this) {
@@ -261,7 +266,7 @@ void EnFirefly_SetupFrozenFall(EnFirefly* this, PlayState* play) {
     s32 i;
     Vec3f iceParticlePos;
 
-    this->actor.flags |= ACTOR_FLAG_4;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
     this->auraType = KEESE_AURA_NONE;
     this->actor.speedXZ = 0.0f;
     Actor_SetColorFilter(&this->actor, 0, 0xFF, 0, 0xFF);
@@ -423,7 +428,7 @@ void EnFirefly_Fall(EnFirefly* this, PlayState* play) {
     this->actor.colorFilterTimer = 40;
     SkelAnime_Update(&this->skelAnime);
     Math_StepToF(&this->actor.speedXZ, 0.0f, 0.5f);
-    if (this->actor.flags & ACTOR_FLAG_15) {
+    if (this->actor.flags & ACTOR_FLAG_DRAGGED_BY_ARROW) {
         this->actor.colorFilterTimer = 40;
     } else {
         Math_ScaledStepToS(&this->actor.shape.rot.x, 0x6800, 0x200);
@@ -626,7 +631,7 @@ void EnFirefly_UpdateDamage(EnFirefly* this, PlayState* play) {
         if ((this->actor.colChkInfo.damageEffect != 0) || (this->actor.colChkInfo.damage != 0)) {
             if (Actor_ApplyDamage(&this->actor) == 0) {
                 Enemy_StartFinishingBlow(play, &this->actor);
-                this->actor.flags &= ~ACTOR_FLAG_0;
+                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
             }
 
             damageEffect = this->actor.colChkInfo.damageEffect;
@@ -682,7 +687,7 @@ void EnFirefly_Update(Actor* thisx, PlayState* play2) {
 
     this->actionFunc(this, play);
 
-    if (!(this->actor.flags & ACTOR_FLAG_15)) {
+    if (!(this->actor.flags & ACTOR_FLAG_DRAGGED_BY_ARROW)) {
         if ((this->actor.colChkInfo.health == 0) || (this->actionFunc == EnFirefly_Stunned)) {
             Actor_MoveForward(&this->actor);
         } else {
@@ -735,11 +740,10 @@ void EnFirefly_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* 
     static Color_RGBA8 fireAuraEnvColor = { 255, 50, 0, 0 };
     static Color_RGBA8 iceAuraPrimColor = { 100, 200, 255, 255 };
     static Color_RGBA8 iceAuraEnvColor = { 0, 0, 255, 0 };
-    static Color_RGB8 fireAuraPrimColor_ori = { 255, 255, 100 };
-    static Color_RGB8 fireAuraEnvColor_ori = { 255, 50, 0 };
-    static Color_RGB8 iceAuraPrimColor_ori = { 100, 200, 255 };
-    static Color_RGB8 iceAuraEnvColor_ori = { 0, 0, 255 };
-
+    Color_RGBA8 customFireAuraPrimColor = CVarGetColor("gCosmetics.NPC_FireKeesePrimary.Value", fireAuraPrimColor);
+    Color_RGBA8 customFireAuraEnvColor = CVarGetColor("gCosmetics.NPC_FireKeeseSecondary.Value", fireAuraEnvColor);
+    Color_RGBA8 customIceAuraPrimColor = CVarGetColor("gCosmetics.NPC_IceKeesePrimary.Value", iceAuraPrimColor);
+    Color_RGBA8 customIceAuraEnvColor = CVarGetColor("gCosmetics.NPC_IceKeeseSecondary.Value", iceAuraEnvColor);
     static Vec3f effVelocity = { 0.0f, 0.5f, 0.0f };
     static Vec3f effAccel = { 0.0f, 0.5f, 0.0f };
     static Vec3f limbSrc = { 0.0f, 0.0f, 0.0f };
@@ -751,26 +755,7 @@ void EnFirefly_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* 
     s16 effScaleStep;
     s16 effLife;
     EnFirefly* this = (EnFirefly*)thisx;
-    if (CVar_GetS32("gUseKeeseCol", 0)) {
-        Color_RGBA8 fireAuraPrimColor_custom = { CVar_GetRGB("gKeese1_Ef_Prim", fireAuraPrimColor_ori).r,CVar_GetRGB("gKeese1_Ef_Prim", fireAuraPrimColor_ori).g,CVar_GetRGB("gKeese1_Ef_Prim", fireAuraPrimColor_ori).b, 255 };
-        Color_RGBA8 fireAuraEnvColor_custom = { CVar_GetRGB("gKeese1_Ef_Env", fireAuraEnvColor_ori).r,CVar_GetRGB("gKeese1_Ef_Env", fireAuraEnvColor_ori).g,CVar_GetRGB("gKeese1_Ef_Env", fireAuraEnvColor_ori).b, 0 };
-        Color_RGBA8 iceAuraPrimColor_custom = { CVar_GetRGB("gKeese2_Ef_Prim", iceAuraPrimColor_ori).r,CVar_GetRGB("gKeese2_Ef_Prim", iceAuraPrimColor_ori).g,CVar_GetRGB("gKeese2_Ef_Prim", iceAuraPrimColor_ori).b, 255 };
-        Color_RGBA8 iceAuraEnvColor_custom = { CVar_GetRGB("gKeese2_Ef_Env", iceAuraEnvColor_ori).r,CVar_GetRGB("gKeese2_Ef_Env", iceAuraEnvColor_ori).g,CVar_GetRGB("gKeese2_Ef_Env", iceAuraEnvColor_ori).b, 0 };
-        fireAuraPrimColor = fireAuraPrimColor_custom;
-        fireAuraEnvColor = fireAuraEnvColor_custom;
-        iceAuraPrimColor = iceAuraPrimColor_custom;
-        iceAuraEnvColor = iceAuraEnvColor_custom;
-    } else {
-        //Original colors are back there
-        Color_RGBA8 fireAuraPrimColor_custom = { fireAuraPrimColor_ori.r, fireAuraPrimColor_ori.g, fireAuraPrimColor_ori.b, 255 };
-        Color_RGBA8 fireAuraEnvColor_custom = { fireAuraEnvColor_ori.r, fireAuraEnvColor_ori.g, fireAuraEnvColor_ori.b, 0 };
-        Color_RGBA8 iceAuraPrimColor_custom = { iceAuraPrimColor_ori.r, iceAuraPrimColor_ori.g, iceAuraPrimColor_ori.b, 255 };
-        Color_RGBA8 iceAuraEnvColor_custom = { iceAuraEnvColor_ori.r, iceAuraEnvColor_ori.g, iceAuraEnvColor_ori.b, 0 };
-        fireAuraPrimColor = fireAuraPrimColor_custom;
-        fireAuraEnvColor = fireAuraEnvColor_custom;
-        iceAuraPrimColor = iceAuraPrimColor_custom;
-        iceAuraEnvColor = iceAuraEnvColor_custom;
-    }
+
     if (!this->onFire && (limbIndex == 27)) {
         gSPDisplayList((*gfx)++, gKeeseEyesDL);
     } else {
@@ -798,11 +783,27 @@ void EnFirefly_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* 
                 }
 
                 if (this->auraType == KEESE_AURA_FIRE) {
-                    effPrimColor = &fireAuraPrimColor;
-                    effEnvColor = &fireAuraEnvColor;
+                    if (CVarGetInteger("gCosmetics.NPC_FireKeesePrimary.Changed", 0)) {
+                        effPrimColor = &customFireAuraPrimColor;
+                    } else {
+                        effPrimColor = &fireAuraPrimColor;
+                    }
+                    if (CVarGetInteger("gCosmetics.NPC_FireKeeseSecondary.Changed", 0)) {
+                        effEnvColor = &customFireAuraEnvColor;
+                    } else {
+                        effEnvColor = &fireAuraEnvColor;
+                    }
                 } else {
-                    effPrimColor = &iceAuraPrimColor;
-                    effEnvColor = &iceAuraEnvColor;
+                    if (CVarGetInteger("gCosmetics.NPC_IceKeesePrimary.Changed", 0)) {
+                        effPrimColor = &customIceAuraPrimColor;
+                    } else {
+                        effPrimColor = &iceAuraPrimColor;
+                    }
+                    if (CVarGetInteger("gCosmetics.NPC_IceKeeseSecondary.Changed", 0)) {
+                        effEnvColor = &customIceAuraEnvColor;
+                    } else {
+                        effEnvColor = &iceAuraEnvColor;
+                    }
                 }
 
                 func_8002843C(play, &effPos, &effVelocity, &effAccel, effPrimColor, effEnvColor, 250, effScaleStep,
@@ -828,7 +829,7 @@ void EnFirefly_Draw(Actor* thisx, PlayState* play) {
     EnFirefly* this = (EnFirefly*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if (this->onFire) {
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
@@ -845,7 +846,7 @@ void EnFirefly_DrawInvisible(Actor* thisx, PlayState* play) {
     EnFirefly* this = (EnFirefly*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     if (this->onFire) {
         gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, 0);

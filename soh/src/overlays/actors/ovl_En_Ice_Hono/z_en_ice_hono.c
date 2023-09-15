@@ -106,7 +106,7 @@ void EnIceHono_InitCapturableFlame(Actor* thisx, PlayState* play) {
 
     Actor_ProcessInitChain(&this->actor, sInitChainCapturableFlame);
     Actor_SetScale(&this->actor, 0.0074f);
-    this->actor.flags |= ACTOR_FLAG_0;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     Actor_SetFocus(&this->actor, 10.0f);
 
     Collider_InitCylinder(play, &this->collider);
@@ -243,7 +243,7 @@ void EnIceHono_DropFlame(EnIceHono* this, PlayState* play) {
         for (i = 0; i < 8; i++) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ICE_HONO, this->actor.world.pos.x,
                         this->actor.world.pos.y, this->actor.world.pos.z, 0,
-                        ((s32)(Rand_ZeroOne() * 1000.0f) + i * 0x2000) - 0x1F4, 0, 1);
+                        ((s32)(Rand_ZeroOne() * 1000.0f) + i * 0x2000) - 0x1F4, 0, 1, true);
         }
         EnIceHono_SetupActionSpreadFlames(this);
     }
@@ -294,7 +294,7 @@ void EnIceHono_SpreadFlames(EnIceHono* this, PlayState* play) {
             s32 rot = i * 0x1999;
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ICE_HONO, this->actor.world.pos.x,
                         this->actor.world.pos.y, this->actor.world.pos.z, 0,
-                        ((s32)(Rand_ZeroOne() * 1000.0f) + rot) - 0x1F4, 0, 2);
+                        ((s32)(Rand_ZeroOne() * 1000.0f) + rot) - 0x1F4, 0, 2, true);
         }
     }
 
@@ -376,7 +376,7 @@ void EnIceHono_Draw(Actor* thisx, PlayState* play) {
     u32 pad;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0, (play->state.frames * -20) % 512,

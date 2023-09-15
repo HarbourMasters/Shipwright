@@ -7,7 +7,7 @@
 #include "z_bg_mori_rakkatenjo.h"
 #include "objects/object_mori_objects/object_mori_objects.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void BgMoriRakkatenjo_Init(Actor* thisx, PlayState* play);
 void BgMoriRakkatenjo_Destroy(Actor* thisx, PlayState* play);
@@ -223,7 +223,7 @@ void BgMoriRakkatenjo_Draw(Actor* thisx, PlayState* play) {
     BgMoriRakkatenjo* this = (BgMoriRakkatenjo*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, play->objectCtx.status[this->moriTexObjIndex].segment);
 

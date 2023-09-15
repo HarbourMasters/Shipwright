@@ -1,7 +1,7 @@
 #ifndef Z64CUTSCENE_H
 #define Z64CUTSCENE_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 
 typedef struct {
     /* 0x00 */ u16 entrance;       // entrance index upon which the cutscene should trigger

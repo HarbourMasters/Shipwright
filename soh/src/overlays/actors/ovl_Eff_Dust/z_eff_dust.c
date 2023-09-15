@@ -8,7 +8,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EffDust_Init(Actor* thisx, PlayState* play);
 void EffDust_Destroy(Actor* thisx, PlayState* play);
@@ -272,7 +272,7 @@ void EffDust_DrawFunc_8099E4F4(Actor* thisx, PlayState* play2) {
 
     OPEN_DISPS(gfxCtx);
 
-    func_80093D18(gfxCtx);
+    Gfx_SetupDL_25Opa(gfxCtx);
 
     gDPPipeSync(POLY_XLU_DISP++);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 128, 128, 128, 255);
@@ -322,7 +322,7 @@ void EffDust_DrawFunc_8099E784(Actor* thisx, PlayState* play2) {
 
     OPEN_DISPS(gfxCtx);
 
-    func_80093D18(gfxCtx);
+    Gfx_SetupDL_25Opa(gfxCtx);
 
     gDPPipeSync(POLY_XLU_DISP++);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);

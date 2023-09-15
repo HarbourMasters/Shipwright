@@ -1,0 +1,210 @@
+#ifndef TEXTURES_MAP_48X85_STATIC_H
+#define TEXTURES_MAP_48X85_STATIC_H 1
+
+#include "align_asset_macro.h"
+
+#define dgDekuTreePauseScreenMapFloor3LeftTex "__OTR__textures/map_48x85_static/gDekuTreePauseScreenMapFloor3LeftTex"
+static const ALIGN_ASSET(2) char gDekuTreePauseScreenMapFloor3LeftTex[] = dgDekuTreePauseScreenMapFloor3LeftTex;
+
+#define dgDekuTreePauseScreenMapFloor3RightTex "__OTR__textures/map_48x85_static/gDekuTreePauseScreenMapFloor3RightTex"
+static const ALIGN_ASSET(2) char gDekuTreePauseScreenMapFloor3RightTex[] = dgDekuTreePauseScreenMapFloor3RightTex;
+
+#define dgDekuTreePauseScreenMapFloor2LeftTex "__OTR__textures/map_48x85_static/gDekuTreePauseScreenMapFloor2LeftTex"
+static const ALIGN_ASSET(2) char gDekuTreePauseScreenMapFloor2LeftTex[] = dgDekuTreePauseScreenMapFloor2LeftTex;
+
+#define dgDekuTreePauseScreenMapFloor2RightTex "__OTR__textures/map_48x85_static/gDekuTreePauseScreenMapFloor2RightTex"
+static const ALIGN_ASSET(2) char gDekuTreePauseScreenMapFloor2RightTex[] = dgDekuTreePauseScreenMapFloor2RightTex;
+
+#define dgDekuTreePauseScreenMapFloor1LeftTex "__OTR__textures/map_48x85_static/gDekuTreePauseScreenMapFloor1LeftTex"
+static const ALIGN_ASSET(2) char gDekuTreePauseScreenMapFloor1LeftTex[] = dgDekuTreePauseScreenMapFloor1LeftTex;
+
+#define dgDekuTreePauseScreenMapFloor1RightTex "__OTR__textures/map_48x85_static/gDekuTreePauseScreenMapFloor1RightTex"
+static const ALIGN_ASSET(2) char gDekuTreePauseScreenMapFloor1RightTex[] = dgDekuTreePauseScreenMapFloor1RightTex;
+
+#define dgDekuTreePauseScreenMapBasement1LeftTex "__OTR__textures/map_48x85_static/gDekuTreePauseScreenMapBasement1LeftTex"
+static const ALIGN_ASSET(2) char gDekuTreePauseScreenMapBasement1LeftTex[] = dgDekuTreePauseScreenMapBasement1LeftTex;
+
+#define dgDekuTreePauseScreenMapBasement1RightTex "__OTR__textures/map_48x85_static/gDekuTreePauseScreenMapBasement1RightTex"
+static const ALIGN_ASSET(2) char gDekuTreePauseScreenMapBasement1RightTex[] = dgDekuTreePauseScreenMapBasement1RightTex;
+
+#define dgDekuTreePauseScreenMapBasement2LeftTex "__OTR__textures/map_48x85_static/gDekuTreePauseScreenMapBasement2LeftTex"
+static const ALIGN_ASSET(2) char gDekuTreePauseScreenMapBasement2LeftTex[] = dgDekuTreePauseScreenMapBasement2LeftTex;
+
+#define dgDekuTreePauseScreenMapBasement2RightTex "__OTR__textures/map_48x85_static/gDekuTreePauseScreenMapBasement2RightTex"
+static const ALIGN_ASSET(2) char gDekuTreePauseScreenMapBasement2RightTex[] = dgDekuTreePauseScreenMapBasement2RightTex;
+
+#define dgDodongosCavernPauseScreenMapFloor2LeftTex "__OTR__textures/map_48x85_static/gDodongosCavernPauseScreenMapFloor2LeftTex"
+static const ALIGN_ASSET(2) char gDodongosCavernPauseScreenMapFloor2LeftTex[] = dgDodongosCavernPauseScreenMapFloor2LeftTex;
+
+#define dgDodongosCavernPauseScreenMapFloor2RightTex "__OTR__textures/map_48x85_static/gDodongosCavernPauseScreenMapFloor2RightTex"
+static const ALIGN_ASSET(2) char gDodongosCavernPauseScreenMapFloor2RightTex[] = dgDodongosCavernPauseScreenMapFloor2RightTex;
+
+#define dgDodongosCavernPauseScreenMapFloor1LeftTex "__OTR__textures/map_48x85_static/gDodongosCavernPauseScreenMapFloor1LeftTex"
+static const ALIGN_ASSET(2) char gDodongosCavernPauseScreenMapFloor1LeftTex[] = dgDodongosCavernPauseScreenMapFloor1LeftTex;
+
+#define dgDodongosCavernPauseScreenMapFloor1RightTex "__OTR__textures/map_48x85_static/gDodongosCavernPauseScreenMapFloor1RightTex"
+static const ALIGN_ASSET(2) char gDodongosCavernPauseScreenMapFloor1RightTex[] = dgDodongosCavernPauseScreenMapFloor1RightTex;
+
+#define dgJabuPauseScreenMapFloor1LeftTex "__OTR__textures/map_48x85_static/gJabuPauseScreenMapFloor1LeftTex"
+static const ALIGN_ASSET(2) char gJabuPauseScreenMapFloor1LeftTex[] = dgJabuPauseScreenMapFloor1LeftTex;
+
+#define dgJabuPauseScreenMapFloor1RightTex "__OTR__textures/map_48x85_static/gJabuPauseScreenMapFloor1RightTex"
+static const ALIGN_ASSET(2) char gJabuPauseScreenMapFloor1RightTex[] = dgJabuPauseScreenMapFloor1RightTex;
+
+#define dgJabuPauseScreenMapBasement1LeftTex "__OTR__textures/map_48x85_static/gJabuPauseScreenMapBasement1LeftTex"
+static const ALIGN_ASSET(2) char gJabuPauseScreenMapBasement1LeftTex[] = dgJabuPauseScreenMapBasement1LeftTex;
+
+#define dgJabuPauseScreenMapBasement1RightTex "__OTR__textures/map_48x85_static/gJabuPauseScreenMapBasement1RightTex"
+static const ALIGN_ASSET(2) char gJabuPauseScreenMapBasement1RightTex[] = dgJabuPauseScreenMapBasement1RightTex;
+
+#define dgForestTemplePauseScreenMapFloor2LeftTex "__OTR__textures/map_48x85_static/gForestTemplePauseScreenMapFloor2LeftTex"
+static const ALIGN_ASSET(2) char gForestTemplePauseScreenMapFloor2LeftTex[] = dgForestTemplePauseScreenMapFloor2LeftTex;
+
+#define dgForestTemplePauseScreenMapFloor2RightTex "__OTR__textures/map_48x85_static/gForestTemplePauseScreenMapFloor2RightTex"
+static const ALIGN_ASSET(2) char gForestTemplePauseScreenMapFloor2RightTex[] = dgForestTemplePauseScreenMapFloor2RightTex;
+
+#define dgForestTemplePauseScreenMapFloor1LeftTex "__OTR__textures/map_48x85_static/gForestTemplePauseScreenMapFloor1LeftTex"
+static const ALIGN_ASSET(2) char gForestTemplePauseScreenMapFloor1LeftTex[] = dgForestTemplePauseScreenMapFloor1LeftTex;
+
+#define dgForestTemplePauseScreenMapFloor1RightTex "__OTR__textures/map_48x85_static/gForestTemplePauseScreenMapFloor1RightTex"
+static const ALIGN_ASSET(2) char gForestTemplePauseScreenMapFloor1RightTex[] = dgForestTemplePauseScreenMapFloor1RightTex;
+
+#define dgForestTemplePauseScreenMapBasement1LeftTex "__OTR__textures/map_48x85_static/gForestTemplePauseScreenMapBasement1LeftTex"
+static const ALIGN_ASSET(2) char gForestTemplePauseScreenMapBasement1LeftTex[] = dgForestTemplePauseScreenMapBasement1LeftTex;
+
+#define dgForestTemplePauseScreenMapBasement1RightTex "__OTR__textures/map_48x85_static/gForestTemplePauseScreenMapBasement1RightTex"
+static const ALIGN_ASSET(2) char gForestTemplePauseScreenMapBasement1RightTex[] = dgForestTemplePauseScreenMapBasement1RightTex;
+
+#define dgForestTemplePauseScreenMapBasement2LeftTex "__OTR__textures/map_48x85_static/gForestTemplePauseScreenMapBasement2LeftTex"
+static const ALIGN_ASSET(2) char gForestTemplePauseScreenMapBasement2LeftTex[] = dgForestTemplePauseScreenMapBasement2LeftTex;
+
+#define dgForestTemplePauseScreenMapBasement2RightTex "__OTR__textures/map_48x85_static/gForestTemplePauseScreenMapBasement2RightTex"
+static const ALIGN_ASSET(2) char gForestTemplePauseScreenMapBasement2RightTex[] = dgForestTemplePauseScreenMapBasement2RightTex;
+
+#define dgFireTemplePauseScreenMapFloor5LeftTex "__OTR__textures/map_48x85_static/gFireTemplePauseScreenMapFloor5LeftTex"
+static const ALIGN_ASSET(2) char gFireTemplePauseScreenMapFloor5LeftTex[] = dgFireTemplePauseScreenMapFloor5LeftTex;
+
+#define dgFireTemplePauseScreenMapFloor5RightTex "__OTR__textures/map_48x85_static/gFireTemplePauseScreenMapFloor5RightTex"
+static const ALIGN_ASSET(2) char gFireTemplePauseScreenMapFloor5RightTex[] = dgFireTemplePauseScreenMapFloor5RightTex;
+
+#define dgFireTemplePauseScreenMapFloor4LeftTex "__OTR__textures/map_48x85_static/gFireTemplePauseScreenMapFloor4LeftTex"
+static const ALIGN_ASSET(2) char gFireTemplePauseScreenMapFloor4LeftTex[] = dgFireTemplePauseScreenMapFloor4LeftTex;
+
+#define dgFireTemplePauseScreenMapFloor4RightTex "__OTR__textures/map_48x85_static/gFireTemplePauseScreenMapFloor4RightTex"
+static const ALIGN_ASSET(2) char gFireTemplePauseScreenMapFloor4RightTex[] = dgFireTemplePauseScreenMapFloor4RightTex;
+
+#define dgFireTemplePauseScreenMapFloor3LeftTex "__OTR__textures/map_48x85_static/gFireTemplePauseScreenMapFloor3LeftTex"
+static const ALIGN_ASSET(2) char gFireTemplePauseScreenMapFloor3LeftTex[] = dgFireTemplePauseScreenMapFloor3LeftTex;
+
+#define dgFireTemplePauseScreenMapFloor3RightTex "__OTR__textures/map_48x85_static/gFireTemplePauseScreenMapFloor3RightTex"
+static const ALIGN_ASSET(2) char gFireTemplePauseScreenMapFloor3RightTex[] = dgFireTemplePauseScreenMapFloor3RightTex;
+
+#define dgFireTemplePauseScreenMapFloor2LeftTex "__OTR__textures/map_48x85_static/gFireTemplePauseScreenMapFloor2LeftTex"
+static const ALIGN_ASSET(2) char gFireTemplePauseScreenMapFloor2LeftTex[] = dgFireTemplePauseScreenMapFloor2LeftTex;
+
+#define dgFireTemplePauseScreenMapFloor2RightTex "__OTR__textures/map_48x85_static/gFireTemplePauseScreenMapFloor2RightTex"
+static const ALIGN_ASSET(2) char gFireTemplePauseScreenMapFloor2RightTex[] = dgFireTemplePauseScreenMapFloor2RightTex;
+
+#define dgFireTemplePauseScreenMapFloor1LeftTex "__OTR__textures/map_48x85_static/gFireTemplePauseScreenMapFloor1LeftTex"
+static const ALIGN_ASSET(2) char gFireTemplePauseScreenMapFloor1LeftTex[] = dgFireTemplePauseScreenMapFloor1LeftTex;
+
+#define dgFireTemplePauseScreenMapFloor1RightTex "__OTR__textures/map_48x85_static/gFireTemplePauseScreenMapFloor1RightTex"
+static const ALIGN_ASSET(2) char gFireTemplePauseScreenMapFloor1RightTex[] = dgFireTemplePauseScreenMapFloor1RightTex;
+
+#define dgWaterTemplePauseScreenMapFloor3LeftTex "__OTR__textures/map_48x85_static/gWaterTemplePauseScreenMapFloor3LeftTex"
+static const ALIGN_ASSET(2) char gWaterTemplePauseScreenMapFloor3LeftTex[] = dgWaterTemplePauseScreenMapFloor3LeftTex;
+
+#define dgWaterTemplePauseScreenMapFloor3RightTex "__OTR__textures/map_48x85_static/gWaterTemplePauseScreenMapFloor3RightTex"
+static const ALIGN_ASSET(2) char gWaterTemplePauseScreenMapFloor3RightTex[] = dgWaterTemplePauseScreenMapFloor3RightTex;
+
+#define dgWaterTemplePauseScreenMapFloor2LeftTex "__OTR__textures/map_48x85_static/gWaterTemplePauseScreenMapFloor2LeftTex"
+static const ALIGN_ASSET(2) char gWaterTemplePauseScreenMapFloor2LeftTex[] = dgWaterTemplePauseScreenMapFloor2LeftTex;
+
+#define dgWaterTemplePauseScreenMapFloor2RightTex "__OTR__textures/map_48x85_static/gWaterTemplePauseScreenMapFloor2RightTex"
+static const ALIGN_ASSET(2) char gWaterTemplePauseScreenMapFloor2RightTex[] = dgWaterTemplePauseScreenMapFloor2RightTex;
+
+#define dgWaterTemplePauseScreenMapFloor1LeftTex "__OTR__textures/map_48x85_static/gWaterTemplePauseScreenMapFloor1LeftTex"
+static const ALIGN_ASSET(2) char gWaterTemplePauseScreenMapFloor1LeftTex[] = dgWaterTemplePauseScreenMapFloor1LeftTex;
+
+#define dgWaterTemplePauseScreenMapFloor1RightTex "__OTR__textures/map_48x85_static/gWaterTemplePauseScreenMapFloor1RightTex"
+static const ALIGN_ASSET(2) char gWaterTemplePauseScreenMapFloor1RightTex[] = dgWaterTemplePauseScreenMapFloor1RightTex;
+
+#define dgWaterTemplePauseScreenMapBasement1LeftTex "__OTR__textures/map_48x85_static/gWaterTemplePauseScreenMapBasement1LeftTex"
+static const ALIGN_ASSET(2) char gWaterTemplePauseScreenMapBasement1LeftTex[] = dgWaterTemplePauseScreenMapBasement1LeftTex;
+
+#define dgWaterTemplePauseScreenMapBasement1RightTex "__OTR__textures/map_48x85_static/gWaterTemplePauseScreenMapBasement1RightTex"
+static const ALIGN_ASSET(2) char gWaterTemplePauseScreenMapBasement1RightTex[] = dgWaterTemplePauseScreenMapBasement1RightTex;
+
+#define dgSpiritTemplePauseScreenMapFloor4LeftTex "__OTR__textures/map_48x85_static/gSpiritTemplePauseScreenMapFloor4LeftTex"
+static const ALIGN_ASSET(2) char gSpiritTemplePauseScreenMapFloor4LeftTex[] = dgSpiritTemplePauseScreenMapFloor4LeftTex;
+
+#define dgSpiritTemplePauseScreenMapFloor4RightTex "__OTR__textures/map_48x85_static/gSpiritTemplePauseScreenMapFloor4RightTex"
+static const ALIGN_ASSET(2) char gSpiritTemplePauseScreenMapFloor4RightTex[] = dgSpiritTemplePauseScreenMapFloor4RightTex;
+
+#define dgSpiritTemplePauseScreenMapFloor3LeftTex "__OTR__textures/map_48x85_static/gSpiritTemplePauseScreenMapFloor3LeftTex"
+static const ALIGN_ASSET(2) char gSpiritTemplePauseScreenMapFloor3LeftTex[] = dgSpiritTemplePauseScreenMapFloor3LeftTex;
+
+#define dgSpiritTemplePauseScreenMapFloor3RightTex "__OTR__textures/map_48x85_static/gSpiritTemplePauseScreenMapFloor3RightTex"
+static const ALIGN_ASSET(2) char gSpiritTemplePauseScreenMapFloor3RightTex[] = dgSpiritTemplePauseScreenMapFloor3RightTex;
+
+#define dgSpiritTemplePauseScreenMapFloor2LeftTex "__OTR__textures/map_48x85_static/gSpiritTemplePauseScreenMapFloor2LeftTex"
+static const ALIGN_ASSET(2) char gSpiritTemplePauseScreenMapFloor2LeftTex[] = dgSpiritTemplePauseScreenMapFloor2LeftTex;
+
+#define dgSpiritTemplePauseScreenMapFloor2RightTex "__OTR__textures/map_48x85_static/gSpiritTemplePauseScreenMapFloor2RightTex"
+static const ALIGN_ASSET(2) char gSpiritTemplePauseScreenMapFloor2RightTex[] = dgSpiritTemplePauseScreenMapFloor2RightTex;
+
+#define dgSpiritTemplePauseScreenMapFloor1LeftTex "__OTR__textures/map_48x85_static/gSpiritTemplePauseScreenMapFloor1LeftTex"
+static const ALIGN_ASSET(2) char gSpiritTemplePauseScreenMapFloor1LeftTex[] = dgSpiritTemplePauseScreenMapFloor1LeftTex;
+
+#define dgSpiritTemplePauseScreenMapFloor1RightTex "__OTR__textures/map_48x85_static/gSpiritTemplePauseScreenMapFloor1RightTex"
+static const ALIGN_ASSET(2) char gSpiritTemplePauseScreenMapFloor1RightTex[] = dgSpiritTemplePauseScreenMapFloor1RightTex;
+
+#define dgShadowTemplePauseScreenMapBasement1LeftTex "__OTR__textures/map_48x85_static/gShadowTemplePauseScreenMapBasement1LeftTex"
+static const ALIGN_ASSET(2) char gShadowTemplePauseScreenMapBasement1LeftTex[] = dgShadowTemplePauseScreenMapBasement1LeftTex;
+
+#define dgShadowTemplePauseScreenMapBasement1RightTex "__OTR__textures/map_48x85_static/gShadowTemplePauseScreenMapBasement1RightTex"
+static const ALIGN_ASSET(2) char gShadowTemplePauseScreenMapBasement1RightTex[] = dgShadowTemplePauseScreenMapBasement1RightTex;
+
+#define dgShadowTemplePauseScreenMapBasement2LeftTex "__OTR__textures/map_48x85_static/gShadowTemplePauseScreenMapBasement2LeftTex"
+static const ALIGN_ASSET(2) char gShadowTemplePauseScreenMapBasement2LeftTex[] = dgShadowTemplePauseScreenMapBasement2LeftTex;
+
+#define dgShadowTemplePauseScreenMapBasement2RightTex "__OTR__textures/map_48x85_static/gShadowTemplePauseScreenMapBasement2RightTex"
+static const ALIGN_ASSET(2) char gShadowTemplePauseScreenMapBasement2RightTex[] = dgShadowTemplePauseScreenMapBasement2RightTex;
+
+#define dgShadowTemplePauseScreenMapBasement3LeftTex "__OTR__textures/map_48x85_static/gShadowTemplePauseScreenMapBasement3LeftTex"
+static const ALIGN_ASSET(2) char gShadowTemplePauseScreenMapBasement3LeftTex[] = dgShadowTemplePauseScreenMapBasement3LeftTex;
+
+#define dgShadowTemplePauseScreenMapBasement3RightTex "__OTR__textures/map_48x85_static/gShadowTemplePauseScreenMapBasement3RightTex"
+static const ALIGN_ASSET(2) char gShadowTemplePauseScreenMapBasement3RightTex[] = dgShadowTemplePauseScreenMapBasement3RightTex;
+
+#define dgShadowTemplePauseScreenMapBasement4LeftTex "__OTR__textures/map_48x85_static/gShadowTemplePauseScreenMapBasement4LeftTex"
+static const ALIGN_ASSET(2) char gShadowTemplePauseScreenMapBasement4LeftTex[] = dgShadowTemplePauseScreenMapBasement4LeftTex;
+
+#define dgShadowTemplePauseScreenMapBasement4RightTex "__OTR__textures/map_48x85_static/gShadowTemplePauseScreenMapBasement4RightTex"
+static const ALIGN_ASSET(2) char gShadowTemplePauseScreenMapBasement4RightTex[] = dgShadowTemplePauseScreenMapBasement4RightTex;
+
+#define dgBottomOfTheWellPauseScreenMapBasement1LeftTex "__OTR__textures/map_48x85_static/gBottomOfTheWellPauseScreenMapBasement1LeftTex"
+static const ALIGN_ASSET(2) char gBottomOfTheWellPauseScreenMapBasement1LeftTex[] = dgBottomOfTheWellPauseScreenMapBasement1LeftTex;
+
+#define dgBottomOfTheWellPauseScreenMapBasement1RightTex "__OTR__textures/map_48x85_static/gBottomOfTheWellPauseScreenMapBasement1RightTex"
+static const ALIGN_ASSET(2) char gBottomOfTheWellPauseScreenMapBasement1RightTex[] = dgBottomOfTheWellPauseScreenMapBasement1RightTex;
+
+#define dgBottomOfTheWellPauseScreenMapBasement2LeftTex "__OTR__textures/map_48x85_static/gBottomOfTheWellPauseScreenMapBasement2LeftTex"
+static const ALIGN_ASSET(2) char gBottomOfTheWellPauseScreenMapBasement2LeftTex[] = dgBottomOfTheWellPauseScreenMapBasement2LeftTex;
+
+#define dgBottomOfTheWellPauseScreenMapBasement2RightTex "__OTR__textures/map_48x85_static/gBottomOfTheWellPauseScreenMapBasement2RightTex"
+static const ALIGN_ASSET(2) char gBottomOfTheWellPauseScreenMapBasement2RightTex[] = dgBottomOfTheWellPauseScreenMapBasement2RightTex;
+
+#define dgBottomOfTheWellPauseScreenMapBasement3LeftTex "__OTR__textures/map_48x85_static/gBottomOfTheWellPauseScreenMapBasement3LeftTex"
+static const ALIGN_ASSET(2) char gBottomOfTheWellPauseScreenMapBasement3LeftTex[] = dgBottomOfTheWellPauseScreenMapBasement3LeftTex;
+
+#define dgBottomOfTheWellPauseScreenMapBasement3RightTex "__OTR__textures/map_48x85_static/gBottomOfTheWellPauseScreenMapBasement3RightTex"
+static const ALIGN_ASSET(2) char gBottomOfTheWellPauseScreenMapBasement3RightTex[] = dgBottomOfTheWellPauseScreenMapBasement3RightTex;
+
+#define dgIceCavernPauseScreenMapFloor1LeftTex "__OTR__textures/map_48x85_static/gIceCavernPauseScreenMapFloor1LeftTex"
+static const ALIGN_ASSET(2) char gIceCavernPauseScreenMapFloor1LeftTex[] = dgIceCavernPauseScreenMapFloor1LeftTex;
+
+#define dgIceCavernPauseScreenMapFloor1RightTex "__OTR__textures/map_48x85_static/gIceCavernPauseScreenMapFloor1RightTex"
+static const ALIGN_ASSET(2) char gIceCavernPauseScreenMapFloor1RightTex[] = dgIceCavernPauseScreenMapFloor1RightTex;
+
+#endif // TEXTURES_MAP_48X85_STATIC_H

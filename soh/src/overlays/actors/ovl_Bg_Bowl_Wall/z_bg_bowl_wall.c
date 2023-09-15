@@ -10,7 +10,7 @@
 #include "objects/object_bowl/object_bowl.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void BgBowlWall_Init(Actor* thisx, PlayState* play);
 void BgBowlWall_Destroy(Actor* thisx, PlayState* play);
@@ -203,7 +203,7 @@ void BgBowlWall_Draw(Actor* thisx, PlayState* play2) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x8,
                Gfx_TexScroll(play->state.gfxCtx, 0, -2 * (frames = play->state.frames), 16, 16));
     gDPPipeSync(POLY_OPA_DISP++);

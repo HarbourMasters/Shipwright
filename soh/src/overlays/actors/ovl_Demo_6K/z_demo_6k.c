@@ -11,8 +11,9 @@
 #include "objects/object_gnd_magic/object_gnd_magic.h"
 #include "overlays/actors/ovl_Eff_Dust/z_eff_dust.h"
 #include "soh/frame_interpolation.h"
+#include <assert.h>
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void Demo6K_Init(Actor* thisx, PlayState* play);
 void Demo6K_Destroy(Actor* thisx, PlayState* play);
@@ -87,7 +88,7 @@ void Demo6K_Init(Actor* thisx, PlayState* play) {
     osSyncPrintf("bank_ID = %d\n", objBankIndex);
 
     if (objBankIndex < 0) {
-        ASSERT(objBankIndex < 0);
+        assert(objBankIndex < 0);
     } else {
         this->objBankIndex = objBankIndex;
     }
@@ -166,7 +167,7 @@ void Demo6K_Init(Actor* thisx, PlayState* play) {
         case 17:
         case 18:
         case 19:
-            this->actor.flags |= ACTOR_FLAG_5;
+            this->actor.flags |= ACTOR_FLAG_DRAW_WHILE_CULLED;
             this->drawFunc = func_8096865C;
             this->initActionFunc = func_80967410;
             this->flags |= 1;
@@ -174,7 +175,7 @@ void Demo6K_Init(Actor* thisx, PlayState* play) {
             this->unk_293 = params - 14;
             break;
         default:
-            ASSERT(0);
+            assert(0);
             break;
     }
 
@@ -237,7 +238,7 @@ void func_80966E98(Demo6K* this, PlayState* play) {
     if (this->timer1 == 39) {
         func_800788CC(NA_SE_EV_CONSENTRATION);
         Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_6K, this->actor.world.pos.x,
-                    this->actor.world.pos.y + 10.0f, this->actor.world.pos.z, 0, 0, 0, 2);
+                    this->actor.world.pos.y + 10.0f, this->actor.world.pos.z, 0, 0, 0, 2, true);
     }
 
     if (this->timer1 == 64) {
@@ -303,7 +304,7 @@ void func_8096712C(Demo6K* this, PlayState* play) {
 
     this->timer2++;
 
-    if ((play->sceneNum == SCENE_GANONTIKA) && (play->csCtx.frames < D_8096932C[this->actor.params - 3])) {
+    if ((play->sceneNum == SCENE_INSIDE_GANONS_CASTLE) && (play->csCtx.frames < D_8096932C[this->actor.params - 3])) {
         func_8002F974(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
     }
 }
@@ -335,7 +336,7 @@ void func_80967244(Demo6K* this, PlayState* play) {
     envColor.g = sEnvColors[this->unk_293].g;
     envColor.b = sEnvColors[this->unk_293].b;
 
-    if (play->sceneNum == SCENE_TOKINOMA) {
+    if (play->sceneNum == SCENE_TEMPLE_OF_TIME) {
         scale = 6000;
     } else if (play->csCtx.frames < 419) {
         scale = 6000;
@@ -542,7 +543,7 @@ void func_80967DBC(Demo6K* this, PlayState* play) {
 void func_80967F10(Demo6K* this, PlayState* play) {
     if (this->timer2 == 0) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_DEMO_6K, this->actor.world.pos.x, this->actor.world.pos.y,
-                    this->actor.world.pos.z, 0, 0, 0, 13);
+                    this->actor.world.pos.z, 0, 0, 0, 13, true);
     }
 
     this->timer2++;
@@ -566,7 +567,7 @@ void func_80967FFC(Actor* thisx, PlayState* play) {
     u16 timer1 = this->timer1;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     Matrix_RotateX(-M_PI / 2, MTXMODE_APPLY);
     gSPSegment(POLY_XLU_DISP++, 0x08,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0x7FFF - ((timer1 * 8) & 0x7FFF), 16, 512, 1, 0,
@@ -618,12 +619,12 @@ void func_80968298(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     alpha = (s32)(this->unk_170 * 255.0f);
-    POLY_XLU_DISP = func_800937C0(POLY_XLU_DISP);
+    POLY_XLU_DISP = Gfx_SetupDL_57(POLY_XLU_DISP);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, alpha);
     gDPSetAlphaDither(POLY_XLU_DISP++, G_AD_DISABLE);
     gDPSetColorDither(POLY_XLU_DISP++, G_CD_DISABLE);
     gDPFillRectangle(POLY_XLU_DISP++, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     alpha = (s32)(this->unk_16C * 255.0f);
     for (i2 = 0, i = 0; i < 63; i++) {
@@ -646,7 +647,7 @@ void func_80968298(Actor* thisx, PlayState* play) {
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);
     gDPSetEnvColor(POLY_XLU_DISP++, 50, 50, 50, 255);
     gSPDisplayList(POLY_XLU_DISP++, object_demo_6k_DL_001040);
@@ -668,7 +669,7 @@ void func_8096865C(Actor* thisx, PlayState* play) {
             displayList = gEffFlash2DL;
         }
 
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 255, 255);
         gDPSetEnvColor(POLY_XLU_DISP++, sEnvColors[this->unk_293].r, sEnvColors[this->unk_293].g,
                        sEnvColors[this->unk_293].b, 255);
@@ -698,7 +699,7 @@ void func_809688C4(Actor* thisx, PlayState* play2) {
         (play->csCtx.npcActions[1]->action != 1)) {
         OPEN_DISPS(play->state.gfxCtx);
 
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 255, 255);
         Matrix_RotateY((s16)(Camera_GetCamDirYaw(GET_ACTIVE_CAM(play)) + 0x8000) * (M_PI / 0x8000), MTXMODE_APPLY);
 
@@ -737,7 +738,7 @@ void func_80968B70(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     Matrix_Mult(&play->billboardMtxF, MTXMODE_APPLY);
     Matrix_RotateX(M_PI / 2, MTXMODE_APPLY);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
@@ -785,7 +786,7 @@ void func_80968FB0(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     scaleFactor = ((s16)D_809693CC[(frames * 4) & 0xF] * 0.01f) + 1.0f;
     Matrix_Scale(this->actor.scale.x * scaleFactor, this->actor.scale.y * scaleFactor,
                  this->actor.scale.z * scaleFactor, MTXMODE_APPLY);

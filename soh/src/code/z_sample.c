@@ -16,7 +16,7 @@ void Sample_Draw(SampleContext* this) {
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
     gSPSegment(POLY_OPA_DISP++, 0x01, this->staticSegment);
 
-    func_80095248(gfxCtx, 0, 0, 0);
+    Gfx_SetupFrame(gfxCtx, 0, 0, 0);
 
     view->flags = 1 | 2 | 4;
     func_800AAA50(view, 15);
@@ -29,7 +29,7 @@ void Sample_Draw(SampleContext* this) {
     }
 
     POLY_OPA_DISP = Gfx_SetFog2(POLY_OPA_DISP, 255, 255, 255, 0, 0, 0);
-    func_80093D18(gfxCtx);
+    Gfx_SetupDL_25Opa(gfxCtx);
 
     gDPSetCycleType(POLY_OPA_DISP++, G_CYC_1CYCLE);
     gDPSetRenderMode(POLY_OPA_DISP++, G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2);

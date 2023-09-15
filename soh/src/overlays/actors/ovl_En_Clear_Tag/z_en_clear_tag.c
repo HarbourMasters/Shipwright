@@ -3,8 +3,9 @@
 #include <string.h>
 
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnClearTag_Init(Actor* thisx, PlayState* play);
 void EnClearTag_Destroy(Actor* thisx, PlayState* play);
@@ -258,7 +259,14 @@ void EnClearTag_Init(Actor* thisx, PlayState* play) {
         Collider_SetCylinder(play, &this->collider, &this->actor, &sLaserCylinderInit);
         Audio_PlayActorSound2(&this->actor, NA_SE_IT_SWORD_REFLECT_MG);
     } else { // Initialize the Arwing.
-        this->actor.flags |= ACTOR_FLAG_0;
+
+        // Change Arwing to regular enemy instead of boss with enemy randomizer and crowd control.
+        // This way Arwings will be considered for "clear enemy" rooms properly.
+        if (CVarGetInteger("gRandomizedEnemies", 0) || CVarGetInteger("gCrowdControl", 0)) {
+            Actor_ChangeCategory(play, &play->actorCtx, thisx, ACTORCAT_ENEMY);
+        }
+
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
         this->actor.targetMode = 5;
         Collider_SetCylinder(play, &this->collider, &this->actor, &sArwingCylinderInit);
         this->actor.colChkInfo.health = 3;
@@ -367,6 +375,7 @@ void EnClearTag_Update(Actor* thisx, PlayState* play2) {
                     if ((s8)this->actor.colChkInfo.health <= 0) {
                         this->state = CLEAR_TAG_STATE_CRASHING;
                         this->actor.velocity.y = 0.0f;
+                        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
                         goto state_crashing;
                     }
                 }
@@ -467,9 +476,13 @@ void EnClearTag_Update(Actor* thisx, PlayState* play2) {
                     Math_ApproachS(&this->actor.world.rot.z, 0, 15, this->targetDirection.z);
                     Math_ApproachF(&this->targetDirection.z, 0x500, 1.0f, 0x100);
 
+                    // Introduce a range requirement in Enemy Rando so Arwings don't shoot the player from
+                    // across the map. Especially noticeable in big maps like Lake Hylia and Hyrule Field.
+                    uint8_t enemyRandoShootLaser = !CVarGetInteger("gRandomizedEnemies", 0) || this->actor.xzDistToPlayer < 1000.0f;
+
                     // Check if the Arwing should fire its laser.
                     if ((this->frameCounter % 4) == 0 && (Rand_ZeroOne() < 0.75f) &&
-                        (this->state == CLEAR_TAG_STATE_TARGET_LOCKED)) {
+                            (this->state == CLEAR_TAG_STATE_TARGET_LOCKED) && enemyRandoShootLaser) {
                         this->shouldShootLaser = true;
                     }
                 } else {
@@ -495,7 +508,7 @@ void EnClearTag_Update(Actor* thisx, PlayState* play2) {
                     this->shouldShootLaser = false;
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_CLEAR_TAG, this->actor.world.pos.x,
                                 this->actor.world.pos.y, this->actor.world.pos.z, this->actor.world.rot.x,
-                                this->actor.world.rot.y, this->actor.world.rot.z, CLEAR_TAG_STATE_LASER);
+                                this->actor.world.rot.y, this->actor.world.rot.z, CLEAR_TAG_STATE_LASER, true);
                 }
             }
             case CLEAR_TAG_STATE_CRASHING:
@@ -540,7 +553,7 @@ void EnClearTag_Update(Actor* thisx, PlayState* play2) {
                         if (this->drawMode != CLEAR_TAG_DRAW_MODE_ARWING) {
                             this->drawMode = CLEAR_TAG_DRAW_MODE_EFFECT;
                             this->deathTimer = 70;
-                            this->actor.flags &= ~ACTOR_FLAG_0;
+                            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                         } else {
                             Actor_Kill(&this->actor);
                         }
@@ -691,7 +704,7 @@ void EnClearTag_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     if (this->drawMode != CLEAR_TAG_DRAW_MODE_EFFECT) {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
         if (this->state >= CLEAR_TAG_STATE_LASER) {
             // Draw Arwing lasers.
@@ -708,7 +721,7 @@ void EnClearTag_Draw(Actor* thisx, PlayState* play) {
             gSPDisplayList(POLY_XLU_DISP++, gArwingLaserDL);
         } else {
             // Draw the Arwing itself.
-            func_80093D18(play->state.gfxCtx);
+            Gfx_SetupDL_25Opa(play->state.gfxCtx);
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
             if (this->crashingTimer != 0) {
                 f32 xRotation;
@@ -900,8 +913,8 @@ void EnClearTag_DrawEffects(PlayState* play) {
     EnClearTagEffect* firstEffect = effect;
 
     OPEN_DISPS(gfxCtx);
-    func_80093D18(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     // Draw all Debris effects.
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {

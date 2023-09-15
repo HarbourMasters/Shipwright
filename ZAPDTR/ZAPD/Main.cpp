@@ -1,24 +1,77 @@
 #include "Globals.h"
-#include "Overlays/ZOverlay.h"
 #include "Utils/Directory.h"
-#include "Utils/File.h"
+#include <Utils/DiskFile.h>
 #include "Utils/Path.h"
 #include "WarningHandler.h"
+
 #include "ZAnimation.h"
+ZNormalAnimation nAnim(nullptr);
+ZCurveAnimation cAnim(nullptr);
+ZLinkAnimation lAnim(nullptr);
+ZLegacyAnimation lAnim2(nullptr);
+
+#include "ZArray.h"
+ZArray arr(nullptr);
+
+#include "ZAudio.h"
+ZAudio audio(nullptr);
+
 #include "ZBackground.h"
+ZBackground back(nullptr);
+
 #include "ZBlob.h"
+ZBlob blob(nullptr);
+
+#include "ZCollision.h"
+ZCollisionHeader colHeader(nullptr);
+
+#include "ZCutscene.h"
+ZCutscene cs(nullptr);
+
+#include "ZLimb.h"
+ZLimb limb(nullptr);
+
+#include "ZMtx.h"
+ZMtx mtx(nullptr);
+
+#include "ZPath.h"
+ZPath path(nullptr);
+
+#include "ZPlayerAnimationData.h"
+ZPlayerAnimationData pAnimData(nullptr);
+
+#include "ZScalar.h"
+ZScalar scalar(nullptr);
+
+#include "ZSkeleton.h"
+ZLimbTable limbTbl(nullptr);
+ZSkeleton skel(nullptr);
+
+#include "ZString.h"
+ZString str(nullptr);
+
+#include "ZSymbol.h"
+ZSymbol sym(nullptr);
+
+#include "ZText.h"
+ZText txt(nullptr);
+
+#include "ZTexture.h"
+ZTexture tex(nullptr);
+
+#include "ZVector.h"
+ZVector vec(nullptr);
+
+#include "ZVtx.h"
+ZVtx vtx(nullptr);
+
+#include "ZRoom/ZRoom.h"
+ZRoom room(nullptr);
+
 #include "ZFile.h"
 #include "ZTexture.h"
 
-#ifdef __linux__
-#include <csignal>
-#include <cstdlib>
-#include <ctime>
-#include <cxxabi.h>  // for __cxa_demangle
-#include <dlfcn.h>   // for dladdr
-#include <execinfo.h>
-#include <unistd.h>
-#endif
+#include "CrashHandler.h"
 
 #include <string>
 #include <string_view>
@@ -27,31 +80,6 @@
 
 //extern const char gBuildHash[];
 const char gBuildHash[] = "";
-
-// LINUX_TODO: remove, those are because of soh <-> lus dependency problems
-float divisor_num = 0.0f;
-
-extern "C" void Audio_SetGameVolume(int player_id, float volume)
-{
-
-}
-
-
-extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
-{
-	return 0;
-}
-
-void DebugConsole_SaveCVars()
-{
-
-}
-
-void DebugConsole_LoadCVars()
-{
-
-}
-
 
 bool Parse(const fs::path& xmlFilePath, const fs::path& basePath, const fs::path& outPath,
            ZFileMode fileMode, int workerID);
@@ -63,63 +91,9 @@ int ExtractFunc(int workerID, int fileListSize, std::string fileListItem, ZFileM
 
 volatile int numWorkersLeft = 0;
 
-#ifdef __linux__
-#define ARRAY_COUNT(arr) (sizeof(arr) / sizeof(arr[0]))
-void ErrorHandler(int sig)
-{
-	void* array[4096];
-	const size_t nMaxFrames = sizeof(array) / sizeof(array[0]);
-	size_t size = backtrace(array, nMaxFrames);
-	char** symbols = backtrace_symbols(array, nMaxFrames);
+extern void ImportExporters();
 
-	fprintf(stderr, "\nZAPD crashed. (Signal: %i)\n", sig);
-
-	// Feel free to add more crash messages.
-	const char* crashEasterEgg[] = {
-		"\tYou've met with a terrible fate, haven't you?",
-		"\tSEA BEARS FOAM. SLEEP BEARS DREAMS. \n\tBOTH END IN THE SAME WAY: CRASSSH!",
-		"\tZAPD has fallen and cannot get up.",
-	};
-
-	srand(time(nullptr));
-	auto easterIndex = rand() % ARRAY_COUNT(crashEasterEgg);
-
-	fprintf(stderr, "\n%s\n\n", crashEasterEgg[easterIndex]);
-
-	fprintf(stderr, "Traceback:\n");
-	for (size_t i = 1; i < size; i++)
-	{
-		Dl_info info;
-		uint32_t gotAddress = dladdr(array[i], &info);
-		std::string functionName(symbols[i]);
-
-		if (gotAddress != 0 && info.dli_sname != nullptr)
-		{
-			int32_t status;
-			char* demangled = abi::__cxa_demangle(info.dli_sname, nullptr, nullptr, &status);
-			const char* nameFound = info.dli_sname;
-
-			if (status == 0)
-			{
-				nameFound = demangled;
-			}
-
-			functionName = StringHelper::Sprintf("%s (+0x%X)", nameFound,
-			                                     (char*)array[i] - (char*)info.dli_saddr);
-			free(demangled);
-		}
-
-		fprintf(stderr, "%-3zd %s\n", i, functionName.c_str());
-	}
-
-	fprintf(stderr, "\n");
-
-	free(symbols);
-	exit(1);
-}
-#endif
-
-int main(int argc, char* argv[])
+extern "C" int zapd_main(int argc, char* argv[])
 {
 	// Syntax: ZAPD.out [mode (btex/bovl/e)] (Arbritrary Number of Arguments)
 
@@ -205,12 +179,6 @@ int main(int argc, char* argv[])
 		{
 			Globals::Instance->texType = ZTexture::GetTextureTypeFromString(argv[++i]);
 		}
-		else if (arg == "-cfg")  // Set cfg path (for overlays)
-		                         // TODO: Change the name of this to something else so it doesn't
-		                         // get confused with XML config files.
-		{
-			Globals::Instance->cfgPath = argv[++i];
-		}
 		else if (arg == "-fl")  // Set baserom filelist path
 		{
 			Globals::Instance->fileListPath = argv[++i];
@@ -221,16 +189,7 @@ int main(int argc, char* argv[])
 		}
 		else if (arg == "-eh")  // Enable Error Handler
 		{
-#ifdef __linux__
-			signal(SIGSEGV, ErrorHandler);
-			signal(SIGABRT, ErrorHandler);
-#else
-			// HANDLE_WARNING(WarningType::Always,
-			//                "tried to set error handler, but this ZAPD build lacks support for one",
-			//                "");
-#endif
-
-
+			CrashHandler_Init();
 		}
 		else if (arg == "-v")  // Verbose
 		{
@@ -242,6 +201,7 @@ int main(int argc, char* argv[])
 		}
 		else if (arg == "-se" || arg == "--set-exporter")  // Set Current Exporter
 		{
+			ImportExporters();
 			Globals::Instance->currentExporter = argv[++i];
 		}
 		else if (arg == "--gcc-compat")  // GCC compatibility
@@ -260,10 +220,23 @@ int main(int argc, char* argv[])
 		{
 			Globals::Instance->buildRawTexture = true;
 		}
+		else if (arg == "--norom") 
+		{
+			Globals::Instance->onlyGenSohOtr = true;
+		}
 	}
+
 
 	// Parse File Mode
 	ExporterSet* exporterSet = Globals::Instance->GetExporterSet();
+	
+	if(Globals::Instance->onlyGenSohOtr) {
+		exporterSet->endProgramFunc();
+
+		delete g;
+		return 0;
+	}
+	
 	std::string buildMode = argv[1];
 	ZFileMode fileMode = ZFileMode::Invalid;
 
@@ -271,8 +244,6 @@ int main(int argc, char* argv[])
 		fileMode = ZFileMode::BuildTexture;
 	else if (buildMode == "bren")
 		fileMode = ZFileMode::BuildBackground;
-	else if (buildMode == "bovl")
-		fileMode = ZFileMode::BuildOverlay;
 	else if (buildMode == "bsf")
 		fileMode = ZFileMode::BuildSourceFile;
 	else if (buildMode == "bblb")
@@ -328,7 +299,7 @@ int main(int argc, char* argv[])
 					Directory::ListFiles(Globals::Instance->inputPath.string());
 
 				const int num_threads = std::thread::hardware_concurrency();
-				ctpl::thread_pool pool(num_threads / 2);
+				ctpl::thread_pool pool(num_threads > 1 ? num_threads / 2 : 1);
 
 				bool parseSuccessful;
 
@@ -419,6 +390,11 @@ int main(int argc, char* argv[])
 
 	if (exporterSet != nullptr && exporterSet->endProgramFunc != nullptr)
 		exporterSet->endProgramFunc();
+
+end:
+	delete exporterSet;
+
+	//Globals::Instance->GetExporterSet() = nullptr; //TODO NULL this out. Compiler complains about lvalue assignment.
 
 	delete g;
 	return 0;
@@ -602,7 +578,7 @@ void BuildAssetBackground(const fs::path& imageFilePath, const fs::path& outPath
 	ZBackground background(nullptr);
 	background.ParseBinaryFile(imageFilePath.string(), false);
 
-	File::WriteAllText(outPath.string(), background.GetBodySourceCode());
+	DiskFile::WriteAllText(outPath.string(), background.GetBodySourceCode());
 }
 
 void BuildAssetBlob(const fs::path& blobFilePath, const fs::path& outPath)
@@ -612,7 +588,7 @@ void BuildAssetBlob(const fs::path& blobFilePath, const fs::path& outPath)
 
 	std::string src = blob->GetBodySourceCode();
 
-	File::WriteAllText(outPath.string(), src);
+	DiskFile::WriteAllText(outPath.string(), src);
 
 	delete blob;
 }

@@ -1,4 +1,5 @@
 #include "global.h"
+#include <math.h>
 
 f32 Math_CosS(s16 angle) {
     return coss(angle) * SHT_MINV;
@@ -6,6 +7,14 @@ f32 Math_CosS(s16 angle) {
 
 f32 Math_SinS(s16 angle) {
     return sins(angle) * SHT_MINV;
+}
+
+f32 Math_AccurateCosS(s16 angle) {
+    return cosf(DEG_TO_RAD((f32)(angle & 0xFFFC) / SHT_MAX) * 180.0f);
+}
+
+f32 Math_AccurateSinS(s16 angle) {
+    return sinf(DEG_TO_RAD((f32)(angle & 0xFFFC) / SHT_MAX) * 180.0f);
 }
 
 /**
@@ -191,6 +200,10 @@ s32 Math_AsymStepToF(f32* pValue, f32 target, f32 incrStep, f32 decrStep) {
 void func_80077D10(f32* arg0, s16* arg1, Input* input) {
     f32 relX = input->rel.stick_x;
     f32 relY = input->rel.stick_y;
+
+    if (CVarGetInteger("gMirroredWorld", 0)) {
+        relX = -input->rel.stick_x;
+    }
 
     *arg0 = sqrtf(SQ(relX) + SQ(relY));
     *arg0 = (60.0f < *arg0) ? 60.0f : *arg0;

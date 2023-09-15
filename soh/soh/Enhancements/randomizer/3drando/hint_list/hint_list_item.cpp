@@ -206,8 +206,8 @@ void HintTable_Init_Item() {
 
     hintTable[STONE_OF_AGONY] = HintText::Item({
                        //obscure text
-                       Text{"the shake shard", /*french*/"le fragment vibrant", /*spanish*/"el fragmento tintineante"},
-                       Text{"a blue alarm",    /*french*/"une alerte bleue",    /*spanish*/"una azul alarma"},
+                       Text{"the shake stone", /*french*/"le fragment vibrant", /*spanish*/"el fragmento tintineante"},
+                       Text{"a gray alarm",    /*french*/"une alerte bleue",    /*spanish*/"una azul alarma"},
                      }, {
                        //ambiguous text
                        Text{"a prize of the House of Skulltulas", /*french*/"un prix de la maison des Skulltulas", /*spanish*/"un obsequio de la Casa Skulltula"},
@@ -1627,6 +1627,18 @@ void HintTable_Init_Item() {
                      },
                        //clear text
                        Text{"a Green Rupee", /*french*/"un rubis vert", /*spanish*/"una rupia verde"}
+    );
+
+    hintTable[GREG_RUPEE] = HintText::Item({
+                       //obscure text
+                       Text{"an old friend",  /*french*/"Greg", /*spanish*/"Greg"},
+                       Text{"a glorious gem", /*french*/"Greg", /*spanish*/"Greg"},
+                     }, {
+                       //ambiguous text
+                       Text{"a Green Rupee", /*french*/"un rubis vert", /*spanish*/"una rupia verde"}
+                     },
+                       //clear text
+                       Text{"Greg", /*french*/"Greg", /*spanish*/"Greg"}
     );
 
     hintTable[BLUE_RUPEE] = HintText::Item({

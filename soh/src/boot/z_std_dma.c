@@ -1,5 +1,7 @@
 #include "global.h"
 #include "vt.h"
+#include <stdio.h>
+#include <assert.h>
 
 StackEntry sDmaMgrStackInfo;
 OSMesgQueue sDmaMgrMsgQueue;
@@ -123,9 +125,9 @@ end:
 s32 DmaMgr_DmaHandler(OSPiHandle* pihandle, OSIoMesg* mb, s32 direction) {
     s32 ret;
 
-    ASSERT(pihandle == gCartHandle);
-    ASSERT(direction == OS_READ);
-    ASSERT(mb != NULL);
+    assert(pihandle == gCartHandle);
+    assert(direction == OS_READ);
+    assert(mb != NULL);
 
     if (D_80009460 == 10) {
         osSyncPrintf("%10lld サウンドＤＭＡ %08x %08x %08x (%d)\n", OS_CYCLES_TO_USEC(osGetTime()), mb->dramAddr,
@@ -168,7 +170,7 @@ void DmaMgr_Error(DmaRequest* req, const char* file, const char* errorName, cons
     char buff1[80];
     char buff2[80];
 
-    osSyncPrintf("%c", 7);
+    osSyncPrintf("%c", BEL);
     osSyncPrintf(VT_FGCOL(RED));
     osSyncPrintf("DMA致命的エラー(%s)\nROM:%X RAM:%X SIZE:%X %s\n",
                  errorDesc != NULL ? errorDesc : (errorName != NULL ? errorName : "???"), vrom, ram, size,
@@ -183,14 +185,14 @@ void DmaMgr_Error(DmaRequest* req, const char* file, const char* errorName, cons
     osSyncPrintf(VT_RST);
 
     if (req->filename) {
-        sprintf(buff1, "DMA ERROR: %s %d", req->filename, req->line);
+        snprintf(buff1, sizeof(buff1), "DMA ERROR: %s %d", req->filename, req->line);
     } else if (sDmaMgrCurFileName) {
-        sprintf(buff1, "DMA ERROR: %s %d", sDmaMgrCurFileName, sDmaMgrCurFileLine);
+        snprintf(buff1, sizeof(buff1), "DMA ERROR: %s %d", sDmaMgrCurFileName, sDmaMgrCurFileLine);
     } else {
-        sprintf(buff1, "DMA ERROR: %s", errorName != NULL ? errorName : "???");
+        snprintf(buff1, sizeof(buff1), "DMA ERROR: %s", errorName != NULL ? errorName : "???");
     }
 
-    sprintf(buff2, "%07X %08X %X %s", vrom, ram, size, file != NULL ? file : "???");
+    snprintf(buff2, sizeof(buff1), "%07X %08X %X %s", vrom, ram, size, file != NULL ? file : "???");
     Fault_AddHungupAndCrashImpl(buff1, buff2);
 }
 
@@ -348,7 +350,7 @@ s32 DmaMgr_SendRequestImpl(DmaRequest* req, uintptr_t ram, uintptr_t vrom, size_
     if (1) {
         if ((sDmaMgrQueueFullLogged == 0) && (sDmaMgrMsgQueue.validCount >= sDmaMgrMsgQueue.msgCount)) {
             sDmaMgrQueueFullLogged++;
-            osSyncPrintf("%c", 7);
+            osSyncPrintf("%c", BEL);
             osSyncPrintf(VT_FGCOL(RED));
             osSyncPrintf("dmaEntryMsgQが一杯です。キューサイズの再検討をおすすめします。");
             LOG_NUM("(sizeof(dmaEntryMsgBufs) / sizeof(dmaEntryMsgBufs[0]))", ARRAY_COUNT(sDmaMgrMsgs));

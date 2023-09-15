@@ -7,7 +7,7 @@
 #include "z_en_bdfire.h"
 #include "objects/object_kingdodongo/object_kingdodongo.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnBdfire_Init(Actor* thisx, PlayState* play);
 void EnBdfire_Destroy(Actor* thisx, PlayState* play);
@@ -19,7 +19,7 @@ void func_809BC2A4(EnBdfire* this, PlayState* play);
 void func_809BC598(EnBdfire* this, PlayState* play);
 
 const ActorInit En_Bdfire_InitVars = {
-    0,
+    ACTOR_EN_BDFIRE,
     ACTORCAT_ENEMY,
     FLAGS,
     OBJECT_KINGDODONGO,
@@ -207,8 +207,8 @@ void EnBdfire_DrawFire(EnBdfire* this, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
     temp = this->unk_156 & 7;
     Matrix_ReplaceRotation(&play->billboardMtxF);
-    func_80094BC4(play->state.gfxCtx);
-    POLY_XLU_DISP = func_80094968(POLY_XLU_DISP);
+    Gfx_SetupDL_60NoCDXlu(play->state.gfxCtx);
+    POLY_XLU_DISP = Gfx_SetupDL_20NoCD(POLY_XLU_DISP);
     gDPSetCombineLERP(POLY_XLU_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, PRIMITIVE, ENVIRONMENT, TEXEL0,
                       ENVIRONMENT, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, PRIMITIVE, ENVIRONMENT, TEXEL0,
                       ENVIRONMENT);

@@ -1,6 +1,6 @@
 #ifndef _BOOTCOMMANDS_H_
 #define _BOOTCOMMANDS_H_
-#include <ultra64.h>
+#include <libultraship/libultra.h>
 #include <z64.h>
 
 typedef s32 (*BootCommandFunc)(char** argv, s32 argc); // Returns the number of arguments it read

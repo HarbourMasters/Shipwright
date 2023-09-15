@@ -1,7 +1,7 @@
 #ifndef Z_EN_DH_H
 #define Z_EN_DH_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnDh;

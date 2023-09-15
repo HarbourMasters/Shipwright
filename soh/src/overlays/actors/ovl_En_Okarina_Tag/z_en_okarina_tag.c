@@ -9,7 +9,7 @@
 #include "scenes/overworld/spot02/spot02_scene.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_25)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void EnOkarinaTag_Init(Actor* thisx, PlayState* play);
 void EnOkarinaTag_Destroy(Actor* thisx, PlayState* play);
@@ -47,7 +47,7 @@ void EnOkarinaTag_Init(Actor* thisx, PlayState* play) {
     osSyncPrintf("\n\n");
     // "Ocarina tag outbreak"
     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ オカリナタグ発生 ☆☆☆☆☆ %x\n" VT_RST, this->actor.params);
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->type = (this->actor.params >> 0xA) & 0x3F;
     this->ocarinaSong = (this->actor.params >> 6) & 0xF;
     this->switchFlag = this->actor.params & 0x3F;
@@ -112,7 +112,7 @@ void func_80ABEF2C(EnOkarinaTag* this, PlayState* play) {
     player = GET_PLAYER(play);
     this->unk_15A++;
     if ((this->switchFlag >= 0) && (Flags_GetSwitch(play, this->switchFlag))) {
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     } else {
         if ((this->ocarinaSong != 6) || (gSaveContext.scarecrowSpawnSongSet)) {
             if (player->stateFlags2 & 0x1000000) {
@@ -149,10 +149,10 @@ void func_80ABF0CC(EnOkarinaTag* this, PlayState* play) {
             if (this->switchFlag >= 0) {
                 Flags_SetSwitch(play, this->switchFlag);
             }
-            if (play->sceneNum == SCENE_MIZUSIN) {
+            if (play->sceneNum == SCENE_WATER_TEMPLE) {
                 play->msgCtx.msgMode = MSGMODE_PAUSED;
             }
-            if ((play->sceneNum != SCENE_DAIYOUSEI_IZUMI) && (play->sceneNum != SCENE_YOUSEI_IZUMI_YOKO)) {
+            if ((play->sceneNum != SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC) && (play->sceneNum != SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS)) {
                 play->msgCtx.ocarinaMode = OCARINA_MODE_04;
             }
             func_80078884(NA_SE_SY_CORRECT_CHIME);
@@ -191,9 +191,9 @@ void func_80ABF28C(EnOkarinaTag* this, PlayState* play) {
     this->unk_15A++;
     if ((this->ocarinaSong != 6) || (gSaveContext.scarecrowSpawnSongSet)) {
         if ((this->switchFlag >= 0) && Flags_GetSwitch(play, this->switchFlag)) {
-            this->actor.flags &= ~ACTOR_FLAG_0;
-        } else if (((this->type != 4) || !(gSaveContext.eventChkInf[4] & 0x800)) &&
-                   ((this->type != 6) || !(gSaveContext.eventChkInf[1] & 0x2000)) &&
+            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+        } else if (((this->type != 4) || !Flags_GetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME)) &&
+                   ((this->type != 6) || !Flags_GetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB)) &&
                    (this->actor.xzDistToPlayer < (90.0f + this->interactRange)) &&
                    (fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < 80.0f)) {
             if (player->stateFlags2 & 0x1000000) {
@@ -234,7 +234,7 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
     if (play->msgCtx.ocarinaMode == OCARINA_MODE_04) {
         this->actionFunc = func_80ABF28C;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
-        if (!gSaveContext.n64ddFlag || (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_DOOR_OF_TIME) != 2)) {
+        if (!gSaveContext.n64ddFlag || (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_DOOR_OF_TIME) != RO_DOOROFTIME_CLOSED)) {
             func_80078884(NA_SE_SY_CORRECT_CHIME);
         }
         if (this->switchFlag >= 0) {
@@ -243,22 +243,21 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
         switch (this->type) {
             case 1:
                 Flags_SetSwitch(play, this->switchFlag);
-                gSaveContext.eventChkInf[3] |= 0x200;
+                Flags_SetEventChkInf(EVENTCHKINF_OPENED_ZORAS_DOMAIN);
                 break;
             case 2:
                 if (!gSaveContext.n64ddFlag) {
                     play->csCtx.segment = D_80ABF9D0;
                     gSaveContext.cutsceneTrigger = 1;
                 } else {
-                    gSaveContext.eventChkInf[6] |= 0x80;
-                    gSaveContext.eventChkInf[6] |= 0x20;
+                    Flags_SetEventChkInf(EVENTCHKINF_DRAINED_WELL_IN_KAKARIKO);
+                    Flags_SetEventChkInf(EVENTCHKINF_PLAYED_SONG_OF_STORMS_IN_WINDMILL);
                 }
                 func_800F574C(1.18921f, 0x5A);
                 break;
             case 4:
                 if (gSaveContext.n64ddFlag) {
-                    int doorOfTime = Randomizer_GetSettingValue(RSK_DOOR_OF_TIME);
-                    if (doorOfTime == 2 &&
+                    if (Randomizer_GetSettingValue(RSK_DOOR_OF_TIME) == RO_DOOROFTIME_CLOSED &&
                         (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_OCARINA_TIME ||
                          !CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) || !CHECK_QUEST_ITEM(QUEST_GORON_RUBY) ||
                          !CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE))) {
@@ -280,7 +279,7 @@ void func_80ABF4C8(EnOkarinaTag* this, PlayState* play) {
                                                              : SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_005020);
                     gSaveContext.cutsceneTrigger = 1;
                 }
-                gSaveContext.eventChkInf[1] |= 0x2000;
+                Flags_SetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB);
                 func_80078884(NA_SE_SY_CORRECT_CHIME);
                 break;
             default:

@@ -7,7 +7,7 @@
 #include "z_en_zl1.h"
 #include "objects/object_zl1/object_zl1.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnZl1_Init(Actor* thisx, PlayState* play);
 void EnZl1_Destroy(Actor* thisx, PlayState* play);
@@ -93,15 +93,15 @@ void EnZl1_Init(Actor* thisx, PlayState* play) {
         Animation_Change(&this->skelAnime, &gChildZelda1Anim_00438, 1.0f, 0.0f, frameCount, ANIMMODE_LOOP, 0.0f);
         this->unk_1E6 = 0;
         this->actionFunc = func_80B4BC78;
-    } else if (Flags_GetEventChkInf(9) && Flags_GetEventChkInf(0x25) && Flags_GetEventChkInf(0x37)) {
+    } else if (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP)) {
         Actor_Kill(&this->actor);
-    } else if ((Flags_GetEventChkInf(9) && Flags_GetEventChkInf(0x25)) ||
-               (Flags_GetEventChkInf(9) && Flags_GetEventChkInf(0x37))) {
+    } else if ((Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) ||
+               (Flags_GetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP) && Flags_GetEventChkInf(EVENTCHKINF_USED_JABU_JABUS_BELLY_BLUE_WARP))) {
         frameCount = Animation_GetLastFrame(&gChildZelda1Anim_00438);
         Animation_Change(&this->skelAnime, &gChildZelda1Anim_00438, 1.0f, 0.0f, frameCount, ANIMMODE_LOOP, 0.0f);
         this->actor.textId = 0x703D;
         this->actionFunc = func_80B4AF18;
-    } else if (Flags_GetEventChkInf(0x40)) {
+    } else if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
         frameCount = Animation_GetLastFrame(&gChildZelda1Anim_00438);
         Animation_Change(&this->skelAnime, &gChildZelda1Anim_00438, 1.0f, 0.0f, frameCount, ANIMMODE_LOOP, 0.0f);
         this->actor.textId = 0x703C;
@@ -532,7 +532,7 @@ void func_80B4BF2C(EnZl1* this, PlayState* play) {
             if ((Message_GetState(msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
                 this->actor.textId = 0x703C;
                 Message_ContinueTextbox(play, this->actor.textId);
-                Flags_SetEventChkInf(0x40);
+                Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER);
                 this->unk_1E2 = 6;
             }
             break;
@@ -556,7 +556,7 @@ void func_80B4BF2C(EnZl1* this, PlayState* play) {
             if (Actor_TextboxIsClosing(&this->actor, play)) {
                 func_8002DF54(play, &this->actor, 7);
                 Interface_ChangeAlpha(50);
-                this->actor.flags &= ~ACTOR_FLAG_8;
+                this->actor.flags &= ~ACTOR_FLAG_PLAYER_TALKED_TO;
                 this->unk_1E2 = 4;
             }
             break;
@@ -622,7 +622,7 @@ void EnZl1_Draw(Actor* thisx, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(this->unk_1F8));
     gSPSegment(POLY_OPA_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(this->unk_1EC));
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnZl1_OverrideLimbDraw, EnZl1_PostLimbDraw, this);
 

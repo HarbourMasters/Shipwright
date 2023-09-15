@@ -7,7 +7,7 @@
 #include "z_bg_menkuri_eye.h"
 #include "objects/object_menkuri_objects/object_menkuri_objects.h"
 
-#define FLAGS ACTOR_FLAG_5
+#define FLAGS ACTOR_FLAG_DRAW_WHILE_CULLED
 
 void BgMenkuriEye_Init(Actor* thisx, PlayState* play);
 void BgMenkuriEye_Destroy(Actor* thisx, PlayState* play);
@@ -124,7 +124,7 @@ void BgMenkuriEye_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     if (Flags_GetSwitch(play, this->actor.params)) {
         gDPSetEnvColor(POLY_XLU_DISP++, 200, 0, 0, 255);
     } else if (this->framesUntilDisable == -1) {

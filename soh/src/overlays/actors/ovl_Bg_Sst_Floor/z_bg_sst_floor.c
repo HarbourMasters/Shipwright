@@ -7,7 +7,7 @@
 #include "z_bg_sst_floor.h"
 #include "objects/object_sst/object_sst.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void BgSstFloor_Init(BgSstFloor* this, PlayState* play);
 void BgSstFloor_Destroy(BgSstFloor* this, PlayState* play);
@@ -124,7 +124,7 @@ void BgSstFloor_Draw(BgSstFloor* thisx, PlayState* play) {
     BgSstFloor* this = (BgSstFloor*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Matrix_Scale(1.0f, this->drumHeight * -0.0025f, 1.0f, MTXMODE_APPLY);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),

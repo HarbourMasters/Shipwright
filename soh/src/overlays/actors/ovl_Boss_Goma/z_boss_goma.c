@@ -1,10 +1,12 @@
 #include "z_boss_goma.h"
+#include "textures/boss_title_cards/object_goma.h"
 #include "objects/object_goma/object_goma.h"
 #include "overlays/actors/ovl_En_Goma/z_en_goma.h"
 #include "overlays/actors/ovl_Door_Shutter/z_door_shutter.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
+#include "soh/Enhancements/boss-rush/BossRush.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 // IRIS_FOLLOW: gohma looks towards the player (iris rotation)
 // BONUS_IFRAMES: gain invincibility frames when the player does something (throwing things?), or
@@ -255,6 +257,9 @@ static u8 sClearPixelTableSecondPass[16 * 16] = {
     0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01
 };
 
+static u8 sClearPixelTex16[16 * 16] = { { 0 } };
+static u8 sClearPixelTex32[32 * 32] = { { 0 } };
+
 // indexed by limb (where the root limb is 1)
 static u8 sDeadLimbLifetime[] = {
     0,  0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -290,46 +295,19 @@ static u8 sDeadLimbLifetime[] = {
 };
 
 /**
- * Sets the `i`th pixel of a 16x16 RGBA16 image to 0 (transparent black)
- * according to the `clearPixelTable`
- */
-void BossGoma_ClearPixels16x16Rgba16(s16* rgba16image, u8* clearPixelTable, s16 i) 
-{
-    if (clearPixelTable[i]) {
-        rgba16image[i] = 0;
-    }
-}
-
-/**
- * Sets the `i`th 2x2 pixels block of a 32x32 RGBA16 image to 0 (transparent black)
- * according to the `clearPixelTable`
- */
-void BossGoma_ClearPixels32x32Rgba16(s16* rgba16image, u8* clearPixelTable, s16 i) {
-    s16* targetPixel;
-
-    if (clearPixelTable[i]) {
-        // address of the top left pixel in a 2x2 pixels block located at
-        // (i & 0xF, i >> 4) in a 16x16 grid of 2x2 pixels
-        targetPixel = rgba16image + ((i & 0xF) * 2 + (i & 0xF0) * 4);
-        // set the 2x2 block of pixels to 0
-        targetPixel[0] = 0;
-        targetPixel[1] = 0;
-        targetPixel[32 + 0] = 0;
-        targetPixel[32 + 1] = 0;
-    }
-}
-
-/**
  * Clear pixels from Gohma's textures
  */
 void BossGoma_ClearPixels(u8* clearPixelTable, s16 i) {
-    BossGoma_ClearPixels16x16Rgba16(ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGohmaBodyTex)), clearPixelTable, i);
-    BossGoma_ClearPixels16x16Rgba16(ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGohmaShellUndersideTex)), clearPixelTable, i);
-    BossGoma_ClearPixels16x16Rgba16(ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGohmaDarkShellTex)), clearPixelTable, i);
-    BossGoma_ClearPixels16x16Rgba16(ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGohmaEyeTex)), clearPixelTable, i);
+    if (clearPixelTable[i]) {
+        sClearPixelTex16[i] = 1;
 
-    BossGoma_ClearPixels32x32Rgba16(ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGohmaShellTex)), clearPixelTable, i);
-    BossGoma_ClearPixels32x32Rgba16(ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(gGohmaIrisTex)), clearPixelTable, i);
+        u8* targetPixel = sClearPixelTex32 + ((i & 0xF) * 2 + (i & 0xF0) * 4);
+        // set the 2x2 block of pixels to 0
+        targetPixel[0] = 1;
+        targetPixel[1] = 1;
+        targetPixel[32 + 0] = 1;
+        targetPixel[32 + 1] = 1;
+    }
 }
 
 static InitChainEntry sInitChain[] = {
@@ -363,8 +341,23 @@ void BossGoma_Init(Actor* thisx, PlayState* play) {
         Actor_Kill(&this->actor);
         Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, -640.0f, 0.0f, 0, 0,
                            0, WARP_DUNGEON_CHILD);
-        Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 141.0f, -640.0f, -84.0f, 0, 0, 0, 0);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, 141.0f, -640.0f, -84.0f, 0, 0, 0, 0, true);
     }
+
+    for (int i = 0; i < ARRAY_COUNT(sClearPixelTex16); i++) {
+        sClearPixelTex16[i] = 0;
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(sClearPixelTex32); i++) {
+        sClearPixelTex32[i] = 0;
+    }
+
+    Gfx_RegisterBlendedTexture(gGohmaBodyTex, sClearPixelTex16, NULL);
+    Gfx_RegisterBlendedTexture(gGohmaShellUndersideTex, sClearPixelTex16, NULL);
+    Gfx_RegisterBlendedTexture(gGohmaDarkShellTex, sClearPixelTex16, NULL);
+    Gfx_RegisterBlendedTexture(gGohmaEyeTex, sClearPixelTex16, NULL);
+    Gfx_RegisterBlendedTexture(gGohmaShellTex, sClearPixelTex32, NULL);
+    Gfx_RegisterBlendedTexture(gGohmaIrisTex, sClearPixelTex32, NULL);
 }
 
 void BossGoma_PlayEffectsAndSfx(BossGoma* this, PlayState* play, s16 arg2, s16 amountMinus1) {
@@ -404,7 +397,7 @@ void BossGoma_SetupDefeated(BossGoma* this, PlayState* play) {
     this->noBackfaceCulling = false;
     this->framesUntilNextAction = 1200;
     this->actionState = 0;
-    this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_2);
+    this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE);
     this->actor.speedXZ = 0.0f;
     this->actor.shape.shadowScale = 0.0f;
     Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x100FF);
@@ -450,6 +443,11 @@ void BossGoma_SetupCeilingIdle(BossGoma* this) {
  * When the player killed all children gohmas
  */
 void BossGoma_SetupFallJump(BossGoma* this) {
+    // When in Enemy Randomizer, reset the state of the spawned Gohma Larva because it's not done
+    // by the (non-existent) Larva themselves.
+    if (CVarGetInteger("gRandomizedEnemies", 0)) {
+        this->childrenGohmaState[0] = this->childrenGohmaState[1] = this->childrenGohmaState[2] = 0;
+    }
     Animation_Change(&this->skelanime, &gGohmaLandAnim, 1.0f, 0.0f, 0.0f, ANIMMODE_ONCE, -5.0f);
     this->actionFunc = BossGoma_FallJump;
     this->actor.speedXZ = 0.0f;
@@ -628,7 +626,7 @@ void BossGoma_SetupEncounterState4(BossGoma* this, PlayState* play) {
     camera = Play_GetCamera(play, 0);
     player = GET_PLAYER(play);
     this->actionState = 4;
-    this->actor.flags |= ACTOR_FLAG_0;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     func_80064520(play, &play->csCtx);
     func_8002DF54(play, &this->actor, 1);
     this->subCameraId = Play_CreateSubCamera(play);
@@ -682,7 +680,7 @@ void BossGoma_Encounter(BossGoma* this, PlayState* play) {
             // entrance of the boss room
             if (fabsf(player->actor.world.pos.x - 150.0f) < 60.0f &&
                 fabsf(player->actor.world.pos.z - 350.0f) < 60.0f) {
-                if (gSaveContext.eventChkInf[7] & 1) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_BEGAN_GOHMA_BATTLE)) {
                     BossGoma_SetupEncounterState4(this, play);
                     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_SHUTTER, 164.72f,
                                        -480.0f, 397.68002f, 0, -0x705C, 0, 0x180);
@@ -718,7 +716,7 @@ void BossGoma_Encounter(BossGoma* this, PlayState* play) {
             this->framesUntilNextAction = 50;
             this->timer = 80;
             this->frameCount = 0;
-            this->actor.flags &= ~ACTOR_FLAG_0;
+            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
             // fall-through
         case 2: // zoom on player from room center
             // room entrance, towards center
@@ -921,13 +919,13 @@ void BossGoma_Encounter(BossGoma* this, PlayState* play) {
             if (Animation_OnFrame(&this->skelanime, 40.0f)) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOMA_CRY1);
 
-                if (!(gSaveContext.eventChkInf[7] & 1)) {
+                if (!Flags_GetEventChkInf(EVENTCHKINF_BEGAN_GOHMA_BATTLE)) {
                     TitleCard_InitBossName(play, &play->actorCtx.titleCtx,
-                                           SEGMENTED_TO_VIRTUAL(gGohmaTitleCardTex), 160, 180, 128, 40, true);
+                                           SEGMENTED_TO_VIRTUAL(gGohmaTitleCardENGTex), 160, 180, 128, 40, true);
                 }
 
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS);
-                gSaveContext.eventChkInf[7] |= 1;
+                Flags_SetEventChkInf(EVENTCHKINF_BEGAN_GOHMA_BATTLE);
             }
 
             if (Animation_OnFrame(&this->skelanime, this->currentAnimFrameCount)) {
@@ -1120,8 +1118,10 @@ void BossGoma_Defeated(BossGoma* this, PlayState* play) {
                 this->timer = 70;
                 this->decayingProgress = 0;
                 this->subCameraFollowSpeed = 0.0f;
-                Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x,
-                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
+                if (!gSaveContext.isBossRush) {
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, this->actor.world.pos.x,
+                                this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
+                }
             }
             break;
 
@@ -1152,8 +1152,13 @@ void BossGoma_Defeated(BossGoma* this, PlayState* play) {
                     }
                 }
 
-                Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, childPos.x,
-                                   this->actor.world.pos.y, childPos.z, 0, 0, 0, WARP_DUNGEON_CHILD);
+                if (!gSaveContext.isBossRush) {
+                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, childPos.x,
+                                       this->actor.world.pos.y, childPos.z, 0, 0, 0, WARP_DUNGEON_CHILD);
+                } else {
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, childPos.x, this->actor.world.pos.y,
+                                childPos.z, 0, 0, 0, WARP_DUNGEON_ADULT, false);
+                }
                 Flags_SetClear(play, play->roomCtx.curRoom.num);
             }
 
@@ -1298,7 +1303,7 @@ void BossGoma_FloorPrepareAttack(BossGoma* this, PlayState* play) {
 void BossGoma_FloorAttack(BossGoma* this, PlayState* play) {
     s16 i;
 
-    this->actor.flags |= ACTOR_FLAG_24;
+    this->actor.flags |= ACTOR_FLAG_PLAY_HIT_SFX;
     SkelAnime_Update(&this->skelanime);
 
     switch (this->actionState) {
@@ -1553,12 +1558,16 @@ void BossGoma_CeilingIdle(BossGoma* this, PlayState* play) {
     Math_ApproachZeroF(&this->actor.speedXZ, 0.5f, 2.0f);
 
     if (this->framesUntilNextAction == 0) {
+        Actor* nearbyEnTest = NULL;
+        if (CVarGetInteger("gRandomizedEnemies", 0)) {
+            nearbyEnTest = Actor_FindNearby(play, &this->actor, -1, ACTORCAT_ENEMY, 8000.0f);
+        }
         if (this->childrenGohmaState[0] == 0 && this->childrenGohmaState[1] == 0 && this->childrenGohmaState[2] == 0) {
             // if no child gohma has been spawned
             BossGoma_SetupCeilingPrepareSpawnGohmas(this);
-        } else if (this->childrenGohmaState[0] < 0 && this->childrenGohmaState[1] < 0 &&
-                   this->childrenGohmaState[2] < 0) {
-            // if all children gohmas are dead
+        } else if ((this->childrenGohmaState[0] < 0 && this->childrenGohmaState[1] < 0 && this->childrenGohmaState[2] < 0) ||
+                   (nearbyEnTest == NULL && CVarGetInteger("gRandomizedEnemies", 0))) {
+            // In authentic gameplay, check if all baby Ghomas are dead. In Enemy Randomizer, check if there's no enemies alive.
             BossGoma_SetupFallJump(this);
         } else {
             for (i = 0; i < ARRAY_COUNT(this->childrenGohmaState); i++) {
@@ -1822,7 +1831,7 @@ void BossGoma_UpdateHit(BossGoma* this, PlayState* play) {
                 BossGoma_SetupFallStruckDown(this);
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_GOMA_DAM2);
             } else if (this->actionFunc == BossGoma_FloorStunned &&
-                       (damage = CollisionCheck_GetSwordDamage(acHitInfo->toucher.dmgFlags)) != 0) {
+                       (damage = CollisionCheck_GetSwordDamage(acHitInfo->toucher.dmgFlags, play)) != 0) {
                 this->actor.colChkInfo.health -= damage;
 
                 if ((s8)this->actor.colChkInfo.health > 0) {
@@ -1832,6 +1841,8 @@ void BossGoma_UpdateHit(BossGoma* this, PlayState* play) {
                 } else {
                     BossGoma_SetupDefeated(this, play);
                     Enemy_StartFinishingBlow(play, &this->actor);
+                    gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GOHMA] = GAMEPLAYSTAT_TOTAL_TIME;
+                    BossRush_HandleCompleteBoss(play);
                 }
 
                 this->invincibilityFrames = 10;
@@ -2122,17 +2133,13 @@ void BossGoma_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Matrix_Translate(0.0f, -4000.0f, 0.0f, MTXMODE_APPLY);
 
     // Invalidate Texture Cache since Goma modifies her own texture
     if (this->visualState == VISUALSTATE_DEFEATED) {
-        gSPInvalidateTexCache(POLY_OPA_DISP++, gGohmaBodyTex);
-        gSPInvalidateTexCache(POLY_OPA_DISP++, gGohmaShellUndersideTex);
-        gSPInvalidateTexCache(POLY_OPA_DISP++, gGohmaDarkShellTex);
-        gSPInvalidateTexCache(POLY_OPA_DISP++, gGohmaEyeTex);
-        gSPInvalidateTexCache(POLY_OPA_DISP++, gGohmaShellTex);
-        gSPInvalidateTexCache(POLY_OPA_DISP++, gGohmaIrisTex);
+        gSPInvalidateTexCache(POLY_OPA_DISP++, sClearPixelTex16);
+        gSPInvalidateTexCache(POLY_OPA_DISP++, sClearPixelTex32);
     }
 
     if (this->noBackfaceCulling) {

@@ -418,6 +418,15 @@ void HintTable_Init_Exclude_Overworld() {
                        Text{"a #carpet guru# sells", /*french*/"#un marchand du désert# vend", /*spanish*/"el #genio de una alfombra# vende"},
   });
 
+    hintTable[GC_MEDIGORON] = HintText::Exclude({
+                       //obscure text
+                       Text{"#Medigoron# sells", /*french*/"#Medigoron# vend", /*spanish*/"#Medigoron# vende"},
+  });
+
+  hintTable[KAK_GRANNYS_SHOP] = HintText::Exclude({
+                       // obscure text
+                       Text{"the #potion shop lady# sells", /*french*/"la #dame du magasin de potion# vend", /*spanish*/"la #señora de la tienda de pociones# vende" },
+  });
 
     hintTable[KAK_IMPAS_HOUSE_FREESTANDING_POH] = HintText::Exclude({
                        //obscure text
@@ -479,7 +488,7 @@ void HintTable_Init_Exclude_Overworld() {
 
     hintTable[GV_WATERFALL_FREESTANDING_POH] = HintText::Exclude({
                        //obscure text
-                       Text{"behind a #desert waterfall# is", /*french*/"#derrière la cascade du désert# se cache", /*spanish*/"tras una #desierta cascada# yace"},
+                       Text{"behind a #valley waterfall# is", /*french*/"#derrière la cascade du désert# se cache", /*spanish*/"tras una #desierta cascada# yace"},
   });
 
     hintTable[GV_CRATE_FREESTANDING_POH] = HintText::Exclude({

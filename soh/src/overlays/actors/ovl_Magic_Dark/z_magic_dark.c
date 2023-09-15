@@ -7,7 +7,7 @@
 #include "z_magic_dark.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_25)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void MagicDark_Init(Actor* thisx, PlayState* play);
 void MagicDark_Destroy(Actor* thisx, PlayState* play);
@@ -200,12 +200,12 @@ void MagicDark_DiamondDraw(Actor* thisx, PlayState* play) {
     u16 gameplayFrames = play->gameplayFrames;
     Color_RGB8 Spell_env_ori = {0, 100, 255};
     Color_RGB8 Spell_col_ori = {170, 255, 255};
-    Color_RGB8 Spell_env = CVar_GetRGB("gNL_Diamond_Env", Spell_env_ori);
-    Color_RGB8 Spell_col = CVar_GetRGB("gNL_Diamond_Col", Spell_col_ori);
+    Color_RGB8 Spell_env = CVarGetColor24("gNL_Diamond_Env", Spell_env_ori);
+    Color_RGB8 Spell_col = CVarGetColor24("gNL_Diamond_Col", Spell_col_ori);
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     {
         Player* player = GET_PLAYER(play);
@@ -224,7 +224,7 @@ void MagicDark_DiamondDraw(Actor* thisx, PlayState* play) {
         Matrix_RotateY(this->actor.shape.rot.y * (M_PI / 0x8000), MTXMODE_APPLY);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        if (CVar_GetS32("gUseSpellsCol",0)) {
+        if (CVarGetInteger("gUseSpellsCol",0)) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, Spell_col.r, Spell_col.g, Spell_col.b, (s32)(this->primAlpha * 0.6f) & 0xFF);
             gDPSetEnvColor(POLY_XLU_DISP++, Spell_env.r, Spell_env.g, Spell_env.b, 128);
         } else {
@@ -270,7 +270,7 @@ void MagicDark_OrbDraw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 170, 255, 255, 255);
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 150, 255, 255);
     Matrix_Translate(pos.x, pos.y, pos.z, MTXMODE_NEW);

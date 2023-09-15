@@ -1,7 +1,7 @@
 #ifndef Z_DEMO_TRE_LGT_H
 #define Z_DEMO_TRE_LGT_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct DemoTreLgt;

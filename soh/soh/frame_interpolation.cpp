@@ -1,4 +1,4 @@
-#include <libultraship/Cvar.h>
+#include <libultraship/bridge.h>
 
 #include <vector>
 #include <map>
@@ -6,6 +6,7 @@
 #include <math.h>
 
 #include "frame_interpolation.h"
+#include "soh/OTRGlobals.h"
 
 /*
 Frame interpolation.
@@ -451,7 +452,7 @@ void FrameInterpolation_StartRecord(void) {
     current_recording = {};
     current_path.clear();
     current_path.push_back(&current_recording.root_path);
-    if (CVar_GetS32("gInterpolationFPS", 20) != 20) {
+    if (OTRGlobals::Instance->GetInterpolationFPS() != 20) {
         is_recording = true;
     }
 }

@@ -1,7 +1,7 @@
 #ifndef _FILE_CHOOSE_H_
 #define _FILE_CHOOSE_H_
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include "vt.h"
 
@@ -61,6 +61,10 @@ typedef enum {
     CM_START_QUEST_MENU,
     CM_QUEST_TO_MAIN,
     CM_NAME_ENTRY_TO_QUEST_MENU,
+    CM_ROTATE_TO_BOSS_RUSH_MENU,
+    CM_BOSS_RUSH_MENU,
+    CM_START_BOSS_RUSH_MENU,
+    CM_BOSS_RUSH_TO_QUEST,
 } ConfigMode;
 
 typedef enum {
@@ -138,7 +142,8 @@ typedef enum {
 
 typedef enum {
     /* 0 */ FS_SETTING_AUDIO,
-    /* 1 */ FS_SETTING_TARGET
+    /* 1 */ FS_SETTING_TARGET,
+    /* 2 */ FS_SETTING_LANGUAGE, // PAL N64 only
 } SettingIndex;
 
 typedef enum {
@@ -147,6 +152,11 @@ typedef enum {
     /* 2 */ FS_AUDIO_HEADSET,
     /* 3 */ FS_AUDIO_SURROUND
 } AudioOption;
+
+typedef enum {
+    /* 0 */ FS_TARGET_SWITCH,
+    /* 1 */ FS_TARGET_HOLD,
+} TargetOption;
 
 typedef enum {
     /* 0 */ FS_CHAR_PAGE_HIRA,
@@ -162,6 +172,13 @@ typedef enum {
     /* 04 */ FS_KBD_BTN_END,
     /* 99 */ FS_KBD_BTN_NONE = 99
 } KeyboardButton;
+
+typedef enum {
+    /* 00 */ FS_QUEST_NORMAL,
+    /* 01 */ FS_QUEST_MASTER,
+    /* 02 */ FS_QUEST_RANDOMIZER,
+    /* 03 */ FS_QUEST_BOSSRUSH,
+} FileSelectQuest;
 
 void FileChoose_SetupCopySource(GameState* thisx); 
 void FileChoose_SelectCopySource(GameState* thisx); 
@@ -209,8 +226,8 @@ void FileChoose_DrawNameEntry(GameState* thisx);
 void FileChoose_DrawCharacter(GraphicsContext* gfxCtx, void* texture, s16 vtx);
 
 void HandleMouseInput(Input* input);
-u8 HandleMouseCursor(FileChooseContext* this, Input* input, int minx, int miny, int maxx, int maxy);
-Vec2f HandleMouseCursorSplit(FileChooseContext* this, Input* input, int minx, int miny, int maxx, int maxy, int countx,
+u8 HandleMouseCursor(FileChooseContext* thisx, Input* input, int minx, int miny, int maxx, int maxy);
+Vec2f HandleMouseCursorSplit(FileChooseContext* thisx, Input* input, int minx, int miny, int maxx, int maxy, int countx,
                              int county);
 
 extern s16 D_808123F0[];

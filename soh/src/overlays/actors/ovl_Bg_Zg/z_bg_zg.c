@@ -8,7 +8,7 @@
 #include "objects/object_zg/object_zg.h"
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void BgZg_Init(Actor* thisx, PlayState* play);
 void BgZg_Destroy(Actor* thisx, PlayState* play);
@@ -125,7 +125,7 @@ void func_808C0EEC(BgZg* this, PlayState* play) {
 
     OPEN_DISPS(localGfxCtx);
 
-    func_80093D18(localGfxCtx);
+    Gfx_SetupDL_25Opa(localGfxCtx);
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(localGfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseBarsDL);

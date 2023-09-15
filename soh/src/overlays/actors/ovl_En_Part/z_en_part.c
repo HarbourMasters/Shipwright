@@ -8,7 +8,7 @@
 #include "objects/object_tite/object_tite.h"
 #include "objects/object_ik/object_ik.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void EnPart_Init(Actor* thisx, PlayState* play);
 void EnPart_Destroy(Actor* thisx, PlayState* play);
@@ -282,7 +282,7 @@ void EnPart_Draw(Actor* thisx, PlayState* play) {
         Matrix_RotateZ(this->rotZ, MTXMODE_APPLY);
     }
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     func_8002EBCC(thisx, play, 0);
 
     if (thisx->params == 5) {

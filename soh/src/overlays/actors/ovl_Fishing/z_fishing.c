@@ -12,7 +12,7 @@
 
 #include "soh/frame_interpolation.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 #define WATER_SURFACE_Y(play) play->colCtx.colHeader->waterBoxes->ySurface
 
@@ -22,6 +22,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play);
 void Fishing_UpdateOwner(Actor* thisx, PlayState* play);
 void Fishing_DrawFish(Actor* thisx, PlayState* play);
 void Fishing_DrawOwner(Actor* thisx, PlayState* play);
+void Fishing_Reset(void);
 
 typedef struct {
     /* 0x00 */ u8 unk_00;
@@ -132,7 +133,7 @@ const ActorInit Fishing_InitVars = {
     (ActorFunc)Fishing_Destroy,
     (ActorFunc)Fishing_UpdateFish,
     (ActorFunc)Fishing_DrawFish,
-    NULL,
+    (ActorResetFunc)Fishing_Reset,
 };
 
 static f32 D_80B7A650 = 0.0f;
@@ -863,7 +864,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
 
         thisx->focus.pos = thisx->world.pos;
         thisx->focus.pos.y += 75.0f;
-        thisx->flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
+        thisx->flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
 
         if (sLinkAge != 1) {
             if (HIGH_SCORE(HS_FISHING) & 0x1000) {
@@ -965,7 +966,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
         Fishing_InitPondProps(this, play);
         Actor_SpawnAsChild(&play->actorCtx, thisx, play, ACTOR_EN_KANBAN, 53.0f, -17.0f, 982.0f, 0, 0, 0,
                            ENKANBAN_FISHING);
-        Actor_Spawn(&play->actorCtx, play, ACTOR_FISHING, 0.0f, 0.0f, 0.0f, 0, 0, 0, 200);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_FISHING, 0.0f, 0.0f, 0.0f, 0, 0, 0, 200, true);
 
         if ((KREG(1) == 1) || ((D_80B7E07D & 3) == 3)) {
             if (sLinkAge != 1) {
@@ -979,7 +980,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
 
         for (i = 0; i < fishCount; i++) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_FISHING, sFishInits[i].pos.x, sFishInits[i].pos.y,
-                        sFishInits[i].pos.z, 0, Rand_ZeroFloat(0x10000), 0, 100 + i);
+                        sFishInits[i].pos.z, 0, Rand_ZeroFloat(0x10000), 0, 100 + i, true);
         }
     } else {
         if ((thisx->params < 115) || (thisx->params == 200)) {
@@ -996,7 +997,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
             this->unk_158 = 100;
             Actor_ChangeCategory(play, &play->actorCtx, thisx, ACTORCAT_PROP);
             thisx->targetMode = 0;
-            thisx->flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
+            thisx->flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
             this->lightNode = LightContext_InsertLight(play, &play->lightCtx, &this->lightInfo);
         } else {
             this->unk_158 = 10;
@@ -1305,7 +1306,7 @@ void Fishing_DrawEffects(FishingEffect* effect, PlayState* play) {
         if (effect->type == FS_EFF_RAIN_DROP) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (flag == 0) {
-                POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x14);
+                POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0x14);
                 gDPSetCombineMode(POLY_XLU_DISP++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
                 gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 150, 255, 255, 30);
                 flag++;
@@ -1326,7 +1327,7 @@ void Fishing_DrawEffects(FishingEffect* effect, PlayState* play) {
         effect++;
     }
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     effect = firstEffect + 30;
     flag = 0;
@@ -1772,7 +1773,7 @@ void Fishing_DrawSinkingLure(PlayState* play) {
     Fishing_UpdateSinkingLure(play);
 
     if (sLurePos.y < WATER_SURFACE_Y(play)) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
         gSPDisplayList(POLY_OPA_DISP++, gFishingSinkingLureSegmentMaterialDL);
 
@@ -1791,7 +1792,7 @@ void Fishing_DrawSinkingLure(PlayState* play) {
             }
         }
     } else {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
         gSPDisplayList(POLY_XLU_DISP++, gFishingSinkingLureSegmentMaterialDL);
 
@@ -1825,7 +1826,7 @@ void Fishing_DrawLureAndLine(PlayState* play, Vec3f* linePos, Vec3f* lineRot) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Matrix_Push();
 
     if (D_80B7A6D4 != 0) {
@@ -1867,7 +1868,7 @@ void Fishing_DrawLureAndLine(PlayState* play, Vec3f* linePos, Vec3f* lineRot) {
         Matrix_RotateZ(M_PI / 2, MTXMODE_APPLY);
         Matrix_RotateY(M_PI / 2, MTXMODE_APPLY);
 
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -1889,7 +1890,7 @@ void Fishing_DrawLureAndLine(PlayState* play, Vec3f* linePos, Vec3f* lineRot) {
         Fishing_DrawLureHook(play, &hookPos[1], &sLureHookRefPos[1], 1);
     }
 
-    POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x14);
+    POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0x14);
 
     gDPSetCombineMode(POLY_XLU_DISP++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 55);
@@ -1963,7 +1964,7 @@ void Fishing_DrawLureAndLine(PlayState* play, Vec3f* linePos, Vec3f* lineRot) {
     }
 
     Matrix_Pop();
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -2024,7 +2025,7 @@ void Fishing_DrawRod(PlayState* play) {
         spC8 = player->unk_85C - spC8;
 
         spC4 = player->unk_858;
-        Math_SmoothStepToF(&player->unk_858, input->rel.stick_x * 0.02f, 0.3f, 5.0f, 0.0f);
+        Math_SmoothStepToF(&player->unk_858, input->rel.stick_x * 0.02f * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1), 0.3f, 5.0f, 0.0f);
         spC4 = player->unk_858 - spC4;
 
         if (player->unk_858 > 1.0f) {
@@ -2058,7 +2059,7 @@ void Fishing_DrawRod(PlayState* play) {
         }
     }
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPDisplayList(POLY_OPA_DISP++, gFishingRodMaterialDL);
 
@@ -2877,7 +2878,7 @@ void Fishing_HandleAquariumDialog(Fishing* this, PlayState* play) {
 
     if (this->unk_1D3 == 0) {
         if (this->unk_1D4 == 0) {
-            this->actor.flags |= ACTOR_FLAG_0;
+            this->actor.flags |= ACTOR_FLAG_TARGETABLE;
 
             if (Actor_ProcessTalkRequest(&this->actor, play)) {
                 D_80B7A678 = D_80B7E078;
@@ -2887,7 +2888,7 @@ void Fishing_HandleAquariumDialog(Fishing* this, PlayState* play) {
             }
         } else {
             this->unk_1D4--;
-            this->actor.flags &= ~ACTOR_FLAG_0;
+            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
         }
     } else if (Actor_TextboxIsClosing(&this->actor, play)) {
         this->unk_1D3 = 0;
@@ -2900,24 +2901,24 @@ f32 Fishing_GetMinimumRequiredScore() {
     // RANDOTODO: update the enhancement sliders to not allow
     // values above rando fish weight values when rando'd
     if(sLinkAge == 1) {
-        weight = CVar_GetS32("gChildMinimumWeightFish", 10);
+        weight = CVarGetInteger("gCustomizeFishing", 0) ? CVarGetInteger("gChildMinimumWeightFish", 10) : 10;
     } else {
-        weight = CVar_GetS32("gAdultMinimumWeightFish", 13);     
+        weight = CVarGetInteger("gCustomizeFishing", 0) ? CVarGetInteger("gAdultMinimumWeightFish", 13) : 13;     
     }
 
     return sqrt(((f32)weight - 0.5f) / 0.0036f);
 }
 
 bool getInstantFish() {
-    return CVar_GetS32("gInstantFishing", 0);
+    return CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gInstantFishing", 0);
 }
 
 bool getGuaranteeBite() {
-    return CVar_GetS32("gGuaranteeFishingBite", 0);
+    return CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gGuaranteeFishingBite", 0);
 }
 
 bool getFishNeverEscape() {
-    return CVar_GetS32("gFishNeverEscape", 0);
+    return CVarGetInteger("gCustomizeFishing", 0) && CVarGetInteger("gFishNeverEscape", 0);
 }
 
 void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
@@ -2968,9 +2969,9 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
     }
 
     if ((D_80B7E0B0 != 0) || (sCameraId != 0) || ((player->actor.world.pos.z > 1150.0f) && (this->unk_158 != 100))) {
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     } else {
-        this->actor.flags |= ACTOR_FLAG_0;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
         if (D_80B7A694 != 0) {
             if (D_80B7E0B2 == 0) {
                 this->actor.focus.pos = sLurePos;
@@ -3187,7 +3188,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
             if (D_80B7E0B6 == 2) {
                 func_80B70ED4(this, input);
             } else {
-                this->actor.flags &= ~ACTOR_FLAG_0;
+                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
             }
             break;
 
@@ -3224,7 +3225,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                 if (D_80B7E0B6 == 2) {
                     func_80B70ED4(this, input);
                 } else {
-                    this->actor.flags &= ~ACTOR_FLAG_0;
+                    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                 }
             }
             break;
@@ -3268,7 +3269,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                 this->unk_1B4.z = Rand_ZeroFloat(50.0f);
             }
 
-            this->actor.flags &= ~ACTOR_FLAG_0;
+            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
             break;
 
         case -2:
@@ -3307,7 +3308,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                 }
 
                 Math_ApproachF(&this->unk_1B0, 2048.0f, 1.0f, 128.0f);
-                this->actor.flags &= ~ACTOR_FLAG_0;
+                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
             }
             break;
 
@@ -4316,7 +4317,7 @@ void Fishing_LoachPostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3
 void Fishing_DrawFish(Actor* thisx, PlayState* play) {
     Fishing* this = (Fishing*)thisx;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     Matrix_Translate(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, MTXMODE_NEW);
     Matrix_RotateY(((this->unk_162 + this->actor.shape.rot.y) / 32768.0f) * M_PI, MTXMODE_APPLY);
@@ -5122,7 +5123,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                 Player* player = GET_PLAYER(play);
 
                 if (gSaveContext.temporaryWeapon) {
-                    player->currentSwordItem = ITEM_NONE;
+                    player->currentSwordItemId = ITEM_NONE;
                     gSaveContext.equips.buttonItems[0] = ITEM_NONE;
                     Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
                     gSaveContext.temporaryWeapon = false;
@@ -5214,9 +5215,9 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
     SkelAnime_Update(&this->skelAnime);
 
     if ((D_80B7A684 != 0) || (Message_GetState(&play->msgCtx) != TEXT_STATE_NONE)) {
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     } else {
-        this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_5;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_DRAW_WHILE_CULLED;
     }
 
     if ((this->actor.xzDistToPlayer < 120.0f) || (Message_GetState(&play->msgCtx) != TEXT_STATE_NONE)) {
@@ -5824,8 +5825,8 @@ void Fishing_DrawOwner(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     if ((this->actor.projectedPos.z < 1500.0f) &&
         (fabsf(this->actor.projectedPos.x) < (100.0f + this->actor.projectedPos.z))) {
@@ -5887,4 +5888,11 @@ void Fishing_DrawOwner(Actor* thisx, PlayState* play) {
     }
 
     CLOSE_DISPS(play->state.gfxCtx);
+}
+
+void Fishing_Reset(void) {
+    // Reset static variables for fishing camera and cinematic state to prevent crashing when dying
+    // or re-entering the scene while the fishing rod was cast
+    sCameraId = 0;
+    D_80B7A6CC = 0;
 }

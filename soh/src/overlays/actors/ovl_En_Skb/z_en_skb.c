@@ -1,8 +1,9 @@
 #include "z_en_skb.h"
 #include "overlays/actors/ovl_En_Encount1/z_en_encount1.h"
 #include "objects/object_skb/object_skb.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnSkb_Init(Actor* thisx, PlayState* play);
 void EnSkb_Destroy(Actor* thisx, PlayState* play);
@@ -185,10 +186,13 @@ void EnSkb_Destroy(Actor* thisx, PlayState* play) {
         }
     }
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80AFCD60(EnSkb* this) {
-    if (IS_DAY) {
+    // Don't despawn stallchildren during daytime when enemy randomizer is enabled.
+    if (IS_DAY && !CVarGetInteger("gRandomizedEnemies", 0)) {
         func_80AFCF48(this);
     } else if (Actor_IsFacingPlayer(&this->actor, 0x11C7) &&
                (this->actor.xzDistToPlayer < (60.0f + (this->actor.params * 6.0f)))) {
@@ -201,7 +205,7 @@ void func_80AFCD60(EnSkb* this) {
 void func_80AFCDF8(EnSkb* this) {
     Animation_PlayOnceSetSpeed(&this->skelAnime, &gStalchildUncurlingAnim, 1.0f);
     this->unk_280 = 0;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIVA_APPEAR);
     EnSkb_SetupAction(this, func_80AFCE5C);
 }
@@ -211,7 +215,7 @@ void func_80AFCE5C(EnSkb* this, PlayState* play) {
         this->actor.world.rot.y = this->actor.yawTowardsPlayer;
         this->actor.shape.rot.y = this->actor.yawTowardsPlayer;
     } else {
-        this->actor.flags |= ACTOR_FLAG_0;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     }
     Math_SmoothStepToF(&this->actor.shape.yOffset, 0.0f, 1.0f, 800.0f, 0.0f);
     Math_SmoothStepToF(&this->actor.shape.shadowScale, 25.0f, 1.0f, 2.5f, 0.0f);
@@ -228,7 +232,7 @@ void func_80AFCF48(EnSkb* this) {
                      Animation_GetLastFrame(&gStalchildUncurlingAnim), 0.0f, ANIMMODE_ONCE, -4.0f);
     this->unk_280 = 0;
     this->unk_281 = 0;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actor.speedXZ = 0.0f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_AKINDONUTS_HIDE);
     EnSkb_SetupAction(this, func_80AFCFF0);
@@ -285,7 +289,8 @@ void EnSkb_Advance(EnSkb* this, PlayState* play) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_STALKID_WALK);
         }
     }
-    if (Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) > 800.0f || IS_DAY) {
+    // Don't despawn stallchildren during daytime or when a stalchildren walks too far away from his "home" when enemy randomizer is enabled.
+    if ((Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) > 800.0f || IS_DAY) && !CVarGetInteger("gRandomizedEnemies", 0)) {
         func_80AFCF48(this);
     } else if (Actor_IsFacingPlayer(&this->actor, 0x11C7) &&
                (this->actor.xzDistToPlayer < (60.0f + (this->actor.params * 6.0f)))) {
@@ -407,11 +412,12 @@ void func_80AFD7B4(EnSkb* this, PlayState* play) {
         this->actor.speedXZ = -6.0f;
     }
     this->unk_280 = 1;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     BodyBreak_Alloc(&this->bodyBreak, 18, play);
     this->unk_283 |= 4;
     EffectSsDeadSound_SpawnStationary(play, &this->actor.projectedPos, NA_SE_EN_STALKID_DEAD, 1, 1, 0x28);
     EnSkb_SetupAction(this, func_80AFD880);
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void func_80AFD880(EnSkb* this, PlayState* play) {
@@ -478,8 +484,8 @@ void func_80AFD968(EnSkb* this, PlayState* play) {
                     if (this->unk_283 == 0) {
                         if ((this->actor.colChkInfo.damageEffect == 0xD) ||
                             ((this->actor.colChkInfo.damageEffect == 0xE) &&
-                             ((player->swordAnimation >= 4 && player->swordAnimation <= 11) ||
-                              (player->swordAnimation == 20 || player->swordAnimation == 21)))) {
+                             ((player->meleeWeaponAnimation >= 4 && player->meleeWeaponAnimation <= 11) ||
+                              (player->meleeWeaponAnimation == 20 || player->meleeWeaponAnimation == 21)))) {
                             BodyBreak_Alloc(&this->bodyBreak, 2, play);
                             this->unk_283 = 1;
                         }
@@ -549,7 +555,7 @@ void EnSkb_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
 
 void EnSkb_Draw(Actor* thisx, PlayState* play) {
     EnSkb* this = (EnSkb*)thisx;
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnSkb_OverrideLimbDraw,
                       EnSkb_PostLimbDraw, &this->actor);
 }

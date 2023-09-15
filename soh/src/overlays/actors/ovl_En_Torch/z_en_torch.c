@@ -35,7 +35,7 @@ void EnTorch_Init(Actor* thisx, PlayState* play) {
        Contents are passed to en_torch from grotto params via Save Context. */
     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOX, this->actor.world.pos.x, this->actor.world.pos.y,
                 this->actor.world.pos.z, 0, this->actor.shape.rot.y, 0,
-                (sChestContents[(returnData >> 0x5) & 0x7] << 0x5) | 0x5000 | (returnData & 0x1F));
+                (sChestContents[(returnData >> 0x5) & 0x7] << 0x5) | 0x5000 | (returnData & 0x1F), true);
 
     Actor_Kill(&this->actor);
 }

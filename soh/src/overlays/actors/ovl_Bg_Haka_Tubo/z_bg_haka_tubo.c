@@ -8,7 +8,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_haka_objects/object_haka_objects.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void BgHakaTubo_Init(Actor* thisx, PlayState* play);
 void BgHakaTubo_Destroy(Actor* thisx, PlayState* play);
@@ -177,11 +177,11 @@ void BgHakaTubo_DropCollectible(BgHakaTubo* this, PlayState* play) {
                 collectibleParams = -1;
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_FIREFLY, this->dyna.actor.world.pos.x,
                             this->dyna.actor.world.pos.y + 80.0f, this->dyna.actor.world.pos.z, 0,
-                            this->dyna.actor.shape.rot.y, 0, 2);
+                            this->dyna.actor.shape.rot.y, 0, 2, true);
                 func_80078884(NA_SE_SY_ERROR);
             } else {
                 // Random rewards
-                if (CVar_GetS32("gNoRandomDrops", 0)) {
+                if (CVarGetInteger("gNoRandomDrops", 0)) {
                     collectibleParams = -1;
                 } else if(rnd < 0.4f) {
                     collectibleParams = ITEM00_BOMBS_A;
@@ -196,7 +196,7 @@ void BgHakaTubo_DropCollectible(BgHakaTubo* this, PlayState* play) {
             }
         } else if (Flags_GetCollectible(play, this->dyna.actor.params) != 0) {
             // If small key already collected, drop recovery heart instead
-            if (CVar_GetS32("gNoHeartDrops", 0)) {
+            if (CVarGetInteger("gNoHeartDrops", 0)) {
                 collectibleParams = -1;
             }
             else {
@@ -231,7 +231,7 @@ void BgHakaTubo_DrawFlameCircle(BgHakaTubo* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     Matrix_Translate(this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y + 235.0f, this->dyna.actor.world.pos.z,
                      MTXMODE_NEW);
     Matrix_RotateY(this->dyna.actor.shape.rot.y * (M_PI / 0x8000), MTXMODE_APPLY);

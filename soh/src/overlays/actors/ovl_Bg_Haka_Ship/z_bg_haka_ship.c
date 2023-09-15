@@ -7,7 +7,7 @@
 #include "z_bg_haka_ship.h"
 #include "objects/object_haka_objects/object_haka_objects.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void BgHakaShip_Init(Actor* thisx, PlayState* play);
 void BgHakaShip_Destroy(Actor* thisx, PlayState* play);
@@ -199,7 +199,7 @@ void BgHakaShip_Draw(Actor* thisx, PlayState* play) {
     f32 angleTemp;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     if (this->dyna.actor.params == 0) {
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

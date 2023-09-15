@@ -7,7 +7,7 @@
 #include "z_en_horse_ganon.h"
 #include "objects/object_horse_ganon/object_horse_ganon.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 typedef struct {
     /* 0x0 */ Vec3s unk_0;
@@ -326,6 +326,6 @@ void EnHorseGanon_Draw(Actor* thisx, PlayState* play) {
     EnHorseGanon* this = (EnHorseGanon*)thisx;
 
     func_80A68E14(this, play);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     func_800A6330(&this->actor, play, &this->skin, EnHorseGanon_PostDraw, true);
 }

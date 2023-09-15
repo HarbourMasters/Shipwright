@@ -148,7 +148,7 @@ void ObjKibako2_Idle(ObjKibako2* this, PlayState* play) {
         func_80033684(play, &this->dyna.actor) != NULL) {
         ObjKibako2_Break(this, play);
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 20, NA_SE_EV_WOODBOX_BREAK);
-        this->dyna.actor.flags |= ACTOR_FLAG_4;
+        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
         func_8003EBF8(play, &play->colCtx.dyna, this->dyna.bgId);
         this->dyna.actor.draw = NULL;
         this->actionFunc = ObjKibako2_Kill;
@@ -163,7 +163,7 @@ void ObjKibako2_Kill(ObjKibako2* this, PlayState* play) {
     if ((params & 0x8000) == 0) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SW, this->dyna.actor.world.pos.x,
                     this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z, 0, this->dyna.actor.shape.rot.y, 0,
-                    params | 0x8000);
+                    params | 0x8000, true);
     }
     ObjKibako2_SpawnCollectible(this, play);
     Actor_Kill(&this->dyna.actor);

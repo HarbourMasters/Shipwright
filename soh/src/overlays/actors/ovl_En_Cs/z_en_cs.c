@@ -2,7 +2,7 @@
 #include "objects/object_cs/object_cs.h"
 #include "objects/object_link_child/object_link_child.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnCs_Init(Actor* thisx, PlayState* play);
 void EnCs_Destroy(Actor* thisx, PlayState* play);
@@ -161,6 +161,8 @@ void EnCs_Destroy(Actor* thisx, PlayState* play) {
     EnCs* this = (EnCs*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnCs_GetTalkState(EnCs* this, PlayState* play) {
@@ -187,7 +189,7 @@ s32 EnCs_GetTalkState(EnCs* this, PlayState* play) {
                 if (this->actor.textId == 0x2026) {
                     Player_UnsetMask(play);
                     Item_Give(play, ITEM_SOLD_OUT);
-                    gSaveContext.itemGetInf[3] |= 0x400;
+                    Flags_SetItemGetInf(ITEMGETINF_3A);
                     Rupees_ChangeBy(30);
                     this->actor.textId = 0x2027;
                     talkState = 2;
@@ -211,7 +213,7 @@ s32 EnCs_GetTextID(EnCs* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     s32 textId = Text_GetFaceReaction(play, 15);
 
-    if (gSaveContext.itemGetInf[3] & 0x400) {
+    if (Flags_GetItemGetInf(ITEMGETINF_3A)) {
         if (textId == 0) {
             textId = 0x2028;
         }
@@ -334,14 +336,14 @@ void EnCs_Walk(EnCs* this, PlayState* play) {
         animIndex = this->currentAnimIndex;
 
         if (this->talkState == 0) {
-            if (gSaveContext.itemGetInf[3] & 0x400) {
+            if (Flags_GetItemGetInf(ITEMGETINF_3A)) {
                 rnd = Rand_ZeroOne() * 10.0f;
             } else {
                 rnd = Rand_ZeroOne() * 5.0f;
             }
 
             if (rnd == 0) {
-                if (gSaveContext.itemGetInf[3] & 0x400) {
+                if (Flags_GetItemGetInf(ITEMGETINF_3A)) {
                     animIndex = 2.0f * Rand_ZeroOne();
                     animIndex = (animIndex == 0) ? ENCS_ANIM_2 : ENCS_ANIM_1;
                 } else {
@@ -404,10 +406,10 @@ void EnCs_Talk(EnCs* this, PlayState* play) {
     }
 
     this->flag |= 1;
-    this->npcInfo.unk_18.x = player->actor.focus.pos.x;
-    this->npcInfo.unk_18.y = player->actor.focus.pos.y;
-    this->npcInfo.unk_18.z = player->actor.focus.pos.z;
-    func_80034A14(&this->actor, &this->npcInfo, 0, 4);
+    this->interactInfo.trackPos.x = player->actor.focus.pos.x;
+    this->interactInfo.trackPos.y = player->actor.focus.pos.y;
+    this->interactInfo.trackPos.z = player->actor.focus.pos.z;
+    Npc_TrackPoint(&this->actor, &this->interactInfo, 0, NPC_TRACKING_FULL_BODY);
 
     if (this->talkState == 0) {
         EnCs_ChangeAnim(this, ENCS_ANIM_0, &this->currentAnimIndex);
@@ -464,13 +466,13 @@ void EnCs_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
 
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnCs_OverrideLimbDraw, EnCs_PostLimbDraw, &this->actor);
 
-    if (gSaveContext.itemGetInf[3] & 0x400) {
+    if (Flags_GetItemGetInf(ITEMGETINF_3A)) {
         s32 childLinkObjectIndex = Object_GetIndex(&play->objectCtx, OBJECT_LINK_CHILD);
 
         // Handle attaching the Spooky Mask to the boy's face
@@ -495,12 +497,12 @@ s32 EnCs_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* po
     if (this->flag & 1) {
         switch (limbIndex) {
             case 8:
-                rot->x += this->npcInfo.unk_0E.y;
-                rot->y -= this->npcInfo.unk_0E.x;
+                rot->x += this->interactInfo.torsoRot.y;
+                rot->y -= this->interactInfo.torsoRot.x;
                 break;
             case 15:
-                rot->x += this->npcInfo.unk_08.y;
-                rot->z += this->npcInfo.unk_08.x;
+                rot->x += this->interactInfo.headRot.y;
+                rot->z += this->interactInfo.headRot.x;
                 break;
         }
     }

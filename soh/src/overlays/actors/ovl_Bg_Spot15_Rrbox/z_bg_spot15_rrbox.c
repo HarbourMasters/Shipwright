@@ -96,7 +96,7 @@ s32 func_808B3AAC(BgSpot15Rrbox* this, PlayState* play) {
     s16 rotY;
     Actor* actor = &this->dyna.actor;
 
-    if (play->sceneNum == SCENE_SOUKO) {
+    if (play->sceneNum == SCENE_LON_LON_BUILDINGS) {
         return true;
     } else if (func_808B3A40(this, play)) {
         return false;
@@ -110,7 +110,7 @@ s32 func_808B3AAC(BgSpot15Rrbox* this, PlayState* play) {
         }
 
         if (rotY < 0x2000 && rotY > -0x6000) {
-            return gSaveContext.eventChkInf[1] & 0x10;
+            return Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE);
         }
         return true;
     }
@@ -260,9 +260,9 @@ void func_808B4194(BgSpot15Rrbox* this, PlayState* play) {
     s32 approxFResult;
     Actor* actor = &this->dyna.actor;
 
-    this->unk_174 = this->unk_174 + ((CVar_GetS32("gFasterBlockPush", 0) / 2) * 0.5) + 0.5f;
+    this->unk_174 = this->unk_174 + ((CVarGetInteger("gFasterBlockPush", 0) / 2) * 0.5) + 0.5f;
 
-    this->unk_174 = CLAMP_MAX(this->unk_174, 2.0f);
+    this->unk_174 = CLAMP_MAX(this->unk_174, 2.0f + (CVarGetInteger("gFasterBlockPush", 0) * 0.5));
 
     approxFResult = Math_StepToF(&this->unk_178, 20.0f, this->unk_174);
 
@@ -294,7 +294,7 @@ void func_808B4194(BgSpot15Rrbox* this, PlayState* play) {
         this->dyna.unk_150 = 0.0f;
         this->unk_178 = 0.0f;
         this->unk_174 = 0.0f;
-        this->unk_168 = 10 - ((CVar_GetS32("gFasterBlockPush", 0) * 3) / 2);
+        this->unk_168 = 10 - ((CVarGetInteger("gFasterBlockPush", 0) * 3) / 2);
         func_808B4084(this, play);
     }
     Audio_PlayActorSound2(actor, NA_SE_EV_ROCK_SLIDE - SFX_FLAG);

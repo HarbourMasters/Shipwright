@@ -1,12 +1,15 @@
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
-#include <ultra64/abi.h>
-#include <libultraship/mixer.h>
+#include "soh/mixer.h"
+
+#include "soh/Enhancements/audio/AudioEditor.h"
 
 typedef struct {
     u8 unk_0;
     u8 unk_1; // importance?
 } Struct_8016E320;
+
+#define GET_PLAYER_IDX(cmd) (cmd & 0xF000000) >> 24
 
 Struct_8016E320 D_8016E320[4][5];
 u8 D_8016E348[4];
@@ -106,7 +109,7 @@ void Audio_ProcessSeqCmd(u32 cmd) {
     u8 op;
     u8 subOp;
     u8 playerIdx;
-    u8 seqId;
+    u16 seqId;
     u8 seqArgs;
     u8 found;
     u8 port;
@@ -122,7 +125,7 @@ void Audio_ProcessSeqCmd(u32 cmd) {
     }
 
     op = cmd >> 28;
-    playerIdx = (cmd & 0xF000000) >> 24;
+    playerIdx = GET_PLAYER_IDX(cmd);
 
     switch (op) {
         case 0x0:
@@ -369,16 +372,22 @@ extern f32 D_80130F28;
 void Audio_QueueSeqCmd(u32 cmd) 
 {
     u8 op = cmd >> 28;
-    if (op == 0 || op == 2 || op == 12){
-        u16 oldSeqId = cmd & 0xFFFF;
-        u16 newSeqId = SfxEditor_GetReplacementSeq(oldSeqId);
-        if (newSeqId != oldSeqId) {
-            cmd &= ~0xFFFF;
-            cmd |= newSeqId;
-        }
+    if (op == 0 || op == 2 || op == 12) {
+        u8 seqId = cmd & 0xFF;
+        u8 playerIdx = GET_PLAYER_IDX(cmd);
+        u16 newSeqId = AudioEditor_GetReplacementSeq(seqId);
+        gAudioContext.seqReplaced[playerIdx] = (seqId != newSeqId);
+        gAudioContext.seqToPlay[playerIdx] = newSeqId;
+        cmd |= (seqId & 0xFF);
     }
 
     sAudioSeqCmds[sSeqCmdWrPos++] = cmd;
+}
+
+void Audio_QueuePreviewSeqCmd(u16 seqId) {
+    gAudioContext.seqReplaced[0] = 1;
+    gAudioContext.seqToPlay[0] = seqId;
+    sAudioSeqCmds[sSeqCmdWrPos++] = 1;
 }
 
 void Audio_ProcessSeqCmds(void) {

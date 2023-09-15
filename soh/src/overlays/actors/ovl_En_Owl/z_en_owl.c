@@ -9,8 +9,9 @@
 #include "scenes/overworld/spot06/spot06_scene.h"
 #include "scenes/overworld/spot16/spot16_scene.h"
 #include "vt.h"
+#include <assert.h>
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnOwl_Init(Actor* thisx, PlayState* play);
 void EnOwl_Destroy(Actor* thisx, PlayState* play);
@@ -138,7 +139,7 @@ void EnOwl_Init(Actor* thisx, PlayState* play) {
 
     if (((owlType != OWL_DEFAULT) && (switchFlag < 0x20) && Flags_GetSwitch(play, switchFlag)) ||
         // Owl shortcuts at SPOT06: Lake Hylia and SPOT16: Death Mountain Trail
-        (gSaveContext.n64ddFlag && !(play->sceneNum == SCENE_SPOT06 || play->sceneNum == SCENE_SPOT16))) {
+        (gSaveContext.n64ddFlag && !(play->sceneNum == SCENE_LAKE_HYLIA || play->sceneNum == SCENE_DEATH_MOUNTAIN_TRAIL))) {
         osSyncPrintf("savebitでフクロウ退避\n"); // "Save owl with savebit"
         Actor_Kill(&this->actor);
         return;
@@ -162,7 +163,7 @@ void EnOwl_Init(Actor* thisx, PlayState* play) {
             this->actionFunc = EnOwl_WaitHyruleCastle;
             break;
         case OWL_KAKARIKO:
-            if (gSaveContext.eventChkInf[4] & 1) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 // has zelda's letter
                 osSyncPrintf("フクロウ退避\n"); // "Owl evacuation"
                 Actor_Kill(&this->actor);
@@ -172,7 +173,7 @@ void EnOwl_Init(Actor* thisx, PlayState* play) {
             this->actionFunc = EnOwl_WaitKakariko;
             break;
         case OWL_HYLIA_GERUDO:
-            if (gSaveContext.eventChkInf[4] & 8) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_OCARINA_OF_TIME)) {
                 // has ocarina of time
                 osSyncPrintf("フクロウ退避\n"); // "Owl evacuation"
                 Actor_Kill(&this->actor);
@@ -184,7 +185,7 @@ void EnOwl_Init(Actor* thisx, PlayState* play) {
             this->actionFunc = EnOwl_WaitLakeHylia;
             break;
         case OWL_ZORA_RIVER:
-            if ((gSaveContext.eventChkInf[3] & 0x200) || !(gSaveContext.eventChkInf[4] & 1)) {
+            if ((Flags_GetEventChkInf(EVENTCHKINF_OPENED_ZORAS_DOMAIN)) || !Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                 // opened zora's domain or has zelda's letter
                 osSyncPrintf("フクロウ退避\n"); // "Owl evacuation"
                 Actor_Kill(&this->actor);
@@ -240,6 +241,9 @@ void EnOwl_Destroy(Actor* thisx, PlayState* play) {
     EnOwl* this = (EnOwl*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime2);
 }
 
 /**
@@ -280,7 +284,7 @@ s32 EnOwl_CheckInitTalk(EnOwl* this, PlayState* play, u16 textId, f32 targetDist
         this->actor.textId = textId;
         distCheck = (flags & 2) ? 200.0f : 1000.0f;
         if (this->actor.xzDistToPlayer < targetDist) {
-            this->actor.flags |= ACTOR_FLAG_16;
+            this->actor.flags |= ACTOR_FLAG_WILL_TALK;
             func_8002F1C4(&this->actor, play, targetDist, distCheck, 0);
         }
         return false;
@@ -346,7 +350,7 @@ void func_80ACA76C(EnOwl* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_FANFARE << 24 | 0xFF);
         func_80ACA62C(this, play);
-        this->actor.flags &= ~ACTOR_FLAG_16;
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
     }
 }
 
@@ -362,14 +366,14 @@ void func_80ACA7E0(EnOwl* this, PlayState* play) {
             func_80ACA71C(this);
             this->actionFunc = func_80ACA690;
         }
-        this->actor.flags &= ~ACTOR_FLAG_16;
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
     }
 }
 
 void EnOwl_ConfirmKokiriMessage(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
         // swap the order of the responses if better owl is enabled
-        uint8_t index = CVar_GetS32("gBetterOwl", 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
+        uint8_t index = CVarGetInteger("gBetterOwl", 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
         switch (index) {
             case OWL_REPEAT:
                 Message_ContinueTextbox(play, 0x2065);
@@ -391,14 +395,14 @@ void EnOwl_WaitOutsideKokiri(EnOwl* this, PlayState* play) {
 
         this->actionFunc = EnOwl_ConfirmKokiriMessage;
         // spoke to owl by lost woods
-        gSaveContext.eventChkInf[6] |= 0x8000;
+        Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_KAEPORA_BY_LOST_WOODS);
     }
 }
 
 void func_80ACA998(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
         // swap the order of the responses if better owl is enabled
-        uint8_t index = CVar_GetS32("gBetterOwl", 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
+        uint8_t index = CVarGetInteger("gBetterOwl", 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
         switch (index) {
             case OWL_REPEAT:
                 Message_ContinueTextbox(play, 0x2069);
@@ -444,11 +448,11 @@ void EnOwl_WaitHyruleCastle(EnOwl* this, PlayState* play) {
 void func_80ACAB88(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
         // swap the order of the responses if better owl is enabled
-        uint8_t index = CVar_GetS32("gBetterOwl", 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
+        uint8_t index = CVarGetInteger("gBetterOwl", 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
         switch (index) {
             case OWL_REPEAT:
                 // obtained zelda's letter
-                if (gSaveContext.eventChkInf[4] & 1) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
                     Message_ContinueTextbox(play, 0x206D);
                 } else {
                     Message_ContinueTextbox(play, 0x206C);
@@ -487,7 +491,7 @@ void EnOwl_WaitKakariko(EnOwl* this, PlayState* play) {
 void func_80ACAD34(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
         // swap the order of the responses if better owl is enabled
-        uint8_t index = CVar_GetS32("gBetterOwl", 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
+        uint8_t index = CVarGetInteger("gBetterOwl", 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
         switch (index) {
             case OWL_REPEAT:
                 Message_ContinueTextbox(play, 0x206F);
@@ -525,7 +529,7 @@ void EnOwl_WaitGerudo(EnOwl* this, PlayState* play) {
 void func_80ACAEB8(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
         // swap the order of the responses if better owl is enabled
-        uint8_t index = CVar_GetS32("gBetterOwl", 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
+        uint8_t index = CVarGetInteger("gBetterOwl", 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
         switch (index) {
             case OWL_REPEAT:
                 Message_ContinueTextbox(play, 0x2071);
@@ -566,7 +570,7 @@ void func_80ACB03C(EnOwl* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_FANFARE << 24 | 0xFF);
         func_80ACA62C(this, play);
-        this->actor.flags &= ~ACTOR_FLAG_16;
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
     }
 }
 
@@ -601,12 +605,12 @@ void func_80ACB148(EnOwl* this, PlayState* play) {
 }
 
 void EnOwl_WaitHyliaShortcut(EnOwl* this, PlayState* play) {
-    u16 textId = (gSaveContext.infTable[25] & 0x20) ? 0x4004 : 0x4003;
+    u16 textId = (Flags_GetInfTable(INFTABLE_SPOKE_TO_KAEPORA_IN_LAKE_HYLIA)) ? 0x4004 : 0x4003;
 
     // Spoke to Owl in Lake Hylia
     EnOwl_LookAtLink(this, play);
     if (func_80ACA558(this, play, textId)) {
-        gSaveContext.infTable[25] |= 0x20;
+        Flags_SetInfTable(INFTABLE_SPOKE_TO_KAEPORA_IN_LAKE_HYLIA);
         Audio_PlayFanfare(NA_BGM_OWL);
         this->actionFunc = func_80ACB148;
     }
@@ -630,7 +634,7 @@ void func_80ACB274(EnOwl* this, PlayState* play) {
 void EnOwl_WaitDeathMountainShortcut(EnOwl* this, PlayState* play) {
     EnOwl_LookAtLink(this, play);
 
-    if (!gSaveContext.magicAcquired && !gSaveContext.n64ddFlag) {
+    if (!gSaveContext.isMagicAcquired && !gSaveContext.n64ddFlag) {
         if (func_80ACA558(this, play, 0x3062)) {
             Audio_PlayFanfare(NA_BGM_OWL);
             this->actionFunc = func_80ACB274;
@@ -647,7 +651,7 @@ void EnOwl_WaitDeathMountainShortcut(EnOwl* this, PlayState* play) {
 void func_80ACB344(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
         // swap the order of the responses if better owl is enabled
-        uint8_t index = CVar_GetS32("gBetterOwl", 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
+        uint8_t index = CVarGetInteger("gBetterOwl", 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
         switch (index) {
             case OWL_REPEAT:
                 Message_ContinueTextbox(play, 0x607A);
@@ -672,7 +676,7 @@ void func_80ACB3E0(EnOwl* this, PlayState* play) {
 void func_80ACB440(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
         // swap the order of the responses if better owl is enabled
-        uint8_t index = CVar_GetS32("gBetterOwl", 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
+        uint8_t index = CVarGetInteger("gBetterOwl", 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
         switch (index) {
             case OWL_REPEAT:
                 Message_ContinueTextbox(play, 0x10C1);
@@ -709,7 +713,7 @@ void EnOwl_WaitLWPreSaria(EnOwl* this, PlayState* play) {
 void func_80ACB5C4(EnOwl* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE && Message_ShouldAdvance(play)) {
         // swap the order of the responses if better owl is enabled
-        uint8_t index = CVar_GetS32("gBetterOwl", 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
+        uint8_t index = CVarGetInteger("gBetterOwl", 0) == 0 ? play->msgCtx.choiceIndex : (1 - play->msgCtx.choiceIndex);
         switch (index) {
             case OWL_REPEAT:
                 Message_ContinueTextbox(play, 0x10C5);
@@ -855,7 +859,7 @@ void func_80ACBAB8(EnOwl* this, PlayState* play) {
 }
 
 void func_80ACBC0C(EnOwl* this, PlayState* play) {
-    this->actor.flags |= ACTOR_FLAG_5;
+    this->actor.flags |= ACTOR_FLAG_DRAW_WHILE_CULLED;
 
     if (this->actor.xzDistToPlayer > 6000.0f && !(this->actionFlags & 0x80)) {
         Actor_Kill(&this->actor);
@@ -958,7 +962,11 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                     osSyncPrintf("SPOT 06 の デモがはしった\n"); // "Demo of SPOT 06 has been completed"
                     osSyncPrintf(VT_RST);
                     if (gSaveContext.n64ddFlag) {
-                        play->nextEntranceIndex = 0x027E;
+                        if (Randomizer_GetSettingValue(RSK_SHUFFLE_OWL_DROPS)) {
+                            play->nextEntranceIndex = Entrance_OverrideNextIndex(0x027E);
+                        } else {
+                            play->nextEntranceIndex = 0x027E;
+                        }
                         play->sceneLoadFlag = 0x14;
                         play->fadeTransition = 2;
                         break;
@@ -969,7 +977,11 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                 case 8:
                 case 9:
                     if (gSaveContext.n64ddFlag) {
-                        play->nextEntranceIndex = 0x0554;
+                        if (Randomizer_GetSettingValue(RSK_SHUFFLE_OWL_DROPS)) {
+                            play->nextEntranceIndex = Entrance_OverrideNextIndex(0x0554);
+                        } else {
+                            play->nextEntranceIndex = 0x0554;
+                        }
                         play->sceneLoadFlag = 0x14;
                         play->fadeTransition = 2;
                         break;
@@ -978,7 +990,7 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                     this->actor.draw = NULL;
                     break;
                 default:
-                    ASSERT(0);
+                    assert(0);
                     break;
             }
 
@@ -1093,7 +1105,7 @@ s32 func_80ACC5CC(EnOwl* this) {
 s32 func_80ACC624(EnOwl* this, PlayState* play) {
     s32 switchFlag = (this->actor.params & 0xFC0) >> 6;
 
-    if (play->sceneNum != SCENE_SPOT11) {
+    if (play->sceneNum != SCENE_DESERT_COLOSSUS) {
         return true;
     } else if (switchFlag == 0xA) {
         return true;
@@ -1349,7 +1361,7 @@ void EnOwl_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_800943C8(play->state.gfxCtx);
+    Gfx_SetupDL_37Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 8, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeTexIndex]));
     SkelAnime_DrawFlexOpa(play, this->curSkelAnime->skeleton, this->curSkelAnime->jointTable,
                           this->curSkelAnime->dListCount, EnOwl_OverrideLimbDraw, EnOwl_PostLimbUpdate, this);

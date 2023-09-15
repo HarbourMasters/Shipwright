@@ -8,10 +8,11 @@
 #include "overlays/actors/ovl_En_Elf/z_en_elf.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "objects/object_sa/object_sa.h"
+#include "soh/Enhancements/boss-rush/BossRush.h"
 
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void DemoSa_Init(Actor* thisx, PlayState* play);
 void DemoSa_Destroy(Actor* thisx, PlayState* play);
@@ -253,11 +254,19 @@ void func_8098E960(DemoSa* this, PlayState* play) {
 
     if ((gSaveContext.chamberCutsceneNum == 0) && (gSaveContext.sceneSetupIndex < 4)) {
         player = GET_PLAYER(play);
-        this->action = 1;
-        play->csCtx.segment = D_8099010C;
-        gSaveContext.cutsceneTrigger = 2;
-        Item_Give(play, ITEM_MEDALLION_FOREST);
-        player->actor.world.rot.y = player->actor.shape.rot.y = this->actor.world.rot.y + 0x8000;
+        if (!gSaveContext.isBossRush) {
+            this->action = 1;
+            play->csCtx.segment = D_8099010C;
+            gSaveContext.cutsceneTrigger = 2;
+            Item_Give(play, ITEM_MEDALLION_FOREST);
+            player->actor.world.rot.y = player->actor.shape.rot.y = this->actor.world.rot.y + 0x8000;
+        } else {
+            this->action = 1;
+            if (gSaveContext.linkAge == LINK_AGE_CHILD) {
+                player->actor.world.rot.y = player->actor.shape.rot.y = -5461 + 0x8000;
+            }
+            BossRush_SpawnBlueWarps(play);
+        }
     }
 }
 
@@ -466,7 +475,7 @@ void DemoSa_DrawXlu(DemoSa* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sp78));
     gSPSegment(POLY_XLU_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sp78));
@@ -804,7 +813,7 @@ void DemoSa_DrawOpa(DemoSa* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTex));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTex));

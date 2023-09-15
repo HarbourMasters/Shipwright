@@ -1,7 +1,7 @@
 #ifndef Z_BG_MJIN_H
 #define Z_BG_MJIN_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgMjin;

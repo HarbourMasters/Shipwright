@@ -6,7 +6,7 @@
 
 #include "z_en_arow_trap.h"
 #include "overlays/actors/ovl_En_Arrow/z_en_arrow.h"
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void EnArowTrap_Init(Actor* thisx, PlayState* play);
 void EnArowTrap_Destroy(Actor* thisx, PlayState* play);
@@ -46,7 +46,7 @@ void EnArowTrap_Update(Actor* thisx, PlayState* play) {
         if (this->attackTimer == 0) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ARROW, this->actor.world.pos.x,
                         this->actor.world.pos.y, this->actor.world.pos.z, this->actor.shape.rot.x,
-                        this->actor.shape.rot.y, this->actor.shape.rot.z, ARROW_NORMAL_SILENT);
+                        this->actor.shape.rot.y, this->actor.shape.rot.z, ARROW_NORMAL_SILENT, true);
             this->attackTimer = 80;
         }
     }

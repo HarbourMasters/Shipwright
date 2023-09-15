@@ -1,7 +1,7 @@
 #ifndef Z_BG_SPOT18_OBJ_H
 #define Z_BG_SPOT18_OBJ_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgSpot18Obj;

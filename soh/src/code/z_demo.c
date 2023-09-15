@@ -31,6 +31,8 @@
 
 #include "scenes/misc/hakaana_ouke/hakaana_ouke_scene.h"
 
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
+
 u16 D_8011E1C0 = 0;
 u16 D_8011E1C4 = 0;
 
@@ -152,15 +154,15 @@ void func_80064558(PlayState* play, CutsceneContext* csCtx) {
 void func_800645A0(PlayState* play, CutsceneContext* csCtx) {
     Input* input = &play->state.input[0];
 
-    if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT) && (csCtx->state == CS_STATE_IDLE) &&
-        (gSaveContext.sceneSetupIndex >= 4)) {
+    if (CVarGetInteger("gDebugEnabled", 0) && CHECK_BTN_ALL(input->press.button, BTN_DLEFT) &&
+        (csCtx->state == CS_STATE_IDLE) && (gSaveContext.sceneSetupIndex >= 4)) {
         D_8015FCC8 = 0;
         gSaveContext.cutsceneIndex = 0xFFFD;
         gSaveContext.cutsceneTrigger = 1;
     }
 
-    if (CHECK_BTN_ALL(input->press.button, BTN_DUP) && (csCtx->state == CS_STATE_IDLE) &&
-        (gSaveContext.sceneSetupIndex >= 4) && !gDbgCamEnabled) {
+    if (CVarGetInteger("gDebugEnabled", 0) && CHECK_BTN_ALL(input->press.button, BTN_DUP) &&
+        (csCtx->state == CS_STATE_IDLE) && (gSaveContext.sceneSetupIndex >= 4) && !gDbgCamEnabled) {
         D_8015FCC8 = 1;
         gSaveContext.cutsceneIndex = 0xFFFD;
         gSaveContext.cutsceneTrigger = 1;
@@ -338,13 +340,13 @@ void func_80064824(PlayState* play, CutsceneContext* csCtx, CsCmdBase* cmd) {
             }
             break;
         case 19:
-            gSaveContext.eventChkInf[6] |= 0x0020;
+            Flags_SetEventChkInf(EVENTCHKINF_PLAYED_SONG_OF_STORMS_IN_WINDMILL);
             break;
         case 20:
-            gSaveContext.eventChkInf[6] |= 0x0080;
+            Flags_SetEventChkInf(EVENTCHKINF_DRAINED_WELL_IN_KAKARIKO);
             break;
         case 21:
-            gSaveContext.eventChkInf[6] |= 0x0200;
+            Flags_SetEventChkInf(EVENTCHKINF_RAISED_LAKE_HYLIA_WATER);
             break;
         case 22:
             D_801614B0.r = 255;
@@ -497,9 +499,9 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
     // cmd->base == 33: Zelda escaping with impa cutscene
     bool randoCsSkip = (gSaveContext.n64ddFlag && (cmd->base == 8 || cmd->base == 24 || cmd->base == 33));
     bool debugCsSkip = (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_START) &&
-                        (gSaveContext.fileNum != 0xFEDC) && CVar_GetS32("gDebugEnabled", 0));
+                        (gSaveContext.fileNum != 0xFEDC) && CVarGetInteger("gDebugEnabled", 0));
 
-    if ((gSaveContext.gameMode != 0) && (gSaveContext.gameMode != 3) && (play->sceneNum != SCENE_SPOT00) &&
+    if ((gSaveContext.gameMode != 0) && (gSaveContext.gameMode != 3) && (play->sceneNum != SCENE_HYRULE_FIELD) &&
         (csCtx->frames > 20) &&
         (CHECK_BTN_ALL(play->state.input[0].press.button, BTN_A) ||
          CHECK_BTN_ALL(play->state.input[0].press.button, BTN_B) ||
@@ -509,11 +511,58 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
         temp = 1;
     }
 
-    if ((csCtx->frames == cmd->startFrame) || (temp != 0) || ((csCtx->frames > 20) && (randoCsSkip || debugCsSkip))) {
+    bool playCutscene = false;
+    if (!CVarGetInteger("gCreditsFix", 1) && (cmd->startFrame == csCtx->frames)) {
+        playCutscene = true;
+    } else if (CVarGetInteger("gCreditsFix", 1)) {
+        u16 delay = 0;
+        
+        // HACK:  Align visual timing with audio during credits sequence
+        switch (cmd->base) {
+            case 55: // Gerudo fortress (second scene of credits roll)
+                delay = 20;
+                break;
+            case 56: // Kakariko village
+                delay = 40;
+                break;
+            case 57: // Death mountain trail
+                delay = 20;
+                break;
+            case 58: // Goron city
+                delay = 20;
+                break;
+            case 59: // Lake hylia
+                delay = 20;
+                break;
+            case 62: // Kokiri forest (houses)
+                delay = 40;
+                break;
+            case 63: // Kokiri forest (deku tree)
+                delay = 40;
+                break;
+            case 74: // First gorons dancing
+                delay = 100;
+                break;
+            case 75: // Magic carpet guy and old shop keepers
+                delay = 180;
+                break;
+            case 77: // Sad mido and king zora (plays after scene 78)
+                delay = 100;
+                break;
+            case 78: // Second gorons dancing
+                delay = 160;
+                break;
+        }
+        if (cmd->startFrame + delay == csCtx->frames) {
+            playCutscene = true;
+        }
+    }
+
+    if (playCutscene || (temp != 0) || ((csCtx->frames > 20) && (randoCsSkip || debugCsSkip))) {
 
         csCtx->state = CS_STATE_UNSKIPPABLE_EXEC;
         Audio_SetCutsceneFlag(0);
-        gSaveContext.unk_1410 = 1;
+        gSaveContext.cutsceneTransitionControl = 1;
 
         osSyncPrintf("\n分岐先指定！！=[%d]番", cmd->base); // "Future fork designation=No. [%d]"
 
@@ -567,10 +616,16 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->fadeTransition = 11;
                 break;
             case 8:
-                gSaveContext.fw.set = 0;
-                gSaveContext.respawn[RESPAWN_MODE_TOP].data = 0;
-                if (!(gSaveContext.eventChkInf[4] & 0x20)) {
-                    gSaveContext.eventChkInf[4] |= 0x20;
+                if (CVarGetInteger("gBetterFW", 0)) {
+                    FaroresWindData tempFW = gSaveContext.backupFW;
+                    gSaveContext.backupFW = gSaveContext.fw;
+                    gSaveContext.fw = tempFW;
+                } else {
+                    gSaveContext.fw.set = 0;
+                    gSaveContext.respawn[RESPAWN_MODE_TOP].data = 0;
+                }
+                if (!Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL)) {
+                    Flags_SetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL);
                     play->nextEntranceIndex = 0x00A0;
                     play->sceneLoadFlag = 0x14;
                     gSaveContext.cutsceneIndex = 0xFFF3;
@@ -586,7 +641,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                     play->nextEntranceIndex = 0x02CA;
                     play->sceneLoadFlag = 0x14;
                     play->fadeTransition = 3;
-                    gSaveContext.nextTransition = 3;
+                    gSaveContext.nextTransitionType = 3;
                 }
                 break;
             case 9:
@@ -616,7 +671,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->nextEntranceIndex = 0x010E;
                 play->sceneLoadFlag = 0x14;
                 play->fadeTransition = 2;
-                gSaveContext.nextTransition = 2;
+                gSaveContext.nextTransitionType = 2;
                 break;
             case 14:
                 play->nextEntranceIndex = 0x0457;
@@ -642,11 +697,11 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->fadeTransition = 3;
                 break;
             case 18:
-                gSaveContext.eventChkInf[4] |= 0x8000;
+                Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
                 play->nextEntranceIndex = 0x0324;
                 play->sceneLoadFlag = 0x14;
                 play->fadeTransition = 2;
-                gSaveContext.nextTransition = 2;
+                gSaveContext.nextTransitionType = 2;
                 break;
             case 19:
                 play->nextEntranceIndex = 0x013D;
@@ -787,14 +842,14 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->fadeTransition = 17;
                 break;
             case 46:
-                gSaveContext.eventChkInf[4] |= 0x8000;
+                Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
                 play->nextEntranceIndex = 0x0324;
                 play->sceneLoadFlag = 0x14;
                 play->fadeTransition = 4;
                 break;
             case 47:
                 Item_Give(play, ITEM_SONG_NOCTURNE);
-                gSaveContext.eventChkInf[5] |= 0x10;
+                Flags_SetEventChkInf(EVENTCHKINF_LEARNED_NOCTURNE_OF_SHADOW);
                 play->nextEntranceIndex = 0x00DB;
                 play->sceneLoadFlag = 0x14;
                 gSaveContext.cutsceneIndex = 0xFFF1;
@@ -804,7 +859,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->nextEntranceIndex = 0x01ED;
                 play->sceneLoadFlag = 0x14;
                 play->fadeTransition = 15;
-                gSaveContext.nextTransition = 15;
+                gSaveContext.nextTransitionType = 15;
                 break;
             case 49:
                 play->nextEntranceIndex = 0x058C;
@@ -936,7 +991,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->sceneLoadFlag = 0x14;
                 gSaveContext.cutsceneIndex = 0xFFF4;
                 play->fadeTransition = 2;
-                gSaveContext.nextTransition = 2;
+                gSaveContext.nextTransitionType = 2;
                 break;
             case 71:
                 gSaveContext.equips.equipment |= 0x0100;
@@ -954,7 +1009,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->sceneLoadFlag = 0x14;
                 gSaveContext.cutsceneIndex = 0xFFF0;
                 play->fadeTransition = 2;
-                gSaveContext.nextTransition = 2;
+                gSaveContext.nextTransitionType = 2;
                 break;
             case 73:
                 play->linkAgeOnLoad = 1;
@@ -968,7 +1023,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->sceneLoadFlag = 0x14;
                 gSaveContext.cutsceneIndex = 0xFFF3;
                 play->fadeTransition = 3;
-                gSaveContext.nextTransition = 3;
+                gSaveContext.nextTransitionType = 3;
                 break;
             case 75:
                 play->linkAgeOnLoad = 1;
@@ -1022,8 +1077,8 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->fadeTransition = 3;
                 break;
             case 95:
-                if ((gSaveContext.eventChkInf[4] & 0x100) && (gSaveContext.eventChkInf[4] & 0x200) &&
-                    (gSaveContext.eventChkInf[4] & 0x400)) {
+                if ((Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) && (Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) &&
+                    (Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP))) {
                     play->nextEntranceIndex = 0x0053;
                     play->sceneLoadFlag = 0x14;
                     gSaveContext.cutsceneIndex = 0xFFF3;
@@ -1056,11 +1111,11 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                     gSaveContext.cutsceneIndex = 0xFFF1;
                     play->fadeTransition = 5;
                 } else {
-                    gSaveContext.eventChkInf[12] |= 0x100;
+                    Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_SPIRIT_MEDALLION);
                     play->nextEntranceIndex = 0x0610;
                     play->sceneLoadFlag = 0x14;
                     play->fadeTransition = 3;
-                    gSaveContext.nextTransition = 3;
+                    gSaveContext.nextTransitionType = 3;
                 }
                 break;
             case 97:
@@ -1073,27 +1128,27 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                     play->nextEntranceIndex = 0x0580;
                     play->sceneLoadFlag = 0x14;
                     play->fadeTransition = 3;
-                    gSaveContext.nextTransition = 3;
+                    gSaveContext.nextTransitionType = 3;
                 }
                 break;
             case 98:
                 play->nextEntranceIndex = 0x0564;
                 play->sceneLoadFlag = 0x14;
                 play->fadeTransition = 3;
-                gSaveContext.nextTransition = 3;
+                gSaveContext.nextTransitionType = 3;
                 break;
             case 99:
                 play->nextEntranceIndex = 0x0608;
                 play->sceneLoadFlag = 0x14;
                 play->fadeTransition = 2;
-                gSaveContext.nextTransition = 2;
+                gSaveContext.nextTransitionType = 2;
                 break;
             case 100:
                 play->nextEntranceIndex = 0x00EE;
                 gSaveContext.cutsceneIndex = 0xFFF8;
                 play->sceneLoadFlag = 0x14;
                 play->fadeTransition = 3;
-                gSaveContext.nextTransition = 3;
+                gSaveContext.nextTransitionType = 3;
                 break;
             case 101:
                 play->nextEntranceIndex = 0x01F5;
@@ -1178,8 +1233,8 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->fadeTransition = 2;
                 break;
             case 113:
-                if (Flags_GetEventChkInf(0xBB) && Flags_GetEventChkInf(0xBC) && Flags_GetEventChkInf(0xBD) &&
-                    Flags_GetEventChkInf(0xBE) && Flags_GetEventChkInf(0xBF) && Flags_GetEventChkInf(0xAD)) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_FOREST_TRIAL) && Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_WATER_TRIAL) && Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_SHADOW_TRIAL) &&
+                    Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_FIRE_TRIAL) && Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_LIGHT_TRIAL) && Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_SPIRIT_TRIAL)) {
                     play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gTowerBarrierCs);
                     play->csCtx.frames = 0;
                     gSaveContext.cutsceneTrigger = 1;
@@ -1199,10 +1254,10 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->nextEntranceIndex = 0x0594;
                 play->sceneLoadFlag = 0x14;
                 play->fadeTransition = 2;
-                gSaveContext.nextTransition = 2;
+                gSaveContext.nextTransitionType = 2;
                 break;
             case 116:
-                if (gSaveContext.eventChkInf[12] & 0x100) {
+                if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_SPIRIT_MEDALLION)) {
                     play->nextEntranceIndex = 0x0580;
                     play->sceneLoadFlag = 0x14;
                     play->fadeTransition = 3;
@@ -1211,7 +1266,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                     play->sceneLoadFlag = 0x14;
                     play->fadeTransition = 3;
                 }
-                gSaveContext.nextTransition = 3;
+                gSaveContext.nextTransitionType = 3;
                 break;
             case 117:
                 gSaveContext.gameMode = 3;
@@ -1226,7 +1281,7 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex = 0x0517;
                 Play_TriggerVoidOut(play);
                 gSaveContext.respawnFlag = -2;
-                gSaveContext.nextTransition = 2;
+                gSaveContext.nextTransitionType = 2;
                 break;
             case 119:
                 gSaveContext.dayTime = 0x8000;
@@ -1235,6 +1290,10 @@ void Cutscene_Command_Terminator(PlayState* play, CutsceneContext* csCtx, CsCmdB
                 play->sceneLoadFlag = 0x14;
                 play->fadeTransition = 3;
                 break;
+        }
+
+        if (randoCsSkip) {
+            Entrance_OverrideCutsceneEntrance(cmd->base);
         }
     }
 }
@@ -1263,7 +1322,7 @@ void Cutscene_Command_TransitionFX(PlayState* play, CutsceneContext* csCtx, CsCm
                                 (gSaveContext.entranceIndex == 0x0371))) {
                         Audio_PlaySoundGeneral(NA_SE_EV_WHITE_OUT, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                                &D_801333E8);
-                    } else if ((temp == 0.0f) && (play->sceneNum == SCENE_GANONTIKA)) {
+                    } else if ((temp == 0.0f) && (play->sceneNum == SCENE_INSIDE_GANONS_CASTLE)) {
                         func_800788CC(NA_SE_EV_WHITE_OUT);
                     }
                 } else {
@@ -1304,7 +1363,7 @@ void Cutscene_Command_TransitionFX(PlayState* play, CutsceneContext* csCtx, CsCm
                 }
                 break;
             case 9:
-                gSaveContext.unk_1410 = 1;
+                gSaveContext.cutsceneTransitionControl = 1;
                 break;
             case 10:
             case 11:
@@ -1318,7 +1377,7 @@ void Cutscene_Command_TransitionFX(PlayState* play, CutsceneContext* csCtx, CsCm
                 }
                 break;
             case 12:
-                gSaveContext.unk_1410 = 255.0f - (155.0f * temp);
+                gSaveContext.cutsceneTransitionControl = 255.0f - (155.0f * temp);
                 break;
             case 13:
                 play->envCtx.screenFillColor[0] = 0;
@@ -1584,7 +1643,7 @@ void Cutscene_ProcessCommands(PlayState* play, CutsceneContext* csCtx, u8* cutsc
         return;
     }
 
-    if (CVar_GetS32("gDebugEnabled", 0) && CHECK_BTN_ALL(play->state.input[0].press.button, BTN_DRIGHT)) {
+    if (CVarGetInteger("gDebugEnabled", 0) && CHECK_BTN_ALL(play->state.input[0].press.button, BTN_DRIGHT)) {
         csCtx->state = CS_STATE_UNSKIPPABLE_INIT;
         return;
     }
@@ -2093,43 +2152,42 @@ void Cutscene_HandleConditionalTriggers(PlayState* play) {
     if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
         const bool bShouldTowerRandoSkip =
             (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_TOWER_ESCAPE));
-        if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(0xAC)) {
+        if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT)) {
             if (!gSaveContext.n64ddFlag) {
-                Flags_SetEventChkInf(0xAC);
+                Flags_SetEventChkInf(EVENTCHKINF_LEARNED_REQUIEM_OF_SPIRIT);
                 gSaveContext.entranceIndex = 0x0123;
                 gSaveContext.cutsceneIndex = 0xFFF0;
             }
-        } else if ((gSaveContext.entranceIndex == 0x00DB) && LINK_IS_ADULT && (gSaveContext.eventChkInf[4] & 0x0100) &&
-                   (gSaveContext.eventChkInf[4] & 0x0200) && (gSaveContext.eventChkInf[4] & 0x0400) &&
-                   !Flags_GetEventChkInf(0xAA)) {
+        } else if ((gSaveContext.entranceIndex == 0x00DB) && LINK_IS_ADULT && (Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) &&
+                   (Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) && (Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) &&
+                   !Flags_GetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL)) {
             if (!gSaveContext.n64ddFlag) {
-                Flags_SetEventChkInf(0xAA);
+                Flags_SetEventChkInf(EVENTCHKINF_BONGO_BONGO_ESCAPED_FROM_WELL);
                 gSaveContext.cutsceneIndex = 0xFFF0;
             }
-        } else if ((gSaveContext.entranceIndex == 0x05E0) && !Flags_GetEventChkInf(0xC1)) {
+        } else if ((gSaveContext.entranceIndex == 0x05E0) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE)) {
             if (!gSaveContext.n64ddFlag) {
-                Flags_SetEventChkInf(0xC1);
+                Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_SARIA_ON_BRIDGE);
                 Item_Give(play, ITEM_OCARINA_FAIRY);
                 gSaveContext.entranceIndex = 0x011E;
                 gSaveContext.cutsceneIndex = 0xFFF0;
             }
         } else if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
-                   LINK_IS_ADULT && !Flags_GetEventChkInf(0xC4) &&
-                   (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA)) {
+                   LINK_IS_ADULT && !Flags_GetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS) &&
+                   (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TEMPLE_OF_TIME)) {
             if (!gSaveContext.n64ddFlag) {
-                Flags_SetEventChkInf(0xC4);
+                Flags_SetEventChkInf(EVENTCHKINF_RETURNED_TO_TEMPLE_OF_TIME_WITH_ALL_MEDALLIONS);
                 gSaveContext.entranceIndex = 0x0053;
                 gSaveContext.cutsceneIndex = 0xFFF8;
             }
-        } else if ((!Flags_GetEventChkInf(0xC7) &&
-                       gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_GANON_DEMO) ||
+        } else if ((!Flags_GetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO) &&
+                       gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_GANON_BOSS) ||
                    (bShouldTowerRandoSkip &&
-                    gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_GANON_FINAL)) {
-            Flags_SetEventChkInf(0xC7);
+                    gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR)) {
+            Flags_SetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
             gSaveContext.entranceIndex = 0x0517;
-            // If we are rando and tower escape skip is on, then set the flag to say we saw the towers fall
-            // and exit.
-            if (bShouldTowerRandoSkip) {
+            // In rando, skip the cutscene for the tower falling down after the escape.
+            if (gSaveContext.n64ddFlag) {
                 return;
             }
             gSaveContext.cutsceneIndex = 0xFFF0;

@@ -1,7 +1,7 @@
 #ifndef Z_DEMO_6K_H
 #define Z_DEMO_6K_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct Demo6K;

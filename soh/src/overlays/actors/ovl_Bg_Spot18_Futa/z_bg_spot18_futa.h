@@ -1,7 +1,7 @@
 #ifndef Z_BG_SPOT18_FUTA_H
 #define Z_BG_SPOT18_FUTA_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgSpot18Futa;

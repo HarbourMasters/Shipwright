@@ -158,12 +158,19 @@ endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/ZAPD/
-	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/ZAPDUtils
-	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/lib/tinyxml2
-	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/libultraship
-	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/libultraship/Lib/spdlog/include
-	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/libultraship/Lib/Fast3D/U64
-	${CMAKE_CURRENT_SOURCE_DIR}/../../StormLib/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/include
+    # TODO: these should no longer be necessary if we were to link against LUS
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/Mercury
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/tinyxml2
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/ZAPDUtils
+	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/StormLib/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/spdlog/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/nlohmann-json/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/src/resource
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../soh/soh
 	.
 )
 
@@ -234,16 +241,5 @@ add_dependencies(${PROJECT_NAME}
 )
 
 # Link with other targets.
-
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
-		set(ADDITIONAL_LIBRARY_DEPENDENCIES
-			"$<$<CONFIG:Debug>:"
-				"ZAPDUtils;"
-				"OTRLib"
-			">"
-		)
-	endif()
-endif()
 target_link_libraries(${PROJECT_NAME} PUBLIC "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 

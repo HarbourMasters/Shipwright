@@ -7,8 +7,9 @@
 #include "z_en_poh.h"
 #include "objects/object_poh/object_poh.h"
 #include "objects/object_po_composer/object_po_composer.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_12)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_IGNORE_QUAKE)
 
 void EnPoh_Init(Actor* thisx, PlayState* play);
 void EnPoh_Destroy(Actor* thisx, PlayState* play);
@@ -254,6 +255,8 @@ void EnPoh_Destroy(Actor* thisx, PlayState* play) {
     if (this->actor.params == EN_POH_RUPEE) {
         D_80AE1A50--;
     }
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80ADE114(EnPoh* this) {
@@ -316,7 +319,7 @@ void func_80ADE368(EnPoh* this) {
 
 void EnPoh_SetupInitialAction(EnPoh* this) {
     this->lightColor.a = 0;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     if (this->infoIdx == EN_POH_INFO_NORMAL) {
         Animation_PlayOnceSetSpeed(&this->skelAnime, &gPoeAppearAnim, 0.0f);
         this->actionFunc = func_80ADEF38;
@@ -334,7 +337,7 @@ void func_80ADE48C(EnPoh* this) {
     this->actor.world.rot.y = this->actor.shape.rot.y;
     this->unk_198 = 0;
     this->actor.naviEnemyId = 0xFF;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actionFunc = func_80ADF15C;
 }
 
@@ -373,7 +376,7 @@ void EnPoh_SetupDeath(EnPoh* this, PlayState* play) {
     this->actor.draw = EnPoh_DrawSoul;
     this->actor.shape.shadowDraw = NULL;
     Actor_SetScale(&this->actor, 0.01f);
-    this->actor.flags |= ACTOR_FLAG_4;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
     this->actor.gravity = -1.0f;
     this->actor.shape.yOffset = 1500.0f;
     this->actor.world.pos.y -= 15.0f;
@@ -436,7 +439,7 @@ void EnPoh_Talk(EnPoh* this, PlayState* play) {
     }
     this->unk_198 = 200;
     this->unk_195 = 32;
-    this->actor.flags |= ACTOR_FLAG_0;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     this->actionFunc = func_80ADFE80;
 }
 
@@ -579,7 +582,7 @@ void func_80ADEF38(EnPoh* this, PlayState* play) {
     if (SkelAnime_Update(&this->skelAnime)) {
         this->lightColor.a = 255;
         this->visibilityTimer = Rand_S16Offset(700, 300);
-        this->actor.flags |= ACTOR_FLAG_0;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
         EnPoh_SetupIdle(this);
     } else if (this->skelAnime.curFrame > 10.0f) {
         this->lightColor.a = ((this->skelAnime.curFrame - 10.0f) * 0.05f) * 255.0f;
@@ -594,7 +597,7 @@ void EnPoh_ComposerAppear(EnPoh* this, PlayState* play) {
     if (SkelAnime_Update(&this->skelAnime)) {
         this->lightColor.a = 255;
         this->visibilityTimer = Rand_S16Offset(700, 300);
-        this->actor.flags |= ACTOR_FLAG_0;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
         EnPoh_SetupIdle(this);
     } else {
         this->lightColor.a = CLAMP_MAX((s32)(this->skelAnime.curFrame * 25.5f), 255);
@@ -636,6 +639,7 @@ void func_80ADF15C(EnPoh* this, PlayState* play) {
                              0, 0, 255, 1, 9, 1);
         if (this->unk_198 == 1) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_EXTINCT);
+            GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
         }
     } else if (this->unk_198 == 28) {
         EnPoh_SetupDeath(this, play);
@@ -776,14 +780,14 @@ void func_80ADFE80(EnPoh* this, PlayState* play) {
     }
     if (this->unk_198 == 0) {
         func_80ADE950(this, 1);
-        this->actor.flags &= ~ACTOR_FLAG_16;
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
         return;
     }
     if (this->colliderCyl.base.ocFlags1 & OC1_HIT) {
-        this->actor.flags |= ACTOR_FLAG_16;
+        this->actor.flags |= ACTOR_FLAG_WILL_TALK;
         func_8002F2F4(&this->actor, play);
     } else {
-        this->actor.flags &= ~ACTOR_FLAG_16;
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
         CollisionCheck_SetOC(play, &play->colChkCtx, &this->colliderCyl.base);
     }
     this->actor.world.pos.y = Math_SinS(this->unk_195 * 0x800) * 5.0f + this->actor.home.pos.y;
@@ -928,7 +932,7 @@ void EnPoh_Update(Actor* thisx, PlayState* play) {
             this->colliderCyl.dim.height = 55;
             this->colliderCyl.dim.yShift = 15;
         }
-        this->actor.flags &= ~ACTOR_FLAG_4;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
         EnPoh_SetupInitialAction(this);
     }
 }
@@ -1000,7 +1004,7 @@ void EnPoh_UpdateLiving(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
     Actor_MoveForward(&this->actor);
     if (this->actionFunc == EnPoh_Attack && this->unk_198 < 10) {
-        this->actor.flags |= ACTOR_FLAG_24;
+        this->actor.flags |= ACTOR_FLAG_PLAY_HIT_SFX;
         CollisionCheck_SetAT(play, &play->colChkCtx, &this->colliderSph.base);
     }
     Collider_UpdateCylinder(&this->actor, &this->colliderCyl);
@@ -1076,8 +1080,8 @@ void EnPoh_DrawRegular(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     func_80AE067C(this);
-    func_80093D18(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     if (this->lightColor.a == 255 || this->lightColor.a == 0) {
         gDPSetEnvColor(POLY_OPA_DISP++, this->lightColor.r, this->lightColor.g, this->lightColor.b, this->lightColor.a);
         gSPSegment(POLY_OPA_DISP++, 0x08, D_80116280 + 2);
@@ -1113,7 +1117,7 @@ void EnPoh_DrawComposer(Actor* thisx, PlayState* play) {
         phi_t0 = &D_80AE1B58;
     }
     if (this->lightColor.a == 255 || this->lightColor.a == 0) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x08,
                    Gfx_EnvColor(play->state.gfxCtx, this->lightColor.r, this->lightColor.g, this->lightColor.b,
                                 this->lightColor.a));
@@ -1126,8 +1130,8 @@ void EnPoh_DrawComposer(Actor* thisx, PlayState* play) {
                                            this->skelAnime.dListCount, EnPoh_OverrideLimbDraw, EnPoh_PostLimbDraw,
                                            &this->actor, POLY_OPA_DISP);
     } else {
-        func_80093D18(play->state.gfxCtx);
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_EnvColor(play->state.gfxCtx, this->lightColor.r, this->lightColor.g, this->lightColor.b,
                                 this->lightColor.a));
@@ -1169,7 +1173,7 @@ void EnPoh_DrawSoul(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     if (this->actionFunc == EnPoh_Death) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gDPSetEnvColor(POLY_OPA_DISP++, this->envColor.r, this->envColor.g, this->envColor.b, 255);
         Lights_PointGlowSetInfo(&this->lightInfo, this->actor.world.pos.x, this->actor.world.pos.y,
                                 this->actor.world.pos.z, this->envColor.r, this->envColor.g, this->envColor.b, 200);
@@ -1186,7 +1190,7 @@ void EnPoh_DrawSoul(Actor* thisx, PlayState* play) {
             gSPDisplayList(POLY_OPA_DISP++, gPoeComposerLanternTopDL);
         }
     } else {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
                                     (this->visibilityTimer * this->info->unk_8) % 512U, 0x20, 0x80));

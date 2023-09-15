@@ -6,6 +6,7 @@
 
 #include "z_en_mb.h"
 #include "objects/object_mb/object_mb.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 /*
  * This actor can have three behaviors:
@@ -14,7 +15,7 @@
  * - "Spear Patrol" (variable 0xPP00 PP=pathId): uses a spear, patrols following a path, charges
  */
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 typedef enum {
     /* -1 */ ENMB_TYPE_SPEAR_GUARD = -1,
@@ -308,7 +309,7 @@ void EnMb_Init(Actor* thisx, PlayState* play) {
             }
 
             ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawFeet, 90.0f);
-            this->actor.flags &= ~ACTOR_FLAG_0;
+            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
             this->actor.naviEnemyId += 1;
             EnMb_SetupClubWaitPlayerNear(this);
             break;
@@ -324,7 +325,7 @@ void EnMb_Init(Actor* thisx, PlayState* play) {
             this->actor.colChkInfo.mass = MASS_HEAVY;
             this->maxHomeDist = 350.0f;
             this->playerDetectionRange = 1750.0f;
-            this->actor.flags &= ~ACTOR_FLAG_0;
+            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
             EnMb_SetupSpearPatrolTurnTowardsWaypoint(this, play);
             break;
     }
@@ -336,6 +337,8 @@ void EnMb_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyTris(play, &this->frontShielding);
     Collider_DestroyCylinder(play, &this->hitbox);
     Collider_DestroyQuad(play, &this->attackCollider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnMb_FaceWaypoint(EnMb* this, PlayState* play) {
@@ -507,6 +510,13 @@ void EnMb_SetupClubAttack(EnMb* this) {
     f32 frames = Animation_GetLastFrame(&gEnMbClubLiftClubAnim);
     s16 relYawFromPlayer;
 
+    // Rotate Club Moblin towards player in Enemy Randomizer because they're
+    // borderline useless otherwise in most scenarios.
+    if (CVarGetInteger("gRandomizedEnemies", 0)) {
+        Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
+        Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
+    }
+
     this->state = ENMB_STATE_ATTACK;
     Animation_Change(&this->skelAnime, &gEnMbClubLiftClubAnim, 3.0f, 0.0f, frames, ANIMMODE_ONCE_INTERP, 0.0f);
     this->timer3 = 1;
@@ -575,7 +585,7 @@ void EnMb_SetupClubDamagedWhileKneeling(EnMb* this) {
 void EnMb_SetupClubDead(EnMb* this) {
     Animation_MorphToPlayOnce(&this->skelAnime, &gEnMbClubFallOnItsBackAnim, -4.0f);
     this->state = ENMB_STATE_CLUB_DEAD;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->hitbox.dim.height = 80;
     this->hitbox.dim.radius = 95;
     this->timer1 = 30;
@@ -704,6 +714,14 @@ void EnMb_SpearEndChargeQuick(EnMb* this, PlayState* play) {
 }
 
 void EnMb_ClubWaitAfterAttack(EnMb* this, PlayState* play) {
+
+    // Rotate Club Moblin towards player in Enemy Randomizer because they're
+    // borderline useless otherwise in most scenarios.
+    if (CVarGetInteger("gRandomizedEnemies", 0)) {
+        Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
+        Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
+    }
+
     this->attack = ENMB_ATTACK_NONE;
     if (SkelAnime_Update(&this->skelAnime)) {
         EnMb_SetupClubWaitPlayerNear(this);
@@ -824,8 +842,15 @@ void EnMb_ClubAttack(EnMb* this, PlayState* play) {
     s16 flamesUnused[] = { 20, 40, 0 };
     s16 relYawTarget[] = { -0x9C4, 0, 0xDAC };
 
-    Math_SmoothStepToS(&this->actor.shape.rot.y, relYawTarget[this->attack - 1] + this->actor.world.rot.y, 1, 0x2EE, 0);
-
+    // Rotate Club Moblin towards player in Enemy Randomizer because they're
+    // borderline useless otherwise in most scenarios.
+    if (!CVarGetInteger("gRandomizedEnemies", 0)) {
+        Math_SmoothStepToS(&this->actor.shape.rot.y, relYawTarget[this->attack - 1] + this->actor.world.rot.y, 1, 0x2EE, 0);
+    } else {
+        Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
+        Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
+    }
+    
     if (this->attackCollider.base.atFlags & AT_HIT) {
         this->attackCollider.base.atFlags &= ~AT_HIT;
         if (this->attackCollider.base.at == &player->actor) {
@@ -863,7 +888,12 @@ void EnMb_ClubAttack(EnMb* this, PlayState* play) {
             EffectSsBlast_SpawnWhiteShockwave(play, &effSpawnPos, &effWhiteShockwaveDynamics,
                                               &effWhiteShockwaveDynamics);
             func_80033480(play, &effSpawnPos, 2.0f, 3, 0x12C, 0xB4, 1);
-            Camera_AddQuake(&play->mainCamera, 2, 0x19, 5);
+            // Disable camera shake when the Moblin attacks with Enemy Randomizer enabled.
+            // This camera shake gets very annoying as these Moblins can spawn in many rooms,
+            // and also often (initially) out of reach for the player.
+            if (!CVarGetInteger("gRandomizedEnemies", 0)) {
+                Camera_AddQuake(&play->mainCamera, 2, 0x19, 5);
+            }
             func_800358DC(&this->actor, &effSpawnPos, &this->actor.world.rot, flamesParams, 20, flamesUnused, play,
                           -1, 0);
             EnMb_SetupClubWaitAfterAttack(this);
@@ -1135,12 +1165,12 @@ void EnMb_SpearGuardWalk(EnMb* this, PlayState* play) {
     if (this->timer3 == 0 &&
         Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) < this->playerDetectionRange) {
         Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 1, 0x2EE, 0);
-        this->actor.flags |= ACTOR_FLAG_0;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
         if (this->actor.xzDistToPlayer < 500.0f && relYawTowardsPlayer < 0x1388) {
             EnMb_SetupSpearPrepareAndCharge(this);
         }
     } else {
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
         if (Math_Vec3f_DistXZ(&this->actor.world.pos, &this->actor.home.pos) > this->maxHomeDist || this->timer2 != 0) {
             yawTowardsHome = Math_Vec3f_Yaw(&this->actor.world.pos, &this->actor.home.pos);
             Math_SmoothStepToS(&this->actor.world.rot.y, yawTowardsHome, 1, 0x2EE, 0);
@@ -1235,10 +1265,23 @@ void EnMb_ClubWaitPlayerNear(EnMb* this, PlayState* play) {
     s32 pad;
     s16 relYawFromPlayer = this->actor.world.rot.y - this->actor.yawTowardsPlayer;
 
+    // Rotate Club Moblin towards player in Enemy Randomizer because they're
+    // borderline useless otherwise in most scenarios.
+    if (CVarGetInteger("gRandomizedEnemies", 0)) {
+        Math_SmoothStepToS(&this->actor.shape.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
+        Math_SmoothStepToS(&this->actor.world.rot.y, this->actor.yawTowardsPlayer, 3, 100.0f, 0);
+    }
+
     SkelAnime_Update(&this->skelAnime);
     if (Math_Vec3f_DistXZ(&this->actor.home.pos, &player->actor.world.pos) < this->playerDetectionRange &&
         !(player->stateFlags1 & 0x4000000) && ABS(relYawFromPlayer) < 0x3E80) {
-        EnMb_SetupClubAttack(this);
+        // Add a height check to the Moblin's Club attack when Enemy Randomizer is on.
+        // Without the height check, the Moblin will attack (and play the sound effect) a lot even though
+        // the Moblin is very far away from the player in vertical rooms (like the first room in Deku Tree).
+        s8 enemyRando = CVarGetInteger("gRandomizedEnemies", 0);
+        if (!enemyRando || (enemyRando && this->actor.yDistToPlayer <= 100.0f && this->actor.yDistToPlayer >= -100.0f)) {
+            EnMb_SetupClubAttack(this);
+        }
     }
 }
 
@@ -1287,7 +1330,7 @@ void EnMb_SetupSpearDead(EnMb* this) {
     this->timer1 = 30;
     this->state = ENMB_STATE_SPEAR_SPEARPATH_DAMAGED;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_MORIBLIN_DEAD);
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     EnMb_SetupAction(this, EnMb_SpearDead);
 }
 
@@ -1400,12 +1443,14 @@ void EnMb_CheckColliding(EnMb* this, PlayState* play) {
                 if (this->actor.params == ENMB_TYPE_CLUB) {
                     if (this->actor.colChkInfo.health == 0) {
                         EnMb_SetupClubDead(this);
+                        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
                     } else if (this->state != ENMB_STATE_CLUB_KNEELING) {
                         EnMb_SetupClubDamaged(this);
                     }
                 } else {
                     if (this->actor.colChkInfo.health == 0) {
                         EnMb_SetupSpearDead(this);
+                        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
                     } else {
                         EnMb_SetupSpearDamaged(this);
                     }
@@ -1523,7 +1568,7 @@ void EnMb_Draw(Actor* thisx, PlayState* play) {
     s32 bodyPartIdx;
     EnMb* this = (EnMb*)thisx;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           NULL, EnMb_PostLimbDraw, thisx);
 

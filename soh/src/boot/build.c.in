@@ -1,4 +1,7 @@
 const char gBuildVersion[] = "@PROJECT_BUILD_NAME@ (@CMAKE_PROJECT_VERSION_MAJOR@.@CMAKE_PROJECT_VERSION_MINOR@.@CMAKE_PROJECT_VERSION_PATCH@)";
+const int gBuildVersionMajor = @CMAKE_PROJECT_VERSION_MAJOR@;
+const int gBuildVersionMinor = @CMAKE_PROJECT_VERSION_MINOR@;
+const int gBuildVersionPatch = @CMAKE_PROJECT_VERSION_PATCH@;
 const char gBuildTeam[] = "@PROJECT_TEAM@";
 const char gBuildDate[] = __DATE__ " " __TIME__;
 const char gBuildMakeOption[] = "";

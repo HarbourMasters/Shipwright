@@ -1,5 +1,16 @@
 <Root>
     <File Name="object_horse_ganon" Segment="6">
+        <Texture Name="object_horse_ganonTex_00A570" OutName="object_horse_ganonTex_00A570" Format="rgba16" Width="8" Height="8" Offset="0xA570" AddedByScript="true"/>
+        <Texture Name="object_horse_ganonTex_00A5F0" OutName="object_horse_ganonTex_00A5F0" Format="rgba16" Width="16" Height="16" Offset="0xA5F0" AddedByScript="true"/>
+        <Texture Name="object_horse_ganonTex_00A7F0" OutName="object_horse_ganonTex_00A7F0" Format="rgba16" Width="4" Height="4" Offset="0xA7F0" AddedByScript="true"/>
+        <Texture Name="object_horse_ganonTex_00A810" OutName="object_horse_ganonTex_00A810" Format="rgba16" Width="16" Height="16" Offset="0xA810" AddedByScript="true"/>
+        <Texture Name="object_horse_ganonTex_00AA10" OutName="object_horse_ganonTex_00AA10" Format="rgba16" Width="16" Height="16" Offset="0xAA10" AddedByScript="true"/>
+        <Texture Name="object_horse_ganonTex_00B010" OutName="object_horse_ganonTex_00B010" Format="rgba16" Width="8" Height="16" Offset="0xB010" AddedByScript="true"/>
+        <Texture Name="object_horse_ganonTex_00B110" OutName="object_horse_ganonTex_00B110" Format="rgba16" Width="16" Height="32" Offset="0xB110" AddedByScript="true"/>
+        <Texture Name="object_horse_ganonTex_00B510" OutName="object_horse_ganonTex_00B510" Format="rgba16" Width="16" Height="8" Offset="0xB510" AddedByScript="true"/>
+        <Texture Name="object_horse_ganonTex_00B610" OutName="object_horse_ganonTex_00B610" Format="rgba16" Width="8" Height="8" Offset="0xB610" AddedByScript="true"/>
+        <Texture Name="object_horse_ganonTex_00B690" OutName="object_horse_ganonTex_00B690" Format="rgba16" Width="32" Height="32" Offset="0xB690" AddedByScript="true"/>
+        <Texture Name="object_horse_ganonTex_00BE90" OutName="object_horse_ganonTex_00BE90" Format="rgba16" Width="16" Height="16" Offset="0xBE90" AddedByScript="true"/>
         <Skeleton Name="gHorseGanonSkel" Type="Normal" LimbType="Skin" Offset="0x8668"/>
 
         <!-- Idle. Horse moving leg. -->

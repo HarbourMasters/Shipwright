@@ -10,8 +10,9 @@
 #include "objects/object_spot02_objects/object_spot02_objects.h"
 
 #include "soh/frame_interpolation.h"
+#include <assert.h>
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5 | ACTOR_FLAG_25)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void ObjectKankyo_Init(Actor* thisx, PlayState* play);
 void ObjectKankyo_Destroy(Actor* thisx, PlayState* play);
@@ -116,22 +117,22 @@ void ObjectKankyo_Init(Actor* thisx, PlayState* play) {
             }
 
             // Check which beams are disabled
-            if (Flags_GetEventChkInf(0xBB)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_FOREST_TRIAL)) {
                 this->effects[0].size = 0.0f;
             }
-            if (Flags_GetEventChkInf(0xBC)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_WATER_TRIAL)) {
                 this->effects[1].size = 0.0f;
             }
-            if (Flags_GetEventChkInf(0xBD)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_SHADOW_TRIAL)) {
                 this->effects[2].size = 0.0f;
             }
-            if (Flags_GetEventChkInf(0xBE)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_FIRE_TRIAL)) {
                 this->effects[3].size = 0.0f;
             }
-            if (Flags_GetEventChkInf(0xBF)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_LIGHT_TRIAL)) {
                 this->effects[4].size = 0.0f;
             }
-            if (Flags_GetEventChkInf(0xAD)) {
+            if (Flags_GetEventChkInf(EVENTCHKINF_COMPLETED_SPIRIT_TRIAL)) {
                 this->effects[5].size = 0.0f;
             }
 
@@ -213,7 +214,7 @@ void ObjectKankyo_Fairies(ObjectKankyo* this, PlayState* play) {
 
     player = GET_PLAYER(play);
 
-    if (play->sceneNum == SCENE_SPOT04 && gSaveContext.sceneSetupIndex == 7) {
+    if (play->sceneNum == SCENE_KOKIRI_FOREST && gSaveContext.sceneSetupIndex == 7) {
         dist = Math3D_Vec3f_DistXYZ(&this->prevEyePos, &play->view.eye);
 
         this->prevEyePos.x = play->view.eye.x;
@@ -521,9 +522,9 @@ void ObjectKankyo_DrawFairies(ObjectKankyo* this2, PlayState* play2) {
 
     if (!(play->cameraPtrs[0]->unk_14C & 0x100)) {
         OPEN_DISPS(play->state.gfxCtx);
-        POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x14);
-        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gSunTex));
-        gSPDisplayList(POLY_XLU_DISP++, gKokiriDustMoteTextureLoadDL);
+        POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0x14);
+        gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gSun1Tex));
+        gSPDisplayList(POLY_XLU_DISP++, gKokiriDustMoteMaterialDL);
 
         for (i = 0; i < play->envCtx.unk_EE[3]; i++) {
             FrameInterpolation_RecordOpenChild(&this->effects[i], this->effects[i].epoch);
@@ -591,7 +592,7 @@ void ObjectKankyo_DrawFairies(ObjectKankyo* this2, PlayState* play2) {
             Matrix_Mult(&play->billboardMtxF, MTXMODE_APPLY);
             Matrix_RotateZ(DEG_TO_RAD(play->state.frames * 20.0f), MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_LOAD);
-            gSPDisplayList(POLY_XLU_DISP++, gKokiriDustMoteDL);
+            gSPDisplayList(POLY_XLU_DISP++, gKokiriDustMoteModelDL);
             FrameInterpolation_RecordCloseChild();
         }
         CLOSE_DISPS(play->state.gfxCtx);
@@ -723,7 +724,7 @@ void ObjectKankyo_DrawSnow(ObjectKankyo* this2, PlayState* play2) {
 
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gDust5Tex));
 
-            func_80094C50(play->state.gfxCtx);
+            Gfx_SetupDL_61Xlu(play->state.gfxCtx);
             gSPMatrix(POLY_XLU_DISP++, SEG_ADDR(1, 0), G_MTX_MODELVIEW | G_MTX_NOPUSH | G_MTX_MUL);
 
             gDPPipeSync(POLY_XLU_DISP++);
@@ -778,7 +779,7 @@ void ObjectKankyo_DrawLightning(ObjectKankyo* this, PlayState* play) {
         gDPSetEnvColor(POLY_XLU_DISP++, 0, 255, 255, 128);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_LOAD);
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEffLightningTextures[this->effects[0].timer]));
-        func_80094C50(play->state.gfxCtx);
+        Gfx_SetupDL_61Xlu(play->state.gfxCtx);
         gSPMatrix(POLY_XLU_DISP++, SEG_ADDR(1, 0), G_MTX_MODELVIEW | G_MTX_NOPUSH | G_MTX_MUL);
         gDPPipeSync(POLY_XLU_DISP++);
         gSPDisplayList(POLY_XLU_DISP++, gEffLightningDL);
@@ -792,7 +793,7 @@ void ObjectKankyo_SunGraveSparkInit(ObjectKankyo* this, PlayState* play) {
     s32 objBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_SPOT02_OBJECTS);
 
     if (objBankIndex < 0) {
-        ASSERT(objBankIndex < 0);
+        assert(objBankIndex < 0);
     } else {
         this->requiredObjBankIndex = objBankIndex;
     }
@@ -866,7 +867,7 @@ void ObjectKankyo_DrawSunGraveSpark(ObjectKankyo* this2, PlayState* play2) {
             Matrix_Translate((end.x - start.x) * weight + start.x, (end.y - start.y) * weight + start.y,
                              (end.z - start.z) * weight + start.z, MTXMODE_NEW);
             Matrix_Scale(this->effects[0].size, this->effects[0].size, this->effects[0].size, MTXMODE_APPLY);
-            func_80093D84(play->state.gfxCtx);
+            Gfx_SetupDL_25Xlu(play->state.gfxCtx);
             gDPPipeSync(POLY_XLU_DISP++);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, (u8)(105 * this->effects[0].amplitude) + 150, 255,
                             (u8)(105 * this->effects[0].amplitude) + 150, this->effects[0].alpha);
@@ -893,7 +894,7 @@ void ObjectKankyo_InitBeams(ObjectKankyo* this, PlayState* play) {
     s32 objectIndex = Object_GetIndex(&play->objectCtx, OBJECT_DEMO_KEKKAI);
 
     if (objectIndex < 0) {
-        ASSERT(objectIndex < 0);
+        assert(objectIndex < 0);
     } else {
         this->requiredObjBankIndex = objectIndex;
     }
@@ -950,7 +951,7 @@ void ObjectKankyo_DrawBeams(ObjectKankyo* this2, PlayState* play2) {
                 Matrix_RotateY(DEG_TO_RAD(beamYaw[i]), MTXMODE_APPLY);
                 Matrix_RotateX(DEG_TO_RAD(beamPitch[i]), MTXMODE_APPLY);
                 Matrix_Scale(this->effects[i].size, 0.1f, this->effects[i].size, MTXMODE_APPLY);
-                func_80093D84(play->state.gfxCtx);
+                Gfx_SetupDL_25Xlu(play->state.gfxCtx);
                 gDPPipeSync(POLY_XLU_DISP++);
                 gDPSetPrimColor(POLY_XLU_DISP++, 0, 128, sBeamPrimColors[i].r, sBeamPrimColors[i].g,
                                 sBeamPrimColors[i].b, 128);

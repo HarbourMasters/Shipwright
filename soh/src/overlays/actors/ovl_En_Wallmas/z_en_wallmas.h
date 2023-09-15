@@ -1,13 +1,14 @@
 #ifndef Z_EN_WALLMAS_H
 #define Z_EN_WALLMAS_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 typedef enum {
     /* 0x00 */ WMT_TIMER,
     /* 0x01 */ WMT_PROXIMITY,
-    /* 0x02 */ WMT_FLAG
+    /* 0x02 */ WMT_FLAG,
+    /* 0x03 */ WMT_SHADOWTAG
 } WallmasType;
 
 struct EnWallmas;

@@ -17,7 +17,7 @@ void SkyboxDraw_Draw(SkyboxContext* skyboxCtx, GraphicsContext* gfxCtx, s16 skyb
     OPEN_DISPS(gfxCtx);
     FrameInterpolation_RecordOpenChild(NULL, FrameInterpolation_GetCameraEpoch());
 
-    func_800945A0(gfxCtx);
+    Gfx_SetupDL_40Opa(gfxCtx);
 
     //gsSPShaderTest(POLY_OPA_DISP++);
 

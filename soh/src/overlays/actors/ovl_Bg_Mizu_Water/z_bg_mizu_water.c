@@ -7,7 +7,7 @@
 #include "z_bg_mizu_water.h"
 #include "objects/object_mizu_objects/object_mizu_objects.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void BgMizuWater_Init(Actor* thisx, PlayState* play);
 void BgMizuWater_Destroy(Actor* thisx, PlayState* play);
@@ -329,7 +329,7 @@ void BgMizuWater_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     gameplayFrames = play->gameplayFrames;
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x0C,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, -gameplayFrames * 1, gameplayFrames * 1, 32, 32, 1, 0,

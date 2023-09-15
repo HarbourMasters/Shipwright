@@ -8,7 +8,7 @@
 #include "z_item_shield.h"
 #include "objects/object_link_child/object_link_child.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void ItemShield_Init(Actor* thisx, PlayState* play);
 void ItemShield_Destroy(Actor* thisx, PlayState* play);
@@ -221,7 +221,7 @@ void ItemShield_Draw(Actor* thisx, PlayState* play) {
 
     if (!(this->unk_19C & 2)) {
         OPEN_DISPS(play->state.gfxCtx);
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, SEGMENTED_TO_VIRTUAL(gLinkChildDekuShieldDL));

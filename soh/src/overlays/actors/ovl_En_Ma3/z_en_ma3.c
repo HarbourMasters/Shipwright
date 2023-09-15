@@ -7,7 +7,7 @@
 #include "z_en_ma3.h"
 #include "objects/object_ma2/object_ma2.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnMa3_Init(Actor* thisx, PlayState* play);
 void EnMa3_Destroy(Actor* thisx, PlayState* play);
@@ -76,13 +76,13 @@ u16 func_80AA2AA0(PlayState* play, Actor* thisx) {
     Player* player = GET_PLAYER(play);
     s16* timer1ValuePtr; // weirdness with this necessary to match
 
-    if (!(gSaveContext.infTable[11] & 0x100)) {
+    if (!Flags_GetInfTable(INFTABLE_B8)) {
         return 0x2000;
     }
     timer1ValuePtr = &gSaveContext.timer1Value;
     if (gSaveContext.eventInf[0] & 0x400) {
         gSaveContext.timer1Value = gSaveContext.timer1Value;
-        thisx->flags |= ACTOR_FLAG_16;
+        thisx->flags |= ACTOR_FLAG_WILL_TALK;
         if (gSaveContext.timer1Value >= 0xD3) {
             return 0x208E;
         }
@@ -90,7 +90,7 @@ u16 func_80AA2AA0(PlayState* play, Actor* thisx) {
             HIGH_SCORE(HS_HORSE_RACE) = 0xB4;
             gSaveContext.timer1Value = *timer1ValuePtr;
         }
-        if (!(gSaveContext.eventChkInf[1] & 0x4000) && (gSaveContext.timer1Value < 0x32)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_WON_COW_IN_MALONS_RACE) && (gSaveContext.timer1Value < 0x32)) {
             return 0x208F;
         } else if (gSaveContext.timer1Value < HIGH_SCORE(HS_HORSE_RACE)) {
             return 0x2012;
@@ -102,7 +102,7 @@ u16 func_80AA2AA0(PlayState* play, Actor* thisx) {
         (Actor_FindNearby(play, thisx, ACTOR_EN_HORSE, 1, 1200.0f) == NULL)) {
         return 0x2001;
     }
-    if (!(gSaveContext.infTable[11] & 0x200)) {
+    if (!Flags_GetInfTable(INFTABLE_B9)) {
         return 0x2002;
     } else {
         return 0x2003;
@@ -110,7 +110,7 @@ u16 func_80AA2AA0(PlayState* play, Actor* thisx) {
 }
 
 s16 func_80AA2BD4(PlayState* play, Actor* thisx) {
-    s16 ret = 1;
+    s16 ret = NPC_TALK_STATE_TALKING;
 
     switch (Message_GetState(&play->msgCtx)) {
         case TEXT_STATE_EVENT:
@@ -125,9 +125,9 @@ s16 func_80AA2BD4(PlayState* play, Actor* thisx) {
             break;
         case TEXT_STATE_CHOICE:
             if (Message_ShouldAdvance(play)) {
-                gSaveContext.infTable[11] |= 0x200;
+                Flags_SetInfTable(INFTABLE_B9);
                 if (play->msgCtx.choiceIndex == 0) {
-                    if (gSaveContext.eventChkInf[1] & 0x4000) {
+                    if (Flags_GetEventChkInf(EVENTCHKINF_WON_COW_IN_MALONS_RACE)) {
                         Message_ContinueTextbox(play, 0x2091);
                     } else if (HIGH_SCORE(HS_HORSE_RACE) == 0) {
                         Message_ContinueTextbox(play, 0x2092);
@@ -140,11 +140,11 @@ s16 func_80AA2BD4(PlayState* play, Actor* thisx) {
         case TEXT_STATE_CLOSING:
             switch (thisx->textId) {
                 case 0x2000:
-                    gSaveContext.infTable[11] |= 0x100;
-                    ret = 0;
+                    Flags_SetInfTable(INFTABLE_B8);
+                    ret = NPC_TALK_STATE_IDLE;
                     break;
                 case 0x208F:
-                    gSaveContext.eventChkInf[1] |= 0x4000;
+                    Flags_SetEventChkInf(EVENTCHKINF_WON_COW_IN_MALONS_RACE);
                 case 0x2004:
                 case 0x2012:
                     if (HIGH_SCORE(HS_HORSE_RACE) > gSaveContext.timer1Value) {
@@ -152,19 +152,19 @@ s16 func_80AA2BD4(PlayState* play, Actor* thisx) {
                     }
                 case 0x208E:
                     gSaveContext.eventInf[0] &= ~0x400;
-                    thisx->flags &= ~ACTOR_FLAG_16;
-                    ret = 0;
+                    thisx->flags &= ~ACTOR_FLAG_WILL_TALK;
+                    ret = NPC_TALK_STATE_IDLE;
                     gSaveContext.timer1State = 0xA;
                     break;
                 case 0x2002:
-                    gSaveContext.infTable[11] |= 0x200;
+                    Flags_SetInfTable(INFTABLE_B9);
                 case 0x2003:
                     if (!(gSaveContext.eventInf[0] & 0x400)) {
-                        ret = 0;
+                        ret = NPC_TALK_STATE_IDLE;
                     }
                     break;
                 default:
-                    ret = 0;
+                    ret = NPC_TALK_STATE_IDLE;
             }
             break;
         case TEXT_STATE_NONE:
@@ -181,24 +181,24 @@ s16 func_80AA2BD4(PlayState* play, Actor* thisx) {
 
 void func_80AA2E54(EnMa3* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
-    s16 phi_a3;
+    s16 trackingMode;
 
-    if ((this->unk_1E0.unk_00 == 0) && (this->skelAnime.animation == &gMalonAdultSingAnim)) {
-        phi_a3 = 1;
+    if ((this->interactInfo.talkState == NPC_TALK_STATE_IDLE) && (this->skelAnime.animation == &gMalonAdultSingAnim)) {
+        trackingMode = NPC_TRACKING_NONE;
     } else {
-        phi_a3 = 0;
+        trackingMode = NPC_TRACKING_PLAYER_AUTO_TURN;
     }
 
-    this->unk_1E0.unk_18 = player->actor.world.pos;
-    this->unk_1E0.unk_14 = 0.0f;
-    func_80034A14(&this->actor, &this->unk_1E0, 0, phi_a3);
+    this->interactInfo.trackPos = player->actor.world.pos;
+    this->interactInfo.yOffset = 0.0f;
+    Npc_TrackPoint(&this->actor, &this->interactInfo, 0, trackingMode);
 }
 
 s32 func_80AA2EC8(EnMa3* this, PlayState* play) {
     if (LINK_IS_CHILD) {
         return 2;
     }
-    if (!(gSaveContext.eventChkInf[1] & 0x100)) {
+    if (!Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED)) {
         return 2;
     }
     if (gSaveContext.eventInf[0] & 0x400) {
@@ -211,7 +211,7 @@ s32 func_80AA2F28(EnMa3* this) {
     if (this->skelAnime.animation != &gMalonAdultSingAnim) {
         return 0;
     }
-    if (this->unk_1E0.unk_00 != 0) {
+    if (this->interactInfo.talkState != NPC_TALK_STATE_IDLE) {
         return 0;
     }
     this->blinkTimer = 0;
@@ -265,7 +265,7 @@ void EnMa3_Init(Actor* thisx, PlayState* play) {
 
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
     Actor_SetScale(&this->actor, 0.01f);
-    this->unk_1E0.unk_00 = (u16)0;
+    this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
 }
 
 void EnMa3_Destroy(Actor* thisx, PlayState* play) {
@@ -276,9 +276,9 @@ void EnMa3_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_80AA3200(EnMa3* this, PlayState* play) {
-    if (this->unk_1E0.unk_00 == 2) {
-        this->actor.flags &= ~ACTOR_FLAG_16;
-        this->unk_1E0.unk_00 = 0;
+    if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+        this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
     }
 }
 
@@ -292,9 +292,9 @@ void EnMa3_Update(Actor* thisx, PlayState* play) {
     EnMa3_UpdateEyes(this);
     this->actionFunc(this, play);
     func_80AA2E54(this, play);
-    func_800343CC(play, &this->actor, &this->unk_1E0.unk_00, (f32)this->collider.dim.radius + 150.0f,
-                  func_80AA2AA0, func_80AA2BD4);
-    if (this->unk_1E0.unk_00 == 0) {
+    Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, (f32)this->collider.dim.radius + 150.0f,
+                      func_80AA2AA0, func_80AA2BD4);
+    if (this->interactInfo.talkState == NPC_TALK_STATE_IDLE) {
         if (this->unk_20A != 0) {
             func_800F6584(0);
             this->unk_20A = 0;
@@ -314,13 +314,13 @@ s32 EnMa3_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
     }
     if (limbIndex == MALON_ADULT_LIMB_HEAD) {
         Matrix_Translate(1400.0f, 0.0f, 0.0f, MTXMODE_APPLY);
-        vec = this->unk_1E0.unk_08;
+        vec = this->interactInfo.headRot;
         Matrix_RotateX((vec.y / 32768.0f) * M_PI, MTXMODE_APPLY);
         Matrix_RotateZ((vec.x / 32768.0f) * M_PI, MTXMODE_APPLY);
         Matrix_Translate(-1400.0f, 0.0f, 0.0f, MTXMODE_APPLY);
     }
     if (limbIndex == MALON_ADULT_LIMB_CHEST_AND_NECK) {
-        vec = this->unk_1E0.unk_0E;
+        vec = this->interactInfo.torsoRot;
         Matrix_RotateY((-vec.y / 32768.0f) * M_PI, MTXMODE_APPLY);
         Matrix_RotateX((-vec.x / 32768.0f) * M_PI, MTXMODE_APPLY);
     }
@@ -362,7 +362,7 @@ void EnMa3_Draw(Actor* thisx, PlayState* play) {
     camera = GET_ACTIVE_CAM(play);
     someFloat = Math_Vec3f_DistXZ(&this->actor.world.pos, &camera->eye);
     func_800F6268(someFloat, NA_BGM_LONLON);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[this->mouthIndex]));
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->eyeIndex]));

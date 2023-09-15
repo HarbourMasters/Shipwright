@@ -8,7 +8,7 @@
 #include "vt.h"
 #include "objects/object_ka/object_ka.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_25)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void EnKakasi_Init(Actor* thisx, PlayState* play);
 void EnKakasi_Destroy(Actor* thisx, PlayState* play);
@@ -59,8 +59,7 @@ void EnKakasi_Destroy(Actor* thisx, PlayState* play) {
     EnKakasi* this = (EnKakasi*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-    SkelAnime_Free(&this->skelanime, play); // OTR - Fixed this memory leak
-    //! @bug SkelAnime_Free is not called
+    SkelAnime_Free(&this->skelanime, play);
 }
 
 void EnKakasi_Init(Actor* thisx, PlayState* play) {
@@ -75,7 +74,7 @@ void EnKakasi_Init(Actor* thisx, PlayState* play) {
     SkelAnime_InitFlex(play, &this->skelanime, &object_ka_Skel_0065B0, &object_ka_Anim_000214, NULL, NULL, 0);
 
     this->rot = this->actor.world.rot;
-    this->actor.flags |= ACTOR_FLAG_10;
+    this->actor.flags |= ACTOR_FLAG_DRAGGED_BY_HOOKSHOT;
     this->actor.colChkInfo.mass = MASS_IMMOVABLE;
 
     Actor_SetScale(&this->actor, 0.01f);
@@ -180,13 +179,13 @@ void func_80A8F660(EnKakasi* this, PlayState* play) {
     this->unk_196 = TEXT_STATE_DONE;
     if (!LINK_IS_ADULT) {
         this->unk_194 = false;
-        if (gSaveContext.scarecrowCustomSongSet) {
+        if (gSaveContext.scarecrowLongSongSet) {
             this->actor.textId = 0x407A;
             this->unk_196 = TEXT_STATE_EVENT;
         }
     } else {
         this->unk_194 = true;
-        if (gSaveContext.scarecrowCustomSongSet) {
+        if (gSaveContext.scarecrowLongSongSet) {
             this->actor.textId = 0x4079;
             this->unk_196 = TEXT_STATE_EVENT;
         }
@@ -342,9 +341,9 @@ void EnKakasi_Draw(Actor* thisx, PlayState* play) {
     if (BREG(3) != 0) {
         osSyncPrintf("\n\n");
         // "flag!"
-        osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ フラグ！ ☆☆☆☆☆ %d\n" VT_RST, gSaveContext.scarecrowCustomSongSet);
+        osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ フラグ！ ☆☆☆☆☆ %d\n" VT_RST, gSaveContext.scarecrowLongSongSet);
     }
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelanime.skeleton, this->skelanime.jointTable, this->skelanime.dListCount,
                           NULL, NULL, this);
 }

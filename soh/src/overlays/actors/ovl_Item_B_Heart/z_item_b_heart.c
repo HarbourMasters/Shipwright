@@ -103,13 +103,13 @@ void ItemBHeart_Draw(Actor* thisx, PlayState* play) {
             play->sceneNum,this->actor.params, GI_HEART_CONTAINER_2));
     } else {
         if (flag) {
-            func_80093D84(play->state.gfxCtx);
+            Gfx_SetupDL_25Xlu(play->state.gfxCtx);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gGiHeartBorderDL);
             gSPDisplayList(POLY_XLU_DISP++, gGiHeartContainerDL);
         } else {
-            func_80093D18(play->state.gfxCtx);
+            Gfx_SetupDL_25Opa(play->state.gfxCtx);
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gGiHeartBorderDL);

@@ -2,9 +2,11 @@
 #include <string.h>
 #include <assert.h>
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include "soh/OTRGlobals.h"
+#include "soh/Enhancements/audio/AudioCollection.h"
+#include "soh/Enhancements/audio/AudioEditor.h"
 
 #define MK_ASYNC_MSG(retData, tableType, id, status) (((retData) << 24) | ((tableType) << 16) | ((id) << 8) | (status))
 #define ASYNC_TBLTYPE(v) ((u8)(v >> 16))
@@ -76,7 +78,10 @@ void* sUnusedHandler = NULL;
 
 s32 gAudioContextInitalized = false;
 
-char* sequenceMap[256];
+char** sequenceMap;
+size_t sequenceMapSize;
+// A map of authentic sequence IDs to their cache policies, for use with sequence swapping.
+u8 seqCachePolicyMap[MAX_AUTHENTIC_SEQID];
 char* fontMap[256];
 
 uintptr_t fontStart;
@@ -481,10 +486,16 @@ void AudioLoad_AsyncLoadFont(s32 fontId, s32 arg1, s32 retData, OSMesgQueue* ret
 u8* AudioLoad_GetFontsForSequence(s32 seqId, u32* outNumFonts) {
     s32 index;
 
-    if (seqId == 255)
+    // Check for NA_BGM_DISABLED and account for seqId that are stripped with `& 0xFF` by the caller
+    if (seqId == NA_BGM_DISABLED || seqId == 0xFF) {
         return NULL;
+    }
 
-    SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
+    u16 newSeqId = AudioEditor_GetReplacementSeq(seqId);
+    if (newSeqId > sequenceMapSize || !sequenceMap[newSeqId]) {
+        return NULL;
+    }
+    SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[newSeqId]);
 
     if (sDat.numFonts == 0)
         return NULL;
@@ -564,14 +575,20 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     s32 index;
     s32 numFonts;
     s32 fontId;
+    s8 authCachePolicy = -1; // since 0 is a valid cache policy value
 
     AudioSeq_SequencePlayerDisable(seqPlayer);
 
     fontId = 0xFF;
-    //index = ((u16*)gAudioContext.sequenceFontTable)[seqId];
-    //numFonts = gAudioContext.sequenceFontTable[index++];
 
+    if (gAudioContext.seqReplaced[playerIdx]) {
+        authCachePolicy = seqCachePolicyMap[seqId];
+        seqId = gAudioContext.seqToPlay[playerIdx];
+    }
     SequenceData seqData2 = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
+    if (authCachePolicy != -1) {
+        seqData2.cachePolicy = authCachePolicy;
+    }
 
     for (int i = 0; i < seqData2.numFonts; i++)
     {
@@ -597,8 +614,37 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     seqPlayer->delay = 0;
     seqPlayer->finished = 0;
     seqPlayer->playerIdx = playerIdx;
+
+    // Fix for barinade boss fight starting music multiple times
+    // this is not noticeable if the sequence is authentic, since the "Boss Battle"
+    // sequence begins with some silence
+    if (gPlayState != NULL &&
+        gPlayState->sceneNum == SCENE_JABU_JABU_BOSS &&
+        playerIdx == SEQ_PLAYER_BGM_MAIN &&
+        seqId != NA_BGM_BOSS) {
+        
+        seqPlayer->delay = 10;
+    }
+    
     AudioSeq_SkipForwardSequence(seqPlayer);
     //! @bug missing return (but the return value is not used so it's not UB)
+    
+    // Keep track of the previous sequence/scene so we don't repeat notifications
+    static uint16_t previousSeqId = UINT16_MAX;
+    static int16_t previousSceneNum = INT16_MAX;
+    if (CVarGetInteger("gSeqNameOverlay", 0) &&
+        playerIdx == SEQ_PLAYER_BGM_MAIN &&
+        (seqId != previousSeqId || (gPlayState != NULL && gPlayState->sceneNum != previousSceneNum))) {
+        
+        previousSeqId = seqId;
+        if (gPlayState != NULL) {
+            previousSceneNum = gPlayState->sceneNum;
+        }
+        const char* sequenceName = AudioCollection_GetSequenceName(seqId);
+        if (sequenceName != NULL) {
+            Overlay_DisplayText_Seconds(CVarGetInteger("gSeqNameOverlayDuration", 5), sequenceName);
+        }
+    }
 }
 
 u8* AudioLoad_SyncLoadSeq(s32 seqId) {
@@ -984,7 +1030,6 @@ void* AudioLoad_AsyncLoadInner(s32 tableType, s32 id, s32 nChunks, s32 retData, 
     u32 temp_v0;
     u32 realId;
 
-    realId = AudioLoad_GetRealTableIndex(tableType, id);
     switch (tableType) {
         case SEQUENCE_TABLE:
             if (gAudioContext.seqLoadStatus[realId] == 1) {
@@ -1211,6 +1256,12 @@ void AudioLoad_InitSwapFont(void) {
 
 #undef BASE_ROM_OFFSET
 
+int strcmp_sort( const void *str1, const void *str2 ) {
+    char *const *pp1 = str1;
+    char *const *pp2 = str2;
+    return strcmp(*pp1, *pp2);
+}
+
 void AudioLoad_Init(void* heap, size_t heapSize) {
     char pad[0x48];
     s32 numFonts;
@@ -1223,6 +1274,8 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     gAudioContext.resetTimer = 0;
 
     memset(&gAudioContext, 0, sizeof(gAudioContext));
+    memset(gAudioContext.seqToPlay, 0, 8);
+    memset(gAudioContext.seqReplaced, 0, 8);
 
     switch (osTvType) {
         case OS_TV_PAL:
@@ -1293,7 +1346,12 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     AudioHeap_ResetStep();
 
     int seqListSize = 0;
+    int customSeqListSize = 0;
     char** seqList = ResourceMgr_ListFiles("audio/sequences*", &seqListSize);
+    char** customSeqList = ResourceMgr_ListFiles("custom/music/*", &customSeqListSize);
+    sequenceMapSize = (size_t)(AudioCollection_SequenceMapSize() + customSeqListSize); 
+    sequenceMap = malloc(sequenceMapSize * sizeof(char*));
+    gAudioContext.seqLoadStatus = malloc(sequenceMapSize * sizeof(char*));
 
     for (size_t i = 0; i < seqListSize; i++)
     {
@@ -1303,9 +1361,38 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
         strcpy(str, seqList[i]);
 
         sequenceMap[sDat.seqNumber] = str;
+        seqCachePolicyMap[sDat.seqNumber] = sDat.cachePolicy;
     }
 
     free(seqList);
+
+    int startingSeqNum = MAX_AUTHENTIC_SEQID; // 109 is the highest vanilla sequence
+    qsort(customSeqList, customSeqListSize, sizeof(char*), strcmp_sort);
+
+    // Because AudioCollection's sequenceMap actually has more than sequences (including instruments from 130-135 and sfx in the 2000s, 6000s, 10000s, 14000s, 18000s, and 26000s),
+    // it's better here to keep track of the next empty seqNum in AudioCollection instead of just skipping past the instruments at 130 with a higher MAX_AUTHENTIC_SEQID,
+    // especially if those others could be added to in the future. However, this really needs to be streamlined with specific ranges in AudioCollection for types, or unifying
+    // AudioCollection and the various maps in here
+    int seqNum = startingSeqNum;
+
+    for (size_t i = startingSeqNum; i < startingSeqNum + customSeqListSize; i++) {
+        // ensure that what would be the next sequence number is actually unassigned in AudioCollection
+        while (AudioCollection_HasSequenceNum(seqNum)) {
+            seqNum++;
+        }
+        int j = i - startingSeqNum;
+        AudioCollection_AddToCollection(customSeqList[j], seqNum);
+        SequenceData sDat = ResourceMgr_LoadSeqByName(customSeqList[j]);
+        sDat.seqNumber = seqNum;
+
+        char* str = malloc(strlen(customSeqList[j]) + 1);
+        strcpy(str, customSeqList[j]);
+
+        sequenceMap[sDat.seqNumber] = str;
+        seqNum++;
+    }
+
+    free(customSeqList);
 
     int fntListSize = 0;
     char** fntList = ResourceMgr_ListFiles("audio/fonts*", &fntListSize);
@@ -1499,6 +1586,22 @@ s32 AudioLoad_SlowLoadSeq(s32 seqId, u8* ramAddr, s8* isDone) {
     size_t size;
 
     seqId = AudioLoad_GetRealTableIndex(SEQUENCE_TABLE, seqId);
+    u16 newSeqId = AudioEditor_GetReplacementSeq(seqId);
+    if (seqId != newSeqId) {
+        gAudioContext.seqToPlay[SEQ_PLAYER_BGM_MAIN] = newSeqId;
+        gAudioContext.seqReplaced[SEQ_PLAYER_BGM_MAIN] = 1;
+        // This sequence command starts playing a sequence specified by seqId on the main BGM seq player.
+        // The sequence command is a bitpacked u32 where different bits of the number indicated different parameters.
+        // What those parameters are is dependent on the first 8 bits which represent an operation.
+        // First two digits (bits 31-24) - Sequence Command Operation (0x0 = play sequence immediately)
+        // Next two digits (bits 23-16) - Index of the SeqPlayer to operate on. (0, which is the main BGM player.)
+        // Next two digits (bits 15-8) - Fade Timer (0 in this case, we don't want any fade-in or out here.)
+        // Last two digits (bits 7-0) - the sequence ID to play. Not actually sure why it is cast to u16 instead of u8,
+        // copied this from authentic game code and adapted it. I think it might be so that you can choose to encode the
+        // fade timer into the seqId if you want to for some reason.
+        Audio_QueueSeqCmd(0x00000000 | ((u8)SEQ_PLAYER_BGM_MAIN << 24) | ((u8)(0) << 16) | (u16)seqId);
+        return 0;
+    }
     seqTable = AudioLoad_GetLoadTable(SEQUENCE_TABLE);
     slowLoad = &gAudioContext.slowLoads[gAudioContext.slowLoadPos];
     if (slowLoad->status == LOAD_STATUS_DONE) {

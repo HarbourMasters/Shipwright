@@ -1,15 +1,14 @@
 #include "savestates.h"
 
-#include <libultraship/GameVersions.h>
+#include <GameVersions.h>
 
 #include <cstdio> // std::sprintf
 
-#include "spdlog/spdlog.h"
+#include <spdlog/spdlog.h>
+#include <spdlog/fmt/fmt.h>
 
 #include <soh/OTRGlobals.h>
 #include <soh/OTRAudio.h>
-
-#include <libultraship/ImGuiImpl.h>
 
 #include "z64.h"
 #include "z64save.h"
@@ -22,7 +21,22 @@
 #include "../../src/overlays/actors/ovl_En_Clear_Tag/z_en_clear_tag.h"
 #include "../../src/overlays/actors/ovl_En_Fr/z_en_fr.h"
 
+#include <libultraship/libultraship.h>
+
 extern "C" PlayState* gPlayState;
+
+template <> struct fmt::formatter<RequestType> {
+    constexpr auto parse(format_parse_context& ctx) { return ctx.begin(); }
+
+    template <typename FormatContext>
+    auto format(const RequestType& type, FormatContext& ctx) {
+        switch (type) {
+            case RequestType::SAVE: return fmt::format_to(ctx.out(), "Save");
+            case RequestType::LOAD: return fmt::format_to(ctx.out(), "Load");
+            default: return fmt::format_to(ctx.out(), "Unknown");
+        }
+    }
+};
 
 // FROM z_lights.c
 // I didn't feel like moving it into a header file.
@@ -823,7 +837,7 @@ extern "C" void ProcessSaveStateRequests(void) {
 }
 
 void SaveStateMgr::SetCurrentSlot(unsigned int slot) {
-    SohImGui::GetGameOverlay()->TextDrawNotification(1.0f, true, "slot %u set", slot);
+    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "slot %u set", slot);
     this->currentSlot = slot;
 }
 
@@ -841,12 +855,12 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
                     this->states[request.slot] = std::make_shared<SaveState>(OTRGlobals::Instance->gSaveStateMgr, request.slot);
                 }
                 this->states[request.slot]->Save();
-                SohImGui::GetGameOverlay()->TextDrawNotification(1.0f, true, "saved state %u", request.slot);
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "saved state %u", request.slot);
                 break;
             case RequestType::LOAD:
                 if (this->states.contains(request.slot)) {
                     this->states[request.slot]->Load();
-                    SohImGui::GetGameOverlay()->TextDrawNotification(1.0f, true, "loaded state %u", request.slot);
+                    LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "loaded state %u", request.slot);
                 } else {
                     SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
                 }
@@ -862,7 +876,7 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
 SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
     if (gPlayState == nullptr) {
         SPDLOG_ERROR("[SOH] Can not save or load a state outside of \"GamePlay\"");
-        SohImGui::GetGameOverlay()->TextDrawNotification(1.0f, true, "states not available here", request.slot);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "states not available here", request.slot);
         return SaveStateReturn::FAIL_WRONG_GAMESTATE;
     }
 
@@ -876,7 +890,7 @@ SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
                 return SaveStateReturn::SUCCESS;
             } else {
                 SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
-                SohImGui::GetGameOverlay()->TextDrawNotification(1.0f, true, "state slot %u empty", request.slot);
+                LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGameOverlay()->TextDrawNotification(1.0f, true, "state slot %u empty", request.slot);
                 return SaveStateReturn::FAIL_INVALID_SLOT;
             }
         [[unlikely]] default: 

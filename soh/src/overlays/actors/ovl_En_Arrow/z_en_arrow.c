@@ -8,7 +8,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_gi_nuts/object_gi_nuts.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnArrow_Init(Actor* thisx, PlayState* play);
 void EnArrow_Destroy(Actor* thisx, PlayState* play);
@@ -84,34 +84,48 @@ void EnArrow_Init(Actor* thisx, PlayState* play) {
     };
     EnArrow* this = (EnArrow*)thisx;
 
-    Color_RGBA8 Arrow_env_ori = { 0, 150, 0, 0 };
-    Color_RGBA8 Arrow_col_ori = { 255, 255, 170, 255 };
-    Color_RGBA8 Light_env_ori = { 255, 255, 0, 255 };
-    Color_RGBA8 Light_col_ori = { 255, 255, 170, 0 };
-    Color_RGBA8 Fire_env_ori = { 255, 0, 0, 255 };
-    Color_RGBA8 Fire_col_ori = { 255, 200, 0, 0 };
-    Color_RGBA8 Ice_env_ori = { 0, 0, 255, 255 };
-    Color_RGBA8 Ice_col_ori = { 170, 255, 255, 0 };
+    if (CVarGetInteger("gCosmetics.Arrows_NormalPrimary.Changed", 0)) {
+        blureNormal.altEnvColor = CVarGetColor("gCosmetics.Arrows_NormalPrimary.Value", (Color_RGBA8){ 0, 150, 0, 0 });
+    } else {
+        blureNormal.altEnvColor = (Color_RGBA8){ 0, 150, 0, 0 };
+    }
+    if (CVarGetInteger("gCosmetics.Arrows_NormalSecondary.Changed", 0)) {
+        blureNormal.altPrimColor = CVarGetColor("gCosmetics.Arrows_NormalSecondary.Value", (Color_RGBA8){ 255, 255, 170, 255 });
+    } else {
+        blureNormal.altPrimColor = (Color_RGBA8){ 255, 255, 170, 255 };
+    }
 
-    if (CVar_GetS32("gUseArrowsCol", 0) != 0) {
-        blureNormal.altPrimColor = CVar_GetRGBA("gNormalArrowCol", Arrow_col_ori);
-        blureNormal.altEnvColor = CVar_GetRGBA("gNormalArrowColEnv", Arrow_env_ori);
-        blureFire.altPrimColor = CVar_GetRGBA("gFireArrowCol", Fire_col_ori);
-        blureFire.altEnvColor = CVar_GetRGBA("gFireArrowColEnv", Fire_env_ori);
-        blureIce.altPrimColor = CVar_GetRGBA("gIceArrowCol", Ice_col_ori);
-        blureIce.altEnvColor = CVar_GetRGBA("gIceArrowColEnv", Ice_env_ori);
-        blureLight.altPrimColor = CVar_GetRGBA("gLightArrowCol", Light_col_ori);
-        blureLight.altEnvColor = CVar_GetRGBA("gLightArrowColEnv", Light_env_ori);
+    if (CVarGetInteger("gCosmetics.Arrows_FirePrimary.Changed", 0)) {
+        blureFire.altEnvColor = CVarGetColor("gCosmetics.Arrows_FirePrimary.Value", (Color_RGBA8){ 255, 200, 0, 0 });
+    } else {
+        blureFire.altEnvColor = (Color_RGBA8){ 255, 200, 0, 0 };
+    }
+    if (CVarGetInteger("gCosmetics.Arrows_FireSecondary.Changed", 0)) {
+        blureFire.altPrimColor = CVarGetColor("gCosmetics.Arrows_FireSecondary.Value", (Color_RGBA8){ 255, 0, 0, 255 });
+    } else {
+        blureFire.altPrimColor = (Color_RGBA8){ 255, 0, 0, 255 };
+    }
 
-        //make sure the alpha values are correct.
-        blureNormal.altPrimColor.a = 255;
-        blureNormal.altEnvColor.a = 0;
-        blureFire.altPrimColor.a = 255;
-        blureFire.altEnvColor.a = 0;
-        blureIce.altPrimColor.a = 255;
-        blureIce.altEnvColor.a = 0;
-        blureLight.altPrimColor.a = 255;
-        blureLight.altEnvColor.a = 0;
+    if (CVarGetInteger("gCosmetics.Arrows_IcePrimary.Changed", 0)) {
+        blureIce.altEnvColor = CVarGetColor("gCosmetics.Arrows_IcePrimary.Value", (Color_RGBA8){ 0, 0, 255, 255 });
+    } else {
+        blureIce.altEnvColor = (Color_RGBA8){ 0, 0, 255, 255 };
+    }
+    if (CVarGetInteger("gCosmetics.Arrows_IceSecondary.Changed", 0)) {
+        blureIce.altPrimColor = CVarGetColor("gCosmetics.Arrows_IceSecondary.Value", (Color_RGBA8){ 170, 255, 255, 0 });
+    } else {
+        blureIce.altPrimColor = (Color_RGBA8){ 170, 255, 255, 0 };
+    }
+
+    if (CVarGetInteger("gCosmetics.Arrows_LightPrimary.Changed", 0)) {
+        blureLight.altEnvColor = CVarGetColor("gCosmetics.Arrows_LightPrimary.Value", (Color_RGBA8){ 255, 255, 0, 255 });
+    } else {
+        blureLight.altEnvColor = (Color_RGBA8){ 255, 255, 0, 255 };
+    }
+    if (CVarGetInteger("gCosmetics.Arrows_LightSecondary.Changed", 0)) {
+        blureLight.altPrimColor = CVarGetColor("gCosmetics.Arrows_LightSecondary.Value", (Color_RGBA8){ 255, 255, 170, 0 });
+    } else {
+        blureLight.altPrimColor = (Color_RGBA8){ 255, 255, 170, 0 };
     }
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
@@ -179,7 +193,7 @@ void EnArrow_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyQuad(play, &this->collider);
 
     if ((this->hitActor != NULL) && (this->hitActor->update != NULL)) {
-        this->hitActor->flags &= ~ACTOR_FLAG_15;
+        this->hitActor->flags &= ~ACTOR_FLAG_DRAGGED_BY_ARROW;
     }
 }
 
@@ -303,7 +317,7 @@ void EnArrow_Fly(EnArrow* this, PlayState* play) {
             if (this->actor.params == ARROW_NUT) {
                 iREG(50) = -1;
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_M_FIRE1, this->actor.world.pos.x,
-                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
+                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0, true);
                 sfxId = NA_SE_IT_DEKU;
             } else {
                 sfxId = NA_SE_IT_SLING_REFLECT;
@@ -319,11 +333,11 @@ void EnArrow_Fly(EnArrow* this, PlayState* play) {
                 hitActor = this->collider.base.at;
 
                 if ((hitActor->update != NULL) && (!(this->collider.base.atFlags & AT_BOUNCED)) &&
-                    (hitActor->flags & ACTOR_FLAG_14)) {
+                    (hitActor->flags & ACTOR_FLAG_ARROW_DRAGGABLE)) {
                     this->hitActor = hitActor;
                     EnArrow_CarryActor(this, play);
                     Math_Vec3f_Diff(&hitActor->world.pos, &this->actor.world.pos, &this->unk_250);
-                    hitActor->flags |= ACTOR_FLAG_15;
+                    hitActor->flags |= ACTOR_FLAG_DRAGGED_BY_ARROW;
                     this->collider.base.atFlags &= ~AT_HIT;
                     this->actor.speedXZ /= 2.0f;
                     this->actor.velocity.y /= 2.0f;
@@ -382,14 +396,14 @@ void EnArrow_Fly(EnArrow* this, PlayState* play) {
                 this->hitActor->world.pos.y = hitPoint.y + ((sp54.y <= hitPoint.y) ? 1.0f : -1.0f);
                 this->hitActor->world.pos.z = hitPoint.z + ((sp54.z <= hitPoint.z) ? 1.0f : -1.0f);
                 Math_Vec3f_Diff(&this->hitActor->world.pos, &this->actor.world.pos, &this->unk_250);
-                this->hitActor->flags &= ~ACTOR_FLAG_15;
+                this->hitActor->flags &= ~ACTOR_FLAG_DRAGGED_BY_ARROW;
                 this->hitActor = NULL;
             } else {
                 Math_Vec3f_Sum(&this->actor.world.pos, &this->unk_250, &this->hitActor->world.pos);
             }
 
             if (this->touchedPoly && (this->hitActor != NULL)) {
-                this->hitActor->flags &= ~ACTOR_FLAG_15;
+                this->hitActor->flags &= ~ACTOR_FLAG_DRAGGED_BY_ARROW;
                 this->hitActor = NULL;
             }
         } else {
@@ -486,7 +500,7 @@ void EnArrow_Draw(Actor* thisx, PlayState* play) {
     f32 scale;
 
     if (this->actor.params <= ARROW_0E) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         SkelAnime_DrawLod(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, NULL, this,
                           (this->actor.projectedPos.z < MREG(95)) ? 0 : 1);
     } else if (this->actor.speedXZ != 0.0f) {
@@ -494,7 +508,7 @@ void EnArrow_Draw(Actor* thisx, PlayState* play) {
 
         OPEN_DISPS(play->state.gfxCtx);
 
-        func_80093C14(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu2(play->state.gfxCtx);
 
         if (this->actor.params == ARROW_SEED) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);

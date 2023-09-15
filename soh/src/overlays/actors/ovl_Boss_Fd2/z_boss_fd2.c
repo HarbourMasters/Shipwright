@@ -10,8 +10,9 @@
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "vt.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/boss-rush/BossRush.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 typedef enum {
     /* 0 */ DEATH_START,
@@ -530,7 +531,7 @@ void BossFd2_Vulnerable(BossFd2* this, PlayState* play) {
     s16 i;
 
     this->disableAT = true;
-    this->actor.flags |= ACTOR_FLAG_10;
+    this->actor.flags |= ACTOR_FLAG_DRAGGED_BY_HOOKSHOT;
     SkelAnime_Update(&this->skelAnime);
     switch (this->work[FD2_ACTION_STATE]) {
         case 0:
@@ -618,7 +619,7 @@ void BossFd2_SetupDeath(BossFd2* this, PlayState* play) {
     Animation_Change(&this->skelAnime, &gHoleVolvagiaDamagedAnim, 1.0f, 0.0f, this->fwork[FD2_END_FRAME],
                      ANIMMODE_ONCE_INTERP, -3.0f);
     this->actionFunc = BossFd2_Death;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->deathState = DEATH_START;
 }
 
@@ -788,8 +789,13 @@ void BossFd2_Death(BossFd2* this, PlayState* play) {
                 this->deathCamera = 0;
                 func_80064534(play, &play->csCtx);
                 func_8002DF54(play, &this->actor, 7);
-                Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f,
-                                   0, 0, 0, WARP_DUNGEON_ADULT);
+                if (!gSaveContext.isBossRush) {
+                    Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f, 0, 0,
+                                       0, WARP_DUNGEON_ADULT);
+                } else {
+                    Actor_Spawn(&play->actorCtx, play, ACTOR_DOOR_WARP1, 0.0f, 100.0f, 0.0f, 0, 0, 0,
+                                WARP_DUNGEON_ADULT, true);
+                }
                 Flags_SetClear(play, play->roomCtx.curRoom.num);
             }
             break;
@@ -869,7 +875,7 @@ void BossFd2_CollisionCheck(BossFd2* this, PlayState* play) {
             u8 canKill = false;
             u8 damage;
 
-            if ((damage = CollisionCheck_GetSwordDamage(hurtbox->toucher.dmgFlags)) == 0) {
+            if ((damage = CollisionCheck_GetSwordDamage(hurtbox->toucher.dmgFlags, play)) == 0) {
                 damage = (hurtbox->toucher.dmgFlags & 0x00001000) ? 4 : 2;
             } else {
                 canKill = true;
@@ -893,6 +899,8 @@ void BossFd2_CollisionCheck(BossFd2* this, PlayState* play) {
                 Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x100FF);
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_VALVAISA_DEAD);
                 Enemy_StartFinishingBlow(play, &this->actor);
+                gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_VOLVAGIA] = GAMEPLAYSTAT_TOTAL_TIME;
+                BossRush_HandleCompleteBoss(play);
             } else if (damage) {
                 BossFd2_SetupDamaged(this, play);
                 this->work[FD2_DAMAGE_FLASH_TIMER] = 10;
@@ -964,7 +972,7 @@ void BossFd2_Update(Actor* thisx, PlayState* play2) {
 
     osSyncPrintf("FD2 move start \n");
     this->disableAT = false;
-    this->actor.flags &= ~ACTOR_FLAG_10;
+    this->actor.flags &= ~ACTOR_FLAG_DRAGGED_BY_HOOKSHOT;
     this->work[FD2_VAR_TIMER]++;
     this->work[FD2_UNK_TIMER]++;
 
@@ -999,9 +1007,9 @@ void BossFd2_Update(Actor* thisx, PlayState* play2) {
     this->fwork[FD2_TEX2_SCROLL_X] += 3.0f;
     this->fwork[FD2_TEX2_SCROLL_Y] -= 2.0f;
     if (this->actor.focus.pos.y < 90.0f) {
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     } else {
-        this->actor.flags |= ACTOR_FLAG_0;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     }
 }
 
@@ -1177,7 +1185,7 @@ void BossFd2_DrawMane(BossFd2* this, PlayState* play) {
         this->leftMane.scale[i] = 1.5f + 0.3f * Math_CosS(5696.0f * this->work[FD2_VAR_TIMER] + i * 0x3200);
     }
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPDisplayList(POLY_XLU_DISP++, gHoleVolvagiaManeMaterialDL);
 
@@ -1204,7 +1212,7 @@ void BossFd2_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
     osSyncPrintf("FD2 draw start \n");
     if (this->actionFunc != BossFd2_Wait) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         if (this->work[FD2_DAMAGE_FLASH_TIMER] & 2) {
             POLY_OPA_DISP = Gfx_SetFog(POLY_OPA_DISP, 255, 255, 255, 0, 900, 1099);
         }

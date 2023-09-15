@@ -114,7 +114,7 @@ void EffectSsKakera_Draw(PlayState* play, u32 index, EffectSs* this) {
     if ((((this->rReg4 >> 7) & 1) << 7) == 0x80) {
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
         if (colorIdx >= 0) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, colors[colorIdx].r, colors[colorIdx].g, colors[colorIdx].b, 255);
@@ -124,7 +124,7 @@ void EffectSsKakera_Draw(PlayState* play, u32 index, EffectSs* this) {
     } else {
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
         if (colorIdx >= 0) {
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, colors[colorIdx].r, colors[colorIdx].g, colors[colorIdx].b, 255);

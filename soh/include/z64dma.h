@@ -1,7 +1,7 @@
 #ifndef Z64_DMA_H
 #define Z64_DMA_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 
 typedef struct {
     /* 0x00 */ uintptr_t      vromAddr; // VROM address (source)

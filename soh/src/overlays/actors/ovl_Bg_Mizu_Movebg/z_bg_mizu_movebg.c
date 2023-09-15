@@ -8,7 +8,7 @@
 #include "overlays/actors/ovl_Bg_Mizu_Water/z_bg_mizu_water.h"
 #include "objects/object_mizu_objects/object_mizu_objects.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 #define MOVEBG_TYPE(params) (((u16)(params) >> 0xC) & 0xF)
 #define MOVEBG_FLAGS(params) ((u16)(params)&0x3F)
@@ -311,7 +311,7 @@ void func_8089E318(BgMizuMovebg* this, PlayState* play) {
                 this->dyna.actor.child->world.pos.x = this->dyna.actor.world.pos.x + sp28.x;
                 this->dyna.actor.child->world.pos.y = this->dyna.actor.world.pos.y + sp28.y;
                 this->dyna.actor.child->world.pos.z = this->dyna.actor.world.pos.z + sp28.z;
-                this->dyna.actor.child->flags &= ~ACTOR_FLAG_0;
+                this->dyna.actor.child->flags &= ~ACTOR_FLAG_TARGETABLE;
             }
             break;
     }
@@ -366,7 +366,7 @@ void BgMizuMovebg_Draw(Actor* thisx, PlayState* play2) {
     OPEN_DISPS(play->state.gfxCtx);
 
     frames = play->gameplayFrames;
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08,
                Gfx_TwoTexScrollEnvColor(play->state.gfxCtx, 0, frames * 1, 0, 32, 32, 1, 0, 0, 32, 32, 0, 0, 0,

@@ -9,7 +9,7 @@
 #include "objects/object_anubice/object_anubice.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void EnAnubiceFire_Init(Actor* thisx, PlayState* play);
 void EnAnubiceFire_Destroy(Actor* thisx, PlayState* play);
@@ -116,7 +116,7 @@ void func_809B27D8(EnAnubiceFire* this, PlayState* play) {
             Audio_PlayActorSound2(&this->actor, NA_SE_IT_SHIELD_REFLECT_SW);
             this->cylinder.base.atFlags &= 0xFFE9;
             this->cylinder.base.atFlags |= 8;
-            this->cylinder.info.toucher.dmgFlags = CVar_GetS32("gAnubisFix", 0) ? 0x800 : 2;
+            this->cylinder.info.toucher.dmgFlags = CVarGetInteger("gAnubisFix", 0) ? 0x800 : 2;
             this->unk_15A = 30;
             this->actor.params = 1;
             this->actor.velocity.x *= -1.0f;
@@ -223,7 +223,7 @@ void EnAnubiceFire_Draw(Actor* thisx, PlayState* play) {
     s32 i;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 0, 255);
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 0);

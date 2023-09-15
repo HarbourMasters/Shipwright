@@ -6,6 +6,7 @@
 
 #include "z_en_tp.h"
 #include "objects/object_tp/object_tp.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS 0
 
@@ -154,12 +155,12 @@ void EnTp_Init(Actor* thisx, PlayState* play2) {
         this->collider.elements->dim.modelSphere.radius = this->collider.elements->dim.worldSphere.radius = 8;
         EnTp_Head_SetupWait(this);
         this->actor.focus.pos = this->actor.world.pos;
-        this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED;
         Actor_SetScale(&this->actor, 1.5f);
 
         for (i = 0; i <= 6; i++) {
             next = (EnTp*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TP, this->actor.world.pos.x,
-                                      this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0 * i);
+                                      this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0 * i, true);
 
             if (0 * i) {} // Very fake, but needed to get the s registers right
             if (next != NULL) {
@@ -170,7 +171,7 @@ void EnTp_Init(Actor* thisx, PlayState* play2) {
                 Actor_SetScale(&next->actor, 0.3f);
 
                 if (i == 2) {
-                    next->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4;
+                    next->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED;
                     next->unk_150 = 1; // Why?
                 }
 
@@ -210,13 +211,13 @@ void EnTp_Tail_FollowHead(EnTp* this, PlayState* play) {
         }
     } else {
         if (this->unk_150 != 0) {
-            this->actor.flags |= ACTOR_FLAG_0;
+            this->actor.flags |= ACTOR_FLAG_TARGETABLE;
         }
 
         if (this->head->unk_150 != 0) {
             this->actor.speedXZ = this->red = this->actor.velocity.y = this->heightPhase = 0.0f;
             if (this->actor.world.pos.y < this->head->actor.home.pos.y) {
-                this->actor.flags &= ~ACTOR_FLAG_0;
+                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
             }
 
             this->actor.world.pos = this->actor.parent->prevPos;
@@ -289,6 +290,7 @@ void EnTp_SetupDie(EnTp* this) {
     }
     this->actionIndex = TAILPASARAN_ACTION_DIE;
     EnTp_SetupAction(this, EnTp_Die);
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 /**
@@ -321,7 +323,7 @@ void EnTp_Die(EnTp* this, PlayState* play) {
             for (i = 0; i < 1; i++) {
                 now =
                     (EnTp*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TP, this->actor.world.pos.x,
-                                       this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, TAILPASARAN_FRAGMENT);
+                                       this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, TAILPASARAN_FRAGMENT, true);
 
                 if (now != NULL) {
                     Actor_SetScale(&now->actor, this->actor.scale.z * 0.5f);
@@ -349,7 +351,7 @@ void EnTp_Fragment_SetupFade(EnTp* this) {
     this->actor.velocity.x = (Rand_ZeroOne() - 0.5f) * 1.5f;
     this->actor.velocity.y = (Rand_ZeroOne() - 0.5f) * 1.5f;
     this->actor.velocity.z = (Rand_ZeroOne() - 0.5f) * 1.5f;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     EnTp_SetupAction(this, EnTp_Fragment_Fade);
 }
 
@@ -593,7 +595,7 @@ void EnTp_UpdateDamage(EnTp* this, PlayState* play) {
             }
 
             if (this->actor.colChkInfo.health == 0) {
-                this->actor.flags &= ~ACTOR_FLAG_0;
+                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                 head = this->head;
 
                 if (head->actor.params <= TAILPASARAN_HEAD) {
@@ -734,7 +736,7 @@ void EnTp_Draw(Actor* thisx, PlayState* play) {
 
     if (this->unk_150 != 2) {
         if ((thisx->params <= TAILPASARAN_HEAD) || (thisx->params == TAILPASARAN_HEAD_DYING)) {
-            func_80093D18(play->state.gfxCtx);
+            Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -742,7 +744,7 @@ void EnTp_Draw(Actor* thisx, PlayState* play) {
 
             Matrix_Translate(0.0f, 0.0f, 8.0f, MTXMODE_APPLY);
         } else {
-            func_80093D84(play->state.gfxCtx);
+            Gfx_SetupDL_25Xlu(play->state.gfxCtx);
             Matrix_ReplaceRotation(&play->billboardMtxF);
 
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, this->red, 0, 255, this->alpha);

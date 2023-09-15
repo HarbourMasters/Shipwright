@@ -1,7 +1,7 @@
 #ifndef Z_OBJ_WARP2BLOCK_H
 #define Z_OBJ_WARP2BLOCK_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct ObjWarp2block;

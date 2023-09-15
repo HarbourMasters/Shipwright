@@ -7,7 +7,7 @@
 #include "z_bg_spot01_fusya.h"
 #include "objects/object_spot01_objects/object_spot01_objects.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void BgSpot01Fusya_Init(Actor* thisx, PlayState* play);
 void BgSpot01Fusya_Destroy(Actor* thisx, PlayState* play);
@@ -60,7 +60,13 @@ void func_808AAA50(BgSpot01Fusya* this, PlayState* play) {
     f32 temp;
     Actor* thisx = &this->actor;
 
-    if (gSaveContext.eventChkInf[6] & 0x20) {
+    if (CVarGetInteger("gCosmetics.Kak_Windmill_Speed.Changed", 0)) {
+        this->unk_158 = CVarGetFloat("gCosmetics.Kak_Windmill_Speed.Value", 100.0f);
+    } else {
+        this->unk_158 = 100.0f;
+    }
+
+    if (Flags_GetEventChkInf(EVENTCHKINF_PLAYED_SONG_OF_STORMS_IN_WINDMILL)) {
         this->unk_158 = 1800.0f;
     }
     thisx->shape.rot.z += this->unk_154;
@@ -78,7 +84,7 @@ void BgSpot01Fusya_Update(Actor* thisx, PlayState* play) {
 void BgSpot01Fusya_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

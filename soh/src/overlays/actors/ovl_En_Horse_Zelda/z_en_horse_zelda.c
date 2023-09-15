@@ -7,7 +7,7 @@
 #include "z_en_horse_zelda.h"
 #include "objects/object_horse_zelda/object_horse_zelda.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void EnHorseZelda_Init(Actor* thisx, PlayState* play);
 void EnHorseZelda_Destroy(Actor* thisx, PlayState* play);
@@ -270,6 +270,6 @@ void EnHorseZelda_Draw(Actor* thisx, PlayState* play) {
     EnHorseZelda* this = (EnHorseZelda*)thisx;
 
     func_80A6DE38(this, play);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     func_800A6330(&this->actor, play, &this->skin, EnHorseZelda_PostDraw, true);
 }

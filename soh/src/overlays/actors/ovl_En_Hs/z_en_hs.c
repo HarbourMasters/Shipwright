@@ -9,7 +9,7 @@
 #include "objects/object_hs/object_hs.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnHs_Init(Actor* thisx, PlayState* play);
 void EnHs_Destroy(Actor* thisx, PlayState* play);
@@ -80,7 +80,7 @@ void EnHs_Init(Actor* thisx, PlayState* play) {
         osSyncPrintf(VT_FGCOL(CYAN) " ヒヨコの店(大人の時) \n" VT_RST);
         func_80A6E3A0(this, func_80A6E9AC);
         bool shouldSpawn;
-        bool tradedMushroom = gSaveContext.itemGetInf[3] & 1;
+        bool tradedMushroom = Flags_GetItemGetInf(ITEMGETINF_30);
         if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE)) {
             // To explain the logic because Fado and Grog are linked:
             // - If you have Cojiro, then spawn Grog and not Fado.
@@ -116,6 +116,8 @@ void EnHs_Destroy(Actor* thisx, PlayState* play) {
     EnHs* this = (EnHs*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 func_80A6E53C(EnHs* this, PlayState* play, u16 textId, EnHsActionFunc actionFunc) {
@@ -181,6 +183,7 @@ void func_80A6E740(EnHs* this, PlayState* play) {
             GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TRADE_COJIRO, GI_ODD_MUSHROOM);
             Randomizer_ConsumeAdultTradeItem(play, ITEM_COJIRO);
             GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
+            Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LW_TRADE_COJIRO);
         } else {
             s32 itemId = GI_ODD_MUSHROOM;
             func_8002F434(&this->actor, play, itemId, 10000.0f, 50.0f);
@@ -199,6 +202,7 @@ void func_80A6E7BC(EnHs* this, PlayState* play) {
                     GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TRADE_COJIRO, GI_ODD_MUSHROOM);
                     Randomizer_ConsumeAdultTradeItem(play, ITEM_COJIRO);
                     GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
+                    Flags_SetRandomizerInf(RAND_INF_ADULT_TRADES_LW_TRADE_COJIRO);
                 } else {
                     s32 itemId = GI_ODD_MUSHROOM;
                     func_8002F434(&this->actor, play, itemId, 10000.0f, 50.0f);
@@ -329,7 +333,7 @@ void EnHs_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, 
 void EnHs_Draw(Actor* thisx, PlayState* play) {
     EnHs* this = (EnHs*)thisx;
 
-    func_800943C8(play->state.gfxCtx);
+    Gfx_SetupDL_37Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnHs_OverrideLimbDraw, EnHs_PostLimbDraw, this);
 }

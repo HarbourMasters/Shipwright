@@ -8,7 +8,7 @@
 #include "vt.h"
 #include "objects/object_ka/object_ka.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_4 | ACTOR_FLAG_5 | ACTOR_FLAG_25 | ACTOR_FLAG_27)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA | ACTOR_FLAG_NO_LOCKON)
 
 static ColliderCylinderInit sCylinderInit = {
     {
@@ -90,7 +90,7 @@ void EnKakasi2_Init(Actor* thisx, PlayState* play) {
     this->actor.colChkInfo.mass = MASS_IMMOVABLE;
     this->height = 60.0f;
     Actor_SetScale(&this->actor, 0.01f);
-    this->actor.flags |= ACTOR_FLAG_10;
+    this->actor.flags |= ACTOR_FLAG_DRAGGED_BY_HOOKSHOT;
     this->unk_198 = this->actor.shape.rot.y;
 
     if (this->switchFlag >= 0 && Flags_GetSwitch(play, this->switchFlag)) {
@@ -109,8 +109,7 @@ void EnKakasi2_Destroy(Actor* thisx, PlayState* play) {
     EnKakasi2* this = (EnKakasi2*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
-    SkelAnime_Free(&this->skelAnime, play); // OTR - Fixed this memory leak
-    //! @bug SkelAnime_Free is not called
+    SkelAnime_Free(&this->skelAnime, play);
 }
 
 void func_80A90264(EnKakasi2* this, PlayState* play) {
@@ -119,7 +118,7 @@ void func_80A90264(EnKakasi2* this, PlayState* play) {
     this->unk_194++;
     
     bool skipScarecrow = play->msgCtx.msgMode == MSGMODE_OCARINA_PLAYING &&
-                            ((CVar_GetS32("gSkipScarecrow", 0) && gSaveContext.scarecrowSpawnSongSet) ||
+                            ((CVarGetInteger("gSkipScarecrow", 0) && gSaveContext.scarecrowSpawnSongSet) ||
                             (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_SCARECROWS_SONG)));
 
     if ((BREG(1) != 0) || skipScarecrow && (this->actor.xzDistToPlayer < this->maxSpawnDistance.x) &&
@@ -129,7 +128,7 @@ void func_80A90264(EnKakasi2* this, PlayState* play) {
         Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
         SkelAnime_InitFlex(play, &this->skelAnime, &object_ka_Skel_0065B0, &object_ka_Anim_000214, NULL, NULL, 0);
         OnePointCutscene_Attention(play, &this->actor);
-        this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_27;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_NO_LOCKON;
 
         func_80078884(NA_SE_SY_CORRECT_CHIME);
         if (this->switchFlag >= 0) {
@@ -140,7 +139,7 @@ void func_80A90264(EnKakasi2* this, PlayState* play) {
         this->actionFunc = func_80A904D8;
     } else if ((this->actor.xzDistToPlayer < this->maxSpawnDistance.x) &&
                (fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < this->maxSpawnDistance.y) &&
-               (gSaveContext.eventChkInf[9] & 0x1000)) {
+               (Flags_GetEventChkInf(EVENTCHKINF_PLAYED_SONG_FOR_SCARECROW_AS_ADULT))) {
 
         this->unk_194 = 0;
         if (play->msgCtx.ocarinaMode == OCARINA_MODE_0B) {
@@ -157,7 +156,7 @@ void func_80A90264(EnKakasi2* this, PlayState* play) {
             OnePointCutscene_Attention(play, &this->actor);
             func_80078884(NA_SE_SY_CORRECT_CHIME);
 
-            this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_27;
+            this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_NO_LOCKON;
             this->actionFunc = func_80A904D8;
         }
     }
@@ -245,7 +244,7 @@ void EnKakasi2_Update(Actor* thisx, PlayState* play2) {
 void func_80A90948(Actor* thisx, PlayState* play) {
     EnKakasi2* this = (EnKakasi2*)thisx;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           NULL, NULL, this);
 }

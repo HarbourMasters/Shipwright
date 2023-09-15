@@ -115,7 +115,7 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
     pauseCtx->stickRelX = input->rel.stick_x;
     pauseCtx->stickRelY = input->rel.stick_y;
 
-    func_800944C4_KAL(play->state.gfxCtx);
+    Gfx_SetupDL_39Kal(play->state.gfxCtx);
 
     gDPSetRenderMode(POLY_KAL_DISP++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
     gDPSetCombineMode(POLY_KAL_DISP++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
@@ -641,7 +641,7 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
     // Handles exiting the inventory editor with the L button
     // The editor is opened with `debugState` set to 1, and becomes closable after a frame once `debugState` is set to 2
     s16 Debug_BTN = BTN_L;
-    if (CVar_GetS32("gNGCKaleidoSwitcher", 0) != 0) {
+    if (CVarGetInteger("gNGCKaleidoSwitcher", 0) != 0) {
         Debug_BTN = BTN_Z;
     }
     if (pauseCtx->debugState == 1) {

@@ -2,8 +2,9 @@
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "vt.h"
 #include "objects/object_fr/object_fr.h"
+#include <assert.h>
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_25)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void EnFr_Init(Actor* thisx, PlayState* play);
 void EnFr_Destroy(Actor* thisx, PlayState* play);
@@ -216,7 +217,7 @@ void EnFr_Init(Actor* thisx, PlayState* play) {
         this->actor.destroy = NULL;
         this->actor.draw = NULL;
         this->actor.update = EnFr_UpdateIdle;
-        this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_4);
+        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED);
         this->actor.flags &= ~0;
         Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_PROP);
         this->actor.textId = 0x40AC;
@@ -227,7 +228,7 @@ void EnFr_Init(Actor* thisx, PlayState* play) {
             // "The argument is wrong!!"
             osSyncPrintf("%s[%d] : 引数が間違っている！！(%d)\n", __FILE__, __LINE__, this->actor.params);
             osSyncPrintf(VT_RST);
-            ASSERT((this->actor.params >= 6) || (this->actor.params < 0));
+            assert((this->actor.params >= 6) || (this->actor.params < 0));
         }
 
         this->objBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_GAMEPLAY_FIELD_KEEP);
@@ -237,7 +238,7 @@ void EnFr_Init(Actor* thisx, PlayState* play) {
             // "There is no bank!!"
             osSyncPrintf("%s[%d] : バンクが無いよ！！\n", __FILE__, __LINE__);
             osSyncPrintf(VT_RST);
-            ASSERT(this->objBankIndex < 0);
+            assert(this->objBankIndex < 0);
         }
     }
 }
@@ -258,7 +259,7 @@ void EnFr_Update(Actor* thisx, PlayState* play) {
     s32 pad2;
 
     if (Object_IsLoaded(&play->objectCtx, this->objBankIndex)) {
-        this->actor.flags &= ~ACTOR_FLAG_4;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
         frogIndex = this->actor.params - 1;
         sEnFrPointers.frogs[frogIndex] = this;
         Actor_ProcessInitChain(&this->actor, sInitChain);
@@ -301,7 +302,7 @@ void EnFr_Update(Actor* thisx, PlayState* play) {
         this->posButterflyLight.x = this->posButterfly.x = this->posLogSpot.x;
         this->posButterflyLight.y = this->posButterfly.y = this->posLogSpot.y + 50.0f;
         this->posButterflyLight.z = this->posButterfly.z = this->posLogSpot.z;
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     }
 }
 
@@ -309,6 +310,9 @@ void EnFr_Destroy(Actor* thisx, PlayState* play) {
     EnFr* this = (EnFr*)thisx;
 
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNode);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
+    ResourceMgr_UnregisterSkeleton(&this->skelAnimeButterfly);
 }
 
 void EnFr_IsDivingIntoWater(EnFr* this, PlayState* play) {
@@ -623,12 +627,12 @@ void EnFr_Activate(EnFr* this, PlayState* play) {
 void EnFr_ActivateCheckFrogSong(EnFr* this, PlayState* play) {
     if (sEnFrPointers.flags == 11) {
         // Check if all 6 child songs have been played for the frogs
-        if ((gSaveContext.eventChkInf[13] & 0x2)        // ZL
-            && (gSaveContext.eventChkInf[13] & 0x4)     // Epona
-            && (gSaveContext.eventChkInf[13] & 0x10)    // Saria
-            && (gSaveContext.eventChkInf[13] & 0x8)     // Suns
-            && (gSaveContext.eventChkInf[13] & 0x20)    // SoT
-            && (gSaveContext.eventChkInf[13] & 0x40)) { // SoS
+        if ((Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_ZL))        // ZL
+            && (Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_EPONA))     // Epona
+            && (Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_SARIA))    // Saria
+            && (Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_SUNS))     // Suns
+            && (Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_SOT))    // SoT
+            && (Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_STORMS))) { // SoS
             this->actionFunc = EnFr_TalkBeforeFrogSong;
             this->songIndex = FROG_CHOIR_SONG;
             Message_StartTextbox(play, 0x40AB, &this->actor);
@@ -792,7 +796,7 @@ void EnFr_DeactivateButterfly() {
 }
 
 u8 EnFr_GetNextNoteFrogSong(u8 ocarinaNoteIndex) {
-    if (!(gSaveContext.eventChkInf[13] & 1)) {
+    if (!Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_CHOIR)) {
         return gFrogsSongPtr[ocarinaNoteIndex];
     } else {
         return sOcarinaNotes[(s32)Rand_ZeroFloat(60.0f) % 5];
@@ -1101,7 +1105,7 @@ void EnFr_Draw(Actor* thisx, PlayState* play) {
     s16 frogIndex = this->actor.params - 1;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     // For the frogs 2 HP, the frog with the next note and the butterfly lights up
     lightRadius = this->isButterflyDrawn ? 95 : -1;
     gDPPipeSync(POLY_OPA_DISP++);

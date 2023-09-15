@@ -8,12 +8,13 @@
 #include "vt.h"
 #include "objects/object_ts/object_ts.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_5 | ACTOR_FLAG_27)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_LOCKON)
 
 void EnTakaraMan_Init(Actor* thisx, PlayState* play);
 void EnTakaraMan_Reset(Actor* thisx, PlayState* play);
 void EnTakaraMan_Update(Actor* thisx, PlayState* play);
 void EnTakaraMan_Draw(Actor* thisx, PlayState* play);
+void EnTakaraMan_Destroy(Actor* thisx, PlayState* play);
 
 void func_80B176E0(EnTakaraMan* this, PlayState* play);
 void func_80B1778C(EnTakaraMan* this, PlayState* play);
@@ -29,7 +30,7 @@ const ActorInit En_Takara_Man_InitVars = {
     OBJECT_TS,
     sizeof(EnTakaraMan),
     (ActorFunc)EnTakaraMan_Init,
-    NULL,
+    (ActorFunc)EnTakaraMan_Destroy,
     (ActorFunc)EnTakaraMan_Update,
     (ActorFunc)EnTakaraMan_Draw,
     (ActorResetFunc)EnTakaraMan_Reset,
@@ -72,6 +73,12 @@ void EnTakaraMan_Init(Actor* thisx, PlayState* play) {
     this->actionFunc = func_80B176E0;
 }
 
+void EnTakaraMan_Destroy(Actor* thisx, PlayState* play) {
+    EnTakaraMan* this = (EnTakaraMan*)thisx;
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
+}
+
 void func_80B176E0(EnTakaraMan* this, PlayState* play) {
     f32 frameCount = Animation_GetLastFrame(&object_ts_Anim_000498);
 
@@ -97,17 +104,20 @@ void func_80B1778C(EnTakaraMan* this, PlayState* play) {
     } else {
         yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
         if (play->roomCtx.curRoom.num == 6 && !this->unk_21A) {
-            this->actor.textId = 0x6E;
+            this->actor.textId = 0x6E; //Real Gambler
             this->unk_21A = 1;
             this->dialogState = TEXT_STATE_DONE;
         }
 
         if (!this->unk_21A && this->unk_214) {
             if (Flags_GetSwitch(play, 0x32)) {
-                this->actor.textId = 0x84;
-                this->dialogState = TEXT_STATE_EVENT;
+                this->actor.textId = 0x84; //Thanks a lot! (Lost)
+                // with text state event, it is only possible to talk to the person running the game
+                // once. we want the player to be able to ask again if they accidentally blast through
+                // the greg hint box, so we check for greg hint here
+                this->dialogState = Randomizer_GetSettingValue(RSK_GREG_HINT) ? TEXT_STATE_DONE : TEXT_STATE_EVENT;
             } else {
-                this->actor.textId = 0x704C;
+                this->actor.textId = 0x704C; //Proceed
                 this->dialogState = TEXT_STATE_DONE;
             }
         }
@@ -115,11 +125,11 @@ void func_80B1778C(EnTakaraMan* this, PlayState* play) {
         absYawDiff = ABS(yawDiff);
         if (absYawDiff < 0x4300) {
             if (play->roomCtx.curRoom.num != this->originalRoomNum) {
-                this->actor.flags &= ~ACTOR_FLAG_0;
+                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                 this->unk_218 = 0;
             } else {
                 if (!this->unk_218) {
-                    this->actor.flags |= ACTOR_FLAG_0;
+                    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
                     this->unk_218 = 1;
                 }
                 func_8002F2CC(&this->actor, play, 100.0f);
@@ -222,7 +232,7 @@ void EnTakaraMan_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeTextureIdx]));
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnTakaraMan_OverrideLimbDraw, NULL, this);

@@ -12,7 +12,7 @@
 #include "objects/object_zl2/object_zl2.h"
 #include "objects/object_zl2_anime2/object_zl2_anime2.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void EnZl3_Init(Actor* thisx, PlayState* play);
 void EnZl3_Destroy(Actor* thisx, PlayState* play);
@@ -84,6 +84,8 @@ void EnZl3_Destroy(Actor* thisx, PlayState* play) {
     EnZl3* this = (EnZl3*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80B53468(void) {
@@ -138,7 +140,7 @@ void func_80B5357C(EnZl3* this, PlayState* play) {
 }
 
 void func_80B53614(EnZl3* this, PlayState* play) {
-    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_RIVER_SOUND, -442.0f, 4102.0f, -371.0f, 0, 0, 0, 0x12);
+    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_RIVER_SOUND, -442.0f, 4102.0f, -371.0f, 0, 0, 0, 0x12, true);
 }
 
 void func_80B5366C(EnZl3* this, PlayState* play) {
@@ -151,8 +153,8 @@ void func_80B536B4(EnZl3* this) {
 
 void func_80B536C4(EnZl3* this) {
     s32 pad[2];
-    Vec3s* vec1 = &this->unk_3F8.unk_08;
-    Vec3s* vec2 = &this->unk_3F8.unk_0E;
+    Vec3s* vec1 = &this->interactInfo.headRot;
+    Vec3s* vec2 = &this->interactInfo.torsoRot;
 
     Math_SmoothStepToS(&vec1->x, 0, 20, 6200, 100);
     Math_SmoothStepToS(&vec1->y, 0, 20, 6200, 100);
@@ -163,9 +165,9 @@ void func_80B536C4(EnZl3* this) {
 void func_80B53764(EnZl3* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    this->unk_3F8.unk_18 = player->actor.world.pos;
-    this->unk_3F8.unk_14 = kREG(16) - 16.0f;
-    func_80034A14(&this->actor, &this->unk_3F8, kREG(17) + 0xC, 2);
+    this->interactInfo.trackPos = player->actor.world.pos;
+    this->interactInfo.yOffset = kREG(16) - 16.0f;
+    Npc_TrackPoint(&this->actor, &this->interactInfo, kREG(17) + 0xC, NPC_TRACKING_HEAD_AND_TORSO);
 }
 
 s32 func_80B537E8(EnZl3* this) {
@@ -603,8 +605,8 @@ s32 func_80B5458C(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
     Mtx* sp78;
     MtxF sp38;
     Vec3s sp30;
-    Vec3s* unk_3F8_unk_08 = &this->unk_3F8.unk_08;
-    Vec3s* unk_3F8_unk_0E = &this->unk_3F8.unk_0E;
+    Vec3s* unk_3F8_unk_08 = &this->interactInfo.headRot;
+    Vec3s* unk_3F8_unk_0E = &this->interactInfo.torsoRot;
 
     if (limbIndex == 14) {
         sp78 = Graph_Alloc(play->state.gfxCtx, sizeof(Mtx) * 7);
@@ -770,7 +772,7 @@ void func_80B54EA4(EnZl3* this, PlayState* play) {
     f32 posY = this->actor.world.pos.y;
     f32 posZ = this->actor.world.pos.z;
 
-    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EG, posX, posY, posZ, 0, 0, 0, 0);
+    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_EG, posX, posY, posZ, 0, 0, 0, 0, true);
 }
 
 void func_80B54EF4(EnZl3* this) {
@@ -1006,7 +1008,7 @@ void func_80B55780(EnZl3* this, PlayState* play) {
     this->drawConfig = 1;
     osSyncPrintf("ゼルダ姫のEn_Zl3_Actor_inFinal2_Initは通った!!!!!!!!!!!!!!!!!!!!!!!!!\n");
     EnZl3_setMouthIndex(this, 1);
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
 }
 
 void func_80B55808(EnZl3* this) {
@@ -1103,8 +1105,8 @@ void func_80B55C4C(EnZl3* this, s32 arg1) {
 void func_80B55C70(EnZl3* this) {
     func_80B54E14(this, &gZelda2Anime2Anim_008684, 2, -8.0f, 0);
     this->action = 12;
-    this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
 }
 
 void func_80B55CCC(EnZl3* this, s32 arg1) {
@@ -1117,20 +1119,20 @@ void func_80B55D00(EnZl3* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->action = 13;
     } else if (ABS((s16)(this->actor.yawTowardsPlayer - this->actor.shape.rot.y)) <= 0x4300) {
-        this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
-        this->actor.flags |= ACTOR_FLAG_0;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
         this->actor.textId = 0x70D5;
         func_8002F2F4(&this->actor, play);
     } else {
-        this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     }
 }
 
 void func_80B55DB0(EnZl3* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
-        this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
         this->action = 12;
     }
 }
@@ -1176,14 +1178,14 @@ void func_80B55F6C(EnZl3* this, PlayState* play) {
         BossGanon2* bossGanon2 = func_80B53488(this, play);
 
         if ((bossGanon2 != NULL) && (bossGanon2->unk_324 <= (10.0f / 81.0f))) {
-            this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
-            this->actor.flags |= ACTOR_FLAG_0;
+            this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
+            this->actor.flags |= ACTOR_FLAG_TARGETABLE;
             this->actor.textId = 0x7059;
             func_8002F2F4(&this->actor, play);
         }
     } else {
-        this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     }
 }
 
@@ -1208,8 +1210,8 @@ void func_80B56090(EnZl3* this, s32 arg1) {
 
 void func_80B56108(EnZl3* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
-        this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
         this->action = 16;
     }
 }
@@ -1238,22 +1240,22 @@ void func_80B56214(EnZl3* this, PlayState* play) {
 
         if (bossGanon2 != NULL) {
             if (bossGanon2->unk_324 <= (10.0f / 81.0f)) {
-                this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
-                this->actor.flags |= ACTOR_FLAG_0;
+                this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
+                this->actor.flags |= ACTOR_FLAG_TARGETABLE;
                 this->actor.textId = 0x7059;
                 func_8002F2F4(&this->actor, play);
             }
         }
     } else {
-        this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     }
 }
 
 void func_80B562F4(EnZl3* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
-        this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
         this->action = 20;
     }
 }
@@ -1672,9 +1674,9 @@ u16 func_80B572F0(PlayState* play) {
     s16 sceneNum = play->sceneNum;
     u16 ret;
 
-    if (sceneNum == SCENE_GANON_SONOGO) {
+    if (sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) {
         ret = 0x71A8;
-    } else if (sceneNum == SCENE_GANON_FINAL) {
+    } else if (sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) {
         ret = 0x71A9;
     } else {
         ret = 0x71AB;
@@ -1693,7 +1695,7 @@ void func_80B57350(EnZl3* this, PlayState* play) {
     s16 temp_v0 = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
 
     if (ABS(temp_v0) <= 0x4300) {
-        this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
         this->actor.textId = func_80B572F0(play);
         func_8002F2F4(&this->actor, play);
     }
@@ -1766,7 +1768,7 @@ s32 func_80B575D0(EnZl3* this, PlayState* play) {
 s32 func_80B575F0(EnZl3* this, PlayState* play) {
     s16 sceneNum = play->sceneNum;
 
-    if ((sceneNum == SCENE_GANON_SONOGO) && (func_80B54DB4(this) == 0x26)) {
+    if ((sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) && (func_80B54DB4(this) == 0x26)) {
         s32 unk_314 = this->unk_314;
 
         if (unk_314 == 1) {
@@ -1779,7 +1781,7 @@ s32 func_80B575F0(EnZl3* this, PlayState* play) {
 void func_80B5764C(EnZl3* this, PlayState* play) {
     s16 sceneNum = play->sceneNum;
 
-    if ((sceneNum == SCENE_GANON_SONOGO) && (func_80B54DB4(this) == 0x26)) {
+    if ((sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) && (func_80B54DB4(this) == 0x26)) {
         s32 unk_314 = this->unk_314 + 1;
 
         if ((unk_314 == 1) && !Play_InCsMode(play)) {
@@ -1808,9 +1810,9 @@ void func_80B5772C(EnZl3* this, PlayState* play) {
 }
 
 void func_80B57754(EnZl3* this, PlayState* play) {
-    if (gSaveContext.unk_13F0 == 0) {
+    if (gSaveContext.magicState == 0) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_OCEFF_WIPE4, this->actor.world.pos.x,
-                    this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 1);
+                    this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 1, true);
         func_80B56DA4(this);
     }
 }
@@ -1824,7 +1826,7 @@ void func_80B577BC(PlayState* play, Vec3f* vec) {
     f32 posZ = vec->z;
 
     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TEST, posX, posY, posZ, 0,
-                (Math_FAtan2F(playerPos->x - posX, playerPos->z - posZ) * (0x8000 / M_PI)), 0, 5);
+                (Math_FAtan2F(playerPos->x - posX, playerPos->z - posZ) * (0x8000 / M_PI)), 0, 5, true);
 }
 
 void func_80B57858(PlayState* play) {
@@ -1840,7 +1842,7 @@ s32 func_80B57890(EnZl3* this, PlayState* play) {
 
     if (play) {} // Needed to match, this if can be almost anywhere and it still matches
 
-    if (sceneNum == SCENE_GANON_SONOGO) {
+    if (sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) {
         if ((result == 0x24) && (curSpawn == 0)) {
             return 1;
         }
@@ -1856,10 +1858,10 @@ s32 func_80B57890(EnZl3* this, PlayState* play) {
         if ((result == 0x28) && (curSpawn == 6)) {
             return 1;
         }
-    } else if (sceneNum == SCENE_GANON_FINAL) {
+    } else if (sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) {
         if ((result == 0x20) && (curSpawn == 0) && Flags_GetSwitch(play, 0x37)) {
-            if ((play->sceneNum == SCENE_GANON_DEMO) || (play->sceneNum == SCENE_GANON_FINAL) ||
-                (play->sceneNum == SCENE_GANON_SONOGO) || (play->sceneNum == SCENE_GANONTIKA_SONOGO)) {
+            if ((play->sceneNum == SCENE_GANON_BOSS) || (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
+                (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) || (play->sceneNum == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE)) {
                 return 1;
             }
         }
@@ -1872,7 +1874,7 @@ s32 func_80B57890(EnZl3* this, PlayState* play) {
         if ((result == 0x23) && (curSpawn == 6)) {
             return 1;
         }
-    } else if (sceneNum == SCENE_GANONTIKA_SONOGO) {
+    } else if (sceneNum == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE) {
         if ((result == 0x29) && (curSpawn == 0)) {
             return 1;
         }
@@ -1968,18 +1970,18 @@ void func_80B57D60(EnZl3* this, PlayState* play) {
 s32 func_80B57D80(EnZl3* this, PlayState* play) {
     s32 pad;
     s16* sp32 = &this->actor.shape.rot.y;
-    struct_80034A14_arg1* unk_3F8 = &this->unk_3F8;
+    NpcInteractInfo* interactInfo = &this->interactInfo;
     Player* player = GET_PLAYER(play);
     s32 unk_314 = this->unk_314;
     s16 temp_v0 = func_80B57104(this, unk_314);
     s32 pad2;
     s16 phi_v1;
 
-    unk_3F8->unk_18.y = player->actor.world.pos.y;
-    unk_3F8->unk_18.x = (Math_SinS(temp_v0) * this->actor.xzDistToPlayer) + this->actor.world.pos.x;
-    unk_3F8->unk_18.z = (Math_CosS(temp_v0) * this->actor.xzDistToPlayer) + this->actor.world.pos.z;
-    unk_3F8->unk_14 = kREG(16) - 16.0f;
-    func_80034A14(&this->actor, unk_3F8, kREG(17) + 0xC, 4);
+    interactInfo->trackPos.y = player->actor.world.pos.y;
+    interactInfo->trackPos.x = (Math_SinS(temp_v0) * this->actor.xzDistToPlayer) + this->actor.world.pos.x;
+    interactInfo->trackPos.z = (Math_CosS(temp_v0) * this->actor.xzDistToPlayer) + this->actor.world.pos.z;
+    interactInfo->yOffset = kREG(16) - 16.0f;
+    Npc_TrackPoint(&this->actor, interactInfo, kREG(17) + 0xC, NPC_TRACKING_FULL_BODY);
 
     phi_v1 = ABS(temp_v0 - *sp32);
     if (phi_v1 <= 0x320) {
@@ -2109,7 +2111,7 @@ void func_80B584B4(EnZl3* this, PlayState* play) {
     s32 pad;
     Player* player = GET_PLAYER(play);
     s8 invincibilityTimer = player->invincibilityTimer;
-    Actor* nearbyEnTest = Actor_FindNearby(play, &this->actor, ACTOR_EN_TEST, ACTORCAT_ENEMY, 8000.0f);
+    Actor* nearbyEnTest = Actor_FindNearby(play, &this->actor, -1, ACTORCAT_ENEMY, 8000.0f);
 
     if (D_80B5A4BC == 0) {
         if ((nearbyEnTest == NULL) && (!Play_InCsMode(play))) {
@@ -2446,7 +2448,7 @@ s32 func_80B5944C(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
     if (limbIndex == 14) {
         Mtx* mtx = Graph_Alloc(play->state.gfxCtx, sizeof(Mtx) * 7);
         EnZl3* this = (EnZl3*)thisx;
-        Vec3s* vec = &this->unk_3F8.unk_08;
+        Vec3s* vec = &this->interactInfo.headRot;
 
         gSPSegment(gfx[0]++, 0x0C, mtx);
 
@@ -2482,8 +2484,8 @@ s32 func_80B5944C(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s
 
 s32 func_80B59698(EnZl3* this, PlayState* play) {
     s32 cond = Flags_GetSwitch(play, 0x37) &&
-               ((play->sceneNum == SCENE_GANON_DEMO) || (play->sceneNum == SCENE_GANON_FINAL) ||
-                (play->sceneNum == SCENE_GANON_SONOGO) || (play->sceneNum == SCENE_GANONTIKA_SONOGO));
+               ((play->sceneNum == SCENE_GANON_BOSS) || (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
+                (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) || (play->sceneNum == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE));
 
     if (cond) {
         u8 curSpawn = play->curSpawn;
@@ -2498,8 +2500,8 @@ s32 func_80B59698(EnZl3* this, PlayState* play) {
 
 s32 func_80B59768(EnZl3* this, PlayState* play) {
     s32 cond = Flags_GetSwitch(play, 0x37) &&
-               ((play->sceneNum == SCENE_GANON_DEMO) || (play->sceneNum == SCENE_GANON_FINAL) ||
-                (play->sceneNum == SCENE_GANON_SONOGO) || (play->sceneNum == SCENE_GANONTIKA_SONOGO));
+               ((play->sceneNum == SCENE_GANON_BOSS) || (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
+                (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) || (play->sceneNum == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE));
 
     if (cond) {
         u8 curSpawn = play->curSpawn;
@@ -2516,7 +2518,7 @@ void func_80B59828(EnZl3* this, PlayState* play) {
         s16 newRotY;
 
         func_80B54E14(this, &gZelda2Anime2Anim_009FBC, 0, 0.0f, 0);
-        this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
         func_80B56F10(this, play);
         newRotY = func_80B571A8(this);
         this->actor.shape.rot.y = newRotY;
@@ -2537,7 +2539,7 @@ void func_80B59828(EnZl3* this, PlayState* play) {
         Magic_Fill(play);
         if (Flags_GetSwitch(play, 0x20)) {
             Flags_UnsetSwitch(play, 0x20);
-            Actor_Spawn(&play->actorCtx, play, ACTOR_BG_ZG, -144.0f, 3544.0f, -43.0f, 0, 0x2000, 0, 0x2000);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_BG_ZG, -144.0f, 3544.0f, -43.0f, 0, 0x2000, 0, 0x2000, true);
         }
         Flags_UnsetSwitch(play, 0x21);
         Flags_UnsetSwitch(play, 0x22);
@@ -2556,8 +2558,8 @@ void func_80B59828(EnZl3* this, PlayState* play) {
 
         func_80B54EA4(this, play);
         cond = Flags_GetSwitch(play, 0x37) &&
-               ((play->sceneNum == SCENE_GANON_DEMO) || (play->sceneNum == SCENE_GANON_FINAL) ||
-                (play->sceneNum == SCENE_GANON_SONOGO) || (play->sceneNum == SCENE_GANONTIKA_SONOGO));
+               ((play->sceneNum == SCENE_GANON_BOSS) || (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) ||
+                (play->sceneNum == SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) || (play->sceneNum == SCENE_INSIDE_GANONS_CASTLE_COLLAPSE));
         if (cond) {
             func_80B53614(this, play);
         }
@@ -2578,7 +2580,7 @@ void func_80B59AD0(EnZl3* this, PlayState* play) {
     func_80088AA0(180);
     func_80B54EA4(this, play);
     func_80B53614(this, play);
-    gSaveContext.eventChkInf[12] &= ~0x80;
+    Flags_UnsetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO);
     func_80B56F10(this, play);
     gSaveContext.healthAccumulator = 320;
     Magic_Fill(play);
@@ -2704,7 +2706,7 @@ void func_80B59FF4(EnZl3* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x8, SEGMENTED_TO_VIRTUAL(eyeTex));
     gSPSegment(POLY_OPA_DISP++, 0x9, SEGMENTED_TO_VIRTUAL(eyeTex));
@@ -2729,7 +2731,7 @@ void func_80B5A1D0(EnZl3* this, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 8, SEGMENTED_TO_VIRTUAL(eyeTex));
     gSPSegment(POLY_XLU_DISP++, 9, SEGMENTED_TO_VIRTUAL(eyeTex));

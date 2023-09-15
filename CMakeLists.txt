@@ -2,17 +2,16 @@ cmake_minimum_required(VERSION 3.16.0 FATAL_ERROR)
 
 set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
-#set(CMAKE_C_STANDARD 11 CACHE STRING "The C standard to use") - issue with soh compile with MSVC
 
-set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version" FORCE)
+set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum OS X deployment version")
 
-project(Ship LANGUAGES C CXX
-	VERSION 4.0.5)
-set(PROJECT_BUILD_NAME "ZHORA FOXTROT" CACHE STRING "")
+project(Ship VERSION 7.1.1 LANGUAGES C CXX)
+set(PROJECT_BUILD_NAME "Sulu Bravo" CACHE STRING "")
 set(PROJECT_TEAM "github.com/harbourmasters" CACHE STRING "")
 
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT soh)
 add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
+add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/utf-8>)
 
 if (CMAKE_SYSTEM_NAME MATCHES "Windows|Linux")
     if(NOT DEFINED BUILD_CROWD_CONTROL)
@@ -27,7 +26,7 @@ set(VCPKG_TRIPLET x64-windows-static)
 set(VCPKG_TARGET_TRIPLET x64-windows-static)
 
 vcpkg_bootstrap()
-vcpkg_install_packages(zlib bzip2 libpng SDL2 SDL2-net GLEW glfw3)
+vcpkg_install_packages(zlib bzip2 libpng sdl2 sdl2-net glew glfw3)
 endif()
 
 ################################################################################
@@ -49,8 +48,8 @@ endif()
 # Global configuration types
 ################################################################################
 if (CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
-set(CMAKE_C_FLAGS_DEBUG "-O3 -ffast-math")
-set(CMAKE_CXX_FLAGS_DEBUG "-O3 -ffast-math")
+set(CMAKE_C_FLAGS_DEBUG "-g -ffast-math -DDEBUG")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -ffast-math -DDEBUG")
 set(CMAKE_C_FLAGS_RELEASE "-O3 -ffast-math -DNDEBUG")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -ffast-math -DNDEBUG")
 else()
@@ -61,38 +60,6 @@ endif()
 
 if(NOT CMAKE_BUILD_TYPE )
     set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the type of build." FORCE)
-endif()
-
-################################################################################
-# Global compiler options
-################################################################################
-if(MSVC)
-    # remove default flags provided with CMake for MSVC
-    set(CMAKE_C_FLAGS "")
-    set(CMAKE_C_FLAGS_DEBUG "")
-    set(CMAKE_C_FLAGS_RELEASE "")
-    set(CMAKE_CXX_FLAGS "")
-    set(CMAKE_CXX_FLAGS_DEBUG "")
-    set(CMAKE_CXX_FLAGS_RELEASE "")
-endif()
-
-################################################################################
-# Global linker options
-################################################################################
-if(MSVC)
-    # remove default flags provided with CMake for MSVC
-    set(CMAKE_EXE_LINKER_FLAGS "")
-    set(CMAKE_MODULE_LINKER_FLAGS "")
-    set(CMAKE_SHARED_LINKER_FLAGS "")
-    set(CMAKE_STATIC_LINKER_FLAGS "")
-    set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS}")
-    set(CMAKE_MODULE_LINKER_FLAGS_DEBUG "${CMAKE_MODULE_LINKER_FLAGS}")
-    set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS}")
-    set(CMAKE_STATIC_LINKER_FLAGS_DEBUG "${CMAKE_STATIC_LINKER_FLAGS}")
-    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS}")
-    set(CMAKE_MODULE_LINKER_FLAGS_RELEASE "${CMAKE_MODULE_LINKER_FLAGS}")
-    set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS}")
-    set(CMAKE_STATIC_LINKER_FLAGS_RELEASE "${CMAKE_STATIC_LINKER_FLAGS}")
 endif()
 
 ################################################################################
@@ -120,14 +87,10 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Sub-projects
 ################################################################################
-add_subdirectory(libultraship/libultraship ${CMAKE_BINARY_DIR}/libultraship)
+add_subdirectory(libultraship ${CMAKE_BINARY_DIR}/libultraship)
 add_subdirectory(ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
-add_subdirectory(ZAPDTR/ZAPDUtils ${CMAKE_BINARY_DIR}/ZAPDUtils)
 add_subdirectory(OTRExporter)
 add_subdirectory(soh)
-if(NOT CMAKE_SYSTEM_NAME MATCHES "Darwin|NintendoSwitch|CafeOS")
-add_subdirectory(OTRGui)
-endif()
 
 set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE_TERMINAL YES)
 set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE "${CMAKE_SOURCE_DIR}/scripts/linux/appimage/soh.desktop")
@@ -135,20 +98,50 @@ set_property(TARGET soh PROPERTY APPIMAGE_ICON_FILE "${CMAKE_BINARY_DIR}/sohIcon
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 install(PROGRAMS "${CMAKE_SOURCE_DIR}/scripts/linux/appimage/soh.sh" DESTINATION . COMPONENT appimage)
+install(FILES "${CMAKE_SOURCE_DIR}/soh.otr" DESTINATION . COMPONENT ship)
+install(TARGETS ZAPD DESTINATION ./assets/extractor COMPONENT extractor)
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/extractor/" DESTINATION ./assets/extractor COMPONENT extractor)
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/xml/" DESTINATION ./assets/extractor/xmls COMPONENT extractor)
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/filelists/" DESTINATION ./assets/extractor/filelists COMPONENT extractor)
+install(FILES "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ActorList_OoTMqDbg.txt" DESTINATION ./assets/extractor/symbols COMPONENT extractor)
+install(FILES "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ObjectList_OoTMqDbg.txt" DESTINATION ./assets/extractor/symbols COMPONENT extractor)
+install(FILES "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/SymbolMap_OoTMqDbg.txt" DESTINATION ./assets/extractor/symbols COMPONENT extractor)
 endif()
 
 find_package(Python3 COMPONENTS Interpreter)
 
+# Target to generate OTRs
 add_custom_target(
     ExtractAssets
     # CMake versions prior to 3.17 do not have the rm command, use remove instead for older versions
-    COMMAND ${CMAKE_COMMAND} -E $<IF:$<VERSION_LESS:${CMAKE_VERSION},3.17>,remove,rm> -f oot.otr oot-mq.otr
+    COMMAND ${CMAKE_COMMAND} -E $<IF:$<VERSION_LESS:${CMAKE_VERSION},3.17>,remove,rm> -f oot.otr oot-mq.otr soh.otr
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets.py -z "$<TARGET_FILE:ZAPD>" --non-interactive
-    COMMAND ${CMAKE_COMMAND} -DSOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DBINARY_DIR=${CMAKE_BINARY_DIR} -P ${CMAKE_CURRENT_SOURCE_DIR}/copy-existing-otrs.cmake
+    COMMAND ${CMAKE_COMMAND} -DSYSTEM_NAME=${CMAKE_SYSTEM_NAME} -DTARGET_DIR="$<TARGET_FILE_DIR:ZAPD>" -DSOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DBINARY_DIR=${CMAKE_BINARY_DIR} -P ${CMAKE_CURRENT_SOURCE_DIR}/copy-existing-otrs.cmake
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter
     COMMENT "Running asset extraction..."
     DEPENDS ZAPD
-    BYPRODUCTS oot.otr ${CMAKE_SOURCE_DIR}/oot.otr oot-mq.otr ${CMAKE_SOURCE_DIR}/oot-mq.otr
+    BYPRODUCTS oot.otr ${CMAKE_SOURCE_DIR}/oot.otr oot-mq.otr ${CMAKE_SOURCE_DIR}/oot-mq.otr ${CMAKE_SOURCE_DIR}/soh.otr
+)
+
+# Target to generate headers
+add_custom_target(
+    ExtractAssetHeaders
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets.py -z "$<TARGET_FILE:ZAPD>" --non-interactive --gen-headers
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter
+    COMMENT "Generating asset headers..."
+    DEPENDS ZAPD
+)
+
+# Target to generate only soh.otr
+add_custom_target(
+    GenerateSohOtr
+    # CMake versions prior to 3.17 do not have the rm command, use remove instead for older versions
+    COMMAND ${CMAKE_COMMAND} -E $<IF:$<VERSION_LESS:${CMAKE_VERSION},3.17>,remove,rm> -f soh.otr
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets.py -z "$<TARGET_FILE:ZAPD>" --norom
+    COMMAND ${CMAKE_COMMAND} -DSYSTEM_NAME=${CMAKE_SYSTEM_NAME} -DTARGET_DIR="$<TARGET_FILE_DIR:ZAPD>" -DSOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR} -DBINARY_DIR=${CMAKE_BINARY_DIR} -DONLYSOHOTR=On -P ${CMAKE_CURRENT_SOURCE_DIR}/copy-existing-otrs.cmake
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter
+    COMMENT "Generating soh.otr..."
+    DEPENDS ZAPD
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
@@ -180,16 +173,16 @@ add_custom_target(CreateOSXIcons
     )
 add_dependencies(soh CreateOSXIcons)
 
-add_custom_target(Assets ALL
-    COMMAND ${CMAKE_COMMAND} -Dsrc_dir="${CMAKE_SOURCE_DIR}/OTRGui/assets/extractor" -Ddst_dir="${CMAKE_BINARY_DIR}/assets/extractor" -P "${CMAKE_SOURCE_DIR}/OTRGui/Overwrite.cmake"
-    COMMAND ${CMAKE_COMMAND} -Dsrc_dir="${CMAKE_SOURCE_DIR}/OTRExporter/assets" -Ddst_dir="${CMAKE_BINARY_DIR}/assets/game" -P "${CMAKE_SOURCE_DIR}/OTRGui/Overwrite.cmake"
-    COMMAND ${CMAKE_COMMAND} -Dsrc_dir="${CMAKE_SOURCE_DIR}/soh/assets/xml" -Ddst_dir="${CMAKE_BINARY_DIR}/assets/extractor/xmls" -P "${CMAKE_SOURCE_DIR}/OTRGui/Overwrite.cmake"
-    )
-add_dependencies(soh Assets)
-
 install(TARGETS ZAPD DESTINATION ${CMAKE_BINARY_DIR}/assets/extractor)
 
 set(PROGRAM_PERMISSIONS_EXECUTE OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ WORLD_EXECUTE WORLD_READ)
+
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/extractor/" DESTINATION ./assets/extractor)
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/soh/assets/xml/" DESTINATION ./assets/extractor/xmls)
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/filelists/" DESTINATION ./assets/extractor/filelists)
+install(FILES "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ActorList_OoTMqDbg.txt" DESTINATION ./assets/extractor/symbols)
+install(FILES "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/ObjectList_OoTMqDbg.txt" DESTINATION ./assets/extractor/symbols)
+install(FILES "${CMAKE_SOURCE_DIR}/OTRExporter/CFG/SymbolMap_OoTMqDbg.txt" DESTINATION ./assets/extractor/symbols)
 
 install(DIRECTORY ${CMAKE_BINARY_DIR}/assets
         DESTINATION .

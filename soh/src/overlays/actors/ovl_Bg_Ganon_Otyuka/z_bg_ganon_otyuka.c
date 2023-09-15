@@ -10,7 +10,7 @@
 
 #include "soh/frame_interpolation.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 typedef enum {
     /* 0x00 */ FLASH_NONE,
@@ -276,7 +276,7 @@ void BgGanonOtyuka_Draw(Actor* thisx, PlayState* play) {
         actor = actor->next;
     }
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPDisplayList(POLY_OPA_DISP++, sPlatformMaterialDL);
 
     actor = play->actorCtx.actorLists[ACTORCAT_PROP].head;
@@ -330,7 +330,7 @@ void BgGanonOtyuka_Draw(Actor* thisx, PlayState* play) {
         actor = actor->next;
     }
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     actor = play->actorCtx.actorLists[ACTORCAT_PROP].head;
     while (actor != NULL) {
         if (actor->id == ACTOR_BG_GANON_OTYUKA) {

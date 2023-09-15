@@ -1,7 +1,7 @@
 #ifndef Z_BOSS_TW_H
 #define Z_BOSS_TW_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 typedef enum {

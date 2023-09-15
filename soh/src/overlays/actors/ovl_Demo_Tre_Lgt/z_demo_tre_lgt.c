@@ -1,8 +1,9 @@
 #include "z_demo_tre_lgt.h"
 #include "overlays/actors/ovl_En_Box/z_en_box.h"
 #include "objects/object_box/object_box.h"
+#include <assert.h>
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void DemoTreLgt_Init(Actor* thisx, PlayState* play);
 void DemoTreLgt_Destroy(Actor* thisx, PlayState* play);
@@ -54,7 +55,7 @@ void DemoTreLgt_Init(Actor* thisx, PlayState* play) {
         osSyncPrintf("Demo_Tre_Lgt_Actor_ct();コンストラクト失敗\n");
     }
 
-    ASSERT(true);
+    assert(true);
 
     this->unk_170 = 255;
     this->unk_174 = 255;
@@ -161,7 +162,7 @@ void DemoTreLgt_Draw(Actor* thisx, PlayState* play) {
         return;
     }
 
-    func_80093D84(gfxCtx);
+    Gfx_SetupDL_25Xlu(gfxCtx);
     gDPSetEnvColor(POLY_XLU_DISP++, 200, 255, 0, 0);
     SkelCurve_Draw(&this->actor, play, &this->skelCurve, DemoTreLgt_PostLimbDraw, NULL, 1, thisx);
 

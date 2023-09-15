@@ -7,7 +7,7 @@
 #include "z_oceff_wipe4.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_25)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void OceffWipe4_Init(Actor* thisx, PlayState* play);
 void OceffWipe4_Destroy(Actor* thisx, PlayState* play);
@@ -67,10 +67,12 @@ void OceffWipe4_Draw(Actor* thisx, PlayState* play) {
 
     eye = GET_ACTIVE_CAM(play)->eye;
     Camera_GetSkyboxOffset(&vec, GET_ACTIVE_CAM(play));
+    
+    int fastOcarinaPlayback = (CVarGetInteger("gFastOcarinaPlayback", 0) != 0);
     if (this->timer < 16) {
-        z = Math_SinS(this->timer * 1024) * 1330.0f;
+        z = Math_SinS(this->timer * 1024) * (fastOcarinaPlayback ? 1200.0f : 1330.0f);
     } else {
-        z = 1330.0f;
+        z = fastOcarinaPlayback ? 1200.0f : 1330.0f;
     }
 
     vtxPtr = ResourceMgr_LoadVtxByName(sFrustumVtx);
@@ -86,7 +88,7 @@ void OceffWipe4_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     Matrix_Translate(eye.x + vec.x, eye.y + vec.y, eye.z + vec.z, MTXMODE_NEW);
     Matrix_Scale(0.1f, 0.1f, 0.1f, MTXMODE_APPLY);

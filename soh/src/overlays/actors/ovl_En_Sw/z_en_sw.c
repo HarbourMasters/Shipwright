@@ -1,7 +1,8 @@
 #include "z_en_sw.h"
 #include "objects/object_st/object_st.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnSw_Init(Actor* thisx, PlayState* play);
 void EnSw_Destroy(Actor* thisx, PlayState* play);
@@ -213,6 +214,16 @@ s32 func_80B0C0CC(EnSw* this, PlayState* play, s32 arg2) {
     return sp64;
 }
 
+// Presumably, due to the removal of object dependency, there is a race condition where
+// the GS on the Kak construction site spawns to early and fails to detect the
+// construction site dyna poly. This custom action func rechecks moving the GS
+// to the nearest poly one frame after init. Further explanation available:
+// https://github.com/HarbourMasters/Shipwright/issues/2310#issuecomment-1492829517
+void EnSw_MoveGoldLater(EnSw* this, PlayState* play) {
+    func_80B0C0CC(this, play, 1);
+    this->actionFunc = func_80B0D590;
+}
+
 void EnSw_Init(Actor* thisx, PlayState* play) {
     EnSw* this = (EnSw*)thisx;
     s32 phi_v0;
@@ -282,7 +293,7 @@ void EnSw_Init(Actor* thisx, PlayState* play) {
             this->collider.elements[0].info.toucher.damage *= 2;
             this->actor.naviEnemyId = 0x20;
             this->actor.colChkInfo.health *= 2;
-            this->actor.flags &= ~ACTOR_FLAG_0;
+            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
             break;
         default:
             Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_ENEMY);
@@ -304,12 +315,22 @@ void EnSw_Init(Actor* thisx, PlayState* play) {
     } else {
         this->actionFunc = func_80B0D590;
     }
+
+    // If a normal GS failed to get attached to a poly during init
+    // try once more on the next frame via a custom action func
+    if ((((thisx->params & 0xE000) >> 0xD) == 1 ||
+         ((thisx->params & 0xE000) >> 0xD) == 2) &&
+        this->actor.floorPoly == NULL) {
+        this->actionFunc = EnSw_MoveGoldLater;
+    }
 }
 
 void EnSw_Destroy(Actor* thisx, PlayState* play) {
     EnSw* this = (EnSw*)thisx;
 
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 func_80B0C9F0(EnSw* this, PlayState* play) {
@@ -333,7 +354,7 @@ s32 func_80B0C9F0(EnSw* this, PlayState* play) {
             }
             Enemy_StartFinishingBlow(play, &this->actor);
             if (((this->actor.params & 0xE000) >> 0xD) != 0) {
-                if (CVar_GetS32("gGsCutscene", 0)) {
+                if (CVarGetInteger("gGsCutscene", 0)) {
                     OnePointCutscene_Init(play, 2200, 90, &this->actor, MAIN_CAM);
                 }
                 this->skelAnime.playSpeed = 8.0f;
@@ -352,9 +373,11 @@ s32 func_80B0C9F0(EnSw* this, PlayState* play) {
                 this->unk_38A = 2;
                 this->actor.shape.shadowScale = 16.0f;
                 this->actor.gravity = -1.0f;
-                this->actor.flags &= ~ACTOR_FLAG_0;
+                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                 this->actionFunc = func_80B0DB00;
             }
+            
+            GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_STALWALL_DEAD);
             return true;
@@ -548,7 +571,7 @@ void func_80B0D590(EnSw* this, PlayState* play) {
             this->collider.elements[0].info.ocElemFlags = 1;
         }
 
-        Math_ApproachF(&this->actor.scale.x, !IS_DAY ? 0.02f : 0.0f, 0.2f, 0.01f);
+        Math_ApproachF(&this->actor.scale.x, !IS_DAY || CVarGetInteger("gNightGSAlwaysSpawn", 0) ? 0.02f : 0.0f, 0.2f, 0.01f);
         Actor_SetScale(&this->actor, this->actor.scale.x);
     }
 
@@ -730,7 +753,7 @@ s32 func_80B0DFFC(EnSw* this, PlayState* play) {
                                        false, false, true, &sp5C)) {
         sp4C = false;
     } else if (((play->state.frames % 4) == 2) &&
-               !BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &this->unk_46C, &sp50, &sp60, true,
+               !BgCheck_EntityLineTest1(&play->colCtx, &this->actor.world.pos, &this->subCamId, &sp50, &sp60, true,
                                         false, false, true, &sp5C)) {
         sp4C = false;
     } else if (((play->state.frames % 4) == 3) &&
@@ -947,7 +970,7 @@ s32 EnSw_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* po
     if (limbIndex == 1) {
         Matrix_MultVec3f(&sp7C, &this->unk_454);
         Matrix_MultVec3f(&sp70, &this->unk_460);
-        Matrix_MultVec3f(&sp64, &this->unk_46C);
+        Matrix_MultVec3f(&sp64, &this->subCamId);
         Matrix_MultVec3f(&sp58, &this->unk_478);
         Matrix_MultVec3f(&sp4C, &this->unk_484);
     }
@@ -1010,7 +1033,7 @@ void EnSw_Draw(Actor* thisx, PlayState* play) {
         func_80B0EDB8(play, &sp30, 0x14, 0x1E);
     }
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnSw_OverrideLimbDraw,
                       EnSw_PostLimbDraw, this);
     if (this->actionFunc == func_80B0E728) {

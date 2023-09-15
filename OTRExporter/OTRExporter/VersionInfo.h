@@ -2,8 +2,6 @@
 
 #include <map>
 #include <vector>
-#include "Resource.h"
+#include "src/resource/Resource.h"
 
-#define MAJOR_VERSION Ship::Version::Deckard
-
-extern std::map<Ship::ResourceType, uint32_t> resourceVersions;
+extern std::map<LUS::ResourceType, uint32_t> resourceVersions;

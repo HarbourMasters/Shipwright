@@ -8,7 +8,7 @@
 #include "overlays/actors/ovl_Obj_Switch/z_obj_switch.h"
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void ObjOshihiki_Init(Actor* thisx, PlayState* play);
 void ObjOshihiki_Destroy(Actor* thisx, PlayState* play);
@@ -54,8 +54,9 @@ static Color_RGB8 sColors[][4] = {
 };
 
 static s16 sScenes[] = {
-    SCENE_YDAN,      SCENE_DDAN,    SCENE_BMORI1, SCENE_HIDAN, SCENE_MIZUSIN,
-    SCENE_JYASINZOU, SCENE_HAKADAN, SCENE_GANON,  SCENE_MEN,
+    SCENE_DEKU_TREE,     SCENE_DODONGOS_CAVERN, SCENE_FOREST_TEMPLE,
+    SCENE_FIRE_TEMPLE,   SCENE_WATER_TEMPLE,    SCENE_SPIRIT_TEMPLE,
+    SCENE_SHADOW_TEMPLE, SCENE_GANONS_TOWER,    SCENE_GERUDO_TRAINING_GROUND,
 };
 
 static InitChainEntry sInitChain[] = {
@@ -271,6 +272,15 @@ void ObjOshihiki_SetColor(ObjOshihiki* this, PlayState* play) {
 void ObjOshihiki_Init(Actor* thisx, PlayState* play2) {
     PlayState* play = play2;
     ObjOshihiki* this = (ObjOshihiki*)thisx;
+
+    // In MQ Spirit, remove the large silver block in the hole as child so the chest in the silver block hallway
+    // can be guaranteed accessible
+    if (gSaveContext.n64ddFlag && LINK_IS_CHILD && ResourceMgr_IsGameMasterQuest() &&
+        play->sceneNum == SCENE_SPIRIT_TEMPLE && thisx->room == 6 && // Spirit Temple silver block hallway
+        thisx->params == 0x9C7) { // Silver block that is marked as in the hole
+        Actor_Kill(thisx);
+        return;
+    }
 
     ObjOshihiki_CheckType(this, play);
 
@@ -558,9 +568,9 @@ void ObjOshihiki_Push(ObjOshihiki* this, PlayState* play) {
     f32 pushDistSigned;
     s32 stopFlag;
 
-    this->pushSpeed = this->pushSpeed + ((CVar_GetS32("gFasterBlockPush", 0) / 2) * 0.5) + 0.5f;
+    this->pushSpeed = this->pushSpeed + (CVarGetInteger("gFasterBlockPush", 0) * 0.25) + 0.5f;
     this->stateFlags |= PUSHBLOCK_PUSH;
-    this->pushSpeed = CLAMP_MAX(this->pushSpeed, 2.0f);
+    this->pushSpeed = CLAMP_MAX(this->pushSpeed, 2.0f + (CVarGetInteger("gFasterBlockPush", 0) * 0.5));
     stopFlag = Math_StepToF(&this->pushDist, 20.0f, this->pushSpeed);
     pushDistSigned = ((this->direction >= 0.0f) ? 1.0f : -1.0f) * this->pushDist;
     thisx->world.pos.x = thisx->home.pos.x + (pushDistSigned * this->yawSin);
@@ -586,7 +596,7 @@ void ObjOshihiki_Push(ObjOshihiki* this, PlayState* play) {
         this->dyna.unk_150 = 0.0f;
         this->pushDist = 0.0f;
         this->pushSpeed = 0.0f;
-        this->timer = 10 - ((CVar_GetS32("gFasterBlockPush", 0) * 3) / 2);
+        this->timer = 10 - ((CVarGetInteger("gFasterBlockPush", 0) * 3) / 2);
         if (this->floorBgIds[this->highestFloor] == BGCHECK_SCENE) {
             ObjOshihiki_SetupOnScene(this, play);
         } else {
@@ -659,21 +669,21 @@ void ObjOshihiki_Draw(Actor* thisx, PlayState* play) {
         Matrix_Translate(this->underDistX * 10.0f, 0.0f, this->underDistZ * 10.0f, MTXMODE_APPLY);
     }
     this->stateFlags &= ~PUSHBLOCK_MOVE_UNDER;
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(this->texture));
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     switch (play->sceneNum) {
-        case SCENE_YDAN:
-        case SCENE_DDAN:
-        case SCENE_BMORI1:
-        case SCENE_HIDAN:
-        case SCENE_MIZUSIN:
-        case SCENE_JYASINZOU:
-        case SCENE_HAKADAN:
-        case SCENE_MEN:
+        case SCENE_DEKU_TREE:
+        case SCENE_DODONGOS_CAVERN:
+        case SCENE_FOREST_TEMPLE:
+        case SCENE_FIRE_TEMPLE:
+        case SCENE_WATER_TEMPLE:
+        case SCENE_SPIRIT_TEMPLE:
+        case SCENE_SHADOW_TEMPLE:
+        case SCENE_GERUDO_TRAINING_GROUND:
             gDPSetEnvColor(POLY_OPA_DISP++, this->color.r, this->color.g, this->color.b, 255);
             break;
         default:

@@ -6,8 +6,9 @@
 
 #include "z_en_elf.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include <assert.h>
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5 | ACTOR_FLAG_25)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 #define FAIRY_FLAG_TIMED (1 << 8)
 #define FAIRY_FLAG_BIG (1 << 9)
@@ -400,11 +401,11 @@ void EnElf_Init(Actor* thisx, PlayState* play) {
 
             for (i = 0; i < 8; i++) {
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, thisx->world.pos.x,
-                            thisx->world.pos.y - 30.0f, thisx->world.pos.z, 0, 0, 0, FAIRY_HEAL);
+                            thisx->world.pos.y - 30.0f, thisx->world.pos.z, 0, 0, 0, FAIRY_HEAL, true);
             }
             break;
         default:
-            ASSERT(0);
+            assert(0);
             break;
     }
 
@@ -437,6 +438,8 @@ void EnElf_Destroy(Actor* thisx, PlayState* play) {
 
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNodeGlow);
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNodeNoGlow);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80A02A20(EnElf* this, PlayState* play) {
@@ -628,15 +631,15 @@ void func_80A0329C(EnElf* this, PlayState* play) {
 
         if ((heightDiff > 0.0f) && (heightDiff < 60.0f)) {
             if (!func_80A01F90(&this->actor.world.pos, &refActor->actor.world.pos, 10.0f)) {
-                if (CVar_GetS32("gFairyEffect", 0) && !(this->fairyFlags & FAIRY_FLAG_BIG))
+                if (CVarGetInteger("gFairyEffect", 0) && !(this->fairyFlags & FAIRY_FLAG_BIG))
                 {
-                    if (CVar_GetS32("gFairyPercentRestore", 0))
+                    if (CVarGetInteger("gFairyPercentRestore", 0))
                     {
-                        Health_ChangeBy(play, (gSaveContext.healthCapacity * CVar_GetS32("gFairyHealth", 100) / 100 + 15) / 16 * 16);
+                        Health_ChangeBy(play, (gSaveContext.healthCapacity * CVarGetInteger("gFairyHealth", 100) / 100 + 15) / 16 * 16);
                     }
                     else
                     {
-                        Health_ChangeBy(play, CVar_GetS32("gFairyHealth", 8) * 16);
+                        Health_ChangeBy(play, CVarGetInteger("gFairyHealth", 8) * 16);
                     }
                 }
                 else
@@ -812,7 +815,7 @@ void func_80A03AB0(EnElf* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
 
     if (this->func_2C8 == NULL) {
-        ASSERT(this->func_2C8 == NULL);
+        assert(this->func_2C8 == NULL);
     }
 
     this->func_2C8(this, play);
@@ -874,7 +877,7 @@ void func_80A03CF8(EnElf* this, PlayState* play) {
             func_80A02C98(this, &nextPos, 0.2f);
         }
 
-        if ((play->sceneNum == SCENE_LINK_HOME) && (gSaveContext.sceneSetupIndex == 4)) {
+        if ((play->sceneNum == SCENE_LINKS_HOUSE) && (gSaveContext.sceneSetupIndex == 4)) {
             // play dash sound as Navi enters Links house in the intro
             if (play->csCtx.frames == 55) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_FAIRY_DASH);
@@ -1392,7 +1395,7 @@ void func_80A053F0(Actor* thisx, PlayState* play) {
         }
     } else if (player->naviTextId < 0) {
         // trigger dialog instantly for negative message IDs
-        thisx->flags |= ACTOR_FLAG_16;
+        thisx->flags |= ACTOR_FLAG_WILL_TALK;
     }
 
     if (Actor_ProcessTalkRequest(thisx, play)) {
@@ -1410,10 +1413,10 @@ void func_80A053F0(Actor* thisx, PlayState* play) {
         func_80A01C38(this, 3);
 
         if (this->elfMsg != NULL) {
-            this->elfMsg->actor.flags |= ACTOR_FLAG_8;
+            this->elfMsg->actor.flags |= ACTOR_FLAG_PLAYER_TALKED_TO;
         }
 
-        thisx->flags &= ~ACTOR_FLAG_16;
+        thisx->flags &= ~ACTOR_FLAG_WILL_TALK;
     } else {
         this->actionFunc(this, play);
         thisx->shape.rot.y = this->unk_2BC;
@@ -1483,6 +1486,7 @@ s32 EnElf_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* p
         if (this->fairyFlags & FAIRY_FLAG_BIG) {
             scale *= 2.0f;
         }
+        scale *= CVarGetFloat("gCosmetics.Fairies_Size", 1.0f);
 
         scale *= (this->actor.scale.x * 124.99999f);
         Matrix_MultVec3f(&zeroVec, &mtxMult);
@@ -1515,7 +1519,7 @@ void EnElf_Draw(Actor* thisx, PlayState* play) {
 
             OPEN_DISPS(play->state.gfxCtx);
 
-            func_80094B58(play->state.gfxCtx);
+            Gfx_SetupDL_27Xlu(play->state.gfxCtx);
 
             envAlpha = (this->timer * 50) & 0x1FF;
             envAlpha = (envAlpha > 255) ? 511 - envAlpha : envAlpha;

@@ -1,7 +1,7 @@
 #include "z_bg_mizu_shutter.h"
 #include "objects/object_mizu_objects/object_mizu_objects.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 #define SIZE_PARAM (((u16)this->dyna.actor.params >> 0xC) & 0xF)
 #define TIMER_PARAM (((u16)this->dyna.actor.params >> 6) & 0x3F)
@@ -159,7 +159,7 @@ void BgMizuShutter_Draw(BgMizuShutter* thisx, PlayState* play) {
     BgMizuShutter* this = (BgMizuShutter*)thisx;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 

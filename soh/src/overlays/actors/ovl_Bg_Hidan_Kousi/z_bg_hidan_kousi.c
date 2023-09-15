@@ -7,7 +7,7 @@
 #include "z_bg_hidan_kousi.h"
 #include "objects/object_hidan_objects/object_hidan_objects.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void BgHidanKousi_Init(Actor* thisx, PlayState* play);
 void BgHidanKousi_Destroy(Actor* thisx, PlayState* play);
@@ -153,7 +153,7 @@ void BgHidanKousi_Update(Actor* thisx, PlayState* play) {
 void BgHidanKousi_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

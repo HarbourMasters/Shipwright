@@ -105,7 +105,7 @@ void func_80890740(BgIceShelter* this, PlayState* play) {
     s32 type = (this->dyna.actor.params >> 8) & 7;
 
     // Initialize this with the red ice, so it can't be affected by toggling while the actor is loaded
-    blueFireArrowsEnabledOnRedIceLoad = CVar_GetS32("gBlueFireArrows", 0) || (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_BLUE_FIRE_ARROWS));
+    blueFireArrowsEnabledOnRedIceLoad = CVarGetInteger("gBlueFireArrows", 0) || (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_BLUE_FIRE_ARROWS));
 
     Collider_InitCylinder(play, &this->cylinder1);
     // If "Blue Fire Arrows" is enabled, set up a collider on the red ice that responds to them
@@ -186,10 +186,10 @@ void BgIceShelter_Init(Actor* thisx, PlayState* play) {
 
     switch (type) {
         case 2:
-            func_80890874(this, play, &object_ice_objects_Col_001C1C, 0);
+            func_80890874(this, play, &gRedIcePlatformCol, 0);
             break;
         case 3:
-            func_80890874(this, play, &object_ice_objects_Col_002920, 0);
+            func_80890874(this, play, &gRedIceWallCol, 0);
             break;
     }
 
@@ -447,7 +447,7 @@ void BgIceShelter_Draw(Actor* thisx, PlayState* play2) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -461,7 +461,12 @@ void BgIceShelter_Draw(Actor* thisx, PlayState* play2) {
             break;
     }
 
-    gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, this->alpha);
+    if (CVarGetInteger("gCosmetics.World_RedIce.Changed", 0)) {
+        Color_RGB8 color = CVarGetColor24("gCosmetics.World_RedIce.Value", (Color_RGB8){ 255, 0, 0});
+        gDPSetEnvColor(POLY_XLU_DISP++, color.r, color.g, color.b, this->alpha);
+    } else {
+        gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, this->alpha);
+    }
 
     switch ((this->dyna.actor.params >> 8) & 7) {
         case 0:
@@ -472,7 +477,7 @@ void BgIceShelter_Draw(Actor* thisx, PlayState* play2) {
                                         -play->gameplayFrames & 0x7F, 0x20, 0x20, 1,
                                         -play->gameplayFrames & 0x7F, play->gameplayFrames & 0x7F, 0x20,
                                         0x20));
-            gSPDisplayList(POLY_XLU_DISP++, object_ice_objects_DL_0006F0);
+            gSPDisplayList(POLY_XLU_DISP++, gRedIceBlockDL);
             break;
 
         case 2:
@@ -484,11 +489,11 @@ void BgIceShelter_Draw(Actor* thisx, PlayState* play2) {
                                         play->gameplayFrames & 0xFF, 0x40, 0x40, 1,
                                         play->gameplayFrames & 0xFF, play->gameplayFrames & 0xFF, 0x40,
                                         0x40));
-            gSPDisplayList(POLY_XLU_DISP++, object_ice_objects_DL_0012A0);
+            gSPDisplayList(POLY_XLU_DISP++, gRedIcePlatformDL);
             break;
 
         case 3:
-            gSPDisplayList(POLY_XLU_DISP++, object_ice_objects_DL_002640);
+            gSPDisplayList(POLY_XLU_DISP++, gRedIceWallDL);
             break;
     }
 

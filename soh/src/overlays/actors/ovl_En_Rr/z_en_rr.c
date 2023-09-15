@@ -7,8 +7,10 @@
 #include "z_en_rr.h"
 #include "objects/object_rr/object_rr.h"
 #include "vt.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include <assert.h>
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5 | ACTOR_FLAG_10)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
 
 #define RR_MESSAGE_SHIELD (1 << 0)
 #define RR_MESSAGE_TUNIC (1 << 1)
@@ -253,7 +255,7 @@ void EnRr_SetupGrabPlayer(EnRr* this, Player* player) {
     s32 i;
 
     this->grabTimer = 100;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->ocTimer = 8;
     this->hasPlayer = true;
     this->reachState = 0;
@@ -288,7 +290,7 @@ void EnRr_SetupReleasePlayer(EnRr* this, PlayState* play) {
     u8 shield;
     u8 tunic;
 
-    this->actor.flags |= ACTOR_FLAG_0;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     this->hasPlayer = false;
     this->ocTimer = 110;
     this->segMoveRate = 0.0f;
@@ -303,7 +305,7 @@ void EnRr_SetupReleasePlayer(EnRr* this, PlayState* play) {
             this->retreat = true;
         }
     }
-    if (CUR_EQUIP_VALUE(EQUIP_TUNIC) != 1 /* Kokiri tunic */) {
+    if (CUR_EQUIP_VALUE(EQUIP_TUNIC) != 1 /* Kokiri tunic */ && !gSaveContext.n64ddFlag /* Randomizer Save File */) {
         tunic = Inventory_DeleteEquipment(play, EQUIP_TUNIC);
         if (tunic != 0) {
             this->eatenTunic = tunic;
@@ -380,7 +382,8 @@ void EnRr_SetupDeath(EnRr* this) {
     }
     this->actionFunc = EnRr_Death;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_LIKE_DEAD);
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnRr_SetupStunned(EnRr* this) {
@@ -788,7 +791,7 @@ void EnRr_Update(Actor* thisx, PlayState* play) {
 
     this->actionFunc(this, play);
     if (this->hasPlayer == 0x3F80) { // checks if 1.0f has been stored to hasPlayer's address
-        ASSERT(this->hasPlayer == 0x3F80);
+        assert(this->hasPlayer == 0x3F80);
     }
 
     Math_StepToF(&this->actor.speedXZ, 0.0f, 0.1f);
@@ -846,7 +849,7 @@ void EnRr_Draw(Actor* thisx, PlayState* play) {
     Mtx* segMtx = Graph_Alloc(play->state.gfxCtx, 4 * sizeof(Mtx));
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x0C, segMtx);
     gSPSegment(POLY_XLU_DISP++, 0x08,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, (this->scrollTimer * 0) & 0x7F,

@@ -8,7 +8,7 @@
 #include "vt.h"
 #include "objects/object_hs/object_hs.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnHs2_Init(Actor* thisx, PlayState* play);
 void EnHs2_Destroy(Actor* thisx, PlayState* play);
@@ -71,6 +71,8 @@ void EnHs2_Destroy(Actor* thisx, PlayState* play) {
     EnHs2* this = (EnHs2*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 func_80A6F0B4(EnHs2* this, PlayState* play, u16 textId, EnHs2ActionFunc actionFunc) {
@@ -163,7 +165,7 @@ void EnHs2_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
 void EnHs2_Draw(Actor* thisx, PlayState* play) {
     EnHs2* this = (EnHs2*)thisx;
 
-    func_800943C8(play->state.gfxCtx);
+    Gfx_SetupDL_37Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnHs2_OverrideLimbDraw, EnHs2_PostLimbDraw, this);
 }

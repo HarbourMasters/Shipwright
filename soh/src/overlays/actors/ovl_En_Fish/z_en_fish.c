@@ -117,7 +117,7 @@ void EnFish_SetCutsceneData(EnFish* this) {
         thisx->shape.yOffset = 600.0f;
         D_80A17014 = 10.0f;
         D_80A17018 = 0.0f;
-        thisx->flags |= ACTOR_FLAG_4;
+        thisx->flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
         EnFish_SetOutOfWaterAnimation(this);
     }
 }
@@ -142,7 +142,7 @@ void EnFish_Init(Actor* thisx, PlayState* play) {
     this->fastPhase = Rand_ZeroOne() * (0xFFFF + 0.5f);
 
     if (params == FISH_DROPPED) {
-        this->actor.flags |= ACTOR_FLAG_4;
+        this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
         ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 8.0f);
         EnFish_Dropped_SetupFall(this);
     } else if (params == FISH_SWIMMING_UNIQUE) {
@@ -157,6 +157,8 @@ void EnFish_Destroy(Actor* thisx, PlayState* play2) {
     EnFish* this = (EnFish*)thisx;
 
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnFish_SetYOffset(EnFish* this) {
@@ -474,7 +476,7 @@ void EnFish_Dropped_FlopOnGround(EnFish* this, PlayState* play) {
 
 void EnFish_Dropped_SetupSwimAway(EnFish* this) {
     this->actor.home.pos = this->actor.world.pos;
-    this->actor.flags |= ACTOR_FLAG_4;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
     this->timer = 200;
     this->actor.gravity = 0.0f;
     this->actor.minVelocityY = 0.0f;
@@ -677,7 +679,7 @@ void EnFish_UpdateCutscene(EnFish* this, PlayState* play) {
 // Update functions and Draw
 
 void EnFish_OrdinaryUpdate(EnFish* this, PlayState* play) {
-    if (this->timer > 0) {
+    if (this->timer > 0 && CVarGetInteger("gNoFishDespawn", 0) == 0) {
         this->timer--;
     }
 
@@ -761,7 +763,7 @@ void EnFish_Update(Actor* thisx, PlayState* play) {
 void EnFish_Draw(Actor* thisx, PlayState* play) {
     EnFish* this = (EnFish*)thisx;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           NULL, NULL, NULL);
     Collider_UpdateSpheres(0, &this->collider);

@@ -1,7 +1,7 @@
 #ifndef Z_EN_GE3_H
 #define Z_EN_GE3_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 #include "overlays/actors/ovl_En_GeldB/z_en_geldb.h"
 

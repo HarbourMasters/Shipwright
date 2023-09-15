@@ -1,4 +1,4 @@
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include <stdio.h>
 #include <string.h>
 #include "z64.h"
@@ -30,36 +30,6 @@ f32 qNaN0x10000 = 0x7F810000;
 //{
 //	__gSPTextureRectangle(pkt, xl, yl, xh, yh, tile, s, t, dsdx, dtdy);
 //}
-
-void osCreateMesgQueue(OSMesgQueue* mq, OSMesg* msgBuf, s32 count) {
-    mq->validCount = 0;
-    mq->first = 0;
-    mq->msgCount = count;
-    mq->msg = msgBuf;
-    return;
-}
-
-s32 osSendMesg(OSMesgQueue* mq, OSMesg msg, s32 flag) {
-    s32 index;
-    if (mq->validCount >= mq->msgCount) {
-        return -1;
-    }
-    index = (mq->first + mq->validCount) % mq->msgCount;
-    mq->msg[index] = msg;
-    mq->validCount++;
-    return 0;
-}
-s32 osRecvMesg(OSMesgQueue* mq, OSMesg* msg, s32 flag) {
-    if (mq->validCount == 0) {
-        return -1;
-    }
-    if (msg != NULL) {
-        *msg = *(mq->first + mq->msg);
-    }
-    mq->first = (mq->first + 1) % mq->msgCount;
-    mq->validCount--;
-    return 0;
-}
 
 s32 osJamMesg(OSMesgQueue* mq, OSMesg msg, s32 flag)
 {

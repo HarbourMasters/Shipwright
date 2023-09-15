@@ -4,7 +4,7 @@
 #include "overlays/actors/ovl_En_Bombf/z_en_bombf.h"
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void BgSpot16Bombstone_Init(Actor* thisx, PlayState* play);
 void BgSpot16Bombstone_Destroy(Actor* thisx, PlayState* play);
@@ -325,7 +325,7 @@ void BgSpot16Bombstone_SpawnFragments(BgSpot16Bombstone* this, PlayState* play) 
 
     if (this->actor.params == 0) {
         Actor_Spawn(&play->actorCtx, play, ACTOR_BG_SPOT16_BOMBSTONE, this->actor.world.pos.x,
-                    this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 5);
+                    this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 5, true);
         index = 3;
     } else {
         index = 0;
@@ -357,7 +357,7 @@ void func_808B561C(BgSpot16Bombstone* this, PlayState* play) {
     world = &this->actor.world;
     for (index = 0; index < ARRAY_COUNT(D_808B6088); index++) {
         if (Actor_Spawn(&play->actorCtx, play, ACTOR_BG_SPOT16_BOMBSTONE, world->pos.x, world->pos.y,
-                        world->pos.z, 0, 0, 0, D_808B6088[index]) == NULL) {
+                        world->pos.z, 0, 0, 0, D_808B6088[index], true) == NULL) {
             break;
         }
     }
@@ -443,7 +443,7 @@ void func_808B5950(BgSpot16Bombstone* this, PlayState* play) {
         OnePointCutscene_Init(play, 4180, 50, NULL, MAIN_CAM);
 
         Flags_SetSwitch(play, this->switchFlag);
-        gSaveContext.eventChkInf[2] |= 8;
+        Flags_SetEventChkInf(EVENTCHKINF_BOMBED_DODONGOS_CAVERN_ENTRANCE);
 
         func_808B5A78(this);
     } else {
@@ -535,7 +535,7 @@ void BgSpot16Bombstone_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

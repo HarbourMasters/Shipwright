@@ -4,8 +4,9 @@
 #include "objects/object_efc_star_field/object_efc_star_field.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
 #include "soh/frame_interpolation.h"
+#include <assert.h>
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void DemoKankyo_Init(Actor* thisx, PlayState* play);
 void DemoKankyo_Destroy(Actor* thisx, PlayState* play);
@@ -187,7 +188,7 @@ void DemoKankyo_Init(Actor* thisx, PlayState* play) {
 
     osSyncPrintf("bank_ID = %d\n", objBankIndex);
     if (objBankIndex < 0) {
-        ASSERT(objBankIndex < 0);
+        assert(objBankIndex < 0);
     } else {
         this->objBankIndex = objBankIndex;
     }
@@ -196,16 +197,16 @@ void DemoKankyo_Init(Actor* thisx, PlayState* play) {
         case DEMOKANKYO_BLUE_RAIN:
         case DEMOKANKYO_BLUE_RAIN_2:
             switch (play->sceneNum) {
-                case SCENE_HIRAL_DEMO:
+                case SCENE_CUTSCENE_MAP:
                     play->roomCtx.curRoom.segment = NULL;
                     D_8098CF80 = 10;
                     sRainScale = 8;
                     break;
-                case SCENE_TOKINOMA:
+                case SCENE_TEMPLE_OF_TIME:
                     D_8098CF80 = 14;
                     sRainScale = 8;
                     break;
-                case SCENE_SPOT00:
+                case SCENE_HYRULE_FIELD:
                     D_8098CF80 = 1;
                     sRainScale = 5;
                     break;
@@ -234,7 +235,7 @@ void DemoKankyo_Init(Actor* thisx, PlayState* play) {
         case DEMOKANKYO_DOOR_OF_TIME:
             this->actor.scale.x = this->actor.scale.y = this->actor.scale.z = 1.0f;
             this->unk_150[0].unk_18 = 0.0f;
-            if (!(gSaveContext.eventChkInf[4] & 0x800)) {
+            if (!Flags_GetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME)) {
                 Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_TOKI,
                                    this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0,
                                    0x0000);
@@ -250,7 +251,7 @@ void DemoKankyo_Init(Actor* thisx, PlayState* play) {
         case DEMOKANKYO_WARP_OUT:
         case DEMOKANKYO_WARP_IN:
             Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_ITEMACTION);
-            this->actor.flags |= ACTOR_FLAG_25;
+            this->actor.flags |= ACTOR_FLAG_NO_FREEZE_OCARINA;
             this->actor.room = -1;
             this->warpTimer = 35;
             this->sparkleCounter = 0;
@@ -320,7 +321,7 @@ void DemoKankyo_SetupType(DemoKankyo* this, PlayState* play) {
                     this->warpTimer--;
                 }
                 if (this->warpTimer == 1) {
-                    if (play->sceneNum == SCENE_TOKINOMA) {
+                    if (play->sceneNum == SCENE_TEMPLE_OF_TIME) {
                         D_8098CF84 = 25;
                         if (!LINK_IS_ADULT) {
                             play->csCtx.segment = gChildWarpInToTCS;
@@ -342,7 +343,7 @@ void DemoKankyo_SetupType(DemoKankyo* this, PlayState* play) {
                 }
                 break;
             case DEMOKANKYO_WARP_IN:
-                if (play->sceneNum == SCENE_TOKINOMA) {
+                if (play->sceneNum == SCENE_TEMPLE_OF_TIME) {
                     if (!LINK_IS_ADULT) {
                         play->csCtx.segment = gChildWarpOutToTCS;
                     } else {
@@ -412,7 +413,7 @@ void DemoKankyo_UpdateDoorOfTime(DemoKankyo* this, PlayState* play) {
     this->unk_150[0].unk_18 += 1.0f;
     if (this->unk_150[0].unk_18 >= 102.0f) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EV_STONEDOOR_STOP);
-        gSaveContext.eventChkInf[4] |= 0x800;
+        Flags_SetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME);
         Actor_Kill(this->actor.child);
         DemoKankyo_SetupAction(this, DemoKankyo_KillDoorOfTimeCollision);
     }
@@ -425,6 +426,12 @@ void DemoKankyo_KillDoorOfTimeCollision(DemoKankyo* this, PlayState* play) {
 void DemoKankyo_Update(Actor* thisx, PlayState* play) {
     DemoKankyo* this = (DemoKankyo*)thisx;
     this->actionFunc(this, play);
+
+    // In ER, override the warp song locations. Also removes the warp song cutscene
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) &&
+        thisx->params == 0x000F) { // Warp Song particles
+        Entrance_SetWarpSongEntrance();
+    }
 }
 
 void DemoKankyo_Draw(Actor* thisx, PlayState* play) {
@@ -434,7 +441,7 @@ void DemoKankyo_Draw(Actor* thisx, PlayState* play) {
         switch (this->actor.params) {
             case DEMOKANKYO_BLUE_RAIN:
             case DEMOKANKYO_BLUE_RAIN_2:
-                if (play->sceneNum == SCENE_TOKINOMA) {
+                if (play->sceneNum == SCENE_TEMPLE_OF_TIME) {
                     if (!Flags_GetEnv(play, 1)) {
                         break;
                     } else if (!Actor_IsFacingAndNearPlayer(&this->actor, 300.0f, 0x7530)) {
@@ -488,12 +495,12 @@ void func_80989B54(Actor* thisx, PlayState* play, s16 i) {
     DemoKankyo* this = (DemoKankyo*)thisx;
 
     switch (play->sceneNum) {
-        case SCENE_HIRAL_DEMO:
+        case SCENE_CUTSCENE_MAP:
             this->unk_150[i].unk_0.x = (Rand_ZeroOne() - 0.5f) * 500.0f;
             this->unk_150[i].unk_0.y = 500.0f;
             this->unk_150[i].unk_0.z = (Rand_ZeroOne() - 0.5f) * 500.0f;
             break;
-        case SCENE_TOKINOMA:
+        case SCENE_TEMPLE_OF_TIME:
             this->unk_150[i].unk_C.x = 0.0f;
             this->unk_150[i].unk_C.y = 0.0f;
             this->unk_150[i].unk_C.z = 0.0f;
@@ -501,7 +508,7 @@ void func_80989B54(Actor* thisx, PlayState* play, s16 i) {
             this->unk_150[i].unk_0.y = 10.0f;
             this->unk_150[i].unk_0.z = (Rand_ZeroOne() - 0.5f) * 180.0f;
             break;
-        case SCENE_SPOT00:
+        case SCENE_HYRULE_FIELD:
             this->unk_150[i].unk_0.x = (Rand_ZeroOne() - 0.5f) * 600.0f;
             this->unk_150[i].unk_0.y = -500.0f;
             this->unk_150[i].unk_0.z = (Rand_ZeroOne() - 0.5f) * 600.0f;
@@ -533,7 +540,7 @@ void DemoKankyo_DrawRain(Actor* thisx, PlayState* play) {
         dz = play->view.lookAt.z - play->view.eye.z;
         norm = sqrtf(SQ(dx) + SQ(dy) + SQ(dz));
 
-        if (play->sceneNum != SCENE_TOKINOMA) {
+        if (play->sceneNum != SCENE_TEMPLE_OF_TIME) {
             this->unk_150[i].unk_C.x = play->view.eye.x + (dx / norm) * 350.0f;
             this->unk_150[i].unk_C.y = play->view.eye.y + (dy / norm) * 80.0f;
             this->unk_150[i].unk_C.z = play->view.eye.z + (dz / norm) * 350.0f;
@@ -599,7 +606,7 @@ void DemoKankyo_DrawRain(Actor* thisx, PlayState* play) {
 
             s32 pad1;
 
-            if (play->sceneNum != SCENE_TOKINOMA) {
+            if (play->sceneNum != SCENE_TEMPLE_OF_TIME) {
                 if (this->unk_150[i].unk_0.x >= 0.0f) {
                     translateX = -j * 1500.0f;
                 } else {
@@ -624,7 +631,7 @@ void DemoKankyo_DrawRain(Actor* thisx, PlayState* play) {
             Matrix_Translate(translateX, translateY, translateZ, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-            POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x14);
+            POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0x14);
             gSPDisplayList(POLY_XLU_DISP++, object_efc_star_field_DL_000080);
 
             FrameInterpolation_RecordCloseChild();
@@ -639,7 +646,7 @@ void DemoKankyo_DrawRock(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Matrix_Translate(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, MTXMODE_NEW);
     Matrix_RotateX(DEG_TO_RAD(this->unk_150[0].unk_C.x), MTXMODE_APPLY);
     Matrix_RotateY(DEG_TO_RAD(this->unk_150[0].unk_C.y), MTXMODE_APPLY);
@@ -684,7 +691,7 @@ void DemoKankyo_DrawClouds(Actor* thisx, PlayState* play) {
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gDust5Tex));
 
-        func_80094C50(play->state.gfxCtx);
+        Gfx_SetupDL_61Xlu(play->state.gfxCtx);
 
         gSPMatrix(POLY_XLU_DISP++, SEG_ADDR(1, 0), G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffDustDL);
@@ -701,7 +708,7 @@ void DemoKankyo_DrawDoorOfTime(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Matrix_Translate(-this->unk_150[0].unk_18, 0.0f, 0.0f, MTXMODE_APPLY);
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -721,7 +728,7 @@ void DemoKankyo_DrawLightPlane(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     if (play->csCtx.state == CS_STATE_IDLE || gSaveContext.sceneSetupIndex >= 4) {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TexScroll(play->state.gfxCtx, 0, play->state.frames & 0x7F, 64, 32));
@@ -813,7 +820,7 @@ void DemoKankyo_DrawWarpSparkles(Actor* thisx, PlayState* play) {
                                       &this->unk_150[i].unk_1C) != 0) {
                         this->unk_150[i].unk_22++;
                     }
-                    if (play->sceneNum == SCENE_TOKINOMA && play->csCtx.frames == 25) {
+                    if (play->sceneNum == SCENE_TEMPLE_OF_TIME && play->csCtx.frames == 25) {
                         this->unk_150[i].unk_22++;
                     }
                 } else {
@@ -894,7 +901,7 @@ void DemoKankyo_DrawWarpSparkles(Actor* thisx, PlayState* play) {
                 gDPSetEnvColor(POLY_XLU_DISP++, sWarpSparkleEnvColors[respawnData].r,
                                sWarpSparkleEnvColors[respawnData].g, sWarpSparkleEnvColors[respawnData].b, 255);
             }
-            func_80093D84(play->state.gfxCtx);
+            Gfx_SetupDL_25Xlu(play->state.gfxCtx);
             Matrix_Mult(&play->billboardMtxF, MTXMODE_APPLY);
             Matrix_RotateZ(DEG_TO_RAD(this->unk_150[i].unk_24), MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
@@ -1000,7 +1007,7 @@ void DemoKankyo_DrawSparkles(Actor* thisx, PlayState* play) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 255, 255, 255, 255);
             gDPSetEnvColor(POLY_XLU_DISP++, sSparkleEnvColors[3].r, sSparkleEnvColors[3].g, sSparkleEnvColors[3].b,
                            255);
-            func_80093D84(play->state.gfxCtx);
+            Gfx_SetupDL_25Xlu(play->state.gfxCtx);
             Matrix_Mult(&play->billboardMtxF, MTXMODE_APPLY);
             Matrix_RotateZ(DEG_TO_RAD(this->unk_150[i].unk_24), MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),

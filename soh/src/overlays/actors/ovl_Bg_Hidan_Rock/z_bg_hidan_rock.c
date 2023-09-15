@@ -93,7 +93,7 @@ void BgHidanRock_Init(Actor* thisx, PlayState* play) {
         } else {
             this->actionFunc = func_8088B268;
         }
-        thisx->flags |= ACTOR_FLAG_4 | ACTOR_FLAG_5;
+        thisx->flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED;
         CollisionHeader_GetVirtual(&gFireTempleStoneBlock1Col, &colHeader);
     } else {
         CollisionHeader_GetVirtual(&gFireTempleStoneBlock2Col, &colHeader);
@@ -116,7 +116,7 @@ void BgHidanRock_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_8088B24C(BgHidanRock* this) {
-    this->dyna.actor.flags |= ACTOR_FLAG_4 | ACTOR_FLAG_5;
+    this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED;
     this->actionFunc = func_8088B990;
 }
 
@@ -137,8 +137,9 @@ void func_8088B268(BgHidanRock* this, PlayState* play) {
                 }
             }
 
-            this->dyna.actor.speedXZ = this->dyna.actor.speedXZ + (CVar_GetS32("gFasterBlockPush", 0) * 0.3) + 0.5f;
-            this->dyna.actor.speedXZ = CLAMP_MAX(this->dyna.actor.speedXZ, 2.0f);
+            this->dyna.actor.speedXZ = this->dyna.actor.speedXZ + (CVarGetInteger("gFasterBlockPush", 0) * 0.3) + 0.5f;
+            this->dyna.actor.speedXZ =
+                CLAMP_MAX(this->dyna.actor.speedXZ, 2.0f + (CVarGetInteger("gFasterBlockPush", 0) * 0.5));
 
             if (D_8088BFC0 > 0.0f) {
                 temp_v1 = Math_StepToF(&D_8088BFC0, 20.0f, this->dyna.actor.speedXZ);
@@ -156,7 +157,7 @@ void func_8088B268(BgHidanRock* this, PlayState* play) {
                 this->dyna.actor.home.pos.z = this->dyna.actor.world.pos.z;
                 D_8088BFC0 = 0.0f;
                 this->dyna.actor.speedXZ = 0.0f;
-                this->timer = 5 - ((CVar_GetS32("gFasterBlockPush", 0) * 3) / 5);
+                this->timer = 5 - ((CVarGetInteger("gFasterBlockPush", 0) * 3) / 5);
             }
 
             func_8002F974(&this->dyna.actor, NA_SE_EV_ROCK_SLIDE - SFX_FLAG);
@@ -249,7 +250,7 @@ void func_8088B79C(BgHidanRock* this, PlayState* play) {
         } else {
             this->dyna.actor.world.pos.y = this->dyna.actor.home.pos.y - 15.0f;
             this->actionFunc = func_8088B90C;
-            this->dyna.actor.flags &= ~(ACTOR_FLAG_4 | ACTOR_FLAG_5);
+            this->dyna.actor.flags &= ~(ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED);
         }
 
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BLOCK_BOUND);
@@ -355,7 +356,7 @@ void func_8088BC40(PlayState* play, BgHidanRock* this) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x14);
+    POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0x14);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x01, 255, 255, 0, 150);
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 255);
 

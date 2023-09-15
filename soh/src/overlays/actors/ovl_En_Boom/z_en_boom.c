@@ -7,7 +7,7 @@
 #include "z_en_boom.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnBoom_Init(Actor* thisx, PlayState* play);
 void EnBoom_Destroy(Actor* thisx, PlayState* play);
@@ -161,7 +161,7 @@ void EnBoom_Fly(EnBoom* this, PlayState* play) {
         if (((this->collider.base.at->id == ACTOR_EN_ITEM00) || (this->collider.base.at->id == ACTOR_EN_SI))) {
             this->grabbed = this->collider.base.at;
             if (this->collider.base.at->id == ACTOR_EN_SI) {
-                this->collider.base.at->flags |= ACTOR_FLAG_13;
+                this->collider.base.at->flags |= ACTOR_FLAG_HOOKSHOT_ATTACHED;
             }
         }
     }
@@ -184,11 +184,11 @@ void EnBoom_Fly(EnBoom* this, PlayState* play) {
                     target->gravity = -0.9f;
                     target->bgCheckFlags &= ~0x03;
                 } else {
-                    target->flags &= ~ACTOR_FLAG_13;
+                    target->flags &= ~ACTOR_FLAG_HOOKSHOT_ATTACHED;
                 }
             }
             // Set player flags and kill the boomerang beacause Link caught it.
-            player->stateFlags1 &= ~PLAYER_STATE1_25;
+            player->stateFlags1 &= ~PLAYER_STATE1_THREW_BOOMERANG;
             player->boomerangQuickRecall = false;
             Actor_Kill(&this->actor);
         }
@@ -269,7 +269,7 @@ void EnBoom_Draw(Actor* thisx, PlayState* play) {
         EffectBlure_AddVertex(Effect_GetByIndex(this->effectIndex), &vec1, &vec2);
     }
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Matrix_RotateY((this->activeTimer * 12000) * (M_PI / 0x8000), MTXMODE_APPLY);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),

@@ -7,7 +7,7 @@
 #include "z_item_ocarina.h"
 #include "scenes/overworld/spot00/spot00_scene.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void ItemOcarina_Init(Actor* thisx, PlayState* play);
 void ItemOcarina_Destroy(Actor* thisx, PlayState* play);
@@ -58,11 +58,11 @@ void ItemOcarina_Init(Actor* thisx, PlayState* play) {
             break;
         case 3:
             ItemOcarina_SetupAction(this, ItemOcarina_WaitInWater);
-            if (!(gSaveContext.eventChkInf[8] & 1) || (gSaveContext.eventChkInf[4] & 8)) {
+            if (!Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE) || (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_OCARINA_OF_TIME))) {
                 Actor_Kill(thisx);
                 return;
             }
-            Actor_Spawn(&play->actorCtx, play, ACTOR_ELF_MSG2, 299.0f, -140.0f, 884.0f, 0, 4, 1, 0x3800);
+            Actor_Spawn(&play->actorCtx, play, ACTOR_ELF_MSG2, 299.0f, -140.0f, 884.0f, 0, 4, 1, 0x3800, true);
             Actor_SetScale(thisx, 0.2f);
             break;
         default:
@@ -175,7 +175,7 @@ void ItemOcarina_StartSoTCutscene(ItemOcarina* this, PlayState* play) {
         } else {
             play->sceneLoadFlag = 0x14;
             play->fadeTransition = 3;
-            gSaveContext.nextTransition = 3;
+            gSaveContext.nextTransitionType = 3;
             play->nextEntranceIndex = 0x050F;
             gSaveContext.nextCutsceneIndex = 0;
         }
@@ -184,7 +184,7 @@ void ItemOcarina_StartSoTCutscene(ItemOcarina* this, PlayState* play) {
 
 void ItemOcarina_WaitInWater(ItemOcarina* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
-        gSaveContext.eventChkInf[4] |= 8;
+        Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_OCARINA_OF_TIME);
         Flags_SetSwitch(play, 3);
         this->actionFunc = ItemOcarina_StartSoTCutscene;
         this->actor.draw = NULL;

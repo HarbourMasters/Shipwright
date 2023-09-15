@@ -1,7 +1,7 @@
 #ifndef Z_OCEFF_WIPE4_H
 #define Z_OCEFF_WIPE4_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 typedef enum {

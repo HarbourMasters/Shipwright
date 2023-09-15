@@ -1,8 +1,9 @@
 #include "z_en_okuta.h"
 #include "objects/object_okuta/object_okuta.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 
 void EnOkuta_Init(Actor* thisx, PlayState* play);
 void EnOkuta_Destroy(Actor* thisx, PlayState* play);
@@ -147,8 +148,8 @@ void EnOkuta_Init(Actor* thisx, PlayState* play) {
         EnOkuta_SetupWaitToAppear(this);
     } else {
         ActorShape_Init(&thisx->shape, 1100.0f, ActorShadow_DrawCircle, 18.0f);
-        thisx->flags &= ~ACTOR_FLAG_0;
-        thisx->flags |= ACTOR_FLAG_4;
+        thisx->flags &= ~ACTOR_FLAG_TARGETABLE;
+        thisx->flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
         Collider_InitCylinder(play, &this->collider);
         Collider_SetCylinder(play, &this->collider, thisx, &sProjectileColliderInit);
         Actor_ChangeCategory(play, &play->actorCtx, thisx, ACTORCAT_PROP);
@@ -163,6 +164,10 @@ void EnOkuta_Destroy(Actor* thisx, PlayState* play) {
     EnOkuta* this = (EnOkuta*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    if (thisx->params == 0) {
+        ResourceMgr_UnregisterSkeleton(&this->skelAnime);
+    }
 }
 
 void EnOkuta_SpawnBubbles(EnOkuta* this, PlayState* play) {
@@ -199,7 +204,7 @@ void EnOkuta_SpawnRipple(EnOkuta* this, PlayState* play) {
 
 void EnOkuta_SetupWaitToAppear(EnOkuta* this) {
     this->actor.draw = NULL;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actionFunc = EnOkuta_WaitToAppear;
     this->actor.world.pos.y = this->actor.home.pos.y;
 }
@@ -207,7 +212,7 @@ void EnOkuta_SetupWaitToAppear(EnOkuta* this) {
 void EnOkuta_SetupAppear(EnOkuta* this, PlayState* play) {
     this->actor.draw = EnOkuta_Draw;
     this->actor.shape.rot.y = this->actor.yawTowardsPlayer;
-    this->actor.flags |= ACTOR_FLAG_0;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     Animation_PlayOnce(&this->skelAnime, &gOctorokAppearAnim);
     EnOkuta_SpawnBubbles(this, play);
     this->actionFunc = EnOkuta_Appear;
@@ -253,6 +258,7 @@ void EnOkuta_SetupDie(EnOkuta* this) {
     Animation_MorphToPlayOnce(&this->skelAnime, &gOctorokDieAnim, -3.0f);
     this->timer = 0;
     this->actionFunc = EnOkuta_Die;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnOkuta_SetupFreeze(EnOkuta* this) {
@@ -271,7 +277,7 @@ void EnOkuta_SpawnProjectile(EnOkuta* this, PlayState* play) {
     pos.y = this->actor.world.pos.y - 6.0f;
     pos.z = this->actor.world.pos.z + (25.0f * cos);
     if (Actor_Spawn(&play->actorCtx, play, ACTOR_EN_OKUTA, pos.x, pos.y, pos.z, this->actor.shape.rot.x,
-                    this->actor.shape.rot.y, this->actor.shape.rot.z, 0x10) != NULL) {
+                    this->actor.shape.rot.y, this->actor.shape.rot.z, 0x10, true) != NULL) {
         pos.x = this->actor.world.pos.x + (40.0f * sin);
         pos.z = this->actor.world.pos.z + (40.0f * cos);
         pos.y = this->actor.world.pos.y;
@@ -500,7 +506,7 @@ void EnOkuta_ProjectileFly(EnOkuta* this, PlayState* play) {
             pos.x = this->actor.world.pos.x;
             pos.y = this->actor.world.pos.y + 11.0f;
             pos.z = this->actor.world.pos.z;
-            if (CVar_GetS32("gNewDrops", 0) != 0) {
+            if (CVarGetInteger("gNewDrops", 0) != 0) {
                 static s16 sEffectScales[] = {
                     145, 135, 115, 85, 75, 53, 45, 40, 35,
                 };
@@ -604,7 +610,7 @@ void EnOkuta_ColliderCheck(EnOkuta* this, PlayState* play) {
         if ((this->actor.colChkInfo.damageEffect != 0) || (this->actor.colChkInfo.damage != 0)) {
             Enemy_StartFinishingBlow(play, &this->actor);
             this->actor.colChkInfo.health = 0;
-            this->actor.flags &= ~ACTOR_FLAG_0;
+            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
             if (this->actor.colChkInfo.damageEffect == 3) {
                 EnOkuta_SetupFreeze(this);
             } else {
@@ -668,7 +674,7 @@ void EnOkuta_Update(Actor* thisx, PlayState* play2) {
             this->collider.dim.radius = sOctorockColliderInit.dim.radius * this->actor.scale.x * 100.0f;
         }
         if (this->actor.params == 0x10) {
-            this->actor.flags |= ACTOR_FLAG_24;
+            this->actor.flags |= ACTOR_FLAG_PLAY_HIT_SFX;
             CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
         }
         if (this->actionFunc != EnOkuta_WaitToAppear) {
@@ -749,7 +755,7 @@ void EnOkuta_Draw(Actor* thisx, PlayState* play) {
     EnOkuta* this = (EnOkuta*)thisx;
     s32 pad;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if (this->actor.params == 0) {
         SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnOkuta_OverrideLimbDraw,
@@ -757,8 +763,8 @@ void EnOkuta_Draw(Actor* thisx, PlayState* play) {
     } else {
         OPEN_DISPS(play->state.gfxCtx);
 
-        if (CVar_GetS32("gNewDrops", 0) != 0) {
-            func_80093D18(play->state.gfxCtx);
+        if (CVarGetInteger("gNewDrops", 0) != 0) {
+            Gfx_SetupDL_25Opa(play->state.gfxCtx);
             gSPSegment(POLY_OPA_DISP++, 0x08,
                     Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 6),
                                         1 * (play->state.frames * 6), 32, 32, 1, 1 * (play->state.frames * 6),

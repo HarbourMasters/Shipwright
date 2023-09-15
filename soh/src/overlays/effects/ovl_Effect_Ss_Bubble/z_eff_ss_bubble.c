@@ -47,7 +47,7 @@ void EffectSsBubble_Draw(PlayState* play, u32 index, EffectSs* this) {
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    func_80093D18(gfxCtx);
+    Gfx_SetupDL_25Opa(gfxCtx);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
     gDPSetEnvColor(POLY_OPA_DISP++, 150, 150, 150, 0);
     gSPSegment(POLY_OPA_DISP++, 0x08, this->gfx);

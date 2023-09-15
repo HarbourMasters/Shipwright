@@ -1,7 +1,7 @@
 #ifndef Z_BG_JYA_BLOCK_H
 #define Z_BG_JYA_BLOCK_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct BgJyaBlock;

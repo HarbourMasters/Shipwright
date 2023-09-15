@@ -1,5 +1,6 @@
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
+#include "soh/Enhancements/audio/AudioEditor.h"
 
 // TODO: can these macros be shared between files? code_800F9280 seems to use
 // versions without any casts...
@@ -134,7 +135,7 @@ u8 sAudioExtraFilter2 = 0;
 Vec3f* sSariaBgmPtr = NULL;
 f32 D_80130650 = 2000.0f;
 u8 sSeqModeInput = 0;
-u8 sSeqFlags[0x6E] = {
+u8 sSeqFlags[0x6F] = {
     0x2,  // NA_BGM_GENERAL_SFX
     0x1,  // NA_BGM_NATURE_BACKGROUND
     0,    // NA_BGM_FIELD_LOGIC
@@ -245,6 +246,7 @@ u8 sSeqFlags[0x6E] = {
     0,    // NA_BGM_FIRE_BOSS
     0x8,  // NA_BGM_TIMED_MINI_GAME
     0,    // NA_BGM_VARIOUS_SFX
+    1,    // NA_BGM_CUSTOM_SEQ
 };
 
 s8 sSpecReverbs[20] = { 0, 0, 0, 0, 0, 0, 0, 40, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -1257,11 +1259,11 @@ void Audio_PlayFanfare_Rando(GetItemEntry getItem);
 // Function originally not called, so repurposing for control mapping
 void Audio_OcaUpdateBtnMap(bool customControls, bool dpad, bool rStick) {
     if (customControls) {
-        sOcarinaD5BtnMap = CVar_GetS32("gOcarinaD5BtnMap", BTN_CUP);
-        sOcarinaB4BtnMap = CVar_GetS32("gOcarinaB4BtnMap", BTN_CLEFT);
-        sOcarinaA4BtnMap = CVar_GetS32("gOcarinaA4BtnMap", BTN_CRIGHT);
-        sOcarinaF4BtnMap = CVar_GetS32("gOcarinaF4BtnMap", BTN_CDOWN);
-        sOcarinaD4BtnMap = CVar_GetS32("gOcarinaD4BtnMap", BTN_A);
+        sOcarinaD5BtnMap = CVarGetInteger("gOcarinaD5BtnMap", BTN_CUP);
+        sOcarinaB4BtnMap = CVarGetInteger("gOcarinaB4BtnMap", BTN_CLEFT);
+        sOcarinaA4BtnMap = CVarGetInteger("gOcarinaA4BtnMap", BTN_CRIGHT);
+        sOcarinaF4BtnMap = CVarGetInteger("gOcarinaF4BtnMap", BTN_CDOWN);
+        sOcarinaD4BtnMap = CVarGetInteger("gOcarinaD4BtnMap", BTN_A);
     } else {
         sOcarinaD5BtnMap = BTN_CUP;
         sOcarinaB4BtnMap = BTN_CLEFT;
@@ -1538,8 +1540,8 @@ void func_800ED200(void) {
     u8 k;
 
     u32 disableSongBtnMap;
-    if (CVar_GetS32("gCustomOcarinaControls", 0)) {
-        disableSongBtnMap = CVar_GetS32("gOcarinaDisableBtnMap", BTN_L);
+    if (CVarGetInteger("gCustomOcarinaControls", 0)) {
+        disableSongBtnMap = CVarGetInteger("gOcarinaDisableBtnMap", BTN_L);
     } else {
         disableSongBtnMap = BTN_L;
     }
@@ -1600,13 +1602,13 @@ void func_800ED200(void) {
 
 void func_800ED458(s32 arg0) {
     u32 phi_v1_2;
-    bool customControls = CVar_GetS32("gCustomOcarinaControls", 0);
-    bool dpad = CVar_GetS32("gDpadOcarina", 0);
-    bool rStick = CVar_GetS32("gRStickOcarina", 0);
+    bool customControls = CVarGetInteger("gCustomOcarinaControls", 0);
+    bool dpad = CVarGetInteger("gDpadOcarina", 0);
+    bool rStick = CVarGetInteger("gRStickOcarina", 0);
 
     if (D_80130F3C != 0 && sOcarinaDropInputTimer != 0) {
         sOcarinaDropInputTimer--;
-        if (!CVar_GetS32("gDpadNoDropOcarinaInput", 0)) {
+        if (!CVarGetInteger("gDpadNoDropOcarinaInput", 0)) {
             return;
         }
     }
@@ -1648,7 +1650,7 @@ void func_800ED458(s32 arg0) {
 
         u32 noteSharpBtnMap;
         if (customControls) {
-            noteSharpBtnMap = CVar_GetS32("gOcarinaSharpBtnMap", BTN_R);
+            noteSharpBtnMap = CVarGetInteger("gOcarinaSharpBtnMap", BTN_R);
         } else {
             noteSharpBtnMap = BTN_R;
         }
@@ -1659,7 +1661,7 @@ void func_800ED458(s32 arg0) {
 
         u32 noteFlatBtnMap;
         if (customControls) {
-            noteFlatBtnMap = CVar_GetS32("gOcarinaFlatBtnMap", BTN_Z);
+            noteFlatBtnMap = CVarGetInteger("gOcarinaFlatBtnMap", BTN_Z);
         } else {
             noteFlatBtnMap = BTN_Z;
         }
@@ -1699,8 +1701,9 @@ void Audio_OcaSetInstrument(u8 arg0) {
     }
 
     u16 sfxEditorId = arg0 + 0x81;
-    u16 newArg0 = SfxEditor_GetReplacementSeq(sfxEditorId);
+    u16 newArg0 = AudioEditor_GetReplacementSeq(sfxEditorId);
     if (newArg0 != sfxEditorId) {
+        gAudioContext.seqReplaced[SEQ_PLAYER_SFX] = 1;
         arg0 = newArg0 - 0x81;
     }
 
@@ -3985,7 +3988,7 @@ void Audio_PlayFanfare_Rando(GetItemEntry getItem) {
                 temp1 = NA_BGM_SMALL_ITEM_GET | 0x900;
             }
             // If the setting is toggled on and we get special quest items (longer fanfares):
-            if (CVar_GetS32("gRandoQuestItemFanfares", 0) != 0) {
+            if (CVarGetInteger("gRandoQuestItemFanfares", 0) != 0) {
                 // If we get a medallion, play the "get a medallion" fanfare
                 if ((itemId >= ITEM_MEDALLION_FOREST) && (itemId <= ITEM_MEDALLION_LIGHT)) {
                     temp1 = NA_BGM_MEDALLION_GET | 0x900;
@@ -4586,7 +4589,6 @@ s32 func_800F5A58(u8 arg0) {
  */
 void func_800F5ACC(u16 seqId) {
     u16 curSeqId = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
-    curSeqId = SfxEditor_GetReverseReplacementSeq(curSeqId);
 
     if ((curSeqId & 0xFF) != NA_BGM_GANON_TOWER && (curSeqId & 0xFF) != NA_BGM_ESCAPE && curSeqId != seqId) {
         Audio_SetSequenceMode(SEQ_MODE_IGNORE);
@@ -4597,6 +4599,22 @@ void func_800F5ACC(u16 seqId) {
         }
 
         Audio_StartSeq(SEQ_PLAYER_BGM_MAIN, 0, seqId);
+    }
+}
+
+// based on func_800F5ACC
+void PreviewSequence(u16 seqId) {
+    u16 curSeqId = func_800FA0B4(SEQ_PLAYER_BGM_MAIN);
+
+    if ((curSeqId & 0xFF) != NA_BGM_GANON_TOWER && (curSeqId & 0xFF) != NA_BGM_ESCAPE && curSeqId != seqId) {
+        Audio_SetSequenceMode(SEQ_MODE_IGNORE);
+        if (curSeqId != NA_BGM_DISABLED) {
+            sPrevMainBgmSeqId = curSeqId;
+        } else {
+            osSyncPrintf("Middle Boss BGM Start not stack \n");
+        }
+
+        Audio_QueuePreviewSeqCmd(seqId);
     }
 }
 
@@ -4641,19 +4659,25 @@ void func_800F5C2C(void) {
 
 void Audio_PlayFanfare(u16 seqId)
 {
-    u16 sp26;
-    u32 sp20;
-    u8* sp1C;
-    u8* sp18;
+    u16 curSeqId;
+    u32 outNumFonts;
+    u8* curFontId;
+    u8* requestedFontId;
 
-    sp26 = func_800FA0B4(SEQ_PLAYER_FANFARE);
-    sp1C = func_800E5E84(sp26 & 0xFF, &sp20);
-    sp18 = func_800E5E84(seqId & 0xFF, &sp20);
-	if (!sp1C || !sp18) {
+    curSeqId = func_800FA0B4(SEQ_PLAYER_FANFARE);
+
+    // Although seqIds are u16, there is no fanfare that is above 0xFF
+    // Sometimes the game will add 0x900 to a requested fanfare ID
+    // The `& 0xFF` here is to strip off this 0x900 and get the original fanfare ID
+    // when getting the sound font data for the sequence
+    curFontId = func_800E5E84(curSeqId & 0xFF, &outNumFonts);
+    requestedFontId = func_800E5E84(seqId & 0xFF, &outNumFonts);
+
+	if (!curFontId || !requestedFontId) {
 		// disable BGM, we're about to null deref!
 		D_8016B9F4 = 1;
 	} else {
-		if ((sp26 == NA_BGM_DISABLED) || (*sp1C == *sp18)) {
+		if ((curSeqId == NA_BGM_DISABLED) || (*curFontId == *requestedFontId)) {
 			D_8016B9F4 = 1;
 		} else {
 			D_8016B9F4 = 5;

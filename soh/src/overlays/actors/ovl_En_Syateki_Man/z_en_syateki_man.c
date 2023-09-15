@@ -2,8 +2,9 @@
 #include "vt.h"
 #include "overlays/actors/ovl_En_Syateki_Itm/z_en_syateki_itm.h"
 #include "objects/object_ossan/object_ossan.h"
+#include "soh/Enhancements/randomizer/randomizer_entrance.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_27)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_LOCKON)
 
 typedef enum {
     /* 0 */ SYATEKI_RESULT_NONE,
@@ -154,6 +155,15 @@ void EnSyatekiMan_Init(Actor* thisx, PlayState* play) {
     s32 pad;
     EnSyatekiMan* this = (EnSyatekiMan*)thisx;
 
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_INTERIOR_ENTRANCES)) {
+        // If child is in the adult shooting gallery or adult in the child shooting gallery, then despawn the shooting gallery man
+        if ((LINK_IS_CHILD && Entrance_SceneAndSpawnAre(SCENE_SHOOTING_GALLERY, 0x00)) || //Kakariko Village -> Adult Shooting Gallery, index 003B in the entrance table
+            (LINK_IS_ADULT && Entrance_SceneAndSpawnAre(SCENE_SHOOTING_GALLERY, 0x01))) { //Market -> Child Shooting Gallery,           index 016D in the entrance table
+            Actor_Kill(thisx);
+            return;
+        }
+    }
+
     osSyncPrintf("\n\n");
     // "Old man appeared!! Muhohohohohohohon"
     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 親父登場！！むほほほほほほほーん ☆☆☆☆☆ \n" VT_RST);
@@ -173,6 +183,9 @@ void EnSyatekiMan_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnSyatekiMan_Destroy(Actor* thisx, PlayState* play) {
+    EnSyatekiMan* this = (EnSyatekiMan*)thisx;
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnSyatekiMan_Start(EnSyatekiMan* this, PlayState* play) {
@@ -279,7 +292,12 @@ void EnSyatekiMan_StartGame(EnSyatekiMan* this, PlayState* play) {
         Message_CloseTextbox(play);
         gallery = ((EnSyatekiItm*)this->actor.parent);
         if (gallery->actor.update != NULL) {
-            gallery->signal = ENSYATEKI_START;
+            if(CVarGetInteger("gCustomizeShootingGallery", 0) && CVarGetInteger("gInstantShootingGalleryWin", 0)) {
+                gallery->hitCount = 10;
+                gallery->signal = ENSYATEKI_END;
+            } else {
+                gallery->signal = ENSYATEKI_START;
+            }
             this->actionFunc = EnSyatekiMan_WaitForGame;
         }
     }
@@ -340,7 +358,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                             this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_SHOOTING_GALLERY_REWARD, GI_BULLET_BAG_50);
                             this->getItemId = this->getItemEntry.getItemId;
                             Flags_SetTreasure(play, 0x1E);
-                        } else if (!gSaveContext.n64ddFlag && !(gSaveContext.itemGetInf[0] & 0x2000)) {
+                        } else if (!gSaveContext.n64ddFlag && !Flags_GetItemGetInf(ITEMGETINF_0D)) {
                             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Equip_Pachinko ☆☆☆☆☆ %d\n" VT_RST,
                                          CUR_UPG_VALUE(UPG_BULLET_BAG));
                             if (CUR_UPG_VALUE(UPG_BULLET_BAG) == 1) {
@@ -357,7 +375,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                             this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_SHOOTING_GALLERY_REWARD, GI_QUIVER_50);
                             this->getItemId = this->getItemEntry.getItemId;
                             Flags_SetTreasure(play, 0x1F);
-                        } else if (!gSaveContext.n64ddFlag && !(gSaveContext.itemGetInf[0] & 0x4000)) {
+                        } else if (!gSaveContext.n64ddFlag && !Flags_GetItemGetInf(ITEMGETINF_0E)) {
                             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Equip_Bow ☆☆☆☆☆ %d\n" VT_RST,
                                          CUR_UPG_VALUE(UPG_QUIVER));
                             switch (CUR_UPG_VALUE(UPG_QUIVER)) {
@@ -385,7 +403,11 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, PlayState* play) {
                     break;
                 case SYATEKI_RESULT_ALMOST:
                     this->timer = 20;
-                    func_8008EF44(play, 15);
+                    s32 ammunition = 15;
+                    if(CVarGetInteger("gCustomizeShootingGallery", 0)) {
+                        ammunition = CVarGetInteger(LINK_IS_ADULT ? "gAdultShootingGalleryAmmunition" : "gChildShootingGalleryAmmunition", 15);
+                    }
+                    func_8008EF44(play, ammunition);
                     this->actionFunc = EnSyatekiMan_RestartGame;
                     break;
                 default:
@@ -423,13 +445,13 @@ void EnSyatekiMan_FinishPrize(EnSyatekiMan* this, PlayState* play) {
         // "Successful completion"
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
         if (!LINK_IS_ADULT) {
-            gSaveContext.itemGetInf[0] |= 0x2000;
+            Flags_SetItemGetInf(ITEMGETINF_0D);
         } else if ((this->getItemId == GI_QUIVER_40) || (this->getItemId == GI_QUIVER_50)) {
-            gSaveContext.itemGetInf[0] |= 0x4000;
+            Flags_SetItemGetInf(ITEMGETINF_0E);
         }
         this->gameResult = SYATEKI_RESULT_NONE;
         this->actor.parent = this->tempGallery;
-        this->actor.flags |= ACTOR_FLAG_0;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
         this->actionFunc = EnSyatekiMan_SetupIdle;
     }
 }
@@ -517,7 +539,7 @@ void EnSyatekiMan_Draw(Actor* thisx, PlayState* play) {
     s32 pad;
     EnSyatekiMan* this = (EnSyatekiMan*)thisx;
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnSyatekiMan_OverrideLimbDraw, NULL, this);
 }

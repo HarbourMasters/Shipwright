@@ -45,8 +45,8 @@ void BgInGate_Init(Actor* thisx, PlayState* play) {
 
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
 
-    if ((play->sceneNum != SCENE_SPOT20 || !LINK_IS_ADULT) ||
-        (((gSaveContext.eventChkInf[1] & 0x100)) && (gSaveContext.cutsceneIndex != 0xFFF0))) {
+    if ((play->sceneNum != SCENE_LON_LON_RANCH || !LINK_IS_ADULT) ||
+        (((Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED))) && (gSaveContext.cutsceneIndex != 0xFFF0))) {
         Actor_Kill(&this->dyna.actor);
         return;
     }
@@ -106,7 +106,7 @@ void BgInGate_Update(Actor* thisx, PlayState* play) {
 void BgInGate_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

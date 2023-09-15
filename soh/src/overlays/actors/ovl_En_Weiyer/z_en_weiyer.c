@@ -6,8 +6,9 @@
 
 #include "z_en_weiyer.h"
 #include "objects/object_ei/object_ei.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 
 void EnWeiyer_Init(Actor* thisx, PlayState* play);
 void EnWeiyer_Destroy(Actor* thisx, PlayState* play);
@@ -118,6 +119,8 @@ void EnWeiyer_Destroy(Actor* thisx, PlayState* play) {
     EnWeiyer* this = (EnWeiyer*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80B32384(EnWeiyer* this) {
@@ -572,8 +575,9 @@ void func_80B3368C(EnWeiyer* this, PlayState* play) {
             } else if (Actor_ApplyDamage(&this->actor) == 0) {
                 Enemy_StartFinishingBlow(play, &this->actor);
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_EIER_DEAD);
-                this->actor.flags &= ~ACTOR_FLAG_0;
+                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                 func_80B32724(this);
+                GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
             } else {
                 func_80B325A0(this);
             }
@@ -633,13 +637,13 @@ void EnWeiyer_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     if (this->actionFunc != func_80B33338) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x08, &D_80116280[2]);
         gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 255, 255);
         POLY_OPA_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                        EnWeiyer_OverrideLimbDraw, NULL, &this->actor, POLY_OPA_DISP);
     } else {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08, &D_80116280[0]);
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 255, this->actor.shape.shadowAlpha);
         POLY_XLU_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,

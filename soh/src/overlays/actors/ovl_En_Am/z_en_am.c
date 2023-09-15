@@ -7,8 +7,9 @@
 #include "z_en_am.h"
 #include "objects/object_am/object_am.h"
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_26)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_CAN_PRESS_SWITCH)
 
 void EnAm_Init(Actor* thisx, PlayState* play);
 void EnAm_Destroy(Actor* thisx, PlayState* play);
@@ -249,6 +250,8 @@ void EnAm_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyCylinder(play, &this->hurtCollider);
     Collider_DestroyCylinder(play, &this->blockCollider);
     //! @bug Quad collider is not destroyed (though destroy doesnt really do anything anyway)
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnAm_SpawnEffects(EnAm* this, PlayState* play) {
@@ -286,7 +289,7 @@ void EnAm_SetupStatue(EnAm* this) {
     f32 lastFrame = Animation_GetLastFrame(&gArmosRicochetAnim);
 
     Animation_Change(&this->skelAnime, &gArmosRicochetAnim, 0.0f, lastFrame, lastFrame, ANIMMODE_LOOP, 0.0f);
-    this->dyna.actor.flags &= ~ACTOR_FLAG_0;
+    this->dyna.actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->behavior = AM_BEHAVIOR_DO_NOTHING;
     this->dyna.actor.speedXZ = 0.0f;
     EnAm_SetupAction(this, EnAm_Statue);
@@ -387,7 +390,7 @@ void EnAm_Sleep(EnAm* this, PlayState* play) {
         if (this->textureBlend >= 240) {
             this->attackTimer = 200;
             this->textureBlend = 255;
-            this->dyna.actor.flags |= ACTOR_FLAG_0;
+            this->dyna.actor.flags |= ACTOR_FLAG_TARGETABLE;
             this->dyna.actor.shape.yOffset = 0.0f;
             EnAm_SetupLunge(this);
         } else {
@@ -408,7 +411,7 @@ void EnAm_Sleep(EnAm* this, PlayState* play) {
             this->textureBlend -= 10;
         } else {
             this->textureBlend = 0;
-            this->dyna.actor.flags &= ~ACTOR_FLAG_0;
+            this->dyna.actor.flags &= ~ACTOR_FLAG_TARGETABLE;
 
             if (this->dyna.bgId < 0) {
                 this->unk_264 = 0;
@@ -667,7 +670,7 @@ void EnAm_Statue(EnAm* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     f32 temp158f = this->dyna.unk_158;
     s16 moveDir = 0;
-    s32 blockSpeed = CVar_GetS32("gFasterBlockPush", 0);
+    s32 blockSpeed = CVarGetInteger("gFasterBlockPush", 0);
 
     if (this->unk_258 == 0) {
         if (this->dyna.unk_150 != 0.0f) {
@@ -866,7 +869,7 @@ void EnAm_Update(Actor* thisx, PlayState* play) {
                 EnAm_SpawnEffects(this, play);
                 bomb =
                     (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->dyna.actor.world.pos.x,
-                                        this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z, 0, 0, 2, BOMB_BODY);
+                                        this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z, 0, 0, 2, BOMB_BODY, true);
                 if (bomb != NULL) {
                     bomb->timer = 0;
                 }
@@ -882,6 +885,8 @@ void EnAm_Update(Actor* thisx, PlayState* play) {
                     func_8002836C(play, &dustPos, &zeroVec, &zeroVec, &dustPrimColor, &dustEnvColor, 200, 45, 12);
                     dustPosScale += 60.0f;
                 }
+                
+                GameInteractor_ExecuteOnEnemyDefeat(thisx);
 
                 Actor_Kill(&this->dyna.actor);
                 return;
@@ -954,7 +959,7 @@ void EnAm_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, this->textureBlend);
     SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, EnAm_PostLimbDraw, this);
 

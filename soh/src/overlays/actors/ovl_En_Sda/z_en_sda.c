@@ -6,7 +6,7 @@
 
 #include "z_en_sda.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnSda_Init(Actor* thisx, PlayState* play);
 void EnSda_Destroy(Actor* thisx, PlayState* play);
@@ -342,7 +342,7 @@ void func_80AF9C70(u8* shadowTexture, Player* player, PlayState* play) {
     OPEN_DISPS(gfxCtx);
 
     osSyncPrintf("SDA D 1\n");
-    func_80094044(play->state.gfxCtx);
+    Gfx_SetupDL_44Xlu(play->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 0x00, 0x00, 0, 0, 0, (BREG(52) + 50));
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, 0);
     Matrix_Translate(player->actor.world.pos.x, player->actor.floorHeight, player->actor.world.pos.z, MTXMODE_NEW);

@@ -58,12 +58,6 @@
     <Filter Include="NuGet">
       <UniqueIdentifier>{730beb67-6d59-4849-9d9b-702c4a565fc0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Yaz0">
-      <UniqueIdentifier>{b26457d2-cdb8-4c92-9ed7-a55bf6d3619e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Yaz0">
-      <UniqueIdentifier>{9651a041-1019-4486-9e90-1dccfa9471e9}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -171,9 +165,6 @@
     <ClCompile Include="ZTexture.cpp">
       <Filter>Source Files\Z64</Filter>
     </ClCompile>
-    <ClCompile Include="Overlays\ZOverlay.cpp">
-      <Filter>Source Files\Z64</Filter>
-    </ClCompile>
     <ClCompile Include="ZSkeleton.cpp">
       <Filter>Source Files\Z64</Filter>
     </ClCompile>
@@ -249,9 +240,6 @@
     <ClCompile Include="ZRoom\Commands\SetMinimapList.cpp">
       <Filter>Source Files\Z64\ZRoom\Commands</Filter>
     </ClCompile>
-    <ClCompile Include="ZCutsceneMM.cpp">
-      <Filter>Source Files\Z64</Filter>
-    </ClCompile>
     <ClCompile Include="ZBackground.cpp">
       <Filter>Source Files\Z64</Filter>
     </ClCompile>
@@ -279,28 +267,28 @@
     <ClCompile Include="OtherStructs\SkinLimbStructs.cpp">
       <Filter>Source Files\Z64</Filter>
     </ClCompile>
+    <ClCompile Include="..\build\ZAPD\BuildInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ZPlayerAnimationData.cpp">
       <Filter>Source Files\Z64</Filter>
     </ClCompile>
     <ClCompile Include="WarningHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ZText.cpp">
+    <ClCompile Include="ZCollisionPoly.cpp">
       <Filter>Source Files\Z64</Filter>
     </ClCompile>
-    <ClCompile Include="ZRom.cpp">
+    <ClCompile Include="OtherStructs\Cutscene_Commands.cpp">
       <Filter>Source Files\Z64</Filter>
     </ClCompile>
-    <ClCompile Include="yaz0\yaz0.cpp">
-      <Filter>Source Files\Yaz0</Filter>
+    <ClCompile Include="OtherStructs\CutsceneMM_Commands.cpp">
+      <Filter>Source Files\Z64</Filter>
     </ClCompile>
-    <ClCompile Include="FileWorker.cpp">
+    <ClCompile Include="CrashHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ZAudio.cpp">
-      <Filter>Source Files\Z64</Filter>
-    </ClCompile>
-    <ClCompile Include="ZAudioDecode.cpp">
+    <ClCompile Include="ZSurfaceType.cpp">
       <Filter>Source Files\Z64</Filter>
     </ClCompile>
   </ItemGroup>
@@ -428,9 +416,6 @@
     <ClInclude Include="..\lib\stb\stb_image_write.h">
       <Filter>Header Files\Libraries</Filter>
     </ClInclude>
-    <ClInclude Include="Overlays\ZOverlay.h">
-      <Filter>Header Files\Z64</Filter>
-    </ClInclude>
     <ClInclude Include="ZTexture.h">
       <Filter>Header Files\Z64</Filter>
     </ClInclude>
@@ -521,9 +506,6 @@
     <ClInclude Include="ZRoom\Commands\SetMinimapList.h">
       <Filter>Header Files\Z64\ZRoom\Commands</Filter>
     </ClInclude>
-    <ClInclude Include="ZCutsceneMM.h">
-      <Filter>Header Files\Z64</Filter>
-    </ClInclude>
     <ClInclude Include="ZBackground.h">
       <Filter>Header Files\Z64</Filter>
     </ClInclude>
@@ -557,25 +539,19 @@
     <ClInclude Include="WarningHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ZText.h">
+    <ClInclude Include="ZCollisionPoly.h">
       <Filter>Header Files\Z64</Filter>
     </ClInclude>
-    <ClInclude Include="ZRom.h">
+    <ClInclude Include="OtherStructs\Cutscene_Commands.h">
       <Filter>Header Files\Z64</Filter>
     </ClInclude>
-    <ClInclude Include="yaz0\readwrite.h">
-      <Filter>Header Files\Yaz0</Filter>
+    <ClInclude Include="OtherStructs\CutsceneMM_Commands.h">
+      <Filter>Header Files\Z64</Filter>
     </ClInclude>
-    <ClInclude Include="yaz0\yaz0.h">
-      <Filter>Header Files\Yaz0</Filter>
-    </ClInclude>
-    <ClInclude Include="FileWorker.h">
+    <ClInclude Include="CrashHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ctpl_stl.h">
-      <Filter>Header Files\Libraries</Filter>
-    </ClInclude>
-    <ClInclude Include="ZAudio.h">
+    <ClInclude Include="ZSurfaceType.h">
       <Filter>Header Files\Z64</Filter>
     </ClInclude>
   </ItemGroup>

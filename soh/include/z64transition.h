@@ -1,7 +1,7 @@
 #ifndef Z64TRANSITION_H
 #define Z64TRANSITION_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include <libultraship/color.h>
 
 typedef struct {

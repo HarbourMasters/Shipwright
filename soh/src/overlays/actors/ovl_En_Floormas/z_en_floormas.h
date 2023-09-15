@@ -1,7 +1,7 @@
 #ifndef Z_EN_FLOORMAS_H
 #define Z_EN_FLOORMAS_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 typedef struct EnFloormas EnFloormas;

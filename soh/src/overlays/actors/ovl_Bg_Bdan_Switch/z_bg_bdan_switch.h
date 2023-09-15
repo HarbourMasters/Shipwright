@@ -1,7 +1,7 @@
 #ifndef Z_BG_BDAN_SWITCH_H
 #define Z_BG_BDAN_SWITCH_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 // BgBdanSwitch.actor.params & 0xFF

@@ -1,7 +1,7 @@
 #include "z_en_fd_fire.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnFdFire_Init(Actor* thisx, PlayState* play);
 void EnFdFire_Destroy(Actor* thisx, PlayState* play);
@@ -129,7 +129,7 @@ void EnFdFire_Init(Actor* thisx, PlayState* play) {
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, &sDamageTable, &sColChkInit);
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actor.gravity = -0.6f;
     this->actor.speedXZ = 5.0f;
     this->actor.velocity.y = 12.0f;
@@ -265,7 +265,7 @@ void EnFdFire_Draw(Actor* thisx, PlayState* play) {
     Matrix_Scale(1.0f, sp84, 1.0f / sp84, MTXMODE_APPLY);
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x8,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, 0, 0, 0x20, 0x40, 1, 0,
                                 play->state.frames * this->tile2Y, 0x20, 0x80));

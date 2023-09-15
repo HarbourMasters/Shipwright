@@ -9,7 +9,7 @@
 #include "vt.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void EnSyatekiNiw_Init(Actor* thisx, PlayState* play);
 void EnSyatekiNiw_Destroy(Actor* thisx, PlayState* play);
@@ -70,7 +70,7 @@ void EnSyatekiNiw_Init(Actor* thisx, PlayState* play) {
     EnSyatekiNiw* this = (EnSyatekiNiw*)thisx;
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 25.0f);
     SkelAnime_InitFlex(play, &this->skelAnime, &gCuccoSkel, &gCuccoAnim, this->jointTable, this->morphTable, 16);
 
@@ -103,6 +103,8 @@ void EnSyatekiNiw_Destroy(Actor* thisx, PlayState* play) {
     EnSyatekiNiw* this = (EnSyatekiNiw*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80B11A94(EnSyatekiNiw* this, PlayState* play, s16 arg2) {
@@ -696,7 +698,7 @@ void EnSyatekiNiw_Draw(Actor* thisx, PlayState* play) {
     Color_RGBA8 sp30 = { 0, 0, 0, 255 };
 
     if (this->actionFunc != func_80B128F8) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         if (this->unk_260 != 0) {
             func_80026230(play, &sp30, 0, 0x14);
         }
@@ -766,7 +768,7 @@ void func_80B13464(EnSyatekiNiw* this, PlayState* play) {
 
     OPEN_DISPS(gfxCtx);
 
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     for (i = 0; i < 5; i++, ptr++) {
         if (ptr->unk_00 == 1) {

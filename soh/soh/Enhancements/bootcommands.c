@@ -2,15 +2,13 @@
 #include "gameconsole.h"
 #include <macros.h>
 #include <z64.h>
-#include <ultra64.h>
+#include <libultraship/libultra.h>
+#include <libultraship/bridge.h>
 #include <functions.h>
 #include <variables.h>
 #include <string.h>
 #include <stdarg.h>
 #include <z64.h>
-#include <ultra64/gbi.h>
-#include <ultra64/gs2dex.h>
-#include <ultra64/controller.h>
 
 uint8_t gLoadFileSelect = 0, gSkipLogoTest = 0;
 
@@ -22,13 +20,16 @@ static BootCommand sCommands[] = { { "--skiplogo", BootCommands_Command_SkipLogo
 
 void BootCommands_Init()
 {
-    CVar_RegisterS32("gDebugEnabled", 0);
-    CVar_RegisterS32("gLanguages", 0); //0 = English / 1 = German / 2 = French
-    CVar_RegisterS32("gHudColors", 0); //0 = N64 / 1 = NGC / 2 = Custom
-	CVar_RegisterS32("gInvertYAxis", 1);
-    CVar_RegisterS32("gTrailDuration", 4); // 4 = Default trail duration
+    // Clears vars to prevent randomizer menu from being disabled
+    CVarClear("gRandoGenerating"); // Clear when a crash happened during rando seed generation
+    CVarClear("gNewSeedGenerated");
+    CVarClear("gOnFileSelectNameEntry"); // Clear when soh is killed on the file name entry page
+    CVarClear("gBetterDebugWarpScreenMQMode");
+    CVarClear("gBetterDebugWarpScreenMQModeScene");
+    CVarClear("gCheatEasyPauseBufferLastInputs");
+    CVarClear("gCheatEasyPauseBufferTimer");
 #if defined(__SWITCH__) || defined(__WIIU__)
-    CVar_RegisterS32("gControlNav", 1); // always enable controller nav on switch/wii u
+    CVarRegisterInteger("gControlNav", 1); // always enable controller nav on switch/wii u
 #endif
 }
 

@@ -156,7 +156,7 @@ void BgPoEvent_InitBlocks(BgPoEvent* this, PlayState* play) {
     CollisionHeader* colHeader = NULL;
     s32 bgId;
 
-    this->dyna.actor.flags |= ACTOR_FLAG_4 | ACTOR_FLAG_5;
+    this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED;
     CollisionHeader_GetVirtual(&gPoSistersAmyBlockCol, &colHeader);
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
     if ((this->type == 0) && (this->index != 3)) {
@@ -309,7 +309,7 @@ void BgPoEvent_BlockFall(BgPoEvent* this, PlayState* play) {
 
     this->dyna.actor.velocity.y++;
     if (Math_StepToF(&this->dyna.actor.world.pos.y, 433.0f, this->dyna.actor.velocity.y)) {
-        this->dyna.actor.flags &= ~ACTOR_FLAG_5;
+        this->dyna.actor.flags &= ~ACTOR_FLAG_DRAW_WHILE_CULLED;
         this->dyna.actor.velocity.y = 0.0f;
         sBgPoEventBlocksAtRest++;
         if (this->type != 1) {
@@ -339,7 +339,7 @@ void BgPoEvent_BlockIdle(BgPoEvent* this, PlayState* play) {
             amy =
                 Actor_Spawn(&play->actorCtx, play, ACTOR_EN_PO_SISTERS, this->dyna.actor.world.pos.x + 30.0f,
                             this->dyna.actor.world.pos.y - 30.0f, this->dyna.actor.world.pos.z + 30.0f, 0,
-                            this->dyna.actor.shape.rot.y, 0, this->dyna.actor.params + 0x300);
+                            this->dyna.actor.shape.rot.y, 0, this->dyna.actor.params + 0x300, true);
             if (amy != NULL) {
                 OnePointCutscene_Init(play, 3170, 30, amy, MAIN_CAM);
             }
@@ -387,8 +387,8 @@ void BgPoEvent_BlockPush(BgPoEvent* this, PlayState* play) {
     s32 blockStop;
     Player* player = GET_PLAYER(play);
 
-    this->dyna.actor.speedXZ = this->dyna.actor.speedXZ + (CVar_GetS32("gFasterBlockPush", 0) * 0.3) + 0.5f;
-    this->dyna.actor.speedXZ = CLAMP_MAX(this->dyna.actor.speedXZ, 2.0f);
+    this->dyna.actor.speedXZ = this->dyna.actor.speedXZ + (CVarGetInteger("gFasterBlockPush", 0) * 0.3) + 0.5f;
+    this->dyna.actor.speedXZ = CLAMP_MAX(this->dyna.actor.speedXZ, 2.0f + (CVarGetInteger("gFasterBlockPush", 0) * 0.5));
     blockStop = Math_StepToF(&sBgPoEventblockPushDist, 20.0f, this->dyna.actor.speedXZ);
     displacement = this->direction * sBgPoEventblockPushDist;
     this->dyna.actor.world.pos.x = (Math_SinS(this->dyna.unk_158) * displacement) + this->dyna.actor.home.pos.x;
@@ -403,7 +403,7 @@ void BgPoEvent_BlockPush(BgPoEvent* this, PlayState* play) {
         this->dyna.actor.home.pos.z = this->dyna.actor.world.pos.z;
         sBgPoEventblockPushDist = 0.0f;
         this->dyna.actor.speedXZ = 0.0f;
-        this->direction = 5 - ((CVar_GetS32("gFasterBlockPush", 0) * 3) / 5);
+        this->direction = 5 - ((CVarGetInteger("gFasterBlockPush", 0) * 3) / 5);
         sBgPoEventBlocksAtRest++;
         this->actionFunc = BgPoEvent_BlockIdle;
         if (this->type == 1) {
@@ -536,7 +536,7 @@ void BgPoEvent_PaintingPresent(BgPoEvent* this, PlayState* play) {
         if (!BgPoEvent_NextPainting(this)) {
             Actor_Spawn(&play->actorCtx, play, ACTOR_EN_PO_SISTERS, thisx->world.pos.x,
                         thisx->world.pos.y - 40.0f, thisx->world.pos.z, 0, thisx->shape.rot.y, 0,
-                        thisx->params + ((this->type - 1) << 8));
+                        thisx->params + ((this->type - 1) << 8), true);
             OnePointCutscene_Init(play, 3160, 80, thisx, MAIN_CAM);
             func_80078884(NA_SE_SY_CORRECT_CHIME);
 
@@ -605,7 +605,7 @@ void BgPoEvent_Draw(Actor* thisx, PlayState* play) {
     s32 pad2;
 
     OPEN_DISPS(play->state.gfxCtx);
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     if ((this->type == 3) || (this->type == 2)) {
         if (this->actionFunc == BgPoEvent_PaintingEmpty) {
             alpha = 255;

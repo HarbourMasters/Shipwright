@@ -7,7 +7,7 @@
 #include "z_bg_toki_swd.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void BgTokiSwd_Init(Actor* thisx, PlayState* play);
 void BgTokiSwd_Destroy(Actor* thisx, PlayState* play);
@@ -89,7 +89,7 @@ void BgTokiSwd_Init(Actor* thisx, PlayState* play) {
         uint32_t kokiriSwordBitMask = 1 << 0;
         if (!(gSaveContext.inventory.equipment & kokiriSwordBitMask)) {
             Player* player = GET_PLAYER(gPlayState);
-            player->currentSwordItem = ITEM_NONE;
+            player->currentSwordItemId = ITEM_NONE;
             gSaveContext.equips.buttonItems[0] = ITEM_NONE;
             Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
         }
@@ -112,14 +112,14 @@ void BgTokiSwd_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void func_808BAF40(BgTokiSwd* this, PlayState* play) {
-    if (((gSaveContext.eventChkInf[4] & 0x8000) == 0) && (gSaveContext.sceneSetupIndex < 4) &&
+    if (((Flags_GetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER)) == 0) && (gSaveContext.sceneSetupIndex < 4) &&
         Actor_IsFacingAndNearPlayer(&this->actor, 800.0f, 0x7530) && !Play_InCsMode(play)) {
-        gSaveContext.eventChkInf[4] |= 0x8000;
+        Flags_SetEventChkInf(EVENTCHKINF_ENTERED_MASTER_SWORD_CHAMBER);
         play->csCtx.segment = D_808BBD90;
         gSaveContext.cutsceneTrigger = 1;
     }
 
-    if (!LINK_IS_ADULT || (gSaveContext.eventChkInf[5] & 0x20 && !gSaveContext.n64ddFlag) || gSaveContext.n64ddFlag) {
+    if (!LINK_IS_ADULT || (Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && !gSaveContext.n64ddFlag) || gSaveContext.n64ddFlag) {
         if (Actor_HasParent(&this->actor, play)) {
             if (!LINK_IS_ADULT) {
                 Item_Give(play, ITEM_SWORD_MASTER);
@@ -187,7 +187,7 @@ void BgTokiSwd_Draw(Actor* thisx, PlayState* play2) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     func_8002EBCC(&this->actor, play, 0);
 

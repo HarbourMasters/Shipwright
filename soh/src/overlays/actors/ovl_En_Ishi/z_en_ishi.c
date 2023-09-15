@@ -10,7 +10,7 @@
 
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_23
+#define FLAGS ACTOR_FLAG_ALWAYS_THROWN
 
 void EnIshi_Init(Actor* thisx, PlayState* play);
 void EnIshi_Destroy(Actor* thisx, PlayState* play);
@@ -281,7 +281,7 @@ void EnIshi_SpawnBugs(EnIshi* this, PlayState* play) {
 
     for (i = 0; i < 3; i++) {
         Actor* bug = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_INSECT, this->actor.world.pos.x,
-                                 this->actor.world.pos.y, this->actor.world.pos.z, 0, Rand_ZeroOne() * 0xFFFF, 0, 1);
+                                 this->actor.world.pos.y, this->actor.world.pos.z, 0, Rand_ZeroOne() * 0xFFFF, 0, 1, true);
 
         if (bug == NULL) {
             break;
@@ -329,6 +329,13 @@ void EnIshi_Init(Actor* thisx, PlayState* play) {
     if (!((this->actor.params >> 5) & 1) && !EnIshi_SnapToFloor(this, play, 0.0f)) {
         Actor_Kill(&this->actor);
         return;
+    }
+    // If dungeon entrance randomizer is on, remove the grey boulders that normally
+    // block child Link from reaching the Fire Temple entrance.
+    if (type == ROCK_LARGE && gSaveContext.n64ddFlag &&
+        Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF &&
+        play->sceneNum == 0x061) { // Death Mountain Creater
+        Actor_Kill(&this->actor);
     }
     EnIshi_SetupWait(this);
 }
@@ -384,7 +391,7 @@ void EnIshi_Wait(EnIshi* this, PlayState* play) {
 void EnIshi_SetupLiftedUp(EnIshi* this) {
     this->actionFunc = EnIshi_LiftedUp;
     this->actor.room = -1;
-    this->actor.flags |= ACTOR_FLAG_4;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
 }
 
 void EnIshi_LiftedUp(EnIshi* this, PlayState* play) {
@@ -484,7 +491,7 @@ void EnIshi_DrawSmall(EnIshi* this, PlayState* play) {
 void EnIshi_DrawLarge(EnIshi* this, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);

@@ -1,0 +1,27 @@
+#ifndef OBJECTS_OBJECT_SPOT00_OBJECTS_H
+#define OBJECTS_OBJECT_SPOT00_OBJECTS_H 1
+
+#include "align_asset_macro.h"
+
+#define dgHyruleFieldCastleDrawbridgeDL "__OTR__objects/object_spot00_objects/gHyruleFieldCastleDrawbridgeDL"
+static const ALIGN_ASSET(2) char gHyruleFieldCastleDrawbridgeDL[] = dgHyruleFieldCastleDrawbridgeDL;
+
+#define dgHyruleFieldCastleDrawbridgeWoodTex "__OTR__objects/object_spot00_objects/gHyruleFieldCastleDrawbridgeWoodTex"
+static const ALIGN_ASSET(2) char gHyruleFieldCastleDrawbridgeWoodTex[] = dgHyruleFieldCastleDrawbridgeWoodTex;
+
+#define dgHyruleFieldCastleDrawbridgeBoltDL "__OTR__objects/object_spot00_objects/gHyruleFieldCastleDrawbridgeBoltDL"
+static const ALIGN_ASSET(2) char gHyruleFieldCastleDrawbridgeBoltDL[] = dgHyruleFieldCastleDrawbridgeBoltDL;
+
+#define dgHyruleFieldCastleDrawbridgeCol "__OTR__objects/object_spot00_objects/gHyruleFieldCastleDrawbridgeCol"
+static const ALIGN_ASSET(2) char gHyruleFieldCastleDrawbridgeCol[] = dgHyruleFieldCastleDrawbridgeCol;
+
+#define dgHyruleFieldCastleDrawbridgeChainsDL "__OTR__objects/object_spot00_objects/gHyruleFieldCastleDrawbridgeChainsDL"
+static const ALIGN_ASSET(2) char gHyruleFieldCastleDrawbridgeChainsDL[] = dgHyruleFieldCastleDrawbridgeChainsDL;
+
+#define dgHyruleFieldCastleDrawbridgeChainsTex "__OTR__objects/object_spot00_objects/gHyruleFieldCastleDrawbridgeChainsTex"
+static const ALIGN_ASSET(2) char gHyruleFieldCastleDrawbridgeChainsTex[] = dgHyruleFieldCastleDrawbridgeChainsTex;
+
+#define dgHyruleFieldCastleDrawbridgeChainsCol "__OTR__objects/object_spot00_objects/gHyruleFieldCastleDrawbridgeChainsCol"
+static const ALIGN_ASSET(2) char gHyruleFieldCastleDrawbridgeChainsCol[] = dgHyruleFieldCastleDrawbridgeChainsCol;
+
+#endif // OBJECTS_OBJECT_SPOT00_OBJECTS_H

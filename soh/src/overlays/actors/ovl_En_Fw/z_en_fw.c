@@ -10,7 +10,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_9)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_HOOKSHOT_DRAGS)
 
 void EnFw_Init(Actor* thisx, PlayState* play);
 void EnFw_Destroy(Actor* thisx, PlayState* play);
@@ -208,6 +208,8 @@ void EnFw_Init(Actor* thisx, PlayState* play) {
 void EnFw_Destroy(Actor* thisx, PlayState* play) {
     EnFw* this = (EnFw*)thisx;
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnFw_Bounce(EnFw* this, PlayState* play) {
@@ -258,7 +260,7 @@ void EnFw_Run(EnFw* this, PlayState* play) {
 
         if (this->explosionTimer == 0) {
             bomb = (EnBom*)Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->bompPos.x, this->bompPos.y,
-                                       this->bompPos.z, 0, 0, 0x600, 0);
+                                       this->bompPos.z, 0, 0, 0x600, 0, true);
             if (bomb != NULL) {
                 bomb->timer = 0;
             }
@@ -362,7 +364,7 @@ void EnFw_JumpToParentInitPos(EnFw* this, PlayState* play) {
 void EnFw_Update(Actor* thisx, PlayState* play) {
     EnFw* this = (EnFw*)thisx;
     SkelAnime_Update(&this->skelAnime);
-    if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_13)) {
+    if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_HOOKSHOT_ATTACHED)) {
         // not attached to hookshot.
         Actor_MoveForward(&this->actor);
         Actor_UpdateBgCheckInfo(play, &this->actor, 10.0f, 20.0f, 0.0f, 5);
@@ -403,7 +405,7 @@ void EnFw_Draw(Actor* thisx, PlayState* play) {
     Matrix_Push();
     EnFw_DrawDust(this, play);
     Matrix_Pop();
-    func_80093D18(play->state.gfxCtx);
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
     SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnFw_OverrideLimbDraw, EnFw_PostLimbDraw, this);
 }
@@ -463,14 +465,14 @@ void EnFw_DrawDust(EnFw* this, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
 
     firstDone = false;
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->effects); i++, eff++) {
         FrameInterpolation_RecordOpenChild(eff, eff->epoch);
 
         if (eff->type != 0) {
             if (!firstDone) {
-                POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0U);
+                POLY_XLU_DISP = Gfx_SetupDL(POLY_XLU_DISP, 0U);
                 gSPDisplayList(POLY_XLU_DISP++, gFlareDancerDL_7928);
                 gDPSetEnvColor(POLY_XLU_DISP++, 100, 60, 20, 0);
                 firstDone = true;

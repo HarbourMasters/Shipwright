@@ -7,8 +7,9 @@
 #include "z_en_bw.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_bw/object_bw.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnBw_Init(Actor* thisx, PlayState* play);
 void EnBw_Destroy(Actor* thisx, PlayState* play);
@@ -134,7 +135,7 @@ void EnBw_Init(Actor* thisx, PlayState* play) {
     Actor_SetScale(&this->actor, 0.012999999f);
     this->actor.naviEnemyId = 0x23;
     this->actor.gravity = -2.0f;
-    SkelAnime_Init(play, &this->skelAnime, &object_bw_Skel_0020F0, &object_bw_Anim_000228, this->jointTable,
+    SkelAnime_Init(play, &this->skelAnime, &gTorchSlugSkel, &gTorchSlugEyestalkWaveAnim, this->jointTable,
                    this->morphTable, 12);
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 40.0f);
     this->actor.colChkInfo.damageTable = &sDamageTable;
@@ -161,6 +162,8 @@ void EnBw_Destroy(Actor* thisx, PlayState* play) {
 
     Collider_DestroyCylinder(play, &this->collider1);
     Collider_DestroyCylinder(play, &this->collider2);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_809CE884(EnBw* this, PlayState* play) {
@@ -176,7 +179,7 @@ void func_809CE884(EnBw* this, PlayState* play) {
 }
 
 void func_809CE9A8(EnBw* this) {
-    Animation_MorphToLoop(&this->skelAnime, &object_bw_Anim_000228, -2.0f);
+    Animation_MorphToLoop(&this->skelAnime, &gTorchSlugEyestalkWaveAnim, -2.0f);
     this->unk_220 = 2;
     this->unk_222 = Rand_ZeroOne() * 200.0f + 200.0f;
     this->unk_232 = 0;
@@ -391,7 +394,7 @@ void func_809CEA24(EnBw* this, PlayState* play) {
 }
 
 void func_809CF72C(EnBw* this) {
-    Animation_MorphToPlayOnce(&this->skelAnime, &object_bw_Anim_0021A0, -2.0f);
+    Animation_MorphToPlayOnce(&this->skelAnime, &gTorchSlugEyestalkRaiseAnim, -2.0f);
     this->unk_220 = 3;
     this->unk_221 = 0;
     this->unk_250 = 0.6f;
@@ -423,14 +426,14 @@ void func_809CF7AC(EnBw* this, PlayState* play) {
 }
 
 void func_809CF8F0(EnBw* this) {
-    Animation_MorphToPlayOnce(&this->skelAnime, &object_bw_Anim_002250, -1.0f);
+    Animation_MorphToPlayOnce(&this->skelAnime, &gTorchSlugEyestalkFlailAnim, -1.0f);
     this->actor.speedXZ = 7.0f;
     this->actor.world.rot.y = this->actor.shape.rot.y = this->actor.yawTowardsPlayer;
     this->unk_220 = 4;
     this->unk_222 = 1000;
     this->actor.velocity.y = 11.0f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_STAL_JUMP);
-    this->actor.flags |= ACTOR_FLAG_24;
+    this->actor.flags |= ACTOR_FLAG_PLAY_HIT_SFX;
     EnBw_SetupAction(this, func_809CF984);
 }
 
@@ -460,7 +463,7 @@ void func_809CF984(EnBw* this, PlayState* play) {
         }
         Actor_SpawnFloorDustRing(play, &this->actor, &this->actor.world.pos, 30.0f, 11, 4.0f, 0, 0, false);
         this->unk_222 = 3000;
-        this->actor.flags &= ~ACTOR_FLAG_24;
+        this->actor.flags &= ~ACTOR_FLAG_PLAY_HIT_SFX;
         this->actor.speedXZ = 0.0f;
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_DODO_M_GND);
         EnBw_SetupAction(this, func_809CE884);
@@ -468,7 +471,7 @@ void func_809CF984(EnBw* this, PlayState* play) {
 }
 
 void func_809CFBA8(EnBw* this) {
-    Animation_MorphToLoop(&this->skelAnime, &object_bw_Anim_002250, -1.0f);
+    Animation_MorphToLoop(&this->skelAnime, &gTorchSlugEyestalkFlailAnim, -1.0f);
     this->unk_220 = 5;
     this->unk_222 = 1000;
     this->unk_260 = 0.0f;
@@ -526,7 +529,7 @@ void func_809CFC4C(EnBw* this, PlayState* play) {
 }
 
 void func_809CFF10(EnBw* this) {
-    Animation_MorphToLoop(&this->skelAnime, &object_bw_Anim_002250, -1.0f);
+    Animation_MorphToLoop(&this->skelAnime, &gTorchSlugEyestalkFlailAnim, -1.0f);
     this->unk_220 = 6;
     this->unk_222 = 1000;
     this->unk_221 = 3;
@@ -571,10 +574,11 @@ void func_809CFF98(EnBw* this, PlayState* play) {
 void func_809D00F4(EnBw* this) {
     this->unk_220 = 0;
     this->unk_222 = 40;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actor.speedXZ = 0.0f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_BUBLEWALK_DEAD);
     EnBw_SetupAction(this, func_809D014C);
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void func_809D014C(EnBw* this, PlayState* play) {
@@ -849,13 +853,13 @@ void EnBw_Draw(Actor* thisx, PlayState* play2) {
     OPEN_DISPS(play->state.gfxCtx);
 
     if (this->color1.a == 0xFF) {
-        func_80093D18(play->state.gfxCtx);
+        Gfx_SetupDL_25Opa(play->state.gfxCtx);
         gDPSetEnvColor(POLY_OPA_DISP++, this->color1.r, this->color1.g, this->color1.b, this->color1.a);
         gSPSegment(POLY_OPA_DISP++, 0x08, &D_80116280[2]);
         POLY_OPA_DISP = SkelAnime_Draw(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                        EnBw_OverrideLimbDraw, NULL, this, POLY_OPA_DISP);
     } else {
-        func_80093D84(play->state.gfxCtx);
+        Gfx_SetupDL_25Xlu(play->state.gfxCtx);
         gDPPipeSync(POLY_XLU_DISP++);
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 0, 0, 0, this->color1.a);
         gDPSetEnvColor(POLY_XLU_DISP++, this->color1.r, this->color1.g, this->color1.b, this->color1.a);
@@ -877,7 +881,7 @@ void EnBw_Draw(Actor* thisx, PlayState* play2) {
 
     Matrix_Translate(thisx->world.pos.x, thisx->world.pos.y + ((thisx->scale.y - 0.013f) * 1000.0f), thisx->world.pos.z,
                      MTXMODE_NEW);
-    func_80093D84(play->state.gfxCtx);
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 0);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,

@@ -1,7 +1,7 @@
 #ifndef Z_EN_TAKARA_MAN_H
 #define Z_EN_TAKARA_MAN_H
 
-#include "ultra64.h"
+#include <libultraship/libultra.h>
 #include "global.h"
 
 struct EnTakaraMan;

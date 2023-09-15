@@ -7,7 +7,7 @@
 #include "z_en_tg.h"
 #include "objects/object_mu/object_mu.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnTg_Init(Actor* thisx, PlayState* play);
 void EnTg_Destroy(Actor* thisx, PlayState* play);
@@ -62,7 +62,7 @@ u16 EnTg_GetTextId(PlayState* play, Actor* thisx) {
         return temp;
     }
     // Use a different set of dialogue in Kakariko Village (Adult)
-    if (play->sceneNum == SCENE_SPOT01) {
+    if (play->sceneNum == SCENE_KAKARIKO_VILLAGE) {
         if (this->nextDialogue % 2 != 0) {
             phi = 0x5089;
         } else {
@@ -79,7 +79,7 @@ u16 EnTg_GetTextId(PlayState* play, Actor* thisx) {
     }
 }
 
-s16 EnTg_OnTextComplete(PlayState* play, Actor* thisx) {
+s16 EnTg_UpdateTalkState(PlayState* play, Actor* thisx) {
     EnTg* this = (EnTg*)thisx;
 
     switch (Message_GetState(&play->msgCtx)) {
@@ -133,7 +133,7 @@ void EnTg_Destroy(Actor* thisx, PlayState* play) {
 }
 
 void EnTg_SpinIfNotTalking(EnTg* this, PlayState* play) {
-    if (!this->isTalking) {
+    if (!this->interactInfo.talkState) {
         this->actor.shape.rot.y += 0x800;
     }
 }
@@ -153,7 +153,7 @@ void EnTg_Update(Actor* thisx, PlayState* play) {
     Actor_UpdateBgCheckInfo(play, &this->actor, 0.0f, 0.0f, 0.0f, 4);
     this->actionFunc(this, play);
     temp = this->collider.dim.radius + 30.0f;
-    func_800343CC(play, &this->actor, &this->isTalking, temp, EnTg_GetTextId, EnTg_OnTextComplete);
+    Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, temp, EnTg_GetTextId, EnTg_UpdateTalkState);
 }
 
 s32 EnTg_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {

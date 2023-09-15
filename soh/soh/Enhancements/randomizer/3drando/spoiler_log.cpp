@@ -11,6 +11,9 @@
 #include "utils.hpp"
 #include "shops.hpp"
 #include "hints.hpp"
+#include "../randomizer_tricks.h"
+#include "pool_functions.hpp"
+#include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include <nlohmann/json.hpp>
 
 #include <cstdio>
@@ -27,11 +30,16 @@
 #include <filesystem>
 #include <variables.h>
 
-#include <libultraship/Window.h>
+#include <libultraship/libultraship.h>
 
-using json = nlohmann::json;
+using json = nlohmann::ordered_json;
 
 json jsonData;
+std::map<HintKey, ItemLocation*> hintedLocations;
+
+extern std::unordered_map<HintType, std::string> hintTypeNames;
+extern std::array<std::string, 17> hintCategoryNames;
+extern Area* GetHintRegion(uint32_t);
 
 namespace {
 std::string placementtxt;
@@ -296,26 +304,52 @@ static void WriteLocation(
 }
 
 //Writes a shuffled entrance to the specified node
-static void WriteShuffledEntrance(
-  tinyxml2::XMLElement* parentNode,
-  Entrance* entrance,
-  const bool withPadding = false
-) {
-  auto node = parentNode->InsertNewChildElement("entrance");
-  node->SetAttribute("name", entrance->GetName().c_str());
-  auto text = entrance->GetConnectedRegion()->regionName + " from " + entrance->GetReplacement()->GetParentRegion()->regionName;
-  node->SetText(text.c_str());
+static void WriteShuffledEntrance(std::string sphereString, Entrance* entrance) {
+  int16_t originalIndex = entrance->GetIndex();
+  int16_t destinationIndex = -1;
+  int16_t originalBlueWarp = entrance->GetBlueWarp();
+  int16_t replacementBlueWarp = -1;
+  int16_t replacementIndex = entrance->GetReplacement()->GetIndex();
+  int16_t replacementDestinationIndex = -1;
+  std::string name = entrance->GetName();
+  std::string text = entrance->GetConnectedRegion()->regionName + " from " + entrance->GetReplacement()->GetParentRegion()->regionName;
 
-  if (withPadding) {
-    constexpr int16_t LONGEST_NAME = 56; //The longest name of a vanilla entrance
-
-    //Insert padding so we get a kind of table in the XML document
-    int16_t requiredPadding = LONGEST_NAME - entrance->GetName().length();
-    if (requiredPadding > 0) {
-      std::string padding(requiredPadding, ' ');
-      node->SetAttribute("_", padding.c_str());
-    }
+  if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
+    destinationIndex = entrance->GetReverse()->GetIndex();
+    replacementDestinationIndex = entrance->GetReplacement()->GetReverse()->GetIndex();
+    replacementBlueWarp = entrance->GetReplacement()->GetReverse()->GetBlueWarp();
   }
+
+  json entranceJson = json::object({
+    {"index", originalIndex},
+    {"destination", destinationIndex},
+    {"blueWarp", originalBlueWarp},
+    {"override", replacementIndex},
+    {"overrideDestination", replacementDestinationIndex},
+  });
+
+  jsonData["entrances"].push_back(entranceJson);
+
+  // When decoupled entrances is off, handle saving reverse entrances with blue warps
+  if (entrance->GetReverse() != nullptr && !entrance->IsDecoupled()) {
+    json reverseEntranceJson = json::object({
+      {"index", replacementDestinationIndex},
+      {"destination", replacementIndex},
+      {"blueWarp", replacementBlueWarp},
+      {"override", destinationIndex},
+      {"overrideDestination", originalIndex},
+    });
+
+    jsonData["entrances"].push_back(reverseEntranceJson);
+  }
+
+  switch (gSaveContext.language) {
+        case LANGUAGE_ENG:
+        case LANGUAGE_FRA:
+        default:
+            jsonData["entrancesMap"][sphereString][name] = text;
+            break;
+    }
 }
 
 // Writes the settings (without excluded locations, starting inventory and tricks) to the spoilerLog document.
@@ -325,9 +359,7 @@ static void WriteSettings(const bool printAll = false) {
   std::vector<Menu*> allMenus = Settings::GetAllOptionMenus();
 
   for (const Menu* menu : allMenus) {
-    if (menu->name == "Cosmetic Settings" ||
-        menu->name == "Ingame Defaults" ||
-        menu->name == "Item Usability Settings" ||
+    if (menu->name == "Item Usability Settings" ||
         menu->name == "Multiplayer Settings") continue;
 
     if (menu->name == "Timesaver Settings") {
@@ -367,6 +399,15 @@ static void WriteSettings(const bool printAll = false) {
 
   // 3drando doesn't have a "skip child zelda" setting, manually add it to the spoilerfile
   jsonData["settings"]["Skip Child Zelda"] = Settings::skipChildZelda;
+
+  // 3drando uses an MQ dungeon count of 13 to mean random, manually add that to the spoilerfile as a bool
+  if (Settings::MQDungeonCount.GetSelectedOptionIndex() == 0) {
+    jsonData["settings"]["World Settings:MQ Dungeons"] = "None";
+  } else if (Settings::MQDungeonCount.GetSelectedOptionIndex() == 13) {
+    jsonData["settings"]["World Settings:MQ Dungeons"] = "Random Number";
+  } else {
+    jsonData["settings"]["World Settings:MQ Dungeons"] = "Set Number";
+  }
 
   // spoilerLog.RootElement()->InsertEndChild(parentNode);
 
@@ -409,10 +450,30 @@ static void WriteStartingInventory() {
     &Settings::startingOthersOptions
   };
 
+  for (std::vector<Option*>* menu : startingInventoryOptions) {
+      for (size_t i = 0; i < menu->size(); ++i) {
+          const auto setting = menu->at(i);
+          // Starting Songs
+          if (setting->GetName() == "Start with Zelda's Lullaby" || 
+              setting->GetName() == "Start with Epona's Song" ||
+              setting->GetName() == "Start with Saria's Song" || 
+              setting->GetName() == "Start with Sun's Song" ||
+              setting->GetName() == "Start with Song of Time" || 
+              setting->GetName() == "Start with Song of Storms" ||
+              setting->GetName() == "Start with Minuet of Forest" || 
+              setting->GetName() == "Start with Bolero of Fire" ||
+              setting->GetName() == "Start with Serenade of Water" || 
+              setting->GetName() == "Start with Requiem of Spirit" ||
+              setting->GetName() == "Start with Nocturne of Shadow" || 
+              setting->GetName() == "Start with Prelude of Light") {
+              jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
+          }
+      }
+  }
   for (std::vector<Option *>* menu : startingInventoryOptions) {
     for (size_t i = 0; i < menu->size(); ++i) {
       const auto setting = menu->at(i);
-
+   
       // we need to write these every time because we're not clearing jsondata, so
       // the default logic of only writing it when we aren't using the default value
       // doesn't work, and because it'd be bad to set every single possible starting
@@ -420,6 +481,7 @@ static void WriteStartingInventory() {
       // to see if the name is one of the 3 we're using rn
       if (setting->GetName() == "Start with Consumables" ||
           setting->GetName() == "Start with Max Rupees" ||
+          setting->GetName() == "Gold Skulltula Tokens" ||
           setting->GetName() == "Start with Fairy Ocarina" ||
           setting->GetName() == "Start with Kokiri Sword" ||
           setting->GetName() == "Start with Deku Shield") {
@@ -431,20 +493,20 @@ static void WriteStartingInventory() {
 
 // Writes the enabled tricks to the spoiler log, if there are any.
 static void WriteEnabledTricks(tinyxml2::XMLDocument& spoilerLog) {
-  auto parentNode = spoilerLog.NewElement("enabled-tricks");
+  //auto parentNode = spoilerLog.NewElement("enabled-tricks");
 
   for (const auto& setting : Settings::trickOptions) {
-    if (setting->GetSelectedOptionIndex() != TRICK_ENABLED || !setting->IsCategory(OptionCategory::Setting)) {
+    if (setting->GetSelectedOptionIndex() != TRICK_ENABLED/* || !setting->IsCategory(OptionCategory::Setting)*/) {
       continue;
     }
-
-    auto node = parentNode->InsertNewChildElement("trick");
-    node->SetAttribute("name", RemoveLineBreaks(setting->GetName()).c_str());
+    jsonData["enabledTricks"].push_back(RemoveLineBreaks(RandomizerTricks::GetRTName((RandomizerTrick)std::stoi(setting->GetName()))).c_str());
+    //auto node = parentNode->InsertNewChildElement("trick");
+    //node->SetAttribute("name", RemoveLineBreaks(setting->GetName()).c_str());
   }
 
-  if (!parentNode->NoChildren()) {
-    spoilerLog.RootElement()->InsertEndChild(parentNode);
-  }
+  // if (!parentNode->NoChildren()) {
+  //  spoilerLog.RootElement()->InsertEndChild(parentNode);
+  //}
 }
 
 // Writes the enabled glitches to the spoiler log, if there are any.
@@ -512,7 +574,7 @@ static void WritePlaythrough() {
   for (uint32_t i = 0; i < playthroughLocations.size(); ++i) {
     auto sphereNum = std::to_string(i);
     std::string sphereString =  "sphere ";
-    if (sphereNum.length() == 1) sphereString += "0";
+    if (i < 10) sphereString += "0";
     sphereString += sphereNum;
     for (const uint32_t key : playthroughLocations[i]) {
       WriteLocation(sphereString, key, true);
@@ -523,23 +585,16 @@ static void WritePlaythrough() {
 }
 
 //Write the randomized entrance playthrough to the spoiler log, if applicable
-static void WriteShuffledEntrances(tinyxml2::XMLDocument& spoilerLog) {
-    if (!Settings::ShuffleEntrances || noRandomEntrances) {
-        return;
+static void WriteShuffledEntrances() {
+  for (uint32_t i = 0; i < playthroughEntrances.size(); ++i) {
+    auto sphereNum = std::to_string(i);
+    std::string sphereString = "sphere ";
+    if (i < 10) sphereString += "0";
+    sphereString += sphereNum;
+    for (Entrance* entrance : playthroughEntrances[i]) {
+      WriteShuffledEntrance(sphereString, entrance);
     }
-
-    auto playthroughNode = spoilerLog.NewElement("entrance-playthrough");
-
-    for (uint32_t i = 0; i < playthroughEntrances.size(); ++i) {
-        auto sphereNode = playthroughNode->InsertNewChildElement("sphere");
-        sphereNode->SetAttribute("level", i + 1);
-
-        for (Entrance* entrance : playthroughEntrances[i]) {
-            WriteShuffledEntrance(sphereNode, entrance, true);
-        }
-    }
-
-    spoilerLog.RootElement()->InsertEndChild(playthroughNode);
+  }
 }
 
 // Writes the WOTH locations to the spoiler log, if there are any.
@@ -568,7 +623,8 @@ std::string AutoFormatHintTextString(std::string unformattedHintTextString) {
       textStr == "Sale petit garnement,&tu fais erreur!&C'est maintenant que marque&ta dernière heure!" ||
       textStr == "Gamin, ton destin achève,&sous mon sort tu périras!&Cette partie ne fut pas brève,&et cette mort, tu subiras!" ||
       textStr == "Oh! It's @.&I was expecting someone called Sheik.&Do you know what happened to them?" ||
-      textStr == "Ah, c'est @.&J'attendais un certain Sheik.&Tu sais ce qui lui est arrivé?") {
+      textStr == "Ah, c'est @.&J'attendais un certain Sheik.&Tu sais ce qui lui est arrivé?" ||
+      textStr == "They say \"Forgive me, but-^Your script will not be used.&....After all...^The one writing the rest of the script...&will be me.\"") {
     needsAutomaicNewlines = false;
   }
 
@@ -604,32 +660,86 @@ std::string AutoFormatHintTextString(std::string unformattedHintTextString) {
   return textStr;
 }
 
+ItemLocation* GetItemLocation(uint32_t item) {
+    return Location(FilterFromPool(allLocations, [item](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == item;})[0]);
+}
+
 // Writes the hints to the spoiler log, if they are enabled.
 static void WriteHints(int language) {
     std::string unformattedGanonText;
     std::string unformattedGanonHintText;
+    std::string unformattedDampesText;
+    std::string unformattedGregText;
 
     switch (language) {
         case 0:
         default:
             unformattedGanonText = GetGanonText().GetEnglish();
             unformattedGanonHintText = GetGanonHintText().GetEnglish();
-            jsonData["childAltarText"] = GetChildAltarText().GetEnglish();
-            jsonData["adultAltarText"] = GetAdultAltarText().GetEnglish();
+            unformattedDampesText = GetDampeHintText().GetEnglish();
+            unformattedGregText = GetGregHintText().GetEnglish();
+            jsonData["warpMinuetText"] = GetWarpMinuetText().GetEnglish();
+            jsonData["warpBoleroText"] = GetWarpBoleroText().GetEnglish();
+            jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetEnglish();
+            jsonData["warpRequiemText"] = GetWarpRequiemText().GetEnglish();
+            jsonData["warpNocturneText"] = GetWarpNocturneText().GetEnglish();
+            jsonData["warpPreludeText"] = GetWarpPreludeText().GetEnglish();
+            jsonData["childAltar"]["hintText"] = GetChildAltarText().GetEnglish();
+            jsonData["adultAltar"]["hintText"] = GetAdultAltarText().GetEnglish();
             break;
         case 2:
             unformattedGanonText = GetGanonText().GetFrench();
             unformattedGanonHintText = GetGanonHintText().GetFrench();
-            jsonData["childAltarText"] = GetChildAltarText().GetFrench();
-            jsonData["adultAltarText"] = GetAdultAltarText().GetFrench();
+            unformattedDampesText = GetDampeHintText().GetFrench();
+            unformattedGregText = GetGregHintText().GetFrench();
+            jsonData["warpMinuetText"] = GetWarpMinuetText().GetFrench();
+            jsonData["warpBoleroText"] = GetWarpBoleroText().GetFrench();
+            jsonData["warpSerenadeText"] = GetWarpSerenadeText().GetFrench();
+            jsonData["warpRequiemText"] = GetWarpRequiemText().GetFrench();
+            jsonData["warpNocturneText"] = GetWarpNocturneText().GetFrench();
+            jsonData["warpPreludeText"] = GetWarpPreludeText().GetFrench();
+            jsonData["childAltar"]["hintText"] = GetChildAltarText().GetFrench();
+            jsonData["adultAltar"]["hintText"] = GetAdultAltarText().GetFrench();
             break;
     }
 
+    ItemLocation* emeraldLoc = GetItemLocation(KOKIRI_EMERALD);
+    ItemLocation* rubyLoc = GetItemLocation(GORON_RUBY);
+    ItemLocation* sapphireLoc = GetItemLocation(ZORA_SAPPHIRE);
+    std::string emeraldArea;
+    std::string erubyArea;
+    std::string sapphireArea;
+
+    jsonData["childAltar"]["rewards"]["emeraldLoc"] = emeraldLoc->GetName();
+    jsonData["childAltar"]["rewards"]["rubyLoc"] = rubyLoc->GetName();
+    jsonData["childAltar"]["rewards"]["sapphireLoc"] = sapphireLoc->GetName();
+
+    ItemLocation* forestMedallionLoc = GetItemLocation(FOREST_MEDALLION);
+    ItemLocation* fireMedallionLoc = GetItemLocation(FIRE_MEDALLION);
+    ItemLocation* waterMedallionLoc = GetItemLocation(WATER_MEDALLION);
+    ItemLocation* shadowMedallionLoc = GetItemLocation(SHADOW_MEDALLION);
+    ItemLocation* spiritMedallionLoc = GetItemLocation(SPIRIT_MEDALLION);
+    ItemLocation* lightMedallionLoc = GetItemLocation(LIGHT_MEDALLION);
+
+    jsonData["adultAltar"]["rewards"]["forestMedallionLoc"] = forestMedallionLoc->GetName();
+    jsonData["adultAltar"]["rewards"]["fireMedallionLoc"] = fireMedallionLoc->GetName();
+    jsonData["adultAltar"]["rewards"]["waterMedallionLoc"] = waterMedallionLoc->GetName();
+    jsonData["adultAltar"]["rewards"]["shadowMedallionLoc"] = shadowMedallionLoc->GetName();
+    jsonData["adultAltar"]["rewards"]["spiritMedallionLoc"] = spiritMedallionLoc->GetName();
+    jsonData["adultAltar"]["rewards"]["lightMedallionLoc"] = lightMedallionLoc->GetName();
+
     std::string ganonText = AutoFormatHintTextString(unformattedGanonText);
     std::string ganonHintText = AutoFormatHintTextString(unformattedGanonHintText);
+    std::string dampesText = AutoFormatHintTextString(unformattedDampesText);
+    std::string gregText = AutoFormatHintTextString(unformattedGregText);
 
     jsonData["ganonText"] = ganonText;
     jsonData["ganonHintText"] = ganonHintText;
+    jsonData["ganonHintLoc"] = GetGanonHintLoc();
+    jsonData["dampeText"] = dampesText;
+    jsonData["dampeHintLoc"] = GetDampeHintLoc();
+    jsonData["gregText"] = gregText;
+    jsonData["gregLoc"] = GetItemLocation(GREG_RUPEE)->GetName();
 
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;
@@ -637,6 +747,7 @@ static void WriteHints(int language) {
 
     for (const uint32_t key : gossipStoneLocations) {
         ItemLocation* location = Location(key);
+        ItemLocation* hintedLocation = Location(location->GetHintedLocation());
         std::string unformattedHintTextString;
         switch (language) {
             case 0:
@@ -648,8 +759,20 @@ static void WriteHints(int language) {
                 break;
         }
 
+        HintType hintType = location->GetHintType();
+
         std::string textStr = AutoFormatHintTextString(unformattedHintTextString);
-        jsonData["hints"][location->GetName()] = textStr;
+        jsonData["hints"][location->GetName()]["hint"] = textStr;
+        jsonData["hints"][location->GetName()]["type"] = hintTypeNames.find(hintType)->second;
+        if (hintType == HINT_TYPE_ITEM || hintType == HINT_TYPE_NAMED_ITEM || hintType == HINT_TYPE_WOTH) {
+            jsonData["hints"][location->GetName()]["item"] = hintedLocation->GetPlacedItemName().GetEnglish();
+            if (hintType != HINT_TYPE_NAMED_ITEM || hintType == HINT_TYPE_WOTH) {
+                jsonData["hints"][location->GetName()]["location"] = hintedLocation->GetName();
+            }
+        }
+        if (hintType != HINT_TYPE_TRIAL && hintType != HINT_TYPE_JUNK) {
+            jsonData["hints"][location->GetName()]["area"] = location->GetHintedRegion();
+        }
     }
 }
 
@@ -668,45 +791,55 @@ static void WriteAllLocations(int language) {
             break;
         }
 
-        // Eventually check for other things here like fake name
-        if (location->HasScrubsanityPrice() || location->HasShopsanityPrice()) {
-            jsonData["locations"][location->GetName()]["item"] = placedItemName;
-            if (location->GetPlacedItemKey() == ICE_TRAP && location->IsCategory(Category::cShop)) {
-                switch (language) {
-                    case 0:
-                    default:
-                        jsonData["locations"][location->GetName()]["model"] =
-                            ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().english;
-                        jsonData["locations"][location->GetName()]["trickName"] = 
-                            NonShopItems[TransformShopIndex(GetShopIndex(key))].Name.english;
-                        break;
-                    case 2:
-                        jsonData["locations"][location->GetName()]["model"] =
-                            ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().french;
-                        jsonData["locations"][location->GetName()]["trickName"] =
-                            NonShopItems[TransformShopIndex(GetShopIndex(key))].Name.french;
-                        break;
-                }
-            }
-            jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
-        } else if (location->GetPlacedItemKey() == ICE_TRAP && iceTrapModels.contains(location->GetRandomizerCheck())) {
-            jsonData["locations"][location->GetName()]["item"] = placedItemName;
-            switch (language) {
-                case 0:
-                default:
-                    jsonData["locations"][location->GetName()]["model"] =
-                        ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().english;
-                    break;
-                case 2:
-                    jsonData["locations"][location->GetName()]["model"] =
-                        ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().french;
-                    break;
-            }
-        } else {
-          jsonData["locations"][location->GetName()] = placedItemName;
+        // If it's a simple item (not an ice trap, doesn't have a price)
+        // just add the name of the item and move on
+        if (!location->HasScrubsanityPrice() &&
+            !location->HasShopsanityPrice() &&
+            location->GetPlacedItemKey() != ICE_TRAP) {
+            
+            jsonData["locations"][location->GetName()] = placedItemName;
+            continue;
         }
+
+        // We're dealing with a complex item, build out the json object for it
+        jsonData["locations"][location->GetName()]["item"] = placedItemName;
+
+        if (location->HasScrubsanityPrice() || location->HasShopsanityPrice()) {
+          jsonData["locations"][location->GetName()]["price"] = location->GetPrice();
+        }
+        if (location->IsHintedAt()) {
+          hintedLocations.emplace(location->GetHintKey(), location);
+        }
+
+        if (location->GetPlacedItemKey() == ICE_TRAP) {
+          switch (language) {
+              case 0:
+              default:
+                  jsonData["locations"][location->GetName()]["model"] =
+                      ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().english;
+                  jsonData["locations"][location->GetName()]["trickName"] = 
+                      GetIceTrapName(iceTrapModels[location->GetRandomizerCheck()]).english;
+                  break;
+              case 2:
+                  jsonData["locations"][location->GetName()]["model"] =
+                      ItemFromGIID(iceTrapModels[location->GetRandomizerCheck()]).GetName().french;
+                  jsonData["locations"][location->GetName()]["trickName"] =
+                      GetIceTrapName(iceTrapModels[location->GetRandomizerCheck()]).french;
+                  break;
+          }
+      }
     }
 }
+
+//static void WriteHintData(int language) {
+//    for (auto [hintKey, item_location] : hintedLocations) {
+//        ItemLocation *hint_location = Location(hintKey);
+//        jsonData["hints"][hint_location->GetName()] = { { "text", hint_location->GetPlacedItemName().GetEnglish() },
+//                                                        { "item", item_location->GetPlacedItemName().GetEnglish() },
+//                                                        { "itemLocation", item_location->GetName() },
+//                                                        { "locationArea", item_location->GetParentRegionKey() } };
+//    }
+//}
 
 const char* SpoilerLog_Write(int language) {
     auto spoilerLog = tinyxml2::XMLDocument(false);
@@ -715,10 +848,11 @@ const char* SpoilerLog_Write(int language) {
     auto rootNode = spoilerLog.NewElement("spoiler-log");
     spoilerLog.InsertEndChild(rootNode);
 
-    rootNode->SetAttribute("version", Settings::version.c_str());
-    rootNode->SetAttribute("seed", Settings::seed.c_str());
-
     jsonData.clear();
+
+    jsonData["version"] = (char*) gBuildVersion;
+    jsonData["seed"] = Settings::seedString;
+    jsonData["finalSeed"] = Settings::seed;
 
     // Write Hash
     int index = 0;
@@ -730,7 +864,7 @@ const char* SpoilerLog_Write(int language) {
     WriteSettings();
     WriteExcludedLocations();
     WriteStartingInventory();
-    //WriteEnabledTricks(spoilerLog);
+    WriteEnabledTricks(spoilerLog);
     //if (Settings::Logic.Is(LOGIC_GLITCHED)) {
     //    WriteEnabledGlitches(spoilerLog);
     //}
@@ -744,11 +878,12 @@ const char* SpoilerLog_Write(int language) {
     wothLocations.clear();
 
     WriteHints(language);
-    //WriteShuffledEntrances(spoilerLog);
+    WriteShuffledEntrances();
     WriteAllLocations(language);
+    //WriteHintData(language);
 
-    if (!std::filesystem::exists(Ship::Window::GetPathRelativeToAppDirectory("Randomizer"))) {
-        std::filesystem::create_directory(Ship::Window::GetPathRelativeToAppDirectory("Randomizer"));
+    if (!std::filesystem::exists(LUS::Context::GetPathRelativeToAppDirectory("Randomizer"))) {
+        std::filesystem::create_directory(LUS::Context::GetPathRelativeToAppDirectory("Randomizer"));
     }
 
     std::string jsonString = jsonData.dump(4);
@@ -763,7 +898,7 @@ const char* SpoilerLog_Write(int language) {
         fileNameStream << std::to_string(Settings::hashIconIndexes[i]);
     }
     std::string fileName = fileNameStream.str();
-    std::ofstream jsonFile(Ship::Window::GetPathRelativeToAppDirectory(
+    std::ofstream jsonFile(LUS::Context::GetPathRelativeToAppDirectory(
         (std::string("Randomizer/") + fileName + std::string(".json")).c_str()));
     jsonFile << std::setw(4) << jsonString << std::endl;
     jsonFile.close();
@@ -787,7 +922,7 @@ bool PlacementLog_Write() {
     placementLog.InsertEndChild(rootNode);
 
     rootNode->SetAttribute("version", Settings::version.c_str());
-    rootNode->SetAttribute("seed", Settings::seed.c_str());
+    rootNode->SetAttribute("seed", Settings::seed);
 
     // WriteSettings(placementLog, true); // Include hidden settings.
     // WriteExcludedLocations(placementLog);

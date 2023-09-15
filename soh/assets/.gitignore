@@ -1,7 +1,6 @@
 *.bin
 *.c
 !text/*.c
-*.h
 *.cfg
 *.vtx.inc
 *.dlist.inc

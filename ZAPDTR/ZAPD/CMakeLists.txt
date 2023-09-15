@@ -1,4 +1,4 @@
-set(PROJECT_NAME ZAPD)
+set(PROJECT_NAME ZAPDLib)
 
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
 #set(CMAKE_C_STANDARD 11 CACHE STRING "The C standard to use")
@@ -17,31 +17,16 @@ set(Header_Files
     "ImageBackend.h"
     "OutputFormatter.h"
     "WarningHandler.h"
+    "CrashHandler.h"
 )
 source_group("Header Files" FILES ${Header_Files})
 
 set(Header_Files__Libraries
-    "../../libultraship/libultraship/Lib/stb/stb_image.h"
-    "../../libultraship/libultraship/Lib/stb/stb_image_write.h"
+    "../../libultraship/extern/stb/stb_image.h"
+    "../../libultraship/extern/stb/stb_image_write.h"
     "ctpl_stl.h"
 )
 source_group("Header Files\\Libraries" FILES ${Header_Files__Libraries})
-
-set(Header_Files__Libraries__elfio
-    "../lib/elfio/elfio/elf_types.hpp"
-    "../lib/elfio/elfio/elfio.hpp"
-    "../lib/elfio/elfio/elfio_dump.hpp"
-    "../lib/elfio/elfio/elfio_dynamic.hpp"
-    "../lib/elfio/elfio/elfio_header.hpp"
-    "../lib/elfio/elfio/elfio_note.hpp"
-    "../lib/elfio/elfio/elfio_relocation.hpp"
-    "../lib/elfio/elfio/elfio_section.hpp"
-    "../lib/elfio/elfio/elfio_segment.hpp"
-    "../lib/elfio/elfio/elfio_strings.hpp"
-    "../lib/elfio/elfio/elfio_symbols.hpp"
-    "../lib/elfio/elfio/elfio_utils.hpp"
-)
-source_group("Header Files\\Libraries\\elfio" FILES ${Header_Files__Libraries__elfio})
 
 set(Header_Files__Libraries__libgfxd
     "../lib/libgfxd/gbi.h"
@@ -58,15 +43,17 @@ source_group("Header Files\\Yaz0" FILES ${Header_Files__Yaz0})
 
 set(Header_Files__Z64
     "OtherStructs/SkinLimbStructs.h"
-    "Overlays/ZOverlay.h"
+    "OtherStructs/CutsceneMM_Commands.h"
+    "OtherStructs/Cutscene_Commands.h"
     "ZAnimation.h"
+    "ZActorList.h"
     "ZArray.h"
     "ZAudio.h"
     "ZBackground.h"
     "ZBlob.h"
     "ZCollision.h"
+    "ZCollisionPoly.h"
     "ZCutscene.h"
-    "ZCutsceneMM.h"
     "ZDisplayList.h"
     "ZFile.h"
     "ZLimb.h"
@@ -77,6 +64,7 @@ set(Header_Files__Z64
     "ZRom.h"
     "ZScalar.h"
     "ZSkeleton.h"
+    "ZSurfaceType.h"
     "ZString.h"
     "ZSymbol.h"
     "ZText.h"
@@ -136,6 +124,7 @@ set(Resource_Files
 source_group("Resource Files" FILES ${Resource_Files})
 
 set(Source_Files
+    "CrashHandler.cpp"
     "Declaration.cpp"
     "FileWorker.cpp"
     "GameConfig.cpp"
@@ -165,16 +154,18 @@ source_group("Source Files\\Yaz0" FILES ${Source_Files__Yaz0})
 
 set(Source_Files__Z64
     "OtherStructs/SkinLimbStructs.cpp"
-    "Overlays/ZOverlay.cpp"
+    "OtherStructs/CutsceneMM_Commands.cpp"
+    "OtherStructs/Cutscene_Commands.cpp"
     "ZAnimation.cpp"
+    "ZActorList.cpp"
     "ZArray.cpp"
     "ZAudio.cpp"
     "ZAudioDecode.cpp"
     "ZBackground.cpp"
     "ZBlob.cpp"
     "ZCollision.cpp"
+    "ZCollisionPoly.cpp"
     "ZCutscene.cpp"
-    "ZCutsceneMM.cpp"
     "ZDisplayList.cpp"
     "ZFile.cpp"
     "ZLimb.cpp"
@@ -185,6 +176,7 @@ set(Source_Files__Z64
     "ZRom.cpp"
     "ZScalar.cpp"
     "ZSkeleton.cpp"
+    "ZSurfaceType.cpp"
     "ZString.cpp"
     "ZSymbol.cpp"
     "ZText.cpp"
@@ -241,7 +233,6 @@ source_group("Source Files\\Z64\\ZRoom\\Commands" FILES ${Source_Files__Z64__ZRo
 set(ALL_FILES
     ${Header_Files}
     ${Header_Files__Libraries}
-    ${Header_Files__Libraries__elfio}
     ${Header_Files__Libraries__libgfxd}
     ${Header_Files__Yaz0}
     ${Header_Files__Z64}
@@ -260,10 +251,17 @@ set(ALL_FILES
 ################################################################################
 # Target
 ################################################################################
-add_executable(${PROJECT_NAME} ${ALL_FILES})
+
+add_library(${PROJECT_NAME} STATIC ${ALL_FILES})
+
+add_executable(ZAPD ExecutableMain.cpp)
+target_link_libraries(ZAPD ${PROJECT_NAME})
+
+
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
+use_props(ZAPD "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
 endif()
 ################################################################################
 # Includes for CMake from *.props
@@ -282,7 +280,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		)
 	endif()
 elseif (CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
-        set_target_properties(${PROJECT_NAME} PROPERTIES
+        set_target_properties(ZAPD PROPERTIES
 		OUTPUT_NAME "ZAPD.out"
 	)
 endif()
@@ -290,7 +288,8 @@ endif()
 # MSVC runtime library
 ################################################################################
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	get_property(MSVC_RUNTIME_LIBRARY_DEFAULT TARGET ${PROJECT_NAME} PROPERTY MSVC_RUNTIME_LIBRARY)
+foreach(ZTarget ${PROJECT_NAME} ZAPD)
+	get_property(MSVC_RUNTIME_LIBRARY_DEFAULT TARGET ${ZTarget} PROPERTY MSVC_RUNTIME_LIBRARY)
 	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
 		string(CONCAT "MSVC_RUNTIME_LIBRARY_STR"
 			$<$<CONFIG:Debug>:
@@ -302,7 +301,8 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			$<$<NOT:$<OR:$<CONFIG:Debug>,$<CONFIG:Release>>>:${MSVC_RUNTIME_LIBRARY_DEFAULT}>
 		)
 	endif()
-	set_target_properties(${PROJECT_NAME} PROPERTIES MSVC_RUNTIME_LIBRARY ${MSVC_RUNTIME_LIBRARY_STR})
+	set_target_properties(${ZTarget} PROPERTIES MSVC_RUNTIME_LIBRARY ${MSVC_RUNTIME_LIBRARY_STR})
+endforeach()
 endif()
 ################################################################################
 # Compile definitions
@@ -329,10 +329,15 @@ endif()
 # Compile and link options
 ################################################################################
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+	set(CMAKE_FIND_FRAMEWORK LAST)
+endif()
 find_package(PNG REQUIRED)
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/ZAPDUtils
+	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/extern/ZAPDUtils
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/src/resource
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/include
 	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/lib/tinyxml2
 	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/lib/libgfxd
 	${PNG_PNG_INCLUDE_DIR}/
@@ -399,7 +404,7 @@ if(MSVC)
 endif()
 
 if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
-	target_compile_options(${PROJECT_NAME} PRIVATE
+	target_compile_options(${PROJECT_NAME} PUBLIC
 		-Wall -Wextra -Wno-error
         -Wno-unused-parameter
         -Wno-unused-function
@@ -412,11 +417,11 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
 	)
 	
     if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-        target_link_options(${PROJECT_NAME} PRIVATE
+        target_link_options(${PROJECT_NAME} PUBLIC
             -pthread
         )
     else()
-        target_link_options(${PROJECT_NAME} PRIVATE
+        target_link_options(${PROJECT_NAME} PUBLIC
             -pthread
             -Wl,-export-dynamic
         )
@@ -486,7 +491,7 @@ endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch|CafeOS")
 add_library(pathconf OBJECT pathconf.c)
-target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}" $<TARGET_OBJECTS:pathconf> )
+target_link_libraries(${PROJECT_NAME} PUBLIC "${ADDITIONAL_LIBRARY_DEPENDENCIES}" $<TARGET_OBJECTS:pathconf> )
 else()
-target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
+target_link_libraries(${PROJECT_NAME} PUBLIC "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 endif()
