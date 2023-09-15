@@ -12,6 +12,10 @@ namespace boost
 namespace hash_detail
 {
 
+// clang-format off
+// not sure how to get this to play nice, it wants to change it so
+// template<> is on it's own line all the time
+// https://reviews.llvm.org/D42684
 template<uint32_t Bits> struct hash_mix_impl_32;
 
 // hash_mix for 32 bit
@@ -35,6 +39,7 @@ template<> struct hash_mix_impl_32<32>
         return x;
     }
 };
+// clang-format on
 
 inline uint32_t hash_mix_32( uint32_t v )
 {
