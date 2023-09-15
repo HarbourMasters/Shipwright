@@ -541,6 +541,8 @@ extern "C" s32 OTRfunc_8009728C(PlayState* play, RoomContext* roomCtx, s32 roomN
 
         roomCtx->unk_30 ^= 1;
 
+        SPDLOG_INFO("Room Init - curRoom.num: {0:#x}", roomCtx->curRoom.num);
+
         return 1;
     }
 

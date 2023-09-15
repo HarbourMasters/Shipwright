@@ -852,6 +852,7 @@ const char* SpoilerLog_Write(int language) {
 
     jsonData["version"] = (char*) gBuildVersion;
     jsonData["seed"] = Settings::seedString;
+    jsonData["finalSeed"] = Settings::seed;
 
     // Write Hash
     int index = 0;
