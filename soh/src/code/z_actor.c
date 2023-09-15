@@ -662,6 +662,7 @@ s32 Flags_GetSwitch(PlayState* play, s32 flag) {
  * Sets current scene switch flag.
  */
 void Flags_SetSwitch(PlayState* play, s32 flag) {
+    lusprintf(__FILE__, __LINE__, 2, "Switch Flag Set - %#x", flag);
     if (flag < 0x20) {
         play->actorCtx.flags.swch |= (1 << flag);
     } else {
@@ -673,6 +674,7 @@ void Flags_SetSwitch(PlayState* play, s32 flag) {
  * Unsets current scene switch flag.
  */
 void Flags_UnsetSwitch(PlayState* play, s32 flag) {
+    lusprintf(__FILE__, __LINE__, 2, "Switch Flag Unset - %#x", flag);
     if (flag < 0x20) {
         play->actorCtx.flags.swch &= ~(1 << flag);
     } else {
@@ -724,6 +726,7 @@ s32 Flags_GetTreasure(PlayState* play, s32 flag) {
  * Sets current scene chest flag.
  */
 void Flags_SetTreasure(PlayState* play, s32 flag) {
+    lusprintf(__FILE__, __LINE__, 2, "Treasure Flag Set - %#x", flag);
     play->actorCtx.flags.chest |= (1 << flag);
 }
 
@@ -784,6 +787,7 @@ s32 Flags_GetCollectible(PlayState* play, s32 flag) {
  * Sets current scene collectible flag.
  */
 void Flags_SetCollectible(PlayState* play, s32 flag) {
+    lusprintf(__FILE__, __LINE__, 2, "Collectible Flag Set - %#x", flag);
     if (flag != 0) {
         if (flag < 0x20) {
             play->actorCtx.flags.collect |= (1 << flag);

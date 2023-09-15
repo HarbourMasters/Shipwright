@@ -708,6 +708,7 @@ void SaveManager::InitFileDebug() {
 // Threaded SaveFile takes copy of gSaveContext for local unmodified storage
 
 void SaveManager::SaveFileThreaded(int fileNum, SaveContext* saveContext, int sectionID) {
+    SPDLOG_INFO("Save File - fileNum: {}", fileNum);
     // Needed for first time save, hasn't changed in forever anyway
     saveBlock["version"] = 1;
     if (sectionID == SECTION_ID_BASE) {
@@ -800,6 +801,7 @@ void SaveManager::SaveGlobal() {
 }
 
 void SaveManager::LoadFile(int fileNum) {
+    SPDLOG_INFO("Load File - fileNum: {}", fileNum);
     assert(std::filesystem::exists(GetFileName(fileNum)));
     InitFile(false);
 
