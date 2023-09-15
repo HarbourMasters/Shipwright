@@ -1,0 +1,18 @@
+name: clang-format-validation
+on: [ pull_request ]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  clang-format-validation:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Install clang-format
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-format-14
+      - uses: actions/checkout@v3
+      - name: Run clang-format
+        run: |
+          find soh \( -path soh/assets -prune -or -path soh/soh/Enhancements/randomizer/3drando -prune \) -name "*.cpp" -or -name "*.hpp" -or -name "*.c" -or -name "*.h" | sed 's| |\\ |g' | xargs clang-format-14 -i
+          git diff --exit-code
