@@ -70,7 +70,7 @@ typedef enum {
 } BonkDamage;
 
 typedef enum {
-    DEKU_STICK_STANDARD,
+    DEKU_STICK_NORMAL,
     DEKU_STICK_UNBREAKABLE,
     DEKU_STICK_UNBREAKABLE_AND_ALWAYS_ON_FIRE,
 } DekuStickType;
