@@ -2041,14 +2041,13 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
                ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT)
                : CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD);
         } else if (textId == TEXT_GANONDORF) {
-            if (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT || !Randomizer_GetSettingValue(RSK_LIGHT_ARROWS_HINT) ||
-                Randomizer_GetSettingValue(RSK_LIGHT_ARROWS_HINT) && Randomizer_GetSettingValue(RSK_GANONS_TRIALS)) {
+            if (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT || !Randomizer_GetSettingValue(RSK_LIGHT_ARROWS_HINT)) {
                 messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF_NOHINT);
             } else {
                 messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF);
             }
         } else if (textId == TEXT_SHEIK_NEED_HOOK || textId == TEXT_SHEIK_HAVE_HOOK) {
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscMessage(gPlayState->sceneNum, textId);            
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetSheikMessage(gPlayState->sceneNum, textId);            
         // textId: TEXT_SCRUB_RANDOM + (randomizerInf - RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT)
         } else if (textId >= TEXT_SCRUB_RANDOM && textId <= TEXT_SCRUB_RANDOM + NUM_SCRUBS) {
             RandomizerInf randoInf = (RandomizerInf)((textId - TEXT_SCRUB_RANDOM) + RAND_INF_SCRUBS_PURCHASED_DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT);
@@ -2112,11 +2111,11 @@ extern "C" int CustomMessage_RetrieveIfExists(PlayState* play) {
             u16 choice = Random(0, NUM_GORON_MESSAGES);
             messageEntry = OTRGlobals::Instance->gRandomizer->GetGoronMessage(choice);
         } else if (Randomizer_GetSettingValue(RSK_FROGS_HINT) && textId == TEXT_FROGS_UNDERWATER) {
-            messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscMessage(gPlayState->sceneNum, textId);
+            messageEntry = OTRGlobals::Instance->gRandomizer->GetFrogsMessage(textId);
         } else if (Randomizer_GetSettingValue(RSK_SARIA_HINT)) {
             if ((gPlayState->sceneNum == SCENE_SACRED_FOREST_MEADOW && textId == TEXT_SARIA_SFM) || textId == TEXT_SARIAS_SONG_FOREST_SOUNDS ||
                 textId == TEXT_SARIAS_SONG_FOREST_TEMPLE) {
-                messageEntry = OTRGlobals::Instance->gRandomizer->GetMiscMessage(gPlayState->sceneNum, textId);
+                messageEntry = OTRGlobals::Instance->gRandomizer->GetSariaMessage(textId);
             }
         }
     }

@@ -956,14 +956,19 @@ void RegisterAltTrapTypes() {
 void RegisterRandomizerSheikSpawn() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
         if (!gPlayState) return;
-        bool canSheik = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIAL_COUNT) != RO_GANONS_TRIALS_SKIP;
+        bool canSheik = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIAL_COUNT) != RO_GANONS_TRIALS_SKIP && 
+          OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LIGHT_ARROWS_HINT));
         if (!gSaveContext.n64ddFlag || !LINK_IS_ADULT || !canSheik) return;
         switch (gPlayState->sceneNum) {
             case SCENE_TEMPLE_OF_TIME:
-                Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, -104, -40, 2382, 0, 0x8000, 0, -1, false);
+                if (gPlayState->roomCtx.curRoom.num == 1) {
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, -104, -40, 2382, 0, 0x8000, 0, SHEIK_TYPE_RANDO, false);
+                }
                 break;
             case SCENE_INSIDE_GANONS_CASTLE:
-                Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, 101, 150, 137, 0, 0, 0, -1, false);
+                if (gPlayState->roomCtx.curRoom.num == 1){
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, 101, 150, 137, 0, 0, 0, SHEIK_TYPE_RANDO, false);
+                    }
                 break;
             default: break;
         }

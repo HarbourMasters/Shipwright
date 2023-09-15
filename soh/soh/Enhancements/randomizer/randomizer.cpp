@@ -5274,10 +5274,8 @@ CustomMessage Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
     return messageEntry;
 }
 
-CustomMessage Randomizer::GetMiscMessage(s16 scene, u16 originalTextId) {
-    CustomMessage messageEntry; 
-    if (originalTextId == TEXT_FROGS_UNDERWATER) {
-        messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, originalTextId);
+CustomMessage Randomizer::GetFrogsMessage(u16 originalTextId) {
+    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, originalTextId);
         RandomizerGet frogsGet = this->itemLocations[RC_ZR_FROGS_OCARINA_GAME].rgID;
         std::array<std::string, LANGUAGE_MAX> frogItemName;
         if (frogsGet == RG_ICE_TRAP) {
@@ -5292,45 +5290,50 @@ CustomMessage Randomizer::GetMiscMessage(s16 scene, u16 originalTextId) {
         }
         messageEntry.Replace("{{item}}", std::move(frogItemName[0]), std::move(frogItemName[1]), std::move(frogItemName[2]));
         return messageEntry;
-    } else if (originalTextId == TEXT_SHEIK_NEED_HOOK || originalTextId == TEXT_SHEIK_HAVE_HOOK) {
-        messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, originalTextId);
-        switch (scene) {
-            case SCENE_TEMPLE_OF_TIME:
-                if (originalTextId == TEXT_SHEIK_NEED_HOOK) {
-                    messageEntry.Replace("{{message}}", 
-                    "@,&meet me at %gGanon's Castle%w&once you obtain the %rkey to his lair%w.",
-                    "@, wir treffen uns bei %gGanons Schloß%w,&sobald Du den %rSchlüssel zu&seinem Verließ%w hast.",
-                    "Retrouve-moi au %gChâteau de Ganon%w une&fois que tu auras obtenu la&Mrclé de son repaire%w.");
+}
+
+CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
+    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, originalTextId);
+    switch (scene) {
+        case SCENE_TEMPLE_OF_TIME:
+            if (originalTextId == TEXT_SHEIK_NEED_HOOK) {
+                messageEntry.Replace("{{message}}", 
+                "@,&meet me at %gGanon's Castle%w&once you obtain the %rkey to his lair%w.",
+                "@, wir treffen uns bei %gGanons Schloß%w,&sobald Du den %rSchlüssel zu&seinem Verließ%w hast.",
+                "Retrouve-moi au %gChâteau de Ganon%w une&fois que tu auras obtenu la&Mrclé de son repaire%w.");
+            } else {
+                messageEntry.Replace("{{message}}",
+                "The time has come. Prepare yourself.",
+                "Die Zeit ist gekommen.&Mach Dich bereit.",
+                "Le moment est venu @.&Tu ferais bien de te préparer.");
+            }
+            break;
+        case SCENE_INSIDE_GANONS_CASTLE:
+            if (originalTextId == TEXT_SHEIK_NEED_HOOK) {
+                if (INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) {
+                    messageEntry.Replace("{{message}}", gSaveContext.sheikText, gSaveContext.sheikText, gSaveContext.sheikText);
                 } else {
-                    messageEntry.Replace("{{message}}",
-                    "The time has come. Prepare yourself.",
-                    "Die Zeit ist gekommen.&Mach Dich bereit.",
-                    "Le moment est venu @.&Tu ferais bien de te préparer.");
-                }
-                break;
-            case SCENE_INSIDE_GANONS_CASTLE:
-                if (originalTextId == TEXT_SHEIK_NEED_HOOK) {
-                    if (INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) {
-                        messageEntry.Replace("{{message}}", gSaveContext.sheikText, gSaveContext.sheikText, gSaveContext.sheikText);
-                    } else {
-                        messageEntry.Replace("{{message}}", "You are still ill-equipped to&face %rGanondorf%w."
-                        "^Seek out the %cMaster Sword%w,&%rsomething to hold your arrows%w,&and %gmagic%w to summon the %ylight%w.",
-                        "Du bist noch nicht gewappnet um Dich&%rGanondorf%w stellen zu können.^"
-                        "Begib Dich auf die Suche nach dem&%cMaster-Schwert%w, %retwas um deine Pfeilen&einen Sinn zu geben%w,^sowie %gdie Magie%w, um das %yLicht%w&herauf beschwören zu können.",
-                        "@, tu n'es toujours pas prêt à affronter&%rGanondorf%w.^"
-                        "Cherche l'%cÉpée de Légende%w,&%rquelque chose pour ranger tes flèches%w&et de la %gmagie%w pour invoquer la&%ylumière%w.");
-                    }                   
-                } else {
-                    messageEntry.Replace("{{message}}",
-                    "If you're ready, then proceed.^Good luck.",
-                    "Wenn Du bereit bist, so schreite&voran.^Viel Glück.",
-                    "Si tu es prêt, tu peux y aller.^Bonne chance.");
-                }
-                break;
-        }
+                    messageEntry.Replace("{{message}}", "You are still ill-equipped to&face %rGanondorf%w."
+                    "^Seek out the %cMaster Sword%w,&%rsomething to hold your arrows%w,&and %gmagic%w to summon the %ylight%w.",
+                    "Du bist noch nicht gewappnet um Dich&%rGanondorf%w stellen zu können.^"
+                    "Begib Dich auf die Suche nach dem&%cMaster-Schwert%w, %retwas um deine Pfeilen&einen Sinn zu geben%w,^sowie %gdie Magie%w, um das %yLicht%w&herauf beschwören zu können.",
+                    "@, tu n'es toujours pas prêt à affronter&%rGanondorf%w.^"
+                    "Cherche l'%cÉpée de Légende%w,&%rquelque chose pour ranger tes flèches%w&et de la %gmagie%w pour invoquer la&%ylumière%w.");
+                }                   
+            } else {
+                messageEntry.Replace("{{message}}",
+                "If you're ready, then proceed.^Good luck.",
+                "Wenn Du bereit bist, so schreite&voran.^Viel Glück.",
+                "Si tu es prêt, tu peux y aller.^Bonne chance.");
+            }
+            break;
+    }
         return messageEntry;
-    } else if (originalTextId == TEXT_SARIA_SFM || originalTextId == TEXT_SARIAS_SONG_FOREST_SOUNDS || TEXT_SARIAS_SONG_FOREST_TEMPLE) {
-        messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_SARIAS_SONG_FACE_TO_FACE);
+}
+
+CustomMessage Randomizer::GetSariaMessage(u16 originalTextId) {
+    if (originalTextId == TEXT_SARIA_SFM || originalTextId == TEXT_SARIAS_SONG_FOREST_SOUNDS || TEXT_SARIAS_SONG_FOREST_TEMPLE) {
+        CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_SARIAS_SONG_FACE_TO_FACE);
         CustomMessage messageEntry2 = messageEntry;
         std::string code = originalTextId == TEXT_SARIA_SFM ? "" : "\x0B";
         messageEntry2.Replace("$C", std::move(code));
