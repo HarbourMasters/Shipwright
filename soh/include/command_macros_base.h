@@ -27,9 +27,12 @@
 #define CMD_W(a) (a)
 
 #if defined(__GNUC__) || defined(_MSC_VER)
+// clang-format off
+// https://github.com/llvm/llvm-project/issues/53180
 #define CMD_F(a) {.f = (a)}
 #else
 #define CMD_F(a) {(a)}
+// clang-format on
 #endif
 
 #define CMD_PTR(a) (uintptr_t)(a)
