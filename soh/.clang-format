@@ -1,7 +1,7 @@
 AlignAfterOpenBracket: Align
 AlignOperands: true
 AlignConsecutiveDeclarations: AcrossComments
-AlignConsecutiveMacros: AcrossEmptyLinesAndComments
+AlignConsecutiveMacros: AcrossComments
 AlignEscapedNewlines: Left
 AlignTrailingComments: true
 AllowShortBlocksOnASingleLine: true
