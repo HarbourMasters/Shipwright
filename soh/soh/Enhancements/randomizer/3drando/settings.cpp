@@ -319,7 +319,7 @@ namespace Settings {
   Option GanondorfHintText   = Option::Bool("Ganondorf LA Hint",      {"Off", "On"}, OptionCategory::Setting, 1);
   Option DampeHintText       = Option::Bool("Dampe's Diary Hint",     {"Off", "On"}, OptionCategory::Setting, 0);
   Option GregHintText        = Option::Bool("Greg the Rupee Hint",    {"Off", "On"}, OptionCategory::Setting, 0);
-  Option WarpSongHints       = Option::Bool("Warp Songs Hints",       {"Off", "On"}, OptionCategory::Setting, 0);
+  Option WarpSongHints       = Option::Bool("Warp Song Hints",        {"Off", "On"}, OptionCategory::Setting, 0);
   Option Kak10GSHintText     = Option::Bool("10 GS Hint",             {"Off", "On"}, OptionCategory::Setting, 0);
   Option Kak20GSHintText     = Option::Bool("20 GS Hint",             {"Off", "On"}, OptionCategory::Setting, 0);
   Option Kak30GSHintText     = Option::Bool("30 GS Hint",             {"Off", "On"}, OptionCategory::Setting, 0);
