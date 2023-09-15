@@ -6,6 +6,7 @@
 
 #include "z_en_bili.h"
 #include "objects/object_bl/object_bl.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_ARROW_DRAGGABLE)
 
@@ -233,7 +234,7 @@ void EnBili_SetupDie(EnBili* this) {
     this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actionFunc = EnBili_Die;
     this->actor.speedXZ = 0.0f;
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BIRI]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 /**

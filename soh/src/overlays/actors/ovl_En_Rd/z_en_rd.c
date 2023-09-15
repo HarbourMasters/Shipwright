@@ -1,5 +1,6 @@
 #include "z_en_rd.h"
 #include "objects/object_rd/object_rd.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
 
@@ -648,11 +649,7 @@ void func_80AE3C20(EnRd* this) {
     this->actor.speedXZ = 0.0f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_REDEAD_DEAD);
     EnRd_SetupAction(this, func_80AE3C98);
-    if (this->actor.params >= -1) {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_REDEAD]++;
-    } else {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GIBDO]++;
-    }
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void func_80AE3C98(EnRd* this, PlayState* play) {

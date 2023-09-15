@@ -90,7 +90,7 @@ int Playthrough_Repeat(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSet
         Settings::seedString = std::to_string(rand() % 0xFFFFFFFF);
         repeatedSeed = boost::hash_32<std::string>{}(Settings::seedString);
         Settings::seed = repeatedSeed % 0xFFFFFFFF;
-        CitraPrint("testing seed: " + std::to_string(Settings::seed));
+        //CitraPrint("testing seed: " + std::to_string(Settings::seed));
         ClearProgress();
         Playthrough_Init(Settings::seed, cvarSettings, excludedLocations, enabledTricks);
         printf("\x1b[15;15HSeeds Generated: %d\n", i + 1);

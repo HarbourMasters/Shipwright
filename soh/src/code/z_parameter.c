@@ -210,8 +210,6 @@ static const char* actionsTbl[] =
     gNum8DoActionENGTex,
 };
 
-static const char gDoEmptyTexture[] = "__OTR__textures/virtual/gEmptyTexture";
-
 // original name: "alpha_change"
 void Interface_ChangeAlpha(u16 alphaType) {
     if (alphaType != gSaveContext.unk_13EA) {
@@ -2859,7 +2857,7 @@ void Interface_LoadActionLabel(InterfaceContext* interfaceCtx, u16 action, s16 l
     }
     
     char* segment = interfaceCtx->doActionSegment[loadOffset];
-    interfaceCtx->doActionSegment[loadOffset] = action != DO_ACTION_NONE ? doAction : gDoEmptyTexture;
+    interfaceCtx->doActionSegment[loadOffset] = action != DO_ACTION_NONE ? doAction : gEmptyTexture;
     gSegments[7] = interfaceCtx->doActionSegment[loadOffset];
 }
 
@@ -2926,7 +2924,7 @@ void Interface_LoadActionLabelB(PlayState* play, u16 action) {
     interfaceCtx->unk_1FC = action;
     
     char* segment = interfaceCtx->doActionSegment[1];
-    interfaceCtx->doActionSegment[1] = action != DO_ACTION_NONE ? doAction : gDoEmptyTexture;
+    interfaceCtx->doActionSegment[1] = action != DO_ACTION_NONE ? doAction : gEmptyTexture;
     osRecvMesg(&interfaceCtx->loadQueue, NULL, OS_MESG_BLOCK);
 
     interfaceCtx->unk_1FA = 1;

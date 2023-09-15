@@ -1353,11 +1353,10 @@ void Player_DrawHookshotReticle(PlayState* play, Player* this, f32 hookshotRange
         Matrix_Scale(sp60, sp60, sp60, MTXMODE_APPLY);
 
         gSPMatrix(WORLD_OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        char* tex = ResourceMgr_LoadTexOrDListByName(gLinkAdultHookshotReticleTex);
         gSPMatrix(WORLD_OVERLAY_DISP++, SEG_ADDR(1, 0), G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
         gSPTexture(WORLD_OVERLAY_DISP++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
-        gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, tex, G_IM_FMT_I, G_IM_SIZ_8b, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP,
-                            G_TX_NOMIRROR | G_TX_CLAMP, 6, 6, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, gLinkAdultHookshotReticleTex, G_IM_FMT_I, G_IM_SIZ_8b, 64, 64, 0,
+                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 6, 6, G_TX_NOLOD, G_TX_NOLOD);
         if (SurfaceType_IsHookshotSurface(&play->colCtx, colPoly, bgId) && CVarGetInteger("gHookshotableReticle", false)) {
             const Color_RGBA8 defaultColor = { .r = 0, .g = 255, .b = 0, .a = 255 };
             const Color_RGBA8 color = CVarGetColor("gCosmetics.HookshotReticle_Target.Value", defaultColor);

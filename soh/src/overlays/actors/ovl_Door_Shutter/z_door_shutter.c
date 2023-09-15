@@ -103,7 +103,7 @@ static ShutterInfo sShutterInfo[] = {
     { gPhantomGanonBarsDL, NULL, 130, 12, 50, 15 },
     { gGohmaDoorDL, NULL, 130, 12, 50, 15 },
     { gSpiritDoorDL, gJyaDoorMetalBarsDL, 240, 14, 50, 15 },
-    { object_bdoor_DL_0010C0, NULL, 130, 12, 50, 15 },
+    { gBossDoorDL, NULL, 130, 12, 50, 15 },
     { gDungeonDoorDL, gDoorMetalBarsDL, 130, 12, 20, 15 },
     { gFireTempleDoorFrontDL, gDoorMetalBarsDL, 130, 12, 20, 15 },
     { gFireTempleDoorBackDL, gDoorMetalBarsDL, 130, 12, 20, 15 },
@@ -165,8 +165,8 @@ static Gfx* sJabuDoorDLists[] = {
 };
 
 static void* D_809982D4[] = {
-    object_bdoor_Tex_0065C0, object_bdoor_Tex_0035C0, object_bdoor_Tex_0055C0, object_bdoor_Tex_0045C0,
-    object_bdoor_Tex_000000, object_bdoor_Tex_0025C0, object_bdoor_Tex_0015C0,
+    gBossDoorDefaultTex, gBossDoorFireTex, gBossDoorWaterTex, gBossDoorShadowTex,
+    gBossDoorGanonsCastleTex, gBossDoorForestTex, gBossDoorSpiritTex,
 };
 
 void DoorShutter_SetupAction(DoorShutter* this, DoorShutterActionFunc actionFunc) {

@@ -23,11 +23,11 @@
         <Texture Name="gMapChestIconTex" OutName="map_chest_icon" Format="rgba16" Width="8" Height="8" Offset="0x2580"/>
         <Texture Name="gArcheryScoreIconTex" OutName="archery_score_icon" Format="rgba16" Width="24" Height="16" Offset="0x2600"/>
         <Texture Name="gMapBossIconTex" OutName="map_boss_icon" Format="ia8" Width="8" Height="8" Offset="0x2900"/>
-        <Texture Name="gOcarinaATex" OutName="ocarina_a" Format="ia8" Width="16" Height="16" Offset="0x2940"/>
-        <Texture Name="gOcarinaCDownTex" OutName="ocarina_c_down" Format="ia8" Width="16" Height="16" Offset="0x2A40"/>
-        <Texture Name="gOcarinaCRightTex" OutName="ocarina_c_right" Format="ia8" Width="16" Height="16" Offset="0x2B40"/>
-        <Texture Name="gOcarinaCLeftTex" OutName="ocarina_c_left" Format="ia8" Width="16" Height="16" Offset="0x2C40"/>
-        <Texture Name="gOcarinaCUpTex" OutName="ocarina_c_up" Format="ia8" Width="16" Height="16" Offset="0x2D40"/>
+        <Texture Name="gOcarinaBtnIconATex" OutName="ocarina_a" Format="ia8" Width="16" Height="16" Offset="0x2940"/>
+        <Texture Name="gOcarinaBtnIconCDownTex" OutName="ocarina_c_down" Format="ia8" Width="16" Height="16" Offset="0x2A40"/>
+        <Texture Name="gOcarinaBtnIconCRightTex" OutName="ocarina_c_right" Format="ia8" Width="16" Height="16" Offset="0x2B40"/>
+        <Texture Name="gOcarinaBtnIconCLeftTex" OutName="ocarina_c_left" Format="ia8" Width="16" Height="16" Offset="0x2C40"/>
+        <Texture Name="gOcarinaBtnIconCUpTex" OutName="ocarina_c_up" Format="ia8" Width="16" Height="16" Offset="0x2D40"/>
         <Texture Name="gOcarinaTrebleClefTex" OutName="ocarina_treble_clef" Format="i4" Width="16" Height="32" Offset="0x2E40"/>
         <Texture Name="gNaviCUpJPTex" OutName="navi_c_up_jp" Format="ia4" Width="32" Height="8" Offset="0x2F40"/>
         <Texture Name="gNaviCUpENGTex" OutName="navi_c_up_eng" Format="ia4" Width="32" Height="8" Offset="0x2FC0"/>

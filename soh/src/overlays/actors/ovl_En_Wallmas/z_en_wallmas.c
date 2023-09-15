@@ -7,6 +7,7 @@
 #include "z_en_wallmas.h"
 #include "objects/object_wallmaster/object_wallmaster.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -258,7 +259,7 @@ void EnWallmas_SetupDie(EnWallmas* this, PlayState* play) {
 
     Item_DropCollectibleRandom(play, &this->actor, &this->actor.world.pos, 0xC0);
     this->actionFunc = EnWallmas_Die;
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WALLMASTER]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnWallmas_SetupTakePlayer(EnWallmas* this, PlayState* play) {

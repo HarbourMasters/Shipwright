@@ -40,28 +40,28 @@ const ActorInit En_Tr_InitVars = {
 // The first elements of these animation arrays are for Koume, the second for Kotake
 
 static AnimationHeader* unused[] = {
-    &object_tr_Anim_003FC8,
-    &object_tr_Anim_001CDC,
+    &gKotakeKoumeStandingBroomOverRightShoulderAnim,
+    &gKotakeKoumeStandingBroomOverLeftShoulderAnim,
 };
 
 static AnimationHeader* D_80B24368[] = {
-    &object_tr_Anim_002BC4,
-    &object_tr_Anim_000BFC,
+    &gKotakeKoumeLookOverLeftShoulderAnim,
+    &gKotakeKoumeLookOverRightShoulderAnim,
 };
 
 static AnimationHeader* D_80B24370[] = {
-    &object_tr_Anim_0035CC,
-    &object_tr_Anim_0013CC,
+    &gKotakeKoumeLookingOverLeftShoulderAnim,
+    &gKotakeKoumeLookingOverRightShoulderAnim,
 };
 
 static AnimationHeader* D_80B24378[] = {
-    &object_tr_Anim_0049C8,
-    &object_tr_Anim_0049C8,
+    &gKotakeKoumeFlyAnim,
+    &gKotakeKoumeFlyAnim,
 };
 
 static AnimationHeader* D_80B24380[] = {
-    &object_tr_Anim_012E1C,
-    &object_tr_Anim_012E1C,
+    &gKotakeKoumeCastMagicAnim,
+    &gKotakeKoumeCastMagicAnim,
 };
 
 static f32 D_80B24388[] = { 0.0f, 20.0f, -30.0f, 20.0f, -20.0f, -20.0f, 30.0f };
@@ -77,9 +77,9 @@ static Color_RGBA8 D_80B243C0[4] = {
 };
 
 static void* sEyeTextures[] = {
-    object_tr_Tex_0086D8,
-    object_tr_Tex_0094D8,
-    object_tr_Tex_0098D8,
+    gKotakeKoumeEyeOpenTex,
+    gKotakeKoumeEyeHalfTex,
+    gKotakeKoumeEyeClosedTex,
 };
 
 void EnTr_SetupAction(EnTr* this, EnTrActionFunc actionFunc) {
@@ -97,18 +97,18 @@ void EnTr_Init(Actor* thisx, PlayState* play) {
 
     switch (this->actor.params) {
         case TR_KOUME:
-            SkelAnime_InitFlex(play, &this->skelAnime, &object_tr_Skel_011688, &object_tr_Anim_003FC8,
+            SkelAnime_InitFlex(play, &this->skelAnime, &gKoumeSkel, &gKotakeKoumeStandingBroomOverRightShoulderAnim,
                                this->jointTable, this->morphTable, 27);
-            Animation_PlayOnce(&this->skelAnime, &object_tr_Anim_003FC8);
+            Animation_PlayOnce(&this->skelAnime, &gKotakeKoumeStandingBroomOverRightShoulderAnim);
             this->animation = NULL;
             EnTr_SetupAction(this, EnTr_ChooseAction1);
             this->actionIndex = 3;
             break;
 
         case TR_KOTAKE:
-            SkelAnime_InitFlex(play, &this->skelAnime, &object_tr_Skel_00C530, &object_tr_Anim_001CDC,
+            SkelAnime_InitFlex(play, &this->skelAnime, &gKotakeSkel, &gKotakeKoumeStandingBroomOverLeftShoulderAnim,
                                this->jointTable, this->morphTable, 27);
-            Animation_PlayOnce(&this->skelAnime, &object_tr_Anim_001CDC);
+            Animation_PlayOnce(&this->skelAnime, &gKotakeKoumeStandingBroomOverLeftShoulderAnim);
             this->animation = NULL;
             EnTr_SetupAction(this, EnTr_ChooseAction1);
             this->actionIndex = 2;
@@ -306,7 +306,7 @@ void EnTr_WaitToReappear(EnTr* this, PlayState* play) {
             this->timer = 34;
             EnTr_SetStartPosRot(this, play, this->actionIndex);
             EnTr_SetupAction(this, EnTr_Reappear);
-            Animation_PlayLoop(&this->skelAnime, &object_tr_Anim_0049C8);
+            Animation_PlayLoop(&this->skelAnime, &gKotakeKoumeFlyAnim);
             this->animation = NULL;
             Actor_SetScale(&this->actor, 0.003f);
         }
@@ -355,7 +355,7 @@ void EnTr_ChooseAction1(EnTr* this, PlayState* play) {
                 case 3:
                     EnTr_SetStartPosRot(this, play, this->actionIndex);
                     EnTr_SetupAction(this, EnTr_ChooseAction2);
-                    Animation_PlayLoop(&this->skelAnime, &object_tr_Anim_0049C8);
+                    Animation_PlayLoop(&this->skelAnime, &gKotakeKoumeFlyAnim);
                     this->animation = NULL;
                     break;
 
@@ -366,7 +366,7 @@ void EnTr_ChooseAction1(EnTr* this, PlayState* play) {
 
                 case 7:
                     EnTr_SetupAction(this, EnTr_FlyKidnapCutscene);
-                    Animation_PlayLoop(&this->skelAnime, &object_tr_Anim_0049C8);
+                    Animation_PlayLoop(&this->skelAnime, &gKotakeKoumeFlyAnim);
                     this->animation = NULL;
                     this->timer =
                         ((this->actor.params != TR_KOUME) ? ((u8)frames * 0x400) + 0x8000 : (u8)frames * 0x400);
@@ -385,17 +385,17 @@ void EnTr_Update(Actor* thisx, PlayState* play) {
 
     if (SkelAnime_Update(&this->skelAnime) != 0) {
         if (this->animation != NULL) {
-            if ((this->animation == &object_tr_Anim_0035CC) || (this->animation == &object_tr_Anim_0013CC)) {
+            if ((this->animation == &gKotakeKoumeLookingOverLeftShoulderAnim) || (this->animation == &gKotakeKoumeLookingOverRightShoulderAnim)) {
                 if (this->actor.params != TR_KOUME) {
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_TWINROBA_LAUGH2);
                 } else {
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_TWINROBA_LAUGH);
                 }
                 Animation_PlayLoop(&this->skelAnime, this->animation);
-            } else if (this->animation == &object_tr_Anim_0049C8) {
+            } else if (this->animation == &gKotakeKoumeFlyAnim) {
                 EnTr_SetupAction(this, EnTr_ChooseAction2);
-                Animation_Change(&this->skelAnime, &object_tr_Anim_0049C8, 1.0f, 0.0f,
-                                 Animation_GetLastFrame(&object_tr_Anim_0049C8), ANIMMODE_LOOP, -5.0f);
+                Animation_Change(&this->skelAnime, &gKotakeKoumeFlyAnim, 1.0f, 0.0f,
+                                 Animation_GetLastFrame(&gKotakeKoumeFlyAnim), ANIMMODE_LOOP, -5.0f);
             } else {
                 Animation_PlayLoop(&this->skelAnime, this->animation);
             }
