@@ -3387,6 +3387,7 @@ void RandomizerSettingsWindow::DrawElement() {
     static const char* randoMqDungeons[4] = { "None", "Set Number", "Random Number", "Selection" };
 
     // World Settings
+    static const char* randoBalancingSettings[4] = { "Balanced", "Most Items", "All Items", "Anything" };
     static const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
     static const char* randoShuffleDungeonsEntrances[3] = { "Off", "On", "On + Ganon" };
     static const char* randoShuffleBossEntrances[3] = { "Off", "Age Restricted", "Full" };
@@ -3492,9 +3493,30 @@ void RandomizerSettingsWindow::DrawElement() {
         if (ImGui::BeginTabItem("World")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             UIWidgets::EnhancementCheckbox("Randomize World Settings", "gRandomizeWorldSettings");
-            UIWidgets::InsertHelpHoverText("TODO Randomizes most of the world settings.");
-
+            UIWidgets::InsertHelpHoverText("Randomizes most of the world settings.");
             auto worldSettingsRandomized = CVarGetInteger("gRandomizeWorldSettings", RO_GENERIC_OFF) == RO_GENERIC_ON;
+
+            if (worldSettingsRandomized) {
+                ImGui::Text("Bridge/LACS Item Count Balancing");
+                UIWidgets::InsertHelpHoverText(
+                    "Determines how the number of required dungeon rewards will be determined, "
+                    "if a bridge or LACS requirement is dependent on a certain number of items "
+                    "that need to be gathered.\n"
+                    "\n"
+                    "Balanced - The number of items required will be randomly determined, but unlikely "
+                    "to be too high or low.\n"
+                    "\n"
+                    "Most Items - The number of items required will be set at roughly 3/4 of the total number. "
+                    "If Gold Skulltulas are required, it will always be 30.\n"
+                    "\n"
+                    "All Items - All items will need to be gathered for whatever item type is required.\n"
+                    "\n"
+                    "Anything - The number of items required can be anything from 1 to the maximum.");
+                UIWidgets::EnhancementCombobox("gRandomDungeonSettingsBalancing", randoBalancingSettings, 0);
+
+                UIWidgets::EnhancementCheckbox("Allow Decoupled Entrances", "gAllowDecoupledEntrances");
+                UIWidgets::InsertHelpHoverText("Allow the Decoupled Entrances setting to be randomized.");
+            }
 
             if (ImGui::BeginTable("tableRandoWorld", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Area Access", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -3513,34 +3535,42 @@ void RandomizerSettingsWindow::DrawElement() {
 
                 // Forest
                 ImGui::Text("%s", Settings::OpenForest.GetName().c_str());
-                UIWidgets::InsertHelpHoverText(
-                    "Closed - Kokiri sword & shield are required to access "
-                    "the Deku Tree, and completing the Deku Tree is required to "
-                    "access the Hyrule Field exit.\n"
-                    "\n"
-                    "Closed Deku - Kokiri boy no longer blocks the path to Hyrule "
-                    "Field but Mido still requires the Kokiri sword and Deku shield "
-                    "to access the tree.\n"
-                    "\n"
-                    "Open - Mido no longer blocks the path to the Deku Tree. Kokiri "
-                    "boy no longer blocks the path out of the forest."
+                UIWidgets::InsertHelpHoverText("Closed - Kokiri sword & shield are required to access "
+                                                "the Deku Tree, and completing the Deku Tree is required to "
+                                                "access the Hyrule Field exit.\n"
+                                                "\n"
+                                                "Closed Deku - Kokiri boy no longer blocks the path to Hyrule "
+                                                "Field but Mido still requires the Kokiri sword and Deku shield "
+                                                "to access the tree.\n"
+                                                "\n"
+                                                "Open - Mido no longer blocks the path to the Deku Tree. Kokiri "
+                                                "boy no longer blocks the path out of the forest.");
+                UIWidgets::EnhancementCombobox(
+                    "gRandomizeForest",
+                    randoForest, 
+                    RO_FOREST_CLOSED, 
+                    worldSettingsRandomized, 
+                    disabledRandomMessage
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeForest", randoForest, RO_FOREST_CLOSED,
-                                               worldSettingsRandomized, disabledRandomMessage, RO_FOREST_CLOSED);
+
+                
 
                 UIWidgets::PaddedSeparator();
 
                 // Kakariko Gate
                 ImGui::Text("%s", Settings::OpenKakariko.GetName().c_str());
-                UIWidgets::InsertHelpHoverText(
-                    "Closed - The gate will remain closed until Zelda's letter "
-                    "is shown to the guard.\n"
-                    "\n"
-                    "Open - The gate is always open. The happy mask shop "
-                    "will open immediately after obtaining Zelda's letter."
-                );
-                UIWidgets::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, RO_KAK_GATE_CLOSED,
-                                               worldSettingsRandomized, disabledRandomMessage, RO_KAK_GATE_CLOSED);
+                UIWidgets::InsertHelpHoverText("Closed - The gate will remain closed until Zelda's letter "
+                                                "is shown to the guard.\n"
+                                                "\n"
+                                                "Open - The gate is always open. The happy mask shop "
+                                                "will open immediately after obtaining Zelda's letter.");
+                UIWidgets::EnhancementCombobox(
+                    "gRandomizeKakarikoGate",
+                    randoKakarikoGate,
+                    RO_KAK_GATE_CLOSED,
+                    worldSettingsRandomized,
+                    disabledRandomMessage
+                    );
 
                 UIWidgets::PaddedSeparator();
 
@@ -3556,25 +3586,23 @@ void RandomizerSettingsWindow::DrawElement() {
                     "Open - The Door of Time is permanently open with no requirements."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeDoorOfTime", randoDoorOfTime, RO_DOOROFTIME_CLOSED,
-                                               worldSettingsRandomized, disabledRandomMessage, RO_DOOROFTIME_CLOSED);
+                                                worldSettingsRandomized, disabledRandomMessage);
 
                 UIWidgets::PaddedSeparator();
 
                 // Zora's Fountain
                 ImGui::Text("%s", Settings::ZorasFountain.GetName().c_str());
-                UIWidgets::InsertHelpHoverText(
-                    "Closed - King Zora obstructs the way to Zora's Fountain. "
-                    "Ruto's letter must be shown as child Link in order to move "
-                    "him in both time periods.\n"
-                    "\n"
-                    "Closed as child - Ruto's Letter is only required to move King Zora "
-                    "as child Link. Zora's Fountain starts open as adult.\n"
-                    "\n"
-                    "Open - King Zora has already mweeped out of the way in both "
-                    "time periods. Ruto's Letter is removed from the item pool."
-                );
+                UIWidgets::InsertHelpHoverText("Closed - King Zora obstructs the way to Zora's Fountain. "
+                                                "Ruto's letter must be shown as child Link in order to move "
+                                                "him in both time periods.\n"
+                                                "\n"
+                                                "Closed as child - Ruto's Letter is only required to move King Zora "
+                                                "as child Link. Zora's Fountain starts open as adult.\n"
+                                                "\n"
+                                                "Open - King Zora has already mweeped out of the way in both "
+                                                "time periods. Ruto's Letter is removed from the item pool.");
                 UIWidgets::EnhancementCombobox("gRandomizeZorasFountain", randoZorasFountain, RO_ZF_CLOSED,
-                                               worldSettingsRandomized, disabledRandomMessage, RO_ZF_CLOSED);
+                                                worldSettingsRandomized, disabledRandomMessage);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3583,49 +3611,44 @@ void RandomizerSettingsWindow::DrawElement() {
                 // COLUMN 2 - World Settings
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
-                ImGui::BeginChild("ChildMiscWorldSettings", ImVec2(0,-8));
+                ImGui::BeginChild("ChildMiscWorldSettings", ImVec2(0, -8));
                 ImGui::PushItemWidth(-FLT_MIN);
 
-                //Starting Age
-                //Disabled when Forest is set to Closed or under very specific conditions
-                bool disableRandoStartingAge = CVarGetInteger("gRandomizeForest", RO_FOREST_CLOSED) == RO_FOREST_CLOSED || 
+                // Starting Age
+                // Disabled when Forest is set to Closed or under very specific conditions
+                bool disableRandoStartingAge =
+                    CVarGetInteger("gRandomizeForest", RO_FOREST_CLOSED) == RO_FOREST_CLOSED ||
                     ((CVarGetInteger("gRandomizeDoorOfTime", RO_DOOROFTIME_CLOSED) == RO_DOOROFTIME_CLOSED) &&
-                    (CVarGetInteger("gRandomizeShuffleOcarinas", RO_GENERIC_OFF) == RO_GENERIC_OFF)); // closed door of time with ocarina shuffle off
+                        (CVarGetInteger("gRandomizeShuffleOcarinas", RO_GENERIC_OFF) ==
+                        RO_GENERIC_OFF)); // closed door of time with ocarina shuffle off
 
                 static const char* disableRandoStartingAgeText = "This option is disabled due to other options making the game unbeatable.";
                 ImGui::Text("%s", Settings::StartingAge.GetName().c_str());
                 UIWidgets::InsertHelpHoverText(
                     "Choose which age Link will start as.\n\n"
                     "Starting as adult means you start with the Master Sword in your inventory.\n"
-                    "The child option is forcefully set if it would conflict with other options."
-                );
+                    "The child option is forcefully set if it would conflict with other options.");
                 UIWidgets::EnhancementCombobox(
-                    "gRandomizeStartingAge",
-                    randoStartingAge, 
-                    RO_AGE_CHILD, 
-                    disableRandoStartingAge || worldSettingsRandomized, 
-                    worldSettingsRandomized ? disabledRandomMessage : disableRandoStartingAgeText, 
-                    RO_AGE_CHILD
-                );
+                    "gRandomizeStartingAge", randoStartingAge, RO_AGE_CHILD,
+                    disableRandoStartingAge || worldSettingsRandomized,
+                    worldSettingsRandomized ? disabledRandomMessage : disableRandoStartingAgeText);
 
                 UIWidgets::PaddedSeparator();
 
                 // Gerudo Fortress
                 ImGui::Text("Gerudo Fortress Carpenters");
-                UIWidgets::InsertHelpHoverText(
-                    "Sets the amount of carpenters required to repair the bridge "
-                    "in Gerudo Valley.\n"
-                    "\n"
-                    "Normal - All 4 carpenters are required to be saved.\n"
-                    "\n"
-                    "Fast - Only the bottom left carpenter requires rescuing.\n"
-                    "\n"
-                    "Open - The bridge is repaired from the start.\n"
-                    "\n"
-                    "Only \"Normal\" is compatible with Gerudo Fortress Key Rings."
-                );
+                UIWidgets::InsertHelpHoverText("Sets the amount of carpenters required to repair the bridge "
+                                                "in Gerudo Valley.\n"
+                                                "\n"
+                                                "Normal - All 4 carpenters are required to be saved.\n"
+                                                "\n"
+                                                "Fast - Only the bottom left carpenter requires rescuing.\n"
+                                                "\n"
+                                                "Open - The bridge is repaired from the start.\n"
+                                                "\n"
+                                                "Only \"Normal\" is compatible with Gerudo Fortress Key Rings.");
                 UIWidgets::EnhancementCombobox("gRandomizeGerudoFortress", randoGerudoFortress, RO_GF_NORMAL,
-                                               worldSettingsRandomized, disabledRandomMessage, RO_GF_NORMAL);
+                                                worldSettingsRandomized, disabledRandomMessage);
 
                 UIWidgets::PaddedSeparator();
 
@@ -3651,11 +3674,10 @@ void RandomizerSettingsWindow::DrawElement() {
                     "\n"
                     "Tokens - Obtain the specified amount of Skulltula tokens.\n"
                     "\n"
-                    "Greg - Find Greg the Green Rupee."
-                );
+                    "Greg - Find Greg the Green Rupee.");
 
                 UIWidgets::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, RO_BRIDGE_VANILLA,
-                                               worldSettingsRandomized, disabledRandomMessage, RO_BRIDGE_VANILLA);
+                                                worldSettingsRandomized, disabledRandomMessage);
                 ImGui::PopItemWidth();
                 switch (CVarGetInteger("gRandomizeRainbowBridge", RO_BRIDGE_VANILLA)) {
                     case RO_BRIDGE_ALWAYS_OPEN:
@@ -3663,89 +3685,107 @@ void RandomizerSettingsWindow::DrawElement() {
                     case RO_BRIDGE_VANILLA:
                         break;
                     case RO_BRIDGE_STONES:
-                         ImGui::Text("Reward Options");
+                        ImGui::Text("Reward Options");
                         UIWidgets::InsertHelpHoverText(
-                            "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, max "
+                            "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, "
+                            "max "
                             "number of rewards on slider does not change.\n"
                             "\n"
                             "Greg as Reward - Greg does change logic (can be part of expected path for opening "
                             "bridge), Greg helps open bridge, max number of rewards on slider increases by 1 to "
                             "account for Greg. \n"
                             "\n"
-                            "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
+                            "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number "
+                            "of "
                             "rewards on slider does not change.");
 
-                        UIWidgets::EnhancementCombobox("gRandomizeBridgeRewardOptions", randoBridgeRewardOptions, RO_BRIDGE_STANDARD_REWARD);
+                        UIWidgets::EnhancementCombobox("gRandomizeBridgeRewardOptions", randoBridgeRewardOptions,
+                                                        RO_BRIDGE_STANDARD_REWARD);
                         switch (CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD)) {
                             case RO_BRIDGE_STANDARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
-                                                                "gRandomizeStoneCount", 1, 3, "", 3, true, true, false);
+                                                                        "gRandomizeStoneCount", 1, 3, "", 3, true,
+                                                                        true, false);
                                 break;
                             case RO_BRIDGE_GREG_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
-                                                                "gRandomizeStoneCount", 1, 4, "", 4, true, true, false);
+                                                                        "gRandomizeStoneCount", 1, 4, "", 4, true,
+                                                                        true, false);
                                 break;
                             case RO_BRIDGE_WILDCARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
-                                                                "gRandomizeStoneCount", 1, 3, "", 3, true, true, false);
+                                                                        "gRandomizeStoneCount", 1, 3, "", 3, true,
+                                                                        true, false);
                                 break;
                         }
                         break;
                     case RO_BRIDGE_MEDALLIONS:
                         ImGui::Text("Reward Options");
                         UIWidgets::InsertHelpHoverText(
-                            "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, max "
+                            "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, "
+                            "max "
                             "number of rewards on slider does not change.\n"
                             "\n"
                             "Greg as Reward - Greg does change logic (can be part of expected path for opening "
                             "bridge), Greg helps open bridge, max number of rewards on slider increases by 1 to "
                             "account for Greg. \n"
                             "\n"
-                            "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
+                            "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number "
+                            "of "
                             "rewards on slider does not change.");
 
-                        UIWidgets::EnhancementCombobox("gRandomizeBridgeRewardOptions", randoBridgeRewardOptions, RO_BRIDGE_STANDARD_REWARD);
+                        UIWidgets::EnhancementCombobox("gRandomizeBridgeRewardOptions", randoBridgeRewardOptions,
+                                                        RO_BRIDGE_STANDARD_REWARD);
                         switch (CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD)) {
                             case RO_BRIDGE_STANDARD_REWARD:
-                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
-                                                                "gRandomizeMedallionCount", 1, 6, "", 6, true, true, false);
+                                UIWidgets::PaddedEnhancementSliderInt(
+                                    "Medallion Count: %d", "##RandoMedallionCount", "gRandomizeMedallionCount", 1,
+                                    6, "", 6, true, true, false);
                                 break;
                             case RO_BRIDGE_GREG_REWARD:
-                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
-                                                                "gRandomizeMedallionCount", 1, 7, "", 7, true, true, false);
+                                UIWidgets::PaddedEnhancementSliderInt(
+                                    "Medallion Count: %d", "##RandoMedallionCount", "gRandomizeMedallionCount", 1,
+                                    7, "", 7, true, true, false);
                                 break;
                             case RO_BRIDGE_WILDCARD_REWARD:
-                                UIWidgets::PaddedEnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
-                                                                "gRandomizeMedallionCount", 1, 6, "", 6, true, true, false);
+                                UIWidgets::PaddedEnhancementSliderInt(
+                                    "Medallion Count: %d", "##RandoMedallionCount", "gRandomizeMedallionCount", 1,
+                                    6, "", 6, true, true, false);
                                 break;
                         }
                         break;
                     case RO_BRIDGE_DUNGEON_REWARDS:
                         ImGui::Text("Reward Options");
                         UIWidgets::InsertHelpHoverText(
-                            "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, max "
+                            "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, "
+                            "max "
                             "number of rewards on slider does not change.\n"
                             "\n"
                             "Greg as Reward - Greg does change logic (can be part of expected path for opening "
                             "bridge), Greg helps open bridge, max number of rewards on slider increases by 1 to "
                             "account for Greg. \n"
                             "\n"
-                            "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
+                            "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number "
+                            "of "
                             "rewards on slider does not change.");
 
-                        UIWidgets::EnhancementCombobox("gRandomizeBridgeRewardOptions", randoBridgeRewardOptions, RO_BRIDGE_STANDARD_REWARD);
+                        UIWidgets::EnhancementCombobox("gRandomizeBridgeRewardOptions", randoBridgeRewardOptions,
+                                                        RO_BRIDGE_STANDARD_REWARD);
                         switch (CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD)) {
                             case RO_BRIDGE_STANDARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                                                                "gRandomizeRewardCount", 1, 9, "", 9, true, true, false);
+                                                                        "gRandomizeRewardCount", 1, 9, "", 9, true,
+                                                                        true, false);
                                 break;
                             case RO_BRIDGE_GREG_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                                                                "gRandomizeRewardCount", 1, 10, "", 10, true, true, false);
+                                                                        "gRandomizeRewardCount", 1, 10, "", 10, true,
+                                                                        true, false);
                                 break;
                             case RO_BRIDGE_WILDCARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                                                                "gRandomizeRewardCount", 1, 9, "", 9, true, true, false);
+                                                                        "gRandomizeRewardCount", 1, 9, "", 9, true,
+                                                                        true, false);
 
                                 break;
                         }
@@ -3753,35 +3793,42 @@ void RandomizerSettingsWindow::DrawElement() {
                     case RO_BRIDGE_DUNGEONS:
                         ImGui::Text("Reward Options");
                         UIWidgets::InsertHelpHoverText(
-                            "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, max "
+                            "Standard Rewards - Greg does not change logic, Greg does not help open the bridge, "
+                            "max "
                             "number of rewards on slider does not change.\n"
                             "\n"
                             "Greg as Reward - Greg does change logic (can be part of expected path for opening "
                             "bridge), Greg helps open bridge, max number of rewards on slider increases by 1 to "
                             "account for Greg. \n"
                             "\n"
-                            "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number of "
+                            "Greg as Wildcard - Greg does not change logic, Greg helps open the bridge, max number "
+                            "of "
                             "rewards on slider does not change.");
 
-                        UIWidgets::EnhancementCombobox("gRandomizeBridgeRewardOptions", randoBridgeRewardOptions, RO_BRIDGE_STANDARD_REWARD);
+                        UIWidgets::EnhancementCombobox("gRandomizeBridgeRewardOptions", randoBridgeRewardOptions,
+                                                        RO_BRIDGE_STANDARD_REWARD);
                         switch (CVarGetInteger("gRandomizeBridgeRewardOptions", RO_BRIDGE_STANDARD_REWARD)) {
                             case RO_BRIDGE_STANDARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
-                                                                "gRandomizeDungeonCount", 1, 8, "", 8, true, true, false);
+                                                                        "gRandomizeDungeonCount", 1, 8, "", 8, true,
+                                                                        true, false);
                                 break;
                             case RO_BRIDGE_GREG_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
-                                                                "gRandomizeDungeonCount", 1, 9, "", 9, true, true, false);
+                                                                        "gRandomizeDungeonCount", 1, 9, "", 9, true,
+                                                                        true, false);
                                 break;
                             case RO_BRIDGE_WILDCARD_REWARD:
                                 UIWidgets::PaddedEnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
-                                                                "gRandomizeDungeonCount", 1, 8, "", 8, true, true, false);
+                                                                        "gRandomizeDungeonCount", 1, 8, "", 8, true,
+                                                                        true, false);
                                 break;
                         }
                         break;
                     case RO_BRIDGE_TOKENS:
                         UIWidgets::PaddedEnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
-                                                        "gRandomizeTokenCount", 1, 100, "", 100, true, true, false);
+                                                                "gRandomizeTokenCount", 1, 100, "", 100, true, true,
+                                                                false);
                         break;
                     case RO_BRIDGE_GREG:
                         break;
@@ -3800,13 +3847,15 @@ void RandomizerSettingsWindow::DrawElement() {
                     "Set Number - Select a number of trials that will be required from the"
                     "slider below. Which specific trials you need to complete will be random.\n"
                     "\n"
-                    "Random Number - A Random number and set of trials will be required."
-                );
-                UIWidgets::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, RO_GANONS_TRIALS_SET_NUMBER);
+                    "Random Number - A Random number and set of trials will be required.");
+                UIWidgets::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial,
+                                                RO_GANONS_TRIALS_SET_NUMBER);
                 ImGui::PopItemWidth();
-                if (CVarGetInteger("gRandomizeGanonTrial", RO_GANONS_TRIALS_SET_NUMBER) == RO_GANONS_TRIALS_SET_NUMBER) {
+                if (CVarGetInteger("gRandomizeGanonTrial", RO_GANONS_TRIALS_SET_NUMBER) ==
+                    RO_GANONS_TRIALS_SET_NUMBER) {
                     UIWidgets::PaddedEnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
-                                                    "gRandomizeGanonTrialCount", 1, 6, "", 6, true, true, false);
+                                                            "gRandomizeGanonTrialCount", 1, 6, "", 6, true, true,
+                                                            false);
                     UIWidgets::InsertHelpHoverText("Set the number of trials required to enter Ganon's Tower.");
                 }
 
@@ -3814,6 +3863,8 @@ void RandomizerSettingsWindow::DrawElement() {
 
                 // Master Quest Dungeons
                 if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
+                    static const char* randoMqDungeons[3] = { "None", "Set Number", "Random Number" };
+
                     ImGui::PushItemWidth(-FLT_MIN);
                     ImGui::Text("Master Quest Dungeons");
                     UIWidgets::InsertHelpHoverText(
@@ -3822,7 +3873,8 @@ void RandomizerSettingsWindow::DrawElement() {
                         "None - All Dungeons will be their Vanilla versions.\n"
                         "\n"
                         "Set Number - Select a number of dungeons that will be their Master Quest versions "
-                        "using the slider below. Which dungeons are set to be the Master Quest variety will be random.\n"
+                        "using the slider below. Which dungeons are set to be the Master Quest variety will be "
+                        "random.\n"
                         "\n"
                         "Random Number - A Random number and set of dungeons will be their Master Quest varieties.\n"
                         "\n"
@@ -3908,48 +3960,50 @@ void RandomizerSettingsWindow::DrawElement() {
                 // Shuffle Dungeon Entrances
                 ImGui::Text("Shuffle Dungeon Entrances");
                 UIWidgets::InsertHelpHoverText(
-                    "Shuffle the pool of dungeon entrances, including Bottom of the Well, Ice Cavern and Gerudo Training Grounds.\n"
+                    "Shuffle the pool of dungeon entrances, including Bottom of the Well, Ice Cavern and Gerudo "
+                    "Training Grounds.\n"
                     "\n"
                     "Shuffling Ganon's Castle can be enabled separately.\n"
                     "\n"
-                    "Additionally, the entrances of Deku Tree, Fire Temple, Bottom of the Well and Gerudo Training Ground are opened for both child and adult.\n"
+                    "Additionally, the entrances of Deku Tree, Fire Temple, Bottom of the Well and Gerudo Training "
+                    "Ground are opened for both child and adult.\n"
                     "\n"
                     "- Deku Tree will be open for adult after Mido has seen child Link with a sword and shield.\n"
-                    "- Bottom of the Well will be open for adult after playing Song of Storms to the Windmill guy as child.\n"
-                    "- Gerudo Training Ground will be open for child after adult has paid to open the gate once."
-                );
+                    "- Bottom of the Well will be open for adult after playing Song of Storms to the Windmill guy "
+                    "as child.\n"
+                    "- Gerudo Training Ground will be open for child after adult has paid to open the gate once.");
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonsEntrances", randoShuffleDungeonsEntrances,
-                                               RO_DUNGEON_ENTRANCE_SHUFFLE_OFF, worldSettingsRandomized,
-                                               disabledRandomMessage, RO_DUNGEON_ENTRANCE_SHUFFLE_OFF);
+                                                RO_DUNGEON_ENTRANCE_SHUFFLE_OFF, worldSettingsRandomized,
+                                                disabledRandomMessage);
 
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Boss Entrances
                 ImGui::Text("Shuffle Boss Entrances");
                 UIWidgets::InsertHelpHoverText(
-                    "Shuffle the pool of dungeon boss entrances. This affects the boss rooms of all stone and medallion dungeons.\n"
+                    "Shuffle the pool of dungeon boss entrances. This affects the boss rooms of all stone and "
+                    "medallion dungeons.\n"
                     "\n"
                     "Age Restricted - Shuffle the entrances of child and adult boss rooms separately.\n"
                     "\n"
-                    "Full - Shuffle the entrances of all boss rooms together. Child may be expected to defeat Phantom Ganon and/or Bongo Bongo."
-                );
+                    "Full - Shuffle the entrances of all boss rooms together. Child may be expected to defeat "
+                    "Phantom Ganon and/or Bongo Bongo.");
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleBossEntrances", randoShuffleBossEntrances,
-                                               RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF, worldSettingsRandomized,
-                                               disabledRandomMessage, RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF);
+                                                RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF, worldSettingsRandomized,
+                                                disabledRandomMessage);
 
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Overworld Entrances
                 UIWidgets::EnhancementCheckbox("Shuffle Overworld Entrances", "gRandomizeShuffleOverworldEntrances",
-                                               worldSettingsRandomized, disabledRandomMessage);
-                UIWidgets::InsertHelpHoverText(
-                    "Shuffle the pool of Overworld entrances, which corresponds to almost all loading zones between overworld areas.\n"
-                    "\n"
-                    "Some entrances are unshuffled to avoid issues:\n"
-                    "- Hyrule Castle Courtyard and Garden entrance\n"
-                    "- Both Market Back Alley entrances\n"
-                    "- Gerudo Valley to Lake Hylia (unless entrances are decoupled)"
-                );
+                                                worldSettingsRandomized, disabledRandomMessage);
+                UIWidgets::InsertHelpHoverText("Shuffle the pool of Overworld entrances, which corresponds to "
+                                                "almost all loading zones between overworld areas.\n"
+                                                "\n"
+                                                "Some entrances are unshuffled to avoid issues:\n"
+                                                "- Hyrule Castle Courtyard and Garden entrance\n"
+                                                "- Both Market Back Alley entrances\n"
+                                                "- Gerudo Valley to Lake Hylia (unless entrances are decoupled)");
 
                 UIWidgets::PaddedSeparator();
 
@@ -3962,42 +4016,40 @@ void RandomizerSettingsWindow::DrawElement() {
                     "- Windmill\n"
                     "- Link's House\n"
                     "- Temple of Time\n"
-                    "- Kakariko Potion Shop"
-                );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleInteriorsEntrances", randoShuffleInteriorsEntrances,
-                                               RO_INTERIOR_ENTRANCE_SHUFFLE_OFF, worldSettingsRandomized,
-                                               disabledRandomMessage, RO_INTERIOR_ENTRANCE_SHUFFLE_OFF);
+                    "- Kakariko Potion Shop");
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleInteriorsEntrances",
+                                                randoShuffleInteriorsEntrances, RO_INTERIOR_ENTRANCE_SHUFFLE_OFF,
+                                                worldSettingsRandomized, disabledRandomMessage);
 
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Grotto Entrances
-                UIWidgets::EnhancementCheckbox("Shuffle Grotto Entrances", "gRandomizeShuffleGrottosEntrances", worldSettingsRandomized, disabledRandomMessage);
-                UIWidgets::InsertHelpHoverText(
-                    "Shuffle the pool of grotto entrances, including all graves, small Fairy fountains and the Deku Theatre."
-                );
+                UIWidgets::EnhancementCheckbox("Shuffle Grotto Entrances", "gRandomizeShuffleGrottosEntrances",
+                                                worldSettingsRandomized, disabledRandomMessage);
+                UIWidgets::InsertHelpHoverText("Shuffle the pool of grotto entrances, including all graves, small "
+                                                "Fairy fountains and the Deku Theatre.");
 
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Owl Drops
-                UIWidgets::EnhancementCheckbox("Shuffle Owl Drops", "gRandomizeShuffleOwlDrops", worldSettingsRandomized, disabledRandomMessage);
+                UIWidgets::EnhancementCheckbox("Shuffle Owl Drops", "gRandomizeShuffleOwlDrops",
+                                                worldSettingsRandomized, disabledRandomMessage);
                 UIWidgets::InsertHelpHoverText(
                     "Randomize where Kaepora Gaebora (the Owl) drops you at when you talk "
-                    "to him at Lake Hylia or at the top of Death Mountain Trail."
-                );
+                    "to him at Lake Hylia or at the top of Death Mountain Trail.");
 
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Warp Songs
-                UIWidgets::EnhancementCheckbox("Shuffle Warp Songs", "gRandomizeShuffleWarpSongs", worldSettingsRandomized, disabledRandomMessage);
-                UIWidgets::InsertHelpHoverText(
-                    "Randomize where each of the 6 warp songs leads to."
-                );
+                UIWidgets::EnhancementCheckbox("Shuffle Warp Songs", "gRandomizeShuffleWarpSongs",
+                                                worldSettingsRandomized, disabledRandomMessage);
+                UIWidgets::InsertHelpHoverText("Randomize where each of the 6 warp songs leads to.");
 
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Overworld Spawns
                 UIWidgets::EnhancementCheckbox("Shuffle Overworld Spawns", "gRandomizeShuffleOverworldSpawns",
-                                               worldSettingsRandomized, disabledRandomMessage);
+                                                worldSettingsRandomized, disabledRandomMessage);
                 UIWidgets::InsertHelpHoverText(
                     "Randomize where you start as Child or Adult when loading a save in the Overworld. This "
                     "means you may not necessarily spawn inside Link's House or Temple of Time.\n"
@@ -4005,33 +4057,37 @@ void RandomizerSettingsWindow::DrawElement() {
                     "This stays consistent after saving and loading the game again.\n"
                     "\n"
                     "Keep in mind you may need to temporarily disable the \"Remember Save Location\" time saver to "
-                    "be able use the spawn positions, especially if they are the only logical way to get to certain areas."
-                );
+                    "be able use the spawn positions, especially if they are the only logical way to get to "
+                    "certain areas.");
 
                 UIWidgets::PaddedSeparator();
 
                 // Decouple Entrances
-                UIWidgets::EnhancementCheckbox("Decouple Entrances", "gRandomizeDecoupleEntrances");
+                UIWidgets::EnhancementCheckbox(
+                    "Decouple Entrances", 
+                    "gRandomizeDecoupleEntrances",
+                     worldSettingsRandomized, 
+                    disabledRandomMessage
+                );
                 UIWidgets::InsertHelpHoverText(
                     "Decouple entrances when shuffling them. This means you are no longer guaranteed "
                     "to end up back where you came from when you go back through an entrance.\n"
                     "\n"
                     "This also adds the one-way entrance from Gerudo Valley to Lake Hylia in the pool of "
-                    "overworld entrances when they are shuffled."
-                );
+                    "overworld entrances when they are shuffled.");
 
                 UIWidgets::PaddedSeparator();
 
                 // Mixed Entrance Pools
                 UIWidgets::EnhancementCheckbox("Mixed Entrance Pools", "gRandomizeMixedEntrances",
-                                               worldSettingsRandomized, disabledRandomMessage);
+                                                worldSettingsRandomized, disabledRandomMessage);
                 UIWidgets::InsertHelpHoverText(
                     "Shuffle entrances into a mixed pool instead of separate ones.\n"
                     "\n"
                     "For example, enabling the settings to shuffle grotto, dungeon, and overworld entrances and "
                     "selecting grotto and dungeon entrances here will allow a dungeon to be inside a grotto or "
-                    "vice versa, while overworld entrances are shuffled in their own separate pool and indoors stay vanilla."
-                );
+                    "vice versa, while overworld entrances are shuffled in their own separate pool and indoors "
+                    "stay vanilla.");
 
                 if (CVarGetInteger("gRandomizeMixedEntrances", RO_GENERIC_OFF)) {
                     if (CVarGetInteger("gRandomizeShuffleDungeonsEntrances", RO_GENERIC_OFF)) {
@@ -4069,6 +4125,11 @@ void RandomizerSettingsWindow::DrawElement() {
         }
 
         if (ImGui::BeginTabItem("Items")) {
+
+            //TODOs:
+            // *Remove disabled parameters from Items and remaining tabs
+            // *Add remaining balancing options in UI
+            // *Implement balancing options in seed generator
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
 
             UIWidgets::EnhancementCheckbox("Randomize Item Settings", "gRandomizeItemSettings");
