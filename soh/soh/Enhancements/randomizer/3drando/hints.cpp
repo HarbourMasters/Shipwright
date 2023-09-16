@@ -203,7 +203,7 @@ Text& GetWarpPreludeText() {
   return warpPreludeText;
 }
 
-std::string GetlightArrowHintLoc() {
+std::string GetLightArrowHintLoc() {
     return lightArrowHintLoc;
 }
 

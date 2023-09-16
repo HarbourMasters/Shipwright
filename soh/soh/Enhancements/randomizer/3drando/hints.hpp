@@ -228,5 +228,5 @@ Text& GetWarpNocturneText();
 Text& GetWarpPreludeText();
 
 std::string GetDampeHintLoc();
-std::string GetlightArrowHintLoc();
+std::string GetLightArrowHintLoc();
 std::string GetSariaHintLoc();
