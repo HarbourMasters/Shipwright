@@ -140,7 +140,7 @@ void RegisterInfiniteISG() {
 
         if (CVarGetInteger("gEzISG", 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
-            player->swordState = 1;
+            player->meleeWeaponState = 1;
         }
     });
 }
@@ -579,8 +579,7 @@ void UpdateMirrorModeState(int32_t sceneNum) {
                         (sceneNum == SCENE_GANON_BOSS);
 
     if (mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) {
-        uint32_t seed = sceneNum + (gSaveContext.n64ddFlag ? (gSaveContext.seedIcons[0] + gSaveContext.seedIcons[1] +
-                        gSaveContext.seedIcons[2] + gSaveContext.seedIcons[3] + gSaveContext.seedIcons[4]) : gSaveContext.sohStats.fileCreatedAt);
+        uint32_t seed = sceneNum + (gSaveContext.n64ddFlag ? gSaveContext.finalSeed : gSaveContext.sohStats.fileCreatedAt);
         Random_Init(seed);
     }
 
