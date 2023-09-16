@@ -10362,7 +10362,7 @@ void func_80848A04(PlayState* play, Player* this) {
                       0, 8);      // I believe this draws the flame effect
     }
 
-    if (this->unk_85C == 0.0f && CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL)) == DEKU_STICK_NORMAL)) {
+    if (this->unk_85C == 0.0f && CVarGetInteger("gDekuStickCheat", DEKU_STICK_NORMAL) == DEKU_STICK_NORMAL) {
         func_80835F44(play, this, 0xFF);
         return;
     }
