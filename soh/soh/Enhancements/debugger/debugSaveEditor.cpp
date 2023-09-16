@@ -1620,7 +1620,7 @@ void DrawPlayerTab() {
                     gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KNIFE;
                 }
                 
-                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_BGS);
+                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_BIGGORON);
             }
             if (ImGui::Selectable("Fishing Pole")) {
                 player->currentSwordItemId = ITEM_FISHING_POLE;
@@ -1725,7 +1725,7 @@ void DrawPlayerTab() {
         }
         DrawGroupWithBorder([&]() {
             ImGui::Text("Sword");
-            ImGui::Text("  %d", player->swordState);
+            ImGui::Text("  %d", player->meleeWeaponState);
         });
 
     } else {
