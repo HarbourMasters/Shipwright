@@ -21,9 +21,6 @@ typedef struct BgMizuShutter {
     /* 0x0184 */ Vec3f openPos;
 } BgMizuShutter; // size = 0x0190
 
-typedef enum BgMizuShutterSize {
-    BGMIZUSHUTTER_SMALL,
-    BGMIZUSHUTTER_LARGE
-} BgMizuShutterSize;
+typedef enum BgMizuShutterSize { BGMIZUSHUTTER_SMALL, BGMIZUSHUTTER_LARGE } BgMizuShutterSize;
 
 #endif

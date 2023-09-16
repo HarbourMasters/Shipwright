@@ -4,8 +4,7 @@
 #include "z64animation.h"
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /**
@@ -63,13 +62,14 @@ typedef struct {
     /* 0x06 */ u8 child;
     /* 0x07 */ u8 sibling;
     /* 0x08 */ s32 segmentType; // Type of data contained in segment
-    /* 0x0C */ void* segment; // Gfx* if segmentType is SKIN_LIMB_TYPE_NORMAL, SkinAnimatedLimbData* if segmentType is SKIN_LIMB_TYPE_ANIMATED, NULL otherwise
-} SkinLimb; // size = 0x10
+    /* 0x0C */ void* segment;   // Gfx* if segmentType is SKIN_LIMB_TYPE_NORMAL, SkinAnimatedLimbData* if segmentType is
+                                // SKIN_LIMB_TYPE_ANIMATED, NULL otherwise
+} SkinLimb;                     // size = 0x10
 
 typedef struct {
-    /* 0x000 */ u8 index; // alternates every draw cycle
+    /* 0x000 */ u8 index;    // alternates every draw cycle
     /* 0x004 */ Vtx* buf[2]; // number of vertices in buffer determined by `totalVtxCount`
-} SkinLimbVtx; // size = 0xC
+} SkinLimbVtx;               // size = 0xC
 
 typedef struct {
     /* 0x000 */ SkeletonHeader* skeletonHeader;
@@ -83,7 +83,7 @@ typedef void (*SkinPostDraw)(struct Actor*, struct PlayState*, Skin*);
 typedef s32 (*SkinOverrideLimbDraw)(struct Actor*, struct PlayState*, s32, Skin*);
 
 #define SKIN_DRAW_FLAG_CUSTOM_TRANSFORMS (1 << 0)
-#define SKIN_DRAW_FLAG_CUSTOM_MATRIX     (1 << 1)
+#define SKIN_DRAW_FLAG_CUSTOM_MATRIX (1 << 1)
 
 #define SKIN_TRANSFORM_IS_FHG 0x23
 

@@ -16,8 +16,8 @@ typedef enum {
     only values 1-11 are used explicitly, other values (like 0) default to another separate behavior
     */
     /*  0 */ ENBOX_TYPE_BIG_DEFAULT,
-    /*  1 */ ENBOX_TYPE_ROOM_CLEAR_BIG,         // appear on room clear, store temp clear as permanent clear
-    /*  2 */ ENBOX_TYPE_DECORATED_BIG,          // boss key chest, different look, same as ENBOX_TYPE_BIG_DEFAULT otherwise
+    /*  1 */ ENBOX_TYPE_ROOM_CLEAR_BIG, // appear on room clear, store temp clear as permanent clear
+    /*  2 */ ENBOX_TYPE_DECORATED_BIG,  // boss key chest, different look, same as ENBOX_TYPE_BIG_DEFAULT otherwise
     /*  3 */ ENBOX_TYPE_SWITCH_FLAG_FALL_BIG,   // falling, appear on switch flag set
     /*  4 */ ENBOX_TYPE_4,                      // big, drawn differently
     /*  5 */ ENBOX_TYPE_SMALL,                  // same as ENBOX_TYPE_BIG_DEFAULT but small

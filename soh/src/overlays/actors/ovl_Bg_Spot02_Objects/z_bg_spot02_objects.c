@@ -88,8 +88,8 @@ void BgSpot02Objects_Init(Actor* thisx, PlayState* play) {
 
             this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, colHeader);
 
-            if (((Flags_GetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB)) && (play->sceneNum == SCENE_GRAVEYARD) &&
-                 (thisx->params == 2)) ||
+            if (((Flags_GetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB)) &&
+                 (play->sceneNum == SCENE_GRAVEYARD) && (thisx->params == 2)) ||
                 (LINK_IS_ADULT && (thisx->params == 1))) {
                 Actor_Kill(thisx);
             }
@@ -166,8 +166,8 @@ void func_808ACA08(BgSpot02Objects* this, PlayState* play) {
 
     if (this->timer == 20) {
         this->dyna.actor.draw = NULL;
-        EffectSsHahen_SpawnBurst(play, &this->dyna.actor.world.pos, 30.0f, 0, 25, 5, 40, OBJECT_SPOT02_OBJECTS,
-                                    20, object_spot02_objects_DL_012D30);
+        EffectSsHahen_SpawnBurst(play, &this->dyna.actor.world.pos, 30.0f, 0, 25, 5, 40, OBJECT_SPOT02_OBJECTS, 20,
+                                 object_spot02_objects_DL_012D30);
     } else if (this->timer == 0) {
         Actor_Kill(&this->dyna.actor);
     }
@@ -224,8 +224,7 @@ void func_808ACC34(BgSpot02Objects* this, PlayState* play) {
         this->actionFunc = func_808AC908;
     }
 
-    if (play->csCtx.state != 0 && play->csCtx.npcActions[0] != NULL &&
-        play->csCtx.npcActions[0]->action == 2) {
+    if (play->csCtx.state != 0 && play->csCtx.npcActions[0] != NULL && play->csCtx.npcActions[0]->action == 2) {
         this->unk_16A++;
 
         if (this->unk_16A >= 12) {
@@ -251,8 +250,7 @@ void func_808ACCB8(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
 
-    if (play->csCtx.state != 0 && play->csCtx.npcActions[0] != NULL &&
-        play->csCtx.npcActions[0]->action == 2) {
+    if (play->csCtx.state != 0 && play->csCtx.npcActions[0] != NULL && play->csCtx.npcActions[0]->action == 2) {
         if (this->unk_16A < 5) {
             rate = (this->unk_16A / 5.0f);
             redPrim = greenPrim = bluePrim = 255;
@@ -280,8 +278,7 @@ void func_808ACCB8(Actor* thisx, PlayState* play) {
         gDPPipeSync(POLY_XLU_DISP++);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, redPrim, greenPrim, bluePrim, 255);
         gDPSetEnvColor(POLY_XLU_DISP++, redEnv, greenEnv, blueEnv, 255);
-        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_808AD850[this->unk_16A]));
         gDPPipeSync(POLY_XLU_DISP++);
         gSPDisplayList(POLY_XLU_DISP++, object_spot02_objects_DL_0126F0);
@@ -292,8 +289,7 @@ void func_808ACCB8(Actor* thisx, PlayState* play) {
 }
 
 void func_808AD3D4(BgSpot02Objects* this, PlayState* play) {
-    if (play->csCtx.state != 0 && play->csCtx.npcActions[2] != NULL &&
-        play->csCtx.npcActions[2]->action == 2) {
+    if (play->csCtx.state != 0 && play->csCtx.npcActions[2] != NULL && play->csCtx.npcActions[2]->action == 2) {
         if (this->timer == 2) {
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_IT_EXPLOSION_ICE);
         }
@@ -326,8 +322,8 @@ void func_808AD450(Actor* thisx, PlayState* play) {
             }
         }
 
-        lerp = Environment_LerpWeight(play->csCtx.npcActions[2]->endFrame,
-                                      play->csCtx.npcActions[2]->startFrame, play->csCtx.frames);
+        lerp = Environment_LerpWeight(play->csCtx.npcActions[2]->endFrame, play->csCtx.npcActions[2]->startFrame,
+                                      play->csCtx.frames);
 
         // should be able to remove & 0xFFFF with some other change
         if ((play->csCtx.npcActions[2]->action & 0xFFFF) == 2) {
@@ -341,8 +337,7 @@ void func_808AD450(Actor* thisx, PlayState* play) {
             gDPPipeSync(POLY_XLU_DISP++);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 170, 128);
             gDPSetEnvColor(POLY_XLU_DISP++, 150, 120, 0, 128);
-            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_XLU_DISP++, 0x08,
                        Gfx_TwoTexScroll(play->state.gfxCtx, 0, 2 * this->timer, -3 * this->timer, 32, 64, 1,
                                         4 * this->timer, -6 * this->timer, 32, 64));

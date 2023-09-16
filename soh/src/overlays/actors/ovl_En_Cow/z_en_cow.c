@@ -223,11 +223,12 @@ void EnCow_MoveForRandomizer(EnCow* this, PlayState* play) {
     }
 
     // Move left cow in lon lon tower
-    if (play->sceneNum == SCENE_LON_LON_BUILDINGS && this->actor.world.pos.x == -108 && this->actor.world.pos.z == -65) {
+    if (play->sceneNum == SCENE_LON_LON_BUILDINGS && this->actor.world.pos.x == -108 &&
+        this->actor.world.pos.z == -65) {
         this->actor.world.pos.x = -229.0f;
         this->actor.world.pos.z = 157.0f;
         this->actor.shape.rot.y = 15783.0f;
-    // Move right cow in lon lon stable
+        // Move right cow in lon lon stable
     } else if (play->sceneNum == SCENE_STABLE && this->actor.world.pos.x == -3 && this->actor.world.pos.z == -254) {
         this->actor.world.pos.x += 119.0f;
     }
@@ -288,7 +289,8 @@ bool EnCow_HasBeenMilked(EnCow* this, PlayState* play) {
 
 void EnCow_GivePlayerRandomizedItem(EnCow* this, PlayState* play) {
     if (!EnCow_HasBeenMilked(this, play)) {
-        CowIdentity cowIdentity = Randomizer_IdentifyCow(play->sceneNum, this->actor.world.pos.x, this->actor.world.pos.z);
+        CowIdentity cowIdentity =
+            Randomizer_IdentifyCow(play->sceneNum, this->actor.world.pos.x, this->actor.world.pos.z);
         GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(cowIdentity.randomizerCheck, GI_MILK);
         GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 100.0f);
     } else {
@@ -311,8 +313,7 @@ void func_809DF96C(EnCow* this, PlayState* play) {
                     // when randomized with cowsanity, if we haven't gotten the
                     // reward from this cow yet, give that, otherwise use the
                     // vanilla cow behavior
-                    if (gSaveContext.n64ddFlag &&
-                        Randomizer_GetSettingValue(RSK_SHUFFLE_COWS) &&
+                    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_COWS) &&
                         !EnCow_HasBeenMilked(this, play)) {
                         EnCow_SetCowMilked(this, play);
                         // setting the ocarina mode here prevents intermittent issues
@@ -450,6 +451,6 @@ void func_809E0070(Actor* thisx, PlayState* play) {
     EnCow* this = (EnCow*)thisx;
 
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, NULL, this);
+    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount, NULL,
+                          NULL, this);
 }

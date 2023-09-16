@@ -8,11 +8,7 @@ struct EnFd;
 
 typedef void (*EnFdActionFunc)(struct EnFd* this, PlayState* play);
 
-typedef enum {
-    FD_EFFECT_NONE,
-    FD_EFFECT_FLAME,
-    FD_EFFECT_DOT
-} FDEffectType;
+typedef enum { FD_EFFECT_NONE, FD_EFFECT_FLAME, FD_EFFECT_DOT } FDEffectType;
 
 typedef struct {
     /* 0x0000 */ u8 type;
@@ -25,7 +21,7 @@ typedef struct {
     /* 0x0014 */ Vec3f pos;
     /* 0x0020 */ Vec3f velocity;
     /* 0x002C */ Vec3f accel;
-                 u32 epoch;
+    u32 epoch;
 } EnFdEffect; // size = 0x38
 
 typedef struct EnFd {

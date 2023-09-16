@@ -139,7 +139,7 @@ static const ALIGN_ASSET(2) char rGfxPrintFontDataAlt[] = drGfxPrintFontDataAlt;
 // OTRTODO: this isn't as clean as it could be if we implemented
 // the GfxPrint texture extraction to `.otr` as described in
 // https://github.com/HarbourMasters/Shipwright/issues/2762
-typedef enum {hardcoded, otrDefault, otrAlt} font_texture_t;
+typedef enum { hardcoded, otrDefault, otrAlt } font_texture_t;
 font_texture_t GfxPrint_TextureToUse() {
     if (CVarGetInteger("gAltAssets", 0) && ResourceMgr_FileExists(rGfxPrintFontDataAlt)) {
         // If we have alt assets enabled, and we have alt prefixed font texture, use that
@@ -164,25 +164,24 @@ void GfxPrint_Setup(GfxPrint* this) {
                         G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE,
                     G_AC_NONE | G_ZS_PRIM | G_RM_XLU_SURF | G_RM_XLU_SURF2);
     gDPSetCombineMode(this->dList++, G_CC_DECALRGBA, G_CC_DECALRGBA);
-    
-
 
     if (GfxPrint_TextureToUse() == hardcoded) {
-        gDPLoadTextureBlock_4b(this->dList++, sGfxPrintFontData, G_IM_FMT_CI, width, height, 0, G_TX_NOMIRROR | G_TX_WRAP,
-                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock_4b(this->dList++, sGfxPrintFontData, G_IM_FMT_CI, width, height, 0,
+                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                               G_TX_NOLOD, G_TX_NOLOD);
     } else {
-        gDPLoadTextureBlock_4b(this->dList++, 
+        gDPLoadTextureBlock_4b(this->dList++,
                                GfxPrint_TextureToUse() == otrAlt ? rGfxPrintFontDataAlt : rGfxPrintFontData,
-                               G_IM_FMT_CI, width * 4, height, 0, G_TX_NOMIRROR | G_TX_WRAP,
-                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                               G_IM_FMT_CI, width * 4, height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                               G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     }
-    
+
     gDPLoadTLUT(this->dList++, 64, 256, sGfxPrintFontTLUT);
 
     for (i = 1; i < 4; i++) {
         if (GfxPrint_TextureToUse() != hardcoded) {
-            gDPSetTile(this->dList++, G_IM_FMT_RGBA, G_IM_SIZ_4b, 1, 0, i * 2, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-                       G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
+            gDPSetTile(this->dList++, G_IM_FMT_RGBA, G_IM_SIZ_4b, 1, 0, i * 2, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                       G_TX_NOMASK, G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
         } else {
             gDPSetTile(this->dList++, G_IM_FMT_CI, G_IM_SIZ_4b, 1, 0, i * 2, i, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                        G_TX_NOLOD, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOLOD);
@@ -268,7 +267,8 @@ void GfxPrint_PrintCharImpl(GfxPrint* this, u8 c) {
                             (this->posY + 32) << 1, tile, (u16)(c & 4) * 64, (u16)(c >> 3) * 256, 1 << 9, 1 << 9);
     } else {
         gSPTextureRectangle(this->dList++, this->posX, this->posY, this->posX + 32, this->posY + 32,
-                            GfxPrint_TextureToUse() != hardcoded ? 0 : tile, (GfxPrint_TextureToUse() != hardcoded ? ((128 * 4) * offset) : 0) + (u16)((c & 4) * 64),
+                            GfxPrint_TextureToUse() != hardcoded ? 0 : tile,
+                            (GfxPrint_TextureToUse() != hardcoded ? ((128 * 4) * offset) : 0) + (u16)((c & 4) * 64),
                             (u16)(c >> 3) * 256, 1 << 10, 1 << 10);
     }
 

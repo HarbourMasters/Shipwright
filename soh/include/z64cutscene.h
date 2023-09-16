@@ -4,17 +4,17 @@
 #include <libultraship/libultra.h>
 
 typedef struct {
-    /* 0x00 */ u16 entrance;       // entrance index upon which the cutscene should trigger
-    /* 0x02 */ u8  ageRestriction; // 0 for adult only, 1 for child only, 2 for both ages
-    /* 0x03 */ u8  flag;           // eventChkInf flag bound to the entrance cutscene
-    /* 0x04 */ void* segAddr;      // segment offset location of the cutscene
-} EntranceCutscene; // size = 0x8
+    /* 0x00 */ u16 entrance;      // entrance index upon which the cutscene should trigger
+    /* 0x02 */ u8 ageRestriction; // 0 for adult only, 1 for child only, 2 for both ages
+    /* 0x03 */ u8 flag;           // eventChkInf flag bound to the entrance cutscene
+    /* 0x04 */ void* segAddr;     // segment offset location of the cutscene
+} EntranceCutscene;               // size = 0x8
 
 typedef struct {
-    /* 0x00 */ s8    continueFlag;
-    /* 0x01 */ s8    cameraRoll;
-    /* 0x02 */ u16   nextPointFrame;
-    /* 0x04 */ f32   viewAngle; // in degrees
+    /* 0x00 */ s8 continueFlag;
+    /* 0x01 */ s8 cameraRoll;
+    /* 0x02 */ u16 nextPointFrame;
+    /* 0x04 */ f32 viewAngle; // in degrees
     /* 0x08 */ Vec3s pos;
 } CutsceneCameraPoint; // size = 0x10
 
@@ -44,7 +44,7 @@ typedef struct {
 } CsCmdEnvLighting; // size = 0x6
 
 typedef struct {
-    /* 0x00 */ u16  sequence;
+    /* 0x00 */ u16 sequence;
     /* 0x02 */ u16 startFrame;
     /* 0x04 */ u16 endFrame;
 } CsCmdMusicChange; // size = 0x6
@@ -59,17 +59,17 @@ typedef struct {
     /* 0x00 */ u16 unk_00;
     /* 0x02 */ u16 startFrame;
     /* 0x04 */ u16 endFrame;
-    /* 0x06 */ u8  unk_06;
-    /* 0x07 */ u8  unk_07;
-    /* 0x08 */ u8  unk_08;
+    /* 0x06 */ u8 unk_06;
+    /* 0x07 */ u8 unk_07;
+    /* 0x08 */ u8 unk_08;
 } CsCmdUnknown9; // size = 0xA
 
 typedef struct {
     /* 0x00 */ u16 unk_00;
     /* 0x02 */ u16 startFrame;
     /* 0x04 */ u16 endFrame;
-    /* 0x06 */ u8  hour;
-    /* 0x07 */ u8  minute;
+    /* 0x06 */ u8 hour;
+    /* 0x07 */ u8 minute;
 } CsCmdDayTime; // size = 0x8
 
 typedef struct {
@@ -137,21 +137,21 @@ typedef enum {
 
 /**
  * Special type for blocks of cutscene data, asm-processor checks
- * arrays for CutsceneData type and converts floats within the array 
- * to their IEEE-754 representation. The array must close with }; 
+ * arrays for CutsceneData type and converts floats within the array
+ * to their IEEE-754 representation. The array must close with };
  * on its own line.
- * 
+ *
  * Files that contain this type that are included in other C files
  * must include an 'EARLY' qualifier to inform asm-processor that it
  * must recursively process that include.
- * 
+ *
  * Example: #include "file.c" EARLY
  */
 typedef union CutsceneData {
     s32 i;
     f32 f;
     s16 s[2];
-    s8  b[4];
+    s8 b[4];
 } CutsceneData;
 
 #define CS_CMD_CONTINUE 0
@@ -174,9 +174,9 @@ typedef enum {
     /* 0x0C */ DEATH_MOUNTAIN_TRAIL_AFTER_GORON_RUBY,
     /* 0x0D */ ZORAS_FOUNTAIN_AFTER_ZORAS_SAPPHIRE,
     /* 0x0E */ KOKIRI_FOREST_AFTER_KOKIRI_EMERALD,
-    /* 0x0F */ TEMPLE_OF_TIME_KOKIRI_EMERALD, //unused
-    /* 0x10 */ TEMPLE_OF_TIME_GORON_RUBY, //unused
-    /* 0x11 */ TEMPLE_OF_TIME_ZORAS_SAPPHIRE, //unused
+    /* 0x0F */ TEMPLE_OF_TIME_KOKIRI_EMERALD, // unused
+    /* 0x10 */ TEMPLE_OF_TIME_GORON_RUBY,     // unused
+    /* 0x11 */ TEMPLE_OF_TIME_ZORAS_SAPPHIRE, // unused
     /* 0x12 */ TEMPLE_OF_TIME_AFTER_USE_MS_FIRST,
     /* 0x13 */ DEATH_MOUNTAIN_TRAIL_AFTER_INTRO,
     /* 0x14 */ INVALID_DESTINATION_14,
@@ -185,21 +185,21 @@ typedef enum {
     /* 0x17 */ CUTSCENE_MAP_CURSE_YOU,
     /* 0x18 */ JABU_JABU_INTRO,
     /* 0x19 */ CHAMBER_OF_SAGES_LIGHT_MEDALLION,
-    /* 0x1A */ TEMPLE_OF_TIME_KOKIRI_EMERALD_2, //duplicate of 0x000F
-    /* 0x1B */ TEMPLE_OF_TIME_GORON_RUBY_2, //duplicate of 0x0010
-    /* 0x1C */ TEMPLE_OF_TIME_ZORAS_SAPPHIRE_2, //duplicate of 0x0011
+    /* 0x1A */ TEMPLE_OF_TIME_KOKIRI_EMERALD_2, // duplicate of 0x000F
+    /* 0x1B */ TEMPLE_OF_TIME_GORON_RUBY_2,     // duplicate of 0x0010
+    /* 0x1C */ TEMPLE_OF_TIME_ZORAS_SAPPHIRE_2, // duplicate of 0x0011
     /* 0x1D */ CHAMBER_OF_SAGES_FOREST_MEDALLION,
     /* 0x1E */ CHAMBER_OF_SAGES_FIRE_MEDALLION,
     /* 0x1F */ CHAMBER_OF_SAGES_WATER_MEDALLION,
-    /* 0x20 */ HYRULE_FIELD_FLASHBACK, //lacs part 4
+    /* 0x20 */ HYRULE_FIELD_FLASHBACK, // lacs part 4
     /* 0x21 */ HYRULE_FIELD_AFTER_LAKE_HYLIA_OWL,
     /* 0x22 */ CUTSCENE_MAP_GANON_AFTER_USE_MS,
     /* 0x23 */ HYRULE_FIELD_INTRO_ZELDA_ESCAPE,
     /* 0x24 */ INVALID_DESTINATION_24,
     /* 0x25 */ INVALID_DESTINATION_25,
-    /* 0x26 */ CUTSCENE_MAP_SHEIKAH_LEGEND, //lacs part 2
-    /* 0x27 */ TEMPLE_OF_TIME_ZELDA_REVEAL, //lacs part 3
-    /* 0x28 */ TEMPLE_OF_TIME_GET_LIGHT_ARROWS, //lacs part 5
+    /* 0x26 */ CUTSCENE_MAP_SHEIKAH_LEGEND,     // lacs part 2
+    /* 0x27 */ TEMPLE_OF_TIME_ZELDA_REVEAL,     // lacs part 3
+    /* 0x28 */ TEMPLE_OF_TIME_GET_LIGHT_ARROWS, // lacs part 5
     /* 0x29 */ LAKE_HYLIA_AFTER_BLUE_WARP,
     /* 0x2A */ KAKARIKO_VILLAGE_DRAIN_WELL,
     /* 0x2B */ WINDMILL_AFTER_DRAIN_WELL,

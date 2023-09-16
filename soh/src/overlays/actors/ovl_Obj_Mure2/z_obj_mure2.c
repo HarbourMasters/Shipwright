@@ -113,8 +113,7 @@ void ObjMure2_SpawnActors(ObjMure2* this, PlayState* play) {
     for (i = 0; i < D_80B9A818[actorNum]; i++) {
         if (this->actorSpawnPtrList[i] != NULL) {
             // "Warning : I already have a child (%s %d)(arg_data 0x%04x)"
-            osSyncPrintf("Warning : 既に子供がいる(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
-                         this->actor.params);
+            osSyncPrintf("Warning : 既に子供がいる(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__, this->actor.params);
             continue;
         }
 
@@ -210,7 +209,7 @@ void func_80B9A6F8(ObjMure2* this, PlayState* play) {
     }
 
     if ((sDistSquared2[this->actor.params & 3] * this->unk_184) <=
-            Math3D_Dist1DSq(this->actor.projectedPos.x, this->actor.projectedPos.z)) {
+        Math3D_Dist1DSq(this->actor.projectedPos.x, this->actor.projectedPos.z)) {
         this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
         ObjMure2_CleanupAndDie(this, play);
         func_80B9A658(this);

@@ -8,7 +8,7 @@ typedef struct EnFloormas EnFloormas;
 
 typedef void (*EnFloormasActionFunc)(EnFloormas* this, PlayState* play);
 
-struct EnFloormas{
+struct EnFloormas {
     /* 0x0000 */ Actor actor;
     /* 0x014C */ SkelAnime skelAnime;
     /* 0x0190 */ EnFloormasActionFunc actionFunc;

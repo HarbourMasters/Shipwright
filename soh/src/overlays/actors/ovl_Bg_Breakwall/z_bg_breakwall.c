@@ -106,7 +106,8 @@ void BgBreakwall_Init(Actor* thisx, PlayState* play) {
     s32 wallType = ((this->dyna.actor.params >> 13) & 3) & 0xFF;
 
     // Initialize this with the mud wall, so it can't be affected by toggling while the actor is loaded
-    blueFireArrowsEnabledOnMudwallLoad = CVarGetInteger("gBlueFireArrows", 0) || (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_BLUE_FIRE_ARROWS));
+    blueFireArrowsEnabledOnMudwallLoad = CVarGetInteger("gBlueFireArrows", 0) ||
+                                         (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_BLUE_FIRE_ARROWS));
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
@@ -157,8 +158,8 @@ void BgBreakwall_Destroy(Actor* thisx, PlayState* play) {
  * Spawns fragments using ACTOR_EN_A_OBJ whenever the wall or floor is exploded.
  * Returns the last spawned actor
  */
-Actor* BgBreakwall_SpawnFragments(PlayState* play, BgBreakwall* this, Vec3f* pos, f32 velocity, f32 scaleY,
-                                  f32 scaleX, s32 count, f32 accel) {
+Actor* BgBreakwall_SpawnFragments(PlayState* play, BgBreakwall* this, Vec3f* pos, f32 velocity, f32 scaleY, f32 scaleX,
+                                  s32 count, f32 accel) {
     Actor* actor;
     Vec3f actorPos;
     s32 k;
@@ -205,10 +206,9 @@ Actor* BgBreakwall_SpawnFragments(PlayState* play, BgBreakwall* this, Vec3f* pos
         for (j = 3; j >= 0; j--) {
             for (k = 3; k >= 0; k--) {
                 Matrix_MultVec3f(&actorPosList[j][k], &actorPos);
-                actor =
-                    Actor_Spawn(&play->actorCtx, play, ACTOR_EN_A_OBJ, Rand_CenteredFloat(20.0f) + actorPos.x,
-                                Rand_CenteredFloat(20.0f) + actorPos.y, Rand_CenteredFloat(20.0f) + actorPos.z,
-                                actorRotList[k].x, actorRotList[k].y + angle1, actorRotList[k].z, 0x000B, true);
+                actor = Actor_Spawn(&play->actorCtx, play, ACTOR_EN_A_OBJ, Rand_CenteredFloat(20.0f) + actorPos.x,
+                                    Rand_CenteredFloat(20.0f) + actorPos.y, Rand_CenteredFloat(20.0f) + actorPos.z,
+                                    actorRotList[k].x, actorRotList[k].y + angle1, actorRotList[k].z, 0x000B, true);
 
                 if ((j & 1) == 0) {
                     func_80033480(play, &actorPos, velocity * 200.0f, 1, 650, 150, 1);
@@ -266,14 +266,13 @@ void BgBreakwall_Wait(BgBreakwall* this, PlayState* play) {
         if (this->collider.base.acFlags & AC_HIT) {
             if ((this->collider.base.ac != NULL) && (this->collider.base.ac->id == ACTOR_EN_ARROW)) {
 
-                if (this->collider.base.ac->child != NULL &&
-                    this->collider.base.ac->child->id == ACTOR_ARROW_ICE) {
+                if (this->collider.base.ac->child != NULL && this->collider.base.ac->child->id == ACTOR_ARROW_ICE) {
                     blueFireArrowHit = true;
                 }
             }
         }
     }
-    
+
     // Break the floor immediately in Boss Rush so the player can jump in the hole immediately.
     if (this->collider.base.acFlags & 2 || blueFireArrowHit || gSaveContext.isBossRush) {
         Vec3f effectPos;
@@ -345,8 +344,7 @@ void BgBreakwall_Draw(Actor* thisx, PlayState* play) {
         OPEN_DISPS(play->state.gfxCtx);
 
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, this->bombableWallDList);
 
         if (this->colType >= 0) {

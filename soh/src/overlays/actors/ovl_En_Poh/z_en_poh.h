@@ -8,17 +8,9 @@ struct EnPoh;
 
 typedef void (*EnPohActionFunc)(struct EnPoh*, PlayState*);
 
-typedef enum {
-    EN_POH_NORMAL,
-    EN_POH_RUPEE,
-    EN_POH_SHARP,
-    EN_POH_FLAT
-} EnPohType;
+typedef enum { EN_POH_NORMAL, EN_POH_RUPEE, EN_POH_SHARP, EN_POH_FLAT } EnPohType;
 
-typedef enum {
-    EN_POH_INFO_NORMAL,
-    EN_POH_INFO_COMPOSER
-} EnPohInfoType;
+typedef enum { EN_POH_INFO_NORMAL, EN_POH_INFO_COMPOSER } EnPohInfoType;
 
 typedef struct {
     /* 0x0000 */ Color_RGB8 primColor;

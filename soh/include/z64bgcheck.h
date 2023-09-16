@@ -6,7 +6,7 @@ struct Actor;
 struct DynaPolyActor;
 
 #define COLPOLY_NORMAL_FRAC (1.0f / SHT_MAX)
-#define COLPOLY_SNORMAL(x) ((s16)((x) * SHT_MAX))
+#define COLPOLY_SNORMAL(x) ((s16)((x)*SHT_MAX))
 #define COLPOLY_GET_NORMAL(n) ((n)*COLPOLY_NORMAL_FRAC)
 #define COLPOLY_VIA_FLAG_TEST(vIA, flags) ((vIA) & (((flags)&7) << 13))
 #define COLPOLY_VTX_INDEX(vI) ((vI)&0x1FFF)
@@ -49,7 +49,7 @@ typedef struct {
                              // Value ranges from -0x7FFF to 0x7FFF, representing -1.0 to 1.0; 0x8000 is invalid
 
     /* 0x0E */ s16 dist; // Plane distance from origin along the normal
-} CollisionPoly; // size = 0x10
+} CollisionPoly;         // size = 0x10
 
 typedef struct {
     /* 0x00 */ u16 cameraSType;
@@ -90,7 +90,7 @@ typedef struct {
     /* 0x24 */ u16 numWaterBoxes;
     /* 0x28 */ WaterBox* waterBoxes;
     size_t cameraDataListLen; // OTRTODO: Added to allow for bounds checking the cameraDataList.
-} CollisionHeader; // original name: BGDataInfo
+} CollisionHeader;            // original name: BGDataInfo
 
 typedef struct {
     s16 polyId;
@@ -163,7 +163,7 @@ typedef struct CollisionContext {
     /* 0x44 */ SSNodeList polyNodes;
     /* 0x50 */ DynaCollisionContext dyna;
     /* 0x1460 */ u32 memSize; // Size of all allocated memory plus CollisionContext
-} CollisionContext; // size = 0x1464
+} CollisionContext;           // size = 0x1464
 
 typedef struct {
     /* 0x00 */ struct PlayState* play;

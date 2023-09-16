@@ -3,7 +3,7 @@
 
 static PlayState* sPlayState;
 
-char** cameraStrings = {0};
+char** cameraStrings = { 0 };
 
 #define ACTION_E 0
 #define ACTION_SAVE 1
@@ -25,7 +25,6 @@ s32 DbCamera_UpdateDemoControl(DbCamera* dbCamera, Camera* cam);
 static DbCamera* sDbCamPtr;
 static s16 D_8016110C;
 static DbCameraAnim sDbCamAnim;
-
 
 Vec3f* DbCamera_AddVecSph(Vec3f* out, Vec3f* in, VecSph* sph) {
     Vec3f ret;
@@ -1226,11 +1225,14 @@ void DbCamera_Update(DbCamera* dbCamera, Camera* cam) {
                         }
                     }
 
-                    DbCamera_SetTextValue(dbCamera->sub.lookAt[dbCamera->sub.unkIdx].viewAngle, &cameraStrings[62][10], 3);
+                    DbCamera_SetTextValue(dbCamera->sub.lookAt[dbCamera->sub.unkIdx].viewAngle, &cameraStrings[62][10],
+                                          3);
                     func_8006376C(0x0E, 0x14, (dbCamera->sub.unk_0A == 0) ? 7 : 4, cameraStrings[62]);
-                    DbCamera_SetTextValue(dbCamera->sub.lookAt[dbCamera->sub.unkIdx].nextPointFrame, &cameraStrings[63][10], 3);
+                    DbCamera_SetTextValue(dbCamera->sub.lookAt[dbCamera->sub.unkIdx].nextPointFrame,
+                                          &cameraStrings[63][10], 3);
                     func_8006376C(0x0E, 0x15, (dbCamera->sub.unk_0A == 1) ? 7 : 4, cameraStrings[63]);
-                    DbCamera_SetTextValue(dbCamera->sub.lookAt[dbCamera->sub.unkIdx].cameraRoll, &cameraStrings[64][10], 3);
+                    DbCamera_SetTextValue(dbCamera->sub.lookAt[dbCamera->sub.unkIdx].cameraRoll, &cameraStrings[64][10],
+                                          3);
                     func_8006376C(0x0E, 0x16, (dbCamera->sub.unk_0A == 2) ? 7 : 4, cameraStrings[64]);
                     func_8006376C(0xF, 0x17, (dbCamera->sub.unk_0A == 3) ? 7 : 4,
                                   (dbCamera->sub.mode == 1)   ? cameraStrings[13]
@@ -1959,7 +1961,8 @@ s32 DbCamera_UpdateDemoControl(DbCamera* dbCamera, Camera* cam) {
                         func_8006376C(0x12, 0x17, sDbCameraColors[idx1], cameraStrings[33]);
                         func_8006376C(0x12, 0x18, sDbCameraColors[idx1 - 1], cameraStrings[34]);
                         func_8006376C(0x12, 0x19, sDbCameraColors[idx1 - 2], cameraStrings[35]);
-                        func_8006376C(0xE, dbCamera->sub.demoCtrlActionIdx + 0x16, 7, cameraStrings[11]); // current selection
+                        func_8006376C(0xE, dbCamera->sub.demoCtrlActionIdx + 0x16, 7,
+                                      cameraStrings[11]); // current selection
                         func_8006376C(0xD, 0x1A, 5, cameraStrings[32]);
                         func_8006376C(0x14, 0x1A, 5, cameraStrings[36]);
 

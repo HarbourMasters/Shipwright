@@ -1251,9 +1251,9 @@ s32 Audio_SetGanonDistVol(u8 targetVol);
 void Audio_PlayFanfare_Rando(GetItemEntry getItem);
 
 // Right stick as virtual C buttons
-#define RSTICK_UP    0x100000
-#define RSTICK_DOWN  0x200000
-#define RSTICK_LEFT  0x400000
+#define RSTICK_UP 0x100000
+#define RSTICK_DOWN 0x200000
+#define RSTICK_LEFT 0x400000
 #define RSTICK_RIGHT 0x800000
 
 // Function originally not called, so repurposing for control mapping
@@ -1286,13 +1286,8 @@ void Audio_OcaUpdateBtnMap(bool customControls, bool dpad, bool rStick) {
         sOcarinaF4BtnMap |= RSTICK_DOWN;
     }
 
-    sOcarinaAllowedBtnMask = (
-        sOcarinaD5BtnMap |
-        sOcarinaB4BtnMap |
-        sOcarinaA4BtnMap |
-        sOcarinaF4BtnMap |
-        sOcarinaD4BtnMap
-    );
+    sOcarinaAllowedBtnMask =
+        (sOcarinaD5BtnMap | sOcarinaB4BtnMap | sOcarinaA4BtnMap | sOcarinaF4BtnMap | sOcarinaD4BtnMap);
 }
 
 void Audio_GetOcaInput(void) {
@@ -1546,10 +1541,8 @@ void func_800ED200(void) {
         disableSongBtnMap = BTN_L;
     }
 
-    if (
-        CHECK_BTN_ANY(sCurOcarinaBtnPress, disableSongBtnMap)
-        && CHECK_BTN_ANY(sCurOcarinaBtnPress, sOcarinaAllowedBtnMask)
-    ) {
+    if (CHECK_BTN_ANY(sCurOcarinaBtnPress, disableSongBtnMap) &&
+        CHECK_BTN_ANY(sCurOcarinaBtnPress, sOcarinaAllowedBtnMask)) {
         func_800ECC04((u16)D_80130F3C);
         return;
     }
@@ -1877,7 +1870,6 @@ void func_800EDD68(u8 arg0) {
         i--;
         lastNote = song[i].noteIdx;
     }
-
 
     if (sRecordSongPos != (i + 1)) {
         sRecordSongPos = i + 2;
@@ -3984,7 +3976,7 @@ void Audio_PlayFanfare_Rando(GetItemEntry getItem) {
             // If we get a skulltula token or the "WINNER" heart, play "get small item"
             // Also make sure "WINNER" heart is not the 4th heart piece.
             if (itemId == ITEM_SKULL_TOKEN || (getItemId == GI_HEART_PIECE_WIN && itemId == ITEM_HEART_PIECE_2 &&
-                (gSaveContext.inventory.questItems & 0xF0000000) != 0x40000000)) {
+                                               (gSaveContext.inventory.questItems & 0xF0000000) != 0x40000000)) {
                 temp1 = NA_BGM_SMALL_ITEM_GET | 0x900;
             }
             // If the setting is toggled on and we get special quest items (longer fanfares):
@@ -4003,9 +3995,9 @@ void Audio_PlayFanfare_Rando(GetItemEntry getItem) {
                 }
             }
             Audio_PlayFanfare(temp1);
-        } 
+        }
     } else if (getItem.modIndex == MOD_RANDOMIZER) {
-        if ((itemId >= RG_BOTTLE_WITH_RED_POTION && itemId <= RG_BOTTLE_WITH_BIG_POE) || 
+        if ((itemId >= RG_BOTTLE_WITH_RED_POTION && itemId <= RG_BOTTLE_WITH_BIG_POE) ||
             (itemId >= RG_DEKU_TREE_MAP && itemId <= RG_GANONS_CASTLE_SMALL_KEY)) {
             temp1 = NA_BGM_ITEM_GET | 0x900;
         } else {
@@ -4219,8 +4211,7 @@ void func_800F4870(u8 arg0) {
 }
 
 // (name derived from debug strings, should probably update. used in ganon/ganon_boss scenes)
-s32 Audio_SetGanonDistVol(u8 targetVol)
-{
+s32 Audio_SetGanonDistVol(u8 targetVol) {
     u8 phi_v0;
     u16 phi_v0_2;
     u8 i;
@@ -4657,8 +4648,7 @@ void func_800F5C2C(void) {
     sPrevMainBgmSeqId = NA_BGM_DISABLED;
 }
 
-void Audio_PlayFanfare(u16 seqId)
-{
+void Audio_PlayFanfare(u16 seqId) {
     u16 curSeqId;
     u32 outNumFonts;
     u8* curFontId;
@@ -4673,17 +4663,17 @@ void Audio_PlayFanfare(u16 seqId)
     curFontId = func_800E5E84(curSeqId & 0xFF, &outNumFonts);
     requestedFontId = func_800E5E84(seqId & 0xFF, &outNumFonts);
 
-	if (!curFontId || !requestedFontId) {
-		// disable BGM, we're about to null deref!
-		D_8016B9F4 = 1;
-	} else {
-		if ((curSeqId == NA_BGM_DISABLED) || (*curFontId == *requestedFontId)) {
-			D_8016B9F4 = 1;
-		} else {
-			D_8016B9F4 = 5;
-			Audio_SeqCmd1(SEQ_PLAYER_FANFARE, 0);
-		}
-	}
+    if (!curFontId || !requestedFontId) {
+        // disable BGM, we're about to null deref!
+        D_8016B9F4 = 1;
+    } else {
+        if ((curSeqId == NA_BGM_DISABLED) || (*curFontId == *requestedFontId)) {
+            D_8016B9F4 = 1;
+        } else {
+            D_8016B9F4 = 5;
+            Audio_SeqCmd1(SEQ_PLAYER_FANFARE, 0);
+        }
+    }
     D_8016B9F6 = seqId;
 }
 

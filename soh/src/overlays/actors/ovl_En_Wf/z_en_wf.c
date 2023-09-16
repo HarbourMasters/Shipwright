@@ -390,7 +390,8 @@ void EnWf_WaitToAppear(EnWf* this, PlayState* play) {
 
             // Disable miniboss music with Enemy Randomizer because the music would keep
             // playing if the enemy was never defeated, which is common with Enemy Randomizer.
-            if ((this->actor.params != WOLFOS_NORMAL) && (this->switchFlag != 0xFF) && !CVarGetInteger("gRandomizedEnemies", 0)) {
+            if ((this->actor.params != WOLFOS_NORMAL) && (this->switchFlag != 0xFF) &&
+                !CVarGetInteger("gRandomizedEnemies", 0)) {
                 func_800F5ACC(NA_BGM_MINI_BOSS);
             }
         }
@@ -1230,8 +1231,8 @@ void EnWf_Die(EnWf* this, PlayState* play) {
             pos.x = Rand_CenteredFloat(60.0f) + this->actor.world.pos.x;
             pos.z = Rand_CenteredFloat(60.0f) + this->actor.world.pos.z;
             pos.y = Rand_CenteredFloat(50.0f) + (this->actor.world.pos.y + 20.0f);
-            EffectSsDeadDb_Spawn(play, &pos, &velAndAccel, &velAndAccel, 100, 0, 255, 255, 255, 255, 0, 0, 255, 1,
-                                 9, true);
+            EffectSsDeadDb_Spawn(play, &pos, &velAndAccel, &velAndAccel, 100, 0, 255, 255, 255, 255, 0, 0, 255, 1, 9,
+                                 true);
         }
     }
 }
@@ -1449,8 +1450,8 @@ void EnWf_Draw(Actor* thisx, PlayState* play) {
             gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sWolfosWhiteEyeTextures[this->eyeIndex]));
         }
 
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnWf_OverrideLimbDraw, EnWf_PostLimbDraw, &this->actor);
+        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+                              EnWf_OverrideLimbDraw, EnWf_PostLimbDraw, &this->actor);
 
         if (this->fireTimer != 0) {
             this->actor.colorFilterTimer++;

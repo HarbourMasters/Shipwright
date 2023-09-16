@@ -29,7 +29,7 @@ typedef struct EnDodongo {
     /* 0x034C */ Vec3f bodyScale;
     /* 0x0358 */ Vec3f icePos[9];
     /* 0x03C4 */ Color_RGBA8 bombSmokePrimColor;
-    /* 0x03C8 */ Color_RGBA8 bombSmokeEnvColor; 
+    /* 0x03C8 */ Color_RGBA8 bombSmokeEnvColor;
     /* 0x03CC */ u8 damageEffect;
     /* 0x03D0 */ s32 blureIdx;
     /* 0x03D4 */ ColliderQuad colliderAT;
@@ -39,9 +39,6 @@ typedef struct EnDodongo {
     /* 0x05A8 */ ColliderJntSphElement sphElements[6];
 } EnDodongo; // size = 0x0728
 
-typedef enum {
-    EN_DODONGO_NORMAL = -1,
-    EN_DODONGO_SMOKE_DEATH
-} EnDodongoParam;
+typedef enum { EN_DODONGO_NORMAL = -1, EN_DODONGO_SMOKE_DEATH } EnDodongoParam;
 
 #endif

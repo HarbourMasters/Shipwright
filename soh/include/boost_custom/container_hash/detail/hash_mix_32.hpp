@@ -7,22 +7,18 @@
 #include <cstddef>
 #include <climits>
 
-namespace boost
-{
-namespace hash_detail
-{
+namespace boost {
+namespace hash_detail {
 
-template<uint32_t Bits> struct hash_mix_impl_32;
+template <uint32_t Bits> struct hash_mix_impl_32;
 
 // hash_mix for 32 bit
 //
 // We use the "best xmxmx" implementation from
 // https://github.com/skeeto/hash-prospector/issues/19
 
-template<> struct hash_mix_impl_32<32>
-{
-    inline static boost::uint32_t fn( boost::uint32_t x )
-    {
+template <> struct hash_mix_impl_32<32> {
+    inline static boost::uint32_t fn(boost::uint32_t x) {
         boost::uint32_t const m1 = 0x21f0aaad;
         boost::uint32_t const m2 = 0x735a2d97;
 
@@ -36,9 +32,8 @@ template<> struct hash_mix_impl_32<32>
     }
 };
 
-inline uint32_t hash_mix_32( uint32_t v )
-{
-    return hash_mix_impl_32<32>::fn( v );
+inline uint32_t hash_mix_32(uint32_t v) {
+    return hash_mix_impl_32<32>::fn(v);
 }
 
 } // namespace hash_detail

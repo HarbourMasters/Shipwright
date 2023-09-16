@@ -8,7 +8,7 @@
 #define ALIGN256(val) (((val) + 0xFF) & ~0xFF)
 
 #ifdef __GNUC__
-#define ALIGNED8 __attribute__ ((aligned (8)))
+#define ALIGNED8 __attribute__((aligned(8)))
 #else
 #define ALIGNED8
 #endif

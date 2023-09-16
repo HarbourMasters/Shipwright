@@ -57,7 +57,7 @@ typedef struct EnWf {
     /* 0x0188 */ SkelAnime skelAnime;
     /* 0x01CC */ Vec3s jointTable[WOLFOS_LIMB_MAX];
     /* 0x0250 */ Vec3s morphTable[WOLFOS_LIMB_MAX];
-    /* 0x02D4 */ s32 action; // Used instead of checking the actionFunc directly (but also in range comparisons)
+    /* 0x02D4 */ s32 action;      // Used instead of checking the actionFunc directly (but also in range comparisons)
     /* 0x02D8 */ char unk_2D8[4]; // Unused
     /* 0x02DC */ EnWfActionFunc actionFunc;
     /* 0x02E0 */ s16 unk_2E0; // Used, but has no effect
@@ -67,9 +67,9 @@ typedef struct EnWf {
     /* 0x02E8 */ s32 actionTimer; // Used to make an action last for a certain amount of time
     /* 0x02EC */ f32 runSpeed;
     /* 0x02F0 */ char unk_2F0[4];
-    /* 0x02F4 */ f32 unk_2F4; // Set and not used
+    /* 0x02F4 */ f32 unk_2F4;     // Set and not used
     /* 0x02F8 */ s16 slashStatus; // Whether to slash again or not, and whether to cry
-    /* 0x02FA */ s16 unk_2FA; // Set and not used
+    /* 0x02FA */ s16 unk_2FA;     // Set and not used
     /* 0x02FC */ s16 switchFlag;
     /* 0x02FE */ s16 runAngle;
     /* 0x0300 */ s16 unk_300; // Set, but ineffectual (see comment in Draw)

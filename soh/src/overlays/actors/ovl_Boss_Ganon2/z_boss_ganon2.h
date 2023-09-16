@@ -4,7 +4,6 @@
 #include <libultraship/libultra.h>
 #include "global.h"
 
-
 typedef struct {
     /* 0x00 */ u8 type;
     /* 0x01 */ u8 unk_01;

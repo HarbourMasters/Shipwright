@@ -37,6 +37,4 @@ typedef enum {
     /* 0x02 */ FHGFLASH_SHOCK_PG
 } FhgFlashLightningParam;
 
-
-
 #endif

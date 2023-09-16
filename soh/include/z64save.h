@@ -11,41 +11,45 @@
 #include "soh/Enhancements/boss-rush/BossRushTypes.h"
 
 typedef enum {
-    /* 0x0 */ MAGIC_STATE_IDLE, // Regular gameplay
+    /* 0x0 */ MAGIC_STATE_IDLE,          // Regular gameplay
     /* 0x1 */ MAGIC_STATE_CONSUME_SETUP, // Sets the speed at which magic border flashes
-    /* 0x2 */ MAGIC_STATE_CONSUME, // Consume magic until target is reached or no more magic is available
+    /* 0x2 */ MAGIC_STATE_CONSUME,       // Consume magic until target is reached or no more magic is available
     /* 0x3 */ MAGIC_STATE_METER_FLASH_1, // Flashes border and freezes Dark Link
     /* 0x4 */ MAGIC_STATE_METER_FLASH_2, // Flashes border and draws yellow magic to preview target consumption
-    /* 0x5 */ MAGIC_STATE_RESET, // Reset colors and return to idle
+    /* 0x5 */ MAGIC_STATE_RESET,         // Reset colors and return to idle
     /* 0x6 */ MAGIC_STATE_METER_FLASH_3, // Flashes border with no additional behaviour
-    /* 0x7 */ MAGIC_STATE_CONSUME_LENS, // Magic slowly consumed by lens.
+    /* 0x7 */ MAGIC_STATE_CONSUME_LENS,  // Magic slowly consumed by lens.
     /* 0x8 */ MAGIC_STATE_STEP_CAPACITY, // Step `magicCapacity` to full capacity
-    /* 0x9 */ MAGIC_STATE_FILL, // Add magic until magicFillTarget is reached.
-    /* 0xA */ MAGIC_STATE_ADD // Add requested magic
+    /* 0x9 */ MAGIC_STATE_FILL,          // Add magic until magicFillTarget is reached.
+    /* 0xA */ MAGIC_STATE_ADD            // Add requested magic
 } MagicState;
 
 typedef enum {
-    /* 0 */ MAGIC_CONSUME_NOW, // Consume Magic immediately without preview
-    /* 1 */ MAGIC_CONSUME_WAIT_NO_PREVIEW, // Sets consume target but waits to consume. No yellow magic preview to target consumption. Unused
-    /* 2 */ MAGIC_CONSUME_NOW_ALT, // Identical behaviour to MAGIC_CONSUME_NOW. Unused
-    /* 3 */ MAGIC_CONSUME_LENS, // Lens consumption
-    /* 4 */ MAGIC_CONSUME_WAIT_PREVIEW, // Sets consume target but waits to consume. Draws yellow magic to target consumption
-    /* 5 */ MAGIC_ADD // Sets a target to add magic
+    /* 0 */ MAGIC_CONSUME_NOW,             // Consume Magic immediately without preview
+    /* 1 */ MAGIC_CONSUME_WAIT_NO_PREVIEW, // Sets consume target but waits to consume. No yellow magic preview to
+                                           // target consumption. Unused
+    /* 2 */ MAGIC_CONSUME_NOW_ALT,         // Identical behaviour to MAGIC_CONSUME_NOW. Unused
+    /* 3 */ MAGIC_CONSUME_LENS,            // Lens consumption
+    /* 4 */ MAGIC_CONSUME_WAIT_PREVIEW,    // Sets consume target but waits to consume. Draws yellow magic to target
+                                           // consumption
+    /* 5 */ MAGIC_ADD                      // Sets a target to add magic
 } MagicChangeType;
 
 #define MAGIC_NORMAL_METER 0x30
 #define MAGIC_DOUBLE_METER (2 * MAGIC_NORMAL_METER)
 
 typedef struct {
-    /* 0x00 */ u8 buttonItems[8]; // SOH [Enhancements] Changed from 4 to 8 to support Dpad equips
+    /* 0x00 */ u8 buttonItems[8];  // SOH [Enhancements] Changed from 4 to 8 to support Dpad equips
     /* 0x04 */ u8 cButtonSlots[7]; // SOH [Enhancements] Changed from 3 to 7 to support Dpad equips
-    /* 0x08 */ u16 equipment; // a mask where each nibble corresponds to a type of equipment `EquipmentType`, and each nibble is a piece `EquipValue*`
-} ItemEquips; // size = 0x0A
+    /* 0x08 */ u16 equipment; // a mask where each nibble corresponds to a type of equipment `EquipmentType`, and each
+                              // nibble is a piece `EquipValue*`
+} ItemEquips;                 // size = 0x0A
 
 typedef struct {
     /* 0x00 */ u8 items[24];
     /* 0x18 */ s8 ammo[16];
-    /* 0x28 */ u16 equipment; // a mask where each nibble corresponds to a type of equipment `EquipmentType`, and each bit to an owned piece `EquipInv*`
+    /* 0x28 */ u16 equipment; // a mask where each nibble corresponds to a type of equipment `EquipmentType`, and each
+                              // bit to an owned piece `EquipInv*`
     /* 0x2C */ u32 upgrades;
     /* 0x30 */ u32 questItems;
     /* 0x34 */ u8 dungeonItems[20];
@@ -169,20 +173,20 @@ typedef struct {
 
 typedef struct {
     /* 0x0000 */ s32 entranceIndex; // start of `save` substruct, originally called "memory"
-    /* 0x0004 */ s32 linkAge; // 0: Adult; 1: Child (see enum `LinkAge`)
+    /* 0x0004 */ s32 linkAge;       // 0: Adult; 1: Child (see enum `LinkAge`)
     /* 0x0008 */ s32 cutsceneIndex;
     /* 0x000C */ u16 dayTime; // "zelda_time"
     /* 0x0010 */ s32 nightFlag;
     /* 0x0014 */ s32 totalDays;
     /* 0x0018 */ s32 bgsDayCount; // increments with totalDays, can be cleared with `Environment_ClearBgsDayCount`
-    /* 0x001C */ char newf[6]; // string "ZELDAZ". start of `info` substruct, originally called "information"
+    /* 0x001C */ char newf[6];    // string "ZELDAZ". start of `info` substruct, originally called "information"
     /* 0x0022 */ u16 deaths;
     /* 0x0024 */ char playerName[8];
     /* 0x002C */ s16 n64ddFlag;
     /* 0x002E */ s16 healthCapacity; // "max_life"
-    /* 0x0030 */ s16 health; // "now_life"
-    /* 0x0032 */ s8 magicLevel; // 0 for no magic/new load, 1 for magic, 2 for double magic
-    /* 0x0033 */ s8 magic; // current magic available for use
+    /* 0x0030 */ s16 health;         // "now_life"
+    /* 0x0032 */ s8 magicLevel;      // 0 for no magic/new load, 1 for magic, 2 for double magic
+    /* 0x0033 */ s8 magic;           // current magic available for use
     /* 0x0034 */ s16 rupees;
     /* 0x0036 */ u16 swordHealth;
     /* 0x0038 */ u16 naviTimer;
@@ -206,8 +210,8 @@ typedef struct {
     /* 0x0EB4 */ char unk_EB4[0x4];
     /* 0x0EB8 */ s32 highScores[7];
     /* 0x0ED4 */ u16 eventChkInf[14]; // "event_chk_inf"
-    /* 0x0EF0 */ u16 itemGetInf[4]; // "item_get_inf"
-    /* 0x0EF8 */ u16 infTable[30]; // "inf_table"
+    /* 0x0EF0 */ u16 itemGetInf[4];   // "item_get_inf"
+    /* 0x0EF8 */ u16 infTable[30];    // "inf_table"
     /* 0x0F34 */ char unk_F34[0x04];
     /* 0x0F38 */ u32 worldMapAreaData; // "area_arrival"
     /* 0x0F3C */ char unk_F3C[0x4];
@@ -219,11 +223,11 @@ typedef struct {
     /* 0x1346 */ char unk_1346[0x02];
     /* 0x1348 */ HorseData horseData;
     /* 0x1352 */ u16 checksum; // "check_sum"
-    /* 0x1354 */ s32 fileNum; // "file_no"
+    /* 0x1354 */ s32 fileNum;  // "file_no"
     /* 0x1358 */ char unk_1358[0x0004];
     /* 0x135C */ s32 gameMode;
-    /* 0x1360 */ s32 sceneSetupIndex; // "counter" // Upstream TODO: sceneLayer
-    /* 0x1364 */ s32 respawnFlag; // "restart_flag"
+    /* 0x1360 */ s32 sceneSetupIndex;                   // "counter" // Upstream TODO: sceneLayer
+    /* 0x1364 */ s32 respawnFlag;                       // "restart_flag"
     /* 0x1368 */ RespawnData respawn[RESPAWN_MODE_MAX]; // "restart_data"
     /* 0x13BC */ f32 entranceSpeed;
     /* 0x13C0 */ u16 entranceSound;
@@ -244,19 +248,20 @@ typedef struct {
     /* 0x13DE */ char unk_13DE[0x0002];
     /* 0x13E0 */ u8 seqId;
     /* 0x13E1 */ u8 natureAmbienceId;
-    /* 0x13E2 */ u8 buttonStatus[9]; // SOH [Enhancements] Changed from 5 to 9 to support Dpad equips
-    /* 0x13E7 */ u8 unk_13E7; // alpha related
-    /* 0x13E8 */ u16 unk_13E8; // alpha type?
-    /* 0x13EA */ u16 unk_13EA; // also alpha type?
-    /* 0x13EC */ u16 unk_13EC; // alpha type counter?
-    /* 0x13EE */ u16 unk_13EE; // previous alpha type?
-    /* 0x13F0 */ s16 magicState; // determines magic meter behavior on each frame
-    /* 0x13F2 */ s16 prevMagicState; // used to resume the previous state after adding or filling magic
-    /* 0x13F4 */ s16 magicCapacity; // maximum magic available
-    /* 0x13F6 */ s16 magicFillTarget; // target used to fill magic. Target can either be full capacity (Magic_Fill, magic upgrades), or the saved magic amount (loading a file, game over)
-    /* 0x13F8 */ s16 magicTarget; // target for magic to step to when adding or consuming magic
-    /* 0x13FA */ u16 eventInf[4]; // "event_inf"
-    /* 0x1402 */ u16 mapIndex; // intended for maps/minimaps but commonly used as the dungeon index
+    /* 0x13E2 */ u8 buttonStatus[9];  // SOH [Enhancements] Changed from 5 to 9 to support Dpad equips
+    /* 0x13E7 */ u8 unk_13E7;         // alpha related
+    /* 0x13E8 */ u16 unk_13E8;        // alpha type?
+    /* 0x13EA */ u16 unk_13EA;        // also alpha type?
+    /* 0x13EC */ u16 unk_13EC;        // alpha type counter?
+    /* 0x13EE */ u16 unk_13EE;        // previous alpha type?
+    /* 0x13F0 */ s16 magicState;      // determines magic meter behavior on each frame
+    /* 0x13F2 */ s16 prevMagicState;  // used to resume the previous state after adding or filling magic
+    /* 0x13F4 */ s16 magicCapacity;   // maximum magic available
+    /* 0x13F6 */ s16 magicFillTarget; // target used to fill magic. Target can either be full capacity (Magic_Fill,
+                                      // magic upgrades), or the saved magic amount (loading a file, game over)
+    /* 0x13F8 */ s16 magicTarget;     // target for magic to step to when adding or consuming magic
+    /* 0x13FA */ u16 eventInf[4];     // "event_inf"
+    /* 0x1402 */ u16 mapIndex;        // intended for maps/minimaps but commonly used as the dungeon index
     /* 0x1404 */ u16 minigameState;
     /* 0x1406 */ u16 minigameScore; // "yabusame_total"
     /* 0x1408 */ char unk_1408[0x0001];
@@ -264,8 +269,9 @@ typedef struct {
     /* 0x140A */ u8 audioSetting;
     /* 0x140B */ char unk_140B[0x0001];
     /* 0x140C */ u8 zTargetSetting; // 0: Switch; 1: Hold
-    /* 0x140E */ u16 forcedSeqId; // immediately start playing the sequence if set
-    /* 0x1410 */ u8 cutsceneTransitionControl; // context dependent usage: can either trigger a delayed fade or control fill alpha
+    /* 0x140E */ u16 forcedSeqId;   // immediately start playing the sequence if set
+    /* 0x1410 */ u8
+        cutsceneTransitionControl; // context dependent usage: can either trigger a delayed fade or control fill alpha
     /* 0x1411 */ char unk_1411[0x0001];
     /* 0x1412 */ u16 nextCutsceneIndex;
     /* 0x1414 */ u8 cutsceneTrigger;
@@ -339,7 +345,7 @@ typedef enum {
 } ChamberCutsceneNum;
 
 typedef enum {
-    /* 0x00 */ HS_HBA,          // horseback archery
+    /* 0x00 */ HS_HBA, // horseback archery
     /* 0x01 */ HS_POE_POINTS,
     /* 0x02 */ HS_FISHING,
     /* 0x03 */ HS_HORSE_RACE,
@@ -350,9 +356,9 @@ typedef enum {
 
 typedef enum {
     /* 0 */ SUNSSONG_INACTIVE,
-    /* 1 */ SUNSSONG_START, // the suns ocarina effect signals that the song has finished playing
+    /* 1 */ SUNSSONG_START,      // the suns ocarina effect signals that the song has finished playing
     /* 2 */ SUNSSONG_SPEED_TIME, // suns was played where time passes, speed up the advancement of time
-    /* 3 */ SUNSSONG_SPECIAL // time does not advance, but signals the song was played. used for freezing redeads
+    /* 3 */ SUNSSONG_SPECIAL     // time does not advance, but signals the song was played. used for freezing redeads
 } SunsSongState;
 
 typedef enum {
@@ -377,14 +383,11 @@ typedef enum {
     /* 1 */ LINK_AGE_CHILD
 } LinkAge;
 
-
-
 /*
  *
  * SaveContext flags
  *
  */
-
 
 /*
  * SaveContext.eventChkInf
@@ -472,7 +475,8 @@ typedef enum {
 #define EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO_INDEX 6
 #define EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO_SHIFT 11
 #define EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO_MASK (1 << EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO_SHIFT)
-#define EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO ((EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO_INDEX << 4) | EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO_SHIFT)
+#define EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO \
+    ((EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO_INDEX << 4) | EVENTCHKINF_TALON_RETURNED_FROM_KAKARIKO_SHIFT)
 
 #define EVENTCHKINF_6E 0x6E
 #define EVENTCHKINF_SPOKE_TO_KAEPORA_BY_LOST_WOODS 0x6F
@@ -498,11 +502,9 @@ typedef enum {
 #define EVENTCHKINF_CARPENTERS_FREE_SHIFT(n) (0 + (n))
 #define EVENTCHKINF_CARPENTERS_FREE_MASK(n) (1 << EVENTCHKINF_CARPENTERS_FREE_SHIFT(n))
 #define EVENTCHKINF_CARPENTERS_FREE(n) ((EVENTCHKINF_CARPENTERS_FREE_INDEX << 4) | EVENTCHKINF_CARPENTERS_FREE_SHIFT(n))
-#define EVENTCHKINF_CARPENTERS_FREE_MASK_ALL (\
-      EVENTCHKINF_CARPENTERS_FREE_MASK(0)     \
-    | EVENTCHKINF_CARPENTERS_FREE_MASK(1)     \
-    | EVENTCHKINF_CARPENTERS_FREE_MASK(2)     \
-    | EVENTCHKINF_CARPENTERS_FREE_MASK(3)    )
+#define EVENTCHKINF_CARPENTERS_FREE_MASK_ALL                                                                           \
+    (EVENTCHKINF_CARPENTERS_FREE_MASK(0) | EVENTCHKINF_CARPENTERS_FREE_MASK(1) | EVENTCHKINF_CARPENTERS_FREE_MASK(2) | \
+     EVENTCHKINF_CARPENTERS_FREE_MASK(3))
 #define GET_EVENTCHKINF_CARPENTERS_FREE_ALL() \
     CHECK_FLAG_ALL(gSaveContext.eventChkInf[EVENTCHKINF_CARPENTERS_FREE_INDEX], EVENTCHKINF_CARPENTERS_FREE_MASK_ALL)
 
@@ -550,27 +552,33 @@ typedef enum {
 
 // 0xD0-0xD6
 #define EVENTCHKINF_SONGS_FOR_FROGS_INDEX 13
-#define EVENTCHKINF_SONGS_FOR_FROGS_CHOIR_SHIFT  0
-#define EVENTCHKINF_SONGS_FOR_FROGS_ZL_SHIFT     1
-#define EVENTCHKINF_SONGS_FOR_FROGS_EPONA_SHIFT  2
-#define EVENTCHKINF_SONGS_FOR_FROGS_SUNS_SHIFT   3
-#define EVENTCHKINF_SONGS_FOR_FROGS_SARIA_SHIFT  4
-#define EVENTCHKINF_SONGS_FOR_FROGS_SOT_SHIFT    5
+#define EVENTCHKINF_SONGS_FOR_FROGS_CHOIR_SHIFT 0
+#define EVENTCHKINF_SONGS_FOR_FROGS_ZL_SHIFT 1
+#define EVENTCHKINF_SONGS_FOR_FROGS_EPONA_SHIFT 2
+#define EVENTCHKINF_SONGS_FOR_FROGS_SUNS_SHIFT 3
+#define EVENTCHKINF_SONGS_FOR_FROGS_SARIA_SHIFT 4
+#define EVENTCHKINF_SONGS_FOR_FROGS_SOT_SHIFT 5
 #define EVENTCHKINF_SONGS_FOR_FROGS_STORMS_SHIFT 6
-#define EVENTCHKINF_SONGS_FOR_FROGS_CHOIR_MASK  (1 << EVENTCHKINF_SONGS_FOR_FROGS_CHOIR_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_ZL_MASK     (1 << EVENTCHKINF_SONGS_FOR_FROGS_ZL_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_EPONA_MASK  (1 << EVENTCHKINF_SONGS_FOR_FROGS_EPONA_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_SUNS_MASK   (1 << EVENTCHKINF_SONGS_FOR_FROGS_SUNS_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_SARIA_MASK  (1 << EVENTCHKINF_SONGS_FOR_FROGS_SARIA_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_SOT_MASK    (1 << EVENTCHKINF_SONGS_FOR_FROGS_SOT_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_CHOIR_MASK (1 << EVENTCHKINF_SONGS_FOR_FROGS_CHOIR_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_ZL_MASK (1 << EVENTCHKINF_SONGS_FOR_FROGS_ZL_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_EPONA_MASK (1 << EVENTCHKINF_SONGS_FOR_FROGS_EPONA_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_SUNS_MASK (1 << EVENTCHKINF_SONGS_FOR_FROGS_SUNS_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_SARIA_MASK (1 << EVENTCHKINF_SONGS_FOR_FROGS_SARIA_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_SOT_MASK (1 << EVENTCHKINF_SONGS_FOR_FROGS_SOT_SHIFT)
 #define EVENTCHKINF_SONGS_FOR_FROGS_STORMS_MASK (1 << EVENTCHKINF_SONGS_FOR_FROGS_STORMS_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_CHOIR  ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_CHOIR_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_ZL     ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_ZL_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_EPONA  ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_EPONA_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_SUNS   ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_SUNS_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_SARIA  ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_SARIA_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_SOT    ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_SOT_SHIFT)
-#define EVENTCHKINF_SONGS_FOR_FROGS_STORMS ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_STORMS_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_CHOIR \
+    ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_CHOIR_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_ZL ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_ZL_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_EPONA \
+    ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_EPONA_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_SUNS \
+    ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_SUNS_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_SARIA \
+    ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_SARIA_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_SOT \
+    ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_SOT_SHIFT)
+#define EVENTCHKINF_SONGS_FOR_FROGS_STORMS \
+    ((EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) | EVENTCHKINF_SONGS_FOR_FROGS_STORMS_SHIFT)
 
 // 0xDA-0xDE
 #define EVENTCHKINF_SKULLTULA_REWARD_INDEX 13
@@ -579,7 +587,6 @@ typedef enum {
 #define EVENTCHKINF_SKULLTULA_REWARD_30_MASK (1 << 12)
 #define EVENTCHKINF_SKULLTULA_REWARD_40_MASK (1 << 13)
 #define EVENTCHKINF_SKULLTULA_REWARD_50_MASK (1 << 14)
-
 
 /*
  * SaveContext.itemGetInf
@@ -638,7 +645,6 @@ typedef enum {
 #define ITEMGETINF_3A 0x3A
 #define ITEMGETINF_3B 0x3B
 #define ITEMGETINF_3F 0x3F
-
 
 /*
  * SaveContext.infTable
@@ -800,7 +806,6 @@ typedef enum {
 #define INFTABLE_1DX_INDEX 29
 #define INFTABLE_SWORDLESS 0x1D0
 
-
 /*
  * SaveContext.eventInf
  */
@@ -860,7 +865,6 @@ typedef enum {
     gSaveContext.eventInf[EVENTINF_HORSES_INDEX] = \
         (gSaveContext.eventInf[EVENTINF_HORSES_INDEX] & ~EVENTINF_HORSES_0F_MASK) | ((v) << EVENTINF_HORSES_0F_SHIFT)
 
-
 #define EVENTINF_MARATHON_ACTIVE 0x10
 
 // 0x20-0x24
@@ -872,7 +876,5 @@ typedef enum {
 #define EVENTINF_24_MASK (1 << 4)
 
 #define EVENTINF_30 0x30
-
-
 
 #endif

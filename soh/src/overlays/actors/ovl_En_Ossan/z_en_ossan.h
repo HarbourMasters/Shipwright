@@ -64,7 +64,7 @@ typedef struct EnOssan {
     /* 0x02CD */ u8 stickAnimState;
     /* 0x02D0 */ f32 shopItemSelectedTween;
     /* 0x02D4 */ f32 cameraFaceAngle; // stored in degrees
-} EnOssan; // size = 0x02D8
+} EnOssan;                            // size = 0x02D8
 
 typedef enum {
     /* 00 */ OSSAN_TYPE_KOKIRI,

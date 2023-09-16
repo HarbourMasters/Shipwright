@@ -4,7 +4,6 @@
 #include <libultraship/libultra.h>
 #include "global.h"
 
-
 typedef enum {
     /* 0x00 */ FLAGPOLE_LIMB_NONE,
     /* 0x01 */ FLAGPOLE_LIMB_POLE_BASE,

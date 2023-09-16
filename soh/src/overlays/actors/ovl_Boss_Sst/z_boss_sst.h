@@ -8,7 +8,6 @@ struct BossSst;
 
 typedef void (*BossSstActionFunc)(struct BossSst*, PlayState*);
 
-
 typedef struct {
     /* 0x0000 */ Vec3f pos;
     /* 0x0010 */ Vec3f vel;

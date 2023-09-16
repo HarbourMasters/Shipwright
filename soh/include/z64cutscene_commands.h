@@ -21,12 +21,11 @@
  *   size = 0xC
  */
 #define CS_CAM_POS_LIST CS_CAM_EYE_LIST
-#define CS_CAM_EYE_LIST(startFrame, endFrame) \
-    CS_CMD_CAM_EYE, CMD_HH(0x0001, startFrame), CMD_HH(endFrame, 0x0000)
+#define CS_CAM_EYE_LIST(startFrame, endFrame) CS_CMD_CAM_EYE, CMD_HH(0x0001, startFrame), CMD_HH(endFrame, 0x0000)
 
 /**
  * ARGS
- *   s8 continueFlag (c), s8 roll (r), s16 frame (f), f32 viewAngle (a), 
+ *   s8 continueFlag (c), s8 roll (r), s16 frame (f), f32 viewAngle (a),
  *   s16 xPos (x), s16 yPos (y), s16 zPos (z)
  * FORMAT
  *   Capital U is Unused
@@ -45,12 +44,11 @@
  *   size = 0xC
  */
 #define CS_CAM_FOCUS_POINT_LIST CS_CAM_AT_LIST
-#define CS_CAM_AT_LIST(startFrame, endFrame) \
-    CS_CMD_CAM_AT, CMD_HH(0x0001, startFrame), CMD_HH(endFrame, 0x0000)
+#define CS_CAM_AT_LIST(startFrame, endFrame) CS_CMD_CAM_AT, CMD_HH(0x0001, startFrame), CMD_HH(endFrame, 0x0000)
 
 /**
  * ARGS
- *   s8 continueFlag (c), s8 roll (r), s16 frame (f), f32 viewAngle (a), 
+ *   s8 continueFlag (c), s8 roll (r), s16 frame (f), f32 viewAngle (a),
  *   s16 xPos (x), s16 yPos (y), s16 zPos (z)
  * FORMAT
  *   Capital U is Unused
@@ -78,10 +76,11 @@
  *   uuuussss eeeeUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU
  *   size = 0x30
  */
-#define CS_MISC(unk, startFrame, endFrame, unused0, unused1, unused2, unused3, unused4, unused5, unused6, unused7, unused8, unused9, unused10) \
-    CMD_HH(unk, startFrame), CMD_HH(endFrame, unused0), \
-    CMD_W(unused1), CMD_W(unused2), CMD_W(unused3), CMD_W(unused4), CMD_W(unused5), \
-    CMD_W(unused6), CMD_W(unused7), CMD_W(unused8), CMD_W(unused9), CMD_W(unused10)
+#define CS_MISC(unk, startFrame, endFrame, unused0, unused1, unused2, unused3, unused4, unused5, unused6, unused7, \
+                unused8, unused9, unused10)                                                                        \
+    CMD_HH(unk, startFrame), CMD_HH(endFrame, unused0), CMD_W(unused1), CMD_W(unused2), CMD_W(unused3),            \
+        CMD_W(unused4), CMD_W(unused5), CMD_W(unused6), CMD_W(unused7), CMD_W(unused8), CMD_W(unused9),            \
+        CMD_W(unused10)
 
 /**
  * ARGS
@@ -97,13 +96,13 @@
  *   s16 setting (m), s16 startFrame (s), s16 endFrame (e)
  * FORMAT
  *   Capital U is Unused
- *   mmmmssss eeeeUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU 00000000 00000000 00000000 
+ *   mmmmssss eeeeUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU 00000000 00000000 00000000
  *   size = 0x30
  */
-#define CS_LIGHTING(setting, startFrame, endFrame, unused0, unused1, unused2, unused3, unused4, unused5, unused6, unused7) \
-    CMD_HH(setting, startFrame), CMD_HH(endFrame, unused0), \
-    CMD_W(unused1), CMD_W(unused2), CMD_W(unused3), CMD_W(unused4), CMD_W(unused5), \
-    CMD_W(unused6), CMD_W(unused7), 0x00000000, 0x00000000, 0x00000000
+#define CS_LIGHTING(setting, startFrame, endFrame, unused0, unused1, unused2, unused3, unused4, unused5, unused6, \
+                    unused7)                                                                                      \
+    CMD_HH(setting, startFrame), CMD_HH(endFrame, unused0), CMD_W(unused1), CMD_W(unused2), CMD_W(unused3),       \
+        CMD_W(unused4), CMD_W(unused5), CMD_W(unused6), CMD_W(unused7), 0x00000000, 0x00000000, 0x00000000
 
 /**
  * ARGS
@@ -119,7 +118,7 @@
 
 /**
  * ARGS
- *   s8 continueFlag (c), s8 roll (r), s16 frame (f), f32 viewAngle (a), 
+ *   s8 continueFlag (c), s8 roll (r), s16 frame (f), f32 viewAngle (a),
  *   s16 xPos (x), s16 yPos (y), s16 zPos (z)
  * FORMAT
  *   Capital U is Unused
@@ -143,7 +142,7 @@
     CS_CMD_CAM_AT_REL_TO_PLAYER, CMD_HH(0x0001, startFrame), CMD_HH(endFrame, 0x0000)
 /**
  * ARGS
- *   s8 continueFlag (c), s8 roll (r), s16 frame (f), f32 viewAngle (a), 
+ *   s8 continueFlag (c), s8 roll (r), s16 frame (f), f32 viewAngle (a),
  *   s16 xPos (x), s16 yPos (y), s16 zPos (z)
  * FORMAT
  *   Capital U is Unused
@@ -162,12 +161,11 @@
  *   00000007 uuuussss eeeeUUUU
  *   size = 0xC
  */
-#define CS_CMD_07_LIST(unk, startFrame, endFrame, unused) \
-    CS_CMD_07, CMD_HH(unk, startFrame), CMD_HH(endFrame, unused)
+#define CS_CMD_07_LIST(unk, startFrame, endFrame, unused) CS_CMD_07, CMD_HH(unk, startFrame), CMD_HH(endFrame, unused)
 
 /**
  * ARGS
- *   s8 continueFlag (c), s8 roll (r), s16 frame (f), f32 viewAngle (a), 
+ *   s8 continueFlag (c), s8 roll (r), s16 frame (f), f32 viewAngle (a),
  *   s16 xPos (x), s16 yPos (y), s16 zPos (z)
  * FORMAT
  *   Capital U is Unused
@@ -185,12 +183,11 @@
  *   00000008 uuuussss eeeeUUUU
  *   size = 0xC
  */
-#define CS_CMD_08_LIST(unk, startFrame, endFrame, unused) \
-    CS_CMD_08, CMD_HH(unk, startFrame), CMD_HH(endFrame, unused)
+#define CS_CMD_08_LIST(unk, startFrame, endFrame, unused) CS_CMD_08, CMD_HH(unk, startFrame), CMD_HH(endFrame, unused)
 
 /**
  * ARGS
- *   s8 continueFlag (c), s8 roll (r), s16 frame (f), f32 viewAngle (a), 
+ *   s8 continueFlag (c), s8 roll (r), s16 frame (f), f32 viewAngle (a),
  *   s16 xPos (x), s16 yPos (y), s16 zPos (z)
  * FORMAT
  *   Capital U is Unused
@@ -231,15 +228,15 @@
 
 /**
  * ARGS
- *   s32 unk1 (a), s32 unk2 (b), s32 unk3 (c), s32 unk4 (d), s32 unk5 (e), s32 unk6 (f), 
+ *   s32 unk1 (a), s32 unk2 (b), s32 unk3 (c), s32 unk4 (d), s32 unk5 (e), s32 unk6 (f),
  *   s32 unk7 (g), s32 unk8 (h), s32 unk9 (i), s32 unk10 (j), s32 unk11 (k), s32 unk12 (l)
  * FORMAT
  *   aaaaaaaa bbbbbbbb cccccccc dddddddd eeeeeeee ffffffff gggggggg hhhhhhhh iiiiiiii jjjjjjjj kkkkkkkk llllllll
  *   size = 0x30
  */
-#define CS_UNK_DATA(unk1, unk2, unk3, unk4, unk5, unk6, unk7, unk8, unk9, unk10, unk11, unk12) \
-    CMD_W(unk1), CMD_W(unk2), CMD_W(unk3), CMD_W(unk4), CMD_W(unk5), CMD_W(unk6), \
-    CMD_W(unk7), CMD_W(unk8), CMD_W(unk9), CMD_W(unk10), CMD_W(unk11), CMD_W(unk12)
+#define CS_UNK_DATA(unk1, unk2, unk3, unk4, unk5, unk6, unk7, unk8, unk9, unk10, unk11, unk12)              \
+    CMD_W(unk1), CMD_W(unk2), CMD_W(unk3), CMD_W(unk4), CMD_W(unk5), CMD_W(unk6), CMD_W(unk7), CMD_W(unk8), \
+        CMD_W(unk9), CMD_W(unk10), CMD_W(unk11), CMD_W(unk12)
 
 /**
  * ARGS
@@ -261,11 +258,10 @@
  *   aaaassss eeeeuuuu vvvvwwww iiiiiiii jjjjjjjj kkkkkkkk llllllll mmmmmmmm nnnnnnnn xxxxxxxx yyyyyyyy zzzzzzzz
  *   size = 0x30
  */
-#define CS_NPC_ACTION(npcAction, startFrame, endFrame, rotX, rotY, rotZ, startX, startY, startZ, endX, endY, endZ, normX, normY, normZ) \
-    CMD_HH(npcAction, startFrame), CMD_HH(endFrame, rotX), CMD_HH(rotY, rotZ), \
-    CMD_W(startX), CMD_W(startY), CMD_W(startZ), \
-    CMD_W(endX), CMD_W(endY), CMD_W(endZ), \
-    CMD_F(normX), CMD_F(normY), CMD_F(normZ)
+#define CS_NPC_ACTION(npcAction, startFrame, endFrame, rotX, rotY, rotZ, startX, startY, startZ, endX, endY, endZ, \
+                      normX, normY, normZ)                                                                         \
+    CMD_HH(npcAction, startFrame), CMD_HH(endFrame, rotX), CMD_HH(rotY, rotZ), CMD_W(startX), CMD_W(startY),       \
+        CMD_W(startZ), CMD_W(endX), CMD_W(endY), CMD_W(endZ), CMD_F(normX), CMD_F(normY), CMD_F(normZ)
 
 /**
  * ARGS
@@ -287,8 +283,10 @@
  *   aaaassss eeeeuuuu vvvvwwww iiiiiiii jjjjjjjj kkkkkkkk llllllll mmmmmmmm nnnnnnnn xxxxxxxx yyyyyyyy zzzzzzzz
  *   size = 0x30
  */
-#define CS_PLAYER_ACTION(linkAction, startFrame, endFrame, rotX, rotY, rotZ, startX, startY, startZ, endX, endY, endZ, normX, normY, normZ) \
-    CS_NPC_ACTION(linkAction, startFrame, endFrame, rotX, rotY, rotZ, startX, startY, startZ, endX, endY, endZ, normX, normY, normZ)
+#define CS_PLAYER_ACTION(linkAction, startFrame, endFrame, rotX, rotY, rotZ, startX, startY, startZ, endX, endY, endZ, \
+                         normX, normY, normZ)                                                                          \
+    CS_NPC_ACTION(linkAction, startFrame, endFrame, rotX, rotY, rotZ, startX, startY, startZ, endX, endY, endZ, normX, \
+                  normY, normZ)
 
 /**
  * ARGS
@@ -301,7 +299,7 @@
 
 /**
  * ARGS
- *   s16 messageId (i), s16 startFrame (s), s16 endFrame (e), s16 type (o), 
+ *   s16 messageId (i), s16 startFrame (s), s16 endFrame (e), s16 type (o),
  *   s16 topOptionBranch (y), s16 bottomOptionBranch (n)
  * FORMAT
  *   iiiissss eeeeoooo yyyynnnn
@@ -317,8 +315,7 @@
  *   FFFFssss eeeeFFFF FFFFFFFF
  *   size = 0xC
  */
-#define CS_TEXT_NONE(startFrame, endFrame) \
-    CS_TEXT_DISPLAY_TEXTBOX(0xFFFF, startFrame, endFrame, 0xFFFF, 0xFFFF, 0xFFFF)
+#define CS_TEXT_NONE(startFrame, endFrame) CS_TEXT_DISPLAY_TEXTBOX(0xFFFF, startFrame, endFrame, 0xFFFF, 0xFFFF, 0xFFFF)
 
 /**
  * ARGS
@@ -358,10 +355,10 @@
  *   qqqqssss eeeeUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU 00000000 00000000 00000000
  *   size = 0x30
  */
-#define CS_PLAY_BGM(sequence, startFrame, endFrame, unused0, unused1, unused2, unused3, unused4, unused5, unused6, unused7) \
-    CMD_HH(sequence, startFrame), CMD_HH(endFrame, unused0), \
-    CMD_W(unused1), CMD_W(unused2), CMD_W(unused3), CMD_W(unused4), CMD_W(unused5), \
-    CMD_W(unused6), CMD_W(unused7), 0x00000000, 0x00000000, 0x00000000
+#define CS_PLAY_BGM(sequence, startFrame, endFrame, unused0, unused1, unused2, unused3, unused4, unused5, unused6, \
+                    unused7)                                                                                       \
+    CMD_HH(sequence, startFrame), CMD_HH(endFrame, unused0), CMD_W(unused1), CMD_W(unused2), CMD_W(unused3),       \
+        CMD_W(unused4), CMD_W(unused5), CMD_W(unused6), CMD_W(unused7), 0x00000000, 0x00000000, 0x00000000
 
 /**
  * ARGS
@@ -380,10 +377,10 @@
  *   uuqqssss eeeeUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU 00000000 00000000 00000000
  *   size = 0x30
  */
-#define CS_STOP_BGM(sequence, startFrame, endFrame, unused0, unused1, unused2, unused3, unused4, unused5, unused6, unused7) \
-    CMD_HH(sequence, startFrame), CMD_HH(endFrame, unused0), \
-    CMD_W(unused1), CMD_W(unused2), CMD_W(unused3), CMD_W(unused4), CMD_W(unused5), \
-    CMD_W(unused6), CMD_W(unused7), 0x00000000, 0x00000000, 0x00000000
+#define CS_STOP_BGM(sequence, startFrame, endFrame, unused0, unused1, unused2, unused3, unused4, unused5, unused6, \
+                    unused7)                                                                                       \
+    CMD_HH(sequence, startFrame), CMD_HH(endFrame, unused0), CMD_W(unused1), CMD_W(unused2), CMD_W(unused3),       \
+        CMD_W(unused4), CMD_W(unused5), CMD_W(unused6), CMD_W(unused7), 0x00000000, 0x00000000, 0x00000000
 
 /**
  * ARGS
@@ -402,10 +399,10 @@
  *   ttttssss eeeeUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU UUUUUUUU 00000000 00000000 00000000
  *   size = 0x30
  */
-#define CS_FADE_BGM(fadeType, startFrame, endFrame, unused0, unused1, unused2, unused3, unused4, unused5, unused6, unused7) \
-    CMD_HH(fadeType, startFrame), CMD_HH(endFrame, unused0), \
-    CMD_W(unused1), CMD_W(unused2), CMD_W(unused3), CMD_W(unused4), CMD_W(unused5), \
-    CMD_W(unused6), CMD_W(unused7), 0x00000000, 0x00000000, 0x00000000
+#define CS_FADE_BGM(fadeType, startFrame, endFrame, unused0, unused1, unused2, unused3, unused4, unused5, unused6, \
+                    unused7)                                                                                       \
+    CMD_HH(fadeType, startFrame), CMD_HH(endFrame, unused0), CMD_W(unused1), CMD_W(unused2), CMD_W(unused3),       \
+        CMD_W(unused4), CMD_W(unused5), CMD_W(unused6), CMD_W(unused7), 0x00000000, 0x00000000, 0x00000000
 
 /**
  * ARGS
@@ -425,9 +422,7 @@
  *   size = 0xC
  */
 #define CS_TIME(unk, startFrame, endFrame, hour, min, unused) \
-    CMD_HH(unk, startFrame), \
-    CMD_HBB(endFrame, hour, min), \
-    CMD_W(unused)
+    CMD_HH(unk, startFrame), CMD_HBB(endFrame, hour, min), CMD_W(unused)
 
 /**
  * ARGS

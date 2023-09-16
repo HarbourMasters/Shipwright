@@ -4,7 +4,10 @@
 #include <libultraship/libultra.h>
 #include <include/libc/math.h>
 
-#define VEC_SET(V,X,Y,Z) (V).x=(X);(V).y=(Y);(V).z=(Z)
+#define VEC_SET(V, X, Y, Z) \
+    (V).x = (X);            \
+    (V).y = (Y);            \
+    (V).z = (Z)
 
 #ifdef __cplusplus
 #define Vec2f Vec2f_
@@ -78,25 +81,26 @@ typedef struct {
 
 // Defines a point in the spherical coordinate system
 typedef struct {
-    /* 0x00 */ f32 r;      // radius
-    /* 0x04 */ s16 pitch;  // polar (zenith) angle
-    /* 0x06 */ s16 yaw;    // azimuthal angle
-} VecSph; // size = 0x08
+    /* 0x00 */ f32 r;     // radius
+    /* 0x04 */ s16 pitch; // polar (zenith) angle
+    /* 0x06 */ s16 yaw;   // azimuthal angle
+} VecSph;                 // size = 0x08
 
 #define LERP(x, y, scale) (((y) - (x)) * (scale) + (x))
 #define LERP32(x, y, scale) ((s32)(((y) - (x)) * (scale)) + (x))
 #define LERP16(x, y, scale) ((s16)(((y) - (x)) * (scale)) + (x))
-#define F32_LERP(v0,v1,t) ((v0) * (1.0f - (t)) + (v1) * (t))
+#define F32_LERP(v0, v1, t) ((v0) * (1.0f - (t)) + (v1) * (t))
 #define F32_LERPIMP(v0, v1, t) (v0 + ((v1 - v0) * t))
 #define F32_LERPIMPINV(v0, v1, t) ((v0) + (((v1) - (v0)) / (t)))
 #define BINANG_LERPIMP(v0, v1, t) ((v0) + (s16)(BINANG_SUB((v1), (v0)) * (t)))
 #define BINANG_LERPIMPINV(v0, v1, t) ((v0) + BINANG_SUB((v1), (v0)) / (t))
 
-#define VEC3F_LERPIMPDST(dst, v0, v1, t){ \
-    (dst)->x = (v0)->x + (((v1)->x - (v0)->x) * t); \
-    (dst)->y = (v0)->y + (((v1)->y - (v0)->y) * t); \
-    (dst)->z = (v0)->z + (((v1)->z - (v0)->z) * t); \
-}
+#define VEC3F_LERPIMPDST(dst, v0, v1, t)                \
+    {                                                   \
+        (dst)->x = (v0)->x + (((v1)->x - (v0)->x) * t); \
+        (dst)->y = (v0)->y + (((v1)->y - (v0)->y) * t); \
+        (dst)->z = (v0)->z + (((v1)->z - (v0)->z) * t); \
+    }
 
 #define IS_ZERO(f) (fabsf(f) < 0.008f)
 

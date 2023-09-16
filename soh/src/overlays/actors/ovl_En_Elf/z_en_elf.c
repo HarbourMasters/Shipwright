@@ -400,8 +400,8 @@ void EnElf_Init(Actor* thisx, PlayState* play) {
             func_80A01C38(this, 8);
 
             for (i = 0; i < 8; i++) {
-                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, thisx->world.pos.x,
-                            thisx->world.pos.y - 30.0f, thisx->world.pos.z, 0, 0, 0, FAIRY_HEAL, true);
+                Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ELF, thisx->world.pos.x, thisx->world.pos.y - 30.0f,
+                            thisx->world.pos.z, 0, 0, 0, FAIRY_HEAL, true);
             }
             break;
         default:
@@ -631,19 +631,15 @@ void func_80A0329C(EnElf* this, PlayState* play) {
 
         if ((heightDiff > 0.0f) && (heightDiff < 60.0f)) {
             if (!func_80A01F90(&this->actor.world.pos, &refActor->actor.world.pos, 10.0f)) {
-                if (CVarGetInteger("gFairyEffect", 0) && !(this->fairyFlags & FAIRY_FLAG_BIG))
-                {
-                    if (CVarGetInteger("gFairyPercentRestore", 0))
-                    {
-                        Health_ChangeBy(play, (gSaveContext.healthCapacity * CVarGetInteger("gFairyHealth", 100) / 100 + 15) / 16 * 16);
-                    }
-                    else
-                    {
+                if (CVarGetInteger("gFairyEffect", 0) && !(this->fairyFlags & FAIRY_FLAG_BIG)) {
+                    if (CVarGetInteger("gFairyPercentRestore", 0)) {
+                        Health_ChangeBy(play,
+                                        (gSaveContext.healthCapacity * CVarGetInteger("gFairyHealth", 100) / 100 + 15) /
+                                            16 * 16);
+                    } else {
                         Health_ChangeBy(play, CVarGetInteger("gFairyHealth", 8) * 16);
                     }
-                }
-                else
-                {
+                } else {
                     Health_ChangeBy(play, 128);
                 }
                 if (this->fairyFlags & FAIRY_FLAG_BIG) {
@@ -1210,8 +1206,8 @@ void EnElf_SpawnSparkles(EnElf* this, PlayState* play, s32 sparkleLife) {
     envColor.g = this->outerColor.g;
     envColor.b = this->outerColor.b;
 
-    EffectSsKiraKira_SpawnDispersed(play, &sparklePos, &sparkleVelocity, &sparkleAccel, &primColor, &envColor,
-                                    1000, sparkleLife);
+    EffectSsKiraKira_SpawnDispersed(play, &sparklePos, &sparkleVelocity, &sparkleAccel, &primColor, &envColor, 1000,
+                                    sparkleLife);
 }
 
 void func_80A04D90(EnElf* this, PlayState* play) {
@@ -1442,8 +1438,8 @@ void func_80A053F0(Actor* thisx, PlayState* play) {
 
     if (this->unk_2A4 > 0.0f) {
         Math_StepToF(&this->unk_2A4, 0.0f, 0.05f);
-        Environment_AdjustLights(play, SQ(this->unk_2A4) * this->unk_2A4, player->actor.projectedPos.z + 780.0f,
-                                 0.2f, 0.5f);
+        Environment_AdjustLights(play, SQ(this->unk_2A4) * this->unk_2A4, player->actor.projectedPos.z + 780.0f, 0.2f,
+                                 0.5f);
     }
 
     // temp probably fake match

@@ -27,39 +27,38 @@ typedef enum {
     /* 19 */ ENHORSE_ACT_FLEE_PLAYER
 } EnHorseAction;
 
-
-#define ENHORSE_BOOST                      (1 << 0)   /*         0x1 */
-#define ENHORSE_BOOST_DECEL                (1 << 1)   /*         0x2 */
-#define ENHORSE_JUMPING                    (1 << 2)   /*         0x4 */
-#define ENHORSE_CALC_RIDER_POS             (1 << 3)   /*         0x8 */
-#define ENHORSE_FORCE_REVERSING            (1 << 4)   /*        0x10 */
-#define ENHORSE_FORCE_WALKING              (1 << 5)   /*        0x20 */
-#define ENHORSE_FLAG_6                     (1 << 6)   /*        0x40 */
-#define ENHORSE_FLAG_7                     (1 << 7)   /*        0x80 */
-#define ENHORSE_FLAG_8                     (1 << 8)   /*       0x100 */
-#define ENHORSE_FLAG_9                     (1 << 9)   /*       0x200 */
-#define ENHORSE_STOPPING_NEIGH_SOUND       (1 << 10)  /*       0x400 */
-#define ENHORSE_LAND2_SOUND                (1 << 11)  /*       0x800 */
-#define ENHORSE_SANDDUST_SOUND             (1 << 12)  /*      0x1000 */
-#define ENHORSE_INACTIVE                   (1 << 13)  /*      0x2000 */
-#define ENHORSE_OBSTACLE                   (1 << 14)  /*      0x4000 */
-#define ENHORSE_TURNING_TO_PLAYER          (1 << 15)  /*      0x8000 */
-#define ENHORSE_UNRIDEABLE                 (1 << 16)  /*    0x1 0000 */
-#define ENHORSE_CANT_JUMP                  (1 << 17)  /*    0x2 0000 */
-#define ENHORSE_FLAG_18                    (1 << 18)  /*    0x4 0000 */
-#define ENHORSE_FLAG_19                    (1 << 19)  /*    0x8 0000 */
-#define ENHORSE_FLAG_20                    (1 << 20)  /*   0x10 0000 */
-#define ENHORSE_FLAG_21                    (1 << 21)  /*   0x20 0000 */
-#define ENHORSE_FIRST_BOOST_REGEN          (1 << 22)  /*   0x40 0000 */
-#define ENHORSE_INGO_WON                   (1 << 23)  /*   0x80 0000 */
-#define ENHORSE_FLAG_24                    (1 << 24)  /*  0x100 0000 */
-#define ENHORSE_FLAG_25                    (1 << 25)  /*  0x200 0000 */
-#define ENHORSE_FLAG_26                    (1 << 26)  /*  0x400 0000 */
-#define ENHORSE_DRAW                       (1 << 27)  /*  0x800 0000 */
-#define ENHORSE_FLAG_28                    (1 << 28)  /* 0x1000 0000 */
-#define ENHORSE_FLAG_29                    (1 << 29)  /* 0x2000 0000 */
-#define ENHORSE_FLAG_30                    (1 << 30)  /* 0x4000 0000 */
-#define ENHORSE_FLAG_31                    (1 << 31)  /* 0x8000 0000 */
+#define ENHORSE_BOOST (1 << 0)                 /*         0x1 */
+#define ENHORSE_BOOST_DECEL (1 << 1)           /*         0x2 */
+#define ENHORSE_JUMPING (1 << 2)               /*         0x4 */
+#define ENHORSE_CALC_RIDER_POS (1 << 3)        /*         0x8 */
+#define ENHORSE_FORCE_REVERSING (1 << 4)       /*        0x10 */
+#define ENHORSE_FORCE_WALKING (1 << 5)         /*        0x20 */
+#define ENHORSE_FLAG_6 (1 << 6)                /*        0x40 */
+#define ENHORSE_FLAG_7 (1 << 7)                /*        0x80 */
+#define ENHORSE_FLAG_8 (1 << 8)                /*       0x100 */
+#define ENHORSE_FLAG_9 (1 << 9)                /*       0x200 */
+#define ENHORSE_STOPPING_NEIGH_SOUND (1 << 10) /*       0x400 */
+#define ENHORSE_LAND2_SOUND (1 << 11)          /*       0x800 */
+#define ENHORSE_SANDDUST_SOUND (1 << 12)       /*      0x1000 */
+#define ENHORSE_INACTIVE (1 << 13)             /*      0x2000 */
+#define ENHORSE_OBSTACLE (1 << 14)             /*      0x4000 */
+#define ENHORSE_TURNING_TO_PLAYER (1 << 15)    /*      0x8000 */
+#define ENHORSE_UNRIDEABLE (1 << 16)           /*    0x1 0000 */
+#define ENHORSE_CANT_JUMP (1 << 17)            /*    0x2 0000 */
+#define ENHORSE_FLAG_18 (1 << 18)              /*    0x4 0000 */
+#define ENHORSE_FLAG_19 (1 << 19)              /*    0x8 0000 */
+#define ENHORSE_FLAG_20 (1 << 20)              /*   0x10 0000 */
+#define ENHORSE_FLAG_21 (1 << 21)              /*   0x20 0000 */
+#define ENHORSE_FIRST_BOOST_REGEN (1 << 22)    /*   0x40 0000 */
+#define ENHORSE_INGO_WON (1 << 23)             /*   0x80 0000 */
+#define ENHORSE_FLAG_24 (1 << 24)              /*  0x100 0000 */
+#define ENHORSE_FLAG_25 (1 << 25)              /*  0x200 0000 */
+#define ENHORSE_FLAG_26 (1 << 26)              /*  0x400 0000 */
+#define ENHORSE_DRAW (1 << 27)                 /*  0x800 0000 */
+#define ENHORSE_FLAG_28 (1 << 28)              /* 0x1000 0000 */
+#define ENHORSE_FLAG_29 (1 << 29)              /* 0x2000 0000 */
+#define ENHORSE_FLAG_30 (1 << 30)              /* 0x4000 0000 */
+#define ENHORSE_FLAG_31 (1 << 31)              /* 0x8000 0000 */
 
 struct EnHorse;
 
@@ -154,7 +153,7 @@ typedef struct EnHorse {
     /* 0x03C0 */ f32 bridgeJumpYVel;
     /* 0x03C4 */ s16 bridgeJumpRelAngle;
     /* 0x03C6 */ s16 unk_3C6; // pad
-    // sub struct?
+                              // sub struct?
     /* 0x03C8 */ u16 dustFlags;
     /* 0x03CC */ Vec3f frontRightHoof;
     /* 0x03D8 */ Vec3f frontLeftHoof;
@@ -162,30 +161,19 @@ typedef struct EnHorse {
     /* 0x03F0 */ Vec3f backLeftHoof;
 } EnHorse; // size = 0x03FC
 
-#define EN_HORSE_CHECK_1(horseActor) \
-    (((horseActor)->stateFlags & ENHORSE_FLAG_6)  \
-        ? true                       \
-        : false)
+#define EN_HORSE_CHECK_1(horseActor) (((horseActor)->stateFlags & ENHORSE_FLAG_6) ? true : false)
 
-#define EN_HORSE_CHECK_2(horseActor) \
-    (((horseActor)->stateFlags & ENHORSE_FLAG_8) \
-        ? true                       \
-        : false)
+#define EN_HORSE_CHECK_2(horseActor) (((horseActor)->stateFlags & ENHORSE_FLAG_8) ? true : false)
 
-#define EN_HORSE_CHECK_3(horseActor) \
-    (((horseActor)->stateFlags & ENHORSE_FLAG_9) \
-        ? true                       \
-        : false)
+#define EN_HORSE_CHECK_3(horseActor) (((horseActor)->stateFlags & ENHORSE_FLAG_9) ? true : false)
 
-#define EN_HORSE_CHECK_4(horseActor)                                                                 \
-    (((((horseActor)->action == ENHORSE_ACT_MOUNTED_IDLE) || ((horseActor)->action == ENHORSE_ACT_FROZEN) || ((horseActor)->action == ENHORSE_ACT_MOUNTED_IDLE_WHINNEYING)) && \
-      !((horseActor)->stateFlags & ENHORSE_FLAG_19) && !((horseActor)->stateFlags & ENHORSE_FLAG_25))          \
-         ? true                                                                                      \
+#define EN_HORSE_CHECK_4(horseActor)                                                                         \
+    (((((horseActor)->action == ENHORSE_ACT_MOUNTED_IDLE) || ((horseActor)->action == ENHORSE_ACT_FROZEN) || \
+       ((horseActor)->action == ENHORSE_ACT_MOUNTED_IDLE_WHINNEYING)) &&                                     \
+      !((horseActor)->stateFlags & ENHORSE_FLAG_19) && !((horseActor)->stateFlags & ENHORSE_FLAG_25))        \
+         ? true                                                                                              \
          : false)
 
-#define EN_HORSE_CHECK_JUMPING(horseActor) \
-    (((horseActor)->stateFlags & ENHORSE_JUMPING) \
-        ? true                       \
-        : false)
+#define EN_HORSE_CHECK_JUMPING(horseActor) (((horseActor)->stateFlags & ENHORSE_JUMPING) ? true : false)
 
 #endif

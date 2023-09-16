@@ -29,10 +29,6 @@ typedef struct EnHonotrap {
     /* 0x0240 */ u8 colChkFlags;
 } EnHonotrap; // size = 0x0244
 
-typedef enum {
-    HONOTRAP_EYE,
-    HONOTRAP_FLAME_MOVE,
-    HONOTRAP_FLAME_DROP
-} EnHonotrapType;
+typedef enum { HONOTRAP_EYE, HONOTRAP_FLAME_MOVE, HONOTRAP_FLAME_DROP } EnHonotrapType;
 
 #endif

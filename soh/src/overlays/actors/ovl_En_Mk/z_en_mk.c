@@ -256,8 +256,7 @@ void EnMk_Wait(EnMk* this, PlayState* play) {
             this->actionFunc = func_80AACA40;
         } else {
             // Skip eye drop text on rando if Link went in the water, so you can still receive the dive check
-            if (INV_CONTENT(ITEM_ODD_MUSHROOM) == ITEM_EYEDROPS &&
-                (!gSaveContext.n64ddFlag || this->swimFlag == 0)) {
+            if (INV_CONTENT(ITEM_ODD_MUSHROOM) == ITEM_EYEDROPS && (!gSaveContext.n64ddFlag || this->swimFlag == 0)) {
                 player->actor.textId = 0x4032;
                 this->actionFunc = func_80AACA40;
             } else {

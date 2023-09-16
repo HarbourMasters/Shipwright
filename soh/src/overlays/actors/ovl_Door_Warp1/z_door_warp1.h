@@ -10,12 +10,12 @@ typedef enum {
     /* -2 */ WARP_BLUE_CRYSTAL = -2,
     /* -1 */ WARP_DUNGEON_ADULT,
     /*  0 */ WARP_DUNGEON_CHILD,
-    /*  1 */ WARP_CLEAR_FLAG,        // Activate on temp clear flag
-    /*  2 */ WARP_SAGES,             // Used by sages warping into chamber of sages during their cutscene
+    /*  1 */ WARP_CLEAR_FLAG, // Activate on temp clear flag
+    /*  2 */ WARP_SAGES,      // Used by sages warping into chamber of sages during their cutscene
     /*  3 */ WARP_PURPLE_CRYSTAL,
-    /*  4 */ WARP_YELLOW,            // The colored variants don't warp, they are cutscene setpieces
+    /*  4 */ WARP_YELLOW, // The colored variants don't warp, they are cutscene setpieces
     /*  5 */ WARP_BLUE_RUTO,
-    /*  6 */ WARP_DESTINATION,       // Spawning in after having taken a warp
+    /*  6 */ WARP_DESTINATION, // Spawning in after having taken a warp
     /*  7 */ WARP_UNK_7,
     /*  8 */ WARP_ORANGE,
     /*  9 */ WARP_GREEN,
@@ -23,12 +23,12 @@ typedef enum {
 } DoorWarp1Type;
 
 typedef enum {
-    /* 0 */ WARP_BLUE_RUTO_STATE_INITIAL,   // initial, warp doesn't work yet
-    /* 1 */ WARP_BLUE_RUTO_STATE_READY,     // set by ruto, warp can work now
-    /* 2 */ WARP_BLUE_RUTO_STATE_ENTERED,   // set by warp, player has stepped into the warp
-    /* 3 */ WARP_BLUE_RUTO_STATE_3,         // set by ruto, folding arms
-    /* 4 */ WARP_BLUE_RUTO_STATE_TALKING,   // set by warp, dialog started
-    /* 5 */ WARP_BLUE_RUTO_STATE_WARPING    // set by warp, after closing dialog
+    /* 0 */ WARP_BLUE_RUTO_STATE_INITIAL, // initial, warp doesn't work yet
+    /* 1 */ WARP_BLUE_RUTO_STATE_READY,   // set by ruto, warp can work now
+    /* 2 */ WARP_BLUE_RUTO_STATE_ENTERED, // set by warp, player has stepped into the warp
+    /* 3 */ WARP_BLUE_RUTO_STATE_3,       // set by ruto, folding arms
+    /* 4 */ WARP_BLUE_RUTO_STATE_TALKING, // set by warp, dialog started
+    /* 5 */ WARP_BLUE_RUTO_STATE_WARPING  // set by warp, after closing dialog
 } DoorWarp1RutoState;
 
 typedef void (*DoorWarp1ActionFunc)(struct DoorWarp1*, PlayState*);
@@ -58,6 +58,6 @@ typedef struct DoorWarp1 {
     /* 0x01D8 */ LightNode* lowerLight;
     /* 0x01DC */ LightInfo lowerLightInfo;
     /* 0x01EC */ s32 rutoWarpState; // for state communication with En_Ru1 using DoorWarp1RutoState values
-} DoorWarp1; // size = 0x01F0
+} DoorWarp1;                        // size = 0x01F0
 
 #endif

@@ -89,9 +89,8 @@ void EnBlkobj_Wait(EnBlkobj* this, PlayState* play) {
 
 void EnBlkobj_SpawnDarkLink(EnBlkobj* this, PlayState* play) {
     if (!(this->dyna.actor.flags & ACTOR_FLAG_ACTIVE)) {
-        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TORCH2, this->dyna.actor.world.pos.x,
-                    this->dyna.actor.world.pos.y, this->dyna.actor.world.pos.z, 0, this->dyna.actor.yawTowardsPlayer, 0,
-                    0, true);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_TORCH2, this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y,
+                    this->dyna.actor.world.pos.z, 0, this->dyna.actor.yawTowardsPlayer, 0, 0, true);
         EnBlkobj_SetupAction(this, EnBlkobj_DarkLinkFight);
     }
 }
@@ -103,9 +102,10 @@ void EnBlkobj_DarkLinkFight(EnBlkobj* this, PlayState* play) {
         // Dark Link room completed.
         // Check for if Dark Link is defeated in authentic gameplay.
         // Check for if all enemies are defeated with enemy randomizer or crowd control on.
-        uint8_t roomCleared = 
-            (!CVarGetInteger("gRandomizedEnemies", 0) && !CVarGetInteger("gCrowdControl", 0) && Actor_Find(&play->actorCtx, ACTOR_EN_TORCH2, ACTORCAT_BOSS) == NULL) ||
-            ((CVarGetInteger("gRandomizedEnemies", 0) || CVarGetInteger("gCrowdControl", 0)) && Flags_GetTempClear(play, this->dyna.actor.room));
+        uint8_t roomCleared = (!CVarGetInteger("gRandomizedEnemies", 0) && !CVarGetInteger("gCrowdControl", 0) &&
+                               Actor_Find(&play->actorCtx, ACTOR_EN_TORCH2, ACTORCAT_BOSS) == NULL) ||
+                              ((CVarGetInteger("gRandomizedEnemies", 0) || CVarGetInteger("gCrowdControl", 0)) &&
+                               Flags_GetTempClear(play, this->dyna.actor.room));
         if (roomCleared) {
             Flags_SetClear(play, this->dyna.actor.room);
             this->timer++;
@@ -166,8 +166,7 @@ void EnBlkobj_Draw(Actor* thisx, PlayState* play) {
 
     gSPSegment(POLY_XLU_DISP++, 0x0D,
                Gfx_TwoTexScroll(play->state.gfxCtx, 0, gameplayFrames, 0, 32, 32, 1, gameplayFrames, 0, 32, 32));
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (this->alpha != 0) {
         EnBlkobj_DrawAlpha(play, gIllusionRoomNormalDL, this->alpha);

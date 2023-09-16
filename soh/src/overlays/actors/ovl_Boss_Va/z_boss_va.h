@@ -28,7 +28,7 @@ typedef struct BossVa {
     /* 0x01C0 */ Vec3f zapNeckPos;
     /* 0x01CC */ Vec3f zapHeadPos;
     /* 0x01D8 */ Vec3f unk_1D8; // Bari scale, Attach point for Bari spin, zapper head
-    /* 0x01E4 */ s16 unk_1E4; // Various Zapper rotations
+    /* 0x01E4 */ s16 unk_1E4;   // Various Zapper rotations
     /* 0x01E6 */ s16 unk_1E6;
     /* 0x01E8 */ s16 unk_1E8;
     /* 0x01EA */ s16 unk_1EA;

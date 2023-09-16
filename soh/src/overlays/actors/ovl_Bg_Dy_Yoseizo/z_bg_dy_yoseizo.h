@@ -20,7 +20,7 @@ typedef struct {
     /* 0x2E */ s16 alpha;
     /* 0x30 */ f32 scale;
     /* 0x34 */ s16 timer; // lifetime
-    /* 0x36 */ s16 type; // 0 is general radiance, else is directed towards Player
+    /* 0x36 */ s16 type;  // 0 is general radiance, else is directed towards Player
     /* 0x36 */ f32 pitch;
     /* 0x36 */ f32 yaw;
     /* 0x40 */ f32 roll;

@@ -26,4 +26,3 @@ typedef struct BgSpot18Basket {
 } BgSpot18Basket; // size = 0x021C
 
 #endif
-

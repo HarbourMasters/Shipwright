@@ -17,9 +17,9 @@ typedef struct EnSkb {
     /* 0x0281 */ u8 unk_281;
     /* 0x0282 */ u8 unk_282;
     /* 0x0283 */ u8 unk_283;
-    /* 0x0284 */ EnSkbActionFunc actionFunc; 
+    /* 0x0284 */ EnSkbActionFunc actionFunc;
     /* 0x0288 */ s16 unk_288;
-    /* 0x028C */ BodyBreak bodyBreak; 
+    /* 0x028C */ BodyBreak bodyBreak;
     /* 0x02A4 */ ColliderJntSph collider;
     /* 0x02C4 */ ColliderJntSphElement colliderItem[2];
 } EnSkb; // size = 0x0344

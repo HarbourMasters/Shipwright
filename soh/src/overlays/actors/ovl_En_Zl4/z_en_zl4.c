@@ -231,7 +231,8 @@ void GivePlayerRandoRewardZeldaChild(EnZl4* zelda, PlayState* play, RandomizerCh
     if (zelda->actor.parent != NULL && zelda->actor.parent->id == GET_PLAYER(play)->actor.id &&
         !Flags_GetTreasure(play, 0x1E)) {
         Flags_SetTreasure(play, 0x1E);
-    } else if (!Flags_GetTreasure(play, 0x1E) && !Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA) && Actor_TextboxIsClosing(&zelda->actor, play) &&
+    } else if (!Flags_GetTreasure(play, 0x1E) && !Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA) &&
+               Actor_TextboxIsClosing(&zelda->actor, play) &&
                (play->msgCtx.textId == 0x703C || play->msgCtx.textId == 0x703D)) {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, GI_LETTER_ZELDA);
         GiveItemEntryFromActor(&zelda->actor, play, getItemEntry, 10000.0f, 100.0f);
@@ -1225,7 +1226,7 @@ void EnZl4_Idle(EnZl4* this, PlayState* play) {
     Npc_UpdateTalking(play, &this->actor, &this->interactInfo.talkState, this->collider.dim.radius + 60.0f,
                       EnZl4_GetText, func_80B5B9B0);
     func_80B5BB78(this, play);
-    
+
     if (gSaveContext.n64ddFlag) {
         GivePlayerRandoRewardZeldaChild(this, play, RC_HC_ZELDAS_LETTER);
         return;

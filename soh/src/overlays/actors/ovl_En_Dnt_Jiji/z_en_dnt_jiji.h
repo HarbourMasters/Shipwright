@@ -25,7 +25,7 @@ typedef struct EnDntJiji {
     /* 0x024A */ s16 unburrow;
     /* 0x024C */ s16 eyeState;
     /* 0x024E */ s16 stageSignal;
-    /* 0x0250 */ s16 unused; // always set to 5
+    /* 0x0250 */ s16 unused;     // always set to 5
     /* 0x0252 */ s16 attackFlag; // Is never set
     /* 0x0254 */ s32 getItemId;
     /* 0x0258 */ struct EnDntDemo* stage;

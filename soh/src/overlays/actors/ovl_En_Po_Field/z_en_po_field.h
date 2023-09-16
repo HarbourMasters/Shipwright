@@ -8,10 +8,7 @@ struct EnPoField;
 
 typedef void (*EnPoFieldActionFunc)(struct EnPoField*, PlayState*);
 
-typedef enum {
-    EN_PO_FIELD_SMALL,
-    EN_PO_FIELD_BIG
-} EnPoFieldSize;
+typedef enum { EN_PO_FIELD_SMALL, EN_PO_FIELD_BIG } EnPoFieldSize;
 
 typedef struct {
     /* 0x0000 */ Color_RGB8 primColor;

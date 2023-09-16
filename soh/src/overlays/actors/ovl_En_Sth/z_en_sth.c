@@ -63,12 +63,8 @@ static s16 sObjectIds[6] = {
 };
 
 static FlexSkeletonHeader* sSkeletons[6] = {
-    &object_ahg_Skel_0000F0,
-    &object_boj_Skel_0000F0,
-    &object_boj_Skel_0000F0,
-    &object_boj_Skel_0000F0,
-    &object_boj_Skel_0000F0,
-    &object_boj_Skel_0000F0,
+    &object_ahg_Skel_0000F0, &object_boj_Skel_0000F0, &object_boj_Skel_0000F0,
+    &object_boj_Skel_0000F0, &object_boj_Skel_0000F0, &object_boj_Skel_0000F0,
 };
 
 static AnimationHeader* sAnimations[6] = {
@@ -81,7 +77,12 @@ static EnSthActionFunc sRewardObtainedWaitActions[6] = {
 };
 
 static u16 sEventFlags[6] = {
-    0, EVENTCHKINF_SKULLTULA_REWARD_10_MASK, EVENTCHKINF_SKULLTULA_REWARD_20_MASK, EVENTCHKINF_SKULLTULA_REWARD_30_MASK, EVENTCHKINF_SKULLTULA_REWARD_40_MASK, EVENTCHKINF_SKULLTULA_REWARD_50_MASK,
+    0,
+    EVENTCHKINF_SKULLTULA_REWARD_10_MASK,
+    EVENTCHKINF_SKULLTULA_REWARD_20_MASK,
+    EVENTCHKINF_SKULLTULA_REWARD_30_MASK,
+    EVENTCHKINF_SKULLTULA_REWARD_40_MASK,
+    EVENTCHKINF_SKULLTULA_REWARD_50_MASK,
 };
 
 static s16 sGetItemIds[6] = {
@@ -157,8 +158,8 @@ void EnSth_SetupAfterObjectLoaded(EnSth* this, PlayState* play) {
 
     EnSth_SetupShapeColliderUpdate2AndDraw(this, play);
     gSegments[6] = PHYSICAL_TO_VIRTUAL(play->objectCtx.status[this->objectBankIdx].segment);
-    SkelAnime_InitFlex(play, &this->skelAnime, sSkeletons[this->actor.params], NULL, this->jointTable,
-                       this->morphTable, 16);
+    SkelAnime_InitFlex(play, &this->skelAnime, sSkeletons[this->actor.params], NULL, this->jointTable, this->morphTable,
+                       16);
     Animation_PlayLoop(&this->skelAnime, sAnimations[this->actor.params]);
 
     this->eventFlag = sEventFlags[this->actor.params];
@@ -243,7 +244,7 @@ void EnSth_ParentRewardObtainedWait(EnSth* this, PlayState* play) {
 void EnSth_GivePlayerItem(EnSth* this, PlayState* play) {
     u16 getItemId = sGetItemIds[this->actor.params];
     GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
-    
+
     if (gSaveContext.n64ddFlag) {
         switch (getItemId) {
             case GI_RUPEE_GOLD:

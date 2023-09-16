@@ -11,7 +11,7 @@ typedef void (*BgJyaCobraActionFunc)(struct BgJyaCobra*, PlayState*);
 #define COBRA_SHADOW_TEX_WIDTH 64
 #define COBRA_SHADOW_TEX_HEIGHT 64
 #define COBRA_SHADOW_TEX_SIZE (COBRA_SHADOW_TEX_WIDTH * COBRA_SHADOW_TEX_HEIGHT * G_IM_SIZ_8b_BYTES)
-#define COBRA_SHADOW_TEX_PTR(this) (u8*)ALIGN16((uintptr_t)&(this)->shadowTextureBuffer)
+#define COBRA_SHADOW_TEX_PTR(this) (u8*)ALIGN16((uintptr_t) & (this)->shadowTextureBuffer)
 
 typedef struct BgJyaCobra {
     /* 0x0000 */ DynaPolyActor dyna;
@@ -26,7 +26,8 @@ typedef struct BgJyaCobra {
     /* 0x0180 */ Vec3f unk_180;
     /* 0x018C */ f32 unk_18C;
     /* 0x0190 */ f32 unk_190;
-    /* 0x0194 */ u8 shadowTextureBuffer[COBRA_SHADOW_TEX_SIZE / sizeof(u8) + 0xF]; // Extra space to allow aligning actual texture to 0x10
-} BgJyaCobra; // size = 0x11A4
+    /* 0x0194 */ u8 shadowTextureBuffer[COBRA_SHADOW_TEX_SIZE / sizeof(u8) +
+                                        0xF]; // Extra space to allow aligning actual texture to 0x10
+} BgJyaCobra;                                 // size = 0x11A4
 
 #endif

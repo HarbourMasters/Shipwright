@@ -134,12 +134,11 @@ void EnStream_Draw(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     multipliedFrames = frames * 20;
     gSPSegment(POLY_XLU_DISP++, 0x08,
-               Gfx_TwoTexScroll(play->state.gfxCtx, 0, frames * 30, -multipliedFrames, 0x40, 0x40, 1,
-                                multipliedFrames, -multipliedFrames, 0x40, 0x40));
+               Gfx_TwoTexScroll(play->state.gfxCtx, 0, frames * 30, -multipliedFrames, 0x40, 0x40, 1, multipliedFrames,
+                                -multipliedFrames, 0x40, 0x40));
     gSPDisplayList(POLY_XLU_DISP++, object_stream_DL_000950);
     CLOSE_DISPS(play->state.gfxCtx);
 }

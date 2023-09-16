@@ -21,7 +21,7 @@ typedef struct EnFish {
     /* 0x024C */ s16 slowPhase;
     /* 0x024E */ s16 fastPhase;
     /* 0x0250 */ s32 unk_250; // Set to 0 or 5, arg5 of Actor_UpdateBgCheckInfo
-} EnFish; // size = 0x0254
+} EnFish;                     // size = 0x0254
 
 typedef enum {
     /* -1 */ FISH_SWIMMING_RESPAWNING = -1, // Used in Zora's Domain; code only uses not 0 or 1, runs away from Player

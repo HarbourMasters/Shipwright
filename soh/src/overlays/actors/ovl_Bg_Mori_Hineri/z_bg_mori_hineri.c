@@ -92,9 +92,8 @@ void BgMoriHineri_Init(Actor* thisx, PlayState* play) {
         if (this->dyna.actor.params == 1) {
             moriHineriObjIdx = Object_GetIndex(&play->objectCtx, OBJECT_MORI_HINERI1A);
         } else {
-            moriHineriObjIdx = (this->dyna.actor.params == 2)
-                                   ? Object_GetIndex(&play->objectCtx, OBJECT_MORI_HINERI2)
-                                   : Object_GetIndex(&play->objectCtx, OBJECT_MORI_HINERI2A);
+            moriHineriObjIdx = (this->dyna.actor.params == 2) ? Object_GetIndex(&play->objectCtx, OBJECT_MORI_HINERI2)
+                                                              : Object_GetIndex(&play->objectCtx, OBJECT_MORI_HINERI2A);
         }
         this->moriHineriObjIdx = moriHineriObjIdx;
     }
@@ -142,8 +141,9 @@ void func_808A39FC(BgMoriHineri* this, PlayState* play) {
             colHeader = NULL;
             this->dyna.actor.draw = BgMoriHineri_DrawHallAndRoom;
             if (this->dyna.actor.params == 0) {
-                // In vanilla this actionFunc is set to func_808A3C8C, and the boss key chest is rendered from scratch in BgMoriHineri_DrawHallAndRoom
-                // In SOH we instead spawn the en_box actor, which allows the rendering to be handled consistently with the rest of the chests in the game
+                // In vanilla this actionFunc is set to func_808A3C8C, and the boss key chest is rendered from scratch
+                // in BgMoriHineri_DrawHallAndRoom In SOH we instead spawn the en_box actor, which allows the rendering
+                // to be handled consistently with the rest of the chests in the game
                 this->actionFunc = BgMoriHineri_SpawnBossKeyChest;
                 CollisionHeader_GetVirtual(&object_mori_hineri1_Col_0054B8, &colHeader);
             } else if (this->dyna.actor.params == 1) {
@@ -167,11 +167,12 @@ void BgMoriHineri_DoNothing(BgMoriHineri* this, PlayState* play) {
 void BgMoriHineri_SpawnBossKeyChest(BgMoriHineri* this, PlayState* play) {
     if (this->dyna.actor.params == 0) {
         Object_Spawn(&play->objectCtx, OBJECT_BOX);
-        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOX, -1515.0f, 1440.0f,  -3475.0f, -0x4000, 0x4000, 0, 0x27EE, true);
+        Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOX, -1515.0f, 1440.0f, -3475.0f, -0x4000, 0x4000, 0, 0x27EE, true);
         this->actionFunc = func_808A3C8C;
     } else {
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOX, this->dyna.actor.world.pos.x + 147.0f,
-                    this->dyna.actor.world.pos.y + -245.0f, this->dyna.actor.world.pos.z + -453.0f, 0, 0x4000, 0, 0x27EE, true);
+                    this->dyna.actor.world.pos.y + -245.0f, this->dyna.actor.world.pos.z + -453.0f, 0, 0x4000, 0,
+                    0x27EE, true);
         this->actionFunc = BgMoriHineri_DoNothing;
     }
 }
@@ -191,10 +192,8 @@ void func_808A3C8C(BgMoriHineri* this, PlayState* play) {
 void func_808A3D58(BgMoriHineri* this, PlayState* play) {
     s16 mainCamChildIdx;
 
-    if ((Flags_GetSwitch(play, this->switchFlag) &&
-         (this->dyna.actor.params == 0 || this->dyna.actor.params == 2)) ||
-        (!Flags_GetSwitch(play, this->switchFlag) &&
-         (this->dyna.actor.params == 1 || this->dyna.actor.params == 3))) {
+    if ((Flags_GetSwitch(play, this->switchFlag) && (this->dyna.actor.params == 0 || this->dyna.actor.params == 2)) ||
+        (!Flags_GetSwitch(play, this->switchFlag) && (this->dyna.actor.params == 1 || this->dyna.actor.params == 3))) {
         this->dyna.actor.draw = BgMoriHineri_DrawHallAndRoom;
         this->actionFunc = func_808A3E54;
 
@@ -246,8 +245,7 @@ void BgMoriHineri_DrawHallAndRoom(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, play->objectCtx.status[this->moriTexObjIdx].segment);
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, sDLists[this->dyna.actor.params]);
     if (this->boxObjIdx > 0) {
         Matrix_Get(&mtx);
@@ -261,8 +259,7 @@ void BgMoriHineri_DrawHallAndRoom(Actor* thisx, PlayState* play) {
         }
         Matrix_RotateZYX(0, -0x8000, this->dyna.actor.shape.rot.z, MTXMODE_APPLY);
         Matrix_Translate(0.0f, -50.0f, 0.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gDungeonDoorDL);
     }
 

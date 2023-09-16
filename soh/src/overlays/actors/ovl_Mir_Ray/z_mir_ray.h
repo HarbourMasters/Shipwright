@@ -8,13 +8,15 @@ struct MirRay;
 
 typedef struct {
     /* 0x00 */ Vec3s sourcePoint;
-    /* 0x06 */ Vec3s poolPoint; // point at center of light pool on floor for windows and BigMirror, same as source point for Cobra Mirror
+    /* 0x06 */ Vec3s poolPoint;     // point at center of light pool on floor for windows and BigMirror, same as source
+                                    // point for Cobra Mirror
     /* 0x0C */ s16 sourceEndRadius; // Radius of beam frustum at the source end
-    /* 0x0E */ s16 poolEndRadius; // Radius of beam frustum at the pool end
-    /* 0x10 */ f32 unk_10; // placement of collider center along beam
-    /* 0x14 */ s16 unk_14; // collider radius before scaled
-    /* 0x16 */ s16 lgtPtMaxRad; // light point max radius
-    /* 0x18 */ f32 unk_18; // placement of light point between source and reflection point (pool point for windows, player for mirrors)
+    /* 0x0E */ s16 poolEndRadius;   // Radius of beam frustum at the pool end
+    /* 0x10 */ f32 unk_10;          // placement of collider center along beam
+    /* 0x14 */ s16 unk_14;          // collider radius before scaled
+    /* 0x16 */ s16 lgtPtMaxRad;     // light point max radius
+    /* 0x18 */ f32 unk_18; // placement of light point between source and reflection point (pool point for windows,
+                           // player for mirrors)
     /* 0x1C */ Color_RGB8 color;
     /* 0x1F */ u8 params;
 } MirRayDataEntry; // size = 0x20
@@ -42,6 +44,6 @@ typedef struct MirRay {
     /* 0x029C */ LightNode* lightNode;
     /* 0x02A0 */ LightInfo lightInfo;
     /* 0x02AE */ u8 unLit; // Conditioned on. set in Cobra?
-} MirRay; // size = 0x02B0
+} MirRay;                  // size = 0x02B0
 
 #endif

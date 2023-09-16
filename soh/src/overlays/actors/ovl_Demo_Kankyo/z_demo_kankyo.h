@@ -17,7 +17,7 @@ typedef enum {
     /* 0x05 */ DEMOKANKYO_ROCK_4,
     /* 0x06 */ DEMOKANKYO_ROCK_5,
     /* 0x07 */ DEMOKANKYO_CLOUDS,
-    /* 0x08 */ DEMOKANKYO_8,        // These unnamed types are removed types that would have used object_gi_melody
+    /* 0x08 */ DEMOKANKYO_8, // These unnamed types are removed types that would have used object_gi_melody
     /* 0x09 */ DEMOKANKYO_9,
     /* 0x0A */ DEMOKANKYO_A,
     /* 0x0B */ DEMOKANKYO_B,
@@ -32,10 +32,10 @@ typedef enum {
 typedef struct {
     /* 0x00 */ Vec3f unk_0;
     /* 0x0C */ Vec3f unk_C;
-    /* 0x18 */ f32 unk_18;     // For Door of Time, this is the amount to translate it by used for when it's opening
+    /* 0x18 */ f32 unk_18; // For Door of Time, this is the amount to translate it by used for when it's opening
     /* 0x1C */ f32 unk_1C;
     /* 0x20 */ s16 unk_20;
-    /* 0x22 */ u8 unk_22;      // mode ?
+    /* 0x22 */ u8 unk_22; // mode ?
     /* 0x23 */ u8 unk_23;
     /* 0x24 */ s16 unk_24;
 } DemoKankyoUnk150; // size = 0x28

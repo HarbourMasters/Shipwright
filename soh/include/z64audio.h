@@ -3,7 +3,8 @@
 
 #include <endianness.h>
 
-#define MK_CMD(b0,b1,b2,b3) ((((b0) & 0xFF) << 0x18) | (((b1) & 0xFF) << 0x10) | (((b2) & 0xFF) << 0x8) | (((b3) & 0xFF) << 0))
+#define MK_CMD(b0, b1, b2, b3) \
+    ((((b0)&0xFF) << 0x18) | (((b1)&0xFF) << 0x10) | (((b2)&0xFF) << 0x8) | (((b3)&0xFF) << 0))
 
 #define NO_LAYER ((SequenceLayer*)(-1))
 
@@ -88,9 +89,9 @@ typedef struct AudioListItem {
     /* 0x00 */ struct AudioListItem* prev;
     /* 0x04 */ struct AudioListItem* next;
     /* 0x08 */ union {
-                   void* value; // either Note* or SequenceLayer*
-                   s32 count;
-               } u;
+        void* value; // either Note* or SequenceLayer*
+        s32 count;
+    } u;
     /* 0x0C */ struct NotePool* pool;
 } AudioListItem; // size = 0x10
 
@@ -123,16 +124,15 @@ typedef struct {
     /* 0x08 */ u32 count;
     /* 0x0C */ char unk_0C[0x4];
     /* 0x10 */ s16 state[16]; // only exists if count != 0. 8-byte aligned
-} AdpcmLoop; // size = 0x30 (or 0x10)
+} AdpcmLoop;                  // size = 0x30 (or 0x10)
 
 typedef struct {
     /* 0x00 */ s32 order;
     /* 0x04 */ s32 npredictors;
     /* 0x08 */ s16* book; // size 8 * order * npredictors. 8-byte aligned
-} AdpcmBook; // size >= 0x8
+} AdpcmBook;              // size >= 0x8
 
-typedef struct 
-{
+typedef struct {
     union {
         struct {
             /* 0x00 */ u32 codec : 4;
@@ -149,24 +149,24 @@ typedef struct
     /* 0x0C */ AdpcmBook* book;
     u32 sampleRateMagicValue; // For wav samples only...
     s32 sampleRate;           // For wav samples only...
-} SoundFontSample; // size = 0x10
+} SoundFontSample;            // size = 0x10
 
 typedef struct {
     /* 0x00 */ SoundFontSample* sample;
     /* 0x04 */ union {
         u32 tuningAsU32;
-        f32 tuning;// frequency scale factor
+        f32 tuning; // frequency scale factor
     };
 } SoundFontSound; // size = 0x8
 
 typedef struct {
     /* 0x00 */ s16 numSamplesAfterDownsampling; // never read
-    /* 0x02 */ s16 chunkLen; // never read
+    /* 0x02 */ s16 chunkLen;                    // never read
     /* 0x04 */ s16* toDownsampleLeft;
     /* 0x08 */ s16* toDownsampleRight; // data pointed to by left and right are adjacent in memory
-    /* 0x0C */ s32 startPos; // start pos in ring buffer
-    /* 0x10 */ s16 lengthA; // first length in ring buffer (from startPos, at most until end)
-    /* 0x12 */ s16 lengthB; // second length in ring buffer (from pos 0)
+    /* 0x0C */ s32 startPos;           // start pos in ring buffer
+    /* 0x10 */ s16 lengthA;            // first length in ring buffer (from startPos, at most until end)
+    /* 0x12 */ s16 lengthB;            // second length in ring buffer (from pos 0)
     /* 0x14 */ u16 unk_14;
     /* 0x16 */ u16 unk_16;
     /* 0x18 */ u16 unk_18;
@@ -281,7 +281,7 @@ typedef struct {
     /* 0x024 */ f32 volume;
     /* 0x028 */ f32 muteVolumeScale;
     /* 0x02C */ f32 fadeVolumeScale;
-                f32 gameVolume;
+    f32 gameVolume;
     /* 0x030 */ f32 appliedFadeVolume;
     /* 0x034 */ f32 unk_34;
     /* 0x038 */ struct SequenceChannel* channels[16];
@@ -291,7 +291,8 @@ typedef struct {
     /* 0x09C */ NotePool notePool;
     /* 0x0DC */ s32 skipTicks;
     /* 0x0E0 */ u32 scriptCounter;
-    /* 0x0E4 */ char unk_E4[0x74]; // unused struct members for sequence/sound font dma management, according to sm64 decomp
+    /* 0x0E4 */ char
+        unk_E4[0x74]; // unused struct members for sequence/sound font dma management, according to sm64 decomp
     /* 0x158 */ s8 soundScriptIO[8];
 } SequencePlayer; // size = 0x160
 
@@ -377,7 +378,7 @@ typedef struct SequenceChannel {
     /* 0x08 */ u8 reverbIndex;
     /* 0x09 */ u8 bookOffset;
     /* 0x0A */ u8 newPan;
-    /* 0x0B */ u8 panChannelWeight;  // proportion of pan that comes from the channel (0..128)
+    /* 0x0B */ u8 panChannelWeight; // proportion of pan that comes from the channel (0..128)
     /* 0x0C */ u8 unk_0C;
     /* 0x0D */ u8 velocityRandomVariance;
     /* 0x0E */ u8 gateTimeRandomVariance;
@@ -393,7 +394,7 @@ typedef struct SequenceChannel {
     /* 0x20 */ u16 unk_20;
     /* 0x22 */ u16 unk_22;
     /* 0x24 */ s16 instOrWave; // either 0 (none), instrument index + 1, or
-                             // 0x80..0x83 for sawtooth/triangle/sine/square waves.
+                               // 0x80..0x83 for sawtooth/triangle/sine/square waves.
     /* 0x26 */ s16 transposition;
     /* 0x28 */ f32 volumeScale;
     /* 0x2C */ f32 volume;
@@ -420,7 +421,7 @@ typedef struct SequenceLayer {
     /* 0x00 */ u8 finished : 1;
     /* 0x00 */ u8 stopSomething : 1;
     /* 0x00 */ u8 continuousNotes : 1; // keep the same note for consecutive notes with the same sound
-    /* 0x00 */ u8 bit3 : 1; // "loaded"?
+    /* 0x00 */ u8 bit3 : 1;            // "loaded"?
     /* 0x00 */ u8 ignoreDrumPan : 1;
     /* 0x00 */ u8 bit1 : 1; // "has initialized continuous notes"?
     /* 0x00 */ u8 notePropertiesNeedInit : 1;
@@ -544,9 +545,9 @@ typedef struct {
     /* 0x0C */ u16 resamplingRateFixedPoint;
     /* 0x0E */ u16 unk_0E;
     /* 0x10 */ union {
-                 SoundFontSound* soundFontSound;
-                 s16* samples; // used for synthetic waves
-             } sound;
+        SoundFontSound* soundFontSound;
+        s16* samples; // used for synthetic waves
+    } sound;
     /* 0x14 */ s16* filter;
     /* 0x18 */ char pad_18[0x8];
 } NoteSubEu; // size = 0x20
@@ -693,7 +694,7 @@ typedef struct {
 
 typedef struct {
 #ifdef IS_BIGENDIAN
-    union{
+    union {
         u32 opArgs;
         struct {
             u8 op;
@@ -721,7 +722,7 @@ typedef struct {
         u32 asUInt;
     };
 #else
-    union{
+    union {
         u32 opArgs;
         struct {
             u8 arg2;
@@ -801,7 +802,7 @@ typedef struct {
     /* 0x04 */ uintptr_t romAddr;
     /* 0x08 */ char pad[0x8];
     /* 0x10 */ AudioTableEntry entries[512]; // (dynamic size)
-} AudioTable; // size >= 0x20
+} AudioTable;                                // size >= 0x20
 
 typedef struct {
     /* 0x00 */ OSTask task;
@@ -818,7 +819,7 @@ typedef struct {
     /* 0x0C */ u8 unused;
     /* 0x0D */ u8 reuseIndex; // position in sSampleDmaReuseQueue1/2, if ttl == 0
     /* 0x0E */ u8 ttl;        // duration after which the DMA can be discarded
-} SampleDma; // size = 0x10
+} SampleDma;                  // size = 0x10
 
 #include <libultraship/libultra/abi.h>
 
@@ -1028,24 +1029,24 @@ typedef enum {
 } SfxState;
 
 typedef struct {
-    /* 0x00 */ f32*     posX;
-    /* 0x04 */ f32*     posY;
-    /* 0x08 */ f32*     posZ;
-    /* 0x0C */ u8       token;
-    /* 0x10 */ f32*     freqScale;
-    /* 0x14 */ f32*     vol;
-    /* 0x18 */ s8*      reverbAdd;
-    /* 0x1C */ f32      dist;
-    /* 0x20 */ u32      priority; // lower is more prioritized
-    /* 0x24 */ u8       sfxImportance;
-    /* 0x26 */ u16      sfxParams;
-    /* 0x28 */ u16      sfxId;
-    /* 0x2A */ u8       state; // uses SfxState enum
-    /* 0x2B */ u8       freshness;
-    /* 0x2C */ u8       prev;
-    /* 0x2D */ u8       next;
-    /* 0x2E */ u8       channelIdx;
-    /* 0x2F */ u8       unk_2F;
+    /* 0x00 */ f32* posX;
+    /* 0x04 */ f32* posY;
+    /* 0x08 */ f32* posZ;
+    /* 0x0C */ u8 token;
+    /* 0x10 */ f32* freqScale;
+    /* 0x14 */ f32* vol;
+    /* 0x18 */ s8* reverbAdd;
+    /* 0x1C */ f32 dist;
+    /* 0x20 */ u32 priority; // lower is more prioritized
+    /* 0x24 */ u8 sfxImportance;
+    /* 0x26 */ u16 sfxParams;
+    /* 0x28 */ u16 sfxId;
+    /* 0x2A */ u8 state; // uses SfxState enum
+    /* 0x2B */ u8 freshness;
+    /* 0x2C */ u8 prev;
+    /* 0x2D */ u8 next;
+    /* 0x2E */ u8 channelIdx;
+    /* 0x2F */ u8 unk_2F;
 } SoundBankEntry; // size = 0x30
 
 /*
@@ -1062,12 +1063,12 @@ typedef struct {
  * bank     1111000000000000    observed in audio code
  */
 
-#define SFX_BANK_SHIFT(sfxId)   (((sfxId) >> 12) & 0xFF)
+#define SFX_BANK_SHIFT(sfxId) (((sfxId) >> 12) & 0xFF)
 
-#define SFX_BANK_MASK(sfxId)    ((sfxId) & 0xF000)
+#define SFX_BANK_MASK(sfxId) ((sfxId)&0xF000)
 
-#define SFX_INDEX(sfxId)    ((sfxId) & 0x01FF)
-#define SFX_BANK(sfxId)     SFX_BANK_SHIFT(SFX_BANK_MASK(sfxId))
+#define SFX_INDEX(sfxId) ((sfxId)&0x01FF)
+#define SFX_BANK(sfxId) SFX_BANK_SHIFT(SFX_BANK_MASK(sfxId))
 
 typedef struct {
     u32 priority; // lower is more prioritized
@@ -1087,7 +1088,7 @@ typedef struct {
     /* 0x0005 */ u8 vibrato;
     /* 0x0006 */ s8 tone;
     /* 0x0007 */ u8 semitone;
-} OcarinaNote;  // size = 0x8
+} OcarinaNote; // size = 0x8
 
 typedef struct {
     u8 len;
@@ -1096,8 +1097,8 @@ typedef struct {
 
 typedef struct {
     u8 noteIdx;
-    u8 state;   // original name: "status"
-    u8 pos;     // original name: "locate"
+    u8 state; // original name: "status"
+    u8 pos;   // original name: "locate"
 } OcarinaStaff;
 
 typedef enum {

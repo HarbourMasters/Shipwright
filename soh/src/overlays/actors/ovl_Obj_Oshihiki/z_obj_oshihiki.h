@@ -17,15 +17,15 @@ typedef enum {
     /* 7 */ PUSHBLOCK_HUGE_START_OFF
 } PushBlockType;
 
-#define PUSHBLOCK_ON_SCENE       (1 << 0)
+#define PUSHBLOCK_ON_SCENE (1 << 0)
 #define PUSHBLOCK_SETUP_ON_SCENE (1 << 1)
-#define PUSHBLOCK_ON_ACTOR       (1 << 2)
+#define PUSHBLOCK_ON_ACTOR (1 << 2)
 #define PUSHBLOCK_SETUP_ON_ACTOR (1 << 3)
-#define PUSHBLOCK_PUSH           (1 << 4)
-#define PUSHBLOCK_SETUP_PUSH     (1 << 5)
-#define PUSHBLOCK_FALL           (1 << 6)
-#define PUSHBLOCK_SETUP_FALL     (1 << 7)
-#define PUSHBLOCK_MOVE_UNDER     (1 << 8)
+#define PUSHBLOCK_PUSH (1 << 4)
+#define PUSHBLOCK_SETUP_PUSH (1 << 5)
+#define PUSHBLOCK_FALL (1 << 6)
+#define PUSHBLOCK_SETUP_FALL (1 << 7)
+#define PUSHBLOCK_MOVE_UNDER (1 << 8)
 
 typedef void (*ObjOshihikiActionFunc)(struct ObjOshihiki*, PlayState*);
 

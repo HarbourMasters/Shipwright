@@ -10,14 +10,14 @@
 
 typedef enum {
     /* 0 */ LIGHTNING_MODE_OFF, // no lightning
-    /* 1 */ LIGHTNING_MODE_ON, // request ligtning strikes at random intervals
+    /* 1 */ LIGHTNING_MODE_ON,  // request ligtning strikes at random intervals
     /* 2 */ LIGHTNING_MODE_LAST // request one lightning strike before turning off
 } LightningMode;
 
 typedef enum {
-    /* 0 */ LIGHTNING_STRIKE_WAIT, // wait between lightning strikes. request bolts when timer hits 0
+    /* 0 */ LIGHTNING_STRIKE_WAIT,  // wait between lightning strikes. request bolts when timer hits 0
     /* 1 */ LIGHTNING_STRIKE_START, // fade in the flash. note: bolts are requested in the previous state
-    /* 2 */ LIGHTNING_STRIKE_END // fade out the flash and go back to wait
+    /* 2 */ LIGHTNING_STRIKE_END    // fade out the flash and go back to wait
 } LightningStrikeState;
 
 typedef enum {
@@ -43,7 +43,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ u16 startTime;
     /* 0x02 */ u16 endTime;
-    /* 0x04 */ u8 blend; // if true, blend between.. skyboxes? palettes?
+    /* 0x04 */ u8 blend;        // if true, blend between.. skyboxes? palettes?
     /* 0x05 */ u8 skybox1Index; // whats the difference between _pal and non _pal files?
     /* 0x06 */ u8 skybox2Index;
 } struct_8011FC1C; // size = 0x8
@@ -64,7 +64,7 @@ typedef struct {
 typedef struct {
     /* 0x00 */ char unk_00[0x02];
     /* 0x02 */ u16 timeIncrement; // how many units of time that pass every update
-    /* 0x04 */ Vec3f sunPos; // moon position can be found by negating the sun position
+    /* 0x04 */ Vec3f sunPos;      // moon position can be found by negating the sun position
     /* 0x10 */ u8 skybox1Index;
     /* 0x11 */ u8 skybox2Index;
     /* 0x12 */ char unk_12[0x01];
@@ -78,8 +78,8 @@ typedef struct {
     /* 0x1A */ u16 unk_1A;
     /* 0x1C */ char unk_1C[0x02];
     /* 0x1E */ u8 indoors; // when set, day time has no effect on lighting
-    /* 0x1F */ u8 unk_1F; // outdoor light index
-    /* 0x20 */ u8 unk_20; // prev outdoor light index?
+    /* 0x1F */ u8 unk_1F;  // outdoor light index
+    /* 0x20 */ u8 unk_20;  // prev outdoor light index?
     /* 0x21 */ u8 unk_21;
     /* 0x22 */ u16 unk_22;
     /* 0x24 */ u16 unk_24;
@@ -102,9 +102,9 @@ typedef struct {
     /* 0xB0 */ f32 windSpeed;
     /* 0xB4 */ u8 numLightSettings;
     /* 0xB8 */ EnvLightSettings* lightSettingsList; // list of light settings from the scene file
-    /* 0xBC */ u8 blendIndoorLights; // when true, blend between indoor light settings when switching
-    /* 0xBD */ u8 unk_BD; // indoor light index
-    /* 0xBE */ u8 unk_BE; // prev indoor light index?
+    /* 0xBC */ u8 blendIndoorLights;                // when true, blend between indoor light settings when switching
+    /* 0xBD */ u8 unk_BD;                           // indoor light index
+    /* 0xBE */ u8 unk_BE;                           // prev indoor light index?
     /* 0xBF */ u8 unk_BF;
     /* 0xC0 */ EnvLightSettings lightSettings;
     /* 0xD6 */ u16 unk_D6;

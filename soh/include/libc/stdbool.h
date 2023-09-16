@@ -5,9 +5,9 @@
 
 #ifndef __cplusplus
 
-#define bool    u32
-#define false   0
-#define true    1
+#define bool u32
+#define false 0
+#define true 1
 
 #endif /* __cplusplus */
 

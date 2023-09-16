@@ -10,9 +10,9 @@ typedef void (*EnZfActionFunc)(struct EnZf*, PlayState*);
 
 typedef enum {
     /* -2 */ ENZF_TYPE_DINOLFOS = -2,
-    /* -1 */ ENZF_TYPE_LIZALFOS_LONE, // Not a miniboss, e.g. Spirit Temple
+    /* -1 */ ENZF_TYPE_LIZALFOS_LONE,       // Not a miniboss, e.g. Spirit Temple
     /*  0 */ ENZF_TYPE_LIZALFOS_MINIBOSS_A, // Pair with B
-    /*  1 */ ENZF_TYPE_LIZALFOS_MINIBOSS_B // Pair with A
+    /*  1 */ ENZF_TYPE_LIZALFOS_MINIBOSS_B  // Pair with A
 } EnZfType;
 
 typedef enum {
@@ -103,7 +103,7 @@ typedef struct EnZf {
     /* 0x03F0 */ s32 unk_3F0; // attack timer?
     /* 0x03F4 */ s16 unk_3F4; // tag timer?
     /* 0x03F6 */ s16 iceTimer;
-    /* 0x03F8 */ s16 unk_3F8; // boolean, to do with movement
+    /* 0x03F8 */ s16 unk_3F8;       // boolean, to do with movement
     /* 0x03FA */ s16 swordSheathed; // boolean
     /* 0x03FC */ s16 clearFlag;
     /* 0x03FE */ s16 curPlatform;

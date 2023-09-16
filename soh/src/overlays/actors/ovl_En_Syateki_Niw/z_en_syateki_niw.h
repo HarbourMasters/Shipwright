@@ -9,15 +9,15 @@ struct EnSyatekiNiw;
 typedef void (*EnSyatekiNiwActionFunc)(struct EnSyatekiNiw*, PlayState*);
 
 typedef struct {
-    /* 0x00 */ u8    unk_00;
+    /* 0x00 */ u8 unk_00;
     /* 0x0C */ Vec3f unk_04;
     /* 0x10 */ Vec3f unk_10;
     /* 0x1C */ Vec3f unk_1C;
-    /* 0x28 */ s16   unk_28;
-    /* 0x2A */ s16   unk_2A;
-    /* 0x2C */ f32   unk_2C;
-    /* 0x30 */ f32   unk_30;
-    /* 0x34 */ u8    unk_34;
+    /* 0x28 */ s16 unk_28;
+    /* 0x2A */ s16 unk_2A;
+    /* 0x2C */ f32 unk_2C;
+    /* 0x30 */ f32 unk_30;
+    /* 0x34 */ u8 unk_34;
     u32 epoch;
 } EnSyatekiNiw_1; // size = 0x38
 

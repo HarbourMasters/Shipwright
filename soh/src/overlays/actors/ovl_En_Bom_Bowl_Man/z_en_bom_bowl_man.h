@@ -32,7 +32,7 @@ typedef struct EnBomBowlMan {
     /* 0x023E */ s16 wallStatus[2];
     /* 0x0242 */ s16 prizeSelect;
     /* 0x0244 */ s16 gameResult; // 0 = default, 1 = lost, 2 = won
-    /* 0x0248 */ Vec3f posCopy; // Set and not used
+    /* 0x0248 */ Vec3f posCopy;  // Set and not used
     /* 0x0254 */ f32 frameCount;
     /* 0x0258 */ u8 minigamePlayStatus; // 0 = default, 1 = paid, 2 = playing
     /* 0x025C */ EnBomBowlPit* bowlPit;

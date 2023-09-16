@@ -17,7 +17,6 @@ u16 sLastButtonPressed;
 int gfx_create_framebuffer(uint32_t width, uint32_t height);
 void gfx_texture_cache_clear();
 
-
 void GameState_FaultPrint(void) {
     static char sBtnChars[] = "ABZSuldr*+LRudlr";
     s32 i;
@@ -245,10 +244,9 @@ int fbTest = -1;
 void GameState_Update(GameState* gameState) {
     GraphicsContext* gfxCtx = gameState->gfxCtx;
 
-    if (fbTest == -1)
-    {
+    if (fbTest == -1) {
         fbTest = gfx_create_framebuffer(64, 112);
-        //fbTest = gfx_create_framebuffer(256, 512);
+        // fbTest = gfx_create_framebuffer(256, 512);
     }
 
     GameState_SetFrameBuffer(gfxCtx);
@@ -464,7 +462,8 @@ void GameState_Destroy(GameState* gameState) {
 
     osSyncPrintf("game デストラクタ終了\n"); // "game destructor end"
 
-    // Performing clear skeletons before unload resources fixes an actor heap corruption crash due to the skeleton patching system.
+    // Performing clear skeletons before unload resources fixes an actor heap corruption crash due to the skeleton
+    // patching system.
     ResourceMgr_ClearSkeletons();
 
     if (CVarGetInteger("gAltAssets", 0)) {
@@ -485,8 +484,7 @@ u32 GameState_IsRunning(GameState* gameState) {
     return gameState->running;
 }
 
-void* GameState_Alloc(GameState* gameState, size_t size, char* file, s32 line)
-{
+void* GameState_Alloc(GameState* gameState, size_t size, char* file, s32 line) {
     void* ret;
 
     if (THA_IsCrash(&gameState->tha)) {

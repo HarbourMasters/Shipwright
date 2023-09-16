@@ -19,7 +19,7 @@ typedef struct EnWonderTalk {
     /* 0x0160 */ s16 unk_15A;
     /* 0x015C */ f32 unk_15C;
     /* 0x0160 */ f32 height;
-    /* 0x0164 */ u8  unk_164;
+    /* 0x0164 */ u8 unk_164;
 } EnWonderTalk; // size = 0x0168
 
 #endif

@@ -22,9 +22,9 @@ typedef struct EnTite {
     /* 0x02BD */ u8 flipState;
     /* 0x02C0 */ EnTiteActionFunc actionFunc;
     /* 0x02C4 */ BodyBreak bodyBreak;
-    /* 0x02DC */ s32 unk_2DC; // flags related to bgCheck drawn effects
+    /* 0x02DC */ s32 unk_2DC;    // flags related to bgCheck drawn effects
     /* 0x02E0 */ s16 actionVar1; // Usage depends on current action function
-    /* 0x02E2 */ u8 actionVar2; // Usage depends on current action function
+    /* 0x02E2 */ u8 actionVar2;  // Usage depends on current action function
     /* 0x02E3 */ u8 spawnIceTimer;
     /* 0x02E4 */ u8 damageEffect;
     /* 0x02E8 */ ColliderJntSph collider;

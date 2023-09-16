@@ -4,7 +4,6 @@
 #include <libultraship/libultra.h>
 #include "global.h"
 
-
 struct EnHeishi2;
 
 typedef void (*EnHeishi2ActionFunc)(struct EnHeishi2*, PlayState*);
@@ -18,7 +17,7 @@ typedef struct EnHeishi2 {
     /* 0x0260 */ Vec3s unk_260;
     /* 0x0266 */ char unk_266[0x06];
     /* 0x026C */ Vec3s unk_26C; // padding inbetween these
-    /* 0x0274 */ Vec3f unk_274; 
+    /* 0x0274 */ Vec3f unk_274;
     /* 0x0280 */ Vec3f unk_280; // camera related
     /* 0x028C */ Vec3f unk_28C; // camera related
     /* 0x0298 */ Vec3f unk_298; // camera related
@@ -32,7 +31,7 @@ typedef struct EnHeishi2 {
     /* 0x02F0 */ u16 unk_2F0;
     /* 0x02F2 */ s16 unk_2F2[0x5]; // starts counting down when guard starts to open gate.
     /* 0x02FC */ s16 unk_2FC;
-    /* 0x02FE */ s16 type; // copy of actor params at init
+    /* 0x02FE */ s16 type;    // copy of actor params at init
     /* 0x0300 */ s16 unk_300; // mask related
     /* 0x0302 */ char unk_302[0x6];
     /* 0x0308 */ u8 audioFlag;

@@ -72,7 +72,7 @@ void EffectBlure_AddVertex(EffectBlure* this, Vec3f* p1, Vec3f* p2) {
     }
 }
 
-//dumb doo doo command to change the type of an object's blur on the fly. Link's Swords with unique trail colors.
+// dumb doo doo command to change the type of an object's blur on the fly. Link's Swords with unique trail colors.
 void EffectBlure_ChangeType(EffectBlure* this, int type) {
     this->trailType = type;
 }
@@ -205,7 +205,7 @@ s32 EffectBlure_Update(void* thisx) {
     Color_RGBA8 color;
     u8 changed = 0;
 
-    switch (this->trailType) { //there HAS to be a better way to do this.
+    switch (this->trailType) { // there HAS to be a better way to do this.
         case 2:
             if (CVarGetInteger("gCosmetics.Trails_Boomerang.Changed", 0)) {
                 color = CVarGetColor("gCosmetics.Trails_Boomerang.Value", (Color_RGBA8){ 255, 255, 100, 255 });
@@ -795,7 +795,6 @@ void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
         } else {
             EffectBlure_DrawElemHermiteInterpolation(this, elem, i, gfxCtx);
         }
-        
     }
 
     FrameInterpolation_RecordCloseChild();
@@ -1134,7 +1133,6 @@ void EffectBlure_Draw(void* thisx, GraphicsContext* gfxCtx) {
                         } else {
                             gSP1Quadrangle(POLY_XLU_DISP++, j - 2, j - 1, j + 1, j, 0);
 
-                
                             if (this->unkFlag == 1) {
                                 phi_t2 = 0;
                             }

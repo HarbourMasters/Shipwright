@@ -78,7 +78,7 @@ s16 sBgDodoagoFirstExplosiveFlag = false;
 
 u8 sBgDodoagoDisableBombCatcher;
 
-//static u8 sUnused[90]; // unknown length
+// static u8 sUnused[90]; // unknown length
 
 s32 sBgDodoagoTimer;
 
@@ -313,8 +313,7 @@ void BgDodoago_Draw(Actor* thisx, PlayState* play) {
 
     if (Flags_GetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN)) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gDodongoLowerJawDL);
     }
 

@@ -19,7 +19,7 @@ typedef struct EnAm {
     /* 0x025A */ s16 cooldownTimer;
     /* 0x025C */ s16 attackTimer; // start going back home after reaching 0
     /* 0x025E */ s16 iceTimer;
-    /* 0x0260 */ s16 deathTimer; // explode after reaching 0
+    /* 0x0260 */ s16 deathTimer;   // explode after reaching 0
     /* 0x0262 */ s16 panicSpinRot; // used when panicking before death
     /* 0x0264 */ s16 unk_264;
     /* 0x0266 */ u8 textureBlend; // 0 = statue textures; 255 = enemy textures

@@ -682,7 +682,8 @@ s32 EnHorse_Spawn(EnHorse* this, PlayState* play) {
             player = GET_PLAYER(play);
             if (play->sceneNum != SCENE_LON_LON_RANCH ||
                 //! Same flag checked twice
-                (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) && ((gSaveContext.eventInf[0] & 0xF) != 6 || Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED))) ||
+                (Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) &&
+                 ((gSaveContext.eventInf[0] & 0xF) != 6 || Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED))) ||
                 // always load two spawns inside lon lon
                 ((sHorseSpawns[i].pos.x == 856 && sHorseSpawns[i].pos.y == 0 && sHorseSpawns[i].pos.z == -918) ||
                  (sHorseSpawns[i].pos.x == -1003 && sHorseSpawns[i].pos.y == 0 && sHorseSpawns[i].pos.z == -755))) {
@@ -980,8 +981,8 @@ void EnHorse_Frozen(EnHorse* this, PlayState* play) {
 
 void EnHorse_StickDirection(Vec2f* curStick, f32* stickMag, s16* angle);
 
-void EnHorse_UpdateSpeed(EnHorse* this, PlayState* play, f32 brakeDecel, f32 brakeAngle, f32 minStickMag,
-                         f32 decel, f32 baseSpeed, s16 turnSpeed) {
+void EnHorse_UpdateSpeed(EnHorse* this, PlayState* play, f32 brakeDecel, f32 brakeAngle, f32 minStickMag, f32 decel,
+                         f32 baseSpeed, s16 turnSpeed) {
     s16* stickAnglePtr; // probably fake
     f32 stickMag;
     s16 stickAngle;
@@ -1022,10 +1023,9 @@ void EnHorse_UpdateSpeed(EnHorse* this, PlayState* play, f32 brakeDecel, f32 bra
 
     if (this->stateFlags & ENHORSE_BOOST) {
         if ((16 - this->boostTimer) > 0) {
-            this->actor.speedXZ =
-                (EnHorse_SlopeSpeedMultiplier(this, play) * this->boostSpeed - this->actor.speedXZ) /
-                    (16 - this->boostTimer) +
-                this->actor.speedXZ;
+            this->actor.speedXZ = (EnHorse_SlopeSpeedMultiplier(this, play) * this->boostSpeed - this->actor.speedXZ) /
+                                      (16 - this->boostTimer) +
+                                  this->actor.speedXZ;
         } else {
             this->actor.speedXZ = EnHorse_SlopeSpeedMultiplier(this, play) * this->boostSpeed;
         }
@@ -2372,7 +2372,7 @@ void EnHorse_CutsceneUpdate(EnHorse* this, PlayState* play) {
         return;
     }
     if (linkCsAction != 0 && (uint32_t)(uintptr_t)linkCsAction != 0xABABABAB) {
-        csFunctionIdx = EnHorse_GetCutsceneFunctionIndex(linkCsAction->action); 
+        csFunctionIdx = EnHorse_GetCutsceneFunctionIndex(linkCsAction->action);
         if (csFunctionIdx != 0) {
             if (this->cutsceneAction != csFunctionIdx) {
                 if (this->cutsceneAction == 0) {
@@ -2817,8 +2817,7 @@ void EnHorse_Vec3fOffset(Vec3f* src, s16 yaw, f32 dist, f32 height, Vec3f* dst) 
     dst->z = src->z + Math_CosS(yaw) * dist;
 }
 
-s32 EnHorse_CalcFloorHeight(EnHorse* this, PlayState* play, Vec3f* pos, CollisionPoly** floorPoly,
-                            f32* floorHeight) {
+s32 EnHorse_CalcFloorHeight(EnHorse* this, PlayState* play, Vec3f* pos, CollisionPoly** floorPoly, f32* floorHeight) {
     s32 bgId;
     f32 waterY;
     WaterBox* waterBox;
@@ -2899,8 +2898,8 @@ void EnHorse_CheckFloors(EnHorse* this, PlayState* play) {
     WaterBox* waterBox;
     s32 pad;
 
-    if (WaterBox_GetSurfaceImpl(play, &play->colCtx, this->actor.world.pos.x, this->actor.world.pos.z,
-                                &waterHeight, &waterBox) == 1 &&
+    if (WaterBox_GetSurfaceImpl(play, &play->colCtx, this->actor.world.pos.x, this->actor.world.pos.z, &waterHeight,
+                                &waterBox) == 1 &&
         this->actor.floorHeight < waterHeight) {
         EnHorse_ObstructMovement(this, play, 1, galloping);
         return;
@@ -3312,7 +3311,9 @@ void EnHorse_CheckBoost(EnHorse* thisx, PlayState* play2) {
                     this->stateFlags |= ENHORSE_BOOST;
                     this->stateFlags |= ENHORSE_FIRST_BOOST_REGEN;
                     this->stateFlags |= ENHORSE_FLAG_8;
-                    if (!CVarGetInteger("gInfiniteEpona", 0)) { this->numBoosts--; }
+                    if (!CVarGetInteger("gInfiniteEpona", 0)) {
+                        this->numBoosts--;
+                    }
                     this->boostTimer = 0;
                     if (this->numBoosts == 0) {
                         this->boostRegenTime = 140;

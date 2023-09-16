@@ -16,4 +16,3 @@ typedef struct ObjTsubo {
 } ObjTsubo; // size = 0x01A0
 
 #endif
-

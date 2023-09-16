@@ -97,8 +97,7 @@ s32 func_808B8910(BgSpot18Obj* this, PlayState* play) {
     } else if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
         age = 0;
     } else {
-        osSyncPrintf("Error : リンク年齢不詳 (%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
-                     this->dyna.actor.params);
+        osSyncPrintf("Error : リンク年齢不詳 (%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__, this->dyna.actor.params);
         return 0;
     }
 

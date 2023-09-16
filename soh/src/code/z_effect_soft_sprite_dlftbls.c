@@ -30,15 +30,9 @@
 //        1,                                 \
 //    },
 
-#define DEFINE_EFFECT_SS(name, _1)         \
-    {                                      \
-        (uintptr_t)0, \
-        (uintptr_t)0,   \
-        0,         \
-        0,           \
-        NULL,                              \
-        &name##_InitVars,                  \
-        1,                                 \
+#define DEFINE_EFFECT_SS(name, _1)                                   \
+    {                                                                \
+        (uintptr_t)0, (uintptr_t)0, 0, 0, NULL, &name##_InitVars, 1, \
     },
 
 #define DEFINE_EFFECT_SS_UNSET(_0) { 0 },

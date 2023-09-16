@@ -27,10 +27,9 @@ typedef struct EnJj {
 } EnJj; // size = 0x0314
 
 typedef enum {
-    /* -1 */ JABUJABU_MAIN = -1, // Head, drawn body, handles updating
-    /*  0 */ JABUJABU_COLLISION, // Static collision for body
+    /* -1 */ JABUJABU_MAIN = -1,       // Head, drawn body, handles updating
+    /*  0 */ JABUJABU_COLLISION,       // Static collision for body
     /*  1 */ JABUJABU_UNUSED_COLLISION // Shaped like a screen
 } EnJjType;
-
 
 #endif

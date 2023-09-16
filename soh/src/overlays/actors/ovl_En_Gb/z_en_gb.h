@@ -16,17 +16,17 @@ typedef struct {
 } EnGbCagedSoulInfo; // size = 0x10
 
 typedef struct {
-    /* 0x00 */ u8    infoIdx;
-    /* 0x01 */ u8    unk_1;
-    /* 0x02 */ u8    unk_2;
-    /* 0x03 */ u8    unk_3;
-    /* 0x04 */ u8    rotate180;
-    /* 0x06 */ s16   unk_6;
+    /* 0x00 */ u8 infoIdx;
+    /* 0x01 */ u8 unk_1;
+    /* 0x02 */ u8 unk_2;
+    /* 0x03 */ u8 unk_3;
+    /* 0x04 */ u8 rotate180;
+    /* 0x06 */ s16 unk_6;
     /* 0x08 */ Vec3f translation;
     /* 0x14 */ Vec3f unk_14;
-    /* 0x20 */ f32   unk_20;
-    /* 0x24 */ f32   unk_24;
-    /* 0x28 */ f32   unk_28;
+    /* 0x20 */ f32 unk_20;
+    /* 0x24 */ f32 unk_24;
+    /* 0x28 */ f32 unk_28;
     u32 epoch;
 } EnGbCagedSoul; // size = 0x2C
 

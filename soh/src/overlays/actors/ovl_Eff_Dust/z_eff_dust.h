@@ -11,13 +11,13 @@ typedef void (*EffDustDrawFunc)(Actor*, PlayState*);
 
 typedef struct EffDust {
     /* 0x0000 */ Actor actor;
-    /* 0x014C */ f32 distanceTraveled[64]; // For each particle. Normalized. From 0.0f to 1.0f
+    /* 0x014C */ f32 distanceTraveled[64];   // For each particle. Normalized. From 0.0f to 1.0f
     /* 0x024C */ Vec3f initialPositions[64]; // Array of position for each dust particle.
     /* 0x054C */ u8 index;
     /* 0x054D */ u8 life; // Only considered if actor.params is 2, 3 or 4.
-    /* 0x0550 */ f32 dx; // Normalized. 0.0f to 1.0f
-    /* 0x0554 */ f32 dy; // Normalized. 0.0f to 1.0f
-    /* 0x0558 */ f32 dz; // Normalized. 0.0f to 1.0f
+    /* 0x0550 */ f32 dx;  // Normalized. 0.0f to 1.0f
+    /* 0x0554 */ f32 dy;  // Normalized. 0.0f to 1.0f
+    /* 0x0558 */ f32 dz;  // Normalized. 0.0f to 1.0f
     /* 0x055C */ f32 scalingFactor;
     /* 0x0560 */ EffDustActionFunc actionFunc;
     /* 0x0564 */ EffDustDrawFunc drawFunc;

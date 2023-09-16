@@ -120,8 +120,7 @@ void EnToryo_Init(Actor* thisx, PlayState* play) {
     }
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 42.0f);
-    SkelAnime_InitFlex(play, &this->skelAnime, &object_toryo_Skel_007150, NULL, this->jointTable, this->morphTable,
-                       17);
+    SkelAnime_InitFlex(play, &this->skelAnime, &object_toryo_Skel_007150, NULL, this->jointTable, this->morphTable, 17);
     Collider_InitCylinder(play, &this->collider);
     Collider_SetCylinder(play, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, &sDamageTable, &sColChkInfoInit);
@@ -293,7 +292,9 @@ void func_80B20768(EnToryo* this, PlayState* play) {
 
     // Animation Count should be no more than 1 to guarantee putaway is complete after giving the saw
     // As this is vanilla behavior, it only applies with the Fix toggle or Skip Text enabled.
-    bool checkAnim = (CVarGetInteger("gFixSawSoftlock", 0) != 0 || CVarGetInteger("gSkipText", 0) != 0) ? play->animationCtx.animationCount <= 1 : true;
+    bool checkAnim = (CVarGetInteger("gFixSawSoftlock", 0) != 0 || CVarGetInteger("gSkipText", 0) != 0)
+                         ? play->animationCtx.animationCount <= 1
+                         : true;
     if (this->unk_1E4 == 3 && checkAnim) {
         Actor_ProcessTalkRequest(&this->actor, play);
         Message_ContinueTextbox(play, this->actor.textId);
@@ -399,8 +400,7 @@ void EnToryo_Draw(Actor* thisx, PlayState* play) {
                           EnToryo_OverrideLimbDraw, EnToryo_PostLimbDraw, this);
 }
 
-s32 EnToryo_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                             void* thisx) {
+s32 EnToryo_OverrideLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnToryo* this = (EnToryo*)thisx;
 
     if ((this->stateFlags & 8)) {

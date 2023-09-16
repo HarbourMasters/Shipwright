@@ -102,7 +102,7 @@ typedef struct BossGoma {
     /* 0x0000 */ Actor actor;
     /* 0x014C */ SkelAnime skelanime;
     /* 0x0190 */ BossGomaActionFunc actionFunc;
-    /* 0x0194 */ s16 frameCount; // also used as a timer
+    /* 0x0194 */ s16 frameCount;    // also used as a timer
     /* 0x0196 */ s16 patienceTimer; // when non-0: walk towards player, can be stunned
     /* 0x0198 */ s16 eyeLidBottomRotX;
     /* 0x019A */ s16 eyeLidTopRotX;
@@ -148,7 +148,7 @@ typedef struct BossGoma {
     /* 0x0290 */ Vec3f subCameraEye;
     /* 0x029C */ Vec3f subCameraAt;
     /* 0x02A8 */ Vec3f defeatedLimbPositions[100]; // only 85/86 first indices actually used
-    /* 0x0758 */ u8 deadLimbsState[100]; // only 85/90 first indices actually used
+    /* 0x0758 */ u8 deadLimbsState[100];           // only 85/90 first indices actually used
     /* 0x07BC */ ColliderJntSph collider;
     /* 0x07DC */ ColliderJntSphElement colliderItems[13];
 } BossGoma; // size = 0x0B1C

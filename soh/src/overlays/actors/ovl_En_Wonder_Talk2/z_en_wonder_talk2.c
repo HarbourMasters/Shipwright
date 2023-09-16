@@ -271,7 +271,7 @@ void func_80B3A4F8(EnWonderTalk2* this, PlayState* play) {
                     }
                     // individual textIds that should be skipped, or that should be preserved
                     // in a scene that otherwise has all wonder talk skipped.
-                    //switch (this->actor.textId) { 
+                    // switch (this->actor.textId) {
                     //    case: 0x023c //textId we want to skip
                     //        randoSkipText = true;
                     //        break;

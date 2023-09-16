@@ -4,7 +4,6 @@
 #include <libultraship/libultra.h>
 #include "global.h"
 
-
 struct BgJyaBombiwa;
 
 typedef struct BgJyaBombiwa {

@@ -468,22 +468,29 @@ u16 func_80A6F810(PlayState* play, Actor* thisx) {
                 return 0x701A;
             }
         case ENHY_TYPE_BOJ_3:
-            return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? ((Flags_GetInfTable(INFTABLE_C4)) ? 0x7001 : 0x70EB) : 0x7001;
+            return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE))
+                       ? ((Flags_GetInfTable(INFTABLE_C4)) ? 0x7001 : 0x70EB)
+                       : 0x7001;
         case ENHY_TYPE_AHG_4:
-            return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? 0x704B : ((Flags_GetInfTable(INFTABLE_C5)) ? 0x7024 : 0x7023);
+            return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE))
+                       ? 0x704B
+                       : ((Flags_GetInfTable(INFTABLE_C5)) ? 0x7024 : 0x7023);
         case ENHY_TYPE_BOJ_5:
             player->exchangeItemId = EXCH_ITEM_BLUE_FIRE;
             return 0x700C;
         case ENHY_TYPE_BBA:
-            return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? 0x704A : ((Flags_GetInfTable(INFTABLE_C6)) ? 0x7022 : 0x7021);
+            return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE))
+                       ? 0x704A
+                       : ((Flags_GetInfTable(INFTABLE_C6)) ? 0x7022 : 0x7021);
         case ENHY_TYPE_BJI_7:
             if (play->sceneNum == SCENE_KAKARIKO_CENTER_GUEST_HOUSE) {
                 return 0x5088;
             } else if (play->sceneNum == SCENE_KAKARIKO_VILLAGE) {
                 return 0x5087;
             } else {
-                return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? 0x704D
-                                                         : ((Flags_GetInfTable(INFTABLE_C7)) ? 0x7028 : 0x7027);
+                return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE))
+                           ? 0x704D
+                           : ((Flags_GetInfTable(INFTABLE_C7)) ? 0x7028 : 0x7027);
             }
         case ENHY_TYPE_CNE_8:
             if (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) {
@@ -497,8 +504,9 @@ u16 func_80A6F810(PlayState* play, Actor* thisx) {
             } else if (play->sceneNum == SCENE_KAKARIKO_VILLAGE) {
                 return CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) ? 0x5080 : 0x507F;
             } else {
-                return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? 0x7049
-                                                         : ((Flags_GetInfTable(INFTABLE_CA)) ? 0x7020 : 0x701F);
+                return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE))
+                           ? 0x7049
+                           : ((Flags_GetInfTable(INFTABLE_CA)) ? 0x7020 : 0x701F);
             }
         case ENHY_TYPE_BOJ_10:
             if (play->sceneNum == SCENE_IMPAS_HOUSE) {
@@ -506,12 +514,14 @@ u16 func_80A6F810(PlayState* play, Actor* thisx) {
             } else if (play->sceneNum == SCENE_KAKARIKO_VILLAGE) {
                 return CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) ? 0x507C : 0x507B;
             } else {
-                return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? 0x7046
-                                                         : ((Flags_GetInfTable(INFTABLE_CD)) ? 0x7019 : 0x7018);
+                return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE))
+                           ? 0x7046
+                           : ((Flags_GetInfTable(INFTABLE_CD)) ? 0x7019 : 0x7018);
             }
         case ENHY_TYPE_CNE_11:
-            return (Flags_GetInfTable(INFTABLE_ENTERED_HYRULE_CASTLE)) ? ((Flags_GetInfTable(INFTABLE_CC)) ? 0x7014 : 0x70A4)
-                                                      : 0x7014;
+            return (Flags_GetInfTable(INFTABLE_ENTERED_HYRULE_CASTLE))
+                       ? ((Flags_GetInfTable(INFTABLE_CC)) ? 0x7014 : 0x70A4)
+                       : 0x7014;
         case ENHY_TYPE_BOJ_12:
             if (play->sceneNum == SCENE_KAKARIKO_VILLAGE) {
                 return !IS_DAY ? 0x5084 : 0x5083;
@@ -540,7 +550,9 @@ u16 func_80A6F810(PlayState* play, Actor* thisx) {
             }
         case ENHY_TYPE_BOB_18:
             if (!LINK_IS_ADULT) {
-                return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ? 0x505F : ((Flags_GetInfTable(INFTABLE_163)) ? 0x505E : 0x505D);
+                return (Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE))
+                           ? 0x505F
+                           : ((Flags_GetInfTable(INFTABLE_163)) ? 0x505E : 0x505D);
             } else {
                 return (this->unk_330 & 0x800) ? 0x5062 : ((Flags_GetInfTable(INFTABLE_164)) ? 0x5061 : 0x5060);
             }
@@ -666,9 +678,12 @@ s16 func_80A70058(PlayState* play, Actor* thisx) {
                             func_80A6F7CC(this, play, GI_HEART_PIECE);
                         } else {
                             this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_LOST_DOG, GI_HEART_PIECE);
-                            // The follownig line and last arguments of GiveItemEntryFromActor are copied from func_80A6F7CC
+                            // The follownig line and last arguments of GiveItemEntryFromActor are copied from
+                            // func_80A6F7CC
                             this->unkGetItemId = this->getItemEntry.getItemId;
-                            GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
+                            GiveItemEntryFromActor(&this->actor, play, this->getItemEntry,
+                                                   this->actor.xzDistToPlayer + 1.0f,
+                                                   fabsf(this->actor.yDistToPlayer) + 1.0f);
                         }
                     }
                     this->actionFunc = func_80A714C4;
@@ -869,7 +884,8 @@ s32 EnHy_ShouldSpawn(EnHy* this, PlayState* play) {
                 return true;
             } else if (IS_NIGHT) {
                 return false;
-            } else if ((Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) && !Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL)) {
+            } else if ((Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) &&
+                       !Flags_GetEventChkInf(EVENTCHKINF_PULLED_MASTER_SWORD_FROM_PEDESTAL)) {
                 return false;
             } else {
                 return true;
@@ -1069,9 +1085,11 @@ void func_80A714C4(EnHy* this, PlayState* play) {
         this->actionFunc = func_80A71530;
     } else {
         if (!gSaveContext.n64ddFlag || this->getItemEntry.getItemId == GI_NONE) {
-            func_8002F434(&this->actor, play, this->unkGetItemId, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
+            func_8002F434(&this->actor, play, this->unkGetItemId, this->actor.xzDistToPlayer + 1.0f,
+                          fabsf(this->actor.yDistToPlayer) + 1.0f);
         } else {
-            GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
+            GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, this->actor.xzDistToPlayer + 1.0f,
+                                   fabsf(this->actor.yDistToPlayer) + 1.0f);
         }
     }
 }
@@ -1254,14 +1272,14 @@ void EnHy_Draw(Actor* thisx, PlayState* play) {
                         envColorSeg10.a = 0;
                     }
                     gSPSegment(POLY_OPA_DISP++, 0x0A,
-                               EnHy_SetEnvColor(play->state.gfxCtx, envColorSeg10.r, envColorSeg10.g,
-                                                envColorSeg10.b, envColorSeg10.a));
+                               EnHy_SetEnvColor(play->state.gfxCtx, envColorSeg10.r, envColorSeg10.g, envColorSeg10.b,
+                                                envColorSeg10.a));
                 }
                 break;
         }
 
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnHy_OverrideLimbDraw, EnHy_PostLimbDraw, &this->actor);
+        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
+                              EnHy_OverrideLimbDraw, EnHy_PostLimbDraw, &this->actor);
     }
 
     CLOSE_DISPS(play->state.gfxCtx);

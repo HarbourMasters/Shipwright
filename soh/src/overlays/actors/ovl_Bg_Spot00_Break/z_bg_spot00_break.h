@@ -4,7 +4,6 @@
 #include <libultraship/libultra.h>
 #include "global.h"
 
-
 struct BgSpot00Break;
 
 typedef struct BgSpot00Break {

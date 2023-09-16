@@ -9,8 +9,9 @@ struct PlayState;
 struct Actor;
 struct SkelAnime;
 
-#define LINK_ANIMATION_OFFSET(addr, offset) \
-    (((uintptr_t)_link_animetionSegmentRomStart) + ((uintptr_t)addr) - ((uintptr_t)_link_animetionSegmentStart) + ((uintptr_t)offset))
+#define LINK_ANIMATION_OFFSET(addr, offset)                                                                       \
+    (((uintptr_t)_link_animetionSegmentRomStart) + ((uintptr_t)addr) - ((uintptr_t)_link_animetionSegmentStart) + \
+     ((uintptr_t)offset))
 #define LIMB_DONE 0xFF
 #define ANIMATION_ENTRY_MAX 50
 #define ANIM_FLAG_UPDATEY (1 << 1)
@@ -25,9 +26,9 @@ typedef enum {
     /* 5 */ ANIMMODE_LOOP_PARTIAL_INTERP
 } AnimationMode;
 
-typedef enum { 
-    /* -1 */ ANIMTAPER_DECEL = -1, 
-    /*  0 */ ANIMTAPER_NONE, 
+typedef enum {
+    /* -1 */ ANIMTAPER_DECEL = -1,
+    /*  0 */ ANIMTAPER_NONE,
     /*  1 */ ANIMTAPER_ACCEL
 } AnimationTapers;
 
@@ -43,7 +44,7 @@ typedef struct {
     /* 0x06 */ u8 child;
     /* 0x07 */ u8 sibling;
     /* 0x08 */ Gfx* dLists[2]; // Near and far
-} LodLimb; // size = 0x10
+} LodLimb;                     // size = 0x10
 
 typedef struct LegacyLimb {
     /* 0x000 */ Gfx* dList;
@@ -65,7 +66,7 @@ typedef struct {
     /* 0x08 */ u8 dListCount;
 } FlexSkeletonHeader; // size = 0xC
 
-// Index into the frame data table. 
+// Index into the frame data table.
 typedef struct {
     /* 0x00 */ u16 x;
     /* 0x02 */ u16 y;
@@ -83,7 +84,7 @@ typedef struct {
 
 typedef struct {
     /* 0x00 */ AnimationHeaderCommon common;
-    /* 0x04 */ s16* frameData; // "tbl"
+    /* 0x04 */ s16* frameData;           // "tbl"
     /* 0x08 */ JointIndex* jointIndices; // "ref_tbl"
     /* 0x0C */ u16 staticIndexMax;
 } AnimationHeader; // size = 0x10
@@ -106,13 +107,12 @@ typedef struct {
     /* 0x08 */ JointKey* jointKey;
 } LegacyAnimationHeader; // size = 0xC
 
-typedef s32 (*OverrideLimbDrawOpa)(struct PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                   void*);
+typedef s32 (*OverrideLimbDrawOpa)(struct PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void*);
 
 typedef void (*PostLimbDrawOpa)(struct PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void*);
 
-typedef s32 (*OverrideLimbDraw)(struct PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
-                                void*, Gfx** gfx);
+typedef s32 (*OverrideLimbDraw)(struct PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void*,
+                                Gfx** gfx);
 
 typedef void (*PostLimbDraw)(struct PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void*, Gfx** gfx);
 
@@ -247,7 +247,8 @@ typedef struct SkelAnime {
     /* 0x04 */ void** skeleton;   // An array of pointers to limbs. Can be StandardLimb, LodLimb, or SkinLimb.
     /* 0x08 */ void* animation;   // Can be an AnimationHeader or LinkAnimationHeader.
     /* 0x0C */ f32 startFrame;    // In mode ANIMMODE_LOOP_PARTIAL*, start of partial loop.
-    /* 0x10 */ f32 endFrame;      // In mode ANIMMODE_ONCE*, Update returns true when curFrame is equal to this. In mode ANIMMODE_LOOP_PARTIAL*, end of partial loop.
+    /* 0x10 */ f32 endFrame;      // In mode ANIMMODE_ONCE*, Update returns true when curFrame is equal to this. In mode
+                                  // ANIMMODE_LOOP_PARTIAL*, end of partial loop.
     /* 0x14 */ f32 animLength;    // Total number of frames in the current animation.
     /* 0x18 */ f32 curFrame;      // Current frame in the animation
     /* 0x1C */ f32 playSpeed;     // Multiplied by R_UPDATE_RATE / 3 to get the animation's frame rate.
@@ -255,12 +256,13 @@ typedef struct SkelAnime {
     /* 0x24 */ Vec3s* morphTable; // Table of values used to morph between animations
     /* 0x28 */ f32 morphWeight;   // Weight of the current animation morph as a fraction in [0,1]
     /* 0x2C */ f32 morphRate;     // Reciprocal of the number of frames in the morph
-    /* 0x30 */ s32 (*update)();   // Can be Loop, Partial loop, Play once, Morph, or Tapered morph. Link only has Loop, Play once, and Morph.
+    /* 0x30 */ s32 (*update)();   // Can be Loop, Partial loop, Play once, Morph, or Tapered morph. Link only has Loop,
+                                  // Play once, and Morph.
     /* 0x34 */ s8 initFlags;      // Flags used when initializing Link's skeleton
     /* 0x35 */ u8 moveFlags;      // Flags used for animations that move the actor in worldspace.
     /* 0x36 */ s16 prevRot;       // Previous rotation in worldspace.
     /* 0x38 */ Vec3s prevTransl;  // Previous modelspace translation.
     /* 0x3E */ Vec3s baseTransl;  // Base modelspace translation.
-} SkelAnime; // size = 0x44
+} SkelAnime;                      // size = 0x44
 
 #endif

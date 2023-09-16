@@ -47,7 +47,7 @@ void GameOver_Update(PlayState* play) {
                         }
                     }
                 }
-			}
+            }
 
             // restore "temporary B" to the B Button if not a sword item
             if (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI &&

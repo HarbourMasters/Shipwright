@@ -79,11 +79,10 @@ typedef struct EnNiw {
 
 #ifdef __cplusplus
 #define this thisx
-extern "C"
-{
+extern "C" {
 #endif
-    void func_80AB70A0(EnNiw* this, PlayState* play);
-    void func_80AB70A0_nocutscene(EnNiw* this, PlayState* play);
+void func_80AB70A0(EnNiw* this, PlayState* play);
+void func_80AB70A0_nocutscene(EnNiw* this, PlayState* play);
 #ifdef __cplusplus
 #undef this
 };

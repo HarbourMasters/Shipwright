@@ -38,7 +38,7 @@ extern PauseMapMarksData gPauseMapMarkDataTableMasterQuest[];
 void PauseMapMark_Init(PlayState* play) {
     gBossMarkState = 0;
     gBossMarkScale = 1.0f;
-    if(ResourceMgr_IsGameMasterQuest()) {
+    if (ResourceMgr_IsGameMasterQuest()) {
         gLoadedPauseMarkDataTable = gPauseMapMarkDataTableMasterQuest;
     } else {
         gLoadedPauseMarkDataTable = gPauseMapMarkDataTable;

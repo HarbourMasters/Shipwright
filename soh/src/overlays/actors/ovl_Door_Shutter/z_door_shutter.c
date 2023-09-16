@@ -135,12 +135,24 @@ typedef struct {
 } ShutterSceneInfo;
 
 static ShutterSceneInfo sSceneInfo[] = {
-    { SCENE_DEKU_TREE, 0x02 },            { SCENE_DODONGOS_CAVERN, 0x03 },    { SCENE_DODONGOS_CAVERN_BOSS, 0x03 },
-    { SCENE_JABU_JABU, 0x04 },            { SCENE_FOREST_TEMPLE, 0x05 },      { SCENE_FIRE_TEMPLE, 0x08 },
-    { SCENE_GANONS_TOWER, 0x09 },         { SCENE_GANONDORF_BOSS, 0x09 },     { SCENE_SPIRIT_TEMPLE, 0x0A },
-    { SCENE_SPIRIT_TEMPLE_BOSS, 0x0A },   { SCENE_WATER_TEMPLE, 0x0B },       { SCENE_SHADOW_TEMPLE, 0x0C },
-    { SCENE_BOTTOM_OF_THE_WELL, 0x0C },   { SCENE_ICE_CAVERN, 0x0D },         { SCENE_GERUDO_TRAINING_GROUND, 0x0E },
-    { SCENE_INSIDE_GANONS_CASTLE, 0x0F }, { SCENE_ROYAL_FAMILYS_TOMB, 0x10 }, { -1, 0x07 },
+    { SCENE_DEKU_TREE, 0x02 },
+    { SCENE_DODONGOS_CAVERN, 0x03 },
+    { SCENE_DODONGOS_CAVERN_BOSS, 0x03 },
+    { SCENE_JABU_JABU, 0x04 },
+    { SCENE_FOREST_TEMPLE, 0x05 },
+    { SCENE_FIRE_TEMPLE, 0x08 },
+    { SCENE_GANONS_TOWER, 0x09 },
+    { SCENE_GANONDORF_BOSS, 0x09 },
+    { SCENE_SPIRIT_TEMPLE, 0x0A },
+    { SCENE_SPIRIT_TEMPLE_BOSS, 0x0A },
+    { SCENE_WATER_TEMPLE, 0x0B },
+    { SCENE_SHADOW_TEMPLE, 0x0C },
+    { SCENE_BOTTOM_OF_THE_WELL, 0x0C },
+    { SCENE_ICE_CAVERN, 0x0D },
+    { SCENE_GERUDO_TRAINING_GROUND, 0x0E },
+    { SCENE_INSIDE_GANONS_CASTLE, 0x0F },
+    { SCENE_ROYAL_FAMILYS_TOMB, 0x10 },
+    { -1, 0x07 },
 };
 
 typedef struct {
@@ -165,7 +177,7 @@ static Gfx* sJabuDoorDLists[] = {
 };
 
 static void* D_809982D4[] = {
-    gBossDoorDefaultTex, gBossDoorFireTex, gBossDoorWaterTex, gBossDoorShadowTex,
+    gBossDoorDefaultTex,      gBossDoorFireTex,   gBossDoorWaterTex,  gBossDoorShadowTex,
     gBossDoorGanonsCastleTex, gBossDoorForestTex, gBossDoorSpiritTex,
 };
 
@@ -568,8 +580,8 @@ void func_809973E8(DoorShutter* this, PlayState* play) {
     if (Math_StepToF(&this->dyna.actor.world.pos.y, this->dyna.actor.home.pos.y, this->dyna.actor.velocity.y)) {
         if (this->dyna.actor.velocity.y > 20.0f) {
             this->dyna.actor.floorHeight = this->dyna.actor.home.pos.y;
-            Actor_SpawnFloorDustRing(play, &this->dyna.actor, &this->dyna.actor.world.pos, 45.0f, 10, 8.0f, 500,
-                                     10, false);
+            Actor_SpawnFloorDustRing(play, &this->dyna.actor, &this->dyna.actor.world.pos, 45.0f, 10, 8.0f, 500, 10,
+                                     false);
         }
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_STONE_BOUND);
         quakeId = Quake_Add(Play_GetCamera(play, 0), 3);
@@ -605,8 +617,8 @@ void func_809975C0(DoorShutter* this, PlayState* play) {
             this->unk_164 = 10;
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_STONE_BOUND);
             func_8099803C(play, 2, 10, parent->subCameraId);
-            Actor_SpawnFloorDustRing(play, &this->dyna.actor, &this->dyna.actor.world.pos, 70.0f, 20, 8.0f, 500,
-                                     10, true);
+            Actor_SpawnFloorDustRing(play, &this->dyna.actor, &this->dyna.actor.world.pos, 70.0f, 20, 8.0f, 500, 10,
+                                     true);
         }
     }
 }
@@ -661,8 +673,7 @@ Gfx* func_80997838(PlayState* play, DoorShutter* this, Gfx* p) {
         if (this->unk_166 != 100) {
             Matrix_Scale(1.0f, yScale, 1.0f, MTXMODE_APPLY);
         }
-        gSPMatrix(p++, MATRIX_NEWMTX(play->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        gSPMatrix(p++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(p++, sJabuDoorDLists[i]);
         angle -= M_PI / 4;
         Matrix_Put(&mtx);
@@ -726,8 +737,7 @@ void DoorShutter_Draw(Actor* thisx, PlayState* play) {
             }
         } else {
             if (sp70->b != NULL) {
-                TransitionActorEntry* transitionEntry =
-                    &play->transiActorCtx.list[(u16)this->dyna.actor.params >> 0xA];
+                TransitionActorEntry* transitionEntry = &play->transiActorCtx.list[(u16)this->dyna.actor.params >> 0xA];
 
                 if (play->roomCtx.prevRoom.num >= 0 ||
                     transitionEntry->sides[0].room == transitionEntry->sides[1].room) {
@@ -742,8 +752,7 @@ void DoorShutter_Draw(Actor* thisx, PlayState* play) {
             } else if (this->doorType == SHUTTER_BOSS) {
                 gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_809982D4[this->unk_168]));
             }
-            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
-                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, sp70->a);
             if (this->unk_170 != 0.0f && sp70->b != NULL) {
                 Matrix_Translate(0, sp70->c * (1.0f - this->unk_170), sp70->translateZ, MTXMODE_APPLY);
