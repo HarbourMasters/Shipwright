@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GNDD_H
+#define OBJECTS_OBJECT_GNDD_H 1
 
 #include "align_asset_macro.h"
 
@@ -208,3 +209,6 @@ static const ALIGN_ASSET(2) char gYoungGanondorfFingernailTex[] = dgYoungGanondo
 
 #define dgYoungGanondorfSkel "__OTR__objects/object_gndd/gYoungGanondorfSkel"
 static const ALIGN_ASSET(2) char gYoungGanondorfSkel[] = dgYoungGanondorfSkel;
+
+
+#endif // OBJECTS_OBJECT_GNDD_H

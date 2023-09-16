@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_TITLE_STATIC_H
+#define TEXTURES_TITLE_STATIC_H 1
 
 #include "align_asset_macro.h"
 
@@ -445,3 +446,5 @@ static const ALIGN_ASSET(2) char gFileSelWindow2DL[] = dgFileSelWindow2DL;
 
 #define dgFileSelWindow3DL "__OTR__textures/title_static/gFileSelWindow3DL"
 static const ALIGN_ASSET(2) char gFileSelWindow3DL[] = dgFileSelWindow3DL;
+
+#endif // TEXTURES_TITLE_STATIC_H

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_COB_H
+#define OBJECTS_OBJECT_COB_H 1
 
 #include "align_asset_macro.h"
 
@@ -67,3 +68,6 @@ static const ALIGN_ASSET(2) char object_cob_DL_002020[] = dobject_cob_DL_002020;
 
 #define dobject_cob_Skel_0021F8 "__OTR__objects/object_cob/object_cob_Skel_0021F8"
 static const ALIGN_ASSET(2) char object_cob_Skel_0021F8[] = dobject_cob_Skel_0021F8;
+
+
+#endif // OBJECTS_OBJECT_COB_H

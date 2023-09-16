@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DUNGEONS_YDAN_BOSS_ROOM_1_H
+#define DUNGEONS_YDAN_BOSS_ROOM_1_H 1
 
 #include "align_asset_macro.h"
 
@@ -19,3 +20,6 @@ static const ALIGN_ASSET(2) char ydan_boss_room_1DL_005FD8[] = dydan_boss_room_1
 
 #define dydan_boss_room_1Tex_005FE8 "__OTR__scenes/nonmq/ydan_boss_scene/ydan_boss_room_1Tex_005FE8"
 static const ALIGN_ASSET(2) char ydan_boss_room_1Tex_005FE8[] = dydan_boss_room_1Tex_005FE8;
+
+
+#endif // DUNGEONS_YDAN_BOSS_ROOM_1_H

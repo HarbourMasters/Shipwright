@@ -1,5 +1,6 @@
 <Root>
     <File Name="object_gi_boots_2" Segment="6">
+        <Texture Name="object_gi_boots_2Tex_000000" OutName="object_gi_boots_2Tex_000000" Format="ia8" Width="16" Height="16" Offset="0x0" AddedByScript="true"/>
         <DList Name="gGiIronBootsDL" Offset="0x1630"/>
         <DList Name="gGiIronBootsRivetsDL" Offset="0x1A98"/>
     </File>

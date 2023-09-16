@@ -152,7 +152,7 @@ void KaleidoScope_DrawPlayerWork(PlayState* play) {
 
     extern int fbTest;
     gsSPSetFB(play->state.gfxCtx->polyOpa.p++, fbTest);
-    func_8009214C(play, pauseCtx->playerSegment, &pauseCtx->playerSkelAnime, &pos, &link_kaleido_rot, scale,
+    Player_DrawPause(play, pauseCtx->playerSegment, &pauseCtx->playerSkelAnime, &pos, &link_kaleido_rot, scale,
                   CUR_EQUIP_VALUE(EQUIP_SWORD), CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1, CUR_EQUIP_VALUE(EQUIP_SHIELD),
                   CUR_EQUIP_VALUE(EQUIP_BOOTS) - 1);
     gsSPResetFB(play->state.gfxCtx->polyOpa.p++);
@@ -708,9 +708,9 @@ void KaleidoScope_DrawEquipment(PlayState* play) {
                 gSPGrayscale(POLY_KAL_DISP++, true);
             }
             if (((u32)i == 0) && (k == 2) && (gSaveContext.bgsFlag != 0)) {
-                KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gBiggoronSwordIconTex, 32, 32, point);
+                KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIconSwordBiggoronTex, 32, 32, point);
             } else if ((i == 0) && (k == 2) && (gBitFlags[bit + 1] & gSaveContext.inventory.equipment)) {
-                KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gBrokenGiantsKnifeIconTex, 32, 32, point);
+                KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIconBrokenGiantsKnifeTex, 32, 32, point);
             } else if (gBitFlags[bit] & gSaveContext.inventory.equipment) {
                 KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[itemId], 32, 32, point);
             }

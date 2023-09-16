@@ -77,7 +77,7 @@ void BgSpot02Objects_Init(Actor* thisx, PlayState* play) {
                 CollisionHeader_GetVirtual(&object_spot02_objects_Col_0128D8, &colHeader);
                 thisx->flags |= ACTOR_FLAG_IGNORE_POINTLIGHTS;
             } else {
-                if (play->sceneNum == SCENE_SPOT02) {
+                if (play->sceneNum == SCENE_GRAVEYARD) {
                     this->actionFunc = func_808AC908;
                 } else {
                     this->actionFunc = func_808AC8FC;
@@ -88,7 +88,7 @@ void BgSpot02Objects_Init(Actor* thisx, PlayState* play) {
 
             this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, thisx, colHeader);
 
-            if (((Flags_GetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB)) && (play->sceneNum == SCENE_SPOT02) &&
+            if (((Flags_GetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB)) && (play->sceneNum == SCENE_GRAVEYARD) &&
                  (thisx->params == 2)) ||
                 (LINK_IS_ADULT && (thisx->params == 1))) {
                 Actor_Kill(thisx);
@@ -176,9 +176,9 @@ void func_808ACA08(BgSpot02Objects* this, PlayState* play) {
     // enter the cutscene context.
     if (play->csCtx.frames == 402 && !(gSaveContext.n64ddFlag)) {
         if (!LINK_IS_ADULT) {
-            func_8002F7DC(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE_KID);
+            Player_PlaySfx(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE_KID);
         } else {
-            func_8002F7DC(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE);
+            Player_PlaySfx(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE);
         }
     }
 }

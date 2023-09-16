@@ -165,7 +165,7 @@ void EnHorseLinkChild_Init(Actor* thisx, PlayState* play) {
 
     if (gSaveContext.sceneSetupIndex > 3) {
         func_80A69EC0(this);
-    } else if (play->sceneNum == SCENE_SPOT20) {
+    } else if (play->sceneNum == SCENE_LON_LON_RANCH) {
         if (!Flags_GetEventChkInf(EVENTCHKINF_TALON_RETURNED_FROM_CASTLE)) {
             Actor_Kill(&this->actor);
             return;
@@ -360,7 +360,7 @@ void func_80A6A068(EnHorseLinkChild* this, PlayState* play) {
     }
 
     if (((Flags_GetEventChkInf(EVENTCHKINF_INVITED_TO_SING_WITH_CHILD_MALON)) && (DREG(53) != 0)) ||
-        ((play->sceneNum == SCENE_SPOT20) && (gSaveContext.cutsceneIndex == 0xFFF1))) {
+        ((play->sceneNum == SCENE_LON_LON_RANCH) && (gSaveContext.cutsceneIndex == 0xFFF1))) {
         func_80A6A4DC(this);
     } else {
         this->unk_2A0 = Flags_GetEventChkInf(EVENTCHKINF_INVITED_TO_SING_WITH_CHILD_MALON);
@@ -558,7 +558,7 @@ void EnHorseLinkChild_Update(Actor* thisx, PlayState* play) {
     Actor_MoveForward(&this->actor);
     Actor_UpdateBgCheckInfo(play, &this->actor, 20.0f, 55.0f, 100.0f, 0x1D);
 
-    if ((play->sceneNum == SCENE_SPOT20) && (this->actor.world.pos.z < -2400.0f)) {
+    if ((play->sceneNum == SCENE_LON_LON_RANCH) && (this->actor.world.pos.z < -2400.0f)) {
         this->actor.world.pos.z = -2400.0f;
     }
 

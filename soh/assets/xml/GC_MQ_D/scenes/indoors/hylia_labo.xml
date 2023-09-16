@@ -1,5 +1,36 @@
 <Root>
     <File Name="hylia_labo_scene" Segment="2">
+        <Texture Name="hylia_labo_sceneTex_001090" OutName="hylia_labo_sceneTex_001090" Format="ia8" Width="16" Height="64" Offset="0x1090" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_001490" OutName="hylia_labo_sceneTex_001490" Format="rgba16" Width="64" Height="32" Offset="0x1490" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_002490" OutName="hylia_labo_sceneTex_002490" Format="rgba16" Width="32" Height="64" Offset="0x2490" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_003490" OutName="hylia_labo_sceneTex_003490" Format="rgba16" Width="32" Height="32" Offset="0x3490" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_003C90" OutName="hylia_labo_sceneTex_003C90" Format="rgba16" Width="32" Height="64" Offset="0x3C90" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_004C90" OutName="hylia_labo_sceneTex_004C90" Format="rgba16" Width="32" Height="32" Offset="0x4C90" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_005490" OutName="hylia_labo_sceneTex_005490" Format="rgba16" Width="32" Height="32" Offset="0x5490" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_005C90" OutName="hylia_labo_sceneTex_005C90" Format="ia8" Width="64" Height="16" Offset="0x5C90" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_006090" OutName="hylia_labo_sceneTex_006090" Format="rgba16" Width="32" Height="4" Offset="0x6090" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_006190" OutName="hylia_labo_sceneTex_006190" Format="rgba16" Width="32" Height="32" Offset="0x6190" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_006990" OutName="hylia_labo_sceneTex_006990" Format="rgba16" Width="32" Height="16" Offset="0x6990" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_006D90" OutName="hylia_labo_sceneTex_006D90" Format="ia4" Width="64" Height="128" Offset="0x6D90" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_007D90" OutName="hylia_labo_sceneTex_007D90" Format="rgba16" Width="32" Height="32" Offset="0x7D90" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_008590" OutName="hylia_labo_sceneTex_008590" Format="ia8" Width="32" Height="16" Offset="0x8590" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_008790" OutName="hylia_labo_sceneTex_008790" Format="ia8" Width="32" Height="128" Offset="0x8790" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_009790" OutName="hylia_labo_sceneTex_009790" Format="rgba16" Width="32" Height="8" Offset="0x9790" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_009990" OutName="hylia_labo_sceneTex_009990" Format="ia8" Width="16" Height="16" Offset="0x9990" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_009A90" OutName="hylia_labo_sceneTex_009A90" Format="ia8" Width="16" Height="32" Offset="0x9A90" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_009C90" OutName="hylia_labo_sceneTex_009C90" Format="ia8" Width="32" Height="32" Offset="0x9C90" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_00A090" OutName="hylia_labo_sceneTex_00A090" Format="rgba16" Width="32" Height="64" Offset="0xA090" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_00B090" OutName="hylia_labo_sceneTex_00B090" Format="rgba16" Width="64" Height="32" Offset="0xB090" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_00C090" OutName="hylia_labo_sceneTex_00C090" Format="rgba16" Width="64" Height="16" Offset="0xC090" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_00C890" OutName="hylia_labo_sceneTex_00C890" Format="rgba16" Width="32" Height="32" Offset="0xC890" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_00D090" OutName="hylia_labo_sceneTex_00D090" Format="rgba16" Width="64" Height="16" Offset="0xD090" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_00D890" OutName="hylia_labo_sceneTex_00D890" Format="rgba16" Width="64" Height="16" Offset="0xD890" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_00E090" OutName="hylia_labo_sceneTex_00E090" Format="rgba16" Width="32" Height="32" Offset="0xE090" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_00E890" OutName="hylia_labo_sceneTex_00E890" Format="rgba16" Width="32" Height="64" Offset="0xE890" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_00F890" OutName="hylia_labo_sceneTex_00F890" Format="rgba16" Width="32" Height="32" Offset="0xF890" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_010090" OutName="hylia_labo_sceneTex_010090" Format="i8" Width="32" Height="32" Offset="0x10090" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_010490" OutName="hylia_labo_sceneTex_010490" Format="i8" Width="32" Height="32" Offset="0x10490" AddedByScript="true"/>
+        <Texture Name="hylia_labo_sceneTex_010890" OutName="hylia_labo_sceneTex_010890" Format="rgba16" Width="32" Height="32" Offset="0x10890" AddedByScript="true"/>
         <Scene Name="hylia_labo_scene" Offset="0x0"/>
     </File>
     <File Name="hylia_labo_room_0" Segment="3">

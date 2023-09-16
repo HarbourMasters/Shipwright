@@ -1,8 +1,22 @@
 <Root>
     <File Name="daiyousei_izumi_scene" Segment="2">
+        <Texture Name="daiyousei_izumi_sceneTex_004800" OutName="daiyousei_izumi_sceneTex_004800" Format="i8" Width="32" Height="64" Offset="0x4800" AddedByScript="true"/>
+        <Texture Name="daiyousei_izumi_sceneTex_005000" OutName="daiyousei_izumi_sceneTex_005000" Format="rgba16" Width="32" Height="32" Offset="0x5000" AddedByScript="true"/>
+        <Texture Name="daiyousei_izumi_sceneTex_005800" OutName="daiyousei_izumi_sceneTex_005800" Format="rgba16" Width="32" Height="32" Offset="0x5800" AddedByScript="true"/>
+        <Texture Name="daiyousei_izumi_sceneTex_006000" OutName="daiyousei_izumi_sceneTex_006000" Format="ia4" Width="64" Height="128" Offset="0x6000" AddedByScript="true"/>
+        <Texture Name="daiyousei_izumi_sceneTex_007000" OutName="daiyousei_izumi_sceneTex_007000" Format="rgba16" Width="32" Height="64" Offset="0x7000" AddedByScript="true"/>
+        <Texture Name="daiyousei_izumi_sceneTex_008000" OutName="daiyousei_izumi_sceneTex_008000" Format="rgba16" Width="32" Height="64" Offset="0x8000" AddedByScript="true"/>
+        <Texture Name="daiyousei_izumi_sceneTex_009000" OutName="daiyousei_izumi_sceneTex_009000" Format="rgba16" Width="32" Height="64" Offset="0x9000" AddedByScript="true"/>
+        <Texture Name="daiyousei_izumi_sceneTex_00A000" OutName="daiyousei_izumi_sceneTex_00A000" Format="i8" Width="32" Height="64" Offset="0xA000" AddedByScript="true"/>
+        <Texture Name="daiyousei_izumi_sceneTex_00A800" OutName="daiyousei_izumi_sceneTex_00A800" Format="rgba16" Width="32" Height="32" Offset="0xA800" AddedByScript="true"/>
+        <Texture Name="daiyousei_izumi_sceneTex_00B000" OutName="daiyousei_izumi_sceneTex_00B000" Format="i8" Width="32" Height="128" Offset="0xB000" AddedByScript="true"/>
+        <Texture Name="daiyousei_izumi_sceneTex_00C000" OutName="daiyousei_izumi_sceneTex_00C000" Format="rgba16" Width="32" Height="32" Offset="0xC000" AddedByScript="true"/>
+        <Texture Name="daiyousei_izumi_sceneTex_00C800" OutName="daiyousei_izumi_sceneTex_00C800" Format="ia8" Width="64" Height="32" Offset="0xC800" AddedByScript="true"/>
+        <Texture Name="daiyousei_izumi_sceneTex_00D000" OutName="daiyousei_izumi_sceneTex_00D000" Format="rgba16" Width="32" Height="32" Offset="0xD000" AddedByScript="true"/>
+        <Texture Name="daiyousei_izumi_sceneTex_00D800" OutName="daiyousei_izumi_sceneTex_00D800" Format="rgba16" Width="32" Height="32" Offset="0xD800" AddedByScript="true"/>
         <Cutscene Name="gGreatFairyMagicCs" Offset="0x0130"/>
         <Cutscene Name="gGreatFairyDoubleMagicCs" Offset="0x13E0"/>
-        <Cutscene Name="gGreatFairyDoubleDefenceCs" Offset="0x25D0"/>
+        <Cutscene Name="gGreatFairyDoubleDefenseCs" Offset="0x25D0"/>
         <Scene Name="daiyousei_izumi_scene" Offset="0x0"/>
     </File>
     <File Name="daiyousei_izumi_room_0" Segment="3">

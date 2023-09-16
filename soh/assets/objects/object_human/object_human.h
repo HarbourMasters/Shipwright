@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_HUMAN_H
+#define OBJECTS_OBJECT_HUMAN_H 1
 
 #include "align_asset_macro.h"
 
@@ -310,3 +311,5 @@ static const ALIGN_ASSET(2) char gHumanWalkingEndAnim[] = dgHumanWalkingEndAnim;
 
 #define dgHumanWalkingStartAnim "__OTR__objects/object_human/gHumanWalkingStartAnim"
 static const ALIGN_ASSET(2) char gHumanWalkingStartAnim[] = dgHumanWalkingStartAnim;
+
+#endif // OBJECTS_OBJECT_HUMAN_H

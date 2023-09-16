@@ -569,7 +569,7 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, PlayState* play) {
     if (sWarpTimerTarget < this->warpTimer && gSaveContext.nextCutsceneIndex == 0xFFEF) {
         osSyncPrintf("\n\n\nじかんがきたからおーしまい fade_direction=[%d]", play->sceneLoadFlag, 0x14);
 
-        if (play->sceneNum == SCENE_DDAN_BOSS) {
+        if (play->sceneNum == SCENE_DODONGOS_CAVERN_BOSS) {
             if (!Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) {
                 Flags_SetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP);
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN);
@@ -585,7 +585,7 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, PlayState* play) {
                 play->nextEntranceIndex = 0x47A;
                 gSaveContext.nextCutsceneIndex = 0;
             }
-        } else if (play->sceneNum == SCENE_YDAN_BOSS) {
+        } else if (play->sceneNum == SCENE_DEKU_TREE_BOSS) {
             if (!Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD) || gSaveContext.n64ddFlag) {
                 Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_KOKIRI_EMERALD_DEKU_TREE_DEAD);
                 Flags_SetEventChkInf(EVENTCHKINF_USED_DEKU_TREE_BLUE_WARP);
@@ -604,7 +604,7 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, PlayState* play) {
                 play->nextEntranceIndex = 0x457;
                 gSaveContext.nextCutsceneIndex = 0;
             }
-        } else if (play->sceneNum == SCENE_BDAN_BOSS) {
+        } else if (play->sceneNum == SCENE_JABU_JABU_BOSS) {
             play->nextEntranceIndex = 0x10E;
             gSaveContext.nextCutsceneIndex = 0;
         }
@@ -828,7 +828,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
     if (this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF) {
         if (gSaveContext.isBossRush) {
             BossRush_HandleBlueWarp(play, this->actor.world.pos.x, this->actor.world.pos.z);
-        } else if (play->sceneNum == SCENE_MORIBOSSROOM) {
+        } else if (play->sceneNum == SCENE_FOREST_TEMPLE_BOSS) {
             if (!Flags_GetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP)) {
                 Flags_SetEventChkInf(EVENTCHKINF_USED_FOREST_TEMPLE_BLUE_WARP);
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FOREST_TEMPLE);
@@ -850,7 +850,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 }
                 gSaveContext.nextCutsceneIndex = 0;
             }
-        } else if (play->sceneNum == SCENE_FIRE_BS) {
+        } else if (play->sceneNum == SCENE_FIRE_TEMPLE_BOSS) {
             if (!Flags_GetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP)) {
                 Flags_SetEventChkInf(EVENTCHKINF_USED_FIRE_TEMPLE_BLUE_WARP);
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_FIRE_TEMPLE);
@@ -873,7 +873,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 }
                 gSaveContext.nextCutsceneIndex = 0;
             }
-        } else if (play->sceneNum == SCENE_MIZUSIN_BS) {
+        } else if (play->sceneNum == SCENE_WATER_TEMPLE_BOSS) {
             if (!Flags_GetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP)) {
                 Flags_SetEventChkInf(EVENTCHKINF_USED_WATER_TEMPLE_BLUE_WARP);
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE);
@@ -897,7 +897,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 }
                 gSaveContext.nextCutsceneIndex = 0;
             }
-        } else if (play->sceneNum == SCENE_JYASINBOSS) {
+        } else if (play->sceneNum == SCENE_SPIRIT_TEMPLE_BOSS) {
             if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) || gSaveContext.n64ddFlag) {
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SPIRIT_TEMPLE);
 
@@ -918,7 +918,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, PlayState* play) {
                 }
                 gSaveContext.nextCutsceneIndex = 0;
             }
-        } else if (play->sceneNum == SCENE_HAKADAN_BS) {
+        } else if (play->sceneNum == SCENE_SHADOW_TEMPLE_BOSS) {
             if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) || gSaveContext.n64ddFlag) {
                 Flags_SetRandomizerInf(RAND_INF_DUNGEONS_DONE_SHADOW_TEMPLE);
 

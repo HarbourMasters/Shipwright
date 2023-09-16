@@ -1,29 +1,29 @@
 <Root>
     <File Name="object_bw" Segment="6">
-        <Animation Name="object_bw_Anim_000228" Offset="0x228"/>
-        <DList Name="object_bw_DL_0002C0" Offset="0x2C0"/>
-        <DList Name="object_bw_DL_0003E8" Offset="0x3E8"/>
-        <DList Name="object_bw_DL_000558" Offset="0x558"/>
-        <DList Name="object_bw_DL_000680" Offset="0x680"/>
-        <DList Name="object_bw_DL_001050" Offset="0x1050"/>
-        <Texture Name="object_bw_Tex_001240" OutName="tex_00001240" Format="rgba16" Width="16" Height="16" Offset="0x1240"/>
-        <Texture Name="object_bw_Tex_001440" OutName="tex_00001440" Format="rgba16" Width="16" Height="16" Offset="0x1440"/>
-        <Texture Name="object_bw_TLUT_001640" OutName="tlut_00001640" Format="rgba16" Width="16" Height="16" Offset="0x1640"/>
-        <Texture Name="object_bw_Tex_001840" OutName="tex_00001840" Format="ci8" Width="32" Height="32" Offset="0x1840" TlutOffset="0x1640"/>
-        <Texture Name="object_bw_Tex_001C40" OutName="tex_00001C40" Format="ci8" Width="32" Height="32" Offset="0x1C40" TlutOffset="0x1640"/>
-        <Limb Name="object_bw_Limb_002040" LimbType="Standard" Offset="0x2040"/>
-        <Limb Name="object_bw_Limb_00204C" LimbType="Standard" Offset="0x204C"/>
-        <Limb Name="object_bw_Limb_002058" LimbType="Standard" Offset="0x2058"/>
-        <Limb Name="object_bw_Limb_002064" LimbType="Standard" Offset="0x2064"/>
-        <Limb Name="object_bw_Limb_002070" LimbType="Standard" Offset="0x2070"/>
-        <Limb Name="object_bw_Limb_00207C" LimbType="Standard" Offset="0x207C"/>
-        <Limb Name="object_bw_Limb_002088" LimbType="Standard" Offset="0x2088"/>
-        <Limb Name="object_bw_Limb_002094" LimbType="Standard" Offset="0x2094"/>
-        <Limb Name="object_bw_Limb_0020A0" LimbType="Standard" Offset="0x20A0"/>
-        <Limb Name="object_bw_Limb_0020AC" LimbType="Standard" Offset="0x20AC"/>
-        <Limb Name="object_bw_Limb_0020B8" LimbType="Standard" Offset="0x20B8"/>
-        <Skeleton Name="object_bw_Skel_0020F0" Type="Normal" LimbType="Standard" Offset="0x20F0"/>
-        <Animation Name="object_bw_Anim_0021A0" Offset="0x21A0"/>
-        <Animation Name="object_bw_Anim_002250" Offset="0x2250"/>
+        <Animation Name="gTorchSlugEyestalkWaveAnim" Offset="0x228"/>
+        <DList Name="gTorchSlugLeftLowerEyestalkDL" Offset="0x2C0"/>
+        <DList Name="gTorchSlugLeftUpperEyestalkDL" Offset="0x3E8"/>
+        <DList Name="gTorchSlugRightLowerEyestalkDL" Offset="0x558"/>
+        <DList Name="gTorchSlugRightUpperEyestalkDL" Offset="0x680"/>
+        <DList Name="gTorchSlugBodyDL" Offset="0x1050"/>
+        <Texture Name="gTorchSlugEyestalkTex" OutName="tex_00001240" Format="rgba16" Width="16" Height="16" Offset="0x1240"/>
+        <Texture Name="gTorchSlugEyeTex" OutName="tex_00001440" Format="rgba16" Width="16" Height="16" Offset="0x1440"/>
+        <Texture Name="gTorchSlugBodyTLUT" OutName="tlut_00001640" Format="rgba16" Width="16" Height="16" Offset="0x1640"/>
+        <Texture Name="gTorchSlugBody1Tex" OutName="tex_00001840" Format="ci8" Width="32" Height="32" Offset="0x1840" TlutOffset="0x1640"/>
+        <Texture Name="gTorchSlugBody2Tex" OutName="tex_00001C40" Format="ci8" Width="32" Height="32" Offset="0x1C40" TlutOffset="0x1640"/>
+        <Limb Name="gTorchSlugBodyLimb" LimbType="Standard" Offset="0x2040"/>
+        <Limb Name="gTorchSlugLeftEyestalkRootRootLimb" LimbType="Standard" Offset="0x204C"/>
+        <Limb Name="gTorchSlugLeftEyestalkRootLimb" LimbType="Standard" Offset="0x2058"/>
+        <Limb Name="gTorchSlugLeftUpperEyestalkRootLimb" LimbType="Standard" Offset="0x2064"/>
+        <Limb Name="gTorchSlugLeftUpperEyestalkLimb" LimbType="Standard" Offset="0x2070"/>
+        <Limb Name="gTorchSlugLeftLowerEyestalkLimb" LimbType="Standard" Offset="0x207C"/>
+        <Limb Name="gTorchSlugRightEyestalkRootRootLimb" LimbType="Standard" Offset="0x2088"/>
+        <Limb Name="gTorchSlugRightEyestalkRootLimb" LimbType="Standard" Offset="0x2094"/>
+        <Limb Name="gTorchSlugRightUpperEyestalkRootLimb" LimbType="Standard" Offset="0x20A0"/>
+        <Limb Name="gTorchSlugRightUpperEyestalkLimb" LimbType="Standard" Offset="0x20AC"/>
+        <Limb Name="gTorchSlugRightLowerEyestalkLimb" LimbType="Standard" Offset="0x20B8"/>
+        <Skeleton Name="gTorchSlugSkel" Type="Normal" LimbType="Standard" Offset="0x20F0"/>
+        <Animation Name="gTorchSlugEyestalkRaiseAnim" Offset="0x21A0"/>
+        <Animation Name="gTorchSlugEyestalkFlailAnim" Offset="0x2250"/>
     </File>
 </Root>

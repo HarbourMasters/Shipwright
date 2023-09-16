@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_PEEHAT_H
+#define OBJECTS_OBJECT_PEEHAT_H 1
 
 #include "align_asset_macro.h"
 
@@ -52,3 +53,6 @@ static const ALIGN_ASSET(2) char gPeehatRecoilAnim[] = dgPeehatRecoilAnim;
 
 #define dgPeehatRisingAnim "__OTR__objects/object_peehat/gPeehatRisingAnim"
 static const ALIGN_ASSET(2) char gPeehatRisingAnim[] = dgPeehatRisingAnim;
+
+
+#endif // OBJECTS_OBJECT_PEEHAT_H

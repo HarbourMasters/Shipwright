@@ -6,6 +6,7 @@
 
 #include "z_en_zf.h"
 #include "objects/object_zf/object_zf.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -720,7 +721,7 @@ void func_80B4543C(EnZf* this, PlayState* play) {
         angleToPlayer = player->actor.shape.rot.y - this->actor.shape.rot.y;
         angleToPlayer = ABS(angleToPlayer);
 
-        if ((this->actor.xzDistToPlayer < 100.0f) && (player->swordState != 0) && (angleToPlayer >= 0x1F40)) {
+        if ((this->actor.xzDistToPlayer < 100.0f) && (player->meleeWeaponState != 0) && (angleToPlayer >= 0x1F40)) {
             this->actor.shape.rot.y = this->actor.world.rot.y = this->actor.yawTowardsPlayer;
             func_80B483E4(this, play);
         } else if (this->unk_3F0 != 0) {
@@ -837,7 +838,7 @@ void EnZf_ApproachPlayer(EnZf* this, PlayState* play) {
         temp_v1 = player->actor.shape.rot.y - this->actor.shape.rot.y;
         temp_v1 = ABS(temp_v1);
 
-        if ((sp48 == this->curPlatform) && (this->actor.xzDistToPlayer < 150.0f) && (player->swordState != 0) &&
+        if ((sp48 == this->curPlatform) && (this->actor.xzDistToPlayer < 150.0f) && (player->meleeWeaponState != 0) &&
             (temp_v1 >= 0x1F40)) {
             this->actor.shape.rot.y = this->actor.world.rot.y = this->actor.yawTowardsPlayer;
 
@@ -1924,11 +1925,7 @@ void EnZf_SetupDie(EnZf* this) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIZA_DEAD);
     EnZf_SetupAction(this, EnZf_Die);
     
-    if (this->actor.params == ENZF_TYPE_DINOLFOS) {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DINOLFOS]++;
-    } else {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LIZALFOS]++;
-    }
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnZf_Die(EnZf* this, PlayState* play) {

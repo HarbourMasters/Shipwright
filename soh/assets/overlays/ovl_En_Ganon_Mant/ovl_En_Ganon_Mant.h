@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OVERLAYS_OVL_EN_GANON_MANT_H
+#define OVERLAYS_OVL_EN_GANON_MANT_H 1
 
 #include "align_asset_macro.h"
 
@@ -22,3 +23,5 @@ static const ALIGN_ASSET(2) char gMantDL[] = dgMantDL;
 
 #define dgMant2Vtx "__OTR__overlays/ovl_En_Ganon_Mant/gMant2Vtx"
 static const ALIGN_ASSET(2) char gMant2Vtx[] = dgMant2Vtx;
+
+#endif // OVERLAYS_OVL_EN_GANON_MANT_H

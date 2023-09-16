@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DUNGEONS_GANON_FINAL_SCENE_H
+#define DUNGEONS_GANON_FINAL_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -79,3 +80,5 @@ static const ALIGN_ASSET(2) char ganon_final_sceneTex_00E080[] = dganon_final_sc
 
 #define dganon_final_sceneTex_011180 "__OTR__scenes/nonmq/ganon_final_scene/ganon_final_sceneTex_011180"
 static const ALIGN_ASSET(2) char ganon_final_sceneTex_011180[] = dganon_final_sceneTex_011180;
+
+#endif // DUNGEONS_GANON_FINAL_SCENE_H

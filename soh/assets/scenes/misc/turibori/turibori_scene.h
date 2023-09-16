@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MISC_TURIBORI_SCENE_H
+#define MISC_TURIBORI_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -85,3 +86,5 @@ static const ALIGN_ASSET(2) char turibori_sceneTex_0092E0[] = dturibori_sceneTex
 
 #define dturibori_sceneTex_00E4E0 "__OTR__scenes/nonmq/turibori_scene/turibori_sceneTex_00E4E0"
 static const ALIGN_ASSET(2) char turibori_sceneTex_00E4E0[] = dturibori_sceneTex_00E4E0;
+
+#endif // MISC_TURIBORI_SCENE_H

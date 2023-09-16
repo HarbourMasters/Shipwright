@@ -38,19 +38,19 @@ void Object_InitBank(PlayState* play, ObjectContext* objectCtx) {
     size_t spaceSize;
     s32 i;
 
-    if (play2->sceneNum == SCENE_SPOT00) {
+    if (play2->sceneNum == SCENE_HYRULE_FIELD) {
         spaceSize = 1024000;
-    } else if (play2->sceneNum == SCENE_GANON_DEMO) {
+    } else if (play2->sceneNum == SCENE_GANON_BOSS) {
         if (gSaveContext.sceneSetupIndex != 4) {
             spaceSize = 1177600;
         } else {
             spaceSize = 1024000;
         }
-    } else if (play2->sceneNum == SCENE_JYASINBOSS) {
+    } else if (play2->sceneNum == SCENE_SPIRIT_TEMPLE_BOSS) {
         spaceSize = 1075200;
-    } else if (play2->sceneNum == SCENE_KENJYANOMA) {
+    } else if (play2->sceneNum == SCENE_CHAMBER_OF_THE_SAGES) {
         spaceSize = 1075200;
-    } else if (play2->sceneNum == SCENE_GANON_BOSS) {
+    } else if (play2->sceneNum == SCENE_GANONDORF_BOSS) {
         spaceSize = 1075200;
     } else {
         spaceSize = 1024000;
@@ -450,14 +450,14 @@ void Scene_CommandMiscSettings(PlayState* play, SceneCmd* cmd) {
     YREG(15) = cmd->miscSettings.cameraMovement;
     gSaveContext.worldMapArea = cmd->miscSettings.area;
 
-    if ((play->sceneNum == SCENE_SHOP1) || (play->sceneNum == SCENE_SYATEKIJYOU)) {
+    if ((play->sceneNum == SCENE_BAZAAR) || (play->sceneNum == SCENE_SHOOTING_GALLERY)) {
         if (LINK_AGE_IN_YEARS == YEARS_ADULT) {
             gSaveContext.worldMapArea = 1;
         }
     }
 
-    if (((play->sceneNum >= SCENE_SPOT00) && (play->sceneNum <= SCENE_GANON_TOU)) ||
-        ((play->sceneNum >= SCENE_ENTRA) && (play->sceneNum <= SCENE_SHRINE_R))) {
+    if (((play->sceneNum >= SCENE_HYRULE_FIELD) && (play->sceneNum <= SCENE_OUTSIDE_GANONS_CASTLE)) ||
+        ((play->sceneNum >= SCENE_MARKET_ENTRANCE_DAY) && (play->sceneNum <= SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS))) {
         if (gSaveContext.cutsceneIndex < 0xFFF0) {
             gSaveContext.worldMapAreaData |= gBitFlags[gSaveContext.worldMapArea];
             osSyncPrintf("０００  ａｒｅａ＿ａｒｒｉｖａｌ＝%x (%d)\n", gSaveContext.worldMapAreaData,

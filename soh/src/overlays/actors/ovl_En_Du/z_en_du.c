@@ -155,9 +155,9 @@ s16 func_809FDCDC(PlayState* play, Actor* actor) {
 }
 
 s32 func_809FDDB4(EnDu* this, PlayState* play) {
-    if (play->sceneNum == SCENE_SPOT18 && LINK_IS_CHILD) {
+    if (play->sceneNum == SCENE_GORON_CITY && LINK_IS_CHILD) {
         return 1;
-    } else if (play->sceneNum == SCENE_HIDAN && !Flags_GetInfTable(INFTABLE_SPOKE_TO_DARUNIA_IN_FIRE_TEMPLE) && LINK_IS_ADULT) {
+    } else if (play->sceneNum == SCENE_FIRE_TEMPLE && !Flags_GetInfTable(INFTABLE_SPOKE_TO_DARUNIA_IN_FIRE_TEMPLE) && LINK_IS_ADULT) {
         return 1;
     }
     return 0;

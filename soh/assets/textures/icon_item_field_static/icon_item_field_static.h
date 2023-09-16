@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_ICON_ITEM_FIELD_STATIC_H
+#define TEXTURES_ICON_ITEM_FIELD_STATIC_H 1
 
 #include "align_asset_macro.h"
 
@@ -85,3 +86,5 @@ static const ALIGN_ASSET(2) char gWorldMapCloud15Tex[] = dgWorldMapCloud15Tex;
 
 #define dgWorldMapCloud16Tex "__OTR__textures/icon_item_field_static/gWorldMapCloud16Tex"
 static const ALIGN_ASSET(2) char gWorldMapCloud16Tex[] = dgWorldMapCloud16Tex;
+
+#endif // TEXTURES_ICON_ITEM_FIELD_STATIC_H

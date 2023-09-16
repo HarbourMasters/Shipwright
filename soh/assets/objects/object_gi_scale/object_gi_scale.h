@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GI_SCALE_H
+#define OBJECTS_OBJECT_GI_SCALE_H 1
 
 #include "align_asset_macro.h"
 
@@ -19,3 +20,5 @@ static const ALIGN_ASSET(2) char gGiScaleWaterDL[] = dgGiScaleWaterDL;
 
 #define dgGiScaleDL "__OTR__objects/object_gi_scale/gGiScaleDL"
 static const ALIGN_ASSET(2) char gGiScaleDL[] = dgGiScaleDL;
+
+#endif // OBJECTS_OBJECT_GI_SCALE_H

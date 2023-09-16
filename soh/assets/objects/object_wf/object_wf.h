@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_WF_H
+#define OBJECTS_OBJECT_WF_H 1
 
 #include "align_asset_macro.h"
 
@@ -211,3 +212,6 @@ static const ALIGN_ASSET(2) char gWolfosWaitingAnim[] = dgWolfosWaitingAnim;
 
 #define dobject_wf_zeroes_Blob_00A4BC "__OTR__objects/object_wf/object_wf_zeroes_Blob_00A4BC"
 static const ALIGN_ASSET(2) char object_wf_zeroes_Blob_00A4BC[] = dobject_wf_zeroes_Blob_00A4BC;
+
+
+#endif // OBJECTS_OBJECT_WF_H

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_OKUTA_H
+#define OBJECTS_OBJECT_OKUTA_H 1
 
 #include "align_asset_macro.h"
 
@@ -100,3 +101,6 @@ static const ALIGN_ASSET(2) char gOctorokSkelLimbsLimb_0035B4DL_001E50[] = dgOct
 
 #define dgOctorokSkelLimbsLimb_0035C0DL_0016D0 "__OTR__objects/object_okuta/gOctorokSkelLimbsLimb_0035C0DL_0016D0"
 static const ALIGN_ASSET(2) char gOctorokSkelLimbsLimb_0035C0DL_0016D0[] = dgOctorokSkelLimbsLimb_0035C0DL_0016D0;
+
+
+#endif // OBJECTS_OBJECT_OKUTA_H

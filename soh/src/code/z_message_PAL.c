@@ -1576,6 +1576,7 @@ void Message_Decode(PlayState* play) {
 extern const char* msgStaticTbl[];
 
 void Message_OpenText(PlayState* play, u16 textId) {
+    lusprintf(__FILE__, __LINE__, 2, "Display Text - textId: %#x", textId);
     static s16 messageStaticIndices[] = { 0, 1, 3, 2 };
     MessageContext* msgCtx = &play->msgCtx;
     Font* font = &msgCtx->font;
@@ -2003,7 +2004,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
     };
     static s16 sOcarinaEffectActorParams[] = { 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 0x0000 };
     static void* sOcarinaNoteTextures[] = {
-        gOcarinaATex, gOcarinaCDownTex, gOcarinaCRightTex, gOcarinaCLeftTex, gOcarinaCUpTex,
+        gOcarinaBtnIconATex, gOcarinaBtnIconCDownTex, gOcarinaBtnIconCRightTex, gOcarinaBtnIconCLeftTex, gOcarinaBtnIconCUpTex,
     };
     static Color_RGB8 sOcarinaNoteAPrimColors[2] = {
         { 80, 150, 255 },
@@ -3153,7 +3154,7 @@ void Message_Update(PlayState* play) {
                 if (D_8014B2F4 >= 4) {
                     var = true;
                 }
-            } else if (YREG(15) != 0 || play->sceneNum == SCENE_HAIRAL_NIWA) {
+            } else if (YREG(15) != 0 || play->sceneNum == SCENE_CASTLE_COURTYARD_GUARDS_DAY) {
                 var = true;
             } else if (D_8014B2F4 >= 4 || msgCtx->talkActor == NULL) {
                 var = true;
@@ -3180,7 +3181,7 @@ void Message_Update(PlayState* play) {
                 var = msgCtx->textBoxType;
 
                 if (!msgCtx->textBoxPos) { // variable position
-                    if (YREG(15) != 0 || play->sceneNum == SCENE_HAIRAL_NIWA) {
+                    if (YREG(15) != 0 || play->sceneNum == SCENE_CASTLE_COURTYARD_GUARDS_DAY) {
                         if (averageY < XREG(92)) {
                             R_TEXTBOX_Y_TARGET = sTextboxLowerYPositions[var];
                         } else {

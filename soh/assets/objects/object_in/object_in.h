@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_IN_H
+#define OBJECTS_OBJECT_IN_H 1
 
 #include "align_asset_macro.h"
 
@@ -325,3 +326,6 @@ static const ALIGN_ASSET(2) char gIngoBlob_0020D0[] = dgIngoBlob_0020D0;
 
 #define dgIngoBlob_003150 "__OTR__objects/object_in/gIngoBlob_003150"
 static const ALIGN_ASSET(2) char gIngoBlob_003150[] = dgIngoBlob_003150;
+
+
+#endif // OBJECTS_OBJECT_IN_H

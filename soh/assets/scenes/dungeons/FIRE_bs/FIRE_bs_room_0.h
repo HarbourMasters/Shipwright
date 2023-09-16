@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DUNGEONS_FIRE_BS_ROOM_0_H
+#define DUNGEONS_FIRE_BS_ROOM_0_H 1
 
 #include "align_asset_macro.h"
 
@@ -31,3 +32,6 @@ static const ALIGN_ASSET(2) char FIRE_bs_room_0Tex_002E68[] = dFIRE_bs_room_0Tex
 
 #define dFIRE_bs_room_0Tex_003068 "__OTR__scenes/nonmq/FIRE_bs_scene/FIRE_bs_room_0Tex_003068"
 static const ALIGN_ASSET(2) char FIRE_bs_room_0Tex_003068[] = dFIRE_bs_room_0Tex_003068;
+
+
+#endif // DUNGEONS_FIRE_BS_ROOM_0_H

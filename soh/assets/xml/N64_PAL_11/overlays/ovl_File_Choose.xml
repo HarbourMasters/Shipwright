@@ -3,18 +3,16 @@
         <Array Name="D_80811BB0" Count="24" Offset="0xF120" Static="Off">
             <Vtx/>
         </Array>
-        <!-- German vertices are combined into one array -->
+        <!-- German headers vertices are combined into one array -->
         <Array Name="D_80811D30" Count="24" Offset="0xF2A0" Static="Off">
             <Vtx/>
         </Array>
-        <!-- <Array Name="D_80811E30" Count="16" Offset="0xF3A0" Static="Off">
-            <Vtx/>
-        </Array> -->
-        <!-- German vertices are combined into one array -->
-        <Array Name="D_80811F30" Count="40" Offset="0xF420" Static="Off">
+        <!-- German options vertices are combined into one array -->
+        <Array Name="D_80811F30" Count="52" Offset="0xF420" Static="Off">
             <Vtx/>
         </Array>
-        <!-- <Array Name="D_80812130" Count="32" Offset="0xF6A0" Static="Off">
+        <!-- Not used for PAL N64, instead these vertices are apart of D_80811F30 -->
+        <!-- <Array Name="D_80812130" Count="12" Offset="0xF6A0" Static="Off">
             <Vtx/>
         </Array> -->
         <Array Name="gOptionsDividerTopVtx" Count="4" Offset="0xF8A0" Static="Off">
@@ -26,6 +24,9 @@
         <Array Name="gOptionsDividerBottomVtx" Count="4" Offset="0xF920" Static="Off">
             <Vtx/>
         </Array>
-        <!-- OTRTODO: Vertices for Choose Language header, options, and divider -->
+        <!-- PAL N64 only -->
+        <Array Name="gOptionsDividerChangeLangVtx" Count="4" Offset="0xF960" Static="Off">
+            <Vtx/>
+        </Array>
     </File>
 </Root>

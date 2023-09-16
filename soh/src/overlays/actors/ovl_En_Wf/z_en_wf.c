@@ -8,6 +8,7 @@
 #include "vt.h"
 #include "overlays/actors/ovl_En_Encount1/z_en_encount1.h"
 #include "objects/object_wf/object_wf.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
@@ -460,7 +461,7 @@ void EnWf_Wait(EnWf* this, PlayState* play) {
         angle = player->actor.shape.rot.y - this->actor.shape.rot.y;
         angle = ABS(angle);
 
-        if ((this->actor.xzDistToPlayer < 80.0f) && (player->swordState != 0) && (angle >= 0x1F40)) {
+        if ((this->actor.xzDistToPlayer < 80.0f) && (player->meleeWeaponState != 0) && (angle >= 0x1F40)) {
             this->actor.shape.rot.y = this->actor.world.rot.y = this->actor.yawTowardsPlayer;
             EnWf_SetupRunAroundPlayer(this);
         } else {
@@ -521,7 +522,7 @@ void EnWf_RunAtPlayer(EnWf* this, PlayState* play) {
         playerFacingAngleDiff = player->actor.shape.rot.y - this->actor.shape.rot.y;
         playerFacingAngleDiff = ABS(playerFacingAngleDiff);
 
-        if ((this->actor.xzDistToPlayer < (150.0f + baseRange)) && (player->swordState != 0) &&
+        if ((this->actor.xzDistToPlayer < (150.0f + baseRange)) && (player->meleeWeaponState != 0) &&
             (playerFacingAngleDiff >= 8000)) {
             this->actor.shape.rot.y = this->actor.world.rot.y = this->actor.yawTowardsPlayer;
 
@@ -1197,11 +1198,7 @@ void EnWf_SetupDie(EnWf* this) {
     this->actionTimer = this->skelAnime.animLength;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_WOLFOS_DEAD);
     EnWf_SetupAction(this, EnWf_Die);
-    if (this->actor.params == WOLFOS_WHITE) {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE]++;
-    } else {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WOLFOS]++;
-    }
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnWf_Die(EnWf* this, PlayState* play) {

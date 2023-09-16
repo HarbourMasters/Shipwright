@@ -1,5 +1,7 @@
 <Root>
     <File Name="object_oE4s" Segment="6">
+        <Texture Name="object_oE4sTex_0002A0" OutName="object_oE4sTex_0002A0" Format="ci8" Width="16" Height="16" Offset="0x2A0" TlutOffset="0x1A8" AddedByScript="true"/>
+        <Texture Name="object_oE4sTex_0003A0" OutName="object_oE4sTex_0003A0" Format="ci8" Width="16" Height="16" Offset="0x3A0" TlutOffset="0x1A8" AddedByScript="true"/>
         <Animation Name="object_oE4s_Anim_00007C" Offset="0x7C"/>
         <Limb Name="object_oE4s_Limb_000090" LimbType="Standard" Offset="0x90"/>
         <Limb Name="object_oE4s_Limb_00009C" LimbType="Standard" Offset="0x9C"/>

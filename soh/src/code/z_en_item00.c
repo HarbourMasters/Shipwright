@@ -1397,7 +1397,7 @@ void EnItem00_DrawCollectible(EnItem00* this, PlayState* play) {
         gDPSetTextureFilter(POLY_OPA_DISP++, G_TF_BILERP);
         gDPSetTextureConvert(POLY_OPA_DISP++, G_TC_FILT);
         gDPSetTextureLUT(POLY_OPA_DISP++, G_TT_NONE);
-        gDPLoadTextureBlock(POLY_OPA_DISP++, gBombchuIconTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0,
+        gDPLoadTextureBlock(POLY_OPA_DISP++, gItemIconBombchuTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
         gSPVertex(POLY_OPA_DISP++, customDropVtx, 4, 0);
@@ -1523,7 +1523,7 @@ s16 func_8001F404(s16 dropId) {
     if (LINK_IS_ADULT) {
         if (dropId == ITEM00_SEEDS) {
             dropId = ITEM00_ARROWS_SMALL;
-        } else if (dropId == ITEM00_STICK) {
+        } else if ((dropId == ITEM00_STICK) && !(CVarGetInteger("gTreeStickDrops", 0))) {
             dropId = ITEM00_RUPEE_GREEN;
         }
     } else {
@@ -1753,7 +1753,11 @@ void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnP
                     }
                 }
             } else {
-                Item_DropCollectible(play, spawnPos, params | 0x8000);
+                if (CVarGetInteger("gBushDropFix", 0)) {
+                    Item_DropCollectible(play, spawnPos, dropId | 0x8000);
+                } else {
+                    Item_DropCollectible(play, spawnPos, params | 0x8000);
+                }
             }
             dropQuantity--;
         }

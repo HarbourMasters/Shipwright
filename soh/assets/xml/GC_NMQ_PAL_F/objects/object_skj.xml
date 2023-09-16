@@ -1,5 +1,13 @@
 <Root>
     <File Name="object_skj" Segment="6">
+        <Texture Name="object_skjTex_005300" OutName="object_skjTex_005300" Format="rgba16" Width="16" Height="16" Offset="0x5300" AddedByScript="true"/>
+        <Texture Name="object_skjTex_005500" OutName="object_skjTex_005500" Format="rgba16" Width="16" Height="16" Offset="0x5500" AddedByScript="true"/>
+        <Texture Name="object_skjTex_005700" OutName="object_skjTex_005700" Format="rgba16" Width="16" Height="16" Offset="0x5700" AddedByScript="true"/>
+        <Texture Name="object_skjTex_005900" OutName="object_skjTex_005900" Format="rgba16" Width="16" Height="16" Offset="0x5900" AddedByScript="true"/>
+        <Texture Name="object_skjTex_005B00" OutName="object_skjTex_005B00" Format="rgba16" Width="8" Height="8" Offset="0x5B00" AddedByScript="true"/>
+        <Texture Name="object_skjTex_005B80" OutName="object_skjTex_005B80" Format="rgba16" Width="16" Height="16" Offset="0x5B80" AddedByScript="true"/>
+        <Texture Name="object_skjTex_005D80" OutName="object_skjTex_005D80" Format="rgba16" Width="4" Height="4" Offset="0x5D80" AddedByScript="true"/>
+        <Texture Name="object_skjTex_005DA0" OutName="object_skjTex_005DA0" Format="ia16" Width="8" Height="8" Offset="0x5DA0" AddedByScript="true"/>
         <DList Name="gSkullKidNeedleDL" Offset="0x0EB0"/>
         <DList Name="gSkullKidSkullMaskDL" Offset="0x14C8"/>
 

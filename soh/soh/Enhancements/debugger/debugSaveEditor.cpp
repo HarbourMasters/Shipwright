@@ -197,18 +197,18 @@ typedef struct {
 
 // Maps quest items ids to info for use in ImGui
 std::map<uint32_t, QuestMapEntry> questMapping = {
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_FOREST, dgForestMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_FIRE, dgFireMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_WATER, dgWaterMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_SPIRIT, dgSpiritMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_SHADOW, dgShadowMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_LIGHT, dgLightMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_KOKIRI_EMERALD, dgKokiriEmeraldIconTex),
-    QUEST_MAP_ENTRY(QUEST_GORON_RUBY, dgGoronRubyIconTex),
-    QUEST_MAP_ENTRY(QUEST_ZORA_SAPPHIRE, dgZoraSapphireIconTex),
-    QUEST_MAP_ENTRY(QUEST_STONE_OF_AGONY, dgStoneOfAgonyIconTex),
-    QUEST_MAP_ENTRY(QUEST_GERUDO_CARD, dgGerudosCardIconTex),
-    QUEST_MAP_ENTRY(QUEST_SKULL_TOKEN, dgGoldSkulltulaIconTex),
+    QUEST_MAP_ENTRY(QUEST_MEDALLION_FOREST, dgQuestIconMedallionForestTex),
+    QUEST_MAP_ENTRY(QUEST_MEDALLION_FIRE, dgQuestIconMedallionFireTex),
+    QUEST_MAP_ENTRY(QUEST_MEDALLION_WATER, dgQuestIconMedallionWaterTex),
+    QUEST_MAP_ENTRY(QUEST_MEDALLION_SPIRIT, dgQuestIconMedallionSpiritTex),
+    QUEST_MAP_ENTRY(QUEST_MEDALLION_SHADOW, dgQuestIconMedallionShadowTex),
+    QUEST_MAP_ENTRY(QUEST_MEDALLION_LIGHT, dgQuestIconMedallionLightTex),
+    QUEST_MAP_ENTRY(QUEST_KOKIRI_EMERALD, dgQuestIconKokiriEmeraldTex),
+    QUEST_MAP_ENTRY(QUEST_GORON_RUBY, dgQuestIconGoronRubyTex),
+    QUEST_MAP_ENTRY(QUEST_ZORA_SAPPHIRE, dgQuestIconZoraSapphireTex),
+    QUEST_MAP_ENTRY(QUEST_STONE_OF_AGONY, dgQuestIconStoneOfAgonyTex),
+    QUEST_MAP_ENTRY(QUEST_GERUDO_CARD, dgQuestIconGerudosCardTex),
+    QUEST_MAP_ENTRY(QUEST_SKULL_TOKEN, dgQuestIconGoldSkulltulaTex),
 };
 
 typedef struct {
@@ -1418,10 +1418,10 @@ void DrawQuestStatusTab() {
     DrawGroupWithBorder([&]() {
         ImGui::Text("Dungeon Items");
 
-        static int32_t dungeonItemsScene = SCENE_YDAN;
+        static int32_t dungeonItemsScene = SCENE_DEKU_TREE;
         ImGui::PushItemWidth(-ImGui::GetWindowWidth() * 0.35f);
         if (ImGui::BeginCombo("##DungeonSelect", SohUtils::GetSceneName(dungeonItemsScene).c_str())) {
-            for (int32_t dungeonIndex = SCENE_YDAN; dungeonIndex < SCENE_BDAN_BOSS + 1; dungeonIndex++) {
+            for (int32_t dungeonIndex = SCENE_DEKU_TREE; dungeonIndex < SCENE_JABU_JABU_BOSS + 1; dungeonIndex++) {
                 if (ImGui::Selectable(SohUtils::GetSceneName(dungeonIndex).c_str(),
                                       dungeonIndex == dungeonItemsScene)) {
                     dungeonItemsScene = dungeonIndex;
@@ -1438,7 +1438,7 @@ void DrawQuestStatusTab() {
         ImGui::SameLine();
         DrawDungeonItemButton(ITEM_DUNGEON_MAP, dungeonItemsScene);
 
-        if (dungeonItemsScene != SCENE_BDAN_BOSS) {
+        if (dungeonItemsScene != SCENE_JABU_JABU_BOSS) {
             float lineHeight = ImGui::GetTextLineHeightWithSpacing();
             ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemMapping[ITEM_KEY_SMALL].name), ImVec2(lineHeight, lineHeight));
             ImGui::SameLine();
@@ -1620,7 +1620,7 @@ void DrawPlayerTab() {
                     gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KNIFE;
                 }
                 
-                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_BGS);
+                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_BIGGORON);
             }
             if (ImGui::Selectable("Fishing Pole")) {
                 player->currentSwordItemId = ITEM_FISHING_POLE;
@@ -1725,7 +1725,7 @@ void DrawPlayerTab() {
         }
         DrawGroupWithBorder([&]() {
             ImGui::Text("Sword");
-            ImGui::Text("  %d", player->swordState);
+            ImGui::Text("  %d", player->meleeWeaponState);
         });
 
     } else {
