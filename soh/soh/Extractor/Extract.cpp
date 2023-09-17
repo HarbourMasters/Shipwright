@@ -7,6 +7,7 @@
 #include "Extract.h"
 #include "portable-file-dialogs.h"
 #include <Utils/BitConverter.h>
+#include "variables.h"
 
 #ifdef unix
 #include <dirent.h>
@@ -524,6 +525,7 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
     constexpr int argc = 16;
     char xmlPath[1024];
     char confPath[1024];
+    char sohVersion[18]; // 5 digits for int16_max (x3) + separators + terminator
     std::array<const char*, argc> argv;
     const char* version = GetZapdVerStr();
     const char* otrFile = IsMasterQuest() ? "oot-mq.otr" : "oot.otr";
@@ -545,6 +547,7 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
 
     snprintf(xmlPath, 1024, "assets/extractor/xmls/%s", version);
     snprintf(confPath, 1024, "assets/extractor/Config_%s.xml", version);
+    snprintf(sohVersion, 18, "%d.%d.%d", gBuildVersionMajor, gBuildVersionMinor, gBuildVersionPatch);
 
     argv[0] = "ZAPD";
     argv[1] = "ed";
@@ -562,6 +565,8 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
     argv[13] = "OTR";
     argv[14] = "--otrfile";
     argv[15] = otrFile;
+    argv[16] = "--sohver";
+    argv[17] = sohVersion;
 
 #ifdef _WIN32
     // Grab a handle to the command window.
@@ -587,4 +592,3 @@ bool Extractor::CallZapd(std::string installPath, std::string exportdir) {
 
     return 0;
 }
-
