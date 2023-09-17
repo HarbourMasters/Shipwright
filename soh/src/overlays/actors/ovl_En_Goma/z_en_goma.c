@@ -733,7 +733,7 @@ void EnGoma_Update(Actor* thisx, PlayState* play) {
         EnGoma_LookAtPlayer(this, play);
         EnGoma_UpdateEyeEnvColor(this);
         this->visualState = 1;
-        if (player->swordState != 0) {
+        if (player->meleeWeaponState != 0) {
             this->colCyl2.dim.radius = 35;
             this->colCyl2.dim.height = 35;
             this->colCyl2.dim.yShift = 0;
