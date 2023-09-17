@@ -275,7 +275,7 @@ void InitTrickNames() {
      Text{"Lon Lon Egg", "Oeuf Lon Lon", "Huevo Lon Lon"},
      Text{"Zora Egg", "Oeuf Zora", "Huevo Zora"}};
   trickNameTable[GI_LETTER_ZELDA] = {
-      Text{"Ruto's Letter", "Lettre de Ruto", "Carta de Ruto"},
+     Text{"Ruto's Letter", "Lettre de Ruto", "Carta de Ruto"},
      Text{"Royal Letter", "Lettre Eoyale", "Carta para Kafei"},
      Text{"Zelda's Business Card", "Carte d'affaires de Zelda", "Carta"},
      Text{"Letter to Kafei", "Lettre pour Kafei", "Carta para Kafei "},
