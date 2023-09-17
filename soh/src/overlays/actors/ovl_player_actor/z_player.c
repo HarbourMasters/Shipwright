@@ -14917,7 +14917,7 @@ void func_80852648(PlayState* play, Player* this, CsCmdActorAction* arg2) {
         this->modelGroup = this->nextModelGroup = Player_ActionToModelGroup(this, PLAYER_IA_NONE);
         this->leftHandDLists = D_80125E08;
         if (!gSaveContext.n64ddFlag || !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) || 
-        (Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && CHECK_OWNED_EQUIP(EQUIP_SWORD, 1) && play->sceneNum == SCENE_GANON_DEMO)) {
+        (Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && CHECK_OWNED_EQUIP(EQUIP_SWORD, 1) && play->sceneNum == SCENE_GANON_BOSS)) {
             Inventory_ChangeEquipment(EQUIP_SWORD, 2);
             gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
             Inventory_DeleteEquipment(play, 0);
