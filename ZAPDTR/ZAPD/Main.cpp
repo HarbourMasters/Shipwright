@@ -226,17 +226,29 @@ extern "C" int zapd_main(int argc, char* argv[])
 		}
 	}
 
-
 	// Parse File Mode
 	ExporterSet* exporterSet = Globals::Instance->GetExporterSet();
-	
-	if(Globals::Instance->onlyGenSohOtr) {
-		exporterSet->endProgramFunc();
+
+	if (Globals::Instance->onlyGenSohOtr)
+	{
+		if (exporterSet != nullptr)
+		{
+			// parse args for exporter
+			if (exporterSet->parseArgsFunc != nullptr)
+			{
+				for (int32_t i = 2; i < argc; i++)
+					exporterSet->parseArgsFunc(argc, argv, i);
+			}
+
+			exporterSet->endProgramFunc();
+		} else {
+			printf("Error: No exporter set, unable to make soh.otr.\n");
+		}
 
 		delete g;
 		return 0;
 	}
-	
+
 	std::string buildMode = argv[1];
 	ZFileMode fileMode = ZFileMode::Invalid;
 
