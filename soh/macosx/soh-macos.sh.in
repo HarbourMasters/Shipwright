@@ -209,7 +209,7 @@ if [ ! -e "$SHIP_HOME"/oot.otr ] || [ ! -e "$SHIP_HOME"/oot-mq.otr ]; then
 		fi
 
 		osascript -e 'display notification "Generating OTR..." with title "Ship Of Harkinian"'
-		assets/extractor/ZAPD.out ed -i assets/extractor/xmls/"${ROM}" -b tmp/rom.z64 -fl assets/extractor/filelists -o placeholder -osf placeholder -gsf 1 -rconf assets/extractor/Config_"${ROM}".xml -se OTR
+		assets/extractor/ZAPD.out ed -i assets/extractor/xmls/"${ROM}" -b tmp/rom.z64 -fl assets/extractor/filelists -o placeholder -osf placeholder -gsf 1 -rconf assets/extractor/Config_"${ROM}".xml -se OTR --sohver "@CMAKE_PROJECT_VERSION@"
 		if [ -e "$ASSETDIR"/oot.otr ]; then
 			osascript -e 'display notification "OTR successfully generated" with title "Ship Of Harkinian"'
 			cp "$ASSETDIR"/oot.otr "$SHIP_HOME"/"$OTRNAME"
