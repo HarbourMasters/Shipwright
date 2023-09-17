@@ -27,6 +27,7 @@
 #include <mutex>
 
 std::string otrFileName = "oot.otr";
+std::string sohVersionString = "0.0.0";
 std::shared_ptr<LUS::Archive> otrArchive;
 BinaryWriter* fileWriter;
 std::chrono::steady_clock::time_point fileStart, resStart;
@@ -67,6 +68,47 @@ static void ExporterProgramEnd()
 {
 	uint32_t crc = 0xFFFFFFFF;
 	const uint8_t endianness = (uint8_t)Endianness::Big;
+
+	std::vector<int16_t> sohVersion = {};
+	std::vector<std::string> versionParts = StringHelper::Split(sohVersionString, ".");
+
+	for (auto val : versionParts)
+	{
+		int16_t num = 0;
+		try
+		{
+			num = std::stoi(val, nullptr);
+		}
+		catch (std::invalid_argument &e)
+		{
+			num = 0;
+		}
+		catch (std::out_of_range &e)
+		{
+			num = 0;
+		}
+
+		sohVersion.push_back(num);
+
+		// Ignore any extra values passed in
+		if (sohVersion.size() == 3)
+			break;
+	}
+
+	// Padded out missing values
+	while (sohVersion.size() < 3)
+	{
+		sohVersion.push_back(0);
+	}
+
+	MemoryStream *sohVersionStream = new MemoryStream();
+	BinaryWriter sohWriter(sohVersionStream);
+	sohWriter.SetEndianness(Endianness::Big);
+	sohWriter.Write(endianness);
+	sohWriter.Write(sohVersion[0]); // Major
+	sohWriter.Write(sohVersion[1]); // Minor
+	sohWriter.Write(sohVersion[2]); // Patch
+	sohWriter.Close();
 	
 	if (Globals::Instance->fileMode == ZFileMode::ExtractDirectory)
 	{
@@ -94,6 +136,9 @@ static void ExporterProgramEnd()
 
 		otrArchive->AddFile("version", (uintptr_t)versionStream->ToVector().data(), versionStream->GetLength());
 
+		printf("Adding sohVersion file.\n");
+		otrArchive->AddFile("sohVersion", (uintptr_t)sohVersionStream->ToVector().data(), sohVersionStream->GetLength());
+
 		for (const auto& item : files)
 		{
 			std::string fName = item.first;
@@ -110,6 +155,7 @@ static void ExporterProgramEnd()
 								fileData.size());
 		}
 	}
+
 	otrArchive = nullptr;
 	delete fileWriter;
 	files.clear();
@@ -118,9 +164,14 @@ static void ExporterProgramEnd()
 	if (DiskFile::Exists("soh.otr")) {
 		return;
 	}
+
 	const auto& lst = Directory::ListFiles("Extract");
+
+	printf("Generating SoH OTR Archive...\n");
 	std::shared_ptr<LUS::Archive> sohOtr = LUS::Archive::CreateArchive("soh.otr", 4096);
-	//sohOtr->AddFile("version", (uintptr_t)versionStream->ToVector().data(), versionStream->GetLength());
+
+	printf("Adding sohVersion file.\n");
+	sohOtr->AddFile("sohVersion", (uintptr_t)sohVersionStream->ToVector().data(), sohVersionStream->GetLength());
 
 	for (const auto& item : lst)
 	{
@@ -183,6 +234,11 @@ static void ExporterParseArgs(int argc, char* argv[], int& i)
 	if (arg == "--otrfile")
 	{
 		otrFileName = argv[i + 1];
+		i++;
+	}
+	else if (arg == "--sohver")
+	{
+		sohVersionString = argv[i + 1];
 		i++;
 	}
 }
