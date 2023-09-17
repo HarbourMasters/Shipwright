@@ -416,14 +416,12 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
     CustomMessageManager::Instance->ClearMessageTable(Randomizer::hintMessageTableID);
     CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::hintMessageTableID);
 
-    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD,
-                                                  CustomMessage(gSaveContext.childAltarText,
-                                                                gSaveContext.childAltarText,
-                                                                gSaveContext.childAltarText, TEXTBOX_TYPE_BLUE));
-    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT,
-                                                  CustomMessage(gSaveContext.adultAltarText,
-                                                                gSaveContext.adultAltarText,
-                                                                gSaveContext.adultAltarText, TEXTBOX_TYPE_BLUE));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD,
+        CustomMessage(gSaveContext.childAltarText, gSaveContext.childAltarText, gSaveContext.childAltarText, TEXTBOX_TYPE_BLUE));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT,
+        CustomMessage(gSaveContext.adultAltarText, gSaveContext.adultAltarText, gSaveContext.adultAltarText, TEXTBOX_TYPE_BLUE));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_GANONDORF,
         CustomMessage(gSaveContext.ganonHintText, gSaveContext.ganonHintText, gSaveContext.ganonHintText));
@@ -2889,8 +2887,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_KEYRINGS_GERUDO_FORTRESS] =
         (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
          CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA)
-            ? CVarGetInteger("gRandomizeShuffleKeyRingsGerudoFortress", RO_GENERIC_OFF)
-            : RO_GENERIC_OFF;
+            ? CVarGetInteger("gRandomizeShuffleKeyRingsGerudoFortress", RO_GENERIC_OFF) : RO_GENERIC_OFF;
     cvarSettings[RSK_KEYRINGS_FOREST_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsForestTemple", 0);
     cvarSettings[RSK_KEYRINGS_FIRE_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsFireTemple", 0);
     cvarSettings[RSK_KEYRINGS_WATER_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsWaterTemple", 0);
@@ -2930,8 +2927,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_SKULLS_SUNS_SONG] = CVarGetInteger("gRandomizeGsExpectSunsSong", 0);
     // Link's Pocket has to have a dungeon reward if the other rewards are shuffled to end of dungeon.
     cvarSettings[RSK_LINKS_POCKET] = CVarGetInteger("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON) != RO_DUNGEON_REWARDS_END_OF_DUNGEON ? 
-                                        CVarGetInteger("gRandomizeLinksPocket", RO_LINKS_POCKET_DUNGEON_REWARD) :
-                                        RO_LINKS_POCKET_DUNGEON_REWARD;
+                                        CVarGetInteger("gRandomizeLinksPocket", RO_LINKS_POCKET_DUNGEON_REWARD) : RO_LINKS_POCKET_DUNGEON_REWARD;
 
     if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
         // If both OTRs are loaded.
@@ -3040,7 +3036,6 @@ void RandomizerSettingsWindow::DrawElement() {
     // Randomizer settings
     // Logic Settings
     static const char* randoLogicRules[2] = { "Glitchless", "No logic" };
-
 
     // Open Settings
     static const char* randoForest[3] = { "Closed", "Closed Deku", "Open" };
@@ -3894,8 +3889,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Adult Trade Quest
-                UIWidgets::EnhancementCheckbox(Settings::ShuffleAdultTradeQuest.GetName().c_str(),
-                                                "gRandomizeShuffleAdultTrade");
+                UIWidgets::EnhancementCheckbox(Settings::ShuffleAdultTradeQuest.GetName().c_str(), "gRandomizeShuffleAdultTrade");
                 UIWidgets::InsertHelpHoverText(
                     "Adds all of the adult trade quest items into the pool, each of which "
                     "can be traded for a unique reward.\n"
