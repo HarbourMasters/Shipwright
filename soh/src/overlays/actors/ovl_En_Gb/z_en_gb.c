@@ -337,7 +337,10 @@ void func_80A2FA50(EnGb* this, PlayState* play) {
         Player_UpdateBottleHeld(play, GET_PLAYER(play), ITEM_BOTTLE, PLAYER_IA_BOTTLE);
         Rupees_ChangeBy(50);
         HIGH_SCORE(HS_POE_POINTS) += 100;
-        if (HIGH_SCORE(HS_POE_POINTS) != 1000) {
+        if (
+            (!gSaveContext.n64ddFlag && HIGH_SCORE(HS_POE_POINTS) != 1000) ||
+            (gSaveContext.n64ddFlag && (HIGH_SCORE(HS_POE_POINTS) != 1000 || Flags_GetRandomizerInf(RAND_INF_10_BIG_POES)))
+        ) {
             if (HIGH_SCORE(HS_POE_POINTS) > 1100) {
                 HIGH_SCORE(HS_POE_POINTS) = 1100;
             }
@@ -345,6 +348,7 @@ void func_80A2FA50(EnGb* this, PlayState* play) {
         } else {
             Player* player = GET_PLAYER(play);
 
+            Flags_SetRandomizerInf(RAND_INF_10_BIG_POES);
             player->exchangeItemId = EXCH_ITEM_NONE;
             this->textId = 0x70F8;
             Message_ContinueTextbox(play, this->textId);
