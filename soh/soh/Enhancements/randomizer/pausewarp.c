@@ -81,6 +81,11 @@ void PauseWarp_Main() {
     // If 'A' is pressed and the cooldowns are zero, and we're not already warping, initiate the warp
     if (aButtonPressed && !state.aButtonCooldown && !(state.warpInitiated || state.textboxInitiated || state.inChoosingState)) {
         int song = play->pauseCtx.cursorPoint[PAUSE_QUEST];
+        
+        // Check if the player has the selected warp song
+        if (!CHECK_QUEST_ITEM(song)) return;
+
+        // Initiate warp if the song is within the valid range
         if (song >= QUEST_SONG_MINUET && song <= QUEST_SONG_PRELUDE) InitiateWarp(play, player, song, &state);
     }
 
