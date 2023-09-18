@@ -180,36 +180,6 @@ Color_RGBA8 Color_Saved_Extra           = {   0, 185,   0, 255 }; // Green
 std::vector<uint32_t> buttons = { BTN_A, BTN_B, BTN_CUP,   BTN_CDOWN, BTN_CLEFT, BTN_CRIGHT, BTN_L,
                                   BTN_Z, BTN_R, BTN_START, BTN_DUP,   BTN_DDOWN, BTN_DLEFT,  BTN_DRIGHT };
 
-std::map<GetItemID, Text> itemNames = {
-    { GI_HOOKSHOT,          Text{ "Hookshot",            "Grappin",                  "Gancho" } },
-    { GI_LONGSHOT,          Text{ "Longshot",            "Super-Grappin",            "Supergancho" } },
-    { GI_OCARINA_FAIRY,     Text{ "Fairy Ocarina",       "Ocarina des fées",         "Ocarina de las Hadas" } },
-    { GI_OCARINA_OOT,       Text{ "Ocarina of Time",     "Ocarina du Temps",         "Ocarina del Tiempo" } },
-    { GI_BOMB_BAG_20,       Text{ "Bomb Bag",            "Sac de Bombes",            "Saco de bombas" } },
-    { GI_BOMB_BAG_30,       Text{ "Bomb Bag Upgrade",    "Sac de Bombes améliorer",  "Saco de bombas mejora" } },
-    { GI_BOMB_BAG_40,       Text{ "Bomb Bag Upgrade",    "Sac de Bombes améliorer",  "Saco de bombas mejora" } },
-    { GI_BOW,               Text{ "Fairy Bow",           "Arc des Fées",             "Arco de las Hadas" } },
-    { GI_QUIVER_40,         Text{ "Quiver Upgrade",      "Carquois améliorer",       "Carcaj grande" } },
-    { GI_QUIVER_50,         Text{ "Quiver Upgrade",      "Carquois améliorer",       "Carcaj grande" } },
-    { GI_SLINGSHOT,         Text{ "Fairy Slingshot",     "Lance-Pierre des Fées",    "Resortera de las hadas" } },
-    { GI_BULLET_BAG_40,     Text{ "Bullet Bag Upgrade",  "Sac de graines améliorer", "Bolsa de semillas deku mejora" } },
-    { GI_BULLET_BAG_50,     Text{ "Bullet Bag Upgrade",  "Sac de graines améliorer", "Bolsa de semillas deku mejora" } },
-    { GI_BRACELET,          Text{ "Goron's Bracelet",    "Bracelet Goron",           "Brazalete de los Goron" } },
-    { GI_GAUNTLETS_SILVER,  Text{ "Silver Gauntlets",    "Gantelets d'argent",       "Guantes de plata" } },
-    { GI_GAUNTLETS_GOLD,    Text{ "Golden Gauntlets",    "Gantelets d'or",           "Guantes de oro" } },
-    { GI_SCALE_SILVER,      Text{ "Silver Scale",        "Écaille d'argent",         "Escama de Plata" } },
-    { GI_SCALE_GOLD,        Text{ "Golden Scale",        "Écaille d'or",             "Escama de Oro" } },
-    { GI_WALLET_ADULT,      Text{ "Adult Wallet",        "Grande Bourse",            "Bolsa de adulto" } },
-    { GI_WALLET_GIANT,      Text{ "Giant Wallet",        "Bourse de Géant",          "Bolsa gigante" } },
-    { GI_NUT_UPGRADE_30,    Text{ "Deku Nut Capacity",   "Capacité de noix Mojo",    "Capacidad de nueces deku" } },
-    { GI_NUT_UPGRADE_40,    Text{ "Deku Nut Capacity",   "Capacité de noix Mojo",    "Capacidad de nueces deku" } },
-    { GI_STICK_UPGRADE_20,  Text{ "Deku Stick Capacity", "Capacité de Bâtons Mojo",  "Capacidad de palos deku" } },
-    { GI_STICK_UPGRADE_30,  Text{ "Deku Stick Capacity", "Capacité de Bâtons Mojo",  "Capacidad de palos deku" } }
-    //{GI_,                       Text{"Magic Meter",                     "Jauge de Magie",                   "Poder mágico"}},
-    //{RG_ENHANCED_MAGIC_METER,              Text{"Enhanced Magic Meter",            "Jauge de Magie améliorée",         "Poder mágico mejorado"}},
-
-};
-
 void SetLastItemGetRC(RandomizerCheck rc) {
     lastItemGetCheck = rc;
 }
