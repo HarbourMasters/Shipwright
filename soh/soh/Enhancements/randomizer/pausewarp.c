@@ -14,6 +14,9 @@ typedef struct {
 // Mapping the song messages. Each song corresponds to a specific text message.
 static const int songMessageMap[] = { TEXT_WARP_MINUET_OF_FOREST, TEXT_WARP_BOLERO_OF_FIRE, TEXT_WARP_SERENADE_OF_WATER, TEXT_WARP_REQUIEM_OF_SPIRIT, TEXT_WARP_NOCTURNE_OF_SHADOW, TEXT_WARP_PRELUDE_OF_LIGHT };
 
+// Mapping the song audio. Each song corresponds to a specific audio ID.
+static const int songAudioMap[] = { NA_BGM_OCA_MINUET, NA_BGM_OCA_BOLERO, NA_BGM_OCA_SERENADE, NA_BGM_OCA_REQUIEM, NA_BGM_OCA_NOCTURNE, NA_BGM_OCA_LIGHT };
+
 // Forward declaring the functions used in this file
 bool IsStateValid(PlayState* play, Player* player, PauseWarpState* state);
 void ResetStateFlags(PauseWarpState* state);
@@ -34,10 +37,12 @@ void ResetStateFlags(PauseWarpState* state) {
 // Initiating the warp process. Here we set all the required flags and disable player input.
 void InitiateWarp(PlayState* play, Player* player, int song, PauseWarpState* state) {
     int idx = song - QUEST_SONG_MINUET;  // Calculating the song index
+    Audio_SetSoundBanksMute(0x20);       //Mute current BGM
+    Audio_PlayFanfare(songAudioMap[idx]);  // Play the corresponding fanfare
     play->msgCtx.lastPlayedSong = idx;   // Storing the last played song
     play->pauseCtx.state = 0x12;         // Setting the pause state
     Message_StartTextbox(play, songMessageMap[idx], NULL);  // Starting the textbox with the appropriate message
-    player->stateFlags1 |= PLAYER_STATE1_INPUT_DISABLED;  // Disabling player input
+    player->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;  // Disabling player input
     *state = (PauseWarpState){.warpInitiated = true, .textboxOpenCooldown = 10, .aButtonCooldown = 10, .textboxCheckCooldown = 5, .textboxIsOpen = true};  // Setting the flags for warp
     play->msgCtx.choiceIndex = 0;  // Resetting the choice index
 }
@@ -45,7 +50,7 @@ void InitiateWarp(PlayState* play, Player* player, int song, PauseWarpState* sta
 // Handling the warp confirmation. This is the part where the player actually gets teleported if they confirmed.
 void HandleWarpConfirmation(PlayState* play, Player* player, PauseWarpState* state) {
     if (play->msgCtx.choiceIndex == 0) Entrance_SetWarpSongEntrance();  // Teleporting the player if 'ok' was selected
-    player->stateFlags1 &= ~PLAYER_STATE1_INPUT_DISABLED;  // Re-enabling player input
+    player->stateFlags1 &= ~PLAYER_STATE1_IN_CUTSCENE;  // Re-enabling player input
     ResetStateFlags(state);  // Resetting the state flags
 }
 
