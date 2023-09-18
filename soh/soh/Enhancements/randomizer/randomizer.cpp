@@ -2546,6 +2546,7 @@ RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 scene
             if (actorId == ACTOR_EN_SA) {
                 specialRc = RC_SONG_FROM_SARIA;
             }
+            break;
         case SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY:
         case SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT:
         case SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS:
