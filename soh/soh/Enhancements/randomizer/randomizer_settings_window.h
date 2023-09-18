@@ -7,4 +7,7 @@ class RandomizerSettingsWindow : public LUS::GuiWindow {
     void InitElement() override;
     void DrawElement() override;
     void UpdateElement() override {};
+
+  private: 
+    void AddCountRandomizationSettings();
 };

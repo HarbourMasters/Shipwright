@@ -1465,6 +1465,7 @@ typedef enum {
     RSK_MIX_INTERIOR_ENTRANCES,
     RSK_MIX_GROTTO_ENTRANCES,
     RSK_DECOUPLED_ENTRANCES,
+    RSK_ALLOW_DECOUPLED_ENTRANCES,
     RSK_STARTING_SKULLTULA_TOKEN,
     RSK_ALL_LOCATIONS_REACHABLE,
     RSK_SHUFFLE_BOSS_ENTRANCES,
@@ -1472,6 +1473,7 @@ typedef enum {
     RSK_TRIFORCE_HUNT,
     RSK_TRIFORCE_HUNT_PIECES_TOTAL,
     RSK_TRIFORCE_HUNT_PIECES_REQUIRED,
+    RSK_ALLOW_100_GS_REWARD,
     RSK_MAX
 } RandomizerSettingKey;
 
@@ -1501,12 +1503,27 @@ typedef enum {
     RO_GENERIC_SKIP,
 } RandoOptionGenericSkip;
 
+//Balancing settings
+typedef enum { 
+    RO_COUNT_BALANCE_BALANCED,
+    RO_COUNT_BALANCE_MOST_ITEMS,
+    RO_COUNT_BALANCE_ALL_ITEMS,
+    RO_COUNT_BALANCE_ANYTHING
+} CountBalanceSettings;
+
+//Starting songs randomization type
+typedef enum {
+    RO_SONG_COUNT_SET_NUMBER,
+    RO_SONG_COUNT_RANDOM 
+} SongsRandomizationSettings;
+
 //Forest settings (closed, closed deku, open)
 typedef enum {
     RO_FOREST_CLOSED,
     RO_FOREST_CLOSED_DEKU,
     RO_FOREST_OPEN,
 } RandoOptionForest;
+
 
 //Door of Time settings (closed, song only, open)
 typedef enum {

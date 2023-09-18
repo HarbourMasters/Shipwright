@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "randomizer.h"
 #include <nlohmann/json.hpp>
 #include "3drando/settings.hpp"
@@ -18,6 +19,7 @@
 #include "../presets.h"
 #include "../../../src/overlays/actors/ovl_En_GirlA/z_en_girla.h"
 #include <stdexcept>
+#include <random>
 #include "randomizer_check_objects.h"
 #include "randomizer_tricks.h"
 #include "randomizer_check_tracker.h"
@@ -2902,6 +2904,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = CVarGetInteger("gRandomizeShuffleBeans", 0);
     cvarSettings[RSK_SHUFFLE_MERCHANTS] = CVarGetInteger("gRandomizeShuffleMerchants", RO_SHUFFLE_MERCHANTS_OFF);
     cvarSettings[RSK_SHUFFLE_100_GS_REWARD] = CVarGetInteger("gRandomizeShuffle100GSReward", RO_GENERIC_OFF);
+    cvarSettings[RSK_ALLOW_100_GS_REWARD] = CVarGetInteger("gAllow100GSReward", RO_GENERIC_OFF);
     cvarSettings[RSK_RANDOMIZE_GAMEPLAY_SETTINGS] = CVarGetInteger("gRandomizeGameplaySettings", RO_GENERIC_OFF);
     cvarSettings[RSK_ENABLE_BOMBCHU_DROPS] = CVarGetInteger("gRandomizeEnableBombchuDrops", 0);
     cvarSettings[RSK_BOMBCHUS_IN_LOGIC] = CVarGetInteger("gRandomizeBombchusInLogic", 0);
@@ -3041,6 +3044,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_MIX_INTERIOR_ENTRANCES] = CVarGetInteger("gRandomizeMixInteriors", RO_GENERIC_OFF);
     cvarSettings[RSK_MIX_GROTTO_ENTRANCES] = CVarGetInteger("gRandomizeMixGrottos", RO_GENERIC_OFF);
     cvarSettings[RSK_DECOUPLED_ENTRANCES] = CVarGetInteger("gRandomizeDecoupleEntrances", RO_GENERIC_OFF);
+    cvarSettings[RSK_ALLOW_DECOUPLED_ENTRANCES] = CVarGetInteger("gAllowDecoupledEntrances", RO_GENERIC_OFF);
 
     RandomSettingsOptions randomOptions = { 
         cvarSettings[RSK_RANDOMIZE_WORLD_SETTINGS] == RO_GENERIC_ON,
@@ -3102,23 +3106,38 @@ void GenerateRandomizerImgui(std::string seed = "") {
     generated = 1;
 }
 
-u8 RandomDistribution(std::initializer_list<u8> args) {
-    //NOTE This function assumes that srand() has been called beforehand.
-    if (args.size() == 0) {
+int RandomDistribution(std::initializer_list<u8> balanceDistribution) {
+    if (balanceDistribution.size() == 0) {
         throw std::invalid_argument("Random distribution must not be empty");
     }
-    if (args.size() % 2 != 0) {
+    if (balanceDistribution.size() % 2 != 0) {
         throw std::invalid_argument("Random distribution must be an even sized array.");
     }
+
     auto randNum = rand() % 100;
     auto current = 0;
-    for (auto i = 0; i < args.size(); i += 2) {
-        auto itemToPick = *(std::begin(args) + i);
-        auto chance = *(std::begin(args) + i + 1);
+    for (auto i = 0; i < balanceDistribution.size(); i += 2) {
+        auto itemToPick = *(std::begin(balanceDistribution) + i);
+        auto chance = *(std::begin(balanceDistribution) + i + 1);
         if (randNum < chance + current)
             return itemToPick;
         else
             current += chance;
+    }
+}
+
+int RandomizeItemCount(int max, int setNumberCount, std::initializer_list<u8> balanceDistribution) {
+    //NOTE This function assumes that srand() has been called beforehand.
+    auto balanceOption = CVarGetInteger("gRandomDungeonSettingsBalancing", RO_COUNT_BALANCE_BALANCED);
+    switch (balanceOption) { 
+    case RO_COUNT_BALANCE_BALANCED:
+            return RandomDistribution(balanceDistribution);
+    case RO_COUNT_BALANCE_MOST_ITEMS:
+        return setNumberCount; 
+    case RO_COUNT_BALANCE_ALL_ITEMS:
+        return max;
+    case RO_COUNT_BALANCE_ANYTHING:
+        return rand() % (max + 1);
     }
 }
 
@@ -3134,37 +3153,32 @@ void RandomizeWorldSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSe
     cvarSettings[RSK_GERUDO_FORTRESS] = rand() % 3;
     cvarSettings[RSK_RAINBOW_BRIDGE] = rand() % 8;
     //For "constant settings" option:
-    //cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT] = 2;
-    //cvarSettings[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT] = 4;
-    //cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT] = 7;
-    //cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT] = 6;
-    //cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT] = 30;
-    cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT] = RandomDistribution({
+    cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT] = RandomizeItemCount(3, 2, {
         1, 10,
         2, 45,
         3, 45,
     });
-    cvarSettings[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT] = RandomDistribution({
+    cvarSettings[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT] = RandomizeItemCount(6, 4, {
         3, 10,
         4, 30,
         5, 30,
         6, 30,
      });
-    cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT] = RandomDistribution({
+    cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT] = RandomizeItemCount(9, 6, {
         5, 10,
         6, 20,
         7, 40,
         8, 20,
         9, 10,
     });
-    cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT] = RandomDistribution({
+    cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT] = RandomizeItemCount(8, 6, {
         4, 10,
         5, 20,
         6, 40,
         7, 20,
         8, 10,
     });
-    cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT] = RandomDistribution({
+    cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT] = RandomizeItemCount(50, 30, {
         20, 10,
         25, 15,
         30, 15,
@@ -3179,11 +3193,9 @@ void RandomizeWorldSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSe
         cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT] += 1;
         cvarSettings[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT] += 1;
         cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT] += 1;
+        cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT] += 1;
 
     }
-
-    cvarSettings[RSK_GANONS_TRIALS] = RO_GANONS_TRIALS_SKIP; // TODO Maybe?
-    cvarSettings[RSK_TRIAL_COUNT] = 0;
 #ifdef ENABLE_REMOTE_CONTROL
     // Triforce Hunt Specific begin
     cvarSettings[RSK_TRIFORCE_HUNT] = rand() % 2;
@@ -3215,7 +3227,7 @@ void RandomizeWorldSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSe
     cvarSettings[RSK_MIX_INTERIOR_ENTRANCES] = rand() % 2;
     cvarSettings[RSK_MIX_GROTTO_ENTRANCES] = rand() % 2;
     cvarSettings[RSK_DECOUPLED_ENTRANCES] =
-        cvarSettings[RSK_DECOUPLED_ENTRANCES] == RO_GENERIC_ON ? rand() % 2 : RO_GENERIC_OFF;
+        cvarSettings[RSK_ALLOW_DECOUPLED_ENTRANCES] == RO_GENERIC_ON ? rand() % 2 : RO_GENERIC_OFF;
 
     cvarSettings[RSK_SHUFFLE_ENTRANCES] = cvarSettings[RSK_SHUFFLE_DUNGEON_ENTRANCES] == RO_GENERIC_ON ||
                                           cvarSettings[RSK_SHUFFLE_BOSS_ENTRANCES] == RO_GENERIC_ON ||
@@ -3236,7 +3248,6 @@ void RandomizeWorldSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSe
 
 void RandomizeItemSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSettings) {
     //Shuffle Items
-    //TODO Dependent settings need to be balanced so that the chances of settings occurring are more equal.
     cvarSettings[RSK_SHUFFLE_SONGS] = rand() % 3;
     cvarSettings[RSK_SHUFFLE_TOKENS] = rand() % 3;
     cvarSettings[RSK_STARTING_KOKIRI_SWORD] = rand() % 2;
@@ -3251,13 +3262,14 @@ void RandomizeItemSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSet
     cvarSettings[RSK_SHOPSANITY] = rand() % 7;
     cvarSettings[RSK_SHOPSANITY_PRICES] = rand() % 5;
     cvarSettings[RSK_SHOPSANITY_PRICES_AFFORDABLE] = rand() % 2;
-    cvarSettings[RSK_SHUFFLE_SCRUBS] = rand() % 4; //TODO Do we want expensive scrubs to happen so much?
+    cvarSettings[RSK_SHUFFLE_SCRUBS] = rand() % 4;
     cvarSettings[RSK_SHUFFLE_COWS] = rand() % 2;
     cvarSettings[RSK_SHUFFLE_MAGIC_BEANS] = rand() % 2;
-    cvarSettings[RSK_SHUFFLE_MERCHANTS] = rand() % 3; //TODO always have hints?
+    cvarSettings[RSK_SHUFFLE_MERCHANTS] = rand() % 3;
     cvarSettings[RSK_SHUFFLE_FROG_SONG_RUPEES] = rand() % 2;
     cvarSettings[RSK_SHUFFLE_ADULT_TRADE] = rand() % 2;
-    //TODO Shuffle 100 GS reward?
+    cvarSettings[RSK_SHUFFLE_100_GS_REWARD] =
+        cvarSettings[RSK_ALLOW_100_GS_REWARD] == RO_GENERIC_ON ? rand() % 2 : RO_GENERIC_OFF;
 
     //Shuffle Dungeon Rewards
     cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = rand() % 4;
@@ -3270,13 +3282,50 @@ void RandomizeItemSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSet
             : 8;
     cvarSettings[RSK_GERUDO_KEYS] = rand() % 4;
     cvarSettings[RSK_BOSS_KEYSANITY] = rand() % 6;
-    cvarSettings[RSK_GANONS_BOSS_KEY] = rand() % 13;
-    cvarSettings[RSK_LACS_STONE_COUNT] = 2;
-    cvarSettings[RSK_LACS_MEDALLION_COUNT] = 4;
-    cvarSettings[RSK_LACS_REWARD_COUNT] = 7;
-    cvarSettings[RSK_LACS_DUNGEON_COUNT] = 6;
-    cvarSettings[RSK_LACS_TOKEN_COUNT] = 30;
+    cvarSettings[RSK_GANONS_BOSS_KEY] = 
+        cvarSettings[RSK_ALLOW_100_GS_REWARD] == RO_GENERIC_ON ? rand() % 13 : rand() % 12;
+    cvarSettings[RSK_LACS_STONE_COUNT] = RandomizeItemCount(3, 2, {
+        1, 10,
+        2, 45,
+        3, 45,
+    });
+    cvarSettings[RSK_LACS_MEDALLION_COUNT] = RandomizeItemCount(6, 4, {
+        3, 10,
+        4, 30,
+        5, 30,
+        6, 30,
+     });;
+    cvarSettings[RSK_LACS_REWARD_COUNT] = RandomizeItemCount(9, 6, {
+        5, 10,
+        6, 20,
+        7, 40,
+        8, 20,
+        9, 10,
+    });;
+    cvarSettings[RSK_LACS_DUNGEON_COUNT] = RandomizeItemCount(8, 6, {
+        4, 10,
+        5, 20,
+        6, 40,
+        7, 20,
+        8, 10,
+    });;
+    cvarSettings[RSK_LACS_TOKEN_COUNT] = RandomizeItemCount(50, 30, {
+        20, 10,
+        25, 15,
+        30, 15,
+        35, 20,
+        40, 15,
+        45, 15,
+        50, 10,
+    });
     cvarSettings[RSK_LACS_OPTIONS] = rand() % 3;
+    // Add one on if Greg is wildcard/required
+    if (cvarSettings[RSK_LACS_OPTIONS] != RO_LACS_STANDARD_REWARD) {
+        cvarSettings[RSK_LACS_STONE_COUNT] += 1;
+        cvarSettings[RSK_LACS_MEDALLION_COUNT] += 1;
+        cvarSettings[RSK_LACS_REWARD_COUNT] += 1;
+        cvarSettings[RSK_LACS_DUNGEON_COUNT] += 1;
+    }
 }
 
 void RandomizeGameplaySettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSettings) {
@@ -3330,18 +3379,30 @@ void RandomizeInventorySettings(std::unordered_map<RandomizerSettingKey, u8>& cv
     cvarSettings[RSK_STARTING_CONSUMABLES] = rand() % 2;
 
     //Starting songs
-    cvarSettings[RSK_STARTING_ZELDAS_LULLABY] = rand() % 2;
-    cvarSettings[RSK_STARTING_EPONAS_SONG] = rand() % 2;
-    cvarSettings[RSK_STARTING_SARIAS_SONG] = rand() % 2;
-    cvarSettings[RSK_STARTING_SUNS_SONG] = rand() % 2;
-    cvarSettings[RSK_STARTING_SONG_OF_TIME] = rand() % 2;
-    cvarSettings[RSK_STARTING_SONG_OF_STORMS] = rand() % 2;
-    cvarSettings[RSK_STARTING_MINUET_OF_FOREST] = rand() % 2;
-    cvarSettings[RSK_STARTING_BOLERO_OF_FIRE] = rand() % 2;
-    cvarSettings[RSK_STARTING_SERENADE_OF_WATER] = rand() % 2;
-    cvarSettings[RSK_STARTING_REQUIEM_OF_SPIRIT] = rand() % 2;
-    cvarSettings[RSK_STARTING_NOCTURNE_OF_SHADOW] = rand() % 2;
-    cvarSettings[RSK_STARTING_PRELUDE_OF_LIGHT] = rand() % 2;
+    std::array<RandomizerSettingKey, 12> songs {
+        RSK_STARTING_ZELDAS_LULLABY,    RSK_STARTING_EPONAS_SONG,        RSK_STARTING_SARIAS_SONG,
+        RSK_STARTING_SUNS_SONG,         RSK_STARTING_SONG_OF_TIME,       RSK_STARTING_SONG_OF_STORMS,
+        RSK_STARTING_MINUET_OF_FOREST,  RSK_STARTING_BOLERO_OF_FIRE,     RSK_STARTING_SERENADE_OF_WATER,
+        RSK_STARTING_REQUIEM_OF_SPIRIT, RSK_STARTING_NOCTURNE_OF_SHADOW, RSK_STARTING_PRELUDE_OF_LIGHT,
+    };
+    int numberToRandomize, numberAdded = 0;
+    auto randomizationType = CVarGetInteger("gRandomizeSongsType", RO_SONG_COUNT_RANDOM);
+    if (randomizationType == RO_SONG_COUNT_SET_NUMBER) {
+        numberToRandomize = CVarGetInteger("gRandomizeSongsCount", 0);
+    } else {
+        numberToRandomize = rand() % 13;
+    }
+    std::shuffle(songs.begin(), songs.end(), std::default_random_engine());
+
+    for (auto key : songs) {
+        if (numberAdded < numberToRandomize) {
+            cvarSettings[key] = RO_GENERIC_ON;
+            numberAdded++;
+        } else {
+            cvarSettings[key] = RO_GENERIC_OFF;
+        }
+    }
+
 }
 
 void RandomizeDependentSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSettings,
@@ -3387,7 +3448,6 @@ void RandomizerSettingsWindow::DrawElement() {
     static const char* randoMqDungeons[4] = { "None", "Set Number", "Random Number", "Selection" };
 
     // World Settings
-    static const char* randoBalancingSettings[4] = { "Balanced", "Most Items", "All Items", "Anything" };
     static const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
     static const char* randoShuffleDungeonsEntrances[3] = { "Off", "On", "On + Ganon" };
     static const char* randoShuffleBossEntrances[3] = { "Off", "Age Restricted", "Full" };
@@ -3497,23 +3557,7 @@ void RandomizerSettingsWindow::DrawElement() {
             auto worldSettingsRandomized = CVarGetInteger("gRandomizeWorldSettings", RO_GENERIC_OFF) == RO_GENERIC_ON;
 
             if (worldSettingsRandomized) {
-                ImGui::Text("Bridge/LACS Item Count Balancing");
-                UIWidgets::InsertHelpHoverText(
-                    "Determines how the number of required dungeon rewards will be determined, "
-                    "if a bridge or LACS requirement is dependent on a certain number of items "
-                    "that need to be gathered.\n"
-                    "\n"
-                    "Balanced - The number of items required will be randomly determined, but unlikely "
-                    "to be too high or low.\n"
-                    "\n"
-                    "Most Items - The number of items required will be set at roughly 3/4 of the total number. "
-                    "If Gold Skulltulas are required, it will always be 30.\n"
-                    "\n"
-                    "All Items - All items will need to be gathered for whatever item type is required.\n"
-                    "\n"
-                    "Anything - The number of items required can be anything from 1 to the maximum.");
-                UIWidgets::EnhancementCombobox("gRandomDungeonSettingsBalancing", randoBalancingSettings, 0);
-
+                AddCountRandomizationSettings();
                 UIWidgets::EnhancementCheckbox("Allow Decoupled Entrances", "gAllowDecoupledEntrances");
                 UIWidgets::InsertHelpHoverText("Allow the Decoupled Entrances setting to be randomized.");
             }
@@ -4125,20 +4169,24 @@ void RandomizerSettingsWindow::DrawElement() {
         }
 
         if (ImGui::BeginTabItem("Items")) {
-
-            //TODOs:
-            // *Remove disabled parameters from Items and remaining tabs
-            // *Add remaining balancing options in UI
-            // *Implement balancing options in seed generator
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
 
             UIWidgets::EnhancementCheckbox("Randomize Item Settings", "gRandomizeItemSettings");
-            UIWidgets::InsertHelpHoverText("TODO Randomizes most of the item settings. Settings that\n"
-                                           "can cause seeds to be unnecessairly difficult or\n"
-                                           "unnecessairly easy are not randomized.");
+            UIWidgets::InsertHelpHoverText("Randomizes most of the item settings.");
             auto itemSettingsRandomized = CVarGetInteger("gRandomizeItemSettings", RO_GENERIC_OFF) == RO_GENERIC_ON;
 
-            if (ImGui::BeginTable("tableRandoStartingInventory", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+            if (itemSettingsRandomized) {
+                UIWidgets::EnhancementCheckbox("Allow 100 GS Reward", "gAllow100GSReward");
+                UIWidgets::InsertHelpHoverText(
+                    "Allows the 100 Gold Skulltula Token reward to potentially be shuffled. "
+                    "This may potentially allow Ganon's Boss Key to potentially be on the 100 "
+                    "Golden Skulltula reward as well."
+                );
+                AddCountRandomizationSettings();
+            }
+
+            if (ImGui::BeginTable("tableRandoStartingInventory", 3,
+                                  ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Shuffle Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::TableSetupColumn("Shuffle NPCs & Merchants", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::TableSetupColumn("Shuffle Dungeon Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -4169,7 +4217,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs,
                                                RO_SONG_SHUFFLE_SONG_LOCATIONS, itemSettingsRandomized,
-                                               disabledRandomMessage, RO_SONG_SHUFFLE_SONG_LOCATIONS);
+                                               disabledRandomMessage);
 
                 UIWidgets::PaddedSeparator();
 
@@ -4188,10 +4236,10 @@ void RandomizerSettingsWindow::DrawElement() {
                     "All Tokens - Shuffle all 100 GS tokens."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleTokens", randoTokensanity, RO_TOKENSANITY_OFF,
-                                               itemSettingsRandomized, disabledRandomMessage, RO_TOKENSANITY_OFF);
+                                               itemSettingsRandomized, disabledRandomMessage);
 
                 UIWidgets::PaddedEnhancementCheckbox("Nighttime GS expect Sun's Song", "gRandomizeGsExpectSunsSong",
-                                                     true, false, itemSettingsRandomized, disabledRandomMessage);
+                                                     true, false);
                 UIWidgets::InsertHelpHoverText(
                     "All Golden Skulltulas that require nighttime to appear will only be "
                     "expected to be collected after getting Sun's Song."
@@ -4305,7 +4353,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         );
                         UIWidgets::EnhancementCombobox("gRandomizeShopsanityPrices", randoShopsanityPrices,
                                                        RO_SHOPSANITY_PRICE_BALANCED, itemSettingsRandomized,
-                                                       disabledRandomMessage, RO_SHOPSANITY_PRICE_BALANCED);
+                                                       disabledRandomMessage);
                         UIWidgets::EnhancementCheckbox(
                             Settings::ShopsanityPricesAffordable.GetName().c_str(), 
                             "gRandomizeShopsanityPricesAffordable",
@@ -4331,7 +4379,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     "\n"
                     "Random - Scrubs will be shuffled and their item will cost will be between 0-95 rupees.\n");
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleScrubs", randoShuffleScrubs, RO_SCRUBS_OFF,
-                                               itemSettingsRandomized, disabledRandomMessage, RO_SCRUBS_OFF);
+                                               itemSettingsRandomized, disabledRandomMessage);
 
                 UIWidgets::PaddedSeparator();
 
@@ -4365,8 +4413,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     "Otherwise when off, you will need to have found the Claim Check to buy her item (simulating the trade quest is complete)."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleMerchants", randoShuffleMerchants,
-                                               RO_SHUFFLE_MERCHANTS_OFF, itemSettingsRandomized, disabledRandomMessage,
-                                               RO_SHUFFLE_MERCHANTS_OFF);
+                                               RO_SHUFFLE_MERCHANTS_OFF, itemSettingsRandomized, disabledRandomMessage);
 
                 UIWidgets::PaddedSeparator();
 
@@ -4406,8 +4453,13 @@ void RandomizerSettingsWindow::DrawElement() {
                 bool forceEnable100GSShuffle =
                     (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA) == RO_GANON_BOSS_KEY_KAK_TOKENS);
                 static const char* disable100GSRewardText = "This option is forcefully enabled because \"Ganon's Boss Key\" is set to \"100 GS Reward.\"";
-                UIWidgets::EnhancementCheckbox(Settings::Shuffle100GSReward.GetName().c_str(), "gRandomizeShuffle100GSReward",
-                    forceEnable100GSShuffle, disable100GSRewardText, UIWidgets::CheckboxGraphics::Checkmark);
+                UIWidgets::EnhancementCheckbox(
+                    Settings::Shuffle100GSReward.GetName().c_str(), 
+                    "gRandomizeShuffle100GSReward",
+                    forceEnable100GSShuffle || itemSettingsRandomized, 
+                    itemSettingsRandomized ? disabledRandomMessage : disable100GSRewardText, 
+                    UIWidgets::CheckboxGraphics::Checkmark
+                );
                 UIWidgets::InsertHelpHoverText(
                     "Shuffle the item the cursed rich man in the House of Skulltula gives when you "
                     "have collected all 100 Gold Skulltula Tokens.\n"
@@ -4442,7 +4494,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards,
                                                RO_DUNGEON_REWARDS_END_OF_DUNGEON, itemSettingsRandomized,
-                                               disabledRandomMessage, RO_DUNGEON_REWARDS_END_OF_DUNGEON);
+                                               disabledRandomMessage);
 
                 UIWidgets::PaddedSeparator();
 
@@ -4463,7 +4515,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeStartingMapsCompasses", randoShuffleMapsAndCompasses,
                                                RO_DUNGEON_ITEM_LOC_OWN_DUNGEON, itemSettingsRandomized,
-                                               disabledRandomMessage, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
+                                               disabledRandomMessage);
 
                 UIWidgets::PaddedSeparator();
 
@@ -4486,7 +4538,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeKeysanity", randoShuffleSmallKeys,
                                                RO_DUNGEON_ITEM_LOC_OWN_DUNGEON, itemSettingsRandomized,
-                                               disabledRandomMessage, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
+                                               disabledRandomMessage);
 
                 UIWidgets::PaddedSeparator();
 
@@ -4510,7 +4562,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     "Count will be 9. Otherwise, the maximum amount of Key Rings will be 8."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleKeyRings", randoShuffleKeyRings, RO_KEYRINGS_OFF,
-                                               itemSettingsRandomized, disabledRandomMessage, RO_KEYRINGS_OFF);
+                                               itemSettingsRandomized, disabledRandomMessage);
                 ImGui::PopItemWidth();
                 switch (CVarGetInteger("gRandomizeShuffleKeyRings", RO_KEYRINGS_OFF)) {
                     case RO_KEYRINGS_COUNT:
@@ -4554,8 +4606,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     "Anywhere - Thieve's Hideout Keys can appear anywhere in the world."
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeGerudoKeys", randoShuffleGerudoFortressKeys,
-                                               RO_GERUDO_KEYS_VANILLA, itemSettingsRandomized, disabledRandomMessage,
-                                               RO_GERUDO_KEYS_VANILLA);
+                                               RO_GERUDO_KEYS_VANILLA, itemSettingsRandomized, disabledRandomMessage);
 
                 UIWidgets::PaddedSeparator();
 
@@ -4576,7 +4627,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeBossKeysanity", randoShuffleBossKeys,
                                                RO_DUNGEON_ITEM_LOC_OWN_DUNGEON, itemSettingsRandomized,
-                                               disabledRandomMessage, RO_DUNGEON_ITEM_LOC_OWN_DUNGEON);
+                                               disabledRandomMessage);
 
                 UIWidgets::PaddedSeparator();
 
@@ -4608,8 +4659,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 bool disableGBK = CVarGetInteger("gRandomizeTriforceHunt", 0);
                 static const char* disableGBKText = "This option is disabled because Triforce Hunt is enabled. Ganon's Boss key\nwill instead be given to you after Triforce Hunt completion.";
                 UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey,
-                                               RO_GANON_BOSS_KEY_VANILLA, itemSettingsRandomized || disableGBK, itemSettingsRandomized ? disabledRandomMessage : disableGBKText,
-                                               RO_GANON_BOSS_KEY_VANILLA);
+                                               RO_GANON_BOSS_KEY_VANILLA, itemSettingsRandomized || disableGBK, itemSettingsRandomized ? disabledRandomMessage : disableGBKText);
                 ImGui::PopItemWidth();
                 switch (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA)) {
                     case RO_GANON_BOSS_KEY_LACS_STONES:
@@ -4750,9 +4800,7 @@ void RandomizerSettingsWindow::DrawElement() {
         if (ImGui::BeginTabItem("Gameplay")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
             UIWidgets::EnhancementCheckbox("Randomize Gameplay Settings", "gRandomizeGameplaySettings");
-            UIWidgets::InsertHelpHoverText("TODO Randomizes most of the gameplay settings. Settings that\n"
-                                           "can cause seeds to be unnecessairly difficult or\n"
-                                           "unnecessairly easy are not randomized.");
+            UIWidgets::InsertHelpHoverText("Randomizes most of the gameplay settings.");
             auto gameplaySettingsRandomized = CVarGetInteger("gRandomizeGameplaySettings", RO_GENERIC_OFF) == RO_GENERIC_ON;
 
             if (ImGui::BeginTable("tableRandoGameplay", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
@@ -4801,6 +4849,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     10,
                     "",
                     10,
+                    true,
                     gameplaySettingsRandomized,
                     disabledRandomMessage
                 );
@@ -5675,11 +5724,29 @@ void RandomizerSettingsWindow::DrawElement() {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
 
             UIWidgets::EnhancementCheckbox("Randomize Starting Inventory Settings", "gRandomizeInventorySettings");
-            UIWidgets::InsertHelpHoverText("TODO Randomizes most of the starting inventory settings. Settings that\n"
-                                           "can cause seeds to be unnecessairly difficult or\n"
-                                           "unnecessairly easy are not randomized.");
+            UIWidgets::InsertHelpHoverText("Randomizes most of the starting inventory settings.");
+
             auto inventorySettingsRandomized =
                 CVarGetInteger("gRandomizeInventorySettings", RO_GENERIC_OFF) == RO_GENERIC_ON;
+
+            if (inventorySettingsRandomized) {
+                static const char* songCountOptions[2] = { "Set Number", "Random" };
+                ImGui::Text("Number of Random Starting Songs");
+                UIWidgets::EnhancementCombobox("gRandomizeSongsType", songCountOptions, RO_SONG_COUNT_SET_NUMBER);
+
+                if (CVarGetInteger("gRandomizeSongsType", RO_SONG_COUNT_SET_NUMBER) == RO_SONG_COUNT_SET_NUMBER) {
+                    UIWidgets::EnhancementSliderInt(
+                        "Count: %d", 
+                        "##RandoSongsCount",
+                        "gRandomizeSongsCount",
+                        0, 
+                        12, 
+                        "",
+                        0
+                    );
+                }
+            }
+
             if (ImGui::BeginTable("tableRandoStartingInventory", 3,
                                   ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Starting Equipment", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -6817,6 +6884,27 @@ void InitRandoItemTable() {
         }
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, randoGetItemTable[i].itemId, randoGetItemTable[i]);
     }
+}
+
+void RandomizerSettingsWindow::AddCountRandomizationSettings() {
+    static const char* randoBalancingSettings[4] = { "Balanced", "Most Items", "All Items", "Anything" };
+
+    ImGui::Text("Bridge/LACS Item Count Balancing");
+    UIWidgets::InsertHelpHoverText(
+        "Determines how the number of required dungeon rewards will be determined, "
+        "if a bridge or LACS requirement is dependent on a certain number of items "
+        "that need to be gathered.\n"
+        "\n"
+        "Balanced - The number of items required will be randomly determined, but unlikely "
+        "to be too high or low.\n"
+        "\n"
+        "Most Items - The number of items required will be set at roughly 2/3 of the total number. "
+        "If Gold Skulltulas are required, it will always be 30.\n"
+        "\n"
+        "All Items - All items will need to be gathered for whatever item type is required.\n"
+        "\n"
+        "Anything - The number of items required can be anything from 1 to the maximum.");
+    UIWidgets::EnhancementCombobox("gRandomDungeonSettingsBalancing", randoBalancingSettings, 0);
 }
 
 
