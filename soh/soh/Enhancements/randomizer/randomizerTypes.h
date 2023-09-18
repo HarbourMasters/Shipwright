@@ -28,7 +28,7 @@ typedef enum {
     RCSHOW_SCUMMED,
     RCSHOW_COLLECTED,
     RCSHOW_SAVED,
-} RandomizerCheckShow;
+} RandomizerCheckStatus;
 
 typedef enum {
     HINT_TYPE_TRIAL,
@@ -1465,7 +1465,7 @@ typedef enum {
 } RandomizerSettingKey;
 
 typedef struct {
-    RandomizerCheckShow status;
+    RandomizerCheckStatus status;
     uint16_t skipped;
     int16_t price;
     uint16_t hintItem;

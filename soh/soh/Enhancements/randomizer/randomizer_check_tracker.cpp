@@ -1,4 +1,3 @@
-
 #ifdef __cplusplus
 #include "randomizer_check_tracker.h"
 #include "randomizer_entrance_tracker.h"
@@ -499,14 +498,16 @@ void CheckTrackerDialogClosed() {
 }
 
 void CheckTrackerShopSlotChange(uint8_t cursorSlot, int16_t basePrice) {
-    if (gPlayState->sceneNum != SCENE_HAPPY_MASK_SHOP) { // Happy Mask Shop is not used in rando, so is not tracked
-        auto slot = startingShopItem.find(gPlayState->sceneNum)->second + cursorSlot;
-        auto status = gSaveContext.checkTrackerData[slot].status;
-        if (status == RCSHOW_SEEN) {
-            gSaveContext.checkTrackerData[slot].status = RCSHOW_IDENTIFIED;
-            gSaveContext.checkTrackerData[slot].price = basePrice;
-            SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
-        }
+    if (gPlayState->sceneNum == SCENE_HAPPY_MASK_SHOP) { // Happy Mask Shop is not used in rando, so is not tracked
+        return;
+    }
+
+    auto slot = startingShopItem.find(gPlayState->sceneNum)->second + cursorSlot;
+    auto status = gSaveContext.checkTrackerData[slot].status;
+    if (status == RCSHOW_SEEN) {
+        gSaveContext.checkTrackerData[slot].status = RCSHOW_IDENTIFIED;
+        gSaveContext.checkTrackerData[slot].price = basePrice;
+        SaveManager::Instance->SaveSection(gSaveContext.fileNum, sectionId, true);
     }
 }
 
@@ -843,7 +844,6 @@ void CheckTrackerWindow::DrawElement() {
         sceneId = (SceneID)gPlayState->sceneNum;
     }
 
-    //previousArea = currentArea;
     areasSpoiled |= (1 << currentArea);
 
     //Quick Options
@@ -1267,7 +1267,7 @@ void DrawLocation(RandomizerCheckObject rcObj) {
     std::string txt;
     bool showHidden = CVarGetInteger("gCheckTrackerOptionShowHidden", 0);
     RandomizerCheckTrackerData checkData = gSaveContext.checkTrackerData[rcObj.rc];
-    RandomizerCheckShow status = checkData.status;
+    RandomizerCheckStatus status = checkData.status;
     bool skipped = checkData.skipped;
     if (status == RCSHOW_COLLECTED) {
         if (!showHidden && CVarGetInteger("gCheckTrackerCollectedHide", 0))

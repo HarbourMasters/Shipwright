@@ -7,7 +7,6 @@
 #include <libultraship/libultra.h>
 #include "z64item.h"
 #include <memory>
-#include <nlohmann/json.hpp>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
 #include "soh/Enhancements/randomizer/randomizer_tricks.h"
