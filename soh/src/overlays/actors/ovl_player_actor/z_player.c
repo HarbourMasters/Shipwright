@@ -5049,6 +5049,7 @@ s32 func_8083B040(Player* this, PlayState* play) {
     s32 sp28;
     GetItemEntry giEntry;
     Actor* targetActor;
+    int bottlePoeValue = PLAYER_IA_BOTTLE_POE;
 
     if ((this->unk_6AD != 0) &&
         (func_808332B8(this) || (this->actor.bgCheckFlags & 1) || (this->stateFlags1 & PLAYER_STATE1_ON_HORSE))) {
@@ -5071,12 +5072,15 @@ s32 func_8083B040(Player* this, PlayState* play) {
                 }
 
                 sp2C = this->itemAction - PLAYER_IA_ZELDAS_LETTER;
+                if (CVarGetInteger("gDrinkBigPoe", 0) && (this->itemAction == PLAYER_IA_BOTTLE_BIG_POE)) {
+                        bottlePoeValue++;
+                    }
                 if ((sp2C >= 0) ||
                     (sp28 = Player_ActionToBottle(this, this->itemAction) - 1,
                      ((sp28 >= 0) && (sp28 < 6) &&
-                      ((this->itemAction > PLAYER_IA_BOTTLE_POE) ||
+                      ((this->itemAction > bottlePoeValue) ||
                        ((this->targetActor != NULL) &&
-                        (((this->itemAction == PLAYER_IA_BOTTLE_POE) && (this->exchangeItemId == EXCH_ITEM_POE)) ||
+                        (((this->itemAction == bottlePoeValue) && (this->exchangeItemId == EXCH_ITEM_POE)) ||
                          (this->exchangeItemId == EXCH_ITEM_BLUE_FIRE))))))) {
 
                     if ((play->actorCtx.titleCtx.delayTimer == 0) && (play->actorCtx.titleCtx.alpha == 0)) {
@@ -13032,7 +13036,7 @@ static u8 D_808549FC[] = {
 void func_8084EAC0(Player* this, PlayState* play) {
     if (LinkAnimation_Update(play, &this->skelAnime)) {
         if (this->unk_850 == 0) {
-            if (this->itemAction == PLAYER_IA_BOTTLE_POE) {
+            if ((this->itemAction == PLAYER_IA_BOTTLE_POE) || (CVarGetInteger("gDrinkBigPoe", 0) && (this->itemAction == PLAYER_IA_BOTTLE_BIG_POE)))  {
                 s32 rand = Rand_S16Offset(-1, 3);
 
                 if (rand == 0) {

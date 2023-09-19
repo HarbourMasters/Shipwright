@@ -595,6 +595,8 @@ void DrawEnhancementsMenu() {
                 UIWidgets::Tooltip("Prevent bombchus from forcing the camera into first-person mode when released.");
                 UIWidgets::PaddedEnhancementCheckbox("Aiming reticle for the bow/slingshot", "gBowReticle", true, false);
                 UIWidgets::Tooltip("Aiming with a bow or slingshot will display a reticle as with the hookshot when the projectile is ready to fire.");
+                UIWidgets::PaddedEnhancementCheckbox("Drinkable Big Poe", "gDrinkBigPoe", true, false);
+                UIWidgets::Tooltip("Allows you to drink the Big Poe to empty the bottle, instead of having to trade it in. Drinking it will have the same effect as drinking normal Poe.");
                 ImGui::EndMenu();
             }
 
