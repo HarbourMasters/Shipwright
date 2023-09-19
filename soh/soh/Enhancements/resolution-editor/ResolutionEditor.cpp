@@ -114,7 +114,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
 
         UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
         // Activator
-        UIWidgets::PaddedEnhancementCheckbox("Enable \"Advanced Resolution Settings\" settings.",
+        UIWidgets::PaddedEnhancementCheckbox("Enable advanced settings.",
                                              "gAdvancedResolution.Enabled", false, false, false, "",
                                              UIWidgets::CheckboxGraphics::Cross, false);
         // Error/Warning display
