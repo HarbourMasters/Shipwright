@@ -75,7 +75,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             integerScale_maximumBounds = gfx_current_game_window_viewport.width / gfx_current_dimensions.width;
         }
         // Lower-clamping maximum bounds value to 1 is no-longer necessary as that's accounted for in LUS.
-        // Letting it go below 1 here will even allow for checking if screen bounds are being exceeded.
+        // Letting it go below 1 in this Editor will even allow for checking if screen bounds are being exceeded.
         if (default_maxIntegerScaleFactor < integerScale_maximumBounds) {
             max_integerScaleFactor =
                 integerScale_maximumBounds + CVarGetInteger("gAdvancedResolution.IntegerScale.ExceedBoundsBy", 0);
@@ -114,9 +114,8 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
 
         UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
         // Activator
-        UIWidgets::PaddedEnhancementCheckbox("Enable advanced settings.",
-                                             "gAdvancedResolution.Enabled", false, false, false, "",
-                                             UIWidgets::CheckboxGraphics::Cross, false);
+        UIWidgets::PaddedEnhancementCheckbox("Enable advanced settings.", "gAdvancedResolution.Enabled", false, false,
+                                             false, "", UIWidgets::CheckboxGraphics::Cross, false);
         // Error/Warning display
         if (!CVarGetInteger("gLowResMode", 0)) {
             if (IsDroppingFrames()) { // Significant frame drop warning
@@ -235,7 +234,8 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         }
 
         UIWidgets::Spacer(0);
-        //UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
+        // UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
+
         // Integer scaling settings group
         if (ImGui::CollapsingHeader("Integer Scaling Settings")) {
             // Pixel-perfect Mode
