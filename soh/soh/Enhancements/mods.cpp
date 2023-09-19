@@ -16,6 +16,8 @@ extern "C" {
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
 
+void PauseWarp_Main();
+
 uint32_t ResourceMgr_IsSceneMasterQuest(s16 sceneNum);
 }
 bool performDelayedSave = false;
@@ -599,6 +601,12 @@ void RegisterMirrorModeHandler() {
     });
 }
 
+void RegisterPauseWarp() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPauseMenu>([]() {
+        PauseWarp_Main();  
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -621,4 +629,5 @@ void InitMods() {
     RegisterBonkDamage();
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
+    RegisterPauseWarp();
 }

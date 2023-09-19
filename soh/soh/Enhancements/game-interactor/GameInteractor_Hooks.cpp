@@ -137,3 +137,8 @@ void GameInteractor_ExecuteOnUpdateFileNameSelection(int16_t charCode) {
 void GameInteractor_ExecuteOnSetGameLanguage() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSetGameLanguage>();
 }
+
+// MARK: - Pause Menu
+void GameInteractor_ExecuteOnPauseMenu() {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnPauseMenu>();
+}

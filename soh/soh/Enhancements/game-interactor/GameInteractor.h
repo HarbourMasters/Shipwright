@@ -179,6 +179,8 @@ public:
     
     DEFINE_HOOK(OnSetGameLanguage, void());
 
+    DEFINE_HOOK(OnPauseMenu, void());
+
     // Helpers
     static bool IsSaveLoaded();
     static bool IsGameplayPaused();
