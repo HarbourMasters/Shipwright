@@ -323,9 +323,11 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY },
     { "Misc Settings:ToT Altar Hint", RSK_TOT_ALTAR_HINT },
-    { "Misc Settings:Ganondorf LA Hint", RSK_GANONDORF_LIGHT_ARROWS_HINT },
+    { "Misc Settings:Light Arrow Hint", RSK_LIGHT_ARROWS_HINT },
     { "Misc Settings:Dampe's Diary Hint", RSK_DAMPES_DIARY_HINT },
     { "Misc Settings:Greg the Rupee Hint", RSK_GREG_HINT },
+    { "Misc Settings:Saria's Hint", RSK_SARIA_HINT },
+    { "Misc Settings:Frog Ocarina Game Hint", RSK_FROGS_HINT },
     { "Misc Settings:10 GS Hint", RSK_KAK_10_SKULLS_HINT },
     { "Misc Settings:20 GS Hint", RSK_KAK_20_SKULLS_HINT },
     { "Misc Settings:30 GS Hint", RSK_KAK_30_SKULLS_HINT },
@@ -364,8 +366,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
 std::string sanitize(std::string stringValue) {
     // Add backslashes.
     for (auto i = stringValue.begin();;) {
-        auto const pos =
-            std::find_if(i, stringValue.end(), [](char const c) { return '\\' == c || '\'' == c || '"' == c; });
+        auto const pos = std::find_if(i, stringValue.end(), [](char const c) { return '\\' == c || '\'' == c || '"' == c; });
         if (pos == stringValue.end()) {
             break;
         }
@@ -373,9 +374,8 @@ std::string sanitize(std::string stringValue) {
     }
 
     // Removes others.
-    stringValue.erase(std::remove_if(stringValue.begin(), stringValue.end(),
-                                     [](char const c) { return '\n' == c || '\r' == c || '\0' == c || '\x1A' == c; }),
-                      stringValue.end());
+    stringValue.erase(std::remove_if(stringValue.begin(), stringValue.end(), [](char const c) {
+        return '\n' == c || '\r' == c || '\0' == c || '\x1A' == c; }), stringValue.end());
 
     return stringValue;
 }
@@ -427,25 +427,35 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
     CustomMessageManager::Instance->ClearMessageTable(Randomizer::hintMessageTableID);
     CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::hintMessageTableID);
 
-    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD,
-                                                  CustomMessage(gSaveContext.childAltarText,
-                                                                gSaveContext.childAltarText,
-                                                                gSaveContext.childAltarText, TEXTBOX_TYPE_BLUE));
-    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT,
-                                                  CustomMessage(gSaveContext.adultAltarText,
-                                                                gSaveContext.adultAltarText,
-                                                                gSaveContext.adultAltarText, TEXTBOX_TYPE_BLUE));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD,
+        CustomMessage(gSaveContext.childAltarText, gSaveContext.childAltarText, gSaveContext.childAltarText, TEXTBOX_TYPE_BLUE));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT,
+        CustomMessage(gSaveContext.adultAltarText, gSaveContext.adultAltarText, gSaveContext.adultAltarText, TEXTBOX_TYPE_BLUE));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_GANONDORF,
         CustomMessage(gSaveContext.ganonHintText, gSaveContext.ganonHintText, gSaveContext.ganonHintText));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_GANONDORF_NOHINT,
         CustomMessage(gSaveContext.ganonText, gSaveContext.ganonText, gSaveContext.ganonText));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, TEXT_SHEIK_NEED_HOOK,
+        CustomMessage("{{message}}", "{{message}}", "{{message}}"));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, TEXT_SHEIK_HAVE_HOOK,
+        CustomMessage("{{message}}", "{{message}}", "{{message}}"));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, TEXT_SARIAS_SONG_FACE_TO_FACE,
+        CustomMessage(gSaveContext.sariaText, gSaveContext.sariaText, gSaveContext.sariaText, TEXTBOX_TYPE_BLUE));
+
 
     this->childAltarText = gSaveContext.childAltarText;
     this->adultAltarText = gSaveContext.adultAltarText;
     this->ganonHintText = gSaveContext.ganonHintText;
     this->ganonText = gSaveContext.ganonText;
+    this->sheikText = gSaveContext.sheikText;
+    this->sariaText = gSaveContext.sariaText;
 
     for (const auto& hintLocation : gSaveContext.hintLocations) {
         if(hintLocation.check == RC_LINKS_POCKET) break;
@@ -466,16 +476,23 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         );
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY,
-            CustomMessage(gSaveContext.dampeText,
-                gSaveContext.dampeText,
-                gSaveContext.dampeText)
+            CustomMessage(gSaveContext.dampeText, gSaveContext.dampeText, gSaveContext.dampeText)
         );
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_CHEST_GAME_PROCEED,
-            CustomMessage(gSaveContext.gregHintText,
-                gSaveContext.gregHintText,
-                gSaveContext.gregHintText)
+            CustomMessage(gSaveContext.gregHintText, gSaveContext.gregHintText, gSaveContext.gregHintText)
         );
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_FROGS_UNDERWATER,
+            CustomMessage("Some frogs holding&%g{{item}}%w&are looking at you from underwater...",
+            "Unter Wasser gibt es Frösche,&die %g{{item}}%w&bei sich haben und Dich neugierig&beobachten...",
+            "Des grenouilles se trouvant&sous l'eau vous fixent attentivement,&tenant fermement&%r{{item}}%w.", TEXTBOX_TYPE_BLUE)
+        );
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_SARIAS_SONG_FOREST_SOUNDS,
+            CustomMessage("{{message}}", "{{message}}", "{{message}}", TEXTBOX_TYPE_BLUE)
+        );
+
 
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT,
         CustomMessage("Warp to&{{location}}?\x1B&%gOK&No%w\x02",
@@ -856,9 +873,11 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SUNLIGHT_ARROWS:
                     case RSK_BOMBCHUS_IN_LOGIC:
                     case RSK_TOT_ALTAR_HINT:
-                    case RSK_GANONDORF_LIGHT_ARROWS_HINT:
+                    case RSK_LIGHT_ARROWS_HINT:
                     case RSK_DAMPES_DIARY_HINT:
                     case RSK_GREG_HINT:
+                    case RSK_SARIA_HINT:
+                    case RSK_FROGS_HINT:
                     case RSK_KAK_10_SKULLS_HINT:
                     case RSK_KAK_20_SKULLS_HINT:
                     case RSK_KAK_30_SKULLS_HINT:
@@ -942,6 +961,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         } else if(it.value() == "Minimal") {
                             gSaveContext.randoSettings[index].value = RO_ITEM_POOL_MINIMAL;
                         }
+                        break;
                     case RSK_ICE_TRAPS:
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = RO_ICE_TRAPS_OFF;
@@ -954,6 +974,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         } else if(it.value() == "Onslaught") {
                             gSaveContext.randoSettings[index].value = RO_ICE_TRAPS_ONSLAUGHT;
                         }
+                        break;
                     case RSK_GOSSIP_STONE_HINTS:
                         if(it.value() == "No Hints") {
                             gSaveContext.randoSettings[index].value = RO_GOSSIP_STONES_NONE;
@@ -1265,9 +1286,6 @@ std::string FormatJsonHintText(std::string jsonHint) {
             formattedHintMessage.replace(start_pos, textToReplace.length(), iconString);
         }
     }
-
-    formattedHintMessage += 0x02;
-
     return formattedHintMessage;
 }
 
@@ -1307,7 +1325,7 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         std::string formattedGanonHintJsonText = FormatJsonHintText(ganonHintJsonText);
         strncpy(gSaveContext.ganonHintText, formattedGanonHintJsonText.c_str(), sizeof(gSaveContext.ganonHintText) - 1);
         gSaveContext.ganonHintText[sizeof(gSaveContext.ganonHintText) - 1] = 0;
-        gSaveContext.ganonHintCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["ganonHintLoc"]];
+        gSaveContext.lightArrowHintCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["lightArrowHintLoc"]];
 
         std::string ganonJsonText = spoilerFileJson["ganonText"].get<std::string>();
         std::string formattedGanonJsonText = FormatJsonHintText(ganonJsonText);
@@ -1325,6 +1343,18 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         strncpy(gSaveContext.gregHintText, formattedGregJsonText.c_str(), sizeof(gSaveContext.gregHintText) - 1);
         gSaveContext.gregHintText[sizeof(gSaveContext.gregHintText) - 1] = 0;
         gSaveContext.gregCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["gregLoc"]];
+
+        std::string sheikJsonText = spoilerFileJson["sheikText"].get<std::string>();
+        std::string formattedSheikJsonText = FormatJsonHintText(sheikJsonText);
+        strncpy(gSaveContext.sheikText, formattedSheikJsonText.c_str(), sizeof(gSaveContext.sheikText) - 1);
+        gSaveContext.sheikText[sizeof(gSaveContext.sheikText) - 1] = 0;
+        gSaveContext.lightArrowHintCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["lightArrowHintLoc"]];
+
+        std::string sariaJsonText = spoilerFileJson["sariaText"].get<std::string>();
+        std::string formattedSariaJsonText = FormatJsonHintText(sariaJsonText);
+        strncpy(gSaveContext.sariaText, formattedSariaJsonText.c_str(), sizeof(gSaveContext.sariaText) - 1);
+        gSaveContext.sariaText[sizeof(gSaveContext.sariaText) - 1] = 0;
+        gSaveContext.sariaCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["sariaHintLoc"]];
 
         std::string warpMinuetJsonText = spoilerFileJson["warpMinuetText"].get<std::string>();
         strncpy(gSaveContext.warpMinuetText, warpMinuetJsonText.c_str(), sizeof(gSaveContext.warpMinuetText) - 1);
@@ -2537,7 +2567,9 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_DMT_TRADE_BROKEN_SWORD,                                      RAND_INF_ADULT_TRADES_DMT_TRADE_BROKEN_SWORD },
     { RC_LH_TRADE_FROG,                                               RAND_INF_ADULT_TRADES_LH_TRADE_FROG },
     { RC_DMT_TRADE_EYEDROPS,                                          RAND_INF_ADULT_TRADES_DMT_TRADE_EYEDROPS },
-
+    { RC_LH_CHILD_FISHING,                                            RAND_INF_CHILD_FISHING },
+    { RC_LH_ADULT_FISHING,                                            RAND_INF_ADULT_FISHING },
+    { RC_MARKET_10_BIG_POES,                                          RAND_INF_10_BIG_POES },
 };
 
 RandomizerCheckObject Randomizer::GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams = 0x00) {
@@ -2875,9 +2907,11 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_ITEM_POOL] = CVarGetInteger("gRandomizeItemPool", RO_ITEM_POOL_BALANCED);
     cvarSettings[RSK_ICE_TRAPS] = CVarGetInteger("gRandomizeIceTraps", RO_ICE_TRAPS_NORMAL);
     cvarSettings[RSK_TOT_ALTAR_HINT] = CVarGetInteger("gRandomizeAltarHint", RO_GENERIC_ON);
-    cvarSettings[RSK_GANONDORF_LIGHT_ARROWS_HINT] = CVarGetInteger("gRandomizeLAHint", RO_GENERIC_ON);
+    cvarSettings[RSK_LIGHT_ARROWS_HINT] = CVarGetInteger("gRandomizeLAHint", RO_GENERIC_ON);
     cvarSettings[RSK_DAMPES_DIARY_HINT] = CVarGetInteger("gRandomizeDampeHint", RO_GENERIC_OFF);
     cvarSettings[RSK_GREG_HINT] = CVarGetInteger("gRandomizeGregHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_SARIA_HINT] = CVarGetInteger("gRandomizeSariaHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_FROGS_HINT] = CVarGetInteger("gRandomizeFrogsHint", RO_GENERIC_OFF);
     cvarSettings[RSK_WARP_SONG_HINTS] = CVarGetInteger("gRandomizeWarpSongText", RO_GENERIC_OFF);
     cvarSettings[RSK_SCRUB_TEXT_HINT] = CVarGetInteger("gRandomizeScrubText", RO_GENERIC_OFF);
     cvarSettings[RSK_KAK_10_SKULLS_HINT] = CVarGetInteger("gRandomize10GSHint", RO_GENERIC_OFF);
@@ -2894,16 +2928,13 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_GERUDO_KEYS] = CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA);
     cvarSettings[RSK_KEYRINGS] = CVarGetInteger("gRandomizeShuffleKeyRings", RO_KEYRINGS_OFF);
     int maxKeyringCount = (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
-                       CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA)
-                          ? 9
-                          : 8;
+                       CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA) ? 9 : 8;
     cvarSettings[RSK_KEYRINGS_RANDOM_COUNT] = std::min(CVarGetInteger("gRandomizeShuffleKeyRingsRandomCount", maxKeyringCount), maxKeyringCount);
     // Don't allow this to be on if Gerudo Fortress Carpenters is anything other than Normal
     cvarSettings[RSK_KEYRINGS_GERUDO_FORTRESS] =
         (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
          CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA)
-            ? CVarGetInteger("gRandomizeShuffleKeyRingsGerudoFortress", RO_GENERIC_OFF)
-            : RO_GENERIC_OFF;
+            ? CVarGetInteger("gRandomizeShuffleKeyRingsGerudoFortress", RO_GENERIC_OFF) : RO_GENERIC_OFF;
     cvarSettings[RSK_KEYRINGS_FOREST_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsForestTemple", 0);
     cvarSettings[RSK_KEYRINGS_FIRE_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsFireTemple", 0);
     cvarSettings[RSK_KEYRINGS_WATER_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsWaterTemple", 0);
@@ -2932,8 +2963,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_BIG_POE_COUNT] = CVarGetInteger("gRandomizeBigPoeTargetCount", 10);
 
     // If we skip child zelda, skip child stealth is pointless, so this needs to be reflected in the spoiler log
-    cvarSettings[RSK_SKIP_CHILD_STEALTH] =
-        !CVarGetInteger("gRandomizeSkipChildZelda", 0) && CVarGetInteger("gRandomizeSkipChildStealth", 0);
+    cvarSettings[RSK_SKIP_CHILD_STEALTH] = !CVarGetInteger("gRandomizeSkipChildZelda", 0) && CVarGetInteger("gRandomizeSkipChildStealth", 0);
 
     cvarSettings[RSK_SKIP_EPONA_RACE] = CVarGetInteger("gRandomizeSkipEponaRace", 0);
     cvarSettings[RSK_SKIP_TOWER_ESCAPE] = CVarGetInteger("gRandomizeSkipTowerEscape", 0);
@@ -2944,8 +2974,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_SKULLS_SUNS_SONG] = CVarGetInteger("gRandomizeGsExpectSunsSong", 0);
     // Link's Pocket has to have a dungeon reward if the other rewards are shuffled to end of dungeon.
     cvarSettings[RSK_LINKS_POCKET] = CVarGetInteger("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON) != RO_DUNGEON_REWARDS_END_OF_DUNGEON ? 
-                                        CVarGetInteger("gRandomizeLinksPocket", RO_LINKS_POCKET_DUNGEON_REWARD) :
-                                        RO_LINKS_POCKET_DUNGEON_REWARD;
+                                        CVarGetInteger("gRandomizeLinksPocket", RO_LINKS_POCKET_DUNGEON_REWARD) : RO_LINKS_POCKET_DUNGEON_REWARD;
 
     if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
         // If both OTRs are loaded.
@@ -3686,8 +3715,7 @@ void RandomizerSettingsWindow::DrawElement() {
 
         if (ImGui::BeginTabItem("Items")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (ImGui::BeginTable("tableRandoStartingInventory", 3,
-                                  ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+            if (ImGui::BeginTable("tableRandoStartingInventory", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Shuffle Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::TableSetupColumn("Shuffle NPCs & Merchants", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::TableSetupColumn("Shuffle Dungeon Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -3793,8 +3821,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Gerudo Membership Card
-                UIWidgets::EnhancementCheckbox(Settings::ShuffleGerudoToken.GetName().c_str(),
-                                                "gRandomizeShuffleGerudoToken");
+                UIWidgets::EnhancementCheckbox(Settings::ShuffleGerudoToken.GetName().c_str(), "gRandomizeShuffleGerudoToken");
                 UIWidgets::InsertHelpHoverText(
                     "Shuffles the Gerudo Membership Card into the item pool.\n"
                     "\n"
@@ -3909,8 +3936,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Adult Trade Quest
-                UIWidgets::EnhancementCheckbox(Settings::ShuffleAdultTradeQuest.GetName().c_str(),
-                                                "gRandomizeShuffleAdultTrade");
+                UIWidgets::EnhancementCheckbox(Settings::ShuffleAdultTradeQuest.GetName().c_str(), "gRandomizeShuffleAdultTrade");
                 UIWidgets::InsertHelpHoverText(
                     "Adds all of the adult trade quest items into the pool, each of which "
                     "can be traded for a unique reward.\n"
@@ -4032,9 +4058,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     case RO_KEYRINGS_COUNT:
                         maxKeyringCount =
                             (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
-                             CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA)
-                                ? 9
-                                : 8;
+                             CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA) ? 9 : 8;
                         UIWidgets::PaddedEnhancementSliderInt("Key Ring Count: %d",
                                                               "##RandomizeShuffleKeyRingsRandomCount",
                                                               "gRandomizeShuffleKeyRingsRandomCount", 1,
@@ -4043,8 +4067,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     case RO_KEYRINGS_SELECTION:
                         disableGFKeyring =
                             CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) != RO_GF_NORMAL || CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) == RO_GERUDO_KEYS_VANILLA;
-                        UIWidgets::EnhancementCheckbox(
-                            "Gerudo Fortress##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGerudoFortress",
+                        UIWidgets::EnhancementCheckbox( "Gerudo Fortress##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGerudoFortress",
                             disableGFKeyring, "Disabled because the currently selected Gerudo Fortress Carpenters\n setting and/or Gerudo Fortress Keys setting is incompatible with \nhaving a Gerudo Fortress keyring.");
                         UIWidgets::EnhancementCheckbox("Forest Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsForestTemple");
                         UIWidgets::EnhancementCheckbox("Fire Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsFireTemple");
@@ -4445,12 +4468,17 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedEnhancementCheckbox("Altar Text", "gRandomizeAltarHint", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::InsertHelpHoverText("Reading the Temple of Time altar as child will tell you the locations of the Spiritual Stones.\n"
                     "Reading the Temple of Time altar as adult will tell you the locations of the Medallions, as well as the conditions for building the Rainbow Bridge and getting the Boss Key for Ganon's Castle.");
-                UIWidgets::PaddedEnhancementCheckbox("Ganondorf (Light Arrows)", "gRandomizeLAHint", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
-                UIWidgets::InsertHelpHoverText("Talking to Ganondorf in his boss room will tell you the location of the Light Arrows. If this option is enabled and Ganondorf is reachable without Light Arrows, Gossip Stones will never hint the Light Arrows.");
+                UIWidgets::PaddedEnhancementCheckbox("Light Arrows", "gRandomizeLAHint", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+                UIWidgets::InsertHelpHoverText("Talking to Ganondorf in his boss room or Sheik inside Ganon's Castle (when trials are enabled) will tell you the location of the Light Arrows."
+                "If this option is enabled and Ganondorf is reachable without Light Arrows, Gossip Stones will never hint the Light Arrows.");
                 UIWidgets::PaddedEnhancementCheckbox("Dampe's Diary (Hookshot)", "gRandomizeDampeHint", true, false);
                 UIWidgets::InsertHelpHoverText("Reading the diary of Dampé the gravekeeper as adult will tell you the location of one of the Hookshots.");
                 UIWidgets::PaddedEnhancementCheckbox("Greg the Green Rupee", "gRandomizeGregHint", true, false);
                 UIWidgets::InsertHelpHoverText("Talking to the chest game owner after buying a key will tell you the location of Greg the Green Rupee.");
+                UIWidgets::PaddedEnhancementCheckbox("Saria (Magic)", "gRandomizeSariaHint", true, false);
+                UIWidgets::InsertHelpHoverText("Talking to Saria either in person or through Saria's Song will tell you the location of a progressive magic meter.");
+                UIWidgets::PaddedEnhancementCheckbox("Frog Ocarina Game", "gRandomizeFrogsHint", true, false);
+                UIWidgets::InsertHelpHoverText("Standing near the pedestal for the frogs in Zora's River will tell you the reward for the frogs' ocarina game.");
                 UIWidgets::PaddedEnhancementCheckbox("Warp Song text", "gRandomizeWarpSongText", true, false, !CVarGetInteger("gRandomizeShuffleWarpSongs", RO_GENERIC_OFF),
                  "This option is disabled since warp songs are not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::InsertHelpHoverText("Playing a warp song will tell you where it leads. (If warp song destinations are vanilla, this is always enabled.)");
@@ -4695,8 +4723,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Enable Glitch-Useful Cutscenes
-                UIWidgets::EnhancementCheckbox(Settings::EnableGlitchCutscenes.GetName().c_str(),
-                                              "gRandomizeEnableGlitchCutscenes");
+                UIWidgets::EnhancementCheckbox(Settings::EnableGlitchCutscenes.GetName().c_str(), "gRandomizeEnableGlitchCutscenes");
                 UIWidgets::InsertHelpHoverText(
                     "The cutscenes of the Poes in Forest Temple and Darunia in Fire Temple will not be skipped. "
                     "These cutscenes are only useful for glitched gameplay and can be safely skipped otherwise.");
@@ -5085,8 +5112,7 @@ void RandomizerSettingsWindow::DrawElement() {
 
         if (ImGui::BeginTabItem("Starting Inventory")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (ImGui::BeginTable("tableRandoStartingInventory", 3,
-                                  ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+            if (ImGui::BeginTable("tableRandoStartingInventory", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Starting Equipment", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::TableSetupColumn("Starting Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::TableSetupColumn("Starting Songs", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -5107,11 +5133,9 @@ void RandomizerSettingsWindow::DrawElement() {
                     UIWidgets::PaddedSeparator();
                 }
 
-                UIWidgets::EnhancementCheckbox(Settings::StartingKokiriSword.GetName().c_str(),
-                                              "gRandomizeStartingKokiriSword");
+                UIWidgets::EnhancementCheckbox(Settings::StartingKokiriSword.GetName().c_str(), "gRandomizeStartingKokiriSword");
                 UIWidgets::PaddedSeparator();
-                UIWidgets::EnhancementCheckbox(Settings::StartingDekuShield.GetName().c_str(),
-                                              "gRandomizeStartingDekuShield");
+                UIWidgets::EnhancementCheckbox(Settings::StartingDekuShield.GetName().c_str(), "gRandomizeStartingDekuShield");
 
                 UIWidgets::PaddedSeparator();
 
@@ -5124,8 +5148,7 @@ void RandomizerSettingsWindow::DrawElement() {
 
                 UIWidgets::EnhancementCheckbox(Settings::StartingOcarina.GetName().c_str(), "gRandomizeStartingOcarina");
                 UIWidgets::PaddedSeparator();
-                UIWidgets::EnhancementCheckbox(Settings::StartingConsumables.GetName().c_str(),
-                                              "gRandomizeStartingConsumables");
+                UIWidgets::EnhancementCheckbox(Settings::StartingConsumables.GetName().c_str(), "gRandomizeStartingConsumables");
                 UIWidgets::PaddedSeparator();
                 UIWidgets::EnhancementSliderInt("Gold Skulltula Tokens: %d", "##RandoStartingSkulltulaToken", "gRandomizeStartingSkulltulaToken", 0, 100, "", 0);
                 UIWidgets::PaddedSeparator();
@@ -5136,46 +5159,21 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildStartingSongs", ImVec2(0, -8));
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingZeldasLullaby.GetName().c_str(),
-                                               "gRandomizeStartingZeldasLullaby");
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingEponasSong.GetName().c_str(),
-                                               "gRandomizeStartingEponasSong");
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingSariasSong.GetName().c_str(),
-                                               "gRandomizeStartingSariasSong");
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingSunsSong.GetName().c_str(),
-                                               "gRandomizeStartingSunsSong");
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingSongOfTime.GetName().c_str(),
-                                               "gRandomizeStartingSongOfTime");
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingSongOfStorms.GetName().c_str(),
-                                               "gRandomizeStartingSongOfStorms");
+                UIWidgets::EnhancementCheckbox(Settings::StartingZeldasLullaby.GetName().c_str(), "gRandomizeStartingZeldasLullaby");
+                UIWidgets::EnhancementCheckbox(Settings::StartingEponasSong.GetName().c_str(), "gRandomizeStartingEponasSong");
+                UIWidgets::EnhancementCheckbox(Settings::StartingSariasSong.GetName().c_str(), "gRandomizeStartingSariasSong");
+                UIWidgets::EnhancementCheckbox(Settings::StartingSunsSong.GetName().c_str(), "gRandomizeStartingSunsSong");
+                UIWidgets::EnhancementCheckbox(Settings::StartingSongOfTime.GetName().c_str(), "gRandomizeStartingSongOfTime");
+                UIWidgets::EnhancementCheckbox(Settings::StartingSongOfStorms.GetName().c_str(), "gRandomizeStartingSongOfStorms");
                 UIWidgets::PaddedSeparator();
                 ImGui::Text("Warp Songs");
                 UIWidgets::PaddedSeparator();
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingMinuetOfForest.GetName().c_str(),
-                                               "gRandomizeStartingMinuetOfForest");
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingBoleroOfFire.GetName().c_str(),
-                                               "gRandomizeStartingBoleroOfFire");
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingSerenadeOfWater.GetName().c_str(),
-                                               "gRandomizeStartingSerenadeOfWater");
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingRequiemOfSpirit.GetName().c_str(),
-                                               "gRandomizeStartingRequiemOfSpirit");
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingNocturneOfShadow.GetName().c_str(),
-                                               "gRandomizeStartingNocturneOfShadow");
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingPreludeOfLight.GetName().c_str(),
-                                               "gRandomizeStartingPreludeOfLight");
-
+                UIWidgets::EnhancementCheckbox(Settings::StartingMinuetOfForest.GetName().c_str(),  "gRandomizeStartingMinuetOfForest");
+                UIWidgets::EnhancementCheckbox(Settings::StartingBoleroOfFire.GetName().c_str(), "gRandomizeStartingBoleroOfFire");
+                UIWidgets::EnhancementCheckbox(Settings::StartingSerenadeOfWater.GetName().c_str(), "gRandomizeStartingSerenadeOfWater");
+                UIWidgets::EnhancementCheckbox(Settings::StartingRequiemOfSpirit.GetName().c_str(),  "gRandomizeStartingRequiemOfSpirit");
+                UIWidgets::EnhancementCheckbox(Settings::StartingNocturneOfShadow.GetName().c_str(), "gRandomizeStartingNocturneOfShadow");
+                UIWidgets::EnhancementCheckbox(Settings::StartingPreludeOfLight.GetName().c_str(), "gRandomizeStartingPreludeOfLight");
                 UIWidgets::PaddedSeparator();
 
                 ImGui::EndChild();
@@ -5233,6 +5231,73 @@ CustomMessage Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
 
     messageEntry.Replace("{{location}}", locationName);
     return messageEntry;
+}
+
+CustomMessage Randomizer::GetFrogsMessage(u16 originalTextId) {
+    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, originalTextId);
+        RandomizerGet frogsGet = this->itemLocations[RC_ZR_FROGS_OCARINA_GAME].rgID;
+        std::array<std::string, LANGUAGE_MAX> frogItemName;
+        if (frogsGet == RG_ICE_TRAP) {
+            frogsGet = this->itemLocations[RC_ZR_FROGS_OCARINA_GAME].fakeRgID;
+            frogItemName = {
+                this->itemLocations[RC_ZR_FROGS_OCARINA_GAME].trickName,
+                this->itemLocations[RC_ZR_FROGS_OCARINA_GAME].trickName,
+                this->itemLocations[RC_ZR_FROGS_OCARINA_GAME].trickName
+            };
+        } else {
+            frogItemName = EnumToSpoilerfileGetName[frogsGet];
+        }
+        messageEntry.Replace("{{item}}", std::move(frogItemName[0]), std::move(frogItemName[1]), std::move(frogItemName[2]));
+        return messageEntry;
+}
+
+CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
+    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, originalTextId);
+    switch (scene) {
+        case SCENE_TEMPLE_OF_TIME:
+            if (originalTextId == TEXT_SHEIK_NEED_HOOK) {
+                messageEntry.Replace("{{message}}", 
+                "@,&meet me at %gGanon's Castle%w&once you obtain the %rkey to his lair%w.",
+                "@, wir treffen uns bei %gGanons Schloß%w,&sobald Du den %rSchlüssel zu&seinem Verließ%w hast.",
+                "Retrouve-moi au %gChâteau de Ganon%w une&fois que tu auras obtenu la&Mrclé de son repaire%w.");
+            } else {
+                messageEntry.Replace("{{message}}",
+                "The time has come. Prepare yourself.",
+                "Die Zeit ist gekommen.&Mach Dich bereit.",
+                "Le moment est venu @.&Tu ferais bien de te préparer.");
+            }
+            break;
+        case SCENE_INSIDE_GANONS_CASTLE:
+            if (originalTextId == TEXT_SHEIK_NEED_HOOK) {
+                if (INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) {
+                    messageEntry.Replace("{{message}}", gSaveContext.sheikText, gSaveContext.sheikText, gSaveContext.sheikText);
+                } else {
+                    messageEntry.Replace("{{message}}", "You are still ill-equipped to&face %rGanondorf%w."
+                    "^Seek out the %cMaster Sword%w,&%rsomething to hold your arrows%w,&and %gmagic%w to summon the %ylight%w.",
+                    "Du bist noch nicht gewappnet um Dich&%rGanondorf%w stellen zu können.^"
+                    "Begib Dich auf die Suche nach dem&%cMaster-Schwert%w, %retwas um deine Pfeilen&einen Sinn zu geben%w,^sowie %gdie Magie%w, um das %yLicht%w&herauf beschwören zu können.",
+                    "@, tu n'es toujours pas prêt à affronter&%rGanondorf%w.^"
+                    "Cherche l'%cÉpée de Légende%w,&%rquelque chose pour ranger tes flèches%w&et de la %gmagie%w pour invoquer la&%ylumière%w.");
+                }                   
+            } else {
+                messageEntry.Replace("{{message}}",
+                "If you're ready, then proceed.^Good luck.",
+                "Wenn Du bereit bist, so schreite&voran.^Viel Glück.",
+                "Si tu es prêt, tu peux y aller.^Bonne chance.");
+            }
+            break;
+    }
+        return messageEntry;
+}
+
+CustomMessage Randomizer::GetSariaMessage(u16 originalTextId) {
+    if (originalTextId == TEXT_SARIA_SFM || originalTextId == TEXT_SARIAS_SONG_FOREST_SOUNDS || TEXT_SARIAS_SONG_FOREST_TEMPLE) {
+        CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_SARIAS_SONG_FACE_TO_FACE);
+        CustomMessage messageEntry2 = messageEntry;
+        std::string code = originalTextId == TEXT_SARIA_SFM ? "" : "\x0B";
+        messageEntry2.Replace("$C", std::move(code));
+        return messageEntry2;
+    }
 }
 
 CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious) {

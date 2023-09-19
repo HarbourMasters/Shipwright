@@ -2174,7 +2174,7 @@ void func_8002F7A0(PlayState* play, Actor* actor, f32 arg2, s16 arg3, f32 arg4) 
     func_8002F758(play, actor, arg2, arg3, arg4, 0);
 }
 
-void func_8002F7DC(Actor* actor, u16 sfxId) {
+void Player_PlaySfx(Actor* actor, u16 sfxId) {
     if (actor->id != ACTOR_PLAYER || sfxId < NA_SE_VO_LI_SWORD_N || sfxId > NA_SE_VO_LI_ELECTRIC_SHOCK_LV_KID) {
         Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &D_801333E0 , &D_801333E0, &D_801333E8);
     } else {
@@ -4514,7 +4514,7 @@ s32 func_800354B4(PlayState* play, Actor* actor, f32 range, s16 arg3, s16 arg4, 
     var1 = (s16)(actor->yawTowardsPlayer + 0x8000) - player->actor.shape.rot.y;
     var2 = actor->yawTowardsPlayer - arg5;
 
-    if ((actor->xzDistToPlayer <= range) && (player->swordState != 0) && (arg4 >= ABS(var1)) && (arg3 >= ABS(var2))) {
+    if ((actor->xzDistToPlayer <= range) && (player->meleeWeaponState != 0) && (arg4 >= ABS(var1)) && (arg3 >= ABS(var2))) {
         return true;
     } else {
         return false;
@@ -4554,7 +4554,7 @@ void func_800355B8(PlayState* play, Vec3f* pos) {
 u8 func_800355E4(PlayState* play, Collider* collider) {
     Player* player = GET_PLAYER(play);
 
-    if ((collider->acFlags & AC_TYPE_PLAYER) && (player->swordState != 0) && (player->meleeWeaponAnimation == 0x16)) {
+    if ((collider->acFlags & AC_TYPE_PLAYER) && (player->meleeWeaponState != 0) && (player->meleeWeaponAnimation == 0x16)) {
         return true;
     } else {
         return false;

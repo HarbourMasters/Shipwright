@@ -27,6 +27,8 @@ class Randomizer {
     std::string ganonHintText;
     std::string ganonText;
     std::string dampeText;
+    std::string sheikText;
+    std::string sariaText;
     std::unordered_map<RandomizerSettingKey, u8> randoSettings;
     void ParseRandomizerSettingsFile(const char* spoilerFileName);
     void ParseHintLocationsFile(const char* spoilerFileName);
@@ -79,6 +81,8 @@ class Randomizer {
     std::string GetGanonText() const;
     std::string GetGanonHintText() const;
     std::string GetDampeText() const;
+    std::string GetSheikText() const;
+    std::string GetSariaText() const;
     RandomizerCheckObject GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams);
     ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
     ShopItemIdentity IdentifyShopItem(s32 sceneNum, u8 slotIndex);
@@ -89,6 +93,9 @@ class Randomizer {
     ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);
     CustomMessage GetWarpSongMessage(u16 textId, bool mysterious = false);
+    CustomMessage GetSheikMessage(s16 scene, u16 originalTextId);
+    CustomMessage GetFrogsMessage(u16 originalTextId);
+    CustomMessage GetSariaMessage(u16 originalTextId);
     CustomMessage GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious = false);
     CustomMessage GetCursedSkullMessage(s16 params);
     CustomMessage GetGoronMessage(u16 index);
