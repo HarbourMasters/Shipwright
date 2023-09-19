@@ -482,7 +482,7 @@ void CheckTrackerShopSlotChange(uint8_t cursorSlot, int16_t basePrice) {
 }
 
 void CheckTrackerTransition(uint32_t sceneNum) {
-    if (!IsGameRunning()) {
+    if (!GameInteractor::IsSaveLoaded()) {
         return;
     }
     gSaveContext;
@@ -506,7 +506,7 @@ void CheckTrackerTransition(uint32_t sceneNum) {
 }
 
 void CheckTrackerFrame() {
-    if (!IsGameRunning()) {
+    if (!GameInteractor::IsSaveLoaded()) {
         return;
     }
     if (!checkAreas.empty() && !transitionCheck && !messageCloseCheck && !pendingSaleCheck) {
@@ -535,7 +535,7 @@ void CheckTrackerSaleEnd(GetItemEntry giEntry) {
 }
 
 void CheckTrackerItemReceive(GetItemEntry giEntry) {
-    if (!IsGameRunning() || vector_contains_scene(skipScenes, gPlayState->sceneNum)) {
+    if (!GameInteractor::IsSaveLoaded() || vector_contains_scene(skipScenes, gPlayState->sceneNum)) {
         return;
     }
     auto scene = static_cast<SceneID>(gPlayState->sceneNum);
@@ -803,7 +803,7 @@ void CheckTrackerWindow::DrawElement() {
 
     BeginFloatWindows("Check Tracker", mIsVisible, ImGuiWindowFlags_NoScrollbar);
 
-    if (!IsGameRunning()) {
+    if (!GameInteractor::IsSaveLoaded()) {
         ImGui::Text("Waiting for file load..."); //TODO Language
         EndFloatWindows();
         return;

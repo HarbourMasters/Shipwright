@@ -564,7 +564,7 @@ void DrawItem(ItemTrackerItem item) {
             break;
     }
 
-    if (IsGameRunning() && (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end())) {
+    if (GameInteractor::IsSaveLoaded() && (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end())) {
         item = actualItemTrackerItemMap[actualItemId];
     }
     
@@ -582,7 +582,7 @@ void DrawBottle(ItemTrackerItem item) {
     uint32_t actualItemId = gSaveContext.inventory.items[SLOT(item.id) + item.data];
     bool hasItem = actualItemId != ITEM_NONE;
 
-    if (IsGameRunning() && (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end())) {
+    if (GameInteractor::IsSaveLoaded() && (hasItem && item.id != actualItemId && actualItemTrackerItemMap.find(actualItemId) != actualItemTrackerItemMap.end())) {
         item = actualItemTrackerItemMap[actualItemId];
     }
 
