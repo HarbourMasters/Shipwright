@@ -1,0 +1,220 @@
+<Root>
+    <File Name="ddan_scene" Segment="2">
+        <Texture Name="ddan_sceneTLUT_011D70" OutName="ddan_sceneTLUT_011D70" Format="rgba16" Width="16" Height="16" Offset="0x11D70" AddedByScript="true"/>
+        <Texture Name="gDCDayEntranceTex" OutName="day_entrance" Format="ci8" Width="32" Height="64" Offset="0x12378" TlutOffset="0x11D70"/>
+        <Texture Name="gDCNightEntranceTex" OutName="night_entrance" Format="ci8" Width="32" Height="64" Offset="0x13378" TlutOffset="0x11D70"/>
+
+        <!-- These textures are used in room 0 with a TLUT at 0x11290 in room 0, and in room 3 with a TLUT at 0x008630 in room 3 (those two TLUTs are identical, but duplicated) -->
+        <Texture Name="gDCLavaFloor1Tex" OutName="lava_floor_1" Format="ci8" Width="32" Height="32" Offset="0x11F78" ExternalTlut="ddan_room_0" ExternalTlutOffset="0x11290"/>
+        <Texture Name="gDCLavaFloor2Tex" OutName="lava_floor_2" Format="ci8" Width="32" Height="32" Offset="0x14778" ExternalTlut="ddan_room_0" ExternalTlutOffset="0x11290"/>
+        <Texture Name="gDCLavaFloor3Tex" OutName="lava_floor_3" Format="ci8" Width="32" Height="32" Offset="0x14378" ExternalTlut="ddan_room_0" ExternalTlutOffset="0x11290"/>
+        <Texture Name="gDCLavaFloor4Tex" OutName="lava_floor_4" Format="ci8" Width="32" Height="32" Offset="0x13F78" ExternalTlut="ddan_room_0" ExternalTlutOffset="0x11290"/>
+        <Texture Name="gDCLavaFloor5Tex" OutName="lava_floor_5" Format="ci8" Width="32" Height="32" Offset="0x14B78" ExternalTlut="ddan_room_0" ExternalTlutOffset="0x11290"/>
+        <Texture Name="gDCLavaFloor6Tex" OutName="lava_floor_6" Format="ci8" Width="32" Height="32" Offset="0x13B78" ExternalTlut="ddan_room_0" ExternalTlutOffset="0x11290"/>
+        <Texture Name="gDCLavaFloor7Tex" OutName="lava_floor_7" Format="ci8" Width="32" Height="32" Offset="0x12F78" ExternalTlut="ddan_room_0" ExternalTlutOffset="0x11290"/>
+        <Texture Name="gDCLavaFloor8Tex" OutName="lava_floor_8" Format="ci8" Width="32" Height="32" Offset="0x12B78" ExternalTlut="ddan_room_0" ExternalTlutOffset="0x11290"/>
+
+        <Cutscene Name="gDcOpeningCs" Offset="0x14F80"/>
+        <Scene Name="ddan_scene" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_0" Segment="3">
+        <Texture Name="ddan_room_0Tex_011498" OutName="ddan_room_0Tex_011498" Format="ci8" Width="32" Height="32" Offset="0x11498" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_0Tex_011898" OutName="ddan_room_0Tex_011898" Format="ci8" Width="32" Height="32" Offset="0x11898" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_0Tex_011C98" OutName="ddan_room_0Tex_011C98" Format="ci8" Width="64" Height="32" Offset="0x11C98" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_0Tex_012498" OutName="ddan_room_0Tex_012498" Format="ci8" Width="32" Height="64" Offset="0x12498" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_0Tex_012C98" OutName="ddan_room_0Tex_012C98" Format="rgba16" Width="32" Height="64" Offset="0x12C98" AddedByScript="true"/>
+        <Texture Name="ddan_room_0Tex_013C98" OutName="ddan_room_0Tex_013C98" Format="rgba16" Width="32" Height="64" Offset="0x13C98" AddedByScript="true"/>
+        <Texture Name="ddan_room_0Tex_014C98" OutName="ddan_room_0Tex_014C98" Format="rgba16" Width="32" Height="32" Offset="0x14C98" AddedByScript="true"/>
+        <Texture Name="ddan_room_0Tex_015498" OutName="ddan_room_0Tex_015498" Format="ci8" Width="32" Height="64" Offset="0x15498" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_0Tex_015C98" OutName="ddan_room_0Tex_015C98" Format="ci8" Width="32" Height="64" Offset="0x15C98" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_0Tex_016498" OutName="ddan_room_0Tex_016498" Format="ci8" Width="32" Height="32" Offset="0x16498" TlutOffset="0x11290" AddedByScript="true"/>
+        <Texture Name="ddan_room_0Tex_016898" OutName="ddan_room_0Tex_016898" Format="ci8" Width="32" Height="64" Offset="0x16898" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_0Tex_017098" OutName="ddan_room_0Tex_017098" Format="rgba16" Width="32" Height="32" Offset="0x17098" AddedByScript="true"/>
+        <Texture Name="ddan_room_0Tex_017898" OutName="ddan_room_0Tex_017898" Format="ci8" Width="32" Height="32" Offset="0x17898" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_0Tex_017C98" OutName="ddan_room_0Tex_017C98" Format="rgba16" Width="32" Height="32" Offset="0x17C98" AddedByScript="true"/>
+        <Texture Name="ddan_room_0Tex_018498" OutName="ddan_room_0Tex_018498" Format="ci8" Width="32" Height="64" Offset="0x18498" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_0Tex_018C98" OutName="ddan_room_0Tex_018C98" Format="ci8" Width="32" Height="64" Offset="0x18C98" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_0Tex_019498" OutName="ddan_room_0Tex_019498" Format="rgba16" Width="64" Height="32" Offset="0x19498" AddedByScript="true"/>
+        <Texture Name="ddan_room_0Tex_01A498" OutName="ddan_room_0Tex_01A498" Format="rgba16" Width="64" Height="32" Offset="0x1A498" AddedByScript="true"/>
+        <Texture Name="ddan_room_0Tex_01B498" OutName="ddan_room_0Tex_01B498" Format="ci8" Width="32" Height="32" Offset="0x1B498" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_0TLUT_011290" OutName="ddan_room_0TLUT_011290" Format="rgba16" Width="16" Height="16" Offset="0x11290" AddedByScript="true"/>
+        <Room Name="ddan_room_0" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_1" Segment="3">
+        <Texture Name="ddan_room_1Tex_004770" OutName="ddan_room_1Tex_004770" Format="ci8" Width="32" Height="32" Offset="0x4770" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_1Tex_004B70" OutName="ddan_room_1Tex_004B70" Format="ci8" Width="32" Height="32" Offset="0x4B70" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_1Tex_004F70" OutName="ddan_room_1Tex_004F70" Format="ci8" Width="32" Height="64" Offset="0x4F70" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_1Tex_005770" OutName="ddan_room_1Tex_005770" Format="ci8" Width="64" Height="32" Offset="0x5770" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_1Tex_005F70" OutName="ddan_room_1Tex_005F70" Format="rgba16" Width="32" Height="64" Offset="0x5F70" AddedByScript="true"/>
+        <Texture Name="ddan_room_1Tex_006F70" OutName="ddan_room_1Tex_006F70" Format="rgba16" Width="32" Height="64" Offset="0x6F70" AddedByScript="true"/>
+        <Texture Name="ddan_room_1Tex_007F70" OutName="ddan_room_1Tex_007F70" Format="ci8" Width="32" Height="64" Offset="0x7F70" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_1Tex_008770" OutName="ddan_room_1Tex_008770" Format="ci8" Width="64" Height="32" Offset="0x8770" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_1Tex_008F70" OutName="ddan_room_1Tex_008F70" Format="ci8" Width="32" Height="64" Offset="0x8F70" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_1Tex_009770" OutName="ddan_room_1Tex_009770" Format="ci8" Width="32" Height="32" Offset="0x9770" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Room Name="ddan_room_1" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_2" Segment="3">
+        <Texture Name="ddan_room_2Tex_003B80" OutName="ddan_room_2Tex_003B80" Format="ci8" Width="64" Height="32" Offset="0x3B80" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_2Tex_004380" OutName="ddan_room_2Tex_004380" Format="ci8" Width="32" Height="32" Offset="0x4380" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_2Tex_004780" OutName="ddan_room_2Tex_004780" Format="ci8" Width="32" Height="32" Offset="0x4780" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_2Tex_004B80" OutName="ddan_room_2Tex_004B80" Format="ci8" Width="32" Height="64" Offset="0x4B80" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_2Tex_005380" OutName="ddan_room_2Tex_005380" Format="ci8" Width="64" Height="32" Offset="0x5380" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_2Tex_005B80" OutName="ddan_room_2Tex_005B80" Format="ci8" Width="32" Height="32" Offset="0x5B80" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_2Tex_005F80" OutName="ddan_room_2Tex_005F80" Format="ci8" Width="32" Height="32" Offset="0x5F80" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_2Tex_006380" OutName="ddan_room_2Tex_006380" Format="ci8" Width="32" Height="32" Offset="0x6380" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_2Tex_006EB8" OutName="ddan_room_2Tex_006EB8" Format="rgba16" Width="32" Height="64" Offset="0x6EB8" AddedByScript="true"/>
+        <Room Name="ddan_room_2" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_3" Segment="3">
+        <Texture Name="ddan_room_3Tex_008838" OutName="ddan_room_3Tex_008838" Format="ci8" Width="32" Height="32" Offset="0x8838" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_3Tex_008C38" OutName="ddan_room_3Tex_008C38" Format="ci8" Width="64" Height="32" Offset="0x8C38" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_3Tex_009438" OutName="ddan_room_3Tex_009438" Format="ci8" Width="32" Height="32" Offset="0x9438" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_3Tex_009838" OutName="ddan_room_3Tex_009838" Format="ci8" Width="32" Height="64" Offset="0x9838" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_3Tex_00A038" OutName="ddan_room_3Tex_00A038" Format="ci8" Width="32" Height="64" Offset="0xA038" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_3Tex_00A838" OutName="ddan_room_3Tex_00A838" Format="ci8" Width="32" Height="64" Offset="0xA838" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_3Tex_00B038" OutName="ddan_room_3Tex_00B038" Format="ci8" Width="32" Height="32" Offset="0xB038" TlutOffset="0x8630" AddedByScript="true"/>
+        <Texture Name="ddan_room_3Tex_00B438" OutName="ddan_room_3Tex_00B438" Format="ci8" Width="32" Height="32" Offset="0xB438" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_3Tex_00B838" OutName="ddan_room_3Tex_00B838" Format="ci8" Width="32" Height="32" Offset="0xB838" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_3Tex_00BC38" OutName="ddan_room_3Tex_00BC38" Format="ci8" Width="64" Height="32" Offset="0xBC38" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_3Tex_00C438" OutName="ddan_room_3Tex_00C438" Format="ci8" Width="32" Height="64" Offset="0xC438" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_3Tex_00CC38" OutName="ddan_room_3Tex_00CC38" Format="ci8" Width="32" Height="32" Offset="0xCC38" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_3Tex_00D038" OutName="ddan_room_3Tex_00D038" Format="ci8" Width="32" Height="32" Offset="0xD038" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_3Tex_00D668" OutName="ddan_room_3Tex_00D668" Format="ia8" Width="64" Height="32" Offset="0xD668" AddedByScript="true"/>
+        <Texture Name="ddan_room_3TLUT_008630" OutName="ddan_room_3TLUT_008630" Format="rgba16" Width="16" Height="16" Offset="0x8630" AddedByScript="true"/>
+        <Room Name="ddan_room_3" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_4" Segment="3">
+        <Texture Name="ddan_room_4Tex_006D58" OutName="ddan_room_4Tex_006D58" Format="ci8" Width="32" Height="32" Offset="0x6D58" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_4Tex_007158" OutName="ddan_room_4Tex_007158" Format="ci8" Width="32" Height="32" Offset="0x7158" TlutOffset="0x6B50" AddedByScript="true"/>
+        <Texture Name="ddan_room_4Tex_007558" OutName="ddan_room_4Tex_007558" Format="ci8" Width="64" Height="32" Offset="0x7558" TlutOffset="0x6B50" AddedByScript="true"/>
+        <Texture Name="ddan_room_4Tex_007D58" OutName="ddan_room_4Tex_007D58" Format="ci8" Width="32" Height="64" Offset="0x7D58" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_4Tex_008558" OutName="ddan_room_4Tex_008558" Format="ci8" Width="32" Height="64" Offset="0x8558" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_4Tex_008D58" OutName="ddan_room_4Tex_008D58" Format="ci8" Width="32" Height="32" Offset="0x8D58" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_4Tex_009158" OutName="ddan_room_4Tex_009158" Format="ci8" Width="64" Height="32" Offset="0x9158" TlutOffset="0x6B50" AddedByScript="true"/>
+        <Texture Name="ddan_room_4TLUT_006B50" OutName="ddan_room_4TLUT_006B50" Format="rgba16" Width="16" Height="16" Offset="0x6B50" AddedByScript="true"/>
+        <Room Name="ddan_room_4" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_5" Segment="3">
+        <Texture Name="ddan_room_5Tex_0032B8" OutName="ddan_room_5Tex_0032B8" Format="ci8" Width="32" Height="64" Offset="0x32B8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_5Tex_003AB8" OutName="ddan_room_5Tex_003AB8" Format="ci8" Width="32" Height="64" Offset="0x3AB8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_5Tex_0042B8" OutName="ddan_room_5Tex_0042B8" Format="ci8" Width="32" Height="32" Offset="0x42B8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_5Tex_0046B8" OutName="ddan_room_5Tex_0046B8" Format="ci8" Width="32" Height="32" Offset="0x46B8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_5Tex_004AB8" OutName="ddan_room_5Tex_004AB8" Format="ci8" Width="32" Height="32" Offset="0x4AB8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_5Tex_004EB8" OutName="ddan_room_5Tex_004EB8" Format="rgba16" Width="32" Height="32" Offset="0x4EB8" AddedByScript="true"/>
+        <Texture Name="ddan_room_5Tex_0056B8" OutName="ddan_room_5Tex_0056B8" Format="ci8" Width="32" Height="64" Offset="0x56B8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Room Name="ddan_room_5" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_6" Segment="3">
+        <Texture Name="ddan_room_6Tex_000CA8" OutName="ddan_room_6Tex_000CA8" Format="ci8" Width="32" Height="64" Offset="0xCA8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_6Tex_0014A8" OutName="ddan_room_6Tex_0014A8" Format="ci8" Width="64" Height="32" Offset="0x14A8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_6Tex_001CA8" OutName="ddan_room_6Tex_001CA8" Format="ci8" Width="32" Height="32" Offset="0x1CA8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_6Tex_0020A8" OutName="ddan_room_6Tex_0020A8" Format="ci8" Width="32" Height="32" Offset="0x20A8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Room Name="ddan_room_6" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_7" Segment="3">
+        <Texture Name="ddan_room_7Tex_0046F8" OutName="ddan_room_7Tex_0046F8" Format="ci8" Width="32" Height="32" Offset="0x46F8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_7Tex_004AF8" OutName="ddan_room_7Tex_004AF8" Format="ci8" Width="32" Height="32" Offset="0x4AF8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_7Tex_004EF8" OutName="ddan_room_7Tex_004EF8" Format="ci8" Width="32" Height="64" Offset="0x4EF8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_7Tex_0056F8" OutName="ddan_room_7Tex_0056F8" Format="ci8" Width="32" Height="64" Offset="0x56F8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_7Tex_005EF8" OutName="ddan_room_7Tex_005EF8" Format="ci8" Width="32" Height="64" Offset="0x5EF8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_7Tex_0066F8" OutName="ddan_room_7Tex_0066F8" Format="ci8" Width="32" Height="64" Offset="0x66F8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_7Tex_006EF8" OutName="ddan_room_7Tex_006EF8" Format="ci8" Width="32" Height="64" Offset="0x6EF8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Room Name="ddan_room_7" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_8" Segment="3">
+        <Texture Name="ddan_room_8Tex_0041A0" OutName="ddan_room_8Tex_0041A0" Format="ci8" Width="64" Height="32" Offset="0x41A0" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_8Tex_0049A0" OutName="ddan_room_8Tex_0049A0" Format="ci8" Width="32" Height="32" Offset="0x49A0" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_8Tex_004DA0" OutName="ddan_room_8Tex_004DA0" Format="ci8" Width="32" Height="32" Offset="0x4DA0" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_8Tex_0051A0" OutName="ddan_room_8Tex_0051A0" Format="ci8" Width="64" Height="32" Offset="0x51A0" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_8Tex_0059A0" OutName="ddan_room_8Tex_0059A0" Format="ci8" Width="32" Height="64" Offset="0x59A0" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_8Tex_0061A0" OutName="ddan_room_8Tex_0061A0" Format="ci8" Width="32" Height="64" Offset="0x61A0" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_8Tex_0069A0" OutName="ddan_room_8Tex_0069A0" Format="ci8" Width="32" Height="64" Offset="0x69A0" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_8Tex_0071A0" OutName="ddan_room_8Tex_0071A0" Format="ci8" Width="32" Height="64" Offset="0x71A0" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_8Tex_0079A0" OutName="ddan_room_8Tex_0079A0" Format="ci8" Width="64" Height="32" Offset="0x79A0" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_8Tex_0081A0" OutName="ddan_room_8Tex_0081A0" Format="ci8" Width="32" Height="64" Offset="0x81A0" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_8Tex_0089A0" OutName="ddan_room_8Tex_0089A0" Format="ci8" Width="32" Height="64" Offset="0x89A0" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_8Tex_0091A0" OutName="ddan_room_8Tex_0091A0" Format="ci8" Width="32" Height="32" Offset="0x91A0" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Room Name="ddan_room_8" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_9" Segment="3">
+        <Texture Name="ddan_room_9Tex_005128" OutName="ddan_room_9Tex_005128" Format="ci8" Width="32" Height="32" Offset="0x5128" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_9Tex_005528" OutName="ddan_room_9Tex_005528" Format="ci8" Width="64" Height="32" Offset="0x5528" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_9Tex_005D28" OutName="ddan_room_9Tex_005D28" Format="ci8" Width="32" Height="32" Offset="0x5D28" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_9Tex_006128" OutName="ddan_room_9Tex_006128" Format="ci8" Width="32" Height="64" Offset="0x6128" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_9Tex_006928" OutName="ddan_room_9Tex_006928" Format="ci8" Width="32" Height="32" Offset="0x6928" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_9Tex_006D28" OutName="ddan_room_9Tex_006D28" Format="rgba16" Width="32" Height="64" Offset="0x6D28" AddedByScript="true"/>
+        <Texture Name="ddan_room_9Tex_007D28" OutName="ddan_room_9Tex_007D28" Format="rgba16" Width="32" Height="64" Offset="0x7D28" AddedByScript="true"/>
+        <Texture Name="ddan_room_9Tex_008D28" OutName="ddan_room_9Tex_008D28" Format="ci8" Width="32" Height="32" Offset="0x8D28" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_9Tex_009128" OutName="ddan_room_9Tex_009128" Format="ci8" Width="32" Height="64" Offset="0x9128" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_9Tex_009928" OutName="ddan_room_9Tex_009928" Format="ci8" Width="64" Height="32" Offset="0x9928" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_9Tex_00A128" OutName="ddan_room_9Tex_00A128" Format="rgba16" Width="32" Height="32" Offset="0xA128" AddedByScript="true"/>
+        <Texture Name="ddan_room_9Tex_00A928" OutName="ddan_room_9Tex_00A928" Format="ci8" Width="32" Height="64" Offset="0xA928" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_9Tex_00B128" OutName="ddan_room_9Tex_00B128" Format="ci8" Width="32" Height="32" Offset="0xB128" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Room Name="ddan_room_9" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_10" Segment="3">
+        <Texture Name="ddan_room_10Tex_002B10" OutName="ddan_room_10Tex_002B10" Format="ci8" Width="32" Height="32" Offset="0x2B10" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_10Tex_002F10" OutName="ddan_room_10Tex_002F10" Format="ci8" Width="64" Height="32" Offset="0x2F10" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_10Tex_003710" OutName="ddan_room_10Tex_003710" Format="ci8" Width="32" Height="32" Offset="0x3710" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_10Tex_003B10" OutName="ddan_room_10Tex_003B10" Format="ci8" Width="32" Height="64" Offset="0x3B10" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_10Tex_004310" OutName="ddan_room_10Tex_004310" Format="ci8" Width="32" Height="32" Offset="0x4310" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_10Tex_004710" OutName="ddan_room_10Tex_004710" Format="ci8" Width="32" Height="64" Offset="0x4710" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_10Tex_004F10" OutName="ddan_room_10Tex_004F10" Format="ci8" Width="32" Height="32" Offset="0x4F10" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_10Tex_005310" OutName="ddan_room_10Tex_005310" Format="rgba16" Width="32" Height="64" Offset="0x5310" AddedByScript="true"/>
+        <Texture Name="ddan_room_10Tex_006310" OutName="ddan_room_10Tex_006310" Format="rgba16" Width="32" Height="64" Offset="0x6310" AddedByScript="true"/>
+        <Texture Name="ddan_room_10Tex_007310" OutName="ddan_room_10Tex_007310" Format="ci8" Width="32" Height="64" Offset="0x7310" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_10Tex_007B10" OutName="ddan_room_10Tex_007B10" Format="ci8" Width="32" Height="32" Offset="0x7B10" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Room Name="ddan_room_10" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_11" Segment="3">
+        <Texture Name="ddan_room_11Tex_000C30" OutName="ddan_room_11Tex_000C30" Format="ci8" Width="32" Height="64" Offset="0xC30" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_11Tex_001430" OutName="ddan_room_11Tex_001430" Format="ci8" Width="64" Height="32" Offset="0x1430" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_11Tex_001C30" OutName="ddan_room_11Tex_001C30" Format="ci8" Width="32" Height="32" Offset="0x1C30" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Room Name="ddan_room_11" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_12" Segment="3">
+        <Texture Name="ddan_room_12Tex_002F80" OutName="ddan_room_12Tex_002F80" Format="ci8" Width="32" Height="32" Offset="0x2F80" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_12Tex_003380" OutName="ddan_room_12Tex_003380" Format="ci8" Width="64" Height="32" Offset="0x3380" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_12Tex_003B80" OutName="ddan_room_12Tex_003B80" Format="ci8" Width="32" Height="32" Offset="0x3B80" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_12Tex_003F80" OutName="ddan_room_12Tex_003F80" Format="ci8" Width="32" Height="64" Offset="0x3F80" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_12Tex_004780" OutName="ddan_room_12Tex_004780" Format="ci8" Width="32" Height="32" Offset="0x4780" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_12Tex_004B80" OutName="ddan_room_12Tex_004B80" Format="ci8" Width="32" Height="64" Offset="0x4B80" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_12Tex_005380" OutName="ddan_room_12Tex_005380" Format="ci8" Width="32" Height="32" Offset="0x5380" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_12Tex_005780" OutName="ddan_room_12Tex_005780" Format="rgba16" Width="32" Height="64" Offset="0x5780" AddedByScript="true"/>
+        <Texture Name="ddan_room_12Tex_006780" OutName="ddan_room_12Tex_006780" Format="rgba16" Width="32" Height="64" Offset="0x6780" AddedByScript="true"/>
+        <Texture Name="ddan_room_12Tex_007780" OutName="ddan_room_12Tex_007780" Format="ci8" Width="32" Height="32" Offset="0x7780" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_12Tex_007B80" OutName="ddan_room_12Tex_007B80" Format="ci8" Width="32" Height="64" Offset="0x7B80" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_12Tex_008380" OutName="ddan_room_12Tex_008380" Format="ci8" Width="32" Height="32" Offset="0x8380" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Room Name="ddan_room_12" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_13" Segment="3">
+        <Texture Name="ddan_room_13Tex_000CC8" OutName="ddan_room_13Tex_000CC8" Format="ci8" Width="32" Height="64" Offset="0xCC8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_13Tex_0014C8" OutName="ddan_room_13Tex_0014C8" Format="ci8" Width="64" Height="32" Offset="0x14C8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_13Tex_001CC8" OutName="ddan_room_13Tex_001CC8" Format="ci8" Width="32" Height="32" Offset="0x1CC8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_13Tex_0020C8" OutName="ddan_room_13Tex_0020C8" Format="ci8" Width="32" Height="32" Offset="0x20C8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Room Name="ddan_room_13" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_14" Segment="3">
+        <Texture Name="ddan_room_14Tex_000CC8" OutName="ddan_room_14Tex_000CC8" Format="ci8" Width="32" Height="64" Offset="0xCC8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_14Tex_0014C8" OutName="ddan_room_14Tex_0014C8" Format="ci8" Width="64" Height="32" Offset="0x14C8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_14Tex_001CC8" OutName="ddan_room_14Tex_001CC8" Format="ci8" Width="32" Height="32" Offset="0x1CC8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_14Tex_0020C8" OutName="ddan_room_14Tex_0020C8" Format="ci8" Width="32" Height="32" Offset="0x20C8" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Room Name="ddan_room_14" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_15" Segment="3">
+        <Texture Name="ddan_room_15Tex_000D28" OutName="ddan_room_15Tex_000D28" Format="ci8" Width="64" Height="32" Offset="0xD28" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_15Tex_001528" OutName="ddan_room_15Tex_001528" Format="ci8" Width="32" Height="64" Offset="0x1528" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_15Tex_001D28" OutName="ddan_room_15Tex_001D28" Format="ci8" Width="64" Height="32" Offset="0x1D28" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_15Tex_002528" OutName="ddan_room_15Tex_002528" Format="ci8" Width="32" Height="32" Offset="0x2528" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Room Name="ddan_room_15" Offset="0x0"/>
+    </File>
+    <File Name="ddan_room_16" Segment="3">
+        <Texture Name="ddan_room_16Tex_002158" OutName="ddan_room_16Tex_002158" Format="rgba16" Width="32" Height="64" Offset="0x2158" AddedByScript="true"/>
+        <Texture Name="ddan_room_16Tex_003158" OutName="ddan_room_16Tex_003158" Format="ci8" Width="32" Height="64" Offset="0x3158" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_16Tex_003958" OutName="ddan_room_16Tex_003958" Format="ci8" Width="32" Height="64" Offset="0x3958" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_16Tex_004158" OutName="ddan_room_16Tex_004158" Format="ci8" Width="32" Height="64" Offset="0x4158" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_16Tex_004958" OutName="ddan_room_16Tex_004958" Format="ci8" Width="32" Height="64" Offset="0x4958" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Texture Name="ddan_room_16Tex_005158" OutName="ddan_room_16Tex_005158" Format="ci8" Width="32" Height="32" Offset="0x5158" ExternalTlut="ddan_scene" ExternalTlutOffset="0x11D70" AddedByScript="true"/>
+        <Room Name="ddan_room_16" Offset="0x0"/>
+    </File>
+</Root>
