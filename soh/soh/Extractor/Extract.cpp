@@ -60,12 +60,12 @@ static constexpr uint32_t OOT_PAL_11 = 0xB2055FBD;
 
 static const std::unordered_map<uint32_t, const char*> verMap = {
     { OOT_PAL_GC, "PAL Gamecube" },
+    { OOT_PAL_MQ, "PAL MQ" },
     { OOT_PAL_GC_DBG1, "PAL Debug 1" },
     { OOT_PAL_GC_DBG2, "PAL Debug 2" },
     { OOT_PAL_GC_MQ_DBG, "PAL MQ Debug" },
     { OOT_PAL_10, "PAL N64 1.0" },
     { OOT_PAL_11, "PAL N64 1.1" },
-    { OOT_PAL_MQ, "PAL MQ Gamecube" },
 };
 
 // TODO only check the first 54MB of the rom.
