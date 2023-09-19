@@ -5074,7 +5074,7 @@ s32 func_8083B040(Player* this, PlayState* play) {
                 if ((sp2C >= 0) ||
                     (sp28 = Player_ActionToBottle(this, this->itemAction) - 1,
                      ((sp28 >= 0) && (sp28 < 6) &&
-                      ((this->itemAction > PLAYER_IA_BOTTLE_POE) ||
+                      ((this->itemAction > PLAYER_IA_BOTTLE_BIG_POE) ||  //Changed this from POE to BIG_POE and that is what now allows me to drink the big poe.
                        ((this->targetActor != NULL) &&
                         (((this->itemAction == PLAYER_IA_BOTTLE_POE) && (this->exchangeItemId == EXCH_ITEM_POE)) ||
                          (this->exchangeItemId == EXCH_ITEM_BLUE_FIRE))))))) {

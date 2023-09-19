@@ -302,7 +302,11 @@ void func_80A2F83C(EnGb* this, PlayState* play) {
         return;
     }
     if (this->dyna.actor.xzDistToPlayer < 100.0f) {
-        func_8002F298(&this->dyna.actor, play, 100.0f, EXCH_ITEM_POE);
+        func_8002F298(&this->dyna.actor, play, 100.0f, EXCH_ITEM_POE);//This is what was orginally here.
+        return;
+    }
+    if (this->dyna.actor.xzDistToPlayer < 100.0f) {
+        func_8002F298(&this->dyna.actor, play, 100.0f, EXCH_ITEM_BIG_POE); //In theory this should be what tells the game to interact with the Poe buyer if I'm close enough
     }
 }
 
