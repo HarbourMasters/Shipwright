@@ -974,6 +974,15 @@ void RegisterRandomizerSheikSpawn() {
     });
 }
 
+void RegisterInstantTransitions() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        if (CVarGetInteger("gInstantTransitions", 0)) {
+            gPlayState->fadeTransition = 11;
+            gSaveContext.nextTransitionType = 11;
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -1000,4 +1009,5 @@ void InitMods() {
     RegisterAltTrapTypes();
     RegisterRandomizerSheikSpawn();
     NameTag_RegisterHooks();
+    RegisterInstantTransitions();
 }
