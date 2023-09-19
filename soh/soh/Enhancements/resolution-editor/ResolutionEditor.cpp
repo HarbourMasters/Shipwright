@@ -235,41 +235,46 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
         }
 
         UIWidgets::Spacer(0);
-        // Pixel-perfect Mode
-        UIWidgets::PaddedEnhancementCheckbox("Pixel-perfect Mode", "gAdvancedResolution.PixelPerfectMode", true, true,
-                                             !CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0), "",
-                                             UIWidgets::CheckboxGraphics::Cross, false);
-        UIWidgets::Tooltip("Don't scale image to fill window.");
-        if (!CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0)) {
-            CVarSetInteger("gAdvancedResolution.PixelPerfectMode", (int)false);
-            CVarSave();
-        }
+        //UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
+        // Integer scaling settings group
+        if (ImGui::CollapsingHeader("Integer Scaling Settings")) {
+            // Pixel-perfect Mode
+            UIWidgets::PaddedEnhancementCheckbox("Pixel-perfect Mode", "gAdvancedResolution.PixelPerfectMode", true,
+                                                 true,
+                                                 !CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0), "",
+                                                 UIWidgets::CheckboxGraphics::Cross, false);
+            UIWidgets::Tooltip("Don't scale image to fill window.");
+            if (!CVarGetInteger("gAdvancedResolution.VerticalResolutionToggle", 0)) {
+                CVarSetInteger("gAdvancedResolution.PixelPerfectMode", (int)false);
+                CVarSave();
+            }
 
-        // Integer Scaling
-        UIWidgets::EnhancementSliderInt("Integer scale factor: %d", "##ARSIntScale",
-                                        "gAdvancedResolution.IntegerScale.Factor", 1, max_integerScaleFactor, "%d", 1,
-                                        true,
-                                        !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0) ||
-                                            CVarGetInteger("gAdvancedResolution.IntegerScale.FitAutomatically", 0));
-        UIWidgets::Tooltip("Integer scales the image. Only available in pixel-perfect mode.");
-        // Display warning if size is being clamped or if framebuffer is larger than viewport.
-        if (CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0) &&
-            (CVarGetInteger("gAdvancedResolution.IntegerScale.NeverExceedBounds", 1) &&
-             CVarGetInteger("gAdvancedResolution.IntegerScale.Factor", 1) > integerScale_maximumBounds)) {
-            ImGui::SameLine();
-            ImGui::TextColored({ 0.85f, 0.85f, 0.0f, 1.0f }, ICON_FA_EXCLAMATION_TRIANGLE " Window exceeded.");
-        }
+            // Integer Scaling
+            UIWidgets::EnhancementSliderInt("Integer scale factor: %d", "##ARSIntScale",
+                                            "gAdvancedResolution.IntegerScale.Factor", 1, max_integerScaleFactor, "%d",
+                                            1, true,
+                                            !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0) ||
+                                                CVarGetInteger("gAdvancedResolution.IntegerScale.FitAutomatically", 0));
+            UIWidgets::Tooltip("Integer scales the image. Only available in pixel-perfect mode.");
+            // Display warning if size is being clamped or if framebuffer is larger than viewport.
+            if (CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0) &&
+                (CVarGetInteger("gAdvancedResolution.IntegerScale.NeverExceedBounds", 1) &&
+                 CVarGetInteger("gAdvancedResolution.IntegerScale.Factor", 1) > integerScale_maximumBounds)) {
+                ImGui::SameLine();
+                ImGui::TextColored({ 0.85f, 0.85f, 0.0f, 1.0f }, ICON_FA_EXCLAMATION_TRIANGLE " Window exceeded.");
+            }
 
-        UIWidgets::PaddedEnhancementCheckbox("Automatically scale image to fit viewport",
-                                             "gAdvancedResolution.IntegerScale.FitAutomatically", true, true,
-                                             !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0), "",
-                                             UIWidgets::CheckboxGraphics::Cross, false);
-        UIWidgets::Tooltip("Automatically sets scale factor to fit window. Only available in pixel-perfect mode.");
-        if (CVarGetInteger("gAdvancedResolution.IntegerScale.FitAutomatically", 0)) {
-            // This is just here to update the value shown on the slider.
-            // The function in LUS to handle this setting will ignore IntegerScaleFactor while active.
-            CVarSetInteger("gAdvancedResolution.IntegerScale.Factor", integerScale_maximumBounds);
-            // CVarSave();
+            UIWidgets::PaddedEnhancementCheckbox("Automatically scale image to fit viewport",
+                                                 "gAdvancedResolution.IntegerScale.FitAutomatically", true, true,
+                                                 !CVarGetInteger("gAdvancedResolution.PixelPerfectMode", 0), "",
+                                                 UIWidgets::CheckboxGraphics::Cross, false);
+            UIWidgets::Tooltip("Automatically sets scale factor to fit window. Only available in pixel-perfect mode.");
+            if (CVarGetInteger("gAdvancedResolution.IntegerScale.FitAutomatically", 0)) {
+                // This is just here to update the value shown on the slider.
+                // The function in LUS to handle this setting will ignore IntegerScaleFactor while active.
+                CVarSetInteger("gAdvancedResolution.IntegerScale.Factor", integerScale_maximumBounds);
+                // CVarSave();
+            }
         }
 
         UIWidgets::PaddedSeparator(true, true, 3.0f, 3.0f);
