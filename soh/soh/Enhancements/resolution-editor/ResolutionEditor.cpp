@@ -166,13 +166,6 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 item_aspectRatio = default_aspectRatio;
                 update[UPDATE_aspectRatioX] = true;
                 update[UPDATE_aspectRatioY] = true;
-
-                if (showHorizontalResField) {
-                    horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
-                    if (horizontalPixelCount < (minVerticalPixelCount / 3.0f) * 4.0f) {
-                        horizontalPixelCount = (minVerticalPixelCount / 3.0f) * 4.0f;
-                    }
-                }
             }
         } else if (showHorizontalResField) { // Show calculated aspect ratio
             if (item_aspectRatio) {
