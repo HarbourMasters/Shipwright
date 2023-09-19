@@ -1,0 +1,41 @@
+<Root>
+    <File Name="object_cob" Segment="6">
+        <Texture Name="object_cob_TLUT_000000" OutName="tlut_00000000" Format="rgba16" Width="16" Height="16" Offset="0x0"/>
+        <Texture Name="object_cob_Tex_000200" OutName="tex_00000200" Format="ci8" Width="8" Height="16" Offset="0x200" TlutOffset="0x0"/>
+        <Texture Name="object_cob_Tex_000280" OutName="tex_00000280" Format="ci8" Width="8" Height="8" Offset="0x280" TlutOffset="0x0"/>
+        <Texture Name="object_cob_Tex_0002C0" OutName="tex_000002C0" Format="ci8" Width="8" Height="8" Offset="0x2C0" TlutOffset="0x0"/>
+        <Texture Name="object_cob_Tex_000300" OutName="tex_00000300" Format="ci8" Width="8" Height="8" Offset="0x300" TlutOffset="0x0"/>
+        <Texture Name="object_cob_Tex_000340" OutName="tex_00000340" Format="ci8" Width="8" Height="16" Offset="0x340" TlutOffset="0x0"/>
+        <DList Name="object_cob_DL_001300" Offset="0x1300"/>
+        <DList Name="object_cob_DL_001678" Offset="0x1678"/>
+        <DList Name="object_cob_DL_001780" Offset="0x1780"/>
+        <DList Name="object_cob_DL_001898" Offset="0x1898"/>
+        <DList Name="object_cob_DL_0019B0" Offset="0x19B0"/>
+        <DList Name="object_cob_DL_001AB8" Offset="0x1AB8"/>
+        <DList Name="object_cob_DL_001BD0" Offset="0x1BD0"/>
+        <DList Name="object_cob_DL_001CE8" Offset="0x1CE8"/>
+        <DList Name="object_cob_DL_001E40" Offset="0x1E40"/>
+        <DList Name="object_cob_DL_001E90" Offset="0x1E90"/>
+        <DList Name="object_cob_DL_001EE0" Offset="0x1EE0"/>
+        <DList Name="object_cob_DL_001F30" Offset="0x1F30"/>
+        <DList Name="object_cob_DL_001F80" Offset="0x1F80"/>
+        <DList Name="object_cob_DL_001FD0" Offset="0x1FD0"/>
+        <DList Name="object_cob_DL_002020" Offset="0x2020"/>
+        <Limb Name="object_cob_Limb_002108" LimbType="Standard" Offset="0x2108"/>
+        <Limb Name="object_cob_Limb_002114" LimbType="Standard" Offset="0x2114"/>
+        <Limb Name="object_cob_Limb_002120" LimbType="Standard" Offset="0x2120"/>
+        <Limb Name="object_cob_Limb_00212C" LimbType="Standard" Offset="0x212C"/>
+        <Limb Name="object_cob_Limb_002138" LimbType="Standard" Offset="0x2138"/>
+        <Limb Name="object_cob_Limb_002144" LimbType="Standard" Offset="0x2144"/>
+        <Limb Name="object_cob_Limb_002150" LimbType="Standard" Offset="0x2150"/>
+        <Limb Name="object_cob_Limb_00215C" LimbType="Standard" Offset="0x215C"/>
+        <Limb Name="object_cob_Limb_002168" LimbType="Standard" Offset="0x2168"/>
+        <Limb Name="object_cob_Limb_002174" LimbType="Standard" Offset="0x2174"/>
+        <Limb Name="object_cob_Limb_002180" LimbType="Standard" Offset="0x2180"/>
+        <Limb Name="object_cob_Limb_00218C" LimbType="Standard" Offset="0x218C"/>
+        <Limb Name="object_cob_Limb_002198" LimbType="Standard" Offset="0x2198"/>
+        <Limb Name="object_cob_Limb_0021A4" LimbType="Standard" Offset="0x21A4"/>
+        <Limb Name="object_cob_Limb_0021B0" LimbType="Standard" Offset="0x21B0"/>
+        <Skeleton Name="object_cob_Skel_0021F8" Type="Flex" LimbType="Standard" Offset="0x21F8"/>
+    </File>
+</Root>

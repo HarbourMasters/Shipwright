@@ -1,0 +1,36 @@
+<Root>
+    <File Name="spot08_scene" Segment="2">
+        <Texture Name="spot08_sceneTex_004DA0" OutName="spot08_sceneTex_004DA0" Format="rgba16" Width="64" Height="32" Offset="0x4DA0" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTex_005DA0" OutName="spot08_sceneTex_005DA0" Format="rgba16" Width="32" Height="16" Offset="0x5DA0" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTex_0061A0" OutName="spot08_sceneTex_0061A0" Format="rgba16" Width="32" Height="32" Offset="0x61A0" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTex_0069A0" OutName="spot08_sceneTex_0069A0" Format="rgba16" Width="32" Height="32" Offset="0x69A0" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTex_0071A0" OutName="spot08_sceneTex_0071A0" Format="ia4" Width="256" Height="32" Offset="0x71A0" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTex_0081A0" OutName="spot08_sceneTex_0081A0" Format="ci4" Width="128" Height="32" Offset="0x81A0" TlutOffset="0x4CC0" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTex_0089A0" OutName="spot08_sceneTex_0089A0" Format="rgba16" Width="32" Height="32" Offset="0x89A0" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTex_0091A0" OutName="spot08_sceneTex_0091A0" Format="rgba16" Width="16" Height="128" Offset="0x91A0" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTex_00A1A0" OutName="spot08_sceneTex_00A1A0" Format="ci4" Width="128" Height="32" Offset="0xA1A0" TlutOffset="0x4CE8" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTex_00A9A0" OutName="spot08_sceneTex_00A9A0" Format="ci4" Width="64" Height="64" Offset="0xA9A0" TlutOffset="0x4D38" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTex_00B1A0" OutName="spot08_sceneTex_00B1A0" Format="ci4" Width="64" Height="64" Offset="0xB1A0" TlutOffset="0x4D10" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTex_00B9A0" OutName="spot08_sceneTex_00B9A0" Format="ci4" Width="64" Height="64" Offset="0xB9A0" TlutOffset="0x4D38" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTex_00C1A0" OutName="spot08_sceneTex_00C1A0" Format="rgba16" Width="64" Height="32" Offset="0xC1A0" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTex_00D1A0" OutName="spot08_sceneTex_00D1A0" Format="i8" Width="64" Height="64" Offset="0xD1A0" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTex_00E1A0" OutName="spot08_sceneTex_00E1A0" Format="rgba16" Width="32" Height="64" Offset="0xE1A0" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTex_00F1A0" OutName="spot08_sceneTex_00F1A0" Format="ci4" Width="32" Height="128" Offset="0xF1A0" TlutOffset="0x4D60" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTex_00F9A0" OutName="spot08_sceneTex_00F9A0" Format="ci4" Width="64" Height="64" Offset="0xF9A0" TlutOffset="0x4D80" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTex_0101A0" OutName="spot08_sceneTex_0101A0" Format="i4" Width="64" Height="64" Offset="0x101A0" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTex_0109A0" OutName="spot08_sceneTex_0109A0" Format="ia8" Width="16" Height="16" Offset="0x109A0" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTex_010AA0" OutName="spot08_sceneTex_010AA0" Format="rgba16" Width="16" Height="32" Offset="0x10AA0" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTex_010EA0" OutName="spot08_sceneTex_010EA0" Format="rgba16" Width="32" Height="32" Offset="0x10EA0" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTLUT_004CC0" OutName="spot08_sceneTLUT_004CC0" Format="rgba16" Width="4" Height="4" Offset="0x4CC0" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTLUT_004CE8" OutName="spot08_sceneTLUT_004CE8" Format="rgba16" Width="4" Height="4" Offset="0x4CE8" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTLUT_004D10" OutName="spot08_sceneTLUT_004D10" Format="rgba16" Width="4" Height="4" Offset="0x4D10" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTLUT_004D38" OutName="spot08_sceneTLUT_004D38" Format="rgba16" Width="4" Height="4" Offset="0x4D38" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTLUT_004D60" OutName="spot08_sceneTLUT_004D60" Format="rgba16" Width="4" Height="4" Offset="0x4D60" AddedByScript="true"/>
+        <Texture Name="spot08_sceneTLUT_004D80" OutName="spot08_sceneTLUT_004D80" Format="rgba16" Width="4" Height="4" Offset="0x4D80" AddedByScript="true"/>
+        <Cutscene Name="gZorasFountainIntroCs" Offset="0x4A80"/>
+        <Scene Name="spot08_scene" Offset="0x0"/>
+    </File>
+    <File Name="spot08_room_0" Segment="3">
+        <Room Name="spot08_room_0" Offset="0x0"/>
+    </File>
+</Root>
