@@ -143,7 +143,9 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
 
         // Aspect Ratio
         ImGui::Text("Force aspect ratio:");
-        if (ImGui::Combo("Aspect Ratio Presets", &item_aspectRatio, aspectRatioPresetLabels,
+        ImGui::SameLine();
+        ImGui::TextColored({ 0.75f, 0.75f, 0.75f, 1.0f }, "(Select \"Off\" to disable.)");
+        if (ImGui::Combo(" ", &item_aspectRatio, aspectRatioPresetLabels,
                          IM_ARRAYSIZE(aspectRatioPresetLabels)) &&
             item_aspectRatio != default_aspectRatio) { // don't change anything if "Custom" is selected.
             aspectRatioX = aspectRatioPresetsX[item_aspectRatio];
@@ -155,17 +157,30 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
             }
         }
-        if (ImGui::InputFloat("X", &aspectRatioX, 0.1f, 1.0f, "%.3f") ||
-            ImGui::InputFloat("Y", &aspectRatioY, 0.1f, 1.0f, "%.3f")) {
-            item_aspectRatio = default_aspectRatio;
-            update[UPDATE_aspectRatioX] = true;
-            update[UPDATE_aspectRatioY] = true;
+        if (item_aspectRatio == default_aspectRatio && !showHorizontalResField) {
+            // Declaring the Y input interaction in particular as a variable beforehand
+            // will prevent a bug where the Y field would disappear when modifying X.
+            bool inputX = ImGui::InputFloat("X", &aspectRatioX, 0.1f, 1.0f, "%.3f");
+            bool inputY = ImGui::InputFloat("Y", &aspectRatioY, 0.1f, 1.0f, "%.3f");
+            if (inputX || inputY) {
+                item_aspectRatio = default_aspectRatio;
+                update[UPDATE_aspectRatioX] = true;
+                update[UPDATE_aspectRatioY] = true;
 
-            if (showHorizontalResField) {
-                horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
-                if (horizontalPixelCount < (minVerticalPixelCount / 3.0f) * 4.0f) {
-                    horizontalPixelCount = (minVerticalPixelCount / 3.0f) * 4.0f;
+                if (showHorizontalResField) {
+                    horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+                    if (horizontalPixelCount < (minVerticalPixelCount / 3.0f) * 4.0f) {
+                        horizontalPixelCount = (minVerticalPixelCount / 3.0f) * 4.0f;
+                    }
                 }
+            }
+        } else if (showHorizontalResField) { // Show calculated aspect ratio
+            if (item_aspectRatio) {
+                UIWidgets::Spacer(2);
+                float resolvedAspectRatio = (float)gfx_current_dimensions.height / gfx_current_dimensions.width;
+                ImGui::Text("Aspect ratio: %.4f", resolvedAspectRatio);
+            } else {
+                UIWidgets::Spacer(enhancementSpacerHeight);
             }
         }
 
@@ -192,6 +207,7 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             if ((aspectRatioX > 0.0f) && (aspectRatioY > 0.0f)) {
                 // So basically we're "faking" this one by setting aspectRatioX instead.
                 if (ImGui::InputInt("Horiz. Pixel Count", &horizontalPixelCount, 8, 320)) {
+                    item_aspectRatio = default_aspectRatio;
                     if (horizontalPixelCount < (minVerticalPixelCount / 3.0f) * 4.0f) {
                         horizontalPixelCount = (minVerticalPixelCount / 3.0f) * 4.0f;
                     }
@@ -199,21 +215,17 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                     update[UPDATE_aspectRatioX] = true;
                 }
             } else { // Display a notice instead.
-                ImGui::TextColored({ 0.0f, 0.85f, 0.85f, 1.0f }, ICON_FA_QUESTION_CIRCLE
-                                   " \"Force aspect ratio\" required to edit horizontal pixel count.");
-                ImGui::Text(" ");
+                ImGui::TextColored({ 0.0f, 0.85f, 0.85f, 1.0f },
+                                   ICON_FA_QUESTION_CIRCLE " \"Force aspect ratio\" required.");
+                // ImGui::Text(" ");
                 ImGui::SameLine();
                 if (ImGui::Button("Click to resolve")) {
-                    item_aspectRatio = 2; // Set it to 4:3
-                    aspectRatioX = aspectRatioPresetsX[item_aspectRatio];
-                    aspectRatioY = aspectRatioPresetsY[item_aspectRatio];
+                    item_aspectRatio = default_aspectRatio; // Set it to Custom
+                    aspectRatioX = aspectRatioPresetsX[2];  // but use the 4:3 defaults
+                    aspectRatioY = aspectRatioPresetsY[2];
                     update[UPDATE_aspectRatioX] = true;
                     update[UPDATE_aspectRatioY] = true;
                     horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
-                }
-                ImGui::SameLine();
-                if (ImGui::Button("Hide this field instead")) {
-                    showHorizontalResField = false;
                 }
             }
         }
@@ -228,9 +240,6 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
                 aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
                 update[UPDATE_aspectRatioX] = true;
             }
-        }
-        if (!showHorizontalResField) {
-            UIWidgets::Spacer(enhancementSpacerHeight); // just so other UI elements don't jump around too much.
         }
 
         UIWidgets::Spacer(0);
@@ -307,16 +316,18 @@ void AdvancedResolutionSettingsWindow::DrawElement() {
             }
 #endif
 
-            if (ImGui::Checkbox("Show a horizontal resolution field.", &showHorizontalResField) &&
-                (aspectRatioX > 0.0f)) {
-                if (!showHorizontalResField) { // when turning this setting off
+            if (ImGui::Checkbox("Show a horizontal resolution field.", &showHorizontalResField)) {
+                if (!showHorizontalResField && (aspectRatioX > 0.0f)) { // when turning this setting off
                     // Refresh relevant values
                     aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
                     horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
                 } else { // when turning this setting on
-                    // Refresh relevant values in the opposite order
-                    horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
-                    aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
+                    item_aspectRatio = default_aspectRatio;
+                    if (aspectRatioX > 0.0f) {
+                        // Refresh relevant values in the opposite order
+                        horizontalPixelCount = (verticalPixelCount / aspectRatioY) * aspectRatioX;
+                        aspectRatioX = aspectRatioY * horizontalPixelCount / verticalPixelCount;
+                    }
                 }
                 update[UPDATE_aspectRatioX] = true;
             }
