@@ -1305,7 +1305,7 @@ typedef enum {
     RG_TRIFORCE,
     RG_HINT,
     RG_TYCOON_WALLET,
-    RG_SWIM,
+    RG_BRONZE_SCALE,
     RG_MAX
 } RandomizerGet;
 

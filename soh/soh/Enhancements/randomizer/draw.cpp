@@ -8,6 +8,7 @@
 #include "objects/object_gi_key/object_gi_key.h"
 #include "objects/object_gi_bosskey/object_gi_bosskey.h"
 #include "objects/object_gi_hearts/object_gi_hearts.h"
+#include "objects/object_gi_scale/object_gi_scale.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 
 extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
@@ -170,6 +171,40 @@ extern "C" void Randomizer_DrawDoubleDefense(PlayState* play, GetItemEntry getIt
     gSPGrayscale(POLY_XLU_DISP++, false);
 
     gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiHeartContainerDL);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+static Gfx gGiBronzeScaleWaterColorDL[] = {
+    gsDPPipeSync(),
+    gsDPSetPrimColor(0, 0x60, 255, 255, 255, 255),
+    gsDPSetEnvColor(255, 123, 0, 255),
+    gsSPEndDisplayList(),
+};
+
+static Gfx gGiBronzeScaleColorDL[] = {
+    gsDPPipeSync(),
+    gsDPSetPrimColor(0, 0x80, 255, 255, 255, 255),
+    gsDPSetEnvColor(91, 51, 18, 255),
+    gsSPEndDisplayList(),
+};
+
+extern "C" void Randomizer_DrawBronzeScale(PlayState* play, GetItemEntry* getItemEntry) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Xlu(play->state.gfxCtx);
+
+    gSPSegment(POLY_XLU_DISP++, 0x08,
+                (uintptr_t)Gfx_TwoTexScroll(play->state.gfxCtx, 0, 1 * (play->state.frames * 2),
+                                -1 * (play->state.frames * 2), 64, 64, 1, 1 * (play->state.frames * 4),
+                                1 * -(play->state.frames * 4), 32, 32));
+
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBronzeScaleColorDL);
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiScaleDL);
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiBronzeScaleWaterColorDL);
+    gSPDisplayList(POLY_XLU_DISP++, (Gfx*)gGiScaleWaterDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

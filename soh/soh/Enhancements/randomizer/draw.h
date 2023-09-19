@@ -11,5 +11,6 @@ extern "C" void Randomizer_DrawKeyRing(PlayState* play, GetItemEntry* getItemEnt
 extern "C" void Randomizer_DrawBossKey(PlayState* play, GetItemEntry* getItemEntry);
 extern "C" void Randomizer_DrawDoubleDefense(PlayState* play, GetItemEntry getItemEntry);
 extern "C" void Randomizer_DrawIceTrap(PlayState* play, GetItemEntry getItemEntry);
+extern "C" void Randomizer_DrawBronzeScale(PlayState* play, GetItemEntry* getItemEntry);
 
 #endif
