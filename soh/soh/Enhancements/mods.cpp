@@ -1,7 +1,6 @@
 #include "mods.h"
 #include <libultraship/bridge.h>
 #include "game-interactor/GameInteractor.h"
-#include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "tts/tts.h"
 #include "soh/Enhancements/boss-rush/BossRushTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
@@ -21,6 +20,7 @@
 #include "src/overlays/actors/ovl_En_Poh/z_en_poh.h"
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
+#include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 
 extern "C" {
 #include <z64.h>
@@ -952,6 +952,28 @@ void RegisterAltTrapTypes() {
     });
 }
 
+void RegisterRandomizerSheikSpawn() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
+        if (!gPlayState) return;
+        bool canSheik = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIAL_COUNT) != RO_GANONS_TRIALS_SKIP && 
+          OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LIGHT_ARROWS_HINT));
+        if (!gSaveContext.n64ddFlag || !LINK_IS_ADULT || !canSheik) return;
+        switch (gPlayState->sceneNum) {
+            case SCENE_TEMPLE_OF_TIME:
+                if (gPlayState->roomCtx.curRoom.num == 1) {
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, -104, -40, 2382, 0, 0x8000, 0, SHEIK_TYPE_RANDO, false);
+                }
+                break;
+            case SCENE_INSIDE_GANONS_CASTLE:
+                if (gPlayState->roomCtx.curRoom.num == 1){
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, 101, 150, 137, 0, 0, 0, SHEIK_TYPE_RANDO, false);
+                    }
+                break;
+            default: break;
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -976,5 +998,6 @@ void InitMods() {
     RegisterMirrorModeHandler();
     RegisterEnemyDefeatCounts();
     RegisterAltTrapTypes();
+    RegisterRandomizerSheikSpawn();
     NameTag_RegisterHooks();
 }
