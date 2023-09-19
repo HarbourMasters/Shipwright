@@ -51,6 +51,10 @@ void GameInteractor_ExecuteOnUpdateFileNameSelection(int16_t charCode);
 
 // MARK: - Game
 void GameInteractor_ExecuteOnSetGameLanguage();
+
+//MARK: - Pause Menu
+void GameInteractor_ExecuteOnPauseMenu();
+
 #ifdef __cplusplus
 }
 #endif

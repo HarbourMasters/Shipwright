@@ -3,7 +3,9 @@
 #include <stdint.h>
 #include "soh/Enhancements/gameconsole.h"
 #include "global.h"
-#include "../custom-message/CustomMessageTypes.h"
+#include <soh/Enhancements/custom-message/CustomMessageTypes.h>
+
+#include "luslog.h"
 
 // Defining the structure for the pause warp state, which holds different flags and cooldowns
 typedef struct {
@@ -67,6 +69,7 @@ void HandleCooldowns(PauseWarpState* state) {
 
 // The main function that gets called every frame
 void PauseWarp_Main() {
+    LUSLOG_CRITICAL("PauseWarp_Main Called");
     static PauseWarpState state;  // The state is static so it retains its value between function calls
 
     // Checking if the pause warp feature is enabled
