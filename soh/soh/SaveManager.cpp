@@ -224,6 +224,12 @@ void SaveManager::LoadRandomizerVersion2() {
     std::string gregHintText;
     SaveManager::Instance->LoadData("gregHintText", gregHintText);
     memcpy(gSaveContext.gregHintText, gregHintText.c_str(), gregHintText.length());
+    std::string sheikText;
+    SaveManager::Instance->LoadData("sheikText", sheikText);
+    memcpy(gSaveContext.sheikText, sheikText.c_str(), sheikText.length() + 1);
+    std::string sariaText;
+    SaveManager::Instance->LoadData("sariaText", sariaText);
+    memcpy(gSaveContext.sariaText, sariaText.c_str(), sariaText.length() + 1);
     std::string warpMinuetText;
     SaveManager::Instance->LoadData("warpMinuetText", warpMinuetText);
     memcpy(gSaveContext.warpMinuetText, warpMinuetText.c_str(), warpMinuetText.length());
@@ -321,6 +327,8 @@ void SaveManager::SaveRandomizer(SaveContext* saveContext, int sectionID, bool f
     SaveManager::Instance->SaveData("ganonText", saveContext->ganonText);
     SaveManager::Instance->SaveData("dampeText", saveContext->dampeText);
     SaveManager::Instance->SaveData("gregHintText", saveContext->gregHintText);
+    SaveManager::Instance->SaveData("sheikText", saveContext->sheikText);
+    SaveManager::Instance->SaveData("sariaText", saveContext->sariaText);
     SaveManager::Instance->SaveData("warpMinuetText", saveContext->warpMinuetText);
     SaveManager::Instance->SaveData("warpBoleroText", saveContext->warpBoleroText);
     SaveManager::Instance->SaveData("warpSerenadeText", saveContext->warpSerenadeText);

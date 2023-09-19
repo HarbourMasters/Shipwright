@@ -307,13 +307,16 @@ typedef struct {
     /*        */ char gregHintText[250];
     /*        */ char ganonText[250];
     /*        */ char dampeText[150];
+    /*        */ char sheikText[150];
+    /*        */ char sariaText[150];
     /*        */ char warpMinuetText[100];
     /*        */ char warpBoleroText[100];
     /*        */ char warpSerenadeText[100];
     /*        */ char warpRequiemText[100];
     /*        */ char warpNocturneText[100];
     /*        */ char warpPreludeText[100];
-    /*        */ RandomizerCheck ganonHintCheck;
+    /*        */ RandomizerCheck lightArrowHintCheck;
+    /*        */ RandomizerCheck sariaCheck;
     /*        */ RandomizerCheck gregCheck;
     /*        */ RandomizerCheck dampeCheck;
     /*        */ char inputSeed[1024];
