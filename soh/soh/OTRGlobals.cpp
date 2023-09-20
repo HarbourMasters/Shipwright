@@ -715,7 +715,131 @@ extern "C" void OTRExtScanner() {
     }
 }
 
+typedef struct {
+    int16_t major;
+    int16_t minor;
+    int16_t patch;
+} OTRVersion;
+
+// Read the soh version from an OTR file
+OTRVersion ReadSohVersionFromOTR(std::string otrPath) {
+    OTRVersion version = {};
+
+    // Use a temporary archive instance to load the otr and read the version file
+    auto archive = std::make_shared<LUS::Archive>(otrPath, "", std::unordered_set<uint32_t>(), false);
+    if (archive->IsMainMPQValid()) {
+        auto t = archive->LoadFile("sohVersion", false);
+        if (t != nullptr && t->IsLoaded) {
+            auto stream = std::make_shared<LUS::MemoryStream>(t->Buffer.data(), t->Buffer.size());
+            auto reader = std::make_shared<LUS::BinaryReader>(stream);
+            LUS::Endianness endianness = (LUS::Endianness)reader->ReadUByte();
+            reader->SetEndianness(endianness);
+            version.major = reader->ReadInt16();
+            version.minor = reader->ReadInt16();
+            version.patch = reader->ReadInt16();
+        }
+    }
+
+    archive = nullptr;
+
+    return version;
+}
+
+// Check that a soh.otr exists and matches the version of soh running
+// Otherwise show a message and exit
+void CheckSoHOTRVersion(std::string otrPath) {
+    const char msg[] = "Please extract the soh.otr from the Ship of Harkinian download to your folder.\n\nExiting...";
+
+    if (!std::filesystem::exists(otrPath)) {
+#if not defined(__SWITCH__) && not defined(__WIIU__)
+        Extractor::ShowErrorBox("soh.otr file is missing", msg);
+        exit(1);
+#elif defined(__SWITCH__)
+        LUS::Switch::PrintErrorMessageToScreen("\x1b[2;2HYou are missing the soh.otr file."
+                                               "\x1b[4;2HPlease re-extract it from the download.");
+#elif defined(__WIIU__)
+        OSFatal(msg);
+        exit(1);
+#endif
+    }
+
+    OTRVersion otrVersion = ReadSohVersionFromOTR(otrPath);
+
+    if (otrVersion.major != gBuildVersionMajor || otrVersion.minor != gBuildVersionMinor || otrVersion.patch != gBuildVersionPatch) {
+#if not defined(__SWITCH__) && not defined(__WIIU__)
+        Extractor::ShowErrorBox("soh.otr file version does not match", msg);
+        exit(1);
+#elif defined(__SWITCH__)
+        LUS::Switch::PrintErrorMessageToScreen("\x1b[2;2HYou have an old soh.otr file."
+                                               "\x1b[4;2HPlease re-extract it from the download.");
+#elif defined(__WIIU__)
+        OSFatal(msg);
+        exit(1);
+#endif
+    }
+}
+
+// Checks the program version stored in the otr and compares the major value to soh
+// For Windows/Mac/Linux if the version doesn't match, offer to 
+void DetectOTRVersion(std::string fileName, bool isMQ) {
+    bool isOtrOld = false;
+    std::string otrPath = LUS::Context::LocateFileAcrossAppDirs(fileName, appShortName);
+
+    // Doesn't exist so nothing to do here
+    if (!std::filesystem::exists(otrPath)) {
+        return;
+    }
+
+    OTRVersion otrVersion = ReadSohVersionFromOTR(otrPath);
+
+    if (otrVersion.major != gBuildVersionMajor) {
+        isOtrOld = true;
+    }
+
+    if (isOtrOld) {
+#if not defined(__SWITCH__) && not defined(__WIIU__)
+        char msgBuf[250];
+        char version[18]; // 5 digits for int16_max (x3) + separators + terminator
+
+        if (otrVersion.major != 0 || otrVersion.minor != 0 || otrVersion.patch != 0) {
+            snprintf(version, 18, "%d.%d.%d", otrVersion.major, otrVersion.minor, otrVersion.patch);
+        } else {
+            snprintf(version, 18, "no version found");
+        }
+
+        snprintf(msgBuf, 250,
+            "The %s file was generated with a different version of Ship of Harkinian.\nOTR version: %s\n\n"
+            "It is recommended to generate a new file to avoid issues. Would you like to regenerate it now?",
+            fileName.c_str(), version);
+
+        if (Extractor::ShowYesNoBox("Old OTR File Found", msgBuf) == IDYES) {
+            std::string installPath = LUS::Context::GetAppBundlePath();
+            if (!std::filesystem::exists(installPath + "/assets/extractor")) {
+                Extractor::ShowErrorBox("Extractor assets not found",
+                    "Unable to regenerate. Missing assets/extractor folder needed to generate OTR file.\n\nExiting...");
+                exit(1);
+            }
+
+            Extractor extract;
+            if (!extract.Run(isMQ ? RomSearchMode::MQ : RomSearchMode::Vanilla)) {
+                Extractor::ShowErrorBox("Error", "An error occured, no OTR file was generated.\n\nExiting...");
+                exit(1);
+            }
+            extract.CallZapd(installPath, LUS::Context::GetAppDirectoryPath(appShortName));
+        }
+#elif defined(__SWITCH__)
+        LUS::Switch::PrintErrorMessageToScreen("\x1b[2;2HYou've launched the Ship with an old OTR file."
+                                               "\x1b[4;2HPlease regenerate a new OTR and relaunch.");
+#elif defined(__WIIU__)
+        LUS::WiiU::ThrowInvalidOTR();
+        exit(1);
+#endif
+    }
+}
+
 extern "C" void InitOTR() {
+    CheckSoHOTRVersion(LUS::Context::GetPathRelativeToAppBundle("soh.otr"));
+
 #if not defined (__SWITCH__) && not defined(__WIIU__)
     if (!std::filesystem::exists(LUS::Context::LocateFileAcrossAppDirs("oot-mq.otr", appShortName)) &&
         !std::filesystem::exists(LUS::Context::LocateFileAcrossAppDirs("oot.otr", appShortName))){
@@ -723,7 +847,7 @@ extern "C" void InitOTR() {
         std::string installPath = LUS::Context::GetAppBundlePath();
         if (!std::filesystem::exists(installPath + "/assets/extractor")) {
             Extractor::ShowErrorBox("Extractor assets not found",
-                "No OTR files found. Missing assets/extractor folder needed to generate OTR file. Exiting...");
+                "No OTR files found. Missing assets/extractor folder needed to generate OTR file.\n\nExiting...");
             exit(1);
         }
 
@@ -731,7 +855,7 @@ extern "C" void InitOTR() {
         if (Extractor::ShowYesNoBox("No OTR Files", "No OTR files found. Generate one now?") == IDYES) {
             Extractor extract;
             if (!extract.Run()) {
-                Extractor::ShowErrorBox("Error", "An error occured, no OTR file was generated. Exiting...");
+                Extractor::ShowErrorBox("Error", "An error occured, no OTR file was generated.\n\nExiting...");
                 exit(1);
             }
             extract.CallZapd(installPath, LUS::Context::GetAppDirectoryPath(appShortName));
@@ -742,13 +866,16 @@ extern "C" void InitOTR() {
         if (Extractor::ShowYesNoBox("Extraction Complete", "ROM Extracted. Extract another?") == IDYES) {
             Extractor extract;
             if (!extract.Run(generatedOtrIsMQ ? RomSearchMode::Vanilla : RomSearchMode::MQ)) {
-                Extractor::ShowErrorBox("Error", "An error occured, an OTR file may have been generated by a different step. Continuing...");
+                Extractor::ShowErrorBox("Error", "An error occured, an OTR file may have been generated by a different step.\n\nContinuing...");
             } else {
                 extract.CallZapd(installPath, LUS::Context::GetAppDirectoryPath(appShortName));
             }
         }
     }
 #endif
+
+    DetectOTRVersion("oot.otr", false);
+    DetectOTRVersion("oot-mq.otr", true);
 
 #ifdef __SWITCH__
     LUS::Switch::Init(LUS::PreInitPhase);

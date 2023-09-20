@@ -134,6 +134,7 @@ static void ExporterProgramEnd()
 		printf("Generating OTR Archive...\n");
 		otrArchive = LUS::Archive::CreateArchive(otrFileName, 40000);
 
+		printf("Adding version file.\n");
 		otrArchive->AddFile("version", (uintptr_t)versionStream->ToVector().data(), versionStream->GetLength());
 
 		printf("Adding sohVersion file.\n");
@@ -169,6 +170,17 @@ static void ExporterProgramEnd()
 
 	printf("Generating SoH OTR Archive...\n");
 	std::shared_ptr<LUS::Archive> sohOtr = LUS::Archive::CreateArchive("soh.otr", 4096);
+
+	// OTRTODO: Remove this dummy version after https://github.com/Kenix3/libultraship/pull/345 is merged
+	MemoryStream *dummyVersionStream = new MemoryStream();
+	BinaryWriter dummyWriter(dummyVersionStream);
+	dummyWriter.SetEndianness(Endianness::Big);
+	dummyWriter.Write(endianness);
+	dummyWriter.Write((uint32_t)0); // dummy version to satisfy LUS
+	dummyWriter.Close();
+
+	printf("Adding version file.\n");
+	sohOtr->AddFile("version", (uintptr_t)dummyVersionStream->ToVector().data(), dummyVersionStream->GetLength());
 
 	printf("Adding sohVersion file.\n");
 	sohOtr->AddFile("sohVersion", (uintptr_t)sohVersionStream->ToVector().data(), sohVersionStream->GetLength());
