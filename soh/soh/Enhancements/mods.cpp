@@ -979,6 +979,11 @@ void RegisterInstantTransitions() {
         if (CVarGetInteger("gInstantTransitions", 0)) {
             gPlayState->fadeTransition = 11;
             gSaveContext.nextTransitionType = 11;
+            //still play the transition when entering the haunted wasteland because if not,
+            //the sandstorm never appears
+            if (gPlayState->nextEntranceIndex == 0x0130 || gPlayState->nextEntranceIndex == 0x0365) {
+                gSaveContext.nextTransitionType = 14;
+            }
         }
     });
 }

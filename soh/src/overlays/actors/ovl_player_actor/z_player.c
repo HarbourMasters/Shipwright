@@ -9225,6 +9225,7 @@ void func_80845CA4(Player* this, PlayState* play) {
             }
 
             if (CVarGetInteger("gInstantTransitions", 0)) {
+                //instantly end the "walking" animation on scene load
                 func_8083CF5C(this, play);
             }
 
