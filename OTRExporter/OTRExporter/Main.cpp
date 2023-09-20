@@ -72,33 +72,23 @@ static void ExporterProgramEnd()
 	std::vector<int16_t> sohVersion = {};
 	std::vector<std::string> versionParts = StringHelper::Split(sohVersionString, ".");
 
-	for (auto val : versionParts)
-	{
-		int16_t num = 0;
-		try
-		{
-			num = std::stoi(val, nullptr);
-		}
-		catch (std::invalid_argument &e)
-		{
-			num = 0;
-		}
-		catch (std::out_of_range &e)
-		{
-			num = 0;
-		}
+	// If a major.minor.patch string was not passed in, fallback to 0 0 0 
+	if (versionParts.size() != 3) {
+		sohVersion = { 0, 0, 0 };
+	} else {
+		// Parse version values to number
+		for (const auto& val : versionParts) {
+			int16_t num = 0;
+			try {
+				num = std::stoi(val, nullptr);
+			} catch (std::invalid_argument &e) {
+				num = 0;
+			} catch (std::out_of_range &e) {
+				num = 0;
+			}
 
-		sohVersion.push_back(num);
-
-		// Ignore any extra values passed in
-		if (sohVersion.size() == 3)
-			break;
-	}
-
-	// Padded out missing values
-	while (sohVersion.size() < 3)
-	{
-		sohVersion.push_back(0);
+			sohVersion.push_back(num);
+		}
 	}
 
 	MemoryStream *sohVersionStream = new MemoryStream();

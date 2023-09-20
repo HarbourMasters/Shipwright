@@ -810,7 +810,7 @@ void DetectOTRVersion(std::string fileName, bool isMQ) {
 
         snprintf(msgBuf, 250,
             "The %s file was generated with a different version of Ship of Harkinian.\nOTR version: %s\n\n"
-            "It is recommended to generate a new file to avoid issues. Would you like to regenerate it now?",
+            "You must regenerate to be able to play, otherwise the program will exit.\nWould you like to regenerate it now?",
             fileName.c_str(), version);
 
         if (Extractor::ShowYesNoBox("Old OTR File Found", msgBuf) == IDYES) {
@@ -827,6 +827,8 @@ void DetectOTRVersion(std::string fileName, bool isMQ) {
                 exit(1);
             }
             extract.CallZapd(installPath, LUS::Context::GetAppDirectoryPath(appShortName));
+        } else {
+            exit(1);
         }
 #elif defined(__SWITCH__)
         LUS::Switch::PrintErrorMessageToScreen("\x1b[2;2HYou've launched the Ship with an old OTR file."
