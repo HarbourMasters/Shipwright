@@ -1,0 +1,29 @@
+<Root>
+    <File Name="object_hakach_objects" Segment="6">
+        <Texture Name="object_hakach_objectsTex_0062F0" OutName="object_hakach_objectsTex_0062F0" Format="rgba16" Width="32" Height="32" Offset="0x62F0" AddedByScript="true"/>
+        <DList Name="gBotwHoleTrap1DL" Offset="0x01B0"/>
+        <DList Name="gBotwHoleTrap2DL" Offset="0x03F0"/>
+        <DList Name="gBotwCoffinLidDL" Offset="0x06B0"/>
+        <DList Name="gBotwBombSpotDL" Offset="0x0A10"/>
+        <DList Name="gBotwFakeWallsAndFloorsDL" Offset="0x1060"/>
+        <DList Name="gBotwBloodSplatterDL" Offset="0x1250"/>
+        <DList Name="gBotwThreeFakeFloorsDL" Offset="0x1920"/>
+        <DList Name="gBotwWaterRingDL" Offset="0x1E50"/>
+        <DList Name="gBotwWaterFallDL" Offset="0x2010"/>
+
+        <Collision Name="gBotwCoffinLidCol" Offset="0x0870"/>
+        <Collision Name="gBotwBombSpotCol" Offset="0x0C2C"/>
+        <Collision Name="gBotw1Col" Offset="0x1830"/>
+        <Collision Name="gBotw2Col" Offset="0x1AB8"/>
+
+        <Texture Name="gBotwWater1Tex" OutName="water_1" Format="ia16" Width="32" Height="32" Offset="0x028F0"/>
+        <Texture Name="gBotwWater2Tex" OutName="water_2" Format="rgba16" Width="32" Height="32" Offset="0x020F0"/>
+        <Texture Name="gBotwTex_0030F0" Format="rgba16" Width="32" Height="32" Offset="0x30F0"/>
+        <Texture Name="gBotwBloodSplatterTex" OutName="blood_splatter" Format="ia16" Width="32" Height="32" Offset="0x38F0"/>
+        <Texture Name="gBotwTex_0040F0" Format="rgba16" Width="32" Height="32" Offset="0x40F0"/>
+        <Texture Name="gBotwTex_0048F0" Format="rgba16" Width="32" Height="32" Offset="0x48F0"/>
+        <Texture Name="gBotwTex_0050F0" Format="rgba16" Width="32" Height="32" Offset="0x50F0"/>
+        <Texture Name="gBotwTex_0058F0" Format="rgba16" Width="32" Height="32" Offset="0x58F0"/>
+        <Texture Name="gBotwTex_0060F0" Format="i4" Width="32" Height="32" Offset="0x60F0"/>
+    </File>
+</Root>
