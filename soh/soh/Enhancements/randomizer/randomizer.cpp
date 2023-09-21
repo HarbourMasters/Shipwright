@@ -3188,21 +3188,14 @@ void RandomizeWorldSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSe
         50, 10,
     });
     cvarSettings[RSK_BRIDGE_OPTIONS] = rand() % 3;
-    //Add one on if Greg is wildcard/required
-    if (cvarSettings[RSK_BRIDGE_OPTIONS] != RO_BRIDGE_STANDARD_REWARD) {
+    //Add one on if Greg is required
+    if (cvarSettings[RSK_BRIDGE_OPTIONS] == RO_BRIDGE_STANDARD_REWARD) {
         cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT] += 1;
         cvarSettings[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT] += 1;
         cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT] += 1;
         cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT] += 1;
 
     }
-#ifdef ENABLE_REMOTE_CONTROL
-    // Triforce Hunt Specific begin
-    cvarSettings[RSK_TRIFORCE_HUNT] = rand() % 2;
-    cvarSettings[RSK_TRIFORCE_HUNT_PIECES_TOTAL] = 30;
-    cvarSettings[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = 20;
-    // Triforce Hunt Specific end
-#endif
 
     //Shuffle Entrances
     cvarSettings[RSK_SHUFFLE_DUNGEON_ENTRANCES] = RandomDistribution({
@@ -3319,8 +3312,8 @@ void RandomizeItemSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSet
         50, 10,
     });
     cvarSettings[RSK_LACS_OPTIONS] = rand() % 3;
-    // Add one on if Greg is wildcard/required
-    if (cvarSettings[RSK_LACS_OPTIONS] != RO_LACS_STANDARD_REWARD) {
+    // Add one on if Greg is required
+    if (cvarSettings[RSK_LACS_OPTIONS] == RO_LACS_GREG_REWARD) {
         cvarSettings[RSK_LACS_STONE_COUNT] += 1;
         cvarSettings[RSK_LACS_MEDALLION_COUNT] += 1;
         cvarSettings[RSK_LACS_REWARD_COUNT] += 1;
@@ -3368,9 +3361,7 @@ void RandomizeGameplaySettings(std::unordered_map<RandomizerSettingKey, u8>& cva
 
 void RandomizeInventorySettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSettings) {
     //Starting Equipment
-    cvarSettings[RSK_LINKS_POCKET] = cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] != RO_DUNGEON_REWARDS_END_OF_DUNGEON
-                                         ? rand() % 4
-                                         : RO_LINKS_POCKET_DUNGEON_REWARD;
+    
     cvarSettings[RSK_STARTING_DEKU_SHIELD] = rand() % 2;
     cvarSettings[RSK_STARTING_KOKIRI_SWORD] = rand() % 2;
 
@@ -3413,7 +3404,11 @@ void RandomizeDependentSettings(std::unordered_map<RandomizerSettingKey, u8>& cv
         cvarSettings[RSK_SHUFFLE_OCARINA] = shuffleOption < 2 ? RO_GENERIC_ON : RO_GENERIC_OFF;
         cvarSettings[RSK_STARTING_OCARINA] = shuffleOption % 2 == 0 ? RO_GENERIC_ON : RO_GENERIC_OFF;
     }
-
+    if (options.randomizeStartingInventorySettings) {
+        cvarSettings[RSK_LINKS_POCKET] = cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] != RO_DUNGEON_REWARDS_END_OF_DUNGEON
+                                             ? rand() % 4
+                                             : RO_LINKS_POCKET_DUNGEON_REWARD;
+    }
 
 }
 
@@ -4336,7 +4331,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     "Random - Vanilla shop items will be shuffled among different shops, and each shop will contain a random number(1-4) of non-vanilla shop items.\n"
                 );
                 UIWidgets::EnhancementCombobox("gRandomizeShopsanity", randoShopsanity, RO_SHOPSANITY_OFF,
-                                               itemSettingsRandomized, disabledRandomMessage, RO_SHOPSANITY_OFF);
+                                               itemSettingsRandomized, disabledRandomMessage);
 
                 // Shopsanity Prices
                 switch (CVarGetInteger("gRandomizeShopsanity", RO_SHOPSANITY_OFF)) {
@@ -4948,8 +4943,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     randoItemPool, 
                     RO_ITEM_POOL_BALANCED,
                     gameplaySettingsRandomized, 
-                    disabledRandomMessage,
-                    RO_ITEM_POOL_BALANCED
+                    disabledRandomMessage
                 );
                 UIWidgets::PaddedSeparator();
 
@@ -4974,8 +4968,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     randoIceTraps,
                     RO_ICE_TRAPS_NORMAL,
                     gameplaySettingsRandomized, 
-                    disabledRandomMessage, 
-                    RO_ICE_TRAPS_NORMAL
+                    disabledRandomMessage
                 );
 
                 UIWidgets::PaddedSeparator();
@@ -4999,8 +4992,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     randoGossipStoneHints,
                     RO_GOSSIP_STONES_NEED_NOTHING, 
                     gameplaySettingsRandomized,
-                    disabledRandomMessage, 
-                    RO_GOSSIP_STONES_NEED_NOTHING
+                    disabledRandomMessage
                 );
                 if (CVarGetInteger("gRandomizeGossipStoneHints", RO_GOSSIP_STONES_NEED_NOTHING) != RO_GOSSIP_STONES_NONE) {
                     // Hint Clarity
@@ -5024,8 +5016,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         randoHintClarity, 
                         RO_HINT_CLARITY_CLEAR,
                         gameplaySettingsRandomized, 
-                        disabledRandomMessage,
-                        RO_GOSSIP_STONES_NEED_NOTHING
+                        disabledRandomMessage
                     );
 
                     // Hint Distribution
@@ -5047,8 +5038,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         randoHintDistribution,
                         RO_HINT_DIST_BALANCED, 
                         gameplaySettingsRandomized,
-                        disabledRandomMessage, 
-                        RO_GOSSIP_STONES_NEED_NOTHING
+                        disabledRandomMessage
                     );
                     ImGui::Unindent();
                 }
@@ -5770,8 +5760,7 @@ void RandomizerSettingsWindow::DrawElement() {
                         randoLinksPocket, 
                         RO_LINKS_POCKET_DUNGEON_REWARD, 
                         inventorySettingsRandomized, 
-                        disabledRandomMessage, 
-                        RO_LINKS_POCKET_DUNGEON_REWARD
+                        disabledRandomMessage
                     );
                     UIWidgets::PaddedSeparator();
                 }
