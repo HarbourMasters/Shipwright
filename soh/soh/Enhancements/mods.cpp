@@ -1011,11 +1011,8 @@ void InitMods() {
 
             func_8002F7DC(&player->actor, NA_SE_PL_SKIP);
         },
-        [](ModdedItem moddedItem) -> const char* {
-            return gItemIconGiantsWalletTex;
-        },
-        [](ModdedItem moddedItem, s32 language) -> const char* {
-            return gBombItemNameENGTex;
-        }
+        gItemIconGiantsWalletTex,
+        gBombItemNameENGTex,
+        "Roc's Feather"
     );
 }

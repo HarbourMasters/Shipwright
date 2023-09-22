@@ -10,6 +10,7 @@
 #include <string>
 #include <libultraship/bridge.h>
 #include <libultraship/libultraship.h>
+#include "soh/Enhancements/modded-items/ModdedItems.h"
 
 extern "C" {
 #include <z64.h>
@@ -138,6 +139,20 @@ std::map<uint32_t, ItemMapEntry> itemMapping = {
     ITEM_MAP_ENTRY(ITEM_HEART_PIECE),
     ITEM_MAP_ENTRY(ITEM_MAGIC_SMALL),
     ITEM_MAP_ENTRY(ITEM_MAGIC_LARGE)
+};
+
+typedef struct {
+    ModdedItem moddedItem;
+    std::string name;
+    std::string nameFaded;
+} ModdedItemMapEntry;
+
+std::map<ModdedItem, ModdedItemMapEntry> moddedItemMapping = {
+    {
+        { 2, 0 }, {
+            { 2, 0 }, "ITEM_TEST", "ITEM_TEST_Faded"
+        }
+    }
 };
 
 std::map<uint32_t, ItemMapEntry> gregMapping = {
@@ -626,9 +641,14 @@ void DrawBGSItemFlag(uint8_t itemID) {
 
 void DrawInventoryTab() {
     static bool restrictToValid = true;
+    static int modId = 0;
 
     ImGui::Checkbox("Restrict to valid items", &restrictToValid);
     UIWidgets::InsertHelpHoverText("Restricts items and ammo to only what is possible to legally acquire in-game");
+
+    if (restrictToValid) {
+        modId = 0;
+    }
 
     for (int32_t y = 0; y < 4; y++) {
         for (int32_t x = 0; x < 6; x++) {
@@ -645,13 +665,33 @@ void DrawInventoryTab() {
             ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1, 1, 0));
             ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
             uint8_t item = gSaveContext.inventory.items[index];
-            if (item != ITEM_NONE) {
-                const ItemMapEntry& slotEntry = itemMapping.find(item)->second;
-                if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0),
-                                       ImVec2(1, 1), 0)) {
-                    selectedIndex = index;
-                    ImGui::OpenPopup(itemPopupPicker);
+            uint8_t itemModId = gSaveContext.inventory.itemModIds[index];
+            if (item != ITEM_NONE || itemModId != 0) {
+                if (itemModId == 0) {
+                    const ItemMapEntry& slotEntry = itemMapping.find(item)->second;
+                    if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0),
+                                           ImVec2(1, 1), 0)) {
+                        selectedIndex = index;
+                        ImGui::OpenPopup(itemPopupPicker);
+                    }
+                } else {
+                    ModdedItem moddedItem = { itemModId, item };
+                    auto entry = moddedItemMapping.find(moddedItem);
+                    if (entry == moddedItemMapping.end()) {
+                        if (ImGui::Button("##itemNoneError", ImVec2(32.0f, 32.0f))) {
+                            selectedIndex = index;
+                            ImGui::OpenPopup(itemPopupPicker);
+                        }
+                    } else {
+                        const ModdedItemMapEntry& slotEntry = entry->second;
+                        if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0),
+                                               ImVec2(1, 1), 0)) {
+                            selectedIndex = index;
+                            ImGui::OpenPopup(itemPopupPicker);
+                        }
+                    }
                 }
+                
             } else {
                 if (ImGui::Button("##itemNone", ImVec2(32.0f, 32.0f))) {
                     selectedIndex = index;
@@ -663,8 +703,15 @@ void DrawInventoryTab() {
 
             ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
             if (ImGui::BeginPopup(itemPopupPicker)) {
+                if (!restrictToValid) {
+                    ImU16 one = 1;
+                    ImGui::InputScalar("Mod Id", ImGuiDataType_U8, &modId, &one);
+                    UIWidgets::InsertHelpHoverText("Changes the modId of the items that you can place in the item slots");
+                    ImGui::NewLine();
+                }
                 if (ImGui::Button("##itemNonePicker", ImVec2(32.0f, 32.0f))) {
                     gSaveContext.inventory.items[selectedIndex] = ITEM_NONE;
+                    gSaveContext.inventory.itemModIds[selectedIndex] = 0;
                     if (selectedIndex == SLOT_TRADE_ADULT) {
                         gSaveContext.adultTradeItems = 0;
                     }
@@ -673,6 +720,7 @@ void DrawInventoryTab() {
                 UIWidgets::SetLastItemHoverText("None");
 
                 std::vector<ItemMapEntry> possibleItems;
+                std::vector<ModdedItemMapEntry> possibleModdedItems;
                 if (restrictToValid) {
                     // Scan gItemSlots to find legal items for this slot. Bottles are a special case
                     for (int slotIndex = 0; slotIndex < 56; slotIndex++) {
@@ -688,26 +736,50 @@ void DrawInventoryTab() {
                     for (const auto& entry : itemMapping) {
                         possibleItems.push_back(entry.second);
                     }
+                    
+                    for (const auto& entry : moddedItemMapping) {
+                        if (entry.second.moddedItem.modId != modId) {
+                            continue;
+                        }
+                        possibleModdedItems.push_back(entry.second);
+                    }
                 }
 
-                for (int32_t pickerIndex = 0; pickerIndex < possibleItems.size(); pickerIndex++) {
-                    if (((pickerIndex + 1) % 8) != 0) {
-                        ImGui::SameLine();
-                    }
-                    const ItemMapEntry& slotEntry = possibleItems[pickerIndex];
-                    if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f),
-                                           ImVec2(0, 0), ImVec2(1, 1), 0)) {
-                        gSaveContext.inventory.items[selectedIndex] = slotEntry.id;
-                        // Set adult trade item flag if you're playing adult trade shuffle in rando  
-                        if (gSaveContext.n64ddFlag &&
-                            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
-                            selectedIndex == SLOT_TRADE_ADULT &&
-                            slotEntry.id >= ITEM_POCKET_EGG && slotEntry.id <= ITEM_CLAIM_CHECK) {
-                            gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(slotEntry.id);
+                if (modId == 0) {
+                    for (int32_t pickerIndex = 0; pickerIndex < possibleItems.size(); pickerIndex++) {
+                        if (((pickerIndex + 1) % 8) != 0) {
+                            ImGui::SameLine();
                         }
-                        ImGui::CloseCurrentPopup();
+                        const ItemMapEntry& slotEntry = possibleItems[pickerIndex];
+                        if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f),
+                                               ImVec2(0, 0), ImVec2(1, 1), 0)) {
+                            gSaveContext.inventory.items[selectedIndex] = slotEntry.id;
+                            gSaveContext.inventory.itemModIds[selectedIndex] = 0;
+                            // Set adult trade item flag if you're playing adult trade shuffle in rando
+                            if (gSaveContext.n64ddFlag &&
+                                OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
+                                selectedIndex == SLOT_TRADE_ADULT &&
+                                slotEntry.id >= ITEM_POCKET_EGG && slotEntry.id <= ITEM_CLAIM_CHECK) {
+                                gSaveContext.adultTradeItems |= ADULT_TRADE_FLAG(slotEntry.id);
+                            }
+                            ImGui::CloseCurrentPopup();
+                        }
+                        UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(slotEntry.id));
                     }
-                    UIWidgets::SetLastItemHoverText(SohUtils::GetItemName(slotEntry.id));
+                } else {
+                    for (int32_t pickerIndex = 0; pickerIndex < possibleModdedItems.size(); pickerIndex++) {
+                        if (((pickerIndex + 1) % 8) != 0) {
+                            ImGui::SameLine();
+                        }
+                        const ModdedItemMapEntry& slotEntry = possibleModdedItems[pickerIndex];
+                        if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f),
+                                               ImVec2(0, 0), ImVec2(1, 1), 0)) {
+                            gSaveContext.inventory.items[selectedIndex] = slotEntry.moddedItem.itemId;
+                            gSaveContext.inventory.itemModIds[selectedIndex] = slotEntry.moddedItem.modId;
+                            ImGui::CloseCurrentPopup();
+                        }
+                        UIWidgets::SetLastItemHoverText(ModdedItems_GetModdedItemName(slotEntry.moddedItem.modId, slotEntry.moddedItem.itemId));
+                    }
                 }
 
                 ImGui::EndPopup();
@@ -1808,6 +1880,11 @@ void SaveEditorWindow::InitElement() {
     for (const auto& entry : itemMapping) {
         LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, ImVec4(1, 1, 1, 1));
         LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
+    }
+    for (const auto& entry : moddedItemMapping) {
+        std::string texturePath = (char*)ModdedItems_GetModdedItemIcon(entry.second.moddedItem.modId, entry.second.moddedItem.itemId);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, texturePath, ImVec4(1, 1, 1, 1));
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, texturePath, ImVec4(1, 1, 1, 0.3f));
     }
     for (const auto& entry : gregMapping) {
         ImVec4 gregGreen = ImVec4(42.0f / 255.0f, 169.0f / 255.0f, 40.0f / 255.0f, 1.0f);

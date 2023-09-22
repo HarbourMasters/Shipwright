@@ -3,6 +3,7 @@
 
 #ifdef __cplusplus
 
+#include <string>
 #include <map>
 #include <functional>
 
@@ -24,10 +25,8 @@ struct ModdedItem {
 };
 
 using ModdedItemActionFunc = std::function<void(PlayState*, Player*, ModdedItem)>;
-using ModdedItemIconGetterFunc = std::function<const char*(ModdedItem)>;
-using ModdedItemNameGetterFunc = std::function<const char*(ModdedItem, s32)>;
 
-bool ModdedItems_RegisterModdedItem(s32 modId, s32 itemId, ModdedItemActionFunc itemAction, ModdedItemIconGetterFunc iconGetter, ModdedItemNameGetterFunc itemNameGetter);
+bool ModdedItems_RegisterModdedItem(s32 modId, s32 itemId, ModdedItemActionFunc itemAction, std::string itemIcon, std::string itemNameTexture, std::string itemName);
 
 extern "C" {
 #endif
@@ -35,6 +34,7 @@ extern "C" {
 void ModdedItems_ExecuteModdedItemAction(PlayState* play, Player* player, s32 modId, s32 itemId);
 void* ModdedItems_GetModdedItemIcon(s32 modId, s32 itemId);
 const char* ModdedItems_GetModdedItemNameTexture(s32 modId, s32 itemId, s32 language);
+const char* ModdedItems_GetModdedItemName(s32 modId, s32 itemId);
 
 #ifdef __cplusplus
 }

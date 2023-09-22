@@ -7,15 +7,16 @@
 #include "z64save.h"
 #include "variables.h"
 
-struct ModdedItemFuncs {
+struct ModdedItemData {
     ModdedItemActionFunc itemAction;
-    ModdedItemIconGetterFunc iconGetter;
-    ModdedItemNameGetterFunc itemNameGetter;
+    std::string itemIcon;
+    std::string itemNameTexture;
+    std::string itemName;
 };
 
-static std::map<ModdedItem, ModdedItemFuncs> moddedItems;
+static std::map<ModdedItem, ModdedItemData> moddedItems;
 
-bool ModdedItems_RegisterModdedItem(s32 modId, s32 itemId, ModdedItemActionFunc itemAction, ModdedItemIconGetterFunc iconGetter, ModdedItemNameGetterFunc itemNameGetter) {
+bool ModdedItems_RegisterModdedItem(s32 modId, s32 itemId, ModdedItemActionFunc itemAction, std::string itemIcon, std::string itemNameTexture, std::string itemName) {
     if (modId == 0) {
         //can't register a new vanilla item
         return false;
@@ -28,9 +29,9 @@ bool ModdedItems_RegisterModdedItem(s32 modId, s32 itemId, ModdedItemActionFunc 
         return false;
     }
 
-    ModdedItemFuncs moddedItemFuncs = { itemAction, iconGetter, itemNameGetter };
+    ModdedItemData moddedItemData = { itemAction, itemIcon, itemNameTexture, itemName };
 
-    moddedItems.insert({ moddedItem, moddedItemFuncs });
+    moddedItems.insert({ moddedItem, moddedItemData });
 
     return true;
 }
@@ -47,18 +48,28 @@ void* ModdedItems_GetModdedItemIcon(s32 modId, s32 itemId) {
     ModdedItem moddedItem = { modId, itemId };
 
     if (moddedItems.contains(moddedItem)) {
-        return (void*)moddedItems[moddedItem].iconGetter(moddedItem);
+        return (void*)moddedItems[moddedItem].itemIcon.c_str();
     }
 
 	//in case the item is not found
 	return (void*)gItemIconDekuStickTex;
 }
 
+const char* ModdedItems_GetModdedItemName(s32 modId, s32 itemId) {
+    ModdedItem moddedItem = { modId, itemId };
+
+    if (moddedItems.contains(moddedItem)) {
+        return moddedItems[moddedItem].itemName.c_str();
+    }
+
+	return "[Name not found]";
+}
+
 const char* ModdedItems_GetModdedItemNameTexture(s32 modId, s32 itemId, s32 language) {
     ModdedItem moddedItem = { modId, itemId };
 
     if (moddedItems.contains(moddedItem)) {
-        return moddedItems[moddedItem].itemNameGetter(moddedItem, language);
+        return moddedItems[moddedItem].itemNameTexture.c_str();
     }
 
 	//in case the item is not found
