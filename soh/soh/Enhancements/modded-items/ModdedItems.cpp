@@ -52,7 +52,7 @@ void* ModdedItems_GetModdedItemIcon(s32 modId, s32 itemId) {
     }
 
 	//in case the item is not found
-	return (void*)gItemIconDekuStickTex;
+	return (void*)gItemIconSoldOutTex;
 }
 
 const char* ModdedItems_GetModdedItemName(s32 modId, s32 itemId) {

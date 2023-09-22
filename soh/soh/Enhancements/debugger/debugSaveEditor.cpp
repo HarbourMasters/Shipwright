@@ -1881,6 +1881,8 @@ void SaveEditorWindow::InitElement() {
         LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, ImVec4(1, 1, 1, 1));
         LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
     }
+
+    //currently doesn't work because this is called before mods are initialized
     for (const auto& entry : moddedItemMapping) {
         std::string texturePath = (char*)ModdedItems_GetModdedItemIcon(entry.second.moddedItem.modId, entry.second.moddedItem.itemId);
         LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, texturePath, ImVec4(1, 1, 1, 1));
