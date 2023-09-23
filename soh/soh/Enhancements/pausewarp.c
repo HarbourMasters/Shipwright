@@ -16,6 +16,8 @@ extern bool IsSaveLoadedWrapper();
 
 static PauseWarpState state;
 
+static int lastPlayedSong = -1;
+
 bool IsPauseWarpEnabled() {
     return CVarGetInteger("gPauseWarpEnabled", 0) && IsSaveLoadedWrapper();
 }
@@ -72,11 +74,27 @@ void PauseWarp_Idle() {
 
     if (gSaveContext.inventory.items[SLOT_OCARINA] == ITEM_NONE) return ResetStateFlags(&state);
 
+    int currentSong = play->pauseCtx.cursorPoint[PAUSE_QUEST];
+    
     switch (play->msgCtx.msgMode) {
-        case 6: if (state.warpInitiated) state.textboxInitiated = true; break;
-        case 53: if (state.warpInitiated && state.textboxInitiated) state.inChoosingState = true; break;
-        case 54: if (state.warpInitiated && state.textboxInitiated && state.inChoosingState) HandleWarpConfirmation(play, player); break;
-        case 0: ResetStateFlags(&state); break;
+        case 6: 
+            if (state.warpInitiated) state.textboxInitiated = true; 
+            break;
+        case 53: 
+            if (state.warpInitiated && state.textboxInitiated) state.inChoosingState = true; 
+            break;
+        case 54: 
+            if (state.warpInitiated && state.textboxInitiated && state.inChoosingState) {
+                HandleWarpConfirmation(play, player); 
+                lastPlayedSong = currentSong; // Update the last played song
+            }
+            break;
+        case 0: 
+            if (currentSong == lastPlayedSong) {
+                // Reset state flags if the same song is selected twice
+                ResetStateFlags(&state);
+            }
+            break;
     }
 
     HandleCooldowns();
