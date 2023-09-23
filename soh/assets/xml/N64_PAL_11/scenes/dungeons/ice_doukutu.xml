@@ -6,7 +6,7 @@
         <Texture Name="ice_doukutu_sceneTex_010AC0" OutName="ice_doukutu_sceneTex_010AC0" Format="i8" Width="32" Height="32" Offset="0x10A00" AddedByScript="true"/>
         <Texture Name="ice_doukutu_sceneTex_010EC0" OutName="ice_doukutu_sceneTex_010EC0" Format="rgba16" Width="32" Height="32" Offset="0x10E00" AddedByScript="true"/>
         <Texture Name="ice_doukutu_sceneTLUT_00F8A0" OutName="ice_doukutu_sceneTLUT_00F8A0" Format="rgba16" Width="4" Height="4" Offset="0xF7E0" AddedByScript="true"/>
-        <Cutscene Name="gIceCavernSerenadeCs" Offset="0x250"/>
+        <Cutscene Name="gIceCavernSerenadeCs" Offset="0x254"/>
         <Texture Name="gIceCavernNightEntranceTex" OutName="night_entrance" Format="ia16" Width="64" Height="4" Offset="0xF800"/>
         <Texture Name="gIceCavernDayEntranceTex" OutName="day_entrance" Format="ia16" Width="64" Height="4" Offset="0xFA00"/>
         <Scene Name="ice_doukutu_scene" Offset="0x0"/>

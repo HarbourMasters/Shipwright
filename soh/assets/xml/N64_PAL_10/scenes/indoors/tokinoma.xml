@@ -10,7 +10,7 @@
         <Texture Name="tokinoma_sceneTex_0117A0" OutName="tokinoma_sceneTex_0117A0" Format="rgba16" Width="32" Height="32" Offset="0x117C0" AddedByScript="true"/>
         <Texture Name="tokinoma_sceneTex_011FA0" OutName="tokinoma_sceneTex_011FA0" Format="rgba16" Width="32" Height="32" Offset="0x11FC0" AddedByScript="true"/>
         <Cutscene Name="gTempleOfTimeFirstAdultCs" Offset="0x4700"/>
-        <Cutscene Name="gTempleOfTimePreludeCs" Offset="0x6D30"/>
+        <Cutscene Name="gTempleOfTimePreludeCs" Offset="0x6D34"/>
         <Cutscene Name="gTempleOfTimeIntroCs" Offset="0xCE20"/>
         <Scene Name="tokinoma_scene" Offset="0x0"/>
     </File>
