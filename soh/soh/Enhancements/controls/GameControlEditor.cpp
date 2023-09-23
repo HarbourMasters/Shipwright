@@ -217,11 +217,11 @@ namespace GameControlEditor {
     // CurrentPort is indexed started at 1 here due to the Generic tab, instead of 0 like in InputEditorWindow
     // Therefore CurrentPort - 1 must always be used inside this function instead of CurrentPort
     void DrawCustomButtons() {
-        auto inputEditorWindow = std::reinterpret_pointer_cast<LUS::InputEditorWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Input Editor"));
-        inputEditorWindow->DrawControllerSelect(CurrentPort - 1);
+        // auto inputEditorWindow = std::reinterpret_pointer_cast<LUS::InputEditorWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Input Editor"));
+        // inputEditorWindow->DrawControllerSelect(CurrentPort - 1);
         
-        inputEditorWindow->DrawButton("Modifier 1", BTN_MODIFIER1, CurrentPort - 1, &BtnReading);
-        inputEditorWindow->DrawButton("Modifier 2", BTN_MODIFIER2, CurrentPort - 1, &BtnReading);
+        // inputEditorWindow->DrawButton("Modifier 1", BTN_MODIFIER1, CurrentPort - 1, &BtnReading);
+        // inputEditorWindow->DrawButton("Modifier 2", BTN_MODIFIER2, CurrentPort - 1, &BtnReading);
     }
 
     void DrawCameraControlPanel(GameControlEditorWindow* window) {
@@ -388,9 +388,9 @@ namespace GameControlEditor {
                 DrawMiscControlPanel(this);
             } else {
                 DrawCustomButtons();
-                if (CurrentPort == 1 && LUS::Context::GetInstance()->GetControlDeck()->GetDeviceFromPortIndex(0)->CanSetLed()) {
-                    DrawLEDControlPanel(this);
-                }
+                // if (CurrentPort == 1 && LUS::Context::GetInstance()->GetControlDeck()->GetDeviceFromPortIndex(0)->CanSetLed()) {
+                //     DrawLEDControlPanel(this);
+                // }
             }
         }
         ImGui::End();
