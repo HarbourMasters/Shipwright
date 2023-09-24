@@ -3189,7 +3189,7 @@ void RandomizeWorldSettings(std::unordered_map<RandomizerSettingKey, u8>& cvarSe
     });
     cvarSettings[RSK_BRIDGE_OPTIONS] = rand() % 3;
     //Add one on if Greg is required
-    if (cvarSettings[RSK_BRIDGE_OPTIONS] == RO_BRIDGE_STANDARD_REWARD) {
+    if (cvarSettings[RSK_BRIDGE_OPTIONS] == RO_BRIDGE_GREG_REWARD) {
         cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT] += 1;
         cvarSettings[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT] += 1;
         cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT] += 1;
@@ -3383,7 +3383,8 @@ void RandomizeInventorySettings(std::unordered_map<RandomizerSettingKey, u8>& cv
     } else {
         numberToRandomize = rand() % 13;
     }
-    std::shuffle(songs.begin(), songs.end(), std::default_random_engine());
+    auto seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::shuffle(songs.begin(), songs.end(), std::default_random_engine(seed));
 
     for (auto key : songs) {
         if (numberAdded < numberToRandomize) {
@@ -3544,18 +3545,34 @@ void RandomizerSettingsWindow::DrawElement() {
 
     const char* disabledRandomMessage = "This setting will be randomly determined.";
 
+    const float randoSettingsItemWidth = 300.0f;
+    const float randosettingsSpacing = 2.0f;
+
     if (ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("World")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+            UIWidgets::Spacer(randosettingsSpacing);
             UIWidgets::EnhancementCheckbox("Randomize World Settings", "gRandomizeWorldSettings");
             UIWidgets::InsertHelpHoverText("Randomizes most of the world settings.");
             auto worldSettingsRandomized = CVarGetInteger("gRandomizeWorldSettings", RO_GENERIC_OFF) == RO_GENERIC_ON;
 
             if (worldSettingsRandomized) {
+
+                ImGui::PushItemWidth(randoSettingsItemWidth);
+
+                UIWidgets::PaddedSeparator();
+
                 AddCountRandomizationSettings();
+                
+                UIWidgets::PaddedSeparator();
+
                 UIWidgets::EnhancementCheckbox("Allow Decoupled Entrances", "gAllowDecoupledEntrances");
                 UIWidgets::InsertHelpHoverText("Allow the Decoupled Entrances setting to be randomized.");
+
+
+                ImGui::PopItemWidth();
             }
+            UIWidgets::Spacer(randosettingsSpacing);
 
             if (ImGui::BeginTable("tableRandoWorld", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Area Access", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -4166,19 +4183,25 @@ void RandomizerSettingsWindow::DrawElement() {
         if (ImGui::BeginTabItem("Items")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
 
+            UIWidgets::Spacer(randosettingsSpacing);
             UIWidgets::EnhancementCheckbox("Randomize Item Settings", "gRandomizeItemSettings");
             UIWidgets::InsertHelpHoverText("Randomizes most of the item settings.");
             auto itemSettingsRandomized = CVarGetInteger("gRandomizeItemSettings", RO_GENERIC_OFF) == RO_GENERIC_ON;
 
             if (itemSettingsRandomized) {
+                ImGui::PushItemWidth(randoSettingsItemWidth);
+                UIWidgets::PaddedSeparator();
                 UIWidgets::EnhancementCheckbox("Allow 100 GS Reward", "gAllow100GSReward");
                 UIWidgets::InsertHelpHoverText(
                     "Allows the 100 Gold Skulltula Token reward to potentially be shuffled. "
-                    "This may potentially allow Ganon's Boss Key to potentially be on the 100 "
+                    "This may allow Ganon's Boss Key to potentially be on the 100 "
                     "Golden Skulltula reward as well."
                 );
+                UIWidgets::PaddedSeparator();
                 AddCountRandomizationSettings();
+                ImGui::PopItemWidth();
             }
+            UIWidgets::Spacer(randosettingsSpacing);
 
             if (ImGui::BeginTable("tableRandoStartingInventory", 3,
                                   ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
@@ -4794,8 +4817,10 @@ void RandomizerSettingsWindow::DrawElement() {
 
         if (ImGui::BeginTabItem("Gameplay")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+            UIWidgets::Spacer(randosettingsSpacing);
             UIWidgets::EnhancementCheckbox("Randomize Gameplay Settings", "gRandomizeGameplaySettings");
             UIWidgets::InsertHelpHoverText("Randomizes most of the gameplay settings.");
+            UIWidgets::Spacer(randosettingsSpacing);
             auto gameplaySettingsRandomized = CVarGetInteger("gRandomizeGameplaySettings", RO_GENERIC_OFF) == RO_GENERIC_ON;
 
             if (ImGui::BeginTable("tableRandoGameplay", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
@@ -5713,6 +5738,7 @@ void RandomizerSettingsWindow::DrawElement() {
         if (ImGui::BeginTabItem("Starting Inventory")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
 
+            UIWidgets::Spacer(randosettingsSpacing);
             UIWidgets::EnhancementCheckbox("Randomize Starting Inventory Settings", "gRandomizeInventorySettings");
             UIWidgets::InsertHelpHoverText("Randomizes most of the starting inventory settings.");
 
@@ -5720,11 +5746,14 @@ void RandomizerSettingsWindow::DrawElement() {
                 CVarGetInteger("gRandomizeInventorySettings", RO_GENERIC_OFF) == RO_GENERIC_ON;
 
             if (inventorySettingsRandomized) {
+                UIWidgets::PaddedSeparator();
+                ImGui::PushItemWidth(randoSettingsItemWidth);
                 static const char* songCountOptions[2] = { "Set Number", "Random" };
                 ImGui::Text("Number of Random Starting Songs");
                 UIWidgets::EnhancementCombobox("gRandomizeSongsType", songCountOptions, RO_SONG_COUNT_SET_NUMBER);
 
                 if (CVarGetInteger("gRandomizeSongsType", RO_SONG_COUNT_SET_NUMBER) == RO_SONG_COUNT_SET_NUMBER) {
+                    UIWidgets::Spacer(randosettingsSpacing);
                     UIWidgets::EnhancementSliderInt(
                         "Count: %d", 
                         "##RandoSongsCount",
@@ -5735,7 +5764,9 @@ void RandomizerSettingsWindow::DrawElement() {
                         0
                     );
                 }
+                ImGui::PopItemWidth();
             }
+            UIWidgets::Spacer(randosettingsSpacing);
 
             if (ImGui::BeginTable("tableRandoStartingInventory", 3,
                                   ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
