@@ -155,13 +155,12 @@ void DrawShipMenu() {
         }
 #if !defined(__SWITCH__) && !defined(__WIIU__)
         UIWidgets::Spacer(0);
-#if defined(__APPLE__) || defined(__WINDOWS__) || defined(__LINUX__)
         if (ImGui::MenuItem("Open App Files Folder")) {
             std::string filesPath = LUS::Context::GetInstance()->GetAppDirectoryPath();
             SDL_OpenURL(std::string("file:///" + std::filesystem::absolute(filesPath).string()).c_str());
         }
         UIWidgets::Spacer(0);
-#endif
+
         if (ImGui::MenuItem("Quit")) {
             LUS::Context::GetInstance()->GetWindow()->Close();
         }
