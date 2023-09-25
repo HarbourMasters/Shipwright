@@ -240,7 +240,7 @@ namespace UIWidgets {
         std::string comboName = std::string("##") + std::string(cvarName);
         if (ImGui::BeginCombo(comboName.c_str(), comboArray[selected])) {
             for (uint8_t i = 0; i < comboArray.size(); i++) {
-                if (strlen(comboArray[i]) >= 1) {
+                if (strlen(comboArray[i]) > 0) {
                     if (ImGui::Selectable(comboArray[i], i == selected)) {
                         CVarSetInteger(cvarName, i);
                         selected = i;
