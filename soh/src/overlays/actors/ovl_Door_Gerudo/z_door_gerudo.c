@@ -105,7 +105,7 @@ void func_8099485C(DoorGerudo* this, PlayState* play) {
         this->actionFunc = func_8099496C;
         gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] -= 1;
 #ifdef ENABLE_REMOTE_CONTROL
-        Anchor_UpdateKeyCount(gSaveContext.mapIndex, gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]);
+        // Anchor_UpdateKeyCount(gSaveContext.mapIndex, gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]);
 #endif
         Flags_SetSwitch(play, this->dyna.actor.params & 0x3F);
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_CHAIN_KEY_UNLOCK);

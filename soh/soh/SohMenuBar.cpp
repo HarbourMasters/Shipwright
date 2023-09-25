@@ -1182,32 +1182,32 @@ void DrawEnhancementsMenu() {
 void DrawCheatsMenu() {
     if (ImGui::BeginMenu("Cheats"))
     {
-        if (ImGui::BeginMenu("Infinite...")) {
-            UIWidgets::EnhancementCheckbox("Money", "gInfiniteMoney");
-            UIWidgets::PaddedEnhancementCheckbox("Health", "gInfiniteHealth", true, false);
-            UIWidgets::PaddedEnhancementCheckbox("Ammo", "gInfiniteAmmo", true, false);
-            UIWidgets::PaddedEnhancementCheckbox("Magic", "gInfiniteMagic", true, false);
-            UIWidgets::PaddedEnhancementCheckbox("Nayru's Love", "gInfiniteNayru", true, false);
-            UIWidgets::PaddedEnhancementCheckbox("Epona Boost", "gInfiniteEpona", true, false);
+        // if (ImGui::BeginMenu("Infinite...")) {
+        //     UIWidgets::EnhancementCheckbox("Money", "gInfiniteMoney");
+        //     UIWidgets::PaddedEnhancementCheckbox("Health", "gInfiniteHealth", true, false);
+        //     UIWidgets::PaddedEnhancementCheckbox("Ammo", "gInfiniteAmmo", true, false);
+        //     UIWidgets::PaddedEnhancementCheckbox("Magic", "gInfiniteMagic", true, false);
+        //     UIWidgets::PaddedEnhancementCheckbox("Nayru's Love", "gInfiniteNayru", true, false);
+        //     UIWidgets::PaddedEnhancementCheckbox("Epona Boost", "gInfiniteEpona", true, false);
 
-            ImGui::EndMenu();
-        }
+        //     ImGui::EndMenu();
+        // }
 
-        UIWidgets::PaddedEnhancementCheckbox("No Clip", "gNoClip", true, false);
-        UIWidgets::Tooltip("Allows you to walk through walls");
-        UIWidgets::PaddedEnhancementCheckbox("Climb Everything", "gClimbEverything", true, false);
-        UIWidgets::Tooltip("Makes every surface in the game climbable");
+        // UIWidgets::PaddedEnhancementCheckbox("No Clip", "gNoClip", true, false);
+        // UIWidgets::Tooltip("Allows you to walk through walls");
+        // UIWidgets::PaddedEnhancementCheckbox("Climb Everything", "gClimbEverything", true, false);
+        // UIWidgets::Tooltip("Makes every surface in the game climbable");
         UIWidgets::PaddedEnhancementCheckbox("Hookshot Everything", "gHookshotEverything", true, false);
         UIWidgets::Tooltip("Makes every surface in the game hookshot-able");
-        UIWidgets::Spacer(2.0f);
-        UIWidgets::EnhancementSliderFloat("Hookshot Reach Multiplier: %.1fx", "##gCheatHookshotReachMultiplier", "gCheatHookshotReachMultiplier", 1.0f, 5.0f, "", 1.0f, false);
-        UIWidgets::EnhancementSliderFloat("Bomb Timer Multiplier: %.1fx", "##gBombTimerMultiplier", "gBombTimerMultiplier", 0.1f, 5.0f, "", 1.0f, false);
-        UIWidgets::PaddedEnhancementCheckbox("Moon Jump on L", "gMoonJumpOnL", true, false);
-        UIWidgets::Tooltip("Holding L makes you float into the air");
-        UIWidgets::PaddedEnhancementCheckbox("Super Tunic", "gSuperTunic", true, false);
-        UIWidgets::Tooltip("Makes every tunic have the effects of every other tunic");
-        UIWidgets::PaddedEnhancementCheckbox("Easy ISG", "gEzISG", true, false);
-        UIWidgets::Tooltip("Passive Infinite Sword Glitch\nIt makes your sword's swing effect and hitbox stay active indefinitely");
+        // UIWidgets::Spacer(2.0f);
+        // UIWidgets::EnhancementSliderFloat("Hookshot Reach Multiplier: %.1fx", "##gCheatHookshotReachMultiplier", "gCheatHookshotReachMultiplier", 1.0f, 5.0f, "", 1.0f, false);
+        // UIWidgets::EnhancementSliderFloat("Bomb Timer Multiplier: %.1fx", "##gBombTimerMultiplier", "gBombTimerMultiplier", 0.1f, 5.0f, "", 1.0f, false);
+        // UIWidgets::PaddedEnhancementCheckbox("Moon Jump on L", "gMoonJumpOnL", true, false);
+        // UIWidgets::Tooltip("Holding L makes you float into the air");
+        // UIWidgets::PaddedEnhancementCheckbox("Super Tunic", "gSuperTunic", true, false);
+        // UIWidgets::Tooltip("Makes every tunic have the effects of every other tunic");
+        // UIWidgets::PaddedEnhancementCheckbox("Easy ISG", "gEzISG", true, false);
+        // UIWidgets::Tooltip("Passive Infinite Sword Glitch\nIt makes your sword's swing effect and hitbox stay active indefinitely");
         UIWidgets::PaddedEnhancementCheckbox("Timeless Equipment", "gTimelessEquipment", true, false);
         UIWidgets::Tooltip("Allows any item to be equipped, regardless of age\nAlso allows Child to use Adult strength upgrades");
         UIWidgets::PaddedEnhancementCheckbox("Easy Frame Advancing", "gCheatEasyPauseBufferEnabled", true, false);
@@ -1231,31 +1231,31 @@ void DrawCheatsMenu() {
         UIWidgets::Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
         UIWidgets::PaddedEnhancementCheckbox("Time Sync", "gTimeSync", true, false);
         UIWidgets::Tooltip("This syncs the ingame time with the real world time");
-        UIWidgets::PaddedEnhancementCheckbox("No ReDead/Gibdo Freeze", "gNoRedeadFreeze", true, false);
-        UIWidgets::Tooltip("Prevents ReDeads and Gibdos from being able to freeze you with their scream");
-        UIWidgets::Spacer(2.0f);
-        if (ImGui::BeginMenu("Save States")) {
-            ImGui::TextColored({ 0.85f, 0.85f, 0.0f, 1.0f }, "          " ICON_FA_EXCLAMATION_TRIANGLE);
-            ImGui::SameLine();
-            ImGui::TextColored({ 0.85f, 0.35f, 0.0f, 1.0f }, " WARNING!!!! ");
-            ImGui::SameLine();
-            ImGui::TextColored({ 0.85f, 0.85f, 0.0f, 1.0f }, ICON_FA_EXCLAMATION_TRIANGLE);
-            UIWidgets::PaddedText("These are NOT like emulator states.", true, false);
-            UIWidgets::PaddedText("They do not save your game progress, and", true, false);
-            UIWidgets::PaddedText("they WILL break across transitions and", true, false);
-            UIWidgets::PaddedText("load zones (like doors). Support for", true, false);
-            UIWidgets::PaddedText("related issues will not be provided.", true, false);
-            if (UIWidgets::PaddedEnhancementCheckbox("I promise I have read the warning", "gSaveStatePromise", true, false)) {
-                CVarSetInteger("gSaveStatesEnabled", 0);
-                LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
-            }
-            if (CVarGetInteger("gSaveStatePromise", 0) == 1) {
-                UIWidgets::PaddedEnhancementCheckbox("I understand, enable save states", "gSaveStatesEnabled", true, false);
-                UIWidgets::Tooltip("F5 to save, F6 to change slots, F7 to load");
-            }
+        // UIWidgets::PaddedEnhancementCheckbox("No ReDead/Gibdo Freeze", "gNoRedeadFreeze", true, false);
+        // UIWidgets::Tooltip("Prevents ReDeads and Gibdos from being able to freeze you with their scream");
+        // UIWidgets::Spacer(2.0f);
+        // if (ImGui::BeginMenu("Save States")) {
+        //     ImGui::TextColored({ 0.85f, 0.85f, 0.0f, 1.0f }, "          " ICON_FA_EXCLAMATION_TRIANGLE);
+        //     ImGui::SameLine();
+        //     ImGui::TextColored({ 0.85f, 0.35f, 0.0f, 1.0f }, " WARNING!!!! ");
+        //     ImGui::SameLine();
+        //     ImGui::TextColored({ 0.85f, 0.85f, 0.0f, 1.0f }, ICON_FA_EXCLAMATION_TRIANGLE);
+        //     UIWidgets::PaddedText("These are NOT like emulator states.", true, false);
+        //     UIWidgets::PaddedText("They do not save your game progress, and", true, false);
+        //     UIWidgets::PaddedText("they WILL break across transitions and", true, false);
+        //     UIWidgets::PaddedText("load zones (like doors). Support for", true, false);
+        //     UIWidgets::PaddedText("related issues will not be provided.", true, false);
+        //     if (UIWidgets::PaddedEnhancementCheckbox("I promise I have read the warning", "gSaveStatePromise", true, false)) {
+        //         CVarSetInteger("gSaveStatesEnabled", 0);
+        //         LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
+        //     }
+        //     if (CVarGetInteger("gSaveStatePromise", 0) == 1) {
+        //         UIWidgets::PaddedEnhancementCheckbox("I understand, enable save states", "gSaveStatesEnabled", true, false);
+        //         UIWidgets::Tooltip("F5 to save, F6 to change slots, F7 to load");
+        //     }
 
-            ImGui::EndMenu();
-        }
+        //     ImGui::EndMenu();
+        // }
         UIWidgets::Spacer(2.0f);
 
         {
@@ -1557,9 +1557,9 @@ void DrawRemoteControlMenu() {
         }
 
         if (GameInteractor::Instance->isRemoteInteractorConnected && CVarGetInteger("gRemote.Scheme", GI_SCHEME_BUILT_IN) == GI_SCHEME_ANCHOR) {
-            if (ImGui::Button("Request State", ImVec2(ImGui::GetContentRegionAvail().x, 0.0f))) {
-                Anchor_RequestSaveStateFromRemote();
-            }
+            // if (ImGui::Button("Request State", ImVec2(ImGui::GetContentRegionAvail().x, 0.0f))) {
+            //     Anchor_RequestSaveStateFromRemote();
+            // }
 
             ImGui::Text("Players in Room:");
             ImGui::Text("%s", CVarGetString("gRemote.AnchorName", ""));

@@ -554,16 +554,16 @@ void Anchor_RequestSaveStateFromRemote() {
 void Anchor_ParseSaveStateFromRemote(nlohmann::json payload) {
     SaveContext loadedData = payload.get<SaveContext>();
 
-    gSaveContext.healthCapacity = loadedData.healthCapacity;
-    gSaveContext.magicLevel = loadedData.magicLevel;
-    gSaveContext.magicCapacity = gSaveContext.magic = loadedData.magicCapacity;
-    gSaveContext.isMagicAcquired = loadedData.isMagicAcquired;
-    gSaveContext.isDoubleMagicAcquired = loadedData.isDoubleMagicAcquired;
-    gSaveContext.isDoubleDefenseAcquired = loadedData.isDoubleDefenseAcquired;
-    gSaveContext.bgsFlag = loadedData.bgsFlag;
-    gSaveContext.swordHealth = loadedData.swordHealth;
+    // gSaveContext.healthCapacity = loadedData.healthCapacity;
+    // gSaveContext.magicLevel = loadedData.magicLevel;
+    // gSaveContext.magicCapacity = gSaveContext.magic = loadedData.magicCapacity;
+    // gSaveContext.isMagicAcquired = loadedData.isMagicAcquired;
+    // gSaveContext.isDoubleMagicAcquired = loadedData.isDoubleMagicAcquired;
+    // gSaveContext.isDoubleDefenseAcquired = loadedData.isDoubleDefenseAcquired;
+    // gSaveContext.bgsFlag = loadedData.bgsFlag;
+    // gSaveContext.swordHealth = loadedData.swordHealth;
     // TODO: Packet to live update this
-    gSaveContext.adultTradeItems = loadedData.adultTradeItems;
+    // gSaveContext.adultTradeItems = loadedData.adultTradeItems;
 
     for (int i = 0; i < 124; i++) {
         gSaveContext.sceneFlags[i] = loadedData.sceneFlags[i];
@@ -603,28 +603,28 @@ void Anchor_ParseSaveStateFromRemote(nlohmann::json payload) {
     }
 
     // Restore master sword state
-    u8 hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_SWORD, 1);
-    if (hasMasterSword) {
-        loadedData.inventory.equipment |= 0x2;
-    } else {
-        loadedData.inventory.equipment &= ~0x2;
-    }
+    // u8 hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_SWORD, 1);
+    // if (hasMasterSword) {
+    //     loadedData.inventory.equipment |= 0x2;
+    // } else {
+    //     loadedData.inventory.equipment &= ~0x2;
+    // }
 
     // Restore bottle contents (unless it's ruto's letter)
-    for (int i = 0; i < 4; i++) {
-        if (gSaveContext.inventory.items[SLOT_BOTTLE_1 + i] != ITEM_NONE && gSaveContext.inventory.items[SLOT_BOTTLE_1 + i] != ITEM_LETTER_RUTO) {
-            loadedData.inventory.items[SLOT_BOTTLE_1 + i] = gSaveContext.inventory.items[SLOT_BOTTLE_1 + i];
-        }
-    }
+    // for (int i = 0; i < 4; i++) {
+    //     if (gSaveContext.inventory.items[SLOT_BOTTLE_1 + i] != ITEM_NONE && gSaveContext.inventory.items[SLOT_BOTTLE_1 + i] != ITEM_LETTER_RUTO) {
+    //         loadedData.inventory.items[SLOT_BOTTLE_1 + i] = gSaveContext.inventory.items[SLOT_BOTTLE_1 + i];
+    //     }
+    // }
 
     // Restore ammo if it's non-zero, unless it's beans
-    for (int i = 0; i < ARRAY_COUNT(gSaveContext.inventory.ammo); i++) {
-        if (gSaveContext.inventory.ammo[i] != 0 && i != SLOT(ITEM_BEAN) && i != SLOT(ITEM_BEAN + 1)) {
-            loadedData.inventory.ammo[i] = gSaveContext.inventory.ammo[i];
-        }
-    }
+    // for (int i = 0; i < ARRAY_COUNT(gSaveContext.inventory.ammo); i++) {
+    //     if (gSaveContext.inventory.ammo[i] != 0 && i != SLOT(ITEM_BEAN) && i != SLOT(ITEM_BEAN + 1)) {
+    //         loadedData.inventory.ammo[i] = gSaveContext.inventory.ammo[i];
+    //     }
+    // }
 
-    gSaveContext.inventory = loadedData.inventory;
+    // gSaveContext.inventory = loadedData.inventory;
     Anchor_DisplayMessage({ .message = "State loaded from remote!" });
 };
 
@@ -721,30 +721,30 @@ void Anchor_RegisterHooks() {
         Anchor_SendClientData();
         Anchor_RequestSaveStateFromRemote();
     });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) {
-        if (itemEntry.modIndex == MOD_NONE && (itemEntry.itemId == ITEM_KEY_SMALL || itemEntry.itemId == ITEM_KEY_BOSS || itemEntry.itemId == ITEM_SWORD_MASTER)) {
-            return;
-        }
+    // GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) {
+    //     if (itemEntry.modIndex == MOD_NONE && (itemEntry.itemId == ITEM_KEY_SMALL || itemEntry.itemId == ITEM_KEY_BOSS || itemEntry.itemId == ITEM_SWORD_MASTER)) {
+    //         return;
+    //     }
 
-        // If the item exists in receivedItems, remove it from the list and don't emit the packet
-        auto it = std::find_if(receivedItems.begin(), receivedItems.end(), [itemEntry](std::pair<uint16_t, int16_t> pair) {
-            return pair.first == itemEntry.tableId && pair.second == itemEntry.getItemId;
-        });
-        if (it != receivedItems.end()) {
-            receivedItems.erase(it);
-            return;
-        }
+    //     // If the item exists in receivedItems, remove it from the list and don't emit the packet
+    //     auto it = std::find_if(receivedItems.begin(), receivedItems.end(), [itemEntry](std::pair<uint16_t, int16_t> pair) {
+    //         return pair.first == itemEntry.tableId && pair.second == itemEntry.getItemId;
+    //     });
+    //     if (it != receivedItems.end()) {
+    //         receivedItems.erase(it);
+    //         return;
+    //     }
 
-        if (!GameInteractor::Instance->isRemoteInteractorConnected || !GameInteractor::Instance->IsSaveLoaded()) return;
+    //     if (!GameInteractor::Instance->isRemoteInteractorConnected || !GameInteractor::Instance->IsSaveLoaded()) return;
 
-        nlohmann::json payload;
+    //     nlohmann::json payload;
 
-        payload["type"] = "GIVE_ITEM";
-        payload["modId"] = itemEntry.tableId;
-        payload["getItemId"] = itemEntry.getItemId;
+    //     payload["type"] = "GIVE_ITEM";
+    //     payload["modId"] = itemEntry.tableId;
+    //     payload["getItemId"] = itemEntry.getItemId;
 
-        GameInteractorAnchor::Instance->TransmitJsonToRemote(payload);
-    });
+    //     GameInteractorAnchor::Instance->TransmitJsonToRemote(payload);
+    // });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneFlagSet>([](int16_t sceneNum, int16_t flagType, int16_t flag) {
         if (!GameInteractor::Instance->isRemoteInteractorConnected || !GameInteractor::Instance->IsSaveLoaded()) return;
         nlohmann::json payload;

@@ -379,7 +379,7 @@ void func_80996B0C(DoorShutter* this, PlayState* play) {
             if (this->doorType != SHUTTER_BOSS) {
                 gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]--;
 #ifdef ENABLE_REMOTE_CONTROL
-                Anchor_UpdateKeyCount(gSaveContext.mapIndex, gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]);
+                // Anchor_UpdateKeyCount(gSaveContext.mapIndex, gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]);
 #endif
                 Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_CHAIN_KEY_UNLOCK);
             } else {

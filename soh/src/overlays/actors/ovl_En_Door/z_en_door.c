@@ -205,7 +205,7 @@ void EnDoor_Idle(EnDoor* this, PlayState* play) {
         if (this->lockTimer != 0) {
             gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]--;
 #ifdef ENABLE_REMOTE_CONTROL
-            Anchor_UpdateKeyCount(gSaveContext.mapIndex, gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]);
+            // Anchor_UpdateKeyCount(gSaveContext.mapIndex, gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]);
 #endif
             Flags_SetSwitch(play, this->actor.params & 0x3F);
             Audio_PlayActorSound2(&this->actor, NA_SE_EV_CHAIN_KEY_UNLOCK);

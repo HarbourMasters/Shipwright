@@ -5114,7 +5114,7 @@ s32 func_8083B040(Player* this, PlayState* play) {
                             if (this->exchangeItemId == EXCH_ITEM_BEAN) {
                                 Inventory_ChangeAmmo(ITEM_BEAN, -1);
 #ifdef ENABLE_REMOTE_CONTROL
-                                Anchor_UpdateBeansCount(AMMO(ITEM_BEAN));
+                                // Anchor_UpdateBeansCount(AMMO(ITEM_BEAN));
 #endif
                                 func_80835DE4(play, this, func_8084279C, 0);
                                 this->stateFlags1 |= PLAYER_STATE1_IN_CUTSCENE;
