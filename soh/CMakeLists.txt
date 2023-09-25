@@ -756,6 +756,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 INSTALL(FILES $<TARGET_PDB_FILE:soh> DESTINATION ./debug COMPONENT ship)
 endif()
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/../scripts/linux/appimage/soh.sh.in ${CMAKE_BINARY_DIR}/linux/soh.sh @ONLY)
+endif()
+
 find_program(CURL NAMES curl DOC "Path to the curl program.  Used to download files.")
 execute_process(COMMAND ${CURL} -sSfL https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt -o ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt OUTPUT_VARIABLE RESULT)
 
@@ -765,7 +769,6 @@ configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/macosx/soh-macos.sh.in ${CMAKE_BINAR
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION ../MacOS COMPONENT ship)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/soh/soh.otr DESTINATION ../Resources COMPONENT ship)
 elseif(NOT "${CMAKE_SYSTEM_NAME}" MATCHES "NintendoSwitch|CafeOS")
-configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/../scripts/linux/appimage/soh.sh.in ${CMAKE_BINARY_DIR}/linux/soh.sh @ONLY)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION . COMPONENT ship)
 endif()
 
