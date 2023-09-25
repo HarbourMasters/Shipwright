@@ -346,16 +346,24 @@ typedef struct {
     /*        */ char gregHintText[250];
     /*        */ char ganonText[250];
     /*        */ char dampeText[150];
+    /*        */ char sheikText[150];
+    /*        */ char sariaText[150];
     /*        */ char warpMinuetText[100];
     /*        */ char warpBoleroText[100];
     /*        */ char warpSerenadeText[100];
     /*        */ char warpRequiemText[100];
     /*        */ char warpNocturneText[100];
     /*        */ char warpPreludeText[100];
-    /*        */ RandomizerCheck ganonHintCheck;
+    /*        */ RandomizerCheck lightArrowHintCheck;
+    /*        */ RandomizerCheck sariaCheck;
     /*        */ RandomizerCheck gregCheck;
     /*        */ RandomizerCheck dampeCheck;
+<<<<<<< HEAD
     /*        */ char seed[255];
+=======
+    /*        */ char inputSeed[1024];
+    /*        */ u32 finalSeed;
+>>>>>>> 8fdee66610923c78b982d68d4e8b1a5a553ccacf
     /*        */ u8 seedIcons[5];
     /*        */ u16 randomizerInf[10];
     /*        */ u16 adultTradeItems;

@@ -153,63 +153,63 @@ std::map<uint16_t, std::string> itemTrackerDungeonShortNames = {
 std::vector<ItemTrackerItem> dungeonItems = {};
 
 std::unordered_map<uint32_t, ItemTrackerItem> actualItemTrackerItemMap = {
-    { ITEM_BOTTLE, ITEM_TRACKER_ITEM(ITEM_BOTTLE, 0, DrawItem) },
-    { ITEM_BIG_POE, ITEM_TRACKER_ITEM(ITEM_BIG_POE, 0, DrawItem) },
-    { ITEM_BLUE_FIRE, ITEM_TRACKER_ITEM(ITEM_BLUE_FIRE, 0, DrawItem) },
-    { ITEM_BUG, ITEM_TRACKER_ITEM(ITEM_BUG, 0, DrawItem) },
-    { ITEM_FAIRY, ITEM_TRACKER_ITEM(ITEM_FAIRY, 0, DrawItem) },
-    { ITEM_FISH, ITEM_TRACKER_ITEM(ITEM_FISH, 0, DrawItem) },
-    { ITEM_POTION_GREEN, ITEM_TRACKER_ITEM(ITEM_POTION_GREEN, 0, DrawItem) },
-    { ITEM_POE, ITEM_TRACKER_ITEM(ITEM_POE, 0, DrawItem) },
-    { ITEM_POTION_RED, ITEM_TRACKER_ITEM(ITEM_POTION_RED, 0, DrawItem) },
-    { ITEM_POTION_BLUE, ITEM_TRACKER_ITEM(ITEM_POTION_BLUE, 0, DrawItem) },
-    { ITEM_MILK_BOTTLE, ITEM_TRACKER_ITEM(ITEM_MILK_BOTTLE, 0, DrawItem) },
-    { ITEM_MILK_HALF, ITEM_TRACKER_ITEM(ITEM_MILK_HALF, 0, DrawItem) },
-    { ITEM_LETTER_RUTO, ITEM_TRACKER_ITEM(ITEM_LETTER_RUTO, 0, DrawItem) },
+    { ITEM_BOTTLE,           ITEM_TRACKER_ITEM(ITEM_BOTTLE, 0, DrawItem) },
+    { ITEM_BIG_POE,          ITEM_TRACKER_ITEM(ITEM_BIG_POE, 0, DrawItem) },
+    { ITEM_BLUE_FIRE,        ITEM_TRACKER_ITEM(ITEM_BLUE_FIRE, 0, DrawItem) },
+    { ITEM_BUG,              ITEM_TRACKER_ITEM(ITEM_BUG, 0, DrawItem) },
+    { ITEM_FAIRY,            ITEM_TRACKER_ITEM(ITEM_FAIRY, 0, DrawItem) },
+    { ITEM_FISH,             ITEM_TRACKER_ITEM(ITEM_FISH, 0, DrawItem) },
+    { ITEM_POTION_GREEN,     ITEM_TRACKER_ITEM(ITEM_POTION_GREEN, 0, DrawItem) },
+    { ITEM_POE,              ITEM_TRACKER_ITEM(ITEM_POE, 0, DrawItem) },
+    { ITEM_POTION_RED,       ITEM_TRACKER_ITEM(ITEM_POTION_RED, 0, DrawItem) },
+    { ITEM_POTION_BLUE,      ITEM_TRACKER_ITEM(ITEM_POTION_BLUE, 0, DrawItem) },
+    { ITEM_MILK_BOTTLE,      ITEM_TRACKER_ITEM(ITEM_MILK_BOTTLE, 0, DrawItem) },
+    { ITEM_MILK_HALF,        ITEM_TRACKER_ITEM(ITEM_MILK_HALF, 0, DrawItem) },
+    { ITEM_LETTER_RUTO,      ITEM_TRACKER_ITEM(ITEM_LETTER_RUTO, 0, DrawItem) },
 
-    { ITEM_HOOKSHOT, ITEM_TRACKER_ITEM(ITEM_HOOKSHOT, 0, DrawItem) },
-    { ITEM_LONGSHOT, ITEM_TRACKER_ITEM(ITEM_LONGSHOT, 0, DrawItem) },
+    { ITEM_HOOKSHOT,         ITEM_TRACKER_ITEM(ITEM_HOOKSHOT, 0, DrawItem) },
+    { ITEM_LONGSHOT,         ITEM_TRACKER_ITEM(ITEM_LONGSHOT, 0, DrawItem) },
 
-    { ITEM_OCARINA_FAIRY, ITEM_TRACKER_ITEM(ITEM_OCARINA_FAIRY, 0, DrawItem) },
-    { ITEM_OCARINA_TIME, ITEM_TRACKER_ITEM(ITEM_OCARINA_TIME, 0, DrawItem) },
+    { ITEM_OCARINA_FAIRY,    ITEM_TRACKER_ITEM(ITEM_OCARINA_FAIRY, 0, DrawItem) },
+    { ITEM_OCARINA_TIME,     ITEM_TRACKER_ITEM(ITEM_OCARINA_TIME, 0, DrawItem) },
 
-    { ITEM_MAGIC_SMALL, ITEM_TRACKER_ITEM(ITEM_MAGIC_SMALL, 0, DrawItem) },
-    { ITEM_MAGIC_LARGE, ITEM_TRACKER_ITEM(ITEM_MAGIC_LARGE, 0, DrawItem) },
+    { ITEM_MAGIC_SMALL,      ITEM_TRACKER_ITEM(ITEM_MAGIC_SMALL, 0, DrawItem) },
+    { ITEM_MAGIC_LARGE,      ITEM_TRACKER_ITEM(ITEM_MAGIC_LARGE, 0, DrawItem) },
 
-    { ITEM_WALLET_ADULT, ITEM_TRACKER_ITEM(ITEM_WALLET_ADULT, 0, DrawItem) },
-    { ITEM_WALLET_GIANT, ITEM_TRACKER_ITEM(ITEM_WALLET_GIANT, 0, DrawItem) },
+    { ITEM_WALLET_ADULT,     ITEM_TRACKER_ITEM(ITEM_WALLET_ADULT, 0, DrawItem) },
+    { ITEM_WALLET_GIANT,     ITEM_TRACKER_ITEM(ITEM_WALLET_GIANT, 0, DrawItem) },
 
-    { ITEM_BRACELET, ITEM_TRACKER_ITEM(ITEM_BRACELET, 0, DrawItem) },
+    { ITEM_BRACELET,         ITEM_TRACKER_ITEM(ITEM_BRACELET, 0, DrawItem) },
     { ITEM_GAUNTLETS_SILVER, ITEM_TRACKER_ITEM(ITEM_GAUNTLETS_SILVER, 0, DrawItem) },
-    { ITEM_GAUNTLETS_GOLD, ITEM_TRACKER_ITEM(ITEM_GAUNTLETS_GOLD, 0, DrawItem) },
+    { ITEM_GAUNTLETS_GOLD,   ITEM_TRACKER_ITEM(ITEM_GAUNTLETS_GOLD, 0, DrawItem) },
 
-    { ITEM_SCALE_SILVER, ITEM_TRACKER_ITEM(ITEM_SCALE_SILVER, 0, DrawItem) },
-    { ITEM_SCALE_GOLDEN, ITEM_TRACKER_ITEM(ITEM_SCALE_GOLDEN, 0, DrawItem) },
+    { ITEM_SCALE_SILVER,     ITEM_TRACKER_ITEM(ITEM_SCALE_SILVER, 0, DrawItem) },
+    { ITEM_SCALE_GOLDEN,     ITEM_TRACKER_ITEM(ITEM_SCALE_GOLDEN, 0, DrawItem) },
 
-    { ITEM_WEIRD_EGG, ITEM_TRACKER_ITEM(ITEM_WEIRD_EGG, 0, DrawItem) },
-    { ITEM_CHICKEN, ITEM_TRACKER_ITEM(ITEM_CHICKEN, 0, DrawItem) },
-    { ITEM_LETTER_ZELDA, ITEM_TRACKER_ITEM(ITEM_LETTER_ZELDA, 0, DrawItem) },
-    { ITEM_MASK_KEATON, ITEM_TRACKER_ITEM(ITEM_MASK_KEATON, 0, DrawItem) },
-    { ITEM_MASK_SKULL, ITEM_TRACKER_ITEM(ITEM_MASK_SKULL, 0, DrawItem) },
-    { ITEM_MASK_SPOOKY, ITEM_TRACKER_ITEM(ITEM_MASK_SPOOKY, 0, DrawItem) },
-    { ITEM_MASK_BUNNY, ITEM_TRACKER_ITEM(ITEM_MASK_BUNNY, 0, DrawItem) },
-    { ITEM_MASK_GORON, ITEM_TRACKER_ITEM(ITEM_MASK_GORON, 0, DrawItem) },
-    { ITEM_MASK_ZORA, ITEM_TRACKER_ITEM(ITEM_MASK_ZORA, 0, DrawItem) },
-    { ITEM_MASK_GERUDO, ITEM_TRACKER_ITEM(ITEM_MASK_GERUDO, 0, DrawItem) },
-    { ITEM_MASK_TRUTH, ITEM_TRACKER_ITEM(ITEM_MASK_TRUTH, 0, DrawItem) },
-    { ITEM_SOLD_OUT, ITEM_TRACKER_ITEM(ITEM_SOLD_OUT, 0, DrawItem) },
+    { ITEM_WEIRD_EGG,        ITEM_TRACKER_ITEM(ITEM_WEIRD_EGG, 0, DrawItem) },
+    { ITEM_CHICKEN,          ITEM_TRACKER_ITEM(ITEM_CHICKEN, 0, DrawItem) },
+    { ITEM_LETTER_ZELDA,     ITEM_TRACKER_ITEM(ITEM_LETTER_ZELDA, 0, DrawItem) },
+    { ITEM_MASK_KEATON,      ITEM_TRACKER_ITEM(ITEM_MASK_KEATON, 0, DrawItem) },
+    { ITEM_MASK_SKULL,       ITEM_TRACKER_ITEM(ITEM_MASK_SKULL, 0, DrawItem) },
+    { ITEM_MASK_SPOOKY,      ITEM_TRACKER_ITEM(ITEM_MASK_SPOOKY, 0, DrawItem) },
+    { ITEM_MASK_BUNNY,       ITEM_TRACKER_ITEM(ITEM_MASK_BUNNY, 0, DrawItem) },
+    { ITEM_MASK_GORON,       ITEM_TRACKER_ITEM(ITEM_MASK_GORON, 0, DrawItem) },
+    { ITEM_MASK_ZORA,        ITEM_TRACKER_ITEM(ITEM_MASK_ZORA, 0, DrawItem) },
+    { ITEM_MASK_GERUDO,      ITEM_TRACKER_ITEM(ITEM_MASK_GERUDO, 0, DrawItem) },
+    { ITEM_MASK_TRUTH,       ITEM_TRACKER_ITEM(ITEM_MASK_TRUTH, 0, DrawItem) },
+    { ITEM_SOLD_OUT,         ITEM_TRACKER_ITEM(ITEM_SOLD_OUT, 0, DrawItem) },
 
-    { ITEM_POCKET_EGG, ITEM_TRACKER_ITEM(ITEM_POCKET_EGG, 0, DrawItem) },
-    { ITEM_POCKET_CUCCO, ITEM_TRACKER_ITEM(ITEM_POCKET_CUCCO, 0, DrawItem) },
-    { ITEM_COJIRO, ITEM_TRACKER_ITEM(ITEM_COJIRO, 0, DrawItem) },
-    { ITEM_ODD_MUSHROOM, ITEM_TRACKER_ITEM(ITEM_ODD_MUSHROOM, 0, DrawItem) },
-    { ITEM_ODD_POTION, ITEM_TRACKER_ITEM(ITEM_ODD_POTION, 0, DrawItem) },
-    { ITEM_SAW, ITEM_TRACKER_ITEM(ITEM_SAW, 0, DrawItem) },
-    { ITEM_SWORD_BROKEN, ITEM_TRACKER_ITEM(ITEM_SWORD_BROKEN, 0, DrawItem) },
-    { ITEM_PRESCRIPTION, ITEM_TRACKER_ITEM(ITEM_PRESCRIPTION, 0, DrawItem) },
-    { ITEM_FROG, ITEM_TRACKER_ITEM(ITEM_FROG, 0, DrawItem) },
-    { ITEM_EYEDROPS, ITEM_TRACKER_ITEM(ITEM_EYEDROPS, 0, DrawItem) },
-    { ITEM_CLAIM_CHECK, ITEM_TRACKER_ITEM(ITEM_CLAIM_CHECK, 0, DrawItem) },
+    { ITEM_POCKET_EGG,       ITEM_TRACKER_ITEM(ITEM_POCKET_EGG, 0, DrawItem) },
+    { ITEM_POCKET_CUCCO,     ITEM_TRACKER_ITEM(ITEM_POCKET_CUCCO, 0, DrawItem) },
+    { ITEM_COJIRO,           ITEM_TRACKER_ITEM(ITEM_COJIRO, 0, DrawItem) },
+    { ITEM_ODD_MUSHROOM,     ITEM_TRACKER_ITEM(ITEM_ODD_MUSHROOM, 0, DrawItem) },
+    { ITEM_ODD_POTION,       ITEM_TRACKER_ITEM(ITEM_ODD_POTION, 0, DrawItem) },
+    { ITEM_SAW,              ITEM_TRACKER_ITEM(ITEM_SAW, 0, DrawItem) },
+    { ITEM_SWORD_BROKEN,     ITEM_TRACKER_ITEM(ITEM_SWORD_BROKEN, 0, DrawItem) },
+    { ITEM_PRESCRIPTION,     ITEM_TRACKER_ITEM(ITEM_PRESCRIPTION, 0, DrawItem) },
+    { ITEM_FROG,             ITEM_TRACKER_ITEM(ITEM_FROG, 0, DrawItem) },
+    { ITEM_EYEDROPS,         ITEM_TRACKER_ITEM(ITEM_EYEDROPS, 0, DrawItem) },
+    { ITEM_CLAIM_CHECK,      ITEM_TRACKER_ITEM(ITEM_CLAIM_CHECK, 0, DrawItem) },
 };
 
 std::vector<uint32_t> buttonMap = {
@@ -281,6 +281,18 @@ void SaveNotes(uint32_t fileNum) {
 bool IsValidSaveFile() {
     bool validSave = gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
     return validSave;
+}
+
+bool HasSong(ItemTrackerItem item) {
+    return (1 << item.id) & gSaveContext.inventory.questItems;
+}
+
+bool HasQuestItem(ItemTrackerItem item) {
+    return (item.data & gSaveContext.inventory.questItems) != 0;
+}
+
+bool HasEquipment(ItemTrackerItem item) {
+    return (item.data & gSaveContext.inventory.equipment) != 0;
 }
 
 ItemTrackerNumbers GetItemCurrentAndMax(ItemTrackerItem item) {
@@ -483,7 +495,7 @@ void DrawItemCount(ItemTrackerItem item) {
 }
 
 void DrawEquip(ItemTrackerItem item) {
-    bool hasEquip = (item.data & gSaveContext.inventory.equipment) != 0;
+    bool hasEquip = HasEquipment(item);
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasEquip && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize, iconSize), ImVec2(0, 0), ImVec2(1, 1));
@@ -492,7 +504,7 @@ void DrawEquip(ItemTrackerItem item) {
 }
 
 void DrawQuest(ItemTrackerItem item) {
-    bool hasQuestItem = (item.data & gSaveContext.inventory.questItems) != 0;
+    bool hasQuestItem = HasQuestItem(item);
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
     ImGui::BeginGroup();
     ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasQuestItem && IsValidSaveFile() ? item.name : item.nameFaded),
@@ -630,9 +642,8 @@ void DrawDungeonItem(ItemTrackerItem item) {
 
 void DrawSong(ItemTrackerItem item) {
     int iconSize = CVarGetInteger("gItemTrackerIconSize", 36);
-    uint32_t bitMask = 1 << item.id;
-    bool hasSong = (bitMask & gSaveContext.inventory.questItems) != 0;
     ImVec2 p = ImGui::GetCursorScreenPos();
+    bool hasSong = HasSong(item);
     ImGui::SetCursorScreenPos(ImVec2(p.x + 6, p.y));
     ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasSong && IsValidSaveFile() ? item.name : item.nameFaded),
                  ImVec2(iconSize / 1.5, iconSize), ImVec2(0, 0), ImVec2(1, 1));

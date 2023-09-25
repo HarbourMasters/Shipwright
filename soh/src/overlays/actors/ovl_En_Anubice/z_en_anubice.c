@@ -225,7 +225,7 @@ void EnAnubice_Idle(EnAnubice* this, PlayState* play) {
     if (this->actor.shape.yOffset > -2.0f) {
         this->actor.shape.yOffset = 0.0f;
 
-        if (player->swordState != 0) {
+        if (player->meleeWeaponState != 0) {
             this->actionFunc = EnAnubice_SetupShootFireball;
         } else if (this->isLinkOutOfRange) {
             this->actor.velocity.y = 0.0f;

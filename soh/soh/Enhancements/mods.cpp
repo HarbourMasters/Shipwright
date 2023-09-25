@@ -1,8 +1,11 @@
 #include "mods.h"
 #include <libultraship/bridge.h>
 #include "game-interactor/GameInteractor.h"
+<<<<<<< HEAD
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "boost_custom/container_hash/hash_32.hpp"
+=======
+>>>>>>> 8fdee66610923c78b982d68d4e8b1a5a553ccacf
 #include "tts/tts.h"
 #include "soh/Enhancements/boss-rush/BossRushTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
@@ -25,6 +28,7 @@
 #include "src/overlays/actors/ovl_En_Poh/z_en_poh.h"
 #include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
 #include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
+#include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 
 extern "C" {
 #include <z64.h>
@@ -144,7 +148,7 @@ void RegisterInfiniteISG() {
 
         if (CVarGetInteger("gEzISG", 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
-            player->swordState = 1;
+            player->meleeWeaponState = 1;
         }
     });
 }
@@ -583,7 +587,11 @@ void UpdateMirrorModeState(int32_t sceneNum) {
                         (sceneNum == SCENE_GANON_BOSS);
 
     if (mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) {
+<<<<<<< HEAD
         uint32_t seed = sceneNum + (gSaveContext.n64ddFlag ? boost::hash_32<std::string>{}(gSaveContext.seed) : gSaveContext.sohStats.fileCreatedAt);
+=======
+        uint32_t seed = sceneNum + (gSaveContext.n64ddFlag ? gSaveContext.finalSeed : gSaveContext.sohStats.fileCreatedAt);
+>>>>>>> 8fdee66610923c78b982d68d4e8b1a5a553ccacf
         Random_Init(seed);
     }
 
@@ -956,6 +964,28 @@ void RegisterAltTrapTypes() {
     });
 }
 
+void RegisterRandomizerSheikSpawn() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
+        if (!gPlayState) return;
+        bool canSheik = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIAL_COUNT) != RO_GANONS_TRIALS_SKIP && 
+          OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LIGHT_ARROWS_HINT));
+        if (!gSaveContext.n64ddFlag || !LINK_IS_ADULT || !canSheik) return;
+        switch (gPlayState->sceneNum) {
+            case SCENE_TEMPLE_OF_TIME:
+                if (gPlayState->roomCtx.curRoom.num == 1) {
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, -104, -40, 2382, 0, 0x8000, 0, SHEIK_TYPE_RANDO, false);
+                }
+                break;
+            case SCENE_INSIDE_GANONS_CASTLE:
+                if (gPlayState->roomCtx.curRoom.num == 1){
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, 101, 150, 137, 0, 0, 0, SHEIK_TYPE_RANDO, false);
+                    }
+                break;
+            default: break;
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -980,6 +1010,7 @@ void InitMods() {
     RegisterMirrorModeHandler();
     RegisterEnemyDefeatCounts();
     RegisterAltTrapTypes();
+    RegisterRandomizerSheikSpawn();
     NameTag_RegisterHooks();
     #ifdef ENABLE_REMOTE_CONTROL
     Anchor_RegisterHooks();

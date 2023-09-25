@@ -276,7 +276,7 @@ jobs:
       if: ${{ !vars.WINDOWS_RUNNER }}
       run: |
         choco install ninja
-        Remove-Item -Path "C:\ProgramData\Chocolatey\bin\ccache.exe" -Force
+        Remove-Item -Path "C:\ProgramData\Chocolatey\bin\ccache.exe" -Force -ErrorAction SilentlyContinue
     - uses: actions/checkout@v3
       with:
         submodules: true
