@@ -97,6 +97,21 @@ std::map<uint32_t, RandomizerCheck> startingShopItem = { { SCENE_KOKIRI_SHOP, RC
                                                          { SCENE_ZORA_SHOP, RC_ZD_SHOP_ITEM_1 },
                                                          { SCENE_GORON_SHOP, RC_GC_SHOP_ITEM_1 } };
 
+std::map<SceneID, RandomizerCheckArea> RCAreaFromSceneID = {
+    {SCENE_DEKU_TREE,              RCAREA_DEKU_TREE},
+    {SCENE_DODONGOS_CAVERN,        RCAREA_DODONGOS_CAVERN},
+    {SCENE_JABU_JABU,              RCAREA_JABU_JABUS_BELLY},
+    {SCENE_FOREST_TEMPLE,          RCAREA_FOREST_TEMPLE},
+    {SCENE_FIRE_TEMPLE,            RCAREA_FIRE_TEMPLE},
+    {SCENE_WATER_TEMPLE,           RCAREA_WATER_TEMPLE},
+    {SCENE_SHADOW_TEMPLE,          RCAREA_SHADOW_TEMPLE},
+    {SCENE_SPIRIT_TEMPLE,          RCAREA_SPIRIT_TEMPLE},
+    {SCENE_BOTTOM_OF_THE_WELL,     RCAREA_BOTTOM_OF_THE_WELL},
+    {SCENE_ICE_CAVERN,             RCAREA_ICE_CAVERN},
+    {SCENE_GERUDO_TRAINING_GROUND, RCAREA_GERUDO_TRAINING_GROUND},
+    {SCENE_INSIDE_GANONS_CASTLE,   RCAREA_GANONS_CASTLE},
+};
+
 std::map<RandomizerCheckArea, std::vector<RandomizerCheckObject>> checksByArea;
 bool areasFullyChecked[RCAREA_INVALID];
 u32 areasSpoiled = 0;
@@ -959,6 +974,7 @@ void CheckTrackerWindow::DrawElement() {
             if (doDraw)
                 ImGui::TreePop();
         }
+        areaMask <<= 1;
     }
 
     ImGui::EndTable(); //Checks Lead-out
@@ -1160,9 +1176,9 @@ bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
 
 void UpdateInventoryChecks() {
     //For all the areas with compasses, if you have one, spoil the area
-    for (u8 i = RCAREA_DEKU_TREE; i <= RCAREA_ICE_CAVERN; i++)
-        if (gSaveContext.inventory.dungeonItems[i - RCAREA_DEKU_TREE] & 0x02)
-            areasSpoiled |= (1 << i);
+    for (u8 i = SCENE_DEKU_TREE; i <= SCENE_GERUDO_TRAINING_GROUND; i++)
+        if (CHECK_DUNGEON_ITEM(DUNGEON_MAP, i))
+            areasSpoiled |= (1 << RCAreaFromSceneID.at((SceneID)i));
 }
 
 void UpdateAreaFullyChecked(RandomizerCheckArea area) {
