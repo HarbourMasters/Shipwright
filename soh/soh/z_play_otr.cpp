@@ -76,7 +76,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     OTRScene_ExecuteCommands(play, (LUS::Scene*)play->sceneSegment);
     Play_InitEnvironment(play, play->skyboxId);
     // Unpause the timer for Boss Rush when the scene loaded isn't the Chamber of Sages.
-    if (gSaveContext.isBossRush && play->sceneNum != SCENE_CHAMBER_OF_THE_SAGES) {
+    if (IS_BOSS_RUSH && play->sceneNum != SCENE_CHAMBER_OF_THE_SAGES) {
         gSaveContext.isBossRushPaused = 0;
     }
     /* auto data = static_cast<LUS::Vertex*>(LUS::Context::GetInstance()
@@ -87,6 +87,7 @@ void OTRPlay_InitScene(PlayState* play, s32 spawn) {
     auto data2 = ResourceMgr_LoadVtxByCRC(0x68d4ea06044e228f);*/
     
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneInit>(play->sceneNum);
+    SPDLOG_INFO("Scene Init - sceneNum: {0:#x}, entranceIndex: {1:#x}", play->sceneNum, gSaveContext.entranceIndex);
 
     volatile int a = 0;
 }

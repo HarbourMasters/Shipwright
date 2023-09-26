@@ -47,6 +47,55 @@ GameInteractionEffectQueryResult GameInteractionEffectBase::Remove() {
 
 namespace GameInteractionEffect {
 
+    // MARK: - Flags
+    GameInteractionEffectQueryResult SetSceneFlag::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        }
+
+        return GameInteractionEffectQueryResult::Possible;
+    }
+
+    void SetSceneFlag::_Apply() {
+        GameInteractor::RawAction::SetSceneFlag(parameters[0], parameters[1], parameters[2]);
+    }
+
+    GameInteractionEffectQueryResult UnsetSceneFlag::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        }
+
+        return GameInteractionEffectQueryResult::Possible;
+    }
+
+    void UnsetSceneFlag::_Apply() {
+        GameInteractor::RawAction::UnsetSceneFlag(parameters[0], parameters[1], parameters[2]);
+    }
+
+    GameInteractionEffectQueryResult SetFlag::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        }
+
+        return GameInteractionEffectQueryResult::Possible;
+    }
+
+    void SetFlag::_Apply() {
+        GameInteractor::RawAction::SetFlag(parameters[0], parameters[1]);
+    }
+
+    GameInteractionEffectQueryResult UnsetFlag::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded()) {
+            return GameInteractionEffectQueryResult::TemporarilyNotPossible;
+        }
+
+        return GameInteractionEffectQueryResult::Possible;
+    }
+
+    void UnsetFlag::_Apply() {
+        GameInteractor::RawAction::UnsetFlag(parameters[0], parameters[1]);
+    }
+
     // MARK: - ModifyHeartContainers
     GameInteractionEffectQueryResult ModifyHeartContainers::CanBeApplied() {
         if (!GameInteractor::IsSaveLoaded()) {
@@ -211,7 +260,8 @@ namespace GameInteractionEffect {
 
     // MARK: - KnockbackPlayer
     GameInteractionEffectQueryResult KnockbackPlayer::CanBeApplied() {
-        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused()) {
+        Player* player = GET_PLAYER(gPlayState);
+        if (!GameInteractor::IsSaveLoaded() || GameInteractor::IsGameplayPaused() || player->stateFlags2 & PLAYER_STATE2_CRAWLING) {
             return GameInteractionEffectQueryResult::TemporarilyNotPossible;
         } else {
             return GameInteractionEffectQueryResult::Possible;

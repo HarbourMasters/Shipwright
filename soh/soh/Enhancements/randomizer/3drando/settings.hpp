@@ -92,6 +92,11 @@ typedef enum {
 } LACSRewardOptionsSetting;
 
 typedef enum {
+    TRIFORCE_HUNT_OFF,
+    TRIFORCE_HUNT_ON,
+} TriforceHuntSetting;
+
+typedef enum {
     AGE_CHILD,
     AGE_ADULT,
     AGE_RANDOM,
@@ -249,6 +254,7 @@ typedef enum {
     GANONSBOSSKEY_LACS_DUNGEONS,
     GANONSBOSSKEY_LACS_TOKENS,
     GANONSBOSSKEY_FINAL_GS_REWARD,
+    GANONSBOSSKEY_TRIFORCE_HUNT,
 } GanonsBossKeySetting;
 
 typedef enum {
@@ -780,6 +786,9 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option BombchusInLogic;
   extern Option AmmoDrops;
   extern Option HeartDropRefill;
+  extern Option TriforceHunt;
+  extern Option TriforceHuntTotal;
+  extern Option TriforceHuntRequired;
   extern Option MQDungeonCount;
   extern Option SetDungeonTypes;
 
@@ -848,7 +857,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern Option ClearerHints;
   extern Option HintDistribution;
   extern Option AltarHintText;
-  extern Option GanondorfHintText;
+  extern Option LightArrowHintText;
   extern Option DampeHintText;
   extern Option GregHintText;
   extern Option Kak10GSHintText;

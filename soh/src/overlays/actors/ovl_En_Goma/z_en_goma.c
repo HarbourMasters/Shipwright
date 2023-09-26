@@ -733,7 +733,7 @@ void EnGoma_Update(Actor* thisx, PlayState* play) {
         EnGoma_LookAtPlayer(this, play);
         EnGoma_UpdateEyeEnvColor(this);
         this->visualState = 1;
-        if (player->swordState != 0) {
+        if (player->meleeWeaponState != 0) {
             this->colCyl2.dim.radius = 35;
             this->colCyl2.dim.height = 35;
             this->colCyl2.dim.yShift = 0;
@@ -804,7 +804,8 @@ void EnGoma_Draw(Actor* thisx, PlayState* play) {
             Matrix_RotateX(this->actor.shape.rot.x / (f32)0x8000 * M_PI, MTXMODE_APPLY);
             Matrix_RotateZ(this->actor.shape.rot.z / (f32)0x8000 * M_PI, MTXMODE_APPLY);
             Matrix_Scale(this->actor.scale.x, this->actor.scale.y, this->actor.scale.z, MTXMODE_APPLY);
-            SkelAnime_DrawOpa(play, this->skelanime.skeleton, this->skelanime.jointTable, EnGoma_OverrideLimbDraw,
+            SkelAnime_DrawSkeletonOpa(play, &this->skelanime,
+                                      EnGoma_OverrideLimbDraw,
                               NULL, this);
             break;
 

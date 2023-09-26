@@ -173,13 +173,6 @@ typedef enum {
     /* 99 */ FS_KBD_BTN_NONE = 99
 } KeyboardButton;
 
-typedef enum {
-    /* 00 */ FS_QUEST_NORMAL,
-    /* 01 */ FS_QUEST_MASTER,
-    /* 02 */ FS_QUEST_RANDOMIZER,
-    /* 03 */ FS_QUEST_BOSSRUSH,
-} FileSelectQuest;
-
 void FileChoose_SetupCopySource(GameState* thisx); 
 void FileChoose_SelectCopySource(GameState* thisx); 
 void FileChoose_SetupCopyDest1(GameState* thisx); 

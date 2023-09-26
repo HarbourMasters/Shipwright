@@ -204,7 +204,7 @@ void func_80ABA244(EnNiwLady* this, PlayState* play) {
     EnNiw* currentCucco;
     s32 phi_s1;
 
-    this->cuccosInPen = gSaveContext.n64ddFlag ? (7 - Randomizer_GetSettingValue(RSK_CUCCO_COUNT)) : 0;
+    this->cuccosInPen = IS_RANDO ? (7 - Randomizer_GetSettingValue(RSK_CUCCO_COUNT)) : 0;
     currentCucco = (EnNiw*)play->actorCtx.actorLists[ACTORCAT_PROP].head;
     while (currentCucco != NULL) {
         if (currentCucco->actor.id == ACTOR_EN_NIW) {
@@ -308,7 +308,7 @@ void func_80ABA654(EnNiwLady* this, PlayState* play) {
         if (!Flags_GetItemGetInf(ITEMGETINF_0C)) {
             this->actor.parent = NULL;
 
-            if (!gSaveContext.n64ddFlag) {
+            if (!IS_RANDO) {
                 this->getItemId = GI_BOTTLE;
                 func_8002F434(&this->actor, play, GI_BOTTLE, 100.0f, 50.0f);
             } else {
@@ -398,7 +398,7 @@ void func_80ABA9B8(EnNiwLady* this, PlayState* play) {
                 Message_CloseTextbox(play);
                 this->actor.parent = NULL;
 
-                if (!gSaveContext.n64ddFlag) {
+                if (!IS_RANDO) {
                     func_8002F434(&this->actor, play, GI_POCKET_EGG, 200.0f, 100.0f);
                 } else {
                     this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
@@ -433,7 +433,7 @@ void func_80ABAB08(EnNiwLady* this, PlayState* play) {
             case 0:
                 Message_CloseTextbox(play);
                 this->actor.parent = NULL;
-                if (!gSaveContext.n64ddFlag) {
+                if (!IS_RANDO) {
                     func_8002F434(&this->actor, play, GI_COJIRO, 200.0f, 100.0f);
                 } else {
                     this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_TRADE_POCKET_CUCCO, GI_COJIRO);
@@ -462,7 +462,7 @@ void func_80ABAC00(EnNiwLady* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         this->actionFunc = func_80ABAC84;
     } else {
-         if (gSaveContext.n64ddFlag) {
+         if (IS_RANDO) {
             getItemId = this->getItemEntry.getItemId;
             GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 200.0f, 100.0f);
             return;
@@ -483,7 +483,7 @@ void func_80ABAC84(EnNiwLady* this, PlayState* play) {
     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
     if (LINK_IS_ADULT) {
         // Flags for randomizer gives are set in the original message prompt choice handling
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             if (!Flags_GetItemGetInf(ITEMGETINF_2C)) {
                 Flags_SetItemGetInf(ITEMGETINF_2C);
             } else {
@@ -612,8 +612,7 @@ void EnNiwLady_Draw(Actor* thisx, PlayState* play) {
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->faceState]));
         gSPSegment(POLY_OPA_DISP++, 0x0C, func_80ABB0A0(play->state.gfxCtx));
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnNiwLady_OverrideLimbDraw, NULL, this);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnNiwLady_OverrideLimbDraw, NULL, this);
     }
     CLOSE_DISPS(play->state.gfxCtx);
 }

@@ -43,7 +43,7 @@ void EnRiverSound_Init(Actor* thisx, PlayState* play) {
         // Always have leading music in rando
         if (
             CVarGetInteger("gLostWoodsConsistentVolume", 0) ||
-            ((!CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) || CHECK_QUEST_ITEM(QUEST_SONG_SARIA)) && !gSaveContext.n64ddFlag)
+            ((!CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) || CHECK_QUEST_ITEM(QUEST_SONG_SARIA)) && !IS_RANDO)
         ) {
             Actor_Kill(&this->actor);
         }

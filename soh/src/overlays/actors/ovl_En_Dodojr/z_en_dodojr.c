@@ -648,7 +648,8 @@ void EnDodojr_Draw(Actor* thisx, PlayState* play) {
 
     if ((this->actionFunc != func_809F73AC) && (this->actionFunc != func_809F7BE4)) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, func_809F7D50, func_809F7DFC,
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, func_809F7D50,
+                                  func_809F7DFC,
                           &this->actor);
     }
 }

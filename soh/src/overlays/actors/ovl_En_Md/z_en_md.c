@@ -373,8 +373,8 @@ u16 EnMd_GetTextKokiriForest(PlayState* play, EnMd* this) {
     this->unk_209 = TEXT_STATE_NONE;
 
     // In rando, skip talking about the tree being dead so we can have the prompt for sword and shield instead
-    if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) ||
-        (gSaveContext.n64ddFlag && Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD) &&
+    if ((!IS_RANDO && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) ||
+        (IS_RANDO && Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD) &&
         Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE) &&
         !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH))) {
         return 0x1045;
@@ -489,7 +489,7 @@ u8 EnMd_ShouldSpawn(EnMd* this, PlayState* play) {
     // He will spawn in the forest if you haven't showed the sword and shield, and will remain
     // in the forest until you've obtained Zelda's letter or Deku Tree dies
     // This is to ensure Deku Tree can still be opened in dungeon entrance rando even if Ghoma is defeated
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         if (play->sceneNum == SCENE_LOST_WOODS) {
             return 1;
         }
@@ -681,8 +681,8 @@ void EnMd_Init(Actor* thisx, PlayState* play) {
 
     if (((play->sceneNum == SCENE_KOKIRI_FOREST) && !Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) ||
         ((play->sceneNum == SCENE_KOKIRI_FOREST) && (Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) &&
-         ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) ||
-          (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE)))) ||
+         ((!IS_RANDO && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) ||
+          (IS_RANDO && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE)))) ||
         ((play->sceneNum == SCENE_LOST_WOODS) && !Flags_GetEventChkInf(EVENTCHKINF_PLAYED_SARIAS_SONG_FOR_MIDO_AS_ADULT))) {
         this->actor.home.pos = this->actor.world.pos;
         this->actionFunc = func_80AAB948;
@@ -745,8 +745,8 @@ void func_80AAB948(EnMd* this, PlayState* play) {
     }
 
     if (this->interactInfo.talkState == NPC_TALK_STATE_ACTION) {
-        if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) ||
-            gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE) &&
+        if ((!IS_RANDO && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) ||
+            IS_RANDO && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE) &&
             Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
             (play->sceneNum == SCENE_KOKIRI_FOREST)) {
             play->msgCtx.msgMode = MSGMODE_PAUSED;
@@ -814,8 +814,8 @@ void func_80AABD0C(EnMd* this, PlayState* play) {
         return;
     }
 
-    if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) ||
-        gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE) &&
+    if ((!IS_RANDO && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) ||
+        IS_RANDO && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_DEKU_TREE) &&
         Flags_GetEventChkInf(EVENTCHKINF_SHOWED_MIDO_SWORD_SHIELD)) && !Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_MIDO_AFTER_DEKU_TREES_DEATH) &&
         (play->sceneNum == SCENE_KOKIRI_FOREST)) {
         Message_CloseTextbox(play);
