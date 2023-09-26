@@ -462,6 +462,9 @@ void CheckTrackerShopSlotChange(uint8_t cursorSlot, int16_t basePrice) {
     }
 
     auto slot = startingShopItem.find(gPlayState->sceneNum)->second + cursorSlot;
+    if (GetCheckArea() == RCAREA_KAKARIKO_VILLAGE && gPlayState->sceneNum == SCENE_BAZAAR) {
+        slot = RC_KAK_BAZAAR_ITEM_1 + cursorSlot;
+    }
     auto status = gSaveContext.checkTrackerData[slot].status;
     if (status == RCSHOW_SEEN) {
         gSaveContext.checkTrackerData[slot].status = RCSHOW_IDENTIFIED;
