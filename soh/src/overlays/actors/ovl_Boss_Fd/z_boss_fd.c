@@ -1857,7 +1857,7 @@ void BossFd_DrawBody(PlayState* play, BossFd* this) {
     Matrix_RotateX(-this->bodySegsRot[segIndex].x, MTXMODE_APPLY);
     Matrix_Translate(-13.0f, -5.0f, 13.0f, MTXMODE_APPLY);
     Matrix_Scale(this->actor.scale.x * 0.1f, this->actor.scale.y * 0.1f, this->actor.scale.z * 0.1f, MTXMODE_APPLY);
-    SkelAnime_DrawOpa(play, this->skelAnimeRightArm.skeleton, this->skelAnimeRightArm.jointTable,
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnimeRightArm,
                       BossFd_OverrideRightArmDraw, NULL, this);
     Matrix_Pop();
     osSyncPrintf("RH\n");
@@ -1869,7 +1869,7 @@ void BossFd_DrawBody(PlayState* play, BossFd* this) {
     Matrix_RotateX(-this->bodySegsRot[segIndex].x, MTXMODE_APPLY);
     Matrix_Translate(13.0f, -5.0f, 13.0f, MTXMODE_APPLY);
     Matrix_Scale(this->actor.scale.x * 0.1f, this->actor.scale.y * 0.1f, this->actor.scale.z * 0.1f, MTXMODE_APPLY);
-    SkelAnime_DrawOpa(play, this->skelAnimeLeftArm.skeleton, this->skelAnimeLeftArm.jointTable,
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnimeLeftArm,
                       BossFd_OverrideLeftArmDraw, NULL, this);
     Matrix_Pop();
     osSyncPrintf("BD\n");
@@ -1966,7 +1966,7 @@ void BossFd_DrawBody(PlayState* play, BossFd* this) {
     Matrix_Pop();
     osSyncPrintf("BHCE\n");
     Matrix_Scale(this->actor.scale.x * 0.1f, this->actor.scale.y * 0.1f, this->actor.scale.z * 0.1f, MTXMODE_APPLY);
-    SkelAnime_DrawOpa(play, this->skelAnimeHead.skeleton, this->skelAnimeHead.jointTable, BossFd_OverrideHeadDraw,
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnimeHead, BossFd_OverrideHeadDraw,
                       BossFd_PostHeadDraw, &this->actor);
     osSyncPrintf("SK\n");
     {

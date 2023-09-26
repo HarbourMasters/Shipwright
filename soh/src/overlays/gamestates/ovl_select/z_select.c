@@ -523,7 +523,7 @@ static BetterSceneSelectEntry sBetterScenes[] = {
         { "Requiem of Spirit Warp", "Requiem der Geister Teleport", "Teleporteur du Requiem de l'Esprit", 0x01F1, 0 },
     }},
     { "32:Deku Tree", "32:Deku-Baum", "32:Arbre Mojo", Select_LoadGame, 3, {
-        { "Entrance", "Eingang", "Entree", 0x0001, 1 },
+        { "Entrance", "Eingang", "Entree", 0x0000, 1 },
         { "From Gohma's Lair", "Vom Gohma Kampf", "Depuis le Repaire de Gohma", 0x0252, 1 },
         { "Gohma's Lair", "Gohma Kampf", "Repaire de Gohma", 0x040F, 0 },
     }},

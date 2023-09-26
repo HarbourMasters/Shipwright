@@ -4329,16 +4329,14 @@ void Fishing_DrawFish(Actor* thisx, PlayState* play) {
         Matrix_RotateY((this->unk_16C * (M_PI / 32768)) - (M_PI / 2), MTXMODE_APPLY);
         Matrix_Translate(0.0f, 0.0f, this->unk_16C * 10.0f * 0.01f, MTXMODE_APPLY);
 
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, Fishing_FishOverrideLimbDraw, Fishing_FishPostLimbDraw, this);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, Fishing_FishOverrideLimbDraw, Fishing_FishPostLimbDraw, this);
     } else {
         Matrix_Translate(0.0f, 0.0f, 3000.0f, MTXMODE_APPLY);
         Matrix_RotateY(this->unk_16C * (M_PI / 32768), MTXMODE_APPLY);
         Matrix_Translate(0.0f, 0.0f, -3000.0f, MTXMODE_APPLY);
         Matrix_RotateY(-(M_PI / 2), MTXMODE_APPLY);
 
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, Fishing_LoachOverrideLimbDraw, Fishing_LoachPostLimbDraw,
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, Fishing_LoachOverrideLimbDraw, Fishing_LoachPostLimbDraw,
                               this);
     }
 }
@@ -5046,9 +5044,13 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                     }
 
                     if (sLinkAge == 1) {
-                        if (!(HIGH_SCORE(HS_FISHING) & 0x400)) {
+                        if (
+                            (!gSaveContext.n64ddFlag && !(HIGH_SCORE(HS_FISHING) & 0x400)) ||
+                            (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_CHILD_FISHING))
+                        ) {
                             if (D_80B7E078 >= Fishing_GetMinimumRequiredScore()) {
                                 HIGH_SCORE(HS_FISHING) |= 0x400;
+                                Flags_SetRandomizerInf(RAND_INF_CHILD_FISHING);
                                 sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
                                 if (!IS_RANDO) {
                                     getItemId = GI_HEART_PIECE;
@@ -5059,9 +5061,13 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                             }
                         }
                     } else {
-                        if (!(HIGH_SCORE(HS_FISHING) & 0x800)) {
+                        if (
+                            (!gSaveContext.n64ddFlag && !(HIGH_SCORE(HS_FISHING) & 0x800)) ||
+                            (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING))
+                        ) {
                             if (D_80B7E078 >= Fishing_GetMinimumRequiredScore()) {
                                 HIGH_SCORE(HS_FISHING) |= 0x800;
+                                Flags_SetRandomizerInf(RAND_INF_ADULT_FISHING);
                                 sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
                                 if (!IS_RANDO) {
                                     getItemId = GI_SCALE_GOLD;
@@ -5832,8 +5838,7 @@ void Fishing_DrawOwner(Actor* thisx, PlayState* play) {
         (fabsf(this->actor.projectedPos.x) < (100.0f + this->actor.projectedPos.z))) {
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sFishingOwnerEyeTexs[this->unk_160]));
 
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, Fishing_OwnerOverrideLimbDraw, Fishing_OwnerPostLimbDraw,
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, Fishing_OwnerOverrideLimbDraw, Fishing_OwnerPostLimbDraw,
                               this);
     }
 

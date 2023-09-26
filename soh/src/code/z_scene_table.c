@@ -2096,7 +2096,7 @@ void func_8009EE44(PlayState* play) {
     }
     if ((play->roomCtx.unk_74[0] == 0) && playerHasCojiro) {
         if (play->roomCtx.unk_74[1] == 50) {
-            func_8002F7DC(&GET_PLAYER(play)->actor, NA_SE_EV_CHICKEN_CRY_M);
+            Player_PlaySfx(&GET_PLAYER(play)->actor, NA_SE_EV_CHICKEN_CRY_M);
             play->roomCtx.unk_74[0] = 1;
         }
         play->roomCtx.unk_74[1]++;

@@ -1260,8 +1260,7 @@ void EnHy_Draw(Actor* thisx, PlayState* play) {
                 break;
         }
 
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnHy_OverrideLimbDraw, EnHy_PostLimbDraw, &this->actor);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnHy_OverrideLimbDraw, EnHy_PostLimbDraw, &this->actor);
     }
 
     CLOSE_DISPS(play->state.gfxCtx);

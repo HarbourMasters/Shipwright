@@ -1165,8 +1165,7 @@ void BossDodongo_Draw(Actor* thisx, PlayState* play) {
     Matrix_RotateZ(this->unk_23C, MTXMODE_APPLY);
     Matrix_RotateX((this->unk_1C4 / 32768.0f) * 3.14159f, MTXMODE_APPLY);
 
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, BossDodongo_OverrideLimbDraw,
-                      BossDodongo_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, BossDodongo_OverrideLimbDraw, BossDodongo_PostLimbDraw, this);
 
     POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
 

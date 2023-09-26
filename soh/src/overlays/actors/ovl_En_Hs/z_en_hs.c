@@ -234,7 +234,7 @@ void func_80A6E8CC(EnHs* this, PlayState* play) {
     if (this->unk_2AA > 0) {
         this->unk_2AA--;
         if (this->unk_2AA == 0) {
-            func_8002F7DC(&player->actor, NA_SE_EV_CHICKEN_CRY_M);
+            Player_PlaySfx(&player->actor, NA_SE_EV_CHICKEN_CRY_M);
         }
     }
 
@@ -334,6 +334,5 @@ void EnHs_Draw(Actor* thisx, PlayState* play) {
     EnHs* this = (EnHs*)thisx;
 
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnHs_OverrideLimbDraw, EnHs_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnHs_OverrideLimbDraw, EnHs_PostLimbDraw, this);
 }

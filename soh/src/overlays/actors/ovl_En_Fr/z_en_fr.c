@@ -3,6 +3,7 @@
 #include "vt.h"
 #include "objects/object_fr/object_fr.h"
 #include <assert.h>
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
@@ -101,6 +102,17 @@ EnFrPointers sEnFrPointers = {
 // Flags for gSaveContext.eventChkInf[13]
 static u16 sSongIndex[] = {
     0x0002, 0x0004, 0x0010, 0x0008, 0x0020, 0x0040, 0x0001, 0x0000,
+};
+
+static u16 sSongIndexShift[] = {
+    EVENTCHKINF_SONGS_FOR_FROGS_ZL_SHIFT,
+    EVENTCHKINF_SONGS_FOR_FROGS_EPONA_SHIFT,
+    EVENTCHKINF_SONGS_FOR_FROGS_SARIA_SHIFT,
+    EVENTCHKINF_SONGS_FOR_FROGS_SUNS_SHIFT,
+    EVENTCHKINF_SONGS_FOR_FROGS_SOT_SHIFT,
+    EVENTCHKINF_SONGS_FOR_FROGS_STORMS_SHIFT,
+    EVENTCHKINF_SONGS_FOR_FROGS_CHOIR_SHIFT,
+    0x0, // FROG_NO_SONG
 };
 
 // Frog to Index for Song Flag (sSongIndex) Mapping
@@ -955,6 +967,7 @@ void EnFr_SetReward(EnFr* this, PlayState* play) {
     if ((songIndex >= FROG_ZL) && (songIndex <= FROG_SOT)) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
+            GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, (EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) + sSongIndexShift[songIndex]);
             if (!IS_RANDO) {
                 this->reward = GI_RUPEE_PURPLE;
             } else {
@@ -967,6 +980,7 @@ void EnFr_SetReward(EnFr* this, PlayState* play) {
     } else if (songIndex == FROG_STORMS) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
+            GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, (EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) + sSongIndexShift[songIndex]);
             if (!IS_RANDO) {
                 this->reward = GI_HEART_PIECE;
             } else {
@@ -979,6 +993,7 @@ void EnFr_SetReward(EnFr* this, PlayState* play) {
     } else if (songIndex == FROG_CHOIR_SONG) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
+            GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, (EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) + sSongIndexShift[songIndex]);
             if (!IS_RANDO) {
                 this->reward = GI_HEART_PIECE;
             } else {
@@ -1115,13 +1130,13 @@ void EnFr_Draw(Actor* thisx, PlayState* play) {
     gDPSetEnvColor(POLY_OPA_DISP++, sEnFrColor[frogIndex].r, sEnFrColor[frogIndex].g, sEnFrColor[frogIndex].b, 255);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeTexIndex]));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeTexIndex]));
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnFr_OverrideLimbDraw, EnFr_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnFr_OverrideLimbDraw, EnFr_PostLimbDraw, this);
     if (this->isButterflyDrawn) {
         Matrix_Translate(this->posButterfly.x, this->posButterfly.y, this->posButterfly.z, MTXMODE_NEW);
         Matrix_Scale(0.015f, 0.015f, 0.015f, MTXMODE_APPLY);
         Matrix_RotateZYX(this->actor.shape.rot.x, this->actor.shape.rot.y, this->actor.shape.rot.z, MTXMODE_APPLY);
-        SkelAnime_DrawOpa(play, this->skelAnimeButterfly.skeleton, this->skelAnimeButterfly.jointTable, NULL, NULL,
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnimeButterfly, NULL,
+                                  NULL,
                           NULL);
     }
     CLOSE_DISPS(play->state.gfxCtx);

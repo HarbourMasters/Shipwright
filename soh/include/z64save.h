@@ -306,18 +306,24 @@ typedef struct {
     /*        */ char gregHintText[250];
     /*        */ char ganonText[250];
     /*        */ char dampeText[150];
+    /*        */ char sheikText[150];
+    /*        */ char sariaText[150];
     /*        */ char warpMinuetText[100];
     /*        */ char warpBoleroText[100];
     /*        */ char warpSerenadeText[100];
     /*        */ char warpRequiemText[100];
     /*        */ char warpNocturneText[100];
     /*        */ char warpPreludeText[100];
-    /*        */ RandomizerCheck ganonHintCheck;
+    /*        */ RandomizerCheck lightArrowHintCheck;
+    /*        */ RandomizerCheck sariaCheck;
     /*        */ RandomizerCheck gregCheck;
     /*        */ RandomizerCheck dampeCheck;
+    /*        */ char inputSeed[1024];
+    /*        */ u32 finalSeed;
     /*        */ u8 seedIcons[5];
-    /*        */ u16 randomizerInf[9];
+    /*        */ u16 randomizerInf[10];
     /*        */ u16 adultTradeItems;
+    /*        */ u8 triforcePiecesCollected;
     // #endregion
 } SaveContext; // size = 0x1428
 
@@ -583,11 +589,16 @@ typedef enum {
 
 // 0xDA-0xDE
 #define EVENTCHKINF_SKULLTULA_REWARD_INDEX 13
-#define EVENTCHKINF_SKULLTULA_REWARD_10_MASK (1 << 10)
-#define EVENTCHKINF_SKULLTULA_REWARD_20_MASK (1 << 11)
-#define EVENTCHKINF_SKULLTULA_REWARD_30_MASK (1 << 12)
-#define EVENTCHKINF_SKULLTULA_REWARD_40_MASK (1 << 13)
-#define EVENTCHKINF_SKULLTULA_REWARD_50_MASK (1 << 14)
+#define EVENTCHKINF_SKULLTULA_REWARD_10_SHIFT 10
+#define EVENTCHKINF_SKULLTULA_REWARD_20_SHIFT 11
+#define EVENTCHKINF_SKULLTULA_REWARD_30_SHIFT 12
+#define EVENTCHKINF_SKULLTULA_REWARD_40_SHIFT 13
+#define EVENTCHKINF_SKULLTULA_REWARD_50_SHIFT 14
+#define EVENTCHKINF_SKULLTULA_REWARD_10_MASK (1 << EVENTCHKINF_SKULLTULA_REWARD_10_SHIFT)
+#define EVENTCHKINF_SKULLTULA_REWARD_20_MASK (1 << EVENTCHKINF_SKULLTULA_REWARD_20_SHIFT)
+#define EVENTCHKINF_SKULLTULA_REWARD_30_MASK (1 << EVENTCHKINF_SKULLTULA_REWARD_30_SHIFT)
+#define EVENTCHKINF_SKULLTULA_REWARD_40_MASK (1 << EVENTCHKINF_SKULLTULA_REWARD_40_SHIFT)
+#define EVENTCHKINF_SKULLTULA_REWARD_50_MASK (1 << EVENTCHKINF_SKULLTULA_REWARD_50_SHIFT)
 
 
 /*

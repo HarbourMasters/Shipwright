@@ -2148,7 +2148,8 @@ void BossGoma_Draw(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_OPA_DISP++, 0x08, BossGoma_EmptyDlist(play->state.gfxCtx));
     }
 
-    SkelAnime_DrawOpa(play, this->skelanime.skeleton, this->skelanime.jointTable, BossGoma_OverrideLimbDraw,
+    SkelAnime_DrawSkeletonOpa(play, &this->skelanime,
+                                               BossGoma_OverrideLimbDraw,
                       BossGoma_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
