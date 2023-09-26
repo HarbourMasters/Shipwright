@@ -39,7 +39,7 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
     gSaveContext.entranceIndex = entranceIndex;
 
     // Check the entrance to see if the exit should be overriden to a grotto return point for entrance rando
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         // Ignore return value as we want to load into the entrance specified by the debug menu
         Grotto_OverrideSpecialEntrance(Entrance_GetOverride(entranceIndex));
     }
@@ -103,7 +103,7 @@ void Select_Grotto_LoadGame(SelectContext* this, s32 grottoIndex) {
     gSaveContext.respawn[RESPAWN_MODE_RETURN].pos = this->betterGrottos[grottoIndex].pos;
 
     // Check the entrance to see if the exit should be overriden to a grotto return point for entrance rando
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
         // Use grotto content and parent scene num to identify the right grotto
         s16 grottoEntrance = Grotto_GetRenamedGrottoIndexFromOriginal(this->betterGrottos[grottoIndex].data, this->betterGrottos[grottoIndex].exitScene);
         // Ignore return value as we want to load into the entrance specified by the debug menu

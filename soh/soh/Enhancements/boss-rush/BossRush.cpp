@@ -235,7 +235,7 @@ void BossRush_HandleBlueWarpHeal(PlayState* play) {
 }
 
 void BossRush_HandleCompleteBoss(PlayState* play) {
-    if (!gSaveContext.isBossRush) {
+    if (!IS_BOSS_RUSH) {
         return;
     }
 

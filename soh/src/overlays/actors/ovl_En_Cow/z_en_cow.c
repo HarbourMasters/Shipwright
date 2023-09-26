@@ -107,7 +107,7 @@ void EnCow_Init(Actor* thisx, PlayState* play) {
     EnCow* this = (EnCow*)thisx;
     s32 pad;
 
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_COWS)) {
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_COWS)) {
         EnCow_MoveForRandomizer(thisx, play);
     }
 
@@ -311,7 +311,7 @@ void func_809DF96C(EnCow* this, PlayState* play) {
                     // when randomized with cowsanity, if we haven't gotten the
                     // reward from this cow yet, give that, otherwise use the
                     // vanilla cow behavior
-                    if (gSaveContext.n64ddFlag &&
+                    if (IS_RANDO &&
                         Randomizer_GetSettingValue(RSK_SHUFFLE_COWS) &&
                         !EnCow_HasBeenMilked(this, play)) {
                         EnCow_SetCowMilked(this, play);

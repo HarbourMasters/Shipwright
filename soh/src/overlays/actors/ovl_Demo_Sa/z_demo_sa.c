@@ -254,7 +254,7 @@ void func_8098E960(DemoSa* this, PlayState* play) {
 
     if ((gSaveContext.chamberCutsceneNum == 0) && (gSaveContext.sceneSetupIndex < 4)) {
         player = GET_PLAYER(play);
-        if (!gSaveContext.isBossRush) {
+        if (!IS_BOSS_RUSH) {
             this->action = 1;
             play->csCtx.segment = D_8099010C;
             gSaveContext.cutsceneTrigger = 2;

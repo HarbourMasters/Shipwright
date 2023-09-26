@@ -128,7 +128,7 @@ void func_809B0558(EnAni* this, PlayState* play) {
         }
         Flags_SetItemGetInf(ITEMGETINF_15);
     } else {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_HEART_PIECE, 10000.0f, 200.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_MAN_ON_ROOF, GI_HEART_PIECE);
@@ -142,7 +142,7 @@ void func_809B05F0(EnAni* this, PlayState* play) {
         EnAni_SetupAction(this, func_809B0558);
     }
 
-    if (!gSaveContext.n64ddFlag) {
+    if (!IS_RANDO) {
         func_8002F434(&this->actor, play, GI_HEART_PIECE, 10000.0f, 200.0f);
     } else {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_MAN_ON_ROOF, GI_HEART_PIECE);

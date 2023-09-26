@@ -394,8 +394,8 @@ void Map_InitData(PlayState* play, s16 room) {
                 }
             } else if (play->sceneNum == SCENE_LAKE_HYLIA) {
                 if ((LINK_AGE_IN_YEARS == YEARS_ADULT) &&
-                    ((!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) ||
-                     (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)))) {
+                    ((!IS_RANDO && !CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) ||
+                     (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)))) {
                     extendedMapIndex = 0x15;
                 }
             } else if (play->sceneNum == SCENE_GERUDO_VALLEY) {
@@ -403,8 +403,8 @@ void Map_InitData(PlayState* play, s16 room) {
                     extendedMapIndex = 0x16;
                 }
             } else if (play->sceneNum == SCENE_GERUDOS_FORTRESS) {
-                if ((!gSaveContext.n64ddFlag && GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) ||
-                    (gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_GERUDO_CARD))) {
+                if ((!IS_RANDO && GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) ||
+                    (IS_RANDO && CHECK_QUEST_ITEM(QUEST_GERUDO_CARD))) {
                     extendedMapIndex = 0x17;
                 }
             }

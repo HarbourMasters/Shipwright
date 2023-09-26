@@ -284,8 +284,7 @@ typedef struct {
     /* 0x1428 */ u16 pendingSaleMod;
     // #region SOH [General]
     // Upstream TODO: Move these to their own struct or name to more obviously specific to SoH
-    /*        */ uint32_t isMasterQuest;
-    /*        */ uint32_t isBossRush;
+    /*        */ uint8_t questId;
     /*        */ uint32_t isBossRushPaused;
     /*        */ uint8_t bossRushOptions[BOSSRUSH_OPTIONS_AMOUNT];
     /*        */ u8 mqDungeonCount;
@@ -327,6 +326,18 @@ typedef struct {
     /*        */ u8 triforcePiecesCollected;
     // #endregion
 } SaveContext; // size = 0x1428
+
+typedef enum {
+    /* 00 */ QUEST_NORMAL,
+    /* 01 */ QUEST_MASTER,
+    /* 02 */ QUEST_RANDOMIZER,
+    /* 03 */ QUEST_BOSSRUSH,
+} Quest;
+
+#define IS_VANILLA (gSaveContext.questId == QUEST_NORMAL)
+#define IS_MASTER_QUEST (gSaveContext.questId == QUEST_MASTER)
+#define IS_RANDO (gSaveContext.questId == QUEST_RANDOMIZER)
+#define IS_BOSS_RUSH (gSaveContext.questId == QUEST_BOSSRUSH)
 
 typedef enum {
     /* 0x00 */ BTN_ENABLED,

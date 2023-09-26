@@ -105,7 +105,7 @@ void func_80AFB768(EnSi* this, PlayState* play) {
             if (this->collider.base.ocFlags2 & OC2_HIT_PLAYER) {
                 this->collider.base.ocFlags2 &= ~OC2_HIT_PLAYER;
 
-                if (gSaveContext.n64ddFlag) {
+                if (IS_RANDO) {
                     Randomizer_UpdateSkullReward(this, play);
                 } else {
                     Item_Give(play, giveItemId);
@@ -121,7 +121,7 @@ void func_80AFB768(EnSi* this, PlayState* play) {
 
                 Message_StartTextbox(play, textId, NULL);
 
-                if (gSaveContext.n64ddFlag) {
+                if (IS_RANDO) {
                     if (getItemId != RG_ICE_TRAP) {
                         Randomizer_GiveSkullReward(this, play);
                         Audio_PlayFanfare_Rando(getItem);
@@ -151,7 +151,7 @@ void func_80AFB89C(EnSi* this, PlayState* play) {
     this->actor.shape.rot.y += 0x400;
 
     if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_HOOKSHOT_ATTACHED)) {
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             Randomizer_UpdateSkullReward(this, play);
         } else {
             Item_Give(play, giveItemId);
@@ -159,7 +159,7 @@ void func_80AFB89C(EnSi* this, PlayState* play) {
 
         Message_StartTextbox(play, textId, NULL);
 
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             if (getItemId != RG_ICE_TRAP) {
                 Randomizer_GiveSkullReward(this, play);
                 Audio_PlayFanfare_Rando(getItem);
@@ -210,7 +210,7 @@ void EnSi_Draw(Actor* thisx, PlayState* play) {
     if (this->actionFunc != func_80AFB950) {
         func_8002ED80(&this->actor, play, 0);
         func_8002EBCC(&this->actor, play, 0);
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             GetItem_Draw(play, GID_SKULL_TOKEN_2);
         } else {
             getItem = Randomizer_GetItemFromActor(this->actor.id, play->sceneNum, this->actor.params, GI_SKULL_TOKEN);

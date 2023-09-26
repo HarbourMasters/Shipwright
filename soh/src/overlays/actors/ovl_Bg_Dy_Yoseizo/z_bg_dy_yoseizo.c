@@ -199,7 +199,7 @@ void BgDyYoseizo_CheckMagicAcquired(BgDyYoseizo* this, PlayState* play) {
     if (Flags_GetSwitch(play, 0x38)) {
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
 
-        if(gSaveContext.n64ddFlag) {
+        if(IS_RANDO) {
             gSaveContext.healthAccumulator = 0x140;
             Magic_Fill(play);
             if(Flags_GetTreasure(play, this->fountainType + 1)) {

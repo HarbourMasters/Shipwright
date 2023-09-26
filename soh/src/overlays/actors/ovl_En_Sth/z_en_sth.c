@@ -259,7 +259,7 @@ void EnSth_GivePlayerItem(EnSth* this, PlayState* play) {
     u16 getItemId = sGetItemIds[this->actor.params];
     GetItemEntry getItemEntry = (GetItemEntry)GET_ITEM_NONE;
     
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         switch (getItemId) {
             case GI_RUPEE_GOLD:
                 if (!Flags_GetRandomizerInf(RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD)) {
@@ -301,7 +301,7 @@ void EnSth_GivePlayerItem(EnSth* this, PlayState* play) {
         }
     }
 
-    if (!gSaveContext.n64ddFlag || getItemEntry.getItemId == GI_NONE) {
+    if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
         func_8002F434(&this->actor, play, getItemId, 10000.0f, 50.0f);
     } else {
         GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
