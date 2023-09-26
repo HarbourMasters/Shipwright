@@ -5,6 +5,7 @@
  */
 
 #include "z_en_si.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 extern void func_8083C148(Player*, PlayState*);
 extern void func_80078884(uint16_t);
@@ -183,6 +184,7 @@ void func_80AFB950(EnSi* this, PlayState* play) {
         player->actor.freezeTimer = 10;
     } else {
         SET_GS_FLAGS((this->actor.params & 0x1F00) >> 8, this->actor.params & 0xFF);
+        GameInteractor_ExecuteOnFlagSet(FLAG_GS_TOKEN, this->actor.params);
         Actor_Kill(&this->actor);
         if (gSaveContext.pendingIceTrapCount > 0 && player->heldItemId == 11) {
             player->actor.freezeTimer = 0;
