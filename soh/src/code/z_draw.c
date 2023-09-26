@@ -78,6 +78,8 @@
 #include "objects/object_gi_sword_1/object_gi_sword_1.h"
 #include "objects/object_st/object_st.h"
 
+#include "soh_assets.h"
+
 // "Get Item" Model Draw Functions
 void GetItem_DrawMaskOrBombchu(PlayState* play, s16 drawId);
 void GetItem_DrawSoldOut(PlayState* play, s16 drawId);
@@ -110,6 +112,7 @@ void GetItem_DrawJewelKokiri(PlayState* play, s16 drawId);
 void GetItem_DrawJewelGoron(PlayState* play, s16 drawId);
 void GetItem_DrawJewelZora(PlayState* play, s16 drawId);
 void GetItem_DrawGenericMusicNote(PlayState* play, s16 drawId);
+void GetItem_DrawTriforcePiece(PlayState* play, s16 drawId);
 
 typedef struct {
     /* 0x00 */ void (*drawFunc)(PlayState*, s16);
@@ -384,7 +387,8 @@ DrawItemTableEntry sDrawItemTable[] = {
     { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } }, //Saria's song
     { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } }, //Sun's song
     { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } }, //Song of time
-    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } } //Song of storms
+    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } }, //Song of storms
+    { GetItem_DrawTriforcePiece, { gTriforcePiece0DL } } // Triforce Piece
 };
 
 /**
@@ -1028,6 +1032,36 @@ void GetItem_DrawWallet(PlayState* play, s16 drawId) {
     gSPDisplayList(POLY_OPA_DISP++, sDrawItemTable[drawId].dlists[5]);
     gSPDisplayList(POLY_OPA_DISP++, sDrawItemTable[drawId].dlists[6]);
     gSPDisplayList(POLY_OPA_DISP++, sDrawItemTable[drawId].dlists[7]);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
+void GetItem_DrawTriforcePiece(PlayState* play, s16 drawId) {
+    OPEN_DISPS(play->state.gfxCtx);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+
+    Matrix_Scale(0.035f, 0.035f, 0.035f, MTXMODE_APPLY);
+
+    uint16_t index = gSaveContext.triforcePiecesCollected % 3;
+    Gfx* triforcePieceDL;
+
+    switch (index) {
+        case 1:
+            triforcePieceDL = (Gfx*) gTriforcePiece1DL;
+            break;
+        case 2:
+            triforcePieceDL = (Gfx*) gTriforcePiece2DL;
+            break;
+        default:
+            triforcePieceDL = (Gfx*) gTriforcePiece0DL;
+            break;
+    }
+
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(play->state.gfxCtx, (char*)__FILE__, __LINE__),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+
+    gSPDisplayList(POLY_OPA_DISP++, triforcePieceDL);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

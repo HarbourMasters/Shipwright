@@ -2318,7 +2318,10 @@ void Play_PerformSave(PlayState* play) {
         } else {
             Save_SaveFile();
         }
-        if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) != AUTOSAVE_OFF) {
+        uint8_t triforceHuntCompleted =
+            gSaveContext.n64ddFlag && gSaveContext.triforcePiecesCollected == Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED) &&
+            Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT);
+        if (CVarGetInteger("gAutosave", AUTOSAVE_OFF) != AUTOSAVE_OFF || triforceHuntCompleted) {
             Overlay_DisplayText(3.0f, "Game Saved");
         }
     }

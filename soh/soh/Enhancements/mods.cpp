@@ -2,10 +2,12 @@
 #include <libultraship/bridge.h>
 #include "game-interactor/GameInteractor.h"
 #include "tts/tts.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/boss-rush/BossRushTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
+#include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/nametag.h"
 
 #include "src/overlays/actors/ovl_En_Bb/z_en_bb.h"
@@ -613,6 +615,45 @@ void RegisterMirrorModeHandler() {
     });
 }
 
+f32 triforcePieceScale;
+
+void RegisterTriforceHunt() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        if (!GameInteractor::IsGameplayPaused() &&
+            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT)) {
+
+            // Warp to credits
+            if (GameInteractor::State::TriforceHuntCreditsWarpActive) {
+                gPlayState->nextEntranceIndex = 0x6B;
+                gSaveContext.nextCutsceneIndex = 0xFFF2;
+                gPlayState->sceneLoadFlag = 0x14;
+                gPlayState->fadeTransition = 3;
+                GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
+            }
+
+            // Reset Triforce Piece scale for GI animation. Triforce Hunt allows for multiple triforce models,
+            // and cycles through them based on the amount of triforce pieces collected. It takes a little while
+            // for the count to increase during the GI animation, so the model is entirely hidden until that piece
+            // has been added. That scale has to be reset after the textbox is closed, and this is the best way
+            // to ensure it's done at that point in time specifically.
+            if (GameInteractor::State::TriforceHuntPieceGiven) {
+                triforcePieceScale = 0.0f;
+                GameInteractor::State::TriforceHuntPieceGiven = 0;
+            }
+
+            uint8_t currentPieces = gSaveContext.triforcePiecesCollected;
+            uint8_t requiredPieces = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
+            
+            // Give Boss Key when player loads back into the savefile.
+            if (currentPieces >= requiredPieces && gPlayState->sceneLoadFlag != 0x14 &&
+                (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0) {
+                GetItemEntry getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY);
+                GiveItemEntryWithoutActor(gPlayState, getItemEntry);
+            }
+        }
+    });
+}
+
 //this map is used for enemies that can be uniquely identified by their id
 //and that are always counted
 //enemies that can't be uniquely identified by their id
@@ -996,6 +1037,7 @@ void InitMods() {
     RegisterBonkDamage();
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
+    RegisterTriforceHunt();
     RegisterEnemyDefeatCounts();
     RegisterAltTrapTypes();
     RegisterRandomizerSheikSpawn();
