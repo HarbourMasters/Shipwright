@@ -1,4 +1,3 @@
-
 #include "randomizer_check_tracker.h"
 #include "randomizer_entrance_tracker.h"
 #include "randomizer_item_tracker.h"
@@ -205,8 +204,8 @@ void DefaultCheckData(RandomizerCheck rc) {
 }
 
 void SongFromImpa() {
-    if (gSaveContext.n64ddFlag) {
-        if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_CHILD_ZELDA) == RO_GENERIC_ON && gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
+        if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SKIP_CHILD_ZELDA) == RO_GENERIC_ON && IS_RANDO) {
             if (gSaveContext.checkTrackerData[RC_SONG_FROM_IMPA].status != RCSHOW_SAVED) {
                 gSaveContext.checkTrackerData[RC_SONG_FROM_IMPA].status = RCSHOW_SAVED;
             }
@@ -215,7 +214,7 @@ void SongFromImpa() {
 }
 
 void GiftFromSages() {
-    if (!gSaveContext.n64ddFlag) {
+    if (!IS_RANDO) {
         DefaultCheckData(RC_GIFT_FROM_SAGES);
     }
 }
@@ -223,7 +222,7 @@ void GiftFromSages() {
 std::vector<RandomizerCheckObject> checks;
 // Function for adding Link's Pocket check
 void LinksPocket() {
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING ||
             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_DUNGEON_REWARDS) == RO_DUNGEON_REWARDS_END_OF_DUNGEON) {
             DefaultCheckData(RC_LINKS_POCKET);
@@ -243,7 +242,7 @@ void TrySetAreas() {
 void SetCheckCollected(RandomizerCheck rc) {
     gSaveContext.checkTrackerData[rc].status = RCSHOW_COLLECTED;
     RandomizerCheckObject rcObj;
-    if (rc == RC_GIFT_FROM_SAGES && !gSaveContext.n64ddFlag) {
+    if (rc == RC_GIFT_FROM_SAGES && !IS_RANDO) {
         rcObj = RCO_RAORU;
     } else {
         rcObj = RandomizerCheckObjects::GetAllRCObjects().find(rc)->second;
@@ -443,7 +442,7 @@ bool HasItemBeenCollected(RandomizerCheck rc) {
     case SpoilerCollectionCheckType::SPOILER_CHK_GRAVEDIGGER:
         // Gravedigger has a fix in place that means one of two save locations. Check both.
         return (gSaveContext.itemGetInf[1] & 0x1000) || // vanilla flag
-            ((gSaveContext.n64ddFlag || CVarGetInteger("gGravediggingTourFix", 0)) &&
+            ((IS_RANDO || CVarGetInteger("gGravediggingTourFix", 0)) &&
                 gSaveContext.sceneFlags[scene].collect & (1 << flag) || (gPlayState->actorCtx.flags.collect & (1 << flag))); // rando/fix flag
     default:
         return false;
@@ -530,7 +529,7 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
     }
     auto scene = static_cast<SceneID>(gPlayState->sceneNum);
     // Vanilla special item checks
-    if (!gSaveContext.n64ddFlag) {
+    if (!IS_RANDO) {
         if (giEntry.itemId == ITEM_SHIELD_DEKU) {
             SetCheckCollected(RC_KF_SHOP_ITEM_3);
             return;
@@ -630,7 +629,7 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
         messageCloseCheck = true;
         return;
     }
-    if (gSaveContext.n64ddFlag || (!gSaveContext.n64ddFlag && giEntry.getItemCategory != ITEM_CATEGORY_JUNK)) {
+    if (IS_RANDO || (!IS_RANDO && giEntry.getItemCategory != ITEM_CATEGORY_JUNK)) {
         checkAreas.push_back(checkArea);
         checkCollected = true;
     }
@@ -692,7 +691,7 @@ void LoadFile() {
             return;
 
         RandomizerCheckObject entry2;
-        if (rc == RC_GIFT_FROM_SAGES && !gSaveContext.n64ddFlag) {
+        if (rc == RC_GIFT_FROM_SAGES && !IS_RANDO) {
             entry2 = RCO_RAORU;
         } else {
             entry2 = RandomizerCheckObjects::GetAllRCObjects().find(rc)->second;
@@ -708,7 +707,7 @@ void LoadFile() {
             areasSpoiled |= (1 << entry2.rcArea);
         }
     });
-    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING && gSaveContext.n64ddFlag) {
+    if (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING && IS_RANDO) {
         s8 startingAge = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_AGE);
         RandomizerCheckArea startingArea;
         switch (startingAge) {
@@ -994,64 +993,64 @@ void LoadSettings() {
     //If in randomzer (n64ddFlag), then get the setting and check if in general we should be showing the settings
     //If in vanilla, _try_ to show items that at least are needed for 100%
 
-    showShops = gSaveContext.n64ddFlag ? (
+    showShops = IS_RANDO ? (
             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) != RO_SHOPSANITY_OFF &&
             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) != RO_SHOPSANITY_ZERO_ITEMS)
         : false;
-    showBeans = gSaveContext.n64ddFlag ?
+    showBeans = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MAGIC_BEANS) == RO_GENERIC_YES
         : true;
-    showScrubs = gSaveContext.n64ddFlag ?
+    showScrubs = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) != RO_SCRUBS_OFF
         : false;
-    showMerchants = gSaveContext.n64ddFlag ?
+    showMerchants = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF
         : true;
-    showCows = gSaveContext.n64ddFlag ?
+    showCows = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_COWS) == RO_GENERIC_YES
         : false;
-    showAdultTrade = gSaveContext.n64ddFlag ?
+    showAdultTrade = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE) == RO_GENERIC_YES
         : true;
-    showKokiriSword = gSaveContext.n64ddFlag ?
+    showKokiriSword = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_KOKIRI_SWORD) == RO_GENERIC_YES
         : true;
-    showWeirdEgg = gSaveContext.n64ddFlag ?
+    showWeirdEgg = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_WEIRD_EGG) == RO_GENERIC_YES
         : true;
-    showGerudoCard = gSaveContext.n64ddFlag ?
+    showGerudoCard = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) == RO_GENERIC_YES
         : true;
-    showFrogSongRupees = gSaveContext.n64ddFlag ?
+    showFrogSongRupees = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FROG_SONG_RUPEES) == RO_GENERIC_YES
         : false;
-    showStartingMapsCompasses = gSaveContext.n64ddFlag ?
+    showStartingMapsCompasses = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) != RO_DUNGEON_ITEM_LOC_VANILLA
         : false;
-    showKeysanity = gSaveContext.n64ddFlag ?
+    showKeysanity = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) != RO_DUNGEON_ITEM_LOC_VANILLA
         : false;
-    showBossKeysanity = gSaveContext.n64ddFlag ?
+    showBossKeysanity = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) != RO_DUNGEON_ITEM_LOC_VANILLA
         : false;
-    showGerudoFortressKeys = gSaveContext.n64ddFlag ?
+    showGerudoFortressKeys = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA
         : false;
-    showGanonBossKey = gSaveContext.n64ddFlag ?
+    showGanonBossKey = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_VANILLA
         : false;
-    showOcarinas = gSaveContext.n64ddFlag ?
+    showOcarinas = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_OCARINA) == RO_GENERIC_YES
         : false;
-    show100SkullReward = gSaveContext.n64ddFlag ?
+    show100SkullReward = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_100_GS_REWARD) == RO_GENERIC_YES
         : false;
-    showLinksPocket = gSaveContext.n64ddFlag ? // don't show Link's Pocket if not randomizer, or if rando and pocket is disabled
+    showLinksPocket = IS_RANDO ? // don't show Link's Pocket if not randomizer, or if rando and pocket is disabled
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LINKS_POCKET) != RO_LINKS_POCKET_NOTHING
         :false;
-    hideShopRightChecks = gSaveContext.n64ddFlag ? CVarGetInteger("gCheckTrackerOptionHideRightShopChecks", 1) : false;
+    hideShopRightChecks = IS_RANDO ? CVarGetInteger("gCheckTrackerOptionHideRightShopChecks", 1) : false;
 
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS)) {
             case RO_TOKENSANITY_ALL:
                 showOverworldTokens = true;
@@ -1092,7 +1091,7 @@ void LoadSettings() {
 }
 
 bool IsVisibleInCheckTracker(RandomizerCheckObject rcObj) {
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         return
             (rcObj.rcArea != RCAREA_INVALID) &&         // don't show Invalid locations
             (rcObj.rcType != RCTYPE_GOSSIP_STONE) &&    //TODO: Don't show hints until tracker supports them
@@ -1231,37 +1230,37 @@ void DrawLocation(RandomizerCheckObject rcObj) {
     if (status == RCSHOW_COLLECTED) {
         if (!showHidden && CVarGetInteger("gCheckTrackerCollectedHide", 0))
             return;
-        mainColor = !IsHeartPiece(rcObj.ogItemId) && !gSaveContext.n64ddFlag ? CVarGetColor("gCheckTrackerCollectedExtraColor", Color_Collected_Extra_Default) :
+        mainColor = !IsHeartPiece(rcObj.ogItemId) && !IS_RANDO ? CVarGetColor("gCheckTrackerCollectedExtraColor", Color_Collected_Extra_Default) :
                   CVarGetColor("gCheckTrackerCollectedMainColor", Color_Main_Default);
         extraColor = CVarGetColor("gCheckTrackerCollectedExtraColor", Color_Collected_Extra_Default);
     } else if (status == RCSHOW_SAVED) {
         if (!showHidden && CVarGetInteger("gCheckTrackerSavedHide", 0))
             return;
-         mainColor = !IsHeartPiece(rcObj.ogItemId) && !gSaveContext.n64ddFlag ? CVarGetColor("gCheckTrackerSavedExtraColor", Color_Saved_Extra_Default) :
+         mainColor = !IsHeartPiece(rcObj.ogItemId) && !IS_RANDO ? CVarGetColor("gCheckTrackerSavedExtraColor", Color_Saved_Extra_Default) :
                   CVarGetColor("gCheckTrackerSavedMainColor", Color_Main_Default);
         extraColor = CVarGetColor("gCheckTrackerSavedExtraColor", Color_Saved_Extra_Default);
     } else if (skipped) {
         if (!showHidden && CVarGetInteger("gCheckTrackerSkippedHide", 0))
             return;
-         mainColor = !IsHeartPiece(rcObj.ogItemId) && !gSaveContext.n64ddFlag ? CVarGetColor("gCheckTrackerSkippedExtraColor", Color_Skipped_Extra_Default) :
+         mainColor = !IsHeartPiece(rcObj.ogItemId) && !IS_RANDO ? CVarGetColor("gCheckTrackerSkippedExtraColor", Color_Skipped_Extra_Default) :
                   CVarGetColor("gCheckTrackerSkippedMainColor", Color_Main_Default);
         extraColor = CVarGetColor("gCheckTrackerSkippedExtraColor", Color_Skipped_Extra_Default);
     } else if (status == RCSHOW_SEEN || status == RCSHOW_IDENTIFIED) {
         if (!showHidden && CVarGetInteger("gCheckTrackerSeenHide", 0))
             return;
-         mainColor = !IsHeartPiece(rcObj.ogItemId) && !gSaveContext.n64ddFlag ? CVarGetColor("gCheckTrackerSeenExtraColor", Color_Seen_Extra_Default) :
+         mainColor = !IsHeartPiece(rcObj.ogItemId) && !IS_RANDO ? CVarGetColor("gCheckTrackerSeenExtraColor", Color_Seen_Extra_Default) :
                   CVarGetColor("gCheckTrackerSeenMainColor", Color_Main_Default);
         extraColor = CVarGetColor("gCheckTrackerSeenExtraColor", Color_Seen_Extra_Default);
     } else if (status == RCSHOW_SCUMMED) {
         if (!showHidden && CVarGetInteger("gCheckTrackerKnownHide", 0))
             return;
-         mainColor = !IsHeartPiece(rcObj.ogItemId) && !gSaveContext.n64ddFlag ? CVarGetColor("gCheckTrackerScummedExtraColor", Color_Scummed_Extra_Default) :
+         mainColor = !IsHeartPiece(rcObj.ogItemId) && !IS_RANDO ? CVarGetColor("gCheckTrackerScummedExtraColor", Color_Scummed_Extra_Default) :
                   CVarGetColor("gCheckTrackerScummedMainColor", Color_Main_Default);
         extraColor = CVarGetColor("gCheckTrackerScummedExtraColor", Color_Scummed_Extra_Default);
     } else if (status == RCSHOW_UNCHECKED) {
         if (!showHidden && CVarGetInteger("gCheckTrackerUncheckedHide", 0))
             return;
-         mainColor = !IsHeartPiece(rcObj.ogItemId) && !gSaveContext.n64ddFlag ? CVarGetColor("gCheckTrackerUncheckedExtraColor", Color_Unchecked_Extra_Default) :
+         mainColor = !IsHeartPiece(rcObj.ogItemId) && !IS_RANDO ? CVarGetColor("gCheckTrackerUncheckedExtraColor", Color_Unchecked_Extra_Default) :
                   CVarGetColor("gCheckTrackerUncheckedMainColor", Color_Main_Default);
         extraColor = CVarGetColor("gCheckTrackerUncheckedExtraColor",  Color_Unchecked_Extra_Default);
     }
@@ -1305,7 +1304,7 @@ void DrawLocation(RandomizerCheckObject rcObj) {
             case RCSHOW_SAVED:
             case RCSHOW_COLLECTED:
             case RCSHOW_SCUMMED:
-                if (gSaveContext.n64ddFlag) {
+                if (IS_RANDO) {
                     txt = OTRGlobals::Instance->gRandomizer->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.rgID][gSaveContext.language];
                 } else {
                     if (IsHeartPiece(rcObj.ogItemId)) {
@@ -1319,7 +1318,7 @@ void DrawLocation(RandomizerCheckObject rcObj) {
                 break;
             case RCSHOW_IDENTIFIED:
             case RCSHOW_SEEN:
-                if (gSaveContext.n64ddFlag) {
+                if (IS_RANDO) {
                     if (gSaveContext.itemLocations[rcObj.rc].get.rgID == RG_ICE_TRAP) {
                         if (status == RCSHOW_IDENTIFIED) {
                             txt = gSaveContext.itemLocations[rcObj.rc].get.trickName;

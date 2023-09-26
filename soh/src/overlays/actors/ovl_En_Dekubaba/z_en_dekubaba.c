@@ -1289,7 +1289,7 @@ void EnDekubaba_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     if (this->actionFunc != EnDekubaba_DeadStickDrop) {
-        SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL,
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL,
                           EnDekubaba_PostLimbDraw, this);
 
         if (this->actionFunc == EnDekubaba_Wait) {

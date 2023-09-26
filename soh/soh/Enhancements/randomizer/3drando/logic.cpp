@@ -150,6 +150,9 @@ namespace Logic {
   uint8_t BottomOfTheWellKeys       = 0;
   uint8_t TreasureGameKeys          = 0;
 
+  //Triforce Pieces
+  uint8_t TriforcePieces = 0;
+
   //Boss Keys
   bool BossKeyForestTemple = false;
   bool BossKeyFireTemple   = false;
@@ -309,6 +312,7 @@ namespace Logic {
   bool AtDay         = false;
   bool AtNight       = false;
   uint8_t Age             = 0;
+  bool CanCompleteTriforce = false;
 
   //Events
   bool ShowedMidoSwordAndShield  = false;
@@ -620,7 +624,7 @@ namespace Logic {
                      (LACSCondition == LACSCONDITION_REWARDS    && StoneCount + MedallionCount + (Greg && GregInLogic ? 1 : 0) >= LACSRewardCount.Value<uint8_t>())  ||
                      (LACSCondition == LACSCONDITION_DUNGEONS   && DungeonCount + (Greg && GregInLogic ? 1 : 0) >= LACSDungeonCount.Value<uint8_t>())                ||
                      (LACSCondition == LACSCONDITION_TOKENS     && GoldSkulltulaTokens >= LACSTokenCount.Value<uint8_t>());
-
+    CanCompleteTriforce = TriforcePieces >= TriforceHuntRequired.Value<uint8_t>();
   }
 
   bool SmallKeys(Key dungeon, uint8_t requiredAmount) {
@@ -873,7 +877,8 @@ namespace Logic {
      NumBottles = 0;
      NoBottles  = false;
 
-
+     //Triforce Pieces
+     TriforcePieces = 0;
 
      //Drops and Bottle Contents Access
      DekuNutDrop      = false;

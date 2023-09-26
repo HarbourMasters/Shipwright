@@ -970,8 +970,7 @@ void func_80A76798(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_OPA_DISP++, 0x09, func_80A761B0(play->state.gfxCtx, 225, 205, 115, 25, 20, 0));
         gSPSegment(POLY_OPA_DISP++, 0x0A, func_80A761B0(play->state.gfxCtx, 225, 205, 115, 25, 20, 0));
     }
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnIk_OverrideLimbDraw3, EnIk_PostLimbDraw3, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnIk_OverrideLimbDraw3, EnIk_PostLimbDraw3, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1240,8 +1239,7 @@ void func_80A77844(EnIk* this, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x08, func_80A761B0(gfxCtx, 245, 225, 155, 30, 30, 0));
     gSPSegment(POLY_OPA_DISP++, 0x09, func_80A761B0(gfxCtx, 255, 40, 0, 40, 0, 0));
     gSPSegment(POLY_OPA_DISP++, 0x0A, func_80A761B0(gfxCtx, 255, 255, 255, 20, 40, 30));
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                          EnIk_OverrideLimbDraw2, EnIk_PostLimbDraw2, this);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, EnIk_OverrideLimbDraw2, EnIk_PostLimbDraw2, this);
 
     CLOSE_DISPS(gfxCtx);
 }
@@ -1394,8 +1392,7 @@ void func_80A77EDC(EnIk* this, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x08, func_80A761B0(gfxCtx, 245, 225, 155, 30, 30, 0));
     gSPSegment(POLY_OPA_DISP++, 0x09, func_80A761B0(gfxCtx, 255, 40, 0, 40, 0, 0));
     gSPSegment(POLY_OPA_DISP++, 0x0A, func_80A761B0(gfxCtx, 255, 255, 255, 20, 40, 30));
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                          EnIk_OverrideLimbDraw1, EnIk_PostLimbDraw1, this);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, EnIk_OverrideLimbDraw1, EnIk_PostLimbDraw1, this);
 
     CLOSE_DISPS(gfxCtx);
 }
@@ -1443,7 +1440,7 @@ void func_80A781CC(Actor* thisx, PlayState* play) {
         this->actor.update = EnIk_Update;
         this->actor.draw = EnIk_Draw;
         // Don't initiate nabooru defeat CS in rando
-        if (!(gSaveContext.n64ddFlag)) {
+        if (!(IS_RANDO)) {
             Cutscene_SetSegment(play, gSpiritBossNabooruKnuckleDefeatCs);
             gSaveContext.cutsceneTrigger = 1;
             Actor_SetScale(&this->actor, 0.01f);

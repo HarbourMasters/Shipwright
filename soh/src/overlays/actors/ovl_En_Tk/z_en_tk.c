@@ -408,7 +408,7 @@ s32 EnTk_ChooseReward(EnTk* this) {
     f32 luck;
     s32 reward;
 
-    if ((gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0)) && !Flags_GetCollectible(gPlayState, 0x1F) && this->heartPieceSpawned == 0) {
+    if ((IS_RANDO || CVarGetInteger("gDampeWin", 0)) && !Flags_GetCollectible(gPlayState, 0x1F) && this->heartPieceSpawned == 0) {
         return 3;
     }
 
@@ -610,7 +610,7 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
 
         this->rewardTimer = 0;
 
-        if (this->validDigHere == 1 || gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0)) {
+        if (this->validDigHere == 1 || IS_RANDO || CVarGetInteger("gDampeWin", 0)) {
             rewardOrigin.x = 0.0f;
             rewardOrigin.y = 0.0f;
             rewardOrigin.z = -40.0f;
@@ -626,21 +626,21 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
 
             // merging in dampe tour fix seems messy, so i'm just wrapping this whole thing
             // in an n64dd check for now
-            if (gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0)) {
+            if (IS_RANDO || CVarGetInteger("gDampeWin", 0)) {
                 if (this->currentReward == 3) {
                     /*
                     * Upgrade the purple rupee reward to the heart piece if this
                     * is the first grand prize dig.
                     */
-                    if (!Flags_GetItemGetInf(ITEMGETINF_1C) && !(gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0))) {
+                    if (!Flags_GetItemGetInf(ITEMGETINF_1C) && !(IS_RANDO || CVarGetInteger("gDampeWin", 0))) {
                         Flags_SetItemGetInf(ITEMGETINF_1C);
                         this->currentReward = 4;
-                    } else if ((gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0)) && !Flags_GetCollectible(gPlayState, 0x1F) && this->heartPieceSpawned == 0) {
+                    } else if ((IS_RANDO || CVarGetInteger("gDampeWin", 0)) && !Flags_GetCollectible(gPlayState, 0x1F) && this->heartPieceSpawned == 0) {
                         this->currentReward = 4;
                     }
                 }
 
-                if ((gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0)) && this->currentReward == 4) {
+                if ((IS_RANDO || CVarGetInteger("gDampeWin", 0)) && this->currentReward == 4) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, rewardPos.x, rewardPos.y, rewardPos.z, 0,
                                 0, 0, 0x1F06, true);
                     this->heartPieceSpawned = 1;
@@ -676,7 +676,7 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
 
     if (this->skelAnime.curFrame >= 32.0f && this->rewardTimer == 10) {
         /* Play a reward sound shortly after digging */
-        if (!(gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0)) && this->validDigHere == 0) {
+        if (!(IS_RANDO || CVarGetInteger("gDampeWin", 0)) && this->validDigHere == 0) {
             /* Bad dig spot */
             Audio_PlayActorSound2(&this->actor, NA_SE_SY_ERROR);
         } else if (this->currentReward == 4) {
@@ -786,8 +786,7 @@ void EnTk_Draw(Actor* thisx, PlayState* play) {
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyesSegments[this->eyeTextureIdx]));
 
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnTk_OverrideLimbDraw, EnTk_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnTk_OverrideLimbDraw, EnTk_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

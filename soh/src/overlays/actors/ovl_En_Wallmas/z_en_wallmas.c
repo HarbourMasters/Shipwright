@@ -672,8 +672,7 @@ void EnWallmas_Draw(Actor* thisx, PlayState* play) {
 
     if (this->actionFunc != EnWallmas_WaitToDrop) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnWallMas_OverrideLimbDraw, EnWallMas_PostLimbDraw, this);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnWallMas_OverrideLimbDraw, EnWallMas_PostLimbDraw, this);
     }
 
     EnWallmas_DrawXlu(this, play);

@@ -1958,7 +1958,7 @@ void EnTest_Draw(Actor* thisx, PlayState* play) {
     func_8002EBCC(&this->actor, play, 1);
 
     if ((thisx->params <= STALFOS_TYPE_CEILING) || (thisx->child == NULL)) {
-        SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnTest_OverrideLimbDraw,
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnTest_OverrideLimbDraw,
                           EnTest_PostLimbDraw, this);
     }
 
