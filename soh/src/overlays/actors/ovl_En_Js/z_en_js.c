@@ -241,6 +241,5 @@ void EnJs_Draw(Actor* thisx, PlayState* play) {
     EnJs* this = (EnJs*)thisx;
 
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnJs_OverrideLimbDraw, EnJs_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnJs_OverrideLimbDraw, EnJs_PostLimbDraw, this);
 }

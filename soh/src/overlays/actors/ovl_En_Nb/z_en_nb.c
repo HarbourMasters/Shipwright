@@ -964,8 +964,7 @@ void func_80AB2E70(EnNb* this, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gNabooruEyeWideTex));
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     gSPSegment(POLY_OPA_DISP++, 0x0C, &D_80116280[2]);
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL, NULL,
-                          &this->actor);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, NULL, NULL, &this->actor);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -994,8 +993,7 @@ void func_80AB2FE4(EnNb* this, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     gSPSegment(POLY_OPA_DISP++, 0x0C, &D_80116280[2]);
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, func_80AB2FC0,
-                          NULL, &this->actor);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, func_80AB2FC0, NULL, &this->actor);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1509,8 +1507,7 @@ void EnNb_DrawDefault(EnNb* this, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     gSPSegment(POLY_OPA_DISP++, 0x0C, &D_80116280[2]);
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                          EnNb_OverrideLimbDraw, EnNb_PostLimbDraw, &this->actor);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, EnNb_OverrideLimbDraw, EnNb_PostLimbDraw, &this->actor);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

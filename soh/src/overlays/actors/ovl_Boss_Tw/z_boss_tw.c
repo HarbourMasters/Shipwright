@@ -3510,8 +3510,7 @@ void BossTw_Draw(Actor* thisx, PlayState* play2) {
         }
 
         Matrix_Push();
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, BossTw_OverrideLimbDraw, BossTw_PostLimbDraw, this);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, BossTw_OverrideLimbDraw, BossTw_PostLimbDraw, this);
         Matrix_Pop();
         POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
     }
@@ -3866,9 +3865,7 @@ void BossTw_TwinrovaDraw(Actor* thisx, PlayState* play2) {
                                                                   (u32)this->fogB, 0, this->fogNear, this->fogFar);
 
         Matrix_Push();
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, BossTw_TwinrovaOverrideLimbDraw, BossTw_TwinrovaPostLimbDraw,
-                              thisx);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, BossTw_TwinrovaOverrideLimbDraw, BossTw_TwinrovaPostLimbDraw, thisx);
         Matrix_Pop();
 
         Matrix_MultVec3f(&D_8094A9EC, &this->beamOrigin);

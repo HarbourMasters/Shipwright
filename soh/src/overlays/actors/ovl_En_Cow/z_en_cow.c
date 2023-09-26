@@ -442,14 +442,12 @@ void EnCow_Draw(Actor* thisx, PlayState* play) {
     EnCow* this = (EnCow*)thisx;
 
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnCow_OverrideLimbDraw, EnCow_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnCow_OverrideLimbDraw, EnCow_PostLimbDraw, this);
 }
 
 void func_809E0070(Actor* thisx, PlayState* play) {
     EnCow* this = (EnCow*)thisx;
 
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, this);
 }

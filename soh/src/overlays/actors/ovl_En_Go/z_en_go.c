@@ -1166,8 +1166,7 @@ void EnGo_Draw(Actor* thisx, PlayState* play) {
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gGoronCsEyeOpenTex));
         gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gGoronCsMouthNeutralTex));
 
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnGo_OverrideLimbDraw, EnGo_PostLimbDraw, &this->actor);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnGo_OverrideLimbDraw, EnGo_PostLimbDraw, &this->actor);
         EnGo_DrawDust(this, play);
     }
     CLOSE_DISPS(play->state.gfxCtx);

@@ -2461,8 +2461,7 @@ void EnOssan_DrawBazaarShopkeeper(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sBazaarShopkeeperEyeTextures[this->eyeTextureIdx]));
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnOssan_OverrideLimbDrawDefaultShopkeeper, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnOssan_OverrideLimbDrawDefaultShopkeeper, NULL, this);
     EnOssan_DrawCursor(play, this, this->cursorX, this->cursorY, this->cursorZ, this->drawCursor);
     EnOssan_DrawStickDirectionPrompts(play, this);
 
@@ -2520,8 +2519,7 @@ void EnOssan_DrawKokiriShopkeeper(Actor* thisx, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x09, EnOssan_SetEnvColor(play->state.gfxCtx, 110, 170, 20, 255));
     gSPSegment(POLY_OPA_DISP++, 0x0C, EnOssan_EndDList(play->state.gfxCtx));
 
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnOssan_OverrideLimbDrawKokiriShopkeeper, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnOssan_OverrideLimbDrawKokiriShopkeeper, NULL, this);
     EnOssan_DrawCursor(play, this, this->cursorX, this->cursorY, this->cursorZ, this->drawCursor);
     EnOssan_DrawStickDirectionPrompts(play, this);
 
@@ -2538,8 +2536,7 @@ void EnOssan_DrawGoronShopkeeper(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sGoronShopkeeperEyeTextures[this->eyeTextureIdx]));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gGoronCsMouthNeutralTex));
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, this);
     EnOssan_DrawCursor(play, this, this->cursorX, this->cursorY, this->cursorZ, this->drawCursor);
     EnOssan_DrawStickDirectionPrompts(play, this);
 
@@ -2568,8 +2565,7 @@ void EnOssan_DrawZoraShopkeeper(Actor* thisx, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x0C, EnOssan_EndDList(play->state.gfxCtx));
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sZoraShopkeeperEyeTextures[this->eyeTextureIdx]));
 
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnOssan_OverrideLimbDrawZoraShopkeeper, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnOssan_OverrideLimbDrawZoraShopkeeper, NULL, this);
     EnOssan_DrawCursor(play, this, this->cursorX, this->cursorY, this->cursorZ, this->drawCursor);
     EnOssan_DrawStickDirectionPrompts(play, this);
 
@@ -2586,8 +2582,7 @@ void EnOssan_DrawPotionShopkeeper(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sPotionShopkeeperEyeTextures[this->eyeTextureIdx]));
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, this);
     EnOssan_DrawCursor(play, this, this->cursorX, this->cursorY, this->cursorZ, this->drawCursor);
     EnOssan_DrawStickDirectionPrompts(play, this);
 
@@ -2605,8 +2600,7 @@ void EnOssan_DrawHappyMaskShopkeeper(Actor* thisx, PlayState* play) {
 
     gSPSegment(POLY_OPA_DISP++, 0x08,
                SEGMENTED_TO_VIRTUAL(sHappyMaskShopkeeperEyeTextures[this->happyMaskShopkeeperEyeIdx]));
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, this);
     EnOssan_DrawCursor(play, this, this->cursorX, this->cursorY, this->cursorZ, this->drawCursor);
     EnOssan_DrawStickDirectionPrompts(play, this);
 
@@ -2624,8 +2618,7 @@ void EnOssan_DrawBombchuShopkeeper(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sBombchuShopkeeperEyeTextures[this->eyeTextureIdx]));
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, this);
     EnOssan_DrawCursor(play, this, this->cursorX, this->cursorY, this->cursorZ, this->drawCursor);
     EnOssan_DrawStickDirectionPrompts(play, this);
 

@@ -602,8 +602,7 @@ void EnDaiku_Draw(Actor* thisx, PlayState* play) {
         gDPSetEnvColor(POLY_OPA_DISP++, 200, 0, 150, 255);
     }
 
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnDaiku_OverrideLimbDraw, EnDaiku_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnDaiku_OverrideLimbDraw, EnDaiku_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

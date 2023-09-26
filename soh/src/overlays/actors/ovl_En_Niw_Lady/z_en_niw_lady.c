@@ -612,8 +612,7 @@ void EnNiwLady_Draw(Actor* thisx, PlayState* play) {
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->faceState]));
         gSPSegment(POLY_OPA_DISP++, 0x0C, func_80ABB0A0(play->state.gfxCtx));
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnNiwLady_OverrideLimbDraw, NULL, this);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnNiwLady_OverrideLimbDraw, NULL, this);
     }
     CLOSE_DISPS(play->state.gfxCtx);
 }

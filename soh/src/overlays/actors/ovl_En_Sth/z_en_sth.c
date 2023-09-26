@@ -441,8 +441,7 @@ void EnSth_Draw(Actor* thisx, PlayState* play) {
     } else {
         gSPSegment(POLY_OPA_DISP++, 0x09, EnSth_AllocColorDList(play->state.gfxCtx, 90, 110, 130, 255));
     }
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnSth_OverrideLimbDraw, EnSth_PostLimbDraw, &this->actor);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnSth_OverrideLimbDraw, EnSth_PostLimbDraw, &this->actor);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

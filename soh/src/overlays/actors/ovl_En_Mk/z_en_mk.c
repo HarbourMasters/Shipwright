@@ -401,6 +401,5 @@ void EnMk_Draw(Actor* thisx, PlayState* play) {
     EnMk* this = (EnMk*)thisx;
 
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnMk_OverrideLimbDraw, EnMk_PostLimbDraw, &this->actor);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnMk_OverrideLimbDraw, EnMk_PostLimbDraw, &this->actor);
 }

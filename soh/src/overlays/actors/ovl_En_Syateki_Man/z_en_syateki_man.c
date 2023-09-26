@@ -540,8 +540,7 @@ void EnSyatekiMan_Draw(Actor* thisx, PlayState* play) {
     EnSyatekiMan* this = (EnSyatekiMan*)thisx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnSyatekiMan_OverrideLimbDraw, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnSyatekiMan_OverrideLimbDraw, NULL, this);
 }
 
 void EnSyatekiMan_SetBgm(void) {
