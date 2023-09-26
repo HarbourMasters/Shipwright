@@ -2,7 +2,6 @@
 #include <nlohmann/json.hpp>
 #include "randomizerTypes.h"
 #include "randomizer_check_objects.h"
-#include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
 #include <libultraship/libultraship.h>
 

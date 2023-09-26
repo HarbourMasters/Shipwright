@@ -1,4 +1,4 @@
-#ifdef __cplusplus
+
 #include "randomizer_check_tracker.h"
 #include "randomizer_entrance_tracker.h"
 #include "randomizer_item_tracker.h"
@@ -47,6 +47,8 @@ void from_json(const json& j, RandomizerCheckTrackerData& rctd) {
     j.at("price").get_to(rctd.price);
 }
 
+namespace CheckTracker {
+
 // settings
 bool showShops;
 bool showOverworldTokens;
@@ -72,12 +74,9 @@ bool fortressFast;
 bool fortressNormal;
 
 bool bypassRandoCheck = true;
-
-namespace CheckTracker {
 // persistent during gameplay
 bool initialized;
 bool doAreaScroll;
-bool doInitialize;
 bool previousShowHidden = false;
 bool hideShopRightChecks = true;
 
@@ -370,30 +369,6 @@ bool EvaluateCheck(RandomizerCheckObject rco) {
     return false;
 }
 
-std::map<RandomizerCheck, QuestItem> QuestItemFromCheck = {
-    { RC_QUEEN_GOHMA, QUEST_KOKIRI_EMERALD },
-    { RC_KING_DODONGO, QUEST_GORON_RUBY },
-    { RC_BARINADE, QUEST_ZORA_SAPPHIRE },
-    { RC_PHANTOM_GANON, QUEST_MEDALLION_FOREST },
-    { RC_VOLVAGIA, QUEST_MEDALLION_FIRE },
-    { RC_MORPHA, QUEST_MEDALLION_WATER },
-    { RC_BONGO_BONGO, QUEST_MEDALLION_SHADOW },
-    { RC_TWINROVA, QUEST_MEDALLION_SPIRIT },
-    { RC_GIFT_FROM_SAGES, QUEST_MEDALLION_LIGHT },
-    { RC_SONG_FROM_IMPA, QUEST_SONG_LULLABY },
-    { RC_SONG_FROM_MALON, QUEST_SONG_EPONA },
-    { RC_SONG_FROM_SARIA, QUEST_SONG_SARIA },
-    { RC_SONG_FROM_ROYAL_FAMILYS_TOMB, QUEST_SONG_SUN },
-    { RC_SONG_FROM_OCARINA_OF_TIME, QUEST_SONG_TIME },
-    { RC_SONG_FROM_WINDMILL, QUEST_SONG_STORMS },
-    { RC_SHEIK_IN_FOREST, QUEST_SONG_MINUET },
-    { RC_SHEIK_IN_CRATER, QUEST_SONG_BOLERO },
-    { RC_SHEIK_IN_ICE_CAVERN, QUEST_SONG_SERENADE },
-    { RC_SHEIK_AT_COLOSSUS, QUEST_SONG_REQUIEM },
-    { RC_SHEIK_IN_KAKARIKO, QUEST_SONG_NOCTURNE },
-    { RC_SHEIK_AT_TEMPLE, QUEST_SONG_PRELUDE }
-};
-
 bool CheckByArea(RandomizerCheckArea area = RCAREA_INVALID) {
     if (area == RCAREA_INVALID) {
         area = checkAreas.front();
@@ -559,8 +534,7 @@ void CheckTrackerItemReceive(GetItemEntry giEntry) {
         if (giEntry.itemId == ITEM_SHIELD_DEKU) {
             SetCheckCollected(RC_KF_SHOP_ITEM_3);
             return;
-        }
-        if (giEntry.itemId == ITEM_KOKIRI_EMERALD) {
+        }else if (giEntry.itemId == ITEM_KOKIRI_EMERALD) {
             SetCheckCollected(RC_QUEEN_GOHMA);
             return;
         } else if (giEntry.itemId == ITEM_GORON_RUBY) {
@@ -760,7 +734,6 @@ void LoadFile() {
     LinksPocket();
     SongFromImpa();
     GiftFromSages();
-    doInitialize = false;
     initialized = true;
     UpdateAllOrdering();
     UpdateInventoryChecks();
@@ -1550,10 +1523,9 @@ void CheckTrackerWindow::InitElement() {
     SaveManager::Instance->AddInitFunction(InitTrackerData);
     sectionId = SaveManager::Instance->AddSaveFunction("trackerData", 1, SaveFile, true, -1);
     SaveManager::Instance->AddLoadFunction("trackerData", 1, LoadFile);
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadFile>([](uint32_t fileNum) {
-        doInitialize = true;
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnExitGame>([](uint32_t fileNum) {
+        Teardown();
     });
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnDeleteFile>([](uint32_t fileNum) { Teardown(); });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>(CheckTrackerItemReceive);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSaleEnd>(CheckTrackerSaleEnd);
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>(CheckTrackerFrame);
@@ -1564,5 +1536,3 @@ void CheckTrackerWindow::InitElement() {
 }
 
 } // namespace CheckTracker
-
-#endif

@@ -5,7 +5,6 @@
 #include <cstdint>
 
 #include <libultraship/libultraship.h>
-#include "soh/OTRGlobals.h"
 
 typedef enum {
     // ENTRANCE_GROUP_NO_GROUP,
