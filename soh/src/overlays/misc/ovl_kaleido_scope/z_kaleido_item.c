@@ -128,7 +128,7 @@ static Vtx sCycleAButtonVtx[] = {
 static sSlotCycleActiveAnimTimer[24] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 // Renders a left and/or right item for any item slot that can support cycling
-void KaleidoScope_DrawItemCycleExtras(PlayState* play, u8 slot, u8 isCycling, u8 canCycle, u8 leftItem, u8 leftModId, u8 rightItem, u8 rightModId) {
+void KaleidoScope_DrawItemCycleExtras(PlayState* play, u8 slot, u8 isCycling, u8 canCycle, u8 leftModId, u8 leftItem, u8 rightModId, u8 rightItem) {
     PauseContext* pauseCtx = &play->pauseCtx;
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -218,9 +218,9 @@ void KaleidoScope_DrawItemCycleExtras(PlayState* play, u8 slot, u8 isCycling, u8
         }
         if (showRightItem) {
             if (rightModId == 0) {
-                KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[rightItem], 32, 32, 0);
+                KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, gItemIcons[rightItem], 32, 32, 4);
             } else {
-                KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, ModdedItems_GetModdedItemIcon(rightModId, rightItem), 32, 32, 0);
+                KaleidoScope_DrawQuadTextureRGBA32(play->state.gfxCtx, ModdedItems_GetModdedItemIcon(rightModId, rightItem), 32, 32, 4);
             }
         }
 
@@ -228,6 +228,19 @@ void KaleidoScope_DrawItemCycleExtras(PlayState* play, u8 slot, u8 isCycling, u8
     }
 
     CLOSE_DISPS(play->state.gfxCtx);
+}
+
+void KaleidoScope_HandleDrawItemCycleExtras(PlayState* play, u8 slot, u8 previousModId, u8 previousItem, u8 nextModId, u8 nextItem) {
+    Input* input = &play->state.input[0];
+    bool dpad = (CVarGetInteger("gDpadPause", 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
+    play->pauseCtx.cursorColorSet = 8;
+    if ((play->pauseCtx.stickRelX > 30 || play->pauseCtx.stickRelY > 30) || dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT | BTN_DUP)) {
+        Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        Inventory_ModAwareReplaceItem(play, gSaveContext.inventory.itemModIds[slot], gSaveContext.inventory.items[slot], nextModId, nextItem);
+    } else if ((play->pauseCtx.stickRelX < -30 || play->pauseCtx.stickRelY < -30) || dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DDOWN)) {
+        Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        Inventory_ModAwareReplaceItem(play, gSaveContext.inventory.itemModIds[slot], gSaveContext.inventory.items[slot], previousModId, previousItem);
+    }
 }
 
 void KaleidoScope_DrawItemSelect(PlayState* play) {
@@ -566,16 +579,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
                         gSelectingAdultTrade = !gSelectingAdultTrade;
                     }
                     if (gSelectingAdultTrade) {
-                        pauseCtx->cursorColorSet = 8;
-                        if (((pauseCtx->stickRelX > 30 || pauseCtx->stickRelY > 30) ||
-                             dpad && CHECK_BTN_ANY(input->press.button, BTN_DRIGHT | BTN_DUP))) {
-                            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                            Inventory_ReplaceItem(play, INV_CONTENT(ITEM_TRADE_ADULT), Randomizer_GetNextAdultTradeItem());
-                        } else if (((pauseCtx->stickRelX < -30 || pauseCtx->stickRelY < -30) ||
-                            dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DDOWN))) {
-                            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-                            Inventory_ReplaceItem(play, INV_CONTENT(ITEM_TRADE_ADULT), Randomizer_GetPrevAdultTradeItem());
-                        }
+                        KaleidoScope_HandleDrawItemCycleExtras(play, SLOT_TRADE_ADULT, 0, Randomizer_GetPrevAdultTradeItem(), 0, Randomizer_GetNextAdultTradeItem());
                         gSelectingAdultTrade = cursorSlot == SLOT_TRADE_ADULT;
                     }
                     u16 buttonsToCheck = BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT;
@@ -705,12 +709,13 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
     // Adult trade item cycle
     KaleidoScope_DrawItemCycleExtras(play, SLOT_TRADE_ADULT, gSelectingAdultTrade,
                                      gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE),
-                                     Randomizer_GetPrevAdultTradeItem(), 0, Randomizer_GetNextAdultTradeItem(), 0);
+                                     0, Randomizer_GetPrevAdultTradeItem(),
+                                     0, Randomizer_GetNextAdultTradeItem());
     // Child mask item cycle (mimics the left/right item behavior from the cycling logic above)
     u8 childTradeItem = INV_CONTENT(ITEM_TRADE_CHILD);
     KaleidoScope_DrawItemCycleExtras(play, SLOT_TRADE_CHILD, gSelectingMask, canMaskSelect,
-                                     childTradeItem <= ITEM_MASK_KEATON ? ITEM_MASK_TRUTH : childTradeItem - 1, 0,
-                                     childTradeItem >= ITEM_MASK_TRUTH ? ITEM_MASK_KEATON : childTradeItem + 1, 0);
+                                     0, childTradeItem <= ITEM_MASK_KEATON ? ITEM_MASK_TRUTH : childTradeItem - 1,
+                                     0, childTradeItem >= ITEM_MASK_TRUTH ? ITEM_MASK_KEATON : childTradeItem + 1);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

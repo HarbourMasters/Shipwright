@@ -2742,6 +2742,7 @@ void Inventory_DeleteItem(u16 item, u16 invSlot) {
     }
 }
 
+//might be a good idea to change to just call Inventory_ModAwareReplaceItem to prevent problems in the future
 s32 Inventory_ReplaceItem(PlayState* play, u16 oldItem, u16 newItem) {
     s16 i;
 
@@ -2752,6 +2753,29 @@ s32 Inventory_ReplaceItem(PlayState* play, u16 oldItem, u16 newItem) {
             for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                 if (gSaveContext.equips.buttonItems[i] == oldItem) {
                     gSaveContext.equips.buttonItems[i] = newItem;
+                    Interface_LoadItemIcon1(play, i);
+                    break;
+                }
+            }
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
+s32 Inventory_ModAwareReplaceItem(PlayState* play, u16 oldModId, u16 oldItem, u16 newModId, u16 newItem) {
+    s16 i;
+
+    for (i = 0; i < ARRAY_COUNT(gSaveContext.inventory.items); i++) {
+        if (gSaveContext.inventory.items[i] == oldItem && gSaveContext.inventory.itemModIds[i] == oldModId) {
+            gSaveContext.inventory.items[i] = newItem;
+            gSaveContext.inventory.itemModIds[i] = newModId;
+            osSyncPrintf("アイテム消去(%d)\n", i); // "Item Purge (%d)"
+            for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+                if (gSaveContext.equips.buttonItems[i] == oldItem && gSaveContext.equips.buttonModIds[i] == oldModId) {
+                    gSaveContext.equips.buttonItems[i] = newItem;
+                    gSaveContext.equips.buttonModIds[i] = newModId;
                     Interface_LoadItemIcon1(play, i);
                     break;
                 }

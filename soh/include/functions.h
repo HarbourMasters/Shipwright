@@ -1077,6 +1077,7 @@ u8 Item_CheckObtainability(u8 item);
 void PerformAutosave(PlayState* play, u8 item);
 void Inventory_DeleteItem(u16 item, u16 invSlot);
 s32 Inventory_ReplaceItem(PlayState* play, u16 oldItem, u16 newItem);
+s32 Inventory_ModAwareReplaceItem(PlayState* play, u16 oldModId, u16 oldItem, u16 newModId, u16 newItem);
 s32 Inventory_HasEmptyBottle(void);
 bool Inventory_HasEmptyBottleSlot(void);
 s32 Inventory_HasSpecificBottle(u8 bottleItem);
