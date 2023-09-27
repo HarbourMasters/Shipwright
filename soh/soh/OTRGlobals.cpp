@@ -48,6 +48,7 @@
 #include "macros.h"
 #include <Utils/StringHelper.h>
 #include "Enhancements/custom-message/CustomMessageManager.h"
+#include "ImGuiUtils.h"
 
 #if not defined (__SWITCH__) && not defined(__WIIU__)
 #include "Extractor/Extract.h"
@@ -781,6 +782,8 @@ extern "C" void InitOTR() {
 
     InitMods();
     ActorDB::AddBuiltInCustomActors();
+
+    RegisterImGuiItemIcons();
 
     time_t now = time(NULL);
     tm *tm_now = localtime(&now);

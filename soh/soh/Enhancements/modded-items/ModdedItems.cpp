@@ -36,6 +36,15 @@ bool ModdedItems_RegisterModdedItem(s32 modId, s32 itemId, ModdedItemActionFunc 
     return true;
 }
 
+std::vector<ModdedItem> ModdedItems_GetRegisteredModdedItems() {
+    std::vector<ModdedItem> items;
+    for (std::map<ModdedItem, ModdedItemData>::iterator itr = moddedItems.begin(); itr != moddedItems.end(); ++itr) {
+        items.push_back(itr->first);
+    }
+    
+    return items;
+}
+
 void ModdedItems_ExecuteModdedItemAction(PlayState* play, Player* player, s32 modId, s32 itemId) {
     ModdedItem moddedItem = { modId, itemId };
 

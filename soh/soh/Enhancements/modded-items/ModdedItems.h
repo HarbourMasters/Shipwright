@@ -1,3 +1,6 @@
+#ifndef MODDED_ITEMS_H
+#define MODDED_ITEMS_H
+
 #pragma once
 #include "z64.h"
 
@@ -27,9 +30,10 @@ struct ModdedItem {
 using ModdedItemActionFunc = std::function<void(PlayState*, Player*, ModdedItem)>;
 
 bool ModdedItems_RegisterModdedItem(s32 modId, s32 itemId, ModdedItemActionFunc itemAction, std::string itemIcon, std::string itemNameTexture, std::string itemName);
+std::vector<ModdedItem> ModdedItems_GetRegisteredModdedItems();
 
 extern "C" {
-#endif
+#endif //__cplusplus
 
 void ModdedItems_ExecuteModdedItemAction(PlayState* play, Player* player, s32 modId, s32 itemId);
 void* ModdedItems_GetModdedItemIcon(s32 modId, s32 itemId);
@@ -38,4 +42,6 @@ const char* ModdedItems_GetModdedItemName(s32 modId, s32 itemId);
 
 #ifdef __cplusplus
 }
-#endif
+#endif //__cplusplus
+
+#endif //MODDED_ITEMS_H
