@@ -73,10 +73,10 @@ static AnimationInfo sAnimationInfo[] = {
 u16 EnKz_GetTextNoMaskChild(PlayState* play, EnKz* this) {
     Player* player = GET_PLAYER(play);
 
-    if ((gSaveContext.n64ddFlag && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY)) ||
-        (!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE))) {
+    if ((IS_RANDO && Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY)) ||
+        (!IS_RANDO && CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE))) {
         // Allow turning in Ruto's letter even if you have already rescued her
-        if (gSaveContext.n64ddFlag && !Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
+        if (IS_RANDO && !Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
             player->exchangeItemId = EXCH_ITEM_LETTER_RUTO;
         }
         return 0x402B;
@@ -94,7 +94,7 @@ u16 EnKz_GetTextNoMaskAdult(PlayState* play, EnKz* this) {
     // this works because both ITEM_NONE and later trade items are > ITEM_FROG
     if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_FROG) {
         if (!Flags_GetInfTable(INFTABLE_139)) {
-            if (!gSaveContext.n64ddFlag) {
+            if (!IS_RANDO) {
                 return CHECK_OWNED_EQUIP(EQUIP_TUNIC, 2) ? 0x401F : 0x4012;
             } else {
                 return 0x4012;
@@ -243,7 +243,7 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     if (func_80A9C95C(play, this, &this->interactInfo.talkState, 340.0f, EnKz_GetText, func_80A9C6C0)) {
-        if (((gSaveContext.n64ddFlag && LINK_IS_CHILD) || this->actor.textId == 0x401A) && !Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
+        if (((IS_RANDO && LINK_IS_CHILD) || this->actor.textId == 0x401A) && !Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
             if (func_8002F368(play) == EXCH_ITEM_LETTER_RUTO) {
                 this->actor.textId = 0x401B;
                 this->sfxPlayed = false;
@@ -257,7 +257,7 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
         if (LINK_IS_ADULT) {
             if ((INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_PRESCRIPTION) &&
                 (func_8002F368(play) == EXCH_ITEM_PRESCRIPTION)) {
-                if (!gSaveContext.n64ddFlag || !Flags_GetTreasure(play, 0x1F)) {
+                if (!IS_RANDO || !Flags_GetTreasure(play, 0x1F)) {
                     this->actor.textId = 0x4014;
                     this->sfxPlayed = false;
                     player->actor.textId = this->actor.textId;
@@ -271,7 +271,7 @@ void func_80A9CB18(EnKz* this, PlayState* play) {
                 this->actor.textId = CHECK_QUEST_ITEM(QUEST_SONG_SERENADE) ? 0x4045 : 0x401A;
                 player->actor.textId = this->actor.textId;
             } else {
-                if (!gSaveContext.n64ddFlag) {
+                if (!IS_RANDO) {
                     this->actor.textId = CHECK_OWNED_EQUIP(EQUIP_TUNIC, 2) ? 0x401F : 0x4012;
                 } else {
                     this->actor.textId = 0x4012;
@@ -344,7 +344,7 @@ void EnKz_Init(Actor* thisx, PlayState* play) {
     this->interactInfo.talkState = NPC_TALK_STATE_IDLE;
     Animation_ChangeByInfo(&this->skelanime, sAnimationInfo, ENKZ_ANIM_0);
 
-    if (!gSaveContext.n64ddFlag) {
+    if (!IS_RANDO) {
         if (Flags_GetEventChkInf(EVENTCHKINF_KING_ZORA_MOVED)) {
             EnKz_SetMovedPos(this, play);
         }
@@ -470,7 +470,7 @@ void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
         this->interactInfo.talkState = NPC_TALK_STATE_TALKING;
         this->actionFunc = EnKz_StartTimer;
     } else {
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             if (this->isTrading) {
                 getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZD_TRADE_PRESCRIPTION, GI_FROG);
                 getItemId = getItemEntry.getItemId;
@@ -485,7 +485,7 @@ void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
         }
         yRange = fabsf(this->actor.yDistToPlayer) + 1.0f;
         xzRange = this->actor.xzDistToPlayer + 1.0f;
-        if (!gSaveContext.n64ddFlag || getItemEntry.getItemId == GI_NONE) {
+        if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
             func_8002F434(&this->actor, play, getItemId, xzRange, yRange);
         } else {
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, xzRange, yRange);
@@ -495,7 +495,7 @@ void EnKz_SetupGetItem(EnKz* this, PlayState* play) {
 
 void EnKz_StartTimer(EnKz* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
-        if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_FROG && !gSaveContext.n64ddFlag) {
+        if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_FROG && !IS_RANDO) {
             func_80088AA0(180); // start timer2 with 3 minutes
             gSaveContext.eventInf[1] &= ~1;
         }
@@ -554,8 +554,7 @@ void EnKz_Draw(Actor* thisx, PlayState* play) {
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeSegments[this->eyeIdx]));
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelanime.skeleton, this->skelanime.jointTable, this->skelanime.dListCount,
-                          EnKz_OverrideLimbDraw, EnKz_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelanime, EnKz_OverrideLimbDraw, EnKz_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

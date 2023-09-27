@@ -497,6 +497,6 @@ void EnAnubice_Draw(Actor* thisx, PlayState* play) {
     EnAnubice* this = (EnAnubice*)thisx;
 
     Gfx_SetupDL_25Xlu(play->state.gfxCtx);
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnAnubice_OverrideLimbDraw,
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnAnubice_OverrideLimbDraw,
                       EnAnubice_PostLimbDraw, this);
 }

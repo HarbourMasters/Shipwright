@@ -532,8 +532,7 @@ void DoorKiller_DrawDoor(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
     DoorKiller_SetTexture(&this->actor, play);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, NULL, NULL);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, NULL);
 }
 
 void DoorKiller_DrawRubble(Actor* thisx, PlayState* play) {

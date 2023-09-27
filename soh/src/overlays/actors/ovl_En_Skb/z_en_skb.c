@@ -556,6 +556,6 @@ void EnSkb_PostLimbDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot,
 void EnSkb_Draw(Actor* thisx, PlayState* play) {
     EnSkb* this = (EnSkb*)thisx;
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnSkb_OverrideLimbDraw,
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnSkb_OverrideLimbDraw,
                       EnSkb_PostLimbDraw, &this->actor);
 }

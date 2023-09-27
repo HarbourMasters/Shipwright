@@ -136,7 +136,7 @@ void ObjectKankyo_Init(Actor* thisx, PlayState* play) {
                 this->effects[5].size = 0.0f;
             }
 
-            if (gSaveContext.n64ddFlag) {
+            if (IS_RANDO) {
                 if (Flags_GetRandomizerInf(RAND_INF_TRIALS_DONE_FOREST_TRIAL)) {
                     this->effects[0].size = 0.0f;
                 }
