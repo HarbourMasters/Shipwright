@@ -638,7 +638,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
     for (i = j = 0; i < 24; i++, j += 4) {
         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
 
-        if (gSaveContext.inventory.items[i] != ITEM_NONE) {
+        if (gSaveContext.inventory.items[i] != ITEM_NONE || gSaveContext.inventory.itemModIds[i] != 0) {
             if ((pauseCtx->unk_1E4 == 0) && (pauseCtx->pageIndex == PAUSE_ITEM) && (pauseCtx->cursorSpecialPos == 0)) {
                 if (CHECK_SLOT_AGE(i)) {
                     if ((sEquipState == 2) && (i == 3)) {
@@ -676,7 +676,7 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
             gSPVertex(POLY_KAL_DISP++, &pauseCtx->itemVtx[j + 0], 4, 0);
             int itemId = gSaveContext.inventory.items[i];
             int modId = gSaveContext.inventory.itemModIds[i];
-            bool not_acquired = !CHECK_ITEM_AGE(itemId);
+            bool not_acquired = modId == 0 && !CHECK_ITEM_AGE(itemId);
             if (not_acquired) {
                 gDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                 gSPGrayscale(POLY_KAL_DISP++, true);
