@@ -216,7 +216,6 @@ void EnMu_Draw(Actor* thisx, PlayState* play) {
                                             colors[this->actor.params][i].g, colors[this->actor.params][i].b,
                                             colors[this->actor.params][i].a));
     }
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnMu_OverrideLimbDraw, EnMu_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnMu_OverrideLimbDraw, EnMu_PostLimbDraw, this);
     CLOSE_DISPS(play->state.gfxCtx);
 }

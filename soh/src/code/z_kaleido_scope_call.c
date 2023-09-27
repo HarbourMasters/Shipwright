@@ -60,7 +60,7 @@ void KaleidoScopeCall_Update(PlayState* play) {
     GameInteractor_ExecuteOnPauseMenu();
 
     if (!gSaveContext.sohStats.gameComplete &&
-        (!gSaveContext.isBossRush || !gSaveContext.isBossRushPaused)) {
+        (!IS_BOSS_RUSH || !gSaveContext.isBossRushPaused)) {
         gSaveContext.sohStats.pauseTimer++;
     }
 

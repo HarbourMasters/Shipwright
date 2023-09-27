@@ -428,7 +428,7 @@ void DemoKankyo_Update(Actor* thisx, PlayState* play) {
     this->actionFunc(this, play);
 
     // In ER, override the warp song locations. Also removes the warp song cutscene
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) &&
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES) &&
         thisx->params == 0x000F) { // Warp Song particles
         Entrance_SetWarpSongEntrance();
     }
@@ -808,7 +808,7 @@ void DemoKankyo_DrawWarpSparkles(Actor* thisx, PlayState* play) {
                 this->unk_150[i].unk_23 = 0;
 
                 // Skip the first part of warp song cutscenes in rando
-                if (gSaveContext.n64ddFlag && this->actor.params == DEMOKANKYO_WARP_OUT) {
+                if (IS_RANDO && this->actor.params == DEMOKANKYO_WARP_OUT) {
                     this->unk_150[i].unk_22 = 2;
                 } else {
                     this->unk_150[i].unk_22++;

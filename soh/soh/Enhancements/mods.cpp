@@ -2,10 +2,12 @@
 #include <libultraship/bridge.h>
 #include "game-interactor/GameInteractor.h"
 #include "tts/tts.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/boss-rush/BossRushTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
+#include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/nametag.h"
 
 #include "src/overlays/actors/ovl_En_Bb/z_en_bb.h"
@@ -231,9 +233,9 @@ void RegisterOcarinaTimeTravel() {
             gPlayState->msgCtx.lastPlayedSong == OCARINA_SONG_TIME && !nearbyTimeBlockEmpty && !nearbyTimeBlock &&
             !nearbyOcarinaSpot && !nearbyFrogs) {
 
-            if (gSaveContext.n64ddFlag) {
+            if (IS_RANDO) {
                 CVarSetInteger("gSwitchTimeline", 1);
-            } else if (!gSaveContext.n64ddFlag && !nearbyDoorOfTime) {
+            } else if (!IS_RANDO && !nearbyDoorOfTime) {
                 // This check is made for when Link is learning the Song Of Time in a vanilla save file that load a
                 // Temple of Time scene where the only object present is the Door of Time
                 CVarSetInteger("gSwitchTimeline", 1);
@@ -469,7 +471,7 @@ void RegisterHyperBosses() {
 
         uint8_t hyperBossesActive =
             CVarGetInteger("gHyperBosses", 0) ||
-            (gSaveContext.isBossRush &&
+            (IS_BOSS_RUSH &&
              gSaveContext.bossRushOptions[BR_OPTIONS_HYPERBOSSES] == BR_CHOICE_HYPERBOSSES_YES);
 
         // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
@@ -581,7 +583,7 @@ void UpdateMirrorModeState(int32_t sceneNum) {
                         (sceneNum == SCENE_GANON_BOSS);
 
     if (mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) {
-        uint32_t seed = sceneNum + (gSaveContext.n64ddFlag ? gSaveContext.finalSeed : gSaveContext.sohStats.fileCreatedAt);
+        uint32_t seed = sceneNum + (IS_RANDO ? gSaveContext.finalSeed : gSaveContext.sohStats.fileCreatedAt);
         Random_Init(seed);
     }
 
@@ -612,6 +614,45 @@ void UpdateMirrorModeState(int32_t sceneNum) {
 void RegisterMirrorModeHandler() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
         UpdateMirrorModeState(sceneNum);
+    });
+}
+
+f32 triforcePieceScale;
+
+void RegisterTriforceHunt() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        if (!GameInteractor::IsGameplayPaused() &&
+            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT)) {
+
+            // Warp to credits
+            if (GameInteractor::State::TriforceHuntCreditsWarpActive) {
+                gPlayState->nextEntranceIndex = 0x6B;
+                gSaveContext.nextCutsceneIndex = 0xFFF2;
+                gPlayState->sceneLoadFlag = 0x14;
+                gPlayState->fadeTransition = 3;
+                GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
+            }
+
+            // Reset Triforce Piece scale for GI animation. Triforce Hunt allows for multiple triforce models,
+            // and cycles through them based on the amount of triforce pieces collected. It takes a little while
+            // for the count to increase during the GI animation, so the model is entirely hidden until that piece
+            // has been added. That scale has to be reset after the textbox is closed, and this is the best way
+            // to ensure it's done at that point in time specifically.
+            if (GameInteractor::State::TriforceHuntPieceGiven) {
+                triforcePieceScale = 0.0f;
+                GameInteractor::State::TriforceHuntPieceGiven = 0;
+            }
+
+            uint8_t currentPieces = gSaveContext.triforcePiecesCollected;
+            uint8_t requiredPieces = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
+            
+            // Give Boss Key when player loads back into the savefile.
+            if (currentPieces >= requiredPieces && gPlayState->sceneLoadFlag != 0x14 &&
+                (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0) {
+                GetItemEntry getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY);
+                GiveItemEntryWithoutActor(gPlayState, getItemEntry);
+            }
+        }
     });
 }
 
@@ -1008,6 +1049,7 @@ void InitMods() {
     RegisterBonkDamage();
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
+    RegisterTriforceHunt();
     RegisterEnemyDefeatCounts();
     RegisterAltTrapTypes();
     RegisterRandomizerSheikSpawn();
