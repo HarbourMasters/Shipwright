@@ -206,8 +206,8 @@ Text& GetWarpPreludeText() {
   return warpPreludeText;
 }
 
-std::string GetMSHintLoc() {
-    return MSHintLoc;
+std::string GetMasterSwordHintLoc() {
+    return masterSwordHintLoc;
 }
   
 std::string GetLightArrowHintLoc() {
@@ -888,6 +888,18 @@ void CreateSheikText() {
   };
   Text temp2 = Text{"%w.", "%w.", "%w."};
   sheikText = temp1 + area + temp2;
+  if (ShuffleMasterSword) {
+    sheikText = sheikText + "^";
+    auto masterSwordLocation = FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == MASTER_SWORD;});
+    masterSwordHintLoc = Location(masterSwordLocation[0])->GetName();
+    area = GetHintRegion(Location(masterSwordLocation[0])->GetParentRegionKey())->GetHint().GetText();
+    Text temp3 = Text{
+      "I also heard that he stole %rthe&Master Sword%w and hid it somewhere&within%g",
+      "Test",
+      "Test"
+    };
+    sheikText = temp3 + area + temp2;
+  }
 }
 
 void CreateSariaText() {

@@ -6260,7 +6260,7 @@ void InitRandoItemTable() {
         } else if (randoGetItemTable[i].itemId == RG_MASTER_SWORD) {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawMasterSword;
         } else if (randoGetItemTable[i].itemId == RG_TRIFORCE_PIECE) {
-            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawTriforcePiece;
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawTriforcePieceGI;
         }
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, randoGetItemTable[i].itemId, randoGetItemTable[i]);
     }
