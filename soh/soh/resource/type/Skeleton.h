@@ -77,7 +77,6 @@ struct SkeletonPatchInfo
 {
     SkelAnime* skelAnime;
     std::string vanillaSkeletonPath;
-    Actor* actor;
 };
 
 class SkeletonPatcher {
