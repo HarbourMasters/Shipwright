@@ -88,11 +88,12 @@ void SkeletonPatcher::UpdateTunicSkeletons() {
     bool isAlt = CVarGetInteger("gAltAssets", 0);
     const char* altPrefix = isAlt ? LUS::IResource::gAltAssetPrefix.c_str() : "";
     for (auto skel : skeletons) {
+        // Check if this is Link's skeleton
         if (strcmp(skel.vanillaSkeletonPath.c_str(), &gLinkAdultSkel[OTR_OFFSET]) == 0) {
             Skeleton* newSkel = nullptr;
             Skeleton* altSkel = nullptr;
             std::string skeletonPath = "";
-
+            // Check what Link's current tunic is
             switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
                 case PLAYER_TUNIC_KOKIRI:
                     skeletonPath = gLinkKokiriTunicSkel;
@@ -104,25 +105,36 @@ void SkeletonPatcher::UpdateTunicSkeletons() {
                     skeletonPath = gLinkZoraTunicSkel;
                     break;
             }
-            newSkel = (Skeleton*)LUS::Context::GetInstance()
-                          ->GetResourceManager()
-                          ->LoadResource(skeletonPath, true)
-                          .get();
+            // Load new skeleton based on Link's tunic if it exists
+            newSkel = 
+                (Skeleton*)LUS::Context::GetInstance()
+                    ->GetResourceManager()
+                    ->LoadResource(skeletonPath, true)
+                    .get();
+
+            // If alt assets are on, look for alt tagged skeletons
             if (isAlt) {
-                altSkel = (Skeleton*)LUS::Context::GetInstance()
-                              ->GetResourceManager()
-                              ->LoadResource(LUS::IResource::gAltAssetPrefix + skeletonPath, true)
-                              .get();
+                altSkel = 
+                    (Skeleton*)LUS::Context::GetInstance()
+                        ->GetResourceManager()
+                        ->LoadResource(LUS::IResource::gAltAssetPrefix + skeletonPath, true)
+                        .get();
             }
+
+            // Override non-alt skeleton if necessary
             if (altSkel != nullptr && isAlt) {
                 newSkel = altSkel;
             }
+
+            // Change back to the original Link skeleton if no skeleton's were found
             if (newSkel == nullptr) {
-                newSkel = (Skeleton*)LUS::Context::GetInstance()
-                          ->GetResourceManager()
-                          ->LoadResource(skel.vanillaSkeletonPath, true)
-                          .get();
+                newSkel = 
+                    (Skeleton*)LUS::Context::GetInstance()
+                        ->GetResourceManager()
+                        ->LoadResource(skel.vanillaSkeletonPath, true)
+                        .get();
             }
+            
             if (newSkel != nullptr) {
                 skel.skelAnime->skeleton = newSkel->skeletonData.skeletonHeader.segment;
             }
