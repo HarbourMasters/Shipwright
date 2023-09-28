@@ -1500,7 +1500,7 @@ extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
     return (AnimationHeaderCommon*) ResourceGetDataByName(path);
 }
 
-extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime, Actor* actor) {
+extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, SkelAnime* skelAnime) {
     std::string pathStr = std::string(path);
     static const std::string sOtr = "__OTR__";
 
@@ -1525,7 +1525,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path, Skel
     // Therefore we can take this oppurtunity to take note of the Skeleton that is created...
     if (skelAnime != nullptr) {
         auto stringPath = std::string(path);
-        LUS::SkeletonPatcher::RegisterSkeleton(stringPath, skelAnime, actor);
+        LUS::SkeletonPatcher::RegisterSkeleton(stringPath, skelAnime);
     }
 
     return skelHeader;

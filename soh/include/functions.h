@@ -1285,7 +1285,7 @@ void AnimationContext_SetMoveActor(PlayState* play, Actor* actor, SkelAnime* ske
 void AnimationContext_Update(PlayState* play, AnimationContext* animationCtx);
 void SkelAnime_InitLink(PlayState* play, SkelAnime* skelAnime, FlexSkeletonHeader* skeletonHeaderSeg,
                         LinkAnimationHeader* animation, s32 initFlags, Vec3s* jointTable, Vec3s* morphTable,
-                        s32 limbCount, Actor* actor);
+                        s32 limbCount);
 void LinkAnimation_SetUpdateFunction(SkelAnime* skelAnime);
 s32 LinkAnimation_Update(PlayState* play, SkelAnime* skelAnime);
 void LinkAnimation_AnimateFrame(PlayState* play, SkelAnime* skelAnime);

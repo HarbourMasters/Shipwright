@@ -9622,10 +9622,10 @@ void Player_InitCommon(Player* this, PlayState* play, FlexSkeletonHeader* skelHe
     func_80834644(play, this);
 
     SkelAnime_InitLink(play, &this->skelAnime, skelHeader, D_80853914[PLAYER_ANIMGROUP_0][this->modelAnimType], 9,
-                       this->jointTable, this->morphTable, PLAYER_LIMB_MAX, &this->actor);
+                       this->jointTable, this->morphTable, PLAYER_LIMB_MAX);
     this->skelAnime.baseTransl = D_80854730;
     SkelAnime_InitLink(play, &this->skelAnime2, skelHeader, func_80833338(this), 9, this->jointTable2,
-                       this->morphTable2, PLAYER_LIMB_MAX, &this->actor);
+                       this->morphTable2, PLAYER_LIMB_MAX);
     this->skelAnime2.baseTransl = D_80854730;
 
     Effect_Add(play, &this->meleeWeaponEffectIndex, EFFECT_BLURE2, 0, 0, &blureSword);

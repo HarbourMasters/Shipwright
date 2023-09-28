@@ -83,7 +83,7 @@ struct SkeletonPatchInfo
 
 class SkeletonPatcher {
   public:
-    static void RegisterSkeleton(std::string& path, SkelAnime* skelAnime, Actor* actor);
+    static void RegisterSkeleton(std::string& path, SkelAnime* skelAnime);
     static void UnregisterSkeleton(SkelAnime* skelAnime);
     static void ClearSkeletons();
     static void UpdateSkeletons();

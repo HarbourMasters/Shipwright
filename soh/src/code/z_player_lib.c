@@ -1657,7 +1657,7 @@ u32 func_80091738(PlayState* play, u8* segment, SkelAnime* skelAnime) {
 
     SetRefreshTunicFlag(); // forces link to buffer again. This makes the right tunic model show up on the equipment screen when it loads
     SkelAnime_InitLink(play, skelAnime, gPlayerSkelHeaders[gSaveContext.linkAge], &gPlayerAnim_link_normal_wait, 9,
-                       ptr, ptr, PLAYER_LIMB_MAX, &this->actor);
+                       ptr, ptr, PLAYER_LIMB_MAX);
 
     return size + 0x8800 + 0x90;
 }

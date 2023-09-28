@@ -7,6 +7,8 @@
 #include <soh_assets.h>
 #include <objects/object_link_boy/object_link_boy.h>
 
+#define OTR_OFFSET 7
+
 namespace LUS {
 SkeletonData* Skeleton::GetPointer() {
     return &skeletonData;
@@ -28,11 +30,10 @@ size_t Skeleton::GetPointerSize() {
 std::vector<SkeletonPatchInfo> SkeletonPatcher::skeletons;
 
 
-void SkeletonPatcher::RegisterSkeleton(std::string& path, SkelAnime* skelAnime, Actor* actor) {
+void SkeletonPatcher::RegisterSkeleton(std::string& path, SkelAnime* skelAnime) {
     SkeletonPatchInfo info;
 
     info.skelAnime = skelAnime;
-    info.actor = actor;
 
     static const std::string sOtr = "__OTR__";
 
@@ -87,39 +88,43 @@ void SkeletonPatcher::UpdateTunicSkeletons() {
     bool isAlt = CVarGetInteger("gAltAssets", 0);
     const char* altPrefix = isAlt ? LUS::IResource::gAltAssetPrefix.c_str() : "";
     for (auto skel : skeletons) {
-        if (skel.actor != nullptr) // is there actually an actor to check?
-        {
-            if (skel.actor->id == 0) // is this Link?
-            {
-                Skeleton* newSkel;
-                if (LINK_IS_ADULT && CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1 == PLAYER_TUNIC_KOKIRI &&
-                    ResourceGetIsCustomByName(gLinkKokiriTunicSkel)) {
-                    newSkel = (Skeleton*)LUS::Context::GetInstance()
-                                  ->GetResourceManager()
-                                  ->LoadResource((isAlt ? LUS::IResource::gAltAssetPrefix : "") + gLinkKokiriTunicSkel, true)
-                                  .get();
-                } else if (LINK_IS_ADULT && CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1 == PLAYER_TUNIC_GORON &&
-                           ResourceGetIsCustomByName(gLinkGoronTunicSkel)) {
-                    newSkel = (Skeleton*)LUS::Context::GetInstance()
-                                  ->GetResourceManager()
-                                  ->LoadResource((isAlt ? LUS::IResource::gAltAssetPrefix : "") + gLinkGoronTunicSkel, true)
-                                  .get();
-                } else if (LINK_IS_ADULT && CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1 == PLAYER_TUNIC_ZORA &&
-                           ResourceGetIsCustomByName(gLinkZoraTunicSkel)) {
-                    newSkel = (Skeleton*)LUS::Context::GetInstance()
-                                  ->GetResourceManager()
-                                  ->LoadResource((isAlt ? LUS::IResource::gAltAssetPrefix : "") + gLinkZoraTunicSkel, true)
-                                  .get();
-                } else { // child link, no model available
-                    newSkel = (Skeleton*)LUS::Context::GetInstance()
-                                  ->GetResourceManager()
-                                  ->LoadResource(
-                                      (isAlt ? LUS::IResource::gAltAssetPrefix : "") + skel.vanillaSkeletonPath, true)
-                                  .get();
-                }
+        if (strcmp(skel.vanillaSkeletonPath.c_str(), &gLinkAdultSkel[OTR_OFFSET]) == 0) {
+            Skeleton* newSkel = nullptr;
+            Skeleton* altSkel = nullptr;
+            std::string skeletonPath = "";
 
-                if (newSkel != nullptr)
-                    skel.skelAnime->skeleton = newSkel->skeletonData.skeletonHeader.segment;
+            switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
+                case PLAYER_TUNIC_KOKIRI:
+                    skeletonPath = gLinkKokiriTunicSkel;
+                    break;
+                case PLAYER_TUNIC_GORON:
+                    skeletonPath = gLinkGoronTunicSkel;
+                    break;
+                case PLAYER_TUNIC_ZORA:
+                    skeletonPath = gLinkZoraTunicSkel;
+                    break;
+            }
+            newSkel = (Skeleton*)LUS::Context::GetInstance()
+                          ->GetResourceManager()
+                          ->LoadResource(skeletonPath, true)
+                          .get();
+            if (isAlt) {
+                altSkel = (Skeleton*)LUS::Context::GetInstance()
+                              ->GetResourceManager()
+                              ->LoadResource(LUS::IResource::gAltAssetPrefix + skeletonPath, true)
+                              .get();
+            }
+            if (altSkel != nullptr && isAlt) {
+                newSkel = altSkel;
+            }
+            if (newSkel == nullptr) {
+                newSkel = (Skeleton*)LUS::Context::GetInstance()
+                          ->GetResourceManager()
+                          ->LoadResource(skel.vanillaSkeletonPath, true)
+                          .get();
+            }
+            if (newSkel != nullptr) {
+                skel.skelAnime->skeleton = newSkel->skeletonData.skeletonHeader.segment;
             }
         }
     }
