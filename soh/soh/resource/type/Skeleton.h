@@ -4,7 +4,6 @@
 #include "Resource.h"
 #include "SkeletonLimb.h"
 #include <z64animation.h>
-#include <z64actor.h>
 
 namespace LUS {
 

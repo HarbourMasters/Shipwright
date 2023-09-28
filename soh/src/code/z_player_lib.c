@@ -1640,7 +1640,6 @@ u32 func_80091738(PlayState* play, u8* segment, SkelAnime* skelAnime) {
     s16 linkObjectId = gLinkObjectIds[gSaveContext.linkAge];
     size_t size;
     void* ptr;
-    Player* this = GET_PLAYER(play);
 
     size = gObjectTable[OBJECT_GAMEPLAY_KEEP].vromEnd - gObjectTable[OBJECT_GAMEPLAY_KEEP].vromStart;
     ptr = segment + 0x3800;
