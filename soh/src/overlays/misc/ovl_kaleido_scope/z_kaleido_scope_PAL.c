@@ -886,10 +886,10 @@ void KaleidoScope_SetDefaultCursor(PlayState* play) {
     switch (pauseCtx->pageIndex) {
         case PAUSE_ITEM:
             s = pauseCtx->cursorSlot[PAUSE_ITEM];
-            if (gSaveContext.inventory.items[s] == ITEM_NONE) {
+            if (gSaveContext.inventory.items[s] == ITEM_NONE && gSaveContext.inventory.itemModIds[s] == 0) {
                 i = s + 1;
                 while (true) {
-                    if (gSaveContext.inventory.items[i] != ITEM_NONE) {
+                    if (gSaveContext.inventory.items[i] != ITEM_NONE || gSaveContext.inventory.itemModIds[i] != 0) {
                         break;
                     }
                     i++;
@@ -1932,7 +1932,7 @@ void KaleidoScope_DrawInfoPanel(PlayState* play) {
             bool pauseAnyCursor =
                 (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_RANDO_ONLY && gSaveContext.n64ddFlag) ||
                 (CVarGetInteger("gPauseAnyCursor", 0) == PAUSE_ANY_CURSOR_ALWAYS_ON);
-            if (!pauseCtx->pageIndex && (!pauseAnyCursor || (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE))) { // pageIndex == PAUSE_ITEM
+            if (!pauseCtx->pageIndex && (!pauseAnyCursor || (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE || gSaveContext.inventory.itemModIds[pauseCtx->cursorPoint[PAUSE_ITEM]] != 0))) { // pageIndex == PAUSE_ITEM
                 pauseCtx->infoPanelVtx[16].v.ob[0] = pauseCtx->infoPanelVtx[18].v.ob[0] =
                     WREG(49 + gSaveContext.language);
 
@@ -2085,7 +2085,7 @@ void KaleidoScope_UpdateNamePanel(PlayState* play) {
 
         if (pauseAnyCursor &&
         ((pauseCtx->pageIndex == PAUSE_EQUIP && pauseCtx->cursorX[PAUSE_EQUIP] != 0 && !CHECK_OWNED_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP] - 1)) ||
-        (pauseCtx->pageIndex == PAUSE_ITEM && gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] == ITEM_NONE))) {
+        (pauseCtx->pageIndex == PAUSE_ITEM && (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] == ITEM_NONE && gSaveContext.inventory.itemModIds[pauseCtx->cursorPoint[PAUSE_ITEM]] == 0)))) {
             pauseCtx->namedItem = PAUSE_ITEM_NONE;
             pauseCtx->namedModId = 0;
         }
