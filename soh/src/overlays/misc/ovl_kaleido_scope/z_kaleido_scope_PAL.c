@@ -898,7 +898,7 @@ void KaleidoScope_SetDefaultCursor(PlayState* play) {
                     }
                     if (i == s) {
                         pauseCtx->cursorItem[PAUSE_ITEM] = pauseCtx->namedItem = PAUSE_ITEM_NONE;
-                        pauseCtx->cursorItemModId[PAUSE_ITEM] = 0;
+                        pauseCtx->cursorItemModId[PAUSE_ITEM] = pauseCtx->namedModId = 0;
                         return;
                     }
                 }
