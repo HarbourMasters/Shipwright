@@ -882,7 +882,7 @@ void CreateSheikText() {
   lightArrowHintLoc = Location(lightArrowLocation[0])->GetName();
   Text area = GetHintRegion(Location(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
   Text temp1 = Text{
-    "I overheard Ganondorf say that he misplaced the %rLight Arrows%w in&%g",
+    "I overheard Ganondorf say that he misplaced the %rLight Arrows%w in %g",
     "J'ai entendu dire que Ganondorf aurait caché les %rFlèches de Lumière%w dans %g",
     ""
   };
@@ -894,11 +894,11 @@ void CreateSheikText() {
     masterSwordHintLoc = Location(masterSwordLocation[0])->GetName();
     area = GetHintRegion(Location(masterSwordLocation[0])->GetParentRegionKey())->GetHint().GetText();
     Text temp3 = Text{
-      "I also heard that he stole %rthe&Master Sword%w and hid it somewhere&within%g",
+      "I also heard that he stole %rthe Master Sword%w and hid it somewhere within %g",
       "Test",
       "Test"
     };
-    sheikText = temp3 + area + temp2;
+    sheikText = sheikText + temp3 + area + temp2;
   }
 }
 

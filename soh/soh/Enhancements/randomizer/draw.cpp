@@ -195,7 +195,7 @@ extern "C" void Randomizer_DrawMasterSword(PlayState* play, GetItemEntry getItem
 
     gSPDisplayList(POLY_OPA_DISP++, (Gfx*)object_toki_objects_DL_001BD0);
     
-    CLOSE_DISPS(play->state.gfxGtx);
+    CLOSE_DISPS(play->state.gfxCtx);
 }
 
 Gfx* Randomizer_GetTriforcePieceDL(uint8_t index) {

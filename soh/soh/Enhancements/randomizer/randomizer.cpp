@@ -3841,6 +3841,8 @@ void RandomizerSettingsWindow::DrawElement() {
                     "This will require the use of sticks until the Kokiri Sword is found."
                 );
 
+                UIWidgets::PaddedSeparator();
+
                 //Shuffle Master Sword
                 //RANDOTODO: Disable when Start with Master Sword is active
                 // bool disableShuffleMasterSword = CvarGetInteger("gRandomizeStartingMasterSword", 0);
@@ -5342,7 +5344,12 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
             break;
         case SCENE_INSIDE_GANONS_CASTLE:
             if (originalTextId == TEXT_SHEIK_NEED_HOOK) {
-                if (INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) {
+                //If MS shuffle is on, Sheik will hint both MS and LA as long as Link doesn't have both, to prevent hint lockout.
+                //Otherwise, she'll only give LA hint so only LA is required to move on.
+                bool needRequirements = GetRandoSettingValue(RSK_SHUFFLE_MASTER_SWORD) ? 
+                (!CHECK_OWNED_EQUIP(EQUIP_SWORD, 1) || INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) :
+                INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT;
+                if (needRequirements) {
                     messageEntry.Replace("{{message}}", gSaveContext.sheikText, gSaveContext.sheikText, gSaveContext.sheikText);
                 } else {
                     messageEntry.Replace("{{message}}", "You are still ill-equipped to&face %rGanondorf%w."
@@ -6260,7 +6267,7 @@ void InitRandoItemTable() {
         } else if (randoGetItemTable[i].itemId == RG_MASTER_SWORD) {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawMasterSword;
         } else if (randoGetItemTable[i].itemId == RG_TRIFORCE_PIECE) {
-            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawTriforcePieceGI;
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawTriforcePiece;
         }
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, randoGetItemTable[i].itemId, randoGetItemTable[i]);
     }

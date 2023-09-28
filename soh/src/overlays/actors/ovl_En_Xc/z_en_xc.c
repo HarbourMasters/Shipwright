@@ -425,7 +425,7 @@ void EnXc_RandoStand(EnXc* this, PlayState* play) {
     this->action = SHEIK_ACTION_BLOCK_PEDESTAL;
     this->drawMode = SHEIK_DRAW_DEFAULT;
     this->unk_30C = 1;
-    if (!gSaveContext.n64ddFlag) {
+    if (!IS_RANDO) {
         Actor_Kill(&this->actor);
     }
 }
@@ -2240,13 +2240,13 @@ void EnXc_SetupDialogueAction(EnXc* this, PlayState* play) {
         this->action = SHEIK_ACTION_IN_DIALOGUE;
     } else {
          this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
-        if (gSaveContext.n64ddFlag && gPlayState->sceneNum == SCENE_TEMPLE_OF_TIME) {
+        if (IS_RANDO && gPlayState->sceneNum == SCENE_TEMPLE_OF_TIME) {
             if (!CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANONS_TOWER)) {
                 this->actor.textId = TEXT_SHEIK_NEED_HOOK;
             } else {
                 this->actor.textId = TEXT_SHEIK_HAVE_HOOK;    
             }
-        } else if (gSaveContext.n64ddFlag && gPlayState->sceneNum == SCENE_INSIDE_GANONS_CASTLE) {
+        } else if (IS_RANDO && gPlayState->sceneNum == SCENE_INSIDE_GANONS_CASTLE) {
             if (CHECK_OWNED_EQUIP(EQUIP_SWORD, 1) && INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT &&
             CUR_CAPACITY(UPG_QUIVER) >= 30 && gSaveContext.isMagicAcquired) {
                 this->actor.textId = TEXT_SHEIK_HAVE_HOOK;

@@ -5,6 +5,7 @@
 #include "../item-tables/ItemTableTypes.h"
 
 typedef struct PlayState PlayState;
+
 #ifdef __cplusplus
 extern "C" {
 #endif
