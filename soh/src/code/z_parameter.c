@@ -2523,7 +2523,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
 
     if (item == RG_CHILD_WALLET) {
         Flags_SetRandomizerInf(RAND_INF_HAS_WALLET);
-        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
+        if (IS_RANDO && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
             Rupees_ChangeBy(99);
         }
         return Return_Item_Entry(giEntry, RG_NONE);
@@ -5034,7 +5034,7 @@ void Interface_Draw(PlayState* play) {
             s16 PosX_RC;
             s16 PosY_RC;
             //when not having a wallet in rando, don't calculate the ruppe icon
-            if (!gSaveContext.n64ddFlag || Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
+            if (!IS_RANDO || Flags_GetRandomizerInf(RAND_INF_HAS_WALLET)) {
                 // Rupee Icon
                 if (CVarGetInteger("gDynamicWalletIcon", 0)) {
                     switch (CUR_UPG_VALUE(UPG_WALLET)) {
@@ -5225,7 +5225,7 @@ void Interface_Draw(PlayState* play) {
             svar5 = rupeeDigitsCount[CUR_UPG_VALUE(UPG_WALLET)];
 
             // Draw Rupee Counter. Hide in Boss Rush and when not having a wallet in rando.
-            if (!IS_BOSS_RUSH && (!gSaveContext.n64ddFlag || Flags_GetRandomizerInf(RAND_INF_HAS_WALLET))) {
+            if (!IS_BOSS_RUSH && (!IS_RANDO || Flags_GetRandomizerInf(RAND_INF_HAS_WALLET))) {
                 for (svar1 = 0, svar3 = 16; svar1 < svar5; svar1++, svar2++, svar3 += 8) {
                     OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[svar2]]),
                                                  8, 16, PosX_RC + svar3, PosY_RC, 8, 16, 1 << 10, 1 << 10);
