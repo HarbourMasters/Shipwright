@@ -135,7 +135,7 @@ void EnDntDemo_Judge(EnDntDemo* this, PlayState* play) {
             this->judgeTimer = 0;
         }
     } else {
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             Player* player = GET_PLAYER(play);
             switch (Player_GetMask(play)) {
                 case PLAYER_MASK_SKULL:

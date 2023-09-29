@@ -667,7 +667,7 @@ void EnReeba_Draw(Actor* thisx, PlayState* play) {
         gDPSetPrimColor(POLY_OPA_DISP++, 0x0, 0x01, 255, 255, 255, 255);
     }
 
-    SkelAnime_DrawOpa(play, this->skelanime.skeleton, this->skelanime.jointTable, NULL, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelanime, NULL, NULL, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 

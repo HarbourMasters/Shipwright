@@ -818,9 +818,9 @@ void EnFloormas_GrabLink(EnFloormas* this, PlayState* play) {
         // Damage link every 20 frames
         if ((this->actionTarget % 20) == 0) {
             if (!LINK_IS_ADULT) {
-                func_8002F7DC(&player->actor, NA_SE_VO_LI_DAMAGE_S_KID);
+                Player_PlaySfx(&player->actor, NA_SE_VO_LI_DAMAGE_S_KID);
             } else {
-                func_8002F7DC(&player->actor, NA_SE_VO_LI_DAMAGE_S);
+                Player_PlaySfx(&player->actor, NA_SE_VO_LI_DAMAGE_S);
             }
             play->damagePlayer(play, -8);
         }

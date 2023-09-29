@@ -722,22 +722,22 @@ void RegisterOnUpdateMainMenuSelection() {
         if (!CVarGetInteger("gA11yTTS", 0)) return;
 
         switch (questIndex) {
-            case FS_QUEST_NORMAL: {
+            case QUEST_NORMAL: {
                 auto translation = GetParameritizedText("quest_sel_vanilla", TEXT_BANK_FILECHOOSE, nullptr);
                 SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
                 break;
             }
-            case FS_QUEST_MASTER: {
+            case QUEST_MASTER: {
                 auto translation = GetParameritizedText("quest_sel_mq", TEXT_BANK_FILECHOOSE, nullptr);
                 SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
                 break;
             }
-            case FS_QUEST_RANDOMIZER: {
+            case QUEST_RANDOMIZER: {
                 auto translation = GetParameritizedText("quest_sel_randomizer", TEXT_BANK_FILECHOOSE, nullptr);
                 SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
                 break;
             }
-            case FS_QUEST_BOSSRUSH: {
+            case QUEST_BOSSRUSH: {
                 auto translation = GetParameritizedText("quest_sel_boss_rush", TEXT_BANK_FILECHOOSE, nullptr);
                 SpeechSynthesizer::Instance->Speak(translation.c_str(), GetLanguageCode());
                 break;

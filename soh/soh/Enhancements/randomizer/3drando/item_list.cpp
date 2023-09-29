@@ -242,6 +242,7 @@ void ItemTable_Init() {                              // RandomizerGet           
     itemTable[BUY_RED_POTION_40]                 = Item(RG_BUY_RED_POTION_40,                 Text{"Buy Red Potion [40]",             "Acheter: Potion Rouge [40]",       "Comprar poción roja [40]"},                ITEMTYPE_SHOP, 0x30, false, &noVariable,     BOTTLE_WITH_RED_POTION,    40);
     itemTable[BUY_RED_POTION_50]                 = Item(RG_BUY_RED_POTION_50,                 Text{"Buy Red Potion [50]",             "Acheter: Potion Rouge [50]",       "Comprar poción roja [50]"},                ITEMTYPE_SHOP, 0x31, false, &noVariable,     BOTTLE_WITH_RED_POTION,    50);
 
+    itemTable[TRIFORCE_PIECE]                    = Item(RG_TRIFORCE_PIECE,                    Text{"Triforce Piece",                  "Triforce Piece",                   "Triforce Piece"},                          ITEMTYPE_ITEM, 0xDF, true,  &TriforcePieces, TRIFORCE_PIECE);
     itemTable[TRIFORCE]                          = Item(RG_TRIFORCE,                          Text{"Triforce",                        "Triforce",                         "Trifuerza"},                               ITEMTYPE_EVENT, GI_RUPEE_RED_LOSE,  false, &noVariable, NONE);
     itemTable[HINT]                              = Item(RG_HINT,                              Text{"Hint",                            "Indice",                           "Pista"},                                   ITEMTYPE_EVENT, GI_RUPEE_BLUE_LOSE, false, &noVariable, NONE);
 

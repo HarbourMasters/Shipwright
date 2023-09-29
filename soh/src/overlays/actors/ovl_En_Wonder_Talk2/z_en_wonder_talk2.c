@@ -254,7 +254,7 @@ void func_80B3A4F8(EnWonderTalk2* this, PlayState* play) {
             if (!this->unk_156) {
                 // Whether or not to skip the text in rando
                 bool randoSkipText = false;
-                if (gSaveContext.n64ddFlag) {
+                if (IS_RANDO) {
                     // Scenes for which all of this type of wonder talk should be skipped.
                     switch (play->sceneNum) {
                         case 0x0007: // Shadow Temple
