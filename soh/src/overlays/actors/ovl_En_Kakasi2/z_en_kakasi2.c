@@ -117,7 +117,7 @@ void func_80A90264(EnKakasi2* this, PlayState* play) {
 
     this->unk_194++;
     
-    bool hasTwoOcarinaButtons = !gSaveContext.n64ddFlag ||
+    bool hasTwoOcarinaButtons = !IS_RANDO ||
         Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_A) +
         Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_LEFT) +
         Flags_GetRandomizerInf(RAND_INF_HAS_OCARINA_C_RIGHT) +
