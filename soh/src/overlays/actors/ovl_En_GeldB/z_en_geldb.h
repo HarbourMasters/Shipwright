@@ -53,7 +53,7 @@ typedef struct EnGeldB {
     /* 0x0304 */ f32 approachRate;
     /* 0x0308 */ char unk_308[4];
     /* 0x030C */ f32 unkFloat;
-    /* 0x0310 */ s16 swordState;
+    /* 0x0310 */ s16 meleeWeaponState;
     /* 0x0312 */ s16 spinAttackState;
     /* 0x0314 */ s16 keyFlag;
     /* 0x0316 */ char unk_316[2];

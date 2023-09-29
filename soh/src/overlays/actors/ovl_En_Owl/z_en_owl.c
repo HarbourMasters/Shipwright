@@ -139,7 +139,7 @@ void EnOwl_Init(Actor* thisx, PlayState* play) {
 
     if (((owlType != OWL_DEFAULT) && (switchFlag < 0x20) && Flags_GetSwitch(play, switchFlag)) ||
         // Owl shortcuts at SPOT06: Lake Hylia and SPOT16: Death Mountain Trail
-        (gSaveContext.n64ddFlag && !(play->sceneNum == SCENE_LAKE_HYLIA || play->sceneNum == SCENE_DEATH_MOUNTAIN_TRAIL))) {
+        (IS_RANDO && !(play->sceneNum == SCENE_LAKE_HYLIA || play->sceneNum == SCENE_DEATH_MOUNTAIN_TRAIL))) {
         osSyncPrintf("savebitでフクロウ退避\n"); // "Save owl with savebit"
         Actor_Kill(&this->actor);
         return;
@@ -634,7 +634,7 @@ void func_80ACB274(EnOwl* this, PlayState* play) {
 void EnOwl_WaitDeathMountainShortcut(EnOwl* this, PlayState* play) {
     EnOwl_LookAtLink(this, play);
 
-    if (!gSaveContext.isMagicAcquired && !gSaveContext.n64ddFlag) {
+    if (!gSaveContext.isMagicAcquired && !IS_RANDO) {
         if (func_80ACA558(this, play, 0x3062)) {
             Audio_PlayFanfare(NA_BGM_OWL);
             this->actionFunc = func_80ACB274;
@@ -961,7 +961,7 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                     osSyncPrintf(VT_FGCOL(CYAN));
                     osSyncPrintf("SPOT 06 の デモがはしった\n"); // "Demo of SPOT 06 has been completed"
                     osSyncPrintf(VT_RST);
-                    if (gSaveContext.n64ddFlag) {
+                    if (IS_RANDO) {
                         if (Randomizer_GetSettingValue(RSK_SHUFFLE_OWL_DROPS)) {
                             play->nextEntranceIndex = Entrance_OverrideNextIndex(0x027E);
                         } else {
@@ -976,7 +976,7 @@ void func_80ACC00C(EnOwl* this, PlayState* play) {
                     break;
                 case 8:
                 case 9:
-                    if (gSaveContext.n64ddFlag) {
+                    if (IS_RANDO) {
                         if (Randomizer_GetSettingValue(RSK_SHUFFLE_OWL_DROPS)) {
                             play->nextEntranceIndex = Entrance_OverrideNextIndex(0x0554);
                         } else {
@@ -1363,8 +1363,7 @@ void EnOwl_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 8, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeTexIndex]));
-    SkelAnime_DrawFlexOpa(play, this->curSkelAnime->skeleton, this->curSkelAnime->jointTable,
-                          this->curSkelAnime->dListCount, EnOwl_OverrideLimbDraw, EnOwl_PostLimbUpdate, this);
+    SkelAnime_DrawSkeletonOpa(play, this->curSkelAnime, EnOwl_OverrideLimbDraw, EnOwl_PostLimbUpdate, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

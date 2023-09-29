@@ -227,7 +227,7 @@ s32 Ge2_DetectPlayerInUpdate(PlayState* play, EnGe2* this, Vec3f* pos, s16 yRot,
 }
 
 s32 EnGe2_CheckCarpentersFreed(void) {
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         if (CHECK_QUEST_ITEM(QUEST_GERUDO_CARD)) {
             return 1;
         } else {
@@ -259,7 +259,7 @@ void EnGe2_CaptureClose(EnGe2* this, PlayState* play) {
             play->nextEntranceIndex = 0x3B4;
         }
 
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             Entrance_OverrideGeurdoGuardCapture();
         }
 
@@ -289,7 +289,7 @@ void EnGe2_CaptureCharge(EnGe2* this, PlayState* play) {
             play->nextEntranceIndex = 0x3B4;
         }
 
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             Entrance_OverrideGeurdoGuardCapture();
         }
 
@@ -471,7 +471,7 @@ void EnGe2_WaitTillCardGiven(EnGe2* this, PlayState* play) {
         this->actor.parent = NULL;
         this->actionFunc = EnGe2_SetActionAfterTalk;
     } else {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_GERUDO_CARD, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD);
@@ -485,7 +485,7 @@ void EnGe2_GiveCard(EnGe2* this, PlayState* play) {
         Message_CloseTextbox(play);
         this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
         this->actionFunc = EnGe2_WaitTillCardGiven;
-         if (!gSaveContext.n64ddFlag) {
+         if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_GERUDO_CARD, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD);
@@ -683,8 +683,7 @@ void EnGe2_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
     func_8002EBCC(&this->actor, play, 0);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnGe2_OverrideLimbDraw, EnGe2_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnGe2_OverrideLimbDraw, EnGe2_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

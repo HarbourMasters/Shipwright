@@ -783,7 +783,7 @@ s32 BossTw_BeamHitPlayerCheck(BossTw* this, PlayState* play) {
                 }
 
                 player->isBurning = true;
-                func_8002F7DC(&player->actor, player->ageProperties->unk_92 + NA_SE_VO_LI_DEMO_DAMAGE);
+                Player_PlaySfx(&player->actor, player->ageProperties->unk_92 + NA_SE_VO_LI_DEMO_DAMAGE);
             }
         }
 
@@ -1653,7 +1653,7 @@ void BossTw_TwinrovaMergeCS(BossTw* this, PlayState* play) {
             }
 
             if (this->timers[3] == 16) {
-                func_8002F7DC(&player->actor, player->ageProperties->unk_92 + NA_SE_VO_LI_SURPRISE);
+                Player_PlaySfx(&player->actor, player->ageProperties->unk_92 + NA_SE_VO_LI_SURPRISE);
             }
 
             if ((this->timers[3] != 0) && (this->timers[3] < 20)) {
@@ -2365,7 +2365,7 @@ void BossTw_DeathCSMsgSfx(BossTw* this, PlayState* play) {
     sp35 = 0;
 
     // Skip ahead to last part of the cutscene in rando
-    if (this->work[CS_TIMER_2] == 10 && (gSaveContext.n64ddFlag || gSaveContext.isBossRush)) {
+    if (this->work[CS_TIMER_2] == 10 && (IS_RANDO || IS_BOSS_RUSH)) {
         this->work[CS_TIMER_2] = 860;
     }
 
@@ -2550,7 +2550,7 @@ void BossTw_DeathCSMsgSfx(BossTw* this, PlayState* play) {
 
     // Add separate timings for the "beam" that opens and closes around the sisters
     // Needed because we skip ahead in cutscene timer value so it never gets called otherwise
-    if (gSaveContext.n64ddFlag || gSaveContext.isBossRush) {
+    if (IS_RANDO || IS_BOSS_RUSH) {
         if (this->work[CS_TIMER_2] < 900) {
             Math_ApproachF(&this->workf[UNK_F18], 255.0f, 0.1f, 5.0f);
         } else if (this->work[CS_TIMER_2] > 910) {
@@ -2795,7 +2795,7 @@ void BossTw_TwinrovaDeathCS(BossTw* this, PlayState* play) {
                 func_80064534(play, &play->csCtx);
                 func_8002DF54(play, &this->actor, 7);
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS_CLEAR);
-                if (!gSaveContext.isBossRush) {
+                if (!IS_BOSS_RUSH) {
                     Actor_SpawnAsChild(&play->actorCtx, &this->actor, play, ACTOR_DOOR_WARP1, 600.0f, 230.0f, 0.0f, 0,
                                        0, 0, WARP_DUNGEON_ADULT);
                     Actor_Spawn(&play->actorCtx, play, ACTOR_ITEM_B_HEART, -600.0f, 230.f, 0.0f, 0, 0, 0, 0, true);
@@ -3510,8 +3510,7 @@ void BossTw_Draw(Actor* thisx, PlayState* play2) {
         }
 
         Matrix_Push();
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, BossTw_OverrideLimbDraw, BossTw_PostLimbDraw, this);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, BossTw_OverrideLimbDraw, BossTw_PostLimbDraw, this);
         Matrix_Pop();
         POLY_OPA_DISP = Play_SetFog(play, POLY_OPA_DISP);
     }
@@ -3866,9 +3865,7 @@ void BossTw_TwinrovaDraw(Actor* thisx, PlayState* play2) {
                                                                   (u32)this->fogB, 0, this->fogNear, this->fogFar);
 
         Matrix_Push();
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, BossTw_TwinrovaOverrideLimbDraw, BossTw_TwinrovaPostLimbDraw,
-                              thisx);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, BossTw_TwinrovaOverrideLimbDraw, BossTw_TwinrovaPostLimbDraw, thisx);
         Matrix_Pop();
 
         Matrix_MultVec3f(&D_8094A9EC, &this->beamOrigin);
@@ -4053,7 +4050,7 @@ void BossTw_BlastFire(BossTw* this, PlayState* play) {
                     player->isBurning = 1;
 
                     if (this->work[BURN_TMR] == 0) {
-                        func_8002F7DC(&player->actor, player->ageProperties->unk_92 + NA_SE_VO_LI_DEMO_DAMAGE);
+                        Player_PlaySfx(&player->actor, player->ageProperties->unk_92 + NA_SE_VO_LI_DEMO_DAMAGE);
                         this->work[BURN_TMR] = 40;
                     }
 

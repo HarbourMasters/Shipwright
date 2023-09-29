@@ -131,7 +131,7 @@ void func_808AC908(BgSpot02Objects* this, PlayState* play) {
 
     // We want to do most of the same things in rando, but we're not in a cutscene and the flag for
     // destroying the royal tombstone is already set.
-    if (gSaveContext.n64ddFlag && Flags_GetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB)) {
+    if (IS_RANDO && Flags_GetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB)) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_GRAVE_EXPLOSION);
         this->timer = 25;
         pos.x = (Math_SinS(this->dyna.actor.shape.rot.y) * 50.0f) + this->dyna.actor.world.pos.x;
@@ -174,11 +174,11 @@ void func_808ACA08(BgSpot02Objects* this, PlayState* play) {
 
     // This shouldn't execute in rando even without the check since we never
     // enter the cutscene context.
-    if (play->csCtx.frames == 402 && !(gSaveContext.n64ddFlag)) {
+    if (play->csCtx.frames == 402 && !(IS_RANDO)) {
         if (!LINK_IS_ADULT) {
-            func_8002F7DC(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE_KID);
+            Player_PlaySfx(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE_KID);
         } else {
-            func_8002F7DC(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE);
+            Player_PlaySfx(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE);
         }
     }
 }
@@ -220,7 +220,7 @@ void func_808ACC34(BgSpot02Objects* this, PlayState* play) {
     // This is the actionFunc that the game settles on when you load the Graveyard
     // When we're in rando and the flag for the gravestone being destroyed gets set,
     // set the actionFunc to the function where the gravestone explodes.
-    if (gSaveContext.n64ddFlag && Flags_GetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB)) {
+    if (IS_RANDO && Flags_GetEventChkInf(EVENTCHKINF_DESTROYED_ROYAL_FAMILY_TOMB)) {
         this->actionFunc = func_808AC908;
     }
 

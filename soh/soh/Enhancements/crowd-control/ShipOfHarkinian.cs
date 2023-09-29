@@ -13,6 +13,8 @@ public class ShipOfHarkinian : SimpleTCPPack
 
     public override ISimpleTCPPack.MessageFormat MessageFormat => ISimpleTCPPack.MessageFormat.CrowdControlLegacy;
 
+    public override ISimpleTCPPack.QuantityFormat QuantityFormat => ISimpleTCPPack.QuantityFormat.ParameterAndField;
+
     public ShipOfHarkinian(UserRecord player, Func<CrowdControlBlock, bool> responseHandler, Action<object> statusUpdateHandler) : base(player, responseHandler, statusUpdateHandler) { }
 
     public override Game Game { get; } = new("Ship of Harkinian", "ShipOfHarkinian", "PC", ConnectorType.SimpleTCPServerConnector);

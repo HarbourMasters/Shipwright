@@ -132,6 +132,8 @@ Text childAltarText;
 Text adultAltarText;
 Text ganonText;
 Text ganonHintText;
+Text sheikText;
+Text sariaText;
 Text dampesText;
 Text gregText;
 Text warpMinuetText;
@@ -141,7 +143,8 @@ Text warpRequiemText;
 Text warpNocturneText;
 Text warpPreludeText;
 
-std::string ganonHintLoc;
+std::string lightArrowHintLoc;
+std::string sariaHintLoc;
 std::string dampeHintLoc;
 
 Text& GetChildAltarText() {
@@ -168,6 +171,14 @@ Text& GetGregHintText() {
   return gregText;
 }
 
+Text& GetSheikHintText() {
+  return sheikText;
+}
+
+Text& GetSariaHintText() {
+  return sariaText;
+}
+
 Text& GetWarpMinuetText() {
   return warpMinuetText;
 }
@@ -192,12 +203,16 @@ Text& GetWarpPreludeText() {
   return warpPreludeText;
 }
 
-std::string GetGanonHintLoc() {
-    return ganonHintLoc;
+std::string GetLightArrowHintLoc() {
+    return lightArrowHintLoc;
 }
 
 std::string GetDampeHintLoc() {
     return dampeHintLoc;
+}
+
+std::string GetSariaHintLoc() {
+  return sariaHintLoc;
 }
 
 Area* GetHintRegion(const uint32_t area) {
@@ -488,7 +503,9 @@ static std::vector<uint32_t> CalculateBarrenRegions() {
     if (Location(loc)->GetPlacedItem().IsMajorItem() || ElementInContainer(loc, wothLocations)) {
       AddElementsToPool(potentiallyUsefulLocations, std::vector{loc});
     } else {
-      if (loc != LINKS_POCKET) { //Nobody cares to know if Link's Pocket is barren
+      // Link's Pocket & Triforce Hunt "reward" shouldn't be considered for barren areas because it's clear what
+      // they have to a player.
+      if (loc != LINKS_POCKET && loc != TRIFORCE_COMPLETED) { 
         AddElementsToPool(barrenLocations, std::vector{loc});
       }
     }
@@ -583,10 +600,10 @@ void CreateGanonText() {
   auto hint = Hint(LIGHT_ARROW_LOCATION_HINT);
   if (lightArrowLocation.empty()) {
     ganonHintText = hint.GetText()+Hint(YOUR_POCKET).GetText();
-    ganonHintLoc = "Link's Pocket";
+    lightArrowHintLoc = "Link's Pocket";
   } else {
     ganonHintText = hint.GetText()+GetHintRegion(Location(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
-    ganonHintLoc = Location(lightArrowLocation[0])->GetName();
+    lightArrowHintLoc = Location(lightArrowLocation[0])->GetName();
   }
   ganonHintText = ganonHintText + "!";
 
@@ -708,6 +725,9 @@ static Text BuildGanonBossKeyText() {
 
   } else if (GanonsBossKey.Is(GANONSBOSSKEY_LACS_TOKENS)) {
     ganonBossKeyText = BuildCountReq(LACS_TOKENS_HINT, LACSTokenCount);
+
+  } else if (GanonsBossKey.Is(GANONSBOSSKEY_TRIFORCE_HUNT)) {
+    ganonBossKeyText = Hint(GANON_BK_TRIFORCE_HINT).GetText();
   }
 
   return Text()+"$b"+ganonBossKeyText+"^";
@@ -820,18 +840,51 @@ void CreateGregRupeeHint() {
 
   Text temp1 = Text{
     "By the way, if you're interested, I saw the shiniest %gGreen Rupee%w somewhere in%g ",
-    "",
+    "Au fait, si ça t'intéresse, j'ai aperçu le plus éclatant des %gRubis Verts%w quelque part à %g",
     ""
   };
 
   Text temp2 = {
     "%w.^It's said to have %rmysterious powers%w...^But then, it could just be another regular rupee.&Oh well.",
-    "",
+    "%w. On dit qu'il possède des pouvoirs mystérieux... Mais bon, ça pourrait juste être un autre rubis ordinaire.",
     ""
   };
 
     gregText = temp1 + area + temp2;
 }
+
+void CreateSheikText() {
+  //Get the location of the light arrows
+  auto lightArrowLocation = FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == LIGHT_ARROWS;});
+  lightArrowHintLoc = Location(lightArrowLocation[0])->GetName();
+  Text area = GetHintRegion(Location(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
+  Text temp1 = Text{
+    "I overheard Ganondorf say that he misplaced the %rLight Arrows%w in&%g",
+    "J'ai entendu dire que Ganondorf aurait caché les %rFlèches de Lumière%w dans %g",
+    ""
+  };
+  Text temp2 = Text{"%w.", "%w.", "%w."};
+  sheikText = temp1 + area + temp2;
+}
+
+void CreateSariaText() {
+  //Get the location of the light arrows
+  auto magicLocation = FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == PROGRESSIVE_MAGIC_METER;});
+  sariaHintLoc = Location(magicLocation[0])->GetName();
+  Text area = GetHintRegion(Location(magicLocation[0])->GetParentRegionKey())->GetHint().GetText();
+  Text temp1 = Text{
+    "Did you feel the %gsurge of magic%w recently? A mysterious bird told me it came from %g",
+    "As-tu récemment ressenti une vague de %gpuissance magique%w? Un mystérieux hibou m'a dit  qu'elle provenait du %g",
+    ""
+  };
+  Text temp2 = Text{
+    "%w.^You should check that place out, @!$C", 
+    "%w. Tu devrais aller y jeter un coup d'oeil, @!$C", 
+    "%w.$C"
+  };
+  sariaText = temp1 + area + temp2;
+}
+
 
 void CreateWarpSongTexts() {
   if (!ShuffleWarpSongs) {

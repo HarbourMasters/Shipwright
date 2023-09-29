@@ -137,7 +137,7 @@ void EnExItem_WaitForObject(EnExItem* this, PlayState* play) {
                 onCounter = true;
             case EXITEM_BOMB_BAG_BOWLING:
                 this->unk_17C = func_8002EBCC;
-                if (gSaveContext.n64ddFlag) {
+                if (IS_RANDO) {
                     this->giDrawId =
                         Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20).gid;
                 } else {
@@ -150,7 +150,7 @@ void EnExItem_WaitForObject(EnExItem* this, PlayState* play) {
                     this->actionFunc = EnExItem_BowlPrize;
                 } else {
                     this->actionFunc = EnExItem_SetupBowlCounter;
-                    this->actor.shape.yOffset = gSaveContext.n64ddFlag ? -10.0f : -18.0f;
+                    this->actor.shape.yOffset = IS_RANDO ? -10.0f : -18.0f;
                 }
                 break;
             case EXITEM_HEART_PIECE_COUNTER:
@@ -172,7 +172,7 @@ void EnExItem_WaitForObject(EnExItem* this, PlayState* play) {
                 onCounter = true;
             case EXITEM_BOMBCHUS_BOWLING:
                 this->unk_17C = func_8002EBCC;
-                if (gSaveContext.n64ddFlag) {
+                if (IS_RANDO) {
                     this->giDrawId = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10).gid;
                 } else {
                     this->giDrawId = GID_BOMBCHU;
@@ -228,7 +228,7 @@ void EnExItem_WaitForObject(EnExItem* this, PlayState* play) {
                 this->scale = 0.5f;
                 this->unkFloat = 0.5f;
                 this->actor.velocity.y = 10.0f;
-                if (!gSaveContext.n64ddFlag || !Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
+                if (!IS_RANDO || !Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
                     switch (this->type) {
                         case EXITEM_GREEN_RUPEE_CHEST:
                             this->giDrawId = GID_RUPEE_GREEN;
@@ -376,7 +376,7 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, PlayState* play) {
         Math_SmoothStepToS(&this->actor.shape.rot.y, -0x4000, 5, 0x1000, 0);
     }
 
-    if (!gSaveContext.n64ddFlag && this->timer != 0) {
+    if (!IS_RANDO && this->timer != 0) {
         if (this->prizeRotateTimer != 0) {
             tmpf1 = play->view.lookAt.x - play->view.eye.x;
             tmpf2 = play->view.lookAt.y - 10.0f - play->view.eye.y;
@@ -402,7 +402,7 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, PlayState* play) {
         this->actor.draw = NULL;
         func_8002DF54(play, NULL, 7);
         this->actor.parent = NULL;
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             GET_PLAYER(play)->stateFlags1 &= ~(PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_ITEM_OVER_HEAD);
             getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
             getItemId = getItemEntry.getItemId;
@@ -414,7 +414,7 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, PlayState* play) {
             }
         }
 
-        if (!gSaveContext.n64ddFlag || getItemEntry.getItemId == GI_NONE) {
+        if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
             func_8002F434(&this->actor, play, getItemId, 2000.0f, 1000.0f);
         } else {
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 2000.0f, 1000.0f);
@@ -427,7 +427,7 @@ void EnExItem_TargetPrizeGive(EnExItem* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         this->actionFunc = EnExItem_TargetPrizeFinish;
     } else {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             s32 getItemId = (CUR_UPG_VALUE(UPG_BULLET_BAG) == 2) ? GI_BULLET_BAG_50 : GI_BULLET_BAG_40;
             func_8002F434(&this->actor, play, getItemId, 2000.0f, 1000.0f);
         } else {
@@ -510,7 +510,7 @@ void EnExItem_DrawItems(EnExItem* this, PlayState* play) {
     }
     if (this) {}
     func_8002ED80(&this->actor, play, 0);
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         GetItemEntry randoGetItem = (GetItemEntry)GET_ITEM_NONE;
         switch (this->type) {
             case EXITEM_BOMB_BAG_BOWLING:
@@ -539,7 +539,7 @@ void EnExItem_DrawItems(EnExItem* this, PlayState* play) {
 void EnExItem_DrawHeartPiece(EnExItem* this, PlayState* play) {
     func_8002ED80(&this->actor, play, 0);
 
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         GetItemEntry randoGetItem =
             Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
         EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
