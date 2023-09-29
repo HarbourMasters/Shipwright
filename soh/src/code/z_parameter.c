@@ -3235,22 +3235,22 @@ void Interface_UpdateMagicBar(PlayState* play) {
     Color_RGB8 MagicBorder_2 = { 255, 255, 150 };
     Color_RGB8 MagicBorder_3 = { 255, 255, 50 };
 
-    if (CVarGetInteger("gCosmetics.Consumable_MagicBorderActive.Changed", 0)) { //This will make custom color based on users selected colors.
-        sMagicBorderColors[0][0] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_0).r;
-        sMagicBorderColors[0][1] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_0).g;
-        sMagicBorderColors[0][2] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_0).b;
+    if (CVarGetInteger(COSMETIC_CVAR("Consumable_MagicBorderActive.Changed"), 0)) { //This will make custom color based on users selected colors.
+        sMagicBorderColors[0][0] = CVarGetColor24(COSMETIC_CVAR("Consumable_MagicBorderActive.Value"), MagicBorder_0).r;
+        sMagicBorderColors[0][1] = CVarGetColor24(COSMETIC_CVAR("Consumable_MagicBorderActive.Value"), MagicBorder_0).g;
+        sMagicBorderColors[0][2] = CVarGetColor24(COSMETIC_CVAR("Consumable_MagicBorderActive.Value"), MagicBorder_0).b;
 
-        sMagicBorderColors[1][0] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_1).r/2;
-        sMagicBorderColors[1][1] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_1).g/2;
-        sMagicBorderColors[1][2] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_1).b/2;
+        sMagicBorderColors[1][0] = CVarGetColor24(COSMETIC_CVAR("Consumable_MagicBorderActive.Value"), MagicBorder_1).r/2;
+        sMagicBorderColors[1][1] = CVarGetColor24(COSMETIC_CVAR("Consumable_MagicBorderActive.Value"), MagicBorder_1).g/2;
+        sMagicBorderColors[1][2] = CVarGetColor24(COSMETIC_CVAR("Consumable_MagicBorderActive.Value"), MagicBorder_1).b/2;
 
-        sMagicBorderColors[2][0] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_2).r/2.5;
-        sMagicBorderColors[2][1] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_2).g/2.5;
-        sMagicBorderColors[2][2] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_2).b/2.5;
+        sMagicBorderColors[2][0] = CVarGetColor24(COSMETIC_CVAR("Consumable_MagicBorderActive.Value"), MagicBorder_2).r/2.5;
+        sMagicBorderColors[2][1] = CVarGetColor24(COSMETIC_CVAR("Consumable_MagicBorderActive.Value"), MagicBorder_2).g/2.5;
+        sMagicBorderColors[2][2] = CVarGetColor24(COSMETIC_CVAR("Consumable_MagicBorderActive.Value"), MagicBorder_2).b/2.5;
 
-        sMagicBorderColors[3][0] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_3).r/3;
-        sMagicBorderColors[3][1] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_3).g/3;
-        sMagicBorderColors[3][2] = CVarGetColor24("gCosmetics.Consumable_MagicBorderActive.Value", MagicBorder_3).b/3;
+        sMagicBorderColors[3][0] = CVarGetColor24(COSMETIC_CVAR("Consumable_MagicBorderActive.Value"), MagicBorder_3).r/3;
+        sMagicBorderColors[3][1] = CVarGetColor24(COSMETIC_CVAR("Consumable_MagicBorderActive.Value"), MagicBorder_3).g/3;
+        sMagicBorderColors[3][2] = CVarGetColor24(COSMETIC_CVAR("Consumable_MagicBorderActive.Value"), MagicBorder_3).b/3;
     }
 
     static s16 sMagicBorderIndexes[] = { 0, 1, 1, 0 };
@@ -3310,15 +3310,15 @@ void Interface_UpdateMagicBar(PlayState* play) {
             if (gSaveContext.magic <= 0) {
                 gSaveContext.magic = 0;
                 gSaveContext.magicState = 3;
-                if (CVarGetInteger("gCosmetics.Consumable_MagicBorder.Changed", 0)) {
-                    sMagicBorder = CVarGetColor24("gCosmetics.Consumable_MagicBorder.Value", sMagicBorder_ori);
+                if (CVarGetInteger(COSMETIC_CVAR("Consumable_MagicBorder.Changed"), 0)) {
+                    sMagicBorder = CVarGetColor24(COSMETIC_CVAR("Consumable_MagicBorder.Value"), sMagicBorder_ori);
                 } else {
                     sMagicBorder = sMagicBorder_ori;
                 }
             } else if (gSaveContext.magic == gSaveContext.magicTarget) {
                 gSaveContext.magicState = 3;
-                if (CVarGetInteger("gCosmetics.Consumable_MagicBorder.Changed", 0)) {
-                    sMagicBorder = CVarGetColor24("gCosmetics.Consumable_MagicBorder.Value", sMagicBorder_ori);
+                if (CVarGetInteger(COSMETIC_CVAR("Consumable_MagicBorder.Changed"), 0)) {
+                    sMagicBorder = CVarGetColor24(COSMETIC_CVAR("Consumable_MagicBorder.Value"), sMagicBorder_ori);
                 } else {
                     sMagicBorder = sMagicBorder_ori;
                 }
@@ -3363,8 +3363,8 @@ void Interface_UpdateMagicBar(PlayState* play) {
             break;
 
         case 5:
-            if (CVarGetInteger("gCosmetics.Consumable_MagicBorder.Changed", 0)) {
-                sMagicBorder = CVarGetColor24("gCosmetics.Consumable_MagicBorder.Value", sMagicBorder_ori);
+            if (CVarGetInteger(COSMETIC_CVAR("Consumable_MagicBorder.Changed"), 0)) {
+                sMagicBorder = CVarGetColor24(COSMETIC_CVAR("Consumable_MagicBorder.Value"), sMagicBorder_ori);
             } else {
                 sMagicBorder = sMagicBorder_ori;
             }
@@ -3389,8 +3389,8 @@ void Interface_UpdateMagicBar(PlayState* play) {
                     Audio_PlaySoundGeneral(NA_SE_SY_GLASSMODE_OFF, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                            &D_801333E8);
                     gSaveContext.magicState = 0;
-                    if (CVarGetInteger("gCosmetics.Consumable_MagicBorder.Changed", 0)) {
-                        sMagicBorder = CVarGetColor24("gCosmetics.Consumable_MagicBorder.Value", sMagicBorder_ori);
+                    if (CVarGetInteger(COSMETIC_CVAR("Consumable_MagicBorder.Changed"), 0)) {
+                        sMagicBorder = CVarGetColor24(COSMETIC_CVAR("Consumable_MagicBorder.Value"), sMagicBorder_ori);
                     } else {
                         sMagicBorder = sMagicBorder_ori;
                     }
@@ -3485,11 +3485,11 @@ void Interface_DrawMagicBar(PlayState* play) {
     Color_RGB8 magicbar_yellow = {250,250,0}; //Magic bar being used
     Color_RGB8 magicbar_green = {R_MAGIC_FILL_COLOR(0),R_MAGIC_FILL_COLOR(1),R_MAGIC_FILL_COLOR(2)}; //Magic bar fill
 
-    if (CVarGetInteger("gCosmetics.Consumable_MagicActive.Changed", 0)) {
-        magicbar_yellow = CVarGetColor24("gCosmetics.Consumable_MagicActive.Value", magicbar_yellow);
+    if (CVarGetInteger(COSMETIC_CVAR("Consumable_MagicActive.Changed"), 0)) {
+        magicbar_yellow = CVarGetColor24(COSMETIC_CVAR("Consumable_MagicActive.Value"), magicbar_yellow);
     }
-    if (CVarGetInteger("gCosmetics.Consumable_Magic.Changed", 0)) {
-        magicbar_green = CVarGetColor24("gCosmetics.Consumable_Magic.Value", magicbar_green);
+    if (CVarGetInteger(COSMETIC_CVAR("Consumable_Magic.Changed"), 0)) {
+        magicbar_green = CVarGetColor24(COSMETIC_CVAR("Consumable_Magic.Value"), magicbar_green);
     }
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -3497,7 +3497,7 @@ void Interface_DrawMagicBar(PlayState* play) {
     if (gSaveContext.magicLevel != 0) {
         s16 X_Margins;
         s16 Y_Margins;
-        if (CVarGetInteger("gMagicBarUseMargins", 0) != 0) {
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.UseMargins"), 0) != 0) {
             X_Margins = Left_HUD_Margin;
             Y_Margins = (Top_HUD_Margin*-1);
         } else {
@@ -3515,40 +3515,40 @@ void Interface_DrawMagicBar(PlayState* play) {
         s16 rMagicBarX;
         s16 PosX_MidEnd;
         s16 rMagicFillX;
-        s32 lineLength = CVarGetInteger("gHeartsLineLength", 10);
-        if (CVarGetInteger("gMagicBarPosType", 0) != 0) {
-            magicBarY = CVarGetInteger("gMagicBarPosY", 0)+Y_Margins;
-            if (CVarGetInteger("gMagicBarPosType", 0) == 1) {//Anchor Left
-                if (CVarGetInteger("gMagicBarUseMargins", 0) != 0) {X_Margins = Left_HUD_Margin;};
-                PosX_Start = OTRGetDimensionFromLeftEdge(CVarGetInteger("gMagicBarPosX", 0)+X_Margins);
-                rMagicBarX = OTRGetDimensionFromLeftEdge(CVarGetInteger("gMagicBarPosX", 0)+X_Margins);
-                PosX_MidEnd = OTRGetDimensionFromLeftEdge(CVarGetInteger("gMagicBarPosX", 0)+X_Margins+8);
-                rMagicFillX = OTRGetDimensionFromLeftEdge(CVarGetInteger("gMagicBarPosX", 0)+X_Margins+8);
-            } else if (CVarGetInteger("gMagicBarPosType", 0) == 2) {//Anchor Right
-                if (CVarGetInteger("gMagicBarUseMargins", 0) != 0) {X_Margins = Right_HUD_Margin;};
-                PosX_Start = OTRGetDimensionFromRightEdge(CVarGetInteger("gMagicBarPosX", 0)+X_Margins);
-                rMagicBarX = OTRGetDimensionFromRightEdge(CVarGetInteger("gMagicBarPosX", 0)+X_Margins);
-                PosX_MidEnd = OTRGetDimensionFromRightEdge(CVarGetInteger("gMagicBarPosX", 0)+X_Margins+8);
-                rMagicFillX = OTRGetDimensionFromRightEdge(CVarGetInteger("gMagicBarPosX", 0)+X_Margins+8);
-            } else if (CVarGetInteger("gMagicBarPosType", 0) == 3) {//Anchor None
-                PosX_Start = CVarGetInteger("gMagicBarPosX", 0)+X_Margins;
-                rMagicBarX = CVarGetInteger("gMagicBarPosX", 0)+X_Margins;
-                PosX_MidEnd = CVarGetInteger("gMagicBarPosX", 0)+X_Margins+8;
-                rMagicFillX = CVarGetInteger("gMagicBarPosX", 0)+X_Margins+8;
-            } else if (CVarGetInteger("gMagicBarPosType", 0) == 4) {//hidden
+        s32 lineLength = CVarGetInteger(COSMETIC_CVAR("Hud_Hearts.LineLength"), 10);
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.AnchorType"), 0) != 0) {
+            magicBarY = CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.PosY"), 0)+Y_Margins;
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.AnchorType"), 0) == 1) {//Anchor Left
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.UseMargins"), 0) != 0) {X_Margins = Left_HUD_Margin;};
+                PosX_Start = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.PosX"), 0)+X_Margins);
+                rMagicBarX = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.PosX"), 0)+X_Margins);
+                PosX_MidEnd = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.PosX"), 0)+X_Margins+8);
+                rMagicFillX = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.PosX"), 0)+X_Margins+8);
+            } else if (CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.AnchorType"), 0) == 2) {//Anchor Right
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.UseMargins"), 0) != 0) {X_Margins = Right_HUD_Margin;};
+                PosX_Start = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.PosX"), 0)+X_Margins);
+                rMagicBarX = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.PosX"), 0)+X_Margins);
+                PosX_MidEnd = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.PosX"), 0)+X_Margins+8);
+                rMagicFillX = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.PosX"), 0)+X_Margins+8);
+            } else if (CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.AnchorType"), 0) == 3) {//Anchor None
+                PosX_Start = CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.PosX"), 0)+X_Margins;
+                rMagicBarX = CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.PosX"), 0)+X_Margins;
+                PosX_MidEnd = CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.PosX"), 0)+X_Margins+8;
+                rMagicFillX = CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.PosX"), 0)+X_Margins+8;
+            } else if (CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.AnchorType"), 0) == 4) {//hidden
                 PosX_Start = -9999;
                 rMagicBarX = -9999;
                 PosX_MidEnd = -9999;
                 rMagicFillX = -9999;
-            } else if (CVarGetInteger("gMagicBarPosType", 0) == 5) {//Anchor To life meter
+            } else if (CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.AnchorType"), 0) == 5) {//Anchor To life meter
                 magicBarY = R_MAGIC_BAR_SMALL_Y-2 +
                             magicDrop*(lineLength == 0 ? 0 : (gSaveContext.healthCapacity-1)/(0x10*lineLength)) +
-                            CVarGetInteger("gMagicBarPosY", 0) + getHealthMeterYOffset();
-                s16 xPushover = CVarGetInteger("gMagicBarPosX", 0) + getHealthMeterXOffset() + R_MAGIC_BAR_X-1;
+                            CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.PosY"), 0) + getHealthMeterYOffset();
+                s16 xPushover = CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.PosX"), 0) + getHealthMeterXOffset() + R_MAGIC_BAR_X-1;
                 PosX_Start = xPushover;
                 rMagicBarX = xPushover;
                 PosX_MidEnd = xPushover+8;
-                rMagicFillX = CVarGetInteger("gMagicBarPosX", 0) + getHealthMeterXOffset() + R_MAGIC_FILL_X-1;
+                rMagicFillX = CVarGetInteger(COSMETIC_CVAR("Hud_MagicBar.PosX"), 0) + getHealthMeterXOffset() + R_MAGIC_FILL_X-1;
             }
         } else {
             if ((gSaveContext.healthCapacity-1)/0x10 >= lineLength && lineLength != 0) {
@@ -3661,18 +3661,18 @@ void Interface_DrawEnemyHealthBar(TargetContext* targetCtx, PlayState* play) {
     Color_RGBA8 healthbar_border = { 255, 255, 255, 255 };
     s16 healthbar_fillWidth = 64;
     s16 healthbar_actorOffset = 40;
-    s32 healthbar_offsetX = CVarGetInteger("gCosmetics.Hud_EnemyHealthBarPosX", 0);
-    s32 healthbar_offsetY = CVarGetInteger("gCosmetics.Hud_EnemyHealthBarPosY", 0);
-    s8 anchorType = CVarGetInteger("gCosmetics.Hud_EnemyHealthBarPosType", ENEMYHEALTH_ANCHOR_ACTOR);
+    s32 healthbar_offsetX = CVarGetInteger(COSMETIC_CVAR("Hud_EnemyHealthBarPosX"), 0);
+    s32 healthbar_offsetY = CVarGetInteger(COSMETIC_CVAR("Hud_EnemyHealthBarPosY"), 0);
+    s8 anchorType = CVarGetInteger(COSMETIC_CVAR("Hud_EnemyHealthBarAnchorType"), ENEMYHEALTH_ANCHOR_ACTOR);
 
-    if (CVarGetInteger("gCosmetics.Hud_EnemyHealthBar.Changed", 0)) {
-        healthbar_red = CVarGetColor("gCosmetics.Hud_EnemyHealthBar.Value", healthbar_red);
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_EnemyHealthBar.Changed"), 0)) {
+        healthbar_red = CVarGetColor(COSMETIC_CVAR("Hud_EnemyHealthBar.Value"), healthbar_red);
     }
-    if (CVarGetInteger("gCosmetics.Hud_EnemyHealthBorder.Changed", 0)) {
-        healthbar_border = CVarGetColor("gCosmetics.Hud_EnemyHealthBorder.Value", healthbar_border);
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_EnemyHealthBorder.Changed"), 0)) {
+        healthbar_border = CVarGetColor(COSMETIC_CVAR("Hud_EnemyHealthBorder.Value"), healthbar_border);
     }
-    if (CVarGetInteger("gCosmetics.Hud_EnemyHealthBarWidth.Changed", 0)) {
-        healthbar_fillWidth = CVarGetInteger("gCosmetics.Hud_EnemyHealthBarWidth.Value", healthbar_fillWidth);
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_EnemyHealthBarWidth.Changed"), 0)) {
+        healthbar_fillWidth = CVarGetInteger(COSMETIC_CVAR("Hud_EnemyHealthBarWidth.Value"), healthbar_fillWidth);
     }
 
     OPEN_DISPS(play->state.gfxCtx);
@@ -3852,37 +3852,37 @@ void Interface_DrawItemButtons(PlayState* play) {
     s16 height;
 
     Color_RGB8 bButtonColor = { 0, 150, 0 };
-    if (CVarGetInteger("gCosmetics.Hud_BButton.Changed", 0)) {
-        bButtonColor = CVarGetColor24("gCosmetics.Hud_BButton.Value", bButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.Changed"), 0)) {
+        bButtonColor = CVarGetColor24(COSMETIC_CVAR("Hud_ButtonB.Value"), bButtonColor);
+    } else if (CVarGetInteger(COSMETIC_CVAR("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         bButtonColor = (Color_RGB8){ 255, 30, 30 };
     }
 
     Color_RGB8 cButtonsColor = { 255, 160, 0 };
-    if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
-        cButtonsColor = CVarGetColor24("gCosmetics.Hud_CButtons.Value", cButtonsColor);
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_CButtons.Changed"), 0)) {
+        cButtonsColor = CVarGetColor24(COSMETIC_CVAR("Hud_CButtons.Value"), cButtonsColor);
     }
     Color_RGB8 cUpButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CUpButton.Changed", 0)) {
-        cUpButtonColor = CVarGetColor24("gCosmetics.Hud_CUpButton.Value", cUpButtonColor);
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCUp.Changed"), 0)) {
+        cUpButtonColor = CVarGetColor24(COSMETIC_CVAR("Hud_ButtonCUp.Value"), cUpButtonColor);
     }
     Color_RGB8 cDownButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CDownButton.Changed", 0)) {
-        cDownButtonColor = CVarGetColor24("gCosmetics.Hud_CDownButton.Value", cDownButtonColor);
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.Changed"), 0)) {
+        cDownButtonColor = CVarGetColor24(COSMETIC_CVAR("Hud_ButtonCDown.Value"), cDownButtonColor);
     }
     Color_RGB8 cLeftButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CLeftButton.Changed", 0)) {
-        cLeftButtonColor = CVarGetColor24("gCosmetics.Hud_CLeftButton.Value", cLeftButtonColor);
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.Changed"), 0)) {
+        cLeftButtonColor = CVarGetColor24(COSMETIC_CVAR("Hud_ButtonCLeft.Value"), cLeftButtonColor);
     }
     Color_RGB8 cRightButtonColor = cButtonsColor;
-    if (CVarGetInteger("gCosmetics.Hud_CRightButton.Changed", 0)) {
-        cRightButtonColor = CVarGetColor24("gCosmetics.Hud_CRightButton.Value", cRightButtonColor);
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.Changed"), 0)) {
+        cRightButtonColor = CVarGetColor24(COSMETIC_CVAR("Hud_ButtonCRight.Value"), cRightButtonColor);
     }
 
     Color_RGB8 startButtonColor = { 200, 0, 0 };
-    if (CVarGetInteger("gCosmetics.Hud_StartButton.Changed", 0)) {
-        startButtonColor = CVarGetColor24("gCosmetics.Hud_StartButton.Value", startButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_StartButton.Changed"), 0)) {
+        startButtonColor = CVarGetColor24(COSMETIC_CVAR("Hud_StartButton.Value"), startButtonColor);
+    } else if (CVarGetInteger(COSMETIC_CVAR("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         startButtonColor = (Color_RGB8){ 120, 120, 120 };
     }
 
@@ -3891,12 +3891,12 @@ void Interface_DrawItemButtons(PlayState* play) {
     s16 Y_Margins_BtnB;
     s16 BBtn_Size = 32;
     int BBtnScaled = BBtn_Size * 0.95f;
-    if (CVarGetInteger("gBBtnPosType", 0) != 0) {
-        BBtnScaled = BBtn_Size * CVarGetFloat("gBBtnScale", 0.95f);
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) != 0) {
+        BBtnScaled = BBtn_Size * CVarGetFloat(COSMETIC_CVAR("Hud_ButtonB.Scale"), 0.95f);
     }
     int BBtn_factor = (1 << 10) * BBtn_Size / BBtnScaled;
-    if (CVarGetInteger("gBBtnUseMargins", 0) != 0) {
-        if (CVarGetInteger("gBBtnPosType", 0) == 0) {X_Margins_BtnB = Right_HUD_Margin;};
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) == 0) {X_Margins_BtnB = Right_HUD_Margin;};
         Y_Margins_BtnB = (Top_HUD_Margin*-1);
     } else {
         X_Margins_BtnB = 0;
@@ -3906,17 +3906,17 @@ void Interface_DrawItemButtons(PlayState* play) {
     s16 PosY_BtnB_ori = R_ITEM_BTN_Y(0)+Y_Margins_BtnB;
     s16 PosX_BtnB;
     s16 PosY_BtnB;
-    if (CVarGetInteger("gBBtnPosType", 0) != 0) {
-        PosY_BtnB = CVarGetInteger("gBBtnPosY", 0)+Y_Margins_BtnB;
-        if (CVarGetInteger("gBBtnPosType", 0) == 1) {//Anchor Left
-            if (CVarGetInteger("gBBtnUseMargins", 0) != 0) {X_Margins_BtnB = Left_HUD_Margin;};
-            PosX_BtnB = OTRGetDimensionFromLeftEdge(CVarGetInteger("gBBtnPosX", 0)+X_Margins_BtnB);
-        } else if (CVarGetInteger("gBBtnPosType", 0) == 2) {//Anchor Right
-            if (CVarGetInteger("gBBtnUseMargins", 0) != 0) {X_Margins_BtnB = Right_HUD_Margin;};
-            PosX_BtnB = OTRGetDimensionFromRightEdge(CVarGetInteger("gBBtnPosX", 0)+X_Margins_BtnB);
-        } else if (CVarGetInteger("gBBtnPosType", 0) == 3) {//Anchor None
-            PosX_BtnB = CVarGetInteger("gBBtnPosX", 0);
-        } else if (CVarGetInteger("gBBtnPosType", 0) == 4) {//Hidden
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) != 0) {
+        PosY_BtnB = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.PosY"), 0)+Y_Margins_BtnB;
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) == 1) {//Anchor Left
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.UseMargins"), 0) != 0) {X_Margins_BtnB = Left_HUD_Margin;};
+            PosX_BtnB = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.PosX"), 0)+X_Margins_BtnB);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) == 2) {//Anchor Right
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.UseMargins"), 0) != 0) {X_Margins_BtnB = Right_HUD_Margin;};
+            PosX_BtnB = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.PosX"), 0)+X_Margins_BtnB);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) == 3) {//Anchor None
+            PosX_BtnB = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.PosX"), 0);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) == 4) {//Hidden
            PosX_BtnB = -9999;
         }
     } else {
@@ -3926,8 +3926,8 @@ void Interface_DrawItemButtons(PlayState* play) {
     //Start Button
     s16 X_Margins_StartBtn;
     s16 Y_Margins_StartBtn;
-    if (CVarGetInteger("gStartBtnUseMargins", 0) != 0) {
-        if (CVarGetInteger("gStartBtnPosType", 0) == 0) {
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonStart.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonStart.AnchorType"), 0) == 0) {
             X_Margins_StartBtn = Right_HUD_Margin;
         };
         Y_Margins_StartBtn = Top_HUD_Margin*-1;
@@ -3938,8 +3938,8 @@ void Interface_DrawItemButtons(PlayState* play) {
     s16 StartBtn_Icon_H = 32;
     s16 StartBtn_Icon_W = 32;
     float Start_BTN_Scale = 0.75f;
-    if (CVarGetInteger("gStartBtnPosType", 0) != 0) {
-        Start_BTN_Scale = CVarGetFloat("gStartBtnScale", 0.75f);
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonStart.AnchorType"), 0) != 0) {
+        Start_BTN_Scale = CVarGetFloat(COSMETIC_CVAR("Hud_ButtonStart.Scale"), 0.75f);
     }
     int StartBTN_H_Scaled = StartBtn_Icon_H * Start_BTN_Scale;
     int StartBTN_W_Scaled = StartBtn_Icon_W * Start_BTN_Scale;
@@ -3951,17 +3951,17 @@ void Interface_DrawItemButtons(PlayState* play) {
     s16 StartBTN_Label_H = DO_ACTION_TEX_HEIGHT();
     s16 PosX_StartBtn;
     s16 PosY_StartBtn;
-    if (CVarGetInteger("gStartBtnPosType", 0) != 0) {
-        PosY_StartBtn = CVarGetInteger("gStartBtnPosY", 0)-(Start_BTN_Scale*13)+Y_Margins_StartBtn;
-        if (CVarGetInteger("gStartBtnPosType", 0) == 1) {//Anchor Left
-            if (CVarGetInteger("gStartBtnUseMargins", 0) != 0) {X_Margins_StartBtn = Left_HUD_Margin;};
-            PosX_StartBtn = OTRGetDimensionFromLeftEdge(CVarGetInteger("gStartBtnPosX", 0)-(Start_BTN_Scale*13)+X_Margins_StartBtn);
-        } else if (CVarGetInteger("gStartBtnPosType", 0) == 2) {//Anchor Right
-            if (CVarGetInteger("gStartBtnUseMargins", 0) != 0) {X_Margins_StartBtn = Right_HUD_Margin;};
-            PosX_StartBtn = OTRGetDimensionFromRightEdge(CVarGetInteger("gStartBtnPosX", 0)-(Start_BTN_Scale*13)+X_Margins_StartBtn);
-        } else if (CVarGetInteger("gStartBtnPosType", 0) == 3) {//Anchor None
-            PosX_StartBtn = CVarGetInteger("gStartBtnPosX", 0);
-        } else if (CVarGetInteger("gStartBtnPosType", 0) == 4) {//Hidden
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonStart.AnchorType"), 0) != 0) {
+        PosY_StartBtn = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonStart.PosY"), 0)-(Start_BTN_Scale*13)+Y_Margins_StartBtn;
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonStart.AnchorType"), 0) == 1) {//Anchor Left
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonStart.UseMargins"), 0) != 0) {X_Margins_StartBtn = Left_HUD_Margin;};
+            PosX_StartBtn = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonStart.PosX"), 0)-(Start_BTN_Scale*13)+X_Margins_StartBtn);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonStart.AnchorType"), 0) == 2) {//Anchor Right
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonStart.UseMargins"), 0) != 0) {X_Margins_StartBtn = Right_HUD_Margin;};
+            PosX_StartBtn = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonStart.PosX"), 0)-(Start_BTN_Scale*13)+X_Margins_StartBtn);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonStart.AnchorType"), 0) == 3) {//Anchor None
+            PosX_StartBtn = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonStart.PosX"), 0);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonStart.AnchorType"), 0) == 4) {//Hidden
            PosX_StartBtn = -9999;
         }
     } else {
@@ -3981,29 +3981,29 @@ void Interface_DrawItemButtons(PlayState* play) {
     s16 Y_Margins_CR;
     s16 Y_Margins_CU;
     s16 Y_Margins_CD;
-    if (CVarGetInteger("gCBtnLUseMargins", 0) != 0) {
-        if (CVarGetInteger("gCBtnLPosType", 0) == 0) {X_Margins_CL = Right_HUD_Margin;};
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) == 0) {X_Margins_CL = Right_HUD_Margin;};
         Y_Margins_CL = (Top_HUD_Margin*-1);
     } else {
         X_Margins_CL = 0;
         Y_Margins_CL = 0;
     }
-    if (CVarGetInteger("gCBtnRUseMargins", 0) != 0) {
-        if (CVarGetInteger("gCBtnRPosType", 0) == 0) {X_Margins_CR = Right_HUD_Margin;};
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) == 0) {X_Margins_CR = Right_HUD_Margin;};
         Y_Margins_CR = (Top_HUD_Margin*-1);
     } else {
         X_Margins_CR = 0;
         Y_Margins_CR = 0;
     }
-    if (CVarGetInteger("gCBtnUUseMargins", 0) != 0) {
-        if (CVarGetInteger("gCBtnUPosType", 0) == 0) {X_Margins_CU = Right_HUD_Margin;};
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCUp.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCUp.AnchorType"), 0) == 0) {X_Margins_CU = Right_HUD_Margin;};
         Y_Margins_CU = (Top_HUD_Margin*-1);
     } else {
         X_Margins_CU = 0;
         Y_Margins_CU = 0;
     }
-    if (CVarGetInteger("gCBtnDUseMargins", 0) != 0) {
-        if (CVarGetInteger("gCBtnDPosType", 0) == 0) {X_Margins_CD = Right_HUD_Margin;};
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) == 0) {X_Margins_CD = Right_HUD_Margin;};
         Y_Margins_CD = (Top_HUD_Margin*-1);
     } else {
         X_Margins_CD = 0;
@@ -4021,23 +4021,23 @@ void Interface_DrawItemButtons(PlayState* play) {
     s16 C_Down_BTN_Pos[2];
     //C button Left
     s16 C_Left_BTN_Size = 32;
-    float CLeftScale = CVarGetFloat("gCBtnLScale", 0.87f);
+    float CLeftScale = CVarGetFloat(COSMETIC_CVAR("Hud_ButtonCLeft.Scale"), 0.87f);
     int CLeftScaled = C_Left_BTN_Size * 0.87f;
-    if (CVarGetInteger("gCBtnLPosType", 0) != 0) {
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) != 0) {
         CLeftScaled = C_Left_BTN_Size * CLeftScale;
     }
     int CLeft_factor = (1 << 10) * C_Left_BTN_Size / CLeftScaled;
-    if (CVarGetInteger("gCBtnLPosType", 0) != 0) {
-        C_Left_BTN_Pos[1] = CVarGetInteger("gCBtnLPosY", 0)+Y_Margins_CL;
-        if (CVarGetInteger("gCBtnLPosType", 0) == 1) {//Anchor Left
-            if (CVarGetInteger("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Left_HUD_Margin;};
-            C_Left_BTN_Pos[0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gCBtnLPosX", 0)+X_Margins_CL);
-        } else if (CVarGetInteger("gCBtnLPosType", 0) == 2) {//Anchor Right
-            if (CVarGetInteger("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Right_HUD_Margin;};
-            C_Left_BTN_Pos[0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gCBtnLPosX", 0)+X_Margins_CL);
-        } else if (CVarGetInteger("gCBtnLPosType", 0) == 3) {//Anchor None
-            C_Left_BTN_Pos[0] = CVarGetInteger("gCBtnLPosX", 0);
-        } else if (CVarGetInteger("gCBtnLPosType", 0) == 4) {//Hidden
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) != 0) {
+        C_Left_BTN_Pos[1] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.PosY"), 0)+Y_Margins_CL;
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) == 1) {//Anchor Left
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.UseMargins"), 0) != 0) {X_Margins_CL = Left_HUD_Margin;};
+            C_Left_BTN_Pos[0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.PosX"), 0)+X_Margins_CL);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) == 2) {//Anchor Right
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.UseMargins"), 0) != 0) {X_Margins_CL = Right_HUD_Margin;};
+            C_Left_BTN_Pos[0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.PosX"), 0)+X_Margins_CL);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) == 3) {//Anchor None
+            C_Left_BTN_Pos[0] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.PosX"), 0);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) == 4) {//Hidden
             C_Left_BTN_Pos[0] = -9999;
         }
     } else {
@@ -4046,23 +4046,23 @@ void Interface_DrawItemButtons(PlayState* play) {
     }
     //C button Right
     s16 C_Right_BTN_Size = 32;
-    float CRightScale = CVarGetFloat("gCBtnRScale", 0.87f);
+    float CRightScale = CVarGetFloat(COSMETIC_CVAR("Hud_ButtonCRight.Scale"), 0.87f);
     int CRightScaled = C_Right_BTN_Size * 0.87f;
-    if (CVarGetInteger("gCBtnRPosType", 0) != 0) {
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) != 0) {
         CRightScaled = C_Right_BTN_Size * CRightScale;
     }
     int CRight_factor = (1 << 10) * C_Right_BTN_Size / CRightScaled;
-    if (CVarGetInteger("gCBtnRPosType", 0) != 0) {
-        C_Right_BTN_Pos[1] = CVarGetInteger("gCBtnRPosY", 0)+Y_Margins_CR;
-        if (CVarGetInteger("gCBtnRPosType", 0) == 1) {//Anchor Left
-            if (CVarGetInteger("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Left_HUD_Margin;};
-            C_Right_BTN_Pos[0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gCBtnRPosX", 0)+X_Margins_CR);
-        } else if (CVarGetInteger("gCBtnRPosType", 0) == 2) {//Anchor Right
-            if (CVarGetInteger("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Right_HUD_Margin;};
-            C_Right_BTN_Pos[0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gCBtnRPosX", 0)+X_Margins_CR);
-        } else if (CVarGetInteger("gCBtnRPosType", 0) == 3) {//Anchor None
-            C_Right_BTN_Pos[0] = CVarGetInteger("gCBtnRPosX", 0);
-        } else if (CVarGetInteger("gCBtnRPosType", 0) == 4) {//Hidden
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) != 0) {
+        C_Right_BTN_Pos[1] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.PosY"), 0)+Y_Margins_CR;
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) == 1) {//Anchor Left
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.UseMargins"), 0) != 0) {X_Margins_CR = Left_HUD_Margin;};
+            C_Right_BTN_Pos[0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.PosX"), 0)+X_Margins_CR);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) == 2) {//Anchor Right
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.UseMargins"), 0) != 0) {X_Margins_CR = Right_HUD_Margin;};
+            C_Right_BTN_Pos[0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.PosX"), 0)+X_Margins_CR);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) == 3) {//Anchor None
+            C_Right_BTN_Pos[0] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.PosX"), 0);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) == 4) {//Hidden
             C_Right_BTN_Pos[0] = -9999;
         }
     } else {
@@ -4072,22 +4072,22 @@ void Interface_DrawItemButtons(PlayState* play) {
     //C Button Up
     s16 C_Up_BTN_Size = 32;
     int CUpScaled = C_Up_BTN_Size * 0.5f;
-    float CUpScale = CVarGetFloat("gCBtnUScale", 0.5f);
-    if (CVarGetInteger("gCBtnUPosType", 0) != 0) {
+    float CUpScale = CVarGetFloat(COSMETIC_CVAR("Hud_ButtonCUp.Scale"), 0.5f);
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCUp.AnchorType"), 0) != 0) {
         CUpScaled = C_Up_BTN_Size * CUpScale;
     }
     int CUp_factor = (1 << 10) * C_Up_BTN_Size / CUpScaled;
-    if (CVarGetInteger("gCBtnUPosType", 0) != 0) {
-        C_Up_BTN_Pos[1] = CVarGetInteger("gCBtnUPosY", 0)+Y_Margins_CU;
-        if (CVarGetInteger("gCBtnUPosType", 0) == 1) {//Anchor Left
-            if (CVarGetInteger("gCBtnUUseMargins", 0) != 0) {X_Margins_CU = Left_HUD_Margin;};
-            C_Up_BTN_Pos[0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gCBtnUPosX", 0)+X_Margins_CU);
-        } else if (CVarGetInteger("gCBtnUPosType", 0) == 2) {//Anchor Right
-            if (CVarGetInteger("gCBtnUUseMargins", 0) != 0) {X_Margins_CU = Right_HUD_Margin;};
-            C_Up_BTN_Pos[0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gCBtnUPosX", 0)+X_Margins_CU);
-        } else if (CVarGetInteger("gCBtnUPosType", 0) == 3) {//Anchor None
-            C_Up_BTN_Pos[0] = CVarGetInteger("gCBtnUPosX", 0);
-        } else if (CVarGetInteger("gCBtnUPosType", 0) == 4) {//Hidden
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCUp.AnchorType"), 0) != 0) {
+        C_Up_BTN_Pos[1] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCUp.PosY"), 0)+Y_Margins_CU;
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCUp.AnchorType"), 0) == 1) {//Anchor Left
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCUp.UseMargins"), 0) != 0) {X_Margins_CU = Left_HUD_Margin;};
+            C_Up_BTN_Pos[0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCUp.PosX"), 0)+X_Margins_CU);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCUp.AnchorType"), 0) == 2) {//Anchor Right
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCUp.UseMargins"), 0) != 0) {X_Margins_CU = Right_HUD_Margin;};
+            C_Up_BTN_Pos[0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCUp.PosX"), 0)+X_Margins_CU);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCUp.AnchorType"), 0) == 3) {//Anchor None
+            C_Up_BTN_Pos[0] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCUp.PosX"), 0);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCUp.AnchorType"), 0) == 4) {//Hidden
             C_Up_BTN_Pos[0] = -9999;
         }
     } else {
@@ -4096,24 +4096,24 @@ void Interface_DrawItemButtons(PlayState* play) {
     }
     //C Button down
     s16 C_Down_BTN_Size = 32;
-    float CDownScale = CVarGetFloat("gCBtnDScale", 0.87f);
-    if (CVarGetInteger("gCBtnDPosType", 0) == 0) {
+    float CDownScale = CVarGetFloat(COSMETIC_CVAR("Hud_ButtonCDown.Scale"), 0.87f);
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) == 0) {
         CDownScale = 0.87f;
     }
     int CDownScaled = C_Down_BTN_Size * CDownScale;
     int CDown_factor = (1 << 10) * C_Down_BTN_Size / CDownScaled;
     int PositionAdjustment = CDownScaled/2;
-    if (CVarGetInteger("gCBtnDPosType", 0) != 0) {
-        C_Down_BTN_Pos[1] = CVarGetInteger("gCBtnDPosY", 0)+Y_Margins_CD;
-        if (CVarGetInteger("gCBtnDPosType", 0) == 1) {//Anchor Left
-            if (CVarGetInteger("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Left_HUD_Margin;};
-            C_Down_BTN_Pos[0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gCBtnDPosX", 0)+X_Margins_CD);
-        } else if (CVarGetInteger("gCBtnDPosType", 0) == 2) {//Anchor Right
-            if (CVarGetInteger("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Right_HUD_Margin;};
-            C_Down_BTN_Pos[0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gCBtnDPosX", 0)+X_Margins_CD);
-        } else if (CVarGetInteger("gCBtnDPosType", 0) == 3) {//Anchor None
-            C_Down_BTN_Pos[0] = CVarGetInteger("gCBtnDPosX", 0);
-        } else if (CVarGetInteger("gCBtnDPosType", 0) == 4) {//Hidden
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) != 0) {
+        C_Down_BTN_Pos[1] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.PosY"), 0)+Y_Margins_CD;
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) == 1) {//Anchor Left
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.UseMargins"), 0) != 0) {X_Margins_CD = Left_HUD_Margin;};
+            C_Down_BTN_Pos[0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.PosX"), 0)+X_Margins_CD);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) == 2) {//Anchor Right
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.UseMargins"), 0) != 0) {X_Margins_CD = Right_HUD_Margin;};
+            C_Down_BTN_Pos[0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.PosX"), 0)+X_Margins_CD);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) == 3) {//Anchor None
+            C_Down_BTN_Pos[0] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.PosX"), 0);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) == 4) {//Hidden
             C_Down_BTN_Pos[0] = -9999;
         }
     } else {
@@ -4241,22 +4241,22 @@ void Interface_DrawItemButtons(PlayState* play) {
             s16 Y_Margins_CL;
             s16 Y_Margins_CR;
             s16 Y_Margins_CD;
-            if (CVarGetInteger("gCBtnLUseMargins", 0) != 0) {
-                if (CVarGetInteger("gCBtnLPosType", 0) == 0) {X_Margins_CL = Right_HUD_Margin;};
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.UseMargins"), 0) != 0) {
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) == 0) {X_Margins_CL = Right_HUD_Margin;};
                 Y_Margins_CL = (Top_HUD_Margin*-1);
             } else {
                 X_Margins_CL = 0;
                 Y_Margins_CL = 0;
             }
-            if (CVarGetInteger("gCBtnRUseMargins", 0) != 0) {
-                if (CVarGetInteger("gCBtnRPosType", 0) == 0) {X_Margins_CR = Right_HUD_Margin;};
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.UseMargins"), 0) != 0) {
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) == 0) {X_Margins_CR = Right_HUD_Margin;};
                 Y_Margins_CR = (Top_HUD_Margin*-1);
             } else {
                 X_Margins_CR = 0;
                 Y_Margins_CR = 0;
             }
-            if (CVarGetInteger("gCBtnDUseMargins", 0) != 0) {
-                if (CVarGetInteger("gCBtnDPosType", 0) == 0) {X_Margins_CD = Right_HUD_Margin;};
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.UseMargins"), 0) != 0) {
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) == 0) {X_Margins_CD = Right_HUD_Margin;};
                 Y_Margins_CD = (Top_HUD_Margin*-1);
             } else {
                 X_Margins_CD = 0;
@@ -4274,17 +4274,17 @@ void Interface_DrawItemButtons(PlayState* play) {
             };
             s16 ItemIconPos[3][2]; //(X,Y)
             //C button Left
-            if (CVarGetInteger("gCBtnLPosType", 0) != 0) {
-                ItemIconPos[0][1] = CVarGetInteger("gCBtnLPosY", 0)+Y_Margins_CL;
-                if (CVarGetInteger("gCBtnLPosType", 0) == 1) {//Anchor Left
-                    if (CVarGetInteger("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Left_HUD_Margin;};
-                    ItemIconPos[0][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gCBtnLPosX", 0)+X_Margins_CL);
-                } else if (CVarGetInteger("gCBtnLPosType", 0) == 2) {//Anchor Right
-                    if (CVarGetInteger("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Right_HUD_Margin;};
-                    ItemIconPos[0][0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gCBtnLPosX", 0)+X_Margins_CL);
-                } else if (CVarGetInteger("gCBtnLPosType", 0) == 3) {//Anchor None
-                    ItemIconPos[0][0] = CVarGetInteger("gCBtnLPosX", 0);
-                } else if (CVarGetInteger("gCBtnLPosType", 0) == 4) {//Hidden
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) != 0) {
+                ItemIconPos[0][1] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.PosY"), 0)+Y_Margins_CL;
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) == 1) {//Anchor Left
+                    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.UseMargins"), 0) != 0) {X_Margins_CL = Left_HUD_Margin;};
+                    ItemIconPos[0][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.PosX"), 0)+X_Margins_CL);
+                } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) == 2) {//Anchor Right
+                    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.UseMargins"), 0) != 0) {X_Margins_CL = Right_HUD_Margin;};
+                    ItemIconPos[0][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.PosX"), 0)+X_Margins_CL);
+                } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) == 3) {//Anchor None
+                    ItemIconPos[0][0] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.PosX"), 0);
+                } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) == 4) {//Hidden
                     ItemIconPos[0][0] = -9999;
                 }
             } else {
@@ -4292,17 +4292,17 @@ void Interface_DrawItemButtons(PlayState* play) {
                 ItemIconPos[0][1] = ItemIconPos_ori[0][1];
             }
             //C Button down
-            if (CVarGetInteger("gCBtnDPosType", 0) != 0) {
-                ItemIconPos[1][1] = CVarGetInteger("gCBtnDPosY", 0)+Y_Margins_CD;
-                if (CVarGetInteger("gCBtnDPosType", 0) == 1) {//Anchor Left
-                    if (CVarGetInteger("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Left_HUD_Margin;};
-                    ItemIconPos[1][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gCBtnDPosX", 0)+X_Margins_CD);
-                } else if (CVarGetInteger("gCBtnDPosType", 0) == 2) {//Anchor Right
-                    if (CVarGetInteger("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Right_HUD_Margin;};
-                    ItemIconPos[1][0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gCBtnDPosX", 0)+X_Margins_CD);
-                } else if (CVarGetInteger("gCBtnDPosType", 0) == 3) {//Anchor None
-                    ItemIconPos[1][0] = CVarGetInteger("gCBtnDPosX", 0);
-                } else if (CVarGetInteger("gCBtnDPosType", 0) == 4) {//Hidden
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) != 0) {
+                ItemIconPos[1][1] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.PosY"), 0)+Y_Margins_CD;
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) == 1) {//Anchor Left
+                    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.UseMargins"), 0) != 0) {X_Margins_CD = Left_HUD_Margin;};
+                    ItemIconPos[1][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.PosX"), 0)+X_Margins_CD);
+                } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) == 2) {//Anchor Right
+                    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.UseMargins"), 0) != 0) {X_Margins_CD = Right_HUD_Margin;};
+                    ItemIconPos[1][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.PosX"), 0)+X_Margins_CD);
+                } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) == 3) {//Anchor None
+                    ItemIconPos[1][0] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.PosX"), 0);
+                } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) == 4) {//Hidden
                     ItemIconPos[1][0] = -9999;
                 }
             } else {
@@ -4310,17 +4310,17 @@ void Interface_DrawItemButtons(PlayState* play) {
                 ItemIconPos[1][1] = ItemIconPos_ori[1][1];
             }
             //C button Right
-            if (CVarGetInteger("gCBtnRPosType", 0) != 0) {
-                ItemIconPos[2][1] = CVarGetInteger("gCBtnRPosY", 0)+Y_Margins_CR;
-                if (CVarGetInteger("gCBtnRPosType", 0) == 1) {//Anchor Left
-                    if (CVarGetInteger("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Left_HUD_Margin;};
-                    ItemIconPos[2][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gCBtnRPosX", 0)+X_Margins_CR);
-                } else if (CVarGetInteger("gCBtnRPosType", 0) == 2) {//Anchor Right
-                    if (CVarGetInteger("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Right_HUD_Margin;};
-                    ItemIconPos[2][0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gCBtnRPosX", 0)+X_Margins_CR);
-                } else if (CVarGetInteger("gCBtnRPosType", 0) == 3) {//Anchor None
-                    ItemIconPos[2][0] = CVarGetInteger("gCBtnRPosX", 0);
-                } else if (CVarGetInteger("gCBtnRPosType", 0) == 4) {//Hidden
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) != 0) {
+                ItemIconPos[2][1] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.PosY"), 0)+Y_Margins_CR;
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) == 1) {//Anchor Left
+                    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.UseMargins"), 0) != 0) {X_Margins_CR = Left_HUD_Margin;};
+                    ItemIconPos[2][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.PosX"), 0)+X_Margins_CR);
+                } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) == 2) {//Anchor Right
+                    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.UseMargins"), 0) != 0) {X_Margins_CR = Right_HUD_Margin;};
+                    ItemIconPos[2][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.PosX"), 0)+X_Margins_CR);
+                } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) == 3) {//Anchor None
+                    ItemIconPos[2][0] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.PosX"), 0);
+                } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) == 4) {//Hidden
                     ItemIconPos[2][0] = -9999;
                 }
             } else {
@@ -4370,36 +4370,36 @@ void Interface_DrawItemIconTexture(PlayState* play, void* texture, s16 button) {
     s16 Y_Margins_BtnB;
     s16 X_Margins_DPad_Items;
     s16 Y_Margins_DPad_Items;
-    if (CVarGetInteger("gBBtnUseMargins", 0) != 0) {
-        if (CVarGetInteger("gBBtnPosType", 0) == 0) {X_Margins_BtnB = Right_HUD_Margin;};
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) == 0) {X_Margins_BtnB = Right_HUD_Margin;};
         Y_Margins_BtnB = (Top_HUD_Margin*-1);
     } else {
         X_Margins_BtnB = 0;
         Y_Margins_BtnB = 0;
     }
-    if (CVarGetInteger("gCBtnLUseMargins", 0) != 0) {
-        if (CVarGetInteger("gCBtnLPosType", 0) == 0) {X_Margins_CL = Right_HUD_Margin;};
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) == 0) {X_Margins_CL = Right_HUD_Margin;};
         Y_Margins_CL = (Top_HUD_Margin*-1);
     } else {
         X_Margins_CL = 0;
         Y_Margins_CL = 0;
     }
-    if (CVarGetInteger("gCBtnRUseMargins", 0) != 0) {
-        if (CVarGetInteger("gCBtnRPosType", 0) == 0) {X_Margins_CR = Right_HUD_Margin;};
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) == 0) {X_Margins_CR = Right_HUD_Margin;};
         Y_Margins_CR = (Top_HUD_Margin*-1);
     } else {
         X_Margins_CR = 0;
         Y_Margins_CR = 0;
     }
-    if (CVarGetInteger("gCBtnDUseMargins", 0) != 0) {
-        if (CVarGetInteger("gCBtnDPosType", 0) == 0) {X_Margins_CD = Right_HUD_Margin;};
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) == 0) {X_Margins_CD = Right_HUD_Margin;};
         Y_Margins_CD = (Top_HUD_Margin*-1);
     } else {
         X_Margins_CD = 0;
         Y_Margins_CD = 0;
     }
-    if (CVarGetInteger("gDPadUseMargins", 0) != 0) {
-        if (CVarGetInteger("gDPadPosType", 0) == 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.AnchorType"), 0) == 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
         Y_Margins_DPad_Items = (Top_HUD_Margin*-1);
     } else {
         X_Margins_DPad_Items = 0;
@@ -4433,29 +4433,29 @@ void Interface_DrawItemIconTexture(PlayState* play, void* texture, s16 button) {
     }; //(X,Y) Used with custom position to place it properly.
     s16 ItemIconPos[8][2]; //(X,Y)
     //DPadItems
-    if (CVarGetInteger("gDPadPosType", 0) != 0) {
-        ItemIconPos[4][1] = CVarGetInteger("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[0][1];//Up
-        ItemIconPos[5][1] = CVarGetInteger("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[1][1];//Down
-        ItemIconPos[6][1] = CVarGetInteger("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[2][1];//Left
-        ItemIconPos[7][1] = CVarGetInteger("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[3][1];//Right
-        if (CVarGetInteger("gDPadPosType", 0) == 1) {//Anchor Left
-            if (CVarGetInteger("gDPadUseMargins", 0) != 0) {X_Margins_DPad_Items = Left_HUD_Margin;};
-            ItemIconPos[4][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
-            ItemIconPos[5][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
-            ItemIconPos[6][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
-            ItemIconPos[7][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
-        } else if (CVarGetInteger("gDPadPosType", 0) == 2) {//Anchor Right
-            if (CVarGetInteger("gDPadUseMargins", 0) != 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
-            ItemIconPos[4][0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
-            ItemIconPos[5][0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
-            ItemIconPos[6][0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
-            ItemIconPos[7][0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
-        } else if (CVarGetInteger("gDPadPosType", 0) == 3) {//Anchor None
-            ItemIconPos[4][0] = CVarGetInteger("gDPadPosX", 0)+DPad_ItemsOffset[0][0];
-            ItemIconPos[5][0] = CVarGetInteger("gDPadPosX", 0)+DPad_ItemsOffset[1][0];
-            ItemIconPos[6][0] = CVarGetInteger("gDPadPosX", 0)+DPad_ItemsOffset[2][0];
-            ItemIconPos[7][0] = CVarGetInteger("gDPadPosX", 0)+DPad_ItemsOffset[3][0];
-        } else if (CVarGetInteger("gDPadPosType", 0) == 4) {//Hidden
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.AnchorType"), 0) != 0) {
+        ItemIconPos[4][1] = CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosY"), 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[0][1];//Up
+        ItemIconPos[5][1] = CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosY"), 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[1][1];//Down
+        ItemIconPos[6][1] = CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosY"), 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[2][1];//Left
+        ItemIconPos[7][1] = CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosY"), 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[3][1];//Right
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.AnchorType"), 0) == 1) {//Anchor Left
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.UseMargins"), 0) != 0) {X_Margins_DPad_Items = Left_HUD_Margin;};
+            ItemIconPos[4][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
+            ItemIconPos[5][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
+            ItemIconPos[6][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
+            ItemIconPos[7][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.AnchorType"), 0) == 2) {//Anchor Right
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.UseMargins"), 0) != 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
+            ItemIconPos[4][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
+            ItemIconPos[5][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
+            ItemIconPos[6][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
+            ItemIconPos[7][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.AnchorType"), 0) == 3) {//Anchor None
+            ItemIconPos[4][0] = CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+DPad_ItemsOffset[0][0];
+            ItemIconPos[5][0] = CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+DPad_ItemsOffset[1][0];
+            ItemIconPos[6][0] = CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+DPad_ItemsOffset[2][0];
+            ItemIconPos[7][0] = CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+DPad_ItemsOffset[3][0];
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.AnchorType"), 0) == 4) {//Hidden
             ItemIconPos[4][0] = -9999;
             ItemIconPos[5][0] = -9999;
             ItemIconPos[6][0] = -9999;
@@ -4472,17 +4472,17 @@ void Interface_DrawItemIconTexture(PlayState* play, void* texture, s16 button) {
         ItemIconPos[7][1] = ItemIconPos_ori[7][1];
     }
     //B Button
-    if (CVarGetInteger("gBBtnPosType", 0) != 0) {
-        ItemIconPos[0][1] = CVarGetInteger("gBBtnPosY", 0)+Y_Margins_BtnB;
-        if (CVarGetInteger("gBBtnPosType", 0) == 1) {//Anchor Left
-            if (CVarGetInteger("gBBtnUseMargins", 0) != 0) {X_Margins_BtnB = Left_HUD_Margin;};
-            ItemIconPos[0][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gBBtnPosX", 0)+X_Margins_BtnB);
-        } else if (CVarGetInteger("gBBtnPosType", 0) == 2) {//Anchor Right
-            if (CVarGetInteger("gBBtnUseMargins", 0) != 0) {X_Margins_BtnB = Right_HUD_Margin;};
-            ItemIconPos[0][0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gBBtnPosX", 0)+X_Margins_BtnB);
-        } else if (CVarGetInteger("gBBtnPosType", 0) == 3) {//Anchor None
-            ItemIconPos[0][0] = CVarGetInteger("gBBtnPosX", 0);
-        } else if (CVarGetInteger("gBBtnPosType", 0) == 4) {//Hidden
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) != 0) {
+        ItemIconPos[0][1] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.PosY"), 0)+Y_Margins_BtnB;
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) == 1) {//Anchor Left
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.UseMargins"), 0) != 0) {X_Margins_BtnB = Left_HUD_Margin;};
+            ItemIconPos[0][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.PosX"), 0)+X_Margins_BtnB);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) == 2) {//Anchor Right
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.UseMargins"), 0) != 0) {X_Margins_BtnB = Right_HUD_Margin;};
+            ItemIconPos[0][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.PosX"), 0)+X_Margins_BtnB);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) == 3) {//Anchor None
+            ItemIconPos[0][0] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.PosX"), 0);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) == 4) {//Hidden
            ItemIconPos[0][0] = -9999;
         }
     } else {
@@ -4490,17 +4490,17 @@ void Interface_DrawItemIconTexture(PlayState* play, void* texture, s16 button) {
         ItemIconPos[0][1] = ItemIconPos_ori[0][1];
     }
     //C button Left
-    if (CVarGetInteger("gCBtnLPosType", 0) != 0) {
-        ItemIconPos[1][1] = CVarGetInteger("gCBtnLPosY", 0)+Y_Margins_CL;
-        if (CVarGetInteger("gCBtnLPosType", 0) == 1) {//Anchor Left
-            if (CVarGetInteger("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Left_HUD_Margin;};
-            ItemIconPos[1][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gCBtnLPosX", 0)+X_Margins_CL);
-        } else if (CVarGetInteger("gCBtnLPosType", 0) == 2) {//Anchor Right
-            if (CVarGetInteger("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Right_HUD_Margin;};
-            ItemIconPos[1][0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gCBtnLPosX", 0)+X_Margins_CL);
-        } else if (CVarGetInteger("gCBtnLPosType", 0) == 3) {//Anchor None
-            ItemIconPos[1][0] = CVarGetInteger("gCBtnLPosX", 0);
-        } else if (CVarGetInteger("gCBtnLPosType", 0) == 4) {//Hidden
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) != 0) {
+        ItemIconPos[1][1] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.PosY"), 0)+Y_Margins_CL;
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) == 1) {//Anchor Left
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.UseMargins"), 0) != 0) {X_Margins_CL = Left_HUD_Margin;};
+            ItemIconPos[1][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.PosX"), 0)+X_Margins_CL);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) == 2) {//Anchor Right
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.UseMargins"), 0) != 0) {X_Margins_CL = Right_HUD_Margin;};
+            ItemIconPos[1][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.PosX"), 0)+X_Margins_CL);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) == 3) {//Anchor None
+            ItemIconPos[1][0] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.PosX"), 0);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) == 4) {//Hidden
             ItemIconPos[1][0] = -9999;
         }
     } else {
@@ -4508,17 +4508,17 @@ void Interface_DrawItemIconTexture(PlayState* play, void* texture, s16 button) {
         ItemIconPos[1][1] = ItemIconPos_ori[1][1];
     }
     //C Button down
-    if (CVarGetInteger("gCBtnDPosType", 0) != 0) {
-        ItemIconPos[2][1] = CVarGetInteger("gCBtnDPosY", 0)+Y_Margins_CD;
-        if (CVarGetInteger("gCBtnDPosType", 0) == 1) {//Anchor Left
-            if (CVarGetInteger("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Left_HUD_Margin;};
-            ItemIconPos[2][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gCBtnDPosX", 0)+X_Margins_CD);
-        } else if (CVarGetInteger("gCBtnDPosType", 0) == 2) {//Anchor Right
-            if (CVarGetInteger("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Right_HUD_Margin;};
-            ItemIconPos[2][0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gCBtnDPosX", 0)+X_Margins_CD);
-        } else if (CVarGetInteger("gCBtnDPosType", 0) == 3) {//Anchor None
-            ItemIconPos[2][0] = CVarGetInteger("gCBtnDPosX", 0);
-        } else if (CVarGetInteger("gCBtnDPosType", 0) == 4) {//Hidden
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) != 0) {
+        ItemIconPos[2][1] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.PosY"), 0)+Y_Margins_CD;
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) == 1) {//Anchor Left
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.UseMargins"), 0) != 0) {X_Margins_CD = Left_HUD_Margin;};
+            ItemIconPos[2][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.PosX"), 0)+X_Margins_CD);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) == 2) {//Anchor Right
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.UseMargins"), 0) != 0) {X_Margins_CD = Right_HUD_Margin;};
+            ItemIconPos[2][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.PosX"), 0)+X_Margins_CD);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) == 3) {//Anchor None
+            ItemIconPos[2][0] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.PosX"), 0);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) == 4) {//Hidden
             ItemIconPos[2][0] = -9999;
         }
     } else {
@@ -4526,17 +4526,17 @@ void Interface_DrawItemIconTexture(PlayState* play, void* texture, s16 button) {
         ItemIconPos[2][1] = ItemIconPos_ori[2][1];
     }
     //C button Right
-    if (CVarGetInteger("gCBtnRPosType", 0) != 0) {
-        ItemIconPos[3][1] = CVarGetInteger("gCBtnRPosY", 0)+Y_Margins_CR;
-        if (CVarGetInteger("gCBtnRPosType", 0) == 1) {//Anchor Left
-            if (CVarGetInteger("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Left_HUD_Margin;};
-            ItemIconPos[3][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gCBtnRPosX", 0)+X_Margins_CR);
-        } else if (CVarGetInteger("gCBtnRPosType", 0) == 2) {//Anchor Right
-            if (CVarGetInteger("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Right_HUD_Margin;};
-            ItemIconPos[3][0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gCBtnRPosX", 0)+X_Margins_CR);
-        } else if (CVarGetInteger("gCBtnRPosType", 0) == 3) {//Anchor None
-            ItemIconPos[3][0] = CVarGetInteger("gCBtnRPosX", 0);
-        } else if (CVarGetInteger("gCBtnRPosType", 0) == 4) {//Hidden
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) != 0) {
+        ItemIconPos[3][1] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.PosY"), 0)+Y_Margins_CR;
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) == 1) {//Anchor Left
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.UseMargins"), 0) != 0) {X_Margins_CR = Left_HUD_Margin;};
+            ItemIconPos[3][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.PosX"), 0)+X_Margins_CR);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) == 2) {//Anchor Right
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.UseMargins"), 0) != 0) {X_Margins_CR = Right_HUD_Margin;};
+            ItemIconPos[3][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.PosX"), 0)+X_Margins_CR);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) == 3) {//Anchor None
+            ItemIconPos[3][0] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.PosX"), 0);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) == 4) {//Hidden
             ItemIconPos[3][0] = -9999;
         }
     } else {
@@ -4579,36 +4579,36 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
     s16 Y_Margins_BtnB;
     s16 X_Margins_DPad_Items;
     s16 Y_Margins_DPad_Items;
-    if (CVarGetInteger("gBBtnUseMargins", 0) != 0) {
-        if (CVarGetInteger("gBBtnPosType", 0) == 0) {X_Margins_BtnB = Right_HUD_Margin;};
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) == 0) {X_Margins_BtnB = Right_HUD_Margin;};
         Y_Margins_BtnB = (Top_HUD_Margin*-1);
     } else {
         X_Margins_BtnB = 0;
         Y_Margins_BtnB = 0;
     }
-    if (CVarGetInteger("gCBtnLUseMargins", 0) != 0) {
-        if (CVarGetInteger("gCBtnLPosType", 0) == 0) {X_Margins_CL = Right_HUD_Margin;};
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) == 0) {X_Margins_CL = Right_HUD_Margin;};
         Y_Margins_CL = (Top_HUD_Margin*-1);
     } else {
         X_Margins_CL = 0;
         Y_Margins_CL = 0;
     }
-    if (CVarGetInteger("gCBtnRUseMargins", 0) != 0) {
-        if (CVarGetInteger("gCBtnRPosType", 0) == 0) {X_Margins_CR = Right_HUD_Margin;};
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) == 0) {X_Margins_CR = Right_HUD_Margin;};
         Y_Margins_CR = (Top_HUD_Margin*-1);
     } else {
         X_Margins_CR = 0;
         Y_Margins_CR = 0;
     }
-    if (CVarGetInteger("gCBtnDUseMargins", 0) != 0) {
-        if (CVarGetInteger("gCBtnDPosType", 0) == 0) {X_Margins_CD = Right_HUD_Margin;};
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) == 0) {X_Margins_CD = Right_HUD_Margin;};
         Y_Margins_CD = (Top_HUD_Margin*-1);
     } else {
         X_Margins_CD = 0;
         Y_Margins_CD = 0;
     }
-    if (CVarGetInteger("gDPadUseMargins", 0) != 0) {
-        if (CVarGetInteger("gDPadPosType", 0) == 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.UseMargins"), 0) != 0) {
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.AnchorType"), 0) == 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
         Y_Margins_DPad_Items = (Top_HUD_Margin*-1);
     } else {
         X_Margins_DPad_Items = 0;
@@ -4632,29 +4632,29 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
         {23,19},//Right
     }; //(X,Y) Used with custom position to place it properly.
     //DPadItems
-    if (CVarGetInteger("gDPadPosType", 0) != 0) {
-        ItemIconPos[4][1] = CVarGetInteger("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[0][1];//Up
-        ItemIconPos[5][1] = CVarGetInteger("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[1][1];//Down
-        ItemIconPos[6][1] = CVarGetInteger("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[2][1];//Left
-        ItemIconPos[7][1] = CVarGetInteger("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[3][1];//Right
-        if (CVarGetInteger("gDPadPosType", 0) == 1) {//Anchor Left
-            if (CVarGetInteger("gDPadUseMargins", 0) != 0) {X_Margins_DPad_Items = Left_HUD_Margin;};
-            ItemIconPos[4][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
-            ItemIconPos[5][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
-            ItemIconPos[6][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
-            ItemIconPos[7][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
-        } else if (CVarGetInteger("gDPadPosType", 0) == 2) {//Anchor Right
-            if (CVarGetInteger("gDPadUseMargins", 0) != 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
-            ItemIconPos[4][0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
-            ItemIconPos[5][0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
-            ItemIconPos[6][0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
-            ItemIconPos[7][0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
-        } else if (CVarGetInteger("gDPadPosType", 0) == 3) {//Anchor None
-            ItemIconPos[4][0] = CVarGetInteger("gDPadPosX", 0)+DPad_ItemsOffset[0][0];
-            ItemIconPos[5][0] = CVarGetInteger("gDPadPosX", 0)+DPad_ItemsOffset[1][0];
-            ItemIconPos[6][0] = CVarGetInteger("gDPadPosX", 0)+DPad_ItemsOffset[2][0];
-            ItemIconPos[7][0] = CVarGetInteger("gDPadPosX", 0)+DPad_ItemsOffset[3][0];
-        } else if (CVarGetInteger("gDPadPosType", 0) == 4) {//Hidden
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.AnchorType"), 0) != 0) {
+        ItemIconPos[4][1] = CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosY"), 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[0][1];//Up
+        ItemIconPos[5][1] = CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosY"), 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[1][1];//Down
+        ItemIconPos[6][1] = CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosY"), 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[2][1];//Left
+        ItemIconPos[7][1] = CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosY"), 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[3][1];//Right
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.AnchorType"), 0) == 1) {//Anchor Left
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.UseMargins"), 0) != 0) {X_Margins_DPad_Items = Left_HUD_Margin;};
+            ItemIconPos[4][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
+            ItemIconPos[5][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
+            ItemIconPos[6][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
+            ItemIconPos[7][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.AnchorType"), 0) == 2) {//Anchor Right
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.UseMargins"), 0) != 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
+            ItemIconPos[4][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
+            ItemIconPos[5][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
+            ItemIconPos[6][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
+            ItemIconPos[7][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.AnchorType"), 0) == 3) {//Anchor None
+            ItemIconPos[4][0] = CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+DPad_ItemsOffset[0][0];
+            ItemIconPos[5][0] = CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+DPad_ItemsOffset[1][0];
+            ItemIconPos[6][0] = CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+DPad_ItemsOffset[2][0];
+            ItemIconPos[7][0] = CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+DPad_ItemsOffset[3][0];
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.AnchorType"), 0) == 4) {//Hidden
             ItemIconPos[4][0] = -9999;
             ItemIconPos[5][0] = -9999;
             ItemIconPos[6][0] = -9999;
@@ -4673,17 +4673,17 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
     //B Button
     s16 PosX_adjust = 1;
     s16 PosY_adjust = 17;
-    if (CVarGetInteger("gBBtnPosType", 0) != 0) {
-        ItemIconPos[0][1] = CVarGetInteger("gBBtnPosY", 0)+Y_Margins_BtnB+PosY_adjust;
-        if (CVarGetInteger("gBBtnPosType", 0) == 1) {//Anchor Left
-            if (CVarGetInteger("gBBtnUseMargins", 0) != 0) {X_Margins_BtnB = Left_HUD_Margin;};
-            ItemIconPos[0][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gBBtnPosX", 0)+X_Margins_BtnB+PosX_adjust);
-        } else if (CVarGetInteger("gBBtnPosType", 0) == 2) {//Anchor Right
-            if (CVarGetInteger("gBBtnUseMargins", 0) != 0) {X_Margins_BtnB = Right_HUD_Margin;};
-            ItemIconPos[0][0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gBBtnPosX", 0)+X_Margins_BtnB+PosX_adjust);
-        } else if (CVarGetInteger("gBBtnPosType", 0) == 3) {//Anchor None
-            ItemIconPos[0][0] = CVarGetInteger("gBBtnPosX", 0)+PosX_adjust;
-        } else if (CVarGetInteger("gBBtnPosType", 0) == 4) {//Hidden
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) != 0) {
+        ItemIconPos[0][1] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.PosY"), 0)+Y_Margins_BtnB+PosY_adjust;
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) == 1) {//Anchor Left
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.UseMargins"), 0) != 0) {X_Margins_BtnB = Left_HUD_Margin;};
+            ItemIconPos[0][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.PosX"), 0)+X_Margins_BtnB+PosX_adjust);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) == 2) {//Anchor Right
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.UseMargins"), 0) != 0) {X_Margins_BtnB = Right_HUD_Margin;};
+            ItemIconPos[0][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.PosX"), 0)+X_Margins_BtnB+PosX_adjust);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) == 3) {//Anchor None
+            ItemIconPos[0][0] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.PosX"), 0)+PosX_adjust;
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) == 4) {//Hidden
            ItemIconPos[0][0] = -9999;
         }
     } else {
@@ -4691,17 +4691,17 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
         ItemIconPos[0][1] = ItemIconPos_ori[0][1];
     }
     //C button Left
-    if (CVarGetInteger("gCBtnLPosType", 0) != 0) {
-        ItemIconPos[1][1] = CVarGetInteger("gCBtnLPosY", 0)+Y_Margins_CL+PosY_adjust;
-        if (CVarGetInteger("gCBtnLPosType", 0) == 1) {//Anchor Left
-            if (CVarGetInteger("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Left_HUD_Margin;};
-            ItemIconPos[1][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gCBtnLPosX", 0)+X_Margins_CL+PosX_adjust);
-        } else if (CVarGetInteger("gCBtnLPosType", 0) == 2) {//Anchor Right
-            if (CVarGetInteger("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Right_HUD_Margin;};
-            ItemIconPos[1][0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gCBtnLPosX", 0)+X_Margins_CL+PosX_adjust);
-        } else if (CVarGetInteger("gCBtnLPosType", 0) == 3) {//Anchor None
-            ItemIconPos[1][0] = CVarGetInteger("gCBtnLPosX", 0)+PosX_adjust;
-        } else if (CVarGetInteger("gCBtnLPosType", 0) == 4) {//Hidden
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) != 0) {
+        ItemIconPos[1][1] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.PosY"), 0)+Y_Margins_CL+PosY_adjust;
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) == 1) {//Anchor Left
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.UseMargins"), 0) != 0) {X_Margins_CL = Left_HUD_Margin;};
+            ItemIconPos[1][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.PosX"), 0)+X_Margins_CL+PosX_adjust);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) == 2) {//Anchor Right
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.UseMargins"), 0) != 0) {X_Margins_CL = Right_HUD_Margin;};
+            ItemIconPos[1][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.PosX"), 0)+X_Margins_CL+PosX_adjust);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) == 3) {//Anchor None
+            ItemIconPos[1][0] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.PosX"), 0)+PosX_adjust;
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCLeft.AnchorType"), 0) == 4) {//Hidden
             ItemIconPos[1][0] = -9999;
         }
     } else {
@@ -4709,17 +4709,17 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
         ItemIconPos[1][1] = ItemIconPos_ori[1][1];
     }
     //C Button down
-    if (CVarGetInteger("gCBtnDPosType", 0) != 0) {
-        ItemIconPos[2][1] = CVarGetInteger("gCBtnDPosY", 0)+Y_Margins_CD+PosY_adjust;
-        if (CVarGetInteger("gCBtnDPosType", 0) == 1) {//Anchor Left
-            if (CVarGetInteger("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Left_HUD_Margin;};
-            ItemIconPos[2][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gCBtnDPosX", 0)+X_Margins_CD+PosX_adjust);
-        } else if (CVarGetInteger("gCBtnDPosType", 0) == 2) {//Anchor Right
-            if (CVarGetInteger("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Right_HUD_Margin;};
-            ItemIconPos[2][0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gCBtnDPosX", 0)+X_Margins_CD+PosX_adjust);
-        } else if (CVarGetInteger("gCBtnDPosType", 0) == 3) {//Anchor None
-            ItemIconPos[2][0] = CVarGetInteger("gCBtnDPosX", 0)+PosX_adjust;
-        } else if (CVarGetInteger("gCBtnDPosType", 0) == 4) {//Hidden
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) != 0) {
+        ItemIconPos[2][1] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.PosY"), 0)+Y_Margins_CD+PosY_adjust;
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) == 1) {//Anchor Left
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.UseMargins"), 0) != 0) {X_Margins_CD = Left_HUD_Margin;};
+            ItemIconPos[2][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.PosX"), 0)+X_Margins_CD+PosX_adjust);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) == 2) {//Anchor Right
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.UseMargins"), 0) != 0) {X_Margins_CD = Right_HUD_Margin;};
+            ItemIconPos[2][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.PosX"), 0)+X_Margins_CD+PosX_adjust);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) == 3) {//Anchor None
+            ItemIconPos[2][0] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.PosX"), 0)+PosX_adjust;
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCDown.AnchorType"), 0) == 4) {//Hidden
             ItemIconPos[2][0] = -9999;
         }
     } else {
@@ -4727,17 +4727,17 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
         ItemIconPos[2][1] = ItemIconPos_ori[2][1];
     }
     //C button Right
-    if (CVarGetInteger("gCBtnRPosType", 0) != 0) {
-        ItemIconPos[3][1] = CVarGetInteger("gCBtnRPosY", 0)+Y_Margins_CR+PosY_adjust;
-        if (CVarGetInteger("gCBtnRPosType", 0) == 1) {//Anchor Left
-            if (CVarGetInteger("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Left_HUD_Margin;};
-            ItemIconPos[3][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger("gCBtnRPosX", 0)+X_Margins_CR+PosX_adjust);
-        } else if (CVarGetInteger("gCBtnRPosType", 0) == 2) {//Anchor Right
-            if (CVarGetInteger("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Right_HUD_Margin;};
-            ItemIconPos[3][0] = OTRGetDimensionFromRightEdge(CVarGetInteger("gCBtnRPosX", 0)+X_Margins_CR+PosX_adjust);
-        } else if (CVarGetInteger("gCBtnRPosType", 0) == 3) {//Anchor None
-            ItemIconPos[3][0] = CVarGetInteger("gCBtnRPosX", 0)+PosX_adjust;
-        } else if (CVarGetInteger("gCBtnRPosType", 0) == 4) {//Hidden
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) != 0) {
+        ItemIconPos[3][1] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.PosY"), 0)+Y_Margins_CR+PosY_adjust;
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) == 1) {//Anchor Left
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.UseMargins"), 0) != 0) {X_Margins_CR = Left_HUD_Margin;};
+            ItemIconPos[3][0] = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.PosX"), 0)+X_Margins_CR+PosX_adjust);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) == 2) {//Anchor Right
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.UseMargins"), 0) != 0) {X_Margins_CR = Right_HUD_Margin;};
+            ItemIconPos[3][0] = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.PosX"), 0)+X_Margins_CR+PosX_adjust);
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) == 3) {//Anchor None
+            ItemIconPos[3][0] = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.PosX"), 0)+PosX_adjust;
+        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonCRight.AnchorType"), 0) == 4) {//Hidden
             ItemIconPos[3][0] = -9999;
         }
     } else {
@@ -4966,19 +4966,19 @@ void Interface_Draw(PlayState* play) {
     Color_RGB8 rColor;
 
     Color_RGB8 keyCountColor = { 200, 230, 255 };
-    if (CVarGetInteger("gCosmetics.Hud_KeyCount.Changed", 0)) {
-        keyCountColor = CVarGetColor24("gCosmetics.Hud_KeyCount.Value", keyCountColor);
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_KeyCount.Changed"), 0)) {
+        keyCountColor = CVarGetColor24(COSMETIC_CVAR("Hud_KeyCount.Value"), keyCountColor);
     }
 
     Color_RGB8 dPadColor = { 255, 255, 255 };
-    if (CVarGetInteger("gCosmetics.Hud_Dpad.Changed", 0)) {
-        dPadColor = CVarGetColor24("gCosmetics.Hud_Dpad.Value", dPadColor);
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.Changed"), 0)) {
+        dPadColor = CVarGetColor24(COSMETIC_CVAR("Hud_Dpad.Value"), dPadColor);
     }
 
     Color_RGB8 aButtonColor = { 90, 90, 255 };
-    if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-        aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonA.Changed"), 0)) {
+        aButtonColor = CVarGetColor24(COSMETIC_CVAR("Hud_ButtonA.Value"), aButtonColor);
+    } else if (CVarGetInteger(COSMETIC_CVAR("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         aButtonColor = (Color_RGB8){ 0, 200, 50 };
     }
 
@@ -5027,37 +5027,37 @@ void Interface_Draw(PlayState* play) {
             if (CVarGetInteger("gDynamicWalletIcon", 0)) {
                 switch (CUR_UPG_VALUE(UPG_WALLET)) {
                     case 0:
-                        if (CVarGetInteger("gCosmetics.Consumable_GreenRupee.Changed", 0)) {
-                            rColor = CVarGetColor24("gCosmetics.Consumable_GreenRupee.Value", rupeeWalletColors[0]);
+                        if (CVarGetInteger(COSMETIC_CVAR("Consumable_GreenRupee.Changed"), 0)) {
+                            rColor = CVarGetColor24(COSMETIC_CVAR("Consumable_GreenRupee.Value"), rupeeWalletColors[0]);
                         } else {
                             rColor = rupeeWalletColors[0];
                         }
                         break;
                     case 1:
-                        if (CVarGetInteger("gCosmetics.Consumable_BlueRupee.Changed", 0)) {
-                            rColor = CVarGetColor24("gCosmetics.Consumable_BlueRupee.Value", rupeeWalletColors[1]);
+                        if (CVarGetInteger(COSMETIC_CVAR("Consumable_BlueRupee.Changed"), 0)) {
+                            rColor = CVarGetColor24(COSMETIC_CVAR("Consumable_BlueRupee.Value"), rupeeWalletColors[1]);
                         } else {
                             rColor = rupeeWalletColors[1];
                         }
                         break;
                     case 2:
-                        if (CVarGetInteger("gCosmetics.Consumable_RedRupee.Changed", 0)) {
-                            rColor = CVarGetColor24("gCosmetics.Consumable_RedRupee.Value", rupeeWalletColors[2]);
+                        if (CVarGetInteger(COSMETIC_CVAR("Consumable_RedRupee.Changed"), 0)) {
+                            rColor = CVarGetColor24(COSMETIC_CVAR("Consumable_RedRupee.Value"), rupeeWalletColors[2]);
                         } else {
                             rColor = rupeeWalletColors[2];
                         }
                         break;
                     case 3:
-                        if (CVarGetInteger("gCosmetics.Consumable_PurpleRupee.Changed", 0)) {
-                            rColor = CVarGetColor24("gCosmetics.Consumable_PurpleRupee.Value", rupeeWalletColors[3]);
+                        if (CVarGetInteger(COSMETIC_CVAR("Consumable_PurpleRupee.Changed"), 0)) {
+                            rColor = CVarGetColor24(COSMETIC_CVAR("Consumable_PurpleRupee.Value"), rupeeWalletColors[3]);
                         } else {
                             rColor = rupeeWalletColors[3];
                         }
                         break;
                 }
             } else {
-                if (CVarGetInteger("gCosmetics.Consumable_GreenRupee.Changed", rupeeWalletColors)) {
-                     rColor = CVarGetColor24("gCosmetics.Consumable_GreenRupee.Value", rupeeWalletColors[0]);
+                if (CVarGetInteger(COSMETIC_CVAR("Consumable_GreenRupee.Changed"), rupeeWalletColors)) {
+                     rColor = CVarGetColor24(COSMETIC_CVAR("Consumable_GreenRupee.Value"), rupeeWalletColors[0]);
                 } else {
                      rColor = rupeeWalletColors[0];
                 }
@@ -5066,8 +5066,8 @@ void Interface_Draw(PlayState* play) {
             //Rupee icon & counter
             s16 X_Margins_RC;
             s16 Y_Margins_RC;
-            if (CVarGetInteger("gRCUseMargins", 0) != 0) {
-                if (CVarGetInteger("gRCPosType", 0) == 0) {X_Margins_RC = Left_HUD_Margin;};
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_RupeeCount.UseMargins"), 0) != 0) {
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_RupeeCount.AnchorType"), 0) == 0) {X_Margins_RC = Left_HUD_Margin;};
                 Y_Margins_RC = Bottom_HUD_Margin;
             } else {
                 X_Margins_RC = 0;
@@ -5077,17 +5077,17 @@ void Interface_Draw(PlayState* play) {
             s16 PosY_RC_ori = 206+Y_Margins_RC;
             s16 PosX_RC;
             s16 PosY_RC;
-            if (CVarGetInteger("gRCPosType", 0) != 0) {
-                PosY_RC = CVarGetInteger("gRCPosY", 0)+Y_Margins_RC;
-                if (CVarGetInteger("gRCPosType", 0) == 1) {//Anchor Left
-                    if (CVarGetInteger("gRCUseMargins", 0) != 0) {X_Margins_RC = Left_HUD_Margin;};
-                    PosX_RC = OTRGetDimensionFromLeftEdge(CVarGetInteger("gRCPosX", 0)+X_Margins_RC);
-                } else if (CVarGetInteger("gRCPosType", 0) == 2) {//Anchor Right
-                    if (CVarGetInteger("gRCUseMargins", 0) != 0) {X_Margins_RC = Right_HUD_Margin;};
-                    PosX_RC = OTRGetDimensionFromRightEdge(CVarGetInteger("gRCPosX", 0)+X_Margins_RC);
-                } else if (CVarGetInteger("gRCPosType", 0) == 3) {//Anchor None
-                    PosX_RC = CVarGetInteger("gRCPosX", 0);
-                } else if (CVarGetInteger("gRCPosType", 0) == 4) {//Hidden
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_RupeeCount.AnchorType"), 0) != 0) {
+                PosY_RC = CVarGetInteger(COSMETIC_CVAR("Hud_RupeeCount.PosY"), 0)+Y_Margins_RC;
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_RupeeCount.AnchorType"), 0) == 1) {//Anchor Left
+                    if (CVarGetInteger(COSMETIC_CVAR("Hud_RupeeCount.UseMargins"), 0) != 0) {X_Margins_RC = Left_HUD_Margin;};
+                    PosX_RC = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_RupeeCount.PosX"), 0)+X_Margins_RC);
+                } else if (CVarGetInteger(COSMETIC_CVAR("Hud_RupeeCount.AnchorType"), 0) == 2) {//Anchor Right
+                    if (CVarGetInteger(COSMETIC_CVAR("Hud_RupeeCount.UseMargins"), 0) != 0) {X_Margins_RC = Right_HUD_Margin;};
+                    PosX_RC = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_RupeeCount.PosX"), 0)+X_Margins_RC);
+                } else if (CVarGetInteger(COSMETIC_CVAR("Hud_RupeeCount.AnchorType"), 0) == 3) {//Anchor None
+                    PosX_RC = CVarGetInteger(COSMETIC_CVAR("Hud_RupeeCount.PosX"), 0);
+                } else if (CVarGetInteger(COSMETIC_CVAR("Hud_RupeeCount.AnchorType"), 0) == 4) {//Hidden
                 PosX_RC = -9999;
                 }
             } else {
@@ -5118,8 +5118,8 @@ void Interface_Draw(PlayState* play) {
                     if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] >= 0) {
                         s16 X_Margins_SKC;
                         s16 Y_Margins_SKC;
-                        if (CVarGetInteger("gSKCUseMargins", 0) != 0) {
-                            if (CVarGetInteger("gSKCPosType", 0) == 0) {X_Margins_SKC = Left_HUD_Margin;};
+                        if (CVarGetInteger(COSMETIC_CVAR("Hud_SmallKeyCount.UseMargins"), 0) != 0) {
+                            if (CVarGetInteger(COSMETIC_CVAR(COSMETIC_CVAR("Hud_SmallKeyCount.AnchorType")), 0) == 0) {X_Margins_SKC = Left_HUD_Margin;};
                             Y_Margins_SKC = Bottom_HUD_Margin;
                         } else {
                             X_Margins_SKC = 0;
@@ -5129,17 +5129,17 @@ void Interface_Draw(PlayState* play) {
                         s16 PosY_SKC_ori = 190+Y_Margins_SKC;
                         s16 PosX_SKC;
                         s16 PosY_SKC;
-                        if (CVarGetInteger("gSKCPosType", 0) != 0) {
-                            PosY_SKC = CVarGetInteger("gSKCPosY", 0)+Y_Margins_SKC;
-                            if (CVarGetInteger("gSKCPosType", 0) == 1) {//Anchor Left
-                                if (CVarGetInteger("gSKCUseMargins", 0) != 0) {X_Margins_SKC = Left_HUD_Margin;};
-                                PosX_SKC = OTRGetDimensionFromLeftEdge(CVarGetInteger("gSKCPosX", 0)+X_Margins_SKC);
-                            } else if (CVarGetInteger("gSKCPosType", 0) == 2) {//Anchor Right
-                                if (CVarGetInteger("gSKCUseMargins", 0) != 0) {X_Margins_SKC = Right_HUD_Margin;};
-                                PosX_SKC = OTRGetDimensionFromRightEdge(CVarGetInteger("gSKCPosX", 0)+X_Margins_SKC);
-                            } else if (CVarGetInteger("gSKCPosType", 0) == 3) {//Anchor None
-                                PosX_SKC = CVarGetInteger("gSKCPosX", 0);
-                            } else if (CVarGetInteger("gSKCPosType", 0) == 4) {//Hidden
+                        if (CVarGetInteger(COSMETIC_CVAR("Hud_SmallKeyCount.AnchorType"), 0) != 0) {
+                            PosY_SKC = CVarGetInteger(COSMETIC_CVAR("Hud_SmallKeyCount.PosY"), 0)+Y_Margins_SKC;
+                            if (CVarGetInteger(COSMETIC_CVAR("Hud_SmallKeyCount.AnchorType"), 0) == 1) {//Anchor Left
+                                if (CVarGetInteger(COSMETIC_CVAR("Hud_SmallKeyCount.UseMargins"), 0) != 0) {X_Margins_SKC = Left_HUD_Margin;};
+                                PosX_SKC = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_SmallKeyCount.PosX"), 0)+X_Margins_SKC);
+                            } else if (CVarGetInteger(COSMETIC_CVAR("Hud_SmallKeyCount.AnchorType"), 0) == 2) {//Anchor Right
+                                if (CVarGetInteger(COSMETIC_CVAR("Hud_SmallKeyCount.UseMargins"), 0) != 0) {X_Margins_SKC = Right_HUD_Margin;};
+                                PosX_SKC = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_SmallKeyCount.PosX"), 0)+X_Margins_SKC);
+                            } else if (CVarGetInteger(COSMETIC_CVAR("Hud_SmallKeyCount.AnchorType"), 0) == 3) {//Anchor None
+                                PosX_SKC = CVarGetInteger(COSMETIC_CVAR("Hud_SmallKeyCount.PosX"), 0);
+                            } else if (CVarGetInteger(COSMETIC_CVAR("Hud_SmallKeyCount.AnchorType"), 0) == 4) {//Hidden
                             PosX_SKC = -9999;
                             }
                         } else {
@@ -5302,24 +5302,24 @@ void Interface_Draw(PlayState* play) {
             s16 BbtnPosY;
             s16 X_Margins_BtnB_label;
             s16 Y_Margins_BtnB_label;
-            if (CVarGetInteger("gBBtnUseMargins", 0) != 0) {
-                if (CVarGetInteger("gBBtnPosType", 0) == 0) {X_Margins_BtnB_label = Right_HUD_Margin;};
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.UseMargins"), 0) != 0) {
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) == 0) {X_Margins_BtnB_label = Right_HUD_Margin;};
                 Y_Margins_BtnB_label = (Top_HUD_Margin*-1);
             } else {
                 X_Margins_BtnB_label = 0;
                 Y_Margins_BtnB_label = 0;
             }
-            if (CVarGetInteger("gBBtnPosType", 0) != 0) {
-                BbtnPosY = CVarGetInteger("gBBtnPosY", 0)+Y_Margins_BtnB_label+PosY_adjust;
-                if (CVarGetInteger("gBBtnPosType", 0) == 1) {//Anchor Left
-                    if (CVarGetInteger("gBBtnUseMargins", 0) != 0) {X_Margins_BtnB_label = Left_HUD_Margin;};
-                    BbtnPosX = OTRGetDimensionFromLeftEdge(CVarGetInteger("gBBtnPosX", 0)+X_Margins_BtnB_label+PosX_adjust);
-                } else if (CVarGetInteger("gBBtnPosType", 0) == 2) {//Anchor Right
-                    if (CVarGetInteger("gBBtnUseMargins", 0) != 0) {X_Margins_BtnB_label = Right_HUD_Margin;};
-                    BbtnPosX = OTRGetDimensionFromRightEdge(CVarGetInteger("gBBtnPosX", 0)+X_Margins_BtnB_label+PosX_adjust);
-                } else if (CVarGetInteger("gBBtnPosType", 0) == 3) {//Anchor None
-                    BbtnPosX = CVarGetInteger("gBBtnPosX", 0)+PosX_adjust;
-                } else if (CVarGetInteger("gBBtnPosType", 0) == 4) {//Hidden
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) != 0) {
+                BbtnPosY = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.PosY"), 0)+Y_Margins_BtnB_label+PosY_adjust;
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) == 1) {//Anchor Left
+                    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.UseMargins"), 0) != 0) {X_Margins_BtnB_label = Left_HUD_Margin;};
+                    BbtnPosX = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.PosX"), 0)+X_Margins_BtnB_label+PosX_adjust);
+                } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) == 2) {//Anchor Right
+                    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.UseMargins"), 0) != 0) {X_Margins_BtnB_label = Right_HUD_Margin;};
+                    BbtnPosX = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.PosX"), 0)+X_Margins_BtnB_label+PosX_adjust);
+                } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) == 3) {//Anchor None
+                    BbtnPosX = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.PosX"), 0)+PosX_adjust;
+                } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonB.AnchorType"), 0) == 4) {//Hidden
                     BbtnPosX = -9999;
                 }
             } else {
@@ -5392,24 +5392,24 @@ void Interface_Draw(PlayState* play) {
             s16 DpadPosY;
             s16 X_Margins_Dpad;
             s16 Y_Margins_Dpad;
-            if (CVarGetInteger("gDPadUseMargins", 0) != 0) {
-                if (CVarGetInteger("gDPadPosType", 0) == 0) {X_Margins_Dpad = Right_HUD_Margin;};
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.UseMargins"), 0) != 0) {
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.AnchorType"), 0) == 0) {X_Margins_Dpad = Right_HUD_Margin;};
                 Y_Margins_Dpad = (Top_HUD_Margin*-1);
             } else {
                 Y_Margins_Dpad = 0;
                 X_Margins_Dpad = 0;
             }
-            if (CVarGetInteger("gDPadPosType", 0) != 0) {
-                DpadPosY = CVarGetInteger("gDPadPosY", 0)+Y_Margins_Dpad;
-                if (CVarGetInteger("gDPadPosType", 0) == 1) {//Anchor Left
-                    if (CVarGetInteger("gDPadUseMargins", 0) != 0) {X_Margins_Dpad = Left_HUD_Margin;};
-                    DpadPosX = OTRGetDimensionFromLeftEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_Dpad);
-                } else if (CVarGetInteger("gDPadPosType", 0) == 2) {//Anchor Right
-                    if (CVarGetInteger("gDPadUseMargins", 0) != 0) {X_Margins_Dpad = Right_HUD_Margin;};
-                    DpadPosX = OTRGetDimensionFromRightEdge(CVarGetInteger("gDPadPosX", 0)+X_Margins_Dpad);
-                } else if (CVarGetInteger("gDPadPosType", 0) == 3) {//Anchor None
-                    DpadPosX = CVarGetInteger("gDPadPosX", 0);
-                } else if (CVarGetInteger("gDPadPosType", 0) == 4) {//Hidden
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.AnchorType"), 0) != 0) {
+                DpadPosY = CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosY"), 0)+Y_Margins_Dpad;
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.AnchorType"), 0) == 1) {//Anchor Left
+                    if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.UseMargins"), 0) != 0) {X_Margins_Dpad = Left_HUD_Margin;};
+                    DpadPosX = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+X_Margins_Dpad);
+                } else if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.AnchorType"), 0) == 2) {//Anchor Right
+                    if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.UseMargins"), 0) != 0) {X_Margins_Dpad = Right_HUD_Margin;};
+                    DpadPosX = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0)+X_Margins_Dpad);
+                } else if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.AnchorType"), 0) == 3) {//Anchor None
+                    DpadPosX = CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.PosX"), 0);
+                } else if (CVarGetInteger(COSMETIC_CVAR("Hud_Dpad.AnchorType"), 0) == 4) {//Hidden
                     DpadPosX = -9999;
                 }
             } else {
@@ -5478,7 +5478,7 @@ void Interface_Draw(PlayState* play) {
         Gfx_SetupDL_42Overlay(play->state.gfxCtx);
         s16 X_Margins_BtnA;
         s16 Y_Margins_BtnA;
-        if (CVarGetInteger("gABtnUseMargins", 0) != 0) {
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonA.UseMargins"), 0) != 0) {
             X_Margins_BtnA = Right_HUD_Margin;
             Y_Margins_BtnA = (Top_HUD_Margin*-1);
         } else {
@@ -5493,21 +5493,21 @@ void Interface_Draw(PlayState* play) {
         s16 PosY_BtnA;
         s16 rAIconX;
         s16 rAIconY;
-        if (CVarGetInteger("gABtnPosType", 0) != 0) {
-            PosY_BtnA = CVarGetInteger("gABtnPosY", 0)+Y_Margins_BtnA;
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonA.AnchorType"), 0) != 0) {
+            PosY_BtnA = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonA.PosY"), 0)+Y_Margins_BtnA;
             rAIconY = 98.0f - PosY_BtnA;
-            if (CVarGetInteger("gABtnPosType", 0) == 1) {//Anchor Left
-                if (CVarGetInteger("gABtnUseMargins", 0) != 0) {X_Margins_BtnA = Left_HUD_Margin;};
-                PosX_BtnA = OTRGetDimensionFromLeftEdge(CVarGetInteger("gABtnPosX", 0)+X_Margins_BtnA);
-                rAIconX = OTRGetDimensionFromLeftEdge(CVarGetInteger("gABtnPosX", 0)+X_Margins_BtnA);
-            } else if (CVarGetInteger("gABtnPosType", 0) == 2) {//Anchor Right
-                if (CVarGetInteger("gABtnUseMargins", 0) != 0) {X_Margins_BtnA = Right_HUD_Margin;};
-                PosX_BtnA = OTRGetDimensionFromRightEdge(CVarGetInteger("gABtnPosX", 0)+X_Margins_BtnA);
-                rAIconX= OTRGetDimensionFromRightEdge(CVarGetInteger("gABtnPosX", 0)+X_Margins_BtnA);
-            } else if (CVarGetInteger("gABtnPosType", 0) == 3) {//Anchor None
-                PosX_BtnA = CVarGetInteger("gABtnPosX", 0);
-                rAIconX = CVarGetInteger("gABtnPosX", 0);
-            } else if (CVarGetInteger("gABtnPosType", 0) == 4) {//Hidden
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonA.AnchorType"), 0) == 1) {//Anchor Left
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonA.UseMargins"), 0) != 0) {X_Margins_BtnA = Left_HUD_Margin;};
+                PosX_BtnA = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonA.PosX"), 0)+X_Margins_BtnA);
+                rAIconX = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonA.PosX"), 0)+X_Margins_BtnA);
+            } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonA.AnchorType"), 0) == 2) {//Anchor Right
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonA.UseMargins"), 0) != 0) {X_Margins_BtnA = Right_HUD_Margin;};
+                PosX_BtnA = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonA.PosX"), 0)+X_Margins_BtnA);
+                rAIconX= OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ButtonA.PosX"), 0)+X_Margins_BtnA);
+            } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonA.AnchorType"), 0) == 3) {//Anchor None
+                PosX_BtnA = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonA.PosX"), 0);
+                rAIconX = CVarGetInteger(COSMETIC_CVAR("Hud_ButtonA.PosX"), 0);
+            } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonA.AnchorType"), 0) == 4) {//Hidden
                 PosX_BtnA = -9999;
                 rAIconX = -9999;
             }
@@ -5611,17 +5611,17 @@ void Interface_Draw(PlayState* play) {
                     s16 CarrotsPosX = ZREG(14);
                     s16 CarrotsPosY = ZREG(15);
                     s16 CarrotsMargins_X = 0;
-                    if (CVarGetInteger("gCarrotsPosType", 0) != 0) {
-                        CarrotsPosY = CVarGetInteger("gCarrotsPosY", 0);
-                        if (CVarGetInteger("gCarrotsPosType", 0) == 1) {//Anchor Left
-                            if (CVarGetInteger("gCarrotsUseMargins", 0) != 0) {CarrotsMargins_X = Left_HUD_Margin;};
-                            CarrotsPosX = OTRGetDimensionFromLeftEdge(CVarGetInteger("gCarrotsPosX", 0)+CarrotsMargins_X);            
-                        } else if (CVarGetInteger("gCarrotsPosType", 0) == 2) {//Anchor Right
-                            if (CVarGetInteger("gCarrotsUseMargins", 0) != 0) {CarrotsMargins_X = Right_HUD_Margin;};
-                            CarrotsPosX = OTRGetDimensionFromRightEdge(CVarGetInteger("gCarrotsPosX", 0)+CarrotsMargins_X);
-                        } else if (CVarGetInteger("gCarrotsPosType", 0) == 3) {//Anchor None
-                            CarrotsPosX = CVarGetInteger("gCarrotsPosX", 0);
-                        } else if (CVarGetInteger("gCarrotsPosType", 0) == 4) {//Hidden
+                    if (CVarGetInteger(COSMETIC_CVAR("Hud_Carrots.AnchorType"), 0) != 0) {
+                        CarrotsPosY = CVarGetInteger(COSMETIC_CVAR("Hud_Carrots.PosY"), 0);
+                        if (CVarGetInteger(COSMETIC_CVAR("Hud_Carrots.AnchorType"), 0) == 1) {//Anchor Left
+                            if (CVarGetInteger(COSMETIC_CVAR("Hud_Carrots.UseMargins"), 0) != 0) {CarrotsMargins_X = Left_HUD_Margin;};
+                            CarrotsPosX = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Carrots.PosX"), 0)+CarrotsMargins_X);            
+                        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_Carrots.AnchorType"), 0) == 2) {//Anchor Right
+                            if (CVarGetInteger(COSMETIC_CVAR("Hud_Carrots.UseMargins"), 0) != 0) {CarrotsMargins_X = Right_HUD_Margin;};
+                            CarrotsPosX = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Carrots.PosX"), 0)+CarrotsMargins_X);
+                        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_Carrots.AnchorType"), 0) == 3) {//Anchor None
+                            CarrotsPosX = CVarGetInteger(COSMETIC_CVAR("Hud_Carrots.PosX"), 0);
+                        } else if (CVarGetInteger(COSMETIC_CVAR("Hud_Carrots.AnchorType"), 0) == 4) {//Hidden
                             CarrotsPosX = -9999;
                         }
                     }
@@ -5640,25 +5640,25 @@ void Interface_Draw(PlayState* play) {
             } else {
                 // Score for the Horseback Archery
                 s32 X_Margins_Archery;
-                if (CVarGetInteger("gASUseMargins", 0) != 0) {
-                    if (CVarGetInteger("gASPosType", 0) == 0) {X_Margins_Archery = Right_HUD_Margin;};
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_ArcheryScore.UseMargins"), 0) != 0) {
+                    if (CVarGetInteger(COSMETIC_CVAR("Hud_ArcheryScore.AnchorType"), 0) == 0) {X_Margins_Archery = Right_HUD_Margin;};
                 } else {
                     X_Margins_Archery = 0;
                 }
                 s16 ArcheryPos_Y = ZREG(15);
                 s16 ArcheryPos_X = OTRGetRectDimensionFromRightEdge(WREG(32)+X_Margins_Archery);
 
-                if (CVarGetInteger("gASPosType", 0) != 0) {
-                    ArcheryPos_Y = CVarGetInteger("gASPosY", 0);
-                    if (CVarGetInteger("gASPosType", 0) == 1) {//Anchor Left
-                        if (CVarGetInteger("gASUseMargins", 0) != 0) {X_Margins_Archery = Left_HUD_Margin;};
-                        ArcheryPos_X = OTRGetRectDimensionFromLeftEdge(CVarGetInteger("gASPosX", 0)+X_Margins_Archery);
-                    } else if (CVarGetInteger("gASPosType", 0) == 2) {//Anchor Right
-                        if (CVarGetInteger("gASUseMargins", 0) != 0) {X_Margins_Archery = Right_HUD_Margin;};
-                        ArcheryPos_X = OTRGetRectDimensionFromRightEdge(CVarGetInteger("gASPosX", 0)+X_Margins_Archery);
-                    } else if (CVarGetInteger("gASPosType", 0) == 3) {//Anchor None
-                        ArcheryPos_X = CVarGetInteger("gASPosX", 0)+204+X_Margins_Archery;
-                    } else if (CVarGetInteger("gASPosType", 0) == 4) {//Hidden
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_ArcheryScore.AnchorType"), 0) != 0) {
+                    ArcheryPos_Y = CVarGetInteger(COSMETIC_CVAR("Hud_ArcheryScore.PosY"), 0);
+                    if (CVarGetInteger(COSMETIC_CVAR("Hud_ArcheryScore.AnchorType"), 0) == 1) {//Anchor Left
+                        if (CVarGetInteger(COSMETIC_CVAR("Hud_ArcheryScore.UseMargins"), 0) != 0) {X_Margins_Archery = Left_HUD_Margin;};
+                        ArcheryPos_X = OTRGetRectDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ArcheryScore.PosX"), 0)+X_Margins_Archery);
+                    } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ArcheryScore.AnchorType"), 0) == 2) {//Anchor Right
+                        if (CVarGetInteger(COSMETIC_CVAR("Hud_ArcheryScore.UseMargins"), 0) != 0) {X_Margins_Archery = Right_HUD_Margin;};
+                        ArcheryPos_X = OTRGetRectDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_ArcheryScore.PosX"), 0)+X_Margins_Archery);
+                    } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ArcheryScore.AnchorType"), 0) == 3) {//Anchor None
+                        ArcheryPos_X = CVarGetInteger(COSMETIC_CVAR("Hud_ArcheryScore.PosX"), 0)+204+X_Margins_Archery;
+                    } else if (CVarGetInteger(COSMETIC_CVAR("Hud_ArcheryScore.AnchorType"), 0) == 4) {//Hidden
                         ArcheryPos_X = -9999;
                     }
                 }
@@ -6077,24 +6077,24 @@ void Interface_Draw(PlayState* play) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
                 gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
                 s32 X_Margins_Timer;
-                if (CVarGetInteger("gTimersUseMargins", 0) != 0) {
-                    if (CVarGetInteger("gTimersPosType", 0) == 0) {X_Margins_Timer = Left_HUD_Margin;};
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_Timers.UseMargins"), 0) != 0) {
+                    if (CVarGetInteger(COSMETIC_CVAR("Hud_Timers.AnchorType"), 0) == 0) {X_Margins_Timer = Left_HUD_Margin;};
                 } else {
                     X_Margins_Timer = 0;
                 }
                 svar5 = OTRGetRectDimensionFromLeftEdge(gSaveContext.timerX[svar6]+X_Margins_Timer);
                 svar2 = gSaveContext.timerY[svar6];
-                if (CVarGetInteger("gTimersPosType", 0) != 0) {
-                    svar2 = (CVarGetInteger("gTimersPosY", 0));
-                    if (CVarGetInteger("gTimersPosType", 0) == 1) {//Anchor Left
-                        if (CVarGetInteger("gTimersUseMargins", 0) != 0) {X_Margins_Timer = Left_HUD_Margin;};
-                        svar5 = OTRGetRectDimensionFromLeftEdge(CVarGetInteger("gTimersPosX", 0)+X_Margins_Timer);
-                    } else if (CVarGetInteger("gTimersPosType", 0) == 2) {//Anchor Right
-                        if (CVarGetInteger("gTimersUseMargins", 0) != 0) {X_Margins_Timer = Right_HUD_Margin;};
-                        svar5 = OTRGetRectDimensionFromRightEdge(CVarGetInteger("gTimersPosX", 0)+X_Margins_Timer);
-                    } else if (CVarGetInteger("gTimersPosType", 0) == 3) {//Anchor None
-                        svar5 = CVarGetInteger("gTimersPosX", 0)+204+X_Margins_Timer;
-                    } else if (CVarGetInteger("gTimersPosType", 0) == 4) {//Hidden
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_Timers.AnchorType"), 0) != 0) {
+                    svar2 = (CVarGetInteger(COSMETIC_CVAR("Hud_Timers.PosY"), 0));
+                    if (CVarGetInteger(COSMETIC_CVAR("Hud_Timers.AnchorType"), 0) == 1) {//Anchor Left
+                        if (CVarGetInteger(COSMETIC_CVAR("Hud_Timers.UseMargins"), 0) != 0) {X_Margins_Timer = Left_HUD_Margin;};
+                        svar5 = OTRGetRectDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Timers.PosX"), 0)+X_Margins_Timer);
+                    } else if (CVarGetInteger(COSMETIC_CVAR("Hud_Timers.AnchorType"), 0) == 2) {//Anchor Right
+                        if (CVarGetInteger(COSMETIC_CVAR("Hud_Timers.UseMargins"), 0) != 0) {X_Margins_Timer = Right_HUD_Margin;};
+                        svar5 = OTRGetRectDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_Timers.PosX"), 0)+X_Margins_Timer);
+                    } else if (CVarGetInteger(COSMETIC_CVAR("Hud_Timers.AnchorType"), 0) == 3) {//Anchor None
+                        svar5 = CVarGetInteger(COSMETIC_CVAR("Hud_Timers.PosX"), 0)+204+X_Margins_Timer;
+                    } else if (CVarGetInteger(COSMETIC_CVAR("Hud_Timers.AnchorType"), 0) == 4) {//Hidden
                         svar5 = -9999;
                     }
                 }
@@ -6156,28 +6156,28 @@ void Interface_DrawTotalGameplayTimer(PlayState* play) {
         (CVarGetInteger("gGameplayStats.ShowIngameTimer", 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2)) {
 
         s32 X_Margins_Timer = 0;
-        if (CVarGetInteger("gIGTUseMargins", 0) != 0) {
-            if (CVarGetInteger("gIGTPosType", 0) == 0) {
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_InGameTimer.UseMargins"), 0) != 0) {
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_InGameTimer.AnchorType"), 0) == 0) {
                 X_Margins_Timer = Left_HUD_Margin;
             };
         }
         s32 rectLeftOri = OTRGetRectDimensionFromLeftEdge(24 + X_Margins_Timer);
         s32 rectTopOri = 73;
-        if (CVarGetInteger("gIGTPosType", 0) != 0) {
-            rectTopOri = (CVarGetInteger("gIGTPosY", 0));
-            if (CVarGetInteger("gIGTPosType", 0) == 1) { // Anchor Left
-                if (CVarGetInteger("gIGTUseMargins", 0) != 0) {
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_InGameTimer.AnchorType"), 0) != 0) {
+            rectTopOri = (CVarGetInteger(COSMETIC_CVAR("Hud_InGameTimer.PosY"), 0));
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_InGameTimer.AnchorType"), 0) == 1) { // Anchor Left
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_InGameTimer.UseMargins"), 0) != 0) {
                     X_Margins_Timer = Left_HUD_Margin;
                 };
-                rectLeftOri = OTRGetRectDimensionFromLeftEdge(CVarGetInteger("gIGTPosX", 0) + X_Margins_Timer);
-            } else if (CVarGetInteger("gIGTPosType", 0) == 2) { // Anchor Right
-                if (CVarGetInteger("gIGTUseMargins", 0) != 0) {
+                rectLeftOri = OTRGetRectDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_InGameTimer.PosX"), 0) + X_Margins_Timer);
+            } else if (CVarGetInteger(COSMETIC_CVAR("Hud_InGameTimer.AnchorType"), 0) == 2) { // Anchor Right
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_InGameTimer.UseMargins"), 0) != 0) {
                     X_Margins_Timer = Right_HUD_Margin;
                 };
-                rectLeftOri = OTRGetRectDimensionFromRightEdge(CVarGetInteger("gIGTPosX", 0) + X_Margins_Timer);
-            } else if (CVarGetInteger("gIGTPosType", 0) == 3) { // Anchor None
-                rectLeftOri = CVarGetInteger("gIGTPosX", 0) + 204 + X_Margins_Timer;
-            } else if (CVarGetInteger("gIGTPosType", 0) == 4) { // Hidden
+                rectLeftOri = OTRGetRectDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_InGameTimer.PosX"), 0) + X_Margins_Timer);
+            } else if (CVarGetInteger(COSMETIC_CVAR("Hud_InGameTimer.AnchorType"), 0) == 3) { // Anchor None
+                rectLeftOri = CVarGetInteger(COSMETIC_CVAR("Hud_InGameTimer.PosX"), 0) + 204 + X_Margins_Timer;
+            } else if (CVarGetInteger(COSMETIC_CVAR("Hud_InGameTimer.AnchorType"), 0) == 4) { // Hidden
                 rectLeftOri = -9999;
             }
         }
@@ -6264,10 +6264,10 @@ void Interface_Update(PlayState* play) {
     u16 action;
     Input* debugInput = &play->state.input[2];
 
-    Top_HUD_Margin = CVarGetInteger("gHUDMargin_T", 0);
-    Left_HUD_Margin = CVarGetInteger("gHUDMargin_L", 0);
-    Right_HUD_Margin = CVarGetInteger("gHUDMargin_R", 0);
-    Bottom_HUD_Margin = CVarGetInteger("gHUDMargin_B", 0);
+    Top_HUD_Margin = CVarGetInteger(COSMETIC_CVAR("Hud_MarginTop"), 0);
+    Left_HUD_Margin = CVarGetInteger(COSMETIC_CVAR("Hud_MarginLeft"), 0);
+    Right_HUD_Margin = CVarGetInteger(COSMETIC_CVAR("Hud_MarginRight"), 0);
+    Bottom_HUD_Margin = CVarGetInteger(COSMETIC_CVAR("Hud_MarginBottom"), 0);
     
     GameInteractor_ExecuteOnInterfaceUpdate();
 

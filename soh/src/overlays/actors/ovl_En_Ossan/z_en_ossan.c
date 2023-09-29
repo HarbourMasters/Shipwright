@@ -1971,9 +1971,9 @@ void EnOssan_UpdateItemSelectedProperty(EnOssan* this) {
 
 void EnOssan_UpdateCursorAnim(EnOssan* this) {
     Color_RGB8 aButtonColor = { 0, 80, 255 };
-    if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
-        aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
+    if (CVarGetInteger(COSMETIC_CVAR("Hud_ButtonA.Changed"), 0)) {
+        aButtonColor = CVarGetColor24(COSMETIC_CVAR("Hud_ButtonA.Value"), aButtonColor);
+    } else if (CVarGetInteger(COSMETIC_CVAR("DefaultColorScheme"), COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         aButtonColor = (Color_RGB8){ 0, 255, 80 };
     }
     f32 t;

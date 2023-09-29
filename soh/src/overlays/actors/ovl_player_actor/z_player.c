@@ -10480,17 +10480,17 @@ void func_80848EF8(Player* this, PlayState* play) {
         /*Prevent it on horse, while jumping and on title screen.
         If you fly around no stone of agony for you! */
         Color_RGB8 stoneOfAgonyColor = { 255, 255, 255 };
-        if (CVarGetInteger("gCosmetics.Hud_StoneOfAgony.Changed", 0)) {
-            stoneOfAgonyColor = CVarGetColor24("gCosmetics.Hud_StoneOfAgony.Value", stoneOfAgonyColor);
+        if (CVarGetInteger(COSMETIC_CVAR("Hud_StoneOfAgony.Changed"), 0)) {
+            stoneOfAgonyColor = CVarGetColor24(COSMETIC_CVAR("Hud_StoneOfAgony.Value"), stoneOfAgonyColor);
         }
         if (CVarGetInteger("gVisualAgony", 0) && !this->stateFlags1 && !GameInteractor_NoUIActive()) {
-            s16 Top_Margins = (CVarGetInteger("gHUDMargin_T", 0) * -1);
-            s16 Left_Margins = CVarGetInteger("gHUDMargin_L", 0);
-            s16 Right_Margins = CVarGetInteger("gHUDMargin_R", 0);
+            s16 Top_Margins = (CVarGetInteger(COSMETIC_CVAR("Hud_MarginTop"), 0) * -1);
+            s16 Left_Margins = CVarGetInteger(COSMETIC_CVAR("Hud_MarginLeft"), 0);
+            s16 Right_Margins = CVarGetInteger(COSMETIC_CVAR("Hud_MarginRight"), 0);
             s16 X_Margins_VSOA;
             s16 Y_Margins_VSOA;
-            if (CVarGetInteger("gVSOAUseMargins", 0) != 0) {
-                if (CVarGetInteger("gVSOAPosType", 0) == 0) {
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_StoneOfAgony.UseMargins"), 0) != 0) {
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_StoneOfAgony.AnchorType"), 0) == 0) {
                     X_Margins_VSOA = Left_Margins;
                 };
                 Y_Margins_VSOA = Top_Margins;
@@ -10502,21 +10502,21 @@ void func_80848EF8(Player* this, PlayState* play) {
             s16 PosY_VSOA_ori = 60 + Y_Margins_VSOA;
             s16 PosX_VSOA;
             s16 PosY_VSOA;
-            if (CVarGetInteger("gVSOAPosType", 0) != 0) {
-                PosY_VSOA = CVarGetInteger("gVSOAPosY", 0) + Y_Margins_VSOA;
-                if (CVarGetInteger("gVSOAPosType", 0) == 1) { // Anchor Left
-                    if (CVarGetInteger("gVSOAUseMargins", 0) != 0) {
+            if (CVarGetInteger(COSMETIC_CVAR("Hud_StoneOfAgony.AnchorType"), 0) != 0) {
+                PosY_VSOA = CVarGetInteger(COSMETIC_CVAR("Hud_StoneOfAgony.PosY"), 0) + Y_Margins_VSOA;
+                if (CVarGetInteger(COSMETIC_CVAR("Hud_StoneOfAgony.AnchorType"), 0) == 1) { // Anchor Left
+                    if (CVarGetInteger(COSMETIC_CVAR("Hud_StoneOfAgony.UseMargins"), 0) != 0) {
                         X_Margins_VSOA = Left_Margins;
                     };
-                    PosX_VSOA = OTRGetDimensionFromLeftEdge(CVarGetInteger("gVSOAPosX", 0) + X_Margins_VSOA);
-                } else if (CVarGetInteger("gVSOAPosType", 0) == 2) { // Anchor Right
-                    if (CVarGetInteger("gVSOAUseMargins", 0) != 0) {
+                    PosX_VSOA = OTRGetDimensionFromLeftEdge(CVarGetInteger(COSMETIC_CVAR("Hud_StoneOfAgony.PosX"), 0) + X_Margins_VSOA);
+                } else if (CVarGetInteger(COSMETIC_CVAR("Hud_StoneOfAgony.AnchorType"), 0) == 2) { // Anchor Right
+                    if (CVarGetInteger(COSMETIC_CVAR("Hud_StoneOfAgony.UseMargins"), 0) != 0) {
                         X_Margins_VSOA = Right_Margins;
                     };
-                    PosX_VSOA = OTRGetDimensionFromRightEdge(CVarGetInteger("gVSOAPosX", 0) + X_Margins_VSOA);
-                } else if (CVarGetInteger("gVSOAPosType", 0) == 3) { // Anchor None
-                    PosX_VSOA = CVarGetInteger("gVSOAPosX", 0);
-                } else if (CVarGetInteger("gVSOAPosType", 0) == 4) { // Hidden
+                    PosX_VSOA = OTRGetDimensionFromRightEdge(CVarGetInteger(COSMETIC_CVAR("Hud_StoneOfAgony.PosX"), 0) + X_Margins_VSOA);
+                } else if (CVarGetInteger(COSMETIC_CVAR("Hud_StoneOfAgony.AnchorType"), 0) == 3) { // Anchor None
+                    PosX_VSOA = CVarGetInteger(COSMETIC_CVAR("Hud_StoneOfAgony.PosX"), 0);
+                } else if (CVarGetInteger(COSMETIC_CVAR("Hud_StoneOfAgony.AnchorType"), 0) == 4) { // Hidden
                     PosX_VSOA = -9999;
                 }
             } else {
@@ -11151,13 +11151,13 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
             sp68.x = D_80858AC8.unk_02 + 0x3E2;
             sp68.y = D_80858AC8.unk_04 + 0xDBE;
             sp68.z = D_80858AC8.unk_00 - 0x348A;
-            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f - CVarGetFloat("gCosmetics.BunnyHood_EarLength", 0.0f), -240.0f - CVarGetFloat("gCosmetics.BunnyHood_EarSpread", 0.0f), &sp68);
+            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f - CVarGetFloat(COSMETIC_CVAR("BunnyHood_EarLength"), 0.0f), -240.0f - CVarGetFloat(COSMETIC_CVAR("BunnyHood_EarSpread"), 0.0f), &sp68);
             MATRIX_TOMTX(sp70++);
 
             sp68.x = D_80858AC8.unk_02 - 0x3E2;
             sp68.y = -0xDBE - D_80858AC8.unk_04;
             sp68.z = D_80858AC8.unk_00 - 0x348A;
-            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f - CVarGetFloat("gCosmetics.BunnyHood_EarLength", 0.0f), 240.0f + CVarGetFloat("gCosmetics.BunnyHood_EarSpread", 0.0f), &sp68);
+            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f - CVarGetFloat(COSMETIC_CVAR("BunnyHood_EarLength"), 0.0f), 240.0f + CVarGetFloat(COSMETIC_CVAR("BunnyHood_EarSpread"), 0.0f), &sp68);
             MATRIX_TOMTX(sp70);
         }
 

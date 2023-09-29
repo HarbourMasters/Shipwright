@@ -1316,24 +1316,24 @@ void EnItem00_DrawRupee(EnItem00* this, PlayState* play) {
     u8 shouldColor = 0;
     switch (texIndex) {
         case 0:
-            rupeeColor = CVarGetColor24("gCosmetics.Consumable_GreenRupee.Value", (Color_RGB8){ 255, 255, 255 });
-            shouldColor = CVarGetInteger("gCosmetics.Consumable_GreenRupee.Changed", 0);
+            rupeeColor = CVarGetColor24(COSMETIC_CVAR("Consumable_GreenRupee.Value"), (Color_RGB8){ 255, 255, 255 });
+            shouldColor = CVarGetInteger(COSMETIC_CVAR("Consumable_GreenRupee.Changed"), 0);
             break;
         case 1:
-            rupeeColor = CVarGetColor24("gCosmetics.Consumable_BlueRupee.Value", (Color_RGB8){ 255, 255, 255 });
-            shouldColor = CVarGetInteger("gCosmetics.Consumable_BlueRupee.Changed", 0);
+            rupeeColor = CVarGetColor24(COSMETIC_CVAR("Consumable_BlueRupee.Value"), (Color_RGB8){ 255, 255, 255 });
+            shouldColor = CVarGetInteger(COSMETIC_CVAR("Consumable_BlueRupee.Changed"), 0);
             break;
         case 2:
-            rupeeColor = CVarGetColor24("gCosmetics.Consumable_RedRupee.Value", (Color_RGB8){ 255, 255, 255 });
-            shouldColor = CVarGetInteger("gCosmetics.Consumable_RedRupee.Changed", 0);
+            rupeeColor = CVarGetColor24(COSMETIC_CVAR("Consumable_RedRupee.Value"), (Color_RGB8){ 255, 255, 255 });
+            shouldColor = CVarGetInteger(COSMETIC_CVAR("Consumable_RedRupee.Changed"), 0);
             break;
         case 4: // orange rupee texture corresponds to the purple rupee (authentic bug)
-            rupeeColor = CVarGetColor24("gCosmetics.Consumable_PurpleRupee.Value", (Color_RGB8){ 255, 255, 255 });
-            shouldColor = CVarGetInteger("gCosmetics.Consumable_PurpleRupee.Changed", 0);
+            rupeeColor = CVarGetColor24(COSMETIC_CVAR("Consumable_PurpleRupee.Value"), (Color_RGB8){ 255, 255, 255 });
+            shouldColor = CVarGetInteger(COSMETIC_CVAR("Consumable_PurpleRupee.Changed"), 0);
             break;
         case 3: // pink rupee texture corresponds to the gold rupee (authentic bug)
-            rupeeColor = CVarGetColor24("gCosmetics.Consumable_GoldRupee.Value", (Color_RGB8){ 255, 255, 255 });
-            shouldColor = CVarGetInteger("gCosmetics.Consumable_GoldRupee.Changed", 0);
+            rupeeColor = CVarGetColor24(COSMETIC_CVAR("Consumable_GoldRupee.Value"), (Color_RGB8){ 255, 255, 255 });
+            shouldColor = CVarGetInteger(COSMETIC_CVAR("Consumable_GoldRupee.Changed"), 0);
             break;
     }
 
