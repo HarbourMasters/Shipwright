@@ -2244,7 +2244,7 @@ void EnXc_SetupDialogueAction(EnXc* this, PlayState* play) {
             if (!CHECK_DUNGEON_ITEM(DUNGEON_KEY_BOSS, SCENE_GANONS_TOWER)) {
                 this->actor.textId = TEXT_SHEIK_NEED_HOOK;
             } else {
-                this->actor.textId = TEXT_SHEIK_HAVE_HOOK;    
+                this->actor.textId = TEXT_SHEIK_HAVE_HOOK;
             }
         } else if (IS_RANDO && gPlayState->sceneNum == SCENE_INSIDE_GANONS_CASTLE) {
             if (CHECK_OWNED_EQUIP(EQUIP_SWORD, 1) && INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT &&
