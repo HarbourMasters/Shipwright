@@ -95,8 +95,7 @@ void SetAllEntrancesData(std::vector<EntranceInfoPair>& entranceShuffleTable) {
       forwardEntrance->BindTwoWay(returnEntrance);
 
       // Mark reverse entrance as decoupled
-      if (Settings::DecoupleEntrances && returnEntry.type != EntranceType::ChildBoss &&
-        returnEntry.type != EntranceType::AdultBoss) {
+      if (Settings::DecoupleEntrances) {
         returnEntrance->SetDecoupled();
       }
     }
@@ -1011,6 +1010,11 @@ int ShuffleAllEntrances() {
         FilterAndEraseFromPool(entrancePools[EntranceType::Boss], [](const Entrance* entrance){return entrance->GetParentRegionKey()    == DEKU_TREE_BOSS_ENTRYWAY &&
                                                                                                       entrance->GetConnectedRegionKey() == DEKU_TREE_BOSS_ROOM;});
       }
+      if (Settings::DecoupleEntrances) {
+        for (Entrance* entrance : entrancePools[EntranceType::Boss]) {
+          entrancePools[EntranceType::BossReverse].push_back(entrance->GetReverse());
+        }
+      }
     } else {
       entrancePools[EntranceType::ChildBoss] = GetShuffleableEntrances(EntranceType::ChildBoss);
       entrancePools[EntranceType::AdultBoss] = GetShuffleableEntrances(EntranceType::AdultBoss);
@@ -1018,6 +1022,14 @@ int ShuffleAllEntrances() {
       if (Settings::OpenForest.Is(OPENFOREST_CLOSED) && !(Settings::ShuffleOverworldEntrances || Settings::ShuffleInteriorEntrances)) {
         FilterAndEraseFromPool(entrancePools[EntranceType::ChildBoss], [](const Entrance* entrance){return entrance->GetParentRegionKey()    == DEKU_TREE_BOSS_ENTRYWAY &&
                                                                                                            entrance->GetConnectedRegionKey() == DEKU_TREE_BOSS_ROOM;});
+      }
+      if (Settings::DecoupleEntrances) {
+        for (Entrance* entrance : entrancePools[EntranceType::ChildBoss]) {
+          entrancePools[EntranceType::ChildBossReverse].push_back(entrance->GetReverse());
+        }
+        for (Entrance* entrance : entrancePools[EntranceType::AdultBoss]) {
+          entrancePools[EntranceType::AdultBossReverse].push_back(entrance->GetReverse());
+        }
       }
     }
   }
@@ -1104,9 +1116,9 @@ int ShuffleAllEntrances() {
     }
     if (Settings::MixBosses) {
       poolsToMix.insert(EntranceType::Boss);
-      // if (Settings::DecoupleEntrances) {
-      //   poolsToMix.insert(EntranceType::BossReverse);
-      // }
+      if (Settings::DecoupleEntrances) {
+        poolsToMix.insert(EntranceType::BossReverse);
+      }
     }
     if (Settings::MixOverworld) {
       poolsToMix.insert(EntranceType::Overworld);
