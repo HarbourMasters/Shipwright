@@ -819,7 +819,7 @@ void func_80083108(PlayState* play) {
     s16 sp28 = 0;
     u8 sDoesNotHaveMS = !(CHECK_OWNED_EQUIP(EQUIP_SWORD, 1));
     u8 sHaveButNotOnB = CHECK_OWNED_EQUIP(EQUIP_SWORD, 1) && (gSaveContext.equips.buttonItems[0] == ITEM_NONE || gSaveContext.buttonStatus[0] < ITEM_SWORD_KOKIRI);
-    u8 swordlessShuffleFlag = (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && (sDoesNotHaveMS || sHaveButNotOnB));
+    u8 swordlessShuffleFlag = (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && (sDoesNotHaveMS || sHaveButNotOnB));
 
     if ((gSaveContext.cutsceneIndex < 0xFFF0) ||
         ((play->sceneNum == SCENE_LON_LON_RANCH) && (gSaveContext.cutsceneIndex == 0xFFF0))) {
@@ -1446,8 +1446,8 @@ void Inventory_SwapAgeEquipment(void) {
 
         gSaveContext.childEquips.equipment = gSaveContext.equips.equipment;
 
-        if (gSaveContext.adultEquips.buttonItems[0] == ITEM_NONE && !(gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && gSaveContext.adultEquips.equipment)) {
-            if (!gSaveContext.n64ddFlag || !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
+        if (gSaveContext.adultEquips.buttonItems[0] == ITEM_NONE && !(IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && gSaveContext.adultEquips.equipment)) {
+            if (!IS_RANDO || !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
                 gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
             } else {
                 gSaveContext.equips.buttonItems[0] = ITEM_NONE;
@@ -1465,7 +1465,7 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.cButtonSlots[1] = SLOT_BOMB;
             gSaveContext.equips.cButtonSlots[2] = SLOT_OCARINA;
             
-            gSaveContext.equips.equipment = (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && 
+            gSaveContext.equips.equipment = (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && 
              gSaveContext.equips.buttonItems[0] == ITEM_NONE) ? 0x1120 :0x1122;
 
             // Set the dpad to nothing

@@ -176,7 +176,7 @@ void BossGanon2_Init(Actor* thisx, PlayState* play) {
     func_808FD5C4(this, play);
     this->actor.naviEnemyId = 0x3E;
     this->actor.gravity = 0.0f;
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && CHECK_OWNED_EQUIP(EQUIP_SWORD, 1)){
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && CHECK_OWNED_EQUIP(EQUIP_SWORD, 1)){
         MSFlag = 1;
     }
 }
@@ -2916,7 +2916,7 @@ void func_80905DA8(BossGanon2* this, PlayState* play) {
                         effect->velocity.y = 0.0f;
                     }
                     if (((SQ(player->actor.world.pos.x - effect->position.x) + SQ(player->actor.world.pos.z - effect->position.z)) < SQ(25.0f)) &&
-                    (!gSaveContext.n64ddFlag || (gSaveContext.n64ddFlag && !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) || MSFlag )) {
+                    (!IS_RANDO || (IS_RANDO && !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) || MSFlag )) {
                             effect->type = 0;
                             this->csState = 10;
                     }
