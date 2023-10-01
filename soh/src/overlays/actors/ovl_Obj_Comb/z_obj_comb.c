@@ -133,7 +133,7 @@ void ObjComb_ChooseItemDrop(ObjComb* this, PlayState* play) {
     s16 params = this->actor.params & 0x1F;
 
     if (
-        gSaveContext.n64ddFlag &&
+        IS_RANDO &&
         Randomizer_GetSettingValue(RSK_SHUFFLE_BEEHIVES) &&
         !Flags_GetRandomizerInf(this->beehiveIdentity.randomizerInf)
     ) {
@@ -170,7 +170,7 @@ void ObjComb_Init(Actor* thisx, PlayState* play) {
     Collider_InitJntSph(play, &this->collider);
     Collider_SetJntSph(play, &this->collider, &this->actor, &sJntSphInit, this->colliderItems);
     ObjComb_SetupWait(this);
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         s16 respawnData = gSaveContext.respawn[RESPAWN_MODE_RETURN].data & ((1 << 8) - 1);
         this->beehiveIdentity = Randomizer_IdentifyBeehive(play->sceneNum, (s16)this->actor.world.pos.x, respawnData);
     }
@@ -192,7 +192,7 @@ void ObjComb_Wait(ObjComb* this, PlayState* play) {
 
     this->unk_1B0 -= 50;
     if (
-        gSaveContext.n64ddFlag &&
+        IS_RANDO &&
         Randomizer_GetSettingValue(RSK_SHUFFLE_BEEHIVES) &&
         !Flags_GetRandomizerInf(this->beehiveIdentity.randomizerInf)
     ) {
@@ -228,7 +228,7 @@ void ObjComb_Update(Actor* thisx, PlayState* play) {
     this->unk_1B2 += 0x2EE0;
     this->actionFunc(this, play);
     s16 wiggleOffset = this->unk_1B0;
-    if (gSaveContext.n64ddFlag && this->unk_1B0 < 0) {
+    if (IS_RANDO && this->unk_1B0 < 0) {
         wiggleOffset = 0;
     }
     this->actor.shape.rot.x = Math_SinS(this->unk_1B2) * wiggleOffset + this->actor.home.rot.x;
