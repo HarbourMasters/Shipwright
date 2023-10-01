@@ -617,7 +617,7 @@ void RegisterMirrorModeHandler() {
 
 void RegisterInfiniteUpgrades() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnGameFrameUpdate>([]() {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             return;
         }
 
