@@ -1503,7 +1503,7 @@ void HintTable_Init_Exclude_Overworld() {
                        Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
   });
 
-    hintTable[GV_STORMS_GROTTO_BEEHIVE] = HintText::Exclude({
+    hintTable[GV_DEKU_SCRUB_GROTTO_BEEHIVE] = HintText::Exclude({
                        //obscure text
                        Text{"a #beehive# offers", /*french*/"", /*spanish*/"una #colmena# brinda"},
   });

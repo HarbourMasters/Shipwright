@@ -811,7 +811,7 @@ void LocationTable_Init() {
     locationTable[ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_RIGHT]        = ItemLocation::Base   (RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_RIGHT, 0, "ZD In Front of King Zora Beehive Right", ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_RIGHT, RED_RUPEE,  {Category::cBeehive}, SpoilerCollectionCheck::RandomizerInf(), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
     locationTable[ZD_BEHIND_KING_ZORA_BEEHIVE]                   = ItemLocation::Base   (RC_ZD_BEHIND_KING_ZORA_BEEHIVE,            0, "ZD Behind King Zora Beehive",            ZD_BEHIND_KING_ZORA_BEEHIVE,            RED_RUPEE,  {Category::cBeehive}, SpoilerCollectionCheck::RandomizerInf(), SpoilerCollectionCheckGroup::GROUP_ZORAS_DOMAIN);
     locationTable[LH_GROTTO_BEEHIVE]                             = ItemLocation::Base   (RC_LH_GROTTO_BEEHIVE,                      0, "LH Grotto Beehive",                      LH_GROTTO_BEEHIVE,                      RED_RUPEE,  {Category::cBeehive}, SpoilerCollectionCheck::RandomizerInf(), SpoilerCollectionCheckGroup::GROUP_LAKE_HYLIA);
-    locationTable[GV_STORMS_GROTTO_BEEHIVE]                      = ItemLocation::Base   (RC_GV_STORMS_GROTTO_BEEHIVE,               0, "GV Storms Grotto Beehive",               GV_STORMS_GROTTO_BEEHIVE,               RED_RUPEE,  {Category::cBeehive}, SpoilerCollectionCheck::RandomizerInf(), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
+    locationTable[GV_DEKU_SCRUB_GROTTO_BEEHIVE]                  = ItemLocation::Base   (RC_GV_DEKU_SCRUB_GROTTO_BEEHIVE,           0, "GV Deku Scrub Grotto Beehive",           GV_DEKU_SCRUB_GROTTO_BEEHIVE,           RED_RUPEE,  {Category::cBeehive}, SpoilerCollectionCheck::RandomizerInf(), SpoilerCollectionCheckGroup::GROUP_GERUDO_VALLEY);
     locationTable[COLOSSUS_GROTTO_BEEHIVE]                       = ItemLocation::Base   (RC_COLOSSUS_GROTTO_BEEHIVE,                0, "Colossus Grotto Beehive",                COLOSSUS_GROTTO_BEEHIVE,                RED_RUPEE,  {Category::cBeehive}, SpoilerCollectionCheck::RandomizerInf(), SpoilerCollectionCheckGroup::GROUP_KAKARIKO);
 
     /*-------------------------------
@@ -1552,7 +1552,7 @@ std::vector<uint32_t> overworldLocations = {
   ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_RIGHT,
   ZD_BEHIND_KING_ZORA_BEEHIVE,
   LH_GROTTO_BEEHIVE,
-  GV_STORMS_GROTTO_BEEHIVE,
+  GV_DEKU_SCRUB_GROTTO_BEEHIVE,
   COLOSSUS_GROTTO_BEEHIVE,
 };
 

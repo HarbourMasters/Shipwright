@@ -585,7 +585,7 @@ static void PlaceVanillaBeehiveRupees() {
   PlaceItemInLocation(RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_RIGHT, RED_RUPEE, false, true);
   PlaceItemInLocation(RC_ZD_BEHIND_KING_ZORA_BEEHIVE, RED_RUPEE, false, true);
   PlaceItemInLocation(RC_LH_GROTTO_BEEHIVE, RED_RUPEE, false, true);
-  PlaceItemInLocation(RC_GV_STORMS_GROTTO_BEEHIVE, RED_RUPEE, false, true);
+  PlaceItemInLocation(RC_GV_DEKU_SCRUB_GROTTO_BEEHIVE, RED_RUPEE, false, true);
   PlaceItemInLocation(RC_COLOSSUS_GROTTO_BEEHIVE, RED_RUPEE, false, true);
 }
 

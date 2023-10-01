@@ -184,7 +184,7 @@ typedef enum {
     RAND_INF_BEEHIVE_ZD_IN_FRONT_OF_KING_ZORA_RIGHT,
     RAND_INF_BEEHIVE_ZD_BEHIND_KING_ZORA,
     RAND_INF_BEEHIVE_LH_GROTTO,
-    RAND_INF_BEEHIVE_GV_STORMS_GROTTO,
+    RAND_INF_BEEHIVE_GV_DEKU_SCRUB_GROTTO,
     RAND_INF_BEEHIVE_COLOSSUS_GROTTO,
 
     // If you add anything to this list, you need to update the size of randomizerInf in z64save.h to be ceil(RAND_INF_MAX / 16)

@@ -2563,7 +2563,7 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_ZD_IN_FRONT_OF_KING_ZORA_BEEHIVE_RIGHT,                      RAND_INF_BEEHIVE_ZD_IN_FRONT_OF_KING_ZORA_RIGHT },
     { RC_ZD_BEHIND_KING_ZORA_BEEHIVE,                                 RAND_INF_BEEHIVE_ZD_BEHIND_KING_ZORA },
     { RC_LH_GROTTO_BEEHIVE,                                           RAND_INF_BEEHIVE_LH_GROTTO },
-    { RC_GV_STORMS_GROTTO_BEEHIVE,                                    RAND_INF_BEEHIVE_GV_STORMS_GROTTO },
+    { RC_GV_DEKU_SCRUB_GROTTO_BEEHIVE,                                RAND_INF_BEEHIVE_GV_DEKU_SCRUB_GROTTO },
     { RC_COLOSSUS_GROTTO_BEEHIVE,                                     RAND_INF_BEEHIVE_COLOSSUS_GROTTO },
 };
 
