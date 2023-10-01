@@ -1082,10 +1082,13 @@ int ShuffleAllEntrances() {
   SetShuffledEntrances(oneWayEntrancePools);
 
   //combine entrance pools if mixing pools. Only continue if more than one pool is selected.
-  int totalMixedPools = (Settings::MixDungeons ? 1 : 0) + (Settings::MixOverworld ? 1 : 0) + (Settings::MixInteriors ? 1 : 0) + (Settings::MixGrottos ? 1 : 0);
+  int totalMixedPools = (Settings::MixDungeons ? 1 : 0) + (Settings::MixBosses ? 1 : 0) +
+                        (Settings::MixOverworld ? 1 : 0) + (Settings::MixInteriors ? 1 : 0) +
+                        (Settings::MixGrottos ? 1 : 0);
   if (totalMixedPools < 2) {
     Settings::MixedEntrancePools.SetSelectedIndex(OFF);
     Settings::MixDungeons.SetSelectedIndex(OFF);
+    Settings::MixBosses.SetSelectedIndex(OFF);
     Settings::MixOverworld.SetSelectedIndex(OFF);
     Settings::MixInteriors.SetSelectedIndex(OFF);
     Settings::MixGrottos.SetSelectedIndex(OFF);
@@ -1098,6 +1101,12 @@ int ShuffleAllEntrances() {
       if (Settings::DecoupleEntrances) {
         poolsToMix.insert(EntranceType::DungeonReverse);
       }
+    }
+    if (Settings::MixBosses) {
+      poolsToMix.insert(EntranceType::Boss);
+      // if (Settings::DecoupleEntrances) {
+      //   poolsToMix.insert(EntranceType::BossReverse);
+      // }
     }
     if (Settings::MixOverworld) {
       poolsToMix.insert(EntranceType::Overworld);

@@ -317,6 +317,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "World Settings:Overworld Spawns", RSK_SHUFFLE_OVERWORLD_SPAWNS },
     { "World Settings:Mixed Entrance Pools", RSK_MIXED_ENTRANCE_POOLS },
     { "World Settings:Mix Dungeons", RSK_MIX_DUNGEON_ENTRANCES },
+    { "World Settings:Mix Bosses", RSK_MIX_BOSS_ENTRANCES },
     { "World Settings:Mix Overworld", RSK_MIX_OVERWORLD_ENTRANCES },
     { "World Settings:Mix Interiors", RSK_MIX_INTERIOR_ENTRANCES },
     { "World Settings:Mix Grottos", RSK_MIX_GROTTO_ENTRANCES },
@@ -908,6 +909,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SHUFFLE_OVERWORLD_SPAWNS:
                     case RSK_MIXED_ENTRANCE_POOLS:
                     case RSK_MIX_DUNGEON_ENTRANCES:
+                    case RSK_MIX_BOSS_ENTRANCES:
                     case RSK_MIX_OVERWORLD_ENTRANCES:
                     case RSK_MIX_INTERIOR_ENTRANCES:
                     case RSK_MIX_GROTTO_ENTRANCES:
@@ -3037,6 +3039,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_SHUFFLE_OVERWORLD_SPAWNS] = CVarGetInteger("gRandomizeShuffleOverworldSpawns", RO_GENERIC_OFF);
     cvarSettings[RSK_MIXED_ENTRANCE_POOLS] = CVarGetInteger("gRandomizeMixedEntrances", RO_GENERIC_OFF);
     cvarSettings[RSK_MIX_DUNGEON_ENTRANCES] = CVarGetInteger("gRandomizeMixDungeons", RO_GENERIC_OFF);
+    cvarSettings[RSK_MIX_BOSS_ENTRANCES] = CVarGetInteger("gRandomizeMixBosses", RO_GENERIC_OFF);
     cvarSettings[RSK_MIX_OVERWORLD_ENTRANCES] = CVarGetInteger("gRandomizeMixOverworld", RO_GENERIC_OFF);
     cvarSettings[RSK_MIX_INTERIOR_ENTRANCES] = CVarGetInteger("gRandomizeMixInteriors", RO_GENERIC_OFF);
     cvarSettings[RSK_MIX_GROTTO_ENTRANCES] = CVarGetInteger("gRandomizeMixGrottos", RO_GENERIC_OFF);
@@ -3721,7 +3724,8 @@ void RandomizerSettingsWindow::DrawElement() {
                 // Mixed Entrance Pools
                 UIWidgets::EnhancementCheckbox("Mixed Entrance Pools", "gRandomizeMixedEntrances");
                 UIWidgets::InsertHelpHoverText(
-                    "Shuffle entrances into a mixed pool instead of separate ones.\n"
+                    "Shuffle entrances into a mixed pool instead of separate ones. Has no affect on pools whose "
+                    "entrances aren't shuffled, and \"Shuffle Boss Entrances\" must be set to \"Full\" to include them.\n"
                     "\n"
                     "For example, enabling the settings to shuffle grotto, dungeon, and overworld entrances and "
                     "selecting grotto and dungeon entrances here will allow a dungeon to be inside a grotto or "
@@ -3734,6 +3738,13 @@ void RandomizerSettingsWindow::DrawElement() {
                         ImGui::SetCursorPosX(20);
                         UIWidgets::EnhancementCheckbox("Mix Dungeons", "gRandomizeMixDungeons");
                         UIWidgets::InsertHelpHoverText("Dungeon entrances will be part of the mixed pool");
+                    }
+                    if (CVarGetInteger("gRandomizeShuffleBossEntrances", RO_BOSS_ROOM_ENTRANCE_SHUFFLE_OFF) ==
+                        RO_BOSS_ROOM_ENTRANCE_SHUFFLE_FULL) {
+                        UIWidgets::Spacer(0);
+                        ImGui::SetCursorPosX(20);
+                        UIWidgets::EnhancementCheckbox("Mix Bosses", "gRandomizeMixBosses");
+                        UIWidgets::InsertHelpHoverText("Boss entrances will be part of the mixed pool");
                     }
                     if (CVarGetInteger("gRandomizeShuffleOverworldEntrances", RO_GENERIC_OFF)) {
                         UIWidgets::Spacer(0);
