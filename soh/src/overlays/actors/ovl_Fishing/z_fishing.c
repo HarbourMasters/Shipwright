@@ -5079,7 +5079,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                         }
                     }
                 } else {
-                    if (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_CAUGHT_LOACH)) {
+                    if (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_CAUGHT_LOACH)) {
                         Flags_SetRandomizerInf(RAND_INF_CAUGHT_LOACH);
                         getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_HYRULE_LOACH, GI_RUPEE_PURPLE);
                         getItemId = getItemEntry.getItemId;

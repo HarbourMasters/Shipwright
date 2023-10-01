@@ -406,7 +406,7 @@ void LoadSettings() {
     showKokiriSword = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_KOKIRI_SWORD) == RO_GENERIC_YES
         : true;
-    showHyruleLoach = gSaveContext.n64ddFlag ?
+    showHyruleLoach = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_HYRULE_LOACH_REWARD) == RO_GENERIC_YES
         : false;
     showWeirdEgg = IS_RANDO ?
