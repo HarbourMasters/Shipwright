@@ -664,7 +664,7 @@ std::map<s32, SpecialRespawnInfo> swimSpecialRespawnInfo = {
 void RegisterNoSwim() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
         if (
-            gSaveContext.n64ddFlag &&
+            IS_RANDO &&
             (GET_PLAYER(gPlayState)->stateFlags1 & PLAYER_STATE1_IN_WATER) &&
             !Flags_GetRandomizerInf(RAND_INF_CAN_SWIM) &&
             CUR_EQUIP_VALUE(EQUIP_BOOTS) != 2 //iron boots
