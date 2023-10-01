@@ -502,6 +502,10 @@ const std::vector<FlagTable> flagTables = {
         { RAND_INF_GREG_FOUND, "RAND_INF_GREG_FOUND" },
 
         { RAND_INF_CAUGHT_LOACH, "RAND_INF_CAUGHT_LOACH" },
+        
+        { RAND_INF_CHILD_FISHING, "RAND_INF_CHILD_FISHING" },
+        { RAND_INF_ADULT_FISHING, "RAND_INF_ADULT_FISHING" },
+        { RAND_INF_10_BIG_POES, "RAND_INF_10_BIG_POES" },
     } },
 };
 

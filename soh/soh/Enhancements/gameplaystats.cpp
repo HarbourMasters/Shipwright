@@ -793,6 +793,7 @@ void SetupDisplayNames() {
     strcpy(itemTimestampDisplayName[TIMESTAMP_DEFEAT_GANON],         "Ganon Defeated:     ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_BOSSRUSH_FINISH],      "Boss Rush Finished: ");
     strcpy(itemTimestampDisplayName[TIMESTAMP_FOUND_GREG],           "Greg Found:         ");
+    strcpy(itemTimestampDisplayName[TIMESTAMP_TRIFORCE_COMPLETED],   "Triforce Completed: ");
 }
 
 void SetupDisplayColors() {
@@ -839,6 +840,7 @@ void SetupDisplayColors() {
             case ITEM_ARROW_LIGHT:
             case TIMESTAMP_DEFEAT_GANONDORF:
             case TIMESTAMP_DEFEAT_GANON:
+            case TIMESTAMP_TRIFORCE_COMPLETED:
                 itemTimestampDisplayColor[i] = COLOR_YELLOW;
                 break;
             case ITEM_SONG_STORMS:

@@ -1,0 +1,29 @@
+<Root>
+    <File Name="object_ganon_anime1" Segment="6">
+        <Animation Name="gGanondorfBigMagicWindupAnim" Offset="0x0540"/>
+        <Animation Name="gGanondorfBigMagicThrowAnim" Offset="0x0FE8"/>
+        <Animation Name="gGanondorfBigMagicThrowEndAnim" Offset="0x1440"/>
+        <Animation Name="gGanondorfBigMagicChargeStartAnim" Offset="0x1B0C"/>
+        <Animation Name="gGanondorfBigMagicChargeHoldAnim" Offset="0x1FF8"/>
+        <Animation Name="gGanondorfPoundAnim" Offset="0x2D2C"/>
+        <Animation Name="gGanondorfPoundEndAnim" Offset="0x343C"/>
+        <Animation Name="gGanondorfDownedAnim" Offset="0x3D40"/>
+        <Animation Name="gGanondorfLightArrowHitAnim" Offset="0x4884"/>
+        <Animation Name="gGanondorfLightEnergyHitAnim" Offset="0x4DA8"/>
+        <Animation Name="gGanondorfGetUp1Anim" Offset="0x58C4"/>
+        <Animation Name="gGanondorfGetUp2Anim" Offset="0x6028"/>
+        <Animation Name="gGanondorfLandAnim" Offset="0x63CC"/>
+        <Animation Name="gGanondorfVulnerableAnim" Offset="0x69A0"/>
+        <Animation Name="gGanondorfThrowAnim" Offset="0x738C"/>
+        <Animation Name="gGanondorfBigMagicHitAnim" Offset="0x8128"/>
+        <Animation Name="gGanondorfGetUp3Anim" Offset="0x8A88"/>
+        <Animation Name="gGanondorfLightArrowWaitAnim" Offset="0x8F44"/>
+        <Animation Name="gGanondorfDamageAnim" Offset="0x96B0"/>
+        <Animation Name="gGanondorfFloatAnim" Offset="0x9A14"/>
+        <Animation Name="gGanondorfBlockAnim" Offset="0x9D5C"/>
+        <Animation Name="gGanondorfBlockReleaseAnim" Offset="0xA598"/>
+        <Animation Name="gGanondorfChargeLightBallAnim" Offset="0xAA24"/>
+        <Animation Name="gGanondorfVolleyLeftAnim" Offset="0xB4AC"/>
+        <Animation Name="gGanondorfVolleyRightAnim" Offset="0xBC28"/>
+    </File>
+</Root>

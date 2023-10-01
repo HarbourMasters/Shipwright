@@ -202,6 +202,7 @@ typedef enum {
 
   TRIFORCE,
   TRIFORCE_PIECE,
+  TRIFORCE_COMPLETED,
   EPONA,
   HINT,
 

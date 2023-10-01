@@ -10,6 +10,7 @@ typedef void (*EnXcActionFunc)(struct EnXc*, PlayState*);
 typedef void (*EnXcDrawFunc)(struct Actor*, PlayState*);
 
 typedef enum {
+    /*-1 */ SHEIK_TYPE_RANDO = -1,
     /* 0 */ SHEIK_TYPE_0,
     /* 1 */ SHEIK_TYPE_1,
     /* 2 */ SHEIK_TYPE_2,

@@ -450,9 +450,9 @@ void EnWallmas_TakePlayer(EnWallmas* this, PlayState* play) {
 
     if (Animation_OnFrame(&this->skelAnime, 1.0f) != 0) {
         if (!LINK_IS_ADULT) {
-            func_8002F7DC(&this->actor, NA_SE_VO_LI_DAMAGE_S_KID);
+            Player_PlaySfx(&this->actor, NA_SE_VO_LI_DAMAGE_S_KID);
         } else {
-            func_8002F7DC(&this->actor, NA_SE_VO_LI_DAMAGE_S);
+            Player_PlaySfx(&this->actor, NA_SE_VO_LI_DAMAGE_S);
         }
 
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_FALL_CATCH);
@@ -475,9 +475,9 @@ void EnWallmas_TakePlayer(EnWallmas* this, PlayState* play) {
 
         if (this->timer == -0x1E) {
             if (!LINK_IS_ADULT) {
-                func_8002F7DC(&this->actor, NA_SE_VO_LI_TAKEN_AWAY_KID);
+                Player_PlaySfx(&this->actor, NA_SE_VO_LI_TAKEN_AWAY_KID);
             } else {
-                func_8002F7DC(&this->actor, NA_SE_VO_LI_TAKEN_AWAY);
+                Player_PlaySfx(&this->actor, NA_SE_VO_LI_TAKEN_AWAY);
             }
         }
         if (this->timer == 0) {
@@ -672,8 +672,7 @@ void EnWallmas_Draw(Actor* thisx, PlayState* play) {
 
     if (this->actionFunc != EnWallmas_WaitToDrop) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnWallMas_OverrideLimbDraw, EnWallMas_PostLimbDraw, this);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnWallMas_OverrideLimbDraw, EnWallMas_PostLimbDraw, this);
     }
 
     EnWallmas_DrawXlu(this, play);

@@ -1084,6 +1084,8 @@ int Fill() {
       CreateDampesDiaryText();
       CreateGregRupeeHint();
       CreateLoachText();
+      CreateSheikText();
+      CreateSariaText();
       CreateWarpSongTexts();
       return 1;
     }
