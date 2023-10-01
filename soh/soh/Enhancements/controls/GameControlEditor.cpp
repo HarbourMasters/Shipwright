@@ -388,9 +388,18 @@ namespace GameControlEditor {
                 DrawMiscControlPanel(this);
             } else {
                 DrawCustomButtons();
-                // if (CurrentPort == 1 && LUS::Context::GetInstance()->GetControlDeck()->GetDeviceFromPortIndex(0)->CanSetLed()) {
-                //     DrawLEDControlPanel(this);
-                // }
+                if (CurrentPort == 1) {
+                    bool showPanel = false;
+                    for (auto [id, mapping] : LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0)->GetLED()->GetAllLEDMappings()) {
+                        if (mapping->GetColorSource() == LED_COLOR_SOURCE_GAME) {
+                            showPanel = true;
+                            break;
+                        }
+                    }
+                    if (showPanel) {
+                        DrawLEDControlPanel(this);
+                    }
+                }
             }
         }
         ImGui::End();

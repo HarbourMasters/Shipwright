@@ -1746,15 +1746,10 @@ extern "C" void OTRControllerCallback(uint8_t rumble) {
     } else {
         LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0)->GetRumble()->StopRumble();
     }
-    // auto physicalDevice = LUS::Context::GetInstance()->GetControlDeck()->GetDeviceFromPortIndex(0);
 
-    // if (physicalDevice->CanSetLed()) {
-    //     // We call this every tick, SDL accounts for this use and prevents driver spam
-    //     // https://github.com/libsdl-org/SDL/blob/f17058b562c8a1090c0c996b42982721ace90903/src/joystick/SDL_joystick.c#L1114-L1144
-    //     physicalDevice->SetLedColor(0, GetColorForControllerLED());
-    // }
-
-    // physicalDevice->SetRumble(0, rumble);
+    // We call this every tick, SDL accounts for this use and prevents driver spam
+    // https://github.com/libsdl-org/SDL/blob/f17058b562c8a1090c0c996b42982721ace90903/src/joystick/SDL_joystick.c#L1114-L1144
+    LUS::Context::GetInstance()->GetControlDeck()->GetControllerByPort(0)->GetLED()->SetLEDColor(GetColorForControllerLED());
 }
 
 extern "C" float OTRGetAspectRatio() {
