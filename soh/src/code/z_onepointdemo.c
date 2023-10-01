@@ -792,7 +792,7 @@ s32 OnePointCutscene_SetInfo(PlayState* play, s16 camIdx, s16 csId, Actor* actor
         case 4100:
             csInfo->keyFrames = D_801225D4;
             // RANDO: Waterfall opening cutscene skips to the end of the cutscene data earlier by doing this
-            if (!(gSaveContext.n64ddFlag)) {
+            if (!(IS_RANDO)) {
                 csInfo->keyFrameCnt = 5;
             } else {
                 csInfo->keyFrameCnt = 2;

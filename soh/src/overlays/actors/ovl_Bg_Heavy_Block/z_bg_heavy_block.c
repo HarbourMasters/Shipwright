@@ -352,7 +352,7 @@ void BgHeavyBlock_LiftedUp(BgHeavyBlock* this, PlayState* play) {
 
     if (this->timer == 11) {
         func_800AA000(0.0f, 0xFF, 0x14, 0x14);
-        func_8002F7DC(&player->actor, NA_SE_PL_PULL_UP_BIGROCK);
+        Player_PlaySfx(&player->actor, NA_SE_PL_PULL_UP_BIGROCK);
         LOG_STRING("NA_SE_PL_PULL_UP_BIGROCK");
     }
 

@@ -251,6 +251,7 @@ void EnHeishi3_Draw(Actor* thisx, PlayState* play) {
     EnHeishi3* this = (EnHeishi3*)thisx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnHeishi3_OverrideLimbDraw, NULL,
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnHeishi3_OverrideLimbDraw,
+                              NULL,
                       this);
 }

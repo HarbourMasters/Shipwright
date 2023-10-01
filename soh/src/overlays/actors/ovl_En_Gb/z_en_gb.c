@@ -337,7 +337,10 @@ void func_80A2FA50(EnGb* this, PlayState* play) {
         Player_UpdateBottleHeld(play, GET_PLAYER(play), ITEM_BOTTLE, PLAYER_IA_BOTTLE);
         Rupees_ChangeBy(50);
         HIGH_SCORE(HS_POE_POINTS) += 100;
-        if (HIGH_SCORE(HS_POE_POINTS) != 1000) {
+        if (
+            (!IS_RANDO && HIGH_SCORE(HS_POE_POINTS) != 1000) ||
+            (IS_RANDO && (HIGH_SCORE(HS_POE_POINTS) != 1000 || Flags_GetRandomizerInf(RAND_INF_10_BIG_POES)))
+        ) {
             if (HIGH_SCORE(HS_POE_POINTS) > 1100) {
                 HIGH_SCORE(HS_POE_POINTS) = 1100;
             }
@@ -345,6 +348,7 @@ void func_80A2FA50(EnGb* this, PlayState* play) {
         } else {
             Player* player = GET_PLAYER(play);
 
+            Flags_SetRandomizerInf(RAND_INF_10_BIG_POES);
             player->exchangeItemId = EXCH_ITEM_NONE;
             this->textId = 0x70F8;
             Message_ContinueTextbox(play, this->textId);
@@ -355,7 +359,7 @@ void func_80A2FA50(EnGb* this, PlayState* play) {
 
 void func_80A2FB40(EnGb* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->dyna.actor, play, GI_BOTTLE, 100.0f, 10.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE);
@@ -370,7 +374,7 @@ void func_80A2FBB0(EnGb* this, PlayState* play) {
         this->dyna.actor.parent = NULL;
         this->actionFunc = func_80A2FC0C;
     } else {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->dyna.actor, play, GI_BOTTLE, 100.0f, 10.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE);
@@ -447,8 +451,7 @@ void EnGb_Draw(Actor* thisx, PlayState* play) {
     Lights_PointNoGlowSetInfo(&this->lightInfo, this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y,
                               this->dyna.actor.world.pos.z, this->lightColor.r, this->lightColor.g, this->lightColor.b,
                               this->lightColor.a);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, NULL, &this->dyna.actor);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, &this->dyna.actor);
     EnGb_DrawCagedSouls(this, play);
     CLOSE_DISPS(play->state.gfxCtx);
 }

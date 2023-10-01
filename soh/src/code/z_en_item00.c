@@ -381,7 +381,7 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
             Actor_SetScale(&this->actor, 0.03f);
             this->scale = 0.03f;
             // Offset keys in randomizer slightly higher for their GID replacement
-            if (!gSaveContext.n64ddFlag) {
+            if (!IS_RANDO) {
                 yOffset = 350.0f;
             } else {
                 yOffset = 430.0f;
@@ -488,7 +488,7 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
     RandomizerCheck randoCheck =
         Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->ogParams);
 
-    if (gSaveContext.n64ddFlag && randoCheck != RC_UNKNOWN_CHECK) {
+    if (IS_RANDO && randoCheck != RC_UNKNOWN_CHECK) {
         this->randoGiEntry =
             Randomizer_GetItemFromKnownCheck(randoCheck, getItemId);
         this->randoGiEntry.getItemFrom = ITEM_FROM_FREESTANDING;
@@ -578,7 +578,7 @@ void EnItem00_Init(Actor* thisx, PlayState* play) {
 
     if (!Actor_HasParent(&this->actor, play)) {
         if (getItemId != GI_NONE) {
-            if (!gSaveContext.n64ddFlag || this->randoGiEntry.getItemId == GI_NONE) {
+            if (!IS_RANDO || this->randoGiEntry.getItemId == GI_NONE) {
                 func_8002F554(&this->actor, play, getItemId);
             } else {
                 GiveItemEntryFromActorWithFixedRange(&this->actor, play, this->randoGiEntry);
@@ -731,7 +731,7 @@ void func_8001E5C8(EnItem00* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
     if (this->getItemId != GI_NONE) {
         if (!Actor_HasParent(&this->actor, play)) {
-            if (!gSaveContext.n64ddFlag) {
+            if (!IS_RANDO) {
                 func_8002F434(&this->actor, play, this->getItemId, 50.0f, 80.0f);
             } else {
                 GiveItemEntryFromActor(&this->actor, play, this->randoGiEntry, 50.0f, 80.0f);
@@ -783,7 +783,7 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
         this->actor.params == ITEM00_BOMBS_SPECIAL || this->actor.params == ITEM00_BOMBCHU) {
         if (CVarGetInteger("gNewDrops", 0) ||
             // Keys in randomizer need to always rotate for their GID replacement
-            (gSaveContext.n64ddFlag && this->actor.params == ITEM00_SMALL_KEY)) {
+            (IS_RANDO && this->actor.params == ITEM00_SMALL_KEY)) {
             this->actor.shape.rot.y += 960;
         } else {
             this->actor.shape.rot.y = 0;
@@ -951,7 +951,7 @@ void EnItem00_Update(Actor* thisx, PlayState* play) {
     params = &this->actor.params;
 
     if ((getItemId != GI_NONE) && !Actor_HasParent(&this->actor, play)) {
-        if (!gSaveContext.n64ddFlag || this->randoGiEntry.getItemId == GI_NONE) {
+        if (!IS_RANDO || this->randoGiEntry.getItemId == GI_NONE) {
             func_8002F554(&this->actor, play, getItemId);
         } else {
             getItemId = this->randoGiEntry.getItemId;
@@ -1046,7 +1046,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                 }
                 break;
             case ITEM00_HEART_PIECE:
-                if (CVarGetInteger("gNewDrops", 0) && !gSaveContext.n64ddFlag) {
+                if (CVarGetInteger("gNewDrops", 0) && !IS_RANDO) {
                     mtxScale = 21.0f;
                     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
                     GetItem_Draw(play, GID_HEART_PIECE);
@@ -1156,7 +1156,7 @@ void EnItem00_Draw(Actor* thisx, PlayState* play) {
                     break;
                 }
             case ITEM00_SMALL_KEY:
-                if (CVarGetInteger("gNewDrops", 0) && !gSaveContext.n64ddFlag) {
+                if (CVarGetInteger("gNewDrops", 0) && !IS_RANDO) {
                     mtxScale = 8.0f;
                     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
                     GetItem_Draw(play, GID_KEY_SMALL);
@@ -1362,7 +1362,7 @@ static const Vtx customDropVtx[] = {
  * Draw Function used for most collectible types of En_Item00 (ammo, bombs, sticks, nuts, magic...).
  */
 void EnItem00_DrawCollectible(EnItem00* this, PlayState* play) {
-    if (gSaveContext.n64ddFlag && (this->getItemId != GI_NONE || this->actor.params == ITEM00_SMALL_KEY)) {
+    if (IS_RANDO && (this->getItemId != GI_NONE || this->actor.params == ITEM00_SMALL_KEY)) {
         RandomizerCheck randoCheck =
             Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->ogParams);
 
@@ -1456,7 +1456,7 @@ void EnItem00_DrawHeartContainer(EnItem00* this, PlayState* play) {
  * Draw Function used for the Piece of Heart type of En_Item00.
  */
 void EnItem00_DrawHeartPiece(EnItem00* this, PlayState* play) {
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         RandomizerCheck randoCheck =
             Randomizer_GetCheckFromActor(this->actor.id, play->sceneNum, this->ogParams);
 
@@ -1523,7 +1523,7 @@ s16 func_8001F404(s16 dropId) {
     if (LINK_IS_ADULT) {
         if (dropId == ITEM00_SEEDS) {
             dropId = ITEM00_ARROWS_SMALL;
-        } else if (dropId == ITEM00_STICK) {
+        } else if ((dropId == ITEM00_STICK) && !(CVarGetInteger("gTreeStickDrops", 0))) {
             dropId = ITEM00_RUPEE_GREEN;
         }
     } else {
@@ -1533,7 +1533,7 @@ s16 func_8001F404(s16 dropId) {
     }
 
     if ((CVarGetInteger("gBombchuDrops", 0) || 
-        (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_ENABLE_BOMBCHU_DROPS) == 1)) &&
+        (IS_RANDO && Randomizer_GetSettingValue(RSK_ENABLE_BOMBCHU_DROPS) == 1)) &&
         (dropId == ITEM00_BOMBS_A || dropId == ITEM00_BOMBS_B || dropId == ITEM00_BOMBS_SPECIAL)) {
         dropId = EnItem00_ConvertBombDropToBombchu(dropId);
     }

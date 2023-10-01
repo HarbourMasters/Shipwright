@@ -961,7 +961,8 @@ void EnAm_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, this->textureBlend);
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, EnAm_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, EnAm_PostLimbDraw,
+                              this);
 
     if (this->iceTimer != 0) {
         this->dyna.actor.colorFilterTimer++;
