@@ -326,6 +326,5 @@ void EnBrob_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Matrix_Translate(0.0f, this->unk_1AE, 0.0f, MTXMODE_APPLY);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, EnBrob_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, EnBrob_PostLimbDraw, this);
 }

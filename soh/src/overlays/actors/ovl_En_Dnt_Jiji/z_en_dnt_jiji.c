@@ -437,7 +437,7 @@ void EnDntJiji_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Matrix_Push();
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(blinkTex[this->eyeState]));
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, this);
     Matrix_Pop();
     Matrix_Translate(this->flowerPos.x, this->flowerPos.y, this->flowerPos.z, MTXMODE_NEW);
     Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);

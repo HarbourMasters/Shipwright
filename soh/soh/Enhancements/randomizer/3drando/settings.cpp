@@ -101,6 +101,9 @@ namespace Settings {
   Option BombchusInLogic           = Option::Bool("Bombchus in Logic",      {"Off", "On"});
   Option AmmoDrops                 = Option::U8  ("Ammo Drops",             {"On", "On + Bombchu", "Off"},         OptionCategory::Setting, AMMODROPS_BOMBCHU);
   Option HeartDropRefill           = Option::U8  ("Heart Drops and Refills",{"On", "No Drop", "No Refill", "Off"}, OptionCategory::Setting, HEARTDROPREFILL_VANILLA);
+  Option TriforceHunt              = Option::U8  ("Triforce Hunt",          {"Off", "On"});
+  Option TriforceHuntTotal         = Option::U8  ("Triforce Hunt Total Pieces", {NumOpts(0, 100)});
+  Option TriforceHuntRequired      = Option::U8  ("Triforce Hunt Required Pieces", {NumOpts(0, 100)});
   Option MQDungeonCount = Option::U8(
       "MQ Dungeon Count", { MultiVecOpts({ NumOpts(0, 12), { "Random" }, { "Selection" } }) });
   uint8_t MQSet;
@@ -139,6 +142,9 @@ namespace Settings {
     &BombchusInLogic,
     &AmmoDrops,
     &HeartDropRefill,
+    &TriforceHunt,
+    &TriforceHuntTotal,
+    &TriforceHuntRequired,
     &MQDungeonCount,
     &SetDungeonTypes,
     &MQDeku,
@@ -221,7 +227,7 @@ namespace Settings {
   Option Keysanity           = Option::U8  ("Small Keys",                {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, KEYSANITY_OWN_DUNGEON);
   Option GerudoKeys          = Option::U8  ("Gerudo Fortress Keys",      {"Vanilla", "Any Dungeon", "Overworld", "Anywhere"});
   Option BossKeysanity       = Option::U8  ("Boss Keys",                 {"Start With", "Vanilla", "Own Dungeon", "Any Dungeon", "Overworld", "Anywhere"}, OptionCategory::Setting, BOSSKEYSANITY_OWN_DUNGEON);
-  Option GanonsBossKey       = Option::U8  ("Ganon's Boss Key",          {"Vanilla", "Own dungeon", "Start with", "Any Dungeon", "Overworld", "Anywhere", "LACS-Vanilla", "LACS-Stones", "LACS-Medallions", "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens", "100 GS Reward"}, OptionCategory::Setting, GANONSBOSSKEY_VANILLA);
+  Option GanonsBossKey       = Option::U8  ("Ganon's Boss Key",          {"Vanilla", "Own dungeon", "Start with", "Any Dungeon", "Overworld", "Anywhere", "LACS-Vanilla", "LACS-Stones", "LACS-Medallions", "LACS-Rewards", "LACS-Dungeons", "LACS-Tokens", "100 GS Reward", "Triforce Hunt"}, OptionCategory::Setting, GANONSBOSSKEY_VANILLA);
   uint8_t LACSCondition           = 0;
   Option LACSStoneCount      = Option::U8  ("Stone Count",             {NumOpts(0, 4)},   OptionCategory::Setting, 1, true);
   Option LACSMedallionCount  = Option::U8  ("Medallion Count",         {NumOpts(0, 7)},   OptionCategory::Setting, 1, true);
@@ -1691,6 +1697,13 @@ namespace Settings {
       IncludeAndHide({KAK_100_GOLD_SKULLTULA_REWARD});
     }
 
+    //Force include Triforce Hunt if it's off
+    if (TriforceHunt) {
+      Unhide({ TRIFORCE_COMPLETED });
+    } else {
+      IncludeAndHide({ TRIFORCE_COMPLETED });
+    }
+
     //Force include Map and Compass Chests when Vanilla
     std::vector<uint32_t> mapChests = GetLocations(everyPossibleLocation, Category::cVanillaMap);
     std::vector<uint32_t> compassChests = GetLocations(everyPossibleLocation, Category::cVanillaCompass);
@@ -2373,7 +2386,11 @@ namespace Settings {
     Keysanity.SetSelectedIndex(cvarSettings[RSK_KEYSANITY]);
     GerudoKeys.SetSelectedIndex(cvarSettings[RSK_GERUDO_KEYS]);
     BossKeysanity.SetSelectedIndex(cvarSettings[RSK_BOSS_KEYSANITY]);
-    GanonsBossKey.SetSelectedIndex(cvarSettings[RSK_GANONS_BOSS_KEY]);
+    if (cvarSettings[RSK_TRIFORCE_HUNT]) {
+      GanonsBossKey.SetSelectedIndex(RO_GANON_BOSS_KEY_TRIFORCE_HUNT);
+    } else {
+      GanonsBossKey.SetSelectedIndex(cvarSettings[RSK_GANONS_BOSS_KEY]);
+    }
     LACSStoneCount.SetSelectedIndex(cvarSettings[RSK_LACS_STONE_COUNT]);
     LACSMedallionCount.SetSelectedIndex(cvarSettings[RSK_LACS_MEDALLION_COUNT]);
     LACSRewardCount.SetSelectedIndex(cvarSettings[RSK_LACS_REWARD_COUNT]);
@@ -2477,6 +2494,10 @@ namespace Settings {
         dungeons[i]->SetMQ();
       }
     }
+
+    TriforceHunt.SetSelectedIndex(cvarSettings[RSK_TRIFORCE_HUNT]);
+    TriforceHuntTotal.SetSelectedIndex(cvarSettings[RSK_TRIFORCE_HUNT_PIECES_TOTAL]);
+    TriforceHuntRequired.SetSelectedIndex(cvarSettings[RSK_TRIFORCE_HUNT_PIECES_REQUIRED]);
 
     //Set key ring for each dungeon
     for (size_t i = 0; i < dungeons.size(); i++) {

@@ -409,7 +409,8 @@ typedef enum {
     FLAG_ITEM_GET_INF,
     FLAG_INF_TABLE,
     FLAG_EVENT_INF,
-    FLAG_RANDOMIZER_INF
+    FLAG_RANDOMIZER_INF,
+    FLAG_GS_TOKEN,
 } FlagType;
 
 typedef struct {
@@ -620,7 +621,7 @@ typedef struct Player {
     /* 0x0858 */ f32        unk_858;
     /* 0x085C */ f32        unk_85C; // stick length among other things
     /* 0x0860 */ s16        unk_860; // stick flame timer among other things
-    /* 0x0862 */ s8         unk_862; // get item draw ID + 1
+    /* 0x0862 */ s16        unk_862; // get item draw ID + 1
     /* 0x0864 */ f32        unk_864;
     /* 0x0868 */ f32        unk_868;
     /* 0x086C */ f32        unk_86C;

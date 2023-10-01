@@ -1292,7 +1292,7 @@ void EnBb_Draw(Actor* thisx, PlayState* play) {
     if (this->moveMode != BBMOVE_HIDDEN) {
         if (this->actor.params <= ENBB_BLUE) {
             Gfx_SetupDL_25Opa(play->state.gfxCtx);
-            SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, EnBb_PostLimbDraw,
+            SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, EnBb_PostLimbDraw,
                               this);
 
             if (this->fireIceTimer != 0) {
