@@ -1,0 +1,10 @@
+<Root>
+    <File Name="object_d_hsblock" Segment="6">
+        <Collision Name="gHookshotTargetCol" Offset="0x578"/>
+        <Collision Name="gHookshotPostCol" Offset="0x730"/>
+        <DList Name="gHookshotPostDL" Offset="0x210"/>
+        <DList Name="gHookshotTargetDL" Offset="0x470"/>
+        <Texture Name="gHookshotTargetTex" OutName="hookshot_target" Format="i4" Width="64" Height="64" Offset="0x760"/>
+        <Texture Name="gHookshotPostTex" OutName="hookshot_post" Format="i8" Width="32" Height="64" Offset="0xF60"/>
+    </File>
+</Root>

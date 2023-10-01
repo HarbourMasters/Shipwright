@@ -348,7 +348,7 @@ const std::vector<FlagTable> flagTables = {
         { 0x24, "Market Crowd Text Randomizer" },
         { 0x30, "Entered the Market" },
     } },
-   { "Randomizer Inf Flags", RANDOMIZER_INF, 0x0A, {
+   { "Randomizer Inf Flags", RANDOMIZER_INF, 0x0B, {
         { RAND_INF_DUNGEONS_DONE_DEKU_TREE, "DUNGEONS_DONE_DEKU_TREE" },
         { RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN, "DUNGEONS_DONE_DODONGOS_CAVERN" },
         { RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY, "DUNGEONS_DONE_JABU_JABUS_BELLY" },
@@ -533,6 +533,10 @@ const std::vector<FlagTable> flagTables = {
         { RAND_INF_BEEHIVE_LH_GROTTO, "RAND_INF_BEEHIVE_LH_GROTTO" },
         { RAND_INF_BEEHIVE_GV_DEKU_SCRUB_GROTTO, "RAND_INF_BEEHIVE_GV_DEKU_SCRUB_GROTTO" },
         { RAND_INF_BEEHIVE_COLOSSUS_GROTTO, "RAND_INF_BEEHIVE_COLOSSUS_GROTTO" },
+        
+        { RAND_INF_CHILD_FISHING, "RAND_INF_CHILD_FISHING" },
+        { RAND_INF_ADULT_FISHING, "RAND_INF_ADULT_FISHING" },
+        { RAND_INF_10_BIG_POES, "RAND_INF_10_BIG_POES" },
     } },
 };
 

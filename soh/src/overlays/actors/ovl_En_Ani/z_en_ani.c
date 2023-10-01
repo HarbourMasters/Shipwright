@@ -128,7 +128,7 @@ void func_809B0558(EnAni* this, PlayState* play) {
         }
         Flags_SetItemGetInf(ITEMGETINF_15);
     } else {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_HEART_PIECE, 10000.0f, 200.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_MAN_ON_ROOF, GI_HEART_PIECE);
@@ -142,7 +142,7 @@ void func_809B05F0(EnAni* this, PlayState* play) {
         EnAni_SetupAction(this, func_809B0558);
     }
 
-    if (!gSaveContext.n64ddFlag) {
+    if (!IS_RANDO) {
         func_8002F434(&this->actor, play, GI_HEART_PIECE, 10000.0f, 200.0f);
     } else {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_MAN_ON_ROOF, GI_HEART_PIECE);
@@ -338,8 +338,7 @@ void EnAni_Draw(Actor* thisx, PlayState* play) {
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
 
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnAni_OverrideLimbDraw, EnAni_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnAni_OverrideLimbDraw, EnAni_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

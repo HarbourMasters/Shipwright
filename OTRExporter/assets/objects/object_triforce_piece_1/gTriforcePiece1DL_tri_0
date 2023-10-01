@@ -1,0 +1,20 @@
+<DisplayList Version="0">
+	<LoadVertices Path="objects/object_triforce_piece_1/gTriforcePiece1DL_vtx_0" VertexBufferIndex="0" VertexOffset="0" Count="16"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="3" V01="2" V02="1"/>
+	<Triangle1 V00="4" V01="2" V02="3"/>
+	<Triangle1 V00="3" V01="5" V02="4"/>
+	<Triangle1 V00="4" V01="6" V02="2"/>
+	<Triangle1 V00="6" V01="4" V02="7"/>
+	<Triangle1 V00="4" V01="8" V02="7"/>
+	<Triangle1 V00="9" V01="10" V02="11"/>
+	<Triangle1 V00="12" V01="11" V02="10"/>
+	<Triangle1 V00="12" V01="10" V02="13"/>
+	<Triangle1 V00="10" V01="14" V02="13"/>
+	<Triangle1 V00="14" V01="15" V02="13"/>
+	<LoadVertices Path="objects/object_triforce_piece_1/gTriforcePiece1DL_vtx_0" VertexBufferIndex="0" VertexOffset="16" Count="5"/>
+	<Triangle1 V00="0" V01="1" V02="2"/>
+	<Triangle1 V00="2" V01="3" V02="4"/>
+	<EndDisplayList/>
+</DisplayList>
+

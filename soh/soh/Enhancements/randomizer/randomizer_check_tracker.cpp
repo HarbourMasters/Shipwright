@@ -381,66 +381,66 @@ bool fortressFast;
 bool fortressNormal;
 
 void LoadSettings() {
-    //If in randomzer (n64ddFlag), then get the setting and check if in general we should be showing the settings
+    //If in randomzer, then get the setting and check if in general we should be showing the settings
     //If in vanilla, _try_ to show items that at least are needed for 100%
 
-    showShops = gSaveContext.n64ddFlag ? (
+    showShops = IS_RANDO ? (
             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) != RO_SHOPSANITY_OFF &&
             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) != RO_SHOPSANITY_ZERO_ITEMS)
         : false;
-    showBeans = gSaveContext.n64ddFlag ?
+    showBeans = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MAGIC_BEANS) == RO_GENERIC_YES
         : true;
-    showScrubs = gSaveContext.n64ddFlag ?
+    showScrubs = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_SCRUBS) != RO_SCRUBS_OFF
         : false;
-    showMerchants = gSaveContext.n64ddFlag ?
+    showMerchants = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF
         : true;
-    showBeehives = gSaveContext.n64ddFlag ?
+    showBeehives = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_BEEHIVES) == RO_GENERIC_YES
         : false;
-    showCows = gSaveContext.n64ddFlag ?
+    showCows = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_COWS) == RO_GENERIC_YES
         : false;
-    showAdultTrade = gSaveContext.n64ddFlag ?
+    showAdultTrade = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE) == RO_GENERIC_YES
         : true;
-    showKokiriSword = gSaveContext.n64ddFlag ?
+    showKokiriSword = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_KOKIRI_SWORD) == RO_GENERIC_YES
         : true;
-    showWeirdEgg = gSaveContext.n64ddFlag ?
+    showWeirdEgg = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_WEIRD_EGG) == RO_GENERIC_YES
         : true;
-    showGerudoCard = gSaveContext.n64ddFlag ?
+    showGerudoCard = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD) == RO_GENERIC_YES
         : true;
-    showFrogSongRupees = gSaveContext.n64ddFlag ?
+    showFrogSongRupees = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_FROG_SONG_RUPEES) == RO_GENERIC_YES
         : false;
-    showStartingMapsCompasses = gSaveContext.n64ddFlag ?
+    showStartingMapsCompasses = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES) != RO_DUNGEON_ITEM_LOC_VANILLA
         : false;
-    showKeysanity = gSaveContext.n64ddFlag ?
+    showKeysanity = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_KEYSANITY) != RO_DUNGEON_ITEM_LOC_VANILLA
         : false;
-    showBossKeysanity = gSaveContext.n64ddFlag ?
+    showBossKeysanity = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_BOSS_KEYSANITY) != RO_DUNGEON_ITEM_LOC_VANILLA
         : false;
-    showGerudoFortressKeys = gSaveContext.n64ddFlag ?
+    showGerudoFortressKeys = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GERUDO_KEYS) != RO_GERUDO_KEYS_VANILLA
         : false;
-    showGanonBossKey = gSaveContext.n64ddFlag ?
+    showGanonBossKey = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_GANONS_BOSS_KEY) != RO_GANON_BOSS_KEY_VANILLA
         : false;
-    showOcarinas = gSaveContext.n64ddFlag ?
+    showOcarinas = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_OCARINA) == RO_GENERIC_YES
         : false;
-    show100SkullReward = gSaveContext.n64ddFlag ?
+    show100SkullReward = IS_RANDO ?
         OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_100_GS_REWARD) == RO_GENERIC_YES
         : false;
 
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         switch (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS)) {
             case RO_TOKENSANITY_ALL:
                 showOverworldTokens = true;
@@ -747,19 +747,12 @@ bool HasItemBeenCollected(RandomizerCheckObject obj) {
             return gSaveContext.itemGetInf[flag / 16] & INDEX_TO_16BIT_LITTLE_ENDIAN_BITMASK(flag);
         case SpoilerCollectionCheckType::SPOILER_CHK_MAGIC_BEANS:
             return BEANS_BOUGHT >= 10;
-        case SpoilerCollectionCheckType::SPOILER_CHK_MINIGAME:
-            if (obj.rc == RC_LH_CHILD_FISHING)
-                return HIGH_SCORE(HS_FISHING) & 0x400;
-            if (obj.rc == RC_LH_ADULT_FISHING)
-                return HIGH_SCORE(HS_FISHING) & 0x800;
         case SpoilerCollectionCheckType::SPOILER_CHK_NONE:
             return false;
-        case SpoilerCollectionCheckType::SPOILER_CHK_POE_POINTS:
-            return gSaveContext.highScores[HS_POE_POINTS] >= 1000;
         case SpoilerCollectionCheckType::SPOILER_CHK_GRAVEDIGGER:
             // Gravedigger has a fix in place that means one of two save locations. Check both.
             return (gSaveContext.itemGetInf[1] & 0x1000) || // vanilla flag
-                   ((gSaveContext.n64ddFlag || CVarGetInteger("gGravediggingTourFix", 0)) &&
+                   ((IS_RANDO || CVarGetInteger("gGravediggingTourFix", 0)) &&
                         gSaveContext.sceneFlags[scene].collect & (1 << flag)); // rando/fix flag
         default:
             return false;
@@ -843,7 +836,7 @@ void DrawLocation(RandomizerCheckObject rcObj, RandomizerCheckShow* thisCheckSta
             case RCSHOW_SAVED:
             case RCSHOW_CHECKED:
             case RCSHOW_SCUMMED:
-                if (gSaveContext.n64ddFlag)
+                if (IS_RANDO)
                     txt = OTRGlobals::Instance->gRandomizer
                         ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.rgID][gSaveContext.language];
                 else if (gSaveContext.language == LANGUAGE_ENG)
@@ -855,7 +848,7 @@ void DrawLocation(RandomizerCheckObject rcObj, RandomizerCheckShow* thisCheckSta
                 txt = "Skipped"; //TODO language
                 break;
             case RCSHOW_SEEN:
-                if (gSaveContext.n64ddFlag)
+                if (IS_RANDO)
                     txt = OTRGlobals::Instance->gRandomizer
                         ->EnumToSpoilerfileGetName[gSaveContext.itemLocations[rcObj.rc].get.fakeRgID][gSaveContext.language];
                 else if (gSaveContext.language == LANGUAGE_ENG)

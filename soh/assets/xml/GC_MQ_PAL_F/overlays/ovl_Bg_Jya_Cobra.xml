@@ -1,0 +1,10 @@
+<Root>
+    <File Name="ovl_Bg_Jya_Cobra" BaseAddress="0x8088F820" RangeStart="0x1850" RangeEnd="0x19F8">
+        <Array Name="sShadowVtx" Count="4" Offset="0x1850">
+            <Vtx/>
+        </Array>
+
+        <DList Name="sShadowDL" Offset="0x1890"/>
+    
+    </File>
+</Root>

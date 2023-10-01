@@ -279,7 +279,7 @@ void UseHammer(Actor* thisx, PlayState* play, u8 started) {
             Vec3f shockwavePos = this->actor.world.pos;
 
             func_808429B4(play, 27767, 7, 20);
-            func_8002F7DC(&this->actor, NA_SE_IT_HAMMER_HIT);
+            Player_PlaySfx(&this->actor, NA_SE_IT_HAMMER_HIT);
 
             EffectSsBlast_SpawnWhiteShockwave(play, &shockwavePos, &zeroVec, &zeroVec);
 

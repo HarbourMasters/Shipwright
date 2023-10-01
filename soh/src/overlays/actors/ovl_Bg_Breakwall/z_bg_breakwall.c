@@ -106,7 +106,7 @@ void BgBreakwall_Init(Actor* thisx, PlayState* play) {
     s32 wallType = ((this->dyna.actor.params >> 13) & 3) & 0xFF;
 
     // Initialize this with the mud wall, so it can't be affected by toggling while the actor is loaded
-    blueFireArrowsEnabledOnMudwallLoad = CVarGetInteger("gBlueFireArrows", 0) || (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_BLUE_FIRE_ARROWS));
+    blueFireArrowsEnabledOnMudwallLoad = CVarGetInteger("gBlueFireArrows", 0) || (IS_RANDO && Randomizer_GetSettingValue(RSK_BLUE_FIRE_ARROWS));
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
@@ -275,7 +275,7 @@ void BgBreakwall_Wait(BgBreakwall* this, PlayState* play) {
     }
     
     // Break the floor immediately in Boss Rush so the player can jump in the hole immediately.
-    if (this->collider.base.acFlags & 2 || blueFireArrowHit || gSaveContext.isBossRush) {
+    if (this->collider.base.acFlags & 2 || blueFireArrowHit || IS_BOSS_RUSH) {
         Vec3f effectPos;
         s32 wallType = ((this->dyna.actor.params >> 13) & 3) & 0xFF;
 

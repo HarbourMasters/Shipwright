@@ -16,6 +16,10 @@ struct SkelAnime;
 #define ANIM_FLAG_UPDATEY (1 << 1)
 #define ANIM_FLAG_NOMOVE (1 << 4)
 
+#define SKELANIME_TYPE_NORMAL   0
+#define SKELANIME_TYPE_FLEX     1
+#define SKELANIME_TYPE_CURVE    2
+
 typedef enum {
     /* 0 */ ANIMMODE_LOOP,
     /* 1 */ ANIMMODE_LOOP_INTERP,
@@ -57,6 +61,7 @@ typedef struct LegacyLimb {
 typedef struct {
     /* 0x00 */ void** segment;
     /* 0x04 */ u8 limbCount;
+               u8 skeletonType;
 } SkeletonHeader; // size = 0x8
 
 // Model has limbs with flexible meshes
@@ -261,6 +266,7 @@ typedef struct SkelAnime {
     /* 0x36 */ s16 prevRot;       // Previous rotation in worldspace.
     /* 0x38 */ Vec3s prevTransl;  // Previous modelspace translation.
     /* 0x3E */ Vec3s baseTransl;  // Base modelspace translation.
+               SkeletonHeader* skeletonHeader;
 } SkelAnime; // size = 0x44
 
 #endif

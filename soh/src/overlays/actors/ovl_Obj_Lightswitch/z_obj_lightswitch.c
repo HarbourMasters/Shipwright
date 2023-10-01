@@ -123,7 +123,7 @@ void ObjLightswitch_InitCollider(ObjLightswitch* this, PlayState* play) {
     s32 pad;
 
     // Initialize this with the sun switch, so it can't be affected by toggling while the actor is loaded
-    sunLightArrowsEnabledOnSunSwitchLoad = CVarGetInteger("gSunlightArrows", 0) || (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SUNLIGHT_ARROWS));
+    sunLightArrowsEnabledOnSunSwitchLoad = CVarGetInteger("gSunlightArrows", 0) || (IS_RANDO && Randomizer_GetSettingValue(RSK_SUNLIGHT_ARROWS));
 
     Collider_InitJntSph(play, &this->collider);
     // If "Sunlight Arrows" is enabled, set up the collider to allow Light Arrow hits

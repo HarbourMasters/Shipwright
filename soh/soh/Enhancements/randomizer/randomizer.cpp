@@ -55,6 +55,7 @@ const std::string Randomizer::getItemMessageTableID = "Randomizer";
 const std::string Randomizer::hintMessageTableID = "RandomizerHints";
 const std::string Randomizer::merchantMessageTableID = "RandomizerMerchants";
 const std::string Randomizer::rupeeMessageTableID = "RandomizerRupees";
+const std::string Randomizer::triforcePieceMessageTableID = "RandomizerTriforcePiece";
 const std::string Randomizer::NaviRandoMessageTableID = "RandomizerNavi";
 const std::string Randomizer::IceTrapRandoMessageTableID = "RandomizerIceTrap";
 const std::string Randomizer::randoMiscHintsTableID = "RandomizerMiscHints";
@@ -321,12 +322,17 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "World Settings:Mix Interiors", RSK_MIX_INTERIOR_ENTRANCES },
     { "World Settings:Mix Grottos", RSK_MIX_GROTTO_ENTRANCES },
     { "World Settings:Decouple Entrances", RSK_DECOUPLED_ENTRANCES },
+    { "World Settings:Triforce Hunt", RSK_TRIFORCE_HUNT },
+    { "World Settings:Triforce Hunt Total Pieces", RSK_TRIFORCE_HUNT_PIECES_TOTAL },
+    { "World Settings:Triforce Hunt Required Pieces", RSK_TRIFORCE_HUNT_PIECES_REQUIRED },
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "Misc Settings:Hint Clarity", RSK_HINT_CLARITY },
     { "Misc Settings:ToT Altar Hint", RSK_TOT_ALTAR_HINT },
-    { "Misc Settings:Ganondorf LA Hint", RSK_GANONDORF_LIGHT_ARROWS_HINT },
+    { "Misc Settings:Light Arrow Hint", RSK_LIGHT_ARROWS_HINT },
     { "Misc Settings:Dampe's Diary Hint", RSK_DAMPES_DIARY_HINT },
     { "Misc Settings:Greg the Rupee Hint", RSK_GREG_HINT },
+    { "Misc Settings:Saria's Hint", RSK_SARIA_HINT },
+    { "Misc Settings:Frog Ocarina Game Hint", RSK_FROGS_HINT },
     { "Misc Settings:10 GS Hint", RSK_KAK_10_SKULLS_HINT },
     { "Misc Settings:20 GS Hint", RSK_KAK_20_SKULLS_HINT },
     { "Misc Settings:30 GS Hint", RSK_KAK_30_SKULLS_HINT },
@@ -365,8 +371,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
 std::string sanitize(std::string stringValue) {
     // Add backslashes.
     for (auto i = stringValue.begin();;) {
-        auto const pos =
-            std::find_if(i, stringValue.end(), [](char const c) { return '\\' == c || '\'' == c || '"' == c; });
+        auto const pos = std::find_if(i, stringValue.end(), [](char const c) { return '\\' == c || '\'' == c || '"' == c; });
         if (pos == stringValue.end()) {
             break;
         }
@@ -374,9 +379,8 @@ std::string sanitize(std::string stringValue) {
     }
 
     // Removes others.
-    stringValue.erase(std::remove_if(stringValue.begin(), stringValue.end(),
-                                     [](char const c) { return '\n' == c || '\r' == c || '\0' == c || '\x1A' == c; }),
-                      stringValue.end());
+    stringValue.erase(std::remove_if(stringValue.begin(), stringValue.end(), [](char const c) {
+        return '\n' == c || '\r' == c || '\0' == c || '\x1A' == c; }), stringValue.end());
 
     return stringValue;
 }
@@ -428,25 +432,35 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
     CustomMessageManager::Instance->ClearMessageTable(Randomizer::hintMessageTableID);
     CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::hintMessageTableID);
 
-    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD,
-                                                  CustomMessage(gSaveContext.childAltarText,
-                                                                gSaveContext.childAltarText,
-                                                                gSaveContext.childAltarText, TEXTBOX_TYPE_BLUE));
-    CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT,
-                                                  CustomMessage(gSaveContext.adultAltarText,
-                                                                gSaveContext.adultAltarText,
-                                                                gSaveContext.adultAltarText, TEXTBOX_TYPE_BLUE));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD,
+        CustomMessage(gSaveContext.childAltarText, gSaveContext.childAltarText, gSaveContext.childAltarText, TEXTBOX_TYPE_BLUE));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT,
+        CustomMessage(gSaveContext.adultAltarText, gSaveContext.adultAltarText, gSaveContext.adultAltarText, TEXTBOX_TYPE_BLUE));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_GANONDORF,
         CustomMessage(gSaveContext.ganonHintText, gSaveContext.ganonHintText, gSaveContext.ganonHintText));
     CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, TEXT_GANONDORF_NOHINT,
         CustomMessage(gSaveContext.ganonText, gSaveContext.ganonText, gSaveContext.ganonText));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, TEXT_SHEIK_NEED_HOOK,
+        CustomMessage("{{message}}", "{{message}}", "{{message}}"));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, TEXT_SHEIK_HAVE_HOOK,
+        CustomMessage("{{message}}", "{{message}}", "{{message}}"));
+    CustomMessageManager::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, TEXT_SARIAS_SONG_FACE_TO_FACE,
+        CustomMessage(gSaveContext.sariaText, gSaveContext.sariaText, gSaveContext.sariaText, TEXTBOX_TYPE_BLUE));
+
 
     this->childAltarText = gSaveContext.childAltarText;
     this->adultAltarText = gSaveContext.adultAltarText;
     this->ganonHintText = gSaveContext.ganonHintText;
     this->ganonText = gSaveContext.ganonText;
+    this->sheikText = gSaveContext.sheikText;
+    this->sariaText = gSaveContext.sariaText;
 
     for (const auto& hintLocation : gSaveContext.hintLocations) {
         if(hintLocation.check == RC_LINKS_POCKET) break;
@@ -467,16 +481,23 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         );
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_DAMPES_DIARY,
-            CustomMessage(gSaveContext.dampeText,
-                gSaveContext.dampeText,
-                gSaveContext.dampeText)
+            CustomMessage(gSaveContext.dampeText, gSaveContext.dampeText, gSaveContext.dampeText)
         );
         CustomMessageManager::Instance->CreateMessage(
             Randomizer::randoMiscHintsTableID, TEXT_CHEST_GAME_PROCEED,
-            CustomMessage(gSaveContext.gregHintText,
-                gSaveContext.gregHintText,
-                gSaveContext.gregHintText)
+            CustomMessage(gSaveContext.gregHintText, gSaveContext.gregHintText, gSaveContext.gregHintText)
         );
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_FROGS_UNDERWATER,
+            CustomMessage("Some frogs holding&%g{{item}}%w&are looking at you from underwater...",
+            "Unter Wasser gibt es Frösche,&die %g{{item}}%w&bei sich haben und Dich neugierig&beobachten...",
+            "Des grenouilles se trouvant&sous l'eau vous fixent attentivement,&tenant fermement&%r{{item}}%w.", TEXTBOX_TYPE_BLUE)
+        );
+        CustomMessageManager::Instance->CreateMessage(
+            Randomizer::randoMiscHintsTableID, TEXT_SARIAS_SONG_FOREST_SOUNDS,
+            CustomMessage("{{message}}", "{{message}}", "{{message}}", TEXTBOX_TYPE_BLUE)
+        );
+
 
     CustomMessageManager::Instance->CreateMessage(Randomizer::hintMessageTableID, TEXT_WARP_RANDOM_REPLACED_TEXT,
         CustomMessage("Warp to&{{location}}?\x1B&%gOK&No%w\x02",
@@ -783,6 +804,8 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_BIG_POE_COUNT:
                     case RSK_CUCCO_COUNT:
                     case RSK_STARTING_SKULLTULA_TOKEN:
+                    case RSK_TRIFORCE_HUNT_PIECES_TOTAL:
+                    case RSK_TRIFORCE_HUNT_PIECES_REQUIRED:
                         numericValueString = it.value();
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
                         break;
@@ -858,9 +881,11 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_SUNLIGHT_ARROWS:
                     case RSK_BOMBCHUS_IN_LOGIC:
                     case RSK_TOT_ALTAR_HINT:
-                    case RSK_GANONDORF_LIGHT_ARROWS_HINT:
+                    case RSK_LIGHT_ARROWS_HINT:
                     case RSK_DAMPES_DIARY_HINT:
                     case RSK_GREG_HINT:
+                    case RSK_SARIA_HINT:
+                    case RSK_FROGS_HINT:
                     case RSK_KAK_10_SKULLS_HINT:
                     case RSK_KAK_20_SKULLS_HINT:
                     case RSK_KAK_30_SKULLS_HINT:
@@ -891,6 +916,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_DECOUPLED_ENTRANCES:
                     case RSK_SHOPSANITY_PRICES_AFFORDABLE:
                     case RSK_ALL_LOCATIONS_REACHABLE:
+                    case RSK_TRIFORCE_HUNT:
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = RO_GENERIC_OFF;
                         } else if(it.value() == "On") {
@@ -944,6 +970,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         } else if(it.value() == "Minimal") {
                             gSaveContext.randoSettings[index].value = RO_ITEM_POOL_MINIMAL;
                         }
+                        break;
                     case RSK_ICE_TRAPS:
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = RO_ICE_TRAPS_OFF;
@@ -956,6 +983,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         } else if(it.value() == "Onslaught") {
                             gSaveContext.randoSettings[index].value = RO_ICE_TRAPS_ONSLAUGHT;
                         }
+                        break;
                     case RSK_GOSSIP_STONE_HINTS:
                         if(it.value() == "No Hints") {
                             gSaveContext.randoSettings[index].value = RO_GOSSIP_STONES_NONE;
@@ -1042,6 +1070,8 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_LACS_TOKENS;
                         } else if(it.value() == "100 GS Reward") {
                             gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_KAK_TOKENS;
+                        } else if(it.value() == "Triforce Hunt") {
+                            gSaveContext.randoSettings[index].value = RO_GANON_BOSS_KEY_TRIFORCE_HUNT;
                         }
                         break;
                     case RSK_RANDOM_MQ_DUNGEONS:
@@ -1267,9 +1297,6 @@ std::string FormatJsonHintText(std::string jsonHint) {
             formattedHintMessage.replace(start_pos, textToReplace.length(), iconString);
         }
     }
-
-    formattedHintMessage += 0x02;
-
     return formattedHintMessage;
 }
 
@@ -1309,7 +1336,7 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         std::string formattedGanonHintJsonText = FormatJsonHintText(ganonHintJsonText);
         strncpy(gSaveContext.ganonHintText, formattedGanonHintJsonText.c_str(), sizeof(gSaveContext.ganonHintText) - 1);
         gSaveContext.ganonHintText[sizeof(gSaveContext.ganonHintText) - 1] = 0;
-        gSaveContext.ganonHintCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["ganonHintLoc"]];
+        gSaveContext.lightArrowHintCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["lightArrowHintLoc"]];
 
         std::string ganonJsonText = spoilerFileJson["ganonText"].get<std::string>();
         std::string formattedGanonJsonText = FormatJsonHintText(ganonJsonText);
@@ -1327,6 +1354,18 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         strncpy(gSaveContext.gregHintText, formattedGregJsonText.c_str(), sizeof(gSaveContext.gregHintText) - 1);
         gSaveContext.gregHintText[sizeof(gSaveContext.gregHintText) - 1] = 0;
         gSaveContext.gregCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["gregLoc"]];
+
+        std::string sheikJsonText = spoilerFileJson["sheikText"].get<std::string>();
+        std::string formattedSheikJsonText = FormatJsonHintText(sheikJsonText);
+        strncpy(gSaveContext.sheikText, formattedSheikJsonText.c_str(), sizeof(gSaveContext.sheikText) - 1);
+        gSaveContext.sheikText[sizeof(gSaveContext.sheikText) - 1] = 0;
+        gSaveContext.lightArrowHintCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["lightArrowHintLoc"]];
+
+        std::string sariaJsonText = spoilerFileJson["sariaText"].get<std::string>();
+        std::string formattedSariaJsonText = FormatJsonHintText(sariaJsonText);
+        strncpy(gSaveContext.sariaText, formattedSariaJsonText.c_str(), sizeof(gSaveContext.sariaText) - 1);
+        gSaveContext.sariaText[sizeof(gSaveContext.sariaText) - 1] = 0;
+        gSaveContext.sariaCheck = SpoilerfileCheckNameToEnum[spoilerFileJson["sariaHintLoc"]];
 
         std::string warpMinuetJsonText = spoilerFileJson["warpMinuetText"].get<std::string>();
         strncpy(gSaveContext.warpMinuetText, warpMinuetJsonText.c_str(), sizeof(gSaveContext.warpMinuetText) - 1);
@@ -1510,6 +1549,12 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent
             gSaveContext.seedIcons[index] = gSeedTextures[it.value()].id;
             index++;
         }
+
+        std::string inputSeed = spoilerFileJson["seed"].get<std::string>();
+        strncpy(gSaveContext.inputSeed, inputSeed.c_str(), sizeof(gSaveContext.inputSeed) - 1);
+        gSaveContext.inputSeed[sizeof(gSaveContext.inputSeed) - 1] = 0;
+
+        gSaveContext.finalSeed = spoilerFileJson["finalSeed"].get<uint32_t>();
 
         for (auto it = locationsJson.begin(); it != locationsJson.end(); ++it) {
             RandomizerCheck randomizerCheck = SpoilerfileCheckNameToEnum[it.key()];
@@ -1946,6 +1991,7 @@ ItemObtainability Randomizer::GetItemObtainabilityFromRandomizerGet(RandomizerGe
         case RG_BUY_DEKU_NUT_10:
         case RG_BUY_DEKU_STICK_1:
         case RG_BUY_HEART:
+        case RG_TRIFORCE_PIECE:
         default:
             return CAN_OBTAIN;
     }
@@ -2565,6 +2611,9 @@ std::map<RandomizerCheck, RandomizerInf> rcToRandomizerInf = {
     { RC_LH_GROTTO_BEEHIVE,                                           RAND_INF_BEEHIVE_LH_GROTTO },
     { RC_GV_DEKU_SCRUB_GROTTO_BEEHIVE,                                RAND_INF_BEEHIVE_GV_DEKU_SCRUB_GROTTO },
     { RC_COLOSSUS_GROTTO_BEEHIVE,                                     RAND_INF_BEEHIVE_COLOSSUS_GROTTO },
+    { RC_LH_CHILD_FISHING,                                            RAND_INF_CHILD_FISHING },
+    { RC_LH_ADULT_FISHING,                                            RAND_INF_ADULT_FISHING },
+    { RC_MARKET_10_BIG_POES,                                          RAND_INF_10_BIG_POES },
 };
 
 BeehiveIdentity Randomizer::IdentifyBeehive(s32 sceneNum, s16 xPosition, s32 respawnData) {
@@ -2925,9 +2974,11 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_ITEM_POOL] = CVarGetInteger("gRandomizeItemPool", RO_ITEM_POOL_BALANCED);
     cvarSettings[RSK_ICE_TRAPS] = CVarGetInteger("gRandomizeIceTraps", RO_ICE_TRAPS_NORMAL);
     cvarSettings[RSK_TOT_ALTAR_HINT] = CVarGetInteger("gRandomizeAltarHint", RO_GENERIC_ON);
-    cvarSettings[RSK_GANONDORF_LIGHT_ARROWS_HINT] = CVarGetInteger("gRandomizeLAHint", RO_GENERIC_ON);
+    cvarSettings[RSK_LIGHT_ARROWS_HINT] = CVarGetInteger("gRandomizeLAHint", RO_GENERIC_ON);
     cvarSettings[RSK_DAMPES_DIARY_HINT] = CVarGetInteger("gRandomizeDampeHint", RO_GENERIC_OFF);
     cvarSettings[RSK_GREG_HINT] = CVarGetInteger("gRandomizeGregHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_SARIA_HINT] = CVarGetInteger("gRandomizeSariaHint", RO_GENERIC_OFF);
+    cvarSettings[RSK_FROGS_HINT] = CVarGetInteger("gRandomizeFrogsHint", RO_GENERIC_OFF);
     cvarSettings[RSK_WARP_SONG_HINTS] = CVarGetInteger("gRandomizeWarpSongText", RO_GENERIC_OFF);
     cvarSettings[RSK_SCRUB_TEXT_HINT] = CVarGetInteger("gRandomizeScrubText", RO_GENERIC_OFF);
     cvarSettings[RSK_KAK_10_SKULLS_HINT] = CVarGetInteger("gRandomize10GSHint", RO_GENERIC_OFF);
@@ -2944,16 +2995,13 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_GERUDO_KEYS] = CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA);
     cvarSettings[RSK_KEYRINGS] = CVarGetInteger("gRandomizeShuffleKeyRings", RO_KEYRINGS_OFF);
     int maxKeyringCount = (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
-                       CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA)
-                          ? 9
-                          : 8;
+                       CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA) ? 9 : 8;
     cvarSettings[RSK_KEYRINGS_RANDOM_COUNT] = std::min(CVarGetInteger("gRandomizeShuffleKeyRingsRandomCount", maxKeyringCount), maxKeyringCount);
     // Don't allow this to be on if Gerudo Fortress Carpenters is anything other than Normal
     cvarSettings[RSK_KEYRINGS_GERUDO_FORTRESS] =
         (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
          CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA)
-            ? CVarGetInteger("gRandomizeShuffleKeyRingsGerudoFortress", RO_GENERIC_OFF)
-            : RO_GENERIC_OFF;
+            ? CVarGetInteger("gRandomizeShuffleKeyRingsGerudoFortress", RO_GENERIC_OFF) : RO_GENERIC_OFF;
     cvarSettings[RSK_KEYRINGS_FOREST_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsForestTemple", 0);
     cvarSettings[RSK_KEYRINGS_FIRE_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsFireTemple", 0);
     cvarSettings[RSK_KEYRINGS_WATER_TEMPLE] = CVarGetInteger("gRandomizeShuffleKeyRingsWaterTemple", 0);
@@ -2982,8 +3030,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_BIG_POE_COUNT] = CVarGetInteger("gRandomizeBigPoeTargetCount", 10);
 
     // If we skip child zelda, skip child stealth is pointless, so this needs to be reflected in the spoiler log
-    cvarSettings[RSK_SKIP_CHILD_STEALTH] =
-        !CVarGetInteger("gRandomizeSkipChildZelda", 0) && CVarGetInteger("gRandomizeSkipChildStealth", 0);
+    cvarSettings[RSK_SKIP_CHILD_STEALTH] = !CVarGetInteger("gRandomizeSkipChildZelda", 0) && CVarGetInteger("gRandomizeSkipChildStealth", 0);
 
     cvarSettings[RSK_SKIP_EPONA_RACE] = CVarGetInteger("gRandomizeSkipEponaRace", 0);
     cvarSettings[RSK_SKIP_TOWER_ESCAPE] = CVarGetInteger("gRandomizeSkipTowerEscape", 0);
@@ -2994,8 +3041,7 @@ void GenerateRandomizerImgui(std::string seed = "") {
     cvarSettings[RSK_SKULLS_SUNS_SONG] = CVarGetInteger("gRandomizeGsExpectSunsSong", 0);
     // Link's Pocket has to have a dungeon reward if the other rewards are shuffled to end of dungeon.
     cvarSettings[RSK_LINKS_POCKET] = CVarGetInteger("gRandomizeShuffleDungeonReward", RO_DUNGEON_REWARDS_END_OF_DUNGEON) != RO_DUNGEON_REWARDS_END_OF_DUNGEON ? 
-                                        CVarGetInteger("gRandomizeLinksPocket", RO_LINKS_POCKET_DUNGEON_REWARD) :
-                                        RO_LINKS_POCKET_DUNGEON_REWARD;
+                                        CVarGetInteger("gRandomizeLinksPocket", RO_LINKS_POCKET_DUNGEON_REWARD) : RO_LINKS_POCKET_DUNGEON_REWARD;
 
     if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
         // If both OTRs are loaded.
@@ -3011,6 +3057,10 @@ void GenerateRandomizerImgui(std::string seed = "") {
         cvarSettings[RSK_MQ_DUNGEON_COUNT] = 0;
     }
 
+    cvarSettings[RSK_TRIFORCE_HUNT] = CVarGetInteger("gRandomizeTriforceHunt", 0);
+    cvarSettings[RSK_TRIFORCE_HUNT_PIECES_TOTAL] = CVarGetInteger("gRandomizeTriforceHuntTotalPieces", 30);
+    cvarSettings[RSK_TRIFORCE_HUNT_PIECES_REQUIRED] = CVarGetInteger("gRandomizeTriforceHuntRequiredPieces", 20);
+    
     cvarSettings[RSK_MQ_DEKU_TREE] = CVarGetInteger("gRandomizeMqDungeonsDekuTree", 0);
     cvarSettings[RSK_MQ_DODONGOS_CAVERN] = CVarGetInteger("gRandomizeMqDungeonsDodongosCavern", 0);
     cvarSettings[RSK_MQ_JABU_JABU] = CVarGetInteger("gRandomizeMqDungeonsJabuJabu", 0);
@@ -3523,6 +3573,7 @@ void RandomizerSettingsWindow::DrawElement() {
 
                 UIWidgets::PaddedSeparator();
 
+                // Master Quest Dungeons
                 if (OTRGlobals::Instance->HasMasterQuest() && OTRGlobals::Instance->HasOriginal()) {
                     ImGui::PushItemWidth(-FLT_MIN);
                     ImGui::Text("Master Quest Dungeons");
@@ -3570,7 +3621,42 @@ void RandomizerSettingsWindow::DrawElement() {
                         UIWidgets::EnhancementCheckbox("Ganon's Castle##RandomizeMqDungeons",
                                                        "gRandomizeMqDungeonsGanonsCastle");
                     }
+
+                    UIWidgets::PaddedSeparator();
                 }
+
+                // Triforce Hunt
+                UIWidgets::EnhancementCheckbox("Triforce Hunt", "gRandomizeTriforceHunt");
+                UIWidgets::InsertHelpHoverText(
+                    "Pieces of the Triforce of Courage have been scattered across the world. Find them all to finish the game!\n\n"
+                    "When the required amount of pieces have been found, the game is saved and Ganon's Boss key is given "
+                    "to you when you load back into the game if you desire to beat Ganon afterwards.\n\n"
+                    "Keep in mind Ganon might not be logically beatable when \"All Locations Reachable\" is turned off."
+                );
+
+                if (CVarGetInteger("gRandomizeTriforceHunt", 0)) {
+                    // Triforce Hunt (total pieces)
+                    UIWidgets::Spacer(0);
+                    int totalPieces = CVarGetInteger("gRandomizeTriforceHuntTotalPieces", 30);
+                    ImGui::Text("Triforce Pieces in the world: %d", totalPieces);
+                    UIWidgets::InsertHelpHoverText(
+                        "The amount of Triforce pieces that will be placed in the world. "
+                        "Keep in mind seed generation can fail if more pieces are placed than there are junk items in the item pool."
+                    );
+                    ImGui::SameLine();
+                    UIWidgets::EnhancementSliderInt("", "##TriforceHuntTotalPieces", "gRandomizeTriforceHuntTotalPieces", 1, 100, "", 30);
+
+                    // Triforce Hunt (required pieces)
+                    int requiredPieces = CVarGetInteger("gRandomizeTriforceHuntRequiredPieces", 20);
+                    ImGui::Text("Triforce Pieces to win: %d", requiredPieces);
+                    UIWidgets::InsertHelpHoverText(
+                        "The amount of Triforce pieces required to win the game."
+                    );
+                    ImGui::SameLine();
+                    UIWidgets::EnhancementSliderInt("", "##TriforceHuntRequiredPieces", "gRandomizeTriforceHuntRequiredPieces", 1, totalPieces, "", 20);
+                }
+
+                UIWidgets::PaddedSeparator();
 
                 ImGui::EndChild();
 
@@ -3736,8 +3822,7 @@ void RandomizerSettingsWindow::DrawElement() {
 
         if (ImGui::BeginTabItem("Items")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (ImGui::BeginTable("tableRandoStartingInventory", 3,
-                                  ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+            if (ImGui::BeginTable("tableRandoStartingInventory", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Shuffle Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::TableSetupColumn("Shuffle NPCs & Merchants", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::TableSetupColumn("Shuffle Dungeon Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -3843,8 +3928,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Gerudo Membership Card
-                UIWidgets::EnhancementCheckbox(Settings::ShuffleGerudoToken.GetName().c_str(),
-                                                "gRandomizeShuffleGerudoToken");
+                UIWidgets::EnhancementCheckbox(Settings::ShuffleGerudoToken.GetName().c_str(), "gRandomizeShuffleGerudoToken");
                 UIWidgets::InsertHelpHoverText(
                     "Shuffles the Gerudo Membership Card into the item pool.\n"
                     "\n"
@@ -3965,8 +4049,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Shuffle Adult Trade Quest
-                UIWidgets::EnhancementCheckbox(Settings::ShuffleAdultTradeQuest.GetName().c_str(),
-                                                "gRandomizeShuffleAdultTrade");
+                UIWidgets::EnhancementCheckbox(Settings::ShuffleAdultTradeQuest.GetName().c_str(), "gRandomizeShuffleAdultTrade");
                 UIWidgets::InsertHelpHoverText(
                     "Adds all of the adult trade quest items into the pool, each of which "
                     "can be traded for a unique reward.\n"
@@ -4088,9 +4171,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     case RO_KEYRINGS_COUNT:
                         maxKeyringCount =
                             (CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) == RO_GF_NORMAL &&
-                             CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA)
-                                ? 9
-                                : 8;
+                             CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) != RO_GERUDO_KEYS_VANILLA) ? 9 : 8;
                         UIWidgets::PaddedEnhancementSliderInt("Key Ring Count: %d",
                                                               "##RandomizeShuffleKeyRingsRandomCount",
                                                               "gRandomizeShuffleKeyRingsRandomCount", 1,
@@ -4099,8 +4180,7 @@ void RandomizerSettingsWindow::DrawElement() {
                     case RO_KEYRINGS_SELECTION:
                         disableGFKeyring =
                             CVarGetInteger("gRandomizeGerudoFortress", RO_GF_NORMAL) != RO_GF_NORMAL || CVarGetInteger("gRandomizeGerudoKeys", RO_GERUDO_KEYS_VANILLA) == RO_GERUDO_KEYS_VANILLA;
-                        UIWidgets::EnhancementCheckbox(
-                            "Gerudo Fortress##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGerudoFortress",
+                        UIWidgets::EnhancementCheckbox( "Gerudo Fortress##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsGerudoFortress",
                             disableGFKeyring, "Disabled because the currently selected Gerudo Fortress Carpenters\n setting and/or Gerudo Fortress Keys setting is incompatible with \nhaving a Gerudo Fortress keyring.");
                         UIWidgets::EnhancementCheckbox("Forest Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsForestTemple");
                         UIWidgets::EnhancementCheckbox("Fire Temple##RandomizeShuffleKeyRings", "gRandomizeShuffleKeyRingsFireTemple");
@@ -4177,7 +4257,11 @@ void RandomizerSettingsWindow::DrawElement() {
                     "\n"
                     "100 GS Reward - Ganon's Boss Key will be awarded by the cursed rich man after you collect 100 Gold Skulltula Tokens."
                 );
-                UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, RO_GANON_BOSS_KEY_VANILLA);
+                bool disableGBK = CVarGetInteger("gRandomizeTriforceHunt", 0);
+                static const char* disableGBKText = "This option is disabled because Triforce Hunt is enabled. Ganon's Boss key\nwill instead be given to you after Triforce Hunt completion.";
+                UIWidgets::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey,
+                                               RO_GANON_BOSS_KEY_VANILLA, disableGBK, disableGBKText,
+                                               RO_GANON_BOSS_KEY_VANILLA);
                 ImGui::PopItemWidth();
                 switch (CVarGetInteger("gRandomizeShuffleGanonBossKey", RO_GANON_BOSS_KEY_VANILLA)) {
                     case RO_GANON_BOSS_KEY_LACS_STONES:
@@ -4501,12 +4585,17 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedEnhancementCheckbox("Altar Text", "gRandomizeAltarHint", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::InsertHelpHoverText("Reading the Temple of Time altar as child will tell you the locations of the Spiritual Stones.\n"
                     "Reading the Temple of Time altar as adult will tell you the locations of the Medallions, as well as the conditions for building the Rainbow Bridge and getting the Boss Key for Ganon's Castle.");
-                UIWidgets::PaddedEnhancementCheckbox("Ganondorf (Light Arrows)", "gRandomizeLAHint", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
-                UIWidgets::InsertHelpHoverText("Talking to Ganondorf in his boss room will tell you the location of the Light Arrows. If this option is enabled and Ganondorf is reachable without Light Arrows, Gossip Stones will never hint the Light Arrows.");
+                UIWidgets::PaddedEnhancementCheckbox("Light Arrows", "gRandomizeLAHint", true, false, false, "", UIWidgets::CheckboxGraphics::Cross, true);
+                UIWidgets::InsertHelpHoverText("Talking to Ganondorf in his boss room or Sheik inside Ganon's Castle (when trials are enabled) will tell you the location of the Light Arrows."
+                "If this option is enabled and Ganondorf is reachable without Light Arrows, Gossip Stones will never hint the Light Arrows.");
                 UIWidgets::PaddedEnhancementCheckbox("Dampe's Diary (Hookshot)", "gRandomizeDampeHint", true, false);
                 UIWidgets::InsertHelpHoverText("Reading the diary of Dampé the gravekeeper as adult will tell you the location of one of the Hookshots.");
                 UIWidgets::PaddedEnhancementCheckbox("Greg the Green Rupee", "gRandomizeGregHint", true, false);
                 UIWidgets::InsertHelpHoverText("Talking to the chest game owner after buying a key will tell you the location of Greg the Green Rupee.");
+                UIWidgets::PaddedEnhancementCheckbox("Saria (Magic)", "gRandomizeSariaHint", true, false);
+                UIWidgets::InsertHelpHoverText("Talking to Saria either in person or through Saria's Song will tell you the location of a progressive magic meter.");
+                UIWidgets::PaddedEnhancementCheckbox("Frog Ocarina Game", "gRandomizeFrogsHint", true, false);
+                UIWidgets::InsertHelpHoverText("Standing near the pedestal for the frogs in Zora's River will tell you the reward for the frogs' ocarina game.");
                 UIWidgets::PaddedEnhancementCheckbox("Warp Song text", "gRandomizeWarpSongText", true, false, !CVarGetInteger("gRandomizeShuffleWarpSongs", RO_GENERIC_OFF),
                  "This option is disabled since warp songs are not shuffled.", UIWidgets::CheckboxGraphics::Cross, true);
                 UIWidgets::InsertHelpHoverText("Playing a warp song will tell you where it leads. (If warp song destinations are vanilla, this is always enabled.)");
@@ -4751,8 +4840,7 @@ void RandomizerSettingsWindow::DrawElement() {
                 UIWidgets::PaddedSeparator();
 
                 // Enable Glitch-Useful Cutscenes
-                UIWidgets::EnhancementCheckbox(Settings::EnableGlitchCutscenes.GetName().c_str(),
-                                              "gRandomizeEnableGlitchCutscenes");
+                UIWidgets::EnhancementCheckbox(Settings::EnableGlitchCutscenes.GetName().c_str(), "gRandomizeEnableGlitchCutscenes");
                 UIWidgets::InsertHelpHoverText(
                     "The cutscenes of the Poes in Forest Temple and Darunia in Fire Temple will not be skipped. "
                     "These cutscenes are only useful for glitched gameplay and can be safely skipped otherwise.");
@@ -5141,8 +5229,7 @@ void RandomizerSettingsWindow::DrawElement() {
 
         if (ImGui::BeginTabItem("Starting Inventory")) {
             ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-            if (ImGui::BeginTable("tableRandoStartingInventory", 3,
-                                  ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+            if (ImGui::BeginTable("tableRandoStartingInventory", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Starting Equipment", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::TableSetupColumn("Starting Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                 ImGui::TableSetupColumn("Starting Songs", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -5163,11 +5250,9 @@ void RandomizerSettingsWindow::DrawElement() {
                     UIWidgets::PaddedSeparator();
                 }
 
-                UIWidgets::EnhancementCheckbox(Settings::StartingKokiriSword.GetName().c_str(),
-                                              "gRandomizeStartingKokiriSword");
+                UIWidgets::EnhancementCheckbox(Settings::StartingKokiriSword.GetName().c_str(), "gRandomizeStartingKokiriSword");
                 UIWidgets::PaddedSeparator();
-                UIWidgets::EnhancementCheckbox(Settings::StartingDekuShield.GetName().c_str(),
-                                              "gRandomizeStartingDekuShield");
+                UIWidgets::EnhancementCheckbox(Settings::StartingDekuShield.GetName().c_str(), "gRandomizeStartingDekuShield");
 
                 UIWidgets::PaddedSeparator();
 
@@ -5180,8 +5265,7 @@ void RandomizerSettingsWindow::DrawElement() {
 
                 UIWidgets::EnhancementCheckbox(Settings::StartingOcarina.GetName().c_str(), "gRandomizeStartingOcarina");
                 UIWidgets::PaddedSeparator();
-                UIWidgets::EnhancementCheckbox(Settings::StartingConsumables.GetName().c_str(),
-                                              "gRandomizeStartingConsumables");
+                UIWidgets::EnhancementCheckbox(Settings::StartingConsumables.GetName().c_str(), "gRandomizeStartingConsumables");
                 UIWidgets::PaddedSeparator();
                 UIWidgets::EnhancementSliderInt("Gold Skulltula Tokens: %d", "##RandoStartingSkulltulaToken", "gRandomizeStartingSkulltulaToken", 0, 100, "", 0);
                 UIWidgets::PaddedSeparator();
@@ -5192,46 +5276,21 @@ void RandomizerSettingsWindow::DrawElement() {
                 ImGui::TableNextColumn();
                 window->DC.CurrLineTextBaseOffset = 0.0f;
                 ImGui::BeginChild("ChildStartingSongs", ImVec2(0, -8));
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingZeldasLullaby.GetName().c_str(),
-                                               "gRandomizeStartingZeldasLullaby");
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingEponasSong.GetName().c_str(),
-                                               "gRandomizeStartingEponasSong");
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingSariasSong.GetName().c_str(),
-                                               "gRandomizeStartingSariasSong");
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingSunsSong.GetName().c_str(),
-                                               "gRandomizeStartingSunsSong");
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingSongOfTime.GetName().c_str(),
-                                               "gRandomizeStartingSongOfTime");
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingSongOfStorms.GetName().c_str(),
-                                               "gRandomizeStartingSongOfStorms");
+                UIWidgets::EnhancementCheckbox(Settings::StartingZeldasLullaby.GetName().c_str(), "gRandomizeStartingZeldasLullaby");
+                UIWidgets::EnhancementCheckbox(Settings::StartingEponasSong.GetName().c_str(), "gRandomizeStartingEponasSong");
+                UIWidgets::EnhancementCheckbox(Settings::StartingSariasSong.GetName().c_str(), "gRandomizeStartingSariasSong");
+                UIWidgets::EnhancementCheckbox(Settings::StartingSunsSong.GetName().c_str(), "gRandomizeStartingSunsSong");
+                UIWidgets::EnhancementCheckbox(Settings::StartingSongOfTime.GetName().c_str(), "gRandomizeStartingSongOfTime");
+                UIWidgets::EnhancementCheckbox(Settings::StartingSongOfStorms.GetName().c_str(), "gRandomizeStartingSongOfStorms");
                 UIWidgets::PaddedSeparator();
                 ImGui::Text("Warp Songs");
                 UIWidgets::PaddedSeparator();
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingMinuetOfForest.GetName().c_str(),
-                                               "gRandomizeStartingMinuetOfForest");
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingBoleroOfFire.GetName().c_str(),
-                                               "gRandomizeStartingBoleroOfFire");
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingSerenadeOfWater.GetName().c_str(),
-                                               "gRandomizeStartingSerenadeOfWater");
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingRequiemOfSpirit.GetName().c_str(),
-                                               "gRandomizeStartingRequiemOfSpirit");
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingNocturneOfShadow.GetName().c_str(),
-                                               "gRandomizeStartingNocturneOfShadow");
-
-                UIWidgets::EnhancementCheckbox(Settings::StartingPreludeOfLight.GetName().c_str(),
-                                               "gRandomizeStartingPreludeOfLight");
-
+                UIWidgets::EnhancementCheckbox(Settings::StartingMinuetOfForest.GetName().c_str(),  "gRandomizeStartingMinuetOfForest");
+                UIWidgets::EnhancementCheckbox(Settings::StartingBoleroOfFire.GetName().c_str(), "gRandomizeStartingBoleroOfFire");
+                UIWidgets::EnhancementCheckbox(Settings::StartingSerenadeOfWater.GetName().c_str(), "gRandomizeStartingSerenadeOfWater");
+                UIWidgets::EnhancementCheckbox(Settings::StartingRequiemOfSpirit.GetName().c_str(),  "gRandomizeStartingRequiemOfSpirit");
+                UIWidgets::EnhancementCheckbox(Settings::StartingNocturneOfShadow.GetName().c_str(), "gRandomizeStartingNocturneOfShadow");
+                UIWidgets::EnhancementCheckbox(Settings::StartingPreludeOfLight.GetName().c_str(), "gRandomizeStartingPreludeOfLight");
                 UIWidgets::PaddedSeparator();
 
                 ImGui::EndChild();
@@ -5289,6 +5348,73 @@ CustomMessage Randomizer::GetWarpSongMessage(u16 textId, bool mysterious) {
 
     messageEntry.Replace("{{location}}", locationName);
     return messageEntry;
+}
+
+CustomMessage Randomizer::GetFrogsMessage(u16 originalTextId) {
+    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::randoMiscHintsTableID, originalTextId);
+        RandomizerGet frogsGet = this->itemLocations[RC_ZR_FROGS_OCARINA_GAME].rgID;
+        std::array<std::string, LANGUAGE_MAX> frogItemName;
+        if (frogsGet == RG_ICE_TRAP) {
+            frogsGet = this->itemLocations[RC_ZR_FROGS_OCARINA_GAME].fakeRgID;
+            frogItemName = {
+                this->itemLocations[RC_ZR_FROGS_OCARINA_GAME].trickName,
+                this->itemLocations[RC_ZR_FROGS_OCARINA_GAME].trickName,
+                this->itemLocations[RC_ZR_FROGS_OCARINA_GAME].trickName
+            };
+        } else {
+            frogItemName = EnumToSpoilerfileGetName[frogsGet];
+        }
+        messageEntry.Replace("{{item}}", std::move(frogItemName[0]), std::move(frogItemName[1]), std::move(frogItemName[2]));
+        return messageEntry;
+}
+
+CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
+    CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, originalTextId);
+    switch (scene) {
+        case SCENE_TEMPLE_OF_TIME:
+            if (originalTextId == TEXT_SHEIK_NEED_HOOK) {
+                messageEntry.Replace("{{message}}", 
+                "@,&meet me at %gGanon's Castle%w&once you obtain the %rkey to his lair%w.",
+                "@, wir treffen uns bei %gGanons Schloß%w,&sobald Du den %rSchlüssel zu&seinem Verließ%w hast.",
+                "Retrouve-moi au %gChâteau de Ganon%w une&fois que tu auras obtenu la&Mrclé de son repaire%w.");
+            } else {
+                messageEntry.Replace("{{message}}",
+                "The time has come. Prepare yourself.",
+                "Die Zeit ist gekommen.&Mach Dich bereit.",
+                "Le moment est venu @.&Tu ferais bien de te préparer.");
+            }
+            break;
+        case SCENE_INSIDE_GANONS_CASTLE:
+            if (originalTextId == TEXT_SHEIK_NEED_HOOK) {
+                if (INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) {
+                    messageEntry.Replace("{{message}}", gSaveContext.sheikText, gSaveContext.sheikText, gSaveContext.sheikText);
+                } else {
+                    messageEntry.Replace("{{message}}", "You are still ill-equipped to&face %rGanondorf%w."
+                    "^Seek out the %cMaster Sword%w,&%rsomething to hold your arrows%w,&and %gmagic%w to summon the %ylight%w.",
+                    "Du bist noch nicht gewappnet um Dich&%rGanondorf%w stellen zu können.^"
+                    "Begib Dich auf die Suche nach dem&%cMaster-Schwert%w, %retwas um deine Pfeilen&einen Sinn zu geben%w,^sowie %gdie Magie%w, um das %yLicht%w&herauf beschwören zu können.",
+                    "@, tu n'es toujours pas prêt à affronter&%rGanondorf%w.^"
+                    "Cherche l'%cÉpée de Légende%w,&%rquelque chose pour ranger tes flèches%w&et de la %gmagie%w pour invoquer la&%ylumière%w.");
+                }                   
+            } else {
+                messageEntry.Replace("{{message}}",
+                "If you're ready, then proceed.^Good luck.",
+                "Wenn Du bereit bist, so schreite&voran.^Viel Glück.",
+                "Si tu es prêt, tu peux y aller.^Bonne chance.");
+            }
+            break;
+    }
+        return messageEntry;
+}
+
+CustomMessage Randomizer::GetSariaMessage(u16 originalTextId) {
+    if (originalTextId == TEXT_SARIA_SFM || originalTextId == TEXT_SARIAS_SONG_FOREST_SOUNDS || TEXT_SARIAS_SONG_FOREST_TEMPLE) {
+        CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_SARIAS_SONG_FACE_TO_FACE);
+        CustomMessage messageEntry2 = messageEntry;
+        std::string code = originalTextId == TEXT_SARIA_SFM ? "" : "\x0B";
+        messageEntry2.Replace("$C", std::move(code));
+        return messageEntry2;
+    }
 }
 
 CustomMessage Randomizer::GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious) {
@@ -5449,6 +5575,70 @@ CustomMessage Randomizer::GetRupeeMessage(u16 rupeeTextId) {
     CustomMessage messageEntry = CustomMessageManager::Instance->RetrieveMessage(Randomizer::rupeeMessageTableID, rupeeTextId);
     messageEntry.Replace("{{rupee}}", RandomElement(englishRupeeNames),
                                                  RandomElement(germanRupeeNames), RandomElement(frenchRupeeNames));
+    return messageEntry;
+}
+
+void CreateTriforcePieceMessages() {
+    CustomMessage TriforcePieceMessages[NUM_TRIFORCE_PIECE_MESSAGES] = {
+
+        { "You found a %yTriforce Piece%w!&%g{{current}}%w down, %c{{remaining}}%w to go. It's a start!",
+          "Ein %yTriforce-Splitter%w! Du hast&%g{{current}}%w von %c{{required}}%w gefunden. Es ist ein&Anfang!",
+          "Vous trouvez un %yFragment de la&Triforce%w! Vous en avez %g{{current}}%w, il en&reste %c{{remaining}}%w à trouver. C'est un début!" },
+
+        { "You found a %yTriforce Piece%w!&%g{{current}}%w down, %c{{remaining}}%w to go. Progress!",
+          "Ein %yTriforce-Splitter%w! Du hast&%g{{current}}%w von %c{{required}}%w gefunden. Es geht voran!",
+          "Vous trouvez un %yFragment de la&Triforce%w! Vous en avez %g{{current}}%w, il en&reste %c{{remaining}}%w à trouver. Ça avance!" },
+
+        { "You found a %yTriforce Piece%w!&%g{{current}}%w down, %c{{remaining}}%w to go. Over half-way&there!",
+          "Ein %yTriforce-Splitter%w! Du hast&schon %g{{current}}%w von %c{{required}}%w gefunden. Schon&über die Hälfte!",
+          "Vous trouvez un %yFragment de la&Triforce%w! Vous en avez %g{{current}}%w, il en&reste %c{{remaining}}%w à trouver. Il en reste un&peu moins que la moitié!" },
+
+        { "You found a %yTriforce Piece%w!&%g{{current}}%w down, %c{{remaining}}%w to go. Almost done!",
+          "Ein %yTriforce-Splitter%w! Du hast&schon %g{{current}}%w von %c{{required}}%w gefunden. Fast&geschafft!",
+          "Vous trouvez un %yFragment de la&Triforce%w! Vous en avez %g{{current}}%w, il en&reste %c{{remaining}}%w à trouver. C'est presque&terminé!" },
+
+        { "You completed the %yTriforce of&Courage%w! %gGG%w!",
+          "Das %yTriforce des Mutes%w! Du hast&alle Splitter gefunden. %gGut gemacht%w!",
+          "Vous avez complété la %yTriforce&du Courage%w! %gFélicitations%w!" },
+
+        { "You found a spare %yTriforce Piece%w!&You only needed %c{{required}}%w, but you have %g{{current}}%w!",
+          "Ein übriger %yTriforce-Splitter%w! Du&hast nun %g{{current}}%w von %c{{required}}%w nötigen gefunden.",
+          "Vous avez trouvé un %yFragment de&Triforce%w en plus! Vous n'aviez besoin&que de %c{{required}}%w, mais vous en avez %g{{current}}%w en&tout!" },
+    };
+    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
+    customMessageManager->AddCustomMessageTable(Randomizer::triforcePieceMessageTableID);
+    for (unsigned int i = 0; i <= (NUM_TRIFORCE_PIECE_MESSAGES - 1); i++) {
+        customMessageManager->CreateMessage(Randomizer::triforcePieceMessageTableID, i, TriforcePieceMessages[i]);
+    }
+}
+
+CustomMessage Randomizer::GetTriforcePieceMessage() {
+    // Item is only given after the textbox, so reflect that inside the textbox.
+    uint16_t current = gSaveContext.triforcePiecesCollected + 1;
+    uint16_t required = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
+    uint16_t remaining = required - current;
+    float percentageCollected = (float)current / (float)required;
+    uint8_t messageIndex;
+
+    if (percentageCollected <= 0.25) {
+        messageIndex = TH_MESSAGE_START;
+    } else if (percentageCollected <= 0.5) {
+        messageIndex = TH_MESSAGE_PROGRESS;
+    } else if (percentageCollected <= 0.75) {
+        messageIndex = TH_MESSAGE_HALFWAY;
+    } else if (percentageCollected < 1) {
+        messageIndex = TH_MESSAGE_ALMOSTDONE;
+    } else if (current == required) {
+        messageIndex = TH_MESSAGE_FINISHED;
+    } else {
+        messageIndex = TH_MESSAGE_SURPLUS;
+    }
+
+    CustomMessage messageEntry =
+        CustomMessageManager::Instance->RetrieveMessage(Randomizer::triforcePieceMessageTableID, messageIndex);
+    messageEntry.Replace("{{current}}", std::to_string(current), std::to_string(current), std::to_string(current));
+    messageEntry.Replace("{{remaining}}", std::to_string(remaining), std::to_string(remaining), std::to_string(remaining));
+    messageEntry.Replace("{{required}}", std::to_string(required), std::to_string(required), std::to_string(required));
     return messageEntry;
 }
 
@@ -5979,6 +6169,7 @@ void Randomizer::CreateCustomMessages() {
     }};
     CreateGetItemMessages(&getItemMessages);
     CreateRupeeMessages();
+    CreateTriforcePieceMessages();
     CreateNaviRandoMessages();
     CreateIceTrapRandoMessages();
     CreateFireTempleGoronMessages();
@@ -6089,6 +6280,7 @@ void InitRandoItemTable() {
         GET_ITEM(RG_MAGIC_BEAN_PACK,                   OBJECT_GI_BEAN,     GID_BEAN,             TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_MAGIC_BEAN_PACK),
         GET_ITEM(RG_TYCOON_WALLET,                     OBJECT_GI_PURSE,    GID_WALLET_GIANT,     TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_LESSER,    MOD_RANDOMIZER, RG_TYCOON_WALLET),
         GET_ITEM(RG_PROGRESSIVE_BOMBCHUS,              OBJECT_GI_BOMB_2,   GID_BOMBCHU,          0x33,                        0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_PROGRESSIVE_BOMBCHUS),
+        GET_ITEM(RG_TRIFORCE_PIECE,                    OBJECT_GI_BOMB_2,   GID_TRIFORCE_PIECE,   TEXT_RANDOMIZER_CUSTOM_ITEM, 0x80, CHEST_ANIM_LONG,  ITEM_CATEGORY_MAJOR,     MOD_RANDOMIZER, RG_TRIFORCE_PIECE),
     };
     ItemTableManager::Instance->AddItemTable(MOD_RANDOMIZER);
     for (int i = 0; i < ARRAY_COUNT(extendedVanillaGetItemTable); i++) {
@@ -6104,6 +6296,8 @@ void InitRandoItemTable() {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawBossKey;
         } else if (randoGetItemTable[i].itemId == RG_DOUBLE_DEFENSE) {
             randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawDoubleDefense;
+        } else if (randoGetItemTable[i].itemId == RG_TRIFORCE_PIECE) {
+            randoGetItemTable[i].drawFunc = (CustomDrawFunc)Randomizer_DrawTriforcePiece;
         }
         ItemTableManager::Instance->AddItemEntry(MOD_RANDOMIZER, randoGetItemTable[i].itemId, randoGetItemTable[i]);
     }
