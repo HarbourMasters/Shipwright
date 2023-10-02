@@ -1378,7 +1378,7 @@ void DrawDeveloperToolsMenu() {
         UIWidgets::Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right, and open the debug menu with L on the pause screen");
         if (CVarGetInteger("gDebugEnabled", 0)) {
             UIWidgets::EnhancementCheckbox("OoT Registry Editor", "gRegEditEnabled");
-            UIWidgets::Tooltip("Enables the registry editor, for more information see here (https://tcrf.net/Proto:The_Legend_of_Zelda:_Ocarina_of_Time_Master_Quest/Memory_Editor)");
+            UIWidgets::Tooltip("Enables the registry editor");
             ImGui::Text("Debug Save File Mode:");
             UIWidgets::EnhancementCombobox("gDebugSaveFileMode", DebugSaveFileModes, 1);
             UIWidgets::Tooltip(
