@@ -10563,7 +10563,7 @@ static Vec3f D_80854814 = { 0.0f, 0.0f, 200.0f };
 static f32 D_80854820[] = { 2.0f, 4.0f, 7.0f };
 static f32 D_8085482C[] = { 0.5f, 1.0f, 3.0f };
 
-void Player_AssignTunicBoots(Player* this, PlayState* play) {
+void Player_UseTunicBoots(Player* this, PlayState* play) {
     // Boots and tunics equip despite state
     s32 i;
     s32 item;
@@ -10899,7 +10899,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
 
         if (!(this->stateFlags3 & PLAYER_STATE3_PAUSE_ACTION_FUNC)) {
             this->func_674(this, play);
-            Player_AssignTunicBoots(this, play);
+            Player_UseTunicBoots(this, play);
         }
 
         Player_UpdateCamAndSeqModes(play, this);
