@@ -47,6 +47,17 @@ private:
 uint32_t IsGameMasterQuest();
 #endif
 
+#define RANDOMIZER_CVAR(var) "gRandomizer.GeneralSettings." var
+#define RANDOMIZER_SEED_CVAR(var) "gRandomizer.SeedSettings." var
+#define COSMETIC_CVAR(var) "gCosmetics." var
+#define AUDIO_CVAR(var) "gAudioEditor." var
+#define REPL_SEQ_CVAR(var) AUDIO_CVAR("ReplacedSequences." var)
+#define EXCL_SEQ_CVAR(var) AUDIO_CVAR("Excluded." var)
+#define CHEAT_CVAR(var) "gCheat." var
+#define ENHANCEMENT_CVAR(var) "gEnhancement." var
+#define SETTING_CVAR(var) "gSetting." var
+#define WINDOW_CVAR(var) "gOpenWindows." var
+
 #ifndef __cplusplus
     void InitOTR(void);
 void DeinitOTR(void);
