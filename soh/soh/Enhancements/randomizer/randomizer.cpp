@@ -5347,8 +5347,8 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
                 //If MS shuffle is on, Sheik will hint both MS and LA as long as Link doesn't have both, to prevent hint lockout.
                 //Otherwise, she'll only give LA hint so only LA is required to move on.
                 bool needRequirements = GetRandoSettingValue(RSK_SHUFFLE_MASTER_SWORD) ? 
-                (!CHECK_OWNED_EQUIP(EQUIP_SWORD, 1) || INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) :
-                INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT;
+                  (!CHECK_OWNED_EQUIP(EQUIP_SWORD, 1) || INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT) :
+                  (INV_CONTENT(ITEM_ARROW_LIGHT) != ITEM_ARROW_LIGHT);
                 if (needRequirements) {
                     messageEntry.Replace("{{message}}", gSaveContext.sheikText, gSaveContext.sheikText, gSaveContext.sheikText);
                 } else {
@@ -5360,10 +5360,17 @@ CustomMessage Randomizer::GetSheikMessage(s16 scene, u16 originalTextId) {
                     "Cherche l'%cÉpée de Légende%w,&%rquelque chose pour ranger tes flèches%w&et de la %gmagie%w pour invoquer la&%ylumière%w.");
                 }                   
             } else {
-                messageEntry.Replace("{{message}}",
-                "If you're ready, then proceed.^Good luck.",
-                "Wenn Du bereit bist, so schreite&voran.^Viel Glück.",
-                "Si tu es prêt, tu peux y aller.^Bonne chance.");
+                if (!Flags_GetEventChkInf(EVENTCHKINF_DISPELLED_GANONS_TOWER_BARRIER)) {
+                    messageEntry.Replace("{{message}}",
+                    "You may have what you need to defeat&%rthe Evil King%w, but the %cbarrier%w still&stands.^Complete the remaining %gtrials%w&to destroy it."
+                    );
+
+                } else {
+                    messageEntry.Replace("{{message}}",
+                    "If you're ready, then proceed.^Good luck.",
+                    "Wenn Du bereit bist, so schreite&voran.^Viel Glück.",
+                    "Si tu es prêt, tu peux y aller.^Bonne chance.");
+                }
             }
             break;
     }
