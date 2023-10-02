@@ -4,7 +4,6 @@
 #include "random.hpp"
 #include "item.hpp"
 #include "shops.hpp"
-#include "debug.hpp"
 
 #include <math.h>
 #include <map>
@@ -14,7 +13,7 @@ using namespace Settings;
 
 std::vector<ItemAndPrice> NonShopItems = {};
 
-static std::array<std::vector<Text>, 0xD5> trickNameTable; //Table of trick names for ice traps
+static std::array<std::vector<Text>, 0xE0> trickNameTable; // Table of trick names for ice traps
 bool initTrickNames = false; //Indicates if trick ice trap names have been initialized yet
 
 //Set vanilla shop item locations before potentially shuffling
@@ -699,6 +698,10 @@ void InitTrickNames() {
      Text{"Crystal Heart", "Cœur de cristal", "Corazón de cristal"},
      Text{"Life Heart", "Cœur de vie", "Vida Corazón"},
      Text{"Lots of Love", "Beaucoup d'amour", "Mucho amor"}};
+  trickNameTable[0xDF] = {
+     Text{"Piece of Cheese", "Morceau de Fromage", "Piece of Cheese"},
+     Text{"Triforce Shard", "Éclat de Triforce", "Triforce Shard"},
+     Text{"Shiny Rock", "Caiiloux Brillant", "Shiny Rock"}};
 
 /*
   //Names for individual upgrades, in case progressive names are replaced

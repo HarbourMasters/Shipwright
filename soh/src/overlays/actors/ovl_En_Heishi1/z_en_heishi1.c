@@ -124,16 +124,16 @@ void EnHeishi1_Init(Actor* thisx, PlayState* play) {
 
     if (this->type != 5) {
         if ((gSaveContext.dayTime < 0xB888 || IS_DAY) &&
-            ((!gSaveContext.n64ddFlag && !Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ||
-             (gSaveContext.n64ddFlag && !metZelda))) {
+            ((!IS_RANDO && !Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) ||
+             (IS_RANDO && !metZelda))) {
             this->actionFunc = EnHeishi1_SetupWalk;
         } else {
             Actor_Kill(&this->actor);
         }
     } else {
         if ((gSaveContext.dayTime >= 0xB889) || !IS_DAY ||
-            (!gSaveContext.n64ddFlag && Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) || 
-            (gSaveContext.n64ddFlag && metZelda)) {
+            (!IS_RANDO && Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) || 
+            (IS_RANDO && metZelda)) {
             this->actionFunc = EnHeishi1_SetupWaitNight;
         } else {
             Actor_Kill(&this->actor);
@@ -506,7 +506,8 @@ void EnHeishi1_Draw(Actor* thisx, PlayState* play) {
     Vec3f matrixScale = { 0.3f, 0.3f, 0.3f };
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnHeishi1_OverrideLimbDraw, NULL,
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnHeishi1_OverrideLimbDraw,
+                              NULL,
                       this);
     func_80033C30(&this->actor.world.pos, &matrixScale, 0xFF, play);
 

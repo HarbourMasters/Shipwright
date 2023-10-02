@@ -222,7 +222,7 @@ void ObjTsubo_WaterBreak(ObjTsubo* this, PlayState* play) {
 
 void ObjTsubo_SetupWaitForObject(ObjTsubo* this) {
     // Remove pots in Boss Rush. Present in Barinade's and Ganondorf's arenas.
-    if (gSaveContext.isBossRush) {
+    if (IS_BOSS_RUSH) {
         Actor_Kill(this);
     }
 
@@ -283,7 +283,7 @@ void ObjTsubo_Idle(ObjTsubo* this, PlayState* play) {
 void ObjTsubo_SetupLiftedUp(ObjTsubo* this) {
     this->actionFunc = ObjTsubo_LiftedUp;
     this->actor.room = -1;
-    func_8002F7DC(&this->actor, NA_SE_PL_PULL_UP_POT);
+    Player_PlaySfx(&this->actor, NA_SE_PL_PULL_UP_POT);
     this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
 }
 

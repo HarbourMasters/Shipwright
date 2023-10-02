@@ -3,10 +3,10 @@
 
 #include "align_asset_macro.h"
 
-#define dsWipe1Vtx "__OTR__code/z_fbdemo_wipe1/sWipe1Vtx"
-static const ALIGN_ASSET(2) char sWipe1Vtx[] = dsWipe1Vtx;
+#define dsTransWipeVtx "__OTR__code/z_fbdemo_wipe1/sTransWipeVtx"
+static const ALIGN_ASSET(2) char sTransWipeVtx[] = dsTransWipeVtx;
 
-#define dsWipe1Tex "__OTR__code/z_fbdemo_wipe1/sWipe1Tex"
-static const ALIGN_ASSET(2) char sWipe1Tex[] = dsWipe1Tex;
+#define dsTransWipeTex "__OTR__code/z_fbdemo_wipe1/sTransWipeTex"
+static const ALIGN_ASSET(2) char sTransWipeTex[] = dsTransWipeTex;
 
 #endif // CODE_Z_FBDEMO_WIPE1_H

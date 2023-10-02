@@ -107,7 +107,7 @@ void EnCow_Init(Actor* thisx, PlayState* play) {
     EnCow* this = (EnCow*)thisx;
     s32 pad;
 
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_COWS)) {
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_COWS)) {
         EnCow_MoveForRandomizer(thisx, play);
     }
 
@@ -311,7 +311,7 @@ void func_809DF96C(EnCow* this, PlayState* play) {
                     // when randomized with cowsanity, if we haven't gotten the
                     // reward from this cow yet, give that, otherwise use the
                     // vanilla cow behavior
-                    if (gSaveContext.n64ddFlag &&
+                    if (IS_RANDO &&
                         Randomizer_GetSettingValue(RSK_SHUFFLE_COWS) &&
                         !EnCow_HasBeenMilked(this, play)) {
                         EnCow_SetCowMilked(this, play);
@@ -442,14 +442,12 @@ void EnCow_Draw(Actor* thisx, PlayState* play) {
     EnCow* this = (EnCow*)thisx;
 
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnCow_OverrideLimbDraw, EnCow_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnCow_OverrideLimbDraw, EnCow_PostLimbDraw, this);
 }
 
 void func_809E0070(Actor* thisx, PlayState* play) {
     EnCow* this = (EnCow*)thisx;
 
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, this);
 }

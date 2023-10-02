@@ -662,7 +662,7 @@ s16 func_80A70058(PlayState* play, Actor* thisx) {
                     if (Flags_GetInfTable(INFTABLE_191)) { // Already brought the lost dog back
                         func_80A6F7CC(this, play, GI_RUPEE_BLUE);
                     } else {
-                        if (!gSaveContext.n64ddFlag) {
+                        if (!IS_RANDO) {
                             func_80A6F7CC(this, play, GI_HEART_PIECE);
                         } else {
                             this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_LOST_DOG, GI_HEART_PIECE);
@@ -1068,7 +1068,7 @@ void func_80A714C4(EnHy* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         this->actionFunc = func_80A71530;
     } else {
-        if (!gSaveContext.n64ddFlag || this->getItemEntry.getItemId == GI_NONE) {
+        if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
             func_8002F434(&this->actor, play, this->unkGetItemId, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
         } else {
             GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, this->actor.xzDistToPlayer + 1.0f, fabsf(this->actor.yDistToPlayer) + 1.0f);
@@ -1078,7 +1078,7 @@ void func_80A714C4(EnHy* this, PlayState* play) {
 
 void func_80A71530(EnHy* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) {
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             if (!Flags_GetInfTable(INFTABLE_191)) {
                 Flags_SetInfTable(INFTABLE_191);
             }
@@ -1260,8 +1260,7 @@ void EnHy_Draw(Actor* thisx, PlayState* play) {
                 break;
         }
 
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, EnHy_OverrideLimbDraw, EnHy_PostLimbDraw, &this->actor);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnHy_OverrideLimbDraw, EnHy_PostLimbDraw, &this->actor);
     }
 
     CLOSE_DISPS(play->state.gfxCtx);

@@ -1,5 +1,7 @@
 <Root>
     <File Name="object_oE1s" Segment="6">
+        <Texture Name="object_oE1sTex_000478" OutName="object_oE1sTex_000478" Format="ci8" Width="32" Height="32" Offset="0x478" TlutOffset="0x1A8" AddedByScript="true"/>
+        <Texture Name="object_oE1sTLUT_0001A8" OutName="object_oE1sTLUT_0001A8" Format="rgba16" Width="16" Height="16" Offset="0x1A8" AddedByScript="true"/>
         <Animation Name="object_oE1s_Anim_00007C" Offset="0x7C"/>
         <Limb Name="object_oE1s_Limb_000090" LimbType="Standard" Offset="0x90"/>
         <Limb Name="object_oE1s_Limb_00009C" LimbType="Standard" Offset="0x9C"/>
@@ -21,15 +23,15 @@
         <!--Blob Name="object_oE1s_Blob_00019C" Size="0x204" Offset="0x19C" /-->
         <Texture Name="object_oE1s_TLUT_0003A0" OutName="tlut_000003A0" Format="rgba16" Width="108" Height="1" Offset="0x3A0"/>
         <!--Blob Name="object_oE1s_Blob_0005A0" Size="0x2D8" Offset="0x5A0" /-->
-        <Texture Name="object_oE1s_Tex_000878" OutName="tex_00000878" Format="ci8" Width="8" Height="8" Offset="0x878"  TlutOffset="0x3A0"/>
+        <Texture Name="object_oE1s_Tex_000878" OutName="tex_00000878" Format="ci8" Width="8" Height="8" Offset="0x878" TlutOffset="0x3A0"/>
         <Texture Name="object_oE1s_Tex_0008B8" OutName="tex_000008B8" Format="rgba16" Width="16" Height="32" Offset="0x8B8"/>
         <Texture Name="object_oE1s_Tex_000CB8" OutName="tex_00000CB8" Format="rgba16" Width="32" Height="32" Offset="0xCB8"/>
-        <Texture Name="object_oE1s_Tex_0014B8" OutName="tex_000014B8" Format="ci8" Width="16" Height="16" Offset="0x14B8"  TlutOffset="0x3A0"/>
+        <Texture Name="object_oE1s_Tex_0014B8" OutName="tex_000014B8" Format="ci8" Width="16" Height="16" Offset="0x14B8" TlutOffset="0x3A0"/>
         <Texture Name="object_oE1s_Tex_0015B8" OutName="tex_000015B8" Format="i4" Width="16" Height="8" Offset="0x15B8"/>
         <Blob Name="object_oE1s_Blob_0015F8" Size="0x400" Offset="0x15F8"/>
         <Texture Name="object_oE1s_Tex_0019F8" OutName="tex_000019F8" Format="i4" Width="16" Height="16" Offset="0x19F8"/>
         <Texture Name="object_oE1s_Tex_001A78" OutName="tex_00001A78" Format="rgba16" Width="16" Height="8" Offset="0x1A78"/>
-        <Texture Name="object_oE1s_Tex_001B78" OutName="tex_00001B78" Format="ci8" Width="16" Height="16" Offset="0x1B78"  TlutOffset="0x3A0"/>
+        <Texture Name="object_oE1s_Tex_001B78" OutName="tex_00001B78" Format="ci8" Width="16" Height="16" Offset="0x1B78" TlutOffset="0x3A0"/>
         <Blob Name="object_oE1s_Blob_001C78" Size="0x400" Offset="0x1C78"/>
         <DList Name="object_oE1s_DL_004D98" Offset="0x4D98"/>
         <DList Name="object_oE1s_DL_005010" Offset="0x5010"/>

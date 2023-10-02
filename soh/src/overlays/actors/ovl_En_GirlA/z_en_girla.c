@@ -416,7 +416,7 @@ void EnGirlA_InitItem(EnGirlA* this, PlayState* play) {
         return;
     }
 
-    if (!gSaveContext.n64ddFlag || Randomizer_GetSettingValue(RSK_SHOPSANITY) == RO_SHOPSANITY_OFF) {
+    if (!IS_RANDO || Randomizer_GetSettingValue(RSK_SHOPSANITY) == RO_SHOPSANITY_OFF) {
         this->objBankIndex = Object_GetIndex(&play->objectCtx, shopItemEntries[params].objID);
     } else {
         s16 objectId = shopItemEntries[params].objID;
@@ -474,7 +474,7 @@ s32 EnGirlA_CanBuy_Arrows(PlayState* play, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_Bombs(PlayState* play, EnGirlA* this) {
-    if (!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) {
+    if (!IS_RANDO && !CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
     if (AMMO(ITEM_BOMB) >= CUR_CAPACITY(UPG_BOMB_BAG)) {
@@ -605,7 +605,7 @@ s32 EnGirlA_CanBuy_DekuShield(PlayState* play, EnGirlA* this) {
 
 s32 EnGirlA_CanBuy_GoronTunic(PlayState* play, EnGirlA* this) {
     if (LINK_AGE_IN_YEARS == YEARS_CHILD && 
-        (!gSaveContext.n64ddFlag || Randomizer_GetSettingValue(RSK_SHOPSANITY) == RO_SHOPSANITY_OFF)) {
+        (!IS_RANDO || Randomizer_GetSettingValue(RSK_SHOPSANITY) == RO_SHOPSANITY_OFF)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
     if (gBitFlags[9] & gSaveContext.inventory.equipment) {
@@ -622,7 +622,7 @@ s32 EnGirlA_CanBuy_GoronTunic(PlayState* play, EnGirlA* this) {
 
 s32 EnGirlA_CanBuy_ZoraTunic(PlayState* play, EnGirlA* this) {
     if (LINK_AGE_IN_YEARS == YEARS_CHILD &&
-        (!gSaveContext.n64ddFlag || Randomizer_GetSettingValue(RSK_SHOPSANITY) == RO_SHOPSANITY_OFF)) {
+        (!IS_RANDO || Randomizer_GetSettingValue(RSK_SHOPSANITY) == RO_SHOPSANITY_OFF)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
     if (gBitFlags[10] & gSaveContext.inventory.equipment) {
@@ -678,7 +678,7 @@ s32 EnGirlA_CanBuy_Unk20(PlayState* play, EnGirlA* this) {
 s32 EnGirlA_CanBuy_Bombchus(PlayState* play, EnGirlA* this) {
     // When in rando, don't allow buying bombchus when the player doesn't have required explosives
     // If bombchus are in logic, the player needs to have bombchus; otherwise they need a bomb bag
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         u8 bombchusInLogic = Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC);
         if ((!bombchusInLogic && CUR_CAPACITY(UPG_BOMB_BAG) == 0) ||
             (bombchusInLogic && INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE)) {
@@ -1027,7 +1027,7 @@ void EnGirlA_BuyEvent_ObtainBombchuPack(PlayState* play, EnGirlA* this) {
 
 	// Normally, buying a bombchu pack sets a flag indicating the pack is now sold out
     // If they're in logic for rando, skip setting that flag so they can be purchased repeatedly
-    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC)) {
+    if (IS_RANDO && Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC)) {
         return;
     }
 
@@ -1254,7 +1254,7 @@ void EnGirlA_InitializeItemAction(EnGirlA* this, PlayState* play) {
         this->itemGiveFunc = itemEntry->itemGiveFunc;
         this->buyEventFunc = itemEntry->buyEventFunc;
         // If chus are in logic, make the 10 pack affordable without a wallet upgrade
-        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) &&
+        if (IS_RANDO && Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) &&
             this->getItemId == GI_BOMBCHUS_10) {
             this->basePrice = 99;
         } else {

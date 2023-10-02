@@ -199,7 +199,7 @@ void BgDyYoseizo_CheckMagicAcquired(BgDyYoseizo* this, PlayState* play) {
     if (Flags_GetSwitch(play, 0x38)) {
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
 
-        if(gSaveContext.n64ddFlag) {
+        if(IS_RANDO) {
             gSaveContext.healthAccumulator = 0x140;
             Magic_Fill(play);
             if(Flags_GetTreasure(play, this->fountainType + 1)) {
@@ -309,7 +309,7 @@ void BgDyYoseizo_ChooseType(BgDyYoseizo* this, PlayState* play) {
                         gSaveContext.cutsceneTrigger = 1;
                         break;
                     case FAIRY_UPGRADE_HALF_DAMAGE:
-                        play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGreatFairyDoubleDefenceCs);
+                        play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGreatFairyDoubleDefenseCs);
                         gSaveContext.cutsceneTrigger = 1;
                         break;
                 }
@@ -934,8 +934,7 @@ void BgDyYoseizo_Draw(Actor* thisx, PlayState* play) {
 
         gSPSegment(POLY_OPA_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(sMouthTextures[this->mouthState]));
 
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, BgDyYoseizo_OverrideLimbDraw, NULL, this);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, BgDyYoseizo_OverrideLimbDraw, NULL, this);
     }
     CLOSE_DISPS(play->state.gfxCtx);
     BgDyYoseizo_ParticleDraw(this, play);

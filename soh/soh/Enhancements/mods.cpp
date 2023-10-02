@@ -1,13 +1,28 @@
 #include "mods.h"
 #include <libultraship/bridge.h>
 #include "game-interactor/GameInteractor.h"
-#include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "tts/tts.h"
+#include "soh/OTRGlobals.h"
 #include "soh/Enhancements/boss-rush/BossRushTypes.h"
 #include "soh/Enhancements/enhancementTypes.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
 #include "soh/Enhancements/cosmetics/authenticGfxPatches.h"
+#include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include "soh/Enhancements/nametag.h"
+
+#include "src/overlays/actors/ovl_En_Bb/z_en_bb.h"
+#include "src/overlays/actors/ovl_En_Dekubaba/z_en_dekubaba.h"
+#include "src/overlays/actors/ovl_En_Mb/z_en_mb.h"
+#include "src/overlays/actors/ovl_En_Tite/z_en_tite.h"
+#include "src/overlays/actors/ovl_En_Zf/z_en_zf.h"
+#include "src/overlays/actors/ovl_En_Wf/z_en_wf.h"
+#include "src/overlays/actors/ovl_En_Reeba/z_en_reeba.h"
+#include "src/overlays/actors/ovl_En_Peehat/z_en_peehat.h"
+#include "src/overlays/actors/ovl_En_Po_Field/z_en_po_field.h"
+#include "src/overlays/actors/ovl_En_Poh/z_en_poh.h"
+#include "src/overlays/actors/ovl_En_Tp/z_en_tp.h"
+#include "src/overlays/actors/ovl_En_Firefly/z_en_firefly.h"
+#include "src/overlays/actors/ovl_En_Xc/z_en_xc.h"
 
 extern "C" {
 #include <z64.h>
@@ -127,7 +142,7 @@ void RegisterInfiniteISG() {
 
         if (CVarGetInteger("gEzISG", 0) != 0) {
             Player* player = GET_PLAYER(gPlayState);
-            player->swordState = 1;
+            player->meleeWeaponState = 1;
         }
     });
 }
@@ -216,9 +231,9 @@ void RegisterOcarinaTimeTravel() {
             gPlayState->msgCtx.lastPlayedSong == OCARINA_SONG_TIME && !nearbyTimeBlockEmpty && !nearbyTimeBlock &&
             !nearbyOcarinaSpot && !nearbyFrogs) {
 
-            if (gSaveContext.n64ddFlag) {
+            if (IS_RANDO) {
                 CVarSetInteger("gSwitchTimeline", 1);
-            } else if (!gSaveContext.n64ddFlag && !nearbyDoorOfTime) {
+            } else if (!IS_RANDO && !nearbyDoorOfTime) {
                 // This check is made for when Link is learning the Song Of Time in a vanilla save file that load a
                 // Temple of Time scene where the only object present is the Door of Time
                 CVarSetInteger("gSwitchTimeline", 1);
@@ -454,7 +469,7 @@ void RegisterHyperBosses() {
 
         uint8_t hyperBossesActive =
             CVarGetInteger("gHyperBosses", 0) ||
-            (gSaveContext.isBossRush &&
+            (IS_BOSS_RUSH &&
              gSaveContext.bossRushOptions[BR_OPTIONS_HYPERBOSSES] == BR_CHOICE_HYPERBOSSES_YES);
 
         // Don't apply during cutscenes because it causes weird behaviour and/or crashes on some bosses.
@@ -566,8 +581,7 @@ void UpdateMirrorModeState(int32_t sceneNum) {
                         (sceneNum == SCENE_GANON_BOSS);
 
     if (mirroredMode == MIRRORED_WORLD_RANDOM_SEEDED || mirroredMode == MIRRORED_WORLD_DUNGEONS_RANDOM_SEEDED) {
-        uint32_t seed = sceneNum + (gSaveContext.n64ddFlag ? (gSaveContext.seedIcons[0] + gSaveContext.seedIcons[1] +
-                        gSaveContext.seedIcons[2] + gSaveContext.seedIcons[3] + gSaveContext.seedIcons[4]) : gSaveContext.sohStats.fileCreatedAt);
+        uint32_t seed = sceneNum + (IS_RANDO ? gSaveContext.finalSeed : gSaveContext.sohStats.fileCreatedAt);
         Random_Init(seed);
     }
 
@@ -598,6 +612,236 @@ void UpdateMirrorModeState(int32_t sceneNum) {
 void RegisterMirrorModeHandler() {
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneInit>([](int32_t sceneNum) {
         UpdateMirrorModeState(sceneNum);
+    });
+}
+
+f32 triforcePieceScale;
+
+void RegisterTriforceHunt() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
+        if (!GameInteractor::IsGameplayPaused() &&
+            OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT)) {
+
+            // Warp to credits
+            if (GameInteractor::State::TriforceHuntCreditsWarpActive) {
+                gPlayState->nextEntranceIndex = 0x6B;
+                gSaveContext.nextCutsceneIndex = 0xFFF2;
+                gPlayState->sceneLoadFlag = 0x14;
+                gPlayState->fadeTransition = 3;
+                GameInteractor::State::TriforceHuntCreditsWarpActive = 0;
+            }
+
+            // Reset Triforce Piece scale for GI animation. Triforce Hunt allows for multiple triforce models,
+            // and cycles through them based on the amount of triforce pieces collected. It takes a little while
+            // for the count to increase during the GI animation, so the model is entirely hidden until that piece
+            // has been added. That scale has to be reset after the textbox is closed, and this is the best way
+            // to ensure it's done at that point in time specifically.
+            if (GameInteractor::State::TriforceHuntPieceGiven) {
+                triforcePieceScale = 0.0f;
+                GameInteractor::State::TriforceHuntPieceGiven = 0;
+            }
+
+            uint8_t currentPieces = gSaveContext.triforcePiecesCollected;
+            uint8_t requiredPieces = OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED);
+            
+            // Give Boss Key when player loads back into the savefile.
+            if (currentPieces >= requiredPieces && gPlayState->sceneLoadFlag != 0x14 &&
+                (1 << 0 & gSaveContext.inventory.dungeonItems[SCENE_GANONS_TOWER]) == 0) {
+                GetItemEntry getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(MOD_RANDOMIZER, RG_GANONS_CASTLE_BOSS_KEY);
+                GiveItemEntryWithoutActor(gPlayState, getItemEntry);
+            }
+        }
+    });
+}
+
+//this map is used for enemies that can be uniquely identified by their id
+//and that are always counted
+//enemies that can't be uniquely identified by their id
+//or only sometimes count (like ACTOR_EN_TP)
+//have to be manually handled in RegisterEnemyDefeatCounts
+static std::unordered_map<u16, u16> uniqueEnemyIdToStatCount = {
+    { ACTOR_EN_ANUBICE,    COUNT_ENEMIES_DEFEATED_ANUBIS },
+    { ACTOR_EN_AM,         COUNT_ENEMIES_DEFEATED_ARMOS },
+    { ACTOR_EN_CLEAR_TAG,  COUNT_ENEMIES_DEFEATED_ARWING },
+    { ACTOR_EN_VALI,       COUNT_ENEMIES_DEFEATED_BARI },
+    { ACTOR_EN_VM,         COUNT_ENEMIES_DEFEATED_BEAMOS },
+    { ACTOR_EN_BIGOKUTA,   COUNT_ENEMIES_DEFEATED_BIG_OCTO },
+    { ACTOR_EN_BILI,       COUNT_ENEMIES_DEFEATED_BIRI },
+    { ACTOR_EN_DNS,        COUNT_ENEMIES_DEFEATED_BUSINESS_SCRUB },
+    { ACTOR_EN_TORCH,      COUNT_ENEMIES_DEFEATED_DARK_LINK },
+    { ACTOR_EN_DH,         COUNT_ENEMIES_DEFEATED_DEAD_HAND },
+    { ACTOR_EN_HINTNUTS,   COUNT_ENEMIES_DEFEATED_DEKU_SCRUB },
+    { ACTOR_EN_DODONGO,    COUNT_ENEMIES_DEFEATED_DODONGO },
+    { ACTOR_EN_DODOJR,     COUNT_ENEMIES_DEFEATED_DODONGO_BABY },
+    { ACTOR_DOOR_KILLER,   COUNT_ENEMIES_DEFEATED_DOOR_TRAP },
+    { ACTOR_EN_FD,         COUNT_ENEMIES_DEFEATED_FLARE_DANCER },
+    { ACTOR_EN_FLOORMAS,   COUNT_ENEMIES_DEFEATED_FLOORMASTER },
+    { ACTOR_EN_TUBO_TRAP,  COUNT_ENEMIES_DEFEATED_FLYING_POT },
+    { ACTOR_EN_YUKABYUN,   COUNT_ENEMIES_DEFEATED_FLOOR_TILE },
+    { ACTOR_EN_FZ,         COUNT_ENEMIES_DEFEATED_FREEZARD },
+    { ACTOR_EN_GELDB,      COUNT_ENEMIES_DEFEATED_GERUDO_THIEF },
+    { ACTOR_EN_GOMA,       COUNT_ENEMIES_DEFEATED_GOHMA_LARVA },
+    { ACTOR_EN_CROW,       COUNT_ENEMIES_DEFEATED_GUAY },
+    { ACTOR_EN_RR,         COUNT_ENEMIES_DEFEATED_LIKE_LIKE },
+    { ACTOR_EN_DEKUNUTS,   COUNT_ENEMIES_DEFEATED_MAD_SCRUB },
+    { ACTOR_EN_OKUTA,      COUNT_ENEMIES_DEFEATED_OCTOROK },
+    { ACTOR_EN_BA,         COUNT_ENEMIES_DEFEATED_PARASITIC_TENTACLE },
+    { ACTOR_EN_PO_SISTERS, COUNT_ENEMIES_DEFEATED_POE_SISTERS },
+    { ACTOR_EN_BUBBLE,     COUNT_ENEMIES_DEFEATED_SHABOM },
+    { ACTOR_EN_SB,         COUNT_ENEMIES_DEFEATED_SHELLBLADE },
+    { ACTOR_EN_SKJ,        COUNT_ENEMIES_DEFEATED_SKULL_KID },
+    { ACTOR_EN_NY,         COUNT_ENEMIES_DEFEATED_SPIKE },
+    { ACTOR_EN_SKB,        COUNT_ENEMIES_DEFEATED_STALCHILD },
+    { ACTOR_EN_TEST,       COUNT_ENEMIES_DEFEATED_STALFOS },
+    { ACTOR_EN_WEIYER,     COUNT_ENEMIES_DEFEATED_STINGER },
+    { ACTOR_EN_BW,         COUNT_ENEMIES_DEFEATED_TORCH_SLUG },
+    { ACTOR_EN_WALLMAS,    COUNT_ENEMIES_DEFEATED_WALLMASTER },
+    { ACTOR_EN_KAREBABA,   COUNT_ENEMIES_DEFEATED_WITHERED_DEKU_BABA },
+};
+
+void RegisterEnemyDefeatCounts() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnEnemyDefeat>([](void* refActor) {
+        Actor* actor = (Actor*)refActor;
+        if (uniqueEnemyIdToStatCount.contains(actor->id)) {
+            gSaveContext.sohStats.count[uniqueEnemyIdToStatCount[actor->id]]++;
+        } else {
+            switch (actor->id) {
+                case ACTOR_EN_BB:
+                    if (actor->params == ENBB_GREEN || actor->params == ENBB_GREEN_BIG) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_GREEN]++;
+                    } else if (actor->params == ENBB_BLUE) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_BLUE]++;
+                    } else if (actor->params == ENBB_WHITE) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_WHITE]++;
+                    } else if (actor->params == ENBB_RED) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_BUBBLE_RED]++;
+                    }
+                    break;
+
+                case ACTOR_EN_DEKUBABA:
+                    if (actor->params == DEKUBABA_BIG) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA_BIG]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DEKU_BABA]++;
+                    }
+                    break;
+
+                case ACTOR_EN_ZF:
+                    if (actor->params == ENZF_TYPE_DINOLFOS) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DINOLFOS]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LIZALFOS]++;
+                    }
+                    break;
+
+                case ACTOR_EN_RD:
+                    if (actor->params >= -1) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_REDEAD]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GIBDO]++;
+                    }
+                    break;
+
+                case ACTOR_EN_IK:
+                    if (actor->params == 0) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE_NABOORU]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_IRON_KNUCKLE]++;
+                    }
+                    break;
+
+                case ACTOR_EN_FIREFLY:
+                    if (actor->params == KEESE_NORMAL_FLY || actor->params == KEESE_NORMAL_PERCH) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE]++;
+                    } else if (actor->params == KEESE_FIRE_FLY || actor->params == KEESE_FIRE_PERCH) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE_FIRE]++;
+                    } else if (actor->params == KEESE_ICE_FLY) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_KEESE_ICE]++;
+                    }
+                    break;
+
+                case ACTOR_EN_REEBA:
+                    {
+                        EnReeba* reeba = (EnReeba*)actor;
+                        if (reeba->isBig) {
+                            gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER_BIG]++;
+                        } else {
+                            gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER]++;
+                        }
+                    }
+                    break;
+
+                case ACTOR_EN_MB:
+                    if (actor->params == 0) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MOBLIN_CLUB]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MOBLIN]++;
+                    }
+                    break;
+
+                case ACTOR_EN_PEEHAT:
+                    if (actor->params == PEAHAT_TYPE_LARVA) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PEAHAT_LARVA]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_PEAHAT]++;
+                    }
+                    break;
+                
+                case ACTOR_EN_POH:
+                    if (actor->params == EN_POH_FLAT || actor->params == EN_POH_SHARP) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_COMPOSER]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE]++;
+                    }
+                    break;
+
+                case ACTOR_EN_PO_FIELD:
+                    if (actor->params == EN_PO_FIELD_BIG) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_BIG]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE]++;
+                    }
+                    break;
+
+                case ACTOR_EN_ST:
+                    if (actor->params == 1) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_BIG]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA]++;
+                    }
+                    break;
+
+                case ACTOR_EN_SW:
+                    if (((actor->params & 0xE000) >> 0xD) != 0) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_GOLD]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLWALLTULA]++;
+                    }
+                    break;
+
+                case ACTOR_EN_TP:
+                    if (actor->params == TAILPASARAN_HEAD) {  // Only count the head, otherwise each body segment will increment
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TAILPASARAN]++;
+                    }
+                    break;
+
+                case ACTOR_EN_TITE:
+                    if (actor->params == TEKTITE_BLUE) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_BLUE]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_TEKTITE_RED]++;
+                    }
+                    break;
+
+                case ACTOR_EN_WF:
+                    if (actor->params == WOLFOS_WHITE) {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WOLFOS_WHITE]++;
+                    } else {
+                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_WOLFOS]++;
+                    }
+                    break;
+            }
+        }
     });
 }
 
@@ -749,6 +993,28 @@ void RegisterAltTrapTypes() {
     });
 }
 
+void RegisterRandomizerSheikSpawn() {
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
+        if (!gPlayState) return;
+        bool canSheik = (OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIAL_COUNT) != RO_GANONS_TRIALS_SKIP && 
+          OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_LIGHT_ARROWS_HINT));
+        if (!IS_RANDO || !LINK_IS_ADULT || !canSheik) return;
+        switch (gPlayState->sceneNum) {
+            case SCENE_TEMPLE_OF_TIME:
+                if (gPlayState->roomCtx.curRoom.num == 1) {
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, -104, -40, 2382, 0, 0x8000, 0, SHEIK_TYPE_RANDO, false);
+                }
+                break;
+            case SCENE_INSIDE_GANONS_CASTLE:
+                if (gPlayState->roomCtx.curRoom.num == 1){
+                    Actor_Spawn(&gPlayState->actorCtx, gPlayState, ACTOR_EN_XC, 101, 150, 137, 0, 0, 0, SHEIK_TYPE_RANDO, false);
+                    }
+                break;
+            default: break;
+        }
+    });
+}
+
 void InitMods() {
     RegisterTTS();
     RegisterInfiniteMoney();
@@ -771,6 +1037,9 @@ void InitMods() {
     RegisterBonkDamage();
     RegisterMenuPathFix();
     RegisterMirrorModeHandler();
+    RegisterTriforceHunt();
+    RegisterEnemyDefeatCounts();
     RegisterAltTrapTypes();
+    RegisterRandomizerSheikSpawn();
     NameTag_RegisterHooks();
 }

@@ -1,5 +1,16 @@
 <Root>
     <File Name="ganon_demo_scene" Segment="2">
+        <Texture Name="ganon_demo_sceneTex_001B70" OutName="ganon_demo_sceneTex_001B70" Format="i8" Width="128" Height="32" Offset="0x1B70" AddedByScript="true"/>
+        <Texture Name="ganon_demo_sceneTex_002B70" OutName="ganon_demo_sceneTex_002B70" Format="i8" Width="64" Height="64" Offset="0x2B70" AddedByScript="true"/>
+        <Texture Name="ganon_demo_sceneTex_003B70" OutName="ganon_demo_sceneTex_003B70" Format="i8" Width="64" Height="64" Offset="0x3B70" AddedByScript="true"/>
+        <Texture Name="ganon_demo_sceneTex_004B70" OutName="ganon_demo_sceneTex_004B70" Format="i8" Width="64" Height="64" Offset="0x4B70" AddedByScript="true"/>
+        <Texture Name="ganon_demo_sceneTex_005B70" OutName="ganon_demo_sceneTex_005B70" Format="rgba16" Width="64" Height="16" Offset="0x5B70" AddedByScript="true"/>
+        <Texture Name="ganon_demo_sceneTex_006370" OutName="ganon_demo_sceneTex_006370" Format="rgba16" Width="32" Height="32" Offset="0x6370" AddedByScript="true"/>
+        <Texture Name="ganon_demo_sceneTex_006B70" OutName="ganon_demo_sceneTex_006B70" Format="ia4" Width="128" Height="32" Offset="0x6B70" AddedByScript="true"/>
+        <Texture Name="ganon_demo_sceneTex_007370" OutName="ganon_demo_sceneTex_007370" Format="rgba16" Width="32" Height="64" Offset="0x7370" AddedByScript="true"/>
+        <Texture Name="ganon_demo_sceneTex_008370" OutName="ganon_demo_sceneTex_008370" Format="rgba16" Width="16" Height="32" Offset="0x8370" AddedByScript="true"/>
+        <Texture Name="ganon_demo_sceneTex_008770" OutName="ganon_demo_sceneTex_008770" Format="i8" Width="16" Height="16" Offset="0x8770" AddedByScript="true"/>
+        <Texture Name="ganon_demo_sceneTex_008870" OutName="ganon_demo_sceneTex_008870" Format="rgba16" Width="32" Height="32" Offset="0x8870" AddedByScript="true"/>
         <Scene Name="ganon_demo_scene" Offset="0x0"/>
     </File>
     <File Name="ganon_demo_room_0" Segment="3">

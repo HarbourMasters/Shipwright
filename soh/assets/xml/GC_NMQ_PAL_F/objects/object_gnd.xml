@@ -1,6 +1,7 @@
 <Root>
     <File Name="object_gnd" Segment="6">
         
+        <Texture Name="object_gndTex_012B50" OutName="object_gndTex_012B50" Format="rgba16" Width="16" Height="32" Offset="0x12B50" AddedByScript="true"/>
         <!-- Skeleton -->
         <Skeleton Name="gPhantomGanonSkel" Type="Normal" LimbType="Standard" Offset="0xC710"/>
         
