@@ -1,17 +1,12 @@
 #include "global.h"
 #include "vt.h"
+#include <string.h>
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 
-//#include <string.h>
-
-#ifdef _MSC_VER
-extern void* __cdecl memset(_Out_writes_bytes_all_(_Size) void* _Dst, _In_ int _Val, _In_ size_t _Size);
-#endif
-
 s32 D_8012D280 = 1;
 
-static ControllerCallback controllerCallback;
+void OTRControllerCallback(uint8_t rumble);
 
 OSMesgQueue* PadMgr_LockSerialMesgQueue(PadMgr* padMgr) {
     OSMesgQueue* ctrlrQ = NULL;
@@ -211,6 +206,7 @@ void PadMgr_RumbleSet(PadMgr* padMgr, u8* ctrlrRumbles) {
     padMgr->rumbleOnFrames = 240;
 }
 
+#define PAUSE_BUFFER_INPUT_BLOCK_ID 0
 void PadMgr_ProcessInputs(PadMgr* padMgr) {
     s32 i;
     Input* input;
@@ -231,6 +227,12 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
 
                 if (GameInteractor_DisableZTargetingActive()) {
                     input->cur.button &= ~(BTN_Z);
+                }
+
+                uint32_t emulatedButtons = GameInteractor_GetEmulatedButtons();
+                if (emulatedButtons) {
+                    input->cur.button |= emulatedButtons;
+                    GameInteractor_SetEmulatedButtons(0);
                 }
 
                 if (GameInteractor_ReverseControlsActive()) {
@@ -282,6 +284,13 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
                 Fault_AddHungupAndCrash(__FILE__, __LINE__);
         }
 
+        // When 3 frames are left on easy pause buffer, re-apply the last held inputs to the prev inputs
+        // to compute the pressed difference. This makes it so previously held inputs are continued as "held",
+        // but new inputs when unpausing are "pressed" out of the pause menu.
+        if (CVarGetInteger("gCheatEasyPauseBufferTimer", 0) == 3) {
+            input->prev.button = CVarGetInteger("gCheatEasyPauseBufferLastInputs", 0);
+        }
+
         buttonDiff = input->prev.button ^ input->cur.button;
         input->press.button |= (u16)(buttonDiff & input->cur.button);
         input->rel.button |= (u16)(buttonDiff & input->prev.button);
@@ -290,30 +299,8 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
         input->press.stick_y += (s8)(input->cur.stick_y - input->prev.stick_y);
     }
 
-    controllerCallback.rumble = (padMgr->rumbleEnable[0] > 0);
-
-    if (HealthMeter_IsCritical()) {
-        controllerCallback.ledColor = 0;
-    } else if (gPlayState) {
-        switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
-            case PLAYER_TUNIC_KOKIRI:
-                controllerCallback.ledColor = 1;
-                break;
-            case PLAYER_TUNIC_GORON:
-                controllerCallback.ledColor = 2;
-                break;
-            case PLAYER_TUNIC_ZORA:
-                controllerCallback.ledColor = 3;
-                break;
-        }
-    }
-
-    OTRControllerCallback(&controllerCallback);
-    if (CVarGetInteger("gPauseBufferBlockInputFrame", 0)) {
-        Controller_BlockGameInput();
-    } else {
-        Controller_UnblockGameInput();
-    }
+    uint8_t rumble = (padMgr->rumbleEnable[0] > 0);
+    OTRControllerCallback(rumble);
 
     PadMgr_UnlockPadData(padMgr);
 }

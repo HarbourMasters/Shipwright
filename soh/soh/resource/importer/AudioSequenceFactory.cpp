@@ -2,35 +2,33 @@
 #include "soh/resource/type/AudioSequence.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> AudioSequenceFactory::ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader)
-{
-	auto resource = std::make_shared<AudioSequence>();
-	std::shared_ptr<ResourceVersionFactory> factory = nullptr;
+namespace LUS {
+std::shared_ptr<IResource>
+AudioSequenceFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+    auto resource = std::make_shared<AudioSequence>(initData);
+    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-	switch (version)
-	{
-	case 2:
-		factory = std::make_shared<AudioSequenceFactoryV0>();
-		break;
-	}
+    switch (resource->GetInitData()->ResourceVersion) {
+    case 2:
+	    factory = std::make_shared<AudioSequenceFactoryV0>();
+	    break;
+    }
 
-	if (factory == nullptr)
-	{
-		SPDLOG_ERROR("Failed to load AudioSequence with version {}", version);
-		return nullptr;
-	}
+    if (factory == nullptr)
+    {
+        SPDLOG_ERROR("Failed to load AudioSequence with version {}", resource->GetInitData()->ResourceVersion);
+        return nullptr;
+    }
 
-	factory->ParseFileBinary(reader, resource);
+    factory->ParseFileBinary(reader, resource);
 
-	return resource;
+    return resource;
 }
 
-void Ship::AudioSequenceFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                                   std::shared_ptr<Resource> resource)
-{
-	std::shared_ptr<AudioSequence> audioSequence = std::static_pointer_cast<AudioSequence>(resource);
-	ResourceVersionFactory::ParseFileBinary(reader, audioSequence);
+void LUS::AudioSequenceFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+                                                   std::shared_ptr<IResource> resource) {
+    std::shared_ptr<AudioSequence> audioSequence = std::static_pointer_cast<AudioSequence>(resource);
+    ResourceVersionFactory::ParseFileBinary(reader, audioSequence);
 
     audioSequence->sequence.seqDataSize = reader->ReadInt32();
     audioSequence->sequenceData.reserve(audioSequence->sequence.seqDataSize);
@@ -51,4 +49,4 @@ void Ship::AudioSequenceFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader>
         audioSequence->sequence.fonts[i] = reader->ReadUByte();
     }
 }
-} // namespace Ship
+} // namespace LUS

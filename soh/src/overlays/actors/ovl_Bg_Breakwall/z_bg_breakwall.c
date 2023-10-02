@@ -9,7 +9,7 @@
 #include "objects/object_bwall/object_bwall.h"
 #include "objects/object_kingdodongo/object_kingdodongo.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 typedef struct {
     /* 0x00 */ CollisionHeader* colHeader;
@@ -106,7 +106,7 @@ void BgBreakwall_Init(Actor* thisx, PlayState* play) {
     s32 wallType = ((this->dyna.actor.params >> 13) & 3) & 0xFF;
 
     // Initialize this with the mud wall, so it can't be affected by toggling while the actor is loaded
-    blueFireArrowsEnabledOnMudwallLoad = CVarGetInteger("gBlueFireArrows", 0) || (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_BLUE_FIRE_ARROWS));
+    blueFireArrowsEnabledOnMudwallLoad = CVarGetInteger("gBlueFireArrows", 0) || (IS_RANDO && Randomizer_GetSettingValue(RSK_BLUE_FIRE_ARROWS));
 
     Actor_ProcessInitChain(&this->dyna.actor, sInitChain);
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
@@ -242,7 +242,7 @@ void BgBreakwall_WaitForObject(BgBreakwall* this, PlayState* play) {
 
         this->dyna.actor.objBankIndex = this->bankIndex;
         Actor_SetObjectDependency(play, &this->dyna.actor);
-        this->dyna.actor.flags &= ~ACTOR_FLAG_4;
+        this->dyna.actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
         this->dyna.actor.draw = BgBreakwall_Draw;
         CollisionHeader_GetVirtual(sBombableWallInfo[wallType].colHeader, &colHeader);
         this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
@@ -274,7 +274,8 @@ void BgBreakwall_Wait(BgBreakwall* this, PlayState* play) {
         }
     }
     
-    if (this->collider.base.acFlags & 2 || blueFireArrowHit) {
+    // Break the floor immediately in Boss Rush so the player can jump in the hole immediately.
+    if (this->collider.base.acFlags & 2 || blueFireArrowHit || IS_BOSS_RUSH) {
         Vec3f effectPos;
         s32 wallType = ((this->dyna.actor.params >> 13) & 3) & 0xFF;
 
@@ -297,8 +298,8 @@ void BgBreakwall_Wait(BgBreakwall* this, PlayState* play) {
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_WALL_BROKEN);
         }
 
-        if ((wallType == BWALL_DC_ENTRANCE) && (!(Flags_GetEventChkInf(0xB0)))) {
-            Flags_SetEventChkInf(0xB0);
+        if ((wallType == BWALL_DC_ENTRANCE) && (!Flags_GetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN))) {
+            Flags_SetEventChkInf(EVENTCHKINF_ENTERED_DODONGOS_CAVERN);
             Cutscene_SetSegment(play, gDcOpeningCs);
             gSaveContext.cutsceneTrigger = 1;
             Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);

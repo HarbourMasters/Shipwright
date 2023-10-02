@@ -99,7 +99,7 @@ void EnDntDemo_Init(Actor* thisx, PlayState* play2) {
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ じじじじじじじじじじい ☆☆☆☆☆ %x\n" VT_RST, this->leader);
     }
     this->subCamera = 0;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actionFunc = EnDntDemo_Judge;
 }
 
@@ -135,20 +135,23 @@ void EnDntDemo_Judge(EnDntDemo* this, PlayState* play) {
             this->judgeTimer = 0;
         }
     } else {
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
+            Player* player = GET_PLAYER(play);
             switch (Player_GetMask(play)) {
                 case PLAYER_MASK_SKULL:
-                    if (!Flags_GetTreasure(play, 0x1F)) {
+                    if (!Flags_GetTreasure(play, 0x1F) && !Player_InBlockingCsMode(play, player)) {
                         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_SKULL_MASK, GI_STICK_UPGRADE_30);
                         GiveItemEntryWithoutActor(play, getItemEntry);
-                        Flags_SetTreasure(play, 0x1F);
+                        player->pendingFlag.flagID = 0x1F;
+                        player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
                     }
                     break;
                 case PLAYER_MASK_TRUTH:
-                    if (!Flags_GetTreasure(play, 0x1E)) {
+                    if (!Flags_GetTreasure(play, 0x1E) && !Player_InBlockingCsMode(play, player)) {
                         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_DEKU_THEATER_MASK_OF_TRUTH, GI_NUT_UPGRADE_40);
                         GiveItemEntryWithoutActor(play, getItemEntry);
-                        Flags_SetTreasure(play, 0x1E);
+                        player->pendingFlag.flagID = 0x1E;
+                        player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
                     }
                     break;
             }
@@ -177,14 +180,14 @@ void EnDntDemo_Judge(EnDntDemo* this, PlayState* play) {
             delay = 0;
             switch (Player_GetMask(play)) {
                 case PLAYER_MASK_SKULL:
-                    if (!(gSaveContext.itemGetInf[1] & 0x4000)) {
+                    if (!Flags_GetItemGetInf(ITEMGETINF_OBTAINED_STICK_UPGRADE_FROM_STAGE)) {
                         reaction = DNT_SIGNAL_CELEBRATE;
                         this->prize = DNT_PRIZE_STICK;
                         Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_SARIA_THEME);
                         break;
                     }
                 case PLAYER_MASK_TRUTH:
-                    if (!(gSaveContext.itemGetInf[1] & 0x8000) && (Player_GetMask(play) != PLAYER_MASK_SKULL)) {
+                    if (!Flags_GetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE) && (Player_GetMask(play) != PLAYER_MASK_SKULL)) {
                         Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                                &D_801333E8);
                         this->prize = DNT_PRIZE_NUTS;

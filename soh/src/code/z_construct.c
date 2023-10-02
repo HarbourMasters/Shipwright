@@ -1,5 +1,6 @@
 #include "global.h"
 #include <textures/do_action_static/do_action_static.h>
+#include <assert.h>
 
 void func_80110990(PlayState* play) {
     Map_Destroy(play);
@@ -37,22 +38,20 @@ void func_801109B0(PlayState* play) {
 
     osSyncPrintf("parameter->parameterSegment=%x\n", interfaceCtx->parameterSegment);
 
-    ASSERT(interfaceCtx->parameterSegment != NULL);
+    assert(interfaceCtx->parameterSegment != NULL);
     DmaMgr_SendRequest1(interfaceCtx->parameterSegment, (uintptr_t)_parameter_staticSegmentRomStart, parameterSize,
                         __FILE__, 162);
 
-    interfaceCtx->doActionSegment = GAMESTATE_ALLOC_MC(&play->state, 0x480);
+    interfaceCtx->doActionSegment = GAMESTATE_ALLOC_MC(&play->state, 3 * sizeof(char*));
 
     osSyncPrintf("ＤＯアクション テクスチャ初期=%x\n", 0x480); // "DO Action Texture Initialization"
     osSyncPrintf("parameter->do_actionSegment=%x\n", interfaceCtx->doActionSegment);
 
-    ASSERT(interfaceCtx->doActionSegment != NULL);
+    assert(interfaceCtx->doActionSegment != NULL);
 
-    uint32_t attackDoActionTexSize = GetResourceTexSizeByName(gAttackDoActionENGTex, false);
-    memcpy(interfaceCtx->doActionSegment, GetResourceDataByName(gAttackDoActionENGTex, false), attackDoActionTexSize);
-    memcpy(interfaceCtx->doActionSegment + (attackDoActionTexSize / 2), GetResourceDataByName(gCheckDoActionENGTex, false), attackDoActionTexSize);
-
-    memcpy(interfaceCtx->doActionSegment + attackDoActionTexSize, GetResourceDataByName(gReturnDoActionENGTex, false), GetResourceTexSizeByName(gReturnDoActionENGTex, false));
+    interfaceCtx->doActionSegment[0] = gAttackDoActionENGTex;
+    interfaceCtx->doActionSegment[1] = gCheckDoActionENGTex;
+    interfaceCtx->doActionSegment[2] = gReturnDoActionENGTex;
 
     interfaceCtx->iconItemSegment = GAMESTATE_ALLOC_MC(
         &play->state, 0x1000 * ARRAY_COUNT(gSaveContext.equips.buttonItems));
@@ -61,7 +60,7 @@ void func_801109B0(PlayState* play) {
     osSyncPrintf("アイコンアイテム テクスチャ初期=%x\n", 0x4000);
     osSyncPrintf("parameter->icon_itemSegment=%x\n", interfaceCtx->iconItemSegment);
 
-    ASSERT(interfaceCtx->iconItemSegment != NULL);
+    assert(interfaceCtx->iconItemSegment != NULL);
 
     osSyncPrintf("Register_Item[%x, %x, %x, %x]\n", gSaveContext.equips.buttonItems[0],
                  gSaveContext.equips.buttonItems[1], gSaveContext.equips.buttonItems[2],
@@ -156,7 +155,7 @@ void Message_Init(PlayState* play) {
     osSyncPrintf("message->fukidashiSegment=%x\n", msgCtx->textboxSegment);
 
     osSyncPrintf("吹き出しgame_alloc=%x\n", 0x2200); // "Textbox game_alloc=%x"
-    ASSERT(msgCtx->textboxSegment != NULL);
+    assert(msgCtx->textboxSegment != NULL);
 
     Font_LoadOrderedFont(&play->msgCtx.font);
 

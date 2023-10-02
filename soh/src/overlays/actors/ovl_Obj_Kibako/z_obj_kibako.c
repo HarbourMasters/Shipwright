@@ -8,7 +8,7 @@
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "overlays/effects/ovl_Effect_Ss_Kakera/z_eff_ss_kakera.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_26)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_CAN_PRESS_SWITCH)
 
 void ObjKibako_Init(Actor* thisx, PlayState* play);
 void ObjKibako_Destroy(Actor* thisx, PlayState* play);
@@ -223,7 +223,7 @@ void ObjKibako_Idle(ObjKibako* this, PlayState* play) {
 void ObjKibako_SetupHeld(ObjKibako* this) {
     this->actionFunc = ObjKibako_Held;
     this->actor.room = -1;
-    func_8002F7DC(&this->actor, NA_SE_PL_PULL_UP_WOODBOX);
+    Player_PlaySfx(&this->actor, NA_SE_PL_PULL_UP_WOODBOX);
 }
 
 void ObjKibako_Held(ObjKibako* this, PlayState* play) {

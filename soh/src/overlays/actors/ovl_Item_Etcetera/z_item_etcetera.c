@@ -5,8 +5,9 @@
  */
 
 #include "z_item_etcetera.h"
+#include <assert.h>
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void ItemEtcetera_Init(Actor* thisx, PlayState* play);
 void ItemEtcetera_Destroy(Actor* thisx, PlayState* play);
@@ -21,7 +22,6 @@ void ItemEtcetera_SpawnSparkles(ItemEtcetera* this, PlayState* play);
 void ItemEtcetera_MoveFireArrowDown(ItemEtcetera* this, PlayState* play);
 void func_80B85B28(ItemEtcetera* this, PlayState* play);
 void ItemEtcetera_UpdateFireArrow(ItemEtcetera* this, PlayState* play);
-GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, PlayState* play);
 
 const ActorInit Item_Etcetera_InitVars = {
     ACTOR_ITEM_ETCETERA,
@@ -69,7 +69,7 @@ void ItemEtcetera_Init(Actor* thisx, PlayState* play) {
     objBankIndex = Object_GetIndex(&play->objectCtx, sObjectIds[type]);
     osSyncPrintf("bank_ID = %d\n", objBankIndex);
     if (objBankIndex < 0) {
-        ASSERT(objBankIndex < 0);
+        assert(objBankIndex < 0);
     } else {
         this->objBankIndex = objBankIndex;
     }
@@ -83,8 +83,8 @@ void ItemEtcetera_Init(Actor* thisx, PlayState* play) {
         case ITEM_ETC_LETTER:
             Actor_SetScale(&this->actor, 0.5f);
             this->futureActionFunc = func_80B858B4;
-            if ((gSaveContext.eventChkInf[3] & 2 && !gSaveContext.n64ddFlag) ||
-                (gSaveContext.n64ddFlag && Flags_GetTreasure(play, 0x1E))) {
+            if ((Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER) && !IS_RANDO) ||
+                (IS_RANDO && Flags_GetTreasure(play, 0x1E))) {
                 Actor_Kill(&this->actor);
             }
             break;
@@ -122,18 +122,18 @@ void func_80B857D0(ItemEtcetera* this, PlayState* play) {
 void func_80B85824(ItemEtcetera* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         if ((this->actor.params & 0xFF) == 7) {
-            if (gSaveContext.n64ddFlag) {
+            if (IS_RANDO) {
                 Flags_SetTreasure(play, 0x1F);
             }
         }
 
         if ((this->actor.params & 0xFF) == 1) {
-            gSaveContext.eventChkInf[3] |= 2;
+            Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER);
             Flags_SetSwitch(play, 0xB);
         }
         Actor_Kill(&this->actor);
     } else {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->actor, play, this->getItemId, 30.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
@@ -145,10 +145,10 @@ void func_80B85824(ItemEtcetera* this, PlayState* play) {
 void func_80B858B4(ItemEtcetera* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         if ((this->actor.params & 0xFF) == 1) {
-            gSaveContext.eventChkInf[3] |= 2;
+            Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_RUTOS_LETTER);
             Flags_SetSwitch(play, 0xB);
 
-            if (gSaveContext.n64ddFlag) {
+            if (IS_RANDO) {
                 Flags_SetTreasure(play, 0x1E);
             }
         }
@@ -156,7 +156,7 @@ void func_80B858B4(ItemEtcetera* this, PlayState* play) {
     } else {
         if (0) {} // Necessary to match
 
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->actor, play, this->getItemId, 30.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
@@ -229,7 +229,7 @@ void ItemEtcetera_DrawThroughLens(Actor* thisx, PlayState* play) {
         func_8002EBCC(&this->actor, play, 0);
         func_8002ED80(&this->actor, play, 0);
 
-        if(gSaveContext.n64ddFlag && play->sceneNum == 16) {
+        if(IS_RANDO && play->sceneNum == 16) {
             GetItemEntry randoGetItem = GetChestGameRandoGetItem(this->actor.room, this->giDrawId, play);
             EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
             if (randoGetItem.itemId != ITEM_NONE) {
@@ -246,7 +246,7 @@ void ItemEtcetera_Draw(Actor* thisx, PlayState* play) {
     ItemEtcetera* this = (ItemEtcetera*)thisx;
     s32 type = this->actor.params & 0xFF;
 
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         GetItemEntry randoGetItem = (GetItemEntry)GET_ITEM_NONE;
         if (type == ITEM_ETC_ARROW_FIRE) {
             randoGetItem = Randomizer_GetItemFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);

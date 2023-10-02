@@ -62,6 +62,9 @@ void EnBird_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnBird_Destroy(Actor* thisx, PlayState* play) {
+    EnBird* this = (EnBird*)thisx;
+
+    SkelAnime_Free(&this->skelAnime, play);
 }
 
 void func_809C1CAC(EnBird* this, s16 params) {
@@ -129,5 +132,5 @@ void EnBird_Update(Actor* thisx, PlayState* play) {
 void EnBird_Draw(Actor* thisx, PlayState* play) {
     EnBird* this = (EnBird*)thisx;
 
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, NULL, NULL);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, NULL);
 }

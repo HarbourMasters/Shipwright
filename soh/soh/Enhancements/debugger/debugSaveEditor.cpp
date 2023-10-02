@@ -1,7 +1,6 @@
 #include "debugSaveEditor.h"
 #include "../../util.h"
 #include "../../OTRGlobals.h"
-#include <ImGuiImpl.h>
 #include "../../UIWidgets.hpp"
 
 #include <spdlog/fmt/fmt.h>
@@ -10,6 +9,8 @@
 #include <map>
 #include <string>
 #include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
+#include "soh_assets.h"
 
 extern "C" {
 #include <z64.h>
@@ -21,6 +22,7 @@ extern PlayState* gPlayState;
 
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
+#include "textures/parameter_static/parameter_static.h"
 }
 
 typedef struct {
@@ -140,7 +142,11 @@ std::map<uint32_t, ItemMapEntry> itemMapping = {
 };
 
 std::map<uint32_t, ItemMapEntry> gregMapping = {
-    {ITEM_RUPEE_GREEN, {ITEM_RUPEE_GREEN, "ITEM_RUPEE_GREEN", "ITEM_RUPEE_GREEN_Faded", "__OTR__textures/parameter_static/gRupeeCounterIconTex"}}
+    {ITEM_RUPEE_GREEN, {ITEM_RUPEE_GREEN, "ITEM_RUPEE_GREEN", "ITEM_RUPEE_GREEN_Faded", gRupeeCounterIconTex}}
+};
+
+std::map<uint32_t, ItemMapEntry> triforcePieceMapping = {
+    {RG_TRIFORCE_PIECE, {RG_TRIFORCE_PIECE, "RG_TRIFORCE_PIECE", "RG_TRIFORCE_PIECE_Faded", gTriforcePieceTex}}
 };
 
 // Maps entries in the GS flag array to the area name it represents
@@ -196,18 +202,18 @@ typedef struct {
 
 // Maps quest items ids to info for use in ImGui
 std::map<uint32_t, QuestMapEntry> questMapping = {
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_FOREST, dgForestMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_FIRE, dgFireMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_WATER, dgWaterMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_SPIRIT, dgSpiritMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_SHADOW, dgShadowMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_LIGHT, dgLightMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_KOKIRI_EMERALD, dgKokiriEmeraldIconTex),
-    QUEST_MAP_ENTRY(QUEST_GORON_RUBY, dgGoronRubyIconTex),
-    QUEST_MAP_ENTRY(QUEST_ZORA_SAPPHIRE, dgZoraSapphireIconTex),
-    QUEST_MAP_ENTRY(QUEST_STONE_OF_AGONY, dgStoneOfAgonyIconTex),
-    QUEST_MAP_ENTRY(QUEST_GERUDO_CARD, dgGerudosCardIconTex),
-    QUEST_MAP_ENTRY(QUEST_SKULL_TOKEN, dgGoldSkulltulaIconTex),
+    QUEST_MAP_ENTRY(QUEST_MEDALLION_FOREST, dgQuestIconMedallionForestTex),
+    QUEST_MAP_ENTRY(QUEST_MEDALLION_FIRE, dgQuestIconMedallionFireTex),
+    QUEST_MAP_ENTRY(QUEST_MEDALLION_WATER, dgQuestIconMedallionWaterTex),
+    QUEST_MAP_ENTRY(QUEST_MEDALLION_SPIRIT, dgQuestIconMedallionSpiritTex),
+    QUEST_MAP_ENTRY(QUEST_MEDALLION_SHADOW, dgQuestIconMedallionShadowTex),
+    QUEST_MAP_ENTRY(QUEST_MEDALLION_LIGHT, dgQuestIconMedallionLightTex),
+    QUEST_MAP_ENTRY(QUEST_KOKIRI_EMERALD, dgQuestIconKokiriEmeraldTex),
+    QUEST_MAP_ENTRY(QUEST_GORON_RUBY, dgQuestIconGoronRubyTex),
+    QUEST_MAP_ENTRY(QUEST_ZORA_SAPPHIRE, dgQuestIconZoraSapphireTex),
+    QUEST_MAP_ENTRY(QUEST_STONE_OF_AGONY, dgQuestIconStoneOfAgonyTex),
+    QUEST_MAP_ENTRY(QUEST_GERUDO_CARD, dgQuestIconGerudosCardTex),
+    QUEST_MAP_ENTRY(QUEST_SKULL_TOKEN, dgQuestIconGoldSkulltulaTex),
 };
 
 typedef struct {
@@ -508,6 +514,10 @@ void DrawInfoTab() {
     }
     UIWidgets::InsertHelpHoverText("Z-Targeting behavior");
 
+    if (gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_TRIFORCE_HUNT)) {
+        ImGui::InputScalar("Triforce Pieces", ImGuiDataType_U16, &gSaveContext.triforcePiecesCollected);
+        UIWidgets::InsertHelpHoverText("Currently obtained Triforce Pieces. For Triforce Hunt.");
+    }
 
     ImGui::PushItemWidth(ImGui::GetFontSize() * 10);
     static std::array<const char*, 7> minigameHS = { "Horseback Archery", 
@@ -604,7 +614,7 @@ void DrawInfoTab() {
 
 void DrawBGSItemFlag(uint8_t itemID) {
     const ItemMapEntry& slotEntry = itemMapping[itemID];
-    ImGui::Image(SohImGui::GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
+    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
     ImGui::SameLine();
     int tradeIndex = itemID - ITEM_POCKET_EGG;
     bool hasItem = (gSaveContext.adultTradeItems & (1 << tradeIndex)) != 0;
@@ -646,7 +656,7 @@ void DrawInventoryTab() {
             uint8_t item = gSaveContext.inventory.items[index];
             if (item != ITEM_NONE) {
                 const ItemMapEntry& slotEntry = itemMapping.find(item)->second;
-                if (ImGui::ImageButton(SohImGui::GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0),
+                if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0),
                                        ImVec2(1, 1), 0)) {
                     selectedIndex = index;
                     ImGui::OpenPopup(itemPopupPicker);
@@ -694,11 +704,11 @@ void DrawInventoryTab() {
                         ImGui::SameLine();
                     }
                     const ItemMapEntry& slotEntry = possibleItems[pickerIndex];
-                    if (ImGui::ImageButton(SohImGui::GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f),
+                    if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f),
                                            ImVec2(0, 0), ImVec2(1, 1), 0)) {
                         gSaveContext.inventory.items[selectedIndex] = slotEntry.id;
                         // Set adult trade item flag if you're playing adult trade shuffle in rando  
-                        if (gSaveContext.n64ddFlag &&
+                        if (IS_RANDO &&
                             OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
                             selectedIndex == SLOT_TRADE_ADULT &&
                             slotEntry.id >= ITEM_POCKET_EGG && slotEntry.id <= ITEM_CLAIM_CHECK) {
@@ -732,7 +742,7 @@ void DrawInventoryTab() {
             ImGui::PushItemWidth(32.0f);
             ImGui::BeginGroup();
 
-            ImGui::Image(SohImGui::GetTextureByName(itemMapping[item].name), ImVec2(32.0f, 32.0f));
+            ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemMapping[item].name), ImVec2(32.0f, 32.0f));
             ImGui::InputScalar("##ammoInput", ImGuiDataType_S8, &AMMO(item));
 
             ImGui::EndGroup();
@@ -743,7 +753,7 @@ void DrawInventoryTab() {
     
     // Trade quest flags are only used when shuffling the trade sequence, so
     // don't show this if it isn't needed.
-    if (gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE)
+    if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_ADULT_TRADE)
         && ImGui::TreeNode("Adult trade quest items")) {
         for (int i = ITEM_POCKET_EGG; i <= ITEM_CLAIM_CHECK; i++) {
             DrawBGSItemFlag(i);
@@ -1070,7 +1080,7 @@ void DrawFlagsTab() {
 
         // If playing a Randomizer Save with Shuffle Skull Tokens on anything other than "Off" we don't want to keep
         // GS Token Count updated, since Gold Skulltulas killed will not correlate to GS Tokens Collected.
-        if (!(gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF)) {
+        if (!(IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHUFFLE_TOKENS) != RO_TOKENSANITY_OFF)) {
             static bool keepGsCountUpdated = true;
             ImGui::Checkbox("Keep GS Count Updated", &keepGsCountUpdated);
             UIWidgets::InsertHelpHoverText("Automatically adjust the number of gold skulltula tokens acquired based on set flags.");
@@ -1086,14 +1096,14 @@ void DrawFlagsTab() {
 
     for (int i = 0; i < flagTables.size(); i++) {
         const FlagTable& flagTable = flagTables[i];
-        if (flagTable.flagTableType == RANDOMIZER_INF && !gSaveContext.n64ddFlag) {
+        if (flagTable.flagTableType == RANDOMIZER_INF && !IS_RANDO && !IS_BOSS_RUSH) {
             continue;
         }
 
         if (ImGui::TreeNode(flagTable.name)) {
             for (int j = 0; j < flagTable.size + 1; j++) {
                 DrawGroupWithBorder([&]() {
-                    ImGui::Text(fmt::format("{:<2x}", j).c_str());
+                    ImGui::Text("%s", fmt::format("{:<2x}", j).c_str());
                     switch (flagTable.flagTableType) {
                         case EVENT_CHECK_INF:
                             DrawFlagTableArray16(flagTable, j, gSaveContext.eventChkInf[j]);
@@ -1147,7 +1157,7 @@ void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const 
     uint8_t item = items[CUR_UPG_VALUE(categoryId)];
     if (item != ITEM_NONE) {
         const ItemMapEntry& slotEntry = itemMapping[item];
-        if (ImGui::ImageButton(SohImGui::GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0),
+        if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0),
                                ImVec2(1, 1), 0)) {
             ImGui::OpenPopup(upgradePopupPicker);
         }
@@ -1175,7 +1185,7 @@ void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const 
                 UIWidgets::SetLastItemHoverText("None");
             } else {
                 const ItemMapEntry& slotEntry = itemMapping[items[pickerIndex]];
-                if (ImGui::ImageButton(SohImGui::GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0),
+                if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0),
                                        ImVec2(1, 1), 0)) {
                     Inventory_ChangeUpgrade(categoryId, pickerIndex);
                     ImGui::CloseCurrentPopup();
@@ -1212,7 +1222,7 @@ void DrawEquipmentTab() {
         bool hasEquip = (bitMask & gSaveContext.inventory.equipment) != 0;
         const ItemMapEntry& entry = itemMapping[equipmentValues[i]];
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-        if (ImGui::ImageButton(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded),
+        if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasEquip ? entry.name : entry.nameFaded),
                                ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 0)) {
             if (hasEquip) {
                 gSaveContext.inventory.equipment &= ~bitMask;
@@ -1280,7 +1290,7 @@ void DrawEquipmentTab() {
         "Giant (500)",
     };
     // only display Tycoon wallet if you're in a save file that would allow it.
-    if (gSaveContext.n64ddFlag && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS) {
+    if (IS_RANDO && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_SHOPSANITY) > RO_SHOPSANITY_ZERO_ITEMS) {
         const std::string walletName = "Tycoon (999)";
         walletNamesImpl.push_back(walletName);
     }
@@ -1311,7 +1321,7 @@ void DrawQuestItemButton(uint32_t item) {
     uint32_t bitMask = 1 << entry.id;
     bool hasQuestItem = (bitMask & gSaveContext.inventory.questItems) != 0;
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-    if (ImGui::ImageButton(SohImGui::GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded),
+    if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded),
                            ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 0)) {
         if (hasQuestItem) {
             gSaveContext.inventory.questItems &= ~bitMask;
@@ -1329,7 +1339,7 @@ void DrawDungeonItemButton(uint32_t item, uint32_t scene) {
     uint32_t bitMask = 1 << (entry.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
     bool hasItem = (bitMask & gSaveContext.inventory.dungeonItems[scene]) != 0;
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-    if (ImGui::ImageButton(SohImGui::GetTextureByName(hasItem ? entry.name : entry.nameFaded),
+    if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasItem ? entry.name : entry.nameFaded),
                            ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 0)) {
         if (hasItem) {
             gSaveContext.inventory.dungeonItems[scene] &= ~bitMask;
@@ -1376,7 +1386,7 @@ void DrawQuestStatusTab() {
         uint32_t bitMask = 1 << entry.id;
         bool hasQuestItem = (bitMask & gSaveContext.inventory.questItems) != 0;
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-        if (ImGui::ImageButton(SohImGui::GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded),
+        if (ImGui::ImageButton(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded),
                                ImVec2(16.0f, 24.0f), ImVec2(0, 0), ImVec2(1, 1), 0)) {
             if (hasQuestItem) {
                 gSaveContext.inventory.questItems &= ~bitMask;
@@ -1417,10 +1427,10 @@ void DrawQuestStatusTab() {
     DrawGroupWithBorder([&]() {
         ImGui::Text("Dungeon Items");
 
-        static int32_t dungeonItemsScene = SCENE_YDAN;
+        static int32_t dungeonItemsScene = SCENE_DEKU_TREE;
         ImGui::PushItemWidth(-ImGui::GetWindowWidth() * 0.35f);
         if (ImGui::BeginCombo("##DungeonSelect", SohUtils::GetSceneName(dungeonItemsScene).c_str())) {
-            for (int32_t dungeonIndex = SCENE_YDAN; dungeonIndex < SCENE_BDAN_BOSS + 1; dungeonIndex++) {
+            for (int32_t dungeonIndex = SCENE_DEKU_TREE; dungeonIndex < SCENE_JABU_JABU_BOSS + 1; dungeonIndex++) {
                 if (ImGui::Selectable(SohUtils::GetSceneName(dungeonIndex).c_str(),
                                       dungeonIndex == dungeonItemsScene)) {
                     dungeonItemsScene = dungeonIndex;
@@ -1437,9 +1447,9 @@ void DrawQuestStatusTab() {
         ImGui::SameLine();
         DrawDungeonItemButton(ITEM_DUNGEON_MAP, dungeonItemsScene);
 
-        if (dungeonItemsScene != SCENE_BDAN_BOSS) {
+        if (dungeonItemsScene != SCENE_JABU_JABU_BOSS) {
             float lineHeight = ImGui::GetTextLineHeightWithSpacing();
-            ImGui::Image(SohImGui::GetTextureByName(itemMapping[ITEM_KEY_SMALL].name), ImVec2(lineHeight, lineHeight));
+            ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(itemMapping[ITEM_KEY_SMALL].name), ImVec2(lineHeight, lineHeight));
             ImGui::SameLine();
             if (ImGui::InputScalar("##Keys", ImGuiDataType_S8, gSaveContext.inventory.dungeonKeys + dungeonItemsScene)) {
                 gSaveContext.sohStats.dungeonKeys[dungeonItemsScene] = gSaveContext.inventory.dungeonKeys[dungeonItemsScene];
@@ -1619,7 +1629,7 @@ void DrawPlayerTab() {
                     gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KNIFE;
                 }
                 
-                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_BGS);
+                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_BIGGORON);
             }
             if (ImGui::Selectable("Fishing Pole")) {
                 player->currentSwordItemId = ITEM_FISHING_POLE;
@@ -1707,14 +1717,16 @@ void DrawPlayerTab() {
         ImGui::Text("Player State");
         uint8_t bit[32] = {};
         uint32_t flags[3] = { player->stateFlags1, player->stateFlags2, player->stateFlags3 };
+        std::vector<std::vector<std::string>> flag_strs = { state1, state2, state3 };
 
         for (int j = 0; j <= 2; j++) {
             DrawGroupWithBorder([&]() {
                 ImGui::Text("State Flags %d", j + 1);
+                std::vector<std::string> state = flag_strs[j];
                 for (int i = 0; i <= 31; i++) {
                     bit[i] = ((flags[j] >> i) & 1);
                     if (bit[i] != 0) {
-                        ImGui::Text("Flag %d", i);
+                        ImGui::Text("%s", state[i].c_str());
                     }
                 }
             });
@@ -1722,7 +1734,7 @@ void DrawPlayerTab() {
         }
         DrawGroupWithBorder([&]() {
             ImGui::Text("Sword");
-            ImGui::Text("  %d", player->swordState);
+            ImGui::Text("  %d", player->meleeWeaponState);
         });
 
     } else {
@@ -1730,14 +1742,9 @@ void DrawPlayerTab() {
     }
 }
 
-void DrawSaveEditor(bool& open) {
-    if (!open) {
-        CVarSetInteger("gSaveEditorEnabled", 0);
-        return;
-    }
-
+void SaveEditorWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Save Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Save Editor", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -1779,35 +1786,37 @@ void DrawSaveEditor(bool& open) {
     ImGui::End();
 }
 
-void InitSaveEditor() {
-    SohImGui::AddWindow("Developer Tools", "Save Editor", DrawSaveEditor);
-
+void SaveEditorWindow::InitElement() {
     // Load item icons into ImGui
     for (const auto& entry : itemMapping) {
-        SohImGui::LoadResource(entry.second.name, entry.second.texturePath);
-        SohImGui::LoadResource(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, ImVec4(1, 1, 1, 1));
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
     }
     for (const auto& entry : gregMapping) {
         ImVec4 gregGreen = ImVec4(42.0f / 255.0f, 169.0f / 255.0f, 40.0f / 255.0f, 1.0f);
         ImVec4 gregFadedGreen = gregGreen;
         gregFadedGreen.w = 0.3f;
-        SohImGui::LoadResource(entry.second.name, entry.second.texturePath, gregGreen);
-        SohImGui::LoadResource(entry.second.nameFaded, entry.second.texturePath, gregFadedGreen);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, gregGreen);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, gregFadedGreen);
+    }
+    for (const auto& entry : triforcePieceMapping) {
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, ImVec4(1, 1, 1, 1));
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
     }
     for (const auto& entry : questMapping) {
-        SohImGui::LoadResource(entry.second.name, entry.second.texturePath);
-        SohImGui::LoadResource(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.name, entry.second.texturePath, ImVec4(1, 1, 1, 1));
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
     }
     for (const auto& entry : songMapping) {
-        SohImGui::LoadResource(entry.name, gSongNoteTex, entry.color);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.name, gSongNoteTex, entry.color);
         ImVec4 fadedCol = entry.color;
         fadedCol.w = 0.3f;
-        SohImGui::LoadResource(entry.nameFaded, gSongNoteTex, fadedCol);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.nameFaded, gSongNoteTex, fadedCol);
     }
     for (const auto& entry : vanillaSongMapping) {
-        SohImGui::LoadResource(entry.name, gSongNoteTex, entry.color);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.name, gSongNoteTex, entry.color);
         ImVec4 fadedCol = entry.color;
         fadedCol.w = 0.3f;
-        SohImGui::LoadResource(entry.nameFaded, gSongNoteTex, fadedCol);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(entry.nameFaded, gSongNoteTex, fadedCol);
     }
 }

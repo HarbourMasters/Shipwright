@@ -1,8 +1,9 @@
 #include "z_en_fz.h"
 #include "objects/object_fz/object_fz.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_10)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
 
 void EnFz_Init(Actor* thisx, PlayState* play);
 void EnFz_Destroy(Actor* thisx, PlayState* play);
@@ -175,7 +176,7 @@ void EnFz_Init(Actor* thisx, PlayState* play) {
 
     Actor_SetScale(&this->actor, 0.008f);
     this->actor.colChkInfo.mass = MASS_IMMOVABLE;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->unusedTimer1 = 0;
     this->unusedCounter = 0;
     this->updateBgInfo = true;
@@ -363,7 +364,7 @@ void EnFz_ApplyDamage(EnFz* this, PlayState* play) {
                         vec.z = this->actor.world.pos.z;
                         EnFz_Damaged(this, play, &vec, 30, 10.0f);
                         EnFz_SetupDespawn(this, play);
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_FREEZARD]++;
+                        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
                     }
                 }
             } else {
@@ -388,7 +389,7 @@ void EnFz_SetYawTowardsPlayer(EnFz* this) {
 void EnFz_SetupDisappear(EnFz* this) {
     this->state = 2;
     this->isFreezing = false;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actionFunc = EnFz_Disappear;
 }
 
@@ -446,7 +447,7 @@ void EnFz_SetupAimForMove(EnFz* this) {
     this->timer = 40;
     this->updateBgInfo = true;
     this->isFreezing = true;
-    this->actor.flags |= ACTOR_FLAG_0;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     this->actionFunc = EnFz_AimForMove;
     this->actor.gravity = -1.0f;
 }
@@ -549,7 +550,7 @@ void EnFz_SetupDespawn(EnFz* this, PlayState* play) {
     this->updateBgInfo = true;
     this->isFreezing = false;
     this->isDespawning = true;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->isActive = false;
     this->timer = 60;
     this->speedXZ = 0.0f;
@@ -571,7 +572,7 @@ void EnFz_SetupMelt(EnFz* this) {
     this->state = 3;
     this->isFreezing = false;
     this->isDespawning = true;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actionFunc = EnFz_Melt;
     this->actor.speedXZ = 0.0f;
     this->speedXZ = 0.0f;
@@ -602,7 +603,7 @@ void EnFz_SetupBlowSmokeStationary(EnFz* this) {
     this->timer = 40;
     this->updateBgInfo = true;
     this->isFreezing = true;
-    this->actor.flags |= ACTOR_FLAG_0;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     this->actionFunc = EnFz_BlowSmokeStationary;
     this->actor.gravity = -1.0f;
 }

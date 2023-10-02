@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DUNGEONS_GANON_BOSS_SCENE_H
+#define DUNGEONS_GANON_BOSS_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -73,3 +74,5 @@ static const ALIGN_ASSET(2) char ganon_boss_sceneTex_004018[] = dganon_boss_scen
 
 #define dganon_boss_sceneTex_007418 "__OTR__scenes/nonmq/ganon_boss_scene/ganon_boss_sceneTex_007418"
 static const ALIGN_ASSET(2) char ganon_boss_sceneTex_007418[] = dganon_boss_sceneTex_007418;
+
+#endif // DUNGEONS_GANON_BOSS_SCENE_H

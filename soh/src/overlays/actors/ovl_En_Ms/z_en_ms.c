@@ -7,7 +7,7 @@
 #include "z_en_ms.h"
 #include "objects/object_ms/object_ms.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnMs_Init(Actor* thisx, PlayState* play);
 void EnMs_Destroy(Actor* thisx, PlayState* play);
@@ -99,6 +99,8 @@ void EnMs_Destroy(Actor* thisx, PlayState* play) {
     EnMs* this = (EnMs*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnMs_Wait(EnMs* this, PlayState* play) {
@@ -126,13 +128,13 @@ void EnMs_Talk(EnMs* this, PlayState* play) {
         switch (play->msgCtx.choiceIndex) {
             case 0: // yes
                 if (gSaveContext.rupees <
-                    ((gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS))
+                    ((IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS))
                          ? 60
                          : sPrices[BEANS_BOUGHT])) {
                     Message_ContinueTextbox(play, 0x4069); // not enough rupees text
                     return;
                 }
-                if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) {
+                if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) {
                     GiveItemEntryFromActor(&this->actor, play, 
                         Randomizer_GetItemFromKnownCheck(RC_ZR_MAGIC_BEAN_SALESMAN, GI_BEAN), 90.0f, 10.0f);
                 } else {
@@ -150,18 +152,21 @@ void EnMs_Talk(EnMs* this, PlayState* play) {
 
 void EnMs_Sell(EnMs* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
-        Rupees_ChangeBy((gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) ? -60 : -sPrices[BEANS_BOUGHT]);
+        Rupees_ChangeBy((IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) ? -60 : -sPrices[BEANS_BOUGHT]);
         this->actor.parent = NULL;
         this->actionFunc =
-            (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) ? EnMs_Wait : EnMs_TalkAfterPurchase;
+            (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) ? EnMs_Wait : EnMs_TalkAfterPurchase;
     } else {
-        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) {
+        if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MAGIC_BEANS)) {
             GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_ZR_MAGIC_BEAN_SALESMAN, GI_BEAN);
             gSaveContext.pendingSale = itemEntry.itemId;
+            gSaveContext.pendingSaleMod = itemEntry.modIndex;
             GiveItemEntryFromActor(&this->actor, play, itemEntry, 90.0f, 10.0f);
             BEANS_BOUGHT = 10;
         } else {
-            gSaveContext.pendingSale = ItemTable_Retrieve(GI_BEAN).itemId;
+            GetItemEntry entry = ItemTable_Retrieve(GI_BEAN);
+            gSaveContext.pendingSaleMod = entry.modIndex;
+            gSaveContext.pendingSale = entry.itemId;
             func_8002F434(&this->actor, play, GI_BEAN, 90.0f, 10.0f);
         }
     }
@@ -199,6 +204,5 @@ void EnMs_Draw(Actor* thisx, PlayState* play) {
     EnMs* this = (EnMs*)thisx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, this);
 }

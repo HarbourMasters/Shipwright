@@ -8,7 +8,7 @@
 #include "z_bg_jya_goroiwa.h"
 #include "objects/object_goroiwa/object_goroiwa.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void BgJyaGoroiwa_Init(Actor* thisx, PlayState* play);
 void BgJyaGoroiwa_Destroy(Actor* thisx, PlayState* play);
@@ -154,7 +154,7 @@ void BgJyaGoroiwa_Move(BgJyaGoroiwa* this, PlayState* play) {
         }
 
         func_8002F6D4(play, thisx, 2.0f, thisx->yawTowardsPlayer, 0.0f, 0);
-        func_8002F7DC(&GET_PLAYER(play)->actor, NA_SE_PL_BODY_HIT);
+        Player_PlaySfx(&GET_PLAYER(play)->actor, NA_SE_PL_BODY_HIT);
 
         this->yOffsetSpeed = 10.0f;
         this->speedFactor = 0.5f;

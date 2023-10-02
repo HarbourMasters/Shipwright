@@ -7,7 +7,7 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
-namespace Ship {
+namespace LUS {
 typedef struct {
   uint8_t unk;
   uint8_t skyboxId;
@@ -15,11 +15,13 @@ typedef struct {
   uint8_t indoors;
 } SkyboxSettings;
 
-class SetSkyboxSettings : public SceneCommand {
+class SetSkyboxSettings : public SceneCommand<SkyboxSettings> {
   public:
-    void* GetPointer();
+    using SceneCommand::SceneCommand;
+
+    SkyboxSettings* GetPointer();
     size_t GetPointerSize();
 
     SkyboxSettings settings;
 };
-}; // namespace Ship
+}; // namespace LUS

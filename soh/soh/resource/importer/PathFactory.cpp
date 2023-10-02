@@ -2,35 +2,32 @@
 #include "soh/resource/type/Path.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> PathFactory::ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader)
-{
-	auto resource = std::make_shared<Path>();
-	std::shared_ptr<ResourceVersionFactory> factory = nullptr;
+namespace LUS {
+std::shared_ptr<IResource>
+PathFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+    auto resource = std::make_shared<Path>(initData);
+    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-	switch (version)
-	{
-	case 0:
-		factory = std::make_shared<PathFactoryV0>();
-		break;
-	}
+    switch (resource->GetInitData()->ResourceVersion) {
+    case 0:
+	factory = std::make_shared<PathFactoryV0>();
+	break;
+    }
 
-	if (factory == nullptr)
-	{
-		SPDLOG_ERROR("Failed to load Path with version {}", version);
-		return nullptr;
-	}
+    if (factory == nullptr) {
+        SPDLOG_ERROR("Failed to load Path with version {}", resource->GetInitData()->ResourceVersion);
+	return nullptr;
+    }
 
-	factory->ParseFileBinary(reader, resource);
+    factory->ParseFileBinary(reader, resource);
 
-	return resource;
+    return resource;
 }
 
-void Ship::PathFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                          std::shared_ptr<Resource> resource)
-{
-	std::shared_ptr<Path> path = std::static_pointer_cast<Path>(resource);
-	ResourceVersionFactory::ParseFileBinary(reader, path);
+void LUS::PathFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+                                          std::shared_ptr<IResource> resource) {
+    std::shared_ptr<Path> path = std::static_pointer_cast<Path>(resource);
+    ResourceVersionFactory::ParseFileBinary(reader, path);
 
     path->numPaths = reader->ReadUInt32();
     path->paths.reserve(path->numPaths);
@@ -56,4 +53,4 @@ void Ship::PathFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
         path->pathData.push_back(pathDataEntry);
     }
 }
-} // namespace Ship
+} // namespace LUS

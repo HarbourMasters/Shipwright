@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_BV_H
+#define OBJECTS_OBJECT_BV_H 1
 
 #include "align_asset_macro.h"
 
@@ -182,6 +183,87 @@ static const ALIGN_ASSET(2) char gBarinadeDL_0094F8[] = dgBarinadeDL_0094F8;
 #define dgBarinadeDL_0095B0 "__OTR__objects/object_bv/gBarinadeDL_0095B0"
 static const ALIGN_ASSET(2) char gBarinadeDL_0095B0[] = dgBarinadeDL_0095B0;
 
+#define dobject_bvTex_0065A0 "__OTR__objects/object_bv/object_bvTex_0065A0"
+static const ALIGN_ASSET(2) char object_bvTex_0065A0[] = dobject_bvTex_0065A0;
+
+#define dobject_bvTex_005DA0 "__OTR__objects/object_bv/object_bvTex_005DA0"
+static const ALIGN_ASSET(2) char object_bvTex_005DA0[] = dobject_bvTex_005DA0;
+
+#define dobject_bvTex_000A40 "__OTR__objects/object_bv/object_bvTex_000A40"
+static const ALIGN_ASSET(2) char object_bvTex_000A40[] = dobject_bvTex_000A40;
+
+#define dobject_bvTex_013660 "__OTR__objects/object_bv/object_bvTex_013660"
+static const ALIGN_ASSET(2) char object_bvTex_013660[] = dobject_bvTex_013660;
+
+#define dobject_bvTex_0117B8 "__OTR__objects/object_bv/object_bvTex_0117B8"
+static const ALIGN_ASSET(2) char object_bvTex_0117B8[] = dobject_bvTex_0117B8;
+
+#define dobject_bvTex_011BB8 "__OTR__objects/object_bv/object_bvTex_011BB8"
+static const ALIGN_ASSET(2) char object_bvTex_011BB8[] = dobject_bvTex_011BB8;
+
+#define dobject_bvTex_0119B8 "__OTR__objects/object_bv/object_bvTex_0119B8"
+static const ALIGN_ASSET(2) char object_bvTex_0119B8[] = dobject_bvTex_0119B8;
+
+#define dobject_bvTex_012CE0 "__OTR__objects/object_bv/object_bvTex_012CE0"
+static const ALIGN_ASSET(2) char object_bvTex_012CE0[] = dobject_bvTex_012CE0;
+
+#define dobject_bvTex_008F88 "__OTR__objects/object_bv/object_bvTex_008F88"
+static const ALIGN_ASSET(2) char object_bvTex_008F88[] = dobject_bvTex_008F88;
+
+#define dobject_bvTex_019BB8 "__OTR__objects/object_bv/object_bvTex_019BB8"
+static const ALIGN_ASSET(2) char object_bvTex_019BB8[] = dobject_bvTex_019BB8;
+
+#define dobject_bvTLUT_0199B0 "__OTR__objects/object_bv/object_bvTLUT_0199B0"
+static const ALIGN_ASSET(2) char object_bvTLUT_0199B0[] = dobject_bvTLUT_0199B0;
+
+#define dobject_bvTex_01A6B8 "__OTR__objects/object_bv/object_bvTex_01A6B8"
+static const ALIGN_ASSET(2) char object_bvTex_01A6B8[] = dobject_bvTex_01A6B8;
+
+#define dobject_bvTLUT_01A4B0 "__OTR__objects/object_bv/object_bvTLUT_01A4B0"
+static const ALIGN_ASSET(2) char object_bvTLUT_01A4B0[] = dobject_bvTLUT_01A4B0;
+
+#define dobject_bvTex_01B1B8 "__OTR__objects/object_bv/object_bvTex_01B1B8"
+static const ALIGN_ASSET(2) char object_bvTex_01B1B8[] = dobject_bvTex_01B1B8;
+
+#define dobject_bvTLUT_01AFB0 "__OTR__objects/object_bv/object_bvTLUT_01AFB0"
+static const ALIGN_ASSET(2) char object_bvTLUT_01AFB0[] = dobject_bvTLUT_01AFB0;
+
+#define dobject_bvTex_01BCB8 "__OTR__objects/object_bv/object_bvTex_01BCB8"
+static const ALIGN_ASSET(2) char object_bvTex_01BCB8[] = dobject_bvTex_01BCB8;
+
+#define dobject_bvTLUT_01BAB0 "__OTR__objects/object_bv/object_bvTLUT_01BAB0"
+static const ALIGN_ASSET(2) char object_bvTLUT_01BAB0[] = dobject_bvTLUT_01BAB0;
+
+#define dobject_bvTex_01C7B8 "__OTR__objects/object_bv/object_bvTex_01C7B8"
+static const ALIGN_ASSET(2) char object_bvTex_01C7B8[] = dobject_bvTex_01C7B8;
+
+#define dobject_bvTLUT_01C5B0 "__OTR__objects/object_bv/object_bvTLUT_01C5B0"
+static const ALIGN_ASSET(2) char object_bvTLUT_01C5B0[] = dobject_bvTLUT_01C5B0;
+
+#define dobject_bvTex_01D2B8 "__OTR__objects/object_bv/object_bvTex_01D2B8"
+static const ALIGN_ASSET(2) char object_bvTex_01D2B8[] = dobject_bvTex_01D2B8;
+
+#define dobject_bvTLUT_01D0B0 "__OTR__objects/object_bv/object_bvTLUT_01D0B0"
+static const ALIGN_ASSET(2) char object_bvTLUT_01D0B0[] = dobject_bvTLUT_01D0B0;
+
+#define dobject_bvTex_01DDB8 "__OTR__objects/object_bv/object_bvTex_01DDB8"
+static const ALIGN_ASSET(2) char object_bvTex_01DDB8[] = dobject_bvTex_01DDB8;
+
+#define dobject_bvTLUT_01DBB0 "__OTR__objects/object_bv/object_bvTLUT_01DBB0"
+static const ALIGN_ASSET(2) char object_bvTLUT_01DBB0[] = dobject_bvTLUT_01DBB0;
+
+#define dobject_bvTex_01E8B8 "__OTR__objects/object_bv/object_bvTex_01E8B8"
+static const ALIGN_ASSET(2) char object_bvTex_01E8B8[] = dobject_bvTex_01E8B8;
+
+#define dobject_bvTLUT_01E6B0 "__OTR__objects/object_bv/object_bvTLUT_01E6B0"
+static const ALIGN_ASSET(2) char object_bvTLUT_01E6B0[] = dobject_bvTLUT_01E6B0;
+
+#define dobject_bvTex_0052A0 "__OTR__objects/object_bv/object_bvTex_0052A0"
+static const ALIGN_ASSET(2) char object_bvTex_0052A0[] = dobject_bvTex_0052A0;
+
+#define dobject_bvTex_0053A0 "__OTR__objects/object_bv/object_bvTex_0053A0"
+static const ALIGN_ASSET(2) char object_bvTex_0053A0[] = dobject_bvTex_0053A0;
+
 #define dgBarinadeBodySkelLimbsLimb_015770DL_007FD8 "__OTR__objects/object_bv/gBarinadeBodySkelLimbsLimb_015770DL_007FD8"
 static const ALIGN_ASSET(2) char gBarinadeBodySkelLimbsLimb_015770DL_007FD8[] = dgBarinadeBodySkelLimbsLimb_015770DL_007FD8;
 
@@ -278,87 +360,6 @@ static const ALIGN_ASSET(2) char gBarinadeCutSupportSkelLimbsLimb_017F88DL_017CB
 #define dgBarinadeCutSupportSkelLimbsLimb_017F94DL_017B90 "__OTR__objects/object_bv/gBarinadeCutSupportSkelLimbsLimb_017F94DL_017B90"
 static const ALIGN_ASSET(2) char gBarinadeCutSupportSkelLimbsLimb_017F94DL_017B90[] = dgBarinadeCutSupportSkelLimbsLimb_017F94DL_017B90;
 
-#define dobject_bvTex_0065A0 "__OTR__objects/object_bv/object_bvTex_0065A0"
-static const ALIGN_ASSET(2) char object_bvTex_0065A0[] = dobject_bvTex_0065A0;
-
-#define dobject_bvTex_005DA0 "__OTR__objects/object_bv/object_bvTex_005DA0"
-static const ALIGN_ASSET(2) char object_bvTex_005DA0[] = dobject_bvTex_005DA0;
-
-#define dobject_bvTex_000A40 "__OTR__objects/object_bv/object_bvTex_000A40"
-static const ALIGN_ASSET(2) char object_bvTex_000A40[] = dobject_bvTex_000A40;
-
-#define dobject_bvTex_013660 "__OTR__objects/object_bv/object_bvTex_013660"
-static const ALIGN_ASSET(2) char object_bvTex_013660[] = dobject_bvTex_013660;
-
-#define dobject_bvTex_0117B8 "__OTR__objects/object_bv/object_bvTex_0117B8"
-static const ALIGN_ASSET(2) char object_bvTex_0117B8[] = dobject_bvTex_0117B8;
-
-#define dobject_bvTex_011BB8 "__OTR__objects/object_bv/object_bvTex_011BB8"
-static const ALIGN_ASSET(2) char object_bvTex_011BB8[] = dobject_bvTex_011BB8;
-
-#define dobject_bvTex_0119B8 "__OTR__objects/object_bv/object_bvTex_0119B8"
-static const ALIGN_ASSET(2) char object_bvTex_0119B8[] = dobject_bvTex_0119B8;
-
-#define dobject_bvTex_012CE0 "__OTR__objects/object_bv/object_bvTex_012CE0"
-static const ALIGN_ASSET(2) char object_bvTex_012CE0[] = dobject_bvTex_012CE0;
-
-#define dobject_bvTex_008F88 "__OTR__objects/object_bv/object_bvTex_008F88"
-static const ALIGN_ASSET(2) char object_bvTex_008F88[] = dobject_bvTex_008F88;
-
-#define dobject_bvTex_019BB8 "__OTR__objects/object_bv/object_bvTex_019BB8"
-static const ALIGN_ASSET(2) char object_bvTex_019BB8[] = dobject_bvTex_019BB8;
-
-#define dobject_bvTLUT_0199B0 "__OTR__objects/object_bv/object_bvTLUT_0199B0"
-static const ALIGN_ASSET(2) char object_bvTLUT_0199B0[] = dobject_bvTLUT_0199B0;
-
-#define dobject_bvTex_01A6B8 "__OTR__objects/object_bv/object_bvTex_01A6B8"
-static const ALIGN_ASSET(2) char object_bvTex_01A6B8[] = dobject_bvTex_01A6B8;
-
-#define dobject_bvTLUT_01A4B0 "__OTR__objects/object_bv/object_bvTLUT_01A4B0"
-static const ALIGN_ASSET(2) char object_bvTLUT_01A4B0[] = dobject_bvTLUT_01A4B0;
-
-#define dobject_bvTex_01B1B8 "__OTR__objects/object_bv/object_bvTex_01B1B8"
-static const ALIGN_ASSET(2) char object_bvTex_01B1B8[] = dobject_bvTex_01B1B8;
-
-#define dobject_bvTLUT_01AFB0 "__OTR__objects/object_bv/object_bvTLUT_01AFB0"
-static const ALIGN_ASSET(2) char object_bvTLUT_01AFB0[] = dobject_bvTLUT_01AFB0;
-
-#define dobject_bvTex_01BCB8 "__OTR__objects/object_bv/object_bvTex_01BCB8"
-static const ALIGN_ASSET(2) char object_bvTex_01BCB8[] = dobject_bvTex_01BCB8;
-
-#define dobject_bvTLUT_01BAB0 "__OTR__objects/object_bv/object_bvTLUT_01BAB0"
-static const ALIGN_ASSET(2) char object_bvTLUT_01BAB0[] = dobject_bvTLUT_01BAB0;
-
-#define dobject_bvTex_01C7B8 "__OTR__objects/object_bv/object_bvTex_01C7B8"
-static const ALIGN_ASSET(2) char object_bvTex_01C7B8[] = dobject_bvTex_01C7B8;
-
-#define dobject_bvTLUT_01C5B0 "__OTR__objects/object_bv/object_bvTLUT_01C5B0"
-static const ALIGN_ASSET(2) char object_bvTLUT_01C5B0[] = dobject_bvTLUT_01C5B0;
-
-#define dobject_bvTex_01D2B8 "__OTR__objects/object_bv/object_bvTex_01D2B8"
-static const ALIGN_ASSET(2) char object_bvTex_01D2B8[] = dobject_bvTex_01D2B8;
-
-#define dobject_bvTLUT_01D0B0 "__OTR__objects/object_bv/object_bvTLUT_01D0B0"
-static const ALIGN_ASSET(2) char object_bvTLUT_01D0B0[] = dobject_bvTLUT_01D0B0;
-
-#define dobject_bvTex_01DDB8 "__OTR__objects/object_bv/object_bvTex_01DDB8"
-static const ALIGN_ASSET(2) char object_bvTex_01DDB8[] = dobject_bvTex_01DDB8;
-
-#define dobject_bvTLUT_01DBB0 "__OTR__objects/object_bv/object_bvTLUT_01DBB0"
-static const ALIGN_ASSET(2) char object_bvTLUT_01DBB0[] = dobject_bvTLUT_01DBB0;
-
-#define dobject_bvTex_01E8B8 "__OTR__objects/object_bv/object_bvTex_01E8B8"
-static const ALIGN_ASSET(2) char object_bvTex_01E8B8[] = dobject_bvTex_01E8B8;
-
-#define dobject_bvTLUT_01E6B0 "__OTR__objects/object_bv/object_bvTLUT_01E6B0"
-static const ALIGN_ASSET(2) char object_bvTLUT_01E6B0[] = dobject_bvTLUT_01E6B0;
-
-#define dobject_bvTex_0052A0 "__OTR__objects/object_bv/object_bvTex_0052A0"
-static const ALIGN_ASSET(2) char object_bvTex_0052A0[] = dobject_bvTex_0052A0;
-
-#define dobject_bvTex_0053A0 "__OTR__objects/object_bv/object_bvTex_0053A0"
-static const ALIGN_ASSET(2) char object_bvTex_0053A0[] = dobject_bvTex_0053A0;
-
 #define dobject_bvTex_0051A0 "__OTR__objects/object_bv/object_bvTex_0051A0"
 static const ALIGN_ASSET(2) char object_bvTex_0051A0[] = dobject_bvTex_0051A0;
 
@@ -388,3 +389,5 @@ static const ALIGN_ASSET(2) char object_bvTex_000840[] = dobject_bvTex_000840;
 
 #define dobject_bvTex_000040 "__OTR__objects/object_bv/object_bvTex_000040"
 static const ALIGN_ASSET(2) char object_bvTex_000040[] = dobject_bvTex_000040;
+
+#endif // OBJECTS_OBJECT_BV_H

@@ -58,6 +58,15 @@ public:
         }
     }
 
+    // Convert first char to upper case
+    Text Capitalize(void) const {
+        Text cap = *this + "";
+        for (std::string* str : {&cap.english, &cap.french, &cap.spanish}) {
+            (*str)[0] = std::toupper((*str)[0]);
+        }
+        return cap;
+    }
+
     //find the appropriate bars that separate singular from plural
     void SetForm(int form) {
         for (std::string* str : {&english, &french, &spanish}) {

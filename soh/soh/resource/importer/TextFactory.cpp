@@ -2,51 +2,92 @@
 #include "soh/resource/type/Text.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> TextFactory::ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader)
-{
-	auto resource = std::make_shared<Text>();
-	std::shared_ptr<ResourceVersionFactory> factory = nullptr;
+namespace LUS {
+std::shared_ptr<IResource>
+TextFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+    auto resource = std::make_shared<Text>(initData);
+    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-	switch (version)
-	{
-	case 0:
-		factory = std::make_shared<TextFactoryV0>();
-		break;
-    default:
-        // VERSION NOT SUPPORTED
-        break;
-	}
+    switch (resource->GetInitData()->ResourceVersion) {
+        case 0:
+	    factory = std::make_shared<TextFactoryV0>();
+	    break;
+        default:
+            // VERSION NOT SUPPORTED
+            break;
+    }
 
-	if (factory == nullptr)
-	{
-		SPDLOG_ERROR("Failed to load Text with version {}", version);
-		return nullptr;
-	}
+    if (factory == nullptr) {
+        SPDLOG_ERROR("Failed to load Text with version {}", resource->GetInitData()->ResourceVersion);
+	return nullptr;
+    }
 
-	factory->ParseFileBinary(reader, resource);
+    factory->ParseFileBinary(reader, resource);
 
-	return resource;
+    return resource;
 }
 
-void Ship::TextFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        std::shared_ptr<Resource> resource)
-{
-	std::shared_ptr<Text> text = std::static_pointer_cast<Text>(resource);
-	ResourceVersionFactory::ParseFileBinary(reader, text);
+std::shared_ptr<IResource>
+TextFactory::ReadResourceXML(std::shared_ptr<ResourceInitData> initData, tinyxml2::XMLElement *reader) {
+    auto resource = std::make_shared<Text>(initData);
+    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-	uint32_t msgCount = reader->ReadUInt32();
-	text->messages.reserve(msgCount);
+    switch (resource->GetInitData()->ResourceVersion) {
+        case 0:
+            factory = std::make_shared<TextFactoryV0>();
+            break;
+    }
 
-	for (uint32_t i = 0; i < msgCount; i++)
-	{
-		MessageEntry entry;
-		entry.id = reader->ReadUInt16();
-		entry.textboxType = reader->ReadUByte();
-		entry.textboxYPos = reader->ReadUByte();
-		entry.msg = reader->ReadString();
+    if (factory == nullptr) {
+        SPDLOG_ERROR("Failed to load Text with version {}", resource->GetInitData()->ResourceVersion);
+        return nullptr;
+    }
 
-		text->messages.push_back(entry);
-	}
+    factory->ParseFileXML(reader, resource);
+
+    return resource;
 }
-} // namespace Ship
+
+void LUS::TextFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+                                        std::shared_ptr<IResource> resource) {
+    std::shared_ptr<Text> text = std::static_pointer_cast<Text>(resource);
+    ResourceVersionFactory::ParseFileBinary(reader, text);
+
+    uint32_t msgCount = reader->ReadUInt32();
+    text->messages.reserve(msgCount);
+
+    for (uint32_t i = 0; i < msgCount; i++) {
+	MessageEntry entry;
+	entry.id = reader->ReadUInt16();
+	entry.textboxType = reader->ReadUByte();
+	entry.textboxYPos = reader->ReadUByte();
+	entry.msg = reader->ReadString();
+
+	text->messages.push_back(entry);
+    }
+}
+void TextFactoryV0::ParseFileXML(tinyxml2::XMLElement* reader, std::shared_ptr<IResource> resource) {
+    std::shared_ptr<Text> txt = std::static_pointer_cast<Text>(resource);
+
+    auto child = reader->FirstChildElement();
+
+    while (child != nullptr) {
+        std::string childName = child->Name();
+
+        if (childName == "TextEntry") {
+            MessageEntry entry;
+            entry.id = child->IntAttribute("ID");
+            entry.textboxType = child->IntAttribute("TextboxType");
+            entry.textboxYPos = child->IntAttribute("TextboxYPos");
+            entry.msg = child->Attribute("Message");
+            entry.msg += "\x2";
+
+            txt->messages.push_back(entry);
+            int bp = 0;
+        }
+
+        child = child->NextSiblingElement();
+    }
+}
+
+} // namespace LUS

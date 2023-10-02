@@ -1,11 +1,11 @@
 #include "SetSpecialObjects.h"
 
-namespace Ship {
-void* SetSpecialObjects::GetPointer() {
+namespace LUS {
+SpecialObjects* SetSpecialObjects::GetPointer() {
     return &specialObjects;
 }
 
 size_t SetSpecialObjects::GetPointerSize() {
 	return sizeof(SpecialObjects);
 }
-} // namespace Ship
+} // namespace LUS

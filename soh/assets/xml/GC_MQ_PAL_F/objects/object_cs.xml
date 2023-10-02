@@ -1,0 +1,60 @@
+<Root>
+    <File Name="object_cs" Segment="6">
+        <Skeleton Name="gGraveyardKidSkel" Type="Flex" LimbType="Standard" Offset="0x8540"/>
+        <Limb Name="gGraveyardKidTorsoLimb" LimbType="Standard" Offset="0x8450"/>
+        <Limb Name="gGraveyardKidLeftThighLimb" LimbType="Standard" Offset="0x845C"/>
+        <Limb Name="gGraveyardKidLeftShinLimb" LimbType="Standard" Offset="0x8468"/>
+        <Limb Name="gGraveyardKidLeftFootLimb" LimbType="Standard" Offset="0x8474"/>
+        <Limb Name="gGraveyardKidRightThighLimb" LimbType="Standard" Offset="0x8480"/>
+        <Limb Name="gGraveyardKidRightShinLimb" LimbType="Standard" Offset="0x848C"/>
+        <Limb Name="gGraveyardKidRightFootLimb" LimbType="Standard" Offset="0x8498"/>
+        <Limb Name="gGraveyardKidChestLimb" LimbType="Standard" Offset="0x84A4"/>
+        <Limb Name="gGraveyardKidLeftShoulderLimb" LimbType="Standard" Offset="0x84B0"/>
+        <Limb Name="gGraveyardKidLeftArmLimb" LimbType="Standard" Offset="0x84BC"/>
+        <Limb Name="gGraveyardKidLeftHandLimb" LimbType="Standard" Offset="0x84C8"/>
+        <Limb Name="gGraveyardKidRightShoulderLimb" LimbType="Standard" Offset="0x84D4"/>
+        <Limb Name="gGraveyardKidRightArmLimb" LimbType="Standard" Offset="0x84E0"/>
+        <Limb Name="gGraveyardKidRightHandLimb" LimbType="Standard" Offset="0x84EC"/>
+        <Limb Name="gGraveyardKidHeadLimb" LimbType="Standard" Offset="0x84F8"/>
+
+        <DList Name="gGraveyardKidTorsoDL" Offset="0x7910"/>
+        <DList Name="gGraveyardKidLeftThighDL" Offset="0x7F00"/>
+        <DList Name="gGraveyardKidLeftShinDL" Offset="0x8050"/>
+        <DList Name="gGraveyardKidLeftFootDL" Offset="0x81E8"/>
+        <DList Name="gGraveyardKidRightThighDL" Offset="0x7A30"/>
+        <DList Name="gGraveyardKidRightShinDL" Offset="0x7B80"/>
+        <DList Name="gGraveyardKidRightFootDL" Offset="0x7D18"/>
+        <DList Name="gGraveyardKidChestDL" Offset="0x65B0"/>
+        <DList Name="gGraveyardKidLeftUpperArmDL" Offset="0x7388"/>
+        <DList Name="gGraveyardKidLeftArmDL" Offset="0x7540"/>
+        <DList Name="gGraveyardKidLeftHandDL" Offset="0x7788"/>
+        <DList Name="gGraveyardKidRightUpperArmDL" Offset="0x6CA8"/>
+        <DList Name="gGraveyardKidRightArmDL" Offset="0x6E60"/>
+        <DList Name="gGraveyardKidRightHandDL" Offset="0x70A8"/>
+        <DList Name="gGraveyardKidHeadDL" Offset="0x6808"/>
+
+        <Animation Name="gGraveyardKidWalkAnim" Offset="0x0700"/>
+        <Animation Name="gGraveyardKidSwingStickUpAnim" Offset="0x0E10"/>
+        <Animation Name="gGraveyardKidGrabStickTwoHandsAnim" Offset="0x1588"/>
+        <Animation Name="gGraveyardKidIdleAnim" Offset="0x195C"/>
+
+
+        <Texture Name="gGraveyardKidEyesOpenTex" OutName="eyes_open" Format="rgba16" Width="64" Height="16" Offset="0x2130"/>
+        <Texture Name="gGraveyardKidEyesHalfTex" OutName="eyes_half" Format="rgba16" Width="64" Height="16" Offset="0x2930"/>
+        <Texture Name="gGraveyardKidEyesClosedTex" OutName="eyes_closed" Format="rgba16" Width="64" Height="16" Offset="0x3130"/>
+
+        <Texture Name="gGraveyardKidTLUT" OutName="tlut" Format="rgba16" Width="16" Height="16" Offset="0x1970"/>
+        <Texture Name="gGraveyardKidGradientTex" OutName="gradient" Format="ci8" Width="8" Height="8" Offset="0x1B70" TlutOffset="0x1970"/>
+        <Texture Name='gGraveyardKidPantsTex' OutName="pants" Format="ci8" Width="16" Height="16" Offset="0x3C70" TlutOffset="0x1970"/>
+        <Texture Name='gGraveyardKidBoot1Tex' OutName="boot1" Format="ci8" Width="8" Height="16" Offset="0x3BF0" TlutOffset="0x1970"/>
+        <Texture Name='gGraveyardKidBoot2Tex' OutName="boot2" Format="ci8" Width="8" Height="8" Offset="0x3BB0" TlutOffset="0x1970"/>
+        <Texture Name='gGraveyardKidHairTex' OutName="hair" Format="ci8" Width="16" Height="16" Offset="0x1BB0" TlutOffset="0x1970"/>
+        <Texture Name='gGraveyardKidEarTex' OutName="ear" Format="ci8" Width="8" Height="8" Offset="0x1CB0" TlutOffset="0x1970"/>
+        <Texture Name='gGraveyardKidNoseTex' OutName="nose" Format="ci8" Width="8" Height="8" Offset="0x1CF0" TlutOffset="0x1970"/>
+        <Texture Name='gGraveyardKidMouthTex' OutName="mouth" Format="rgba16" Width="32" Height="16" Offset="0x1D30"/>
+        <Texture Name='gGraveyardKidShirt1Tex' OutName="shirt1" Format="ci8" Width="16" Height="16" Offset="0x3A30" TlutOffset="0x1970"/>
+        <Texture Name='gGraveyardKidShirt2Tex' OutName="shirt2" Format="ci8" Width="8" Height="8" Offset="0x3B30" TlutOffset="0x1970"/>
+        <Texture Name='gGraveyardKidFingersTex' OutName="fingers" Format="ci8" Width="16" Height="16" Offset="0x3930" TlutOffset="0x1970"/>
+        <Texture Name='gGraveyardKidStickTex' OutName="stick" Format="ci8" Width="8" Height="8" Offset="0x3B70" TlutOffset="0x1970"/>
+   </File>
+</Root>

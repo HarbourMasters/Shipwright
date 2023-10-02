@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_SPOT16_OBJ_H
+#define OBJECTS_OBJECT_SPOT16_OBJ_H 1
 
 #include "align_asset_macro.h"
 
@@ -19,3 +20,5 @@ static const ALIGN_ASSET(2) char gDodongosCavernRockTex[] = dgDodongosCavernRock
 
 #define dgDeathMountainRingTex "__OTR__objects/object_spot16_obj/gDeathMountainRingTex"
 static const ALIGN_ASSET(2) char gDeathMountainRingTex[] = dgDeathMountainRingTex;
+
+#endif // OBJECTS_OBJECT_SPOT16_OBJ_H

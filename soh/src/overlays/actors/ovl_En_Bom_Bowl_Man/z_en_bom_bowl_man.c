@@ -4,7 +4,7 @@
 #include "overlays/actors/ovl_En_Ex_Item/z_en_ex_item.h"
 #include "objects/object_bg/object_bg.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_5 | ACTOR_FLAG_27)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED | ACTOR_FLAG_NO_LOCKON)
 
 typedef enum {
     /* 0 */ CHU_GIRL_EYES_ASLEEP,
@@ -83,12 +83,15 @@ void EnBomBowlMan_Init(Actor* thisx, PlayState* play2) {
         }
     }
 
-    this->prizeSelect = gSaveContext.n64ddFlag ? 0 : (s16)Rand_ZeroFloat(4.99f);
+    this->prizeSelect = IS_RANDO ? 0 : (s16)Rand_ZeroFloat(4.99f);
     this->actor.targetMode = 1;
     this->actionFunc = EnBomBowMan_SetupWaitAsleep;
 }
 
 void EnBomBowlMan_Destroy(Actor* thisx, PlayState* play) {
+    EnBomBowlMan* this = (EnBomBowlMan*)thisx;
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnBomBowMan_SetupWaitAsleep(EnBomBowlMan* this, PlayState* play) {
@@ -139,8 +142,8 @@ void EnBomBowMan_BlinkAwake(EnBomBowlMan* this, PlayState* play) {
         this->dialogState = TEXT_STATE_EVENT;
 
         // Check for beaten Dodongo's Cavern if Rando is disabled
-        if (!gSaveContext.n64ddFlag) {
-            if ((gSaveContext.eventChkInf[2] & 0x20) || BREG(2)) {
+        if (!IS_RANDO) {
+            if ((Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) || BREG(2)) {
                 this->actor.textId = 0xBF;
             } else {
                 this->actor.textId = 0x7058;
@@ -149,7 +152,7 @@ void EnBomBowMan_BlinkAwake(EnBomBowlMan* this, PlayState* play) {
 
         // In randomizer, only check for bomb bag when bombchus aren't in logic
         // and only check for bombchus when bombchus are in logic
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             u8 bombchusInLogic = Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC);
             if ((!bombchusInLogic && INV_CONTENT(ITEM_BOMB) == ITEM_NONE) ||
                 (bombchusInLogic && INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE)) {
@@ -184,14 +187,14 @@ void EnBomBowMan_CheckBeatenDC(EnBomBowlMan* this, PlayState* play) {
         this->blinkTimer = (s16)Rand_ZeroFloat(60.0f) + 20;
 
         bool bombchuBowlingClosed;
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             // when rando'd, check if we have bombchus if chus are in logic
             // and check if we have a bomb bag if chus aren't in logic
             u8 explosive = Randomizer_GetSettingValue(RSK_BOMBCHUS_IN_LOGIC) ? ITEM_BOMBCHU : ITEM_BOMB;
             bombchuBowlingClosed = (INV_CONTENT(explosive) == ITEM_NONE);
         } else {
             // if not rando'd, check if we have beaten Dodongo's Cavern
-            bombchuBowlingClosed = !((gSaveContext.eventChkInf[2] & 0x20) || BREG(2));
+            bombchuBowlingClosed = !((Flags_GetEventChkInf(EVENTCHKINF_USED_DODONGOS_CAVERN_BLUE_WARP)) || BREG(2));
         }
         if (bombchuBowlingClosed) {
             this->actionFunc = EnBomBowMan_WaitNotBeatenDC;
@@ -423,16 +426,16 @@ void EnBomBowMan_ChooseShowPrize(EnBomBowlMan* this, PlayState* play) {
         switch (this->prizeSelect) {
             case 0:
                 prizeTemp = EXITEM_BOMB_BAG_BOWLING;
-                if (gSaveContext.itemGetInf[1] & 2) {
+                if (Flags_GetItemGetInf(ITEMGETINF_11)) {
                     prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
                 }
                 break;
             case 1:
-                if (!gSaveContext.n64ddFlag) {
+                if (!IS_RANDO) {
                     prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
                 } else {
                     prizeTemp = EXITEM_HEART_PIECE_BOWLING;
-                    if (gSaveContext.itemGetInf[1] & 4) {
+                    if (Flags_GetItemGetInf(ITEMGETINF_12)) {
                         prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
                     }
                 }
@@ -441,9 +444,9 @@ void EnBomBowMan_ChooseShowPrize(EnBomBowlMan* this, PlayState* play) {
                 prizeTemp = EXITEM_BOMBCHUS_BOWLING;
                 break;
             case 3:
-                if (!gSaveContext.n64ddFlag) {
+                if (!IS_RANDO) {
                     prizeTemp = EXITEM_HEART_PIECE_BOWLING;
-                    if (gSaveContext.itemGetInf[1] & 4) {
+                    if (Flags_GetItemGetInf(ITEMGETINF_12)) {
                         prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
                     }
                 } else {
@@ -574,8 +577,7 @@ void EnBomBowlMan_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeTextureIndex]));
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnBomBowlMan_OverrideLimbDraw, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnBomBowlMan_OverrideLimbDraw, NULL, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_JYA_OBJ_H
+#define OBJECTS_OBJECT_JYA_OBJ_H 1
 
 #include "align_asset_macro.h"
 
@@ -250,3 +251,5 @@ static const ALIGN_ASSET(2) char object_jya_objTex_011A80[] = dobject_jya_objTex
 
 #define dobject_jya_objTLUT_011A60 "__OTR__objects/object_jya_obj/object_jya_objTLUT_011A60"
 static const ALIGN_ASSET(2) char object_jya_objTLUT_011A60[] = dobject_jya_objTLUT_011A60;
+
+#endif // OBJECTS_OBJECT_JYA_OBJ_H

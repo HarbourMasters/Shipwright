@@ -2,9 +2,9 @@
 #include <variant>
 #include <string>
 #include <cstdint>
-#include <ImGuiImpl.h>
 #include <libultraship/bridge.h>
 #include "soh/UIWidgets.hpp"
+#include <libultraship/libultraship.h>
 
 void clearCvars(std::vector<const char*> cvarsToClear) {
     for(const char* cvar : cvarsToClear) {
@@ -59,7 +59,7 @@ void DrawPresetSelector(PresetType presetTypeId) {
         if (selectedPresetId != 0) {
             applyPreset(selectedPresetDef.entries);
         }
-        SohImGui::RequestCvarSaveOnNextTick();
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->SaveConsoleVariablesOnNextTick();
     }
     ImGui::PopStyleVar(1);
 }

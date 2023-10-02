@@ -3,43 +3,28 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "textures/do_action_static/do_action_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
+#include "soh_assets.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
-#include "libultraship/bridge.h"
 
-#ifdef _MSC_VER
-#include <stdlib.h>
+#include "libultraship/bridge.h"
+#include "soh/Enhancements/gameplaystats.h"
+#include "soh/Enhancements/boss-rush/BossRushTypes.h"
+#include "soh/Enhancements/custom-message/CustomMessageInterfaceAddon.h"
+#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include "soh/Enhancements/enhancementTypes.h"
+
 #include <string.h>
+#include <stdlib.h>
 #include <assert.h>
-#endif
 
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/Enhancements/randomizer/randomizer_grotto.h"
 
-
-static uint16_t _doActionTexWidth, _doActionTexHeight = -1;
-static uint16_t DO_ACTION_TEX_WIDTH() {
-    return 48;
-
-    // TODO: Figure out why Ship::Texture is not returning a valid width
-    if (_doActionTexWidth == -1)
-        _doActionTexWidth = GetResourceTexWidthByName(gCheckDoActionENGTex, false);
-    return _doActionTexWidth;
-}
-static uint16_t DO_ACTION_TEX_HEIGHT() {
-    return 16;
-
-    // TODO: Figure out why Ship::Texture is not returning a valid height
-    if (_doActionTexHeight == -1)
-        _doActionTexHeight = GetResourceTexHeightByName(gCheckDoActionENGTex, false);
-    return _doActionTexHeight;
-}
-
-static uint32_t _doActionTexSize = -1;
-static uint32_t DO_ACTION_TEX_SIZE() {
-    if (_doActionTexSize == -1)
-        _doActionTexSize = GetResourceTexSizeByName(gCheckDoActionENGTex, false);
-    return _doActionTexSize;
-}
+#define DO_ACTION_TEX_WIDTH() 48
+#define DO_ACTION_TEX_HEIGHT() 16
+#define DO_ACTION_TEX_SIZE() ((DO_ACTION_TEX_WIDTH() * DO_ACTION_TEX_HEIGHT()) / 2)
 
 // The button statuses include the A button when most things are only the equip item buttons
 // So, when indexing into it with a item button index, we need to adjust
@@ -58,106 +43,106 @@ typedef struct {
 } RestrictionFlags;
 
 static RestrictionFlags sRestrictionFlags[] = {
-    { SCENE_SPOT00, 0x00, 0x00, 0x10 },
-    { SCENE_SPOT01, 0x00, 0x00, 0x10 },
-    { SCENE_SPOT02, 0x00, 0x00, 0x10 },
-    { SCENE_SPOT03, 0x00, 0x00, 0x10 },
-    { SCENE_SPOT04, 0x00, 0x00, 0x10 },
-    { SCENE_SPOT05, 0x00, 0x00, 0x10 },
-    { SCENE_SPOT06, 0x00, 0x00, 0x10 },
-    { SCENE_SPOT07, 0x00, 0x00, 0x10 },
-    { SCENE_SPOT08, 0x00, 0x00, 0x10 },
-    { SCENE_SPOT09, 0x00, 0x00, 0x10 },
-    { SCENE_SPOT10, 0x00, 0x00, 0x10 },
-    { SCENE_SPOT11, 0x00, 0x00, 0x10 },
-    { SCENE_SPOT12, 0x00, 0x00, 0x10 },
-    { SCENE_SPOT13, 0x00, 0x00, 0x10 },
-    { SCENE_SPOT15, 0x00, 0x00, 0x10 },
-    { SCENE_GANON_TOU, 0x00, 0x00, 0x10 },
-    { SCENE_SPOT16, 0x00, 0x00, 0x10 },
-    { SCENE_SPOT17, 0x00, 0x00, 0x10 },
-    { SCENE_SPOT18, 0x00, 0x00, 0x10 },
-    { SCENE_SPOT20, 0x00, 0x00, 0x10 },
-    { SCENE_TOKINOMA, 0x00, 0x10, 0x15 },
-    { SCENE_KENJYANOMA, 0xA2, 0xAA, 0xAA },
-    { SCENE_SYATEKIJYOU, 0x11, 0x55, 0x55 },
-    { SCENE_HAIRAL_NIWA, 0x11, 0x55, 0x55 },
-    { SCENE_HAIRAL_NIWA_N, 0x11, 0x55, 0x55 },
-    { SCENE_HAKAANA, 0x00, 0x00, 0xD0 },
-    { SCENE_HAKAANA2, 0x00, 0x00, 0xD0 },
-    { SCENE_HAKAANA_OUKE, 0x00, 0x00, 0xD0 },
-    { SCENE_DAIYOUSEI_IZUMI, 0x00, 0x00, 0x10 },
-    { SCENE_YOUSEI_IZUMI_TATE, 0x00, 0x00, 0xD0 },
-    { SCENE_YOUSEI_IZUMI_YOKO, 0x00, 0x00, 0x10 },
-    { SCENE_GANON_FINAL, 0x00, 0x05, 0x50 },
-    { SCENE_NAKANIWA, 0x00, 0x05, 0x54 },
-    { SCENE_TURIBORI, 0x11, 0x55, 0x55 },
-    { SCENE_BOWLING, 0x11, 0x55, 0x55 },
-    { SCENE_SOUKO, 0x00, 0x10, 0x15 },
-    { SCENE_MIHARIGOYA, 0x00, 0x10, 0x14 },
-    { SCENE_MAHOUYA, 0x10, 0x15, 0x55 },
-    { SCENE_TAKARAYA, 0x10, 0x15, 0x55 },
-    { SCENE_KINSUTA, 0x00, 0x10, 0x15 },
-    { SCENE_ENTRA, 0x00, 0x10, 0x15 },
-    { SCENE_ENTRA_N, 0x00, 0x10, 0x15 },
-    { SCENE_ENRUI, 0x00, 0x10, 0xD5 },
+    { SCENE_HYRULE_FIELD, 0x00, 0x00, 0x10 },
+    { SCENE_KAKARIKO_VILLAGE, 0x00, 0x00, 0x10 },
+    { SCENE_GRAVEYARD, 0x00, 0x00, 0x10 },
+    { SCENE_ZORAS_RIVER, 0x00, 0x00, 0x10 },
+    { SCENE_KOKIRI_FOREST, 0x00, 0x00, 0x10 },
+    { SCENE_SACRED_FOREST_MEADOW, 0x00, 0x00, 0x10 },
+    { SCENE_LAKE_HYLIA, 0x00, 0x00, 0x10 },
+    { SCENE_ZORAS_DOMAIN, 0x00, 0x00, 0x10 },
+    { SCENE_ZORAS_FOUNTAIN, 0x00, 0x00, 0x10 },
+    { SCENE_GERUDO_VALLEY, 0x00, 0x00, 0x10 },
+    { SCENE_LOST_WOODS, 0x00, 0x00, 0x10 },
+    { SCENE_DESERT_COLOSSUS, 0x00, 0x00, 0x10 },
+    { SCENE_GERUDOS_FORTRESS, 0x00, 0x00, 0x10 },
+    { SCENE_HAUNTED_WASTELAND, 0x00, 0x00, 0x10 },
+    { SCENE_HYRULE_CASTLE, 0x00, 0x00, 0x10 },
+    { SCENE_OUTSIDE_GANONS_CASTLE, 0x00, 0x00, 0x10 },
+    { SCENE_DEATH_MOUNTAIN_TRAIL, 0x00, 0x00, 0x10 },
+    { SCENE_DEATH_MOUNTAIN_CRATER, 0x00, 0x00, 0x10 },
+    { SCENE_GORON_CITY, 0x00, 0x00, 0x10 },
+    { SCENE_LON_LON_RANCH, 0x00, 0x00, 0x10 },
+    { SCENE_TEMPLE_OF_TIME, 0x00, 0x10, 0x15 },
+    { SCENE_CHAMBER_OF_THE_SAGES, 0xA2, 0xAA, 0xAA },
+    { SCENE_SHOOTING_GALLERY, 0x11, 0x55, 0x55 },
+    { SCENE_CASTLE_COURTYARD_GUARDS_DAY, 0x11, 0x55, 0x55 },
+    { SCENE_CASTLE_COURTYARD_GUARDS_NIGHT, 0x11, 0x55, 0x55 },
+    { SCENE_REDEAD_GRAVE, 0x00, 0x00, 0xD0 },
+    { SCENE_GRAVE_WITH_FAIRYS_FOUNTAIN, 0x00, 0x00, 0xD0 },
+    { SCENE_ROYAL_FAMILYS_TOMB, 0x00, 0x00, 0xD0 },
+    { SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC, 0x00, 0x00, 0x10 },
+    { SCENE_FAIRYS_FOUNTAIN, 0x00, 0x00, 0xD0 },
+    { SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS, 0x00, 0x00, 0x10 },
+    { SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR, 0x00, 0x05, 0x50 },
+    { SCENE_CASTLE_COURTYARD_ZELDA, 0x00, 0x05, 0x54 },
+    { SCENE_FISHING_POND, 0x11, 0x55, 0x55 },
+    { SCENE_BOMBCHU_BOWLING_ALLEY, 0x11, 0x55, 0x55 },
+    { SCENE_LON_LON_BUILDINGS, 0x00, 0x10, 0x15 },
+    { SCENE_MARKET_GUARD_HOUSE, 0x00, 0x10, 0x14 },
+    { SCENE_POTION_SHOP_GRANNY, 0x10, 0x15, 0x55 },
+    { SCENE_TREASURE_BOX_SHOP, 0x10, 0x15, 0x55 },
+    { SCENE_HOUSE_OF_SKULLTULA, 0x00, 0x10, 0x15 },
+    { SCENE_MARKET_ENTRANCE_DAY, 0x00, 0x10, 0x15 },
+    { SCENE_MARKET_ENTRANCE_NIGHT, 0x00, 0x10, 0x15 },
+    { SCENE_MARKET_ENTRANCE_RUINS, 0x00, 0x10, 0xD5 },
     { SCENE_MARKET_DAY, 0x00, 0x10, 0x15 },
     { SCENE_MARKET_NIGHT, 0x00, 0x10, 0x15 },
     { SCENE_MARKET_RUINS, 0x00, 0x10, 0xD5 },
-    { SCENE_MARKET_ALLEY, 0x00, 0x10, 0x15 },
-    { SCENE_MARKET_ALLEY_N, 0x00, 0x10, 0x15 },
-    { SCENE_SHRINE, 0x00, 0x10, 0x15 },
-    { SCENE_SHRINE_N, 0x00, 0x10, 0x15 },
-    { SCENE_SHRINE_R, 0x00, 0x10, 0xD5 },
-    { SCENE_LINK_HOME, 0x10, 0x10, 0x15 },
-    { SCENE_KAKARIKO, 0x10, 0x10, 0x15 },
-    { SCENE_KAKARIKO3, 0x10, 0x10, 0x15 },
-    { SCENE_KOKIRI_HOME, 0x10, 0x10, 0x15 },
-    { SCENE_KOKIRI_HOME3, 0x10, 0x10, 0x15 },
-    { SCENE_KOKIRI_HOME4, 0x10, 0x10, 0x15 },
-    { SCENE_KOKIRI_HOME5, 0x10, 0x10, 0x15 },
-    { SCENE_MALON_STABLE, 0x10, 0x10, 0x15 },
-    { SCENE_HUT, 0x10, 0x10, 0x15 },
-    { SCENE_IMPA, 0x10, 0x10, 0x15 },
-    { SCENE_LABO, 0x10, 0x10, 0x15 },
-    { SCENE_HYLIA_LABO, 0x00, 0x10, 0x15 },
-    { SCENE_TENT, 0x10, 0x10, 0x15 },
-    { SCENE_SHOP1, 0x10, 0x10, 0x15 },
+    { SCENE_BACK_ALLEY_DAY, 0x00, 0x10, 0x15 },
+    { SCENE_BACK_ALLEY_NIGHT, 0x00, 0x10, 0x15 },
+    { SCENE_TEMPLE_OF_TIME_EXTERIOR_DAY, 0x00, 0x10, 0x15 },
+    { SCENE_TEMPLE_OF_TIME_EXTERIOR_NIGHT, 0x00, 0x10, 0x15 },
+    { SCENE_TEMPLE_OF_TIME_EXTERIOR_RUINS, 0x00, 0x10, 0xD5 },
+    { SCENE_LINKS_HOUSE, 0x10, 0x10, 0x15 },
+    { SCENE_KAKARIKO_CENTER_GUEST_HOUSE, 0x10, 0x10, 0x15 },
+    { SCENE_BACK_ALLEY_HOUSE, 0x10, 0x10, 0x15 },
+    { SCENE_KNOW_IT_ALL_BROS_HOUSE, 0x10, 0x10, 0x15 },
+    { SCENE_TWINS_HOUSE, 0x10, 0x10, 0x15 },
+    { SCENE_MIDOS_HOUSE, 0x10, 0x10, 0x15 },
+    { SCENE_SARIAS_HOUSE, 0x10, 0x10, 0x15 },
+    { SCENE_STABLE, 0x10, 0x10, 0x15 },
+    { SCENE_GRAVEKEEPERS_HUT, 0x10, 0x10, 0x15 },
+    { SCENE_DOG_LADY_HOUSE, 0x10, 0x10, 0x15 },
+    { SCENE_IMPAS_HOUSE, 0x10, 0x10, 0x15 },
+    { SCENE_LAKESIDE_LABORATORY, 0x00, 0x10, 0x15 },
+    { SCENE_CARPENTERS_TENT, 0x10, 0x10, 0x15 },
+    { SCENE_BAZAAR, 0x10, 0x10, 0x15 },
     { SCENE_KOKIRI_SHOP, 0x10, 0x10, 0x15 },
-    { SCENE_GOLON, 0x10, 0x10, 0x15 },
-    { SCENE_ZOORA, 0x10, 0x10, 0x15 },
-    { SCENE_DRAG, 0x10, 0x10, 0x15 },
-    { SCENE_ALLEY_SHOP, 0x10, 0x10, 0x15 },
-    { SCENE_NIGHT_SHOP, 0x10, 0x10, 0x15 },
-    { SCENE_FACE_SHOP, 0x10, 0x10, 0x15 },
-    { SCENE_MEN, 0x00, 0x03, 0x10 },
-    { SCENE_YDAN, 0x00, 0x00, 0x00 },
-    { SCENE_YDAN_BOSS, 0x00, 0x45, 0x50 },
-    { SCENE_DDAN, 0x00, 0x00, 0x00 },
-    { SCENE_DDAN_BOSS, 0x00, 0x45, 0x50 },
-    { SCENE_BDAN, 0x00, 0x00, 0x00 },
-    { SCENE_BDAN_BOSS, 0x00, 0x45, 0x50 },
-    { SCENE_BMORI1, 0x00, 0x00, 0x00 },
-    { SCENE_MORIBOSSROOM, 0x00, 0x45, 0x50 },
-    { SCENE_HAKADANCH, 0x00, 0x00, 0x00 },
-    { SCENE_HAKADAN, 0x00, 0x00, 0x00 },
-    { SCENE_HAKADAN_BS, 0x00, 0x45, 0x50 },
-    { SCENE_HIDAN, 0x00, 0x00, 0x00 },
-    { SCENE_FIRE_BS, 0x00, 0x45, 0x50 },
-    { SCENE_MIZUSIN, 0x00, 0x00, 0x00 },
-    { SCENE_MIZUSIN_BS, 0x00, 0x45, 0x50 },
-    { SCENE_JYASINZOU, 0x00, 0x00, 0x00 },
-    { SCENE_JYASINBOSS, 0x00, 0x45, 0x50 },
-    { SCENE_GANON, 0x00, 0x00, 0x00 },
+    { SCENE_GORON_SHOP, 0x10, 0x10, 0x15 },
+    { SCENE_ZORA_SHOP, 0x10, 0x10, 0x15 },
+    { SCENE_POTION_SHOP_KAKARIKO, 0x10, 0x10, 0x15 },
+    { SCENE_POTION_SHOP_MARKET, 0x10, 0x10, 0x15 },
+    { SCENE_BOMBCHU_SHOP, 0x10, 0x10, 0x15 },
+    { SCENE_HAPPY_MASK_SHOP, 0x10, 0x10, 0x15 },
+    { SCENE_GERUDO_TRAINING_GROUND, 0x00, 0x03, 0x10 },
+    { SCENE_DEKU_TREE, 0x00, 0x00, 0x00 },
+    { SCENE_DEKU_TREE_BOSS, 0x00, 0x45, 0x50 },
+    { SCENE_DODONGOS_CAVERN, 0x00, 0x00, 0x00 },
+    { SCENE_DODONGOS_CAVERN_BOSS, 0x00, 0x45, 0x50 },
+    { SCENE_JABU_JABU, 0x00, 0x00, 0x00 },
+    { SCENE_JABU_JABU_BOSS, 0x00, 0x45, 0x50 },
+    { SCENE_FOREST_TEMPLE, 0x00, 0x00, 0x00 },
+    { SCENE_FOREST_TEMPLE_BOSS, 0x00, 0x45, 0x50 },
+    { SCENE_BOTTOM_OF_THE_WELL, 0x00, 0x00, 0x00 },
+    { SCENE_SHADOW_TEMPLE, 0x00, 0x00, 0x00 },
+    { SCENE_SHADOW_TEMPLE_BOSS, 0x00, 0x45, 0x50 },
+    { SCENE_FIRE_TEMPLE, 0x00, 0x00, 0x00 },
+    { SCENE_FIRE_TEMPLE_BOSS, 0x00, 0x45, 0x50 },
+    { SCENE_WATER_TEMPLE, 0x00, 0x00, 0x00 },
+    { SCENE_WATER_TEMPLE_BOSS, 0x00, 0x45, 0x50 },
+    { SCENE_SPIRIT_TEMPLE, 0x00, 0x00, 0x00 },
+    { SCENE_SPIRIT_TEMPLE_BOSS, 0x00, 0x45, 0x50 },
+    { SCENE_GANONS_TOWER, 0x00, 0x00, 0x00 },
+    { SCENE_GANONDORF_BOSS, 0x00, 0x45, 0x50 },
+    { SCENE_ICE_CAVERN, 0x00, 0x00, 0xC0 },
+    { SCENE_WINDMILL_AND_DAMPES_GRAVE, 0x00, 0x03, 0x14 },
+    { SCENE_INSIDE_GANONS_CASTLE, 0x00, 0x03, 0x10 },
     { SCENE_GANON_BOSS, 0x00, 0x45, 0x50 },
-    { SCENE_ICE_DOUKUTO, 0x00, 0x00, 0xC0 },
-    { SCENE_HAKASITARELAY, 0x00, 0x03, 0x14 },
-    { SCENE_GANONTIKA, 0x00, 0x03, 0x10 },
-    { SCENE_GANON_DEMO, 0x00, 0x45, 0x50 },
-    { SCENE_GANON_SONOGO, 0x00, 0x05, 0x50 },
-    { SCENE_GANONTIKA_SONOGO, 0x00, 0x05, 0x50 },
-    { SCENE_GERUDOWAY, 0x00, 0x00, 0x10 },
-    { SCENE_KAKUSIANA, 0x00, 0x00, 0xD0 },
+    { SCENE_GANONS_TOWER_COLLAPSE_INTERIOR, 0x00, 0x05, 0x50 },
+    { SCENE_INSIDE_GANONS_CASTLE_COLLAPSE, 0x00, 0x05, 0x50 },
+    { SCENE_THIEVES_HIDEOUT, 0x00, 0x00, 0x10 },
+    { SCENE_GROTTOS, 0x00, 0x00, 0xD0 },
     { 0xFF, 0x00, 0x00, 0x00 },
 };
 
@@ -550,26 +535,26 @@ void func_80082850(PlayState* play, s16 maxAlpha) {
             }
 
             switch (play->sceneNum) {
-                case SCENE_SPOT00:
-                case SCENE_SPOT01:
-                case SCENE_SPOT02:
-                case SCENE_SPOT03:
-                case SCENE_SPOT04:
-                case SCENE_SPOT05:
-                case SCENE_SPOT06:
-                case SCENE_SPOT07:
-                case SCENE_SPOT08:
-                case SCENE_SPOT09:
-                case SCENE_SPOT10:
-                case SCENE_SPOT11:
-                case SCENE_SPOT12:
-                case SCENE_SPOT13:
-                case SCENE_SPOT15:
-                case SCENE_SPOT16:
-                case SCENE_SPOT17:
-                case SCENE_SPOT18:
-                case SCENE_SPOT20:
-                case SCENE_GANON_TOU:
+                case SCENE_HYRULE_FIELD:
+                case SCENE_KAKARIKO_VILLAGE:
+                case SCENE_GRAVEYARD:
+                case SCENE_ZORAS_RIVER:
+                case SCENE_KOKIRI_FOREST:
+                case SCENE_SACRED_FOREST_MEADOW:
+                case SCENE_LAKE_HYLIA:
+                case SCENE_ZORAS_DOMAIN:
+                case SCENE_ZORAS_FOUNTAIN:
+                case SCENE_GERUDO_VALLEY:
+                case SCENE_LOST_WOODS:
+                case SCENE_DESERT_COLOSSUS:
+                case SCENE_GERUDOS_FORTRESS:
+                case SCENE_HAUNTED_WASTELAND:
+                case SCENE_HYRULE_CASTLE:
+                case SCENE_DEATH_MOUNTAIN_TRAIL:
+                case SCENE_DEATH_MOUNTAIN_CRATER:
+                case SCENE_GORON_CITY:
+                case SCENE_LON_LON_RANCH:
+                case SCENE_OUTSIDE_GANONS_CASTLE:
                     if (interfaceCtx->minimapAlpha < 170) {
                         interfaceCtx->minimapAlpha = alpha;
                     } else {
@@ -834,11 +819,11 @@ void func_80083108(PlayState* play) {
     s16 sp28 = 0;
 
     if ((gSaveContext.cutsceneIndex < 0xFFF0) ||
-        ((play->sceneNum == SCENE_SPOT20) && (gSaveContext.cutsceneIndex == 0xFFF0))) {
+        ((play->sceneNum == SCENE_LON_LON_RANCH) && (gSaveContext.cutsceneIndex == 0xFFF0))) {
         gSaveContext.unk_13E7 = 0;
 
         if ((player->stateFlags1 & 0x00800000) || (play->shootingGalleryStatus > 1) ||
-            ((play->sceneNum == SCENE_BOWLING) && Flags_GetSwitch(play, 0x38))) {
+            ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38))) {
             if (gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
                 gSaveContext.unk_13E7 = 1;
 
@@ -855,7 +840,7 @@ void func_80083108(PlayState* play) {
                     (gSaveContext.equips.buttonItems[0] != ITEM_NONE)) {
                     gSaveContext.buttonStatus[0] = gSaveContext.equips.buttonItems[0];
 
-                    if ((play->sceneNum == SCENE_BOWLING) && Flags_GetSwitch(play, 0x38)) {
+                    if ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38)) {
                         gSaveContext.equips.buttonItems[0] = ITEM_BOMBCHU;
                         Interface_LoadItemIcon1(play, 0);
                     } else {
@@ -888,7 +873,7 @@ void func_80083108(PlayState* play) {
                     Interface_ChangeAlpha(8);
                 } else if (play->shootingGalleryStatus > 1) {
                     Interface_ChangeAlpha(8);
-                } else if ((play->sceneNum == SCENE_BOWLING) && Flags_GetSwitch(play, 0x38)) {
+                } else if ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38)) {
                     Interface_ChangeAlpha(8);
                 } else if (player->stateFlags1 & 0x00800000) {
                     Interface_ChangeAlpha(12);
@@ -898,9 +883,10 @@ void func_80083108(PlayState* play) {
                     Interface_ChangeAlpha(12);
                 }
             }
-        } else if (play->sceneNum == SCENE_KENJYANOMA) {
+        // Don't hide the HUD in the Chamber of Sages when in Boss Rush.
+        } else if (play->sceneNum == SCENE_CHAMBER_OF_THE_SAGES && !IS_BOSS_RUSH) {
             Interface_ChangeAlpha(1);
-        } else if (play->sceneNum == SCENE_TURIBORI) {
+        } else if (play->sceneNum == SCENE_FISHING_POND) {
             gSaveContext.unk_13E7 = 2;
             if (play->interfaceCtx.unk_260 != 0) {
                 if (gSaveContext.equips.buttonItems[0] != ITEM_FISHING_POLE) {
@@ -943,7 +929,7 @@ void func_80083108(PlayState* play) {
                 gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
                 gSaveContext.buttonStatus[3] = gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] =
                 gSaveContext.buttonStatus[7] = gSaveContext.buttonStatus[8] = BTN_DISABLED;
-            } else if ((func_8008F2F8(play) >= 2) && (func_8008F2F8(play) < 5)) {
+            } else if ((Player_GetEnvironmentalHazard(play) >= 2) && (Player_GetEnvironmentalHazard(play) < 5)) {
                 if (gSaveContext.buttonStatus[0] != BTN_DISABLED) {
                     sp28 = 1;
                 }
@@ -959,7 +945,7 @@ void func_80083108(PlayState* play) {
                         }
 
                         gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_ENABLED;
-                    } else if (func_8008F2F8(play) == 2) {
+                    } else if (Player_GetEnvironmentalHazard(play) == 2) {
                         if ((gSaveContext.equips.buttonItems[i] != ITEM_HOOKSHOT) &&
                             (gSaveContext.equips.buttonItems[i] != ITEM_LONGSHOT)) {
                             if (gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] == BTN_ENABLED) {
@@ -1140,7 +1126,7 @@ void func_80083108(PlayState* play) {
 
                 if (interfaceCtx->restrictions.tradeItems != 0) {
                     for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
-                        if ((CVarGetInteger("gMMBunnyHood", 0) != 0)
+                        if ((CVarGetInteger("gMMBunnyHood", BUNNY_HOOD_VANILLA) != BUNNY_HOOD_VANILLA)
                             && (gSaveContext.equips.buttonItems[i] >= ITEM_MASK_KEATON)
                             && (gSaveContext.equips.buttonItems[i] <= ITEM_MASK_TRUTH)) {
                             gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_ENABLED;
@@ -1271,7 +1257,7 @@ void func_80083108(PlayState* play) {
                               (gSaveContext.equips.buttonItems[i] <= ITEM_BOOTS_HOVER)) && // (tunics/boots) on C-buttons
                             !((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
                               (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK))) {
-                            if ((play->sceneNum != SCENE_TAKARAYA) ||
+                            if ((play->sceneNum != SCENE_TREASURE_BOX_SHOP) ||
                                 (gSaveContext.equips.buttonItems[i] != ITEM_LENS)) {
                                 if (gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] == BTN_ENABLED) {
                                     sp28 = 1;
@@ -1372,7 +1358,7 @@ void Interface_SetSceneRestrictions(PlayState* play) {
                          interfaceCtx->restrictions.all);
             osSyncPrintf(VT_RST);
             if (CVarGetInteger("gBetterFW", 0)) {
-                if (currentScene == SCENE_MEN || currentScene == SCENE_GANONTIKA) {
+                if (currentScene == SCENE_GERUDO_TRAINING_GROUND || currentScene == SCENE_INSIDE_GANONS_CASTLE) {
                     interfaceCtx->restrictions.farores = 0;
                 }
             }
@@ -1411,11 +1397,7 @@ void Inventory_SwapAgeEquipment(void) {
     u16 temp;
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
-        // When becoming adult, remove swordless flag since we'll get master sword
-        // Only in rando to keep swordless link bugs in vanilla
-        if (gSaveContext.n64ddFlag) {
-            gSaveContext.infTable[29] &= ~1;
-        }
+        
 
         for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
             if (i != 0) {
@@ -1427,6 +1409,12 @@ void Inventory_SwapAgeEquipment(void) {
             if (i != 0) {
                 gSaveContext.childEquips.cButtonSlots[i - 1] = gSaveContext.equips.cButtonSlots[i - 1];
             }
+        }
+
+        // When becoming adult, remove swordless flag since we'll get master sword
+        // Only in rando to keep swordless link bugs in vanilla
+        if (IS_RANDO) {
+            Flags_UnsetInfTable(INFTABLE_SWORDLESS);
         }
 
         gSaveContext.childEquips.equipment = gSaveContext.equips.equipment;
@@ -1479,8 +1467,15 @@ void Inventory_SwapAgeEquipment(void) {
     } else {
         // When becoming child, set swordless flag if player doesn't have kokiri sword
         // Only in rando to keep swordless link bugs in vanilla
-        if (gSaveContext.n64ddFlag && (1 << 0 & gSaveContext.inventory.equipment) == 0) {
-            gSaveContext.infTable[29] |= 1;
+        if (IS_RANDO && (1 << 0 & gSaveContext.inventory.equipment) == 0) {
+            Flags_SetInfTable(INFTABLE_SWORDLESS);
+        }
+
+        // When using enhancements, set swordless flag if player doesn't have kokiri sword or hasn't equipped a sword yet.
+        // Then set the child equips button items to item none to ensure kokiri sword is not equipped
+        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) && ((1 << 0 & gSaveContext.inventory.equipment) == 0 || Flags_GetInfTable(INFTABLE_SWORDLESS))) {
+            Flags_SetInfTable(INFTABLE_SWORDLESS);
+            gSaveContext.childEquips.buttonItems[0] = ITEM_NONE;
         }
 
         for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
@@ -1492,8 +1487,32 @@ void Inventory_SwapAgeEquipment(void) {
         }
 
         gSaveContext.adultEquips.equipment = gSaveContext.equips.equipment;
+        // Switching age using enhancements separated out to make vanilla flow clear
+        if (CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) {
+            for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+                gSaveContext.equips.buttonItems[i] = gSaveContext.childEquips.buttonItems[i];
 
-        if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE) {
+                if (i != 0) {
+                    gSaveContext.equips.cButtonSlots[i - 1] = gSaveContext.childEquips.cButtonSlots[i - 1];
+                }
+
+                if (((gSaveContext.equips.buttonItems[i] >= ITEM_BOTTLE) &&
+                     (gSaveContext.equips.buttonItems[i] <= ITEM_POE)) ||
+                    ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
+                     (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK))) {
+                    osSyncPrintf("Register_Item_Pt(%d)=%d\n", i, gSaveContext.equips.cButtonSlots[i - 1]);
+                    gSaveContext.equips.buttonItems[i] =
+                        gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[i - 1]];
+                }
+            }
+
+            gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
+            gSaveContext.equips.equipment &= 0xFFF0;
+            // Equips kokiri sword in the inventory screen only if kokiri sword exists in inventory and a sword has been equipped already
+            if (!((1 << 0 & gSaveContext.inventory.equipment) == 0) && !Flags_GetInfTable(INFTABLE_SWORDLESS)) {
+                gSaveContext.equips.equipment |= 0x0001;
+            }
+        } else if (gSaveContext.childEquips.buttonItems[0] != ITEM_NONE) {
             for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
                 gSaveContext.equips.buttonItems[i] = gSaveContext.childEquips.buttonItems[i];
 
@@ -1514,14 +1533,14 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.equipment = gSaveContext.childEquips.equipment;
             gSaveContext.equips.equipment &= 0xFFF0;
             gSaveContext.equips.equipment |= 0x0001;
-        } else if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_STARTING_AGE) == RO_AGE_ADULT) {
+        } else if (IS_RANDO && Randomizer_GetSettingValue(RSK_STARTING_AGE) == RO_AGE_ADULT) {
             /*If in rando and starting age is adult, childEquips is not initialized and buttonItems[0]
             will be ITEM_NONE. When changing age from adult -> child, reset equips to "default"
             (only kokiri tunic/boots equipped, no sword, no C-button items, no D-Pad items).
             When becoming child, set swordless flag if player doesn't have kokiri sword
             Only in rando to keep swordless link bugs in vanilla*/
             if (1 << 0 & gSaveContext.inventory.equipment == 0) {
-                gSaveContext.infTable[29] |= 1;
+                Flags_SetInfTable(INFTABLE_SWORDLESS);
             }
 
             //zero out items
@@ -1533,8 +1552,18 @@ void Inventory_SwapAgeEquipment(void) {
             }
             gSaveContext.equips.equipment = 0x1111;
         }
-    }
 
+        if ((CVarGetInteger("gSwitchAge", 0) || CVarGetInteger("gSwitchTimeline", 0)) &&
+            (gSaveContext.equips.buttonItems[0] == ITEM_NONE)) {
+            Flags_SetInfTable(INFTABLE_SWORDLESS);
+            if (gSaveContext.childEquips.equipment == 0) {
+                // force equip kokiri tunic and boots in scenario gSaveContext.childEquips.equipment is uninitialized
+                gSaveContext.equips.equipment &= 0xFFF0;
+                gSaveContext.equips.equipment |= 0x1100;
+            }
+        }
+    }
+    CVarSetInteger("gSwitchTimeline", 0);
     temp = gEquipMasks[EQUIP_SHIELD] & gSaveContext.equips.equipment;
     if (temp != 0) {
         temp >>= gEquipShifts[EQUIP_SHIELD];
@@ -1625,7 +1654,7 @@ void func_80084BF4(PlayState* play, u16 flag) {
 void GameplayStats_SetTimestamp(PlayState* play, u8 item) {
 
     // If we already have a timestamp for this item, do nothing
-    if (gSaveContext.sohStats.timestamp[item] != 0){
+    if (gSaveContext.sohStats.itemTimestamp[item] != 0){
         return;
     }
     // Use ITEM_KEY_BOSS only for Ganon's boss key - not any other boss keys
@@ -1644,20 +1673,20 @@ void GameplayStats_SetTimestamp(PlayState* play, u8 item) {
 
     // Count any bottled item as a bottle
     if (item >= ITEM_BOTTLE && item <= ITEM_POE) {
-        if (gSaveContext.sohStats.timestamp[ITEM_BOTTLE] == 0) {
-            gSaveContext.sohStats.timestamp[ITEM_BOTTLE] = time;
+        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] == 0) {
+            gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] = time;
         }
         return;
     }
     // Count any bombchu pack as bombchus
     if (item == ITEM_BOMBCHU || (item >= ITEM_BOMBCHUS_5 && item <= ITEM_BOMBCHUS_20)) {
-        if (gSaveContext.sohStats.timestamp[ITEM_BOMBCHU] == 0) {
-            gSaveContext.sohStats.timestamp[ITEM_BOMBCHU] = time;
+        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] == 0) {
+            gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = time;
         }
         return;
     }
 
-    gSaveContext.sohStats.timestamp[item] = time;
+    gSaveContext.sohStats.itemTimestamp[item] = time;
 }
 
 // Gameplay stat tracking: Update time the item was acquired
@@ -1673,29 +1702,49 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
 
     // Use ITEM_KEY_BOSS to timestamp Ganon's boss key
     if (item == RG_GANONS_CASTLE_BOSS_KEY) {
-        gSaveContext.sohStats.timestamp[ITEM_KEY_BOSS] = time;
+        gSaveContext.sohStats.itemTimestamp[ITEM_KEY_BOSS] = time;
     }
 
     // Count any bottled item as a bottle
     if (item >= RG_EMPTY_BOTTLE && item <= RG_BOTTLE_WITH_BIG_POE) {
-        if (gSaveContext.sohStats.timestamp[ITEM_BOTTLE] == 0) {
-            gSaveContext.sohStats.timestamp[ITEM_BOTTLE] = time;
+        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] == 0) {
+            gSaveContext.sohStats.itemTimestamp[ITEM_BOTTLE] = time;
         }
         return;
     }
     // Count any bombchu pack as bombchus
-    if (item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) {
-        if (gSaveContext.sohStats.timestamp[ITEM_BOMBCHU] = 0) {
-            gSaveContext.sohStats.timestamp[ITEM_BOMBCHU] = time;
+    if ((item >= RG_BOMBCHU_5 && item <= RG_BOMBCHU_DROP) || item == RG_PROGRESSIVE_BOMBCHUS) {
+        if (gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = 0) {
+            gSaveContext.sohStats.itemTimestamp[ITEM_BOMBCHU] = time;
         }
         return;
     }
     if (item == RG_MAGIC_SINGLE) {
-        gSaveContext.sohStats.timestamp[ITEM_SINGLE_MAGIC] = time;
+        gSaveContext.sohStats.itemTimestamp[ITEM_SINGLE_MAGIC] = time;
     }
     if (item == RG_DOUBLE_DEFENSE) {
-        gSaveContext.sohStats.timestamp[ITEM_DOUBLE_DEFENSE] = time;
+        gSaveContext.sohStats.itemTimestamp[ITEM_DOUBLE_DEFENSE] = time;
     }
+}
+
+u8 Return_Item_Entry(GetItemEntry itemEntry, ItemID returnItem ) {
+    GameInteractor_ExecuteOnItemReceiveHooks(itemEntry);
+    return returnItem;
+}
+
+// Processes Item_Give returns
+u8 Return_Item(u8 itemID, ModIndex modId, ItemID returnItem) {
+    // ITEM_SOLD_OUT doesn't have an ItemTable entry, so pass custom entry instead
+    if (itemID == ITEM_SOLD_OUT) {
+        GetItemEntry gie = { ITEM_SOLD_OUT, 0, 0, 0, 0, 0, 0, 0, false, ITEM_FROM_NPC, ITEM_CATEGORY_LESSER, NULL };
+        return Return_Item_Entry(gie, returnItem);
+    }
+    int32_t get = GetGIID(itemID);
+    if (get == -1) {
+        modId = MOD_RANDOMIZER;
+        get = itemID;
+    }
+    return Return_Item_Entry(ItemTable_RetrieveEntry(modId, get), returnItem);
 }
 
 /**
@@ -1710,10 +1759,13 @@ void Randomizer_GameplayStats_SetTimestamp(uint16_t item) {
  * @return u8 
  */
 u8 Item_Give(PlayState* play, u8 item) {
+    lusprintf(__FILE__, __LINE__, 2, "Item Give - item: %#x", item);
     static s16 sAmmoRefillCounts[] = { 5, 10, 20, 30, 5, 10, 30, 0, 5, 20, 1, 5, 20, 50, 200, 10 };
     s16 i;
     s16 slot;
     s16 temp;
+
+    GetItemID returnItem = ITEM_NONE;
 
     // Gameplay stats: Update the time the item was obtained
     GameplayStats_SetTimestamp(play, item);
@@ -1738,8 +1790,7 @@ u8 Item_Give(PlayState* play, u8 item) {
             func_8006D0AC(play);
         }
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_SONG_MINUET) && (item <= ITEM_SONG_STORMS)) {
         gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_SONG_MINUET + QUEST_SONG_MINUET];
 
@@ -1750,8 +1801,7 @@ u8 Item_Give(PlayState* play, u8 item) {
                      gBitFlags[item - ITEM_SONG_MINUET + QUEST_SONG_MINUET], gBitFlags[item - ITEM_SONG_MINUET]);
         osSyncPrintf(VT_RST);
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_KOKIRI_EMERALD) && (item <= ITEM_ZORA_SAPPHIRE)) {
         gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_KOKIRI_EMERALD + QUEST_KOKIRI_EMERALD];
 
@@ -1759,8 +1809,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         osSyncPrintf("精霊石 = %x\n", gSaveContext.inventory.questItems); // "Spiritual Stones = %x"
         osSyncPrintf(VT_RST);
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item == ITEM_STONE_OF_AGONY) || (item == ITEM_GERUDO_CARD)) {
         gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_STONE_OF_AGONY + QUEST_STONE_OF_AGONY];
 
@@ -1768,8 +1817,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         osSyncPrintf("アイテム = %x\n", gSaveContext.inventory.questItems); // "Items = %x"
         osSyncPrintf(VT_RST);
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_SKULL_TOKEN) {
         gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_SKULL_TOKEN + QUEST_SKULL_TOKEN];
         gSaveContext.inventory.gsTokens++;
@@ -1779,8 +1827,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         osSyncPrintf("Ｎコイン = %x(%d)\n", gSaveContext.inventory.questItems, gSaveContext.inventory.gsTokens);
         osSyncPrintf(VT_RST);
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_SWORD_KOKIRI) && (item <= ITEM_SWORD_BGS)) {
         gSaveContext.inventory.equipment |= gBitFlags[item - ITEM_SWORD_KOKIRI] << gEquipShifts[EQUIP_SWORD];
 
@@ -1790,7 +1837,7 @@ u8 Item_Give(PlayState* play, u8 item) {
 
             // In rando, when buying Giant's Knife, also check
             // for 0xE in case we don't have Kokiri Sword
-            if (ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xF || (gSaveContext.n64ddFlag && ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xE)) {
+            if (ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xF || (IS_RANDO && ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xE)) {
 
                 gSaveContext.inventory.equipment ^= 8 << gEquipShifts[EQUIP_SWORD]; 
 
@@ -1811,85 +1858,33 @@ u8 Item_Give(PlayState* play, u8 item) {
             }
         }
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_SHIELD_DEKU) && (item <= ITEM_SHIELD_MIRROR)) {
         gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_SHIELD_DEKU] << gEquipShifts[EQUIP_SHIELD]);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_TUNIC_KOKIRI) && (item <= ITEM_TUNIC_ZORA)) {
         gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_TUNIC_KOKIRI] << gEquipShifts[EQUIP_TUNIC]);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_BOOTS_KOKIRI) && (item <= ITEM_BOOTS_HOVER)) {
         gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_BOOTS_KOKIRI] << gEquipShifts[EQUIP_BOOTS]);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item == ITEM_KEY_BOSS) || (item == ITEM_COMPASS) || (item == ITEM_DUNGEON_MAP)) {
-        // Boss Key, Compass, and Dungeon Map exceptions for rando.
-        // Rando should never be able to get here for Link's Pocket unless something goes wrong,
-        // but we check for a play here so the game won't crash if we do somehow get here.
-        if (gSaveContext.n64ddFlag && play != NULL) {
-            if (play->sceneNum == 13) { // ganon's castle -> ganon's tower
-                gSaveContext.inventory.dungeonItems[10] |= 1;
-            } else if (play->sceneNum == 92) { // Desert Colossus -> Spirit Temple.
-                gSaveContext.inventory.dungeonItems[6] |= gBitFlags[item - ITEM_KEY_BOSS];
-            } else {
-                gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
-            }
-        } else {
-            gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
-        }
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_KEY_SMALL) {
-        // Small key exceptions for rando with keysanity off.
-        // Rando should never be able to get here for Link's Pocket unless something goes wrong,
-        // but we check for a play here so the game won't crash if we do somehow get here.
-        if (gSaveContext.n64ddFlag && play != NULL) {
-            if (play->sceneNum == 10) { // ganon's tower -> ganon's castle
-                gSaveContext.sohStats.dungeonKeys[13]++;
-                if (gSaveContext.inventory.dungeonKeys[13] < 0) {
-                    gSaveContext.inventory.dungeonKeys[13] = 1;
-                    GameInteractor_ExecuteOnReceiveItemHooks(item);
-                    return ITEM_NONE;
-                } else {
-                    gSaveContext.inventory.dungeonKeys[13]++;
-                    GameInteractor_ExecuteOnReceiveItemHooks(item);
-                    return ITEM_NONE;
-                }
-            }
-
-            if (play->sceneNum == 92) { // Desert Colossus -> Spirit Temple.
-                gSaveContext.sohStats.dungeonKeys[6]++;
-                if (gSaveContext.inventory.dungeonKeys[6] < 0) {
-                    gSaveContext.inventory.dungeonKeys[6] = 1;
-                    GameInteractor_ExecuteOnReceiveItemHooks(item);
-                    return ITEM_NONE;
-                } else {
-                    gSaveContext.inventory.dungeonKeys[6]++;
-                    GameInteractor_ExecuteOnReceiveItemHooks(item);
-                    return ITEM_NONE;
-                }
-            }
-        }
-        gSaveContext.sohStats.dungeonKeys[gSaveContext.mapIndex]++;
         if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] < 0) {
             gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] = 1;
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
+            return Return_Item(item, MOD_NONE, ITEM_NONE);
         } else {
             gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex]++;
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
+            return Return_Item(item, MOD_NONE, ITEM_NONE);
         }
     } else if ((item == ITEM_QUIVER_30) || (item == ITEM_BOW)) {
         if (CUR_UPG_VALUE(UPG_QUIVER) == 0) {
             Inventory_ChangeUpgrade(UPG_QUIVER, 1);
             INV_CONTENT(ITEM_BOW) = ITEM_BOW;
             AMMO(ITEM_BOW) = CAPACITY(UPG_QUIVER, 1);
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
+            return Return_Item(item, MOD_NONE, ITEM_NONE);
         } else {
             AMMO(ITEM_BOW)++;
             if (AMMO(ITEM_BOW) > CUR_CAPACITY(UPG_QUIVER)) {
@@ -1899,30 +1894,25 @@ u8 Item_Give(PlayState* play, u8 item) {
     } else if (item == ITEM_QUIVER_40) {
         Inventory_ChangeUpgrade(UPG_QUIVER, 2);
         AMMO(ITEM_BOW) = CAPACITY(UPG_QUIVER, 2);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_QUIVER_50) {
         Inventory_ChangeUpgrade(UPG_QUIVER, 3);
         AMMO(ITEM_BOW) = CAPACITY(UPG_QUIVER, 3);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_BULLET_BAG_40) {
         Inventory_ChangeUpgrade(UPG_BULLET_BAG, 2);
         AMMO(ITEM_SLINGSHOT) = CAPACITY(UPG_BULLET_BAG, 2);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_BULLET_BAG_50) {
         Inventory_ChangeUpgrade(UPG_BULLET_BAG, 3);
         AMMO(ITEM_SLINGSHOT) = CAPACITY(UPG_BULLET_BAG, 3);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_BOMB_BAG_20) {
         if (CUR_UPG_VALUE(UPG_BOMB_BAG) == 0) {
             Inventory_ChangeUpgrade(UPG_BOMB_BAG, 1);
             INV_CONTENT(ITEM_BOMB) = ITEM_BOMB;
             AMMO(ITEM_BOMB) = CAPACITY(UPG_BOMB_BAG, 1);
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
+            return Return_Item(item, MOD_NONE, ITEM_NONE);
         } else {
             AMMO(ITEM_BOMB)++;
             if (AMMO(ITEM_BOMB) > CUR_CAPACITY(UPG_BOMB_BAG)) {
@@ -1932,79 +1922,66 @@ u8 Item_Give(PlayState* play, u8 item) {
     } else if (item == ITEM_BOMB_BAG_30) {
         Inventory_ChangeUpgrade(UPG_BOMB_BAG, 2);
         AMMO(ITEM_BOMB) = CAPACITY(UPG_BOMB_BAG, 2);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_BOMB_BAG_40) {
         Inventory_ChangeUpgrade(UPG_BOMB_BAG, 3);
         AMMO(ITEM_BOMB) = CAPACITY(UPG_BOMB_BAG, 3);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_BRACELET) {
         Inventory_ChangeUpgrade(UPG_STRENGTH, 1);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_GAUNTLETS_SILVER) {
         Inventory_ChangeUpgrade(UPG_STRENGTH, 2);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_GAUNTLETS_GOLD) {
         Inventory_ChangeUpgrade(UPG_STRENGTH, 3);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_SCALE_SILVER) {
         Inventory_ChangeUpgrade(UPG_SCALE, 1);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_SCALE_GOLDEN) {
         Inventory_ChangeUpgrade(UPG_SCALE, 2);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_WALLET_ADULT) {
         Inventory_ChangeUpgrade(UPG_WALLET, 1);
-        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
+        if (IS_RANDO && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
             Rupees_ChangeBy(200);
         }
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_WALLET_GIANT) {
         Inventory_ChangeUpgrade(UPG_WALLET, 2);
-        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
+        if (IS_RANDO && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
             Rupees_ChangeBy(500);
         }
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_STICK_UPGRADE_20) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             INV_CONTENT(ITEM_STICK) = ITEM_STICK;
         }
         Inventory_ChangeUpgrade(UPG_STICKS, 2);
         AMMO(ITEM_STICK) = CAPACITY(UPG_STICKS, 2);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_STICK_UPGRADE_30) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             INV_CONTENT(ITEM_STICK) = ITEM_STICK;
         }
         Inventory_ChangeUpgrade(UPG_STICKS, 3);
         AMMO(ITEM_STICK) = CAPACITY(UPG_STICKS, 3);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_NUT_UPGRADE_30) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             INV_CONTENT(ITEM_NUT) = ITEM_NUT;
         }
         Inventory_ChangeUpgrade(UPG_NUTS, 2);
         AMMO(ITEM_NUT) = CAPACITY(UPG_NUTS, 2);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_NUT_UPGRADE_40) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             INV_CONTENT(ITEM_NUT) = ITEM_NUT;
         }
         Inventory_ChangeUpgrade(UPG_NUTS, 3);
         AMMO(ITEM_NUT) = CAPACITY(UPG_NUTS, 3);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_LONGSHOT) {
         INV_CONTENT(item) = item;
         // always update "equips" as this is what is currently on the c-buttons
@@ -2017,7 +1994,7 @@ u8 Item_Give(PlayState* play, u8 item) {
             }
         }
         // update the adult/child equips when rando'd (accounting for equp swapped hookshot as child)
-        if (gSaveContext.n64ddFlag && LINK_IS_CHILD) {
+        if (IS_RANDO && LINK_IS_CHILD) {
             for (i = 1; i < ARRAY_COUNT(gSaveContext.adultEquips.buttonItems); i++) {
                 if (gSaveContext.adultEquips.buttonItems[i] == ITEM_HOOKSHOT) {
                     gSaveContext.adultEquips.buttonItems[i] = ITEM_LONGSHOT;
@@ -2027,7 +2004,7 @@ u8 Item_Give(PlayState* play, u8 item) {
                 }
             }
         }
-        if (gSaveContext.n64ddFlag && LINK_IS_ADULT) {
+        if (IS_RANDO && LINK_IS_ADULT) {
             for (i = 1; i < ARRAY_COUNT(gSaveContext.childEquips.buttonItems); i++) {
                 if (gSaveContext.childEquips.buttonItems[i] == ITEM_HOOKSHOT) {
                     gSaveContext.childEquips.buttonItems[i] = ITEM_LONGSHOT;
@@ -2037,8 +2014,7 @@ u8 Item_Give(PlayState* play, u8 item) {
                 }
             }
         }
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_STICK) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             Inventory_ChangeUpgrade(UPG_STICKS, 1);
@@ -2090,42 +2066,34 @@ u8 Item_Give(PlayState* play, u8 item) {
         if ((AMMO(ITEM_BOMB) += 1) > CUR_CAPACITY(UPG_BOMB_BAG)) {
             AMMO(ITEM_BOMB) = CUR_CAPACITY(UPG_BOMB_BAG);
         }
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_BOMBS_5) && (item <= ITEM_BOMBS_30)) {
         if ((AMMO(ITEM_BOMB) += sAmmoRefillCounts[item - ITEM_BOMBS_5]) > CUR_CAPACITY(UPG_BOMB_BAG)) {
             AMMO(ITEM_BOMB) = CUR_CAPACITY(UPG_BOMB_BAG);
         }
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_BOMBCHU) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
             AMMO(ITEM_BOMBCHU) = 10;
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
         } else {
             AMMO(ITEM_BOMBCHU) += 10;
             if (AMMO(ITEM_BOMBCHU) > 50) {
                 AMMO(ITEM_BOMBCHU) = 50;
             }
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
         }
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item == ITEM_BOMBCHUS_5) || (item == ITEM_BOMBCHUS_20)) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
             AMMO(ITEM_BOMBCHU) += sAmmoRefillCounts[item - ITEM_BOMBCHUS_5 + 8];
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
         } else {
             AMMO(ITEM_BOMBCHU) += sAmmoRefillCounts[item - ITEM_BOMBCHUS_5 + 8];
             if (AMMO(ITEM_BOMBCHU) > 50) {
                 AMMO(ITEM_BOMBCHU) = 50;
             }
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
         }
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_ARROWS_SMALL) && (item <= ITEM_ARROWS_LARGE)) {
         AMMO(ITEM_BOW) += sAmmoRefillCounts[item - ITEM_ARROWS_SMALL + 4];
 
@@ -2135,14 +2103,12 @@ u8 Item_Give(PlayState* play, u8 item) {
 
         osSyncPrintf("%d本  Item_MaxGet=%d\n", AMMO(ITEM_BOW), CUR_CAPACITY(UPG_QUIVER));
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_BOW;
+        return Return_Item(item, MOD_NONE, ITEM_BOW);
     } else if (item == ITEM_SLINGSHOT) {
         Inventory_ChangeUpgrade(UPG_BULLET_BAG, 1);
         INV_CONTENT(ITEM_SLINGSHOT) = ITEM_SLINGSHOT;
         AMMO(ITEM_SLINGSHOT) = 30;
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_SEEDS) {
         AMMO(ITEM_SLINGSHOT) += 5;
 
@@ -2150,14 +2116,12 @@ u8 Item_Give(PlayState* play, u8 item) {
             AMMO(ITEM_SLINGSHOT) = CUR_CAPACITY(UPG_BULLET_BAG);
         }
 
-        if (!(gSaveContext.itemGetInf[1] & 8)) {
-            gSaveContext.itemGetInf[1] |= 8;
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
+        if (!Flags_GetItemGetInf(ITEMGETINF_13)) {
+            Flags_SetItemGetInf(ITEMGETINF_13);
+            return Return_Item(item, MOD_NONE, ITEM_NONE);
         }
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_SEEDS;
+        return Return_Item(item, MOD_NONE, ITEM_SEEDS);
     } else if (item == ITEM_SEEDS_30) {
         AMMO(ITEM_SLINGSHOT) += 30;
 
@@ -2165,18 +2129,15 @@ u8 Item_Give(PlayState* play, u8 item) {
             AMMO(ITEM_SLINGSHOT) = CUR_CAPACITY(UPG_BULLET_BAG);
         }
 
-        if (!(gSaveContext.itemGetInf[1] & 8)) {
-            gSaveContext.itemGetInf[1] |= 8;
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
+        if (!Flags_GetItemGetInf(ITEMGETINF_13)) {
+            Flags_SetItemGetInf(ITEMGETINF_13);
+            return Return_Item(item, MOD_NONE, ITEM_NONE);
         }
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_SEEDS;
+        return Return_Item(item, MOD_NONE, ITEM_SEEDS);
     } else if (item == ITEM_OCARINA_FAIRY) {
         INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_OCARINA_TIME) {
         INV_CONTENT(ITEM_OCARINA_TIME) = ITEM_OCARINA_TIME;
         // always update "equips" as this is what is currently on the c-buttons
@@ -2188,7 +2149,7 @@ u8 Item_Give(PlayState* play, u8 item) {
         }
 
         // update the adult/child equips when rando'd
-        if (gSaveContext.n64ddFlag && LINK_IS_CHILD) {
+        if (IS_RANDO && LINK_IS_CHILD) {
             for (i = 1; i < ARRAY_COUNT(gSaveContext.adultEquips.buttonItems); i++) {
                 if (gSaveContext.adultEquips.buttonItems[i] == ITEM_OCARINA_FAIRY) {
                     gSaveContext.adultEquips.buttonItems[i] = ITEM_OCARINA_TIME;
@@ -2198,7 +2159,7 @@ u8 Item_Give(PlayState* play, u8 item) {
                 }
             }
         }
-        if (gSaveContext.n64ddFlag && LINK_IS_ADULT) {
+        if (IS_RANDO && LINK_IS_ADULT) {
             for (i = 1; i < ARRAY_COUNT(gSaveContext.childEquips.buttonItems); i++) {
                 if (gSaveContext.childEquips.buttonItems[i] == ITEM_OCARINA_FAIRY) {
                     gSaveContext.childEquips.buttonItems[i] = ITEM_OCARINA_TIME;
@@ -2208,8 +2169,7 @@ u8 Item_Give(PlayState* play, u8 item) {
                 }
             }
         }
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_BEAN) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
             INV_CONTENT(item) = item;
@@ -2219,26 +2179,22 @@ u8 Item_Give(PlayState* play, u8 item) {
             AMMO(ITEM_BEAN)++;
             BEANS_BOUGHT++;
         }
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item == ITEM_HEART_PIECE_2) || (item == ITEM_HEART_PIECE)) {
         gSaveContext.inventory.questItems += 1 << (QUEST_HEART_PIECE + 4);
         gSaveContext.sohStats.heartPieces++;
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART_CONTAINER) {
         gSaveContext.healthCapacity += 0x10;
         gSaveContext.health += 0x10;
         gSaveContext.sohStats.heartContainers++;
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_HEART) {
         osSyncPrintf("回復ハート回復ハート回復ハート\n"); // "Recovery Heart"
         if (play != NULL) {
             Health_ChangeBy(play, 0x10);
         }
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return item;
+        return Return_Item(item, MOD_NONE, item);
     } else if (item == ITEM_MAGIC_SMALL) {
         if (gSaveContext.magicState != 10) {
             if (play != NULL) {
@@ -2250,14 +2206,12 @@ u8 Item_Give(PlayState* play, u8 item) {
             func_80087708(play, 12, 5);
         }
 
-        if (!(gSaveContext.infTable[25] & 0x100)) {
-            gSaveContext.infTable[25] |= 0x100;
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
+        if (!Flags_GetInfTable(INFTABLE_198)) {
+            Flags_SetInfTable(INFTABLE_198);
+            return Return_Item(item, MOD_NONE, ITEM_NONE);
         }
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return item;
+        return Return_Item(item, MOD_NONE, item);
     } else if (item == ITEM_MAGIC_LARGE) {
         if (gSaveContext.magicState != 10) {
             if (play != NULL) {
@@ -2268,26 +2222,22 @@ u8 Item_Give(PlayState* play, u8 item) {
             func_80087708(play, 24, 5);
         }
 
-        if (!(gSaveContext.infTable[25] & 0x100)) {
-            gSaveContext.infTable[25] |= 0x100;
-            GameInteractor_ExecuteOnReceiveItemHooks(item);
-            return ITEM_NONE;
+        if (!Flags_GetInfTable(INFTABLE_198)) {
+            Flags_SetInfTable(INFTABLE_198);
+            return Return_Item(item, MOD_NONE, ITEM_NONE);
         }
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return item;
+        return Return_Item(item, MOD_NONE, item);
     } else if ((item >= ITEM_RUPEE_GREEN) && (item <= ITEM_INVALID_8)) {
         Rupees_ChangeBy(sAmmoRefillCounts[item - ITEM_RUPEE_GREEN + 10]);
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if (item == ITEM_BOTTLE) {
         temp = SLOT(item);
 
         for (i = 0; i < 4; i++) {
             if (gSaveContext.inventory.items[temp + i] == ITEM_NONE) {
                 gSaveContext.inventory.items[temp + i] = item;
-                GameInteractor_ExecuteOnReceiveItemHooks(item);
-                return ITEM_NONE;
+                return Return_Item(item, MOD_NONE, ITEM_NONE);
             }
         }
     } else if (((item >= ITEM_POTION_RED) && (item <= ITEM_POE)) || (item == ITEM_MILK)) {
@@ -2318,22 +2268,21 @@ u8 Item_Give(PlayState* play, u8 item) {
                     }
 
                     gSaveContext.inventory.items[temp + i] = item;
-                    GameInteractor_ExecuteOnReceiveItemHooks(item);
-                    return ITEM_NONE;
+                    break;
                 }
             }
         } else {
             for (i = 0; i < 4; i++) {
                 if (gSaveContext.inventory.items[temp + i] == ITEM_NONE) {
                     gSaveContext.inventory.items[temp + i] = item;
-                    GameInteractor_ExecuteOnReceiveItemHooks(item);
-                    return ITEM_NONE;
+                    break;
                 }
             }
         }
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     } else if ((item >= ITEM_WEIRD_EGG) && (item <= ITEM_CLAIM_CHECK)) {
         if ((item == ITEM_SAW) && CVarGetInteger("gDekuNutUpgradeFix", 0) == 0) {
-            gSaveContext.itemGetInf[1] |= 0x8000;
+            Flags_SetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE);
         }
 
         if (item >= ITEM_POCKET_EGG) {
@@ -2354,26 +2303,21 @@ u8 Item_Give(PlayState* play, u8 item) {
                     } else {
                         gSaveContext.equips.buttonItems[i] = ITEM_NONE;
                     }
-                    GameInteractor_ExecuteOnReceiveItemHooks(item);
-                    return ITEM_NONE;
+                    return Return_Item(item, MOD_NONE, ITEM_NONE);
                 }
             }
         }
 
-        GameInteractor_ExecuteOnReceiveItemHooks(item);
-        return ITEM_NONE;
+        return Return_Item(item, MOD_NONE, ITEM_NONE);
     }
-
-    temp = gSaveContext.inventory.items[slot];
-    osSyncPrintf("Item_Register(%d)=%d  %d\n", slot, item, temp);
+    returnItem = gSaveContext.inventory.items[slot];
+    osSyncPrintf("Item_Register(%d)=%d  %d\n", slot, item, returnItem);
     INV_CONTENT(item) = item;
-
-    GameInteractor_ExecuteOnReceiveItemHooks(item);
-    return temp;
+    return Return_Item(item, MOD_NONE, returnItem);
 }
 
 u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
-    uint16_t item = giEntry.itemId;
+    uint16_t item = giEntry.getItemId;
     uint16_t temp;
     uint16_t i;
     uint16_t slot;
@@ -2386,7 +2330,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         gSaveContext.isMagicAcquired = true;
         gSaveContext.magicFillTarget = 0x30;
         Magic_Fill(play);
-        return RG_NONE;
+        return Return_Item_Entry(giEntry, RG_NONE);
     } else if (item == RG_MAGIC_DOUBLE) {
         if (!gSaveContext.isMagicAcquired) {
             gSaveContext.isMagicAcquired = true;
@@ -2395,7 +2339,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         gSaveContext.magicFillTarget = 0x60;
         gSaveContext.magicLevel = 0;
         Magic_Fill(play);
-        return RG_NONE;
+        return Return_Item_Entry(giEntry, RG_NONE);
     }
 
     if (item == RG_MAGIC_BEAN_PACK) {
@@ -2403,14 +2347,14 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             INV_CONTENT(ITEM_BEAN) = ITEM_BEAN;
             AMMO(ITEM_BEAN) = 10;
         }
-        return RG_NONE;
+        return Return_Item_Entry(giEntry, RG_NONE);
     }
 
     if (item == RG_DOUBLE_DEFENSE) {
         gSaveContext.isDoubleDefenseAcquired = true;
         gSaveContext.inventory.defenseHearts = 20;
         gSaveContext.healthAccumulator = 0x140;
-        return RG_NONE;
+        return Return_Item_Entry(giEntry, RG_NONE);
     }
 
     if (item >= RG_BOTTLE_WITH_RED_POTION && item <= RG_BOTTLE_WITH_BIG_POE) {
@@ -2448,7 +2392,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
                 }
 
                 gSaveContext.inventory.items[temp + i] = item;
-                return ITEM_NONE;
+                return Return_Item_Entry(giEntry, RG_NONE);
             }
         }
     } else if ((item >= RG_FOREST_TEMPLE_SMALL_KEY && item <= RG_GANONS_CASTLE_SMALL_KEY) ||
@@ -2461,22 +2405,22 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
         switch (item) {
             case RG_DEKU_TREE_MAP:
             case RG_DEKU_TREE_COMPASS:
-                mapIndex = SCENE_YDAN;
+                mapIndex = SCENE_DEKU_TREE;
                 break;
             case RG_DODONGOS_CAVERN_MAP:
             case RG_DODONGOS_CAVERN_COMPASS:
-                mapIndex = SCENE_DDAN;
+                mapIndex = SCENE_DODONGOS_CAVERN;
                 break;
             case RG_JABU_JABUS_BELLY_MAP:
             case RG_JABU_JABUS_BELLY_COMPASS:
-                mapIndex = SCENE_BDAN;
+                mapIndex = SCENE_JABU_JABU;
                 break;
             case RG_FOREST_TEMPLE_MAP:
             case RG_FOREST_TEMPLE_COMPASS:
             case RG_FOREST_TEMPLE_SMALL_KEY:
             case RG_FOREST_TEMPLE_KEY_RING:
             case RG_FOREST_TEMPLE_BOSS_KEY:
-                mapIndex = SCENE_BMORI1;
+                mapIndex = SCENE_FOREST_TEMPLE;
                 numOfKeysOnKeyring = FOREST_TEMPLE_SMALL_KEY_MAX;
                 break;
             case RG_FIRE_TEMPLE_MAP:
@@ -2484,7 +2428,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             case RG_FIRE_TEMPLE_SMALL_KEY:
             case RG_FIRE_TEMPLE_KEY_RING:
             case RG_FIRE_TEMPLE_BOSS_KEY:
-                mapIndex = SCENE_HIDAN;
+                mapIndex = SCENE_FIRE_TEMPLE;
                 numOfKeysOnKeyring = FIRE_TEMPLE_SMALL_KEY_MAX;
                 break;
             case RG_WATER_TEMPLE_MAP:
@@ -2492,7 +2436,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             case RG_WATER_TEMPLE_SMALL_KEY:
             case RG_WATER_TEMPLE_KEY_RING:
             case RG_WATER_TEMPLE_BOSS_KEY:
-                mapIndex = SCENE_MIZUSIN;
+                mapIndex = SCENE_WATER_TEMPLE;
                 numOfKeysOnKeyring = WATER_TEMPLE_SMALL_KEY_MAX;
                 break;
             case RG_SPIRIT_TEMPLE_MAP:
@@ -2500,7 +2444,7 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             case RG_SPIRIT_TEMPLE_SMALL_KEY:
             case RG_SPIRIT_TEMPLE_KEY_RING:
             case RG_SPIRIT_TEMPLE_BOSS_KEY:
-                mapIndex = SCENE_JYASINZOU;
+                mapIndex = SCENE_SPIRIT_TEMPLE;
                 numOfKeysOnKeyring = SPIRIT_TEMPLE_SMALL_KEY_MAX;
                 break;
             case RG_SHADOW_TEMPLE_MAP:
@@ -2508,36 +2452,36 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             case RG_SHADOW_TEMPLE_SMALL_KEY:
             case RG_SHADOW_TEMPLE_KEY_RING:
             case RG_SHADOW_TEMPLE_BOSS_KEY:
-                mapIndex = SCENE_HAKADAN;
+                mapIndex = SCENE_SHADOW_TEMPLE;
                 numOfKeysOnKeyring = SHADOW_TEMPLE_SMALL_KEY_MAX;
                 break;
             case RG_BOTTOM_OF_THE_WELL_MAP:
             case RG_BOTTOM_OF_THE_WELL_COMPASS:
             case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
             case RG_BOTTOM_OF_THE_WELL_KEY_RING:
-                mapIndex = SCENE_HAKADANCH;
+                mapIndex = SCENE_BOTTOM_OF_THE_WELL;
                 numOfKeysOnKeyring = BOTTOM_OF_THE_WELL_SMALL_KEY_MAX;
                 break;
             case RG_ICE_CAVERN_MAP:
             case RG_ICE_CAVERN_COMPASS:
-                mapIndex = SCENE_ICE_DOUKUTO;
+                mapIndex = SCENE_ICE_CAVERN;
                 break;
             case RG_GANONS_CASTLE_BOSS_KEY:
-                mapIndex = SCENE_GANON;
+                mapIndex = SCENE_GANONS_TOWER;
                 break;
             case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
             case RG_GERUDO_TRAINING_GROUNDS_KEY_RING:
-                mapIndex = SCENE_MEN;
+                mapIndex = SCENE_GERUDO_TRAINING_GROUND;
                 numOfKeysOnKeyring = GERUDO_TRAINING_GROUNDS_SMALL_KEY_MAX;
                 break;
             case RG_GERUDO_FORTRESS_SMALL_KEY:
             case RG_GERUDO_FORTRESS_KEY_RING:
-                mapIndex = SCENE_GERUDOWAY;
+                mapIndex = SCENE_THIEVES_HIDEOUT;
                 numOfKeysOnKeyring = GERUDO_FORTRESS_SMALL_KEY_MAX;
                 break;
             case RG_GANONS_CASTLE_SMALL_KEY:
             case RG_GANONS_CASTLE_KEY_RING:
-                mapIndex = SCENE_GANONTIKA;
+                mapIndex = SCENE_INSIDE_GANONS_CASTLE;
                 numOfKeysOnKeyring = GANONS_CASTLE_SMALL_KEY_MAX;
                 break;
         }
@@ -2546,15 +2490,14 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             gSaveContext.sohStats.dungeonKeys[mapIndex]++;
             if (gSaveContext.inventory.dungeonKeys[mapIndex] < 0) {
                 gSaveContext.inventory.dungeonKeys[mapIndex] = 1;
-                return RG_NONE;
             } else {
                 gSaveContext.inventory.dungeonKeys[mapIndex]++;
-                return RG_NONE;
             }
+            return Return_Item_Entry(giEntry, RG_NONE);
         } else if ((item >= RG_FOREST_TEMPLE_KEY_RING) && (item <= RG_GANONS_CASTLE_KEY_RING)) {
             gSaveContext.sohStats.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
             gSaveContext.inventory.dungeonKeys[mapIndex] = numOfKeysOnKeyring;
-            return RG_NONE;
+            return Return_Item_Entry(giEntry, RG_NONE);
         } else {
             int bitmask;
             if ((item >= RG_DEKU_TREE_MAP) && (item <= RG_ICE_CAVERN_MAP)) {
@@ -2566,23 +2509,51 @@ u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry) {
             }
 
             gSaveContext.inventory.dungeonItems[mapIndex] |= bitmask;
-            return RG_NONE;
+            return Return_Item_Entry(giEntry, RG_NONE);
         }
     }
 
     if (item == RG_TYCOON_WALLET) {
         Inventory_ChangeUpgrade(UPG_WALLET, 3);
-        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
+        if (IS_RANDO && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
             Rupees_ChangeBy(999);
         }
-        return RG_NONE;
+        return Return_Item_Entry(giEntry, RG_NONE);
     }
 
     if (item == RG_GREG_RUPEE) {
         Rupees_ChangeBy(1);
         Flags_SetRandomizerInf(RAND_INF_GREG_FOUND);
-        gSaveContext.sohStats.timestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
-        return RG_NONE;
+        gSaveContext.sohStats.itemTimestamp[TIMESTAMP_FOUND_GREG] = GAMEPLAYSTAT_TOTAL_TIME;
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_TRIFORCE_PIECE) {
+        gSaveContext.triforcePiecesCollected++;
+        GameInteractor_SetTriforceHuntPieceGiven(true);
+
+        // Teleport to credits when goal is reached.
+        if (gSaveContext.triforcePiecesCollected == Randomizer_GetSettingValue(RSK_TRIFORCE_HUNT_PIECES_REQUIRED)) {
+            gSaveContext.sohStats.itemTimestamp[TIMESTAMP_TRIFORCE_COMPLETED] = GAMEPLAYSTAT_TOTAL_TIME;
+            gSaveContext.sohStats.gameComplete = 1;
+            Play_PerformSave(play);
+            GameInteractor_SetTriforceHuntCreditsWarpActive(true);
+        }
+
+        return Return_Item_Entry(giEntry, RG_NONE);
+    }
+
+    if (item == RG_PROGRESSIVE_BOMBCHUS) {
+        if (INV_CONTENT(ITEM_BOMBCHU) == ITEM_NONE) {
+            INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
+            AMMO(ITEM_BOMBCHU) = 20;
+        } else {
+            AMMO(ITEM_BOMBCHU) += AMMO(ITEM_BOMBCHU) < 5 ? 10 : 5;
+            if (AMMO(ITEM_BOMBCHU) > 50) {
+                AMMO(ITEM_BOMBCHU) = 50;
+            }
+        }
+        return Return_Item_Entry(giEntry, RG_NONE);
     }
 
     temp = gSaveContext.inventory.items[slot];
@@ -2605,7 +2576,7 @@ u8 Item_CheckObtainability(u8 item) {
     osSyncPrintf("item_get_non_setting=%d  pt=%d  z=%x\n", item, slot, gSaveContext.inventory.items[slot]);
     osSyncPrintf(VT_RST);
 
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         if (item == ITEM_SINGLE_MAGIC || item == ITEM_DOUBLE_MAGIC || item == ITEM_DOUBLE_DEFENSE) {
             return ITEM_NONE;
         }
@@ -2622,25 +2593,25 @@ u8 Item_CheckObtainability(u8 item) {
             return ITEM_NONE;
         } else if ((gBitFlags[item - ITEM_SWORD_KOKIRI] << gEquipShifts[EQUIP_SWORD]) &
                    gSaveContext.inventory.equipment) {
-            return gSaveContext.n64ddFlag ? ITEM_NONE : item;
+            return IS_RANDO ? ITEM_NONE : item;
         } else {
             return ITEM_NONE;
         }
     } else if ((item >= ITEM_SHIELD_DEKU) && (item <= ITEM_SHIELD_MIRROR)) {
         if ((gBitFlags[item - ITEM_SHIELD_DEKU] << gEquipShifts[EQUIP_SHIELD]) & gSaveContext.inventory.equipment) {
-            return gSaveContext.n64ddFlag ? ITEM_NONE : item;
+            return IS_RANDO ? ITEM_NONE : item;
         } else {
             return ITEM_NONE;
         }
     } else if ((item >= ITEM_TUNIC_KOKIRI) && (item <= ITEM_TUNIC_ZORA)) {
         if ((gBitFlags[item - ITEM_TUNIC_KOKIRI] << gEquipShifts[EQUIP_TUNIC]) & gSaveContext.inventory.equipment) {
-            return gSaveContext.n64ddFlag ? ITEM_NONE : item;
+            return IS_RANDO ? ITEM_NONE : item;
         } else {
             return ITEM_NONE;
         }
     } else if ((item >= ITEM_BOOTS_KOKIRI) && (item <= ITEM_BOOTS_HOVER)) {
         if ((gBitFlags[item - ITEM_BOOTS_KOKIRI] << gEquipShifts[EQUIP_BOOTS]) & gSaveContext.inventory.equipment) {
-            return gSaveContext.n64ddFlag ? ITEM_NONE : item;
+            return IS_RANDO ? ITEM_NONE : item;
         } else {
             return ITEM_NONE;
         }
@@ -2675,7 +2646,7 @@ u8 Item_CheckObtainability(u8 item) {
     } else if (item == ITEM_LONGSHOT) {
         return ITEM_NONE;
     } else if ((item == ITEM_SEEDS) || (item == ITEM_SEEDS_30)) {
-        if (!(gSaveContext.itemGetInf[1] & 0x8)) {
+        if (!Flags_GetItemGetInf(ITEMGETINF_13)) {
             return ITEM_NONE;
         } else {
             return ITEM_SEEDS;
@@ -2690,8 +2661,8 @@ u8 Item_CheckObtainability(u8 item) {
         return ITEM_HEART;
     } else if ((item == ITEM_MAGIC_SMALL) || (item == ITEM_MAGIC_LARGE)) {
         // "Magic Pot Get_Inf_Table( 25, 0x0100)=%d"
-        osSyncPrintf("魔法の壷 Get_Inf_Table( 25, 0x0100)=%d\n", gSaveContext.infTable[25] & 0x100);
-        if (!(gSaveContext.infTable[25] & 0x100)) {
+        osSyncPrintf("魔法の壷 Get_Inf_Table( 25, 0x0100)=%d\n", Flags_GetInfTable(INFTABLE_198));
+        if (!Flags_GetInfTable(INFTABLE_198)) {
             return ITEM_NONE;
         } else {
             return item;
@@ -2896,7 +2867,7 @@ s32 Inventory_ConsumeFairy(PlayState* play) {
 }
 
 bool Inventory_HatchPocketCucco(PlayState* play) {
-    if (!gSaveContext.n64ddFlag) {
+    if (!IS_RANDO) {
         return Inventory_ReplaceItem(play, ITEM_POCKET_EGG, ITEM_POCKET_CUCCO);
     }
 
@@ -2911,11 +2882,7 @@ bool Inventory_HatchPocketCucco(PlayState* play) {
 }
 
 void func_80086D5C(s32* buf, u16 size) {
-    u16 i;
-
-    //buf = GetResourceDataByName(buf, false);
-
-    for (i = 0; i < size; i++) {
+    for (u16 i = 0; i < size; i++) {
         buf[i] = 0;
     }
 }
@@ -2928,46 +2895,25 @@ void Interface_LoadActionLabel(InterfaceContext* interfaceCtx, u16 action, s16 l
 
     char* doAction = actionsTbl[action];
 
-    char newName[512];
+    static char newName[4][512];
     if (gSaveContext.language != LANGUAGE_ENG) {
         size_t length = strlen(doAction);
-        strcpy(newName, doAction);
+        strcpy(newName[loadOffset], doAction);
         if (gSaveContext.language == LANGUAGE_FRA) {
-            newName[length - 6] = 'F';
-            newName[length - 5] = 'R';
-            newName[length - 4] = 'A';
+            newName[loadOffset][length - 6] = 'F';
+            newName[loadOffset][length - 5] = 'R';
+            newName[loadOffset][length - 4] = 'A';
         } else if (gSaveContext.language == LANGUAGE_GER) {
-            newName[length - 6] = 'G';
-            newName[length - 5] = 'E';
-            newName[length - 4] = 'R';
+            newName[loadOffset][length - 6] = 'G';
+            newName[loadOffset][length - 5] = 'E';
+            newName[loadOffset][length - 4] = 'R';
         }
-        doAction = newName;
+        doAction = newName[loadOffset];
     }
-
-    /*
-    if (gSaveContext.language != LANGUAGE_ENG) {
-        action += DO_ACTION_MAX;
-    }
-
-    if (gSaveContext.language == LANGUAGE_FRA) {
-        action += DO_ACTION_MAX;
-    }*/
-
-
-    if (action != DO_ACTION_NONE) {
-        //osCreateMesgQueue(&interfaceCtx->loadQueue, &interfaceCtx->loadMsg, OS_MESG_BLOCK);
-        memcpy(interfaceCtx->doActionSegment + (loadOffset * DO_ACTION_TEX_SIZE()), GetResourceDataByName(doAction, false),
-               DO_ACTION_TEX_SIZE());
-        //DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_160,
-                            //interfaceCtx->doActionSegment + (loadOffset * DO_ACTION_TEX_SIZE),
-                            //(uintptr_t)_do_action_staticSegmentRomStart + (action * DO_ACTION_TEX_SIZE), DO_ACTION_TEX_SIZE,
-                            //0, &interfaceCtx->loadQueue, NULL, __FILE__, __LINE__);
-        //osRecvMesg(&interfaceCtx->loadQueue, NULL, OS_MESG_BLOCK);
-    } else {
-        gSegments[7] = VIRTUAL_TO_PHYSICAL(interfaceCtx->doActionSegment);
-        //func_80086D5C(SEGMENTED_TO_VIRTUAL(sDoActionTextures[loadOffset]), DO_ACTION_TEX_SIZE / 4);
-        func_80086D5C(interfaceCtx->doActionSegment + (loadOffset * DO_ACTION_TEX_SIZE()), DO_ACTION_TEX_SIZE() / 4);
-    }
+    
+    char* segment = interfaceCtx->doActionSegment[loadOffset];
+    interfaceCtx->doActionSegment[loadOffset] = action != DO_ACTION_NONE ? doAction : gEmptyTexture;
+    gSegments[7] = interfaceCtx->doActionSegment[loadOffset];
 }
 
 void Interface_SetDoAction(PlayState* play, u16 action) {
@@ -3013,7 +2959,7 @@ void Interface_LoadActionLabelB(PlayState* play, u16 action) {
     InterfaceContext* interfaceCtx = &play->interfaceCtx;
 
     char* doAction = actionsTbl[action];
-    char newName[512];
+    static char newName[512];
 
     if (gSaveContext.language != LANGUAGE_ENG) {
         size_t length = strlen(doAction);
@@ -3030,24 +2976,10 @@ void Interface_LoadActionLabelB(PlayState* play, u16 action) {
         doAction = newName;
     }
 
-    /*if (gSaveContext.language != LANGUAGE_ENG) {
-        action += DO_ACTION_MAX;
-    }
-
-    if (gSaveContext.language == LANGUAGE_FRA) {
-        action += DO_ACTION_MAX;
-    }*/
-
     interfaceCtx->unk_1FC = action;
-
-
-
-    // OTRTODO
-    osCreateMesgQueue(&interfaceCtx->loadQueue, &interfaceCtx->loadMsg, OS_MESG_BLOCK);
-    memcpy(interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE(), GetResourceDataByName(doAction, false), DO_ACTION_TEX_SIZE());
-    //DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_160, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE,
-                        //(uintptr_t)_do_action_staticSegmentRomStart + (action * DO_ACTION_TEX_SIZE), DO_ACTION_TEX_SIZE, 0,
-                        //&interfaceCtx->loadQueue, NULL, __FILE__, __LINE__);
+    
+    char* segment = interfaceCtx->doActionSegment[1];
+    interfaceCtx->doActionSegment[1] = action != DO_ACTION_NONE ? doAction : gEmptyTexture;
     osRecvMesg(&interfaceCtx->loadQueue, NULL, OS_MESG_BLOCK);
 
     interfaceCtx->unk_1FA = 1;
@@ -3123,7 +3055,11 @@ s32 Health_ChangeBy(PlayState* play, s16 healthChange) {
 }
 
 void Rupees_ChangeBy(s16 rupeeChange) {
-    gSaveContext.rupeeAccumulator += rupeeChange;
+    if (gPlayState == NULL) {
+        gSaveContext.rupees += rupeeChange;
+    } else {
+        gSaveContext.rupeeAccumulator += rupeeChange;
+    }
 
     if (rupeeChange > 0) {
         gSaveContext.sohStats.count[COUNT_RUPEES_COLLECTED] += rupeeChange;
@@ -3485,7 +3421,7 @@ void Interface_UpdateMagicBar(PlayState* play) {
                         break;
                     }
                 }
-                if ((gSaveContext.magic == 0) || ((func_8008F2F8(play) >= 2) && (func_8008F2F8(play) < 5)) ||
+                if ((gSaveContext.magic == 0) || ((Player_GetEnvironmentalHazard(play) >= 2) && (Player_GetEnvironmentalHazard(play) < 5)) ||
                     !hasLens ||
                     !play->actorCtx.lensActive) {
                     play->actorCtx.lensActive = false;
@@ -3723,6 +3659,178 @@ void Interface_DrawMagicBar(PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+static Vtx sEnemyHealthVtx[16];
+static Mtx sEnemyHealthMtx[2];
+
+// Build vertex coordinates for a quad command
+// In order of top left, top right, bottom left, then bottom right
+// Supports flipping the texture horizontally
+void Interface_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart, s32 width, s32 height, u8 flippedH) {
+    vtxList[0].v.ob[0] = xStart;
+    vtxList[0].v.ob[1] = yStart;
+    vtxList[0].v.tc[0] = (flippedH ? width : 0) << 5;
+    vtxList[0].v.tc[1] = 0 << 5;
+
+    vtxList[1].v.ob[0] = xStart + width;
+    vtxList[1].v.ob[1] = yStart;
+    vtxList[1].v.tc[0] = (flippedH ? width * 2 : width) << 5;
+    vtxList[1].v.tc[1] = 0 << 5;
+
+    vtxList[2].v.ob[0] = xStart;
+    vtxList[2].v.ob[1] = yStart + height;
+    vtxList[2].v.tc[0] = (flippedH ? width : 0) << 5;
+    vtxList[2].v.tc[1] = height << 5;
+
+    vtxList[3].v.ob[0] = xStart + width;
+    vtxList[3].v.ob[1] = yStart + height;
+    vtxList[3].v.tc[0] = (flippedH ? width * 2 : width) << 5;
+    vtxList[3].v.tc[1] = height << 5;
+}
+
+// Draws an enemy health bar using the magic bar textures and positions it in a similar way to Z-Targeting
+void Interface_DrawEnemyHealthBar(TargetContext* targetCtx, PlayState* play) {
+    InterfaceContext* interfaceCtx = &play->interfaceCtx;
+    Player* player = GET_PLAYER(play);
+    Actor* actor = targetCtx->targetedActor;
+
+    Vec3f projTargetCenter;
+    f32 projTargetCappedInvW;
+
+    Color_RGBA8 healthbar_red = { 255, 0, 0, 255 };
+    Color_RGBA8 healthbar_border = { 255, 255, 255, 255 };
+    s16 healthbar_fillWidth = 64;
+    s16 healthbar_actorOffset = 40;
+    s32 healthbar_offsetX = CVarGetInteger("gCosmetics.Hud_EnemyHealthBarPosX", 0);
+    s32 healthbar_offsetY = CVarGetInteger("gCosmetics.Hud_EnemyHealthBarPosY", 0);
+    s8 anchorType = CVarGetInteger("gCosmetics.Hud_EnemyHealthBarPosType", ENEMYHEALTH_ANCHOR_ACTOR);
+
+    if (CVarGetInteger("gCosmetics.Hud_EnemyHealthBar.Changed", 0)) {
+        healthbar_red = CVarGetColor("gCosmetics.Hud_EnemyHealthBar.Value", healthbar_red);
+    }
+    if (CVarGetInteger("gCosmetics.Hud_EnemyHealthBorder.Changed", 0)) {
+        healthbar_border = CVarGetColor("gCosmetics.Hud_EnemyHealthBorder.Value", healthbar_border);
+    }
+    if (CVarGetInteger("gCosmetics.Hud_EnemyHealthBarWidth.Changed", 0)) {
+        healthbar_fillWidth = CVarGetInteger("gCosmetics.Hud_EnemyHealthBarWidth.Value", healthbar_fillWidth);
+    }
+
+    OPEN_DISPS(play->state.gfxCtx);
+
+    if (targetCtx->unk_48 != 0 && actor != NULL && actor->category == ACTORCAT_ENEMY) {
+        s16 texHeight = 16;
+        s16 endTexWidth = 8;
+        f32 scaleY = -0.75f;
+        f32 scaledHeight = -texHeight * scaleY;
+        f32 halfBarWidth = endTexWidth + ((f32)healthbar_fillWidth / 2);
+        s16 healthBarFill = ((f32)actor->colChkInfo.health / actor->maximumHealth) * healthbar_fillWidth;
+
+        if (anchorType == ENEMYHEALTH_ANCHOR_ACTOR) {
+            // Get actor projected position
+            func_8002BE04(play, &targetCtx->targetCenterPos, &projTargetCenter, &projTargetCappedInvW);
+
+            projTargetCenter.x = (SCREEN_WIDTH / 2) * (projTargetCenter.x * projTargetCappedInvW);
+            projTargetCenter.x = projTargetCenter.x * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
+            projTargetCenter.x = CLAMP(projTargetCenter.x, (-SCREEN_WIDTH / 2) + halfBarWidth,
+                                       (SCREEN_WIDTH / 2) - halfBarWidth);
+
+            projTargetCenter.y = (SCREEN_HEIGHT / 2) * (projTargetCenter.y * projTargetCappedInvW);
+            projTargetCenter.y = projTargetCenter.y - healthbar_offsetY + healthbar_actorOffset;
+            projTargetCenter.y = CLAMP(projTargetCenter.y, (-SCREEN_HEIGHT / 2) + (scaledHeight / 2),
+                                       (SCREEN_HEIGHT / 2) - (scaledHeight / 2));
+        } else if (anchorType == ENEMYHEALTH_ANCHOR_TOP) {
+            projTargetCenter.x = healthbar_offsetX;
+            projTargetCenter.y = (SCREEN_HEIGHT / 2) - (scaledHeight / 2) - healthbar_offsetY;
+        } else if (anchorType == ENEMYHEALTH_ANCHOR_BOTTOM) {
+            projTargetCenter.x = healthbar_offsetX;
+            projTargetCenter.y = (-SCREEN_HEIGHT / 2) + (scaledHeight / 2) - healthbar_offsetY;
+        }
+
+        // Health bar border end left
+        Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[0], -floorf(halfBarWidth), -texHeight / 2, endTexWidth, texHeight, 0);
+        // Health bar border middle
+        Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[4], -floorf(halfBarWidth) + endTexWidth, -texHeight / 2,
+                                        healthbar_fillWidth, texHeight, 0);
+        // Health bar border end right
+        Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[8], ceilf(halfBarWidth) - endTexWidth, -texHeight / 2, endTexWidth,
+                                        texHeight, 1);
+        // Health bar fill
+        Interface_CreateQuadVertexGroup(&sEnemyHealthVtx[12], -floorf(halfBarWidth) + endTexWidth, (-texHeight / 2) + 3,
+                                        healthBarFill, 7, 0);
+
+        if (((!(player->stateFlags1 & 0x40)) || (actor != player->unk_664)) && targetCtx->unk_44 < 500.0f) {
+            f32 slideInOffsetY = 0;
+
+            // Slide in the health bar from edge of the screen (mimic the Z-Target triangles fly in)
+            if (anchorType == ENEMYHEALTH_ANCHOR_ACTOR && targetCtx->unk_44 > 120.0f) {
+                slideInOffsetY = (targetCtx->unk_44 - 120.0f) / 2;
+                // Slide in from the top if the bar is placed on the top half of the screen
+                if (healthbar_offsetY - healthbar_actorOffset <= 0) {
+                    slideInOffsetY *= -1;
+                }
+            }
+
+            // Setup DL for overlay disp
+            Gfx_SetupDL_39Overlay(play->state.gfxCtx);
+
+            Matrix_Translate(projTargetCenter.x, projTargetCenter.y - slideInOffsetY, 0, MTXMODE_NEW);
+            Matrix_Scale(1.0f, scaleY, 1.0f, MTXMODE_APPLY);
+            Matrix_ToMtx(&sEnemyHealthMtx[0], __FILE__, __LINE__);
+            gSPMatrix(OVERLAY_DISP++, &sEnemyHealthMtx[0], G_MTX_MODELVIEW | G_MTX_LOAD);
+
+            // Health bar border
+            gDPPipeSync(OVERLAY_DISP++);
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, healthbar_border.r, healthbar_border.g, healthbar_border.b,
+                            healthbar_border.a);
+            gDPSetEnvColor(OVERLAY_DISP++, 100, 50, 50, 255);
+
+            gSPVertex(OVERLAY_DISP++, sEnemyHealthVtx, 16, 0);
+
+            gDPLoadTextureBlock(OVERLAY_DISP++, gMagicMeterEndTex, G_IM_FMT_IA, G_IM_SIZ_8b, endTexWidth, texHeight, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                G_TX_NOLOD, G_TX_NOLOD);
+
+            gSP1Quadrangle(OVERLAY_DISP++, 0, 2, 3, 1, 0);
+
+            gDPLoadTextureBlock(OVERLAY_DISP++, gMagicMeterMidTex, G_IM_FMT_IA, G_IM_SIZ_8b, 24, texHeight, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                G_TX_NOLOD, G_TX_NOLOD);
+
+            gSP1Quadrangle(OVERLAY_DISP++, 4, 6, 7, 5, 0);
+
+            gDPLoadTextureBlock(OVERLAY_DISP++, gMagicMeterEndTex, G_IM_FMT_IA, G_IM_SIZ_8b, endTexWidth, texHeight, 0,
+                                G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 3, G_TX_NOMASK, G_TX_NOLOD,
+                                G_TX_NOLOD);
+
+            gSP1Quadrangle(OVERLAY_DISP++, 8, 10, 11, 9, 0);
+
+            // Health bar fill
+            Matrix_Push();
+            Matrix_Translate(-0.375f, -0.5f, 0, MTXMODE_APPLY);
+            Matrix_ToMtx(&sEnemyHealthMtx[1], __FILE__, __LINE__);
+            gSPMatrix(OVERLAY_DISP++, &sEnemyHealthMtx[1], G_MTX_MODELVIEW | G_MTX_LOAD);
+
+            gDPPipeSync(OVERLAY_DISP++);
+            gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, 0, 0, 0, PRIMITIVE,
+                              PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, 0, 0, 0, PRIMITIVE);
+            gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
+
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, healthbar_red.r, healthbar_red.g, healthbar_red.b, healthbar_red.a);
+
+            gDPLoadMultiBlock_4b(OVERLAY_DISP++, gMagicMeterFillTex, 0, G_TX_RENDERTILE, G_IM_FMT_I, 16, texHeight, 0,
+                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                 G_TX_NOLOD, G_TX_NOLOD);
+
+            gSPVertex(OVERLAY_DISP++, &sEnemyHealthVtx[12], 4, 0);
+
+            gSP1Quadrangle(OVERLAY_DISP++, 0, 2, 3, 1, 0);
+
+            Matrix_Pop();
+        }
+    }
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+
 void func_80088AA0(s16 arg0) {
     gSaveContext.timerX[1] = 140;
     gSaveContext.timerY[1] = 80;
@@ -3785,7 +3893,7 @@ void Interface_DrawItemButtons(PlayState* play) {
     Color_RGB8 bButtonColor = { 0, 150, 0 };
     if (CVarGetInteger("gCosmetics.Hud_BButton.Changed", 0)) {
         bButtonColor = CVarGetColor24("gCosmetics.Hud_BButton.Value", bButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         bButtonColor = (Color_RGB8){ 255, 30, 30 };
     }
 
@@ -3813,7 +3921,7 @@ void Interface_DrawItemButtons(PlayState* play) {
     Color_RGB8 startButtonColor = { 200, 0, 0 };
     if (CVarGetInteger("gCosmetics.Hud_StartButton.Changed", 0)) {
         startButtonColor = CVarGetColor24("gCosmetics.Hud_StartButton.Value", startButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         startButtonColor = (Color_RGB8){ 120, 120, 120 };
     }
 
@@ -4099,28 +4207,8 @@ void Interface_DrawItemButtons(PlayState* play) {
             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
             gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                               PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-
-            //There is probably a more elegant way to do it.
-            char* doAction = actionsTbl[3];
-            char newName[512];
-            if (gSaveContext.language != LANGUAGE_ENG) {
-                size_t length = strlen(doAction);
-                strcpy(newName, doAction);
-                if (gSaveContext.language == LANGUAGE_FRA) {
-                    newName[length - 6] = 'F';
-                    newName[length - 5] = 'R';
-                    newName[length - 4] = 'A';
-                } else if (gSaveContext.language == LANGUAGE_GER) {
-                    newName[length - 6] = 'G';
-                    newName[length - 5] = 'E';
-                    newName[length - 4] = 'R';
-                }
-                doAction = newName;
-            }
-
-            memcpy(interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE() * 2, GetResourceDataByName(doAction, false), DO_ACTION_TEX_SIZE());
-
-            gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE() * 2, G_IM_FMT_IA,
+            Interface_LoadActionLabel(interfaceCtx, 3, 2);
+            gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->doActionSegment[2], G_IM_FMT_IA,
                                    DO_ACTION_TEX_WIDTH(), DO_ACTION_TEX_HEIGHT(), 0, G_TX_NOMIRROR | G_TX_WRAP,
                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
@@ -4135,7 +4223,7 @@ void Interface_DrawItemButtons(PlayState* play) {
             gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                     G_MTX_MODELVIEW | G_MTX_LOAD);
             gSPVertex(OVERLAY_DISP++, &interfaceCtx->actionVtx[4], 4, 0);
-            Interface_DrawActionLabel(play->state.gfxCtx, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE() * 2);
+            Interface_DrawActionLabel(play->state.gfxCtx, interfaceCtx->doActionSegment[2]);
             gDPPipeSync(OVERLAY_DISP++);
         }
     }
@@ -4148,7 +4236,7 @@ void Interface_DrawItemButtons(PlayState* play) {
 
             if ((gSaveContext.unk_13EA == 1) || (gSaveContext.unk_13EA == 2) || (gSaveContext.unk_13EA == 5)) {
                 temp = 0;
-            } else if ((player->stateFlags1 & 0x00200000) || (func_8008F2F8(play) == 4) ||
+            } else if ((player->stateFlags1 & 0x00200000) || (Player_GetEnvironmentalHazard(play) == 4) ||
                        (player->stateFlags2 & PLAYER_STATE2_CRAWLING)) {
                 temp = 70;
             } else {
@@ -4716,7 +4804,7 @@ void Interface_DrawAmmoCount(PlayState* play, s16 button, s16 alpha) {
             ammo = play->interfaceCtx.hbaAmmo;
         } else if ((button == 0) && (play->shootingGalleryStatus > 1)) {
             ammo = play->shootingGalleryStatus - 1;
-        } else if ((button == 0) && (play->sceneNum == SCENE_BOWLING) && Flags_GetSwitch(play, 0x38)) {
+        } else if ((button == 0) && (play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38)) {
             ammo = play->bombchuBowlingStatus;
             if (ammo < 0) {
                 ammo = 0;
@@ -4929,7 +5017,7 @@ void Interface_Draw(PlayState* play) {
     Color_RGB8 aButtonColor = { 90, 90, 255 };
     if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
         aButtonColor = CVarGetColor24("gCosmetics.Hud_AButton.Value", aButtonColor);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         aButtonColor = (Color_RGB8){ 0, 200, 50 };
     }
 
@@ -4958,10 +5046,6 @@ void Interface_Draw(PlayState* play) {
     }
 
     OPEN_DISPS(play->state.gfxCtx);
-
-    // Invalidate Do Action textures as they may have changed
-    gSPInvalidateTexCache(OVERLAY_DISP++, interfaceCtx->doActionSegment);
-    gSPInvalidateTexCache(OVERLAY_DISP++, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE());
 
     gSPSegment(OVERLAY_DISP++, 0x02, interfaceCtx->parameterSegment);
     gSPSegment(OVERLAY_DISP++, 0x07, interfaceCtx->doActionSegment);
@@ -5050,23 +5134,26 @@ void Interface_Draw(PlayState* play) {
                 PosX_RC = PosX_RC_ori;
             }
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rColor.r, rColor.g, rColor.b, interfaceCtx->magicAlpha);
-            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, PosX_RC, PosY_RC, 16, 16, 1 << 10, 1 << 10);
+            // Draw Rupee icon. Hide in Boss Rush.
+            if (!IS_BOSS_RUSH) {
+                OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, PosX_RC, PosY_RC, 16, 16, 1 << 10, 1 << 10);
+            }
 
             switch (play->sceneNum) {
-                case SCENE_BMORI1:
-                case SCENE_HIDAN:
-                case SCENE_MIZUSIN:
-                case SCENE_JYASINZOU:
-                case SCENE_HAKADAN:
-                case SCENE_HAKADANCH:
-                case SCENE_ICE_DOUKUTO:
-                case SCENE_GANON:
-                case SCENE_MEN:
-                case SCENE_GERUDOWAY:
-                case SCENE_GANONTIKA:
-                case SCENE_GANON_SONOGO:
-                case SCENE_GANONTIKA_SONOGO:
-                case SCENE_TAKARAYA:
+                case SCENE_FOREST_TEMPLE:
+                case SCENE_FIRE_TEMPLE:
+                case SCENE_WATER_TEMPLE:
+                case SCENE_SPIRIT_TEMPLE:
+                case SCENE_SHADOW_TEMPLE:
+                case SCENE_BOTTOM_OF_THE_WELL:
+                case SCENE_ICE_CAVERN:
+                case SCENE_GANONS_TOWER:
+                case SCENE_GERUDO_TRAINING_GROUND:
+                case SCENE_THIEVES_HIDEOUT:
+                case SCENE_INSIDE_GANONS_CASTLE:
+                case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
+                case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
+                case SCENE_TREASURE_BOX_SHOP:
                     if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] >= 0) {
                         s16 X_Margins_SKC;
                         s16 Y_Margins_SKC;
@@ -5165,10 +5252,12 @@ void Interface_Draw(PlayState* play) {
             svar2 = rupeeDigitsFirst[CUR_UPG_VALUE(UPG_WALLET)];
             svar5 = rupeeDigitsCount[CUR_UPG_VALUE(UPG_WALLET)];
 
-            for (svar1 = 0, svar3 = 16; svar1 < svar5; svar1++, svar2++, svar3 += 8) {
-                OVERLAY_DISP =
-                    Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[svar2]]), 8, 16,
-                        PosX_RC+svar3, PosY_RC, 8, 16, 1 << 10, 1 << 10);
+            // Draw Rupee Counter. Hide in Boss Rush.
+            if (!IS_BOSS_RUSH) {
+                for (svar1 = 0, svar3 = 16; svar1 < svar5; svar1++, svar2++, svar3 += 8) {
+                    OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[svar2]]),
+                                                 8, 16, PosX_RC + svar3, PosY_RC, 8, 16, 1 << 10, 1 << 10);
+                }
             }
         }
         else {
@@ -5188,7 +5277,18 @@ void Interface_Draw(PlayState* play) {
         Minimap_Draw(play);
 
         if ((R_PAUSE_MENU_MODE != 2) && (R_PAUSE_MENU_MODE != 3)) {
+            if (CVarGetInteger("gMirroredWorld", 0)) {
+                gSPMatrix(OVERLAY_DISP++, interfaceCtx->view.projectionFlippedPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+            }
             func_8002C124(&play->actorCtx.targetCtx, play); // Draw Z-Target
+            if (CVarGetInteger("gMirroredWorld", 0)) {
+                gSPMatrix(OVERLAY_DISP++, interfaceCtx->view.projectionPtr, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+            }
+
+            // Render enemy health bar after Z-target to leverage set variables
+            if (CVarGetInteger("gEnemyHealthBar", 0)) {
+                Interface_DrawEnemyHealthBar(&play->actorCtx.targetCtx, play);
+            }
         }
 
         Gfx_SetupDL_39Overlay(play->state.gfxCtx);
@@ -5210,7 +5310,7 @@ void Interface_Draw(PlayState* play) {
                 }
 
                 if ((player->stateFlags1 & 0x00800000) || (play->shootingGalleryStatus > 1) ||
-                    ((play->sceneNum == SCENE_BOWLING) && Flags_GetSwitch(play, 0x38))) {
+                    ((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38))) {
 
                     if (!fullUi) {
                         Interface_DrawItemIconTexture(play, gItemIcons[gSaveContext.equips.buttonItems[0]], 0);
@@ -5270,7 +5370,7 @@ void Interface_Draw(PlayState* play) {
                               PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->bAlpha);
 
-            gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE(), G_IM_FMT_IA,
+            gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->doActionSegment[1], G_IM_FMT_IA,
                                    DO_ACTION_TEX_WIDTH(), DO_ACTION_TEX_HEIGHT(), 0, G_TX_NOMIRROR | G_TX_WRAP,
                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
@@ -5360,7 +5460,7 @@ void Interface_Draw(PlayState* play) {
 
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, dPadColor.r, dPadColor.g, dPadColor.b, dpadAlpha);
             if (fullUi) {
-                gDPLoadTextureBlock(OVERLAY_DISP++, GetResourceDataByName("__OTR__textures/parameter_static/gDPad", false),
+                gDPLoadTextureBlock(OVERLAY_DISP++, gDPadTex,
                                     G_IM_FMT_IA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                 gSPWideTextureRectangle(OVERLAY_DISP++, DpadPosX << 2, DpadPosY << 2,
@@ -5476,9 +5576,9 @@ void Interface_Draw(PlayState* play) {
         gSPVertex(OVERLAY_DISP++, &interfaceCtx->actionVtx[4], 4, 0);
 
         if ((interfaceCtx->unk_1EC < 2) || (interfaceCtx->unk_1EC == 3)) {
-            Interface_DrawActionLabel(play->state.gfxCtx, interfaceCtx->doActionSegment);
+            Interface_DrawActionLabel(play->state.gfxCtx, interfaceCtx->doActionSegment[0]);
         } else {
-            Interface_DrawActionLabel(play->state.gfxCtx, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE());
+            Interface_DrawActionLabel(play->state.gfxCtx, interfaceCtx->doActionSegment[1]);
         }
 
         gDPPipeSync(OVERLAY_DISP++);
@@ -5676,7 +5776,7 @@ void Interface_Draw(PlayState* play) {
             !(player->stateFlags2 & 0x01000000) && (play->sceneLoadFlag == 0) &&
             (play->transitionMode == 0) && !Play_InCsMode(play) && (gSaveContext.minigameState != 1) &&
             (play->shootingGalleryStatus <= 1) &&
-            !((play->sceneNum == SCENE_BOWLING) && Flags_GetSwitch(play, 0x38))) {
+            !((play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY) && Flags_GetSwitch(play, 0x38))) {
             svar6 = 0;
             switch (gSaveContext.timer1State) {
                 case 1:
@@ -5931,10 +6031,10 @@ void Interface_Draw(PlayState* play) {
 
                                         if (gSaveContext.timer2Value <= 0) {
                                             if (!Flags_GetSwitch(play, 0x37) ||
-                                                ((play->sceneNum != SCENE_GANON_DEMO) &&
-                                                 (play->sceneNum != SCENE_GANON_FINAL) &&
-                                                 (play->sceneNum != SCENE_GANON_SONOGO) &&
-                                                 (play->sceneNum != SCENE_GANONTIKA_SONOGO))) {
+                                                ((play->sceneNum != SCENE_GANON_BOSS) &&
+                                                 (play->sceneNum != SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR) &&
+                                                 (play->sceneNum != SCENE_GANONS_TOWER_COLLAPSE_INTERIOR) &&
+                                                 (play->sceneNum != SCENE_INSIDE_GANONS_CASTLE_COLLAPSE))) {
                                                 D_8015FFE6 = 40;
                                                 gSaveContext.timer2State = 5;
                                                 gSaveContext.cutsceneIndex = 0;
@@ -6088,6 +6188,110 @@ void Interface_Draw(PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+void Interface_DrawTotalGameplayTimer(PlayState* play) {
+    // Draw timer based on the Gameplay Stats total time.
+
+    if ((IS_BOSS_RUSH && gSaveContext.bossRushOptions[BR_OPTIONS_TIMER] == BR_CHOICE_TIMER_YES) ||
+        (CVarGetInteger("gGameplayStats.ShowIngameTimer", 0) && gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2)) {
+
+        s32 X_Margins_Timer = 0;
+        if (CVarGetInteger("gIGTUseMargins", 0) != 0) {
+            if (CVarGetInteger("gIGTPosType", 0) == 0) {
+                X_Margins_Timer = Left_HUD_Margin;
+            };
+        }
+        s32 rectLeftOri = OTRGetRectDimensionFromLeftEdge(24 + X_Margins_Timer);
+        s32 rectTopOri = 73;
+        if (CVarGetInteger("gIGTPosType", 0) != 0) {
+            rectTopOri = (CVarGetInteger("gIGTPosY", 0));
+            if (CVarGetInteger("gIGTPosType", 0) == 1) { // Anchor Left
+                if (CVarGetInteger("gIGTUseMargins", 0) != 0) {
+                    X_Margins_Timer = Left_HUD_Margin;
+                };
+                rectLeftOri = OTRGetRectDimensionFromLeftEdge(CVarGetInteger("gIGTPosX", 0) + X_Margins_Timer);
+            } else if (CVarGetInteger("gIGTPosType", 0) == 2) { // Anchor Right
+                if (CVarGetInteger("gIGTUseMargins", 0) != 0) {
+                    X_Margins_Timer = Right_HUD_Margin;
+                };
+                rectLeftOri = OTRGetRectDimensionFromRightEdge(CVarGetInteger("gIGTPosX", 0) + X_Margins_Timer);
+            } else if (CVarGetInteger("gIGTPosType", 0) == 3) { // Anchor None
+                rectLeftOri = CVarGetInteger("gIGTPosX", 0) + 204 + X_Margins_Timer;
+            } else if (CVarGetInteger("gIGTPosType", 0) == 4) { // Hidden
+                rectLeftOri = -9999;
+            }
+        }
+
+        s32 rectLeft;
+        s32 rectTop;
+        s32 rectWidth = 8;
+        s32 rectHeightOri = 16;
+        s32 rectHeight;
+
+        OPEN_DISPS(play->state.gfxCtx);
+
+        gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0,
+                          PRIMITIVE, 0);
+
+        gDPSetOtherMode(OVERLAY_DISP++,
+                        G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_IA16 | G_TL_TILE |
+                            G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE,
+                        G_AC_NONE | G_ZS_PRIM | G_RM_XLU_SURF | G_RM_XLU_SURF2);
+
+        char* totalTimeText = GameplayStats_GetCurrentTime();
+        size_t textLength = strlen(totalTimeText);
+        uint16_t textureIndex = 0;
+
+        for (size_t i = 0; i < textLength; i++) {
+            if (totalTimeText[i] == ':' || totalTimeText[i] == '.') {
+                textureIndex = 10;
+            } else {
+                textureIndex = totalTimeText[i] - 48;
+            }
+
+            rectLeft = rectLeftOri + (i * 8);
+            rectTop = rectTopOri;
+            rectHeight = rectHeightOri;
+
+            // Load correct digit (or : symbol)
+            gDPLoadTextureBlock(OVERLAY_DISP++, ((u8*)digitTextures[textureIndex]), G_IM_FMT_I, G_IM_SIZ_8b, rectWidth,
+                                rectHeight, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                                G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+
+            // Create dot image from the colon image.
+            if (totalTimeText[i] == '.') {
+                rectHeight = rectHeight / 2;
+                rectTop += 5;
+                rectLeft -= 1;
+            }
+
+            // Draw text shadow
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 0, 0, 255);
+            gDPSetEnvColor(OVERLAY_DISP++, 255, 255, 255, 255);
+            gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2,
+                                    (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+
+            // Draw regular text. Change color based on if the timer is paused, running or the game is completed.
+            if (gSaveContext.sohStats.gameComplete) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, 255);
+            } else if (gSaveContext.isBossRushPaused && !gSaveContext.sohStats.rtaTiming) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 150, 150, 150, 255);
+            } else {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
+            }
+
+            // Offset text so underlaying shadow is to the bottom right of the text.
+            rectLeft -= 1;
+            rectTop -= 1;
+
+            gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2,
+                                    (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+        }
+        free(totalTimeText);
+
+        CLOSE_DISPS(play->state.gfxCtx);
+    }
+}
+
 void Interface_Update(PlayState* play) {
     static u8 D_80125B60 = 0;
     static s16 sPrevTimeIncrement = 0;
@@ -6119,9 +6323,9 @@ void Interface_Update(PlayState* play) {
 
     if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0)) {
         if ((gSaveContext.minigameState == 1) || (gSaveContext.sceneSetupIndex < 4) ||
-            ((play->sceneNum == SCENE_SPOT20) && (gSaveContext.sceneSetupIndex == 4))) {
+            ((play->sceneNum == SCENE_LON_LON_RANCH) && (gSaveContext.sceneSetupIndex == 4))) {
             if ((msgCtx->msgMode == MSGMODE_NONE) ||
-                ((msgCtx->msgMode != MSGMODE_NONE) && (play->sceneNum == SCENE_BOWLING))) {
+                ((msgCtx->msgMode != MSGMODE_NONE) && (play->sceneNum == SCENE_BOMBCHU_BOWLING_ALLEY))) {
                 if (play->gameOverCtx.state == GAMEOVER_INACTIVE) {
                     func_80083108(play);
                 }
@@ -6178,26 +6382,26 @@ void Interface_Update(PlayState* play) {
             }
 
             switch (play->sceneNum) {
-                case SCENE_SPOT00:
-                case SCENE_SPOT01:
-                case SCENE_SPOT02:
-                case SCENE_SPOT03:
-                case SCENE_SPOT04:
-                case SCENE_SPOT05:
-                case SCENE_SPOT06:
-                case SCENE_SPOT07:
-                case SCENE_SPOT08:
-                case SCENE_SPOT09:
-                case SCENE_SPOT10:
-                case SCENE_SPOT11:
-                case SCENE_SPOT12:
-                case SCENE_SPOT13:
-                case SCENE_SPOT15:
-                case SCENE_SPOT16:
-                case SCENE_SPOT17:
-                case SCENE_SPOT18:
-                case SCENE_SPOT20:
-                case SCENE_GANON_TOU:
+                case SCENE_HYRULE_FIELD:
+                case SCENE_KAKARIKO_VILLAGE:
+                case SCENE_GRAVEYARD:
+                case SCENE_ZORAS_RIVER:
+                case SCENE_KOKIRI_FOREST:
+                case SCENE_SACRED_FOREST_MEADOW:
+                case SCENE_LAKE_HYLIA:
+                case SCENE_ZORAS_DOMAIN:
+                case SCENE_ZORAS_FOUNTAIN:
+                case SCENE_GERUDO_VALLEY:
+                case SCENE_LOST_WOODS:
+                case SCENE_DESERT_COLOSSUS:
+                case SCENE_GERUDOS_FORTRESS:
+                case SCENE_HAUNTED_WASTELAND:
+                case SCENE_HYRULE_CASTLE:
+                case SCENE_DEATH_MOUNTAIN_TRAIL:
+                case SCENE_DEATH_MOUNTAIN_CRATER:
+                case SCENE_GORON_CITY:
+                case SCENE_LON_LON_RANCH:
+                case SCENE_OUTSIDE_GANONS_CASTLE:
                     if (interfaceCtx->minimapAlpha < 170) {
                         interfaceCtx->minimapAlpha = alpha1;
                     } else {
@@ -6246,13 +6450,13 @@ void Interface_Update(PlayState* play) {
     }
 
     HealthMeter_HandleCriticalAlarm(play);
-    D_80125A58 = func_8008F2F8(play);
+    D_80125A58 = Player_GetEnvironmentalHazard(play);
 
     if (D_80125A58 == 1) {
         if (CUR_EQUIP_VALUE(EQUIP_TUNIC) == 2 || CVarGetInteger("gSuperTunic", 0) != 0) {
             D_80125A58 = 0;
         }
-    } else if ((func_8008F2F8(play) >= 2) && (func_8008F2F8(play) < 5)) {
+    } else if ((Player_GetEnvironmentalHazard(play) >= 2) && (Player_GetEnvironmentalHazard(play) < 5)) {
         if (CUR_EQUIP_VALUE(EQUIP_TUNIC) == 3 || CVarGetInteger("gSuperTunic", 0) != 0) {
             D_80125A58 = 0;
         }
@@ -6291,13 +6495,23 @@ void Interface_Update(PlayState* play) {
                 gSaveContext.rupees--;
                 Audio_PlaySoundGeneral(NA_SE_SY_RUPY_COUNT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             }
-            if (gSaveContext.rupeeAccumulator == 0) {
-                u16 tempSaleItem = gSaveContext.pendingSale;
-                gSaveContext.pendingSale = ITEM_NONE;
-                GameInteractor_ExecuteOnReceiveItemHooks(tempSaleItem);
-            }
         } else {
             gSaveContext.rupeeAccumulator = 0;
+        }
+        if (gSaveContext.rupeeAccumulator == 0 && gSaveContext.pendingSale != ITEM_NONE) {
+            u16 tempSaleItem = gSaveContext.pendingSale;
+            u16 tempSaleMod = gSaveContext.pendingSaleMod;
+            gSaveContext.pendingSale = ITEM_NONE;
+            gSaveContext.pendingSaleMod = MOD_NONE;
+            if (tempSaleMod == MOD_NONE) {
+                s16 giid = GetGIID(tempSaleItem);
+                if (giid == -1) {
+                    tempSaleMod = MOD_RANDOMIZER;
+                } else {
+                    tempSaleItem = giid;
+                }
+            }
+            GameInteractor_ExecuteOnSaleEndHooks(ItemTable_RetrieveEntry(tempSaleMod, tempSaleItem));
         }
     }
 
@@ -6455,7 +6669,7 @@ void Interface_Update(PlayState* play) {
                 play->unk_11DE9 = 1;
             }
 
-            if (play->sceneNum == SCENE_SPOT13) {
+            if (play->sceneNum == SCENE_HAUNTED_WASTELAND) {
                 play->fadeTransition = 14;
                 gSaveContext.nextTransitionType = 14;
             }
@@ -6464,7 +6678,7 @@ void Interface_Update(PlayState* play) {
             play->nextEntranceIndex = gSaveContext.entranceIndex;
 
             // In ER, handle sun song respawn from last entrance from grottos
-            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
+            if (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ENTRANCES)) {
                 Grotto_ForceGrottoReturn();
             }
 
@@ -6477,4 +6691,67 @@ void Interface_Update(PlayState* play) {
             gSaveContext.sunsSongState = SUNSSONG_SPECIAL;
         }
     }
+}
+
+void Interface_DrawTextCharacter(GraphicsContext* gfx, int16_t x, int16_t y, void* texture, uint16_t colorR,
+                                    uint16_t colorG, uint16_t colorB, uint16_t colorA, float textScale, uint8_t textShadow) {
+
+    int32_t scale = R_TEXT_CHAR_SCALE * textScale;
+    int32_t sCharTexSize = (scale / 100.0f) * 16.0f;
+    int32_t sCharTexScale = 1024.0f / (scale / 100.0f);
+
+    OPEN_DISPS(gfx);
+
+    gDPPipeSync(POLY_OPA_DISP++);
+
+    gDPLoadTextureBlock_4b(POLY_OPA_DISP++, texture, G_IM_FMT_I, FONT_CHAR_TEX_WIDTH, FONT_CHAR_TEX_HEIGHT, 0,
+                           G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                           G_TX_NOLOD);
+
+    if (textShadow) {
+        // Draw drop shadow
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, colorA);
+        gSPTextureRectangle(POLY_OPA_DISP++, (x + R_TEXT_DROP_SHADOW_OFFSET) << 2, (y + R_TEXT_DROP_SHADOW_OFFSET) << 2,
+                            (x + R_TEXT_DROP_SHADOW_OFFSET + sCharTexSize) << 2,
+                            (y + R_TEXT_DROP_SHADOW_OFFSET + sCharTexSize) << 2, G_TX_RENDERTILE, 0, 0, sCharTexScale,
+                            sCharTexScale);
+    }
+
+    gDPPipeSync(POLY_OPA_DISP++);
+
+    // Draw normal text
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, colorR, colorG, colorB, colorA);
+    gSPTextureRectangle(POLY_OPA_DISP++, x << 2, y << 2, (x + sCharTexSize) << 2, (y + sCharTexSize) << 2,
+                        G_TX_RENDERTILE, 0, 0, sCharTexScale, sCharTexScale);
+
+    CLOSE_DISPS(gfx);
+}
+
+uint16_t Interface_DrawTextLine(GraphicsContext* gfx, char text[], int16_t x, int16_t y, uint16_t colorR,
+                         uint16_t colorG, uint16_t colorB, uint16_t colorA, float textScale, uint8_t textShadow) {
+
+    uint16_t textureIndex;
+    uint16_t kerningOffset = 0;
+    uint16_t lineOffset = 0;
+    void* texture;
+    const char* processedText = Interface_ReplaceSpecialCharacters(text);
+    uint8_t textLength = strlen(processedText);
+
+    for (uint16_t i = 0; i < textLength; i++) {
+        if (processedText[i] == '\n') {
+            lineOffset += 15 * textScale;
+            kerningOffset = 0;
+        } else {
+            textureIndex = processedText[i] - 32;
+
+            if (textureIndex != 0) {
+                texture = Font_FetchCharTexture(textureIndex);
+                Interface_DrawTextCharacter(gfx, x + kerningOffset, y + lineOffset, texture, colorR, colorG, colorB,
+                                            colorA, textScale, textShadow);
+            }
+            kerningOffset += (uint16_t)(Message_GetCharacterWidth(textureIndex) * textScale);
+        }
+    }
+
+    return kerningOffset;
 }

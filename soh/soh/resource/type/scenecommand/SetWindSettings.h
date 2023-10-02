@@ -7,19 +7,21 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
-namespace Ship {
+namespace LUS {
 typedef struct {
   int8_t windWest;
   int8_t windVertical;
   int8_t windSouth;
-  int8_t windSpeed;
+  uint8_t windSpeed;
 } WindSettings;
 
-class SetWindSettings : public SceneCommand {
+class SetWindSettings : public SceneCommand<WindSettings> {
   public:
-    void* GetPointer();
+    using SceneCommand::SceneCommand;
+
+    WindSettings* GetPointer();
     size_t GetPointerSize();
 
     WindSettings settings;
 };
-}; // namespace Ship
+}; // namespace LUS

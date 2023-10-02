@@ -8,7 +8,7 @@
 #include "objects/object_zl4/object_zl4.h"
 #include "scenes/indoors/nakaniwa/nakaniwa_scene.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 typedef enum {
     /* 0 */ ZL4_CS_WAIT,
@@ -237,7 +237,7 @@ void GivePlayerRandoRewardZeldaChild(EnZl4* zelda, PlayState* play, RandomizerCh
         GiveItemEntryFromActor(&zelda->actor, play, getItemEntry, 10000.0f, 100.0f);
     } else if (Flags_GetTreasure(play, 0x1E) && !Player_InBlockingCsMode(play, GET_PLAYER(play))) {
         gSaveContext.unk_13EE = 0x32;
-        gSaveContext.eventChkInf[4] |= 1;
+        Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER);
     }
 }
 
@@ -389,7 +389,7 @@ void EnZl4_Init(Actor* thisx, PlayState* play) {
     this->actor.textId = -1;
     this->eyeExpression = this->mouthExpression = ZL4_MOUTH_NEUTRAL;
 
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_0);
         this->actionFunc = EnZl4_Idle;
         return;
@@ -398,7 +398,7 @@ void EnZl4_Init(Actor* thisx, PlayState* play) {
     if (gSaveContext.sceneSetupIndex >= 4) {
         Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_0);
         this->actionFunc = EnZl4_TheEnd;
-    } else if (gSaveContext.eventChkInf[4] & 1) {
+    } else if (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER)) {
         Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_0);
         this->actionFunc = EnZl4_Idle;
     } else {
@@ -422,6 +422,8 @@ void EnZl4_Destroy(Actor* thisx, PlayState* play) {
     EnZl4* this = (EnZl4*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnZl4_SetNextAnim(EnZl4* this, s32 nextAnim) {
@@ -1206,7 +1208,7 @@ void EnZl4_Cutscene(EnZl4* this, PlayState* play) {
             if (EnZl4_CsMakePlan(this, play)) {
                 func_8002DF54(play, &this->actor, 7);
                 gSaveContext.unk_13EE = 0x32;
-                gSaveContext.eventChkInf[4] |= 1;
+                Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_ZELDAS_LETTER);
                 this->actionFunc = EnZl4_Idle;
             }
             break;
@@ -1224,7 +1226,7 @@ void EnZl4_Idle(EnZl4* this, PlayState* play) {
                       EnZl4_GetText, func_80B5B9B0);
     func_80B5BB78(this, play);
     
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         GivePlayerRandoRewardZeldaChild(this, play, RC_HC_ZELDAS_LETTER);
         return;
     }
@@ -1325,7 +1327,6 @@ void EnZl4_Draw(Actor* thisx, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTex[this->leftEyeState]));
     gSPSegment(POLY_OPA_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(mouthTex[this->mouthState]));
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnZl4_OverrideLimbDraw, EnZl4_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnZl4_OverrideLimbDraw, EnZl4_PostLimbDraw, this);
     CLOSE_DISPS(play->state.gfxCtx);
 }

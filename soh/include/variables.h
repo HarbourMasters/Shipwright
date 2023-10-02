@@ -68,8 +68,6 @@ extern "C"
 	extern u64 gJpegUCode[];
 	extern EffectSsOverlay gEffectSsOverlayTable[EFFECT_SS_TYPE_MAX];
 	extern Gfx D_80116280[];
-	extern ActorOverlay gActorOverlayTable[ACTOR_ID_MAX]; // original name: "actor_dlftbls" 801162A0
-	extern s32 gMaxActorId; // original name: "MaxProfile"
 	extern s32 gDbgCamEnabled;
 	extern GameStateOverlay gGameStateOverlayTable[6];
 	extern u8 gWeatherMode;
@@ -85,10 +83,10 @@ extern "C"
 	extern s16 gSpoilingItemReverts[3];
 	extern FlexSkeletonHeader* gPlayerSkelHeaders[2];
 	extern u8 gPlayerModelTypes[][5];
-	extern Gfx* D_80125DE8[];
-	extern Gfx* D_80125E08[];
-	extern Gfx* D_80125E18[];
-	extern Gfx* D_80125EF8[];
+	extern Gfx* gPlayerLeftHandBgsDLs[];
+	extern Gfx* gPlayerLeftHandOpenDLs[];
+	extern Gfx* gPlayerLeftHandClosedDLs[];
+	extern Gfx* gPlayerLeftHandBoomerangDLs[];
 	extern Gfx gCullBackDList[];
 	extern Gfx gCullFrontDList[];
 	extern Gfx gEmptyDL[];
@@ -103,6 +101,7 @@ extern "C"
 	extern u32 gGsFlagsShifts[4];
 	extern void* gItemIcons[0x82];
 	extern u8 gItemAgeReqs[];
+	extern u8 gSlotAgeReqs[];
 	extern u8 gItemSlots[56];
 	extern void (*gSceneCmdHandlers[SCENE_CMD_ID_MAX])(PlayState*, SceneCmd*);
 	extern s16 gLinkObjectIds[2];
@@ -172,6 +171,7 @@ extern "C"
 	extern u8 gWalkSpeedToggle1;
 	extern u8 gWalkSpeedToggle2;
 	extern f32 iceTrapScale;
+	extern f32 triforcePieceScale;
 
 	extern const s16 D_8014A6C0[];
 #define gTatumsPerBeat (D_8014A6C0[1])

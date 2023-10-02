@@ -39,9 +39,9 @@
 #define SYSTEM_HEAP_SIZE (1024 * 1024 * 4)
 
 #ifdef __cplusplus
-namespace Ship
+namespace LUS
 {
-    class Resource;
+    class IResource;
     class Scene;
     class DisplayList;
 };
@@ -203,6 +203,7 @@ typedef struct {
     /* 0x0060 */ Mtx    projection;
     /* 0x00A0 */ Mtx    viewing;
     /* 0x00E0 */ Mtx*   projectionPtr;
+    /* 0x00E0 */ Mtx*   projectionFlippedPtr;
     /* 0x00E4 */ Mtx*   viewingPtr;
     /* 0x00E8 */ Vec3f  distortionOrientation;
     /* 0x00F4 */ Vec3f  distortionScale;
@@ -624,12 +625,15 @@ typedef enum {
     /* 10 */ TEXT_STATE_AWAITING_NEXT
 } TextState;
 
+// Increased char buffer because texture paths could be bigger than (16 * 16 / 2)
+#define FONT_CHAR_MULTIPLIER 256
+
 typedef struct {
     /* 0x0000 */ uintptr_t    msgOffset;
     /* 0x0004 */ u32          msgLength;
-    /* 0x0008 */ u8           charTexBuf[FONT_CHAR_TEX_SIZE * 120];
-    /* 0x3C08 */ u8           iconBuf[FONT_CHAR_TEX_SIZE];
-    /* 0x3C88 */ u8           fontBuf[FONT_CHAR_TEX_SIZE * 320];
+    /* 0x0008 */ u8           charTexBuf[FONT_CHAR_TEX_SIZE * FONT_CHAR_MULTIPLIER];
+    /* 0x3C08 */ u8           iconBuf[FONT_CHAR_TEX_SIZE * FONT_CHAR_MULTIPLIER];
+    /* 0x3C88 */ u8           fontBuf[FONT_CHAR_TEX_SIZE * FONT_CHAR_MULTIPLIER];
     union {
          /* 0xDC88 */ char   msgBuf[1280];
          /* 0xDC88 */ u16    msgBufWide[640];
@@ -737,9 +741,10 @@ typedef struct {
     /* 0x0128 */ Vtx*   actionVtx;
     /* 0x012C */ Vtx*   beatingHeartVtx;
     /* 0x0130 */ u8*    parameterSegment;
-    /* 0x0134 */ u8*    doActionSegment;
+    /* 0x0134 */ char** doActionSegment;
     /* 0x0138 */ u8*    iconItemSegment;
-    /* 0x013C */ u8*    mapSegment;
+    /* 0x013C */ char** mapSegment;
+    char** mapSegmentName;
     /* 0x0140 */ u8     mapPalette[32];
     /* 0x0160 */ DmaRequest dmaRequest_160;
     /* 0x0180 */ DmaRequest dmaRequest_180;
@@ -1248,6 +1253,7 @@ typedef struct {
   /*      */ char* germanName;
   /*      */ char* frenchName;
   /*      */ s32 entranceIndex;
+  /*      */ u8 canBeMQ;
 } BetterSceneSelectEntrancePair;
 
 typedef struct {
@@ -1255,7 +1261,7 @@ typedef struct {
     /*      */ char* germanName;
     /*      */ char* frenchName;
     /*      */ void (*loadFunc)(struct SelectContext*, s32);
-    /*      */ s32 count;
+    /*      */ u8 entranceCount;
     /*      */ BetterSceneSelectEntrancePair entrancePairs[18];
 } BetterSceneSelectEntry;
 
@@ -1288,9 +1294,12 @@ typedef struct SelectContext {
     /* 0x0230 */ s32 lockDown;
     /* 0x0234 */ s32 unk_234; // unused
     /* 0x0238 */ u8* staticSegment;
+    // #region SOH [General]
     /*        */ s32 currentEntrance;
+    /*        */ u8 isBetterWarp;
     /*        */ BetterSceneSelectEntry* betterScenes;
     /*        */ BetterSceneSelectGrottoData* betterGrottos;
+    // #endregion
 } SelectContext; // size = 0x240
 
 typedef struct {
@@ -1495,6 +1504,10 @@ typedef struct {
     f32 stickAnimTween;
     u8 arrowAnimState;
     u8 stickAnimState;
+    uint8_t bossRushIndex;
+    uint8_t bossRushOffset;
+    int16_t bossRushUIAlpha;
+    uint16_t bossRushArrowOffset;
 } FileChooseContext; // size = 0x1CAE0
 
 typedef enum {
@@ -2226,8 +2239,14 @@ typedef enum {
     /* 0x00 */ PAUSE_ANY_CURSOR_RANDO_ONLY,
     /* 0x01 */ PAUSE_ANY_CURSOR_ALWAYS_ON,
     /* 0x02 */ PAUSE_ANY_CURSOR_ALWAYS_OFF,
-    /* 0x03 */ PAUSE_ANY_CURSOR_MAX
 } PauseCursorAnySlotOptions;
+
+typedef enum {
+    LED_SOURCE_TUNIC_ORIGINAL,
+    LED_SOURCE_TUNIC_COSMETICS,
+    LED_SOURCE_HEALTH,
+    LED_SOURCE_CUSTOM
+} LEDColorSource;
 
 #define ROM_FILE(name) \
     { 0, 0, #name }

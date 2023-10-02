@@ -7,17 +7,19 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
-namespace Ship {
+namespace LUS {
 typedef struct {
   int8_t elfMessage;
   int16_t globalObject;
 } SpecialObjects;
 
-class SetSpecialObjects : public SceneCommand {
+class SetSpecialObjects : public SceneCommand<SpecialObjects> {
   public:
-    void* GetPointer();
+    using SceneCommand::SceneCommand;
+
+    SpecialObjects* GetPointer();
     size_t GetPointerSize();
 
     SpecialObjects specialObjects;
 };
-}; // namespace Ship
+}; // namespace LUS

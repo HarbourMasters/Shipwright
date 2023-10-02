@@ -71,9 +71,6 @@ ZAPD needs a _File parsing mode_ to be passed as first parameter. The options ar
 - `blb`: "Build blob" mode.
   - In this mode, ZAPD expects a BIN file as input and a filename as ouput.
   - ZAPD will try to convert the given BIN into the contents of a `uint8_t` C array.
-- `bovl`: "Build overlay" mode.
-  - In this mode, ZAPD expects an overlay C file as input, a filename as ouput and an overlay configuration path (`-cfg`).
-  - ZAPD will generate a reloc `.s` file.
 
 ZAPD also accepts the following list of extra parameters:
 
@@ -102,8 +99,6 @@ ZAPD also accepts the following list of extra parameters:
     - `ia16`
     - `ci4`
     - `ci8`
-- `-cfg PATH`: Set cfg path (for overlays).
-  - Can be used only in `bovl` mode.
 - `-rconf PATH` Read Config File.
 - `-eh`: Enable error handler.
   - Only available in non-Windows environments.

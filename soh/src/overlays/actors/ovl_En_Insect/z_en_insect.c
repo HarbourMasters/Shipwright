@@ -189,7 +189,7 @@ void EnInsect_Init(Actor* thisx, PlayState* play2) {
 
     if (this->unk_314 & 4) {
         this->unk_31C = Rand_S16Offset(200, 40);
-        this->actor.flags |= ACTOR_FLAG_4;
+        this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
     }
 
     if (temp_s2 == 2 || temp_s2 == 3) {
@@ -234,6 +234,8 @@ void EnInsect_Destroy(Actor* thisx, PlayState* play) {
     if ((temp_v0 == 2 || temp_v0 == 3) && D_80A7DEB8 > 0) {
         D_80A7DEB8--;
     }
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80A7C3A0(EnInsect* this) {
@@ -392,6 +394,9 @@ void func_80A7CAD0(EnInsect* this, PlayState* play) {
 }
 
 void func_80A7CBC8(EnInsect* this) {
+    if (CVarGetInteger("gNoBugsDespawn", 0) != 0) {
+        return;
+    }
     this->unk_31A = 60;
     func_80A7BF58(this);
     this->skelAnime.playSpeed = 1.9f;
@@ -790,7 +795,7 @@ void EnInsect_Draw(Actor* thisx, PlayState* play) {
     EnInsect* this = (EnInsect*)thisx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, NULL, NULL);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, NULL);
     Collider_UpdateSpheres(0, &this->collider);
     D_80A7DEB4 = 0;
 }

@@ -1,5 +1,6 @@
 #include "global.h"
 #include "z64elf_message.h"
+#include <assert.h>
 
 ElfMessage sChildSariaMsgs[] = {
     ELF_MSG_STRENGTH_UPG(SKIP, 3, false, 0),
@@ -59,7 +60,7 @@ u32 ElfMessage_CheckCondition(ElfMessage* msg) {
     }
 
     LOG_STRING("企画外 条件"); // "Unplanned conditions"
-    ASSERT(0);
+    assert(0);
 
     return false;
 }
@@ -142,7 +143,7 @@ u16 ElfMessage_GetTextFromMsgs(ElfMessage* msg) {
                 return msg->byte2 | 0x100;
             default:
                 LOG_STRING("企画外 条件"); // "Unplanned conditions"
-                ASSERT(0);
+                assert(0);
         }
         msg++;
     }
@@ -154,6 +155,9 @@ u16 ElfMessage_GetSariaText(PlayState* play) {
 
     if (!LINK_IS_ADULT) {
         if (Actor_FindNearby(play, &player->actor, ACTOR_EN_SA, 4, 800.0f) == NULL) {
+             if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SARIA_HINT)) {
+                return 0x161;
+            }
             msgs = sChildSariaMsgs;
         } else {
             return 0x0160; // Special text about Saria preferring to talk to you face-to-face

@@ -2,46 +2,45 @@
 #include "soh/resource/type/scenecommand/SetLightList.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> SetLightListFactory::ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader)
-{
-	auto resource = std::make_shared<SetLightList>();
-	std::shared_ptr<ResourceVersionFactory> factory = nullptr;
+namespace LUS {
+std::shared_ptr<IResource>
+SetLightListFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+    auto resource = std::make_shared<SetLightList>(initData);
+    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-	switch (version)
-	{
-	case 0:
-		factory = std::make_shared<SetLightListFactoryV0>();
-		break;
-	}
+    switch (resource->GetInitData()->ResourceVersion) {
+    case 0:
+	factory = std::make_shared<SetLightListFactoryV0>();
+	break;
+    }
 
-	if (factory == nullptr)
-	{
-		SPDLOG_ERROR("Failed to load SetLightList with version {}", version);
-		return nullptr;
-	}
+    if (factory == nullptr)
+    {
+        SPDLOG_ERROR("Failed to load SetLightList with version {}", resource->GetInitData()->ResourceVersion);
+	return nullptr;
+    }
 
-	factory->ParseFileBinary(reader, resource);
+    factory->ParseFileBinary(reader, resource);
 
-	return resource;
+    return resource;
 }
 
-void Ship::SetLightListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                        		  std::shared_ptr<Resource> resource)
+void LUS::SetLightListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+                                        		  std::shared_ptr<IResource> resource)
 {
-	std::shared_ptr<SetLightList> setLightList = std::static_pointer_cast<SetLightList>(resource);
-	ResourceVersionFactory::ParseFileBinary(reader, setLightList);
+    std::shared_ptr<SetLightList> setLightList = std::static_pointer_cast<SetLightList>(resource);
+    ResourceVersionFactory::ParseFileBinary(reader, setLightList);
 
-	ReadCommandId(setLightList, reader);
-	
-   	setLightList->numLights = reader->ReadUInt32();
+    ReadCommandId(setLightList, reader);
+    
+    setLightList->numLights = reader->ReadUInt32();
     setLightList->lightList.reserve(setLightList->numLights);
     for (uint32_t i = 0; i < setLightList->numLights; i++) {
         LightInfo light;
 
         light.type = reader->ReadUByte();
 		
-		light.params.point.x = reader->ReadInt16();
+	light.params.point.x = reader->ReadInt16();
         light.params.point.y = reader->ReadInt16();
         light.params.point.z = reader->ReadInt16();
 
@@ -50,10 +49,10 @@ void Ship::SetLightListFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> 
         light.params.point.color[2] = reader->ReadUByte(); // b
 
         light.params.point.drawGlow = reader->ReadUByte();
-		light.params.point.radius = reader->ReadInt16();
+	light.params.point.radius = reader->ReadInt16();
 
         setLightList->lightList.push_back(light);
     }
 }
 
-} // namespace Ship
+} // namespace LUS

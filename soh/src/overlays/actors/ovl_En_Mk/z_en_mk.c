@@ -8,7 +8,7 @@
 #include "objects/object_mk/object_mk.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnMk_Init(Actor* thisx, PlayState* play);
 void EnMk_Destroy(Actor* thisx, PlayState* play);
@@ -70,7 +70,7 @@ void EnMk_Init(Actor* thisx, PlayState* play) {
     this->swimFlag = 0;
     this->actor.targetMode = 6;
 
-    if (gSaveContext.itemGetInf[1] & 1) {
+    if (Flags_GetItemGetInf(ITEMGETINF_10)) {
         this->flags |= 4;
     }
 }
@@ -79,11 +79,13 @@ void EnMk_Destroy(Actor* thisx, PlayState* play) {
     EnMk* this = (EnMk*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80AACA40(EnMk* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
-        this->actor.flags &= ~ACTOR_FLAG_16;
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
         this->actionFunc = EnMk_Wait;
     }
 
@@ -94,12 +96,12 @@ void func_80AACA94(EnMk* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play) != 0) {
         this->actor.parent = NULL;
         this->actionFunc = func_80AACA40;
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_80088AA0(240);
             gSaveContext.eventInf[1] &= ~1;
         }
     } else {
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_TRADE_FROG, GI_EYEDROPS);
             Randomizer_ConsumeAdultTradeItem(play, ITEM_FROG);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
@@ -114,7 +116,7 @@ void func_80AACA94(EnMk* this, PlayState* play) {
 void func_80AACB14(EnMk* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         this->actionFunc = func_80AACA94;
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_TRADE_FROG, GI_EYEDROPS);
             Randomizer_ConsumeAdultTradeItem(play, ITEM_FROG);
             GiveItemEntryFromActor(&this->actor, play, getItemEntry, 10000.0f, 50.0f);
@@ -148,7 +150,7 @@ void func_80AACC04(EnMk* this, PlayState* play) {
     if (this->timer > 0) {
         this->timer--;
     } else {
-        this->timer = gSaveContext.n64ddFlag ? 0 : 16;
+        this->timer = IS_RANDO ? 0 : 16;
         this->actionFunc = func_80AACBAC;
         Animation_Change(&this->skelAnime, &object_mk_Anim_000D88, 1.0f, 0.0f,
                          Animation_GetLastFrame(&object_mk_Anim_000D88), ANIMMODE_LOOP, -4.0f);
@@ -161,7 +163,7 @@ void func_80AACCA0(EnMk* this, PlayState* play) {
         this->timer--;
         this->actor.shape.rot.y += 0x800;
     } else {
-        this->timer = gSaveContext.n64ddFlag ? 0 : 120;
+        this->timer = IS_RANDO ? 0 : 120;
         this->actionFunc = func_80AACC04;
         Animation_Change(&this->skelAnime, &object_mk_Anim_000724, 1.0f, 0.0f,
                          Animation_GetLastFrame(&object_mk_Anim_000724), ANIMMODE_LOOP, -4.0f);
@@ -177,7 +179,7 @@ void func_80AACD48(EnMk* this, PlayState* play) {
         this->actionFunc = func_80AACCA0;
         play->msgCtx.msgMode = MSGMODE_PAUSED;
         player->exchangeItemId = EXCH_ITEM_NONE;
-        this->timer = gSaveContext.n64ddFlag ? 0 : 16;
+        this->timer = IS_RANDO ? 0 : 16;
         Animation_Change(&this->skelAnime, &object_mk_Anim_000D88, 1.0f, 0.0f,
                          Animation_GetLastFrame(&object_mk_Anim_000D88), ANIMMODE_LOOP, -4.0f);
         this->flags &= ~2;
@@ -214,10 +216,10 @@ void func_80AACFA0(EnMk* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         this->actor.parent = NULL;
         this->actionFunc = func_80AACA40;
-        gSaveContext.itemGetInf[1] |= 1;
+        Flags_SetItemGetInf(ITEMGETINF_10);
     } else {
         // not sure when/how/if this is getting called
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_HEART_PIECE, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_LAB_DIVE, GI_HEART_PIECE);
@@ -229,7 +231,7 @@ void func_80AACFA0(EnMk* this, PlayState* play) {
 void func_80AAD014(EnMk* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         this->actionFunc = func_80AACFA0;
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_HEART_PIECE, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_LAB_DIVE, GI_HEART_PIECE);
@@ -255,14 +257,14 @@ void EnMk_Wait(EnMk* this, PlayState* play) {
         } else {
             // Skip eye drop text on rando if Link went in the water, so you can still receive the dive check
             if (INV_CONTENT(ITEM_ODD_MUSHROOM) == ITEM_EYEDROPS &&
-                (!gSaveContext.n64ddFlag || this->swimFlag == 0)) {
+                (!IS_RANDO || this->swimFlag == 0)) {
                 player->actor.textId = 0x4032;
                 this->actionFunc = func_80AACA40;
             } else {
                 switch (playerExchangeItem) {
                     case EXCH_ITEM_NONE:
                         if (this->swimFlag >= 8) {
-                            if (gSaveContext.itemGetInf[1] & 1) {
+                            if (Flags_GetItemGetInf(ITEMGETINF_10)) {
                                 player->actor.textId = 0x4075;
                                 this->actionFunc = func_80AACA40;
                             } else {
@@ -399,6 +401,5 @@ void EnMk_Draw(Actor* thisx, PlayState* play) {
     EnMk* this = (EnMk*)thisx;
 
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnMk_OverrideLimbDraw, EnMk_PostLimbDraw, &this->actor);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnMk_OverrideLimbDraw, EnMk_PostLimbDraw, &this->actor);
 }

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_DO_ACTION_STATIC_H
+#define TEXTURES_DO_ACTION_STATIC_H 1
 
 #include "align_asset_macro.h"
 
@@ -262,3 +263,5 @@ static const ALIGN_ASSET(2) char gNum7DoActionFRATex[] = dgNum7DoActionFRATex;
 
 #define dgNum8DoActionFRATex "__OTR__textures/do_action_static/gNum8DoActionFRATex"
 static const ALIGN_ASSET(2) char gNum8DoActionFRATex[] = dgNum8DoActionFRATex;
+
+#endif // TEXTURES_DO_ACTION_STATIC_H

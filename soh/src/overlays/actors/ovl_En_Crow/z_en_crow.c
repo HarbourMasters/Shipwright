@@ -1,7 +1,8 @@
 #include "z_en_crow.h"
 #include "objects/object_crow/object_crow.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_12 | ACTOR_FLAG_14)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_ARROW_DRAGGABLE)
 
 void EnCrow_Init(Actor* thisx, PlayState* play);
 void EnCrow_Destroy(Actor* thisx, PlayState* play);
@@ -124,6 +125,8 @@ void EnCrow_Destroy(Actor* thisx, PlayState* play) {
     EnCrow* this = (EnCrow*)thisx;
 
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 // Setup Action functions
@@ -176,12 +179,12 @@ void EnCrow_SetupDamaged(EnCrow* this, PlayState* play) {
         Actor_SetColorFilter(&this->actor, 0x4000, 255, 0, 40);
     }
 
-    if (this->actor.flags & ACTOR_FLAG_15) {
+    if (this->actor.flags & ACTOR_FLAG_DRAGGED_BY_ARROW) {
         this->actor.speedXZ = 0.0f;
     }
 
     this->collider.base.acFlags &= ~AC_ON;
-    this->actor.flags |= ACTOR_FLAG_4;
+    this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
 
     this->actionFunc = EnCrow_Damaged;
 }
@@ -189,7 +192,7 @@ void EnCrow_SetupDamaged(EnCrow* this, PlayState* play) {
 void EnCrow_SetupDie(EnCrow* this) {
     this->actor.colorFilterTimer = 0;
     this->actionFunc = EnCrow_Die;
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GUAY]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnCrow_SetupTurnAway(EnCrow* this) {
@@ -330,7 +333,7 @@ void EnCrow_Damaged(EnCrow* this, PlayState* play) {
     Math_StepToF(&this->actor.speedXZ, 0.0f, 0.5f);
     this->actor.colorFilterTimer = 40;
 
-    if (!(this->actor.flags & ACTOR_FLAG_15)) {
+    if (!(this->actor.flags & ACTOR_FLAG_DRAGGED_BY_ARROW)) {
         if (this->actor.colorFilterParams & 0x4000) {
             Math_ScaledStepToS(&this->actor.shape.rot.x, 0x4000, 0x200);
             this->actor.shape.rot.z += 0x1780;
@@ -405,8 +408,8 @@ void EnCrow_Respawn(EnCrow* this, PlayState* play) {
             target = 0.01f;
         }
         if (Math_StepToF(&this->actor.scale.x, target, target * 0.1f)) {
-            this->actor.flags |= ACTOR_FLAG_0;
-            this->actor.flags &= ~ACTOR_FLAG_4;
+            this->actor.flags |= ACTOR_FLAG_TARGETABLE;
+            this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
             this->actor.colChkInfo.health = 1;
             EnCrow_SetupFlyIdle(this);
         }
@@ -423,7 +426,7 @@ void EnCrow_UpdateDamage(EnCrow* this, PlayState* play) {
                 EnCrow_SetupTurnAway(this);
             } else {
                 Actor_ApplyDamage(&this->actor);
-                this->actor.flags &= ~ACTOR_FLAG_0;
+                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                 Enemy_StartFinishingBlow(play, &this->actor);
                 EnCrow_SetupDamaged(this, play);
             }
@@ -510,6 +513,5 @@ void EnCrow_Draw(Actor* thisx, PlayState* play) {
     EnCrow* this = (EnCrow*)thisx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnCrow_OverrideLimbDraw, EnCrow_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnCrow_OverrideLimbDraw, EnCrow_PostLimbDraw, this);
 }

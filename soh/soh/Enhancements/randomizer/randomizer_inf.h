@@ -142,6 +142,7 @@ typedef enum {
 
     RAND_INF_MERCHANTS_CARPET_SALESMAN,
     RAND_INF_MERCHANTS_MEDIGORON,
+    RAND_INF_MERCHANTS_GRANNYS_SHOP,
 
     RAND_INF_ADULT_TRADES_LW_TRADE_COJIRO,
     RAND_INF_ADULT_TRADES_GV_TRADE_SAW,
@@ -152,6 +153,11 @@ typedef enum {
     RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD,
 
     RAND_INF_GREG_FOUND,
+
+    RAND_INF_CHILD_FISHING,
+    RAND_INF_ADULT_FISHING,
+
+    RAND_INF_10_BIG_POES,
 
     // If you add anything to this list, you need to update the size of randomizerInf in z64save.h to be ceil(RAND_INF_MAX / 16)
 

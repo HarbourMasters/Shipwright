@@ -1,7 +1,8 @@
 #include "z_en_rd.h"
 #include "objects/object_rd/object_rd.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_10)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
 
 void EnRd_Init(Actor* thisx, PlayState* play);
 void EnRd_Destroy(Actor* thisx, PlayState* play);
@@ -164,7 +165,7 @@ void EnRd_Init(Actor* thisx, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
 
     if (thisx->params == 3) {
-        thisx->flags |= ACTOR_FLAG_7;
+        thisx->flags |= ACTOR_FLAG_LENS;
     }
 }
 
@@ -175,6 +176,8 @@ void EnRd_Destroy(Actor* thisx, PlayState* play) {
         gSaveContext.sunsSongState = SUNSSONG_INACTIVE;
     }
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80AE2630(PlayState* play, Actor* thisx, s32 arg2) {
@@ -251,8 +254,8 @@ void func_80AE2744(EnRd* this, PlayState* play) {
             // Add a height check to redeads/gibdos freeze when Enemy Randomizer is on.
             // Without the height check, redeads/gibdos can freeze the player from insane distances in
             // vertical rooms (like the first room in Deku Tree), making these rooms nearly unplayable.
-            s8 enemyRando = CVarGetInteger("gRandomizedEnemies", 0);
-            if (!enemyRando || (enemyRando && this->actor.yDistToPlayer <= 100.0f && this->actor.yDistToPlayer >= -100.0f)) {
+            s8 enemyRandoCCActive = CVarGetInteger("gRandomizedEnemies", 0) || CVarGetInteger("gCrowdControl", 0);
+            if (!enemyRandoCCActive || (enemyRandoCCActive && this->actor.yDistToPlayer <= 100.0f && this->actor.yDistToPlayer >= -100.0f)) {
                 if ((this->actor.params != 2) && (this->unk_305 == 0)) {
                     func_80AE37BC(this);
                 } else {
@@ -332,7 +335,7 @@ void func_80AE2C1C(EnRd* this, PlayState* play) {
     if ((ABS(sp32) < 0x1554) && (Actor_WorldDistXYZToActor(&this->actor, &player->actor) <= 150.0f)) {
         if (!(player->stateFlags1 & 0x2C6080) && !(player->stateFlags2 & 0x80)) {
             if (this->unk_306 == 0) {
-                if (!(this->unk_312 & 0x80)) {
+                if (!(this->unk_312 & 0x80) && !CVarGetInteger("gNoRedeadFreeze", 0)) {
                     player->actor.freezeTimer = 40;
                     func_8008EEAC(play, &this->actor);
                     GET_PLAYER(play)->unk_684 = &this->actor;
@@ -354,7 +357,7 @@ void func_80AE2C1C(EnRd* this, PlayState* play) {
         Actor_IsFacingPlayer(&this->actor, 0x38E3)) {
         player->actor.freezeTimer = 0;
         if (play->grabPlayer(play, player)) {
-            this->actor.flags &= ~ACTOR_FLAG_0;
+            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
             func_80AE33F0(this);
         }
     } else if (this->actor.params > 0) {
@@ -525,7 +528,7 @@ void func_80AE3454(EnRd* this, PlayState* play) {
                 play->damagePlayer(play, -8);
                 func_800AA000(this->actor.xzDistToPlayer, 0xF0, 1, 0xC);
                 this->unk_319 = 20;
-                func_8002F7DC(&player->actor, NA_SE_VO_LI_DAMAGE_S + player->ageProperties->unk_92);
+                Player_PlaySfx(&player->actor, NA_SE_VO_LI_DAMAGE_S + player->ageProperties->unk_92);
             }
             break;
         case 3:
@@ -538,7 +541,7 @@ void func_80AE3454(EnRd* this, PlayState* play) {
                 Math_SmoothStepToF(&this->actor.shape.yOffset, 0, 1.0f, 400.0f, 0.0f);
             }
             this->actor.targetMode = 0;
-            this->actor.flags |= ACTOR_FLAG_0;
+            this->actor.flags |= ACTOR_FLAG_TARGETABLE;
             this->unk_306 = 0xA;
             this->unk_307 = 0xF;
             func_80AE2B90(this, play);
@@ -561,7 +564,7 @@ void func_80AE3834(EnRd* this, PlayState* play) {
     s16 temp_v0 = this->actor.yawTowardsPlayer - this->actor.shape.rot.y - this->unk_30E - this->unk_310;
 
     if (ABS(temp_v0) < 0x2008) {
-        if (!(this->unk_312 & 0x80)) {
+        if (!(this->unk_312 & 0x80) && !CVarGetInteger("gNoRedeadFreeze", 0)) {
             player->actor.freezeTimer = 60;
             func_800AA000(this->actor.xzDistToPlayer, 0xFF, 0x14, 0x96);
             func_8008EEAC(play, &this->actor);
@@ -607,7 +610,7 @@ void func_80AE3A8C(EnRd* this) {
         this->actor.speedXZ = -2.0f;
     }
 
-    this->actor.flags |= ACTOR_FLAG_0;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_REDEAD_DAMAGE);
     this->unk_31B = 9;
     EnRd_SetupAction(this, func_80AE3B18);
@@ -642,15 +645,11 @@ void func_80AE3C20(EnRd* this) {
     Animation_MorphToPlayOnce(&this->skelAnime, &gGibdoRedeadDeathAnim, -1.0f);
     this->unk_31B = 10;
     this->unk_30C = 300;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actor.speedXZ = 0.0f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_REDEAD_DEAD);
     EnRd_SetupAction(this, func_80AE3C98);
-    if (this->actor.params >= -1) {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_REDEAD]++;
-    } else {
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_GIBDO]++;
-    }
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void func_80AE3C98(EnRd* this, PlayState* play) {
@@ -663,8 +662,9 @@ void func_80AE3C98(EnRd* this, PlayState* play) {
 
     if (SkelAnime_Update(&this->skelAnime)) {
         if (this->unk_30C == 0) {
+            s8 enemyRandoCCActive = CVarGetInteger("gRandomizedEnemies", 0) || CVarGetInteger("gCrowdControl", 0);
             // Don't set this flag in Enemy Rando as it can overlap with other objects using the same flag.
-            if (!Flags_GetSwitch(play, this->unk_312 & 0x7F) && !CVarGetInteger("gRandomizedEnemies", 0)) {
+            if (!Flags_GetSwitch(play, this->unk_312 & 0x7F) && !enemyRandoCCActive) {
                 Flags_SetSwitch(play, this->unk_312 & 0x7F);
             }
             if (this->unk_314 != 0) {

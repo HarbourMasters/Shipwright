@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_G_PN_01_H
+#define TEXTURES_G_PN_01_H 1
 
 #include "align_asset_macro.h"
 
@@ -10,3 +11,5 @@ static const ALIGN_ASSET(2) char gForestTempleTitleCardGERTex[] = dgForestTemple
 
 #define dgForestTempleTitleCardFRATex "__OTR__textures/g_pn_01/gForestTempleTitleCardFRATex"
 static const ALIGN_ASSET(2) char gForestTempleTitleCardFRATex[] = dgForestTempleTitleCardFRATex;
+
+#endif // TEXTURES_G_PN_01_H

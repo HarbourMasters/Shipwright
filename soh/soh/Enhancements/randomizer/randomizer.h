@@ -9,10 +9,12 @@
 #include <memory>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include "soh/Enhancements/randomizer/randomizer_check_objects.h"
+#include "soh/Enhancements/randomizer/randomizer_tricks.h"
 #include <soh/Enhancements/custom-message/CustomMessageManager.h>
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
 #define MAX_SEED_STRING_SIZE 1024
+#define NUM_TRIFORCE_PIECE_MESSAGES 6
 #define NUM_NAVI_MESSAGES 19
 #define NUM_ICE_TRAP_MESSAGES 23
 #define NUM_GORON_MESSAGES 9
@@ -26,6 +28,8 @@ class Randomizer {
     std::string ganonHintText;
     std::string ganonText;
     std::string dampeText;
+    std::string sheikText;
+    std::string sariaText;
     std::unordered_map<RandomizerSettingKey, u8> randoSettings;
     void ParseRandomizerSettingsFile(const char* spoilerFileName);
     void ParseHintLocationsFile(const char* spoilerFileName);
@@ -45,6 +49,7 @@ class Randomizer {
     static const std::string hintMessageTableID;
     static const std::string merchantMessageTableID;
     static const std::string rupeeMessageTableID;
+    static const std::string triforcePieceMessageTableID;
     static const std::string NaviRandoMessageTableID;
     static const std::string IceTrapRandoMessageTableID;
     static const std::string randoMiscHintsTableID;
@@ -53,7 +58,7 @@ class Randomizer {
     std::unordered_map<RandomizerInf, bool> trialsRequired;
     std::unordered_set<uint16_t> masterQuestDungeons;
     std::unordered_map<RandomizerCheck, u16> merchantPrices;
-    std::unordered_map<RandomizerGet, std::vector<std::string>> EnumToSpoilerfileGetName;
+    std::unordered_map<RandomizerGet, std::array<std::string, 3>> EnumToSpoilerfileGetName;
 
     static Sprite* GetSeedTexture(uint8_t index);
     s16 GetItemModelFromId(s16 itemId);
@@ -78,6 +83,8 @@ class Randomizer {
     std::string GetGanonText() const;
     std::string GetGanonHintText() const;
     std::string GetDampeText() const;
+    std::string GetSheikText() const;
+    std::string GetSariaText() const;
     RandomizerCheckObject GetCheckObjectFromActor(s16 actorId, s16 sceneNum, s32 actorParams);
     ScrubIdentity IdentifyScrub(s32 sceneNum, s32 actorParams, s32 respawnData);
     ShopItemIdentity IdentifyShopItem(s32 sceneNum, u8 slotIndex);
@@ -87,13 +94,17 @@ class Randomizer {
     GetItemID GetItemIdFromRandomizerGet(RandomizerGet randoGet, GetItemID ogItemId);
     ItemObtainability GetItemObtainabilityFromRandomizerCheck(RandomizerCheck randomizerCheck);
     ItemObtainability GetItemObtainabilityFromRandomizerGet(RandomizerGet randomizerCheck);
-    CustomMessageEntry GetWarpSongMessage(u16 textId, bool mysterious = false);
-    CustomMessageEntry GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious = false);
-    CustomMessageEntry GetCursedSkullMessage(s16 params);
-    CustomMessageEntry GetGoronMessage(u16 index);
-    CustomMessageEntry GetMapGetItemMessageWithHint(GetItemEntry itemEntry);
+    CustomMessage GetWarpSongMessage(u16 textId, bool mysterious = false);
+    CustomMessage GetSheikMessage(s16 scene, u16 originalTextId);
+    CustomMessage GetFrogsMessage(u16 originalTextId);
+    CustomMessage GetSariaMessage(u16 originalTextId);
+    CustomMessage GetMerchantMessage(RandomizerInf randomizerInf, u16 textId, bool mysterious = false);
+    CustomMessage GetCursedSkullMessage(s16 params);
+    CustomMessage GetGoronMessage(u16 index);
+    CustomMessage GetMapGetItemMessageWithHint(GetItemEntry itemEntry);
     static void CreateCustomMessages();
-    static CustomMessageEntry GetRupeeMessage(u16 rupeeTextId);
+    static CustomMessage GetRupeeMessage(u16 rupeeTextId);
+    static CustomMessage GetTriforcePieceMessage();
     bool CheckContainsVanillaItem(RandomizerCheck randoCheck);
 };
 
@@ -101,7 +112,6 @@ class Randomizer {
 extern "C" {
 #endif
 
-void Rando_Init(void);
 bool GenerateRandomizer(std::string seed = "");
 
 #ifdef __cplusplus

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_DEKUNUTS_H
+#define OBJECTS_OBJECT_DEKUNUTS_H 1
 
 #include "align_asset_macro.h"
 
@@ -85,3 +86,6 @@ static const ALIGN_ASSET(2) char gDekuNutsSkelLimbsLimb_0031F0DL_001DA8[] = dgDe
 
 #define dgDekuNutsSkelLimbsLimb_0031FCDL_001D08 "__OTR__objects/object_dekunuts/gDekuNutsSkelLimbsLimb_0031FCDL_001D08"
 static const ALIGN_ASSET(2) char gDekuNutsSkelLimbsLimb_0031FCDL_001D08[] = dgDekuNutsSkelLimbsLimb_0031FCDL_001D08;
+
+
+#endif // OBJECTS_OBJECT_DEKUNUTS_H

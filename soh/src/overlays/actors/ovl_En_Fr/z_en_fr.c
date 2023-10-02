@@ -2,8 +2,10 @@
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
 #include "vt.h"
 #include "objects/object_fr/object_fr.h"
+#include <assert.h>
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_25)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void EnFr_Init(Actor* thisx, PlayState* play);
 void EnFr_Destroy(Actor* thisx, PlayState* play);
@@ -100,6 +102,17 @@ EnFrPointers sEnFrPointers = {
 // Flags for gSaveContext.eventChkInf[13]
 static u16 sSongIndex[] = {
     0x0002, 0x0004, 0x0010, 0x0008, 0x0020, 0x0040, 0x0001, 0x0000,
+};
+
+static u16 sSongIndexShift[] = {
+    EVENTCHKINF_SONGS_FOR_FROGS_ZL_SHIFT,
+    EVENTCHKINF_SONGS_FOR_FROGS_EPONA_SHIFT,
+    EVENTCHKINF_SONGS_FOR_FROGS_SARIA_SHIFT,
+    EVENTCHKINF_SONGS_FOR_FROGS_SUNS_SHIFT,
+    EVENTCHKINF_SONGS_FOR_FROGS_SOT_SHIFT,
+    EVENTCHKINF_SONGS_FOR_FROGS_STORMS_SHIFT,
+    EVENTCHKINF_SONGS_FOR_FROGS_CHOIR_SHIFT,
+    0x0, // FROG_NO_SONG
 };
 
 // Frog to Index for Song Flag (sSongIndex) Mapping
@@ -216,7 +229,7 @@ void EnFr_Init(Actor* thisx, PlayState* play) {
         this->actor.destroy = NULL;
         this->actor.draw = NULL;
         this->actor.update = EnFr_UpdateIdle;
-        this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_4);
+        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_UPDATE_WHILE_CULLED);
         this->actor.flags &= ~0;
         Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_PROP);
         this->actor.textId = 0x40AC;
@@ -227,7 +240,7 @@ void EnFr_Init(Actor* thisx, PlayState* play) {
             // "The argument is wrong!!"
             osSyncPrintf("%s[%d] : 引数が間違っている！！(%d)\n", __FILE__, __LINE__, this->actor.params);
             osSyncPrintf(VT_RST);
-            ASSERT((this->actor.params >= 6) || (this->actor.params < 0));
+            assert((this->actor.params >= 6) || (this->actor.params < 0));
         }
 
         this->objBankIndex = Object_GetIndex(&play->objectCtx, OBJECT_GAMEPLAY_FIELD_KEEP);
@@ -237,7 +250,7 @@ void EnFr_Init(Actor* thisx, PlayState* play) {
             // "There is no bank!!"
             osSyncPrintf("%s[%d] : バンクが無いよ！！\n", __FILE__, __LINE__);
             osSyncPrintf(VT_RST);
-            ASSERT(this->objBankIndex < 0);
+            assert(this->objBankIndex < 0);
         }
     }
 }
@@ -258,7 +271,7 @@ void EnFr_Update(Actor* thisx, PlayState* play) {
     s32 pad2;
 
     if (Object_IsLoaded(&play->objectCtx, this->objBankIndex)) {
-        this->actor.flags &= ~ACTOR_FLAG_4;
+        this->actor.flags &= ~ACTOR_FLAG_UPDATE_WHILE_CULLED;
         frogIndex = this->actor.params - 1;
         sEnFrPointers.frogs[frogIndex] = this;
         Actor_ProcessInitChain(&this->actor, sInitChain);
@@ -301,7 +314,7 @@ void EnFr_Update(Actor* thisx, PlayState* play) {
         this->posButterflyLight.x = this->posButterfly.x = this->posLogSpot.x;
         this->posButterflyLight.y = this->posButterfly.y = this->posLogSpot.y + 50.0f;
         this->posButterflyLight.z = this->posButterfly.z = this->posLogSpot.z;
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     }
 }
 
@@ -309,6 +322,9 @@ void EnFr_Destroy(Actor* thisx, PlayState* play) {
     EnFr* this = (EnFr*)thisx;
 
     LightContext_RemoveLight(play, &play->lightCtx, this->lightNode);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
+    ResourceMgr_UnregisterSkeleton(&this->skelAnimeButterfly);
 }
 
 void EnFr_IsDivingIntoWater(EnFr* this, PlayState* play) {
@@ -623,12 +639,12 @@ void EnFr_Activate(EnFr* this, PlayState* play) {
 void EnFr_ActivateCheckFrogSong(EnFr* this, PlayState* play) {
     if (sEnFrPointers.flags == 11) {
         // Check if all 6 child songs have been played for the frogs
-        if ((gSaveContext.eventChkInf[13] & 0x2)        // ZL
-            && (gSaveContext.eventChkInf[13] & 0x4)     // Epona
-            && (gSaveContext.eventChkInf[13] & 0x10)    // Saria
-            && (gSaveContext.eventChkInf[13] & 0x8)     // Suns
-            && (gSaveContext.eventChkInf[13] & 0x20)    // SoT
-            && (gSaveContext.eventChkInf[13] & 0x40)) { // SoS
+        if ((Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_ZL))        // ZL
+            && (Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_EPONA))     // Epona
+            && (Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_SARIA))    // Saria
+            && (Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_SUNS))     // Suns
+            && (Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_SOT))    // SoT
+            && (Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_STORMS))) { // SoS
             this->actionFunc = EnFr_TalkBeforeFrogSong;
             this->songIndex = FROG_CHOIR_SONG;
             Message_StartTextbox(play, 0x40AB, &this->actor);
@@ -792,7 +808,7 @@ void EnFr_DeactivateButterfly() {
 }
 
 u8 EnFr_GetNextNoteFrogSong(u8 ocarinaNoteIndex) {
-    if (!(gSaveContext.eventChkInf[13] & 1)) {
+    if (!Flags_GetEventChkInf(EVENTCHKINF_SONGS_FOR_FROGS_CHOIR)) {
         return gFrogsSongPtr[ocarinaNoteIndex];
     } else {
         return sOcarinaNotes[(s32)Rand_ZeroFloat(60.0f) % 5];
@@ -951,7 +967,8 @@ void EnFr_SetReward(EnFr* this, PlayState* play) {
     if ((songIndex >= FROG_ZL) && (songIndex <= FROG_SOT)) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
-            if (!gSaveContext.n64ddFlag) {
+            GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, (EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) + sSongIndexShift[songIndex]);
+            if (!IS_RANDO) {
                 this->reward = GI_RUPEE_PURPLE;
             } else {
                 this->getItemEntry = Randomizer_GetItemFromKnownCheck(EnFr_RandomizerCheckFromSongIndex(songIndex), GI_RUPEE_PURPLE);
@@ -963,7 +980,8 @@ void EnFr_SetReward(EnFr* this, PlayState* play) {
     } else if (songIndex == FROG_STORMS) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
-            if (!gSaveContext.n64ddFlag) {
+            GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, (EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) + sSongIndexShift[songIndex]);
+            if (!IS_RANDO) {
                 this->reward = GI_HEART_PIECE;
             } else {
                 this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZR_FROGS_IN_THE_RAIN, GI_HEART_PIECE);
@@ -975,7 +993,8 @@ void EnFr_SetReward(EnFr* this, PlayState* play) {
     } else if (songIndex == FROG_CHOIR_SONG) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
-            if (!gSaveContext.n64ddFlag) {
+            GameInteractor_ExecuteOnFlagSet(FLAG_EVENT_CHECK_INF, (EVENTCHKINF_SONGS_FOR_FROGS_INDEX << 4) + sSongIndexShift[songIndex]);
+            if (!IS_RANDO) {
                 this->reward = GI_HEART_PIECE;
             } else {
                 this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_ZR_FROGS_OCARINA_GAME, GI_HEART_PIECE);
@@ -1030,7 +1049,7 @@ void EnFr_Deactivate(EnFr* this, PlayState* play) {
         this->actionFunc = EnFr_Idle;
     } else {
         this->actionFunc = EnFr_GiveReward;
-        if (!gSaveContext.n64ddFlag || this->getItemEntry.getItemId == GI_NONE) {
+        if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
             func_8002F434(&this->actor, play, this->reward, 30.0f, 100.0f);
         } else {
             GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 30.0f, 100.0f);
@@ -1043,7 +1062,7 @@ void EnFr_GiveReward(EnFr* this, PlayState* play) {
         this->actor.parent = NULL;
         this->actionFunc = EnFr_SetIdle;
     } else {
-        if (!gSaveContext.n64ddFlag || this->getItemEntry.getItemId == GI_NONE) {
+        if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
             func_8002F434(&this->actor, play, this->reward, 30.0f, 100.0f);
         } else {
             GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 30.0f, 100.0f);
@@ -1052,7 +1071,7 @@ void EnFr_GiveReward(EnFr* this, PlayState* play) {
 }
 
 void EnFr_SetIdle(EnFr* this, PlayState* play) {
-    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play) || (gSaveContext.n64ddFlag && this->reward == RG_ICE_TRAP)) {
+    if ((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play) || (IS_RANDO && this->reward == RG_ICE_TRAP)) {
         this->actionFunc = EnFr_Idle;
     }
 }
@@ -1111,13 +1130,13 @@ void EnFr_Draw(Actor* thisx, PlayState* play) {
     gDPSetEnvColor(POLY_OPA_DISP++, sEnFrColor[frogIndex].r, sEnFrColor[frogIndex].g, sEnFrColor[frogIndex].b, 255);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeTexIndex]));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeTexIndex]));
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnFr_OverrideLimbDraw, EnFr_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnFr_OverrideLimbDraw, EnFr_PostLimbDraw, this);
     if (this->isButterflyDrawn) {
         Matrix_Translate(this->posButterfly.x, this->posButterfly.y, this->posButterfly.z, MTXMODE_NEW);
         Matrix_Scale(0.015f, 0.015f, 0.015f, MTXMODE_APPLY);
         Matrix_RotateZYX(this->actor.shape.rot.x, this->actor.shape.rot.y, this->actor.shape.rot.z, MTXMODE_APPLY);
-        SkelAnime_DrawOpa(play, this->skelAnimeButterfly.skeleton, this->skelAnimeButterfly.jointTable, NULL, NULL,
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnimeButterfly, NULL,
+                                  NULL,
                           NULL);
     }
     CLOSE_DISPS(play->state.gfxCtx);

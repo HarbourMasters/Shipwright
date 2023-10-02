@@ -1,8 +1,7 @@
 #include "actorViewer.h"
 #include "../../util.h"
 #include "../../UIWidgets.hpp"
-#include <ImGuiImpl.h>
-#include "ResourceMgr.h"
+#include "ResourceManager.h"
 #include "DisplayList.h"
 #include "../../OTRGlobals.h"
 
@@ -10,7 +9,8 @@
 #include <bit>
 #include <map>
 #include <string>
-#include <libultraship/bridge.h>
+#include <libultraship/libultraship.h>
+#include "dlViewer.h"
 
 extern "C" {
 #include <z64.h>
@@ -38,14 +38,9 @@ std::map<int, std::string> cmdMap = {
     { G_ENDDL, "gsSPEndDisplayList" },
 };
 
-void DrawDLViewer(bool& open) {
-    if (!open) {
-        CVarSetInteger("gDLViewerEnabled", 0);
-        return;
-    }
-
+void DLViewerWindow::DrawElement() {
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Display List Viewer", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Display List Viewer", &mIsVisible, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
@@ -64,7 +59,7 @@ void DrawDLViewer(bool& open) {
         ImGui::EndCombo();
     }
     if (activeDisplayList != nullptr) {
-        auto res = std::static_pointer_cast<Ship::DisplayList>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(activeDisplayList));
+        auto res = std::static_pointer_cast<LUS::DisplayList>(LUS::Context::GetInstance()->GetResourceManager()->LoadResource(activeDisplayList));
         for (int i = 0; i < res->Instructions.size(); i++) {
             std::string id = "##CMD" + std::to_string(i);
             Gfx* gfx = (Gfx*)&res->Instructions[i];
@@ -137,8 +132,6 @@ void DrawDLViewer(bool& open) {
     ImGui::End();
 }
 
-void InitDLViewer() {
-    SohImGui::AddWindow("Developer Tools", "Display List Viewer", DrawDLViewer);
-
+void DLViewerWindow::InitElement() {
     displayListsSearchResults = ResourceMgr_ListFiles("*DL", &displayListsSearchResultsCount);
 }

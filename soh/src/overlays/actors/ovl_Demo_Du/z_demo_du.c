@@ -4,7 +4,7 @@
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "vt.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 typedef void (*DemoDuActionFunc)(DemoDu*, PlayState*);
 typedef void (*DemoDuDrawFunc)(Actor*, PlayState*);
@@ -1012,8 +1012,7 @@ void DemoDu_Draw_01(Actor* thisx, PlayState* play2) {
 
     gSPSegment(POLY_OPA_DISP++, 0x0C, &D_80116280[2]);
 
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL, NULL,
-                          this);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, NULL, NULL, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

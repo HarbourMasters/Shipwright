@@ -2,35 +2,33 @@
 #include "soh/resource/type/AudioSample.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> AudioSampleFactory::ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader)
-{
-	auto resource = std::make_shared<AudioSample>();
-	std::shared_ptr<ResourceVersionFactory> factory = nullptr;
+namespace LUS {
+std::shared_ptr<IResource>
+AudioSampleFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+    auto resource = std::make_shared<AudioSample>(initData);
+    std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-	switch (version)
-	{
-	case 2:
-		factory = std::make_shared<AudioSampleFactoryV0>();
-		break;
-	}
+    switch (resource->GetInitData()->ResourceVersion) {
+    case 2:
+	factory = std::make_shared<AudioSampleFactoryV0>();
+	break;
+    }
 
-	if (factory == nullptr)
-	{
-		SPDLOG_ERROR("Failed to load AudioSample with version {}", version);
-		return nullptr;
-	}
+    if (factory == nullptr) {
+        SPDLOG_ERROR("Failed to load AudioSample with version {}", resource->GetInitData()->ResourceVersion);
+	return nullptr;
+    }
 
-	factory->ParseFileBinary(reader, resource);
+    factory->ParseFileBinary(reader, resource);
 
-	return resource;
+    return resource;
 }
 
-void Ship::AudioSampleFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
-                                                 std::shared_ptr<Resource> resource)
+void LUS::AudioSampleFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader,
+                                                 std::shared_ptr<IResource> resource)
 {
-	std::shared_ptr<AudioSample> audioSample = std::static_pointer_cast<AudioSample>(resource);
-	ResourceVersionFactory::ParseFileBinary(reader, audioSample);
+    std::shared_ptr<AudioSample> audioSample = std::static_pointer_cast<AudioSample>(resource);
+    ResourceVersionFactory::ParseFileBinary(reader, audioSample);
 
     audioSample->sample.codec = reader->ReadUByte();
     audioSample->sample.medium = reader->ReadUByte();
@@ -68,7 +66,7 @@ void Ship::AudioSampleFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> r
     audioSample->book.book = audioSample->bookData.data();
     audioSample->sample.book = &audioSample->book;
 }
-} // namespace Ship
+} // namespace LUS
 
 
 /*
@@ -91,7 +89,7 @@ extern "C" SoundFontSample* ReadCustomSample(const char* path) {
 
     ExtensionEntry entry = ExtensionCache[path];
 
-    auto sampleRaw = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(entry.path);
+    auto sampleRaw = LUS::Context::GetInstance()->GetResourceManager()->LoadFile(entry.path);
     uint32_t* strem = (uint32_t*)sampleRaw->Buffer.get();
     uint8_t* strem2 = (uint8_t*)strem;
 

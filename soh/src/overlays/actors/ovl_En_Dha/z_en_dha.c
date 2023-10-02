@@ -8,7 +8,7 @@
 #include "overlays/actors/ovl_En_Dh/z_en_dh.h"
 #include "objects/object_dh/object_dh.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnDha_Init(Actor* thisx, PlayState* play);
 void EnDha_Destroy(Actor* thisx, PlayState* play);
@@ -167,7 +167,7 @@ void EnDha_Init(Actor* thisx, PlayState* play) {
     this->limbAngleX[0] = -0x4000;
     Collider_InitJntSph(play, &this->collider);
     Collider_SetJntSph(play, &this->collider, &this->actor, &sJntSphInit, this->colliderItem);
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
 
     EnDha_SetupWait(this);
 }
@@ -177,6 +177,8 @@ void EnDha_Destroy(Actor* thisx, PlayState* play) {
     EnDha* this = (EnDha*)thisx;
 
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDha_SetupWait(EnDha* this) {
@@ -461,6 +463,5 @@ void EnDha_Draw(Actor* thisx, PlayState* play) {
     EnDha* this = (EnDha*)thisx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnDha_OverrideLimbDraw, EnDha_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnDha_OverrideLimbDraw, EnDha_PostLimbDraw, this);
 }

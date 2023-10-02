@@ -10,7 +10,7 @@
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnDntJiji_Init(Actor* thisx, PlayState* play);
 void EnDntJiji_Destroy(Actor* thisx, PlayState* play);
@@ -84,7 +84,7 @@ void EnDntJiji_Init(Actor* thisx, PlayState* play) {
     osSyncPrintf("\n\n");
     // "Deku Scrub mask show elder"
     osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ デグナッツお面品評会長老 ☆☆☆☆☆ %x\n" VT_RST, this->stage);
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actor.colChkInfo.mass = 0xFF;
     this->actor.targetMode = 6;
     this->actionFunc = EnDntJiji_SetFlower;
@@ -96,6 +96,8 @@ void EnDntJiji_Destroy(Actor* thisx, PlayState* play) {
     EnDntJiji* this = (EnDntJiji*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDntJiji_SetFlower(EnDntJiji* this, PlayState* play) {
@@ -223,7 +225,7 @@ void EnDntJiji_SetupCower(EnDntJiji* this, PlayState* play) {
     } else {
         this->getItemId = GI_NUT_UPGRADE_40;
     }
-    this->actor.flags |= ACTOR_FLAG_0;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     this->actor.textId = 0x10DB;
     this->unused = 5;
     this->actionFunc = EnDntJiji_Cower;
@@ -284,7 +286,7 @@ void EnDntJiji_GivePrize(EnDntJiji* this, PlayState* play) {
             osSyncPrintf("実 \n");
             osSyncPrintf("実 \n");
             osSyncPrintf("実 \n");
-            gSaveContext.itemGetInf[1] |= 0x8000;
+            Flags_SetItemGetInf(ITEMGETINF_OBTAINED_NUT_UPGRADE_FROM_STAGE);
         } else {
             // "stick"
             osSyncPrintf("棒 \n");
@@ -293,7 +295,7 @@ void EnDntJiji_GivePrize(EnDntJiji* this, PlayState* play) {
             osSyncPrintf("棒 \n");
             osSyncPrintf("棒 \n");
             osSyncPrintf("棒 \n");
-            gSaveContext.itemGetInf[1] |= 0x4000;
+            Flags_SetItemGetInf(ITEMGETINF_OBTAINED_STICK_UPGRADE_FROM_STAGE);
         }
         this->actor.textId = 0;
         if ((this->stage != NULL) && (this->stage->actor.update != NULL)) {
@@ -304,7 +306,7 @@ void EnDntJiji_GivePrize(EnDntJiji* this, PlayState* play) {
                 this->stage->leaderSignal = DNT_SIGNAL_RETURN;
             }
         }
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
         if (!this->unburrow) {
             this->actionFunc = EnDntJiji_SetupHide;
         } else {
@@ -435,7 +437,7 @@ void EnDntJiji_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     Matrix_Push();
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(blinkTex[this->eyeState]));
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, this);
     Matrix_Pop();
     Matrix_Translate(this->flowerPos.x, this->flowerPos.y, this->flowerPos.z, MTXMODE_NEW);
     Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);

@@ -1,49 +1,49 @@
 <Root>
     <File Name="ovl_Boss_Ganon2" BaseAddress="0x808F1DB0" RangeStart="0x9F88" RangeEnd="0x10778">
-        <Texture Name="ovl_Boss_Ganon2_Tex_00A2C8" OutName="tex_0000A2C8" Format="i8" Width="64" Height="64" Offset="0x009F88"/>
+        <Texture Name="gGanonLightOrbTex" OutName="tex_0000A2C8" Format="i8" Width="64" Height="64" Offset="0x009F88"/>
         <Array Name="ovl_Boss_Ganon2_Vtx_00B2C8" Count="4" Offset="0x00AF88">
             <Vtx/>
         </Array>
-        <DList Name="ovl_Boss_Ganon2_DL_00B308" Offset="0x00AFC8"/>
-        <DList Name="ovl_Boss_Ganon2_DL_00B378" Offset="0x00B038"/>
+        <DList Name="gGanonLightOrbMaterialDL" Offset="0x00AFC8"/>
+        <DList Name="gGanonLightOrbModelDL" Offset="0x00B038"/>
         <Array Name="ovl_Boss_Ganon2_Vtx_00B390" Count="4" Offset="0x00B050">
             <Vtx/>
         </Array>
-        <DList Name="ovl_Boss_Ganon2_DL_00B3D0" Offset="0x00B090"/>
-        <DList Name="ovl_Boss_Ganon2_DL_00B3F0" Offset="0x00B0B0"/>
-        <Texture Name="ovl_Boss_Ganon2_Tex_00B420" OutName="tex_0000B420" Format="i8" Width="32" Height="32" Offset="0x00B0E0"/>
-        <Texture Name="ovl_Boss_Ganon2_Tex_00B820" OutName="tex_0000B820" Format="i4" Width="32" Height="32" Offset="0x00B4E0"/>
-        <Array Name="ovl_Boss_Ganon2_Vtx_00BA20" Count="22" Offset="0x00B6E0">
+        <DList Name="gGanonShadowMaterialDL" Offset="0x00B090"/>
+        <DList Name="gGanonShadowModelDL" Offset="0x00B0B0"/>
+        <Texture Name="gGanonSwordTrailTex" OutName="tex_0000B420" Format="i8" Width="32" Height="32" Offset="0x00B0E0"/>
+        <Texture Name="gGanonSwordTrailMaskTex" OutName="tex_0000B820" Format="i4" Width="32" Height="32" Offset="0x00B4E0"/>
+        <Array Name="gGanonSwordTrailVtx" Count="22" Offset="0x00B6E0">
             <Vtx/>
         </Array>
-        <DList Name="ovl_Boss_Ganon2_DL_00BB80" Offset="0x00B840"/>
-        <Texture Name="ovl_Boss_Ganon2_Tex_00BC98" OutName="tex_0000BC98" Format="i8" Width="64" Height="64" Offset="0x00B958"/>
+        <DList Name="gGanonSwordTrailDL" Offset="0x00B840"/>
+        <Texture Name="gGanonTriforceTex" OutName="tex_0000BC98" Format="i8" Width="64" Height="64" Offset="0x00B958"/>
         <Array Name="ovl_Boss_Ganon2_Vtx_00CC98" Count="4" Offset="0x00C958">
             <Vtx/>
         </Array>
-        <DList Name="ovl_Boss_Ganon2_DL_00CCD8" Offset="0x00C998"/>
-        <Texture Name="ovl_Boss_Ganon2_Tex_00CD58" OutName="tex_0000CD58" Format="i4" Width="32" Height="160" Offset="0x00CA18"/>
+        <DList Name="gGanonTriforceDL" Offset="0x00C998"/>
+        <Texture Name="gGanonLightningTex" OutName="tex_0000CD58" Format="i4" Width="32" Height="160" Offset="0x00CA18"/>
         <Array Name="ovl_Boss_Ganon2_Vtx_00D758" Count="4" Offset="0x00D418">
             <Vtx/>
         </Array>
-        <DList Name="ovl_Boss_Ganon2_DL_00D798" Offset="0x00D458"/>
-        <Texture Name="ovl_Boss_Ganon2_Tex_00D820" OutName="tex_0000D820" Format="i8" Width="32" Height="64" Offset="0x00D4E0"/>
+        <DList Name="gGanonLightningDL" Offset="0x00D458"/>
+        <Texture Name="gGanonFireRingTex" OutName="tex_0000D820" Format="i8" Width="32" Height="64" Offset="0x00D4E0"/>
         <Array Name="ovl_Boss_Ganon2_Vtx_00E020" Count="26" Offset="0x00DCE0">
             <Vtx/>
         </Array>
-        <DList Name="ovl_Boss_Ganon2_DL_00E1C0" Offset="0x00DE80"/>
-        <Texture Name="ovl_Boss_Ganon2_Tex_00E2E0" OutName="tex_0000E2E0" Format="i8" Width="32" Height="64" Offset="0x00DFA0"/>
+        <DList Name="gGanonFireRingDL" Offset="0x00DE80"/>
+        <Texture Name="gGanonZeldaMagicTex" OutName="tex_0000E2E0" Format="i8" Width="32" Height="64" Offset="0x00DFA0"/>
         <Array Name="ovl_Boss_Ganon2_Vtx_00EAE0" Count="22" Offset="0x00E7A0">
             <Vtx/>
         </Array>
-        <DList Name="ovl_Boss_Ganon2_DL_00EC40" Offset="0x00E900"/>
-        <Texture Name="ovl_Boss_Ganon2_Tex_00ED48" OutName="tex_0000ED48" Format="i8" Width="32" Height="32" Offset="0x00EA08"/>
+        <DList Name="gGanonZeldaMagicDL" Offset="0x00E900"/>
+        <Texture Name="gGanonMasterSwordShadowTex" OutName="tex_0000ED48" Format="i8" Width="32" Height="32" Offset="0x00EA08"/>
         <Array Name="ovl_Boss_Ganon2_Vtx_00F148" Count="4" Offset="0x00EE08">
             <Vtx/>
         </Array>
-        <DList Name="ovl_Boss_Ganon2_DL_00F188" Offset="0x00EE48"/>
-        <Texture Name="ovl_Boss_Ganon2_Tex_00F208" OutName="tex_0000F208" Format="rgba16" Width="16" Height="16" Offset="0x00EEC8"/>
-        <Texture Name="ovl_Boss_Ganon2_Tex_00F408" OutName="tex_0000F408" Format="rgba16" Width="32" Height="32" Offset="0x00F0C8"/>
+        <DList Name="gGanonMasterSwordShadowDL" Offset="0x00EE48"/>
+        <Texture Name="gGanonMasterSwordPommelTex" OutName="tex_0000F208" Format="rgba16" Width="16" Height="16" Offset="0x00EEC8"/>
+        <Texture Name="gGanonMasterSwordGuardTex" OutName="tex_0000F408" Format="rgba16" Width="32" Height="32" Offset="0x00F0C8"/>
         <Array Name="ovl_Boss_Ganon2_Vtx_00FC08" Count="3" Offset="0x00F8C8">
             <Vtx/>
         </Array>
@@ -71,6 +71,6 @@
         <Array Name="ovl_Boss_Ganon2_Vtx_010298" Count="17" Offset="0xFF58">
             <Vtx/>
         </Array>
-        <DList Name="ovl_Boss_Ganon2_DL_0103A8" Offset="0x010168"/>
+        <DList Name="gGanonMasterSwordDL" Offset="0x010168"/>
     </File>
 </Root>

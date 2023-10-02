@@ -90,6 +90,8 @@ void EnHeishi3_Destroy(Actor* thisx, PlayState* play) {
     EnHeishi3* this = (EnHeishi3*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnHeishi3_SetupGuardType(EnHeishi3* this, PlayState* play) {
@@ -203,7 +205,7 @@ void func_80A55D00(EnHeishi3* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play) &&
         (this->respawnFlag == 0)) {
-        gSaveContext.eventChkInf[4] |= 0x4000;
+        Flags_SetEventChkInf(EVENTCHKINF_CAUGHT_BY_CASTLE_GUARDS);
         play->nextEntranceIndex = 0x47E; // Hyrule Castle from Guard Capture (outside)
         play->sceneLoadFlag = 0x14;
         this->respawnFlag = 1;
@@ -249,6 +251,7 @@ void EnHeishi3_Draw(Actor* thisx, PlayState* play) {
     EnHeishi3* this = (EnHeishi3*)thisx;
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnHeishi3_OverrideLimbDraw, NULL,
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnHeishi3_OverrideLimbDraw,
+                              NULL,
                       this);
 }

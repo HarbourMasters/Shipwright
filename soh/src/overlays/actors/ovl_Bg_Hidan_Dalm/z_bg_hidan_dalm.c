@@ -139,13 +139,13 @@ void BgHidanDalm_Wait(BgHidanDalm* this, PlayState* play) {
         this->dyna.actor.world.pos.z += 32.5f * Math_CosS(this->dyna.actor.world.rot.y);
 
         func_8002DF54(play, &this->dyna.actor, 8);
-        this->dyna.actor.flags |= ACTOR_FLAG_4;
+        this->dyna.actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
         this->actionFunc = BgHidanDalm_Shrink;
         this->dyna.actor.bgCheckFlags &= ~2;
         this->dyna.actor.bgCheckFlags &= ~8;
         this->dyna.actor.speedXZ = 10.0f;
         Flags_SetSwitch(play, this->switchFlag);
-        func_8002F7DC(&GET_PLAYER(play)->actor, NA_SE_IT_HAMMER_HIT);
+        Player_PlaySfx(&GET_PLAYER(play)->actor, NA_SE_IT_HAMMER_HIT);
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_DARUMA_VANISH);
     } else {
         CollisionCheck_SetAC(play, &play->colChkCtx, &this->collider.base);

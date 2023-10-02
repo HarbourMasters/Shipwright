@@ -7,7 +7,7 @@
 #include "z_en_mu.h"
 #include "objects/object_mu/object_mu.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnMu_Init(Actor* thisx, PlayState* play);
 void EnMu_Destroy(Actor* thisx, PlayState* play);
@@ -216,7 +216,6 @@ void EnMu_Draw(Actor* thisx, PlayState* play) {
                                             colors[this->actor.params][i].g, colors[this->actor.params][i].b,
                                             colors[this->actor.params][i].a));
     }
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnMu_OverrideLimbDraw, EnMu_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnMu_OverrideLimbDraw, EnMu_PostLimbDraw, this);
     CLOSE_DISPS(play->state.gfxCtx);
 }

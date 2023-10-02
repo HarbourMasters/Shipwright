@@ -6,7 +6,7 @@
 
 #include "z_magic_wind.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_25)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void MagicWind_Init(Actor* thisx, PlayState* play);
 void MagicWind_Destroy(Actor* thisx, PlayState* play);
@@ -62,7 +62,7 @@ void MagicWind_Init(Actor* thisx, PlayState* play) {
             MagicWind_SetupAction(this, MagicWind_Shrink);
             // "Means start"
             LOG_STRING("表示開始");
-            func_8002F7DC(&player->actor, NA_SE_PL_MAGIC_WIND_WARP);
+            Player_PlaySfx(&player->actor, NA_SE_PL_MAGIC_WIND_WARP);
             break;
     }
 }
@@ -95,7 +95,7 @@ void MagicWind_WaitForTimer(MagicWind* this, PlayState* play) {
 
     // "Means start"
     LOG_STRING("表示開始");
-    func_8002F7DC(&player->actor, NA_SE_PL_MAGIC_WIND_NORMAL);
+    Player_PlaySfx(&player->actor, NA_SE_PL_MAGIC_WIND_NORMAL);
     MagicWind_UpdateAlpha(1.0f);
     MagicWind_SetupAction(this, MagicWind_Grow);
     SkelCurve_Update(play, &this->skelCurve);

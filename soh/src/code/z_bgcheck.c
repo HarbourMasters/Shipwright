@@ -2,6 +2,7 @@
 #include "vt.h"
 
 #include <soh/OTRGlobals.h>
+#include <assert.h>
 
 #define SS_NULL 0xFFFF
 
@@ -87,7 +88,7 @@ void SSNodeList_SetSSListHead(SSNodeList* nodeList, SSList* ssList, s16* polyId)
 void DynaSSNodeList_SetSSListHead(DynaSSNodeList* nodeList, SSList* ssList, s16* polyId) {
     u16 newNodeId = DynaSSNodeList_GetNextNodeIdx(nodeList);
 
-    ASSERT(newNodeId != SS_NULL);
+    assert(newNodeId != SS_NULL);
     SSNode_SetValue(&nodeList->tbl[newNodeId], polyId, ssList->head);
     ssList->head = newNodeId;
 }
@@ -106,7 +107,7 @@ void DynaSSNodeList_Initialize(PlayState* play, DynaSSNodeList* nodeList) {
 void DynaSSNodeList_Alloc(PlayState* play, DynaSSNodeList* nodeList, s32 max) {
     nodeList->tbl = THA_AllocEndAlign(&play->state.tha, max * sizeof(SSNode), -2);
 
-    ASSERT(nodeList->tbl != NULL);
+    assert(nodeList->tbl != NULL);
 
     nodeList->max = max;
     nodeList->count = 0;
@@ -709,7 +710,7 @@ s32 BgCheck_SphVsStaticWall(StaticLookup* lookup, CollisionContext* colCtx, u16 
             }
         }
 
-        ASSERT(!IS_ZERO(normalXZ));
+        assert(!IS_ZERO(normalXZ));
 
         invNormalXZ = 1.0f / normalXZ;
         temp_f16 = fabsf(nz) * invNormalXZ;
@@ -790,7 +791,7 @@ s32 BgCheck_SphVsStaticWall(StaticLookup* lookup, CollisionContext* colCtx, u16 
             }
         }
 
-        ASSERT(!IS_ZERO(normalXZ));
+        assert(!IS_ZERO(normalXZ));
 
         invNormalXZ = 1.0f / normalXZ;
         temp_f16 = fabsf(nx) * invNormalXZ;
@@ -1440,9 +1441,11 @@ u32 BgCheck_InitializeStaticLookup(CollisionContext* colCtx, PlayState* play, St
  */
 s32 BgCheck_IsSpotScene(PlayState* play) {
     static s16 spotScenes[] = {
-        SCENE_SPOT00, SCENE_SPOT01, SCENE_SPOT02, SCENE_SPOT03, SCENE_SPOT04, SCENE_SPOT05, SCENE_SPOT06,
-        SCENE_SPOT07, SCENE_SPOT08, SCENE_SPOT09, SCENE_SPOT10, SCENE_SPOT11, SCENE_SPOT12, SCENE_SPOT13,
-        SCENE_SPOT15, SCENE_SPOT16, SCENE_SPOT17, SCENE_SPOT18, SCENE_SPOT20,
+        SCENE_HYRULE_FIELD,          SCENE_KAKARIKO_VILLAGE,     SCENE_GRAVEYARD,     SCENE_ZORAS_RIVER,
+        SCENE_KOKIRI_FOREST,         SCENE_SACRED_FOREST_MEADOW, SCENE_LAKE_HYLIA,    SCENE_ZORAS_DOMAIN,
+        SCENE_ZORAS_FOUNTAIN,        SCENE_GERUDO_VALLEY,        SCENE_LOST_WOODS,    SCENE_DESERT_COLOSSUS,
+        SCENE_GERUDOS_FORTRESS,      SCENE_HAUNTED_WASTELAND,    SCENE_HYRULE_CASTLE, SCENE_DEATH_MOUNTAIN_TRAIL,
+        SCENE_DEATH_MOUNTAIN_CRATER, SCENE_GORON_CITY,           SCENE_LON_LON_RANCH,
     };
     s16* i;
 
@@ -1464,9 +1467,10 @@ typedef struct {
  */
 s32 BgCheck_TryGetCustomMemsize(s32 sceneId, u32* memSize) {
     static BgCheckSceneMemEntry sceneMemList[] = {
-        { SCENE_SPOT00, 0xB798 },     { SCENE_GANON_FINAL, 0x78C8 }, { SCENE_GANON_DEMO, 0x70C8 },
-        { SCENE_JYASINBOSS, 0xACC8 }, { SCENE_KENJYANOMA, 0x70C8 },  { SCENE_JYASINZOU, 0x16CC8 },
-        { SCENE_HIDAN, 0x198C8 },     { SCENE_GANON_BOSS, 0x84C8 },
+        { SCENE_HYRULE_FIELD, 0xB798 },         { SCENE_GANONS_TOWER_COLLAPSE_EXTERIOR, 0x78C8 },
+        { SCENE_GANON_BOSS, 0x70C8 },           { SCENE_SPIRIT_TEMPLE_BOSS, 0xACC8 },
+        { SCENE_CHAMBER_OF_THE_SAGES, 0x70C8 }, { SCENE_SPIRIT_TEMPLE, 0x16CC8 },
+        { SCENE_FIRE_TEMPLE, 0x198C8 },         { SCENE_GANONDORF_BOSS, 0x84C8 },
     };
     s32 i;
 
@@ -1503,8 +1507,8 @@ typedef struct {
  */
 void BgCheck_Allocate(CollisionContext* colCtx, PlayState* play, CollisionHeader* colHeader) {
     static BgCheckSceneSubdivisionEntry sceneSubdivisionList[] = {
-        { SCENE_HAKADAN, { 23, 7, 14 }, -1 },
-        { SCENE_BMORI1, { 38, 1, 38 }, -1 },
+        { SCENE_SHADOW_TEMPLE, { 23, 7, 14 }, -1 },
+        { SCENE_FOREST_TEMPLE, { 38, 1, 38 }, -1 },
     };
     u32 tblMax;
     u32 memSize;
@@ -1522,7 +1526,7 @@ void BgCheck_Allocate(CollisionContext* colCtx, PlayState* play, CollisionHeader
     osSyncPrintf("/*---------------- BGCheck バッファーメモリサイズ -------------*/\n");
 
     if (YREG(15) == 0x10 || YREG(15) == 0x20 || YREG(15) == 0x30 || YREG(15) == 0x40) {
-        if (play->sceneNum == SCENE_MALON_STABLE) {
+        if (play->sceneNum == SCENE_STABLE) {
             // "/* BGCheck LonLon Size %dbyte */\n"
             osSyncPrintf("/* BGCheck LonLonサイズ %dbyte */\n", 0x3520);
             colCtx->memSize = 0x3520;
@@ -2446,11 +2450,11 @@ void SSNodeList_Alloc(PlayState* play, SSNodeList* this, s32 tblMax, s32 numPoly
     this->count = 0;
     this->tbl = THA_AllocEndAlign(&play->state.tha, tblMax * sizeof(SSNode), -2);
 
-    ASSERT(this->tbl != NULL);
+    assert(this->tbl != NULL);
 
     this->polyCheckTbl = GAMESTATE_ALLOC_MC(&play->state, numPolys);
 
-    ASSERT(this->polyCheckTbl != NULL);
+    assert(this->polyCheckTbl != NULL);
 }
 
 /**
@@ -2460,7 +2464,7 @@ SSNode* SSNodeList_GetNextNode(SSNodeList* this) {
     SSNode* result = &this->tbl[this->count];
 
     this->count++;
-    ASSERT(this->count < this->max);
+    assert(this->count < this->max);
     if (!(this->count < this->max)) {
         return NULL;
     }
@@ -2473,7 +2477,7 @@ SSNode* SSNodeList_GetNextNode(SSNodeList* this) {
 u16 SSNodeList_GetNextNodeIdx(SSNodeList* this) {
     u16 new_index = this->count++;
 
-    ASSERT(new_index < this->max);
+    assert(new_index < this->max);
     return new_index;
 }
 
@@ -2579,7 +2583,7 @@ void DynaPoly_NullPolyList(CollisionPoly** polyList) {
  */
 void DynaPoly_AllocPolyList(PlayState* play, CollisionPoly** polyList, s32 numPolys) {
     *polyList = THA_AllocEndAlign(&play->state.tha, numPolys * sizeof(CollisionPoly), -2);
-    ASSERT(*polyList != NULL);
+    assert(*polyList != NULL);
 }
 
 /**
@@ -2594,7 +2598,7 @@ void DynaPoly_NullVtxList(Vec3s** vtxList) {
  */
 void DynaPoly_AllocVtxList(PlayState* play, Vec3s** vtxList, s32 numVtx) {
     *vtxList = THA_AllocEndAlign(&play->state.tha, numVtx * sizeof(Vec3s), -2);
-    ASSERT(*vtxList != NULL);
+    assert(*vtxList != NULL);
 }
 
 /**
@@ -2811,8 +2815,8 @@ void DynaPoly_ExpandSRT(PlayState* play, DynaCollisionContext* dyna, s32 bgId, s
                      *vtxStartIndex + pbgdata->numVertices, dyna->vtxListMax);
     }
 
-    ASSERT(dyna->polyListMax >= *polyStartIndex + pbgdata->numPolygons);
-    ASSERT(dyna->vtxListMax >= *vtxStartIndex + pbgdata->numVertices);
+    assert(dyna->polyListMax >= *polyStartIndex + pbgdata->numPolygons);
+    assert(dyna->vtxListMax >= *vtxStartIndex + pbgdata->numVertices);
 
     if (!(dyna->bitFlag & DYNAPOLY_INVALIDATE_LOOKUP) &&
         (BgActor_IsTransformUnchanged(&dyna->bgActors[bgId]) == true)) {
@@ -3245,7 +3249,7 @@ s32 BgCheck_SphVsDynaWallInBgActor(CollisionContext* colCtx, u16 xpFlags, DynaCo
         poly = &dyna->polyList[polyId];
         CollisionPoly_GetNormalF(poly, &nx, &ny, &nz);
         normalXZ = sqrtf(SQ(nx) + SQ(nz));
-        ASSERT(!IS_ZERO(normalXZ));
+        assert(!IS_ZERO(normalXZ));
 
         planeDist = Math3D_DistPlaneToPos(nx, ny, nz, poly->dist, &resultPos);
         if (radius < fabsf(planeDist) || COLPOLY_VIA_FLAG_TEST(poly->flags_vIA, xpFlags)) {
@@ -3318,7 +3322,7 @@ s32 BgCheck_SphVsDynaWallInBgActor(CollisionContext* colCtx, u16 xpFlags, DynaCo
         poly = &dyna->polyList[polyId];
         CollisionPoly_GetNormalF(poly, &nx, &ny, &nz);
         normalXZ = sqrtf(SQ(nx) + SQ(nz));
-        ASSERT(!IS_ZERO(normalXZ));
+        assert(!IS_ZERO(normalXZ));
 
         planeDist = Math3D_DistPlaneToPos(nx, ny, nz, poly->dist, &resultPos);
         if (radius < fabsf(planeDist) || COLPOLY_VIA_FLAG_TEST(poly->flags_vIA, xpFlags)) {
@@ -4207,7 +4211,7 @@ f32 zdWaterBoxMaxZ = -967.0f;
  */
 s32 WaterBox_GetSurface1(PlayState* play, CollisionContext* colCtx, f32 x, f32 z, f32* ySurface,
                          WaterBox** outWaterBox) {
-    if (play->sceneNum == SCENE_SPOT07) {
+    if (play->sceneNum == SCENE_ZORAS_DOMAIN) {
         if (zdWaterBoxMinX < x && x < zdWaterBoxMaxX && zdWaterBoxMinY < *ySurface && *ySurface < zdWaterBoxMaxY &&
             zdWaterBoxMinZ < z && z < zdWaterBoxMaxZ) {
             *outWaterBox = &zdWaterBox;

@@ -6,7 +6,7 @@
 #include "soh/resource/type/AudioSample.h"
 #include <libultraship/libultra/types.h>
 
-namespace Ship {
+namespace LUS {
 
 typedef struct {
     /* 0x0 */ s16 delay;
@@ -52,9 +52,13 @@ typedef struct {
     s32 fntIndex;
 } SoundFont; // size = 0x14
 
-class AudioSoundFont : public Resource {
+class AudioSoundFont : public Resource<SoundFont> {
 public:
-    void* GetPointer();
+    using Resource::Resource;
+
+    AudioSoundFont() : Resource(std::shared_ptr<ResourceInitData>()) {}
+
+    SoundFont* GetPointer();
     size_t GetPointerSize();
 
     int8_t medium;
@@ -77,4 +81,4 @@ public:
 
     SoundFont soundFont;
 };
-}; // namespace Ship
+}; // namespace LUS

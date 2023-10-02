@@ -7,6 +7,9 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "textures/message_static/message_static.h"
 #include "textures/message_texture_static/message_texture_static.h"
+#include "soh/Enhancements/cosmetics/cosmeticsTypes.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
+#include "soh/OTRGlobals.h"
 
 s16 sTextFade = false; // original name: key_off_flag ?
 
@@ -32,10 +35,10 @@ s16 sMessageHasSetSfx = false;
 
 u16 sOcarinaSongBitFlags = 0; // ocarina bit flags
 
-MessageTableEntry* sNesMessageEntryTablePtr;
-MessageTableEntry* sGerMessageEntryTablePtr;
-MessageTableEntry* sFraMessageEntryTablePtr;
-MessageTableEntry* sStaffMessageEntryTablePtr;
+MessageTableEntry* sNesMessageEntryTablePtr = NULL;
+MessageTableEntry* sGerMessageEntryTablePtr = NULL;
+MessageTableEntry* sFraMessageEntryTablePtr = NULL;
+MessageTableEntry* sStaffMessageEntryTablePtr = NULL;
 
 char* _message_0xFFFC_nes;
 
@@ -97,7 +100,7 @@ void Message_ResetOcarinaNoteState(void) {
     sOcarinaNoteCBtnEnv = (Color_RGB8){ 10, 10, 10 };
     if (CVarGetInteger("gCosmetics.Hud_AButton.Changed", 0)) {
         sOcarinaNoteABtnPrim = CVarGetColor24("gCosmetics.Hud_AButton.Value", sOcarinaNoteABtnPrim);
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         sOcarinaNoteABtnPrim = (Color_RGB8){ 80, 255, 150 };
     }
     if (CVarGetInteger("gCosmetics.Hud_CButtons.Changed", 0)) {
@@ -465,7 +468,7 @@ void Message_DrawTextboxIcon(PlayState* play, Gfx** p, s16 x, s16 y) {
         sIconPrimColors[0].b = (color.b / 255) * 95;
         sIconPrimColors[1] = color;
         sIconEnvColors[1] = color;
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         sIconPrimColors[0] = (Color_RGB8){ 0, 200, 80 };
         sIconPrimColors[1] = (Color_RGB8){ 50, 255, 130 }; 
         sIconEnvColors[1] = (Color_RGB8){ 50, 255, 130 }; 
@@ -562,7 +565,6 @@ void Message_DrawTextboxIcon(PlayState* play, Gfx** p, s16 x, s16 y) {
     *p = gfx;
 }
 
-#define MESSAGE_SPACE_WIDTH 6
 f32 sFontWidths[144] = {
     8.0f,  // ' '
     8.0f,  // '!'
@@ -709,6 +711,10 @@ f32 sFontWidths[144] = {
     14.0f, // ?
     14.0f, // ?
 };
+
+f32 Message_GetCharacterWidth(unsigned char characterIndex) {
+    return sFontWidths[characterIndex] * (R_TEXT_CHAR_SCALE / 100.0f);
+}
 
 u16 Message_DrawItemIcon(PlayState* play, u16 itemId, Gfx** p, u16 i) {
     s32 pad;
@@ -865,7 +871,7 @@ void Message_DrawText(PlayState* play, Gfx** gfxP) {
                 Message_SetTextColor(msgCtx, msgCtx->msgBufDecoded[++i] & 0xF);
                 break;
             case ' ':
-                msgCtx->textPosX += MESSAGE_SPACE_WIDTH;
+                msgCtx->textPosX += CVarGetInteger("gTextSpacing", 6);
                 break;
             case MESSAGE_BOX_BREAK:
                 if (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING) {
@@ -1131,7 +1137,7 @@ void Message_LoadItemIcon(PlayState* play, u16 itemId, s16 y) {
         R_TEXTBOX_ICON_YPOS = y + 6;
         R_TEXTBOX_ICON_SIZE = 32;
         memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE,
-               GetResourceDataByName(gItemIcons[itemId], false), GetResourceTexSizeByName(gItemIcons[itemId], false));
+               gItemIcons[itemId], strlen(gItemIcons[itemId]) + 1);
         // "Item 32-0"
         osSyncPrintf("アイテム32-0\n");
     } else {
@@ -1139,7 +1145,7 @@ void Message_LoadItemIcon(PlayState* play, u16 itemId, s16 y) {
         R_TEXTBOX_ICON_YPOS = y + 10;
         R_TEXTBOX_ICON_SIZE = 24;
         memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE,
-               GetResourceDataByName(gItemIcons[itemId], false), GetResourceTexSizeByName(gItemIcons[itemId], false));
+               gItemIcons[itemId], strlen(gItemIcons[itemId]) + 1);
         // "Item 24"
         osSyncPrintf("アイテム24＝%d (%d) {%d}\n", itemId, itemId - ITEM_KOKIRI_EMERALD, 84);
     }
@@ -1525,10 +1531,8 @@ void Message_Decode(PlayState* play) {
             msgCtx->textboxBackgroundYOffsetIdx = (font->msgBuf[msgCtx->msgBufPos + 3] & 0xF0) >> 4;
             msgCtx->textboxBackgroundUnkArg = font->msgBuf[msgCtx->msgBufPos + 3] & 0xF;
 
-            memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE,
-                   GetResourceDataByName(gRedMessageXLeftTex, false), GetResourceTexSizeByName(gRedMessageXLeftTex, false));
-            memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE + 0x900,
-                   GetResourceDataByName(gRedMessageXRightTex, false), GetResourceTexSizeByName(gRedMessageXRightTex, false));
+            memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, gRedMessageXLeftTex, strlen(gRedMessageXLeftTex) + 1);
+            memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE + 0x900, gRedMessageXRightTex, strlen(gRedMessageXRightTex) + 1);
 
             msgCtx->msgBufPos += 3;
             R_TEXTBOX_BG_YPOS = R_TEXTBOX_Y + 8;
@@ -1572,6 +1576,7 @@ void Message_Decode(PlayState* play) {
 extern const char* msgStaticTbl[];
 
 void Message_OpenText(PlayState* play, u16 textId) {
+    lusprintf(__FILE__, __LINE__, 2, "Display Text - textId: %#x", textId);
     static s16 messageStaticIndices[] = { 0, 1, 3, 2 };
     MessageContext* msgCtx = &play->msgCtx;
     Font* font = &msgCtx->font;
@@ -1612,9 +1617,9 @@ void Message_OpenText(PlayState* play, u16 textId) {
         // Increments text id based on piece of heart count, assumes the piece of heart text is all
         // in order and that you don't have more than the intended amount of heart pieces.
         textId += (gSaveContext.inventory.questItems & 0xF0000000 & 0xF0000000) >> 0x1C;
-    } else if (!gSaveContext.n64ddFlag && (msgCtx->textId == 0xC && CHECK_OWNED_EQUIP(EQUIP_SWORD, 2))) {
+    } else if (!IS_RANDO && (msgCtx->textId == 0xC && CHECK_OWNED_EQUIP(EQUIP_SWORD, 2))) {
         textId = 0xB; // Traded Giant's Knife for Biggoron Sword
-    } else if (!gSaveContext.n64ddFlag && (msgCtx->textId == 0xB4 && (gSaveContext.eventChkInf[9] & 0x40))) {
+    } else if (!IS_RANDO && (msgCtx->textId == 0xB4 && (Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_CURSED_MAN_IN_SKULL_HOUSE)))) {
         textId = 0xB5; // Destroyed Gold Skulltula
     }
     // Ocarina Staff + Dialog
@@ -1674,7 +1679,7 @@ void Message_OpenText(PlayState* play, u16 textId) {
     osSyncPrintf("吹き出し種類＝%d\n", msgCtx->textBoxType);
     if (textBoxType < TEXTBOX_TYPE_NONE_BOTTOM) {
         const char* textureName = msgStaticTbl[messageStaticIndices[textBoxType]];
-        memcpy(msgCtx->textboxSegment, GetResourceDataByName(textureName, false), MESSAGE_STATIC_TEX_SIZE);
+        memcpy(msgCtx->textboxSegment, textureName, strlen(textureName) + 1);
         if (textBoxType == TEXTBOX_TYPE_BLACK) {
             msgCtx->textboxColorRed = 0;
             msgCtx->textboxColorGreen = 0;
@@ -1999,7 +2004,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
     };
     static s16 sOcarinaEffectActorParams[] = { 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 0x0000 };
     static void* sOcarinaNoteTextures[] = {
-        gOcarinaATex, gOcarinaCDownTex, gOcarinaCRightTex, gOcarinaCLeftTex, gOcarinaCUpTex,
+        gOcarinaBtnIconATex, gOcarinaBtnIconCDownTex, gOcarinaBtnIconCRightTex, gOcarinaBtnIconCLeftTex, gOcarinaBtnIconCUpTex,
     };
     static Color_RGB8 sOcarinaNoteAPrimColors[2] = {
         { 80, 150, 255 },
@@ -2016,7 +2021,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
         sOcarinaNoteAPrimColors[0].b = (color.b / 255) * 95;
         sOcarinaNoteAPrimColors[1] = color;
         sOcarinaNoteAEnvColors[1] = color;
-    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", 0)) {
+    } else if (CVarGetInteger("gCosmetics.DefaultColorScheme", COLORSCHEME_N64) == COLORSCHEME_GAMECUBE) {
         sOcarinaNoteAPrimColors[0] = (Color_RGB8){ 80, 255, 150 };
         sOcarinaNoteAPrimColors[1] = (Color_RGB8){ 100, 255, 200 };
         sOcarinaNoteAEnvColors[1] = (Color_RGB8){ 50, 255, 50 };
@@ -2512,7 +2517,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     if (msgCtx->lastPlayedSong < OCARINA_SONG_SARIAS &&
                         (msgCtx->ocarinaAction < OCARINA_ACTION_PLAYBACK_MINUET ||
                          msgCtx->ocarinaAction >= OCARINA_ACTION_PLAYBACK_SARIA)) {
-                        if (msgCtx->disableWarpSongs || (interfaceCtx->restrictions.warpSongs == 3 && !gSaveContext.n64ddFlag)) {
+                        if (msgCtx->disableWarpSongs || (interfaceCtx->restrictions.warpSongs == 3 && !IS_RANDO)) {
                             Message_StartTextbox(play, 0x88C, NULL); // "You can't warp here!"
                             play->msgCtx.ocarinaMode = OCARINA_MODE_04;
                         } else if ((gSaveContext.eventInf[0] & 0xF) != 1) {
@@ -2557,6 +2562,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                         osSyncPrintf(VT_RST);
                         osSyncPrintf("→  OCARINA_MODE=%d\n", play->msgCtx.ocarinaMode);
                     }
+                    GameInteractor_ExecuteOnOcarinaSongAction();
                 }
                 break;
             case MSGMODE_DISPLAY_SONG_PLAYED:
@@ -2597,7 +2603,7 @@ void Message_DrawMain(PlayState* play, Gfx** p) {
                     msgCtx->lastPlayedSong = msgCtx->ocarinaStaff->state;
                     msgCtx->msgMode = MSGMODE_SONG_PLAYBACK_SUCCESS;
 
-                    if (!gSaveContext.n64ddFlag) {
+                    if (!IS_RANDO) {
                         Item_Give(play, ITEM_SONG_MINUET + gOcarinaSongItemMap[msgCtx->ocarinaStaff->state]);
                     }
 
@@ -3148,7 +3154,7 @@ void Message_Update(PlayState* play) {
                 if (D_8014B2F4 >= 4) {
                     var = true;
                 }
-            } else if (YREG(15) != 0 || play->sceneNum == SCENE_HAIRAL_NIWA) {
+            } else if (YREG(15) != 0 || play->sceneNum == SCENE_CASTLE_COURTYARD_GUARDS_DAY) {
                 var = true;
             } else if (D_8014B2F4 >= 4 || msgCtx->talkActor == NULL) {
                 var = true;
@@ -3175,7 +3181,7 @@ void Message_Update(PlayState* play) {
                 var = msgCtx->textBoxType;
 
                 if (!msgCtx->textBoxPos) { // variable position
-                    if (YREG(15) != 0 || play->sceneNum == SCENE_HAIRAL_NIWA) {
+                    if (YREG(15) != 0 || play->sceneNum == SCENE_CASTLE_COURTYARD_GUARDS_DAY) {
                         if (averageY < XREG(92)) {
                             R_TEXTBOX_Y_TARGET = sTextboxLowerYPositions[var];
                         } else {

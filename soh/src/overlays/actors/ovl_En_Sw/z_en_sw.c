@@ -1,7 +1,8 @@
 #include "z_en_sw.h"
 #include "objects/object_st/object_st.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnSw_Init(Actor* thisx, PlayState* play);
 void EnSw_Destroy(Actor* thisx, PlayState* play);
@@ -213,6 +214,16 @@ s32 func_80B0C0CC(EnSw* this, PlayState* play, s32 arg2) {
     return sp64;
 }
 
+// Presumably, due to the removal of object dependency, there is a race condition where
+// the GS on the Kak construction site spawns to early and fails to detect the
+// construction site dyna poly. This custom action func rechecks moving the GS
+// to the nearest poly one frame after init. Further explanation available:
+// https://github.com/HarbourMasters/Shipwright/issues/2310#issuecomment-1492829517
+void EnSw_MoveGoldLater(EnSw* this, PlayState* play) {
+    func_80B0C0CC(this, play, 1);
+    this->actionFunc = func_80B0D590;
+}
+
 void EnSw_Init(Actor* thisx, PlayState* play) {
     EnSw* this = (EnSw*)thisx;
     s32 phi_v0;
@@ -282,7 +293,7 @@ void EnSw_Init(Actor* thisx, PlayState* play) {
             this->collider.elements[0].info.toucher.damage *= 2;
             this->actor.naviEnemyId = 0x20;
             this->actor.colChkInfo.health *= 2;
-            this->actor.flags &= ~ACTOR_FLAG_0;
+            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
             break;
         default:
             Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTORCAT_ENEMY);
@@ -304,12 +315,22 @@ void EnSw_Init(Actor* thisx, PlayState* play) {
     } else {
         this->actionFunc = func_80B0D590;
     }
+
+    // If a normal GS failed to get attached to a poly during init
+    // try once more on the next frame via a custom action func
+    if ((((thisx->params & 0xE000) >> 0xD) == 1 ||
+         ((thisx->params & 0xE000) >> 0xD) == 2) &&
+        this->actor.floorPoly == NULL) {
+        this->actionFunc = EnSw_MoveGoldLater;
+    }
 }
 
 void EnSw_Destroy(Actor* thisx, PlayState* play) {
     EnSw* this = (EnSw*)thisx;
 
     Collider_DestroyJntSph(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 func_80B0C9F0(EnSw* this, PlayState* play) {
@@ -346,17 +367,17 @@ s32 func_80B0C9F0(EnSw* this, PlayState* play) {
                 this->unk_38A = 1;
                 this->unk_420 *= 4.0f;
                 this->actionFunc = func_80B0D878;
-                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLTULA_GOLD]++;
             } else {
                 this->actor.shape.shadowDraw = ActorShadow_DrawCircle;
                 this->actor.shape.shadowAlpha = 0xFF;
                 this->unk_38A = 2;
                 this->actor.shape.shadowScale = 16.0f;
                 this->actor.gravity = -1.0f;
-                this->actor.flags &= ~ACTOR_FLAG_0;
+                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                 this->actionFunc = func_80B0DB00;
-                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_SKULLWALLTULA]++;
             }
+            
+            GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_STALWALL_DEAD);
             return true;
@@ -550,7 +571,7 @@ void func_80B0D590(EnSw* this, PlayState* play) {
             this->collider.elements[0].info.ocElemFlags = 1;
         }
 
-        Math_ApproachF(&this->actor.scale.x, !IS_DAY ? 0.02f : 0.0f, 0.2f, 0.01f);
+        Math_ApproachF(&this->actor.scale.x, !IS_DAY || CVarGetInteger("gNightGSAlwaysSpawn", 0) ? 0.02f : 0.0f, 0.2f, 0.01f);
         Actor_SetScale(&this->actor, this->actor.scale.x);
     }
 
@@ -1013,7 +1034,7 @@ void EnSw_Draw(Actor* thisx, PlayState* play) {
     }
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnSw_OverrideLimbDraw,
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnSw_OverrideLimbDraw,
                       EnSw_PostLimbDraw, this);
     if (this->actionFunc == func_80B0E728) {
         func_80B0EEA4(play);

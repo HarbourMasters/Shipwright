@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_bracelet" Segment="6">
+        <DList Name="gGiGoronBraceletDL" Offset="0x0960"/>
+    </File>
+</Root>

@@ -8,7 +8,7 @@
 #include "vt.h"
 #include "objects/object_mm/object_mm.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 typedef enum {
     /* 0 */ RM2_ANIM_RUN,
@@ -101,9 +101,9 @@ void EnMm2_ChangeAnim(EnMm2* this, s32 index, s32* currentIndex) {
 }
 
 void func_80AAEF70(EnMm2* this, PlayState* play) {
-    if ((gSaveContext.eventChkInf[9] & 0xF) != 0xF) {
+    if (!GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {
         this->actor.textId = 0x6086;
-    } else if (gSaveContext.infTable[23] & 0x8000) {
+    } else if (Flags_GetInfTable(INFTABLE_17F)) {
         if (gSaveContext.eventInf[1] & 1) {
             this->actor.textId = 0x6082;
         } else if (gSaveContext.timer2State != 0) {
@@ -150,7 +150,7 @@ void EnMm2_Init(Actor* thisx, PlayState* play2) {
         Actor_Kill(&this->actor);
     }
     if (this->actor.params == 1) {
-        if (!(gSaveContext.infTable[23] & 0x8000) || !(gSaveContext.eventInf[1] & 1)) {
+        if (!Flags_GetInfTable(INFTABLE_17F) || !(gSaveContext.eventInf[1] & 1)) {
             osSyncPrintf(VT_FGCOL(CYAN) " マラソン 開始されていない \n" VT_RST "\n");
             Actor_Kill(&this->actor);
         }
@@ -161,6 +161,8 @@ void EnMm2_Destroy(Actor* thisx, PlayState* play) {
     EnMm2* this = (EnMm2*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 func_80AAF224(EnMm2* this, PlayState* play, EnMm2ActionFunc actionFunc) {
@@ -249,7 +251,7 @@ void func_80AAF57C(EnMm2* this, PlayState* play) {
     SkelAnime_Update(&this->skelAnime);
     func_80AAEF70(this, play);
     if ((func_80AAF224(this, play, func_80AAF3C0)) && (this->actor.textId == 0x607D)) {
-        gSaveContext.infTable[23] |= 0x8000;
+        Flags_SetInfTable(INFTABLE_17F);
     }
 }
 
@@ -313,8 +315,7 @@ void EnMm2_Draw(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(mouthTextures[this->mouthTexIndex]));
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnMm2_OverrideLimbDraw, EnMm2_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnMm2_OverrideLimbDraw, EnMm2_PostLimbDraw, this);
     CLOSE_DISPS(play->state.gfxCtx);
 }
 

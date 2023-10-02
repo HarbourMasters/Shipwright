@@ -8,7 +8,7 @@
 #include "objects/object_fu/object_fu.h"
 #include "scenes/indoors/hakasitarelay/hakasitarelay_scene.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_25)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 #define FU_RESET_LOOK_ANGLE (1 << 0)
 #define FU_WAIT (1 << 1)
@@ -99,6 +99,8 @@ void EnFu_Init(Actor* thisx, PlayState* play) {
 void EnFu_Destroy(Actor* thisx, PlayState* play) {
     EnFu* this = (EnFu*)thisx;
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelanime);
 }
 
 s32 func_80A1D94C(EnFu* this, PlayState* play, u16 textID, EnFuActionFunc actionFunc) {
@@ -135,10 +137,10 @@ void EnFu_WaitChild(EnFu* this, PlayState* play) {
     u16 textID = Text_GetFaceReaction(play, 0xB);
 
     if (textID == 0) {
-        textID = (gSaveContext.eventChkInf[6] & 0x80) ? 0x5033 : 0x5032;
+        textID = (Flags_GetEventChkInf(EVENTCHKINF_DRAINED_WELL_IN_KAKARIKO)) ? 0x5033 : 0x5032;
     }
 
-    // if ACTOR_FLAG_8 is set and textID is 0x5033, change animation
+    // if ACTOR_FLAG_PLAYER_TALKED_TO is set and textID is 0x5033, change animation
     // if func_80A1D94C returns 1, actionFunc is set to func_80A1DA04
     if (func_80A1D94C(this, play, textID, func_80A1DA04)) {
         if (textID == 0x5033) {
@@ -166,11 +168,11 @@ void func_WaitForSongGive(EnFu* this, PlayState* play) {
 void func_80A1DB60(EnFu* this, PlayState* play) {
     if (play->csCtx.state == CS_STATE_IDLE) {
         this->actionFunc = EnFu_WaitAdult;
-        gSaveContext.eventChkInf[5] |= 0x800;
+        Flags_SetEventChkInf(EVENTCHKINF_LEARNED_SONG_OF_STORMS);
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     }
 
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         this->actionFunc = func_WaitForSongGive;
     }
 }
@@ -184,27 +186,27 @@ void func_80A1DBA0(EnFu* this, PlayState* play) {
 void func_80A1DBD4(EnFu* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
-    if (gSaveContext.n64ddFlag && (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING)) {
+    if (IS_RANDO && (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING)) {
         play->msgCtx.ocarinaMode = OCARINA_MODE_03;
     }
 
     if (play->msgCtx.ocarinaMode >= OCARINA_MODE_04) {
         this->actionFunc = EnFu_WaitAdult;
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
-        this->actor.flags &= ~ACTOR_FLAG_16;
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
         func_80078884(NA_SE_SY_CORRECT_CHIME);
         this->actionFunc = func_80A1DB60;
-        this->actor.flags &= ~ACTOR_FLAG_16;
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
 
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gSongOfStormsCs);
             gSaveContext.cutsceneTrigger = 1;
             Item_Give(play, ITEM_SONG_STORMS);
         }
 
         play->msgCtx.ocarinaMode = OCARINA_MODE_00;
-        gSaveContext.eventChkInf[6] |= 0x20;
+        Flags_SetEventChkInf(EVENTCHKINF_PLAYED_SONG_OF_STORMS_IN_WINDMILL);
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_02) {
         player->stateFlags2 &= ~0x1000000;
         this->actionFunc = EnFu_WaitAdult;
@@ -242,12 +244,12 @@ void EnFu_WaitAdult(EnFu* this, PlayState* play) {
     Player* player = GET_PLAYER(play);
 
     yawDiff = this->actor.yawTowardsPlayer - this->actor.shape.rot.y;
-    if ((gSaveContext.eventChkInf[5] & 0x800)) {
+    if ((Flags_GetEventChkInf(EVENTCHKINF_LEARNED_SONG_OF_STORMS))) {
         func_80A1D94C(this, play, 0x508E, func_80A1DBA0);
     } else if (player->stateFlags2 & 0x1000000) {
         this->actor.textId = 0x5035;
         Message_StartTextbox(play, this->actor.textId, NULL);
-        this->actionFunc = gSaveContext.n64ddFlag ? func_80A1DBD4 : EnFu_TeachSong;
+        this->actionFunc = IS_RANDO ? func_80A1DBD4 : EnFu_TeachSong;
         this->behaviorFlags |= FU_WAIT;
     } else if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actionFunc = func_80A1DBA0;
@@ -330,8 +332,7 @@ void EnFu_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyesSegments[this->facialExpression]));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthSegments[this->facialExpression]));
-    SkelAnime_DrawFlexOpa(play, this->skelanime.skeleton, this->skelanime.jointTable, this->skelanime.dListCount,
-                          EnFu_OverrideLimbDraw, EnFu_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelanime, EnFu_OverrideLimbDraw, EnFu_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

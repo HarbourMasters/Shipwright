@@ -8,7 +8,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_gi_nuts/object_gi_nuts.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnArrow_Init(Actor* thisx, PlayState* play);
 void EnArrow_Destroy(Actor* thisx, PlayState* play);
@@ -193,7 +193,7 @@ void EnArrow_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyQuad(play, &this->collider);
 
     if ((this->hitActor != NULL) && (this->hitActor->update != NULL)) {
-        this->hitActor->flags &= ~ACTOR_FLAG_15;
+        this->hitActor->flags &= ~ACTOR_FLAG_DRAGGED_BY_ARROW;
     }
 }
 
@@ -208,19 +208,19 @@ void EnArrow_Shoot(EnArrow* this, PlayState* play) {
 
         switch (this->actor.params) {
             case ARROW_SEED:
-                func_8002F7DC(&player->actor, NA_SE_IT_SLING_SHOT);
+                Player_PlaySfx(&player->actor, NA_SE_IT_SLING_SHOT);
                 break;
 
             case ARROW_NORMAL_LIT:
             case ARROW_NORMAL_HORSE:
             case ARROW_NORMAL:
-                func_8002F7DC(&player->actor, NA_SE_IT_ARROW_SHOT);
+                Player_PlaySfx(&player->actor, NA_SE_IT_ARROW_SHOT);
                 break;
 
             case ARROW_FIRE:
             case ARROW_ICE:
             case ARROW_LIGHT:
-                func_8002F7DC(&player->actor, NA_SE_IT_MAGIC_ARROW_SHOT);
+                Player_PlaySfx(&player->actor, NA_SE_IT_MAGIC_ARROW_SHOT);
                 break;
         }
 
@@ -333,11 +333,11 @@ void EnArrow_Fly(EnArrow* this, PlayState* play) {
                 hitActor = this->collider.base.at;
 
                 if ((hitActor->update != NULL) && (!(this->collider.base.atFlags & AT_BOUNCED)) &&
-                    (hitActor->flags & ACTOR_FLAG_14)) {
+                    (hitActor->flags & ACTOR_FLAG_ARROW_DRAGGABLE)) {
                     this->hitActor = hitActor;
                     EnArrow_CarryActor(this, play);
                     Math_Vec3f_Diff(&hitActor->world.pos, &this->actor.world.pos, &this->unk_250);
-                    hitActor->flags |= ACTOR_FLAG_15;
+                    hitActor->flags |= ACTOR_FLAG_DRAGGED_BY_ARROW;
                     this->collider.base.atFlags &= ~AT_HIT;
                     this->actor.speedXZ /= 2.0f;
                     this->actor.velocity.y /= 2.0f;
@@ -396,14 +396,14 @@ void EnArrow_Fly(EnArrow* this, PlayState* play) {
                 this->hitActor->world.pos.y = hitPoint.y + ((sp54.y <= hitPoint.y) ? 1.0f : -1.0f);
                 this->hitActor->world.pos.z = hitPoint.z + ((sp54.z <= hitPoint.z) ? 1.0f : -1.0f);
                 Math_Vec3f_Diff(&this->hitActor->world.pos, &this->actor.world.pos, &this->unk_250);
-                this->hitActor->flags &= ~ACTOR_FLAG_15;
+                this->hitActor->flags &= ~ACTOR_FLAG_DRAGGED_BY_ARROW;
                 this->hitActor = NULL;
             } else {
                 Math_Vec3f_Sum(&this->actor.world.pos, &this->unk_250, &this->hitActor->world.pos);
             }
 
             if (this->touchedPoly && (this->hitActor != NULL)) {
-                this->hitActor->flags &= ~ACTOR_FLAG_15;
+                this->hitActor->flags &= ~ACTOR_FLAG_DRAGGED_BY_ARROW;
                 this->hitActor = NULL;
             }
         } else {

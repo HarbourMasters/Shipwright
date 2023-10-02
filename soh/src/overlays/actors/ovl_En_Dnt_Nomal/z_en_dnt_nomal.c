@@ -13,7 +13,7 @@
 #include "objects/object_hintnuts/object_hintnuts.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnDntNomal_Init(Actor* thisx, PlayState* play);
 void EnDntNomal_Destroy(Actor* thisx, PlayState* play);
@@ -123,7 +123,7 @@ void EnDntNomal_Init(Actor* thisx, PlayState* play) {
     if (this->type < ENDNTNOMAL_TARGET) {
         this->type = ENDNTNOMAL_TARGET;
     }
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actor.colChkInfo.mass = 0xFF;
     this->objId = -1;
     if (this->type == ENDNTNOMAL_TARGET) {
@@ -167,6 +167,8 @@ void EnDntNomal_Destroy(Actor* thisx, PlayState* play) {
     } else {
         Collider_DestroyCylinder(play, &this->bodyCyl);
     }
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDntNomal_WaitForObject(EnDntNomal* this, PlayState* play) {
@@ -247,10 +249,10 @@ void EnDntNomal_TargetWait(EnDntNomal* this, PlayState* play) {
             func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
             // "Big hit"
             osSyncPrintf(VT_FGCOL(CYAN) "☆☆☆☆☆ 大当り ☆☆☆☆☆ %d\n" VT_RST, this->hitCounter);
-            if (!LINK_IS_ADULT && !(gSaveContext.itemGetInf[1] & 0x2000)) {
+            if (!LINK_IS_ADULT && !Flags_GetItemGetInf(ITEMGETINF_1D)) {
                 this->hitCounter++;
                 if (this->hitCounter >= 3) {
-                    if(gSaveContext.n64ddFlag) {
+                    if(IS_RANDO) {
                         this->actionFunc = EnDntNomal_TargetGivePrize;
                     } else {
                         OnePointCutscene_Init(play, 4140, -99, &this->actor, MAIN_CAM);
@@ -860,7 +862,7 @@ void EnDntNomal_DrawStageScrub(Actor* thisx, PlayState* play) {
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(blinkTex[this->eyeState]));
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnDntNomal_OverrideLimbDraw,
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnDntNomal_OverrideLimbDraw,
                       EnDntNomal_PostLimbDraw, this);
     Matrix_Translate(this->flowerPos.x, this->flowerPos.y, this->flowerPos.z, MTXMODE_NEW);
     Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);
@@ -881,7 +883,7 @@ void EnDntNomal_DrawTargetScrub(Actor* thisx, PlayState* play) {
 
     OPEN_DISPS(play->state.gfxCtx);
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, EnDntNomal_PostLimbDraw,
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, EnDntNomal_PostLimbDraw,
                       this);
     Matrix_Translate(this->flowerPos.x, this->flowerPos.y, this->flowerPos.z, MTXMODE_NEW);
     Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);

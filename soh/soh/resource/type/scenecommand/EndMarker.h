@@ -7,16 +7,18 @@
 #include "SceneCommand.h"
 #include <libultraship/libultra/types.h>
 
-namespace Ship {
+namespace LUS {
 typedef struct {
 
 } Marker;
 
-class EndMarker : public SceneCommand {
+class EndMarker : public SceneCommand<Marker> {
   public:
-    void* GetPointer();
+    using SceneCommand::SceneCommand;
+
+    Marker* GetPointer();
     size_t GetPointerSize();
 
     Marker endMarker;
 };
-}; // namespace Ship
+}; // namespace LUS

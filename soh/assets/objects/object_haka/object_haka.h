@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_HAKA_H
+#define OBJECTS_OBJECT_HAKA_H 1
 
 #include "align_asset_macro.h"
 
@@ -19,3 +20,5 @@ static const ALIGN_ASSET(2) char gGravestoneEarthDL[] = dgGravestoneEarthDL;
 
 #define dgGravestoneCol "__OTR__objects/object_haka/gGravestoneCol"
 static const ALIGN_ASSET(2) char gGravestoneCol[] = dgGravestoneCol;
+
+#endif // OBJECTS_OBJECT_HAKA_H

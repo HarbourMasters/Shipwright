@@ -3,8 +3,9 @@
 #include <string.h>
 
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void EnClearTag_Init(Actor* thisx, PlayState* play);
 void EnClearTag_Destroy(Actor* thisx, PlayState* play);
@@ -265,7 +266,7 @@ void EnClearTag_Init(Actor* thisx, PlayState* play) {
             Actor_ChangeCategory(play, &play->actorCtx, thisx, ACTORCAT_ENEMY);
         }
 
-        this->actor.flags |= ACTOR_FLAG_0;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
         this->actor.targetMode = 5;
         Collider_SetCylinder(play, &this->collider, &this->actor, &sArwingCylinderInit);
         this->actor.colChkInfo.health = 3;
@@ -374,7 +375,7 @@ void EnClearTag_Update(Actor* thisx, PlayState* play2) {
                     if ((s8)this->actor.colChkInfo.health <= 0) {
                         this->state = CLEAR_TAG_STATE_CRASHING;
                         this->actor.velocity.y = 0.0f;
-                        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ARWING]++;
+                        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
                         goto state_crashing;
                     }
                 }
@@ -475,9 +476,13 @@ void EnClearTag_Update(Actor* thisx, PlayState* play2) {
                     Math_ApproachS(&this->actor.world.rot.z, 0, 15, this->targetDirection.z);
                     Math_ApproachF(&this->targetDirection.z, 0x500, 1.0f, 0x100);
 
+                    // Introduce a range requirement in Enemy Rando so Arwings don't shoot the player from
+                    // across the map. Especially noticeable in big maps like Lake Hylia and Hyrule Field.
+                    uint8_t enemyRandoShootLaser = !CVarGetInteger("gRandomizedEnemies", 0) || this->actor.xzDistToPlayer < 1000.0f;
+
                     // Check if the Arwing should fire its laser.
                     if ((this->frameCounter % 4) == 0 && (Rand_ZeroOne() < 0.75f) &&
-                        (this->state == CLEAR_TAG_STATE_TARGET_LOCKED)) {
+                            (this->state == CLEAR_TAG_STATE_TARGET_LOCKED) && enemyRandoShootLaser) {
                         this->shouldShootLaser = true;
                     }
                 } else {
@@ -548,7 +553,7 @@ void EnClearTag_Update(Actor* thisx, PlayState* play2) {
                         if (this->drawMode != CLEAR_TAG_DRAW_MODE_ARWING) {
                             this->drawMode = CLEAR_TAG_DRAW_MODE_EFFECT;
                             this->deathTimer = 70;
-                            this->actor.flags &= ~ACTOR_FLAG_0;
+                            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                         } else {
                             Actor_Kill(&this->actor);
                         }

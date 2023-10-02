@@ -3,8 +3,9 @@
 #include <cstdint>
 #include "Resource.h"
 #include "SkeletonLimb.h"
+#include <z64animation.h>
 
-namespace Ship {
+namespace LUS {
 
 enum class SkeletonType {
     Normal,
@@ -23,6 +24,7 @@ enum class SkeletonType {
 typedef struct {
     /* 0x00 */ void** segment;
     /* 0x04 */ uint8_t limbCount;
+               uint8_t skeletonType;
 } SkeletonHeader; // size = 0x8
 
 // Model has limbs with flexible meshes
@@ -48,9 +50,13 @@ union SkeletonData {
     SkelCurveLimbList skelCurveLimbList;
 };
 
-class Skeleton : public Resource {
+class Skeleton : public Resource<SkeletonData> {
   public:
-    void* GetPointer();
+    using Resource::Resource;
+
+    Skeleton() : Resource(std::shared_ptr<ResourceInitData>()) {}
+
+    SkeletonData* GetPointer();
     size_t GetPointerSize();
 
     SkeletonType type;
@@ -66,4 +72,23 @@ class Skeleton : public Resource {
     std::vector<std::string> limbTable;
     std::vector<void*> skeletonHeaderSegments;
 };
-} // namespace Ship
+
+// TODO: CLEAN THIS UP LATER
+struct SkeletonPatchInfo 
+{
+    SkelAnime* skelAnime;
+    std::string vanillaSkeletonPath;
+};
+
+class SkeletonPatcher {
+  public:
+    static void RegisterSkeleton(std::string& path, SkelAnime* skelAnime);
+    static void UnregisterSkeleton(SkelAnime* skelAnime);
+    static void ClearSkeletons();
+    static void UpdateSkeletons();
+
+    static std::vector<SkeletonPatchInfo> skeletons;
+};
+
+
+} // namespace LUS

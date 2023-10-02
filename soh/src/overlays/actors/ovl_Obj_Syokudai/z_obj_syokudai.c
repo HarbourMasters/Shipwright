@@ -9,7 +9,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_syokudai/object_syokudai.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_10)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAGGED_BY_HOOKSHOT)
 
 void ObjSyokudai_Init(Actor* thisx, PlayState* play);
 void ObjSyokudai_Destroy(Actor* thisx, PlayState* play);
@@ -176,7 +176,7 @@ void ObjSyokudai_Update(Actor* thisx, PlayState* play2) {
             if (dmgFlags & 0x20820) {
                 interactionType = 1;
             }
-        } else if (player->heldItemAction == PLAYER_IA_STICK) {
+        } else if (player->heldItemAction == PLAYER_IA_DEKU_STICK) {
             Math_Vec3f_Diff(&player->meleeWeaponInfo[0].tip, &this->actor.world.pos, &tipToFlame);
             tipToFlame.y -= 67.0f;
             if ((SQ(tipToFlame.x) + SQ(tipToFlame.y) + SQ(tipToFlame.z)) < SQ(20.0f)) {

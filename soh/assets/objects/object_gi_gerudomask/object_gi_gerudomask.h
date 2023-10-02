@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_GI_GERUDOMASK_H
+#define OBJECTS_OBJECT_GI_GERUDOMASK_H 1
 
 #include "align_asset_macro.h"
 
@@ -19,3 +20,5 @@ static const ALIGN_ASSET(2) char object_gi_gerudomaskTex_000348[] = dobject_gi_g
 
 #define dobject_gi_gerudomaskTex_000448 "__OTR__objects/object_gi_gerudomask/object_gi_gerudomaskTex_000448"
 static const ALIGN_ASSET(2) char object_gi_gerudomaskTex_000448[] = dobject_gi_gerudomaskTex_000448;
+
+#endif // OBJECTS_OBJECT_GI_GERUDOMASK_H

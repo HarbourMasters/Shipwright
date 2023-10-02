@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_TITE_H
+#define OBJECTS_OBJECT_TITE_H 1
 
 #include "align_asset_macro.h"
 
@@ -82,3 +83,6 @@ static const ALIGN_ASSET(2) char object_tite_DL_003800[] = dobject_tite_DL_00380
 
 #define dobject_tite_Skel_003A20 "__OTR__objects/object_tite/object_tite_Skel_003A20"
 static const ALIGN_ASSET(2) char object_tite_Skel_003A20[] = dobject_tite_Skel_003A20;
+
+
+#endif // OBJECTS_OBJECT_TITE_H

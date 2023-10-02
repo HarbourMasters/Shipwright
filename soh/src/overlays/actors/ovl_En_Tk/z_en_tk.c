@@ -9,7 +9,7 @@
 #include "objects/object_tk/object_tk.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 #define COLLECTFLAG_GRAVEDIGGING_HEART_PIECE 0x19
 #define ITEMGETINFFLAG_GRAVEDIGGING_HEART_PIECE 0x1000
 
@@ -345,7 +345,7 @@ u16 func_80B1C54C(PlayState* play, Actor* thisx) {
         return ret;
     }
 
-    if (gSaveContext.infTable[13] & 0x0200) {
+    if (Flags_GetInfTable(INFTABLE_D9)) {
         /* "Do you want me to dig here? ..." */
         return 0x5019;
     } else {
@@ -364,7 +364,7 @@ s16 func_80B1C5A0(PlayState* play, Actor* thisx) {
         case TEXT_STATE_CLOSING:
             /* "I am the boss of the carpenters ..." (wtf?) */
             if (thisx->textId == 0x5028) {
-                gSaveContext.infTable[13] |= 0x0100;
+                Flags_SetInfTable(INFTABLE_D8);
             }
             ret = NPC_TALK_STATE_IDLE;
             break;
@@ -381,11 +381,11 @@ s16 func_80B1C5A0(PlayState* play, Actor* thisx) {
                 } else {
                     play->msgCtx.msgMode = MSGMODE_PAUSED;
                     Rupees_ChangeBy(-10);
-                    gSaveContext.infTable[13] |= 0x0200;
+                    Flags_SetInfTable(INFTABLE_D9);
                     return NPC_TALK_STATE_ACTION;
                 }
                 Message_ContinueTextbox(play, thisx->textId);
-                gSaveContext.infTable[13] |= 0x0200;
+                Flags_SetInfTable(INFTABLE_D9);
             }
             break;
         case TEXT_STATE_EVENT:
@@ -408,7 +408,7 @@ s32 EnTk_ChooseReward(EnTk* this) {
     f32 luck;
     s32 reward;
 
-    if ((gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0)) && !Flags_GetCollectible(gPlayState, 0x1F) && this->heartPieceSpawned == 0) {
+    if ((IS_RANDO || CVarGetInteger("gDampeWin", 0)) && !Flags_GetCollectible(gPlayState, 0x1F) && this->heartPieceSpawned == 0) {
         return 3;
     }
 
@@ -502,8 +502,12 @@ void EnTk_Init(Actor* thisx, PlayState* play) {
 
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, NULL, &sColChkInfoInit);
 
-    if (gSaveContext.dayTime <= 0xC000 || gSaveContext.dayTime >= 0xE000 || !!LINK_IS_ADULT ||
-        play->sceneNum != SCENE_SPOT02) {
+    if (CVarGetInteger("gDampeAllNight", 0)) {
+        if (!!LINK_IS_ADULT || play->sceneNum != SCENE_GRAVEYARD) {
+            Actor_Kill(&this->actor);
+            return;
+        }
+    } else if (gSaveContext.dayTime <= 0xC000 || gSaveContext.dayTime >= 0xE000 || !!LINK_IS_ADULT || play->sceneNum != SCENE_GRAVEYARD) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -522,6 +526,8 @@ void EnTk_Destroy(Actor* thisx, PlayState* play) {
     EnTk* this = (EnTk*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnTk_Rest(EnTk* this, PlayState* play) {
@@ -604,7 +610,7 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
 
         this->rewardTimer = 0;
 
-        if (this->validDigHere == 1 || gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0)) {
+        if (this->validDigHere == 1 || IS_RANDO || CVarGetInteger("gDampeWin", 0)) {
             rewardOrigin.x = 0.0f;
             rewardOrigin.y = 0.0f;
             rewardOrigin.z = -40.0f;
@@ -620,21 +626,21 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
 
             // merging in dampe tour fix seems messy, so i'm just wrapping this whole thing
             // in an n64dd check for now
-            if (gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0)) {
+            if (IS_RANDO || CVarGetInteger("gDampeWin", 0)) {
                 if (this->currentReward == 3) {
                     /*
                     * Upgrade the purple rupee reward to the heart piece if this
                     * is the first grand prize dig.
                     */
-                    if (!(gSaveContext.itemGetInf[1] & 0x1000) && !(gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0))) {
-                        gSaveContext.itemGetInf[1] |= 0x1000;
+                    if (!Flags_GetItemGetInf(ITEMGETINF_1C) && !(IS_RANDO || CVarGetInteger("gDampeWin", 0))) {
+                        Flags_SetItemGetInf(ITEMGETINF_1C);
                         this->currentReward = 4;
-                    } else if ((gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0)) && !Flags_GetCollectible(gPlayState, 0x1F) && this->heartPieceSpawned == 0) {
+                    } else if ((IS_RANDO || CVarGetInteger("gDampeWin", 0)) && !Flags_GetCollectible(gPlayState, 0x1F) && this->heartPieceSpawned == 0) {
                         this->currentReward = 4;
                     }
                 }
 
-                if ((gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0)) && this->currentReward == 4) {
+                if ((IS_RANDO || CVarGetInteger("gDampeWin", 0)) && this->currentReward == 4) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_ITEM00, rewardPos.x, rewardPos.y, rewardPos.z, 0,
                                 0, 0, 0x1F06, true);
                     this->heartPieceSpawned = 1;
@@ -670,7 +676,7 @@ void EnTk_Dig(EnTk* this, PlayState* play) {
 
     if (this->skelAnime.curFrame >= 32.0f && this->rewardTimer == 10) {
         /* Play a reward sound shortly after digging */
-        if (!(gSaveContext.n64ddFlag || CVarGetInteger("gDampeWin", 0)) && this->validDigHere == 0) {
+        if (!(IS_RANDO || CVarGetInteger("gDampeWin", 0)) && this->validDigHere == 0) {
             /* Bad dig spot */
             Audio_PlayActorSound2(&this->actor, NA_SE_SY_ERROR);
         } else if (this->currentReward == 4) {
@@ -780,8 +786,7 @@ void EnTk_Draw(Actor* thisx, PlayState* play) {
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyesSegments[this->eyeTextureIdx]));
 
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnTk_OverrideLimbDraw, EnTk_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnTk_OverrideLimbDraw, EnTk_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

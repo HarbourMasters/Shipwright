@@ -8,7 +8,7 @@
 #include "overlays/actors/ovl_Bg_Mizu_Water/z_bg_mizu_water.h"
 #include "objects/object_mizu_objects/object_mizu_objects.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void BgMizuBwall_Init(Actor* thisx, PlayState* play);
 void BgMizuBwall_Destroy(Actor* thisx, PlayState* play);

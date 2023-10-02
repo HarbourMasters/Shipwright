@@ -8,7 +8,7 @@
 #include "objects/object_ds/object_ds.h"
 #include "soh/Enhancements/randomizer/adult_trade_shuffle.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnDs_Init(Actor* thisx, PlayState* play);
 void EnDs_Destroy(Actor* thisx, PlayState* play);
@@ -45,17 +45,20 @@ void EnDs_Init(Actor* thisx, PlayState* play) {
     this->actionFunc = EnDs_Wait;
     this->actor.targetMode = 1;
     this->unk_1E8 = 0;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->unk_1E4 = 0.0f;
 }
 
 void EnDs_Destroy(Actor* thisx, PlayState* play) {
+    EnDs* this = (EnDs*)thisx;
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnDs_Talk(EnDs* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         this->actionFunc = EnDs_Wait;
-        this->actor.flags &= ~ACTOR_FLAG_16;
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
     }
     this->unk_1E8 |= 1;
 }
@@ -72,7 +75,7 @@ void EnDs_TalkAfterGiveOddPotion(EnDs* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->actionFunc = EnDs_Talk;
     } else {
-        this->actor.flags |= ACTOR_FLAG_16;
+        this->actor.flags |= ACTOR_FLAG_WILL_TALK;
         func_8002F2CC(&this->actor, play, 1000.0f);
     }
 }
@@ -81,8 +84,8 @@ void EnDs_DisplayOddPotionText(EnDs* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
         this->actor.textId = 0x504F;
         this->actionFunc = EnDs_TalkAfterGiveOddPotion;
-        this->actor.flags &= ~ACTOR_FLAG_8;
-        gSaveContext.itemGetInf[3] |= 1;
+        this->actor.flags &= ~ACTOR_FLAG_PLAYER_TALKED_TO;
+        Flags_SetItemGetInf(ITEMGETINF_30);
     }
 }
 
@@ -93,7 +96,7 @@ void EnDs_GiveOddPotion(EnDs* this, PlayState* play) {
         gSaveContext.timer2State = 0;
     } else {
         u32 itemId = GI_ODD_POTION;
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_TRADE_ODD_MUSHROOM, GI_ODD_POTION);
             GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
             Randomizer_ConsumeAdultTradeItem(play, ITEM_ODD_MUSHROOM);
@@ -108,7 +111,7 @@ void EnDs_TalkAfterBrewOddPotion(EnDs* this, PlayState* play) {
         Message_CloseTextbox(play);
         this->actionFunc = EnDs_GiveOddPotion;
         u32 itemId = GI_ODD_POTION;
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             GetItemEntry itemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_TRADE_ODD_MUSHROOM, GI_ODD_POTION);
             GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
             Randomizer_ConsumeAdultTradeItem(play, ITEM_ODD_MUSHROOM);
@@ -135,7 +138,7 @@ void EnDs_BrewOddPotion2(EnDs* this, PlayState* play) {
         this->brewTimer -= 1;
     } else {
         this->actionFunc = EnDs_BrewOddPotion3;
-        this->brewTimer = gSaveContext.n64ddFlag ? 0 : 60;
+        this->brewTimer = IS_RANDO ? 0 : 60;
         Flags_UnsetSwitch(play, 0x3F);
     }
 }
@@ -145,7 +148,7 @@ void EnDs_BrewOddPotion1(EnDs* this, PlayState* play) {
         this->brewTimer -= 1;
     } else {
         this->actionFunc = EnDs_BrewOddPotion2;
-        this->brewTimer = gSaveContext.n64ddFlag ? 0 : 20;
+        this->brewTimer = IS_RANDO ? 0 : 20;
     }
 
     Math_StepToF(&this->unk_1E4, 1.0f, 0.01f);
@@ -159,7 +162,7 @@ void EnDs_OfferOddPotion(EnDs* this, PlayState* play) {
         switch (play->msgCtx.choiceIndex) {
             case 0: // yes
                 this->actionFunc = EnDs_BrewOddPotion1;
-                this->brewTimer = gSaveContext.n64ddFlag ? 0 : 60;
+                this->brewTimer = IS_RANDO ? 0 : 60;
                 Flags_SetSwitch(play, 0x3F);
                 play->msgCtx.msgMode = MSGMODE_PAUSED;
                 player->exchangeItemId = EXCH_ITEM_NONE;
@@ -171,9 +174,21 @@ void EnDs_OfferOddPotion(EnDs* this, PlayState* play) {
     }
 }
 
+u8 EnDs_RandoCanGetGrannyItem() {
+    return IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_MERCHANTS) != RO_SHUFFLE_MERCHANTS_OFF &&
+           !Flags_GetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP) &&
+           // Traded odd mushroom when adult trade is on
+           ((Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) && Flags_GetItemGetInf(ITEMGETINF_30)) ||
+            // Found claim check when adult trade is off
+            (!Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) &&
+             INV_CONTENT(ITEM_CLAIM_CHECK) == ITEM_CLAIM_CHECK));
+}
+
 s32 EnDs_CheckRupeesAndBottle() {
     if (gSaveContext.rupees < 100) {
         return 0;
+    } else if (EnDs_RandoCanGetGrannyItem()) { // Allow buying the rando item regardless of having a bottle
+        return 2;
     } else if (Inventory_HasEmptyBottle() == 0) {
         return 1;
     } else {
@@ -183,10 +198,19 @@ s32 EnDs_CheckRupeesAndBottle() {
 
 void EnDs_GiveBluePotion(EnDs* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
+        if (EnDs_RandoCanGetGrannyItem()) {
+            Flags_SetRandomizerInf(RAND_INF_MERCHANTS_GRANNYS_SHOP);
+        }
+
         this->actor.parent = NULL;
         this->actionFunc = EnDs_Talk;
     } else {
-        func_8002F434(&this->actor, play, GI_POTION_BLUE, 10000.0f, 50.0f);
+        if (EnDs_RandoCanGetGrannyItem()) {
+            GetItemEntry entry = Randomizer_GetItemFromKnownCheck(RC_KAK_GRANNYS_SHOP, GI_POTION_BLUE);
+            GiveItemEntryFromActor(&this->actor, play, entry, 10000.0f, 50.0f);
+        } else {
+            func_8002F434(&this->actor, play, GI_POTION_BLUE, 10000.0f, 50.0f);
+        }
     }
 }
 
@@ -204,9 +228,19 @@ void EnDs_OfferBluePotion(EnDs* this, PlayState* play) {
                         return;
                     case 2: // have 100 rupees and empty bottle
                         Rupees_ChangeBy(-100);
-                        this->actor.flags &= ~ACTOR_FLAG_16;
-                        gSaveContext.pendingSale = ItemTable_Retrieve(GI_POTION_BLUE).itemId;
-                        func_8002F434(&this->actor, play, GI_POTION_BLUE, 10000.0f, 50.0f);
+                        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
+                        GetItemEntry itemEntry;
+
+                        if (EnDs_RandoCanGetGrannyItem()) {
+                            itemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_GRANNYS_SHOP, GI_POTION_BLUE);
+                            GiveItemEntryFromActor(&this->actor, play, itemEntry, 10000.0f, 50.0f);
+                        } else {
+                            itemEntry = ItemTable_Retrieve(GI_POTION_BLUE);
+                            func_8002F434(&this->actor, play, GI_POTION_BLUE, 10000.0f, 50.0f);
+                        }
+
+                        gSaveContext.pendingSale = itemEntry.itemId;
+                        gSaveContext.pendingSaleMod = itemEntry.modIndex;
                         this->actionFunc = EnDs_GiveBluePotion;
                         return;
                 }
@@ -227,7 +261,10 @@ void EnDs_Wait(EnDs* this, PlayState* play) {
             Audio_PlaySoundGeneral(NA_SE_SY_TRE_BOX_APPEAR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             player->actor.textId = 0x504A;
             this->actionFunc = EnDs_OfferOddPotion;
-        } else if (gSaveContext.itemGetInf[3] & 1) {
+        } else if (
+            // Always offer blue potion when adult trade is off
+            (IS_RANDO && Randomizer_GetSettingValue(RSK_SHUFFLE_ADULT_TRADE) == RO_GENERIC_OFF) ||
+            Flags_GetItemGetInf(ITEMGETINF_30)) { // Traded odd mushroom
             player->actor.textId = 0x500C;
             this->actionFunc = EnDs_OfferBluePotion;
         } else {
@@ -291,6 +328,5 @@ void EnDs_Draw(Actor* thisx, PlayState* play) {
     EnDs* this = (EnDs*)thisx;
 
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnDs_OverrideLimbDraw, EnDs_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnDs_OverrideLimbDraw, EnDs_PostLimbDraw, this);
 }

@@ -8,8 +8,9 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_po_sisters/object_po_sisters.h"
 #include "soh/frame_interpolation.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_9 | ACTOR_FLAG_12 | ACTOR_FLAG_14)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_HOOKSHOT_DRAGS | ACTOR_FLAG_IGNORE_QUAKE | ACTOR_FLAG_ARROW_DRAGGABLE)
 
 void EnPoSisters_Init(Actor* thisx, PlayState* play);
 void EnPoSisters_Destroy(Actor* thisx, PlayState* play);
@@ -183,7 +184,7 @@ void EnPoSisters_Init(Actor* thisx, PlayState* play) {
     this->epoch++;
 
     // Skip Poe Intro Cutscene
-    if (gSaveContext.n64ddFlag && thisx->params == 4124 && !Randomizer_GetSettingValue(RSK_ENABLE_GLITCH_CUTSCENES)) {
+    if (IS_RANDO && thisx->params == 4124 && !Randomizer_GetSettingValue(RSK_ENABLE_GLITCH_CUTSCENES)) {
         Flags_SetSwitch(play, 0x1B);
         Actor_Kill(thisx);
     }
@@ -210,7 +211,7 @@ void EnPoSisters_Init(Actor* thisx, PlayState* play) {
     this->unk_198 = 1;
     this->unk_199 = 32;
     this->unk_294 = 110.0f;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     if (this->actor.params & 0x1000) {
         func_80ADA094(this, play);
     } else if (this->unk_194 == 0) {
@@ -218,7 +219,7 @@ void EnPoSisters_Init(Actor* thisx, PlayState* play) {
             this->collider.base.ocFlags1 = OC1_ON | OC1_TYPE_PLAYER;
             func_80AD9AA8(this, play);
         } else {
-            this->actor.flags &= ~(ACTOR_FLAG_9 | ACTOR_FLAG_14);
+            this->actor.flags &= ~(ACTOR_FLAG_HOOKSHOT_DRAGS | ACTOR_FLAG_ARROW_DRAGGABLE);
             this->collider.info.elemType = ELEMTYPE_UNK4;
             this->collider.info.bumper.dmgFlags |= 1;
             this->collider.base.ocFlags1 = OC1_NONE;
@@ -238,6 +239,8 @@ void EnPoSisters_Destroy(Actor* thisx, PlayState* play) {
         func_800F5B58();
     }
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80AD9240(EnPoSisters* this, s32 arg1, Vec3f* arg2) {
@@ -349,7 +352,7 @@ void func_80AD97C8(EnPoSisters* this, PlayState* play) {
     f32 sp20;
 
     if (this->unk_195 == 0 || this->actionFunc != func_80ADAAA4) {
-        if ((player->swordState == 0 || player->meleeWeaponAnimation >= 24) &&
+        if ((player->meleeWeaponState == 0 || player->meleeWeaponAnimation >= 24) &&
             player->actor.world.pos.y - player->actor.floorHeight < 1.0f) {
             Math_StepToF(&this->unk_294, 110.0f, 3.0f);
         } else {
@@ -386,7 +389,7 @@ void func_80AD99D4(EnPoSisters* this, PlayState* play) {
     this->actor.speedXZ = 0.0f;
     this->actor.world.pos.y += 42.0f;
     this->actor.shape.yOffset = -6000.0f;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->unk_199 = 0;
     this->actionFunc = func_80ADAFC0;
     OnePointCutscene_Init(play, 3190, 999, &this->actor, MAIN_CAM);
@@ -436,7 +439,7 @@ void func_80AD9C24(EnPoSisters* this, PlayState* play) {
     Vec3f vec;
 
     this->actor.draw = NULL;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->unk_19C = 100;
     this->unk_199 = 32;
     this->collider.base.colType = COLTYPE_HIT3;
@@ -495,7 +498,7 @@ void func_80AD9F1C(EnPoSisters* this) {
     this->unk_19A = 300;
     this->unk_19C = 3;
     this->unk_199 |= 9;
-    this->actor.flags |= ACTOR_FLAG_0;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     this->actionFunc = func_80ADB770;
 }
 
@@ -517,7 +520,7 @@ void func_80ADA028(EnPoSisters* this) {
     Animation_MorphToLoop(&this->skelAnime, &gPoeSistersSwayAnim, -3.0f);
     this->unk_22E.a = 255;
     this->unk_199 |= 0x15;
-    this->actor.flags |= ACTOR_FLAG_0;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     this->actionFunc = func_80ADBBF4;
     this->actor.speedXZ = 0.0f;
 }
@@ -709,7 +712,7 @@ void func_80ADA9E8(EnPoSisters* this, PlayState* play) {
 }
 
 void func_80ADAAA4(EnPoSisters* this, PlayState* play) {
-    if (SkelAnime_Update(&this->skelAnime) && !(this->actor.flags & ACTOR_FLAG_15)) {
+    if (SkelAnime_Update(&this->skelAnime) && !(this->actor.flags & ACTOR_FLAG_DRAGGED_BY_ARROW)) {
         if (this->actor.colChkInfo.health != 0) {
             if (this->unk_194 != 0) {
                 func_80AD96A4(this);
@@ -861,7 +864,7 @@ void func_80ADB338(EnPoSisters* this, PlayState* play) {
                 this->unk_19C--;
 
                 // Force Meg to respawn instantly after getting hit
-                if (gSaveContext.n64ddFlag) {
+                if (IS_RANDO) {
                     this->unk_19C = 0;
                 }
             }
@@ -1011,7 +1014,7 @@ void func_80ADB9F0(EnPoSisters* this, PlayState* play) {
     if (SkelAnime_Update(&this->skelAnime)) {
         this->unk_22E.a = 255;
         if (this->unk_194 == 3) {
-            this->actor.flags |= ACTOR_FLAG_0;
+            this->actor.flags |= ACTOR_FLAG_TARGETABLE;
             this->actor.home.pos.x = 1992.0f;
             this->actor.home.pos.z = -1440.0f;
             this->unk_199 |= 0x18;
@@ -1179,7 +1182,7 @@ void func_80ADC10C(EnPoSisters* this, PlayState* play) {
             } else {
                 Enemy_StartFinishingBlow(play, &this->actor);
                 Audio_PlayActorSound2(&this->actor, NA_SE_EN_PO_SISTER_DEAD);
-                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_POE_SISTERS]++;
+                GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
             }
             func_80AD95D8(this);
         }
@@ -1228,7 +1231,7 @@ void EnPoSisters_Update(Actor* thisx, PlayState* play) {
             this->unk_198 = CLAMP_MIN(temp, 1);
         }
         if (this->actionFunc == func_80ADA8C0) {
-            this->actor.flags |= ACTOR_FLAG_24;
+            this->actor.flags |= ACTOR_FLAG_PLAY_HIT_SFX;
             CollisionCheck_SetAT(play, &play->colChkCtx, &this->collider.base);
         }
         if (this->unk_199 & 1) {

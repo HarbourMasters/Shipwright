@@ -4,6 +4,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "textures/map_i_static/map_i_static.h"
 #include "textures/map_grand_static/map_grand_static.h"
+#include <assert.h>
 
 MapData* gMapData;
 
@@ -61,24 +62,24 @@ void Map_SetFloorPalettesData(PlayState* play, s16 floor) {
     }
 
     switch (play->sceneNum) {
-        case SCENE_YDAN:
-        case SCENE_DDAN:
-        case SCENE_BDAN:
-        case SCENE_BMORI1:
-        case SCENE_HIDAN:
-        case SCENE_MIZUSIN:
-        case SCENE_JYASINZOU:
-        case SCENE_HAKADAN:
-        case SCENE_HAKADANCH:
-        case SCENE_ICE_DOUKUTO:
-        case SCENE_YDAN_BOSS:
-        case SCENE_DDAN_BOSS:
-        case SCENE_BDAN_BOSS:
-        case SCENE_MORIBOSSROOM:
-        case SCENE_FIRE_BS:
-        case SCENE_MIZUSIN_BS:
-        case SCENE_JYASINBOSS:
-        case SCENE_HAKADAN_BS:
+        case SCENE_DEKU_TREE:
+        case SCENE_DODONGOS_CAVERN:
+        case SCENE_JABU_JABU:
+        case SCENE_FOREST_TEMPLE:
+        case SCENE_FIRE_TEMPLE:
+        case SCENE_WATER_TEMPLE:
+        case SCENE_SPIRIT_TEMPLE:
+        case SCENE_SHADOW_TEMPLE:
+        case SCENE_BOTTOM_OF_THE_WELL:
+        case SCENE_ICE_CAVERN:
+        case SCENE_DEKU_TREE_BOSS:
+        case SCENE_DODONGOS_CAVERN_BOSS:
+        case SCENE_JABU_JABU_BOSS:
+        case SCENE_FOREST_TEMPLE_BOSS:
+        case SCENE_FIRE_TEMPLE_BOSS:
+        case SCENE_WATER_TEMPLE_BOSS:
+        case SCENE_SPIRIT_TEMPLE_BOSS:
+        case SCENE_SHADOW_TEMPLE_BOSS:
             for (i = 0; i < gMapData->maxPaletteCount[mapIndex]; i++) {
                 room = gMapData->paletteRoom[mapIndex][floor][i];
                 if ((room != 0xFF) && (gSaveContext.sceneFlags[mapIndex].rooms & gBitFlags[room])) {
@@ -366,41 +367,44 @@ void Map_InitData(PlayState* play, s16 room) {
     s16 extendedMapIndex;
 
     switch (play->sceneNum) {
-        case SCENE_SPOT00:
-        case SCENE_SPOT01:
-        case SCENE_SPOT02:
-        case SCENE_SPOT03:
-        case SCENE_SPOT04:
-        case SCENE_SPOT05:
-        case SCENE_SPOT06:
-        case SCENE_SPOT07:
-        case SCENE_SPOT08:
-        case SCENE_SPOT09:
-        case SCENE_SPOT10:
-        case SCENE_SPOT11:
-        case SCENE_SPOT12:
-        case SCENE_SPOT13:
-        case SCENE_SPOT15:
-        case SCENE_SPOT16:
-        case SCENE_SPOT17:
-        case SCENE_SPOT18:
-        case SCENE_SPOT20:
-        case SCENE_GANON_TOU:
+        case SCENE_HYRULE_FIELD:
+        case SCENE_KAKARIKO_VILLAGE:
+        case SCENE_GRAVEYARD:
+        case SCENE_ZORAS_RIVER:
+        case SCENE_KOKIRI_FOREST:
+        case SCENE_SACRED_FOREST_MEADOW:
+        case SCENE_LAKE_HYLIA:
+        case SCENE_ZORAS_DOMAIN:
+        case SCENE_ZORAS_FOUNTAIN:
+        case SCENE_GERUDO_VALLEY:
+        case SCENE_LOST_WOODS:
+        case SCENE_DESERT_COLOSSUS:
+        case SCENE_GERUDOS_FORTRESS:
+        case SCENE_HAUNTED_WASTELAND:
+        case SCENE_HYRULE_CASTLE:
+        case SCENE_DEATH_MOUNTAIN_TRAIL:
+        case SCENE_DEATH_MOUNTAIN_CRATER:
+        case SCENE_GORON_CITY:
+        case SCENE_LON_LON_RANCH:
+        case SCENE_OUTSIDE_GANONS_CASTLE:
             extendedMapIndex = mapIndex;
-            if (play->sceneNum == SCENE_SPOT02) {
+            if (play->sceneNum == SCENE_GRAVEYARD) {
                 if (CHECK_QUEST_ITEM(QUEST_SONG_NOCTURNE)) {
                     extendedMapIndex = 0x14;
                 }
-            } else if (play->sceneNum == SCENE_SPOT06) {
-                if ((LINK_AGE_IN_YEARS == YEARS_ADULT) && !CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) {
+            } else if (play->sceneNum == SCENE_LAKE_HYLIA) {
+                if ((LINK_AGE_IN_YEARS == YEARS_ADULT) &&
+                    ((!IS_RANDO && !CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) ||
+                     (IS_RANDO && !Flags_GetRandomizerInf(RAND_INF_DUNGEONS_DONE_WATER_TEMPLE)))) {
                     extendedMapIndex = 0x15;
                 }
-            } else if (play->sceneNum == SCENE_SPOT09) {
-                if ((LINK_AGE_IN_YEARS == YEARS_ADULT) && !((gSaveContext.eventChkInf[9] & 0xF) == 0xF)) {
+            } else if (play->sceneNum == SCENE_GERUDO_VALLEY) {
+                if ((LINK_AGE_IN_YEARS == YEARS_ADULT) && !GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) {
                     extendedMapIndex = 0x16;
                 }
-            } else if (play->sceneNum == SCENE_SPOT12) {
-                if ((gSaveContext.eventChkInf[9] & 0xF) == 0xF) {
+            } else if (play->sceneNum == SCENE_GERUDOS_FORTRESS) {
+                if ((!IS_RANDO && GET_EVENTCHKINF_CARPENTERS_FREE_ALL()) ||
+                    (IS_RANDO && CHECK_QUEST_ITEM(QUEST_GERUDO_CARD))) {
                     extendedMapIndex = 0x17;
                 }
             }
@@ -413,30 +417,30 @@ void Map_InitData(PlayState* play, s16 room) {
                                 //gMapData->owMinimapTexSize[mapIndex], __FILE__, __LINE__);
 
             if (sEntranceIconMapIndex < 24) {
-                const char* textureName = minimapTableOW[sEntranceIconMapIndex];
-                memcpy(play->interfaceCtx.mapSegment, GetResourceDataByName(textureName, false), GetResourceTexSizeByName(textureName, false));
+                play->interfaceCtx.mapSegment[0] = ResourceGetDataByName(minimapTableOW[sEntranceIconMapIndex]);
+                play->interfaceCtx.mapSegmentName[0] = minimapTableOW[sEntranceIconMapIndex];
             }
 
             interfaceCtx->unk_258 = mapIndex;
             break;
-        case SCENE_YDAN:
-        case SCENE_DDAN:
-        case SCENE_BDAN:
-        case SCENE_BMORI1:
-        case SCENE_HIDAN:
-        case SCENE_MIZUSIN:
-        case SCENE_JYASINZOU:
-        case SCENE_HAKADAN:
-        case SCENE_HAKADANCH:
-        case SCENE_ICE_DOUKUTO:
-        case SCENE_YDAN_BOSS:
-        case SCENE_DDAN_BOSS:
-        case SCENE_BDAN_BOSS:
-        case SCENE_MORIBOSSROOM:
-        case SCENE_FIRE_BS:
-        case SCENE_MIZUSIN_BS:
-        case SCENE_JYASINBOSS:
-        case SCENE_HAKADAN_BS:
+        case SCENE_DEKU_TREE:
+        case SCENE_DODONGOS_CAVERN:
+        case SCENE_JABU_JABU:
+        case SCENE_FOREST_TEMPLE:
+        case SCENE_FIRE_TEMPLE:
+        case SCENE_WATER_TEMPLE:
+        case SCENE_SPIRIT_TEMPLE:
+        case SCENE_SHADOW_TEMPLE:
+        case SCENE_BOTTOM_OF_THE_WELL:
+        case SCENE_ICE_CAVERN:
+        case SCENE_DEKU_TREE_BOSS:
+        case SCENE_DODONGOS_CAVERN_BOSS:
+        case SCENE_JABU_JABU_BOSS:
+        case SCENE_FOREST_TEMPLE_BOSS:
+        case SCENE_FIRE_TEMPLE_BOSS:
+        case SCENE_WATER_TEMPLE_BOSS:
+        case SCENE_SPIRIT_TEMPLE_BOSS:
+        case SCENE_SHADOW_TEMPLE_BOSS:
             osSyncPrintf(VT_FGCOL(YELLOW));
             // "Deku Tree Dungeon MAP Texture DMA"
             osSyncPrintf("デクの樹ダンジョンＭＡＰ テクスチャＤＭＡ(%x) scene_id_offset=%d  VREG(30)=%d\n", room,
@@ -447,9 +451,9 @@ void Map_InitData(PlayState* play, s16 room) {
                                     //((gMapData->dgnMinimapTexIndexOffset[mapIndex] + room) * 0xFF0),
                                 //0xFF0, __FILE__, __LINE__);
 
-            const char* textureName = minimapTableDangeon[gMapData->dgnMinimapTexIndexOffset[mapIndex] + room];
-            memcpy(play->interfaceCtx.mapSegment, GetResourceDataByName(textureName, false), GetResourceTexSizeByName(textureName, false));
-
+            play->interfaceCtx.mapSegment[0] = ResourceGetDataByName(
+                    minimapTableDangeon[gMapData->dgnMinimapTexIndexOffset[mapIndex] + room]);
+            play->interfaceCtx.mapSegmentName[0] = minimapTableDangeon[gMapData->dgnMinimapTexIndexOffset[mapIndex] + room];
             R_COMPASS_OFFSET_X = gMapData->roomCompassOffsetX[mapIndex][room];
             R_COMPASS_OFFSET_Y = gMapData->roomCompassOffsetY[mapIndex][room];
             Map_SetFloorPalettesData(play, VREG(30));
@@ -467,24 +471,24 @@ void Map_InitRoomData(PlayState* play, s16 room) {
 
     if (room >= 0) {
         switch (play->sceneNum) {
-            case SCENE_YDAN:
-            case SCENE_DDAN:
-            case SCENE_BDAN:
-            case SCENE_BMORI1:
-            case SCENE_HIDAN:
-            case SCENE_MIZUSIN:
-            case SCENE_JYASINZOU:
-            case SCENE_HAKADAN:
-            case SCENE_HAKADANCH:
-            case SCENE_ICE_DOUKUTO:
-            case SCENE_YDAN_BOSS:
-            case SCENE_DDAN_BOSS:
-            case SCENE_BDAN_BOSS:
-            case SCENE_MORIBOSSROOM:
-            case SCENE_FIRE_BS:
-            case SCENE_MIZUSIN_BS:
-            case SCENE_JYASINBOSS:
-            case SCENE_HAKADAN_BS:
+            case SCENE_DEKU_TREE:
+            case SCENE_DODONGOS_CAVERN:
+            case SCENE_JABU_JABU:
+            case SCENE_FOREST_TEMPLE:
+            case SCENE_FIRE_TEMPLE:
+            case SCENE_WATER_TEMPLE:
+            case SCENE_SPIRIT_TEMPLE:
+            case SCENE_SHADOW_TEMPLE:
+            case SCENE_BOTTOM_OF_THE_WELL:
+            case SCENE_ICE_CAVERN:
+            case SCENE_DEKU_TREE_BOSS:
+            case SCENE_DODONGOS_CAVERN_BOSS:
+            case SCENE_JABU_JABU_BOSS:
+            case SCENE_FOREST_TEMPLE_BOSS:
+            case SCENE_FIRE_TEMPLE_BOSS:
+            case SCENE_WATER_TEMPLE_BOSS:
+            case SCENE_SPIRIT_TEMPLE_BOSS:
+            case SCENE_SHADOW_TEMPLE_BOSS:
                 gSaveContext.sceneFlags[mapIndex].rooms |= gBitFlags[room];
                 osSyncPrintf("ＲＯＯＭ＿ＩＮＦ＝%d\n", gSaveContext.sceneFlags[mapIndex].rooms);
                 interfaceCtx->mapRoomNum = room;
@@ -519,34 +523,35 @@ void Map_Init(PlayState* play) {
     interfaceCtx->unk_258 = -1;
     interfaceCtx->unk_25A = -1;
 
-    interfaceCtx->mapSegment = GAMESTATE_ALLOC_MC(&play->state, 0x1000);
+    interfaceCtx->mapSegment = GAMESTATE_ALLOC_MC(&play->state, 2 * sizeof(char*));
+    interfaceCtx->mapSegmentName = GAMESTATE_ALLOC_MC(&play->state, 2 * sizeof(char*));
     // "ＭＡＰ texture initialization scene_data_ID=%d mapSegment=%x"
     osSyncPrintf("\n\n\nＭＡＰ テクスチャ初期化   scene_data_ID=%d\nmapSegment=%x\n\n", play->sceneNum,
                  interfaceCtx->mapSegment, play);
-    ASSERT(interfaceCtx->mapSegment != NULL);
+    assert(interfaceCtx->mapSegment != NULL);
 
     switch (play->sceneNum) {
-        case SCENE_SPOT00:
-        case SCENE_SPOT01:
-        case SCENE_SPOT02:
-        case SCENE_SPOT03:
-        case SCENE_SPOT04:
-        case SCENE_SPOT05:
-        case SCENE_SPOT06:
-        case SCENE_SPOT07:
-        case SCENE_SPOT08:
-        case SCENE_SPOT09:
-        case SCENE_SPOT10:
-        case SCENE_SPOT11:
-        case SCENE_SPOT12:
-        case SCENE_SPOT13:
-        case SCENE_SPOT15:
-        case SCENE_SPOT16:
-        case SCENE_SPOT17:
-        case SCENE_SPOT18:
-        case SCENE_SPOT20:
-        case SCENE_GANON_TOU:
-            mapIndex = play->sceneNum - SCENE_SPOT00;
+        case SCENE_HYRULE_FIELD:
+        case SCENE_KAKARIKO_VILLAGE:
+        case SCENE_GRAVEYARD:
+        case SCENE_ZORAS_RIVER:
+        case SCENE_KOKIRI_FOREST:
+        case SCENE_SACRED_FOREST_MEADOW:
+        case SCENE_LAKE_HYLIA:
+        case SCENE_ZORAS_DOMAIN:
+        case SCENE_ZORAS_FOUNTAIN:
+        case SCENE_GERUDO_VALLEY:
+        case SCENE_LOST_WOODS:
+        case SCENE_DESERT_COLOSSUS:
+        case SCENE_GERUDOS_FORTRESS:
+        case SCENE_HAUNTED_WASTELAND:
+        case SCENE_HYRULE_CASTLE:
+        case SCENE_DEATH_MOUNTAIN_TRAIL:
+        case SCENE_DEATH_MOUNTAIN_CRATER:
+        case SCENE_GORON_CITY:
+        case SCENE_LON_LON_RANCH:
+        case SCENE_OUTSIDE_GANONS_CASTLE:
+            mapIndex = play->sceneNum - SCENE_HYRULE_FIELD;
             R_MAP_INDEX = gSaveContext.mapIndex = mapIndex;
             R_COMPASS_SCALE_X = gMapData->owCompassInfo[mapIndex][0];
             R_COMPASS_SCALE_Y = gMapData->owCompassInfo[mapIndex][1];
@@ -556,35 +561,35 @@ void Map_Init(PlayState* play) {
             R_OW_MINIMAP_X = gMapData->owMinimapPosX[mapIndex];
             R_OW_MINIMAP_Y = gMapData->owMinimapPosY[mapIndex];
             break;
-        case SCENE_YDAN:
-        case SCENE_DDAN:
-        case SCENE_BDAN:
-        case SCENE_BMORI1:
-        case SCENE_HIDAN:
-        case SCENE_MIZUSIN:
-        case SCENE_JYASINZOU:
-        case SCENE_HAKADAN:
-        case SCENE_HAKADANCH:
-        case SCENE_ICE_DOUKUTO:
-        case SCENE_GANON:
-        case SCENE_MEN:
-        case SCENE_GERUDOWAY:
-        case SCENE_GANONTIKA:
-        case SCENE_GANON_SONOGO:
-        case SCENE_GANONTIKA_SONOGO:
-        case SCENE_TAKARAYA:
-        case SCENE_YDAN_BOSS:
-        case SCENE_DDAN_BOSS:
-        case SCENE_BDAN_BOSS:
-        case SCENE_MORIBOSSROOM:
-        case SCENE_FIRE_BS:
-        case SCENE_MIZUSIN_BS:
-        case SCENE_JYASINBOSS:
-        case SCENE_HAKADAN_BS:
+        case SCENE_DEKU_TREE:
+        case SCENE_DODONGOS_CAVERN:
+        case SCENE_JABU_JABU:
+        case SCENE_FOREST_TEMPLE:
+        case SCENE_FIRE_TEMPLE:
+        case SCENE_WATER_TEMPLE:
+        case SCENE_SPIRIT_TEMPLE:
+        case SCENE_SHADOW_TEMPLE:
+        case SCENE_BOTTOM_OF_THE_WELL:
+        case SCENE_ICE_CAVERN:
+        case SCENE_GANONS_TOWER:
+        case SCENE_GERUDO_TRAINING_GROUND:
+        case SCENE_THIEVES_HIDEOUT:
+        case SCENE_INSIDE_GANONS_CASTLE:
+        case SCENE_GANONS_TOWER_COLLAPSE_INTERIOR:
+        case SCENE_INSIDE_GANONS_CASTLE_COLLAPSE:
+        case SCENE_TREASURE_BOX_SHOP:
+        case SCENE_DEKU_TREE_BOSS:
+        case SCENE_DODONGOS_CAVERN_BOSS:
+        case SCENE_JABU_JABU_BOSS:
+        case SCENE_FOREST_TEMPLE_BOSS:
+        case SCENE_FIRE_TEMPLE_BOSS:
+        case SCENE_WATER_TEMPLE_BOSS:
+        case SCENE_SPIRIT_TEMPLE_BOSS:
+        case SCENE_SHADOW_TEMPLE_BOSS:
             mapIndex =
-                (play->sceneNum >= SCENE_YDAN_BOSS) ? play->sceneNum - SCENE_YDAN_BOSS : play->sceneNum;
+                (play->sceneNum >= SCENE_DEKU_TREE_BOSS) ? play->sceneNum - SCENE_DEKU_TREE_BOSS : play->sceneNum;
             R_MAP_INDEX = gSaveContext.mapIndex = mapIndex;
-            if ((play->sceneNum <= SCENE_ICE_DOUKUTO) || (play->sceneNum >= SCENE_YDAN_BOSS)) {
+            if ((play->sceneNum <= SCENE_ICE_CAVERN) || (play->sceneNum >= SCENE_DEKU_TREE_BOSS)) {
                 R_COMPASS_SCALE_X = gMapData->dgnCompassInfo[mapIndex][0];
                 R_COMPASS_SCALE_Y = gMapData->dgnCompassInfo[mapIndex][1];
                 R_COMPASS_OFFSET_X = gMapData->dgnCompassInfo[mapIndex][2];
@@ -631,36 +636,49 @@ void Minimap_DrawCompassIcons(PlayState* play) {
         gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
         gDPSetCombineMode(OVERLAY_DISP++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
 
+        s16 mapWidth = 0;
+        s16 mapStartPosX = 0;
+        if (play->sceneNum >= SCENE_HYRULE_FIELD && play->sceneNum <= SCENE_OUTSIDE_GANONS_CASTLE) { // Overworld
+            mapStartPosX = R_OW_MINIMAP_X;
+            mapWidth = gMapData->owMinimapWidth[R_MAP_INDEX];
+        } else if (play->sceneNum >= SCENE_DEKU_TREE && play->sceneNum <= SCENE_ICE_CAVERN) { // Dungeons
+            mapStartPosX = R_DGN_MINIMAP_X;
+            mapWidth = 96;
+        }
+
+        // The compass offset value is a factor of 10 compared to N64 screen pixels and originates in the center of the screen
+        // Compute the additional mirror offset value by normalizing the original offset position
+        // and taking it's distance to the center of the map, duplicating that result and casting back to a factor of 10
+        s16 mirrorOffset = ((mapWidth / 2) - ((R_COMPASS_OFFSET_X / 10) - (mapStartPosX - SCREEN_WIDTH / 2))) * 2 * 10;
+
         tempX = player->actor.world.pos.x;
         tempZ = player->actor.world.pos.z;
-        tempX /= R_COMPASS_SCALE_X;
+        tempX /= R_COMPASS_SCALE_X * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
         tempZ /= R_COMPASS_SCALE_Y;
+
+        s16 tempXOffset = R_COMPASS_OFFSET_X + (CVarGetInteger("gMirroredWorld", 0) ? mirrorOffset : 0);
         if (CVarGetInteger("gMinimapPosType", 0) != 0) {
             if (CVarGetInteger("gMinimapPosType", 0) == 1) {//Anchor Left
                 if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
-                    Matrix_Translate(
-                        OTRGetDimensionFromLeftEdge((R_COMPASS_OFFSET_X + (X_Margins_Minimap*10) + tempX + (CVarGetInteger("gMinimapPosX", 0)*10)) / 10.0f), 
-                        (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
+                Matrix_Translate(
+                    OTRGetDimensionFromLeftEdge((tempXOffset + (X_Margins_Minimap*10) + tempX + (CVarGetInteger("gMinimapPosX", 0)*10)) / 10.0f),
+                    (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
             } else if (CVarGetInteger("gMinimapPosType", 0) == 2) {//Anchor Right
                 if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
                 Matrix_Translate(
-                    OTRGetDimensionFromRightEdge((R_COMPASS_OFFSET_X + (X_Margins_Minimap*10) + tempX + (CVarGetInteger("gMinimapPosX", 0)*10)) / 10.0f), 
+                    OTRGetDimensionFromRightEdge((tempXOffset + (X_Margins_Minimap*10) + tempX + (CVarGetInteger("gMinimapPosX", 0)*10)) / 10.0f),
                     (R_COMPASS_OFFSET_Y +((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
             } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
                 Matrix_Translate(
-                    (R_COMPASS_OFFSET_X + tempX + (CVarGetInteger("gMinimapPosX", 0)*10) / 10.0f), 
+                    (tempXOffset + tempX + (CVarGetInteger("gMinimapPosX", 0)*10) / 10.0f),
                     (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
-            } else if (CVarGetInteger("gMinimapPosType", 0) == 4) {//Hidden
-                Matrix_Translate(
-                    (R_COMPASS_OFFSET_X+(9999*10) + tempX / 10.0f), 
-                    (R_COMPASS_OFFSET_Y+(9999*10) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
             }
         } else {
-            Matrix_Translate(OTRGetDimensionFromRightEdge((R_COMPASS_OFFSET_X+(X_Margins_Minimap*10) + tempX) / 10.0f), (R_COMPASS_OFFSET_Y+((Y_Margins_Minimap*10)*-1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
+            Matrix_Translate(OTRGetDimensionFromRightEdge((tempXOffset+(X_Margins_Minimap*10) + tempX) / 10.0f), (R_COMPASS_OFFSET_Y+((Y_Margins_Minimap*10)*-1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
         }
         Matrix_Scale(0.4f, 0.4f, 0.4f, MTXMODE_APPLY);
         Matrix_RotateX(-1.6f, MTXMODE_APPLY);
-        tempX = (0x7FFF - player->actor.shape.rot.y) / 0x400;
+        tempX = ((0x7FFF - player->actor.shape.rot.y) / 0x400) * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
         Matrix_RotateY(tempX / 10.0f, MTXMODE_APPLY);
         gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -669,36 +687,32 @@ void Minimap_DrawCompassIcons(PlayState* play) {
         gSPDisplayList(OVERLAY_DISP++, gCompassArrowDL);
 
         //Player map entry (red arrow)
-        tempX = sPlayerInitialPosX+X_Margins_Minimap;
-        tempZ = sPlayerInitialPosZ+Y_Margins_Minimap;
-        tempX /= R_COMPASS_SCALE_X;
+        tempX = sPlayerInitialPosX;
+        tempZ = sPlayerInitialPosZ;
+        tempX /= R_COMPASS_SCALE_X * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
         tempZ /= R_COMPASS_SCALE_Y;
         if (CVarGetInteger("gMinimapPosType", 0) != 0) {
             if (CVarGetInteger("gMinimapPosType", 0) == 1) {//Anchor Left
                 if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
-                    Matrix_Translate(
-                        OTRGetDimensionFromLeftEdge((R_COMPASS_OFFSET_X + (X_Margins_Minimap*10) + tempX + (CVarGetInteger("gMinimapPosX", 0)*10)) / 10.0f), 
-                        (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
+                Matrix_Translate(
+                    OTRGetDimensionFromLeftEdge((tempXOffset + (X_Margins_Minimap*10) + tempX + (CVarGetInteger("gMinimapPosX", 0)*10)) / 10.0f),
+                    (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
             } else if (CVarGetInteger("gMinimapPosType", 0) == 2) {//Anchor Right
                 if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
                 Matrix_Translate(
-                    OTRGetDimensionFromRightEdge((R_COMPASS_OFFSET_X + (X_Margins_Minimap*10) + tempX + (CVarGetInteger("gMinimapPosX", 0)*10)) / 10.0f), 
+                    OTRGetDimensionFromRightEdge((tempXOffset + (X_Margins_Minimap*10) + tempX + (CVarGetInteger("gMinimapPosX", 0)*10)) / 10.0f),
                     (R_COMPASS_OFFSET_Y +((Y_Margins_Minimap*10)*-1) - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
             } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
                 Matrix_Translate(
-                    (R_COMPASS_OFFSET_X + tempX + (CVarGetInteger("gMinimapPosX", 0)*10) / 10.0f), 
+                    (tempXOffset + tempX + (CVarGetInteger("gMinimapPosX", 0)*10) / 10.0f),
                     (R_COMPASS_OFFSET_Y - tempZ + ((CVarGetInteger("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
-            } else if (CVarGetInteger("gMinimapPosType", 0) == 4) {//Hidden
-                Matrix_Translate(
-                    (R_COMPASS_OFFSET_X+(9999*10) + tempX / 10.0f), 
-                    (R_COMPASS_OFFSET_Y+(9999*10) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
             }
         } else {
-            Matrix_Translate(OTRGetDimensionFromRightEdge((R_COMPASS_OFFSET_X+(X_Margins_Minimap*10) + tempX) / 10.0f), (R_COMPASS_OFFSET_Y+((Y_Margins_Minimap*10)*-1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
+            Matrix_Translate(OTRGetDimensionFromRightEdge((tempXOffset+(X_Margins_Minimap*10) + tempX) / 10.0f), (R_COMPASS_OFFSET_Y+((Y_Margins_Minimap*10)*-1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
         }
         Matrix_Scale(VREG(9) / 100.0f, VREG(9) / 100.0f, VREG(9) / 100.0f, MTXMODE_APPLY);
         Matrix_RotateX(VREG(52) / 10.0f, MTXMODE_APPLY);
-        Matrix_RotateY(sPlayerInitialDirection / 10.0f, MTXMODE_APPLY);
+        Matrix_RotateY((sPlayerInitialDirection * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1)) / 10.0f, MTXMODE_APPLY);
         gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
@@ -738,17 +752,17 @@ void Minimap_Draw(PlayState* play) {
         }
 
         switch (play->sceneNum) {
-            case SCENE_YDAN:
-            case SCENE_DDAN:
-            case SCENE_BDAN:
-            case SCENE_BMORI1:
-            case SCENE_HIDAN:
-            case SCENE_MIZUSIN:
-            case SCENE_JYASINZOU:
-            case SCENE_HAKADAN:
-            case SCENE_HAKADANCH:
-            case SCENE_ICE_DOUKUTO:
-                if (!R_MINIMAP_DISABLED) {
+            case SCENE_DEKU_TREE:
+            case SCENE_DODONGOS_CAVERN:
+            case SCENE_JABU_JABU:
+            case SCENE_FOREST_TEMPLE:
+            case SCENE_FIRE_TEMPLE:
+            case SCENE_WATER_TEMPLE:
+            case SCENE_SPIRIT_TEMPLE:
+            case SCENE_SHADOW_TEMPLE:
+            case SCENE_BOTTOM_OF_THE_WELL:
+            case SCENE_ICE_CAVERN:
+                if (!R_MINIMAP_DISABLED && CVarGetInteger("gMinimapPosType", 0) != 4) { // Not Hidden
                     Gfx_SetupDL_39Overlay(play->state.gfxCtx);
                     gDPSetCombineLERP(OVERLAY_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0,
                                       TEXEL0, 0, PRIMITIVE, 0);
@@ -756,9 +770,9 @@ void Minimap_Draw(PlayState* play) {
                     if (CHECK_DUNGEON_ITEM(DUNGEON_MAP, mapIndex)) {
                         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, minimapColor.r, minimapColor.g, minimapColor.b, interfaceCtx->minimapAlpha);
 
-                        gSPInvalidateTexCache(OVERLAY_DISP++, interfaceCtx->mapSegment);
-                        gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->mapSegment, G_IM_FMT_I, 96, 85, 0,
-                                               G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                        u8 mirrorMode = CVarGetInteger("gMirroredWorld", 0) ? G_TX_MIRROR : G_TX_NOMIRROR;
+                        gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->mapSegmentName[0], G_IM_FMT_I, 96, 85, 0,
+                                               mirrorMode | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                                G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
                         s16 dgnMiniMapX = OTRGetRectDimensionFromRightEdge(R_DGN_MINIMAP_X + X_Margins_Minimap);
@@ -767,19 +781,24 @@ void Minimap_Draw(PlayState* play) {
                             dgnMiniMapY = R_DGN_MINIMAP_Y+CVarGetInteger("gMinimapPosY", 0)+Y_Margins_Minimap;
                             if (CVarGetInteger("gMinimapPosType", 0) == 1) {//Anchor Left
                                 if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
-                                dgnMiniMapX = OTRGetDimensionFromLeftEdge(R_DGN_MINIMAP_X+CVarGetInteger("gMinimapPosX", 0)+X_Margins_Minimap);            
+                                dgnMiniMapX = OTRGetDimensionFromLeftEdge(R_DGN_MINIMAP_X+CVarGetInteger("gMinimapPosX", 0)+X_Margins_Minimap);
                             } else if (CVarGetInteger("gMinimapPosType", 0) == 2) {//Anchor Right
                                 if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
                                 dgnMiniMapX = OTRGetDimensionFromRightEdge(R_DGN_MINIMAP_X+CVarGetInteger("gMinimapPosX", 0)+X_Margins_Minimap);
                             } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
                                 dgnMiniMapX = CVarGetInteger("gMinimapPosX", 0);
-                            } else if (CVarGetInteger("gMinimapPosType", 0) == 4) {//Hidden
-                                dgnMiniMapX = -9999;
                             }
                         }
+
+                        s32 sValue = 0;
+                        if (CVarGetInteger("gMirroredWorld", 0)) {
+                            // Flip the minimap on the x-axis (s-axis) by setting s to the textures mirror boundary
+                            sValue = 96 << 5;
+                        }
+
                         gSPWideTextureRectangle(OVERLAY_DISP++, dgnMiniMapX << 2, dgnMiniMapY << 2,
                                             (dgnMiniMapX + 96) << 2, (dgnMiniMapY + 85) << 2, G_TX_RENDERTILE,
-                                            0, 0, 1 << 10, 1 << 10);
+                                            sValue, 0, 1 << 10, 1 << 10);
                     }
 
                     if (CHECK_DUNGEON_ITEM(DUNGEON_COMPASS, mapIndex)) {
@@ -801,35 +820,36 @@ void Minimap_Draw(PlayState* play) {
                 }
 
                 break;
-            case SCENE_SPOT00:
-            case SCENE_SPOT01:
-            case SCENE_SPOT02:
-            case SCENE_SPOT03:
-            case SCENE_SPOT04:
-            case SCENE_SPOT05:
-            case SCENE_SPOT06:
-            case SCENE_SPOT07:
-            case SCENE_SPOT08:
-            case SCENE_SPOT09:
-            case SCENE_SPOT10:
-            case SCENE_SPOT11:
-            case SCENE_SPOT12:
-            case SCENE_SPOT13:
-            case SCENE_SPOT15:
-            case SCENE_SPOT16:
-            case SCENE_SPOT17:
-            case SCENE_SPOT18:
-            case SCENE_SPOT20:
-            case SCENE_GANON_TOU:
-                if (!R_MINIMAP_DISABLED) {
+            case SCENE_HYRULE_FIELD:
+            case SCENE_KAKARIKO_VILLAGE:
+            case SCENE_GRAVEYARD:
+            case SCENE_ZORAS_RIVER:
+            case SCENE_KOKIRI_FOREST:
+            case SCENE_SACRED_FOREST_MEADOW:
+            case SCENE_LAKE_HYLIA:
+            case SCENE_ZORAS_DOMAIN:
+            case SCENE_ZORAS_FOUNTAIN:
+            case SCENE_GERUDO_VALLEY:
+            case SCENE_LOST_WOODS:
+            case SCENE_DESERT_COLOSSUS:
+            case SCENE_GERUDOS_FORTRESS:
+            case SCENE_HAUNTED_WASTELAND:
+            case SCENE_HYRULE_CASTLE:
+            case SCENE_DEATH_MOUNTAIN_TRAIL:
+            case SCENE_DEATH_MOUNTAIN_CRATER:
+            case SCENE_GORON_CITY:
+            case SCENE_LON_LON_RANCH:
+            case SCENE_OUTSIDE_GANONS_CASTLE:
+                if (!R_MINIMAP_DISABLED && CVarGetInteger("gMinimapPosType", 0) != 4) { // Not Hidden
                     Gfx_SetupDL_39Overlay(play->state.gfxCtx);
 
                     gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
                     gDPSetPrimColor(OVERLAY_DISP++, 0, 0, minimapColor.r, minimapColor.g, minimapColor.b, interfaceCtx->minimapAlpha);
 
-                    gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->mapSegment, G_IM_FMT_IA,
+                    u8 mirrorMode = CVarGetInteger("gMirroredWorld", 0) ? G_TX_MIRROR : G_TX_NOMIRROR;
+                    gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->mapSegmentName[0], G_IM_FMT_IA,
                                            gMapData->owMinimapWidth[mapIndex], gMapData->owMinimapHeight[mapIndex], 0,
-                                           G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                                           mirrorMode | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
                     s16 oWMiniMapX = OTRGetRectDimensionFromRightEdge(R_OW_MINIMAP_X + X_Margins_Minimap);
@@ -844,104 +864,101 @@ void Minimap_Draw(PlayState* play) {
                             oWMiniMapX = OTRGetDimensionFromRightEdge(R_OW_MINIMAP_X+CVarGetInteger("gMinimapPosX", 0)+X_Margins_Minimap);
                         } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
                             oWMiniMapX = CVarGetInteger("gMinimapPosX", 0);
-                        } else if (CVarGetInteger("gMinimapPosType", 0) == 4) {//Hidden
-                            oWMiniMapX = -9999;
                         }
                     }
+
+                    s32 sValue = 0;
+                    if (CVarGetInteger("gMirroredWorld", 0)) {
+                        // Flip the minimap on the x-axis (s-axis) by setting s to the textures mirror boundary
+                        sValue = gMapData->owMinimapWidth[mapIndex] << 5;
+                    }
+
                     gSPWideTextureRectangle(OVERLAY_DISP++, oWMiniMapX << 2, oWMiniMapY << 2,
                                            (oWMiniMapX + gMapData->owMinimapWidth[mapIndex]) << 2,
-                                           (oWMiniMapY + gMapData->owMinimapHeight[mapIndex]) << 2, G_TX_RENDERTILE, 0,
+                                           (oWMiniMapY + gMapData->owMinimapHeight[mapIndex]) << 2, G_TX_RENDERTILE, sValue,
                                             0, 1 << 10, 1 << 10);
 
                     gDPSetPrimColor(OVERLAY_DISP++, 0, 0, minimapColor.r, minimapColor.g, minimapColor.b, interfaceCtx->minimapAlpha);
 
-                    if (((play->sceneNum != SCENE_SPOT01) && (play->sceneNum != SCENE_SPOT04) &&
-                         (play->sceneNum != SCENE_SPOT08)) ||
-                        (LINK_AGE_IN_YEARS != YEARS_ADULT)) {
-                        bool Map0 = gMapData->owEntranceIconPosY[sEntranceIconMapIndex] << 2 == 0;
-                        s16 IconSize = 8;
-                        s16 PosX = gMapData->owEntranceIconPosX[sEntranceIconMapIndex] + (Map0 ? 0 : X_Margins_Minimap);
-                        s16 PosY = gMapData->owEntranceIconPosY[sEntranceIconMapIndex] + (Map0 ? 0 : Y_Margins_Minimap);
-                        //gFixDungeonMinimapIcon fix both Y position of visible icon and hide these non needed.
+                    s16 iconSize = 8;
 
-                        s16 TopLeftX = (Map0 ? OTRGetRectDimensionFromLeftEdge(PosX) : OTRGetRectDimensionFromRightEdge(PosX)) << 2;
-                        s16 TopLeftY = PosY << 2;
-                        s16 TopLeftW = (Map0 ? OTRGetRectDimensionFromLeftEdge(PosX + IconSize) : OTRGetRectDimensionFromRightEdge(PosX + IconSize)) << 2;
-                        s16 TopLeftH = (PosY + IconSize) << 2;
+                    if (((play->sceneNum != SCENE_KAKARIKO_VILLAGE) && (play->sceneNum != SCENE_KOKIRI_FOREST) &&
+                         (play->sceneNum != SCENE_ZORAS_FOUNTAIN)) ||
+                        (LINK_AGE_IN_YEARS != YEARS_ADULT)) {
+                        s16 origX = gMapData->owEntranceIconPosX[sEntranceIconMapIndex];
+
+                        // Compute the distance of the center of the original texture location to the center of the map
+                        // Then duplicate that and right-align the texture (extra 2 pixels are due to the texture being a 6px left-aligned in a 8px tex)
+                        s16 distFromCenter = (R_OW_MINIMAP_X + (gMapData->owMinimapWidth[mapIndex] / 2)) - (origX + (iconSize / 2));
+                        s16 mirrorOffset = distFromCenter * 2 + (iconSize / 2) - 2;
+                        s16 newX = origX + (CVarGetInteger("gMirroredWorld", 0) ? mirrorOffset : 0);
+
+                        // The game authentically uses larger negative values for the entrance icon Y pos value. Normally only the first 12 bits
+                        // would be read when the final value is passed into `gSPTextureRectangle`, but our cosmetic hud placements requires using
+                        // `gSPWideTextureRectangle` which reads the first 24 bits instead. This caused the icon to be placed off screen.
+                        // To address this, we take only the first 10 bits (which are later left-shifted by 2 to get our final 12 bits)
+                        // to fix the entrance icon position when used with `gSPWideTextureRectangle`
+                        s16 newY = gMapData->owEntranceIconPosY[sEntranceIconMapIndex] & 0x3FF;
+
+                        s16 entranceX = OTRGetRectDimensionFromRightEdge(newX + X_Margins_Minimap);
+                        s16 entranceY = newY + Y_Margins_Minimap;
                         if (CVarGetInteger("gMinimapPosType", 0) != 0) {
-                            PosX = gMapData->owEntranceIconPosX[sEntranceIconMapIndex] + CVarGetInteger("gMinimapPosX", 0) + X_Margins_Minimap;
-                            PosY = gMapData->owEntranceIconPosY[sEntranceIconMapIndex] + CVarGetInteger("gMinimapPosY", 0) + Y_Margins_Minimap;
-                            if (CVarGetInteger("gMinimapPosType", 0) == 1) {//Anchor Left
+                            entranceY = newY + CVarGetInteger("gMinimapPosY", 0) + Y_Margins_Minimap;
+                            if (CVarGetInteger("gMinimapPosType", 0) == 1) { // Anchor Left
                                 if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
-                                TopLeftX = OTRGetRectDimensionFromLeftEdge(PosX) << 2;
-                                TopLeftW = OTRGetRectDimensionFromLeftEdge(PosX + IconSize) << 2;
-                            } else if (CVarGetInteger("gMinimapPosType", 0) == 2) {//Anchor Right
+                                entranceX = OTRGetRectDimensionFromLeftEdge(newX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0));
+                            } else if (CVarGetInteger("gMinimapPosType", 0) == 2) { // Anchor Right
                                 if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
-                                TopLeftX = OTRGetRectDimensionFromRightEdge(PosX) << 2;
-                                TopLeftW = OTRGetRectDimensionFromRightEdge(PosX + IconSize) << 2;
-                            } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
-                                TopLeftX = PosX << 2;
-                                TopLeftW = PosX + IconSize << 2;
-                            } else if (CVarGetInteger("gMinimapPosType", 0) == 4) {//Hidden
-                                TopLeftX = -9999 << 2;
-                                TopLeftW = -9999 + IconSize << 2;
-                            }
-                            if (!CVarGetInteger("gMinimapPosType", 0) != 4 && Map0 && !CVarGetInteger("gFixDungeonMinimapIcon", 0)) { //Force top left icon if fix not applied.
-                                TopLeftX = OTRGetRectDimensionFromLeftEdge(gMapData->owEntranceIconPosX[sEntranceIconMapIndex]) << 2;
-                                TopLeftY = gMapData->owEntranceIconPosY[sEntranceIconMapIndex] << 2;
-                                TopLeftW = OTRGetRectDimensionFromLeftEdge(gMapData->owEntranceIconPosX[sEntranceIconMapIndex] + IconSize) << 2;
-                                TopLeftH = (gMapData->owEntranceIconPosY[sEntranceIconMapIndex] + IconSize) << 2;
+                                entranceX = OTRGetRectDimensionFromRightEdge(newX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0));
+                            } else if (CVarGetInteger("gMinimapPosType", 0) == 3) { // Anchor None
+                                entranceX = newX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0);
                             }
                         }
-                        if (CVarGetInteger("gFixDungeonMinimapIcon", 0) != 0){
-                            //No idea why and how Original value work but this does actually fix them all.
-                            PosY = PosY+1024;
+
+                        // For icons that normally would be placed in 0,0 leave them there based on the left edge dimension
+                        // or hide them entirely if the fix is applied
+                        if (gMapData->owEntranceIconPosY[sEntranceIconMapIndex] == 0) {
+                            entranceY = 0;
+                            entranceX = CVarGetInteger("gFixDungeonMinimapIcon", 0) ? -9999 : OTRGetRectDimensionFromLeftEdge(0);
                         }
-                        
-                        if (((gMapData->owEntranceFlag[sEntranceIconMapIndex] == 0xFFFF) ||
-                             ((gMapData->owEntranceFlag[sEntranceIconMapIndex] != 0xFFFF) &&
-                              (gSaveContext.infTable[26] & gBitFlags[gMapData->owEntranceFlag[mapIndex]])
-                             )) || CVarGetInteger("gAlwaysShowDungeonMinimapIcon", 0)) {
-                            if (!Map0 || !CVarGetInteger("gFixDungeonMinimapIcon", 0)) {
-                                gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                                                    IconSize, IconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
-                                                    G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-                                gSPWideTextureRectangle(OVERLAY_DISP++, TopLeftX, TopLeftY, TopLeftW, TopLeftH, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
-                            }
+
+                        //! @bug UB: sEntranceIconMapIndex can be up to 23 and is accessing owEntranceFlag which is size 20
+                        if ((gMapData->owEntranceFlag[sEntranceIconMapIndex] == 0xFFFF) ||
+                            ((gMapData->owEntranceFlag[sEntranceIconMapIndex] != 0xFFFF) &&
+                              ((gSaveContext.infTable[26] & gBitFlags[gMapData->owEntranceFlag[mapIndex]]) ||
+                               CVarGetInteger("gAlwaysShowDungeonMinimapIcon", 0)))) {
+                            gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b,
+                                                iconSize, iconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                            gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, entranceY << 2, (entranceX + iconSize) << 2,
+                                                    (entranceY + iconSize) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
                         }
                     }
 
-                    s16 entranceX = OTRGetRectDimensionFromRightEdge(270 + X_Margins_Minimap);
-                    s16 entranceY = 154 + Y_Margins_Minimap; 
+                    s16 origX = CVarGetInteger("gMirroredWorld", 0) ? 256 : 270;
+                    s16 entranceX = OTRGetRectDimensionFromRightEdge(origX + X_Margins_Minimap);
+                    s16 entranceY = 154 + Y_Margins_Minimap;
                     if (CVarGetInteger("gMinimapPosType", 0) != 0) {
-                        entranceY = 154 + Y_Margins_Minimap + CVarGetInteger("gMinimapPosY", 0); 
+                        entranceY = 154 + Y_Margins_Minimap + CVarGetInteger("gMinimapPosY", 0);
                         if (CVarGetInteger("gMinimapPosType", 0) == 1) {//Anchor Left
                             if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
-                            entranceX = OTRGetRectDimensionFromLeftEdge(270 + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0));
+                            entranceX = OTRGetRectDimensionFromLeftEdge(origX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0));
                         } else if (CVarGetInteger("gMinimapPosType", 0) == 2) {//Anchor Right
                             if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
-                            entranceX = OTRGetRectDimensionFromRightEdge(270 + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0));
+                            entranceX = OTRGetRectDimensionFromRightEdge(origX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0));
                         } else if (CVarGetInteger("gMinimapPosType", 0) == 3) {//Anchor None
-                            entranceX = 270 + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0);
-                        } else if (CVarGetInteger("gMinimapPosType", 0) == 4) {//Hidden
-                            entranceX = -9999;
+                            entranceX = origX + X_Margins_Minimap + CVarGetInteger("gMinimapPosX", 0);
                         }
                     }
 
-                    if ((play->sceneNum == SCENE_SPOT08) && (gSaveContext.infTable[26] & gBitFlags[9])) {
-                        gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8,
-                                            8, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                    // Ice Cavern entrance icon
+                    if ((play->sceneNum == SCENE_ZORAS_FOUNTAIN) && ((gSaveContext.infTable[26] & gBitFlags[9]) ||
+                        CVarGetInteger("gAlwaysShowDungeonMinimapIcon", 0))) {
+                        gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, iconSize,
+                                            iconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-                        gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, entranceY << 2, (entranceX + 32) << 2, (entranceY + 8) << 2, 
-                                                G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
-                    } else if ((play->sceneNum == SCENE_SPOT08) && CVarGetInteger("gAlwaysShowDungeonMinimapIcon", 0) != 0){
-                        
-                        gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8,
-                                            8, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-                                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-
-                        gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, entranceY << 2, (entranceX + 32) << 2, (entranceY + 8) << 2, 
-                                                G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                        gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, entranceY << 2, (entranceX + iconSize) << 2,
+                                               (entranceY + iconSize) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
                     }
 
                     Minimap_DrawCompassIcons(play); // Draw icons for the player spawn and current position
@@ -983,16 +1000,16 @@ void Map_Update(PlayState* play) {
 
     if ((play->pauseCtx.state == 0) && (play->pauseCtx.debugState == 0)) {
         switch (play->sceneNum) {
-            case SCENE_YDAN:
-            case SCENE_DDAN:
-            case SCENE_BDAN:
-            case SCENE_BMORI1:
-            case SCENE_HIDAN:
-            case SCENE_MIZUSIN:
-            case SCENE_JYASINZOU:
-            case SCENE_HAKADAN:
-            case SCENE_HAKADANCH:
-            case SCENE_ICE_DOUKUTO:
+            case SCENE_DEKU_TREE:
+            case SCENE_DODONGOS_CAVERN:
+            case SCENE_JABU_JABU:
+            case SCENE_FOREST_TEMPLE:
+            case SCENE_FIRE_TEMPLE:
+            case SCENE_WATER_TEMPLE:
+            case SCENE_SPIRIT_TEMPLE:
+            case SCENE_SHADOW_TEMPLE:
+            case SCENE_BOTTOM_OF_THE_WELL:
+            case SCENE_ICE_CAVERN:
                 interfaceCtx->mapPalette[30] = 0;
                 if (CHECK_DUNGEON_ITEM(DUNGEON_MAP, mapIndex)) {
                     interfaceCtx->mapPalette[31] = 1;
@@ -1035,17 +1052,17 @@ void Map_Update(PlayState* play) {
 
                 VREG(10) = interfaceCtx->mapRoomNum;
                 break;
-            case SCENE_YDAN_BOSS:
-            case SCENE_DDAN_BOSS:
-            case SCENE_BDAN_BOSS:
-            case SCENE_MORIBOSSROOM:
-            case SCENE_FIRE_BS:
-            case SCENE_MIZUSIN_BS:
-            case SCENE_JYASINBOSS:
-            case SCENE_HAKADAN_BS:
-                VREG(30) = gMapData->bossFloor[play->sceneNum - SCENE_YDAN_BOSS];
+            case SCENE_DEKU_TREE_BOSS:
+            case SCENE_DODONGOS_CAVERN_BOSS:
+            case SCENE_JABU_JABU_BOSS:
+            case SCENE_FOREST_TEMPLE_BOSS:
+            case SCENE_FIRE_TEMPLE_BOSS:
+            case SCENE_WATER_TEMPLE_BOSS:
+            case SCENE_SPIRIT_TEMPLE_BOSS:
+            case SCENE_SHADOW_TEMPLE_BOSS:
+                VREG(30) = gMapData->bossFloor[play->sceneNum - SCENE_DEKU_TREE_BOSS];
                 R_MAP_TEX_INDEX = R_MAP_TEX_INDEX_BASE +
-                                  gMapData->floorTexIndexOffset[play->sceneNum - SCENE_YDAN_BOSS][VREG(30)];
+                                  gMapData->floorTexIndexOffset[play->sceneNum - SCENE_DEKU_TREE_BOSS][VREG(30)];
                 break;
         }
     }

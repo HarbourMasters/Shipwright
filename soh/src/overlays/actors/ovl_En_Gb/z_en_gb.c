@@ -8,7 +8,7 @@
 #include "objects/object_ps/object_ps.h"
 #include "soh/frame_interpolation.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnGb_Init(Actor* thisx, PlayState* play);
 void EnGb_Destroy(Actor* thisx, PlayState* play);
@@ -143,7 +143,7 @@ static Vec3f sBottlesPositions[] = {
 };
 
 void func_80A2F180(EnGb* this) {
-    if (gSaveContext.infTable[0xB] & 0x40) {
+    if (Flags_GetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET)) {
         this->textId = 0x70F5;
     } else {
         this->textId = 0x70F4;
@@ -224,6 +224,8 @@ void EnGb_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyCylinder(play, &this->collider);
     LightContext_RemoveLight(play, &play->lightCtx, this->light);
     DynaPoly_DeleteBgActor(play, &play->colCtx.dyna, this->dyna.bgId);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80A2F608(EnGb* this) {
@@ -306,8 +308,8 @@ void func_80A2F83C(EnGb* this, PlayState* play) {
 
 void func_80A2F94C(EnGb* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
-        if (!(gSaveContext.infTable[0xB] & 0x40)) {
-            gSaveContext.infTable[0xB] |= 0x40;
+        if (!Flags_GetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET)) {
+            Flags_SetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET);
         }
         func_80A2F180(this);
         this->actionFunc = func_80A2F83C;
@@ -316,8 +318,8 @@ void func_80A2F94C(EnGb* this, PlayState* play) {
 
 void func_80A2F9C0(EnGb* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
-        if (!(gSaveContext.infTable[0xB] & 0x40)) {
-            gSaveContext.infTable[0xB] |= 0x40;
+        if (!Flags_GetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET)) {
+            Flags_SetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET);
         }
         func_80A2F180(this);
         Player_UpdateBottleHeld(play, GET_PLAYER(play), ITEM_BOTTLE, PLAYER_IA_BOTTLE);
@@ -328,14 +330,17 @@ void func_80A2F9C0(EnGb* this, PlayState* play) {
 
 void func_80A2FA50(EnGb* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
-        if (!(gSaveContext.infTable[0xB] & 0x40)) {
-            gSaveContext.infTable[0xB] |= 0x40;
+        if (!Flags_GetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET)) {
+            Flags_SetInfTable(INFTABLE_SPOKE_TO_POE_COLLECTOR_IN_RUINED_MARKET);
         }
         func_80A2F180(this);
         Player_UpdateBottleHeld(play, GET_PLAYER(play), ITEM_BOTTLE, PLAYER_IA_BOTTLE);
         Rupees_ChangeBy(50);
         HIGH_SCORE(HS_POE_POINTS) += 100;
-        if (HIGH_SCORE(HS_POE_POINTS) != 1000) {
+        if (
+            (!gSaveContext.n64ddFlag && HIGH_SCORE(HS_POE_POINTS) != 1000) ||
+            (gSaveContext.n64ddFlag && (HIGH_SCORE(HS_POE_POINTS) != 1000 || Flags_GetRandomizerInf(RAND_INF_10_BIG_POES)))
+        ) {
             if (HIGH_SCORE(HS_POE_POINTS) > 1100) {
                 HIGH_SCORE(HS_POE_POINTS) = 1100;
             }
@@ -343,6 +348,7 @@ void func_80A2FA50(EnGb* this, PlayState* play) {
         } else {
             Player* player = GET_PLAYER(play);
 
+            Flags_SetRandomizerInf(RAND_INF_10_BIG_POES);
             player->exchangeItemId = EXCH_ITEM_NONE;
             this->textId = 0x70F8;
             Message_ContinueTextbox(play, this->textId);
@@ -353,7 +359,7 @@ void func_80A2FA50(EnGb* this, PlayState* play) {
 
 void func_80A2FB40(EnGb* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(play)) {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->dyna.actor, play, GI_BOTTLE, 100.0f, 10.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE);
@@ -368,7 +374,7 @@ void func_80A2FBB0(EnGb* this, PlayState* play) {
         this->dyna.actor.parent = NULL;
         this->actionFunc = func_80A2FC0C;
     } else {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->dyna.actor, play, GI_BOTTLE, 100.0f, 10.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE);
@@ -445,8 +451,7 @@ void EnGb_Draw(Actor* thisx, PlayState* play) {
     Lights_PointNoGlowSetInfo(&this->lightInfo, this->dyna.actor.world.pos.x, this->dyna.actor.world.pos.y,
                               this->dyna.actor.world.pos.z, this->lightColor.r, this->lightColor.g, this->lightColor.b,
                               this->lightColor.a);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, NULL, &this->dyna.actor);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, &this->dyna.actor);
     EnGb_DrawCagedSouls(this, play);
     CLOSE_DISPS(play->state.gfxCtx);
 }

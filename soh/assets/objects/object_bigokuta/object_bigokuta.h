@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_BIGOKUTA_H
+#define OBJECTS_OBJECT_BIGOKUTA_H 1
 
 #include "align_asset_macro.h"
 
@@ -106,3 +107,6 @@ static const ALIGN_ASSET(2) char object_bigokuta_Tex_006890[] = dobject_bigokuta
 
 #define dobject_bigokuta_Skel_006BC0 "__OTR__objects/object_bigokuta/object_bigokuta_Skel_006BC0"
 static const ALIGN_ASSET(2) char object_bigokuta_Skel_006BC0[] = dobject_bigokuta_Skel_006BC0;
+
+
+#endif // OBJECTS_OBJECT_BIGOKUTA_H

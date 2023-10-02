@@ -2,7 +2,7 @@
 #include "objects/object_du/object_du.h"
 #include "scenes/overworld/spot18/spot18_scene.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_25)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void EnDu_Init(Actor* thisx, PlayState* play);
 void EnDu_Destroy(Actor* thisx, PlayState* play);
@@ -112,7 +112,7 @@ u16 func_809FDC38(PlayState* play, Actor* actor) {
             return 0x301D;
         }
     }
-    if (gSaveContext.infTable[0x11] & 8) {
+    if (Flags_GetInfTable(INFTABLE_113)) {
         return 0x301B;
     } else {
         return 0x301A;
@@ -127,13 +127,13 @@ s16 func_809FDCDC(PlayState* play, Actor* actor) {
         case TEXT_STATE_CLOSING:
             switch (actor->textId) {
                 case 0x301A:
-                    gSaveContext.infTable[0x11] |= 8;
+                    Flags_SetInfTable(INFTABLE_113);
                     break;
                 case 0x301C:
                 case 0x301F:
                     return NPC_TALK_STATE_ACTION;
                 case 0x3020:
-                    gSaveContext.eventChkInf[0x2] |= 4;
+                    Flags_SetEventChkInf(EVENTCHKINF_22);
                     break;
             }
             return 0;
@@ -155,9 +155,9 @@ s16 func_809FDCDC(PlayState* play, Actor* actor) {
 }
 
 s32 func_809FDDB4(EnDu* this, PlayState* play) {
-    if (play->sceneNum == SCENE_SPOT18 && LINK_IS_CHILD) {
+    if (play->sceneNum == SCENE_GORON_CITY && LINK_IS_CHILD) {
         return 1;
-    } else if (play->sceneNum == SCENE_HIDAN && !(gSaveContext.infTable[0x11] & 0x400) && LINK_IS_ADULT) {
+    } else if (play->sceneNum == SCENE_FIRE_TEMPLE && !Flags_GetInfTable(INFTABLE_SPOKE_TO_DARUNIA_IN_FIRE_TEMPLE) && LINK_IS_ADULT) {
         return 1;
     }
     return 0;
@@ -344,7 +344,7 @@ void func_809FE4A4(EnDu* this, PlayState* play) {
         play->msgCtx.ocarinaMode = OCARINA_MODE_00;
         EnDu_SetupAction(this, func_809FE3C0);
     } else if (play->msgCtx.ocarinaMode >= OCARINA_MODE_06) {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGoronCityDaruniaWrongCs);
             gSaveContext.cutsceneTrigger = 1;
         }
@@ -353,7 +353,7 @@ void func_809FE4A4(EnDu* this, PlayState* play) {
         play->msgCtx.ocarinaMode = OCARINA_MODE_04;
     } else if (play->msgCtx.ocarinaMode == OCARINA_MODE_03) {
         Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGoronCityDaruniaCorrectCs);
             gSaveContext.cutsceneTrigger = 1;
         }
@@ -431,7 +431,7 @@ void func_809FE798(EnDu* this, PlayState* play) {
         }
     } else {
         Actor_Kill(&this->actor);
-        gSaveContext.infTable[0x11] |= 0x400;
+        Flags_SetInfTable(INFTABLE_SPOKE_TO_DARUNIA_IN_FIRE_TEMPLE);
     }
 }
 
@@ -442,8 +442,8 @@ void func_809FE890(EnDu* this, PlayState* play) {
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
     CsCmdActorAction* csAction;
 
-    if (play->csCtx.state == CS_STATE_IDLE || gSaveContext.n64ddFlag) {
-        if (gSaveContext.n64ddFlag) {
+    if (play->csCtx.state == CS_STATE_IDLE || IS_RANDO) {
+        if (IS_RANDO) {
             play->csCtx.state = CS_STATE_IDLE;
         }
         func_8002DF54(play, &this->actor, 1);
@@ -518,9 +518,9 @@ void func_809FEB08(EnDu* this, PlayState* play) {
         EnDu_SetupAction(this, func_809FE3C0);
         return;
     }
-    if ((!gSaveContext.n64ddFlag && CUR_UPG_VALUE(UPG_STRENGTH) <= 0) ||
-         (gSaveContext.n64ddFlag && !Flags_GetTreasure(play, 0x1E))) {
-        if (gSaveContext.n64ddFlag) {
+    if ((!IS_RANDO && CUR_UPG_VALUE(UPG_STRENGTH) <= 0) ||
+         (IS_RANDO && !Flags_GetTreasure(play, 0x1E))) {
+        if (IS_RANDO) {
             Flags_SetTreasure(play, 0x1E);
         }
         this->actor.textId = 0x301C;
@@ -548,7 +548,7 @@ void func_809FEC70(EnDu* this, PlayState* play) {
         EnDu_SetupAction(this, func_809FECE4);
     } else {
         f32 xzRange = this->actor.xzDistToPlayer + 1.0f;
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_BRACELET, xzRange, fabsf(this->actor.yDistToPlayer) + 1.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GC_DARUNIAS_JOY, GI_BRACELET);

@@ -6,7 +6,7 @@
 
 #include "z_magic_fire.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_25)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_FREEZE_OCARINA)
 
 void MagicFire_Init(Actor* thisx, PlayState* play);
 void MagicFire_Destroy(Actor* thisx, PlayState* play);
@@ -109,7 +109,7 @@ void MagicFire_UpdateBeforeCast(Actor* thisx, PlayState* play) {
         this->actionTimer--;
     } else {
         this->actor.update = MagicFire_Update;
-        func_8002F7DC(&player->actor, NA_SE_PL_MAGIC_FIRE);
+        Player_PlaySfx(&player->actor, NA_SE_PL_MAGIC_FIRE);
     }
     this->actor.world.pos = player->actor.world.pos;
 }

@@ -7,7 +7,7 @@
 #include "z_en_ani.h"
 #include "objects/object_ani/object_ani.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY)
 
 void EnAni_Init(Actor* thisx, PlayState* play);
 void EnAni_Destroy(Actor* thisx, PlayState* play);
@@ -95,6 +95,8 @@ void EnAni_Destroy(Actor* thisx, PlayState* play) {
     EnAni* this = (EnAni*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 s32 EnAni_SetText(EnAni* this, PlayState* play, u16 textId) {
@@ -124,9 +126,9 @@ void func_809B0558(EnAni* this, PlayState* play) {
         } else {
             EnAni_SetupAction(this, func_809B0524);
         }
-        gSaveContext.itemGetInf[1] |= 0x20;
+        Flags_SetItemGetInf(ITEMGETINF_15);
     } else {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_HEART_PIECE, 10000.0f, 200.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_MAN_ON_ROOF, GI_HEART_PIECE);
@@ -140,7 +142,7 @@ void func_809B05F0(EnAni* this, PlayState* play) {
         EnAni_SetupAction(this, func_809B0558);
     }
 
-    if (!gSaveContext.n64ddFlag) {
+    if (!IS_RANDO) {
         func_8002F434(&this->actor, play, GI_HEART_PIECE, 10000.0f, 200.0f);
     } else {
         GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_KAK_MAN_ON_ROOF, GI_HEART_PIECE);
@@ -173,7 +175,7 @@ void func_809B064C(EnAni* this, PlayState* play) {
         }
     } else if (yawDiff >= -0x36AF && yawDiff < 0 && this->actor.xzDistToPlayer < 150.0f &&
                -80.0f < this->actor.yDistToPlayer) {
-        if (gSaveContext.itemGetInf[1] & 0x20) {
+        if (Flags_GetItemGetInf(ITEMGETINF_15)) {
             EnAni_SetText(this, play, 0x5056);
         } else {
             EnAni_SetText(this, play, 0x5055);
@@ -199,16 +201,16 @@ void func_809B07F8(EnAni* this, PlayState* play) {
         }
     } else if (yawDiff > -0x36B0 && yawDiff < 0 && this->actor.xzDistToPlayer < 150.0f &&
                -80.0f < this->actor.yDistToPlayer) {
-        if (gSaveContext.itemGetInf[1] & 0x20) {
+        if (Flags_GetItemGetInf(ITEMGETINF_15)) {
             EnAni_SetText(this, play, 0x5056);
         } else {
             EnAni_SetText(this, play, 0x5055);
         }
     } else if (yawDiff > -0x3E8 && yawDiff < 0x36B0 && this->actor.xzDistToPlayer < 350.0f) {
-        if (!(gSaveContext.eventChkInf[2] & 0x8000)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_DEATH_MOUNTAIN_ERUPTED)) {
             textId = 0x5052;
         } else {
-            textId = (gSaveContext.itemGetInf[1] & 0x20) ? 0x5054 : 0x5053;
+            textId = (Flags_GetItemGetInf(ITEMGETINF_15)) ? 0x5054 : 0x5053;
         }
         EnAni_SetText(this, play, textId);
     }
@@ -336,8 +338,7 @@ void EnAni_Draw(Actor* thisx, PlayState* play) {
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
 
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnAni_OverrideLimbDraw, EnAni_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnAni_OverrideLimbDraw, EnAni_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

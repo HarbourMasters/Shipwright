@@ -8,8 +8,9 @@
 #include "vt.h"
 #include "objects/object_gla/object_gla.h"
 #include "soh/Enhancements/randomizer/randomizer_entrance.h"
+#include <assert.h>
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 #define GE2_STATE_ANIMCOMPLETE (1 << 1)
 #define GE2_STATE_KO (1 << 2)
@@ -125,7 +126,7 @@ void EnGe2_Init(Actor* thisx, PlayState* play) {
     this->actor.colChkInfo.mass = MASS_IMMOVABLE;
     Actor_SetScale(&this->actor, 0.01f);
 
-    if (play->sceneNum == SCENE_SPOT09) {
+    if (play->sceneNum == SCENE_GERUDO_VALLEY) {
         this->actor.uncullZoneForward = 1000.0f;
     } else {
         this->actor.uncullZoneForward = 1200.0f;
@@ -157,7 +158,7 @@ void EnGe2_Init(Actor* thisx, PlayState* play) {
             this->actor.targetMode = 6;
             break;
         default:
-            ASSERT(0);
+            assert(0);
     }
 
     this->stateFlags = 0;
@@ -174,6 +175,8 @@ void EnGe2_Destroy(Actor* thisx, PlayState* play) {
     EnGe2* this = (EnGe2*)thisx;
 
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 // Detection/check functions
@@ -224,7 +227,7 @@ s32 Ge2_DetectPlayerInUpdate(PlayState* play, EnGe2* this, Vec3f* pos, s16 yRot,
 }
 
 s32 EnGe2_CheckCarpentersFreed(void) {
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         if (CHECK_QUEST_ITEM(QUEST_GERUDO_CARD)) {
             return 1;
         } else {
@@ -232,7 +235,9 @@ s32 EnGe2_CheckCarpentersFreed(void) {
         }
     } 
 
-    if ((u8)(gSaveContext.eventChkInf[9] & 0xF) == 0xF) {
+    if (CHECK_FLAG_ALL(gSaveContext.eventChkInf[EVENTCHKINF_CARPENTERS_FREE_INDEX] &
+                           (EVENTCHKINF_CARPENTERS_FREE_MASK_ALL | 0xF0),
+                       EVENTCHKINF_CARPENTERS_FREE_MASK_ALL)) {
         return 1;
     }
     return 0;
@@ -248,13 +253,13 @@ void EnGe2_CaptureClose(EnGe2* this, PlayState* play) {
 
         if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
             play->nextEntranceIndex = 0x1A5;
-        } else if (gSaveContext.eventChkInf[12] & 0x80) {
+        } else if (Flags_GetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO)) {
             play->nextEntranceIndex = 0x5F8;
         } else {
             play->nextEntranceIndex = 0x3B4;
         }
 
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             Entrance_OverrideGeurdoGuardCapture();
         }
 
@@ -278,13 +283,13 @@ void EnGe2_CaptureCharge(EnGe2* this, PlayState* play) {
 
         if ((INV_CONTENT(ITEM_HOOKSHOT) == ITEM_NONE) || (INV_CONTENT(ITEM_LONGSHOT) == ITEM_NONE)) {
             play->nextEntranceIndex = 0x1A5;
-        } else if (gSaveContext.eventChkInf[12] & 0x80) {
+        } else if (Flags_GetEventChkInf(EVENTCHKINF_WATCHED_GANONS_CASTLE_COLLAPSE_CAUGHT_BY_GERUDO)) {
             play->nextEntranceIndex = 0x5F8;
         } else {
             play->nextEntranceIndex = 0x3B4;
         }
 
-        if (gSaveContext.n64ddFlag) {
+        if (IS_RANDO) {
             Entrance_OverrideGeurdoGuardCapture();
         }
 
@@ -312,7 +317,7 @@ void EnGe2_KnockedOut(EnGe2* this, PlayState* play) {
     s32 effectAngle;
     Vec3f effectPos;
 
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     if (this->stateFlags & GE2_STATE_ANIMCOMPLETE) {
         effectAngle = (play->state.frames) * 0x2800;
         effectPos.x = this->actor.focus.pos.x + (Math_CosS(effectAngle) * 5.0f);
@@ -452,7 +457,7 @@ void EnGe2_SetActionAfterTalk(EnGe2* this, PlayState* play) {
                 break;
         }
         this->actor.update = EnGe2_UpdateFriendly;
-        this->actor.flags &= ~ACTOR_FLAG_16;
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
     }
     EnGe2_TurnToFacePlayer(this, play);
 }
@@ -466,7 +471,7 @@ void EnGe2_WaitTillCardGiven(EnGe2* this, PlayState* play) {
         this->actor.parent = NULL;
         this->actionFunc = EnGe2_SetActionAfterTalk;
     } else {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_GERUDO_CARD, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD);
@@ -478,9 +483,9 @@ void EnGe2_WaitTillCardGiven(EnGe2* this, PlayState* play) {
 void EnGe2_GiveCard(EnGe2* this, PlayState* play) {
     if ((Message_GetState(&play->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(play)) {
         Message_CloseTextbox(play);
-        this->actor.flags &= ~ACTOR_FLAG_16;
+        this->actor.flags &= ~ACTOR_FLAG_WILL_TALK;
         this->actionFunc = EnGe2_WaitTillCardGiven;
-         if (!gSaveContext.n64ddFlag) {
+         if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_GERUDO_CARD, 10000.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD);
@@ -495,7 +500,7 @@ void EnGe2_ForceTalk(EnGe2* this, PlayState* play) {
         this->actionFunc = EnGe2_GiveCard;
     } else {
         this->actor.textId = 0x6004;
-        this->actor.flags |= ACTOR_FLAG_16;
+        this->actor.flags |= ACTOR_FLAG_WILL_TALK;
         func_8002F1C4(&this->actor, play, 300.0f, 300.0f, 0);
     }
     EnGe2_LookAtPlayer(this, play);
@@ -678,8 +683,7 @@ void EnGe2_Draw(Actor* thisx, PlayState* play) {
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
     func_8002EBCC(&this->actor, play, 0);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnGe2_OverrideLimbDraw, EnGe2_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnGe2_OverrideLimbDraw, EnGe2_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

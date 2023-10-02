@@ -9,14 +9,16 @@
 #include "soh/resource/type/CollisionHeader.h"
 // #include <libultraship/libultra/types.h>
 
-namespace Ship {
-class SetCollisionHeader : public SceneCommand {
+namespace LUS {
+class SetCollisionHeader : public SceneCommand<CollisionHeaderData> {
   public:
-    void* GetPointer();
+    using SceneCommand::SceneCommand;
+
+    CollisionHeaderData* GetPointer();
     size_t GetPointerSize();
 
     std::string fileName;
 
     std::shared_ptr<CollisionHeader> collisionHeader;
 };
-}; // namespace Ship
+}; // namespace LUS

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_ICON_ITEM_GER_STATIC_H
+#define TEXTURES_ICON_ITEM_GER_STATIC_H 1
 
 #include "align_asset_macro.h"
 
@@ -97,3 +98,5 @@ static const ALIGN_ASSET(2) char gPauseSave10GERTex[] = dgPauseSave10GERTex;
 
 #define dgPauseSave20GERTex "__OTR__textures/icon_item_ger_static/gPauseSave20GERTex"
 static const ALIGN_ASSET(2) char gPauseSave20GERTex[] = dgPauseSave20GERTex;
+
+#endif // TEXTURES_ICON_ITEM_GER_STATIC_H

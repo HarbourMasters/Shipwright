@@ -173,6 +173,15 @@ void EnWood02_Init(Actor* thisx, PlayState* play2) {
     f32 floorY;
     s16 extraRot;
 
+    // The tree in Kakariko's day scene does not have the same params to spawn the GS
+    // as the night scene, For the always spawn GS enhancement we apply the needed
+    // params to have the GS drop when bonking
+    if ((this->actor.params & 0xFF) == WOOD_TREE_CONICAL_MEDIUM && IS_DAY &&
+        play->sceneNum == SCENE_KAKARIKO_VILLAGE && CVarGetInteger("gNightGSAlwaysSpawn", 0)) {
+        this->actor.params = 0x2001;
+        this->actor.home.rot.z = 0x71;
+    }
+
     spawnType = WOOD_SPAWN_NORMAL;
     actorScale = 1.0f;
     this->unk_14C = (this->actor.params >> 8) & 0xFF;
@@ -276,7 +285,7 @@ void EnWood02_Init(Actor* thisx, PlayState* play2) {
             this->actor.world.pos.x += (sSpawnSin * sSpawnDistance[5]);
             this->actor.world.pos.z += (sSpawnCos * sSpawnDistance[5]);
         } else {
-            this->actor.flags |= ACTOR_FLAG_4;
+            this->actor.flags |= ACTOR_FLAG_UPDATE_WHILE_CULLED;
         }
 
         // Snap to floor, or remove if over void
@@ -313,10 +322,11 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
     Vec3f dropsSpawnPt;
     s32 i;
     s32 leavesParams;
+    s32 numDrops;
 
     // Despawn extra trees in a group if out of range
     if ((this->spawnType == WOOD_SPAWN_SPAWNED) && (this->actor.parent != NULL)) {
-        if (!(this->actor.flags & ACTOR_FLAG_6)) {
+        if (!(this->actor.flags & ACTOR_FLAG_ACTIVE)) {
             new_var = this->unk_14E[0];
             phi_v0 = 0;
 
@@ -342,7 +352,13 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
             dropsSpawnPt = this->actor.world.pos;
             dropsSpawnPt.y += 200.0f;
 
-            if ((this->unk_14C >= 0) && (this->unk_14C < 0x64)) {
+            if ((this->unk_14C >= 0) && (this->unk_14C < 0x64) && (CVarGetInteger("gTreeStickDrops", 0)) && !(INV_CONTENT(ITEM_STICK) == ITEM_NONE)) {
+                (numDrops = (Rand_ZeroOne() * 4));
+                for (i = 0; i < numDrops; ++i) {
+                    Item_DropCollectible(play, &dropsSpawnPt, ITEM00_STICK);
+                }
+            } else {
+                if ((this->unk_14C >= 0) && (this->unk_14C < 0x64)) {
                 Item_DropCollectibleRandom(play, &this->actor, &dropsSpawnPt, this->unk_14C << 4);
             } else {
                 if (this->actor.home.rot.z != 0) {
@@ -351,6 +367,7 @@ void EnWood02_Update(Actor* thisx, PlayState* play2) {
                     Actor_Spawn(&play->actorCtx, play, ACTOR_EN_SW, dropsSpawnPt.x, dropsSpawnPt.y,
                                 dropsSpawnPt.z, 0, this->actor.world.rot.y, 0, this->actor.home.rot.z, true);
                     this->actor.home.rot.z = 0;
+                    }
                 }
             }
 

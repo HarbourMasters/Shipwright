@@ -143,6 +143,9 @@ extern uint8_t GerudoFortressKeys;
 extern uint8_t GanonsCastleKeys;
 extern uint8_t TreasureGameKeys;
 
+// Triforce Pieces
+extern uint8_t TriforcePieces;
+
 // Boss Keys
 extern bool BossKeyForestTemple;
 extern bool BossKeyFireTemple;
@@ -278,6 +281,10 @@ extern bool CanFinishGerudoFortress;
 
 extern bool HasShield;
 extern bool CanShield;
+extern bool ChildShield;
+extern bool AdultReflectShield;
+extern bool AdultShield;
+extern bool CanShieldFlick;
 extern bool CanJumpslash;
 extern bool CanUseProjectile;
 extern bool CanUseMagicArrow;
@@ -286,6 +293,7 @@ extern bool CanUseMagicArrow;
 extern bool HasAllStones;
 extern bool HasAllMedallions;
 extern bool CanBuildRainbowBridge;
+extern bool BuiltRainbowBridge;
 extern bool CanTriggerLACS;
 
 // Other
@@ -293,6 +301,7 @@ extern bool AtDay;
 extern bool AtNight;
 extern bool LinksCow;
 extern uint8_t Age;
+extern bool CanCompleteTriforce;
 
 // Events
 extern bool ShowedMidoSwordAndShield;
@@ -342,31 +351,8 @@ enum class HasProjectileAge {
 };
 
 enum class GlitchType {
-    RestrictedItems,
-    SuperStab,
-    ISG,
-    BombHover,
-    BombOI,
-    OutdoorBombOI,
-    WindmillBombOI,
-    IndoorBombOI,
-    DungeonBombOI,
-    HoverBoost,
-    SuperSlide,
-    Megaflip,
-    ASlide,
-    HammerSlide,
-    LedgeCancel,
-    ActionSwap,
-    QPA,
-    HookshotClip,
-    HookshotJump_Bonk,
-    HookshotJump_Boots,
-    CutsceneDive,
-    NaviDive_Stick,
-    TripleSlashClip,
-    LedgeClip,
-    SeamWalk,
+    EquipSwapDins,
+    EquipSwap,
 };
 
 enum class GlitchDifficulty {
@@ -383,7 +369,7 @@ bool CanUse(uint32_t itemName);
 bool HasProjectile(HasProjectileAge age);
 bool SmallKeys(Key dungeon, uint8_t requiredAmount);
 bool SmallKeys(Key dungeon, uint8_t requiredAmountGlitchless, uint8_t requiredAmountGlitched);
-bool CanDoGlitch(GlitchType glitch, GlitchDifficulty difficulty);
+bool CanDoGlitch(GlitchType glitch);
 bool EventsUpdated();
 void LogicReset();
 } // namespace Logic

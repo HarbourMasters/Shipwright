@@ -9,8 +9,9 @@
 #include "overlays/actors/ovl_En_Encount1/z_en_encount1.h"
 #include "vt.h"
 #include "objects/object_reeba/object_reeba.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_27)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_NO_LOCKON)
 
 void EnReeba_Init(Actor* thisx, PlayState* play);
 void EnReeba_Destroy(Actor* thisx, PlayState* play);
@@ -161,6 +162,8 @@ void EnReeba_Destroy(Actor* thisx, PlayState* play) {
             }
         }
     }
+
+    ResourceMgr_UnregisterSkeleton(&this->skelanime);
 }
 
 void func_80AE4F40(EnReeba* this, PlayState* play) {
@@ -179,7 +182,7 @@ void func_80AE4F40(EnReeba* this, PlayState* play) {
         this->unk_278 = 20;
     }
 
-    this->actor.flags &= ~ACTOR_FLAG_27;
+    this->actor.flags &= ~ACTOR_FLAG_NO_LOCKON;
     this->actor.world.pos.y = this->actor.floorHeight;
 
     if (this->isBig) {
@@ -265,7 +268,7 @@ void func_80AE5270(EnReeba* this, PlayState* play) {
 }
 
 void func_80AE538C(EnReeba* this, PlayState* play) {
-    this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_2;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE;
     this->actionfunc = func_80AE53AC;
 }
 
@@ -327,8 +330,8 @@ void func_80AE561C(EnReeba* this, PlayState* play) {
 void func_80AE5688(EnReeba* this, PlayState* play) {
     this->unk_27E = 0;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_AKINDONUTS_HIDE);
-    this->actor.flags |= ACTOR_FLAG_27;
-    this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_2);
+    this->actor.flags |= ACTOR_FLAG_NO_LOCKON;
+    this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE);
     this->actionfunc = func_80AE56E0;
 }
 
@@ -379,8 +382,8 @@ void func_80AE58EC(EnReeba* this, PlayState* play) {
     this->unk_278 = 14;
     this->actor.world.rot.y = this->actor.yawTowardsPlayer;
     this->actor.speedXZ = -8.0f;
-    this->actor.flags |= ACTOR_FLAG_27;
-    this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_2);
+    this->actor.flags |= ACTOR_FLAG_NO_LOCKON;
+    this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE);
     this->actionfunc = func_80AE5938;
 }
 
@@ -439,7 +442,7 @@ void func_80AE5A9C(EnReeba* this, PlayState* play) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_RIVA_DEAD);
         Enemy_StartFinishingBlow(play, &this->actor);
         this->actionfunc = func_80AE5C38;
-        gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER]++;
+        GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
     }
 }
 
@@ -448,7 +451,7 @@ void func_80AE5BC4(EnReeba* this, PlayState* play) {
     this->actor.world.rot.y = this->actor.yawTowardsPlayer;
     Actor_SetColorFilter(&this->actor, 0x4000, 0xFF, 0, 8);
     this->unk_278 = 14;
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actionfunc = func_80AE5C38;
 }
 
@@ -494,11 +497,7 @@ void func_80AE5C38(EnReeba* this, PlayState* play) {
                 }
 
                 Actor_Kill(&this->actor);
-                if (this->isBig) {
-                    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER_BIG]++;
-                } else {
-                    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_LEEVER]++;
-                }
+                GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
             }
         }
     }
@@ -668,7 +667,7 @@ void EnReeba_Draw(Actor* thisx, PlayState* play) {
         gDPSetPrimColor(POLY_OPA_DISP++, 0x0, 0x01, 255, 255, 255, 255);
     }
 
-    SkelAnime_DrawOpa(play, this->skelanime.skeleton, this->skelanime.jointTable, NULL, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelanime, NULL, NULL, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 

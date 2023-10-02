@@ -13,7 +13,6 @@
 #include "hint_list.hpp"
 #include "entrance.hpp"
 #include "shops.hpp"
-#include "debug.hpp"
 
 #include <vector>
 #include <list>
@@ -548,13 +547,13 @@ static void CalculateWotH() {
 static void FastFill(std::vector<uint32_t> items, std::vector<uint32_t> locations, bool endOnItemsEmpty = false) {
   //Loop until locations are empty, or also end if items are empty and the parameters specify to end then
   while (!locations.empty() && (!endOnItemsEmpty || !items.empty())) {
-    uint32_t loc = RandomElement(locations, true);
-    Location(loc)->SetAsHintable();
-    PlaceItemInLocation(loc, RandomElement(items, true));
-
     if (items.empty() && !endOnItemsEmpty) {
       items.push_back(GetJunkItem());
     }
+
+    uint32_t loc = RandomElement(locations, true);
+    Location(loc)->SetAsHintable();
+    PlaceItemInLocation(loc, RandomElement(items, true));
   }
 }
 
@@ -759,8 +758,14 @@ static void FillExcludedLocations() {
 
 //Function to handle the Own Dungeon setting
 static void RandomizeOwnDungeon(const Dungeon::DungeonInfo* dungeon) {
-  std::vector<uint32_t> dungeonLocations = dungeon->GetDungeonLocations();
   std::vector<uint32_t> dungeonItems;
+
+  // Search and filter for locations that match the hint region of the dungeon
+  // This accounts for boss room shuffle so that own dungeon items can be placed
+  // in the shuffled boss room
+  std::vector<LocationKey> dungeonLocations = FilterFromPool(allLocations, [dungeon](const auto loc) {
+    return GetHintRegionHintKey(Location(loc)->GetParentRegionKey()) == dungeon->GetHintKey();
+  });
 
   //filter out locations that may be required to have songs placed at them
   dungeonLocations = FilterFromPool(dungeonLocations, [](const auto loc){
@@ -911,7 +916,6 @@ void VanillaFill() {
   //Finish up
   CreateItemOverrides();
   CreateEntranceOverrides();
-  CreateAlwaysIncludedMessages();
   CreateWarpSongTexts();
 }
 
@@ -1066,7 +1070,6 @@ int Fill() {
       printf("Done");
       CreateItemOverrides();
       CreateEntranceOverrides();
-      CreateAlwaysIncludedMessages();
       if (GossipStoneHints.IsNot(HINTS_NO_HINTS)) {
         printf("\x1b[10;10HCreating Hints...");
         CreateAllHints();
@@ -1075,11 +1078,13 @@ int Fill() {
       if (ShuffleMerchants.Is(SHUFFLEMERCHANTS_HINTS)) {
         CreateMerchantsHints();
       }
-      //Always execute ganon hint generation for the funny line  
+      //Always execute ganon hint generation for the funny line
       CreateGanonText();
       CreateAltarText();
       CreateDampesDiaryText();
       CreateGregRupeeHint();
+      CreateSheikText();
+      CreateSariaText();
       CreateWarpSongTexts();
       return 1;
     }

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_XC_H
+#define OBJECTS_OBJECT_XC_H 1
 
 #include "align_asset_macro.h"
 
@@ -89,6 +90,39 @@ static const ALIGN_ASSET(2) char gSheikDL_011620[] = dgSheikDL_011620;
 #define dgSheikDL_012970 "__OTR__objects/object_xc/gSheikDL_012970"
 static const ALIGN_ASSET(2) char gSheikDL_012970[] = dgSheikDL_012970;
 
+#define dobject_xcTex_00F790 "__OTR__objects/object_xc/object_xcTex_00F790"
+static const ALIGN_ASSET(2) char object_xcTex_00F790[] = dobject_xcTex_00F790;
+
+#define dobject_xcTLUT_00F6C0 "__OTR__objects/object_xc/object_xcTLUT_00F6C0"
+static const ALIGN_ASSET(2) char object_xcTLUT_00F6C0[] = dobject_xcTLUT_00F6C0;
+
+#define dobject_xcTex_00F7D0 "__OTR__objects/object_xc/object_xcTex_00F7D0"
+static const ALIGN_ASSET(2) char object_xcTex_00F7D0[] = dobject_xcTex_00F7D0;
+
+#define dobject_xcTLUT_00F720 "__OTR__objects/object_xc/object_xcTLUT_00F720"
+static const ALIGN_ASSET(2) char object_xcTLUT_00F720[] = dobject_xcTLUT_00F720;
+
+#define dobject_xcTex_00FBD0 "__OTR__objects/object_xc/object_xcTex_00FBD0"
+static const ALIGN_ASSET(2) char object_xcTex_00FBD0[] = dobject_xcTex_00FBD0;
+
+#define dobject_xcTex_00FD10 "__OTR__objects/object_xc/object_xcTex_00FD10"
+static const ALIGN_ASSET(2) char object_xcTex_00FD10[] = dobject_xcTex_00FD10;
+
+#define dobject_xcTex_00FD90 "__OTR__objects/object_xc/object_xcTex_00FD90"
+static const ALIGN_ASSET(2) char object_xcTex_00FD90[] = dobject_xcTex_00FD90;
+
+#define dobject_xcTex_00FDD0 "__OTR__objects/object_xc/object_xcTex_00FDD0"
+static const ALIGN_ASSET(2) char object_xcTex_00FDD0[] = dobject_xcTex_00FDD0;
+
+#define dobject_xcTex_0101D0 "__OTR__objects/object_xc/object_xcTex_0101D0"
+static const ALIGN_ASSET(2) char object_xcTex_0101D0[] = dobject_xcTex_0101D0;
+
+#define dobject_xcTex_00FCD0 "__OTR__objects/object_xc/object_xcTex_00FCD0"
+static const ALIGN_ASSET(2) char object_xcTex_00FCD0[] = dobject_xcTex_00FCD0;
+
+#define dobject_xcTex_011930 "__OTR__objects/object_xc/object_xcTex_011930"
+static const ALIGN_ASSET(2) char object_xcTex_011930[] = dobject_xcTex_011930;
+
 #define dgSheikSkelLimbsLimb_0129FCDL_00EA98 "__OTR__objects/object_xc/gSheikSkelLimbsLimb_0129FCDL_00EA98"
 static const ALIGN_ASSET(2) char gSheikSkelLimbsLimb_0129FCDL_00EA98[] = dgSheikSkelLimbsLimb_0129FCDL_00EA98;
 
@@ -133,39 +167,6 @@ static const ALIGN_ASSET(2) char gSheikSkelLimbsLimb_012A98DL_00E220[] = dgSheik
 
 #define dgSheikSkelLimbsLimb_012AA4DL_00D710 "__OTR__objects/object_xc/gSheikSkelLimbsLimb_012AA4DL_00D710"
 static const ALIGN_ASSET(2) char gSheikSkelLimbsLimb_012AA4DL_00D710[] = dgSheikSkelLimbsLimb_012AA4DL_00D710;
-
-#define dobject_xcTex_00F790 "__OTR__objects/object_xc/object_xcTex_00F790"
-static const ALIGN_ASSET(2) char object_xcTex_00F790[] = dobject_xcTex_00F790;
-
-#define dobject_xcTLUT_00F6C0 "__OTR__objects/object_xc/object_xcTLUT_00F6C0"
-static const ALIGN_ASSET(2) char object_xcTLUT_00F6C0[] = dobject_xcTLUT_00F6C0;
-
-#define dobject_xcTex_00F7D0 "__OTR__objects/object_xc/object_xcTex_00F7D0"
-static const ALIGN_ASSET(2) char object_xcTex_00F7D0[] = dobject_xcTex_00F7D0;
-
-#define dobject_xcTLUT_00F720 "__OTR__objects/object_xc/object_xcTLUT_00F720"
-static const ALIGN_ASSET(2) char object_xcTLUT_00F720[] = dobject_xcTLUT_00F720;
-
-#define dobject_xcTex_00FBD0 "__OTR__objects/object_xc/object_xcTex_00FBD0"
-static const ALIGN_ASSET(2) char object_xcTex_00FBD0[] = dobject_xcTex_00FBD0;
-
-#define dobject_xcTex_00FD10 "__OTR__objects/object_xc/object_xcTex_00FD10"
-static const ALIGN_ASSET(2) char object_xcTex_00FD10[] = dobject_xcTex_00FD10;
-
-#define dobject_xcTex_00FD90 "__OTR__objects/object_xc/object_xcTex_00FD90"
-static const ALIGN_ASSET(2) char object_xcTex_00FD90[] = dobject_xcTex_00FD90;
-
-#define dobject_xcTex_00FDD0 "__OTR__objects/object_xc/object_xcTex_00FDD0"
-static const ALIGN_ASSET(2) char object_xcTex_00FDD0[] = dobject_xcTex_00FDD0;
-
-#define dobject_xcTex_0101D0 "__OTR__objects/object_xc/object_xcTex_0101D0"
-static const ALIGN_ASSET(2) char object_xcTex_0101D0[] = dobject_xcTex_0101D0;
-
-#define dobject_xcTex_00FCD0 "__OTR__objects/object_xc/object_xcTex_00FCD0"
-static const ALIGN_ASSET(2) char object_xcTex_00FCD0[] = dobject_xcTex_00FCD0;
-
-#define dobject_xcTex_011930 "__OTR__objects/object_xc/object_xcTex_011930"
-static const ALIGN_ASSET(2) char object_xcTex_011930[] = dobject_xcTex_011930;
 
 #define dobject_xcTLUT_004840 "__OTR__objects/object_xc/object_xcTLUT_004840"
 static const ALIGN_ASSET(2) char object_xcTLUT_004840[] = dobject_xcTLUT_004840;
@@ -214,3 +215,5 @@ static const ALIGN_ASSET(2) char object_xcTex_006CC0[] = dobject_xcTex_006CC0;
 
 #define dobject_xcTex_006D40 "__OTR__objects/object_xc/object_xcTex_006D40"
 static const ALIGN_ASSET(2) char object_xcTex_006D40[] = dobject_xcTex_006D40;
+
+#endif // OBJECTS_OBJECT_XC_H

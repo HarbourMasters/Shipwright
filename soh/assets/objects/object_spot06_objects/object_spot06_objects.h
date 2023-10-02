@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_SPOT06_OBJECTS_H
+#define OBJECTS_OBJECT_SPOT06_OBJECTS_H 1
 
 #include "align_asset_macro.h"
 
@@ -34,3 +35,5 @@ static const ALIGN_ASSET(2) char gLakeHyliaWaterTempleKeyDL[] = dgLakeHyliaWater
 
 #define dgLakeHyliaWaterTempleKeyTex "__OTR__objects/object_spot06_objects/gLakeHyliaWaterTempleKeyTex"
 static const ALIGN_ASSET(2) char gLakeHyliaWaterTempleKeyTex[] = dgLakeHyliaWaterTempleKeyTex;
+
+#endif // OBJECTS_OBJECT_SPOT06_OBJECTS_H

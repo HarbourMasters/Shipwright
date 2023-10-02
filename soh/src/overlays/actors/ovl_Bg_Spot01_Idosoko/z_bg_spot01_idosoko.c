@@ -7,7 +7,7 @@
 #include "z_bg_spot01_idosoko.h"
 #include "objects/object_spot01_matoya/object_spot01_matoya.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void BgSpot01Idosoko_Init(Actor* thisx, PlayState* play);
 void BgSpot01Idosoko_Destroy(Actor* thisx, PlayState* play);
@@ -49,9 +49,9 @@ void BgSpot01Idosoko_Init(Actor* thisx, PlayState* play) {
     this->dyna.bgId = DynaPoly_SetBgActor(play, &play->colCtx.dyna, &this->dyna.actor, colHeader);
     // If dungeon entrance randomizer is on, remove the well stone as adult Link when
     // child Link has drained the water to the well
-    if (!LINK_IS_ADULT || (gSaveContext.n64ddFlag &&
+    if (!LINK_IS_ADULT || (IS_RANDO &&
         Randomizer_GetSettingValue(RSK_SHUFFLE_DUNGEON_ENTRANCES) != RO_DUNGEON_ENTRANCE_SHUFFLE_OFF &&
-        Flags_GetEventChkInf(0x67))) {
+        Flags_GetEventChkInf(EVENTCHKINF_DRAINED_WELL_IN_KAKARIKO))) {
         Actor_Kill(&this->dyna.actor);
     } else {
         BgSpot01Idosoko_SetupAction(this, func_808ABF54);

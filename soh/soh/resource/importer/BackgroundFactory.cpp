@@ -2,19 +2,20 @@
 #include "soh/resource/type/Background.h"
 #include "spdlog/spdlog.h"
 
-namespace Ship {
-std::shared_ptr<Resource> BackgroundFactory::ReadResource(uint32_t version, std::shared_ptr<BinaryReader> reader) {
-    auto resource = std::make_shared<Background>();
+namespace LUS {
+std::shared_ptr<IResource>
+BackgroundFactory::ReadResource(std::shared_ptr<ResourceInitData> initData, std::shared_ptr<BinaryReader> reader) {
+    auto resource = std::make_shared<Background>(initData);
     std::shared_ptr<ResourceVersionFactory> factory = nullptr;
 
-    switch (version) {
+    switch (resource->GetInitData()->ResourceVersion) {
         case 0:
             factory = std::make_shared<BackgroundFactoryV0>();
             break;
     }
 
     if (factory == nullptr) {
-        SPDLOG_ERROR("Failed to load Background with version {}", version);
+        SPDLOG_ERROR("Failed to load Background with version {}", resource->GetInitData()->ResourceVersion);
         return nullptr;
     }
 
@@ -23,7 +24,7 @@ std::shared_ptr<Resource> BackgroundFactory::ReadResource(uint32_t version, std:
     return resource;
 }
 
-void BackgroundFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader, std::shared_ptr<Resource> resource) {
+void BackgroundFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader, std::shared_ptr<IResource> resource) {
     std::shared_ptr<Background> background = std::static_pointer_cast<Background>(resource);
     ResourceVersionFactory::ParseFileBinary(reader, background);
 
@@ -35,4 +36,4 @@ void BackgroundFactoryV0::ParseFileBinary(std::shared_ptr<BinaryReader> reader, 
         background->Data.push_back(reader->ReadUByte());
     }
 }
-} // namespace Ship
+} // namespace LUS

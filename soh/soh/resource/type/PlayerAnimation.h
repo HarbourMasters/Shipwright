@@ -7,13 +7,17 @@
 #include "Vec3f.h"
 #include "Color3b.h"
 
-namespace Ship {
+namespace LUS {
 
-class PlayerAnimation : public Resource {
+class PlayerAnimation : public Resource<int16_t> {
   public:
-    void* GetPointer();
+    using Resource::Resource;
+
+    PlayerAnimation() : Resource(std::shared_ptr<ResourceInitData>()) {}
+
+    int16_t* GetPointer();
     size_t GetPointerSize();
 
     std::vector<int16_t> limbRotData;
 };
-} // namespace Ship
+} // namespace LUS

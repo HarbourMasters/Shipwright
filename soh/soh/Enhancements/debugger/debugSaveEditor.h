@@ -4,9 +4,9 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <cstdint>
 #include <soh/Enhancements/randomizer/randomizer_inf.h>
-
-void InitSaveEditor();
+#include <libultraship/libultraship.h>
 
 typedef enum {
     EVENT_CHECK_INF,
@@ -348,7 +348,7 @@ const std::vector<FlagTable> flagTables = {
         { 0x24, "Market Crowd Text Randomizer" },
         { 0x30, "Entered the Market" },
     } },
-   { "Randomizer Inf Flags", RANDOMIZER_INF, 0x08, {
+   { "Randomizer Inf Flags", RANDOMIZER_INF, 0x09, {
         { RAND_INF_DUNGEONS_DONE_DEKU_TREE, "DUNGEONS_DONE_DEKU_TREE" },
         { RAND_INF_DUNGEONS_DONE_DODONGOS_CAVERN, "DUNGEONS_DONE_DODONGOS_CAVERN" },
         { RAND_INF_DUNGEONS_DONE_JABU_JABUS_BELLY, "DUNGEONS_DONE_JABU_JABUS_BELLY" },
@@ -488,8 +488,9 @@ const std::vector<FlagTable> flagTables = {
         { RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_7, "SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_7" },
         { RAND_INF_SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_8, "SHOP_ITEMS_MARKET_BOMBCHU_SHOP_ITEM_8" },
         
-        { RAND_INF_MERCHANTS_MEDIGORON, "RAND_INF_MERCHANTS_MEDIGORON" },
         { RAND_INF_MERCHANTS_CARPET_SALESMAN, "RAND_INF_MERCHANTS_CARPET_SALESMAN" },
+        { RAND_INF_MERCHANTS_MEDIGORON, "RAND_INF_MERCHANTS_MEDIGORON" },
+        { RAND_INF_MERCHANTS_GRANNYS_SHOP, "RAND_INF_MERCHANTS_GRANNY_SHOP"},
 
         { RAND_INF_ADULT_TRADES_LW_TRADE_COJIRO, "ADULT_TRADES_LW_TRADE_COJIRO" },
         { RAND_INF_ADULT_TRADES_GV_TRADE_SAW, "ADULT_TRADES_GV_TRADE_SAW" },
@@ -498,5 +499,99 @@ const std::vector<FlagTable> flagTables = {
         { RAND_INF_ADULT_TRADES_DMT_TRADE_EYEDROPS, "ADULT_TRADES_DMT_TRADE_EYEDROPS" },
 
         { RAND_INF_KAK_100_GOLD_SKULLTULA_REWARD, "KAK_100_GOLD_SKULLTULA_REWARD" },
+        { RAND_INF_GREG_FOUND, "RAND_INF_GREG_FOUND" },
+        { RAND_INF_CHILD_FISHING, "RAND_INF_CHILD_FISHING" },
+        { RAND_INF_ADULT_FISHING, "RAND_INF_ADULT_FISHING" },
+        { RAND_INF_10_BIG_POES, "RAND_INF_10_BIG_POES" },
     } },
+};
+
+const std::vector<std::string> state1 = {
+    "Loading",
+    "Swinging Bottle",
+    "Falling from Hookshot",
+    "Hookshot/Bow in Hand",
+    "Targeting Enemy",
+    "Input Disabled",
+    "Text on Screen",
+    "Death",
+    "Starting to put away",
+    "Ready to Fire",
+    "Get Item",
+    "Item over Head",
+    "Charging Spin Attack",
+    "Hanging off Ledge",
+    "Climbing Ledge",
+    "Targeting",
+    "Target Locked",
+    "Targeting Nothing",
+    "Jumping Forward",
+    "In Freefall",
+    "In First-Person View",
+    "Climbing Ladder",
+    "Shielding",
+    "On Horse",
+    "Boomerang in Hand",
+    "Boomerang Thrown",
+    "Damaged",
+    "In Water",
+    "In Item Cutscene",
+    "In Cutscene",
+    "30", //Unknown
+    "Floor collision disabled"
+};
+
+const std::vector<std::string> state2 = {
+    "Grab",
+    "Speak/Check",
+    "Climb",
+    "Footstep",
+    "Moving Dynapoly",
+    "Disabled Rotation on Z target",
+    "Disabled Rotation",
+    "Grabbed by Enemy",
+    "Grabbing Dynapoly",
+    "Spawning Dust",
+    "Underwater",
+    "Diving",
+    "Stationary on Ladder",
+    "Switch Targeting",
+    "Frozen",
+    "Pause Most Updating",
+    "Enter",
+    "Spin Attack w/o Magic",
+    "Crawling",
+    "Hopping",
+    "Navi Out",
+    "Navi Alert",
+    "Down",
+    "Near Ocarina Actor",
+    "Attempt playing for Oca. Actor",
+    "Playing for Oca. Actor",
+    "Reflection",
+    "Ocarina Playing",
+    "Idling",
+    "Disabled draw func",
+    "Sword Lunge",
+    "Void out"
+};
+
+const std::vector<std::string> state3 = {
+    "Ignore ceiling for Floor and Water",
+    "Midair",
+    "Pause Action Func",
+    "Finished Attacking",
+    "Check Floor Water Collision",
+    "Force Pull Ocarina",
+    "Restore Nayru's Love",
+    "Travelling to Hook Target"
+};
+
+class SaveEditorWindow : public LUS::GuiWindow {
+  public:
+    using GuiWindow::GuiWindow;
+
+    void InitElement() override;
+    void DrawElement() override;
+    void UpdateElement() override {};
 };

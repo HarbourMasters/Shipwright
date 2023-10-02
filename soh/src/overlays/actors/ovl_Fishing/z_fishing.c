@@ -12,7 +12,7 @@
 
 #include "soh/frame_interpolation.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 #define WATER_SURFACE_Y(play) play->colCtx.colHeader->waterBoxes->ySurface
 
@@ -22,6 +22,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play);
 void Fishing_UpdateOwner(Actor* thisx, PlayState* play);
 void Fishing_DrawFish(Actor* thisx, PlayState* play);
 void Fishing_DrawOwner(Actor* thisx, PlayState* play);
+void Fishing_Reset(void);
 
 typedef struct {
     /* 0x00 */ u8 unk_00;
@@ -132,7 +133,7 @@ const ActorInit Fishing_InitVars = {
     (ActorFunc)Fishing_Destroy,
     (ActorFunc)Fishing_UpdateFish,
     (ActorFunc)Fishing_DrawFish,
-    NULL,
+    (ActorResetFunc)Fishing_Reset,
 };
 
 static f32 D_80B7A650 = 0.0f;
@@ -863,7 +864,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
 
         thisx->focus.pos = thisx->world.pos;
         thisx->focus.pos.y += 75.0f;
-        thisx->flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
+        thisx->flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
 
         if (sLinkAge != 1) {
             if (HIGH_SCORE(HS_FISHING) & 0x1000) {
@@ -996,7 +997,7 @@ void Fishing_Init(Actor* thisx, PlayState* play2) {
             this->unk_158 = 100;
             Actor_ChangeCategory(play, &play->actorCtx, thisx, ACTORCAT_PROP);
             thisx->targetMode = 0;
-            thisx->flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
+            thisx->flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
             this->lightNode = LightContext_InsertLight(play, &play->lightCtx, &this->lightInfo);
         } else {
             this->unk_158 = 10;
@@ -2024,7 +2025,7 @@ void Fishing_DrawRod(PlayState* play) {
         spC8 = player->unk_85C - spC8;
 
         spC4 = player->unk_858;
-        Math_SmoothStepToF(&player->unk_858, input->rel.stick_x * 0.02f, 0.3f, 5.0f, 0.0f);
+        Math_SmoothStepToF(&player->unk_858, input->rel.stick_x * 0.02f * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1), 0.3f, 5.0f, 0.0f);
         spC4 = player->unk_858 - spC4;
 
         if (player->unk_858 > 1.0f) {
@@ -2877,7 +2878,7 @@ void Fishing_HandleAquariumDialog(Fishing* this, PlayState* play) {
 
     if (this->unk_1D3 == 0) {
         if (this->unk_1D4 == 0) {
-            this->actor.flags |= ACTOR_FLAG_0;
+            this->actor.flags |= ACTOR_FLAG_TARGETABLE;
 
             if (Actor_ProcessTalkRequest(&this->actor, play)) {
                 D_80B7A678 = D_80B7E078;
@@ -2887,7 +2888,7 @@ void Fishing_HandleAquariumDialog(Fishing* this, PlayState* play) {
             }
         } else {
             this->unk_1D4--;
-            this->actor.flags &= ~ACTOR_FLAG_0;
+            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
         }
     } else if (Actor_TextboxIsClosing(&this->actor, play)) {
         this->unk_1D3 = 0;
@@ -2968,9 +2969,9 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
     }
 
     if ((D_80B7E0B0 != 0) || (sCameraId != 0) || ((player->actor.world.pos.z > 1150.0f) && (this->unk_158 != 100))) {
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     } else {
-        this->actor.flags |= ACTOR_FLAG_0;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE;
         if (D_80B7A694 != 0) {
             if (D_80B7E0B2 == 0) {
                 this->actor.focus.pos = sLurePos;
@@ -3187,7 +3188,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
             if (D_80B7E0B6 == 2) {
                 func_80B70ED4(this, input);
             } else {
-                this->actor.flags &= ~ACTOR_FLAG_0;
+                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
             }
             break;
 
@@ -3224,7 +3225,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                 if (D_80B7E0B6 == 2) {
                     func_80B70ED4(this, input);
                 } else {
-                    this->actor.flags &= ~ACTOR_FLAG_0;
+                    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
                 }
             }
             break;
@@ -3268,7 +3269,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                 this->unk_1B4.z = Rand_ZeroFloat(50.0f);
             }
 
-            this->actor.flags &= ~ACTOR_FLAG_0;
+            this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
             break;
 
         case -2:
@@ -3307,7 +3308,7 @@ void Fishing_UpdateFish(Actor* thisx, PlayState* play2) {
                 }
 
                 Math_ApproachF(&this->unk_1B0, 2048.0f, 1.0f, 128.0f);
-                this->actor.flags &= ~ACTOR_FLAG_0;
+                this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
             }
             break;
 
@@ -4328,16 +4329,14 @@ void Fishing_DrawFish(Actor* thisx, PlayState* play) {
         Matrix_RotateY((this->unk_16C * (M_PI / 32768)) - (M_PI / 2), MTXMODE_APPLY);
         Matrix_Translate(0.0f, 0.0f, this->unk_16C * 10.0f * 0.01f, MTXMODE_APPLY);
 
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, Fishing_FishOverrideLimbDraw, Fishing_FishPostLimbDraw, this);
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, Fishing_FishOverrideLimbDraw, Fishing_FishPostLimbDraw, this);
     } else {
         Matrix_Translate(0.0f, 0.0f, 3000.0f, MTXMODE_APPLY);
         Matrix_RotateY(this->unk_16C * (M_PI / 32768), MTXMODE_APPLY);
         Matrix_Translate(0.0f, 0.0f, -3000.0f, MTXMODE_APPLY);
         Matrix_RotateY(-(M_PI / 2), MTXMODE_APPLY);
 
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, Fishing_LoachOverrideLimbDraw, Fishing_LoachPostLimbDraw,
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, Fishing_LoachOverrideLimbDraw, Fishing_LoachPostLimbDraw,
                               this);
     }
 }
@@ -4922,7 +4921,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                             if (D_80B7A670 == 0.0f) {
                                 this->actor.textId = 0x408C;
                                 this->unk_15C = 20;
-                            } else if (D_80B7E07C == 0 && !gSaveContext.n64ddFlag) {
+                            } else if (D_80B7E07C == 0 && !IS_RANDO) {
                                 D_80B7A678 = D_80B7A670;
                                 if ((s16)D_80B7E078 < (s16)D_80B7A670) {
                                     if (D_80B7E07E == 2) {
@@ -4935,7 +4934,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                                     this->actor.textId = 0x408B;
                                     this->unk_15C = 20;
                                 }
-                            } else if (!gSaveContext.n64ddFlag) {
+                            } else if (!IS_RANDO) {
                                 this->actor.textId = 0x409B;
                                 this->unk_15C = 11;
                             }
@@ -5045,11 +5044,15 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                     }
 
                     if (sLinkAge == 1) {
-                        if (!(HIGH_SCORE(HS_FISHING) & 0x400)) {
+                        if (
+                            (!gSaveContext.n64ddFlag && !(HIGH_SCORE(HS_FISHING) & 0x400)) ||
+                            (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_CHILD_FISHING))
+                        ) {
                             if (D_80B7E078 >= Fishing_GetMinimumRequiredScore()) {
                                 HIGH_SCORE(HS_FISHING) |= 0x400;
+                                Flags_SetRandomizerInf(RAND_INF_CHILD_FISHING);
                                 sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
-                                if (!gSaveContext.n64ddFlag) {
+                                if (!IS_RANDO) {
                                     getItemId = GI_HEART_PIECE;
                                 } else {
                                     getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_CHILD_FISHING, GI_HEART_PIECE);
@@ -5058,11 +5061,15 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                             }
                         }
                     } else {
-                        if (!(HIGH_SCORE(HS_FISHING) & 0x800)) {
+                        if (
+                            (!gSaveContext.n64ddFlag && !(HIGH_SCORE(HS_FISHING) & 0x800)) ||
+                            (gSaveContext.n64ddFlag && !Flags_GetRandomizerInf(RAND_INF_ADULT_FISHING))
+                        ) {
                             if (D_80B7E078 >= Fishing_GetMinimumRequiredScore()) {
                                 HIGH_SCORE(HS_FISHING) |= 0x800;
+                                Flags_SetRandomizerInf(RAND_INF_ADULT_FISHING);
                                 sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
-                                if (!gSaveContext.n64ddFlag) {
+                                if (!IS_RANDO) {
                                     getItemId = GI_SCALE_GOLD;
                                 } else {
                                     getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD);
@@ -5077,7 +5084,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
                 }
 
                 this->actor.parent = NULL;
-                if (!gSaveContext.n64ddFlag || getItemEntry.getItemId == GI_NONE) {
+                if (!IS_RANDO || getItemEntry.getItemId == GI_NONE) {
                     func_8002F434(&this->actor, play, getItemId, 2000.0f, 1000.0f);
                 } else {
                     GiveItemEntryFromActor(&this->actor, play, getItemEntry, 2000.0f, 1000.0f);
@@ -5142,7 +5149,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
             if (Actor_HasParent(&this->actor, play)) {
                 this->unk_15C = 24;
             } else {
-                if (!gSaveContext.n64ddFlag) {
+                if (!IS_RANDO) {
                     func_8002F434(&this->actor, play, GI_SCALE_GOLD, 2000.0f, 1000.0f);
                 } else {
                     GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD);
@@ -5154,7 +5161,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, PlayState* play) {
         case 24:
             D_80B7A674 = false;
             if (((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(play)) ||
-                (gSaveContext.n64ddFlag && GET_PLAYER(play)->getItemId == GI_ICE_TRAP)) {
+                (IS_RANDO && GET_PLAYER(play)->getItemId == GI_ICE_TRAP)) {
                 if (D_80B7E07C == 0) {
                     this->unk_15C = 0;
                 } else {
@@ -5214,9 +5221,9 @@ void Fishing_UpdateOwner(Actor* thisx, PlayState* play2) {
     SkelAnime_Update(&this->skelAnime);
 
     if ((D_80B7A684 != 0) || (Message_GetState(&play->msgCtx) != TEXT_STATE_NONE)) {
-        this->actor.flags &= ~ACTOR_FLAG_0;
+        this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     } else {
-        this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_5;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_DRAW_WHILE_CULLED;
     }
 
     if ((this->actor.xzDistToPlayer < 120.0f) || (Message_GetState(&play->msgCtx) != TEXT_STATE_NONE)) {
@@ -5831,8 +5838,7 @@ void Fishing_DrawOwner(Actor* thisx, PlayState* play) {
         (fabsf(this->actor.projectedPos.x) < (100.0f + this->actor.projectedPos.z))) {
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sFishingOwnerEyeTexs[this->unk_160]));
 
-        SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable,
-                              this->skelAnime.dListCount, Fishing_OwnerOverrideLimbDraw, Fishing_OwnerPostLimbDraw,
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, Fishing_OwnerOverrideLimbDraw, Fishing_OwnerPostLimbDraw,
                               this);
     }
 
@@ -5887,4 +5893,11 @@ void Fishing_DrawOwner(Actor* thisx, PlayState* play) {
     }
 
     CLOSE_DISPS(play->state.gfxCtx);
+}
+
+void Fishing_Reset(void) {
+    // Reset static variables for fishing camera and cinematic state to prevent crashing when dying
+    // or re-entering the scene while the fishing rod was cast
+    sCameraId = 0;
+    D_80B7A6CC = 0;
 }

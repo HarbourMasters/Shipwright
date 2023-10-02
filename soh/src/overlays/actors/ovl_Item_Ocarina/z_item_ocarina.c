@@ -7,7 +7,7 @@
 #include "z_item_ocarina.h"
 #include "scenes/overworld/spot00/spot00_scene.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 void ItemOcarina_Init(Actor* thisx, PlayState* play);
 void ItemOcarina_Destroy(Actor* thisx, PlayState* play);
@@ -58,7 +58,7 @@ void ItemOcarina_Init(Actor* thisx, PlayState* play) {
             break;
         case 3:
             ItemOcarina_SetupAction(this, ItemOcarina_WaitInWater);
-            if (!(gSaveContext.eventChkInf[8] & 1) || (gSaveContext.eventChkInf[4] & 8)) {
+            if (!Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE) || (Flags_GetEventChkInf(EVENTCHKINF_OBTAINED_OCARINA_OF_TIME))) {
                 Actor_Kill(thisx);
                 return;
             }
@@ -169,7 +169,7 @@ void ItemOcarina_DoNothing(ItemOcarina* this, PlayState* play) {
 
 void ItemOcarina_StartSoTCutscene(ItemOcarina* this, PlayState* play) {
     if (Actor_TextboxIsClosing(&this->actor, play)) {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             play->csCtx.segment = SEGMENTED_TO_VIRTUAL(gHyruleFieldZeldaSongOfTimeCs);
             gSaveContext.cutsceneTrigger = 1;
         } else {
@@ -184,12 +184,12 @@ void ItemOcarina_StartSoTCutscene(ItemOcarina* this, PlayState* play) {
 
 void ItemOcarina_WaitInWater(ItemOcarina* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
-        gSaveContext.eventChkInf[4] |= 8;
+        Flags_SetEventChkInf(EVENTCHKINF_OBTAINED_OCARINA_OF_TIME);
         Flags_SetSwitch(play, 3);
         this->actionFunc = ItemOcarina_StartSoTCutscene;
         this->actor.draw = NULL;
     } else {
-        if (!gSaveContext.n64ddFlag) {
+        if (!IS_RANDO) {
             func_8002F434(&this->actor, play, GI_OCARINA_OOT, 30.0f, 50.0f);
         } else {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
@@ -214,7 +214,7 @@ void ItemOcarina_Draw(Actor* thisx, PlayState* play) {
     func_8002EBCC(thisx, play, 0);
     func_8002ED80(thisx, play, 0);
 
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         GetItemEntry randoGetItem = Randomizer_GetItemFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
         EnItem00_CustomItemsParticles(&this->actor, play, randoGetItem);
         GetItemEntry_Draw(play, randoGetItem);

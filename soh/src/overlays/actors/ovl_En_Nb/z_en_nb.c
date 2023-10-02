@@ -9,7 +9,7 @@
 #include "objects/object_nb/object_nb.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 
-#define FLAGS ACTOR_FLAG_4
+#define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
 typedef enum {
     /* 0x00 */ NB_CHAMBER_INIT,
@@ -147,6 +147,8 @@ void EnNb_Destroy(Actor* thisx, PlayState* play) {
     
     D_80AB4318 = 0;
     Collider_DestroyCylinder(play, &this->collider);
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void func_80AB0FBC(EnNb* this, PlayState* play) {
@@ -564,7 +566,7 @@ void EnNb_InitKidnap(EnNb* this, PlayState* play) {
     EnNb_SetCurrentAnim(this, &gNabooruTrappedInVortexPushingGroundAnim, 0, 0.0f, 0);
     this->action = NB_KIDNAPPED;
     this->actor.shape.shadowAlpha = 0;
-    gSaveContext.eventChkInf[9] |= 0x20;
+    Flags_SetEventChkInf(EVENTCHKINF_NABOORU_CAPTURED_BY_TWINROVA);
 }
 
 void EnNb_PlayCrySFX(EnNb* this, PlayState* play) {
@@ -962,8 +964,7 @@ void func_80AB2E70(EnNb* this, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gNabooruEyeWideTex));
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     gSPSegment(POLY_OPA_DISP++, 0x0C, &D_80116280[2]);
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL, NULL,
-                          &this->actor);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, NULL, NULL, &this->actor);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -992,8 +993,7 @@ void func_80AB2FE4(EnNb* this, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     gSPSegment(POLY_OPA_DISP++, 0x0C, &D_80116280[2]);
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, func_80AB2FC0,
-                          NULL, &this->actor);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, func_80AB2FC0, NULL, &this->actor);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }
@@ -1100,18 +1100,18 @@ void EnNb_LookUp(EnNb* this, PlayState* play) {
 }
 
 void EnNb_CrawlspaceSpawnCheck(EnNb* this, PlayState* play) {
-    if (!gSaveContext.n64ddFlag && !(gSaveContext.eventChkInf[9] & 0x20) && LINK_IS_CHILD) {
+    if (!IS_RANDO && !Flags_GetEventChkInf(EVENTCHKINF_NABOORU_CAPTURED_BY_TWINROVA) && LINK_IS_CHILD) {
         EnNb_UpdatePath(this, play);
 
         // looking into crawlspace
-        if (!(gSaveContext.eventChkInf[9] & 0x10)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_SPOKE_TO_NABOORU_IN_SPIRIT_TEMPLE)) {
             EnNb_SetCurrentAnim(this, &gNabooruKneeingAtCrawlspaceAnim, 0, 0.0f, 0);
             this->action = NB_CROUCH_CRAWLSPACE;
             this->drawMode = NB_DRAW_DEFAULT;
         } else {
             EnNb_SetCurrentAnim(this, &gNabooruStandingHandsOnHipsAnim, 0, 0.0f, 0);
             this->headTurnFlag = 1;
-            this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
+            this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
             this->actor.world.pos = this->finalPos;
             this->action = NB_IDLE_AFTER_TALK;
             this->drawMode = NB_DRAW_DEFAULT;
@@ -1190,7 +1190,7 @@ void EnNb_SetupIdleCrawlspace(EnNb* this, s32 animFinished) {
     if (animFinished) {
         EnNb_SetCurrentAnim(this, &gNabooruStandingHandsOnHipsAnim, 0, -8.0f, 0);
         this->headTurnFlag = 1;
-        this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
         this->action = NB_IDLE_CRAWLSPACE;
     }
 }
@@ -1199,9 +1199,9 @@ void func_80AB3838(EnNb* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->action = NB_IN_DIALOG;
     } else {
-        this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
 
-        if (!(gSaveContext.infTable[22] & 0x1000)) {
+        if (!Flags_GetInfTable(INFTABLE_16C)) {
             this->actor.textId = 0x601D;
         } else {
             this->actor.textId = 0x6024;
@@ -1213,9 +1213,9 @@ void func_80AB3838(EnNb* this, PlayState* play) {
 
 void EnNb_SetupPathMovement(EnNb* this, PlayState* play) {
     EnNb_SetCurrentAnim(this, &gNabooruStandingToWalkingTransitionAnim, 2, -8.0f, 0);
-    gSaveContext.eventChkInf[9] |= 0x10;
+    Flags_SetEventChkInf(EVENTCHKINF_SPOKE_TO_NABOORU_IN_SPIRIT_TEMPLE);
     this->action = NB_IN_PATH;
-    this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
+    this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
 }
 
 void EnNb_SetTextIdAsChild(EnNb* this, PlayState* play) {
@@ -1231,11 +1231,11 @@ void EnNb_SetTextIdAsChild(EnNb* this, PlayState* play) {
             EnNb_SetupPathMovement(this, play);
         } else {
             if (textId == 0x6027) {
-                gSaveContext.infTable[22] |= 0x1000;
+                Flags_SetInfTable(INFTABLE_16C);
             }
             this->action = NB_IDLE_CRAWLSPACE;
         }
-        this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
+        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
     } else if ((Message_GetState(&play->msgCtx) == TEXT_STATE_CHOICE) && Message_ShouldAdvance(play)) {
         choiceIndex = play->msgCtx.choiceIndex;
 
@@ -1291,7 +1291,7 @@ void func_80AB3B04(EnNb* this, PlayState* play) {
     if (Actor_ProcessTalkRequest(&this->actor, play)) {
         this->action = NB_ACTION_30;
     } else {
-        this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_3;
+        this->actor.flags |= ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY;
         this->actor.textId = Text_GetFaceReaction(play, 0x23);
 
         if ((this->actor.textId) == 0) {
@@ -1305,7 +1305,7 @@ void func_80AB3B04(EnNb* this, PlayState* play) {
 void func_80AB3B7C(EnNb* this, PlayState* play) {
     if (Message_GetState(&play->msgCtx) == TEXT_STATE_CLOSING) {
         this->action = NB_IDLE_AFTER_TALK;
-        this->actor.flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_3);
+        this->actor.flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY);
     }
 }
 
@@ -1507,8 +1507,7 @@ void EnNb_DrawDefault(EnNb* this, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     gSPSegment(POLY_OPA_DISP++, 0x0C, &D_80116280[2]);
-    SkelAnime_DrawFlexOpa(play, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
-                          EnNb_OverrideLimbDraw, EnNb_PostLimbDraw, &this->actor);
+    SkelAnime_DrawSkeletonOpa(play, skelAnime, EnNb_OverrideLimbDraw, EnNb_PostLimbDraw, &this->actor);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

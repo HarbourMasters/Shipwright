@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_NIW_H
+#define OBJECTS_OBJECT_NIW_H 1
 
 #include "align_asset_macro.h"
 
@@ -58,3 +59,6 @@ static const ALIGN_ASSET(2) char gCuccoTex_2180[] = dgCuccoTex_2180;
 
 #define dgCuccoAnim "__OTR__objects/object_niw/gCuccoAnim"
 static const ALIGN_ASSET(2) char gCuccoAnim[] = dgCuccoAnim;
+
+
+#endif // OBJECTS_OBJECT_NIW_H

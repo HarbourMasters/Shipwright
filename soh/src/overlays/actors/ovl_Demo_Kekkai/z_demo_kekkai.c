@@ -8,7 +8,7 @@
 #include "objects/object_demo_kekkai/object_demo_kekkai.h"
 #include "scenes/dungeons/ganontika/ganontika_scene.h"
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void DemoKekkai_Init(Actor* thisx, PlayState* play);
 void DemoKekkai_Destroy(Actor* thisx, PlayState* play);
@@ -88,7 +88,7 @@ s32 DemoKekkai_CheckEventFlag(s32 params) {
     if ((params < KEKKAI_TOWER) || (params > KEKKAI_FOREST)) {
         return true;
     }
-    if (gSaveContext.n64ddFlag && params > KEKKAI_TOWER) {
+    if (IS_RANDO && params > KEKKAI_TOWER) {
         return Flags_GetRandomizerInf(trialParamToRandInf(params));
     }
     return Flags_GetEventChkInf(eventFlags[params]);
@@ -148,7 +148,7 @@ void DemoKekkai_Init(Actor* thisx, PlayState* play) {
             this->collider2.dim.height = thisx->scale.y * 5000.0f;
             this->collider2.dim.yShift = 300;
 
-            if (gSaveContext.n64ddFlag) {
+            if (IS_RANDO) {
                 if (TrialsDoneCount() == NUM_TRIALS) {
                     Actor_Kill(thisx);
                     return;
@@ -161,7 +161,7 @@ void DemoKekkai_Init(Actor* thisx, PlayState* play) {
         case KEKKAI_SHADOW:
         case KEKKAI_SPIRIT:
         case KEKKAI_FOREST:
-            if (gSaveContext.n64ddFlag && Flags_GetRandomizerInf(trialParamToRandInf(thisx->params))) {
+            if (IS_RANDO && Flags_GetRandomizerInf(trialParamToRandInf(thisx->params))) {
                 Actor_Kill(thisx);
                 return;
             }
@@ -231,7 +231,7 @@ void DemoKekkai_TowerBarrier(DemoKekkai* this, PlayState* play) {
         } else {
             this->timer++;
             if (this->timer > 100) {
-                Flags_SetEventChkInf(0xC3);
+                Flags_SetEventChkInf(EVENTCHKINF_DISPELLED_GANONS_TOWER_BARRIER);
                 Actor_Kill(&this->actor);
                 return;
             } else if (this->timer > 40) {
@@ -270,7 +270,7 @@ void DemoKekkai_TrialBarrierDispel(Actor* thisx, PlayState* play) {
     s32 pad;
     DemoKekkai* this = (DemoKekkai*)thisx;
 
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         Flags_SetRandomizerInf(trialParamToRandInf(thisx->params));
         // May or may not be needed. Not sure if needed for anything
         // that randoInf isn't already covering. Leaving it for safety.

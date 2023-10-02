@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_VALI_H
+#define OBJECTS_OBJECT_VALI_H 1
 
 #include "align_asset_macro.h"
 
@@ -73,3 +74,6 @@ static const ALIGN_ASSET(2) char gBariInnerHoodTex[] = dgBariInnerHoodTex;
 
 #define dgBariSkel "__OTR__objects/object_vali/gBariSkel"
 static const ALIGN_ASSET(2) char gBariSkel[] = dgBariSkel;
+
+
+#endif // OBJECTS_OBJECT_VALI_H

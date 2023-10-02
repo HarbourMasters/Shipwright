@@ -21,97 +21,54 @@ char* quote;
 
 void Title_PrintBuildInfo(Gfx** gfxp) {
     Gfx* g;
-    //GfxPrint* printer;
     GfxPrint printer;
 
     g = *gfxp;
     g = Gfx_SetupDL_28(g);
-    //printer = alloca(sizeof(GfxPrint));
+
     GfxPrint_Init(&printer);
     GfxPrint_Open(&printer, g);
-    GfxPrint_SetColor(&printer, 255, 155, 255, 255);
-    GfxPrint_SetPos(&printer, 12, 20);
+    GfxPrint_SetColor(&printer, 131, 154, 255, 255);
 
-#ifdef _MSC_VER
-    GfxPrint_Printf(&printer, "MSVC SHIP");
-#elif __clang__
-    GfxPrint_Printf(&printer, "CLANG SHIP");
-#else
-    GfxPrint_Printf(&printer, "GCC SHIP");
-#endif
-
-    s32 pos = 4;
-    GfxPrint_SetPos(&printer, 1, pos);
-    GfxPrint_Printf(&printer, "Game Versions:");
+    GfxPrint_SetPos(&printer, 1, 25);
+    GfxPrint_Printf(&printer, "%s", gBuildVersion);
+    GfxPrint_SetPos(&printer, 1, 26);
+    GfxPrint_Printf(&printer, "%s", gBuildDate);
 
     u32 numVersions = ResourceMgr_GetNumGameVersions();
-    if (!numVersions) {
-        GfxPrint_SetPos(&printer, 16, pos++);
-        GfxPrint_Printf(&printer, "Unknown");
-    } else {
-        for (u32 i = 0; i < numVersions; i++) {
-            GfxPrint_SetPos(&printer, 16, pos++);
-            GfxPrint_Printf(&printer, "%s", GetGameVersionString(i));
-        }
+    s32 pos = 27 - numVersions;
+    for (u32 i = 0; i < numVersions; i++) {
+        GfxPrint_SetPos(&printer, 29, pos++);
+        GfxPrint_Printf(&printer, "%s", GetGameVersionString(i));
     }
 
-    GfxPrint_SetPos(&printer, 1, pos);
-    GfxPrint_Printf(&printer, "Release Version: %s", gBuildVersion);
-
-    GfxPrint_SetColor(&printer, 255, 255, 255, 255);
-    GfxPrint_SetPos(&printer, 2, 22);
-    GfxPrint_Printf(&printer, quote);
-    GfxPrint_SetPos(&printer, 1, 25);
-    GfxPrint_Printf(&printer, "Build Date:%s", gBuildDate);
-    GfxPrint_SetPos(&printer, 3, 26);
-    GfxPrint_Printf(&printer, "%s", gBuildTeam);
     g = GfxPrint_Close(&printer);
     GfxPrint_Destroy(&printer);
     *gfxp = g;
 }
 
-const char* quotes[11] = {
-    "My boy! This peace is what all true warriors strive for!",
-    "Hmm. How can we help?",
-    "Zelda! Duke Onkled is under attack by the evil forces of Ganon!",
-    "I'm going to Gamelon to aid him.",
-    "I'll take the Triforce of Courage to protect me.",
-    "If you don't hear from me in a month, send Link.",
-    "Enough! My ship sails in the morning.",
-    "I wonder what's for dinner.",
-    "You've saved me!",
-    "After you've scrubbed all the floors in Hyrule, then we can talk about mercy! Take him away!",
-    "Waaaahahahohohahahahahahaha"
-};
-
-const char* SetQuote() {
-    srand(time(NULL));
-    int randomQuote = rand() % 11;
-    return quotes[randomQuote];
-}
-
 const char* GetGameVersionString(s32 index) {
     uint32_t gameVersion = ResourceMgr_GetGameVersion(index);
     switch (gameVersion) {
-        case OOT_NTSC_10:
-            return "N64 NTSC 1.0";
-        case OOT_NTSC_11:
-            return "N64 NTSC 1.1";
-        case OOT_NTSC_12:
-            return "N64 NTSC 1.2";
+        case OOT_NTSC_US_10:
+            return "NTSC-U 1.0";
+        case OOT_NTSC_US_11:
+            return "NTSC-U 1.1";
+        case OOT_NTSC_US_12:
+            return "NTSC-U 1.2";
         case OOT_PAL_10:
-            return "N64 PAL 1.0";
+            return "PAL 1.0";
         case OOT_PAL_11:
-            return "N64 PAL 1.1";
+            return "PAL 1.1";
         case OOT_PAL_GC:
-            return "GC PAL";
+            return "PAL GC";
         case OOT_PAL_MQ:
-            return "GC PAL MQ";
+            return "PAL MQ";
         case OOT_PAL_GC_DBG1:
         case OOT_PAL_GC_DBG2:
-            return "GC PAL DEBUG";
+            return "PAL GC-D";
         case OOT_PAL_GC_MQ_DBG:
-            return "GC PAL DEBUG MQ";
+            return "PAL MQ-D";
         case OOT_IQUE_CN:
             return "IQUE CN";
         case OOT_IQUE_TW:
@@ -171,6 +128,12 @@ void Title_SetupView(TitleContext* this, f32 x, f32 y, f32 z) {
     func_800AAA50(view, 0xF);
 }
 
+#define dgShipLogoDL "__OTR__textures/nintendo_rogo_static/gShipLogoDL"
+static const ALIGN_ASSET(2) char gShipLogoDL[] = dgShipLogoDL;
+
+#define dnintendo_rogo_static_Tex_LUS_000000 "__OTR__textures/nintendo_rogo_static/nintendo_rogo_static_Tex_LUS_000000"
+static const ALIGN_ASSET(2) char nintendo_rogo_static_Tex_LUS_000000[] = dnintendo_rogo_static_Tex_LUS_000000;
+
 void Title_Draw(TitleContext* this) {
     static s16 sTitleRotY = 0;
     static Lights1 sTitleLights = gdSPDefLights1(0x64, 0x64, 0x64, 0xFF, 0xFF, 0xFF, 0x45, 0x45, 0x45);
@@ -195,8 +158,6 @@ void Title_Draw(TitleContext* this) {
     v1.z = 0;
     v2.z = 1119.0837;
 
-    char* n64LogoTex = GetResourceDataByName(nintendo_rogo_static_Tex_000000, false);
-
     func_8002EABC(&v1, &v2, &v3, this->state.gfxCtx);
     gSPSetLights1(POLY_OPA_DISP++, sTitleLights);
     Title_SetupView(this, 0, 150.0, 300.0);
@@ -206,7 +167,11 @@ void Title_Draw(TitleContext* this) {
     Matrix_RotateZYX(0, sTitleRotY, 0, MTXMODE_APPLY);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx), G_MTX_LOAD);
-    gSPDisplayList(POLY_OPA_DISP++, gNintendo64LogoDL);
+    if (CVarGetInteger("gAuthenticLogo", 0)) {
+        gSPDisplayList(POLY_OPA_DISP++, gNintendo64LogoDL);
+    } else {
+        gSPDisplayList(POLY_OPA_DISP++, gShipLogoDL);
+    }
     Gfx_SetupDL_39Opa(this->state.gfxCtx);
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetCycleType(POLY_OPA_DISP++, G_CYC_2CYCLE);
@@ -227,9 +192,12 @@ void Title_Draw(TitleContext* this) {
 
     for (idx = 0, y = 94; idx < 16; idx++, y += 2)
     {
-        gDPLoadTextureBlock(POLY_OPA_DISP++, &n64LogoTex[0x180 * idx], G_IM_FMT_I,
-            G_IM_SIZ_8b, 192, 2, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadMultiTile(POLY_OPA_DISP++, CVarGetInteger("gAuthenticLogo", 0) ? nintendo_rogo_static_Tex_000000 : nintendo_rogo_static_Tex_LUS_000000, 0, G_TX_RENDERTILE, G_IM_FMT_I, G_IM_SIZ_8b, 192, 32,
+                         0, idx * 2, 192 - 1, (idx + 1) * 2 - 1, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                         G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+        
+        gDPSetTileSize(POLY_OPA_DISP++, 0, 0, 0, (192 - 1) << G_TEXTURE_IMAGE_FRAC,
+                       (2 - 1) << G_TEXTURE_IMAGE_FRAC);
 
         gDPSetTileSize(POLY_OPA_DISP++, 1, this->uls, (this->ult & 0x7F) - idx * 4, 0, 0);
         gSPTextureRectangle(POLY_OPA_DISP++, 388, y << 2, 1156, (y + 2) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
@@ -269,7 +237,7 @@ void Title_Main(GameState* thisx) {
     Title_Calc(this);
     Title_Draw(this);
 
-    if (!CVarGetInteger("gHideBuildInfo", 0)) {
+    if (!CVarGetInteger("gAuthenticLogo", 0)) {
         Gfx* gfx = POLY_OPA_DISP;
         s32 pad;
 
@@ -302,14 +270,11 @@ void Title_Init(GameState* thisx) {
     //u32 size = 0;
     TitleContext* this = (TitleContext*)thisx;
 
-    quote = SetQuote();
-
     this->staticSegment = NULL;
     //this->staticSegment = GAMESTATE_ALLOC_MC(&this->state, size);
     osSyncPrintf("z_title.c\n");
-    //ASSERT(this->staticSegment != NULL);
 
-    //ResourceMgr_CacheDirectory("nintendo_rogo_static*");
+    //ResourceMgr_LoadDirectory("nintendo_rogo_static*");
 
     // Disable vismono
     D_801614B0.a = 0;

@@ -9,8 +9,9 @@
 #include "objects/object_triforce_spot/object_triforce_spot.h"
 #include "objects/object_efc_tw/object_efc_tw.h"
 #include "objects/object_gi_jewel/object_gi_jewel.h"
+#include <assert.h>
 
-#define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
+#define FLAGS (ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_DRAW_WHILE_CULLED)
 
 void DemoEffect_Init(Actor* thisx, PlayState* play);
 void DemoEffect_Destroy(Actor* thisx, PlayState* play);
@@ -141,7 +142,7 @@ f32 DemoEffect_InterpolateCsFrames(PlayState* play, s32 csActionId) {
  */
 void DemoEffect_InitJewel(PlayState* play, DemoEffect* this) {
     this->initDrawFunc = DemoEffect_DrawJewel;
-    if (gSaveContext.n64ddFlag && play->sceneNum == SCENE_BDAN) {
+    if (IS_RANDO && play->sceneNum == SCENE_JABU_JABU) {
         this->initDrawFunc = DemoEffect_DrawGetItem;
     }
     if (!LINK_IS_ADULT) {
@@ -149,13 +150,13 @@ void DemoEffect_InitJewel(PlayState* play, DemoEffect* this) {
     } else {
         this->initUpdateFunc = DemoEffect_UpdateJewelAdult;
     }
-    if (play->sceneNum == SCENE_TOKINOMA) {
+    if (play->sceneNum == SCENE_TEMPLE_OF_TIME) {
         Actor_SetScale(&this->actor, 0.35f);
     } else {
         Actor_SetScale(&this->actor, 0.10f);
     }
     this->csActionId = 1;
-    this->actor.shape.rot.x = (gSaveContext.n64ddFlag && play->sceneNum == SCENE_BDAN) ? 0 : 16384;
+    this->actor.shape.rot.x = (IS_RANDO && play->sceneNum == SCENE_JABU_JABU) ? 0 : 16384;
     DemoEffect_InitJewelColor(this);
     this->jewel.alpha = 0;
     this->jewelCsRotation.x = this->jewelCsRotation.y = this->jewelCsRotation.z = 0;
@@ -199,7 +200,7 @@ void DemoEffect_Init(Actor* thisx, PlayState* play2) {
     osSyncPrintf(VT_FGCOL(CYAN) " bank_ID = %d\n" VT_RST, objectIndex);
 
     if (objectIndex < 0) {
-        ASSERT(objectIndex < 0);
+        assert(objectIndex < 0);
     } else {
         this->initObjectBankIndex = objectIndex;
     }
@@ -461,7 +462,7 @@ void DemoEffect_Init(Actor* thisx, PlayState* play2) {
 
         case DEMO_EFFECT_TIMEWARP_TIMEBLOCK_LARGE:
         case DEMO_EFFECT_TIMEWARP_TIMEBLOCK_SMALL:
-            this->actor.flags |= ACTOR_FLAG_25;
+            this->actor.flags |= ACTOR_FLAG_NO_FREEZE_OCARINA;
         case DEMO_EFFECT_TIMEWARP_MASTERSWORD:
             this->initDrawFunc = DemoEffect_DrawTimeWarp;
             this->initUpdateFunc = DemoEffect_InitTimeWarp;
@@ -495,7 +496,7 @@ void DemoEffect_Init(Actor* thisx, PlayState* play2) {
             this->jewel.isPositionInit = 0;
             DemoEffect_InitJewel(play, this);
             Actor_ChangeCategory(play, &play->actorCtx, &this->actor, ACTOR_EN_DOOR);
-            if ((play->sceneNum == SCENE_BDAN) && (gSaveContext.infTable[20] & 0x20)) {
+            if ((play->sceneNum == SCENE_JABU_JABU) && (Flags_GetInfTable(INFTABLE_145))) {
                 Actor_Kill(&this->actor);
                 return;
             }
@@ -509,7 +510,7 @@ void DemoEffect_Init(Actor* thisx, PlayState* play2) {
             break;
 
         default:
-            ASSERT(0);
+            assert(0);
             break;
     }
 
@@ -634,7 +635,7 @@ void DemoEffect_UpdateGetItem(DemoEffect* this, PlayState* play) {
 
         Actor_SetScale(thisx, 0.20f);
 
-        if (gSaveContext.entranceIndex == 0x0053 || (gSaveContext.n64ddFlag && gSaveContext.entranceIndex == 0x05F4)) {
+        if (gSaveContext.entranceIndex == 0x0053 || (IS_RANDO && gSaveContext.entranceIndex == 0x05F4)) {
             switch (play->csCtx.npcActions[this->csActionId]->action) {
                 case 2:
                     DemoEffect_MedalSparkle(this, play, 0);
@@ -647,7 +648,7 @@ void DemoEffect_UpdateGetItem(DemoEffect* this, PlayState* play) {
         switch (play->csCtx.npcActions[this->csActionId]->action) {
             case 2:
                 if (gSaveContext.entranceIndex == 0x0053 ||
-                    (gSaveContext.n64ddFlag && gSaveContext.entranceIndex == 0x05F4)) {
+                    (IS_RANDO && gSaveContext.entranceIndex == 0x05F4)) {
                     Audio_PlayActorSound2(thisx, NA_SE_EV_MEDAL_APPEAR_L - SFX_FLAG);
                 } else {
                     func_800788CC(NA_SE_EV_MEDAL_APPEAR_S - SFX_FLAG);
@@ -663,7 +664,7 @@ void DemoEffect_UpdateGetItem(DemoEffect* this, PlayState* play) {
                     this->actor.shape.rot.y += this->getItem.rotation;
                 }
                 if (gSaveContext.entranceIndex == 0x0053 ||
-                    (gSaveContext.n64ddFlag && gSaveContext.entranceIndex == 0x05F4)) {
+                    (IS_RANDO && gSaveContext.entranceIndex == 0x05F4)) {
                     Audio_PlayActorSound2(thisx, NA_SE_EV_MEDAL_APPEAR_L - SFX_FLAG);
                 } else {
                     func_800788CC(NA_SE_EV_MEDAL_APPEAR_S - SFX_FLAG);
@@ -688,7 +689,7 @@ void DemoEffect_InitTimeWarp(DemoEffect* this, PlayState* play) {
     s32 effectType = (this->actor.params & 0x00FF);
 
     if (!SkelCurve_Init(play, &this->skelCurve, &gTimeWarpSkel, &gTimeWarpAnim)) {
-        ASSERT(!SkelCurve_Init(play, &this->skelCurve, &gTimeWarpSkel, &gTimeWarpAnim));
+        assert(!SkelCurve_Init(play, &this->skelCurve, &gTimeWarpSkel, &gTimeWarpAnim));
     }
 
     if (effectType == DEMO_EFFECT_TIMEWARP_TIMEBLOCK_LARGE || effectType == DEMO_EFFECT_TIMEWARP_TIMEBLOCK_SMALL) {
@@ -702,7 +703,7 @@ void DemoEffect_InitTimeWarp(DemoEffect* this, PlayState* play) {
             Actor_SetScale(&this->actor, 84 * 0.001f);
         }
     } else if (gSaveContext.sceneSetupIndex == 5 || gSaveContext.sceneSetupIndex == 4 ||
-               (gSaveContext.entranceIndex == 0x0324 && !((gSaveContext.eventChkInf[12] & 0x200)))) {
+               (gSaveContext.entranceIndex == 0x0324 && !((Flags_GetEventChkInf(EVENTCHKINF_TIME_TRAVELED_TO_ADULT))))) {
         SkelCurve_SetAnim(&this->skelCurve, &gTimeWarpAnim, 1.0f, 59.0f, 59.0f, 0.0f);
         SkelCurve_Update(play, &this->skelCurve);
         this->updateFunc = DemoEffect_UpdateTimeWarpReturnFromChamberOfSages;
@@ -766,7 +767,7 @@ void DemoEffect_UpdateTimeWarpReturnFromChamberOfSages(DemoEffect* this, PlaySta
 
     if (this->timeWarp.shrinkTimer > 250) {
         if (gSaveContext.entranceIndex == 0x0324) {
-            gSaveContext.eventChkInf[12] |= 0x200;
+            Flags_SetEventChkInf(EVENTCHKINF_TIME_TRAVELED_TO_ADULT);
         }
 
         Actor_Kill(&this->actor);
@@ -1074,12 +1075,12 @@ void DemoEffect_UpdateLightEffect(DemoEffect* this, PlayState* play) {
                 break;
         }
 
-        if (play->sceneNum == SCENE_SPOT04 && gSaveContext.sceneSetupIndex == 6 &&
+        if (play->sceneNum == SCENE_KOKIRI_FOREST && gSaveContext.sceneSetupIndex == 6 &&
             play->csCtx.frames == 197) {
             Audio_PlayActorSound2(&this->actor, NA_SE_EV_WHITE_OUT);
         }
 
-        if (play->sceneNum == SCENE_SPOT16 && gSaveContext.sceneSetupIndex == 5) {
+        if (play->sceneNum == SCENE_DEATH_MOUNTAIN_TRAIL && gSaveContext.sceneSetupIndex == 5) {
             if (!DemoEffect_CheckCsAction(this, play, 1)) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
             }
@@ -1088,7 +1089,7 @@ void DemoEffect_UpdateLightEffect(DemoEffect* this, PlayState* play) {
             }
         }
 
-        if (play->sceneNum == SCENE_SPOT08 && gSaveContext.sceneSetupIndex == 4) {
+        if (play->sceneNum == SCENE_ZORAS_FOUNTAIN && gSaveContext.sceneSetupIndex == 4) {
             if (!DemoEffect_CheckCsAction(this, play, 1)) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
             }
@@ -1097,14 +1098,14 @@ void DemoEffect_UpdateLightEffect(DemoEffect* this, PlayState* play) {
             }
         }
 
-        if (play->sceneNum == SCENE_TOKINOMA && gSaveContext.sceneSetupIndex == 14) {
+        if (play->sceneNum == SCENE_TEMPLE_OF_TIME && gSaveContext.sceneSetupIndex == 14) {
 
             if (play->csCtx.npcActions[this->csActionId]->action == 2) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
             }
         }
 
-        if (play->sceneNum == SCENE_DAIYOUSEI_IZUMI || play->sceneNum == SCENE_YOUSEI_IZUMI_YOKO) {
+        if (play->sceneNum == SCENE_GREAT_FAIRYS_FOUNTAIN_MAGIC || play->sceneNum == SCENE_GREAT_FAIRYS_FOUNTAIN_SPELLS) {
             if (play->csCtx.npcActions[this->csActionId]->action == 2) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
             }
@@ -1544,7 +1545,7 @@ void DemoEffect_UpdateJewelAdult(DemoEffect* this, PlayState* play) {
     this->actor.shape.rot.y += 0x0400;
     DemoEffect_PlayJewelSfx(this, play);
 
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         switch (this->jewel.type) {
             case DEMO_EFFECT_JEWEL_KOKIRI:
                 if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
@@ -1587,8 +1588,8 @@ void DemoEffect_UpdateJewelChild(DemoEffect* this, PlayState* play) {
     if (play->csCtx.state && play->csCtx.npcActions[this->csActionId]) {
         switch (play->csCtx.npcActions[this->csActionId]->action) {
             case 3:
-                if (gSaveContext.eventChkInf[4] & 0x800) {
-                    gSaveContext.eventChkInf[4] |= 0x800;
+                if (Flags_GetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME)) {
+                    Flags_SetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME);
                 }
                 DemoEffect_MoveJewelActivateDoorOfTime(this, play);
                 if ((play->gameplayFrames & 1) == 0) {
@@ -1614,15 +1615,15 @@ void DemoEffect_UpdateJewelChild(DemoEffect* this, PlayState* play) {
             default:
                 DemoEffect_MoveToCsEndpoint(this, play, this->csActionId, 0);
                 if (gSaveContext.entranceIndex == 0x0053 ||
-                    (gSaveContext.n64ddFlag && gSaveContext.entranceIndex == 0x05F4)) {
+                    (IS_RANDO && gSaveContext.entranceIndex == 0x05F4)) {
                     DemoEffect_MoveJewelSplit(&thisx->world, this);
                 }
                 break;
         }
     }
 
-    if (gSaveContext.entranceIndex == 0x0053 || (gSaveContext.n64ddFlag && gSaveContext.entranceIndex == 0x05F4)) {
-        if (!(gSaveContext.eventChkInf[4] & 0x800)) {
+    if (gSaveContext.entranceIndex == 0x0053 || (IS_RANDO && gSaveContext.entranceIndex == 0x05F4)) {
+        if (!Flags_GetEventChkInf(EVENTCHKINF_OPENED_THE_DOOR_OF_TIME)) {
             hasCmdAction = play->csCtx.state && play->csCtx.npcActions[this->csActionId];
             if (!hasCmdAction) {
                 this->effectFlags |= 0x1;
@@ -1635,7 +1636,7 @@ void DemoEffect_UpdateJewelChild(DemoEffect* this, PlayState* play) {
     DemoEffect_PlayJewelSfx(this, play);
     this->effectFlags &= ~1;
 
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         switch (this->jewel.type) {
             case DEMO_EFFECT_JEWEL_KOKIRI:
                 if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
@@ -2086,7 +2087,7 @@ void DemoEffect_DrawGetItem(Actor* thisx, PlayState* play) {
             this->getItem.isLoaded = 1;
             return;
         }
-        if (gSaveContext.n64ddFlag && play->sceneNum == SCENE_BDAN) {
+        if (IS_RANDO && play->sceneNum == SCENE_JABU_JABU) {
             GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_BARINADE, RG_ZORA_SAPPHIRE);
             this->getItem.drawId = getItemEntry.gid;
             func_8002EBCC(thisx, play, 0);

@@ -10,23 +10,6 @@
 #include "settings.hpp"
 #include <functional>
 
-enum class HintType {
-  Trial,
-  Always,
-  Woth, //Way of the Hero
-  Barren,
-  Entrance,
-  Sometimes,
-  Random,
-  Item,
-  Song,
-  Overworld,
-  Dungeon,
-  Junk,
-  NamedItem,
-  MaxCount,
-};
-
 struct HintDistributionSetting {
   HintType type;
   uint8_t order;
@@ -36,7 +19,7 @@ struct HintDistributionSetting {
 };
 
 struct HintSetting {
-  using DistributionTable = std::array<HintDistributionSetting, static_cast<int>(HintType::MaxCount)>;
+  using DistributionTable = std::array<HintDistributionSetting, static_cast<int>(HINT_TYPE_MAX)>;
 
   uint8_t dungeonsWothLimit;
   uint8_t dungeonsBarrenLimit;
@@ -223,6 +206,8 @@ extern void CreateMerchantsHints();
 extern void CreateWarpSongTexts();
 extern void CreateDampesDiaryText();
 extern void CreateGregRupeeHint();
+extern void CreateSheikText();
+extern void CreateSariaText();
 extern void CreateGanonText();
 extern void CreateAltarText();
 
@@ -232,6 +217,8 @@ Text& GetGanonText();
 Text& GetGanonHintText();
 Text& GetDampeHintText();
 Text& GetGregHintText();
+Text& GetSheikHintText();
+Text& GetSariaHintText();
 
 Text& GetWarpMinuetText();
 Text& GetWarpBoleroText();
@@ -239,3 +226,7 @@ Text& GetWarpSerenadeText();
 Text& GetWarpRequiemText();
 Text& GetWarpNocturneText();
 Text& GetWarpPreludeText();
+
+std::string GetDampeHintLoc();
+std::string GetLightArrowHintLoc();
+std::string GetSariaHintLoc();

@@ -42,8 +42,9 @@ public:
 	void SetGrayscalePixel(size_t y, size_t x, uint8_t grayscale, uint8_t alpha = 0);
 
 	void SetIndexedPixel(size_t y, size_t x, uint8_t index, uint8_t grayscale);
+	void SetIndexedPixel(size_t y, size_t x, uint8_t index, RGBAPixel pixel);
 	void SetPaletteIndex(size_t index, uint8_t nR, uint8_t nG, uint8_t nB, uint8_t nA);
-	void SetPalette(const ImageBackend& pal);
+	void SetPalette(const ImageBackend& pal, uint32_t offset = 0);
 
 	uint32_t GetWidth() const;
 	uint32_t GetHeight() const;

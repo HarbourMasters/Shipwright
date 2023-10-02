@@ -13,14 +13,14 @@ void OTRSetFrameDivisor(int divisor);
 void OTRGetPixelDepthPrepare(float x, float y);
 uint16_t OTRGetPixelDepth(float x, float y);
 int32_t OTRGetLastScancode();
-void ResourceMgr_CacheDirectory(const char* resName);
+void ResourceMgr_LoadDirectory(const char* resName);
 void ResourceMgr_LoadFile(const char* resName);
 char* ResourceMgr_LoadFileFromDisk(const char* filePath);
-char* GetResourceDataByName(char* texPath);
 uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
 uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
-size_t GetResourceTexSizeByName(const char* name);
+size_t ResourceGetTexSizeByName(const char* name);
 char* ResourceMgr_LoadTexOrDListByName(char* filePath);
+char* ResourceMgr_LoadIfDListByName(char* filePath);
 char* ResourceMgr_LoadPlayerAnimByName(char* animPath);
 char* ResourceMgr_GetNameByCRC(uint64_t crc, char* alloc);
 Gfx* ResourceMgr_LoadGfxByCRC(uint64_t crc);
@@ -30,6 +30,7 @@ Vtx* ResourceMgr_LoadVtxByName(char* path);
 CollisionHeader* ResourceMgr_LoadColByName(char* path);
 uint64_t GetPerfCounter();
 int ResourceMgr_OTRSigCheck(char* imgData);
+void ResourceMgr_PushCurrentDirectory(char* path);
 
 }
 
@@ -39,8 +40,30 @@ extern "C" void gSPSegment(void* value, int segNum, uintptr_t target) {
 
     int res = ResourceMgr_OTRSigCheck(imgData);
 
-    if (res)
+    // OTRTODO: Disabled for now to fix an issue with HD Textures.
+    // With HD textures, we need to pass the path to F3D, not the raw texture data.
+    // Otherwise the needed metadata is not available for proper rendering...
+    // This should *not* cause any crashes, but some testing may be needed...
+    // UPDATE: To maintain compatability it will still do the old behavior if the resource is a display list.
+    // That should not affect HD textures.
+    if (res) {
+        uintptr_t desiredTarget = (uintptr_t)ResourceMgr_LoadIfDListByName(imgData);
+
+        if (desiredTarget != NULL)
+            target = desiredTarget;
+    }
+
+    __gSPSegment(value, segNum, target);
+}
+
+extern "C" void gSPSegmentLoadRes(void* value, int segNum, uintptr_t target) {
+    char* imgData = (char*)target;
+
+    int res = ResourceMgr_OTRSigCheck(imgData);
+
+    if (res) {
         target = (uintptr_t)ResourceMgr_LoadTexOrDListByName(imgData);
+    }
 
     __gSPSegment(value, segNum, target);
 }
@@ -57,8 +80,12 @@ extern "C" void gDPSetTextureImageFB(Gfx* pkt, u32 format, u32 size, u32 width, 
 extern "C" void gSPDisplayList(Gfx* pkt, Gfx* dl) {
     char* imgData = (char*)dl;
 
-    if (ResourceMgr_OTRSigCheck(imgData) == 1)
+    if (ResourceMgr_OTRSigCheck(imgData) == 1) {
+        
+        //ResourceMgr_PushCurrentDirectory(imgData);
+        //gsSPPushCD(pkt++, imgData);
         dl = ResourceMgr_LoadGfxByName(imgData);
+    }
 
     __gSPDisplayList(pkt, dl);
 }

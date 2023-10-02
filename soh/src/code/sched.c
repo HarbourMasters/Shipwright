@@ -1,6 +1,7 @@
 #include "global.h"
 
 #include <string.h>
+#include <assert.h>
 
 #define RSP_DONE_MSG 667
 #define RDP_DONE_MSG 668
@@ -102,7 +103,7 @@ void Sched_HandleStart(SchedContext* sc) {
 void Sched_QueueTask(SchedContext* sc, OSScTask* task) {
     s32 type = task->list.t.type;
 
-    ASSERT((type == M_AUDTASK) || (type == M_GFXTASK) || (type == M_NJPEGTASK) || (type == M_NULTASK));
+    assert((type == M_AUDTASK) || (type == M_GFXTASK) || (type == M_NJPEGTASK) || (type == M_NULTASK));
 
     if (type == M_AUDTASK) {
         if (sLogScheduler) {
@@ -134,7 +135,7 @@ void Sched_QueueTask(SchedContext* sc, OSScTask* task) {
 
 void Sched_Yield(SchedContext* sc) {
     if (!(sc->curRSPTask->state & OS_SC_YIELD)) {
-        ASSERT(sc->curRSPTask->list.t.type != M_AUDTASK);
+        assert(sc->curRSPTask->list.t.type != M_AUDTASK);
 
         sc->curRSPTask->state |= OS_SC_YIELD;
 
@@ -153,14 +154,14 @@ OSScTask* func_800C89D4(SchedContext* sc, OSScTask* task) {
 
     if (sc->pendingSwapBuf1 != NULL) {
         if (0) {
-            ASSERT(sc->pendingSwapBuf1 != NULL);
+            assert(sc->pendingSwapBuf1 != NULL);
         }
         return NULL;
     }
 
     if (sc->pendingSwapBuf2 != NULL) {
         if (0) {
-            ASSERT(sc->pendingSwapBuf2 != NULL);
+            assert(sc->pendingSwapBuf2 != NULL);
         }
         return NULL;
     }
@@ -246,7 +247,7 @@ u32 Sched_IsComplete(SchedContext* sc, OSScTask* task) {
 }
 
 void Sched_RunTask(SchedContext* sc, OSScTask* spTask, OSScTask* dpTask) {
-    ASSERT(sc->curRSPTask == NULL);
+    assert(sc->curRSPTask == NULL);
     if (spTask != NULL) {
         if (spTask->list.t.type == M_NULTASK) {
             if (spTask->flags & OS_SC_NEEDS_RSP) {
@@ -356,7 +357,7 @@ void Sched_HandleRSPDone(SchedContext* sc) {
     OSScTask* nextRDP = NULL;
     s32 state;
 
-    ASSERT(sc->curRSPTask != NULL);
+    assert(sc->curRSPTask != NULL);
 
     if (sc->curRSPTask->list.t.type == M_AUDTASK) {
         gRSPAudioTotalTime += osGetTime() - sRSPAudioStartTime;
@@ -405,8 +406,8 @@ void Sched_HandleRDPDone(SchedContext* sc) {
     s32 state;
 
     gRDPTotalTime = osGetTime() - sRDPStartTime;
-    ASSERT(sc->curRDPTask != NULL);
-    ASSERT(sc->curRDPTask->list.t.type == M_GFXTASK);
+    assert(sc->curRDPTask != NULL);
+    assert(sc->curRDPTask->list.t.type == M_GFXTASK);
     curTask = sc->curRDPTask;
     sc->curRDPTask = NULL;
     curTask->state &= ~OS_SC_DP;

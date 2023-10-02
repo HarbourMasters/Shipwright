@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DUNGEONS_ICE_DOUKUTU_SCENE_H
+#define DUNGEONS_ICE_DOUKUTU_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -33,3 +34,6 @@ static const ALIGN_ASSET(2) char ice_doukutu_sceneTex_010EC0[] = dice_doukutu_sc
 static const ALIGN_ASSET(2) char ice_doukutu_sceneTLUT_00F8A0[] = dice_doukutu_sceneTLUT_00F8A0;
 
 #define dice_doukutu_sceneCollisionHeader_00F668 "__OTR__scenes/nonmq/ice_doukutu_scene/ice_doukutu_sceneCollisionHeader_00F668"
+
+
+#endif // DUNGEONS_ICE_DOUKUTU_SCENE_H

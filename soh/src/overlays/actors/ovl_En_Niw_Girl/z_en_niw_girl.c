@@ -8,7 +8,7 @@
 #include "objects/object_gr/object_gr.h"
 #include "vt.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_FRIENDLY | ACTOR_FLAG_UPDATE_WHILE_CULLED)
 
 void EnNiwGirl_Init(Actor* thisx, PlayState* play);
 void EnNiwGirl_Destroy(Actor* thisx, PlayState* play);
@@ -93,12 +93,15 @@ void EnNiwGirl_Init(Actor* thisx, PlayState* play) {
 }
 
 void EnNiwGirl_Destroy(Actor* thisx, PlayState* play) {
+    EnNiwGirl* this = (EnNiwGirl*)thisx;
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnNiwGirl_Jump(EnNiwGirl* this, PlayState* play) {
     f32 frameCount = Animation_GetLastFrame(&gNiwGirlRunAnim);
     Animation_Change(&this->skelAnime, &gNiwGirlRunAnim, 1.0f, 0.0f, frameCount, 0, -10.0f);
-    this->actor.flags &= ~ACTOR_FLAG_0;
+    this->actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->actionFunc = func_80AB9210;
 }
 
@@ -139,9 +142,9 @@ void func_80AB9210(EnNiwGirl* this, PlayState* play) {
 void EnNiwGirl_Talk(EnNiwGirl* this, PlayState* play) {
     Animation_Change(&this->skelAnime, &gNiwGirlJumpAnim, 1.0f, 0.0f, Animation_GetLastFrame(&gNiwGirlJumpAnim), 0,
                      -10.0f);
-    this->actor.flags |= ACTOR_FLAG_0;
+    this->actor.flags |= ACTOR_FLAG_TARGETABLE;
     this->actor.textId = 0x7000;
-    if ((gSaveContext.eventChkInf[8] & 1) && (this->unk_27A == 0)) {
+    if ((Flags_GetEventChkInf(EVENTCHKINF_ZELDA_FLED_HYRULE_CASTLE)) && (this->unk_27A == 0)) {
         this->actor.textId = 0x70EA;
     }
     switch (Player_GetMask(play)) {
@@ -255,8 +258,7 @@ void EnNiwGirl_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnNiwGirlOverrideLimbDraw, NULL, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnNiwGirlOverrideLimbDraw, NULL, this);
     func_80033C30(&this->actor.world.pos, &sp4C, 255, play);
 
     CLOSE_DISPS(play->state.gfxCtx);

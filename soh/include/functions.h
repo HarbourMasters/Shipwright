@@ -20,19 +20,15 @@ extern "C"
 #define osSyncPrintf(fmt, ...) osSyncPrintfUnused(fmt, ##__VA_ARGS__)
 #endif
 
-f32 fabsf(f32 f);
-//#pragma intrinsic(fabsf)
-f32 sqrtf(f32 f);
-//#pragma intrinsic(sqrtf)
-f64 sqrt(f64 d);
-//#pragma intrinsic(sqrt)
-
 void gSPSegment(void* value, int segNum, uintptr_t target);
+void gSPSegmentLoadRes(void* value, int segNum, uintptr_t target);
 void gDPSetTextureImage(Gfx* pkt, u32 f, u32 s, u32 w, uintptr_t i);
 void gSPDisplayList(Gfx* pkt, Gfx* dl);
 void gSPDisplayListOffset(Gfx* pkt, Gfx* dl, int offset);
 void gSPVertex(Gfx* pkt, uintptr_t v, int n, int v0);
 void gSPInvalidateTexCache(Gfx* pkt, uintptr_t texAddr);
+void gDPSetTextureImageFB(Gfx* pkt, u32 format, u32 size, u32 width, int fb);
+
 
 void cleararena(void);
 void bootproc(void);
@@ -186,6 +182,7 @@ void __osSetWatchLo(u32);
 
 EnItem00* Item_DropCollectible(PlayState* play, Vec3f* spawnPos, s16 params);
 EnItem00* Item_DropCollectible2(PlayState* play, Vec3f* spawnPos, s16 params);
+void EnItem00_CustomItemsParticles(Actor* Parent, PlayState* play, GetItemEntry giEntry);
 void Item_DropCollectibleRandom(PlayState* play, Actor* fromActor, Vec3f* spawnPos, s16 params);
 void EffectBlure_ChangeType(EffectBlure* this, int type);
 void EffectBlure_AddVertex(EffectBlure* this, Vec3f* p1, Vec3f* p2);
@@ -475,7 +472,7 @@ void func_8002F6D4(PlayState* play, Actor* actor, f32 arg2, s16 arg3, f32 arg4, 
 void func_8002F71C(PlayState* play, Actor* actor, f32 arg2, s16 arg3, f32 arg4);
 void func_8002F758(PlayState* play, Actor* actor, f32 arg2, s16 arg3, f32 arg4, u32 arg5);
 void func_8002F7A0(PlayState* play, Actor* actor, f32 arg2, s16 arg3, f32 arg4);
-void func_8002F7DC(Actor* actor, u16 sfxId);
+void Player_PlaySfx(Actor* actor, u16 sfxId);
 void Audio_PlayActorSound2(Actor* actor, u16 sfxId);
 void func_8002F850(PlayState* play, Actor* actor);
 void func_8002F8F0(Actor* actor, u16 sfxId);
@@ -559,16 +556,25 @@ Actor* func_800358DC(Actor* actor, Vec3f* spawnPos, Vec3s* spawnRot, f32* arg3, 
 void func_800359B8(Actor* actor, s16 arg1, Vec3s* arg2);
 s32 Flags_GetEventChkInf(s32 flag);
 void Flags_SetEventChkInf(s32 flag);
+void Flags_UnsetEventChkInf(s32 flag);
+s32 Flags_GetItemGetInf(s32 flag);
+void Flags_SetItemGetInf(s32 flag);
+void Flags_UnsetItemGetInf(s32 flag);
 s32 Flags_GetInfTable(s32 flag);
 void Flags_SetInfTable(s32 flag);
+void Flags_UnsetInfTable(s32 flag);
+s32 Flags_GetEventInf(s32 flag);
+void Flags_SetEventInf(s32 flag);
+void Flags_UnsetEventInf(s32 flag);
 s32 Flags_GetRandomizerInf(RandomizerInf flag);
 void Flags_SetRandomizerInf(RandomizerInf flag);
+void Flags_UnsetRandomizerInf(RandomizerInf flag);
 u16 func_80037C30(PlayState* play, s16 arg1);
 s32 func_80037D98(PlayState* play, Actor* actor, s16 arg2, s32* arg3);
 s32 func_80038290(PlayState* play, Actor* actor, Vec3s* arg2, Vec3s* arg3, Vec3f arg4);
-void ActorOverlayTable_LogPrint(void);
-void ActorOverlayTable_Init(void);
-void ActorOverlayTable_Cleanup(void);
+GetItemEntry GetChestGameRandoGetItem(s8 room, s16 ogDrawId, PlayState* play);
+s16 GetChestGameRandoGiDrawId(s8 room, s16 ogDrawId, PlayState* play);
+
 // ? func_80038600(?);
 u16 DynaSSNodeList_GetNextNodeIdx(DynaSSNodeList*);
 void func_80038A28(CollisionPoly* poly, f32 tx, f32 ty, f32 tz, MtxF* dest);
@@ -840,7 +846,7 @@ void CollisionCheck_SpawnShieldParticlesMetal2(PlayState* play, Vec3f* v);
 void CollisionCheck_SpawnShieldParticlesWood(PlayState* play, Vec3f* b, Vec3f* actorPos);
 s32 CollisionCheck_CylSideVsLineSeg(f32 radius, f32 height, f32 offset, Vec3f* actorPos, Vec3f* itemPos,
                                     Vec3f* itemProjPos, Vec3f* out1, Vec3f* out2);
-u8 CollisionCheck_GetSwordDamage(s32 dmgFlags);
+u8 CollisionCheck_GetSwordDamage(s32 dmgFlags, PlayState* play);
 void SaveContext_Init(void);
 s32 func_800635D0(s32);
 void func_800636C0(void);
@@ -898,6 +904,7 @@ void KaleidoSetup_Init(PlayState* play);
 void KaleidoSetup_Destroy(PlayState* play);
 void func_8006EE50(Font* font, u16 arg1, u16 arg2);
 void Font_LoadChar(Font* font, u8 character, u16 codePointIndex);
+void* Font_FetchCharTexture(u8 character);
 void Font_LoadMessageBoxIcon(Font* font, u16 icon);
 void Font_LoadOrderedFont(Font* font);
 s32 func_8006F0A0(s32 arg0);
@@ -1063,6 +1070,7 @@ void func_800849EC(PlayState* play);
 void Interface_LoadItemIcon1(PlayState* play, u16 button);
 void Interface_LoadItemIcon2(PlayState* play, u16 button);
 void func_80084BF4(PlayState* play, u16 flag);
+uint16_t Interface_DrawTextLine(GraphicsContext* gfx, char text[], int16_t x, int16_t y, uint16_t colorR, uint16_t colorG, uint16_t colorB, uint16_t colorA, float textScale, uint8_t textShadow);
 u8 Item_Give(PlayState* play, u8 item);
 u16 Randomizer_Item_Give(PlayState* play, GetItemEntry giEntry);
 u8 Item_CheckObtainability(u8 item);
@@ -1088,6 +1096,7 @@ void func_80088AA0(s16 seconds);
 void func_80088AF0(PlayState* play);
 void func_80088B34(s16 arg0);
 void Interface_Draw(PlayState* play);
+void Interface_DrawTotalGameplayTimer(PlayState* play);
 void Interface_Update(PlayState* play);
 Path* Path_GetByIndex(PlayState* play, s16 index, s16 max);
 f32 Path_OrientAndGetDistSq(Actor* actor, Path* path, s16 waypoint, s16* yaw);
@@ -1123,8 +1132,8 @@ s32 Player_HoldsHookshot(Player* player);
 s32 Player_HoldsBow(Player* player);
 s32 Player_HoldsSlingshot(Player* player);
 s32 func_8008F128(Player* player);
-s32 Player_ActionToSword(s32 actionParam);
-s32 Player_GetSwordHeld(Player* player);
+s32 Player_ActionToMeleeWeapon(s32 actionParam);
+s32 Player_GetMeleeWeaponHeld(Player* player);
 s32 Player_HoldsTwoHandedWeapon(Player* player);
 s32 Player_HoldsBrokenKnife(Player* player);
 s32 Player_ActionToBottle(Player* player, s32 actionParam);
@@ -1132,19 +1141,19 @@ s32 Player_GetBottleHeld(Player* player);
 s32 Player_ActionToExplosive(Player* player, s32 actionParam);
 s32 Player_GetExplosiveHeld(Player* player);
 s32 func_8008F2BC(Player* player, s32 actionParam);
-s32 func_8008F2F8(PlayState* play);
-void func_8008F470(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dListCount, s32 lod, s32 tunic,
+s32 Player_GetEnvironmentalHazard(PlayState* play);
+void Player_DrawImpl(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dListCount, s32 lod, s32 tunic,
                    s32 boots, s32 face, OverrideLimbDrawOpa overrideLimbDraw, PostLimbDrawOpa postLimbDraw, void* this);
-s32 func_8008FCC8(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* data);
-s32 func_80090014(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* data);
-s32 func_800902F0(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* data);
-s32 func_80090440(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* data);
+s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* data);
+s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* data);
+s32 Player_OverrideLimbDrawGameplayFirstPerson(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* data);
+s32 Player_OverrideLimbDrawGameplayCrawling(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* data);
 u8 func_80090480(PlayState* play, ColliderQuad* collider, WeaponInfo* weaponDim, Vec3f* newTip,
                  Vec3f* newBase);
 void Player_DrawGetItem(PlayState* play, Player* player);
-void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* data);
+void Player_PostLimbDrawGameplay(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* data);
 u32 func_80091738(PlayState* play, u8* segment, SkelAnime* skelAnime);
-void func_8009214C(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f* pos, Vec3s* rot, f32 scale,
+void Player_DrawPause(PlayState* play, u8* segment, SkelAnime* skelAnime, Vec3f* pos, Vec3s* rot, f32 scale,
                    s32 sword, s32 tunic, s32 shield, s32 boots);
 void PreNMI_Init(GameState* thisx);
 Vec3f* Quake_AddVec(Vec3f* dst, Vec3f* arg1, VecSph* arg2);
@@ -1204,10 +1213,12 @@ Gfx* Gfx_SetupDL_66(Gfx* gfx);
 Gfx* func_800947AC(Gfx* gfx);
 void Gfx_SetupDL_42Opa(GraphicsContext* gfxCtx);
 void Gfx_SetupDL_42Overlay(GraphicsContext* gfxCtx);
+void Gfx_SetupDL_42Kal(GraphicsContext* gfxCtx);
 void Gfx_SetupDL_27Xlu(GraphicsContext* gfxCtx);
 void Gfx_SetupDL_60NoCDXlu(GraphicsContext* gfxCtx);
 void Gfx_SetupDL_61Xlu(GraphicsContext* gfxCtx);
 void Gfx_SetupDL_56Ptr(Gfx** gfxp);
+void Gfx_SetupDL_39Kal(GraphicsContext* gfxp);
 Gfx* Gfx_BranchTexScroll(Gfx** gfxp, u32 x, u32 y, s32 width, s32 height);
 Gfx* func_80094E78(GraphicsContext* gfxCtx, u32 x, u32 y);
 Gfx* Gfx_TexScroll(GraphicsContext* gfxCtx, u32 x, u32 y, s32 width, s32 height);
@@ -1246,6 +1257,8 @@ void SkelAnime_DrawLod(PlayState* play, void** skeleton, Vec3s* jointTable,
 void SkelAnime_DrawFlexLod(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dListCount,
                            OverrideLimbDrawOpa overrideLimbDraw, PostLimbDrawOpa postLimbDraw, void* arg,
                            s32 dListIndex);
+void SkelAnime_DrawSkeletonOpa(PlayState* play, SkelAnime* skelAnime, OverrideLimbDrawOpa overrideLimbDraw,
+                               PostLimbDrawOpa postLimbDraw, void* arg);
 void SkelAnime_DrawOpa(PlayState* play, void** skeleton, Vec3s* jointTable,
                        OverrideLimbDrawOpa overrideLimbDraw, PostLimbDrawOpa postLimbDraw, void* arg);
 void SkelAnime_DrawFlexOpa(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dListCount,
@@ -1342,6 +1355,7 @@ void SkinMatrix_Vec3fMtxFMultXYZW(MtxF* mf, Vec3f* src, Vec3f* xyzDest, f32* wDe
 void SkinMatrix_Vec3fMtxFMultXYZ(MtxF* mf, Vec3f* src, Vec3f* dest);
 void SkinMatrix_MtxFMtxFMult(MtxF* mfA, MtxF* mfB, MtxF* dest);
 void SkinMatrix_GetClear(MtxF** mf);
+void SkinMatrix_Clear(MtxF* mf);
 void SkinMatrix_MtxFCopy(MtxF* src, MtxF* dest);
 s32 SkinMatrix_Invert(MtxF* src, MtxF* dest);
 void SkinMatrix_SetScale(MtxF* mf, f32 x, f32 y, f32 z);
@@ -1531,6 +1545,8 @@ void Play_Main(GameState* thisx);
 u8 CheckStoneCount();
 u8 CheckMedallionCount();
 u8 CheckDungeonCount();
+u8 CheckBridgeRewardCount();
+u8 CheckLACSRewardCount();
 s32 Play_InCsMode(PlayState* play);
 f32 func_800BFCB8(PlayState* play, MtxF* mf, Vec3f* vec);
 void* Play_LoadFile(PlayState* play, RomFile* file);
@@ -2096,6 +2112,7 @@ void PreviewSequence(u16 seqId);
 void func_800F5B58(void);
 void func_800F5BF0(u8 natureAmbienceId);
 void Audio_PlayFanfare(u16);
+void Audio_PlayFanfare_Rando(GetItemEntry getItem);
 void func_800F5C2C(void);
 void func_800F5E18(u8 playerIdx, u16 seqId, u8 fadeTimer, s8 arg3, s8 arg4);
 void Audio_SetSequenceMode(u8 seqMode);
@@ -2292,7 +2309,6 @@ s32 JpegDecoder_ParseNextSymbol(JpegHuffmanTable* hTable, s16* outCoeff, s8* out
 u16 JpegDecoder_ReadBits(u8 len);
 s32 osPfsFreeBlocks(OSPfs* pfs, s32* leftoverBytes);
 void guScale(Mtx* m, f32 x, f32 y, f32 z);
-f32 sinf(f32);
 s16 sins(u16);
 OSTask* _VirtualToPhysicalTask(OSTask* intp);
 void osSpTaskLoad(OSTask* task);
@@ -2357,7 +2373,6 @@ s32 osPfsDeleteFile(OSPfs* pfs, u16 companyCode, u32 gameCode, u8* gameName, u8*
 s32 __osPfsReleasePages(OSPfs* pfs, __OSInode* inode, u8 initialPage, u8 bank, __OSInodeUnit* finalPage);
 void guOrthoF(f32[4][4], f32, f32, f32, f32, f32, f32, f32);
 void guOrtho(Mtx*, f32, f32, f32, f32, f32, f32, f32);
-f32 cosf(f32);
 s16 coss(u16);
 void osViSetEvent(OSMesgQueue* mq, OSMesg m, u32 retraceCount);
 s32 osPfsIsPlug(OSMesgQueue* mq, u8* pattern);
@@ -2410,6 +2425,7 @@ u8 Message_GetState(MessageContext* msgCtx);
 void Message_Draw(PlayState* play);
 void Message_Update(PlayState* play);
 void Message_SetTables(void);
+f32 Message_GetCharacterWidth(unsigned char characterIndex);
 void GameOver_Init(PlayState* play);
 void GameOver_FadeInLights(PlayState* play);
 void GameOver_Update(PlayState* play);
@@ -2432,6 +2448,8 @@ void Heaps_Alloc(void);
 void Heaps_Free(void);
 
 CollisionHeader* BgCheck_GetCollisionHeader(CollisionContext* colCtx, s32 bgId);
+
+void Interface_CreateQuadVertexGroup(Vtx* vtxList, s32 xStart, s32 yStart, s32 width, s32 height, u8 flippedH);
 
 // Exposing these methods to leverage them from the file select screen to render messages
 void Message_OpenText(PlayState* play, u16 textId);

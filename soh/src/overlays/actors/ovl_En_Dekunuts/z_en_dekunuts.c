@@ -7,8 +7,9 @@
 #include "z_en_dekunuts.h"
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
 #include "objects/object_dekunuts/object_dekunuts.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE)
 
 #define DEKUNUTS_FLOWER 10
 
@@ -112,7 +113,7 @@ void EnDekunuts_Init(Actor* thisx, PlayState* play) {
 
     Actor_ProcessInitChain(&this->actor, sInitChain);
     if (thisx->params == DEKUNUTS_FLOWER) {
-        thisx->flags &= ~(ACTOR_FLAG_0 | ACTOR_FLAG_2);
+        thisx->flags &= ~(ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE);
     } else {
         ActorShape_Init(&thisx->shape, 0.0f, ActorShadow_DrawCircle, 35.0f);
         SkelAnime_Init(play, &this->skelAnime, &gDekuNutsSkel, &gDekuNutsStandAnim, this->jointTable,
@@ -136,6 +137,8 @@ void EnDekunuts_Destroy(Actor* thisx, PlayState* play) {
 
     if (this->actor.params != DEKUNUTS_FLOWER) {
         Collider_DestroyCylinder(play, &this->collider);
+
+        ResourceMgr_UnregisterSkeleton(&this->skelAnime);
     }
 }
 
@@ -233,7 +236,7 @@ void EnDekunuts_SetupDie(EnDekunuts* this) {
     this->actionFunc = EnDekunuts_Die;
     this->actor.speedXZ = 0.0f;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_NUTS_DEAD);
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_MAD_SCRUB]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 void EnDekunuts_Wait(EnDekunuts* this, PlayState* play) {
@@ -532,7 +535,7 @@ void EnDekunuts_Draw(Actor* thisx, PlayState* play) {
     if (this->actor.params == DEKUNUTS_FLOWER) {
         Gfx_DrawDListOpa(play, gDekuNutsFlowerDL);
     } else {
-        SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, EnDekunuts_OverrideLimbDraw,
+        SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnDekunuts_OverrideLimbDraw,
                           NULL, this);
     }
 }

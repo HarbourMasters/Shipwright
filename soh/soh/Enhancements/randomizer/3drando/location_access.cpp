@@ -162,8 +162,8 @@ Entrance* Area::GetExit(uint32_t exitToReturn) {
       return &exit;
     }
   }
-  auto message = "ERROR: EXIT " + AreaTable(exitToReturn)->regionName + " DOES NOT EXIST IN " + this->regionName;
-  CitraPrint(message);
+  //auto message = "ERROR: EXIT " + AreaTable(exitToReturn)->regionName + " DOES NOT EXIST IN " + this->regionName;
+  //CitraPrint(message);
   return nullptr;
 }
 
@@ -256,7 +256,8 @@ void AreaTable_Init() {
                        //name, scene, hint text,                       events, locations, exits
   areaTable[ROOT] = Area("Root", "", LINKS_POCKET, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(LINKS_POCKET, {[]{return true;}})
+                  LocationAccess(LINKS_POCKET, {[]{return true;}}),
+                  LocationAccess(TRIFORCE_COMPLETED, { [] { return CanCompleteTriforce;}}),
                 }, {
                   //Exits
                   Entrance(ROOT_EXITS, {[]{return true;}})
@@ -266,24 +267,12 @@ void AreaTable_Init() {
                   //Exits
                   Entrance(CHILD_SPAWN,             {[]{return IsChild;}}),
                   Entrance(ADULT_SPAWN,             {[]{return IsAdult;}}),
-                  Entrance(MINUET_OF_FOREST_WARP,   {[]{return CanPlay(MinuetOfForest);},
-                                         /*Glitched*/[]{return (((IsChild && (ChildCanAccess(KOKIRI_FOREST) || ChildCanAccess(HYRULE_FIELD) || ChildCanAccess(LAKE_HYLIA))) || (IsAdult && (AdultCanAccess(KOKIRI_FOREST) || AdultCanAccess(HYRULE_FIELD) || AdultCanAccess(LAKE_HYLIA)))) && (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::NOVICE) ||
-                                                                 ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && (IsAdult || KokiriSword || Sticks || Bombs || HasBombchus || Boomerang || Slingshot || CanUse(MEGATON_HAMMER)) && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::NOVICE)))) && MinuetOfForest;}}),
-                  Entrance(BOLERO_OF_FIRE_WARP,     {[]{return CanPlay(BoleroOfFire)     && CanLeaveForest;},
-                                         /*Glitched*/[]{return (((IsChild && (ChildCanAccess(KOKIRI_FOREST) || ChildCanAccess(HYRULE_FIELD) || ChildCanAccess(LAKE_HYLIA))) || (IsAdult && (AdultCanAccess(KOKIRI_FOREST) || AdultCanAccess(HYRULE_FIELD) || AdultCanAccess(LAKE_HYLIA)))) && (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::NOVICE) ||
-                                                                 ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && (IsAdult || KokiriSword || Sticks || Bombs || HasBombchus || Boomerang || Slingshot || CanUse(MEGATON_HAMMER)) && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::NOVICE)))) && BoleroOfFire     && CanLeaveForest;}}),
-                  Entrance(SERENADE_OF_WATER_WARP,  {[]{return CanPlay(SerenadeOfWater)  && CanLeaveForest;},
-                                         /*Glitched*/[]{return (((IsChild && (ChildCanAccess(KOKIRI_FOREST) || ChildCanAccess(HYRULE_FIELD) || ChildCanAccess(LAKE_HYLIA))) || (IsAdult && (AdultCanAccess(KOKIRI_FOREST) || AdultCanAccess(HYRULE_FIELD) || AdultCanAccess(LAKE_HYLIA)))) && (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::NOVICE) ||
-                                                                 ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && (IsAdult || KokiriSword || Sticks || Bombs || HasBombchus || Boomerang || Slingshot || CanUse(MEGATON_HAMMER)) && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::NOVICE)))) && SerenadeOfWater  && CanLeaveForest;}}),
-                  Entrance(NOCTURNE_OF_SHADOW_WARP, {[]{return CanPlay(NocturneOfShadow) && CanLeaveForest;},
-                                         /*Glitched*/[]{return (((IsChild && (ChildCanAccess(KOKIRI_FOREST) || ChildCanAccess(HYRULE_FIELD) || ChildCanAccess(LAKE_HYLIA))) || (IsAdult && (AdultCanAccess(KOKIRI_FOREST) || AdultCanAccess(HYRULE_FIELD) || AdultCanAccess(LAKE_HYLIA)))) && (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::NOVICE) ||
-                                                                 ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && (IsAdult || KokiriSword || Sticks || Bombs || HasBombchus || Boomerang || Slingshot || CanUse(MEGATON_HAMMER)) && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::NOVICE)))) && NocturneOfShadow && CanLeaveForest;}}),
-                  Entrance(REQUIEM_OF_SPIRIT_WARP,  {[]{return CanPlay(RequiemOfSpirit)  && CanLeaveForest;},
-                                         /*Glitched*/[]{return (((IsChild && (ChildCanAccess(KOKIRI_FOREST) || ChildCanAccess(HYRULE_FIELD) || ChildCanAccess(LAKE_HYLIA))) || (IsAdult && (AdultCanAccess(KOKIRI_FOREST) || AdultCanAccess(HYRULE_FIELD) || AdultCanAccess(LAKE_HYLIA)))) && (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::NOVICE) ||
-                                                                 ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && (IsAdult || KokiriSword || Sticks || Bombs || HasBombchus || Boomerang || Slingshot || CanUse(MEGATON_HAMMER)) && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::NOVICE)))) && RequiemOfSpirit  && CanLeaveForest;}}),
-                  Entrance(PRELUDE_OF_LIGHT_WARP,   {[]{return CanPlay(PreludeOfLight)   && CanLeaveForest;},
-                                         /*Glitched*/[]{return (((IsChild && (ChildCanAccess(KOKIRI_FOREST) || ChildCanAccess(HYRULE_FIELD) || ChildCanAccess(LAKE_HYLIA))) || (IsAdult && (AdultCanAccess(KOKIRI_FOREST) || AdultCanAccess(HYRULE_FIELD) || AdultCanAccess(LAKE_HYLIA)))) && (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::NOVICE) ||
-                                                                 ((Bugs || Fish) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && (IsAdult || KokiriSword || Sticks || Bombs || HasBombchus || Boomerang || Slingshot || CanUse(MEGATON_HAMMER)) && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::NOVICE)))) && PreludeOfLight   && CanLeaveForest;}}),
+                  Entrance(MINUET_OF_FOREST_WARP,   {[]{return CanPlay(MinuetOfForest);}}),
+                  Entrance(BOLERO_OF_FIRE_WARP,     {[]{return CanPlay(BoleroOfFire)     && CanLeaveForest;}}),
+                  Entrance(SERENADE_OF_WATER_WARP,  {[]{return CanPlay(SerenadeOfWater)  && CanLeaveForest;}}),
+                  Entrance(NOCTURNE_OF_SHADOW_WARP, {[]{return CanPlay(NocturneOfShadow) && CanLeaveForest;}}),
+                  Entrance(REQUIEM_OF_SPIRIT_WARP,  {[]{return CanPlay(RequiemOfSpirit)  && CanLeaveForest;}}),
+                  Entrance(PRELUDE_OF_LIGHT_WARP,   {[]{return CanPlay(PreludeOfLight)   && CanLeaveForest;}}),
   });
 
   areaTable[CHILD_SPAWN] = Area("Child Spawn", "", NONE, NO_DAY_NIGHT_CYCLE, {}, {}, {

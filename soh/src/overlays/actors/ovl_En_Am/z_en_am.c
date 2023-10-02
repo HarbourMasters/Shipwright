@@ -7,8 +7,9 @@
 #include "z_en_am.h"
 #include "objects/object_am/object_am.h"
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
-#define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_26)
+#define FLAGS (ACTOR_FLAG_TARGETABLE | ACTOR_FLAG_HOSTILE | ACTOR_FLAG_UPDATE_WHILE_CULLED | ACTOR_FLAG_CAN_PRESS_SWITCH)
 
 void EnAm_Init(Actor* thisx, PlayState* play);
 void EnAm_Destroy(Actor* thisx, PlayState* play);
@@ -249,6 +250,8 @@ void EnAm_Destroy(Actor* thisx, PlayState* play) {
     Collider_DestroyCylinder(play, &this->hurtCollider);
     Collider_DestroyCylinder(play, &this->blockCollider);
     //! @bug Quad collider is not destroyed (though destroy doesnt really do anything anyway)
+
+    ResourceMgr_UnregisterSkeleton(&this->skelAnime);
 }
 
 void EnAm_SpawnEffects(EnAm* this, PlayState* play) {
@@ -286,7 +289,7 @@ void EnAm_SetupStatue(EnAm* this) {
     f32 lastFrame = Animation_GetLastFrame(&gArmosRicochetAnim);
 
     Animation_Change(&this->skelAnime, &gArmosRicochetAnim, 0.0f, lastFrame, lastFrame, ANIMMODE_LOOP, 0.0f);
-    this->dyna.actor.flags &= ~ACTOR_FLAG_0;
+    this->dyna.actor.flags &= ~ACTOR_FLAG_TARGETABLE;
     this->behavior = AM_BEHAVIOR_DO_NOTHING;
     this->dyna.actor.speedXZ = 0.0f;
     EnAm_SetupAction(this, EnAm_Statue);
@@ -387,7 +390,7 @@ void EnAm_Sleep(EnAm* this, PlayState* play) {
         if (this->textureBlend >= 240) {
             this->attackTimer = 200;
             this->textureBlend = 255;
-            this->dyna.actor.flags |= ACTOR_FLAG_0;
+            this->dyna.actor.flags |= ACTOR_FLAG_TARGETABLE;
             this->dyna.actor.shape.yOffset = 0.0f;
             EnAm_SetupLunge(this);
         } else {
@@ -408,7 +411,7 @@ void EnAm_Sleep(EnAm* this, PlayState* play) {
             this->textureBlend -= 10;
         } else {
             this->textureBlend = 0;
-            this->dyna.actor.flags &= ~ACTOR_FLAG_0;
+            this->dyna.actor.flags &= ~ACTOR_FLAG_TARGETABLE;
 
             if (this->dyna.bgId < 0) {
                 this->unk_264 = 0;
@@ -882,8 +885,8 @@ void EnAm_Update(Actor* thisx, PlayState* play) {
                     func_8002836C(play, &dustPos, &zeroVec, &zeroVec, &dustPrimColor, &dustEnvColor, 200, 45, 12);
                     dustPosScale += 60.0f;
                 }
-
-                gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_ARMOS]++;
+                
+                GameInteractor_ExecuteOnEnemyDefeat(thisx);
 
                 Actor_Kill(&this->dyna.actor);
                 return;
@@ -958,7 +961,8 @@ void EnAm_Draw(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_25Opa(play->state.gfxCtx);
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, this->textureBlend);
-    SkelAnime_DrawOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, EnAm_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, EnAm_PostLimbDraw,
+                              this);
 
     if (this->iceTimer != 0) {
         this->dyna.actor.colorFilterTimer++;
