@@ -2811,6 +2811,38 @@ s32 Inventory_HasSpecificBottle(u8 bottleItem) {
     }
 }
 
+#define RBA_EQUIPMENT_OFFSET 0x28
+#define RBA_UPGRADE_OFFSET 0x2C
+#define RBA_QUEST_OFFSET 0x30
+#define RBA_GS_OFFSET 0x5C
+
+void byteSwapInventory() {
+    u8 equipment[2];
+    u8 upgrades[4];
+    u8 questItems[4];
+    u8 gsTokens[2];
+
+    equipment[0] = gSaveContext.inventory.items[RBA_EQUIPMENT_OFFSET + 1];
+    equipment[1] = gSaveContext.inventory.items[RBA_EQUIPMENT_OFFSET + 0];
+    gSaveContext.inventory.equipment = *(u16*)equipment;
+
+    upgrades[0] = gSaveContext.inventory.items[RBA_UPGRADE_OFFSET + 3];
+    upgrades[1] = gSaveContext.inventory.items[RBA_UPGRADE_OFFSET + 2];
+    upgrades[2] = gSaveContext.inventory.items[RBA_UPGRADE_OFFSET + 1];
+    upgrades[3] = gSaveContext.inventory.items[RBA_UPGRADE_OFFSET + 0];
+    gSaveContext.inventory.upgrades = *(u32*)upgrades;
+
+    questItems[0] = gSaveContext.inventory.items[RBA_QUEST_OFFSET + 3];
+    questItems[1] = gSaveContext.inventory.items[RBA_QUEST_OFFSET + 2];
+    questItems[2] = gSaveContext.inventory.items[RBA_QUEST_OFFSET + 1];
+    questItems[3] = gSaveContext.inventory.items[RBA_QUEST_OFFSET + 0];
+    gSaveContext.inventory.questItems = *(u32*)questItems;
+
+    gsTokens[0] = gSaveContext.inventory.items[RBA_GS_OFFSET + 1];
+    gsTokens[1] = gSaveContext.inventory.items[RBA_GS_OFFSET + 0];
+    gSaveContext.inventory.gsTokens = *(s16*)gsTokens;
+}
+
 void Inventory_UpdateBottleItem(PlayState* play, u8 item, u8 button) {
     osSyncPrintf("item_no=%x,  c_no=%x,  Pt=%x  Item_Register=%x\n", item, button,
                  gSaveContext.equips.cButtonSlots[button - 1],
@@ -2821,51 +2853,11 @@ void Inventory_UpdateBottleItem(PlayState* play, u8 item, u8 button) {
         (item == ITEM_BOTTLE)) {
         item = ITEM_MILK_HALF;
     }
-    //rba cases (hacky fix but gets around having to deal with how data is read by game):
-    if (CVarGetInteger("gRestoreRBAValues",0) && button == 0) { //button == 0 check unnecessary but double checks that rba is being performed to avoid any unintended behaviour
-        u8 rbaItem;
-        switch (gSaveContext.equips.cButtonSlots[button - 1]) {
-            case ITEM_MASK_GORON:
-                rbaItem = ITEM_MASK_ZORA;
-                break;
-            case ITEM_MASK_ZORA:
-                rbaItem = ITEM_MASK_GORON;
-                break;
-            case ITEM_MASK_GERUDO:              //unconfirmed if gerudo mask and mask of truth end up with reversed values as fake deku stick count is not visible in menu
-                rbaItem = ITEM_MASK_TRUTH;
-                break;
-            case ITEM_MASK_TRUTH:
-                rbaItem = ITEM_MASK_GERUDO; 
-                break;
-            case ITEM_SOLD_OUT:
-                rbaItem = ITEM_COJIRO;
-                break;
-            case ITEM_POCKET_EGG:
-                rbaItem = ITEM_POCKET_CUCCO;
-                break;
-            case ITEM_POCKET_CUCCO:
-                rbaItem = ITEM_POCKET_EGG;
-                break;
-            case ITEM_COJIRO:
-                rbaItem = ITEM_SOLD_OUT;
-                break;
-            case ITEM_ODD_MUSHROOM:
-                rbaItem = ITEM_SWORD_BROKEN;
-                break;
-            case ITEM_ODD_POTION:
-                rbaItem = ITEM_SAW;
-                break;
-            case ITEM_SAW:
-                rbaItem = ITEM_ODD_POTION;
-                break;
-            case ITEM_SWORD_BROKEN:
-                rbaItem = ITEM_ODD_MUSHROOM;
-                break;
-            default:
-                rbaItem = gSaveContext.equips.cButtonSlots[button - 1];
-                break;
-        }
-        gSaveContext.inventory.items[rbaItem] = item;
+
+    if (CVarGetInteger("gRestoreRBAValues",0)) {
+        byteSwapInventory();
+        gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] = item;
+        byteSwapInventory();
     } else {
         gSaveContext.inventory.items[gSaveContext.equips.cButtonSlots[button - 1]] = item;
     }
