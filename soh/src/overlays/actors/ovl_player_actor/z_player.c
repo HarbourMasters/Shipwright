@@ -11173,7 +11173,6 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
 
        
         if ((this->currentMask == PLAYER_MASK_BUNNY) && CVarGetInteger("gCosmetics.Equipment_BunnyHood.Changed", 0)) {
-            gDPSetGrayscaleColor(POLY_OPA_DISP++, 75, 75, 75, 255);
             gSPGrayscale(POLY_OPA_DISP++, true);
             Color_RGBA8 hoodColor = CVarGetColor("gCosmetics.Equipment_BunnyHood.Value", (Color_RGBA8){ 255, 255, 255, 255 });
             gDPSetGrayscaleColor(POLY_OPA_DISP++, hoodColor.r, hoodColor.g, hoodColor.b, 255);
