@@ -10607,8 +10607,6 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
 
     sControlInput = input;
 
-    Player_AssignTunicBoots(this, play);
-
     if (this->unk_A86 < 0) {
         this->unk_A86++;
         if (this->unk_A86 == 0) {
@@ -10901,6 +10899,7 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
 
         if (!(this->stateFlags3 & PLAYER_STATE3_PAUSE_ACTION_FUNC)) {
             this->func_674(this, play);
+            Player_AssignTunicBoots(this, play);
         }
 
         Player_UpdateCamAndSeqModes(play, this);
