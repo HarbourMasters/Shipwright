@@ -123,26 +123,9 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
     if (!LINK_IS_ADULT || (Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && !IS_RANDO) || IS_RANDO) {
         if (Actor_HasParent(&this->actor, play)) {
             if (!LINK_IS_ADULT) {
-                if (Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
-                    if (!Flags_GetRandomizerInf(RAND_INF_TOT_MASTER_SWORD)) {
-                        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(RC_TOT_MASTER_SWORD, GI_NONE);
-                        if (getItemEntry.modIndex == MOD_NONE) {
-                            //RANDOTODO: Move this into Item_Give() or some other central location
-                            if (getItemEntry.getItemId == GI_SWORD_BGS) {
-                                gSaveContext.bgsFlag = true;
-                            }
-                            Item_Give(play, getItemEntry.itemId);
-                        } else if (getItemEntry.modIndex == MOD_RANDOMIZER && getItemEntry.itemId != RG_ICE_TRAP) {
-                            Randomizer_Item_Give(play, getItemEntry);
-                        }
-                        if (getItemEntry.itemId == GI_ICE_TRAP || getItemEntry.itemId == RG_ICE_TRAP) {
-                            GameInteractor_ExecuteOnItemReceiveHooks(getItemEntry);
-                        }
-                        Flags_SetRandomizerInf(RAND_INF_TOT_MASTER_SWORD);
-                    }
-                } else {
+                 if (!Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
                     Item_Give(play, ITEM_SWORD_MASTER);
-                }
+                 }
                 play->csCtx.segment = D_808BB2F0;
             } else {
                 play->csCtx.segment = D_808BB7A0;

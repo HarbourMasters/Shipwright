@@ -264,6 +264,18 @@ void GivePlayerRandoRewardRequiem(PlayState* play, RandomizerCheck check) {
     }
 }
 
+void GivePlayerRandoRewardMasterSword(PlayState* play, RandomizerCheck check) {
+    Player* player = GET_PLAYER(play);
+
+    if (gSaveContext.entranceIndex == 0x02CA && LINK_IS_ADULT && !Player_InBlockingCsMode(play, player) &&
+    player != NULL && Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD) && !Flags_GetRandomizerInf(RAND_INF_TOT_MASTER_SWORD)) {
+        GetItemEntry getItemEntry = Randomizer_GetItemFromKnownCheck(check, RG_MASTER_SWORD);
+        GiveItemEntryWithoutActor(play, getItemEntry);
+        player->pendingFlag.flagID = RAND_INF_TOT_MASTER_SWORD;
+        player->pendingFlag.flagType = FLAG_RANDOMIZER_INF;
+    }
+}
+
 u8 CheckStoneCount() {
     u8 stoneCount = 0;
 
@@ -1425,6 +1437,7 @@ skip:
         GivePlayerRandoRewardZeldaLightArrowsGift(play, RC_TOT_LIGHT_ARROWS_CUTSCENE);
         GivePlayerRandoRewardNocturne(play, RC_SHEIK_IN_KAKARIKO);
         GivePlayerRandoRewardRequiem(play, RC_SHEIK_AT_COLOSSUS);
+        GivePlayerRandoRewardMasterSword(play, RC_TOT_MASTER_SWORD);
     }
 }
 
