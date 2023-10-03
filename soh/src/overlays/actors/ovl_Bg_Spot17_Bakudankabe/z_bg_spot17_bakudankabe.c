@@ -114,7 +114,9 @@ void BgSpot17Bakudankabe_Destroy(Actor* thisx, PlayState* play) {
 
 void BgSpot17Bakudankabe_Update(Actor* thisx, PlayState* play) {
     BgSpot17Bakudankabe* this = (BgSpot17Bakudankabe*)thisx;
-    if (this->dyna.actor.xzDistToPlayer < 650.0f && func_80033684(play, &this->dyna.actor) != NULL) {
+    // #region SOH [Co-op]
+    if ((this->dyna.actor.xzDistToPlayer < 650.0f && func_80033684(play, &this->dyna.actor) != NULL) || Flags_GetSwitch(play, (this->dyna.actor.params & 0x3F))) {
+    // #endregion
         func_808B6BC0(this, play);
         Flags_SetSwitch(play, (this->dyna.actor.params & 0x3F));
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 40, NA_SE_EV_WALL_BROKEN);

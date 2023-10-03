@@ -163,7 +163,9 @@ void BgJyaBombiwa_Break(BgJyaBombiwa* this, PlayState* play) {
 void BgJyaBombiwa_Update(Actor* thisx, PlayState* play) {
     BgJyaBombiwa* this = (BgJyaBombiwa*)thisx;
 
-    if (this->collider.base.acFlags & AC_HIT) {
+    // #region SOH [Co-op]
+    if ((this->collider.base.acFlags & AC_HIT) || Flags_GetSwitch(play, this->dyna.actor.params & 0x3F)) {
+    // #endregion
         BgJyaBombiwa_Break(this, play);
         Flags_SetSwitch(play, this->dyna.actor.params & 0x3F);
         SoundSource_PlaySfxAtFixedWorldPos(play, &this->dyna.actor.world.pos, 40, NA_SE_EV_WALL_BROKEN);

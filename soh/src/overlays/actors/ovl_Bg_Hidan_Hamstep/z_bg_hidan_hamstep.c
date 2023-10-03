@@ -278,7 +278,9 @@ void func_80888734(BgHidanHamstep* this) {
 }
 
 void func_808887C4(BgHidanHamstep* this, PlayState* play) {
-    if (this->collider.base.acFlags & AC_HIT) {
+    // #region SOH [Co-op]
+    if ((this->collider.base.acFlags & AC_HIT) || Flags_GetSwitch(play, (this->dyna.actor.params >> 8) & 0xFF)) {
+    // #endregion
         OnePointCutscene_Init(play, 3310, 100, &this->dyna.actor, MAIN_CAM);
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_HAMMER_SWITCH);
         this->collider.base.acFlags = AC_NONE;
