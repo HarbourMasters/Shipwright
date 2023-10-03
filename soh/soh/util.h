@@ -3,6 +3,10 @@
 #include <stdint.h>
 
 namespace SohUtils {
+    int32_t GetItemIdIconFromRandomizerGet(int32_t randomizerGet);
+
+    const char* GetIconNameFromItemID(int32_t itemId);
+
     const std::string& GetSceneName(int32_t scene);
 
     const std::string& GetItemName(int32_t item);

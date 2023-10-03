@@ -915,6 +915,14 @@ void func_80B0E9BC(EnSw* this, PlayState* play) {
 void EnSw_Update(Actor* thisx, PlayState* play) {
     EnSw* this = (EnSw*)thisx;
 
+    // #region SOH [Co-op]
+    // Check to see if this gold skull token has already been retrieved.
+    if (GET_GS_FLAGS((thisx->params & 0x1F00) >> 8) & (thisx->params & 0xFF)) {
+        Actor_Kill(&this->actor);
+        return;
+    }
+    // #endregion
+
     SkelAnime_Update(&this->skelAnime);
     func_80B0C9F0(this, play);
     this->actionFunc(this, play);

@@ -859,7 +859,7 @@ void EntranceTrackerWindow::DrawElement() {
                         (override->reverseIndex == lastEntranceIndex && OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(RSK_DECOUPLED_ENTRANCES) == RO_GENERIC_OFF)) &&
                             CVarGetInteger("gEntranceTrackerHighlightPrevious", 0)) {
                                  color = COLOR_ORANGE;
-                    } else if (LinkIsInArea(original) != -1) {
+                    } else if (LinkIsInArea(destToggle ? override : original) != -1) {
                         if (CVarGetInteger("gEntranceTrackerHighlightAvailable", 0)) {
                             color = COLOR_GREEN;
                         }
@@ -877,16 +877,30 @@ void EntranceTrackerWindow::DrawElement() {
                     // Use a non-breaking space to keep the arrow from wrapping to a newline by itself
                     auto nbsp = u8"\u00A0";
                     if (original->srcGroup != ENTRANCE_GROUP_ONE_WAY) {
-                        ImGui::TextWrapped("%s to %s%s->", origSrcName, origDstName, nbsp);
+                        if (!destToggle) ImGui::PushStyleColor(ImGuiCol_Text, COLOR_GRAY);
+                        ImGui::TextWrapped("%s", origSrcName);
+                        if (!destToggle) ImGui::PopStyleColor();
+                        ImGui::SameLine();
+                        if (destToggle) ImGui::PushStyleColor(ImGuiCol_Text, COLOR_GRAY);
+                        ImGui::TextWrapped("%s %s%s->", destToggle ? "from" : "to", origDstName, nbsp);
+                        if (destToggle) ImGui::PopStyleColor();
                     } else {
                         ImGui::TextWrapped("%s%s->", origSrcName, nbsp);
                     }
 
                     // Indent the destination
-                    ImGui::SetCursorPosX(ImGui::GetCursorPosX() * 2);
+                    // ImGui::SetCursorPosX(ImGui::GetCursorPosX() * 2);
                     if (!showOverride || (showOverride && (!override->oneExit && override->srcGroup != ENTRANCE_GROUP_ONE_WAY))) {
-                        ImGui::TextWrapped("%s from %s", rplcDstName, rplcSrcName);
+                        ImGui::SameLine();
+                        if (destToggle) ImGui::PushStyleColor(ImGuiCol_Text, COLOR_GRAY);
+                        ImGui::TextWrapped("%s", rplcDstName);
+                        if (destToggle) ImGui::PopStyleColor();
+                        ImGui::SameLine();
+                        if (!destToggle) ImGui::PushStyleColor(ImGuiCol_Text, COLOR_GRAY);
+                        ImGui::TextWrapped("%s %s", destToggle ? "to" : "from", rplcSrcName);
+                        if (!destToggle) ImGui::PopStyleColor();
                     } else {
+                        ImGui::SameLine();
                         ImGui::TextWrapped("%s", rplcDstName);
                     }
 

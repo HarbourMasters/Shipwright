@@ -1567,6 +1567,7 @@ s32 func_800C0808(PlayState* play, s16 camId, Player* player, s16 arg3);
 s32 Play_CameraChangeSetting(PlayState* play, s16 camId, s16 arg2);
 void func_800C08AC(PlayState* play, s16 camId, s16 arg2);
 void Play_SaveSceneFlags(PlayState* play);
+void Play_SetRespawnData(PlayState* play, s32 respawnMode, s16 entranceIndex, s32 roomIndex, s32 playerParams, Vec3f* pos, s16 yaw);
 void Play_SetupRespawnPoint(PlayState* play, s32 respawnMode, s32 playerParams);
 void Play_TriggerVoidOut(PlayState* play);
 void Play_TriggerRespawn(PlayState* play);

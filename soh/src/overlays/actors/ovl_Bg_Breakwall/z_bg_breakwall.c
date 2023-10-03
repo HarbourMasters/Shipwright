@@ -275,7 +275,9 @@ void BgBreakwall_Wait(BgBreakwall* this, PlayState* play) {
     }
     
     // Break the floor immediately in Boss Rush so the player can jump in the hole immediately.
-    if (this->collider.base.acFlags & 2 || blueFireArrowHit || IS_BOSS_RUSH) {
+    // #region SOH [Co-op]
+    if (this->collider.base.acFlags & 2 || blueFireArrowHit || IS_BOSS_RUSH || Flags_GetSwitch(play, this->dyna.actor.params & 0x3F)) {
+    // #endregion
         Vec3f effectPos;
         s32 wallType = ((this->dyna.actor.params >> 13) & 3) & 0xFF;
 

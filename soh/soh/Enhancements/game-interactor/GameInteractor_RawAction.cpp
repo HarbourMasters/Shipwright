@@ -2,6 +2,7 @@
 #include <libultraship/bridge.h>
 #include "soh/Enhancements/cosmetics/CosmeticsEditor.h"
 #include "soh/Enhancements/randomizer/3drando/random.hpp"
+#include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include <math.h>
 #include "soh/Enhancements/debugger/colViewer.h"
 
@@ -121,6 +122,23 @@ void GameInteractor::RawAction::ElectrocutePlayer() {
     Player* player = GET_PLAYER(gPlayState);
     func_80837C0C(gPlayState, player, 4, 0, 0, 0, 0);
 }
+
+void GameInteractor::RawAction::GiveItem(uint16_t modId, uint16_t itemId) {
+    GetItemEntry getItemEntry = ItemTableManager::Instance->RetrieveItemEntry(modId, itemId);
+    Player* player = GET_PLAYER(gPlayState);
+    if (getItemEntry.modIndex == MOD_NONE) {
+        if (getItemEntry.getItemId == GI_SWORD_BGS) {
+            gSaveContext.bgsFlag = true;
+        }
+        Item_Give(gPlayState, getItemEntry.itemId);
+    } else if (getItemEntry.modIndex == MOD_RANDOMIZER) {
+        if (getItemEntry.getItemId == RG_ICE_TRAP) {
+            gSaveContext.pendingIceTrapCount++;
+        } else {
+            Randomizer_Item_Give(gPlayState, getItemEntry);
+        }
+    }
+};
 
 void GameInteractor::RawAction::KnockbackPlayer(float strength) {
     Player* player = GET_PLAYER(gPlayState);

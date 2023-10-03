@@ -8,6 +8,9 @@
 #include "objects/object_geff/object_geff.h"
 #include "soh/frame_interpolation.h"
 #include "soh/Enhancements/boss-rush/BossRush.h"
+#ifdef ENABLE_REMOTE_CONTROL
+#include "soh/Enhancements/game-interactor/GameInteractor_Anchor.h"
+#endif
 
 #include <string.h>
 
@@ -1684,6 +1687,9 @@ void func_8090120C(BossGanon2* this, PlayState* play) {
                 gSaveContext.sohStats.itemTimestamp[TIMESTAMP_DEFEAT_GANON] = GAMEPLAYSTAT_TOTAL_TIME;
                 BossRush_HandleCompleteBoss(play);
                 gSaveContext.sohStats.gameComplete = true;
+#ifdef ENABLE_REMOTE_CONTROL
+                Anchor_GameComplete();
+#endif
                 this->unk_39E = Play_CreateSubCamera(play);
                 Play_ChangeCameraStatus(play, MAIN_CAM, CAM_STAT_WAIT);
                 Play_ChangeCameraStatus(play, this->unk_39E, CAM_STAT_ACTIVE);

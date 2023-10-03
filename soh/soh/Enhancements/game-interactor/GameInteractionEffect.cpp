@@ -640,4 +640,17 @@ namespace GameInteractionEffect {
     void SlipperyFloor::_Remove() {
         GameInteractor::State::SlipperyFloorActive = 0;
     }
+
+    // MARK: - GiveItem
+    GameInteractionEffectQueryResult GiveItem::CanBeApplied() {
+        if (!GameInteractor::IsSaveLoaded()) {
+            return GameInteractionEffectQueryResult::NotPossible;
+        }
+
+        return GameInteractionEffectQueryResult::Possible;
+    }
+
+    void GiveItem::_Apply() {
+        GameInteractor::RawAction::GiveItem(parameters[0], parameters[1]);
+    }
 }

@@ -2,10 +2,16 @@
 #include "functions.h"
 #include "variables.h"
 #include "macros.h"
+#ifdef ENABLE_REMOTE_CONTROL
+#include "soh/Enhancements/game-interactor/GameInteractor_Anchor.h"
+#endif
 
 void Randomizer_ConsumeAdultTradeItem(PlayState* play, u8 itemId) {
     gSaveContext.adultTradeItems &= ~ADULT_TRADE_FLAG(itemId);
 	Inventory_ReplaceItem(play, itemId, Randomizer_GetNextAdultTradeItem());
+#ifdef ENABLE_REMOTE_CONTROL
+    Anchor_ConsumeAdultTradeItem(itemId);
+#endif
 }
 
 u8 Randomizer_GetNextAdultTradeItem() {
