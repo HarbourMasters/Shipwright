@@ -6,6 +6,7 @@
 #include <soh/Enhancements/item-tables/ItemTableManager.h>
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include <soh/Enhancements/randomizer/adult_trade_shuffle.h>
+#include <overlays/actors/ovl_Link_Puppet/z_link_puppet.h>
 #include <soh/Enhancements/nametag.h>
 #include <soh/Enhancements/presets.h>
 #include <soh/util.h>
@@ -17,7 +18,8 @@ extern "C" {
 #include "z64scene.h"
 #include "z64actor.h"
 #include "functions.h"
-extern "C" s16 gEnPartnerId;
+
+extern "C" s16 gEnLinkPuppetId;
 extern PlayState* gPlayState;
 extern SaveContext gSaveContext;
 }
@@ -35,6 +37,90 @@ void to_json(json& j, const Color_RGB8& color) {
         {"r", color.r},
         {"g", color.g},
         {"b", color.b}
+    };
+}
+
+void from_json(const json& j, PlayerData& playerData) {
+    j.at("playerAge").get_to(playerData.playerAge);
+    j.at("playerSound").get_to(playerData.playerSound);
+    j.at("sheathType").get_to(playerData.sheathType);
+    j.at("leftHandType").get_to(playerData.leftHandType);
+    j.at("biggoron_broken").get_to(playerData.biggoron_broken);
+    j.at("rightHandType").get_to(playerData.rightHandType);
+    j.at("tunicType").get_to(playerData.tunicType);
+    j.at("bootsType").get_to(playerData.bootsType);
+    j.at("faceType").get_to(playerData.faceType);
+    j.at("shieldType").get_to(playerData.shieldType);
+    j.at("damageEffect").get_to(playerData.damageEffect);
+    j.at("damageValue").get_to(playerData.damageValue);
+    j.at("playerHealth").get_to(playerData.playerHealth);
+    j.at("playerHealthCapacity").get_to(playerData.playerHealthCapacity);
+    j.at("playerMagic").get_to(playerData.playerMagic);
+    j.at("playerMagicCapacity").get_to(playerData.playerMagicCapacity);
+    j.at("isPlayerMagicAcquired").get_to(playerData.isPlayerMagicAcquired);
+    j.at("isDoubleMagicAcquired").get_to(playerData.isDoubleMagicAcquired);
+    j.at("strengthValue").get_to(playerData.strengthValue);
+    j.at("yOffset").get_to(playerData.yOffset);
+    j.at("currentMask").get_to(playerData.currentMask);
+    j.at("swordEquipped").get_to(playerData.swordEquipped);
+    j.at("playerStateFlags1").get_to(playerData.playerStateFlags1);
+    j.at("moveFlags").get_to(playerData.moveFlags);
+    j.at("unk_6C4").get_to(playerData.unk_6C4);
+    j.at("unk_00").get_to(playerData.unk_00);
+    j.at("unk_02").get_to(playerData.unk_02);
+    j.at("unk_04").get_to(playerData.unk_04);
+    j.at("unk_06").get_to(playerData.unk_06);
+    j.at("unk_08").get_to(playerData.unk_08);
+    j.at("speedXZ").get_to(playerData.speedXZ);
+    j.at("itemAction").get_to(playerData.itemAction);
+    j.at("unk_85C").get_to(playerData.unk_85C);
+    j.at("stickWeaponTipX").get_to(playerData.stickWeaponTip.x);
+    j.at("stickWeaponTipY").get_to(playerData.stickWeaponTip.y);
+    j.at("stickWeaponTipZ").get_to(playerData.stickWeaponTip.z);
+    j.at("unk_860").get_to(playerData.unk_860);
+    j.at("unk_862").get_to(playerData.unk_862);
+}
+
+void to_json(json& j, const PlayerData& playerData) {
+    j = json{
+        { "playerAge", playerData.playerAge },
+        { "playerSound", playerData.playerSound },
+        { "sheathType", playerData.sheathType },
+        { "leftHandType", playerData.leftHandType },
+        { "biggoron_broken", playerData.biggoron_broken },
+        { "rightHandType", playerData.rightHandType },
+        { "tunicType", playerData.tunicType },
+        { "bootsType", playerData.bootsType },
+        { "faceType", playerData.faceType },
+        { "shieldType", playerData.shieldType },
+        { "damageEffect", playerData.damageEffect },
+        { "damageValue", playerData.damageValue },
+        { "playerHealth", playerData.playerHealth },
+        { "playerHealthCapacity", playerData.playerHealthCapacity },
+        { "playerMagic", playerData.playerMagic },
+        { "playerMagicCapacity", playerData.playerMagicCapacity },
+        { "isPlayerMagicAcquired", playerData.isPlayerMagicAcquired },
+        { "isDoubleMagicAcquired", playerData.isDoubleMagicAcquired },
+        { "strengthValue", playerData.strengthValue },
+        { "yOffset", playerData.yOffset },
+        { "currentMask", playerData.currentMask },
+        { "swordEquipped", playerData.swordEquipped },
+        { "playerStateFlags1", playerData.playerStateFlags1 },
+        { "moveFlags", playerData.moveFlags },
+        { "unk_6C4", playerData.unk_6C4 },
+        { "unk_00", playerData.unk_00 },
+        { "unk_02", playerData.unk_02 },
+        { "unk_04", playerData.unk_04 },
+        { "unk_06", playerData.unk_06 },
+        { "unk_08", playerData.unk_08 },
+        { "speedXZ", playerData.speedXZ },
+        { "itemAction", playerData.itemAction },
+        { "unk_85C", playerData.unk_85C },
+        { "stickWeaponTipX", playerData.stickWeaponTip.x },
+        { "stickWeaponTipY", playerData.stickWeaponTip.y },
+        { "stickWeaponTipZ", playerData.stickWeaponTip.z },
+        { "unk_860", playerData.unk_860 },
+        { "unk_862", playerData.unk_862 },
     };
 }
 
@@ -90,6 +176,7 @@ void from_json(const json& j, AnchorClient& client) {
     j.contains("roomIndex") ? j.at("roomIndex").get_to(client.roomIndex) : client.roomIndex = 0;
     j.contains("entranceIndex") ? j.at("entranceIndex").get_to(client.entranceIndex) : client.entranceIndex = 0;
     j.contains("posRot") ? j.at("posRot").get_to(client.posRot) : client.posRot = { -9999, -9999, -9999, 0, 0, 0 };
+    j.contains("playerData") ? j.at("playerData").get_to(client.playerData) : client.playerData = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 }
 
 void to_json(json& j, const SavedSceneFlags& flags) {
@@ -190,7 +277,7 @@ void from_json(const json& j, SaveContext& saveContext) {
 
 std::map<uint32_t, AnchorClient> GameInteractorAnchor::AnchorClients = {};
 std::vector<uint32_t> GameInteractorAnchor::ActorIndexToClientId = {};
-std::string GameInteractorAnchor::clientVersion = "Anchor Build 12 (alpha)";
+std::string GameInteractorAnchor::clientVersion = "Anchor + Player Models 3 (alpha)";
 std::vector<std::pair<uint16_t, int16_t>> receivedItems = {};
 std::vector<AnchorMessage> anchorMessages = {};
 uint32_t notificationId = 0;
@@ -257,6 +344,7 @@ void GameInteractorAnchor::Disable() {
     GameInteractor::Instance->DisableRemoteInteractor();
 
     GameInteractorAnchor::AnchorClients.clear();
+    // TODO: This crashes in player model build for some reason
     if (GameInteractor::IsSaveLoaded()) {
         Anchor_RefreshClientActors();
     }
@@ -347,6 +435,42 @@ void GameInteractorAnchor::HandleRemoteJson(nlohmann::json payload) {
         effect->parameters[1] = payload["flag"].get<int16_t>();
         effect->Apply();
     }
+    if (payload["type"] == "DAMAGE_PLAYER") {
+        if (payload["damageEffect"] > 0 && GET_PLAYER(gPlayState)->invincibilityTimer <= 0 &&
+            !Player_InBlockingCsMode(gPlayState, GET_PLAYER(gPlayState))) {
+            if (payload["damageEffect"] == PUPPET_DMGEFF_NORMAL) {
+                u8 damage = payload["damageValue"];
+                Player_InflictDamage(gPlayState, damage * -4);
+                func_80837C0C(gPlayState, GET_PLAYER(gPlayState), 0, 0, 0, 0, 0);
+                GET_PLAYER(gPlayState)->invincibilityTimer = 18;
+                GET_PLAYER(gPlayState)->actor.freezeTimer = 0;
+            } else if (payload["damageEffect"] == PUPPET_DMGEFF_ICE) {
+                GET_PLAYER(gPlayState)->stateFlags1 &= ~(PLAYER_STATE1_GETTING_ITEM | PLAYER_STATE1_ITEM_OVER_HEAD);
+                func_80837C0C(gPlayState, GET_PLAYER(gPlayState), 3, 0.0f, 0.0f, 0, 20);
+                GET_PLAYER(gPlayState)->invincibilityTimer = 18;
+                GET_PLAYER(gPlayState)->actor.freezeTimer = 0;
+            } else if (payload["damageEffect"] == PUPPET_DMGEFF_FIRE) {
+                for (int i = 0; i < 18; i++) {
+                    GET_PLAYER(gPlayState)->flameTimers[i] = Rand_S16Offset(0, 200);
+                }
+                GET_PLAYER(gPlayState)->isBurning = true;
+                func_80837C0C(gPlayState, GET_PLAYER(gPlayState), 0, 0, 0, 0, 0);
+                GET_PLAYER(gPlayState)->invincibilityTimer = 18;
+                GET_PLAYER(gPlayState)->actor.freezeTimer = 0;
+            } else if (payload["damageEffect"] == PUPPET_DMGEFF_THUNDER) {
+                func_80837C0C(gPlayState, GET_PLAYER(gPlayState), 4, 0.0f, 0.0f, 0, 20);
+                GET_PLAYER(gPlayState)->invincibilityTimer = 18;
+                GET_PLAYER(gPlayState)->actor.freezeTimer = 0;
+            } else if (payload["damageEffect"] == PUPPET_DMGEFF_KNOCKBACK) {
+                func_8002F71C(gPlayState, &GET_PLAYER(gPlayState)->actor, 100.0f * 0.04f + 4.0f, GET_PLAYER(gPlayState)->actor.world.rot.y, 8.0f);
+                GET_PLAYER(gPlayState)->invincibilityTimer = 28;
+                GET_PLAYER(gPlayState)->actor.freezeTimer = 0;
+            } else if (payload["damageEffect"] == PUPPET_DMGEFF_STUN) {
+                GET_PLAYER(gPlayState)->actor.freezeTimer = 20;
+                Actor_SetColorFilter(&GET_PLAYER(gPlayState)->actor, 0, 0xFF, 0, 10);
+            }
+        }
+    }
     if (payload["type"] == "CLIENT_UPDATE") {
         uint32_t clientId = payload["clientId"].get<uint32_t>();
 
@@ -355,6 +479,11 @@ void GameInteractorAnchor::HandleRemoteJson(nlohmann::json payload) {
             GameInteractorAnchor::AnchorClients[clientId].roomIndex = payload.contains("roomIndex") ? payload.at("roomIndex").get<int16_t>() : 0;
             GameInteractorAnchor::AnchorClients[clientId].entranceIndex = payload.contains("entranceIndex") ? payload.at("entranceIndex").get<int16_t>() : 0;
             GameInteractorAnchor::AnchorClients[clientId].posRot = payload["posRot"].get<PosRot>();
+            GameInteractorAnchor::AnchorClients[clientId].playerData = payload["playerData"].get<PlayerData>();
+            std::vector<Vec3s> jointTable = payload["jointTable"].get<std::vector<Vec3s>>();
+            for (int i = 0; i < 23; i++) {
+                GameInteractorAnchor::AnchorClients[clientId].jointTable[i] = jointTable[i];
+            }
         }
     }
     if (payload["type"] == "PUSH_SAVE_STATE" && GameInteractor::IsSaveLoaded()) {
@@ -380,7 +509,9 @@ void GameInteractorAnchor::HandleRemoteJson(nlohmann::json payload) {
                     client.sceneNum,
                     0,
                     client.entranceIndex,
-                    { -9999, -9999, -9999, 0, 0, 0 }
+                    { -9999, -9999, -9999, 0, 0, 0 },
+                    { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                    {},
                 };
                 Anchor_DisplayMessage({
                     .prefix = client.name,
@@ -579,6 +710,33 @@ PosRot Anchor_GetClientPosition(uint32_t actorIndex) {
     return GameInteractorAnchor::AnchorClients[clientId].posRot;
 }
 
+PlayerData Anchor_GetClientPlayerData(uint32_t actorIndex) {
+    uint32_t clientId = GameInteractorAnchor::ActorIndexToClientId[actorIndex];
+    if (GameInteractorAnchor::AnchorClients.find(clientId) == GameInteractorAnchor::AnchorClients.end()) {
+        return { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    }
+
+    return GameInteractorAnchor::AnchorClients[clientId].playerData;
+}
+
+Vec3s* Anchor_GetClientJointTable(uint32_t actorIndex) {
+    uint32_t clientId = GameInteractorAnchor::ActorIndexToClientId[actorIndex];
+    if (GameInteractorAnchor::AnchorClients.find(clientId) == GameInteractorAnchor::AnchorClients.end()) {
+        return {};
+    }
+
+    return GameInteractorAnchor::AnchorClients[clientId].jointTable;
+}
+
+const char* Anchor_GetClientName(uint32_t actorIndex) {
+    uint32_t clientId = GameInteractorAnchor::ActorIndexToClientId[actorIndex];
+    if (GameInteractorAnchor::AnchorClients.find(clientId) == GameInteractorAnchor::AnchorClients.end()) {
+        return "";
+    }
+
+    return GameInteractorAnchor::AnchorClients[clientId].name.c_str();
+}
+
 uint8_t Anchor_GetClientRoomIndex(uint32_t actorIndex) {
     uint32_t clientId = GameInteractorAnchor::ActorIndexToClientId[actorIndex];
     if (GameInteractorAnchor::AnchorClients.find(clientId) == GameInteractorAnchor::AnchorClients.end()) {
@@ -601,7 +759,7 @@ void Anchor_RefreshClientActors() {
     if (!GameInteractor::IsSaveLoaded()) return;
     Actor* actor = gPlayState->actorCtx.actorLists[ACTORCAT_ITEMACTION].head;
     while (actor != NULL) {
-        if (gEnPartnerId == actor->id) {
+        if (gEnLinkPuppetId == actor->id) {
             Actor_Kill(actor);
         }
         actor = actor->next;
@@ -613,12 +771,13 @@ void Anchor_RefreshClientActors() {
     for (auto [clientId, client] : GameInteractorAnchor::AnchorClients) {
         GameInteractorAnchor::ActorIndexToClientId.push_back(clientId);
         auto fairy = Actor_Spawn(
-            &gPlayState->actorCtx, gPlayState, gEnPartnerId,
+            &gPlayState->actorCtx, gPlayState, gEnLinkPuppetId,
             client.posRot.pos.x, client.posRot.pos.y, client.posRot.pos.z, 
             client.posRot.rot.x, client.posRot.rot.y, client.posRot.rot.z,
             3 + i, false
         );
-        NameTag_RegisterForActor(fairy, client.name.c_str());
+        // Todo: This was removed in player models branch
+        // NameTag_RegisterForActor(fairy, client.name.c_str());
         i++;
     }
 }
@@ -727,7 +886,6 @@ void Anchor_RegisterHooks() {
         GameInteractorAnchor::Instance->TransmitJsonToRemote(payload);
     });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
-        static uint32_t lastPlayerCount = 0;
         uint32_t currentPlayerCount = 0;
         for (auto& [clientId, client] : GameInteractorAnchor::AnchorClients) {
             if (client.sceneNum == gPlayState->sceneNum) {
@@ -735,25 +893,60 @@ void Anchor_RegisterHooks() {
             }
         }
         if (!GameInteractor::Instance->isRemoteInteractorConnected || gPlayState == NULL || !GameInteractor::Instance->IsSaveLoaded()) {
-            lastPlayerCount = currentPlayerCount;
             return;
         }
         Player* player = GET_PLAYER(gPlayState);
         nlohmann::json payload;
-        float currentPosition = player->actor.world.pos.x + player->actor.world.pos.y + player->actor.world.pos.z + player->actor.world.rot.y;
-        static float lastPosition = 0.0f;
+        if (currentPlayerCount == 0) return;
 
-        if (currentPosition == lastPosition && currentPlayerCount == lastPlayerCount) return;
+        gSaveContext.playerData.bootsType = player->currentBoots;
+        gSaveContext.playerData.shieldType = player->currentShield;
+        gSaveContext.playerData.sheathType = player->sheathType;
+        gSaveContext.playerData.leftHandType = player->leftHandType;
+        gSaveContext.playerData.rightHandType = player->rightHandType;
+        gSaveContext.playerData.tunicType = player->currentTunic;
+        gSaveContext.playerData.faceType = player->actor.shape.face;
+        gSaveContext.playerData.biggoron_broken = gSaveContext.swordHealth <= 0 ? 1 : 0;
+        gSaveContext.playerData.playerAge = gSaveContext.linkAge;
+        gSaveContext.playerData.playerHealth = gSaveContext.health;
+        gSaveContext.playerData.playerHealthCapacity = gSaveContext.healthCapacity;
+        gSaveContext.playerData.playerMagic = gSaveContext.magic;
+        gSaveContext.playerData.playerMagicCapacity = gSaveContext.magicCapacity;
+        gSaveContext.playerData.isPlayerMagicAcquired = gSaveContext.isMagicAcquired;
+        gSaveContext.playerData.isDoubleMagicAcquired = gSaveContext.isDoubleMagicAcquired;
+        gSaveContext.playerData.strengthValue = CUR_UPG_VALUE(UPG_STRENGTH);
+        gSaveContext.playerData.yOffset = player->actor.shape.yOffset;
+        gSaveContext.playerData.currentMask = player->currentMask;
+        gSaveContext.playerData.swordEquipped = gSaveContext.equips.buttonItems[0];
+        gSaveContext.playerData.playerStateFlags1 = player->stateFlags1;
+        gSaveContext.playerData.moveFlags = player->skelAnime.moveFlags;
+        gSaveContext.playerData.unk_6C4 = player->unk_6C4;
+        gSaveContext.playerData.speedXZ = player->actor.speedXZ;
+        gSaveContext.playerData.itemAction = player->itemAction;
+        gSaveContext.playerData.unk_85C = player->unk_85C;
+        gSaveContext.playerData.stickWeaponTip = player->meleeWeaponInfo[0].tip;
+        gSaveContext.playerData.unk_860 = player->unk_860;
+        gSaveContext.playerData.unk_862 = player->unk_862;
+
+        payload["playerData"] = gSaveContext.playerData;
 
         payload["type"] = "CLIENT_UPDATE";
         payload["sceneNum"] = gPlayState->sceneNum;
         payload["roomIndex"] = gPlayState->roomCtx.curRoom.num;
         payload["entranceIndex"] = gSaveContext.entranceIndex;
-        payload["posRot"] = player->actor.world;
-        payload["quiet"] = true;
 
-        lastPosition = currentPosition;
-        lastPlayerCount = currentPlayerCount;
+        PosRot playerPosRot;
+        playerPosRot.pos = player->actor.world.pos;
+        playerPosRot.rot = player->actor.shape.rot;
+        payload["posRot"] = playerPosRot;
+
+        std::vector<Vec3s> jointTable = {};
+        for (int i = 0; i < 23; i++) {
+            jointTable.push_back(player->skelAnime.jointTable[i]);
+        }
+
+        payload["jointTable"] = jointTable;
+        payload["quiet"] = true;
 
         for (auto& [clientId, client] : GameInteractorAnchor::AnchorClients) {
             if (client.sceneNum == gPlayState->sceneNum) {
@@ -761,6 +954,10 @@ void Anchor_RegisterHooks() {
                 GameInteractorAnchor::Instance->TransmitJsonToRemote(payload);
             }
         }
+
+        gSaveContext.playerData.damageEffect = 0;
+        gSaveContext.playerData.damageValue = 0;
+        gSaveContext.playerData.playerSound = 0;
     });
 }
 
@@ -821,6 +1018,20 @@ void Anchor_UpdateKeyCount(int16_t sceneNum, int8_t amount) {
     GameInteractorAnchor::Instance->TransmitJsonToRemote(payload);
 }
 
+void Anchor_DamagePlayer(uint32_t actorIndex, u8 damageEffect, u8 damageValue) {
+    if (!GameInteractor::Instance->isRemoteInteractorConnected || !GameInteractor::Instance->IsSaveLoaded()) return;
+
+    uint32_t clientId = GameInteractorAnchor::ActorIndexToClientId[actorIndex];
+    nlohmann::json payload;
+
+    payload["type"] = "DAMAGE_PLAYER";
+    payload["damageEffect"] = damageEffect;
+    payload["damageValue"] = damageValue;
+    payload["targetClientId"] = clientId;
+
+    GameInteractorAnchor::Instance->TransmitJsonToRemote(payload);
+}
+
 void Anchor_GameComplete() {
     if (!GameInteractor::Instance->isRemoteInteractorConnected || !GameInteractor::Instance->IsSaveLoaded()) return;
 
@@ -835,6 +1046,123 @@ void Anchor_GameComplete() {
 const ImVec4 GRAY = ImVec4(0.5f, 0.5f, 0.5f, 1.0f);
 const ImVec4 WHITE = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 const ImVec4 GREEN = ImVec4(0.5f, 1.0f, 0.5f, 1.0f);
+
+bool heartTexturesLoaded = false;
+
+bool IsValidSave() {
+    bool validSave = gSaveContext.fileNum >= 0 && gSaveContext.fileNum <= 2;
+    return validSave;
+}
+
+const char* heartTextureNames[16] = {
+    "Heart_Full",          "Heart_One_Fourth",    "Heart_One_Fourth",    "Heart_One_Fourth",
+    "Heart_One_Fourth",    "Heart_One_Fourth",    "Heart_Half",          "Heart_Half",
+    "Heart_Half",          "Heart_Half",          "Heart_Half",          "Heart_Three_Fourths",
+    "Heart_Three_Fourths", "Heart_Three_Fourths", "Heart_Three_Fourths", "Heart_Three_Fourths",
+};
+
+void DisplayLifeMeter(AnchorClient& client) {
+    int currentHealth = client.playerData.playerHealth;
+    int maxHealth = client.playerData.playerHealthCapacity;
+    int currentMagic = client.playerData.playerMagic;
+    int maxMagic = client.playerData.playerMagicCapacity;
+
+    int fullHearts = currentHealth / 16;
+    int partialHealth = currentHealth % 16;
+
+    const ImVec4 normalHeartsColor = ImVec4(1, 0.275f, 0.118f, 1);
+
+    int numMaxHearts = maxHealth / 16;
+
+    int numLines = (numMaxHearts / 10) + 1;
+
+    if (!heartTexturesLoaded) {
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(
+            "Heart_Full", "textures/parameter_static/gHeartFullTex", normalHeartsColor);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(
+            "Heart_Three_Fourths", "textures/parameter_static/gHeartThreeQuarterTex", normalHeartsColor);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(
+            "Heart_Half", "textures/parameter_static/gHeartHalfTex", normalHeartsColor);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(
+            "Heart_One_Fourth", "textures/parameter_static/gHeartQuarterTex", normalHeartsColor);
+        LUS::Context::GetInstance()->GetWindow()->GetGui()->LoadGuiTexture(
+            "Heart_Empty", "textures/parameter_static/gHeartEmptyTex", normalHeartsColor);
+        heartTexturesLoaded = true;
+    }
+
+    if (CVarGetInteger("gAnchorPlayerHealth", 0) == 1 || CVarGetInteger("gAnchorPlayerHealth", 0) == 3) {
+        std::string healthInfo = "Life: " + std::to_string(currentHealth) + " / " + std::to_string(maxHealth);
+        ImGui::Text(healthInfo.c_str());
+        if (client.playerData.isPlayerMagicAcquired || client.playerData.isDoubleMagicAcquired) {
+            std::string magichInfo = " | Magic: " + std::to_string(currentMagic) + " / " + std::to_string(maxMagic);
+            ImGui::SameLine();
+            ImGui::Text(magichInfo.c_str());  
+        }
+        if (CVarGetInteger("gAnchorPlayerHealth", 0) == 1) {
+            ImGui::Separator();
+        }
+    }
+
+    if (CVarGetInteger("gAnchorPlayerHealth", 0) == 2 || CVarGetInteger("gAnchorPlayerHealth", 0) == 3) {
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(1, 0));
+
+        ImVec2 imageSize(16, 16);
+
+        for (int line = 0; line < numLines; line++) {
+            for (int i = 0; i < 10; i++) {
+                int heartIndex = line * 10 + i;
+
+                if (heartIndex >= numMaxHearts) {
+                    break;
+                }
+
+                if (i > 0) {
+                    ImGui::SameLine();
+                }
+
+                if (heartIndex < fullHearts) {
+                    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Heart_Full"), imageSize);
+                } else if (heartIndex == fullHearts) {
+                    if (currentHealth == 0) {
+                        ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Heart_Empty"), imageSize);
+                    } else {
+                        ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName(heartTextureNames[partialHealth]), imageSize);
+                    }
+                } else {
+                    ImGui::Image(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetTextureByName("Heart_Empty"), imageSize);
+                }
+            }
+
+            if (line < numLines - 1) {
+                ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 2));
+            }
+        }
+
+        if (client.playerData.isPlayerMagicAcquired) {
+            ImGui::Spacing();
+            ImVec4 magicBarColor = ImVec4(0, 1, 0, 1);
+            float magicBarItemWidth = 168.0f;
+            float magicBarItemHeight = 6.0f;
+            const char* label = "";
+
+            if (!client.playerData.isDoubleMagicAcquired) {
+                magicBarItemWidth /= 2;
+            }
+
+            float currentMagicRatio = static_cast<float>(currentMagic) / maxMagic;
+
+            ImGui::BeginGroup();
+
+            ImGui::PushStyleColor(ImGuiCol_PlotHistogram, magicBarColor);
+            ImGui::ProgressBar(currentMagicRatio, ImVec2(magicBarItemWidth, magicBarItemHeight), label);
+            ImGui::PopStyleColor();
+            ImGui::EndGroup();
+        }
+
+        ImGui::PopStyleVar();
+        ImGui::Separator();
+    }
+}
 
 void AnchorPlayerLocationWindow::DrawElement() {
     ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
@@ -886,6 +1214,9 @@ void AnchorPlayerLocationWindow::DrawElement() {
                     gSaveContext.nextCutsceneIndex = 0;
                 }
                 ImGui::PopStyleVar();
+            }
+            if (IsValidSave() && CVarGetInteger("gAnchorPlayerHealth", 0) != 0) {
+                DisplayLifeMeter(client);
             }
         }
         ImGui::PopID();

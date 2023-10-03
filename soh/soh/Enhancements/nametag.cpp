@@ -59,7 +59,7 @@ void DrawNameTag(PlayState* play, const NameTag* nameTag) {
         alpha = (200000.0f - nameTag->actor->xyzDistToPlayerSq) / 40000.0f;
     }
 
-    float scale = 75.0f / 100.f;
+    float scale = 75.0f / 150.f;
 
     size_t numChar = nameTag->processedText.length();
     // No text to render

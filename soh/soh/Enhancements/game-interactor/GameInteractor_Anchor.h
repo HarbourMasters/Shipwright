@@ -5,6 +5,8 @@
 
 #include "z64item.h"
 #include "z64actor.h"
+#include "z64save.h"
+#include "src/overlays/actors/ovl_Link_Puppet/z_link_puppet.h"
 #include "./GameInteractor.h"
 
 typedef struct {
@@ -19,6 +21,8 @@ typedef struct {
     uint8_t roomIndex;
     uint32_t entranceIndex;
     PosRot posRot;
+    PlayerData playerData;
+    Vec3s jointTable[23];
 } AnchorClient;
 
 class GameInteractorAnchor {
@@ -80,7 +84,10 @@ void Anchor_PushSaveStateToRemote();
 void Anchor_RequestSaveStateFromRemote();
 uint8_t Anchor_GetClientScene(uint32_t fairyIndex);
 PosRot Anchor_GetClientPosition(uint32_t fairyIndex);
+const char* Anchor_GetClientName(uint32_t actorIndex);
 uint8_t Anchor_GetClientRoomIndex(uint32_t fairyIndex);
+Vec3s* Anchor_GetClientJointTable(uint32_t actorIndex);
+PlayerData Anchor_GetClientPlayerData(uint32_t actorIndex);
 Color_RGB8 Anchor_GetClientColor(uint32_t fairyIndex);
 void Anchor_RefreshClientActors();
 void Anchor_SkipLocation(uint32_t locationIndex, bool skipped);
@@ -88,6 +95,7 @@ void Anchor_UpdateBeansBought(uint8_t amount);
 void Anchor_UpdateBeansCount(uint8_t amount);
 void Anchor_ConsumeAdultTradeItem(uint8_t itemId);
 void Anchor_UpdateKeyCount(int16_t sceneNum, int8_t amount);
+void Anchor_DamagePlayer(uint32_t actorIndex, u8 damageEffect, u8 damageValue);
 void Anchor_GameComplete();
 
 #ifdef __cplusplus

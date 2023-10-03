@@ -2181,6 +2181,10 @@ void func_8002F7A0(PlayState* play, Actor* actor, f32 arg2, s16 arg3, f32 arg4) 
 }
 
 void Player_PlaySfx(Actor* actor, u16 sfxId) {
+    if (actor->id == ACTOR_PLAYER) {
+        gSaveContext.playerData.playerSound = sfxId;
+    }
+
     if (actor->id != ACTOR_PLAYER || sfxId < NA_SE_VO_LI_SWORD_N || sfxId > NA_SE_VO_LI_ELECTRIC_SHOCK_LV_KID) {
         Audio_PlaySoundGeneral(sfxId, &actor->projectedPos, 4, &D_801333E0 , &D_801333E0, &D_801333E8);
     } else {

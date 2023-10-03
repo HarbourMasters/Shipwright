@@ -168,6 +168,45 @@ typedef struct {
 } RandoSetting;
 
 typedef struct {
+    s32 playerAge;
+    u16 playerSound;
+    u8 sheathType;
+    u8 leftHandType;
+    u8 biggoron_broken;
+    u8 rightHandType;
+    u8 tunicType;
+    u8 bootsType;
+    s16 faceType;
+    u8 shieldType;
+    u8 damageEffect;
+    u8 damageValue;
+    s16 playerHealth;
+    s16 playerHealthCapacity;
+    s16 playerMagic;
+    s16 playerMagicCapacity;
+    s16 isPlayerMagicAcquired;
+    s16 isDoubleMagicAcquired;
+    s32 strengthValue;
+    f32 yOffset;
+    u8 currentMask;
+    u8 swordEquipped;
+    u32 playerStateFlags1;
+    u8 moveFlags;
+    f32 unk_6C4;
+    s16 unk_00;
+    s16 unk_02;
+    s16 unk_04;
+    s16 unk_06;
+    s16 unk_08;
+    f32 speedXZ;
+    s8 itemAction;
+    f32 unk_85C;
+    Vec3f stickWeaponTip;
+    s16 unk_860;
+    s8 unk_862;
+} PlayerData;
+
+typedef struct {
     /* 0x0000 */ s32 entranceIndex; // start of `save` substruct, originally called "memory"
     /* 0x0004 */ s32 linkAge; // 0: Adult; 1: Child (see enum `LinkAge`)
     /* 0x0008 */ s32 cutsceneIndex;
@@ -324,6 +363,10 @@ typedef struct {
     /*        */ u16 randomizerInf[10];
     /*        */ u16 adultTradeItems;
     /*        */ u8 triforcePiecesCollected;
+    // #endregion
+    // #region SOH [Network]
+    // Upstream TODO: Move these to their own struct or name to more obviously specific to Network
+    /*        */ PlayerData playerData;
     // #endregion
 } SaveContext; // size = 0x1428
 

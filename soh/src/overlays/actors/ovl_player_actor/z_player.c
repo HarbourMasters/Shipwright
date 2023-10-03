@@ -13722,6 +13722,14 @@ void Player_UpdateBunnyEars(Player* this) {
     } else {
         D_80858AC8.unk_04 = 0;
     }
+
+    #ifdef ENABLE_REMOTE_CONTROL
+    gSaveContext.playerData.unk_00 = D_80858AC8.unk_00;
+    gSaveContext.playerData.unk_02 = D_80858AC8.unk_02;
+    gSaveContext.playerData.unk_04 = D_80858AC8.unk_04;
+    gSaveContext.playerData.unk_06 = D_80858AC8.unk_06;
+    gSaveContext.playerData.unk_08 = D_80858AC8.unk_08;
+    #endif
 }
 
 s32 func_80850224(Player* this, PlayState* play) {

@@ -34,6 +34,7 @@ u64 D_801614D0[0xA00];
 PlayState* gPlayState;
 
 s16 gEnPartnerId;
+s16 gEnLinkPuppetId;
 
 void OTRPlay_SpawnScene(PlayState* play, s32 sceneNum, s32 spawn);
 

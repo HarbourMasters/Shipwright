@@ -5,9 +5,14 @@
 #include "objects/object_link_child/object_link_child.h"
 #include "objects/object_triforce_spot/object_triforce_spot.h"
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
+#include "soh/frame_interpolation.h"
 
+#ifdef ENABLE_REMOTE_CONTROL
+#include "overlays/actors/ovl_Link_Puppet/z_link_puppet.h"
 #include "soh/Enhancements/game-interactor/GameInteractor.h"
 #include "soh/Enhancements/randomizer/draw.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Anchor.h"
+#endif
 
 #include <stdlib.h>
 
@@ -849,6 +854,135 @@ void Player_DrawImpl(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dL
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+static Gfx* sMaskDlists[PLAYER_MASK_MAX - 1] = {
+    gLinkChildKeatonMaskDL, gLinkChildSkullMaskDL, gLinkChildSpookyMaskDL, gLinkChildBunnyHoodDL,
+    gLinkChildGoronMaskDL,  gLinkChildZoraMaskDL,  gLinkChildGerudoMaskDL, gLinkChildMaskOfTruthDL,
+};
+
+#ifdef ENABLE_REMOTE_CONTROL
+void DrawAnchorPuppet(PlayState* play, void** skeleton, Vec3s* jointTable, s32 dListCount, s32 lod, s32 tunic,
+                      s32 boots, s32 face, OverrideLimbDrawOpa overrideLimbDraw, PostLimbDrawOpa postLimbDraw,
+                      void* data, PlayerData playerData, s32 anchorActorIndex) {
+    LinkPuppet* puppet = (LinkPuppet*)data;
+    Color_RGB8* color;
+
+    s32 eyeIndex = (jointTable[22].x & 0xF) - 1;
+    s32 mouthIndex = (jointTable[22].x >> 4) - 1;
+
+    OPEN_DISPS(play->state.gfxCtx);
+
+    if (eyeIndex < 0) {
+        eyeIndex = sEyeMouthIndexes[face][0];
+    }
+
+    if (eyeIndex > 7)
+        eyeIndex = 7;
+
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
+    gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[playerData.playerAge][eyeIndex]));
+#else
+    gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[eyeIndex]));
+#endif
+    if (mouthIndex < 0) {
+        mouthIndex = sEyeMouthIndexes[face][1];
+    }
+
+    if (mouthIndex > 3)
+        mouthIndex = 3;
+
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
+    gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[playerData.playerAge][mouthIndex]));
+#else
+    gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[eyeIndex]));
+#endif
+
+    Color_RGB8 sTemp;
+    color = &sTunicColors[tunic];
+
+    Color_RGB8 clientColor = Anchor_GetClientColor(anchorActorIndex);
+    color = &clientColor;
+
+    gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
+
+    Gfx_SetupDL_25Opa(play->state.gfxCtx);
+
+    gSPSegment(POLY_OPA_DISP++, 0x0C, gCullBackDList);
+
+    SkelAnime_DrawFlexLod(play, skeleton, jointTable, dListCount, overrideLimbDraw, postLimbDraw, data, lod);
+
+    if (playerData.playerAge == LINK_AGE_ADULT) {
+        s32 strengthUpgrade = playerData.strengthValue;
+
+        if (strengthUpgrade >= 2) { // silver or gold gauntlets
+            gDPPipeSync(POLY_OPA_DISP++);
+
+            color = &sGauntletColors[strengthUpgrade - 2];
+            if (strengthUpgrade == PLAYER_STR_SILVER_G &&
+                CVarGetInteger("gCosmetics.Gloves_SilverGauntlets.Changed", 0)) {
+                sTemp =
+                    CVarGetColor24("gCosmetics.Gloves_SilverGauntlets.Value", sGauntletColors[PLAYER_STR_SILVER_G - 2]);
+                color = &sTemp;
+            } else if (strengthUpgrade == PLAYER_STR_GOLD_G &&
+                       CVarGetInteger("gCosmetics.Gloves_GoldenGauntlets.Changed", 0)) {
+                sTemp =
+                    CVarGetColor24("gCosmetics.Gloves_GoldenGauntlets.Value", sGauntletColors[PLAYER_STR_GOLD_G - 2]);
+                color = &sTemp;
+            }
+            gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
+
+            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftGauntletPlate1DL);
+            gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightGauntletPlate1DL);
+            gSPDisplayList(POLY_OPA_DISP++,
+                           (playerData.leftHandType == 0) ? gLinkAdultLeftGauntletPlate2DL : gLinkAdultLeftGauntletPlate3DL);
+            gSPDisplayList(POLY_OPA_DISP++,
+                           (playerData.rightHandType == 8) ? gLinkAdultRightGauntletPlate2DL : gLinkAdultRightGauntletPlate3DL);
+        }
+
+        if (boots != 0) {
+            Gfx** bootDLists = sBootDListGroups[boots - 1];
+
+            gSPDisplayList(POLY_OPA_DISP++, bootDLists[0]);
+            gSPDisplayList(POLY_OPA_DISP++, bootDLists[1]);
+        }
+    } else {
+        if (playerData.strengthValue > PLAYER_STR_NONE) {
+            gSPDisplayList(POLY_OPA_DISP++, gLinkChildGoronBraceletDL);
+        }
+    }
+
+    if (playerData.currentMask != PLAYER_MASK_NONE) {
+        if (playerData.currentMask == PLAYER_MASK_BUNNY) {
+            PlayerData playerData = Anchor_GetClientPlayerData(puppet->actor.params - 3);
+
+            Mtx* sp70 = Graph_Alloc(play->state.gfxCtx, 2 * sizeof(Mtx));
+
+            Vec3s sp68;
+
+            FrameInterpolation_RecordActorPosRotMatrix();
+            gSPSegment(POLY_OPA_DISP++, 0x0B, sp70);
+
+            sp68.x = playerData.unk_02 + 0x3E2;
+            sp68.y = playerData.unk_04 + 0xDBE;
+            sp68.z = playerData.unk_00 - 0x348A;
+            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f - CVarGetFloat("gCosmetics.BunnyHood_EarLength", 0.0f),
+                                         -240.0f - CVarGetFloat("gCosmetics.BunnyHood_EarSpread", 0.0f), &sp68);
+            MATRIX_TOMTX(sp70++);
+
+            sp68.x = playerData.unk_02 - 0x3E2;
+            sp68.y = -0xDBE - playerData.unk_04;
+            sp68.z = playerData.unk_00 - 0x348A;
+            Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f - CVarGetFloat("gCosmetics.BunnyHood_EarLength", 0.0f),
+                                         240.0f + CVarGetFloat("gCosmetics.BunnyHood_EarSpread", 0.0f), &sp68);
+            MATRIX_TOMTX(sp70);
+        }
+
+        gSPDisplayList(POLY_OPA_DISP++, sMaskDlists[playerData.currentMask - 1]);
+    }
+
+    CLOSE_DISPS(play->state.gfxCtx);
+}
+#endif
+
 Vec3f sZeroVec = { 0.0f, 0.0f, 0.0f };
 
 Vec3f D_80126038[] = {
@@ -1037,6 +1171,84 @@ s32 Player_OverrideLimbDrawGameplayCommon(PlayState* play, s32 limbIndex, Gfx** 
     return false;
 }
 
+#ifdef ENABLE_REMOTE_CONTROL
+s32 PuppetOverrideDraw(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
+    LinkPuppet* this = (LinkPuppet*)thisx;
+
+    static Vec3f headPosLocal = { 2000.0f, 0.0f, -300.0f };
+
+    PlayerData playerData = Anchor_GetClientPlayerData(this->actor.params - 3);
+
+    if (limbIndex == PLAYER_LIMB_ROOT) {
+        if (playerData.playerAge != LINK_AGE_ADULT) {
+            if (!(playerData.moveFlags & 4) || (playerData.moveFlags & 1)) {
+                pos->x *= 0.64f;
+                pos->z *= 0.64f;
+            }
+
+            if (!(playerData.moveFlags & 4) || (playerData.moveFlags & 2)) {
+                pos->y *= 0.64f;
+            }
+        }
+
+        pos->y -= playerData.unk_6C4;
+    } else if (limbIndex == PLAYER_LIMB_HEAD) {
+        Matrix_MultVec3f(&headPosLocal, &this->actor.focus.pos);
+    } else if (limbIndex == PLAYER_LIMB_L_HAND) {
+        Matrix_MultVec3f(&headPosLocal, &this->leftHandPos);
+
+        Gfx** dLists = &sPlayerDListGroups[playerData.leftHandType][(void)0, playerData.playerAge];
+
+        if ((playerData.leftHandType == 4) && (playerData.biggoron_broken == 1)) {
+            dLists += 4;
+        } else if ((playerData.leftHandType == 6) && (playerData.playerStateFlags1 & 0x2000000)) {
+            dLists = &gPlayerLeftHandOpenDLs[playerData.playerAge];
+            playerData.leftHandType = 0;
+        } else if ((playerData.leftHandType == 0) && (playerData.speedXZ > 2.0f) &&
+                   !(playerData.playerStateFlags1 & 0x8000000)) {
+            dLists = &gPlayerLeftHandClosedDLs[playerData.playerAge];
+            playerData.leftHandType = 1;
+        }
+
+        *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
+    } else if (limbIndex == PLAYER_LIMB_R_HAND) {
+        Gfx** dLists = &sPlayerDListGroups[playerData.rightHandType][(void)0, playerData.playerAge];
+
+        if (playerData.rightHandType == 10) {
+            dLists += playerData.shieldType * 4;
+        } else if ((playerData.rightHandType == 8) && (playerData.speedXZ > 2.0f) &&
+                   !(playerData.playerStateFlags1 & 0x8000000)) {
+            dLists = &sPlayerRightHandClosedDLs[playerData.playerAge];
+            playerData.rightHandType = 9;
+        }
+
+        *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
+    } else if (limbIndex == PLAYER_LIMB_SHEATH) {
+        Gfx** dLists = &sPlayerDListGroups[playerData.sheathType][(void)0, playerData.playerAge];
+
+        if ((playerData.sheathType == 18) || (playerData.sheathType == 19)) {
+            dLists += playerData.shieldType * 4;
+            if (playerData.playerAge != LINK_AGE_ADULT && (playerData.shieldType < PLAYER_SHIELD_HYLIAN) &&
+                (playerData.swordEquipped != ITEM_SWORD_KOKIRI)) {
+                dLists += 16;
+            }
+        } else if (playerData.playerAge != LINK_AGE_ADULT &&
+                   ((playerData.sheathType == 16) || (playerData.sheathType == 17)) &&
+                   (playerData.swordEquipped != ITEM_SWORD_KOKIRI)) {
+            dLists = &sSheathWithSwordDLs[16];
+        }
+
+        if (dLists[sDListsLodOffset] != NULL) {
+            *dList = ResourceMgr_LoadGfxByName(dLists[sDListsLodOffset]);
+        } else {
+            *dList = NULL;
+        }
+    }
+
+    return false;
+}
+#endif
+
 s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
 
@@ -1098,10 +1310,12 @@ s32 Player_OverrideLimbDrawGameplayDefault(PlayState* play, s32 limbIndex, Gfx**
         }
     }
 
+    #ifdef ENABLE_REMOTE_CONTROL
     if (GameInteractor_InvisibleLinkActive()) {
         this->actor.shape.shadowDraw = NULL;
         *dList = NULL;
     }
+    #endif
 
     return false;
 }

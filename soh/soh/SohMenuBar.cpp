@@ -1458,6 +1458,8 @@ bool isStringEmpty(std::string str) {
 }
 
 #ifdef ENABLE_REMOTE_CONTROL
+static const char* anchorPlayerHealth[4] = { "Disabled", "Numeric", "Hearts and Magic", "Numeric + Hearts and Magic" };
+
 void DrawRemoteControlMenu() {
     if (ImGui::BeginMenu("Network")) {
         static std::string ip = CVarGetString("gRemote.IP", "127.0.0.1");
@@ -1509,7 +1511,7 @@ void DrawRemoteControlMenu() {
         }
         ImGui::PopItemWidth();
         } else {
-        ImGui::Text("Fairy Color & Name");
+        ImGui::Text("Tunic Color & Name");
         static Color_RGBA8 color = CVarGetColor("gRemote.AnchorColor", { 100, 255, 100, 255 });
         static ImVec4 colorVec = ImVec4(color.r / 255.0, color.g / 255.0, color.b / 255.0, 1);
         if (ImGui::ColorEdit3("##gRemote.AnchorColor", (float*)&colorVec, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel)) {
@@ -1534,6 +1536,10 @@ void DrawRemoteControlMenu() {
         }
         ImGui::EndDisabled();
 
+        // Todo: Crashes / Spacing issues
+        // ImGui::Spacing();
+        // ImGui::Text("Display Player Health");
+        // UIWidgets::EnhancementCombobox("gAnchorPlayerHealth", anchorPlayerHealth, 0);
         ImGui::Spacing();
 
         ImGui::BeginDisabled(!isFormValid);
