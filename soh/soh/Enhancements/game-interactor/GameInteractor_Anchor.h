@@ -80,6 +80,7 @@ void Anchor_PushSaveStateToRemote();
 void Anchor_RequestSaveStateFromRemote();
 uint8_t Anchor_GetClientScene(uint32_t fairyIndex);
 PosRot Anchor_GetClientPosition(uint32_t fairyIndex);
+uint8_t Anchor_GetClientRoomIndex(uint32_t fairyIndex);
 Color_RGB8 Anchor_GetClientColor(uint32_t fairyIndex);
 void Anchor_SpawnClientFairies();
 void Anchor_SkipLocation(uint32_t locationIndex, bool skipped);

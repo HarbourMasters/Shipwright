@@ -556,6 +556,15 @@ PosRot Anchor_GetClientPosition(uint32_t fairyIndex) {
     return GameInteractorAnchor::AnchorClients[clientId].posRot;
 }
 
+uint8_t Anchor_GetClientRoomIndex(uint32_t fairyIndex) {
+    uint32_t clientId = GameInteractorAnchor::FairyIndexToClientId[fairyIndex];
+    if (GameInteractorAnchor::AnchorClients.find(clientId) == GameInteractorAnchor::AnchorClients.end()) {
+        return 0xFF;
+    }
+
+    return GameInteractorAnchor::AnchorClients[clientId].roomIndex;
+}
+
 Color_RGB8 Anchor_GetClientColor(uint32_t fairyIndex) {
     uint32_t clientId = GameInteractorAnchor::FairyIndexToClientId[fairyIndex];
     if (GameInteractorAnchor::AnchorClients.find(clientId) == GameInteractorAnchor::AnchorClients.end()) {

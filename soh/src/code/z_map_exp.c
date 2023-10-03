@@ -5,6 +5,10 @@
 #include "textures/map_i_static/map_i_static.h"
 #include "textures/map_grand_static/map_grand_static.h"
 #include <assert.h>
+#ifdef ENABLE_REMOTE_CONTROL
+#include "soh/Enhancements/game-interactor/GameInteractor.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Anchor.h"
+#endif
 
 MapData* gMapData;
 
@@ -602,6 +606,8 @@ void Map_Init(PlayState* play) {
     }
 }
 
+extern s16 gEnPartnerId;
+
 void Minimap_DrawCompassIcons(PlayState* play) {
     s32 pad;
     Player* player = GET_PLAYER(play);
@@ -684,6 +690,12 @@ void Minimap_DrawCompassIcons(PlayState* play) {
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, currentPositionColor.r, currentPositionColor.g, currentPositionColor.b, 255);
+#ifdef ENABLE_REMOTE_CONTROL
+        if (CVarGetInteger("gRemote.Scheme", 0) == GI_SCHEME_ANCHOR) {
+            Color_RGB8 myColor = CVarGetColor24("gRemote.AnchorColor", (Color_RGB8){ 100, 255, 100 });
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, myColor.r, myColor.g, myColor.b, 255);
+        }
+#endif
         gSPDisplayList(OVERLAY_DISP++, gCompassArrowDL);
 
         //Player map entry (red arrow)
@@ -718,6 +730,72 @@ void Minimap_DrawCompassIcons(PlayState* play) {
 
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, lastEntranceColor.r, lastEntranceColor.g, lastEntranceColor.b, 255);
         gSPDisplayList(OVERLAY_DISP++, gCompassArrowDL);
+
+#ifdef ENABLE_REMOTE_CONTROL
+        // Other Anchor Players Arrow
+        Actor* actor = gPlayState->actorCtx.actorLists[ACTORCAT_ITEMACTION].head;
+        while (actor != NULL) {
+            if (gEnPartnerId == actor->id && Anchor_GetClientRoomIndex(actor->params - 3) == gPlayState->roomCtx.curRoom.num) {
+                if (actor->world.pos.x != -9999.0 && Anchor_GetClientScene(actor->params - 3) == gPlayState->sceneNum) {
+                    Color_RGB8 playerColor = Anchor_GetClientColor(actor->params - 3);
+
+                    tempX = actor->world.pos.x;
+                    tempZ = actor->world.pos.z;
+                    tempX /= R_COMPASS_SCALE_X * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
+                    tempZ /= R_COMPASS_SCALE_Y;
+
+                    s16 tempXOffset = R_COMPASS_OFFSET_X + (CVarGetInteger("gMirroredWorld", 0) ? mirrorOffset : 0);
+                    if (CVarGetInteger("gMinimapPosType", 0) != 0) {
+                        if (CVarGetInteger("gMinimapPosType", 0) == 1) { // Anchor Left
+                            if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {
+                                X_Margins_Minimap = Left_MM_Margin;
+                            };
+                            Matrix_Translate(
+                                OTRGetDimensionFromLeftEdge((tempXOffset + (X_Margins_Minimap * 10) + tempX +
+                                                             (CVarGetInteger("gMinimapPosX", 0) * 10)) /
+                                                            10.0f),
+                                (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap * 10) * -1) - tempZ +
+                                 ((CVarGetInteger("gMinimapPosY", 0) * 10) * -1)) /
+                                    10.0f,
+                                0.0f, MTXMODE_NEW);
+                        } else if (CVarGetInteger("gMinimapPosType", 0) == 2) { // Anchor Right
+                            if (CVarGetInteger("gMinimapUseMargins", 0) != 0) {
+                                X_Margins_Minimap = Right_MM_Margin;
+                            };
+                            Matrix_Translate(
+                                OTRGetDimensionFromRightEdge((tempXOffset + (X_Margins_Minimap * 10) + tempX +
+                                                              (CVarGetInteger("gMinimapPosX", 0) * 10)) /
+                                                             10.0f),
+                                (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap * 10) * -1) - tempZ +
+                                 ((CVarGetInteger("gMinimapPosY", 0) * 10) * -1)) /
+                                    10.0f,
+                                0.0f, MTXMODE_NEW);
+                        } else if (CVarGetInteger("gMinimapPosType", 0) == 3) { // Anchor None
+                            Matrix_Translate((tempXOffset + tempX + (CVarGetInteger("gMinimapPosX", 0) * 10) / 10.0f),
+                                             (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap * 10) * -1) - tempZ +
+                                              ((CVarGetInteger("gMinimapPosY", 0) * 10) * -1)) /
+                                                 10.0f,
+                                             0.0f, MTXMODE_NEW);
+                        }
+                    } else {
+                        Matrix_Translate(
+                            OTRGetDimensionFromRightEdge((tempXOffset + (X_Margins_Minimap * 10) + tempX) / 10.0f),
+                            (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap * 10) * -1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
+                    }
+                    Matrix_Scale(0.4f, 0.4f, 0.4f, MTXMODE_APPLY);
+                    Matrix_RotateX(-1.6f, MTXMODE_APPLY);
+                    tempX = ((0x7FFF - actor->shape.rot.y) / 0x400) * (CVarGetInteger("gMirroredWorld", 0) ? -1 : 1);
+                    Matrix_RotateY(tempX / 10.0f, MTXMODE_APPLY);
+                    gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(play->state.gfxCtx),
+                              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, playerColor.r, playerColor.g, playerColor.b, 255);
+                    gSPDisplayList(OVERLAY_DISP++, gCompassArrowDL);
+                }
+            }
+            actor = actor->next;
+        }
+#endif
     }
 
     CLOSE_DISPS(play->state.gfxCtx);
