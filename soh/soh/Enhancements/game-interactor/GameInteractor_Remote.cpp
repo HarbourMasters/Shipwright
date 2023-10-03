@@ -73,12 +73,14 @@ void GameInteractor::DisableRemoteInteractor() {
 }
 
 void GameInteractor::TransmitDataToRemote(const char* payload) {
-    SDLNet_TCP_Send(remoteSocket, payload, strlen(payload) + 1);
+    SDLNet_TCP_Send(remoteSocket, payload, strlen(payload));
 }
 
 // Appends a newline character to the end of the json payload and sends it to the remote
 void GameInteractor::TransmitJsonToRemote(nlohmann::json payload) {
-    TransmitDataToRemote(payload.dump().c_str());
+    // TODO: Migrate anchor server to use null terminators instead of newlines
+    std::string payloadString = payload.dump() + '\n';
+    TransmitDataToRemote(payloadString.c_str());
 }
 
 // MARK: - Private
@@ -134,7 +136,8 @@ void GameInteractor::ReceiveFromServer() {
             receivedData.append(remoteDataReceived, len);
 
             // Proess all complete packets
-            size_t delimiterPos = receivedData.find('\0');
+            // TODO: Migrate anchor server to use null terminators instead of newlines
+            size_t delimiterPos = receivedData.find('\n');
             while (delimiterPos != std::string::npos) {
                 // Extract the complete packet until the delimiter
                 std::string packet = receivedData.substr(0, delimiterPos);
@@ -142,7 +145,7 @@ void GameInteractor::ReceiveFromServer() {
                 receivedData.erase(0, delimiterPos + 1);
                 HandleRemoteJson(packet);
                 // Find the next delimiter
-                delimiterPos = receivedData.find('\0');
+                delimiterPos = receivedData.find('\n');
             }
         }
 

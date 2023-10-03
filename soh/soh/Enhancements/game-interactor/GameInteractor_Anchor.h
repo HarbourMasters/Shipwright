@@ -12,9 +12,10 @@ typedef struct {
     std::string clientVersion;
     std::string name;
     Color_RGB8 color;
-    std::string seed;
+    uint32_t seed;
+    uint8_t fileNum;
     bool gameComplete;
-    uint8_t scene;
+    uint8_t sceneNum;
     uint8_t roomIndex;
     uint32_t entranceIndex;
     PosRot posRot;
@@ -28,9 +29,8 @@ class GameInteractorAnchor {
     public:
         static GameInteractorAnchor* Instance;
         static std::map<uint32_t, AnchorClient> AnchorClients;
-        static std::vector<uint32_t> FairyIndexToClientId;
+        static std::vector<uint32_t> ActorIndexToClientId;
         static std::string clientVersion;
-        static std::string seed;
 
         void Enable();
         void Disable();
@@ -82,7 +82,7 @@ uint8_t Anchor_GetClientScene(uint32_t fairyIndex);
 PosRot Anchor_GetClientPosition(uint32_t fairyIndex);
 uint8_t Anchor_GetClientRoomIndex(uint32_t fairyIndex);
 Color_RGB8 Anchor_GetClientColor(uint32_t fairyIndex);
-void Anchor_SpawnClientFairies();
+void Anchor_RefreshClientActors();
 void Anchor_SkipLocation(uint32_t locationIndex, bool skipped);
 void Anchor_UpdateBeansBought(uint8_t amount);
 void Anchor_UpdateBeansCount(uint8_t amount);

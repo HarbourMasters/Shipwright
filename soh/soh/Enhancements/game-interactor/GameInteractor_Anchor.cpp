@@ -7,6 +7,7 @@
 #include <soh/Enhancements/randomizer/randomizerTypes.h>
 #include <soh/Enhancements/randomizer/adult_trade_shuffle.h>
 #include <soh/Enhancements/nametag.h>
+#include <soh/Enhancements/presets.h>
 #include <soh/util.h>
 #include <nlohmann/json.hpp>
 
@@ -82,9 +83,10 @@ void from_json(const json& j, AnchorClient& client) {
     j.contains("clientVersion") ? j.at("clientVersion").get_to(client.clientVersion) : client.clientVersion = "???";
     j.contains("name") ? j.at("name").get_to(client.name) : client.name = "???";
     j.contains("color") ? j.at("color").get_to(client.color) : client.color = {255, 255, 255};
-    j.contains("seed") ? j.at("seed").get_to(client.seed) : client.seed = "???";
+    j.contains("seed") ? j.at("seed").get_to(client.seed) : client.seed = 0;
+    j.contains("fileNum") ? j.at("fileNum").get_to(client.fileNum) : client.fileNum = 0xFF;
     j.contains("gameComplete") ? j.at("gameComplete").get_to(client.gameComplete) : client.gameComplete = false;
-    j.contains("scene") ? j.at("scene").get_to(client.scene) : client.scene = SCENE_ID_MAX;
+    j.contains("sceneNum") ? j.at("sceneNum").get_to(client.sceneNum) : client.sceneNum = SCENE_ID_MAX;
     j.contains("roomIndex") ? j.at("roomIndex").get_to(client.roomIndex) : client.roomIndex = 0;
     j.contains("entranceIndex") ? j.at("entranceIndex").get_to(client.entranceIndex) : client.entranceIndex = 0;
     j.contains("posRot") ? j.at("posRot").get_to(client.posRot) : client.posRot = { -9999, -9999, -9999, 0, 0, 0 };
@@ -141,7 +143,7 @@ void to_json(json& j, const SohStats& sohStats) {
 
 void from_json(const json& j, SohStats& sohStats) {
     j.at("locationsSkipped").get_to(sohStats.locationsSkipped);
-    j.contains("fileCreatedAt") ? j.at("fileCreatedAt").get_to(sohStats.fileCreatedAt) : gSaveContext.sohStats.fileCreatedAt;
+    j.at("fileCreatedAt").get_to(sohStats.fileCreatedAt);
 }
 
 void to_json(json& j, const SaveContext& saveContext) {
@@ -187,9 +189,8 @@ void from_json(const json& j, SaveContext& saveContext) {
 }
 
 std::map<uint32_t, AnchorClient> GameInteractorAnchor::AnchorClients = {};
-std::vector<uint32_t> GameInteractorAnchor::FairyIndexToClientId = {};
-std::string GameInteractorAnchor::clientVersion = "Anchor Build 11";
-std::string GameInteractorAnchor::seed = "00000";
+std::vector<uint32_t> GameInteractorAnchor::ActorIndexToClientId = {};
+std::string GameInteractorAnchor::clientVersion = "Anchor Build 12 (alpha)";
 std::vector<std::pair<uint16_t, int16_t>> receivedItems = {};
 std::vector<AnchorMessage> anchorMessages = {};
 uint32_t notificationId = 0;
@@ -197,20 +198,29 @@ uint32_t notificationId = 0;
 void Anchor_DisplayMessage(AnchorMessage message = {}) {
     message.id = notificationId++;
     anchorMessages.push_back(message);
+    Audio_PlaySoundGeneral(NA_SE_SY_METRONOME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
 }
 
 void Anchor_SendClientData() {
-    GameInteractorAnchor::seed = std::accumulate(std::begin(gSaveContext.seedIcons), std::end(gSaveContext.seedIcons), std::string(), [](std::string a, int b) {
-        return a + std::to_string(b);
-    });
-
     nlohmann::json payload;
     payload["data"]["name"] = CVarGetString("gRemote.AnchorName", "");
     payload["data"]["color"] = CVarGetColor24("gRemote.AnchorColor", { 100, 255, 100 });
     payload["data"]["clientVersion"] = GameInteractorAnchor::clientVersion;
-    payload["data"]["seed"] = GameInteractorAnchor::seed;
     payload["data"]["gameComplete"] = gSaveContext.sohStats.gameComplete;
     payload["type"] = "UPDATE_CLIENT_DATA";
+
+    if (GameInteractor::Instance->IsSaveLoaded()) {
+        payload["data"]["seed"] = gSaveContext.finalSeed;
+        payload["data"]["fileNum"] = gSaveContext.fileNum;
+        payload["data"]["sceneNum"] = gPlayState->sceneNum;
+        payload["data"]["entranceIndex"] = gSaveContext.entranceIndex;
+    } else {
+        payload["data"]["seed"] = 0;
+        payload["data"]["fileNum"] = 0xFF;
+        payload["data"]["sceneNum"] = SCENE_ID_MAX;
+        payload["data"]["entranceIndex"] = 0x00;
+    }
+
     GameInteractorAnchor::Instance->TransmitJsonToRemote(payload);
 }
 
@@ -226,7 +236,12 @@ void GameInteractorAnchor::Enable() {
     });
     GameInteractor::Instance->RegisterRemoteConnectedHandler([&]() {
         Anchor_DisplayMessage({ .message = "Connected to Anchor" });
-        Anchor_SendClientData();
+        if (GameInteractor::IsSaveLoaded() || gSaveContext.fileNum == 0xFF) {
+            Anchor_SendClientData();
+        }
+        if (GameInteractor::IsSaveLoaded()) {
+            Anchor_RequestSaveStateFromRemote();
+        }
     });
     GameInteractor::Instance->RegisterRemoteDisconnectedHandler([&]() {
         Anchor_DisplayMessage({ .message = "Disconnected from Anchor" });
@@ -243,7 +258,7 @@ void GameInteractorAnchor::Disable() {
 
     GameInteractorAnchor::AnchorClients.clear();
     if (GameInteractor::IsSaveLoaded()) {
-        Anchor_SpawnClientFairies();
+        Anchor_RefreshClientActors();
     }
 }
 
@@ -336,7 +351,7 @@ void GameInteractorAnchor::HandleRemoteJson(nlohmann::json payload) {
         uint32_t clientId = payload["clientId"].get<uint32_t>();
 
         if (GameInteractorAnchor::AnchorClients.contains(clientId)) {
-            GameInteractorAnchor::AnchorClients[clientId].scene = payload["sceneNum"].get<int16_t>();
+            GameInteractorAnchor::AnchorClients[clientId].sceneNum = payload["sceneNum"].get<int16_t>();
             GameInteractorAnchor::AnchorClients[clientId].roomIndex = payload.contains("roomIndex") ? payload.at("roomIndex").get<int16_t>() : 0;
             GameInteractorAnchor::AnchorClients[clientId].entranceIndex = payload.contains("entranceIndex") ? payload.at("entranceIndex").get<int16_t>() : 0;
             GameInteractorAnchor::AnchorClients[clientId].posRot = payload["posRot"].get<PosRot>();
@@ -360,10 +375,11 @@ void GameInteractorAnchor::HandleRemoteJson(nlohmann::json payload) {
                     client.name,
                     client.color,
                     client.seed,
+                    client.fileNum,
                     client.gameComplete,
-                    SCENE_ID_MAX,
+                    client.sceneNum,
                     0,
-                    0,
+                    client.entranceIndex,
                     { -9999, -9999, -9999, 0, 0, 0 }
                 };
                 Anchor_DisplayMessage({
@@ -391,7 +407,7 @@ void GameInteractorAnchor::HandleRemoteJson(nlohmann::json payload) {
         }
 
         if (GameInteractor::IsSaveLoaded()) {
-            Anchor_SpawnClientFairies();
+            Anchor_RefreshClientActors();
         }
     }
     if (payload["type"] == "UPDATE_CLIENT_DATA") {
@@ -402,7 +418,10 @@ void GameInteractorAnchor::HandleRemoteJson(nlohmann::json payload) {
             GameInteractorAnchor::AnchorClients[clientId].name = client.name;
             GameInteractorAnchor::AnchorClients[clientId].color = client.color;
             GameInteractorAnchor::AnchorClients[clientId].seed = client.seed;
+            GameInteractorAnchor::AnchorClients[clientId].fileNum = client.fileNum;
             GameInteractorAnchor::AnchorClients[clientId].gameComplete = client.gameComplete;
+            GameInteractorAnchor::AnchorClients[clientId].sceneNum = client.sceneNum;
+            GameInteractorAnchor::AnchorClients[clientId].entranceIndex = client.entranceIndex;
         }
     }
     if (payload["type"] == "SKIP_LOCATION" && GameInteractor::IsSaveLoaded()) {
@@ -439,6 +458,9 @@ void GameInteractorAnchor::HandleRemoteJson(nlohmann::json payload) {
     if (payload["type"] == "DISABLE_ANCHOR") {
         GameInteractor::Instance->isRemoteInteractorEnabled = false;
         GameInteractorAnchor::Instance->isEnabled = false;
+    }
+    if (payload["type"] == "RESET") {
+        std::reinterpret_pointer_cast<LUS::ConsoleWindow>(LUS::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))->Dispatch("reset");
     }
 }
 
@@ -511,6 +533,7 @@ void Anchor_ParseSaveStateFromRemote(nlohmann::json payload) {
             gSaveContext.sohStats.locationsSkipped[i] = loadedData.sohStats.locationsSkipped[i];
         }
     }
+    gSaveContext.sohStats.fileCreatedAt = loadedData.sohStats.fileCreatedAt;
 
     // Restore master sword state
     u8 hasMasterSword = CHECK_OWNED_EQUIP(EQUIP_SWORD, 1);
@@ -538,17 +561,17 @@ void Anchor_ParseSaveStateFromRemote(nlohmann::json payload) {
     Anchor_DisplayMessage({ .message = "State loaded from remote!" });
 };
 
-uint8_t Anchor_GetClientScene(uint32_t fairyIndex) {
-    uint32_t clientId = GameInteractorAnchor::FairyIndexToClientId[fairyIndex];
+uint8_t Anchor_GetClientScene(uint32_t actorIndex) {
+    uint32_t clientId = GameInteractorAnchor::ActorIndexToClientId[actorIndex];
     if (GameInteractorAnchor::AnchorClients.find(clientId) == GameInteractorAnchor::AnchorClients.end()) {
         return SCENE_ID_MAX;
     }
 
-    return GameInteractorAnchor::AnchorClients[clientId].scene;
+    return GameInteractorAnchor::AnchorClients[clientId].sceneNum;
 }
 
-PosRot Anchor_GetClientPosition(uint32_t fairyIndex) {
-    uint32_t clientId = GameInteractorAnchor::FairyIndexToClientId[fairyIndex];
+PosRot Anchor_GetClientPosition(uint32_t actorIndex) {
+    uint32_t clientId = GameInteractorAnchor::ActorIndexToClientId[actorIndex];
     if (GameInteractorAnchor::AnchorClients.find(clientId) == GameInteractorAnchor::AnchorClients.end()) {
         return {-9999.0, -9999.0, -9999.0, 0, 0, 0};
     }
@@ -556,8 +579,8 @@ PosRot Anchor_GetClientPosition(uint32_t fairyIndex) {
     return GameInteractorAnchor::AnchorClients[clientId].posRot;
 }
 
-uint8_t Anchor_GetClientRoomIndex(uint32_t fairyIndex) {
-    uint32_t clientId = GameInteractorAnchor::FairyIndexToClientId[fairyIndex];
+uint8_t Anchor_GetClientRoomIndex(uint32_t actorIndex) {
+    uint32_t clientId = GameInteractorAnchor::ActorIndexToClientId[actorIndex];
     if (GameInteractorAnchor::AnchorClients.find(clientId) == GameInteractorAnchor::AnchorClients.end()) {
         return 0xFF;
     }
@@ -565,8 +588,8 @@ uint8_t Anchor_GetClientRoomIndex(uint32_t fairyIndex) {
     return GameInteractorAnchor::AnchorClients[clientId].roomIndex;
 }
 
-Color_RGB8 Anchor_GetClientColor(uint32_t fairyIndex) {
-    uint32_t clientId = GameInteractorAnchor::FairyIndexToClientId[fairyIndex];
+Color_RGB8 Anchor_GetClientColor(uint32_t actorIndex) {
+    uint32_t clientId = GameInteractorAnchor::ActorIndexToClientId[actorIndex];
     if (GameInteractorAnchor::AnchorClients.find(clientId) == GameInteractorAnchor::AnchorClients.end()) {
         return {100, 255, 100};
     }
@@ -574,8 +597,8 @@ Color_RGB8 Anchor_GetClientColor(uint32_t fairyIndex) {
     return GameInteractorAnchor::AnchorClients[clientId].color;
 }
 
-void Anchor_SpawnClientFairies() {
-    if (gPlayState == NULL) return;
+void Anchor_RefreshClientActors() {
+    if (!GameInteractor::IsSaveLoaded()) return;
     Actor* actor = gPlayState->actorCtx.actorLists[ACTORCAT_ITEMACTION].head;
     while (actor != NULL) {
         if (gEnPartnerId == actor->id) {
@@ -584,24 +607,51 @@ void Anchor_SpawnClientFairies() {
         actor = actor->next;
     }
 
-    GameInteractorAnchor::FairyIndexToClientId.clear();
+    GameInteractorAnchor::ActorIndexToClientId.clear();
 
     uint32_t i = 0;
     for (auto [clientId, client] : GameInteractorAnchor::AnchorClients) {
-        GameInteractorAnchor::FairyIndexToClientId.push_back(clientId);
-        auto fairy = Actor_Spawn(&gPlayState->actorCtx, gPlayState, gEnPartnerId, -9999.0, -9999.0, -9999.0, 0, 0, 0, 3 + i, false);
+        GameInteractorAnchor::ActorIndexToClientId.push_back(clientId);
+        auto fairy = Actor_Spawn(
+            &gPlayState->actorCtx, gPlayState, gEnPartnerId,
+            client.posRot.pos.x, client.posRot.pos.y, client.posRot.pos.z, 
+            client.posRot.rot.x, client.posRot.rot.y, client.posRot.rot.z,
+            3 + i, false
+        );
         NameTag_RegisterForActor(fairy, client.name.c_str());
         i++;
     }
 }
 
+static uint32_t lastSceneNum = SCENE_ID_MAX;
+
 void Anchor_RegisterHooks() {
-    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnLoadGame>([](int32_t fileNum) {
-        if (!GameInteractor::Instance->isRemoteInteractorConnected || gSaveContext.fileNum > 2) return;
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnSceneSpawnActors>([]() {
+        if (gPlayState == NULL || !GameInteractor::Instance->isRemoteInteractorConnected) return;
+
+        // Moved to a new scene
+        if (lastSceneNum != gPlayState->sceneNum) {
+            Anchor_SendClientData();
+        }
+        
+        if (GameInteractor::Instance->IsSaveLoaded()) {
+            // Player loaded into file
+            if (lastSceneNum == SCENE_ID_MAX) {
+                Anchor_RequestSaveStateFromRemote();
+            }
+
+            Anchor_RefreshClientActors();
+        }
+
+        lastSceneNum = gPlayState->sceneNum;
+    });
+    GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPresentFileSelect>([]() {
+        lastSceneNum = SCENE_ID_MAX;
+        if (!GameInteractor::Instance->isRemoteInteractorConnected) return;
 
         Anchor_SendClientData();
-        Anchor_RequestSaveStateFromRemote();
     });
+    
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnItemReceive>([](GetItemEntry itemEntry) {
         if (itemEntry.modIndex == MOD_NONE && (itemEntry.itemId == ITEM_KEY_SMALL || itemEntry.itemId == ITEM_KEY_BOSS || itemEntry.itemId == ITEM_SWORD_MASTER)) {
             return;
@@ -678,7 +728,12 @@ void Anchor_RegisterHooks() {
     });
     GameInteractor::Instance->RegisterGameHook<GameInteractor::OnPlayerUpdate>([]() {
         static uint32_t lastPlayerCount = 0;
-        uint32_t currentPlayerCount =  GameInteractorAnchor::AnchorClients.size();
+        uint32_t currentPlayerCount = 0;
+        for (auto& [clientId, client] : GameInteractorAnchor::AnchorClients) {
+            if (client.sceneNum == gPlayState->sceneNum) {
+                currentPlayerCount++;
+            }
+        }
         if (!GameInteractor::Instance->isRemoteInteractorConnected || gPlayState == NULL || !GameInteractor::Instance->IsSaveLoaded()) {
             lastPlayerCount = currentPlayerCount;
             return;
@@ -700,7 +755,12 @@ void Anchor_RegisterHooks() {
         lastPosition = currentPosition;
         lastPlayerCount = currentPlayerCount;
 
-        GameInteractorAnchor::Instance->TransmitJsonToRemote(payload);
+        for (auto& [clientId, client] : GameInteractorAnchor::AnchorClients) {
+            if (client.sceneNum == gPlayState->sceneNum) {
+                payload["targetClientId"] = clientId;
+                GameInteractorAnchor::Instance->TransmitJsonToRemote(payload);
+            }
+        }
     });
 }
 
@@ -793,22 +853,37 @@ void AnchorPlayerLocationWindow::DrawElement() {
     );
 
     ImGui::TextColored(gSaveContext.sohStats.gameComplete ? GREEN : WHITE, "%s", CVarGetString("gRemote.AnchorName", ""));
-    if (gPlayState != NULL) {
+    if (GameInteractor::Instance->IsSaveLoaded()) {
         ImGui::SameLine();
         ImGui::TextColored(ImVec4(0.5, 0.5, 0.5, 1), "%s", SohUtils::GetSceneName(gPlayState->sceneNum).c_str());
     }
     for (auto& [clientId, client] : GameInteractorAnchor::AnchorClients) {
         ImGui::PushID(clientId);
         ImGui::TextColored(client.gameComplete ? GREEN : WHITE, "%s", client.name.c_str());
-        if (client.scene < SCENE_ID_MAX) {
+        if (client.seed != gSaveContext.finalSeed && client.fileNum != 0xFF && GameInteractor::Instance->IsSaveLoaded()) {
             ImGui::SameLine();
-            ImGui::TextColored(ImVec4(0.5, 0.5, 0.5, 1), "%s", SohUtils::GetSceneName(client.scene).c_str());
-            if (gPlayState != NULL && client.scene != SCENE_GROTTOS && client.scene != SCENE_ID_MAX) {
+            ImGui::TextColored(ImVec4(1, 0, 0, 1), ICON_FA_EXCLAMATION_TRIANGLE);
+            if (ImGui::IsItemHovered()) {
+                ImGui::BeginTooltip();
+                ImGui::Text("Seed mismatch (%u != %u)", client.seed, gSaveContext.finalSeed);
+                ImGui::EndTooltip();
+            }
+        }
+        if (client.sceneNum < SCENE_ID_MAX && client.fileNum != 0xFF) {
+            ImGui::SameLine();
+            ImGui::TextColored(ImVec4(0.5, 0.5, 0.5, 1), "%s", SohUtils::GetSceneName(client.sceneNum).c_str());
+            if (GameInteractor::Instance->IsSaveLoaded() && client.sceneNum != SCENE_GROTTOS && client.sceneNum != SCENE_ID_MAX) {
                 ImGui::SameLine();
                 ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0, 0));
                 if (ImGui::Button(ICON_FA_CHEVRON_RIGHT, ImVec2(ImGui::GetFontSize() * 1.0f, ImGui::GetFontSize() * 1.0f))) {
-                    Play_SetRespawnData(gPlayState, RESPAWN_MODE_DOWN, client.entranceIndex, client.roomIndex, 0xDFF, &client.posRot.pos, client.posRot.rot.y);
-                    Play_TriggerVoidOut(gPlayState);
+                    // Todo: When we have a way to send & recieve packets from a specific client, we can restore this functionality
+                    // Play_SetRespawnData(gPlayState, RESPAWN_MODE_DOWN, client.entranceIndex, client.roomIndex, 0xDFF, &client.posRot.pos, client.posRot.rot.y);
+                    // Play_TriggerVoidOut(gPlayState);
+                    gPlayState->sceneLoadFlag = 0x14;
+                    gPlayState->fadeTransition = 3;
+                    gSaveContext.nextTransitionType = 3;
+                    gPlayState->nextEntranceIndex = client.entranceIndex;
+                    gSaveContext.nextCutsceneIndex = 0;
                 }
                 ImGui::PopStyleVar();
             }
