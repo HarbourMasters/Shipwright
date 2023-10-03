@@ -666,6 +666,7 @@ namespace Settings {
   Option LogicBunnyHoodJump                       = LogicTrick(std::to_string(RT_BUNNY_HOOD_JUMPS));
   Option LogicDamageBoost                         = LogicTrick(std::to_string(RT_DAMAGE_BOOST_SIMPLE));
   Option LogicHoverBoost                          = LogicTrick(std::to_string(RT_HOVER_BOOST_SIMPLE));
+  Option LogicExplodeBeehives                     = LogicTrick(std::to_string(RT_EXPLODE_BEEHIVES));
   Option LogicAdultKokiriGS                       = LogicTrick(std::to_string(RT_KF_ADULT_GS));
   Option LogicLostWoodsBridge                     = LogicTrick(std::to_string(RT_LW_BRIDGE));
   Option LogicMidoBackflip                        = LogicTrick(std::to_string(RT_LW_MIDO_BACKFLIP));
@@ -839,6 +840,7 @@ namespace Settings {
     &LogicBunnyHoodJump,
     &LogicDamageBoost,
     &LogicHoverBoost,
+    &LogicExplodeBeehives,
     &LogicAdultKokiriGS,
     &LogicLostWoodsBridge,
     &LogicMidoBackflip,
@@ -1012,6 +1014,7 @@ namespace Settings {
     {RT_BUNNY_HOOD_JUMPS,&LogicBunnyHoodJump},
     {RT_DAMAGE_BOOST_SIMPLE,&LogicDamageBoost},
     {RT_HOVER_BOOST_SIMPLE,&LogicHoverBoost},
+    {RT_EXPLODE_BEEHIVES,&LogicExplodeBeehives},
     {RT_KF_ADULT_GS,&LogicAdultKokiriGS},
     {RT_LW_BRIDGE,&LogicLostWoodsBridge},
     {RT_LW_MIDO_BACKFLIP,&LogicMidoBackflip},
