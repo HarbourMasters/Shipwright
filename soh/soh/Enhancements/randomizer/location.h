@@ -202,6 +202,7 @@ class Location {
     const HintText& GetHint() const;
     void SetParentRegion(uint32_t region);
     uint32_t GetParentRegionKey() const;
+    RandomizerGet GetVanillaItem() const;
 
     static Location
     Base(RandomizerCheck rc, RandomizerCheckQuest quest_, RandomizerCheckType checkType_, RandomizerCheckArea area_,
