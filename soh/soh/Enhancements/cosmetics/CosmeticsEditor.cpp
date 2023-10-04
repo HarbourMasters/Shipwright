@@ -926,6 +926,16 @@ void ApplyOrResetCustomGfxPatches(bool manualChange) {
         PATCH_GFX(gGiBunnyHoodDL,                                   "Equipment_BunnyHood2",       equipmentBunnyHood.changedCvar,        6, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
         PATCH_GFX(gGiBunnyHoodDL,                                   "Equipment_BunnyHood3",       equipmentBunnyHood.changedCvar,        83, gsDPSetPrimColor(0, 0, color.r, color.g, color.b, 255));
         PATCH_GFX(gGiBunnyHoodDL,                                   "Equipment_BunnyHood4",       equipmentBunnyHood.changedCvar,        84, gsDPSetEnvColor(color.r / 3, color.g / 3, color.b / 3, 255));
+        PATCH_GFX(gLinkChildBunnyHoodDL,                            "Equipment_BunnyHood5",       equipmentBunnyHood.changedCvar,         4, gsDPSetGrayscaleColor(color.r, color.g, color.b, 255));
+
+        if (manualChange) {
+        PATCH_GFX(gLinkChildBunnyHoodDL,                            "Equipment_BunnyHood6",       equipmentBunnyHood.changedCvar,        13, gsSPGrayscale(true));
+            if (CVarGetInteger(equipmentBunnyHood.changedCvar, 0)) {
+                ResourceMgr_PatchGfxByName(gLinkChildBunnyHoodDL,   "Equipment_BunnyHood7",                                             125, gsSPBranchListOTRFilePath(gEndGrayscaleAndEndDlistDL));
+            } else {
+                ResourceMgr_UnpatchGfxByName(gLinkChildBunnyHoodDL, "Equipment_BunnyHood7");
+            }
+        }
     }
 
     static CosmeticOption& consumableGreenRupee = cosmeticOptions.at("Consumable_GreenRupee");
