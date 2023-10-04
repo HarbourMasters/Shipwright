@@ -263,7 +263,8 @@ extern bool CanOpenStormGrotto;
 extern bool HookshotOrBoomerang;
 extern bool CanGetNightTimeGS;
 extern bool BigPoeKill;
-extern bool CanBreakBeehives;
+extern bool CanBreakLowerBeehives;
+extern bool CanBreakUpperBeehives;
 
 extern uint8_t BaseHearts;
 extern uint8_t Hearts;

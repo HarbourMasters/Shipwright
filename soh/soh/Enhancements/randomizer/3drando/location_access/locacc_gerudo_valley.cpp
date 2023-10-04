@@ -89,7 +89,7 @@ void AreaTable_Init_GerudoValley() {
                   //Locations
                   LocationAccess(GV_DEKU_SCRUB_GROTTO_REAR,  {[]{return CanStunDeku;}}),
                   LocationAccess(GV_DEKU_SCRUB_GROTTO_FRONT, {[]{return CanStunDeku;}}),
-                  LocationAccess(GV_DEKU_SCRUB_GROTTO_BEEHIVE, {[]{return CanBreakBeehives;}}),
+                  LocationAccess(GV_DEKU_SCRUB_GROTTO_BEEHIVE, {[]{return CanBreakUpperBeehives;}}),
                 }, {
                   //Exits
                   Entrance(GV_FORTRESS_SIDE, {[]{return true;}}),
@@ -203,7 +203,7 @@ void AreaTable_Init_GerudoValley() {
                   //Locations
                   LocationAccess(COLOSSUS_DEKU_SCRUB_GROTTO_REAR,  {[]{return CanStunDeku;}}),
                   LocationAccess(COLOSSUS_DEKU_SCRUB_GROTTO_FRONT, {[]{return CanStunDeku;}}),
-                  LocationAccess(COLOSSUS_GROTTO_BEEHIVE,          {[]{return CanBreakBeehives;}}),
+                  LocationAccess(COLOSSUS_GROTTO_BEEHIVE,          {[]{return CanBreakUpperBeehives;}}),
                 }, {
                   //Exits
                   Entrance(DESERT_COLOSSUS, {[]{return true;}}),
