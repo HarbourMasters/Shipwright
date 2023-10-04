@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_MA1_H
+#define OBJECTS_OBJECT_MA1_H 1
 
 #include "align_asset_macro.h"
 
@@ -118,3 +119,6 @@ static const ALIGN_ASSET(2) char gMalonChildLeftShinDL[] = dgMalonChildLeftShinD
 
 #define dgMalonChildLeftFootDL "__OTR__objects/object_ma1/gMalonChildLeftFootDL"
 static const ALIGN_ASSET(2) char gMalonChildLeftFootDL[] = dgMalonChildLeftFootDL;
+
+
+#endif // OBJECTS_OBJECT_MA1_H

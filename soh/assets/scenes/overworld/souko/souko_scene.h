@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OVERWORLD_SOUKO_SCENE_H
+#define OVERWORLD_SOUKO_SCENE_H 1
 
 #include "align_asset_macro.h"
 
@@ -22,3 +23,5 @@ static const ALIGN_ASSET(2) char souko_sceneTex_004410[] = dsouko_sceneTex_00441
 
 #define dsouko_sceneTex_005410 "__OTR__scenes/nonmq/souko_scene/souko_sceneTex_005410"
 static const ALIGN_ASSET(2) char souko_sceneTex_005410[] = dsouko_sceneTex_005410;
+
+#endif // OVERWORLD_SOUKO_SCENE_H

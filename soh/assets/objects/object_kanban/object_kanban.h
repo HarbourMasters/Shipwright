@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_KANBAN_H
+#define OBJECTS_OBJECT_KANBAN_H 1
 
 #include "align_asset_macro.h"
 
@@ -43,3 +44,5 @@ static const ALIGN_ASSET(2) char object_kanban_DL_001630[] = dobject_kanban_DL_0
 
 #define dobject_kanban_Tex_0016B0 "__OTR__objects/object_kanban/object_kanban_Tex_0016B0"
 static const ALIGN_ASSET(2) char object_kanban_Tex_0016B0[] = dobject_kanban_Tex_0016B0;
+
+#endif // OBJECTS_OBJECT_KANBAN_H

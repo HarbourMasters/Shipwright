@@ -183,7 +183,7 @@ void EnBomBowlPit_GivePrize(EnBomBowlPit* this, PlayState* play) {
         this->getItemId = GI_BOMB_BAG_40;
     }
 
-    if (gSaveContext.n64ddFlag) {
+    if (IS_RANDO) {
         switch (this->prizeIndex) {
             case EXITEM_BOMB_BAG_BOWLING:
                 this->getItemEntry = Randomizer_GetItemFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20);
@@ -202,7 +202,7 @@ void EnBomBowlPit_GivePrize(EnBomBowlPit* this, PlayState* play) {
 
     player->stateFlags1 &= ~0x20000000;
     this->actor.parent = NULL;
-    if (!gSaveContext.n64ddFlag || this->getItemEntry.getItemId == GI_NONE) {
+    if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
         func_8002F434(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
     } else {
         GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 2000.0f, 1000.0f);
@@ -215,7 +215,7 @@ void EnBomBowlPit_WaitTillPrizeGiven(EnBomBowlPit* this, PlayState* play) {
     if (Actor_HasParent(&this->actor, play)) {
         this->actionFunc = EnBomBowlPit_Reset;
     } else {
-         if (!gSaveContext.n64ddFlag || this->getItemEntry.getItemId == GI_NONE) {
+         if (!IS_RANDO || this->getItemEntry.getItemId == GI_NONE) {
             func_8002F434(&this->actor, play, this->getItemId, 2000.0f, 1000.0f);
         } else {
             GiveItemEntryFromActor(&this->actor, play, this->getItemEntry, 2000.0f, 1000.0f);
@@ -226,7 +226,7 @@ void EnBomBowlPit_WaitTillPrizeGiven(EnBomBowlPit* this, PlayState* play) {
 void EnBomBowlPit_Reset(EnBomBowlPit* this, PlayState* play) {
     if (((Message_GetState(&play->msgCtx) == TEXT_STATE_DONE) &&
           Message_ShouldAdvance(play)) ||
-        (gSaveContext.n64ddFlag && this->getItemId == GI_ICE_TRAP)) {
+        (IS_RANDO && this->getItemId == GI_ICE_TRAP)) {
         // "Normal termination"/"completion"
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 正常終了 ☆☆☆☆☆ \n" VT_RST);
         if (this->getItemId == GI_HEART_PIECE) {

@@ -1,5 +1,7 @@
 <Root>
     <File Name="object_torch2" Segment="6">
+        <Texture Name="object_torch2Tex_0041C0" OutName="object_torch2Tex_0041C0" Format="rgba16" Width="16" Height="16" Offset="0x41C0" AddedByScript="true"/>
+        <Texture Name="object_torch2Tex_0043C0" OutName="object_torch2Tex_0043C0" Format="ia16" Width="16" Height="16" Offset="0x43C0" AddedByScript="true"/>
         <!-- Dark Link's skeleton -->
         <Skeleton Name="gDarkLinkSkel" Type="Flex" LimbType="LOD" Offset="0x4764"/>
 

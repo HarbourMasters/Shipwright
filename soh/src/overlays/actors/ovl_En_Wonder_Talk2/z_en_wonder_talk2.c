@@ -85,7 +85,7 @@ void EnWonderTalk2_Init(Actor* thisx, PlayState* play) {
         Actor_Kill(&this->actor);
         return;
     }
-    if ((this->talkMode == 1) && (play->sceneNum == SCENE_MEN) && (this->switchFlag != 0x08) &&
+    if ((this->talkMode == 1) && (play->sceneNum == SCENE_GERUDO_TRAINING_GROUND) && (this->switchFlag != 0x08) &&
         (this->switchFlag != 0x16) && (this->switchFlag != 0x2F)) {
 
         this->unk_15A = false;
@@ -254,7 +254,7 @@ void func_80B3A4F8(EnWonderTalk2* this, PlayState* play) {
             if (!this->unk_156) {
                 // Whether or not to skip the text in rando
                 bool randoSkipText = false;
-                if (gSaveContext.n64ddFlag) {
+                if (IS_RANDO) {
                     // Scenes for which all of this type of wonder talk should be skipped.
                     switch (play->sceneNum) {
                         case 0x0007: // Shadow Temple

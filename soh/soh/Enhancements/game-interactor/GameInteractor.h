@@ -83,6 +83,8 @@ uint8_t GameInteractor_GetRandomWindActive();
 uint8_t GameInteractor_GetRandomBonksActive();
 uint8_t GameInteractor_GetSlipperyFloorActive();
 uint8_t GameInteractor_SecondCollisionUpdate();
+void GameInteractor_SetTriforceHuntPieceGiven(uint8_t state);
+void GameInteractor_SetTriforceHuntCreditsWarpActive(uint8_t state);
 #ifdef __cplusplus
 }
 #endif
@@ -123,6 +125,8 @@ public:
         static uint8_t RandomBonksActive;
         static uint8_t SlipperyFloorActive;
         static uint8_t SecondCollisionUpdate;
+        static uint8_t TriforceHuntPieceGiven;
+        static uint8_t TriforceHuntCreditsWarpActive;
 
         static void SetPacifistMode(bool active);
     };
@@ -148,11 +152,17 @@ public:
     DEFINE_HOOK(OnSaleEnd, void(GetItemEntry itemEntry));
     DEFINE_HOOK(OnTransitionEnd, void(int16_t sceneNum));
     DEFINE_HOOK(OnSceneInit, void(int16_t sceneNum));
+    DEFINE_HOOK(OnSceneFlagSet, void(int16_t sceneNum, int16_t flagType, int16_t flag));
+    DEFINE_HOOK(OnSceneFlagUnset, void(int16_t sceneNum, int16_t flagType, int16_t flag));
+    DEFINE_HOOK(OnFlagSet, void(int16_t flagType, int16_t flag));
+    DEFINE_HOOK(OnFlagUnset, void(int16_t flagType, int16_t flag));
     DEFINE_HOOK(OnSceneSpawnActors, void());
     DEFINE_HOOK(OnPlayerUpdate, void());
     DEFINE_HOOK(OnOcarinaSongAction, void());
     DEFINE_HOOK(OnActorInit, void(void* actor));
     DEFINE_HOOK(OnActorUpdate, void(void* actor));
+    DEFINE_HOOK(OnActorKill, void(void* actor));
+    DEFINE_HOOK(OnEnemyDefeat, void(void* actor));
     DEFINE_HOOK(OnPlayerBonk, void());
     DEFINE_HOOK(OnPlayDestroy, void());
     DEFINE_HOOK(OnPlayDrawEnd, void());
@@ -175,6 +185,7 @@ public:
     DEFINE_HOOK(OnUpdateFileEraseConfirmationSelection, void(uint16_t optionIndex));
     DEFINE_HOOK(OnUpdateFileAudioSelection, void(uint8_t optionIndex));
     DEFINE_HOOK(OnUpdateFileTargetSelection, void(uint8_t optionIndex));
+    DEFINE_HOOK(OnUpdateFileLanguageSelection, void(uint8_t optionIndex));
     DEFINE_HOOK(OnUpdateFileQuestSelection, void(uint8_t questIndex));
     DEFINE_HOOK(OnUpdateFileBossRushOptionSelection, void(uint8_t optionIndex, uint8_t optionValue));
     DEFINE_HOOK(OnUpdateFileNameSelection, void(int16_t charCode));
@@ -189,6 +200,10 @@ public:
 
     class RawAction {
     public:
+        static void SetSceneFlag(int16_t sceneNum, int16_t flagType, int16_t flag);
+        static void UnsetSceneFlag(int16_t sceneNum, int16_t flagType, int16_t flag);
+        static void SetFlag(int16_t flagType, int16_t chestNum);
+        static void UnsetFlag(int16_t flagType, int16_t chestNum);
         static void AddOrRemoveHealthContainers(int16_t amount);
         static void AddOrRemoveMagic(int8_t amount);
         static void HealOrDamagePlayer(int16_t hearts);
@@ -214,6 +229,7 @@ public:
         static void EmulateRandomButtonPress(uint32_t chancePercentage = 100);
         static void SetRandomWind(bool active);
         static void SetPlayerInvincibility(bool active);
+        static void ClearCutscenePointer();
 
         static GameInteractionEffectQueryResult SpawnEnemyWithOffset(uint32_t enemyId, int32_t enemyParams);
         static GameInteractionEffectQueryResult SpawnActor(uint32_t actorId, int32_t actorParams);

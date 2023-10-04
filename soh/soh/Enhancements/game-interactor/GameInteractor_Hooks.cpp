@@ -30,6 +30,22 @@ void GameInteractor_ExecuteOnSceneInitHooks(int16_t sceneNum) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneInit>(sceneNum);
 }
 
+void GameInteractor_ExecuteOnSceneFlagSet(int16_t sceneNum, int16_t flagType, int16_t flag) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneFlagSet>(sceneNum, flagType, flag);
+}
+
+void GameInteractor_ExecuteOnSceneFlagUnset(int16_t sceneNum, int16_t flagType, int16_t flag) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneFlagUnset>(sceneNum, flagType, flag);
+}
+
+void GameInteractor_ExecuteOnFlagSet(int16_t flagType, int16_t flag) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnFlagSet>(flagType, flag);
+}
+
+void GameInteractor_ExecuteOnFlagUnset(int16_t flagType, int16_t flag) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnFlagUnset>(flagType, flag);
+}
+
 void GameInteractor_ExecuteOnSceneSpawnActors() {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnSceneSpawnActors>();
 }
@@ -48,6 +64,14 @@ void GameInteractor_ExecuteOnActorInit(void* actor) {
 
 void GameInteractor_ExecuteOnActorUpdate(void* actor) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnActorUpdate>(actor);
+}
+
+void GameInteractor_ExecuteOnActorKill(void* actor) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnActorKill>(actor);
+}
+
+void GameInteractor_ExecuteOnEnemyDefeat(void* actor) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnEnemyDefeat>(actor);
 }
 
 void GameInteractor_ExecuteOnPlayerBonk() {
@@ -130,6 +154,10 @@ void GameInteractor_ExecuteOnUpdateFileAudioSelection(uint8_t optionIndex) {
 
 void GameInteractor_ExecuteOnUpdateFileTargetSelection(uint8_t optionIndex) {
     GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileTargetSelection>(optionIndex);
+}
+
+void GameInteractor_ExecuteOnUpdateFileLanguageSelection(uint8_t optionIndex) {
+    GameInteractor::Instance->ExecuteHooks<GameInteractor::OnUpdateFileLanguageSelection>(optionIndex);
 }
 
 void GameInteractor_ExecuteOnUpdateFileQuestSelection(uint8_t questIndex) {

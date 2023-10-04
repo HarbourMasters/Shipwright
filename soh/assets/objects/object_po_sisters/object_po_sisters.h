@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_PO_SISTERS_H
+#define OBJECTS_OBJECT_PO_SISTERS_H 1
 
 #include "align_asset_macro.h"
 
@@ -113,24 +114,6 @@ static const ALIGN_ASSET(2) char object_po_sistersTex_0062F8[] = dobject_po_sist
 #define dobject_po_sistersTex_006318 "__OTR__objects/object_po_sisters/object_po_sistersTex_006318"
 static const ALIGN_ASSET(2) char object_po_sistersTex_006318[] = dobject_po_sistersTex_006318;
 
-#define dgPoeSistersSkelLimbsLimb_006524DL_002718 "__OTR__objects/object_po_sisters/gPoeSistersSkelLimbsLimb_006524DL_002718"
-static const ALIGN_ASSET(2) char gPoeSistersSkelLimbsLimb_006524DL_002718[] = dgPoeSistersSkelLimbsLimb_006524DL_002718;
-
-#define dgPoeSistersSkelLimbsLimb_006530DL_002870 "__OTR__objects/object_po_sisters/gPoeSistersSkelLimbsLimb_006530DL_002870"
-static const ALIGN_ASSET(2) char gPoeSistersSkelLimbsLimb_006530DL_002870[] = dgPoeSistersSkelLimbsLimb_006530DL_002870;
-
-#define dgPoeSistersSkelLimbsLimb_00653CDL_002680 "__OTR__objects/object_po_sisters/gPoeSistersSkelLimbsLimb_00653CDL_002680"
-static const ALIGN_ASSET(2) char gPoeSistersSkelLimbsLimb_00653CDL_002680[] = dgPoeSistersSkelLimbsLimb_00653CDL_002680;
-
-#define dgPoeSistersSkelLimbsLimb_006548DL_0025E8 "__OTR__objects/object_po_sisters/gPoeSistersSkelLimbsLimb_006548DL_0025E8"
-static const ALIGN_ASSET(2) char gPoeSistersSkelLimbsLimb_006548DL_0025E8[] = dgPoeSistersSkelLimbsLimb_006548DL_0025E8;
-
-#define dgPoeSistersSkelLimbsLimb_006560DL_002570 "__OTR__objects/object_po_sisters/gPoeSistersSkelLimbsLimb_006560DL_002570"
-static const ALIGN_ASSET(2) char gPoeSistersSkelLimbsLimb_006560DL_002570[] = dgPoeSistersSkelLimbsLimb_006560DL_002570;
-
-#define dgPoeSistersSkelLimbsLimb_006590DL_0024A8 "__OTR__objects/object_po_sisters/gPoeSistersSkelLimbsLimb_006590DL_0024A8"
-static const ALIGN_ASSET(2) char gPoeSistersSkelLimbsLimb_006590DL_0024A8[] = dgPoeSistersSkelLimbsLimb_006590DL_0024A8;
-
 #define dobject_po_sistersTex_0082C0 "__OTR__objects/object_po_sisters/object_po_sistersTex_0082C0"
 static const ALIGN_ASSET(2) char object_po_sistersTex_0082C0[] = dobject_po_sistersTex_0082C0;
 
@@ -173,5 +156,25 @@ static const ALIGN_ASSET(2) char object_po_sistersTex_00CBC0[] = dobject_po_sist
 #define dobject_po_sistersTex_00C3C0 "__OTR__objects/object_po_sisters/object_po_sistersTex_00C3C0"
 static const ALIGN_ASSET(2) char object_po_sistersTex_00C3C0[] = dobject_po_sistersTex_00C3C0;
 
+#define dgPoeSistersSkelLimbsLimb_006524DL_002718 "__OTR__objects/object_po_sisters/gPoeSistersSkelLimbsLimb_006524DL_002718"
+static const ALIGN_ASSET(2) char gPoeSistersSkelLimbsLimb_006524DL_002718[] = dgPoeSistersSkelLimbsLimb_006524DL_002718;
+
+#define dgPoeSistersSkelLimbsLimb_006530DL_002870 "__OTR__objects/object_po_sisters/gPoeSistersSkelLimbsLimb_006530DL_002870"
+static const ALIGN_ASSET(2) char gPoeSistersSkelLimbsLimb_006530DL_002870[] = dgPoeSistersSkelLimbsLimb_006530DL_002870;
+
+#define dgPoeSistersSkelLimbsLimb_00653CDL_002680 "__OTR__objects/object_po_sisters/gPoeSistersSkelLimbsLimb_00653CDL_002680"
+static const ALIGN_ASSET(2) char gPoeSistersSkelLimbsLimb_00653CDL_002680[] = dgPoeSistersSkelLimbsLimb_00653CDL_002680;
+
+#define dgPoeSistersSkelLimbsLimb_006548DL_0025E8 "__OTR__objects/object_po_sisters/gPoeSistersSkelLimbsLimb_006548DL_0025E8"
+static const ALIGN_ASSET(2) char gPoeSistersSkelLimbsLimb_006548DL_0025E8[] = dgPoeSistersSkelLimbsLimb_006548DL_0025E8;
+
+#define dgPoeSistersSkelLimbsLimb_006560DL_002570 "__OTR__objects/object_po_sisters/gPoeSistersSkelLimbsLimb_006560DL_002570"
+static const ALIGN_ASSET(2) char gPoeSistersSkelLimbsLimb_006560DL_002570[] = dgPoeSistersSkelLimbsLimb_006560DL_002570;
+
+#define dgPoeSistersSkelLimbsLimb_006590DL_0024A8 "__OTR__objects/object_po_sisters/gPoeSistersSkelLimbsLimb_006590DL_0024A8"
+static const ALIGN_ASSET(2) char gPoeSistersSkelLimbsLimb_006590DL_0024A8[] = dgPoeSistersSkelLimbsLimb_006590DL_0024A8;
+
 #define dobject_po_sistersTex_0052D8 "__OTR__objects/object_po_sisters/object_po_sistersTex_0052D8"
 static const ALIGN_ASSET(2) char object_po_sistersTex_0052D8[] = dobject_po_sistersTex_0052D8;
+
+#endif // OBJECTS_OBJECT_PO_SISTERS_H

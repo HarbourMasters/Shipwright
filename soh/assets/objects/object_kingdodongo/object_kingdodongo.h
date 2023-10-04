@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OBJECTS_OBJECT_KINGDODONGO_H
+#define OBJECTS_OBJECT_KINGDODONGO_H 1
 
 #include "align_asset_macro.h"
 
@@ -235,3 +236,6 @@ static const ALIGN_ASSET(2) char object_kingdodongo_Tex_0304E0[] = dobject_kingd
 
 #define dobject_kingdodongo_Tex_0308E0 "__OTR__objects/object_kingdodongo/object_kingdodongo_Tex_0308E0"
 static const ALIGN_ASSET(2) char object_kingdodongo_Tex_0308E0[] = dobject_kingdodongo_Tex_0308E0;
+
+
+#endif // OBJECTS_OBJECT_KINGDODONGO_H

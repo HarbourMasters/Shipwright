@@ -96,7 +96,7 @@ s32 func_808B3AAC(BgSpot15Rrbox* this, PlayState* play) {
     s16 rotY;
     Actor* actor = &this->dyna.actor;
 
-    if (play->sceneNum == SCENE_SOUKO) {
+    if (play->sceneNum == SCENE_LON_LON_BUILDINGS) {
         return true;
     } else if (func_808B3A40(this, play)) {
         return false;

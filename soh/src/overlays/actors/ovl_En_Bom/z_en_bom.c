@@ -267,7 +267,7 @@ void EnBom_Update(Actor* thisx, PlayState* play2) {
     }
 
     // With random bomb fuse timer or gBombTimerMultiplier, sound effect and scaling is already done on init.
-    if (this->timer == 67 && !GameInteractor_GetRandomBombFuseTimerActive() && CVarGetFloat("gBombTimerMultiplier", 1.0f) != 1.0f) {
+    if (this->timer == 67 && !GameInteractor_GetRandomBombFuseTimerActive() && CVarGetFloat("gBombTimerMultiplier", 1.0f) == 1.0f) {
         Audio_PlayActorSound2(thisx, NA_SE_PL_TAKE_OUT_SHIELD);
         Actor_SetScale(thisx, 0.01f);
     }
@@ -397,7 +397,9 @@ void EnBom_Draw(Actor* thisx, PlayState* play) {
 
     if (thisx->params == BOMB_BODY) {
         Gfx_SetupDL_25Opa(play->state.gfxCtx);
-        Matrix_ReplaceRotation(&play->billboardMtxF);
+        if (!CVarGetInteger("gDisableBombBillboarding", 0)) {
+            Matrix_ReplaceRotation(&play->billboardMtxF);
+        }
         func_8002EBCC(thisx, play, 0);
 
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(play->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

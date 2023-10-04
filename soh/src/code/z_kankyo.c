@@ -1367,10 +1367,10 @@ void Environment_DrawSunAndMoon(PlayState* play) {
         // Replacement for gSunDL
         gSPMatrix(POLY_OPA_DISP++, SEG_ADDR(1, 0), G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
         gDPPipeSync(POLY_OPA_DISP++);
-        gDPLoadTextureBlock_4b(POLY_OPA_DISP++, gSunTex, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+        gDPLoadTextureBlock_4b(POLY_OPA_DISP++, gSun1Tex, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                                G_TX_NOMIRROR | G_TX_CLAMP,
                                6, 6, G_TX_NOLOD, G_TX_NOLOD);
-        gDPLoadMultiBlock_4b(POLY_OPA_DISP++, gSunEveningTex, 0x0100, 1, G_IM_FMT_I, 64, 64, 0,
+        gDPLoadMultiBlock_4b(POLY_OPA_DISP++, gSunEvening1Tex, 0x0100, 1, G_IM_FMT_I, 64, 64, 0,
                              G_TX_NOMIRROR | G_TX_CLAMP,
                              G_TX_NOMIRROR | G_TX_CLAMP, 6, 6, G_TX_NOLOD, G_TX_NOLOD);
         gSPVertex(POLY_OPA_DISP++, vertices, 4, 0);
@@ -2337,7 +2337,7 @@ void Environment_DrawSandstorm(PlayState* play, u8 sandstormState) {
 
     switch (sandstormState) {
         case 3:
-            if ((play->sceneNum == SCENE_SPOT13) && (play->roomCtx.curRoom.num == 0)) {
+            if ((play->sceneNum == SCENE_HAUNTED_WASTELAND) && (play->roomCtx.curRoom.num == 0)) {
                 envA1 = 0;
                 primA1 = (play->envCtx.sandstormEnvA > 128) ? 255 : play->envCtx.sandstormEnvA >> 1;
             } else {

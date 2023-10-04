@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTURES_NES_FONT_STATIC_H
+#define TEXTURES_NES_FONT_STATIC_H 1
 
 #include "align_asset_macro.h"
 
@@ -421,3 +422,5 @@ static const ALIGN_ASSET(2) char gMsgCharAAControlStickTex[] = dgMsgCharAAContro
 
 #define dgMsgCharABControlPadTex "__OTR__textures/nes_font_static/gMsgCharABControlPadTex"
 static const ALIGN_ASSET(2) char gMsgCharABControlPadTex[] = dgMsgCharABControlPadTex;
+
+#endif // TEXTURES_NES_FONT_STATIC_H

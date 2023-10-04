@@ -10,6 +10,7 @@
 #include "objects/object_mizu_objects/object_mizu_objects.h"
 #include "objects/object_haka_door/object_haka_door.h"
 #include "objects/object_door_killer/object_door_killer.h"
+#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -114,14 +115,14 @@ void DoorKiller_Init(Actor* thisx, PlayState* play2) {
 
     // For SoH where all objects are loaded, hardcode the index to match the current map.
     switch (play->sceneNum) {
-        case SCENE_HIDAN:
+        case SCENE_FIRE_TEMPLE:
             this->textureEntryIndex = 0;
             break;
-        case SCENE_MIZUSIN:
+        case SCENE_WATER_TEMPLE:
             this->textureEntryIndex = 1;
             break;
-        case SCENE_HAKADAN:
-        case SCENE_HAKADANCH:
+        case SCENE_SHADOW_TEMPLE:
+        case SCENE_BOTTOM_OF_THE_WELL:
             this->textureEntryIndex = 2;
             break;
         default:
@@ -270,7 +271,7 @@ void DoorKiller_Die(DoorKiller* this, PlayState* play) {
         Flags_SetSwitch(play, switchFlag);
     }
     Actor_Kill(&this->actor);
-    gSaveContext.sohStats.count[COUNT_ENEMIES_DEFEATED_DOOR_TRAP]++;
+    GameInteractor_ExecuteOnEnemyDefeat(&this->actor);
 }
 
 /**
@@ -378,7 +379,7 @@ void DoorKiller_FallOver(DoorKiller* this, PlayState* play) {
             this->hasHitPlayerOrGround |= 1;
             func_8002F6D4(play, &this->actor, 6.0f, this->actor.yawTowardsPlayer, 6.0f, 16);
             Audio_PlayActorSound2(&this->actor, NA_SE_EN_KDOOR_HIT);
-            func_8002F7DC(&player->actor, NA_SE_PL_BODY_HIT);
+            Player_PlaySfx(&player->actor, NA_SE_PL_BODY_HIT);
         }
     }
     if (!(this->hasHitPlayerOrGround & 1) && (this->timer == 2)) {
@@ -531,8 +532,7 @@ void DoorKiller_DrawDoor(Actor* thisx, PlayState* play) {
 
     Gfx_SetupDL_37Opa(play->state.gfxCtx);
     DoorKiller_SetTexture(&this->actor, play);
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          NULL, NULL, NULL);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, NULL, NULL, NULL);
 }
 
 void DoorKiller_DrawRubble(Actor* thisx, PlayState* play) {

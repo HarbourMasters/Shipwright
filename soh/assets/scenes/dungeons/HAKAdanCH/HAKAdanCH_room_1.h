@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DUNGEONS_HAKADANCH_ROOM_1_H
+#define DUNGEONS_HAKADANCH_ROOM_1_H 1
 
 #include "align_asset_macro.h"
 
@@ -55,3 +56,6 @@ static const ALIGN_ASSET(2) char HAKAdanCH_room_1Tex_009158[] = dHAKAdanCH_room_
 
 #define dHAKAdanCH_room_1DL_00B040 "__OTR__scenes/nonmq/HAKAdanCH_scene/HAKAdanCH_room_1DL_00B040"
 static const ALIGN_ASSET(2) char HAKAdanCH_room_1DL_00B040[] = dHAKAdanCH_room_1DL_00B040;
+
+
+#endif // DUNGEONS_HAKADANCH_ROOM_1_H

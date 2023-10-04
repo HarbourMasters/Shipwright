@@ -142,15 +142,15 @@ u16 func_80AA1B58(EnMa2* this, PlayState* play) {
     if (LINK_IS_CHILD) {
         return 0;
     }
-    if (!Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) && (play->sceneNum == SCENE_MALON_STABLE) && IS_DAY &&
+    if (!Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) && (play->sceneNum == SCENE_STABLE) && IS_DAY &&
         (this->actor.shape.rot.z == 5)) {
         return 1;
     }
-    if (!Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) && (play->sceneNum == SCENE_SPOT20) && IS_NIGHT &&
+    if (!Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) && (play->sceneNum == SCENE_LON_LON_RANCH) && IS_NIGHT &&
         (this->actor.shape.rot.z == 6)) {
         return 2;
     }
-    if (!Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) || (play->sceneNum != SCENE_SPOT20)) {
+    if (!Flags_GetEventChkInf(EVENTCHKINF_EPONA_OBTAINED) || (play->sceneNum != SCENE_LON_LON_RANCH)) {
         return 0;
     }
     if ((this->actor.shape.rot.z == 7) && IS_DAY) {
@@ -387,8 +387,7 @@ void EnMa2_Draw(Actor* thisx, PlayState* play) {
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[this->mouthIndex]));
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->eyeIndex]));
 
-    SkelAnime_DrawFlexOpa(play, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
-                          EnMa2_OverrideLimbDraw, EnMa2_PostLimbDraw, this);
+    SkelAnime_DrawSkeletonOpa(play, &this->skelAnime, EnMa2_OverrideLimbDraw, EnMa2_PostLimbDraw, this);
 
     CLOSE_DISPS(play->state.gfxCtx);
 }

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef OVERLAYS_OVL_OCEFF_WIPE2_H
+#define OVERLAYS_OVL_OCEFF_WIPE2_H 1
 
 #include "align_asset_macro.h"
 
@@ -16,3 +17,5 @@ static const ALIGN_ASSET(2) char sMaterialDL[] = dsMaterialDL;
 
 #define dsFrustumDL "__OTR__overlays/ovl_Oceff_Wipe2/sFrustumDL"
 static const ALIGN_ASSET(2) char sFrustumDL[] = dsFrustumDL;
+
+#endif // OVERLAYS_OVL_OCEFF_WIPE2_H

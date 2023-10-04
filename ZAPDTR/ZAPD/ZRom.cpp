@@ -97,6 +97,8 @@ ZRom::ZRom(std::string romPath)
 	RomVersion version;
 	romData = DiskFile::ReadAllBytes(romPath);
 
+	BitConverter::RomToBigEndian(romData.data(), romData.size());
+
 	version.crc = BitConverter::ToInt32BE(romData, 0x10);
 
 	switch (version.crc)
