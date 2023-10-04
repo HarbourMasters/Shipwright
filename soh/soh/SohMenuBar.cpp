@@ -1354,7 +1354,12 @@ void DrawCheatsMenu() {
         if (ImGui::Button("Change Age")) {
             CVarSetInteger("gSwitchAge", 1);
         }
-        UIWidgets::Tooltip("Switches Link's age and reloads the area.");   
+        UIWidgets::Tooltip("Switches Link's age and reloads the area.");  
+
+        if (ImGui::Button("Clear Cutscene Pointer")) {
+            GameInteractor::RawAction::ClearCutscenePointer();
+        }
+        UIWidgets::Tooltip("Clears the cutscene pointer to a value safe for wrong warps.");   
 
         ImGui::EndMenu();
     }
