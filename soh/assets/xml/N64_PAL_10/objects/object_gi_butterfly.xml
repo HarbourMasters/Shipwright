@@ -1,0 +1,7 @@
+<Root>
+    <File Name="object_gi_butterfly" Segment="6">
+        <Texture Name="object_gi_butterflyTex_000000" OutName="object_gi_butterflyTex_000000" Format="ia4" Width="24" Height="48" Offset="0x0" AddedByScript="true"/>
+        <DList Name="gGiButterflyContainerDL" Offset="0x0830"/>
+        <DList Name="gGiButterflyGlassDL" Offset="0x0A70"/>
+    </File>
+</Root>

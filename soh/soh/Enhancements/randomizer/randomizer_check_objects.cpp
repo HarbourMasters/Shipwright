@@ -861,6 +861,9 @@ std::map<SceneID, RandomizerCheckArea> RandomizerCheckObjects::GetAllRCAreaBySce
         for (int id = (int)SCENE_MARKET_ENTRANCE_DAY; id <= (int)SCENE_MARKET_RUINS; id++) {
             rcAreaBySceneID[(SceneID)id] = RCAREA_MARKET;
         }
+        rcAreaBySceneID[SCENE_TEMPLE_OF_TIME] = RCAREA_MARKET;
+        rcAreaBySceneID[SCENE_CASTLE_COURTYARD_GUARDS_DAY] = RCAREA_HYRULE_CASTLE;
+        rcAreaBySceneID[SCENE_CASTLE_COURTYARD_GUARDS_NIGHT] = RCAREA_HYRULE_CASTLE;
     }
     return rcAreaBySceneID;
 }

@@ -1,5 +1,9 @@
 [
     {
+        "name": "PAL 1.0",
+        "sha1": "328a1f1beba30ce5e178f031662019eb32c5f3b5"
+    },
+    {
         "name": "PAL 1.1",
         "sha1": "cfbb98d392e4a9d39da8285d10cbef3974c2f012"
     },
