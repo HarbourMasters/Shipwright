@@ -881,7 +881,6 @@ const std::vector<PresetEntry> spockRaceNoLogicPresetEntries = {
     PRESET_ENTRY_S32("gOnFileSelectNameEntry", 0),
     PRESET_ENTRY_S32("gOpenMenuBar", 1),
     PRESET_ENTRY_S32("gPauseAnyCursor", 1),
-    PRESET_ENTRY_S32("gPreset1", 1),
     PRESET_ENTRY_S32("gRStickOcarina", 1),
     PRESET_ENTRY_S32("gRandomize10GSHint", 1),
     PRESET_ENTRY_S32("gRandomize20GSHint", 1),
