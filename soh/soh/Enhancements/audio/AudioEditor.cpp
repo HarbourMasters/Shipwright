@@ -27,7 +27,7 @@ s8 reverbAdd = 0;
 #define SEQ_COUNT_BGM_EVENT 17
 #define SEQ_COUNT_INSTRUMENT 6
 #define SEQ_COUNT_SFX 57
-#define SEQ_COUNT_VOICE 107
+#define SEQ_COUNT_VOICE 108
 
 size_t AuthenticCountBySequenceType(SeqType type) {
     switch (type) {
