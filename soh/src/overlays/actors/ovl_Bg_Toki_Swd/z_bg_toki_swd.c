@@ -6,7 +6,6 @@
 
 #include "z_bg_toki_swd.h"
 #include "objects/object_toki_objects/object_toki_objects.h"
-#include "soh/Enhancements/game-interactor/GameInteractor_Hooks.h"
 
 #define FLAGS ACTOR_FLAG_UPDATE_WHILE_CULLED
 
@@ -123,7 +122,7 @@ void func_808BAF40(BgTokiSwd* this, PlayState* play) {
     if (!LINK_IS_ADULT || (Flags_GetEventChkInf(EVENTCHKINF_LEARNED_PRELUDE_OF_LIGHT) && !IS_RANDO) || IS_RANDO) {
         if (Actor_HasParent(&this->actor, play)) {
             if (!LINK_IS_ADULT) {
-                 if (!Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
+                 if (!IS_RANDO || !Randomizer_GetSettingValue(RSK_SHUFFLE_MASTER_SWORD)) {
                     Item_Give(play, ITEM_SWORD_MASTER);
                  }
                 play->csCtx.segment = D_808BB2F0;
