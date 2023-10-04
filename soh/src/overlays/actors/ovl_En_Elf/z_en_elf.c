@@ -952,7 +952,7 @@ void func_80A03CF8(EnElf* this, PlayState* play) {
                 nextPos.y += (1500.0f * this->actor.scale.y);
                 arrowPointedActor = play->actorCtx.targetCtx.arrowPointedActor;
 
-                if (arrowPointedActor != NULL) { // an arrow has appeared. navi flies over.
+                if (arrowPointedActor != NULL) {
                     func_80A03148(this, &nextPos, 0.0f, 20.0f, 0.2f);
 
                     if (this->actor.speedXZ >= 5.0f) {
@@ -971,7 +971,7 @@ void func_80A03CF8(EnElf* this, PlayState* play) {
                         func_80A03148(this, &nextPos, 0.0f, 20.0f, 0.2f);
                         EnElf_SpawnSparkles(this, play, 16);
                     } else {
-                        if (distFromLinksHead > 100.0f) { // if Navi is too far away, she flies back.
+                        if (distFromLinksHead > 100.0f) {
                             this->fairyFlags |= 2;
 
                             if (this->unk_2C7 == 0) {
