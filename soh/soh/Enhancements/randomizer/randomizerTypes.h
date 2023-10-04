@@ -907,7 +907,7 @@ typedef enum {
     RT_BUNNY_HOOD_JUMPS,
     RT_DAMAGE_BOOST_SIMPLE,
     RT_HOVER_BOOST_SIMPLE,
-    RT_EXPLODE_BEEHIVES,
+    RT_BOMBCHU_BEEHIVES,
     RT_KF_ADULT_GS,                            // -- location tricks
     RT_LW_BRIDGE,
     RT_LW_MIDO_BACKFLIP,
