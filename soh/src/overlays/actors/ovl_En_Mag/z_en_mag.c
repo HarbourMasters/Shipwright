@@ -620,9 +620,9 @@ s16 GetCharArraySize(const char* str) {
 }
 
 static void EnMag_SetCopyValues(const char** copy_tex, u16* copy_width, u16* copy_xl, u16* copy_xh) {
-    u32 gameVersion = ResourceMgr_GetGameVersion(0);
-    switch (gameVersion) {
-        case OOT_PAL_11:
+    u32 platform = ResourceMgr_GetGamePlatform(0);
+    switch (platform) {
+        case GAME_PLATFORM_N64:
             *copy_tex = gTitleCopyright1998Tex;
             *copy_width = 128;
             *copy_xl = 376;

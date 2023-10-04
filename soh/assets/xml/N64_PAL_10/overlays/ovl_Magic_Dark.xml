@@ -1,0 +1,12 @@
+<Root>
+    <File Name="ovl_Magic_Dark" BaseAddress="0x80A2C850" RangeStart="0xC90" RangeEnd="0x1740">
+        <Texture Name="sDiamondTex" OutName="diamond_texture" Format="i8" Width="32" Height="64" Offset="0xC90"/>
+
+        <Array Name="sDiamondVtx" Count="20" Offset="0x1490">
+            <Vtx/>
+        </Array>
+
+        <DList Name="sDiamondMaterialDL" Offset="0x15D0"/>
+        <DList Name="sDiamondModelDL" Offset="0x1680"/>
+    </File>
+</Root>

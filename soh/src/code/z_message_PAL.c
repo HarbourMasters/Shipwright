@@ -3384,6 +3384,7 @@ void Message_Update(PlayState* play) {
             }
             sLastPlayedSong = 0xFF;
             osSyncPrintf("OCARINA_MODE=%d   chk_ocarina_no=%d\n", play->msgCtx.ocarinaMode, msgCtx->unk_E3F2);
+            CheckTracker_OnMessageClose();
             break;
         case MSGMODE_PAUSED:
             break;

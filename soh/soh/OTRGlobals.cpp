@@ -2198,3 +2198,7 @@ extern "C" void EntranceTracker_SetLastEntranceOverride(s16 entranceIndex) {
 extern "C" void Gfx_RegisterBlendedTexture(const char* name, u8* mask, u8* replacement) {
     gfx_register_blended_texture(name, mask, replacement);
 }
+
+extern "C" void CheckTracker_OnMessageClose() {
+    CheckTracker::CheckTrackerDialogClosed();
+}
