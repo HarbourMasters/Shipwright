@@ -9,7 +9,9 @@
 #include "randomizerTypes.h"
 #include "soh/Enhancements/item-tables/ItemTableTypes.h"
 
+namespace Rando {
 union ItemOverride_Value;
+}
 
 enum ItemType {
     ITEMTYPE_ITEM,
@@ -47,7 +49,7 @@ class RandoItem {
     void ApplyEffect();
     void UndoEffect();
 
-    ItemOverride_Value Value() const;
+    Rando::ItemOverride_Value Value() const;
     
     const Text& GetName() const;
     bool IsAdvancement() const;
@@ -63,7 +65,7 @@ class RandoItem {
     bool IsPlaythrough() const;
     bool IsBottleItem() const;
     bool IsMajorItem() const;
-    const uint32_t GetHintKey() const;
+    uint32_t GetHintKey() const;
     const HintText& GetHint() const;
     bool operator==(const RandoItem& right) const;
     bool operator!=(const RandoItem& right) const;

@@ -12,68 +12,7 @@
 #include "z64scene_enum.h"
 
 namespace Rando {
-typedef enum {
-    RCTYPE_STANDARD,                   // Base set of rando checks
-    RCTYPE_SKULL_TOKEN,                // Gold Skulltulas
-    RCTYPE_COW,                        // Cows
-    RCTYPE_ADULT_TRADE,                // Adult trade quest checks
-    RCTYPE_FROG_SONG,                  // Frog song purple rupee checks
-    RCTYPE_MAP_COMPASS,                // Maps/Compasses
-    RCTYPE_SMALL_KEY,                  // Small Keys
-    RCTYPE_GF_KEY,                     // Gerudo Fortress Keys
-    RCTYPE_BOSS_KEY,                   // Boss Keys
-    RCTYPE_GANON_BOSS_KEY,             // Ganon's boss key
-    RCTYPE_SHOP,                       // shops
-    RCTYPE_SCRUB,                      // scrubs
-    RCTYPE_MERCHANT,                   // merchants
-    RCTYPE_CHEST_GAME,                 // todo replace this once we implement it, just using it to exclude for now
-    RCTYPE_LINKS_POCKET,               // todo this feels hacky
-    RCTYPE_GOSSIP_STONE,
-    RCTYPE_SONG_LOCATION,              // Song locations
-    RCTYPE_BOSS_HEART_OR_OTHER_REWARD, // Boss heart container or lesser dungeon rewards (lens, ice arrow)
-    RCTYPE_DUNGEON_REWARD,             // Dungeon rewards (blue warps)
-    RCTYPE_OCARINA,                    // Ocarina locations
-} RandomizerCheckType;
-
 typedef enum { RCQUEST_VANILLA, RCQUEST_MQ, RCQUEST_BOTH } RandomizerCheckQuest;
-
-typedef enum {
-    RCAREA_KOKIRI_FOREST,
-    RCAREA_LOST_WOODS,
-    RCAREA_SACRED_FOREST_MEADOW,
-    RCAREA_HYRULE_FIELD,
-    RCAREA_LAKE_HYLIA,
-    RCAREA_GERUDO_VALLEY,
-    RCAREA_GERUDO_FORTRESS,
-    RCAREA_WASTELAND,
-    RCAREA_DESERT_COLOSSUS,
-    RCAREA_MARKET,
-    RCAREA_HYRULE_CASTLE,
-    RCAREA_KAKARIKO_VILLAGE,
-    RCAREA_GRAVEYARD,
-    RCAREA_DEATH_MOUNTAIN_TRAIL,
-    RCAREA_GORON_CITY,
-    RCAREA_DEATH_MOUNTAIN_CRATER,
-    RCAREA_ZORAS_RIVER,
-    RCAREA_ZORAS_DOMAIN,
-    RCAREA_ZORAS_FOUNTAIN,
-    RCAREA_LON_LON_RANCH,
-    RCAREA_DEKU_TREE,
-    RCAREA_DODONGOS_CAVERN,
-    RCAREA_JABU_JABUS_BELLY,
-    RCAREA_FOREST_TEMPLE,
-    RCAREA_FIRE_TEMPLE,
-    RCAREA_WATER_TEMPLE,
-    RCAREA_SPIRIT_TEMPLE,
-    RCAREA_SHADOW_TEMPLE,
-    RCAREA_BOTTOM_OF_THE_WELL,
-    RCAREA_ICE_CAVERN,
-    RCAREA_GERUDO_TRAINING_GROUND,
-    RCAREA_GANONS_CASTLE,
-    // If adding any more areas, Check Tracker will need a refactor
-    RCAREA_INVALID
-} RandomizerCheckArea;
-
 class SpoilerCollectionCheck {
   public:
     SpoilerCollectionCheckType type = SpoilerCollectionCheckType::SPOILER_CHK_NONE;
@@ -124,10 +63,6 @@ class SpoilerCollectionCheck {
 
     static auto Scrub(uint8_t scene, uint8_t bit) {
         return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_SCRUB, scene, bit);
-    }
-
-    static auto Biggoron(uint8_t mask) {
-        return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_BIGGORON, 0x00, mask);
     }
 
     static auto GerudoToken() {
@@ -191,17 +126,16 @@ class Location {
     SpoilerCollectionCheckGroup GetCollectionCheckGroup() const;
     SceneID GetScene() const;
     uint8_t GetFlag() const;
-    const uint32_t GetHintKey() const;
+    uint32_t GetHintKey() const;
     const std::string& GetName() const;
     const std::string& GetShortName() const;
+    LocationType GetLocationType() const;
     bool IsCategory(Category category) const;
     bool IsDungeon() const;
     bool IsOverworld() const;
     bool IsShop() const;
-    const uint32_t Getuint32_t() const;
+    uint32_t Getuint32_t() const;
     const HintText& GetHint() const;
-    void SetParentRegion(uint32_t region);
-    uint32_t GetParentRegionKey() const;
     RandomizerGet GetVanillaItem() const;
 
     static Location
@@ -297,6 +231,5 @@ class Location {
     SpoilerCollectionCheck collectionCheck;
     SpoilerCollectionCheckGroup collectionCheckGroup;
     bool isHintable = false;
-    uint32_t parentRegion = NONE;
 };
 } // namespace Rando

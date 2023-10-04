@@ -69,7 +69,7 @@ private:
 class LocationAccess {
 public:
 
-    explicit LocationAccess(uint32_t location_, std::vector<ConditionFn> conditions_met_)
+    explicit LocationAccess(RandomizerCheck location_, std::vector<ConditionFn> conditions_met_)
         : location(location_) {
         conditions_met.resize(2);
         for (size_t i = 0; i < conditions_met_.size(); i++) {
@@ -96,12 +96,12 @@ public:
 
     bool ConditionsMet() const;
 
-    uint32_t GetLocation() const {
+    RandomizerCheck GetLocation() const {
         return location;
     }
 
 private:
-    uint32_t location;
+    RandomizerCheck location;
     std::vector<ConditionFn> conditions_met;
 
     //Makes sure shop locations are buyable

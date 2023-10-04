@@ -3,7 +3,7 @@
 #include "fill.hpp"
 #include "settings.hpp"
 #include "item_pool.hpp"
-#include "item_location.hpp"
+#include "../context.h"
 #include "spoiler_log.hpp"
 #include "hints.hpp"
 #include "location_access.hpp"
@@ -389,7 +389,7 @@ static bool ValidateWorld(Entrance* entrancePlaced) {
   }
 
   // If all locations aren't reachable, that means that one of the conditions failed when searching
-  if (!allLocationsReachable) {
+  if (!Rando::Context::GetInstance()->allLocationsReachable) {
     if (checkOtherEntranceAccess) {
       // At least one valid starting region with all basic refills should be reachable without using any items at the beginning of the seed
       if (!AreaTable(KOKIRI_FOREST)->HasAccess() && !AreaTable(KAKARIKO_VILLAGE)->HasAccess()) {

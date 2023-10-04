@@ -21,7 +21,7 @@ uint8_t Rando::Location::GetFlag() const {
     return flag;
 }
 
-const uint32_t Rando::Location::GetHintKey() const {
+uint32_t Rando::Location::GetHintKey() const {
     return hintKey;
 }
 
@@ -31,6 +31,10 @@ const std::string& Rando::Location::GetName() const {
 
 const std::string& Rando::Location::GetShortName() const {
     return shortName;
+}
+
+Rando::LocationType Rando::Location::GetLocationType() const {
+    return locationType;
 }
 
 bool Rando::Location::IsCategory(Category category) const {
@@ -51,20 +55,12 @@ bool Rando::Location::IsShop() const {
     return (scene >= SCENE_SHOP1 && scene <= SCENE_NIGHT_SHOP);
 }
 
-const uint32_t Rando::Location::Getuint32_t() const {
+uint32_t Rando::Location::Getuint32_t() const {
     return hintKey;
 }
 
 const HintText& Rando::Location::GetHint() const {
     return Hint(hintKey);
-}
-
-void Rando::Location::SetParentRegion(uint32_t region) {
-    parentRegion = region;
-}
-
-uint32_t Rando::Location::GetParentRegionKey() const {
-    return parentRegion;
 }
 
 RandomizerGet Rando::Location::GetVanillaItem() const {

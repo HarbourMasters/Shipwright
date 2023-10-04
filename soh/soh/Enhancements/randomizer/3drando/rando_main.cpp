@@ -1,6 +1,7 @@
 #include "menu.hpp"
 #include "hint_list.hpp"
-#include "item_location.hpp"
+#include "../static_data.h"
+#include "../item_location.h"
 #include "location_access.hpp"
 #include "rando_main.hpp"
 // #include <soh/Enhancements/randomizer.h>
@@ -11,7 +12,7 @@
 void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, u8> cvarSettings, std::set<RandomizerCheck> excludedLocations, std::set<RandomizerTrick> enabledTricks,
     std::string seedString) {
     HintTable_Init();
-    LocationTable_Init();
+    StaticData::InitLocationTable();
 
     // std::string settingsFileName = "./randomizer/latest_settings.json";
     // CVarSetString("gLoadedPreset", settingsFileName.c_str());

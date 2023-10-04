@@ -2,7 +2,8 @@
 
 #include "dungeon.hpp"
 #include "fill.hpp"
-#include "item_location.hpp"
+#include "../static_data.h"
+#include "../item_location.h"
 #include "random.hpp"
 #include "randomizer.hpp"
 #include "trial.hpp"
@@ -1497,19 +1498,19 @@ namespace Settings {
   }
 
   //Include and Lock the desired locations
-  static void IncludeAndHide(std::vector<uint32_t> locations) {
-    for (uint32_t loc : locations) {
-      Location(loc)->GetExcludedOption()->SetSelectedIndex(INCLUDE);
-      Location(loc)->GetExcludedOption()->Hide();
-    }
-  }
+  // static void IncludeAndHide(std::vector<uint32_t> locations) {
+  //   for (uint32_t loc : locations) {
+  //     Location(loc)->GetExcludedOption()->SetSelectedIndex(INCLUDE);
+  //     Location(loc)->GetExcludedOption()->Hide();
+  //   }
+  // }
 
   //Unlock the desired locations
-  static void Unhide(std::vector<uint32_t> locations) {
-    for (uint32_t loc : locations) {
-      Location(loc)->GetExcludedOption()->Unhide();
-    }
-  }
+  // static void Unhide(std::vector<uint32_t> locations) {
+  //   for (uint32_t loc : locations) {
+  //     Location(loc)->GetExcludedOption()->Unhide();
+  //   }
+  // }
 
   //Used for toggle options, enables/disables all the options between the 2 given
   void ToggleSet(std::vector<Option *> optionsList, Option* toggleOption, Option* firstOptionInSet, Option* lastOptionInSet) {
@@ -1540,195 +1541,195 @@ namespace Settings {
   //This function will hide certain locations from the Excluded Locations
   //menu if the player's current settings would require non-junk to be placed
   //at those locations. Excluded locations will have junk placed at them.
-  void ResolveExcludedLocationConflicts() {
+  // void ResolveExcludedLocationConflicts() {
 
-    std::vector<uint32_t> shopLocations = GetLocations(everyPossibleLocation, Category::cShop);
-    //For now, just always hide shop locations, as not sure how to handle hiding them-
-    //1-4 should always be hidden, while the others should be settings dependent, but random shopsanity makes that more complicated...
-    //Excluded shop locations are also wonky
-    IncludeAndHide(shopLocations);
+  //   std::vector<uint32_t> shopLocations = GetLocations(everyPossibleLocation, Category::cShop);
+  //   //For now, just always hide shop locations, as not sure how to handle hiding them-
+  //   //1-4 should always be hidden, while the others should be settings dependent, but random shopsanity makes that more complicated...
+  //   //Excluded shop locations are also wonky
+  //   IncludeAndHide(shopLocations);
 
-    //Force include song locations
-    std::vector<uint32_t> songLocations = GetLocations(everyPossibleLocation, Category::cSong);
-    std::vector<uint32_t> songDungeonRewards = GetLocations(everyPossibleLocation, Category::cSongDungeonReward);
+  //   //Force include song locations
+  //   std::vector<uint32_t> songLocations = GetLocations(everyPossibleLocation, Category::cSong);
+  //   std::vector<uint32_t> songDungeonRewards = GetLocations(everyPossibleLocation, Category::cSongDungeonReward);
 
-    //Unhide all song locations, then lock necessary ones
-    Unhide(songLocations);
-    Unhide(songDungeonRewards);
+  //   //Unhide all song locations, then lock necessary ones
+  //   Unhide(songLocations);
+  //   Unhide(songDungeonRewards);
 
-    if (ShuffleSongs.Is(SONGSHUFFLE_SONG_LOCATIONS)) {
-      IncludeAndHide(songLocations);
-    } else if (ShuffleSongs.Is(SONGSHUFFLE_DUNGEON_REWARDS)) {
-      IncludeAndHide(songDungeonRewards);
-    }
+  //   if (ShuffleSongs.Is(SONGSHUFFLE_SONG_LOCATIONS)) {
+  //     IncludeAndHide(songLocations);
+  //   } else if (ShuffleSongs.Is(SONGSHUFFLE_DUNGEON_REWARDS)) {
+  //     IncludeAndHide(songDungeonRewards);
+  //   }
 
-    //Force Include Vanilla Skulltula locations
-    std::vector<uint32_t> skulltulaLocations = GetLocations(everyPossibleLocation, Category::cSkulltula);
-    Unhide(skulltulaLocations);
-    if (Tokensanity.IsNot(TOKENSANITY_ALL_TOKENS)) {
-      if (Tokensanity.Is(TOKENSANITY_OVERWORLD)) {
-        //filter overworld skulls so we're just left with dungeons
-        FilterAndEraseFromPool(skulltulaLocations, [](const uint32_t loc){return Location(loc)->GetScene() >= 0x0A;});
-      } else if (Tokensanity.Is(TOKENSANITY_DUNGEONS)) {
-        //filter dungeon skulls so we're just left with overworld
-        FilterAndEraseFromPool(skulltulaLocations, [](const uint32_t loc){return Location(loc)->GetScene() < 0x0A;});
-      }
-      IncludeAndHide(skulltulaLocations);
-    }
+  //   //Force Include Vanilla Skulltula locations
+  //   std::vector<uint32_t> skulltulaLocations = GetLocations(everyPossibleLocation, Category::cSkulltula);
+  //   Unhide(skulltulaLocations);
+  //   if (Tokensanity.IsNot(TOKENSANITY_ALL_TOKENS)) {
+  //     if (Tokensanity.Is(TOKENSANITY_OVERWORLD)) {
+  //       //filter overworld skulls so we're just left with dungeons
+  //       FilterAndEraseFromPool(skulltulaLocations, [](const uint32_t loc){return StaticData::Location(loc)->GetScene() >= 0x0A;});
+  //     } else if (Tokensanity.Is(TOKENSANITY_DUNGEONS)) {
+  //       //filter dungeon skulls so we're just left with overworld
+  //       FilterAndEraseFromPool(skulltulaLocations, [](const uint32_t loc){return StaticData::Location(loc)->GetScene() < 0x0A;});
+  //     }
+  //     IncludeAndHide(skulltulaLocations);
+  //   }
 
-    //Force Include scrubs if Scrubsanity is Off
-    std::vector<uint32_t> scrubLocations = GetLocations(everyPossibleLocation, Category::cDekuScrub, Category::cDekuScrubUpgrades);
-    if (Scrubsanity.Is(OFF)) {
-      IncludeAndHide(scrubLocations);
-    } else {
-      Unhide(scrubLocations);
-    }
+  //   //Force Include scrubs if Scrubsanity is Off
+  //   std::vector<uint32_t> scrubLocations = GetLocations(everyPossibleLocation, Category::cDekuScrub, Category::cDekuScrubUpgrades);
+  //   if (Scrubsanity.Is(OFF)) {
+  //     IncludeAndHide(scrubLocations);
+  //   } else {
+  //     Unhide(scrubLocations);
+  //   }
 
-    //Force include Cows if Shuffle Cows is Off
-    std::vector<uint32_t> cowLocations = GetLocations(everyPossibleLocation, Category::cCow);
-    if (ShuffleCows) {
-      Unhide(cowLocations);
-    } else {
-      IncludeAndHide(cowLocations);
-    }
+  //   //Force include Cows if Shuffle Cows is Off
+  //   std::vector<uint32_t> cowLocations = GetLocations(everyPossibleLocation, Category::cCow);
+  //   if (ShuffleCows) {
+  //     Unhide(cowLocations);
+  //   } else {
+  //     IncludeAndHide(cowLocations);
+  //   }
 
-    //Force include the Kokiri Sword Chest if Shuffle Kokiri Sword is Off
-    if (ShuffleKokiriSword) {
-      Unhide({KF_KOKIRI_SWORD_CHEST});
-    } else {
-      IncludeAndHide({KF_KOKIRI_SWORD_CHEST});
-    }
+  //   //Force include the Kokiri Sword Chest if Shuffle Kokiri Sword is Off
+  //   if (ShuffleKokiriSword) {
+  //     Unhide({KF_KOKIRI_SWORD_CHEST});
+  //   } else {
+  //     IncludeAndHide({KF_KOKIRI_SWORD_CHEST});
+  //   }
 
-    //Force include the ocarina locations if Shuffle Ocarinas is Off
-    std::vector<uint32_t> ocarinaLocations = {LW_GIFT_FROM_SARIA, HF_OCARINA_OF_TIME_ITEM};
-    if (ShuffleOcarinas) {
-      Unhide(ocarinaLocations);
-    } else {
-      IncludeAndHide(ocarinaLocations);
-    }
+  //   //Force include the ocarina locations if Shuffle Ocarinas is Off
+  //   std::vector<uint32_t> ocarinaLocations = {LW_GIFT_FROM_SARIA, HF_OCARINA_OF_TIME_ITEM};
+  //   if (ShuffleOcarinas) {
+  //     Unhide(ocarinaLocations);
+  //   } else {
+  //     IncludeAndHide(ocarinaLocations);
+  //   }
 
-    //Force include Malon if Shuffle Weird Egg is Off
-    if (ShuffleWeirdEgg) {
-      Unhide({HC_MALON_EGG});
-    } else {
-      IncludeAndHide({HC_MALON_EGG});
-    }
+  //   //Force include Malon if Shuffle Weird Egg is Off
+  //   if (ShuffleWeirdEgg) {
+  //     Unhide({HC_MALON_EGG});
+  //   } else {
+  //     IncludeAndHide({HC_MALON_EGG});
+  //   }
 
-    //Force include Gerudo Membership Card Location if it's not shuffled
-    if (ShuffleGerudoToken) {
-      Unhide({GF_GERUDO_MEMBERSHIP_CARD});
-    } else {
-      IncludeAndHide({GF_GERUDO_MEMBERSHIP_CARD});
-    }
+  //   //Force include Gerudo Membership Card Location if it's not shuffled
+  //   if (ShuffleGerudoToken) {
+  //     Unhide({GF_GERUDO_MEMBERSHIP_CARD});
+  //   } else {
+  //     IncludeAndHide({GF_GERUDO_MEMBERSHIP_CARD});
+  //   }
 
-    //Force include Magic Bean salesman if Shuffle Magic Beans is off
-    if (ShuffleMagicBeans) {
-      Unhide({ZR_MAGIC_BEAN_SALESMAN});
-    } else {
-      IncludeAndHide({ZR_MAGIC_BEAN_SALESMAN});
-    }
+  //   //Force include Magic Bean salesman if Shuffle Magic Beans is off
+  //   if (ShuffleMagicBeans) {
+  //     Unhide({ZR_MAGIC_BEAN_SALESMAN});
+  //   } else {
+  //     IncludeAndHide({ZR_MAGIC_BEAN_SALESMAN});
+  //   }
 
-    //Force include Medigoron, Granny and Carpet salesman if Shuffle Merchants is off
-    if (ShuffleMerchants.IsNot(SHUFFLEMERCHANTS_OFF)) {
-      Unhide({GC_MEDIGORON});
-      Unhide({KAK_GRANNYS_SHOP});
-      Unhide({WASTELAND_BOMBCHU_SALESMAN});
-    } else {
-      IncludeAndHide({GC_MEDIGORON});
-      IncludeAndHide({KAK_GRANNYS_SHOP});
-      IncludeAndHide({WASTELAND_BOMBCHU_SALESMAN});
-    }
+  //   //Force include Medigoron, Granny and Carpet salesman if Shuffle Merchants is off
+  //   if (ShuffleMerchants.IsNot(SHUFFLEMERCHANTS_OFF)) {
+  //     Unhide({GC_MEDIGORON});
+  //     Unhide({KAK_GRANNYS_SHOP});
+  //     Unhide({WASTELAND_BOMBCHU_SALESMAN});
+  //   } else {
+  //     IncludeAndHide({GC_MEDIGORON});
+  //     IncludeAndHide({KAK_GRANNYS_SHOP});
+  //     IncludeAndHide({WASTELAND_BOMBCHU_SALESMAN});
+  //   }
 
-    //Force include frog song rupees if they're not shuffled
-    if (ShuffleFrogSongRupees) {
-      Unhide({ZR_FROGS_ZELDAS_LULLABY});
-      Unhide({ZR_FROGS_EPONAS_SONG});
-      Unhide({ZR_FROGS_SARIAS_SONG});
-      Unhide({ZR_FROGS_SUNS_SONG});
-      Unhide({ZR_FROGS_SONG_OF_TIME});
-    } else {
-      IncludeAndHide({ZR_FROGS_ZELDAS_LULLABY});
-      IncludeAndHide({ZR_FROGS_EPONAS_SONG});
-      IncludeAndHide({ZR_FROGS_SARIAS_SONG});
-      IncludeAndHide({ZR_FROGS_SUNS_SONG});
-      IncludeAndHide({ZR_FROGS_SONG_OF_TIME});
-    }
+  //   //Force include frog song rupees if they're not shuffled
+  //   if (ShuffleFrogSongRupees) {
+  //     Unhide({ZR_FROGS_ZELDAS_LULLABY});
+  //     Unhide({ZR_FROGS_EPONAS_SONG});
+  //     Unhide({ZR_FROGS_SARIAS_SONG});
+  //     Unhide({ZR_FROGS_SUNS_SONG});
+  //     Unhide({ZR_FROGS_SONG_OF_TIME});
+  //   } else {
+  //     IncludeAndHide({ZR_FROGS_ZELDAS_LULLABY});
+  //     IncludeAndHide({ZR_FROGS_EPONAS_SONG});
+  //     IncludeAndHide({ZR_FROGS_SARIAS_SONG});
+  //     IncludeAndHide({ZR_FROGS_SUNS_SONG});
+  //     IncludeAndHide({ZR_FROGS_SONG_OF_TIME});
+  //   }
 
-    //Force include adult trade quest if Shuffle Adult Trade Quest is off
-    std::vector<uint32_t> adultTradeLocations = {KAK_TRADE_POCKET_CUCCO, LW_TRADE_COJIRO, KAK_TRADE_ODD_MUSHROOM, LW_TRADE_ODD_POTION, GV_TRADE_SAW, DMT_TRADE_BROKEN_SWORD, ZD_TRADE_PRESCRIPTION, LH_TRADE_FROG, DMT_TRADE_EYEDROPS};
-    if (ShuffleAdultTradeQuest) {
-      Unhide(adultTradeLocations);
-    } else {
-      IncludeAndHide(adultTradeLocations);
-    }
+  //   //Force include adult trade quest if Shuffle Adult Trade Quest is off
+  //   std::vector<uint32_t> adultTradeLocations = {KAK_TRADE_POCKET_CUCCO, LW_TRADE_COJIRO, KAK_TRADE_ODD_MUSHROOM, LW_TRADE_ODD_POTION, GV_TRADE_SAW, DMT_TRADE_BROKEN_SWORD, ZD_TRADE_PRESCRIPTION, LH_TRADE_FROG, DMT_TRADE_EYEDROPS};
+  //   if (ShuffleAdultTradeQuest) {
+  //     Unhide(adultTradeLocations);
+  //   } else {
+  //     IncludeAndHide(adultTradeLocations);
+  //   }
 
-    //Force include Chest Game keys if Shuffle Chest Minigame is off
-    std::vector<uint32_t> ChestMinigameLocations = {
-        MARKET_TREASURE_CHEST_GAME_ITEM_1, MARKET_TREASURE_CHEST_GAME_ITEM_2, MARKET_TREASURE_CHEST_GAME_ITEM_3,
-        MARKET_TREASURE_CHEST_GAME_ITEM_4, MARKET_TREASURE_CHEST_GAME_ITEM_5
-    };
-    if (ShuffleChestMinigame) {
-      Unhide(ChestMinigameLocations);
-    } else {
-      IncludeAndHide(ChestMinigameLocations);
-    }
+  //   //Force include Chest Game keys if Shuffle Chest Minigame is off
+  //   std::vector<uint32_t> ChestMinigameLocations = {
+  //       MARKET_TREASURE_CHEST_GAME_ITEM_1, MARKET_TREASURE_CHEST_GAME_ITEM_2, MARKET_TREASURE_CHEST_GAME_ITEM_3,
+  //       MARKET_TREASURE_CHEST_GAME_ITEM_4, MARKET_TREASURE_CHEST_GAME_ITEM_5
+  //   };
+  //   if (ShuffleChestMinigame) {
+  //     Unhide(ChestMinigameLocations);
+  //   } else {
+  //     IncludeAndHide(ChestMinigameLocations);
+  //   }
 
-    //Force include 100 GS reward if it isn't shuffled
-    if (Shuffle100GSReward) {
-      Unhide({KAK_100_GOLD_SKULLTULA_REWARD});
-    } else {
-      IncludeAndHide({KAK_100_GOLD_SKULLTULA_REWARD});
-    }
+  //   //Force include 100 GS reward if it isn't shuffled
+  //   if (Shuffle100GSReward) {
+  //     Unhide({KAK_100_GOLD_SKULLTULA_REWARD});
+  //   } else {
+  //     IncludeAndHide({KAK_100_GOLD_SKULLTULA_REWARD});
+  //   }
 
-    //Force include Map and Compass Chests when Vanilla
-    std::vector<uint32_t> mapChests = GetLocations(everyPossibleLocation, Category::cVanillaMap);
-    std::vector<uint32_t> compassChests = GetLocations(everyPossibleLocation, Category::cVanillaCompass);
-    if (MapsAndCompasses.Is(MAPSANDCOMPASSES_VANILLA)) {
-      IncludeAndHide(mapChests);
-      IncludeAndHide(compassChests);
-    } else {
-      Unhide(mapChests);
-      Unhide(compassChests);
-    }
+  //   //Force include Map and Compass Chests when Vanilla
+  //   std::vector<uint32_t> mapChests = GetLocations(everyPossibleLocation, Category::cVanillaMap);
+  //   std::vector<uint32_t> compassChests = GetLocations(everyPossibleLocation, Category::cVanillaCompass);
+  //   if (MapsAndCompasses.Is(MAPSANDCOMPASSES_VANILLA)) {
+  //     IncludeAndHide(mapChests);
+  //     IncludeAndHide(compassChests);
+  //   } else {
+  //     Unhide(mapChests);
+  //     Unhide(compassChests);
+  //   }
 
-    //Force include Vanilla Small Key Locations (except gerudo Fortress) on Vanilla Keys
-    std::vector<uint32_t> smallKeyChests = GetLocations(everyPossibleLocation, Category::cVanillaSmallKey);
-    if (Keysanity.Is(KEYSANITY_VANILLA)) {
-      IncludeAndHide(smallKeyChests);
-    } else {
-      Unhide(smallKeyChests);
-    }
+  //   //Force include Vanilla Small Key Locations (except gerudo Fortress) on Vanilla Keys
+  //   std::vector<uint32_t> smallKeyChests = GetLocations(everyPossibleLocation, Category::cVanillaSmallKey);
+  //   if (Keysanity.Is(KEYSANITY_VANILLA)) {
+  //     IncludeAndHide(smallKeyChests);
+  //   } else {
+  //     Unhide(smallKeyChests);
+  //   }
 
-    //Force include Gerudo Fortress carpenter fights if GF Small Keys are Vanilla
-    std::vector<uint32_t> vanillaGFKeyLocations = GetLocations(everyPossibleLocation, Category::cVanillaGFSmallKey);
-    if (GerudoKeys.Is(GERUDOKEYS_VANILLA)) {
-      IncludeAndHide(vanillaGFKeyLocations);
-    } else {
-      Unhide(vanillaGFKeyLocations);
-    }
+  //   //Force include Gerudo Fortress carpenter fights if GF Small Keys are Vanilla
+  //   std::vector<uint32_t> vanillaGFKeyLocations = GetLocations(everyPossibleLocation, Category::cVanillaGFSmallKey);
+  //   if (GerudoKeys.Is(GERUDOKEYS_VANILLA)) {
+  //     IncludeAndHide(vanillaGFKeyLocations);
+  //   } else {
+  //     Unhide(vanillaGFKeyLocations);
+  //   }
 
-    //Force include Boss Key Chests if Boss Keys are Vanilla
-    std::vector<uint32_t> bossKeyChests = GetLocations(everyPossibleLocation, Category::cVanillaBossKey);
-    if (BossKeysanity.Is(BOSSKEYSANITY_VANILLA)) {
-      IncludeAndHide(bossKeyChests);
-    } else {
-      Unhide(bossKeyChests);
-    }
+  //   //Force include Boss Key Chests if Boss Keys are Vanilla
+  //   std::vector<uint32_t> bossKeyChests = GetLocations(everyPossibleLocation, Category::cVanillaBossKey);
+  //   if (BossKeysanity.Is(BOSSKEYSANITY_VANILLA)) {
+  //     IncludeAndHide(bossKeyChests);
+  //   } else {
+  //     Unhide(bossKeyChests);
+  //   }
 
-    //Force include Ganons Boss Key Chest if ganons boss key has to be there
-    if (GanonsBossKey.Is(GANONSBOSSKEY_VANILLA)) {
-      IncludeAndHide({GANONS_TOWER_BOSS_KEY_CHEST});
-    } else {
-      Unhide({GANONS_TOWER_BOSS_KEY_CHEST});
-    }
+  //   //Force include Ganons Boss Key Chest if ganons boss key has to be there
+  //   if (GanonsBossKey.Is(GANONSBOSSKEY_VANILLA)) {
+  //     IncludeAndHide({GANONS_TOWER_BOSS_KEY_CHEST});
+  //   } else {
+  //     Unhide({GANONS_TOWER_BOSS_KEY_CHEST});
+  //   }
 
-    //Force include Light Arrow item if ganons boss key has to be there
-    if (GanonsBossKey.Value<uint8_t>() >= GANONSBOSSKEY_LACS_VANILLA) {
-      IncludeAndHide({TOT_LIGHT_ARROWS_CUTSCENE});
-    } else {
-      Unhide({TOT_LIGHT_ARROWS_CUTSCENE});
-    }
-  }
+  //   //Force include Light Arrow item if ganons boss key has to be there
+  //   if (GanonsBossKey.Value<uint8_t>() >= GANONSBOSSKEY_LACS_VANILLA) {
+  //     IncludeAndHide({TOT_LIGHT_ARROWS_CUTSCENE});
+  //   } else {
+  //     Unhide({TOT_LIGHT_ARROWS_CUTSCENE});
+  //   }
+  // }
 
   uint8_t DungeonsOfType(uint8_t type) {
     uint8_t count = 0;
@@ -2188,15 +2189,15 @@ namespace Settings {
 
     LocationsReachable.SetSelectedIndex(cvarSettings[RSK_ALL_LOCATIONS_REACHABLE]);
 
-    AddExcludedOptions();
-    for (auto locationKey : everyPossibleLocation) {
-      auto location = Location(locationKey);
-      if (excludedLocations.count(location->GetRandomizerCheck())) {
-        location->GetExcludedOption()->SetSelectedIndex(1);
-      } else {
-        location->GetExcludedOption()->SetSelectedIndex(0);
-      }
-    }
+    // AddExcludedOptions();
+    // for (auto locationKey : everyPossibleLocation) {
+    //   auto location = Location(locationKey);
+    //   if (excludedLocations.count(location->GetRandomizerCheck())) {
+    //     location->GetExcludedOption()->SetSelectedIndex(1);
+    //   } else {
+    //     location->GetExcludedOption()->SetSelectedIndex(0);
+    //   }
+    // }
 
     //tricks
     

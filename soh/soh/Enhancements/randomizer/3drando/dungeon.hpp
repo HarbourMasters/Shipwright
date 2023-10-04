@@ -13,10 +13,10 @@ public:
   DungeonInfo(std::string name_, uint32_t hintKey_, RandomizerGet map_, RandomizerGet compass_, RandomizerGet smallKey_,
               RandomizerGet keyRing_, RandomizerGet bossKey_,
               uint8_t vanillaKeyCount_, uint8_t mqKeyCount_,
-                std::vector<uint32_t> vanillaLocations_,
-                std::vector<uint32_t> mqLocations_,
-                std::vector<uint32_t> sharedLocations_,
-                std::vector<uint32_t> bossRoomLocations_);
+                std::vector<RandomizerCheck> vanillaLocations_,
+                std::vector<RandomizerCheck> mqLocations_,
+                std::vector<RandomizerCheck> sharedLocations_,
+                std::vector<RandomizerCheck> bossRoomLocations_);
     ~DungeonInfo();
 
     const std::string& GetName() const {
@@ -68,10 +68,10 @@ public:
     void PlaceVanillaSmallKeys();
 
     // Gets the chosen dungeon locations for a playthrough (so either MQ or Vanilla)
-    std::vector<uint32_t> GetDungeonLocations() const;
+    std::vector<RandomizerCheck> GetDungeonLocations() const;
 
     // Gets all dungeon locations (MQ + Vanilla)
-    std::vector<uint32_t> GetEveryLocation() const;
+    std::vector<RandomizerCheck> GetEveryLocation() const;
 
 private:
     std::string name;
@@ -85,10 +85,10 @@ private:
     uint8_t mqKeyCount;
     bool masterQuest = false;
     bool hasKeyRing = false;
-    std::vector<uint32_t> vanillaLocations;
-    std::vector<uint32_t> mqLocations;
-    std::vector<uint32_t> sharedLocations;
-    std::vector<uint32_t> bossRoomLocations;
+    std::vector<RandomizerCheck> vanillaLocations;
+    std::vector<RandomizerCheck> mqLocations;
+    std::vector<RandomizerCheck> sharedLocations;
+    std::vector<RandomizerCheck> bossRoomLocations;
 };
 
 extern DungeonInfo DekuTree;

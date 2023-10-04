@@ -23,6 +23,10 @@ class StaticData {
       static std::array<RandoItem, RG_MAX>& GetItemTable();
       static void InitLocationTable();
       static Rando::Location* Location(RandomizerCheck locKey);
+      static std::vector<RandomizerCheck> overworldLocations;
+      static std::vector<RandomizerCheck> dungeonRewardLocations;
+      static std::vector<std::vector<RandomizerCheck>> shopLocationLists;
+      static std::vector<RandomizerCheck> scrubLocations;
       StaticData();
       ~StaticData();
 

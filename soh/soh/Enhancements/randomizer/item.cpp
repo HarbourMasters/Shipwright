@@ -1,7 +1,7 @@
 #include "item.h"
+#include "item_location.h"
 
 #include "3drando/logic.hpp"
-#include "3drando/item_location.hpp"
 #include "3drando/random.hpp"
 #include "3drando/item_pool.hpp"
 #include "z64item.h"
@@ -66,8 +66,8 @@ void RandoItem::UndoEffect() {
     Logic::UpdateHelpers();
 }
 
-ItemOverride_Value RandoItem::Value() const {
-    ItemOverride_Value val;
+Rando::ItemOverride_Value RandoItem::Value() const {
+    Rando::ItemOverride_Value val;
 
     val.all = 0;
     val.itemId = getItemId;

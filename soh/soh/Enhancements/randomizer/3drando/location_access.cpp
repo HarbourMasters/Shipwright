@@ -1,7 +1,8 @@
 #include "location_access.hpp"
 
 #include "dungeon.hpp"
-#include "item_location.hpp"
+#include "../static_data.h"
+#include "../context.h"
 #include "item_pool.hpp"
 #include "logic.hpp"
 #include "settings.hpp"
@@ -40,7 +41,7 @@ bool LocationAccess::CheckConditionAtAgeTime(bool& age, bool& time) const {
 
 bool LocationAccess::ConditionsMet() const {
 
-  Area* parentRegion = AreaTable(Location(location)->GetParentRegionKey());
+  Area* parentRegion = AreaTable(Rando::Context::GetInstance()->GetItemLocation(location)->GetParentRegionKey());
   bool conditionsMet = false;
 
   if ((parentRegion->childDay   && CheckConditionAtAgeTime(IsChild, AtDay))   ||
@@ -54,30 +55,32 @@ bool LocationAccess::ConditionsMet() const {
 }
 
 bool LocationAccess::CanBuy() const {
+  auto ctx = Rando::Context::GetInstance();
   //Not a shop location, don't need to check if buyable
-  if (!(Location(location)->IsCategory(Category::cShop))) {
+  if (!(StaticData::Location(location)->IsCategory(Category::cShop))) {
     return true;
   }
 
   //Check if wallet is large enough to buy item
   bool SufficientWallet = true;
-  if (Location(location)->GetPrice() > 500) {
+  if (ctx->GetItemLocation(location)->GetPrice() > 500) {
     SufficientWallet = ProgressiveWallet >= 3;
-  } else if (Location(location)->GetPrice() > 200) {
+  } else if (ctx->GetItemLocation(location)->GetPrice() > 200) {
     SufficientWallet = ProgressiveWallet >= 2;
-  } else if (Location(location)->GetPrice() > 99) {
+  } else if (ctx->GetItemLocation(location)->GetPrice() > 99) {
     SufficientWallet = ProgressiveWallet >= 1;
   }
 
   bool OtherCondition = true;
-  uint32_t placed = Location(location)->GetPlacedItemKey();
+  RandomizerGet placed = ctx->GetItemLocation(location)->GetPlacedRandomizerGet();
   //Need bottle to buy bottle items, only logically relevant bottle items included here
-  if (placed == BUY_BLUE_FIRE || placed == BUY_BOTTLE_BUG || placed == BUY_FISH || placed == BUY_FAIRYS_SPIRIT) {
-    OtherCondition = HasBottle;
+  if (placed == RG_BUY_BLUE_FIRE || placed == RG_BUY_BOTTLE_BUG || placed == RG_BUY_FISH ||
+      placed == RG_BUY_FAIRYS_SPIRIT) {
+      OtherCondition = HasBottle;
   }
-  //If bombchus in logic, need to have found chus to buy; if not just need bomb bag
-  else if (placed == BUY_BOMBCHU_10 || placed == BUY_BOMBCHU_20) {
-    OtherCondition = (!BombchusInLogic && Bombs) || (BombchusInLogic && FoundBombchus);
+  // If bombchus in logic, need to have found chus to buy; if not just need bomb bag
+  else if (placed == RG_BUY_BOMBCHU_10 || placed == RG_BUY_BOMBCHU_20) {
+      OtherCondition = (!BombchusInLogic && Bombs) || (BombchusInLogic && FoundBombchus);
   }
 
   return SufficientWallet && OtherCondition;
@@ -178,7 +181,7 @@ bool Area::AllAccountedFor() const {
   }
 
   for (const LocationAccess& loc : locations) {
-    if (!(Location(loc.GetLocation())->IsAddedToPool())) {
+    if (!(Rando::Context::GetInstance()->GetItemLocation(loc.GetLocation())->IsAddedToPool())) {
       return false;
     }
   }
@@ -255,7 +258,7 @@ void AreaTable_Init() {
                        //name, scene, hint text,                       events, locations, exits
   areaTable[ROOT] = Area("Root", "", LINKS_POCKET, NO_DAY_NIGHT_CYCLE, {}, {
                   //Locations
-                  LocationAccess(LINKS_POCKET, {[]{return true;}})
+                  LocationAccess(RC_LINKS_POCKET, {[]{return true;}})
                 }, {
                   //Exits
                   Entrance(ROOT_EXITS, {[]{return true;}})
@@ -338,8 +341,8 @@ void AreaTable_Init() {
   //Set parent regions
   for (uint32_t i = ROOT; i <= GANONS_CASTLE; i++) {
     for (LocationAccess& locPair : areaTable[i].locations) {
-      uint32_t location = locPair.GetLocation();
-      Location(location)->SetParentRegion(i);
+      RandomizerCheck location = locPair.GetLocation();
+      Rando::Context::GetInstance()->GetItemLocation(location)->SetParentRegion(i);
     }
     for (Entrance& exit : areaTable[i].exits) {
       exit.SetParentRegion(i);
@@ -400,8 +403,8 @@ namespace Areas {
       AreaTable(area)->ResetVariables();
       //Erase item from every location in this exit
       for (LocationAccess& locPair : AreaTable(area)->locations) {
-          uint32_t location = locPair.GetLocation();
-          Location(location)->ResetVariables();
+          RandomizerCheck location = locPair.GetLocation();
+          Rando::Context::GetInstance()->GetItemLocation(location)->ResetVariables();
       }
     }
 

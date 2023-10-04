@@ -1,6 +1,7 @@
 #pragma once
 
 #include "keys.hpp"
+#include "../randomizerTypes.h"
 
 #include <vector>
 #include <string>
@@ -21,7 +22,7 @@ void ClearProgress();
 void VanillaFill();
 int Fill();
 
-std::vector<uint32_t> GetAccessibleLocations(const std::vector<uint32_t>& allowedLocations,
+std::vector<RandomizerCheck> GetAccessibleLocations(const std::vector<RandomizerCheck>& allowedLocations,
                                              SearchMode mode = SearchMode::ReachabilitySearch, std::string ignore = "",
                                              bool checkPoeCollectorAccess = false,
                                              bool checkOtherEntranceAccess = false);

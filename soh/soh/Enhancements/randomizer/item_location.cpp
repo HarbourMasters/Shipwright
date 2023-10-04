@@ -1,7 +1,10 @@
 #include "item_location.h"
-#include "static_data.h"
 
 namespace Rando {
+RandomizerCheck ItemLocation::GetRandomizerCheck() const {
+    return rc;
+}
+
 bool ItemLocation::IsAddedToPool() const {
     return addedToPool;
 }
@@ -40,6 +43,14 @@ void ItemLocation::SaveDelayedItem () {
     delayedItem = RG_NONE;
 }
 
+void ItemLocation::SetParentRegion(uint32_t region) {
+    parentRegion = region;
+}
+
+uint32_t ItemLocation::GetParentRegionKey() const {
+    return parentRegion;
+}
+
 void ItemLocation::PlaceVanillaItem() {
     placedItem = StaticData::Location(rc)->GetVanillaItem();
 }
@@ -75,9 +86,17 @@ bool ItemLocation::HasScrubsanityPrice() const {
     return hasScrubsanityPrice;
 }
 
-void ItemLocation::SetScrubsanityPrice(uint16_t price_) const {
+void ItemLocation::SetScrubsanityPrice(uint16_t price_) {
     price = price_;
     hasScrubsanityPrice = true;
+}
+
+bool ItemLocation::IsHintable() const {
+    return isHintable;
+}
+
+void ItemLocation::SetAsHintable() {
+    isHintable = true;
 }
 
 bool ItemLocation::IsHintedAt() const {
@@ -95,10 +114,25 @@ bool ItemLocation::IsHidden() const {
 void ItemLocation::SetHidden(const bool hidden_) {
     hidden = hidden_;
 }
+
+bool ItemLocation::IsExcluded() const {
+    return excludedOption.Value<bool>();
+}
+
+ItemOverride_Key ItemLocation::Key() const {
+    ItemOverride_Key key;
+    key.all = 0;
+
+    key.scene = StaticData::Location(rc)->GetScene();
+    key.type = static_cast<uint8_t>(StaticData::Location(rc)->GetLocationType()); // TODO make sure these match up
+    return key;
+}
+
 void ItemLocation::ResetVariables() {
     addedToPool = false;
     placedItem = RG_NONE;
     delayedItem = RG_NONE;
+    isHintable = false;
     hintedAt = false;
     price = 0;
     hasShopsanityPrice = false;

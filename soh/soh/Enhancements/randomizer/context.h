@@ -1,6 +1,7 @@
 #pragma once
 
 #include "randomizerTypes.h"
+#include "item_location.h"
 #include "3drando/text.hpp"
 #include "hint.h"
 
@@ -21,8 +22,28 @@ class Context {
         static std::shared_ptr<Context> CreateInstance();
         static std::shared_ptr<Context> GetInstance();
         void AddHint(RandomizerHintKey hintId, Text text);
-    private:
+        ItemLocation *GetItemLocation(RandomizerCheck locKey);
+        void PlaceItemInLocation(RandomizerCheck locKey, RandomizerGet item, bool applyEffectImmediately = false,
+                                 bool setHidden = false);
+        static std::vector<RandomizerCheck> allLocations;
+        void AddLocation(RandomizerCheck loc, std::vector<RandomizerCheck>* destination = &allLocations);
+        template<typename Container>
+        void AddLocations(const Container& locations, std::vector<RandomizerCheck>* destination = &allLocations);
+        void GenerateLocationPool();
+        std::vector<RandomizerCheck> GetLocations(const std::vector<RandomizerCheck>& locationPool,
+                                                  Category categoryInclude, Category categoryExclude = Category::cNull);
+        void LocationReset();
+        void ItemReset();
+        void CreateItemOverrides();
+        std::set<ItemOverride, ItemOverride_Compare> overrides;
+        std::vector<std::vector<RandomizerCheck>> playthroughLocations;
+        std::vector<RandomizerCheck> wothLocations;
+        std::unordered_map<RandomizerCheck, uint8_t> iceTrapModels;
+        bool playthroughBeatable = false;
+        bool allLocationsReachable = false;
+      private:
         static std::weak_ptr<Context> mContext;
         std::array<RandoHint, RH_MAX> hintTable;
+        std::array<ItemLocation, RC_MAX> itemLocationTable;
 };
 }
