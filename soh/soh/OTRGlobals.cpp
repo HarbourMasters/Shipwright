@@ -1733,10 +1733,10 @@ Color_RGB8 GetColorForControllerLED() {
                     break;
             }
         }
-        if (gPlayState && (source == LED_SOURCE_NAVI)) {
+        if (gPlayState && (source == LED_SOURCE_NAVI_ORIGINAL)) {
             Actor* arrowPointedActor = gPlayState->actorCtx.targetCtx.arrowPointedActor;
             if (arrowPointedActor) {
-                uint8_t category = gPlayState->actorCtx.targetCtx.arrowPointedActor->category;
+                uint8_t category = arrowPointedActor->category;
                 color.r = sNaviColorList[category].inner.r;
                 color.g = sNaviColorList[category].inner.g;
                 color.b = sNaviColorList[category].inner.b;
