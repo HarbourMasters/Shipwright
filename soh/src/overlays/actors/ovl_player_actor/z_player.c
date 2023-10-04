@@ -11172,19 +11172,10 @@ void Player_DrawGameplay(PlayState* play, Player* this, s32 lod, Gfx* cullDList,
         }
 
        
-        if ((this->currentMask == PLAYER_MASK_BUNNY) && CVarGetInteger("gCosmetics.Equipment_BunnyHood.Changed", 0)) {
-            gSPGrayscale(POLY_OPA_DISP++, true);
-            Color_RGBA8 hoodColor = CVarGetColor("gCosmetics.Equipment_BunnyHood.Value", (Color_RGBA8){ 255, 255, 255, 255 });
-            gDPSetGrayscaleColor(POLY_OPA_DISP++, hoodColor.r, hoodColor.g, hoodColor.b, 255);
-        }
         if (this->currentMask != PLAYER_MASK_BUNNY || !CVarGetInteger("gHideBunnyHood", 0)) {
             gSPDisplayList(POLY_OPA_DISP++, sMaskDlists[this->currentMask - 1]);
         }
 
-        if ((this->currentMask == PLAYER_MASK_BUNNY) && CVarGetInteger("gCosmetics.Equipment_BunnyHood.Changed", 0)) {
-            gSPGrayscale(POLY_OPA_DISP++, false);
-        }
-        
         if (CVarGetInteger("gFixIceTrapWithBunnyHood", 1)) Matrix_Pop();
     }
 
