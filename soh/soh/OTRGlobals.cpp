@@ -128,6 +128,21 @@ Color_RGB8 kokiriColor = { 0x1E, 0x69, 0x1B };
 Color_RGB8 goronColor = { 0x64, 0x14, 0x00 };
 Color_RGB8 zoraColor = { 0x00, 0xEC, 0x64 };
 
+typedef struct {
+    /* 0x00 */ Color_RGBA8 inner;
+    /* 0x04 */ Color_RGBA8 outer;
+} NaviColor; // size = 0x8
+
+NaviColor sNaviColorList[] = {
+    { { 0, 255, 0, 255 }, { 0, 255, 0, 0 } },         { { 0, 255, 0, 255 }, { 0, 255, 0, 0 } },
+    { { 255, 255, 255, 255 }, { 0, 0, 255, 0 } },     { { 0, 255, 0, 255 }, { 0, 255, 0, 0 } },
+    { { 150, 150, 255, 255 }, { 150, 150, 255, 0 } }, { { 255, 255, 0, 255 }, { 200, 155, 0, 0 } },
+    { { 0, 255, 0, 255 }, { 0, 255, 0, 0 } },         { { 0, 255, 0, 255 }, { 0, 255, 0, 0 } },
+    { { 0, 255, 0, 255 }, { 0, 255, 0, 0 } },         { { 255, 255, 0, 255 }, { 200, 155, 0, 0 } },
+    { { 0, 255, 0, 255 }, { 0, 255, 0, 0 } },         { { 0, 255, 0, 255 }, { 0, 255, 0, 0 } },
+    { { 0, 255, 0, 255 }, { 0, 255, 0, 0 } },
+};
+
 // OTRTODO: A lot of these left in Japanese are used by the mempak manager. LUS does not currently support mempaks. Ignore unused ones.
 const char* constCameraStrings[] = {
     "INSUFFICIENT",
@@ -1716,6 +1731,19 @@ Color_RGB8 GetColorForControllerLED() {
                                 ? CVarGetColor24("gCosmetics.Link_ZoraTunic.Value", zoraColor)
                                 : zoraColor;
                     break;
+            }
+        }
+        if (gPlayState && (source == LED_SOURCE_NAVI)) {
+            Actor* arrowPointedActor = gPlayState->actorCtx.targetCtx.arrowPointedActor;
+            if (arrowPointedActor) {
+                uint8_t category = gPlayState->actorCtx.targetCtx.arrowPointedActor->category;
+                color.r = sNaviColorList[category].inner.r;
+                color.g = sNaviColorList[category].inner.g;
+                color.b = sNaviColorList[category].inner.b;
+            } else {
+                color.r = sNaviColorList[2].inner.r;
+                color.g = sNaviColorList[2].inner.g;
+                color.b = sNaviColorList[2].inner.b;
             }
         }
         if (source == LED_SOURCE_CUSTOM) {
