@@ -3181,11 +3181,19 @@ void FileChoose_DrawRandoSaveVersionWarning(GameState* thisx) {
 
 static const char* noRandoGeneratedText[] = {
     // English
-    "No randomizer generated.\nGenerate one in the randomizer menu.",
+    "No Randomizer seed currently available.\nGenerate one in the Randomizer Settings"
+    #if defined(__WIIU__) || defined(__SWITCH__)
+        ".",
+    #else
+        ",\nor drop a spoiler log on the game window.",
+    #endif
     // German
     "!!!",
     // French
-    "!!!"
+    "Aucune Seed de Randomizer actuellement disponoble.\nGénérez-en une dans les \"Randomizer Settings\""
+    #if !(defined(__WIIU__) || defined(__SWITCH__))
+        "\nou glissez un spoiler log sur la fenêtre du jeu"
+    #endif
 };
 
 void FileChoose_DrawNoRandoGeneratedWarning(GameState* thisx) {
@@ -3198,7 +3206,11 @@ void FileChoose_DrawNoRandoGeneratedWarning(GameState* thisx) {
         u8 textAlpha = 225;
 
         // Compute the height for a "squished" textbox texture
-        s16 height = gSaveContext.language == LANGUAGE_ENG ? 32 : 40; // English is only 2 lines
+        #if defined(__WIIU__) || defined(__SWITCH__)
+            s16 height = 32;// 2 lines
+        #else
+            s16 height = 40;// 3 lines
+        #endif
         // float math to get a S5.10 number that will squish the texture
         f32 texCoordinateHeightF = 512 / ((f32)height / 64);
         s16 texCoordinateHeightScale = texCoordinateHeightF + 0.5f;
